@@ -1,23 +1,23 @@
 @interface NSString
-+ (id)bk_localizedStringForDeleteAction:(int64_t)a3 deleteActionProvider:(id)a4;
-+ (id)bk_localizedWarningAndTitleStringsForProvider:(id)a3;
-+ (id)bk_localizedWarningStringForProvider:(id)a3;
++ (id)bk_localizedStringForDeleteAction:(int64_t)action deleteActionProvider:(id)provider;
++ (id)bk_localizedWarningAndTitleStringsForProvider:(id)provider;
++ (id)bk_localizedWarningStringForProvider:(id)provider;
 @end
 
 @implementation NSString
 
-+ (id)bk_localizedStringForDeleteAction:(int64_t)a3 deleteActionProvider:(id)a4
++ (id)bk_localizedStringForDeleteAction:(int64_t)action deleteActionProvider:(id)provider
 {
-  v5 = a4;
-  v6 = v5;
+  providerCopy = provider;
+  v6 = providerCopy;
   v7 = &stru_100A30A68;
-  if (a3 <= 3)
+  if (action <= 3)
   {
-    if (a3 <= 1)
+    if (action <= 1)
     {
-      if (a3)
+      if (action)
       {
-        if (a3 != 1)
+        if (action != 1)
         {
           goto LABEL_36;
         }
@@ -37,9 +37,9 @@
       goto LABEL_34;
     }
 
-    if (a3 == 2)
+    if (action == 2)
     {
-      v11 = [v5 countForActionItem:2];
+      v11 = [providerCopy countForActionItem:2];
       v9 = +[NSBundle mainBundle];
       if (v11 == 1)
       {
@@ -62,9 +62,9 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if (a3 <= 5)
+  if (action <= 5)
   {
-    if (a3 == 4)
+    if (action == 4)
     {
       v9 = [BCCollection titleForDefaultCollectionID:kBKCollectionDefaultIDSamples];
       v16 = +[NSBundle mainBundle];
@@ -84,11 +84,11 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (a3 != 6)
+  if (action != 6)
   {
-    if (a3 != 7)
+    if (action != 7)
     {
-      if (a3 != 8)
+      if (action != 8)
       {
         goto LABEL_36;
       }
@@ -99,9 +99,9 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v18 = [v5 countForActionItem:7];
-    v19 = [v6 localITSAudiobookCount];
-    v20 = &v19[[v6 cloudITSAudiobookCount]];
+    v18 = [providerCopy countForActionItem:7];
+    localITSAudiobookCount = [v6 localITSAudiobookCount];
+    v20 = &localITSAudiobookCount[[v6 cloudITSAudiobookCount]];
     v9 = +[NSBundle mainBundle];
     if (v20 == v18)
     {
@@ -129,9 +129,9 @@ LABEL_34:
     goto LABEL_33;
   }
 
-  v12 = [v5 collection];
-  v9 = v12;
-  if (!v12 || ![v12 isDefaultCollection])
+  collection = [providerCopy collection];
+  v9 = collection;
+  if (!collection || ![collection isDefaultCollection])
   {
     v14 = +[NSBundle mainBundle];
     v17 = [v14 localizedStringForKey:@"Remove from Collection" value:&stru_100A30A68 table:0];
@@ -141,8 +141,8 @@ LABEL_34:
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"Remove from %@" value:&stru_100A30A68 table:0];
 
-  v15 = [v9 title];
-  v7 = [NSString stringWithFormat:v14, v15];
+  title = [v9 title];
+  v7 = [NSString stringWithFormat:v14, title];
 
 LABEL_27:
 LABEL_35:
@@ -152,36 +152,36 @@ LABEL_36:
   return v7;
 }
 
-+ (id)bk_localizedWarningStringForProvider:(id)a3
++ (id)bk_localizedWarningStringForProvider:(id)provider
 {
-  v3 = [NSString bk_localizedWarningAndTitleStringsForProvider:a3];
+  v3 = [NSString bk_localizedWarningAndTitleStringsForProvider:provider];
   v4 = [v3 objectForKeyedSubscript:@"warningString"];
 
   return v4;
 }
 
-+ (id)bk_localizedWarningAndTitleStringsForProvider:(id)a3
++ (id)bk_localizedWarningAndTitleStringsForProvider:(id)provider
 {
-  v3 = a3;
-  if ([v3 sampleCount])
+  providerCopy = provider;
+  if ([providerCopy sampleCount])
   {
     v4 = &stru_100A30A68;
     goto LABEL_73;
   }
 
-  if (![v3 nonStoreAudiobookCount])
+  if (![providerCopy nonStoreAudiobookCount])
   {
-    if ([v3 localUbiquityCount])
+    if ([providerCopy localUbiquityCount])
     {
       v8 = +[BCDevice deviceClass];
-      v9 = [v3 pdfCount];
-      v10 = [v3 localUbiquityCount];
-      v6 = +[NSBundle mainBundle];
+      pdfCount = [providerCopy pdfCount];
+      localUbiquityCount = [providerCopy localUbiquityCount];
+      actionItems = +[NSBundle mainBundle];
       if (v8 == 3)
       {
-        if (v9)
+        if (pdfCount)
         {
-          if (v10 >= 2)
+          if (localUbiquityCount >= 2)
           {
             v7 = @"These items were downloaded to this iPad. Delete them from iCloud or remove the downloads from this iPad.";
           }
@@ -192,7 +192,7 @@ LABEL_36:
           }
         }
 
-        else if (v10 >= 2)
+        else if (localUbiquityCount >= 2)
         {
           v7 = @"These books were downloaded to this iPad. Delete them from iCloud or remove the downloads from this iPad.";
         }
@@ -205,9 +205,9 @@ LABEL_36:
 
       else if (v8 == 2)
       {
-        if (v9)
+        if (pdfCount)
         {
-          if (v10 >= 2)
+          if (localUbiquityCount >= 2)
           {
             v7 = @"These items were downloaded to this iPod touch. Delete them from iCloud or remove the downloads from this iPod touch.";
           }
@@ -218,7 +218,7 @@ LABEL_36:
           }
         }
 
-        else if (v10 >= 2)
+        else if (localUbiquityCount >= 2)
         {
           v7 = @"These books were downloaded to this iPod touch. Delete them from iCloud or remove the downloads from this iPod touch.";
         }
@@ -231,9 +231,9 @@ LABEL_36:
 
       else if (v8 == 1)
       {
-        if (v9)
+        if (pdfCount)
         {
-          if (v10 >= 2)
+          if (localUbiquityCount >= 2)
           {
             v7 = @"These items were downloaded to this iPhone. Delete them from iCloud or remove the downloads from this iPhone.";
           }
@@ -244,7 +244,7 @@ LABEL_36:
           }
         }
 
-        else if (v10 >= 2)
+        else if (localUbiquityCount >= 2)
         {
           v7 = @"These books were downloaded to this iPhone. Delete them from iCloud or remove the downloads from this iPhone.";
         }
@@ -255,9 +255,9 @@ LABEL_36:
         }
       }
 
-      else if (v9)
+      else if (pdfCount)
       {
-        if (v10 >= 2)
+        if (localUbiquityCount >= 2)
         {
           v7 = @"These items were downloaded to this device. Delete them from iCloud or remove the downloads from this device.";
         }
@@ -268,7 +268,7 @@ LABEL_36:
         }
       }
 
-      else if (v10 >= 2)
+      else if (localUbiquityCount >= 2)
       {
         v7 = @"These books were downloaded to this device. Delete them from iCloud or remove the downloads from this device.";
       }
@@ -279,18 +279,18 @@ LABEL_36:
       }
 
 LABEL_70:
-      v5 = v6;
+      v5 = actionItems;
       goto LABEL_71;
     }
 
-    if ([v3 nonlocalUbiquityCount])
+    if ([providerCopy nonlocalUbiquityCount])
     {
-      v11 = [v3 pdfCount];
-      v12 = [v3 nonlocalUbiquityCount];
-      v6 = +[NSBundle mainBundle];
-      if (v11)
+      pdfCount2 = [providerCopy pdfCount];
+      nonlocalUbiquityCount = [providerCopy nonlocalUbiquityCount];
+      actionItems = +[NSBundle mainBundle];
+      if (pdfCount2)
       {
-        if (v12 >= 2)
+        if (nonlocalUbiquityCount >= 2)
         {
           v7 = @"Do you want to delete items from iCloud and all your iCloud devices?";
         }
@@ -301,7 +301,7 @@ LABEL_70:
         }
       }
 
-      else if (v12 >= 2)
+      else if (nonlocalUbiquityCount >= 2)
       {
         v7 = @"Do you want to delete books from iCloud and all your iCloud devices?";
       }
@@ -314,14 +314,14 @@ LABEL_70:
       goto LABEL_70;
     }
 
-    if ([v3 ubiquityErrorCount])
+    if ([providerCopy ubiquityErrorCount])
     {
-      v13 = [v3 pdfCount];
-      v14 = [v3 ubiquityErrorCount];
-      v6 = +[NSBundle mainBundle];
-      if (v13)
+      pdfCount3 = [providerCopy pdfCount];
+      ubiquityErrorCount = [providerCopy ubiquityErrorCount];
+      actionItems = +[NSBundle mainBundle];
+      if (pdfCount3)
       {
-        if (v14 >= 2)
+        if (ubiquityErrorCount >= 2)
         {
           v7 = @"These items weren’t uploaded to iCloud. Do you want to delete them?";
         }
@@ -332,7 +332,7 @@ LABEL_70:
         }
       }
 
-      else if (v14 >= 2)
+      else if (ubiquityErrorCount >= 2)
       {
         v7 = @"These books weren’t uploaded to iCloud. Do you want to delete them?";
       }
@@ -345,21 +345,21 @@ LABEL_70:
       goto LABEL_70;
     }
 
-    v6 = [v3 actionItems];
-    v15 = [v6 containsObject:&off_100A43638];
-    v16 = [v6 containsObject:&off_100A43650];
-    if ([v6 containsObject:&off_100A43668])
+    actionItems = [providerCopy actionItems];
+    v15 = [actionItems containsObject:&off_100A43638];
+    v16 = [actionItems containsObject:&off_100A43650];
+    if ([actionItems containsObject:&off_100A43668])
     {
       v17 = 1;
     }
 
     else
     {
-      v17 = [v6 containsObject:&off_100A43680];
+      v17 = [actionItems containsObject:&off_100A43680];
     }
 
-    v18 = [v3 booksToDelete];
-    v19 = [v18 count];
+    booksToDelete = [providerCopy booksToDelete];
+    v19 = [booksToDelete count];
 
     if (((v15 | v16) & 1) == 0 && !v17)
     {
@@ -379,10 +379,10 @@ LABEL_81:
       goto LABEL_87;
     }
 
-    v22 = [v3 countForActionItem:2];
-    v23 = [v3 countForActionItem:7];
-    v24 = [v3 localITSAudiobookCount];
-    v25 = &v24[[v3 cloudITSAudiobookCount]];
+    v22 = [providerCopy countForActionItem:2];
+    v23 = [providerCopy countForActionItem:7];
+    localITSAudiobookCount = [providerCopy localITSAudiobookCount];
+    v25 = &localITSAudiobookCount[[providerCopy cloudITSAudiobookCount]];
     v26 = v15 ^ 1 | v16;
     if ((v26 | v17))
     {
@@ -539,7 +539,7 @@ LABEL_88:
   }
 
   v5 = +[NSBundle mainBundle];
-  v6 = v5;
+  actionItems = v5;
   v7 = @"Audiobooks not purchased from the Audiobook Store will be permanently deleted.";
 LABEL_71:
   v4 = [v5 localizedStringForKey:v7 value:&stru_100A30A68 table:0];

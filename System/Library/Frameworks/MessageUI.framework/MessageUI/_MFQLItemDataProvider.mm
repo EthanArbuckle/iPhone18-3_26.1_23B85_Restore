@@ -1,14 +1,14 @@
 @interface _MFQLItemDataProvider
-- (_MFQLItemDataProvider)initWithData:(id)a3 contentType:(id)a4 previewTitle:(id)a5;
+- (_MFQLItemDataProvider)initWithData:(id)data contentType:(id)type previewTitle:(id)title;
 @end
 
 @implementation _MFQLItemDataProvider
 
-- (_MFQLItemDataProvider)initWithData:(id)a3 contentType:(id)a4 previewTitle:(id)a5
+- (_MFQLItemDataProvider)initWithData:(id)data contentType:(id)type previewTitle:(id)title
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  typeCopy = type;
+  titleCopy = title;
   v19.receiver = self;
   v19.super_class = _MFQLItemDataProvider;
   v11 = [(_MFQLItemDataProvider *)&v19 init];
@@ -32,11 +32,11 @@
 
     v13 = v12;
     _Block_object_dispose(&v21, 8);
-    v14 = [[v12 alloc] initWithDataProvider:v11 contentType:v9 previewTitle:v10];
+    v14 = [[v12 alloc] initWithDataProvider:v11 contentType:typeCopy previewTitle:titleCopy];
     item = v11->_item;
     v11->_item = v14;
 
-    v16 = [v8 copy];
+    v16 = [dataCopy copy];
     data = v11->_data;
     v11->_data = v16;
   }

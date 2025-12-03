@@ -1,18 +1,18 @@
 @interface NWParameters
-+ (NWParameters)parametersWithCParameters:(id)a3;
-+ (NWParameters)parametersWithProtocolBufferData:(id)a3;
++ (NWParameters)parametersWithCParameters:(id)parameters;
++ (NWParameters)parametersWithProtocolBufferData:(id)data;
 - (BOOL)allowDuplicateStateUpdates;
 - (BOOL)allowJoiningConnectedFd;
 - (BOOL)allowSocketAccess;
 - (BOOL)allowUnusableAddresses;
 - (BOOL)attachProtocolListener;
-- (BOOL)copyEffectiveAuditToken:(id *)a3;
+- (BOOL)copyEffectiveAuditToken:(id *)token;
 - (BOOL)disableNagleAlgorithm;
 - (BOOL)enableTFO;
 - (BOOL)enableTFONoCookie;
 - (BOOL)enableTLS;
 - (BOOL)fastOpenForceEnable;
-- (BOOL)hasDelegatedPIDForOriginatingPID:(int)a3;
+- (BOOL)hasDelegatedPIDForOriginatingPID:(int)d;
 - (BOOL)hasDelegatedProcessUUID;
 - (BOOL)hasNonEmptyProxyConfiguration;
 - (BOOL)hasPreferredNetworkAgents;
@@ -24,7 +24,7 @@
 - (BOOL)indefinite;
 - (BOOL)isDiscretionary;
 - (BOOL)isDryRun;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (BOOL)keepAlive;
 - (BOOL)keepAliveOffload;
@@ -60,14 +60,14 @@
 - (NWAddressEndpoint)localAddress;
 - (NWInterface)requiredInterface;
 - (NWParameters)init;
-- (NWParameters)initWithCoder:(id)a3;
-- (NWParameters)initWithParameters:(id)a3;
+- (NWParameters)initWithCoder:(id)coder;
+- (NWParameters)initWithParameters:(id)parameters;
 - (id)copyCParameters;
 - (id)copyRequiredAgentsDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createProtocolBufferObject;
 - (id)description;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
 - (int)multipathService;
 - (int)pid;
 - (int64_t)requiredCompanionProxyInterfaceType;
@@ -80,83 +80,83 @@
 - (unint64_t)trafficClass;
 - (unsigned)ipProtocol;
 - (unsigned)requiredAddressFamily;
-- (unsigned)tlsVersionWithSSLProtocol:(int)a3;
+- (unsigned)tlsVersionWithSSLProtocol:(int)protocol;
 - (unsigned)transportProtocol;
 - (unsigned)uid;
-- (void)avoidNetworkAgentWithDomain:(id)a3 type:(id)a4;
-- (void)avoidNetworkAgentWithUUID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)preferNetworkAgentWithDomain:(id)a3 type:(id)a4;
-- (void)preferNetworkAgentWithUUID:(id)a3;
-- (void)prohibitInterface:(id)a3;
-- (void)prohibitInterfaceSubtype:(int64_t)a3;
-- (void)prohibitInterfaceType:(int64_t)a3;
-- (void)prohibitNetworkAgentWithUUID:(id)a3;
-- (void)prohibitNetworkAgentsWithDomain:(id)a3 type:(id)a4;
-- (void)requireNetworkAgentWithDomain:(id)a3 type:(id)a4;
-- (void)requireNetworkAgentWithUUID:(id)a3;
-- (void)setAccount:(id)a3;
-- (void)setAllowDuplicateStateUpdates:(BOOL)a3;
-- (void)setAllowJoiningConnectedFd:(BOOL)a3;
-- (void)setAllowSocketAccess:(BOOL)a3;
-- (void)setAllowUnusableAddresses:(BOOL)a3;
-- (void)setAttachProtocolListener:(BOOL)a3;
-- (void)setDataMode:(unint64_t)a3;
-- (void)setDisableNagleAlgorithm:(BOOL)a3;
-- (void)setDiscretionary:(BOOL)a3;
-- (void)setEffectiveBundleID:(id)a3;
-- (void)setEffectiveProcessUUID:(id)a3;
-- (void)setEnableTFO:(BOOL)a3;
-- (void)setEnableTFONoCookie:(BOOL)a3;
-- (void)setEnableTLS:(BOOL)a3;
-- (void)setFastOpenForceEnable:(BOOL)a3;
-- (void)setHttpsProxyIsOpaque:(BOOL)a3;
-- (void)setHttpsProxyOverTLS:(BOOL)a3;
-- (void)setIgnoreResolverStats:(BOOL)a3;
-- (void)setIndefinite:(BOOL)a3;
-- (void)setInitialDataPayload:(id)a3;
-- (void)setKeepAlive:(BOOL)a3;
-- (void)setKeepAliveIdleTime:(unint64_t)a3;
-- (void)setKeepAliveInterval:(unint64_t)a3;
-- (void)setKeepAliveOffload:(BOOL)a3;
-- (void)setLocalAddress:(id)a3;
-- (void)setMaximumSSLProtocolVersion:(unint64_t)a3;
-- (void)setMetadata:(id)a3;
-- (void)setMinimumSSLProtocolVersion:(unint64_t)a3;
-- (void)setMultipath:(BOOL)a3;
-- (void)setMultipathForceEnable:(BOOL)a3;
-- (void)setMultipathService:(int)a3;
-- (void)setNoProxy:(BOOL)a3;
-- (void)setParentID:(id)a3;
-- (void)setPid:(int)a3;
-- (void)setPreferNoProxy:(BOOL)a3;
-- (void)setProcessUUID:(id)a3;
-- (void)setProhibitConstrainedPaths:(BOOL)a3;
-- (void)setProhibitExpensivePaths:(BOOL)a3;
-- (void)setProhibitFallback:(BOOL)a3;
-- (void)setProhibitJoiningProtocols:(BOOL)a3;
-- (void)setProhibitRoaming:(BOOL)a3;
-- (void)setProtocolTransforms:(id)a3;
-- (void)setProxyConfiguration:(id)a3;
-- (void)setReduceBuffering:(BOOL)a3;
-- (void)setRequiredAddressFamily:(unsigned __int8)a3;
-- (void)setRequiredCompanionProxyInterfaceType:(int64_t)a3;
-- (void)setRequiredInterface:(id)a3;
-- (void)setRequiredInterfaceSubtype:(int64_t)a3;
-- (void)setRequiredInterfaceType:(int64_t)a3;
-- (void)setResolvePTR:(BOOL)a3;
-- (void)setReuseLocalAddress:(BOOL)a3;
-- (void)setSSLCipherSuites:(id)a3;
-- (void)setSourceApplicationWithBundleID:(id)a3;
-- (void)setSourceApplicationWithToken:(id *)a3;
-- (void)setTLSSessionID:(id)a3;
-- (void)setTrafficClass:(unint64_t)a3;
-- (void)setTrustInvalidCertificates:(BOOL)a3;
-- (void)setUid:(unsigned int)a3;
-- (void)setUrl:(id)a3;
-- (void)setUseAWDL:(BOOL)a3;
-- (void)setUseLongOutstandingQueries:(BOOL)a3;
-- (void)setUseP2P:(BOOL)a3;
+- (void)avoidNetworkAgentWithDomain:(id)domain type:(id)type;
+- (void)avoidNetworkAgentWithUUID:(id)d;
+- (void)encodeWithCoder:(id)coder;
+- (void)preferNetworkAgentWithDomain:(id)domain type:(id)type;
+- (void)preferNetworkAgentWithUUID:(id)d;
+- (void)prohibitInterface:(id)interface;
+- (void)prohibitInterfaceSubtype:(int64_t)subtype;
+- (void)prohibitInterfaceType:(int64_t)type;
+- (void)prohibitNetworkAgentWithUUID:(id)d;
+- (void)prohibitNetworkAgentsWithDomain:(id)domain type:(id)type;
+- (void)requireNetworkAgentWithDomain:(id)domain type:(id)type;
+- (void)requireNetworkAgentWithUUID:(id)d;
+- (void)setAccount:(id)account;
+- (void)setAllowDuplicateStateUpdates:(BOOL)updates;
+- (void)setAllowJoiningConnectedFd:(BOOL)fd;
+- (void)setAllowSocketAccess:(BOOL)access;
+- (void)setAllowUnusableAddresses:(BOOL)addresses;
+- (void)setAttachProtocolListener:(BOOL)listener;
+- (void)setDataMode:(unint64_t)mode;
+- (void)setDisableNagleAlgorithm:(BOOL)algorithm;
+- (void)setDiscretionary:(BOOL)discretionary;
+- (void)setEffectiveBundleID:(id)d;
+- (void)setEffectiveProcessUUID:(id)d;
+- (void)setEnableTFO:(BOOL)o;
+- (void)setEnableTFONoCookie:(BOOL)cookie;
+- (void)setEnableTLS:(BOOL)s;
+- (void)setFastOpenForceEnable:(BOOL)enable;
+- (void)setHttpsProxyIsOpaque:(BOOL)opaque;
+- (void)setHttpsProxyOverTLS:(BOOL)s;
+- (void)setIgnoreResolverStats:(BOOL)stats;
+- (void)setIndefinite:(BOOL)indefinite;
+- (void)setInitialDataPayload:(id)payload;
+- (void)setKeepAlive:(BOOL)alive;
+- (void)setKeepAliveIdleTime:(unint64_t)time;
+- (void)setKeepAliveInterval:(unint64_t)interval;
+- (void)setKeepAliveOffload:(BOOL)offload;
+- (void)setLocalAddress:(id)address;
+- (void)setMaximumSSLProtocolVersion:(unint64_t)version;
+- (void)setMetadata:(id)metadata;
+- (void)setMinimumSSLProtocolVersion:(unint64_t)version;
+- (void)setMultipath:(BOOL)multipath;
+- (void)setMultipathForceEnable:(BOOL)enable;
+- (void)setMultipathService:(int)service;
+- (void)setNoProxy:(BOOL)proxy;
+- (void)setParentID:(id)d;
+- (void)setPid:(int)pid;
+- (void)setPreferNoProxy:(BOOL)proxy;
+- (void)setProcessUUID:(id)d;
+- (void)setProhibitConstrainedPaths:(BOOL)paths;
+- (void)setProhibitExpensivePaths:(BOOL)paths;
+- (void)setProhibitFallback:(BOOL)fallback;
+- (void)setProhibitJoiningProtocols:(BOOL)protocols;
+- (void)setProhibitRoaming:(BOOL)roaming;
+- (void)setProtocolTransforms:(id)transforms;
+- (void)setProxyConfiguration:(id)configuration;
+- (void)setReduceBuffering:(BOOL)buffering;
+- (void)setRequiredAddressFamily:(unsigned __int8)family;
+- (void)setRequiredCompanionProxyInterfaceType:(int64_t)type;
+- (void)setRequiredInterface:(id)interface;
+- (void)setRequiredInterfaceSubtype:(int64_t)subtype;
+- (void)setRequiredInterfaceType:(int64_t)type;
+- (void)setResolvePTR:(BOOL)r;
+- (void)setReuseLocalAddress:(BOOL)address;
+- (void)setSSLCipherSuites:(id)suites;
+- (void)setSourceApplicationWithBundleID:(id)d;
+- (void)setSourceApplicationWithToken:(id *)token;
+- (void)setTLSSessionID:(id)d;
+- (void)setTrafficClass:(unint64_t)class;
+- (void)setTrustInvalidCertificates:(BOOL)certificates;
+- (void)setUid:(unsigned int)uid;
+- (void)setUrl:(id)url;
+- (void)setUseAWDL:(BOOL)l;
+- (void)setUseLongOutstandingQueries:(BOOL)queries;
+- (void)setUseP2P:(BOOL)p;
 @end
 
 @implementation NWParameters
@@ -173,8 +173,8 @@
   v8 = *MEMORY[0x1E69E9840];
   memset(uu, 0, sizeof(uu));
   uuid_clear(uu);
-  v3 = [(NWParameters *)self internalParameters];
-  nw_parameters_get_proc_uuid(v3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_get_proc_uuid(internalParameters);
 
   is_null = uuid_is_null(uu);
   v5 = 0;
@@ -191,8 +191,8 @@
   v8 = *MEMORY[0x1E69E9840];
   memset(uu, 0, sizeof(uu));
   uuid_clear(uu);
-  v3 = [(NWParameters *)self internalParameters];
-  nw_parameters_get_e_proc_uuid(v3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_get_e_proc_uuid(internalParameters);
 
   is_null = uuid_is_null(uu);
   v5 = 0;
@@ -206,8 +206,8 @@
 
 - (NSString)effectiveBundleID
 {
-  v2 = [(NWParameters *)self internalParameters];
-  effective_bundle_id = nw_parameters_get_effective_bundle_id(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  effective_bundle_id = nw_parameters_get_effective_bundle_id(internalParameters);
 
   if (effective_bundle_id)
   {
@@ -224,24 +224,24 @@
 
 - (int)pid
 {
-  v2 = [(NWParameters *)self internalParameters];
-  pid = nw_parameters_get_pid(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  pid = nw_parameters_get_pid(internalParameters);
 
   return pid;
 }
 
 - (unsigned)uid
 {
-  v2 = [(NWParameters *)self internalParameters];
-  uid = nw_parameters_get_uid(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  uid = nw_parameters_get_uid(internalParameters);
 
   return uid;
 }
 
 - (NSString)account
 {
-  v2 = [(NWParameters *)self internalParameters];
-  account_id = nw_parameters_get_account_id(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  account_id = nw_parameters_get_account_id(internalParameters);
 
   if (account_id)
   {
@@ -258,8 +258,8 @@
 
 - (NSURL)url
 {
-  v2 = [(NWParameters *)self internalParameters];
-  url = nw_parameters_get_url(v2, v3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  url = nw_parameters_get_url(internalParameters, v3);
 
   if (url)
   {
@@ -278,8 +278,8 @@
 
 - (NSURL)sanitizedURL
 {
-  v2 = [(NWParameters *)self internalParameters];
-  sanitized_url = nw_parameters_get_sanitized_url(v2, v3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  sanitized_url = nw_parameters_get_sanitized_url(internalParameters, v3);
 
   if (sanitized_url)
   {
@@ -293,16 +293,16 @@
 
 - (unint64_t)dataMode
 {
-  v2 = [(NWParameters *)self internalParameters];
-  data_mode = nw_parameters_get_data_mode(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  data_mode = nw_parameters_get_data_mode(internalParameters);
 
   return data_mode;
 }
 
 - (NSArray)protocolTransforms
 {
-  v2 = [(NWParameters *)self internalParameters];
-  v3 = nw_parameters_copy_transform_array(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  v3 = nw_parameters_copy_transform_array(internalParameters);
 
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -323,56 +323,56 @@
 
 - (BOOL)isDryRun
 {
-  v2 = [(NWParameters *)self internalParameters];
-  dry_run = nw_parameters_get_dry_run(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  dry_run = nw_parameters_get_dry_run(internalParameters);
 
   return dry_run;
 }
 
 - (unint64_t)trafficClass
 {
-  v2 = [(NWParameters *)self internalParameters];
-  traffic_class = nw_parameters_get_traffic_class(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  traffic_class = nw_parameters_get_traffic_class(internalParameters);
 
   return traffic_class;
 }
 
 - (unsigned)ipProtocol
 {
-  v2 = [(NWParameters *)self internalParameters];
-  ip_protocol = nw_parameters_get_ip_protocol(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  ip_protocol = nw_parameters_get_ip_protocol(internalParameters);
 
   return ip_protocol;
 }
 
 - (unsigned)transportProtocol
 {
-  v2 = [(NWParameters *)self internalParameters];
-  upper_transport_protocol = nw_parameters_get_upper_transport_protocol(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  upper_transport_protocol = nw_parameters_get_upper_transport_protocol(internalParameters);
 
   return upper_transport_protocol;
 }
 
 - (unsigned)requiredAddressFamily
 {
-  v2 = [(NWParameters *)self internalParameters];
-  required_address_family = nw_parameters_get_required_address_family(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  required_address_family = nw_parameters_get_required_address_family(internalParameters);
 
   return required_address_family;
 }
 
 - (BOOL)reuseLocalAddress
 {
-  v2 = [(NWParameters *)self internalParameters];
-  reuse_local_address = nw_parameters_get_reuse_local_address(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  reuse_local_address = nw_parameters_get_reuse_local_address(internalParameters);
 
   return reuse_local_address;
 }
 
 - (NWInterface)requiredInterface
 {
-  v2 = [(NWParameters *)self internalParameters];
-  v3 = nw_parameters_copy_required_interface(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  v3 = nw_parameters_copy_required_interface(internalParameters);
 
   if (v3)
   {
@@ -389,288 +389,288 @@
 
 - (int64_t)requiredInterfaceType
 {
-  v2 = [(NWParameters *)self internalParameters];
-  required_interface_type = nw_parameters_get_required_interface_type(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  required_interface_type = nw_parameters_get_required_interface_type(internalParameters);
 
   return required_interface_type;
 }
 
 - (int64_t)requiredCompanionProxyInterfaceType
 {
-  v2 = [(NWParameters *)self internalParameters];
-  next_hop_required_interface_type = nw_parameters_get_next_hop_required_interface_type(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  next_hop_required_interface_type = nw_parameters_get_next_hop_required_interface_type(internalParameters);
 
   return next_hop_required_interface_type;
 }
 
 - (BOOL)prohibitExpensivePaths
 {
-  v2 = [(NWParameters *)self internalParameters];
-  prohibit_expensive = nw_parameters_get_prohibit_expensive(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  prohibit_expensive = nw_parameters_get_prohibit_expensive(internalParameters);
 
   return prohibit_expensive;
 }
 
 - (BOOL)enableTFO
 {
-  v2 = [(NWParameters *)self internalParameters];
-  tfo = nw_parameters_get_tfo(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  tfo = nw_parameters_get_tfo(internalParameters);
 
   return tfo;
 }
 
 - (BOOL)disableNagleAlgorithm
 {
-  v2 = [(NWParameters *)self internalParameters];
-  no_delay = nw_parameters_get_no_delay(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  no_delay = nw_parameters_get_no_delay(internalParameters);
 
   return no_delay;
 }
 
 - (BOOL)prohibitConstrainedPaths
 {
-  v2 = [(NWParameters *)self internalParameters];
-  prohibit_constrained = nw_parameters_get_prohibit_constrained(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  prohibit_constrained = nw_parameters_get_prohibit_constrained(internalParameters);
 
   return prohibit_constrained;
 }
 
 - (BOOL)prohibitRoaming
 {
-  v2 = [(NWParameters *)self internalParameters];
-  prohibit_roaming = nw_parameters_get_prohibit_roaming(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  prohibit_roaming = nw_parameters_get_prohibit_roaming(internalParameters);
 
   return prohibit_roaming;
 }
 
 - (BOOL)useLongOutstandingQueries
 {
-  v2 = [(NWParameters *)self internalParameters];
-  use_long_outstanding_queries = nw_parameters_get_use_long_outstanding_queries(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  use_long_outstanding_queries = nw_parameters_get_use_long_outstanding_queries(internalParameters);
 
   return use_long_outstanding_queries;
 }
 
 - (BOOL)resolvePTR
 {
-  v2 = [(NWParameters *)self internalParameters];
-  resolve_ptr = nw_parameters_get_resolve_ptr(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  resolve_ptr = nw_parameters_get_resolve_ptr(internalParameters);
 
   return resolve_ptr;
 }
 
 - (BOOL)useAWDL
 {
-  v2 = [(NWParameters *)self internalParameters];
-  use_awdl = nw_parameters_get_use_awdl(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  use_awdl = nw_parameters_get_use_awdl(internalParameters);
 
   return use_awdl;
 }
 
 - (BOOL)useP2P
 {
-  v2 = [(NWParameters *)self internalParameters];
-  use_p2p = nw_parameters_get_use_p2p(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  use_p2p = nw_parameters_get_use_p2p(internalParameters);
 
   return use_p2p;
 }
 
 - (int)multipathService
 {
-  v2 = [(NWParameters *)self internalParameters];
-  multipath_service = nw_parameters_get_multipath_service(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  multipath_service = nw_parameters_get_multipath_service(internalParameters);
 
   return multipath_service;
 }
 
 - (BOOL)enableTLS
 {
-  v2 = [(NWParameters *)self internalParameters];
-  tls = nw_parameters_get_tls(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  tls = nw_parameters_get_tls(internalParameters);
 
   return tls;
 }
 
 - (NSData)TLSSessionID
 {
-  v2 = [(NWParameters *)self internalParameters];
-  nw_parameters_copy_tls_session_id(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_copy_tls_session_id(internalParameters);
 
   return 0;
 }
 
 - (BOOL)trustInvalidCertificates
 {
-  v2 = [(NWParameters *)self internalParameters];
-  should_trust_invalid_certificates = nw_parameters_get_should_trust_invalid_certificates(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  should_trust_invalid_certificates = nw_parameters_get_should_trust_invalid_certificates(internalParameters);
 
   return should_trust_invalid_certificates;
 }
 
 - (id)copyCParameters
 {
-  v2 = [(NWParameters *)self internalParameters];
-  v3 = _nw_parameters_copy(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  v3 = _nw_parameters_copy(internalParameters);
 
   return v3;
 }
 
 - (BOOL)allowDuplicateStateUpdates
 {
-  v2 = [(NWParameters *)self internalParameters];
-  allow_duplicate_state_updates = nw_parameters_get_allow_duplicate_state_updates(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  allow_duplicate_state_updates = nw_parameters_get_allow_duplicate_state_updates(internalParameters);
 
   return allow_duplicate_state_updates;
 }
 
-- (void)setAllowDuplicateStateUpdates:(BOOL)a3
+- (void)setAllowDuplicateStateUpdates:(BOOL)updates
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_allow_duplicate_state_updates(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_allow_duplicate_state_updates(internalParameters, updates);
 }
 
 - (BOOL)allowJoiningConnectedFd
 {
-  v2 = [(NWParameters *)self internalParameters];
-  allow_joining_connected_fd = nw_parameters_get_allow_joining_connected_fd(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  allow_joining_connected_fd = nw_parameters_get_allow_joining_connected_fd(internalParameters);
 
   return allow_joining_connected_fd;
 }
 
-- (void)setAllowJoiningConnectedFd:(BOOL)a3
+- (void)setAllowJoiningConnectedFd:(BOOL)fd
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_allow_joining_connected_fd(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_allow_joining_connected_fd(internalParameters, fd);
 }
 
 - (BOOL)prohibitJoiningProtocols
 {
-  v2 = [(NWParameters *)self internalParameters];
-  prohibit_joining_protocols = nw_parameters_get_prohibit_joining_protocols(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  prohibit_joining_protocols = nw_parameters_get_prohibit_joining_protocols(internalParameters);
 
   return prohibit_joining_protocols;
 }
 
-- (void)setProhibitJoiningProtocols:(BOOL)a3
+- (void)setProhibitJoiningProtocols:(BOOL)protocols
 {
-  v3 = a3;
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_prohibit_joining_protocols(v4, v3);
+  protocolsCopy = protocols;
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_prohibit_joining_protocols(internalParameters, protocolsCopy);
 }
 
 - (BOOL)attachProtocolListener
 {
-  v2 = [(NWParameters *)self internalParameters];
-  attach_protocol_listener = nw_parameters_get_attach_protocol_listener(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  attach_protocol_listener = nw_parameters_get_attach_protocol_listener(internalParameters);
 
   return attach_protocol_listener;
 }
 
-- (void)setAttachProtocolListener:(BOOL)a3
+- (void)setAttachProtocolListener:(BOOL)listener
 {
-  v3 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_attach_protocol_listener(v3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_attach_protocol_listener(internalParameters);
 }
 
 - (BOOL)httpsProxyOverTLS
 {
-  v2 = [(NWParameters *)self internalParameters];
-  https_proxy_over_tls = nw_parameters_get_https_proxy_over_tls(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  https_proxy_over_tls = nw_parameters_get_https_proxy_over_tls(internalParameters);
 
   return https_proxy_over_tls;
 }
 
-- (void)setHttpsProxyOverTLS:(BOOL)a3
+- (void)setHttpsProxyOverTLS:(BOOL)s
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_https_proxy_over_tls(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_https_proxy_over_tls(internalParameters, s);
 }
 
 - (BOOL)httpsProxyIsOpaque
 {
-  v2 = [(NWParameters *)self internalParameters];
-  is_opaque = nw_parameters_get_https_proxy_is_opaque(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  is_opaque = nw_parameters_get_https_proxy_is_opaque(internalParameters);
 
   return is_opaque;
 }
 
-- (void)setHttpsProxyIsOpaque:(BOOL)a3
+- (void)setHttpsProxyIsOpaque:(BOOL)opaque
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_https_proxy_is_opaque(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_https_proxy_is_opaque(internalParameters, opaque);
 }
 
 - (BOOL)preferNoProxy
 {
-  v2 = [(NWParameters *)self internalParameters];
-  prefer_no_proxy = nw_parameters_get_prefer_no_proxy(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  prefer_no_proxy = nw_parameters_get_prefer_no_proxy(internalParameters);
 
   return prefer_no_proxy;
 }
 
-- (void)setPreferNoProxy:(BOOL)a3
+- (void)setPreferNoProxy:(BOOL)proxy
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_prefer_no_proxy(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_prefer_no_proxy(internalParameters, proxy);
 }
 
 - (BOOL)allowUnusableAddresses
 {
-  v2 = [(NWParameters *)self internalParameters];
-  allow_unusable_addresses = nw_parameters_get_allow_unusable_addresses(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  allow_unusable_addresses = nw_parameters_get_allow_unusable_addresses(internalParameters);
 
   return allow_unusable_addresses;
 }
 
-- (void)setAllowUnusableAddresses:(BOOL)a3
+- (void)setAllowUnusableAddresses:(BOOL)addresses
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_allow_unusable_addresses(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_allow_unusable_addresses(internalParameters, addresses);
 }
 
 - (id)createProtocolBufferObject
 {
   v3 = objc_alloc_init(NWPBParameters);
-  v4 = [(NWParameters *)self effectiveProcessUUID];
-  v5 = [v4 UUIDString];
+  effectiveProcessUUID = [(NWParameters *)self effectiveProcessUUID];
+  uUIDString = [effectiveProcessUUID UUIDString];
   if (v3)
   {
-    objc_storeStrong(&v3->_effectiveProcessUUID, v5);
+    objc_storeStrong(&v3->_effectiveProcessUUID, uUIDString);
   }
 
-  v6 = [(NWParameters *)self processUUID];
-  v7 = [v6 UUIDString];
+  processUUID = [(NWParameters *)self processUUID];
+  uUIDString2 = [processUUID UUIDString];
   if (v3)
   {
-    objc_storeStrong(&v3->_realProcessUUID, v7);
+    objc_storeStrong(&v3->_realProcessUUID, uUIDString2);
   }
 
-  v8 = [(NWParameters *)self localAddress];
-  v9 = [v8 createProtocolBufferObject];
+  localAddress = [(NWParameters *)self localAddress];
+  createProtocolBufferObject = [localAddress createProtocolBufferObject];
   if (v3)
   {
-    objc_storeStrong(&v3->_localEndpoint, v9);
+    objc_storeStrong(&v3->_localEndpoint, createProtocolBufferObject);
   }
 
-  v10 = [(NWParameters *)self account];
+  account = [(NWParameters *)self account];
   if (v3)
   {
-    objc_storeStrong(&v3->_account, v10);
+    objc_storeStrong(&v3->_account, account);
   }
 
   if ([(NWParameters *)self requiredAddressFamily])
   {
-    v11 = [(NWParameters *)self requiredAddressFamily];
+    requiredAddressFamily = [(NWParameters *)self requiredAddressFamily];
     if (v3)
     {
       *&v3->_has |= 1u;
-      v3->_addressFamily = v11;
-      v12 = [(NWParameters *)self dataMode];
+      v3->_addressFamily = requiredAddressFamily;
+      dataMode = [(NWParameters *)self dataMode];
 LABEL_13:
       *&v3->_has |= 2u;
-      v3->_dataMode = v12;
-      v13 = [(NWParameters *)self effectiveBundleID];
-      objc_storeStrong(&v3->_effectiveBundleID, v13);
+      v3->_dataMode = dataMode;
+      effectiveBundleID = [(NWParameters *)self effectiveBundleID];
+      objc_storeStrong(&v3->_effectiveBundleID, effectiveBundleID);
       goto LABEL_14;
     }
 
@@ -679,37 +679,37 @@ LABEL_13:
 
   else
   {
-    v12 = [(NWParameters *)self dataMode];
+    dataMode = [(NWParameters *)self dataMode];
     if (v3)
     {
       goto LABEL_13;
     }
   }
 
-  v13 = [(NWParameters *)self effectiveBundleID];
+  effectiveBundleID = [(NWParameters *)self effectiveBundleID];
 LABEL_14:
 
-  v14 = [(NWParameters *)self metadata];
+  metadata = [(NWParameters *)self metadata];
   if (v3)
   {
-    objc_storeStrong(&v3->_metadata, v14);
+    objc_storeStrong(&v3->_metadata, metadata);
   }
 
-  v15 = [(NWParameters *)self requiredInterface];
-  v16 = [v15 createProtocolBufferObject];
+  requiredInterface = [(NWParameters *)self requiredInterface];
+  createProtocolBufferObject2 = [requiredInterface createProtocolBufferObject];
   if (v3)
   {
-    objc_storeStrong(&v3->_requiredInterface, v16);
+    objc_storeStrong(&v3->_requiredInterface, createProtocolBufferObject2);
   }
 
-  v17 = [(NWParameters *)self requiredInterfaceType];
+  requiredInterfaceType = [(NWParameters *)self requiredInterfaceType];
   if (v3)
   {
     *&v3->_has |= 0x10u;
-    v3->_requiredInterfaceType = v17;
-    v18 = [(NWParameters *)self trafficClass];
+    v3->_requiredInterfaceType = requiredInterfaceType;
+    trafficClass = [(NWParameters *)self trafficClass];
     *&v3->_has |= 0x20u;
-    v3->_trafficClass = v18;
+    v3->_trafficClass = trafficClass;
   }
 
   else
@@ -718,51 +718,51 @@ LABEL_14:
   }
 
   v19 = [(NWParameters *)self url];
-  v20 = [v19 absoluteString];
+  absoluteString = [v19 absoluteString];
   if (v3)
   {
-    objc_storeStrong(&v3->_url, v20);
+    objc_storeStrong(&v3->_url, absoluteString);
   }
 
   if ([(NWParameters *)self enableTFO])
   {
-    v21 = [(NWParameters *)self enableTFO];
+    enableTFO = [(NWParameters *)self enableTFO];
     if (v3)
     {
       *&v3->_has |= 0x40u;
-      v3->_fastOpen = v21;
+      v3->_fastOpen = enableTFO;
     }
   }
 
   if ([(NWParameters *)self keepAlive])
   {
-    v22 = [(NWParameters *)self keepAlive];
+    keepAlive = [(NWParameters *)self keepAlive];
     if (v3)
     {
       *&v3->_has |= 0x80u;
-      v3->_keepalive = v22;
-      v23 = [(NWParameters *)self useLongOutstandingQueries];
+      v3->_keepalive = keepAlive;
+      useLongOutstandingQueries = [(NWParameters *)self useLongOutstandingQueries];
 LABEL_29:
       *&v3->_has |= 0x100u;
-      v3->_longOutstandingQueries = v23;
-      v24 = [(NWParameters *)self multipathService];
+      v3->_longOutstandingQueries = useLongOutstandingQueries;
+      multipathService = [(NWParameters *)self multipathService];
       *&v3->_has |= 8u;
-      v3->_multipathService = v24;
-      v25 = [(NWParameters *)self prohibitFallback];
+      v3->_multipathService = multipathService;
+      prohibitFallback = [(NWParameters *)self prohibitFallback];
       *&v3->_has |= 0x200u;
-      v3->_noFallback = v25;
-      v26 = [(NWParameters *)self prohibitExpensivePaths];
+      v3->_noFallback = prohibitFallback;
+      prohibitExpensivePaths = [(NWParameters *)self prohibitExpensivePaths];
       *&v3->_has |= 0x400u;
-      v3->_prohibitExpensive = v26;
-      v27 = [(NWParameters *)self reuseLocalAddress];
+      v3->_prohibitExpensive = prohibitExpensivePaths;
+      reuseLocalAddress = [(NWParameters *)self reuseLocalAddress];
       *&v3->_has |= 0x1000u;
-      v3->_reuseLocalAddress = v27;
-      v28 = [(NWParameters *)self useAWDL];
+      v3->_reuseLocalAddress = reuseLocalAddress;
+      useAWDL = [(NWParameters *)self useAWDL];
       *&v3->_has |= 0x2000u;
-      v3->_useAWDL = v28;
-      v29 = [(NWParameters *)self useP2P];
+      v3->_useAWDL = useAWDL;
+      useP2P = [(NWParameters *)self useP2P];
       *&v3->_has |= 0x4000u;
-      v3->_useP2P = v29;
+      v3->_useP2P = useP2P;
       goto LABEL_30;
     }
 
@@ -771,7 +771,7 @@ LABEL_29:
 
   else
   {
-    v23 = [(NWParameters *)self useLongOutstandingQueries];
+    useLongOutstandingQueries = [(NWParameters *)self useLongOutstandingQueries];
     if (v3)
     {
       goto LABEL_29;
@@ -785,16 +785,16 @@ LABEL_29:
   [(NWParameters *)self useAWDL];
   [(NWParameters *)self useP2P];
 LABEL_30:
-  v30 = [(NWParameters *)self internalParameters];
-  has_required_netagents = nw_parameters_has_required_netagents(v30);
+  internalParameters = [(NWParameters *)self internalParameters];
+  has_required_netagents = nw_parameters_has_required_netagents(internalParameters);
 
   if (has_required_netagents)
   {
-    v32 = [(NWParameters *)self internalParameters];
-    v33 = nw_parameters_copy_required_netagent_domains(v32);
+    internalParameters2 = [(NWParameters *)self internalParameters];
+    v33 = nw_parameters_copy_required_netagent_domains(internalParameters2);
 
-    v34 = [(NWParameters *)self internalParameters];
-    v35 = nw_parameters_copy_required_netagent_types(v34);
+    internalParameters3 = [(NWParameters *)self internalParameters];
+    v35 = nw_parameters_copy_required_netagent_types(internalParameters3);
 
     if (v33)
     {
@@ -849,16 +849,16 @@ LABEL_30:
     }
   }
 
-  v49 = [(NWParameters *)self internalParameters];
-  has_prohibited_netagents = nw_parameters_has_prohibited_netagents(v49);
+  internalParameters4 = [(NWParameters *)self internalParameters];
+  has_prohibited_netagents = nw_parameters_has_prohibited_netagents(internalParameters4);
 
   if (has_prohibited_netagents)
   {
-    v51 = [(NWParameters *)self internalParameters];
-    v52 = nw_parameters_copy_prohibited_netagent_domains(v51);
+    internalParameters5 = [(NWParameters *)self internalParameters];
+    v52 = nw_parameters_copy_prohibited_netagent_domains(internalParameters5);
 
-    v53 = [(NWParameters *)self internalParameters];
-    v54 = nw_parameters_copy_prohibited_netagent_types(v53);
+    internalParameters6 = [(NWParameters *)self internalParameters];
+    v54 = nw_parameters_copy_prohibited_netagent_types(internalParameters6);
 
     if (v52)
     {
@@ -913,16 +913,16 @@ LABEL_30:
     }
   }
 
-  v68 = [(NWParameters *)self internalParameters];
-  has_preferred_netagents = nw_parameters_has_preferred_netagents(v68);
+  internalParameters7 = [(NWParameters *)self internalParameters];
+  has_preferred_netagents = nw_parameters_has_preferred_netagents(internalParameters7);
 
   if (has_preferred_netagents)
   {
-    v70 = [(NWParameters *)self internalParameters];
-    v71 = nw_parameters_copy_preferred_netagent_domains(v70);
+    internalParameters8 = [(NWParameters *)self internalParameters];
+    v71 = nw_parameters_copy_preferred_netagent_domains(internalParameters8);
 
-    v72 = [(NWParameters *)self internalParameters];
-    v73 = nw_parameters_copy_preferred_netagent_types(v72);
+    internalParameters9 = [(NWParameters *)self internalParameters];
+    v73 = nw_parameters_copy_preferred_netagent_types(internalParameters9);
 
     if (v71)
     {
@@ -977,13 +977,13 @@ LABEL_30:
     }
   }
 
-  v87 = [(NWParameters *)self internalParameters];
-  has_prohibited_interfaces = nw_parameters_has_prohibited_interfaces(v87);
+  internalParameters10 = [(NWParameters *)self internalParameters];
+  has_prohibited_interfaces = nw_parameters_has_prohibited_interfaces(internalParameters10);
 
   if (has_prohibited_interfaces)
   {
-    v89 = [(NWParameters *)self internalParameters];
-    v90 = nw_parameters_copy_prohibited_interfaces(v89);
+    internalParameters11 = [(NWParameters *)self internalParameters];
+    v90 = nw_parameters_copy_prohibited_interfaces(internalParameters11);
 
     if (v90)
     {
@@ -999,7 +999,7 @@ LABEL_30:
           if (v95)
           {
             v96 = [[NWInterface alloc] initWithInterface:v95];
-            v97 = [(NWInterface *)v96 createProtocolBufferObject];
+            createProtocolBufferObject3 = [(NWInterface *)v96 createProtocolBufferObject];
             if (v3)
             {
               prohibitedInterfaces = v3->_prohibitedInterfaces;
@@ -1012,7 +1012,7 @@ LABEL_30:
                 prohibitedInterfaces = v3->_prohibitedInterfaces;
               }
 
-              [(NSMutableArray *)prohibitedInterfaces addObject:v97];
+              [(NSMutableArray *)prohibitedInterfaces addObject:createProtocolBufferObject3];
             }
           }
         }
@@ -1020,13 +1020,13 @@ LABEL_30:
     }
   }
 
-  v101 = [(NWParameters *)self internalParameters];
-  has_prohibited_interface_types = nw_parameters_has_prohibited_interface_types(v101);
+  internalParameters12 = [(NWParameters *)self internalParameters];
+  has_prohibited_interface_types = nw_parameters_has_prohibited_interface_types(internalParameters12);
 
   if (has_prohibited_interface_types)
   {
-    v103 = [(NWParameters *)self internalParameters];
-    v104 = nw_parameters_copy_prohibited_interface_types(v103);
+    internalParameters13 = [(NWParameters *)self internalParameters];
+    v104 = nw_parameters_copy_prohibited_interface_types(internalParameters13);
 
     if (v104)
     {
@@ -1046,13 +1046,13 @@ LABEL_30:
     }
   }
 
-  v108 = [(NWParameters *)self internalParameters];
-  has_prohibited_interface_subtypes = nw_parameters_has_prohibited_interface_subtypes(v108);
+  internalParameters14 = [(NWParameters *)self internalParameters];
+  has_prohibited_interface_subtypes = nw_parameters_has_prohibited_interface_subtypes(internalParameters14);
 
   if (has_prohibited_interface_subtypes)
   {
-    v110 = [(NWParameters *)self internalParameters];
-    v111 = nw_parameters_copy_prohibited_interface_subtypes(v110);
+    internalParameters15 = [(NWParameters *)self internalParameters];
+    v111 = nw_parameters_copy_prohibited_interface_subtypes(internalParameters15);
 
     if (v111)
     {
@@ -1075,13 +1075,13 @@ LABEL_30:
   return v3;
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  metadataCopy = metadata;
+  v7 = metadataCopy;
+  if (metadataCopy)
   {
-    v5 = xpc_data_create([v4 bytes], objc_msgSend(v4, "length"));
+    v5 = xpc_data_create([metadataCopy bytes], objc_msgSend(metadataCopy, "length"));
   }
 
   else
@@ -1089,14 +1089,14 @@ LABEL_30:
     v5 = 0;
   }
 
-  v6 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_metadata(v6, v5);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_metadata(internalParameters, v5);
 }
 
 - (NSData)metadata
 {
-  v2 = [(NWParameters *)self internalParameters];
-  v3 = nw_parameters_copy_metadata(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  v3 = nw_parameters_copy_metadata(internalParameters);
 
   if (v3)
   {
@@ -1115,11 +1115,11 @@ LABEL_30:
 
 - (unint64_t)hash
 {
-  v2 = [(NWParameters *)self internalParameters];
-  v3 = v2;
-  if (v2)
+  internalParameters = [(NWParameters *)self internalParameters];
+  v3 = internalParameters;
+  if (internalParameters)
   {
-    hash = _nw_parameters_get_hash(v2);
+    hash = _nw_parameters_get_hash(internalParameters);
   }
 
   else
@@ -1130,19 +1130,19 @@ LABEL_30:
   return hash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && [v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (equalCopy && [equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(NWParameters *)self internalParameters];
-    v7 = [v5 internalParameters];
+    v5 = equalCopy;
+    internalParameters = [(NWParameters *)self internalParameters];
+    internalParameters2 = [v5 internalParameters];
 
-    is_equal = v6 == v7;
-    if (v6 != v7 && v6 && v7)
+    is_equal = internalParameters == internalParameters2;
+    if (internalParameters != internalParameters2 && internalParameters && internalParameters2)
     {
-      is_equal = _nw_parameters_is_equal(v6, v7);
+      is_equal = _nw_parameters_is_equal(internalParameters, internalParameters2);
     }
   }
 
@@ -1156,13 +1156,13 @@ LABEL_30:
 
 - (id)copyRequiredAgentsDescription
 {
-  v3 = [(NWParameters *)self internalParameters];
-  v4 = nw_parameters_copy_required_netagent_domains(v3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  v4 = nw_parameters_copy_required_netagent_domains(internalParameters);
 
   if (v4)
   {
-    v5 = [(NWParameters *)self internalParameters];
-    v6 = nw_parameters_copy_required_netagent_types(v5);
+    internalParameters2 = [(NWParameters *)self internalParameters];
+    v6 = nw_parameters_copy_required_netagent_types(internalParameters2);
 
     if (v6)
     {
@@ -1238,68 +1238,68 @@ uint64_t __45__NWParameters_copyRequiredAgentsDescription__block_invoke(uint64_t
 
 - (BOOL)hasNonEmptyProxyConfiguration
 {
-  v2 = [(NWParameters *)self internalParameters];
-  has_custom_proxy_configs = nw_parameters_has_custom_proxy_configs(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  has_custom_proxy_configs = nw_parameters_has_custom_proxy_configs(internalParameters);
 
   return has_custom_proxy_configs;
 }
 
 - (BOOL)hasProhibitedNetworkAgents
 {
-  v2 = [(NWParameters *)self internalParameters];
-  has_prohibited_netagents = nw_parameters_has_prohibited_netagents(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  has_prohibited_netagents = nw_parameters_has_prohibited_netagents(internalParameters);
 
   return has_prohibited_netagents;
 }
 
 - (BOOL)hasPreferredNetworkAgents
 {
-  v2 = [(NWParameters *)self internalParameters];
-  has_preferred_netagents = nw_parameters_has_preferred_netagents(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  has_preferred_netagents = nw_parameters_has_preferred_netagents(internalParameters);
 
   return has_preferred_netagents;
 }
 
 - (BOOL)hasRequiredNetworkAgents
 {
-  v2 = [(NWParameters *)self internalParameters];
-  has_required_netagents = nw_parameters_has_required_netagents(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  has_required_netagents = nw_parameters_has_required_netagents(internalParameters);
 
   return has_required_netagents;
 }
 
-- (void)setDiscretionary:(BOOL)a3
+- (void)setDiscretionary:(BOOL)discretionary
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_discretionary(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_discretionary(internalParameters, discretionary);
 }
 
 - (BOOL)isDiscretionary
 {
-  v2 = [(NWParameters *)self internalParameters];
-  discretionary = nw_parameters_get_discretionary(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  discretionary = nw_parameters_get_discretionary(internalParameters);
 
   return discretionary;
 }
 
-- (void)setProhibitFallback:(BOOL)a3
+- (void)setProhibitFallback:(BOOL)fallback
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_no_fallback(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_no_fallback(internalParameters, fallback);
 }
 
 - (BOOL)prohibitFallback
 {
-  v2 = [(NWParameters *)self internalParameters];
-  no_fallback = nw_parameters_get_no_fallback(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  no_fallback = nw_parameters_get_no_fallback(internalParameters);
 
   return no_fallback;
 }
 
 - (BOOL)isValid
 {
-  v2 = [(NWParameters *)self internalParameters];
-  v3 = nw_parameters_are_valid(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  v3 = nw_parameters_are_valid(internalParameters);
 
   return v3;
 }
@@ -1314,16 +1314,16 @@ uint64_t __34__NWParameters_protocolTransforms__block_invoke(uint64_t a1, uint64
   return 1;
 }
 
-- (void)setProtocolTransforms:(id)a3
+- (void)setProtocolTransforms:(id)transforms
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  transformsCopy = transforms;
   v5 = _nw_array_create();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = transformsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -1338,11 +1338,11 @@ uint64_t __34__NWParameters_protocolTransforms__block_invoke(uint64_t a1, uint64
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) internalTransform];
-        v12 = v11;
-        if (v5 && v11)
+        internalTransform = [*(*(&v14 + 1) + 8 * i) internalTransform];
+        v12 = internalTransform;
+        if (v5 && internalTransform)
         {
-          _nw_array_append(v5, v11);
+          _nw_array_append(v5, internalTransform);
         }
       }
 
@@ -1352,27 +1352,27 @@ uint64_t __34__NWParameters_protocolTransforms__block_invoke(uint64_t a1, uint64
     while (v8);
   }
 
-  v13 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_transform_array(v13, v5);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_transform_array(internalParameters, v5);
 }
 
-- (void)setInitialDataPayload:(id)a3
+- (void)setInitialDataPayload:(id)payload
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  payloadCopy = payload;
+  v5 = payloadCopy;
+  if (!payloadCopy)
   {
-    v6 = 0;
+    _createDispatchData = 0;
     goto LABEL_8;
   }
 
-  v6 = [v4 _createDispatchData];
-  if (v6)
+  _createDispatchData = [payloadCopy _createDispatchData];
+  if (_createDispatchData)
   {
 LABEL_8:
-    v12 = [(NWParameters *)self internalParameters];
-    nw_parameters_set_initial_data_payload(v12, v6);
+    internalParameters = [(NWParameters *)self internalParameters];
+    nw_parameters_set_initial_data_payload(internalParameters, _createDispatchData);
 
     goto LABEL_9;
   }
@@ -1472,52 +1472,52 @@ LABEL_20:
 LABEL_9:
 }
 
-- (void)setSourceApplicationWithBundleID:(id)a3
+- (void)setSourceApplicationWithBundleID:(id)d
 {
-  v5 = a3;
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_source_application_by_bundle_id_internal(v4, [v5 UTF8String]);
+  dCopy = d;
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_source_application_by_bundle_id_internal(internalParameters, [dCopy UTF8String]);
 }
 
-- (void)setSourceApplicationWithToken:(id *)a3
+- (void)setSourceApplicationWithToken:(id *)token
 {
-  v5 = [(NWParameters *)self internalParameters];
-  v4 = *&a3->var0[4];
-  v6[0] = *a3->var0;
+  internalParameters = [(NWParameters *)self internalParameters];
+  v4 = *&token->var0[4];
+  v6[0] = *token->var0;
   v6[1] = v4;
-  nw_parameters_set_source_application(v5, v6);
+  nw_parameters_set_source_application(internalParameters, v6);
 }
 
-- (void)setMaximumSSLProtocolVersion:(unint64_t)a3
+- (void)setMaximumSSLProtocolVersion:(unint64_t)version
 {
   [(NWParameters *)self tlsVersionWithSSLProtocol:?];
-  [(NWParameters *)self setMaximumSSLProtocolVersionInternal:a3];
-  v5 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_maximum_tls_protocol_version(v5);
+  [(NWParameters *)self setMaximumSSLProtocolVersionInternal:version];
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_maximum_tls_protocol_version(internalParameters);
 }
 
-- (void)setMinimumSSLProtocolVersion:(unint64_t)a3
+- (void)setMinimumSSLProtocolVersion:(unint64_t)version
 {
   [(NWParameters *)self tlsVersionWithSSLProtocol:?];
-  [(NWParameters *)self setMinimumSSLProtocolVersionInternal:a3];
-  v5 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_minimum_tls_protocol_version(v5);
+  [(NWParameters *)self setMinimumSSLProtocolVersionInternal:version];
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_minimum_tls_protocol_version(internalParameters);
 }
 
-- (unsigned)tlsVersionWithSSLProtocol:(int)a3
+- (unsigned)tlsVersionWithSSLProtocol:(int)protocol
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = "unknown";
-  if (a3 <= 4)
+  if (protocol <= 4)
   {
-    if (a3 <= 1)
+    if (protocol <= 1)
     {
-      if (!a3)
+      if (!protocol)
       {
         return 0;
       }
 
-      if (a3 != 1)
+      if (protocol != 1)
       {
 LABEL_17:
         pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
@@ -1530,7 +1530,7 @@ LABEL_17:
           v9 = 2082;
           v10 = v3;
           v11 = 1024;
-          v12 = a3;
+          protocolCopy = protocol;
           _os_log_impl(&dword_181A37000, v6, OS_LOG_TYPE_ERROR, "%{public}s Parameters have %{public}s SSLProtocol %d, ignoring", &v7, 0x1Cu);
         }
 
@@ -1540,12 +1540,12 @@ LABEL_17:
 
     else
     {
-      if (a3 == 2)
+      if (protocol == 2)
       {
         return 768;
       }
 
-      if (a3 != 3)
+      if (protocol != 3)
       {
         return 769;
       }
@@ -1556,11 +1556,11 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a3 <= 7)
+  if (protocol <= 7)
   {
-    if ((a3 - 5) >= 2)
+    if ((protocol - 5) >= 2)
     {
-      if (a3 == 7)
+      if (protocol == 7)
       {
         return 770;
       }
@@ -1571,14 +1571,14 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (a3 == 8)
+  if (protocol == 8)
   {
     return 771;
   }
 
-  if (a3 != 9)
+  if (protocol != 9)
   {
-    if (a3 == 10)
+    if (protocol == 10)
     {
       return 772;
     }
@@ -1589,78 +1589,78 @@ LABEL_16:
   return -257;
 }
 
-- (void)setKeepAliveOffload:(BOOL)a3
+- (void)setKeepAliveOffload:(BOOL)offload
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_keepalive_offload(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_keepalive_offload(internalParameters, offload);
 }
 
 - (BOOL)keepAliveOffload
 {
-  v2 = [(NWParameters *)self internalParameters];
-  keepalive_offload = nw_parameters_get_keepalive_offload(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  keepalive_offload = nw_parameters_get_keepalive_offload(internalParameters);
 
   return keepalive_offload;
 }
 
-- (void)setKeepAliveInterval:(unint64_t)a3
+- (void)setKeepAliveInterval:(unint64_t)interval
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_keepalive_interval(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_keepalive_interval(internalParameters, interval);
 }
 
 - (unint64_t)keepAliveInterval
 {
-  v2 = [(NWParameters *)self internalParameters];
-  keepalive_interval = nw_parameters_get_keepalive_interval(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  keepalive_interval = nw_parameters_get_keepalive_interval(internalParameters);
 
   return keepalive_interval;
 }
 
-- (void)setKeepAliveIdleTime:(unint64_t)a3
+- (void)setKeepAliveIdleTime:(unint64_t)time
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_keepalive_idle_time(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_keepalive_idle_time(internalParameters, time);
 }
 
 - (unint64_t)keepAliveIdleTime
 {
-  v2 = [(NWParameters *)self internalParameters];
-  keepalive_idle_time = nw_parameters_get_keepalive_idle_time(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  keepalive_idle_time = nw_parameters_get_keepalive_idle_time(internalParameters);
 
   return keepalive_idle_time;
 }
 
-- (void)setKeepAlive:(BOOL)a3
+- (void)setKeepAlive:(BOOL)alive
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_keepalive_enabled(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_keepalive_enabled(internalParameters, alive);
 }
 
 - (BOOL)keepAlive
 {
-  v2 = [(NWParameters *)self internalParameters];
-  keepalive_enabled = nw_parameters_get_keepalive_enabled(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  keepalive_enabled = nw_parameters_get_keepalive_enabled(internalParameters);
 
   return keepalive_enabled;
 }
 
-- (void)setSSLCipherSuites:(id)a3
+- (void)setSSLCipherSuites:(id)suites
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(NWParameters *)self setSSLCipherSuitesInternal:v4];
-  if (![v4 count])
+  suitesCopy = suites;
+  [(NWParameters *)self setSSLCipherSuitesInternal:suitesCopy];
+  if (![suitesCopy count])
   {
-    v5 = [(NWParameters *)self internalParameters];
-    nw_parameters_set_ssl_cipher_suites(v5, 0, 0);
+    internalParameters = [(NWParameters *)self internalParameters];
+    nw_parameters_set_ssl_cipher_suites(internalParameters, 0, 0);
 LABEL_13:
 
     return;
   }
 
-  v5 = [v4 allObjects];
-  v6 = [v5 count];
+  internalParameters = [suitesCopy allObjects];
+  v6 = [internalParameters count];
   if (!v6)
   {
     v16 = __nwlog_obj();
@@ -1685,10 +1685,10 @@ LABEL_13:
     v8 = v7;
     if (v6)
     {
-      for (i = 0; i != v6; v8[i++] = v11)
+      for (i = 0; i != v6; v8[i++] = unsignedIntValue)
       {
-        v10 = [v5 objectAtIndexedSubscript:{i, v18, v19}];
-        v11 = [v10 unsignedIntValue];
+        v10 = [internalParameters objectAtIndexedSubscript:{i, v18, v19}];
+        unsignedIntValue = [v10 unsignedIntValue];
       }
     }
 
@@ -1733,7 +1733,7 @@ LABEL_16:
   __break(1u);
 }
 
-- (void)setTLSSessionID:(id)a3
+- (void)setTLSSessionID:(id)d
 {
   v4 = _CFXPCCreateXPCObjectFromCFObject();
   if (v4)
@@ -1743,75 +1743,75 @@ LABEL_16:
     v4 = v7;
     if (v5)
     {
-      v6 = [(NWParameters *)self internalParameters];
-      nw_parameters_set_tls_session_id(v6);
+      internalParameters = [(NWParameters *)self internalParameters];
+      nw_parameters_set_tls_session_id(internalParameters);
 
       v4 = v7;
     }
   }
 }
 
-- (void)setEnableTLS:(BOOL)a3
+- (void)setEnableTLS:(BOOL)s
 {
-  v3 = a3;
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_tls(v4, v3);
+  sCopy = s;
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_tls(internalParameters, sCopy);
 }
 
-- (void)setNoProxy:(BOOL)a3
+- (void)setNoProxy:(BOOL)proxy
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_no_proxy(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_no_proxy(internalParameters, proxy);
 }
 
 - (BOOL)noProxy
 {
-  v2 = [(NWParameters *)self internalParameters];
-  no_proxy = nw_parameters_get_no_proxy(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  no_proxy = nw_parameters_get_no_proxy(internalParameters);
 
   return no_proxy;
 }
 
-- (void)setIndefinite:(BOOL)a3
+- (void)setIndefinite:(BOOL)indefinite
 {
-  v3 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_indefinite(v3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_indefinite(internalParameters);
 }
 
 - (BOOL)indefinite
 {
-  v2 = [(NWParameters *)self internalParameters];
-  indefinite = nw_parameters_get_indefinite(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  indefinite = nw_parameters_get_indefinite(internalParameters);
 
   return indefinite;
 }
 
-- (void)setMultipathForceEnable:(BOOL)a3
+- (void)setMultipathForceEnable:(BOOL)enable
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_multipath_force_enable(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_multipath_force_enable(internalParameters, enable);
 }
 
 - (BOOL)multipathForceEnable
 {
-  v2 = [(NWParameters *)self internalParameters];
-  multipath_force_enable = nw_parameters_get_multipath_force_enable(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  multipath_force_enable = nw_parameters_get_multipath_force_enable(internalParameters);
 
   return multipath_force_enable;
 }
 
-- (void)setMultipathService:(int)a3
+- (void)setMultipathService:(int)service
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_multipath_service(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_multipath_service(internalParameters, service);
 }
 
-- (void)setMultipath:(BOOL)a3
+- (void)setMultipath:(BOOL)multipath
 {
-  v3 = a3;
-  v4 = [(NWParameters *)self internalParameters];
-  v6 = v4;
-  if (v3)
+  multipathCopy = multipath;
+  internalParameters = [(NWParameters *)self internalParameters];
+  v6 = internalParameters;
+  if (multipathCopy)
   {
     v5 = nw_multipath_service_interactive;
   }
@@ -1821,120 +1821,120 @@ LABEL_16:
     v5 = nw_multipath_service_disabled;
   }
 
-  nw_parameters_set_multipath_service(v4, v5);
+  nw_parameters_set_multipath_service(internalParameters, v5);
 }
 
 - (BOOL)multipath
 {
-  v2 = [(NWParameters *)self internalParameters];
-  multipath = nw_parameters_get_multipath(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  multipath = nw_parameters_get_multipath(internalParameters);
 
   return multipath;
 }
 
-- (void)setResolvePTR:(BOOL)a3
+- (void)setResolvePTR:(BOOL)r
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_resolve_ptr(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_resolve_ptr(internalParameters, r);
 }
 
-- (void)setUseP2P:(BOOL)a3
+- (void)setUseP2P:(BOOL)p
 {
-  v3 = a3;
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_use_p2p(v4, v3);
+  pCopy = p;
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_use_p2p(internalParameters, pCopy);
 }
 
-- (void)setUseAWDL:(BOOL)a3
+- (void)setUseAWDL:(BOOL)l
 {
-  v3 = a3;
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_use_awdl(v4, v3);
+  lCopy = l;
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_use_awdl(internalParameters, lCopy);
 }
 
-- (void)setIgnoreResolverStats:(BOOL)a3
+- (void)setIgnoreResolverStats:(BOOL)stats
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_ignore_resolver_stats(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_ignore_resolver_stats(internalParameters, stats);
 }
 
 - (BOOL)ignoreResolverStats
 {
-  v2 = [(NWParameters *)self internalParameters];
-  ignore_resolver_stats = nw_parameters_get_ignore_resolver_stats(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  ignore_resolver_stats = nw_parameters_get_ignore_resolver_stats(internalParameters);
 
   return ignore_resolver_stats;
 }
 
-- (void)setUseLongOutstandingQueries:(BOOL)a3
+- (void)setUseLongOutstandingQueries:(BOOL)queries
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_use_long_outstanding_queries(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_use_long_outstanding_queries(internalParameters, queries);
 }
 
-- (void)setDisableNagleAlgorithm:(BOOL)a3
+- (void)setDisableNagleAlgorithm:(BOOL)algorithm
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_no_delay(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_no_delay(internalParameters, algorithm);
 }
 
-- (void)setReduceBuffering:(BOOL)a3
+- (void)setReduceBuffering:(BOOL)buffering
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_reduce_buffering(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_reduce_buffering(internalParameters, buffering);
 }
 
 - (BOOL)reduceBuffering
 {
-  v2 = [(NWParameters *)self internalParameters];
-  reduce_buffering = nw_parameters_get_reduce_buffering(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  reduce_buffering = nw_parameters_get_reduce_buffering(internalParameters);
 
   return reduce_buffering;
 }
 
-- (void)setFastOpenForceEnable:(BOOL)a3
+- (void)setFastOpenForceEnable:(BOOL)enable
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_fast_open_force_enable(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_fast_open_force_enable(internalParameters, enable);
 }
 
 - (BOOL)fastOpenForceEnable
 {
-  v2 = [(NWParameters *)self internalParameters];
-  fast_open_force_enable = nw_parameters_get_fast_open_force_enable(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  fast_open_force_enable = nw_parameters_get_fast_open_force_enable(internalParameters);
 
   return fast_open_force_enable;
 }
 
-- (void)setEnableTFONoCookie:(BOOL)a3
+- (void)setEnableTFONoCookie:(BOOL)cookie
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_tfo_no_cookie(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_tfo_no_cookie(internalParameters, cookie);
 }
 
 - (BOOL)enableTFONoCookie
 {
-  v2 = [(NWParameters *)self internalParameters];
-  tfo_no_cookie = nw_parameters_get_tfo_no_cookie(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  tfo_no_cookie = nw_parameters_get_tfo_no_cookie(internalParameters);
 
   return tfo_no_cookie;
 }
 
-- (void)setEnableTFO:(BOOL)a3
+- (void)setEnableTFO:(BOOL)o
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_tfo(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_tfo(internalParameters, o);
 }
 
-- (void)avoidNetworkAgentWithDomain:(id)a3 type:(id)a4
+- (void)avoidNetworkAgentWithDomain:(id)domain type:(id)type
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [(NWParameters *)self internalParameters];
-  v8 = nw_parameters_copy_avoided_netagent_domains(v7);
+  domainCopy = domain;
+  typeCopy = type;
+  internalParameters = [(NWParameters *)self internalParameters];
+  v8 = nw_parameters_copy_avoided_netagent_domains(internalParameters);
 
-  v9 = [(NWParameters *)self internalParameters];
-  v10 = nw_parameters_copy_avoided_netagent_types(v9);
+  internalParameters2 = [(NWParameters *)self internalParameters];
+  v10 = nw_parameters_copy_avoided_netagent_types(internalParameters2);
 
   if (!v8 || !v10)
   {
@@ -1945,10 +1945,10 @@ LABEL_16:
     v8 = v11;
   }
 
-  v13 = [v18 UTF8String];
-  if (v13)
+  uTF8String = [domainCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = v13;
+    v14 = uTF8String;
   }
 
   else
@@ -1957,10 +1957,10 @@ LABEL_16:
   }
 
   xpc_array_set_string(v8, 0xFFFFFFFFFFFFFFFFLL, v14);
-  v15 = [v6 UTF8String];
-  if (v15)
+  uTF8String2 = [typeCopy UTF8String];
+  if (uTF8String2)
   {
-    v16 = v15;
+    v16 = uTF8String2;
   }
 
   else
@@ -1969,18 +1969,18 @@ LABEL_16:
   }
 
   xpc_array_set_string(v10, 0xFFFFFFFFFFFFFFFFLL, v16);
-  v17 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_avoided_netagent_classes(v17, v8, v10);
+  internalParameters3 = [(NWParameters *)self internalParameters];
+  nw_parameters_set_avoided_netagent_classes(internalParameters3, v8, v10);
 }
 
-- (void)avoidNetworkAgentWithUUID:(id)a3
+- (void)avoidNetworkAgentWithUUID:(id)d
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(NWParameters *)self internalParameters];
-    v6 = nw_parameters_copy_avoided_netagent_uuids(v5);
+    internalParameters = [(NWParameters *)self internalParameters];
+    v6 = nw_parameters_copy_avoided_netagent_uuids(internalParameters);
 
     if (!v6)
     {
@@ -1989,22 +1989,22 @@ LABEL_16:
 
     *uuid = 0;
     v9 = 0;
-    [v4 getUUIDBytes:uuid];
+    [dCopy getUUIDBytes:uuid];
     xpc_array_set_uuid(v6, 0xFFFFFFFFFFFFFFFFLL, uuid);
-    v7 = [(NWParameters *)self internalParameters];
-    nw_parameters_set_avoided_netagent_uuids(v7, v6);
+    internalParameters2 = [(NWParameters *)self internalParameters];
+    nw_parameters_set_avoided_netagent_uuids(internalParameters2, v6);
   }
 }
 
-- (void)preferNetworkAgentWithDomain:(id)a3 type:(id)a4
+- (void)preferNetworkAgentWithDomain:(id)domain type:(id)type
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [(NWParameters *)self internalParameters];
-  v8 = nw_parameters_copy_preferred_netagent_domains(v7);
+  domainCopy = domain;
+  typeCopy = type;
+  internalParameters = [(NWParameters *)self internalParameters];
+  v8 = nw_parameters_copy_preferred_netagent_domains(internalParameters);
 
-  v9 = [(NWParameters *)self internalParameters];
-  v10 = nw_parameters_copy_preferred_netagent_types(v9);
+  internalParameters2 = [(NWParameters *)self internalParameters];
+  v10 = nw_parameters_copy_preferred_netagent_types(internalParameters2);
 
   if (!v8 || !v10)
   {
@@ -2015,10 +2015,10 @@ LABEL_16:
     v8 = v11;
   }
 
-  v13 = [v18 UTF8String];
-  if (v13)
+  uTF8String = [domainCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = v13;
+    v14 = uTF8String;
   }
 
   else
@@ -2027,10 +2027,10 @@ LABEL_16:
   }
 
   xpc_array_set_string(v8, 0xFFFFFFFFFFFFFFFFLL, v14);
-  v15 = [v6 UTF8String];
-  if (v15)
+  uTF8String2 = [typeCopy UTF8String];
+  if (uTF8String2)
   {
-    v16 = v15;
+    v16 = uTF8String2;
   }
 
   else
@@ -2039,18 +2039,18 @@ LABEL_16:
   }
 
   xpc_array_set_string(v10, 0xFFFFFFFFFFFFFFFFLL, v16);
-  v17 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_preferred_netagent_classes(v17, v8, v10);
+  internalParameters3 = [(NWParameters *)self internalParameters];
+  nw_parameters_set_preferred_netagent_classes(internalParameters3, v8, v10);
 }
 
-- (void)preferNetworkAgentWithUUID:(id)a3
+- (void)preferNetworkAgentWithUUID:(id)d
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(NWParameters *)self internalParameters];
-    v6 = nw_parameters_copy_preferred_netagent_uuids(v5);
+    internalParameters = [(NWParameters *)self internalParameters];
+    v6 = nw_parameters_copy_preferred_netagent_uuids(internalParameters);
 
     if (!v6)
     {
@@ -2059,22 +2059,22 @@ LABEL_16:
 
     *uuid = 0;
     v9 = 0;
-    [v4 getUUIDBytes:uuid];
+    [dCopy getUUIDBytes:uuid];
     xpc_array_set_uuid(v6, 0xFFFFFFFFFFFFFFFFLL, uuid);
-    v7 = [(NWParameters *)self internalParameters];
-    nw_parameters_set_preferred_netagent_uuids(v7, v6);
+    internalParameters2 = [(NWParameters *)self internalParameters];
+    nw_parameters_set_preferred_netagent_uuids(internalParameters2, v6);
   }
 }
 
-- (void)requireNetworkAgentWithDomain:(id)a3 type:(id)a4
+- (void)requireNetworkAgentWithDomain:(id)domain type:(id)type
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [(NWParameters *)self internalParameters];
-  v8 = nw_parameters_copy_required_netagent_domains(v7);
+  domainCopy = domain;
+  typeCopy = type;
+  internalParameters = [(NWParameters *)self internalParameters];
+  v8 = nw_parameters_copy_required_netagent_domains(internalParameters);
 
-  v9 = [(NWParameters *)self internalParameters];
-  v10 = nw_parameters_copy_required_netagent_types(v9);
+  internalParameters2 = [(NWParameters *)self internalParameters];
+  v10 = nw_parameters_copy_required_netagent_types(internalParameters2);
 
   if (!v8 || !v10)
   {
@@ -2085,10 +2085,10 @@ LABEL_16:
     v8 = v11;
   }
 
-  v13 = [v18 UTF8String];
-  if (v13)
+  uTF8String = [domainCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = v13;
+    v14 = uTF8String;
   }
 
   else
@@ -2097,10 +2097,10 @@ LABEL_16:
   }
 
   xpc_array_set_string(v8, 0xFFFFFFFFFFFFFFFFLL, v14);
-  v15 = [v6 UTF8String];
-  if (v15)
+  uTF8String2 = [typeCopy UTF8String];
+  if (uTF8String2)
   {
-    v16 = v15;
+    v16 = uTF8String2;
   }
 
   else
@@ -2109,18 +2109,18 @@ LABEL_16:
   }
 
   xpc_array_set_string(v10, 0xFFFFFFFFFFFFFFFFLL, v16);
-  v17 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_required_netagent_classes(v17, v8, v10);
+  internalParameters3 = [(NWParameters *)self internalParameters];
+  nw_parameters_set_required_netagent_classes(internalParameters3, v8, v10);
 }
 
-- (void)requireNetworkAgentWithUUID:(id)a3
+- (void)requireNetworkAgentWithUUID:(id)d
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(NWParameters *)self internalParameters];
-    v6 = nw_parameters_copy_required_netagent_uuids(v5);
+    internalParameters = [(NWParameters *)self internalParameters];
+    v6 = nw_parameters_copy_required_netagent_uuids(internalParameters);
 
     if (!v6)
     {
@@ -2129,62 +2129,62 @@ LABEL_16:
 
     *uuid = 0;
     v9 = 0;
-    [v4 getUUIDBytes:uuid];
+    [dCopy getUUIDBytes:uuid];
     xpc_array_set_uuid(v6, 0xFFFFFFFFFFFFFFFFLL, uuid);
-    v7 = [(NWParameters *)self internalParameters];
-    nw_parameters_set_required_netagent_uuids(v7, v6);
+    internalParameters2 = [(NWParameters *)self internalParameters];
+    nw_parameters_set_required_netagent_uuids(internalParameters2, v6);
   }
 }
 
-- (void)setRequiredCompanionProxyInterfaceType:(int64_t)a3
+- (void)setRequiredCompanionProxyInterfaceType:(int64_t)type
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_next_hop_required_interface_type(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_next_hop_required_interface_type(internalParameters, type);
 }
 
-- (void)setRequiredInterfaceSubtype:(int64_t)a3
+- (void)setRequiredInterfaceSubtype:(int64_t)subtype
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_required_interface_subtype(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_required_interface_subtype(internalParameters, subtype);
 }
 
 - (int64_t)requiredInterfaceSubtype
 {
-  v2 = [(NWParameters *)self internalParameters];
-  required_interface_subtype = nw_parameters_get_required_interface_subtype(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  required_interface_subtype = nw_parameters_get_required_interface_subtype(internalParameters);
 
   return required_interface_subtype;
 }
 
-- (void)setRequiredInterfaceType:(int64_t)a3
+- (void)setRequiredInterfaceType:(int64_t)type
 {
-  v3 = a3;
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_required_interface_type(v4, v3);
+  typeCopy = type;
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_required_interface_type(internalParameters, typeCopy);
 }
 
-- (void)setRequiredInterface:(id)a3
+- (void)setRequiredInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   parameters = [(NWParameters *)self internalParameters];
-  v5 = [v4 internalInterface];
+  internalInterface = [interfaceCopy internalInterface];
 
-  nw_parameters_require_interface(parameters, v5);
+  nw_parameters_require_interface(parameters, internalInterface);
 }
 
-- (void)prohibitNetworkAgentsWithDomain:(id)a3 type:(id)a4
+- (void)prohibitNetworkAgentsWithDomain:(id)domain type:(id)type
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  domainCopy = domain;
+  typeCopy = type;
+  v8 = typeCopy;
+  if (domainCopy && typeCopy)
   {
-    v9 = [(NWParameters *)self internalParameters];
-    v10 = nw_parameters_copy_prohibited_netagent_domains(v9);
+    internalParameters = [(NWParameters *)self internalParameters];
+    v10 = nw_parameters_copy_prohibited_netagent_domains(internalParameters);
 
-    v11 = [(NWParameters *)self internalParameters];
-    v12 = nw_parameters_copy_prohibited_netagent_types(v11);
+    internalParameters2 = [(NWParameters *)self internalParameters];
+    v12 = nw_parameters_copy_prohibited_netagent_types(internalParameters2);
 
     if (!v10 || !v12)
     {
@@ -2195,10 +2195,10 @@ LABEL_16:
       v10 = v13;
     }
 
-    v15 = [v6 UTF8String];
-    if (v15)
+    uTF8String = [domainCopy UTF8String];
+    if (uTF8String)
     {
-      xpc_array_set_string(v10, 0xFFFFFFFFFFFFFFFFLL, v15);
+      xpc_array_set_string(v10, 0xFFFFFFFFFFFFFFFFLL, uTF8String);
       goto LABEL_24;
     }
 
@@ -2208,7 +2208,7 @@ LABEL_16:
     *buf = 136446466;
     v45 = "[NWParameters prohibitNetworkAgentsWithDomain:type:]";
     v46 = 2114;
-    v47 = v6;
+    v47 = domainCopy;
     LODWORD(v40) = 22;
     v38 = buf;
     v17 = _os_log_send_and_compose_impl();
@@ -2224,10 +2224,10 @@ LABEL_22:
       }
 
 LABEL_24:
-      v26 = [v8 UTF8String];
-      if (v26)
+      uTF8String2 = [v8 UTF8String];
+      if (uTF8String2)
       {
-        xpc_array_set_string(v12, 0xFFFFFFFFFFFFFFFFLL, v26);
+        xpc_array_set_string(v12, 0xFFFFFFFFFFFFFFFFLL, uTF8String2);
 LABEL_42:
         v37 = [(NWParameters *)self internalParameters:v39];
         nw_parameters_set_prohibited_netagent_classes(v37, v10, v12);
@@ -2264,7 +2264,7 @@ LABEL_40:
         pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
         networkd_settings_init();
         v29 = gLogObj;
-        v30 = type;
+        typeCopy4 = type;
         if (os_log_type_enabled(v29, type))
         {
           *buf = 136446466;
@@ -2274,7 +2274,7 @@ LABEL_40:
           v31 = "%{public}s Failed to get UTF8String from type %{public}@";
 LABEL_37:
           v35 = v29;
-          v36 = v30;
+          v36 = typeCopy4;
 LABEL_38:
           _os_log_impl(&dword_181A37000, v35, v36, v31, buf, 0x16u);
         }
@@ -2288,7 +2288,7 @@ LABEL_38:
           pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
           networkd_settings_init();
           v29 = gLogObj;
-          v33 = type;
+          typeCopy3 = type;
           v34 = os_log_type_enabled(v29, type);
           if (backtrace_string)
           {
@@ -2300,7 +2300,7 @@ LABEL_38:
               v47 = v8;
               v48 = 2082;
               v49 = backtrace_string;
-              _os_log_impl(&dword_181A37000, v29, v33, "%{public}s Failed to get UTF8String from type %{public}@, dumping backtrace:%{public}s", buf, 0x20u);
+              _os_log_impl(&dword_181A37000, v29, typeCopy3, "%{public}s Failed to get UTF8String from type %{public}@, dumping backtrace:%{public}s", buf, 0x20u);
             }
 
             free(backtrace_string);
@@ -2318,14 +2318,14 @@ LABEL_38:
           v47 = v8;
           v31 = "%{public}s Failed to get UTF8String from type %{public}@, no backtrace";
           v35 = v29;
-          v36 = v33;
+          v36 = typeCopy3;
           goto LABEL_38;
         }
 
         pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
         networkd_settings_init();
         v29 = gLogObj;
-        v30 = type;
+        typeCopy4 = type;
         if (os_log_type_enabled(v29, type))
         {
           *buf = 136446466;
@@ -2347,17 +2347,17 @@ LABEL_39:
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
       v18 = gLogObj;
-      v19 = type;
+      typeCopy7 = type;
       if (os_log_type_enabled(v18, type))
       {
         *buf = 136446466;
         v45 = "[NWParameters prohibitNetworkAgentsWithDomain:type:]";
         v46 = 2114;
-        v47 = v6;
+        v47 = domainCopy;
         v20 = "%{public}s Failed to get UTF8String from domain %{public}@";
 LABEL_19:
         v24 = v18;
-        v25 = v19;
+        v25 = typeCopy7;
 LABEL_20:
         _os_log_impl(&dword_181A37000, v24, v25, v20, buf, 0x16u);
       }
@@ -2371,7 +2371,7 @@ LABEL_20:
         pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
         networkd_settings_init();
         v18 = gLogObj;
-        v22 = type;
+        typeCopy6 = type;
         v23 = os_log_type_enabled(v18, type);
         if (v21)
         {
@@ -2380,10 +2380,10 @@ LABEL_20:
             *buf = 136446722;
             v45 = "[NWParameters prohibitNetworkAgentsWithDomain:type:]";
             v46 = 2114;
-            v47 = v6;
+            v47 = domainCopy;
             v48 = 2082;
             v49 = v21;
-            _os_log_impl(&dword_181A37000, v18, v22, "%{public}s Failed to get UTF8String from domain %{public}@, dumping backtrace:%{public}s", buf, 0x20u);
+            _os_log_impl(&dword_181A37000, v18, typeCopy6, "%{public}s Failed to get UTF8String from domain %{public}@, dumping backtrace:%{public}s", buf, 0x20u);
           }
 
           free(v21);
@@ -2398,23 +2398,23 @@ LABEL_20:
         *buf = 136446466;
         v45 = "[NWParameters prohibitNetworkAgentsWithDomain:type:]";
         v46 = 2114;
-        v47 = v6;
+        v47 = domainCopy;
         v20 = "%{public}s Failed to get UTF8String from domain %{public}@, no backtrace";
         v24 = v18;
-        v25 = v22;
+        v25 = typeCopy6;
         goto LABEL_20;
       }
 
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
       v18 = gLogObj;
-      v19 = type;
+      typeCopy7 = type;
       if (os_log_type_enabled(v18, type))
       {
         *buf = 136446466;
         v45 = "[NWParameters prohibitNetworkAgentsWithDomain:type:]";
         v46 = 2114;
-        v47 = v6;
+        v47 = domainCopy;
         v20 = "%{public}s Failed to get UTF8String from domain %{public}@, backtrace limit exceeded";
         goto LABEL_19;
       }
@@ -2428,14 +2428,14 @@ LABEL_21:
 LABEL_43:
 }
 
-- (void)prohibitNetworkAgentWithUUID:(id)a3
+- (void)prohibitNetworkAgentWithUUID:(id)d
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(NWParameters *)self internalParameters];
-    v6 = nw_parameters_copy_prohibited_netagent_uuids(v5);
+    internalParameters = [(NWParameters *)self internalParameters];
+    v6 = nw_parameters_copy_prohibited_netagent_uuids(internalParameters);
 
     if (!v6)
     {
@@ -2444,39 +2444,39 @@ LABEL_43:
 
     *uuid = 0;
     v9 = 0;
-    [v4 getUUIDBytes:uuid];
+    [dCopy getUUIDBytes:uuid];
     xpc_array_set_uuid(v6, 0xFFFFFFFFFFFFFFFFLL, uuid);
-    v7 = [(NWParameters *)self internalParameters];
-    nw_parameters_set_prohibited_netagent_uuids(v7, v6);
+    internalParameters2 = [(NWParameters *)self internalParameters];
+    nw_parameters_set_prohibited_netagent_uuids(internalParameters2, v6);
   }
 }
 
-- (void)prohibitInterface:(id)a3
+- (void)prohibitInterface:(id)interface
 {
-  v9 = a3;
-  v4 = [(NWParameters *)self internalParameters];
-  v5 = nw_parameters_copy_prohibited_interfaces(v4);
+  interfaceCopy = interface;
+  internalParameters = [(NWParameters *)self internalParameters];
+  v5 = nw_parameters_copy_prohibited_interfaces(internalParameters);
 
   if (!v5)
   {
     v5 = xpc_array_create(0, 0);
   }
 
-  v6 = [v9 internalInterface];
-  v7 = nw_interface_copy_dictionary(v6);
+  internalInterface = [interfaceCopy internalInterface];
+  v7 = nw_interface_copy_dictionary(internalInterface);
 
   if (v7)
   {
     xpc_array_set_value(v5, 0xFFFFFFFFFFFFFFFFLL, v7);
-    v8 = [(NWParameters *)self internalParameters];
-    nw_parameters_set_prohibited_interfaces(v8, v5);
+    internalParameters2 = [(NWParameters *)self internalParameters];
+    nw_parameters_set_prohibited_interfaces(internalParameters2, v5);
   }
 }
 
-- (void)prohibitInterfaceSubtype:(int64_t)a3
+- (void)prohibitInterfaceSubtype:(int64_t)subtype
 {
-  v5 = [(NWParameters *)self internalParameters];
-  objectsa = nw_parameters_copy_prohibited_interface_subtypes(v5);
+  internalParameters = [(NWParameters *)self internalParameters];
+  objectsa = nw_parameters_copy_prohibited_interface_subtypes(internalParameters);
 
   v6 = objectsa;
   if (!objectsa)
@@ -2485,15 +2485,15 @@ LABEL_43:
   }
 
   objects = v6;
-  xpc_array_set_uint64(v6, 0xFFFFFFFFFFFFFFFFLL, a3);
-  v7 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_prohibited_interface_subtypes(v7, objects);
+  xpc_array_set_uint64(v6, 0xFFFFFFFFFFFFFFFFLL, subtype);
+  internalParameters2 = [(NWParameters *)self internalParameters];
+  nw_parameters_set_prohibited_interface_subtypes(internalParameters2, objects);
 }
 
-- (void)prohibitInterfaceType:(int64_t)a3
+- (void)prohibitInterfaceType:(int64_t)type
 {
-  v5 = [(NWParameters *)self internalParameters];
-  objectsa = nw_parameters_copy_prohibited_interface_types(v5);
+  internalParameters = [(NWParameters *)self internalParameters];
+  objectsa = nw_parameters_copy_prohibited_interface_types(internalParameters);
 
   v6 = objectsa;
   if (!objectsa)
@@ -2502,38 +2502,38 @@ LABEL_43:
   }
 
   objects = v6;
-  xpc_array_set_uint64(v6, 0xFFFFFFFFFFFFFFFFLL, a3);
-  v7 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_prohibited_interface_types(v7, objects);
+  xpc_array_set_uint64(v6, 0xFFFFFFFFFFFFFFFFLL, type);
+  internalParameters2 = [(NWParameters *)self internalParameters];
+  nw_parameters_set_prohibited_interface_types(internalParameters2, objects);
 }
 
 - (BOOL)prohibitCellular
 {
-  v2 = [(NWParameters *)self internalParameters];
-  prohibit_cellular = nw_parameters_get_prohibit_cellular(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  prohibit_cellular = nw_parameters_get_prohibit_cellular(internalParameters);
 
   return prohibit_cellular;
 }
 
-- (void)setProhibitRoaming:(BOOL)a3
+- (void)setProhibitRoaming:(BOOL)roaming
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_prohibit_roaming(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_prohibit_roaming(internalParameters, roaming);
 }
 
-- (void)setProhibitConstrainedPaths:(BOOL)a3
+- (void)setProhibitConstrainedPaths:(BOOL)paths
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_prohibit_constrained(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_prohibit_constrained(internalParameters, paths);
 }
 
-- (void)setProhibitExpensivePaths:(BOOL)a3
+- (void)setProhibitExpensivePaths:(BOOL)paths
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_prohibit_expensive(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_prohibit_expensive(internalParameters, paths);
 }
 
-- (void)setProxyConfiguration:(id)a3
+- (void)setProxyConfiguration:(id)configuration
 {
   v4 = _CFXPCCreateXPCObjectFromCFObject();
   if (v4)
@@ -2543,40 +2543,40 @@ LABEL_43:
     v4 = v7;
     if (v5)
     {
-      v6 = [(NWParameters *)self internalParameters];
-      nw_parameters_set_proxy_configuration(v6, v7);
+      internalParameters = [(NWParameters *)self internalParameters];
+      nw_parameters_set_proxy_configuration(internalParameters, v7);
 
       v4 = v7;
     }
   }
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v5 = [a3 absoluteString];
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_url(v4, [v5 UTF8String]);
+  absoluteString = [url absoluteString];
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_url(internalParameters, [absoluteString UTF8String]);
 }
 
-- (void)setReuseLocalAddress:(BOOL)a3
+- (void)setReuseLocalAddress:(BOOL)address
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_reuse_local_address(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_reuse_local_address(internalParameters, address);
 }
 
-- (void)setLocalAddress:(id)a3
+- (void)setLocalAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   parameters = [(NWParameters *)self internalParameters];
-  v5 = [v4 internalEndpoint];
+  internalEndpoint = [addressCopy internalEndpoint];
 
-  nw_parameters_set_local_endpoint(parameters, v5);
+  nw_parameters_set_local_endpoint(parameters, internalEndpoint);
 }
 
 - (NWAddressEndpoint)localAddress
 {
-  v2 = [(NWParameters *)self internalParameters];
-  v3 = nw_parameters_copy_local_endpoint(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  v3 = nw_parameters_copy_local_endpoint(internalParameters);
 
   if (v3)
   {
@@ -2591,36 +2591,36 @@ LABEL_43:
   return v4;
 }
 
-- (void)setRequiredAddressFamily:(unsigned __int8)a3
+- (void)setRequiredAddressFamily:(unsigned __int8)family
 {
-  v3 = a3;
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_required_address_family(v4, v3);
+  familyCopy = family;
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_required_address_family(internalParameters, familyCopy);
 }
 
-- (void)setParentID:(id)a3
+- (void)setParentID:(id)d
 {
   v7 = *MEMORY[0x1E69E9840];
   memset(uu, 0, sizeof(uu));
-  v4 = a3;
+  dCopy = d;
   uuid_clear(uu);
-  [v4 getUUIDBytes:uu];
+  [dCopy getUUIDBytes:uu];
 
-  v5 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_parent_id(v5, uu);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_parent_id(internalParameters, uu);
 }
 
 - (NSArray)parentIDs
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(NWParameters *)self internalParameters];
+  internalParameters = [(NWParameters *)self internalParameters];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __25__NWParameters_parentIDs__block_invoke;
   v7[3] = &unk_1E6A3A500;
   v5 = v3;
   v8 = v5;
-  nw_parameters_iterate_parent_ids(v4, v7);
+  nw_parameters_iterate_parent_ids(internalParameters, v7);
 
   return v5;
 }
@@ -2639,8 +2639,8 @@ uint64_t __25__NWParameters_parentIDs__block_invoke(uint64_t a1, uint64_t a2)
   v8 = *MEMORY[0x1E69E9840];
   memset(uu, 0, sizeof(uu));
   uuid_clear(uu);
-  v3 = [(NWParameters *)self internalParameters];
-  nw_parameters_get_parent_id(v3, uu);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_get_parent_id(internalParameters, uu);
 
   is_null = uuid_is_null(uu);
   v5 = 0;
@@ -2652,120 +2652,120 @@ uint64_t __25__NWParameters_parentIDs__block_invoke(uint64_t a1, uint64_t a2)
   return v5;
 }
 
-- (BOOL)copyEffectiveAuditToken:(id *)a3
+- (BOOL)copyEffectiveAuditToken:(id *)token
 {
-  v4 = [(NWParameters *)self internalParameters];
-  LOBYTE(a3) = nw_parameters_get_effective_audit_token(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  LOBYTE(token) = nw_parameters_get_effective_audit_token(internalParameters, token);
 
-  return a3;
+  return token;
 }
 
-- (void)setEffectiveBundleID:(id)a3
+- (void)setEffectiveBundleID:(id)d
 {
-  v5 = a3;
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_effective_bundle_id(v4, [v5 UTF8String]);
+  dCopy = d;
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_effective_bundle_id(internalParameters, [dCopy UTF8String]);
 }
 
-- (void)setEffectiveProcessUUID:(id)a3
+- (void)setEffectiveProcessUUID:(id)d
 {
   v7 = *MEMORY[0x1E69E9840];
   memset(uu, 0, sizeof(uu));
-  v4 = a3;
+  dCopy = d;
   uuid_clear(uu);
-  [v4 getUUIDBytes:uu];
+  [dCopy getUUIDBytes:uu];
 
-  v5 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_e_proc_uuid(v5, uu);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_e_proc_uuid(internalParameters, uu);
 }
 
 - (BOOL)hasDelegatedProcessUUID
 {
-  v2 = [(NWParameters *)self internalParameters];
-  has_delegated_proc_uuid = nw_parameters_has_delegated_proc_uuid(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  has_delegated_proc_uuid = nw_parameters_has_delegated_proc_uuid(internalParameters);
 
   return has_delegated_proc_uuid;
 }
 
-- (void)setProcessUUID:(id)a3
+- (void)setProcessUUID:(id)d
 {
   v7 = *MEMORY[0x1E69E9840];
   memset(uu, 0, sizeof(uu));
-  v4 = a3;
+  dCopy = d;
   uuid_clear(uu);
-  [v4 getUUIDBytes:uu];
+  [dCopy getUUIDBytes:uu];
 
-  v5 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_proc_uuid(v5, uu);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_proc_uuid(internalParameters, uu);
 }
 
-- (void)setUid:(unsigned int)a3
+- (void)setUid:(unsigned int)uid
 {
-  v3 = *&a3;
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_uid(v4, v3);
+  v3 = *&uid;
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_uid(internalParameters, v3);
 }
 
-- (BOOL)hasDelegatedPIDForOriginatingPID:(int)a3
+- (BOOL)hasDelegatedPIDForOriginatingPID:(int)d
 {
-  v4 = [(NWParameters *)self internalParameters];
-  LOBYTE(a3) = nw_parameters_has_delegated_proc_pid(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  LOBYTE(d) = nw_parameters_has_delegated_proc_pid(internalParameters, d);
 
-  return a3;
+  return d;
 }
 
-- (void)setPid:(int)a3
+- (void)setPid:(int)pid
 {
-  v3 = *&a3;
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_pid(v4, v3);
+  v3 = *&pid;
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_pid(internalParameters, v3);
 }
 
-- (void)setTrafficClass:(unint64_t)a3
+- (void)setTrafficClass:(unint64_t)class
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_traffic_class(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_traffic_class(internalParameters, class);
 }
 
-- (void)setDataMode:(unint64_t)a3
+- (void)setDataMode:(unint64_t)mode
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_data_mode(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_data_mode(internalParameters, mode);
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v5 = a3;
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_account_id(v4, [v5 UTF8String]);
+  accountCopy = account;
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_account_id(internalParameters, [accountCopy UTF8String]);
 }
 
 - (BOOL)allowSocketAccess
 {
-  v2 = [(NWParameters *)self internalParameters];
-  allow_socket_access = nw_parameters_get_allow_socket_access(v2);
+  internalParameters = [(NWParameters *)self internalParameters];
+  allow_socket_access = nw_parameters_get_allow_socket_access(internalParameters);
 
   return allow_socket_access;
 }
 
-- (void)setAllowSocketAccess:(BOOL)a3
+- (void)setAllowSocketAccess:(BOOL)access
 {
-  v3 = a3;
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_allow_socket_access(v4, v3);
+  accessCopy = access;
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_allow_socket_access(internalParameters, accessCopy);
 }
 
-- (void)setTrustInvalidCertificates:(BOOL)a3
+- (void)setTrustInvalidCertificates:(BOOL)certificates
 {
-  v4 = [(NWParameters *)self internalParameters];
-  nw_parameters_set_should_trust_invalid_certificates(v4, a3);
+  internalParameters = [(NWParameters *)self internalParameters];
+  nw_parameters_set_should_trust_invalid_certificates(internalParameters, certificates);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NWParameters allocWithZone:a3];
-  v5 = [(NWParameters *)self internalParameters];
-  v6 = _nw_parameters_copy(v5);
+  v4 = [NWParameters allocWithZone:zone];
+  internalParameters = [(NWParameters *)self internalParameters];
+  v6 = _nw_parameters_copy(internalParameters);
   v7 = [(NWParameters *)v4 initWithParameters:v6];
 
   return v7;
@@ -2778,30 +2778,30 @@ uint64_t __25__NWParameters_parentIDs__block_invoke(uint64_t a1, uint64_t a2)
   return v2;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = *&a3;
+  contentCopy = content;
+  v5 = *&indent;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v8 = [(NWParameters *)self processUUID];
-  [v7 appendPrettyObject:v8 withName:@"processUUID" indent:v5 showFullContent:v4];
+  processUUID = [(NWParameters *)self processUUID];
+  [v7 appendPrettyObject:processUUID withName:@"processUUID" indent:v5 showFullContent:contentCopy];
 
-  v9 = [(NWParameters *)self effectiveProcessUUID];
-  [v7 appendPrettyObject:v9 withName:@"effectiveProcessUUID" indent:v5 showFullContent:v4];
+  effectiveProcessUUID = [(NWParameters *)self effectiveProcessUUID];
+  [v7 appendPrettyObject:effectiveProcessUUID withName:@"effectiveProcessUUID" indent:v5 showFullContent:contentCopy];
 
-  v10 = [(NWParameters *)self effectiveBundleID];
-  [v7 appendPrettyObject:v10 withName:@"effectiveBundleID" indent:v5 showFullContent:v4];
+  effectiveBundleID = [(NWParameters *)self effectiveBundleID];
+  [v7 appendPrettyObject:effectiveBundleID withName:@"effectiveBundleID" indent:v5 showFullContent:contentCopy];
 
   [v7 appendPrettyInt:-[NWParameters pid](self withName:"pid") indent:{@"pid", v5}];
   [v7 appendPrettyInt:-[NWParameters uid](self withName:"uid") indent:{@"uid", v5}];
-  v11 = [(NWParameters *)self account];
-  [v7 appendPrettyObject:v11 withName:@"account" indent:v5 showFullContent:v4];
+  account = [(NWParameters *)self account];
+  [v7 appendPrettyObject:account withName:@"account" indent:v5 showFullContent:contentCopy];
 
   v12 = [(NWParameters *)self url];
-  [v7 appendPrettyObject:v12 withName:@"url" indent:v5 showFullContent:v4];
+  [v7 appendPrettyObject:v12 withName:@"url" indent:v5 showFullContent:contentCopy];
 
-  v13 = [(NWParameters *)self sanitizedURL];
-  [v7 appendPrettyObject:v13 withName:@"sanitizedURL" indent:v5 showFullContent:v4];
+  sanitizedURL = [(NWParameters *)self sanitizedURL];
+  [v7 appendPrettyObject:sanitizedURL withName:@"sanitizedURL" indent:v5 showFullContent:contentCopy];
 
   if ([(NWParameters *)self dataMode]== 1)
   {
@@ -2818,34 +2818,34 @@ uint64_t __25__NWParameters_parentIDs__block_invoke(uint64_t a1, uint64_t a2)
     v14 = @"Stream";
   }
 
-  [v7 appendPrettyObject:v14 withName:@"dataMode" indent:v5 showFullContent:v4];
+  [v7 appendPrettyObject:v14 withName:@"dataMode" indent:v5 showFullContent:contentCopy];
 LABEL_6:
-  v15 = [(NWParameters *)self internalParameters];
-  is_known_tracker = nw_parameters_get_is_known_tracker(v15);
+  internalParameters = [(NWParameters *)self internalParameters];
+  is_known_tracker = nw_parameters_get_is_known_tracker(internalParameters);
 
   if (is_known_tracker)
   {
     [v7 appendPrettyBOOL:1 withName:@"knownTracker" indent:v5];
   }
 
-  v17 = [(NWParameters *)self internalParameters];
-  is_third_party_web_content = nw_parameters_is_third_party_web_content(v17);
+  internalParameters2 = [(NWParameters *)self internalParameters];
+  is_third_party_web_content = nw_parameters_is_third_party_web_content(internalParameters2);
 
   if (is_third_party_web_content)
   {
     [v7 appendPrettyBOOL:1 withName:@"thirdPartyWebContent" indent:v5];
   }
 
-  v19 = [(NWParameters *)self internalParameters];
-  is_approved_app_domain = nw_parameters_is_approved_app_domain(v19);
+  internalParameters3 = [(NWParameters *)self internalParameters];
+  is_approved_app_domain = nw_parameters_is_approved_app_domain(internalParameters3);
 
   if (is_approved_app_domain)
   {
     [v7 appendPrettyBOOL:1 withName:@"approvedAppDomain" indent:v5];
   }
 
-  v21 = [(NWParameters *)self protocolTransforms];
-  [v7 appendPrettyObject:v21 withName:@"protocolTransforms" indent:v5 showFullContent:v4];
+  protocolTransforms = [(NWParameters *)self protocolTransforms];
+  [v7 appendPrettyObject:protocolTransforms withName:@"protocolTransforms" indent:v5 showFullContent:contentCopy];
 
   if ([(NWParameters *)self isDryRun])
   {
@@ -2872,13 +2872,13 @@ LABEL_6:
     [v7 appendPrettyInt:-[NWParameters requiredAddressFamily](self withName:"requiredAddressFamily") indent:{@"requiredAddressFamily", v5}];
   }
 
-  v22 = [(NWParameters *)self internalParameters];
-  v23 = nw_parameters_copy_local_endpoint(v22);
+  internalParameters4 = [(NWParameters *)self internalParameters];
+  v23 = nw_parameters_copy_local_endpoint(internalParameters4);
 
   if (v23)
   {
-    v24 = [(NWParameters *)self localAddress];
-    [v7 appendPrettyObject:v24 withName:@"localAddress" indent:v5 showFullContent:v4];
+    localAddress = [(NWParameters *)self localAddress];
+    [v7 appendPrettyObject:localAddress withName:@"localAddress" indent:v5 showFullContent:contentCopy];
   }
 
   if ([(NWParameters *)self reuseLocalAddress])
@@ -2886,8 +2886,8 @@ LABEL_6:
     [v7 appendPrettyBOOL:-[NWParameters reuseLocalAddress](self withName:"reuseLocalAddress") indent:{@"reuseLocalAddress", v5}];
   }
 
-  v25 = [(NWParameters *)self requiredInterface];
-  [v7 appendPrettyObject:v25 withName:@"requiredInterface" indent:v5 showFullContent:v4];
+  requiredInterface = [(NWParameters *)self requiredInterface];
+  [v7 appendPrettyObject:requiredInterface withName:@"requiredInterface" indent:v5 showFullContent:contentCopy];
 
   if ([(NWParameters *)self requiredInterfaceType])
   {
@@ -2901,13 +2901,13 @@ LABEL_6:
     [v7 appendPrettyObject:v27 withName:@"requiredCompanionInterfaceType" indent:v5 showFullContent:1];
   }
 
-  v28 = [(NWParameters *)self internalParameters];
-  has_prohibited_interface_types = nw_parameters_has_prohibited_interface_types(v28);
+  internalParameters5 = [(NWParameters *)self internalParameters];
+  has_prohibited_interface_types = nw_parameters_has_prohibited_interface_types(internalParameters5);
 
   if (has_prohibited_interface_types)
   {
-    v30 = [(NWParameters *)self internalParameters];
-    v31 = nw_parameters_copy_prohibited_interface_types(v30);
+    internalParameters6 = [(NWParameters *)self internalParameters];
+    v31 = nw_parameters_copy_prohibited_interface_types(internalParameters6);
 
     if (v31)
     {
@@ -2922,13 +2922,13 @@ LABEL_6:
     }
   }
 
-  v34 = [(NWParameters *)self internalParameters];
-  has_prohibited_interface_subtypes = nw_parameters_has_prohibited_interface_subtypes(v34);
+  internalParameters7 = [(NWParameters *)self internalParameters];
+  has_prohibited_interface_subtypes = nw_parameters_has_prohibited_interface_subtypes(internalParameters7);
 
   if (has_prohibited_interface_subtypes)
   {
-    v36 = [(NWParameters *)self internalParameters];
-    v37 = nw_parameters_copy_prohibited_interface_subtypes(v36);
+    internalParameters8 = [(NWParameters *)self internalParameters];
+    v37 = nw_parameters_copy_prohibited_interface_subtypes(internalParameters8);
 
     if (v37)
     {
@@ -2943,13 +2943,13 @@ LABEL_6:
     }
   }
 
-  v40 = [(NWParameters *)self internalParameters];
-  has_preferred_interface_subtypes = nw_parameters_has_preferred_interface_subtypes(v40);
+  internalParameters9 = [(NWParameters *)self internalParameters];
+  has_preferred_interface_subtypes = nw_parameters_has_preferred_interface_subtypes(internalParameters9);
 
   if (has_preferred_interface_subtypes)
   {
-    v42 = [(NWParameters *)self internalParameters];
-    v43 = nw_parameters_copy_preferred_interface_subtypes(v42);
+    internalParameters10 = [(NWParameters *)self internalParameters];
+    v43 = nw_parameters_copy_preferred_interface_subtypes(internalParameters10);
 
     if (v43)
     {
@@ -2964,13 +2964,13 @@ LABEL_6:
     }
   }
 
-  v46 = [(NWParameters *)self internalParameters];
-  has_preferred_netagents = nw_parameters_has_preferred_netagents(v46);
+  internalParameters11 = [(NWParameters *)self internalParameters];
+  has_preferred_netagents = nw_parameters_has_preferred_netagents(internalParameters11);
 
   if (has_preferred_netagents)
   {
-    v48 = [(NWParameters *)self internalParameters];
-    v49 = nw_parameters_copy_preferred_netagent_domains(v48);
+    internalParameters12 = [(NWParameters *)self internalParameters];
+    v49 = nw_parameters_copy_preferred_netagent_domains(internalParameters12);
 
     if (v49)
     {
@@ -2984,8 +2984,8 @@ LABEL_6:
       }
     }
 
-    v52 = [(NWParameters *)self internalParameters];
-    v53 = nw_parameters_copy_preferred_netagent_types(v52);
+    internalParameters13 = [(NWParameters *)self internalParameters];
+    v53 = nw_parameters_copy_preferred_netagent_types(internalParameters13);
 
     if (v53)
     {
@@ -2999,8 +2999,8 @@ LABEL_6:
       }
     }
 
-    v56 = [(NWParameters *)self internalParameters];
-    v57 = nw_parameters_copy_preferred_netagent_uuids(v56);
+    internalParameters14 = [(NWParameters *)self internalParameters];
+    v57 = nw_parameters_copy_preferred_netagent_uuids(internalParameters14);
 
     if (v57)
     {
@@ -3015,13 +3015,13 @@ LABEL_6:
     }
   }
 
-  v60 = [(NWParameters *)self internalParameters];
-  has_required_netagents = nw_parameters_has_required_netagents(v60);
+  internalParameters15 = [(NWParameters *)self internalParameters];
+  has_required_netagents = nw_parameters_has_required_netagents(internalParameters15);
 
   if (has_required_netagents)
   {
-    v62 = [(NWParameters *)self internalParameters];
-    v63 = nw_parameters_copy_required_netagent_domains(v62);
+    internalParameters16 = [(NWParameters *)self internalParameters];
+    v63 = nw_parameters_copy_required_netagent_domains(internalParameters16);
 
     if (v63)
     {
@@ -3035,8 +3035,8 @@ LABEL_6:
       }
     }
 
-    v66 = [(NWParameters *)self internalParameters];
-    v67 = nw_parameters_copy_required_netagent_types(v66);
+    internalParameters17 = [(NWParameters *)self internalParameters];
+    v67 = nw_parameters_copy_required_netagent_types(internalParameters17);
 
     if (v67)
     {
@@ -3050,8 +3050,8 @@ LABEL_6:
       }
     }
 
-    v70 = [(NWParameters *)self internalParameters];
-    v71 = nw_parameters_copy_required_netagent_uuids(v70);
+    internalParameters18 = [(NWParameters *)self internalParameters];
+    v71 = nw_parameters_copy_required_netagent_uuids(internalParameters18);
 
     if (v71)
     {
@@ -3066,13 +3066,13 @@ LABEL_6:
     }
   }
 
-  v74 = [(NWParameters *)self internalParameters];
-  has_prohibited_netagents = nw_parameters_has_prohibited_netagents(v74);
+  internalParameters19 = [(NWParameters *)self internalParameters];
+  has_prohibited_netagents = nw_parameters_has_prohibited_netagents(internalParameters19);
 
   if (has_prohibited_netagents)
   {
-    v76 = [(NWParameters *)self internalParameters];
-    v77 = nw_parameters_copy_prohibited_netagent_domains(v76);
+    internalParameters20 = [(NWParameters *)self internalParameters];
+    v77 = nw_parameters_copy_prohibited_netagent_domains(internalParameters20);
 
     if (v77)
     {
@@ -3086,8 +3086,8 @@ LABEL_6:
       }
     }
 
-    v80 = [(NWParameters *)self internalParameters];
-    v81 = nw_parameters_copy_prohibited_netagent_types(v80);
+    internalParameters21 = [(NWParameters *)self internalParameters];
+    v81 = nw_parameters_copy_prohibited_netagent_types(internalParameters21);
 
     if (v81)
     {
@@ -3101,8 +3101,8 @@ LABEL_6:
       }
     }
 
-    v84 = [(NWParameters *)self internalParameters];
-    v85 = nw_parameters_copy_prohibited_netagent_uuids(v84);
+    internalParameters22 = [(NWParameters *)self internalParameters];
+    v85 = nw_parameters_copy_prohibited_netagent_uuids(internalParameters22);
 
     if (v85)
     {
@@ -3172,16 +3172,16 @@ LABEL_6:
     [v7 appendPrettyBOOL:-[NWParameters enableTLS](self withName:"enableTLS") indent:{@"enableTLS", v5}];
   }
 
-  v88 = [(NWParameters *)self TLSSessionID];
-  [v7 appendPrettyObject:v88 withName:@"TLSSessionID" indent:v5 showFullContent:v4];
+  tLSSessionID = [(NWParameters *)self TLSSessionID];
+  [v7 appendPrettyObject:tLSSessionID withName:@"TLSSessionID" indent:v5 showFullContent:contentCopy];
 
-  v89 = [(NWParameters *)self internalParameters];
-  LODWORD(v88) = nw_parameters_has_initial_data_payload(v89);
+  internalParameters23 = [(NWParameters *)self internalParameters];
+  LODWORD(tLSSessionID) = nw_parameters_has_initial_data_payload(internalParameters23);
 
-  if (v88)
+  if (tLSSessionID)
   {
-    v90 = [(NWParameters *)self internalParameters];
-    v91 = nw_parameters_copy_initial_data_payload(v90);
+    internalParameters24 = [(NWParameters *)self internalParameters];
+    v91 = nw_parameters_copy_initial_data_payload(internalParameters24);
 
     v92 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%zu bytes]", dispatch_data_get_size(v91)];
     [v7 appendPrettyObject:v92 withName:@"initialDataPayload" indent:v5 showFullContent:1];
@@ -3192,24 +3192,24 @@ LABEL_6:
     [v7 appendPrettyBOOL:-[NWParameters trustInvalidCertificates](self withName:"trustInvalidCertificates") indent:{@"trustInvalidCertificates", v5}];
   }
 
-  v93 = [(NWParameters *)self internalParameters];
-  fallback_mode = nw_parameters_get_fallback_mode(v93);
+  internalParameters25 = [(NWParameters *)self internalParameters];
+  fallback_mode = nw_parameters_get_fallback_mode(internalParameters25);
 
   if (fallback_mode)
   {
     [v7 appendPrettyInt:fallback_mode withName:@"fallbackMode" indent:v5];
   }
 
-  v95 = [(NWParameters *)self internalParameters];
-  include_ble = nw_parameters_get_include_ble(v95);
+  internalParameters26 = [(NWParameters *)self internalParameters];
+  include_ble = nw_parameters_get_include_ble(internalParameters26);
 
   if (include_ble)
   {
     [v7 appendPrettyBOOL:1 withName:@"includeBle" indent:v5];
   }
 
-  v97 = [(NWParameters *)self internalParameters];
-  include_screen_off_devices = nw_parameters_get_include_screen_off_devices(v97);
+  internalParameters27 = [(NWParameters *)self internalParameters];
+  include_screen_off_devices = nw_parameters_get_include_screen_off_devices(internalParameters27);
 
   if (include_screen_off_devices)
   {
@@ -3221,11 +3221,11 @@ LABEL_6:
   return v99;
 }
 
-- (NWParameters)initWithParameters:(id)a3
+- (NWParameters)initWithParameters:(id)parameters
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  parametersCopy = parameters;
+  if (parametersCopy)
   {
     v23.receiver = self;
     v23.super_class = NWParameters;
@@ -3233,7 +3233,7 @@ LABEL_6:
     if (v6)
     {
       v7 = v6;
-      objc_storeStrong(&v6->_internalParameters, a3);
+      objc_storeStrong(&v6->_internalParameters, parameters);
       goto LABEL_4;
     }
 
@@ -3601,13 +3601,13 @@ LABEL_17:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NWParameters *)self internalParameters];
-  v6 = v5;
-  if (v5 && (v7 = _nw_parameters_copy_serialized_bytes(v5)) != 0)
+  coderCopy = coder;
+  internalParameters = [(NWParameters *)self internalParameters];
+  v6 = internalParameters;
+  if (internalParameters && (v7 = _nw_parameters_copy_serialized_bytes(internalParameters)) != 0)
   {
     v8 = v7;
     v9 = xpc_dictionary_create(0, 0, 0);
@@ -3617,18 +3617,18 @@ LABEL_17:
     {
       v10 = MEMORY[0x1E695DF90];
       v11 = v9;
-      v12 = [v10 dictionary];
+      dictionary = [v10 dictionary];
       *applier = MEMORY[0x1E69E9820];
       *&applier[8] = 3221225472;
       *&applier[16] = __NWUtilsCreateNSDictionaryFromXPCDictionary_block_invoke;
       v37 = &unk_1E6A39980;
-      v13 = v12;
+      v13 = dictionary;
       v38 = v13;
       xpc_dictionary_apply(v11, applier);
 
       if (v13)
       {
-        [v4 encodeObject:v13 forKey:@"dictionary"];
+        [coderCopy encodeObject:v13 forKey:@"dictionary"];
 LABEL_43:
 
         goto LABEL_44;
@@ -3835,10 +3835,10 @@ LABEL_18:
 LABEL_44:
 }
 
-- (NWParameters)initWithCoder:(id)a3
+- (NWParameters)initWithCoder:(id)coder
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v57.receiver = self;
   v57.super_class = NWParameters;
   v5 = [(NWParameters *)&v57 init];
@@ -3851,7 +3851,7 @@ LABEL_44:
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v6 initWithObjects:{v7, v8, v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"dictionary"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"dictionary"];
     v14 = v13;
     if (v13)
     {
@@ -3872,9 +3872,9 @@ LABEL_44:
 
         [(NWParameters *)v5 setInternalParameters:v18];
 
-        v22 = [(NWParameters *)v5 internalParameters];
+        internalParameters = [(NWParameters *)v5 internalParameters];
 
-        if (v22)
+        if (internalParameters)
         {
           v23 = v5;
 LABEL_48:
@@ -4259,11 +4259,11 @@ LABEL_50:
   return v23;
 }
 
-+ (NWParameters)parametersWithProtocolBufferData:(id)a3
++ (NWParameters)parametersWithProtocolBufferData:(id)data
 {
   v107 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [[NWPBParameters alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[NWPBParameters alloc] initWithData:dataCopy];
   if (!v4)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
@@ -4368,7 +4368,7 @@ LABEL_83:
     goto LABEL_84;
   }
 
-  v80 = v3;
+  v80 = dataCopy;
   v5 = [NWParameters alloc];
   empty_stack = _nw_parameters_create_empty_stack();
   v7 = [(NWParameters *)v5 initWithParameters:empty_stack];
@@ -4393,8 +4393,8 @@ LABEL_83:
   if (localEndpoint)
   {
     v15 = localEndpoint;
-    v16 = [(NWPBEndpoint *)v15 data];
-    v17 = [NWEndpoint endpointWithProtocolBufferData:v16];
+    data = [(NWPBEndpoint *)v15 data];
+    v17 = [NWEndpoint endpointWithProtocolBufferData:data];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -4434,8 +4434,8 @@ LABEL_83:
   if (requiredInterface)
   {
     v29 = requiredInterface;
-    v30 = [(NWPBInterface *)v29 data];
-    v31 = [NWInterface interfaceWithProtocolBufferData:v30];
+    data2 = [(NWPBInterface *)v29 data];
+    v31 = [NWInterface interfaceWithProtocolBufferData:data2];
     [(NWParameters *)v7 setRequiredInterface:v31];
   }
 
@@ -4624,8 +4624,8 @@ LABEL_83:
           objc_enumerationMutation(v65);
         }
 
-        v70 = [*(*(&v81 + 1) + 8 * m) data];
-        v71 = [NWInterface interfaceWithProtocolBufferData:v70];
+        data3 = [*(*(&v81 + 1) + 8 * m) data];
+        v71 = [NWInterface interfaceWithProtocolBufferData:data3];
         [(NWParameters *)v7 prohibitInterface:v71];
       }
 
@@ -4645,17 +4645,17 @@ LABEL_83:
     [(NWParameters *)v7 prohibitInterfaceSubtype:v4->_prohibitedInterfaceSubTypes.list[ii]];
   }
 
-  v3 = v80;
+  dataCopy = v80;
 LABEL_85:
 
   return v7;
 }
 
-+ (NWParameters)parametersWithCParameters:(id)a3
++ (NWParameters)parametersWithCParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = [NWParameters alloc];
-  v5 = _nw_parameters_copy(v3);
+  v5 = _nw_parameters_copy(parametersCopy);
 
   v6 = [(NWParameters *)v4 initWithParameters:v5];
 

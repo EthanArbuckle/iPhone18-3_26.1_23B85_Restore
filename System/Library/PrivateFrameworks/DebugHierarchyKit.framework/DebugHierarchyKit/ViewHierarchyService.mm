@@ -1,35 +1,35 @@
 @interface ViewHierarchyService
-- (ViewHierarchyService)initWithDataSourceConnection:(id)a3 runnablePid:(int)a4;
+- (ViewHierarchyService)initWithDataSourceConnection:(id)connection runnablePid:(int)pid;
 - (id)_metadata;
 - (void)_enqueueAdditionalRequests;
 - (void)_enqueueInitialRequest;
 - (void)_enqueueRemainingUnfetchedPropertyValuesRequest;
-- (void)_requestFailed:(id)a3;
+- (void)_requestFailed:(id)failed;
 - (void)_saveCompletedRequests;
-- (void)captureTo:(id)a3 completionBlock:(id)a4;
-- (void)finishWithError:(id)a3;
+- (void)captureTo:(id)to completionBlock:(id)block;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation ViewHierarchyService
 
-- (ViewHierarchyService)initWithDataSourceConnection:(id)a3 runnablePid:(int)a4
+- (ViewHierarchyService)initWithDataSourceConnection:(id)connection runnablePid:(int)pid
 {
-  v7 = a3;
+  connectionCopy = connection;
   v17.receiver = self;
   v17.super_class = ViewHierarchyService;
   v8 = [(ViewHierarchyService *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_dataSourceConnection, a3);
+    objc_storeStrong(&v8->_dataSourceConnection, connection);
     v10 = objc_alloc_init(DBGSnapshot);
-    v11 = [DBGDataCoordinatorTargetHub coordinatorWithDataSourceConnection:v7];
+    v11 = [DBGDataCoordinatorTargetHub coordinatorWithDataSourceConnection:connectionCopy];
     [v11 setShouldStoreCompletedRequests:1];
     v12 = [DBGSnapshotManager snapshotManagerWithSnapshot:v10 primaryDataCoordinator:v11];
     snapshotManager = v9->_snapshotManager;
     v9->_snapshotManager = v12;
 
-    v9->_runnablePid = a4;
+    v9->_runnablePid = pid;
     v14 = dispatch_queue_create("CaptureQueue", 0);
     captureQueue = v9->_captureQueue;
     v9->_captureQueue = v14;
@@ -40,21 +40,21 @@
   return v9;
 }
 
-- (void)captureTo:(id)a3 completionBlock:(id)a4
+- (void)captureTo:(id)to completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ViewHierarchyService *)self captureQueue];
+  toCopy = to;
+  blockCopy = block;
+  captureQueue = [(ViewHierarchyService *)self captureQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __50__ViewHierarchyService_captureTo_completionBlock___block_invoke;
   block[3] = &unk_243E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = toCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = toCopy;
+  dispatch_async(captureQueue, block);
 }
 
 void __50__ViewHierarchyService_captureTo_completionBlock___block_invoke(uint64_t a1)
@@ -81,19 +81,19 @@ void __50__ViewHierarchyService_captureTo_completionBlock___block_invoke(uint64_
 
 - (void)_enqueueInitialRequest
 {
-  v3 = [(ViewHierarchyService *)self platform];
-  v4 = v3;
-  if (v3)
+  platform = [(ViewHierarchyService *)self platform];
+  v4 = platform;
+  if (platform)
   {
-    v5 = v3;
+    defaultPlatform = platform;
   }
 
   else
   {
-    v5 = [(ViewHierarchyService *)self defaultPlatform];
+    defaultPlatform = [(ViewHierarchyService *)self defaultPlatform];
   }
 
-  v6 = v5;
+  v6 = defaultPlatform;
 
   v7 = [RequestFactory initialRequestForPlatform:v6];
   v10[0] = _NSConcreteStackBlock;
@@ -102,9 +102,9 @@ void __50__ViewHierarchyService_captureTo_completionBlock___block_invoke(uint64_
   v10[3] = &unk_24410;
   v10[4] = self;
   [v7 setCompletion:v10];
-  v8 = [(ViewHierarchyService *)self snapshotManager];
-  v9 = [v8 primaryDataCoordinator];
-  [v9 performRequest:v7];
+  snapshotManager = [(ViewHierarchyService *)self snapshotManager];
+  primaryDataCoordinator = [snapshotManager primaryDataCoordinator];
+  [primaryDataCoordinator performRequest:v7];
 }
 
 void __46__ViewHierarchyService__enqueueInitialRequest__block_invoke(uint64_t a1, void *a2)
@@ -125,15 +125,15 @@ void __46__ViewHierarchyService__enqueueInitialRequest__block_invoke(uint64_t a1
 
 - (void)_enqueueAdditionalRequests
 {
-  v3 = [(ViewHierarchyService *)self snapshotManager];
-  v4 = [v3 snapshot];
+  snapshotManager = [(ViewHierarchyService *)self snapshotManager];
+  snapshot = [snapshotManager snapshot];
 
-  [RequestFactory additionalRequestsWithSnapshot:v4];
+  [RequestFactory additionalRequestsWithSnapshot:snapshot];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __50__ViewHierarchyService__enqueueAdditionalRequests__block_invoke;
   v7 = v6[3] = &unk_24438;
-  v8 = self;
+  selfCopy = self;
   v5 = v7;
   [v5 enumerateObjectsUsingBlock:v6];
 }
@@ -165,19 +165,19 @@ void __50__ViewHierarchyService__enqueueAdditionalRequests__block_invoke(uint64_
 
 - (void)_enqueueRemainingUnfetchedPropertyValuesRequest
 {
-  v3 = [(ViewHierarchyService *)self snapshotManager];
-  v4 = [v3 snapshot];
+  snapshotManager = [(ViewHierarchyService *)self snapshotManager];
+  snapshot = [snapshotManager snapshot];
 
-  v5 = [RequestFactory requestForRemainingLazyPropertiesWithSnapshot:v4];
+  v5 = [RequestFactory requestForRemainingLazyPropertiesWithSnapshot:snapshot];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __71__ViewHierarchyService__enqueueRemainingUnfetchedPropertyValuesRequest__block_invoke;
   v8[3] = &unk_24410;
   v8[4] = self;
   [v5 setCompletion:v8];
-  v6 = [(ViewHierarchyService *)self snapshotManager];
-  v7 = [v6 primaryDataCoordinator];
-  [v7 performRequest:v5];
+  snapshotManager2 = [(ViewHierarchyService *)self snapshotManager];
+  primaryDataCoordinator = [snapshotManager2 primaryDataCoordinator];
+  [primaryDataCoordinator performRequest:v5];
 }
 
 void __71__ViewHierarchyService__enqueueRemainingUnfetchedPropertyValuesRequest__block_invoke(uint64_t a1, void *a2)
@@ -199,7 +199,7 @@ void __71__ViewHierarchyService__enqueueRemainingUnfetchedPropertyValuesRequest_
   }
 }
 
-- (void)_requestFailed:(id)a3
+- (void)_requestFailed:(id)failed
 {
   v6 = NSLocalizedDescriptionKey;
   v7 = @"Failed to capture view hierarchy";
@@ -209,15 +209,15 @@ void __71__ViewHierarchyService__enqueueRemainingUnfetchedPropertyValuesRequest_
   [(ViewHierarchyService *)self finishWithError:v5];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(ViewHierarchyService *)self completionBlock];
+  errorCopy = error;
+  completionBlock = [(ViewHierarchyService *)self completionBlock];
 
-  if (v4)
+  if (completionBlock)
   {
-    v5 = [(ViewHierarchyService *)self completionBlock];
-    (v5)[2](v5, v6);
+    completionBlock2 = [(ViewHierarchyService *)self completionBlock];
+    (completionBlock2)[2](completionBlock2, errorCopy);
 
     [(ViewHierarchyService *)self setCompletionBlock:0];
   }
@@ -226,33 +226,33 @@ void __71__ViewHierarchyService__enqueueRemainingUnfetchedPropertyValuesRequest_
 - (void)_saveCompletedRequests
 {
   v3 = [[NSFileWrapper alloc] initDirectoryWithFileWrappers:&__NSDictionary0__struct];
-  v4 = [(ViewHierarchyService *)self destination];
-  v5 = [v4 lastPathComponent];
-  [v3 setPreferredFilename:v5];
+  destination = [(ViewHierarchyService *)self destination];
+  lastPathComponent = [destination lastPathComponent];
+  [v3 setPreferredFilename:lastPathComponent];
 
   v6 = [[NSFileWrapper alloc] initDirectoryWithFileWrappers:&__NSDictionary0__struct];
   [v6 setPreferredFilename:@"RequestResponses"];
-  v7 = [(ViewHierarchyService *)self snapshotManager];
-  v8 = [v7 primaryDataCoordinator];
-  v9 = [v8 completedRequests];
+  snapshotManager = [(ViewHierarchyService *)self snapshotManager];
+  primaryDataCoordinator = [snapshotManager primaryDataCoordinator];
+  completedRequests = [primaryDataCoordinator completedRequests];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = __46__ViewHierarchyService__saveCompletedRequests__block_invoke;
   v19[3] = &unk_24460;
   v20 = v6;
   v10 = v6;
-  [v9 enumerateObjectsUsingBlock:v19];
+  [completedRequests enumerateObjectsUsingBlock:v19];
 
   v11 = [v3 addFileWrapper:v10];
   v12 = [NSFileWrapper alloc];
-  v13 = [(ViewHierarchyService *)self _metadata];
-  v14 = [v12 initRegularFileWithContents:v13];
+  _metadata = [(ViewHierarchyService *)self _metadata];
+  v14 = [v12 initRegularFileWithContents:_metadata];
 
   [v14 setPreferredFilename:@"metadata"];
   v15 = [v3 addFileWrapper:v14];
-  v16 = [(ViewHierarchyService *)self destination];
+  destination2 = [(ViewHierarchyService *)self destination];
   v18 = 0;
-  [v3 writeToURL:v16 options:1 originalContentsURL:0 error:&v18];
+  [v3 writeToURL:destination2 options:1 originalContentsURL:0 error:&v18];
   v17 = v18;
 
   [(ViewHierarchyService *)self finishWithError:v17];
@@ -279,9 +279,9 @@ void __46__ViewHierarchyService__saveCompletedRequests__block_invoke(uint64_t a1
   v3 = [NSNumber numberWithInt:[(ViewHierarchyService *)self runnablePid]];
   v11[1] = v3;
   v10[2] = @"RunnableDisplayName";
-  v4 = [(ViewHierarchyService *)self destination];
-  v5 = [v4 lastPathComponent];
-  v6 = [v5 stringByReplacingOccurrencesOfString:@".viewhierarchy" withString:&stru_28750];
+  destination = [(ViewHierarchyService *)self destination];
+  lastPathComponent = [destination lastPathComponent];
+  v6 = [lastPathComponent stringByReplacingOccurrencesOfString:@".viewhierarchy" withString:&stru_28750];
   v11[2] = v6;
   v7 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:3];
 

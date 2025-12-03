@@ -1,65 +1,65 @@
 @interface MADAutoSetTarget
-- (BOOL)includesEntryForAssetType:(id)a3;
-- (BOOL)includesEntryForAssetType:(id)a3 forAssetSpecifier:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (MADAutoSetTarget)initWithCoder:(id)a3;
-- (id)assetSetEntryForAssetType:(id)a3 forAssetSpecifier:(id)a4;
+- (BOOL)includesEntryForAssetType:(id)type;
+- (BOOL)includesEntryForAssetType:(id)type forAssetSpecifier:(id)specifier;
+- (BOOL)isEqual:(id)equal;
+- (MADAutoSetTarget)initWithCoder:(id)coder;
+- (id)assetSetEntryForAssetType:(id)type forAssetSpecifier:(id)specifier;
 - (id)copy;
 - (id)description;
 - (id)firstEntryAssetType;
 - (id)fullName;
-- (id)initForClientDomainName:(id)a3 forAssetSetIdentifier:(id)a4 fromMinTargetOSVersion:(id)a5 toMaxTargetOSVersion:(id)a6 asEntriesWhenTargeting:(id)a7;
+- (id)initForClientDomainName:(id)name forAssetSetIdentifier:(id)identifier fromMinTargetOSVersion:(id)version toMaxTargetOSVersion:(id)sVersion asEntriesWhenTargeting:(id)targeting;
 - (id)newSummaryWithoutEntryID;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADAutoSetTarget
 
-- (id)initForClientDomainName:(id)a3 forAssetSetIdentifier:(id)a4 fromMinTargetOSVersion:(id)a5 toMaxTargetOSVersion:(id)a6 asEntriesWhenTargeting:(id)a7
+- (id)initForClientDomainName:(id)name forAssetSetIdentifier:(id)identifier fromMinTargetOSVersion:(id)version toMaxTargetOSVersion:(id)sVersion asEntriesWhenTargeting:(id)targeting
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  identifierCopy = identifier;
+  versionCopy = version;
+  sVersionCopy = sVersion;
+  targetingCopy = targeting;
   v21.receiver = self;
   v21.super_class = MADAutoSetTarget;
   v17 = [(MADAutoSetTarget *)&v21 init];
   p_isa = &v17->super.isa;
   if (v17)
   {
-    objc_storeStrong(&v17->_clientDomainName, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
-    objc_storeStrong(p_isa + 5, a7);
+    objc_storeStrong(&v17->_clientDomainName, name);
+    objc_storeStrong(p_isa + 2, identifier);
+    objc_storeStrong(p_isa + 3, version);
+    objc_storeStrong(p_isa + 4, sVersion);
+    objc_storeStrong(p_isa + 5, targeting);
   }
 
   return p_isa;
 }
 
-- (MADAutoSetTarget)initWithCoder:(id)a3
+- (MADAutoSetTarget)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = MADAutoSetTarget;
   v5 = [(MADAutoSetTarget *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientDomainName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientDomainName"];
     clientDomainName = v5->_clientDomainName;
     v5->_clientDomainName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetSetIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetSetIdentifier"];
     assetSetIdentifier = v5->_assetSetIdentifier;
     v5->_assetSetIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minTargetOSVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minTargetOSVersion"];
     minTargetOSVersion = v5->_minTargetOSVersion;
     v5->_minTargetOSVersion = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxTargetOSVersion"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxTargetOSVersion"];
     maxTargetOSVersion = v5->_maxTargetOSVersion;
     v5->_maxTargetOSVersion = v12;
 
@@ -70,7 +70,7 @@
     v21[3] = objc_opt_class();
     v15 = [NSArray arrayWithObjects:v21 count:4];
     v16 = [v14 initWithArray:v15];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"autoAssetEntries"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"autoAssetEntries"];
     autoAssetEntries = v5->_autoAssetEntries;
     v5->_autoAssetEntries = v17;
   }
@@ -78,29 +78,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MADAutoSetTarget *)self clientDomainName];
-  [v4 encodeObject:v5 forKey:@"clientDomainName"];
+  coderCopy = coder;
+  clientDomainName = [(MADAutoSetTarget *)self clientDomainName];
+  [coderCopy encodeObject:clientDomainName forKey:@"clientDomainName"];
 
-  v6 = [(MADAutoSetTarget *)self assetSetIdentifier];
-  [v4 encodeObject:v6 forKey:@"assetSetIdentifier"];
+  assetSetIdentifier = [(MADAutoSetTarget *)self assetSetIdentifier];
+  [coderCopy encodeObject:assetSetIdentifier forKey:@"assetSetIdentifier"];
 
-  v7 = [(MADAutoSetTarget *)self minTargetOSVersion];
-  [v4 encodeObject:v7 forKey:@"minTargetOSVersion"];
+  minTargetOSVersion = [(MADAutoSetTarget *)self minTargetOSVersion];
+  [coderCopy encodeObject:minTargetOSVersion forKey:@"minTargetOSVersion"];
 
-  v8 = [(MADAutoSetTarget *)self maxTargetOSVersion];
-  [v4 encodeObject:v8 forKey:@"maxTargetOSVersion"];
+  maxTargetOSVersion = [(MADAutoSetTarget *)self maxTargetOSVersion];
+  [coderCopy encodeObject:maxTargetOSVersion forKey:@"maxTargetOSVersion"];
 
-  v9 = [(MADAutoSetTarget *)self autoAssetEntries];
-  [v4 encodeObject:v9 forKey:@"autoAssetEntries"];
+  autoAssetEntries = [(MADAutoSetTarget *)self autoAssetEntries];
+  [coderCopy encodeObject:autoAssetEntries forKey:@"autoAssetEntries"];
 }
 
-- (id)assetSetEntryForAssetType:(id)a3 forAssetSpecifier:(id)a4
+- (id)assetSetEntryForAssetType:(id)type forAssetSpecifier:(id)specifier
 {
-  v6 = a3;
-  v23 = a4;
+  typeCopy = type;
+  specifierCopy = specifier;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -124,19 +124,19 @@
 
         v11 = *(*(&v25 + 1) + 8 * v10);
         v12 = p_weak_ivar_lyt[223];
-        v13 = [v11 assetSelector];
-        v14 = [v13 assetType];
-        if ([v12 stringIsEqual:v14 to:v6])
+        assetSelector = [v11 assetSelector];
+        assetType = [assetSelector assetType];
+        if ([v12 stringIsEqual:assetType to:typeCopy])
         {
           v15 = p_weak_ivar_lyt[223];
           [v11 assetSelector];
           v16 = v8;
           v17 = p_weak_ivar_lyt;
-          v19 = v18 = v6;
-          v20 = [v19 assetSpecifier];
-          LODWORD(v15) = [v15 stringIsEqual:v20 to:v23];
+          v19 = v18 = typeCopy;
+          assetSpecifier = [v19 assetSpecifier];
+          LODWORD(v15) = [v15 stringIsEqual:assetSpecifier to:specifierCopy];
 
-          v6 = v18;
+          typeCopy = v18;
           p_weak_ivar_lyt = v17;
           v8 = v16;
           v7 = v22;
@@ -170,22 +170,22 @@ LABEL_12:
 - (id)copy
 {
   v3 = [MADAutoSetTarget alloc];
-  v4 = [(MADAutoSetTarget *)self clientDomainName];
-  v5 = [(MADAutoSetTarget *)self assetSetIdentifier];
-  v6 = [(MADAutoSetTarget *)self minTargetOSVersion];
-  v7 = [(MADAutoSetTarget *)self maxTargetOSVersion];
-  v8 = [(MADAutoSetTarget *)self autoAssetEntries];
-  v9 = [(MADAutoSetTarget *)v3 initForClientDomainName:v4 forAssetSetIdentifier:v5 fromMinTargetOSVersion:v6 toMaxTargetOSVersion:v7 asEntriesWhenTargeting:v8];
+  clientDomainName = [(MADAutoSetTarget *)self clientDomainName];
+  assetSetIdentifier = [(MADAutoSetTarget *)self assetSetIdentifier];
+  minTargetOSVersion = [(MADAutoSetTarget *)self minTargetOSVersion];
+  maxTargetOSVersion = [(MADAutoSetTarget *)self maxTargetOSVersion];
+  autoAssetEntries = [(MADAutoSetTarget *)self autoAssetEntries];
+  v9 = [(MADAutoSetTarget *)v3 initForClientDomainName:clientDomainName forAssetSetIdentifier:assetSetIdentifier fromMinTargetOSVersion:minTargetOSVersion toMaxTargetOSVersion:maxTargetOSVersion asEntriesWhenTargeting:autoAssetEntries];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
-    LOBYTE(v6) = 1;
+    LOBYTE(clientDomainName) = 1;
   }
 
   else
@@ -193,57 +193,57 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MADAutoSetTarget *)self clientDomainName];
-      if (!v6)
+      v5 = equalCopy;
+      clientDomainName = [(MADAutoSetTarget *)self clientDomainName];
+      if (!clientDomainName)
       {
 LABEL_22:
 
         goto LABEL_23;
       }
 
-      v7 = [(MADAutoSetTarget *)self assetSetIdentifier];
-      if (v7)
+      assetSetIdentifier = [(MADAutoSetTarget *)self assetSetIdentifier];
+      if (assetSetIdentifier)
       {
-        v8 = v7;
-        v9 = [(MADAutoSetTarget *)self minTargetOSVersion];
-        if (v9)
+        v8 = assetSetIdentifier;
+        minTargetOSVersion = [(MADAutoSetTarget *)self minTargetOSVersion];
+        if (minTargetOSVersion)
         {
-          v10 = v9;
-          v11 = [(MADAutoSetTarget *)self maxTargetOSVersion];
-          if (v11)
+          v10 = minTargetOSVersion;
+          maxTargetOSVersion = [(MADAutoSetTarget *)self maxTargetOSVersion];
+          if (maxTargetOSVersion)
           {
-            v12 = v11;
-            v13 = [(MADAutoSetTarget *)self autoAssetEntries];
-            if (v13)
+            v12 = maxTargetOSVersion;
+            autoAssetEntries = [(MADAutoSetTarget *)self autoAssetEntries];
+            if (autoAssetEntries)
             {
-              v14 = v13;
-              v15 = [(MADAutoSetTarget *)self clientDomainName];
-              v16 = [(MADAutoSetTarget *)v5 clientDomainName];
-              if ([SUCore stringIsEqual:v15 to:v16])
+              v14 = autoAssetEntries;
+              clientDomainName2 = [(MADAutoSetTarget *)self clientDomainName];
+              clientDomainName3 = [(MADAutoSetTarget *)v5 clientDomainName];
+              if ([SUCore stringIsEqual:clientDomainName2 to:clientDomainName3])
               {
                 v42 = v14;
-                v43 = v15;
-                v17 = [(MADAutoSetTarget *)self assetSetIdentifier];
-                v18 = [(MADAutoSetTarget *)v5 assetSetIdentifier];
-                if ([SUCore stringIsEqual:v17 to:v18])
+                v43 = clientDomainName2;
+                assetSetIdentifier2 = [(MADAutoSetTarget *)self assetSetIdentifier];
+                assetSetIdentifier3 = [(MADAutoSetTarget *)v5 assetSetIdentifier];
+                if ([SUCore stringIsEqual:assetSetIdentifier2 to:assetSetIdentifier3])
                 {
-                  v40 = v18;
-                  v41 = v17;
-                  v19 = [(MADAutoSetTarget *)self minTargetOSVersion];
-                  v38 = [(MADAutoSetTarget *)v5 minTargetOSVersion];
-                  v39 = v19;
-                  if ([SUCore stringIsEqual:v19 to:?])
+                  v40 = assetSetIdentifier3;
+                  v41 = assetSetIdentifier2;
+                  minTargetOSVersion2 = [(MADAutoSetTarget *)self minTargetOSVersion];
+                  minTargetOSVersion3 = [(MADAutoSetTarget *)v5 minTargetOSVersion];
+                  v39 = minTargetOSVersion2;
+                  if ([SUCore stringIsEqual:minTargetOSVersion2 to:?])
                   {
-                    v20 = [(MADAutoSetTarget *)self maxTargetOSVersion];
-                    v21 = [(MADAutoSetTarget *)v5 maxTargetOSVersion];
-                    v37 = v20;
-                    v22 = v20;
-                    v23 = v21;
-                    if ([SUCore stringIsEqual:v22 to:v21])
+                    maxTargetOSVersion2 = [(MADAutoSetTarget *)self maxTargetOSVersion];
+                    maxTargetOSVersion3 = [(MADAutoSetTarget *)v5 maxTargetOSVersion];
+                    v37 = maxTargetOSVersion2;
+                    v22 = maxTargetOSVersion2;
+                    v23 = maxTargetOSVersion3;
+                    if ([SUCore stringIsEqual:v22 to:maxTargetOSVersion3])
                     {
-                      v24 = [(MADAutoSetTarget *)v5 autoAssetEntries];
-                      v25 = v24 == 0;
+                      autoAssetEntries2 = [(MADAutoSetTarget *)v5 autoAssetEntries];
+                      v25 = autoAssetEntries2 == 0;
                     }
 
                     else
@@ -259,11 +259,11 @@ LABEL_22:
 
                   if (!v25)
                   {
-                    v27 = [(MADAutoSetTarget *)self autoAssetEntries];
-                    v28 = [v27 count];
+                    autoAssetEntries3 = [(MADAutoSetTarget *)self autoAssetEntries];
+                    v28 = [autoAssetEntries3 count];
 
-                    v29 = [(MADAutoSetTarget *)v5 autoAssetEntries];
-                    v30 = [v29 count];
+                    autoAssetEntries4 = [(MADAutoSetTarget *)v5 autoAssetEntries];
+                    v30 = [autoAssetEntries4 count];
 
                     if (v30 == v28)
                     {
@@ -271,23 +271,23 @@ LABEL_22:
                       v32 = v28 & ~(v28 >> 63);
                       do
                       {
-                        LOBYTE(v6) = v32 == v31;
+                        LOBYTE(clientDomainName) = v32 == v31;
                         if (v32 == v31)
                         {
                           break;
                         }
 
-                        v33 = [(MADAutoSetTarget *)self autoAssetEntries];
-                        v34 = [v33 objectAtIndex:v31];
+                        autoAssetEntries5 = [(MADAutoSetTarget *)self autoAssetEntries];
+                        v34 = [autoAssetEntries5 objectAtIndex:v31];
 
-                        v35 = [(MADAutoSetTarget *)v5 autoAssetEntries];
-                        v36 = [v35 objectAtIndex:v31];
+                        autoAssetEntries6 = [(MADAutoSetTarget *)v5 autoAssetEntries];
+                        v36 = [autoAssetEntries6 objectAtIndex:v31];
 
                         ++v31;
-                        LOBYTE(v35) = [v36 isEqual:v34];
+                        LOBYTE(autoAssetEntries6) = [v36 isEqual:v34];
                       }
 
-                      while ((v35 & 1) != 0);
+                      while ((autoAssetEntries6 & 1) != 0);
                       goto LABEL_22;
                     }
                   }
@@ -296,7 +296,7 @@ LABEL_22:
                 }
 
                 v14 = v42;
-                v15 = v43;
+                clientDomainName2 = v43;
               }
             }
           }
@@ -304,22 +304,22 @@ LABEL_22:
       }
 
 LABEL_21:
-      LOBYTE(v6) = 0;
+      LOBYTE(clientDomainName) = 0;
       goto LABEL_22;
     }
 
-    LOBYTE(v6) = 0;
+    LOBYTE(clientDomainName) = 0;
   }
 
 LABEL_23:
 
-  return v6;
+  return clientDomainName;
 }
 
-- (BOOL)includesEntryForAssetType:(id)a3 forAssetSpecifier:(id)a4
+- (BOOL)includesEntryForAssetType:(id)type forAssetSpecifier:(id)specifier
 {
-  v6 = a3;
-  v17 = a4;
+  typeCopy = type;
+  specifierCopy = specifier;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -339,13 +339,13 @@ LABEL_23:
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 assetSelector];
-        v12 = [v11 assetType];
-        if (([SUCore stringIsEqual:v12 to:v6]& 1) != 0)
+        assetSelector = [v10 assetSelector];
+        assetType = [assetSelector assetType];
+        if (([SUCore stringIsEqual:assetType to:typeCopy]& 1) != 0)
         {
-          v13 = [v10 assetSelector];
-          v14 = [v13 assetSpecifier];
-          v15 = [SUCore stringIsEqual:v14 to:v17];
+          assetSelector2 = [v10 assetSelector];
+          assetSpecifier = [assetSelector2 assetSpecifier];
+          v15 = [SUCore stringIsEqual:assetSpecifier to:specifierCopy];
 
           if (v15)
           {
@@ -370,15 +370,15 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)includesEntryForAssetType:(id)a3
+- (BOOL)includesEntryForAssetType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(MADAutoSetTarget *)self autoAssetEntries];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  autoAssetEntries = [(MADAutoSetTarget *)self autoAssetEntries];
+  v6 = [autoAssetEntries countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -388,12 +388,12 @@ LABEL_12:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(autoAssetEntries);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) assetSelector];
-        v10 = [v9 assetType];
-        v11 = [SUCore stringIsEqual:v10 to:v4];
+        assetSelector = [*(*(&v13 + 1) + 8 * i) assetSelector];
+        assetType = [assetSelector assetType];
+        v11 = [SUCore stringIsEqual:assetType to:typeCopy];
 
         if (v11)
         {
@@ -402,7 +402,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [autoAssetEntries countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -419,55 +419,55 @@ LABEL_11:
 
 - (id)firstEntryAssetType
 {
-  v3 = [(MADAutoSetTarget *)self autoAssetEntries];
-  v4 = [v3 count];
+  autoAssetEntries = [(MADAutoSetTarget *)self autoAssetEntries];
+  v4 = [autoAssetEntries count];
 
   if (v4)
   {
-    v5 = [(MADAutoSetTarget *)self autoAssetEntries];
-    v6 = [v5 objectAtIndex:0];
+    autoAssetEntries2 = [(MADAutoSetTarget *)self autoAssetEntries];
+    v6 = [autoAssetEntries2 objectAtIndex:0];
 
-    v7 = [v6 assetSelector];
-    v8 = [v7 assetType];
+    assetSelector = [v6 assetSelector];
+    assetType = [assetSelector assetType];
   }
 
   else
   {
-    v8 = 0;
+    assetType = 0;
   }
 
-  return v8;
+  return assetType;
 }
 
 - (id)description
 {
-  v3 = [(MADAutoSetTarget *)self summary];
-  v4 = [(MADAutoSetTarget *)self autoAssetEntries];
-  v5 = [v4 description];
-  v6 = [NSString stringWithFormat:@"%@\nautoAssetEntries:\n%@", v3, v5];
+  summary = [(MADAutoSetTarget *)self summary];
+  autoAssetEntries = [(MADAutoSetTarget *)self autoAssetEntries];
+  v5 = [autoAssetEntries description];
+  v6 = [NSString stringWithFormat:@"%@\nautoAssetEntries:\n%@", summary, v5];
 
   return v6;
 }
 
 - (id)summary
 {
-  v3 = [(MADAutoSetTarget *)self clientDomainName];
-  v4 = [(MADAutoSetTarget *)self assetSetIdentifier];
-  v5 = [(MADAutoSetTarget *)self minTargetOSVersion];
-  v6 = [(MADAutoSetTarget *)self maxTargetOSVersion];
-  v7 = [(MADAutoSetTarget *)self autoAssetEntries];
-  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"clientDomain:%@|setIdentifier:%@|targetOSVersion:%@..%@|autoAssetEntries:%ld", v3, v4, v5, v6, [v7 count]);
+  clientDomainName = [(MADAutoSetTarget *)self clientDomainName];
+  assetSetIdentifier = [(MADAutoSetTarget *)self assetSetIdentifier];
+  minTargetOSVersion = [(MADAutoSetTarget *)self minTargetOSVersion];
+  maxTargetOSVersion = [(MADAutoSetTarget *)self maxTargetOSVersion];
+  autoAssetEntries = [(MADAutoSetTarget *)self autoAssetEntries];
+  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"clientDomain:%@|setIdentifier:%@|targetOSVersion:%@..%@|autoAssetEntries:%ld", clientDomainName, assetSetIdentifier, minTargetOSVersion, maxTargetOSVersion, [autoAssetEntries count]);
 
   return v8;
 }
 
 - (id)fullName
 {
-  v3 = [(MADAutoSetTarget *)self clientDomainName];
-  v4 = [(MADAutoSetTarget *)self assetSetIdentifier];
-  v5 = [(MADAutoSetTarget *)self minTargetOSVersion];
-  v6 = [(MADAutoSetTarget *)self maxTargetOSVersion];
-  v7 = [NSString stringWithFormat:@"%@^%@^%@..%@", v3, v4, v5, v6];
+  clientDomainName = [(MADAutoSetTarget *)self clientDomainName];
+  assetSetIdentifier = [(MADAutoSetTarget *)self assetSetIdentifier];
+  minTargetOSVersion = [(MADAutoSetTarget *)self minTargetOSVersion];
+  maxTargetOSVersion = [(MADAutoSetTarget *)self maxTargetOSVersion];
+  v7 = [NSString stringWithFormat:@"%@^%@^%@..%@", clientDomainName, assetSetIdentifier, minTargetOSVersion, maxTargetOSVersion];
 
   return v7;
 }
@@ -475,10 +475,10 @@ LABEL_11:
 - (id)newSummaryWithoutEntryID
 {
   v3 = [NSString alloc];
-  v4 = [(MADAutoSetTarget *)self minTargetOSVersion];
-  v5 = [(MADAutoSetTarget *)self maxTargetOSVersion];
-  v6 = [(MADAutoSetTarget *)self autoAssetEntries];
-  v7 = [v3 initWithFormat:@"targetOSVersion:%@..%@|autoAssetEntries:%ld", v4, v5, objc_msgSend(v6, "count")];
+  minTargetOSVersion = [(MADAutoSetTarget *)self minTargetOSVersion];
+  maxTargetOSVersion = [(MADAutoSetTarget *)self maxTargetOSVersion];
+  autoAssetEntries = [(MADAutoSetTarget *)self autoAssetEntries];
+  v7 = [v3 initWithFormat:@"targetOSVersion:%@..%@|autoAssetEntries:%ld", minTargetOSVersion, maxTargetOSVersion, objc_msgSend(autoAssetEntries, "count")];
 
   return v7;
 }

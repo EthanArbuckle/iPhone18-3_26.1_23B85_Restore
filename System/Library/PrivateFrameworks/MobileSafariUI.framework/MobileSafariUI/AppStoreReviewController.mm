@@ -3,7 +3,7 @@
 - (AppStoreReviewController)init;
 - (void)_setupSharedStoreReviewIfNeeded;
 - (void)applicationDidEnterForeground;
-- (void)showAppReviewPromptInSceneIfNeeded:(id)a3;
+- (void)showAppReviewPromptInSceneIfNeeded:(id)needed;
 @end
 
 @implementation AppStoreReviewController
@@ -68,24 +68,24 @@ uint64_t __57__AppStoreReviewController_applicationDidEnterForeground__block_inv
 {
   if (!self->_sharedStoreReview)
   {
-    v8 = [MEMORY[0x277CEE690] bagSubProfile];
-    v4 = [MEMORY[0x277CEE690] bagSubProfileVersion];
-    v5 = [MEMORY[0x277CEE3F8] bagForProfile:v8 profileVersion:v4];
+    bagSubProfile = [MEMORY[0x277CEE690] bagSubProfile];
+    bagSubProfileVersion = [MEMORY[0x277CEE690] bagSubProfileVersion];
+    v5 = [MEMORY[0x277CEE3F8] bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
     v6 = [objc_alloc(MEMORY[0x277CEE690]) initWithBag:v5];
     sharedStoreReview = self->_sharedStoreReview;
     self->_sharedStoreReview = v6;
   }
 }
 
-- (void)showAppReviewPromptInSceneIfNeeded:(id)a3
+- (void)showAppReviewPromptInSceneIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 BOOLForKey:@"DebugReviewShouldAlwaysShowPromptPreferenceKey"];
+  neededCopy = needed;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults BOOLForKey:@"DebugReviewShouldAlwaysShowPromptPreferenceKey"];
 
   if (v6)
   {
-    [MEMORY[0x277CDD3B0] requestReviewInScene:v4];
+    [MEMORY[0x277CDD3B0] requestReviewInScene:neededCopy];
   }
 
   else
@@ -96,7 +96,7 @@ uint64_t __57__AppStoreReviewController_applicationDidEnterForeground__block_inv
     v8[2] = __63__AppStoreReviewController_showAppReviewPromptInSceneIfNeeded___block_invoke;
     v8[3] = &unk_2781D4C88;
     v8[4] = self;
-    v9 = v4;
+    v9 = neededCopy;
     dispatch_async(internalQueue, v8);
   }
 }

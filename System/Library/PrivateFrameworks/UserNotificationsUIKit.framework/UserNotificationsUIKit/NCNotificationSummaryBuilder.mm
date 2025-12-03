@@ -1,18 +1,18 @@
 @interface NCNotificationSummaryBuilder
-- (NCNotificationSummaryBuilder)initWithStyle:(unint64_t)a3;
+- (NCNotificationSummaryBuilder)initWithStyle:(unint64_t)style;
 - (id)_buildSummaryText;
-- (id)_defaultLocalizedSummaryWithNotificationsCount:(unint64_t)a3;
-- (id)_defaultLocalizedSummaryWithNotificationsCount:(unint64_t)a3 arguments:(id)a4;
-- (id)_filteredArgumentsArrayWithArguments:(id)a3;
-- (id)_formatListWithArguments:(id)a3 truncated:(BOOL)a4 truncatedArgumentsCount:(unint64_t *)a5;
-- (id)_localizedSummaryWithFormat:(id)a3 notificationsCount:(unint64_t)a4 arguments:(id)a5;
-- (id)_localizedSummaryWithFormats:(id)a3 andCounts:(id)a4;
+- (id)_defaultLocalizedSummaryWithNotificationsCount:(unint64_t)count;
+- (id)_defaultLocalizedSummaryWithNotificationsCount:(unint64_t)count arguments:(id)arguments;
+- (id)_filteredArgumentsArrayWithArguments:(id)arguments;
+- (id)_formatListWithArguments:(id)arguments truncated:(BOOL)truncated truncatedArgumentsCount:(unint64_t *)count;
+- (id)_localizedSummaryWithFormat:(id)format notificationsCount:(unint64_t)count arguments:(id)arguments;
+- (id)_localizedSummaryWithFormats:(id)formats andCounts:(id)counts;
 - (id)description;
 - (unint64_t)_summaryNotificationsCount;
-- (void)_addNotificationRequest:(id)a3;
-- (void)_insertString:(id)a3 intoSequence:(id)a4 withCounters:(id)a5;
+- (void)_addNotificationRequest:(id)request;
+- (void)_insertString:(id)string intoSequence:(id)sequence withCounters:(id)counters;
 - (void)_updateSummaryText;
-- (void)updateWithNotificationRequests:(id)a3;
+- (void)updateWithNotificationRequests:(id)requests;
 @end
 
 @implementation NCNotificationSummaryBuilder
@@ -26,10 +26,10 @@
 
 - (id)_buildSummaryText
 {
-  v3 = [(NCNotificationSummaryBuilder *)self _summaryNotificationsCount];
-  if (v3)
+  _summaryNotificationsCount = [(NCNotificationSummaryBuilder *)self _summaryNotificationsCount];
+  if (_summaryNotificationsCount)
   {
-    v4 = v3;
+    v4 = _summaryNotificationsCount;
     if (self->_style == 1)
     {
       goto LABEL_3;
@@ -58,8 +58,8 @@ LABEL_4:
       goto LABEL_8;
     }
 
-    v9 = [(NSMutableOrderedSet *)formatStrings firstObject];
-    v6 = [(NCNotificationSummaryBuilder *)self _localizedSummaryWithFormat:v9 notificationsCount:v4 arguments:self->_arguments];
+    firstObject = [(NSMutableOrderedSet *)formatStrings firstObject];
+    v6 = [(NCNotificationSummaryBuilder *)self _localizedSummaryWithFormat:firstObject notificationsCount:v4 arguments:self->_arguments];
   }
 
   else
@@ -91,23 +91,23 @@ LABEL_8:
   return v3;
 }
 
-- (NCNotificationSummaryBuilder)initWithStyle:(unint64_t)a3
+- (NCNotificationSummaryBuilder)initWithStyle:(unint64_t)style
 {
   v5.receiver = self;
   v5.super_class = NCNotificationSummaryBuilder;
   result = [(NCNotificationSummaryBuilder *)&v5 init];
   if (result)
   {
-    result->_style = a3;
+    result->_style = style;
   }
 
   return result;
 }
 
-- (void)updateWithNotificationRequests:(id)a3
+- (void)updateWithNotificationRequests:(id)requests
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestsCopy = requests;
   v5 = objc_opt_new();
   notificationRequests = self->_notificationRequests;
   self->_notificationRequests = v5;
@@ -137,7 +137,7 @@ LABEL_8:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v16 = v4;
+  v16 = requestsCopy;
   v17 = [v16 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v17)
   {
@@ -165,16 +165,16 @@ LABEL_8:
 
   if ([(NCNotificationSummaryBuilder *)self _includeLeadingNotificationRequest])
   {
-    v21 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v21 = [v16 firstObject];
+    firstObject = [v16 firstObject];
   }
 
   leadingNotificationRequest = self->_leadingNotificationRequest;
-  self->_leadingNotificationRequest = v21;
+  self->_leadingNotificationRequest = firstObject;
 
   [(NCNotificationSummaryBuilder *)self _updateSummaryText];
 }
@@ -182,8 +182,8 @@ LABEL_8:
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NCNotificationSummaryBuilder *)self summaryText];
-  [v3 appendString:v4 withName:@"summaryText"];
+  summaryText = [(NCNotificationSummaryBuilder *)self summaryText];
+  [v3 appendString:summaryText withName:@"summaryText"];
 
   v5 = [v3 appendUnsignedInteger:-[NSMutableArray count](self->_notificationRequests withName:{"count"), @"notificationRequests"}];
   v9 = MEMORY[0x277D85DD0];
@@ -191,12 +191,12 @@ LABEL_8:
   v11 = __43__NCNotificationSummaryBuilder_description__block_invoke;
   v12 = &unk_27836F560;
   v13 = v3;
-  v14 = self;
+  selfCopy = self;
   v6 = v3;
   [v6 appendBodySectionWithName:0 multilinePrefix:0 block:&v9];
-  v7 = [v6 build];
+  build = [v6 build];
 
-  return v7;
+  return build;
 }
 
 void __43__NCNotificationSummaryBuilder_description__block_invoke(uint64_t a1)
@@ -214,28 +214,28 @@ void __43__NCNotificationSummaryBuilder_description__block_invoke(uint64_t a1)
   [v6 appendArraySection:v8 withName:@"arguments" skipIfEmpty:0];
 }
 
-- (void)_addNotificationRequest:(id)a3
+- (void)_addNotificationRequest:(id)request
 {
-  v8 = a3;
-  [(NSMutableArray *)self->_notificationRequests addObject:v8];
-  v4 = [v8 content];
-  v5 = [v4 categorySummaryFormat];
+  requestCopy = request;
+  [(NSMutableArray *)self->_notificationRequests addObject:requestCopy];
+  content = [requestCopy content];
+  categorySummaryFormat = [content categorySummaryFormat];
 
-  if (![v5 length])
+  if (![categorySummaryFormat length])
   {
     ++self->_defaultFormatsCount;
   }
 
-  [(NCNotificationSummaryBuilder *)self _insertString:v5 intoSequence:self->_formatStrings withCounters:self->_formatStringsCounts];
-  v6 = [v8 content];
-  v7 = [v6 summaryArgument];
+  [(NCNotificationSummaryBuilder *)self _insertString:categorySummaryFormat intoSequence:self->_formatStrings withCounters:self->_formatStringsCounts];
+  content2 = [requestCopy content];
+  summaryArgument = [content2 summaryArgument];
 
-  if (![v7 length])
+  if (![summaryArgument length])
   {
     ++self->_emptyArgumentsCount;
   }
 
-  [(NCNotificationSummaryBuilder *)self _insertString:v7 intoSequence:self->_arguments withCounters:self->_argumentsCounts];
+  [(NCNotificationSummaryBuilder *)self _insertString:summaryArgument intoSequence:self->_arguments withCounters:self->_argumentsCounts];
 }
 
 void __58__NCNotificationSummaryBuilder__summaryNotificationsCount__block_invoke(uint64_t a1, void *a2)
@@ -259,7 +259,7 @@ void __58__NCNotificationSummaryBuilder__summaryNotificationsCount__block_invoke
   }
 }
 
-- (id)_defaultLocalizedSummaryWithNotificationsCount:(unint64_t)a3
+- (id)_defaultLocalizedSummaryWithNotificationsCount:(unint64_t)count
 {
   style = self->_style;
   if (!style)
@@ -280,14 +280,14 @@ LABEL_5:
 
   v8 = 0;
 LABEL_7:
-  v9 = [(NCNotificationSummaryBuilder *)self _localizedSummaryWithFormat:v8 notificationsCount:a3 arguments:0];
+  v9 = [(NCNotificationSummaryBuilder *)self _localizedSummaryWithFormat:v8 notificationsCount:count arguments:0];
 
   return v9;
 }
 
-- (id)_defaultLocalizedSummaryWithNotificationsCount:(unint64_t)a3 arguments:(id)a4
+- (id)_defaultLocalizedSummaryWithNotificationsCount:(unint64_t)count arguments:(id)arguments
 {
-  v6 = a4;
+  argumentsCopy = arguments;
   style = self->_style;
   if (!style)
   {
@@ -307,22 +307,22 @@ LABEL_5:
 
   v10 = 0;
 LABEL_7:
-  v11 = [(NCNotificationSummaryBuilder *)self _localizedSummaryWithFormat:v10 notificationsCount:a3 arguments:v6];
+  v11 = [(NCNotificationSummaryBuilder *)self _localizedSummaryWithFormat:v10 notificationsCount:count arguments:argumentsCopy];
 
   return v11;
 }
 
-- (id)_localizedSummaryWithFormats:(id)a3 andCounts:(id)a4
+- (id)_localizedSummaryWithFormats:(id)formats andCounts:(id)counts
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  formatsCopy = formats;
+  countsCopy = counts;
   v27 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v6;
+  obj = formatsCopy;
   v8 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v8)
   {
@@ -338,21 +338,21 @@ LABEL_7:
         }
 
         v12 = *(*(&v28 + 1) + 8 * i);
-        v13 = [v7 objectForKeyedSubscript:v12];
-        v14 = [v13 unsignedIntegerValue];
+        v13 = [countsCopy objectForKeyedSubscript:v12];
+        unsignedIntegerValue = [v13 unsignedIntegerValue];
 
         if (![(NCNotificationSummaryBuilder *)self _includeLeadingNotificationRequest])
         {
-          v15 = [(NCNotificationRequest *)self->_leadingNotificationRequest content];
-          v16 = [v15 categorySummaryFormat];
-          v17 = [v12 isEqualToString:v16];
+          content = [(NCNotificationRequest *)self->_leadingNotificationRequest content];
+          categorySummaryFormat = [content categorySummaryFormat];
+          v17 = [v12 isEqualToString:categorySummaryFormat];
 
-          v14 -= v17 & 1;
+          unsignedIntegerValue -= v17 & 1;
         }
 
-        if (v14)
+        if (unsignedIntegerValue)
         {
-          v18 = [(NCNotificationSummaryBuilder *)self _localizedSummaryWithFormat:v12 notificationsCount:v14 arguments:0];
+          v18 = [(NCNotificationSummaryBuilder *)self _localizedSummaryWithFormat:v12 notificationsCount:unsignedIntegerValue arguments:0];
           [v27 addObject:v18];
         }
       }
@@ -368,9 +368,9 @@ LABEL_7:
   {
     if (![(NCNotificationSummaryBuilder *)self _includeLeadingNotificationRequest])
     {
-      v20 = [(NCNotificationRequest *)self->_leadingNotificationRequest content];
-      v21 = [v20 categorySummaryFormat];
-      v22 = [v21 length] == 0;
+      content2 = [(NCNotificationRequest *)self->_leadingNotificationRequest content];
+      categorySummaryFormat2 = [content2 categorySummaryFormat];
+      v22 = [categorySummaryFormat2 length] == 0;
 
       defaultFormatsCount -= v22;
     }
@@ -384,14 +384,14 @@ LABEL_7:
   return v24;
 }
 
-- (id)_localizedSummaryWithFormat:(id)a3 notificationsCount:(unint64_t)a4 arguments:(id)a5
+- (id)_localizedSummaryWithFormat:(id)format notificationsCount:(unint64_t)count arguments:(id)arguments
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  formatCopy = format;
+  argumentsCopy = arguments;
+  if (formatCopy)
   {
     v31 = 0;
-    v10 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v8 validFormatSpecifiers:@"%u" error:&v31, a4];
+    v10 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:formatCopy validFormatSpecifiers:@"%u" error:&v31, count];
     v11 = v31;
     v12 = v11;
     if (v10)
@@ -417,7 +417,7 @@ LABEL_7:
     v10 = 0;
   }
 
-  if ([v9 count] && self->_emptyArgumentsCount)
+  if ([argumentsCopy count] && self->_emptyArgumentsCount)
   {
     v15 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_INFO))
@@ -426,17 +426,17 @@ LABEL_7:
       _os_log_impl(&dword_21E77E000, v15, OS_LOG_TYPE_INFO, "Ignoring category format because the group contains mixed notifications with and without arguments", buf, 2u);
     }
 
-    v14 = [(NCNotificationSummaryBuilder *)self _defaultLocalizedSummaryWithNotificationsCount:a4];
+    v14 = [(NCNotificationSummaryBuilder *)self _defaultLocalizedSummaryWithNotificationsCount:count];
     goto LABEL_36;
   }
 
-  v16 = [(NCNotificationSummaryBuilder *)self _filteredArgumentsArrayWithArguments:v9];
+  v16 = [(NCNotificationSummaryBuilder *)self _filteredArgumentsArrayWithArguments:argumentsCopy];
   v17 = [(NCNotificationSummaryBuilder *)self _formatListWithArguments:v16];
 
-  if (v8)
+  if (formatCopy)
   {
     v30 = 0;
-    v14 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v8 validFormatSpecifiers:@"%u%@" error:&v30, a4, v17];
+    v14 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:formatCopy validFormatSpecifiers:@"%u%@" error:&v30, count, v17];
     v18 = v30;
 
     if (!v14)
@@ -457,7 +457,7 @@ LABEL_7:
 
   if (!v18)
   {
-    if (![v9 count])
+    if (![argumentsCopy count])
     {
       v19 = *MEMORY[0x277D77DD0];
       if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_ERROR))
@@ -465,7 +465,7 @@ LABEL_7:
         [NCNotificationSummaryBuilder _localizedSummaryWithFormat:v19 notificationsCount:? arguments:?];
       }
 
-      v20 = [(NCNotificationSummaryBuilder *)self _defaultLocalizedSummaryWithNotificationsCount:a4];
+      v20 = [(NCNotificationSummaryBuilder *)self _defaultLocalizedSummaryWithNotificationsCount:count];
 
       v10 = v17;
       v12 = v16;
@@ -480,10 +480,10 @@ LABEL_23:
   *buf = 0;
   v21 = [(NCNotificationSummaryBuilder *)self _formatListWithArguments:v16 truncated:1 truncatedArgumentsCount:buf];
 
-  if (v8)
+  if (formatCopy)
   {
     v28 = 0;
-    v22 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v8 validFormatSpecifiers:@"%u%@%u" error:&v28, a4, v21, *buf];
+    v22 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:formatCopy validFormatSpecifiers:@"%u%@%u" error:&v28, count, v21, *buf];
     v23 = v28;
 
     v14 = v22;
@@ -493,11 +493,11 @@ LABEL_31:
       v25 = *MEMORY[0x277D77DD0];
       if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_ERROR))
       {
-        [NCNotificationSummaryBuilder _localizedSummaryWithFormat:v8 notificationsCount:v25 arguments:v23];
+        [NCNotificationSummaryBuilder _localizedSummaryWithFormat:formatCopy notificationsCount:v25 arguments:v23];
       }
 
 LABEL_33:
-      v26 = [(NCNotificationSummaryBuilder *)self _defaultLocalizedSummaryWithNotificationsCount:a4];
+      v26 = [(NCNotificationSummaryBuilder *)self _defaultLocalizedSummaryWithNotificationsCount:count];
 
       v14 = v26;
       goto LABEL_34;
@@ -518,7 +518,7 @@ LABEL_33:
     goto LABEL_31;
   }
 
-  if (![v9 count])
+  if (![argumentsCopy count])
   {
     v24 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_ERROR))
@@ -541,18 +541,18 @@ LABEL_37:
   return v14;
 }
 
-- (id)_formatListWithArguments:(id)a3 truncated:(BOOL)a4 truncatedArgumentsCount:(unint64_t *)a5
+- (id)_formatListWithArguments:(id)arguments truncated:(BOOL)truncated truncatedArgumentsCount:(unint64_t *)count
 {
-  v6 = a4;
+  truncatedCopy = truncated;
   v27[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (a5)
+  argumentsCopy = arguments;
+  v8 = argumentsCopy;
+  if (count)
   {
-    *a5 = 0;
+    *count = 0;
   }
 
-  if (![v7 count])
+  if (![argumentsCopy count])
   {
     v9 = &stru_282FE84F8;
     goto LABEL_16;
@@ -577,13 +577,13 @@ LABEL_9:
     goto LABEL_16;
   }
 
-  if (v6 && [v8 count] >= 5)
+  if (truncatedCopy && [v8 count] >= 5)
   {
     v11 = [v8 subarrayWithRange:{0, 3}];
-    if (a5)
+    if (count)
     {
       v15 = [v8 count];
-      *a5 = v15 - [v11 count];
+      *count = v15 - [v11 count];
     }
 
     v16 = NCUserNotificationsUIKitFrameworkBundle();
@@ -593,8 +593,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v18 = [v8 lastObject];
-  v27[0] = v18;
+  lastObject = [v8 lastObject];
+  v27[0] = lastObject;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
   v20 = [v8 arrayByExcludingObjectsInArray:v19];
 
@@ -604,19 +604,19 @@ LABEL_9:
 
   v24 = NCUserNotificationsUIKitFrameworkBundle();
   v25 = [v24 localizedStringForKey:@"CATEGORY_SUMMARY_LIST_SEPARATOR_LAST_ELEMENT" value:&stru_282FE84F8 table:0];
-  v9 = [v23 stringByAppendingFormat:v25, v18];
+  v9 = [v23 stringByAppendingFormat:v25, lastObject];
 
 LABEL_16:
 
   return v9;
 }
 
-- (id)_filteredArgumentsArrayWithArguments:(id)a3
+- (id)_filteredArgumentsArrayWithArguments:(id)arguments
 {
   v4 = MEMORY[0x277CCAA78];
-  v5 = a3;
-  v6 = [v4 indexSetWithIndexesInRange:{0, objc_msgSend(v5, "count")}];
-  v7 = [v5 objectsAtIndexes:v6];
+  argumentsCopy = arguments;
+  v6 = [v4 indexSetWithIndexesInRange:{0, objc_msgSend(argumentsCopy, "count")}];
+  v7 = [argumentsCopy objectsAtIndexes:v6];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -650,23 +650,23 @@ uint64_t __69__NCNotificationSummaryBuilder__filteredArgumentsArrayWithArguments
   }
 }
 
-- (void)_insertString:(id)a3 intoSequence:(id)a4 withCounters:(id)a5
+- (void)_insertString:(id)string intoSequence:(id)sequence withCounters:(id)counters
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = a5;
-  if ([v12 length])
+  stringCopy = string;
+  sequenceCopy = sequence;
+  countersCopy = counters;
+  if ([stringCopy length])
   {
-    if ([v7 containsObject:v12])
+    if ([sequenceCopy containsObject:stringCopy])
     {
-      [v7 removeObject:v12];
+      [sequenceCopy removeObject:stringCopy];
     }
 
-    [v7 addObject:v12];
+    [sequenceCopy addObject:stringCopy];
     v9 = MEMORY[0x277CCABB0];
-    v10 = [v8 objectForKeyedSubscript:v12];
+    v10 = [countersCopy objectForKeyedSubscript:stringCopy];
     v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(v10, "unsignedIntegerValue") + 1}];
-    [v8 setObject:v11 forKeyedSubscript:v12];
+    [countersCopy setObject:v11 forKeyedSubscript:stringCopy];
   }
 }
 

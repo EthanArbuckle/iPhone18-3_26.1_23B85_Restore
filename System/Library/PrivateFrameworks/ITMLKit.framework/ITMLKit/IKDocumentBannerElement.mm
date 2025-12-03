@@ -7,20 +7,20 @@
 
 - (UIColor)backgroundColor
 {
-  v2 = [(IKViewElement *)self style];
-  v3 = [v2 ikBackgroundColor];
-  v4 = [v3 color];
+  style = [(IKViewElement *)self style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  return v4;
+  return color;
 }
 
 - (BOOL)fixed
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"fixed"];
-  v4 = [v3 ik_attributeBoolValue];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"fixed"];
+  ik_attributeBoolValue = [v3 ik_attributeBoolValue];
 
-  return v4;
+  return ik_attributeBoolValue;
 }
 
 @end

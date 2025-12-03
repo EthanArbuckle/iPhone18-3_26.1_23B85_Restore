@@ -1,39 +1,39 @@
 @interface FBSCAContextSceneLayer
-+ (id)layerWithCAContext:(id)a3;
-- (FBSCAContextSceneLayer)initWithCAContext:(id)a3;
-- (FBSCAContextSceneLayer)initWithCAContextID:(unsigned int)a3 level:(double)a4;
-- (FBSCAContextSceneLayer)initWithCAContextID:(unsigned int)a3 renderID:(unint64_t)a4 level:(double)a5;
++ (id)layerWithCAContext:(id)context;
+- (FBSCAContextSceneLayer)initWithCAContext:(id)context;
+- (FBSCAContextSceneLayer)initWithCAContextID:(unsigned int)d level:(double)level;
+- (FBSCAContextSceneLayer)initWithCAContextID:(unsigned int)d renderID:(unint64_t)iD level:(double)level;
 @end
 
 @implementation FBSCAContextSceneLayer
 
-+ (id)layerWithCAContext:(id)a3
++ (id)layerWithCAContext:(id)context
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithWindowContext:v4];
+  contextCopy = context;
+  v5 = [[self alloc] initWithWindowContext:contextCopy];
 
   return v5;
 }
 
-- (FBSCAContextSceneLayer)initWithCAContext:(id)a3
+- (FBSCAContextSceneLayer)initWithCAContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = FBSCAContextSceneLayer;
-  return [(FBSSceneLayer *)&v4 initWithWindowContext:a3];
+  return [(FBSSceneLayer *)&v4 initWithWindowContext:context];
 }
 
-- (FBSCAContextSceneLayer)initWithCAContextID:(unsigned int)a3 level:(double)a4
+- (FBSCAContextSceneLayer)initWithCAContextID:(unsigned int)d level:(double)level
 {
   v5.receiver = self;
   v5.super_class = FBSCAContextSceneLayer;
-  return [(FBSSceneLayer *)&v5 initWithContextID:*&a3 renderID:0 level:a4];
+  return [(FBSSceneLayer *)&v5 initWithContextID:*&d renderID:0 level:level];
 }
 
-- (FBSCAContextSceneLayer)initWithCAContextID:(unsigned int)a3 renderID:(unint64_t)a4 level:(double)a5
+- (FBSCAContextSceneLayer)initWithCAContextID:(unsigned int)d renderID:(unint64_t)iD level:(double)level
 {
   v6.receiver = self;
   v6.super_class = FBSCAContextSceneLayer;
-  return [(FBSSceneLayer *)&v6 initWithContextID:*&a3 renderID:a4 level:a5];
+  return [(FBSSceneLayer *)&v6 initWithContextID:*&d renderID:iD level:level];
 }
 
 @end

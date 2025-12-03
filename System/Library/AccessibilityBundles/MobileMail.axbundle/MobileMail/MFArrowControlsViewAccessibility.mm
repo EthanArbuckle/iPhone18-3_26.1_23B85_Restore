@@ -1,15 +1,15 @@
 @interface MFArrowControlsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation MFArrowControlsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFArrowControlsView" hasInstanceMethod:@"upButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFArrowControlsView" hasInstanceMethod:@"downButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFArrowControlsView" hasInstanceMethod:@"upButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFArrowControlsView" hasInstanceMethod:@"downButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,5 +1,5 @@
 @interface OTPreloadOctagonKeysOperation
-- (OTPreloadOctagonKeysOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5;
+- (OTPreloadOctagonKeysOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState;
 - (void)groupStart;
 @end
 
@@ -17,60 +17,60 @@
   v4 = objc_alloc_init(NSOperation);
   [(OTPreloadOctagonKeysOperation *)self setFinishOp:v4];
 
-  v5 = [(OTPreloadOctagonKeysOperation *)self finishOp];
-  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v5];
+  finishOp = [(OTPreloadOctagonKeysOperation *)self finishOp];
+  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishOp];
 
-  v6 = [(OTPreloadOctagonKeysOperation *)self deps];
-  v7 = [v6 sosAdapter];
-  v8 = [v7 sosEnabled];
+  deps = [(OTPreloadOctagonKeysOperation *)self deps];
+  sosAdapter = [deps sosAdapter];
+  sosEnabled = [sosAdapter sosEnabled];
 
-  if (v8)
+  if (sosEnabled)
   {
-    v9 = [(OTPreloadOctagonKeysOperation *)self deps];
-    v10 = [v9 octagonAdapter];
+    deps2 = [(OTPreloadOctagonKeysOperation *)self deps];
+    octagonAdapter = [deps2 octagonAdapter];
     v27 = 0;
-    v11 = [v10 fetchSelfPeers:&v27];
-    v12 = v27;
+    v11 = [octagonAdapter fetchSelfPeers:&v27];
+    finishOp5 = v27;
 
-    if (!v11 || v12)
+    if (!v11 || finishOp5)
     {
       v21 = sub_100006274("octagon-preload-keys");
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v31 = v12;
+        v31 = finishOp5;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "failed to retrieve self peers: %@", buf, 0xCu);
       }
 
-      [(CKKSResultOperation *)self setError:v12];
-      v13 = [(OTPreloadOctagonKeysOperation *)self finishOp];
-      [(CKKSGroupOperation *)self runBeforeGroupFinished:v13];
+      [(CKKSResultOperation *)self setError:finishOp5];
+      finishOp2 = [(OTPreloadOctagonKeysOperation *)self finishOp];
+      [(CKKSGroupOperation *)self runBeforeGroupFinished:finishOp2];
     }
 
     else
     {
-      v13 = [v11 currentSelf];
-      if (v13)
+      finishOp2 = [v11 currentSelf];
+      if (finishOp2)
       {
-        v14 = [(OTPreloadOctagonKeysOperation *)self deps];
-        v15 = [v14 sosAdapter];
+        deps3 = [(OTPreloadOctagonKeysOperation *)self deps];
+        sosAdapter2 = [deps3 sosAdapter];
         v26 = 0;
-        v16 = [v15 preloadOctagonKeySetOnAccount:v13 error:&v26];
-        v17 = v26;
+        v16 = [sosAdapter2 preloadOctagonKeySetOnAccount:finishOp2 error:&v26];
+        finishOp4 = v26;
 
         if (v16)
         {
-          v18 = [(OTPreloadOctagonKeysOperation *)self intendedState];
-          [(OTPreloadOctagonKeysOperation *)self setNextState:v18];
+          intendedState = [(OTPreloadOctagonKeysOperation *)self intendedState];
+          [(OTPreloadOctagonKeysOperation *)self setNextState:intendedState];
         }
 
         else
         {
-          [(CKKSResultOperation *)self setError:v17];
+          [(CKKSResultOperation *)self setError:finishOp4];
         }
 
-        v25 = [(OTPreloadOctagonKeysOperation *)self finishOp];
-        [(CKKSGroupOperation *)self runBeforeGroupFinished:v25];
+        finishOp3 = [(OTPreloadOctagonKeysOperation *)self finishOp];
+        [(CKKSGroupOperation *)self runBeforeGroupFinished:finishOp3];
       }
 
       else
@@ -88,8 +88,8 @@
         v24 = [NSError errorWithDomain:@"com.apple.security.octagon" code:38 userInfo:v23];
         [(CKKSResultOperation *)self setError:v24];
 
-        v17 = [(OTPreloadOctagonKeysOperation *)self finishOp];
-        [(CKKSGroupOperation *)self runBeforeGroupFinished:v17];
+        finishOp4 = [(OTPreloadOctagonKeysOperation *)self finishOp];
+        [(CKKSGroupOperation *)self runBeforeGroupFinished:finishOp4];
       }
     }
   }
@@ -102,25 +102,25 @@
     v20 = [NSError errorWithDomain:@"com.apple.security.octagon" code:39 userInfo:v19];
     [(CKKSResultOperation *)self setError:v20];
 
-    v12 = [(OTPreloadOctagonKeysOperation *)self finishOp];
-    [(CKKSGroupOperation *)self runBeforeGroupFinished:v12];
+    finishOp5 = [(OTPreloadOctagonKeysOperation *)self finishOp];
+    [(CKKSGroupOperation *)self runBeforeGroupFinished:finishOp5];
   }
 }
 
-- (OTPreloadOctagonKeysOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5
+- (OTPreloadOctagonKeysOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
   v15.receiver = self;
   v15.super_class = OTPreloadOctagonKeysOperation;
   v12 = [(CKKSGroupOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_deps, a3);
-    objc_storeStrong(&v13->_intendedState, a4);
-    objc_storeStrong(&v13->_nextState, a5);
+    objc_storeStrong(&v12->_deps, dependencies);
+    objc_storeStrong(&v13->_intendedState, state);
+    objc_storeStrong(&v13->_nextState, errorState);
   }
 
   return v13;

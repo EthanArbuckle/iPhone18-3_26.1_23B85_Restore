@@ -1,22 +1,22 @@
 @interface SKOverlayTransitionContext
 - (CGRect)endFrame;
 - (CGRect)startFrame;
-- (SKOverlayTransitionContext)initWithASOOverlayTransitionContext:(id)a3;
+- (SKOverlayTransitionContext)initWithASOOverlayTransitionContext:(id)context;
 - (void)addAnimationBlock:(void *)block;
 @end
 
 @implementation SKOverlayTransitionContext
 
-- (SKOverlayTransitionContext)initWithASOOverlayTransitionContext:(id)a3
+- (SKOverlayTransitionContext)initWithASOOverlayTransitionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = SKOverlayTransitionContext;
   v6 = [(SKOverlayTransitionContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backing, a3);
+    objc_storeStrong(&v6->_backing, context);
   }
 
   return v7;
@@ -24,8 +24,8 @@
 
 - (CGRect)startFrame
 {
-  v2 = [(SKOverlayTransitionContext *)self backing];
-  [v2 startFrame];
+  backing = [(SKOverlayTransitionContext *)self backing];
+  [backing startFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -44,8 +44,8 @@
 
 - (CGRect)endFrame
 {
-  v2 = [(SKOverlayTransitionContext *)self backing];
-  [v2 endFrame];
+  backing = [(SKOverlayTransitionContext *)self backing];
+  [backing endFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -65,8 +65,8 @@
 - (void)addAnimationBlock:(void *)block
 {
   v4 = block;
-  v5 = [(SKOverlayTransitionContext *)self backing];
-  [v5 addAnimationBlock:v4];
+  backing = [(SKOverlayTransitionContext *)self backing];
+  [backing addAnimationBlock:v4];
 }
 
 @end

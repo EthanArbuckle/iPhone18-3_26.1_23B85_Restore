@@ -1,44 +1,44 @@
 @interface TSCECellDependencyRowPrinter
-- (TSCECellDependencyRowPrinter)initWithCellID:(id)a3 dirtyPrecedentCount:(unint64_t)a4;
+- (TSCECellDependencyRowPrinter)initWithCellID:(id)d dirtyPrecedentCount:(unint64_t)count;
 - (id)stringForDependencyRow;
-- (int64_t)tsce_numericCompare:(id)a3;
-- (void)addDependentWithCellID:(id)a3 forOwner:(id)a4;
-- (void)addPrecedentWithCellID:(id)a3 forOwner:(id)a4;
+- (int64_t)tsce_numericCompare:(id)compare;
+- (void)addDependentWithCellID:(id)d forOwner:(id)owner;
+- (void)addPrecedentWithCellID:(id)d forOwner:(id)owner;
 @end
 
 @implementation TSCECellDependencyRowPrinter
 
-- (TSCECellDependencyRowPrinter)initWithCellID:(id)a3 dirtyPrecedentCount:(unint64_t)a4
+- (TSCECellDependencyRowPrinter)initWithCellID:(id)d dirtyPrecedentCount:(unint64_t)count
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = TSCECellDependencyRowPrinter;
   v8 = [(TSCECellDependencyRowPrinter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_cellID, a3);
-    v9->_dirtyPrecedentCount = a4;
+    objc_storeStrong(&v8->_cellID, d);
+    v9->_dirtyPrecedentCount = count;
   }
 
   return v9;
 }
 
-- (int64_t)tsce_numericCompare:(id)a3
+- (int64_t)tsce_numericCompare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v9 = objc_msgSend_cellID(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_cellID(v4, v10, v11, v12, v13);
+  v14 = objc_msgSend_cellID(compareCopy, v10, v11, v12, v13);
   v17 = objc_msgSend_compare_options_(v9, v15, v14, 64, v16);
 
   return v17;
 }
 
-- (void)addPrecedentWithCellID:(id)a3 forOwner:(id)a4
+- (void)addPrecedentWithCellID:(id)d forOwner:(id)owner
 {
-  v12 = a3;
-  v8 = a4;
-  if (v12)
+  dCopy = d;
+  ownerCopy = owner;
+  if (dCopy)
   {
     precedentsList = self->_precedentsList;
     if (!precedentsList)
@@ -50,15 +50,15 @@
       precedentsList = self->_precedentsList;
     }
 
-    objc_msgSend_addEdge_forOwner_(precedentsList, v6, v12, v8, v7);
+    objc_msgSend_addEdge_forOwner_(precedentsList, v6, dCopy, ownerCopy, v7);
   }
 }
 
-- (void)addDependentWithCellID:(id)a3 forOwner:(id)a4
+- (void)addDependentWithCellID:(id)d forOwner:(id)owner
 {
-  v12 = a3;
-  v8 = a4;
-  if (v12)
+  dCopy = d;
+  ownerCopy = owner;
+  if (dCopy)
   {
     dependentsList = self->_dependentsList;
     if (!dependentsList)
@@ -70,7 +70,7 @@
       dependentsList = self->_dependentsList;
     }
 
-    objc_msgSend_addEdge_forOwner_(dependentsList, v6, v12, v8, v7);
+    objc_msgSend_addEdge_forOwner_(dependentsList, v6, dCopy, ownerCopy, v7);
   }
 }
 

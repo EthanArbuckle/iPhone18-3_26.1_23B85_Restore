@@ -1,46 +1,46 @@
 @interface AFAccessibilityState
-+ (id)newWithBuilder:(id)a3;
-- (AFAccessibilityState)initWithBuilder:(id)a3;
-- (AFAccessibilityState)initWithCoder:(id)a3;
-- (AFAccessibilityState)initWithIsVoiceOverTouchEnabled:(int64_t)a3 isVibrationDisabled:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFAccessibilityState)initWithBuilder:(id)builder;
+- (AFAccessibilityState)initWithCoder:(id)coder;
+- (AFAccessibilityState)initWithIsVoiceOverTouchEnabled:(int64_t)enabled isVibrationDisabled:(int64_t)disabled;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFAccessibilityState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   isVoiceOverTouchEnabled = self->_isVoiceOverTouchEnabled;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithInteger:isVoiceOverTouchEnabled];
-  [v6 encodeObject:v7 forKey:@"AFAccessibilityState::isVoiceOverTouchEnabled"];
+  [coderCopy encodeObject:v7 forKey:@"AFAccessibilityState::isVoiceOverTouchEnabled"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:self->_isVibrationDisabled];
-  [v6 encodeObject:v8 forKey:@"AFAccessibilityState::isVibrationDisabled"];
+  [coderCopy encodeObject:v8 forKey:@"AFAccessibilityState::isVibrationDisabled"];
 }
 
-- (AFAccessibilityState)initWithCoder:(id)a3
+- (AFAccessibilityState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFAccessibilityState::isVoiceOverTouchEnabled"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAccessibilityState::isVoiceOverTouchEnabled"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFAccessibilityState::isVibrationDisabled"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAccessibilityState::isVibrationDisabled"];
 
-  v8 = [v7 integerValue];
+  integerValue2 = [v7 integerValue];
 
-  return [(AFAccessibilityState *)self initWithIsVoiceOverTouchEnabled:v6 isVibrationDisabled:v8];
+  return [(AFAccessibilityState *)self initWithIsVoiceOverTouchEnabled:integerValue isVibrationDisabled:integerValue2];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -50,7 +50,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       isVoiceOverTouchEnabled = self->_isVoiceOverTouchEnabled;
       if (isVoiceOverTouchEnabled == [(AFAccessibilityState *)v5 isVoiceOverTouchEnabled])
       {
@@ -83,7 +83,7 @@
   return v6 ^ v4;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v14.receiver = self;
@@ -118,14 +118,14 @@
   return v12;
 }
 
-- (AFAccessibilityState)initWithIsVoiceOverTouchEnabled:(int64_t)a3 isVibrationDisabled:(int64_t)a4
+- (AFAccessibilityState)initWithIsVoiceOverTouchEnabled:(int64_t)enabled isVibrationDisabled:(int64_t)disabled
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __76__AFAccessibilityState_initWithIsVoiceOverTouchEnabled_isVibrationDisabled___block_invoke;
   v5[3] = &__block_descriptor_48_e40_v16__0___AFAccessibilityStateMutating__8l;
-  v5[4] = a3;
-  v5[5] = a4;
+  v5[4] = enabled;
+  v5[5] = disabled;
   return [(AFAccessibilityState *)self initWithBuilder:v5];
 }
 
@@ -137,17 +137,17 @@ void __76__AFAccessibilityState_initWithIsVoiceOverTouchEnabled_isVibrationDisab
   [v4 setIsVibrationDisabled:*(a1 + 40)];
 }
 
-- (AFAccessibilityState)initWithBuilder:(id)a3
+- (AFAccessibilityState)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = AFAccessibilityState;
   v5 = [(AFAccessibilityState *)&v9 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFAccessibilityStateMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFAccessibilityStateMutation *)v7 isDirty])
     {
       v6->_isVoiceOverTouchEnabled = [(_AFAccessibilityStateMutation *)v7 getIsVoiceOverTouchEnabled];
@@ -158,21 +158,21 @@ void __76__AFAccessibilityState_initWithIsVoiceOverTouchEnabled_isVibrationDisab
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFAccessibilityStateMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFAccessibilityStateMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFAccessibilityState);

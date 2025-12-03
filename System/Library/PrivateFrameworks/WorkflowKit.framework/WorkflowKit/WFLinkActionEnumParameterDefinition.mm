@@ -1,12 +1,12 @@
 @interface WFLinkActionEnumParameterDefinition
-- (WFLinkActionEnumParameterDefinition)initWithParameterMetadata:(id)a3;
-- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)a3;
+- (WFLinkActionEnumParameterDefinition)initWithParameterMetadata:(id)metadata;
+- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)value;
 - (id)enumMetadata;
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4;
-- (id)localizedTitleForLinkValue:(id)a3;
+- (id)linkValueFromParameterState:(id)state action:(id)action;
+- (id)localizedTitleForLinkValue:(id)value;
 - (id)parameterDefinitionDictionary;
-- (id)parameterStateFromLinkValue:(id)a3;
-- (void)getLinkValueFromProcessedParameterValue:(id)a3 parameterState:(id)a4 permissionRequestor:(id)a5 runningFromToolKit:(BOOL)a6 action:(id)a7 parameterKey:(id)a8 completionHandler:(id)a9;
+- (id)parameterStateFromLinkValue:(id)value;
+- (void)getLinkValueFromProcessedParameterValue:(id)value parameterState:(id)state permissionRequestor:(id)requestor runningFromToolKit:(BOOL)kit action:(id)action parameterKey:(id)key completionHandler:(id)handler;
 @end
 
 @implementation WFLinkActionEnumParameterDefinition
@@ -14,20 +14,20 @@
 - (id)parameterDefinitionDictionary
 {
   v46 = *MEMORY[0x1E69E9840];
-  v3 = [(WFLinkActionEnumParameterDefinition *)self enumMetadata];
-  v30 = self;
+  enumMetadata = [(WFLinkActionEnumParameterDefinition *)self enumMetadata];
+  selfCopy = self;
   v4 = [(WFLinkActionParameterDefinition *)self objectForTypeSpecificMetadataKey:*MEMORY[0x1E69AC5A8] ofClass:objc_opt_class()];
   v36 = objc_opt_new();
   v35 = objc_opt_new();
   v34 = objc_opt_new();
   v33 = objc_opt_new();
-  v31 = v3;
+  v31 = enumMetadata;
   v32 = objc_opt_new();
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = [v3 cases];
+  obj = [enumMetadata cases];
   v39 = [obj countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v39)
   {
@@ -44,8 +44,8 @@
         v6 = *(*(&v41 + 1) + 8 * i);
         if (v4)
         {
-          v7 = [*(*(&v41 + 1) + 8 * i) identifier];
-          v8 = [v4 containsObject:v7];
+          identifier = [*(*(&v41 + 1) + 8 * i) identifier];
+          v8 = [v4 containsObject:identifier];
 
           if (!v8)
           {
@@ -53,13 +53,13 @@
           }
         }
 
-        v9 = [v6 identifier];
-        v10 = [v6 wf_localizedDisplayName];
-        v11 = [v6 wf_localizedSubtitle];
-        v12 = v11;
-        if (v11)
+        identifier2 = [v6 identifier];
+        wf_localizedDisplayName = [v6 wf_localizedDisplayName];
+        wf_localizedSubtitle = [v6 wf_localizedSubtitle];
+        v12 = wf_localizedSubtitle;
+        if (wf_localizedSubtitle)
         {
-          v13 = v11;
+          v13 = wf_localizedSubtitle;
         }
 
         else
@@ -69,11 +69,11 @@
 
         v14 = v13;
 
-        v15 = [v6 wf_symbolName];
-        v16 = v15;
-        if (v15)
+        wf_symbolName = [v6 wf_symbolName];
+        v16 = wf_symbolName;
+        if (wf_symbolName)
         {
-          v17 = v15;
+          v17 = wf_symbolName;
         }
 
         else
@@ -83,26 +83,26 @@
 
         v18 = v17;
 
-        v19 = [v6 displayRepresentation];
-        v20 = [v19 image];
-        v21 = [v20 wf_image];
-        v22 = v21;
-        if (v21)
+        displayRepresentation = [v6 displayRepresentation];
+        image = [displayRepresentation image];
+        wf_image = [image wf_image];
+        v22 = wf_image;
+        if (wf_image)
         {
-          v23 = v21;
+          null = wf_image;
         }
 
         else
         {
-          v23 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
         }
 
-        v24 = v23;
+        v24 = null;
 
-        if (v9 && v10)
+        if (identifier2 && wf_localizedDisplayName)
         {
-          [v36 addObject:v9];
-          [v35 addObject:v10];
+          [v36 addObject:identifier2];
+          [v35 addObject:wf_localizedDisplayName];
           [v34 addObject:v14];
           [v33 addObject:v18];
           [v32 addObject:v24];
@@ -121,10 +121,10 @@
   [v25 setValue:v34 forKey:@"ItemSubtitles"];
   [v25 setValue:v33 forKey:@"ItemIconNames"];
   [v25 setValue:v32 forKey:@"ItemImages"];
-  v40.receiver = v30;
+  v40.receiver = selfCopy;
   v40.super_class = WFLinkActionEnumParameterDefinition;
-  v26 = [(WFLinkActionParameterDefinition *)&v40 parameterDefinitionDictionary];
-  v27 = [v26 definitionByAddingEntriesInDictionary:v25];
+  parameterDefinitionDictionary = [(WFLinkActionParameterDefinition *)&v40 parameterDefinitionDictionary];
+  v27 = [parameterDefinitionDictionary definitionByAddingEntriesInDictionary:v25];
 
   v28 = *MEMORY[0x1E69E9840];
 
@@ -138,32 +138,32 @@
   return [(WFLinkActionParameterDefinition *)self objectForTypeSpecificMetadataKey:@"LNValueTypeSpecificMetadataKeyLinkEnumerationMetadata" ofClass:v3];
 }
 
-- (id)localizedTitleForLinkValue:(id)a3
+- (id)localizedTitleForLinkValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 displayRepresentation];
-  v6 = [v5 title];
-  v7 = [v6 wf_localizedString];
+  valueCopy = value;
+  displayRepresentation = [valueCopy displayRepresentation];
+  title = [displayRepresentation title];
+  wf_localizedString = [title wf_localizedString];
 
-  if (v7)
+  if (wf_localizedString)
   {
-    v8 = v7;
+    wf_localizedDisplayName = wf_localizedString;
   }
 
   else
   {
-    v9 = [(WFLinkActionEnumParameterDefinition *)self enumMetadata];
-    v10 = [v9 cases];
+    enumMetadata = [(WFLinkActionEnumParameterDefinition *)self enumMetadata];
+    cases = [enumMetadata cases];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __66__WFLinkActionEnumParameterDefinition_localizedTitleForLinkValue___block_invoke;
     v13[3] = &unk_1E837F1B0;
-    v14 = v4;
-    v11 = [v10 if_firstObjectPassingTest:v13];
-    v8 = [v11 wf_localizedDisplayName];
+    v14 = valueCopy;
+    v11 = [cases if_firstObjectPassingTest:v13];
+    wf_localizedDisplayName = [v11 wf_localizedDisplayName];
   }
 
-  return v8;
+  return wf_localizedDisplayName;
 }
 
 uint64_t __66__WFLinkActionEnumParameterDefinition_localizedTitleForLinkValue___block_invoke(uint64_t a1, void *a2)
@@ -175,38 +175,38 @@ uint64_t __66__WFLinkActionEnumParameterDefinition_localizedTitleForLinkValue___
   return v5;
 }
 
-- (id)parameterStateFromLinkValue:(id)a3
+- (id)parameterStateFromLinkValue:(id)value
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [a3 value];
-  if (!v4)
+  value = [value value];
+  if (!value)
   {
 LABEL_12:
     v11 = 0;
     goto LABEL_13;
   }
 
-  v5 = [(WFLinkActionParameterDefinition *)self valueType];
-  v6 = [v5 objectIsMemberOfType:v4];
+  valueType = [(WFLinkActionParameterDefinition *)self valueType];
+  v6 = [valueType objectIsMemberOfType:value];
 
   if ((v6 & 1) == 0)
   {
     v12 = getWFAppIntentsLogObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(WFLinkActionParameterDefinition *)self valueType];
+      valueType2 = [(WFLinkActionParameterDefinition *)self valueType];
       v16 = 136315650;
       v17 = "[WFLinkActionEnumParameterDefinition parameterStateFromLinkValue:]";
       v18 = 2114;
-      v19 = v4;
+      v19 = value;
       v20 = 2114;
-      v21 = v13;
+      v21 = valueType2;
     }
 
     goto LABEL_12;
   }
 
-  v7 = v4;
+  v7 = value;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -233,16 +233,16 @@ LABEL_13:
   return v11;
 }
 
-- (void)getLinkValueFromProcessedParameterValue:(id)a3 parameterState:(id)a4 permissionRequestor:(id)a5 runningFromToolKit:(BOOL)a6 action:(id)a7 parameterKey:(id)a8 completionHandler:(id)a9
+- (void)getLinkValueFromProcessedParameterValue:(id)value parameterState:(id)state permissionRequestor:(id)requestor runningFromToolKit:(BOOL)kit action:(id)action parameterKey:(id)key completionHandler:(id)handler
 {
-  v14 = a3;
-  v10 = a9;
-  if (v14)
+  valueCopy = value;
+  handlerCopy = handler;
+  if (valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v14;
+      v11 = valueCopy;
     }
 
     else
@@ -259,20 +259,20 @@ LABEL_13:
   v12 = v11;
   v13 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:v12];
 
-  v10[2](v10, v13, 0);
+  handlerCopy[2](handlerCopy, v13, 0);
 }
 
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4
+- (id)linkValueFromParameterState:(id)state action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  stateCopy = state;
+  actionCopy = action;
+  v8 = stateCopy;
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [v8 value];
-    if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    value = [v8 value];
+    if (value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v10 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:v9];
+      v10 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:value];
     }
 
     else
@@ -289,31 +289,31 @@ LABEL_13:
   return v10;
 }
 
-- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)a3
+- (id)defaultSerializedRepresentationFromParameterMetadataDefaultValue:(id)value
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if (valueCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(WFLinkActionEnumParameterDefinition *)self enumMetadata];
-    v6 = [v5 cases];
+    enumMetadata = [(WFLinkActionEnumParameterDefinition *)self enumMetadata];
+    cases = [enumMetadata cases];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __104__WFLinkActionEnumParameterDefinition_defaultSerializedRepresentationFromParameterMetadataDefaultValue___block_invoke;
     v11[3] = &unk_1E837F1B0;
-    v12 = v4;
-    v7 = v4;
-    v8 = [v6 if_firstObjectPassingTest:v11];
+    v12 = valueCopy;
+    v7 = valueCopy;
+    v8 = [cases if_firstObjectPassingTest:v11];
 
-    v9 = [v8 identifier];
+    identifier = [v8 identifier];
   }
 
   else
   {
 
-    v9 = 0;
+    identifier = 0;
   }
 
-  return v9;
+  return identifier;
 }
 
 uint64_t __104__WFLinkActionEnumParameterDefinition_defaultSerializedRepresentationFromParameterMetadataDefaultValue___block_invoke(uint64_t a1, void *a2)
@@ -324,20 +324,20 @@ uint64_t __104__WFLinkActionEnumParameterDefinition_defaultSerializedRepresentat
   return v4;
 }
 
-- (WFLinkActionEnumParameterDefinition)initWithParameterMetadata:(id)a3
+- (WFLinkActionEnumParameterDefinition)initWithParameterMetadata:(id)metadata
 {
-  v5 = a3;
-  v6 = [v5 valueType];
-  if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  metadataCopy = metadata;
+  valueType = [metadataCopy valueType];
+  if (!valueType || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
-    v7 = [v5 valueType];
-    if (v7)
+    valueType2 = [metadataCopy valueType];
+    if (valueType2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = v7;
+        v8 = valueType2;
       }
 
       else
@@ -353,26 +353,26 @@ uint64_t __104__WFLinkActionEnumParameterDefinition_defaultSerializedRepresentat
 
     v9 = v8;
 
-    v10 = [v9 memberValueType];
+    memberValueType = [v9 memberValueType];
 
-    if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (memberValueType && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v11 = v10;
-      v6 = v11;
+      currentHandler = memberValueType;
+      valueType = currentHandler;
     }
 
     else
     {
 
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"WFLinkActionEnumParameterDefinition.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"valueType"}];
-      v6 = 0;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"WFLinkActionEnumParameterDefinition.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"valueType"}];
+      valueType = 0;
     }
   }
 
   v14.receiver = self;
   v14.super_class = WFLinkActionEnumParameterDefinition;
-  v12 = [(WFLinkActionParameterDefinition *)&v14 initWithValueType:v6 parameterMetadata:v5];
+  v12 = [(WFLinkActionParameterDefinition *)&v14 initWithValueType:valueType parameterMetadata:metadataCopy];
 
   return v12;
 }

@@ -1,10 +1,10 @@
 @interface _ICLLParticipant
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLParticipant
@@ -47,23 +47,23 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_participantId != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_participantId != *(equalCopy + 1))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_20:
     v7 = 0;
@@ -71,13 +71,13 @@ LABEL_20:
   }
 
   externalId = self->_externalId;
-  if (externalId | *(v4 + 2) && ![(NSString *)externalId isEqual:?])
+  if (externalId | *(equalCopy + 2) && ![(NSString *)externalId isEqual:?])
   {
     goto LABEL_20;
   }
 
   participantUUID = self->_participantUUID;
-  if (participantUUID | *(v4 + 3))
+  if (participantUUID | *(equalCopy + 3))
   {
     if (![(NSString *)participantUUID isEqual:?])
     {
@@ -87,21 +87,21 @@ LABEL_20:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_storefront != *(v4 + 8))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_storefront != *(equalCopy + 8))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_20;
   }
 
-  v7 = (*(v4 + 40) & 4) == 0;
+  v7 = (*(equalCopy + 40) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_unreliablePlaybackSyncStatus != *(v4 + 9))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_unreliablePlaybackSyncStatus != *(equalCopy + 9))
     {
       goto LABEL_20;
     }
@@ -114,9 +114,9 @@ LABEL_21:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -124,11 +124,11 @@ LABEL_21:
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(NSString *)self->_externalId copyWithZone:a3];
+  v7 = [(NSString *)self->_externalId copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
-  v9 = [(NSString *)self->_participantUUID copyWithZone:a3];
+  v9 = [(NSString *)self->_participantUUID copyWithZone:zone];
   v10 = *(v6 + 24);
   *(v6 + 24) = v9;
 
@@ -149,9 +149,9 @@ LABEL_21:
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
@@ -182,30 +182,30 @@ LABEL_21:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_participantId];
-    [v3 setObject:v4 forKey:@"participantId"];
+    [dictionary setObject:v4 forKey:@"participantId"];
   }
 
   externalId = self->_externalId;
   if (externalId)
   {
-    [v3 setObject:externalId forKey:@"externalId"];
+    [dictionary setObject:externalId forKey:@"externalId"];
   }
 
   participantUUID = self->_participantUUID;
   if (participantUUID)
   {
-    [v3 setObject:participantUUID forKey:@"participantUUID"];
+    [dictionary setObject:participantUUID forKey:@"participantUUID"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:self->_storefront];
-    [v3 setObject:v8 forKey:@"storefront"];
+    [dictionary setObject:v8 forKey:@"storefront"];
 
     has = self->_has;
   }
@@ -213,10 +213,10 @@ LABEL_21:
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInt:self->_unreliablePlaybackSyncStatus];
-    [v3 setObject:v9 forKey:@"unreliablePlaybackSyncStatus"];
+    [dictionary setObject:v9 forKey:@"unreliablePlaybackSyncStatus"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -225,8 +225,8 @@ LABEL_21:
   v8.receiver = self;
   v8.super_class = _ICLLParticipant;
   v4 = [(_ICLLParticipant *)&v8 description];
-  v5 = [(_ICLLParticipant *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLParticipant *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

@@ -1,12 +1,12 @@
 @interface COSTritiumDetailController
 - (COSTritiumDetailController)init;
 - (id)specifiers;
-- (id)tritiumEnabled:(id)a3;
-- (id)tritiumPrivacyEnabled:(id)a3;
+- (id)tritiumEnabled:(id)enabled;
+- (id)tritiumPrivacyEnabled:(id)enabled;
 - (void)_updatePrivacyRowVisibility;
 - (void)dealloc;
-- (void)setTritiumEnabled:(id)a3 specifier:(id)a4;
-- (void)setTritiumPrivacyEnabled:(id)a3 specifier:(id)a4;
+- (void)setTritiumEnabled:(id)enabled specifier:(id)specifier;
+- (void)setTritiumPrivacyEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation COSTritiumDetailController
@@ -248,9 +248,9 @@
   }
 }
 
-- (void)setTritiumEnabled:(id)a3 specifier:(id)a4
+- (void)setTritiumEnabled:(id)enabled specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"AOTEnabled", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [a3 BOOLValue]), @"com.apple.system.prefs");
+  CFPreferencesSetAppValue(@"AOTEnabled", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [enabled BOOLValue]), @"com.apple.system.prefs");
   CFPreferencesAppSynchronize(@"com.apple.system.prefs");
   v5 = objc_opt_new();
   v8 = @"AOTEnabled";
@@ -261,7 +261,7 @@
   [(COSTritiumDetailController *)self _updatePrivacyRowVisibility];
 }
 
-- (id)tritiumEnabled:(id)a3
+- (id)tritiumEnabled:(id)enabled
 {
   keyExistsAndHasValidFormat = 0;
   if (CFPreferencesGetAppBooleanValue(@"AOTEnabled", @"com.apple.system.prefs", &keyExistsAndHasValidFormat))
@@ -280,9 +280,9 @@
   return v5;
 }
 
-- (void)setTritiumPrivacyEnabled:(id)a3 specifier:(id)a4
+- (void)setTritiumPrivacyEnabled:(id)enabled specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"AOTPrivacyEnabled", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [a3 BOOLValue]), @"com.apple.system.prefs");
+  CFPreferencesSetAppValue(@"AOTPrivacyEnabled", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [enabled BOOLValue]), @"com.apple.system.prefs");
   CFPreferencesAppSynchronize(@"com.apple.system.prefs");
   v4 = objc_opt_new();
   v7 = @"AOTPrivacyEnabled";
@@ -291,7 +291,7 @@
   [v4 synchronizeUserDefaultsDomain:@"com.apple.system.prefs" keys:v6];
 }
 
-- (id)tritiumPrivacyEnabled:(id)a3
+- (id)tritiumPrivacyEnabled:(id)enabled
 {
   v3 = CFPreferencesGetAppBooleanValue(@"AOTPrivacyEnabled", @"com.apple.system.prefs", 0) != 0;
 

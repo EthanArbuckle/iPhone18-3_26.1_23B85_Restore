@@ -1,16 +1,16 @@
 @interface _SBFloatingDockPlatterMetrics
 - (CGRect)bounds;
-- (_SBFloatingDockPlatterMetrics)initWithBounds:(CGRect)a3 continuousCornerRadius:(double)a4 shadowRadius:(double)a5 shadowYOffset:(double)a6;
+- (_SBFloatingDockPlatterMetrics)initWithBounds:(CGRect)bounds continuousCornerRadius:(double)radius shadowRadius:(double)shadowRadius shadowYOffset:(double)offset;
 @end
 
 @implementation _SBFloatingDockPlatterMetrics
 
-- (_SBFloatingDockPlatterMetrics)initWithBounds:(CGRect)a3 continuousCornerRadius:(double)a4 shadowRadius:(double)a5 shadowYOffset:(double)a6
+- (_SBFloatingDockPlatterMetrics)initWithBounds:(CGRect)bounds continuousCornerRadius:(double)radius shadowRadius:(double)shadowRadius shadowYOffset:(double)offset
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v14.receiver = self;
   v14.super_class = _SBFloatingDockPlatterMetrics;
   result = [(_SBFloatingDockPlatterMetrics *)&v14 init];
@@ -19,9 +19,9 @@
     result->_bounds.origin.y = y;
     result->_bounds.size.width = width;
     result->_bounds.size.height = height;
-    result->_continuousCornerRadius = a4;
-    result->_shadowRadius = a5;
-    result->_shadowYOffset = a6;
+    result->_continuousCornerRadius = radius;
+    result->_shadowRadius = shadowRadius;
+    result->_shadowYOffset = offset;
     result->_bounds.origin.x = x;
   }
 

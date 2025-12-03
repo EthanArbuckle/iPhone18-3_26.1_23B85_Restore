@@ -1,52 +1,52 @@
 @interface WiFiAnalyticsAWDWASymptomsDnsStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsConfigType:(id)a3;
-- (int)StringAsSuppressedReason:(id)a3;
-- (int)StringAsSymptomsDnsRecommendation:(id)a3;
+- (int)StringAsConfigType:(id)type;
+- (int)StringAsSuppressedReason:(id)reason;
+- (int)StringAsSymptomsDnsRecommendation:(id)recommendation;
 - (int)configType;
 - (int)suppressedReason;
 - (int)symptomsDnsRecommendation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConfigType:(BOOL)a3;
-- (void)setHasDpsNotificationReceivedDuringStudy:(BOOL)a3;
-- (void)setHasImpactedServersAtStudyEnd:(BOOL)a3;
-- (void)setHasImpactedServersAtStudyStart:(BOOL)a3;
-- (void)setHasIsCaptiveServerIPResolved:(BOOL)a3;
-- (void)setHasIsPingEnqueueFailing:(BOOL)a3;
-- (void)setHasLanHealthAfterDecision:(BOOL)a3;
-- (void)setHasLanHealthBeforeDecision:(BOOL)a3;
-- (void)setHasNetscoreAtStudyEnd:(BOOL)a3;
-- (void)setHasNetscoreAtStudyStart:(BOOL)a3;
-- (void)setHasNetscoreHealthAfterDecision:(BOOL)a3;
-- (void)setHasNetscoreHealthBeforeDecision:(BOOL)a3;
-- (void)setHasNumIpv4DnsServers:(BOOL)a3;
-- (void)setHasNumIpv6DnsServers:(BOOL)a3;
-- (void)setHasNumLocalDnsServers:(BOOL)a3;
-- (void)setHasNumRemoteDnsServers:(BOOL)a3;
-- (void)setHasSlowWiFiNotificationReceivedDuringStudy:(BOOL)a3;
-- (void)setHasStallscoreAtStudyEnd:(BOOL)a3;
-- (void)setHasStallscoreAtStudyStart:(BOOL)a3;
-- (void)setHasStallscoreHealthAfterDecision:(BOOL)a3;
-- (void)setHasStallscoreHealthBeforeDecision:(BOOL)a3;
-- (void)setHasSuppressedReason:(BOOL)a3;
-- (void)setHasSymptomsDnsRecommendation:(BOOL)a3;
-- (void)setHasSymptomsDnsscreenStateOn:(BOOL)a3;
-- (void)setHasTotalDnsServers:(BOOL)a3;
-- (void)setHasWanHealthAfterDecision:(BOOL)a3;
-- (void)setHasWanHealthBeforeDecision:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasConfigType:(BOOL)type;
+- (void)setHasDpsNotificationReceivedDuringStudy:(BOOL)study;
+- (void)setHasImpactedServersAtStudyEnd:(BOOL)end;
+- (void)setHasImpactedServersAtStudyStart:(BOOL)start;
+- (void)setHasIsCaptiveServerIPResolved:(BOOL)resolved;
+- (void)setHasIsPingEnqueueFailing:(BOOL)failing;
+- (void)setHasLanHealthAfterDecision:(BOOL)decision;
+- (void)setHasLanHealthBeforeDecision:(BOOL)decision;
+- (void)setHasNetscoreAtStudyEnd:(BOOL)end;
+- (void)setHasNetscoreAtStudyStart:(BOOL)start;
+- (void)setHasNetscoreHealthAfterDecision:(BOOL)decision;
+- (void)setHasNetscoreHealthBeforeDecision:(BOOL)decision;
+- (void)setHasNumIpv4DnsServers:(BOOL)servers;
+- (void)setHasNumIpv6DnsServers:(BOOL)servers;
+- (void)setHasNumLocalDnsServers:(BOOL)servers;
+- (void)setHasNumRemoteDnsServers:(BOOL)servers;
+- (void)setHasSlowWiFiNotificationReceivedDuringStudy:(BOOL)study;
+- (void)setHasStallscoreAtStudyEnd:(BOOL)end;
+- (void)setHasStallscoreAtStudyStart:(BOOL)start;
+- (void)setHasStallscoreHealthAfterDecision:(BOOL)decision;
+- (void)setHasStallscoreHealthBeforeDecision:(BOOL)decision;
+- (void)setHasSuppressedReason:(BOOL)reason;
+- (void)setHasSymptomsDnsRecommendation:(BOOL)recommendation;
+- (void)setHasSymptomsDnsscreenStateOn:(BOOL)on;
+- (void)setHasTotalDnsServers:(BOOL)servers;
+- (void)setHasWanHealthAfterDecision:(BOOL)decision;
+- (void)setHasWanHealthBeforeDecision:(BOOL)decision;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWASymptomsDnsStats
 
-- (void)setHasTotalDnsServers:(BOOL)a3
+- (void)setHasTotalDnsServers:(BOOL)servers
 {
-  if (a3)
+  if (servers)
   {
     v3 = 0x100000;
   }
@@ -59,9 +59,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasNumIpv4DnsServers:(BOOL)a3
+- (void)setHasNumIpv4DnsServers:(BOOL)servers
 {
-  if (a3)
+  if (servers)
   {
     v3 = 1024;
   }
@@ -74,9 +74,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasNumIpv6DnsServers:(BOOL)a3
+- (void)setHasNumIpv6DnsServers:(BOOL)servers
 {
-  if (a3)
+  if (servers)
   {
     v3 = 2048;
   }
@@ -89,9 +89,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasNumLocalDnsServers:(BOOL)a3
+- (void)setHasNumLocalDnsServers:(BOOL)servers
 {
-  if (a3)
+  if (servers)
   {
     v3 = 4096;
   }
@@ -104,9 +104,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasNumRemoteDnsServers:(BOOL)a3
+- (void)setHasNumRemoteDnsServers:(BOOL)servers
 {
-  if (a3)
+  if (servers)
   {
     v3 = 0x2000;
   }
@@ -132,9 +132,9 @@
   }
 }
 
-- (void)setHasConfigType:(BOOL)a3
+- (void)setHasConfigType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -147,20 +147,20 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (int)StringAsConfigType:(id)a3
+- (int)StringAsConfigType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"kDnsServerConfigTypeNone"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"kDnsServerConfigTypeNone"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"kDnsServerConfigTypeAutomatic"])
+  else if ([typeCopy isEqualToString:@"kDnsServerConfigTypeAutomatic"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"kDnsServerConfigTypeManual"])
+  else if ([typeCopy isEqualToString:@"kDnsServerConfigTypeManual"])
   {
     v4 = 2;
   }
@@ -173,9 +173,9 @@
   return v4;
 }
 
-- (void)setHasNetscoreAtStudyStart:(BOOL)a3
+- (void)setHasNetscoreAtStudyStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 128;
   }
@@ -188,9 +188,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasStallscoreAtStudyStart:(BOOL)a3
+- (void)setHasStallscoreAtStudyStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 0x8000;
   }
@@ -203,9 +203,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasImpactedServersAtStudyStart:(BOOL)a3
+- (void)setHasImpactedServersAtStudyStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 8;
   }
@@ -218,9 +218,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasNetscoreHealthBeforeDecision:(BOOL)a3
+- (void)setHasNetscoreHealthBeforeDecision:(BOOL)decision
 {
-  if (a3)
+  if (decision)
   {
     v3 = 512;
   }
@@ -233,9 +233,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasStallscoreHealthBeforeDecision:(BOOL)a3
+- (void)setHasStallscoreHealthBeforeDecision:(BOOL)decision
 {
-  if (a3)
+  if (decision)
   {
     v3 = 0x20000;
   }
@@ -248,9 +248,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasLanHealthBeforeDecision:(BOOL)a3
+- (void)setHasLanHealthBeforeDecision:(BOOL)decision
 {
-  if (a3)
+  if (decision)
   {
     v3 = 32;
   }
@@ -263,9 +263,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasWanHealthBeforeDecision:(BOOL)a3
+- (void)setHasWanHealthBeforeDecision:(BOOL)decision
 {
-  if (a3)
+  if (decision)
   {
     v3 = 0x400000;
   }
@@ -278,9 +278,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasIsCaptiveServerIPResolved:(BOOL)a3
+- (void)setHasIsCaptiveServerIPResolved:(BOOL)resolved
 {
-  if (a3)
+  if (resolved)
   {
     v3 = 0x1000000;
   }
@@ -293,9 +293,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasSymptomsDnsscreenStateOn:(BOOL)a3
+- (void)setHasSymptomsDnsscreenStateOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v3 = 0x8000000;
   }
@@ -321,9 +321,9 @@
   }
 }
 
-- (void)setHasSymptomsDnsRecommendation:(BOOL)a3
+- (void)setHasSymptomsDnsRecommendation:(BOOL)recommendation
 {
-  if (a3)
+  if (recommendation)
   {
     v3 = 0x80000;
   }
@@ -336,20 +336,20 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (int)StringAsSymptomsDnsRecommendation:(id)a3
+- (int)StringAsSymptomsDnsRecommendation:(id)recommendation
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"kSymptomsDnsRecoveryTypeNone"])
+  recommendationCopy = recommendation;
+  if ([recommendationCopy isEqualToString:@"kSymptomsDnsRecoveryTypeNone"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"kSymptomsDnsRecoveryTypeReset"])
+  else if ([recommendationCopy isEqualToString:@"kSymptomsDnsRecoveryTypeReset"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"kSymptomsDnsRecoveryTypeReassoc"])
+  else if ([recommendationCopy isEqualToString:@"kSymptomsDnsRecoveryTypeReassoc"])
   {
     v4 = 2;
   }
@@ -375,9 +375,9 @@
   }
 }
 
-- (void)setHasSuppressedReason:(BOOL)a3
+- (void)setHasSuppressedReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 0x40000;
   }
@@ -390,60 +390,60 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (int)StringAsSuppressedReason:(id)a3
+- (int)StringAsSuppressedReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"kSymptomsDnsNotSuppressed"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"kSymptomsDnsNotSuppressed"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"kSymptomsDnsBudgetThresholdReached"])
+  else if ([reasonCopy isEqualToString:@"kSymptomsDnsBudgetThresholdReached"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"kSymptomsDnsSymptomsConditionsRecovered"])
+  else if ([reasonCopy isEqualToString:@"kSymptomsDnsSymptomsConditionsRecovered"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"kSymptomsDnsPeerDiagnosticsStudy"])
+  else if ([reasonCopy isEqualToString:@"kSymptomsDnsPeerDiagnosticsStudy"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"kSymptomsDnsAWDLActivitySuspected"])
+  else if ([reasonCopy isEqualToString:@"kSymptomsDnsAWDLActivitySuspected"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"kSymptomsDnsCriticalAppInUse"])
+  else if ([reasonCopy isEqualToString:@"kSymptomsDnsCriticalAppInUse"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"kSymptomsDnsWiFiDisassociatedDuringStudy"])
+  else if ([reasonCopy isEqualToString:@"kSymptomsDnsWiFiDisassociatedDuringStudy"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"kSymptomsDnsAverageCcaAboveThreshold"])
+  else if ([reasonCopy isEqualToString:@"kSymptomsDnsAverageCcaAboveThreshold"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"kSymptomsDnsWiFiInterfaceNotPrimary"])
+  else if ([reasonCopy isEqualToString:@"kSymptomsDnsWiFiInterfaceNotPrimary"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"kSymptomsDnsWiFiNetworkIsCaptive"])
+  else if ([reasonCopy isEqualToString:@"kSymptomsDnsWiFiNetworkIsCaptive"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"kSymptomsDnsServerConfigurationInvalid"])
+  else if ([reasonCopy isEqualToString:@"kSymptomsDnsServerConfigurationInvalid"])
   {
     v4 = 10;
   }
@@ -456,9 +456,9 @@
   return v4;
 }
 
-- (void)setHasNetscoreAtStudyEnd:(BOOL)a3
+- (void)setHasNetscoreAtStudyEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 64;
   }
@@ -471,9 +471,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasStallscoreAtStudyEnd:(BOOL)a3
+- (void)setHasStallscoreAtStudyEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 0x4000;
   }
@@ -486,9 +486,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasImpactedServersAtStudyEnd:(BOOL)a3
+- (void)setHasImpactedServersAtStudyEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 4;
   }
@@ -501,9 +501,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasNetscoreHealthAfterDecision:(BOOL)a3
+- (void)setHasNetscoreHealthAfterDecision:(BOOL)decision
 {
-  if (a3)
+  if (decision)
   {
     v3 = 256;
   }
@@ -516,9 +516,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasStallscoreHealthAfterDecision:(BOOL)a3
+- (void)setHasStallscoreHealthAfterDecision:(BOOL)decision
 {
-  if (a3)
+  if (decision)
   {
     v3 = 0x10000;
   }
@@ -531,9 +531,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasLanHealthAfterDecision:(BOOL)a3
+- (void)setHasLanHealthAfterDecision:(BOOL)decision
 {
-  if (a3)
+  if (decision)
   {
     v3 = 16;
   }
@@ -546,9 +546,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasWanHealthAfterDecision:(BOOL)a3
+- (void)setHasWanHealthAfterDecision:(BOOL)decision
 {
-  if (a3)
+  if (decision)
   {
     v3 = 0x200000;
   }
@@ -561,9 +561,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasDpsNotificationReceivedDuringStudy:(BOOL)a3
+- (void)setHasDpsNotificationReceivedDuringStudy:(BOOL)study
 {
-  if (a3)
+  if (study)
   {
     v3 = 0x800000;
   }
@@ -576,9 +576,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasSlowWiFiNotificationReceivedDuringStudy:(BOOL)a3
+- (void)setHasSlowWiFiNotificationReceivedDuringStudy:(BOOL)study
 {
-  if (a3)
+  if (study)
   {
     v3 = 0x4000000;
   }
@@ -591,9 +591,9 @@
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasIsPingEnqueueFailing:(BOOL)a3
+- (void)setHasIsPingEnqueueFailing:(BOOL)failing
 {
-  if (a3)
+  if (failing)
   {
     v3 = 0x2000000;
   }
@@ -612,20 +612,20 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWASymptomsDnsStats;
   v4 = [(WiFiAnalyticsAWDWASymptomsDnsStats *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWASymptomsDnsStats *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWASymptomsDnsStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((*&has & 0x100000) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_totalDnsServers];
-    [v3 setObject:v8 forKey:@"totalDnsServers"];
+    [dictionary setObject:v8 forKey:@"totalDnsServers"];
 
     has = self->_has;
     if ((*&has & 0x400) == 0)
@@ -646,7 +646,7 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_numIpv4DnsServers];
-  [v3 setObject:v9 forKey:@"numIpv4DnsServers"];
+  [dictionary setObject:v9 forKey:@"numIpv4DnsServers"];
 
   has = self->_has;
   if ((*&has & 0x800) == 0)
@@ -662,7 +662,7 @@ LABEL_4:
 
 LABEL_33:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_numIpv6DnsServers];
-  [v3 setObject:v10 forKey:@"numIpv6DnsServers"];
+  [dictionary setObject:v10 forKey:@"numIpv6DnsServers"];
 
   has = self->_has;
   if ((*&has & 0x1000) == 0)
@@ -678,7 +678,7 @@ LABEL_5:
 
 LABEL_34:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_numLocalDnsServers];
-  [v3 setObject:v11 forKey:@"numLocalDnsServers"];
+  [dictionary setObject:v11 forKey:@"numLocalDnsServers"];
 
   has = self->_has;
   if ((*&has & 0x2000) == 0)
@@ -694,7 +694,7 @@ LABEL_6:
 
 LABEL_35:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_numRemoteDnsServers];
-  [v3 setObject:v12 forKey:@"numRemoteDnsServers"];
+  [dictionary setObject:v12 forKey:@"numRemoteDnsServers"];
 
   has = self->_has;
   if ((*&has & 2) == 0)
@@ -720,7 +720,7 @@ LABEL_36:
     v14 = off_1E830E4E8[configType];
   }
 
-  [v3 setObject:v14 forKey:@"configType"];
+  [dictionary setObject:v14 forKey:@"configType"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -736,7 +736,7 @@ LABEL_8:
 
 LABEL_40:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_netscoreAtStudyStart];
-  [v3 setObject:v15 forKey:@"netscoreAtStudyStart"];
+  [dictionary setObject:v15 forKey:@"netscoreAtStudyStart"];
 
   has = self->_has;
   if ((*&has & 0x8000) == 0)
@@ -752,7 +752,7 @@ LABEL_9:
 
 LABEL_41:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_stallscoreAtStudyStart];
-  [v3 setObject:v16 forKey:@"stallscoreAtStudyStart"];
+  [dictionary setObject:v16 forKey:@"stallscoreAtStudyStart"];
 
   has = self->_has;
   if ((*&has & 8) == 0)
@@ -768,7 +768,7 @@ LABEL_10:
 
 LABEL_42:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_impactedServersAtStudyStart];
-  [v3 setObject:v17 forKey:@"impactedServersAtStudyStart"];
+  [dictionary setObject:v17 forKey:@"impactedServersAtStudyStart"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -784,7 +784,7 @@ LABEL_11:
 
 LABEL_43:
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_netscoreHealthBeforeDecision];
-  [v3 setObject:v18 forKey:@"netscoreHealthBeforeDecision"];
+  [dictionary setObject:v18 forKey:@"netscoreHealthBeforeDecision"];
 
   has = self->_has;
   if ((*&has & 0x20000) == 0)
@@ -800,7 +800,7 @@ LABEL_12:
 
 LABEL_44:
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_stallscoreHealthBeforeDecision];
-  [v3 setObject:v19 forKey:@"stallscoreHealthBeforeDecision"];
+  [dictionary setObject:v19 forKey:@"stallscoreHealthBeforeDecision"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -816,7 +816,7 @@ LABEL_13:
 
 LABEL_45:
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_lanHealthBeforeDecision];
-  [v3 setObject:v20 forKey:@"lanHealthBeforeDecision"];
+  [dictionary setObject:v20 forKey:@"lanHealthBeforeDecision"];
 
   has = self->_has;
   if ((*&has & 0x400000) == 0)
@@ -832,7 +832,7 @@ LABEL_14:
 
 LABEL_46:
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_wanHealthBeforeDecision];
-  [v3 setObject:v21 forKey:@"wanHealthBeforeDecision"];
+  [dictionary setObject:v21 forKey:@"wanHealthBeforeDecision"];
 
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
@@ -848,7 +848,7 @@ LABEL_15:
 
 LABEL_47:
   v22 = [MEMORY[0x1E696AD98] numberWithBool:self->_isCaptiveServerIPResolved];
-  [v3 setObject:v22 forKey:@"isCaptiveServerIPResolved"];
+  [dictionary setObject:v22 forKey:@"isCaptiveServerIPResolved"];
 
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
@@ -864,7 +864,7 @@ LABEL_16:
 
 LABEL_48:
   v23 = [MEMORY[0x1E696AD98] numberWithBool:self->_symptomsDnsscreenStateOn];
-  [v3 setObject:v23 forKey:@"symptomsDnsscreenStateOn"];
+  [dictionary setObject:v23 forKey:@"symptomsDnsscreenStateOn"];
 
   has = self->_has;
   if ((*&has & 0x80000) == 0)
@@ -890,7 +890,7 @@ LABEL_49:
     v25 = off_1E830E500[symptomsDnsRecommendation];
   }
 
-  [v3 setObject:v25 forKey:@"symptomsDnsRecommendation"];
+  [dictionary setObject:v25 forKey:@"symptomsDnsRecommendation"];
 
   has = self->_has;
   if ((*&has & 0x40000) == 0)
@@ -916,7 +916,7 @@ LABEL_53:
     v27 = off_1E830E518[suppressedReason];
   }
 
-  [v3 setObject:v27 forKey:@"suppressedReason"];
+  [dictionary setObject:v27 forKey:@"suppressedReason"];
 
   has = self->_has;
   if ((*&has & 0x40) == 0)
@@ -932,7 +932,7 @@ LABEL_19:
 
 LABEL_57:
   v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_netscoreAtStudyEnd];
-  [v3 setObject:v28 forKey:@"netscoreAtStudyEnd"];
+  [dictionary setObject:v28 forKey:@"netscoreAtStudyEnd"];
 
   has = self->_has;
   if ((*&has & 0x4000) == 0)
@@ -948,7 +948,7 @@ LABEL_20:
 
 LABEL_58:
   v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_stallscoreAtStudyEnd];
-  [v3 setObject:v29 forKey:@"stallscoreAtStudyEnd"];
+  [dictionary setObject:v29 forKey:@"stallscoreAtStudyEnd"];
 
   has = self->_has;
   if ((*&has & 4) == 0)
@@ -964,7 +964,7 @@ LABEL_21:
 
 LABEL_59:
   v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_impactedServersAtStudyEnd];
-  [v3 setObject:v30 forKey:@"impactedServersAtStudyEnd"];
+  [dictionary setObject:v30 forKey:@"impactedServersAtStudyEnd"];
 
   has = self->_has;
   if ((*&has & 0x100) == 0)
@@ -980,7 +980,7 @@ LABEL_22:
 
 LABEL_60:
   v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_netscoreHealthAfterDecision];
-  [v3 setObject:v31 forKey:@"netscoreHealthAfterDecision"];
+  [dictionary setObject:v31 forKey:@"netscoreHealthAfterDecision"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -996,7 +996,7 @@ LABEL_23:
 
 LABEL_61:
   v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_stallscoreHealthAfterDecision];
-  [v3 setObject:v32 forKey:@"stallscoreHealthAfterDecision"];
+  [dictionary setObject:v32 forKey:@"stallscoreHealthAfterDecision"];
 
   has = self->_has;
   if ((*&has & 0x10) == 0)
@@ -1012,7 +1012,7 @@ LABEL_24:
 
 LABEL_62:
   v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_lanHealthAfterDecision];
-  [v3 setObject:v33 forKey:@"lanHealthAfterDecision"];
+  [dictionary setObject:v33 forKey:@"lanHealthAfterDecision"];
 
   has = self->_has;
   if ((*&has & 0x200000) == 0)
@@ -1028,7 +1028,7 @@ LABEL_25:
 
 LABEL_63:
   v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_wanHealthAfterDecision];
-  [v3 setObject:v34 forKey:@"wanHealthAfterDecision"];
+  [dictionary setObject:v34 forKey:@"wanHealthAfterDecision"];
 
   has = self->_has;
   if ((*&has & 1) == 0)
@@ -1044,7 +1044,7 @@ LABEL_26:
 
 LABEL_64:
   v35 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_symptomsDnsTimeSincePreviousTriggerMinutes];
-  [v3 setObject:v35 forKey:@"symptomsDnsTimeSincePreviousTriggerMinutes"];
+  [dictionary setObject:v35 forKey:@"symptomsDnsTimeSincePreviousTriggerMinutes"];
 
   has = self->_has;
   if ((*&has & 0x800000) == 0)
@@ -1057,7 +1057,7 @@ LABEL_27:
 
 LABEL_66:
     v37 = [MEMORY[0x1E696AD98] numberWithBool:self->_slowWiFiNotificationReceivedDuringStudy];
-    [v3 setObject:v37 forKey:@"slowWiFiNotificationReceivedDuringStudy"];
+    [dictionary setObject:v37 forKey:@"slowWiFiNotificationReceivedDuringStudy"];
 
     if ((*&self->_has & 0x2000000) == 0)
     {
@@ -1069,7 +1069,7 @@ LABEL_66:
 
 LABEL_65:
   v36 = [MEMORY[0x1E696AD98] numberWithBool:self->_dpsNotificationReceivedDuringStudy];
-  [v3 setObject:v36 forKey:@"dpsNotificationReceivedDuringStudy"];
+  [dictionary setObject:v36 forKey:@"dpsNotificationReceivedDuringStudy"];
 
   has = self->_has;
   if ((*&has & 0x4000000) != 0)
@@ -1082,18 +1082,18 @@ LABEL_28:
   {
 LABEL_29:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_isPingEnqueueFailing];
-    [v3 setObject:v5 forKey:@"isPingEnqueueFailing"];
+    [dictionary setObject:v5 forKey:@"isPingEnqueueFailing"];
   }
 
 LABEL_30:
-  v6 = v3;
+  v6 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v33 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x100000) != 0)
   {
@@ -1504,14 +1504,14 @@ LABEL_29:
 LABEL_30:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x100000) != 0)
   {
-    v4[23] = self->_totalDnsServers;
-    v4[28] |= 0x100000u;
+    toCopy[23] = self->_totalDnsServers;
+    toCopy[28] |= 0x100000u;
     has = self->_has;
     if ((*&has & 0x400) == 0)
     {
@@ -1530,8 +1530,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[13] = self->_numIpv4DnsServers;
-  v4[28] |= 0x400u;
+  toCopy[13] = self->_numIpv4DnsServers;
+  toCopy[28] |= 0x400u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1545,8 +1545,8 @@ LABEL_4:
   }
 
 LABEL_35:
-  v4[14] = self->_numIpv6DnsServers;
-  v4[28] |= 0x800u;
+  toCopy[14] = self->_numIpv6DnsServers;
+  toCopy[28] |= 0x800u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1560,8 +1560,8 @@ LABEL_5:
   }
 
 LABEL_36:
-  v4[15] = self->_numLocalDnsServers;
-  v4[28] |= 0x1000u;
+  toCopy[15] = self->_numLocalDnsServers;
+  toCopy[28] |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1575,8 +1575,8 @@ LABEL_6:
   }
 
 LABEL_37:
-  v4[16] = self->_numRemoteDnsServers;
-  v4[28] |= 0x2000u;
+  toCopy[16] = self->_numRemoteDnsServers;
+  toCopy[28] |= 0x2000u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1590,8 +1590,8 @@ LABEL_7:
   }
 
 LABEL_38:
-  v4[4] = self->_configType;
-  v4[28] |= 2u;
+  toCopy[4] = self->_configType;
+  toCopy[28] |= 2u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1605,8 +1605,8 @@ LABEL_8:
   }
 
 LABEL_39:
-  v4[10] = self->_netscoreAtStudyStart;
-  v4[28] |= 0x80u;
+  toCopy[10] = self->_netscoreAtStudyStart;
+  toCopy[28] |= 0x80u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1620,8 +1620,8 @@ LABEL_9:
   }
 
 LABEL_40:
-  v4[18] = self->_stallscoreAtStudyStart;
-  v4[28] |= 0x8000u;
+  toCopy[18] = self->_stallscoreAtStudyStart;
+  toCopy[28] |= 0x8000u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1635,8 +1635,8 @@ LABEL_10:
   }
 
 LABEL_41:
-  v4[6] = self->_impactedServersAtStudyStart;
-  v4[28] |= 8u;
+  toCopy[6] = self->_impactedServersAtStudyStart;
+  toCopy[28] |= 8u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1650,8 +1650,8 @@ LABEL_11:
   }
 
 LABEL_42:
-  v4[12] = self->_netscoreHealthBeforeDecision;
-  v4[28] |= 0x200u;
+  toCopy[12] = self->_netscoreHealthBeforeDecision;
+  toCopy[28] |= 0x200u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1665,8 +1665,8 @@ LABEL_12:
   }
 
 LABEL_43:
-  v4[20] = self->_stallscoreHealthBeforeDecision;
-  v4[28] |= 0x20000u;
+  toCopy[20] = self->_stallscoreHealthBeforeDecision;
+  toCopy[28] |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1680,8 +1680,8 @@ LABEL_13:
   }
 
 LABEL_44:
-  v4[8] = self->_lanHealthBeforeDecision;
-  v4[28] |= 0x20u;
+  toCopy[8] = self->_lanHealthBeforeDecision;
+  toCopy[28] |= 0x20u;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -1695,8 +1695,8 @@ LABEL_14:
   }
 
 LABEL_45:
-  v4[25] = self->_wanHealthBeforeDecision;
-  v4[28] |= 0x400000u;
+  toCopy[25] = self->_wanHealthBeforeDecision;
+  toCopy[28] |= 0x400000u;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -1710,8 +1710,8 @@ LABEL_15:
   }
 
 LABEL_46:
-  *(v4 + 105) = self->_isCaptiveServerIPResolved;
-  v4[28] |= 0x1000000u;
+  *(toCopy + 105) = self->_isCaptiveServerIPResolved;
+  toCopy[28] |= 0x1000000u;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -1725,8 +1725,8 @@ LABEL_16:
   }
 
 LABEL_47:
-  *(v4 + 108) = self->_symptomsDnsscreenStateOn;
-  v4[28] |= 0x8000000u;
+  *(toCopy + 108) = self->_symptomsDnsscreenStateOn;
+  toCopy[28] |= 0x8000000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1740,8 +1740,8 @@ LABEL_17:
   }
 
 LABEL_48:
-  v4[22] = self->_symptomsDnsRecommendation;
-  v4[28] |= 0x80000u;
+  toCopy[22] = self->_symptomsDnsRecommendation;
+  toCopy[28] |= 0x80000u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1755,8 +1755,8 @@ LABEL_18:
   }
 
 LABEL_49:
-  v4[21] = self->_suppressedReason;
-  v4[28] |= 0x40000u;
+  toCopy[21] = self->_suppressedReason;
+  toCopy[28] |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1770,8 +1770,8 @@ LABEL_19:
   }
 
 LABEL_50:
-  v4[9] = self->_netscoreAtStudyEnd;
-  v4[28] |= 0x40u;
+  toCopy[9] = self->_netscoreAtStudyEnd;
+  toCopy[28] |= 0x40u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1785,8 +1785,8 @@ LABEL_20:
   }
 
 LABEL_51:
-  v4[17] = self->_stallscoreAtStudyEnd;
-  v4[28] |= 0x4000u;
+  toCopy[17] = self->_stallscoreAtStudyEnd;
+  toCopy[28] |= 0x4000u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1800,8 +1800,8 @@ LABEL_21:
   }
 
 LABEL_52:
-  v4[5] = self->_impactedServersAtStudyEnd;
-  v4[28] |= 4u;
+  toCopy[5] = self->_impactedServersAtStudyEnd;
+  toCopy[28] |= 4u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1815,8 +1815,8 @@ LABEL_22:
   }
 
 LABEL_53:
-  v4[11] = self->_netscoreHealthAfterDecision;
-  v4[28] |= 0x100u;
+  toCopy[11] = self->_netscoreHealthAfterDecision;
+  toCopy[28] |= 0x100u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1830,8 +1830,8 @@ LABEL_23:
   }
 
 LABEL_54:
-  v4[19] = self->_stallscoreHealthAfterDecision;
-  v4[28] |= 0x10000u;
+  toCopy[19] = self->_stallscoreHealthAfterDecision;
+  toCopy[28] |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1845,8 +1845,8 @@ LABEL_24:
   }
 
 LABEL_55:
-  v4[7] = self->_lanHealthAfterDecision;
-  v4[28] |= 0x10u;
+  toCopy[7] = self->_lanHealthAfterDecision;
+  toCopy[28] |= 0x10u;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1860,8 +1860,8 @@ LABEL_25:
   }
 
 LABEL_56:
-  v4[24] = self->_wanHealthAfterDecision;
-  v4[28] |= 0x200000u;
+  toCopy[24] = self->_wanHealthAfterDecision;
+  toCopy[28] |= 0x200000u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1875,8 +1875,8 @@ LABEL_26:
   }
 
 LABEL_57:
-  *(v4 + 1) = self->_symptomsDnsTimeSincePreviousTriggerMinutes;
-  v4[28] |= 1u;
+  *(toCopy + 1) = self->_symptomsDnsTimeSincePreviousTriggerMinutes;
+  toCopy[28] |= 1u;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -1890,8 +1890,8 @@ LABEL_27:
   }
 
 LABEL_58:
-  *(v4 + 104) = self->_dpsNotificationReceivedDuringStudy;
-  v4[28] |= 0x800000u;
+  *(toCopy + 104) = self->_dpsNotificationReceivedDuringStudy;
+  toCopy[28] |= 0x800000u;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -1905,21 +1905,21 @@ LABEL_28:
   }
 
 LABEL_59:
-  *(v4 + 107) = self->_slowWiFiNotificationReceivedDuringStudy;
-  v4[28] |= 0x4000000u;
+  *(toCopy + 107) = self->_slowWiFiNotificationReceivedDuringStudy;
+  toCopy[28] |= 0x4000000u;
   if ((*&self->_has & 0x2000000) != 0)
   {
 LABEL_29:
-    *(v4 + 106) = self->_isPingEnqueueFailing;
-    v4[28] |= 0x2000000u;
+    *(toCopy + 106) = self->_isPingEnqueueFailing;
+    toCopy[28] |= 0x2000000u;
   }
 
 LABEL_30:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((*&has & 0x100000) != 0)
   {
@@ -2331,19 +2331,19 @@ LABEL_29:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_152;
   }
 
   has = self->_has;
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if ((*&has & 0x100000) != 0)
   {
-    if ((v6 & 0x100000) == 0 || self->_totalDnsServers != *(v4 + 23))
+    if ((v6 & 0x100000) == 0 || self->_totalDnsServers != *(equalCopy + 23))
     {
       goto LABEL_152;
     }
@@ -2356,7 +2356,7 @@ LABEL_29:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_numIpv4DnsServers != *(v4 + 13))
+    if ((v6 & 0x400) == 0 || self->_numIpv4DnsServers != *(equalCopy + 13))
     {
       goto LABEL_152;
     }
@@ -2369,7 +2369,7 @@ LABEL_29:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_numIpv6DnsServers != *(v4 + 14))
+    if ((v6 & 0x800) == 0 || self->_numIpv6DnsServers != *(equalCopy + 14))
     {
       goto LABEL_152;
     }
@@ -2382,7 +2382,7 @@ LABEL_29:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_numLocalDnsServers != *(v4 + 15))
+    if ((v6 & 0x1000) == 0 || self->_numLocalDnsServers != *(equalCopy + 15))
     {
       goto LABEL_152;
     }
@@ -2395,7 +2395,7 @@ LABEL_29:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_numRemoteDnsServers != *(v4 + 16))
+    if ((v6 & 0x2000) == 0 || self->_numRemoteDnsServers != *(equalCopy + 16))
     {
       goto LABEL_152;
     }
@@ -2408,7 +2408,7 @@ LABEL_29:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_configType != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_configType != *(equalCopy + 4))
     {
       goto LABEL_152;
     }
@@ -2421,7 +2421,7 @@ LABEL_29:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_netscoreAtStudyStart != *(v4 + 10))
+    if ((v6 & 0x80) == 0 || self->_netscoreAtStudyStart != *(equalCopy + 10))
     {
       goto LABEL_152;
     }
@@ -2434,7 +2434,7 @@ LABEL_29:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_stallscoreAtStudyStart != *(v4 + 18))
+    if ((v6 & 0x8000) == 0 || self->_stallscoreAtStudyStart != *(equalCopy + 18))
     {
       goto LABEL_152;
     }
@@ -2447,7 +2447,7 @@ LABEL_29:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_impactedServersAtStudyStart != *(v4 + 6))
+    if ((v6 & 8) == 0 || self->_impactedServersAtStudyStart != *(equalCopy + 6))
     {
       goto LABEL_152;
     }
@@ -2460,7 +2460,7 @@ LABEL_29:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_netscoreHealthBeforeDecision != *(v4 + 12))
+    if ((v6 & 0x200) == 0 || self->_netscoreHealthBeforeDecision != *(equalCopy + 12))
     {
       goto LABEL_152;
     }
@@ -2473,7 +2473,7 @@ LABEL_29:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_stallscoreHealthBeforeDecision != *(v4 + 20))
+    if ((v6 & 0x20000) == 0 || self->_stallscoreHealthBeforeDecision != *(equalCopy + 20))
     {
       goto LABEL_152;
     }
@@ -2486,7 +2486,7 @@ LABEL_29:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_lanHealthBeforeDecision != *(v4 + 8))
+    if ((v6 & 0x20) == 0 || self->_lanHealthBeforeDecision != *(equalCopy + 8))
     {
       goto LABEL_152;
     }
@@ -2499,7 +2499,7 @@ LABEL_29:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v6 & 0x400000) == 0 || self->_wanHealthBeforeDecision != *(v4 + 25))
+    if ((v6 & 0x400000) == 0 || self->_wanHealthBeforeDecision != *(equalCopy + 25))
     {
       goto LABEL_152;
     }
@@ -2517,16 +2517,16 @@ LABEL_29:
       goto LABEL_152;
     }
 
-    v7 = *(v4 + 105);
+    v7 = *(equalCopy + 105);
     if (self->_isCaptiveServerIPResolved)
     {
-      if ((*(v4 + 105) & 1) == 0)
+      if ((*(equalCopy + 105) & 1) == 0)
       {
         goto LABEL_152;
       }
     }
 
-    else if (*(v4 + 105))
+    else if (*(equalCopy + 105))
     {
       goto LABEL_152;
     }
@@ -2544,16 +2544,16 @@ LABEL_29:
       goto LABEL_152;
     }
 
-    v8 = *(v4 + 108);
+    v8 = *(equalCopy + 108);
     if (self->_symptomsDnsscreenStateOn)
     {
-      if ((*(v4 + 108) & 1) == 0)
+      if ((*(equalCopy + 108) & 1) == 0)
       {
         goto LABEL_152;
       }
     }
 
-    else if (*(v4 + 108))
+    else if (*(equalCopy + 108))
     {
       goto LABEL_152;
     }
@@ -2566,7 +2566,7 @@ LABEL_29:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v6 & 0x80000) == 0 || self->_symptomsDnsRecommendation != *(v4 + 22))
+    if ((v6 & 0x80000) == 0 || self->_symptomsDnsRecommendation != *(equalCopy + 22))
     {
       goto LABEL_152;
     }
@@ -2579,7 +2579,7 @@ LABEL_29:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v6 & 0x40000) == 0 || self->_suppressedReason != *(v4 + 21))
+    if ((v6 & 0x40000) == 0 || self->_suppressedReason != *(equalCopy + 21))
     {
       goto LABEL_152;
     }
@@ -2592,7 +2592,7 @@ LABEL_29:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_netscoreAtStudyEnd != *(v4 + 9))
+    if ((v6 & 0x40) == 0 || self->_netscoreAtStudyEnd != *(equalCopy + 9))
     {
       goto LABEL_152;
     }
@@ -2605,7 +2605,7 @@ LABEL_29:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_stallscoreAtStudyEnd != *(v4 + 17))
+    if ((v6 & 0x4000) == 0 || self->_stallscoreAtStudyEnd != *(equalCopy + 17))
     {
       goto LABEL_152;
     }
@@ -2618,7 +2618,7 @@ LABEL_29:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_impactedServersAtStudyEnd != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_impactedServersAtStudyEnd != *(equalCopy + 5))
     {
       goto LABEL_152;
     }
@@ -2631,7 +2631,7 @@ LABEL_29:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_netscoreHealthAfterDecision != *(v4 + 11))
+    if ((v6 & 0x100) == 0 || self->_netscoreHealthAfterDecision != *(equalCopy + 11))
     {
       goto LABEL_152;
     }
@@ -2644,7 +2644,7 @@ LABEL_29:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_stallscoreHealthAfterDecision != *(v4 + 19))
+    if ((v6 & 0x10000) == 0 || self->_stallscoreHealthAfterDecision != *(equalCopy + 19))
     {
       goto LABEL_152;
     }
@@ -2657,7 +2657,7 @@ LABEL_29:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_lanHealthAfterDecision != *(v4 + 7))
+    if ((v6 & 0x10) == 0 || self->_lanHealthAfterDecision != *(equalCopy + 7))
     {
       goto LABEL_152;
     }
@@ -2670,7 +2670,7 @@ LABEL_29:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v6 & 0x200000) == 0 || self->_wanHealthAfterDecision != *(v4 + 24))
+    if ((v6 & 0x200000) == 0 || self->_wanHealthAfterDecision != *(equalCopy + 24))
     {
       goto LABEL_152;
     }
@@ -2683,7 +2683,7 @@ LABEL_29:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_symptomsDnsTimeSincePreviousTriggerMinutes != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_symptomsDnsTimeSincePreviousTriggerMinutes != *(equalCopy + 1))
     {
       goto LABEL_152;
     }
@@ -2701,16 +2701,16 @@ LABEL_29:
       goto LABEL_152;
     }
 
-    v9 = *(v4 + 104);
+    v9 = *(equalCopy + 104);
     if (self->_dpsNotificationReceivedDuringStudy)
     {
-      if ((*(v4 + 104) & 1) == 0)
+      if ((*(equalCopy + 104) & 1) == 0)
       {
         goto LABEL_152;
       }
     }
 
-    else if (*(v4 + 104))
+    else if (*(equalCopy + 104))
     {
       goto LABEL_152;
     }
@@ -2728,16 +2728,16 @@ LABEL_29:
       goto LABEL_152;
     }
 
-    v10 = *(v4 + 107);
+    v10 = *(equalCopy + 107);
     if (self->_slowWiFiNotificationReceivedDuringStudy)
     {
-      if ((*(v4 + 107) & 1) == 0)
+      if ((*(equalCopy + 107) & 1) == 0)
       {
         goto LABEL_152;
       }
     }
 
-    else if (*(v4 + 107))
+    else if (*(equalCopy + 107))
     {
       goto LABEL_152;
     }
@@ -2754,13 +2754,13 @@ LABEL_29:
     {
       if (self->_isPingEnqueueFailing)
       {
-        if ((*(v4 + 106) & 1) == 0)
+        if ((*(equalCopy + 106) & 1) == 0)
         {
           goto LABEL_152;
         }
       }
 
-      else if (*(v4 + 106))
+      else if (*(equalCopy + 106))
       {
         goto LABEL_152;
       }
@@ -3171,15 +3171,15 @@ LABEL_29:
   return v3 ^ v31 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x100000) != 0)
   {
-    self->_totalDnsServers = *(v4 + 23);
+    self->_totalDnsServers = *(fromCopy + 23);
     *&self->_has |= 0x100000u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 0x400) == 0)
     {
 LABEL_3:
@@ -3197,9 +3197,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_numIpv4DnsServers = *(v4 + 13);
+  self->_numIpv4DnsServers = *(fromCopy + 13);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x800) == 0)
   {
 LABEL_4:
@@ -3212,9 +3212,9 @@ LABEL_4:
   }
 
 LABEL_35:
-  self->_numIpv6DnsServers = *(v4 + 14);
+  self->_numIpv6DnsServers = *(fromCopy + 14);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_5:
@@ -3227,9 +3227,9 @@ LABEL_5:
   }
 
 LABEL_36:
-  self->_numLocalDnsServers = *(v4 + 15);
+  self->_numLocalDnsServers = *(fromCopy + 15);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_6:
@@ -3242,9 +3242,9 @@ LABEL_6:
   }
 
 LABEL_37:
-  self->_numRemoteDnsServers = *(v4 + 16);
+  self->_numRemoteDnsServers = *(fromCopy + 16);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 2) == 0)
   {
 LABEL_7:
@@ -3257,9 +3257,9 @@ LABEL_7:
   }
 
 LABEL_38:
-  self->_configType = *(v4 + 4);
+  self->_configType = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x80) == 0)
   {
 LABEL_8:
@@ -3272,9 +3272,9 @@ LABEL_8:
   }
 
 LABEL_39:
-  self->_netscoreAtStudyStart = *(v4 + 10);
+  self->_netscoreAtStudyStart = *(fromCopy + 10);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_9:
@@ -3287,9 +3287,9 @@ LABEL_9:
   }
 
 LABEL_40:
-  self->_stallscoreAtStudyStart = *(v4 + 18);
+  self->_stallscoreAtStudyStart = *(fromCopy + 18);
   *&self->_has |= 0x8000u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 8) == 0)
   {
 LABEL_10:
@@ -3302,9 +3302,9 @@ LABEL_10:
   }
 
 LABEL_41:
-  self->_impactedServersAtStudyStart = *(v4 + 6);
+  self->_impactedServersAtStudyStart = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x200) == 0)
   {
 LABEL_11:
@@ -3317,9 +3317,9 @@ LABEL_11:
   }
 
 LABEL_42:
-  self->_netscoreHealthBeforeDecision = *(v4 + 12);
+  self->_netscoreHealthBeforeDecision = *(fromCopy + 12);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_12:
@@ -3332,9 +3332,9 @@ LABEL_12:
   }
 
 LABEL_43:
-  self->_stallscoreHealthBeforeDecision = *(v4 + 20);
+  self->_stallscoreHealthBeforeDecision = *(fromCopy + 20);
   *&self->_has |= 0x20000u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x20) == 0)
   {
 LABEL_13:
@@ -3347,9 +3347,9 @@ LABEL_13:
   }
 
 LABEL_44:
-  self->_lanHealthBeforeDecision = *(v4 + 8);
+  self->_lanHealthBeforeDecision = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x400000) == 0)
   {
 LABEL_14:
@@ -3362,9 +3362,9 @@ LABEL_14:
   }
 
 LABEL_45:
-  self->_wanHealthBeforeDecision = *(v4 + 25);
+  self->_wanHealthBeforeDecision = *(fromCopy + 25);
   *&self->_has |= 0x400000u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x1000000) == 0)
   {
 LABEL_15:
@@ -3377,9 +3377,9 @@ LABEL_15:
   }
 
 LABEL_46:
-  self->_isCaptiveServerIPResolved = *(v4 + 105);
+  self->_isCaptiveServerIPResolved = *(fromCopy + 105);
   *&self->_has |= 0x1000000u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x8000000) == 0)
   {
 LABEL_16:
@@ -3392,9 +3392,9 @@ LABEL_16:
   }
 
 LABEL_47:
-  self->_symptomsDnsscreenStateOn = *(v4 + 108);
+  self->_symptomsDnsscreenStateOn = *(fromCopy + 108);
   *&self->_has |= 0x8000000u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_17:
@@ -3407,9 +3407,9 @@ LABEL_17:
   }
 
 LABEL_48:
-  self->_symptomsDnsRecommendation = *(v4 + 22);
+  self->_symptomsDnsRecommendation = *(fromCopy + 22);
   *&self->_has |= 0x80000u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_18:
@@ -3422,9 +3422,9 @@ LABEL_18:
   }
 
 LABEL_49:
-  self->_suppressedReason = *(v4 + 21);
+  self->_suppressedReason = *(fromCopy + 21);
   *&self->_has |= 0x40000u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x40) == 0)
   {
 LABEL_19:
@@ -3437,9 +3437,9 @@ LABEL_19:
   }
 
 LABEL_50:
-  self->_netscoreAtStudyEnd = *(v4 + 9);
+  self->_netscoreAtStudyEnd = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_20:
@@ -3452,9 +3452,9 @@ LABEL_20:
   }
 
 LABEL_51:
-  self->_stallscoreAtStudyEnd = *(v4 + 17);
+  self->_stallscoreAtStudyEnd = *(fromCopy + 17);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 4) == 0)
   {
 LABEL_21:
@@ -3467,9 +3467,9 @@ LABEL_21:
   }
 
 LABEL_52:
-  self->_impactedServersAtStudyEnd = *(v4 + 5);
+  self->_impactedServersAtStudyEnd = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x100) == 0)
   {
 LABEL_22:
@@ -3482,9 +3482,9 @@ LABEL_22:
   }
 
 LABEL_53:
-  self->_netscoreHealthAfterDecision = *(v4 + 11);
+  self->_netscoreHealthAfterDecision = *(fromCopy + 11);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_23:
@@ -3497,9 +3497,9 @@ LABEL_23:
   }
 
 LABEL_54:
-  self->_stallscoreHealthAfterDecision = *(v4 + 19);
+  self->_stallscoreHealthAfterDecision = *(fromCopy + 19);
   *&self->_has |= 0x10000u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x10) == 0)
   {
 LABEL_24:
@@ -3512,9 +3512,9 @@ LABEL_24:
   }
 
 LABEL_55:
-  self->_lanHealthAfterDecision = *(v4 + 7);
+  self->_lanHealthAfterDecision = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x200000) == 0)
   {
 LABEL_25:
@@ -3527,9 +3527,9 @@ LABEL_25:
   }
 
 LABEL_56:
-  self->_wanHealthAfterDecision = *(v4 + 24);
+  self->_wanHealthAfterDecision = *(fromCopy + 24);
   *&self->_has |= 0x200000u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 1) == 0)
   {
 LABEL_26:
@@ -3542,9 +3542,9 @@ LABEL_26:
   }
 
 LABEL_57:
-  self->_symptomsDnsTimeSincePreviousTriggerMinutes = *(v4 + 1);
+  self->_symptomsDnsTimeSincePreviousTriggerMinutes = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x800000) == 0)
   {
 LABEL_27:
@@ -3557,9 +3557,9 @@ LABEL_27:
   }
 
 LABEL_58:
-  self->_dpsNotificationReceivedDuringStudy = *(v4 + 104);
+  self->_dpsNotificationReceivedDuringStudy = *(fromCopy + 104);
   *&self->_has |= 0x800000u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x4000000) == 0)
   {
 LABEL_28:
@@ -3572,12 +3572,12 @@ LABEL_28:
   }
 
 LABEL_59:
-  self->_slowWiFiNotificationReceivedDuringStudy = *(v4 + 107);
+  self->_slowWiFiNotificationReceivedDuringStudy = *(fromCopy + 107);
   *&self->_has |= 0x4000000u;
-  if ((*(v4 + 28) & 0x2000000) != 0)
+  if ((*(fromCopy + 28) & 0x2000000) != 0)
   {
 LABEL_29:
-    self->_isPingEnqueueFailing = *(v4 + 106);
+    self->_isPingEnqueueFailing = *(fromCopy + 106);
     *&self->_has |= 0x2000000u;
   }
 

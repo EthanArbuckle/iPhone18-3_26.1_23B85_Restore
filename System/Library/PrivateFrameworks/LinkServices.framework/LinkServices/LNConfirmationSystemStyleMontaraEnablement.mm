@@ -1,7 +1,7 @@
 @interface LNConfirmationSystemStyleMontaraEnablement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)bundleIdentifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNConfirmationSystemStyleMontaraEnablement
@@ -14,11 +14,11 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_19774F460();
     swift_unknownObjectRelease();
@@ -27,7 +27,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = LNConfirmationSystemStyleMontaraEnablement.isEqual(_:)(v8);
@@ -36,11 +36,11 @@
   return v6 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  LNConfirmationSystemStyleMontaraEnablement.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  LNConfirmationSystemStyleMontaraEnablement.encode(with:)(coderCopy);
 }
 
 @end

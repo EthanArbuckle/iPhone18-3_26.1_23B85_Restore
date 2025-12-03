@@ -1,32 +1,32 @@
 @interface BRCUserNotification
 + (id)defaultInstance;
 - (BRCUserNotification)init;
-- (id)_logWrapUserReplyBlock:(id)a3;
-- (void)_displayDialogWithType:(unint64_t)a3 dict:(id)a4 options:(id)a5 userReplyBlock:(id)a6;
-- (void)_displayDialogWithType:(unint64_t)a3 dict:(id)a4 userReplyBlock:(id)a5;
+- (id)_logWrapUserReplyBlock:(id)block;
+- (void)_displayDialogWithType:(unint64_t)type dict:(id)dict options:(id)options userReplyBlock:(id)block;
+- (void)_displayDialogWithType:(unint64_t)type dict:(id)dict userReplyBlock:(id)block;
 - (void)_hideCurrentDialog;
-- (void)_showJoinDialogWithDocumentName:(id)a3 isPublicShare:(BOOL)a4 ckContainer:(id)a5 ownerDisplayName:(id)a6 isFolderShare:(BOOL)a7 appName:(id)a8 reply:(id)a9;
-- (void)_updateDialogWithType:(unint64_t)a3 dict:(id)a4 userReplyBlock:(id)a5;
+- (void)_showJoinDialogWithDocumentName:(id)name isPublicShare:(BOOL)share ckContainer:(id)container ownerDisplayName:(id)displayName isFolderShare:(BOOL)folderShare appName:(id)appName reply:(id)reply;
+- (void)_updateDialogWithType:(unint64_t)type dict:(id)dict userReplyBlock:(id)block;
 - (void)close;
 - (void)dealloc;
 - (void)showCloudDocsNotSupportedSimulatorRunningOnOldHost;
-- (void)showDefaultErrorForRequestAccessWithReply:(id)a3;
-- (void)showErrorDeviceOfflineForShareMetadata:(id)a3 reply:(id)a4;
-- (void)showErrorDeviceOfflineForType:(id)a3 reply:(id)a4;
-- (void)showErrorDocumentsAppNotVisibleForShareURL:(id)a3 reply:(id)a4;
-- (void)showErrorInstallNativeAppForShareMetadata:(id)a3 reply:(id)a4;
-- (void)showErrorItemUnavailableOrAccessRestrictedForShareMetadata:(id)a3 reply:(id)a4;
-- (void)showErrorItemUnavailableOrAccessRestrictedForType:(id)a3 reply:(id)a4;
-- (void)showErrorNativeAppDisabledByProfileForShareMetadata:(id)a3 reply:(id)a4;
-- (void)showErrorParticipantLimitReachedForShareMetadata:(id)a3 reply:(id)a4;
-- (void)showErrorParticipantLimitReachedForType:(id)a3 reply:(id)a4;
-- (void)showErrorReasonUnknownForShareMetadata:(id)a3 reply:(id)a4;
-- (void)showErrorServerNotReachableForShareMetadata:(id)a3 reply:(id)a4;
-- (void)showErrorServerNotReachableForType:(id)a3 reply:(id)a4;
-- (void)showErrorSignInToiCloudForShareMetadata:(id)a3 reply:(id)a4;
-- (void)showErrorTurnOniCloudDriveForShareMetadata:(id)a3 reply:(id)a4;
-- (void)showErrorVolumeNotSupportedWithReason:(unint64_t)a3;
-- (void)showJoinDialogForShareMetadata:(id)a3 ckContainer:(id)a4 reply:(id)a5;
+- (void)showDefaultErrorForRequestAccessWithReply:(id)reply;
+- (void)showErrorDeviceOfflineForShareMetadata:(id)metadata reply:(id)reply;
+- (void)showErrorDeviceOfflineForType:(id)type reply:(id)reply;
+- (void)showErrorDocumentsAppNotVisibleForShareURL:(id)l reply:(id)reply;
+- (void)showErrorInstallNativeAppForShareMetadata:(id)metadata reply:(id)reply;
+- (void)showErrorItemUnavailableOrAccessRestrictedForShareMetadata:(id)metadata reply:(id)reply;
+- (void)showErrorItemUnavailableOrAccessRestrictedForType:(id)type reply:(id)reply;
+- (void)showErrorNativeAppDisabledByProfileForShareMetadata:(id)metadata reply:(id)reply;
+- (void)showErrorParticipantLimitReachedForShareMetadata:(id)metadata reply:(id)reply;
+- (void)showErrorParticipantLimitReachedForType:(id)type reply:(id)reply;
+- (void)showErrorReasonUnknownForShareMetadata:(id)metadata reply:(id)reply;
+- (void)showErrorServerNotReachableForShareMetadata:(id)metadata reply:(id)reply;
+- (void)showErrorServerNotReachableForType:(id)type reply:(id)reply;
+- (void)showErrorSignInToiCloudForShareMetadata:(id)metadata reply:(id)reply;
+- (void)showErrorTurnOniCloudDriveForShareMetadata:(id)metadata reply:(id)reply;
+- (void)showErrorVolumeNotSupportedWithReason:(unint64_t)reason;
+- (void)showJoinDialogForShareMetadata:(id)metadata ckContainer:(id)container reply:(id)reply;
 @end
 
 @implementation BRCUserNotification
@@ -127,31 +127,31 @@ uint64_t __38__BRCUserNotification_defaultInstance__block_invoke()
   }
 }
 
-- (void)_displayDialogWithType:(unint64_t)a3 dict:(id)a4 userReplyBlock:(id)a5
+- (void)_displayDialogWithType:(unint64_t)type dict:(id)dict userReplyBlock:(id)block
 {
-  v12 = a4;
-  v8 = a5;
-  v9 = v8;
+  dictCopy = dict;
+  blockCopy = block;
+  v9 = blockCopy;
   if (self->_skipDialogs)
   {
-    (*(v8 + 2))(v8, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 
   else
   {
     v10 = +[BRCAccountsManager sharedManager];
-    v11 = [v10 isInSyncBubble];
+    isInSyncBubble = [v10 isInSyncBubble];
 
-    if ((v11 & 1) == 0)
+    if ((isInSyncBubble & 1) == 0)
     {
-      [(BRCUserNotification *)self _displayDialogWithType:a3 dict:v12 options:0 userReplyBlock:v9];
+      [(BRCUserNotification *)self _displayDialogWithType:type dict:dictCopy options:0 userReplyBlock:v9];
     }
   }
 }
 
-- (id)_logWrapUserReplyBlock:(id)a3
+- (id)_logWrapUserReplyBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v19 = 0uLL;
   v20 = 0;
   __brc_create_section(0, "[BRCUserNotification _logWrapUserReplyBlock:]", 185, 0, &v19);
@@ -164,14 +164,14 @@ uint64_t __38__BRCUserNotification_defaultInstance__block_invoke()
 
   v21 = v19;
   v22 = v20;
-  v6 = [MEMORY[0x277D77BF8] sharedManager];
-  v7 = [v6 br_currentPersonaID];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  br_currentPersonaID = [mEMORY[0x277D77BF8] br_currentPersonaID];
 
   v8 = brc_bread_crumbs();
   v9 = brc_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [BRCUserNotification _logWrapUserReplyBlock:v7];
+    [BRCUserNotification _logWrapUserReplyBlock:br_currentPersonaID];
   }
 
   v14[0] = MEMORY[0x277D85DD0];
@@ -180,10 +180,10 @@ uint64_t __38__BRCUserNotification_defaultInstance__block_invoke()
   v14[3] = &unk_2785018A0;
   v17 = v21;
   v18 = v22;
-  v15 = v7;
-  v16 = v3;
-  v10 = v3;
-  v11 = v7;
+  v15 = br_currentPersonaID;
+  v16 = blockCopy;
+  v10 = blockCopy;
+  v11 = br_currentPersonaID;
   v12 = MEMORY[0x22AA4A310](v14);
 
   return v12;
@@ -214,23 +214,23 @@ void __46__BRCUserNotification__logWrapUserReplyBlock___block_invoke_2(uint64_t 
   __brc_leave_section(&v7);
 }
 
-- (void)_displayDialogWithType:(unint64_t)a3 dict:(id)a4 options:(id)a5 userReplyBlock:(id)a6
+- (void)_displayDialogWithType:(unint64_t)type dict:(id)dict options:(id)options userReplyBlock:(id)block
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [(BRCUserNotification *)self _logWrapUserReplyBlock:a6];
+  dictCopy = dict;
+  optionsCopy = options;
+  v12 = [(BRCUserNotification *)self _logWrapUserReplyBlock:block];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__BRCUserNotification__displayDialogWithType_dict_options_userReplyBlock___block_invoke;
   block[3] = &unk_2785018F0;
   block[4] = self;
-  v17 = v10;
+  v17 = dictCopy;
   v19 = v12;
-  v20 = a3;
-  v18 = v11;
+  typeCopy = type;
+  v18 = optionsCopy;
   v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v14 = optionsCopy;
+  v15 = dictCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -362,20 +362,20 @@ void __74__BRCUserNotification__displayDialogWithType_dict_options_userReplyBloc
   }
 }
 
-- (void)_updateDialogWithType:(unint64_t)a3 dict:(id)a4 userReplyBlock:(id)a5
+- (void)_updateDialogWithType:(unint64_t)type dict:(id)dict userReplyBlock:(id)block
 {
-  v8 = a4;
-  v9 = [(BRCUserNotification *)self _logWrapUserReplyBlock:a5];
+  dictCopy = dict;
+  v9 = [(BRCUserNotification *)self _logWrapUserReplyBlock:block];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65__BRCUserNotification__updateDialogWithType_dict_userReplyBlock___block_invoke;
   v12[3] = &unk_278501940;
   v12[4] = self;
-  v13 = v8;
+  v13 = dictCopy;
   v14 = v9;
-  v15 = a3;
+  typeCopy = type;
   v10 = v9;
-  v11 = v8;
+  v11 = dictCopy;
   dispatch_async(MEMORY[0x277D85CD0], v12);
 }
 
@@ -450,28 +450,28 @@ uint64_t __28__BRCUserNotification_close__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_showJoinDialogWithDocumentName:(id)a3 isPublicShare:(BOOL)a4 ckContainer:(id)a5 ownerDisplayName:(id)a6 isFolderShare:(BOOL)a7 appName:(id)a8 reply:(id)a9
+- (void)_showJoinDialogWithDocumentName:(id)name isPublicShare:(BOOL)share ckContainer:(id)container ownerDisplayName:(id)displayName isFolderShare:(BOOL)folderShare appName:(id)appName reply:(id)reply
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a8;
-  v18 = a9;
+  nameCopy = name;
+  displayNameCopy = displayName;
+  appNameCopy = appName;
+  replyCopy = reply;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __126__BRCUserNotification__showJoinDialogWithDocumentName_isPublicShare_ckContainer_ownerDisplayName_isFolderShare_appName_reply___block_invoke;
   v23[3] = &unk_278501990;
-  v27 = self;
-  v28 = v18;
-  v29 = a7;
-  v24 = v17;
-  v25 = v15;
-  v30 = a4;
-  v26 = v16;
-  v19 = v16;
-  v20 = v15;
-  v21 = v17;
-  v22 = v18;
-  [a5 fetchFullNameAndFormattedUsernameOfAccountWithCompletionHandler:v23];
+  selfCopy = self;
+  v28 = replyCopy;
+  folderShareCopy = folderShare;
+  v24 = appNameCopy;
+  v25 = nameCopy;
+  shareCopy = share;
+  v26 = displayNameCopy;
+  v19 = displayNameCopy;
+  v20 = nameCopy;
+  v21 = appNameCopy;
+  v22 = replyCopy;
+  [container fetchFullNameAndFormattedUsernameOfAccountWithCompletionHandler:v23];
 }
 
 void __126__BRCUserNotification__showJoinDialogWithDocumentName_isPublicShare_ckContainer_ownerDisplayName_isFolderShare_appName_reply___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -579,49 +579,49 @@ LABEL_19:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showJoinDialogForShareMetadata:(id)a3 ckContainer:(id)a4 reply:(id)a5
+- (void)showJoinDialogForShareMetadata:(id)metadata ckContainer:(id)container reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 share];
-  v12 = [v11 brc_sharedRootDisplayName];
+  replyCopy = reply;
+  containerCopy = container;
+  metadataCopy = metadata;
+  share = [metadataCopy share];
+  brc_sharedRootDisplayName = [share brc_sharedRootDisplayName];
 
-  if ([v12 hasSuffix:@":nooverride"])
+  if ([brc_sharedRootDisplayName hasSuffix:@":nooverride"])
   {
-    v13 = [v12 substringToIndex:{objc_msgSend(v12, "length") - objc_msgSend(@":nooverride", "length")}];
+    v13 = [brc_sharedRootDisplayName substringToIndex:{objc_msgSend(brc_sharedRootDisplayName, "length") - objc_msgSend(@":nooverride", "length")}];
 
-    v12 = v13;
+    brc_sharedRootDisplayName = v13;
   }
 
-  v14 = [v10 share];
-  v15 = [v14 URL];
-  v16 = [v12 brc_fixDocumentExtensionIfNeededForShareURL:v15];
+  share2 = [metadataCopy share];
+  v15 = [share2 URL];
+  v16 = [brc_sharedRootDisplayName brc_fixDocumentExtensionIfNeededForShareURL:v15];
 
   v26 = [v16 br_displayFilenameWithExtensionHidden:1];
 
-  v17 = [v10 ownerIdentity];
-  v18 = [v17 nameComponents];
-  v19 = [v18 br_formattedNameWithNonBreakingSpaces];
+  ownerIdentity = [metadataCopy ownerIdentity];
+  nameComponents = [ownerIdentity nameComponents];
+  br_formattedNameWithNonBreakingSpaces = [nameComponents br_formattedNameWithNonBreakingSpaces];
 
-  v20 = [v10 share];
-  v21 = [v20 isFolderShare];
+  share3 = [metadataCopy share];
+  isFolderShare = [share3 isFolderShare];
 
-  v22 = [v10 share];
-  v23 = [v22 URL];
-  v24 = [v23 brc_applicationName];
+  share4 = [metadataCopy share];
+  v23 = [share4 URL];
+  brc_applicationName = [v23 brc_applicationName];
 
-  v25 = [v10 share];
+  share5 = [metadataCopy share];
 
-  -[BRCUserNotification _showJoinDialogWithDocumentName:isPublicShare:ckContainer:ownerDisplayName:isFolderShare:appName:reply:](self, "_showJoinDialogWithDocumentName:isPublicShare:ckContainer:ownerDisplayName:isFolderShare:appName:reply:", v26, [v25 publicPermission] != 1, v9, v19, v21, v24, v8);
+  -[BRCUserNotification _showJoinDialogWithDocumentName:isPublicShare:ckContainer:ownerDisplayName:isFolderShare:appName:reply:](self, "_showJoinDialogWithDocumentName:isPublicShare:ckContainer:ownerDisplayName:isFolderShare:appName:reply:", v26, [share5 publicPermission] != 1, containerCopy, br_formattedNameWithNonBreakingSpaces, isFolderShare, brc_applicationName, replyCopy);
 }
 
-- (void)showErrorSignInToiCloudForShareMetadata:(id)a3 reply:(id)a4
+- (void)showErrorSignInToiCloudForShareMetadata:(id)metadata reply:(id)reply
 {
   v28[5] = *MEMORY[0x277D85DE8];
-  v23 = a4;
-  v5 = [a3 share];
-  v6 = [BRCSharingUtil typeForShare:v5];
+  replyCopy = reply;
+  share = [metadata share];
+  v6 = [BRCSharingUtil typeForShare:share];
 
   v27[0] = *MEMORY[0x277CBF188];
   v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -652,8 +652,8 @@ LABEL_19:
   v25[1] = 3221225472;
   v25[2] = __69__BRCUserNotification_showErrorSignInToiCloudForShareMetadata_reply___block_invoke;
   v25[3] = &unk_278501968;
-  v26 = v23;
-  v17 = v23;
+  v26 = replyCopy;
+  v17 = replyCopy;
   [(BRCUserNotification *)self _displayDialogWithType:3 dict:v16 userReplyBlock:v25];
 
   v18 = *MEMORY[0x277D85DE8];
@@ -677,19 +677,19 @@ uint64_t __69__BRCUserNotification_showErrorSignInToiCloudForShareMetadata_reply
   return (*(v2 + 16))(v2, v3, v4, 0);
 }
 
-- (void)showErrorTurnOniCloudDriveForShareMetadata:(id)a3 reply:(id)a4
+- (void)showErrorTurnOniCloudDriveForShareMetadata:(id)metadata reply:(id)reply
 {
   v33[5] = *MEMORY[0x277D85DE8];
-  v28 = a4;
-  v5 = a3;
-  v6 = [v5 share];
-  v7 = [BRCSharingUtil typeForShare:v6];
+  replyCopy = reply;
+  metadataCopy = metadata;
+  share = [metadataCopy share];
+  v7 = [BRCSharingUtil typeForShare:share];
 
   v8 = MEMORY[0x277CCAC08];
-  v9 = [v5 ownerIdentity];
+  ownerIdentity = [metadataCopy ownerIdentity];
 
-  v10 = [v9 nameComponents];
-  v27 = [v8 localizedStringFromPersonNameComponents:v10 style:0 options:0];
+  nameComponents = [ownerIdentity nameComponents];
+  v27 = [v8 localizedStringFromPersonNameComponents:nameComponents style:0 options:0];
 
   v32[0] = *MEMORY[0x277CBF188];
   v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -720,8 +720,8 @@ uint64_t __69__BRCUserNotification_showErrorSignInToiCloudForShareMetadata_reply
   v30[1] = 3221225472;
   v30[2] = __72__BRCUserNotification_showErrorTurnOniCloudDriveForShareMetadata_reply___block_invoke;
   v30[3] = &unk_278501968;
-  v31 = v28;
-  v21 = v28;
+  v31 = replyCopy;
+  v21 = replyCopy;
   [(BRCUserNotification *)self _displayDialogWithType:3 dict:v20 userReplyBlock:v30];
 
   v22 = *MEMORY[0x277D85DE8];
@@ -745,29 +745,29 @@ uint64_t __72__BRCUserNotification_showErrorTurnOniCloudDriveForShareMetadata_re
   return (*(v2 + 16))(v2, v3, v4, 0);
 }
 
-- (void)showErrorInstallNativeAppForShareMetadata:(id)a3 reply:(id)a4
+- (void)showErrorInstallNativeAppForShareMetadata:(id)metadata reply:(id)reply
 {
   v37[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 share];
-  v9 = [v8 isFolderShare];
+  metadataCopy = metadata;
+  replyCopy = reply;
+  share = [metadataCopy share];
+  isFolderShare = [share isFolderShare];
 
-  if (v9)
+  if (isFolderShare)
   {
     [BRCUserNotification showErrorInstallNativeAppForShareMetadata:reply:];
   }
 
-  v10 = [v6 share];
-  v11 = [v10 URL];
-  v12 = [v11 brc_applicationName];
+  share2 = [metadataCopy share];
+  v11 = [share2 URL];
+  brc_applicationName = [v11 brc_applicationName];
 
-  if (v12)
+  if (brc_applicationName)
   {
     v13 = MEMORY[0x277CCAC08];
-    v14 = [v6 ownerIdentity];
-    [v14 nameComponents];
-    v15 = v33 = v7;
+    ownerIdentity = [metadataCopy ownerIdentity];
+    [ownerIdentity nameComponents];
+    v15 = v33 = replyCopy;
     v27 = [v13 localizedStringFromPersonNameComponents:v15 style:0 options:0];
 
     v36[0] = *MEMORY[0x277CBF188];
@@ -775,7 +775,7 @@ uint64_t __72__BRCUserNotification_showErrorTurnOniCloudDriveForShareMetadata_re
     v31 = _BRLocalizedStringWithFormat();
     v37[0] = v31;
     v36[1] = *MEMORY[0x277CBF198];
-    v29 = [BRCSharingUtil localizationKey:@"SHARING_APP_NOT_INSTALLED_MESSAGE_IOS" forTypeOfShare:v12, v12];
+    v29 = [BRCSharingUtil localizationKey:@"SHARING_APP_NOT_INSTALLED_MESSAGE_IOS" forTypeOfShare:brc_applicationName, brc_applicationName];
     v28 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v26 = _BRLocalizedStringWithFormat();
     v37[1] = v26;
@@ -785,7 +785,7 @@ uint64_t __72__BRCUserNotification_showErrorTurnOniCloudDriveForShareMetadata_re
     v17 = v30 = self;
     v37[2] = v17;
     v36[3] = *MEMORY[0x277CBF218];
-    v18 = [BRCSharingUtil localizationKey:@"PREVIEW_BUTTON" forTypeOfShare:v12];
+    v18 = [BRCSharingUtil localizationKey:@"PREVIEW_BUTTON" forTypeOfShare:brc_applicationName];
     v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v20 = _BRLocalizedStringWithFormat();
     v37[3] = v20;
@@ -795,7 +795,7 @@ uint64_t __72__BRCUserNotification_showErrorTurnOniCloudDriveForShareMetadata_re
     v37[4] = v22;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:5];
 
-    v7 = v33;
+    replyCopy = v33;
     v24 = v27;
 
     v34[0] = MEMORY[0x277D85DD0];
@@ -808,8 +808,8 @@ uint64_t __72__BRCUserNotification_showErrorTurnOniCloudDriveForShareMetadata_re
 
   else
   {
-    v24 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"shareMetadata" value:v6];
-    (*(v7 + 2))(v7, 0, 0, v24);
+    v24 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"shareMetadata" value:metadataCopy];
+    (*(replyCopy + 2))(replyCopy, 0, 0, v24);
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -833,12 +833,12 @@ uint64_t __71__BRCUserNotification_showErrorInstallNativeAppForShareMetadata_rep
   return (*(v2 + 16))(v2, v3, v4, 0);
 }
 
-- (void)showErrorNativeAppDisabledByProfileForShareMetadata:(id)a3 reply:(id)a4
+- (void)showErrorNativeAppDisabledByProfileForShareMetadata:(id)metadata reply:(id)reply
 {
   v26[4] = *MEMORY[0x277D85DE8];
-  v21 = a4;
-  v5 = [a3 share];
-  v6 = [BRCSharingUtil typeForShare:v5];
+  replyCopy = reply;
+  share = [metadata share];
+  v6 = [BRCSharingUtil typeForShare:share];
 
   v25[0] = *MEMORY[0x277CBF188];
   v20 = [BRCSharingUtil localizationKey:@"SHARING_PROFILE_DISABLED_HEADER_IOS" forTypeOfShare:v6];
@@ -865,19 +865,19 @@ uint64_t __71__BRCUserNotification_showErrorInstallNativeAppForShareMetadata_rep
   v23[1] = 3221225472;
   v23[2] = __81__BRCUserNotification_showErrorNativeAppDisabledByProfileForShareMetadata_reply___block_invoke;
   v23[3] = &unk_278501968;
-  v24 = v21;
-  v16 = v21;
+  v24 = replyCopy;
+  v16 = replyCopy;
   [(BRCUserNotification *)self _displayDialogWithType:3 dict:v15 userReplyBlock:v23];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showErrorReasonUnknownForShareMetadata:(id)a3 reply:(id)a4
+- (void)showErrorReasonUnknownForShareMetadata:(id)metadata reply:(id)reply
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v18 = a4;
-  v5 = [a3 share];
-  v6 = [BRCSharingUtil typeForShare:v5];
+  replyCopy = reply;
+  share = [metadata share];
+  v6 = [BRCSharingUtil typeForShare:share];
 
   v22[0] = *MEMORY[0x277CBF188];
   v7 = [BRCSharingUtil localizationKey:@"SHARING_GENERIC_ERROR_HEADER" forOSAndTypeOfShare:v6];
@@ -899,33 +899,33 @@ uint64_t __71__BRCUserNotification_showErrorInstallNativeAppForShareMetadata_rep
   v20[1] = 3221225472;
   v20[2] = __68__BRCUserNotification_showErrorReasonUnknownForShareMetadata_reply___block_invoke;
   v20[3] = &unk_278501968;
-  v21 = v18;
-  v16 = v18;
+  v21 = replyCopy;
+  v16 = replyCopy;
   [(BRCUserNotification *)self _displayDialogWithType:3 dict:v15 userReplyBlock:v20];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showErrorDeviceOfflineForShareMetadata:(id)a3 reply:(id)a4
+- (void)showErrorDeviceOfflineForShareMetadata:(id)metadata reply:(id)reply
 {
-  v6 = a4;
-  v8 = [a3 share];
-  v7 = [BRCSharingUtil typeForShare:v8];
-  [(BRCUserNotification *)self showErrorDeviceOfflineForType:v7 reply:v6];
+  replyCopy = reply;
+  share = [metadata share];
+  v7 = [BRCSharingUtil typeForShare:share];
+  [(BRCUserNotification *)self showErrorDeviceOfflineForType:v7 reply:replyCopy];
 }
 
-- (void)showErrorDeviceOfflineForType:(id)a3 reply:(id)a4
+- (void)showErrorDeviceOfflineForType:(id)type reply:(id)reply
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v17 = a4;
+  replyCopy = reply;
   v21[0] = *MEMORY[0x277CBF188];
-  v5 = a3;
-  v6 = [BRCSharingUtil localizationKey:@"SHARING_DEVICE_OFFLINE_ERROR_HEADER" forOSAndTypeOfShare:v5];
+  typeCopy = type;
+  v6 = [BRCSharingUtil localizationKey:@"SHARING_DEVICE_OFFLINE_ERROR_HEADER" forOSAndTypeOfShare:typeCopy];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = _BRLocalizedStringWithFormat();
   v22[0] = v8;
   v21[1] = *MEMORY[0x277CBF198];
-  v9 = [BRCSharingUtil localizationKey:@"SHARING_DEVICE_OFFLINE_ERROR_MESSAGE" forOSAndTypeOfShare:v5];
+  v9 = [BRCSharingUtil localizationKey:@"SHARING_DEVICE_OFFLINE_ERROR_MESSAGE" forOSAndTypeOfShare:typeCopy];
 
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = _BRLocalizedStringWithFormat();
@@ -940,33 +940,33 @@ uint64_t __71__BRCUserNotification_showErrorInstallNativeAppForShareMetadata_rep
   v19[1] = 3221225472;
   v19[2] = __59__BRCUserNotification_showErrorDeviceOfflineForType_reply___block_invoke;
   v19[3] = &unk_278501968;
-  v20 = v17;
-  v15 = v17;
+  v20 = replyCopy;
+  v15 = replyCopy;
   [(BRCUserNotification *)self _displayDialogWithType:3 dict:v14 userReplyBlock:v19];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showErrorServerNotReachableForShareMetadata:(id)a3 reply:(id)a4
+- (void)showErrorServerNotReachableForShareMetadata:(id)metadata reply:(id)reply
 {
-  v6 = a4;
-  v8 = [a3 share];
-  v7 = [BRCSharingUtil typeForShare:v8];
-  [(BRCUserNotification *)self showErrorServerNotReachableForType:v7 reply:v6];
+  replyCopy = reply;
+  share = [metadata share];
+  v7 = [BRCSharingUtil typeForShare:share];
+  [(BRCUserNotification *)self showErrorServerNotReachableForType:v7 reply:replyCopy];
 }
 
-- (void)showErrorServerNotReachableForType:(id)a3 reply:(id)a4
+- (void)showErrorServerNotReachableForType:(id)type reply:(id)reply
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v17 = a4;
+  replyCopy = reply;
   v21[0] = *MEMORY[0x277CBF188];
-  v5 = a3;
-  v6 = [BRCSharingUtil localizationKey:@"SHARING_ICLOUD_NOT_REACHABLE_HEADER" forOSAndTypeOfShare:v5];
+  typeCopy = type;
+  v6 = [BRCSharingUtil localizationKey:@"SHARING_ICLOUD_NOT_REACHABLE_HEADER" forOSAndTypeOfShare:typeCopy];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = _BRLocalizedStringWithFormat();
   v22[0] = v8;
   v21[1] = *MEMORY[0x277CBF198];
-  v9 = [BRCSharingUtil localizationKey:@"SHARING_ICLOUD_NOT_REACHABLE_MESSAGE" forOSAndTypeOfShare:v5];
+  v9 = [BRCSharingUtil localizationKey:@"SHARING_ICLOUD_NOT_REACHABLE_MESSAGE" forOSAndTypeOfShare:typeCopy];
 
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = _BRLocalizedStringWithFormat();
@@ -981,33 +981,33 @@ uint64_t __71__BRCUserNotification_showErrorInstallNativeAppForShareMetadata_rep
   v19[1] = 3221225472;
   v19[2] = __64__BRCUserNotification_showErrorServerNotReachableForType_reply___block_invoke;
   v19[3] = &unk_278501968;
-  v20 = v17;
-  v15 = v17;
+  v20 = replyCopy;
+  v15 = replyCopy;
   [(BRCUserNotification *)self _displayDialogWithType:3 dict:v14 userReplyBlock:v19];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showErrorItemUnavailableOrAccessRestrictedForShareMetadata:(id)a3 reply:(id)a4
+- (void)showErrorItemUnavailableOrAccessRestrictedForShareMetadata:(id)metadata reply:(id)reply
 {
-  v6 = a4;
-  v8 = [a3 share];
-  v7 = [BRCSharingUtil typeForShare:v8];
-  [(BRCUserNotification *)self showErrorItemUnavailableOrAccessRestrictedForType:v7 reply:v6];
+  replyCopy = reply;
+  share = [metadata share];
+  v7 = [BRCSharingUtil typeForShare:share];
+  [(BRCUserNotification *)self showErrorItemUnavailableOrAccessRestrictedForType:v7 reply:replyCopy];
 }
 
-- (void)showErrorItemUnavailableOrAccessRestrictedForType:(id)a3 reply:(id)a4
+- (void)showErrorItemUnavailableOrAccessRestrictedForType:(id)type reply:(id)reply
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v17 = a4;
+  replyCopy = reply;
   v21[0] = *MEMORY[0x277CBF188];
-  v5 = a3;
-  v6 = [BRCSharingUtil localizationKey:@"SHARING_NO_LONGER_SHARED_HEADER" forOSAndTypeOfShare:v5];
+  typeCopy = type;
+  v6 = [BRCSharingUtil localizationKey:@"SHARING_NO_LONGER_SHARED_HEADER" forOSAndTypeOfShare:typeCopy];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = _BRLocalizedStringWithFormat();
   v22[0] = v8;
   v21[1] = *MEMORY[0x277CBF198];
-  v9 = [BRCSharingUtil localizationKey:@"SHARING_NO_LONGER_SHARED_MESSAGE" forOSAndTypeOfShare:v5];
+  v9 = [BRCSharingUtil localizationKey:@"SHARING_NO_LONGER_SHARED_MESSAGE" forOSAndTypeOfShare:typeCopy];
 
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = _BRLocalizedStringWithFormat();
@@ -1022,33 +1022,33 @@ uint64_t __71__BRCUserNotification_showErrorInstallNativeAppForShareMetadata_rep
   v19[1] = 3221225472;
   v19[2] = __79__BRCUserNotification_showErrorItemUnavailableOrAccessRestrictedForType_reply___block_invoke;
   v19[3] = &unk_278501968;
-  v20 = v17;
-  v15 = v17;
+  v20 = replyCopy;
+  v15 = replyCopy;
   [(BRCUserNotification *)self _displayDialogWithType:3 dict:v14 userReplyBlock:v19];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showErrorParticipantLimitReachedForShareMetadata:(id)a3 reply:(id)a4
+- (void)showErrorParticipantLimitReachedForShareMetadata:(id)metadata reply:(id)reply
 {
-  v6 = a4;
-  v8 = [a3 share];
-  v7 = [BRCSharingUtil typeForShare:v8];
-  [(BRCUserNotification *)self showErrorParticipantLimitReachedForType:v7 reply:v6];
+  replyCopy = reply;
+  share = [metadata share];
+  v7 = [BRCSharingUtil typeForShare:share];
+  [(BRCUserNotification *)self showErrorParticipantLimitReachedForType:v7 reply:replyCopy];
 }
 
-- (void)showErrorParticipantLimitReachedForType:(id)a3 reply:(id)a4
+- (void)showErrorParticipantLimitReachedForType:(id)type reply:(id)reply
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v20 = a4;
+  replyCopy = reply;
   v24[0] = *MEMORY[0x277CBF188];
-  v5 = a3;
-  v19 = [BRCSharingUtil localizationKey:@"SHARING_PARTICIPANT_LIMIT_REACHED_HEADER" forOSAndTypeOfShare:v5];
+  typeCopy = type;
+  v19 = [BRCSharingUtil localizationKey:@"SHARING_PARTICIPANT_LIMIT_REACHED_HEADER" forOSAndTypeOfShare:typeCopy];
   v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v17 = _BRLocalizedStringWithFormat();
   v25[0] = v17;
   v24[1] = *MEMORY[0x277CBF198];
-  v6 = [BRCSharingUtil localizationKey:@"SHARING_PARTICIPANT_LIMIT_REACHED_MESSAGE" forOSAndTypeOfShare:v5];
+  v6 = [BRCSharingUtil localizationKey:@"SHARING_PARTICIPANT_LIMIT_REACHED_MESSAGE" forOSAndTypeOfShare:typeCopy];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = _BRLocalizedStringWithFormat();
   v25[1] = v8;
@@ -1057,7 +1057,7 @@ uint64_t __71__BRCUserNotification_showErrorInstallNativeAppForShareMetadata_rep
   v10 = _BRLocalizedStringWithFormat();
   v25[2] = v10;
   v24[3] = *MEMORY[0x277CBF1E8];
-  v11 = [BRCSharingUtil localizationKey:@"PREVIEW_BUTTON" forTypeOfShare:v5];
+  v11 = [BRCSharingUtil localizationKey:@"PREVIEW_BUTTON" forTypeOfShare:typeCopy];
 
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = _BRLocalizedStringWithFormat();
@@ -1068,17 +1068,17 @@ uint64_t __71__BRCUserNotification_showErrorInstallNativeAppForShareMetadata_rep
   v22[1] = 3221225472;
   v22[2] = __69__BRCUserNotification_showErrorParticipantLimitReachedForType_reply___block_invoke;
   v22[3] = &unk_278501968;
-  v23 = v20;
-  v15 = v20;
+  v23 = replyCopy;
+  v15 = replyCopy;
   [(BRCUserNotification *)self _displayDialogWithType:3 dict:v14 userReplyBlock:v22];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showErrorDocumentsAppNotVisibleForShareURL:(id)a3 reply:(id)a4
+- (void)showErrorDocumentsAppNotVisibleForShareURL:(id)l reply:(id)reply
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  replyCopy = reply;
   v6 = *MEMORY[0x277D67298];
   v18[0] = MEMORY[0x277CBEC38];
   v7 = *MEMORY[0x277CBF188];
@@ -1097,8 +1097,8 @@ uint64_t __71__BRCUserNotification_showErrorInstallNativeAppForShareMetadata_rep
   v15[1] = 3221225472;
   v15[2] = __72__BRCUserNotification_showErrorDocumentsAppNotVisibleForShareURL_reply___block_invoke;
   v15[3] = &unk_278501968;
-  v16 = v5;
-  v13 = v5;
+  v16 = replyCopy;
+  v13 = replyCopy;
   [(BRCUserNotification *)self _displayDialogWithType:3 dict:v12 userReplyBlock:v15];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1125,11 +1125,11 @@ uint64_t __71__BRCUserNotification_showErrorInstallNativeAppForShareMetadata_rep
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showErrorVolumeNotSupportedWithReason:(unint64_t)a3
+- (void)showErrorVolumeNotSupportedWithReason:(unint64_t)reason
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v4 = @"ICLOUD_DRIVE_VOLUME_NOT_SUPPORTED_NON_LOCAL_ALERT_MESSAGE";
-  if (a3 == 2)
+  if (reason == 2)
   {
     v4 = @"ICLOUD_DRIVE_VOLUME_NOT_SUPPORTED_NON_APFS_ALERT_MESSAGE";
   }
@@ -1155,10 +1155,10 @@ uint64_t __71__BRCUserNotification_showErrorInstallNativeAppForShareMetadata_rep
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showDefaultErrorForRequestAccessWithReply:(id)a3
+- (void)showDefaultErrorForRequestAccessWithReply:(id)reply
 {
   v17[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   v16[0] = *MEMORY[0x277CBF188];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = _BRLocalizedStringWithFormat();
@@ -1177,8 +1177,8 @@ uint64_t __71__BRCUserNotification_showErrorInstallNativeAppForShareMetadata_rep
   v14[1] = 3221225472;
   v14[2] = __65__BRCUserNotification_showDefaultErrorForRequestAccessWithReply___block_invoke;
   v14[3] = &unk_278501968;
-  v15 = v4;
-  v12 = v4;
+  v15 = replyCopy;
+  v12 = replyCopy;
   [(BRCUserNotification *)self _displayDialogWithType:3 dict:v11 userReplyBlock:v14];
 
   v13 = *MEMORY[0x277D85DE8];

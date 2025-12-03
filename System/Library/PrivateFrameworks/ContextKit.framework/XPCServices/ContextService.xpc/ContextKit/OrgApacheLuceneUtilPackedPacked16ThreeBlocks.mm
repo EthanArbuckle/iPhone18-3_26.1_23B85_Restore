@@ -1,16 +1,16 @@
 @interface OrgApacheLuceneUtilPackedPacked16ThreeBlocks
 - (id)description;
-- (int)setWithInt:(int)a3 withLongArray:(id)a4 withInt:(int)a5 withInt:(int)a6;
-- (int64_t)getWithInt:(int)a3;
+- (int)setWithInt:(int)int withLongArray:(id)array withInt:(int)withInt withInt:(int)a6;
+- (int64_t)getWithInt:(int)int;
 - (int64_t)ramBytesUsed;
 - (void)dealloc;
-- (void)fillWithInt:(int)a3 withInt:(int)a4 withLong:(int64_t)a5;
-- (void)setWithInt:(int)a3 withLong:(int64_t)a4;
+- (void)fillWithInt:(int)int withInt:(int)withInt withLong:(int64_t)long;
+- (void)setWithInt:(int)int withLong:(int64_t)long;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPacked16ThreeBlocks
 
-- (int64_t)getWithInt:(int)a3
+- (int64_t)getWithInt:(int)int
 {
   blocks = self->blocks_;
   if (!blocks)
@@ -18,11 +18,11 @@
     JreThrowNullPointerException();
   }
 
-  v4 = 3 * a3;
+  v4 = 3 * int;
   size = blocks->super.size_;
-  if (3 * a3 < 0 || v4 >= size)
+  if (3 * int < 0 || v4 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (3 * a3));
+    IOSArray_throwOutOfBoundsWithMsg(size, (3 * int));
   }
 
   v6 = blocks;
@@ -43,7 +43,7 @@
   return (v7 << 32) | (v9 << 16) | *(&v6->super.size_ + v10 + 2);
 }
 
-- (void)setWithInt:(int)a3 withLong:(int64_t)a4
+- (void)setWithInt:(int)int withLong:(int64_t)long
 {
   blocks = self->blocks_;
   if (!blocks)
@@ -51,14 +51,14 @@
     JreThrowNullPointerException();
   }
 
-  v6 = 3 * a3;
+  v6 = 3 * int;
   size = blocks->super.size_;
-  if (3 * a3 < 0 || v6 >= size)
+  if (3 * int < 0 || v6 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (3 * a3));
+    IOSArray_throwOutOfBoundsWithMsg(size, (3 * int));
   }
 
-  *(&blocks->super.size_ + v6 + 2) = WORD2(a4);
+  *(&blocks->super.size_ + v6 + 2) = WORD2(long);
   v8 = self->blocks_;
   v9 = v8->super.size_;
   v10 = v6 + 1;
@@ -67,7 +67,7 @@
     IOSArray_throwOutOfBoundsWithMsg(v9, v10);
   }
 
-  *(&v8->super.size_ + v10 + 2) = WORD1(a4);
+  *(&v8->super.size_ + v10 + 2) = WORD1(long);
   v11 = self->blocks_;
   v12 = v11->super.size_;
   v13 = v6 + 2;
@@ -76,25 +76,25 @@
     IOSArray_throwOutOfBoundsWithMsg(v12, (v6 + 2));
   }
 
-  *(&v11->super.size_ + v13 + 2) = a4;
+  *(&v11->super.size_ + v13 + 2) = long;
 }
 
-- (int)setWithInt:(int)a3 withLongArray:(id)a4 withInt:(int)a5 withInt:(int)a6
+- (int)setWithInt:(int)int withLongArray:(id)array withInt:(int)withInt withInt:(int)a6
 {
-  v10 = JavaLangMath_minWithInt_withInt_((self->super.valueCount_ - a3), a6);
-  v11 = v10 + a5;
-  if (v10 + a5 > a5)
+  v10 = JavaLangMath_minWithInt_withInt_((self->super.valueCount_ - int), a6);
+  v11 = v10 + withInt;
+  if (v10 + withInt > withInt)
   {
-    v12 = a4;
-    v13 = a5;
-    v14 = (3 * a3);
-    v15 = a4 + 8 * a5;
+    arrayCopy = array;
+    withIntCopy = withInt;
+    v14 = (3 * int);
+    v15 = array + 8 * withInt;
     do
     {
-      v16 = v12[2];
-      if (v13 < 0 || v13 >= v16)
+      v16 = arrayCopy[2];
+      if (withIntCopy < 0 || withIntCopy >= v16)
       {
-        IOSArray_throwOutOfBoundsWithMsg(v16, v13);
+        IOSArray_throwOutOfBoundsWithMsg(v16, withIntCopy);
       }
 
       blocks = self->blocks_;
@@ -129,20 +129,20 @@
       }
 
       *(&v24->super.size_ + v23 + 2) = v18;
-      ++v13;
+      ++withIntCopy;
       v15 += 8;
       v14 = (v14 + 3);
     }
 
-    while (v11 != v13);
+    while (v11 != withIntCopy);
   }
 
   return v10;
 }
 
-- (void)fillWithInt:(int)a3 withInt:(int)a4 withLong:(int64_t)a5
+- (void)fillWithInt:(int)int withInt:(int)withInt withLong:(int64_t)long
 {
-  for (i = (3 * a3); i < 3 * a4; i = (i + 3))
+  for (i = (3 * int); i < 3 * withInt; i = (i + 3))
   {
     blocks = self->blocks_;
     if (!blocks)
@@ -156,7 +156,7 @@
       IOSArray_throwOutOfBoundsWithMsg(size, i);
     }
 
-    *(&blocks->super.size_ + i + 2) = WORD2(a5);
+    *(&blocks->super.size_ + i + 2) = WORD2(long);
     v9 = self->blocks_;
     v10 = i + 1;
     v11 = v9->super.size_;
@@ -165,7 +165,7 @@
       IOSArray_throwOutOfBoundsWithMsg(v11, v10);
     }
 
-    *(&v9->super.size_ + v10 + 2) = WORD1(a5);
+    *(&v9->super.size_ + v10 + 2) = WORD1(long);
     v12 = self->blocks_;
     v13 = v12->super.size_;
     v14 = i + 2;
@@ -174,7 +174,7 @@
       IOSArray_throwOutOfBoundsWithMsg(v13, v14);
     }
 
-    v12->buffer_[i] = a5;
+    v12->buffer_[i] = long;
   }
 }
 

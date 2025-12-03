@@ -8,9 +8,9 @@
 + (id)tu_contactStore
 {
   v2 = objc_alloc_init(MEMORY[0x1E695CE28]);
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 tu_assumedIdentity];
-  [v2 setAssumedIdentity:v4];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  tu_assumedIdentity = [mainBundle tu_assumedIdentity];
+  [v2 setAssumedIdentity:tu_assumedIdentity];
 
   [v2 setIncludeLocalContacts:1];
   v5 = objc_alloc_init(TUFeatureFlags);
@@ -19,7 +19,7 @@
     [v2 setIncludeAcceptedIntroductions:1];
   }
 
-  v6 = [[a1 alloc] initWithConfiguration:v2];
+  v6 = [[self alloc] initWithConfiguration:v2];
 
   return v6;
 }
@@ -41,16 +41,16 @@
       v19 = 138740227;
       v20 = v10;
       v21 = 2117;
-      v22 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_1956FD000, v12, OS_LOG_TYPE_DEFAULT, "Executing contact fetch request %{sensitive}@ using contact store %{sensitive}@", &v19, 0x16u);
     }
 
-    v13 = [a1 executeFetchRequest:v10 error:a5];
-    v14 = [v13 value];
+    v13 = [self executeFetchRequest:v10 error:a5];
+    value = [v13 value];
     v15 = TUDefaultLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v14 count];
+      v16 = [value count];
       v19 = 134217984;
       v20 = v16;
       _os_log_impl(&dword_1956FD000, v15, OS_LOG_TYPE_DEFAULT, "Contact fetch request returned %lu results", &v19, 0xCu);
@@ -59,12 +59,12 @@
 
   else
   {
-    v14 = 0;
+    value = 0;
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return value;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface PXOutlineDataSectionManager
-- (BOOL)shouldInvalidateDataSectionForChildDataSectionManager:(id)a3 changeDescriptor:(unint64_t)a4;
+- (BOOL)shouldInvalidateDataSectionForChildDataSectionManager:(id)manager changeDescriptor:(unint64_t)descriptor;
 - (PXOutlineDataSectionManagerDelegate)delegate;
-- (id)_changeDetailsForNewDataSection:(id)a3;
-- (id)changeDetailsForChangedChildDataSectionManager:(id)a3 childChangeDetails:(id)a4;
+- (id)_changeDetailsForNewDataSection:(id)section;
+- (id)changeDetailsForChangedChildDataSectionManager:(id)manager childChangeDetails:(id)details;
 - (id)createDataSection;
 - (void)rearrangeSectionContent;
 @end
@@ -16,17 +16,17 @@
   return WeakRetained;
 }
 
-- (id)changeDetailsForChangedChildDataSectionManager:(id)a3 childChangeDetails:(id)a4
+- (id)changeDetailsForChangedChildDataSectionManager:(id)manager childChangeDetails:(id)details
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([a4 hasIncrementalChanges])
+  managerCopy = manager;
+  if ([details hasIncrementalChanges])
   {
-    v7 = [v6 outlineObject];
-    v8 = v7;
-    if (v7)
+    outlineObject = [managerCopy outlineObject];
+    v8 = outlineObject;
+    if (outlineObject)
     {
-      v12[0] = v7;
+      v12[0] = outlineObject;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
     }
 
@@ -35,34 +35,34 @@
       v9 = 0;
     }
 
-    v10 = [(PXOutlineDataSectionManager *)self _changeDetailsForNewDataSection:v9];
+    changeDetailsWithNoIncrementalChanges = [(PXOutlineDataSectionManager *)self _changeDetailsForNewDataSection:v9];
   }
 
   else
   {
-    v10 = [off_1E7721450 changeDetailsWithNoIncrementalChanges];
+    changeDetailsWithNoIncrementalChanges = [off_1E7721450 changeDetailsWithNoIncrementalChanges];
   }
 
-  return v10;
+  return changeDetailsWithNoIncrementalChanges;
 }
 
-- (BOOL)shouldInvalidateDataSectionForChildDataSectionManager:(id)a3 changeDescriptor:(unint64_t)a4
+- (BOOL)shouldInvalidateDataSectionForChildDataSectionManager:(id)manager changeDescriptor:(unint64_t)descriptor
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if ((v4 & 6) != 0)
+  descriptorCopy = descriptor;
+  managerCopy = manager;
+  v6 = managerCopy;
+  if ((descriptorCopy & 6) != 0)
   {
     v7 = 1;
   }
 
-  else if (v4)
+  else if (descriptorCopy)
   {
-    v8 = [v5 previousDataSection];
-    v9 = v8;
-    if (v8)
+    previousDataSection = [managerCopy previousDataSection];
+    v9 = previousDataSection;
+    if (previousDataSection)
     {
-      v10 = [v8 containsAnyObjects] ^ 1;
+      v10 = [previousDataSection containsAnyObjects] ^ 1;
     }
 
     else
@@ -91,8 +91,8 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [(PXDataSectionManager *)self childDataSectionManagers];
-  v7 = [v6 countByEnumeratingWithState:&v26 objects:v32 count:16];
+  childDataSectionManagers = [(PXDataSectionManager *)self childDataSectionManagers];
+  v7 = [childDataSectionManagers countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -103,37 +103,37 @@
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childDataSectionManagers);
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [v11 outlineObject];
-        if (v12)
+        outlineObject = [v11 outlineObject];
+        if (outlineObject)
         {
-          [v3 addObject:v12];
+          [v3 addObject:outlineObject];
           if (([v11 allowsEmptyDataSection] & 1) != 0 || (objc_msgSend(v11, "isDataSectionEmpty") & 1) == 0)
           {
-            [(NSDictionary *)v5 setObject:v11 forKeyedSubscript:v12];
+            [(NSDictionary *)v5 setObject:v11 forKeyedSubscript:outlineObject];
           }
 
           else
           {
-            [v4 addObject:v12];
+            [v4 addObject:outlineObject];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v26 objects:v32 count:16];
+      v8 = [childDataSectionManagers countByEnumeratingWithState:&v26 objects:v32 count:16];
     }
 
     while (v8);
   }
 
-  v13 = [(PXOutlineDataSectionManager *)self delegate];
-  v14 = v13;
-  if (v13)
+  delegate = [(PXOutlineDataSectionManager *)self delegate];
+  v14 = delegate;
+  if (delegate)
   {
-    v15 = [v13 outlineDataSectionManager:self arrangedSectionContent:v3];
+    v15 = [delegate outlineDataSectionManager:self arrangedSectionContent:v3];
     if (v15 != v3)
     {
       v16 = [v3 count];
@@ -172,16 +172,16 @@
   [(PXDataSectionManager *)self updateDataSectionWithChangeDetails:v3];
 }
 
-- (id)_changeDetailsForNewDataSection:(id)a3
+- (id)_changeDetailsForNewDataSection:(id)section
 {
-  v4 = a3;
-  v5 = [(PXOutlineDataSectionManager *)self createDataSection];
-  v6 = [(PXDataSectionManager *)self dataSection];
-  v7 = [v6 sectionContent];
-  v8 = [v5 sectionContent];
-  if (v4)
+  sectionCopy = section;
+  createDataSection = [(PXOutlineDataSectionManager *)self createDataSection];
+  dataSection = [(PXDataSectionManager *)self dataSection];
+  sectionContent = [dataSection sectionContent];
+  sectionContent2 = [createDataSection sectionContent];
+  if (sectionCopy)
   {
-    v9 = v4;
+    v9 = sectionCopy;
   }
 
   else
@@ -189,7 +189,7 @@
     v9 = MEMORY[0x1E695E0F0];
   }
 
-  v10 = [off_1E7721450 changeDetailsFromArray:v7 toArray:v8 changedObjects:v9];
+  v10 = [off_1E7721450 changeDetailsFromArray:sectionContent toArray:sectionContent2 changedObjects:v9];
 
   return v10;
 }

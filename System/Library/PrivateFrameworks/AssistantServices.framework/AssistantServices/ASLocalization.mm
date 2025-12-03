@@ -2,7 +2,7 @@
 + (id)sharedLocalization;
 - (ASLocalization)init;
 - (id)_languageCode;
-- (id)localizedStringForKey:(id)a3 table:(id)a4 bundle:(id)a5;
+- (id)localizedStringForKey:(id)key table:(id)table bundle:(id)bundle;
 - (void)_clearTableCache;
 - (void)_languageCodeChanged;
 - (void)dealloc;
@@ -10,12 +10,12 @@
 
 @implementation ASLocalization
 
-- (id)localizedStringForKey:(id)a3 table:(id)a4 bundle:(id)a5
+- (id)localizedStringForKey:(id)key table:(id)table bundle:(id)bundle
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  keyCopy = key;
+  tableCopy = table;
+  bundleCopy = bundle;
+  if (bundleCopy)
   {
     v20 = 0;
     v21 = &v20;
@@ -28,11 +28,11 @@
     block[1] = 3221225472;
     block[2] = sub_100003968;
     block[3] = &unk_100014458;
-    v15 = v9;
-    v16 = self;
-    v17 = v10;
+    v15 = tableCopy;
+    selfCopy = self;
+    v17 = bundleCopy;
     v19 = &v20;
-    v18 = v8;
+    v18 = keyCopy;
     dispatch_sync(queue, block);
     v12 = v21[5];
 
@@ -73,8 +73,8 @@
   if (!languageCode)
   {
     v4 = +[AFPreferences sharedPreferences];
-    v5 = [v4 languageCode];
-    v6 = [v5 copy];
+    languageCode = [v4 languageCode];
+    v6 = [languageCode copy];
     v7 = self->_languageCode;
     self->_languageCode = v6;
 

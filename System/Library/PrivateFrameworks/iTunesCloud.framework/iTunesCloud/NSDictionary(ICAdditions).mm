@@ -16,7 +16,7 @@
 
 - (void)ic_dataValueForKey:()ICAdditions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (_NSIsNSData())
   {
     v2 = v1;
@@ -34,7 +34,7 @@
 
 - (void)ic_stringValueForKey:()ICAdditions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (_NSIsNSString())
   {
     v2 = v1;
@@ -52,7 +52,7 @@
 
 - (void)ic_dictionaryValueForKey:()ICAdditions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (_NSIsNSDictionary())
   {
     v2 = v1;
@@ -70,7 +70,7 @@
 
 - (void)ic_arrayValueForKey:()ICAdditions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (_NSIsNSArray())
   {
     v2 = v1;
@@ -88,7 +88,7 @@
 
 - (double)ic_doubleValueForKey:()ICAdditions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   v2 = 0.0;
   if (objc_opt_respondsToSelector())
   {
@@ -101,87 +101,87 @@
 
 - (uint64_t)ic_BOOLValueForKey:()ICAdditions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (objc_opt_respondsToSelector())
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v2 = 0;
+    bOOLValue = 0;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)ic_int64ValueForKey:()ICAdditions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (objc_opt_respondsToSelector())
   {
-    v2 = [v1 longLongValue];
+    longLongValue = [v1 longLongValue];
   }
 
   else
   {
-    v2 = 0;
+    longLongValue = 0;
   }
 
-  return v2;
+  return longLongValue;
 }
 
 - (uint64_t)ic_uintValueForKey:()ICAdditions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (objc_opt_respondsToSelector())
   {
-    v2 = [v1 unsignedIntValue];
+    unsignedIntValue = [v1 unsignedIntValue];
   }
 
   else
   {
-    v2 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v2;
+  return unsignedIntValue;
 }
 
 - (uint64_t)ic_intValueForKey:()ICAdditions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (objc_opt_respondsToSelector())
   {
-    v2 = [v1 intValue];
+    intValue = [v1 intValue];
   }
 
   else
   {
-    v2 = 0;
+    intValue = 0;
   }
 
-  return v2;
+  return intValue;
 }
 
 - (uint64_t)ic_integerValueForKey:()ICAdditions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (objc_opt_respondsToSelector())
   {
-    v2 = [v1 integerValue];
+    integerValue = [v1 integerValue];
   }
 
   else
   {
-    v2 = 0;
+    integerValue = 0;
   }
 
-  return v2;
+  return integerValue;
 }
 
 - (void)ic_numberValueForKey:()ICAdditions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (_NSIsNSNumber())
   {
     v2 = v1;

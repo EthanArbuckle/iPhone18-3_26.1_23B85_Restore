@@ -1,17 +1,17 @@
 @interface WakingTimerScheduler
 + (id)sharedInstance;
 + (id)timerQueue;
-+ (void)cancelScheduledWake:(id)a3;
++ (void)cancelScheduledWake:(id)wake;
 - (WakingTimerScheduler)init;
 - (void)cancelScheduledWake;
-- (void)cancelTimer:(id)a3;
+- (void)cancelTimer:(id)timer;
 - (void)clearDispatchTimer;
 - (void)evaluateTimers;
-- (void)evaluateTimers:(unint64_t)a3;
-- (void)scheduleTimer:(id)a3;
-- (void)scheduleTimerWithEarliestDeadline:(id)a3 now:(unint64_t)a4;
-- (void)scheduleWakeWithDelayBeforeFireTime:(unint64_t)a3 gracePeriod:(double)a4;
-- (void)systemPowerChanged:(unsigned int)a3 notificationID:(void *)a4;
+- (void)evaluateTimers:(unint64_t)timers;
+- (void)scheduleTimer:(id)timer;
+- (void)scheduleTimerWithEarliestDeadline:(id)deadline now:(unint64_t)now;
+- (void)scheduleWakeWithDelayBeforeFireTime:(unint64_t)time gracePeriod:(double)period;
+- (void)systemPowerChanged:(unsigned int)changed notificationID:(void *)d;
 @end
 
 @implementation WakingTimerScheduler
@@ -180,7 +180,7 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = sub_10006F94C;
   block[3] = &unk_1001756A8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001B3898 != -1)
   {
     dispatch_once(&qword_1001B3898, block);
@@ -191,43 +191,43 @@ LABEL_15:
   return v2;
 }
 
-- (void)scheduleTimer:(id)a3
+- (void)scheduleTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   v5 = +[WakingTimerScheduler timerQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006FA3C;
   v7[3] = &unk_100175598;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = timerCopy;
+  selfCopy = self;
+  v6 = timerCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)cancelTimer:(id)a3
+- (void)cancelTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   v5 = +[WakingTimerScheduler timerQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006FC78;
   v7[3] = &unk_100175598;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = timerCopy;
+  selfCopy = self;
+  v6 = timerCopy;
   dispatch_sync(v5, v7);
 }
 
-- (void)evaluateTimers:(unint64_t)a3
+- (void)evaluateTimers:(unint64_t)timers
 {
-  v4 = self;
-  v5 = [(NSHashTable *)self->_timers allObjects];
+  selfCopy = self;
+  allObjects = [(NSHashTable *)self->_timers allObjects];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v6 = [allObjects countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v6)
   {
     v7 = v6;
@@ -239,11 +239,11 @@ LABEL_15:
       {
         if (*v32 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
-        if ([v11 earliestFireTime] < a3)
+        if ([v11 earliestFireTime] < timers)
         {
           if (!v8)
           {
@@ -251,11 +251,11 @@ LABEL_15:
           }
 
           [v8 addObject:v11];
-          [(NSHashTable *)v4->_timers removeObject:v11];
+          [(NSHashTable *)selfCopy->_timers removeObject:v11];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v7);
@@ -283,20 +283,20 @@ LABEL_15:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = v4->_timers;
+  v14 = selfCopy->_timers;
   v15 = [(NSHashTable *)v14 countByEnumeratingWithState:&v24 objects:v35 count:16];
   if (!v15)
   {
 
 LABEL_31:
-    [(WakingTimerScheduler *)v4 clearDispatchTimer];
-    [(WakingTimerScheduler *)v4 cancelScheduledWake];
+    [(WakingTimerScheduler *)selfCopy clearDispatchTimer];
+    [(WakingTimerScheduler *)selfCopy cancelScheduledWake];
     v17 = 0;
     goto LABEL_32;
   }
 
   v16 = v15;
-  v23 = v4;
+  v23 = selfCopy;
   v17 = 0;
   v18 = *v25;
   do
@@ -311,8 +311,8 @@ LABEL_31:
       v20 = *(*(&v24 + 1) + 8 * j);
       if (v17)
       {
-        v21 = [*(*(&v24 + 1) + 8 * j) deadline];
-        if (v21 < [(WakingTimer *)v17 deadline])
+        deadline = [*(*(&v24 + 1) + 8 * j) deadline];
+        if (deadline < [(WakingTimer *)v17 deadline])
         {
           v22 = v20;
 
@@ -331,7 +331,7 @@ LABEL_31:
 
   while (v16);
 
-  v4 = v23;
+  selfCopy = v23;
   if (!v17)
   {
     goto LABEL_31;
@@ -339,18 +339,18 @@ LABEL_31:
 
   if (v17 != v23->_timerWithEarliestDeadline)
   {
-    [(WakingTimerScheduler *)v23 scheduleTimerWithEarliestDeadline:v17 now:a3];
+    [(WakingTimerScheduler *)v23 scheduleTimerWithEarliestDeadline:v17 now:timers];
   }
 
 LABEL_32:
-  [(NSHashTable *)v4->_timers count];
+  [(NSHashTable *)selfCopy->_timers count];
 }
 
-- (void)scheduleTimerWithEarliestDeadline:(id)a3 now:(unint64_t)a4
+- (void)scheduleTimerWithEarliestDeadline:(id)deadline now:(unint64_t)now
 {
-  v6 = a3;
-  v7 = [(WakingTimer *)v6 earliestFireTime]- a4;
-  [(WakingTimer *)v6 gracePeriod];
+  deadlineCopy = deadline;
+  v7 = [(WakingTimer *)deadlineCopy earliestFireTime]- now;
+  [(WakingTimer *)deadlineCopy gracePeriod];
   v9 = (v8 * 1000000000.0);
   v10 = nr_daemon_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -361,7 +361,7 @@ LABEL_32:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 134218496;
-      v15 = v6;
+      v15 = deadlineCopy;
       v16 = 2048;
       v17 = v7 / 1000000000.0;
       v18 = 2048;
@@ -373,19 +373,19 @@ LABEL_32:
   v13 = dispatch_walltime(0, v7);
   dispatch_source_set_timer(self->_dispatchTimer, v13, 0xFFFFFFFFFFFFFFFFLL, v9);
   self->_dispatchTimerScheduled = 1;
-  [(WakingTimer *)v6 gracePeriod];
+  [(WakingTimer *)deadlineCopy gracePeriod];
   [(WakingTimerScheduler *)self scheduleWakeWithDelayBeforeFireTime:v7 gracePeriod:?];
-  self->_timerWithEarliestDeadline = v6;
+  self->_timerWithEarliestDeadline = deadlineCopy;
 }
 
-- (void)scheduleWakeWithDelayBeforeFireTime:(unint64_t)a3 gracePeriod:(double)a4
+- (void)scheduleWakeWithDelayBeforeFireTime:(unint64_t)time gracePeriod:(double)period
 {
   if (self->_requestedWakeDate)
   {
     [(WakingTimerScheduler *)self cancelScheduledWake];
   }
 
-  v7 = [NSDate dateWithTimeIntervalSinceNow:(a3 / 0x3B9ACA00)];
+  v7 = [NSDate dateWithTimeIntervalSinceNow:(time / 0x3B9ACA00)];
   v8 = nr_daemon_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -398,7 +398,7 @@ LABEL_32:
       v20 = 134218240;
       v21 = v7;
       v22 = 2048;
-      v23 = v11;
+      periodCopy = v11;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Scheduling wake for date (%p) in (%.3f) seconds", &v20, 0x16u);
     }
   }
@@ -406,7 +406,7 @@ LABEL_32:
   v27[0] = v7;
   v26[0] = @"time";
   v26[1] = @"leeway";
-  v12 = [NSNumber numberWithDouble:a4];
+  v12 = [NSNumber numberWithDouble:period];
   v26[2] = @"scheduledby";
   v27[1] = v12;
   v27[2] = @"com.apple.NanoRegistry.WakingTimerScheduler.IOPM";
@@ -435,7 +435,7 @@ LABEL_12:
       v20 = 138412802;
       v21 = v7;
       v22 = 2048;
-      v23 = a4;
+      periodCopy = period;
       v24 = 1024;
       v25 = v15;
       _os_log_impl(&_mh_execute_header, p_super, OS_LOG_TYPE_DEFAULT, "Failed to schedule wake at date (%@) with grace period (%f) with error: (%d)", &v20, 0x1Cu);
@@ -447,9 +447,9 @@ LABEL_12:
 LABEL_13:
 }
 
-+ (void)cancelScheduledWake:(id)a3
++ (void)cancelScheduledWake:(id)wake
 {
-  v3 = a3;
+  wakeCopy = wake;
   v4 = nr_daemon_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -459,12 +459,12 @@ LABEL_13:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 134217984;
-      v18 = v3;
+      v18 = wakeCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Cancelling wake for date: (%p)", &v17, 0xCu);
     }
   }
 
-  v7 = IOPMCancelScheduledPowerEvent(v3, @"com.apple.NanoRegistry.WakingTimerScheduler.IOPM", @"wake");
+  v7 = IOPMCancelScheduledPowerEvent(wakeCopy, @"com.apple.NanoRegistry.WakingTimerScheduler.IOPM", @"wake");
   if (v7)
   {
     v8 = v7;
@@ -479,7 +479,7 @@ LABEL_13:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v17 = 138412290;
-          v18 = v3;
+          v18 = wakeCopy;
           v12 = "Failed to cancel wake for date (%@) with error: kIOReturnNotFound";
           v13 = v11;
           v14 = 12;
@@ -503,7 +503,7 @@ LABEL_13:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v17 = 138412546;
-          v18 = v3;
+          v18 = wakeCopy;
           v19 = 1024;
           v20 = v8;
           v12 = "Failed to cancel wake for date (%@) with error: (%d)";
@@ -518,11 +518,11 @@ LABEL_14:
   }
 }
 
-- (void)systemPowerChanged:(unsigned int)a3 notificationID:(void *)a4
+- (void)systemPowerChanged:(unsigned int)changed notificationID:(void *)d
 {
-  if (a3 == -536870288 || (a3 == -536870144 || a3 == -536870272) && ([(WakingTimerScheduler *)self evaluateTimers], a3 == -536870272))
+  if (changed == -536870288 || (changed == -536870144 || changed == -536870272) && ([(WakingTimerScheduler *)self evaluateTimers], changed == -536870272))
   {
-    v7 = IOAllowPowerChange(self->_systemPowerConnection, a4);
+    v7 = IOAllowPowerChange(self->_systemPowerConnection, d);
     if (v7)
     {
       v8 = v7;
@@ -535,7 +535,7 @@ LABEL_14:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v12[0] = 67109376;
-          v12[1] = a3;
+          v12[1] = changed;
           v13 = 1024;
           v14 = v8;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Failed allow Power change (%u) with error: (%d)", v12, 0xEu);

@@ -1,8 +1,8 @@
 @interface FCIssueRecordSource
-+ (id)_URLStringForCoverImageKey:(id)a3 inRecord:(id)a4;
++ (id)_URLStringForCoverImageKey:(id)key inRecord:(id)record;
 - (id)alwaysLocalizedKeys;
 - (id)nonLocalizableKeys;
-- (id)recordFromCKRecord:(id)a3 base:(id)a4;
+- (id)recordFromCKRecord:(id)record base:(id)base;
 @end
 
 @implementation FCIssueRecordSource
@@ -94,29 +94,29 @@ uint64_t __42__FCIssueRecordSource_alwaysLocalizedKeys__block_invoke_2()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)recordFromCKRecord:(id)a3 base:(id)a4
+- (id)recordFromCKRecord:(id)record base:(id)base
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  baseCopy = base;
   v8 = objc_alloc_init(MEMORY[0x1E69B6E60]);
-  [v8 setBase:v7];
-  v9 = [v6 objectForKey:@"allArticleIDs"];
+  [v8 setBase:baseCopy];
+  v9 = [recordCopy objectForKey:@"allArticleIDs"];
   v10 = [v9 mutableCopy];
   [v8 setAllArticleIDs:v10];
 
-  v11 = [v6 objectForKey:@"allowedStorefrontIDs"];
+  v11 = [recordCopy objectForKey:@"allowedStorefrontIDs"];
   v12 = [v11 mutableCopy];
   [v8 setAllowedStorefrontIDs:v12];
 
-  v13 = [v6 objectForKey:@"blockedStorefrontIDs"];
+  v13 = [recordCopy objectForKey:@"blockedStorefrontIDs"];
   v14 = [v13 mutableCopy];
   [v8 setBlockedStorefrontIDs:v14];
 
-  v15 = [v6 objectForKey:@"channelTagID"];
+  v15 = [recordCopy objectForKey:@"channelTagID"];
   [v8 setChannelTagID:v15];
 
   objc_opt_class();
-  v16 = [v6 objectForKey:@"coverArticleID"];
+  v16 = [recordCopy objectForKey:@"coverArticleID"];
   if (v16)
   {
     if (objc_opt_isKindOfClass())
@@ -139,7 +139,7 @@ uint64_t __42__FCIssueRecordSource_alwaysLocalizedKeys__block_invoke_2()
   [v8 setCoverArticleID:v18];
 
   objc_opt_class();
-  v19 = [v6 objectForKey:@"coverAspectRatio"];
+  v19 = [recordCopy objectForKey:@"coverAspectRatio"];
   if (v19)
   {
     if (objc_opt_isKindOfClass())
@@ -162,29 +162,29 @@ uint64_t __42__FCIssueRecordSource_alwaysLocalizedKeys__block_invoke_2()
   [v21 doubleValue];
   [v8 setCoverAspectRatio:?];
 
-  v22 = [objc_opt_class() _URLStringForCoverImageKey:@"coverImage" inRecord:v6];
+  v22 = [objc_opt_class() _URLStringForCoverImageKey:@"coverImage" inRecord:recordCopy];
   [v8 setCoverImageURL:v22];
 
-  v23 = [v6 objectForKey:@"coverPrimaryColor"];
+  v23 = [recordCopy objectForKey:@"coverPrimaryColor"];
   [v8 setCoverPrimaryColor:v23];
 
-  v24 = [v6 objectForKey:@"coverBackgroundColor"];
+  v24 = [recordCopy objectForKey:@"coverBackgroundColor"];
   [v8 setCoverBackgroundColor:v24];
 
-  v25 = [v6 objectForKey:@"coverTextColor"];
+  v25 = [recordCopy objectForKey:@"coverTextColor"];
   [v8 setCoverTextColor:v25];
 
-  v26 = [v6 objectForKey:@"coverAccentColor"];
+  v26 = [recordCopy objectForKey:@"coverAccentColor"];
   [v8 setCoverAccentColor:v26];
 
-  v27 = [v6 objectForKey:@"edition"];
+  v27 = [recordCopy objectForKey:@"edition"];
   [v8 setEdition:v27];
 
-  v28 = [v6 objectForKey:@"halfLife"];
+  v28 = [recordCopy objectForKey:@"halfLife"];
   [v8 setHalfLifeMilliseconds:{objc_msgSend(v28, "unsignedLongLongValue")}];
 
   objc_opt_class();
-  v29 = [v6 objectForKey:@"isDraft"];
+  v29 = [recordCopy objectForKey:@"isDraft"];
   if (v29)
   {
     if (objc_opt_isKindOfClass())
@@ -207,7 +207,7 @@ uint64_t __42__FCIssueRecordSource_alwaysLocalizedKeys__block_invoke_2()
   [v8 setIsDraft:{objc_msgSend(v31, "BOOLValue")}];
 
   objc_opt_class();
-  v32 = [v6 objectForKey:@"isPaid"];
+  v32 = [recordCopy objectForKey:@"isPaid"];
   if (v32)
   {
     if (objc_opt_isKindOfClass())
@@ -229,17 +229,17 @@ uint64_t __42__FCIssueRecordSource_alwaysLocalizedKeys__block_invoke_2()
   v34 = v33;
   [v8 setIsPaid:{objc_msgSend(v34, "BOOLValue")}];
 
-  v35 = [v6 objectForKey:@"description"];
+  v35 = [recordCopy objectForKey:@"description"];
   [v8 setIssueDescription:v35];
 
-  v36 = [v6 objectForKey:@"minNewsVersion"];
+  v36 = [recordCopy objectForKey:@"minNewsVersion"];
   [v8 setMinimumNewsVersion:{+[FCRestrictions integerRepresentationOfShortVersionString:](FCRestrictions, "integerRepresentationOfShortVersionString:", v36)}];
 
-  v37 = [v6 objectForKey:@"layeredCover"];
+  v37 = [recordCopy objectForKey:@"layeredCover"];
   [v8 setLayeredCover:v37];
 
   objc_opt_class();
-  v38 = [v6 objectForKey:@"layeredCoverAspectRatio"];
+  v38 = [recordCopy objectForKey:@"layeredCoverAspectRatio"];
   if (v38)
   {
     if (objc_opt_isKindOfClass())
@@ -262,14 +262,14 @@ uint64_t __42__FCIssueRecordSource_alwaysLocalizedKeys__block_invoke_2()
   [v40 doubleValue];
   [v8 setLayeredCoverAspectRatio:?];
 
-  v41 = [v6 objectForKey:@"layeredCoverPrimaryColor"];
+  v41 = [recordCopy objectForKey:@"layeredCoverPrimaryColor"];
   [v8 setLayeredCoverPrimaryColor:v41];
 
-  v42 = [v6 objectForKey:@"notificationDescription"];
+  v42 = [recordCopy objectForKey:@"notificationDescription"];
   [v8 setNotificationDescription:v42];
 
   objc_opt_class();
-  v43 = [v6 objectForKey:@"pdfResourceArchive"];
+  v43 = [recordCopy objectForKey:@"pdfResourceArchive"];
   if (v43)
   {
     if (objc_opt_isKindOfClass())
@@ -291,21 +291,21 @@ uint64_t __42__FCIssueRecordSource_alwaysLocalizedKeys__block_invoke_2()
   v45 = v44;
   [v8 setPdfResourceArchiveURL:v45];
 
-  v46 = [v6 objectForKey:@"publishDate"];
-  v47 = [v46 pbDate];
-  [v8 setPublishDate:v47];
+  v46 = [recordCopy objectForKey:@"publishDate"];
+  pbDate = [v46 pbDate];
+  [v8 setPublishDate:pbDate];
 
-  v48 = [v6 objectForKey:@"title"];
+  v48 = [recordCopy objectForKey:@"title"];
   [v8 setTitle:v48];
 
-  v49 = [v6 objectForKey:@"topicTagIDs"];
+  v49 = [recordCopy objectForKey:@"topicTagIDs"];
   [v8 setTopicTagIDs:v49];
 
-  v50 = [v6 objectForKey:@"sortDate"];
-  v51 = [v50 pbDate];
-  [v8 setSortDate:v51];
+  v50 = [recordCopy objectForKey:@"sortDate"];
+  pbDate2 = [v50 pbDate];
+  [v8 setSortDate:pbDate2];
 
-  v52 = [v6 objectForKey:@"type"];
+  v52 = [recordCopy objectForKey:@"type"];
   if ([v52 isEqualToString:@"flint"])
   {
     v53 = 1;
@@ -326,7 +326,7 @@ LABEL_36:
   if ([v8 type] == 2)
   {
     objc_opt_class();
-    v54 = [v6 objectForKey:@"metadataAssetEncrypted"];
+    v54 = [recordCopy objectForKey:@"metadataAssetEncrypted"];
     if (v54)
     {
       if (objc_opt_isKindOfClass())
@@ -355,16 +355,16 @@ LABEL_36:
 
   else
   {
-    v56 = [v7 identifier];
-    v57 = [FCRecordFieldURLProtocol URLForRecordID:v56 fieldName:@"metadataAsset"];
+    identifier = [baseCopy identifier];
+    v57 = [FCRecordFieldURLProtocol URLForRecordID:identifier fieldName:@"metadataAsset"];
 
-    v58 = [v57 absoluteString];
-    [v8 setMetadataURL:v58];
+    absoluteString = [v57 absoluteString];
+    [v8 setMetadataURL:absoluteString];
   }
 
-  v59 = [(FCRecordSource *)self localizedKeysByOriginalKey];
-  v60 = [v59 objectForKeyedSubscript:@"scores"];
-  v61 = [v6 objectForKey:v60];
+  localizedKeysByOriginalKey = [(FCRecordSource *)self localizedKeysByOriginalKey];
+  v60 = [localizedKeysByOriginalKey objectForKeyedSubscript:@"scores"];
+  v61 = [recordCopy objectForKey:v60];
   v62 = v61;
   if (v61)
   {
@@ -373,7 +373,7 @@ LABEL_36:
 
   else
   {
-    v63 = [v6 objectForKey:@"scores"];
+    v63 = [recordCopy objectForKey:@"scores"];
   }
 
   v64 = v63;
@@ -384,15 +384,15 @@ LABEL_36:
   return v8;
 }
 
-+ (id)_URLStringForCoverImageKey:(id)a3 inRecord:(id)a4
++ (id)_URLStringForCoverImageKey:(id)key inRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 _useTaggedImages])
+  keyCopy = key;
+  recordCopy = record;
+  if ([self _useTaggedImages])
   {
-    v8 = [v6 stringByAppendingString:@"2"];
+    v8 = [keyCopy stringByAppendingString:@"2"];
     objc_opt_class();
-    v9 = [v7 objectForKeyedSubscript:v8];
+    v9 = [recordCopy objectForKeyedSubscript:v8];
     if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v10 = v9;
@@ -402,7 +402,7 @@ LABEL_36:
     else
     {
       objc_opt_class();
-      v13 = [v7 objectForKeyedSubscript:v6];
+      v13 = [recordCopy objectForKeyedSubscript:keyCopy];
       if (v13)
       {
         if (objc_opt_isKindOfClass())
@@ -430,7 +430,7 @@ LABEL_36:
   else
   {
     objc_opt_class();
-    v8 = [v7 objectForKeyedSubscript:v6];
+    v8 = [recordCopy objectForKeyedSubscript:keyCopy];
     if (v8)
     {
       if (objc_opt_isKindOfClass())

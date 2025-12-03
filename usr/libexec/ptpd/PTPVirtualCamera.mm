@@ -2,46 +2,46 @@
 - (BOOL)hostIsLegacyOS;
 - (BOOL)hostIsMacOS;
 - (BOOL)hostIsWindows;
-- (BOOL)visibleStorage:(id)a3;
+- (BOOL)visibleStorage:(id)storage;
 - (BOOL)willOverrideCapabilities;
 - (NSString)userAssignedName;
-- (PTPVirtualCamera)initWithName:(id)a3 andPath:(id)a4;
+- (PTPVirtualCamera)initWithName:(id)name andPath:(id)path;
 - (id)allStorages;
 - (id)delegate;
-- (id)devicePropDescDatasetForProperty:(unsigned __int16)a3;
-- (id)devicePropValueForProperty:(unsigned __int16)a3;
-- (id)objectForObjectHandle:(id)a3;
-- (id)objectPropDescForObjectPropertyCode:(unsigned __int16)a3 responseCode:(unsigned __int16 *)a4;
-- (id)objectPropertiesSupportedForObjectFormatCode:(unsigned __int16)a3 responseCode:(unsigned __int16 *)a4;
+- (id)devicePropDescDatasetForProperty:(unsigned __int16)property;
+- (id)devicePropValueForProperty:(unsigned __int16)property;
+- (id)objectForObjectHandle:(id)handle;
+- (id)objectPropDescForObjectPropertyCode:(unsigned __int16)code responseCode:(unsigned __int16 *)responseCode;
+- (id)objectPropertiesSupportedForObjectFormatCode:(unsigned __int16)code responseCode:(unsigned __int16 *)responseCode;
 - (id)overrideCapabilities;
 - (id)photoStorageAvailable;
-- (id)storageWithID:(unsigned int)a3;
+- (id)storageWithID:(unsigned int)d;
 - (int64_t)transferBehaviorUserPreference;
 - (unsigned)numDownloadableObjects;
-- (void)addStorage:(id)a3;
-- (void)addedPhotoKeys:(id)a3 deletedPhotoKeys:(id)a4 changedPhotoKeys:(id)a5 changePendingPhotoKeys:(id)a6;
-- (void)assignHostMediaCapabilities:(id)a3;
-- (void)assignHostSupportedFormats:(id)a3;
-- (void)cleanupStorageAfterTimeout:(double)a3 cleanup:(id)a4;
+- (void)addStorage:(id)storage;
+- (void)addedPhotoKeys:(id)keys deletedPhotoKeys:(id)photoKeys changedPhotoKeys:(id)changedPhotoKeys changePendingPhotoKeys:(id)pendingPhotoKeys;
+- (void)assignHostMediaCapabilities:(id)capabilities;
+- (void)assignHostSupportedFormats:(id)formats;
+- (void)cleanupStorageAfterTimeout:(double)timeout cleanup:(id)cleanup;
 - (void)closeSession;
 - (void)dealloc;
-- (void)generatePTPEventsForAddedObjectHandles:(id)a3;
-- (void)generatePTPEventsForDeletedObjectHandles:(id)a3;
+- (void)generatePTPEventsForAddedObjectHandles:(id)handles;
+- (void)generatePTPEventsForDeletedObjectHandles:(id)handles;
 - (void)handleInternalSettingsChanged;
 - (void)initializeMTPProperties;
 - (void)installSecurity;
 - (void)openSession;
 - (void)preparePhotoStorage;
-- (void)processAddedFiles:(id)a3;
-- (void)processDeletedFiles:(id)a3;
+- (void)processAddedFiles:(id)files;
+- (void)processDeletedFiles:(id)files;
 - (void)provokeSecurityCheck;
 - (void)removePlaceholderStorage;
 - (void)removeSecurity;
 - (void)removeStorages;
 - (void)resetPhotoStorage;
 - (void)sendEventDeviceUnlocked;
-- (void)setHostSupportsGroups:(BOOL)a3;
-- (void)setupStorageAfterTimeout:(id)a3;
+- (void)setHostSupportsGroups:(BOOL)groups;
+- (void)setupStorageAfterTimeout:(id)timeout;
 - (void)startObservers;
 - (void)stopObservers;
 - (void)updateDeviceInformation;
@@ -51,10 +51,10 @@
 
 @implementation PTPVirtualCamera
 
-- (PTPVirtualCamera)initWithName:(id)a3 andPath:(id)a4
+- (PTPVirtualCamera)initWithName:(id)name andPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  pathCopy = path;
   v61.receiver = self;
   v61.super_class = PTPVirtualCamera;
   v9 = [(PTPVirtualCamera *)&v61 init];
@@ -64,8 +64,8 @@
     dword_1000403A4 = 0;
     dword_1000403A8 = 0;
     dword_1000403AC = 0;
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_path, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_path, path);
     v11 = objc_alloc_init(PTPDeviceInfoDataset);
     deviceInfoDataset = v10->_deviceInfoDataset;
     v10->_deviceInfoDataset = v11;
@@ -155,9 +155,9 @@
     v10->_notificationCenter = CFNotificationCenterGetDarwinNotifyCenter();
     v51 = sub_10000C470();
     v52 = [v51 cplStorageState] != 0;
-    v53 = [v51 cplStorageState];
+    cplStorageState = [v51 cplStorageState];
     v54 = MGCopyAnswer();
-    v55 = [NSString stringWithFormat:@"ICPE^%d&CPLS^%lu", v52, v53];
+    v55 = [NSString stringWithFormat:@"ICPE^%d&CPLS^%lu", v52, cplStorageState];
     if (v54)
     {
       v56 = [NSString stringWithFormat:@"%@&ASN^%@", v55, v54];
@@ -243,11 +243,11 @@
 {
   [(PTPVirtualCamera *)self assignHostMediaCapabilities:0];
   v3 = sub_10000C470();
-  v4 = [v3 delegate];
+  delegate = [v3 delegate];
 
   __ICOSLogCreate();
   v5 = [@"am.delegate" length];
-  if (v4 == self)
+  if (delegate == self)
   {
     if (v5 < 0x15)
     {
@@ -267,7 +267,7 @@
       v16 = v9;
       v17 = v15;
       *buf = 136446466;
-      v20 = [(__CFString *)v9 UTF8String];
+      uTF8String = [(__CFString *)v9 UTF8String];
       v21 = 2114;
       v22 = v14;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -296,7 +296,7 @@
       v12 = v7;
       v13 = v11;
       *buf = 136446466;
-      v20 = [(__CFString *)v7 UTF8String];
+      uTF8String = [(__CFString *)v7 UTF8String];
       v21 = 2114;
       v22 = v10;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -333,7 +333,7 @@
     v7 = v3;
     v8 = v6;
     *buf = 136446466;
-    v20 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v21 = 2114;
     v22 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -353,9 +353,9 @@
   {
     v13 = v9;
     v14 = v12;
-    v15 = [(__CFString *)v9 UTF8String];
+    uTF8String2 = [(__CFString *)v9 UTF8String];
     *buf = 136446466;
-    v20 = v15;
+    uTF8String = uTF8String2;
     v21 = 2114;
     v22 = v11;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -381,18 +381,18 @@
     v4 = [v2 valueForKey:@"CAMUserPreferenceMediaTransferBehavior"];
     if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v5 = [v4 integerValue];
+      integerValue = [v4 integerValue];
     }
 
     else
     {
-      v5 = 0;
+      integerValue = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
   __ICOSLogCreate();
@@ -404,7 +404,7 @@
   }
 
   v8 = "Auto";
-  if (v5 == 1)
+  if (integerValue == 1)
   {
     v8 = "Original";
   }
@@ -416,13 +416,13 @@
     v11 = v6;
     v12 = v10;
     *buf = 136446466;
-    v15 = [(__CFString *)v6 UTF8String];
+    uTF8String = [(__CFString *)v6 UTF8String];
     v16 = 2114;
     v17 = v9;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
-  return v5;
+  return integerValue;
 }
 
 - (void)initializeMTPProperties
@@ -477,9 +477,9 @@
   if ([(PTPVirtualCamera *)self visibleStorage:self->_placeholderStorage])
   {
     [(PTPVirtualCamera *)self sendEventRemoveStorageWithID:[(PTPStorage *)self->_placeholderStorage storageID]];
-    v3 = [(PTPStorage *)self->_placeholderStorage storageID];
+    storageID = [(PTPStorage *)self->_placeholderStorage storageID];
 
-    [(PTPVirtualCamera *)self removeStorageWithID:v3];
+    [(PTPVirtualCamera *)self removeStorageWithID:storageID];
   }
 }
 
@@ -500,15 +500,15 @@
     v7 = v3;
     v8 = v6;
     *buf = 136446466;
-    v25 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v26 = 2114;
     v27 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
-  v9 = [(PTPVirtualCamera *)self photoStorage];
+  photoStorage = [(PTPVirtualCamera *)self photoStorage];
 
-  if (!v9)
+  if (!photoStorage)
   {
     if ([(PTPVirtualCamera *)self hostSupportsGroups])
     {
@@ -528,9 +528,9 @@
       {
         v15 = v11;
         v16 = v14;
-        v17 = [(__CFString *)v11 UTF8String];
+        uTF8String2 = [(__CFString *)v11 UTF8String];
         *buf = 136446466;
-        v25 = v17;
+        uTF8String = uTF8String2;
         v26 = 2114;
         v27 = v13;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -577,7 +577,7 @@
     v7 = v3;
     v8 = v6;
     *buf = 136446466;
-    v12 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v13 = 2114;
     v14 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -603,30 +603,30 @@
 
 - (id)photoStorageAvailable
 {
-  v2 = [(PTPVirtualCamera *)self photoStorage];
+  photoStorage = [(PTPVirtualCamera *)self photoStorage];
 
-  return [NSNumber numberWithBool:v2 != 0];
+  return [NSNumber numberWithBool:photoStorage != 0];
 }
 
-- (BOOL)visibleStorage:(id)a3
+- (BOOL)visibleStorage:(id)storage
 {
-  if (!a3)
+  if (!storage)
   {
     return 0;
   }
 
-  v4 = [a3 storageID];
+  storageID = [storage storageID];
   storages = self->_storages;
-  v6 = [NSNumber numberWithUnsignedInt:v4];
+  v6 = [NSNumber numberWithUnsignedInt:storageID];
   v7 = [(NSMutableDictionary *)storages objectForKey:v6];
   v8 = v7 != 0;
 
   return v8;
 }
 
-- (void)addStorage:(id)a3
+- (void)addStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   if ([(NSMutableDictionary *)self->_storages count]== 1)
   {
     __ICOSLogCreate();
@@ -637,14 +637,14 @@
       v5 = [v6 stringByAppendingString:@".."];
     }
 
-    v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Storage 0x%x is being added", [v4 storageID]);
+    v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Storage 0x%x is being added", [storageCopy storageID]);
     v8 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v5;
       v10 = v8;
       *buf = 136446466;
-      v35 = [(__CFString *)v5 UTF8String];
+      uTF8String = [(__CFString *)v5 UTF8String];
       v36 = 2114;
       v37 = v7;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -664,16 +664,16 @@
     {
       v15 = v11;
       v16 = v14;
-      v17 = [(__CFString *)v11 UTF8String];
+      uTF8String2 = [(__CFString *)v11 UTF8String];
       *buf = 136446466;
-      v35 = v17;
+      uTF8String = uTF8String2;
       v36 = 2114;
       v37 = v13;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
   }
 
-  if (v4)
+  if (storageCopy)
   {
     __ICOSLogCreate();
     v18 = &stru_100038B48;
@@ -683,23 +683,23 @@
       v18 = [v19 stringByAppendingString:@".."];
     }
 
-    v20 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Storage 0x%x is being added\n", [v4 storageID]);
+    v20 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Storage 0x%x is being added\n", [storageCopy storageID]);
     v21 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
       v22 = v18;
       v23 = v21;
-      v24 = [(__CFString *)v18 UTF8String];
+      uTF8String3 = [(__CFString *)v18 UTF8String];
       *buf = 136446466;
-      v35 = v24;
+      uTF8String = uTF8String3;
       v36 = 2114;
       v37 = v20;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
     storages = self->_storages;
-    v26 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 storageID]);
-    [(NSMutableDictionary *)storages setObject:v4 forKey:v26];
+    v26 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [storageCopy storageID]);
+    [(NSMutableDictionary *)storages setObject:storageCopy forKey:v26];
 
     __ICOSLogCreate();
     v27 = &stru_100038B48;
@@ -715,9 +715,9 @@
     {
       v31 = v27;
       v32 = v30;
-      v33 = [(__CFString *)v27 UTF8String];
+      uTF8String4 = [(__CFString *)v27 UTF8String];
       *buf = 136446466;
-      v35 = v33;
+      uTF8String = uTF8String4;
       v36 = 2114;
       v37 = v29;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -730,7 +730,7 @@
   storages = self->_storages;
   if (storages)
   {
-    v17 = self;
+    selfCopy = self;
     [(NSMutableDictionary *)storages allValues];
     v19 = 0u;
     v20 = 0u;
@@ -765,9 +765,9 @@
           {
             v13 = v9;
             v14 = v12;
-            v15 = [(__CFString *)v9 UTF8String];
+            uTF8String = [(__CFString *)v9 UTF8String];
             *buf = 136446466;
-            v24 = v15;
+            v24 = uTF8String;
             v25 = 2114;
             v26 = v11;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -782,9 +782,9 @@
       while (v5);
     }
 
-    [(NSMutableDictionary *)v17->_storages removeAllObjects];
-    v16 = v17->_storages;
-    v17->_storages = 0;
+    [(NSMutableDictionary *)selfCopy->_storages removeAllObjects];
+    v16 = selfCopy->_storages;
+    selfCopy->_storages = 0;
   }
 }
 
@@ -814,7 +814,7 @@
       v6 = v2;
       v7 = v5;
       v52 = 136446466;
-      v53 = [(__CFString *)v2 UTF8String];
+      uTF8String = [(__CFString *)v2 UTF8String];
       v54 = 2114;
       v55 = v4;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v52, 0x16u);
@@ -838,9 +838,9 @@
       {
         v13 = v9;
         v14 = v12;
-        v15 = [(__CFString *)v9 UTF8String];
+        uTF8String2 = [(__CFString *)v9 UTF8String];
         v52 = 136446466;
-        v53 = v15;
+        uTF8String = uTF8String2;
         v54 = 2114;
         v55 = v11;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v52, 0x16u);
@@ -860,9 +860,9 @@
       {
         v20 = v16;
         v21 = v19;
-        v22 = [(__CFString *)v16 UTF8String];
+        uTF8String3 = [(__CFString *)v16 UTF8String];
         v52 = 136446466;
-        v53 = v22;
+        uTF8String = uTF8String3;
         v54 = 2114;
         v55 = v18;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v52, 0x16u);
@@ -886,9 +886,9 @@
       {
         v27 = v23;
         v28 = v26;
-        v29 = [(__CFString *)v23 UTF8String];
+        uTF8String4 = [(__CFString *)v23 UTF8String];
         v52 = 136446466;
-        v53 = v29;
+        uTF8String = uTF8String4;
         v54 = 2114;
         v55 = v25;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v52, 0x16u);
@@ -908,9 +908,9 @@
       {
         v34 = v30;
         v35 = v33;
-        v36 = [(__CFString *)v30 UTF8String];
+        uTF8String5 = [(__CFString *)v30 UTF8String];
         v52 = 136446466;
-        v53 = v36;
+        uTF8String = uTF8String5;
         v54 = 2114;
         v55 = v32;
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v52, 0x16u);
@@ -934,9 +934,9 @@
       {
         v41 = v37;
         v42 = v40;
-        v43 = [(__CFString *)v37 UTF8String];
+        uTF8String6 = [(__CFString *)v37 UTF8String];
         v52 = 136446466;
-        v53 = v43;
+        uTF8String = uTF8String6;
         v54 = 2114;
         v55 = v39;
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v52, 0x16u);
@@ -956,9 +956,9 @@
       {
         v48 = v44;
         v49 = v47;
-        v50 = [(__CFString *)v44 UTF8String];
+        uTF8String7 = [(__CFString *)v44 UTF8String];
         v52 = 136446466;
-        v53 = v50;
+        uTF8String = uTF8String7;
         v54 = 2114;
         v55 = v46;
         _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v52, 0x16u);
@@ -976,8 +976,8 @@
 
 - (BOOL)willOverrideCapabilities
 {
-  v3 = [(PTPVirtualCamera *)self overrideCapabilities];
-  if (!v3)
+  overrideCapabilities = [(PTPVirtualCamera *)self overrideCapabilities];
+  if (!overrideCapabilities)
   {
     goto LABEL_9;
   }
@@ -986,7 +986,7 @@
   v5 = sub_10000C470();
   v6 = +[NSMutableDictionary dictionary];
   v7 = +[NSMutableArray array];
-  v8 = [v3 objectForKeyedSubscript:@"HEIC"];
+  v8 = [overrideCapabilities objectForKeyedSubscript:@"HEIC"];
   if (v8)
   {
 
@@ -999,7 +999,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [v3 objectForKeyedSubscript:@"HEICS"];
+  v9 = [overrideCapabilities objectForKeyedSubscript:@"HEICS"];
 
   if (v9)
   {
@@ -1007,7 +1007,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v11 = [v3 objectForKeyedSubscript:@"HEVC"];
+  v11 = [overrideCapabilities objectForKeyedSubscript:@"HEVC"];
 
   if (v11)
   {
@@ -1020,17 +1020,17 @@ LABEL_6:
   [(NSMutableArray *)self->_hostMediaSupportedFormats addObjectsFromArray:v7];
 
 LABEL_9:
-  return v3 != 0;
+  return overrideCapabilities != 0;
 }
 
-- (void)assignHostMediaCapabilities:(id)a3
+- (void)assignHostMediaCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   if (![(PTPVirtualCamera *)self willOverrideCapabilities])
   {
-    if (v4)
+    if (capabilitiesCopy)
     {
-      v5 = [[PFMediaCapabilities alloc] initWithOpaqueRepresentation:v4];
+      v5 = [[PFMediaCapabilities alloc] initWithOpaqueRepresentation:capabilitiesCopy];
       if (v5)
       {
         v6 = sub_10000C470();
@@ -1067,7 +1067,7 @@ LABEL_9:
       v12 = v8;
       v13 = v11;
       *buf = 136446466;
-      v15 = [(__CFString *)v8 UTF8String];
+      uTF8String = [(__CFString *)v8 UTF8String];
       v16 = 2114;
       v17 = v10;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1075,9 +1075,9 @@ LABEL_9:
   }
 }
 
-- (void)assignHostSupportedFormats:(id)a3
+- (void)assignHostSupportedFormats:(id)formats
 {
-  v4 = a3;
+  formatsCopy = formats;
   if (![(PTPVirtualCamera *)self willOverrideCapabilities])
   {
     __ICOSLogCreate();
@@ -1095,15 +1095,15 @@ LABEL_9:
       v9 = v5;
       v10 = v8;
       *buf = 136446466;
-      v47 = [(__CFString *)v5 UTF8String];
+      uTF8String = [(__CFString *)v5 UTF8String];
       v48 = 2114;
       v49 = v7;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    [v4 bytes];
-    [v4 bytes];
-    [v4 length];
+    [formatsCopy bytes];
+    [formatsCopy bytes];
+    [formatsCopy length];
     v11 = CopyArrayOfUnsignedShortsFromBufferMaxSize();
     if (v11)
     {
@@ -1131,9 +1131,9 @@ LABEL_9:
         {
           v20 = v16;
           v21 = v19;
-          v22 = [(__CFString *)v16 UTF8String];
+          uTF8String2 = [(__CFString *)v16 UTF8String];
           *buf = 136446466;
-          v47 = v22;
+          uTF8String = uTF8String2;
           v48 = 2114;
           v49 = v18;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1153,9 +1153,9 @@ LABEL_9:
         {
           v27 = v23;
           v28 = v26;
-          v29 = [(__CFString *)v23 UTF8String];
+          uTF8String3 = [(__CFString *)v23 UTF8String];
           *buf = 136446466;
-          v47 = v29;
+          uTF8String = uTF8String3;
           v48 = 2114;
           v49 = v25;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1181,9 +1181,9 @@ LABEL_9:
         {
           v34 = v30;
           v35 = v33;
-          v36 = [(__CFString *)v30 UTF8String];
+          uTF8String4 = [(__CFString *)v30 UTF8String];
           *buf = 136446466;
-          v47 = v36;
+          uTF8String = uTF8String4;
           v48 = 2114;
           v49 = v32;
           _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1203,9 +1203,9 @@ LABEL_9:
         {
           v41 = v37;
           v42 = v40;
-          v43 = [(__CFString *)v37 UTF8String];
+          uTF8String5 = [(__CFString *)v37 UTF8String];
           *buf = 136446466;
-          v47 = v43;
+          uTF8String = uTF8String5;
           v48 = 2114;
           v49 = v39;
           _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1257,7 +1257,7 @@ LABEL_9:
       v7 = v3;
       v8 = v6;
       v10 = 136446466;
-      v11 = [(__CFString *)v3 UTF8String];
+      uTF8String = [(__CFString *)v3 UTF8String];
       v12 = 2114;
       v13 = v5;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v10, 0x16u);
@@ -1281,12 +1281,12 @@ LABEL_9:
   [(PTPVirtualCamera *)self setupStorageAfterTimeout:v3];
 }
 
-- (void)setupStorageAfterTimeout:(id)a3
+- (void)setupStorageAfterTimeout:(id)timeout
 {
-  v4 = a3;
-  v5 = [(PTPVirtualCamera *)self storageTimer];
+  timeoutCopy = timeout;
+  storageTimer = [(PTPVirtualCamera *)self storageTimer];
 
-  if (v5)
+  if (storageTimer)
   {
     __ICOSLogCreate();
     v6 = &stru_100038B48;
@@ -1303,28 +1303,28 @@ LABEL_9:
       v10 = v6;
       v11 = v9;
       v13 = 136446466;
-      v14 = [(__CFString *)v6 UTF8String];
+      uTF8String = [(__CFString *)v6 UTF8String];
       v15 = 2114;
       v16 = v8;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v13, 0x16u);
     }
 
-    v12 = [(PTPVirtualCamera *)self storageTimer];
-    dispatch_source_cancel(v12);
+    storageTimer2 = [(PTPVirtualCamera *)self storageTimer];
+    dispatch_source_cancel(storageTimer2);
   }
 
   else
   {
-    v4[2](v4);
+    timeoutCopy[2](timeoutCopy);
   }
 }
 
 - (void)closeSession
 {
   [(PTPVirtualCamera *)self removeSecurity];
-  v3 = [(PTPVirtualCamera *)self hostIsWindows];
+  hostIsWindows = [(PTPVirtualCamera *)self hostIsWindows];
   v4 = 3.0;
-  if (v3)
+  if (hostIsWindows)
   {
     v4 = 0.0;
   }
@@ -1339,9 +1339,9 @@ LABEL_9:
   [v5 closeSession:@"Host closed all sessions"];
 }
 
-- (void)cleanupStorageAfterTimeout:(double)a3 cleanup:(id)a4
+- (void)cleanupStorageAfterTimeout:(double)timeout cleanup:(id)cleanup
 {
-  v6 = a4;
+  cleanupCopy = cleanup;
   __ICOSLogCreate();
   v7 = &stru_100038B48;
   if ([&stru_100038B48 length] >= 0x15)
@@ -1357,46 +1357,46 @@ LABEL_9:
     v11 = v7;
     v12 = v10;
     *buf = 136446466;
-    v26 = [(__CFString *)v7 UTF8String];
+    uTF8String = [(__CFString *)v7 UTF8String];
     v27 = 2114;
     v28 = v9;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
-  v13 = [(PTPVirtualCamera *)self storageTimer];
+  storageTimer = [(PTPVirtualCamera *)self storageTimer];
 
-  if (!v13)
+  if (!storageTimer)
   {
     v14 = dispatch_get_global_queue(0, 0);
     [(PTPVirtualCamera *)self setStorageTimerQ:v14];
 
-    v15 = [(PTPVirtualCamera *)self storageTimerQ];
-    v16 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v15);
+    storageTimerQ = [(PTPVirtualCamera *)self storageTimerQ];
+    v16 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, storageTimerQ);
     [(PTPVirtualCamera *)self setStorageTimer:v16];
 
-    v17 = [(PTPVirtualCamera *)self storageTimer];
-    v18 = dispatch_time(0, (a3 * 1000000000.0));
-    dispatch_source_set_timer(v17, v18, 0xFFFFFFFFFFFFFFFFLL, 0x5F5E100uLL);
+    storageTimer2 = [(PTPVirtualCamera *)self storageTimer];
+    v18 = dispatch_time(0, (timeout * 1000000000.0));
+    dispatch_source_set_timer(storageTimer2, v18, 0xFFFFFFFFFFFFFFFFLL, 0x5F5E100uLL);
 
-    v19 = [(PTPVirtualCamera *)self storageTimer];
+    storageTimer3 = [(PTPVirtualCamera *)self storageTimer];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100010CF4;
     handler[3] = &unk_1000388C0;
     handler[4] = self;
-    v24 = v6;
-    dispatch_source_set_event_handler(v19, handler);
+    v24 = cleanupCopy;
+    dispatch_source_set_event_handler(storageTimer3, handler);
 
-    v20 = [(PTPVirtualCamera *)self storageTimer];
+    storageTimer4 = [(PTPVirtualCamera *)self storageTimer];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100010E64;
     v22[3] = &unk_100038770;
     v22[4] = self;
-    dispatch_source_set_cancel_handler(v20, v22);
+    dispatch_source_set_cancel_handler(storageTimer4, v22);
 
-    v21 = [(PTPVirtualCamera *)self storageTimer];
-    dispatch_resume(v21);
+    storageTimer5 = [(PTPVirtualCamera *)self storageTimer];
+    dispatch_resume(storageTimer5);
   }
 }
 
@@ -1430,8 +1430,8 @@ LABEL_9:
     *&buf[16] = 0x3032000000;
     v24 = sub_100011324;
     v25 = sub_100011334;
-    v9 = self;
-    v26 = v9;
+    selfCopy = self;
+    v26 = selfCopy;
     v10 = [kLockdownNotificationDeviceNameChanged cStringUsingEncoding:4];
     v11 = &_dispatch_main_q;
     handler[0] = _NSConcreteStackBlock;
@@ -1439,7 +1439,7 @@ LABEL_9:
     handler[2] = sub_10001133C;
     handler[3] = &unk_100038798;
     handler[4] = buf;
-    notify_register_dispatch(v10, &v9->_nameChangeToken, &_dispatch_main_q, handler);
+    notify_register_dispatch(v10, &selfCopy->_nameChangeToken, &_dispatch_main_q, handler);
 
     self->_notificationObserversInstalled = 1;
     __ICOSLogCreate();
@@ -1459,9 +1459,9 @@ LABEL_9:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v13;
-      v17 = [(__CFString *)v13 UTF8String];
+      uTF8String = [(__CFString *)v13 UTF8String];
       *v19 = 136446466;
-      v20 = v17;
+      v20 = uTF8String;
       v21 = 2114;
       v22 = v14;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", v19, 0x16u);
@@ -1488,7 +1488,7 @@ LABEL_9:
     v7 = v3;
     v8 = v6;
     v9 = 136446466;
-    v10 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v11 = 2114;
     v12 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v9, 0x16u);
@@ -1514,7 +1514,7 @@ LABEL_9:
     v7 = v3;
     v8 = v6;
     v16 = 136446466;
-    v17 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v18 = 2114;
     v19 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v16, 0x16u);
@@ -1536,9 +1536,9 @@ LABEL_9:
     {
       v13 = v9;
       v14 = v12;
-      v15 = [(__CFString *)v9 UTF8String];
+      uTF8String2 = [(__CFString *)v9 UTF8String];
       v16 = 136446466;
-      v17 = v15;
+      uTF8String = uTF8String2;
       v18 = 2114;
       v19 = v11;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v16, 0x16u);
@@ -1549,7 +1549,7 @@ LABEL_9:
   }
 }
 
-- (id)storageWithID:(unsigned int)a3
+- (id)storageWithID:(unsigned int)d
 {
   [(NSMutableDictionary *)self->_storages allValues];
   v12 = 0u;
@@ -1571,7 +1571,7 @@ LABEL_9:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 objectHandle] == a3)
+        if ([v9 objectHandle] == d)
         {
           v10 = v9;
           goto LABEL_11;
@@ -1594,25 +1594,25 @@ LABEL_11:
   return v10;
 }
 
-- (id)objectForObjectHandle:(id)a3
+- (id)objectForObjectHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_storages allValues];
-  v6 = [v5 count];
+  handleCopy = handle;
+  allValues = [(NSMutableDictionary *)self->_storages allValues];
+  v6 = [allValues count];
   v7 = v6;
   if (v6)
   {
     v8 = 0;
     while (1)
     {
-      v9 = [v5 objectAtIndex:v8];
-      v10 = [v9 cameraFolderWithObjectID:{objc_msgSend(v4, "unsignedIntValue")}];
+      v9 = [allValues objectAtIndex:v8];
+      v10 = [v9 cameraFolderWithObjectID:{objc_msgSend(handleCopy, "unsignedIntValue")}];
       if (v10)
       {
         break;
       }
 
-      v10 = [v9 cameraFileWithObjectID:{objc_msgSend(v4, "unsignedIntValue")}];
+      v10 = [v9 cameraFileWithObjectID:{objc_msgSend(handleCopy, "unsignedIntValue")}];
       if (v10)
       {
         break;
@@ -1643,8 +1643,8 @@ LABEL_6:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_storages allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allKeys = [(NSMutableDictionary *)self->_storages allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1655,14 +1655,14 @@ LABEL_6:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = [(NSMutableDictionary *)self->_storages objectForKey:*(*(&v11 + 1) + 8 * i)];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1709,9 +1709,9 @@ LABEL_6:
     return 0;
   }
 
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  return v10;
+  return bOOLValue;
 }
 
 - (BOOL)hostIsMacOS
@@ -1740,9 +1740,9 @@ LABEL_6:
     return 0;
   }
 
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  return v10;
+  return bOOLValue;
 }
 
 - (BOOL)hostIsLegacyOS
@@ -1771,37 +1771,37 @@ LABEL_6:
     return 0;
   }
 
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  return v10;
+  return bOOLValue;
 }
 
-- (id)devicePropDescDatasetForProperty:(unsigned __int16)a3
+- (id)devicePropDescDatasetForProperty:(unsigned __int16)property
 {
-  if (a3 == 54018)
+  if (property == 54018)
   {
     v3 = objc_alloc_init(PTPDevicePropDescDataset);
     [v3 setDevicePropertyCode:54018];
     [v3 setDataTypeCode:10];
     [v3 setReadWriteAttribute:0];
-    v8 = [(PTPDeviceInfoDataset *)self->_deviceInfoDataset serialNumber];
-    if ([v8 length] < 4)
+    serialNumber = [(PTPDeviceInfoDataset *)self->_deviceInfoDataset serialNumber];
+    if ([serialNumber length] < 4)
     {
       v11 = 0;
     }
 
     else
     {
-      v10 = [v8 substringFromIndex:{objc_msgSend(v8, "length") - 4}];
+      v10 = [serialNumber substringFromIndex:{objc_msgSend(serialNumber, "length") - 4}];
       v11 = v10;
       if (v10)
       {
         v12 = [v10 dataUsingEncoding:1 allowLossyConversion:1];
 LABEL_10:
-        v13 = [v12 bytes];
-        if (v13)
+        bytes = [v12 bytes];
+        if (bytes)
         {
-          v14 = *v13;
+          v14 = *bytes;
         }
 
         else
@@ -1824,7 +1824,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (a3 != 20481)
+  if (property != 20481)
   {
     v3 = 0;
     goto LABEL_15;
@@ -1847,8 +1847,8 @@ LABEL_10:
   v7 = [NSNumber numberWithUnsignedChar:100];
   [v3 setMaximumValue:v7];
 
-  v8 = [NSNumber numberWithUnsignedChar:10];
-  [v3 setStepSize:v8];
+  serialNumber = [NSNumber numberWithUnsignedChar:10];
+  [v3 setStepSize:serialNumber];
 LABEL_14:
 
 LABEL_15:
@@ -1856,12 +1856,12 @@ LABEL_15:
   return v3;
 }
 
-- (id)devicePropValueForProperty:(unsigned __int16)a3
+- (id)devicePropValueForProperty:(unsigned __int16)property
 {
-  if (a3 == 54018)
+  if (property == 54018)
   {
-    v4 = [(PTPDeviceInfoDataset *)self->_deviceInfoDataset serialNumber];
-    if ([v4 length] >= 4 && (objc_msgSend(v4, "substringFromIndex:", objc_msgSend(v4, "length") - 4), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+    serialNumber = [(PTPDeviceInfoDataset *)self->_deviceInfoDataset serialNumber];
+    if ([serialNumber length] >= 4 && (objc_msgSend(serialNumber, "substringFromIndex:", objc_msgSend(serialNumber, "length") - 4), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v6 = v5;
       v3 = [v5 dataUsingEncoding:1 allowLossyConversion:1];
@@ -1882,65 +1882,65 @@ LABEL_15:
   return v3;
 }
 
-- (void)setHostSupportsGroups:(BOOL)a3
+- (void)setHostSupportsGroups:(BOOL)groups
 {
-  self->_hostSupportsGroups = a3;
-  v4 = [(PTPVirtualCamera *)self photoStorage];
+  self->_hostSupportsGroups = groups;
+  photoStorage = [(PTPVirtualCamera *)self photoStorage];
 
-  if (v4)
+  if (photoStorage)
   {
-    v5 = [(PTPVirtualCamera *)self photoStorage];
-    [v5 setAssetGroupIndex:0];
+    photoStorage2 = [(PTPVirtualCamera *)self photoStorage];
+    [photoStorage2 setAssetGroupIndex:0];
   }
 }
 
-- (void)generatePTPEventsForAddedObjectHandles:(id)a3
+- (void)generatePTPEventsForAddedObjectHandles:(id)handles
 {
-  v9 = [a3 objectEnumerator];
-  v4 = [v9 nextObject];
-  if (v4)
+  objectEnumerator = [handles objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v5 = v4;
+    v5 = nextObject;
     do
     {
       v6 = NSSelectorFromString(@"reportObjectAdded:");
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained performSelector:v6 withObject:v5];
 
-      v8 = [v9 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v5 = v8;
+      v5 = nextObject2;
     }
 
-    while (v8);
+    while (nextObject2);
   }
 }
 
-- (void)generatePTPEventsForDeletedObjectHandles:(id)a3
+- (void)generatePTPEventsForDeletedObjectHandles:(id)handles
 {
-  v9 = [a3 objectEnumerator];
-  v4 = [v9 nextObject];
-  if (v4)
+  objectEnumerator = [handles objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v5 = v4;
+    v5 = nextObject;
     do
     {
       v6 = NSSelectorFromString(@"reportObjectDeleted:");
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained performSelector:v6 withObject:v5];
 
-      v8 = [v9 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v5 = v8;
+      v5 = nextObject2;
     }
 
-    while (v8);
+    while (nextObject2);
   }
 }
 
-- (void)processAddedFiles:(id)a3
+- (void)processAddedFiles:(id)files
 {
-  v4 = a3;
+  filesCopy = files;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -1964,7 +1964,7 @@ LABEL_15:
     v14[4] = self;
     v14[5] = &v21;
     v14[6] = &v15;
-    [v5 ptpEnumerateAssetsWithLocalIdentifiers:v4 usingBlock:v14];
+    [v5 ptpEnumerateAssetsWithLocalIdentifiers:filesCopy usingBlock:v14];
   }
 
   else
@@ -1986,9 +1986,9 @@ LABEL_15:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v8;
-      v12 = [(__CFString *)v8 UTF8String];
+      uTF8String = [(__CFString *)v8 UTF8String];
       *buf = 136446466;
-      v28 = v12;
+      v28 = uTF8String;
       v29 = 2114;
       v30 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1997,8 +1997,8 @@ LABEL_15:
 
   if (self->_hostSupportsGroups)
   {
-    v13 = [(PTPVirtualCamera *)self photoStorage];
-    -[PTPVirtualCamera generatePTPEventsForAddedObjectGroupInStorage:](self, "generatePTPEventsForAddedObjectGroupInStorage:", [v13 storageID]);
+    photoStorage = [(PTPVirtualCamera *)self photoStorage];
+    -[PTPVirtualCamera generatePTPEventsForAddedObjectGroupInStorage:](self, "generatePTPEventsForAddedObjectGroupInStorage:", [photoStorage storageID]);
   }
 
   else
@@ -2018,9 +2018,9 @@ LABEL_15:
   _Block_object_dispose(&v21, 8);
 }
 
-- (void)processDeletedFiles:(id)a3
+- (void)processDeletedFiles:(id)files
 {
-  v23 = a3;
+  filesCopy = files;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -2043,7 +2043,7 @@ LABEL_15:
     v30[4] = self;
     v30[5] = &v33;
     v30[6] = v31;
-    [v24 ptpEnumerateAssetsWithLocalIdentifiers:v23 usingBlock:v30];
+    [v24 ptpEnumerateAssetsWithLocalIdentifiers:filesCopy usingBlock:v30];
   }
 
   __ICOSLogCreate();
@@ -2063,9 +2063,9 @@ LABEL_15:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v4;
-    v8 = [(__CFString *)v4 UTF8String];
+    uTF8String = [(__CFString *)v4 UTF8String];
     *buf = 136446466;
-    v41 = v8;
+    v41 = uTF8String;
     v42 = 2114;
     v43 = v5;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -2104,18 +2104,18 @@ LABEL_15:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           v18 = v14;
-          v19 = [(__CFString *)v14 UTF8String];
+          uTF8String2 = [(__CFString *)v14 UTF8String];
           *buf = 136446466;
-          v41 = v19;
+          v41 = uTF8String2;
           v42 = 2114;
           v43 = v16;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
         }
 
         v20 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v13 objectHandle]);
-        v21 = [v13 parent];
+        parent = [v13 parent];
         [v9 addObject:v20];
-        [v21 deleteFile:v13];
+        [parent deleteFile:v13];
       }
 
       v10 = [obj countByEnumeratingWithState:&v26 objects:v39 count:16];
@@ -2133,12 +2133,12 @@ LABEL_15:
   _Block_object_dispose(&v33, 8);
 }
 
-- (void)addedPhotoKeys:(id)a3 deletedPhotoKeys:(id)a4 changedPhotoKeys:(id)a5 changePendingPhotoKeys:(id)a6
+- (void)addedPhotoKeys:(id)keys deletedPhotoKeys:(id)photoKeys changedPhotoKeys:(id)changedPhotoKeys changePendingPhotoKeys:(id)pendingPhotoKeys
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keysCopy = keys;
+  photoKeysCopy = photoKeys;
+  changedPhotoKeysCopy = changedPhotoKeys;
+  pendingPhotoKeysCopy = pendingPhotoKeys;
   __ICOSLogCreate();
   v14 = @"addedPhotoKeys";
   if ([@"addedPhotoKeys" length] >= 0x15)
@@ -2147,14 +2147,14 @@ LABEL_15:
     v14 = [v15 stringByAppendingString:@".."];
   }
 
-  v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Added:[%lu] Changed[%lu] Removed[%lu]", [v10 count], objc_msgSend(v12, "count"), objc_msgSend(v11, "count"));
+  v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Added:[%lu] Changed[%lu] Removed[%lu]", [keysCopy count], objc_msgSend(changedPhotoKeysCopy, "count"), objc_msgSend(photoKeysCopy, "count"));
   v17 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
   {
     v18 = v14;
     v19 = v17;
     *buf = 136446466;
-    v31 = [(__CFString *)v14 UTF8String];
+    uTF8String = [(__CFString *)v14 UTF8String];
     v32 = 2114;
     v33 = v16;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -2164,22 +2164,22 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = sub_100014A00;
   block[3] = &unk_100038910;
-  v25 = v10;
-  v26 = self;
-  v27 = v11;
-  v28 = v12;
-  v29 = v13;
-  v20 = v13;
-  v21 = v12;
-  v22 = v11;
-  v23 = v10;
+  v25 = keysCopy;
+  selfCopy = self;
+  v27 = photoKeysCopy;
+  v28 = changedPhotoKeysCopy;
+  v29 = pendingPhotoKeysCopy;
+  v20 = pendingPhotoKeysCopy;
+  v21 = changedPhotoKeysCopy;
+  v22 = photoKeysCopy;
+  v23 = keysCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)objectPropertiesSupportedForObjectFormatCode:(unsigned __int16)a3 responseCode:(unsigned __int16 *)a4
+- (id)objectPropertiesSupportedForObjectFormatCode:(unsigned __int16)code responseCode:(unsigned __int16 *)responseCode
 {
   v6 = [NSMutableArray arrayWithCapacity:0];
-  *a4 = 8193;
+  *responseCode = 8193;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -2212,10 +2212,10 @@ LABEL_15:
   return v6;
 }
 
-- (id)objectPropDescForObjectPropertyCode:(unsigned __int16)a3 responseCode:(unsigned __int16 *)a4
+- (id)objectPropDescForObjectPropertyCode:(unsigned __int16)code responseCode:(unsigned __int16 *)responseCode
 {
-  v4 = a3;
-  v6 = [NSMutableData dataWithLength:0, a4];
+  codeCopy = code;
+  responseCode = [NSMutableData dataWithLength:0, responseCode];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -2236,9 +2236,9 @@ LABEL_15:
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if ([v12 propertyCode] == v4)
+        if ([v12 propertyCode] == codeCopy)
         {
-          [v12 objectPropertyDescriptionDataset:v6];
+          [v12 objectPropertyDescriptionDataset:responseCode];
           goto LABEL_11;
         }
       }
@@ -2255,7 +2255,7 @@ LABEL_15:
 
 LABEL_11:
 
-  return v6;
+  return responseCode;
 }
 
 - (id)delegate

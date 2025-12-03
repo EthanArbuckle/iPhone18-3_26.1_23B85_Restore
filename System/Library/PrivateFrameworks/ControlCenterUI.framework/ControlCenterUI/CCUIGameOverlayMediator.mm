@@ -1,12 +1,12 @@
 @interface CCUIGameOverlayMediator
-- (void)launchOverlayForGameBundleIdentifier:(id)a3;
+- (void)launchOverlayForGameBundleIdentifier:(id)identifier;
 @end
 
 @implementation CCUIGameOverlayMediator
 
-- (void)launchOverlayForGameBundleIdentifier:(id)a3
+- (void)launchOverlayForGameBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -43,11 +43,11 @@
 
   v7 = v6;
   _Block_object_dispose(&v16, 8);
-  v8 = [v6 local];
-  v9 = [v4 proxyForPlayer:v8];
+  local = [v6 local];
+  v9 = [v4 proxyForPlayer:local];
 
-  v10 = [v9 utilityService];
-  [v10 launchOverlayForGameBundleId:v3];
+  utilityService = [v9 utilityService];
+  [utilityService launchOverlayForGameBundleId:identifierCopy];
 }
 
 @end

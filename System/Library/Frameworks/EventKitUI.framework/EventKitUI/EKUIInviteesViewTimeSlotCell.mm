@@ -1,57 +1,57 @@
 @interface EKUIInviteesViewTimeSlotCell
-+ (BOOL)_layoutManagerReportsExcessLines:(id)a3;
++ (BOOL)_layoutManagerReportsExcessLines:(id)lines;
 + (id)_andMoreLeftSpacing;
-+ (id)_generateAndMoreStringWithCount:(unint64_t)a3 attributes:(id)a4;
++ (id)_generateAndMoreStringWithCount:(unint64_t)count attributes:(id)attributes;
 + (id)_generateParticipantTextView;
 + (id)_interParticipantSpacing;
-+ (id)_replaceSpacesWithNonBreakingSpaces:(id)a3;
-+ (void)_setRequiredHuggingAndCompression:(id)a3;
++ (id)_replaceSpacesWithNonBreakingSpaces:(id)spaces;
++ (void)_setRequiredHuggingAndCompression:(id)compression;
 - (BOOL)_everyoneCanAttend;
 - (BOOL)_shouldDisplayTimeZone;
-- (BOOL)_textWillFit:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)_textWillFit:(id)fit;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CGRect)andMoreBoundingRect;
-- (EKUIInviteesViewTimeSlotCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (EKUIInviteesViewTimeSlotCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)_preferredMaxLayoutWidth;
-- (id)_busyImageAttributedStringForColor:(id)a3;
-- (id)_generateStringForAllParticipants:(id)a3;
-- (id)_generateStringForSomeParticipantsAndStampMoreBoundingRect:(id)a3;
-- (id)_textForParticipant:(id)a3 color:(id)a4;
-- (void)_andMoreTapped:(id)a3;
+- (id)_busyImageAttributedStringForColor:(id)color;
+- (id)_generateStringForAllParticipants:(id)participants;
+- (id)_generateStringForSomeParticipantsAndStampMoreBoundingRect:(id)rect;
+- (id)_textForParticipant:(id)participant color:(id)color;
+- (void)_andMoreTapped:(id)tapped;
 - (void)_resetFonts;
 - (void)_resetParticipantsTextIfNeeded;
 - (void)_resetPreferredMaxLayoutWidths;
 - (void)_resetTimeTextIfNeeded;
-- (void)_showPreviewButtonTapped:(id)a3;
+- (void)_showPreviewButtonTapped:(id)tapped;
 - (void)dealloc;
-- (void)setAndMoreBoundingRect:(CGRect)a3;
-- (void)setBusyParticipants:(id)a3;
-- (void)setChecked:(BOOL)a3;
-- (void)setEndDate:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setProposedBy:(id)a3;
-- (void)setShowAllParticipants:(BOOL)a3;
-- (void)setStartDate:(id)a3;
+- (void)setAndMoreBoundingRect:(CGRect)rect;
+- (void)setBusyParticipants:(id)participants;
+- (void)setChecked:(BOOL)checked;
+- (void)setEndDate:(id)date;
+- (void)setFrame:(CGRect)frame;
+- (void)setProposedBy:(id)by;
+- (void)setShowAllParticipants:(BOOL)participants;
+- (void)setStartDate:(id)date;
 - (void)updateConstraints;
-- (void)updateWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 busyParticipants:(id)a6 showAllParticipants:(BOOL)a7 checked:(BOOL)a8;
+- (void)updateWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone busyParticipants:(id)participants showAllParticipants:(BOOL)allParticipants checked:(BOOL)checked;
 @end
 
 @implementation EKUIInviteesViewTimeSlotCell
 
-- (EKUIInviteesViewTimeSlotCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKUIInviteesViewTimeSlotCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v31.receiver = self;
   v31.super_class = EKUIInviteesViewTimeSlotCell;
-  v4 = [(EKUIInviteesViewTimeSlotCell *)&v31 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(EKUIInviteesViewTimeSlotCell *)&v31 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(EKUIInviteesViewTimeSlotCell *)v4 setAndMoreBoundingRect:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
     [objc_opt_class() _leftBuffer];
     [(EKUIInviteesViewTimeSlotCell *)v5 setSeparatorInset:0.0, v6, 0.0, 0.0];
-    v7 = [(EKUIInviteesViewTimeSlotCell *)v5 contentView];
-    v8 = [(EKUIInviteesViewTimeSlotCell *)v5 traitCollection];
-    v9 = TableViewCheckmarkImage(v8);
+    contentView = [(EKUIInviteesViewTimeSlotCell *)v5 contentView];
+    traitCollection = [(EKUIInviteesViewTimeSlotCell *)v5 traitCollection];
+    v9 = TableViewCheckmarkImage(traitCollection);
 
     v30 = v9;
     v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v9];
@@ -59,63 +59,63 @@
     [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v10 setContentMode:4];
     [v10 setHidden:1];
-    [v7 addSubview:v10];
+    [contentView addSubview:v10];
     [(EKUIInviteesViewTimeSlotCell *)v5 setCheckmarkImageView:v10];
     v11 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v7 addSubview:v11];
+    [contentView addSubview:v11];
     v29 = v11;
     [(EKUIInviteesViewTimeSlotCell *)v5 setTopTimeLabel:v11];
     v12 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v7 addSubview:v12];
+    [contentView addSubview:v12];
     v28 = v12;
     [(EKUIInviteesViewTimeSlotCell *)v5 setBottomTimeLabel:v12];
     v13 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v7 addSubview:v13];
+    [contentView addSubview:v13];
     [(EKUIInviteesViewTimeSlotCell *)v5 setTimeZoneTimeLabel:v13];
     v14 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v14 setNumberOfLines:4];
-    [v7 addSubview:v14];
+    [contentView addSubview:v14];
     [(EKUIInviteesViewTimeSlotCell *)v5 setProposedByLabel:v14];
     v15 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
     v27 = v15;
     [(EKUIInviteesViewTimeSlotCell *)v5 setLabelForTextSizeTesting:v15];
-    v16 = [objc_opt_class() _generateParticipantTextView];
-    [v7 addSubview:v16];
-    [(EKUIInviteesViewTimeSlotCell *)v5 setParticipantsTextView:v16];
-    v26 = [objc_opt_class() _generateParticipantTextView];
+    _generateParticipantTextView = [objc_opt_class() _generateParticipantTextView];
+    [contentView addSubview:_generateParticipantTextView];
+    [(EKUIInviteesViewTimeSlotCell *)v5 setParticipantsTextView:_generateParticipantTextView];
+    _generateParticipantTextView2 = [objc_opt_class() _generateParticipantTextView];
     [(EKUIInviteesViewTimeSlotCell *)v5 setTextViewForTextSizeTesting:?];
     v17 = [MEMORY[0x1E69DC738] buttonWithType:3];
     if (CalSolariumEnabled())
     {
-      v18 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-      [v17 setConfiguration:v18];
+      plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+      [v17 setConfiguration:plainButtonConfiguration];
     }
 
     [objc_opt_class() _setRequiredHuggingAndCompression:v17];
     [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v17 addTarget:v5 action:sel__showPreviewButtonTapped_ forControlEvents:64];
-    v19 = [(EKUIInviteesViewTimeSlotCell *)v5 contentView];
-    [v19 addSubview:v17];
+    contentView2 = [(EKUIInviteesViewTimeSlotCell *)v5 contentView];
+    [contentView2 addSubview:v17];
 
     [(EKUIInviteesViewTimeSlotCell *)v5 setShowPreviewButton:v17];
     v20 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v5 action:sel__andMoreTapped_];
     [v20 setDelegate:v5];
-    v21 = [(EKUIInviteesViewTimeSlotCell *)v5 contentView];
-    [v21 addGestureRecognizer:v20];
+    contentView3 = [(EKUIInviteesViewTimeSlotCell *)v5 contentView];
+    [contentView3 addGestureRecognizer:v20];
 
     [(EKUIInviteesViewTimeSlotCell *)v5 setTappedMoreRecognizer:v20];
     v22 = +[EKUIDebugPreferences shared];
-    v23 = [v22 showInviteesAndMoreRegion];
+    showInviteesAndMoreRegion = [v22 showInviteesAndMoreRegion];
 
-    if (v23)
+    if (showInviteesAndMoreRegion)
     {
       v24 = objc_alloc_init(MEMORY[0x1E69DD250]);
-      [v16 addSubview:v24];
+      [_generateParticipantTextView addSubview:v24];
       [(EKUIInviteesViewTimeSlotCell *)v5 setAndMoreDebugOverlay:v24];
     }
 
@@ -130,20 +130,20 @@
 
 - (void)dealloc
 {
-  v3 = [(EKUIInviteesViewTimeSlotCell *)self tappedMoreRecognizer];
-  [v3 setDelegate:0];
+  tappedMoreRecognizer = [(EKUIInviteesViewTimeSlotCell *)self tappedMoreRecognizer];
+  [tappedMoreRecognizer setDelegate:0];
 
   v4.receiver = self;
   v4.super_class = EKUIInviteesViewTimeSlotCell;
   [(EKUIInviteesViewTimeSlotCell *)&v4 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(EKUIInviteesViewTimeSlotCell *)self frame];
   v9 = v8;
   v10.receiver = self;
@@ -157,295 +157,295 @@
 
 - (void)updateConstraints
 {
-  v3 = [(EKUIInviteesViewTimeSlotCell *)self persistentConstraints];
+  persistentConstraints = [(EKUIInviteesViewTimeSlotCell *)self persistentConstraints];
 
-  if (!v3)
+  if (!persistentConstraints)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5 = MEMORY[0x1E696ACD8];
-    v6 = [(EKUIInviteesViewTimeSlotCell *)self checkmarkImageView];
-    v7 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
-    v8 = [v5 constraintWithItem:v6 attribute:9 relatedBy:0 toItem:v7 attribute:17 multiplier:1.0 constant:20.0];
+    checkmarkImageView = [(EKUIInviteesViewTimeSlotCell *)self checkmarkImageView];
+    contentView = [(EKUIInviteesViewTimeSlotCell *)self contentView];
+    v8 = [v5 constraintWithItem:checkmarkImageView attribute:9 relatedBy:0 toItem:contentView attribute:17 multiplier:1.0 constant:20.0];
     [v4 addObject:v8];
 
     v9 = MEMORY[0x1E696ACD8];
-    v10 = [(EKUIInviteesViewTimeSlotCell *)self checkmarkImageView];
-    v11 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
-    v12 = [v9 constraintWithItem:v10 attribute:10 relatedBy:0 toItem:v11 attribute:10 multiplier:1.0 constant:0.0];
+    checkmarkImageView2 = [(EKUIInviteesViewTimeSlotCell *)self checkmarkImageView];
+    contentView2 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
+    v12 = [v9 constraintWithItem:checkmarkImageView2 attribute:10 relatedBy:0 toItem:contentView2 attribute:10 multiplier:1.0 constant:0.0];
     [v4 addObject:v12];
 
     v13 = MEMORY[0x1E696ACD8];
-    v14 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
-    v15 = [(EKUIInviteesViewTimeSlotCell *)self checkmarkImageView];
-    v16 = [v13 constraintWithItem:v14 attribute:5 relatedBy:0 toItem:v15 attribute:9 multiplier:1.0 constant:30.0];
+    topTimeLabel = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
+    checkmarkImageView3 = [(EKUIInviteesViewTimeSlotCell *)self checkmarkImageView];
+    v16 = [v13 constraintWithItem:topTimeLabel attribute:5 relatedBy:0 toItem:checkmarkImageView3 attribute:9 multiplier:1.0 constant:30.0];
     [v4 addObject:v16];
 
     v17 = MEMORY[0x1E696ACD8];
-    v18 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
-    v19 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
+    topTimeLabel2 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
+    contentView3 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
     [objc_opt_class() _rightBuffer];
-    v21 = [v17 constraintWithItem:v18 attribute:6 relatedBy:0 toItem:v19 attribute:6 multiplier:1.0 constant:-v20];
+    v21 = [v17 constraintWithItem:topTimeLabel2 attribute:6 relatedBy:0 toItem:contentView3 attribute:6 multiplier:1.0 constant:-v20];
     [v4 addObject:v21];
 
     v22 = MEMORY[0x1E696ACD8];
-    v23 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
-    v24 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
-    v25 = [v22 constraintWithItem:v23 attribute:5 relatedBy:0 toItem:v24 attribute:5 multiplier:1.0 constant:0.0];
+    bottomTimeLabel = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
+    topTimeLabel3 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
+    v25 = [v22 constraintWithItem:bottomTimeLabel attribute:5 relatedBy:0 toItem:topTimeLabel3 attribute:5 multiplier:1.0 constant:0.0];
     [v4 addObject:v25];
 
     v26 = MEMORY[0x1E696ACD8];
-    v27 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
-    v28 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
+    bottomTimeLabel2 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
+    contentView4 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
     [objc_opt_class() _rightBuffer];
-    v30 = [v26 constraintWithItem:v27 attribute:6 relatedBy:0 toItem:v28 attribute:6 multiplier:1.0 constant:-v29];
+    v30 = [v26 constraintWithItem:bottomTimeLabel2 attribute:6 relatedBy:0 toItem:contentView4 attribute:6 multiplier:1.0 constant:-v29];
     [v4 addObject:v30];
 
     v31 = MEMORY[0x1E696ACD8];
-    v32 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
-    v33 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
-    v34 = [v31 constraintWithItem:v32 attribute:5 relatedBy:0 toItem:v33 attribute:5 multiplier:1.0 constant:0.0];
+    timeZoneTimeLabel = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
+    topTimeLabel4 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
+    v34 = [v31 constraintWithItem:timeZoneTimeLabel attribute:5 relatedBy:0 toItem:topTimeLabel4 attribute:5 multiplier:1.0 constant:0.0];
     [v4 addObject:v34];
 
     v35 = MEMORY[0x1E696ACD8];
-    v36 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
-    v37 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
+    timeZoneTimeLabel2 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
+    contentView5 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
     [objc_opt_class() _rightBuffer];
-    v39 = [v35 constraintWithItem:v36 attribute:6 relatedBy:0 toItem:v37 attribute:6 multiplier:1.0 constant:-v38];
+    v39 = [v35 constraintWithItem:timeZoneTimeLabel2 attribute:6 relatedBy:0 toItem:contentView5 attribute:6 multiplier:1.0 constant:-v38];
     [v4 addObject:v39];
 
     v40 = MEMORY[0x1E696ACD8];
-    v41 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
-    v42 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
-    v43 = [v40 constraintWithItem:v41 attribute:5 relatedBy:0 toItem:v42 attribute:5 multiplier:1.0 constant:0.0];
+    proposedByLabel = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
+    topTimeLabel5 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
+    v43 = [v40 constraintWithItem:proposedByLabel attribute:5 relatedBy:0 toItem:topTimeLabel5 attribute:5 multiplier:1.0 constant:0.0];
     [v4 addObject:v43];
 
     v44 = MEMORY[0x1E696ACD8];
-    v45 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
-    v46 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
+    proposedByLabel2 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
+    contentView6 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
     [objc_opt_class() _rightBuffer];
-    v48 = [v44 constraintWithItem:v45 attribute:6 relatedBy:0 toItem:v46 attribute:6 multiplier:1.0 constant:-v47];
+    v48 = [v44 constraintWithItem:proposedByLabel2 attribute:6 relatedBy:0 toItem:contentView6 attribute:6 multiplier:1.0 constant:-v47];
     [v4 addObject:v48];
 
     v49 = MEMORY[0x1E696ACD8];
-    v50 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
-    v51 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
-    v52 = [v49 constraintWithItem:v50 attribute:5 relatedBy:0 toItem:v51 attribute:5 multiplier:1.0 constant:0.0];
+    participantsTextView = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
+    topTimeLabel6 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
+    v52 = [v49 constraintWithItem:participantsTextView attribute:5 relatedBy:0 toItem:topTimeLabel6 attribute:5 multiplier:1.0 constant:0.0];
     [v4 addObject:v52];
 
     v53 = MEMORY[0x1E696ACD8];
-    v54 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
-    v55 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
+    participantsTextView2 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
+    contentView7 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
     [objc_opt_class() _rightBuffer];
-    v57 = [v53 constraintWithItem:v54 attribute:6 relatedBy:0 toItem:v55 attribute:6 multiplier:1.0 constant:-v56];
+    v57 = [v53 constraintWithItem:participantsTextView2 attribute:6 relatedBy:0 toItem:contentView7 attribute:6 multiplier:1.0 constant:-v56];
     [v4 addObject:v57];
 
     v58 = MEMORY[0x1E696ACD8];
-    v59 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
-    v60 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
-    v61 = [v58 constraintWithItem:v59 attribute:4 relatedBy:-1 toItem:v60 attribute:4 multiplier:1.0 constant:0.0];
+    participantsTextView3 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
+    contentView8 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
+    v61 = [v58 constraintWithItem:participantsTextView3 attribute:4 relatedBy:-1 toItem:contentView8 attribute:4 multiplier:1.0 constant:0.0];
     [v4 addObject:v61];
 
     v62 = MEMORY[0x1E696ACD8];
-    v63 = [(EKUIInviteesViewTimeSlotCell *)self showPreviewButton];
-    v64 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
-    v65 = [v62 constraintWithItem:v63 attribute:6 relatedBy:0 toItem:v64 attribute:6 multiplier:1.0 constant:-16.0];
+    showPreviewButton = [(EKUIInviteesViewTimeSlotCell *)self showPreviewButton];
+    contentView9 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
+    v65 = [v62 constraintWithItem:showPreviewButton attribute:6 relatedBy:0 toItem:contentView9 attribute:6 multiplier:1.0 constant:-16.0];
     [v4 addObject:v65];
 
     v66 = MEMORY[0x1E696ACD8];
-    v67 = [(EKUIInviteesViewTimeSlotCell *)self showPreviewButton];
-    v68 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
-    v69 = [v66 constraintWithItem:v67 attribute:10 relatedBy:0 toItem:v68 attribute:10 multiplier:1.0 constant:0.0];
+    showPreviewButton2 = [(EKUIInviteesViewTimeSlotCell *)self showPreviewButton];
+    contentView10 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
+    v69 = [v66 constraintWithItem:showPreviewButton2 attribute:10 relatedBy:0 toItem:contentView10 attribute:10 multiplier:1.0 constant:0.0];
     [v4 addObject:v69];
 
     v70 = MEMORY[0x1E696ACD8];
-    v71 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
-    v72 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
-    v73 = [v70 constraintWithItem:v71 attribute:12 relatedBy:0 toItem:v72 attribute:3 multiplier:1.0 constant:0.0];
+    topTimeLabel7 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
+    contentView11 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
+    v73 = [v70 constraintWithItem:topTimeLabel7 attribute:12 relatedBy:0 toItem:contentView11 attribute:3 multiplier:1.0 constant:0.0];
     [(EKUIInviteesViewTimeSlotCell *)self setTopTimeLabelToTopContentViewConstraint:v73];
 
-    v74 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabelToTopContentViewConstraint];
-    [v4 addObject:v74];
+    topTimeLabelToTopContentViewConstraint = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabelToTopContentViewConstraint];
+    [v4 addObject:topTimeLabelToTopContentViewConstraint];
 
     v75 = MEMORY[0x1E696ACD8];
-    v76 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
-    v77 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
-    v78 = [v75 constraintWithItem:v76 attribute:12 relatedBy:0 toItem:v77 attribute:11 multiplier:1.0 constant:0.0];
+    bottomTimeLabel3 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
+    topTimeLabel8 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
+    v78 = [v75 constraintWithItem:bottomTimeLabel3 attribute:12 relatedBy:0 toItem:topTimeLabel8 attribute:11 multiplier:1.0 constant:0.0];
     [(EKUIInviteesViewTimeSlotCell *)self setBottomTimeLabelToTopTimeLabelConstraint:v78];
 
-    v79 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabelToTopTimeLabelConstraint];
-    [v4 addObject:v79];
+    bottomTimeLabelToTopTimeLabelConstraint = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabelToTopTimeLabelConstraint];
+    [v4 addObject:bottomTimeLabelToTopTimeLabelConstraint];
 
     v80 = MEMORY[0x1E696ACD8];
-    v81 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
-    v82 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
-    v83 = [v80 constraintWithItem:v81 attribute:12 relatedBy:0 toItem:v82 attribute:11 multiplier:1.0 constant:0.0];
+    timeZoneTimeLabel3 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
+    bottomTimeLabel4 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
+    v83 = [v80 constraintWithItem:timeZoneTimeLabel3 attribute:12 relatedBy:0 toItem:bottomTimeLabel4 attribute:11 multiplier:1.0 constant:0.0];
     [(EKUIInviteesViewTimeSlotCell *)self setTimeZoneTimeLabelToBottomTimeLabelConstraint:v83];
 
-    v84 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabelToBottomTimeLabelConstraint];
-    [v4 addObject:v84];
+    timeZoneTimeLabelToBottomTimeLabelConstraint = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabelToBottomTimeLabelConstraint];
+    [v4 addObject:timeZoneTimeLabelToBottomTimeLabelConstraint];
 
     v85 = MEMORY[0x1E696ACD8];
-    v86 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
-    v87 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
-    v88 = [v85 constraintWithItem:v86 attribute:12 relatedBy:0 toItem:v87 attribute:11 multiplier:1.0 constant:0.0];
+    proposedByLabel3 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
+    timeZoneTimeLabel4 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
+    v88 = [v85 constraintWithItem:proposedByLabel3 attribute:12 relatedBy:0 toItem:timeZoneTimeLabel4 attribute:11 multiplier:1.0 constant:0.0];
     [(EKUIInviteesViewTimeSlotCell *)self setProposedTimeLabelToBottomTimeLabelConstraint:v88];
 
-    v89 = [(EKUIInviteesViewTimeSlotCell *)self proposedTimeLabelToBottomTimeLabelConstraint];
-    [v4 addObject:v89];
+    proposedTimeLabelToBottomTimeLabelConstraint = [(EKUIInviteesViewTimeSlotCell *)self proposedTimeLabelToBottomTimeLabelConstraint];
+    [v4 addObject:proposedTimeLabelToBottomTimeLabelConstraint];
 
     v90 = MEMORY[0x1E696ACD8];
-    v91 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
-    v92 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
-    v93 = [v90 constraintWithItem:v91 attribute:12 relatedBy:0 toItem:v92 attribute:11 multiplier:1.0 constant:0.0];
+    participantsTextView4 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
+    proposedByLabel4 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
+    v93 = [v90 constraintWithItem:participantsTextView4 attribute:12 relatedBy:0 toItem:proposedByLabel4 attribute:11 multiplier:1.0 constant:0.0];
     [(EKUIInviteesViewTimeSlotCell *)self setParticipantsViewToBottomTimeLabelConstraint:v93];
 
-    v94 = [(EKUIInviteesViewTimeSlotCell *)self participantsViewToBottomTimeLabelConstraint];
-    [v4 addObject:v94];
+    participantsViewToBottomTimeLabelConstraint = [(EKUIInviteesViewTimeSlotCell *)self participantsViewToBottomTimeLabelConstraint];
+    [v4 addObject:participantsViewToBottomTimeLabelConstraint];
 
     v95 = MEMORY[0x1E696ACD8];
-    v96 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
-    v97 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
-    v98 = [v95 constraintWithItem:v96 attribute:4 relatedBy:1 toItem:v97 attribute:11 multiplier:1.0 constant:0.0];
+    contentView12 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
+    participantsTextView5 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
+    v98 = [v95 constraintWithItem:contentView12 attribute:4 relatedBy:1 toItem:participantsTextView5 attribute:11 multiplier:1.0 constant:0.0];
     [(EKUIInviteesViewTimeSlotCell *)self setParticipantsViewToContentViewConstraint:v98];
 
-    v99 = [(EKUIInviteesViewTimeSlotCell *)self participantsViewToContentViewConstraint];
-    [v4 addObject:v99];
+    participantsViewToContentViewConstraint = [(EKUIInviteesViewTimeSlotCell *)self participantsViewToContentViewConstraint];
+    [v4 addObject:participantsViewToContentViewConstraint];
 
     v100 = MEMORY[0x1E696ACD8];
-    v101 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
-    v102 = [v100 constraintWithItem:v101 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
+    topTimeLabel9 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
+    v102 = [v100 constraintWithItem:topTimeLabel9 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
     [(EKUIInviteesViewTimeSlotCell *)self setTopTimeLabelHeightConstraint:v102];
 
-    v103 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabelHeightConstraint];
-    [v4 addObject:v103];
+    topTimeLabelHeightConstraint = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabelHeightConstraint];
+    [v4 addObject:topTimeLabelHeightConstraint];
 
     v104 = MEMORY[0x1E696ACD8];
-    v105 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
-    v106 = [v104 constraintWithItem:v105 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
+    bottomTimeLabel5 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
+    v106 = [v104 constraintWithItem:bottomTimeLabel5 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
     [(EKUIInviteesViewTimeSlotCell *)self setBottomTimeLabelHeightConstraint:v106];
 
-    v107 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabelHeightConstraint];
-    [v4 addObject:v107];
+    bottomTimeLabelHeightConstraint = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabelHeightConstraint];
+    [v4 addObject:bottomTimeLabelHeightConstraint];
 
     v108 = MEMORY[0x1E696ACD8];
-    v109 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
-    v110 = [v108 constraintWithItem:v109 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
+    timeZoneTimeLabel5 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
+    v110 = [v108 constraintWithItem:timeZoneTimeLabel5 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
     [(EKUIInviteesViewTimeSlotCell *)self setTimeZoneTimeLabelHeightConstraint:v110];
 
-    v111 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabelHeightConstraint];
-    [v4 addObject:v111];
+    timeZoneTimeLabelHeightConstraint = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabelHeightConstraint];
+    [v4 addObject:timeZoneTimeLabelHeightConstraint];
 
     v112 = MEMORY[0x1E696ACD8];
-    v113 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
-    v114 = [v112 constraintWithItem:v113 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
+    proposedByLabel5 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
+    v114 = [v112 constraintWithItem:proposedByLabel5 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
     [(EKUIInviteesViewTimeSlotCell *)self setProposedByMinHeightConstraint:v114];
 
     v115 = MEMORY[0x1E696ACD8];
-    v116 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
-    v117 = [v115 constraintWithItem:v116 attribute:8 relatedBy:-1 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
+    proposedByLabel6 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
+    v117 = [v115 constraintWithItem:proposedByLabel6 attribute:8 relatedBy:-1 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
     [(EKUIInviteesViewTimeSlotCell *)self setProposedByMaxHeightConstraint:v117];
 
-    v118 = [(EKUIInviteesViewTimeSlotCell *)self proposedByMinHeightConstraint];
-    [v4 addObject:v118];
+    proposedByMinHeightConstraint = [(EKUIInviteesViewTimeSlotCell *)self proposedByMinHeightConstraint];
+    [v4 addObject:proposedByMinHeightConstraint];
 
-    v119 = [(EKUIInviteesViewTimeSlotCell *)self proposedByMaxHeightConstraint];
-    [v4 addObject:v119];
+    proposedByMaxHeightConstraint = [(EKUIInviteesViewTimeSlotCell *)self proposedByMaxHeightConstraint];
+    [v4 addObject:proposedByMaxHeightConstraint];
 
-    v120 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
-    [v120 addConstraints:v4];
+    contentView13 = [(EKUIInviteesViewTimeSlotCell *)self contentView];
+    [contentView13 addConstraints:v4];
 
     [(EKUIInviteesViewTimeSlotCell *)self setPersistentConstraints:v4];
   }
 
-  v121 = [objc_opt_class() _proposedByFont];
-  v122 = [objc_opt_class() _timeLabelFont];
-  v123 = [objc_opt_class() _participantsTextViewFont];
+  _proposedByFont = [objc_opt_class() _proposedByFont];
+  _timeLabelFont = [objc_opt_class() _timeLabelFont];
+  _participantsTextViewFont = [objc_opt_class() _participantsTextViewFont];
   if ([(EKUIInviteesViewTimeSlotCell *)self updateFontBasedConstraints])
   {
     [(EKUIInviteesViewTimeSlotCell *)self setUpdateFontBasedConstraints:0];
-    [v122 _scaledValueForValue:24.0];
+    [_timeLabelFont _scaledValueForValue:24.0];
     v125 = v124;
-    v126 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabelToTopContentViewConstraint];
-    [v126 setConstant:v125];
+    topTimeLabelToTopContentViewConstraint2 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabelToTopContentViewConstraint];
+    [topTimeLabelToTopContentViewConstraint2 setConstant:v125];
 
-    [v122 _scaledValueForValue:22.0];
+    [_timeLabelFont _scaledValueForValue:22.0];
     v128 = v127;
-    v129 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabelToTopTimeLabelConstraint];
-    [v129 setConstant:v128];
+    bottomTimeLabelToTopTimeLabelConstraint2 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabelToTopTimeLabelConstraint];
+    [bottomTimeLabelToTopTimeLabelConstraint2 setConstant:v128];
 
-    [v122 _scaledValueForValue:22.0];
+    [_timeLabelFont _scaledValueForValue:22.0];
     v131 = v130;
-    v132 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabelToBottomTimeLabelConstraint];
-    [v132 setConstant:v131];
+    timeZoneTimeLabelToBottomTimeLabelConstraint2 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabelToBottomTimeLabelConstraint];
+    [timeZoneTimeLabelToBottomTimeLabelConstraint2 setConstant:v131];
 
-    [v121 _scaledValueForValue:20.0];
+    [_proposedByFont _scaledValueForValue:20.0];
     v134 = v133;
-    v135 = [(EKUIInviteesViewTimeSlotCell *)self proposedTimeLabelToBottomTimeLabelConstraint];
-    [v135 setConstant:v134];
+    proposedTimeLabelToBottomTimeLabelConstraint2 = [(EKUIInviteesViewTimeSlotCell *)self proposedTimeLabelToBottomTimeLabelConstraint];
+    [proposedTimeLabelToBottomTimeLabelConstraint2 setConstant:v134];
 
-    [v123 _scaledValueForValue:20.0];
+    [_participantsTextViewFont _scaledValueForValue:20.0];
     v137 = v136;
-    v138 = [(EKUIInviteesViewTimeSlotCell *)self participantsViewToBottomTimeLabelConstraint];
-    [v138 setConstant:v137];
+    participantsViewToBottomTimeLabelConstraint2 = [(EKUIInviteesViewTimeSlotCell *)self participantsViewToBottomTimeLabelConstraint];
+    [participantsViewToBottomTimeLabelConstraint2 setConstant:v137];
 
-    [v122 _scaledValueForValue:12.0];
+    [_timeLabelFont _scaledValueForValue:12.0];
     v140 = v139;
-    v141 = [(EKUIInviteesViewTimeSlotCell *)self participantsViewToContentViewConstraint];
-    [v141 setConstant:v140];
+    participantsViewToContentViewConstraint2 = [(EKUIInviteesViewTimeSlotCell *)self participantsViewToContentViewConstraint];
+    [participantsViewToContentViewConstraint2 setConstant:v140];
 
-    [v122 lineHeight];
+    [_timeLabelFont lineHeight];
     v143 = v142;
-    v144 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabelHeightConstraint];
-    [v144 setConstant:v143];
+    topTimeLabelHeightConstraint2 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabelHeightConstraint];
+    [topTimeLabelHeightConstraint2 setConstant:v143];
 
-    [v122 lineHeight];
+    [_timeLabelFont lineHeight];
     v146 = v145;
-    v147 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabelHeightConstraint];
-    [v147 setConstant:v146];
+    bottomTimeLabelHeightConstraint2 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabelHeightConstraint];
+    [bottomTimeLabelHeightConstraint2 setConstant:v146];
   }
 
   v148 = 0.0;
   if ([(EKUIInviteesViewTimeSlotCell *)self _shouldDisplayTimeZone])
   {
-    [v122 lineHeight];
+    [_timeLabelFont lineHeight];
     v148 = v149;
   }
 
-  v150 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabelHeightConstraint];
-  [v150 setConstant:v148];
+  timeZoneTimeLabelHeightConstraint2 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabelHeightConstraint];
+  [timeZoneTimeLabelHeightConstraint2 setConstant:v148];
 
-  v151 = [(EKUIInviteesViewTimeSlotCell *)self proposedBy];
-  v152 = [v151 count];
+  proposedBy = [(EKUIInviteesViewTimeSlotCell *)self proposedBy];
+  v152 = [proposedBy count];
 
   if (v152)
   {
-    [v121 lineHeight];
+    [_proposedByFont lineHeight];
     v154 = v153;
-    v155 = [(EKUIInviteesViewTimeSlotCell *)self proposedByMinHeightConstraint];
-    [v155 setConstant:v154];
+    proposedByMinHeightConstraint2 = [(EKUIInviteesViewTimeSlotCell *)self proposedByMinHeightConstraint];
+    [proposedByMinHeightConstraint2 setConstant:v154];
 
-    [v121 lineHeight];
+    [_proposedByFont lineHeight];
     v157 = v156 * 4.0;
   }
 
   else
   {
-    v158 = [(EKUIInviteesViewTimeSlotCell *)self proposedByMinHeightConstraint];
+    proposedByMinHeightConstraint3 = [(EKUIInviteesViewTimeSlotCell *)self proposedByMinHeightConstraint];
     v157 = 0.0;
-    [v158 setConstant:0.0];
+    [proposedByMinHeightConstraint3 setConstant:0.0];
   }
 
-  v159 = [(EKUIInviteesViewTimeSlotCell *)self proposedByMaxHeightConstraint];
-  [v159 setConstant:v157];
+  proposedByMaxHeightConstraint2 = [(EKUIInviteesViewTimeSlotCell *)self proposedByMaxHeightConstraint];
+  [proposedByMaxHeightConstraint2 setConstant:v157];
 
   v160.receiver = self;
   v160.super_class = EKUIInviteesViewTimeSlotCell;
   [(EKUIInviteesViewTimeSlotCell *)&v160 updateConstraints];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
+  touchCopy = touch;
   [(EKUIInviteesViewTimeSlotCell *)self andMoreBoundingRect];
   x = v18.origin.x;
   y = v18.origin.y;
@@ -458,8 +458,8 @@
 
   else
   {
-    v11 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
-    [v5 locationInView:v11];
+    participantsTextView = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
+    [touchCopy locationInView:participantsTextView];
     v13 = v12;
     v15 = v14;
 
@@ -475,39 +475,39 @@
   return v10;
 }
 
-- (void)updateWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 busyParticipants:(id)a6 showAllParticipants:(BOOL)a7 checked:(BOOL)a8
+- (void)updateWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone busyParticipants:(id)participants showAllParticipants:(BOOL)allParticipants checked:(BOOL)checked
 {
-  v8 = a8;
-  v9 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  [(EKUIInviteesViewTimeSlotCell *)self setStartDate:a3];
-  [(EKUIInviteesViewTimeSlotCell *)self setEndDate:v16];
+  checkedCopy = checked;
+  allParticipantsCopy = allParticipants;
+  participantsCopy = participants;
+  zoneCopy = zone;
+  endDateCopy = endDate;
+  [(EKUIInviteesViewTimeSlotCell *)self setStartDate:date];
+  [(EKUIInviteesViewTimeSlotCell *)self setEndDate:endDateCopy];
 
-  [(EKUIInviteesViewTimeSlotCell *)self setTimeZone:v15];
-  [(EKUIInviteesViewTimeSlotCell *)self setBusyParticipants:v14];
+  [(EKUIInviteesViewTimeSlotCell *)self setTimeZone:zoneCopy];
+  [(EKUIInviteesViewTimeSlotCell *)self setBusyParticipants:participantsCopy];
 
-  [(EKUIInviteesViewTimeSlotCell *)self setShowAllParticipants:v9];
-  [(EKUIInviteesViewTimeSlotCell *)self setChecked:v8];
+  [(EKUIInviteesViewTimeSlotCell *)self setShowAllParticipants:allParticipantsCopy];
+  [(EKUIInviteesViewTimeSlotCell *)self setChecked:checkedCopy];
   [(EKUIInviteesViewTimeSlotCell *)self _resetTimeTextIfNeeded];
 
   [(EKUIInviteesViewTimeSlotCell *)self _resetParticipantsTextIfNeeded];
 }
 
-- (void)setProposedBy:(id)a3
+- (void)setProposedBy:(id)by
 {
-  v25 = a3;
-  objc_storeStrong(&self->_proposedBy, a3);
-  if ([v25 count] == 1)
+  byCopy = by;
+  objc_storeStrong(&self->_proposedBy, by);
+  if ([byCopy count] == 1)
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = EventKitUIBundle();
-    v7 = [v6 localizedStringForKey:@"Proposed by %@" value:&stru_1F4EF6790 table:0];
-    v8 = [v25 objectAtIndexedSubscript:0];
-    v9 = [v5 localizedStringWithFormat:v7, v8];
-    v10 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
-    [v10 setText:v9];
+    proposedByLabel3 = [v6 localizedStringForKey:@"Proposed by %@" value:&stru_1F4EF6790 table:0];
+    v8 = [byCopy objectAtIndexedSubscript:0];
+    v9 = [v5 localizedStringWithFormat:proposedByLabel3, v8];
+    proposedByLabel = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
+    [proposedByLabel setText:v9];
 
 LABEL_5:
 LABEL_6:
@@ -515,26 +515,26 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v25 count] == 2)
+  if ([byCopy count] == 2)
   {
     v11 = MEMORY[0x1E696AEC0];
     v6 = EventKitUIBundle();
-    v7 = [v6 localizedStringForKey:@"Proposed by %@ and %@" value:&stru_1F4EF6790 table:0];
-    v8 = [v25 objectAtIndexedSubscript:0];
-    v12 = [v25 objectAtIndexedSubscript:1];
-    v13 = [v11 localizedStringWithFormat:v7, v8, v12];
-    v14 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
-    [v14 setText:v13];
+    proposedByLabel3 = [v6 localizedStringForKey:@"Proposed by %@ and %@" value:&stru_1F4EF6790 table:0];
+    v8 = [byCopy objectAtIndexedSubscript:0];
+    v12 = [byCopy objectAtIndexedSubscript:1];
+    v13 = [v11 localizedStringWithFormat:proposedByLabel3, v8, v12];
+    proposedByLabel2 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
+    [proposedByLabel2 setText:v13];
 
     goto LABEL_5;
   }
 
-  if ([v25 count] >= 3)
+  if ([byCopy count] >= 3)
   {
     v15 = EventKitUIBundle();
     v16 = [v15 localizedStringForKey:@"Proposed by " value:&stru_1F4EF6790 table:0];
 
-    if ([v25 count] == 1)
+    if ([byCopy count] == 1)
     {
       v17 = v16;
     }
@@ -547,7 +547,7 @@ LABEL_6:
         v19 = MEMORY[0x1E696AEC0];
         v20 = EventKitUIBundle();
         v21 = [v20 localizedStringForKey:@"%@ value:" table:{&stru_1F4EF6790, 0}];
-        v22 = [v25 objectAtIndexedSubscript:v18];
+        v22 = [byCopy objectAtIndexedSubscript:v18];
         v23 = [v19 localizedStringWithFormat:v21, v22];
         v17 = [v16 stringByAppendingString:v23];
 
@@ -555,14 +555,14 @@ LABEL_6:
         v16 = v17;
       }
 
-      while (v18 < [v25 count] - 1);
+      while (v18 < [byCopy count] - 1);
     }
 
-    v24 = [v25 objectAtIndexedSubscript:{objc_msgSend(v25, "count") - 1}];
+    v24 = [byCopy objectAtIndexedSubscript:{objc_msgSend(byCopy, "count") - 1}];
     v6 = [v17 stringByAppendingString:v24];
 
-    v7 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
-    [v7 setText:v6];
+    proposedByLabel3 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
+    [proposedByLabel3 setText:v6];
     goto LABEL_6;
   }
 
@@ -570,73 +570,73 @@ LABEL_7:
   [(EKUIInviteesViewTimeSlotCell *)self updateConstraints];
 }
 
-- (void)setStartDate:(id)a3
+- (void)setStartDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   startDate = self->_startDate;
-  if (startDate != v5)
+  if (startDate != dateCopy)
   {
-    v8 = v5;
-    if (!startDate || (v7 = [(NSDate *)startDate isEqualToDate:v5], v5 = v8, !v7))
+    v8 = dateCopy;
+    if (!startDate || (v7 = [(NSDate *)startDate isEqualToDate:dateCopy], dateCopy = v8, !v7))
     {
-      objc_storeStrong(&self->_startDate, a3);
+      objc_storeStrong(&self->_startDate, date);
       [(EKUIInviteesViewTimeSlotCell *)self setUpdateTimeText:1];
-      v5 = v8;
+      dateCopy = v8;
     }
   }
 }
 
-- (void)setEndDate:(id)a3
+- (void)setEndDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   endDate = self->_endDate;
-  if (endDate != v5)
+  if (endDate != dateCopy)
   {
-    v8 = v5;
-    if (!endDate || (v7 = [(NSDate *)endDate isEqualToDate:v5], v5 = v8, !v7))
+    v8 = dateCopy;
+    if (!endDate || (v7 = [(NSDate *)endDate isEqualToDate:dateCopy], dateCopy = v8, !v7))
     {
-      objc_storeStrong(&self->_endDate, a3);
+      objc_storeStrong(&self->_endDate, date);
       [(EKUIInviteesViewTimeSlotCell *)self setUpdateTimeText:1];
-      v5 = v8;
+      dateCopy = v8;
     }
   }
 }
 
-- (void)setBusyParticipants:(id)a3
+- (void)setBusyParticipants:(id)participants
 {
-  objc_storeStrong(&self->_busyParticipants, a3);
+  objc_storeStrong(&self->_busyParticipants, participants);
 
   [(EKUIInviteesViewTimeSlotCell *)self setUpdateParticipantsText:1];
 }
 
-- (void)setShowAllParticipants:(BOOL)a3
+- (void)setShowAllParticipants:(BOOL)participants
 {
-  if (self->_showAllParticipants != a3)
+  if (self->_showAllParticipants != participants)
   {
-    self->_showAllParticipants = a3;
+    self->_showAllParticipants = participants;
     [(EKUIInviteesViewTimeSlotCell *)self setUpdateParticipantsText:1];
   }
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  if (self->_checked != a3)
+  if (self->_checked != checked)
   {
-    v4 = a3;
-    self->_checked = a3;
-    v5 = [(EKUIInviteesViewTimeSlotCell *)self checkmarkImageView];
-    [v5 setHidden:!v4];
+    checkedCopy = checked;
+    self->_checked = checked;
+    checkmarkImageView = [(EKUIInviteesViewTimeSlotCell *)self checkmarkImageView];
+    [checkmarkImageView setHidden:!checkedCopy];
   }
 }
 
-- (void)setAndMoreBoundingRect:(CGRect)a3
+- (void)setAndMoreBoundingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_andMoreBoundingRect = &self->_andMoreBoundingRect;
-  if (!CGRectEqualToRect(self->_andMoreBoundingRect, a3))
+  if (!CGRectEqualToRect(self->_andMoreBoundingRect, rect))
   {
     p_andMoreBoundingRect->origin.x = x;
     p_andMoreBoundingRect->origin.y = y;
@@ -652,8 +652,8 @@ LABEL_7:
       v10 = *(MEMORY[0x1E695F058] + 8);
       v11 = *(MEMORY[0x1E695F058] + 16);
       v12 = *(MEMORY[0x1E695F058] + 24);
-      v13 = [(EKUIInviteesViewTimeSlotCell *)self andMoreDebugOverlay];
-      v18 = v13;
+      andMoreDebugOverlay = [(EKUIInviteesViewTimeSlotCell *)self andMoreDebugOverlay];
+      v18 = andMoreDebugOverlay;
       v14 = v9;
       v15 = v10;
       v16 = v11;
@@ -662,47 +662,47 @@ LABEL_7:
 
     else
     {
-      v13 = [(EKUIInviteesViewTimeSlotCell *)self andMoreDebugOverlay];
-      v18 = v13;
+      andMoreDebugOverlay = [(EKUIInviteesViewTimeSlotCell *)self andMoreDebugOverlay];
+      v18 = andMoreDebugOverlay;
       v14 = x;
       v15 = y;
       v16 = width;
       v17 = height;
     }
 
-    [v13 setFrame:{v14, v15, v16, v17}];
+    [andMoreDebugOverlay setFrame:{v14, v15, v16, v17}];
   }
 }
 
-- (void)_showPreviewButtonTapped:(id)a3
+- (void)_showPreviewButtonTapped:(id)tapped
 {
-  v4 = [(EKUIInviteesViewTimeSlotCell *)self showPreviewOfEventAtTime];
+  showPreviewOfEventAtTime = [(EKUIInviteesViewTimeSlotCell *)self showPreviewOfEventAtTime];
 
-  if (v4)
+  if (showPreviewOfEventAtTime)
   {
-    v7 = [(EKUIInviteesViewTimeSlotCell *)self showPreviewOfEventAtTime];
-    v5 = [(EKUIInviteesViewTimeSlotCell *)self startDate];
-    v6 = [(EKUIInviteesViewTimeSlotCell *)self endDate];
-    v7[2](v7, v5, v6);
+    showPreviewOfEventAtTime2 = [(EKUIInviteesViewTimeSlotCell *)self showPreviewOfEventAtTime];
+    startDate = [(EKUIInviteesViewTimeSlotCell *)self startDate];
+    endDate = [(EKUIInviteesViewTimeSlotCell *)self endDate];
+    showPreviewOfEventAtTime2[2](showPreviewOfEventAtTime2, startDate, endDate);
   }
 }
 
-- (void)_andMoreTapped:(id)a3
+- (void)_andMoreTapped:(id)tapped
 {
   [(EKUIInviteesViewTimeSlotCell *)self setShowAllParticipants:1];
-  v4 = [(EKUIInviteesViewTimeSlotCell *)self _tableView];
-  [v4 beginUpdates];
+  _tableView = [(EKUIInviteesViewTimeSlotCell *)self _tableView];
+  [_tableView beginUpdates];
 
   [(EKUIInviteesViewTimeSlotCell *)self _resetParticipantsTextIfNeeded];
-  v5 = [(EKUIInviteesViewTimeSlotCell *)self _tableView];
-  [v5 endUpdates];
+  _tableView2 = [(EKUIInviteesViewTimeSlotCell *)self _tableView];
+  [_tableView2 endUpdates];
 
-  v6 = [(EKUIInviteesViewTimeSlotCell *)self showAllConflictedParticipantsTapped];
+  showAllConflictedParticipantsTapped = [(EKUIInviteesViewTimeSlotCell *)self showAllConflictedParticipantsTapped];
 
-  if (v6)
+  if (showAllConflictedParticipantsTapped)
   {
-    v7 = [(EKUIInviteesViewTimeSlotCell *)self showAllConflictedParticipantsTapped];
-    v7[2]();
+    showAllConflictedParticipantsTapped2 = [(EKUIInviteesViewTimeSlotCell *)self showAllConflictedParticipantsTapped];
+    showAllConflictedParticipantsTapped2[2]();
   }
 }
 
@@ -720,29 +720,29 @@ LABEL_7:
 
 - (void)_resetFonts
 {
-  v12 = [objc_opt_class() _timeLabelFont];
-  v3 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
-  [v3 setFont:v12];
+  _timeLabelFont = [objc_opt_class() _timeLabelFont];
+  topTimeLabel = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
+  [topTimeLabel setFont:_timeLabelFont];
 
-  v4 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
-  [v4 setFont:v12];
+  bottomTimeLabel = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
+  [bottomTimeLabel setFont:_timeLabelFont];
 
-  v5 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
-  [v5 setFont:v12];
+  timeZoneTimeLabel = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
+  [timeZoneTimeLabel setFont:_timeLabelFont];
 
-  v6 = [objc_opt_class() _proposedByFont];
-  v7 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
-  [v7 setFont:v6];
+  _proposedByFont = [objc_opt_class() _proposedByFont];
+  proposedByLabel = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
+  [proposedByLabel setFont:_proposedByFont];
 
-  v8 = [(EKUIInviteesViewTimeSlotCell *)self labelForTextSizeTesting];
-  [v8 setFont:v12];
+  labelForTextSizeTesting = [(EKUIInviteesViewTimeSlotCell *)self labelForTextSizeTesting];
+  [labelForTextSizeTesting setFont:_timeLabelFont];
 
-  v9 = [objc_opt_class() _participantsTextViewFont];
-  v10 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
-  [v10 setFont:v9];
+  _participantsTextViewFont = [objc_opt_class() _participantsTextViewFont];
+  participantsTextView = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
+  [participantsTextView setFont:_participantsTextViewFont];
 
-  v11 = [(EKUIInviteesViewTimeSlotCell *)self textViewForTextSizeTesting];
-  [v11 setFont:v9];
+  textViewForTextSizeTesting = [(EKUIInviteesViewTimeSlotCell *)self textViewForTextSizeTesting];
+  [textViewForTextSizeTesting setFont:_participantsTextViewFont];
 
   [(EKUIInviteesViewTimeSlotCell *)self setUpdateTimeText:1];
   [(EKUIInviteesViewTimeSlotCell *)self _resetTimeTextIfNeeded];
@@ -756,20 +756,20 @@ LABEL_7:
 {
   [(EKUIInviteesViewTimeSlotCell *)self _preferredMaxLayoutWidth];
   v4 = v3;
-  v5 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
-  [v5 setPreferredMaxLayoutWidth:v4];
+  topTimeLabel = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
+  [topTimeLabel setPreferredMaxLayoutWidth:v4];
 
-  v6 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
-  [v6 setPreferredMaxLayoutWidth:v4];
+  bottomTimeLabel = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
+  [bottomTimeLabel setPreferredMaxLayoutWidth:v4];
 
-  v7 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
-  [v7 setPreferredMaxLayoutWidth:v4];
+  timeZoneTimeLabel = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
+  [timeZoneTimeLabel setPreferredMaxLayoutWidth:v4];
 
-  v8 = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
-  [v8 setPreferredMaxLayoutWidth:v4];
+  proposedByLabel = [(EKUIInviteesViewTimeSlotCell *)self proposedByLabel];
+  [proposedByLabel setPreferredMaxLayoutWidth:v4];
 
-  v9 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
-  [v9 _setPreferredMaxLayoutWidth:v4];
+  participantsTextView = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
+  [participantsTextView _setPreferredMaxLayoutWidth:v4];
 
   [(EKUIInviteesViewTimeSlotCell *)self setUpdateTimeText:1];
   [(EKUIInviteesViewTimeSlotCell *)self _resetTimeTextIfNeeded];
@@ -781,12 +781,12 @@ LABEL_7:
 
 - (BOOL)_shouldDisplayTimeZone
 {
-  v3 = [(EKUIInviteesViewTimeSlotCell *)self timeZone];
-  if (v3)
+  timeZone = [(EKUIInviteesViewTimeSlotCell *)self timeZone];
+  if (timeZone)
   {
-    v4 = [(EKUIInviteesViewTimeSlotCell *)self timeZone];
-    v5 = [MEMORY[0x1E695DFE8] calendarTimeZone];
-    v6 = [v4 isEquivalentTo:v5] ^ 1;
+    timeZone2 = [(EKUIInviteesViewTimeSlotCell *)self timeZone];
+    calendarTimeZone = [MEMORY[0x1E695DFE8] calendarTimeZone];
+    v6 = [timeZone2 isEquivalentTo:calendarTimeZone] ^ 1;
   }
 
   else
@@ -808,12 +808,12 @@ LABEL_7:
     aBlock[3] = &unk_1E8441BA8;
     aBlock[4] = self;
     v3 = _Block_copy(aBlock);
-    v4 = [(EKUIInviteesViewTimeSlotCell *)self startDate];
-    v5 = [(EKUIInviteesViewTimeSlotCell *)self endDate];
+    startDate = [(EKUIInviteesViewTimeSlotCell *)self startDate];
+    endDate = [(EKUIInviteesViewTimeSlotCell *)self endDate];
     v6 = v3[2];
     v31 = 0;
     v32 = 0;
-    v6(v3, v4, v5, &v32, &v31);
+    v6(v3, startDate, endDate, &v32, &v31);
     v7 = v32;
     v8 = v31;
 
@@ -821,14 +821,14 @@ LABEL_7:
     if ([(EKUIInviteesViewTimeSlotCell *)self _shouldDisplayTimeZone])
     {
       v10 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-      v11 = [(EKUIInviteesViewTimeSlotCell *)self timeZone];
-      [v10 setTimeZone:v11];
+      timeZone = [(EKUIInviteesViewTimeSlotCell *)self timeZone];
+      [v10 setTimeZone:timeZone];
 
-      v12 = [(EKUIInviteesViewTimeSlotCell *)self startDate];
-      v27 = [v10 components:252 fromDate:v12];
+      startDate2 = [(EKUIInviteesViewTimeSlotCell *)self startDate];
+      v27 = [v10 components:252 fromDate:startDate2];
 
-      v13 = [(EKUIInviteesViewTimeSlotCell *)self endDate];
-      [v10 components:252 fromDate:v13];
+      endDate2 = [(EKUIInviteesViewTimeSlotCell *)self endDate];
+      [v10 components:252 fromDate:endDate2];
       v14 = v29 = v7;
 
       v15 = CUIKCalendar();
@@ -842,7 +842,7 @@ LABEL_7:
       (v3[2])(v3, v16, v18, 0, &v30);
       v19 = v30;
       v20 = MEMORY[0x1E696AEC0];
-      v21 = [(EKUIInviteesViewTimeSlotCell *)self timeZone];
+      timeZone2 = [(EKUIInviteesViewTimeSlotCell *)self timeZone];
       v22 = CUIKShortTZString();
       v9 = [v20 stringWithFormat:@"%@ (%@)", v19, v22];
 
@@ -850,16 +850,16 @@ LABEL_7:
       v7 = v29;
     }
 
-    v23 = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
-    v24 = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
-    v25 = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
-    [v23 setText:v7];
-    [v24 setText:v8];
-    [v25 setText:v9];
-    v26 = [(EKUIInviteesViewTimeSlotCell *)self timeTextColor];
-    [v23 setTextColor:v26];
-    [v24 setTextColor:v26];
-    [v25 setTextColor:v26];
+    topTimeLabel = [(EKUIInviteesViewTimeSlotCell *)self topTimeLabel];
+    bottomTimeLabel = [(EKUIInviteesViewTimeSlotCell *)self bottomTimeLabel];
+    timeZoneTimeLabel = [(EKUIInviteesViewTimeSlotCell *)self timeZoneTimeLabel];
+    [topTimeLabel setText:v7];
+    [bottomTimeLabel setText:v8];
+    [timeZoneTimeLabel setText:v9];
+    timeTextColor = [(EKUIInviteesViewTimeSlotCell *)self timeTextColor];
+    [topTimeLabel setTextColor:timeTextColor];
+    [bottomTimeLabel setTextColor:timeTextColor];
+    [timeZoneTimeLabel setTextColor:timeTextColor];
   }
 }
 
@@ -991,19 +991,19 @@ LABEL_26:
         v6 = EventKitUIBundle();
         v7 = [v6 localizedStringForKey:@"Everyone can attend" value:&stru_1F4EF6790 table:0];
         v13[0] = *MEMORY[0x1E69DB650];
-        v8 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextColor];
-        v14[0] = v8;
+        participantsTextColor = [(EKUIInviteesViewTimeSlotCell *)self participantsTextColor];
+        v14[0] = participantsTextColor;
         v13[1] = *MEMORY[0x1E69DB648];
-        v9 = [objc_opt_class() _participantsTextViewFont];
-        v14[1] = v9;
+        _participantsTextViewFont = [objc_opt_class() _participantsTextViewFont];
+        v14[1] = _participantsTextViewFont;
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
         v4 = [v5 initWithString:v7 attributes:v10];
       }
 
       else
       {
-        v11 = [(EKUIInviteesViewTimeSlotCell *)self busyParticipants];
-        v6 = [v11 sortedArrayWithOptions:16 usingComparator:&__block_literal_global_45];
+        busyParticipants = [(EKUIInviteesViewTimeSlotCell *)self busyParticipants];
+        v6 = [busyParticipants sortedArrayWithOptions:16 usingComparator:&__block_literal_global_45];
 
         if ([(EKUIInviteesViewTimeSlotCell *)self showAllParticipants])
         {
@@ -1018,35 +1018,35 @@ LABEL_26:
       }
     }
 
-    v12 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
-    [v12 setAttributedText:v4];
+    participantsTextView = [(EKUIInviteesViewTimeSlotCell *)self participantsTextView];
+    [participantsTextView setAttributedText:v4];
   }
 }
 
-- (id)_generateStringForAllParticipants:(id)a3
+- (id)_generateStringForAllParticipants:(id)participants
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AD40];
-  v5 = a3;
+  participantsCopy = participants;
   v6 = objc_alloc_init(v4);
-  v7 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextColor];
-  v8 = [objc_opt_class() _interParticipantSpacing];
+  participantsTextColor = [(EKUIInviteesViewTimeSlotCell *)self participantsTextColor];
+  _interParticipantSpacing = [objc_opt_class() _interParticipantSpacing];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __66__EKUIInviteesViewTimeSlotCell__generateStringForAllParticipants___block_invoke;
   v17[3] = &unk_1E8441BD0;
   v9 = v6;
   v18 = v9;
-  v19 = v8;
-  v20 = self;
-  v21 = v7;
-  v10 = v7;
-  v11 = v8;
-  [v5 enumerateObjectsUsingBlock:v17];
+  v19 = _interParticipantSpacing;
+  selfCopy = self;
+  v21 = participantsTextColor;
+  v10 = participantsTextColor;
+  v11 = _interParticipantSpacing;
+  [participantsCopy enumerateObjectsUsingBlock:v17];
 
   v22 = *MEMORY[0x1E69DB648];
-  v12 = [objc_opt_class() _participantsTextViewFont];
-  v23[0] = v12;
+  _participantsTextViewFont = [objc_opt_class() _participantsTextViewFont];
+  v23[0] = _participantsTextViewFont;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
   [v9 addAttributes:v13 range:{0, objc_msgSend(v9, "length")}];
 
@@ -1068,23 +1068,23 @@ void __66__EKUIInviteesViewTimeSlotCell__generateStringForAllParticipants___bloc
   [*(a1 + 32) appendAttributedString:v5];
 }
 
-- (id)_generateStringForSomeParticipantsAndStampMoreBoundingRect:(id)a3
+- (id)_generateStringForSomeParticipantsAndStampMoreBoundingRect:(id)rect
 {
   v74[1] = *MEMORY[0x1E69E9840];
-  v45 = a3;
-  v4 = [(EKUIInviteesViewTimeSlotCell *)self participantsTextColor];
-  v5 = [objc_opt_class() _interParticipantSpacing];
-  v43 = [objc_opt_class() _andMoreLeftSpacing];
-  v6 = [v45 count];
-  v7 = [(EKUIInviteesViewTimeSlotCell *)self textViewForTextSizeTesting];
+  rectCopy = rect;
+  participantsTextColor = [(EKUIInviteesViewTimeSlotCell *)self participantsTextColor];
+  _interParticipantSpacing = [objc_opt_class() _interParticipantSpacing];
+  _andMoreLeftSpacing = [objc_opt_class() _andMoreLeftSpacing];
+  v6 = [rectCopy count];
+  textViewForTextSizeTesting = [(EKUIInviteesViewTimeSlotCell *)self textViewForTextSizeTesting];
   [(EKUIInviteesViewTimeSlotCell *)self _preferredMaxLayoutWidth];
-  [v7 setFrame:{0.0, 0.0, v8, 0.0}];
+  [textViewForTextSizeTesting setFrame:{0.0, 0.0, v8, 0.0}];
   v73 = *MEMORY[0x1E69DB650];
-  v9 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v74[0] = v9;
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v74[0] = systemBlueColor;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v74 forKeys:&v73 count:1];
 
-  v11 = [v7 textLayoutManager];
+  textLayoutManager = [textViewForTextSizeTesting textLayoutManager];
   v65 = 0;
   v66 = &v65;
   v67 = 0x3032000000;
@@ -1104,28 +1104,28 @@ void __66__EKUIInviteesViewTimeSlotCell__generateStringForAllParticipants___bloc
   v46[3] = &unk_1E8441BF8;
   v42 = v12;
   v47 = v42;
-  v41 = v5;
+  v41 = _interParticipantSpacing;
   v48 = v41;
-  v49 = self;
-  v40 = v4;
+  selfCopy = self;
+  v40 = participantsTextColor;
   v50 = v40;
   v57 = v6 - 1;
   v58 = v6;
   v13 = v10;
   v51 = v13;
-  v44 = v43;
+  v44 = _andMoreLeftSpacing;
   v52 = v44;
-  v14 = v7;
+  v14 = textViewForTextSizeTesting;
   v53 = v14;
-  v15 = v11;
+  v15 = textLayoutManager;
   v54 = v15;
   v55 = &v59;
   v56 = &v65;
-  [v45 enumerateObjectsUsingBlock:v46];
+  [rectCopy enumerateObjectsUsingBlock:v46];
   v16 = v60[5];
   v71 = *MEMORY[0x1E69DB648];
-  v17 = [objc_opt_class() _participantsTextViewFont];
-  v72 = v17;
+  _participantsTextViewFont = [objc_opt_class() _participantsTextViewFont];
+  v72 = _participantsTextViewFont;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
   [v16 addAttributes:v18 range:{0, objc_msgSend(v60[5], "length")}];
 
@@ -1138,18 +1138,18 @@ void __66__EKUIInviteesViewTimeSlotCell__generateStringForAllParticipants___bloc
   {
     v23 = [v60[5] length];
     v24 = [v66[5] length];
-    v25 = [v15 textContainer];
-    v26 = [v25 layoutManager];
-    v27 = [v26 glyphIndexForCharacterAtIndex:v23 - v24];
+    textContainer = [v15 textContainer];
+    layoutManager = [textContainer layoutManager];
+    v27 = [layoutManager glyphIndexForCharacterAtIndex:v23 - v24];
 
-    v28 = [v15 textContainer];
-    v29 = [v28 layoutManager];
-    v30 = [v29 numberOfGlyphs];
+    textContainer2 = [v15 textContainer];
+    layoutManager2 = [textContainer2 layoutManager];
+    numberOfGlyphs = [layoutManager2 numberOfGlyphs];
 
-    v31 = [v14 textContainer];
-    v32 = [v15 textContainer];
-    v33 = [v32 layoutManager];
-    [v33 boundingRectForGlyphRange:v27 inTextContainer:{v30 - v27, v31}];
+    textContainer3 = [v14 textContainer];
+    textContainer4 = [v15 textContainer];
+    layoutManager3 = [textContainer4 layoutManager];
+    [layoutManager3 boundingRectForGlyphRange:v27 inTextContainer:{numberOfGlyphs - v27, textContainer3}];
     v19 = v34;
     v20 = v35;
     v21 = v36;
@@ -1239,36 +1239,36 @@ void __91__EKUIInviteesViewTimeSlotCell__generateStringForSomeParticipantsAndSta
 LABEL_11:
 }
 
-+ (BOOL)_layoutManagerReportsExcessLines:(id)a3
++ (BOOL)_layoutManagerReportsExcessLines:(id)lines
 {
-  v3 = a3;
+  linesCopy = lines;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v4 = [v3 textContainer];
-  v5 = [v4 layoutManager];
-  v6 = [v5 numberOfGlyphs];
+  textContainer = [linesCopy textContainer];
+  layoutManager = [textContainer layoutManager];
+  numberOfGlyphs = [layoutManager numberOfGlyphs];
 
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x2020000000;
   v11[3] = 0;
-  v7 = [v3 textContainer];
-  v8 = [v7 layoutManager];
+  textContainer2 = [linesCopy textContainer];
+  layoutManager2 = [textContainer2 layoutManager];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__EKUIInviteesViewTimeSlotCell__layoutManagerReportsExcessLines___block_invoke;
   v10[3] = &unk_1E8441C20;
   v10[4] = v11;
   v10[5] = &v12;
-  [v8 enumerateLineFragmentsForGlyphRange:0 usingBlock:{v6, v10}];
+  [layoutManager2 enumerateLineFragmentsForGlyphRange:0 usingBlock:{numberOfGlyphs, v10}];
 
-  LOBYTE(v6) = *(v13 + 24);
+  LOBYTE(numberOfGlyphs) = *(v13 + 24);
   _Block_object_dispose(v11, 8);
   _Block_object_dispose(&v12, 8);
 
-  return v6;
+  return numberOfGlyphs;
 }
 
 uint64_t __65__EKUIInviteesViewTimeSlotCell__layoutManagerReportsExcessLines___block_invoke(uint64_t result, uint64_t a2, uint64_t a3, uint64_t a4, _BYTE *a5)
@@ -1282,25 +1282,25 @@ uint64_t __65__EKUIInviteesViewTimeSlotCell__layoutManagerReportsExcessLines___b
   return result;
 }
 
-- (id)_textForParticipant:(id)a3 color:(id)a4
+- (id)_textForParticipant:(id)participant color:(id)color
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(EKUIInviteesViewTimeSlotCell *)self _busyImageAttributedStringForColor:v6];
+  colorCopy = color;
+  participantCopy = participant;
+  v8 = [(EKUIInviteesViewTimeSlotCell *)self _busyImageAttributedStringForColor:colorCopy];
   v9 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v8];
   v10 = objc_opt_class();
-  v11 = [v7 displayName];
+  displayName = [participantCopy displayName];
 
-  v12 = [v10 _replaceSpacesWithNonBreakingSpaces:v11];
+  v12 = [v10 _replaceSpacesWithNonBreakingSpaces:displayName];
 
   v13 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v14 = [objc_opt_class() _nonBreakingSpace];
-  v15 = [v13 initWithFormat:@"%@%@", v14, v12];
+  _nonBreakingSpace = [objc_opt_class() _nonBreakingSpace];
+  v15 = [v13 initWithFormat:@"%@%@", _nonBreakingSpace, v12];
 
   v16 = objc_alloc(MEMORY[0x1E696AAB0]);
   v20 = *MEMORY[0x1E69DB650];
-  v21[0] = v6;
+  v21[0] = colorCopy;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
 
   v18 = [v16 initWithString:v15 attributes:v17];
@@ -1309,43 +1309,43 @@ uint64_t __65__EKUIInviteesViewTimeSlotCell__layoutManagerReportsExcessLines___b
   return v9;
 }
 
-- (id)_busyImageAttributedStringForColor:(id)a3
+- (id)_busyImageAttributedStringForColor:(id)color
 {
-  v4 = a3;
-  v5 = [(EKUIInviteesViewTimeSlotCell *)self colorToBusyImageAttributedString];
+  colorCopy = color;
+  colorToBusyImageAttributedString = [(EKUIInviteesViewTimeSlotCell *)self colorToBusyImageAttributedString];
 
-  if (!v5)
+  if (!colorToBusyImageAttributedString)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [(EKUIInviteesViewTimeSlotCell *)self setColorToBusyImageAttributedString:v6];
   }
 
-  v7 = [(EKUIInviteesViewTimeSlotCell *)self colorToBusyImageAttributedString];
-  v8 = [v7 objectForKey:v4];
+  colorToBusyImageAttributedString2 = [(EKUIInviteesViewTimeSlotCell *)self colorToBusyImageAttributedString];
+  v8 = [colorToBusyImageAttributedString2 objectForKey:colorCopy];
 
   if (!v8)
   {
     v9 = [MEMORY[0x1E69DCAD8] configurationWithScale:1];
     v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark.circle" withConfiguration:v9];
-    v11 = [v10 imageWithTintColor:v4 renderingMode:1];
+    v11 = [v10 imageWithTintColor:colorCopy renderingMode:1];
 
     v12 = [MEMORY[0x1E69DB7F0] textAttachmentWithImage:v11];
     v8 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v12];
-    v13 = [(EKUIInviteesViewTimeSlotCell *)self colorToBusyImageAttributedString];
-    [v13 setObject:v8 forKey:v4];
+    colorToBusyImageAttributedString3 = [(EKUIInviteesViewTimeSlotCell *)self colorToBusyImageAttributedString];
+    [colorToBusyImageAttributedString3 setObject:v8 forKey:colorCopy];
   }
 
   return v8;
 }
 
-- (BOOL)_textWillFit:(id)a3
+- (BOOL)_textWillFit:(id)fit
 {
-  v4 = a3;
-  v5 = [(EKUIInviteesViewTimeSlotCell *)self labelForTextSizeTesting];
-  [v5 setText:v4];
+  fitCopy = fit;
+  labelForTextSizeTesting = [(EKUIInviteesViewTimeSlotCell *)self labelForTextSizeTesting];
+  [labelForTextSizeTesting setText:fitCopy];
 
-  [v5 sizeToFit];
-  [v5 frame];
+  [labelForTextSizeTesting sizeToFit];
+  [labelForTextSizeTesting frame];
   v7 = v6;
   [(EKUIInviteesViewTimeSlotCell *)self _preferredMaxLayoutWidth];
   LOBYTE(self) = v7 <= v8;
@@ -1353,9 +1353,9 @@ uint64_t __65__EKUIInviteesViewTimeSlotCell__layoutManagerReportsExcessLines___b
   return self;
 }
 
-+ (id)_generateAndMoreStringWithCount:(unint64_t)a3 attributes:(id)a4
++ (id)_generateAndMoreStringWithCount:(unint64_t)count attributes:(id)attributes
 {
-  v4 = a4;
+  attributesCopy = attributes;
   v5 = CUIKLocalizedStringForInteger();
   v6 = MEMORY[0x1E696AEC0];
   v7 = EventKitUIBundle();
@@ -1363,16 +1363,16 @@ uint64_t __65__EKUIInviteesViewTimeSlotCell__layoutManagerReportsExcessLines___b
   v9 = [v6 localizedStringWithFormat:v8, v5];
 
   v10 = [objc_opt_class() _replaceSpacesWithNonBreakingSpaces:v9];
-  v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v10 attributes:v4];
+  v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v10 attributes:attributesCopy];
 
   return v11;
 }
 
-+ (id)_replaceSpacesWithNonBreakingSpaces:(id)a3
++ (id)_replaceSpacesWithNonBreakingSpaces:(id)spaces
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _nonBreakingSpace];
-  v5 = [v3 stringByReplacingOccurrencesOfString:@" " withString:v4];
+  spacesCopy = spaces;
+  _nonBreakingSpace = [objc_opt_class() _nonBreakingSpace];
+  v5 = [spacesCopy stringByReplacingOccurrencesOfString:@" " withString:_nonBreakingSpace];
 
   return v5;
 }
@@ -1393,11 +1393,11 @@ uint64_t __65__EKUIInviteesViewTimeSlotCell__layoutManagerReportsExcessLines___b
 
 - (BOOL)_everyoneCanAttend
 {
-  v2 = [(EKUIInviteesViewTimeSlotCell *)self busyParticipants];
-  v3 = v2;
-  if (v2)
+  busyParticipants = [(EKUIInviteesViewTimeSlotCell *)self busyParticipants];
+  v3 = busyParticipants;
+  if (busyParticipants)
   {
-    v4 = [v2 count] == 0;
+    v4 = [busyParticipants count] == 0;
   }
 
   else
@@ -1412,36 +1412,36 @@ uint64_t __65__EKUIInviteesViewTimeSlotCell__layoutManagerReportsExcessLines___b
 {
   v2 = objc_alloc(MEMORY[0x1E69DD168]);
   v3 = [v2 initWithFrame:0 textContainer:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  v4 = [v3 layoutManager];
-  [v4 setLimitsLayoutForSuspiciousContents:1];
+  layoutManager = [v3 layoutManager];
+  [layoutManager setLimitsLayoutForSuspiciousContents:1];
 
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   [v3 setUserInteractionEnabled:0];
   [v3 setScrollEnabled:0];
   [v3 setSelectable:0];
   [v3 setEditable:0];
-  v6 = [v3 textContainer];
-  [v6 setLineFragmentPadding:0.0];
+  textContainer = [v3 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   [v3 setTextContainerInset:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
   return v3;
 }
 
-+ (void)_setRequiredHuggingAndCompression:(id)a3
++ (void)_setRequiredHuggingAndCompression:(id)compression
 {
-  v7 = a3;
+  compressionCopy = compression;
   LODWORD(v3) = 1148846080;
-  [v7 setContentHuggingPriority:0 forAxis:v3];
+  [compressionCopy setContentHuggingPriority:0 forAxis:v3];
   LODWORD(v4) = 1148846080;
-  [v7 setContentHuggingPriority:1 forAxis:v4];
+  [compressionCopy setContentHuggingPriority:1 forAxis:v4];
   LODWORD(v5) = 1148846080;
-  [v7 setContentCompressionResistancePriority:0 forAxis:v5];
+  [compressionCopy setContentCompressionResistancePriority:0 forAxis:v5];
   LODWORD(v6) = 1148846080;
-  [v7 setContentCompressionResistancePriority:1 forAxis:v6];
+  [compressionCopy setContentCompressionResistancePriority:1 forAxis:v6];
 }
 
 - (CGRect)andMoreBoundingRect

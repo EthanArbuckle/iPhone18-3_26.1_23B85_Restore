@@ -28,7 +28,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%@ installing placeholder DNS entry to the dynamic store", buf, 0xCu);
   }
 
@@ -38,9 +38,9 @@
   if (v4)
   {
     v5 = +[NSUUID UUID];
-    v6 = [v5 UUIDString];
+    uUIDString = [v5 UUIDString];
 
-    if (v6)
+    if (uUIDString)
     {
       v28 = kSCDynamicStoreUseSessionKeys;
       v29 = kCFBooleanTrue;
@@ -53,13 +53,13 @@
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v25 = v4;
+          selfCopy = v4;
           v26 = 2112;
-          v27 = v6;
+          v27 = uUIDString;
           _os_log_debug_impl(&_mh_execute_header, NetworkServiceEntity, OS_LOG_TYPE_DEBUG, "%@ adding placeholder DNS entry for service %@ to the dynamic store", buf, 0x16u);
         }
 
-        NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, v6, kSCEntNetDNS);
+        NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, uUIDString, kSCEntNetDNS);
         v11 = [NSString stringWithFormat:@"placeholder-%u.hostname.internal", (arc4random_uniform(0x9C40u) + 10000)];
         v22[0] = kSCPropNetDNSServerAddresses;
         v22[1] = kSCPropNetDNSServerPort;
@@ -83,13 +83,13 @@
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
-            v25 = v4;
+            selfCopy = v4;
             v26 = 2112;
-            v27 = v6;
+            v27 = uUIDString;
             _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "%@ successfully added placeholder DNS entry with key uuid: %@", buf, 0x16u);
           }
 
-          objc_setProperty_atomic(v4, v17, v6, 16);
+          objc_setProperty_atomic(v4, v17, uUIDString, 16);
           v4->_placeholderServiceStore = v8;
           v18 = v4;
         }
@@ -99,9 +99,9 @@
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v25 = v4;
+            selfCopy = v4;
             v26 = 2112;
-            v27 = v6;
+            v27 = uUIDString;
             _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%@ failed to add placeholder DNS entry for service %@ to the dynamic store", buf, 0x16u);
           }
 
@@ -115,7 +115,7 @@
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v25 = v4;
+          selfCopy = v4;
           _os_log_error_impl(&_mh_execute_header, NetworkServiceEntity, OS_LOG_TYPE_ERROR, "%@ failed to open dynamic store session", buf, 0xCu);
         }
 
@@ -129,7 +129,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v25 = v4;
+        selfCopy = v4;
         _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%@ failed to create UUID", buf, 0xCu);
       }
 
@@ -139,11 +139,11 @@
 
   else
   {
-    v6 = ne_log_obj();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+    uUIDString = ne_log_obj();
+    if (os_log_type_enabled(uUIDString, OS_LOG_TYPE_FAULT))
     {
       *buf = 0;
-      _os_log_fault_impl(&_mh_execute_header, v6, OS_LOG_TYPE_FAULT, "[super init] failed", buf, 2u);
+      _os_log_fault_impl(&_mh_execute_header, uUIDString, OS_LOG_TYPE_FAULT, "[super init] failed", buf, 2u);
     }
 
     v18 = 0;

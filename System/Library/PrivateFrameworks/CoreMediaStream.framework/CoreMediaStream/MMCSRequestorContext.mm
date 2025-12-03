@@ -1,6 +1,6 @@
 @interface MMCSRequestorContext
 - (MMCSEngine)engine;
-- (MMCSRequestorContext)initWithEngine:(id)a3 type:(int)a4;
+- (MMCSRequestorContext)initWithEngine:(id)engine type:(int)type;
 - (void)dealloc;
 @end
 
@@ -35,17 +35,17 @@
   [(MMCSRequestorContext *)&v4 dealloc];
 }
 
-- (MMCSRequestorContext)initWithEngine:(id)a3 type:(int)a4
+- (MMCSRequestorContext)initWithEngine:(id)engine type:(int)type
 {
-  v6 = a3;
+  engineCopy = engine;
   v10.receiver = self;
   v10.super_class = MMCSRequestorContext;
   v7 = [(MMCSRequestorContext *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_engine, v6);
-    v8->_type = a4;
+    objc_storeWeak(&v7->_engine, engineCopy);
+    v8->_type = type;
   }
 
   return v8;

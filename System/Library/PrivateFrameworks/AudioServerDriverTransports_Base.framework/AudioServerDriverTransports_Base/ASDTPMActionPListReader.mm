@@ -1,14 +1,14 @@
 @interface ASDTPMActionPListReader
-- (ASDTPMActionPListReader)initWithConfig:(id)a3 forSequencer:(id)a4;
-- (id)convert:(id)a3;
+- (ASDTPMActionPListReader)initWithConfig:(id)config forSequencer:(id)sequencer;
+- (id)convert:(id)convert;
 @end
 
 @implementation ASDTPMActionPListReader
 
-- (ASDTPMActionPListReader)initWithConfig:(id)a3 forSequencer:(id)a4
+- (ASDTPMActionPListReader)initWithConfig:(id)config forSequencer:(id)sequencer
 {
-  v6 = a4;
-  v7 = [a3 mutableCopy];
+  sequencerCopy = sequencer;
+  v7 = [config mutableCopy];
   [v7 setObject:MEMORY[0x277CBEC38] forKey:@"IsPList"];
   v8 = [v7 objectForKey:@"BundleExt"];
 
@@ -19,15 +19,15 @@
 
   v11.receiver = self;
   v11.super_class = ASDTPMActionPListReader;
-  v9 = [(ASDTPMActionFileReader *)&v11 initWithConfig:v7 forSequencer:v6];
+  v9 = [(ASDTPMActionFileReader *)&v11 initWithConfig:v7 forSequencer:sequencerCopy];
 
   return v9;
 }
 
-- (id)convert:(id)a3
+- (id)convert:(id)convert
 {
   v9 = 0;
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:&v9];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:convert options:0 format:0 error:&v9];
   v5 = v9;
   if (v4)
   {

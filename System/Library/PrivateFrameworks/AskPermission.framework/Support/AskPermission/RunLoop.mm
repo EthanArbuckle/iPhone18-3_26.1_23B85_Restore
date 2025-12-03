@@ -1,5 +1,5 @@
 @interface RunLoop
-- (BOOL)performStartupWithError:(id *)a3;
+- (BOOL)performStartupWithError:(id *)error;
 - (void)_run;
 - (void)runUntilIdleExit;
 @end
@@ -26,23 +26,23 @@
     v3 = +[APLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
     v7 = objc_opt_class();
     v5 = v7;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Stopping for idle-exit", &v6, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Stopping for idle-exit", &v6, 0xCu);
   }
 
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)performStartupWithError:(id *)a3
+- (BOOL)performStartupWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return 1;
@@ -65,8 +65,8 @@
       v7 = +[APLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       *buf = 138543618;
@@ -74,7 +74,7 @@
       v14 = 2114;
       v15 = v6;
       v10 = v9;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%{public}@: Failed to startup daemon. Error: %{public}@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to startup daemon. Error: %{public}@", buf, 0x16u);
     }
   }
 

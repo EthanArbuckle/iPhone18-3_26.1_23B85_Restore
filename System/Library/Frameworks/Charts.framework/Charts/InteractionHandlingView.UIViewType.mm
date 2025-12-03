@@ -1,31 +1,31 @@
 @interface InteractionHandlingView.UIViewType
-- (_TtCV6Charts23InteractionHandlingView10UIViewType)initWithFrame:(CGRect)a3;
-- (void)handleDragGesture:(id)a3;
-- (void)handleHover:(id)a3;
+- (_TtCV6Charts23InteractionHandlingView10UIViewType)initWithFrame:(CGRect)frame;
+- (void)handleDragGesture:(id)gesture;
+- (void)handleHover:(id)hover;
 @end
 
 @implementation InteractionHandlingView.UIViewType
 
-- (void)handleDragGesture:(id)a3
+- (void)handleDragGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_1AAEBBC58(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_1AAEBBC58(gestureCopy);
 }
 
-- (void)handleHover:(id)a3
+- (void)handleHover:(id)hover
 {
-  v4 = a3;
-  v5 = self;
-  sub_1AAEBBEF0(v4);
+  hoverCopy = hover;
+  selfCopy = self;
+  sub_1AAEBBEF0(hoverCopy);
 }
 
-- (_TtCV6Charts23InteractionHandlingView10UIViewType)initWithFrame:(CGRect)a3
+- (_TtCV6Charts23InteractionHandlingView10UIViewType)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = (&self->super.super.super.isa + OBJC_IVAR____TtCV6Charts23InteractionHandlingView10UIViewType_onChanged);
   *v8 = 0;
   v8[1] = 0;

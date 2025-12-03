@@ -1,12 +1,12 @@
 @interface SFWeatherColor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFWeatherColor)initWithCoder:(id)a3;
-- (SFWeatherColor)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFWeatherColor)initWithCoder:(id)coder;
+- (SFWeatherColor)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFWeatherColor
@@ -16,12 +16,12 @@
   v35.receiver = self;
   v35.super_class = SFWeatherColor;
   v3 = [(SFColor *)&v35 hash];
-  v4 = [(SFWeatherColor *)self condition];
-  v5 = [v4 hash];
-  v6 = [(SFWeatherColor *)self location];
-  v7 = [v6 hash];
-  v8 = [(SFWeatherColor *)self date];
-  v9 = [v8 hash];
+  condition = [(SFWeatherColor *)self condition];
+  v5 = [condition hash];
+  location = [(SFWeatherColor *)self location];
+  v7 = [location hash];
+  date = [(SFWeatherColor *)self date];
+  v9 = [date hash];
   [(SFWeatherColor *)self cloudCover];
   v34 = v10;
   [(SFWeatherColor *)self cloudCoverLowAltPct];
@@ -53,26 +53,26 @@
   return v30 ^ v7 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFWeatherColor *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFWeatherColor *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v50.receiver = self;
       v50.super_class = SFWeatherColor;
-      if ([(SFColor *)&v50 isEqual:v5])
+      if ([(SFColor *)&v50 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFWeatherColor *)self condition];
-        v8 = [(SFWeatherColor *)v6 condition];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        condition = [(SFWeatherColor *)self condition];
+        condition2 = [(SFWeatherColor *)v6 condition];
+        if ((condition != 0) == (condition2 == 0))
         {
           v11 = 0;
 LABEL_39:
@@ -80,29 +80,29 @@ LABEL_39:
           goto LABEL_40;
         }
 
-        v9 = [(SFWeatherColor *)self condition];
-        if (v9)
+        condition3 = [(SFWeatherColor *)self condition];
+        if (condition3)
         {
-          v10 = [(SFWeatherColor *)self condition];
-          v3 = [(SFWeatherColor *)v6 condition];
-          if (![v10 isEqual:v3])
+          condition4 = [(SFWeatherColor *)self condition];
+          condition5 = [(SFWeatherColor *)v6 condition];
+          if (![condition4 isEqual:condition5])
           {
             v11 = 0;
             goto LABEL_37;
           }
 
-          v49 = v10;
+          v49 = condition4;
         }
 
-        v12 = [(SFWeatherColor *)self location];
-        v13 = [(SFWeatherColor *)v6 location];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        location = [(SFWeatherColor *)self location];
+        location2 = [(SFWeatherColor *)v6 location];
+        v14 = location2;
+        if ((location != 0) == (location2 == 0))
         {
 
           v11 = 0;
-          v10 = v49;
-          if (!v9)
+          condition4 = v49;
+          if (!condition3)
           {
             goto LABEL_38;
           }
@@ -110,27 +110,27 @@ LABEL_39:
           goto LABEL_37;
         }
 
-        v15 = [(SFWeatherColor *)self location];
-        v48 = v3;
-        if (v15)
+        location3 = [(SFWeatherColor *)self location];
+        v48 = condition5;
+        if (location3)
         {
-          v16 = v15;
+          v16 = location3;
           v17 = v14;
-          v18 = v12;
-          v19 = [(SFWeatherColor *)self location];
+          v18 = location;
+          location4 = [(SFWeatherColor *)self location];
           [(SFWeatherColor *)v6 location];
-          v47 = v45 = v19;
-          if (![v19 isEqual:?])
+          v47 = v45 = location4;
+          if (![location4 isEqual:?])
           {
             v11 = 0;
-            v12 = v18;
+            location = v18;
             v14 = v17;
             v22 = v47;
             goto LABEL_35;
           }
 
           v46 = v16;
-          v12 = v18;
+          location = v18;
           v14 = v17;
         }
 
@@ -139,12 +139,12 @@ LABEL_39:
           v46 = 0;
         }
 
-        v20 = [(SFWeatherColor *)self date];
-        v21 = [(SFWeatherColor *)v6 date];
-        if ((v20 != 0) != (v21 == 0))
+        date = [(SFWeatherColor *)self date];
+        date2 = [(SFWeatherColor *)v6 date];
+        if ((date != 0) != (date2 == 0))
         {
-          v43 = v21;
-          v44 = v20;
+          v43 = date2;
+          v44 = date;
           [(SFWeatherColor *)self date];
           v42 = v22 = v47;
           if (!v42 || (-[SFWeatherColor date](self, "date"), v23 = objc_claimAutoreleasedReturnValue(), -[SFWeatherColor date](v6, "date"), v40 = objc_claimAutoreleasedReturnValue(), v41 = v23, [v23 isEqual:?]))
@@ -201,9 +201,9 @@ LABEL_34:
         {
 LABEL_36:
 
-          v3 = v48;
-          v10 = v49;
-          if (!v9)
+          condition5 = v48;
+          condition4 = v49;
+          if (!condition3)
           {
 LABEL_38:
 
@@ -229,21 +229,21 @@ LABEL_40:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = SFWeatherColor;
-  v4 = [(SFColor *)&v12 copyWithZone:a3];
-  v5 = [(SFWeatherColor *)self condition];
-  v6 = [v5 copy];
+  v4 = [(SFColor *)&v12 copyWithZone:zone];
+  condition = [(SFWeatherColor *)self condition];
+  v6 = [condition copy];
   [v4 setCondition:v6];
 
-  v7 = [(SFWeatherColor *)self location];
-  v8 = [v7 copy];
+  location = [(SFWeatherColor *)self location];
+  v8 = [location copy];
   [v4 setLocation:v8];
 
-  v9 = [(SFWeatherColor *)self date];
-  v10 = [v9 copy];
+  date = [(SFWeatherColor *)self date];
+  v10 = [date copy];
   [v4 setDate:v10];
 
   [(SFWeatherColor *)self cloudCover];
@@ -260,45 +260,45 @@ LABEL_40:
 - (NSData)jsonData
 {
   v2 = [[_SFPBWeatherColor alloc] initWithFacade:self];
-  v3 = [(_SFPBWeatherColor *)v2 jsonData];
+  jsonData = [(_SFPBWeatherColor *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBWeatherColor alloc] initWithFacade:self];
-  v3 = [(_SFPBWeatherColor *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBWeatherColor *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFWeatherColor;
-  [(SFColor *)&v3 encodeWithCoder:a3];
+  [(SFColor *)&v3 encodeWithCoder:coder];
 }
 
-- (SFWeatherColor)initWithCoder:(id)a3
+- (SFWeatherColor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFWeatherColor *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBColor alloc] initWithData:v6];
   v8 = [[SFColor alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFColor *)v8 condition];
-    [(SFWeatherColor *)v5 setCondition:v9];
+    condition = [(SFColor *)v8 condition];
+    [(SFWeatherColor *)v5 setCondition:condition];
 
-    v10 = [(SFColor *)v8 location];
-    [(SFWeatherColor *)v5 setLocation:v10];
+    location = [(SFColor *)v8 location];
+    [(SFWeatherColor *)v5 setLocation:location];
 
-    v11 = [(SFColor *)v8 date];
-    [(SFWeatherColor *)v5 setDate:v11];
+    date = [(SFColor *)v8 date];
+    [(SFWeatherColor *)v5 setDate:date];
 
     [(SFColor *)v8 cloudCover];
     [(SFWeatherColor *)v5 setCloudCover:?];
@@ -317,75 +317,75 @@ LABEL_40:
     [(SFColor *)v8 alphaComponent];
     [(SFColor *)v5 setAlphaComponent:?];
     [(SFColor *)v5 setColorTintStyle:[(SFColor *)v8 colorTintStyle]];
-    v12 = [(SFColor *)v8 darkModeColor];
-    [(SFColor *)v5 setDarkModeColor:v12];
+    darkModeColor = [(SFColor *)v8 darkModeColor];
+    [(SFColor *)v5 setDarkModeColor:darkModeColor];
   }
 
   return v5;
 }
 
-- (SFWeatherColor)initWithProtobuf:(id)a3
+- (SFWeatherColor)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v22.receiver = self;
   v22.super_class = SFWeatherColor;
   v5 = [(SFWeatherColor *)&v22 init];
   if (v5)
   {
-    v6 = [v4 condition];
+    condition = [protobufCopy condition];
 
-    if (v6)
+    if (condition)
     {
-      v7 = [v4 condition];
-      [(SFWeatherColor *)v5 setCondition:v7];
+      condition2 = [protobufCopy condition];
+      [(SFWeatherColor *)v5 setCondition:condition2];
     }
 
-    v8 = [v4 location];
+    location = [protobufCopy location];
 
-    if (v8)
+    if (location)
     {
       v9 = [SFLatLng alloc];
-      v10 = [v4 location];
-      v11 = [(SFLatLng *)v9 initWithProtobuf:v10];
+      location2 = [protobufCopy location];
+      v11 = [(SFLatLng *)v9 initWithProtobuf:location2];
       [(SFWeatherColor *)v5 setLocation:v11];
     }
 
-    v12 = [v4 date];
+    date = [protobufCopy date];
 
-    if (v12)
+    if (date)
     {
-      v13 = [v4 date];
+      date2 = [protobufCopy date];
       v14 = MEMORY[0x1E695DF00];
-      [v13 secondsSince1970];
+      [date2 secondsSince1970];
       v15 = [v14 dateWithTimeIntervalSince1970:?];
       [(SFWeatherColor *)v5 setDate:v15];
     }
 
-    [v4 cloudCover];
+    [protobufCopy cloudCover];
     if (v16 != 0.0)
     {
-      [v4 cloudCover];
+      [protobufCopy cloudCover];
       [(SFWeatherColor *)v5 setCloudCover:?];
     }
 
-    [v4 cloudCoverLowAltPct];
+    [protobufCopy cloudCoverLowAltPct];
     if (v17 != 0.0)
     {
-      [v4 cloudCoverLowAltPct];
+      [protobufCopy cloudCoverLowAltPct];
       [(SFWeatherColor *)v5 setCloudCoverLowAltPct:?];
     }
 
-    [v4 cloudCoverMidAltPct];
+    [protobufCopy cloudCoverMidAltPct];
     if (v18 != 0.0)
     {
-      [v4 cloudCoverMidAltPct];
+      [protobufCopy cloudCoverMidAltPct];
       [(SFWeatherColor *)v5 setCloudCoverMidAltPct:?];
     }
 
-    [v4 cloudCoverHighAltPct];
+    [protobufCopy cloudCoverHighAltPct];
     if (v19 != 0.0)
     {
-      [v4 cloudCoverHighAltPct];
+      [protobufCopy cloudCoverHighAltPct];
       [(SFWeatherColor *)v5 setCloudCoverHighAltPct:?];
     }
 

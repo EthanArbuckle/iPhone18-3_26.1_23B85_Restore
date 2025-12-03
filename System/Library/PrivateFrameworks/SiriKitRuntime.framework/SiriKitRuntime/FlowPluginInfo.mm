@@ -1,14 +1,14 @@
 @interface FlowPluginInfo
 - (NSString)description;
 - (_TtC14SiriKitRuntime14FlowPluginInfo)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FlowPluginInfo
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FlowPluginInfo.description.getter();
   v5 = v4;
 
@@ -17,11 +17,11 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  FlowPluginInfo.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  FlowPluginInfo.encode(with:)(coderCopy);
 }
 
 - (_TtC14SiriKitRuntime14FlowPluginInfo)init

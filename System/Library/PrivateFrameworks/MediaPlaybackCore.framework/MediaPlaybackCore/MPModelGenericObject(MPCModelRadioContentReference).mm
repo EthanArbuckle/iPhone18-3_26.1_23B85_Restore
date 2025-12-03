@@ -6,11 +6,11 @@
 
 - (id)mpc_radioContentReference
 {
-  v1 = [a1 flattenedGenericObject];
-  v2 = [v1 anyObject];
-  v3 = [v2 mpc_radioContentReference];
+  flattenedGenericObject = [self flattenedGenericObject];
+  anyObject = [flattenedGenericObject anyObject];
+  mpc_radioContentReference = [anyObject mpc_radioContentReference];
 
-  return v3;
+  return mpc_radioContentReference;
 }
 
 @end

@@ -10,28 +10,28 @@
 
 - (uint64_t)hf_isOnForContextType:()HFIncludedContextProtocol
 {
-  v4 = [a1 accessory];
-  v5 = [v4 hf_isOnForContextType:a3];
+  accessory = [self accessory];
+  v5 = [accessory hf_isOnForContextType:a3];
 
   return v5;
 }
 
 - (uint64_t)hf_hasSetForContextType:()HFIncludedContextProtocol
 {
-  v4 = [a1 accessory];
-  v5 = [v4 hf_hasSetForContextType:a3];
+  accessory = [self accessory];
+  v5 = [accessory hf_hasSetForContextType:a3];
 
   return v5;
 }
 
 - (uint64_t)hf_shouldBeOnForContextType:()HFIncludedContextProtocol
 {
-  v4 = a1;
+  selfCopy = self;
   if (a2 < 2)
   {
-    if (([a1 hf_isOnForContextType:a2] & 1) == 0)
+    if (([self hf_isOnForContextType:a2] & 1) == 0)
     {
-      a3 = [v4 hf_hasSetForContextType:a2] ^ 1;
+      a3 = [selfCopy hf_hasSetForContextType:a2] ^ 1;
       return a3 & 1;
     }
 
@@ -49,18 +49,18 @@
     return a3 & 1;
   }
 
-  if (![a1 hf_hasSetForContextType:3])
+  if (![self hf_hasSetForContextType:3])
   {
 LABEL_7:
     a3 = 1;
     return a3 & 1;
   }
 
-  a1 = v4;
+  self = selfCopy;
   v5 = 3;
 LABEL_9:
 
-  return [a1 hf_isOnForContextType:v5];
+  return [self hf_isOnForContextType:v5];
 }
 
 - (uint64_t)hf_shouldHideForContextType:()HFIncludedContextProtocol
@@ -72,8 +72,8 @@ LABEL_9:
 
   if (a3 == 1)
   {
-    v5 = [a1 accessory];
-    v6 = [v5 hf_shouldHideForContextType:1];
+    accessory = [self accessory];
+    v6 = [accessory hf_shouldHideForContextType:1];
 
     return v6;
   }
@@ -85,7 +85,7 @@ LABEL_9:
 
 LABEL_4:
 
-  return [a1 isContainedWithinItemGroup];
+  return [self isContainedWithinItemGroup];
 }
 
 - (id)hf_updateValue:()HFIncludedContextProtocol forContextType:
@@ -95,7 +95,7 @@ LABEL_4:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138413058;
-    v13 = a1;
+    selfCopy = self;
     v14 = 2080;
     v15 = "[HMMediaProfile(HFIncludedContextProtocol) hf_updateValue:forContextType:]";
     v16 = 1024;
@@ -105,8 +105,8 @@ LABEL_4:
     _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "(%@:%s) Updating value to %{BOOL}d for context %lu", &v12, 0x26u);
   }
 
-  v8 = [a1 accessory];
-  v9 = [v8 hf_updateValue:a3 forContextType:a4];
+  accessory = [self accessory];
+  v9 = [accessory hf_updateValue:a3 forContextType:a4];
 
   v10 = *MEMORY[0x277D85DE8];
 

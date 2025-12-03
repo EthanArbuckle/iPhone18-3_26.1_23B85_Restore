@@ -6,9 +6,9 @@
 - (void)_continueButtonClicked;
 - (void)_dismissButtonClicked;
 - (void)_setupButtons;
-- (void)_setupContentForRecognitionLanguage:(id)a3 dataManager:(id)a4 customVoicePreviewer:(id)a5;
-- (void)presenter:(id)a3 didChangeVoiceSelection:(id)a4;
-- (void)updateContainerConstraintsForOrientationChangeToSize:(CGSize)a3;
+- (void)_setupContentForRecognitionLanguage:(id)language dataManager:(id)manager customVoicePreviewer:(id)previewer;
+- (void)presenter:(id)presenter didChangeVoiceSelection:(id)selection;
+- (void)updateContainerConstraintsForOrientationChangeToSize:(CGSize)size;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -42,12 +42,12 @@
 {
   if (self->_allowsRandomSelection)
   {
-    v3 = [(VTUIVoiceSelectionViewController *)self chooseForMeButton];
-    [v3 addTarget:self action:sel__chooseForMeButtonClicked forControlEvents:64];
+    chooseForMeButton = [(VTUIVoiceSelectionViewController *)self chooseForMeButton];
+    [chooseForMeButton addTarget:self action:sel__chooseForMeButtonClicked forControlEvents:64];
   }
 
-  v4 = [(VTUIVoiceSelectionContaining *)self->_voiceSelectionContainer dismissButton];
-  [v4 addTarget:self action:sel__dismissButtonClicked forControlEvents:64];
+  dismissButton = [(VTUIVoiceSelectionContaining *)self->_voiceSelectionContainer dismissButton];
+  [dismissButton addTarget:self action:sel__dismissButtonClicked forControlEvents:64];
 
   continueBarButton = self->_continueBarButton;
   if (continueBarButton)
@@ -61,20 +61,20 @@
 
   else
   {
-    v7 = [(VTUIVoiceSelectionViewController *)self continueButton];
-    [v7 addTarget:self action:sel__continueButtonClicked forControlEvents:64];
+    continueButton = [(VTUIVoiceSelectionViewController *)self continueButton];
+    [continueButton addTarget:self action:sel__continueButtonClicked forControlEvents:64];
   }
 }
 
-- (void)_setupContentForRecognitionLanguage:(id)a3 dataManager:(id)a4 customVoicePreviewer:(id)a5
+- (void)_setupContentForRecognitionLanguage:(id)language dataManager:(id)manager customVoicePreviewer:(id)previewer
 {
-  v17 = a5;
-  v8 = a4;
-  v9 = a3;
+  previewerCopy = previewer;
+  managerCopy = manager;
+  languageCopy = language;
   v10 = objc_alloc_init(VTUIVoiceSelectionOptionsView);
-  if (v17)
+  if (previewerCopy)
   {
-    v11 = v17;
+    v11 = previewerCopy;
   }
 
   else
@@ -83,7 +83,7 @@
   }
 
   v12 = v11;
-  v13 = [objc_alloc(MEMORY[0x277D61A90]) initWithDataManaging:v8 view:v10 delegate:self voicePreviewing:v11 recognitionLanguage:v9];
+  v13 = [objc_alloc(MEMORY[0x277D61A90]) initWithDataManaging:managerCopy view:v10 delegate:self voicePreviewing:v11 recognitionLanguage:languageCopy];
 
   voiceSelectionPresenter = self->_voiceSelectionPresenter;
   self->_voiceSelectionPresenter = v13;
@@ -109,9 +109,9 @@
     [v3 deactivateConstraints:v4];
   }
 
-  v5 = [(VTUIVoiceSelectionOptionsView *)self->_voiceOptionsView heightAnchor];
+  heightAnchor = [(VTUIVoiceSelectionOptionsView *)self->_voiceOptionsView heightAnchor];
   [(VTUIVoiceSelectionOptionsView *)self->_voiceOptionsView sizeThatFits:1.79769313e308, 1.79769313e308];
-  v7 = [v5 constraintEqualToConstant:v6];
+  v7 = [heightAnchor constraintEqualToConstant:v6];
   voiceOptionsViewHeightConstraint = self->_voiceOptionsViewHeightConstraint;
   self->_voiceOptionsViewHeightConstraint = v7;
 
@@ -220,10 +220,10 @@ void __85__VTUIVoiceSelectionViewController__informDelegateVoiceWasSelected_rand
   }
 }
 
-- (void)updateContainerConstraintsForOrientationChangeToSize:(CGSize)a3
+- (void)updateContainerConstraintsForOrientationChangeToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   voiceSelectionContainer = self->_voiceSelectionContainer;
   if (objc_opt_respondsToSelector())
   {
@@ -233,23 +233,23 @@ void __85__VTUIVoiceSelectionViewController__informDelegateVoiceWasSelected_rand
   }
 }
 
-- (void)presenter:(id)a3 didChangeVoiceSelection:(id)a4
+- (void)presenter:(id)presenter didChangeVoiceSelection:(id)selection
 {
-  v5 = a4;
+  selectionCopy = selection;
   continueBarButton = self->_continueBarButton;
   if (continueBarButton)
   {
-    [(UIBarButtonItem *)continueBarButton setEnabled:v5 != 0];
+    [(UIBarButtonItem *)continueBarButton setEnabled:selectionCopy != 0];
   }
 
   else
   {
-    v7 = [(VTUIVoiceSelectionViewController *)self continueButton];
-    [v7 setEnabled:v5 != 0];
+    continueButton = [(VTUIVoiceSelectionViewController *)self continueButton];
+    [continueButton setEnabled:selectionCopy != 0];
   }
 
   currentVoiceSelection = self->_currentVoiceSelection;
-  self->_currentVoiceSelection = v5;
+  self->_currentVoiceSelection = selectionCopy;
 }
 
 - (VTUIVoiceSelectionViewControllerDelegate)delegate

@@ -1,18 +1,18 @@
 @interface PGFeatureExtractorCartesianLocation
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorCartesianLocation
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
   v25[3] = *MEMORY[0x277D85DE8];
-  v4 = [a3 location];
-  v5 = v4;
-  if (v4)
+  location = [entity location];
+  v5 = location;
+  if (location)
   {
-    [v4 coordinate];
+    [location coordinate];
     *&v6 = v6;
     *&v7 = v7;
     [MEMORY[0x277D3ACD0] cartesianCoordinateFromLatitude:v6 longitude:v7];

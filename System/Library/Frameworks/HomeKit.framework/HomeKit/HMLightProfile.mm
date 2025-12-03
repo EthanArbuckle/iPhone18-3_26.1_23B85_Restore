@@ -1,12 +1,12 @@
 @interface HMLightProfile
 + (id)logCategory;
-- (BOOL)mergeFromNewObject:(id)a3;
-- (HMLightProfile)initWithLightProfile:(id)a3;
+- (BOOL)mergeFromNewObject:(id)object;
+- (HMLightProfile)initWithLightProfile:(id)profile;
 - (HMLightProfileDelegate)delegate;
 - (HMLightProfileSettings)settings;
-- (void)fetchNaturalLightColorTemperatureForBrightness:(int64_t)a3 completion:(id)a4;
-- (void)fetchSettingsWithCompletion:(id)a3;
-- (void)updateSettings:(id)a3 withReason:(id)a4;
+- (void)fetchNaturalLightColorTemperatureForBrightness:(int64_t)brightness completion:(id)completion;
+- (void)fetchSettingsWithCompletion:(id)completion;
+- (void)updateSettings:(id)settings withReason:(id)reason;
 @end
 
 @implementation HMLightProfile
@@ -26,18 +26,18 @@ uint64_t __31___HMLightProfile_lightProfile__block_invoke(uint64_t a1, void *a2)
   return WeakRetained;
 }
 
-- (void)fetchSettingsWithCompletion:(id)a3
+- (void)fetchSettingsWithCompletion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMLightProfile *)self lightProfile];
-  v6 = [v5 context];
+  completionCopy = completion;
+  lightProfile = [(HMLightProfile *)self lightProfile];
+  context = [lightProfile context];
 
-  if (!v4)
+  if (!completionCopy)
   {
     v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMLightProfile fetchSettingsWithCompletion:]", @"completion"];
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -54,12 +54,12 @@ uint64_t __31___HMLightProfile_lightProfile__block_invoke(uint64_t a1, void *a2)
     objc_exception_throw(v26);
   }
 
-  if (v6)
+  if (context)
   {
-    v7 = [(HMAccessoryProfile *)self accessory];
-    v8 = [v7 home];
+    accessory = [(HMAccessoryProfile *)self accessory];
+    home = [accessory home];
 
-    if (v8)
+    if (home)
     {
       v9 = [MEMORY[0x1E695DFD8] setWithObject:self];
       v27[0] = MEMORY[0x1E69E9820];
@@ -67,15 +67,15 @@ uint64_t __31___HMLightProfile_lightProfile__block_invoke(uint64_t a1, void *a2)
       v27[2] = __46__HMLightProfile_fetchSettingsWithCompletion___block_invoke;
       v27[3] = &unk_1E754E280;
       v27[4] = self;
-      v28 = v6;
-      v29 = v4;
-      [v8 fetchSettingsForLightProfiles:v9 withCompletion:v27];
+      v28 = context;
+      v29 = completionCopy;
+      [home fetchSettingsForLightProfiles:v9 withCompletion:v27];
     }
 
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy2 = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -86,18 +86,18 @@ uint64_t __31___HMLightProfile_lightProfile__block_invoke(uint64_t a1, void *a2)
       }
 
       objc_autoreleasePoolPop(v14);
-      v18 = [v6 delegateCaller];
+      delegateCaller = [context delegateCaller];
       v19 = [MEMORY[0x1E696ABC0] hmErrorWithCode:21];
-      [v18 callCompletion:v4 obj:0 error:v19];
+      [delegateCaller callCompletion:completionCopy obj:0 error:v19];
 
-      v8 = 0;
+      home = 0;
     }
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy3 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -110,8 +110,8 @@ uint64_t __31___HMLightProfile_lightProfile__block_invoke(uint64_t a1, void *a2)
     }
 
     objc_autoreleasePoolPop(v10);
-    v8 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, 0, v8);
+    home = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    (*(completionCopy + 2))(completionCopy, 0, home);
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -157,18 +157,18 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)fetchNaturalLightColorTemperatureForBrightness:(int64_t)a3 completion:(id)a4
+- (void)fetchNaturalLightColorTemperatureForBrightness:(int64_t)brightness completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(HMLightProfile *)self lightProfile];
-  v8 = [v7 context];
+  completionCopy = completion;
+  lightProfile = [(HMLightProfile *)self lightProfile];
+  context = [lightProfile context];
 
-  if (!v6)
+  if (!completionCopy)
   {
     v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMLightProfile fetchNaturalLightColorTemperatureForBrightness:completion:]", @"completion"];
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -176,7 +176,7 @@ LABEL_6:
       *buf = 138543618;
       v40 = v32;
       v41 = 2112;
-      v42 = v28;
+      brightnessCopy = v28;
       _os_log_impl(&dword_19BB39000, v31, OS_LOG_TYPE_ERROR, "%{public}@%@", buf, 0x16u);
     }
 
@@ -185,21 +185,21 @@ LABEL_6:
     objc_exception_throw(v33);
   }
 
-  if (v8)
+  if (context)
   {
     v9 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v10 = [(HMLightProfile *)self lightProfile];
-    v11 = [v10 profileUniqueIdentifier];
-    v12 = [v9 initWithTarget:v11];
+    lightProfile2 = [(HMLightProfile *)self lightProfile];
+    profileUniqueIdentifier = [lightProfile2 profileUniqueIdentifier];
+    v12 = [v9 initWithTarget:profileUniqueIdentifier];
 
     v37 = @"HMLightProfile.bmk";
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:brightness];
     v38 = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
 
     v15 = [MEMORY[0x1E69A2A10] messageWithName:@"HMLightProfile.fnlctfbm" destination:v12 payload:v14];
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -207,7 +207,7 @@ LABEL_6:
       *buf = 138543618;
       v40 = v19;
       v41 = 2048;
-      v42 = a3;
+      brightnessCopy = brightness;
       _os_log_impl(&dword_19BB39000, v18, OS_LOG_TYPE_INFO, "%{public}@Fetching natural lighting color temperature for brightness: %lu", buf, 0x16u);
     }
 
@@ -216,20 +216,20 @@ LABEL_6:
     v34[1] = 3221225472;
     v34[2] = __76__HMLightProfile_fetchNaturalLightColorTemperatureForBrightness_completion___block_invoke;
     v34[3] = &unk_1E754E480;
-    v34[4] = v17;
-    v35 = v8;
-    v36 = v6;
+    v34[4] = selfCopy2;
+    v35 = context;
+    v36 = completionCopy;
     [v15 setResponseHandler:v34];
-    v20 = [(HMLightProfile *)v17 lightProfile];
-    v21 = [v20 context];
-    v22 = [v21 messageDispatcher];
-    [v22 sendMessage:v15];
+    lightProfile3 = [(HMLightProfile *)selfCopy2 lightProfile];
+    context2 = [lightProfile3 context];
+    messageDispatcher = [context2 messageDispatcher];
+    [messageDispatcher sendMessage:v15];
   }
 
   else
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy3 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -237,13 +237,13 @@ LABEL_6:
       *buf = 138543618;
       v40 = v26;
       v41 = 2080;
-      v42 = "[HMLightProfile fetchNaturalLightColorTemperatureForBrightness:completion:]";
+      brightnessCopy = "[HMLightProfile fetchNaturalLightColorTemperatureForBrightness:completion:]";
       _os_log_impl(&dword_19BB39000, v25, OS_LOG_TYPE_ERROR, "%{public}@Nil context, invoking completion - %s", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v23);
     v12 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v6 + 2))(v6, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -283,10 +283,10 @@ void __76__HMLightProfile_fetchNaturalLightColorTemperatureForBrightness_complet
 
 - (HMLightProfileSettings)settings
 {
-  v2 = [(HMLightProfile *)self lightProfile];
-  v3 = [v2 settings];
+  lightProfile = [(HMLightProfile *)self lightProfile];
+  settings = [lightProfile settings];
 
-  return v3;
+  return settings;
 }
 
 void __76__HMLightProfile_setNaturalLightingEnabled_shouldRetryOnFailure_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -364,49 +364,49 @@ void __76__HMLightProfile_setNaturalLightingEnabled_shouldRetryOnFailure_complet
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateSettings:(id)a3 withReason:(id)a4
+- (void)updateSettings:(id)settings withReason:(id)reason
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMLightProfile *)self lightProfile];
-  v9 = [v8 settings];
-  v10 = [v9 isEqual:v6];
+  settingsCopy = settings;
+  reasonCopy = reason;
+  lightProfile = [(HMLightProfile *)self lightProfile];
+  settings = [lightProfile settings];
+  v10 = [settings isEqual:settingsCopy];
 
   if ((v10 & 1) == 0)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [(HMLightProfile *)v12 settings];
+      settings2 = [(HMLightProfile *)selfCopy settings];
       *buf = 138544130;
       v24 = v14;
       v25 = 2112;
-      v26 = v7;
+      v26 = reasonCopy;
       v27 = 2112;
-      v28 = v15;
+      v28 = settings2;
       v29 = 2112;
-      v30 = v6;
+      v30 = settingsCopy;
       _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@Updating settings with reason: %@ (%@:%@)", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v11);
-    v16 = [(HMLightProfile *)v12 lightProfile];
-    [v16 setSettings:v6];
+    lightProfile2 = [(HMLightProfile *)selfCopy lightProfile];
+    [lightProfile2 setSettings:settingsCopy];
 
-    v17 = [(HMLightProfile *)v12 lightProfile];
-    v18 = [v17 context];
-    v19 = [v18 delegateCaller];
+    lightProfile3 = [(HMLightProfile *)selfCopy lightProfile];
+    context = [lightProfile3 context];
+    delegateCaller = [context delegateCaller];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __44__HMLightProfile_updateSettings_withReason___block_invoke;
     v21[3] = &unk_1E754E5C0;
-    v21[4] = v12;
-    v22 = v6;
-    [v19 invokeBlock:v21];
+    v21[4] = selfCopy;
+    v22 = settingsCopy;
+    [delegateCaller invokeBlock:v21];
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -418,14 +418,14 @@ void __44__HMLightProfile_updateSettings_withReason___block_invoke(uint64_t a1)
   [v2 lightProfile:*(a1 + 32) didUpdateSettings:*(a1 + 40)];
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -437,26 +437,26 @@ void __44__HMLightProfile_updateSettings_withReason___block_invoke(uint64_t a1)
 
   if (v6)
   {
-    v7 = [v6 settings];
-    v8 = [(HMLightProfile *)self settings];
-    v9 = [v8 isEqual:v7];
+    settings = [v6 settings];
+    settings2 = [(HMLightProfile *)self settings];
+    v9 = [settings2 isEqual:settings];
 
     if ((v9 & 1) == 0)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v13 = HMFGetLogIdentifier();
-        v14 = [(HMLightProfile *)v11 lightProfile];
-        v15 = [v14 settings];
+        lightProfile = [(HMLightProfile *)selfCopy lightProfile];
+        settings3 = [lightProfile settings];
         [v6 settings];
         v16 = v24 = v10;
         *buf = 138543874;
         v28 = v13;
         v29 = 2112;
-        v30 = v15;
+        v30 = settings3;
         v31 = 2112;
         v32 = v16;
         _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@Updating settings because of merge: %@ to %@ ", buf, 0x20u);
@@ -465,19 +465,19 @@ void __44__HMLightProfile_updateSettings_withReason___block_invoke(uint64_t a1)
       }
 
       objc_autoreleasePoolPop(v10);
-      v17 = [(HMLightProfile *)v11 lightProfile];
-      [v17 setSettings:v7];
+      lightProfile2 = [(HMLightProfile *)selfCopy lightProfile];
+      [lightProfile2 setSettings:settings];
 
-      v18 = [(HMLightProfile *)v11 lightProfile];
-      v19 = [v18 context];
-      v20 = [v19 delegateCaller];
+      lightProfile3 = [(HMLightProfile *)selfCopy lightProfile];
+      context = [lightProfile3 context];
+      delegateCaller = [context delegateCaller];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __37__HMLightProfile_mergeFromNewObject___block_invoke;
       v25[3] = &unk_1E754E5C0;
-      v25[4] = v11;
-      v26 = v7;
-      [v20 invokeBlock:v25];
+      v25[4] = selfCopy;
+      v26 = settings;
+      [delegateCaller invokeBlock:v25];
     }
 
     v21 = v9 ^ 1;
@@ -498,18 +498,18 @@ void __37__HMLightProfile_mergeFromNewObject___block_invoke(uint64_t a1)
   [v2 lightProfile:*(a1 + 32) didUpdateSettings:*(a1 + 40)];
 }
 
-- (HMLightProfile)initWithLightProfile:(id)a3
+- (HMLightProfile)initWithLightProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v10.receiver = self;
   v10.super_class = HMLightProfile;
-  v5 = [(HMAccessoryProfile *)&v10 initWithAccessoryProfile:v4];
+  v5 = [(HMAccessoryProfile *)&v10 initWithAccessoryProfile:profileCopy];
   if (v5)
   {
-    v6 = [v4 profileUniqueIdentifier];
-    v7 = [v6 UUIDString];
+    profileUniqueIdentifier = [profileCopy profileUniqueIdentifier];
+    uUIDString = [profileUniqueIdentifier UUIDString];
     logIdentifier = v5->_logIdentifier;
-    v5->_logIdentifier = v7;
+    v5->_logIdentifier = uUIDString;
   }
 
   return v5;

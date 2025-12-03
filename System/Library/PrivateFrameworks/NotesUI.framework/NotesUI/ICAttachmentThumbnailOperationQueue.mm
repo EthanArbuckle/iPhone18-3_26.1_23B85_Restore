@@ -1,29 +1,29 @@
 @interface ICAttachmentThumbnailOperationQueue
-- (id)checkPreviewImagesIntegrityOperationForAttachment:(id)a3;
-- (void)addOperationWithAttachment:(id)a3 size:(CGSize)a4 scale:(double)a5 appearanceInfo:(id)a6 cache:(id)a7 cacheKey:(id)a8 processingBlock:(id)a9 completionBlock:(id)a10 fallbackBlock:(id)a11;
+- (id)checkPreviewImagesIntegrityOperationForAttachment:(id)attachment;
+- (void)addOperationWithAttachment:(id)attachment size:(CGSize)size scale:(double)scale appearanceInfo:(id)info cache:(id)cache cacheKey:(id)key processingBlock:(id)block completionBlock:(id)self0 fallbackBlock:(id)self1;
 @end
 
 @implementation ICAttachmentThumbnailOperationQueue
 
-- (void)addOperationWithAttachment:(id)a3 size:(CGSize)a4 scale:(double)a5 appearanceInfo:(id)a6 cache:(id)a7 cacheKey:(id)a8 processingBlock:(id)a9 completionBlock:(id)a10 fallbackBlock:(id)a11
+- (void)addOperationWithAttachment:(id)attachment size:(CGSize)size scale:(double)scale appearanceInfo:(id)info cache:(id)cache cacheKey:(id)key processingBlock:(id)block completionBlock:(id)self0 fallbackBlock:(id)self1
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v45 = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v38 = a6;
-  v20 = a7;
-  v21 = a8;
-  v37 = a9;
-  v22 = a10;
-  v36 = a11;
+  attachmentCopy = attachment;
+  infoCopy = info;
+  cacheCopy = cache;
+  keyCopy = key;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  fallbackBlockCopy = fallbackBlock;
   [(ICAttachmentThumbnailOperationQueue *)self setSuspended:1];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v23 = [(ICAttachmentThumbnailOperationQueue *)self operations];
-  v24 = [v23 countByEnumeratingWithState:&v40 objects:v44 count:16];
+  operations = [(ICAttachmentThumbnailOperationQueue *)self operations];
+  v24 = [operations countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v24)
   {
     v25 = v24;
@@ -35,20 +35,20 @@
       {
         if (*v41 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(operations);
         }
 
         v28 = ICProtocolCast();
         v29 = v28;
-        if (v28 && [v28 isMatchingOperationForCacheKey:v21 cache:v20])
+        if (v28 && [v28 isMatchingOperationForCacheKey:keyCopy cache:cacheCopy])
         {
-          [v29 addCompletionBlock:v22];
+          [v29 addCompletionBlock:completionBlockCopy];
 
           [(ICAttachmentThumbnailOperationQueue *)self setSuspended:0];
-          v34 = v38;
-          v30 = v39;
-          v33 = v36;
-          v32 = v37;
+          v34 = infoCopy;
+          v30 = attachmentCopy;
+          v33 = fallbackBlockCopy;
+          v32 = blockCopy;
           goto LABEL_12;
         }
 
@@ -56,7 +56,7 @@
       }
 
       while (v25 != v27);
-      v25 = [v23 countByEnumeratingWithState:&v40 objects:v44 count:16];
+      v25 = [operations countByEnumeratingWithState:&v40 objects:v44 count:16];
       if (v25)
       {
         continue;
@@ -67,12 +67,12 @@
   }
 
   [(ICAttachmentThumbnailOperationQueue *)self setSuspended:0];
-  v30 = v39;
-  v31 = [(ICAttachmentThumbnailOperationQueue *)self checkPreviewImagesIntegrityOperationForAttachment:v39];
-  v33 = v36;
-  v32 = v37;
-  v34 = v38;
-  v35 = [[ICAttachmentThumbnailOperation alloc] initWithAttachment:v39 size:v38 scale:v20 appearanceInfo:v21 cache:v37 cacheKey:v22 processingBlock:width completionBlock:height fallbackBlock:a5 queue:v36, self];
+  v30 = attachmentCopy;
+  v31 = [(ICAttachmentThumbnailOperationQueue *)self checkPreviewImagesIntegrityOperationForAttachment:attachmentCopy];
+  v33 = fallbackBlockCopy;
+  v32 = blockCopy;
+  v34 = infoCopy;
+  v35 = [[ICAttachmentThumbnailOperation alloc] initWithAttachment:attachmentCopy size:infoCopy scale:cacheCopy appearanceInfo:keyCopy cache:blockCopy cacheKey:completionBlockCopy processingBlock:width completionBlock:height fallbackBlock:scale queue:fallbackBlockCopy, self];
   [(ICAttachmentThumbnailOperation *)v35 addDependency:v31];
   [(ICAttachmentThumbnailOperationQueue *)self addOperation:v31];
   [(ICAttachmentThumbnailOperationQueue *)self addOperation:v35];
@@ -80,16 +80,16 @@
 LABEL_12:
 }
 
-- (id)checkPreviewImagesIntegrityOperationForAttachment:(id)a3
+- (id)checkPreviewImagesIntegrityOperationForAttachment:(id)attachment
 {
-  v3 = [a3 objectID];
+  objectID = [attachment objectID];
   v4 = MEMORY[0x1E696AAE0];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __89__ICAttachmentThumbnailOperationQueue_checkPreviewImagesIntegrityOperationForAttachment___block_invoke;
   v8[3] = &unk_1E8468BA0;
-  v9 = v3;
-  v5 = v3;
+  v9 = objectID;
+  v5 = objectID;
   v6 = [v4 blockOperationWithBlock:v8];
 
   return v6;

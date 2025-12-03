@@ -3,10 +3,10 @@
 - (ATXMemoryPressureMonitor)init;
 - (unint64_t)_currentMemoryPressureType;
 - (void)_currentMemoryPressureType;
-- (void)_notifyObserversOfMemoryPressureType:(unint64_t)a3;
+- (void)_notifyObserversOfMemoryPressureType:(unint64_t)type;
 - (void)dealloc;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation ATXMemoryPressureMonitor
@@ -109,25 +109,25 @@ void __32__ATXMemoryPressureMonitor_init__block_invoke(uint64_t a1)
   return 2;
 }
 
-- (void)_notifyObserversOfMemoryPressureType:(unint64_t)a3
+- (void)_notifyObserversOfMemoryPressureType:(unint64_t)type
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = __atxlog_handle_default();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = ATXMemoryPressureTypeToString(a3);
+    v6 = ATXMemoryPressureTypeToString(type);
     *buf = 138412290;
     v21 = v6;
     _os_log_impl(&dword_226368000, v5, OS_LOG_TYPE_DEFAULT, "ATXMemoryPressureMonitor: received memory pressure warning of type: %@", buf, 0xCu);
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = v7->_observers;
+  v8 = selfCopy->_observers;
   v9 = [(NSHashTable *)v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -142,7 +142,7 @@ void __32__ATXMemoryPressureMonitor_init__block_invoke(uint64_t a1)
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if (a3 - 1 <= 1)
+        if (type - 1 <= 1)
         {
           v13 = *(*(&v15 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
@@ -153,7 +153,7 @@ void __32__ATXMemoryPressureMonitor_init__block_invoke(uint64_t a1)
 
         if (objc_opt_respondsToSelector())
         {
-          [v12 handleMemoryPressureOfType:a3];
+          [v12 handleMemoryPressureOfType:type];
         }
       }
 
@@ -163,33 +163,33 @@ void __32__ATXMemoryPressureMonitor_init__block_invoke(uint64_t a1)
     while (v9);
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers addObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers addObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_currentMemoryPressureType
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 134217984;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_226368000, a2, OS_LOG_TYPE_FAULT, "ATXMemoryPressureMonitor could not convert %lu to ATXMemoryPressureType", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

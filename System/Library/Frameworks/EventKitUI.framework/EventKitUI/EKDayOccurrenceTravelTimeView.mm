@@ -1,16 +1,16 @@
 @interface EKDayOccurrenceTravelTimeView
-+ (double)minimumNaturalHeightForPrimaryTextUsingSmallText:(BOOL)a3 sizeClass:(int64_t)a4;
++ (double)minimumNaturalHeightForPrimaryTextUsingSmallText:(BOOL)text sizeClass:(int64_t)class;
 + (void)initialize;
-- (EKDayOccurrenceTravelTimeView)initWithFrame:(CGRect)a3;
-- (EKDayOccurrenceTravelTimeView)initWithReusableTravelTimeView:(id)a3;
+- (EKDayOccurrenceTravelTimeView)initWithFrame:(CGRect)frame;
+- (EKDayOccurrenceTravelTimeView)initWithReusableTravelTimeView:(id)view;
 - (double)alphaForElements;
-- (id)_travelTimeIconForTravelModeWithColor:(id)a3;
+- (id)_travelTimeIconForTravelModeWithColor:(id)color;
 - (void)_updateStringsColorsAndConstraintConstants;
 - (void)layoutSubviews;
-- (void)setColorBarColor:(id)a3;
-- (void)setElementColor:(id)a3;
-- (void)setLineColor:(id)a3;
-- (void)setRoutingMode:(int64_t)a3;
+- (void)setColorBarColor:(id)color;
+- (void)setElementColor:(id)color;
+- (void)setLineColor:(id)color;
+- (void)setRoutingMode:(int64_t)mode;
 @end
 
 @implementation EKDayOccurrenceTravelTimeView
@@ -32,12 +32,12 @@
   s_iconCache = v6;
 }
 
-- (EKDayOccurrenceTravelTimeView)initWithFrame:(CGRect)a3
+- (EKDayOccurrenceTravelTimeView)initWithFrame:(CGRect)frame
 {
   v72[13] = *MEMORY[0x1E69E9840];
   v71.receiver = self;
   v71.super_class = EKDayOccurrenceTravelTimeView;
-  v3 = [(EKDayOccurrenceTravelTimeView *)&v71 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(EKDayOccurrenceTravelTimeView *)&v71 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -55,8 +55,8 @@
     v4->_travelTimeIcon = v7;
 
     v9 = MEMORY[0x1E69DCAD8];
-    v10 = [(EKDayOccurrenceTravelTimeView *)v4 _textFont];
-    v11 = [v9 configurationWithFont:v10];
+    _textFont = [(EKDayOccurrenceTravelTimeView *)v4 _textFont];
+    v11 = [v9 configurationWithFont:_textFont];
     [(UIImageView *)v4->_travelTimeIcon setPreferredSymbolConfiguration:v11];
 
     [(UIImageView *)v4->_travelTimeIcon setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -74,8 +74,8 @@
     travelTimeLabel = v4->_travelTimeLabel;
     v4->_travelTimeLabel = v16;
 
-    v18 = [(EKDayOccurrenceTravelTimeView *)v4 _textFont];
-    [(UILabel *)v4->_travelTimeLabel setFont:v18];
+    _textFont2 = [(EKDayOccurrenceTravelTimeView *)v4 _textFont];
+    [(UILabel *)v4->_travelTimeLabel setFont:_textFont2];
 
     [(UILabel *)v4->_travelTimeLabel setNumberOfLines:0];
     [(UILabel *)v4->_travelTimeLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -89,78 +89,78 @@
 
     [(UIView *)v4->_horizontalLineView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(EKDayOccurrenceTravelTimeView *)v4 addSubview:v4->_horizontalLineView];
-    v22 = [(EKDayOccurrenceTravelTimeView *)v4 trailingAnchor];
-    v23 = [(UILabel *)v4->_travelTimeLabel trailingAnchor];
+    trailingAnchor = [(EKDayOccurrenceTravelTimeView *)v4 trailingAnchor];
+    trailingAnchor2 = [(UILabel *)v4->_travelTimeLabel trailingAnchor];
     [MEMORY[0x1E6993420] occurrencePadding];
-    v24 = [v22 constraintEqualToAnchor:v23 constant:?];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:?];
     travelTimeLabelToTrailingEdgeConstraint = v4->_travelTimeLabelToTrailingEdgeConstraint;
     v4->_travelTimeLabelToTrailingEdgeConstraint = v24;
 
-    v26 = [(EKDayOccurrenceTravelTimeView *)v4 bottomAnchor];
-    v27 = [(UILabel *)v4->_travelTimeLabel bottomAnchor];
+    bottomAnchor = [(EKDayOccurrenceTravelTimeView *)v4 bottomAnchor];
+    bottomAnchor2 = [(UILabel *)v4->_travelTimeLabel bottomAnchor];
     [MEMORY[0x1E6993420] occurrencePadding];
-    v28 = [v26 constraintGreaterThanOrEqualToAnchor:v27 constant:?];
+    v28 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:?];
 
     v57 = v28;
     LODWORD(v29) = 1144750080;
     [v28 setPriority:v29];
-    v30 = [(UIView *)v4->_colorBarView bottomAnchor];
-    v31 = [(EKDayOccurrenceTravelTimeView *)v4 bottomAnchor];
+    bottomAnchor3 = [(UIView *)v4->_colorBarView bottomAnchor];
+    bottomAnchor4 = [(EKDayOccurrenceTravelTimeView *)v4 bottomAnchor];
     [MEMORY[0x1E6993420] occurrencePadding];
-    v70 = [v30 constraintEqualToAnchor:v31 constant:-v32];
+    v70 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-v32];
 
     LODWORD(v33) = 1144750080;
     [v70 setPriority:v33];
     v59 = MEMORY[0x1E696ACD8];
     v72[0] = v70;
-    v69 = [(UIView *)v4->_colorBarView leadingAnchor];
-    v68 = [(EKDayOccurrenceTravelTimeView *)v4 leadingAnchor];
+    leadingAnchor = [(UIView *)v4->_colorBarView leadingAnchor];
+    leadingAnchor2 = [(EKDayOccurrenceTravelTimeView *)v4 leadingAnchor];
     [MEMORY[0x1E6993420] occurrencePadding];
-    v67 = [v69 constraintEqualToAnchor:v68 constant:?];
+    v67 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     v72[1] = v67;
-    v66 = [(UIView *)v4->_colorBarView widthAnchor];
+    widthAnchor = [(UIView *)v4->_colorBarView widthAnchor];
     [MEMORY[0x1E6993420] colorBarThickness];
-    v65 = [v66 constraintEqualToConstant:?];
+    v65 = [widthAnchor constraintEqualToConstant:?];
     v72[2] = v65;
-    v64 = [(UIView *)v4->_colorBarView topAnchor];
-    v63 = [(EKDayOccurrenceTravelTimeView *)v4 topAnchor];
+    topAnchor = [(UIView *)v4->_colorBarView topAnchor];
+    topAnchor2 = [(EKDayOccurrenceTravelTimeView *)v4 topAnchor];
     [MEMORY[0x1E6993420] occurrencePadding];
-    v62 = [v64 constraintEqualToAnchor:v63 constant:?];
+    v62 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
     v72[3] = v62;
-    v61 = [(UIImageView *)v4->_travelTimeIcon leadingAnchor];
-    v60 = [(UIView *)v4->_colorBarView trailingAnchor];
+    leadingAnchor3 = [(UIImageView *)v4->_travelTimeIcon leadingAnchor];
+    trailingAnchor3 = [(UIView *)v4->_colorBarView trailingAnchor];
     [MEMORY[0x1E6993420] occurrencePadding];
-    v58 = [v61 constraintEqualToAnchor:v60 constant:?];
+    v58 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3 constant:?];
     v72[4] = v58;
-    v56 = [(UIImageView *)v4->_travelTimeIcon topAnchor];
-    v55 = [(UIView *)v4->_colorBarView topAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55];
+    topAnchor3 = [(UIImageView *)v4->_travelTimeIcon topAnchor];
+    topAnchor4 = [(UIView *)v4->_colorBarView topAnchor];
+    v54 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v72[5] = v54;
-    v53 = [(UILabel *)v4->_travelTimeLabel leadingAnchor];
-    v52 = [(UIImageView *)v4->_travelTimeIcon trailingAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52 constant:3.0];
+    leadingAnchor4 = [(UILabel *)v4->_travelTimeLabel leadingAnchor];
+    trailingAnchor4 = [(UIImageView *)v4->_travelTimeIcon trailingAnchor];
+    v51 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor4 constant:3.0];
     v72[6] = v51;
-    v49 = [(UILabel *)v4->_travelTimeLabel topAnchor];
-    v50 = [(EKDayOccurrenceTravelTimeView *)v4 colorBarView];
-    v48 = [v50 topAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48];
+    topAnchor5 = [(UILabel *)v4->_travelTimeLabel topAnchor];
+    colorBarView = [(EKDayOccurrenceTravelTimeView *)v4 colorBarView];
+    topAnchor6 = [colorBarView topAnchor];
+    v47 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v72[7] = v47;
     v72[8] = v28;
-    v46 = [(UIView *)v4->_horizontalLineView leadingAnchor];
-    v45 = [(EKDayOccurrenceTravelTimeView *)v4 leadingAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45];
+    leadingAnchor5 = [(UIView *)v4->_horizontalLineView leadingAnchor];
+    leadingAnchor6 = [(EKDayOccurrenceTravelTimeView *)v4 leadingAnchor];
+    v44 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v72[9] = v44;
-    v34 = [(UIView *)v4->_horizontalLineView trailingAnchor];
-    v35 = [(EKDayOccurrenceTravelTimeView *)v4 trailingAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    trailingAnchor5 = [(UIView *)v4->_horizontalLineView trailingAnchor];
+    trailingAnchor6 = [(EKDayOccurrenceTravelTimeView *)v4 trailingAnchor];
+    v36 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v72[10] = v36;
-    v37 = [(UIView *)v4->_horizontalLineView heightAnchor];
+    heightAnchor = [(UIView *)v4->_horizontalLineView heightAnchor];
     CalRoundToScreenScale(0.5);
-    v38 = [v37 constraintEqualToConstant:?];
+    v38 = [heightAnchor constraintEqualToConstant:?];
     v72[11] = v38;
-    v39 = [(UIView *)v4->_horizontalLineView bottomAnchor];
-    v40 = [(EKDayOccurrenceTravelTimeView *)v4 bottomAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    bottomAnchor5 = [(UIView *)v4->_horizontalLineView bottomAnchor];
+    bottomAnchor6 = [(EKDayOccurrenceTravelTimeView *)v4 bottomAnchor];
+    v41 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v72[12] = v41;
     v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:13];
     [v59 activateConstraints:v42];
@@ -169,29 +169,29 @@
   return v4;
 }
 
-- (EKDayOccurrenceTravelTimeView)initWithReusableTravelTimeView:(id)a3
+- (EKDayOccurrenceTravelTimeView)initWithReusableTravelTimeView:(id)view
 {
-  v4 = a3;
-  [v4 frame];
+  viewCopy = view;
+  [viewCopy frame];
   v5 = [(EKDayOccurrenceTravelTimeView *)self initWithFrame:?];
   if (v5)
   {
-    v6 = [v4 elementColor];
-    [(EKDayOccurrenceTravelTimeView *)v5 setElementColor:v6];
+    elementColor = [viewCopy elementColor];
+    [(EKDayOccurrenceTravelTimeView *)v5 setElementColor:elementColor];
 
-    v7 = [v4 lineColor];
-    [(EKDayOccurrenceTravelTimeView *)v5 setLineColor:v7];
+    lineColor = [viewCopy lineColor];
+    [(EKDayOccurrenceTravelTimeView *)v5 setLineColor:lineColor];
 
-    -[EKDayOccurrenceTravelTimeView setRoutingMode:](v5, "setRoutingMode:", [v4 routingMode]);
+    -[EKDayOccurrenceTravelTimeView setRoutingMode:](v5, "setRoutingMode:", [viewCopy routingMode]);
   }
 
   return v5;
 }
 
-+ (double)minimumNaturalHeightForPrimaryTextUsingSmallText:(BOOL)a3 sizeClass:(int64_t)a4
++ (double)minimumNaturalHeightForPrimaryTextUsingSmallText:(BOOL)text sizeClass:(int64_t)class
 {
-  v4 = [MEMORY[0x1E6993418] defaultOccurrenceSecondaryTextFont];
-  [v4 lineHeight];
+  defaultOccurrenceSecondaryTextFont = [MEMORY[0x1E6993418] defaultOccurrenceSecondaryTextFont];
+  [defaultOccurrenceSecondaryTextFont lineHeight];
   v6 = v5;
 
   return v6;
@@ -209,54 +209,54 @@
   [(EKDayOccurrenceTravelTimeView *)self setNeedsLayout];
 }
 
-- (void)setElementColor:(id)a3
+- (void)setElementColor:(id)color
 {
-  v5 = a3;
-  if (self->_elementColor != v5)
+  colorCopy = color;
+  if (self->_elementColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_elementColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_elementColor, color);
     [(EKDayOccurrenceTravelTimeView *)self _updateStringsColorsAndConstraintConstants];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setColorBarColor:(id)a3
+- (void)setColorBarColor:(id)color
 {
-  v5 = a3;
-  if (self->_colorBarColor != v5)
+  colorCopy = color;
+  if (self->_colorBarColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_colorBarColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_colorBarColor, color);
     [(EKDayOccurrenceTravelTimeView *)self _updateStringsColorsAndConstraintConstants];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setLineColor:(id)a3
+- (void)setLineColor:(id)color
 {
-  v5 = a3;
-  if (self->_lineColor != v5)
+  colorCopy = color;
+  if (self->_lineColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_lineColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_lineColor, color);
     [(EKDayOccurrenceTravelTimeView *)self _updateStringsColorsAndConstraintConstants];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setRoutingMode:(int64_t)a3
+- (void)setRoutingMode:(int64_t)mode
 {
-  if (self->_routingMode != a3)
+  if (self->_routingMode != mode)
   {
-    self->_routingMode = a3;
+    self->_routingMode = mode;
     [(EKDayOccurrenceTravelTimeView *)self _updateStringsColorsAndConstraintConstants];
   }
 }
 
-- (id)_travelTimeIconForTravelModeWithColor:(id)a3
+- (id)_travelTimeIconForTravelModeWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (self->_routingMode == -1)
   {
     routingMode = 0;
@@ -268,7 +268,7 @@
   }
 
   v6 = [s_iconCache objectAtIndexedSubscript:routingMode];
-  v7 = [v6 objectForKey:v4];
+  v7 = [v6 objectForKey:colorCopy];
 
   v8 = 0;
   if (v7)
@@ -306,11 +306,11 @@
 
   v8 = v9;
 LABEL_15:
-  v7 = [v8 imageWithTintColor:v4 renderingMode:1];
+  v7 = [v8 imageWithTintColor:colorCopy renderingMode:1];
   if (v7)
   {
     v10 = [s_iconCache objectAtIndexedSubscript:routingMode];
-    [v10 setObject:v7 forKey:v4];
+    [v10 setObject:v7 forKey:colorCopy];
   }
 
 LABEL_17:

@@ -11,18 +11,18 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [a1 identifier];
-    v7 = [v5 identifier];
-    if (v6 == v7)
+    identifier = [self identifier];
+    identifier2 = [v5 identifier];
+    if (identifier == identifier2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [a1 identifier];
-      v9 = [v5 identifier];
-      v10 = [v8 isEqualToString:v9];
+      identifier3 = [self identifier];
+      identifier4 = [v5 identifier];
+      v10 = [identifier3 isEqualToString:identifier4];
     }
   }
 

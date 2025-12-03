@@ -1,24 +1,24 @@
 @interface NLLanguageModel
-+ (id)languageModelWithOptions:(id)a3 error:(id *)a4;
-- (NLLanguageModel)initWithLocalization:(id)a3;
-- (double)conditionalProbabilityForEntry:(id)a3 context:(id)a4;
-- (double)conditionalProbabilityForWord:(id)a3 context:(id)a4;
++ (id)languageModelWithOptions:(id)options error:(id *)error;
+- (NLLanguageModel)initWithLocalization:(id)localization;
+- (double)conditionalProbabilityForEntry:(id)entry context:(id)context;
+- (double)conditionalProbabilityForWord:(id)word context:(id)context;
 - (id)description;
 - (id)languages;
 - (id)locale;
-- (id)stringForTokenID:(unsigned int)a3;
-- (unsigned)tokenIDForString:(id)a3;
+- (id)stringForTokenID:(unsigned int)d;
+- (unsigned)tokenIDForString:(id)string;
 - (void)dealloc;
-- (void)enumeratePredictionsForContext:(id)a3 maxEntriesPerPrediction:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumeratePredictionsForContext:(id)a3 maxWordsPerPrediction:(unint64_t)a4 usingBlock:(id)a5;
+- (void)enumeratePredictionsForContext:(id)context maxEntriesPerPrediction:(unint64_t)prediction usingBlock:(id)block;
+- (void)enumeratePredictionsForContext:(id)context maxWordsPerPrediction:(unint64_t)prediction usingBlock:(id)block;
 @end
 
 @implementation NLLanguageModel
 
-- (NLLanguageModel)initWithLocalization:(id)a3
+- (NLLanguageModel)initWithLocalization:(id)localization
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:v4];
+  localizationCopy = localization;
+  v5 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:localizationCopy];
   v6 = objc_alloc(MEMORY[0x1E695DF90]);
   v7 = [v6 initWithObjectsAndKeys:{v5, *MEMORY[0x1E69ABF90], 0}];
   v14.receiver = self;
@@ -26,12 +26,12 @@
   v8 = [(NLLanguageModel *)&v14 init];
   if (v8)
   {
-    v9 = [v4 copy];
+    v9 = [localizationCopy copy];
     localization = v8->_localization;
     v8->_localization = v9;
 
     v8->_model = LMLanguageModelCreate();
-    v11 = [[NLLexicon alloc] initWithLocalization:v4];
+    v11 = [[NLLexicon alloc] initWithLocalization:localizationCopy];
     lexicon = v8->_lexicon;
     v8->_lexicon = v11;
   }
@@ -39,14 +39,14 @@
   return v8;
 }
 
-+ (id)languageModelWithOptions:(id)a3 error:(id *)a4
++ (id)languageModelWithOptions:(id)options error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = localizationForOptions(v5);
-  v7 = granularityForOptions(v5);
-  v8 = stringForKey(v5, @"Architecture", @"LSTM");
-  v9 = BOOLForKey(v5, @"UseLMS", 0);
+  optionsCopy = options;
+  v6 = localizationForOptions(optionsCopy);
+  v7 = granularityForOptions(optionsCopy);
+  v8 = stringForKey(optionsCopy, @"Architecture", @"LSTM");
+  v9 = BOOLForKey(optionsCopy, @"UseLMS", 0);
   if (v7 != 1)
   {
     if (v9)
@@ -64,17 +64,17 @@
 
   v10 = NLNLPLanguageModel;
 LABEL_5:
-  v11 = [[v10 alloc] initWithLocalization:v6 options:v5];
+  v11 = [[v10 alloc] initWithLocalization:v6 options:optionsCopy];
 LABEL_6:
   v12 = v11;
-  if (a4 && !v11)
+  if (error && !v11)
   {
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load language model for %@", v6];
     v14 = MEMORY[0x1E696ABC0];
     v18 = *MEMORY[0x1E696A578];
     v19[0] = v13;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-    *a4 = [v14 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:11 userInfo:v15];
+    *error = [v14 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:11 userInfo:v15];
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -125,22 +125,22 @@ LABEL_6:
 - (id)locale
 {
   v3 = objc_alloc(MEMORY[0x1E695DF58]);
-  v4 = [(NLLanguageModel *)self localization];
-  v5 = [v3 initWithLocaleIdentifier:v4];
+  localization = [(NLLanguageModel *)self localization];
+  v5 = [v3 initWithLocaleIdentifier:localization];
 
   return v5;
 }
 
-- (double)conditionalProbabilityForEntry:(id)a3 context:(id)a4
+- (double)conditionalProbabilityForEntry:(id)entry context:(id)context
 {
   v12 = -30.0;
-  v6 = a4;
-  v7 = a3;
-  v8 = tokensForEntrySequence(v6);
-  v9 = [v7 tokenID];
+  contextCopy = context;
+  entryCopy = entry;
+  v8 = tokensForEntrySequence(contextCopy);
+  tokenID = [entryCopy tokenID];
 
-  v10 = [v6 count];
-  [(NLLanguageModel *)self getConditionalProbabilityForTokenID:v9 context:v8 length:v10 probability:&v12];
+  v10 = [contextCopy count];
+  [(NLLanguageModel *)self getConditionalProbabilityForTokenID:tokenID context:v8 length:v10 probability:&v12];
   if (v8)
   {
     free(v8);
@@ -149,10 +149,10 @@ LABEL_6:
   return v12;
 }
 
-- (double)conditionalProbabilityForWord:(id)a3 context:(id)a4
+- (double)conditionalProbabilityForWord:(id)word context:(id)context
 {
-  v6 = a4;
-  v7 = [(NLLexicon *)self->_lexicon entryForString:a3];
+  contextCopy = context;
+  v7 = [(NLLexicon *)self->_lexicon entryForString:word];
   tokenizer = self->_tokenizer;
   if (!tokenizer)
   {
@@ -163,7 +163,7 @@ LABEL_6:
     tokenizer = self->_tokenizer;
   }
 
-  v11 = entrySequenceForStringWithOptionalBOS(v6, self->_lexicon, tokenizer, 1);
+  v11 = entrySequenceForStringWithOptionalBOS(contextCopy, self->_lexicon, tokenizer, 1);
   if (v7)
   {
     [(NLLanguageModel *)self conditionalProbabilityForEntry:v7 context:v11];
@@ -178,16 +178,16 @@ LABEL_6:
   return v13;
 }
 
-- (void)enumeratePredictionsForContext:(id)a3 maxEntriesPerPrediction:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumeratePredictionsForContext:(id)context maxEntriesPerPrediction:(unint64_t)prediction usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
+  contextCopy = context;
+  blockCopy = block;
   if (self->_model && self->_lexicon)
   {
-    v9 = tokensForEntrySequence(v7);
+    v9 = tokensForEntrySequence(contextCopy);
     model = self->_model;
-    [v7 count];
-    v11 = v8;
+    [contextCopy count];
+    v11 = blockCopy;
     LMLanguageModelEnumeratePredictionsWithBlock();
     if (v9)
     {
@@ -208,10 +208,10 @@ void __85__NLLanguageModel_enumeratePredictionsForContext_maxEntriesPerPredictio
   (*(*(a1 + 40) + 16))(a4);
 }
 
-- (void)enumeratePredictionsForContext:(id)a3 maxWordsPerPrediction:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumeratePredictionsForContext:(id)context maxWordsPerPrediction:(unint64_t)prediction usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
+  contextCopy = context;
+  blockCopy = block;
   if (self->_model)
   {
     lexicon = self->_lexicon;
@@ -228,11 +228,11 @@ void __85__NLLanguageModel_enumeratePredictionsForContext_maxEntriesPerPredictio
         tokenizer = self->_tokenizer;
       }
 
-      v13 = entrySequenceForStringWithOptionalBOS(v7, lexicon, tokenizer, 1);
+      v13 = entrySequenceForStringWithOptionalBOS(contextCopy, lexicon, tokenizer, 1);
       v14 = tokensForEntrySequence(v13);
       model = self->_model;
       [v13 count];
-      v16 = v8;
+      v16 = blockCopy;
       LMLanguageModelEnumeratePredictionsWithBlock();
       if (v14)
       {
@@ -267,11 +267,11 @@ void __83__NLLanguageModel_enumeratePredictionsForContext_maxWordsPerPrediction_
   }
 }
 
-- (unsigned)tokenIDForString:(id)a3
+- (unsigned)tokenIDForString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_model && (v6 = [v4 UTF8String]) != 0)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (self->_model && (v6 = [stringCopy UTF8String]) != 0)
   {
     model = self->_model;
     strlen(v6);
@@ -286,7 +286,7 @@ void __83__NLLanguageModel_enumeratePredictionsForContext_maxWordsPerPrediction_
   return TokenIDForUTF8String;
 }
 
-- (id)stringForTokenID:(unsigned int)a3
+- (id)stringForTokenID:(unsigned int)d
 {
   model = self->_model;
   if (model)

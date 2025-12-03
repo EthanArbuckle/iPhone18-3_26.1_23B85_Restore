@@ -1,8 +1,8 @@
 @interface CDPRecoveryKeyCache
 + (id)sharedInstance;
-- (BOOL)cacheRecoveryKey:(id)a3 forAltDSID:(id)a4 error:(id *)a5;
+- (BOOL)cacheRecoveryKey:(id)key forAltDSID:(id)d error:(id *)error;
 - (CDPRecoveryKeyCache)init;
-- (id)fetchRecoveryKeyFromCacheForAltDSID:(id)a3;
+- (id)fetchRecoveryKeyFromCacheForAltDSID:(id)d;
 - (void)deleteCache;
 @end
 
@@ -42,11 +42,11 @@ uint64_t __37__CDPRecoveryKeyCache_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)cacheRecoveryKey:(id)a3 forAltDSID:(id)a4 error:(id *)a5
+- (BOOL)cacheRecoveryKey:(id)key forAltDSID:(id)d error:(id *)error
 {
-  v8 = a4;
-  v9 = [a3 dataUsingEncoding:4];
-  v10 = [CDPKeychainItemDescriptor recoveryKeyDescriptorForAltDSID:v8];
+  dCopy = d;
+  v9 = [key dataUsingEncoding:4];
+  v10 = [CDPKeychainItemDescriptor recoveryKeyDescriptorForAltDSID:dCopy];
 
   v11 = [objc_alloc(MEMORY[0x277CE4520]) initWithDescriptor:v10 value:v9];
   keychainManager = self->_keychainManager;
@@ -56,10 +56,10 @@ uint64_t __37__CDPRecoveryKeyCache_sharedInstance__block_invoke()
   v14 = v13;
   if (v13)
   {
-    if (a5)
+    if (error)
     {
       v15 = v13;
-      *a5 = v14;
+      *error = v14;
     }
   }
 
@@ -75,32 +75,32 @@ uint64_t __37__CDPRecoveryKeyCache_sharedInstance__block_invoke()
   return v14 == 0;
 }
 
-- (id)fetchRecoveryKeyFromCacheForAltDSID:(id)a3
+- (id)fetchRecoveryKeyFromCacheForAltDSID:(id)d
 {
-  v4 = [CDPKeychainItemDescriptor recoveryKeyDescriptorForAltDSID:a3];
+  v4 = [CDPKeychainItemDescriptor recoveryKeyDescriptorForAltDSID:d];
   keychainManager = self->_keychainManager;
   v13 = 0;
   v6 = [(AAFKeychainManager *)keychainManager keychainItemForDescriptor:v4 error:&v13];
   v7 = v13;
   if (v7)
   {
-    v8 = _CDPLogSystem();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    value2 = _CDPLogSystem();
+    if (os_log_type_enabled(value2, OS_LOG_TYPE_ERROR))
     {
-      [(CDPRecoveryKeyCache *)v7 fetchRecoveryKeyFromCacheForAltDSID:v8];
+      [(CDPRecoveryKeyCache *)v7 fetchRecoveryKeyFromCacheForAltDSID:value2];
     }
 
     v9 = 0;
     goto LABEL_7;
   }
 
-  v10 = [v6 value];
+  value = [v6 value];
 
-  if (v10)
+  if (value)
   {
     v11 = objc_alloc(MEMORY[0x277CCACA8]);
-    v8 = [v6 value];
-    v9 = [v11 initWithData:v8 encoding:4];
+    value2 = [v6 value];
+    v9 = [v11 initWithData:value2 encoding:4];
 LABEL_7:
 
     goto LABEL_8;
@@ -116,7 +116,7 @@ LABEL_8:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_24510B000, a2, OS_LOG_TYPE_DEBUG, "Cleared RK cache with error: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

@@ -1,12 +1,12 @@
 @interface ThreadsafeHKCalendarCache
 - (_TtC16HealthExperience25ThreadsafeHKCalendarCache)init;
-- (id)calendarForTimeZone:(id)a3;
+- (id)calendarForTimeZone:(id)zone;
 - (id)currentCalendar;
 @end
 
 @implementation ThreadsafeHKCalendarCache
 
-- (id)calendarForTimeZone:(id)a3
+- (id)calendarForTimeZone:(id)zone
 {
   v18 = sub_1D0FF44B8();
   v4 = *(v18 - 8);
@@ -17,11 +17,11 @@
   MEMORY[0x1EEE9AC00](v7);
   v10 = &v17 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D0FF4498();
-  v11 = self;
+  selfCopy = self;
   sub_1D0FF47F8();
   v12 = sub_1D0FF4488();
   v13 = type metadata accessor for ThreadsafeHKCalendarCache();
-  v19.receiver = v11;
+  v19.receiver = selfCopy;
   v19.super_class = v13;
   v14 = [(HKCalendarCache *)&v19 calendarForTimeZone:v12];
 
@@ -41,12 +41,12 @@
   v4 = *(v3 - 8);
   MEMORY[0x1EEE9AC00](v3);
   v6 = &v12 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   sub_1D0FF47F8();
   v8 = type metadata accessor for ThreadsafeHKCalendarCache();
-  v12.receiver = v7;
+  v12.receiver = selfCopy;
   v12.super_class = v8;
-  v9 = [(HKCalendarCache *)&v12 currentCalendar];
+  currentCalendar = [(HKCalendarCache *)&v12 currentCalendar];
   sub_1D0FF43F8();
 
   sub_1D0FF4808();

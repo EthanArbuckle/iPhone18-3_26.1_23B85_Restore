@@ -1,65 +1,65 @@
 @interface TSPCryptoComponentWriteChannel
-- (TSPCryptoComponentWriteChannel)initWithWriteChannel:(id)a3 encryptionKey:(id)a4;
-- (void)_writeData:(id)a3 updateHmac:(BOOL)a4;
+- (TSPCryptoComponentWriteChannel)initWithWriteChannel:(id)channel encryptionKey:(id)key;
+- (void)_writeData:(id)data updateHmac:(BOOL)hmac;
 - (void)close;
 - (void)dealloc;
 @end
 
 @implementation TSPCryptoComponentWriteChannel
 
-- (TSPCryptoComponentWriteChannel)initWithWriteChannel:(id)a3 encryptionKey:(id)a4
+- (TSPCryptoComponentWriteChannel)initWithWriteChannel:(id)channel encryptionKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  channelCopy = channel;
+  keyCopy = key;
   v38.receiver = self;
   v38.super_class = TSPCryptoComponentWriteChannel;
   v9 = [(TSPCryptoComponentWriteChannel *)&v38 init];
   v10 = v9;
   if (v9)
   {
-    if (!v7)
+    if (!channelCopy)
     {
-      v11 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPCryptoComponentWriteChannel initWithWriteChannel:encryptionKey:]"];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPCryptoComponentWriteChannel.mm"];
-      [v11 handleFailureInFunction:v12 file:v13 lineNumber:30 description:{@"invalid nil value for '%s'", "writeChannel"}];
+      [currentHandler handleFailureInFunction:v12 file:v13 lineNumber:30 description:{@"invalid nil value for '%s'", "writeChannel"}];
     }
 
-    objc_storeStrong(v9 + 1, a3);
-    if (!v8)
+    objc_storeStrong(v9 + 1, channel);
+    if (!keyCopy)
     {
-      v14 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPCryptoComponentWriteChannel initWithWriteChannel:encryptionKey:]"];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPCryptoComponentWriteChannel.mm"];
-      [v14 handleFailureInFunction:v15 file:v16 lineNumber:33 description:{@"invalid nil value for '%s'", "encryptionKey"}];
+      [currentHandler2 handleFailureInFunction:v15 file:v16 lineNumber:33 description:{@"invalid nil value for '%s'", "encryptionKey"}];
     }
 
     v17 = malloc_type_malloc(0x20000uLL, 0x100004077774924uLL);
     *(v9 + 3) = v17;
     if (!v17)
     {
-      v18 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPCryptoComponentWriteChannel initWithWriteChannel:encryptionKey:]"];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPCryptoComponentWriteChannel.mm"];
-      [v18 handleFailureInFunction:v19 file:v20 lineNumber:36 description:@"Failed to allocate space for encryption buffer"];
+      [currentHandler3 handleFailureInFunction:v19 file:v20 lineNumber:36 description:@"Failed to allocate space for encryption buffer"];
     }
 
     v21 = malloc_type_malloc(0x10uLL, 0x100004077774924uLL);
     if (v21 && ([MEMORY[0x277D6C278] generateRandomDataInBuffer:v21 length:16] & 1) != 0)
     {
-      v22 = CCCryptorCreate(0, 0, 1u, [v8 keyData], objc_msgSend(v8, "keyLength"), v21, v9 + 2);
+      v22 = CCCryptorCreate(0, 0, 1u, [keyCopy keyData], objc_msgSend(keyCopy, "keyLength"), v21, v9 + 2);
       if (v22 || !*(v9 + 2))
       {
-        v23 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler4 = [MEMORY[0x277D6C290] currentHandler];
         v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPCryptoComponentWriteChannel initWithWriteChannel:encryptionKey:]"];
         v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPCryptoComponentWriteChannel.mm"];
-        [v23 handleFailureInFunction:v24 file:v25 lineNumber:48 description:{@"CCCryptorCreate() failed: %d", v22}];
+        [currentHandler4 handleFailureInFunction:v24 file:v25 lineNumber:48 description:{@"CCCryptorCreate() failed: %d", v22}];
       }
 
       else
       {
-        v32 = [v8 passphrase];
-        v33 = [v32 cStringUsingEncoding:4];
+        passphrase = [keyCopy passphrase];
+        v33 = [passphrase cStringUsingEncoding:4];
 
         if (v33)
         {
@@ -78,10 +78,10 @@
             goto LABEL_17;
           }
 
-          v26 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler5 = [MEMORY[0x277D6C290] currentHandler];
           v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPCryptoComponentWriteChannel initWithWriteChannel:encryptionKey:]"];
           v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPCryptoComponentWriteChannel.mm"];
-          [v26 handleFailureInFunction:v27 file:v28 lineNumber:72 description:@"Failed to generate initial block of random plaintext"];
+          [currentHandler5 handleFailureInFunction:v27 file:v28 lineNumber:72 description:@"Failed to generate initial block of random plaintext"];
 LABEL_14:
 
           if (!v21)
@@ -102,19 +102,19 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v23 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler4 = [MEMORY[0x277D6C290] currentHandler];
         v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPCryptoComponentWriteChannel initWithWriteChannel:encryptionKey:]"];
         v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPCryptoComponentWriteChannel.mm"];
-        [v23 handleFailureInFunction:v24 file:v25 lineNumber:56 description:@"Invalid passphrase"];
+        [currentHandler4 handleFailureInFunction:v24 file:v25 lineNumber:56 description:@"Invalid passphrase"];
       }
 
       goto LABEL_15;
     }
 
-    v26 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler5 = [MEMORY[0x277D6C290] currentHandler];
     v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPCryptoComponentWriteChannel initWithWriteChannel:encryptionKey:]"];
     v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPCryptoComponentWriteChannel.mm"];
-    [v26 handleFailureInFunction:v27 file:v28 lineNumber:41 description:@"Failed to generate IV"];
+    [currentHandler5 handleFailureInFunction:v27 file:v28 lineNumber:41 description:@"Failed to generate IV"];
     goto LABEL_14;
   }
 
@@ -145,15 +145,15 @@ LABEL_18:
   [(TSPCryptoComponentWriteChannel *)&v5 dealloc];
 }
 
-- (void)_writeData:(id)a3 updateHmac:(BOOL)a4
+- (void)_writeData:(id)data updateHmac:(BOOL)hmac
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__TSPCryptoComponentWriteChannel__writeData_updateHmac___block_invoke;
   v4[3] = &unk_279D473F0;
   v4[4] = self;
-  v5 = a4;
-  dispatch_data_apply(a3, v4);
+  hmacCopy = hmac;
+  dispatch_data_apply(data, v4);
 }
 
 uint64_t __56__TSPCryptoComponentWriteChannel__writeData_updateHmac___block_invoke(uint64_t a1, void *a2, uint64_t a3, char *a4, size_t a5)
@@ -222,22 +222,22 @@ LABEL_16:
 - (void)close
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_writeChannel)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_writeChannel)
   {
     goto LABEL_15;
   }
 
   dataOutMoved = 0;
-  buffer = v2->_buffer;
-  if (CCCryptorFinal(v2->_cryptor, buffer, 0x20000uLL, &dataOutMoved) == -4301)
+  buffer = selfCopy->_buffer;
+  if (CCCryptorFinal(selfCopy->_cryptor, buffer, 0x20000uLL, &dataOutMoved) == -4301)
   {
-    OutputLength = CCCryptorGetOutputLength(v2->_cryptor, 0, 1);
+    OutputLength = CCCryptorGetOutputLength(selfCopy->_cryptor, 0, 1);
     buffer = malloc_type_malloc(OutputLength, 0x100004077774924uLL);
     if (buffer)
     {
-      v5 = CCCryptorFinal(v2->_cryptor, buffer, OutputLength, &dataOutMoved);
+      v5 = CCCryptorFinal(selfCopy->_cryptor, buffer, OutputLength, &dataOutMoved);
       if (!v5)
       {
 LABEL_9:
@@ -245,18 +245,18 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v6 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPCryptoComponentWriteChannel close]"];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPCryptoComponentWriteChannel.mm"];
-      [v6 handleFailureInFunction:v7 file:v8 lineNumber:194 description:{@"Finalizing encryption failed: CCCryptorFinal status %i", v5}];
+      [currentHandler handleFailureInFunction:v7 file:v8 lineNumber:194 description:{@"Finalizing encryption failed: CCCryptorFinal status %i", v5}];
     }
 
     else
     {
-      v6 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPCryptoComponentWriteChannel close]"];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPCryptoComponentWriteChannel.mm"];
-      [v6 handleFailureInFunction:v7 file:v8 lineNumber:188 description:@"Failed to allocate buffer for finalizing encryption"];
+      [currentHandler handleFailureInFunction:v7 file:v8 lineNumber:188 description:@"Failed to allocate buffer for finalizing encryption"];
       buffer = 0;
     }
 
@@ -267,7 +267,7 @@ LABEL_9:
 LABEL_10:
   if (dataOutMoved)
   {
-    writeChannel = v2->_writeChannel;
+    writeChannel = selfCopy->_writeChannel;
     v11 = dispatch_data_create(buffer, dataOutMoved, 0, 0);
     [(TSPComponentWriteChannel *)writeChannel writeData:v11];
   }
@@ -277,17 +277,17 @@ LABEL_10:
     free(v9);
   }
 
-  CCHmacFinal(&v2->_ccHmacContext, macOut);
-  v12 = v2->_writeChannel;
+  CCHmacFinal(&selfCopy->_ccHmacContext, macOut);
+  v12 = selfCopy->_writeChannel;
   v13 = dispatch_data_create(macOut, 0x14uLL, 0, 0);
   [(TSPComponentWriteChannel *)v12 writeData:v13];
 
-  [(TSPComponentWriteChannel *)v2->_writeChannel close];
-  v14 = v2->_writeChannel;
-  v2->_writeChannel = 0;
+  [(TSPComponentWriteChannel *)selfCopy->_writeChannel close];
+  v14 = selfCopy->_writeChannel;
+  selfCopy->_writeChannel = 0;
 
 LABEL_15:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 @end

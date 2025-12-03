@@ -1,9 +1,9 @@
 @interface DTGraphicsService
-+ (void)registerCapabilities:(id)a3;
-- (DTGraphicsService)initWithChannel:(id)a3;
++ (void)registerCapabilities:(id)capabilities;
+- (DTGraphicsService)initWithChannel:(id)channel;
 - (id)_collectSampleForService;
 - (id)availableStatistics;
-- (id)currentFramesPerSecond:(double)a3;
+- (id)currentFramesPerSecond:(double)second;
 - (id)driverNames;
 - (id)queryGlobalStatistics;
 - (id)queryPidStatistics;
@@ -12,25 +12,25 @@
 - (void)_setupIOServices;
 - (void)dealloc;
 - (void)queryCards;
-- (void)startSamplingAtTimeInterval:(id)a3 processIdentifier:(id)a4;
+- (void)startSamplingAtTimeInterval:(id)interval processIdentifier:(id)identifier;
 - (void)stopSampling;
 @end
 
 @implementation DTGraphicsService
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
-  v4 = a3;
-  [v4 publishCapability:@"com.apple.instruments.server.services.graphics.opengl" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.graphics.opengl.immediate" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.graphics.opengl.deferred" withVersion:1 forClass:a1];
+  capabilitiesCopy = capabilities;
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.graphics.opengl" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.graphics.opengl.immediate" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.graphics.opengl.deferred" withVersion:1 forClass:self];
 }
 
-- (DTGraphicsService)initWithChannel:(id)a3
+- (DTGraphicsService)initWithChannel:(id)channel
 {
   v8.receiver = self;
   v8.super_class = DTGraphicsService;
-  v3 = [(DTXService *)&v8 initWithChannel:a3];
+  v3 = [(DTXService *)&v8 initWithChannel:channel];
   v4 = v3;
   if (v3)
   {
@@ -69,13 +69,13 @@
       abort();
     }
 
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [v4 addEntriesFromDictionary:{CFDictionaryGetValue(properties, @"PerformanceStatistics"}];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary addEntriesFromDictionary:{CFDictionaryGetValue(properties, @"PerformanceStatistics"}];
     v5 = CFDictionaryGetValue(properties, @"IOGLBundleName");
     if (v5)
     {
       v6 = XRVideoCardIdentifier;
-      v7 = v4;
+      v7 = dictionary;
       v8 = v5;
     }
 
@@ -83,7 +83,7 @@
     {
       v8 = XRVideoCardBuiltIn;
       v6 = XRVideoCardIdentifier;
-      v7 = v4;
+      v7 = dictionary;
     }
 
     [v7 setObject:v8 forKey:v6];
@@ -93,10 +93,10 @@
   else
   {
     [MEMORY[0x277CBEAD8] raise:@"DTGraphicsServiceException" format:@"Global statics not found"];
-    v4 = 0;
+    dictionary = 0;
   }
 
-  return v4;
+  return dictionary;
 }
 
 - (id)queryPidStatistics
@@ -261,15 +261,15 @@ LABEL_19:
     self->_driverNames = v7;
 
     [(DTGraphicsService *)self _setupIOServices];
-    v9 = [(DTGraphicsService *)self queryGlobalStatistics];
-    if (v9)
+    queryGlobalStatistics = [(DTGraphicsService *)self queryGlobalStatistics];
+    if (queryGlobalStatistics)
     {
       [(NSMutableArray *)self->_driverNames addObject:XRVideoCardBuiltIn];
-      v10 = [v9 count];
+      v10 = [queryGlobalStatistics count];
       v11 = (context - ((8 * v10 + 15) & 0xFFFFFFFFFFFFFFF0));
       bzero(v11, 8 * v10);
       context[0] = v11;
-      CFDictionaryApplyFunction(v9, sub_247FC3414, context);
+      CFDictionaryApplyFunction(queryGlobalStatistics, sub_247FC3414, context);
       qsort(v11, v10, 8uLL, sub_247FC344C);
       for (; v10; --v10)
       {
@@ -323,9 +323,9 @@ LABEL_19:
   return driverNames;
 }
 
-- (void)startSamplingAtTimeInterval:(id)a3 processIdentifier:(id)a4
+- (void)startSamplingAtTimeInterval:(id)interval processIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   self->_capFPS = CARenderServerGetDebugOption() ^ 1;
   self->_maxFPS = 60;
   [(DTGraphicsService *)self _setupIOServices];
@@ -333,9 +333,9 @@ LABEL_19:
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   self->_lastTimeStampInSeconds = v6;
   self->_startTime = v6;
-  v7 = [v5 intValue];
+  intValue = [identifierCopy intValue];
 
-  self->_targetPid = v7;
+  self->_targetPid = intValue;
   v8 = MEMORY[0x277CCACC8];
 
   MEMORY[0x2821F9670](v8, sel_detachNewThreadSelector_toTarget_withObject_);
@@ -359,43 +359,43 @@ LABEL_19:
   v5 = v4 - self->_startTime;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:(v5 * 1000000.0)];
   [v3 setObject:v6 forKey:XRVideoCardRunTimeStamp];
-  v7 = [(DTGraphicsService *)self queryGlobalStatistics];
-  [v3 addEntriesFromDictionary:v7];
+  queryGlobalStatistics = [(DTGraphicsService *)self queryGlobalStatistics];
+  [v3 addEntriesFromDictionary:queryGlobalStatistics];
 
   if (self->_targetPid >= 1)
   {
     v28 = v6;
     v29 = v3;
-    v8 = [(DTGraphicsService *)self queryPidStatistics];
+    queryPidStatistics = [(DTGraphicsService *)self queryPidStatistics];
     v9 = objc_opt_new();
-    v10 = [v8 count];
+    v10 = [queryPidStatistics count];
     if (v10)
     {
       v11 = v10;
       v12 = 0;
-      v31 = v8;
-      v32 = self;
+      v31 = queryPidStatistics;
+      selfCopy = self;
       v30 = v10;
       do
       {
-        v13 = [v8 objectAtIndex:v12];
+        v13 = [queryPidStatistics objectAtIndex:v12];
         v14 = [v13 objectForKey:@"OwningPID"];
-        v15 = [v14 intValue];
+        intValue = [v14 intValue];
         targetPid = self->_targetPid;
 
-        if (v15 == targetPid)
+        if (intValue == targetPid)
         {
           if ([v9 count])
           {
             v33 = v12;
-            v17 = [v9 allKeys];
-            v18 = [v17 count];
+            allKeys = [v9 allKeys];
+            v18 = [allKeys count];
             if (v18)
             {
               v19 = v18;
               for (i = 0; i != v19; ++i)
               {
-                v21 = [v17 objectAtIndex:i];
+                v21 = [allKeys objectAtIndex:i];
                 v22 = [v9 objectForKey:v21];
                 v23 = [v13 objectForKey:v21];
                 if (v23)
@@ -406,8 +406,8 @@ LABEL_19:
               }
             }
 
-            v8 = v31;
-            self = v32;
+            queryPidStatistics = v31;
+            self = selfCopy;
             v11 = v30;
             v12 = v33;
           }
@@ -447,16 +447,16 @@ LABEL_19:
   while (self->_doCollectData)
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = [(DTGraphicsService *)self _collectSampleForService];
-    if (v4)
+    _collectSampleForService = [(DTGraphicsService *)self _collectSampleForService];
+    if (_collectSampleForService)
     {
-      v5 = [(DTXService *)self channel];
+      channel = [(DTXService *)self channel];
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = sub_247FC3B5C;
       v6[3] = &unk_278EF32E8;
       v6[4] = self;
-      [v5 sendMessage:v4 replyHandler:v6];
+      [channel sendMessage:_collectSampleForService replyHandler:v6];
     }
 
     objc_autoreleasePoolPop(v3);
@@ -466,12 +466,12 @@ LABEL_19:
   dispatch_semaphore_signal(self->_stopSamplingSemaphore);
 }
 
-- (id)currentFramesPerSecond:(double)a3
+- (id)currentFramesPerSecond:(double)second
 {
   FrameCounter = CARenderServerGetFrameCounter();
-  v6 = (FrameCounter - self->_lastFPSCount) / (a3 - self->_lastTimeStampInSeconds);
+  v6 = (FrameCounter - self->_lastFPSCount) / (second - self->_lastTimeStampInSeconds);
   self->_lastFPSCount = FrameCounter;
-  self->_lastTimeStampInSeconds = a3;
+  self->_lastTimeStampInSeconds = second;
   if (!self->_capFPS || (maxFPS = self->_maxFPS, maxFPS >= v6))
   {
     maxFPS = v6;

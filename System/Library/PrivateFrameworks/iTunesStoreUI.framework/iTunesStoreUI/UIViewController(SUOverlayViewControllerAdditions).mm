@@ -7,7 +7,7 @@
 
 - (void)overlayViewController
 {
-  for (i = a1; i; i = [i parentViewController])
+  for (i = self; i; i = [i parentViewController])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -21,9 +21,9 @@
 
 - (uint64_t)scriptWindowContext
 {
-  v1 = [a1 parentViewController];
+  parentViewController = [self parentViewController];
 
-  return [v1 scriptWindowContext];
+  return [parentViewController scriptWindowContext];
 }
 
 @end

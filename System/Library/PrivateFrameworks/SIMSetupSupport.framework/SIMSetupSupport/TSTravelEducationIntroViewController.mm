@@ -1,23 +1,23 @@
 @interface TSTravelEducationIntroViewController
 - (TSSIMSetupFlowDelegate)delegate;
-- (TSTravelEducationIntroViewController)initWithOptions:(id)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_decodeBase64EncodedString:(id)a3;
-- (id)getCellTextAt:(id)a3;
+- (TSTravelEducationIntroViewController)initWithOptions:(id)options;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_decodeBase64EncodedString:(id)string;
+- (id)getCellTextAt:(id)at;
 - (id)getDisplayOptions;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_cancelButtonTapped;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation TSTravelEducationIntroViewController
 
-- (TSTravelEducationIntroViewController)initWithOptions:(id)a3
+- (TSTravelEducationIntroViewController)initWithOptions:(id)options
 {
   v34[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"STAY_CONNECTED_TRAVEL_TITLE" value:&stru_28753DF48 table:@"Localizable"];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -28,18 +28,18 @@
 
   if (v9)
   {
-    v10 = [v4 objectForKey:@"roamingInfo"];
+    v10 = [optionsCopy objectForKey:@"roamingInfo"];
 
     if (v10)
     {
-      v11 = [v4 objectForKey:@"roamingInfo"];
+      v11 = [optionsCopy objectForKey:@"roamingInfo"];
       v12 = MEMORY[0x277CBEBC0];
       v13 = [(TSTravelEducationIntroViewController *)v9 _decodeBase64EncodedString:v11];
       v14 = [v12 URLWithString:v13];
       roamingInfo = v9->_roamingInfo;
       v9->_roamingInfo = v14;
 
-      v16 = [v4 mutableCopy];
+      v16 = [optionsCopy mutableCopy];
       [(NSDictionary *)v16 removeObjectForKey:@"roamingInfo"];
       options = v9->_options;
       v9->_options = v16;
@@ -47,7 +47,7 @@
 
     else
     {
-      v18 = v4;
+      v18 = optionsCopy;
       v11 = v9->_options;
       v9->_options = v18;
     }
@@ -87,46 +87,46 @@
   v17.super_class = TSTravelEducationIntroViewController;
   [(TSOBTableWelcomeController *)&v17 viewDidLoad];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonTapped];
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
   v5 = objc_alloc(MEMORY[0x277D75B40]);
   v6 = [v5 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v6];
 
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(OBTableWelcomeController *)self tableView];
-  [v8 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
 
-  v9 = [(OBTableWelcomeController *)self tableView];
-  v10 = [MEMORY[0x277D75348] clearColor];
-  [v9 setBackgroundColor:v10];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView3 setBackgroundColor:clearColor];
 
-  v11 = [(OBTableWelcomeController *)self tableView];
-  [v11 setDataSource:self];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setDataSource:self];
 
-  v12 = [(OBTableWelcomeController *)self tableView];
-  [v12 setDelegate:self];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setDelegate:self];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 setScrollEnabled:1];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setScrollEnabled:1];
 
-  v14 = [(OBTableWelcomeController *)self tableView];
-  [v14 setAllowsMultipleSelection:0];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  [tableView7 setAllowsMultipleSelection:0];
 
-  v15 = [(OBTableWelcomeController *)self tableView];
-  [v15 reloadData];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  [tableView8 reloadData];
 
-  v16 = [(OBTableWelcomeController *)self tableView];
-  [v16 layoutIfNeeded];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
+  [tableView9 layoutIfNeeded];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(TSTravelEducationIntroViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(TSTravelEducationIntroViewController *)self view];
+  [view layoutIfNeeded];
 
   v5.receiver = self;
   v5.super_class = TSTravelEducationIntroViewController;
@@ -136,15 +136,15 @@
   [(OBTableWelcomeController *)&v4 viewDidLayoutSubviews];
 }
 
-- (id)getCellTextAt:(id)a3
+- (id)getCellTextAt:(id)at
 {
-  v4 = a3;
-  v5 = [(TSTravelEducationIntroViewController *)self getDisplayOptions];
-  v6 = [v4 row];
-  if (v6 <= [v5 count])
+  atCopy = at;
+  getDisplayOptions = [(TSTravelEducationIntroViewController *)self getDisplayOptions];
+  v6 = [atCopy row];
+  if (v6 <= [getDisplayOptions count])
   {
     text = self->_text;
-    v9 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    v9 = [getDisplayOptions objectAtIndexedSubscript:{objc_msgSend(atCopy, "row")}];
     v7 = [(NSDictionary *)text objectForKeyedSubscript:v9];
   }
 
@@ -156,17 +156,17 @@
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TSTravelEducationIntroViewController *)self getCellTextAt:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(TSTravelEducationIntroViewController *)self getCellTextAt:pathCopy];
   v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v6 section];
+  section = [pathCopy section];
 
-  v12 = [v10 stringWithFormat:@"options%ld", v11];
-  v13 = [v7 dequeueReusableCellWithIdentifier:v12];
+  v12 = [v10 stringWithFormat:@"options%ld", section];
+  v13 = [viewCopy dequeueReusableCellWithIdentifier:v12];
 
   [v8 sizeWithFont:v9 constrainedToSize:0 lineBreakMode:{235.0, 3.40282347e38}];
   v15 = fmax(v14, 60.0);
@@ -174,58 +174,58 @@
   return v15;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 stringWithFormat:@"options%ld", objc_msgSend(v7, "section")];
-  v10 = [v8 dequeueReusableCellWithIdentifier:v9];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = [v6 stringWithFormat:@"options%ld", objc_msgSend(pathCopy, "section")];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9];
 
   if (!v10)
   {
     v10 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:v9];
   }
 
-  v11 = [v10 contentView];
-  [v11 setLayoutMargins:{10.0, 0.0, 0.0, 0.0}];
+  contentView = [v10 contentView];
+  [contentView setLayoutMargins:{10.0, 0.0, 0.0, 0.0}];
 
   [v10 setAccessoryType:1];
-  v12 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  [v10 setBackgroundColor:v12];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [v10 setBackgroundColor:secondarySystemBackgroundColor];
 
-  v13 = [v10 textLabel];
-  [v13 setLineBreakMode:0];
+  textLabel = [v10 textLabel];
+  [textLabel setLineBreakMode:0];
 
-  v14 = [v10 textLabel];
-  [v14 setNumberOfLines:0];
+  textLabel2 = [v10 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
-  v15 = [v10 textLabel];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textLabel3 = [v10 textLabel];
+  [textLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v16 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-  v17 = [v10 textLabel];
-  [v17 setFont:v16];
+  textLabel4 = [v10 textLabel];
+  [textLabel4 setFont:v16];
 
-  v18 = [(TSTravelEducationIntroViewController *)self getCellTextAt:v7];
+  v18 = [(TSTravelEducationIntroViewController *)self getCellTextAt:pathCopy];
 
-  v19 = [v10 textLabel];
-  [v19 setText:v18];
+  textLabel5 = [v10 textLabel];
+  [textLabel5 setText:v18];
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v16 = a4;
-  v5 = [(TSTravelEducationIntroViewController *)self getDisplayOptions];
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [v6 deselectRowAtIndexPath:v16 animated:1];
+  pathCopy = path;
+  getDisplayOptions = [(TSTravelEducationIntroViewController *)self getDisplayOptions];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:1];
 
-  v7 = [v16 row];
-  if (v7 <= [v5 count])
+  v7 = [pathCopy row];
+  if (v7 <= [getDisplayOptions count])
   {
-    v8 = [v5 objectAtIndexedSubscript:{objc_msgSend(v16, "row")}];
+    v8 = [getDisplayOptions objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     v9 = [v8 isEqualToString:@"showRoamingOption"];
 
     if (v9)
@@ -235,7 +235,7 @@
 
     else
     {
-      v11 = [v5 objectAtIndexedSubscript:{objc_msgSend(v16, "row")}];
+      v11 = [getDisplayOptions objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
       v12 = [v11 isEqualToString:@"showLocalPlanOption"];
 
       if (v12)
@@ -245,7 +245,7 @@
 
       else
       {
-        v13 = [v5 objectAtIndexedSubscript:{objc_msgSend(v16, "row")}];
+        v13 = [getDisplayOptions objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
         v14 = [v13 isEqualToString:@"showPurchaseOption"];
 
         if (!v14)
@@ -310,16 +310,16 @@ LABEL_10:
   client = self->_client;
   v5 = 0;
   [(CoreTelephonyClient *)client sendTravelBuddyCAEvent:@"Intro View Controller_Cancel" carrierName:&stru_28753DF48 error:&v5];
-  v4 = [(TSTravelEducationIntroViewController *)self delegate];
-  [v4 userDidTapCancel];
+  delegate = [(TSTravelEducationIntroViewController *)self delegate];
+  [delegate userDidTapCancel];
 }
 
-- (id)_decodeBase64EncodedString:(id)a3
+- (id)_decodeBase64EncodedString:(id)string
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEA90];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBase64EncodedString:v4 options:0];
+  stringCopy = string;
+  v5 = [[v3 alloc] initWithBase64EncodedString:stringCopy options:0];
 
   v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v5 encoding:4];
   v7 = _TSLogDomain();

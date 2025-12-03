@@ -1,8 +1,8 @@
 @interface RecognizerProvider
 - (CHRecognizer)recognizer;
-- (RecognizerProvider)initWithRecognitionLanguage:(id)a3 mode:(int)a4;
+- (RecognizerProvider)initWithRecognitionLanguage:(id)language mode:(int)mode;
 - (void)dealloc;
-- (void)provideRecognizerToBlock:(id)a3;
+- (void)provideRecognizerToBlock:(id)block;
 - (void)unloadRecognizer;
 @end
 
@@ -18,14 +18,14 @@
   objc_sync_exit(obj);
 }
 
-- (void)provideRecognizerToBlock:(id)a3
+- (void)provideRecognizerToBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     obj = self;
-    v4 = a3;
+    blockCopy = block;
     objc_sync_enter(obj);
-    (v4)[2](v4, obj->_recognizer);
+    (blockCopy)[2](blockCopy, obj->_recognizer);
 
     objc_sync_exit(obj);
   }
@@ -34,38 +34,38 @@
 - (CHRecognizer)recognizer
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  recognizer = v2->_recognizer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  recognizer = selfCopy->_recognizer;
   v4 = recognizer;
   if (!recognizer)
   {
     v5 = MEMORY[0x277CFEE58];
-    v6 = [(RecognizerProvider *)v2 recognitionMode];
-    v7 = [(RecognizerProvider *)v2 recognitionLanguage];
-    v17[0] = v7;
+    recognitionMode = [(RecognizerProvider *)selfCopy recognitionMode];
+    recognitionLanguage = [(RecognizerProvider *)selfCopy recognitionLanguage];
+    v17[0] = recognitionLanguage;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-    v9 = [v5 newRemoteRecognizerWithMode:v6 locales:v8];
+    v9 = [v5 newRemoteRecognizerWithMode:recognitionMode locales:v8];
 
-    v10 = v2->_recognizer;
-    v2->_recognizer = v9;
+    v10 = selfCopy->_recognizer;
+    selfCopy->_recognizer = v9;
     v11 = v9;
 
-    [(CHRecognizer *)v2->_recognizer setMaxRecognitionResultCount:15];
-    v4 = v2->_recognizer;
+    [(CHRecognizer *)selfCopy->_recognizer setMaxRecognitionResultCount:15];
+    v4 = selfCopy->_recognizer;
   }
 
   v12 = v4;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!recognizer)
   {
-    v13 = [(RecognizerProvider *)v2 recognizerDidLoadBlock];
+    recognizerDidLoadBlock = [(RecognizerProvider *)selfCopy recognizerDidLoadBlock];
 
-    if (v13)
+    if (recognizerDidLoadBlock)
     {
-      v14 = [(RecognizerProvider *)v2 recognizerDidLoadBlock];
-      v14[2]();
+      recognizerDidLoadBlock2 = [(RecognizerProvider *)selfCopy recognizerDidLoadBlock];
+      recognizerDidLoadBlock2[2]();
     }
   }
 
@@ -82,17 +82,17 @@
   [(RecognizerProvider *)&v3 dealloc];
 }
 
-- (RecognizerProvider)initWithRecognitionLanguage:(id)a3 mode:(int)a4
+- (RecognizerProvider)initWithRecognitionLanguage:(id)language mode:(int)mode
 {
-  v7 = a3;
+  languageCopy = language;
   v11.receiver = self;
   v11.super_class = RecognizerProvider;
   v8 = [(RecognizerProvider *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_recognitionLanguage, a3);
-    v9->_recognitionMode = a4;
+    objc_storeStrong(&v8->_recognitionLanguage, language);
+    v9->_recognitionMode = mode;
   }
 
   return v9;

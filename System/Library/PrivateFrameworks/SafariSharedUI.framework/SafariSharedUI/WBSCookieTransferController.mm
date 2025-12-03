@@ -1,10 +1,10 @@
 @interface WBSCookieTransferController
 + (WBSCookieTransferController)sharedController;
-- (BOOL)copyCookiesFromArray:(id)a3 matchingDomain:(id)a4 intoFolderAtURL:(id)a5;
+- (BOOL)copyCookiesFromArray:(id)array matchingDomain:(id)domain intoFolderAtURL:(id)l;
 - (WBSCookieTransferController)init;
-- (void)_copyCookiesFromCookieStore:(id)a3 matchingDomain:(id)a4 intoFolderAtURL:(id)a5 completionHandler:(id)a6;
-- (void)copyCookiesFromFolderAtURL:(id)a3 intoDataStore:(id)a4;
-- (void)copyCookiesFromWebView:(id)a3 intoFolderAtURL:(id)a4 completionHandler:(id)a5;
+- (void)_copyCookiesFromCookieStore:(id)store matchingDomain:(id)domain intoFolderAtURL:(id)l completionHandler:(id)handler;
+- (void)copyCookiesFromFolderAtURL:(id)l intoDataStore:(id)store;
+- (void)copyCookiesFromWebView:(id)view intoFolderAtURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation WBSCookieTransferController
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __47__WBSCookieTransferController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedController_onceToken != -1)
   {
     dispatch_once(&sharedController_onceToken, block);
@@ -53,29 +53,29 @@ void __47__WBSCookieTransferController_sharedController__block_invoke(uint64_t a
   return v2;
 }
 
-- (void)copyCookiesFromWebView:(id)a3 intoFolderAtURL:(id)a4 completionHandler:(id)a5
+- (void)copyCookiesFromWebView:(id)view intoFolderAtURL:(id)l completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [objc_opt_class() domainsToDisableCookieCopying];
-  v12 = [v10 configuration];
-  v13 = [v12 websiteDataStore];
-  v14 = [v13 httpCookieStore];
+  lCopy = l;
+  handlerCopy = handler;
+  viewCopy = view;
+  domainsToDisableCookieCopying = [objc_opt_class() domainsToDisableCookieCopying];
+  configuration = [viewCopy configuration];
+  websiteDataStore = [configuration websiteDataStore];
+  httpCookieStore = [websiteDataStore httpCookieStore];
 
-  v15 = [v10 URL];
+  v15 = [viewCopy URL];
 
-  v16 = [v15 host];
-  v17 = [v16 safari_highLevelDomainFromHost];
+  host = [v15 host];
+  safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
 
-  if (v14)
+  if (httpCookieStore)
   {
-    v18 = [v17 safari_stringByRemovingWwwDotPrefix];
-    v19 = [v11 containsObject:v18];
+    safari_stringByRemovingWwwDotPrefix = [safari_highLevelDomainFromHost safari_stringByRemovingWwwDotPrefix];
+    v19 = [domainsToDisableCookieCopying containsObject:safari_stringByRemovingWwwDotPrefix];
 
     if (!v19)
     {
-      [(WBSCookieTransferController *)self _copyCookiesFromCookieStore:v14 matchingDomain:v17 intoFolderAtURL:v8 completionHandler:v9];
+      [(WBSCookieTransferController *)self _copyCookiesFromCookieStore:httpCookieStore matchingDomain:safari_highLevelDomainFromHost intoFolderAtURL:lCopy completionHandler:handlerCopy];
       goto LABEL_9;
     }
 
@@ -101,20 +101,20 @@ void __47__WBSCookieTransferController_sharedController__block_invoke(uint64_t a
   block[1] = 3221225472;
   block[2] = __88__WBSCookieTransferController_copyCookiesFromWebView_intoFolderAtURL_completionHandler___block_invoke;
   block[3] = &unk_1E8283C40;
-  v24 = v9;
+  v24 = handlerCopy;
   dispatch_async(internalQueue, block);
 
 LABEL_9:
 }
 
-- (void)_copyCookiesFromCookieStore:(id)a3 matchingDomain:(id)a4 intoFolderAtURL:(id)a5 completionHandler:(id)a6
+- (void)_copyCookiesFromCookieStore:(id)store matchingDomain:(id)domain intoFolderAtURL:(id)l completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x1E696AC08] defaultManager];
-  v15 = [v14 safari_ensureDirectoryExists:v12];
+  storeCopy = store;
+  domainCopy = domain;
+  lCopy = l;
+  handlerCopy = handler;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v15 = [defaultManager safari_ensureDirectoryExists:lCopy];
 
   if (v15)
   {
@@ -123,15 +123,15 @@ LABEL_9:
     v16[2] = __108__WBSCookieTransferController__copyCookiesFromCookieStore_matchingDomain_intoFolderAtURL_completionHandler___block_invoke;
     v16[3] = &unk_1E8283C68;
     v16[4] = self;
-    v17 = v11;
-    v18 = v12;
-    v19 = v13;
-    [v10 getAllCookies:v16];
+    v17 = domainCopy;
+    v18 = lCopy;
+    v19 = handlerCopy;
+    [storeCopy getAllCookies:v16];
   }
 
   else
   {
-    (*(v13 + 2))(v13, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -208,26 +208,26 @@ uint64_t __108__WBSCookieTransferController__copyCookiesFromCookieStore_matching
   return (*(*(a1 + 56) + 16))();
 }
 
-- (BOOL)copyCookiesFromArray:(id)a3 matchingDomain:(id)a4 intoFolderAtURL:(id)a5
+- (BOOL)copyCookiesFromArray:(id)array matchingDomain:(id)domain intoFolderAtURL:(id)l
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v30 = v9;
-  v11 = [v10 safari_ensureDirectoryExists:v9];
+  arrayCopy = array;
+  domainCopy = domain;
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v30 = lCopy;
+  v11 = [defaultManager safari_ensureDirectoryExists:lCopy];
 
   if (v11)
   {
     v27 = v11;
-    v28 = v10;
+    v28 = defaultManager;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v29 = v7;
-    v12 = v7;
+    v29 = arrayCopy;
+    v12 = arrayCopy;
     v13 = [v12 countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v13)
     {
@@ -243,20 +243,20 @@ uint64_t __108__WBSCookieTransferController__copyCookiesFromCookieStore_matching
           }
 
           v17 = *(*(&v32 + 1) + 8 * i);
-          if ([v17 safari_belongsToDomain:v8])
+          if ([v17 safari_belongsToDomain:domainCopy])
           {
             v18 = MEMORY[0x1E696AEC0];
-            v19 = [MEMORY[0x1E696AFB0] UUID];
-            v20 = [v19 UUIDString];
-            v21 = [v18 stringWithFormat:@"%@.plist", v20];
+            uUID = [MEMORY[0x1E696AFB0] UUID];
+            uUIDString = [uUID UUIDString];
+            v21 = [v18 stringWithFormat:@"%@.plist", uUIDString];
             v22 = [v30 URLByAppendingPathComponent:v21];
 
-            v23 = [v17 properties];
+            properties = [v17 properties];
             v31 = 0;
-            LOBYTE(v19) = [v23 writeToURL:v22 error:&v31];
+            LOBYTE(uUID) = [properties writeToURL:v22 error:&v31];
             v24 = v31;
 
-            if ((v19 & 1) == 0)
+            if ((uUID & 1) == 0)
             {
               v25 = WBS_LOG_CHANNEL_PREFIXWebApps();
               if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -273,30 +273,30 @@ uint64_t __108__WBSCookieTransferController__copyCookiesFromCookieStore_matching
       while (v14);
     }
 
-    v10 = v28;
-    v7 = v29;
+    defaultManager = v28;
+    arrayCopy = v29;
     v11 = v27;
   }
 
   return v11 != 0;
 }
 
-- (void)copyCookiesFromFolderAtURL:(id)a3 intoDataStore:(id)a4
+- (void)copyCookiesFromFolderAtURL:(id)l intoDataStore:(id)store
 {
   v53 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  storeCopy = store;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v49 = 0;
-  v8 = [v5 path];
-  v38 = v7;
-  v9 = [v7 fileExistsAtPath:v8 isDirectory:&v49];
+  path = [lCopy path];
+  v38 = defaultManager;
+  v9 = [defaultManager fileExistsAtPath:path isDirectory:&v49];
   v10 = v49;
 
   if (v9 && (v10 & 1) != 0)
   {
     v48 = 0;
-    v11 = [v38 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:0 options:0 error:&v48];
+    v11 = [v38 contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:0 options:0 error:&v48];
     v12 = v48;
     if (v12)
     {
@@ -310,9 +310,9 @@ uint64_t __108__WBSCookieTransferController__copyCookiesFromCookieStore_matching
 
     else
     {
-      v35 = v6;
-      v36 = v5;
-      v37 = [v6 httpCookieStore];
+      v35 = storeCopy;
+      v36 = lCopy;
+      httpCookieStore = [storeCopy httpCookieStore];
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
@@ -335,8 +335,8 @@ uint64_t __108__WBSCookieTransferController__copyCookiesFromCookieStore_matching
             }
 
             v21 = *(*(&v44 + 1) + 8 * i);
-            v22 = [v21 pathExtension];
-            v23 = [v22 isEqualToString:@"plist"];
+            pathExtension = [v21 pathExtension];
+            v23 = [pathExtension isEqualToString:@"plist"];
 
             if (v23)
             {
@@ -349,7 +349,7 @@ uint64_t __108__WBSCookieTransferController__copyCookiesFromCookieStore_matching
                 v26 = [MEMORY[0x1E695ABF8] cookieWithProperties:v24];
                 if (v26)
                 {
-                  [v37 setCookie:v26 completionHandler:0];
+                  [httpCookieStore setCookie:v26 completionHandler:0];
                   v40 = v25;
                   v27 = [v38 removeItemAtURL:v21 error:&v40];
                   v28 = v40;
@@ -406,7 +406,7 @@ uint64_t __108__WBSCookieTransferController__copyCookiesFromCookieStore_matching
       }
 
       v39 = v18;
-      v5 = v36;
+      lCopy = v36;
       v32 = [v38 removeItemAtURL:v36 error:&v39];
       v13 = v39;
 
@@ -420,7 +420,7 @@ uint64_t __108__WBSCookieTransferController__copyCookiesFromCookieStore_matching
       }
 
       v11 = v34;
-      v6 = v35;
+      storeCopy = v35;
     }
   }
 }

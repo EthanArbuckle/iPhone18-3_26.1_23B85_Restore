@@ -1,20 +1,20 @@
 @interface PREditingFontPickerItem
-- (PREditingFontPickerItem)initWithFontConfiguration:(id)a3 systemItem:(BOOL)a4;
+- (PREditingFontPickerItem)initWithFontConfiguration:(id)configuration systemItem:(BOOL)item;
 @end
 
 @implementation PREditingFontPickerItem
 
-- (PREditingFontPickerItem)initWithFontConfiguration:(id)a3 systemItem:(BOOL)a4
+- (PREditingFontPickerItem)initWithFontConfiguration:(id)configuration systemItem:(BOOL)item
 {
-  v7 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = PREditingFontPickerItem;
   v8 = [(PREditingFontPickerItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_fontConfiguration, a3);
-    v9->_systemItem = a4;
+    objc_storeStrong(&v8->_fontConfiguration, configuration);
+    v9->_systemItem = item;
   }
 
   return v9;

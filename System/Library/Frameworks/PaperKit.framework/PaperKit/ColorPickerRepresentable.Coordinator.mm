@@ -1,19 +1,19 @@
 @interface ColorPickerRepresentable.Coordinator
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5;
-- (void)colorPickerViewControllerDidFinish:(id)a3;
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously;
+- (void)colorPickerViewControllerDidFinish:(id)finish;
 @end
 
 @implementation ColorPickerRepresentable.Coordinator
 
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously
 {
   v6 = *(&self->super.isa + OBJC_IVAR____TtCV8PaperKit24ColorPickerRepresentable11Coordinator_pickedColor);
-  v8 = a4;
-  v7 = self;
-  v6(v8);
+  colorCopy = color;
+  selfCopy = self;
+  v6(colorCopy);
 }
 
-- (void)colorPickerViewControllerDidFinish:(id)a3
+- (void)colorPickerViewControllerDidFinish:(id)finish
 {
   v4 = type metadata accessor for PresentationMode();
   MEMORY[0x1EEE9AC00](v4 - 8);
@@ -24,7 +24,7 @@
   MEMORY[0x1EEE9AC00](v8 - 8);
   v10 = &v12 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   outlined init with copy of MiniColorSwatch(self + OBJC_IVAR____TtCV8PaperKit24ColorPickerRepresentable11Coordinator_parent, v10, type metadata accessor for ColorPickerRepresentable);
-  v11 = self;
+  selfCopy = self;
   ColorPickerRepresentable.presentationMode.getter(v7);
   _s8PaperKit5ColorVWOhTm_3(v10, type metadata accessor for ColorPickerRepresentable);
   MEMORY[0x1DA6CA790](v5);

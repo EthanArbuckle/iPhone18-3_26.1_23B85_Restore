@@ -2,28 +2,28 @@
 + (NSArray)accNavParameters;
 + (NSDictionary)accNavParameterKeysIndexed;
 + (NSDictionary)accNavParametersIndexed;
-- (CPChargingStationConnector)initWithCoder:(id)a3;
-- (CPChargingStationConnector)initWithType:(unint64_t)a3 voltage:(id)a4 power:(id)a5;
+- (CPChargingStationConnector)initWithCoder:(id)coder;
+- (CPChargingStationConnector)initWithType:(unint64_t)type voltage:(id)voltage power:(id)power;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPChargingStationConnector
 
-- (CPChargingStationConnector)initWithType:(unint64_t)a3 voltage:(id)a4 power:(id)a5
+- (CPChargingStationConnector)initWithType:(unint64_t)type voltage:(id)voltage power:(id)power
 {
-  v9 = a4;
-  v10 = a5;
+  voltageCopy = voltage;
+  powerCopy = power;
   v13.receiver = self;
   v13.super_class = CPChargingStationConnector;
   v11 = [(CPChargingStationConnector *)&v13 init];
   if (v11)
   {
     [CPAccNavUpdate resetUpdate:v11];
-    v11->_type = a3;
-    objc_storeStrong(&v11->_voltage, a4);
-    objc_storeStrong(&v11->_power, a5);
+    v11->_type = type;
+    objc_storeStrong(&v11->_voltage, voltage);
+    objc_storeStrong(&v11->_power, power);
   }
 
   return v11;
@@ -36,55 +36,55 @@
   [v3 setUnitOptions:1];
   v4 = MEMORY[0x277CCACA8];
   v5 = NSStringFromCPChargingStationConnectorType([(CPChargingStationConnector *)self type]);
-  v6 = [(CPChargingStationConnector *)self voltage];
-  v7 = [v3 stringFromMeasurement:v6];
-  v8 = [(CPChargingStationConnector *)self power];
-  v9 = [v3 stringFromMeasurement:v8];
+  voltage = [(CPChargingStationConnector *)self voltage];
+  v7 = [v3 stringFromMeasurement:voltage];
+  power = [(CPChargingStationConnector *)self power];
+  v9 = [v3 stringFromMeasurement:power];
   v10 = [v4 stringWithFormat:@"(%@ %@ %@)", v5, v7, v9];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CPChargingStationConnector alloc];
-  v5 = [(CPChargingStationConnector *)self type];
-  v6 = [(CPChargingStationConnector *)self voltage];
-  v7 = [(CPChargingStationConnector *)self power];
-  v8 = [(CPChargingStationConnector *)v4 initWithType:v5 voltage:v6 power:v7];
+  type = [(CPChargingStationConnector *)self type];
+  voltage = [(CPChargingStationConnector *)self voltage];
+  power = [(CPChargingStationConnector *)self power];
+  v8 = [(CPChargingStationConnector *)v4 initWithType:type voltage:voltage power:power];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPChargingStationConnector *)self type];
+  coderCopy = coder;
+  type = [(CPChargingStationConnector *)self type];
   v6 = NSStringFromSelector(sel_type);
-  [v4 encodeInteger:v5 forKey:v6];
+  [coderCopy encodeInteger:type forKey:v6];
 
-  v7 = [(CPChargingStationConnector *)self voltage];
+  voltage = [(CPChargingStationConnector *)self voltage];
   v8 = NSStringFromSelector(sel_voltage);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:voltage forKey:v8];
 
-  v10 = [(CPChargingStationConnector *)self power];
+  power = [(CPChargingStationConnector *)self power];
   v9 = NSStringFromSelector(sel_power);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:power forKey:v9];
 }
 
-- (CPChargingStationConnector)initWithCoder:(id)a3
+- (CPChargingStationConnector)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_type);
-  v6 = [v4 decodeIntegerForKey:v5];
+  v6 = [coderCopy decodeIntegerForKey:v5];
 
   v7 = objc_opt_class();
   v8 = NSStringFromSelector(sel_voltage);
-  v9 = [v4 decodeObjectOfClass:v7 forKey:v8];
+  v9 = [coderCopy decodeObjectOfClass:v7 forKey:v8];
 
   v10 = objc_opt_class();
   v11 = NSStringFromSelector(sel_power);
-  v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+  v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
 
   v13 = [(CPChargingStationConnector *)self initWithType:v6 voltage:v9 power:v12];
   return v13;
@@ -141,7 +141,7 @@ void __62__CPChargingStationConnector_CPAccNavUpdate__accNavParameters__block_in
   block[1] = 3221225472;
   block[2] = __69__CPChargingStationConnector_CPAccNavUpdate__accNavParametersIndexed__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accNavParametersIndexed_onceToken != -1)
   {
     dispatch_once(&accNavParametersIndexed_onceToken, block);
@@ -165,7 +165,7 @@ uint64_t __69__CPChargingStationConnector_CPAccNavUpdate__accNavParametersIndexe
   block[1] = 3221225472;
   block[2] = __72__CPChargingStationConnector_CPAccNavUpdate__accNavParameterKeysIndexed__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accNavParameterKeysIndexed_onceToken != -1)
   {
     dispatch_once(&accNavParameterKeysIndexed_onceToken, block);

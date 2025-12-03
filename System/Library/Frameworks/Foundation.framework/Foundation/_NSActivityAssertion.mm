@@ -3,11 +3,11 @@
 + (id)_expiringActivities;
 + (id)_expiringTaskExecutionQueue;
 + (void)_expireAllActivities;
-+ (void)_performActivityWithOptions:(unint64_t)a3 reason:(id)a4 usingBlock:(id)a5;
-+ (void)_performExpiringActivityWithReason:(id)a3 usingBlock:(id)a4;
-- (id)_initWithActivityOptions:(unint64_t)a3 reason:(id)a4 expirationHandler:(id)a5;
++ (void)_performActivityWithOptions:(unint64_t)options reason:(id)reason usingBlock:(id)block;
++ (void)_performExpiringActivityWithReason:(id)reason usingBlock:(id)block;
+- (id)_initWithActivityOptions:(unint64_t)options reason:(id)reason expirationHandler:(id)handler;
 - (id)debugDescription;
-- (void)_endFromDealloc:(BOOL)a3;
+- (void)_endFromDealloc:(BOOL)dealloc;
 - (void)_fireExpirationHandler;
 - (void)_reactivate;
 - (void)_releaseProcessAssertion;
@@ -109,7 +109,7 @@
   }
 }
 
-- (id)_initWithActivityOptions:(unint64_t)a3 reason:(id)a4 expirationHandler:(id)a5
+- (id)_initWithActivityOptions:(unint64_t)options reason:(id)reason expirationHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
   v34.receiver = self;
@@ -122,26 +122,26 @@
     return v10;
   }
 
-  v11 = a3 | 0x100000000000;
-  if (!a5)
+  optionsCopy = options | 0x100000000000;
+  if (!handler)
   {
-    v11 = a3;
+    optionsCopy = options;
   }
 
-  v10->_options = v11;
+  v10->_options = optionsCopy;
   p_options = &v10->_options;
   atomic_store(0, &v10->_ended);
-  if (a4)
+  if (reason)
   {
-    v13 = a4;
+    reasonCopy = reason;
   }
 
   else
   {
-    v13 = @"No Reason Specified (via NSActivityOptions)";
+    reasonCopy = @"No Reason Specified (via NSActivityOptions)";
   }
 
-  v14 = [(__CFString *)v13 copy];
+  v14 = [(__CFString *)reasonCopy copy];
   v10->_reason = v14;
   atomic_store(0, &v10->_signpostID);
   options = *p_options;
@@ -190,7 +190,7 @@ LABEL_12:
 
   if ((options & 0x100000000000) != 0)
   {
-    if (!a5)
+    if (!handler)
     {
       v29 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: called with a nil expiration block", _NSMethodExceptionProem(v10, a2)), 0}];
       objc_exception_throw(v29);
@@ -201,7 +201,7 @@ LABEL_12:
       dispatch_once(&qword_1ED43F738, &__block_literal_global_43);
     }
 
-    v10->_expirationHandler = [a5 copy];
+    v10->_expirationHandler = [handler copy];
     v10->_lock._os_unfair_lock_opaque = 0;
     os_unfair_lock_lock(&_MergedGlobals_104);
     [+[_NSActivityAssertion _expiringActivities](_NSActivityAssertion "_expiringActivities")];
@@ -214,7 +214,7 @@ LABEL_12:
     v31[2] = __74___NSActivityAssertion__initWithActivityOptions_reason_expirationHandler___block_invoke_3;
     v31[3] = &unk_1E69F49B8;
     objc_copyWeak(&v32, location);
-    v10->_processAssertion = [v19 initWithPID:v20 flags:1 reason:4 name:a4 withHandler:v31];
+    v10->_processAssertion = [v19 initWithPID:v20 flags:1 reason:4 name:reason withHandler:v31];
     objc_destroyWeak(&v32);
     objc_destroyWeak(location);
     options = v10->_options;
@@ -332,19 +332,19 @@ LABEL_49:
   return [NSString stringWithFormat:@"%@ 0x%16llx %@ %@", [(_NSActivityAssertion *)&v3 debugDescription], self->_options, self->_reason, self->_processAssertion];
 }
 
-- (void)_endFromDealloc:(BOOL)a3
+- (void)_endFromDealloc:(BOOL)dealloc
 {
   v4 = 0;
   v14 = *MEMORY[0x1E69E9840];
   atomic_compare_exchange_strong(&self->_ended, &v4, 1u);
   if (v4)
   {
-    NSLog(@"Warning: NSActivity %@ was ended multiple times", a2, a3, self);
+    NSLog(@"Warning: NSActivity %@ was ended multiple times", a2, dealloc, self);
   }
 
   else
   {
-    v5 = a3;
+    deallocCopy = dealloc;
     options = self->_options;
     if ((options & 0x100000) != 0)
     {
@@ -368,7 +368,7 @@ LABEL_49:
           if (os_signpost_enabled(qword_1ED43F748))
           {
             *buf = 67240192;
-            v13 = v5;
+            v13 = deallocCopy;
             _os_signpost_emit_with_name_impl(&dword_18075C000, v8, OS_SIGNPOST_INTERVAL_END, v7, "interaction_tracking", " abandoned=%{signpost.telemetry:number1,public}d ", buf, 8u);
           }
         }
@@ -461,24 +461,24 @@ LABEL_49:
   dispatch_async(v4, block);
 }
 
-+ (void)_performActivityWithOptions:(unint64_t)a3 reason:(id)a4 usingBlock:(id)a5
++ (void)_performActivityWithOptions:(unint64_t)options reason:(id)reason usingBlock:(id)block
 {
-  if (!a4 || !_NSIsNSString() || ![a4 length])
+  if (!reason || !_NSIsNSString() || ![reason length])
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot begin activity without reason string or empty reason string" userInfo:0]);
   }
 
-  v8 = [[_NSActivityAssertion alloc] _initWithActivityOptions:a3 reason:a4 expirationHandler:0];
+  v8 = [[_NSActivityAssertion alloc] _initWithActivityOptions:options reason:reason expirationHandler:0];
   _CFSetTSD();
-  (*(a5 + 2))(a5);
+  (*(block + 2))(block);
   _CFSetTSD();
   [v8 _endFromDealloc:0];
 }
 
-+ (void)_performExpiringActivityWithReason:(id)a3 usingBlock:(id)a4
++ (void)_performExpiringActivityWithReason:(id)reason usingBlock:(id)block
 {
   v10[5] = *MEMORY[0x1E69E9840];
-  if (!a3 || !_NSIsNSString() || ![a3 length])
+  if (!reason || !_NSIsNSString() || ![reason length])
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot begin activity without reason string or empty reason string" userInfo:0]);
   }
@@ -488,15 +488,15 @@ LABEL_49:
   v10[1] = 3221225472;
   v10[2] = __70___NSActivityAssertion__performExpiringActivityWithReason_usingBlock___block_invoke;
   v10[3] = &unk_1E69F40C0;
-  v10[4] = a4;
-  v7 = [(_NSActivityAssertion *)v6 _initWithActivityOptions:0x1000000000FFLL reason:a3 expirationHandler:v10];
+  v10[4] = block;
+  v7 = [(_NSActivityAssertion *)v6 _initWithActivityOptions:0x1000000000FFLL reason:reason expirationHandler:v10];
   v8 = +[_NSActivityAssertion _expiringTaskExecutionQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70___NSActivityAssertion__performExpiringActivityWithReason_usingBlock___block_invoke_2;
   v9[3] = &unk_1E69F3910;
   v9[4] = v7;
-  v9[5] = a4;
+  v9[5] = block;
   dispatch_async(v8, v9);
 }
 

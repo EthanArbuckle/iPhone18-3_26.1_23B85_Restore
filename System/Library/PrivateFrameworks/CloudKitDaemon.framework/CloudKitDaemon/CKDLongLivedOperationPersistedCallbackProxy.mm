@@ -1,48 +1,48 @@
 @interface CKDLongLivedOperationPersistedCallbackProxy
-- (CKDLongLivedOperationPersistedCallbackProxy)initWithOperationID:(id)a3 callbackProtocol:(id)a4 completionSelector:(SEL)a5 operationInfoCache:(id)a6;
+- (CKDLongLivedOperationPersistedCallbackProxy)initWithOperationID:(id)d callbackProtocol:(id)protocol completionSelector:(SEL)selector operationInfoCache:(id)cache;
 - (SEL)completionSelector;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)addBarrierBlock:(id)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)setCompletionSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)addBarrierBlock:(id)block;
+- (void)forwardInvocation:(id)invocation;
+- (void)setCompletionSelector:(SEL)selector;
 @end
 
 @implementation CKDLongLivedOperationPersistedCallbackProxy
 
-- (CKDLongLivedOperationPersistedCallbackProxy)initWithOperationID:(id)a3 callbackProtocol:(id)a4 completionSelector:(SEL)a5 operationInfoCache:(id)a6
+- (CKDLongLivedOperationPersistedCallbackProxy)initWithOperationID:(id)d callbackProtocol:(id)protocol completionSelector:(SEL)selector operationInfoCache:(id)cache
 {
-  v10 = a4;
-  v11 = a6;
-  v14 = objc_msgSend_copy(a3, v12, v13);
+  protocolCopy = protocol;
+  cacheCopy = cache;
+  v14 = objc_msgSend_copy(d, v12, v13);
   operationID = self->_operationID;
   self->_operationID = v14;
 
   callbackProtocol = self->_callbackProtocol;
-  self->_callbackProtocol = v10;
-  v17 = v10;
+  self->_callbackProtocol = protocolCopy;
+  v17 = protocolCopy;
 
-  if (a5)
+  if (selector)
   {
-    v18 = a5;
+    selectorCopy = selector;
   }
 
   else
   {
-    v18 = 0;
+    selectorCopy = 0;
   }
 
   operationInfoCache = self->_operationInfoCache;
-  self->_completionSelector = v18;
-  self->_operationInfoCache = v11;
+  self->_completionSelector = selectorCopy;
+  self->_operationInfoCache = cacheCopy;
 
   return self;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_callbackProtocol(self, a2, a3);
-  MethodDescription = protocol_getMethodDescription(v5, a3, 1, 1);
+  v5 = objc_msgSend_callbackProtocol(self, a2, selector);
+  MethodDescription = protocol_getMethodDescription(v5, selector, 1, 1);
 
   if (MethodDescription.name)
   {
@@ -60,7 +60,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       v12 = v9;
-      v13 = NSStringFromSelector(a3);
+      v13 = NSStringFromSelector(selector);
       v16 = objc_msgSend_callbackProtocol(self, v14, v15);
       v17 = NSStringFromProtocol(v16);
       v18 = 138412546;
@@ -78,14 +78,14 @@
   return v8;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v28 = a3;
-  objc_msgSend_retainArguments(v28, v4, v5);
+  invocationCopy = invocation;
+  objc_msgSend_retainArguments(invocationCopy, v4, v5);
   v8 = objc_msgSend_callbackProtocol(self, v6, v7);
-  objc_msgSend_CKInvokeAndNilOutReplyBlockWithError_forProtocol_(v28, v9, 0, v8);
+  objc_msgSend_CKInvokeAndNilOutReplyBlockWithError_forProtocol_(invocationCopy, v9, 0, v8);
 
-  v12 = objc_msgSend_selector(v28, v10, v11);
+  v12 = objc_msgSend_selector(invocationCopy, v10, v11);
   if (self->_completionSelector)
   {
     completionSelector = self->_completionSelector;
@@ -99,18 +99,18 @@
   isEqual = sel_isEqual(v12, completionSelector);
   v15 = [CKDLongLivedOperationPersistedCallback alloc];
   v18 = objc_msgSend_callbackProtocol(self, v16, v17);
-  isCompletionCallback = objc_msgSend_initWithProtocol_invocation_isCompletionCallback_(v15, v19, v18, v28, isEqual);
+  isCompletionCallback = objc_msgSend_initWithProtocol_invocation_isCompletionCallback_(v15, v19, v18, invocationCopy, isEqual);
 
   v23 = objc_msgSend_operationInfoCache(self, v21, v22);
   v26 = objc_msgSend_operationID(self, v24, v25);
   objc_msgSend_archiveCallback_forOperationID_(v23, v27, isCompletionCallback, v26);
 }
 
-- (void)addBarrierBlock:(id)a3
+- (void)addBarrierBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
   }
 }
 
@@ -127,19 +127,19 @@
   }
 }
 
-- (void)setCompletionSelector:(SEL)a3
+- (void)setCompletionSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_completionSelector = v3;
+  self->_completionSelector = selectorCopy;
 }
 
 @end

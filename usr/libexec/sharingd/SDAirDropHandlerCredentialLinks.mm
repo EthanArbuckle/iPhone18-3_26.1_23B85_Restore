@@ -1,5 +1,5 @@
 @interface SDAirDropHandlerCredentialLinks
-+ (void)openPasswordManagerURL:(id)a3;
++ (void)openPasswordManagerURL:(id)l;
 - (BOOL)canHandleTransfer;
 - (id)credential;
 - (id)suitableContentsDescription;
@@ -21,10 +21,10 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 completedURLs];
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [completedURLs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -35,12 +35,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(completedURLs);
         }
 
         v9 = [NSURLComponents componentsWithURL:*(*(&v14 + 1) + 8 * i) resolvingAgainstBaseURL:0];
-        v10 = [v9 scheme];
-        v11 = [v10 isEqual:@"EncryptedCredential"];
+        scheme = [v9 scheme];
+        v11 = [scheme isEqual:@"EncryptedCredential"];
 
         if (!v11)
         {
@@ -49,7 +49,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [completedURLs countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -67,12 +67,12 @@ LABEL_13:
 
 - (void)handleAction
 {
-  v3 = [(SDAirDropHandlerCredentialLinks *)self credential];
-  v4 = v3;
-  if (!v3)
+  credential = [(SDAirDropHandlerCredentialLinks *)self credential];
+  v4 = credential;
+  if (!credential)
   {
-    v5 = airdrop_log();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    passwordManagerURL = airdrop_log();
+    if (os_log_type_enabled(passwordManagerURL, OS_LOG_TYPE_ERROR))
     {
       sub_100152814();
     }
@@ -80,10 +80,10 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  v5 = [v3 passwordManagerURL];
+  passwordManagerURL = [credential passwordManagerURL];
   v6 = airdrop_log();
   v7 = v6;
-  if (!v5)
+  if (!passwordManagerURL)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -101,40 +101,40 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Opening password manager url", v11, 2u);
   }
 
-  [(objc_class *)off_1009717C8() openPasswordManagerURL:v5];
+  [(objc_class *)off_1009717C8() openPasswordManagerURL:passwordManagerURL];
   v8 = 1;
 LABEL_12:
 
   credential = self->_credential;
   self->_credential = 0;
 
-  v10 = [(SDAirDropHandler *)self completionHandler];
-  v10[2](v10, v8, 0, 1);
+  completionHandler = [(SDAirDropHandler *)self completionHandler];
+  completionHandler[2](completionHandler, v8, 0, 1);
 }
 
-+ (void)openPasswordManagerURL:(id)a3
++ (void)openPasswordManagerURL:(id)l
 {
   v3 = off_1009717C8;
-  v4 = a3;
-  [(objc_class *)v3() openPasswordManagerURL:v4];
+  lCopy = l;
+  [(objc_class *)v3() openPasswordManagerURL:lCopy];
 }
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
-  v4 = [(SDAirDropHandler *)self totalSharedItemsCount];
-  v5 = [(SDAirDropHandlerCredentialLinks *)self credential];
-  v6 = [v5 displayName];
+  senderName = [(SDAirDropHandler *)self senderName];
+  totalSharedItemsCount = [(SDAirDropHandler *)self totalSharedItemsCount];
+  credential = [(SDAirDropHandlerCredentialLinks *)self credential];
+  displayName = [credential displayName];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    if (v6 && v4 == 1)
+    if (displayName && totalSharedItemsCount == 1)
     {
       goto LABEL_8;
     }
 
 LABEL_12:
     v21 = @"CREDENTIAL";
-    v16 = [NSNumber numberWithUnsignedInteger:v4];
+    v16 = [NSNumber numberWithUnsignedInteger:totalSharedItemsCount];
     v22 = v16;
     v17 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     v23 = v17;
@@ -145,17 +145,17 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v7 = [v5 passkeyCredential];
+  passkeyCredential = [credential passkeyCredential];
 
-  if (v6 && v4 == 1)
+  if (displayName && totalSharedItemsCount == 1)
   {
-    if (v7)
+    if (passkeyCredential)
     {
       v8 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:&off_100910148];
       v9 = SFLocalizedStringForKeyInStringsFileNamed();
 LABEL_9:
       v10 = v9;
-      v11 = [NSString localizedStringWithFormat:v9, v3, v6];
+      v11 = [NSString localizedStringWithFormat:v9, senderName, displayName];
 
       goto LABEL_14;
     }
@@ -166,13 +166,13 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!passkeyCredential)
   {
     goto LABEL_12;
   }
 
   v24 = @"PASSKEY";
-  v12 = [NSNumber numberWithUnsignedInteger:v4];
+  v12 = [NSNumber numberWithUnsignedInteger:totalSharedItemsCount];
   v25 = v12;
   v13 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
   v26 = v13;
@@ -182,7 +182,7 @@ LABEL_8:
   v15 = SFLocalizedStringForKeyInStringsFileNamed();
 LABEL_13:
   v19 = v15;
-  v11 = [NSString localizedStringWithFormat:v15, v3, v4];
+  v11 = [NSString localizedStringWithFormat:v15, senderName, totalSharedItemsCount];
 
 LABEL_14:
 
@@ -202,13 +202,13 @@ LABEL_14:
   v19.super_class = SDAirDropHandlerCredentialLinks;
   [(SDAirDropHandler *)&v19 updatePossibleActions];
   v3 = [SFAirDropAction alloc];
-  v4 = [(SDAirDropHandler *)self transfer];
-  v5 = [v4 identifier];
+  transfer = [(SDAirDropHandler *)self transfer];
+  identifier = [transfer identifier];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(SDAirDropHandler *)self singleItemActionTitle];
-  v9 = [(SDAirDropHandler *)self singleItemActionTitle];
-  v10 = [v3 initWithTransferIdentifier:v5 actionIdentifier:v7 title:v8 singleItemTitle:v9 type:1];
+  singleItemActionTitle = [(SDAirDropHandler *)self singleItemActionTitle];
+  singleItemActionTitle2 = [(SDAirDropHandler *)self singleItemActionTitle];
+  v10 = [v3 initWithTransferIdentifier:identifier actionIdentifier:v7 title:singleItemActionTitle singleItemTitle:singleItemActionTitle2 type:1];
 
   objc_initWeak(&location, self);
   v13 = _NSConcreteStackBlock;
@@ -219,8 +219,8 @@ LABEL_14:
   [v10 setActionHandler:&v13];
   v20 = v10;
   v11 = [NSArray arrayWithObjects:&v20 count:1, v13, v14, v15, v16];
-  v12 = [(SDAirDropHandler *)self transfer];
-  [v12 setPossibleActions:v11];
+  transfer2 = [(SDAirDropHandler *)self transfer];
+  [transfer2 setPossibleActions:v11];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -244,9 +244,9 @@ LABEL_14:
     }
 
     v6 = +[SDAppleIDAgent sharedAgent];
-    v7 = [v6 myAccount];
+    myAccount = [v6 myAccount];
 
-    if (!v7)
+    if (!myAccount)
     {
       v8 = airdrop_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -255,8 +255,8 @@ LABEL_14:
       }
     }
 
-    v9 = [v7 identity];
-    if (!v9)
+    identity = [myAccount identity];
+    if (!identity)
     {
       v10 = airdrop_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -265,8 +265,8 @@ LABEL_14:
       }
     }
 
-    v11 = [v9 copyPrivateKey];
-    if (!v11)
+    copyPrivateKey = [identity copyPrivateKey];
+    if (!copyPrivateKey)
     {
       v12 = airdrop_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -275,14 +275,14 @@ LABEL_14:
       }
     }
 
-    v13 = [(SDAirDropHandler *)self transfer];
-    v14 = [v13 completedURLs];
-    v15 = [v14 firstObject];
+    transfer = [(SDAirDropHandler *)self transfer];
+    completedURLs = [transfer completedURLs];
+    firstObject = [completedURLs firstObject];
     v16 = SFSharablePasswordForEncryptedAirDropURL();
 
-    if (v11)
+    if (copyPrivateKey)
     {
-      CFRelease(v11);
+      CFRelease(copyPrivateKey);
     }
 
     if (v16)

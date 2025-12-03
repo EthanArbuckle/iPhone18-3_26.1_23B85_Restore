@@ -1,8 +1,8 @@
 @interface ATXPBExecutableReferenceEntry
 - (BOOL)hasClientModelId;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (double)date;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)clientModelId;
@@ -22,10 +22,10 @@
 - (uint64_t)shouldPurge;
 - (uint64_t)suggestionIsHidden;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setClientModelId:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setClientModelId:(uint64_t)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBExecutableReferenceEntry
@@ -42,9 +42,9 @@
 
 - (double)date
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else
@@ -55,9 +55,9 @@
 
 - (uint64_t)shouldPurge
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_7_0(*(a1 + 25));
+    return OUTLINED_FUNCTION_7_0(*(self + 25));
   }
 
   else
@@ -68,9 +68,9 @@
 
 - (uint64_t)shouldClearOnEngagement
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_7_0(*(a1 + 24));
+    return OUTLINED_FUNCTION_7_0(*(self + 24));
   }
 
   else
@@ -81,9 +81,9 @@
 
 - (uint64_t)suggestionIsHidden
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_7_0(*(a1 + 26));
+    return OUTLINED_FUNCTION_7_0(*(self + 26));
   }
 
   else
@@ -98,32 +98,32 @@
   v8.receiver = self;
   v8.super_class = ATXPBExecutableReferenceEntry;
   v4 = [(ATXPBExecutableReferenceEntry *)&v8 description];
-  v5 = [(ATXPBExecutableReferenceEntry *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBExecutableReferenceEntry *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_date];
-    [v3 setObject:v4 forKey:@"date"];
+    [dictionary setObject:v4 forKey:@"date"];
   }
 
   clientModelId = self->_clientModelId;
   if (clientModelId)
   {
-    [v3 setObject:clientModelId forKey:@"clientModelId"];
+    [dictionary setObject:clientModelId forKey:@"clientModelId"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_shouldClearOnEngagement];
-    [v3 setObject:v9 forKey:@"shouldClearOnEngagement"];
+    [dictionary setObject:v9 forKey:@"shouldClearOnEngagement"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -144,23 +144,23 @@ LABEL_7:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_shouldPurge];
-  [v3 setObject:v10 forKey:@"shouldPurge"];
+  [dictionary setObject:v10 forKey:@"shouldPurge"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_8:
     v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_suggestionIsHidden];
-    [v3 setObject:v7 forKey:@"suggestionIsHidden"];
+    [dictionary setObject:v7 forKey:@"suggestionIsHidden"];
   }
 
 LABEL_9:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteDoubleField();
@@ -203,9 +203,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -213,7 +213,7 @@ LABEL_9:
     *(v5 + 28) |= 1u;
   }
 
-  v7 = [(NSString *)self->_clientModelId copyWithZone:a3];
+  v7 = [(NSString *)self->_clientModelId copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
@@ -255,10 +255,10 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
@@ -266,19 +266,19 @@ LABEL_6:
   has = self->_has;
   if (has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_date != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_date != *(equalCopy + 1))
     {
       goto LABEL_32;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_32;
   }
 
   clientModelId = self->_clientModelId;
-  if (clientModelId | *(v4 + 2))
+  if (clientModelId | *(equalCopy + 2))
   {
     if (![(NSString *)clientModelId isEqual:?])
     {
@@ -290,70 +290,70 @@ LABEL_6:
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0)
+    if ((*(equalCopy + 28) & 2) == 0)
     {
       goto LABEL_32;
     }
 
     if (self->_shouldClearOnEngagement)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_32;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_32;
   }
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0)
+    if ((*(equalCopy + 28) & 4) == 0)
     {
       goto LABEL_32;
     }
 
     if (self->_shouldPurge)
     {
-      if ((*(v4 + 25) & 1) == 0)
+      if ((*(equalCopy + 25) & 1) == 0)
       {
         goto LABEL_32;
       }
     }
 
-    else if (*(v4 + 25))
+    else if (*(equalCopy + 25))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
     goto LABEL_32;
   }
 
-  v7 = (*(v4 + 28) & 8) == 0;
+  v7 = (*(equalCopy + 28) & 8) == 0;
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 28) & 8) != 0)
+    if ((*(equalCopy + 28) & 8) != 0)
     {
       if (self->_suggestionIsHidden)
       {
-        if (*(v4 + 26))
+        if (*(equalCopy + 26))
         {
           goto LABEL_34;
         }
       }
 
-      else if (!*(v4 + 26))
+      else if (!*(equalCopy + 26))
       {
 LABEL_34:
         v7 = 1;
@@ -608,18 +608,18 @@ LABEL_12:
   return result;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v3 = a2;
-  if (a1)
+  if (to)
   {
-    if (*(a1 + 28))
+    if (*(to + 28))
     {
-      v3[1] = *(a1 + 8);
+      v3[1] = *(to + 8);
       *(v3 + 28) |= 1u;
     }
 
-    v4 = *(a1 + 16);
+    v4 = *(to + 16);
     if (v4)
     {
       v12 = v3;
@@ -627,12 +627,12 @@ LABEL_12:
       v3 = v12;
     }
 
-    v5 = *(a1 + 28);
+    v5 = *(to + 28);
     if ((v5 & 2) != 0)
     {
       v3 = OUTLINED_FUNCTION_0_24(v3, 24);
       *(v3 + v9) = v8 | 2;
-      v5 = *(a1 + 28);
+      v5 = *(to + 28);
       if ((v5 & 4) == 0)
       {
 LABEL_8:
@@ -645,14 +645,14 @@ LABEL_8:
       }
     }
 
-    else if ((*(a1 + 28) & 4) == 0)
+    else if ((*(to + 28) & 4) == 0)
     {
       goto LABEL_8;
     }
 
     v3 = OUTLINED_FUNCTION_0_24(v3, 25);
     *(v3 + v11) = v10 | 4;
-    if ((*(a1 + 28) & 8) != 0)
+    if ((*(to + 28) & 8) != 0)
     {
 LABEL_9:
       v3 = OUTLINED_FUNCTION_0_24(v3, 26);
@@ -663,30 +663,30 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)setClientModelId:(uint64_t)a1
+- (void)setClientModelId:(uint64_t)id
 {
-  if (a1)
+  if (id)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((id + 16), a2);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v3 = a2;
-  if (a1)
+  if (from)
   {
     if (*(v3 + 28))
     {
-      *(a1 + 8) = v3[1];
-      *(a1 + 28) |= 1u;
+      *(from + 8) = v3[1];
+      *(from + 28) |= 1u;
     }
 
     v4 = v3[2];
     if (v4)
     {
       v12 = v3;
-      objc_storeStrong((a1 + 16), v4);
+      objc_storeStrong((from + 16), v4);
       v3 = v12;
     }
 
@@ -694,7 +694,7 @@ LABEL_10:
     if ((v5 & 2) != 0)
     {
       v3 = OUTLINED_FUNCTION_1_21(v3, 24);
-      *(a1 + v9) = v8 | 2;
+      *(from + v9) = v8 | 2;
       v5 = *(v3 + 28);
       if ((v5 & 4) == 0)
       {
@@ -714,12 +714,12 @@ LABEL_8:
     }
 
     v3 = OUTLINED_FUNCTION_1_21(v3, 25);
-    *(a1 + v11) = v10 | 4;
+    *(from + v11) = v10 | 4;
     if ((*(v3 + 28) & 8) != 0)
     {
 LABEL_9:
       v3 = OUTLINED_FUNCTION_1_21(v3, 26);
-      *(a1 + v7) = v6 | 8;
+      *(from + v7) = v6 | 8;
     }
   }
 

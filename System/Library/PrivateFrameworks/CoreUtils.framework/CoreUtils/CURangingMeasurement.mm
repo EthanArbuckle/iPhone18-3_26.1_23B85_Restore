@@ -1,7 +1,7 @@
 @interface CURangingMeasurement
-- (CURangingMeasurement)initWithCoder:(id)a3;
+- (CURangingMeasurement)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CURangingMeasurement
@@ -46,90 +46,90 @@
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v9 = v4;
+  coderCopy = coder;
+  v9 = coderCopy;
   if (self->_distanceMeters != 0.0)
   {
-    [v4 encodeDouble:@"dM" forKey:?];
-    v4 = v9;
+    [coderCopy encodeDouble:@"dM" forKey:?];
+    coderCopy = v9;
   }
 
   if (self->_distanceError != 0.0)
   {
     [v9 encodeDouble:@"dE" forKey:?];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   error = self->_error;
   if (error)
   {
     [v9 encodeObject:error forKey:@"e"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   flags = self->_flags;
   if (flags)
   {
     [v9 encodeInt64:flags forKey:@"fl"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   if (self->_horizontalAngle != 0.0)
   {
     [v9 encodeDouble:@"hA" forKey:?];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   if (self->_horizontalError != 0.0)
   {
     [v9 encodeDouble:@"hE" forKey:?];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
     [v9 encodeObject:identifier forKey:@"id"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   if (self->_verticalAngle != 0.0)
   {
     [v9 encodeDouble:@"vA" forKey:?];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   if (self->_verticalError != 0.0)
   {
     [v9 encodeDouble:@"vE" forKey:?];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   if (self->_ptsScore != 0.0)
   {
     [v9 encodeDouble:@"pS" forKey:?];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   timestampTicks = self->_timestampTicks;
   if (timestampTicks)
   {
     [v9 encodeInt64:timestampTicks forKey:@"ts"];
-    v4 = v9;
+    coderCopy = v9;
   }
 }
 
-- (CURangingMeasurement)initWithCoder:(id)a3
+- (CURangingMeasurement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = CURangingMeasurement;
   v5 = [(CURangingMeasurement *)&v27 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     if ([v6 containsValueForKey:@"dM"])
     {
       [v6 decodeDoubleForKey:@"dM"];

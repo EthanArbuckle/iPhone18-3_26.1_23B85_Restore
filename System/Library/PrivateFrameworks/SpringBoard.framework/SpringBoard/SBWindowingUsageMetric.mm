@@ -1,8 +1,8 @@
 @interface SBWindowingUsageMetric
 - (SBWindowingUsageMetric)init;
-- (id)_stageItemsInContext:(id)a3;
-- (int64_t)_multitaskingModeForContext:(id)a3;
-- (void)_flushStageWithItems:(id)a3 multitaskingMode:(int64_t)a4;
+- (id)_stageItemsInContext:(id)context;
+- (int64_t)_multitaskingModeForContext:(id)context;
+- (void)_flushStageWithItems:(id)items multitaskingMode:(int64_t)mode;
 @end
 
 @implementation SBWindowingUsageMetric
@@ -80,10 +80,10 @@ uint64_t __30__SBWindowingUsageMetric_init__block_invoke_2(uint64_t a1, uint64_t
   return 0;
 }
 
-- (id)_stageItemsInContext:(id)a3
+- (id)_stageItemsInContext:(id)context
 {
-  v3 = [a3 eventPayload];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D675A0]];
+  eventPayload = [context eventPayload];
+  v4 = [eventPayload objectForKeyedSubscript:*MEMORY[0x277D675A0]];
   v5 = [MEMORY[0x277CBEB58] set];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -107,27 +107,27 @@ void __47__SBWindowingUsageMetric__stageItemsInContext___block_invoke(uint64_t a
   [*(a1 + 32) addObject:v9];
 }
 
-- (int64_t)_multitaskingModeForContext:(id)a3
+- (int64_t)_multitaskingModeForContext:(id)context
 {
-  v3 = [a3 eventPayload];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D675C8]];
+  eventPayload = [context eventPayload];
+  v4 = [eventPayload objectForKeyedSubscript:*MEMORY[0x277D675C8]];
   v5 = [v4 objectForKey:*MEMORY[0x277D675D0]];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
-- (void)_flushStageWithItems:(id)a3 multitaskingMode:(int64_t)a4
+- (void)_flushStageWithItems:(id)items multitaskingMode:(int64_t)mode
 {
-  v5 = a3;
-  if ([v5 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __64__SBWindowingUsageMetric__flushStageWithItems_multitaskingMode___block_invoke;
     v8[3] = &unk_2783B1160;
-    v9 = v5;
-    v10 = a4;
+    v9 = itemsCopy;
+    modeCopy = mode;
     v7 = MEMORY[0x223D6F7F0](v8);
     v6 = v7;
     AnalyticsSendEventLazy();

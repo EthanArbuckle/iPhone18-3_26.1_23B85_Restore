@@ -1,6 +1,6 @@
 @interface WBSLPLinkMetadataFetchOperation
 + (id)configuredLPMetadataProvider;
-- (WBSLPLinkMetadataFetchOperation)initWithRequest:(id)a3 operationCompletionHandler:(id)a4;
+- (WBSLPLinkMetadataFetchOperation)initWithRequest:(id)request operationCompletionHandler:(id)handler;
 - (id)description;
 - (void)cancel;
 - (void)start;
@@ -8,15 +8,15 @@
 
 @implementation WBSLPLinkMetadataFetchOperation
 
-- (WBSLPLinkMetadataFetchOperation)initWithRequest:(id)a3 operationCompletionHandler:(id)a4
+- (WBSLPLinkMetadataFetchOperation)initWithRequest:(id)request operationCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = WBSLPLinkMetadataFetchOperation;
-  v7 = [(WBSSiteMetadataFetchOperation *)&v12 initWithRequest:a3];
+  v7 = [(WBSSiteMetadataFetchOperation *)&v12 initWithRequest:request];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [handlerCopy copy];
     operationCompletionHandler = v7->_operationCompletionHandler;
     v7->_operationCompletionHandler = v8;
 
@@ -49,7 +49,7 @@
       *buf = 138543618;
       v18 = objc_opt_class();
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C6968000, v4, OS_LOG_TYPE_INFO, "Aborted fetch operation <%{public}@ %p> due to cancellation", buf, 0x16u);
     }
   }
@@ -58,21 +58,21 @@
   {
     objc_initWeak(&location, self);
     v5 = MEMORY[0x1E695AC68];
-    v6 = [(WBSSiteMetadataFetchOperation *)self request];
-    v7 = [v6 url];
+    request = [(WBSSiteMetadataFetchOperation *)self request];
+    v7 = [request url];
     v8 = [v5 safari_nonAppInitiatedRequestWithURL:v7];
 
-    v9 = [objc_opt_class() configuredLPMetadataProvider];
+    configuredLPMetadataProvider = [objc_opt_class() configuredLPMetadataProvider];
     v10 = WBS_LOG_CHANNEL_PREFIXSiteMetadata();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(WBSSiteMetadataFetchOperation *)self request];
-      v12 = [v11 url];
-      v13 = [v12 absoluteString];
+      request2 = [(WBSSiteMetadataFetchOperation *)self request];
+      v12 = [request2 url];
+      absoluteString = [v12 absoluteString];
       *buf = 141558275;
       v18 = 1752392040;
       v19 = 2117;
-      v20 = v13;
+      selfCopy = absoluteString;
       _os_log_impl(&dword_1C6968000, v10, OS_LOG_TYPE_INFO, "Fetching LP metadata for URL: %{sensitive, mask.hash}@.", buf, 0x16u);
     }
 
@@ -81,7 +81,7 @@
     v14[2] = __40__WBSLPLinkMetadataFetchOperation_start__block_invoke;
     v14[3] = &unk_1E82897A0;
     objc_copyWeak(&v15, &location);
-    [v9 startFetchingMetadataForRequest:v8 completionHandler:v14];
+    [configuredLPMetadataProvider startFetchingMetadataForRequest:v8 completionHandler:v14];
     objc_destroyWeak(&v15);
 
     objc_destroyWeak(&location);
@@ -150,10 +150,10 @@ void __40__WBSLPLinkMetadataFetchOperation_start__block_invoke(uint64_t a1, void
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(WBSSiteMetadataFetchOperation *)self request];
-  v6 = [v5 url];
-  v7 = [v6 absoluteURL];
-  v8 = [v3 stringWithFormat:@"<%p %@, Request URL: %@>", self, v4, v7];
+  request = [(WBSSiteMetadataFetchOperation *)self request];
+  v6 = [request url];
+  absoluteURL = [v6 absoluteURL];
+  v8 = [v3 stringWithFormat:@"<%p %@, Request URL: %@>", self, v4, absoluteURL];
 
   return v8;
 }

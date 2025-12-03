@@ -1,19 +1,19 @@
 @interface ABSContainerSyncObject
 + (id)_getContainer;
 + (int64_t)currentGuardianRestriction;
-+ (void)applyChange:(id)a3;
-- (id)createProtobufWithOptions:(id)a3;
++ (void)applyChange:(id)change;
+- (id)createProtobufWithOptions:(id)options;
 @end
 
 @implementation ABSContainerSyncObject
 
 + (int64_t)currentGuardianRestriction
 {
-  v2 = [a1 _getContainer];
-  v3 = v2;
-  if (v2)
+  _getContainer = [self _getContainer];
+  v3 = _getContainer;
+  if (_getContainer)
   {
-    if ([v2 isGuardianRestricted])
+    if ([_getContainer isGuardianRestricted])
     {
       v4 = 1;
     }
@@ -65,44 +65,44 @@
   return v4;
 }
 
-- (id)createProtobufWithOptions:(id)a3
+- (id)createProtobufWithOptions:(id)options
 {
   v3 = [[ABSPBSyncObject alloc] initWithMemo:@"Container"];
   v4 = objc_alloc_init(ABSPBContainerAttributes);
   [(ABSPBSyncObject *)v3 setContainerSyncObject:v4];
 
-  v5 = [objc_opt_class() _getContainer];
-  v6 = [v5 accountIdentifier];
-  v7 = [(ABSPBSyncObject *)v3 containerSyncObject];
-  [v7 setAccountExternalIdentifier:v6];
+  _getContainer = [objc_opt_class() _getContainer];
+  accountIdentifier = [_getContainer accountIdentifier];
+  containerSyncObject = [(ABSPBSyncObject *)v3 containerSyncObject];
+  [containerSyncObject setAccountExternalIdentifier:accountIdentifier];
 
-  v8 = [v5 isGuardianRestricted];
-  v9 = [(ABSPBSyncObject *)v3 containerSyncObject];
-  [v9 setGuardianRestricted:v8];
+  isGuardianRestricted = [_getContainer isGuardianRestricted];
+  containerSyncObject2 = [(ABSPBSyncObject *)v3 containerSyncObject];
+  [containerSyncObject2 setGuardianRestricted:isGuardianRestricted];
 
-  v10 = [v5 type];
-  v11 = [(ABSPBSyncObject *)v3 containerSyncObject];
-  [v11 setType:v10];
+  type = [_getContainer type];
+  containerSyncObject3 = [(ABSPBSyncObject *)v3 containerSyncObject];
+  [containerSyncObject3 setType:type];
 
-  v12 = [v5 name];
-  v13 = [(ABSPBSyncObject *)v3 containerSyncObject];
-  [v13 setName:v12];
+  name = [_getContainer name];
+  containerSyncObject4 = [(ABSPBSyncObject *)v3 containerSyncObject];
+  [containerSyncObject4 setName:name];
 
-  v14 = [(ABSPBSyncObject *)v3 data];
+  data = [(ABSPBSyncObject *)v3 data];
 
-  return v14;
+  return data;
 }
 
-+ (void)applyChange:(id)a3
++ (void)applyChange:(id)change
 {
-  v3 = [a3 containerSyncObject];
+  containerSyncObject = [change containerSyncObject];
   v4 = +[ABSContactsInterface sharedInstance];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100031848;
   v6[3] = &unk_10005D168;
-  v7 = v3;
-  v5 = v3;
+  v7 = containerSyncObject;
+  v5 = containerSyncObject;
   [v4 mutateSync:v6];
 }
 

@@ -1,19 +1,19 @@
 @interface UIHoverEffectLayer
-+ (BOOL)supportsStyle:(id)a3;
-- (UIHoverEffectLayer)initWithContainerView:(id)a3 style:(id)a4;
-- (UIHoverEffectLayer)initWithLayer:(id)a3;
++ (BOOL)supportsStyle:(id)style;
+- (UIHoverEffectLayer)initWithContainerView:(id)view style:(id)style;
+- (UIHoverEffectLayer)initWithLayer:(id)layer;
 - (UIView)containerView;
 - (void)layoutSublayers;
-- (void)setHoverStyle:(id)a3;
+- (void)setHoverStyle:(id)style;
 @end
 
 @implementation UIHoverEffectLayer
 
-- (void)setHoverStyle:(id)a3
+- (void)setHoverStyle:(id)style
 {
-  v4 = a3;
-  v5 = self;
-  sub_1890E4B68(v4);
+  styleCopy = style;
+  selfCopy = self;
+  sub_1890E4B68(styleCopy);
 }
 
 - (UIView)containerView
@@ -23,7 +23,7 @@
   return Strong;
 }
 
-- (UIHoverEffectLayer)initWithLayer:(id)a3
+- (UIHoverEffectLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_18A4A7DE8();
@@ -31,15 +31,15 @@
   return sub_1890E565C(v4);
 }
 
-- (UIHoverEffectLayer)initWithContainerView:(id)a3 style:(id)a4
+- (UIHoverEffectLayer)initWithContainerView:(id)view style:(id)style
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  styleCopy = style;
   v8 = [(UIHoverEffectLayer *)self init];
   swift_unknownObjectWeakAssign();
-  if (v7)
+  if (styleCopy)
   {
-    [(UIHoverEffectLayer *)v8 setHoverStyle:v7];
+    [(UIHoverEffectLayer *)v8 setHoverStyle:styleCopy];
   }
 
   return v8;
@@ -47,14 +47,14 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   UIHoverEffectLayer.layoutSublayers()();
 }
 
-+ (BOOL)supportsStyle:(id)a3
++ (BOOL)supportsStyle:(id)style
 {
-  v3 = a3;
-  v4 = sub_1890E6428(v3);
+  styleCopy = style;
+  v4 = sub_1890E6428(styleCopy);
 
   return v4 & 1;
 }

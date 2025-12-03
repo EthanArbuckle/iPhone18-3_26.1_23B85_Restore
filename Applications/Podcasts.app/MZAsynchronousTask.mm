@@ -1,5 +1,5 @@
 @interface MZAsynchronousTask
-- (MZAsynchronousTask)initWithHandlerQueue:(id)a3 taskTimeout:(double)a4 assertionTimeout:(double)a5 debugDescription:(id)a6;
+- (MZAsynchronousTask)initWithHandlerQueue:(id)queue taskTimeout:(double)timeout assertionTimeout:(double)assertionTimeout debugDescription:(id)description;
 - (NSError)error;
 - (id)description;
 - (id)expirationHandler;
@@ -7,56 +7,56 @@
 - (id)result;
 - (int)cancelType;
 - (void)_invalidateAssertionTimer;
-- (void)_invalidateTaskAssertionForced:(BOOL)a3;
+- (void)_invalidateTaskAssertionForced:(BOOL)forced;
 - (void)_invalidateTaskTimer;
 - (void)_onQueueFireExpirationHandlerIfNecesary;
-- (void)addTaskCompletionBlock:(id)a3;
+- (void)addTaskCompletionBlock:(id)block;
 - (void)beginTaskOperation;
 - (void)dealloc;
 - (void)endTaskOperation;
-- (void)finishTaskOperationWithResult:(id)a3 error:(id)a4;
+- (void)finishTaskOperationWithResult:(id)result error:(id)error;
 - (void)invalidate;
-- (void)invokeTaskCompletionBlocksWithBlock:(id)a3;
-- (void)setCancelType:(int)a3;
-- (void)setError:(id)a3;
-- (void)setExpirationHandler:(id)a3;
-- (void)setFinishedHandler:(id)a3;
-- (void)setResult:(id)a3;
+- (void)invokeTaskCompletionBlocksWithBlock:(id)block;
+- (void)setCancelType:(int)type;
+- (void)setError:(id)error;
+- (void)setExpirationHandler:(id)handler;
+- (void)setFinishedHandler:(id)handler;
+- (void)setResult:(id)result;
 @end
 
 @implementation MZAsynchronousTask
 
-- (MZAsynchronousTask)initWithHandlerQueue:(id)a3 taskTimeout:(double)a4 assertionTimeout:(double)a5 debugDescription:(id)a6
+- (MZAsynchronousTask)initWithHandlerQueue:(id)queue taskTimeout:(double)timeout assertionTimeout:(double)assertionTimeout debugDescription:(id)description
 {
-  v11 = a3;
-  v12 = a6;
+  queueCopy = queue;
+  descriptionCopy = description;
   v34.receiver = self;
   v34.super_class = MZAsynchronousTask;
   v13 = [(MZAsynchronousTask *)&v34 init];
   v14 = v13;
   if (v13)
   {
-    if (a5 > a4)
+    if (assertionTimeout > timeout)
     {
-      a5 = a4;
+      assertionTimeout = timeout;
     }
 
-    objc_storeStrong(&v13->_handlerQueue, a3);
+    objc_storeStrong(&v13->_handlerQueue, queue);
     v15 = dispatch_queue_create(0, 0);
     queue = v14->_queue;
     v14->_queue = v15;
 
-    v17 = a4 - a5;
-    if (a4 - a5 < 0.00000011920929)
+    v17 = timeout - assertionTimeout;
+    if (timeout - assertionTimeout < 0.00000011920929)
     {
-      a5 = *&qword_1005931F0;
+      assertionTimeout = *&qword_1005931F0;
     }
 
     v18 = +[NSMutableArray array];
     [(MZAsynchronousTask *)v14 setCompletions:v18];
 
-    [(MZAsynchronousTask *)v14 setTaskDebugDescription:v12];
-    v14->_taskTimeout = a4;
+    [(MZAsynchronousTask *)v14 setTaskDebugDescription:descriptionCopy];
+    v14->_taskTimeout = timeout;
     v19 = dispatch_queue_create(0, 0);
     v20 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v19);
     taskTimeoutTimer = v14->_taskTimeoutTimer;
@@ -72,13 +72,13 @@
     v33 = v23;
     dispatch_source_set_event_handler(v22, handler);
     dispatch_resume(v14->_taskTimeoutTimer);
-    *(v23 + 13) = a5;
+    *(v23 + 13) = assertionTimeout;
     v24 = v23[14];
     v23[14] = 0;
 
     if (*(v23 + 13) != *&qword_1005931F0)
     {
-      *(v23 + 13) = a5;
+      *(v23 + 13) = assertionTimeout;
       v25 = dispatch_queue_create(0, 0);
       v26 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v25);
       v27 = v23[14];
@@ -105,7 +105,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "dealloc task: %@", buf, 0xCu);
   }
 
@@ -143,23 +143,23 @@
   v7.receiver = self;
   v7.super_class = MZAsynchronousTask;
   v3 = [(MZAsynchronousTask *)&v7 description];
-  v4 = [(MZAsynchronousTask *)self taskDebugDescription];
-  v5 = [NSString stringWithFormat:@"%@ '%@'", v3, v4];
+  taskDebugDescription = [(MZAsynchronousTask *)self taskDebugDescription];
+  v5 = [NSString stringWithFormat:@"%@ '%@'", v3, taskDebugDescription];
 
   return v5;
 }
 
-- (void)setExpirationHandler:(id)a3
+- (void)setExpirationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008E45C;
   v7[3] = &unk_1004D9158;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -185,17 +185,17 @@
   return v3;
 }
 
-- (void)setFinishedHandler:(id)a3
+- (void)setFinishedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008E724;
   v7[3] = &unk_1004D9158;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -242,14 +242,14 @@
   }
 }
 
-- (void)setCancelType:(int)a3
+- (void)setCancelType:(int)type
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10008EB54;
   v4[3] = &unk_1004D9ED0;
-  v5 = a3;
+  typeCopy = type;
   v4[4] = self;
   dispatch_sync(queue, v4);
 }
@@ -273,17 +273,17 @@
   return v3;
 }
 
-- (void)setResult:(id)a3
+- (void)setResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008ECD8;
   v7[3] = &unk_1004D8798;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resultCopy;
+  v6 = resultCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -309,17 +309,17 @@
   return v3;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008EE98;
   v7[3] = &unk_1004D8798;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -351,7 +351,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "beginTaskOperation %@", buf, 0xCu);
   }
 
@@ -373,12 +373,12 @@
   dispatch_sync(queue, v7);
 }
 
-- (void)finishTaskOperationWithResult:(id)a3 error:(id)a4
+- (void)finishTaskOperationWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  [(MZAsynchronousTask *)self setResult:v6];
-  [(MZAsynchronousTask *)self setError:v7];
+  resultCopy = result;
+  errorCopy = error;
+  [(MZAsynchronousTask *)self setResult:resultCopy];
+  [(MZAsynchronousTask *)self setError:errorCopy];
   [(MZAsynchronousTask *)self setExpirationHandler:0];
   handlerQueue = self->_handlerQueue;
   block[0] = _NSConcreteStackBlock;
@@ -386,10 +386,10 @@
   block[2] = sub_10008F3CC;
   block[3] = &unk_1004D94C8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = resultCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = resultCopy;
   dispatch_async(handlerQueue, block);
 }
 
@@ -400,7 +400,7 @@
   [(MZAsynchronousTask *)self invalidate];
 }
 
-- (void)_invalidateTaskAssertionForced:(BOOL)a3
+- (void)_invalidateTaskAssertionForced:(BOOL)forced
 {
   v10 = 0;
   v11 = &v10;
@@ -413,7 +413,7 @@
   block[1] = 3221225472;
   block[2] = sub_10008F698;
   block[3] = &unk_1004D9090;
-  v9 = a3;
+  forcedCopy = forced;
   block[4] = self;
   block[5] = &v10;
   dispatch_sync(queue, block);
@@ -428,7 +428,7 @@
       *buf = 138412546;
       v17 = v7;
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Releasing the background task assertion %@ for task: %@.", buf, 0x16u);
     }
   }
@@ -445,30 +445,30 @@
   [(MZAsynchronousTask *)self _invalidateTaskAssertionForced:0];
 }
 
-- (void)addTaskCompletionBlock:(id)a3
+- (void)addTaskCompletionBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = v4;
-    v6 = objc_retainBlock(v4);
+    v5 = blockCopy;
+    v6 = objc_retainBlock(blockCopy);
     v9 = [v6 copy];
 
-    v7 = [(MZAsynchronousTask *)self completions];
+    completions = [(MZAsynchronousTask *)self completions];
     v8 = objc_retainBlock(v9);
-    [v7 addObject:v8];
+    [completions addObject:v8];
   }
 }
 
-- (void)invokeTaskCompletionBlocksWithBlock:(id)a3
+- (void)invokeTaskCompletionBlocksWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MZAsynchronousTask *)self completions];
-  v6 = [v5 copy];
+  blockCopy = block;
+  completions = [(MZAsynchronousTask *)self completions];
+  v6 = [completions copy];
 
   [(MZAsynchronousTask *)self setCompletions:0];
-  v7 = [(MZAsynchronousTask *)self result];
-  v8 = [(MZAsynchronousTask *)self error];
+  result = [(MZAsynchronousTask *)self result];
+  error = [(MZAsynchronousTask *)self error];
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
@@ -487,11 +487,11 @@
   v15[3] = &unk_1004D9F20;
   v10 = dispatch_group_create();
   v16 = v10;
-  v11 = v4;
+  v11 = blockCopy;
   v19 = v11;
-  v12 = v7;
+  v12 = result;
   v17 = v12;
-  v13 = v8;
+  v13 = error;
   v18 = v13;
   [v6 enumerateObjectsUsingBlock:v15];
   v14[0] = _NSConcreteStackBlock;

@@ -1,5 +1,5 @@
 @interface Browse_Entity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)browseInfo;
 - (unint64_t)hash;
 @end
@@ -9,23 +9,23 @@
 - (id)browseInfo
 {
   v3 = [PKPrinterBrowseInfo alloc];
-  v4 = [(Browse_Entity *)self bonjourName];
-  v5 = [(Browse_Entity *)self txtRecordDictionary];
-  v6 = [v3 initWithBonjourName:v4 txtRecord:v5];
+  bonjourName = [(Browse_Entity *)self bonjourName];
+  txtRecordDictionary = [(Browse_Entity *)self txtRecordDictionary];
+  v6 = [v3 initWithBonjourName:bonjourName txtRecord:txtRecordDictionary];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(Browse_Entity *)self browseInfo];
-    v7 = [v5 browseInfo];
-    v8 = [v6 isEqualToBrowseInfo:v7];
+    v5 = equalCopy;
+    browseInfo = [(Browse_Entity *)self browseInfo];
+    browseInfo2 = [v5 browseInfo];
+    v8 = [browseInfo isEqualToBrowseInfo:browseInfo2];
   }
 
   else
@@ -38,8 +38,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(Browse_Entity *)self browseInfo];
-  v3 = [v2 hash];
+  browseInfo = [(Browse_Entity *)self browseInfo];
+  v3 = [browseInfo hash];
 
   return v3;
 }

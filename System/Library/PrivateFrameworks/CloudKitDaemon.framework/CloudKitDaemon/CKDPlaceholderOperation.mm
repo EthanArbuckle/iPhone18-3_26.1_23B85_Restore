@@ -1,11 +1,11 @@
 @interface CKDPlaceholderOperation
 - (BOOL)isAnonymous;
 - (CKDContainer)container;
-- (CKDPlaceholderOperation)initWithOperation:(id)a3 targetOperationQueue:(id)a4;
+- (CKDPlaceholderOperation)initWithOperation:(id)operation targetOperationQueue:(id)queue;
 - (NSString)operationID;
 - (id)_startDateString;
 - (id)ckShortDescription;
-- (id)statusReportWithIndent:(unint64_t)a3;
+- (id)statusReportWithIndent:(unint64_t)indent;
 - (void)cancel;
 - (void)main;
 - (void)start;
@@ -168,10 +168,10 @@ LABEL_15:
   return v9;
 }
 
-- (CKDPlaceholderOperation)initWithOperation:(id)a3 targetOperationQueue:(id)a4
+- (CKDPlaceholderOperation)initWithOperation:(id)operation targetOperationQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  operationCopy = operation;
+  queueCopy = queue;
   v23.receiver = self;
   v23.super_class = CKDPlaceholderOperation;
   v9 = [(CKDPlaceholderOperation *)&v23 init];
@@ -184,7 +184,7 @@ LABEL_15:
     v12 = dispatch_group_create();
     dispatch_group_enter(v12);
     objc_storeStrong(&v9->_group, v12);
-    v15 = objc_msgSend_completionBlock(v7, v13, v14);
+    v15 = objc_msgSend_completionBlock(operationCopy, v13, v14);
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = sub_225271518;
@@ -193,9 +193,9 @@ LABEL_15:
     v22 = v15;
     v16 = v12;
     v17 = v15;
-    objc_msgSend_setCompletionBlock_(v7, v18, v20);
-    objc_storeStrong(&v9->_realOperation, a3);
-    objc_storeStrong(&v9->_targetOperationQueue, a4);
+    objc_msgSend_setCompletionBlock_(operationCopy, v18, v20);
+    objc_storeStrong(&v9->_realOperation, operation);
+    objc_storeStrong(&v9->_targetOperationQueue, queue);
   }
 
   return v9;
@@ -277,7 +277,7 @@ LABEL_15:
   return v15;
 }
 
-- (id)statusReportWithIndent:(unint64_t)a3
+- (id)statusReportWithIndent:(unint64_t)indent
 {
   v4 = MEMORY[0x277CCAB68];
   v5 = CKTabIndentAtDepth();

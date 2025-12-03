@@ -1,21 +1,21 @@
 @interface BWSoftISPResult
-- (BWSoftISPResult)initWithInput:(id)a3 outputSampleBuffer:(opaqueCMSampleBuffer *)a4 error:(int)a5;
+- (BWSoftISPResult)initWithInput:(id)input outputSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(int)error;
 - (void)dealloc;
 @end
 
 @implementation BWSoftISPResult
 
-- (BWSoftISPResult)initWithInput:(id)a3 outputSampleBuffer:(opaqueCMSampleBuffer *)a4 error:(int)a5
+- (BWSoftISPResult)initWithInput:(id)input outputSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(int)error
 {
   v11.receiver = self;
   v11.super_class = BWSoftISPResult;
   v8 = [(BWSoftISPResult *)&v11 init];
   if (v8)
   {
-    v8->_input = a3;
-    if (a4)
+    v8->_input = input;
+    if (buffer)
     {
-      v9 = CFRetain(a4);
+      v9 = CFRetain(buffer);
     }
 
     else
@@ -24,7 +24,7 @@
     }
 
     v8->_outputSampleBuffer = v9;
-    v8->_error = a5;
+    v8->_error = error;
   }
 
   return v8;

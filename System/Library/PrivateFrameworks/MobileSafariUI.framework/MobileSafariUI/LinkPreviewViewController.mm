@@ -1,29 +1,29 @@
 @interface LinkPreviewViewController
-- (LinkPreviewViewController)initWithTabDocument:(id)a3;
+- (LinkPreviewViewController)initWithTabDocument:(id)document;
 - (TabDocument)previewTabDocument;
 - (_SFLinkPreviewHeader)previewHeader;
 - (id)currentFluidProgressStateSource;
 - (void)displayHostedScreenTimeView;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 - (void)willCommitPreviewedWebView;
 @end
 
 @implementation LinkPreviewViewController
 
-- (LinkPreviewViewController)initWithTabDocument:(id)a3
+- (LinkPreviewViewController)initWithTabDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v9.receiver = self;
   v9.super_class = LinkPreviewViewController;
   v5 = [(LinkPreviewViewController *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_previewTabDocument, v4);
-    [v4 setLinkPreviewViewController:v6];
-    [v4 beginSuppressingProgressAnimation];
+    objc_storeWeak(&v5->_previewTabDocument, documentCopy);
+    [documentCopy setLinkPreviewViewController:v6];
+    [documentCopy beginSuppressingProgressAnimation];
     v7 = v6;
   }
 
@@ -37,7 +37,7 @@
   browserView = self->_browserView;
   self->_browserView = v4;
 
-  v18 = [MEMORY[0x277D75348] systemBackgroundColor];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
   [(_SFBrowserView *)self->_browserView setBackgroundColor:?];
 
   [(_SFBrowserView *)self->_browserView setContentReadyForDisplay];
@@ -47,35 +47,35 @@
   v6 = [objc_alloc(MEMORY[0x277CDB7F8]) initWithMinimumPreviewUI:0];
   [(_SFBrowserView *)self->_browserView setPreviewHeader:v6];
 
-  v7 = [(_SFBrowserView *)self->_browserView previewHeader];
-  v8 = [v7 progressView];
+  previewHeader = [(_SFBrowserView *)self->_browserView previewHeader];
+  progressView = [previewHeader progressView];
 
-  v9 = [WeakRetained navigationBarItem];
-  v10 = [v9 fluidProgressController];
-  [v10 registerObserver:v8];
+  navigationBarItem = [WeakRetained navigationBarItem];
+  fluidProgressController = [navigationBarItem fluidProgressController];
+  [fluidProgressController registerObserver:progressView];
 
-  v11 = [WeakRetained navigationBarItem];
-  v12 = [v11 fluidProgressStateSource];
-  v13 = [v12 progressState];
-  [v8 setProgressToCurrentPositionForState:v13];
+  navigationBarItem2 = [WeakRetained navigationBarItem];
+  fluidProgressStateSource = [navigationBarItem2 fluidProgressStateSource];
+  progressState = [fluidProgressStateSource progressState];
+  [progressView setProgressToCurrentPositionForState:progressState];
 
   v14 = self->_browserView;
-  v15 = [WeakRetained webView];
-  [(_SFBrowserView *)v14 addWebView:v15];
+  webView = [WeakRetained webView];
+  [(_SFBrowserView *)v14 addWebView:webView];
 
-  v16 = [(_SFBrowserView *)self->_browserView currentWebView];
-  [v16 setAutoresizingMask:18];
+  currentWebView = [(_SFBrowserView *)self->_browserView currentWebView];
+  [currentWebView setAutoresizingMask:18];
 
-  v17 = [(_SFBrowserView *)self->_browserView previewHeader];
-  [v17 setAccessibilityIdentifier:@"LinkPreview"];
+  previewHeader2 = [(_SFBrowserView *)self->_browserView previewHeader];
+  [previewHeader2 setAccessibilityIdentifier:@"LinkPreview"];
 }
 
 - (_SFLinkPreviewHeader)previewHeader
 {
-  v2 = [(LinkPreviewViewController *)self view];
-  v3 = [v2 previewHeader];
+  view = [(LinkPreviewViewController *)self view];
+  previewHeader = [view previewHeader];
 
-  return v3;
+  return previewHeader;
 }
 
 - (void)viewWillLayoutSubviews
@@ -87,11 +87,11 @@
   [(_SFBrowserView *)self->_browserView setUnscaledWebViewWidth:?];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = LinkPreviewViewController;
-  [(LinkPreviewViewController *)&v6 viewDidAppear:a3];
+  [(LinkPreviewViewController *)&v6 viewDidAppear:appear];
   v4 = dispatch_time(0, 250000000);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -112,8 +112,8 @@ void __43__LinkPreviewViewController_viewDidAppear___block_invoke(uint64_t a1)
   v3 = [(_SFBrowserView *)self->_browserView currentWebView:*MEMORY[0x277CBF2C0]];
   [v3 setTransform:&v6];
 
-  v4 = [(_SFBrowserView *)self->_browserView previewHeader];
-  [v4 setHidden:1];
+  previewHeader = [(_SFBrowserView *)self->_browserView previewHeader];
+  [previewHeader setHidden:1];
 
   [(_SFBrowserView *)self->_browserView addWebView:0];
   WeakRetained = objc_loadWeakRetained(&self->_previewTabDocument);
@@ -122,9 +122,9 @@ void __43__LinkPreviewViewController_viewDidAppear___block_invoke(uint64_t a1)
 
 - (void)displayHostedScreenTimeView
 {
-  v3 = [(SFScreenTimeOverlayViewController *)self->_screenTimeOverlayViewController parentViewController];
+  parentViewController = [(SFScreenTimeOverlayViewController *)self->_screenTimeOverlayViewController parentViewController];
 
-  if (v3 != self)
+  if (parentViewController != self)
   {
     [(LinkPreviewViewController *)self addChildViewController:self->_screenTimeOverlayViewController];
   }
@@ -134,15 +134,15 @@ void __43__LinkPreviewViewController_viewDidAppear___block_invoke(uint64_t a1)
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SFScreenTimeOverlayViewController *)self->_screenTimeOverlayViewController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view = [(SFScreenTimeOverlayViewController *)self->_screenTimeOverlayViewController view];
+  [view setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(LinkPreviewViewController *)self view];
-  v14 = [(SFScreenTimeOverlayViewController *)self->_screenTimeOverlayViewController view];
-  v15 = [(_SFBrowserView *)self->_browserView previewHeader];
-  [v13 insertSubview:v14 belowSubview:v15];
+  view2 = [(LinkPreviewViewController *)self view];
+  view3 = [(SFScreenTimeOverlayViewController *)self->_screenTimeOverlayViewController view];
+  previewHeader = [(_SFBrowserView *)self->_browserView previewHeader];
+  [view2 insertSubview:view3 belowSubview:previewHeader];
 
-  if (v3 != self)
+  if (parentViewController != self)
   {
     screenTimeOverlayViewController = self->_screenTimeOverlayViewController;
 

@@ -1,27 +1,27 @@
 @interface SBDoubleClickSleepWakeHardwareButtonInteraction
 - (BOOL)consumeInitialPressDown;
 - (BOOL)consumeInitialPressUp;
-- (SBDoubleClickSleepWakeHardwareButtonInteraction)initWithProximitySensorManager:(id)a3;
+- (SBDoubleClickSleepWakeHardwareButtonInteraction)initWithProximitySensorManager:(id)manager;
 - (void)_performSleep;
 - (void)_performWake;
-- (void)_resumeProxAfterMultiplePressIntervalForReason:(id)a3;
-- (void)_resumeProxForReason:(id)a3;
+- (void)_resumeProxAfterMultiplePressIntervalForReason:(id)reason;
+- (void)_resumeProxForReason:(id)reason;
 - (void)_suspendProx;
 - (void)observeFinalPressUp;
 @end
 
 @implementation SBDoubleClickSleepWakeHardwareButtonInteraction
 
-- (SBDoubleClickSleepWakeHardwareButtonInteraction)initWithProximitySensorManager:(id)a3
+- (SBDoubleClickSleepWakeHardwareButtonInteraction)initWithProximitySensorManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SBDoubleClickSleepWakeHardwareButtonInteraction;
   v6 = [(SBSleepWakeHardwareButtonInteraction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_proximitySensorManager, a3);
+    objc_storeStrong(&v6->_proximitySensorManager, manager);
   }
 
   return v7;
@@ -37,8 +37,8 @@
 
 - (BOOL)consumeInitialPressUp
 {
-  v3 = [(SBSleepWakeHardwareButtonInteraction *)self inhibitNextSinglePressUp];
-  if (v3)
+  inhibitNextSinglePressUp = [(SBSleepWakeHardwareButtonInteraction *)self inhibitNextSinglePressUp];
+  if (inhibitNextSinglePressUp)
   {
     v4 = SBLogButtonsInteraction();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -57,7 +57,7 @@ LABEL_7:
     {
       [(SBDoubleClickSleepWakeHardwareButtonInteraction *)self _suspendProx];
       [(SBDoubleClickSleepWakeHardwareButtonInteraction *)self _resumeProxAfterMultiplePressIntervalForReason:@"Multiple press timeout"];
-      return v3;
+      return inhibitNextSinglePressUp;
     }
 
     v4 = SBLogButtonsInteraction();
@@ -70,7 +70,7 @@ LABEL_7:
     }
   }
 
-  return v3;
+  return inhibitNextSinglePressUp;
 }
 
 - (void)observeFinalPressUp
@@ -108,17 +108,17 @@ LABEL_7:
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "wake/sleep x2 suspend prox", v7, 2u);
     }
 
-    v4 = [(SBSleepWakeHardwareButtonInteraction *)self sensorModeController];
-    v5 = [v4 suspendProximityDetectionForSource:0 reason:@"double-click interval"];
+    sensorModeController = [(SBSleepWakeHardwareButtonInteraction *)self sensorModeController];
+    v5 = [sensorModeController suspendProximityDetectionForSource:0 reason:@"double-click interval"];
     proxLockAssertion = self->_proxLockAssertion;
     self->_proxLockAssertion = v5;
   }
 }
 
-- (void)_resumeProxForReason:(id)a3
+- (void)_resumeProxForReason:(id)reason
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   [(SBDoubleClickSleepWakeHardwareButtonInteraction *)self _cancelPreviousResumeProxRequests];
   if (self->_proxLockAssertion)
   {
@@ -126,7 +126,7 @@ LABEL_7:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = v4;
+      v8 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "wake/sleep x2 resume prox: %{public}@", &v7, 0xCu);
     }
 
@@ -136,13 +136,13 @@ LABEL_7:
   }
 }
 
-- (void)_resumeProxAfterMultiplePressIntervalForReason:(id)a3
+- (void)_resumeProxAfterMultiplePressIntervalForReason:(id)reason
 {
   v4 = MEMORY[0x277D82BB8];
-  v5 = a3;
+  reasonCopy = reason;
   [v4 cancelPreviousPerformRequestsWithTarget:self];
   [(SBSleepWakeHardwareButtonInteraction *)self multiplePressTimeInterval];
-  [(SBDoubleClickSleepWakeHardwareButtonInteraction *)self performSelector:sel__resumeProxForReason_ withObject:v5 afterDelay:?];
+  [(SBDoubleClickSleepWakeHardwareButtonInteraction *)self performSelector:sel__resumeProxForReason_ withObject:reasonCopy afterDelay:?];
 }
 
 @end

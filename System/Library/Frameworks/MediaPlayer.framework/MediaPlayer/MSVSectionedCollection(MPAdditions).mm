@@ -13,19 +13,19 @@
 - (id)indexPathForItemWithIdentifiersIntersectingSet:()MPAdditions
 {
   v4 = a3;
-  v5 = [a1 numberOfSections];
-  if (v5 < 1)
+  numberOfSections = [self numberOfSections];
+  if (numberOfSections < 1)
   {
     v13 = 0;
   }
 
   else
   {
-    v6 = v5;
+    v6 = numberOfSections;
     v7 = 0;
     do
     {
-      v8 = [a1 numberOfItemsInSection:v7];
+      v8 = [self numberOfItemsInSection:v7];
       if (v8 < 1)
       {
         v13 = 0;
@@ -38,7 +38,7 @@
         do
         {
           v11 = [MEMORY[0x1E696AC88] indexPathForItem:v10 - 1 inSection:v7];
-          v12 = [a1 identifiersForItemAtIndexPath:v11];
+          v12 = [self identifiersForItemAtIndexPath:v11];
           if ([v12 intersectsSet:v4])
           {
             v13 = v11;
@@ -71,7 +71,7 @@
 
 - (id)identifiersForSectionAtIndex:()MPAdditions
 {
-  v1 = [a1 sectionAtIndex:?];
+  v1 = [self sectionAtIndex:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -100,7 +100,7 @@
 
 - (id)identifiersForItemAtIndexPath:()MPAdditions
 {
-  v1 = [a1 itemAtIndexPath:?];
+  v1 = [self itemAtIndexPath:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -131,7 +131,7 @@
 {
   v6 = a4;
   v12 = 0;
-  v7 = [a1 numberOfItemsInSection:a3];
+  v7 = [self numberOfItemsInSection:a3];
   if (v7 >= 1)
   {
     v8 = v7;
@@ -139,7 +139,7 @@
     do
     {
       v10 = [MEMORY[0x1E696AC88] indexPathForItem:v9 - 1 inSection:a3];
-      v11 = [a1 identifiersForItemAtIndexPath:v10];
+      v11 = [self identifiersForItemAtIndexPath:v10];
       if (v11)
       {
         v6[2](v6, v9 - 1, v11, &v12);
@@ -161,14 +161,14 @@
 {
   v4 = a3;
   v9 = 0;
-  v5 = [a1 numberOfSections];
-  if (v5 >= 1)
+  numberOfSections = [self numberOfSections];
+  if (numberOfSections >= 1)
   {
-    v6 = v5;
+    v6 = numberOfSections;
     v7 = 1;
     do
     {
-      v8 = [a1 identifiersForSectionAtIndex:v7 - 1];
+      v8 = [self identifiersForSectionAtIndex:v7 - 1];
       v4[2](v4, v7 - 1, v8, &v9);
 
       if (v7 >= v6)
@@ -187,14 +187,14 @@
 {
   v4 = a3;
   v14 = 0;
-  v5 = [a1 numberOfSections];
-  if (v5 >= 1)
+  numberOfSections = [self numberOfSections];
+  if (numberOfSections >= 1)
   {
-    v6 = v5;
+    v6 = numberOfSections;
     v7 = 0;
     do
     {
-      v8 = [a1 numberOfItemsInSection:v7];
+      v8 = [self numberOfItemsInSection:v7];
       v9 = v14;
       if (v8 >= 1 && (v14 & 1) == 0)
       {
@@ -203,7 +203,7 @@
         do
         {
           v12 = [MEMORY[0x1E696AC88] indexPathForItem:v11 - 1 inSection:v7];
-          v13 = [a1 identifiersForItemAtIndexPath:v12];
+          v13 = [self identifiersForItemAtIndexPath:v12];
           if (v13)
           {
             v4[2](v4, v12, v13, &v14);
@@ -238,7 +238,7 @@
   v21[1] = 3221225472;
   v21[2] = __127__MSVSectionedCollection_MPAdditions__changeDetailsToSectionedCollection_applyingUIKitWorkarounds_isEqualBlock_isUpdatedBlock___block_invoke;
   v21[3] = &unk_1E767D948;
-  v21[4] = a1;
+  v21[4] = self;
   v22 = v10;
   v23 = v11;
   v24 = v12;

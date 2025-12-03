@@ -1,16 +1,16 @@
 @interface UISegmentedControlDefaultStyleProvider
-- (UIEdgeInsets)alignmentInsetsForControlSize:(int)a3 bounds:(CGRect)a4;
-- (UIEdgeInsets)alignmentInsetsForControlSize:(int)a3 bounds:(CGRect)a4 traitCollection:(id)a5;
-- (UIEdgeInsets)contentInsetsForControlSize:(int)a3 position:(unsigned int)a4 bounds:(CGRect)a5 traitCollection:(id)a6;
-- (double)cornerRadiusForControlSize:(int)a3;
-- (double)defaultHeightForControlSize:(int)a3 traitCollection:(id)a4;
-- (id)fontColorForSegment:(id)a3 enabled:(BOOL)a4 selected:(BOOL)a5 state:(unint64_t)a6;
-- (id)fontForControlSize:(int)a3 selected:(BOOL)a4;
+- (UIEdgeInsets)alignmentInsetsForControlSize:(int)size bounds:(CGRect)bounds;
+- (UIEdgeInsets)alignmentInsetsForControlSize:(int)size bounds:(CGRect)bounds traitCollection:(id)collection;
+- (UIEdgeInsets)contentInsetsForControlSize:(int)size position:(unsigned int)position bounds:(CGRect)bounds traitCollection:(id)collection;
+- (double)cornerRadiusForControlSize:(int)size;
+- (double)defaultHeightForControlSize:(int)size traitCollection:(id)collection;
+- (id)fontColorForSegment:(id)segment enabled:(BOOL)enabled selected:(BOOL)selected state:(unint64_t)state;
+- (id)fontForControlSize:(int)size selected:(BOOL)selected;
 @end
 
 @implementation UISegmentedControlDefaultStyleProvider
 
-- (UIEdgeInsets)contentInsetsForControlSize:(int)a3 position:(unsigned int)a4 bounds:(CGRect)a5 traitCollection:(id)a6
+- (UIEdgeInsets)contentInsetsForControlSize:(int)size position:(unsigned int)position bounds:(CGRect)bounds traitCollection:(id)collection
 {
   v6 = 0.0;
   v7 = 0.0;
@@ -23,10 +23,10 @@
   return result;
 }
 
-- (double)defaultHeightForControlSize:(int)a3 traitCollection:(id)a4
+- (double)defaultHeightForControlSize:(int)size traitCollection:(id)collection
 {
   result = 32.0;
-  if (a3 == 1)
+  if (size == 1)
   {
     return 26.0;
   }
@@ -34,10 +34,10 @@
   return result;
 }
 
-- (double)cornerRadiusForControlSize:(int)a3
+- (double)cornerRadiusForControlSize:(int)size
 {
   result = 8.0;
-  if (a3 == 1)
+  if (size == 1)
   {
     return 6.0;
   }
@@ -45,7 +45,7 @@
   return result;
 }
 
-- (UIEdgeInsets)alignmentInsetsForControlSize:(int)a3 bounds:(CGRect)a4
+- (UIEdgeInsets)alignmentInsetsForControlSize:(int)size bounds:(CGRect)bounds
 {
   v4 = 0.0;
   v5 = 0.0;
@@ -58,7 +58,7 @@
   return result;
 }
 
-- (UIEdgeInsets)alignmentInsetsForControlSize:(int)a3 bounds:(CGRect)a4 traitCollection:(id)a5
+- (UIEdgeInsets)alignmentInsetsForControlSize:(int)size bounds:(CGRect)bounds traitCollection:(id)collection
 {
   v5 = 0.0;
   v6 = 0.0;
@@ -71,17 +71,17 @@
   return result;
 }
 
-- (id)fontForControlSize:(int)a3 selected:(BOOL)a4
+- (id)fontForControlSize:(int)size selected:(BOOL)selected
 {
   v18[3] = *MEMORY[0x1E69E9840];
   v4 = 0.0;
-  if (a3 <= 2)
+  if (size <= 2)
   {
-    v4 = dbl_18A683368[a3];
+    v4 = dbl_18A683368[size];
   }
 
   v5 = off_1E70ECD20;
-  if (!a4)
+  if (!selected)
   {
     v5 = off_1E70ECD28;
   }
@@ -108,19 +108,19 @@
   return v13;
 }
 
-- (id)fontColorForSegment:(id)a3 enabled:(BOOL)a4 selected:(BOOL)a5 state:(unint64_t)a6
+- (id)fontColorForSegment:(id)segment enabled:(BOOL)enabled selected:(BOOL)selected state:(unint64_t)state
 {
-  if (a4)
+  if (enabled)
   {
-    v8 = 0;
+    _disabledColor = 0;
   }
 
   else
   {
-    v8 = [a3 _disabledColor];
+    _disabledColor = [segment _disabledColor];
   }
 
-  return v8;
+  return _disabledColor;
 }
 
 @end

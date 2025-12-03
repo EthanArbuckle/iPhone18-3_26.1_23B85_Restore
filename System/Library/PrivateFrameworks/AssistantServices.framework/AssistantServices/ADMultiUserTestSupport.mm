@@ -5,7 +5,7 @@
 - (id)getClassifiedUser;
 - (id)getDebugVoiceIdScores;
 - (id)getUserIdentityClassification;
-- (void)updateVoiceIdScoreToUser:(id)a3 score:(id)a4 reset:(BOOL)a5 completion:(id)a6;
+- (void)updateVoiceIdScoreToUser:(id)user score:(id)score reset:(BOOL)reset completion:(id)completion;
 @end
 
 @implementation ADMultiUserTestSupport
@@ -109,11 +109,11 @@
   return v3;
 }
 
-- (void)updateVoiceIdScoreToUser:(id)a3 score:(id)a4 reset:(BOOL)a5 completion:(id)a6
+- (void)updateVoiceIdScoreToUser:(id)user score:(id)score reset:(BOOL)reset completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  userCopy = user;
+  scoreCopy = score;
+  completionCopy = completion;
   if (AFIsInternalInstall())
   {
     queue = self->_queue;
@@ -121,17 +121,17 @@
     block[1] = 3221225472;
     block[2] = sub_1002BDC4C;
     block[3] = &unk_100519D50;
-    v18 = a5;
+    resetCopy = reset;
     block[4] = self;
-    v15 = v11;
-    v16 = v10;
-    v17 = v12;
+    v15 = scoreCopy;
+    v16 = userCopy;
+    v17 = completionCopy;
     dispatch_async(queue, block);
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    (*(v12 + 2))(v12, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

@@ -1,34 +1,34 @@
 @interface SBPrototypeFlipBookElementDefaultConfiguration
-- (id)componentFlipBookDescriptionsForLayoutMode:(int64_t)a3;
-- (void)configureLayoutMode:(int64_t)a3 withDescriptions:(id)a4;
+- (id)componentFlipBookDescriptionsForLayoutMode:(int64_t)mode;
+- (void)configureLayoutMode:(int64_t)mode withDescriptions:(id)descriptions;
 @end
 
 @implementation SBPrototypeFlipBookElementDefaultConfiguration
 
-- (id)componentFlipBookDescriptionsForLayoutMode:(int64_t)a3
+- (id)componentFlipBookDescriptionsForLayoutMode:(int64_t)mode
 {
   layoutModeToDescriptions = self->_layoutModeToDescriptions;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
   v5 = [(NSMutableDictionary *)layoutModeToDescriptions objectForKey:v4];
 
   return v5;
 }
 
-- (void)configureLayoutMode:(int64_t)a3 withDescriptions:(id)a4
+- (void)configureLayoutMode:(int64_t)mode withDescriptions:(id)descriptions
 {
-  v10 = a4;
+  descriptionsCopy = descriptions;
   layoutModeToDescriptions = self->_layoutModeToDescriptions;
   if (!layoutModeToDescriptions)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v8 = self->_layoutModeToDescriptions;
-    self->_layoutModeToDescriptions = v7;
+    self->_layoutModeToDescriptions = dictionary;
 
     layoutModeToDescriptions = self->_layoutModeToDescriptions;
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [(NSMutableDictionary *)layoutModeToDescriptions setObject:v10 forKey:v9];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
+  [(NSMutableDictionary *)layoutModeToDescriptions setObject:descriptionsCopy forKey:v9];
 }
 
 @end

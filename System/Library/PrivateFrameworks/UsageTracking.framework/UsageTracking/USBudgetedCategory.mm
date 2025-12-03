@@ -1,41 +1,41 @@
 @interface USBudgetedCategory
-- (BOOL)_validateBudget:(id)a3 andEvent:(id)a4 error:(id *)a5;
-- (BOOL)validateBudget:(id *)a3 error:(id *)a4;
-- (BOOL)validateEvent:(id *)a3 error:(id *)a4;
+- (BOOL)_validateBudget:(id)budget andEvent:(id)event error:(id *)error;
+- (BOOL)validateBudget:(id *)budget error:(id *)error;
+- (BOOL)validateEvent:(id *)event error:(id *)error;
 @end
 
 @implementation USBudgetedCategory
 
-- (BOOL)validateBudget:(id *)a3 error:(id *)a4
+- (BOOL)validateBudget:(id *)budget error:(id *)error
 {
-  v6 = *a3;
-  v7 = [(USBudgetedCategory *)self event];
-  LOBYTE(a4) = [(USBudgetedCategory *)self _validateBudget:v6 andEvent:v7 error:a4];
+  v6 = *budget;
+  event = [(USBudgetedCategory *)self event];
+  LOBYTE(error) = [(USBudgetedCategory *)self _validateBudget:v6 andEvent:event error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)validateEvent:(id *)a3 error:(id *)a4
+- (BOOL)validateEvent:(id *)event error:(id *)error
 {
-  v7 = [(USBudgetedCategory *)self budget];
-  LOBYTE(a4) = [(USBudgetedCategory *)self _validateBudget:v7 andEvent:*a3 error:a4];
+  budget = [(USBudgetedCategory *)self budget];
+  LOBYTE(error) = [(USBudgetedCategory *)self _validateBudget:budget andEvent:*event error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_validateBudget:(id)a3 andEvent:(id)a4 error:(id *)a5
+- (BOOL)_validateBudget:(id)budget andEvent:(id)event error:(id *)error
 {
-  v5 = a4 != 0;
-  v6 = a3 == 0;
+  v5 = event != 0;
+  v6 = budget == 0;
   v7 = v6 ^ v5;
   if (v6 != v5)
   {
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"USBudgetedCategory.m" lineNumber:31 description:@"Either budget or event must be non-nil!"];
 
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:NSCocoaErrorDomain code:1024 userInfo:0];
+      *error = [NSError errorWithDomain:NSCocoaErrorDomain code:1024 userInfo:0];
     }
   }
 

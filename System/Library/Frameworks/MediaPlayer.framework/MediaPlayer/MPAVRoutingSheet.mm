@@ -3,16 +3,16 @@
 - (CGRect)_controlsViewFrame;
 - (CGRect)_routingViewFrame;
 - (CGSize)_maxRoutingViewSize;
-- (MPAVRoutingSheet)initWithAVItemType:(int64_t)a3;
-- (void)_animateControls:(BOOL)a3 withCompletionHandler:(id)a4;
+- (MPAVRoutingSheet)initWithAVItemType:(int64_t)type;
+- (void)_animateControls:(BOOL)controls withCompletionHandler:(id)handler;
 - (void)_updateDismissButtonText;
 - (void)_updateRoutingSheetFrame;
 - (void)dealloc;
 - (void)dismiss;
 - (void)layoutSubviews;
-- (void)routingViewControllerDidUpdateContents:(id)a3;
-- (void)setMirroringOnly:(BOOL)a3;
-- (void)showInView:(id)a3 withCompletionHandler:(id)a4;
+- (void)routingViewControllerDidUpdateContents:(id)contents;
+- (void)setMirroringOnly:(BOOL)only;
+- (void)showInView:(id)view withCompletionHandler:(id)handler;
 - (void)tintColorDidChange;
 @end
 
@@ -95,12 +95,12 @@
 
 - (void)_updateDismissButtonText
 {
-  v3 = [(MPAVRoutingViewController *)self->_routingViewController _routingController];
-  v4 = [v3 wirelessDisplayRouteIsPicked];
+  _routingController = [(MPAVRoutingViewController *)self->_routingViewController _routingController];
+  wirelessDisplayRouteIsPicked = [_routingController wirelessDisplayRouteIsPicked];
 
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
   v6 = v5;
-  if (v4)
+  if (wirelessDisplayRouteIsPicked)
   {
     v7 = @"DONE";
   }
@@ -122,10 +122,10 @@
   [(MPAVRoutingSheet *)self setFrame:?];
 }
 
-- (void)_animateControls:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)_animateControls:(BOOL)controls withCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  controlsCopy = controls;
+  handlerCopy = handler;
   [(MPAVRoutingSheet *)self layoutIfNeeded];
   [(MPAVRoutingSheet *)self _controlsViewFrame];
   v10 = v7;
@@ -133,7 +133,7 @@
   v13 = v12;
   v14 = v9;
   v15 = v8 + v9 + 8.0;
-  if (v4)
+  if (controlsCopy)
   {
     v16 = 0.0;
   }
@@ -143,7 +143,7 @@
     v16 = 0.5;
   }
 
-  if (v4)
+  if (controlsCopy)
   {
     v8 = v8 + v9 + 8.0;
   }
@@ -155,7 +155,7 @@
   v17[2] = __59__MPAVRoutingSheet__animateControls_withCompletionHandler___block_invoke;
   v17[3] = &unk_1E76766C8;
   v17[4] = self;
-  v18 = v4;
+  v18 = controlsCopy;
   *&v17[5] = v10;
   *&v17[6] = v11;
   v17[7] = v13;
@@ -164,7 +164,7 @@
   *&v17[10] = v15;
   v17[11] = v13;
   *&v17[12] = v14;
-  [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:0 animations:v17 completion:v6];
+  [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:0 animations:v17 completion:handlerCopy];
 }
 
 uint64_t __59__MPAVRoutingSheet__animateControls_withCompletionHandler___block_invoke(uint64_t a1)
@@ -205,7 +205,7 @@ uint64_t __59__MPAVRoutingSheet__animateControls_withCompletionHandler___block_i
   return [v7 setAlpha:v8];
 }
 
-- (void)routingViewControllerDidUpdateContents:(id)a3
+- (void)routingViewControllerDidUpdateContents:(id)contents
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -232,9 +232,9 @@ uint64_t __59__MPAVRoutingSheet_routingViewControllerDidUpdateContents___block_i
 
 - (void)dismiss
 {
-  v3 = [(MPAVRoutingSheet *)self superview];
+  superview = [(MPAVRoutingSheet *)self superview];
 
-  if (v3)
+  if (superview)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
@@ -268,23 +268,23 @@ uint64_t __27__MPAVRoutingSheet_dismiss__block_invoke(uint64_t result, int a2)
   return result;
 }
 
-- (void)showInView:(id)a3 withCompletionHandler:(id)a4
+- (void)showInView:(id)view withCompletionHandler:(id)handler
 {
-  v5 = [a4 copy];
+  v5 = [handler copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v5;
 
   v7 = [_MPAVRoutingSheetSecureWindow alloc];
-  v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v8 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v9 = [(_MPAVRoutingSheetSecureWindow *)v7 initWithFrame:?];
   presentationWindow = self->_presentationWindow;
   self->_presentationWindow = v9;
 
   [(UIWindow *)self->_presentationWindow setWindowLevel:*MEMORY[0x1E69DE7D8]];
   v11 = self->_presentationWindow;
-  v12 = [MEMORY[0x1E69DC888] clearColor];
-  [(UIWindow *)v11 setBackgroundColor:v12];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UIWindow *)v11 setBackgroundColor:clearColor];
 
   v13 = objc_alloc_init(MEMORY[0x1E69DD258]);
   [v13 setView:self];
@@ -299,9 +299,9 @@ uint64_t __27__MPAVRoutingSheet_dismiss__block_invoke(uint64_t result, int a2)
   v4.receiver = self;
   v4.super_class = MPAVRoutingSheet;
   [(MPAVRoutingSheet *)&v4 tintColorDidChange];
-  v3 = [(MPAVRoutingSheet *)self tintColor];
-  [(UIButton *)self->_cancelButton setTitleColor:v3 forState:0];
-  [(MPAVRoutingViewController *)self->_routingViewController _setTableCellsContentColor:v3];
+  tintColor = [(MPAVRoutingSheet *)self tintColor];
+  [(UIButton *)self->_cancelButton setTitleColor:tintColor forState:0];
+  [(MPAVRoutingViewController *)self->_routingViewController _setTableCellsContentColor:tintColor];
 }
 
 - (void)layoutSubviews
@@ -346,10 +346,10 @@ uint64_t __34__MPAVRoutingSheet_layoutSubviews__block_invoke(uint64_t a1)
   return [v18 setFrame:{0.0, 0.0, v15, v17}];
 }
 
-- (void)setMirroringOnly:(BOOL)a3
+- (void)setMirroringOnly:(BOOL)only
 {
-  self->_mirroringOnly = a3;
-  if (a3)
+  self->_mirroringOnly = only;
+  if (only)
   {
     v3 = 2;
   }
@@ -371,7 +371,7 @@ uint64_t __34__MPAVRoutingSheet_layoutSubviews__block_invoke(uint64_t a1)
   [(MPAVRoutingSheet *)&v3 dealloc];
 }
 
-- (MPAVRoutingSheet)initWithAVItemType:(int64_t)a3
+- (MPAVRoutingSheet)initWithAVItemType:(int64_t)type
 {
   v49.receiver = self;
   v49.super_class = MPAVRoutingSheet;
@@ -383,16 +383,16 @@ uint64_t __34__MPAVRoutingSheet_layoutSubviews__block_invoke(uint64_t a1)
     v4->_controlsView = v5;
 
     v7 = v4->_controlsView;
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v7 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v7 setBackgroundColor:clearColor];
 
     v9 = objc_alloc_init(MEMORY[0x1E69DD250]);
     backgroundView = v4->_backgroundView;
     v4->_backgroundView = v9;
 
     v11 = v4->_backgroundView;
-    v12 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v11 setBackgroundColor:v12];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v11 setBackgroundColor:blackColor];
 
     [(UIView *)v4->_backgroundView setAlpha:0.0];
     [(MPAVRoutingSheet *)v4 addSubview:v4->_backgroundView];
@@ -401,8 +401,8 @@ uint64_t __34__MPAVRoutingSheet_layoutSubviews__block_invoke(uint64_t a1)
     v4->_dismissBackgroundButton = v13;
 
     v15 = v4->_dismissBackgroundButton;
-    v16 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIButton *)v15 setBackgroundColor:v16];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIButton *)v15 setBackgroundColor:clearColor2];
 
     [(UIButton *)v4->_dismissBackgroundButton addTarget:v4 action:sel__cancelButtonAction_ forControlEvents:64];
     [(MPAVRoutingSheet *)v4 addSubview:v4->_dismissBackgroundButton];
@@ -411,8 +411,8 @@ uint64_t __34__MPAVRoutingSheet_layoutSubviews__block_invoke(uint64_t a1)
     v4->_dismissControlsViewButton = v17;
 
     v19 = v4->_dismissControlsViewButton;
-    v20 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIButton *)v19 setBackgroundColor:v20];
+    clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIButton *)v19 setBackgroundColor:clearColor3];
 
     [(UIButton *)v4->_dismissControlsViewButton addTarget:v4 action:sel__cancelButtonAction_ forControlEvents:64];
     [(UIView *)v4->_controlsView addSubview:v4->_dismissControlsViewButton];
@@ -428,22 +428,22 @@ uint64_t __34__MPAVRoutingSheet_layoutSubviews__block_invoke(uint64_t a1)
 
     [(MPAVRoutingViewController *)v4->_routingViewController viewDidAppear:0];
     [(MPAVRoutingViewController *)v4->_routingViewController setDelegate:v4];
-    v28 = [(MPAVRoutingViewController *)v4->_routingViewController view];
-    v29 = [v28 layer];
-    [v29 setCornerRadius:10.0];
+    view = [(MPAVRoutingViewController *)v4->_routingViewController view];
+    layer = [view layer];
+    [layer setCornerRadius:10.0];
 
-    v30 = [(MPAVRoutingViewController *)v4->_routingViewController view];
-    v31 = [v30 layer];
-    [v31 setMasksToBounds:1];
+    view2 = [(MPAVRoutingViewController *)v4->_routingViewController view];
+    layer2 = [view2 layer];
+    [layer2 setMasksToBounds:1];
 
-    v32 = [(MPAVRoutingViewController *)v4->_routingViewController _tableView];
-    [v32 _setSeparatorBackdropOverlayBlendMode:1];
+    _tableView = [(MPAVRoutingViewController *)v4->_routingViewController _tableView];
+    [_tableView _setSeparatorBackdropOverlayBlendMode:1];
 
     v33 = v4->_controlsView;
-    v34 = [(MPAVRoutingViewController *)v4->_routingViewController view];
-    [(UIView *)v33 addSubview:v34];
+    view3 = [(MPAVRoutingViewController *)v4->_routingViewController view];
+    [(UIView *)v33 addSubview:view3];
 
-    v35 = [MEMORY[0x1E69DC888] systemBlueColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
     if (dyld_program_sdk_at_least())
     {
       v36 = [MEMORY[0x1E69DC738] buttonWithType:1];
@@ -458,33 +458,33 @@ uint64_t __34__MPAVRoutingSheet_layoutSubviews__block_invoke(uint64_t a1)
       v4->_cancelButton = v38;
 
       v40 = v4->_cancelButton;
-      cancelButton = [v35 colorWithAlphaComponent:0.2];
+      cancelButton = [systemBlueColor colorWithAlphaComponent:0.2];
       [(UIButton *)v40 setTitleColor:cancelButton forState:1];
     }
 
     v41 = v4->_cancelButton;
-    v42 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIButton *)v41 setBackgroundColor:v42];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIButton *)v41 setBackgroundColor:whiteColor];
 
-    [(UIButton *)v4->_cancelButton setTitleColor:v35 forState:0];
+    [(UIButton *)v4->_cancelButton setTitleColor:systemBlueColor forState:0];
     [(UIButton *)v4->_cancelButton addTarget:v4 action:sel__cancelButtonAction_ forControlEvents:64];
     [(UIView *)v4->_controlsView _setVisualAltitude:*MEMORY[0x1E69DEAF0] * 1.5];
-    v43 = [(UIButton *)v4->_cancelButton titleLabel];
+    titleLabel = [(UIButton *)v4->_cancelButton titleLabel];
     v44 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:19.0];
-    [v43 setFont:v44];
+    [titleLabel setFont:v44];
 
-    v45 = [(UIButton *)v4->_cancelButton layer];
-    [v45 setCornerRadius:10.0];
+    layer3 = [(UIButton *)v4->_cancelButton layer];
+    [layer3 setCornerRadius:10.0];
 
-    v46 = [(UIButton *)v4->_cancelButton layer];
-    [v46 setMasksToBounds:1];
+    layer4 = [(UIButton *)v4->_cancelButton layer];
+    [layer4 setMasksToBounds:1];
 
     [(UIView *)v4->_controlsView addSubview:v4->_cancelButton];
     [(MPAVRoutingSheet *)v4 addSubview:v4->_controlsView];
-    v47 = [MEMORY[0x1E69DC888] clearColor];
-    [(MPAVRoutingSheet *)v4 setBackgroundColor:v47];
+    clearColor4 = [MEMORY[0x1E69DC888] clearColor];
+    [(MPAVRoutingSheet *)v4 setBackgroundColor:clearColor4];
 
-    [(MPAVRoutingSheet *)v4 setAVItemType:a3];
+    [(MPAVRoutingSheet *)v4 setAVItemType:type];
     [(MPAVRoutingSheet *)v4 _updateDismissButtonText];
   }
 

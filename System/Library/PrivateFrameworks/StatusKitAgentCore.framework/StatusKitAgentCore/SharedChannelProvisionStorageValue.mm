@@ -1,35 +1,35 @@
 @interface SharedChannelProvisionStorageValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPushPriority:(id)a3;
+- (int)StringAsPushPriority:(id)priority;
 - (int)pushPriority;
 - (unint64_t)hash;
-- (void)addChannelPublishProvisionPacketInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addChannelPublishProvisionPacketInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SharedChannelProvisionStorageValue
 
-- (void)addChannelPublishProvisionPacketInfo:(id)a3
+- (void)addChannelPublishProvisionPacketInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   channelPublishProvisionPacketInfos = self->_channelPublishProvisionPacketInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!channelPublishProvisionPacketInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_channelPublishProvisionPacketInfos;
     self->_channelPublishProvisionPacketInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     channelPublishProvisionPacketInfos = self->_channelPublishProvisionPacketInfos;
   }
 
-  [(NSMutableArray *)channelPublishProvisionPacketInfos addObject:v4];
+  [(NSMutableArray *)channelPublishProvisionPacketInfos addObject:infoCopy];
 }
 
 - (int)pushPriority
@@ -45,20 +45,20 @@
   }
 }
 
-- (int)StringAsPushPriority:(id)a3
+- (int)StringAsPushPriority:(id)priority
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LOW"])
+  priorityCopy = priority;
+  if ([priorityCopy isEqualToString:@"LOW"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NORMAL"])
+  else if ([priorityCopy isEqualToString:@"NORMAL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"HIGH"])
+  else if ([priorityCopy isEqualToString:@"HIGH"])
   {
     v4 = 2;
   }
@@ -77,8 +77,8 @@
   v8.receiver = self;
   v8.super_class = SharedChannelProvisionStorageValue;
   v4 = [(SharedChannelProvisionStorageValue *)&v8 description];
-  v5 = [(SharedChannelProvisionStorageValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SharedChannelProvisionStorageValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -86,7 +86,7 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_channelPublishProvisionPacketInfos count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_channelPublishProvisionPacketInfos, "count")}];
@@ -109,8 +109,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -119,7 +119,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"channel_publish_provision_packet_info"];
+    [dictionary setObject:v4 forKey:@"channel_publish_provision_packet_info"];
   }
 
   if (*&self->_has)
@@ -135,18 +135,18 @@
       v12 = off_27843E148[pushPriority];
     }
 
-    [v3 setObject:v12 forKey:@"push_priority"];
+    [dictionary setObject:v12 forKey:@"push_priority"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -188,35 +188,35 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(SharedChannelProvisionStorageValue *)self channelPublishProvisionPacketInfosCount])
   {
-    [v8 clearChannelPublishProvisionPacketInfos];
-    v4 = [(SharedChannelProvisionStorageValue *)self channelPublishProvisionPacketInfosCount];
-    if (v4)
+    [toCopy clearChannelPublishProvisionPacketInfos];
+    channelPublishProvisionPacketInfosCount = [(SharedChannelProvisionStorageValue *)self channelPublishProvisionPacketInfosCount];
+    if (channelPublishProvisionPacketInfosCount)
     {
-      v5 = v4;
+      v5 = channelPublishProvisionPacketInfosCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SharedChannelProvisionStorageValue *)self channelPublishProvisionPacketInfoAtIndex:i];
-        [v8 addChannelPublishProvisionPacketInfo:v7];
+        [toCopy addChannelPublishProvisionPacketInfo:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v8 + 4) = self->_pushPriority;
-    *(v8 + 20) |= 1u;
+    *(toCopy + 4) = self->_pushPriority;
+    *(toCopy + 20) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -237,7 +237,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addChannelPublishProvisionPacketInfo:v11];
 
         ++v10;
@@ -260,16 +260,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   channelPublishProvisionPacketInfos = self->_channelPublishProvisionPacketInfos;
-  if (channelPublishProvisionPacketInfos | *(v4 + 1))
+  if (channelPublishProvisionPacketInfos | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)channelPublishProvisionPacketInfos isEqual:?])
     {
@@ -277,10 +277,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) != 0 && self->_pushPriority == *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) != 0 && self->_pushPriority == *(equalCopy + 4))
     {
       v6 = 1;
       goto LABEL_9;
@@ -311,15 +311,15 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -345,9 +345,9 @@ LABEL_9:
     while (v7);
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
-    self->_pushPriority = *(v4 + 4);
+    self->_pushPriority = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 

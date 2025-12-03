@@ -1,5 +1,5 @@
 @interface LightningControllerHardwareAuthenticationController
-- (int64_t)base64EncodeData:(id)a3 result:(id *)a4;
+- (int64_t)base64EncodeData:(id)data result:(id *)result;
 - (void)start;
 @end
 
@@ -21,26 +21,26 @@
 
   else
   {
-    v5 = [(LightningControllerHardwareAuthenticationController *)self inputs];
-    v6 = [v5 challenge];
+    inputs = [(LightningControllerHardwareAuthenticationController *)self inputs];
+    challenge = [inputs challenge];
 
     v28 = 0;
-    v7 = [(LightningControllerHardwareAuthenticationController *)self inputs];
-    v8 = [v7 keyIndex];
+    inputs2 = [(LightningControllerHardwareAuthenticationController *)self inputs];
+    keyIndex = [inputs2 keyIndex];
 
     v9 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v30 = v6;
+      v30 = challenge;
       v31 = 1024;
-      v32[0] = v8;
+      v32[0] = keyIndex;
       LOWORD(v32[1]) = 2048;
       *(&v32[1] + 2) = 1;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Input parameters: challenge: %@, keyIndex :%i, option: %llu", buf, 0x1Cu);
     }
 
-    if (v6)
+    if (challenge)
     {
       MFAAComponentAuthCreateSignature();
       v18 = DiagnosticLogHandleForCategory();
@@ -65,16 +65,16 @@
   }
 
   v26 = [NSNumber numberWithInteger:v4];
-  v27 = [(LightningControllerHardwareAuthenticationController *)self result];
-  [v27 setStatusCode:v26];
+  result = [(LightningControllerHardwareAuthenticationController *)self result];
+  [result setStatusCode:v26];
 
   [(LightningControllerHardwareAuthenticationController *)self setFinished:1];
 }
 
-- (int64_t)base64EncodeData:(id)a3 result:(id *)a4
+- (int64_t)base64EncodeData:(id)data result:(id *)result
 {
-  v5 = [a3 base64EncodedStringWithOptions:0];
-  *a4 = v5;
+  v5 = [data base64EncodedStringWithOptions:0];
+  *result = v5;
   if (v5)
   {
     return 0;

@@ -1,28 +1,28 @@
 @interface CRKRemoveASMClassOperation
-- (CRKRemoveASMClassOperation)initWithObjectID:(id)a3 requirements:(id)a4;
-- (id)classWithObjectID:(id)a3 inClasses:(id)a4;
-- (void)didFetchClasses:(id)a3 error:(id)a4;
+- (CRKRemoveASMClassOperation)initWithObjectID:(id)d requirements:(id)requirements;
+- (id)classWithObjectID:(id)d inClasses:(id)classes;
+- (void)didFetchClasses:(id)classes error:(id)error;
 - (void)fetchClasses;
 - (void)main;
-- (void)removeClass:(id)a3;
+- (void)removeClass:(id)class;
 @end
 
 @implementation CRKRemoveASMClassOperation
 
-- (CRKRemoveASMClassOperation)initWithObjectID:(id)a3 requirements:(id)a4
+- (CRKRemoveASMClassOperation)initWithObjectID:(id)d requirements:(id)requirements
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  requirementsCopy = requirements;
   v12.receiver = self;
   v12.super_class = CRKRemoveASMClassOperation;
   v8 = [(CRKRemoveASMClassOperation *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     objectID = v8->_objectID;
     v8->_objectID = v9;
 
-    objc_storeStrong(&v8->_requirements, a4);
+    objc_storeStrong(&v8->_requirements, requirements);
   }
 
   return v8;
@@ -40,13 +40,13 @@
 
 - (void)fetchClasses
 {
-  v3 = [(CRKRemoveASMClassOperation *)self requirements];
+  requirements = [(CRKRemoveASMClassOperation *)self requirements];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__CRKRemoveASMClassOperation_fetchClasses__block_invoke;
   v4[3] = &unk_278DC1E18;
   v4[4] = self;
-  [v3 classesWithCompletion:v4];
+  [requirements classesWithCompletion:v4];
 }
 
 void __42__CRKRemoveASMClassOperation_fetchClasses__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -65,18 +65,18 @@ void __42__CRKRemoveASMClassOperation_fetchClasses__block_invoke(uint64_t a1, vo
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)didFetchClasses:(id)a3 error:(id)a4
+- (void)didFetchClasses:(id)classes error:(id)error
 {
-  v8 = a3;
-  if (a4)
+  classesCopy = classes;
+  if (error)
   {
-    [(CRKRemoveASMClassOperation *)self endOperationWithError:a4];
+    [(CRKRemoveASMClassOperation *)self endOperationWithError:error];
   }
 
   else
   {
-    v6 = [(CRKRemoveASMClassOperation *)self objectID];
-    v7 = [(CRKRemoveASMClassOperation *)self classWithObjectID:v6 inClasses:v8];
+    objectID = [(CRKRemoveASMClassOperation *)self objectID];
+    v7 = [(CRKRemoveASMClassOperation *)self classWithObjectID:objectID inClasses:classesCopy];
 
     if (v7)
     {
@@ -90,24 +90,24 @@ void __42__CRKRemoveASMClassOperation_fetchClasses__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)removeClass:(id)a3
+- (void)removeClass:(id)class
 {
-  v4 = a3;
-  if ([v4 isEditable])
+  classCopy = class;
+  if ([classCopy isEditable])
   {
-    v5 = [(CRKRemoveASMClassOperation *)self requirements];
+    requirements = [(CRKRemoveASMClassOperation *)self requirements];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __42__CRKRemoveASMClassOperation_removeClass___block_invoke;
     v6[3] = &unk_278DC0F68;
     v6[4] = self;
-    [v5 removeClass:v4 completion:v6];
+    [requirements removeClass:classCopy completion:v6];
   }
 
   else
   {
-    v5 = CRKErrorWithCodeAndUserInfo(5, 0);
-    [(CRKRemoveASMClassOperation *)self endOperationWithError:v5];
+    requirements = CRKErrorWithCodeAndUserInfo(5, 0);
+    [(CRKRemoveASMClassOperation *)self endOperationWithError:requirements];
   }
 }
 
@@ -140,19 +140,19 @@ uint64_t __42__CRKRemoveASMClassOperation_removeClass___block_invoke_2(uint64_t 
   }
 }
 
-- (id)classWithObjectID:(id)a3 inClasses:(id)a4
+- (id)classWithObjectID:(id)d inClasses:(id)classes
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  dCopy = d;
+  classesCopy = classes;
+  v7 = classesCopy;
+  if (dCopy)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v6;
+    v8 = classesCopy;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
@@ -167,8 +167,8 @@ uint64_t __42__CRKRemoveASMClassOperation_removeClass___block_invoke_2(uint64_t 
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [v12 objectID];
-          v14 = [v5 isEqualToString:v13];
+          objectID = [v12 objectID];
+          v14 = [dCopy isEqualToString:objectID];
 
           if (v14)
           {

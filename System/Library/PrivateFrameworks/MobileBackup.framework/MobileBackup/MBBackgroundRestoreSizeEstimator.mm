@@ -1,29 +1,29 @@
 @interface MBBackgroundRestoreSizeEstimator
-- (MBBackgroundRestoreSizeEstimator)initWithAccount:(id)a3 serviceManager:(id)a4 snapshotUUID:(id)a5;
+- (MBBackgroundRestoreSizeEstimator)initWithAccount:(id)account serviceManager:(id)manager snapshotUUID:(id)d;
 - (MBCKManager)serviceManager;
-- (unint64_t)_estimateCurrentBackgroundRestoreSizeWithError:(id *)a3;
-- (unint64_t)estimatedBackgroundRestoreSizeWithError:(id *)a3;
+- (unint64_t)_estimateCurrentBackgroundRestoreSizeWithError:(id *)error;
+- (unint64_t)estimatedBackgroundRestoreSizeWithError:(id *)error;
 @end
 
 @implementation MBBackgroundRestoreSizeEstimator
 
-- (MBBackgroundRestoreSizeEstimator)initWithAccount:(id)a3 serviceManager:(id)a4 snapshotUUID:(id)a5
+- (MBBackgroundRestoreSizeEstimator)initWithAccount:(id)account serviceManager:(id)manager snapshotUUID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accountCopy = account;
+  managerCopy = manager;
+  dCopy = d;
   v20.receiver = self;
   v20.super_class = MBBackgroundRestoreSizeEstimator;
   v12 = [(MBBackgroundRestoreSizeEstimator *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_serviceManager, v10);
-    objc_storeStrong(&v13->_account, a3);
-    objc_storeStrong(&v13->_snapshotUUID, a5);
-    v14 = [v9 persona];
+    objc_storeWeak(&v12->_serviceManager, managerCopy);
+    objc_storeStrong(&v13->_account, account);
+    objc_storeStrong(&v13->_snapshotUUID, d);
+    persona = [accountCopy persona];
     v19 = 0;
-    v15 = [MBRestoreCloudFormatPolicy isRestoringFromFileLists:&v13->_isRestoringFromFileLists persona:v14 error:&v19];
+    v15 = [MBRestoreCloudFormatPolicy isRestoringFromFileLists:&v13->_isRestoringFromFileLists persona:persona error:&v19];
     v16 = v19;
 
     if ((v15 & 1) == 0)
@@ -44,59 +44,59 @@
   return v13;
 }
 
-- (unint64_t)estimatedBackgroundRestoreSizeWithError:(id *)a3
+- (unint64_t)estimatedBackgroundRestoreSizeWithError:(id *)error
 {
   v5 = +[NSDate now];
-  v6 = [(MBBackgroundRestoreSizeEstimator *)self dateOfLastSizeEstimate];
-  v7 = [(MBBackgroundRestoreSizeEstimator *)self estimatedBackgroundRestoreSize];
-  if (v7 && v6 && ([v5 timeIntervalSinceDate:v6], v8 < 30.0))
+  dateOfLastSizeEstimate = [(MBBackgroundRestoreSizeEstimator *)self dateOfLastSizeEstimate];
+  estimatedBackgroundRestoreSize = [(MBBackgroundRestoreSizeEstimator *)self estimatedBackgroundRestoreSize];
+  if (estimatedBackgroundRestoreSize && dateOfLastSizeEstimate && ([v5 timeIntervalSinceDate:dateOfLastSizeEstimate], v8 < 30.0))
   {
-    v9 = [v7 unsignedLongLongValue];
+    unsignedLongLongValue = [estimatedBackgroundRestoreSize unsignedLongLongValue];
   }
 
   else
   {
     v15 = 0;
-    v9 = [(MBBackgroundRestoreSizeEstimator *)self _estimateCurrentBackgroundRestoreSizeWithError:&v15];
+    unsignedLongLongValue = [(MBBackgroundRestoreSizeEstimator *)self _estimateCurrentBackgroundRestoreSizeWithError:&v15];
     v10 = v15;
     v11 = v10;
     if (v10)
     {
-      if (a3)
+      if (error)
       {
         v12 = v10;
-        *a3 = v11;
+        *error = v11;
       }
     }
 
     else
     {
       [(MBBackgroundRestoreSizeEstimator *)self setDateOfLastSizeEstimate:v5];
-      v13 = [NSNumber numberWithUnsignedLongLong:v9];
+      v13 = [NSNumber numberWithUnsignedLongLong:unsignedLongLongValue];
       [(MBBackgroundRestoreSizeEstimator *)self setEstimatedBackgroundRestoreSize:v13];
     }
   }
 
-  return v9;
+  return unsignedLongLongValue;
 }
 
-- (unint64_t)_estimateCurrentBackgroundRestoreSizeWithError:(id *)a3
+- (unint64_t)_estimateCurrentBackgroundRestoreSizeWithError:(id *)error
 {
-  if (!a3)
+  if (!error)
   {
     __assert_rtn("[MBBackgroundRestoreSizeEstimator _estimateCurrentBackgroundRestoreSizeWithError:]", "MBBackgroundRestoreSizeEstimator.m", 73, "error");
   }
 
   v5 = dispatch_group_create();
   v6 = [[NSMutableArray alloc] initWithCapacity:3];
-  v7 = [(MBBackgroundRestoreSizeEstimator *)self serviceManager];
-  if (!v7)
+  serviceManager = [(MBBackgroundRestoreSizeEstimator *)self serviceManager];
+  if (!serviceManager)
   {
     __assert_rtn("[MBBackgroundRestoreSizeEstimator _estimateCurrentBackgroundRestoreSizeWithError:]", "MBBackgroundRestoreSizeEstimator.m", 79, "serviceManager");
   }
 
-  v8 = [(MBBackgroundRestoreSizeEstimator *)self account];
-  if (!v8)
+  account = [(MBBackgroundRestoreSizeEstimator *)self account];
+  if (!account)
   {
     __assert_rtn("[MBBackgroundRestoreSizeEstimator _estimateCurrentBackgroundRestoreSizeWithError:]", "MBBackgroundRestoreSizeEstimator.m", 81, "account");
   }
@@ -123,9 +123,9 @@
   block[2] = sub_1001E32F0;
   block[3] = &unk_1003C1380;
   block[4] = self;
-  v10 = v7;
+  v10 = serviceManager;
   v65 = v10;
-  v11 = v8;
+  v11 = account;
   v66 = v11;
   v12 = v6;
   v67 = v12;
@@ -180,7 +180,7 @@
     v15 = [MBError errorWithCode:17 format:@"Cannot fetch background size estimate for account:%@", v11];
 LABEL_12:
     v16 = 0;
-    *a3 = v15;
+    *error = v15;
     goto LABEL_13;
   }
 

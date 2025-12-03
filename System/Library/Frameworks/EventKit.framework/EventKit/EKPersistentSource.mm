@@ -75,9 +75,9 @@ void __31__EKPersistentSource_relations__block_invoke()
 
 - (id)constraints
 {
-  v3 = [(EKPersistentObject *)self eventStore];
-  v4 = [(EKPersistentObject *)self CADObjectID];
-  v5 = [v3 cachedConstraintsForEventOrSourceWithCADObjectID:v4];
+  eventStore = [(EKPersistentObject *)self eventStore];
+  cADObjectID = [(EKPersistentObject *)self CADObjectID];
+  v5 = [eventStore cachedConstraintsForEventOrSourceWithCADObjectID:cADObjectID];
 
   return v5;
 }
@@ -86,11 +86,11 @@ void __31__EKPersistentSource_relations__block_invoke()
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKPersistentSource *)self UUID];
+  uUID = [(EKPersistentSource *)self UUID];
   v6 = description_kTypeStrings_0[[(EKPersistentSource *)self sourceTypeRaw]];
-  v7 = [(EKPersistentSource *)self title];
-  v8 = [(EKPersistentSource *)self externalID];
-  v9 = [v3 stringWithFormat:@"%@ <%p> {UUID = %@ type = %@; title = %@; externalId = %@}", v4, self, v5, v6, v7, v8];;
+  title = [(EKPersistentSource *)self title];
+  externalID = [(EKPersistentSource *)self externalID];
+  v9 = [v3 stringWithFormat:@"%@ <%p> {UUID = %@ type = %@; title = %@; externalId = %@}", v4, self, uUID, v6, title, externalID];;
 
   return v9;
 }

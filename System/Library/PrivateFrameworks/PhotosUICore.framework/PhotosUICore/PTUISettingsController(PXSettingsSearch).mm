@@ -11,28 +11,28 @@
 - (void)px_setShouldPreventAnimations:()PXSettingsSearch
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, sel_px_shouldPreventAnimations, v2, 1);
+  objc_setAssociatedObject(self, sel_px_shouldPreventAnimations, v2, 1);
 }
 
 - (uint64_t)px_shouldPreventAnimations
 {
-  v1 = objc_getAssociatedObject(a1, sel_px_shouldPreventAnimations);
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, sel_px_shouldPreventAnimations);
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)_pxswizzled_presentViewController:()PXSettingsSearch animated:completion:
 {
   v8 = a5;
   v9 = a3;
-  [a1 _pxswizzled_presentViewController:v9 animated:a4 & ~objc_msgSend(a1 completion:{"px_shouldPreventAnimations"), v8}];
+  [self _pxswizzled_presentViewController:v9 animated:a4 & ~objc_msgSend(self completion:{"px_shouldPreventAnimations"), v8}];
 }
 
 - (void)_pxswizzled_pushViewController:()PXSettingsSearch animated:
 {
   v6 = a3;
-  [a1 _pxswizzled_pushViewController:v6 animated:{a4 & ~objc_msgSend(a1, "px_shouldPreventAnimations")}];
+  [self _pxswizzled_pushViewController:v6 animated:{a4 & ~objc_msgSend(self, "px_shouldPreventAnimations")}];
 }
 
 - (void)px_performWithoutAnimations:()PXSettingsSearch completionHandler:
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = __90__PTUISettingsController_PXSettingsSearch__px_performWithoutAnimations_completionHandler___block_invoke;
   block[3] = &unk_1E774C648;
-  block[4] = a1;
+  block[4] = self;
   v6 = px_performWithoutAnimations_completionHandler__onceToken;
   v7 = a4;
   v8 = a3;
@@ -50,11 +50,11 @@
     dispatch_once(&px_performWithoutAnimations_completionHandler__onceToken, block);
   }
 
-  v9 = [a1 px_shouldPreventAnimations];
-  [a1 px_setShouldPreventAnimations:1];
+  px_shouldPreventAnimations = [self px_shouldPreventAnimations];
+  [self px_setShouldPreventAnimations:1];
   v8[2](v8);
 
-  [a1 px_setShouldPreventAnimations:v9];
+  [self px_setShouldPreventAnimations:px_shouldPreventAnimations];
   v7[2](v7);
 }
 

@@ -1,37 +1,37 @@
 @interface CLRunLoopSilo
 - (BOOL)isSuspended;
-- (CLRunLoopSilo)initWithCurrentRunLoopAndIdentifier:(id)a3;
-- (CLRunLoopSilo)initWithCurrentRunLoopAndIdentifier:(id)a3 bePermissive:(BOOL)a4;
-- (CLRunLoopSilo)initWithIdentifier:(id)a3;
-- (CLRunLoopSilo)initWithUnderlyingRunLoop:(__CFRunLoop *)a3;
+- (CLRunLoopSilo)initWithCurrentRunLoopAndIdentifier:(id)identifier;
+- (CLRunLoopSilo)initWithCurrentRunLoopAndIdentifier:(id)identifier bePermissive:(BOOL)permissive;
+- (CLRunLoopSilo)initWithIdentifier:(id)identifier;
+- (CLRunLoopSilo)initWithUnderlyingRunLoop:(__CFRunLoop *)loop;
 - (id)debugDescription;
 - (id)getTimeCoercibleVariantInstance;
 - (id)newTimer;
-- (void)afterInterval:(double)a3 async:(id)a4;
+- (void)afterInterval:(double)interval async:(id)async;
 - (void)assertInside;
 - (void)assertOutside;
-- (void)async:(id)a3;
-- (void)heartBeat:(id)a3;
+- (void)async:(id)async;
+- (void)heartBeat:(id)beat;
 - (void)resume;
 - (void)suspend;
-- (void)sync:(id)a3;
+- (void)sync:(id)sync;
 @end
 
 @implementation CLRunLoopSilo
 
-- (CLRunLoopSilo)initWithIdentifier:(id)a3
+- (CLRunLoopSilo)initWithIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = CLRunLoopSilo;
-  v5 = [(CLSilo *)&v22 initWithIdentifier:v4];
+  v5 = [(CLSilo *)&v22 initWithIdentifier:identifierCopy];
   if (v5)
   {
     v6 = +[CLSilo globalConfiguration];
     v7 = [v6 objectForKeyedSubscript:@"NameToCohortMap"];
 
-    v8 = [v7 objectForKeyedSubscript:v4];
+    v8 = [v7 objectForKeyedSubscript:identifierCopy];
     if (v8)
     {
       v9 = v8;
@@ -50,7 +50,7 @@
       }
     }
 
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(%@)", v4, v9];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(%@)", identifierCopy, v9];
 
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -70,7 +70,7 @@
       v18(v17, qword_1ED5FAE60);
       os_unfair_lock_unlock(&unk_1ED5FAE58);
 
-      v4 = v10;
+      identifierCopy = v10;
 LABEL_7:
       if (v5->_siloThread)
       {
@@ -132,11 +132,11 @@ LABEL_18:
   return v5;
 }
 
-- (CLRunLoopSilo)initWithCurrentRunLoopAndIdentifier:(id)a3
+- (CLRunLoopSilo)initWithCurrentRunLoopAndIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = CLRunLoopSilo;
-  v3 = [(CLSilo *)&v8 initWithIdentifier:a3];
+  v3 = [(CLSilo *)&v8 initWithIdentifier:identifier];
   if (v3 && (v4 = [[CLRunLoopSiloThread alloc] initWithCurrentThread], siloThread = v3->_siloThread, v3->_siloThread = v4, siloThread, !v3->_siloThread))
   {
     v6 = 0;
@@ -150,23 +150,23 @@ LABEL_18:
   return v6;
 }
 
-- (CLRunLoopSilo)initWithCurrentRunLoopAndIdentifier:(id)a3 bePermissive:(BOOL)a4
+- (CLRunLoopSilo)initWithCurrentRunLoopAndIdentifier:(id)identifier bePermissive:(BOOL)permissive
 {
-  result = [(CLRunLoopSilo *)self initWithCurrentRunLoopAndIdentifier:a3];
+  result = [(CLRunLoopSilo *)self initWithCurrentRunLoopAndIdentifier:identifier];
   if (result)
   {
-    result->_useCLPermissiveTimer = a4;
+    result->_useCLPermissiveTimer = permissive;
   }
 
   return result;
 }
 
-- (CLRunLoopSilo)initWithUnderlyingRunLoop:(__CFRunLoop *)a3
+- (CLRunLoopSilo)initWithUnderlyingRunLoop:(__CFRunLoop *)loop
 {
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"RunLoop: %p", a3];
-  if (CFRunLoopGetCurrent() == a3)
+  loop = [MEMORY[0x1E696AEC0] stringWithFormat:@"RunLoop: %p", loop];
+  if (CFRunLoopGetCurrent() == loop)
   {
-    v6 = [(CLRunLoopSilo *)self initWithCurrentRunLoopAndIdentifier:v5];
+    v6 = [(CLRunLoopSilo *)self initWithCurrentRunLoopAndIdentifier:loop];
 LABEL_6:
     v6 = v6;
     v9 = v6;
@@ -175,13 +175,13 @@ LABEL_6:
 
   v11.receiver = self;
   v11.super_class = CLRunLoopSilo;
-  v6 = [(CLSilo *)&v11 initWithIdentifier:v5];
+  v6 = [(CLSilo *)&v11 initWithIdentifier:loop];
   if (!v6)
   {
     goto LABEL_6;
   }
 
-  v7 = [[CLRunLoopSiloThread alloc] initWithRunLoop:a3];
+  v7 = [[CLRunLoopSiloThread alloc] initWithRunLoop:loop];
   siloThread = v6->_siloThread;
   v6->_siloThread = v7;
 
@@ -264,9 +264,9 @@ LABEL_11:
 
 - (void)assertInside
 {
-  v4 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  v3 = [(CLRunLoopSiloThread *)self->_siloThread underlyingRunLoop];
-  if (v4 != v3)
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  underlyingRunLoop = [(CLRunLoopSiloThread *)self->_siloThread underlyingRunLoop];
+  if (currentRunLoop != underlyingRunLoop)
   {
     __assert_rtn("[CLRunLoopSilo assertInside]", "CLRunLoopSilo.m", 285, "[NSRunLoop currentRunLoop] == _siloThread.underlyingRunLoop");
   }
@@ -274,9 +274,9 @@ LABEL_11:
 
 - (void)assertOutside
 {
-  v4 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  v3 = [(CLRunLoopSiloThread *)self->_siloThread underlyingRunLoop];
-  if (v4 == v3)
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  underlyingRunLoop = [(CLRunLoopSiloThread *)self->_siloThread underlyingRunLoop];
+  if (currentRunLoop == underlyingRunLoop)
   {
     __assert_rtn("[CLRunLoopSilo assertOutside]", "CLRunLoopSilo.m", 290, "[NSRunLoop currentRunLoop] != _siloThread.underlyingRunLoop");
   }
@@ -498,23 +498,23 @@ LABEL_11:
   return v5;
 }
 
-- (void)async:(id)a3
+- (void)async:(id)async
 {
-  v4 = a3;
-  v5 = [(CLRunLoopSiloThread *)self->_siloThread underlyingRunLoop];
+  asyncCopy = async;
+  underlyingRunLoop = [(CLRunLoopSiloThread *)self->_siloThread underlyingRunLoop];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1DF8111C4;
   v7[3] = &unk_1E86C8370;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = asyncCopy;
+  v6 = asyncCopy;
+  [underlyingRunLoop performBlock:v7];
 }
 
-- (void)sync:(id)a3
+- (void)sync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v9[0] = 0;
   v9[1] = 0;
   [(CLRunLoopSiloThread *)self->_siloThread threadId];
@@ -523,45 +523,45 @@ LABEL_11:
   v6[1] = 3221225472;
   v6[2] = sub_1DF8112A0;
   v6[3] = &unk_1E86C8398;
-  v7 = v4;
+  v7 = syncCopy;
   v8 = v9;
-  v5 = v4;
+  v5 = syncCopy;
   [(CLRunLoopSilo *)self async:v6];
   pthread_dependency_wait_np();
 }
 
-- (void)afterInterval:(double)a3 async:(id)a4
+- (void)afterInterval:(double)interval async:(id)async
 {
   siloThread = self->_siloThread;
-  v6 = a4;
-  v8 = [(CLRunLoopSiloThread *)siloThread underlyingRunLoop];
-  v7 = _Block_copy(v6);
+  asyncCopy = async;
+  underlyingRunLoop = [(CLRunLoopSiloThread *)siloThread underlyingRunLoop];
+  v7 = _Block_copy(asyncCopy);
 
-  [v8 performSelector:sel_async_ withObject:v7 afterDelay:a3];
+  [underlyingRunLoop performSelector:sel_async_ withObject:v7 afterDelay:interval];
 }
 
 - (id)debugDescription
 {
   v2 = MEMORY[0x1E696AEC0];
   identifier = self->super._identifier;
-  v4 = [(CLRunLoopSiloThread *)self->_siloThread underlyingRunLoop];
-  v5 = [v2 stringWithFormat:@"CLRunLoopSilo: %@ - %@", identifier, v4];
+  underlyingRunLoop = [(CLRunLoopSiloThread *)self->_siloThread underlyingRunLoop];
+  v5 = [v2 stringWithFormat:@"CLRunLoopSilo: %@ - %@", identifier, underlyingRunLoop];
 
   return v5;
 }
 
-- (void)heartBeat:(id)a3
+- (void)heartBeat:(id)beat
 {
-  v4 = a3;
-  v5 = [(CLRunLoopSiloThread *)self->_siloThread underlyingRunLoop];
+  beatCopy = beat;
+  underlyingRunLoop = [(CLRunLoopSiloThread *)self->_siloThread underlyingRunLoop];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1DF8114C8;
   v7[3] = &unk_1E86C83C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = beatCopy;
+  selfCopy = self;
+  v6 = beatCopy;
+  [underlyingRunLoop performBlock:v7];
 }
 
 @end

@@ -9,9 +9,9 @@
 - (id)hk_hearingSevenDayDosePercentageWithError:()HeadphoneSevenDayDose
 {
   v5 = MEMORY[0x277CCD028];
-  v6 = [a1 averageQuantity];
-  v7 = [a1 duration];
-  v8 = [v5 _sevenDayDoseWithExposureAverageQuantity:v6 duration:v7 error:a3];
+  averageQuantity = [self averageQuantity];
+  duration = [self duration];
+  v8 = [v5 _sevenDayDoseWithExposureAverageQuantity:averageQuantity duration:duration error:a3];
 
   return v8;
 }
@@ -19,8 +19,8 @@
 - (id)hk_hearingSevenDayDoseDateIntervalEndingBeforeDate:()HeadphoneSevenDayDose error:
 {
   v6 = a3;
-  v7 = [a1 startDate];
-  v8 = [v7 compare:v6];
+  startDate = [self startDate];
+  v8 = [startDate compare:v6];
 
   if (v8 == 1)
   {
@@ -28,61 +28,61 @@
   }
 
   v9 = objc_alloc(MEMORY[0x277CCA970]);
-  v10 = [a1 startDate];
-  v11 = [v9 initWithStartDate:v10 endDate:v6];
+  startDate2 = [self startDate];
+  v11 = [v9 initWithStartDate:startDate2 endDate:v6];
 
   v12 = objc_alloc(MEMORY[0x277CCA970]);
-  v13 = [a1 startDate];
-  v14 = [a1 endDate];
-  v15 = [v12 initWithStartDate:v13 endDate:v14];
+  startDate3 = [self startDate];
+  endDate = [self endDate];
+  v15 = [v12 initWithStartDate:startDate3 endDate:endDate];
 
   v16 = [v15 intersectionWithDateInterval:v11];
-  v17 = [v16 hk_hearingSevenDayDoseDateIntervalClampedToMaxDuration];
+  hk_hearingSevenDayDoseDateIntervalClampedToMaxDuration = [v16 hk_hearingSevenDayDoseDateIntervalClampedToMaxDuration];
 
-  if (!v17)
+  if (!hk_hearingSevenDayDoseDateIntervalClampedToMaxDuration)
   {
 LABEL_3:
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:{@"Unable to truncate date interval %@ to maxEndDate %@", a1, v6}];
-    v17 = 0;
+    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:{@"Unable to truncate date interval %@ to maxEndDate %@", self, v6}];
+    hk_hearingSevenDayDoseDateIntervalClampedToMaxDuration = 0;
   }
 
-  return v17;
+  return hk_hearingSevenDayDoseDateIntervalClampedToMaxDuration;
 }
 
 - (id)unitTesting_hearingSevenDayDoseCategorySampleWithNow:()HeadphoneSevenDayDose includesPrunableData:error:
 {
   v34[3] = *MEMORY[0x277D85DE8];
   v8 = a3;
-  v9 = [MEMORY[0x277CCDAB0] decibelAWeightedSoundPressureLevelUnit];
-  v10 = [a1 averageQuantity];
-  v11 = [v10 isCompatibleWithUnit:v9];
+  decibelAWeightedSoundPressureLevelUnit = [MEMORY[0x277CCDAB0] decibelAWeightedSoundPressureLevelUnit];
+  averageQuantity = [self averageQuantity];
+  v11 = [averageQuantity isCompatibleWithUnit:decibelAWeightedSoundPressureLevelUnit];
 
   if (v11)
   {
-    v12 = [MEMORY[0x277CCDAB0] secondUnit];
-    v13 = [a1 duration];
-    v14 = [v13 isCompatibleWithUnit:v12];
+    secondUnit = [MEMORY[0x277CCDAB0] secondUnit];
+    duration = [self duration];
+    v14 = [duration isCompatibleWithUnit:secondUnit];
 
     if (v14)
     {
-      v15 = [a1 hk_hearingSevenDayDoseDateIntervalEndingBeforeDate:v8 error:a5];
+      v15 = [self hk_hearingSevenDayDoseDateIntervalEndingBeforeDate:v8 error:a5];
       if (v15)
       {
         v16 = MEMORY[0x277CCD0B0];
         v17 = HKHeadphoneAudioExposureEventType();
-        v31 = [v15 startDate];
-        v30 = [v15 endDate];
+        startDate = [v15 startDate];
+        endDate = [v15 endDate];
         v33[0] = *MEMORY[0x277CCC458];
-        v32 = [a1 averageQuantity];
-        v34[0] = v32;
+        averageQuantity2 = [self averageQuantity];
+        v34[0] = averageQuantity2;
         v33[1] = *MEMORY[0x277CCC450];
-        v29 = [a1 duration];
-        v34[1] = v29;
+        duration2 = [self duration];
+        v34[1] = duration2;
         v33[2] = *MEMORY[0x277CCE068];
         v18 = [MEMORY[0x277CCABB0] numberWithBool:a4];
         v34[2] = v18;
         v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:3];
-        v20 = [v16 categorySampleWithType:v17 value:1 startDate:v31 endDate:v30 device:0 metadata:v19];
+        v20 = [v16 categorySampleWithType:v17 value:1 startDate:startDate endDate:endDate device:0 metadata:v19];
       }
 
       else
@@ -94,9 +94,9 @@ LABEL_3:
     else
     {
       v24 = MEMORY[0x277CCA9B8];
-      v25 = [a1 duration];
-      v26 = [v25 _unit];
-      [v24 hk_assignError:a5 code:3 format:{@"duration (%@) incompatible with second unit", v26}];
+      duration3 = [self duration];
+      _unit = [duration3 _unit];
+      [v24 hk_assignError:a5 code:3 format:{@"duration (%@) incompatible with second unit", _unit}];
 
       v20 = 0;
     }
@@ -105,9 +105,9 @@ LABEL_3:
   else
   {
     v21 = MEMORY[0x277CCA9B8];
-    v22 = [a1 averageQuantity];
-    v23 = [v22 _unit];
-    [v21 hk_assignError:a5 code:3 format:{@"averageQuantity (%@) incompatable with dBASPL unit", v23}];
+    averageQuantity3 = [self averageQuantity];
+    _unit2 = [averageQuantity3 _unit];
+    [v21 hk_assignError:a5 code:3 format:{@"averageQuantity (%@) incompatable with dBASPL unit", _unit2}];
 
     v20 = 0;
   }

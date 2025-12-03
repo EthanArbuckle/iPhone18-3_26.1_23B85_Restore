@@ -7,8 +7,8 @@
 
 + (void)registerClasses
 {
-  v2 = [a1 classifications];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_74];
+  classifications = [self classifications];
+  [classifications enumerateObjectsUsingBlock:&__block_literal_global_74];
 }
 
 + (id)classifications

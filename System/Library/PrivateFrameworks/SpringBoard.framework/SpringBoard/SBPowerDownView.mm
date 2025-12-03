@@ -6,18 +6,18 @@
 - (void)_powerDownSliderDidBeginSlide;
 - (void)_powerDownSliderDidCancelSlide;
 - (void)_powerDownSliderDidCompleteSlide;
-- (void)_powerDownSliderDidUpdateSlideWithValue:(double)a3;
-- (void)setPowerDownDelegate:(id)a3;
+- (void)_powerDownSliderDidUpdateSlideWithValue:(double)value;
+- (void)setPowerDownDelegate:(id)delegate;
 @end
 
 @implementation SBPowerDownView
 
 - (void)_powerDownSliderDidBeginSlide
 {
-  v3 = [(SBPowerDownView *)self powerDownDelegate];
+  powerDownDelegate = [(SBPowerDownView *)self powerDownDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 powerDownViewDidBeginSlide:self];
+    [powerDownDelegate powerDownViewDidBeginSlide:self];
   }
 
   v4.receiver = self;
@@ -25,23 +25,23 @@
   [(SBUIPowerDownView *)&v4 _powerDownSliderDidBeginSlide];
 }
 
-- (void)_powerDownSliderDidUpdateSlideWithValue:(double)a3
+- (void)_powerDownSliderDidUpdateSlideWithValue:(double)value
 {
-  v5 = [(SBPowerDownView *)self powerDownDelegate];
+  powerDownDelegate = [(SBPowerDownView *)self powerDownDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 powerDownView:self didUpdateSlideWithValue:a3];
+    [powerDownDelegate powerDownView:self didUpdateSlideWithValue:value];
   }
 
   v6.receiver = self;
   v6.super_class = SBPowerDownView;
-  [(SBUIPowerDownView *)&v6 _powerDownSliderDidUpdateSlideWithValue:a3];
+  [(SBUIPowerDownView *)&v6 _powerDownSliderDidUpdateSlideWithValue:value];
 }
 
 - (void)_powerDownSliderDidCompleteSlide
 {
-  v3 = [(SBPowerDownView *)self powerDownDelegate];
-  if ([(SBUIPowerDownView *)self deviceSupportsFindMy]&& (v4 = [(SBUIPowerDownView *)self shouldPowerDownViewShowFindMyAlert], v3) && v4)
+  powerDownDelegate = [(SBPowerDownView *)self powerDownDelegate];
+  if ([(SBUIPowerDownView *)self deviceSupportsFindMy]&& (v4 = [(SBUIPowerDownView *)self shouldPowerDownViewShowFindMyAlert], powerDownDelegate) && v4)
   {
     v9.receiver = self;
     v9.super_class = SBPowerDownView;
@@ -51,7 +51,7 @@
     v7[2] = __51__SBPowerDownView__powerDownSliderDidCompleteSlide__block_invoke;
     v7[3] = &unk_2783A92D8;
     v7[4] = self;
-    v8 = v3;
+    v8 = powerDownDelegate;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __51__SBPowerDownView__powerDownSliderDidCompleteSlide__block_invoke_2;
@@ -64,7 +64,7 @@
   {
     if (objc_opt_respondsToSelector())
     {
-      [v3 powerDownViewDidCompleteSlide:self];
+      [powerDownDelegate powerDownViewDidCompleteSlide:self];
     }
 
     v5.receiver = self;
@@ -88,10 +88,10 @@ id __51__SBPowerDownView__powerDownSliderDidCompleteSlide__block_invoke(uint64_t
 
 - (void)_powerDownSliderDidCancelSlide
 {
-  v3 = [(SBPowerDownView *)self powerDownDelegate];
+  powerDownDelegate = [(SBPowerDownView *)self powerDownDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 powerDownViewDidCancelSlide:self];
+    [powerDownDelegate powerDownViewDidCancelSlide:self];
   }
 
   v4.receiver = self;
@@ -101,10 +101,10 @@ id __51__SBPowerDownView__powerDownSliderDidCompleteSlide__block_invoke(uint64_t
 
 - (void)_cancelButtonTapped
 {
-  v3 = [(SBPowerDownView *)self powerDownDelegate];
+  powerDownDelegate = [(SBPowerDownView *)self powerDownDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 powerDownViewDidReceiveCancelButtonAction:self];
+    [powerDownDelegate powerDownViewDidReceiveCancelButtonAction:self];
   }
 
   v4.receiver = self;
@@ -114,19 +114,19 @@ id __51__SBPowerDownView__powerDownSliderDidCompleteSlide__block_invoke(uint64_t
 
 - (void)_didTapFindMy
 {
-  v3 = [(SBPowerDownView *)self powerDownDelegate];
+  powerDownDelegate = [(SBPowerDownView *)self powerDownDelegate];
   v4.receiver = self;
   v4.super_class = SBPowerDownView;
   [(SBUIPowerDownView *)&v4 _prepareViewsForAlert];
-  [v3 showPowerDownFindMyAlert];
+  [powerDownDelegate showPowerDownFindMyAlert];
 }
 
 - (void)_idleTimerFired
 {
-  v3 = [(SBPowerDownView *)self powerDownDelegate];
+  powerDownDelegate = [(SBPowerDownView *)self powerDownDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 powerDownViewDidFireIdleTimer:self];
+    [powerDownDelegate powerDownViewDidFireIdleTimer:self];
   }
 
   v4.receiver = self;
@@ -138,16 +138,16 @@ id __51__SBPowerDownView__powerDownSliderDidCompleteSlide__block_invoke(uint64_t
 {
   v4.receiver = self;
   v4.super_class = SBPowerDownView;
-  v2 = [(SBUIPowerDownView *)&v4 delegate];
+  delegate = [(SBUIPowerDownView *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
-- (void)setPowerDownDelegate:(id)a3
+- (void)setPowerDownDelegate:(id)delegate
 {
   v3.receiver = self;
   v3.super_class = SBPowerDownView;
-  [(SBUIPowerDownView *)&v3 setDelegate:a3];
+  [(SBUIPowerDownView *)&v3 setDelegate:delegate];
 }
 
 @end

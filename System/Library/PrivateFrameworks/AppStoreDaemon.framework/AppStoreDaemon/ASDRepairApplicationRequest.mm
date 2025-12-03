@@ -1,22 +1,22 @@
 @interface ASDRepairApplicationRequest
-- (ASDRepairApplicationRequest)initWithOptions:(id)a3;
-- (void)sendRequestWithCompletionBlock:(id)a3;
+- (ASDRepairApplicationRequest)initWithOptions:(id)options;
+- (void)sendRequestWithCompletionBlock:(id)block;
 @end
 
 @implementation ASDRepairApplicationRequest
 
-- (ASDRepairApplicationRequest)initWithOptions:(id)a3
+- (ASDRepairApplicationRequest)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = ASDRepairApplicationRequest;
   v5 = [(ASDRepairApplicationRequest *)&v12 init];
   if (v5)
   {
     v6 = [ASDRepairOptions alloc];
-    v7 = [v4 bundleID];
-    v8 = [v4 accountDSID];
-    v9 = -[ASDRepairOptions initWithBundleID:accountIdentifier:claimStyle:](v6, "initWithBundleID:accountIdentifier:claimStyle:", v7, v8, [v4 claimStyle]);
+    bundleID = [optionsCopy bundleID];
+    accountDSID = [optionsCopy accountDSID];
+    v9 = -[ASDRepairOptions initWithBundleID:accountIdentifier:claimStyle:](v6, "initWithBundleID:accountIdentifier:claimStyle:", bundleID, accountDSID, [optionsCopy claimStyle]);
     options = v5->_options;
     v5->_options = v9;
   }
@@ -24,11 +24,11 @@
   return v5;
 }
 
-- (void)sendRequestWithCompletionBlock:(id)a3
+- (void)sendRequestWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[ASDRepairService defaultService];
-  [v5 repairAppWithOptions:self->_options replyHandler:v4];
+  [v5 repairAppWithOptions:self->_options replyHandler:blockCopy];
 }
 
 @end

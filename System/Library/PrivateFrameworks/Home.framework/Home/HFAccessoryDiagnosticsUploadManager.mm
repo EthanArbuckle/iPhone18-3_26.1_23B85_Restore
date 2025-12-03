@@ -1,28 +1,28 @@
 @interface HFAccessoryDiagnosticsUploadManager
 + (id)sharedManager;
-- (BOOL)_didPreviouslySubmitLog:(id)a3;
-- (BOOL)_isValidFilenameIdentifier:(id)a3;
+- (BOOL)_didPreviouslySubmitLog:(id)log;
+- (BOOL)_isValidFilenameIdentifier:(id)identifier;
 - (BOOL)_needsToPurgeOldLogs;
 - (HFAccessoryDiagnosticsUploadManager)init;
 - (id)_nextFilenameIdentifierToProcess;
-- (id)filePathForIdentifier:(id)a3;
-- (id)fileURLForIdentifier:(id)a3;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7;
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3;
-- (void)_addToPendingUploads:(id)a3;
-- (void)_cleanUpLocalFilesForIdentifier:(id)a3;
+- (id)filePathForIdentifier:(id)identifier;
+- (id)fileURLForIdentifier:(id)identifier;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send;
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session;
+- (void)_addToPendingUploads:(id)uploads;
+- (void)_cleanUpLocalFilesForIdentifier:(id)identifier;
 - (void)_failAttemptToUploadCurrentIdentifier;
-- (void)_finalizeHandlingOfIdentifier:(id)a3;
+- (void)_finalizeHandlingOfIdentifier:(id)identifier;
 - (void)_submitNextPendingLog;
-- (void)_updatePreviousLogIdentifiers:(id)a3 forKey:(id)a4;
+- (void)_updatePreviousLogIdentifiers:(id)identifiers forKey:(id)key;
 - (void)purgeStaleSubmittedLogs;
-- (void)resumeServiceForURLSessionIdentifier:(id)a3;
+- (void)resumeServiceForURLSessionIdentifier:(id)identifier;
 - (void)updateLastPurgeDate;
-- (void)uploadDiagnosticLogUsingItem:(id)a3;
-- (void)willResignActive:(id)a3;
+- (void)uploadDiagnosticLogUsingItem:(id)item;
+- (void)willResignActive:(id)active;
 @end
 
 @implementation HFAccessoryDiagnosticsUploadManager
@@ -53,9 +53,9 @@ void __52__HFAccessoryDiagnosticsUploadManager_sharedManager__block_invoke()
   v2 = [(HFAccessoryDiagnosticsUploadManager *)&v16 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     pendingIdentifiers = v2->_pendingIdentifiers;
-    v2->_pendingIdentifiers = v3;
+    v2->_pendingIdentifiers = orderedSet;
 
     v5 = [MEMORY[0x277CBEB58] set];
     uploadedIdentifiers = v2->_uploadedIdentifiers;
@@ -65,9 +65,9 @@ void __52__HFAccessoryDiagnosticsUploadManager_sharedManager__block_invoke()
     failedUploadIdentifiers = v2->_failedUploadIdentifiers;
     v2->_failedUploadIdentifiers = v7;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     diagnosticItems = v2->_diagnosticItems;
-    v2->_diagnosticItems = v9;
+    v2->_diagnosticItems = dictionary;
 
     v11 = HFLogForCategory(1uLL);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -79,66 +79,66 @@ void __52__HFAccessoryDiagnosticsUploadManager_sharedManager__block_invoke()
     v12 = +[HFAccessoryDiagnosticsUploadManager backgroundURLSessionIdentifier];
     [(HFAccessoryDiagnosticsUploadManager *)v2 resumeServiceForURLSessionIdentifier:v12];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v2 selector:sel_willResignActive_ name:*MEMORY[0x277D76768] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_willResignActive_ name:*MEMORY[0x277D76768] object:0];
   }
 
   return v2;
 }
 
-- (void)resumeServiceForURLSessionIdentifier:(id)a3
+- (void)resumeServiceForURLSessionIdentifier:(id)identifier
 {
-  v10 = a3;
-  v4 = [(HFAccessoryDiagnosticsUploadManager *)self backgroundSession];
-  v5 = [v4 configuration];
-  v6 = [v5 identifier];
-  v7 = [v6 isEqualToString:v10];
+  identifierCopy = identifier;
+  backgroundSession = [(HFAccessoryDiagnosticsUploadManager *)self backgroundSession];
+  configuration = [backgroundSession configuration];
+  identifier = [configuration identifier];
+  v7 = [identifier isEqualToString:identifierCopy];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [MEMORY[0x277CCAD38] backgroundSessionConfigurationWithIdentifier:v10];
+    v8 = [MEMORY[0x277CCAD38] backgroundSessionConfigurationWithIdentifier:identifierCopy];
     v9 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v8 delegate:self delegateQueue:0];
     [(HFAccessoryDiagnosticsUploadManager *)self setBackgroundSession:v9];
   }
 }
 
-- (void)uploadDiagnosticLogUsingItem:(id)a3
+- (void)uploadDiagnosticLogUsingItem:(id)item
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (([v5 isEligibleForUpload] & 1) == 0)
+  itemCopy = item;
+  if (([itemCopy isEligibleForUpload] & 1) == 0)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    v18 = [v5 filename];
-    [v17 handleFailureInMethod:a2 object:self file:@"HFAccessoryDiagnosticsUploadManager.m" lineNumber:102 description:{@"Attempting to upload a diagnostic item that is not eligible for uploading. Log: (%@)", v18}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    filename = [itemCopy filename];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryDiagnosticsUploadManager.m" lineNumber:102 description:{@"Attempting to upload a diagnostic item that is not eligible for uploading. Log: (%@)", filename}];
   }
 
-  v6 = [v5 filename];
-  v7 = [(HFAccessoryDiagnosticsUploadManager *)self _didPreviouslySubmitLog:v6];
+  filename2 = [itemCopy filename];
+  v7 = [(HFAccessoryDiagnosticsUploadManager *)self _didPreviouslySubmitLog:filename2];
 
   if (!v7)
   {
-    v8 = [v5 filename];
-    v9 = [v5 metadata];
-    v10 = [(HFAccessoryDiagnosticsUploadManager *)self diagnosticItems];
-    [v10 setObject:v9 forKeyedSubscript:v8];
+    filename3 = [itemCopy filename];
+    metadata = [itemCopy metadata];
+    diagnosticItems = [(HFAccessoryDiagnosticsUploadManager *)self diagnosticItems];
+    [diagnosticItems setObject:metadata forKeyedSubscript:filename3];
 
-    [(HFAccessoryDiagnosticsUploadManager *)self _addToPendingUploads:v8];
+    [(HFAccessoryDiagnosticsUploadManager *)self _addToPendingUploads:filename3];
     v11 = HFLogForCategory(1uLL);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v5 metadata];
-      v13 = [v12 uploadDestination];
+      metadata2 = [itemCopy metadata];
+      uploadDestination = [metadata2 uploadDestination];
       *buf = 138412546;
-      v20 = v8;
+      v20 = filename3;
       v21 = 2112;
-      v22 = v13;
+      v22 = uploadDestination;
       _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "Accessory Diagnostics upload requested for log %@  to URL %@", buf, 0x16u);
     }
   }
 
-  v14 = [(HFAccessoryDiagnosticsUploadManager *)self pendingIdentifiers];
-  v15 = [v14 count];
+  pendingIdentifiers = [(HFAccessoryDiagnosticsUploadManager *)self pendingIdentifiers];
+  v15 = [pendingIdentifiers count];
 
   if (v15 <= 1)
   {
@@ -148,9 +148,9 @@ void __52__HFAccessoryDiagnosticsUploadManager_sharedManager__block_invoke()
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fileURLForIdentifier:(id)a3
+- (id)fileURLForIdentifier:(id)identifier
 {
-  v3 = [(HFAccessoryDiagnosticsUploadManager *)self filePathForIdentifier:a3];
+  v3 = [(HFAccessoryDiagnosticsUploadManager *)self filePathForIdentifier:identifier];
   if (v3)
   {
     v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:v3];
@@ -164,56 +164,56 @@ void __52__HFAccessoryDiagnosticsUploadManager_sharedManager__block_invoke()
   return v4;
 }
 
-- (id)filePathForIdentifier:(id)a3
+- (id)filePathForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HFAccessoryDiagnosticsUploadManager *)self diagnosticItems];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  diagnosticItems = [(HFAccessoryDiagnosticsUploadManager *)self diagnosticItems];
+  v6 = [diagnosticItems objectForKey:identifierCopy];
 
-  v7 = [v6 snapshotPath];
+  snapshotPath = [v6 snapshotPath];
 
-  return v7;
+  return snapshotPath;
 }
 
 - (id)_nextFilenameIdentifierToProcess
 {
-  v2 = [(HFAccessoryDiagnosticsUploadManager *)self pendingIdentifiers];
-  v3 = [v2 firstObject];
+  pendingIdentifiers = [(HFAccessoryDiagnosticsUploadManager *)self pendingIdentifiers];
+  firstObject = [pendingIdentifiers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (void)_submitNextPendingLog
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [(HFAccessoryDiagnosticsUploadManager *)self _nextFilenameIdentifierToProcess];
-  if (v3)
+  _nextFilenameIdentifierToProcess = [(HFAccessoryDiagnosticsUploadManager *)self _nextFilenameIdentifierToProcess];
+  if (_nextFilenameIdentifierToProcess)
   {
-    v4 = [(HFAccessoryDiagnosticsUploadManager *)self diagnosticItems];
-    v5 = [v4 objectForKey:v3];
+    diagnosticItems = [(HFAccessoryDiagnosticsUploadManager *)self diagnosticItems];
+    v5 = [diagnosticItems objectForKey:_nextFilenameIdentifierToProcess];
 
-    v6 = [v5 snapshotPath];
-    v7 = [v5 hf_serviceURLWithParameters];
-    if (v7 && v6)
+    snapshotPath = [v5 snapshotPath];
+    hf_serviceURLWithParameters = [v5 hf_serviceURLWithParameters];
+    if (hf_serviceURLWithParameters && snapshotPath)
     {
       v8 = HFLogForCategory(1uLL);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v30 = v6;
+        v30 = snapshotPath;
         v31 = 2112;
-        v32 = v7;
+        v32 = hf_serviceURLWithParameters;
         _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "Preparing to upload %@ to %@", buf, 0x16u);
       }
 
-      v9 = [v6 lastPathComponent];
+      lastPathComponent = [snapshotPath lastPathComponent];
       v10 = NSTemporaryDirectory();
-      v27 = v9;
-      v11 = [v10 stringByAppendingPathComponent:v9];
+      v27 = lastPathComponent;
+      v11 = [v10 stringByAppendingPathComponent:lastPathComponent];
 
-      v12 = [MEMORY[0x277CCAA00] defaultManager];
-      v26 = v12;
-      if ([v12 fileExistsAtPath:v11])
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v26 = defaultManager;
+      if ([defaultManager fileExistsAtPath:v11])
       {
         v25 = 0;
       }
@@ -221,7 +221,7 @@ void __52__HFAccessoryDiagnosticsUploadManager_sharedManager__block_invoke()
       else
       {
         v28 = 0;
-        v13 = [v12 copyItemAtPath:v6 toPath:v11 error:&v28];
+        v13 = [defaultManager copyItemAtPath:snapshotPath toPath:v11 error:&v28];
         v14 = v28;
         v25 = v14;
         if ((v13 & 1) == 0)
@@ -231,7 +231,7 @@ void __52__HFAccessoryDiagnosticsUploadManager_sharedManager__block_invoke()
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412802;
-            v30 = v6;
+            v30 = snapshotPath;
             v31 = 2112;
             v32 = v11;
             v33 = 2112;
@@ -243,17 +243,17 @@ void __52__HFAccessoryDiagnosticsUploadManager_sharedManager__block_invoke()
 
       v17 = [MEMORY[0x277CBEBC0] fileURLWithPath:v11];
       v18 = MEMORY[0x277CCACA8];
-      v19 = [v17 lastPathComponent];
-      v20 = [v18 stringWithFormat:@"attachment filename=%@", v19];;
+      lastPathComponent2 = [v17 lastPathComponent];
+      v20 = [v18 stringWithFormat:@"attachment filename=%@", lastPathComponent2];;
 
-      v21 = [MEMORY[0x277CCAB70] requestWithURL:v7];
+      v21 = [MEMORY[0x277CCAB70] requestWithURL:hf_serviceURLWithParameters];
       [v21 setHTTPMethod:@"POST"];
       [v21 setValue:@"application/zip" forHTTPHeaderField:@"Content-Type"];
       [v21 setValue:v20 forHTTPHeaderField:@"Content-Disposition"];
-      v22 = [(HFAccessoryDiagnosticsUploadManager *)self backgroundSession];
-      v23 = [v22 uploadTaskWithRequest:v21 fromFile:v17];
+      backgroundSession = [(HFAccessoryDiagnosticsUploadManager *)self backgroundSession];
+      v23 = [backgroundSession uploadTaskWithRequest:v21 fromFile:v17];
 
-      [v23 setTaskDescription:v3];
+      [v23 setTaskDescription:_nextFilenameIdentifierToProcess];
       [v23 resume];
     }
   }
@@ -271,33 +271,33 @@ void __52__HFAccessoryDiagnosticsUploadManager_sharedManager__block_invoke()
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addToPendingUploads:(id)a3
+- (void)_addToPendingUploads:(id)uploads
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uploadsCopy = uploads;
   v5 = HFLogForCategory(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(HFAccessoryDiagnosticsUploadManager *)self pendingIdentifiers];
+    pendingIdentifiers = [(HFAccessoryDiagnosticsUploadManager *)self pendingIdentifiers];
     v9 = 138412546;
-    v10 = v4;
+    v10 = uploadsCopy;
     v11 = 2048;
-    v12 = [v6 count];
+    v12 = [pendingIdentifiers count];
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Adding log:%@ to Accessory Diagnostics upload service pending queue %lu.", &v9, 0x16u);
   }
 
-  v7 = [(HFAccessoryDiagnosticsUploadManager *)self pendingIdentifiers];
-  [v7 addObject:v4];
+  pendingIdentifiers2 = [(HFAccessoryDiagnosticsUploadManager *)self pendingIdentifiers];
+  [pendingIdentifiers2 addObject:uploadsCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_didPreviouslySubmitLog:(id)a3
+- (BOOL)_didPreviouslySubmitLog:(id)log
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFAccessoryDiagnosticsUploadManager *)self pendingIdentifiers];
-  v6 = [v5 containsObject:v4];
+  logCopy = log;
+  pendingIdentifiers = [(HFAccessoryDiagnosticsUploadManager *)self pendingIdentifiers];
+  v6 = [pendingIdentifiers containsObject:logCopy];
 
   if (v6)
   {
@@ -305,7 +305,7 @@ void __52__HFAccessoryDiagnosticsUploadManager_sharedManager__block_invoke()
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v4;
+      v17 = logCopy;
       v8 = "Previously submitted. Pending identifiers contains log: %@";
 LABEL_10:
       _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, v8, &v16, 0xCu);
@@ -314,8 +314,8 @@ LABEL_10:
 
   else
   {
-    v9 = [(HFAccessoryDiagnosticsUploadManager *)self failedUploadIdentifiers];
-    v10 = [v9 containsObject:v4];
+    failedUploadIdentifiers = [(HFAccessoryDiagnosticsUploadManager *)self failedUploadIdentifiers];
+    v10 = [failedUploadIdentifiers containsObject:logCopy];
 
     if (v10)
     {
@@ -323,7 +323,7 @@ LABEL_10:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412290;
-        v17 = v4;
+        v17 = logCopy;
         v8 = "Previously submitted. Failed identifiers contains log: %@";
         goto LABEL_10;
       }
@@ -331,8 +331,8 @@ LABEL_10:
 
     else
     {
-      v11 = [(HFAccessoryDiagnosticsUploadManager *)self uploadedIdentifiers];
-      v12 = [v11 containsObject:v4];
+      uploadedIdentifiers = [(HFAccessoryDiagnosticsUploadManager *)self uploadedIdentifiers];
+      v12 = [uploadedIdentifiers containsObject:logCopy];
 
       if (!v12)
       {
@@ -344,7 +344,7 @@ LABEL_10:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412290;
-        v17 = v4;
+        v17 = logCopy;
         v8 = "Previously submitted. Uploaded identifiers contains log: %@";
         goto LABEL_10;
       }
@@ -400,16 +400,16 @@ void __76__HFAccessoryDiagnosticsUploadManager__failAttemptToUploadCurrentIdenti
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finalizeHandlingOfIdentifier:(id)a3
+- (void)_finalizeHandlingOfIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__HFAccessoryDiagnosticsUploadManager__finalizeHandlingOfIdentifier___block_invoke;
   v6[3] = &unk_277DF3370;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -433,53 +433,53 @@ uint64_t __69__HFAccessoryDiagnosticsUploadManager__finalizeHandlingOfIdentifier
   return [v7 _submitNextPendingLog];
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v8 = HFLogForCategory(1uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = challengeCopy;
     _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "Received auth challenge:%@", &v10, 0xCu);
   }
 
-  v7[2](v7, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send
 {
   v19 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  if (a6 == a7)
+  taskCopy = task;
+  if (sent == send)
   {
     v11 = HFLogForCategory(1uLL);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v10 taskDescription];
+      taskDescription = [taskCopy taskDescription];
       v15 = 138412546;
-      v16 = v12;
+      v16 = taskDescription;
       v17 = 2048;
-      v18 = a6;
+      sentCopy = sent;
       _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "Finished uploading task %@ of size:%lld", &v15, 0x16u);
     }
 
-    v13 = [v10 taskDescription];
-    [(HFAccessoryDiagnosticsUploadManager *)self _finalizeHandlingOfIdentifier:v13];
+    taskDescription2 = [taskCopy taskDescription];
+    [(HFAccessoryDiagnosticsUploadManager *)self _finalizeHandlingOfIdentifier:taskDescription2];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFAccessoryDiagnosticsUploadManager *)self pendingIdentifiers];
-  v6 = [v5 count];
+  sessionCopy = session;
+  pendingIdentifiers = [(HFAccessoryDiagnosticsUploadManager *)self pendingIdentifiers];
+  v6 = [pendingIdentifiers count];
 
   v7 = HFLogForCategory(1uLL);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -491,40 +491,40 @@ uint64_t __69__HFAccessoryDiagnosticsUploadManager__finalizeHandlingOfIdentifier
       _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "Finished uploading task in background. Submitting next identifier.", &v13, 2u);
     }
 
-    v9 = [(HFAccessoryDiagnosticsUploadManager *)self _nextFilenameIdentifierToProcess];
-    [(HFAccessoryDiagnosticsUploadManager *)self _finalizeHandlingOfIdentifier:v9];
+    _nextFilenameIdentifierToProcess = [(HFAccessoryDiagnosticsUploadManager *)self _nextFilenameIdentifierToProcess];
+    [(HFAccessoryDiagnosticsUploadManager *)self _finalizeHandlingOfIdentifier:_nextFilenameIdentifierToProcess];
   }
 
   else
   {
     if (v8)
     {
-      v10 = [v4 configuration];
-      v11 = [v10 identifier];
+      configuration = [sessionCopy configuration];
+      identifier = [configuration identifier];
       v13 = 138412546;
-      v14 = v4;
+      v14 = sessionCopy;
       v15 = 2112;
-      v16 = v11;
+      v16 = identifier;
       _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "Did finish all events for background url session:%@ identifier:%@", &v13, 0x16u);
     }
 
-    v9 = [(HFAccessoryDiagnosticsUploadManager *)self backgroundUrlSessionCompletionHandler];
-    v9[2]();
+    _nextFilenameIdentifierToProcess = [(HFAccessoryDiagnosticsUploadManager *)self backgroundUrlSessionCompletionHandler];
+    _nextFilenameIdentifierToProcess[2]();
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   objc_opt_class();
-  v9 = [v7 response];
+  response = [taskCopy response];
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = response;
   }
 
   else
@@ -534,16 +534,16 @@ uint64_t __69__HFAccessoryDiagnosticsUploadManager__finalizeHandlingOfIdentifier
 
   v11 = v10;
 
-  if (v8)
+  if (errorCopy)
   {
     v12 = HFLogForCategory(1uLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v7 taskDescription];
+      taskDescription = [taskCopy taskDescription];
       v18 = 138412546;
-      v19 = v13;
+      v19 = taskDescription;
       v20 = 2112;
-      v21 = v8;
+      statusCode = errorCopy;
       v14 = "Unable to complete task:%@ with error:%@";
 LABEL_16:
       _os_log_error_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_ERROR, v14, &v18, 0x16u);
@@ -559,11 +559,11 @@ LABEL_16:
     v12 = HFLogForCategory(1uLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v7 taskDescription];
+      taskDescription = [taskCopy taskDescription];
       v18 = 138412546;
-      v19 = v13;
+      v19 = taskDescription;
       v20 = 2048;
-      v21 = [v11 statusCode];
+      statusCode = [v11 statusCode];
       v14 = "Unable to complete task:%@ with statusCode:%ld";
       goto LABEL_16;
     }
@@ -577,11 +577,11 @@ LABEL_10:
   v16 = HFLogForCategory(1uLL);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v7 taskDescription];
+    taskDescription2 = [taskCopy taskDescription];
     v18 = 138412546;
-    v19 = v17;
+    v19 = taskDescription2;
     v20 = 2048;
-    v21 = [v11 statusCode];
+    statusCode = [v11 statusCode];
     _os_log_impl(&dword_20D9BF000, v16, OS_LOG_TYPE_DEFAULT, "Did complete task:%@ with response:%ld", &v18, 0x16u);
   }
 
@@ -589,34 +589,34 @@ LABEL_11:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v7 = HFLogForCategory(1uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v5;
+    v10 = sessionCopy;
     v11 = 2112;
-    v12 = v6;
+    v12 = errorCopy;
     _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "Session %@ Did Become Invalid with error:%@", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isValidFilenameIdentifier:(id)a3
+- (BOOL)_isValidFilenameIdentifier:(id)identifier
 {
-  v3 = [(HFAccessoryDiagnosticsUploadManager *)self filePathForIdentifier:a3];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v3 = [(HFAccessoryDiagnosticsUploadManager *)self filePathForIdentifier:identifier];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3];
 
   return v5;
 }
 
-- (void)willResignActive:(id)a3
+- (void)willResignActive:(id)active
 {
   v4 = HFLogForCategory(1uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -632,11 +632,11 @@ LABEL_11:
 {
   if ([(HFAccessoryDiagnosticsUploadManager *)self _needsToPurgeOldLogs])
   {
-    v3 = [(HFAccessoryDiagnosticsUploadManager *)self uploadedIdentifiers];
-    [(HFAccessoryDiagnosticsUploadManager *)self _updatePreviousLogIdentifiers:v3 forKey:@"HFAccessoryDiagnosticsUploaded"];
+    uploadedIdentifiers = [(HFAccessoryDiagnosticsUploadManager *)self uploadedIdentifiers];
+    [(HFAccessoryDiagnosticsUploadManager *)self _updatePreviousLogIdentifiers:uploadedIdentifiers forKey:@"HFAccessoryDiagnosticsUploaded"];
 
-    v4 = [(HFAccessoryDiagnosticsUploadManager *)self failedUploadIdentifiers];
-    [(HFAccessoryDiagnosticsUploadManager *)self _updatePreviousLogIdentifiers:v4 forKey:@"HFAccessoryDiagnosticsFailed"];
+    failedUploadIdentifiers = [(HFAccessoryDiagnosticsUploadManager *)self failedUploadIdentifiers];
+    [(HFAccessoryDiagnosticsUploadManager *)self _updatePreviousLogIdentifiers:failedUploadIdentifiers forKey:@"HFAccessoryDiagnosticsFailed"];
 
     [(HFAccessoryDiagnosticsUploadManager *)self updateLastPurgeDate];
   }
@@ -644,12 +644,12 @@ LABEL_11:
 
 - (BOOL)_needsToPurgeOldLogs
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"HFAccessoryDiagnosticsLastCheckedDate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"HFAccessoryDiagnosticsLastCheckedDate"];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [v4 timeIntervalSinceDate:v3];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:v3];
     v6 = v5 > 86400.0;
   }
 
@@ -663,59 +663,59 @@ LABEL_11:
 
 - (void)updateLastPurgeDate
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v2 = [MEMORY[0x277CBEAA8] date];
-  [v3 setObject:v2 forKey:@"HFAccessoryDiagnosticsLastCheckedDate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  date = [MEMORY[0x277CBEAA8] date];
+  [standardUserDefaults setObject:date forKey:@"HFAccessoryDiagnosticsLastCheckedDate"];
 }
 
-- (void)_updatePreviousLogIdentifiers:(id)a3 forKey:(id)a4
+- (void)_updatePreviousLogIdentifiers:(id)identifiers forKey:(id)key
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v10 = [v9 valueForKey:v7];
+  identifiersCopy = identifiers;
+  keyCopy = key;
+  date = [MEMORY[0x277CBEAA8] date];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v10 = [standardUserDefaults valueForKey:keyCopy];
   if (v10)
   {
-    [v6 addObjectsFromArray:v10];
+    [identifiersCopy addObjectsFromArray:v10];
   }
 
   v11 = HFLogForCategory(1uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v22 = v7;
+    v22 = keyCopy;
     v23 = 2048;
-    v24 = [v6 count];
+    v24 = [identifiersCopy count];
     _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "Begin update for previous identifiers with key: %@ with count: %lu", buf, 0x16u);
   }
 
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __76__HFAccessoryDiagnosticsUploadManager__updatePreviousLogIdentifiers_forKey___block_invoke;
   v18[3] = &unk_277DF56F8;
   v18[4] = self;
-  v19 = v8;
-  v13 = v12;
+  v19 = date;
+  v13 = array;
   v20 = v13;
-  v14 = v8;
-  [v6 enumerateObjectsUsingBlock:v18];
+  v14 = date;
+  [identifiersCopy enumerateObjectsUsingBlock:v18];
   v15 = HFLogForCategory(1uLL);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = [v13 count];
     *buf = 138412546;
-    v22 = v7;
+    v22 = keyCopy;
     v23 = 2048;
     v24 = v16;
     _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "Finish update for previous identifiers with key: %@ with count: %lu", buf, 0x16u);
   }
 
-  [v6 removeAllObjects];
-  [v6 addObjectsFromArray:v13];
-  [v9 setObject:v13 forKey:v7];
+  [identifiersCopy removeAllObjects];
+  [identifiersCopy addObjectsFromArray:v13];
+  [standardUserDefaults setObject:v13 forKey:keyCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -766,15 +766,15 @@ void __76__HFAccessoryDiagnosticsUploadManager__updatePreviousLogIdentifiers_for
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cleanUpLocalFilesForIdentifier:(id)a3
+- (void)_cleanUpLocalFilesForIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HFAccessoryDiagnosticsUploadManager *)self filePathForIdentifier:a3];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  v3 = [(HFAccessoryDiagnosticsUploadManager *)self filePathForIdentifier:identifier];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:v3])
   {
     v8 = 0;
-    [v4 removeItemAtPath:v3 error:&v8];
+    [defaultManager removeItemAtPath:v3 error:&v8];
     v5 = v8;
     if (v5)
     {

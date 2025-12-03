@@ -251,17 +251,17 @@
   if (fabs(v31) >= 1.0e-10)
   {
     v134 = v42;
-    v44 = [(CIImage *)v3 imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha = [(CIImage *)v3 imageByUnpremultiplyingAlpha];
 
     if (v31 >= 0.0)
     {
-      v45 = [(PISmartToneFilterHDR *)self _kernelBpos];
-      [v44 extent];
+      _kernelBpos = [(PISmartToneFilterHDR *)self _kernelBpos];
+      [imageByUnpremultiplyingAlpha extent];
       v47 = v56;
       v49 = v57;
       v51 = v58;
       v53 = v59;
-      v145[0] = v44;
+      v145[0] = imageByUnpremultiplyingAlpha;
       v54 = [MEMORY[0x1E696AD98] numberWithDouble:v31 * 2.0 + 1.0];
       v145[1] = v54;
       v55 = v145;
@@ -269,20 +269,20 @@
 
     else
     {
-      v45 = [(PISmartToneFilterHDR *)self _kernelBneg];
-      [v44 extent];
+      _kernelBpos = [(PISmartToneFilterHDR *)self _kernelBneg];
+      [imageByUnpremultiplyingAlpha extent];
       v47 = v46;
       v49 = v48;
       v51 = v50;
       v53 = v52;
-      v146[0] = v44;
+      v146[0] = imageByUnpremultiplyingAlpha;
       v54 = [MEMORY[0x1E696AD98] numberWithDouble:v31 * -1.5 + 1.0];
       v146[1] = v54;
       v55 = v146;
     }
 
     v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:2];
-    v3 = [v45 applyWithExtent:v60 arguments:{v47, v49, v51, v53}];
+    v3 = [_kernelBpos applyWithExtent:v60 arguments:{v47, v49, v51, v53}];
 
     if (fabs(v41) < 1.0e-10)
     {
@@ -291,9 +291,9 @@
       goto LABEL_20;
     }
 
-    v61 = [(CIImage *)v3 imageByPremultiplyingAlpha];
+    imageByPremultiplyingAlpha = [(CIImage *)v3 imageByPremultiplyingAlpha];
 
-    v3 = v61;
+    v3 = imageByPremultiplyingAlpha;
     v42 = v134;
   }
 
@@ -342,9 +342,9 @@ LABEL_20:
     v135 = v71;
     if (v43)
     {
-      v72 = [(CIImage *)v3 imageByUnpremultiplyingAlpha];
+      imageByUnpremultiplyingAlpha2 = [(CIImage *)v3 imageByUnpremultiplyingAlpha];
 
-      v3 = v72;
+      v3 = imageByUnpremultiplyingAlpha2;
     }
 
     v73 = v137;
@@ -389,7 +389,7 @@ LABEL_20:
       v74 = v3;
     }
 
-    v88 = [(PISmartToneFilterHDR *)self _kernelH];
+    _kernelH = [(PISmartToneFilterHDR *)self _kernelH];
     [v74 extent];
     v90 = v89;
     v92 = v91;
@@ -401,7 +401,7 @@ LABEL_20:
     v98 = [MEMORY[0x1E696AD98] numberWithDouble:v135];
     v141[2] = v98;
     v99 = [MEMORY[0x1E695DEC8] arrayWithObjects:v141 count:3];
-    v3 = [v88 applyWithExtent:v99 arguments:{v90, v92, v94, v96}];
+    v3 = [_kernelH applyWithExtent:v99 arguments:{v90, v92, v94, v96}];
 
     if (fabs(v65) < 1.0e-10)
     {
@@ -415,13 +415,13 @@ LABEL_20:
   {
     if (v43)
     {
-      v75 = [(CIImage *)v3 imageByUnpremultiplyingAlpha];
+      imageByUnpremultiplyingAlpha3 = [(CIImage *)v3 imageByUnpremultiplyingAlpha];
 
-      v3 = v75;
+      v3 = imageByUnpremultiplyingAlpha3;
     }
 
 LABEL_42:
-    v100 = [(PISmartToneFilterHDR *)self _kernelC_hdr];
+    _kernelC_hdr = [(PISmartToneFilterHDR *)self _kernelC_hdr];
     [(CIImage *)v3 extent];
     v102 = v101;
     v104 = v103;
@@ -435,7 +435,7 @@ LABEL_42:
     v111 = [v110 numberWithDouble:?];
     v140[2] = v111;
     v112 = [MEMORY[0x1E695DEC8] arrayWithObjects:v140 count:3];
-    v113 = [v100 applyWithExtent:v112 arguments:{v102, v104, v106, v108}];
+    v113 = [_kernelC_hdr applyWithExtent:v112 arguments:{v102, v104, v106, v108}];
 
     v3 = v113;
     goto LABEL_43;
@@ -444,9 +444,9 @@ LABEL_42:
   if ((v43 & 1) == 0)
   {
 LABEL_43:
-    v114 = [(CIImage *)v3 imageByPremultiplyingAlpha];
+    imageByPremultiplyingAlpha2 = [(CIImage *)v3 imageByPremultiplyingAlpha];
 
-    v3 = v114;
+    v3 = imageByPremultiplyingAlpha2;
   }
 
   if (v137 >= 1.0e-10)

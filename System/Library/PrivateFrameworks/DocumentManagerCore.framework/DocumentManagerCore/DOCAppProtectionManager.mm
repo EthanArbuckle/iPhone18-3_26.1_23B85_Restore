@@ -1,12 +1,12 @@
 @interface DOCAppProtectionManager
 + (DOCAppProtectionManager)sharedManager;
-- (BOOL)_applicationShouldBeIncludedInList:(id)a3;
-- (BOOL)canNodeHostAnAppContainer:(id)a3;
+- (BOOL)_applicationShouldBeIncludedInList:(id)list;
+- (BOOL)canNodeHostAnAppContainer:(id)container;
 - (BOOL)hasAnyProtectedApps;
-- (BOOL)hostAppCanSeeFileProviderDomain:(id)a3;
+- (BOOL)hostAppCanSeeFileProviderDomain:(id)domain;
 - (BOOL)isFilesAppLocked;
-- (BOOL)itemIsAppContainer:(id)a3;
-- (BOOL)nodeRequiresAuthentication_Sync:(id)a3;
+- (BOOL)itemIsAppContainer:(id)container;
+- (BOOL)nodeRequiresAuthentication_Sync:(id)sync;
 - (DOCAppProtectionManager)init;
 - (NSArray)applicationsWithContentHiddenFromSearch;
 - (NSArray)hiddenApplicationBundleIDs;
@@ -15,20 +15,20 @@
 - (NSArray)lockedApplications;
 - (NSArray)protectedApplicationBundleIDs;
 - (NSArray)protectedApplications;
-- (id)_applicationRecordsForAPApplications:(id)a3;
-- (id)bundleIDOfAppContainer_Sync:(id)a3;
-- (id)filterApplications:(id)a3;
-- (id)protectedAppForAppContainerBundleID:(id)a3;
-- (id)protectedAppForAppContainerOID:(id)a3;
-- (unint64_t)hostAppCanNavigateToAppBundleID:(id)a3;
-- (unint64_t)hostAppCanNavigateToFileProviderDomain:(id)a3;
-- (unint64_t)hostAppCanNavigateToTargetNode:(id)a3;
-- (void)appProtectionCacheDidUpdate:(id)a3;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
-- (void)authenticateLocationWithNoUI:(id)a3 checkFilesApp:(BOOL)a4 completion:(id)a5;
-- (void)authenticateLocationWithShielding:(id)a3 completion:(id)a4;
-- (void)bundleIDOfAppContainer:(id)a3 completion:(id)a4;
-- (void)protectedAppForAppContainerBundleID:(id)a3 completion:(id)a4;
+- (id)_applicationRecordsForAPApplications:(id)applications;
+- (id)bundleIDOfAppContainer_Sync:(id)sync;
+- (id)filterApplications:(id)applications;
+- (id)protectedAppForAppContainerBundleID:(id)d;
+- (id)protectedAppForAppContainerOID:(id)d;
+- (unint64_t)hostAppCanNavigateToAppBundleID:(id)d;
+- (unint64_t)hostAppCanNavigateToFileProviderDomain:(id)domain;
+- (unint64_t)hostAppCanNavigateToTargetNode:(id)node;
+- (void)appProtectionCacheDidUpdate:(id)update;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
+- (void)authenticateLocationWithNoUI:(id)i checkFilesApp:(BOOL)app completion:(id)completion;
+- (void)authenticateLocationWithShielding:(id)shielding completion:(id)completion;
+- (void)bundleIDOfAppContainer:(id)container completion:(id)completion;
+- (void)protectedAppForAppContainerBundleID:(id)d completion:(id)completion;
 - (void)startObserving;
 - (void)stopObserving;
 - (void)updateCachedFilteredApplications;
@@ -70,8 +70,8 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
     v5 = [[DOCProtectedAppContainerCache alloc] initWithDelegate:v3];
     [(DOCAppProtectionManager *)v3 setAppContainerCache:v5];
 
-    v6 = [(DOCAppProtectionManager *)v3 appContainerCache];
-    [v6 setAppProtectionContext:v3];
+    appContainerCache = [(DOCAppProtectionManager *)v3 appContainerCache];
+    [appContainerCache setAppProtectionContext:v3];
 
     [(DOCAppProtectionManager *)v3 startObserving];
   }
@@ -82,8 +82,8 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
 - (void)startObserving
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_8() appMonitorSubscription];
+  selfCopy = self;
+  appMonitorSubscription = [OUTLINED_FUNCTION_8() appMonitorSubscription];
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_4_0();
   _os_log_debug_impl(v4, v5, v6, v7, v8, 0x20u);
@@ -99,16 +99,16 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
   }
 
   [(DOCAppProtectionManager *)self updateCachedFilteredApplicationsIfNeeded];
-  v3 = [(DOCAppProtectionManager *)self lockedFilteredDocumentApplications];
-  if ([v3 count])
+  lockedFilteredDocumentApplications = [(DOCAppProtectionManager *)self lockedFilteredDocumentApplications];
+  if ([lockedFilteredDocumentApplications count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(DOCAppProtectionManager *)self hiddenFilteredDocumentApplications];
-    v4 = [v5 count] != 0;
+    hiddenFilteredDocumentApplications = [(DOCAppProtectionManager *)self hiddenFilteredDocumentApplications];
+    v4 = [hiddenFilteredDocumentApplications count] != 0;
   }
 
   return v4;
@@ -134,13 +134,13 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
 {
   v30 = *MEMORY[0x277D85DE8];
   [(DOCAppProtectionManager *)self updateCachedFilteredApplicationsIfNeeded];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = MEMORY[0x277CBEB58];
-  v5 = [(DOCAppProtectionManager *)self filteredDocumentApplicationsWithContentHiddenFromSearch];
-  v6 = [v4 setWithArray:v5];
+  filteredDocumentApplicationsWithContentHiddenFromSearch = [(DOCAppProtectionManager *)self filteredDocumentApplicationsWithContentHiddenFromSearch];
+  v6 = [v4 setWithArray:filteredDocumentApplicationsWithContentHiddenFromSearch];
 
-  v7 = [(DOCAppProtectionManager *)self hiddenFilteredDocumentApplications];
-  [v6 addObjectsFromArray:v7];
+  hiddenFilteredDocumentApplications = [(DOCAppProtectionManager *)self hiddenFilteredDocumentApplications];
+  [v6 addObjectsFromArray:hiddenFilteredDocumentApplications];
 
   v23 = 0u;
   v24 = 0u;
@@ -164,12 +164,12 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 bundleIdentifier];
-        v16 = [(DOCAppProtectionManager *)self protectedAppForAppContainerBundleID:v15];
+        bundleIdentifier = [v14 bundleIdentifier];
+        v16 = [(DOCAppProtectionManager *)self protectedAppForAppContainerBundleID:bundleIdentifier];
 
         if (v16)
         {
-          [v3 addObject:v16];
+          [array addObject:v16];
         }
 
         else
@@ -200,20 +200,20 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)protectedApplications
 {
   v35 = *MEMORY[0x277D85DE8];
   [(DOCAppProtectionManager *)self updateCachedFilteredApplicationsIfNeeded];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = MEMORY[0x277CBEB58];
-  v5 = [(DOCAppProtectionManager *)self lockedFilteredDocumentApplications];
-  v6 = [v4 setWithArray:v5];
+  lockedFilteredDocumentApplications = [(DOCAppProtectionManager *)self lockedFilteredDocumentApplications];
+  v6 = [v4 setWithArray:lockedFilteredDocumentApplications];
 
-  v7 = [(DOCAppProtectionManager *)self hiddenFilteredDocumentApplications];
-  [v6 addObjectsFromArray:v7];
+  hiddenFilteredDocumentApplications = [(DOCAppProtectionManager *)self hiddenFilteredDocumentApplications];
+  [v6 addObjectsFromArray:hiddenFilteredDocumentApplications];
 
   v28 = 0u;
   v29 = 0u;
@@ -237,12 +237,12 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
         }
 
         v13 = *(*(&v26 + 1) + 8 * i);
-        v14 = [v13 bundleIdentifier];
-        v15 = [(DOCAppProtectionManager *)self protectedAppForAppContainerBundleID:v14];
+        bundleIdentifier = [v13 bundleIdentifier];
+        v15 = [(DOCAppProtectionManager *)self protectedAppForAppContainerBundleID:bundleIdentifier];
 
         if (v15)
         {
-          [v3 addObject:v15];
+          [array addObject:v15];
         }
 
         else
@@ -265,10 +265,10 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
 
           v17 = [MEMORY[0x277CBEB98] set];
           v18 = [DOCProtectedApp alloc];
-          v19 = [v13 bundleIdentifier];
-          v20 = [(DOCProtectedApp *)v18 initWith:v19 oids:v17];
+          bundleIdentifier2 = [v13 bundleIdentifier];
+          v20 = [(DOCProtectedApp *)v18 initWith:bundleIdentifier2 oids:v17];
 
-          [v3 addObject:v20];
+          [array addObject:v20];
           v21 = docLogHandle;
           if (!docLogHandle)
           {
@@ -295,13 +295,13 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (BOOL)isFilesAppLocked
 {
-  v2 = [(DOCAppProtectionManager *)self lockedApplicationBundleIDs];
-  v3 = [v2 containsObject:@"com.apple.DocumentsApp"];
+  lockedApplicationBundleIDs = [(DOCAppProtectionManager *)self lockedApplicationBundleIDs];
+  v3 = [lockedApplicationBundleIDs containsObject:@"com.apple.DocumentsApp"];
 
   return v3;
 }
@@ -310,13 +310,13 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
 {
   v21 = *MEMORY[0x277D85DE8];
   [(DOCAppProtectionManager *)self updateCachedFilteredApplicationsIfNeeded];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(DOCAppProtectionManager *)self lockedFilteredDocumentApplications];
+  array = [MEMORY[0x277CBEB18] array];
+  lockedFilteredDocumentApplications = [(DOCAppProtectionManager *)self lockedFilteredDocumentApplications];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [lockedFilteredDocumentApplications countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -327,45 +327,45 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(lockedFilteredDocumentApplications);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [(DOCAppProtectionManager *)self hostIdentifier];
-        v11 = [v9 isEqual:v10];
+        hostIdentifier = [(DOCAppProtectionManager *)self hostIdentifier];
+        v11 = [v9 isEqual:hostIdentifier];
 
         if ((v11 & 1) == 0)
         {
-          v12 = [v9 bundleIdentifier];
-          v13 = [v12 copy];
-          [v3 addObject:v13];
+          bundleIdentifier = [v9 bundleIdentifier];
+          v13 = [bundleIdentifier copy];
+          [array addObject:v13];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [lockedFilteredDocumentApplications countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 
-  [v3 sortUsingSelector:sel_caseInsensitiveCompare_];
+  [array sortUsingSelector:sel_caseInsensitiveCompare_];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)hiddenApplicationBundleIDs
 {
   v21 = *MEMORY[0x277D85DE8];
   [(DOCAppProtectionManager *)self updateCachedFilteredApplicationsIfNeeded];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(DOCAppProtectionManager *)self hiddenFilteredDocumentApplications];
+  array = [MEMORY[0x277CBEB18] array];
+  hiddenFilteredDocumentApplications = [(DOCAppProtectionManager *)self hiddenFilteredDocumentApplications];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [hiddenFilteredDocumentApplications countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -376,46 +376,46 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(hiddenFilteredDocumentApplications);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [(DOCAppProtectionManager *)self hostIdentifier];
-        v11 = [v9 isEqual:v10];
+        hostIdentifier = [(DOCAppProtectionManager *)self hostIdentifier];
+        v11 = [v9 isEqual:hostIdentifier];
 
         if ((v11 & 1) == 0)
         {
-          v12 = [v9 bundleIdentifier];
-          v13 = [v12 copy];
-          [v3 addObject:v13];
+          bundleIdentifier = [v9 bundleIdentifier];
+          v13 = [bundleIdentifier copy];
+          [array addObject:v13];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [hiddenFilteredDocumentApplications countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 
-  [v3 sortUsingSelector:sel_caseInsensitiveCompare_];
+  [array sortUsingSelector:sel_caseInsensitiveCompare_];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)protectedApplicationBundleIDs
 {
   [(DOCAppProtectionManager *)self updateCachedFilteredApplicationsIfNeeded];
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(DOCAppProtectionManager *)self hiddenApplicationBundleIDs];
-  [v3 addObjectsFromArray:v4];
+  hiddenApplicationBundleIDs = [(DOCAppProtectionManager *)self hiddenApplicationBundleIDs];
+  [v3 addObjectsFromArray:hiddenApplicationBundleIDs];
 
-  v5 = [(DOCAppProtectionManager *)self lockedApplicationBundleIDs];
-  [v3 addObjectsFromArray:v5];
+  lockedApplicationBundleIDs = [(DOCAppProtectionManager *)self lockedApplicationBundleIDs];
+  [v3 addObjectsFromArray:lockedApplicationBundleIDs];
 
-  v6 = [v3 allObjects];
-  v7 = [v6 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+  allObjects = [v3 allObjects];
+  v7 = [allObjects sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
   return v7;
 }
@@ -424,13 +424,13 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
 {
   v26 = *MEMORY[0x277D85DE8];
   [(DOCAppProtectionManager *)self updateCachedFilteredApplicationsIfNeeded];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(DOCAppProtectionManager *)self hiddenFilteredDocumentApplications];
+  array = [MEMORY[0x277CBEB18] array];
+  hiddenFilteredDocumentApplications = [(DOCAppProtectionManager *)self hiddenFilteredDocumentApplications];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  v5 = [hiddenFilteredDocumentApplications countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v5)
   {
     v7 = v5;
@@ -443,16 +443,16 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(hiddenFilteredDocumentApplications);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 bundleIdentifier];
-        v12 = [(DOCAppProtectionManager *)self protectedAppForAppContainerBundleID:v11];
+        bundleIdentifier = [v10 bundleIdentifier];
+        v12 = [(DOCAppProtectionManager *)self protectedAppForAppContainerBundleID:bundleIdentifier];
 
         if (v12)
         {
-          [v3 addObject:v12];
+          [array addObject:v12];
         }
 
         else
@@ -475,7 +475,7 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v7 = [hiddenFilteredDocumentApplications countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v7);
@@ -483,21 +483,21 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)lockedApplications
 {
   v32 = *MEMORY[0x277D85DE8];
   [(DOCAppProtectionManager *)self updateCachedFilteredApplicationsIfNeeded];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = MEMORY[0x277CBEB58];
-  v5 = [(DOCAppProtectionManager *)self lockedFilteredDocumentApplications];
-  v6 = [v4 setWithArray:v5];
+  lockedFilteredDocumentApplications = [(DOCAppProtectionManager *)self lockedFilteredDocumentApplications];
+  v6 = [v4 setWithArray:lockedFilteredDocumentApplications];
 
   v7 = MEMORY[0x277CBEB98];
-  v8 = [(DOCAppProtectionManager *)self hiddenFilteredDocumentApplications];
-  v9 = [v7 setWithArray:v8];
+  hiddenFilteredDocumentApplications = [(DOCAppProtectionManager *)self hiddenFilteredDocumentApplications];
+  v9 = [v7 setWithArray:hiddenFilteredDocumentApplications];
   [v6 minusSet:v9];
 
   v25 = 0u;
@@ -522,12 +522,12 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
         }
 
         v16 = *(*(&v23 + 1) + 8 * i);
-        v17 = [v16 bundleIdentifier];
-        v18 = [(DOCAppProtectionManager *)self protectedAppForAppContainerBundleID:v17];
+        bundleIdentifier = [v16 bundleIdentifier];
+        v18 = [(DOCAppProtectionManager *)self protectedAppForAppContainerBundleID:bundleIdentifier];
 
         if (v18)
         {
-          [v3 addObject:v18];
+          [array addObject:v18];
         }
 
         else
@@ -558,17 +558,17 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
-- (id)protectedAppForAppContainerOID:(id)a3
+- (id)protectedAppForAppContainerOID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(DOCAppProtectionManager *)self updateCachedFilteredApplicationsIfNeeded];
   if (+[DOCFeature protectedAppsEnabled])
   {
-    v5 = [(DOCAppProtectionManager *)self appContainerCache];
-    v6 = [v5 appForAppContainerOID:v4];
+    appContainerCache = [(DOCAppProtectionManager *)self appContainerCache];
+    v6 = [appContainerCache appForAppContainerOID:dCopy];
   }
 
   else
@@ -591,14 +591,14 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
   return v6;
 }
 
-- (id)protectedAppForAppContainerBundleID:(id)a3
+- (id)protectedAppForAppContainerBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(DOCAppProtectionManager *)self updateCachedFilteredApplicationsIfNeeded];
   if (+[DOCFeature protectedAppsEnabled])
   {
-    v5 = [(DOCAppProtectionManager *)self appContainerCache];
-    v6 = [v5 appForAppContainerBundleID:v4];
+    appContainerCache = [(DOCAppProtectionManager *)self appContainerCache];
+    v6 = [appContainerCache appForAppContainerBundleID:dCopy];
   }
 
   else
@@ -621,15 +621,15 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
   return v6;
 }
 
-- (void)protectedAppForAppContainerBundleID:(id)a3 completion:(id)a4
+- (void)protectedAppForAppContainerBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   [(DOCAppProtectionManager *)self updateCachedFilteredApplicationsIfNeeded];
   if (+[DOCFeature protectedAppsEnabled])
   {
-    v8 = [(DOCAppProtectionManager *)self appContainerCache];
-    [v8 appForAppContainerBundleID:v6 completion:v7];
+    appContainerCache = [(DOCAppProtectionManager *)self appContainerCache];
+    [appContainerCache appForAppContainerBundleID:dCopy completion:completionCopy];
   }
 
   else
@@ -646,21 +646,21 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
       [DOCAppProtectionManager protectedAppForAppContainerBundleID:completion:];
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (id)filterApplications:(id)a3
+- (id)filterApplications:(id)applications
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DOCAppProtectionManager *)self _applicationRecordsForAPApplications:v4];
-  v25 = [MEMORY[0x277CBEB18] array];
+  applicationsCopy = applications;
+  v5 = [(DOCAppProtectionManager *)self _applicationRecordsForAPApplications:applicationsCopy];
+  array = [MEMORY[0x277CBEB18] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = v4;
+  v6 = applicationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v36 count:16];
   if (v7)
   {
@@ -678,12 +678,12 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v12 bundleIdentifier];
-        v14 = [v5 objectForKey:v13];
+        bundleIdentifier = [v12 bundleIdentifier];
+        v14 = [v5 objectForKey:bundleIdentifier];
 
         if (v14 && [(DOCAppProtectionManager *)self _applicationShouldBeIncludedInList:v14])
         {
-          [v25 addObject:v12];
+          [array addObject:v12];
         }
 
         else
@@ -715,7 +715,7 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
   }
 
   v16 = [v6 count];
-  v17 = [v25 count];
+  v17 = [array count];
   v18 = docLogHandle;
   if (!docLogHandle)
   {
@@ -727,7 +727,7 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
   {
     v21 = v16 - v17;
     v22 = v18;
-    v23 = [v25 count];
+    v23 = [array count];
     *buf = 136315650;
     v31 = "[DOCAppProtectionManager filterApplications:]";
     v32 = 2048;
@@ -739,19 +739,19 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v25;
+  return array;
 }
 
-- (id)_applicationRecordsForAPApplications:(id)a3
+- (id)_applicationRecordsForAPApplications:(id)applications
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v22 = [MEMORY[0x277CBEB38] dictionary];
+  applicationsCopy = applications;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = v3;
+  v4 = applicationsCopy;
   v5 = [v4 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v5)
   {
@@ -769,16 +769,16 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [v10 bundleIdentifier];
+        bundleIdentifier = [v10 bundleIdentifier];
         v23 = 0;
-        v12 = [MEMORY[0x277CC1E70] bundleRecordWithBundleIdentifier:v11 allowPlaceholder:0 error:&v23];
+        v12 = [MEMORY[0x277CC1E70] bundleRecordWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v23];
         v13 = v23;
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && (v14 = v12) != 0)
         {
           v15 = v14;
-          v16 = [v14 bundleIdentifier];
-          [v22 setObject:v15 forKey:v16];
+          bundleIdentifier2 = [v14 bundleIdentifier];
+          [dictionary setObject:v15 forKey:bundleIdentifier2];
         }
 
         else
@@ -807,41 +807,41 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
     while (v7);
   }
 
-  v18 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v22];
+  v18 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
 
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;
 }
 
-- (BOOL)_applicationShouldBeIncludedInList:(id)a3
+- (BOOL)_applicationShouldBeIncludedInList:(id)list
 {
-  v3 = a3;
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.DocumentsApp"];
+  listCopy = list;
+  bundleIdentifier = [listCopy bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.DocumentsApp"];
 
-  if (v5 & 1) != 0 || ([v3 doc_canHaveAppContainer])
+  if (v5 & 1) != 0 || ([listCopy doc_canHaveAppContainer])
   {
-    v6 = 1;
+    doc_hasFileProviderExtension = 1;
   }
 
   else
   {
-    v6 = [v3 doc_hasFileProviderExtension];
+    doc_hasFileProviderExtension = [listCopy doc_hasFileProviderExtension];
   }
 
-  return v6;
+  return doc_hasFileProviderExtension;
 }
 
-- (void)authenticateLocationWithShielding:(id)a3 completion:(id)a4
+- (void)authenticateLocationWithShielding:(id)shielding completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  shieldingCopy = shielding;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__DOCAppProtectionManager_authenticateLocationWithShielding_completion___block_invoke;
   aBlock[3] = &unk_278F9BC68;
-  v8 = v7;
+  v8 = completionCopy;
   v19 = v8;
   v9 = _Block_copy(aBlock);
   if (!+[DOCFeature protectedAppsEnabled])
@@ -861,7 +861,7 @@ uint64_t __40__DOCAppProtectionManager_sharedManager__block_invoke()
     goto LABEL_23;
   }
 
-  if (!v6)
+  if (!shieldingCopy)
   {
     v14 = docLogHandle;
     if (!docLogHandle)
@@ -897,8 +897,8 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v10 = [(DOCAppProtectionManager *)self hostIdentifier];
-  v11 = [v10 length];
+  hostIdentifier = [(DOCAppProtectionManager *)self hostIdentifier];
+  v11 = [hostIdentifier length];
 
   if (!v11)
   {
@@ -914,7 +914,7 @@ LABEL_23:
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [DOCAppProtectionManager authenticateLocationWithShielding:v6 completion:v12];
+    [DOCAppProtectionManager authenticateLocationWithShielding:shieldingCopy completion:v12];
   }
 
   v16[0] = MEMORY[0x277D85DD0];
@@ -923,7 +923,7 @@ LABEL_23:
   v16[3] = &unk_278F9BCE0;
   v16[4] = self;
   v17 = v9;
-  [v6 fetchFPItem:v16];
+  [shieldingCopy fetchFPItem:v16];
 
 LABEL_24:
 }
@@ -1204,20 +1204,20 @@ void __72__DOCAppProtectionManager_authenticateLocationWithShielding_completion_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)authenticateLocationWithNoUI:(id)a3 checkFilesApp:(BOOL)a4 completion:(id)a5
+- (void)authenticateLocationWithNoUI:(id)i checkFilesApp:(BOOL)app completion:(id)completion
 {
-  v6 = a4;
+  appCopy = app;
   v64 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  iCopy = i;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __81__DOCAppProtectionManager_authenticateLocationWithNoUI_checkFilesApp_completion___block_invoke;
   aBlock[3] = &unk_278F9BD30;
-  v10 = v8;
+  v10 = iCopy;
   v51 = v10;
-  v52 = self;
-  v11 = v9;
+  selfCopy = self;
+  v11 = completionCopy;
   v53 = v11;
   v12 = _Block_copy(aBlock);
   if (+[DOCFeature protectedAppsEnabled])
@@ -1226,13 +1226,13 @@ void __72__DOCAppProtectionManager_authenticateLocationWithShielding_completion_
     {
       if (v10)
       {
-        if (v6)
+        if (appCopy)
         {
           v13 = +[DOCAppProtectionManager sharedManager];
           if ([v13 isFilesAppLocked])
           {
-            v14 = [(DOCAppProtectionManager *)self hostIdentifier];
-            v15 = [@"com.apple.DocumentsApp" isEqualToString:v14];
+            hostIdentifier = [(DOCAppProtectionManager *)self hostIdentifier];
+            v15 = [@"com.apple.DocumentsApp" isEqualToString:hostIdentifier];
 
             if ((v15 & 1) == 0)
             {
@@ -1248,15 +1248,15 @@ void __72__DOCAppProtectionManager_authenticateLocationWithShielding_completion_
                 [DOCAppProtectionManager authenticateLocationWithNoUI:checkFilesApp:completion:];
               }
 
-              v17 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:@"com.apple.DocumentsApp"];
-              v18 = [MEMORY[0x277CEBE98] sharedGuard];
+              cachedDomain = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:@"com.apple.DocumentsApp"];
+              mEMORY[0x277CEBE98] = [MEMORY[0x277CEBE98] sharedGuard];
               v47[0] = MEMORY[0x277D85DD0];
               v47[1] = 3221225472;
               v47[2] = __81__DOCAppProtectionManager_authenticateLocationWithNoUI_checkFilesApp_completion___block_invoke_79;
               v47[3] = &unk_278F9BC90;
               v48 = v10;
               v49 = v12;
-              [v18 authenticateForSubject:v17 completion:v47];
+              [mEMORY[0x277CEBE98] authenticateForSubject:cachedDomain completion:v47];
 
               goto LABEL_57;
             }
@@ -1267,8 +1267,8 @@ void __72__DOCAppProtectionManager_authenticateLocationWithShielding_completion_
           }
         }
 
-        v17 = [v10 cachedDomain];
-        v23 = [v17 topLevelBundleIdentifier];
+        cachedDomain = [v10 cachedDomain];
+        topLevelBundleIdentifier = [cachedDomain topLevelBundleIdentifier];
         v24 = docLogHandle;
         if (!docLogHandle)
         {
@@ -1279,18 +1279,18 @@ void __72__DOCAppProtectionManager_authenticateLocationWithShielding_completion_
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
           log = v24;
-          v34 = [(DOCAppProtectionManager *)self hostIdentifier];
-          v35 = [v17 topLevelBundleIdentifier];
+          hostIdentifier2 = [(DOCAppProtectionManager *)self hostIdentifier];
+          topLevelBundleIdentifier2 = [cachedDomain topLevelBundleIdentifier];
           *buf = 136316162;
           v55 = "[DOCAppProtectionManager authenticateLocationWithNoUI:checkFilesApp:completion:]";
           v56 = 2112;
-          v57 = v34;
+          v57 = hostIdentifier2;
           v58 = 2112;
           v59 = v10;
           v60 = 2112;
-          v61 = v17;
+          v61 = cachedDomain;
           v62 = 2112;
-          v63 = v35;
+          v63 = topLevelBundleIdentifier2;
           _os_log_debug_impl(&dword_249340000, log, OS_LOG_TYPE_DEBUG, "[PROTECTED APPS] %s targetNode: %@ cachedDomain: %@, topLevelBundleIdentifier: %@ hostIdentifier: %@, ", buf, 0x34u);
         }
 
@@ -1304,18 +1304,18 @@ void __72__DOCAppProtectionManager_authenticateLocationWithShielding_completion_
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
         {
           [DOCAppProtectionManager authenticateLocationWithNoUI:checkFilesApp:completion:];
-          if (!v23)
+          if (!topLevelBundleIdentifier)
           {
             goto LABEL_55;
           }
         }
 
-        else if (!v23)
+        else if (!topLevelBundleIdentifier)
         {
           goto LABEL_55;
         }
 
-        v26 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:v23];
+        v26 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:topLevelBundleIdentifier];
         v27 = docLogHandle;
         if (!docLogHandle)
         {
@@ -1328,8 +1328,8 @@ void __72__DOCAppProtectionManager_authenticateLocationWithShielding_completion_
           [DOCAppProtectionManager authenticateLocationWithNoUI:checkFilesApp:completion:];
         }
 
-        v28 = [(DOCAppProtectionManager *)self hostIdentifier];
-        v29 = [v23 isEqualToString:v28];
+        hostIdentifier3 = [(DOCAppProtectionManager *)self hostIdentifier];
+        v29 = [topLevelBundleIdentifier isEqualToString:hostIdentifier3];
 
         if (v29)
         {
@@ -1343,13 +1343,13 @@ void __72__DOCAppProtectionManager_authenticateLocationWithShielding_completion_
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
           {
             v36 = v30;
-            v37 = [(DOCAppProtectionManager *)self hostIdentifier];
+            hostIdentifier4 = [(DOCAppProtectionManager *)self hostIdentifier];
             *buf = 136315906;
             v55 = "[DOCAppProtectionManager authenticateLocationWithNoUI:checkFilesApp:completion:]";
             v56 = 2112;
-            v57 = v17;
+            v57 = cachedDomain;
             v58 = 2112;
-            v59 = v37;
+            v59 = hostIdentifier4;
             v60 = 2112;
             v61 = v10;
             _os_log_debug_impl(&dword_249340000, v36, OS_LOG_TYPE_DEBUG, "[PROTECTED APPS] %s : cached file provider domain %@ matches host identifier: %@ for node: %@. Do not require auth.", buf, 0x2Au);
@@ -1372,15 +1372,15 @@ void __72__DOCAppProtectionManager_authenticateLocationWithShielding_completion_
             [DOCAppProtectionManager authenticateLocationWithNoUI:checkFilesApp:completion:];
           }
 
-          v32 = [MEMORY[0x277CEBE98] sharedGuard];
+          mEMORY[0x277CEBE98]2 = [MEMORY[0x277CEBE98] sharedGuard];
           v43[0] = MEMORY[0x277D85DD0];
           v43[1] = 3221225472;
           v43[2] = __81__DOCAppProtectionManager_authenticateLocationWithNoUI_checkFilesApp_completion___block_invoke_80;
           v43[3] = &unk_278F9BD58;
-          v44 = v23;
+          v44 = topLevelBundleIdentifier;
           v45 = v10;
           v46 = v12;
-          [v32 authenticateForSubject:v26 completion:v43];
+          [mEMORY[0x277CEBE98]2 authenticateForSubject:v26 completion:v43];
 
           v33 = docLogHandle;
           if (!docLogHandle)
@@ -1403,7 +1403,7 @@ LABEL_55:
         v39[2] = __81__DOCAppProtectionManager_authenticateLocationWithNoUI_checkFilesApp_completion___block_invoke_81;
         v39[3] = &unk_278F9BDA8;
         v39[4] = self;
-        v40 = v17;
+        v40 = cachedDomain;
         v41 = v10;
         v42 = v12;
         [(DOCAppProtectionManager *)self bundleIDOfAppContainer:v41 completion:v39];
@@ -1765,14 +1765,14 @@ void __81__DOCAppProtectionManager_authenticateLocationWithNoUI_checkFilesApp_co
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)nodeRequiresAuthentication_Sync:(id)a3
+- (BOOL)nodeRequiresAuthentication_Sync:(id)sync
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  syncCopy = sync;
   if (!+[DOCFeature protectedAppsEnabled])
   {
 LABEL_16:
-    LOBYTE(v15) = 0;
+    LOBYTE(isLocked3) = 0;
     goto LABEL_55;
   }
 
@@ -1793,23 +1793,23 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v5 = [v4 cachedDomain];
-  v6 = v5;
-  if (!v5)
+  cachedDomain = [syncCopy cachedDomain];
+  v6 = cachedDomain;
+  if (!cachedDomain)
   {
     goto LABEL_24;
   }
 
-  v7 = [v5 topLevelBundleIdentifier];
+  topLevelBundleIdentifier = [cachedDomain topLevelBundleIdentifier];
 
-  if (!v7)
+  if (!topLevelBundleIdentifier)
   {
     goto LABEL_24;
   }
 
-  v8 = [v6 topLevelBundleIdentifier];
-  v9 = [(DOCAppProtectionManager *)self hostIdentifier];
-  v10 = [v8 isEqualToString:v9];
+  topLevelBundleIdentifier2 = [v6 topLevelBundleIdentifier];
+  hostIdentifier = [(DOCAppProtectionManager *)self hostIdentifier];
+  v10 = [topLevelBundleIdentifier2 isEqualToString:hostIdentifier];
 
   if (v10)
   {
@@ -1823,28 +1823,28 @@ LABEL_16:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v35 = v11;
-      v36 = [(DOCAppProtectionManager *)self hostIdentifier];
+      hostIdentifier2 = [(DOCAppProtectionManager *)self hostIdentifier];
       v40 = 136315906;
       v41 = "[DOCAppProtectionManager nodeRequiresAuthentication_Sync:]";
       v42 = 2112;
       *v43 = v6;
       *&v43[8] = 2112;
-      *&v43[10] = v36;
+      *&v43[10] = hostIdentifier2;
       *&v43[18] = 2112;
-      *&v43[20] = v4;
+      *&v43[20] = syncCopy;
       _os_log_debug_impl(&dword_249340000, v35, OS_LOG_TYPE_DEBUG, "[PROTECTED APPS] %s : cached file provider domain %@ matches host identifier: %@ for node: %@. Do not require auth.", &v40, 0x2Au);
     }
   }
 
-  v12 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:v8];
+  v12 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:topLevelBundleIdentifier2];
   if ([v12 isHidden])
   {
-    v13 = 1;
+    isLocked = 1;
   }
 
   else
   {
-    v13 = [v12 isLocked];
+    isLocked = [v12 isLocked];
   }
 
   v16 = docLogHandle;
@@ -1861,21 +1861,21 @@ LABEL_16:
     v42 = 2112;
     *v43 = v6;
     *&v43[8] = 1024;
-    *&v43[10] = v13;
+    *&v43[10] = isLocked;
     *&v43[14] = 2112;
-    *&v43[16] = v4;
+    *&v43[16] = syncCopy;
     _os_log_debug_impl(&dword_249340000, v16, OS_LOG_TYPE_DEBUG, "[PROTECTED APPS] %s : cached file provider domain %@ locked or hidden: %d for node: %@", &v40, 0x26u);
   }
 
-  if ((v10 | v13))
+  if ((v10 | isLocked))
   {
-    LOBYTE(v15) = v10 ^ 1;
+    LOBYTE(isLocked3) = v10 ^ 1;
   }
 
   else
   {
 LABEL_24:
-    if ([(DOCAppProtectionManager *)self canNodeHostAnAppContainer:v4])
+    if ([(DOCAppProtectionManager *)self canNodeHostAnAppContainer:syncCopy])
     {
       Current = CFAbsoluteTimeGetCurrent();
       v18 = docLogHandle;
@@ -1890,7 +1890,7 @@ LABEL_24:
         [DOCAppProtectionManager nodeRequiresAuthentication_Sync:];
       }
 
-      v19 = [(DOCAppProtectionManager *)self bundleIDOfAppContainer_Sync:v4];
+      v19 = [(DOCAppProtectionManager *)self bundleIDOfAppContainer_Sync:syncCopy];
       if (v19 && (-[DOCAppProtectionManager hostIdentifier](self, "hostIdentifier"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v19 isEqualToString:v20], v20, (v21 & 1) == 0))
       {
         v24 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:v19];
@@ -1904,29 +1904,29 @@ LABEL_24:
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
         {
           v37 = v25;
-          v38 = [v24 isHidden];
-          v39 = [v24 isLocked];
+          isHidden = [v24 isHidden];
+          isLocked2 = [v24 isLocked];
           v40 = 136316162;
           v41 = "[DOCAppProtectionManager nodeRequiresAuthentication_Sync:]";
           v42 = 2112;
-          *v43 = v4;
+          *v43 = syncCopy;
           *&v43[8] = 2112;
           *&v43[10] = v19;
           *&v43[18] = 1024;
-          *&v43[20] = v38;
+          *&v43[20] = isHidden;
           *&v43[24] = 1024;
-          *&v43[26] = v39;
+          *&v43[26] = isLocked2;
           _os_log_debug_impl(&dword_249340000, v37, OS_LOG_TYPE_DEBUG, "[PROTECTED APPS] %s : target node: %@ appContainerBundleIdentifier: %@ isHidden: %d isLocked: %d", &v40, 0x2Cu);
         }
 
         if ([v24 isHidden])
         {
-          v15 = 1;
+          isLocked3 = 1;
         }
 
         else
         {
-          v15 = [v24 isLocked];
+          isLocked3 = [v24 isLocked];
         }
       }
 
@@ -1942,19 +1942,19 @@ LABEL_24:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
         {
           v33 = v22;
-          v34 = [(DOCAppProtectionManager *)self hostIdentifier];
+          hostIdentifier3 = [(DOCAppProtectionManager *)self hostIdentifier];
           v40 = 136315906;
           v41 = "[DOCAppProtectionManager nodeRequiresAuthentication_Sync:]";
           v42 = 2112;
-          *v43 = v4;
+          *v43 = syncCopy;
           *&v43[8] = 2112;
           *&v43[10] = v19;
           *&v43[18] = 2112;
-          *&v43[20] = v34;
+          *&v43[20] = hostIdentifier3;
           _os_log_debug_impl(&dword_249340000, v33, OS_LOG_TYPE_DEBUG, "[PROTECTED APPS] %s Proceed without auth. Node: %@ is not in an app container OR app container bundle id: %@ matches host id: %@", &v40, 0x2Au);
         }
 
-        v15 = 0;
+        isLocked3 = 0;
       }
 
       v26 = CFAbsoluteTimeGetCurrent();
@@ -1969,15 +1969,15 @@ LABEL_24:
       {
         v30 = MEMORY[0x277CCABB0];
         v31 = v27;
-        v32 = [v30 numberWithDouble:v26 - Current];
+        current = [v30 numberWithDouble:v26 - Current];
         v40 = 136315906;
         v41 = "[DOCAppProtectionManager nodeRequiresAuthentication_Sync:]";
         v42 = 1024;
-        *v43 = v15;
+        *v43 = isLocked3;
         *&v43[4] = 2112;
-        *&v43[6] = v32;
+        *&v43[6] = current;
         *&v43[14] = 2112;
-        *&v43[16] = v4;
+        *&v43[16] = syncCopy;
         _os_log_debug_impl(&dword_249340000, v31, OS_LOG_TYPE_DEBUG, "[PROTECTED APPS] %s requiresAuthentication: %d took: %@ ms for node: %@", &v40, 0x26u);
       }
     }
@@ -1996,26 +1996,26 @@ LABEL_24:
         [DOCAppProtectionManager nodeRequiresAuthentication_Sync:];
       }
 
-      LOBYTE(v15) = 0;
+      LOBYTE(isLocked3) = 0;
     }
   }
 
 LABEL_55:
   v28 = *MEMORY[0x277D85DE8];
-  return v15;
+  return isLocked3;
 }
 
-- (BOOL)canNodeHostAnAppContainer:(id)a3
+- (BOOL)canNodeHostAnAppContainer:(id)container
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  containerCopy = container;
   if (+[DOCFeature protectedAppsEnabled])
   {
-    if (v4)
+    if (containerCopy)
     {
-      v5 = [v4 providerID];
-      v6 = [v4 cachedDomain];
-      if ([v6 isiCloudDriveProvider])
+      providerID = [containerCopy providerID];
+      cachedDomain = [containerCopy cachedDomain];
+      if ([cachedDomain isiCloudDriveProvider])
       {
         v7 = docLogHandle;
         if (!docLogHandle)
@@ -2026,13 +2026,13 @@ LABEL_55:
 
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
         {
-          [(DOCAppProtectionManager *)v4 canNodeHostAnAppContainer:v7];
+          [(DOCAppProtectionManager *)containerCopy canNodeHostAnAppContainer:v7];
         }
       }
 
       else
       {
-        v10 = [v5 isEqualToString:@"com.apple.FileProvider.LocalStorage"];
+        v10 = [providerID isEqualToString:@"com.apple.FileProvider.LocalStorage"];
         v11 = docLogHandle;
         if (!v10)
         {
@@ -2045,15 +2045,15 @@ LABEL_55:
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
           {
             v14 = v11;
-            v15 = [(DOCAppProtectionManager *)self hostIdentifier];
+            hostIdentifier = [(DOCAppProtectionManager *)self hostIdentifier];
             v16 = 136315906;
             v17 = "[DOCAppProtectionManager canNodeHostAnAppContainer:]";
             v18 = 2112;
-            v19 = v4;
+            v19 = containerCopy;
             v20 = 2112;
-            v21 = v6;
+            v21 = cachedDomain;
             v22 = 2112;
-            v23 = v15;
+            v23 = hostIdentifier;
             _os_log_debug_impl(&dword_249340000, v14, OS_LOG_TYPE_DEBUG, "[PROTECTED APPS] %s targetNode: %@ returning NO. Cached domain: %@ Host ID: %@", &v16, 0x2Au);
           }
 
@@ -2069,7 +2069,7 @@ LABEL_55:
 
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
-          [(DOCAppProtectionManager *)v4 canNodeHostAnAppContainer:v11];
+          [(DOCAppProtectionManager *)containerCopy canNodeHostAnAppContainer:v11];
         }
       }
 
@@ -2099,9 +2099,9 @@ LABEL_25:
   return v9;
 }
 
-- (unint64_t)hostAppCanNavigateToTargetNode:(id)a3
+- (unint64_t)hostAppCanNavigateToTargetNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   if (!+[DOCFeature protectedAppsEnabled])
   {
 LABEL_11:
@@ -2109,8 +2109,8 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v5 = [(DOCAppProtectionManager *)self hostIdentifier];
-  v6 = [v5 length];
+  hostIdentifier = [(DOCAppProtectionManager *)self hostIdentifier];
+  v6 = [hostIdentifier length];
 
   if (!v6)
   {
@@ -2134,10 +2134,10 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v7 = [v4 cachedDomain];
-  if (v7)
+  cachedDomain = [nodeCopy cachedDomain];
+  if (cachedDomain)
   {
-    v8 = [(DOCAppProtectionManager *)self hostAppCanNavigateToFileProviderDomain:v7];
+    v8 = [(DOCAppProtectionManager *)self hostAppCanNavigateToFileProviderDomain:cachedDomain];
   }
 
   else
@@ -2149,9 +2149,9 @@ LABEL_14:
   return v8;
 }
 
-- (unint64_t)hostAppCanNavigateToFileProviderDomain:(id)a3
+- (unint64_t)hostAppCanNavigateToFileProviderDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   if (!+[DOCFeature protectedAppsEnabled])
   {
 LABEL_12:
@@ -2159,16 +2159,16 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v5 = [(DOCAppProtectionManager *)self hostIdentifier];
-  v6 = [v5 length];
+  hostIdentifier = [(DOCAppProtectionManager *)self hostIdentifier];
+  v6 = [hostIdentifier length];
 
   if (!v6)
   {
     [DOCAppProtectionManager hostAppCanNavigateToFileProviderDomain:];
   }
 
-  v7 = [v4 topLevelBundleIdentifier];
-  v8 = [v7 length];
+  topLevelBundleIdentifier = [domainCopy topLevelBundleIdentifier];
+  v8 = [topLevelBundleIdentifier length];
 
   if (!v8)
   {
@@ -2192,16 +2192,16 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v9 = [v4 topLevelBundleIdentifier];
-  v10 = [(DOCAppProtectionManager *)self hostAppCanNavigateToAppBundleID:v9];
+  topLevelBundleIdentifier2 = [domainCopy topLevelBundleIdentifier];
+  v10 = [(DOCAppProtectionManager *)self hostAppCanNavigateToAppBundleID:topLevelBundleIdentifier2];
 
 LABEL_13:
   return v10;
 }
 
-- (unint64_t)hostAppCanNavigateToAppBundleID:(id)a3
+- (unint64_t)hostAppCanNavigateToAppBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (!+[DOCFeature protectedAppsEnabled])
   {
 LABEL_11:
@@ -2209,8 +2209,8 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v5 = [(DOCAppProtectionManager *)self hostIdentifier];
-  v6 = [v5 length];
+  hostIdentifier = [(DOCAppProtectionManager *)self hostIdentifier];
+  v6 = [hostIdentifier length];
 
   if (!v6)
   {
@@ -2234,12 +2234,12 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v7 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:v4];
+  v7 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:dCopy];
   if ([v7 isHidden])
   {
-    v8 = [v7 bundleIdentifier];
-    v9 = [(DOCAppProtectionManager *)self hostIdentifier];
-    v10 = [v8 isEqualToString:v9];
+    bundleIdentifier = [v7 bundleIdentifier];
+    hostIdentifier2 = [(DOCAppProtectionManager *)self hostIdentifier];
+    v10 = [bundleIdentifier isEqualToString:hostIdentifier2];
 
     v11 = v10 ^ 1u;
   }
@@ -2253,24 +2253,24 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)hostAppCanSeeFileProviderDomain:(id)a3
+- (BOOL)hostAppCanSeeFileProviderDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   if (!+[DOCFeature protectedAppsEnabled])
   {
     goto LABEL_13;
   }
 
-  v5 = [(DOCAppProtectionManager *)self hostIdentifier];
-  v6 = [v5 length];
+  hostIdentifier = [(DOCAppProtectionManager *)self hostIdentifier];
+  v6 = [hostIdentifier length];
 
   if (!v6)
   {
     [DOCAppProtectionManager hostAppCanSeeFileProviderDomain:];
   }
 
-  v7 = [v4 topLevelBundleIdentifier];
-  v8 = [v7 length];
+  topLevelBundleIdentifier = [domainCopy topLevelBundleIdentifier];
+  v8 = [topLevelBundleIdentifier length];
 
   if (!v8)
   {
@@ -2294,34 +2294,34 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if (![v4 owningApplicationIsHidden])
+  if (![domainCopy owningApplicationIsHidden])
   {
 LABEL_13:
     v11 = 1;
     goto LABEL_14;
   }
 
-  v9 = [v4 topLevelBundleIdentifier];
-  v10 = [(DOCAppProtectionManager *)self hostIdentifier];
-  v11 = [v9 isEqualToString:v10];
+  topLevelBundleIdentifier2 = [domainCopy topLevelBundleIdentifier];
+  hostIdentifier2 = [(DOCAppProtectionManager *)self hostIdentifier];
+  v11 = [topLevelBundleIdentifier2 isEqualToString:hostIdentifier2];
 
 LABEL_14:
   return v11;
 }
 
-- (BOOL)itemIsAppContainer:(id)a3
+- (BOOL)itemIsAppContainer:(id)container
 {
-  v3 = [a3 fpfs_fpItem];
-  v4 = [v3 fp_appContainerBundleIdentifier];
-  v5 = v4 != 0;
+  fpfs_fpItem = [container fpfs_fpItem];
+  fp_appContainerBundleIdentifier = [fpfs_fpItem fp_appContainerBundleIdentifier];
+  v5 = fp_appContainerBundleIdentifier != 0;
 
   return v5;
 }
 
-- (void)bundleIDOfAppContainer:(id)a3 completion:(id)a4
+- (void)bundleIDOfAppContainer:(id)container completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  containerCopy = container;
+  completionCopy = completion;
   Current = CFAbsoluteTimeGetCurrent();
   v8 = docLogHandle;
   if (!docLogHandle)
@@ -2339,7 +2339,7 @@ LABEL_14:
   aBlock[1] = 3221225472;
   aBlock[2] = __61__DOCAppProtectionManager_bundleIDOfAppContainer_completion___block_invoke;
   aBlock[3] = &unk_278F9BDD0;
-  v9 = v5;
+  v9 = containerCopy;
   v34 = v9;
   v35 = Current;
   v10 = _Block_copy(aBlock);
@@ -2349,7 +2349,7 @@ LABEL_14:
   v30[3] = &unk_278F9BDF8;
   v11 = v9;
   v31 = v11;
-  v12 = v6;
+  v12 = completionCopy;
   v32 = v12;
   v13 = _Block_copy(v30);
   objc_opt_class();
@@ -2368,13 +2368,13 @@ LABEL_14:
     }
 
     v15 = v11;
-    v16 = [v15 fileURL];
+    fileURL = [v15 fileURL];
 
-    if (!v16)
+    if (!fileURL)
     {
-      v20 = [v15 itemIdentifier];
+      itemIdentifier = [v15 itemIdentifier];
       v21 = *MEMORY[0x277CC6348];
-      v22 = [v20 isEqualToString:*MEMORY[0x277CC6348]];
+      v22 = [itemIdentifier isEqualToString:*MEMORY[0x277CC6348]];
 
       if (v22)
       {
@@ -2384,27 +2384,27 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v24 = [v15 parentItemIdentifier];
-      v25 = [v24 isEqualToString:v21];
+      parentItemIdentifier = [v15 parentItemIdentifier];
+      v25 = [parentItemIdentifier isEqualToString:v21];
 
       if (v25)
       {
-        v23 = [v15 fp_appContainerBundleIdentifier];
-        (*(v12 + 2))(v12, v23, 0);
+        fp_appContainerBundleIdentifier = [v15 fp_appContainerBundleIdentifier];
+        (*(v12 + 2))(v12, fp_appContainerBundleIdentifier, 0);
       }
 
       else
       {
-        v26 = [MEMORY[0x277CC6408] defaultManager];
+        defaultManager = [MEMORY[0x277CC6408] defaultManager];
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
         v27[2] = __61__DOCAppProtectionManager_bundleIDOfAppContainer_completion___block_invoke_96;
         v27[3] = &unk_278F9BE20;
         v28 = v13;
         v29 = v12;
-        [v26 fetchURLForItem:v15 completionHandler:v27];
+        [defaultManager fetchURLForItem:v15 completionHandler:v27];
 
-        v23 = v28;
+        fp_appContainerBundleIdentifier = v28;
       }
 
 LABEL_28:
@@ -2412,10 +2412,10 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v17 = [v15 fileURL];
+    fileURL2 = [v15 fileURL];
 LABEL_27:
-    v23 = v17;
-    (*(v13 + 2))(v13, v17);
+    fp_appContainerBundleIdentifier = fileURL2;
+    (*(v13 + 2))(v13, fileURL2);
     goto LABEL_28;
   }
 
@@ -2453,7 +2453,7 @@ LABEL_27:
       goto LABEL_29;
     }
 
-    v17 = [v11 nodeURL];
+    fileURL2 = [v11 nodeURL];
     goto LABEL_27;
   }
 
@@ -2604,10 +2604,10 @@ uint64_t __61__DOCAppProtectionManager_bundleIDOfAppContainer_completion___block
   }
 }
 
-- (id)bundleIDOfAppContainer_Sync:(id)a3
+- (id)bundleIDOfAppContainer_Sync:(id)sync
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  syncCopy = sync;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -2636,7 +2636,7 @@ uint64_t __61__DOCAppProtectionManager_bundleIDOfAppContainer_completion___block
   v22 = &v23;
   v8 = v7;
   v21 = v8;
-  [(DOCAppProtectionManager *)self bundleIDOfAppContainer:v4 completion:&v17];
+  [(DOCAppProtectionManager *)self bundleIDOfAppContainer:syncCopy completion:&v17];
   dispatch_group_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
   v9 = CFAbsoluteTimeGetCurrent();
   v10 = docLogHandle;
@@ -2654,7 +2654,7 @@ uint64_t __61__DOCAppProtectionManager_bundleIDOfAppContainer_completion___block
     *buf = 136315906;
     v30 = "[DOCAppProtectionManager bundleIDOfAppContainer_Sync:]";
     v31 = 2112;
-    v32 = v4;
+    v32 = syncCopy;
     v33 = 2112;
     v34 = v15;
     v35 = 2112;
@@ -2682,9 +2682,9 @@ void __55__DOCAppProtectionManager_bundleIDOfAppContainer_Sync___block_invoke(ui
   dispatch_group_leave(v6);
 }
 
-- (void)appProtectionCacheDidUpdate:(id)a3
+- (void)appProtectionCacheDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = docLogHandle;
   if (!docLogHandle)
   {
@@ -2727,8 +2727,8 @@ void __55__DOCAppProtectionManager_appProtectionCacheDidUpdate___block_invoke(ui
 - (void)stopObserving
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_8() appMonitorSubscription];
+  selfCopy = self;
+  appMonitorSubscription = [OUTLINED_FUNCTION_8() appMonitorSubscription];
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_4_0();
   _os_log_debug_impl(v4, v5, v6, v7, v8, 0x20u);
@@ -2736,10 +2736,10 @@ void __55__DOCAppProtectionManager_appProtectionCacheDidUpdate___block_invoke(ui
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  subscriptionCopy = subscription;
   v8 = docLogHandle;
   if (!docLogHandle)
   {
@@ -2757,8 +2757,8 @@ void __55__DOCAppProtectionManager_appProtectionCacheDidUpdate___block_invoke(ui
   v10[2] = __101__DOCAppProtectionManager_APSubjectMonitorConformance__appProtectionSubjectsChanged_forSubscription___block_invoke;
   v10[3] = &unk_278F9B430;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = changedCopy;
+  v9 = changedCopy;
   DOCRunInMainThread(v10);
 }
 

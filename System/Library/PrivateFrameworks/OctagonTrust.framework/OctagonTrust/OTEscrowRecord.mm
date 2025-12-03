@@ -1,46 +1,46 @@
 @interface OTEscrowRecord
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRecordStatus:(id)a3;
-- (int)StringAsRecordViability:(id)a3;
-- (int)StringAsRecoveryStatus:(id)a3;
-- (int)StringAsViabilityStatus:(id)a3;
+- (int)StringAsRecordStatus:(id)status;
+- (int)StringAsRecordViability:(id)viability;
+- (int)StringAsRecoveryStatus:(id)status;
+- (int)StringAsViabilityStatus:(id)status;
 - (int)recordStatus;
 - (int)recordViability;
 - (int)recoveryStatus;
 - (int)viabilityStatus;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCreationDate:(BOOL)a3;
-- (void)setHasRecordStatus:(BOOL)a3;
-- (void)setHasRecordViability:(BOOL)a3;
-- (void)setHasRecoveryStatus:(BOOL)a3;
-- (void)setHasRemainingAttempts:(BOOL)a3;
-- (void)setHasSilentAttemptAllowed:(BOOL)a3;
-- (void)setHasViabilityStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCreationDate:(BOOL)date;
+- (void)setHasRecordStatus:(BOOL)status;
+- (void)setHasRecordViability:(BOOL)viability;
+- (void)setHasRecoveryStatus:(BOOL)status;
+- (void)setHasRemainingAttempts:(BOOL)attempts;
+- (void)setHasSilentAttemptAllowed:(BOOL)allowed;
+- (void)setHasViabilityStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OTEscrowRecord
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 108);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 108);
   if ((v6 & 2) != 0)
   {
-    self->_creationDate = v4[2];
+    self->_creationDate = fromCopy[2];
     *&self->_has |= 2u;
-    v6 = *(v4 + 108);
+    v6 = *(fromCopy + 108);
   }
 
   if ((v6 & 4) != 0)
   {
-    self->_remainingAttempts = v4[3];
+    self->_remainingAttempts = fromCopy[3];
     *&self->_has |= 4u;
   }
 
@@ -242,49 +242,49 @@ LABEL_21:
   return v14 ^ v15 ^ [(NSString *)self->_expectedFederationId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_55;
   }
 
-  v5 = *(v4 + 108);
+  v5 = *(equalCopy + 108);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 108) & 2) == 0 || self->_creationDate != *(v4 + 2))
+    if ((*(equalCopy + 108) & 2) == 0 || self->_creationDate != *(equalCopy + 2))
     {
       goto LABEL_55;
     }
   }
 
-  else if ((*(v4 + 108) & 2) != 0)
+  else if ((*(equalCopy + 108) & 2) != 0)
   {
     goto LABEL_55;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 108) & 4) == 0 || self->_remainingAttempts != *(v4 + 3))
+    if ((*(equalCopy + 108) & 4) == 0 || self->_remainingAttempts != *(equalCopy + 3))
     {
       goto LABEL_55;
     }
   }
 
-  else if ((*(v4 + 108) & 4) != 0)
+  else if ((*(equalCopy + 108) & 4) != 0)
   {
     goto LABEL_55;
   }
 
   escrowInformationMetadata = self->_escrowInformationMetadata;
-  if (escrowInformationMetadata | *(v4 + 5) && ![(OTEscrowRecordMetadata *)escrowInformationMetadata isEqual:?])
+  if (escrowInformationMetadata | *(equalCopy + 5) && ![(OTEscrowRecordMetadata *)escrowInformationMetadata isEqual:?])
   {
     goto LABEL_55;
   }
 
   label = self->_label;
-  if (label | *(v4 + 8))
+  if (label | *(equalCopy + 8))
   {
     if (![(NSString *)label isEqual:?])
     {
@@ -293,35 +293,35 @@ LABEL_21:
   }
 
   has = self->_has;
-  v9 = *(v4 + 108);
+  v9 = *(equalCopy + 108);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 108) & 8) == 0 || self->_silentAttemptAllowed != *(v4 + 4))
+    if ((*(equalCopy + 108) & 8) == 0 || self->_silentAttemptAllowed != *(equalCopy + 4))
     {
       goto LABEL_55;
     }
   }
 
-  else if ((*(v4 + 108) & 8) != 0)
+  else if ((*(equalCopy + 108) & 8) != 0)
   {
     goto LABEL_55;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 108) & 0x10) == 0 || self->_recordStatus != *(v4 + 20))
+    if ((*(equalCopy + 108) & 0x10) == 0 || self->_recordStatus != *(equalCopy + 20))
     {
       goto LABEL_55;
     }
   }
 
-  else if ((*(v4 + 108) & 0x10) != 0)
+  else if ((*(equalCopy + 108) & 0x10) != 0)
   {
     goto LABEL_55;
   }
 
   recordId = self->_recordId;
-  if (recordId | *(v4 + 9))
+  if (recordId | *(equalCopy + 9))
   {
     if (![(NSString *)recordId isEqual:?])
     {
@@ -329,12 +329,12 @@ LABEL_21:
     }
 
     has = self->_has;
-    v9 = *(v4 + 108);
+    v9 = *(equalCopy + 108);
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v9 & 0x40) == 0 || self->_recoveryStatus != *(v4 + 22))
+    if ((v9 & 0x40) == 0 || self->_recoveryStatus != *(equalCopy + 22))
     {
       goto LABEL_55;
     }
@@ -347,7 +347,7 @@ LABEL_21:
 
   if (has)
   {
-    if ((v9 & 1) == 0 || self->_coolOffEnd != *(v4 + 1))
+    if ((v9 & 1) == 0 || self->_coolOffEnd != *(equalCopy + 1))
     {
       goto LABEL_55;
     }
@@ -359,7 +359,7 @@ LABEL_21:
   }
 
   serialNumber = self->_serialNumber;
-  if (serialNumber | *(v4 + 12))
+  if (serialNumber | *(equalCopy + 12))
   {
     if (![(NSString *)serialNumber isEqual:?])
     {
@@ -367,12 +367,12 @@ LABEL_21:
     }
 
     has = self->_has;
-    v9 = *(v4 + 108);
+    v9 = *(equalCopy + 108);
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((v9 & 0x20) == 0 || self->_recordViability != *(v4 + 21))
+    if ((v9 & 0x20) == 0 || self->_recordViability != *(equalCopy + 21))
     {
       goto LABEL_55;
     }
@@ -395,20 +395,20 @@ LABEL_55:
     goto LABEL_56;
   }
 
-  if ((v9 & 0x80) == 0 || self->_viabilityStatus != *(v4 + 26))
+  if ((v9 & 0x80) == 0 || self->_viabilityStatus != *(equalCopy + 26))
   {
     goto LABEL_55;
   }
 
 LABEL_49:
   federationId = self->_federationId;
-  if (federationId | *(v4 + 7) && ![(NSString *)federationId isEqual:?])
+  if (federationId | *(equalCopy + 7) && ![(NSString *)federationId isEqual:?])
   {
     goto LABEL_55;
   }
 
   expectedFederationId = self->_expectedFederationId;
-  if (expectedFederationId | *(v4 + 6))
+  if (expectedFederationId | *(equalCopy + 6))
   {
     v14 = [(NSString *)expectedFederationId isEqual:?];
   }
@@ -423,9 +423,9 @@ LABEL_56:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -441,11 +441,11 @@ LABEL_56:
     *(v5 + 108) |= 4u;
   }
 
-  v8 = [(OTEscrowRecordMetadata *)self->_escrowInformationMetadata copyWithZone:a3];
+  v8 = [(OTEscrowRecordMetadata *)self->_escrowInformationMetadata copyWithZone:zone];
   v9 = *(v6 + 40);
   *(v6 + 40) = v8;
 
-  v10 = [(NSString *)self->_label copyWithZone:a3];
+  v10 = [(NSString *)self->_label copyWithZone:zone];
   v11 = *(v6 + 64);
   *(v6 + 64) = v10;
 
@@ -463,7 +463,7 @@ LABEL_56:
     *(v6 + 108) |= 0x10u;
   }
 
-  v13 = [(NSString *)self->_recordId copyWithZone:a3];
+  v13 = [(NSString *)self->_recordId copyWithZone:zone];
   v14 = *(v6 + 72);
   *(v6 + 72) = v13;
 
@@ -481,7 +481,7 @@ LABEL_56:
     *(v6 + 108) |= 1u;
   }
 
-  v16 = [(NSString *)self->_serialNumber copyWithZone:a3];
+  v16 = [(NSString *)self->_serialNumber copyWithZone:zone];
   v17 = *(v6 + 96);
   *(v6 + 96) = v16;
 
@@ -499,124 +499,124 @@ LABEL_56:
     *(v6 + 108) |= 0x80u;
   }
 
-  v19 = [(NSString *)self->_federationId copyWithZone:a3];
+  v19 = [(NSString *)self->_federationId copyWithZone:zone];
   v20 = *(v6 + 56);
   *(v6 + 56) = v19;
 
-  v21 = [(NSString *)self->_expectedFederationId copyWithZone:a3];
+  v21 = [(NSString *)self->_expectedFederationId copyWithZone:zone];
   v22 = *(v6 + 48);
   *(v6 + 48) = v21;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_creationDate;
-    *(v4 + 108) |= 2u;
+    toCopy[2] = self->_creationDate;
+    *(toCopy + 108) |= 2u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    v4[3] = self->_remainingAttempts;
-    *(v4 + 108) |= 4u;
+    toCopy[3] = self->_remainingAttempts;
+    *(toCopy + 108) |= 4u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_escrowInformationMetadata)
   {
-    [v4 setEscrowInformationMetadata:?];
-    v4 = v9;
+    [toCopy setEscrowInformationMetadata:?];
+    toCopy = v9;
   }
 
   if (self->_label)
   {
     [v9 setLabel:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
-    v4[4] = self->_silentAttemptAllowed;
-    *(v4 + 108) |= 8u;
+    toCopy[4] = self->_silentAttemptAllowed;
+    *(toCopy + 108) |= 8u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x10) != 0)
   {
-    *(v4 + 20) = self->_recordStatus;
-    *(v4 + 108) |= 0x10u;
+    *(toCopy + 20) = self->_recordStatus;
+    *(toCopy + 108) |= 0x10u;
   }
 
   if (self->_recordId)
   {
     [v9 setRecordId:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   v7 = self->_has;
   if ((v7 & 0x40) != 0)
   {
-    *(v4 + 22) = self->_recoveryStatus;
-    *(v4 + 108) |= 0x40u;
+    *(toCopy + 22) = self->_recoveryStatus;
+    *(toCopy + 108) |= 0x40u;
     v7 = self->_has;
   }
 
   if (v7)
   {
-    v4[1] = self->_coolOffEnd;
-    *(v4 + 108) |= 1u;
+    toCopy[1] = self->_coolOffEnd;
+    *(toCopy + 108) |= 1u;
   }
 
   if (self->_serialNumber)
   {
     [v9 setSerialNumber:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   v8 = self->_has;
   if ((v8 & 0x20) != 0)
   {
-    *(v4 + 21) = self->_recordViability;
-    *(v4 + 108) |= 0x20u;
+    *(toCopy + 21) = self->_recordViability;
+    *(toCopy + 108) |= 0x20u;
     v8 = self->_has;
   }
 
   if (v8 < 0)
   {
-    *(v4 + 26) = self->_viabilityStatus;
-    *(v4 + 108) |= 0x80u;
+    *(toCopy + 26) = self->_viabilityStatus;
+    *(toCopy + 108) |= 0x80u;
   }
 
   if (self->_federationId)
   {
     [v9 setFederationId:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_expectedFederationId)
   {
     [v9 setExpectedFederationId:?];
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v17 = v4;
+  v17 = toCopy;
   if ((has & 2) != 0)
   {
     creationDate = self->_creationDate;
     PBDataWriterWriteUint64Field();
-    v4 = v17;
+    toCopy = v17;
     has = self->_has;
   }
 
@@ -624,19 +624,19 @@ LABEL_56:
   {
     remainingAttempts = self->_remainingAttempts;
     PBDataWriterWriteUint64Field();
-    v4 = v17;
+    toCopy = v17;
   }
 
   if (self->_escrowInformationMetadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v17;
+    toCopy = v17;
   }
 
   if (self->_label)
   {
     PBDataWriterWriteStringField();
-    v4 = v17;
+    toCopy = v17;
   }
 
   v8 = self->_has;
@@ -644,7 +644,7 @@ LABEL_56:
   {
     silentAttemptAllowed = self->_silentAttemptAllowed;
     PBDataWriterWriteUint64Field();
-    v4 = v17;
+    toCopy = v17;
     v8 = self->_has;
   }
 
@@ -652,13 +652,13 @@ LABEL_56:
   {
     recordStatus = self->_recordStatus;
     PBDataWriterWriteInt32Field();
-    v4 = v17;
+    toCopy = v17;
   }
 
   if (self->_recordId)
   {
     PBDataWriterWriteStringField();
-    v4 = v17;
+    toCopy = v17;
   }
 
   v11 = self->_has;
@@ -666,7 +666,7 @@ LABEL_56:
   {
     recoveryStatus = self->_recoveryStatus;
     PBDataWriterWriteInt32Field();
-    v4 = v17;
+    toCopy = v17;
     v11 = self->_has;
   }
 
@@ -674,13 +674,13 @@ LABEL_56:
   {
     coolOffEnd = self->_coolOffEnd;
     PBDataWriterWriteUint64Field();
-    v4 = v17;
+    toCopy = v17;
   }
 
   if (self->_serialNumber)
   {
     PBDataWriterWriteStringField();
-    v4 = v17;
+    toCopy = v17;
   }
 
   v14 = self->_has;
@@ -688,7 +688,7 @@ LABEL_56:
   {
     recordViability = self->_recordViability;
     PBDataWriterWriteInt32Field();
-    v4 = v17;
+    toCopy = v17;
     v14 = self->_has;
   }
 
@@ -696,30 +696,30 @@ LABEL_56:
   {
     viabilityStatus = self->_viabilityStatus;
     PBDataWriterWriteInt32Field();
-    v4 = v17;
+    toCopy = v17;
   }
 
   if (self->_federationId)
   {
     PBDataWriterWriteStringField();
-    v4 = v17;
+    toCopy = v17;
   }
 
   if (self->_expectedFederationId)
   {
     PBDataWriterWriteStringField();
-    v4 = v17;
+    toCopy = v17;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_creationDate];
-    [v3 setObject:v5 forKey:@"creation_date"];
+    [dictionary setObject:v5 forKey:@"creation_date"];
 
     has = self->_has;
   }
@@ -727,27 +727,27 @@ LABEL_56:
   if ((has & 4) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_remainingAttempts];
-    [v3 setObject:v6 forKey:@"remaining_attempts"];
+    [dictionary setObject:v6 forKey:@"remaining_attempts"];
   }
 
   escrowInformationMetadata = self->_escrowInformationMetadata;
   if (escrowInformationMetadata)
   {
-    v8 = [(OTEscrowRecordMetadata *)escrowInformationMetadata dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"escrow_information_metadata"];
+    dictionaryRepresentation = [(OTEscrowRecordMetadata *)escrowInformationMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"escrow_information_metadata"];
   }
 
   label = self->_label;
   if (label)
   {
-    [v3 setObject:label forKey:@"label"];
+    [dictionary setObject:label forKey:@"label"];
   }
 
   v10 = self->_has;
   if ((v10 & 8) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_silentAttemptAllowed];
-    [v3 setObject:v11 forKey:@"silent_attempt_allowed"];
+    [dictionary setObject:v11 forKey:@"silent_attempt_allowed"];
 
     v10 = self->_has;
   }
@@ -773,13 +773,13 @@ LABEL_56:
       v13 = @"RECORD_STATUS_VALID";
     }
 
-    [v3 setObject:v13 forKey:@"record_status"];
+    [dictionary setObject:v13 forKey:@"record_status"];
   }
 
   recordId = self->_recordId;
   if (recordId)
   {
-    [v3 setObject:recordId forKey:@"record_id"];
+    [dictionary setObject:recordId forKey:@"record_id"];
   }
 
   v15 = self->_has;
@@ -796,7 +796,7 @@ LABEL_56:
       v17 = off_1E833E928[recoveryStatus];
     }
 
-    [v3 setObject:v17 forKey:@"recovery_status"];
+    [dictionary setObject:v17 forKey:@"recovery_status"];
 
     v15 = self->_has;
   }
@@ -804,13 +804,13 @@ LABEL_56:
   if (v15)
   {
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_coolOffEnd];
-    [v3 setObject:v18 forKey:@"cool_off_end"];
+    [dictionary setObject:v18 forKey:@"cool_off_end"];
   }
 
   serialNumber = self->_serialNumber;
   if (serialNumber)
   {
-    [v3 setObject:serialNumber forKey:@"serial_number"];
+    [dictionary setObject:serialNumber forKey:@"serial_number"];
   }
 
   v20 = self->_has;
@@ -827,7 +827,7 @@ LABEL_56:
       v22 = off_1E833E940[recordViability];
     }
 
-    [v3 setObject:v22 forKey:@"record_viability"];
+    [dictionary setObject:v22 forKey:@"record_viability"];
 
     v20 = self->_has;
   }
@@ -845,22 +845,22 @@ LABEL_56:
       v24 = off_1E833E958[viabilityStatus];
     }
 
-    [v3 setObject:v24 forKey:@"viability_status"];
+    [dictionary setObject:v24 forKey:@"viability_status"];
   }
 
   federationId = self->_federationId;
   if (federationId)
   {
-    [v3 setObject:federationId forKey:@"federation_id"];
+    [dictionary setObject:federationId forKey:@"federation_id"];
   }
 
   expectedFederationId = self->_expectedFederationId;
   if (expectedFederationId)
   {
-    [v3 setObject:expectedFederationId forKey:@"expected_federation_id"];
+    [dictionary setObject:expectedFederationId forKey:@"expected_federation_id"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -869,26 +869,26 @@ LABEL_56:
   v8.receiver = self;
   v8.super_class = OTEscrowRecord;
   v4 = [(OTEscrowRecord *)&v8 description];
-  v5 = [(OTEscrowRecord *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(OTEscrowRecord *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsViabilityStatus:(id)a3
+- (int)StringAsViabilityStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SOS_VIABLE_UNKNOWN"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"SOS_VIABLE_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SOS_VIABLE"])
+  else if ([statusCopy isEqualToString:@"SOS_VIABLE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SOS_NOT_VIABLE"])
+  else if ([statusCopy isEqualToString:@"SOS_NOT_VIABLE"])
   {
     v4 = 2;
   }
@@ -901,9 +901,9 @@ LABEL_56:
   return v4;
 }
 
-- (void)setHasViabilityStatus:(BOOL)a3
+- (void)setHasViabilityStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x80;
   }
@@ -929,20 +929,20 @@ LABEL_56:
   }
 }
 
-- (int)StringAsRecordViability:(id)a3
+- (int)StringAsRecordViability:(id)viability
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"RECORD_VIABILITY_FULLY_VIABLE"])
+  viabilityCopy = viability;
+  if ([viabilityCopy isEqualToString:@"RECORD_VIABILITY_FULLY_VIABLE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RECORD_VIABILITY_PARTIALLY_VIABLE"])
+  else if ([viabilityCopy isEqualToString:@"RECORD_VIABILITY_PARTIALLY_VIABLE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RECORD_VIABILITY_LEGACY"])
+  else if ([viabilityCopy isEqualToString:@"RECORD_VIABILITY_LEGACY"])
   {
     v4 = 2;
   }
@@ -955,9 +955,9 @@ LABEL_56:
   return v4;
 }
 
-- (void)setHasRecordViability:(BOOL)a3
+- (void)setHasRecordViability:(BOOL)viability
 {
-  if (a3)
+  if (viability)
   {
     v3 = 32;
   }
@@ -983,20 +983,20 @@ LABEL_56:
   }
 }
 
-- (int)StringAsRecoveryStatus:(id)a3
+- (int)StringAsRecoveryStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"RECOVERY_STATUS_VALID"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"RECOVERY_STATUS_VALID"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RECOVERY_STATUS_SOFT_LIMIT_REACHED"])
+  else if ([statusCopy isEqualToString:@"RECOVERY_STATUS_SOFT_LIMIT_REACHED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RECOVERY_STATUS_HARD_LIMIT_REACHED"])
+  else if ([statusCopy isEqualToString:@"RECOVERY_STATUS_HARD_LIMIT_REACHED"])
   {
     v4 = 2;
   }
@@ -1009,9 +1009,9 @@ LABEL_56:
   return v4;
 }
 
-- (void)setHasRecoveryStatus:(BOOL)a3
+- (void)setHasRecoveryStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 64;
   }
@@ -1037,25 +1037,25 @@ LABEL_56:
   }
 }
 
-- (int)StringAsRecordStatus:(id)a3
+- (int)StringAsRecordStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"RECORD_STATUS_VALID"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"RECORD_STATUS_VALID"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"RECORD_STATUS_INVALID"];
+    v4 = [statusCopy isEqualToString:@"RECORD_STATUS_INVALID"];
   }
 
   return v4;
 }
 
-- (void)setHasRecordStatus:(BOOL)a3
+- (void)setHasRecordStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 16;
   }
@@ -1081,9 +1081,9 @@ LABEL_56:
   }
 }
 
-- (void)setHasSilentAttemptAllowed:(BOOL)a3
+- (void)setHasSilentAttemptAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 8;
   }
@@ -1096,9 +1096,9 @@ LABEL_56:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasRemainingAttempts:(BOOL)a3
+- (void)setHasRemainingAttempts:(BOOL)attempts
 {
-  if (a3)
+  if (attempts)
   {
     v3 = 4;
   }
@@ -1111,9 +1111,9 @@ LABEL_56:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCreationDate:(BOOL)a3
+- (void)setHasCreationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }

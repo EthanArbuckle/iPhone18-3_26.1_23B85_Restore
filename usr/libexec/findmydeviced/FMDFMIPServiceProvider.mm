@@ -1,59 +1,59 @@
 @interface FMDFMIPServiceProvider
 - (BOOL)_canSendDeviceIdentityNow;
-- (BOOL)validateParamsForUCRTHealing:(id)a3;
+- (BOOL)validateParamsForUCRTHealing:(id)healing;
 - (BOOL)willMakeProviderActive;
 - (FMDFMIPServiceProvider)init;
-- (id)_unregisterDeviceErrorForResponseError:(int64_t)a3 inContext:(unint64_t)a4;
+- (id)_unregisterDeviceErrorForResponseError:(int64_t)error inContext:(unint64_t)context;
 - (id)accountStore;
-- (id)alertActionInfoForAction:(id)a3 andURL:(id)a4;
+- (id)alertActionInfoForAction:(id)action andURL:(id)l;
 - (unint64_t)fmipState;
 - (unsigned)essentialServerInfoMissingError;
-- (void)_buddyCompletionCheckTimerFired:(id)a3;
-- (void)_checkForBuddyCompletionAndReinitialize:(BOOL)a3 withBuddyStatus:(BOOL)a4;
-- (void)_deviceDidPair:(id)a3;
-- (void)_deviceDidUnpair:(id)a3;
-- (void)_enableRepairWithContext:(id)a3 callingClient:(id)a4 completion:(id)a5;
-- (void)_enqueueIdentityOperation:(id)a3;
-- (void)_fmipStateChangeLocalNotification:(id)a3;
-- (void)_sendDeviceIdentityNowWithIdentityInfo:(id)a3;
-- (void)_serialQueue_checkAndSendPendingDeviceIdentityWithIdentityInfo:(id)a3;
-- (void)_serialQueue_sendDeviceIdentityIfEligibleWithIdentityInfo:(id)a3;
-- (void)_showMarkAsMissingErrorForResponseError:(int64_t)a3;
-- (void)_showPairedDeviceDisableFMIPErrorForResponseError:(int64_t)a3;
+- (void)_buddyCompletionCheckTimerFired:(id)fired;
+- (void)_checkForBuddyCompletionAndReinitialize:(BOOL)reinitialize withBuddyStatus:(BOOL)status;
+- (void)_deviceDidPair:(id)pair;
+- (void)_deviceDidUnpair:(id)unpair;
+- (void)_enableRepairWithContext:(id)context callingClient:(id)client completion:(id)completion;
+- (void)_enqueueIdentityOperation:(id)operation;
+- (void)_fmipStateChangeLocalNotification:(id)notification;
+- (void)_sendDeviceIdentityNowWithIdentityInfo:(id)info;
+- (void)_serialQueue_checkAndSendPendingDeviceIdentityWithIdentityInfo:(id)info;
+- (void)_serialQueue_sendDeviceIdentityIfEligibleWithIdentityInfo:(id)info;
+- (void)_showMarkAsMissingErrorForResponseError:(int64_t)error;
+- (void)_showPairedDeviceDisableFMIPErrorForResponseError:(int64_t)error;
 - (void)_showPendingHomescreenAlertNow;
-- (void)_showUnregisterDeviceErrorForResponseError:(int64_t)a3 inContext:(unint64_t)a4;
+- (void)_showUnregisterDeviceErrorForResponseError:(int64_t)error inContext:(unint64_t)context;
 - (void)_updateToHomescreenAlerts;
-- (void)accountRemoveRequestedWithCompletion:(id)a3;
-- (void)addAccount:(id)a3;
-- (void)attemptUCRTHealing:(id)a3 completion:(id)a4;
-- (void)buddyDidComplete:(id)a3;
-- (void)checkAndSendPendingDeviceIdentityWithIdentityInfo:(id)a3;
+- (void)accountRemoveRequestedWithCompletion:(id)completion;
+- (void)addAccount:(id)account;
+- (void)attemptUCRTHealing:(id)healing completion:(id)completion;
+- (void)buddyDidComplete:(id)complete;
+- (void)checkAndSendPendingDeviceIdentityWithIdentityInfo:(id)info;
 - (void)checkShutdownSoonRegistration;
 - (void)deregisterCommonNotifications;
-- (void)deviceEligibleForRepairWithContext:(id)a3 completion:(id)a4;
+- (void)deviceEligibleForRepairWithContext:(id)context completion:(id)completion;
 - (void)didMakeProviderActive;
-- (void)didReceiveAuthFailureForRequest:(id)a3;
-- (void)disableFMIPForPairedDeviceWithUDID:(id)a3 account:(id)a4 andCompletion:(id)a5;
-- (void)disableLocationDisplayWithCompletion:(id)a3;
-- (void)enableRepairWithContext:(id)a3 callingClient:(id)a4 completion:(id)a5;
-- (void)ephemeralTokenForUserWithCompletion:(id)a3;
-- (void)markPairedDeviceWithUdid:(id)a3 asMissingUsingToken:(id)a4 withCompletion:(id)a5;
-- (void)monitorAndSendDeviceIdentityLaterWithIdentityInfo:(id)a3;
+- (void)didReceiveAuthFailureForRequest:(id)request;
+- (void)disableFMIPForPairedDeviceWithUDID:(id)d account:(id)account andCompletion:(id)completion;
+- (void)disableLocationDisplayWithCompletion:(id)completion;
+- (void)enableRepairWithContext:(id)context callingClient:(id)client completion:(id)completion;
+- (void)ephemeralTokenForUserWithCompletion:(id)completion;
+- (void)markPairedDeviceWithUdid:(id)udid asMissingUsingToken:(id)token withCompletion:(id)completion;
+- (void)monitorAndSendDeviceIdentityLaterWithIdentityInfo:(id)info;
 - (void)registerCommonNotifications;
 - (void)registerDidSucceed;
-- (void)sendDeviceIdentity:(int64_t)a3;
-- (void)sendDeviceIdentityIfEligibleWithIdentityInfo:(id)a3;
-- (void)sendDeviceIdentityWithIdentityInfo:(id)a3;
-- (void)setCompletionHandlerForRepairDeviceRequest:(id)a3 thisDevice:(id)a4 completion:(id)a5;
-- (void)setPendingLocateAlert:(id)a3;
-- (void)setPendingSecureMessage:(id)a3;
+- (void)sendDeviceIdentity:(int64_t)identity;
+- (void)sendDeviceIdentityIfEligibleWithIdentityInfo:(id)info;
+- (void)sendDeviceIdentityWithIdentityInfo:(id)info;
+- (void)setCompletionHandlerForRepairDeviceRequest:(id)request thisDevice:(id)device completion:(id)completion;
+- (void)setPendingLocateAlert:(id)alert;
+- (void)setPendingSecureMessage:(id)message;
 - (void)start;
 - (void)stopMonitoringPendingDeviceIdentity;
 - (void)syncFMIPStateToWatch;
 - (void)synchronizeLocalActivationLockState;
-- (void)systemShutdownSoon:(id)a3;
+- (void)systemShutdownSoon:(id)soon;
 - (void)tryToFetchAuthToken;
-- (void)unregisterDeviceWithCompletion:(id)a3;
+- (void)unregisterDeviceWithCompletion:(id)completion;
 - (void)willMakeProviderInactive;
 @end
 
@@ -67,14 +67,14 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(FMDFMIPServiceProvider *)v2 fm_logID];
-    v5 = [NSString stringWithFormat:@"com.apple.icloud.findmydeviced.identityWaitQueue-%@", v4];
+    fm_logID = [(FMDFMIPServiceProvider *)v2 fm_logID];
+    v5 = [NSString stringWithFormat:@"com.apple.icloud.findmydeviced.identityWaitQueue-%@", fm_logID];
 
     v6 = dispatch_queue_create([v5 cStringUsingEncoding:4], 0);
     [(FMDFMIPServiceProvider *)v3 setIdentity_wait_queue:v6];
 
-    v7 = [(FMDFMIPServiceProvider *)v3 fm_logID];
-    v8 = [NSString stringWithFormat:@"com.apple.icloud.findmydeviced.deviceUnlockActionsQueue-%@", v7];
+    fm_logID2 = [(FMDFMIPServiceProvider *)v3 fm_logID];
+    v8 = [NSString stringWithFormat:@"com.apple.icloud.findmydeviced.deviceUnlockActionsQueue-%@", fm_logID2];
 
     v9 = dispatch_queue_create([v8 cStringUsingEncoding:4], 0);
     [(FMDFMIPServiceProvider *)v3 setDevice_unlock_actions_queue:v9];
@@ -146,18 +146,18 @@
   v3 = objc_alloc_init(FMDUnregisterTokenStore);
   [(FMDFMIPServiceProvider *)self setUnregisterTokenStore:v3];
   v4 = [FMDCompanionRegistryFactory companionRegistryWithDelegate:0];
-  v5 = [(FMDFMIPServiceProvider *)self unregisterTokenStore];
-  v6 = [v4 allAccessories];
-  [v5 expungeUnregisterTokens:v6];
+  unregisterTokenStore = [(FMDFMIPServiceProvider *)self unregisterTokenStore];
+  allAccessories = [v4 allAccessories];
+  [unregisterTokenStore expungeUnregisterTokens:allAccessories];
 
   v7 = [FMDNanoMigrator alloc];
-  v8 = [(FMDFMIPServiceProvider *)self unregisterTokenStore];
-  v9 = [(FMDServiceProvider *)self serverInteractionController];
-  v10 = [(FMDNanoMigrator *)v7 initWithCompanionRegistry:v4 unregisterTokenStore:v8 serverInteractionController:v9];
+  unregisterTokenStore2 = [(FMDFMIPServiceProvider *)self unregisterTokenStore];
+  serverInteractionController = [(FMDServiceProvider *)self serverInteractionController];
+  v10 = [(FMDNanoMigrator *)v7 initWithCompanionRegistry:v4 unregisterTokenStore:unregisterTokenStore2 serverInteractionController:serverInteractionController];
   [(FMDFMIPServiceProvider *)self setNanoMigrator:v10];
 
-  v11 = [(FMDFMIPServiceProvider *)self nanoMigrator];
-  [v11 unregisterAccessoriesIfNeeded];
+  nanoMigrator = [(FMDFMIPServiceProvider *)self nanoMigrator];
+  [nanoMigrator unregisterAccessoriesIfNeeded];
 
   [(FMDServiceProvider *)self startLocationMonitoringIfNeeded];
   v12 = +[FMDCoreFollowUpManager sharedInstance];
@@ -167,18 +167,18 @@
 - (BOOL)willMakeProviderActive
 {
   v3 = +[FMDSystemConfig sharedInstance];
-  v4 = [v3 isBuddyDone];
+  isBuddyDone = [v3 isBuddyDone];
 
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v4;
+    v7[1] = isBuddyDone;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Buddy status: %d", v7, 8u);
   }
 
-  [(FMDFMIPServiceProvider *)self _checkForBuddyCompletionAndReinitialize:0 withBuddyStatus:v4];
-  return v4;
+  [(FMDFMIPServiceProvider *)self _checkForBuddyCompletionAndReinitialize:0 withBuddyStatus:isBuddyDone];
+  return isBuddyDone;
 }
 
 - (void)didMakeProviderActive
@@ -186,10 +186,10 @@
   v22.receiver = self;
   v22.super_class = FMDFMIPServiceProvider;
   [(FMDDeviceActionsServiceProvider *)&v22 didMakeProviderActive];
-  v3 = [(FMDServiceProvider *)self account];
-  v4 = [v3 unregisterState];
+  account = [(FMDServiceProvider *)self account];
+  unregisterState = [account unregisterState];
 
-  if (v4 <= 4 && ((1 << v4) & 0x1A) != 0)
+  if (unregisterState <= 4 && ((1 << unregisterState) & 0x1A) != 0)
   {
     v5 = sub_100002880();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -198,50 +198,50 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Found an fmip account that was previously unregistering in the last run of findmydeviced. That unregister may or may not have failed & error may or may not have been shown to the user. Showing error to user & turning FMIP back on", v21, 2u);
     }
 
-    v6 = [(FMDServiceProvider *)self account];
-    [RegisterAction deleteRegisterDigestForAccount:v6];
+    account2 = [(FMDServiceProvider *)self account];
+    [RegisterAction deleteRegisterDigestForAccount:account2];
 
-    v7 = [(FMDServiceProvider *)self account];
-    [v7 setUnregisterState:0];
+    account3 = [(FMDServiceProvider *)self account];
+    [account3 setUnregisterState:0];
 
-    v8 = [(FMDFMIPServiceProvider *)self accountStore];
-    v9 = [(FMDServiceProvider *)self account];
-    [v8 saveAccount:v9];
+    accountStore = [(FMDFMIPServiceProvider *)self accountStore];
+    account4 = [(FMDServiceProvider *)self account];
+    [accountStore saveAccount:account4];
 
-    v10 = [(FMDServiceProvider *)self account];
-    v11 = [v10 fmipDisableContext];
-    if (v11 <= 1)
+    account5 = [(FMDServiceProvider *)self account];
+    fmipDisableContext = [account5 fmipDisableContext];
+    if (fmipDisableContext <= 1)
     {
       v12 = 1;
     }
 
     else
     {
-      v12 = v11;
+      v12 = fmipDisableContext;
     }
 
     [(FMDFMIPServiceProvider *)self _showUnregisterDeviceErrorForResponseError:2 inContext:v12];
   }
 
-  v13 = [(FMDFMIPServiceProvider *)self unregisterTokenStore];
-  [v13 clearUnregisterTokens];
+  unregisterTokenStore = [(FMDFMIPServiceProvider *)self unregisterTokenStore];
+  [unregisterTokenStore clearUnregisterTokens];
 
   [(FMDFMIPServiceProvider *)self registerCommonNotifications];
   [(FMDFMIPServiceProvider *)self synchronizeLocalActivationLockState];
   v14 = objc_alloc_init(FMDDetachNotificationManager);
   [(FMDFMIPServiceProvider *)self setDetachNotificationManager:v14];
 
-  v15 = [(FMDServiceProvider *)self accessoryRegistry];
-  v16 = [(FMDFMIPServiceProvider *)self detachNotificationManager];
-  [v15 registerDelegate:v16];
+  accessoryRegistry = [(FMDServiceProvider *)self accessoryRegistry];
+  detachNotificationManager = [(FMDFMIPServiceProvider *)self detachNotificationManager];
+  [accessoryRegistry registerDelegate:detachNotificationManager];
 
-  v17 = [(FMDServiceProvider *)self supportedAccessoryRegistry];
-  v18 = [(FMDFMIPServiceProvider *)self detachNotificationManager];
-  [v18 setSupportedAccessoryRegistry:v17];
+  supportedAccessoryRegistry = [(FMDServiceProvider *)self supportedAccessoryRegistry];
+  detachNotificationManager2 = [(FMDFMIPServiceProvider *)self detachNotificationManager];
+  [detachNotificationManager2 setSupportedAccessoryRegistry:supportedAccessoryRegistry];
 
-  v19 = [(FMDServiceProvider *)self accessoryLocationStore];
-  v20 = [(FMDFMIPServiceProvider *)self detachNotificationManager];
-  [v20 setLocationStore:v19];
+  accessoryLocationStore = [(FMDServiceProvider *)self accessoryLocationStore];
+  detachNotificationManager3 = [(FMDFMIPServiceProvider *)self detachNotificationManager];
+  [detachNotificationManager3 setLocationStore:accessoryLocationStore];
 }
 
 - (void)willMakeProviderInactive
@@ -251,13 +251,13 @@
   [(FMDDeviceActionsServiceProvider *)&v6 willMakeProviderInactive];
   [(FMDFMIPServiceProvider *)self deregisterCommonNotifications];
   [(FMDFMIPServiceProvider *)self stopMonitoringPendingDeviceIdentity];
-  v3 = [(FMDFMIPServiceProvider *)self deviceIdentityPendingXpcTransactionName];
+  deviceIdentityPendingXpcTransactionName = [(FMDFMIPServiceProvider *)self deviceIdentityPendingXpcTransactionName];
 
-  if (v3)
+  if (deviceIdentityPendingXpcTransactionName)
   {
     v4 = +[FMXPCTransactionManager sharedInstance];
-    v5 = [(FMDFMIPServiceProvider *)self deviceIdentityPendingXpcTransactionName];
-    [v4 endTransaction:v5];
+    deviceIdentityPendingXpcTransactionName2 = [(FMDFMIPServiceProvider *)self deviceIdentityPendingXpcTransactionName];
+    [v4 endTransaction:deviceIdentityPendingXpcTransactionName2];
 
     [(FMDFMIPServiceProvider *)self setDeviceIdentityPendingXpcTransactionName:0];
   }
@@ -307,14 +307,14 @@
   [(FMDDeviceActionsServiceProvider *)&v8 deregisterCommonNotifications];
 }
 
-- (id)alertActionInfoForAction:(id)a3 andURL:(id)a4
+- (id)alertActionInfoForAction:(id)action andURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"appleid"])
+  actionCopy = action;
+  lCopy = l;
+  if ([actionCopy isEqualToString:@"appleid"])
   {
 
-    v6 = @"prefs:root=APPLE_ACCOUNT";
+    lCopy = @"prefs:root=APPLE_ACCOUNT";
     v7 = [NSURL URLWithString:@"prefs:root=APPLE_ACCOUNT"];
     v19[0] = @"url";
     v19[1] = @"sensitive";
@@ -328,10 +328,10 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v5 isEqualToString:@"settings"])
+  if ([actionCopy isEqualToString:@"settings"])
   {
 
-    v6 = @"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE";
+    lCopy = @"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE";
     v7 = [NSURL URLWithString:@"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE"];
     v17[0] = @"url";
     v17[1] = @"sensitive";
@@ -342,10 +342,10 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if ([v5 isEqualToString:@"fmip-settings"])
+  if ([actionCopy isEqualToString:@"fmip-settings"])
   {
 
-    v6 = @"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE/DEVICE_LOCATOR";
+    lCopy = @"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE/DEVICE_LOCATOR";
     v7 = [NSURL URLWithString:@"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE/DEVICE_LOCATOR"];
     v15[0] = @"url";
     v15[1] = @"sensitive";
@@ -356,11 +356,11 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [v5 isEqualToString:@"open-url"];
+  v10 = [actionCopy isEqualToString:@"open-url"];
   v11 = 0;
-  if (v6 && v10)
+  if (lCopy && v10)
   {
-    v7 = [NSURL URLWithString:v6];
+    v7 = [NSURL URLWithString:lCopy];
     v13[0] = @"url";
     v13[1] = @"sensitive";
     v14[0] = v7;
@@ -375,13 +375,13 @@ LABEL_11:
   return v11;
 }
 
-- (void)accountRemoveRequestedWithCompletion:(id)a3
+- (void)accountRemoveRequestedWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FMDServiceProvider *)self account];
-  v6 = [v5 unregisterState];
+  completionCopy = completion;
+  account = [(FMDServiceProvider *)self account];
+  unregisterState = [account unregisterState];
 
-  if (v6 == 1)
+  if (unregisterState == 1)
   {
     v7 = sub_100002880();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -391,18 +391,18 @@ LABEL_11:
     }
 
     [(FMDServiceProvider *)self makeProviderInactive];
-    v8 = [(FMDServiceProvider *)self account];
-    [RegisterAction deleteRegisterDigestForAccount:v8];
+    account2 = [(FMDServiceProvider *)self account];
+    [RegisterAction deleteRegisterDigestForAccount:account2];
 
-    v9 = [(FMDDeviceActionsServiceProvider *)self locationTracker];
-    [v9 deleteLocationTrackingInfoAndStopTracking];
+    locationTracker = [(FMDDeviceActionsServiceProvider *)self locationTracker];
+    [locationTracker deleteLocationTrackingInfoAndStopTracking];
 
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10016F0B0;
     v12[3] = &unk_1002CEE48;
     v12[4] = self;
-    v13 = v4;
+    v13 = completionCopy;
     [(FMDFMIPServiceProvider *)self unregisterDeviceWithCompletion:v12];
   }
 
@@ -413,14 +413,14 @@ LABEL_11:
 
     v11.receiver = self;
     v11.super_class = FMDFMIPServiceProvider;
-    [(FMDDeviceActionsServiceProvider *)&v11 accountRemoveRequestedWithCompletion:v4];
+    [(FMDDeviceActionsServiceProvider *)&v11 accountRemoveRequestedWithCompletion:completionCopy];
   }
 }
 
 - (void)checkShutdownSoonRegistration
 {
-  v3 = [(FMDServiceProvider *)self account];
-  if ([v3 lowBatteryLocateEnabled])
+  account = [(FMDServiceProvider *)self account];
+  if ([account lowBatteryLocateEnabled])
   {
     objc_initWeak(&location, self);
     v9[0] = _NSConcreteStackBlock;
@@ -454,45 +454,45 @@ LABEL_11:
 
 - (void)tryToFetchAuthToken
 {
-  v3 = [(FMDFMIPServiceProvider *)self authTokenHealingQueue];
+  authTokenHealingQueue = [(FMDFMIPServiceProvider *)self authTokenHealingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10016F604;
   block[3] = &unk_1002CD4C8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(authTokenHealingQueue, block);
 }
 
 - (unsigned)essentialServerInfoMissingError
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1196379972;
-  v3 = [(FMDFMIPServiceProvider *)self authTokenHealingQueue];
+  authTokenHealingQueue = [(FMDFMIPServiceProvider *)self authTokenHealingQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10016F784;
   v5[3] = &unk_1002CD260;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(authTokenHealingQueue, v5);
 
-  LODWORD(v2) = *(v7 + 6);
+  LODWORD(selfCopy) = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)sendDeviceIdentity:(int64_t)a3
+- (void)sendDeviceIdentity:(int64_t)identity
 {
-  v4 = [[FMDIdentityInfo alloc] initWithVersion:a3];
+  v4 = [[FMDIdentityInfo alloc] initWithVersion:identity];
   [(FMDFMIPServiceProvider *)self sendDeviceIdentityWithIdentityInfo:v4];
 }
 
-- (void)sendDeviceIdentityWithIdentityInfo:(id)a3
+- (void)sendDeviceIdentityWithIdentityInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if ([(FMDFMIPServiceProvider *)self isMonitoringPendingDeviceIdentity])
   {
     v5 = sub_100002880();
@@ -505,17 +505,17 @@ LABEL_11:
 
   else
   {
-    [(FMDFMIPServiceProvider *)self sendDeviceIdentityIfEligibleWithIdentityInfo:v4];
+    [(FMDFMIPServiceProvider *)self sendDeviceIdentityIfEligibleWithIdentityInfo:infoCopy];
   }
 }
 
-- (void)_sendDeviceIdentityNowWithIdentityInfo:(id)a3
+- (void)_sendDeviceIdentityNowWithIdentityInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(FMDFMIPServiceProvider *)self essentialServerInfoMissingError];
-  if (v5 != 1196379972)
+  infoCopy = info;
+  essentialServerInfoMissingError = [(FMDFMIPServiceProvider *)self essentialServerInfoMissingError];
+  if (essentialServerInfoMissingError != 1196379972)
   {
-    v9 = v5;
+    v9 = essentialServerInfoMissingError;
     v10 = sub_100002880();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -526,28 +526,28 @@ LABEL_11:
     }
 
     [(FMDFMIPServiceProvider *)self tryToFetchAuthToken];
-    v8 = [(FMDFMIPServiceProvider *)self accountStore];
-    v12 = [(FMDServiceProvider *)self account];
-    [(FMDRequestIdentityV5 *)v8 saveAccount:v12];
+    accountStore = [(FMDFMIPServiceProvider *)self accountStore];
+    account = [(FMDServiceProvider *)self account];
+    [(FMDRequestIdentityV5 *)accountStore saveAccount:account];
 
     goto LABEL_7;
   }
 
   [FMPreferencesUtil removeKey:@"identityVersion" inDomain:kFMDNotBackedUpPrefDomain];
   [FMPreferencesUtil synchronizeDomain:kFMDNotBackedUpPrefDomain];
-  v6 = [v4 version];
-  if ((v6 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  version = [infoCopy version];
+  if ((version & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
-    v7 = v6;
-    v8 = [[FMDRequestIdentityV5 alloc] initWithProvider:self identityInfo:v4];
+    v7 = version;
+    accountStore = [[FMDRequestIdentityV5 alloc] initWithProvider:self identityInfo:infoCopy];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10016FABC;
     v13[3] = &unk_1002CF538;
     v13[4] = self;
     v13[5] = v7;
-    [(FMDRequest *)v8 setCompletionHandler:v13];
-    [(FMDServiceProvider *)self enqueueRequest:v8];
+    [(FMDRequest *)accountStore setCompletionHandler:v13];
+    [(FMDServiceProvider *)self enqueueRequest:accountStore];
 LABEL_7:
   }
 }
@@ -557,20 +557,20 @@ LABEL_7:
   v4.receiver = self;
   v4.super_class = FMDFMIPServiceProvider;
   [(FMDServiceProvider *)&v4 registerDidSucceed];
-  v3 = [(FMDServiceProvider *)self account];
-  [v3 setLastLoggedInDsid:0];
+  account = [(FMDServiceProvider *)self account];
+  [account setLastLoggedInDsid:0];
 }
 
-- (void)disableLocationDisplayWithCompletion:(id)a3
+- (void)disableLocationDisplayWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [FMDDisableLocationDisplayRequest alloc];
-  v6 = [(FMDServiceProvider *)self account];
-  v7 = [(FMDDisableLocationDisplayRequest *)v5 initWithAccount:v6];
+  account = [(FMDServiceProvider *)self account];
+  v7 = [(FMDDisableLocationDisplayRequest *)v5 initWithAccount:account];
 
   v8 = +[ServerDeviceInfo sharedInstance];
-  v9 = [(FMDServiceProvider *)self account];
-  v10 = [v8 deviceInfoForAccount:v9];
+  account2 = [(FMDServiceProvider *)self account];
+  v10 = [v8 deviceInfoForAccount:account2];
 
   v11 = [FMDActingRequestDecorator alloc];
   v19[4] = self;
@@ -590,29 +590,29 @@ LABEL_7:
   v17[1] = 3221225472;
   v17[2] = sub_100170220;
   v17[3] = &unk_1002CD1D0;
-  v18 = v4;
-  v14 = v4;
+  v18 = completionCopy;
+  v14 = completionCopy;
   [(FMDRequest *)v7 setCompletionHandler:v17];
   v15 = sub_10017DE2C();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(FMDDisableLocationDisplayRequest *)v7 fm_logID];
+    fm_logID = [(FMDDisableLocationDisplayRequest *)v7 fm_logID];
     *buf = 138412290;
-    v23 = v16;
+    v23 = fm_logID;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@: sending request to disable locations.", buf, 0xCu);
   }
 
   [(FMDServiceProvider *)self enqueueRequest:v7];
 }
 
-- (void)deviceEligibleForRepairWithContext:(id)a3 completion:(id)a4
+- (void)deviceEligibleForRepairWithContext:(id)context completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 repairDeviceMode];
+  completionCopy = completion;
+  contextCopy = context;
+  repairDeviceMode = [contextCopy repairDeviceMode];
   v8 = sub_10017DD1C();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7 == 2)
+  if (repairDeviceMode == 2)
   {
     if (!v9)
     {
@@ -624,7 +624,7 @@ LABEL_7:
     v11 = &v19;
   }
 
-  else if (v7 == 1)
+  else if (repairDeviceMode == 1)
   {
     if (!v9)
     {
@@ -652,10 +652,10 @@ LABEL_7:
 LABEL_10:
 
   v12 = objc_opt_new();
-  v13 = [v6 searchIdentifiers];
+  searchIdentifiers = [contextCopy searchIdentifiers];
 
   v14 = FMDRepairDeviceThisDeviceIdentifier;
-  v15 = [v13 containsObject:FMDRepairDeviceThisDeviceIdentifier];
+  v15 = [searchIdentifiers containsObject:FMDRepairDeviceThisDeviceIdentifier];
 
   if (v15)
   {
@@ -664,18 +664,18 @@ LABEL_10:
   }
 
   v17 = [[FMDRepairDeviceResult alloc] initWithEligibleDevices:v12 devicesInRepairMode:&__NSArray0__struct];
-  v5[2](v5, v17, 0);
+  completionCopy[2](completionCopy, v17, 0);
 }
 
-- (BOOL)validateParamsForUCRTHealing:(id)a3
+- (BOOL)validateParamsForUCRTHealing:(id)healing
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:kFMDOptionsActivationLockUsername];
+  healingCopy = healing;
+  v4 = [healingCopy objectForKeyedSubscript:kFMDOptionsActivationLockUsername];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = kFMDOptionsActivationLockPET;
-    v6 = [v3 objectForKeyedSubscript:kFMDOptionsActivationLockPET];
+    v6 = [healingCopy objectForKeyedSubscript:kFMDOptionsActivationLockPET];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -684,7 +684,7 @@ LABEL_10:
 
     else
     {
-      v8 = [v3 objectForKeyedSubscript:v5];
+      v8 = [healingCopy objectForKeyedSubscript:v5];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
     }
@@ -698,11 +698,11 @@ LABEL_10:
   return isKindOfClass & 1;
 }
 
-- (void)attemptUCRTHealing:(id)a3 completion:(id)a4
+- (void)attemptUCRTHealing:(id)healing completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(FMDFMIPServiceProvider *)self validateParamsForUCRTHealing:v6])
+  healingCopy = healing;
+  completionCopy = completion;
+  if ([(FMDFMIPServiceProvider *)self validateParamsForUCRTHealing:healingCopy])
   {
     v8 = MAEUCRTUpgradeRequired();
     v9 = 0;
@@ -716,7 +716,7 @@ LABEL_10:
       }
 
 LABEL_20:
-      v7[2](v7, 0, v9);
+      completionCopy[2](completionCopy, 0, v9);
       goto LABEL_21;
     }
 
@@ -757,7 +757,7 @@ LABEL_20:
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Is UCRT Success: %s,: Error: %@", buf, 0x16u);
     }
 
-    v7[2](v7, v17, v18);
+    completionCopy[2](completionCopy, v17, v18);
     v9 = v18;
   }
 
@@ -776,21 +776,21 @@ LABEL_20:
     v14 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v15 = [NSError errorWithDomain:v13 code:7 userInfo:v14];
 
-    v7[2](v7, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
   }
 
 LABEL_21:
 }
 
-- (void)enableRepairWithContext:(id)a3 callingClient:(id)a4 completion:(id)a5
+- (void)enableRepairWithContext:(id)context callingClient:(id)client completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 repairDeviceMode];
+  contextCopy = context;
+  clientCopy = client;
+  completionCopy = completion;
+  repairDeviceMode = [contextCopy repairDeviceMode];
   v12 = sub_10017DD1C();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-  if (v11 == 2)
+  if (repairDeviceMode == 2)
   {
     if (!v13)
     {
@@ -801,7 +801,7 @@ LABEL_21:
     v14 = "enableRepairWithContext for trade in mode";
   }
 
-  else if (v11 == 1)
+  else if (repairDeviceMode == 1)
   {
     if (!v13)
     {
@@ -826,9 +826,9 @@ LABEL_21:
   _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, v14, buf, 2u);
 LABEL_10:
 
-  v15 = [v8 ephemeralToken];
+  ephemeralToken = [contextCopy ephemeralToken];
 
-  if (v15)
+  if (ephemeralToken)
   {
     v16 = sub_10017DD1C();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -837,7 +837,7 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Got ephemeral token for repair device.", buf, 2u);
     }
 
-    [(FMDFMIPServiceProvider *)self _enableRepairWithContext:v8 callingClient:v9 completion:v10];
+    [(FMDFMIPServiceProvider *)self _enableRepairWithContext:contextCopy callingClient:clientCopy completion:completionCopy];
   }
 
   else
@@ -846,26 +846,26 @@ LABEL_10:
     v17[1] = 3221225472;
     v17[2] = sub_100170CC8;
     v17[3] = &unk_1002CF580;
-    v21 = v10;
-    v18 = v8;
-    v19 = self;
-    v20 = v9;
+    v21 = completionCopy;
+    v18 = contextCopy;
+    selfCopy = self;
+    v20 = clientCopy;
     [(FMDFMIPServiceProvider *)self ephemeralTokenForUserWithCompletion:v17];
   }
 }
 
-- (void)_enableRepairWithContext:(id)a3 callingClient:(id)a4 completion:(id)a5
+- (void)_enableRepairWithContext:(id)context callingClient:(id)client completion:(id)completion
 {
-  v8 = a3;
-  v44 = a4;
-  v9 = a5;
+  contextCopy = context;
+  clientCopy = client;
+  completionCopy = completion;
   v10 = objc_alloc_init(FMDRepairDevice);
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v11 = [v8 selectedDevices];
-  v12 = [v11 countByEnumeratingWithState:&v49 objects:v57 count:16];
+  selectedDevices = [contextCopy selectedDevices];
+  v12 = [selectedDevices countByEnumeratingWithState:&v49 objects:v57 count:16];
   if (v12)
   {
     v13 = v12;
@@ -877,7 +877,7 @@ LABEL_3:
     {
       if (*v50 != v15)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(selectedDevices);
       }
 
       v17 = *(*(&v49 + 1) + 8 * v16);
@@ -889,7 +889,7 @@ LABEL_3:
 
       if (v13 == ++v16)
       {
-        v13 = [v11 countByEnumeratingWithState:&v49 objects:v57 count:16];
+        v13 = [selectedDevices countByEnumeratingWithState:&v49 objects:v57 count:16];
         if (v13)
         {
           goto LABEL_3;
@@ -902,8 +902,8 @@ LABEL_3:
 
 LABEL_12:
         v19 = +[ServerDeviceInfo sharedInstance];
-        v20 = [(FMDServiceProvider *)self account];
-        v21 = [v19 deviceInfoForAccount:v20];
+        account = [(FMDServiceProvider *)self account];
+        v21 = [v19 deviceInfoForAccount:account];
 
         v22 = [FMDActingRequestDecorator alloc];
         v47[0] = _NSConcreteStackBlock;
@@ -918,25 +918,25 @@ LABEL_12:
         v46[3] = &unk_1002CD580;
         v46[4] = self;
         v24 = [(FMDActingRequestDecorator *)v22 initWithDeviceContextGenerator:&stru_1002CF5A0 deviceInfoGenerator:v47 serverContextGenerator:0 requestHeaderGenerator:v46];
-        v25 = [(FMDServiceProvider *)self account];
-        v26 = [v25 dsid];
+        account2 = [(FMDServiceProvider *)self account];
+        dsid = [account2 dsid];
 
-        if (v26)
+        if (dsid)
         {
           v27 = [FMDRepairDeviceRequest alloc];
-          v28 = [(FMDServiceProvider *)self account];
-          [v8 ephemeralToken];
-          v29 = v26;
+          account3 = [(FMDServiceProvider *)self account];
+          [contextCopy ephemeralToken];
+          v29 = dsid;
           v31 = v30 = v24;
-          v32 = [v8 repairDeviceMode];
+          repairDeviceMode = [contextCopy repairDeviceMode];
           v33 = v27;
           v43 = v29;
-          v34 = v44;
-          v35 = [(FMDRepairDeviceRequest *)v33 initWithDeviceIdentifier:v28 ephemeralToken:v31 dsid:v29 callingClient:v44 mode:v32];
+          v34 = clientCopy;
+          v35 = [(FMDRepairDeviceRequest *)v33 initWithDeviceIdentifier:account3 ephemeralToken:v31 dsid:v29 callingClient:clientCopy mode:repairDeviceMode];
 
           v24 = v30;
           [(FMDRequest *)v35 setDecorator:v30];
-          [(FMDFMIPServiceProvider *)self setCompletionHandlerForRepairDeviceRequest:v35 thisDevice:v10 completion:v9];
+          [(FMDFMIPServiceProvider *)self setCompletionHandlerForRepairDeviceRequest:v35 thisDevice:v10 completion:completionCopy];
           v36 = sub_10017DD1C();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
           {
@@ -945,7 +945,7 @@ LABEL_12:
           }
 
           [(FMDServiceProvider *)self enqueueRequest:v35];
-          v26 = v43;
+          dsid = v43;
         }
 
         else
@@ -956,9 +956,9 @@ LABEL_12:
           v54 = v35;
           v41 = [NSDictionary dictionaryWithObjects:&v54 forKeys:&v53 count:1];
           v42 = [NSError errorWithDomain:v40 code:5 userInfo:v41];
-          v9[2](v9, 0, v42);
+          completionCopy[2](completionCopy, 0, v42);
 
-          v34 = v44;
+          v34 = clientCopy;
         }
 
         v38 = v48;
@@ -984,32 +984,32 @@ LABEL_17:
   v56 = v23;
   v38 = [NSDictionary dictionaryWithObjects:&v56 forKeys:&v55 count:1];
   v39 = [NSError errorWithDomain:v37 code:0 userInfo:v38];
-  v9[2](v9, 0, v39);
+  completionCopy[2](completionCopy, 0, v39);
 
-  v34 = v44;
+  v34 = clientCopy;
 LABEL_20:
 }
 
-- (void)setCompletionHandlerForRepairDeviceRequest:(id)a3 thisDevice:(id)a4 completion:(id)a5
+- (void)setCompletionHandlerForRepairDeviceRequest:(id)request thisDevice:(id)device completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100171448;
   v9[3] = &unk_1002CF5C8;
-  v10 = a4;
-  v11 = a5;
-  v7 = v10;
-  v8 = v11;
-  [a3 setCompletionHandler:v9];
+  deviceCopy = device;
+  completionCopy = completion;
+  v7 = deviceCopy;
+  v8 = completionCopy;
+  [request setCompletionHandler:v9];
 }
 
-- (void)ephemeralTokenForUserWithCompletion:(id)a3
+- (void)ephemeralTokenForUserWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[FMSystemInfo sharedInstance];
-  v6 = [v5 isInternalBuild];
+  isInternalBuild = [v5 isInternalBuild];
 
-  if (v6)
+  if (isInternalBuild)
   {
     v7 = objc_alloc_init(AKAppleIDAuthenticationController);
     if (v7)
@@ -1020,9 +1020,9 @@ LABEL_20:
       {
         [v8 setIsUsernameEditable:0];
         [v9 setShouldPromptForPasswordOnly:1];
-        v10 = [(FMDServiceProvider *)self account];
-        v11 = [v10 username];
-        [v9 setUsername:v11];
+        account = [(FMDServiceProvider *)self account];
+        username = [account username];
+        [v9 setUsername:username];
 
         [v9 setDefaultButtonString:@"Default Button Text"];
         [v9 setIsEphemeral:1];
@@ -1031,7 +1031,7 @@ LABEL_20:
         v20[1] = 3221225472;
         v20[2] = sub_100171B38;
         v20[3] = &unk_1002CF5F0;
-        v21 = v4;
+        v21 = completionCopy;
         [v7 authenticateWithContext:v9 completion:v20];
         v12 = v21;
       }
@@ -1047,7 +1047,7 @@ LABEL_20:
 
         v19 = [NSError alloc];
         v12 = [v19 initWithDomain:kFMDErrorDomain code:5 userInfo:0];
-        (*(v4 + 2))(v4, 0, v12);
+        (*(completionCopy + 2))(completionCopy, 0, v12);
       }
     }
 
@@ -1062,7 +1062,7 @@ LABEL_20:
 
       v17 = [NSError alloc];
       v9 = [v17 initWithDomain:kFMDErrorDomain code:5 userInfo:0];
-      (*(v4 + 2))(v4, 0, v9);
+      (*(completionCopy + 2))(completionCopy, 0, v9);
     }
   }
 
@@ -1074,18 +1074,18 @@ LABEL_20:
     v24 = v7;
     v14 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v15 = [NSError errorWithDomain:v13 code:4 userInfo:v14];
-    (*(v4 + 2))(v4, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)disableFMIPForPairedDeviceWithUDID:(id)a3 account:(id)a4 andCompletion:(id)a5
+- (void)disableFMIPForPairedDeviceWithUDID:(id)d account:(id)account andCompletion:(id)completion
 {
-  v38 = self;
-  v7 = a3;
-  v40 = a4;
-  v39 = a5;
+  selfCopy = self;
+  dCopy = d;
+  accountCopy = account;
+  completionCopy = completion;
   v8 = +[NRPairedDeviceRegistry sharedInstance];
   v9 = +[NRPairedDeviceRegistry pairedDevicesSelectorBlock];
   v10 = [v8 getAllDevicesWithArchivedAltAccountDevicesMatching:v9];
@@ -1112,15 +1112,15 @@ LABEL_3:
       }
 
       v18 = *(*(&v45 + 1) + 8 * v17);
-      v19 = [v18 valueForProperty:{v15, v38}];
-      v20 = [v19 BOOLValue];
+      v19 = [v18 valueForProperty:{v15, selfCopy}];
+      bOOLValue = [v19 BOOLValue];
 
-      if (v7)
+      if (dCopy)
       {
-        if (v20)
+        if (bOOLValue)
         {
           v21 = [v18 valueForProperty:v16];
-          v22 = [v7 isEqualToString:v21];
+          v22 = [dCopy isEqualToString:v21];
 
           if (v22)
           {
@@ -1159,12 +1159,12 @@ LABEL_3:
     [(FMDFMIPUnregisterDeviceInfo *)v24 setProductType:v27];
 
     v28 = [v23 valueForProperty:NRDevicePropertyPairingID];
-    v29 = [v28 UUIDString];
-    [(FMDFMIPUnregisterDeviceInfo *)v24 setPairingId:v29];
+    uUIDString = [v28 UUIDString];
+    [(FMDFMIPUnregisterDeviceInfo *)v24 setPairingId:uUIDString];
 
     v30 = [FMPreferencesUtil stringForKey:@"productVersionOverride" inDomain:kFMDNotBackedUpPrefDomain];
-    v32 = v39;
-    v31 = v40;
+    v32 = completionCopy;
+    v31 = accountCopy;
     if (v30)
     {
       [(FMDFMIPUnregisterDeviceInfo *)v24 setProductVersion:v30];
@@ -1180,16 +1180,16 @@ LABEL_3:
     [(FMDFMIPUnregisterDeviceInfo *)v24 setBuildVersion:v36];
 
     [(FMDFMIPUnregisterDeviceInfo *)v24 setDisableContext:5];
-    v37 = [[FMDRequestFMIPUnregister alloc] initWithAccount:v40 device:v24 otherDevices:0];
+    v37 = [[FMDRequestFMIPUnregister alloc] initWithAccount:accountCopy device:v24 otherDevices:0];
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
     v41[2] = sub_1001720F8;
     v41[3] = &unk_1002CF618;
-    v42 = v7;
-    v43 = v38;
-    v44 = v39;
+    v42 = dCopy;
+    v43 = selfCopy;
+    v44 = completionCopy;
     [(FMDRequest *)v37 setCompletionHandler:v41];
-    [(FMDServiceProvider *)v38 enqueueRequest:v37 account:v40];
+    [(FMDServiceProvider *)selfCopy enqueueRequest:v37 account:accountCopy];
 
     goto LABEL_21;
   }
@@ -1198,74 +1198,74 @@ LABEL_11:
 
 LABEL_15:
   v33 = sub_100002880();
-  v32 = v39;
-  v31 = v40;
+  v32 = completionCopy;
+  v31 = accountCopy;
   if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
   {
     sub_10022A308();
   }
 
-  if (v39)
+  if (completionCopy)
   {
     v34 = kFMDErrorDomain;
     v49 = NSLocalizedFailureReasonErrorKey;
     v50 = @"No paired device with this UDID";
     v23 = [NSDictionary dictionaryWithObjects:&v50 forKeys:&v49 count:1];
     v24 = [NSError errorWithDomain:v34 code:1 userInfo:v23];
-    (*(v39 + 2))(v39, v24);
+    (*(completionCopy + 2))(completionCopy, v24);
 LABEL_21:
   }
 }
 
-- (void)unregisterDeviceWithCompletion:(id)a3
+- (void)unregisterDeviceWithCompletion:(id)completion
 {
-  v50 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(FMDFMIPUnregisterDeviceInfo);
   v5 = +[FMDSystemConfig sharedInstance];
-  v6 = [v5 deviceUDID];
-  [(FMDFMIPUnregisterDeviceInfo *)v4 setUdid:v6];
+  deviceUDID = [v5 deviceUDID];
+  [(FMDFMIPUnregisterDeviceInfo *)v4 setUdid:deviceUDID];
 
   v7 = +[FMDSystemConfig sharedInstance];
-  v8 = [v7 internationalMobileEquipmentIdentity];
-  [(FMDFMIPUnregisterDeviceInfo *)v4 setImei:v8];
+  internationalMobileEquipmentIdentity = [v7 internationalMobileEquipmentIdentity];
+  [(FMDFMIPUnregisterDeviceInfo *)v4 setImei:internationalMobileEquipmentIdentity];
 
   v9 = +[FMDSystemConfig sharedInstance];
-  v10 = [v9 internationalMobileEquipmentIdentityTwo];
-  [(FMDFMIPUnregisterDeviceInfo *)v4 setImei2:v10];
+  internationalMobileEquipmentIdentityTwo = [v9 internationalMobileEquipmentIdentityTwo];
+  [(FMDFMIPUnregisterDeviceInfo *)v4 setImei2:internationalMobileEquipmentIdentityTwo];
 
   v11 = +[FMDSystemConfig sharedInstance];
-  v12 = [v11 mobileEquipmentIdentifier];
-  [(FMDFMIPUnregisterDeviceInfo *)v4 setMeid:v12];
+  mobileEquipmentIdentifier = [v11 mobileEquipmentIdentifier];
+  [(FMDFMIPUnregisterDeviceInfo *)v4 setMeid:mobileEquipmentIdentifier];
 
   v13 = +[FMDSystemConfig sharedInstance];
-  v14 = [v13 serialNumber];
-  [(FMDFMIPUnregisterDeviceInfo *)v4 setSerialNumber:v14];
+  serialNumber = [v13 serialNumber];
+  [(FMDFMIPUnregisterDeviceInfo *)v4 setSerialNumber:serialNumber];
 
   v15 = +[FMDSystemConfig sharedInstance];
-  v16 = [v15 productType];
-  [(FMDFMIPUnregisterDeviceInfo *)v4 setProductType:v16];
+  productType = [v15 productType];
+  [(FMDFMIPUnregisterDeviceInfo *)v4 setProductType:productType];
 
   v17 = +[FMDSystemConfig sharedInstance];
-  v18 = [v17 productVersion];
-  [(FMDFMIPUnregisterDeviceInfo *)v4 setProductVersion:v18];
+  productVersion = [v17 productVersion];
+  [(FMDFMIPUnregisterDeviceInfo *)v4 setProductVersion:productVersion];
 
   v19 = +[FMDSystemConfig sharedInstance];
-  v20 = [v19 buildVersion];
-  [(FMDFMIPUnregisterDeviceInfo *)v4 setBuildVersion:v20];
+  buildVersion = [v19 buildVersion];
+  [(FMDFMIPUnregisterDeviceInfo *)v4 setBuildVersion:buildVersion];
 
-  v21 = [(FMDServiceProvider *)self account];
+  account = [(FMDServiceProvider *)self account];
   v51 = v4;
-  -[FMDFMIPUnregisterDeviceInfo setDisableContext:](v4, "setDisableContext:", [v21 fmipDisableContext]);
+  -[FMDFMIPUnregisterDeviceInfo setDisableContext:](v4, "setDisableContext:", [account fmipDisableContext]);
 
   v22 = +[NSMutableArray array];
   v23 = [FMDCompanionRegistryFactory companionRegistryWithDelegate:0];
-  v24 = [v23 allAccessories];
+  allAccessories = [v23 allAccessories];
 
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v25 = v24;
+  v25 = allAccessories;
   v26 = [v25 countByEnumeratingWithState:&v56 objects:v60 count:16];
   if (v26)
   {
@@ -1282,29 +1282,29 @@ LABEL_21:
 
         v30 = *(*(&v56 + 1) + 8 * i);
         v31 = objc_alloc_init(FMDFMIPUnregisterDeviceInfo);
-        v32 = [v30 udid];
-        [(FMDFMIPUnregisterDeviceInfo *)v31 setUdid:v32];
+        udid = [v30 udid];
+        [(FMDFMIPUnregisterDeviceInfo *)v31 setUdid:udid];
 
-        v33 = [v30 serialNumber];
-        [(FMDFMIPUnregisterDeviceInfo *)v31 setSerialNumber:v33];
+        serialNumber2 = [v30 serialNumber];
+        [(FMDFMIPUnregisterDeviceInfo *)v31 setSerialNumber:serialNumber2];
 
-        v34 = [v30 productType];
-        [(FMDFMIPUnregisterDeviceInfo *)v31 setProductType:v34];
+        productType2 = [v30 productType];
+        [(FMDFMIPUnregisterDeviceInfo *)v31 setProductType:productType2];
 
-        v35 = [v30 productVersion];
-        [(FMDFMIPUnregisterDeviceInfo *)v31 setProductVersion:v35];
+        productVersion2 = [v30 productVersion];
+        [(FMDFMIPUnregisterDeviceInfo *)v31 setProductVersion:productVersion2];
 
-        v36 = [v30 buildVersion];
-        [(FMDFMIPUnregisterDeviceInfo *)v31 setBuildVersion:v36];
+        buildVersion2 = [v30 buildVersion];
+        [(FMDFMIPUnregisterDeviceInfo *)v31 setBuildVersion:buildVersion2];
 
         -[FMDFMIPUnregisterDeviceInfo setPaired:](v31, "setPaired:", [v30 paired]);
         -[FMDFMIPUnregisterDeviceInfo setMigrationConfirmed:](v31, "setMigrationConfirmed:", [v30 migrationPossible]);
-        v37 = [(FMDServiceProvider *)self account];
-        -[FMDFMIPUnregisterDeviceInfo setDisableContext:](v31, "setDisableContext:", [v37 fmipDisableContext]);
+        account2 = [(FMDServiceProvider *)self account];
+        -[FMDFMIPUnregisterDeviceInfo setDisableContext:](v31, "setDisableContext:", [account2 fmipDisableContext]);
 
-        v38 = [v30 pairingId];
-        v39 = [v38 UUIDString];
-        [(FMDFMIPUnregisterDeviceInfo *)v31 setPairingId:v39];
+        pairingId = [v30 pairingId];
+        uUIDString = [pairingId UUIDString];
+        [(FMDFMIPUnregisterDeviceInfo *)v31 setPairingId:uUIDString];
 
         [v22 addObject:v31];
       }
@@ -1315,31 +1315,31 @@ LABEL_21:
     while (v27);
   }
 
-  v40 = [(FMDServiceProvider *)self account];
+  account3 = [(FMDServiceProvider *)self account];
   v41 = [FMDRequestFMIPUnregister alloc];
-  v42 = [(FMDServiceProvider *)self account];
-  v43 = [(FMDRequestFMIPUnregister *)v41 initWithAccount:v42 device:v51 otherDevices:v22];
+  account4 = [(FMDServiceProvider *)self account];
+  v43 = [(FMDRequestFMIPUnregister *)v41 initWithAccount:account4 device:v51 otherDevices:v22];
 
   v52[0] = _NSConcreteStackBlock;
   v52[1] = 3221225472;
   v52[2] = sub_100172DE8;
   v52[3] = &unk_1002CF618;
-  v44 = v40;
+  v44 = account3;
   v53 = v44;
-  v54 = self;
-  v45 = v50;
+  selfCopy = self;
+  v45 = completionCopy;
   v55 = v45;
   [(FMDRequest *)v43 setCompletionHandler:v52];
-  v46 = [v44 unregisterState];
+  unregisterState = [v44 unregisterState];
   [v44 setUnregisterState:4];
-  v47 = [(FMDFMIPServiceProvider *)self accountStore];
-  [v47 saveAccount:v44];
+  accountStore = [(FMDFMIPServiceProvider *)self accountStore];
+  [accountStore saveAccount:v44];
 
   if (![(FMDServiceProvider *)self enqueueRequest:v43])
   {
-    [v44 setUnregisterState:v46];
-    v48 = [(FMDFMIPServiceProvider *)self accountStore];
-    [v48 saveAccount:v44];
+    [v44 setUnregisterState:unregisterState];
+    accountStore2 = [(FMDFMIPServiceProvider *)self accountStore];
+    [accountStore2 saveAccount:v44];
 
     if (v45)
     {
@@ -1349,11 +1349,11 @@ LABEL_21:
   }
 }
 
-- (void)markPairedDeviceWithUdid:(id)a3 asMissingUsingToken:(id)a4 withCompletion:(id)a5
+- (void)markPairedDeviceWithUdid:(id)udid asMissingUsingToken:(id)token withCompletion:(id)completion
 {
-  v7 = a3;
-  v40 = a4;
-  v39 = a5;
+  udidCopy = udid;
+  tokenCopy = token;
+  completionCopy = completion;
   v8 = +[NRPairedDeviceRegistry sharedInstance];
   v9 = +[NRPairedDeviceRegistry pairedDevicesSelectorBlock];
   v10 = [v8 getAllDevicesWithArchivedAltAccountDevicesMatching:v9];
@@ -1381,14 +1381,14 @@ LABEL_3:
 
       v18 = *(*(&v43 + 1) + 8 * v17);
       v19 = [v18 valueForProperty:v15];
-      v20 = [v19 BOOLValue];
+      bOOLValue = [v19 BOOLValue];
 
-      if (v7)
+      if (udidCopy)
       {
-        if (v20)
+        if (bOOLValue)
         {
           v21 = [v18 valueForProperty:v16];
-          v22 = [v7 isEqualToString:v21];
+          v22 = [udidCopy isEqualToString:v21];
 
           if (v22)
           {
@@ -1427,7 +1427,7 @@ LABEL_3:
     [(FMDFMIPMissingDeviceInfo *)v24 setProductType:v27];
 
     v28 = [FMPreferencesUtil stringForKey:@"productVersionOverride" inDomain:kFMDNotBackedUpPrefDomain];
-    v29 = v40;
+    v29 = tokenCopy;
     if (v28)
     {
       [(FMDFMIPMissingDeviceInfo *)v24 setProductVersion:v28];
@@ -1443,16 +1443,16 @@ LABEL_3:
     [(FMDFMIPMissingDeviceInfo *)v24 setBuildVersion:v34];
 
     v35 = [FMDRequestMissingDevice alloc];
-    v36 = [(FMDServiceProvider *)self account];
-    v37 = [(FMDRequestMissingDevice *)v35 initWithAccount:v36 token:v40 andMissingDeviceInfo:v24];
+    account = [(FMDServiceProvider *)self account];
+    v37 = [(FMDRequestMissingDevice *)v35 initWithAccount:account token:tokenCopy andMissingDeviceInfo:v24];
 
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
     v41[2] = sub_100173D3C;
     v41[3] = &unk_1002CF668;
     v41[4] = self;
-    v31 = v39;
-    v42 = v39;
+    v31 = completionCopy;
+    v42 = completionCopy;
     [(FMDRequest *)v37 setCompletionHandler:v41];
     [(FMDServiceProvider *)self enqueueRequest:v37];
 
@@ -1463,43 +1463,43 @@ LABEL_11:
 
 LABEL_15:
   v30 = sub_100002880();
-  v31 = v39;
-  v29 = v40;
+  v31 = completionCopy;
+  v29 = tokenCopy;
   if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
   {
     sub_10022A308();
   }
 
-  if (v39)
+  if (completionCopy)
   {
     v32 = kFMDErrorDomain;
     v47 = NSLocalizedFailureReasonErrorKey;
     v48 = @"No paired device with this UDID";
     v23 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
     v24 = [NSError errorWithDomain:v32 code:1 userInfo:v23];
-    (*(v39 + 2))(v39, v24);
+    (*(completionCopy + 2))(completionCopy, v24);
 LABEL_21:
   }
 }
 
-- (void)_showUnregisterDeviceErrorForResponseError:(int64_t)a3 inContext:(unint64_t)a4
+- (void)_showUnregisterDeviceErrorForResponseError:(int64_t)error inContext:(unint64_t)context
 {
   v16 = objc_alloc_init(FMAlert);
   [v16 setCategory:1];
   v6 = [LocalizedUnregisterErrorKey alloc];
   v7 = +[FMDSystemConfig sharedInstance];
-  v8 = -[LocalizedUnregisterErrorKey initWithUnregisterError:context:deviceClass:](v6, "initWithUnregisterError:context:deviceClass:", a3, a4, [v7 deviceClass]);
+  v8 = -[LocalizedUnregisterErrorKey initWithUnregisterError:context:deviceClass:](v6, "initWithUnregisterError:context:deviceClass:", error, context, [v7 deviceClass]);
 
-  v9 = [(LocalizedUnregisterErrorKey *)v8 titleKey];
-  v10 = [(LocalizedUnregisterErrorKey *)v8 textKey];
-  v11 = [(LocalizedUnregisterErrorKey *)v8 okButtonKey];
-  v12 = sub_100151958(v9);
+  titleKey = [(LocalizedUnregisterErrorKey *)v8 titleKey];
+  textKey = [(LocalizedUnregisterErrorKey *)v8 textKey];
+  okButtonKey = [(LocalizedUnregisterErrorKey *)v8 okButtonKey];
+  v12 = sub_100151958(titleKey);
   [v16 setMsgTitle:v12];
 
-  v13 = sub_100151958(v10);
+  v13 = sub_100151958(textKey);
   [v16 setMsgText:v13];
 
-  v14 = sub_100151958(v11);
+  v14 = sub_100151958(okButtonKey);
   [v16 setDefaultButtonTitle:v14];
 
   [v16 setShowMsgInLockScreen:1];
@@ -1509,21 +1509,21 @@ LABEL_21:
   [v15 activateAlert:v16];
 }
 
-- (void)_showMarkAsMissingErrorForResponseError:(int64_t)a3
+- (void)_showMarkAsMissingErrorForResponseError:(int64_t)error
 {
   v12 = objc_alloc_init(FMAlert);
   [v12 setCategory:1];
-  v4 = [[LocalizedUnregisterErrorKey alloc] initWithUnregisterError:a3 context:6 deviceClass:8];
-  v5 = [(LocalizedUnregisterErrorKey *)v4 titleKey];
-  v6 = [(LocalizedUnregisterErrorKey *)v4 textKey];
-  v7 = [(LocalizedUnregisterErrorKey *)v4 okButtonKey];
-  v8 = sub_100151958(v5);
+  v4 = [[LocalizedUnregisterErrorKey alloc] initWithUnregisterError:error context:6 deviceClass:8];
+  titleKey = [(LocalizedUnregisterErrorKey *)v4 titleKey];
+  textKey = [(LocalizedUnregisterErrorKey *)v4 textKey];
+  okButtonKey = [(LocalizedUnregisterErrorKey *)v4 okButtonKey];
+  v8 = sub_100151958(titleKey);
   [v12 setMsgTitle:v8];
 
-  v9 = sub_100151958(v6);
+  v9 = sub_100151958(textKey);
   [v12 setMsgText:v9];
 
-  v10 = sub_100151958(v7);
+  v10 = sub_100151958(okButtonKey);
   [v12 setDefaultButtonTitle:v10];
 
   [v12 setShowMsgInLockScreen:1];
@@ -1533,21 +1533,21 @@ LABEL_21:
   [v11 activateAlert:v12];
 }
 
-- (void)_showPairedDeviceDisableFMIPErrorForResponseError:(int64_t)a3
+- (void)_showPairedDeviceDisableFMIPErrorForResponseError:(int64_t)error
 {
   v12 = objc_alloc_init(FMAlert);
   [v12 setCategory:1];
-  v4 = [[LocalizedUnregisterErrorKey alloc] initWithUnregisterError:a3 context:5 deviceClass:8];
-  v5 = [(LocalizedUnregisterErrorKey *)v4 titleKey];
-  v6 = [(LocalizedUnregisterErrorKey *)v4 textKey];
-  v7 = [(LocalizedUnregisterErrorKey *)v4 okButtonKey];
-  v8 = sub_100151958(v5);
+  v4 = [[LocalizedUnregisterErrorKey alloc] initWithUnregisterError:error context:5 deviceClass:8];
+  titleKey = [(LocalizedUnregisterErrorKey *)v4 titleKey];
+  textKey = [(LocalizedUnregisterErrorKey *)v4 textKey];
+  okButtonKey = [(LocalizedUnregisterErrorKey *)v4 okButtonKey];
+  v8 = sub_100151958(titleKey);
   [v12 setMsgTitle:v8];
 
-  v9 = sub_100151958(v6);
+  v9 = sub_100151958(textKey);
   [v12 setMsgText:v9];
 
-  v10 = sub_100151958(v7);
+  v10 = sub_100151958(okButtonKey);
   [v12 setDefaultButtonTitle:v10];
 
   [v12 setShowMsgInLockScreen:1];
@@ -1557,15 +1557,15 @@ LABEL_21:
   [v11 activateAlert:v12];
 }
 
-- (void)didReceiveAuthFailureForRequest:(id)a3
+- (void)didReceiveAuthFailureForRequest:(id)request
 {
   v6.receiver = self;
   v6.super_class = FMDFMIPServiceProvider;
-  v3 = a3;
-  [(FMDServiceProvider *)&v6 didReceiveAuthFailureForRequest:v3];
-  v4 = [v3 showAuthFailedMessage];
+  requestCopy = request;
+  [(FMDServiceProvider *)&v6 didReceiveAuthFailureForRequest:requestCopy];
+  showAuthFailedMessage = [requestCopy showAuthFailedMessage];
 
-  if (v4)
+  if (showAuthFailedMessage)
   {
     v5 = +[FMDAppleAccountManager sharedInstance];
     [v5 fixFMIPAuthTokenShouldForce:0];
@@ -1574,10 +1574,10 @@ LABEL_21:
 
 - (unint64_t)fmipState
 {
-  v2 = [(FMDServiceProvider *)self account];
-  v3 = [v2 dsid];
+  account = [(FMDServiceProvider *)self account];
+  dsid = [account dsid];
 
-  if (v3 && (v4 = [v2 unregisterState], v4 <= 5))
+  if (dsid && (v4 = [account unregisterState], v4 <= 5))
   {
     v5 = qword_1002586D8[v4];
   }
@@ -1590,16 +1590,16 @@ LABEL_21:
   return v5;
 }
 
-- (void)setPendingSecureMessage:(id)a3
+- (void)setPendingSecureMessage:(id)message
 {
-  objc_storeStrong(&self->_pendingSecureMessage, a3);
+  objc_storeStrong(&self->_pendingSecureMessage, message);
 
   [(FMDFMIPServiceProvider *)self _updateToHomescreenAlerts];
 }
 
-- (void)setPendingLocateAlert:(id)a3
+- (void)setPendingLocateAlert:(id)alert
 {
-  objc_storeStrong(&self->_pendingLocateAlert, a3);
+  objc_storeStrong(&self->_pendingLocateAlert, alert);
 
   [(FMDFMIPServiceProvider *)self _updateToHomescreenAlerts];
 }
@@ -1607,13 +1607,13 @@ LABEL_21:
 - (void)_updateToHomescreenAlerts
 {
   objc_initWeak(&location, self);
-  v3 = [(FMDFMIPServiceProvider *)self device_unlock_actions_queue];
+  device_unlock_actions_queue = [(FMDFMIPServiceProvider *)self device_unlock_actions_queue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10017485C;
   v4[3] = &unk_1002CD518;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(device_unlock_actions_queue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1622,26 +1622,26 @@ LABEL_21:
 - (void)_showPendingHomescreenAlertNow
 {
   objc_initWeak(&location, self);
-  v3 = [(FMDFMIPServiceProvider *)self device_unlock_actions_queue];
+  device_unlock_actions_queue = [(FMDFMIPServiceProvider *)self device_unlock_actions_queue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100174A58;
   v4[3] = &unk_1002CD518;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(device_unlock_actions_queue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (void)_checkForBuddyCompletionAndReinitialize:(BOOL)a3 withBuddyStatus:(BOOL)a4
+- (void)_checkForBuddyCompletionAndReinitialize:(BOOL)reinitialize withBuddyStatus:(BOOL)status
 {
-  v4 = a4;
+  statusCopy = status;
   v7 = sub_100002880();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v12 = v4;
+    v12 = statusCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Buddy complete? : %d", buf, 8u);
   }
 
@@ -1649,9 +1649,9 @@ LABEL_21:
   v8[1] = 3221225472;
   v8[2] = sub_100174C90;
   v8[3] = &unk_1002CF6B8;
-  v9 = v4;
+  v9 = statusCopy;
   v8[4] = self;
-  v10 = a3;
+  reinitializeCopy = reinitialize;
   dispatch_async(&_dispatch_main_q, v8);
 }
 
@@ -1665,22 +1665,22 @@ LABEL_21:
   }
 
   v4 = +[FMDSystemConfig sharedInstance];
-  v5 = [v4 allowsActivationLock];
+  allowsActivationLock = [v4 allowsActivationLock];
 
-  v6 = [(FMDServiceProvider *)self account];
-  v7 = [v6 dsid];
+  account = [(FMDServiceProvider *)self account];
+  dsid = [account dsid];
 
-  v8 = [(FMDFMIPServiceProvider *)self fmipState];
-  v9 = [(FMDServiceProvider *)self account];
-  v10 = [v9 accountAddTime];
-  [v10 timeIntervalSinceReferenceDate];
+  fmipState = [(FMDFMIPServiceProvider *)self fmipState];
+  account2 = [(FMDServiceProvider *)self account];
+  accountAddTime = [account2 accountAddTime];
+  [accountAddTime timeIntervalSinceReferenceDate];
   v11 = [NSNumber numberWithDouble:?];
 
-  v12 = [(FMDServiceProvider *)self account];
-  v13 = [v12 lowBatteryLocateEnabled];
+  account3 = [(FMDServiceProvider *)self account];
+  lowBatteryLocateEnabled = [account3 lowBatteryLocateEnabled];
 
-  v64 = v7;
-  if (v8 > 2)
+  v64 = dsid;
+  if (fmipState > 2)
   {
     v15 = v11;
     v86 = @"Enabled";
@@ -1696,10 +1696,10 @@ LABEL_21:
     v88[0] = @"Enabled";
     v88[1] = @"AccountId";
     v89[0] = &__kCFBooleanTrue;
-    v89[1] = v7;
+    v89[1] = dsid;
     v88[2] = @"AccountAddTime";
     v88[3] = @"LowBatteryLocateEnabled";
-    if (!v13)
+    if (!lowBatteryLocateEnabled)
     {
       v14 = &__kCFBooleanFalse;
     }
@@ -1723,7 +1723,7 @@ LABEL_21:
     [v20 addObject:@"FMIPInfo"];
   }
 
-  if (v5 != [v63 BOOLValue])
+  if (allowsActivationLock != [v63 BOOLValue])
   {
     [v20 addObject:@"ActivationLockAllowed"];
   }
@@ -1741,13 +1741,13 @@ LABEL_21:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v25 = [v69 objectForKeyedSubscript:@"Enabled"];
-      v26 = [v25 BOOLValue];
+      bOOLValue = [v25 BOOLValue];
       *buf = 134218754;
-      v79 = v26;
+      v79 = bOOLValue;
       v80 = 2112;
-      v81 = v7;
+      v81 = dsid;
       v82 = 2048;
-      v83 = v5;
+      v83 = allowsActivationLock;
       v84 = 2112;
       v85 = v23;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Updating watch with fmipEnabled:%ld, fmipAccount:%@, activationLockAllowed:%ld, lastUpdated:%@...", buf, 0x2Au);
@@ -1756,7 +1756,7 @@ LABEL_21:
     [v62 addObject:@"LastUpdated"];
     [FMPreferencesUtil setObject:v23 forKey:@"LastUpdated" inDomain:kFMDWatchNotBackedUpPrefDomain];
     [FMPreferencesUtil setObject:v69 forKey:@"FMIPInfo" inDomain:kFMDWatchNotBackedUpPrefDomain];
-    [FMPreferencesUtil setBool:v5 forKey:@"ActivationLockAllowed" inDomain:kFMDWatchNotBackedUpPrefDomain];
+    [FMPreferencesUtil setBool:allowsActivationLock forKey:@"ActivationLockAllowed" inDomain:kFMDWatchNotBackedUpPrefDomain];
     v27 = objc_alloc_init(NPSManager);
     [v27 synchronizeUserDefaultsDomain:kFMDWatchNotBackedUpPrefDomain keys:v62];
   }
@@ -1772,13 +1772,13 @@ LABEL_21:
   }
 
   v28 = +[NRPairedDeviceRegistry sharedInstance];
-  v29 = [v28 getPairedDevices];
+  getPairedDevices = [v28 getPairedDevices];
 
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v30 = v29;
+  v30 = getPairedDevices;
   v31 = [v30 countByEnumeratingWithState:&v72 objects:v77 count:16];
   if (v31)
   {
@@ -1801,9 +1801,9 @@ LABEL_21:
 
         v35 = *(*(&v72 + 1) + 8 * i);
         v36 = [v35 valueForProperty:v71];
-        v37 = [v36 BOOLValue];
+        bOOLValue2 = [v36 BOOLValue];
 
-        if (v37)
+        if (bOOLValue2)
         {
           v38 = [v35 valueForProperty:v70];
           v39 = NRRawVersionFromString();
@@ -1838,19 +1838,19 @@ LABEL_21:
               v45 = [v35 valueForProperty:v65];
               v46 = [NPSDomainAccessor alloc];
               v47 = [v46 initWithDomain:kFMDWatchNotBackedUpPrefDomain pairingID:v43 pairingDataStore:v45];
-              v48 = [v47 synchronize];
+              synchronize = [v47 synchronize];
               v49 = [v47 BOOLForKey:v42];
               v50 = [v69 objectForKeyedSubscript:@"Enabled"];
-              v51 = [v50 BOOLValue];
+              bOOLValue3 = [v50 BOOLValue];
 
               v52 = sub_100002880();
               v53 = os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT);
-              if (v49 == v51)
+              if (v49 == bOOLValue3)
               {
                 if (v53)
                 {
                   v59 = @"Don't Show";
-                  if (v51)
+                  if (bOOLValue3)
                   {
                     v59 = @"Show";
                   }
@@ -1867,7 +1867,7 @@ LABEL_21:
                 {
                   *buf = 138412546;
                   v54 = @"Don't Show";
-                  if (v51)
+                  if (bOOLValue3)
                   {
                     v54 = @"Show";
                   }
@@ -1878,8 +1878,8 @@ LABEL_21:
                   _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "Syncing %@ upgrade alert state : '%@'", buf, 0x16u);
                 }
 
-                [v47 setBool:v51 forKey:v42];
-                v55 = [v47 synchronize];
+                [v47 setBool:bOOLValue3 forKey:v42];
+                synchronize2 = [v47 synchronize];
                 v52 = objc_opt_new();
                 v56 = kFMDWatchNotBackedUpPrefDomain;
                 v76 = v42;
@@ -1903,11 +1903,11 @@ LABEL_21:
   }
 }
 
-- (void)addAccount:(id)a3
+- (void)addAccount:(id)account
 {
   v4.receiver = self;
   v4.super_class = FMDFMIPServiceProvider;
-  [(FMDServiceProvider *)&v4 updateAccount:a3];
+  [(FMDServiceProvider *)&v4 updateAccount:account];
   v3 = +[FMDCoreFollowUpManager sharedInstance];
   [v3 clearTheftAndLossCFU];
 }
@@ -1923,25 +1923,25 @@ LABEL_21:
   dispatch_async(v3, block);
 }
 
-- (void)_enqueueIdentityOperation:(id)a3
+- (void)_enqueueIdentityOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(FMDFMIPServiceProvider *)self fm_logID];
-  v6 = [NSString stringWithFormat:@"identityOperation-%@", v5];
+  operationCopy = operation;
+  fm_logID = [(FMDFMIPServiceProvider *)self fm_logID];
+  v6 = [NSString stringWithFormat:@"identityOperation-%@", fm_logID];
 
   v7 = +[FMXPCTransactionManager sharedInstance];
   [v7 beginTransaction:v6];
 
-  v8 = [(FMDFMIPServiceProvider *)self identity_wait_queue];
+  identity_wait_queue = [(FMDFMIPServiceProvider *)self identity_wait_queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100175AD8;
   block[3] = &unk_1002CD8B0;
   v12 = v6;
-  v13 = v4;
+  v13 = operationCopy;
   v9 = v6;
-  v10 = v4;
-  dispatch_async(v8, block);
+  v10 = operationCopy;
+  dispatch_async(identity_wait_queue, block);
 }
 
 - (BOOL)_canSendDeviceIdentityNow
@@ -1964,16 +1964,16 @@ LABEL_21:
   return v4;
 }
 
-- (void)sendDeviceIdentityIfEligibleWithIdentityInfo:(id)a3
+- (void)sendDeviceIdentityIfEligibleWithIdentityInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100175CE0;
   v6[3] = &unk_1002CD288;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = infoCopy;
   v7 = v5;
   [(FMDFMIPServiceProvider *)self _enqueueIdentityOperation:v6];
 
@@ -1981,9 +1981,9 @@ LABEL_21:
   objc_destroyWeak(&location);
 }
 
-- (void)_serialQueue_sendDeviceIdentityIfEligibleWithIdentityInfo:(id)a3
+- (void)_serialQueue_sendDeviceIdentityIfEligibleWithIdentityInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if ([(FMDFMIPServiceProvider *)self isMonitoringPendingDeviceIdentity])
   {
     v5 = sub_100002880();
@@ -2001,9 +2001,9 @@ LABEL_9:
   }
 
   v8 = +[FMDSystemConfig sharedInstance];
-  v9 = [v8 allowsActivationLock];
+  allowsActivationLock = [v8 allowsActivationLock];
 
-  if ((v9 & 1) == 0)
+  if ((allowsActivationLock & 1) == 0)
   {
     v5 = sub_100002880();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2021,7 +2021,7 @@ LABEL_10:
 
   if ([(FMDFMIPServiceProvider *)self _canSendDeviceIdentityNow])
   {
-    [(FMDFMIPServiceProvider *)self _sendDeviceIdentityNowWithIdentityInfo:v4];
+    [(FMDFMIPServiceProvider *)self _sendDeviceIdentityNowWithIdentityInfo:infoCopy];
   }
 
   else
@@ -2033,21 +2033,21 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Cannot send a deviceIdentity request now. Will wait for the right moment", v11, 2u);
     }
 
-    [(FMDFMIPServiceProvider *)self monitorAndSendDeviceIdentityLaterWithIdentityInfo:v4];
+    [(FMDFMIPServiceProvider *)self monitorAndSendDeviceIdentityLaterWithIdentityInfo:infoCopy];
   }
 
 LABEL_11:
 }
 
-- (void)monitorAndSendDeviceIdentityLaterWithIdentityInfo:(id)a3
+- (void)monitorAndSendDeviceIdentityLaterWithIdentityInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [NSString stringWithFormat:@"DeviceIdentityPending-%lX", self];
   [(FMDFMIPServiceProvider *)self setDeviceIdentityPendingXpcTransactionName:v5];
 
   v6 = +[FMXPCTransactionManager sharedInstance];
-  v7 = [(FMDFMIPServiceProvider *)self deviceIdentityPendingXpcTransactionName];
-  [v6 beginTransaction:v7];
+  deviceIdentityPendingXpcTransactionName = [(FMDFMIPServiceProvider *)self deviceIdentityPendingXpcTransactionName];
+  [v6 beginTransaction:deviceIdentityPendingXpcTransactionName];
 
   [(FMDFMIPServiceProvider *)self setIsMonitoringPendingDeviceIdentity:1];
   v8 = [BKSApplicationStateMonitor alloc];
@@ -2060,10 +2060,10 @@ LABEL_11:
   v12[2] = sub_100176024;
   v12[3] = &unk_1002CF6E0;
   objc_copyWeak(&v14, &location);
-  v10 = v4;
+  v10 = infoCopy;
   v13 = v10;
-  v11 = [(FMDFMIPServiceProvider *)self pendingDeviceIdentityMonitor];
-  [v11 setHandler:v12];
+  pendingDeviceIdentityMonitor = [(FMDFMIPServiceProvider *)self pendingDeviceIdentityMonitor];
+  [pendingDeviceIdentityMonitor setHandler:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -2073,15 +2073,15 @@ LABEL_11:
 {
   if ([(FMDFMIPServiceProvider *)self isMonitoringPendingDeviceIdentity])
   {
-    v3 = [(FMDFMIPServiceProvider *)self pendingDeviceIdentityMonitor];
+    pendingDeviceIdentityMonitor = [(FMDFMIPServiceProvider *)self pendingDeviceIdentityMonitor];
 
-    if (v3)
+    if (pendingDeviceIdentityMonitor)
     {
-      v4 = [(FMDFMIPServiceProvider *)self pendingDeviceIdentityMonitor];
-      [v4 invalidate];
+      pendingDeviceIdentityMonitor2 = [(FMDFMIPServiceProvider *)self pendingDeviceIdentityMonitor];
+      [pendingDeviceIdentityMonitor2 invalidate];
 
-      v5 = [(FMDFMIPServiceProvider *)self pendingDeviceIdentityMonitor];
-      [v5 setHandler:0];
+      pendingDeviceIdentityMonitor3 = [(FMDFMIPServiceProvider *)self pendingDeviceIdentityMonitor];
+      [pendingDeviceIdentityMonitor3 setHandler:0];
 
       [(FMDFMIPServiceProvider *)self setPendingDeviceIdentityMonitor:0];
     }
@@ -2090,16 +2090,16 @@ LABEL_11:
   }
 }
 
-- (void)checkAndSendPendingDeviceIdentityWithIdentityInfo:(id)a3
+- (void)checkAndSendPendingDeviceIdentityWithIdentityInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10017627C;
   v6[3] = &unk_1002CD288;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = infoCopy;
   v7 = v5;
   [(FMDFMIPServiceProvider *)self _enqueueIdentityOperation:v6];
 
@@ -2107,19 +2107,19 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)_serialQueue_checkAndSendPendingDeviceIdentityWithIdentityInfo:(id)a3
+- (void)_serialQueue_checkAndSendPendingDeviceIdentityWithIdentityInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(FMDFMIPServiceProvider *)self _canSendDeviceIdentityNow];
-  if ([(FMDFMIPServiceProvider *)self isMonitoringPendingDeviceIdentity]&& v5)
+  infoCopy = info;
+  _canSendDeviceIdentityNow = [(FMDFMIPServiceProvider *)self _canSendDeviceIdentityNow];
+  if ([(FMDFMIPServiceProvider *)self isMonitoringPendingDeviceIdentity]&& _canSendDeviceIdentityNow)
   {
     [(FMDFMIPServiceProvider *)self stopMonitoringPendingDeviceIdentity];
     v6 = +[FMDSystemConfig sharedInstance];
-    v7 = [v6 allowsActivationLock];
+    allowsActivationLock = [v6 allowsActivationLock];
 
-    if (v7)
+    if (allowsActivationLock)
     {
-      [(FMDFMIPServiceProvider *)self _sendDeviceIdentityNowWithIdentityInfo:v4];
+      [(FMDFMIPServiceProvider *)self _sendDeviceIdentityNowWithIdentityInfo:infoCopy];
     }
 
     else
@@ -2133,8 +2133,8 @@ LABEL_11:
     }
 
     v13 = +[FMXPCTransactionManager sharedInstance];
-    v14 = [(FMDFMIPServiceProvider *)self deviceIdentityPendingXpcTransactionName];
-    [v13 endTransaction:v14];
+    deviceIdentityPendingXpcTransactionName = [(FMDFMIPServiceProvider *)self deviceIdentityPendingXpcTransactionName];
+    [v13 endTransaction:deviceIdentityPendingXpcTransactionName];
 
     [(FMDFMIPServiceProvider *)self setDeviceIdentityPendingXpcTransactionName:0];
   }
@@ -2144,9 +2144,9 @@ LABEL_11:
     v8 = sub_100002880();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(FMDFMIPServiceProvider *)self isMonitoringPendingDeviceIdentity];
+      isMonitoringPendingDeviceIdentity = [(FMDFMIPServiceProvider *)self isMonitoringPendingDeviceIdentity];
       v10 = @"NO";
-      if (v9)
+      if (isMonitoringPendingDeviceIdentity)
       {
         v11 = @"YES";
       }
@@ -2156,7 +2156,7 @@ LABEL_11:
         v11 = @"NO";
       }
 
-      if (v5)
+      if (_canSendDeviceIdentityNow)
       {
         v10 = @"YES";
       }
@@ -2170,7 +2170,7 @@ LABEL_11:
   }
 }
 
-- (void)_buddyCompletionCheckTimerFired:(id)a3
+- (void)_buddyCompletionCheckTimerFired:(id)fired
 {
   v4 = sub_100002880();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2180,12 +2180,12 @@ LABEL_11:
   }
 
   v5 = +[FMDSystemConfig sharedInstance];
-  v6 = [v5 isBuddyDone];
+  isBuddyDone = [v5 isBuddyDone];
 
-  [(FMDFMIPServiceProvider *)self _checkForBuddyCompletionAndReinitialize:1 withBuddyStatus:v6];
+  [(FMDFMIPServiceProvider *)self _checkForBuddyCompletionAndReinitialize:1 withBuddyStatus:isBuddyDone];
 }
 
-- (void)buddyDidComplete:(id)a3
+- (void)buddyDidComplete:(id)complete
 {
   v4 = sub_100002880();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2195,12 +2195,12 @@ LABEL_11:
   }
 
   v5 = +[FMDSystemConfig sharedInstance];
-  v6 = [v5 isBuddyDone];
+  isBuddyDone = [v5 isBuddyDone];
 
-  [(FMDFMIPServiceProvider *)self _checkForBuddyCompletionAndReinitialize:1 withBuddyStatus:v6];
+  [(FMDFMIPServiceProvider *)self _checkForBuddyCompletionAndReinitialize:1 withBuddyStatus:isBuddyDone];
 }
 
-- (void)_fmipStateChangeLocalNotification:(id)a3
+- (void)_fmipStateChangeLocalNotification:(id)notification
 {
   v4 = sub_100002880();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2220,12 +2220,12 @@ LABEL_11:
   dispatch_after(v5, v6, block);
 }
 
-- (void)systemShutdownSoon:(id)a3
+- (void)systemShutdownSoon:(id)soon
 {
-  v4 = [(FMDServiceProvider *)self account];
-  v5 = [v4 lowBatteryLocateEnabled];
+  account = [(FMDServiceProvider *)self account];
+  lowBatteryLocateEnabled = [account lowBatteryLocateEnabled];
 
-  if (v5)
+  if (lowBatteryLocateEnabled)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -2234,9 +2234,9 @@ LABEL_11:
     v15[4] = self;
     v6 = [[FMDActingRequestDecorator alloc] initWithDeviceContextGenerator:&stru_1002CF700 deviceInfoGenerator:v15 serverContextGenerator:0 requestHeaderGenerator:0];
     v7 = [QCAction alloc];
-    v8 = [(FMDServiceProvider *)self account];
-    v9 = [(FMDServiceProvider *)self serverInteractionController];
-    v10 = [(QCAction *)v7 initWithAccount:v8 shutdownActivityPending:1 serverInteractionController:v9];
+    account2 = [(FMDServiceProvider *)self account];
+    serverInteractionController = [(FMDServiceProvider *)self serverInteractionController];
+    v10 = [(QCAction *)v7 initWithAccount:account2 shutdownActivityPending:1 serverInteractionController:serverInteractionController];
 
     [(QCAction *)v10 setRequestDecorator:v6];
     v11 = +[ActionManager sharedManager];
@@ -2254,32 +2254,32 @@ LABEL_11:
   }
 }
 
-- (void)_deviceDidPair:(id)a3
+- (void)_deviceDidPair:(id)pair
 {
   [(FMDFMIPServiceProvider *)self syncFMIPStateToWatch];
 
   [(FMDFMIPServiceProvider *)self registerDeviceWithCause:@"deviceDidPair" force:0];
 }
 
-- (void)_deviceDidUnpair:(id)a3
+- (void)_deviceDidUnpair:(id)unpair
 {
   [(FMDFMIPServiceProvider *)self registerDeviceWithCause:@"deviceDidUnpair" force:0];
   v6 = [FMDCompanionRegistryFactory companionRegistryWithDelegate:0];
-  v4 = [(FMDFMIPServiceProvider *)self unregisterTokenStore];
-  v5 = [v6 allAccessories];
-  [v4 expungeUnregisterTokens:v5];
+  unregisterTokenStore = [(FMDFMIPServiceProvider *)self unregisterTokenStore];
+  allAccessories = [v6 allAccessories];
+  [unregisterTokenStore expungeUnregisterTokens:allAccessories];
 }
 
-- (id)_unregisterDeviceErrorForResponseError:(int64_t)a3 inContext:(unint64_t)a4
+- (id)_unregisterDeviceErrorForResponseError:(int64_t)error inContext:(unint64_t)context
 {
-  if (a4 - 3 < 5)
+  if (context - 3 < 5)
   {
     goto LABEL_2;
   }
 
-  if (a4 == 2)
+  if (context == 2)
   {
-    if ((a3 & 0x200) != 0)
+    if ((error & 0x200) != 0)
     {
       v6 = 1;
     }
@@ -2292,10 +2292,10 @@ LABEL_11:
 
   else
   {
-    if (a4 == 1)
+    if (context == 1)
     {
 LABEL_2:
-      v6 = 2 * ((a3 & 0x200) == 0);
+      v6 = 2 * ((error & 0x200) == 0);
       goto LABEL_3;
     }
 
@@ -2305,10 +2305,10 @@ LABEL_2:
 LABEL_3:
   v7 = [LocalizedUnregisterErrorKey alloc];
   v8 = +[FMDSystemConfig sharedInstance];
-  v9 = -[LocalizedUnregisterErrorKey initWithUnregisterError:context:deviceClass:](v7, "initWithUnregisterError:context:deviceClass:", a3, a4, [v8 deviceClass]);
+  v9 = -[LocalizedUnregisterErrorKey initWithUnregisterError:context:deviceClass:](v7, "initWithUnregisterError:context:deviceClass:", error, context, [v8 deviceClass]);
 
-  v10 = [(LocalizedUnregisterErrorKey *)v9 textKey];
-  v11 = sub_100151958(v10);
+  textKey = [(LocalizedUnregisterErrorKey *)v9 textKey];
+  v11 = sub_100151958(textKey);
   v12 = FMDFMIPManagerUnregisterErrorDomain;
   v16 = NSLocalizedDescriptionKey;
   v17 = v11;

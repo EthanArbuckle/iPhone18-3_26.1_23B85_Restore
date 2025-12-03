@@ -1,10 +1,10 @@
 @interface PXGViewEnvironment
 + (BOOL)_hideFocusRing;
-- (BOOL)hasDifferentColorAppearanceComparedTo:(id)a3;
-- (BOOL)hasEqualAppearanceTo:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasDifferentColorAppearanceComparedTo:(id)to;
+- (BOOL)hasEqualAppearanceTo:(id)to;
+- (BOOL)isEqual:(id)equal;
 - (PXGViewEnvironment)init;
-- (PXGViewEnvironment)initWithView:(id)a3 accessibilityEnabled:(BOOL)a4 isBeingFullPageSnapshotted:(BOOL)a5;
+- (PXGViewEnvironment)initWithView:(id)view accessibilityEnabled:(BOOL)enabled isBeingFullPageSnapshotted:(BOOL)snapshotted;
 - (void)dealloc;
 @end
 
@@ -15,8 +15,8 @@
   HasInternalUI = PFOSVariantHasInternalUI();
   if (HasInternalUI)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 BOOLForKey:@"PXGViewEnvironmentHideFocusRing"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults BOOLForKey:@"PXGViewEnvironmentHideFocusRing"];
 
     LOBYTE(HasInternalUI) = v4;
   }
@@ -33,43 +33,43 @@
   [(PXGViewEnvironment *)&v3 dealloc];
 }
 
-- (BOOL)hasDifferentColorAppearanceComparedTo:(id)a3
+- (BOOL)hasDifferentColorAppearanceComparedTo:(id)to
 {
-  v4 = a3;
-  v5 = [(PXGViewEnvironment *)self traitCollection];
-  v6 = [v4 traitCollection];
+  toCopy = to;
+  traitCollection = [(PXGViewEnvironment *)self traitCollection];
+  traitCollection2 = [toCopy traitCollection];
 
-  LOBYTE(v4) = [v5 hasDifferentColorAppearanceComparedToTraitCollection:v6];
-  return v4;
+  LOBYTE(toCopy) = [traitCollection hasDifferentColorAppearanceComparedToTraitCollection:traitCollection2];
+  return toCopy;
 }
 
-- (BOOL)hasEqualAppearanceTo:(id)a3
+- (BOOL)hasEqualAppearanceTo:(id)to
 {
-  v4 = a3;
-  if (!v4)
+  toCopy = to;
+  if (!toCopy)
   {
     goto LABEL_14;
   }
 
-  v5 = [(PXGViewEnvironment *)self traitCollection];
-  v6 = [v4 traitCollection];
-  v7 = v6 != 0;
+  traitCollection = [(PXGViewEnvironment *)self traitCollection];
+  traitCollection2 = [toCopy traitCollection];
+  v7 = traitCollection2 != 0;
 
-  if ((v5 == 0) == v7 || [(PXGViewEnvironment *)self hasDifferentColorAppearanceComparedTo:v4])
+  if ((traitCollection == 0) == v7 || [(PXGViewEnvironment *)self hasDifferentColorAppearanceComparedTo:toCopy])
   {
     goto LABEL_14;
   }
 
-  v8 = [(PXGViewEnvironment *)self backgroundColor];
-  v9 = [v4 backgroundColor];
-  v10 = v9;
-  if (v8 == v9)
+  backgroundColor = [(PXGViewEnvironment *)self backgroundColor];
+  backgroundColor2 = [toCopy backgroundColor];
+  v10 = backgroundColor2;
+  if (backgroundColor == backgroundColor2)
   {
   }
 
   else
   {
-    v11 = [v8 isEqual:v9];
+    v11 = [backgroundColor isEqual:backgroundColor2];
 
     if ((v11 & 1) == 0)
     {
@@ -77,31 +77,31 @@
     }
   }
 
-  v12 = [(PXGViewEnvironment *)self userInterfaceStyle];
-  if (v12 == [v4 userInterfaceStyle])
+  userInterfaceStyle = [(PXGViewEnvironment *)self userInterfaceStyle];
+  if (userInterfaceStyle == [toCopy userInterfaceStyle])
   {
-    v13 = [(PXGViewEnvironment *)self accessibilityEnabled];
-    if (v13 == [v4 accessibilityEnabled])
+    accessibilityEnabled = [(PXGViewEnvironment *)self accessibilityEnabled];
+    if (accessibilityEnabled == [toCopy accessibilityEnabled])
     {
-      v14 = [(PXGViewEnvironment *)self emphasized];
-      if (v14 == [v4 emphasized])
+      emphasized = [(PXGViewEnvironment *)self emphasized];
+      if (emphasized == [toCopy emphasized])
       {
-        v15 = [(PXGViewEnvironment *)self wantsFocusRing];
-        if (v15 == [v4 wantsFocusRing])
+        wantsFocusRing = [(PXGViewEnvironment *)self wantsFocusRing];
+        if (wantsFocusRing == [toCopy wantsFocusRing])
         {
-          v16 = [(PXGViewEnvironment *)self isBeingFullPageSnapshotted];
-          if (v16 == [v4 isBeingFullPageSnapshotted])
+          isBeingFullPageSnapshotted = [(PXGViewEnvironment *)self isBeingFullPageSnapshotted];
+          if (isBeingFullPageSnapshotted == [toCopy isBeingFullPageSnapshotted])
           {
-            v17 = [(PXGViewEnvironment *)self checkmarkEmphasized];
-            if (v17 == [v4 checkmarkEmphasized])
+            checkmarkEmphasized = [(PXGViewEnvironment *)self checkmarkEmphasized];
+            if (checkmarkEmphasized == [toCopy checkmarkEmphasized])
             {
-              v20 = [(PXGViewEnvironment *)self tintColor];
-              v21 = [(PXGViewEnvironment *)self traitCollection];
-              v22 = [v20 resolvedColorWithTraitCollection:v21];
+              tintColor = [(PXGViewEnvironment *)self tintColor];
+              traitCollection3 = [(PXGViewEnvironment *)self traitCollection];
+              v22 = [tintColor resolvedColorWithTraitCollection:traitCollection3];
 
-              v23 = [v4 tintColor];
-              v24 = [v4 traitCollection];
-              v25 = [v23 resolvedColorWithTraitCollection:v24];
+              tintColor2 = [toCopy tintColor];
+              traitCollection4 = [toCopy traitCollection];
+              v25 = [tintColor2 resolvedColorWithTraitCollection:traitCollection4];
 
               v18 = [v22 _isSimilarToColor:v25 withinPercentage:0.000000999999997];
               goto LABEL_15;
@@ -119,10 +119,10 @@ LABEL_15:
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -132,19 +132,19 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(PXGViewEnvironment *)self hasEqualAppearanceTo:v5])
       {
-        v6 = [(PXGViewEnvironment *)self traitCollection];
-        v7 = [(PXGViewEnvironment *)v5 traitCollection];
-        if (v6 == v7)
+        traitCollection = [(PXGViewEnvironment *)self traitCollection];
+        traitCollection2 = [(PXGViewEnvironment *)v5 traitCollection];
+        if (traitCollection == traitCollection2)
         {
           v8 = 1;
         }
 
         else
         {
-          v8 = [v6 isEqual:v7];
+          v8 = [traitCollection isEqual:traitCollection2];
         }
       }
 
@@ -165,15 +165,15 @@ LABEL_15:
 
 - (PXGViewEnvironment)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGViewEnvironment.m" lineNumber:93 description:{@"%s is not available as initializer", "-[PXGViewEnvironment init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGViewEnvironment.m" lineNumber:93 description:{@"%s is not available as initializer", "-[PXGViewEnvironment init]"}];
 
   abort();
 }
 
-- (PXGViewEnvironment)initWithView:(id)a3 accessibilityEnabled:(BOOL)a4 isBeingFullPageSnapshotted:(BOOL)a5
+- (PXGViewEnvironment)initWithView:(id)view accessibilityEnabled:(BOOL)enabled isBeingFullPageSnapshotted:(BOOL)snapshotted
 {
-  v7 = a3;
+  viewCopy = view;
   v42.receiver = self;
   v42.super_class = PXGViewEnvironment;
   v8 = [(PXGViewEnvironment *)&v42 init];
@@ -182,30 +182,30 @@ LABEL_15:
     goto LABEL_28;
   }
 
-  v9 = [v7 backgroundColor];
+  backgroundColor = [viewCopy backgroundColor];
   backgroundColor = v8->_backgroundColor;
-  v8->_backgroundColor = v9;
+  v8->_backgroundColor = backgroundColor;
 
-  v11 = [v7 tintColor];
+  tintColor = [viewCopy tintColor];
   tintColor = v8->_tintColor;
-  v8->_tintColor = v11;
+  v8->_tintColor = tintColor;
 
-  v13 = [v7 traitCollection];
+  traitCollection = [viewCopy traitCollection];
   traitCollection = v8->_traitCollection;
-  v8->_traitCollection = v13;
+  v8->_traitCollection = traitCollection;
 
-  v15 = [v7 traitCollection];
+  traitCollection2 = [viewCopy traitCollection];
   v8->_userInterfaceStyle = PXUserInterfaceStyleFromUITraitCollection();
 
-  v16 = [v7 traitCollection];
+  traitCollection3 = [viewCopy traitCollection];
   v8->_userInterfaceLayoutDirection = PXUserInterfaceLayoutDirectionFromUITraitCollection();
 
-  v17 = [MEMORY[0x277D75518] focusSystemForEnvironment:v7];
+  v17 = [MEMORY[0x277D75518] focusSystemForEnvironment:viewCopy];
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 focusedItem];
-    v8->_emphasized = [v7 px_isAncestorOfFocusEnvironment:v19];
+    focusedItem = [v17 focusedItem];
+    v8->_emphasized = [viewCopy px_isAncestorOfFocusEnvironment:focusedItem];
     p_emphasized = &v8->_emphasized;
   }
 
@@ -215,37 +215,37 @@ LABEL_15:
     p_emphasized = &v8->_emphasized;
   }
 
-  v21 = [objc_opt_class() _hideFocusRing];
-  if (!v18 || v21)
+  _hideFocusRing = [objc_opt_class() _hideFocusRing];
+  if (!v18 || _hideFocusRing)
   {
     v8->_wantsFocusRing = 0;
   }
 
   else
   {
-    v22 = [v7 traitCollection];
-    if ([v22 userInterfaceIdiom] == 1)
+    traitCollection4 = [viewCopy traitCollection];
+    if ([traitCollection4 userInterfaceIdiom] == 1)
     {
       v8->_wantsFocusRing = 1;
     }
 
     else
     {
-      v23 = [v7 traitCollection];
-      if ([v23 userInterfaceIdiom] == 5)
+      traitCollection5 = [viewCopy traitCollection];
+      if ([traitCollection5 userInterfaceIdiom] == 5)
       {
         v8->_wantsFocusRing = 1;
       }
 
       else
       {
-        v24 = [v7 traitCollection];
-        v8->_wantsFocusRing = [v24 userInterfaceIdiom] == 6;
+        traitCollection6 = [viewCopy traitCollection];
+        v8->_wantsFocusRing = [traitCollection6 userInterfaceIdiom] == 6;
       }
     }
   }
 
-  v8->_isBeingFullPageSnapshotted = a5;
+  v8->_isBeingFullPageSnapshotted = snapshotted;
   emphasized = v8->_emphasized;
   if (!v18 || v8->_emphasized)
   {
@@ -256,12 +256,12 @@ LABEL_15:
     }
 
 LABEL_20:
-    v27 = [v7 tintColor];
+    tintColor2 = [viewCopy tintColor];
     goto LABEL_21;
   }
 
-  v26 = [v18 focusedItem];
-  v8->_checkmarkEmphasized = v26 == 0;
+  focusedItem2 = [v18 focusedItem];
+  v8->_checkmarkEmphasized = focusedItem2 == 0;
 
   if (v8->_checkmarkEmphasized)
   {
@@ -269,33 +269,33 @@ LABEL_20:
   }
 
 LABEL_18:
-  v27 = [MEMORY[0x277D75348] opaqueSeparatorColor];
+  tintColor2 = [MEMORY[0x277D75348] opaqueSeparatorColor];
 LABEL_21:
-  v28 = v27;
-  v29 = [v7 traitCollection];
-  if ([v29 userInterfaceIdiom] == 6)
+  v28 = tintColor2;
+  traitCollection7 = [viewCopy traitCollection];
+  if ([traitCollection7 userInterfaceIdiom] == 6)
   {
-    v30 = [MEMORY[0x277D75348] systemWhiteColor];
-    v31 = [v30 colorWithAlphaComponent:0.4];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    tintColor3 = [systemWhiteColor colorWithAlphaComponent:0.4];
   }
 
   else
   {
-    v31 = [v7 tintColor];
+    tintColor3 = [viewCopy tintColor];
   }
 
   if (*p_emphasized)
   {
-    v32 = v31;
+    opaqueSeparatorColor = tintColor3;
   }
 
   else
   {
-    v32 = [MEMORY[0x277D75348] opaqueSeparatorColor];
+    opaqueSeparatorColor = [MEMORY[0x277D75348] opaqueSeparatorColor];
   }
 
-  v33 = v32;
-  v34 = [v7 traitCollection];
+  v33 = opaqueSeparatorColor;
+  traitCollection8 = [viewCopy traitCollection];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __83__PXGViewEnvironment_initWithView_accessibilityEnabled_isBeingFullPageSnapshotted___block_invoke;
@@ -305,7 +305,7 @@ LABEL_21:
   v41 = v33;
   v35 = v33;
   v36 = v28;
-  [v34 performAsCurrentTraitCollection:v38];
+  [traitCollection8 performAsCurrentTraitCollection:v38];
 
 LABEL_28:
   return v8;

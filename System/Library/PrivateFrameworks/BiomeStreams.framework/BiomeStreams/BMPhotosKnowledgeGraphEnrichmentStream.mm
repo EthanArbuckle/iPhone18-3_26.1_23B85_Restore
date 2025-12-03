@@ -6,8 +6,8 @@
 
 - (BMPhotosKnowledgeGraphEnrichmentStream)init
 {
-  v3 = [(BMPhotosKnowledgeGraphEnrichmentStream *)self identifier];
-  v4 = [(BMContentStream *)self initWithStreamIdentifier:v3 eventClass:objc_opt_class()];
+  identifier = [(BMPhotosKnowledgeGraphEnrichmentStream *)self identifier];
+  v4 = [(BMContentStream *)self initWithStreamIdentifier:identifier eventClass:objc_opt_class()];
 
   return v4;
 }

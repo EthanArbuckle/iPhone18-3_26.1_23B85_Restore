@@ -1,9 +1,9 @@
 @interface AXDeviceScreenLockMonitor
 + (id)sharedInstance;
 - (AXDeviceScreenLockMonitor)init;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)deviceLockStateChanged:(double)a3;
+- (void)deviceLockStateChanged:(double)changed;
 @end
 
 @implementation AXDeviceScreenLockMonitor
@@ -34,16 +34,16 @@
   return v3;
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_2E3C;
   v5[3] = &unk_30A30;
   objc_copyWeak(&v6, &location);
-  dispatch_async(v4, v5);
+  dispatch_async(queueCopy, v5);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -60,7 +60,7 @@
   }
 }
 
-- (void)deviceLockStateChanged:(double)a3
+- (void)deviceLockStateChanged:(double)changed
 {
   [(AXDeviceScreenLockMonitor *)self setDeviceLocked:[(AXDeviceScreenLockMonitor *)self _queryIsDeviceLocked]];
   objc_initWeak(&location, self);
@@ -69,7 +69,7 @@
   v5[2] = sub_30EC;
   v5[3] = &unk_30A58;
   objc_copyWeak(v6, &location);
-  v6[1] = *&a3;
+  v6[1] = *&changed;
   [(AXDeviceEventMonitor *)self enumerateObserversInQueue:v5];
   objc_destroyWeak(v6);
   objc_destroyWeak(&location);

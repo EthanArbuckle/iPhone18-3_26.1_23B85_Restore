@@ -1,15 +1,15 @@
 @interface PGGraphLocationDistrictEdge
 + (id)filter;
-- (id)initFromLocationNode:(id)a3 toDistrictNode:(id)a4;
+- (id)initFromLocationNode:(id)node toDistrictNode:(id)districtNode;
 @end
 
 @implementation PGGraphLocationDistrictEdge
 
-- (id)initFromLocationNode:(id)a3 toDistrictNode:(id)a4
+- (id)initFromLocationNode:(id)node toDistrictNode:(id)districtNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphLocationDistrictEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:districtNode];
 }
 
 + (id)filter

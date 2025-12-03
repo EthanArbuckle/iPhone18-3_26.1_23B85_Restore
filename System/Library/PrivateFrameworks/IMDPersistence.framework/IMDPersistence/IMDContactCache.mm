@@ -1,23 +1,23 @@
 @interface IMDContactCache
-+ (BOOL)vCardCoordinateForMapURL:(id)a3 outLatitude:(float *)a4 outLongitude:(float *)a5;
-+ (id)contactsForVCardAtPath:(id)a3;
++ (BOOL)vCardCoordinateForMapURL:(id)l outLatitude:(float *)latitude outLongitude:(float *)longitude;
++ (id)contactsForVCardAtPath:(id)path;
 + (id)sharedInstance;
-+ (id)vCardMapURLForContact:(id)a3;
-+ (id)vCardNameForContact:(id)a3;
-+ (void)updateAttributes:(id)a3 withAddressFromContact:(id)a4;
++ (id)vCardMapURLForContact:(id)contact;
++ (id)vCardNameForContact:(id)contact;
++ (void)updateAttributes:(id)attributes withAddressFromContact:(id)contact;
 - (IMDContactCache)init;
-- (id)_handlesMatchingContactIdentifier:(id)a3;
-- (id)cachedContactForKey:(id)a3;
-- (id)fullNameForContact:(id)a3;
+- (id)_handlesMatchingContactIdentifier:(id)identifier;
+- (id)cachedContactForKey:(id)key;
+- (id)fullNameForContact:(id)contact;
 - (void)_contactStoreDidChange;
-- (void)cacheAndReindexAcceptedContactUpdates:(id)a3 deletions:(id)a4;
-- (void)cacheContact:(id)a3 forKey:(id)a4;
-- (void)cacheContactsFromFetchResults:(id)a3 forAliases:(id)a4;
-- (void)contactStoreDidChange:(id)a3;
-- (void)removeCachedContactForKey:(id)a3;
-- (void)removeCachedContactsForKeys:(id)a3;
+- (void)cacheAndReindexAcceptedContactUpdates:(id)updates deletions:(id)deletions;
+- (void)cacheContact:(id)contact forKey:(id)key;
+- (void)cacheContactsFromFetchResults:(id)results forAliases:(id)aliases;
+- (void)contactStoreDidChange:(id)change;
+- (void)removeCachedContactForKey:(id)key;
+- (void)removeCachedContactsForKeys:(id)keys;
 - (void)resetCache;
-- (void)updateCacheForAliases:(id)a3;
+- (void)updateCacheForAliases:(id)aliases;
 @end
 
 @implementation IMDContactCache
@@ -60,7 +60,7 @@
     }
 
     self = v3;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
@@ -71,10 +71,10 @@
       sub_1B7CEB3C4(v17);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (void)resetCache
@@ -83,12 +83,12 @@
   objc_msgSend_removeAllObjects(v5, v3, v4);
 }
 
-- (void)removeCachedContactForKey:(id)a3
+- (void)removeCachedContactForKey:(id)key
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v5 = IMOSLoggingEnabled();
-  if (v4)
+  if (keyCopy)
   {
     if (v5)
     {
@@ -96,13 +96,13 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v13 = 138412290;
-        v14 = v4;
+        v14 = keyCopy;
         _os_log_impl(&dword_1B7AD5000, v8, OS_LOG_TYPE_INFO, "Removing cached contact for key %@", &v13, 0xCu);
       }
     }
 
     v9 = objc_msgSend_cache(self, v6, v7);
-    objc_msgSend_removeObjectForKey_(v9, v10, v4);
+    objc_msgSend_removeObjectForKey_(v9, v10, keyCopy);
   }
 
   else if (v5)
@@ -119,15 +119,15 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeCachedContactsForKeys:(id)a3
+- (void)removeCachedContactsForKeys:(id)keys
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v12, v16, 16);
+  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(keysCopy, v5, &v12, v16, 16);
   if (v6)
   {
     v8 = v6;
@@ -139,14 +139,14 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keysCopy);
         }
 
         objc_msgSend_removeCachedContactForKey_(self, v7, *(*(&v12 + 1) + 8 * v10++));
       }
 
       while (v8 != v10);
-      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v7, &v12, v16, 16);
+      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(keysCopy, v7, &v12, v16, 16);
     }
 
     while (v8);
@@ -155,21 +155,21 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cacheContactsFromFetchResults:(id)a3 forAliases:(id)a4
+- (void)cacheContactsFromFetchResults:(id)results forAliases:(id)aliases
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_count(v7, v8, v9);
-  if ((!v6 || !v10) && IMOSLoggingEnabled())
+  resultsCopy = results;
+  aliasesCopy = aliases;
+  v10 = objc_msgSend_count(aliasesCopy, v8, v9);
+  if ((!resultsCopy || !v10) && IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v43 = v7;
+      v43 = aliasesCopy;
       v44 = 2112;
-      v45 = v6;
+      v45 = resultsCopy;
       _os_log_impl(&dword_1B7AD5000, v11, OS_LOG_TYPE_INFO, "IMDContactCache - not caching fetchResults as aliases: %@, fetchResults: %@", buf, 0x16u);
     }
   }
@@ -189,7 +189,7 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v16 = v7;
+  v16 = aliasesCopy;
   v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v17, &v37, v41, 16);
   if (v19)
   {
@@ -204,7 +204,7 @@
         }
 
         v22 = *(*(&v37 + 1) + 8 * i);
-        v23 = objc_msgSend_objectForKey_(v6, v18, v22);
+        v23 = objc_msgSend_objectForKey_(resultsCopy, v18, v22);
         if (objc_msgSend_count(v23, v24, v25))
         {
           v28 = objc_msgSend_firstObject(v23, v26, v27);
@@ -247,12 +247,12 @@
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cacheAndReindexAcceptedContactUpdates:(id)a3 deletions:(id)a4
+- (void)cacheAndReindexAcceptedContactUpdates:(id)updates deletions:(id)deletions
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_count(v6, v8, v9) || objc_msgSend_count(v7, v10, v11))
+  updatesCopy = updates;
+  deletionsCopy = deletions;
+  if (objc_msgSend_count(updatesCopy, v8, v9) || objc_msgSend_count(deletionsCopy, v10, v11))
   {
     if (IMOSLoggingEnabled())
     {
@@ -260,9 +260,9 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         *buf = 134218240;
-        v28 = objc_msgSend_count(v6, v13, v14);
+        v28 = objc_msgSend_count(updatesCopy, v13, v14);
         v29 = 2048;
-        v30 = objc_msgSend_count(v7, v15, v16);
+        v30 = objc_msgSend_count(deletionsCopy, v15, v16);
         _os_log_impl(&dword_1B7AD5000, v12, OS_LOG_TYPE_INFO, "cacheAndReindexAcceptedContactUpdates: %lu updated, %lu deleted", buf, 0x16u);
       }
     }
@@ -271,9 +271,9 @@
     aBlock[1] = 3221225472;
     aBlock[2] = sub_1B7B04994;
     aBlock[3] = &unk_1E7CB6798;
-    v24 = v6;
-    v25 = self;
-    v26 = v7;
+    v24 = updatesCopy;
+    selfCopy = self;
+    v26 = deletionsCopy;
     v17 = _Block_copy(aBlock);
     if (objc_msgSend_isMainThread(MEMORY[0x1E696AF00], v18, v19))
     {
@@ -294,11 +294,11 @@
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateCacheForAliases:(id)a3
+- (void)updateCacheForAliases:(id)aliases
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && IMOSLoggingEnabled())
+  aliasesCopy = aliases;
+  if (!aliasesCopy && IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -314,7 +314,7 @@
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v10 = objc_msgSend_count(v4, v8, v9);
+      v10 = objc_msgSend_count(aliasesCopy, v8, v9);
       *buf = 134217984;
       v14 = v10;
       _os_log_impl(&dword_1B7AD5000, v7, OS_LOG_TYPE_INFO, "Udpating cache with %lu aliases", buf, 0xCu);
@@ -326,17 +326,17 @@
   v12[2] = sub_1B7B04D08;
   v12[3] = &unk_1E7CB67E8;
   v12[4] = self;
-  objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v4, v6, v12);
+  objc_msgSend_enumerateKeysAndObjectsUsingBlock_(aliasesCopy, v6, v12);
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cacheContact:(id)a3 forKey:(id)a4
+- (void)cacheContact:(id)contact forKey:(id)key
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = a4;
-  if (!v9)
+  contactCopy = contact;
+  keyCopy = key;
+  if (!keyCopy)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -347,7 +347,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v6;
+      v15 = contactCopy;
       _os_log_impl(&dword_1B7AD5000, v12, OS_LOG_TYPE_INFO, "IMDContactCache - asked to cache contact for nil key %@", &v14, 0xCu);
     }
 
@@ -356,7 +356,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v6)
+  if (!contactCopy)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -369,7 +369,7 @@ LABEL_11:
       v14 = 138412546;
       v15 = 0;
       v16 = 2112;
-      v17 = v9;
+      v17 = keyCopy;
       _os_log_impl(&dword_1B7AD5000, v12, OS_LOG_TYPE_INFO, "Not caching nil contact:%@ for key:%@", &v14, 0x16u);
     }
 
@@ -377,19 +377,19 @@ LABEL_11:
   }
 
   v10 = objc_msgSend_cache(self, v7, v8);
-  objc_msgSend_setObject_forKey_(v10, v11, v6, v9);
+  objc_msgSend_setObject_forKey_(v10, v11, contactCopy, keyCopy);
 
 LABEL_12:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)cachedContactForKey:(id)a3
+- (id)cachedContactForKey:(id)key
 {
-  v6 = a3;
-  if (v6)
+  keyCopy = key;
+  if (keyCopy)
   {
     v7 = objc_msgSend_cache(self, v4, v5);
-    v9 = objc_msgSend_objectForKey_(v7, v8, v6);
+    v9 = objc_msgSend_objectForKey_(v7, v8, keyCopy);
   }
 
   else
@@ -410,13 +410,13 @@ LABEL_12:
   return v9;
 }
 
-- (id)fullNameForContact:(id)a3
+- (id)fullNameForContact:(id)contact
 {
-  v6 = a3;
-  if (v6)
+  contactCopy = contact;
+  if (contactCopy)
   {
     v7 = objc_msgSend_fullNameCache(self, v4, v5);
-    v10 = objc_msgSend_identifier(v6, v8, v9);
+    v10 = objc_msgSend_identifier(contactCopy, v8, v9);
     v12 = objc_msgSend_objectForKey_(v7, v11, v10);
 
     v15 = objc_msgSend_null(MEMORY[0x1E695DFB0], v13, v14);
@@ -433,7 +433,7 @@ LABEL_12:
 
     else
     {
-      v16 = _IMDCoreSpotlightFullNameForContact(v6, 0);
+      v16 = _IMDCoreSpotlightFullNameForContact(contactCopy, 0);
       v21 = objc_msgSend_fullNameCache(self, v17, v18);
       v22 = v16;
       if (!v16)
@@ -441,7 +441,7 @@ LABEL_12:
         v22 = objc_msgSend_null(MEMORY[0x1E695DFB0], v19, v20);
       }
 
-      v23 = objc_msgSend_identifier(v6, v19, v20);
+      v23 = objc_msgSend_identifier(contactCopy, v19, v20);
       objc_msgSend_setObject_forKey_(v21, v24, v22, v23);
 
       if (!v16)
@@ -458,10 +458,10 @@ LABEL_12:
   return v16;
 }
 
-- (id)_handlesMatchingContactIdentifier:(id)a3
+- (id)_handlesMatchingContactIdentifier:(id)identifier
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = objc_msgSend_cache(self, v6, v7);
   v11 = objc_msgSend_mapTableRepresentation(v8, v9, v10);
@@ -488,7 +488,7 @@ LABEL_12:
         v21 = *(*(&v33 + 1) + 8 * i);
         v22 = objc_msgSend_objectForKey_(v11, v17, v21);
         v25 = objc_msgSend_identifier(v22, v23, v24);
-        if (objc_msgSend_isEqualToString_(v4, v26, v25))
+        if (objc_msgSend_isEqualToString_(identifierCopy, v26, v25))
         {
           objc_msgSend_addObject_(v5, v27, v21);
         }
@@ -506,9 +506,9 @@ LABEL_12:
   return v30;
 }
 
-- (void)contactStoreDidChange:(id)a3
+- (void)contactStoreDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -597,17 +597,17 @@ LABEL_12:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)contactsForVCardAtPath:(id)a3
++ (id)contactsForVCardAtPath:(id)path
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  pathCopy = path;
+  if (!pathCopy)
   {
     v12 = 0;
     goto LABEL_16;
   }
 
-  v5 = objc_msgSend_fileURLWithPath_isDirectory_(MEMORY[0x1E695DFF8], v3, v4, 0);
+  v5 = objc_msgSend_fileURLWithPath_isDirectory_(MEMORY[0x1E695DFF8], v3, pathCopy, 0);
   v17 = 0;
   v7 = objc_msgSend_dataWithContentsOfURL_options_error_(MEMORY[0x1E695DEF0], v6, v5, 8, &v17);
   v8 = v17;
@@ -622,7 +622,7 @@ LABEL_12:
         *buf = 136315650;
         v19 = "+[IMDContactCache contactsForVCardAtPath:]";
         v20 = 2112;
-        v21 = v4;
+        v21 = pathCopy;
         v22 = 2112;
         v23 = v10;
         _os_log_impl(&dword_1B7AD5000, v11, OS_LOG_TYPE_INFO, "%s Couldn't read data from file %@ ; error %@", buf, 0x20u);
@@ -647,7 +647,7 @@ LABEL_14:
         *buf = 136315650;
         v19 = "+[IMDContactCache contactsForVCardAtPath:]";
         v20 = 2112;
-        v21 = v4;
+        v21 = pathCopy;
         v22 = 2112;
         v23 = v10;
         _os_log_impl(&dword_1B7AD5000, v13, OS_LOG_TYPE_INFO, "%s Failed to generate vcard summary from file %@ ; error %@", buf, 0x20u);
@@ -665,46 +665,46 @@ LABEL_16:
   return v12;
 }
 
-+ (id)vCardNameForContact:(id)a3
++ (id)vCardNameForContact:(id)contact
 {
-  v3 = a3;
-  v7 = objc_msgSend_stringFromContact_style_(MEMORY[0x1E695CD80], v4, v3, 0);
+  contactCopy = contact;
+  v7 = objc_msgSend_stringFromContact_style_(MEMORY[0x1E695CD80], v4, contactCopy, 0);
   if (!v7)
   {
-    v7 = objc_msgSend_organizationName(v3, v5, v6);
+    v7 = objc_msgSend_organizationName(contactCopy, v5, v6);
   }
 
   return v7;
 }
 
-+ (void)updateAttributes:(id)a3 withAddressFromContact:(id)a4
++ (void)updateAttributes:(id)attributes withAddressFromContact:(id)contact
 {
-  v5 = a3;
-  v8 = objc_msgSend_postalAddresses(a4, v6, v7);
+  attributesCopy = attributes;
+  v8 = objc_msgSend_postalAddresses(contact, v6, v7);
   v34 = objc_msgSend_firstObject(v8, v9, v10);
 
   v13 = objc_msgSend_value(v34, v11, v12);
   v16 = objc_msgSend_street(v13, v14, v15);
-  objc_msgSend_setThoroughfare_(v5, v17, v16);
+  objc_msgSend_setThoroughfare_(attributesCopy, v17, v16);
 
   v20 = objc_msgSend_city(v13, v18, v19);
-  objc_msgSend_setCity_(v5, v21, v20);
+  objc_msgSend_setCity_(attributesCopy, v21, v20);
 
   v24 = objc_msgSend_postalCode(v13, v22, v23);
-  objc_msgSend_setPostalCode_(v5, v25, v24);
+  objc_msgSend_setPostalCode_(attributesCopy, v25, v24);
 
   v28 = objc_msgSend_state(v13, v26, v27);
-  objc_msgSend_setStateOrProvince_(v5, v29, v28);
+  objc_msgSend_setStateOrProvince_(attributesCopy, v29, v28);
 
   v32 = objc_msgSend_country(v13, v30, v31);
-  objc_msgSend_setCountry_(v5, v33, v32);
+  objc_msgSend_setCountry_(attributesCopy, v33, v32);
 }
 
-+ (id)vCardMapURLForContact:(id)a3
++ (id)vCardMapURLForContact:(id)contact
 {
   v48 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v5 = objc_msgSend_urlAddresses(v35, v3, v4);
+  contactCopy = contact;
+  v5 = objc_msgSend_urlAddresses(contactCopy, v3, v4);
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -804,30 +804,30 @@ LABEL_21:
   return v32;
 }
 
-+ (BOOL)vCardCoordinateForMapURL:(id)a3 outLatitude:(float *)a4 outLongitude:(float *)a5
++ (BOOL)vCardCoordinateForMapURL:(id)l outLatitude:(float *)latitude outLongitude:(float *)longitude
 {
-  v7 = a3;
-  if (objc_msgSend_length(v7, v8, v9))
+  lCopy = l;
+  if (objc_msgSend_length(lCopy, v8, v9))
   {
-    v11 = objc_msgSend_coordinatesFromString_(MEMORY[0x1E69A80F8], v10, v7);
+    v11 = objc_msgSend_coordinatesFromString_(MEMORY[0x1E69A80F8], v10, lCopy);
     v14 = objc_msgSend_count(v11, v12, v13);
     v16 = v14 == 2;
     if (v14 == 2)
     {
-      if (a4)
+      if (latitude)
       {
         v17 = objc_msgSend_objectAtIndex_(v11, v15, 0);
         objc_msgSend_doubleValue(v17, v18, v19);
         *&v20 = v20;
-        *a4 = *&v20;
+        *latitude = *&v20;
       }
 
-      if (a5)
+      if (longitude)
       {
         v21 = objc_msgSend_objectAtIndex_(v11, v15, 1);
         objc_msgSend_doubleValue(v21, v22, v23);
         *&v24 = v24;
-        *a5 = *&v24;
+        *longitude = *&v24;
       }
     }
   }

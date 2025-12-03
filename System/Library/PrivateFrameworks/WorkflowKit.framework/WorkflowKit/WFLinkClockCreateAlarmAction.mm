@@ -21,8 +21,8 @@
   v13[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = WFLinkClockCreateAlarmAction;
-  v2 = [(WFOverridableLinkAction *)&v11 parameterOverrides];
-  v3 = [v2 mutableCopy];
+  parameterOverrides = [(WFOverridableLinkAction *)&v11 parameterOverrides];
+  v3 = [parameterOverrides mutableCopy];
   v4 = v3;
   if (v3)
   {

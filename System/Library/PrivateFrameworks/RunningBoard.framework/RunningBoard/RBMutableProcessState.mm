@@ -1,60 +1,60 @@
 @interface RBMutableProcessState
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addEndowmentInfo:(id)a3;
-- (void)addInheritance:(id)a3;
-- (void)addLegacyAssertion:(id)a3;
-- (void)addPreventIdleSleepIdentifier:(id)a3;
-- (void)addRBAssertion:(id)a3;
-- (void)addTag:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addEndowmentInfo:(id)info;
+- (void)addInheritance:(id)inheritance;
+- (void)addLegacyAssertion:(id)assertion;
+- (void)addPreventIdleSleepIdentifier:(id)identifier;
+- (void)addRBAssertion:(id)assertion;
+- (void)addTag:(id)tag;
 - (void)removeAllEndowmentInfos;
 - (void)removeAllInheritances;
 - (void)removeAllPreventIdleSleepIdentifiers;
-- (void)removeEndowmentInfo:(id)a3;
-- (void)removeInheritance:(id)a3;
-- (void)removePreventIdleSleepIdentifier:(id)a3;
-- (void)setCarPlayMode:(BOOL)a3;
-- (void)setForceRoleManage:(BOOL)a3;
-- (void)setIsBeingDebugged:(BOOL)a3;
-- (void)setJetsamLenientMode:(BOOL)a3;
-- (void)setPreventBaseMemoryLimitReduction:(BOOL)a3;
-- (void)setPreventIdleSleep:(BOOL)a3;
-- (void)setPreventSuspend:(BOOL)a3;
-- (void)setTargetedBySuspendableAssertion:(BOOL)a3;
-- (void)setThrottleBestEffortNetworking:(BOOL)a3;
-- (void)unionState:(id)a3;
+- (void)removeEndowmentInfo:(id)info;
+- (void)removeInheritance:(id)inheritance;
+- (void)removePreventIdleSleepIdentifier:(id)identifier;
+- (void)setCarPlayMode:(BOOL)mode;
+- (void)setForceRoleManage:(BOOL)manage;
+- (void)setIsBeingDebugged:(BOOL)debugged;
+- (void)setJetsamLenientMode:(BOOL)mode;
+- (void)setPreventBaseMemoryLimitReduction:(BOOL)reduction;
+- (void)setPreventIdleSleep:(BOOL)sleep;
+- (void)setPreventSuspend:(BOOL)suspend;
+- (void)setTargetedBySuspendableAssertion:(BOOL)assertion;
+- (void)setThrottleBestEffortNetworking:(BOOL)networking;
+- (void)unionState:(id)state;
 @end
 
 @implementation RBMutableProcessState
 
-- (void)unionState:(id)a3
+- (void)unionState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && v4 != self)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (stateCopy && stateCopy != self)
   {
-    self->super._flags |= v4->super._flags;
+    self->super._flags |= stateCopy->super._flags;
     terminationResistance = self->super._terminationResistance;
-    if (terminationResistance <= v4->super._terminationResistance)
+    if (terminationResistance <= stateCopy->super._terminationResistance)
     {
-      LOBYTE(terminationResistance) = v4->super._terminationResistance;
+      LOBYTE(terminationResistance) = stateCopy->super._terminationResistance;
     }
 
     self->super._terminationResistance = terminationResistance;
     explicitJetsamBand = self->super._explicitJetsamBand;
-    if (explicitJetsamBand <= v4->super._explicitJetsamBand)
+    if (explicitJetsamBand <= stateCopy->super._explicitJetsamBand)
     {
-      explicitJetsamBand = v4->super._explicitJetsamBand;
+      explicitJetsamBand = stateCopy->super._explicitJetsamBand;
     }
 
     self->super._explicitJetsamBand = explicitJetsamBand;
     memoryLimit = self->super._memoryLimit;
-    v9 = v4->super._memoryLimit;
+    v9 = stateCopy->super._memoryLimit;
     if (memoryLimit == v9)
     {
       memoryLimitStrength = self->super._memoryLimitStrength;
-      if (memoryLimitStrength <= v4->super._memoryLimitStrength)
+      if (memoryLimitStrength <= stateCopy->super._memoryLimitStrength)
       {
-        LOBYTE(memoryLimitStrength) = v4->super._memoryLimitStrength;
+        LOBYTE(memoryLimitStrength) = stateCopy->super._memoryLimitStrength;
       }
 
       self->super._memoryLimitStrength = memoryLimitStrength;
@@ -62,7 +62,7 @@
 
     else if (memoryLimit < v9)
     {
-      objc_storeStrong(&self->super._memoryLimitCategory, v4->super._memoryLimitCategory);
+      objc_storeStrong(&self->super._memoryLimitCategory, stateCopy->super._memoryLimitCategory);
       self->super._memoryLimitStrength = v5->super._memoryLimitStrength;
       self->super._memoryLimit = v5->super._memoryLimit;
     }
@@ -264,9 +264,9 @@ void __36__RBMutableProcessState_unionState___block_invoke_2(uint64_t a1, void *
   [*(*(a1 + 32) + 24) setObject:v8 forKey:v7];
 }
 
-- (void)setPreventSuspend:(BOOL)a3
+- (void)setPreventSuspend:(BOOL)suspend
 {
-  if (a3)
+  if (suspend)
   {
     v3 = 64;
   }
@@ -279,9 +279,9 @@ void __36__RBMutableProcessState_unionState___block_invoke_2(uint64_t a1, void *
   self->super._flags = self->super._flags & 0xFFBF | v3;
 }
 
-- (void)setIsBeingDebugged:(BOOL)a3
+- (void)setIsBeingDebugged:(BOOL)debugged
 {
-  if (a3)
+  if (debugged)
   {
     v3 = 2;
   }
@@ -294,9 +294,9 @@ void __36__RBMutableProcessState_unionState___block_invoke_2(uint64_t a1, void *
   self->super._flags = self->super._flags & 0xFFFD | v3;
 }
 
-- (void)setJetsamLenientMode:(BOOL)a3
+- (void)setJetsamLenientMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 8;
   }
@@ -309,9 +309,9 @@ void __36__RBMutableProcessState_unionState___block_invoke_2(uint64_t a1, void *
   self->super._flags = self->super._flags & 0xFFF7 | v3;
 }
 
-- (void)setTargetedBySuspendableAssertion:(BOOL)a3
+- (void)setTargetedBySuspendableAssertion:(BOOL)assertion
 {
-  if (a3)
+  if (assertion)
   {
     v3 = 256;
   }
@@ -324,27 +324,27 @@ void __36__RBMutableProcessState_unionState___block_invoke_2(uint64_t a1, void *
   self->super._flags = self->super._flags & 0xFEFF | v3;
 }
 
-- (void)addPreventIdleSleepIdentifier:(id)a3
+- (void)addPreventIdleSleepIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   preventIdleSleepIdentifiers = self->super._preventIdleSleepIdentifiers;
-  v8 = v4;
+  v8 = identifierCopy;
   if (!preventIdleSleepIdentifiers)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->super._preventIdleSleepIdentifiers;
     self->super._preventIdleSleepIdentifiers = v6;
 
-    v4 = v8;
+    identifierCopy = v8;
     preventIdleSleepIdentifiers = self->super._preventIdleSleepIdentifiers;
   }
 
-  [(NSMutableSet *)preventIdleSleepIdentifiers addObject:v4];
+  [(NSMutableSet *)preventIdleSleepIdentifiers addObject:identifierCopy];
 }
 
-- (void)removePreventIdleSleepIdentifier:(id)a3
+- (void)removePreventIdleSleepIdentifier:(id)identifier
 {
-  [(NSMutableSet *)self->super._preventIdleSleepIdentifiers removeObject:a3];
+  [(NSMutableSet *)self->super._preventIdleSleepIdentifiers removeObject:identifier];
   if (![(NSMutableSet *)self->super._preventIdleSleepIdentifiers count])
   {
     preventIdleSleepIdentifiers = self->super._preventIdleSleepIdentifiers;
@@ -359,9 +359,9 @@ void __36__RBMutableProcessState_unionState___block_invoke_2(uint64_t a1, void *
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setPreventIdleSleep:(BOOL)a3
+- (void)setPreventIdleSleep:(BOOL)sleep
 {
-  if (a3)
+  if (sleep)
   {
     v3 = 4;
   }
@@ -374,9 +374,9 @@ void __36__RBMutableProcessState_unionState___block_invoke_2(uint64_t a1, void *
   self->super._flags = self->super._flags & 0xFFFB | v3;
 }
 
-- (void)setPreventBaseMemoryLimitReduction:(BOOL)a3
+- (void)setPreventBaseMemoryLimitReduction:(BOOL)reduction
 {
-  if (a3)
+  if (reduction)
   {
     v3 = 128;
   }
@@ -389,9 +389,9 @@ void __36__RBMutableProcessState_unionState___block_invoke_2(uint64_t a1, void *
   self->super._flags = self->super._flags & 0xFF7F | v3;
 }
 
-- (void)setThrottleBestEffortNetworking:(BOOL)a3
+- (void)setThrottleBestEffortNetworking:(BOOL)networking
 {
-  if (a3)
+  if (networking)
   {
     v3 = 16;
   }
@@ -404,9 +404,9 @@ void __36__RBMutableProcessState_unionState___block_invoke_2(uint64_t a1, void *
   self->super._flags = self->super._flags & 0xFFEF | v3;
 }
 
-- (void)setForceRoleManage:(BOOL)a3
+- (void)setForceRoleManage:(BOOL)manage
 {
-  if (a3)
+  if (manage)
   {
     v3 = 32;
   }
@@ -419,9 +419,9 @@ void __36__RBMutableProcessState_unionState___block_invoke_2(uint64_t a1, void *
   self->super._flags = self->super._flags & 0xFFDF | v3;
 }
 
-- (void)setCarPlayMode:(BOOL)a3
+- (void)setCarPlayMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 512;
   }
@@ -434,28 +434,28 @@ void __36__RBMutableProcessState_unionState___block_invoke_2(uint64_t a1, void *
   self->super._flags = self->super._flags & 0xFDFF | v3;
 }
 
-- (void)addEndowmentInfo:(id)a3
+- (void)addEndowmentInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   endowmentInfos = self->super._endowmentInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!endowmentInfos)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->super._endowmentInfos;
     self->super._endowmentInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     endowmentInfos = self->super._endowmentInfos;
   }
 
-  [(NSMutableSet *)endowmentInfos addObject:v4];
+  [(NSMutableSet *)endowmentInfos addObject:infoCopy];
 }
 
-- (void)removeEndowmentInfo:(id)a3
+- (void)removeEndowmentInfo:(id)info
 {
   endowmentInfos = self->super._endowmentInfos;
-  v5 = [MEMORY[0x277CBEB98] setWithObject:a3];
+  v5 = [MEMORY[0x277CBEB98] setWithObject:info];
   [(NSMutableSet *)endowmentInfos minusSet:v5];
 
   if (![(NSMutableSet *)self->super._endowmentInfos count])
@@ -472,36 +472,36 @@ void __36__RBMutableProcessState_unionState___block_invoke_2(uint64_t a1, void *
   MEMORY[0x2821F96F8]();
 }
 
-- (void)addInheritance:(id)a3
+- (void)addInheritance:(id)inheritance
 {
-  v4 = a3;
+  inheritanceCopy = inheritance;
   inheritances = self->super._inheritances;
-  v13 = v4;
+  v13 = inheritanceCopy;
   if (!inheritances)
   {
     v6 = objc_alloc_init(RBMutableInheritanceCollection);
     v7 = self->super._inheritances;
     self->super._inheritances = &v6->super;
 
-    v4 = v13;
+    inheritanceCopy = v13;
     inheritances = self->super._inheritances;
   }
 
-  [(RBInheritanceCollection *)inheritances addInheritance:v4];
+  [(RBInheritanceCollection *)inheritances addInheritance:inheritanceCopy];
   v8 = objc_alloc(MEMORY[0x277D46F20]);
-  v9 = [v13 endowmentNamespace];
-  v10 = [v13 environment];
-  v11 = [v13 encodedEndowment];
-  v12 = [v8 _initWithNamespace:v9 environment:v10 encodedEndowment:v11];
+  endowmentNamespace = [v13 endowmentNamespace];
+  environment = [v13 environment];
+  encodedEndowment = [v13 encodedEndowment];
+  v12 = [v8 _initWithNamespace:endowmentNamespace environment:environment encodedEndowment:encodedEndowment];
 
   [(RBMutableProcessState *)self addEndowmentInfo:v12];
 }
 
-- (void)removeInheritance:(id)a3
+- (void)removeInheritance:(id)inheritance
 {
   inheritances = self->super._inheritances;
-  v5 = a3;
-  [(RBInheritanceCollection *)inheritances removeInheritance:v5];
+  inheritanceCopy = inheritance;
+  [(RBInheritanceCollection *)inheritances removeInheritance:inheritanceCopy];
   if (![(RBInheritanceCollection *)self->super._inheritances count])
   {
     v6 = self->super._inheritances;
@@ -509,11 +509,11 @@ void __36__RBMutableProcessState_unionState___block_invoke_2(uint64_t a1, void *
   }
 
   v7 = objc_alloc(MEMORY[0x277D46F20]);
-  v8 = [v5 endowmentNamespace];
-  v9 = [v5 environment];
-  v10 = [v5 encodedEndowment];
+  endowmentNamespace = [inheritanceCopy endowmentNamespace];
+  environment = [inheritanceCopy environment];
+  encodedEndowment = [inheritanceCopy encodedEndowment];
 
-  v11 = [v7 _initWithNamespace:v8 environment:v9 encodedEndowment:v10];
+  v11 = [v7 _initWithNamespace:endowmentNamespace environment:environment encodedEndowment:encodedEndowment];
   [(RBMutableProcessState *)self removeEndowmentInfo:v11];
 }
 
@@ -525,63 +525,63 @@ void __36__RBMutableProcessState_unionState___block_invoke_2(uint64_t a1, void *
   [(RBMutableProcessState *)self removeAllEndowmentInfos];
 }
 
-- (void)addTag:(id)a3
+- (void)addTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   tags = self->super._tags;
-  v8 = v4;
+  v8 = tagCopy;
   if (!tags)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->super._tags;
     self->super._tags = v6;
 
-    v4 = v8;
+    tagCopy = v8;
     tags = self->super._tags;
   }
 
-  [(NSMutableSet *)tags addObject:v4];
+  [(NSMutableSet *)tags addObject:tagCopy];
 }
 
-- (void)addLegacyAssertion:(id)a3
+- (void)addLegacyAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   legacyAssertions = self->super._legacyAssertions;
-  v8 = v4;
+  v8 = assertionCopy;
   if (!legacyAssertions)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->super._legacyAssertions;
     self->super._legacyAssertions = v6;
 
-    v4 = v8;
+    assertionCopy = v8;
     legacyAssertions = self->super._legacyAssertions;
   }
 
-  [(NSMutableSet *)legacyAssertions addObject:v4];
+  [(NSMutableSet *)legacyAssertions addObject:assertionCopy];
 }
 
-- (void)addRBAssertion:(id)a3
+- (void)addRBAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   primitiveAssertions = self->super._primitiveAssertions;
-  v8 = v4;
+  v8 = assertionCopy;
   if (!primitiveAssertions)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->super._primitiveAssertions;
     self->super._primitiveAssertions = v6;
 
-    v4 = v8;
+    assertionCopy = v8;
     primitiveAssertions = self->super._primitiveAssertions;
   }
 
-  [(NSMutableSet *)primitiveAssertions addObject:v4];
+  [(NSMutableSet *)primitiveAssertions addObject:assertionCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [RBProcessState allocWithZone:a3];
+  v4 = [RBProcessState allocWithZone:zone];
 
   return [(RBProcessState *)&v4->super.isa _initWithProcessState:?];
 }

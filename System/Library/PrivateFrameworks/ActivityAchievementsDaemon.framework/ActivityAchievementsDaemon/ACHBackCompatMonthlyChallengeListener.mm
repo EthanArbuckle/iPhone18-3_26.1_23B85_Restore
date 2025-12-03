@@ -1,49 +1,49 @@
 @interface ACHBackCompatMonthlyChallengeListener
-- (ACHBackCompatMonthlyChallengeListener)initWithProfile:(id)a3 templateStore:(id)a4;
+- (ACHBackCompatMonthlyChallengeListener)initWithProfile:(id)profile templateStore:(id)store;
 - (ACHTemplateStore)templateStore;
 - (BOOL)_readAndSaveBackCompatDefinitions;
 - (HDProfile)profile;
-- (id)_definitionsFromKeyValuePairs:(id)a3;
-- (void)_protectedNanoUserDefaultsDidSyncWithNotification:(id)a3;
+- (id)_definitionsFromKeyValuePairs:(id)pairs;
+- (void)_protectedNanoUserDefaultsDidSyncWithNotification:(id)notification;
 - (void)_readAndSaveBackCompatDefinitions;
-- (void)daemonReady:(id)a3;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)daemonReady:(id)ready;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 @end
 
 @implementation ACHBackCompatMonthlyChallengeListener
 
-- (ACHBackCompatMonthlyChallengeListener)initWithProfile:(id)a3 templateStore:(id)a4
+- (ACHBackCompatMonthlyChallengeListener)initWithProfile:(id)profile templateStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = ACHBackCompatMonthlyChallengeListener;
   v8 = [(ACHBackCompatMonthlyChallengeListener *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    objc_storeWeak(&v9->_templateStore, v7);
-    v10 = [v6 daemon];
-    [v10 registerForDaemonReady:v9];
+    objc_storeWeak(&v8->_profile, profileCopy);
+    objc_storeWeak(&v9->_templateStore, storeCopy);
+    daemon = [profileCopy daemon];
+    [daemon registerForDaemonReady:v9];
   }
 
   return v9;
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__protectedNanoUserDefaultsDidSyncWithNotification_ name:*MEMORY[0x277D10490] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__protectedNanoUserDefaultsDidSyncWithNotification_ name:*MEMORY[0x277D10490] object:0];
 
-  v5 = [(ACHBackCompatMonthlyChallengeListener *)self profile];
-  v6 = [v5 database];
+  profile = [(ACHBackCompatMonthlyChallengeListener *)self profile];
+  database = [profile database];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__ACHBackCompatMonthlyChallengeListener_daemonReady___block_invoke;
   v7[3] = &unk_278490870;
   v7[4] = self;
-  [v6 performWhenDataProtectedByFirstUnlockIsAvailable:v7];
+  [database performWhenDataProtectedByFirstUnlockIsAvailable:v7];
 }
 
 void __53__ACHBackCompatMonthlyChallengeListener_daemonReady___block_invoke(uint64_t a1)
@@ -81,9 +81,9 @@ void __53__ACHBackCompatMonthlyChallengeListener_daemonReady___block_invoke(uint
   }
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  if (a4)
+  if (available)
   {
     v5 = ACHLogDefault();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -92,10 +92,10 @@ void __53__ACHBackCompatMonthlyChallengeListener_daemonReady___block_invoke(uint
       _os_log_impl(&dword_221DDC000, v5, OS_LOG_TYPE_DEFAULT, "Protected data available and dynamic definitions never read, trying to read and save.", buf, 2u);
     }
 
-    v6 = [(ACHBackCompatMonthlyChallengeListener *)self _readAndSaveBackCompatDefinitions];
+    _readAndSaveBackCompatDefinitions = [(ACHBackCompatMonthlyChallengeListener *)self _readAndSaveBackCompatDefinitions];
     v7 = ACHLogDefault();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v6)
+    if (_readAndSaveBackCompatDefinitions)
     {
       if (v8)
       {
@@ -129,10 +129,10 @@ void __82__ACHBackCompatMonthlyChallengeListener_database_protectedDataDidBecome
   [v2 removeProtectedDataObserver:*(a1 + 32)];
 }
 
-- (void)_protectedNanoUserDefaultsDidSyncWithNotification:(id)a3
+- (void)_protectedNanoUserDefaultsDidSyncWithNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D10488]];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D10488]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -162,21 +162,21 @@ void __82__ACHBackCompatMonthlyChallengeListener_database_protectedDataDidBecome
   v49 = 0;
   v6 = [v5 allValuesWithError:&v49];
   v7 = v49;
-  v8 = [(ACHBackCompatMonthlyChallengeListener *)self injectedKeyValuePairs];
-  v9 = v8 == 0;
+  injectedKeyValuePairs = [(ACHBackCompatMonthlyChallengeListener *)self injectedKeyValuePairs];
+  v9 = injectedKeyValuePairs == 0;
 
   if (!v9)
   {
-    v10 = [(ACHBackCompatMonthlyChallengeListener *)self injectedKeyValuePairs];
-    v11 = v10;
+    injectedKeyValuePairs2 = [(ACHBackCompatMonthlyChallengeListener *)self injectedKeyValuePairs];
+    v11 = injectedKeyValuePairs2;
     if (v6)
     {
-      v12 = [v6 hk_dictionaryByAddingEntriesFromDictionary:v10];
+      v12 = [v6 hk_dictionaryByAddingEntriesFromDictionary:injectedKeyValuePairs2];
     }
 
     else
     {
-      v6 = [v10 copy];
+      v6 = [injectedKeyValuePairs2 copy];
     }
   }
 
@@ -197,12 +197,12 @@ void __82__ACHBackCompatMonthlyChallengeListener_database_protectedDataDidBecome
     v17 = [v13 hk_map:&__block_literal_global_309];
     if (![v17 count])
     {
-      v35 = [(ACHBackCompatMonthlyChallengeListener *)self readTemplatesBlock];
+      readTemplatesBlock = [(ACHBackCompatMonthlyChallengeListener *)self readTemplatesBlock];
 
-      if (v35)
+      if (readTemplatesBlock)
       {
-        v36 = [(ACHBackCompatMonthlyChallengeListener *)self readTemplatesBlock];
-        v36[2](v36, MEMORY[0x277CBEBF8]);
+        readTemplatesBlock2 = [(ACHBackCompatMonthlyChallengeListener *)self readTemplatesBlock];
+        readTemplatesBlock2[2](readTemplatesBlock2, MEMORY[0x277CBEBF8]);
       }
 
       v37 = ACHLogDefault();
@@ -240,8 +240,8 @@ void __82__ACHBackCompatMonthlyChallengeListener_database_protectedDataDidBecome
     v48[4] = buf;
     v20 = [v17 hk_map:v48];
     v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v22 = [(ACHBackCompatMonthlyChallengeListener *)self templateStore];
-    v23 = [v22 allTemplates];
+    templateStore = [(ACHBackCompatMonthlyChallengeListener *)self templateStore];
+    allTemplates = [templateStore allTemplates];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __74__ACHBackCompatMonthlyChallengeListener__readAndSaveBackCompatDefinitions__block_invoke_2;
@@ -251,7 +251,7 @@ void __82__ACHBackCompatMonthlyChallengeListener_database_protectedDataDidBecome
     v47 = buf;
     v24 = v21;
     v46 = v24;
-    v25 = [v23 hk_map:v44];
+    v25 = [allTemplates hk_map:v44];
 
     v26 = MEMORY[0x277CCAC30];
     v42[0] = MEMORY[0x277D85DD0];
@@ -265,12 +265,12 @@ void __82__ACHBackCompatMonthlyChallengeListener_database_protectedDataDidBecome
 
     if ([v25 count] && (-[ACHBackCompatMonthlyChallengeListener templateStore](self, "templateStore", v40), v30 = objc_claimAutoreleasedReturnValue(), v41 = 0, objc_msgSend(v30, "removeTemplates:error:", v25, &v41), v7 = v41, v30, v7))
     {
-      v31 = ACHLogDefault();
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+      templateStore2 = ACHLogDefault();
+      if (os_log_type_enabled(templateStore2, OS_LOG_TYPE_DEFAULT))
       {
         *v50 = 138412290;
         v51 = v7;
-        _os_log_impl(&dword_221DDC000, v31, OS_LOG_TYPE_DEFAULT, "Back compat monthly challenge listener failed to remove existing templates: %@", v50, 0xCu);
+        _os_log_impl(&dword_221DDC000, templateStore2, OS_LOG_TYPE_DEFAULT, "Back compat monthly challenge listener failed to remove existing templates: %@", v50, 0xCu);
       }
 
       v32 = 0;
@@ -278,12 +278,12 @@ void __82__ACHBackCompatMonthlyChallengeListener_database_protectedDataDidBecome
 
     else
     {
-      v33 = [(ACHBackCompatMonthlyChallengeListener *)self readTemplatesBlock];
+      readTemplatesBlock3 = [(ACHBackCompatMonthlyChallengeListener *)self readTemplatesBlock];
 
-      if (v33)
+      if (readTemplatesBlock3)
       {
-        v34 = [(ACHBackCompatMonthlyChallengeListener *)self readTemplatesBlock];
-        (v34)[2](v34, v29);
+        readTemplatesBlock4 = [(ACHBackCompatMonthlyChallengeListener *)self readTemplatesBlock];
+        (readTemplatesBlock4)[2](readTemplatesBlock4, v29);
       }
 
       if (![v29 count])
@@ -306,8 +306,8 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v31 = [(ACHBackCompatMonthlyChallengeListener *)self templateStore];
-      [v31 addTemplates:v29 error:0];
+      templateStore2 = [(ACHBackCompatMonthlyChallengeListener *)self templateStore];
+      [templateStore2 addTemplates:v29 error:0];
       v7 = 0;
       v32 = 1;
     }
@@ -426,18 +426,18 @@ uint64_t __74__ACHBackCompatMonthlyChallengeListener__readAndSaveBackCompatDefin
   return v2 ^ 1;
 }
 
-- (id)_definitionsFromKeyValuePairs:(id)a3
+- (id)_definitionsFromKeyValuePairs:(id)pairs
 {
-  v3 = a3;
-  v4 = [v3 allKeys];
-  v5 = [v4 hk_filter:&__block_literal_global_324];
+  pairsCopy = pairs;
+  allKeys = [pairsCopy allKeys];
+  v5 = [allKeys hk_filter:&__block_literal_global_324];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__ACHBackCompatMonthlyChallengeListener__definitionsFromKeyValuePairs___block_invoke_2;
   v9[3] = &unk_2784917C0;
-  v10 = v3;
-  v6 = v3;
+  v10 = pairsCopy;
+  v6 = pairsCopy;
   v7 = [v5 hk_map:v9];
 
   return v7;
@@ -469,7 +469,7 @@ id __71__ACHBackCompatMonthlyChallengeListener__definitionsFromKeyValuePairs___b
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_221DDC000, a2, OS_LOG_TYPE_ERROR, "Failed to read legacy dynamic definitions from key value domain with error %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

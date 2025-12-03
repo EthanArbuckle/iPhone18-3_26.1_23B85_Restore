@@ -1,11 +1,11 @@
 @interface REMGroceryDummyModel
-+ (BOOL)isGrocerySupportedForLocaleWithIdentifier:(id)a3;
++ (BOOL)isGrocerySupportedForLocaleWithIdentifier:(id)identifier;
 - (_TtC19ReminderKitInternal20REMGroceryDummyModel)init;
 @end
 
 @implementation REMGroceryDummyModel
 
-+ (BOOL)isGrocerySupportedForLocaleWithIdentifier:(id)a3
++ (BOOL)isGrocerySupportedForLocaleWithIdentifier:(id)identifier
 {
   v3 = _sSo15REMSortingStylea19ReminderKitInternalE11descriptionSSvg_0();
   v5 = v4;

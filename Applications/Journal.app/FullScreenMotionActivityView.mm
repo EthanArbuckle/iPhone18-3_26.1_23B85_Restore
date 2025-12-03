@@ -1,15 +1,15 @@
 @interface FullScreenMotionActivityView
-- (_TtC7Journal28FullScreenMotionActivityView)initWithFrame:(CGRect)a3;
+- (_TtC7Journal28FullScreenMotionActivityView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FullScreenMotionActivityView
 
-- (_TtC7Journal28FullScreenMotionActivityView)initWithFrame:(CGRect)a3
+- (_TtC7Journal28FullScreenMotionActivityView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC7Journal28FullScreenMotionActivityView_motionActivityView;
   type metadata accessor for MotionActivityGridView();
   *(&self->super.super.super.isa + v8) = [objc_allocWithZone(swift_getObjCClassFromMetadata()) init];

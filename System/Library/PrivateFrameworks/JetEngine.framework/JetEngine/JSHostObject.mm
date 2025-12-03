@@ -1,5 +1,5 @@
 @interface JSHostObject
-- (BOOL)isOSAtLeast:(id)a3 :(id)a4 :(id)a5;
+- (BOOL)isOSAtLeast:(id)least :(id)a4 :(id)a5;
 - (NSString)clientIdentifier;
 - (NSString)clientVersion;
 - (NSString)platform;
@@ -22,29 +22,29 @@
   return v2;
 }
 
-- (BOOL)isOSAtLeast:(id)a3 :(id)a4 :(id)a5
+- (BOOL)isOSAtLeast:(id)least :(id)a4 :(id)a5
 {
-  v7 = a3;
+  leastCopy = least;
   v8 = a4;
   v9 = a5;
-  v10 = [v7 toInt32];
-  v11 = [v8 toInt32];
-  v12 = [v9 toInt32];
-  v13 = [objc_opt_self() processInfo];
-  v15[0] = v10;
-  v15[1] = v11;
-  v15[2] = v12;
-  LOBYTE(v10) = [v13 isOperatingSystemAtLeastVersion_];
+  toInt32 = [leastCopy toInt32];
+  toInt322 = [v8 toInt32];
+  toInt323 = [v9 toInt32];
+  processInfo = [objc_opt_self() processInfo];
+  v15[0] = toInt32;
+  v15[1] = toInt322;
+  v15[2] = toInt323;
+  LOBYTE(toInt32) = [processInfo isOperatingSystemAtLeastVersion_];
 
-  return v10;
+  return toInt32;
 }
 
 - (NSString)clientIdentifier
 {
-  v2 = [objc_opt_self() mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [objc_opt_self() mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (v3)
+  if (bundleIdentifier)
   {
     sub_1AB460544();
   }

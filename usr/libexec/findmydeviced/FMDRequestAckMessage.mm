@@ -1,27 +1,27 @@
 @interface FMDRequestAckMessage
-- (BOOL)canReplace:(id)a3;
-- (FMDRequestAckMessage)initWithAccount:(id)a3 messageCommand:(id)a4 cmdStatusCode:(int64_t)a5 ackURL:(id)a6;
+- (BOOL)canReplace:(id)replace;
+- (FMDRequestAckMessage)initWithAccount:(id)account messageCommand:(id)command cmdStatusCode:(int64_t)code ackURL:(id)l;
 - (id)requestBody;
 - (id)requestHeaders;
 @end
 
 @implementation FMDRequestAckMessage
 
-- (FMDRequestAckMessage)initWithAccount:(id)a3 messageCommand:(id)a4 cmdStatusCode:(int64_t)a5 ackURL:(id)a6
+- (FMDRequestAckMessage)initWithAccount:(id)account messageCommand:(id)command cmdStatusCode:(int64_t)code ackURL:(id)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  accountCopy = account;
+  commandCopy = command;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = FMDRequestAckMessage;
-  v13 = [(FMDRequest *)&v16 initWithAccount:v10];
+  v13 = [(FMDRequest *)&v16 initWithAccount:accountCopy];
   v14 = v13;
   if (v13)
   {
-    [(FMDRequestAckMessage *)v13 setAccount:v10];
-    [(FMDRequestAckMessage *)v14 setMessageCommand:v11];
-    [(FMDRequestAckMessage *)v14 setCmdStatusCode:a5];
-    [(FMDRequestAckMessage *)v14 setAckURL:v12];
+    [(FMDRequestAckMessage *)v13 setAccount:accountCopy];
+    [(FMDRequestAckMessage *)v14 setMessageCommand:commandCopy];
+    [(FMDRequestAckMessage *)v14 setCmdStatusCode:code];
+    [(FMDRequestAckMessage *)v14 setAckURL:lCopy];
   }
 
   return v14;
@@ -31,15 +31,15 @@
 {
   v7.receiver = self;
   v7.super_class = FMDRequestAckMessage;
-  v3 = [(FMDRequest *)&v7 requestHeaders];
+  requestHeaders = [(FMDRequest *)&v7 requestHeaders];
   v4 = +[FMSystemInfo sharedInstance];
   if ([v4 isInternalBuild])
   {
-    v5 = [(FMDRequestAckMessage *)self timeoutError];
+    timeoutError = [(FMDRequestAckMessage *)self timeoutError];
 
-    if (v5)
+    if (timeoutError)
     {
-      [v3 setObject:@"Timeout Error" forKeyedSubscript:@"X-Apple-Timeout-Error"];
+      [requestHeaders setObject:@"Timeout Error" forKeyedSubscript:@"X-Apple-Timeout-Error"];
     }
   }
 
@@ -47,40 +47,40 @@
   {
   }
 
-  return v3;
+  return requestHeaders;
 }
 
 - (id)requestBody
 {
   v8.receiver = self;
   v8.super_class = FMDRequestAckMessage;
-  v3 = [(FMDRequest *)&v8 requestBody];
+  requestBody = [(FMDRequest *)&v8 requestBody];
   v4 = [NSNumber numberWithInteger:[(FMDRequestAckMessage *)self cmdStatusCode]];
-  [v3 setObject:v4 forKeyedSubscript:@"statusCode"];
+  [requestBody setObject:v4 forKeyedSubscript:@"statusCode"];
 
-  v5 = [(FMDRequestAckMessage *)self messageCommand];
-  [v3 setObject:v5 forKeyedSubscript:@"cmdContext"];
+  messageCommand = [(FMDRequestAckMessage *)self messageCommand];
+  [requestBody setObject:messageCommand forKeyedSubscript:@"cmdContext"];
 
-  v6 = [(FMDRequestAckMessage *)self safetyAlertType];
-  [v3 setObject:v6 forKeyedSubscript:@"safetyAlertType"];
+  safetyAlertType = [(FMDRequestAckMessage *)self safetyAlertType];
+  [requestBody setObject:safetyAlertType forKeyedSubscript:@"safetyAlertType"];
 
-  return v3;
+  return requestBody;
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v4 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = replaceCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(FMDRequestAckMessage *)self messageCommand];
-      v7 = [v6 objectForKeyedSubscript:@"id"];
-      v8 = [v5 messageCommand];
-      v9 = [v8 objectForKeyedSubscript:@"id"];
+      messageCommand = [(FMDRequestAckMessage *)self messageCommand];
+      v7 = [messageCommand objectForKeyedSubscript:@"id"];
+      messageCommand2 = [v5 messageCommand];
+      v9 = [messageCommand2 objectForKeyedSubscript:@"id"];
       v10 = [v7 isEqualToString:v9];
     }
 

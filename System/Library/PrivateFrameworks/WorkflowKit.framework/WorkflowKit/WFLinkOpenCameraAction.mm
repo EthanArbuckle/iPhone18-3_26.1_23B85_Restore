@@ -6,8 +6,8 @@
 
 - (void)serializeAppIntentDescriptorIfNecessary
 {
-  v3 = [(WFAction *)self serializedParameters];
-  v4 = [v3 objectForKey:@"AppIntentDescriptor"];
+  serializedParameters = [(WFAction *)self serializedParameters];
+  v4 = [serializedParameters objectForKey:@"AppIntentDescriptor"];
 
   if (!v4)
   {

@@ -1,17 +1,17 @@
 @interface AMSUICommonDynamicColor
-+ (id)dynamicColorWithLightColor:(id)a3 darkColor:(id)a4 lightHighContrastColor:(id)a5 darkHighContrastColor:(id)a6;
++ (id)dynamicColorWithLightColor:(id)color darkColor:(id)darkColor lightHighContrastColor:(id)contrastColor darkHighContrastColor:(id)highContrastColor;
 @end
 
 @implementation AMSUICommonDynamicColor
 
-+ (id)dynamicColorWithLightColor:(id)a3 darkColor:(id)a4 lightHighContrastColor:(id)a5 darkHighContrastColor:(id)a6
++ (id)dynamicColorWithLightColor:(id)color darkColor:(id)darkColor lightHighContrastColor:(id)contrastColor darkHighContrastColor:(id)highContrastColor
 {
   v33[2] = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E69DD1B8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  highContrastColorCopy = highContrastColor;
+  contrastColorCopy = contrastColor;
+  darkColorCopy = darkColor;
+  colorCopy = color;
   v14 = [v9 traitCollectionWithUserInterfaceStyle:1];
   v33[0] = v14;
   v15 = [MEMORY[0x1E69DD1B8] _traitCollectionWithContrast:1];
@@ -29,17 +29,17 @@
 
   v23 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:0];
   v30[0] = v23;
-  v31[0] = v13;
+  v31[0] = colorCopy;
   v24 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:1];
   v30[1] = v24;
-  v31[1] = v13;
+  v31[1] = colorCopy;
   v25 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:2];
   v30[2] = v25;
   v30[3] = v17;
-  v31[2] = v12;
-  v31[3] = v11;
+  v31[2] = darkColorCopy;
+  v31[3] = contrastColorCopy;
   v30[4] = v22;
-  v31[4] = v10;
+  v31[4] = highContrastColorCopy;
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:5];
 
   v27 = [MEMORY[0x1E69DC888] _dynamicColorWithColorsByTraitCollection:v26];

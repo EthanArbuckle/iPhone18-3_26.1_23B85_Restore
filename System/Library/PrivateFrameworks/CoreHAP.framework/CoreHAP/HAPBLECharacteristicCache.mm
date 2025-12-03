@@ -1,11 +1,11 @@
 @interface HAPBLECharacteristicCache
-- (BOOL)isEqual:(id)a3;
-- (HAPBLECharacteristicCache)initWithCharacteristicUUID:(id)a3 instanceId:(id)a4 characteristicProperties:(unsigned __int16)a5 characteristicMetadata:(id)a6;
-- (HAPBLECharacteristicCache)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HAPBLECharacteristicCache)initWithCharacteristicUUID:(id)d instanceId:(id)id characteristicProperties:(unsigned __int16)properties characteristicMetadata:(id)metadata;
+- (HAPBLECharacteristicCache)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithCharacteristic:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithCharacteristic:(id)characteristic;
 @end
 
 @implementation HAPBLECharacteristicCache
@@ -13,20 +13,20 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPBLECharacteristicCache *)self characteristicUUID];
-  v5 = [(HAPBLECharacteristicCache *)self characteristicInstanceId];
-  v6 = [(HAPBLECharacteristicCache *)self characteristicProperties];
-  v7 = [MEMORY[0x277CCAB68] string];
-  v8 = v7;
-  if ((v6 & 0x40) != 0)
+  characteristicUUID = [(HAPBLECharacteristicCache *)self characteristicUUID];
+  characteristicInstanceId = [(HAPBLECharacteristicCache *)self characteristicInstanceId];
+  characteristicProperties = [(HAPBLECharacteristicCache *)self characteristicProperties];
+  string = [MEMORY[0x277CCAB68] string];
+  v8 = string;
+  if ((characteristicProperties & 0x40) != 0)
   {
-    v13 = [v7 stringByAppendingString:@": Hidden"];
+    v13 = [string stringByAppendingString:@": Hidden"];
 
     v8 = v13;
-    if ((v6 & 1) == 0)
+    if ((characteristicProperties & 1) == 0)
     {
 LABEL_3:
-      if ((v6 & 8) == 0)
+      if ((characteristicProperties & 8) == 0)
       {
         goto LABEL_4;
       }
@@ -35,7 +35,7 @@ LABEL_3:
     }
   }
 
-  else if ((v6 & 1) == 0)
+  else if ((characteristicProperties & 1) == 0)
   {
     goto LABEL_3;
   }
@@ -43,10 +43,10 @@ LABEL_3:
   v14 = [v8 stringByAppendingString:@": Notify"];
 
   v8 = v14;
-  if ((v6 & 8) == 0)
+  if ((characteristicProperties & 8) == 0)
   {
 LABEL_4:
-    if ((v6 & 2) == 0)
+    if ((characteristicProperties & 2) == 0)
     {
       goto LABEL_5;
     }
@@ -58,10 +58,10 @@ LABEL_15:
   v15 = [v8 stringByAppendingString:@": Broadcast"];
 
   v8 = v15;
-  if ((v6 & 2) == 0)
+  if ((characteristicProperties & 2) == 0)
   {
 LABEL_5:
-    if ((v6 & 4) == 0)
+    if ((characteristicProperties & 4) == 0)
     {
       goto LABEL_6;
     }
@@ -73,10 +73,10 @@ LABEL_16:
   v16 = [v8 stringByAppendingString:@": Read"];
 
   v8 = v16;
-  if ((v6 & 4) == 0)
+  if ((characteristicProperties & 4) == 0)
   {
 LABEL_6:
-    if ((v6 & 0x20) == 0)
+    if ((characteristicProperties & 0x20) == 0)
     {
       goto LABEL_7;
     }
@@ -88,10 +88,10 @@ LABEL_17:
   v17 = [v8 stringByAppendingString:@": Write"];
 
   v8 = v17;
-  if ((v6 & 0x20) == 0)
+  if ((characteristicProperties & 0x20) == 0)
   {
 LABEL_7:
-    if ((v6 & 0x10) == 0)
+    if ((characteristicProperties & 0x10) == 0)
     {
       goto LABEL_8;
     }
@@ -103,10 +103,10 @@ LABEL_18:
   v18 = [v8 stringByAppendingString:@": Timed Write"];
 
   v8 = v18;
-  if ((v6 & 0x10) == 0)
+  if ((characteristicProperties & 0x10) == 0)
   {
 LABEL_8:
-    if ((v6 & 0x100) == 0)
+    if ((characteristicProperties & 0x100) == 0)
     {
       goto LABEL_10;
     }
@@ -118,7 +118,7 @@ LABEL_19:
   v19 = [v8 stringByAppendingString:@": AAD"];
 
   v8 = v19;
-  if ((v6 & 0x100) != 0)
+  if ((characteristicProperties & 0x100) != 0)
   {
 LABEL_9:
     v9 = [v8 stringByAppendingString:@": ENC"];
@@ -127,30 +127,30 @@ LABEL_9:
   }
 
 LABEL_10:
-  v10 = [(HAPBLECharacteristicCache *)self characteristicMetadata];
-  v11 = [v3 stringWithFormat:@"\n\tCharacteristic Info:\n\t\tCharacteristic UUID: %@, \n\t\tInstanceId: %@, \n\t\tProperties: %@, \n\t\tMetadata: %@", v4, v5, v8, v10];
+  characteristicMetadata = [(HAPBLECharacteristicCache *)self characteristicMetadata];
+  v11 = [v3 stringWithFormat:@"\n\tCharacteristic Info:\n\t\tCharacteristic UUID: %@, \n\t\tInstanceId: %@, \n\t\tProperties: %@, \n\t\tMetadata: %@", characteristicUUID, characteristicInstanceId, v8, characteristicMetadata];
 
   return v11;
 }
 
-- (HAPBLECharacteristicCache)initWithCoder:(id)a3
+- (HAPBLECharacteristicCache)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HAPBLECharacteristicCache;
   v5 = [(HAPBLECharacteristicCache *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CUUI"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CUUI"];
     characteristicUUID = v5->_characteristicUUID;
     v5->_characteristicUUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CI"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CI"];
     characteristicInstanceId = v5->_characteristicInstanceId;
     v5->_characteristicInstanceId = v8;
 
-    v5->_characteristicProperties = [v4 decodeIntegerForKey:@"CP"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CM"];
+    v5->_characteristicProperties = [coderCopy decodeIntegerForKey:@"CP"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CM"];
     characteristicMetadata = v5->_characteristicMetadata;
     v5->_characteristicMetadata = v10;
   }
@@ -158,43 +158,43 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HAPBLECharacteristicCache *)self characteristicUUID];
-  [v4 encodeObject:v5 forKey:@"CUUI"];
+  coderCopy = coder;
+  characteristicUUID = [(HAPBLECharacteristicCache *)self characteristicUUID];
+  [coderCopy encodeObject:characteristicUUID forKey:@"CUUI"];
 
-  v6 = [(HAPBLECharacteristicCache *)self characteristicInstanceId];
-  [v4 encodeObject:v6 forKey:@"CI"];
+  characteristicInstanceId = [(HAPBLECharacteristicCache *)self characteristicInstanceId];
+  [coderCopy encodeObject:characteristicInstanceId forKey:@"CI"];
 
-  [v4 encodeInteger:-[HAPBLECharacteristicCache characteristicProperties](self forKey:{"characteristicProperties"), @"CP"}];
-  v7 = [(HAPBLECharacteristicCache *)self characteristicMetadata];
-  [v4 encodeObject:v7 forKey:@"CM"];
+  [coderCopy encodeInteger:-[HAPBLECharacteristicCache characteristicProperties](self forKey:{"characteristicProperties"), @"CP"}];
+  characteristicMetadata = [(HAPBLECharacteristicCache *)self characteristicMetadata];
+  [coderCopy encodeObject:characteristicMetadata forKey:@"CM"];
 }
 
-- (void)updateWithCharacteristic:(id)a3
+- (void)updateWithCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  -[HAPBLECharacteristicCache setCharacteristicProperties:](self, "setCharacteristicProperties:", [v4 characteristicProperties]);
-  v5 = [v4 characteristicMetadata];
+  characteristicCopy = characteristic;
+  -[HAPBLECharacteristicCache setCharacteristicProperties:](self, "setCharacteristicProperties:", [characteristicCopy characteristicProperties]);
+  characteristicMetadata = [characteristicCopy characteristicMetadata];
 
-  [(HAPBLECharacteristicCache *)self setCharacteristicMetadata:v5];
+  [(HAPBLECharacteristicCache *)self setCharacteristicMetadata:characteristicMetadata];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HAPBLECharacteristicCache *)self characteristicUUID];
-  v4 = [v3 hash];
-  v5 = [(HAPBLECharacteristicCache *)self characteristicInstanceId];
-  v6 = [v5 hash];
+  characteristicUUID = [(HAPBLECharacteristicCache *)self characteristicUUID];
+  v4 = [characteristicUUID hash];
+  characteristicInstanceId = [(HAPBLECharacteristicCache *)self characteristicInstanceId];
+  v6 = [characteristicInstanceId hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -204,16 +204,16 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HAPBLECharacteristicCache *)self characteristicUUID];
-      v7 = [(HAPBLECharacteristicCache *)v5 characteristicUUID];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      characteristicUUID = [(HAPBLECharacteristicCache *)self characteristicUUID];
+      characteristicUUID2 = [(HAPBLECharacteristicCache *)v5 characteristicUUID];
+      v8 = [characteristicUUID isEqual:characteristicUUID2];
 
       if (v8)
       {
-        v9 = [(HAPBLECharacteristicCache *)self characteristicInstanceId];
-        v10 = [(HAPBLECharacteristicCache *)v5 characteristicInstanceId];
-        v11 = [v9 isEqual:v10];
+        characteristicInstanceId = [(HAPBLECharacteristicCache *)self characteristicInstanceId];
+        characteristicInstanceId2 = [(HAPBLECharacteristicCache *)v5 characteristicInstanceId];
+        v11 = [characteristicInstanceId isEqual:characteristicInstanceId2];
       }
 
       else
@@ -231,21 +231,21 @@ LABEL_10:
   return v11;
 }
 
-- (HAPBLECharacteristicCache)initWithCharacteristicUUID:(id)a3 instanceId:(id)a4 characteristicProperties:(unsigned __int16)a5 characteristicMetadata:(id)a6
+- (HAPBLECharacteristicCache)initWithCharacteristicUUID:(id)d instanceId:(id)id characteristicProperties:(unsigned __int16)properties characteristicMetadata:(id)metadata
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  dCopy = d;
+  idCopy = id;
+  metadataCopy = metadata;
   v17.receiver = self;
   v17.super_class = HAPBLECharacteristicCache;
   v14 = [(HAPBLECharacteristicCache *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_characteristicUUID, a3);
-    objc_storeStrong(&v15->_characteristicInstanceId, a4);
-    v15->_characteristicProperties = a5;
-    objc_storeStrong(&v15->_characteristicMetadata, a6);
+    objc_storeStrong(&v14->_characteristicUUID, d);
+    objc_storeStrong(&v15->_characteristicInstanceId, id);
+    v15->_characteristicProperties = properties;
+    objc_storeStrong(&v15->_characteristicMetadata, metadata);
   }
 
   return v15;

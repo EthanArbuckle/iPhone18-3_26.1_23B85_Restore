@@ -1,165 +1,165 @@
 @interface WBSAnalyticsLogger
 + (id)sharedLogger;
-- (WBSAnalyticsLogger)initWithQueue:(id)a3;
-- (id)_builtInImageNameToSimpleName:(id)a3;
-- (id)_bundleIdDictionaryWithArray:(id)a3;
-- (id)_nameForStartPageSection:(int64_t)a3;
-- (id)_sanitizedPathExtensionForAnalyticsForPathExtension:(id)a3;
-- (void)_didAddBookmarkWithMethod:(id)a3 menuItemType:(id)a4;
-- (void)_logDiagnosticMessageWithKey:(id)a3 diagnosticMessage:(id)a4 integerValue:(int64_t)a5;
-- (void)_logDiagnosticMessageWithKey:(id)a3 diagnosticMessage:(id)a4 stringValue:(id)a5;
-- (void)_sendEvent:(id)a3 usingBlock:(id)a4;
-- (void)_sendEventAddingVersionInfo:(id)a3 baseEvent:(id)a4;
-- (void)_sendEventAddingVersionInfo:(id)a3 usingBlock:(id)a4;
-- (void)didAcceptCompletionItemOfType:(int64_t)a3 atRank:(unint64_t)a4;
-- (void)didAcceptSearchSuggestionOfType:(int64_t)a3;
-- (void)didActivateLinkWithZoomScale:(float)a3 recentlyZoomedIn:(BOOL)a4;
-- (void)didActivateReaderWithTrigger:(int64_t)a3;
-- (void)didActivateVoiceSearchAccidentally:(BOOL)a3;
-- (void)didAddBookmarkFromToolbarMenuWithItemType:(int64_t)a3;
-- (void)didAddBookmarkWithMethod:(int64_t)a3;
-- (void)didAddNumberOfBookmarksInMemory:(unint64_t)a3;
-- (void)didAddReadingListItemWithMethod:(int64_t)a3;
-- (void)didBanWebsiteWithMetadata:(id)a3;
-- (void)didChangeStartPageSectionVisibility:(id)a3 visible:(BOOL)a4;
-- (void)didChooseIntervalFromAutomaticTabClosingFirstTimeExperiencePrompt:(id)a3;
-- (void)didChooseTopHit:(BOOL)a3 matchLength:(unint64_t)a4 matchScore:(float)a5;
-- (void)didClearBrowsingDataFromInterval:(int64_t)a3 withMethod:(int64_t)a4;
-- (void)didCloseTabWithTrigger:(int64_t)a3 tabClosingAction:(int64_t)a4 numberOfTabsClosed:(unint64_t)a5 tabCollectionViewType:(int64_t)a6;
-- (void)didCloseTabsAutomaticallyWithCount:(unint64_t)a3 tabClosingInterval:(id)a4;
-- (void)didCloseVisualTabPickerWithMethod:(int64_t)a3;
-- (void)didContinueUserActivityOfType:(int64_t)a3;
-- (void)didConvertExtensionWithKeySupport:(id)a3;
-- (void)didCreateTabGroupFromLocation:(int64_t)a3 prepopulatedWithTabs:(BOOL)a4;
-- (void)didDeleteNumberOfBookmarksInMemory:(unint64_t)a3;
-- (void)didDetectLanguageOfWebpage:(id)a3 primaryLocale:(id)a4 webpageCanBeTranslatedToPrimaryLocale:(BOOL)a5 canOfferTranslation:(BOOL)a6 firstNonPrimaryLocaleThatCanBeTranslatedTo:(id)a7 numberOfPreferredLocales:(unint64_t)a8 notificationLevel:(int64_t)a9;
-- (void)didDetectPossibleUserTrackingInHostApp:(id)a3 urlHasIDFA:(BOOL)a4 urlHasQueryString:(BOOL)a5 userInteracted:(BOOL)a6 viewControllerIsHidden:(BOOL)a7;
-- (void)didDetermineReaderAvailability:(BOOL)a3;
-- (void)didDismissCompletionListWithItemAccepted:(BOOL)a3 goKeyTapped:(BOOL)a4 unifiedFieldContentType:(int64_t)a5;
-- (void)didDownvoteDataSourceWithMetadata:(id)a3;
-- (void)didEngageWithStartPageSection:(int64_t)a3;
-- (void)didEnterTabViewWithMethod:(int64_t)a3;
-- (void)didFindOnPageWithTrigger:(int64_t)a3;
-- (void)didFinishPageLoadWithPageLoadStatus:(int64_t)a3;
-- (void)didFinishScribble:(unint64_t)a3;
-- (void)didInjectScriptForExtensionWithIdentifier:(id)a3;
-- (void)didInteractWithOnboardingItem:(id)a3 userClosedCard:(BOOL)a4;
-- (void)didInvokeToolbarButtonForExtensionWithIdentifier:(id)a3;
-- (void)didLoadTabContent:(int64_t)a3;
-- (void)didManuallyMarkReadingListItemAsRead:(BOOL)a3;
-- (void)didModifyPerSitePreferencesWithPreferenceIdentifier:(id)a3 modificationLevel:(int64_t)a4 type:(int64_t)a5 method:(int64_t)a6;
-- (void)didMoveToBackgroundWithNumberOfOnGoingDownloads:(unint64_t)a3;
-- (void)didNavigateToFrequentlyVisitedSiteByAnyMeansWithAnalyticsPayload:(id)a3;
-- (void)didOpenClearHistoryFromSource:(id)a3;
-- (void)didOpenCloudTabsItemWithPosition:(int64_t)a3;
-- (void)didOpenNewBlankTabWithTrigger:(int64_t)a3 tabCollectionViewType:(int64_t)a4;
-- (void)didOpenNewTabWithURLWithTrigger:(int64_t)a3 isExternalLink:(BOOL)a4 tabCollectionViewType:(int64_t)a5;
-- (void)didOpenPerSitePreferencesPopoverVia:(int64_t)a3;
-- (void)didOpenReadingListItemWithPosition:(int64_t)a3;
-- (void)didOpenReadingListItemWithReachableNetwork:(BOOL)a3 isContinuousTransition:(BOOL)a4;
-- (void)didOpenRecentlyClosedTabsItemWithPosition:(int64_t)a3;
-- (void)didOpenRecommendationWithMetadata:(id)a3 withPosition:(int64_t)a4;
-- (void)didOpenVisualTabPickerWithMethod:(int64_t)a3;
-- (void)didPerformActionOnDownloadsPopover:(int64_t)a3;
-- (void)didPerformDownloadsFileEvent:(int64_t)a3 withFileType:(id)a4;
-- (void)didPerformMoreMenuAction:(int64_t)a3;
-- (void)didPerformSafeBrowsingAction:(int64_t)a3 fromSource:(int64_t)a4;
-- (void)didPerformVisualTabPickerMiscEvent:(int64_t)a3;
-- (void)didPreventBookmarkActionWithBookmarkType:(int64_t)a3 actionType:(int64_t)a4;
-- (void)didReceiveAnalyticsEventFromWebKitWithName:(id)a3 description:(id)a4 payload:(id)a5;
-- (void)didReloadEvent:(int64_t)a3 withReloadType:(int64_t)a4 withReloadProvenance:(int64_t)a5 withLayout:(int64_t)a6;
-- (void)didRemoveFrequentlyVisitedSiteWithAnalyticsPayload:(id)a3;
-- (void)didRequestPageShowingSideBar:(BOOL)a3;
-- (void)didRequestTranslatingToLocale:(id)a3 webpageLocale:(id)a4 requestType:(int64_t)a5 isTargetLocalePrimaryLocale:(BOOL)a6;
-- (void)didRetrieveNumberOfFavorites:(unint64_t)a3;
-- (void)didRetrieveNumberOfFrequentlyVisitedSites:(unint64_t)a3;
-- (void)didRetrieveNumberOfRecommendations:(unint64_t)a3 numberOfTopics:(unint64_t)a4;
-- (void)didRevealDownloadWithMIMEType:(id)a3 uti:(id)a4 result:(int64_t)a5;
-- (void)didSelectFavoriteWithOpenLocation:(int64_t)a3;
-- (void)didSelectFavoritesRow:(int64_t)a3;
-- (void)didSelectFrequentlyVisitedSiteWithOpenLocation:(int64_t)a3 analyticsPayload:(id)a4;
-- (void)didSetDownloadFolderToProviderWithIdentifier:(id)a3 isDefaultFolder:(BOOL)a4;
-- (void)didSetPrivateBrowsingEnabled:(BOOL)a3;
-- (void)didShowBrowserChoiceScreen:(id)a3;
-- (void)didShowPasswordGenerationPromptWithPasswordAccepted:(BOOL)a3;
-- (void)didShowSafeBrowsingWarningWithSource:(int64_t)a3;
-- (void)didStartDragWithDragContentType:(int64_t)a3;
-- (void)didSubmitFormOfType:(unint64_t)a3 withFieldType:(int64_t)a4 elementType:(unint64_t)a5 isAutoFilled:(BOOL)a6 isManuallyFilledByUser:(BOOL)a7 modificationType:(unint64_t)a8 autoFillOfferedType:(unint64_t)a9 webpageLocale:(id)a10;
-- (void)didSubmitFormOfType:(unint64_t)a3 withPerFormModificationsDictionary:(id)a4 webpageLocale:(id)a5;
-- (void)didSubmitFormOfType:(unint64_t)a3 withPerFormUsageDictionary:(id)a4 webpageLocale:(id)a5;
-- (void)didSuggestUsernameInPromptAndUserKeptSuggestion:(BOOL)a3;
-- (void)didSwitchToSafari:(id)a3 entryPoint:(id)a4;
-- (void)didSwitchToTabGroupFromLocation:(int64_t)a3;
-- (void)didTakeActionOnClearHistory:(id)a3;
-- (void)didUseCreditCardAutoFillEscapeHatchFillingNewType:(id)a3 forPreviousType:(id)a4 fieldType:(int64_t)a5;
-- (void)didUseSidebarAction:(int64_t)a3;
-- (void)didViewBrowserProductPage:(id)a3;
-- (void)didVisitBookmarksWithOpenLocation:(int64_t)a3 numberOfBookmarksVisited:(unint64_t)a4;
-- (void)didVisitWebpageSBAWithUserOptedIn:(BOOL)a3;
-- (void)generatedPasswordDidOverwriteExistingPasswordWithTrigger:(int64_t)a3;
-- (void)logDiagnosticMessageWithKey:(id)a3 diagnosticMessage:(id)a4;
-- (void)logDiagnosticMessageWithKey:(id)a3 diagnosticMessage:(id)a4 result:(int64_t)a5;
-- (void)logDiagnosticMessageWithKey:(id)a3 diagnosticMessage:(id)a4 value:(id)a5;
-- (void)performOnAnalyticsQueueWithDelay:(int64_t)a3 block:(id)a4;
-- (void)recordSearchResultPageImpressionWithDefaultSearchProviderIdentifier:(id)a3 searchProviderIdentifier:(id)a4 provenance:(int64_t)a5;
-- (void)registerSafariVersion:(id)a3 persona:(int64_t)a4;
+- (WBSAnalyticsLogger)initWithQueue:(id)queue;
+- (id)_builtInImageNameToSimpleName:(id)name;
+- (id)_bundleIdDictionaryWithArray:(id)array;
+- (id)_nameForStartPageSection:(int64_t)section;
+- (id)_sanitizedPathExtensionForAnalyticsForPathExtension:(id)extension;
+- (void)_didAddBookmarkWithMethod:(id)method menuItemType:(id)type;
+- (void)_logDiagnosticMessageWithKey:(id)key diagnosticMessage:(id)message integerValue:(int64_t)value;
+- (void)_logDiagnosticMessageWithKey:(id)key diagnosticMessage:(id)message stringValue:(id)value;
+- (void)_sendEvent:(id)event usingBlock:(id)block;
+- (void)_sendEventAddingVersionInfo:(id)info baseEvent:(id)event;
+- (void)_sendEventAddingVersionInfo:(id)info usingBlock:(id)block;
+- (void)didAcceptCompletionItemOfType:(int64_t)type atRank:(unint64_t)rank;
+- (void)didAcceptSearchSuggestionOfType:(int64_t)type;
+- (void)didActivateLinkWithZoomScale:(float)scale recentlyZoomedIn:(BOOL)in;
+- (void)didActivateReaderWithTrigger:(int64_t)trigger;
+- (void)didActivateVoiceSearchAccidentally:(BOOL)accidentally;
+- (void)didAddBookmarkFromToolbarMenuWithItemType:(int64_t)type;
+- (void)didAddBookmarkWithMethod:(int64_t)method;
+- (void)didAddNumberOfBookmarksInMemory:(unint64_t)memory;
+- (void)didAddReadingListItemWithMethod:(int64_t)method;
+- (void)didBanWebsiteWithMetadata:(id)metadata;
+- (void)didChangeStartPageSectionVisibility:(id)visibility visible:(BOOL)visible;
+- (void)didChooseIntervalFromAutomaticTabClosingFirstTimeExperiencePrompt:(id)prompt;
+- (void)didChooseTopHit:(BOOL)hit matchLength:(unint64_t)length matchScore:(float)score;
+- (void)didClearBrowsingDataFromInterval:(int64_t)interval withMethod:(int64_t)method;
+- (void)didCloseTabWithTrigger:(int64_t)trigger tabClosingAction:(int64_t)action numberOfTabsClosed:(unint64_t)closed tabCollectionViewType:(int64_t)type;
+- (void)didCloseTabsAutomaticallyWithCount:(unint64_t)count tabClosingInterval:(id)interval;
+- (void)didCloseVisualTabPickerWithMethod:(int64_t)method;
+- (void)didContinueUserActivityOfType:(int64_t)type;
+- (void)didConvertExtensionWithKeySupport:(id)support;
+- (void)didCreateTabGroupFromLocation:(int64_t)location prepopulatedWithTabs:(BOOL)tabs;
+- (void)didDeleteNumberOfBookmarksInMemory:(unint64_t)memory;
+- (void)didDetectLanguageOfWebpage:(id)webpage primaryLocale:(id)locale webpageCanBeTranslatedToPrimaryLocale:(BOOL)primaryLocale canOfferTranslation:(BOOL)translation firstNonPrimaryLocaleThatCanBeTranslatedTo:(id)to numberOfPreferredLocales:(unint64_t)locales notificationLevel:(int64_t)level;
+- (void)didDetectPossibleUserTrackingInHostApp:(id)app urlHasIDFA:(BOOL)a urlHasQueryString:(BOOL)string userInteracted:(BOOL)interacted viewControllerIsHidden:(BOOL)hidden;
+- (void)didDetermineReaderAvailability:(BOOL)availability;
+- (void)didDismissCompletionListWithItemAccepted:(BOOL)accepted goKeyTapped:(BOOL)tapped unifiedFieldContentType:(int64_t)type;
+- (void)didDownvoteDataSourceWithMetadata:(id)metadata;
+- (void)didEngageWithStartPageSection:(int64_t)section;
+- (void)didEnterTabViewWithMethod:(int64_t)method;
+- (void)didFindOnPageWithTrigger:(int64_t)trigger;
+- (void)didFinishPageLoadWithPageLoadStatus:(int64_t)status;
+- (void)didFinishScribble:(unint64_t)scribble;
+- (void)didInjectScriptForExtensionWithIdentifier:(id)identifier;
+- (void)didInteractWithOnboardingItem:(id)item userClosedCard:(BOOL)card;
+- (void)didInvokeToolbarButtonForExtensionWithIdentifier:(id)identifier;
+- (void)didLoadTabContent:(int64_t)content;
+- (void)didManuallyMarkReadingListItemAsRead:(BOOL)read;
+- (void)didModifyPerSitePreferencesWithPreferenceIdentifier:(id)identifier modificationLevel:(int64_t)level type:(int64_t)type method:(int64_t)method;
+- (void)didMoveToBackgroundWithNumberOfOnGoingDownloads:(unint64_t)downloads;
+- (void)didNavigateToFrequentlyVisitedSiteByAnyMeansWithAnalyticsPayload:(id)payload;
+- (void)didOpenClearHistoryFromSource:(id)source;
+- (void)didOpenCloudTabsItemWithPosition:(int64_t)position;
+- (void)didOpenNewBlankTabWithTrigger:(int64_t)trigger tabCollectionViewType:(int64_t)type;
+- (void)didOpenNewTabWithURLWithTrigger:(int64_t)trigger isExternalLink:(BOOL)link tabCollectionViewType:(int64_t)type;
+- (void)didOpenPerSitePreferencesPopoverVia:(int64_t)via;
+- (void)didOpenReadingListItemWithPosition:(int64_t)position;
+- (void)didOpenReadingListItemWithReachableNetwork:(BOOL)network isContinuousTransition:(BOOL)transition;
+- (void)didOpenRecentlyClosedTabsItemWithPosition:(int64_t)position;
+- (void)didOpenRecommendationWithMetadata:(id)metadata withPosition:(int64_t)position;
+- (void)didOpenVisualTabPickerWithMethod:(int64_t)method;
+- (void)didPerformActionOnDownloadsPopover:(int64_t)popover;
+- (void)didPerformDownloadsFileEvent:(int64_t)event withFileType:(id)type;
+- (void)didPerformMoreMenuAction:(int64_t)action;
+- (void)didPerformSafeBrowsingAction:(int64_t)action fromSource:(int64_t)source;
+- (void)didPerformVisualTabPickerMiscEvent:(int64_t)event;
+- (void)didPreventBookmarkActionWithBookmarkType:(int64_t)type actionType:(int64_t)actionType;
+- (void)didReceiveAnalyticsEventFromWebKitWithName:(id)name description:(id)description payload:(id)payload;
+- (void)didReloadEvent:(int64_t)event withReloadType:(int64_t)type withReloadProvenance:(int64_t)provenance withLayout:(int64_t)layout;
+- (void)didRemoveFrequentlyVisitedSiteWithAnalyticsPayload:(id)payload;
+- (void)didRequestPageShowingSideBar:(BOOL)bar;
+- (void)didRequestTranslatingToLocale:(id)locale webpageLocale:(id)webpageLocale requestType:(int64_t)type isTargetLocalePrimaryLocale:(BOOL)primaryLocale;
+- (void)didRetrieveNumberOfFavorites:(unint64_t)favorites;
+- (void)didRetrieveNumberOfFrequentlyVisitedSites:(unint64_t)sites;
+- (void)didRetrieveNumberOfRecommendations:(unint64_t)recommendations numberOfTopics:(unint64_t)topics;
+- (void)didRevealDownloadWithMIMEType:(id)type uti:(id)uti result:(int64_t)result;
+- (void)didSelectFavoriteWithOpenLocation:(int64_t)location;
+- (void)didSelectFavoritesRow:(int64_t)row;
+- (void)didSelectFrequentlyVisitedSiteWithOpenLocation:(int64_t)location analyticsPayload:(id)payload;
+- (void)didSetDownloadFolderToProviderWithIdentifier:(id)identifier isDefaultFolder:(BOOL)folder;
+- (void)didSetPrivateBrowsingEnabled:(BOOL)enabled;
+- (void)didShowBrowserChoiceScreen:(id)screen;
+- (void)didShowPasswordGenerationPromptWithPasswordAccepted:(BOOL)accepted;
+- (void)didShowSafeBrowsingWarningWithSource:(int64_t)source;
+- (void)didStartDragWithDragContentType:(int64_t)type;
+- (void)didSubmitFormOfType:(unint64_t)type withFieldType:(int64_t)fieldType elementType:(unint64_t)elementType isAutoFilled:(BOOL)filled isManuallyFilledByUser:(BOOL)user modificationType:(unint64_t)modificationType autoFillOfferedType:(unint64_t)offeredType webpageLocale:(id)self0;
+- (void)didSubmitFormOfType:(unint64_t)type withPerFormModificationsDictionary:(id)dictionary webpageLocale:(id)locale;
+- (void)didSubmitFormOfType:(unint64_t)type withPerFormUsageDictionary:(id)dictionary webpageLocale:(id)locale;
+- (void)didSuggestUsernameInPromptAndUserKeptSuggestion:(BOOL)suggestion;
+- (void)didSwitchToSafari:(id)safari entryPoint:(id)point;
+- (void)didSwitchToTabGroupFromLocation:(int64_t)location;
+- (void)didTakeActionOnClearHistory:(id)history;
+- (void)didUseCreditCardAutoFillEscapeHatchFillingNewType:(id)type forPreviousType:(id)previousType fieldType:(int64_t)fieldType;
+- (void)didUseSidebarAction:(int64_t)action;
+- (void)didViewBrowserProductPage:(id)page;
+- (void)didVisitBookmarksWithOpenLocation:(int64_t)location numberOfBookmarksVisited:(unint64_t)visited;
+- (void)didVisitWebpageSBAWithUserOptedIn:(BOOL)in;
+- (void)generatedPasswordDidOverwriteExistingPasswordWithTrigger:(int64_t)trigger;
+- (void)logDiagnosticMessageWithKey:(id)key diagnosticMessage:(id)message;
+- (void)logDiagnosticMessageWithKey:(id)key diagnosticMessage:(id)message result:(int64_t)result;
+- (void)logDiagnosticMessageWithKey:(id)key diagnosticMessage:(id)message value:(id)value;
+- (void)performOnAnalyticsQueueWithDelay:(int64_t)delay block:(id)block;
+- (void)recordSearchResultPageImpressionWithDefaultSearchProviderIdentifier:(id)identifier searchProviderIdentifier:(id)providerIdentifier provenance:(int64_t)provenance;
+- (void)registerSafariVersion:(id)version persona:(int64_t)persona;
 - (void)reportAdvancedPrivacyProtectionPreference;
-- (void)reportAllProcessInfo:(id)a3;
-- (void)reportApplicationCacheSize:(unint64_t)a3;
-- (void)reportAudioIndicatorClickEvent:(int64_t)a3;
-- (void)reportAutomaticTabClosingInterval:(id)a3;
-- (void)reportAverageNumberOfTabsPerTabGroup:(int64_t)a3 andMaximum:(int64_t)a4;
-- (void)reportBlockingSafariQuitWithReason:(int64_t)a3;
-- (void)reportCustomizationSyncEnablement:(BOOL)a3;
-- (void)reportExperimentalFeaturesOnLaunchForWebXREnabled:(BOOL)a3 webXRGamepadsModuleEnabled:(BOOL)a4 webXRHandInputModuleEnabled:(BOOL)a5 modelElementEnabled:(BOOL)a6;
-- (void)reportFirstInteractionAfterTranslation:(int64_t)a3 maxVisibleHeightPercentage:(float)a4;
-- (void)reportFolderOnTopModePreference:(BOOL)a3;
-- (void)reportIOSToolbarButtonUsage:(int64_t)a3 withLayout:(int64_t)a4;
-- (void)reportInvalidMessageFromWebProcess:(id)a3;
-- (void)reportIsUsingPasswordsApp:(BOOL)a3 isUsingCredentialProviderExtension:(BOOL)a4;
-- (void)reportMacOSToolbarButtonUsage:(int64_t)a3 withLayout:(int64_t)a4;
-- (void)reportNewTabBehavior:(int64_t)a3;
-- (void)reportNewWindowBehavior:(int64_t)a3;
-- (void)reportNumberOfDuplicateBookmarksWithTopLevelDuplicatesCount:(unint64_t)a3 allDuplicatesCount:(unint64_t)a4;
-- (void)reportNumberOfExtensionsWithFrequencyDictionaryProvider:(id)a3;
-- (void)reportNumberOfPinnedTabs:(unint64_t)a3;
-- (void)reportNumberOfTabGroups:(int64_t)a3;
-- (void)reportNumberOfTabs:(int64_t)a3;
-- (void)reportNumberOfTabsPerWindow:(int64_t)a3;
-- (void)reportNumberOfWebApps:(int64_t)a3 andBookmarks:(int64_t)a4;
-- (void)reportNumberOfWebsitesWithScribbleActive:(unint64_t)a3;
-- (void)reportNumberOfWindows:(int64_t)a3;
-- (void)reportOverlayStatusBarIsEnabled:(BOOL)a3;
-- (void)reportPictureInPictureEvent:(int64_t)a3;
-- (void)reportPrivateBrowsingUsage:(int64_t)a3;
-- (void)reportPrivateRelayModulePromptEvent:(id)a3;
-- (void)reportSVCToolbarButtonUsage:(int64_t)a3;
-- (void)reportSafariRecoveredWindowStateWithSuccess:(BOOL)a3;
-- (void)reportSafariTabStateMismatchWithError:(int64_t)a3 systemTALEnabled:(BOOL)a4 safariRestoreOnLaunchEnabled:(BOOL)a5 excludePrivateWindows:(BOOL)a6 systemSaysPreserveState:(BOOL)a7 stringRepresentation:(id)a8;
-- (void)reportSafariVersion:(id)a3 safariAndWebKitVersion:(id)a4;
-- (void)reportShowFullURLInSmartSearchFieldPreference:(BOOL)a3;
-- (void)reportShowStandaloneTabBarPreference:(BOOL)a3;
-- (void)reportStartPageBackgroundImageVisible:(BOOL)a3;
-- (void)reportStartPageBackgroundName:(id)a3;
-- (void)reportStartPageOverrideStatistics:(id)a3;
-- (void)reportStartPageSectionVisibility:(int64_t)a3 visible:(BOOL)a4;
-- (void)reportStatusForExtensions:(id)a3 extensionType:(id)a4;
-- (void)reportTabGroupSyncFinishedWithInfo:(id)a3;
-- (void)reportTabGroupSyncSuccessesWithCount:(id)a3;
-- (void)reportTabUpdatedWithUpdateType:(int64_t)a3;
-- (void)reportTabsForNonTabGroupUser:(int64_t)a3 andAverageNumber:(int64_t)a4;
-- (void)reportUnifiedFieldEvent:(int64_t)a3;
-- (void)reportUnifiedFieldHistoryItemURLAutocompletedEventWithDaysSinceLastVisit:(id)a3;
-- (void)reportUnifiedFieldSearchSlowDown:(double)a3;
-- (void)reportUnifiedTabBarStatusWithLayout:(int64_t)a3 numberOfTabsInCurrentTabBar:(unint64_t)a4 tabBarIsCurrentlyScrollable:(BOOL)a5 tabsShowOnlyIcons:(BOOL)a6 backgroundColorInTabBarEnabled:(BOOL)a7;
-- (void)reportUserConsentStateSBA:(id)a3;
-- (void)reportUserPreferencesOnLaunchForJavaScriptEnabled:(BOOL)a3 safeBrowsingEnabled:(BOOL)a4 siteSpecificSearchEnabled:(BOOL)a5 trackingPolicy:(unint64_t)a6;
-- (void)reportVerificationCodeProvider:(id)a3;
-- (void)reportWeakPasswordWarningEvent:(int64_t)a3;
-- (void)reportWebContentProcessInfo:(id)a3;
-- (void)safariDidBeginTerminationWithReason:(int64_t)a3;
+- (void)reportAllProcessInfo:(id)info;
+- (void)reportApplicationCacheSize:(unint64_t)size;
+- (void)reportAudioIndicatorClickEvent:(int64_t)event;
+- (void)reportAutomaticTabClosingInterval:(id)interval;
+- (void)reportAverageNumberOfTabsPerTabGroup:(int64_t)group andMaximum:(int64_t)maximum;
+- (void)reportBlockingSafariQuitWithReason:(int64_t)reason;
+- (void)reportCustomizationSyncEnablement:(BOOL)enablement;
+- (void)reportExperimentalFeaturesOnLaunchForWebXREnabled:(BOOL)enabled webXRGamepadsModuleEnabled:(BOOL)moduleEnabled webXRHandInputModuleEnabled:(BOOL)inputModuleEnabled modelElementEnabled:(BOOL)elementEnabled;
+- (void)reportFirstInteractionAfterTranslation:(int64_t)translation maxVisibleHeightPercentage:(float)percentage;
+- (void)reportFolderOnTopModePreference:(BOOL)preference;
+- (void)reportIOSToolbarButtonUsage:(int64_t)usage withLayout:(int64_t)layout;
+- (void)reportInvalidMessageFromWebProcess:(id)process;
+- (void)reportIsUsingPasswordsApp:(BOOL)app isUsingCredentialProviderExtension:(BOOL)extension;
+- (void)reportMacOSToolbarButtonUsage:(int64_t)usage withLayout:(int64_t)layout;
+- (void)reportNewTabBehavior:(int64_t)behavior;
+- (void)reportNewWindowBehavior:(int64_t)behavior;
+- (void)reportNumberOfDuplicateBookmarksWithTopLevelDuplicatesCount:(unint64_t)count allDuplicatesCount:(unint64_t)duplicatesCount;
+- (void)reportNumberOfExtensionsWithFrequencyDictionaryProvider:(id)provider;
+- (void)reportNumberOfPinnedTabs:(unint64_t)tabs;
+- (void)reportNumberOfTabGroups:(int64_t)groups;
+- (void)reportNumberOfTabs:(int64_t)tabs;
+- (void)reportNumberOfTabsPerWindow:(int64_t)window;
+- (void)reportNumberOfWebApps:(int64_t)apps andBookmarks:(int64_t)bookmarks;
+- (void)reportNumberOfWebsitesWithScribbleActive:(unint64_t)active;
+- (void)reportNumberOfWindows:(int64_t)windows;
+- (void)reportOverlayStatusBarIsEnabled:(BOOL)enabled;
+- (void)reportPictureInPictureEvent:(int64_t)event;
+- (void)reportPrivateBrowsingUsage:(int64_t)usage;
+- (void)reportPrivateRelayModulePromptEvent:(id)event;
+- (void)reportSVCToolbarButtonUsage:(int64_t)usage;
+- (void)reportSafariRecoveredWindowStateWithSuccess:(BOOL)success;
+- (void)reportSafariTabStateMismatchWithError:(int64_t)error systemTALEnabled:(BOOL)enabled safariRestoreOnLaunchEnabled:(BOOL)launchEnabled excludePrivateWindows:(BOOL)windows systemSaysPreserveState:(BOOL)state stringRepresentation:(id)representation;
+- (void)reportSafariVersion:(id)version safariAndWebKitVersion:(id)kitVersion;
+- (void)reportShowFullURLInSmartSearchFieldPreference:(BOOL)preference;
+- (void)reportShowStandaloneTabBarPreference:(BOOL)preference;
+- (void)reportStartPageBackgroundImageVisible:(BOOL)visible;
+- (void)reportStartPageBackgroundName:(id)name;
+- (void)reportStartPageOverrideStatistics:(id)statistics;
+- (void)reportStartPageSectionVisibility:(int64_t)visibility visible:(BOOL)visible;
+- (void)reportStatusForExtensions:(id)extensions extensionType:(id)type;
+- (void)reportTabGroupSyncFinishedWithInfo:(id)info;
+- (void)reportTabGroupSyncSuccessesWithCount:(id)count;
+- (void)reportTabUpdatedWithUpdateType:(int64_t)type;
+- (void)reportTabsForNonTabGroupUser:(int64_t)user andAverageNumber:(int64_t)number;
+- (void)reportUnifiedFieldEvent:(int64_t)event;
+- (void)reportUnifiedFieldHistoryItemURLAutocompletedEventWithDaysSinceLastVisit:(id)visit;
+- (void)reportUnifiedFieldSearchSlowDown:(double)down;
+- (void)reportUnifiedTabBarStatusWithLayout:(int64_t)layout numberOfTabsInCurrentTabBar:(unint64_t)bar tabBarIsCurrentlyScrollable:(BOOL)scrollable tabsShowOnlyIcons:(BOOL)icons backgroundColorInTabBarEnabled:(BOOL)enabled;
+- (void)reportUserConsentStateSBA:(id)a;
+- (void)reportUserPreferencesOnLaunchForJavaScriptEnabled:(BOOL)enabled safeBrowsingEnabled:(BOOL)browsingEnabled siteSpecificSearchEnabled:(BOOL)searchEnabled trackingPolicy:(unint64_t)policy;
+- (void)reportVerificationCodeProvider:(id)provider;
+- (void)reportWeakPasswordWarningEvent:(int64_t)event;
+- (void)reportWebContentProcessInfo:(id)info;
+- (void)safariDidBeginTerminationWithReason:(int64_t)reason;
 - (void)safariDidCancelTermination;
-- (void)webExtensionBackgroundPage:(id)a3 livedTooLong:(double)a4;
+- (void)webExtensionBackgroundPage:(id)page livedTooLong:(double)long;
 @end
 
 @implementation WBSAnalyticsLogger
@@ -186,42 +186,42 @@ void __34__WBSAnalyticsLogger_sharedLogger__block_invoke()
   +[WBSAnalyticsLogger sharedLogger]::shared = v1;
 }
 
-- (WBSAnalyticsLogger)initWithQueue:(id)a3
+- (WBSAnalyticsLogger)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = WBSAnalyticsLogger;
   v6 = [(WBSAnalyticsLogger *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_analyticsSynchronizationQueue, a3);
+    objc_storeStrong(&v6->_analyticsSynchronizationQueue, queue);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)performOnAnalyticsQueueWithDelay:(int64_t)a3 block:(id)a4
+- (void)performOnAnalyticsQueueWithDelay:(int64_t)delay block:(id)block
 {
-  v5 = 1000000000 * a3;
-  block = a4;
+  v5 = 1000000000 * delay;
+  block = block;
   v6 = dispatch_time(0, v5);
   dispatch_after(v6, self->_analyticsSynchronizationQueue, block);
 }
 
-- (void)registerSafariVersion:(id)a3 persona:(int64_t)a4
+- (void)registerSafariVersion:(id)version persona:(int64_t)persona
 {
-  v6 = a3;
+  versionCopy = version;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__WBSAnalyticsLogger_registerSafariVersion_persona___block_invoke;
   block[3] = &unk_1E7CF0700;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = versionCopy;
+  personaCopy = persona;
+  v8 = versionCopy;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -235,20 +235,20 @@ void __52__WBSAnalyticsLogger_registerSafariVersion_persona___block_invoke(uint6
   *(*(a1 + 32) + 16) = *(a1 + 48);
 }
 
-- (void)recordSearchResultPageImpressionWithDefaultSearchProviderIdentifier:(id)a3 searchProviderIdentifier:(id)a4 provenance:(int64_t)a5
+- (void)recordSearchResultPageImpressionWithDefaultSearchProviderIdentifier:(id)identifier searchProviderIdentifier:(id)providerIdentifier provenance:(int64_t)provenance
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  providerIdentifierCopy = providerIdentifier;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __126__WBSAnalyticsLogger_recordSearchResultPageImpressionWithDefaultSearchProviderIdentifier_searchProviderIdentifier_provenance___block_invoke;
   block[3] = &unk_1E7CF0700;
-  v14 = v9;
-  v15 = v8;
-  v16 = a5;
-  v11 = v8;
-  v12 = v9;
+  v14 = providerIdentifierCopy;
+  v15 = identifierCopy;
+  provenanceCopy = provenance;
+  v11 = identifierCopy;
+  v12 = providerIdentifierCopy;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -313,14 +313,14 @@ id __126__WBSAnalyticsLogger_recordSearchResultPageImpressionWithDefaultSearchPr
   return v10;
 }
 
-- (void)reportWeakPasswordWarningEvent:(int64_t)a3
+- (void)reportWeakPasswordWarningEvent:(int64_t)event
 {
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__WBSAnalyticsLogger_reportWeakPasswordWarningEvent___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = event;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -346,20 +346,20 @@ id __53__WBSAnalyticsLogger_reportWeakPasswordWarningEvent___block_invoke_2(uint
   return v3;
 }
 
-- (void)didRevealDownloadWithMIMEType:(id)a3 uti:(id)a4 result:(int64_t)a5
+- (void)didRevealDownloadWithMIMEType:(id)type uti:(id)uti result:(int64_t)result
 {
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  utiCopy = uti;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__WBSAnalyticsLogger_didRevealDownloadWithMIMEType_uti_result___block_invoke;
   block[3] = &unk_1E7CF0700;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = typeCopy;
+  v15 = utiCopy;
+  resultCopy = result;
+  v11 = utiCopy;
+  v12 = typeCopy;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -396,16 +396,16 @@ id __63__WBSAnalyticsLogger_didRevealDownloadWithMIMEType_uti_result___block_inv
   return v3;
 }
 
-- (void)didMoveToBackgroundWithNumberOfOnGoingDownloads:(unint64_t)a3
+- (void)didMoveToBackgroundWithNumberOfOnGoingDownloads:(unint64_t)downloads
 {
-  if (a3)
+  if (downloads)
   {
     analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __70__WBSAnalyticsLogger_didMoveToBackgroundWithNumberOfOnGoingDownloads___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a3;
+    block[4] = downloads;
     dispatch_async(analyticsSynchronizationQueue, block);
   }
 }
@@ -423,17 +423,17 @@ id __70__WBSAnalyticsLogger_didMoveToBackgroundWithNumberOfOnGoingDownloads___bl
   return v2;
 }
 
-- (void)didSetDownloadFolderToProviderWithIdentifier:(id)a3 isDefaultFolder:(BOOL)a4
+- (void)didSetDownloadFolderToProviderWithIdentifier:(id)identifier isDefaultFolder:(BOOL)folder
 {
-  v6 = a3;
+  identifierCopy = identifier;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __83__WBSAnalyticsLogger_didSetDownloadFolderToProviderWithIdentifier_isDefaultFolder___block_invoke;
   v9[3] = &unk_1E7CF07D8;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = identifierCopy;
+  folderCopy = folder;
+  v8 = identifierCopy;
   dispatch_async(analyticsSynchronizationQueue, v9);
 }
 
@@ -465,16 +465,16 @@ id __83__WBSAnalyticsLogger_didSetDownloadFolderToProviderWithIdentifier_isDefau
   return v3;
 }
 
-- (void)didDownvoteDataSourceWithMetadata:(id)a3
+- (void)didDownvoteDataSourceWithMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__WBSAnalyticsLogger_didDownvoteDataSourceWithMetadata___block_invoke;
   block[3] = &unk_1E7CF0828;
-  v8 = v4;
-  v6 = v4;
+  v8 = metadataCopy;
+  v6 = metadataCopy;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -484,16 +484,16 @@ void __56__WBSAnalyticsLogger_didDownvoteDataSourceWithMetadata___block_invoke(u
   AnalyticsSendEventLazy();
 }
 
-- (void)didBanWebsiteWithMetadata:(id)a3
+- (void)didBanWebsiteWithMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__WBSAnalyticsLogger_didBanWebsiteWithMetadata___block_invoke;
   block[3] = &unk_1E7CF0828;
-  v8 = v4;
-  v6 = v4;
+  v8 = metadataCopy;
+  v6 = metadataCopy;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -503,15 +503,15 @@ void __48__WBSAnalyticsLogger_didBanWebsiteWithMetadata___block_invoke(uint64_t 
   AnalyticsSendEventLazy();
 }
 
-- (void)didRetrieveNumberOfRecommendations:(unint64_t)a3 numberOfTopics:(unint64_t)a4
+- (void)didRetrieveNumberOfRecommendations:(unint64_t)recommendations numberOfTopics:(unint64_t)topics
 {
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __72__WBSAnalyticsLogger_didRetrieveNumberOfRecommendations_numberOfTopics___block_invoke;
   v5[3] = &__block_descriptor_48_e5_v8__0l;
-  v5[4] = a3;
-  v5[5] = a4;
+  v5[4] = recommendations;
+  v5[5] = topics;
   dispatch_async(analyticsSynchronizationQueue, v5);
 }
 
@@ -531,17 +531,17 @@ id __72__WBSAnalyticsLogger_didRetrieveNumberOfRecommendations_numberOfTopics___
   return v4;
 }
 
-- (void)didOpenRecommendationWithMetadata:(id)a3 withPosition:(int64_t)a4
+- (void)didOpenRecommendationWithMetadata:(id)metadata withPosition:(int64_t)position
 {
-  v6 = a3;
+  metadataCopy = metadata;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__WBSAnalyticsLogger_didOpenRecommendationWithMetadata_withPosition___block_invoke;
   v9[3] = &unk_1E7CF08B8;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = metadataCopy;
+  positionCopy = position;
+  v8 = metadataCopy;
   dispatch_async(analyticsSynchronizationQueue, v9);
 }
 
@@ -572,14 +572,14 @@ id __69__WBSAnalyticsLogger_didOpenRecommendationWithMetadata_withPosition___blo
   return v3;
 }
 
-- (void)didOpenReadingListItemWithPosition:(int64_t)a3
+- (void)didOpenReadingListItemWithPosition:(int64_t)position
 {
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__WBSAnalyticsLogger_didOpenReadingListItemWithPosition___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = position;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -605,14 +605,14 @@ id __57__WBSAnalyticsLogger_didOpenReadingListItemWithPosition___block_invoke_2(
   return v3;
 }
 
-- (void)didOpenCloudTabsItemWithPosition:(int64_t)a3
+- (void)didOpenCloudTabsItemWithPosition:(int64_t)position
 {
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__WBSAnalyticsLogger_didOpenCloudTabsItemWithPosition___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = position;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -638,14 +638,14 @@ id __55__WBSAnalyticsLogger_didOpenCloudTabsItemWithPosition___block_invoke_2(ui
   return v3;
 }
 
-- (void)didOpenRecentlyClosedTabsItemWithPosition:(int64_t)a3
+- (void)didOpenRecentlyClosedTabsItemWithPosition:(int64_t)position
 {
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__WBSAnalyticsLogger_didOpenRecentlyClosedTabsItemWithPosition___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = position;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -671,16 +671,16 @@ id __64__WBSAnalyticsLogger_didOpenRecentlyClosedTabsItemWithPosition___block_in
   return v3;
 }
 
-- (id)_nameForStartPageSection:(int64_t)a3
+- (id)_nameForStartPageSection:(int64_t)section
 {
-  if ((a3 - 1) > 8)
+  if ((section - 1) > 8)
   {
     return @"Favorites";
   }
 
   else
   {
-    return off_1E7CF0D68[a3 - 1];
+    return off_1E7CF0D68[section - 1];
   }
 }
 
@@ -709,14 +709,14 @@ id __70__WBSAnalyticsLogger_didToggleShowMoreButtonForSection_isShowingMore___bl
   return v4;
 }
 
-- (void)didRetrieveNumberOfFavorites:(unint64_t)a3
+- (void)didRetrieveNumberOfFavorites:(unint64_t)favorites
 {
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__WBSAnalyticsLogger_didRetrieveNumberOfFavorites___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = favorites;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -733,14 +733,14 @@ id __51__WBSAnalyticsLogger_didRetrieveNumberOfFavorites___block_invoke_2(uint64
   return v2;
 }
 
-- (void)didRetrieveNumberOfFrequentlyVisitedSites:(unint64_t)a3
+- (void)didRetrieveNumberOfFrequentlyVisitedSites:(unint64_t)sites
 {
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__WBSAnalyticsLogger_didRetrieveNumberOfFrequentlyVisitedSites___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = sites;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -757,19 +757,19 @@ id __64__WBSAnalyticsLogger_didRetrieveNumberOfFrequentlyVisitedSites___block_in
   return v2;
 }
 
-- (void)didReceiveAnalyticsEventFromWebKitWithName:(id)a3 description:(id)a4 payload:(id)a5
+- (void)didReceiveAnalyticsEventFromWebKitWithName:(id)name description:(id)description payload:(id)payload
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"Safari"])
+  nameCopy = name;
+  descriptionCopy = description;
+  payloadCopy = payload;
+  if ([descriptionCopy isEqualToString:@"Safari"])
   {
-    [@"com.apple.Safari." stringByAppendingString:v8];
+    [@"com.apple.Safari." stringByAppendingString:nameCopy];
   }
 
   else
   {
-    [@"com.apple.WebKit." stringByAppendingString:v8];
+    [@"com.apple.WebKit." stringByAppendingString:nameCopy];
   }
   v11 = ;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
@@ -778,8 +778,8 @@ id __64__WBSAnalyticsLogger_didRetrieveNumberOfFrequentlyVisitedSites___block_in
   v15[2] = __85__WBSAnalyticsLogger_didReceiveAnalyticsEventFromWebKitWithName_description_payload___block_invoke;
   v15[3] = &unk_1E7CF0908;
   v16 = v11;
-  v17 = v10;
-  v13 = v10;
+  v17 = payloadCopy;
+  v13 = payloadCopy;
   v14 = v11;
   dispatch_async(analyticsSynchronizationQueue, v15);
 }
@@ -791,19 +791,19 @@ void __85__WBSAnalyticsLogger_didReceiveAnalyticsEventFromWebKitWithName_descrip
   AnalyticsSendEventLazy();
 }
 
-- (void)reportStatusForExtensions:(id)a3 extensionType:(id)a4
+- (void)reportStatusForExtensions:(id)extensions extensionType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  extensionsCopy = extensions;
+  typeCopy = type;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__WBSAnalyticsLogger_reportStatusForExtensions_extensionType___block_invoke;
   v11[3] = &unk_1E7CF0908;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = extensionsCopy;
+  v13 = typeCopy;
+  v9 = typeCopy;
+  v10 = extensionsCopy;
   dispatch_async(analyticsSynchronizationQueue, v11);
 }
 
@@ -876,16 +876,16 @@ void __62__WBSAnalyticsLogger_reportStatusForExtensions_extensionType___block_in
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportNumberOfExtensionsWithFrequencyDictionaryProvider:(id)a3
+- (void)reportNumberOfExtensionsWithFrequencyDictionaryProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__WBSAnalyticsLogger_reportNumberOfExtensionsWithFrequencyDictionaryProvider___block_invoke;
   block[3] = &unk_1E7CF0958;
-  v8 = v4;
-  v6 = v4;
+  v8 = providerCopy;
+  v6 = providerCopy;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -895,37 +895,37 @@ void __78__WBSAnalyticsLogger_reportNumberOfExtensionsWithFrequencyDictionaryPro
   AnalyticsSendEventLazy();
 }
 
-- (void)didInjectScriptForExtensionWithIdentifier:(id)a3
+- (void)didInjectScriptForExtensionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__WBSAnalyticsLogger_didInjectScriptForExtensionWithIdentifier___block_invoke;
   v6[3] = &unk_1E7CF0800;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Extensions.Invoked" usingBlock:v6];
 }
 
-- (void)didInvokeToolbarButtonForExtensionWithIdentifier:(id)a3
+- (void)didInvokeToolbarButtonForExtensionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__WBSAnalyticsLogger_didInvokeToolbarButtonForExtensionWithIdentifier___block_invoke;
   v6[3] = &unk_1E7CF0800;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Extensions.Invoked" usingBlock:v6];
 }
 
-- (void)didFinishPageLoadWithPageLoadStatus:(int64_t)a3
+- (void)didFinishPageLoadWithPageLoadStatus:(int64_t)status
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __58__WBSAnalyticsLogger_didFinishPageLoadWithPageLoadStatus___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = status;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.PageFinishedLoad" usingBlock:v3];
 }
 
@@ -942,14 +942,14 @@ id __58__WBSAnalyticsLogger_didFinishPageLoadWithPageLoadStatus___block_invoke(u
   return v2;
 }
 
-- (void)didActivateLinkWithZoomScale:(float)a3 recentlyZoomedIn:(BOOL)a4
+- (void)didActivateLinkWithZoomScale:(float)scale recentlyZoomedIn:(BOOL)in
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __68__WBSAnalyticsLogger_didActivateLinkWithZoomScale_recentlyZoomedIn___block_invoke;
   v4[3] = &__block_descriptor_37_e19___NSDictionary_8__0l;
-  v5 = a3;
-  v6 = a4;
+  scaleCopy = scale;
+  inCopy = in;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.LinkActivated" usingBlock:v4];
 }
 
@@ -970,13 +970,13 @@ id __68__WBSAnalyticsLogger_didActivateLinkWithZoomScale_recentlyZoomedIn___bloc
   return v5;
 }
 
-- (void)didStartDragWithDragContentType:(int64_t)a3
+- (void)didStartDragWithDragContentType:(int64_t)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __54__WBSAnalyticsLogger_didStartDragWithDragContentType___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = type;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.ContentDrag" usingBlock:v3];
 }
 
@@ -993,16 +993,16 @@ id __54__WBSAnalyticsLogger_didStartDragWithDragContentType___block_invoke(uint6
   return v2;
 }
 
-- (void)reportStartPageOverrideStatistics:(id)a3
+- (void)reportStartPageOverrideStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__WBSAnalyticsLogger_reportStartPageOverrideStatistics___block_invoke;
   block[3] = &unk_1E7CF0828;
-  v8 = v4;
-  v6 = v4;
+  v8 = statisticsCopy;
+  v6 = statisticsCopy;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -1024,9 +1024,9 @@ void __56__WBSAnalyticsLogger_reportStartPageOverrideStatistics___block_invoke(u
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didConvertExtensionWithKeySupport:(id)a3
+- (void)didConvertExtensionWithKeySupport:(id)support
 {
-  v4 = [a3 copy];
+  v4 = [support copy];
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1058,17 +1058,17 @@ id __56__WBSAnalyticsLogger_didConvertExtensionWithKeySupport___block_invoke_3(u
   return v2;
 }
 
-- (void)webExtensionBackgroundPage:(id)a3 livedTooLong:(double)a4
+- (void)webExtensionBackgroundPage:(id)page livedTooLong:(double)long
 {
-  v6 = a3;
+  pageCopy = page;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__WBSAnalyticsLogger_webExtensionBackgroundPage_livedTooLong___block_invoke;
   v9[3] = &unk_1E7CF08B8;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = pageCopy;
+  longCopy = long;
+  v8 = pageCopy;
   dispatch_async(analyticsSynchronizationQueue, v9);
 }
 
@@ -1088,19 +1088,19 @@ void __62__WBSAnalyticsLogger_webExtensionBackgroundPage_livedTooLong___block_in
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendEvent:(id)a3 usingBlock:(id)a4
+- (void)_sendEvent:(id)event usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  blockCopy = block;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __44__WBSAnalyticsLogger__sendEvent_usingBlock___block_invoke;
   v11[3] = &unk_1E7CF09E8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = eventCopy;
   dispatch_async(analyticsSynchronizationQueue, v11);
 }
 
@@ -1111,20 +1111,20 @@ uint64_t __44__WBSAnalyticsLogger__sendEvent_usingBlock___block_invoke(uint64_t 
   return AnalyticsSendEventLazy();
 }
 
-- (void)_sendEventAddingVersionInfo:(id)a3 usingBlock:(id)a4
+- (void)_sendEventAddingVersionInfo:(id)info usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  blockCopy = block;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__WBSAnalyticsLogger__sendEventAddingVersionInfo_usingBlock___block_invoke;
   block[3] = &unk_1E7CF0A10;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = blockCopy;
+  v12 = infoCopy;
+  v9 = blockCopy;
+  v10 = infoCopy;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -1138,18 +1138,18 @@ void __61__WBSAnalyticsLogger__sendEventAddingVersionInfo_usingBlock___block_inv
   }
 }
 
-- (void)_sendEventAddingVersionInfo:(id)a3 baseEvent:(id)a4
+- (void)_sendEventAddingVersionInfo:(id)info baseEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  eventCopy = event;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__WBSAnalyticsLogger__sendEventAddingVersionInfo_baseEvent___block_invoke;
   aBlock[3] = &unk_1E7CF0A38;
-  v8 = v7;
+  v8 = eventCopy;
   v16 = v8;
-  v17 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = infoCopy;
   v18 = v9;
   v10 = _Block_copy(aBlock);
   v11 = v10;
@@ -1219,16 +1219,16 @@ void __60__WBSAnalyticsLogger__sendEventAddingVersionInfo_baseEvent___block_invo
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didChangeStartPageSectionVisibility:(id)a3 visible:(BOOL)a4
+- (void)didChangeStartPageSectionVisibility:(id)visibility visible:(BOOL)visible
 {
-  v6 = a3;
+  visibilityCopy = visibility;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__WBSAnalyticsLogger_didChangeStartPageSectionVisibility_visible___block_invoke;
   v8[3] = &unk_1E7CF07B0;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = visibilityCopy;
+  visibleCopy = visible;
+  v7 = visibilityCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.DidChangeSectionVisibility" usingBlock:v8];
 }
 
@@ -1248,15 +1248,15 @@ id __66__WBSAnalyticsLogger_didChangeStartPageSectionVisibility_visible___block_
   return v3;
 }
 
-- (void)reportStartPageSectionVisibility:(int64_t)a3 visible:(BOOL)a4
+- (void)reportStartPageSectionVisibility:(int64_t)visibility visible:(BOOL)visible
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __63__WBSAnalyticsLogger_reportStartPageSectionVisibility_visible___block_invoke;
   v4[3] = &unk_1E7CF08E0;
   v4[4] = self;
-  v4[5] = a3;
-  v5 = a4;
+  v4[5] = visibility;
+  visibleCopy = visible;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.StartPage.ReportSectionVisibility" usingBlock:v4];
 }
 
@@ -1276,13 +1276,13 @@ id __63__WBSAnalyticsLogger_reportStartPageSectionVisibility_visible___block_inv
   return v4;
 }
 
-- (void)reportStartPageBackgroundImageVisible:(BOOL)a3
+- (void)reportStartPageBackgroundImageVisible:(BOOL)visible
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __60__WBSAnalyticsLogger_reportStartPageBackgroundImageVisible___block_invoke;
   v3[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v4 = a3;
+  visibleCopy = visible;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.StartPage.ReportSectionVisibility" usingBlock:v3];
 }
 
@@ -1301,17 +1301,17 @@ id __60__WBSAnalyticsLogger_reportStartPageBackgroundImageVisible___block_invoke
   return v2;
 }
 
-- (void)didInteractWithOnboardingItem:(id)a3 userClosedCard:(BOOL)a4
+- (void)didInteractWithOnboardingItem:(id)item userClosedCard:(BOOL)card
 {
-  v4 = a4;
-  v6 = a3;
+  cardCopy = card;
+  itemCopy = item;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__WBSAnalyticsLogger_didInteractWithOnboardingItem_userClosedCard___block_invoke;
   v8[3] = &unk_1E7CF0890;
-  v9 = v6;
-  v10 = !v4;
-  v7 = v6;
+  v9 = itemCopy;
+  v10 = !cardCopy;
+  v7 = itemCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.OnBoarding.OnBoardingItemSelected" usingBlock:v8];
 }
 
@@ -1332,13 +1332,13 @@ id __67__WBSAnalyticsLogger_didInteractWithOnboardingItem_userClosedCard___block
   return v4;
 }
 
-- (void)reportCustomizationSyncEnablement:(BOOL)a3
+- (void)reportCustomizationSyncEnablement:(BOOL)enablement
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __56__WBSAnalyticsLogger_reportCustomizationSyncEnablement___block_invoke;
   v3[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v4 = a3;
+  enablementCopy = enablement;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.StartPage.ReportSectionVisibility" usingBlock:v3];
 }
 
@@ -1357,15 +1357,15 @@ id __56__WBSAnalyticsLogger_reportCustomizationSyncEnablement___block_invoke(uin
   return v2;
 }
 
-- (void)reportPrivateRelayModulePromptEvent:(id)a3
+- (void)reportPrivateRelayModulePromptEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__WBSAnalyticsLogger_reportPrivateRelayModulePromptEvent___block_invoke;
   v6[3] = &unk_1E7CF0800;
-  v7 = v4;
-  v5 = v4;
+  v7 = eventCopy;
+  v5 = eventCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.StartPage.PrivateRelayModulePrompt" usingBlock:v6];
 }
 
@@ -1381,9 +1381,9 @@ id __58__WBSAnalyticsLogger_reportPrivateRelayModulePromptEvent___block_invoke(u
   return v2;
 }
 
-- (id)_builtInImageNameToSimpleName:(id)a3
+- (id)_builtInImageNameToSimpleName:(id)name
 {
-  v3 = [&unk_1F308E5C0 objectForKeyedSubscript:a3];
+  v3 = [&unk_1F308E5C0 objectForKeyedSubscript:name];
   v4 = v3;
   if (v3)
   {
@@ -1400,16 +1400,16 @@ id __58__WBSAnalyticsLogger_reportPrivateRelayModulePromptEvent___block_invoke(u
   return v5;
 }
 
-- (void)reportStartPageBackgroundName:(id)a3
+- (void)reportStartPageBackgroundName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__WBSAnalyticsLogger_reportStartPageBackgroundName___block_invoke;
   v6[3] = &unk_1E7CF09C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = nameCopy;
+  v5 = nameCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.StartPage.CurrentBackgroundImageName" usingBlock:v6];
 }
 
@@ -1426,7 +1426,7 @@ id __52__WBSAnalyticsLogger_reportStartPageBackgroundName___block_invoke(uint64_
   return v2;
 }
 
-- (void)didEngageWithStartPageSection:(int64_t)a3
+- (void)didEngageWithStartPageSection:(int64_t)section
 {
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1434,7 +1434,7 @@ id __52__WBSAnalyticsLogger_reportStartPageBackgroundName___block_invoke(uint64_
   v4[2] = __52__WBSAnalyticsLogger_didEngageWithStartPageSection___block_invoke;
   v4[3] = &unk_1E7CF08B8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = section;
   dispatch_async(analyticsSynchronizationQueue, v4);
 }
 
@@ -1458,18 +1458,18 @@ id __52__WBSAnalyticsLogger_didEngageWithStartPageSection___block_invoke_2(uint6
   return v2;
 }
 
-- (void)didSwitchToSafari:(id)a3 entryPoint:(id)a4
+- (void)didSwitchToSafari:(id)safari entryPoint:(id)point
 {
-  v6 = a3;
-  v7 = a4;
+  safariCopy = safari;
+  pointCopy = point;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__WBSAnalyticsLogger_didSwitchToSafari_entryPoint___block_invoke;
   v10[3] = &unk_1E7CF09C0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = safariCopy;
+  v12 = pointCopy;
+  v8 = pointCopy;
+  v9 = safariCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.setSafariAsDefaultBrowser" usingBlock:v10];
 }
 
@@ -1487,13 +1487,13 @@ id __51__WBSAnalyticsLogger_didSwitchToSafari_entryPoint___block_invoke(uint64_t
   return v2;
 }
 
-- (void)reportShowFullURLInSmartSearchFieldPreference:(BOOL)a3
+- (void)reportShowFullURLInSmartSearchFieldPreference:(BOOL)preference
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __68__WBSAnalyticsLogger_reportShowFullURLInSmartSearchFieldPreference___block_invoke;
   v3[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v4 = a3;
+  preferenceCopy = preference;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Preferences.ShowFullURLInSmartSearchField" usingBlock:v3];
 }
 
@@ -1510,13 +1510,13 @@ id __68__WBSAnalyticsLogger_reportShowFullURLInSmartSearchFieldPreference___bloc
   return v2;
 }
 
-- (void)reportShowStandaloneTabBarPreference:(BOOL)a3
+- (void)reportShowStandaloneTabBarPreference:(BOOL)preference
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __59__WBSAnalyticsLogger_reportShowStandaloneTabBarPreference___block_invoke;
   v3[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v4 = a3;
+  preferenceCopy = preference;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Preferences.ShowStandaloneTabBar" usingBlock:v3];
 }
 
@@ -1533,17 +1533,17 @@ id __59__WBSAnalyticsLogger_reportShowStandaloneTabBarPreference___block_invoke(
   return v2;
 }
 
-- (void)reportUnifiedTabBarStatusWithLayout:(int64_t)a3 numberOfTabsInCurrentTabBar:(unint64_t)a4 tabBarIsCurrentlyScrollable:(BOOL)a5 tabsShowOnlyIcons:(BOOL)a6 backgroundColorInTabBarEnabled:(BOOL)a7
+- (void)reportUnifiedTabBarStatusWithLayout:(int64_t)layout numberOfTabsInCurrentTabBar:(unint64_t)bar tabBarIsCurrentlyScrollable:(BOOL)scrollable tabsShowOnlyIcons:(BOOL)icons backgroundColorInTabBarEnabled:(BOOL)enabled
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __163__WBSAnalyticsLogger_reportUnifiedTabBarStatusWithLayout_numberOfTabsInCurrentTabBar_tabBarIsCurrentlyScrollable_tabsShowOnlyIcons_backgroundColorInTabBarEnabled___block_invoke;
   v7[3] = &__block_descriptor_51_e19___NSDictionary_8__0l;
-  v7[4] = a3;
-  v7[5] = a4;
-  v8 = a5;
-  v9 = a6;
-  v10 = a7;
+  v7[4] = layout;
+  v7[5] = bar;
+  scrollableCopy = scrollable;
+  iconsCopy = icons;
+  enabledCopy = enabled;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.ReportUnifiedTabBarStatus" usingBlock:v7];
 }
 
@@ -1582,13 +1582,13 @@ id __163__WBSAnalyticsLogger_reportUnifiedTabBarStatusWithLayout_numberOfTabsInC
   return v8;
 }
 
-- (void)reportOverlayStatusBarIsEnabled:(BOOL)a3
+- (void)reportOverlayStatusBarIsEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __54__WBSAnalyticsLogger_reportOverlayStatusBarIsEnabled___block_invoke;
   v3[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v4 = a3;
+  enabledCopy = enabled;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Preferences.OverlayStatusBar" usingBlock:v3];
 }
 
@@ -1605,13 +1605,13 @@ id __54__WBSAnalyticsLogger_reportOverlayStatusBarIsEnabled___block_invoke(uint6
   return v2;
 }
 
-- (void)reportNumberOfPinnedTabs:(unint64_t)a3
+- (void)reportNumberOfPinnedTabs:(unint64_t)tabs
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __47__WBSAnalyticsLogger_reportNumberOfPinnedTabs___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = tabs;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.PinnedTabs.PeriodicCount" usingBlock:v3];
 }
 
@@ -1628,25 +1628,25 @@ id __47__WBSAnalyticsLogger_reportNumberOfPinnedTabs___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)didDetectLanguageOfWebpage:(id)a3 primaryLocale:(id)a4 webpageCanBeTranslatedToPrimaryLocale:(BOOL)a5 canOfferTranslation:(BOOL)a6 firstNonPrimaryLocaleThatCanBeTranslatedTo:(id)a7 numberOfPreferredLocales:(unint64_t)a8 notificationLevel:(int64_t)a9
+- (void)didDetectLanguageOfWebpage:(id)webpage primaryLocale:(id)locale webpageCanBeTranslatedToPrimaryLocale:(BOOL)primaryLocale canOfferTranslation:(BOOL)translation firstNonPrimaryLocaleThatCanBeTranslatedTo:(id)to numberOfPreferredLocales:(unint64_t)locales notificationLevel:(int64_t)level
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
+  webpageCopy = webpage;
+  localeCopy = locale;
+  toCopy = to;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __207__WBSAnalyticsLogger_didDetectLanguageOfWebpage_primaryLocale_webpageCanBeTranslatedToPrimaryLocale_canOfferTranslation_firstNonPrimaryLocaleThatCanBeTranslatedTo_numberOfPreferredLocales_notificationLevel___block_invoke;
   v21[3] = &unk_1E7CF0AA0;
-  v22 = v15;
-  v23 = v16;
-  v27 = a5;
-  v28 = a6;
-  v24 = v17;
-  v25 = a8;
-  v26 = a9;
-  v18 = v17;
-  v19 = v16;
-  v20 = v15;
+  v22 = webpageCopy;
+  v23 = localeCopy;
+  primaryLocaleCopy = primaryLocale;
+  translationCopy = translation;
+  v24 = toCopy;
+  localesCopy = locales;
+  levelCopy = level;
+  v18 = toCopy;
+  v19 = localeCopy;
+  v20 = webpageCopy;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.Translation.DetectedWebpageLanguage" usingBlock:v21];
 }
 
@@ -1695,20 +1695,20 @@ id __207__WBSAnalyticsLogger_didDetectLanguageOfWebpage_primaryLocale_webpageCan
   return v10;
 }
 
-- (void)didRequestTranslatingToLocale:(id)a3 webpageLocale:(id)a4 requestType:(int64_t)a5 isTargetLocalePrimaryLocale:(BOOL)a6
+- (void)didRequestTranslatingToLocale:(id)locale webpageLocale:(id)webpageLocale requestType:(int64_t)type isTargetLocalePrimaryLocale:(BOOL)primaryLocale
 {
-  v10 = a3;
-  v11 = a4;
+  localeCopy = locale;
+  webpageLocaleCopy = webpageLocale;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __106__WBSAnalyticsLogger_didRequestTranslatingToLocale_webpageLocale_requestType_isTargetLocalePrimaryLocale___block_invoke;
   v14[3] = &unk_1E7CF0AC8;
-  v15 = v11;
-  v16 = v10;
-  v18 = a6;
-  v17 = a5;
-  v12 = v10;
-  v13 = v11;
+  v15 = webpageLocaleCopy;
+  v16 = localeCopy;
+  primaryLocaleCopy = primaryLocale;
+  typeCopy = type;
+  v12 = localeCopy;
+  v13 = webpageLocaleCopy;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.Translation.RequestedTranslation" usingBlock:v14];
 }
 
@@ -1747,14 +1747,14 @@ id __106__WBSAnalyticsLogger_didRequestTranslatingToLocale_webpageLocale_request
   return v7;
 }
 
-- (void)reportFirstInteractionAfterTranslation:(int64_t)a3 maxVisibleHeightPercentage:(float)a4
+- (void)reportFirstInteractionAfterTranslation:(int64_t)translation maxVisibleHeightPercentage:(float)percentage
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __88__WBSAnalyticsLogger_reportFirstInteractionAfterTranslation_maxVisibleHeightPercentage___block_invoke;
   v4[3] = &__block_descriptor_44_e19___NSDictionary_8__0l;
-  v4[4] = a3;
-  v5 = a4;
+  v4[4] = translation;
+  percentageCopy = percentage;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.Translation.ScrollInteraction" usingBlock:v4];
 }
 
@@ -1775,13 +1775,13 @@ id __88__WBSAnalyticsLogger_reportFirstInteractionAfterTranslation_maxVisibleHei
   return v5;
 }
 
-- (void)didShowSafeBrowsingWarningWithSource:(int64_t)a3
+- (void)didShowSafeBrowsingWarningWithSource:(int64_t)source
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __59__WBSAnalyticsLogger_didShowSafeBrowsingWarningWithSource___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = source;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.SafeBrowsing.ShowedWarning" usingBlock:v3];
 }
 
@@ -1815,14 +1815,14 @@ id __59__WBSAnalyticsLogger_didShowSafeBrowsingWarningWithSource___block_invoke(
   return v5;
 }
 
-- (void)didPerformSafeBrowsingAction:(int64_t)a3 fromSource:(int64_t)a4
+- (void)didPerformSafeBrowsingAction:(int64_t)action fromSource:(int64_t)source
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __62__WBSAnalyticsLogger_didPerformSafeBrowsingAction_fromSource___block_invoke;
   v4[3] = &__block_descriptor_48_e19___NSDictionary_8__0l;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = action;
+  v4[5] = source;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.SafeBrowsing.PerformedAction" usingBlock:v4];
 }
 
@@ -1860,13 +1860,13 @@ id __62__WBSAnalyticsLogger_didPerformSafeBrowsingAction_fromSource___block_invo
   return v6;
 }
 
-- (void)didLoadTabContent:(int64_t)a3
+- (void)didLoadTabContent:(int64_t)content
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __40__WBSAnalyticsLogger_didLoadTabContent___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = content;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.LoadedTabContent" usingBlock:v3];
 }
 
@@ -1900,13 +1900,13 @@ id __40__WBSAnalyticsLogger_didLoadTabContent___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)didContinueUserActivityOfType:(int64_t)a3
+- (void)didContinueUserActivityOfType:(int64_t)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __52__WBSAnalyticsLogger_didContinueUserActivityOfType___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = type;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.ContinuedUserActivity" usingBlock:v3];
 }
 
@@ -1932,14 +1932,14 @@ id __52__WBSAnalyticsLogger_didContinueUserActivityOfType___block_invoke(uint64_
   return v3;
 }
 
-- (void)didClearBrowsingDataFromInterval:(int64_t)a3 withMethod:(int64_t)a4
+- (void)didClearBrowsingDataFromInterval:(int64_t)interval withMethod:(int64_t)method
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __66__WBSAnalyticsLogger_didClearBrowsingDataFromInterval_withMethod___block_invoke;
   v4[3] = &__block_descriptor_48_e19___NSDictionary_8__0l;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = interval;
+  v4[5] = method;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.ClearedBrowsingData" usingBlock:v4];
 }
 
@@ -1979,13 +1979,13 @@ id __66__WBSAnalyticsLogger_didClearBrowsingDataFromInterval_withMethod___block_
   return v5;
 }
 
-- (void)didSetPrivateBrowsingEnabled:(BOOL)a3
+- (void)didSetPrivateBrowsingEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __51__WBSAnalyticsLogger_didSetPrivateBrowsingEnabled___block_invoke;
   v3[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v4 = a3;
+  enabledCopy = enabled;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.SetPrivateBrowsingEnabled" usingBlock:v3];
 }
 
@@ -2002,13 +2002,13 @@ id __51__WBSAnalyticsLogger_didSetPrivateBrowsingEnabled___block_invoke(uint64_t
   return v2;
 }
 
-- (void)didEnterTabViewWithMethod:(int64_t)a3
+- (void)didEnterTabViewWithMethod:(int64_t)method
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __48__WBSAnalyticsLogger_didEnterTabViewWithMethod___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = method;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.EnteredTabView" usingBlock:v3];
 }
 
@@ -2042,16 +2042,16 @@ id __48__WBSAnalyticsLogger_didEnterTabViewWithMethod___block_invoke(uint64_t a1
   return v5;
 }
 
-- (void)reportUserPreferencesOnLaunchForJavaScriptEnabled:(BOOL)a3 safeBrowsingEnabled:(BOOL)a4 siteSpecificSearchEnabled:(BOOL)a5 trackingPolicy:(unint64_t)a6
+- (void)reportUserPreferencesOnLaunchForJavaScriptEnabled:(BOOL)enabled safeBrowsingEnabled:(BOOL)browsingEnabled siteSpecificSearchEnabled:(BOOL)searchEnabled trackingPolicy:(unint64_t)policy
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __133__WBSAnalyticsLogger_reportUserPreferencesOnLaunchForJavaScriptEnabled_safeBrowsingEnabled_siteSpecificSearchEnabled_trackingPolicy___block_invoke;
   v6[3] = &__block_descriptor_43_e19___NSDictionary_8__0l;
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v6[4] = a6;
+  enabledCopy = enabled;
+  browsingEnabledCopy = browsingEnabled;
+  searchEnabledCopy = searchEnabled;
+  v6[4] = policy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.UserPreferencesOnLaunch" usingBlock:v6];
 }
 
@@ -2096,16 +2096,16 @@ id __133__WBSAnalyticsLogger_reportUserPreferencesOnLaunchForJavaScriptEnabled_s
   return v9;
 }
 
-- (void)reportExperimentalFeaturesOnLaunchForWebXREnabled:(BOOL)a3 webXRGamepadsModuleEnabled:(BOOL)a4 webXRHandInputModuleEnabled:(BOOL)a5 modelElementEnabled:(BOOL)a6
+- (void)reportExperimentalFeaturesOnLaunchForWebXREnabled:(BOOL)enabled webXRGamepadsModuleEnabled:(BOOL)moduleEnabled webXRHandInputModuleEnabled:(BOOL)inputModuleEnabled modelElementEnabled:(BOOL)elementEnabled
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __147__WBSAnalyticsLogger_reportExperimentalFeaturesOnLaunchForWebXREnabled_webXRGamepadsModuleEnabled_webXRHandInputModuleEnabled_modelElementEnabled___block_invoke;
   v6[3] = &__block_descriptor_36_e19___NSDictionary_8__0l;
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  enabledCopy = enabled;
+  moduleEnabledCopy = moduleEnabled;
+  inputModuleEnabledCopy = inputModuleEnabled;
+  elementEnabledCopy = elementEnabled;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.ExperimentalFeaturesOnLaunch" usingBlock:v6];
 }
 
@@ -2131,13 +2131,13 @@ id __147__WBSAnalyticsLogger_reportExperimentalFeaturesOnLaunchForWebXREnabled_w
   return v6;
 }
 
-- (void)didRequestPageShowingSideBar:(BOOL)a3
+- (void)didRequestPageShowingSideBar:(BOOL)bar
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __51__WBSAnalyticsLogger_didRequestPageShowingSideBar___block_invoke;
   v3[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v4 = a3;
+  barCopy = bar;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.RequestedPage" usingBlock:v3];
 }
 
@@ -2154,19 +2154,19 @@ id __51__WBSAnalyticsLogger_didRequestPageShowingSideBar___block_invoke(uint64_t
   return v2;
 }
 
-- (void)didDetectPossibleUserTrackingInHostApp:(id)a3 urlHasIDFA:(BOOL)a4 urlHasQueryString:(BOOL)a5 userInteracted:(BOOL)a6 viewControllerIsHidden:(BOOL)a7
+- (void)didDetectPossibleUserTrackingInHostApp:(id)app urlHasIDFA:(BOOL)a urlHasQueryString:(BOOL)string userInteracted:(BOOL)interacted viewControllerIsHidden:(BOOL)hidden
 {
-  v12 = a3;
+  appCopy = app;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __128__WBSAnalyticsLogger_didDetectPossibleUserTrackingInHostApp_urlHasIDFA_urlHasQueryString_userInteracted_viewControllerIsHidden___block_invoke;
   v14[3] = &unk_1E7CF0B50;
-  v15 = v12;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v13 = v12;
+  v15 = appCopy;
+  aCopy = a;
+  stringCopy = string;
+  interactedCopy = interacted;
+  hiddenCopy = hidden;
+  v13 = appCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.SafariViewController.DetectedPossibleUserTracking" usingBlock:v14];
 }
 
@@ -2194,13 +2194,13 @@ id __128__WBSAnalyticsLogger_didDetectPossibleUserTrackingInHostApp_urlHasIDFA_u
   return v6;
 }
 
-- (void)didAddReadingListItemWithMethod:(int64_t)a3
+- (void)didAddReadingListItemWithMethod:(int64_t)method
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __54__WBSAnalyticsLogger_didAddReadingListItemWithMethod___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = method;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.ReadingList.AddedItem" usingBlock:v3];
 }
 
@@ -2226,14 +2226,14 @@ id __54__WBSAnalyticsLogger_didAddReadingListItemWithMethod___block_invoke(uint6
   return v3;
 }
 
-- (void)didOpenReadingListItemWithReachableNetwork:(BOOL)a3 isContinuousTransition:(BOOL)a4
+- (void)didOpenReadingListItemWithReachableNetwork:(BOOL)network isContinuousTransition:(BOOL)transition
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __88__WBSAnalyticsLogger_didOpenReadingListItemWithReachableNetwork_isContinuousTransition___block_invoke;
   v4[3] = &__block_descriptor_34_e19___NSDictionary_8__0l;
-  v5 = a3;
-  v6 = a4;
+  networkCopy = network;
+  transitionCopy = transition;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.ReadingList.OpenedItem" usingBlock:v4];
 }
 
@@ -2253,13 +2253,13 @@ id __88__WBSAnalyticsLogger_didOpenReadingListItemWithReachableNetwork_isContinu
   return v4;
 }
 
-- (void)didManuallyMarkReadingListItemAsRead:(BOOL)a3
+- (void)didManuallyMarkReadingListItemAsRead:(BOOL)read
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __59__WBSAnalyticsLogger_didManuallyMarkReadingListItemAsRead___block_invoke;
   v3[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v4 = a3;
+  readCopy = read;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.ReadingList.ManuallyMarkedItemAsRead" usingBlock:v3];
 }
 
@@ -2276,13 +2276,13 @@ id __59__WBSAnalyticsLogger_didManuallyMarkReadingListItemAsRead___block_invoke(
   return v2;
 }
 
-- (void)didDetermineReaderAvailability:(BOOL)a3
+- (void)didDetermineReaderAvailability:(BOOL)availability
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __53__WBSAnalyticsLogger_didDetermineReaderAvailability___block_invoke;
   v3[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v4 = a3;
+  availabilityCopy = availability;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.ReaderAvailabilityDetermined" usingBlock:v3];
 }
 
@@ -2299,13 +2299,13 @@ id __53__WBSAnalyticsLogger_didDetermineReaderAvailability___block_invoke(uint64
   return v2;
 }
 
-- (void)didActivateReaderWithTrigger:(int64_t)a3
+- (void)didActivateReaderWithTrigger:(int64_t)trigger
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __51__WBSAnalyticsLogger_didActivateReaderWithTrigger___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = trigger;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.ReaderActivated" usingBlock:v3];
 }
 
@@ -2331,15 +2331,15 @@ id __51__WBSAnalyticsLogger_didActivateReaderWithTrigger___block_invoke(uint64_t
   return v3;
 }
 
-- (void)didDismissCompletionListWithItemAccepted:(BOOL)a3 goKeyTapped:(BOOL)a4 unifiedFieldContentType:(int64_t)a5
+- (void)didDismissCompletionListWithItemAccepted:(BOOL)accepted goKeyTapped:(BOOL)tapped unifiedFieldContentType:(int64_t)type
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __99__WBSAnalyticsLogger_didDismissCompletionListWithItemAccepted_goKeyTapped_unifiedFieldContentType___block_invoke;
   v5[3] = &__block_descriptor_42_e19___NSDictionary_8__0l;
-  v6 = a3;
-  v7 = a4;
-  v5[4] = a5;
+  acceptedCopy = accepted;
+  tappedCopy = tapped;
+  v5[4] = type;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.CompletionList.DismissedCompletionList" usingBlock:v5];
 }
 
@@ -2389,14 +2389,14 @@ id __99__WBSAnalyticsLogger_didDismissCompletionListWithItemAccepted_goKeyTapped
   return v8;
 }
 
-- (void)didAcceptCompletionItemOfType:(int64_t)a3 atRank:(unint64_t)a4
+- (void)didAcceptCompletionItemOfType:(int64_t)type atRank:(unint64_t)rank
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __59__WBSAnalyticsLogger_didAcceptCompletionItemOfType_atRank___block_invoke;
   v4[3] = &__block_descriptor_48_e19___NSDictionary_8__0l;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = type;
+  v4[5] = rank;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.CompletionList.AcceptedItem" usingBlock:v4];
 }
 
@@ -2426,13 +2426,13 @@ id __59__WBSAnalyticsLogger_didAcceptCompletionItemOfType_atRank___block_invoke(
   return v4;
 }
 
-- (void)didAcceptSearchSuggestionOfType:(int64_t)a3
+- (void)didAcceptSearchSuggestionOfType:(int64_t)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __54__WBSAnalyticsLogger_didAcceptSearchSuggestionOfType___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = type;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.CompletionList.AcceptedSearchSuggestion" usingBlock:v3];
 }
 
@@ -2458,15 +2458,15 @@ id __54__WBSAnalyticsLogger_didAcceptSearchSuggestionOfType___block_invoke(uint6
   return v3;
 }
 
-- (void)didChooseTopHit:(BOOL)a3 matchLength:(unint64_t)a4 matchScore:(float)a5
+- (void)didChooseTopHit:(BOOL)hit matchLength:(unint64_t)length matchScore:(float)score
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __61__WBSAnalyticsLogger_didChooseTopHit_matchLength_matchScore___block_invoke;
   v5[3] = &__block_descriptor_45_e19___NSDictionary_8__0l;
-  v7 = a3;
-  v5[4] = a4;
-  v6 = a5;
+  hitCopy = hit;
+  v5[4] = length;
+  scoreCopy = score;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.CompletionList.ChoseOrIgnoredTopHit" usingBlock:v5];
 }
 
@@ -2490,13 +2490,13 @@ id __61__WBSAnalyticsLogger_didChooseTopHit_matchLength_matchScore___block_invok
   return v6;
 }
 
-- (void)didActivateVoiceSearchAccidentally:(BOOL)a3
+- (void)didActivateVoiceSearchAccidentally:(BOOL)accidentally
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __57__WBSAnalyticsLogger_didActivateVoiceSearchAccidentally___block_invoke;
   v3[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v4 = a3;
+  accidentallyCopy = accidentally;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.VoiceSearchActivatedAccidentally" usingBlock:v3];
 }
 
@@ -2513,13 +2513,13 @@ id __57__WBSAnalyticsLogger_didActivateVoiceSearchAccidentally___block_invoke(ui
   return v2;
 }
 
-- (void)reportNumberOfWindows:(int64_t)a3
+- (void)reportNumberOfWindows:(int64_t)windows
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __44__WBSAnalyticsLogger_reportNumberOfWindows___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = windows;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.WindowCount" usingBlock:v3];
 }
 
@@ -2536,13 +2536,13 @@ id __44__WBSAnalyticsLogger_reportNumberOfWindows___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)reportNumberOfTabsPerWindow:(int64_t)a3
+- (void)reportNumberOfTabsPerWindow:(int64_t)window
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __50__WBSAnalyticsLogger_reportNumberOfTabsPerWindow___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = window;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.TabsPerWindowCount" usingBlock:v3];
 }
 
@@ -2559,13 +2559,13 @@ id __50__WBSAnalyticsLogger_reportNumberOfTabsPerWindow___block_invoke(uint64_t 
   return v2;
 }
 
-- (void)reportNumberOfTabs:(int64_t)a3
+- (void)reportNumberOfTabs:(int64_t)tabs
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __41__WBSAnalyticsLogger_reportNumberOfTabs___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = tabs;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.TabCount" usingBlock:v3];
 }
 
@@ -2582,13 +2582,13 @@ id __41__WBSAnalyticsLogger_reportNumberOfTabs___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)reportNewWindowBehavior:(int64_t)a3
+- (void)reportNewWindowBehavior:(int64_t)behavior
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __46__WBSAnalyticsLogger_reportNewWindowBehavior___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = behavior;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.NewWindowBehavior" usingBlock:v3];
 }
 
@@ -2614,13 +2614,13 @@ id __46__WBSAnalyticsLogger_reportNewWindowBehavior___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)reportNewTabBehavior:(int64_t)a3
+- (void)reportNewTabBehavior:(int64_t)behavior
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __43__WBSAnalyticsLogger_reportNewTabBehavior___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = behavior;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.NewTabBehavior" usingBlock:v3];
 }
 
@@ -2646,13 +2646,13 @@ id __43__WBSAnalyticsLogger_reportNewTabBehavior___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)didOpenVisualTabPickerWithMethod:(int64_t)a3
+- (void)didOpenVisualTabPickerWithMethod:(int64_t)method
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __55__WBSAnalyticsLogger_didOpenVisualTabPickerWithMethod___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = method;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.VisualTabPicker.Entry" usingBlock:v3];
 }
 
@@ -2679,13 +2679,13 @@ id __55__WBSAnalyticsLogger_didOpenVisualTabPickerWithMethod___block_invoke(uint
   return v3;
 }
 
-- (void)didCloseVisualTabPickerWithMethod:(int64_t)a3
+- (void)didCloseVisualTabPickerWithMethod:(int64_t)method
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __56__WBSAnalyticsLogger_didCloseVisualTabPickerWithMethod___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = method;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.VisualTabPicker.Exit" usingBlock:v3];
 }
 
@@ -2711,13 +2711,13 @@ id __56__WBSAnalyticsLogger_didCloseVisualTabPickerWithMethod___block_invoke(uin
   return v3;
 }
 
-- (void)didPerformVisualTabPickerMiscEvent:(int64_t)a3
+- (void)didPerformVisualTabPickerMiscEvent:(int64_t)event
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __57__WBSAnalyticsLogger_didPerformVisualTabPickerMiscEvent___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = event;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.VisualTabPicker.Misc" usingBlock:v3];
 }
 
@@ -2743,15 +2743,15 @@ id __57__WBSAnalyticsLogger_didPerformVisualTabPickerMiscEvent___block_invoke(ui
   return v3;
 }
 
-- (void)didOpenClearHistoryFromSource:(id)a3
+- (void)didOpenClearHistoryFromSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__WBSAnalyticsLogger_didOpenClearHistoryFromSource___block_invoke;
   v6[3] = &unk_1E7CF0800;
-  v7 = v4;
-  v5 = v4;
+  v7 = sourceCopy;
+  v5 = sourceCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.ClearHistory.Opened" usingBlock:v6];
 }
 
@@ -2767,15 +2767,15 @@ id __52__WBSAnalyticsLogger_didOpenClearHistoryFromSource___block_invoke(uint64_
   return v2;
 }
 
-- (void)didTakeActionOnClearHistory:(id)a3
+- (void)didTakeActionOnClearHistory:(id)history
 {
-  v4 = a3;
+  historyCopy = history;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__WBSAnalyticsLogger_didTakeActionOnClearHistory___block_invoke;
   v6[3] = &unk_1E7CF0800;
-  v7 = v4;
-  v5 = v4;
+  v7 = historyCopy;
+  v5 = historyCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.ClearHistory.ActionTaken" usingBlock:v6];
 }
 
@@ -2791,13 +2791,13 @@ id __50__WBSAnalyticsLogger_didTakeActionOnClearHistory___block_invoke(uint64_t 
   return v2;
 }
 
-- (void)didFindOnPageWithTrigger:(int64_t)a3
+- (void)didFindOnPageWithTrigger:(int64_t)trigger
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __47__WBSAnalyticsLogger_didFindOnPageWithTrigger___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = trigger;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.FindOnPageTriggered" usingBlock:v3];
 }
 
@@ -2823,16 +2823,16 @@ id __47__WBSAnalyticsLogger_didFindOnPageWithTrigger___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)didCloseTabWithTrigger:(int64_t)a3 tabClosingAction:(int64_t)a4 numberOfTabsClosed:(unint64_t)a5 tabCollectionViewType:(int64_t)a6
+- (void)didCloseTabWithTrigger:(int64_t)trigger tabClosingAction:(int64_t)action numberOfTabsClosed:(unint64_t)closed tabCollectionViewType:(int64_t)type
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __103__WBSAnalyticsLogger_didCloseTabWithTrigger_tabClosingAction_numberOfTabsClosed_tabCollectionViewType___block_invoke;
   v6[3] = &__block_descriptor_64_e19___NSDictionary_8__0l;
-  v6[4] = a3;
-  v6[5] = a4;
-  v6[6] = a5;
-  v6[7] = a6;
+  v6[4] = trigger;
+  v6[5] = action;
+  v6[6] = closed;
+  v6[7] = type;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Tabs.ClosedTab" usingBlock:v6];
 }
 
@@ -2888,14 +2888,14 @@ id __103__WBSAnalyticsLogger_didCloseTabWithTrigger_tabClosingAction_numberOfTab
   return v9;
 }
 
-- (void)didOpenNewBlankTabWithTrigger:(int64_t)a3 tabCollectionViewType:(int64_t)a4
+- (void)didOpenNewBlankTabWithTrigger:(int64_t)trigger tabCollectionViewType:(int64_t)type
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __74__WBSAnalyticsLogger_didOpenNewBlankTabWithTrigger_tabCollectionViewType___block_invoke;
   v4[3] = &__block_descriptor_48_e19___NSDictionary_8__0l;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = trigger;
+  v4[5] = type;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Tabs.OpenedNewTab" usingBlock:v4];
 }
 
@@ -2938,15 +2938,15 @@ id __74__WBSAnalyticsLogger_didOpenNewBlankTabWithTrigger_tabCollectionViewType_
   return v5;
 }
 
-- (void)didOpenNewTabWithURLWithTrigger:(int64_t)a3 isExternalLink:(BOOL)a4 tabCollectionViewType:(int64_t)a5
+- (void)didOpenNewTabWithURLWithTrigger:(int64_t)trigger isExternalLink:(BOOL)link tabCollectionViewType:(int64_t)type
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __91__WBSAnalyticsLogger_didOpenNewTabWithURLWithTrigger_isExternalLink_tabCollectionViewType___block_invoke;
   v5[3] = &__block_descriptor_49_e19___NSDictionary_8__0l;
-  v6 = a4;
-  v5[4] = a3;
-  v5[5] = a5;
+  linkCopy = link;
+  v5[4] = trigger;
+  v5[5] = type;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Tabs.OpenedNewTab" usingBlock:v5];
 }
 
@@ -2991,16 +2991,16 @@ id __91__WBSAnalyticsLogger_didOpenNewTabWithURLWithTrigger_isExternalLink_tabCo
   return v7;
 }
 
-- (void)didChooseIntervalFromAutomaticTabClosingFirstTimeExperiencePrompt:(id)a3
+- (void)didChooseIntervalFromAutomaticTabClosingFirstTimeExperiencePrompt:(id)prompt
 {
-  v4 = a3;
+  promptCopy = prompt;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__WBSAnalyticsLogger_didChooseIntervalFromAutomaticTabClosingFirstTimeExperiencePrompt___block_invoke;
   block[3] = &unk_1E7CF0828;
-  v8 = v4;
-  v6 = v4;
+  v8 = promptCopy;
+  v6 = promptCopy;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -3022,16 +3022,16 @@ id __88__WBSAnalyticsLogger_didChooseIntervalFromAutomaticTabClosingFirstTimeExp
   return v2;
 }
 
-- (void)reportAutomaticTabClosingInterval:(id)a3
+- (void)reportAutomaticTabClosingInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__WBSAnalyticsLogger_reportAutomaticTabClosingInterval___block_invoke;
   block[3] = &unk_1E7CF0828;
-  v8 = v4;
-  v6 = v4;
+  v8 = intervalCopy;
+  v6 = intervalCopy;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 
@@ -3053,17 +3053,17 @@ id __56__WBSAnalyticsLogger_reportAutomaticTabClosingInterval___block_invoke_2(u
   return v2;
 }
 
-- (void)didCloseTabsAutomaticallyWithCount:(unint64_t)a3 tabClosingInterval:(id)a4
+- (void)didCloseTabsAutomaticallyWithCount:(unint64_t)count tabClosingInterval:(id)interval
 {
-  v6 = a4;
+  intervalCopy = interval;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__WBSAnalyticsLogger_didCloseTabsAutomaticallyWithCount_tabClosingInterval___block_invoke;
   v9[3] = &unk_1E7CF08B8;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = intervalCopy;
+  countCopy = count;
+  v8 = intervalCopy;
   dispatch_async(analyticsSynchronizationQueue, v9);
 }
 
@@ -3091,13 +3091,13 @@ id __76__WBSAnalyticsLogger_didCloseTabsAutomaticallyWithCount_tabClosingInterva
   return v4;
 }
 
-- (void)didPerformActionOnDownloadsPopover:(int64_t)a3
+- (void)didPerformActionOnDownloadsPopover:(int64_t)popover
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __57__WBSAnalyticsLogger_didPerformActionOnDownloadsPopover___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = popover;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Downloads.Popover" usingBlock:v3];
 }
 
@@ -3123,17 +3123,17 @@ id __57__WBSAnalyticsLogger_didPerformActionOnDownloadsPopover___block_invoke(ui
   return v3;
 }
 
-- (void)didPerformDownloadsFileEvent:(int64_t)a3 withFileType:(id)a4
+- (void)didPerformDownloadsFileEvent:(int64_t)event withFileType:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__WBSAnalyticsLogger_didPerformDownloadsFileEvent_withFileType___block_invoke;
   v8[3] = &unk_1E7CF0728;
-  v9 = v6;
-  v10 = a3;
+  v9 = typeCopy;
+  eventCopy = event;
   v8[4] = self;
-  v7 = v6;
+  v7 = typeCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Downloads.FileType" usingBlock:v8];
 }
 
@@ -3170,28 +3170,28 @@ id __64__WBSAnalyticsLogger_didPerformDownloadsFileEvent_withFileType___block_in
   return v7;
 }
 
-- (id)_sanitizedPathExtensionForAnalyticsForPathExtension:(id)a3
+- (id)_sanitizedPathExtensionForAnalyticsForPathExtension:(id)extension
 {
-  v3 = a3;
-  if (![(__CFString *)v3 length]|| ([(__CFString *)v3 safari_isPathExtensionAllowedForAnalytics]& 1) == 0)
+  extensionCopy = extension;
+  if (![(__CFString *)extensionCopy length]|| ([(__CFString *)extensionCopy safari_isPathExtensionAllowedForAnalytics]& 1) == 0)
   {
 
-    v3 = @"Unspecified";
+    extensionCopy = @"Unspecified";
   }
 
-  return v3;
+  return extensionCopy;
 }
 
-- (void)didReloadEvent:(int64_t)a3 withReloadType:(int64_t)a4 withReloadProvenance:(int64_t)a5 withLayout:(int64_t)a6
+- (void)didReloadEvent:(int64_t)event withReloadType:(int64_t)type withReloadProvenance:(int64_t)provenance withLayout:(int64_t)layout
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __84__WBSAnalyticsLogger_didReloadEvent_withReloadType_withReloadProvenance_withLayout___block_invoke;
   v6[3] = &__block_descriptor_64_e19___NSDictionary_8__0l;
-  v6[4] = a3;
-  v6[5] = a4;
-  v6[6] = a5;
-  v6[7] = a6;
+  v6[4] = event;
+  v6[5] = type;
+  v6[6] = provenance;
+  v6[7] = layout;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Reload" usingBlock:v6];
 }
 
@@ -3257,13 +3257,13 @@ id __84__WBSAnalyticsLogger_didReloadEvent_withReloadType_withReloadProvenance_w
   return v10;
 }
 
-- (void)reportAudioIndicatorClickEvent:(int64_t)a3
+- (void)reportAudioIndicatorClickEvent:(int64_t)event
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __53__WBSAnalyticsLogger_reportAudioIndicatorClickEvent___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = event;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.TabAudio" usingBlock:v3];
 }
 
@@ -3289,13 +3289,13 @@ id __53__WBSAnalyticsLogger_reportAudioIndicatorClickEvent___block_invoke(uint64
   return v3;
 }
 
-- (void)reportPictureInPictureEvent:(int64_t)a3
+- (void)reportPictureInPictureEvent:(int64_t)event
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __50__WBSAnalyticsLogger_reportPictureInPictureEvent___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = event;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.PictureInPicture" usingBlock:v3];
 }
 
@@ -3316,13 +3316,13 @@ id __50__WBSAnalyticsLogger_reportPictureInPictureEvent___block_invoke(uint64_t 
   return v2;
 }
 
-- (void)reportPrivateBrowsingUsage:(int64_t)a3
+- (void)reportPrivateBrowsingUsage:(int64_t)usage
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __49__WBSAnalyticsLogger_reportPrivateBrowsingUsage___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = usage;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.PrivateBrowsing" usingBlock:v3];
 }
 
@@ -3349,11 +3349,11 @@ id __49__WBSAnalyticsLogger_reportPrivateBrowsingUsage___block_invoke(uint64_t a
   return v3;
 }
 
-- (void)reportInvalidMessageFromWebProcess:(id)a3
+- (void)reportInvalidMessageFromWebProcess:(id)process
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 objectForInfoDictionaryKey:*MEMORY[0x1E695E500]];
+  processCopy = process;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v6 = [mainBundle objectForInfoDictionaryKey:*MEMORY[0x1E695E500]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -3362,7 +3362,7 @@ id __49__WBSAnalyticsLogger_reportPrivateBrowsingUsage___block_invoke(uint64_t a
     v7[1] = 3221225472;
     v7[2] = __57__WBSAnalyticsLogger_reportInvalidMessageFromWebProcess___block_invoke;
     v7[3] = &unk_1E7CF09C0;
-    v8 = v4;
+    v8 = processCopy;
     v9 = v6;
     [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.InvalidMessageFromWebProcess" usingBlock:v7];
   }
@@ -3382,17 +3382,17 @@ id __57__WBSAnalyticsLogger_reportInvalidMessageFromWebProcess___block_invoke(ui
   return v2;
 }
 
-- (void)reportUnifiedFieldEvent:(int64_t)a3
+- (void)reportUnifiedFieldEvent:(int64_t)event
 {
-  if (a3 <= 6 && ((0x77u >> a3) & 1) != 0)
+  if (event <= 6 && ((0x77u >> event) & 1) != 0)
   {
-    v3 = off_1E7CF1090[a3];
+    v3 = off_1E7CF1090[event];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __46__WBSAnalyticsLogger_reportUnifiedFieldEvent___block_invoke;
     v4[3] = &unk_1E7CF0890;
     v5 = v3;
-    v6 = a3;
+    eventCopy = event;
     [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.URL" usingBlock:v4];
   }
 }
@@ -3421,15 +3421,15 @@ id __46__WBSAnalyticsLogger_reportUnifiedFieldEvent___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)reportUnifiedFieldHistoryItemURLAutocompletedEventWithDaysSinceLastVisit:(id)a3
+- (void)reportUnifiedFieldHistoryItemURLAutocompletedEventWithDaysSinceLastVisit:(id)visit
 {
-  v4 = a3;
+  visitCopy = visit;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __95__WBSAnalyticsLogger_reportUnifiedFieldHistoryItemURLAutocompletedEventWithDaysSinceLastVisit___block_invoke;
   v6[3] = &unk_1E7CF0800;
-  v7 = v4;
-  v5 = v4;
+  v7 = visitCopy;
+  v5 = visitCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.URL" usingBlock:v6];
 }
 
@@ -3447,13 +3447,13 @@ id __95__WBSAnalyticsLogger_reportUnifiedFieldHistoryItemURLAutocompletedEventWi
   return v2;
 }
 
-- (void)reportUnifiedFieldSearchSlowDown:(double)a3
+- (void)reportUnifiedFieldSearchSlowDown:(double)down
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __55__WBSAnalyticsLogger_reportUnifiedFieldSearchSlowDown___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  *&v3[4] = a3;
+  *&v3[4] = down;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.URL.SearchSlowDown" usingBlock:v3];
 }
 
@@ -3470,19 +3470,19 @@ id __55__WBSAnalyticsLogger_reportUnifiedFieldSearchSlowDown___block_invoke(uint
   return v2;
 }
 
-- (void)didModifyPerSitePreferencesWithPreferenceIdentifier:(id)a3 modificationLevel:(int64_t)a4 type:(int64_t)a5 method:(int64_t)a6
+- (void)didModifyPerSitePreferencesWithPreferenceIdentifier:(id)identifier modificationLevel:(int64_t)level type:(int64_t)type method:(int64_t)method
 {
-  v10 = a3;
+  identifierCopy = identifier;
   v11 = @"page formatting menu";
-  if (a6 <= 2)
+  if (method <= 2)
   {
     v12 = @"settings";
-    if (a6 != 2)
+    if (method != 2)
     {
       v12 = @"page formatting menu";
     }
 
-    if (a6 == 1)
+    if (method == 1)
     {
       v11 = @"in-app";
     }
@@ -3495,7 +3495,7 @@ id __55__WBSAnalyticsLogger_reportUnifiedFieldSearchSlowDown___block_invoke(uint
 
   else
   {
-    switch(a6)
+    switch(method)
     {
       case 3:
         v11 = @"keyboard shortcut";
@@ -3513,12 +3513,12 @@ id __55__WBSAnalyticsLogger_reportUnifiedFieldSearchSlowDown___block_invoke(uint
   v15[1] = 3221225472;
   v15[2] = __104__WBSAnalyticsLogger_didModifyPerSitePreferencesWithPreferenceIdentifier_modificationLevel_type_method___block_invoke;
   v15[3] = &unk_1E7CF0C18;
-  v18 = a4;
-  v19 = a5;
-  v16 = v10;
+  levelCopy = level;
+  typeCopy = type;
+  v16 = identifierCopy;
   v17 = v11;
   v13 = v11;
-  v14 = v10;
+  v14 = identifierCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.MobileSafari.PerSitePreferences" usingBlock:v15];
 }
 
@@ -3563,15 +3563,15 @@ id __104__WBSAnalyticsLogger_didModifyPerSitePreferencesWithPreferenceIdentifier
   return v7;
 }
 
-- (void)didOpenPerSitePreferencesPopoverVia:(int64_t)a3
+- (void)didOpenPerSitePreferencesPopoverVia:(int64_t)via
 {
   v4 = @"popover via Safari menu item";
-  if (a3 == 1)
+  if (via == 1)
   {
     v4 = @"popover via context menu item";
   }
 
-  if (a3 == 2)
+  if (via == 2)
   {
     v5 = @"popover via toolbar button";
   }
@@ -3602,14 +3602,14 @@ id __58__WBSAnalyticsLogger_didOpenPerSitePreferencesPopoverVia___block_invoke(u
   return v2;
 }
 
-- (void)reportNumberOfDuplicateBookmarksWithTopLevelDuplicatesCount:(unint64_t)a3 allDuplicatesCount:(unint64_t)a4
+- (void)reportNumberOfDuplicateBookmarksWithTopLevelDuplicatesCount:(unint64_t)count allDuplicatesCount:(unint64_t)duplicatesCount
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __101__WBSAnalyticsLogger_reportNumberOfDuplicateBookmarksWithTopLevelDuplicatesCount_allDuplicatesCount___block_invoke;
   v4[3] = &__block_descriptor_48_e19___NSDictionary_8__0l;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = count;
+  v4[5] = duplicatesCount;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Bookmarks.ReportNumberOfDuplicates" usingBlock:v4];
 }
 
@@ -3629,14 +3629,14 @@ id __101__WBSAnalyticsLogger_reportNumberOfDuplicateBookmarksWithTopLevelDuplica
   return v4;
 }
 
-- (void)didVisitBookmarksWithOpenLocation:(int64_t)a3 numberOfBookmarksVisited:(unint64_t)a4
+- (void)didVisitBookmarksWithOpenLocation:(int64_t)location numberOfBookmarksVisited:(unint64_t)visited
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __81__WBSAnalyticsLogger_didVisitBookmarksWithOpenLocation_numberOfBookmarksVisited___block_invoke;
   v4[3] = &__block_descriptor_48_e19___NSDictionary_8__0l;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = location;
+  v4[5] = visited;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.Bookmarks.VisitedBookmarks" usingBlock:v4];
 }
 
@@ -3666,14 +3666,14 @@ id __81__WBSAnalyticsLogger_didVisitBookmarksWithOpenLocation_numberOfBookmarksV
   return v4;
 }
 
-- (void)didPreventBookmarkActionWithBookmarkType:(int64_t)a3 actionType:(int64_t)a4
+- (void)didPreventBookmarkActionWithBookmarkType:(int64_t)type actionType:(int64_t)actionType
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __74__WBSAnalyticsLogger_didPreventBookmarkActionWithBookmarkType_actionType___block_invoke;
   v4[3] = &__block_descriptor_48_e19___NSDictionary_8__0l;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = type;
+  v4[5] = actionType;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Bookmarks.PreventedBookmarkAction" usingBlock:v4];
 }
 
@@ -3720,24 +3720,24 @@ id __74__WBSAnalyticsLogger_didPreventBookmarkActionWithBookmarkType_actionType_
   return v8;
 }
 
-- (void)didAddBookmarkWithMethod:(int64_t)a3
+- (void)didAddBookmarkWithMethod:(int64_t)method
 {
-  if ((a3 - 1) > 2)
+  if ((method - 1) > 2)
   {
     v3 = @"long press bookmark button";
   }
 
   else
   {
-    v3 = off_1E7CF1110[a3 - 1];
+    v3 = off_1E7CF1110[method - 1];
   }
 
   [(WBSAnalyticsLogger *)self _didAddBookmarkWithMethod:v3 menuItemType:&stru_1F3064D08];
 }
 
-- (void)didAddBookmarkFromToolbarMenuWithItemType:(int64_t)a3
+- (void)didAddBookmarkFromToolbarMenuWithItemType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
     v3 = @"folder";
   }
@@ -3750,18 +3750,18 @@ id __74__WBSAnalyticsLogger_didPreventBookmarkActionWithBookmarkType_actionType_
   [(WBSAnalyticsLogger *)self _didAddBookmarkWithMethod:@"long press bookmark button" menuItemType:v3];
 }
 
-- (void)_didAddBookmarkWithMethod:(id)a3 menuItemType:(id)a4
+- (void)_didAddBookmarkWithMethod:(id)method menuItemType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  methodCopy = method;
+  typeCopy = type;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__WBSAnalyticsLogger__didAddBookmarkWithMethod_menuItemType___block_invoke;
   v10[3] = &unk_1E7CF09C0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = methodCopy;
+  v12 = typeCopy;
+  v8 = typeCopy;
+  v9 = methodCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Bookmarks.AddedBookmark" usingBlock:v10];
 }
 
@@ -3779,13 +3779,13 @@ id __61__WBSAnalyticsLogger__didAddBookmarkWithMethod_menuItemType___block_invok
   return v2;
 }
 
-- (void)didAddNumberOfBookmarksInMemory:(unint64_t)a3
+- (void)didAddNumberOfBookmarksInMemory:(unint64_t)memory
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __54__WBSAnalyticsLogger_didAddNumberOfBookmarksInMemory___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = memory;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Bookmarks.AddedBookmarksInMemory" usingBlock:v3];
 }
 
@@ -3802,13 +3802,13 @@ id __54__WBSAnalyticsLogger_didAddNumberOfBookmarksInMemory___block_invoke(uint6
   return v2;
 }
 
-- (void)didDeleteNumberOfBookmarksInMemory:(unint64_t)a3
+- (void)didDeleteNumberOfBookmarksInMemory:(unint64_t)memory
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __57__WBSAnalyticsLogger_didDeleteNumberOfBookmarksInMemory___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = memory;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Bookmarks.DeletedBookmarksInMemory" usingBlock:v3];
 }
 
@@ -3825,13 +3825,13 @@ id __57__WBSAnalyticsLogger_didDeleteNumberOfBookmarksInMemory___block_invoke(ui
   return v2;
 }
 
-- (void)didShowPasswordGenerationPromptWithPasswordAccepted:(BOOL)a3
+- (void)didShowPasswordGenerationPromptWithPasswordAccepted:(BOOL)accepted
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __74__WBSAnalyticsLogger_didShowPasswordGenerationPromptWithPasswordAccepted___block_invoke;
   v3[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v4 = a3;
+  acceptedCopy = accepted;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Autofill.PasswordGeneration.ShowedPrompt" usingBlock:v3];
 }
 
@@ -3848,13 +3848,13 @@ id __74__WBSAnalyticsLogger_didShowPasswordGenerationPromptWithPasswordAccepted_
   return v2;
 }
 
-- (void)generatedPasswordDidOverwriteExistingPasswordWithTrigger:(int64_t)a3
+- (void)generatedPasswordDidOverwriteExistingPasswordWithTrigger:(int64_t)trigger
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __79__WBSAnalyticsLogger_generatedPasswordDidOverwriteExistingPasswordWithTrigger___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = trigger;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Autofill.PasswordGeneration.OverwroteExistingPassword" usingBlock:v3];
 }
 
@@ -3881,13 +3881,13 @@ id __79__WBSAnalyticsLogger_generatedPasswordDidOverwriteExistingPasswordWithTri
   return v3;
 }
 
-- (void)didSuggestUsernameInPromptAndUserKeptSuggestion:(BOOL)a3
+- (void)didSuggestUsernameInPromptAndUserKeptSuggestion:(BOOL)suggestion
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __70__WBSAnalyticsLogger_didSuggestUsernameInPromptAndUserKeptSuggestion___block_invoke;
   v3[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v4 = a3;
+  suggestionCopy = suggestion;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.Autofill.PasswordManagement.ReportUseOfSuggestedUsernameInPrompt" usingBlock:v3];
 }
 
@@ -3904,22 +3904,22 @@ id __70__WBSAnalyticsLogger_didSuggestUsernameInPromptAndUserKeptSuggestion___bl
   return v2;
 }
 
-- (void)didSubmitFormOfType:(unint64_t)a3 withFieldType:(int64_t)a4 elementType:(unint64_t)a5 isAutoFilled:(BOOL)a6 isManuallyFilledByUser:(BOOL)a7 modificationType:(unint64_t)a8 autoFillOfferedType:(unint64_t)a9 webpageLocale:(id)a10
+- (void)didSubmitFormOfType:(unint64_t)type withFieldType:(int64_t)fieldType elementType:(unint64_t)elementType isAutoFilled:(BOOL)filled isManuallyFilledByUser:(BOOL)user modificationType:(unint64_t)modificationType autoFillOfferedType:(unint64_t)offeredType webpageLocale:(id)self0
 {
-  v17 = a10;
+  localeCopy = locale;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __155__WBSAnalyticsLogger_didSubmitFormOfType_withFieldType_elementType_isAutoFilled_isManuallyFilledByUser_modificationType_autoFillOfferedType_webpageLocale___block_invoke;
   v19[3] = &unk_1E7CF0C40;
-  v22 = a4;
-  v23 = a5;
-  v26 = a6;
-  v27 = a7;
-  v24 = a8;
-  v25 = a9;
-  v20 = v17;
-  v21 = a3;
-  v18 = v17;
+  fieldTypeCopy = fieldType;
+  elementTypeCopy = elementType;
+  filledCopy = filled;
+  userCopy = user;
+  modificationTypeCopy = modificationType;
+  offeredTypeCopy = offeredType;
+  v20 = localeCopy;
+  typeCopy = type;
+  v18 = localeCopy;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.AutoFill.DidSubmitFieldInForm" usingBlock:v19];
 }
 
@@ -4009,19 +4009,19 @@ id __155__WBSAnalyticsLogger_didSubmitFormOfType_withFieldType_elementType_isAut
   return v17;
 }
 
-- (void)didSubmitFormOfType:(unint64_t)a3 withPerFormModificationsDictionary:(id)a4 webpageLocale:(id)a5
+- (void)didSubmitFormOfType:(unint64_t)type withPerFormModificationsDictionary:(id)dictionary webpageLocale:(id)locale
 {
-  v8 = a4;
-  v9 = a5;
+  dictionaryCopy = dictionary;
+  localeCopy = locale;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __91__WBSAnalyticsLogger_didSubmitFormOfType_withPerFormModificationsDictionary_webpageLocale___block_invoke;
   v12[3] = &unk_1E7CF0728;
-  v14 = v9;
-  v15 = a3;
-  v13 = v8;
-  v10 = v9;
-  v11 = v8;
+  v14 = localeCopy;
+  typeCopy = type;
+  v13 = dictionaryCopy;
+  v10 = localeCopy;
+  v11 = dictionaryCopy;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.AutoFill.DidSubmitForm" usingBlock:v12];
 }
 
@@ -4066,19 +4066,19 @@ id __91__WBSAnalyticsLogger_didSubmitFormOfType_withPerFormModificationsDictiona
   return v11;
 }
 
-- (void)didSubmitFormOfType:(unint64_t)a3 withPerFormUsageDictionary:(id)a4 webpageLocale:(id)a5
+- (void)didSubmitFormOfType:(unint64_t)type withPerFormUsageDictionary:(id)dictionary webpageLocale:(id)locale
 {
-  v8 = a4;
-  v9 = a5;
+  dictionaryCopy = dictionary;
+  localeCopy = locale;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __83__WBSAnalyticsLogger_didSubmitFormOfType_withPerFormUsageDictionary_webpageLocale___block_invoke;
   v12[3] = &unk_1E7CF0728;
-  v14 = v9;
-  v15 = a3;
-  v13 = v8;
-  v10 = v9;
-  v11 = v8;
+  v14 = localeCopy;
+  typeCopy = type;
+  v13 = dictionaryCopy;
+  v10 = localeCopy;
+  v11 = dictionaryCopy;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.AutoFill.DidSubmitFormAutoFillUsage" usingBlock:v12];
 }
 
@@ -4123,19 +4123,19 @@ id __83__WBSAnalyticsLogger_didSubmitFormOfType_withPerFormUsageDictionary_webpa
   return v11;
 }
 
-- (void)didUseCreditCardAutoFillEscapeHatchFillingNewType:(id)a3 forPreviousType:(id)a4 fieldType:(int64_t)a5
+- (void)didUseCreditCardAutoFillEscapeHatchFillingNewType:(id)type forPreviousType:(id)previousType fieldType:(int64_t)fieldType
 {
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  previousTypeCopy = previousType;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __98__WBSAnalyticsLogger_didUseCreditCardAutoFillEscapeHatchFillingNewType_forPreviousType_fieldType___block_invoke;
   v12[3] = &unk_1E7CF0728;
-  v13 = v8;
-  v14 = v9;
-  v15 = a5;
-  v10 = v9;
-  v11 = v8;
+  v13 = typeCopy;
+  v14 = previousTypeCopy;
+  fieldTypeCopy = fieldType;
+  v10 = previousTypeCopy;
+  v11 = typeCopy;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.AutoFill.DidUseCreditCardEscapeHatch" usingBlock:v12];
 }
 
@@ -4157,13 +4157,13 @@ id __98__WBSAnalyticsLogger_didUseCreditCardAutoFillEscapeHatchFillingNewType_fo
   return v3;
 }
 
-- (void)didSelectFavoriteWithOpenLocation:(int64_t)a3
+- (void)didSelectFavoriteWithOpenLocation:(int64_t)location
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __56__WBSAnalyticsLogger_didSelectFavoriteWithOpenLocation___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = location;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.StartPage.SelectedFavorite" usingBlock:v3];
 }
 
@@ -4189,13 +4189,13 @@ id __56__WBSAnalyticsLogger_didSelectFavoriteWithOpenLocation___block_invoke(uin
   return v3;
 }
 
-- (void)didSelectFavoritesRow:(int64_t)a3
+- (void)didSelectFavoritesRow:(int64_t)row
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __44__WBSAnalyticsLogger_didSelectFavoritesRow___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = row;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Favorites" usingBlock:v3];
 }
 
@@ -4212,16 +4212,16 @@ id __44__WBSAnalyticsLogger_didSelectFavoritesRow___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)didSelectFrequentlyVisitedSiteWithOpenLocation:(int64_t)a3 analyticsPayload:(id)a4
+- (void)didSelectFrequentlyVisitedSiteWithOpenLocation:(int64_t)location analyticsPayload:(id)payload
 {
-  v6 = a4;
+  payloadCopy = payload;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __86__WBSAnalyticsLogger_didSelectFrequentlyVisitedSiteWithOpenLocation_analyticsPayload___block_invoke;
   v8[3] = &unk_1E7CF0890;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = payloadCopy;
+  locationCopy = location;
+  v7 = payloadCopy;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.StartPage.SelectedFrequentlyVisitedSite" usingBlock:v8];
 }
 
@@ -4250,42 +4250,42 @@ id __86__WBSAnalyticsLogger_didSelectFrequentlyVisitedSiteWithOpenLocation_analy
   return v6;
 }
 
-- (void)didRemoveFrequentlyVisitedSiteWithAnalyticsPayload:(id)a3
+- (void)didRemoveFrequentlyVisitedSiteWithAnalyticsPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __73__WBSAnalyticsLogger_didRemoveFrequentlyVisitedSiteWithAnalyticsPayload___block_invoke;
   v6[3] = &unk_1E7CF0800;
-  v7 = v4;
-  v5 = v4;
+  v7 = payloadCopy;
+  v5 = payloadCopy;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.StartPage.RemovedFrequentlyVisitedSite" usingBlock:v6];
 }
 
-- (void)didNavigateToFrequentlyVisitedSiteByAnyMeansWithAnalyticsPayload:(id)a3
+- (void)didNavigateToFrequentlyVisitedSiteByAnyMeansWithAnalyticsPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __87__WBSAnalyticsLogger_didNavigateToFrequentlyVisitedSiteByAnyMeansWithAnalyticsPayload___block_invoke;
   v6[3] = &unk_1E7CF0800;
-  v7 = v4;
-  v5 = v4;
+  v7 = payloadCopy;
+  v5 = payloadCopy;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.StartPage.VisitedFrequentlyVisitedSiteByAnyMeans" usingBlock:v6];
 }
 
-- (void)reportSafariVersion:(id)a3 safariAndWebKitVersion:(id)a4
+- (void)reportSafariVersion:(id)version safariAndWebKitVersion:(id)kitVersion
 {
-  v6 = a3;
-  v7 = a4;
+  versionCopy = version;
+  kitVersionCopy = kitVersion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__WBSAnalyticsLogger_reportSafariVersion_safariAndWebKitVersion___block_invoke;
   v10[3] = &unk_1E7CF09C0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = versionCopy;
+  v12 = kitVersionCopy;
+  v8 = kitVersionCopy;
+  v9 = versionCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Version" usingBlock:v10];
 }
 
@@ -4301,10 +4301,10 @@ id __65__WBSAnalyticsLogger_reportSafariVersion_safariAndWebKitVersion___block_i
   return v1;
 }
 
-- (void)reportApplicationCacheSize:(unint64_t)a3
+- (void)reportApplicationCacheSize:(unint64_t)size
 {
-  v3 = a3 >> 10;
-  if (a3 >> 10 >= 0xC8)
+  v3 = size >> 10;
+  if (size >> 10 >= 0xC8)
   {
     v3 = 200;
   }
@@ -4330,15 +4330,15 @@ id __49__WBSAnalyticsLogger_reportApplicationCacheSize___block_invoke(uint64_t a
   return v2;
 }
 
-- (void)logDiagnosticMessageWithKey:(id)a3 diagnosticMessage:(id)a4
+- (void)logDiagnosticMessageWithKey:(id)key diagnosticMessage:(id)message
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.%@", a3];
+  messageCopy = message;
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.%@", key];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__WBSAnalyticsLogger_logDiagnosticMessageWithKey_diagnosticMessage___block_invoke;
   v9[3] = &unk_1E7CF0800;
-  v8 = v6;
+  v8 = messageCopy;
   v10 = v8;
   [(WBSAnalyticsLogger *)self _sendEvent:v7 usingBlock:v9];
 }
@@ -4360,17 +4360,17 @@ id __68__WBSAnalyticsLogger_logDiagnosticMessageWithKey_diagnosticMessage___bloc
   return v2;
 }
 
-- (void)logDiagnosticMessageWithKey:(id)a3 diagnosticMessage:(id)a4 result:(int64_t)a5
+- (void)logDiagnosticMessageWithKey:(id)key diagnosticMessage:(id)message result:(int64_t)result
 {
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.%@", a3];
+  messageCopy = message;
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.%@", key];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __75__WBSAnalyticsLogger_logDiagnosticMessageWithKey_diagnosticMessage_result___block_invoke;
   v11[3] = &unk_1E7CF0890;
-  v10 = v8;
+  v10 = messageCopy;
   v12 = v10;
-  v13 = a5;
+  resultCopy = result;
   [(WBSAnalyticsLogger *)self _sendEvent:v9 usingBlock:v11];
 }
 
@@ -4411,43 +4411,43 @@ id __75__WBSAnalyticsLogger_logDiagnosticMessageWithKey_diagnosticMessage_result
   return v5;
 }
 
-- (void)logDiagnosticMessageWithKey:(id)a3 diagnosticMessage:(id)a4 value:(id)a5
+- (void)logDiagnosticMessageWithKey:(id)key diagnosticMessage:(id)message value:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  keyCopy = key;
+  messageCopy = message;
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_6;
   }
 
-  v11 = [MEMORY[0x1E696AE88] scannerWithString:v10];
+  v11 = [MEMORY[0x1E696AE88] scannerWithString:valueCopy];
   v12 = 0;
   if (![v11 scanInteger:&v12] || !objc_msgSend(v11, "isAtEnd"))
   {
 
 LABEL_6:
-    [(WBSAnalyticsLogger *)self _logDiagnosticMessageWithKey:v8 diagnosticMessage:v9 stringValue:v10];
+    [(WBSAnalyticsLogger *)self _logDiagnosticMessageWithKey:keyCopy diagnosticMessage:messageCopy stringValue:valueCopy];
     goto LABEL_7;
   }
 
-  [(WBSAnalyticsLogger *)self _logDiagnosticMessageWithKey:v8 diagnosticMessage:v9 integerValue:v12];
+  [(WBSAnalyticsLogger *)self _logDiagnosticMessageWithKey:keyCopy diagnosticMessage:messageCopy integerValue:v12];
 
 LABEL_7:
 }
 
-- (void)_logDiagnosticMessageWithKey:(id)a3 diagnosticMessage:(id)a4 stringValue:(id)a5
+- (void)_logDiagnosticMessageWithKey:(id)key diagnosticMessage:(id)message stringValue:(id)value
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.%@", a3];
+  messageCopy = message;
+  valueCopy = value;
+  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.%@", key];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __81__WBSAnalyticsLogger__logDiagnosticMessageWithKey_diagnosticMessage_stringValue___block_invoke;
   v13[3] = &unk_1E7CF09C0;
-  v11 = v8;
+  v11 = messageCopy;
   v14 = v11;
-  v12 = v9;
+  v12 = valueCopy;
   v15 = v12;
   [(WBSAnalyticsLogger *)self _sendEvent:v10 usingBlock:v13];
 }
@@ -4464,17 +4464,17 @@ id __81__WBSAnalyticsLogger__logDiagnosticMessageWithKey_diagnosticMessage_strin
   return v1;
 }
 
-- (void)_logDiagnosticMessageWithKey:(id)a3 diagnosticMessage:(id)a4 integerValue:(int64_t)a5
+- (void)_logDiagnosticMessageWithKey:(id)key diagnosticMessage:(id)message integerValue:(int64_t)value
 {
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.%@", a3];
+  messageCopy = message;
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.%@", key];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __82__WBSAnalyticsLogger__logDiagnosticMessageWithKey_diagnosticMessage_integerValue___block_invoke;
   v11[3] = &unk_1E7CF0890;
-  v10 = v8;
+  v10 = messageCopy;
   v12 = v10;
-  v13 = a5;
+  valueCopy = value;
   [(WBSAnalyticsLogger *)self _sendEvent:v9 usingBlock:v11];
 }
 
@@ -4504,14 +4504,14 @@ id __82__WBSAnalyticsLogger__logDiagnosticMessageWithKey_diagnosticMessage_integ
   return v4;
 }
 
-- (void)reportAverageNumberOfTabsPerTabGroup:(int64_t)a3 andMaximum:(int64_t)a4
+- (void)reportAverageNumberOfTabsPerTabGroup:(int64_t)group andMaximum:(int64_t)maximum
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __70__WBSAnalyticsLogger_reportAverageNumberOfTabsPerTabGroup_andMaximum___block_invoke;
   v4[3] = &__block_descriptor_48_e19___NSDictionary_8__0l;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = group;
+  v4[5] = maximum;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.SafariShared.TabGroups.AverageNumberOfTabsPerTabGroup" usingBlock:v4];
 }
 
@@ -4531,14 +4531,14 @@ id __70__WBSAnalyticsLogger_reportAverageNumberOfTabsPerTabGroup_andMaximum___bl
   return v4;
 }
 
-- (void)reportTabsForNonTabGroupUser:(int64_t)a3 andAverageNumber:(int64_t)a4
+- (void)reportTabsForNonTabGroupUser:(int64_t)user andAverageNumber:(int64_t)number
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __68__WBSAnalyticsLogger_reportTabsForNonTabGroupUser_andAverageNumber___block_invoke;
   v4[3] = &__block_descriptor_48_e19___NSDictionary_8__0l;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = user;
+  v4[5] = number;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.SafariShared.TabGroups.NonTabGroupUsersTabs" usingBlock:v4];
 }
 
@@ -4558,13 +4558,13 @@ id __68__WBSAnalyticsLogger_reportTabsForNonTabGroupUser_andAverageNumber___bloc
   return v4;
 }
 
-- (void)reportNumberOfTabGroups:(int64_t)a3
+- (void)reportNumberOfTabGroups:(int64_t)groups
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __46__WBSAnalyticsLogger_reportNumberOfTabGroups___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = groups;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.SafariShared.TabGroups.NumberOfTabGroups" usingBlock:v3];
 }
 
@@ -4581,14 +4581,14 @@ id __46__WBSAnalyticsLogger_reportNumberOfTabGroups___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)didCreateTabGroupFromLocation:(int64_t)a3 prepopulatedWithTabs:(BOOL)a4
+- (void)didCreateTabGroupFromLocation:(int64_t)location prepopulatedWithTabs:(BOOL)tabs
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __73__WBSAnalyticsLogger_didCreateTabGroupFromLocation_prepopulatedWithTabs___block_invoke;
   v4[3] = &__block_descriptor_41_e19___NSDictionary_8__0l;
-  v4[4] = a3;
-  v5 = a4;
+  v4[4] = location;
+  tabsCopy = tabs;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.TabGroups.CreatedTabGroup" usingBlock:v4];
 }
 
@@ -4608,13 +4608,13 @@ id __73__WBSAnalyticsLogger_didCreateTabGroupFromLocation_prepopulatedWithTabs__
   return v4;
 }
 
-- (void)didSwitchToTabGroupFromLocation:(int64_t)a3
+- (void)didSwitchToTabGroupFromLocation:(int64_t)location
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __54__WBSAnalyticsLogger_didSwitchToTabGroupFromLocation___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = location;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.TabGroups.SwitchedToTabGroup" usingBlock:v3];
 }
 
@@ -4631,14 +4631,14 @@ id __54__WBSAnalyticsLogger_didSwitchToTabGroupFromLocation___block_invoke(uint6
   return v2;
 }
 
-- (void)reportMacOSToolbarButtonUsage:(int64_t)a3 withLayout:(int64_t)a4
+- (void)reportMacOSToolbarButtonUsage:(int64_t)usage withLayout:(int64_t)layout
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __63__WBSAnalyticsLogger_reportMacOSToolbarButtonUsage_withLayout___block_invoke;
   v4[3] = &__block_descriptor_48_e19___NSDictionary_8__0l;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = usage;
+  v4[5] = layout;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.ToolbarButtonUsage" usingBlock:v4];
 }
 
@@ -4668,14 +4668,14 @@ id __63__WBSAnalyticsLogger_reportMacOSToolbarButtonUsage_withLayout___block_inv
   return v5;
 }
 
-- (void)reportIOSToolbarButtonUsage:(int64_t)a3 withLayout:(int64_t)a4
+- (void)reportIOSToolbarButtonUsage:(int64_t)usage withLayout:(int64_t)layout
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __61__WBSAnalyticsLogger_reportIOSToolbarButtonUsage_withLayout___block_invoke;
   v4[3] = &__block_descriptor_48_e19___NSDictionary_8__0l;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = usage;
+  v4[5] = layout;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.MobileSafari.ToolbarButtonUsage" usingBlock:v4];
 }
 
@@ -4705,13 +4705,13 @@ id __61__WBSAnalyticsLogger_reportIOSToolbarButtonUsage_withLayout___block_invok
   return v5;
 }
 
-- (void)reportSVCToolbarButtonUsage:(int64_t)a3
+- (void)reportSVCToolbarButtonUsage:(int64_t)usage
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __50__WBSAnalyticsLogger_reportSVCToolbarButtonUsage___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = usage;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.SafariViewController.ToolbarButtonUsage" usingBlock:v3];
 }
 
@@ -4728,13 +4728,13 @@ id __50__WBSAnalyticsLogger_reportSVCToolbarButtonUsage___block_invoke(uint64_t 
   return v2;
 }
 
-- (void)didPerformMoreMenuAction:(int64_t)a3
+- (void)didPerformMoreMenuAction:(int64_t)action
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __47__WBSAnalyticsLogger_didPerformMoreMenuAction___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = action;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.PerformedMoreMenuAction" usingBlock:v3];
 }
 
@@ -4760,13 +4760,13 @@ id __47__WBSAnalyticsLogger_didPerformMoreMenuAction___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)didUseSidebarAction:(int64_t)a3
+- (void)didUseSidebarAction:(int64_t)action
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __42__WBSAnalyticsLogger_didUseSidebarAction___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = action;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.SidebarAction" usingBlock:v3];
 }
 
@@ -4792,13 +4792,13 @@ id __42__WBSAnalyticsLogger_didUseSidebarAction___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)didFinishScribble:(unint64_t)a3
+- (void)didFinishScribble:(unint64_t)scribble
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __40__WBSAnalyticsLogger_didFinishScribble___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = scribble;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Scribble.didFinishScribble" usingBlock:v3];
 }
 
@@ -4815,13 +4815,13 @@ id __40__WBSAnalyticsLogger_didFinishScribble___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)reportNumberOfWebsitesWithScribbleActive:(unint64_t)a3
+- (void)reportNumberOfWebsitesWithScribbleActive:(unint64_t)active
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __63__WBSAnalyticsLogger_reportNumberOfWebsitesWithScribbleActive___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = active;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Scribble.reportNumberOfWebsitesWithScribbleActive" usingBlock:v3];
 }
 
@@ -4838,15 +4838,15 @@ id __63__WBSAnalyticsLogger_reportNumberOfWebsitesWithScribbleActive___block_inv
   return v2;
 }
 
-- (void)reportUserConsentStateSBA:(id)a3
+- (void)reportUserConsentStateSBA:(id)a
 {
-  v4 = a3;
+  aCopy = a;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__WBSAnalyticsLogger_reportUserConsentStateSBA___block_invoke;
   v6[3] = &unk_1E7CF0800;
-  v7 = v4;
-  v5 = v4;
+  v7 = aCopy;
+  v5 = aCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.SmartBrowsingAssistant.userConsentState" usingBlock:v6];
 }
 
@@ -4862,13 +4862,13 @@ id __48__WBSAnalyticsLogger_reportUserConsentStateSBA___block_invoke(uint64_t a1
   return v2;
 }
 
-- (void)didVisitWebpageSBAWithUserOptedIn:(BOOL)a3
+- (void)didVisitWebpageSBAWithUserOptedIn:(BOOL)in
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __56__WBSAnalyticsLogger_didVisitWebpageSBAWithUserOptedIn___block_invoke;
   v3[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v4 = a3;
+  inCopy = in;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.SmartBrowsingAssistant.didVisitWebpage" usingBlock:v3];
 }
 
@@ -4885,12 +4885,12 @@ id __56__WBSAnalyticsLogger_didVisitWebpageSBAWithUserOptedIn___block_invoke(uin
   return v2;
 }
 
-- (void)safariDidBeginTerminationWithReason:(int64_t)a3
+- (void)safariDidBeginTerminationWithReason:(int64_t)reason
 {
   self->_safariIsTerminating = 1;
-  if (a3 || !self->_safariQuitReason)
+  if (reason || !self->_safariQuitReason)
   {
-    self->_safariQuitReason = a3;
+    self->_safariQuitReason = reason;
   }
 }
 
@@ -4901,9 +4901,9 @@ id __56__WBSAnalyticsLogger_didVisitWebpageSBAWithUserOptedIn___block_invoke(uin
   self->_safariReportedNonOtherBlockingReason = 0;
 }
 
-- (void)reportBlockingSafariQuitWithReason:(int64_t)a3
+- (void)reportBlockingSafariQuitWithReason:(int64_t)reason
 {
-  if (self->_safariIsTerminating && (a3 || !self->_safariReportedNonOtherBlockingReason))
+  if (self->_safariIsTerminating && (reason || !self->_safariReportedNonOtherBlockingReason))
   {
     safariQuitReason = self->_safariQuitReason;
     v4[0] = MEMORY[0x1E69E9820];
@@ -4911,7 +4911,7 @@ id __56__WBSAnalyticsLogger_didVisitWebpageSBAWithUserOptedIn___block_invoke(uin
     v4[2] = __57__WBSAnalyticsLogger_reportBlockingSafariQuitWithReason___block_invoke;
     v4[3] = &unk_1E7CF0C88;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = reason;
     v4[6] = safariQuitReason;
     [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.BlockingSafariQuit" usingBlock:v4];
   }
@@ -4938,20 +4938,20 @@ id __57__WBSAnalyticsLogger_reportBlockingSafariQuitWithReason___block_invoke(vo
   return v4;
 }
 
-- (void)reportSafariTabStateMismatchWithError:(int64_t)a3 systemTALEnabled:(BOOL)a4 safariRestoreOnLaunchEnabled:(BOOL)a5 excludePrivateWindows:(BOOL)a6 systemSaysPreserveState:(BOOL)a7 stringRepresentation:(id)a8
+- (void)reportSafariTabStateMismatchWithError:(int64_t)error systemTALEnabled:(BOOL)enabled safariRestoreOnLaunchEnabled:(BOOL)launchEnabled excludePrivateWindows:(BOOL)windows systemSaysPreserveState:(BOOL)state stringRepresentation:(id)representation
 {
-  v14 = a8;
+  representationCopy = representation;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __173__WBSAnalyticsLogger_reportSafariTabStateMismatchWithError_systemTALEnabled_safariRestoreOnLaunchEnabled_excludePrivateWindows_systemSaysPreserveState_stringRepresentation___block_invoke;
   v16[3] = &unk_1E7CF0CB0;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v17 = v14;
-  v18 = a3;
-  v15 = v14;
+  enabledCopy = enabled;
+  launchEnabledCopy = launchEnabled;
+  windowsCopy = windows;
+  stateCopy = state;
+  v17 = representationCopy;
+  errorCopy = error;
+  v15 = representationCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.SafariTabStateError" usingBlock:v16];
 }
 
@@ -4983,13 +4983,13 @@ id __173__WBSAnalyticsLogger_reportSafariTabStateMismatchWithError_systemTALEnab
   return v8;
 }
 
-- (void)reportSafariRecoveredWindowStateWithSuccess:(BOOL)a3
+- (void)reportSafariRecoveredWindowStateWithSuccess:(BOOL)success
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __66__WBSAnalyticsLogger_reportSafariRecoveredWindowStateWithSuccess___block_invoke;
   v3[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v4 = a3;
+  successCopy = success;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.SafariRecoveredWindowState" usingBlock:v3];
 }
 
@@ -5006,27 +5006,27 @@ id __66__WBSAnalyticsLogger_reportSafariRecoveredWindowStateWithSuccess___block_
   return v2;
 }
 
-- (void)reportTabGroupSyncFinishedWithInfo:(id)a3
+- (void)reportTabGroupSyncFinishedWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__WBSAnalyticsLogger_reportTabGroupSyncFinishedWithInfo___block_invoke;
   v6[3] = &unk_1E7CF0800;
-  v7 = v4;
-  v5 = v4;
+  v7 = infoCopy;
+  v5 = infoCopy;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.TabGroups.Sync.SyncFinished" usingBlock:v6];
 }
 
-- (void)reportTabGroupSyncSuccessesWithCount:(id)a3
+- (void)reportTabGroupSyncSuccessesWithCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__WBSAnalyticsLogger_reportTabGroupSyncSuccessesWithCount___block_invoke;
   v6[3] = &unk_1E7CF0800;
-  v7 = v4;
-  v5 = v4;
+  v7 = countCopy;
+  v5 = countCopy;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.TabGroups.Sync.SyncFinished" usingBlock:v6];
 }
 
@@ -5046,10 +5046,10 @@ id __59__WBSAnalyticsLogger_reportTabGroupSyncSuccessesWithCount___block_invoke(
 
 - (void)reportAdvancedPrivacyProtectionPreference
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if ([v3 BOOLForKey:@"EnableEnhancedPrivacyInPrivateBrowsing"])
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if ([standardUserDefaults BOOLForKey:@"EnableEnhancedPrivacyInPrivateBrowsing"])
   {
-    v4 = [v3 BOOLForKey:@"EnableEnhancedPrivacyInRegularBrowsing"];
+    v4 = [standardUserDefaults BOOLForKey:@"EnableEnhancedPrivacyInRegularBrowsing"];
     v5 = 1;
     if (v4)
     {
@@ -5100,13 +5100,13 @@ id __63__WBSAnalyticsLogger_reportAdvancedPrivacyProtectionPreference__block_inv
   return v5;
 }
 
-- (void)reportTabUpdatedWithUpdateType:(int64_t)a3
+- (void)reportTabUpdatedWithUpdateType:(int64_t)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __53__WBSAnalyticsLogger_reportTabUpdatedWithUpdateType___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = type;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.DidModifyTab" usingBlock:v3];
 }
 
@@ -5132,14 +5132,14 @@ id __53__WBSAnalyticsLogger_reportTabUpdatedWithUpdateType___block_invoke(uint64
   return v3;
 }
 
-- (void)reportNumberOfWebApps:(int64_t)a3 andBookmarks:(int64_t)a4
+- (void)reportNumberOfWebApps:(int64_t)apps andBookmarks:(int64_t)bookmarks
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __57__WBSAnalyticsLogger_reportNumberOfWebApps_andBookmarks___block_invoke;
   v4[3] = &__block_descriptor_48_e19___NSDictionary_8__0l;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = apps;
+  v4[5] = bookmarks;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.MobileSafari.WebClipCount" usingBlock:v4];
 }
 
@@ -5159,41 +5159,41 @@ id __57__WBSAnalyticsLogger_reportNumberOfWebApps_andBookmarks___block_invoke(ui
   return v4;
 }
 
-- (void)reportWebContentProcessInfo:(id)a3
+- (void)reportWebContentProcessInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__WBSAnalyticsLogger_reportWebContentProcessInfo___block_invoke;
   v6[3] = &unk_1E7CF0800;
-  v7 = v4;
-  v5 = v4;
+  v7 = infoCopy;
+  v5 = infoCopy;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.WebContentProcessInfo" usingBlock:v6];
 }
 
-- (void)reportAllProcessInfo:(id)a3
+- (void)reportAllProcessInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__WBSAnalyticsLogger_reportAllProcessInfo___block_invoke;
   v6[3] = &unk_1E7CF0800;
-  v7 = v4;
-  v5 = v4;
+  v7 = infoCopy;
+  v5 = infoCopy;
   [(WBSAnalyticsLogger *)self _sendEventAddingVersionInfo:@"com.apple.Safari.AllProcessInfo" usingBlock:v6];
 }
 
-- (id)_bundleIdDictionaryWithArray:(id)a3
+- (id)_bundleIdDictionaryWithArray:(id)array
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  arrayCopy = array;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__WBSAnalyticsLogger__bundleIdDictionaryWithArray___block_invoke;
   v7[3] = &unk_1E7CF0CD8;
-  v5 = v4;
+  v5 = dictionary;
   v8 = v5;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [arrayCopy enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -5205,16 +5205,16 @@ void __51__WBSAnalyticsLogger__bundleIdDictionaryWithArray___block_invoke(uint64
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (void)didShowBrowserChoiceScreen:(id)a3
+- (void)didShowBrowserChoiceScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__WBSAnalyticsLogger_didShowBrowserChoiceScreen___block_invoke;
   v6[3] = &unk_1E7CF09C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = screenCopy;
+  v5 = screenCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.BrowserChoice.didShowBrowserChoice" usingBlock:v6];
 }
 
@@ -5226,15 +5226,15 @@ void __185__WBSAnalyticsLogger_didSelectBrowserChoice_browserAlreadyInstalled_br
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (void)didViewBrowserProductPage:(id)a3
+- (void)didViewBrowserProductPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__WBSAnalyticsLogger_didViewBrowserProductPage___block_invoke;
   v6[3] = &unk_1E7CF0800;
-  v7 = v4;
-  v5 = v4;
+  v7 = pageCopy;
+  v5 = pageCopy;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.BrowserChoice.didViewBrowserProductPage" usingBlock:v6];
 }
 
@@ -5250,13 +5250,13 @@ id __48__WBSAnalyticsLogger_didViewBrowserProductPage___block_invoke(uint64_t a1
   return v2;
 }
 
-- (void)reportFolderOnTopModePreference:(BOOL)a3
+- (void)reportFolderOnTopModePreference:(BOOL)preference
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __54__WBSAnalyticsLogger_reportFolderOnTopModePreference___block_invoke;
   v3[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v4 = a3;
+  preferenceCopy = preference;
   [(WBSAnalyticsLogger *)self _sendEvent:@"com.apple.Safari.Sidebar.FolderOnTopModePreference" usingBlock:v3];
 }
 
@@ -5273,21 +5273,21 @@ id __54__WBSAnalyticsLogger_reportFolderOnTopModePreference___block_invoke(uint6
   return v2;
 }
 
-- (void)reportIsUsingPasswordsApp:(BOOL)a3 isUsingCredentialProviderExtension:(BOOL)a4
+- (void)reportIsUsingPasswordsApp:(BOOL)app isUsingCredentialProviderExtension:(BOOL)extension
 {
   v4 = 2;
-  if (!a4)
+  if (!extension)
   {
     v4 = 0;
   }
 
   v5 = 3;
-  if (!a4)
+  if (!extension)
   {
     v5 = 1;
   }
 
-  if (a3)
+  if (app)
   {
     v4 = v5;
   }
@@ -5313,12 +5313,12 @@ id __83__WBSAnalyticsLogger_reportIsUsingPasswordsApp_isUsingCredentialProviderE
   return v2;
 }
 
-- (void)reportVerificationCodeProvider:(id)a3
+- (void)reportVerificationCodeProvider:(id)provider
 {
-  v4 = a3;
-  if ([v4 length])
+  providerCopy = provider;
+  if ([providerCopy length])
   {
-    v5 = [v4 isEqualToString:@"com.apple.Passwords"];
+    v5 = [providerCopy isEqualToString:@"com.apple.Passwords"];
     v6 = 1;
     if (!v5)
     {

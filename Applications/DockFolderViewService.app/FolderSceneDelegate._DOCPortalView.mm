@@ -1,15 +1,15 @@
 @interface FolderSceneDelegate._DOCPortalView
 - (NSString)description;
-- (_TtCC21DockFolderViewService19FolderSceneDelegate14_DOCPortalView)initWithCoder:(id)a3;
-- (_TtCC21DockFolderViewService19FolderSceneDelegate14_DOCPortalView)initWithFrame:(CGRect)a3;
-- (_TtCC21DockFolderViewService19FolderSceneDelegate14_DOCPortalView)initWithSourceView:(id)a3;
+- (_TtCC21DockFolderViewService19FolderSceneDelegate14_DOCPortalView)initWithCoder:(id)coder;
+- (_TtCC21DockFolderViewService19FolderSceneDelegate14_DOCPortalView)initWithFrame:(CGRect)frame;
+- (_TtCC21DockFolderViewService19FolderSceneDelegate14_DOCPortalView)initWithSourceView:(id)view;
 @end
 
 @implementation FolderSceneDelegate._DOCPortalView
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_100071CF4();
 
   v3 = String._bridgeToObjectiveC()();
@@ -17,30 +17,30 @@
   return v3;
 }
 
-- (_TtCC21DockFolderViewService19FolderSceneDelegate14_DOCPortalView)initWithSourceView:(id)a3
+- (_TtCC21DockFolderViewService19FolderSceneDelegate14_DOCPortalView)initWithSourceView:(id)view
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for FolderSceneDelegate._DOCPortalView();
-  return [(FolderSceneDelegate._DOCPortalView *)&v5 initWithSourceView:a3];
+  return [(FolderSceneDelegate._DOCPortalView *)&v5 initWithSourceView:view];
 }
 
-- (_TtCC21DockFolderViewService19FolderSceneDelegate14_DOCPortalView)initWithFrame:(CGRect)a3
+- (_TtCC21DockFolderViewService19FolderSceneDelegate14_DOCPortalView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for FolderSceneDelegate._DOCPortalView();
   return [(FolderSceneDelegate._DOCPortalView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtCC21DockFolderViewService19FolderSceneDelegate14_DOCPortalView)initWithCoder:(id)a3
+- (_TtCC21DockFolderViewService19FolderSceneDelegate14_DOCPortalView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for FolderSceneDelegate._DOCPortalView();
-  v4 = a3;
-  v5 = [(FolderSceneDelegate._DOCPortalView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(FolderSceneDelegate._DOCPortalView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

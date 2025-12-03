@@ -1,6 +1,6 @@
 @interface ODDSiriSchemaODDSiriClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (ODDSiriSchemaODDAssetAvailabilityFromBootDigestReported)assetAvailabilityFromBootDigestReported;
 - (ODDSiriSchemaODDAssetSetStatusDigestReported)assetSetStatusDigestReported;
@@ -19,15 +19,15 @@
 - (ODDSiriSchemaODDMobileAssetErrorsReported)mobileAssetErrorsReported;
 - (ODDSiriSchemaODDRequestsWithoutAssetsDigestReported)requestsWithoutAssetsDigestReported;
 - (ODDSiriSchemaODDSiriAccountInformation)siriAccountInformation;
-- (ODDSiriSchemaODDSiriClientEvent)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDSiriClientEvent)initWithJSON:(id)a3;
+- (ODDSiriSchemaODDSiriClientEvent)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDSiriClientEvent)initWithJSON:(id)n;
 - (ODDSiriSchemaODDiOSDevicePropertiesReported)iOSDevicePropertiesReported;
 - (ODDSiriSchemaODDmacOSDevicePropertiesReported)macOSDevicePropertiesReported;
 - (ODDSiriSchemaODDtvOSDevicePropertiesReported)tvOSDevicePropertiesReported;
 - (ODDSiriSchemaODDvisionOSDevicePropertiesReported)visionOSDevicePropertiesReported;
 - (ODDSiriSchemaODDwatchOSDevicePropertiesReported)watchOSDevicePropertiesReported;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
@@ -55,42 +55,42 @@
 - (void)deleteTvOSDevicePropertiesReported;
 - (void)deleteVisionOSDevicePropertiesReported;
 - (void)deleteWatchOSDevicePropertiesReported;
-- (void)setAssetAvailabilityFromBootDigestReported:(id)a3;
-- (void)setAssetSetStatusDigestReported:(id)a3;
-- (void)setAssistantCarPlayDigestReported:(id)a3;
-- (void)setAssistantDeviceDigestReported:(id)a3;
-- (void)setAssistantDiagnosticAndUsageOptInDigestReported:(id)a3;
-- (void)setAssistantExperimentDigestReported:(id)a3;
-- (void)setAttentionInvocationDigestsReported:(id)a3;
-- (void)setBluetoothCarDigestReported:(id)a3;
-- (void)setDeviceCohortsReported:(id)a3;
-- (void)setDeviceSegmentsReported:(id)a3;
-- (void)setDictationDeviceDigestReported:(id)a3;
-- (void)setDictationExperimentDigestsReported:(id)a3;
-- (void)setExecutionMetadataReported:(id)a3;
-- (void)setIOSDevicePropertiesReported:(id)a3;
-- (void)setIntelligenceFeatureAvailabilityStatusChangesReported:(id)a3;
-- (void)setMacOSDevicePropertiesReported:(id)a3;
-- (void)setMobileAssetErrorsReported:(id)a3;
-- (void)setRequestsWithoutAssetsDigestReported:(id)a3;
-- (void)setSiriAccountInformation:(id)a3;
-- (void)setTvOSDevicePropertiesReported:(id)a3;
-- (void)setVisionOSDevicePropertiesReported:(id)a3;
-- (void)setWatchOSDevicePropertiesReported:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAssetAvailabilityFromBootDigestReported:(id)reported;
+- (void)setAssetSetStatusDigestReported:(id)reported;
+- (void)setAssistantCarPlayDigestReported:(id)reported;
+- (void)setAssistantDeviceDigestReported:(id)reported;
+- (void)setAssistantDiagnosticAndUsageOptInDigestReported:(id)reported;
+- (void)setAssistantExperimentDigestReported:(id)reported;
+- (void)setAttentionInvocationDigestsReported:(id)reported;
+- (void)setBluetoothCarDigestReported:(id)reported;
+- (void)setDeviceCohortsReported:(id)reported;
+- (void)setDeviceSegmentsReported:(id)reported;
+- (void)setDictationDeviceDigestReported:(id)reported;
+- (void)setDictationExperimentDigestsReported:(id)reported;
+- (void)setExecutionMetadataReported:(id)reported;
+- (void)setIOSDevicePropertiesReported:(id)reported;
+- (void)setIntelligenceFeatureAvailabilityStatusChangesReported:(id)reported;
+- (void)setMacOSDevicePropertiesReported:(id)reported;
+- (void)setMobileAssetErrorsReported:(id)reported;
+- (void)setRequestsWithoutAssetsDigestReported:(id)reported;
+- (void)setSiriAccountInformation:(id)information;
+- (void)setTvOSDevicePropertiesReported:(id)reported;
+- (void)setVisionOSDevicePropertiesReported:(id)reported;
+- (void)setWatchOSDevicePropertiesReported:(id)reported;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDSiriClientEvent
 
-- (ODDSiriSchemaODDSiriClientEvent)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDSiriClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v70.receiver = self;
   v70.super_class = ODDSiriSchemaODDSiriClientEvent;
   v5 = [(ODDSiriSchemaODDSiriClientEvent *)&v70 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,7 +98,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"deviceSegmentsReported"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"deviceSegmentsReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -106,7 +106,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setDeviceSegmentsReported:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"deviceCohortsReported"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"deviceCohortsReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,7 +114,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setDeviceCohortsReported:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"assistantDeviceDigestReported"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"assistantDeviceDigestReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -122,7 +122,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setAssistantDeviceDigestReported:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"dictationDeviceDigestReported"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"dictationDeviceDigestReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -130,7 +130,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setDictationDeviceDigestReported:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"siriAccountInformation"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"siriAccountInformation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -138,7 +138,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setSiriAccountInformation:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"assistantExperimentDigestReported"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"assistantExperimentDigestReported"];
     objc_opt_class();
     v69 = v18;
     if (objc_opt_isKindOfClass())
@@ -147,7 +147,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setAssistantExperimentDigestReported:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"assistantDiagnosticAndUsageOptInDigestReported"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"assistantDiagnosticAndUsageOptInDigestReported"];
     objc_opt_class();
     v68 = v20;
     if (objc_opt_isKindOfClass())
@@ -156,7 +156,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setAssistantDiagnosticAndUsageOptInDigestReported:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"iOSDevicePropertiesReported"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"iOSDevicePropertiesReported"];
     objc_opt_class();
     v67 = v22;
     if (objc_opt_isKindOfClass())
@@ -165,7 +165,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setIOSDevicePropertiesReported:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"watchOSDevicePropertiesReported"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"watchOSDevicePropertiesReported"];
     objc_opt_class();
     v66 = v24;
     if (objc_opt_isKindOfClass())
@@ -174,7 +174,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setWatchOSDevicePropertiesReported:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"tvOSDevicePropertiesReported"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"tvOSDevicePropertiesReported"];
     objc_opt_class();
     v65 = v26;
     if (objc_opt_isKindOfClass())
@@ -183,7 +183,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setTvOSDevicePropertiesReported:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"macOSDevicePropertiesReported"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"macOSDevicePropertiesReported"];
     objc_opt_class();
     v64 = v28;
     if (objc_opt_isKindOfClass())
@@ -192,7 +192,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setMacOSDevicePropertiesReported:v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"visionOSDevicePropertiesReported"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"visionOSDevicePropertiesReported"];
     objc_opt_class();
     v63 = v30;
     if (objc_opt_isKindOfClass())
@@ -201,7 +201,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setVisionOSDevicePropertiesReported:v31];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"assistantCarPlayDigestReported"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"assistantCarPlayDigestReported"];
     objc_opt_class();
     v62 = v32;
     if (objc_opt_isKindOfClass())
@@ -210,7 +210,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setAssistantCarPlayDigestReported:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"requestsWithoutAssetsDigestReported"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"requestsWithoutAssetsDigestReported"];
     objc_opt_class();
     v61 = v34;
     if (objc_opt_isKindOfClass())
@@ -220,7 +220,7 @@
     }
 
     v60 = v6;
-    v36 = [v4 objectForKeyedSubscript:@"assetAvailabilityFromBootDigestReported"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"assetAvailabilityFromBootDigestReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -229,7 +229,7 @@
     }
 
     v59 = v8;
-    v38 = [v4 objectForKeyedSubscript:{@"assetSetStatusDigestReported", v36}];
+    v38 = [dictionaryCopy objectForKeyedSubscript:{@"assetSetStatusDigestReported", v36}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -238,7 +238,7 @@
     }
 
     v58 = v10;
-    v40 = [v4 objectForKeyedSubscript:@"executionMetadataReported"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"executionMetadataReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -247,7 +247,7 @@
     }
 
     v57 = v12;
-    v42 = [v4 objectForKeyedSubscript:@"dictationExperimentDigestsReported"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"dictationExperimentDigestsReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -256,7 +256,7 @@
     }
 
     v56 = v14;
-    v44 = [v4 objectForKeyedSubscript:@"attentionInvocationDigestsReported"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"attentionInvocationDigestsReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -265,7 +265,7 @@
     }
 
     v55 = v16;
-    v46 = [v4 objectForKeyedSubscript:@"bluetoothCarDigestReported"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"bluetoothCarDigestReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -273,7 +273,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setBluetoothCarDigestReported:v47];
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"mobileAssetErrorsReported"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"mobileAssetErrorsReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -281,7 +281,7 @@
       [(ODDSiriSchemaODDSiriClientEvent *)v5 setMobileAssetErrorsReported:v49];
     }
 
-    v50 = [v4 objectForKeyedSubscript:@"intelligenceFeatureAvailabilityStatusChangesReported"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"intelligenceFeatureAvailabilityStatusChangesReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -295,30 +295,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDSiriClientEvent)initWithJSON:(id)a3
+- (ODDSiriSchemaODDSiriClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDSiriClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDSiriClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDSiriClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -331,379 +331,379 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_assetAvailabilityFromBootDigestReported)
   {
-    v4 = [(ODDSiriSchemaODDSiriClientEvent *)self assetAvailabilityFromBootDigestReported];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    assetAvailabilityFromBootDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assetAvailabilityFromBootDigestReported];
+    dictionaryRepresentation = [assetAvailabilityFromBootDigestReported dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"assetAvailabilityFromBootDigestReported"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"assetAvailabilityFromBootDigestReported"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"assetAvailabilityFromBootDigestReported"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"assetAvailabilityFromBootDigestReported"];
     }
   }
 
   if (self->_assetSetStatusDigestReported)
   {
-    v7 = [(ODDSiriSchemaODDSiriClientEvent *)self assetSetStatusDigestReported];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    assetSetStatusDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assetSetStatusDigestReported];
+    dictionaryRepresentation2 = [assetSetStatusDigestReported dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"assetSetStatusDigestReported"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"assetSetStatusDigestReported"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"assetSetStatusDigestReported"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"assetSetStatusDigestReported"];
     }
   }
 
   if (self->_assistantCarPlayDigestReported)
   {
-    v10 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantCarPlayDigestReported];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    assistantCarPlayDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantCarPlayDigestReported];
+    dictionaryRepresentation3 = [assistantCarPlayDigestReported dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"assistantCarPlayDigestReported"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"assistantCarPlayDigestReported"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"assistantCarPlayDigestReported"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"assistantCarPlayDigestReported"];
     }
   }
 
   if (self->_assistantDeviceDigestReported)
   {
-    v13 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDeviceDigestReported];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    assistantDeviceDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDeviceDigestReported];
+    dictionaryRepresentation4 = [assistantDeviceDigestReported dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"assistantDeviceDigestReported"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"assistantDeviceDigestReported"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"assistantDeviceDigestReported"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"assistantDeviceDigestReported"];
     }
   }
 
   if (self->_assistantDiagnosticAndUsageOptInDigestReported)
   {
-    v16 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDiagnosticAndUsageOptInDigestReported];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    assistantDiagnosticAndUsageOptInDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDiagnosticAndUsageOptInDigestReported];
+    dictionaryRepresentation5 = [assistantDiagnosticAndUsageOptInDigestReported dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"assistantDiagnosticAndUsageOptInDigestReported"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"assistantDiagnosticAndUsageOptInDigestReported"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"assistantDiagnosticAndUsageOptInDigestReported"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"assistantDiagnosticAndUsageOptInDigestReported"];
     }
   }
 
   if (self->_assistantExperimentDigestReported)
   {
-    v19 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantExperimentDigestReported];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    assistantExperimentDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantExperimentDigestReported];
+    dictionaryRepresentation6 = [assistantExperimentDigestReported dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"assistantExperimentDigestReported"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"assistantExperimentDigestReported"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"assistantExperimentDigestReported"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"assistantExperimentDigestReported"];
     }
   }
 
   if (self->_attentionInvocationDigestsReported)
   {
-    v22 = [(ODDSiriSchemaODDSiriClientEvent *)self attentionInvocationDigestsReported];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    attentionInvocationDigestsReported = [(ODDSiriSchemaODDSiriClientEvent *)self attentionInvocationDigestsReported];
+    dictionaryRepresentation7 = [attentionInvocationDigestsReported dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"attentionInvocationDigestsReported"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"attentionInvocationDigestsReported"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"attentionInvocationDigestsReported"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"attentionInvocationDigestsReported"];
     }
   }
 
   if (self->_bluetoothCarDigestReported)
   {
-    v25 = [(ODDSiriSchemaODDSiriClientEvent *)self bluetoothCarDigestReported];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    bluetoothCarDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self bluetoothCarDigestReported];
+    dictionaryRepresentation8 = [bluetoothCarDigestReported dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"bluetoothCarDigestReported"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"bluetoothCarDigestReported"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"bluetoothCarDigestReported"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"bluetoothCarDigestReported"];
     }
   }
 
   if (self->_deviceCohortsReported)
   {
-    v28 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceCohortsReported];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    deviceCohortsReported = [(ODDSiriSchemaODDSiriClientEvent *)self deviceCohortsReported];
+    dictionaryRepresentation9 = [deviceCohortsReported dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"deviceCohortsReported"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"deviceCohortsReported"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"deviceCohortsReported"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"deviceCohortsReported"];
     }
   }
 
   if (self->_deviceSegmentsReported)
   {
-    v31 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceSegmentsReported];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    deviceSegmentsReported = [(ODDSiriSchemaODDSiriClientEvent *)self deviceSegmentsReported];
+    dictionaryRepresentation10 = [deviceSegmentsReported dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"deviceSegmentsReported"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"deviceSegmentsReported"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"deviceSegmentsReported"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"deviceSegmentsReported"];
     }
   }
 
   if (self->_dictationDeviceDigestReported)
   {
-    v34 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationDeviceDigestReported];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    dictationDeviceDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self dictationDeviceDigestReported];
+    dictionaryRepresentation11 = [dictationDeviceDigestReported dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"dictationDeviceDigestReported"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"dictationDeviceDigestReported"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"dictationDeviceDigestReported"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"dictationDeviceDigestReported"];
     }
   }
 
   if (self->_dictationExperimentDigestsReported)
   {
-    v37 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationExperimentDigestsReported];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    dictationExperimentDigestsReported = [(ODDSiriSchemaODDSiriClientEvent *)self dictationExperimentDigestsReported];
+    dictionaryRepresentation12 = [dictationExperimentDigestsReported dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"dictationExperimentDigestsReported"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"dictationExperimentDigestsReported"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"dictationExperimentDigestsReported"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"dictationExperimentDigestsReported"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v40 = [(ODDSiriSchemaODDSiriClientEvent *)self eventMetadata];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self eventMetadata];
+    dictionaryRepresentation13 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"eventMetadata"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_executionMetadataReported)
   {
-    v43 = [(ODDSiriSchemaODDSiriClientEvent *)self executionMetadataReported];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    executionMetadataReported = [(ODDSiriSchemaODDSiriClientEvent *)self executionMetadataReported];
+    dictionaryRepresentation14 = [executionMetadataReported dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"executionMetadataReported"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"executionMetadataReported"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"executionMetadataReported"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"executionMetadataReported"];
     }
   }
 
   if (self->_iOSDevicePropertiesReported)
   {
-    v46 = [(ODDSiriSchemaODDSiriClientEvent *)self iOSDevicePropertiesReported];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    iOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self iOSDevicePropertiesReported];
+    dictionaryRepresentation15 = [iOSDevicePropertiesReported dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"iOSDevicePropertiesReported"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"iOSDevicePropertiesReported"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"iOSDevicePropertiesReported"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"iOSDevicePropertiesReported"];
     }
   }
 
   if (self->_intelligenceFeatureAvailabilityStatusChangesReported)
   {
-    v49 = [(ODDSiriSchemaODDSiriClientEvent *)self intelligenceFeatureAvailabilityStatusChangesReported];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    intelligenceFeatureAvailabilityStatusChangesReported = [(ODDSiriSchemaODDSiriClientEvent *)self intelligenceFeatureAvailabilityStatusChangesReported];
+    dictionaryRepresentation16 = [intelligenceFeatureAvailabilityStatusChangesReported dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"intelligenceFeatureAvailabilityStatusChangesReported"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"intelligenceFeatureAvailabilityStatusChangesReported"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"intelligenceFeatureAvailabilityStatusChangesReported"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"intelligenceFeatureAvailabilityStatusChangesReported"];
     }
   }
 
   if (self->_macOSDevicePropertiesReported)
   {
-    v52 = [(ODDSiriSchemaODDSiriClientEvent *)self macOSDevicePropertiesReported];
-    v53 = [v52 dictionaryRepresentation];
-    if (v53)
+    macOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self macOSDevicePropertiesReported];
+    dictionaryRepresentation17 = [macOSDevicePropertiesReported dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v53 forKeyedSubscript:@"macOSDevicePropertiesReported"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"macOSDevicePropertiesReported"];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v54 forKeyedSubscript:@"macOSDevicePropertiesReported"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"macOSDevicePropertiesReported"];
     }
   }
 
   if (self->_mobileAssetErrorsReported)
   {
-    v55 = [(ODDSiriSchemaODDSiriClientEvent *)self mobileAssetErrorsReported];
-    v56 = [v55 dictionaryRepresentation];
-    if (v56)
+    mobileAssetErrorsReported = [(ODDSiriSchemaODDSiriClientEvent *)self mobileAssetErrorsReported];
+    dictionaryRepresentation18 = [mobileAssetErrorsReported dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v56 forKeyedSubscript:@"mobileAssetErrorsReported"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"mobileAssetErrorsReported"];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v57 forKeyedSubscript:@"mobileAssetErrorsReported"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"mobileAssetErrorsReported"];
     }
   }
 
   if (self->_requestsWithoutAssetsDigestReported)
   {
-    v58 = [(ODDSiriSchemaODDSiriClientEvent *)self requestsWithoutAssetsDigestReported];
-    v59 = [v58 dictionaryRepresentation];
-    if (v59)
+    requestsWithoutAssetsDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self requestsWithoutAssetsDigestReported];
+    dictionaryRepresentation19 = [requestsWithoutAssetsDigestReported dictionaryRepresentation];
+    if (dictionaryRepresentation19)
     {
-      [v3 setObject:v59 forKeyedSubscript:@"requestsWithoutAssetsDigestReported"];
+      [dictionary setObject:dictionaryRepresentation19 forKeyedSubscript:@"requestsWithoutAssetsDigestReported"];
     }
 
     else
     {
-      v60 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v60 forKeyedSubscript:@"requestsWithoutAssetsDigestReported"];
+      null19 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null19 forKeyedSubscript:@"requestsWithoutAssetsDigestReported"];
     }
   }
 
   if (self->_siriAccountInformation)
   {
-    v61 = [(ODDSiriSchemaODDSiriClientEvent *)self siriAccountInformation];
-    v62 = [v61 dictionaryRepresentation];
-    if (v62)
+    siriAccountInformation = [(ODDSiriSchemaODDSiriClientEvent *)self siriAccountInformation];
+    dictionaryRepresentation20 = [siriAccountInformation dictionaryRepresentation];
+    if (dictionaryRepresentation20)
     {
-      [v3 setObject:v62 forKeyedSubscript:@"siriAccountInformation"];
+      [dictionary setObject:dictionaryRepresentation20 forKeyedSubscript:@"siriAccountInformation"];
     }
 
     else
     {
-      v63 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v63 forKeyedSubscript:@"siriAccountInformation"];
+      null20 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null20 forKeyedSubscript:@"siriAccountInformation"];
     }
   }
 
   if (self->_tvOSDevicePropertiesReported)
   {
-    v64 = [(ODDSiriSchemaODDSiriClientEvent *)self tvOSDevicePropertiesReported];
-    v65 = [v64 dictionaryRepresentation];
-    if (v65)
+    tvOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self tvOSDevicePropertiesReported];
+    dictionaryRepresentation21 = [tvOSDevicePropertiesReported dictionaryRepresentation];
+    if (dictionaryRepresentation21)
     {
-      [v3 setObject:v65 forKeyedSubscript:@"tvOSDevicePropertiesReported"];
+      [dictionary setObject:dictionaryRepresentation21 forKeyedSubscript:@"tvOSDevicePropertiesReported"];
     }
 
     else
     {
-      v66 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v66 forKeyedSubscript:@"tvOSDevicePropertiesReported"];
+      null21 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null21 forKeyedSubscript:@"tvOSDevicePropertiesReported"];
     }
   }
 
   if (self->_visionOSDevicePropertiesReported)
   {
-    v67 = [(ODDSiriSchemaODDSiriClientEvent *)self visionOSDevicePropertiesReported];
-    v68 = [v67 dictionaryRepresentation];
-    if (v68)
+    visionOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self visionOSDevicePropertiesReported];
+    dictionaryRepresentation22 = [visionOSDevicePropertiesReported dictionaryRepresentation];
+    if (dictionaryRepresentation22)
     {
-      [v3 setObject:v68 forKeyedSubscript:@"visionOSDevicePropertiesReported"];
+      [dictionary setObject:dictionaryRepresentation22 forKeyedSubscript:@"visionOSDevicePropertiesReported"];
     }
 
     else
     {
-      v69 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v69 forKeyedSubscript:@"visionOSDevicePropertiesReported"];
+      null22 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null22 forKeyedSubscript:@"visionOSDevicePropertiesReported"];
     }
   }
 
   if (self->_watchOSDevicePropertiesReported)
   {
-    v70 = [(ODDSiriSchemaODDSiriClientEvent *)self watchOSDevicePropertiesReported];
-    v71 = [v70 dictionaryRepresentation];
-    if (v71)
+    watchOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self watchOSDevicePropertiesReported];
+    dictionaryRepresentation23 = [watchOSDevicePropertiesReported dictionaryRepresentation];
+    if (dictionaryRepresentation23)
     {
-      [v3 setObject:v71 forKeyedSubscript:@"watchOSDevicePropertiesReported"];
+      [dictionary setObject:dictionaryRepresentation23 forKeyedSubscript:@"watchOSDevicePropertiesReported"];
     }
 
     else
     {
-      v72 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v72 forKeyedSubscript:@"watchOSDevicePropertiesReported"];
+      null23 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null23 forKeyedSubscript:@"watchOSDevicePropertiesReported"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v73 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v73 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -733,34 +733,34 @@
   return v24 ^ [(ODDSiriSchemaODDIntelligenceFeatureAvailabilityStatusChangesReported *)self->_intelligenceFeatureAvailabilityStatusChangesReported hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_118;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_118;
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v8 = [(ODDSiriSchemaODDSiriClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(ODDSiriSchemaODDSiriClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(ODDSiriSchemaODDSiriClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(ODDSiriSchemaODDSiriClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -772,20 +772,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceSegmentsReported];
-  v7 = [v4 deviceSegmentsReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self deviceSegmentsReported];
+  eventMetadata2 = [equalCopy deviceSegmentsReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v13 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceSegmentsReported];
-  if (v13)
+  deviceSegmentsReported = [(ODDSiriSchemaODDSiriClientEvent *)self deviceSegmentsReported];
+  if (deviceSegmentsReported)
   {
-    v14 = v13;
-    v15 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceSegmentsReported];
-    v16 = [v4 deviceSegmentsReported];
-    v17 = [v15 isEqual:v16];
+    v14 = deviceSegmentsReported;
+    deviceSegmentsReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceSegmentsReported];
+    deviceSegmentsReported3 = [equalCopy deviceSegmentsReported];
+    v17 = [deviceSegmentsReported2 isEqual:deviceSegmentsReported3];
 
     if (!v17)
     {
@@ -797,20 +797,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceCohortsReported];
-  v7 = [v4 deviceCohortsReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self deviceCohortsReported];
+  eventMetadata2 = [equalCopy deviceCohortsReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v18 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceCohortsReported];
-  if (v18)
+  deviceCohortsReported = [(ODDSiriSchemaODDSiriClientEvent *)self deviceCohortsReported];
+  if (deviceCohortsReported)
   {
-    v19 = v18;
-    v20 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceCohortsReported];
-    v21 = [v4 deviceCohortsReported];
-    v22 = [v20 isEqual:v21];
+    v19 = deviceCohortsReported;
+    deviceCohortsReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceCohortsReported];
+    deviceCohortsReported3 = [equalCopy deviceCohortsReported];
+    v22 = [deviceCohortsReported2 isEqual:deviceCohortsReported3];
 
     if (!v22)
     {
@@ -822,20 +822,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDeviceDigestReported];
-  v7 = [v4 assistantDeviceDigestReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDeviceDigestReported];
+  eventMetadata2 = [equalCopy assistantDeviceDigestReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v23 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDeviceDigestReported];
-  if (v23)
+  assistantDeviceDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDeviceDigestReported];
+  if (assistantDeviceDigestReported)
   {
-    v24 = v23;
-    v25 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDeviceDigestReported];
-    v26 = [v4 assistantDeviceDigestReported];
-    v27 = [v25 isEqual:v26];
+    v24 = assistantDeviceDigestReported;
+    assistantDeviceDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDeviceDigestReported];
+    assistantDeviceDigestReported3 = [equalCopy assistantDeviceDigestReported];
+    v27 = [assistantDeviceDigestReported2 isEqual:assistantDeviceDigestReported3];
 
     if (!v27)
     {
@@ -847,20 +847,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationDeviceDigestReported];
-  v7 = [v4 dictationDeviceDigestReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self dictationDeviceDigestReported];
+  eventMetadata2 = [equalCopy dictationDeviceDigestReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v28 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationDeviceDigestReported];
-  if (v28)
+  dictationDeviceDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self dictationDeviceDigestReported];
+  if (dictationDeviceDigestReported)
   {
-    v29 = v28;
-    v30 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationDeviceDigestReported];
-    v31 = [v4 dictationDeviceDigestReported];
-    v32 = [v30 isEqual:v31];
+    v29 = dictationDeviceDigestReported;
+    dictationDeviceDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationDeviceDigestReported];
+    dictationDeviceDigestReported3 = [equalCopy dictationDeviceDigestReported];
+    v32 = [dictationDeviceDigestReported2 isEqual:dictationDeviceDigestReported3];
 
     if (!v32)
     {
@@ -872,20 +872,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self siriAccountInformation];
-  v7 = [v4 siriAccountInformation];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self siriAccountInformation];
+  eventMetadata2 = [equalCopy siriAccountInformation];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v33 = [(ODDSiriSchemaODDSiriClientEvent *)self siriAccountInformation];
-  if (v33)
+  siriAccountInformation = [(ODDSiriSchemaODDSiriClientEvent *)self siriAccountInformation];
+  if (siriAccountInformation)
   {
-    v34 = v33;
-    v35 = [(ODDSiriSchemaODDSiriClientEvent *)self siriAccountInformation];
-    v36 = [v4 siriAccountInformation];
-    v37 = [v35 isEqual:v36];
+    v34 = siriAccountInformation;
+    siriAccountInformation2 = [(ODDSiriSchemaODDSiriClientEvent *)self siriAccountInformation];
+    siriAccountInformation3 = [equalCopy siriAccountInformation];
+    v37 = [siriAccountInformation2 isEqual:siriAccountInformation3];
 
     if (!v37)
     {
@@ -897,20 +897,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantExperimentDigestReported];
-  v7 = [v4 assistantExperimentDigestReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self assistantExperimentDigestReported];
+  eventMetadata2 = [equalCopy assistantExperimentDigestReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v38 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantExperimentDigestReported];
-  if (v38)
+  assistantExperimentDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantExperimentDigestReported];
+  if (assistantExperimentDigestReported)
   {
-    v39 = v38;
-    v40 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantExperimentDigestReported];
-    v41 = [v4 assistantExperimentDigestReported];
-    v42 = [v40 isEqual:v41];
+    v39 = assistantExperimentDigestReported;
+    assistantExperimentDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantExperimentDigestReported];
+    assistantExperimentDigestReported3 = [equalCopy assistantExperimentDigestReported];
+    v42 = [assistantExperimentDigestReported2 isEqual:assistantExperimentDigestReported3];
 
     if (!v42)
     {
@@ -922,20 +922,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDiagnosticAndUsageOptInDigestReported];
-  v7 = [v4 assistantDiagnosticAndUsageOptInDigestReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDiagnosticAndUsageOptInDigestReported];
+  eventMetadata2 = [equalCopy assistantDiagnosticAndUsageOptInDigestReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v43 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDiagnosticAndUsageOptInDigestReported];
-  if (v43)
+  assistantDiagnosticAndUsageOptInDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDiagnosticAndUsageOptInDigestReported];
+  if (assistantDiagnosticAndUsageOptInDigestReported)
   {
-    v44 = v43;
-    v45 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDiagnosticAndUsageOptInDigestReported];
-    v46 = [v4 assistantDiagnosticAndUsageOptInDigestReported];
-    v47 = [v45 isEqual:v46];
+    v44 = assistantDiagnosticAndUsageOptInDigestReported;
+    assistantDiagnosticAndUsageOptInDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDiagnosticAndUsageOptInDigestReported];
+    assistantDiagnosticAndUsageOptInDigestReported3 = [equalCopy assistantDiagnosticAndUsageOptInDigestReported];
+    v47 = [assistantDiagnosticAndUsageOptInDigestReported2 isEqual:assistantDiagnosticAndUsageOptInDigestReported3];
 
     if (!v47)
     {
@@ -947,20 +947,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self iOSDevicePropertiesReported];
-  v7 = [v4 iOSDevicePropertiesReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self iOSDevicePropertiesReported];
+  eventMetadata2 = [equalCopy iOSDevicePropertiesReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v48 = [(ODDSiriSchemaODDSiriClientEvent *)self iOSDevicePropertiesReported];
-  if (v48)
+  iOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self iOSDevicePropertiesReported];
+  if (iOSDevicePropertiesReported)
   {
-    v49 = v48;
-    v50 = [(ODDSiriSchemaODDSiriClientEvent *)self iOSDevicePropertiesReported];
-    v51 = [v4 iOSDevicePropertiesReported];
-    v52 = [v50 isEqual:v51];
+    v49 = iOSDevicePropertiesReported;
+    iOSDevicePropertiesReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self iOSDevicePropertiesReported];
+    iOSDevicePropertiesReported3 = [equalCopy iOSDevicePropertiesReported];
+    v52 = [iOSDevicePropertiesReported2 isEqual:iOSDevicePropertiesReported3];
 
     if (!v52)
     {
@@ -972,20 +972,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self watchOSDevicePropertiesReported];
-  v7 = [v4 watchOSDevicePropertiesReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self watchOSDevicePropertiesReported];
+  eventMetadata2 = [equalCopy watchOSDevicePropertiesReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v53 = [(ODDSiriSchemaODDSiriClientEvent *)self watchOSDevicePropertiesReported];
-  if (v53)
+  watchOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self watchOSDevicePropertiesReported];
+  if (watchOSDevicePropertiesReported)
   {
-    v54 = v53;
-    v55 = [(ODDSiriSchemaODDSiriClientEvent *)self watchOSDevicePropertiesReported];
-    v56 = [v4 watchOSDevicePropertiesReported];
-    v57 = [v55 isEqual:v56];
+    v54 = watchOSDevicePropertiesReported;
+    watchOSDevicePropertiesReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self watchOSDevicePropertiesReported];
+    watchOSDevicePropertiesReported3 = [equalCopy watchOSDevicePropertiesReported];
+    v57 = [watchOSDevicePropertiesReported2 isEqual:watchOSDevicePropertiesReported3];
 
     if (!v57)
     {
@@ -997,20 +997,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self tvOSDevicePropertiesReported];
-  v7 = [v4 tvOSDevicePropertiesReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self tvOSDevicePropertiesReported];
+  eventMetadata2 = [equalCopy tvOSDevicePropertiesReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v58 = [(ODDSiriSchemaODDSiriClientEvent *)self tvOSDevicePropertiesReported];
-  if (v58)
+  tvOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self tvOSDevicePropertiesReported];
+  if (tvOSDevicePropertiesReported)
   {
-    v59 = v58;
-    v60 = [(ODDSiriSchemaODDSiriClientEvent *)self tvOSDevicePropertiesReported];
-    v61 = [v4 tvOSDevicePropertiesReported];
-    v62 = [v60 isEqual:v61];
+    v59 = tvOSDevicePropertiesReported;
+    tvOSDevicePropertiesReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self tvOSDevicePropertiesReported];
+    tvOSDevicePropertiesReported3 = [equalCopy tvOSDevicePropertiesReported];
+    v62 = [tvOSDevicePropertiesReported2 isEqual:tvOSDevicePropertiesReported3];
 
     if (!v62)
     {
@@ -1022,20 +1022,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self macOSDevicePropertiesReported];
-  v7 = [v4 macOSDevicePropertiesReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self macOSDevicePropertiesReported];
+  eventMetadata2 = [equalCopy macOSDevicePropertiesReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v63 = [(ODDSiriSchemaODDSiriClientEvent *)self macOSDevicePropertiesReported];
-  if (v63)
+  macOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self macOSDevicePropertiesReported];
+  if (macOSDevicePropertiesReported)
   {
-    v64 = v63;
-    v65 = [(ODDSiriSchemaODDSiriClientEvent *)self macOSDevicePropertiesReported];
-    v66 = [v4 macOSDevicePropertiesReported];
-    v67 = [v65 isEqual:v66];
+    v64 = macOSDevicePropertiesReported;
+    macOSDevicePropertiesReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self macOSDevicePropertiesReported];
+    macOSDevicePropertiesReported3 = [equalCopy macOSDevicePropertiesReported];
+    v67 = [macOSDevicePropertiesReported2 isEqual:macOSDevicePropertiesReported3];
 
     if (!v67)
     {
@@ -1047,20 +1047,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self visionOSDevicePropertiesReported];
-  v7 = [v4 visionOSDevicePropertiesReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self visionOSDevicePropertiesReported];
+  eventMetadata2 = [equalCopy visionOSDevicePropertiesReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v68 = [(ODDSiriSchemaODDSiriClientEvent *)self visionOSDevicePropertiesReported];
-  if (v68)
+  visionOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self visionOSDevicePropertiesReported];
+  if (visionOSDevicePropertiesReported)
   {
-    v69 = v68;
-    v70 = [(ODDSiriSchemaODDSiriClientEvent *)self visionOSDevicePropertiesReported];
-    v71 = [v4 visionOSDevicePropertiesReported];
-    v72 = [v70 isEqual:v71];
+    v69 = visionOSDevicePropertiesReported;
+    visionOSDevicePropertiesReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self visionOSDevicePropertiesReported];
+    visionOSDevicePropertiesReported3 = [equalCopy visionOSDevicePropertiesReported];
+    v72 = [visionOSDevicePropertiesReported2 isEqual:visionOSDevicePropertiesReported3];
 
     if (!v72)
     {
@@ -1072,20 +1072,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantCarPlayDigestReported];
-  v7 = [v4 assistantCarPlayDigestReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self assistantCarPlayDigestReported];
+  eventMetadata2 = [equalCopy assistantCarPlayDigestReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v73 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantCarPlayDigestReported];
-  if (v73)
+  assistantCarPlayDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantCarPlayDigestReported];
+  if (assistantCarPlayDigestReported)
   {
-    v74 = v73;
-    v75 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantCarPlayDigestReported];
-    v76 = [v4 assistantCarPlayDigestReported];
-    v77 = [v75 isEqual:v76];
+    v74 = assistantCarPlayDigestReported;
+    assistantCarPlayDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantCarPlayDigestReported];
+    assistantCarPlayDigestReported3 = [equalCopy assistantCarPlayDigestReported];
+    v77 = [assistantCarPlayDigestReported2 isEqual:assistantCarPlayDigestReported3];
 
     if (!v77)
     {
@@ -1097,20 +1097,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self requestsWithoutAssetsDigestReported];
-  v7 = [v4 requestsWithoutAssetsDigestReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self requestsWithoutAssetsDigestReported];
+  eventMetadata2 = [equalCopy requestsWithoutAssetsDigestReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v78 = [(ODDSiriSchemaODDSiriClientEvent *)self requestsWithoutAssetsDigestReported];
-  if (v78)
+  requestsWithoutAssetsDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self requestsWithoutAssetsDigestReported];
+  if (requestsWithoutAssetsDigestReported)
   {
-    v79 = v78;
-    v80 = [(ODDSiriSchemaODDSiriClientEvent *)self requestsWithoutAssetsDigestReported];
-    v81 = [v4 requestsWithoutAssetsDigestReported];
-    v82 = [v80 isEqual:v81];
+    v79 = requestsWithoutAssetsDigestReported;
+    requestsWithoutAssetsDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self requestsWithoutAssetsDigestReported];
+    requestsWithoutAssetsDigestReported3 = [equalCopy requestsWithoutAssetsDigestReported];
+    v82 = [requestsWithoutAssetsDigestReported2 isEqual:requestsWithoutAssetsDigestReported3];
 
     if (!v82)
     {
@@ -1122,20 +1122,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self assetAvailabilityFromBootDigestReported];
-  v7 = [v4 assetAvailabilityFromBootDigestReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self assetAvailabilityFromBootDigestReported];
+  eventMetadata2 = [equalCopy assetAvailabilityFromBootDigestReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v83 = [(ODDSiriSchemaODDSiriClientEvent *)self assetAvailabilityFromBootDigestReported];
-  if (v83)
+  assetAvailabilityFromBootDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assetAvailabilityFromBootDigestReported];
+  if (assetAvailabilityFromBootDigestReported)
   {
-    v84 = v83;
-    v85 = [(ODDSiriSchemaODDSiriClientEvent *)self assetAvailabilityFromBootDigestReported];
-    v86 = [v4 assetAvailabilityFromBootDigestReported];
-    v87 = [v85 isEqual:v86];
+    v84 = assetAvailabilityFromBootDigestReported;
+    assetAvailabilityFromBootDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self assetAvailabilityFromBootDigestReported];
+    assetAvailabilityFromBootDigestReported3 = [equalCopy assetAvailabilityFromBootDigestReported];
+    v87 = [assetAvailabilityFromBootDigestReported2 isEqual:assetAvailabilityFromBootDigestReported3];
 
     if (!v87)
     {
@@ -1147,20 +1147,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self assetSetStatusDigestReported];
-  v7 = [v4 assetSetStatusDigestReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self assetSetStatusDigestReported];
+  eventMetadata2 = [equalCopy assetSetStatusDigestReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v88 = [(ODDSiriSchemaODDSiriClientEvent *)self assetSetStatusDigestReported];
-  if (v88)
+  assetSetStatusDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assetSetStatusDigestReported];
+  if (assetSetStatusDigestReported)
   {
-    v89 = v88;
-    v90 = [(ODDSiriSchemaODDSiriClientEvent *)self assetSetStatusDigestReported];
-    v91 = [v4 assetSetStatusDigestReported];
-    v92 = [v90 isEqual:v91];
+    v89 = assetSetStatusDigestReported;
+    assetSetStatusDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self assetSetStatusDigestReported];
+    assetSetStatusDigestReported3 = [equalCopy assetSetStatusDigestReported];
+    v92 = [assetSetStatusDigestReported2 isEqual:assetSetStatusDigestReported3];
 
     if (!v92)
     {
@@ -1172,20 +1172,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self executionMetadataReported];
-  v7 = [v4 executionMetadataReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self executionMetadataReported];
+  eventMetadata2 = [equalCopy executionMetadataReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v93 = [(ODDSiriSchemaODDSiriClientEvent *)self executionMetadataReported];
-  if (v93)
+  executionMetadataReported = [(ODDSiriSchemaODDSiriClientEvent *)self executionMetadataReported];
+  if (executionMetadataReported)
   {
-    v94 = v93;
-    v95 = [(ODDSiriSchemaODDSiriClientEvent *)self executionMetadataReported];
-    v96 = [v4 executionMetadataReported];
-    v97 = [v95 isEqual:v96];
+    v94 = executionMetadataReported;
+    executionMetadataReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self executionMetadataReported];
+    executionMetadataReported3 = [equalCopy executionMetadataReported];
+    v97 = [executionMetadataReported2 isEqual:executionMetadataReported3];
 
     if (!v97)
     {
@@ -1197,20 +1197,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationExperimentDigestsReported];
-  v7 = [v4 dictationExperimentDigestsReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self dictationExperimentDigestsReported];
+  eventMetadata2 = [equalCopy dictationExperimentDigestsReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v98 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationExperimentDigestsReported];
-  if (v98)
+  dictationExperimentDigestsReported = [(ODDSiriSchemaODDSiriClientEvent *)self dictationExperimentDigestsReported];
+  if (dictationExperimentDigestsReported)
   {
-    v99 = v98;
-    v100 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationExperimentDigestsReported];
-    v101 = [v4 dictationExperimentDigestsReported];
-    v102 = [v100 isEqual:v101];
+    v99 = dictationExperimentDigestsReported;
+    dictationExperimentDigestsReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationExperimentDigestsReported];
+    dictationExperimentDigestsReported3 = [equalCopy dictationExperimentDigestsReported];
+    v102 = [dictationExperimentDigestsReported2 isEqual:dictationExperimentDigestsReported3];
 
     if (!v102)
     {
@@ -1222,20 +1222,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self attentionInvocationDigestsReported];
-  v7 = [v4 attentionInvocationDigestsReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self attentionInvocationDigestsReported];
+  eventMetadata2 = [equalCopy attentionInvocationDigestsReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v103 = [(ODDSiriSchemaODDSiriClientEvent *)self attentionInvocationDigestsReported];
-  if (v103)
+  attentionInvocationDigestsReported = [(ODDSiriSchemaODDSiriClientEvent *)self attentionInvocationDigestsReported];
+  if (attentionInvocationDigestsReported)
   {
-    v104 = v103;
-    v105 = [(ODDSiriSchemaODDSiriClientEvent *)self attentionInvocationDigestsReported];
-    v106 = [v4 attentionInvocationDigestsReported];
-    v107 = [v105 isEqual:v106];
+    v104 = attentionInvocationDigestsReported;
+    attentionInvocationDigestsReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self attentionInvocationDigestsReported];
+    attentionInvocationDigestsReported3 = [equalCopy attentionInvocationDigestsReported];
+    v107 = [attentionInvocationDigestsReported2 isEqual:attentionInvocationDigestsReported3];
 
     if (!v107)
     {
@@ -1247,20 +1247,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self bluetoothCarDigestReported];
-  v7 = [v4 bluetoothCarDigestReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self bluetoothCarDigestReported];
+  eventMetadata2 = [equalCopy bluetoothCarDigestReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v108 = [(ODDSiriSchemaODDSiriClientEvent *)self bluetoothCarDigestReported];
-  if (v108)
+  bluetoothCarDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self bluetoothCarDigestReported];
+  if (bluetoothCarDigestReported)
   {
-    v109 = v108;
-    v110 = [(ODDSiriSchemaODDSiriClientEvent *)self bluetoothCarDigestReported];
-    v111 = [v4 bluetoothCarDigestReported];
-    v112 = [v110 isEqual:v111];
+    v109 = bluetoothCarDigestReported;
+    bluetoothCarDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self bluetoothCarDigestReported];
+    bluetoothCarDigestReported3 = [equalCopy bluetoothCarDigestReported];
+    v112 = [bluetoothCarDigestReported2 isEqual:bluetoothCarDigestReported3];
 
     if (!v112)
     {
@@ -1272,20 +1272,20 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self mobileAssetErrorsReported];
-  v7 = [v4 mobileAssetErrorsReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self mobileAssetErrorsReported];
+  eventMetadata2 = [equalCopy mobileAssetErrorsReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_117;
   }
 
-  v113 = [(ODDSiriSchemaODDSiriClientEvent *)self mobileAssetErrorsReported];
-  if (v113)
+  mobileAssetErrorsReported = [(ODDSiriSchemaODDSiriClientEvent *)self mobileAssetErrorsReported];
+  if (mobileAssetErrorsReported)
   {
-    v114 = v113;
-    v115 = [(ODDSiriSchemaODDSiriClientEvent *)self mobileAssetErrorsReported];
-    v116 = [v4 mobileAssetErrorsReported];
-    v117 = [v115 isEqual:v116];
+    v114 = mobileAssetErrorsReported;
+    mobileAssetErrorsReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self mobileAssetErrorsReported];
+    mobileAssetErrorsReported3 = [equalCopy mobileAssetErrorsReported];
+    v117 = [mobileAssetErrorsReported2 isEqual:mobileAssetErrorsReported3];
 
     if (!v117)
     {
@@ -1297,12 +1297,12 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self intelligenceFeatureAvailabilityStatusChangesReported];
-  v7 = [v4 intelligenceFeatureAvailabilityStatusChangesReported];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self intelligenceFeatureAvailabilityStatusChangesReported];
+  eventMetadata2 = [equalCopy intelligenceFeatureAvailabilityStatusChangesReported];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v118 = [(ODDSiriSchemaODDSiriClientEvent *)self intelligenceFeatureAvailabilityStatusChangesReported];
-    if (!v118)
+    intelligenceFeatureAvailabilityStatusChangesReported = [(ODDSiriSchemaODDSiriClientEvent *)self intelligenceFeatureAvailabilityStatusChangesReported];
+    if (!intelligenceFeatureAvailabilityStatusChangesReported)
     {
 
 LABEL_121:
@@ -1310,10 +1310,10 @@ LABEL_121:
       goto LABEL_119;
     }
 
-    v119 = v118;
-    v120 = [(ODDSiriSchemaODDSiriClientEvent *)self intelligenceFeatureAvailabilityStatusChangesReported];
-    v121 = [v4 intelligenceFeatureAvailabilityStatusChangesReported];
-    v122 = [v120 isEqual:v121];
+    v119 = intelligenceFeatureAvailabilityStatusChangesReported;
+    intelligenceFeatureAvailabilityStatusChangesReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self intelligenceFeatureAvailabilityStatusChangesReported];
+    intelligenceFeatureAvailabilityStatusChangesReported3 = [equalCopy intelligenceFeatureAvailabilityStatusChangesReported];
+    v122 = [intelligenceFeatureAvailabilityStatusChangesReported2 isEqual:intelligenceFeatureAvailabilityStatusChangesReported3];
 
     if (v122)
     {
@@ -1333,194 +1333,194 @@ LABEL_119:
   return v123;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v51 = a3;
-  v4 = [(ODDSiriSchemaODDSiriClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(ODDSiriSchemaODDSiriClientEvent *)self eventMetadata];
+    eventMetadata2 = [(ODDSiriSchemaODDSiriClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceSegmentsReported];
+  deviceSegmentsReported = [(ODDSiriSchemaODDSiriClientEvent *)self deviceSegmentsReported];
 
-  if (v6)
+  if (deviceSegmentsReported)
   {
-    v7 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceSegmentsReported];
+    deviceSegmentsReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceSegmentsReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceCohortsReported];
+  deviceCohortsReported = [(ODDSiriSchemaODDSiriClientEvent *)self deviceCohortsReported];
 
-  if (v8)
+  if (deviceCohortsReported)
   {
-    v9 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceCohortsReported];
+    deviceCohortsReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceCohortsReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDeviceDigestReported];
+  assistantDeviceDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDeviceDigestReported];
 
-  if (v10)
+  if (assistantDeviceDigestReported)
   {
-    v11 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDeviceDigestReported];
+    assistantDeviceDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDeviceDigestReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationDeviceDigestReported];
+  dictationDeviceDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self dictationDeviceDigestReported];
 
-  if (v12)
+  if (dictationDeviceDigestReported)
   {
-    v13 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationDeviceDigestReported];
+    dictationDeviceDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationDeviceDigestReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(ODDSiriSchemaODDSiriClientEvent *)self siriAccountInformation];
+  siriAccountInformation = [(ODDSiriSchemaODDSiriClientEvent *)self siriAccountInformation];
 
-  if (v14)
+  if (siriAccountInformation)
   {
-    v15 = [(ODDSiriSchemaODDSiriClientEvent *)self siriAccountInformation];
+    siriAccountInformation2 = [(ODDSiriSchemaODDSiriClientEvent *)self siriAccountInformation];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantExperimentDigestReported];
+  assistantExperimentDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantExperimentDigestReported];
 
-  if (v16)
+  if (assistantExperimentDigestReported)
   {
-    v17 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantExperimentDigestReported];
+    assistantExperimentDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantExperimentDigestReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDiagnosticAndUsageOptInDigestReported];
+  assistantDiagnosticAndUsageOptInDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDiagnosticAndUsageOptInDigestReported];
 
-  if (v18)
+  if (assistantDiagnosticAndUsageOptInDigestReported)
   {
-    v19 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDiagnosticAndUsageOptInDigestReported];
+    assistantDiagnosticAndUsageOptInDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDiagnosticAndUsageOptInDigestReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(ODDSiriSchemaODDSiriClientEvent *)self iOSDevicePropertiesReported];
+  iOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self iOSDevicePropertiesReported];
 
-  if (v20)
+  if (iOSDevicePropertiesReported)
   {
-    v21 = [(ODDSiriSchemaODDSiriClientEvent *)self iOSDevicePropertiesReported];
+    iOSDevicePropertiesReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self iOSDevicePropertiesReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(ODDSiriSchemaODDSiriClientEvent *)self watchOSDevicePropertiesReported];
+  watchOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self watchOSDevicePropertiesReported];
 
-  if (v22)
+  if (watchOSDevicePropertiesReported)
   {
-    v23 = [(ODDSiriSchemaODDSiriClientEvent *)self watchOSDevicePropertiesReported];
+    watchOSDevicePropertiesReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self watchOSDevicePropertiesReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(ODDSiriSchemaODDSiriClientEvent *)self tvOSDevicePropertiesReported];
+  tvOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self tvOSDevicePropertiesReported];
 
-  if (v24)
+  if (tvOSDevicePropertiesReported)
   {
-    v25 = [(ODDSiriSchemaODDSiriClientEvent *)self tvOSDevicePropertiesReported];
+    tvOSDevicePropertiesReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self tvOSDevicePropertiesReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(ODDSiriSchemaODDSiriClientEvent *)self macOSDevicePropertiesReported];
+  macOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self macOSDevicePropertiesReported];
 
-  if (v26)
+  if (macOSDevicePropertiesReported)
   {
-    v27 = [(ODDSiriSchemaODDSiriClientEvent *)self macOSDevicePropertiesReported];
+    macOSDevicePropertiesReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self macOSDevicePropertiesReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(ODDSiriSchemaODDSiriClientEvent *)self visionOSDevicePropertiesReported];
+  visionOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self visionOSDevicePropertiesReported];
 
-  if (v28)
+  if (visionOSDevicePropertiesReported)
   {
-    v29 = [(ODDSiriSchemaODDSiriClientEvent *)self visionOSDevicePropertiesReported];
+    visionOSDevicePropertiesReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self visionOSDevicePropertiesReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantCarPlayDigestReported];
+  assistantCarPlayDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantCarPlayDigestReported];
 
-  if (v30)
+  if (assistantCarPlayDigestReported)
   {
-    v31 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantCarPlayDigestReported];
+    assistantCarPlayDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantCarPlayDigestReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(ODDSiriSchemaODDSiriClientEvent *)self requestsWithoutAssetsDigestReported];
+  requestsWithoutAssetsDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self requestsWithoutAssetsDigestReported];
 
-  if (v32)
+  if (requestsWithoutAssetsDigestReported)
   {
-    v33 = [(ODDSiriSchemaODDSiriClientEvent *)self requestsWithoutAssetsDigestReported];
+    requestsWithoutAssetsDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self requestsWithoutAssetsDigestReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(ODDSiriSchemaODDSiriClientEvent *)self assetAvailabilityFromBootDigestReported];
+  assetAvailabilityFromBootDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assetAvailabilityFromBootDigestReported];
 
-  if (v34)
+  if (assetAvailabilityFromBootDigestReported)
   {
-    v35 = [(ODDSiriSchemaODDSiriClientEvent *)self assetAvailabilityFromBootDigestReported];
+    assetAvailabilityFromBootDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self assetAvailabilityFromBootDigestReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(ODDSiriSchemaODDSiriClientEvent *)self assetSetStatusDigestReported];
+  assetSetStatusDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assetSetStatusDigestReported];
 
-  if (v36)
+  if (assetSetStatusDigestReported)
   {
-    v37 = [(ODDSiriSchemaODDSiriClientEvent *)self assetSetStatusDigestReported];
+    assetSetStatusDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self assetSetStatusDigestReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(ODDSiriSchemaODDSiriClientEvent *)self executionMetadataReported];
+  executionMetadataReported = [(ODDSiriSchemaODDSiriClientEvent *)self executionMetadataReported];
 
-  if (v38)
+  if (executionMetadataReported)
   {
-    v39 = [(ODDSiriSchemaODDSiriClientEvent *)self executionMetadataReported];
+    executionMetadataReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self executionMetadataReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v40 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationExperimentDigestsReported];
+  dictationExperimentDigestsReported = [(ODDSiriSchemaODDSiriClientEvent *)self dictationExperimentDigestsReported];
 
-  if (v40)
+  if (dictationExperimentDigestsReported)
   {
-    v41 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationExperimentDigestsReported];
+    dictationExperimentDigestsReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationExperimentDigestsReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v42 = [(ODDSiriSchemaODDSiriClientEvent *)self attentionInvocationDigestsReported];
+  attentionInvocationDigestsReported = [(ODDSiriSchemaODDSiriClientEvent *)self attentionInvocationDigestsReported];
 
-  if (v42)
+  if (attentionInvocationDigestsReported)
   {
-    v43 = [(ODDSiriSchemaODDSiriClientEvent *)self attentionInvocationDigestsReported];
+    attentionInvocationDigestsReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self attentionInvocationDigestsReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v44 = [(ODDSiriSchemaODDSiriClientEvent *)self bluetoothCarDigestReported];
+  bluetoothCarDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self bluetoothCarDigestReported];
 
-  if (v44)
+  if (bluetoothCarDigestReported)
   {
-    v45 = [(ODDSiriSchemaODDSiriClientEvent *)self bluetoothCarDigestReported];
+    bluetoothCarDigestReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self bluetoothCarDigestReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v46 = [(ODDSiriSchemaODDSiriClientEvent *)self mobileAssetErrorsReported];
+  mobileAssetErrorsReported = [(ODDSiriSchemaODDSiriClientEvent *)self mobileAssetErrorsReported];
 
-  if (v46)
+  if (mobileAssetErrorsReported)
   {
-    v47 = [(ODDSiriSchemaODDSiriClientEvent *)self mobileAssetErrorsReported];
+    mobileAssetErrorsReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self mobileAssetErrorsReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v48 = [(ODDSiriSchemaODDSiriClientEvent *)self intelligenceFeatureAvailabilityStatusChangesReported];
+  intelligenceFeatureAvailabilityStatusChangesReported = [(ODDSiriSchemaODDSiriClientEvent *)self intelligenceFeatureAvailabilityStatusChangesReported];
 
-  v49 = v51;
-  if (v48)
+  v49 = toCopy;
+  if (intelligenceFeatureAvailabilityStatusChangesReported)
   {
-    v50 = [(ODDSiriSchemaODDSiriClientEvent *)self intelligenceFeatureAvailabilityStatusChangesReported];
+    intelligenceFeatureAvailabilityStatusChangesReported2 = [(ODDSiriSchemaODDSiriClientEvent *)self intelligenceFeatureAvailabilityStatusChangesReported];
     PBDataWriterWriteSubmessage();
 
-    v49 = v51;
+    v49 = toCopy;
   }
 }
 
@@ -1549,9 +1549,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setIntelligenceFeatureAvailabilityStatusChangesReported:(id)a3
+- (void)setIntelligenceFeatureAvailabilityStatusChangesReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -1615,9 +1615,9 @@ LABEL_119:
   mobileAssetErrorsReported = self->_mobileAssetErrorsReported;
   self->_mobileAssetErrorsReported = 0;
 
-  self->_whichEvent_Type = 32 * (v4 != 0);
+  self->_whichEvent_Type = 32 * (reportedCopy != 0);
   intelligenceFeatureAvailabilityStatusChangesReported = self->_intelligenceFeatureAvailabilityStatusChangesReported;
-  self->_intelligenceFeatureAvailabilityStatusChangesReported = v4;
+  self->_intelligenceFeatureAvailabilityStatusChangesReported = reportedCopy;
 }
 
 - (void)deleteMobileAssetErrorsReported
@@ -1645,9 +1645,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setMobileAssetErrorsReported:(id)a3
+- (void)setMobileAssetErrorsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -1712,14 +1712,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 31;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   mobileAssetErrorsReported = self->_mobileAssetErrorsReported;
-  self->_mobileAssetErrorsReported = v4;
+  self->_mobileAssetErrorsReported = reportedCopy;
 }
 
 - (void)deleteBluetoothCarDigestReported
@@ -1747,9 +1747,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setBluetoothCarDigestReported:(id)a3
+- (void)setBluetoothCarDigestReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -1814,14 +1814,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 30;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   bluetoothCarDigestReported = self->_bluetoothCarDigestReported;
-  self->_bluetoothCarDigestReported = v4;
+  self->_bluetoothCarDigestReported = reportedCopy;
 }
 
 - (void)deleteAttentionInvocationDigestsReported
@@ -1849,9 +1849,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setAttentionInvocationDigestsReported:(id)a3
+- (void)setAttentionInvocationDigestsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -1916,14 +1916,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 29;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   attentionInvocationDigestsReported = self->_attentionInvocationDigestsReported;
-  self->_attentionInvocationDigestsReported = v4;
+  self->_attentionInvocationDigestsReported = reportedCopy;
 }
 
 - (void)deleteDictationExperimentDigestsReported
@@ -1951,9 +1951,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setDictationExperimentDigestsReported:(id)a3
+- (void)setDictationExperimentDigestsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -2018,14 +2018,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 28;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   dictationExperimentDigestsReported = self->_dictationExperimentDigestsReported;
-  self->_dictationExperimentDigestsReported = v4;
+  self->_dictationExperimentDigestsReported = reportedCopy;
 }
 
 - (void)deleteExecutionMetadataReported
@@ -2053,9 +2053,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setExecutionMetadataReported:(id)a3
+- (void)setExecutionMetadataReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -2120,14 +2120,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 26;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   executionMetadataReported = self->_executionMetadataReported;
-  self->_executionMetadataReported = v4;
+  self->_executionMetadataReported = reportedCopy;
 }
 
 - (void)deleteAssetSetStatusDigestReported
@@ -2155,9 +2155,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setAssetSetStatusDigestReported:(id)a3
+- (void)setAssetSetStatusDigestReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -2222,14 +2222,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 25;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   assetSetStatusDigestReported = self->_assetSetStatusDigestReported;
-  self->_assetSetStatusDigestReported = v4;
+  self->_assetSetStatusDigestReported = reportedCopy;
 }
 
 - (void)deleteAssetAvailabilityFromBootDigestReported
@@ -2257,9 +2257,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setAssetAvailabilityFromBootDigestReported:(id)a3
+- (void)setAssetAvailabilityFromBootDigestReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -2324,14 +2324,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 24;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   assetAvailabilityFromBootDigestReported = self->_assetAvailabilityFromBootDigestReported;
-  self->_assetAvailabilityFromBootDigestReported = v4;
+  self->_assetAvailabilityFromBootDigestReported = reportedCopy;
 }
 
 - (void)deleteRequestsWithoutAssetsDigestReported
@@ -2359,9 +2359,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setRequestsWithoutAssetsDigestReported:(id)a3
+- (void)setRequestsWithoutAssetsDigestReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -2426,14 +2426,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 23;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   requestsWithoutAssetsDigestReported = self->_requestsWithoutAssetsDigestReported;
-  self->_requestsWithoutAssetsDigestReported = v4;
+  self->_requestsWithoutAssetsDigestReported = reportedCopy;
 }
 
 - (void)deleteAssistantCarPlayDigestReported
@@ -2461,9 +2461,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setAssistantCarPlayDigestReported:(id)a3
+- (void)setAssistantCarPlayDigestReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -2528,14 +2528,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 22;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   assistantCarPlayDigestReported = self->_assistantCarPlayDigestReported;
-  self->_assistantCarPlayDigestReported = v4;
+  self->_assistantCarPlayDigestReported = reportedCopy;
 }
 
 - (void)deleteVisionOSDevicePropertiesReported
@@ -2563,9 +2563,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setVisionOSDevicePropertiesReported:(id)a3
+- (void)setVisionOSDevicePropertiesReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -2630,14 +2630,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 21;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   visionOSDevicePropertiesReported = self->_visionOSDevicePropertiesReported;
-  self->_visionOSDevicePropertiesReported = v4;
+  self->_visionOSDevicePropertiesReported = reportedCopy;
 }
 
 - (void)deleteMacOSDevicePropertiesReported
@@ -2665,9 +2665,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setMacOSDevicePropertiesReported:(id)a3
+- (void)setMacOSDevicePropertiesReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -2732,14 +2732,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 20;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   macOSDevicePropertiesReported = self->_macOSDevicePropertiesReported;
-  self->_macOSDevicePropertiesReported = v4;
+  self->_macOSDevicePropertiesReported = reportedCopy;
 }
 
 - (void)deleteTvOSDevicePropertiesReported
@@ -2767,9 +2767,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setTvOSDevicePropertiesReported:(id)a3
+- (void)setTvOSDevicePropertiesReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -2834,14 +2834,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 19;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   tvOSDevicePropertiesReported = self->_tvOSDevicePropertiesReported;
-  self->_tvOSDevicePropertiesReported = v4;
+  self->_tvOSDevicePropertiesReported = reportedCopy;
 }
 
 - (void)deleteWatchOSDevicePropertiesReported
@@ -2869,9 +2869,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setWatchOSDevicePropertiesReported:(id)a3
+- (void)setWatchOSDevicePropertiesReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -2936,14 +2936,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 18;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   watchOSDevicePropertiesReported = self->_watchOSDevicePropertiesReported;
-  self->_watchOSDevicePropertiesReported = v4;
+  self->_watchOSDevicePropertiesReported = reportedCopy;
 }
 
 - (void)deleteIOSDevicePropertiesReported
@@ -2971,9 +2971,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setIOSDevicePropertiesReported:(id)a3
+- (void)setIOSDevicePropertiesReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -3038,14 +3038,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 17;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   iOSDevicePropertiesReported = self->_iOSDevicePropertiesReported;
-  self->_iOSDevicePropertiesReported = v4;
+  self->_iOSDevicePropertiesReported = reportedCopy;
 }
 
 - (void)deleteAssistantDiagnosticAndUsageOptInDigestReported
@@ -3073,9 +3073,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setAssistantDiagnosticAndUsageOptInDigestReported:(id)a3
+- (void)setAssistantDiagnosticAndUsageOptInDigestReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -3139,9 +3139,9 @@ LABEL_119:
   intelligenceFeatureAvailabilityStatusChangesReported = self->_intelligenceFeatureAvailabilityStatusChangesReported;
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
-  self->_whichEvent_Type = 16 * (v4 != 0);
+  self->_whichEvent_Type = 16 * (reportedCopy != 0);
   assistantDiagnosticAndUsageOptInDigestReported = self->_assistantDiagnosticAndUsageOptInDigestReported;
-  self->_assistantDiagnosticAndUsageOptInDigestReported = v4;
+  self->_assistantDiagnosticAndUsageOptInDigestReported = reportedCopy;
 }
 
 - (void)deleteAssistantExperimentDigestReported
@@ -3169,9 +3169,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setAssistantExperimentDigestReported:(id)a3
+- (void)setAssistantExperimentDigestReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -3236,14 +3236,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 15;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   assistantExperimentDigestReported = self->_assistantExperimentDigestReported;
-  self->_assistantExperimentDigestReported = v4;
+  self->_assistantExperimentDigestReported = reportedCopy;
 }
 
 - (void)deleteSiriAccountInformation
@@ -3271,9 +3271,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setSiriAccountInformation:(id)a3
+- (void)setSiriAccountInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -3338,14 +3338,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 14;
-  if (!v4)
+  if (!informationCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   siriAccountInformation = self->_siriAccountInformation;
-  self->_siriAccountInformation = v4;
+  self->_siriAccountInformation = informationCopy;
 }
 
 - (void)deleteDictationDeviceDigestReported
@@ -3373,9 +3373,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setDictationDeviceDigestReported:(id)a3
+- (void)setDictationDeviceDigestReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -3440,14 +3440,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 13;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   dictationDeviceDigestReported = self->_dictationDeviceDigestReported;
-  self->_dictationDeviceDigestReported = v4;
+  self->_dictationDeviceDigestReported = reportedCopy;
 }
 
 - (void)deleteAssistantDeviceDigestReported
@@ -3475,9 +3475,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setAssistantDeviceDigestReported:(id)a3
+- (void)setAssistantDeviceDigestReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -3542,14 +3542,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 12;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   assistantDeviceDigestReported = self->_assistantDeviceDigestReported;
-  self->_assistantDeviceDigestReported = v4;
+  self->_assistantDeviceDigestReported = reportedCopy;
 }
 
 - (void)deleteDeviceCohortsReported
@@ -3577,9 +3577,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setDeviceCohortsReported:(id)a3
+- (void)setDeviceCohortsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceSegmentsReported = self->_deviceSegmentsReported;
   self->_deviceSegmentsReported = 0;
 
@@ -3644,14 +3644,14 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 11;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   deviceCohortsReported = self->_deviceCohortsReported;
-  self->_deviceCohortsReported = v4;
+  self->_deviceCohortsReported = reportedCopy;
 }
 
 - (void)deleteDeviceSegmentsReported
@@ -3679,9 +3679,9 @@ LABEL_119:
   return v3;
 }
 
-- (void)setDeviceSegmentsReported:(id)a3
+- (void)setDeviceSegmentsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   deviceCohortsReported = self->_deviceCohortsReported;
   self->_deviceCohortsReported = 0;
 
@@ -3746,239 +3746,239 @@ LABEL_119:
   self->_intelligenceFeatureAvailabilityStatusChangesReported = 0;
 
   v26 = 10;
-  if (!v4)
+  if (!reportedCopy)
   {
     v26 = 0;
   }
 
   self->_whichEvent_Type = v26;
   deviceSegmentsReported = self->_deviceSegmentsReported;
-  self->_deviceSegmentsReported = v4;
+  self->_deviceSegmentsReported = reportedCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(ODDSiriSchemaODDSiriClientEvent *)self whichEvent_Type];
-  if (v2 - 10 > 0x16)
+  whichEvent_Type = [(ODDSiriSchemaODDSiriClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 10 > 0x16)
   {
     return @"com.apple.aiml.siri.odd.ODDSiriClientEvent";
   }
 
   else
   {
-    return off_1E78DDA20[v2 - 10];
+    return off_1E78DDA20[whichEvent_Type - 10];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v76.receiver = self;
   v76.super_class = ODDSiriSchemaODDSiriClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v76 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODDSiriSchemaODDSiriClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v76 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(ODDSiriSchemaODDSiriClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceSegmentsReported];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  deviceSegmentsReported = [(ODDSiriSchemaODDSiriClientEvent *)self deviceSegmentsReported];
+  v10 = [deviceSegmentsReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteDeviceSegmentsReported];
   }
 
-  v12 = [(ODDSiriSchemaODDSiriClientEvent *)self deviceCohortsReported];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  deviceCohortsReported = [(ODDSiriSchemaODDSiriClientEvent *)self deviceCohortsReported];
+  v13 = [deviceCohortsReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteDeviceCohortsReported];
   }
 
-  v15 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDeviceDigestReported];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  assistantDeviceDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDeviceDigestReported];
+  v16 = [assistantDeviceDigestReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteAssistantDeviceDigestReported];
   }
 
-  v18 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationDeviceDigestReported];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  dictationDeviceDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self dictationDeviceDigestReported];
+  v19 = [dictationDeviceDigestReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteDictationDeviceDigestReported];
   }
 
-  v21 = [(ODDSiriSchemaODDSiriClientEvent *)self siriAccountInformation];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  siriAccountInformation = [(ODDSiriSchemaODDSiriClientEvent *)self siriAccountInformation];
+  v22 = [siriAccountInformation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteSiriAccountInformation];
   }
 
-  v24 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantExperimentDigestReported];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  assistantExperimentDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantExperimentDigestReported];
+  v25 = [assistantExperimentDigestReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteAssistantExperimentDigestReported];
   }
 
-  v27 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDiagnosticAndUsageOptInDigestReported];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  assistantDiagnosticAndUsageOptInDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantDiagnosticAndUsageOptInDigestReported];
+  v28 = [assistantDiagnosticAndUsageOptInDigestReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteAssistantDiagnosticAndUsageOptInDigestReported];
   }
 
-  v30 = [(ODDSiriSchemaODDSiriClientEvent *)self iOSDevicePropertiesReported];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  iOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self iOSDevicePropertiesReported];
+  v31 = [iOSDevicePropertiesReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteIOSDevicePropertiesReported];
   }
 
-  v33 = [(ODDSiriSchemaODDSiriClientEvent *)self watchOSDevicePropertiesReported];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  watchOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self watchOSDevicePropertiesReported];
+  v34 = [watchOSDevicePropertiesReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteWatchOSDevicePropertiesReported];
   }
 
-  v36 = [(ODDSiriSchemaODDSiriClientEvent *)self tvOSDevicePropertiesReported];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  tvOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self tvOSDevicePropertiesReported];
+  v37 = [tvOSDevicePropertiesReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteTvOSDevicePropertiesReported];
   }
 
-  v39 = [(ODDSiriSchemaODDSiriClientEvent *)self macOSDevicePropertiesReported];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  macOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self macOSDevicePropertiesReported];
+  v40 = [macOSDevicePropertiesReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteMacOSDevicePropertiesReported];
   }
 
-  v42 = [(ODDSiriSchemaODDSiriClientEvent *)self visionOSDevicePropertiesReported];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  visionOSDevicePropertiesReported = [(ODDSiriSchemaODDSiriClientEvent *)self visionOSDevicePropertiesReported];
+  v43 = [visionOSDevicePropertiesReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteVisionOSDevicePropertiesReported];
   }
 
-  v45 = [(ODDSiriSchemaODDSiriClientEvent *)self assistantCarPlayDigestReported];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  assistantCarPlayDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assistantCarPlayDigestReported];
+  v46 = [assistantCarPlayDigestReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteAssistantCarPlayDigestReported];
   }
 
-  v48 = [(ODDSiriSchemaODDSiriClientEvent *)self requestsWithoutAssetsDigestReported];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  requestsWithoutAssetsDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self requestsWithoutAssetsDigestReported];
+  v49 = [requestsWithoutAssetsDigestReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteRequestsWithoutAssetsDigestReported];
   }
 
-  v51 = [(ODDSiriSchemaODDSiriClientEvent *)self assetAvailabilityFromBootDigestReported];
-  v52 = [v51 applySensitiveConditionsPolicy:v4];
-  v53 = [v52 suppressMessage];
+  assetAvailabilityFromBootDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assetAvailabilityFromBootDigestReported];
+  v52 = [assetAvailabilityFromBootDigestReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage16 = [v52 suppressMessage];
 
-  if (v53)
+  if (suppressMessage16)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteAssetAvailabilityFromBootDigestReported];
   }
 
-  v54 = [(ODDSiriSchemaODDSiriClientEvent *)self assetSetStatusDigestReported];
-  v55 = [v54 applySensitiveConditionsPolicy:v4];
-  v56 = [v55 suppressMessage];
+  assetSetStatusDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self assetSetStatusDigestReported];
+  v55 = [assetSetStatusDigestReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage17 = [v55 suppressMessage];
 
-  if (v56)
+  if (suppressMessage17)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteAssetSetStatusDigestReported];
   }
 
-  v57 = [(ODDSiriSchemaODDSiriClientEvent *)self executionMetadataReported];
-  v58 = [v57 applySensitiveConditionsPolicy:v4];
-  v59 = [v58 suppressMessage];
+  executionMetadataReported = [(ODDSiriSchemaODDSiriClientEvent *)self executionMetadataReported];
+  v58 = [executionMetadataReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage18 = [v58 suppressMessage];
 
-  if (v59)
+  if (suppressMessage18)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteExecutionMetadataReported];
   }
 
-  v60 = [(ODDSiriSchemaODDSiriClientEvent *)self dictationExperimentDigestsReported];
-  v61 = [v60 applySensitiveConditionsPolicy:v4];
-  v62 = [v61 suppressMessage];
+  dictationExperimentDigestsReported = [(ODDSiriSchemaODDSiriClientEvent *)self dictationExperimentDigestsReported];
+  v61 = [dictationExperimentDigestsReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage19 = [v61 suppressMessage];
 
-  if (v62)
+  if (suppressMessage19)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteDictationExperimentDigestsReported];
   }
 
-  v63 = [(ODDSiriSchemaODDSiriClientEvent *)self attentionInvocationDigestsReported];
-  v64 = [v63 applySensitiveConditionsPolicy:v4];
-  v65 = [v64 suppressMessage];
+  attentionInvocationDigestsReported = [(ODDSiriSchemaODDSiriClientEvent *)self attentionInvocationDigestsReported];
+  v64 = [attentionInvocationDigestsReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage20 = [v64 suppressMessage];
 
-  if (v65)
+  if (suppressMessage20)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteAttentionInvocationDigestsReported];
   }
 
-  v66 = [(ODDSiriSchemaODDSiriClientEvent *)self bluetoothCarDigestReported];
-  v67 = [v66 applySensitiveConditionsPolicy:v4];
-  v68 = [v67 suppressMessage];
+  bluetoothCarDigestReported = [(ODDSiriSchemaODDSiriClientEvent *)self bluetoothCarDigestReported];
+  v67 = [bluetoothCarDigestReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage21 = [v67 suppressMessage];
 
-  if (v68)
+  if (suppressMessage21)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteBluetoothCarDigestReported];
   }
 
-  v69 = [(ODDSiriSchemaODDSiriClientEvent *)self mobileAssetErrorsReported];
-  v70 = [v69 applySensitiveConditionsPolicy:v4];
-  v71 = [v70 suppressMessage];
+  mobileAssetErrorsReported = [(ODDSiriSchemaODDSiriClientEvent *)self mobileAssetErrorsReported];
+  v70 = [mobileAssetErrorsReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage22 = [v70 suppressMessage];
 
-  if (v71)
+  if (suppressMessage22)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteMobileAssetErrorsReported];
   }
 
-  v72 = [(ODDSiriSchemaODDSiriClientEvent *)self intelligenceFeatureAvailabilityStatusChangesReported];
-  v73 = [v72 applySensitiveConditionsPolicy:v4];
-  v74 = [v73 suppressMessage];
+  intelligenceFeatureAvailabilityStatusChangesReported = [(ODDSiriSchemaODDSiriClientEvent *)self intelligenceFeatureAvailabilityStatusChangesReported];
+  v73 = [intelligenceFeatureAvailabilityStatusChangesReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage23 = [v73 suppressMessage];
 
-  if (v74)
+  if (suppressMessage23)
   {
     [(ODDSiriSchemaODDSiriClientEvent *)self deleteIntelligenceFeatureAvailabilityStatusChangesReported];
   }
@@ -4010,30 +4010,30 @@ LABEL_119:
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 10 > 0x16)
+  if (tag - 10 > 0x16)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EA520[a3 - 10];
+    return off_1E78EA520[tag - 10];
   }
 }
 
 - (int)clockIsolationLevel
 {
-  v2 = [(ODDSiriSchemaODDSiriClientEvent *)self whichEvent_Type];
-  if (v2 - 10 > 0x16)
+  whichEvent_Type = [(ODDSiriSchemaODDSiriClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 10 > 0x16)
   {
     return 1;
   }
 
   else
   {
-    return dword_1AA738C88[v2 - 10];
+    return dword_1AA738C88[whichEvent_Type - 10];
   }
 }
 

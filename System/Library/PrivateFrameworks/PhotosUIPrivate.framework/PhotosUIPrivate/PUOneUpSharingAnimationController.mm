@@ -2,12 +2,12 @@
 + (id)new;
 - (PUOneUpAssetTransitionViewController)presentingViewController;
 - (PUOneUpSharingAnimationController)init;
-- (PUOneUpSharingAnimationController)initWithTransitionContext:(id)a3 presentingViewController:(id)a4;
+- (PUOneUpSharingAnimationController)initWithTransitionContext:(id)context presentingViewController:(id)controller;
 - (PUOneUpSharingAnimationControllerDelegate)delegate;
-- (double)transitionDuration:(id)a3;
-- (id)interruptibleAnimatorForTransition:(id)a3;
-- (void)_configurePhotoView:(id)a3 withContentHelper:(id)a4;
-- (void)_installTransitioningBadgeViewsForAssetTransitionInfo:(id)a3 inTransitioningView:(id)a4;
+- (double)transitionDuration:(id)duration;
+- (id)interruptibleAnimatorForTransition:(id)transition;
+- (void)_configurePhotoView:(id)view withContentHelper:(id)helper;
+- (void)_installTransitioningBadgeViewsForAssetTransitionInfo:(id)info inTransitioningView:(id)view;
 @end
 
 @implementation PUOneUpSharingAnimationController
@@ -26,14 +26,14 @@
   return WeakRetained;
 }
 
-- (void)_configurePhotoView:(id)a3 withContentHelper:(id)a4
+- (void)_configurePhotoView:(id)view withContentHelper:(id)helper
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  viewCopy = view;
+  helperCopy = helper;
+  v7 = helperCopy;
+  if (helperCopy)
   {
-    [v6 badgeInfo];
+    [helperCopy badgeInfo];
   }
 
   else
@@ -42,38 +42,38 @@
     v39 = 0u;
   }
 
-  v8 = [v5 contentHelper];
+  contentHelper = [viewCopy contentHelper];
   v32 = v38;
   v33 = v39;
-  [v8 setBadgeInfo:&v32];
+  [contentHelper setBadgeInfo:&v32];
 
-  v9 = [v7 badgeStyle];
-  v10 = [v5 contentHelper];
-  [v10 setBadgeStyle:v9];
+  badgeStyle = [v7 badgeStyle];
+  contentHelper2 = [viewCopy contentHelper];
+  [contentHelper2 setBadgeStyle:badgeStyle];
 
   [v7 customPaddingForBadgeElements];
   v12 = v11;
   v14 = v13;
-  v15 = [v5 contentHelper];
-  [v15 setCustomPaddingForBadgeElements:{v12, v14}];
+  contentHelper3 = [viewCopy contentHelper];
+  [contentHelper3 setCustomPaddingForBadgeElements:{v12, v14}];
 
-  v16 = [v7 photoImage];
-  v17 = [v5 contentHelper];
-  [v17 setPhotoImage:v16];
+  photoImage = [v7 photoImage];
+  contentHelper4 = [viewCopy contentHelper];
+  [contentHelper4 setPhotoImage:photoImage];
 
-  v18 = [v7 placeHolderImage];
-  v19 = [v5 contentHelper];
-  [v19 setPlaceHolderImage:v18];
+  placeHolderImage = [v7 placeHolderImage];
+  contentHelper5 = [viewCopy contentHelper];
+  [contentHelper5 setPlaceHolderImage:placeHolderImage];
 
   [v7 photoSize];
   v21 = v20;
   v23 = v22;
-  v24 = [v5 contentHelper];
-  [v24 setPhotoSize:{v21, v23}];
+  contentHelper6 = [viewCopy contentHelper];
+  [contentHelper6 setPhotoSize:{v21, v23}];
 
-  v25 = [v7 fillMode];
-  v26 = [v5 contentHelper];
-  [v26 setFillMode:v25];
+  fillMode = [v7 fillMode];
+  contentHelper7 = [viewCopy contentHelper];
+  [contentHelper7 setFillMode:fillMode];
 
   if (v7)
   {
@@ -87,29 +87,29 @@
     v35 = 0u;
   }
 
-  v27 = [v5 contentHelper];
+  contentHelper8 = [viewCopy contentHelper];
   v32 = v35;
   v33 = v36;
   v34 = v37;
-  [v27 setImageTransform:&v32];
+  [contentHelper8 setImageTransform:&v32];
 
-  v28 = [v7 photoDecoration];
-  v29 = [v5 contentHelper];
-  [v29 setPhotoDecoration:v28];
+  photoDecoration = [v7 photoDecoration];
+  contentHelper9 = [viewCopy contentHelper];
+  [contentHelper9 setPhotoDecoration:photoDecoration];
 
-  v30 = [v7 isTextBannerVisible];
-  v31 = [v5 contentHelper];
-  [v31 setTextBannerVisible:v30];
+  isTextBannerVisible = [v7 isTextBannerVisible];
+  contentHelper10 = [viewCopy contentHelper];
+  [contentHelper10 setTextBannerVisible:isTextBannerVisible];
 
-  [v5 layoutIfNeeded];
+  [viewCopy layoutIfNeeded];
 }
 
-- (void)_installTransitioningBadgeViewsForAssetTransitionInfo:(id)a3 inTransitioningView:(id)a4
+- (void)_installTransitioningBadgeViewsForAssetTransitionInfo:(id)info inTransitioningView:(id)view
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  [v5 badgeTransitionInfos];
+  infoCopy = info;
+  viewCopy = view;
+  [infoCopy badgeTransitionInfos];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -129,17 +129,17 @@
         }
 
         v11 = *(*(&v37 + 1) + 8 * i);
-        v12 = [v11 snapshotView];
-        [v6 addSubview:v12];
+        snapshotView = [v11 snapshotView];
+        [viewCopy addSubview:snapshotView];
         [v11 frame];
         v14 = v13;
         v16 = v15;
         v18 = v17;
         v20 = v19;
-        [v5 frame];
+        [infoCopy frame];
         v22 = v21;
         v24 = v23;
-        [v6 frame];
+        [viewCopy frame];
         if (v22 == v26 && v24 == v25)
         {
           v27 = v14;
@@ -147,16 +147,16 @@
 
         else
         {
-          v28 = [v11 badgesCorner];
+          badgesCorner = [v11 badgesCorner];
           [v11 badgesOffset];
           v27 = v29;
           v31 = v30;
-          v32 = [v6 traitCollection];
-          v33 = [v32 layoutDirection] == 1;
+          traitCollection = [viewCopy traitCollection];
+          v33 = [traitCollection layoutDirection] == 1;
 
-          if (((v28 & 0xA) != 0) != v33)
+          if (((badgesCorner & 0xA) != 0) != v33)
           {
-            [v6 frame];
+            [viewCopy frame];
             v34 = CGRectGetWidth(v43) - v27;
             v44.origin.x = v14;
             v44.origin.y = v16;
@@ -165,9 +165,9 @@
             v27 = v34 - CGRectGetWidth(v44);
           }
 
-          if ((v28 & 0xC) != 0)
+          if ((badgesCorner & 0xC) != 0)
           {
-            [v6 frame];
+            [viewCopy frame];
             v35 = CGRectGetHeight(v45) - v31;
             v46.origin.x = v27;
             v46.origin.y = v16;
@@ -182,8 +182,8 @@
           }
         }
 
-        [v12 setFrame:{v27, v16, v18, v20}];
-        [v12 setAlpha:0.0];
+        [snapshotView setFrame:{v27, v16, v18, v20}];
+        [snapshotView setAlpha:0.0];
       }
 
       v8 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
@@ -193,72 +193,72 @@
   }
 }
 
-- (id)interruptibleAnimatorForTransition:(id)a3
+- (id)interruptibleAnimatorForTransition:(id)transition
 {
-  v5 = a3;
+  transitionCopy = transition;
   v99.receiver = self;
   v99.super_class = PUOneUpSharingAnimationController;
-  v6 = [(_UISheetAnimationController *)&v99 interruptibleAnimatorForTransition:v5];
+  v6 = [(_UISheetAnimationController *)&v99 interruptibleAnimatorForTransition:transitionCopy];
   if (!self->_interruptibleAnimatorForTransitionWasCalled)
   {
     self->_interruptibleAnimatorForTransitionWasCalled = 1;
-    v7 = [v5 viewControllerForKey:*MEMORY[0x1E69DE778]];
+    v7 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
     v47 = v6;
     v36 = v7;
     if (_os_feature_enabled_impl())
     {
-      v8 = 0;
+      photosCarouselViewController = 0;
     }
 
     else
     {
-      v8 = [v7 photosCarouselViewController];
-      if (v8)
+      photosCarouselViewController = [v7 photosCarouselViewController];
+      if (photosCarouselViewController)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v32 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v33 = objc_opt_class();
           v34 = NSStringFromClass(v33);
-          v35 = [v8 px_descriptionForAssertionMessage];
-          [v32 handleFailureInMethod:a2 object:self file:@"PUOneUpSharingAnimationController.m" lineNumber:75 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"activityViewController.photosCarouselViewController", v34, v35}];
+          px_descriptionForAssertionMessage = [photosCarouselViewController px_descriptionForAssertionMessage];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpSharingAnimationController.m" lineNumber:75 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"activityViewController.photosCarouselViewController", v34, px_descriptionForAssertionMessage}];
         }
       }
     }
 
-    v42 = [v5 containerView];
-    v43 = [v8 view];
-    v45 = [v8 mainCollectionView];
-    v9 = [(PUOneUpSharingAnimationController *)self oneUpTransitionContext];
-    v10 = [v9 currentAssetReference];
+    containerView = [transitionCopy containerView];
+    view = [photosCarouselViewController view];
+    mainCollectionView = [photosCarouselViewController mainCollectionView];
+    oneUpTransitionContext = [(PUOneUpSharingAnimationController *)self oneUpTransitionContext];
+    currentAssetReference = [oneUpTransitionContext currentAssetReference];
 
-    v11 = [(PUOneUpSharingAnimationController *)self oneUpTransitionContext];
-    [v8 setOneUpPhotosSharingTransitionContext:v11];
+    oneUpTransitionContext2 = [(PUOneUpSharingAnimationController *)self oneUpTransitionContext];
+    [photosCarouselViewController setOneUpPhotosSharingTransitionContext:oneUpTransitionContext2];
 
-    v12 = [(PUOneUpSharingAnimationController *)self delegate];
-    [v12 oneUpSharingAnimationController:self setVisibility:0 forAssetReference:v10];
+    delegate = [(PUOneUpSharingAnimationController *)self delegate];
+    [delegate oneUpSharingAnimationController:self setVisibility:0 forAssetReference:currentAssetReference];
 
-    v13 = [v10 asset];
+    asset = [currentAssetReference asset];
     objc_opt_class();
-    v37 = v5;
-    v41 = v10;
+    v37 = transitionCopy;
+    v41 = currentAssetReference;
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v10 asset];
-      v15 = [v14 photoLibrary];
+      asset2 = [currentAssetReference asset];
+      photoLibrary = [asset2 photoLibrary];
     }
 
     else
     {
-      v15 = 0;
+      photoLibrary = 0;
     }
 
-    v39 = v15;
-    v38 = [v15 px_beginPausingChangesWithTimeout:@"PUOneUpSharingAnimationController" identifier:*MEMORY[0x1E69C4138]];
-    v16 = [(PUOneUpSharingAnimationController *)self presentingViewController];
-    v17 = [v16 navigationController];
-    v40 = [v17 toolbar];
+    v39 = photoLibrary;
+    v38 = [photoLibrary px_beginPausingChangesWithTimeout:@"PUOneUpSharingAnimationController" identifier:*MEMORY[0x1E69C4138]];
+    presentingViewController = [(PUOneUpSharingAnimationController *)self presentingViewController];
+    navigationController = [presentingViewController navigationController];
+    toolbar = [navigationController toolbar];
 
     v97[0] = 0;
     v97[1] = v97;
@@ -295,7 +295,7 @@
     v87[2] = 0x3032000000;
     v87[3] = __Block_byref_object_copy__33816;
     v87[4] = __Block_byref_object_dispose__33817;
-    v88 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v85[0] = 0;
     v85[1] = v85;
     v85[2] = 0x3032000000;
@@ -308,20 +308,20 @@
     v73[2] = __72__PUOneUpSharingAnimationController_interruptibleAnimatorForTransition___block_invoke;
     v73[3] = &unk_1E7B77CF0;
     v73[4] = self;
-    v19 = v42;
+    v19 = containerView;
     v74 = v19;
     v78 = v97;
     v79 = v85;
-    v20 = v8;
+    v20 = photosCarouselViewController;
     v75 = v20;
     v80 = v93;
     v81 = v91;
     v82 = v95;
     v83 = v89;
-    v21 = v43;
+    v21 = view;
     v76 = v21;
     v84 = v87;
-    v22 = v45;
+    v22 = mainCollectionView;
     v77 = v22;
     [v18 performWithoutAnimation:v73];
     block[0] = MEMORY[0x1E69E9820];
@@ -332,7 +332,7 @@
     v68 = v87;
     v69 = v89;
     v65 = v23;
-    v66 = self;
+    selfCopy = self;
     v46 = v41;
     v67 = v46;
     v72 = a2;
@@ -349,7 +349,7 @@
     v24 = v21;
     v60 = v24;
     v63 = v97;
-    v25 = v40;
+    v25 = toolbar;
     v61 = v25;
     [v23 addAnimations:v58];
     v48[0] = MEMORY[0x1E69E9820];
@@ -382,7 +382,7 @@
     _Block_object_dispose(v95, 8);
 
     _Block_object_dispose(v97, 8);
-    v5 = v37;
+    transitionCopy = v37;
     v6 = v47;
   }
 
@@ -1058,14 +1058,14 @@ void __72__PUOneUpSharingAnimationController_interruptibleAnimatorForTransition_
   [*(a1 + 32) _installTransitioningBadgeViewsForAssetTransitionInfo:v3 inTransitioningView:v16];
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   v3 = ([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 3) < 2;
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   result = dbl_1B3D0CEB0[v3];
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 0.666999996;
   }
@@ -1073,18 +1073,18 @@ void __72__PUOneUpSharingAnimationController_interruptibleAnimatorForTransition_
   return result;
 }
 
-- (PUOneUpSharingAnimationController)initWithTransitionContext:(id)a3 presentingViewController:(id)a4
+- (PUOneUpSharingAnimationController)initWithTransitionContext:(id)context presentingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = PUOneUpSharingAnimationController;
   v9 = [(_UISheetAnimationController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_oneUpTransitionContext, a3);
-    objc_storeWeak(&v10->_presentingViewController, v8);
+    objc_storeStrong(&v9->_oneUpTransitionContext, context);
+    objc_storeWeak(&v10->_presentingViewController, controllerCopy);
   }
 
   return v10;
@@ -1092,16 +1092,16 @@ void __72__PUOneUpSharingAnimationController_interruptibleAnimatorForTransition_
 
 - (PUOneUpSharingAnimationController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUOneUpSharingAnimationController.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PUOneUpSharingAnimationController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpSharingAnimationController.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PUOneUpSharingAnimationController init]"}];
 
   abort();
 }
 
 + (id)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PUOneUpSharingAnimationController.m" lineNumber:37 description:{@"%s is not available as initializer", "+[PUOneUpSharingAnimationController new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpSharingAnimationController.m" lineNumber:37 description:{@"%s is not available as initializer", "+[PUOneUpSharingAnimationController new]"}];
 
   abort();
 }

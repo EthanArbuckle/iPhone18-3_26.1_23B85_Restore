@@ -1,24 +1,24 @@
 @interface QLPreviewURLProtocol
-+ (BOOL)canInitWithRequest:(id)a3;
-+ (BOOL)isSafeRequest:(id)a3;
-+ (BOOL)isSafeURL:(id)a3;
-+ (BOOL)requestIsCacheEquivalent:(id)a3 toRequest:(id)a4;
++ (BOOL)canInitWithRequest:(id)request;
++ (BOOL)isSafeRequest:(id)request;
++ (BOOL)isSafeURL:(id)l;
++ (BOOL)requestIsCacheEquivalent:(id)equivalent toRequest:(id)request;
 + (id)_errorForAbort;
 + (id)_errorForCancel;
-+ (id)canonicalRequestForRequest:(id)a3;
-+ (id)errorForURL:(id)a3;
-+ (id)mimeTypeForAttachmentURL:(id)a3;
-+ (id)newURLWithContentID:(id)a3 baseURL:(id)a4;
-+ (id)newUniqueURLWithName:(id)a3;
-+ (void)_unregisterURL:(id)a3;
-+ (void)appendData:(id)a3 forURL:(id)a4 lastChunk:(BOOL)a5;
++ (id)canonicalRequestForRequest:(id)request;
++ (id)errorForURL:(id)l;
++ (id)mimeTypeForAttachmentURL:(id)l;
++ (id)newURLWithContentID:(id)d baseURL:(id)l;
++ (id)newUniqueURLWithName:(id)name;
++ (void)_unregisterURL:(id)l;
++ (void)appendData:(id)data forURL:(id)l lastChunk:(BOOL)chunk;
 + (void)initialize;
-+ (void)registerPreview:(id)a3 forPreviewURL:(id)a4;
-+ (void)registerURL:(id)a3 mimeType:(id)a4 textEncoding:(id)a5;
-+ (void)setError:(id)a3 forURL:(id)a4;
-+ (void)startLoadingProtocol:(id)a3;
-+ (void)stopLoadingProtocol:(id)a3 isCancel:(BOOL)a4;
-+ (void)unregisterURLs:(id)a3 andPreviewURL:(id)a4;
++ (void)registerPreview:(id)preview forPreviewURL:(id)l;
++ (void)registerURL:(id)l mimeType:(id)type textEncoding:(id)encoding;
++ (void)setError:(id)error forURL:(id)l;
++ (void)startLoadingProtocol:(id)protocol;
++ (void)stopLoadingProtocol:(id)protocol isCancel:(BOOL)cancel;
++ (void)unregisterURLs:(id)ls andPreviewURL:(id)l;
 - (void)startLoading;
 - (void)stopLoading;
 @end
@@ -27,7 +27,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v4 = urlToPreviews;
@@ -45,33 +45,33 @@
     v10 = urlToAttachmentDescriptions;
     urlToAttachmentDescriptions = v9;
 
-    [MEMORY[0x277CCAD10] registerClass:a1];
+    [MEMORY[0x277CCAD10] registerClass:self];
     protocolQueue = dispatch_queue_create("quicklook.urlloading", 0);
 
     MEMORY[0x2821F96F8]();
   }
 }
 
-+ (id)newUniqueURLWithName:(id)a3
++ (id)newUniqueURLWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_new();
-  v6 = [v5 UUIDString];
-  if (v4)
+  uUIDString = [v5 UUIDString];
+  if (nameCopy)
   {
-    v7 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
-    v8 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:v7];
+    uRLPathAllowedCharacterSet = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
+    protocolScheme2 = [nameCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
     v9 = MEMORY[0x277CCACA8];
-    v10 = [a1 protocolScheme];
-    v11 = [v9 stringWithFormat:@"%@://%@/%@/%@", v10, v6, @"x-apple-ql-magic", v8];
+    protocolScheme = [self protocolScheme];
+    v11 = [v9 stringWithFormat:@"%@://%@/%@/%@", protocolScheme, uUIDString, @"x-apple-ql-magic", protocolScheme2];
   }
 
   else
   {
     v12 = MEMORY[0x277CCACA8];
-    v8 = [a1 protocolScheme];
-    v11 = [v12 stringWithFormat:@"%@://%@/%@/", v8, v6, @"x-apple-ql-magic"];
+    protocolScheme2 = [self protocolScheme];
+    v11 = [v12 stringWithFormat:@"%@://%@/%@/", protocolScheme2, uUIDString, @"x-apple-ql-magic"];
   }
 
   v13 = [MEMORY[0x277CBEBC0] URLWithString:v11];
@@ -79,18 +79,18 @@
   return v13;
 }
 
-+ (id)newURLWithContentID:(id)a3 baseURL:(id)a4
++ (id)newURLWithContentID:(id)d baseURL:(id)l
 {
   v6 = MEMORY[0x277CCA900];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 URLPathAllowedCharacterSet];
-  v10 = [v8 stringByAddingPercentEncodingWithAllowedCharacters:v9];
+  lCopy = l;
+  dCopy = d;
+  uRLPathAllowedCharacterSet = [v6 URLPathAllowedCharacterSet];
+  v10 = [dCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
-  v11 = [v7 host];
+  host = [lCopy host];
 
-  v12 = [a1 protocolScheme];
-  v13 = CFStringCreateWithFormat(0, 0, @"%@://%@/%@/%@", v12, v11, @"x-apple-ql-attachment", v10);
+  protocolScheme = [self protocolScheme];
+  v13 = CFStringCreateWithFormat(0, 0, @"%@://%@/%@/%@", protocolScheme, host, @"x-apple-ql-attachment", v10);
 
   v14 = CFURLCreateWithString(0, v13, 0);
   CFRelease(v13);
@@ -98,20 +98,20 @@
   return v14;
 }
 
-+ (void)registerPreview:(id)a3 forPreviewURL:(id)a4
++ (void)registerPreview:(id)preview forPreviewURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
-  [v6 hash];
+  previewCopy = preview;
+  lCopy = l;
+  [lCopy hash];
   v7 = protocolQueue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__QLPreviewURLProtocol_registerPreview_forPreviewURL___block_invoke;
   v10[3] = &unk_279ADB358;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = previewCopy;
+  v12 = lCopy;
+  v8 = lCopy;
+  v9 = previewCopy;
   dispatch_async(v7, v10);
 }
 
@@ -126,22 +126,22 @@ uint64_t __54__QLPreviewURLProtocol_registerPreview_forPreviewURL___block_invoke
   return [urlToPreviews setObject:*(a1 + 32) forKey:*(a1 + 40)];
 }
 
-+ (void)registerURL:(id)a3 mimeType:(id)a4 textEncoding:(id)a5
++ (void)registerURL:(id)l mimeType:(id)type textEncoding:(id)encoding
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  typeCopy = type;
+  encodingCopy = encoding;
   v10 = protocolQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__QLPreviewURLProtocol_registerURL_mimeType_textEncoding___block_invoke;
   block[3] = &unk_279ADB680;
-  v15 = v7;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
+  v15 = lCopy;
+  v16 = typeCopy;
+  v17 = encodingCopy;
+  v11 = encodingCopy;
+  v12 = typeCopy;
+  v13 = lCopy;
   dispatch_sync(v10, block);
 }
 
@@ -267,17 +267,17 @@ void __58__QLPreviewURLProtocol_registerURL_mimeType_textEncoding___block_invoke
   return v2;
 }
 
-+ (void)_unregisterURL:(id)a3
++ (void)_unregisterURL:(id)l
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = _log_2();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     +[QLPreviewURLProtocol _unregisterURL:];
   }
 
-  v6 = [urlToProtocols objectForKey:v4];
+  v6 = [urlToProtocols objectForKey:lCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -299,19 +299,19 @@ void __58__QLPreviewURLProtocol_registerURL_mimeType_textEncoding___block_invoke
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 client];
+        client = [v12 client];
         v14 = _log_2();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
           *buf = v16;
           v22 = v12;
           v23 = 2112;
-          v24 = v4;
+          v24 = lCopy;
           _os_log_debug_impl(&dword_2615AE000, v14, OS_LOG_TYPE_DEBUG, "Aborting %@ loading %@", buf, 0x16u);
         }
 
-        v15 = [a1 _errorForAbort];
-        [v13 URLProtocol:v12 didFailWithError:v15];
+        _errorForAbort = [self _errorForAbort];
+        [client URLProtocol:v12 didFailWithError:_errorForAbort];
       }
 
       v9 = [v6 countByEnumeratingWithState:&v17 objects:v25 count:16];
@@ -320,25 +320,25 @@ void __58__QLPreviewURLProtocol_registerURL_mimeType_textEncoding___block_invoke
     while (v9);
   }
 
-  [urlToProtocols removeObjectForKey:v4];
-  [urlToAttachmentData removeObjectForKey:v4];
-  [urlToAttachmentDescriptions removeObjectForKey:v4];
+  [urlToProtocols removeObjectForKey:lCopy];
+  [urlToAttachmentData removeObjectForKey:lCopy];
+  [urlToAttachmentDescriptions removeObjectForKey:lCopy];
 }
 
-+ (void)unregisterURLs:(id)a3 andPreviewURL:(id)a4
++ (void)unregisterURLs:(id)ls andPreviewURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  lsCopy = ls;
+  lCopy = l;
   v8 = protocolQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__QLPreviewURLProtocol_unregisterURLs_andPreviewURL___block_invoke;
   block[3] = &unk_279ADB6A8;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  v13 = lCopy;
+  selfCopy = self;
+  v12 = lsCopy;
+  v9 = lCopy;
+  v10 = lsCopy;
   dispatch_sync(v8, block);
 }
 
@@ -384,21 +384,21 @@ uint64_t __53__QLPreviewURLProtocol_unregisterURLs_andPreviewURL___block_invoke(
   return [urlToPreviews removeObjectForKey:*(a1 + 40)];
 }
 
-+ (void)appendData:(id)a3 forURL:(id)a4 lastChunk:(BOOL)a5
++ (void)appendData:(id)data forURL:(id)l lastChunk:(BOOL)chunk
 {
-  v7 = a3;
-  v8 = a4;
-  [v8 hash];
+  dataCopy = data;
+  lCopy = l;
+  [lCopy hash];
   v9 = protocolQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__QLPreviewURLProtocol_appendData_forURL_lastChunk___block_invoke;
   block[3] = &unk_279ADB6D0;
-  v13 = v8;
-  v14 = v7;
-  v15 = a5;
-  v10 = v7;
-  v11 = v8;
+  v13 = lCopy;
+  v14 = dataCopy;
+  chunkCopy = chunk;
+  v10 = dataCopy;
+  v11 = lCopy;
   dispatch_async(v9, block);
 }
 
@@ -498,20 +498,20 @@ void __52__QLPreviewURLProtocol_appendData_forURL_lastChunk___block_invoke(uint6
   }
 }
 
-+ (void)setError:(id)a3 forURL:(id)a4
++ (void)setError:(id)error forURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
-  [v6 hash];
+  errorCopy = error;
+  lCopy = l;
+  [lCopy hash];
   v7 = protocolQueue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__QLPreviewURLProtocol_setError_forURL___block_invoke;
   v10[3] = &unk_279ADB358;
-  v11 = v6;
-  v12 = v5;
-  v8 = v5;
-  v9 = v6;
+  v11 = lCopy;
+  v12 = errorCopy;
+  v8 = errorCopy;
+  v9 = lCopy;
   dispatch_async(v7, v10);
 }
 
@@ -570,9 +570,9 @@ void __40__QLPreviewURLProtocol_setError_forURL___block_invoke(uint64_t a1)
   [v13 setObject:*(a1 + 40) forKey:@"error"];
 }
 
-+ (id)errorForURL:(id)a3
++ (id)errorForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -584,9 +584,9 @@ void __40__QLPreviewURLProtocol_setError_forURL___block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __36__QLPreviewURLProtocol_errorForURL___block_invoke;
   v8[3] = &unk_279ADB6F8;
-  v9 = v3;
+  v9 = lCopy;
   v10 = &v11;
-  v5 = v3;
+  v5 = lCopy;
   dispatch_sync(v4, v8);
   v6 = v12[5];
 
@@ -605,21 +605,21 @@ void __36__QLPreviewURLProtocol_errorForURL___block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-+ (void)startLoadingProtocol:(id)a3
++ (void)startLoadingProtocol:(id)protocol
 {
-  v3 = a3;
-  v4 = [v3 request];
-  v5 = [v4 URL];
+  protocolCopy = protocol;
+  request = [protocolCopy request];
+  v5 = [request URL];
   [v5 hash];
   v6 = protocolQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__QLPreviewURLProtocol_startLoadingProtocol___block_invoke;
   v9[3] = &unk_279ADB358;
-  v10 = v3;
+  v10 = protocolCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v3;
+  v8 = protocolCopy;
   dispatch_async(v6, v9);
 }
 
@@ -744,22 +744,22 @@ LABEL_26:
 LABEL_35:
 }
 
-+ (void)stopLoadingProtocol:(id)a3 isCancel:(BOOL)a4
++ (void)stopLoadingProtocol:(id)protocol isCancel:(BOOL)cancel
 {
-  v6 = a3;
-  v7 = [v6 request];
-  v8 = [v7 URL];
+  protocolCopy = protocol;
+  request = [protocolCopy request];
+  v8 = [request URL];
   [v8 hash];
   v9 = protocolQueue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__QLPreviewURLProtocol_stopLoadingProtocol_isCancel___block_invoke;
   v12[3] = &unk_279ADB720;
-  v16 = a4;
+  cancelCopy = cancel;
   v13 = v8;
-  v14 = v6;
-  v15 = a1;
-  v10 = v6;
+  v14 = protocolCopy;
+  selfCopy = self;
+  v10 = protocolCopy;
   v11 = v8;
   dispatch_async(v9, v12);
 }
@@ -829,13 +829,13 @@ void __45__QLPreviewURLProtocol__dumpPendingProtocols__block_invoke()
   }
 }
 
-+ (BOOL)isSafeURL:(id)a3
++ (BOOL)isSafeURL:(id)l
 {
-  v4 = [a3 scheme];
-  if (v4)
+  scheme = [l scheme];
+  if (scheme)
   {
-    v5 = [a1 protocolScheme];
-    v6 = [v5 caseInsensitiveCompare:v4] == 0;
+    protocolScheme = [self protocolScheme];
+    v6 = [protocolScheme caseInsensitiveCompare:scheme] == 0;
   }
 
   else
@@ -846,53 +846,53 @@ void __45__QLPreviewURLProtocol__dumpPendingProtocols__block_invoke()
   return v6;
 }
 
-+ (BOOL)isSafeRequest:(id)a3
++ (BOOL)isSafeRequest:(id)request
 {
-  v4 = [a3 URL];
-  LOBYTE(a1) = [a1 isSafeURL:v4];
+  v4 = [request URL];
+  LOBYTE(self) = [self isSafeURL:v4];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [a1 isSafeRequest:v4];
+  requestCopy = request;
+  v5 = [self isSafeRequest:requestCopy];
   v6 = _log_2();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [QLPreviewURLProtocol canInitWithRequest:v4];
+    [QLPreviewURLProtocol canInitWithRequest:requestCopy];
   }
 
   return v5;
 }
 
-+ (id)canonicalRequestForRequest:(id)a3
++ (id)canonicalRequestForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = _log_2();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [QLPreviewURLProtocol canonicalRequestForRequest:v3];
+    [QLPreviewURLProtocol canonicalRequestForRequest:requestCopy];
   }
 
-  return v3;
+  return requestCopy;
 }
 
-+ (BOOL)requestIsCacheEquivalent:(id)a3 toRequest:(id)a4
++ (BOOL)requestIsCacheEquivalent:(id)equivalent toRequest:(id)request
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 URL];
-  v8 = [v6 URL];
+  equivalentCopy = equivalent;
+  requestCopy = request;
+  v7 = [equivalentCopy URL];
+  v8 = [requestCopy URL];
   v9 = [v7 isEqual:v8];
 
   v10 = _log_2();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v5 URL];
-    v13 = [v6 URL];
+    v12 = [equivalentCopy URL];
+    v13 = [requestCopy URL];
     v14 = v13;
     v15 = "NO";
     v16 = 138412802;
@@ -912,9 +912,9 @@ void __45__QLPreviewURLProtocol__dumpPendingProtocols__block_invoke()
   return v9;
 }
 
-+ (id)mimeTypeForAttachmentURL:(id)a3
++ (id)mimeTypeForAttachmentURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -926,9 +926,9 @@ void __45__QLPreviewURLProtocol__dumpPendingProtocols__block_invoke()
   v8[1] = 3221225472;
   v8[2] = __49__QLPreviewURLProtocol_mimeTypeForAttachmentURL___block_invoke;
   v8[3] = &unk_279ADB6F8;
-  v9 = v3;
+  v9 = lCopy;
   v10 = &v11;
-  v5 = v3;
+  v5 = lCopy;
   dispatch_sync(v4, v8);
   v6 = v12[5];
 

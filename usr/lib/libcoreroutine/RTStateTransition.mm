@@ -1,13 +1,13 @@
 @interface RTStateTransition
 - (RTStateTransition)init;
-- (RTStateTransition)initWithCoder:(id)a3;
-- (id)getPredTrans:(double)a3 duration:(double)a4 numOfWeeks:(int)a5 uniqueID:(id)a6;
+- (RTStateTransition)initWithCoder:(id)coder;
+- (id)getPredTrans:(double)trans duration:(double)duration numOfWeeks:(int)weeks uniqueID:(id)d;
 - (int64_t)count;
-- (void)addStateTransitionOneTimeTransFromStateTransition:(id)a3;
-- (void)cleanTransition:(double)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addStateTransitionOneTimeTransFromStateTransition:(id)transition;
+- (void)cleanTransition:(double)transition;
+- (void)encodeWithCoder:(id)coder;
 - (void)showTransition;
-- (void)submitTransition:(id)a3;
+- (void)submitTransition:(id)transition;
 @end
 
 @implementation RTStateTransition
@@ -26,20 +26,20 @@
   return v2;
 }
 
-- (void)addStateTransitionOneTimeTransFromStateTransition:(id)a3
+- (void)addStateTransitionOneTimeTransFromStateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(RTStateTransition *)self listTransitions];
-  v6 = [v4 listTransitions];
+  transitionCopy = transition;
+  listTransitions = [(RTStateTransition *)self listTransitions];
+  listTransitions2 = [transitionCopy listTransitions];
 
-  [v5 addObjectsFromArray:v6];
-  v7 = [(RTStateTransition *)self listTransitions];
-  [v7 sortUsingComparator:&__block_literal_global_211];
+  [listTransitions addObjectsFromArray:listTransitions2];
+  listTransitions3 = [(RTStateTransition *)self listTransitions];
+  [listTransitions3 sortUsingComparator:&__block_literal_global_211];
 
   if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v8 = [(RTStateTransition *)self listTransitions];
-    [v8 enumerateObjectsUsingBlock:&__block_literal_global_213];
+    listTransitions4 = [(RTStateTransition *)self listTransitions];
+    [listTransitions4 enumerateObjectsUsingBlock:&__block_literal_global_213];
   }
 }
 
@@ -95,24 +95,24 @@ void __71__RTStateTransition_addStateTransitionOneTimeTransFromStateTransition__
   }
 }
 
-- (void)submitTransition:(id)a3
+- (void)submitTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(RTStateTransition *)self listTransitions];
-  [v5 addObject:v4];
+  transitionCopy = transition;
+  listTransitions = [(RTStateTransition *)self listTransitions];
+  [listTransitions addObject:transitionCopy];
 }
 
 - (void)showTransition
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    v3 = [(RTStateTransition *)self listTransitions];
-    v4 = [v3 count];
+    listTransitions = [(RTStateTransition *)self listTransitions];
+    v4 = [listTransitions count];
 
     if (v4)
     {
-      v6 = [(RTStateTransition *)self listTransitions];
-      [v6 enumerateObjectsUsingBlock:&__block_literal_global_215];
+      listTransitions2 = [(RTStateTransition *)self listTransitions];
+      [listTransitions2 enumerateObjectsUsingBlock:&__block_literal_global_215];
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -163,18 +163,18 @@ void __35__RTStateTransition_showTransition__block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (void)cleanTransition:(double)a3
+- (void)cleanTransition:(double)transition
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(RTStateTransition *)self listTransitions];
+  listTransitions = [(RTStateTransition *)self listTransitions];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __37__RTStateTransition_cleanTransition___block_invoke;
   v11 = &unk_2788CF328;
-  v13 = a3;
+  transitionCopy = transition;
   v12 = v5;
   v7 = v5;
-  [v6 enumerateObjectsUsingBlock:&v8];
+  [listTransitions enumerateObjectsUsingBlock:&v8];
 
   [(RTStateTransition *)self setListTransitions:v7, v8, v9, v10, v11];
 }
@@ -189,9 +189,9 @@ void __37__RTStateTransition_cleanTransition___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (id)getPredTrans:(double)a3 duration:(double)a4 numOfWeeks:(int)a5 uniqueID:(id)a6
+- (id)getPredTrans:(double)trans duration:(double)duration numOfWeeks:(int)weeks uniqueID:(id)d
 {
-  v10 = a6;
+  dCopy = d;
   v214 = 0;
   v215 = &v214;
   v216 = 0x3032000000;
@@ -221,7 +221,7 @@ void __37__RTStateTransition_cleanTransition___block_invoke(uint64_t a1, void *a
   v192 = 0x3032000000;
   v193 = __Block_byref_object_copy__129;
   v194 = __Block_byref_object_dispose__129;
-  v101 = v10;
+  v101 = dCopy;
   v195 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v184 = 0;
   v185 = &v184;
@@ -248,9 +248,9 @@ void __37__RTStateTransition_cleanTransition___block_invoke(uint64_t a1, void *a
   v169 = &v168;
   v170 = 0x2020000000;
   v171 = 0x426D1A94A2000000;
-  v13 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:a3 + -7200.0];
-  v14 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:a3 + a4];
-  [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:a3];
+  v13 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:trans + -7200.0];
+  duration = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:trans + duration];
+  [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:trans];
   v98 = v11;
   v162 = 0;
   v163 = &v162;
@@ -258,7 +258,7 @@ void __37__RTStateTransition_cleanTransition___block_invoke(uint64_t a1, void *a
   v165 = __Block_byref_object_copy__129;
   v15 = v166 = __Block_byref_object_dispose__129;
   v97 = v12;
-  v16 = self;
+  selfCopy = self;
   v167 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v156 = 0;
   v157 = &v156;
@@ -266,7 +266,7 @@ void __37__RTStateTransition_cleanTransition___block_invoke(uint64_t a1, void *a
   v159 = __Block_byref_object_copy__129;
   v160 = __Block_byref_object_dispose__129;
   v161 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a5 >= 1)
+  if (weeks >= 1)
   {
     v17 = 0;
     do
@@ -289,21 +289,21 @@ void __37__RTStateTransition_cleanTransition___block_invoke(uint64_t a1, void *a
       ++v17;
     }
 
-    while (v17 != a5);
+    while (v17 != weeks);
   }
 
-  [(RTStateTransition *)v16 listTransitions];
-  v24 = v23 = v10;
-  v25 = a5;
+  [(RTStateTransition *)selfCopy listTransitions];
+  v24 = v23 = dCopy;
+  weeksCopy = weeks;
   v136[0] = MEMORY[0x277D85DD0];
   v136[1] = 3221225472;
   v136[2] = __63__RTStateTransition_getPredTrans_duration_numOfWeeks_uniqueID___block_invoke;
   v136[3] = &unk_2788CF350;
-  v154 = a3 + -7200.0 + a5 * -604800.0;
-  v155 = a3;
+  v154 = trans + -7200.0 + weeks * -604800.0;
+  transCopy = trans;
   v26 = v13;
   v137 = v26;
-  v27 = v14;
+  v27 = duration;
   v138 = v27;
   v142 = &v196;
   v143 = &v190;
@@ -375,8 +375,8 @@ void __37__RTStateTransition_cleanTransition___block_invoke(uint64_t a1, void *a
     v109[4] = &v114;
     v109[5] = &v110;
     [v33 enumerateObjectsUsingBlock:v109];
-    v34 = [(RTStateTransitionOneTransPred *)v102 weekly];
-    [v34 setYield:{objc_msgSend(v197[5], "count") / v25}];
+    weekly = [(RTStateTransitionOneTransPred *)v102 weekly];
+    [weekly setYield:{objc_msgSend(v197[5], "count") / weeksCopy}];
 
     v35 = v133[3];
     v36 = v35 / [v197[5] count];
@@ -395,11 +395,11 @@ void __37__RTStateTransition_cleanTransition___block_invoke(uint64_t a1, void *a
       v38 = sqrt(v129[3] / [v197[5] count] - v36 * v36);
       if (v38 < 2700.0)
       {
-        v39 = [(RTStateTransitionOneTransPred *)v102 weekly];
-        [v39 setPredResidualStart_s:v37];
+        weekly2 = [(RTStateTransitionOneTransPred *)v102 weekly];
+        [weekly2 setPredResidualStart_s:v37];
 
-        v40 = [(RTStateTransitionOneTransPred *)v102 weekly];
-        [v40 setResUncStart_s:v38];
+        weekly3 = [(RTStateTransitionOneTransPred *)v102 weekly];
+        [weekly3 setResUncStart_s:v38];
       }
     }
 
@@ -420,28 +420,28 @@ void __37__RTStateTransition_cleanTransition___block_invoke(uint64_t a1, void *a
       v44 = sqrt(v120[3] / [v191[5] count] - v42 * v42);
       if (v44 < 2700.0)
       {
-        v45 = [(RTStateTransitionOneTransPred *)v102 weekly];
-        [v45 setPredResidualStop_s:v43];
+        weekly4 = [(RTStateTransitionOneTransPred *)v102 weekly];
+        [weekly4 setPredResidualStop_s:v43];
 
-        v46 = [(RTStateTransitionOneTransPred *)v102 weekly];
-        [v46 setResUncStop_s:v44];
+        weekly5 = [(RTStateTransitionOneTransPred *)v102 weekly];
+        [weekly5 setResUncStop_s:v44];
       }
     }
 
-    v47 = [(RTStateTransitionOneTransPred *)v102 weekly];
-    [v47 setNumOfTrans:{objc_msgSend(v197[5], "count")}];
+    weekly6 = [(RTStateTransitionOneTransPred *)v102 weekly];
+    [weekly6 setNumOfTrans:{objc_msgSend(v197[5], "count")}];
 
-    v48 = [(RTStateTransitionOneTransPred *)v102 weekly];
-    [v48 setEarliestTransTimeStart_s:v177[3]];
+    weekly7 = [(RTStateTransitionOneTransPred *)v102 weekly];
+    [weekly7 setEarliestTransTimeStart_s:v177[3]];
 
-    v49 = [(RTStateTransitionOneTransPred *)v102 weekly];
-    [v49 setLatestTransTimeStart_s:v181[3]];
+    weekly8 = [(RTStateTransitionOneTransPred *)v102 weekly];
+    [weekly8 setLatestTransTimeStart_s:v181[3]];
 
-    v50 = [(RTStateTransitionOneTransPred *)v102 weekly];
-    [v50 setDensity:v115[6] / v111[6]];
+    weekly9 = [(RTStateTransitionOneTransPred *)v102 weekly];
+    [weekly9 setDensity:v115[6] / v111[6]];
 
-    v51 = [(RTStateTransitionOneTransPred *)v102 weekly];
-    [v51 setMotionActivityType:{-[RTStateTransitionMotionActivityTypeHistogram getDominantMotionActivityType](v29, "getDominantMotionActivityType")}];
+    weekly10 = [(RTStateTransitionOneTransPred *)v102 weekly];
+    [weekly10 setMotionActivityType:{-[RTStateTransitionMotionActivityTypeHistogram getDominantMotionActivityType](v29, "getDominantMotionActivityType")}];
     v99 = v30;
     v52 = v29;
     v53 = v28;
@@ -450,13 +450,13 @@ void __37__RTStateTransition_cleanTransition___block_invoke(uint64_t a1, void *a
 
     v56 = [v185[5] valueForKeyPath:@"@max.self"];
     v57 = [RTStateModelAlgorithms bucketizeDates:v185[5] bucketInterval:v56 latestDate:7200.0];
-    v58 = [v57 allValues];
+    allValues = [v57 allValues];
     v59 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %@", @"numOfDates", &unk_28459F1C8];
-    v60 = [v58 filteredArrayUsingPredicate:v59];
+    v60 = [allValues filteredArrayUsingPredicate:v59];
 
     v61 = [v60 valueForKeyPath:@"@min.averageDate"];
-    v62 = [(RTStateTransitionOneTransPred *)v102 weekly];
-    [v62 setPrimaryStopDate:v61];
+    weekly11 = [(RTStateTransitionOneTransPred *)v102 weekly];
+    [weekly11 setPrimaryStopDate:v61];
 
     _Block_object_dispose(&v110, 8);
     _Block_object_dispose(&v114, 8);
@@ -532,8 +532,8 @@ void __37__RTStateTransition_cleanTransition___block_invoke(uint64_t a1, void *a
     v103[6] = &v114;
     v103[7] = &v110;
     [v65 enumerateObjectsUsingBlock:v103];
-    v66 = [(RTStateTransitionOneTransPred *)v102 daily];
-    [v66 setYield:{objc_msgSend(v215[5], "count") / v25 * 7.0}];
+    daily = [(RTStateTransitionOneTransPred *)v102 daily];
+    [daily setYield:{objc_msgSend(v215[5], "count") / weeksCopy * 7.0}];
 
     v67 = v133[3];
     v68 = v67 / [v215[5] count];
@@ -552,11 +552,11 @@ void __37__RTStateTransition_cleanTransition___block_invoke(uint64_t a1, void *a
       v70 = sqrt(v129[3] / [v215[5] count] - v68 * v68);
       if (v70 < 2700.0)
       {
-        v71 = [(RTStateTransitionOneTransPred *)v102 daily];
-        [v71 setPredResidualStart_s:v69];
+        daily2 = [(RTStateTransitionOneTransPred *)v102 daily];
+        [daily2 setPredResidualStart_s:v69];
 
-        v72 = [(RTStateTransitionOneTransPred *)v102 daily];
-        [v72 setResUncStart_s:v70];
+        daily3 = [(RTStateTransitionOneTransPred *)v102 daily];
+        [daily3 setResUncStart_s:v70];
       }
     }
 
@@ -577,28 +577,28 @@ void __37__RTStateTransition_cleanTransition___block_invoke(uint64_t a1, void *a
       v76 = sqrt(v120[3] / [v209[5] count] - v74 * v74);
       if (v76 < 2700.0)
       {
-        v77 = [(RTStateTransitionOneTransPred *)v102 daily];
-        [v77 setPredResidualStop_s:v75];
+        daily4 = [(RTStateTransitionOneTransPred *)v102 daily];
+        [daily4 setPredResidualStop_s:v75];
 
-        v78 = [(RTStateTransitionOneTransPred *)v102 daily];
-        [v78 setResUncStop_s:v76];
+        daily5 = [(RTStateTransitionOneTransPred *)v102 daily];
+        [daily5 setResUncStop_s:v76];
       }
     }
 
-    v79 = [(RTStateTransitionOneTransPred *)v102 daily];
-    [v79 setNumOfTrans:{objc_msgSend(v215[5], "count")}];
+    daily6 = [(RTStateTransitionOneTransPred *)v102 daily];
+    [daily6 setNumOfTrans:{objc_msgSend(v215[5], "count")}];
 
-    v80 = [(RTStateTransitionOneTransPred *)v102 daily];
-    [v80 setEarliestTransTimeStart_s:v169[3]];
+    daily7 = [(RTStateTransitionOneTransPred *)v102 daily];
+    [daily7 setEarliestTransTimeStart_s:v169[3]];
 
-    v81 = [(RTStateTransitionOneTransPred *)v102 daily];
-    [v81 setLatestTransTimeStart_s:v173[3]];
+    daily8 = [(RTStateTransitionOneTransPred *)v102 daily];
+    [daily8 setLatestTransTimeStart_s:v173[3]];
 
-    v82 = [(RTStateTransitionOneTransPred *)v102 daily];
-    [v82 setDensity:*(v115 + 3) / v111[6]];
+    daily9 = [(RTStateTransitionOneTransPred *)v102 daily];
+    [daily9 setDensity:*(v115 + 3) / v111[6]];
 
-    v83 = [(RTStateTransitionOneTransPred *)v102 daily];
-    [v83 setMotionActivityType:{-[RTStateTransitionMotionActivityTypeHistogram getDominantMotionActivityType](v30, "getDominantMotionActivityType")}];
+    daily10 = [(RTStateTransitionOneTransPred *)v102 daily];
+    [daily10 setMotionActivityType:{-[RTStateTransitionMotionActivityTypeHistogram getDominantMotionActivityType](v30, "getDominantMotionActivityType")}];
     v100 = v30;
     v84 = v29;
     v85 = v28;
@@ -608,13 +608,13 @@ void __37__RTStateTransition_cleanTransition___block_invoke(uint64_t a1, void *a
 
     v89 = [v203[5] valueForKeyPath:@"@max.self"];
     v90 = [RTStateModelAlgorithms bucketizeDates:v203[5] bucketInterval:v89 latestDate:7200.0];
-    v91 = [v90 allValues];
+    allValues2 = [v90 allValues];
     v92 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %@", @"numOfDates", &unk_28459F1C8];
-    v93 = [v91 filteredArrayUsingPredicate:v92];
+    v93 = [allValues2 filteredArrayUsingPredicate:v92];
 
     v94 = [v93 valueForKeyPath:@"@min.averageDate"];
-    v95 = [(RTStateTransitionOneTransPred *)v102 daily];
-    [v95 setPrimaryStopDate:v94];
+    daily11 = [(RTStateTransitionOneTransPred *)v102 daily];
+    [daily11 setPrimaryStopDate:v94];
 
     _Block_object_dispose(v104, 8);
     _Block_object_dispose(v106, 8);
@@ -916,22 +916,22 @@ uint64_t __63__RTStateTransition_getPredTrans_duration_numOfWeeks_uniqueID___blo
 
 - (int64_t)count
 {
-  v2 = [(RTStateTransition *)self listTransitions];
-  v3 = [v2 count];
+  listTransitions = [(RTStateTransition *)self listTransitions];
+  v3 = [listTransitions count];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RTStateTransition *)self listTransitions];
-  [v4 encodeObject:v5 forKey:@"listTransitions"];
+  coderCopy = coder;
+  listTransitions = [(RTStateTransition *)self listTransitions];
+  [coderCopy encodeObject:listTransitions forKey:@"listTransitions"];
 }
 
-- (RTStateTransition)initWithCoder:(id)a3
+- (RTStateTransition)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = RTStateTransition;
   v5 = [(RTStateTransition *)&v11 init];
@@ -940,7 +940,7 @@ uint64_t __63__RTStateTransition_getPredTrans_duration_numOfWeeks_uniqueID___blo
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"listTransitions"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"listTransitions"];
     [(RTStateTransition *)v5 setListTransitions:v9];
   }
 

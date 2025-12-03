@@ -1,53 +1,53 @@
 @interface CSDConversationInvitationResolver
-- (BOOL)shouldShowInvitationRingingUIForConversation:(id)a3 handle:(id)a4;
-- (BOOL)shouldShowInvitationRingingUIForConversation:(id)a3 handle:(id)a4 invitationMessagePreferences:(id)a5;
-- (BOOL)shouldShowInvitationUserNotificationForConversation:(id)a3 handle:(id)a4;
-- (BOOL)shouldStartRingingTimeoutForConversation:(id)a3 handle:(id)a4;
+- (BOOL)shouldShowInvitationRingingUIForConversation:(id)conversation handle:(id)handle;
+- (BOOL)shouldShowInvitationRingingUIForConversation:(id)conversation handle:(id)handle invitationMessagePreferences:(id)preferences;
+- (BOOL)shouldShowInvitationUserNotificationForConversation:(id)conversation handle:(id)handle;
+- (BOOL)shouldStartRingingTimeoutForConversation:(id)conversation handle:(id)handle;
 @end
 
 @implementation CSDConversationInvitationResolver
 
-- (BOOL)shouldShowInvitationUserNotificationForConversation:(id)a3 handle:(id)a4
+- (BOOL)shouldShowInvitationUserNotificationForConversation:(id)conversation handle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  LOBYTE(a4) = sub_1003C7C74(v6, a4, 2);
+  conversationCopy = conversation;
+  handleCopy = handle;
+  selfCopy = self;
+  LOBYTE(handle) = sub_1003C7C74(conversationCopy, handle, 2);
 
-  return a4 & 1;
+  return handle & 1;
 }
 
-- (BOOL)shouldShowInvitationRingingUIForConversation:(id)a3 handle:(id)a4
+- (BOOL)shouldShowInvitationRingingUIForConversation:(id)conversation handle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  LOBYTE(a4) = sub_1003C7C74(v6, a4, 4);
+  conversationCopy = conversation;
+  handleCopy = handle;
+  selfCopy = self;
+  LOBYTE(handle) = sub_1003C7C74(conversationCopy, handle, 4);
 
-  return a4 & 1;
+  return handle & 1;
 }
 
-- (BOOL)shouldShowInvitationRingingUIForConversation:(id)a3 handle:(id)a4 invitationMessagePreferences:(id)a5
+- (BOOL)shouldShowInvitationRingingUIForConversation:(id)conversation handle:(id)handle invitationMessagePreferences:(id)preferences
 {
   sub_1003C8570();
   sub_1003C85B4();
   v8 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  LOBYTE(a4) = sub_1003C7DC0(v9, a4, v8);
+  conversationCopy = conversation;
+  handleCopy = handle;
+  selfCopy = self;
+  LOBYTE(handle) = sub_1003C7DC0(conversationCopy, handle, v8);
 
-  return a4 & 1;
+  return handle & 1;
 }
 
-- (BOOL)shouldStartRingingTimeoutForConversation:(id)a3 handle:(id)a4
+- (BOOL)shouldStartRingingTimeoutForConversation:(id)conversation handle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  LOBYTE(a4) = sub_1003C7F60(v6, a4);
+  conversationCopy = conversation;
+  handleCopy = handle;
+  selfCopy = self;
+  LOBYTE(handle) = sub_1003C7F60(conversationCopy, handle);
 
-  return a4 & 1;
+  return handle & 1;
 }
 
 @end

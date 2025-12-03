@@ -1,65 +1,65 @@
 @interface IOGPUMetal4CommandQueue
-- (IOGPUMetal4CommandQueue)initWithDevice:(id)a3;
-- (IOGPUMetal4CommandQueue)initWithDevice:(id)a3 descriptor:(id)a4;
-- (id)initIOGPUMTL4CommandQueue:(id)a3 descriptor:(id)a4 args:(IOGPUDeviceNewCommandQueueArgs *)a5 argsSize:(unsigned int)a6;
-- (id)preCommit:(const void *)a3 count:(unint64_t)a4 options:(id)a5;
-- (void)_commit:(const void *)a3 count:(unint64_t)a4 commitFeedback:(id)a5;
-- (void)addResidencySet:(id)a3;
-- (void)addResidencySets:(id *)a3 count:(unint64_t)a4;
+- (IOGPUMetal4CommandQueue)initWithDevice:(id)device;
+- (IOGPUMetal4CommandQueue)initWithDevice:(id)device descriptor:(id)descriptor;
+- (id)initIOGPUMTL4CommandQueue:(id)queue descriptor:(id)descriptor args:(IOGPUDeviceNewCommandQueueArgs *)args argsSize:(unsigned int)size;
+- (id)preCommit:(const void *)commit count:(unint64_t)count options:(id)options;
+- (void)_commit:(const void *)_commit count:(unint64_t)count commitFeedback:(id)feedback;
+- (void)addResidencySet:(id)set;
+- (void)addResidencySets:(id *)sets count:(unint64_t)count;
 - (void)allocateMappingCommandBuffer;
-- (void)commitFillArgs:(id *)a3 count:(unint64_t)a4 args:(unint64_t)a5 argsSize:(unsigned int)a6 commitFeedback:(id)a7;
+- (void)commitFillArgs:(id *)args count:(unint64_t)count args:(unint64_t)a5 argsSize:(unsigned int)size commitFeedback:(id)feedback;
 - (void)commitMappingCommandBuffer;
-- (void)copyBufferMappingsFromBuffer:(id)a3 toBuffer:(id)a4 operations:(id *)a5 count:(unint64_t)a6;
+- (void)copyBufferMappingsFromBuffer:(id)buffer toBuffer:(id)toBuffer operations:(id *)operations count:(unint64_t)count;
 - (void)dealloc;
 - (void)endTier1MappingCommands;
-- (void)removeResidencySet:(id)a3;
-- (void)removeResidencySets:(id *)a3 count:(unint64_t)a4;
-- (void)signalEvent:(id)a3 value:(unint64_t)a4;
-- (void)updateBufferMappings:(id)a3 heap:(id)a4 operations:(id *)a5 count:(unint64_t)a6;
+- (void)removeResidencySet:(id)set;
+- (void)removeResidencySets:(id *)sets count:(unint64_t)count;
+- (void)signalEvent:(id)event value:(unint64_t)value;
+- (void)updateBufferMappings:(id)mappings heap:(id)heap operations:(id *)operations count:(unint64_t)count;
 @end
 
 @implementation IOGPUMetal4CommandQueue
 
-- (id)initIOGPUMTL4CommandQueue:(id)a3 descriptor:(id)a4 args:(IOGPUDeviceNewCommandQueueArgs *)a5 argsSize:(unsigned int)a6
+- (id)initIOGPUMTL4CommandQueue:(id)queue descriptor:(id)descriptor args:(IOGPUDeviceNewCommandQueueArgs *)args argsSize:(unsigned int)size
 {
-  if (!a5)
+  if (!args)
   {
     [IOGPUMetal4CommandQueue initIOGPUMTL4CommandQueue:descriptor:args:argsSize:];
   }
 
-  if (a6 <= 0x407)
+  if (size <= 0x407)
   {
     [IOGPUMetal4CommandQueue initIOGPUMTL4CommandQueue:descriptor:args:argsSize:];
   }
 
   v20.receiver = self;
   v20.super_class = IOGPUMetal4CommandQueue;
-  v10 = [(_MTL4CommandQueue *)&v20 initWithDescriptor:a4 device:a3];
+  v10 = [(_MTL4CommandQueue *)&v20 initWithDescriptor:descriptor device:queue];
   v11 = v10;
   if (v10)
   {
     v10->_qosLevel = 2;
-    bzero(a5, 0x408uLL);
+    bzero(args, 0x408uLL);
     x = 0;
     pid_for_task(*MEMORY[0x1E69E9A60], &x);
-    proc_pidpath(x, a5, 0x400u);
-    a5->var1 = v11->_qosLevel;
-    *&a5->var2 = 256;
-    v12 = IOGPUCommandQueueCreate([a3 deviceRef], a5, a6);
+    proc_pidpath(x, args, 0x400u);
+    args->var1 = v11->_qosLevel;
+    *&args->var2 = 256;
+    v12 = IOGPUCommandQueueCreate([queue deviceRef], args, size);
     v11->_commandQueue = v12;
     if (!v12)
     {
       goto LABEL_14;
     }
 
-    v13 = [a3 newDevicePoolAliasedCommandAllocator];
-    v11->_commandAllocator = v13;
-    if (!v13)
+    newDevicePoolAliasedCommandAllocator = [queue newDevicePoolAliasedCommandAllocator];
+    v11->_commandAllocator = newDevicePoolAliasedCommandAllocator;
+    if (!newDevicePoolAliasedCommandAllocator)
     {
       goto LABEL_14;
     }
 
-    if (a4 && (v14 = [a4 feedbackQueue]) != 0)
+    if (descriptor && (v14 = [descriptor feedbackQueue]) != 0)
     {
       v15 = dispatch_queue_create_with_target_V2("com.Metal4.CompletionQueue", 0, v14);
     }
@@ -89,18 +89,18 @@ LABEL_14:
   return v11;
 }
 
-- (IOGPUMetal4CommandQueue)initWithDevice:(id)a3 descriptor:(id)a4
+- (IOGPUMetal4CommandQueue)initWithDevice:(id)device descriptor:(id)descriptor
 {
   v6[129] = *MEMORY[0x1E69E9840];
-  result = [(IOGPUMetal4CommandQueue *)self initIOGPUMTL4CommandQueue:a3 descriptor:a4 args:v6 argsSize:1032];
+  result = [(IOGPUMetal4CommandQueue *)self initIOGPUMTL4CommandQueue:device descriptor:descriptor args:v6 argsSize:1032];
   v5 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (IOGPUMetal4CommandQueue)initWithDevice:(id)a3
+- (IOGPUMetal4CommandQueue)initWithDevice:(id)device
 {
   v5[129] = *MEMORY[0x1E69E9840];
-  result = [(IOGPUMetal4CommandQueue *)self initIOGPUMTL4CommandQueue:a3 descriptor:0 args:v5 argsSize:1032];
+  result = [(IOGPUMetal4CommandQueue *)self initIOGPUMTL4CommandQueue:device descriptor:0 args:v5 argsSize:1032];
   v4 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -134,22 +134,22 @@ LABEL_14:
   [(_MTL4CommandQueue *)&v5 dealloc];
 }
 
-- (id)preCommit:(const void *)a3 count:(unint64_t)a4 options:(id)a5
+- (id)preCommit:(const void *)commit count:(unint64_t)count options:(id)options
 {
   if (*__globalGPUCommPage)
   {
     self->_lastSubmissionID = IOGPUDeviceGetNextGlobalTraceID([*(&self->super.super.super.isa + *MEMORY[0x1E6974240]) deviceRef]);
-    if (a4)
+    if (count)
     {
       v9 = 0;
       v10 = 1;
       do
       {
-        v11 = a3[v9];
-        v12 = [v11 commandAllocator];
+        v11 = commit[v9];
+        commandAllocator = [v11 commandAllocator];
         if (*__globalGPUCommPage)
         {
-          v13 = v12;
+          v13 = commandAllocator;
           [v11 globalTraceObjectID];
           [v13 globalTraceObjectID];
           [v13 allocatedSize];
@@ -160,31 +160,31 @@ LABEL_14:
         v9 = v10++;
       }
 
-      while (v9 < a4);
+      while (v9 < count);
     }
   }
 
   v16.receiver = self;
   v16.super_class = IOGPUMetal4CommandQueue;
-  return [(_MTL4CommandQueue *)&v16 preCommit:a3 count:a4 options:a5];
+  return [(_MTL4CommandQueue *)&v16 preCommit:commit count:count options:options];
 }
 
-- (void)commitFillArgs:(id *)a3 count:(unint64_t)a4 args:(unint64_t)a5 argsSize:(unsigned int)a6 commitFeedback:(id)a7
+- (void)commitFillArgs:(id *)args count:(unint64_t)count args:(unint64_t)a5 argsSize:(unsigned int)size commitFeedback:(id)feedback
 {
-  if (a4)
+  if (count)
   {
-    v8 = a4;
+    countCopy = count;
     lastSubmissionID = self->_lastSubmissionID;
-    v11 = a6;
+    sizeCopy = size;
     do
     {
-      v12 = *a3;
-      v13 = [*a3 commandAllocator];
-      v14 = [v13 getGeneration];
-      v15 = [v12 commandBufferStorage];
-      if (v13)
+      v12 = *args;
+      commandAllocator = [*args commandAllocator];
+      getGeneration = [commandAllocator getGeneration];
+      commandBufferStorage = [v12 commandBufferStorage];
+      if (commandAllocator)
       {
-        v16 = v15 == 0;
+        v16 = commandBufferStorage == 0;
       }
 
       else
@@ -197,28 +197,28 @@ LABEL_14:
         [IOGPUMetal4CommandQueue commitFillArgs:count:args:argsSize:commitFeedback:];
       }
 
-      v17 = v15;
-      IOGPUMetal4CommandBufferStorageFinalizeCommandBuffer(v15);
+      v17 = commandBufferStorage;
+      IOGPUMetal4CommandBufferStorageFinalizeCommandBuffer(commandBufferStorage);
       aBlock[0] = MEMORY[0x1E69E9820];
-      --v8;
+      --countCopy;
       aBlock[1] = 3221225472;
       aBlock[2] = __77__IOGPUMetal4CommandQueue_commitFillArgs_count_args_argsSize_commitFeedback___block_invoke;
       aBlock[3] = &unk_1E8362FC8;
       aBlock[4] = self;
       aBlock[5] = v12;
-      v21 = v14;
+      v21 = getGeneration;
       aBlock[8] = v17;
       aBlock[9] = lastSubmissionID;
-      aBlock[6] = v13;
-      aBlock[7] = a7;
-      v22 = v8 == 0;
+      aBlock[6] = commandAllocator;
+      aBlock[7] = feedback;
+      v22 = countCopy == 0;
       *(a5 + 24) = _Block_copy(aBlock);
       [v12 fillCommandBufferArgs:a5];
-      a5 += v11;
-      ++a3;
+      a5 += sizeCopy;
+      ++args;
     }
 
-    while (v8);
+    while (countCopy);
   }
 }
 
@@ -240,16 +240,16 @@ void __77__IOGPUMetal4CommandQueue_commitFillArgs_count_args_argsSize_commitFeed
   [*(a1 + 32) commandBufferComplete:*(a1 + 40) commandAllocator:*(a1 + 48) commandAllocatorGeneration:*(a1 + 80) storage:*(a1 + 64) submissionID:*(a1 + 72) startTime:a2 completionTime:a3 kernelError:v9 error:v8 commitFeedback:*(a1 + 56) commitComplete:v10];
 }
 
-- (void)_commit:(const void *)a3 count:(unint64_t)a4 commitFeedback:(id)a5
+- (void)_commit:(const void *)_commit count:(unint64_t)count commitFeedback:(id)feedback
 {
-  if (!a4)
+  if (!count)
   {
     [IOGPUMetal4CommandQueue _commit:count:commitFeedback:];
   }
 
   [(IOGPUMetal4CommandQueue *)self commitMappingCommandBuffer];
-  v9 = [*(&self->super.super.super.isa + *MEMORY[0x1E6974240]) cmdBufArgsSize];
-  v10 = malloc_type_malloc(v9 * a4 + 32, 0x1080040130C75C4uLL);
+  cmdBufArgsSize = [*(&self->super.super.super.isa + *MEMORY[0x1E6974240]) cmdBufArgsSize];
+  v10 = malloc_type_malloc(cmdBufArgsSize * count + 32, 0x1080040130C75C4uLL);
   if (!v10)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -262,33 +262,33 @@ void __77__IOGPUMetal4CommandQueue_commitFillArgs_count_args_argsSize_commitFeed
 
   v11 = v10;
   v12 = v10 + 32;
-  [(IOGPUMetal4CommandQueue *)self commitFillArgs:a3 count:a4 args:v10 + 32 argsSize:v9 commitFeedback:a5];
+  [(IOGPUMetal4CommandQueue *)self commitFillArgs:_commit count:count args:v10 + 32 argsSize:cmdBufArgsSize commitFeedback:feedback];
   *v11 = v12;
   v11[1] = self;
-  *(v11 + 4) = v9;
-  *(v11 + 5) = a4;
+  *(v11 + 4) = cmdBufArgsSize;
+  *(v11 + 5) = count;
   v11[3] = self->_lastSubmissionID;
   v13 = *(&self->super.super.super.isa + *MEMORY[0x1E6974260]);
 
   dispatch_async_f(v13, v11, submitCommandBuffers);
 }
 
-- (void)signalEvent:(id)a3 value:(unint64_t)a4
+- (void)signalEvent:(id)event value:(unint64_t)value
 {
   *(&self->super.super.super.isa + *MEMORY[0x1E6974250]) = 0;
   *(&self->super.super.super.isa + *MEMORY[0x1E6974258]) = 0;
   [(IOGPUMetal4CommandQueue *)self commitMappingCommandBuffer];
-  if ([a3 _isSharedEvent])
+  if ([event _isSharedEvent])
   {
-    v7 = [a3 eventPort];
+    eventPort = [event eventPort];
     v8 = *(&self->super.super.super.isa + *MEMORY[0x1E6974260]);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __45__IOGPUMetal4CommandQueue_signalEvent_value___block_invoke;
     v12[3] = &unk_1E8362FF0;
-    v13 = v7;
+    v13 = eventPort;
     v12[4] = self;
-    v12[5] = a4;
+    v12[5] = value;
     v9 = v12;
     v10 = v8;
   }
@@ -300,9 +300,9 @@ void __77__IOGPUMetal4CommandQueue_commitFillArgs_count_args_argsSize_commitFeed
     v11[1] = 3221225472;
     v11[2] = __45__IOGPUMetal4CommandQueue_signalEvent_value___block_invoke_2;
     v11[3] = &unk_1E8363018;
-    v11[4] = a3;
+    v11[4] = event;
     v11[5] = self;
-    v11[6] = a4;
+    v11[6] = value;
     v9 = v11;
   }
 
@@ -318,37 +318,37 @@ uint64_t __45__IOGPUMetal4CommandQueue_signalEvent_value___block_invoke_2(uint64
   return IOGPUCommandQueueSignalMTLEvent(v4, v2, v3);
 }
 
-- (void)addResidencySet:(id)a3
+- (void)addResidencySet:(id)set
 {
   *(&self->super.super.super.isa + *MEMORY[0x1E6974250]) = 0;
-  v3 = a3;
+  setCopy = set;
   *(&self->super.super.super.isa + *MEMORY[0x1E6974258]) = 0;
-  _addResidencySets(self, &v3, 1uLL, 0);
+  _addResidencySets(self, &setCopy, 1uLL, 0);
 }
 
-- (void)addResidencySets:(id *)a3 count:(unint64_t)a4
-{
-  *(&self->super.super.super.isa + *MEMORY[0x1E6974250]) = 0;
-  *(&self->super.super.super.isa + *MEMORY[0x1E6974258]) = 0;
-  _addResidencySets(self, a3, a4, 1);
-}
-
-- (void)removeResidencySet:(id)a3
-{
-  *(&self->super.super.super.isa + *MEMORY[0x1E6974250]) = 0;
-  v3 = a3;
-  *(&self->super.super.super.isa + *MEMORY[0x1E6974258]) = 0;
-  _removeResidencySets(self, &v3, 1uLL, 0);
-}
-
-- (void)removeResidencySets:(id *)a3 count:(unint64_t)a4
+- (void)addResidencySets:(id *)sets count:(unint64_t)count
 {
   *(&self->super.super.super.isa + *MEMORY[0x1E6974250]) = 0;
   *(&self->super.super.super.isa + *MEMORY[0x1E6974258]) = 0;
-  _removeResidencySets(self, a3, a4, 0);
+  _addResidencySets(self, sets, count, 1);
 }
 
-- (void)updateBufferMappings:(id)a3 heap:(id)a4 operations:(id *)a5 count:(unint64_t)a6
+- (void)removeResidencySet:(id)set
+{
+  *(&self->super.super.super.isa + *MEMORY[0x1E6974250]) = 0;
+  setCopy = set;
+  *(&self->super.super.super.isa + *MEMORY[0x1E6974258]) = 0;
+  _removeResidencySets(self, &setCopy, 1uLL, 0);
+}
+
+- (void)removeResidencySets:(id *)sets count:(unint64_t)count
+{
+  *(&self->super.super.super.isa + *MEMORY[0x1E6974250]) = 0;
+  *(&self->super.super.super.isa + *MEMORY[0x1E6974258]) = 0;
+  _removeResidencySets(self, sets, count, 0);
+}
+
+- (void)updateBufferMappings:(id)mappings heap:(id)heap operations:(id *)operations count:(unint64_t)count
 {
   *(&self->super.super.super.isa + *MEMORY[0x1E6974250]) = 0;
   *(&self->super.super.super.isa + *MEMORY[0x1E6974258]) = 0;
@@ -360,13 +360,13 @@ uint64_t __45__IOGPUMetal4CommandQueue_signalEvent_value___block_invoke_2(uint64
     mappingCommandBuffer = self->_mappingCommandBuffer;
   }
 
-  [(IOGPUMetal4CommandBuffer *)mappingCommandBuffer updateBufferMappings:a3 heap:a4 operations:a5 count:a6];
+  [(IOGPUMetal4CommandBuffer *)mappingCommandBuffer updateBufferMappings:mappings heap:heap operations:operations count:count];
   self->_tier1ResourceMapping = 1;
 
   os_unfair_lock_unlock(&self->_mappingLock);
 }
 
-- (void)copyBufferMappingsFromBuffer:(id)a3 toBuffer:(id)a4 operations:(id *)a5 count:(unint64_t)a6
+- (void)copyBufferMappingsFromBuffer:(id)buffer toBuffer:(id)toBuffer operations:(id *)operations count:(unint64_t)count
 {
   *(&self->super.super.super.isa + *MEMORY[0x1E6974250]) = 0;
   *(&self->super.super.super.isa + *MEMORY[0x1E6974258]) = 0;
@@ -378,7 +378,7 @@ uint64_t __45__IOGPUMetal4CommandQueue_signalEvent_value___block_invoke_2(uint64
     mappingCommandBuffer = self->_mappingCommandBuffer;
   }
 
-  [(IOGPUMetal4CommandBuffer *)mappingCommandBuffer copyBufferMappingsFromBuffer:a3 toBuffer:a4 operations:a5 count:a6];
+  [(IOGPUMetal4CommandBuffer *)mappingCommandBuffer copyBufferMappingsFromBuffer:buffer toBuffer:toBuffer operations:operations count:count];
   self->_tier1ResourceMapping = 1;
 
   os_unfair_lock_unlock(&self->_mappingLock);
@@ -389,16 +389,16 @@ uint64_t __45__IOGPUMetal4CommandQueue_signalEvent_value___block_invoke_2(uint64
   os_unfair_lock_assert_owner(&self->_mappingLock);
   if (!self->_mappingCommandBuffer)
   {
-    v3 = [*(&self->super.super.super.isa + *MEMORY[0x1E6974240]) newCommandBuffer];
-    self->_mappingCommandBuffer = v3;
-    if (!v3)
+    newCommandBuffer = [*(&self->super.super.super.isa + *MEMORY[0x1E6974240]) newCommandBuffer];
+    self->_mappingCommandBuffer = newCommandBuffer;
+    if (!newCommandBuffer)
     {
       [IOGPUMetal4CommandQueue allocateMappingCommandBuffer];
     }
 
     commandAllocator = self->_commandAllocator;
 
-    [(IOGPUMetal4CommandBuffer *)v3 beginCommandBufferWithAllocator:commandAllocator];
+    [(IOGPUMetal4CommandBuffer *)newCommandBuffer beginCommandBufferWithAllocator:commandAllocator];
   }
 }
 

@@ -1,43 +1,43 @@
 @interface SceneDelegate
 - (UIEdgeInsets)_additionalSafeAreaInsets;
-- (void)_performNextStepWithInfo:(id)a3;
-- (void)doneViewControllerDidReboot:(id)a3;
-- (void)failureViewControllerDidReboot:(id)a3;
-- (void)languageViewController:(id)a3 didChooseLanguageCodeWithRegion:(id)a4;
-- (void)passcodeViewController:(id)a3 didEnterPasscode:(id)a4;
-- (void)promptToBootToNeRDFromViewController:(id)a3;
-- (void)promptToCancelAndRebootFromViewController:(id)a3;
-- (void)recoveryViewControllerDidBegin:(id)a3;
+- (void)_performNextStepWithInfo:(id)info;
+- (void)doneViewControllerDidReboot:(id)reboot;
+- (void)failureViewControllerDidReboot:(id)reboot;
+- (void)languageViewController:(id)controller didChooseLanguageCodeWithRegion:(id)region;
+- (void)passcodeViewController:(id)controller didEnterPasscode:(id)passcode;
+- (void)promptToBootToNeRDFromViewController:(id)controller;
+- (void)promptToCancelAndRebootFromViewController:(id)controller;
+- (void)recoveryViewControllerDidBegin:(id)begin;
 - (void)resetPasscodeView;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)showCompletionViewWithError:(id)a3;
-- (void)showLockoutViewUntilDate:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)showCompletionViewWithError:(id)error;
+- (void)showLockoutViewUntilDate:(id)date;
 - (void)showPasscodeView;
 - (void)showRebootView;
 - (void)showRecoveryView;
 - (void)showTermsView;
-- (void)showUserApprovalView:(id)a3;
+- (void)showUserApprovalView:(id)view;
 - (void)showWiFiView;
-- (void)termsViewControllerDidAgree:(id)a3;
-- (void)termsViewControllerDidDisagree:(id)a3;
-- (void)userApprovalViewControllerDidCancel:(id)a3;
-- (void)userApprovalViewControllerDidContinue:(id)a3;
-- (void)welcomeViewControllerDidCancel:(id)a3;
-- (void)welcomeViewControllerDidChooseDisable:(id)a3;
-- (void)welcomeViewControllerDidChooseLanguage:(id)a3;
-- (void)welcomeViewControllerDidChooseNeRD:(id)a3;
-- (void)welcomeViewControllerDidContinue:(id)a3;
-- (void)wifiViewControllerDelegateDidCancel:(id)a3;
-- (void)wifiViewControllerDelegateDidChooseNetwork:(id)a3;
+- (void)termsViewControllerDidAgree:(id)agree;
+- (void)termsViewControllerDidDisagree:(id)disagree;
+- (void)userApprovalViewControllerDidCancel:(id)cancel;
+- (void)userApprovalViewControllerDidContinue:(id)continue;
+- (void)welcomeViewControllerDidCancel:(id)cancel;
+- (void)welcomeViewControllerDidChooseDisable:(id)disable;
+- (void)welcomeViewControllerDidChooseLanguage:(id)language;
+- (void)welcomeViewControllerDidChooseNeRD:(id)d;
+- (void)welcomeViewControllerDidContinue:(id)continue;
+- (void)wifiViewControllerDelegateDidCancel:(id)cancel;
+- (void)wifiViewControllerDelegateDidChooseNetwork:(id)network;
 @end
 
 @implementation SceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v32 = a3;
-  v7 = [a4 persistentIdentifier];
-  v8 = [v7 isEqualToString:@"dre-main-view"];
+  sceneCopy = scene;
+  persistentIdentifier = [session persistentIdentifier];
+  v8 = [persistentIdentifier isEqualToString:@"dre-main-view"];
 
   if (v8)
   {
@@ -47,21 +47,21 @@
     v10 = objc_alloc_init(WiFiViewController);
     [(SceneDelegate *)self setWifiViewController:v10];
 
-    v11 = [(SceneDelegate *)self wifiViewController];
-    [v11 setDelegate:self];
+    wifiViewController = [(SceneDelegate *)self wifiViewController];
+    [wifiViewController setDelegate:self];
 
     v12 = [WFNetworkListController alloc];
-    v13 = [(SceneDelegate *)self wifiViewController];
-    v14 = [v12 initWithViewController:v13];
+    wifiViewController2 = [(SceneDelegate *)self wifiViewController];
+    v14 = [v12 initWithViewController:wifiViewController2];
     [(SceneDelegate *)self setWifiManager:v14];
 
-    v15 = [(SceneDelegate *)self wifiManager];
-    [v15 startScanning];
+    wifiManager = [(SceneDelegate *)self wifiManager];
+    [wifiManager startScanning];
 
     v16 = +[NetworkMonitor shared];
     [v16 activate];
 
-    v17 = [[UIWindow alloc] initWithWindowScene:v32];
+    v17 = [[UIWindow alloc] initWithWindowScene:sceneCopy];
     [(SceneDelegate *)self setWindow:v17];
 
     v18 = objc_alloc_init(WelcomeViewController);
@@ -74,33 +74,33 @@
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    v28 = [(SceneDelegate *)self navigationController];
-    [v28 setAdditionalSafeAreaInsets:{v21, v23, v25, v27}];
+    navigationController = [(SceneDelegate *)self navigationController];
+    [navigationController setAdditionalSafeAreaInsets:{v21, v23, v25, v27}];
 
-    v29 = [(SceneDelegate *)self window];
-    v30 = [(SceneDelegate *)self navigationController];
-    [v29 setRootViewController:v30];
+    window = [(SceneDelegate *)self window];
+    navigationController2 = [(SceneDelegate *)self navigationController];
+    [window setRootViewController:navigationController2];
 
-    v31 = [(SceneDelegate *)self window];
-    [v31 makeKeyAndVisible];
+    window2 = [(SceneDelegate *)self window];
+    [window2 makeKeyAndVisible];
   }
 }
 
-- (void)doneViewControllerDidReboot:(id)a3
+- (void)doneViewControllerDidReboot:(id)reboot
 {
-  v3 = [(SceneDelegate *)self flowController];
-  [v3 reboot];
+  flowController = [(SceneDelegate *)self flowController];
+  [flowController reboot];
 }
 
-- (void)failureViewControllerDidReboot:(id)a3
+- (void)failureViewControllerDidReboot:(id)reboot
 {
-  v3 = [(SceneDelegate *)self flowController];
-  [v3 reboot];
+  flowController = [(SceneDelegate *)self flowController];
+  [flowController reboot];
 }
 
-- (void)languageViewController:(id)a3 didChooseLanguageCodeWithRegion:(id)a4
+- (void)languageViewController:(id)controller didChooseLanguageCodeWithRegion:(id)region
 {
-  v5 = a4;
+  regionCopy = region;
   v6 = sub_100012608();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -110,16 +110,16 @@
   }
 
   v7 = +[NSUserDefaults standardUserDefaults];
-  [v7 setObject:v5 forKey:@"preferredLanguageCode"];
+  [v7 setObject:regionCopy forKey:@"preferredLanguageCode"];
 
   v8 = +[FBSystemService sharedInstance];
   [v8 exitAndRelaunch:self != 0];
 }
 
-- (void)passcodeViewController:(id)a3 didEnterPasscode:(id)a4
+- (void)passcodeViewController:(id)controller didEnterPasscode:(id)passcode
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  passcodeCopy = passcode;
   v8 = sub_100012608();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -128,10 +128,10 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}s: Passcode screen did provide passcode.", buf, 0xCu);
   }
 
-  if ([v7 length])
+  if ([passcodeCopy length])
   {
     v10 = DeviceRecoveryUserAuthParamPasscode;
-    v11 = v7;
+    v11 = passcodeCopy;
     v9 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   }
 
@@ -140,11 +140,11 @@
     v9 = &__NSDictionary0__struct;
   }
 
-  [v6 disable];
+  [controllerCopy disable];
   [(SceneDelegate *)self _performNextStepWithInfo:v9];
 }
 
-- (void)recoveryViewControllerDidBegin:(id)a3
+- (void)recoveryViewControllerDidBegin:(id)begin
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -157,7 +157,7 @@
   [(SceneDelegate *)self _performNextStepWithInfo:0];
 }
 
-- (void)termsViewControllerDidAgree:(id)a3
+- (void)termsViewControllerDidAgree:(id)agree
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -167,16 +167,16 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}s: Terms screen did agree.", &v7, 0xCu);
   }
 
-  v5 = [(SceneDelegate *)self flowController];
-  [v5 setPromptForPasscodeComplete:0];
+  flowController = [(SceneDelegate *)self flowController];
+  [flowController setPromptForPasscodeComplete:0];
 
-  v6 = [(SceneDelegate *)self flowController];
-  [v6 setUserApprovedDiagnosticsSubmission:1];
+  flowController2 = [(SceneDelegate *)self flowController];
+  [flowController2 setUserApprovedDiagnosticsSubmission:1];
 
   [(SceneDelegate *)self _performNextStepWithInfo:0];
 }
 
-- (void)termsViewControllerDidDisagree:(id)a3
+- (void)termsViewControllerDidDisagree:(id)disagree
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -186,18 +186,18 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}s: Terms screen did disagree.", &v7, 0xCu);
   }
 
-  v5 = [(SceneDelegate *)self flowController];
-  [v5 setPromptForPasscodeComplete:0];
+  flowController = [(SceneDelegate *)self flowController];
+  [flowController setPromptForPasscodeComplete:0];
 
-  v6 = [(SceneDelegate *)self flowController];
-  [v6 setUserApprovedDiagnosticsSubmission:0];
+  flowController2 = [(SceneDelegate *)self flowController];
+  [flowController2 setUserApprovedDiagnosticsSubmission:0];
 
   [(SceneDelegate *)self _performNextStepWithInfo:0];
 }
 
-- (void)userApprovalViewControllerDidCancel:(id)a3
+- (void)userApprovalViewControllerDidCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = sub_100012608();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -206,10 +206,10 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: User approval screen did cancel.", &v6, 0xCu);
   }
 
-  [(SceneDelegate *)self promptToCancelAndRebootFromViewController:v4];
+  [(SceneDelegate *)self promptToCancelAndRebootFromViewController:cancelCopy];
 }
 
-- (void)userApprovalViewControllerDidContinue:(id)a3
+- (void)userApprovalViewControllerDidContinue:(id)continue
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -222,9 +222,9 @@
   [(SceneDelegate *)self _performNextStepWithInfo:0];
 }
 
-- (void)welcomeViewControllerDidCancel:(id)a3
+- (void)welcomeViewControllerDidCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = sub_100012608();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -233,12 +233,12 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: Cancel on the welcome screen was pressed.", &v6, 0xCu);
   }
 
-  [(SceneDelegate *)self promptToCancelAndRebootFromViewController:v4];
+  [(SceneDelegate *)self promptToCancelAndRebootFromViewController:cancelCopy];
 }
 
-- (void)welcomeViewControllerDidChooseDisable:(id)a3
+- (void)welcomeViewControllerDidChooseDisable:(id)disable
 {
-  v4 = a3;
+  disableCopy = disable;
   v5 = sub_100012608();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -257,10 +257,10 @@
   v8 = [UIAlertController alertControllerWithTitle:@"Disable Recovery auto-boot and reboot to the main OS." message:0 preferredStyle:1];
   [v8 addAction:v6];
   [v8 addAction:v7];
-  [v4 presentViewController:v8 animated:1 completion:&stru_100028BC8];
+  [disableCopy presentViewController:v8 animated:1 completion:&stru_100028BC8];
 }
 
-- (void)welcomeViewControllerDidChooseLanguage:(id)a3
+- (void)welcomeViewControllerDidChooseLanguage:(id)language
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -272,13 +272,13 @@
 
   v5 = objc_alloc_init(LanguageViewController);
   [(LanguageViewController *)v5 setDelegate:self];
-  v6 = [(SceneDelegate *)self navigationController];
-  [v6 pushViewController:v5 animated:1];
+  navigationController = [(SceneDelegate *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 }
 
-- (void)welcomeViewControllerDidChooseNeRD:(id)a3
+- (void)welcomeViewControllerDidChooseNeRD:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_100012608();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -287,10 +287,10 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: Welcome screen did choose NeRD.", &v6, 0xCu);
   }
 
-  [(SceneDelegate *)self promptToBootToNeRDFromViewController:v4];
+  [(SceneDelegate *)self promptToBootToNeRDFromViewController:dCopy];
 }
 
-- (void)welcomeViewControllerDidContinue:(id)a3
+- (void)welcomeViewControllerDidContinue:(id)continue
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -300,13 +300,13 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}s: Welcome screen did continue.", &v6, 0xCu);
   }
 
-  v5 = [(SceneDelegate *)self flowController];
-  [v5 setPromptForTermsComplete:0];
+  flowController = [(SceneDelegate *)self flowController];
+  [flowController setPromptForTermsComplete:0];
 
   [(SceneDelegate *)self _performNextStepWithInfo:0];
 }
 
-- (void)wifiViewControllerDelegateDidChooseNetwork:(id)a3
+- (void)wifiViewControllerDelegateDidChooseNetwork:(id)network
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -319,9 +319,9 @@
   [(SceneDelegate *)self _performNextStepWithInfo:0];
 }
 
-- (void)wifiViewControllerDelegateDidCancel:(id)a3
+- (void)wifiViewControllerDelegateDidCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = sub_100012608();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -330,18 +330,18 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: WiFi screen did Cancel.", &v6, 0xCu);
   }
 
-  [(SceneDelegate *)self promptToCancelAndRebootFromViewController:v4];
+  [(SceneDelegate *)self promptToCancelAndRebootFromViewController:cancelCopy];
 }
 
 - (void)resetPasscodeView
 {
-  v2 = [(SceneDelegate *)self navigationController];
-  v3 = [v2 topViewController];
+  navigationController = [(SceneDelegate *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  [v3 enable];
+  [topViewController enable];
 }
 
-- (void)showCompletionViewWithError:(id)a3
+- (void)showCompletionViewWithError:(id)error
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -353,15 +353,15 @@
 
   v5 = objc_alloc_init(FailureViewController);
   [(FailureViewController *)v5 setDelegate:self];
-  v6 = [(SceneDelegate *)self navigationController];
+  navigationController = [(SceneDelegate *)self navigationController];
   v8 = v5;
   v7 = [NSArray arrayWithObjects:&v8 count:1];
-  [v6 setViewControllers:v7 animated:1];
+  [navigationController setViewControllers:v7 animated:1];
 }
 
-- (void)showLockoutViewUntilDate:(id)a3
+- (void)showLockoutViewUntilDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = sub_100012608();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -370,9 +370,9 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: Pushing lockout screen onto stack.", &v8, 0xCu);
   }
 
-  v6 = [[LockoutViewController alloc] initWithEndDate:v4];
-  v7 = [(SceneDelegate *)self navigationController];
-  [v7 pushViewController:v6 animated:1];
+  v6 = [[LockoutViewController alloc] initWithEndDate:dateCopy];
+  navigationController = [(SceneDelegate *)self navigationController];
+  [navigationController pushViewController:v6 animated:1];
 }
 
 - (void)showPasscodeView
@@ -387,8 +387,8 @@
 
   v4 = objc_alloc_init(PasscodeViewController);
   [(PasscodeViewController *)v4 setDelegate:self];
-  v5 = [(SceneDelegate *)self navigationController];
-  [v5 pushViewController:v4 animated:1];
+  navigationController = [(SceneDelegate *)self navigationController];
+  [navigationController pushViewController:v4 animated:1];
 }
 
 - (void)showRebootView
@@ -402,10 +402,10 @@
   }
 
   v4 = objc_alloc_init(RebootViewController);
-  v5 = [(SceneDelegate *)self navigationController];
+  navigationController = [(SceneDelegate *)self navigationController];
   v7 = v4;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
-  [v5 setViewControllers:v6 animated:1];
+  [navigationController setViewControllers:v6 animated:1];
 }
 
 - (void)showRecoveryView
@@ -420,10 +420,10 @@
 
   v4 = objc_alloc_init(RecoveryViewController);
   [(RecoveryViewController *)v4 setDelegate:self];
-  v5 = [(SceneDelegate *)self navigationController];
+  navigationController = [(SceneDelegate *)self navigationController];
   v7 = v4;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
-  [v5 setViewControllers:v6 animated:1];
+  [navigationController setViewControllers:v6 animated:1];
 }
 
 - (void)showTermsView
@@ -438,13 +438,13 @@
 
   v4 = objc_alloc_init(TermsViewController);
   [(TermsViewController *)v4 setDelegate:self];
-  v5 = [(SceneDelegate *)self navigationController];
-  [v5 pushViewController:v4 animated:1];
+  navigationController = [(SceneDelegate *)self navigationController];
+  [navigationController pushViewController:v4 animated:1];
 }
 
-- (void)showUserApprovalView:(id)a3
+- (void)showUserApprovalView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = sub_100012608();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -453,12 +453,12 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: Pushing user approval screen onto stack.", buf, 0xCu);
   }
 
-  v6 = [[UserApprovalViewController alloc] initWithUserApprovalOptions:v4];
+  v6 = [[UserApprovalViewController alloc] initWithUserApprovalOptions:viewCopy];
   [(UserApprovalViewController *)v6 setDelegate:self];
-  v7 = [(SceneDelegate *)self navigationController];
+  navigationController = [(SceneDelegate *)self navigationController];
   v9 = v6;
   v8 = [NSArray arrayWithObjects:&v9 count:1];
-  [v7 setViewControllers:v8 animated:1];
+  [navigationController setViewControllers:v8 animated:1];
 }
 
 - (void)showWiFiView
@@ -471,23 +471,23 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}s: Pushing wifi screen onto stack.", buf, 0xCu);
   }
 
-  v4 = [(SceneDelegate *)self navigationController];
-  v5 = [(SceneDelegate *)self wifiViewController];
-  v7 = v5;
+  navigationController = [(SceneDelegate *)self navigationController];
+  wifiViewController = [(SceneDelegate *)self wifiViewController];
+  v7 = wifiViewController;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
-  [v4 setViewControllers:v6 animated:1];
+  [navigationController setViewControllers:v6 animated:1];
 }
 
-- (void)_performNextStepWithInfo:(id)a3
+- (void)_performNextStepWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(SceneDelegate *)self flowController];
-  [v5 performNextStepWithInfo:v4];
+  infoCopy = info;
+  flowController = [(SceneDelegate *)self flowController];
+  [flowController performNextStepWithInfo:infoCopy];
 }
 
-- (void)promptToCancelAndRebootFromViewController:(id)a3
+- (void)promptToCancelAndRebootFromViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"RESTART_ALERT_BUTTON" value:&stru_100028E90 table:0];
   v14[0] = _NSConcreteStackBlock;
@@ -507,12 +507,12 @@
 
   [v13 addAction:v7];
   [v13 addAction:v10];
-  [v4 presentViewController:v13 animated:1 completion:&stru_100028C08];
+  [controllerCopy presentViewController:v13 animated:1 completion:&stru_100028C08];
 }
 
-- (void)promptToBootToNeRDFromViewController:(id)a3
+- (void)promptToBootToNeRDFromViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"RESTART_ALERT_BUTTON" value:&stru_100028E90 table:0];
   v14[0] = _NSConcreteStackBlock;
@@ -532,7 +532,7 @@
 
   [v13 addAction:v7];
   [v13 addAction:v10];
-  [v4 presentViewController:v13 animated:1 completion:&stru_100028C48];
+  [controllerCopy presentViewController:v13 animated:1 completion:&stru_100028C48];
 }
 
 - (UIEdgeInsets)_additionalSafeAreaInsets

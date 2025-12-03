@@ -1,21 +1,21 @@
 @interface _MFContentProtectionObserverWrapper
 - (MFContentProtectionObserver)observer;
-- (_MFContentProtectionObserverWrapper)initWithObserver:(id)a3 queue:(id)a4;
+- (_MFContentProtectionObserverWrapper)initWithObserver:(id)observer queue:(id)queue;
 - (void)dealloc;
 @end
 
 @implementation _MFContentProtectionObserverWrapper
 
-- (_MFContentProtectionObserverWrapper)initWithObserver:(id)a3 queue:(id)a4
+- (_MFContentProtectionObserverWrapper)initWithObserver:(id)observer queue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = _MFContentProtectionObserverWrapper;
   v6 = [(_MFContentProtectionObserverWrapper *)&v8 init];
   if (v6)
   {
-    v6->_observerReference = [MEMORY[0x277D24FC0] weakReferenceWithObject:a3];
-    dispatch_retain(a4);
-    v6->_queue = a4;
+    v6->_observerReference = [MEMORY[0x277D24FC0] weakReferenceWithObject:observer];
+    dispatch_retain(queue);
+    v6->_queue = queue;
   }
 
   return v6;
@@ -23,9 +23,9 @@
 
 - (MFContentProtectionObserver)observer
 {
-  v2 = [(MFWeakReferenceHolder *)self->_observerReference retainedReference];
+  retainedReference = [(MFWeakReferenceHolder *)self->_observerReference retainedReference];
 
-  return v2;
+  return retainedReference;
 }
 
 - (void)dealloc

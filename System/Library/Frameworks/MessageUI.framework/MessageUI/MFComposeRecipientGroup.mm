@@ -1,7 +1,7 @@
 @interface MFComposeRecipientGroup
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)wasCompleteMatch;
-- (MFComposeRecipientGroup)initWithChildren:(id)a3 displayString:(id)a4;
+- (MFComposeRecipientGroup)initWithChildren:(id)children displayString:(id)string;
 - (id)address;
 - (id)children;
 - (id)childrenWithCompleteMatches;
@@ -15,18 +15,18 @@
 
 @implementation MFComposeRecipientGroup
 
-- (MFComposeRecipientGroup)initWithChildren:(id)a3 displayString:(id)a4
+- (MFComposeRecipientGroup)initWithChildren:(id)children displayString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
+  childrenCopy = children;
+  stringCopy = string;
   v13.receiver = self;
   v13.super_class = MFComposeRecipientGroup;
   v9 = [(MFComposeRecipient *)&v13 initWithContact:0 address:0 kind:5];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_children, a3);
-    objc_storeStrong(&v10->super._displayString, a4);
+    objc_storeStrong(&v9->_children, children);
+    objc_storeStrong(&v10->super._displayString, string);
     v11 = v10;
   }
 
@@ -65,8 +65,8 @@
         v5 = MFLogGeneral();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
         {
-          v6 = [v16 ef_publicDescription];
-          [(MFComposeRecipientGroup *)v6 children];
+          ef_publicDescription = [v16 ef_publicDescription];
+          [(MFComposeRecipientGroup *)ef_publicDescription children];
         }
       }
 
@@ -123,13 +123,13 @@
 {
   if (!self->super._cachedSortedMembers)
   {
-    v3 = [(MFComposeRecipient *)self originContext];
-    v13 = [v3 searchTerm];
+    originContext = [(MFComposeRecipient *)self originContext];
+    searchTerm = [originContext searchTerm];
 
-    v4 = [(MFComposeRecipientGroup *)self children];
+    children = [(MFComposeRecipientGroup *)self children];
     v14 = 0;
     v15 = 0;
-    v5 = _sortedArrayByRelevancy(v13, v4, &v15, &v14);
+    v5 = _sortedArrayByRelevancy(searchTerm, children, &v15, &v14);
     v6 = v15;
     v7 = v14;
 
@@ -162,15 +162,15 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(MFComposeRecipientGroup *)self children];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  children = [(MFComposeRecipientGroup *)self children];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(children, "count")}];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(MFComposeRecipientGroup *)self children];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  children2 = [(MFComposeRecipientGroup *)self children];
+  v7 = [children2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -180,17 +180,17 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children2);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) address];
-        if (v10)
+        address = [*(*(&v14 + 1) + 8 * i) address];
+        if (address)
         {
-          [v5 addObject:v10];
+          [v5 addObject:address];
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [children2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -202,15 +202,15 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 children];
-    v6 = [(MFComposeRecipientGroup *)self children];
-    v7 = [v5 isEqualToArray:v6];
+    children = [equalCopy children];
+    children2 = [(MFComposeRecipientGroup *)self children];
+    v7 = [children isEqualToArray:children2];
   }
 
   else
@@ -231,11 +231,11 @@
 
   else
   {
-    v5 = [(MFComposeRecipient *)self originContext];
-    v6 = [v5 searchTerm];
-    v7 = [(MFComposeRecipientGroup *)self children];
+    originContext = [(MFComposeRecipient *)self originContext];
+    searchTerm = [originContext searchTerm];
+    children = [(MFComposeRecipientGroup *)self children];
     v9 = 0;
-    v4 = _fastCountOfCompleteMatches(v6, v7, &v9);
+    v4 = _fastCountOfCompleteMatches(searchTerm, children, &v9);
   }
 
   return v4 != 0;
@@ -268,7 +268,7 @@
 - (void)children
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_1BE819000, log, OS_LOG_TYPE_ERROR, "Error fetching members for contact of type CNAutocompleteResultTypeGroup: %{public}@", buf, 0xCu);
 }
 

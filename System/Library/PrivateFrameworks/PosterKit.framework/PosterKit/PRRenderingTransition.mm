@@ -1,14 +1,14 @@
 @interface PRRenderingTransition
 - (PRRenderingTransition)init;
-- (PRRenderingTransition)initWithType:(id)a3 initialStateMetadata:(id)a4 finalStateMetadata:(id)a5;
+- (PRRenderingTransition)initWithType:(id)type initialStateMetadata:(id)metadata finalStateMetadata:(id)stateMetadata;
 - (id)_observers;
 - (id)description;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)begin;
 - (void)dealloc;
 - (void)end;
-- (void)removeObserver:(id)a3;
-- (void)setCurrentStateMetadata:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setCurrentStateMetadata:(id)metadata;
 @end
 
 @implementation PRRenderingTransition
@@ -20,19 +20,19 @@
   return 0;
 }
 
-- (PRRenderingTransition)initWithType:(id)a3 initialStateMetadata:(id)a4 finalStateMetadata:(id)a5
+- (PRRenderingTransition)initWithType:(id)type initialStateMetadata:(id)metadata finalStateMetadata:(id)stateMetadata
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  metadataCopy = metadata;
+  stateMetadataCopy = stateMetadata;
   v26.receiver = self;
   v26.super_class = PRRenderingTransition;
   v12 = [(PRRenderingTransition *)&v26 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_type, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_type, type);
+    v14 = [metadataCopy copy];
     v15 = v14;
     v16 = MEMORY[0x1E695E0F8];
     if (v14)
@@ -48,7 +48,7 @@
     objc_storeStrong(&v13->_initialStateMetadata, v17);
 
     objc_storeStrong(&v13->_currentStateMetadata, v13->_initialStateMetadata);
-    v18 = [v11 copy];
+    v18 = [stateMetadataCopy copy];
     v19 = v18;
     if (v18)
     {
@@ -66,28 +66,28 @@
     lock = v13->_lock;
     v13->_lock = v21;
 
-    v23 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     lock_observers = v13->_lock_observers;
-    v13->_lock_observers = v23;
+    v13->_lock_observers = weakObjectsHashTable;
   }
 
   return v13;
 }
 
-- (void)setCurrentStateMetadata:(id)a3
+- (void)setCurrentStateMetadata:(id)metadata
 {
-  v4 = [a3 copy];
+  v4 = [metadata copy];
   currentStateMetadata = self->_currentStateMetadata;
   self->_currentStateMetadata = v4;
 
-  v6 = [(PRRenderingTransition *)self _observers];
-  v7 = [v6 allObjects];
+  _observers = [(PRRenderingTransition *)self _observers];
+  allObjects = [_observers allObjects];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__PRRenderingTransition_setCurrentStateMetadata___block_invoke;
   v8[3] = &unk_1E7843470;
   v8[4] = self;
-  [v7 bs_each:v8];
+  [allObjects bs_each:v8];
 }
 
 - (void)begin
@@ -98,46 +98,46 @@
   v6 = 138543874;
   v7 = v5;
   v8 = 2050;
-  v9 = a1;
+  selfCopy = self;
   v10 = 2114;
-  v11 = a1;
+  selfCopy2 = self;
   _os_log_error_impl(&dword_1A8AA7000, a2, OS_LOG_TYPE_ERROR, "<%{public}@:%{public}p> PRRenderingEvent %{public}@ has already begun.", &v6, 0x20u);
 }
 
 - (void)end
 {
-  v3 = [(PRRenderingTransition *)self _observers];
-  v4 = [v3 allObjects];
+  _observers = [(PRRenderingTransition *)self _observers];
+  allObjects = [_observers allObjects];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __28__PRRenderingTransition_end__block_invoke;
   v6[3] = &unk_1E7843470;
   v6[4] = self;
-  [v4 bs_each:v6];
+  [allObjects bs_each:v6];
 
   [(NSHashTable *)self->_lock_observers removeAllObjects];
   lock_observers = self->_lock_observers;
   self->_lock_observers = 0;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   lock = self->_lock;
-  v5 = a3;
+  observerCopy = observer;
   [(PFOSUnfairLock *)lock lock];
-  [(NSHashTable *)self->_lock_observers addObject:v5];
+  [(NSHashTable *)self->_lock_observers addObject:observerCopy];
 
   v6 = self->_lock;
 
   [(PFOSUnfairLock *)v6 unlock];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   lock = self->_lock;
-  v5 = a3;
+  observerCopy = observer;
   [(PFOSUnfairLock *)lock lock];
-  [(NSHashTable *)self->_lock_observers removeObject:v5];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
   v6 = self->_lock;
 
@@ -163,11 +163,11 @@
 
 - (id)description
 {
-  v3 = [(PRRenderingTransition *)self _observers];
+  _observers = [(PRRenderingTransition *)self _observers];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 stringWithFormat:@"<%@:%p, type: %@, initialStateMetadata: %@, currentStateMetadata: %@, finalStateMetadata: %@, observers: %@>", v6, self, self->_type, self->_initialStateMetadata, self->_currentStateMetadata, self->_finalStateMetadata, v3];
+  v7 = [v4 stringWithFormat:@"<%@:%p, type: %@, initialStateMetadata: %@, currentStateMetadata: %@, finalStateMetadata: %@, observers: %@>", v6, self, self->_type, self->_initialStateMetadata, self->_currentStateMetadata, self->_finalStateMetadata, _observers];
 
   return v7;
 }

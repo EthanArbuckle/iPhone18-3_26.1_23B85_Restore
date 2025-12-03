@@ -11,8 +11,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v2 = [a1 allKeys];
-  v3 = [v2 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  allKeys = [self allKeys];
+  v3 = [allKeys countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v3)
   {
     v4 = v3;
@@ -24,13 +24,13 @@
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allKeys);
         }
 
         v5 ^= (v5 << 6) + 2654435769u + (v5 >> 2) + [*(*(&v18 + 1) + 8 * i) hash];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v4 = [allKeys countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v4);
@@ -45,8 +45,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [a1 allValues];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  allValues = [self allValues];
+  v9 = [allValues countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -57,13 +57,13 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v5 ^= (v5 << 6) + 2654435769u + (v5 >> 2) + [*(*(&v14 + 1) + 8 * j) hash];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v10);

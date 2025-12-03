@@ -1,21 +1,21 @@
 @interface HKFeatureAvailabilityStoreServerConfiguration
-- (HKFeatureAvailabilityStoreServerConfiguration)initWithCoder:(id)a3;
-- (HKFeatureAvailabilityStoreServerConfiguration)initWithFeatureIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKFeatureAvailabilityStoreServerConfiguration)initWithCoder:(id)coder;
+- (HKFeatureAvailabilityStoreServerConfiguration)initWithFeatureIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFeatureAvailabilityStoreServerConfiguration
 
-- (HKFeatureAvailabilityStoreServerConfiguration)initWithFeatureIdentifier:(id)a3
+- (HKFeatureAvailabilityStoreServerConfiguration)initWithFeatureIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HKFeatureAvailabilityStoreServerConfiguration;
   v5 = [(HKFeatureAvailabilityStoreServerConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     featureIdentifier = v5->_featureIdentifier;
     v5->_featureIdentifier = v6;
   }
@@ -23,22 +23,22 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_storeStrong(v4 + 1, self->_featureIdentifier);
   return v4;
 }
 
-- (HKFeatureAvailabilityStoreServerConfiguration)initWithCoder:(id)a3
+- (HKFeatureAvailabilityStoreServerConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKFeatureAvailabilityStoreServerConfiguration;
-  v5 = [(HKTaskConfiguration *)&v9 initWithCoder:v4];
+  v5 = [(HKTaskConfiguration *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FeatureIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FeatureIdentifier"];
     featureIdentifier = v5->_featureIdentifier;
     v5->_featureIdentifier = v6;
   }
@@ -46,13 +46,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKFeatureAvailabilityStoreServerConfiguration;
-  v4 = a3;
-  [(HKTaskConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_featureIdentifier forKey:{@"FeatureIdentifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(HKTaskConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_featureIdentifier forKey:{@"FeatureIdentifier", v5.receiver, v5.super_class}];
 }
 
 @end

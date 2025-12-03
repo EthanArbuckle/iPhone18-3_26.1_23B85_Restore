@@ -1,48 +1,48 @@
 @interface PREditorElementLayoutController
-+ (CGRect)boundsForElements:(unint64_t)a3;
-+ (CGRect)boundsForElements:(unint64_t)a3 variant:(unint64_t)a4;
-+ (CGRect)frameForElements:(unint64_t)a3;
-+ (CGRect)frameForElements:(unint64_t)a3 variant:(unint64_t)a4;
-+ (void)clearRegisteredBoundingRectForTitleLayout:(unint64_t)a3;
-+ (void)registerBoundingRect:(CGRect)a3 forTitleLayout:(unint64_t)a4 variant:(unint64_t)a5;
-- (CGRect)boundsForElements:(unint64_t)a3 variant:(unint64_t)a4 withBoundingRect:(CGRect)a5;
-- (CGRect)boundsForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4;
-- (CGRect)frameForElements:(unint64_t)a3 variant:(unint64_t)a4 withBoundingRect:(CGRect)a5;
-- (CGRect)frameForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4;
-- (PREditorElementLayoutController)initWithTraitEnvironment:(id)a3;
++ (CGRect)boundsForElements:(unint64_t)elements;
++ (CGRect)boundsForElements:(unint64_t)elements variant:(unint64_t)variant;
++ (CGRect)frameForElements:(unint64_t)elements;
++ (CGRect)frameForElements:(unint64_t)elements variant:(unint64_t)variant;
++ (void)clearRegisteredBoundingRectForTitleLayout:(unint64_t)layout;
++ (void)registerBoundingRect:(CGRect)rect forTitleLayout:(unint64_t)layout variant:(unint64_t)variant;
+- (CGRect)boundsForElements:(unint64_t)elements variant:(unint64_t)variant withBoundingRect:(CGRect)rect;
+- (CGRect)boundsForElements:(unint64_t)elements withBoundingRect:(CGRect)rect;
+- (CGRect)frameForElements:(unint64_t)elements variant:(unint64_t)variant withBoundingRect:(CGRect)rect;
+- (CGRect)frameForElements:(unint64_t)elements withBoundingRect:(CGRect)rect;
+- (PREditorElementLayoutController)initWithTraitEnvironment:(id)environment;
 - (UITraitEnvironment)traitEnvironment;
-- (id)boundsAttributesForElements:(unint64_t)a3 variant:(unint64_t)a4 titleLayout:(unint64_t)a5 withBoundingRect:(CGRect)a6;
-- (id)frameAttributesForElements:(unint64_t)a3 variant:(unint64_t)a4 titleLayout:(unint64_t)a5 withBoundingRect:(CGRect)a6;
-- (void)setNumberingSystem:(id)a3;
+- (id)boundsAttributesForElements:(unint64_t)elements variant:(unint64_t)variant titleLayout:(unint64_t)layout withBoundingRect:(CGRect)rect;
+- (id)frameAttributesForElements:(unint64_t)elements variant:(unint64_t)variant titleLayout:(unint64_t)layout withBoundingRect:(CGRect)rect;
+- (void)setNumberingSystem:(id)system;
 @end
 
 @implementation PREditorElementLayoutController
 
-+ (void)registerBoundingRect:(CGRect)a3 forTitleLayout:(unint64_t)a4 variant:(unint64_t)a5
++ (void)registerBoundingRect:(CGRect)rect forTitleLayout:(unint64_t)layout variant:(unint64_t)variant
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v11 = registeredTitleLayoutToBoundingRects;
   if (!registeredTitleLayoutToBoundingRects)
   {
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v13 = registeredTitleLayoutToBoundingRects;
-    registeredTitleLayoutToBoundingRects = v12;
+    registeredTitleLayoutToBoundingRects = dictionary;
 
     v11 = registeredTitleLayoutToBoundingRects;
   }
 
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:layout];
   v15 = [v11 objectForKeyedSubscript:v14];
 
   if (!v15)
   {
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v17 = registeredTitleLayoutToBoundingRects;
-    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    [v17 setObject:v16 forKeyedSubscript:v18];
+    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:layout];
+    [v17 setObject:dictionary2 forKeyedSubscript:v18];
   }
 
   *v24 = x;
@@ -51,22 +51,22 @@
   *&v24[3] = height;
   v19 = [MEMORY[0x1E696B098] valueWithBytes:v24 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
   v20 = registeredTitleLayoutToBoundingRects;
-  v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:layout];
   v22 = [v20 objectForKeyedSubscript:v21];
-  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:variant];
   [v22 setObject:v19 forKeyedSubscript:v23];
 }
 
-+ (void)clearRegisteredBoundingRectForTitleLayout:(unint64_t)a3
++ (void)clearRegisteredBoundingRectForTitleLayout:(unint64_t)layout
 {
   v3 = registeredTitleLayoutToBoundingRects;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:layout];
   [v3 removeObjectForKey:v4];
 }
 
-+ (CGRect)frameForElements:(unint64_t)a3
++ (CGRect)frameForElements:(unint64_t)elements
 {
-  [a1 frameForElements:a3 variant:0];
+  [self frameForElements:elements variant:0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -74,9 +74,9 @@
   return result;
 }
 
-+ (CGRect)boundsForElements:(unint64_t)a3
++ (CGRect)boundsForElements:(unint64_t)elements
 {
-  [a1 boundsForElements:a3 variant:0];
+  [self boundsForElements:elements variant:0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -84,21 +84,21 @@
   return result;
 }
 
-+ (CGRect)frameForElements:(unint64_t)a3 variant:(unint64_t)a4
++ (CGRect)frameForElements:(unint64_t)elements variant:(unint64_t)variant
 {
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
   v7 = frameForElements_variant__mainScreenLayoutController;
   if (!frameForElements_variant__mainScreenLayoutController)
   {
-    v8 = [[PREditorElementLayoutController alloc] initWithTraitEnvironment:v6];
+    v8 = [[PREditorElementLayoutController alloc] initWithTraitEnvironment:mainScreen];
     v9 = frameForElements_variant__mainScreenLayoutController;
     frameForElements_variant__mainScreenLayoutController = v8;
 
     v7 = frameForElements_variant__mainScreenLayoutController;
   }
 
-  [v6 bounds];
-  [v7 frameForElements:a3 variant:a4 withBoundingRect:?];
+  [mainScreen bounds];
+  [v7 frameForElements:elements variant:variant withBoundingRect:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -115,9 +115,9 @@
   return result;
 }
 
-+ (CGRect)boundsForElements:(unint64_t)a3 variant:(unint64_t)a4
++ (CGRect)boundsForElements:(unint64_t)elements variant:(unint64_t)variant
 {
-  [a1 frameForElements:a3 variant:a4];
+  [self frameForElements:elements variant:variant];
   v6 = 0.0;
   v7 = 0.0;
   result.size.height = v5;
@@ -127,17 +127,17 @@
   return result;
 }
 
-- (PREditorElementLayoutController)initWithTraitEnvironment:(id)a3
+- (PREditorElementLayoutController)initWithTraitEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v10.receiver = self;
   v10.super_class = PREditorElementLayoutController;
   v5 = [(PREditorElementLayoutController *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_traitEnvironment, v4);
-    v7 = [objc_alloc(MEMORY[0x1E6999638]) initWithTraitEnvironment:v4];
+    objc_storeWeak(&v5->_traitEnvironment, environmentCopy);
+    v7 = [objc_alloc(MEMORY[0x1E6999638]) initWithTraitEnvironment:environmentCopy];
     csLayoutController = v6->_csLayoutController;
     v6->_csLayoutController = v7;
   }
@@ -145,7 +145,7 @@
   return v6;
 }
 
-- (void)setNumberingSystem:(id)a3
+- (void)setNumberingSystem:(id)system
 {
   csLayoutController = self->_csLayoutController;
   v4 = CSTimeNumberingSystemStringToType();
@@ -153,9 +153,9 @@
   [(CSProminentLayoutController *)csLayoutController setNumberingSystem:v4];
 }
 
-- (CGRect)frameForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4
+- (CGRect)frameForElements:(unint64_t)elements withBoundingRect:(CGRect)rect
 {
-  [(PREditorElementLayoutController *)self frameForElements:a3 variant:0 withBoundingRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(PREditorElementLayoutController *)self frameForElements:elements variant:0 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -163,9 +163,9 @@
   return result;
 }
 
-- (CGRect)boundsForElements:(unint64_t)a3 withBoundingRect:(CGRect)a4
+- (CGRect)boundsForElements:(unint64_t)elements withBoundingRect:(CGRect)rect
 {
-  [(PREditorElementLayoutController *)self boundsForElements:a3 variant:0 withBoundingRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(PREditorElementLayoutController *)self boundsForElements:elements variant:0 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -173,9 +173,9 @@
   return result;
 }
 
-- (CGRect)frameForElements:(unint64_t)a3 variant:(unint64_t)a4 withBoundingRect:(CGRect)a5
+- (CGRect)frameForElements:(unint64_t)elements variant:(unint64_t)variant withBoundingRect:(CGRect)rect
 {
-  v5 = [(PREditorElementLayoutController *)self frameAttributesForElements:a3 variant:a4 titleLayout:0 withBoundingRect:a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  v5 = [(PREditorElementLayoutController *)self frameAttributesForElements:elements variant:variant titleLayout:0 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [v5 rect];
   v7 = v6;
   v9 = v8;
@@ -193,9 +193,9 @@
   return result;
 }
 
-- (CGRect)boundsForElements:(unint64_t)a3 variant:(unint64_t)a4 withBoundingRect:(CGRect)a5
+- (CGRect)boundsForElements:(unint64_t)elements variant:(unint64_t)variant withBoundingRect:(CGRect)rect
 {
-  v5 = [(PREditorElementLayoutController *)self boundsAttributesForElements:a3 variant:a4 titleLayout:0 withBoundingRect:a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  v5 = [(PREditorElementLayoutController *)self boundsAttributesForElements:elements variant:variant titleLayout:0 withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [v5 rect];
   v7 = v6;
   v9 = v8;
@@ -213,39 +213,39 @@
   return result;
 }
 
-- (id)frameAttributesForElements:(unint64_t)a3 variant:(unint64_t)a4 titleLayout:(unint64_t)a5 withBoundingRect:(CGRect)a6
+- (id)frameAttributesForElements:(unint64_t)elements variant:(unint64_t)variant titleLayout:(unint64_t)layout withBoundingRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  elementsCopy = elements;
   v13 = *MEMORY[0x1E695F050];
   v14 = *(MEMORY[0x1E695F050] + 8);
   v15 = *(MEMORY[0x1E695F050] + 16);
   v16 = *(MEMORY[0x1E695F050] + 24);
-  if (a3)
+  if (elements)
   {
     v17 = registeredTitleLayoutToBoundingRects;
-    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:layout];
     v19 = [v17 objectForKeyedSubscript:v18];
-    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:variant];
     v21 = [v19 objectForKeyedSubscript:v20];
 
     if (!v21)
     {
 LABEL_5:
-      if (a4 - 1 >= 3)
+      if (variant - 1 >= 3)
       {
-        v26 = 0;
+        variantCopy = 0;
       }
 
       else
       {
-        v26 = a4;
+        variantCopy = variant;
       }
 
-      [(CSProminentLayoutController *)self->_csLayoutController frameForElements:v11 & 0x3F | ((v11 >> 6) << 7) variant:v26 withBoundingRect:x, y, width, height];
+      [(CSProminentLayoutController *)self->_csLayoutController frameForElements:elementsCopy & 0x3F | ((elementsCopy >> 6) << 7) variant:variantCopy withBoundingRect:x, y, width, height];
       v39.origin.x = v27;
       v39.origin.y = v28;
       v39.size.width = v29;
@@ -277,25 +277,25 @@ LABEL_5:
     v15 = v35.size.width;
     v16 = v35.size.height;
 
-    v11 &= ~1uLL;
+    elementsCopy &= ~1uLL;
   }
 
-  if (v11)
+  if (elementsCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_9:
-  v31 = [[PREditorElementLayoutAttributes alloc] initWithRect:a4 variant:0 resolvedTitleLayout:v13, v14, v15, v16];
+  v31 = [[PREditorElementLayoutAttributes alloc] initWithRect:variant variant:0 resolvedTitleLayout:v13, v14, v15, v16];
 
   return v31;
 }
 
-- (id)boundsAttributesForElements:(unint64_t)a3 variant:(unint64_t)a4 titleLayout:(unint64_t)a5 withBoundingRect:(CGRect)a6
+- (id)boundsAttributesForElements:(unint64_t)elements variant:(unint64_t)variant titleLayout:(unint64_t)layout withBoundingRect:(CGRect)rect
 {
-  v7 = [(PREditorElementLayoutController *)self frameAttributesForElements:a3 variant:a4 titleLayout:a5 withBoundingRect:a6.origin.x, a6.origin.y, a6.size.width, a6.size.height];
+  v7 = [(PREditorElementLayoutController *)self frameAttributesForElements:elements variant:variant titleLayout:layout withBoundingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [v7 rect];
-  v10 = -[PREditorElementLayoutAttributes initWithRect:variant:resolvedTitleLayout:]([PREditorElementLayoutAttributes alloc], "initWithRect:variant:resolvedTitleLayout:", a4, [v7 resolvedTitleLayout], 0.0, 0.0, v8, v9);
+  v10 = -[PREditorElementLayoutAttributes initWithRect:variant:resolvedTitleLayout:]([PREditorElementLayoutAttributes alloc], "initWithRect:variant:resolvedTitleLayout:", variant, [v7 resolvedTitleLayout], 0.0, 0.0, v8, v9);
 
   return v10;
 }

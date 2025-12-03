@@ -14,25 +14,25 @@
 - (CAFUInt32Range)speedMaxMPHRange;
 - (NSMeasurement)speedMaxKMH;
 - (NSMeasurement)speedMaxMPH;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFDisplayedSpeed
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFDisplayedSpeed;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846AB7B0])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846AB7B0])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -45,12 +45,12 @@
   [(CAFSpeedDisplay *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846AB7B0])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846AB7B0])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -66,13 +66,13 @@
 - (CAFMeasurementCharacteristic)speedMaxKMHCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000048"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000048"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000048"];
@@ -91,27 +91,27 @@
 
 - (NSMeasurement)speedMaxKMH
 {
-  v2 = [(CAFDisplayedSpeed *)self speedMaxKMHCharacteristic];
-  v3 = [v2 measurementValue];
+  speedMaxKMHCharacteristic = [(CAFDisplayedSpeed *)self speedMaxKMHCharacteristic];
+  measurementValue = [speedMaxKMHCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFUInt32Range)speedMaxKMHRange
 {
-  v2 = [(CAFDisplayedSpeed *)self speedMaxKMHCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 uInt32Range];
+  speedMaxKMHCharacteristic = [(CAFDisplayedSpeed *)self speedMaxKMHCharacteristic];
+  range = [speedMaxKMHCharacteristic range];
+  uInt32Range = [range uInt32Range];
 
-  return v4;
+  return uInt32Range;
 }
 
 - (CAFMeasurementRange)speedMaxKMHMeasurementRange
 {
-  v3 = [(CAFDisplayedSpeed *)self speedMaxKMHRange];
-  v4 = [(CAFDisplayedSpeed *)self speedMaxKMH];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  speedMaxKMHRange = [(CAFDisplayedSpeed *)self speedMaxKMHRange];
+  speedMaxKMH = [(CAFDisplayedSpeed *)self speedMaxKMH];
+  unit = [speedMaxKMH unit];
+  v6 = [speedMaxKMHRange measurementRangeWithUnit:unit];
 
   return v6;
 }
@@ -119,13 +119,13 @@
 - (CAFMeasurementCharacteristic)speedMaxMPHCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000049"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000049"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000049"];
@@ -144,27 +144,27 @@
 
 - (NSMeasurement)speedMaxMPH
 {
-  v2 = [(CAFDisplayedSpeed *)self speedMaxMPHCharacteristic];
-  v3 = [v2 measurementValue];
+  speedMaxMPHCharacteristic = [(CAFDisplayedSpeed *)self speedMaxMPHCharacteristic];
+  measurementValue = [speedMaxMPHCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFUInt32Range)speedMaxMPHRange
 {
-  v2 = [(CAFDisplayedSpeed *)self speedMaxMPHCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 uInt32Range];
+  speedMaxMPHCharacteristic = [(CAFDisplayedSpeed *)self speedMaxMPHCharacteristic];
+  range = [speedMaxMPHCharacteristic range];
+  uInt32Range = [range uInt32Range];
 
-  return v4;
+  return uInt32Range;
 }
 
 - (CAFMeasurementRange)speedMaxMPHMeasurementRange
 {
-  v3 = [(CAFDisplayedSpeed *)self speedMaxMPHRange];
-  v4 = [(CAFDisplayedSpeed *)self speedMaxMPH];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  speedMaxMPHRange = [(CAFDisplayedSpeed *)self speedMaxMPHRange];
+  speedMaxMPH = [(CAFDisplayedSpeed *)self speedMaxMPH];
+  unit = [speedMaxMPH unit];
+  v6 = [speedMaxMPHRange measurementRangeWithUnit:unit];
 
   return v6;
 }
@@ -172,13 +172,13 @@
 - (CAFBoolCharacteristic)showSecondarySpeedCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000046000002"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000046000002"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000046000002"];
@@ -197,16 +197,16 @@
 
 - (BOOL)showSecondarySpeed
 {
-  v2 = [(CAFDisplayedSpeed *)self showSecondarySpeedCharacteristic];
-  v3 = [v2 BOOLValue];
+  showSecondarySpeedCharacteristic = [(CAFDisplayedSpeed *)self showSecondarySpeedCharacteristic];
+  bOOLValue = [showSecondarySpeedCharacteristic BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasShowSecondarySpeed
 {
-  v2 = [(CAFDisplayedSpeed *)self showSecondarySpeedCharacteristic];
-  v3 = v2 != 0;
+  showSecondarySpeedCharacteristic = [(CAFDisplayedSpeed *)self showSecondarySpeedCharacteristic];
+  v3 = showSecondarySpeedCharacteristic != 0;
 
   return v3;
 }
@@ -214,13 +214,13 @@
 - (BOOL)registeredForSpeedMaxKMH
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000048"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000048"];
 
   return v10;
 }
@@ -228,13 +228,13 @@
 - (BOOL)registeredForSpeedMaxMPH
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000049"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000049"];
 
   return v10;
 }
@@ -242,13 +242,13 @@
 - (BOOL)registeredForShowSecondarySpeed
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000046000002"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000046000002"];
 
   return v10;
 }

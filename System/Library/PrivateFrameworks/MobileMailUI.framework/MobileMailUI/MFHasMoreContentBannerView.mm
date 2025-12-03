@@ -1,34 +1,34 @@
 @interface MFHasMoreContentBannerView
-+ (id)bannerWithFrame:(CGRect)a3 isPlainText:(BOOL)a4 remainingBytes:(unint64_t)a5;
-- (MFHasMoreContentBannerView)initWithFrame:(CGRect)a3;
++ (id)bannerWithFrame:(CGRect)frame isPlainText:(BOOL)text remainingBytes:(unint64_t)bytes;
+- (MFHasMoreContentBannerView)initWithFrame:(CGRect)frame;
 - (MFHasMoreContentBannerViewDelegate)delegate;
-- (void)_titleControlTapped:(id)a3;
+- (void)_titleControlTapped:(id)tapped;
 - (void)reloadData;
 @end
 
 @implementation MFHasMoreContentBannerView
 
-+ (id)bannerWithFrame:(CGRect)a3 isPlainText:(BOOL)a4 remainingBytes:(unint64_t)a5
++ (id)bannerWithFrame:(CGRect)frame isPlainText:(BOOL)text remainingBytes:(unint64_t)bytes
 {
-  if (a4)
+  if (text)
   {
-    v5 = [[_MFPlainTextBannerView alloc] initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    v5 = [[_MFPlainTextBannerView alloc] initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   }
 
   else
   {
-    v5 = [[_MFPartiallyDownloadedBannerView alloc] initWithFrame:a5 remainingBytes:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    v5 = [[_MFPartiallyDownloadedBannerView alloc] initWithFrame:bytes remainingBytes:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   }
 
   return v5;
 }
 
-- (MFHasMoreContentBannerView)initWithFrame:(CGRect)a3
+- (MFHasMoreContentBannerView)initWithFrame:(CGRect)frame
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = MFHasMoreContentBannerView;
-  v3 = [(MFSuggestionBannerView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFSuggestionBannerView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -44,8 +44,8 @@
     v6 = [v5 actionWithTitle:&stru_2826D1AD8 handler:&v12];
     [v4 setPrimaryAction:{v6, v12, v13, v14, v15}];
 
-    v7 = [MEMORY[0x277D75348] mailInteractiveColor];
-    v8 = [MFSuggestionBannerView bannerIconViewForSymbol:*MEMORY[0x277D259C8] tintColor:v7];
+    mailInteractiveColor = [MEMORY[0x277D75348] mailInteractiveColor];
+    v8 = [MFSuggestionBannerView bannerIconViewForSymbol:*MEMORY[0x277D259C8] tintColor:mailInteractiveColor];
     v19[0] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
     [v4 setImageSGViews:v9];
@@ -66,7 +66,7 @@ void __44__MFHasMoreContentBannerView_initWithFrame___block_invoke(uint64_t a1)
   [WeakRetained primaryAction];
 }
 
-- (void)_titleControlTapped:(id)a3
+- (void)_titleControlTapped:(id)tapped
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -74,11 +74,11 @@ void __44__MFHasMoreContentBannerView_initWithFrame___block_invoke(uint64_t a1)
   v6[3] = &unk_2781816C0;
   v6[4] = self;
   [MEMORY[0x277D75D18] animateWithDuration:v6 animations:0.35];
-  v4 = [(MFSuggestionBannerView *)self banner];
-  [v4 setUserInteractionEnabled:0];
+  banner = [(MFSuggestionBannerView *)self banner];
+  [banner setUserInteractionEnabled:0];
 
-  v5 = [(MFHasMoreContentBannerView *)self delegate];
-  [v5 didTapHasMoreContentBannerView:self];
+  delegate = [(MFHasMoreContentBannerView *)self delegate];
+  [delegate didTapHasMoreContentBannerView:self];
 }
 
 void __50__MFHasMoreContentBannerView__titleControlTapped___block_invoke(uint64_t a1)
@@ -95,17 +95,17 @@ void __50__MFHasMoreContentBannerView__titleControlTapped___block_invoke(uint64_
 
 - (void)reloadData
 {
-  v6 = [(MFSuggestionBannerView *)self banner];
+  banner = [(MFSuggestionBannerView *)self banner];
   v3 = [(MFHasMoreContentBannerView *)self actionStringIsDownloading:0];
-  [v6 setActionTitle:v3];
+  [banner setActionTitle:v3];
 
-  [v6 setActionButtonType:0];
-  [(MFSuggestionBannerView *)self setBanner:v6];
-  v4 = [(MFSuggestionBannerView *)self banner];
-  [v4 setTintAdjustmentMode:0];
+  [banner setActionButtonType:0];
+  [(MFSuggestionBannerView *)self setBanner:banner];
+  banner2 = [(MFSuggestionBannerView *)self banner];
+  [banner2 setTintAdjustmentMode:0];
 
-  v5 = [(MFSuggestionBannerView *)self banner];
-  [v5 setUserInteractionEnabled:1];
+  banner3 = [(MFSuggestionBannerView *)self banner];
+  [banner3 setUserInteractionEnabled:1];
 }
 
 - (MFHasMoreContentBannerViewDelegate)delegate

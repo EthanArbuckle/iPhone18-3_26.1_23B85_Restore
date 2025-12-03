@@ -1,14 +1,14 @@
 @interface ICCoreDataIndexer
-- (ICCoreDataIndexer)initWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4;
+- (ICCoreDataIndexer)initWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext;
 - (ICCoreDataIndexerDelegate)delegate;
 - (id)newSnapshotFromIndex;
-- (id)sectionSnapshotsForSectionType:(unint64_t)a3;
-- (void)controller:(id)a3 didChangeContentWithDifference:(id)a4;
-- (void)indexObjectsWithCompletion:(id)a3;
-- (void)performAndWaitForFetchedResultsControllers:(id)a3 block:(id)a4;
-- (void)reloadData:(id)a3;
+- (id)sectionSnapshotsForSectionType:(unint64_t)type;
+- (void)controller:(id)controller didChangeContentWithDifference:(id)difference;
+- (void)indexObjectsWithCompletion:(id)completion;
+- (void)performAndWaitForFetchedResultsControllers:(id)controllers block:(id)block;
+- (void)reloadData:(id)data;
 - (void)reloadDataAndWait;
-- (void)unsafelyIndexAllObjectsForFetchedResultsController:(id)a3;
+- (void)unsafelyIndexAllObjectsForFetchedResultsController:(id)controller;
 - (void)unsafelyReloadData;
 @end
 
@@ -19,21 +19,21 @@
   v34 = *MEMORY[0x1E69E9840];
   if (-[ICCoreDataIndexer needsFetchedResultsControllerUpdate](self, "needsFetchedResultsControllerUpdate") || (-[ICCoreDataIndexer activeFetchedResultsControllers](self, "activeFetchedResultsControllers"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 count], v3, !v4))
   {
-    v5 = [(ICCoreDataIndexer *)self modernManagedObjectContext];
+    modernManagedObjectContext = [(ICCoreDataIndexer *)self modernManagedObjectContext];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __39__ICCoreDataIndexer_unsafelyReloadData__block_invoke;
     v31[3] = &unk_1E8468BA0;
     v31[4] = self;
-    [v5 performBlockAndWait:v31];
+    [modernManagedObjectContext performBlockAndWait:v31];
 
-    v6 = [(ICCoreDataIndexer *)self legacyManagedObjectContext];
+    legacyManagedObjectContext = [(ICCoreDataIndexer *)self legacyManagedObjectContext];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __39__ICCoreDataIndexer_unsafelyReloadData__block_invoke_2;
     v30[3] = &unk_1E8468BA0;
     v30[4] = self;
-    [v6 performBlockAndWait:v30];
+    [legacyManagedObjectContext performBlockAndWait:v30];
 
     [(ICCoreDataIndexer *)self setNeedsFetchedResultsControllerUpdate:0];
   }
@@ -159,25 +159,25 @@ void __39__ICCoreDataIndexer_unsafelyReloadData__block_invoke_5(uint64_t a1, voi
 
 - (id)newSnapshotFromIndex
 {
-  v3 = [(ICCoreDataIndexer *)self legacyManagedObjectContext];
-  v4 = [(ICCoreDataIndexer *)self modernManagedObjectContext];
-  v5 = [(ICCoreDataIndexer *)self newSnapshotFromIndexWithLegacyManagedObjectContext:v3 modernManagedObjectContext:v4];
+  legacyManagedObjectContext = [(ICCoreDataIndexer *)self legacyManagedObjectContext];
+  modernManagedObjectContext = [(ICCoreDataIndexer *)self modernManagedObjectContext];
+  v5 = [(ICCoreDataIndexer *)self newSnapshotFromIndexWithLegacyManagedObjectContext:legacyManagedObjectContext modernManagedObjectContext:modernManagedObjectContext];
 
   return v5;
 }
 
-- (ICCoreDataIndexer)initWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4
+- (ICCoreDataIndexer)initWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  objectContextCopy = objectContext;
   v15.receiver = self;
   v15.super_class = ICCoreDataIndexer;
   v9 = [(ICCoreDataIndexer *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_legacyManagedObjectContext, a3);
-    objc_storeStrong(&v10->_modernManagedObjectContext, a4);
+    objc_storeStrong(&v9->_legacyManagedObjectContext, context);
+    objc_storeStrong(&v10->_modernManagedObjectContext, objectContext);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.notes.indexer-reload-data-serial-queue", v11);
     reloadDataSerialQueue = v10->_reloadDataSerialQueue;
@@ -187,18 +187,18 @@ void __39__ICCoreDataIndexer_unsafelyReloadData__block_invoke_5(uint64_t a1, voi
   return v10;
 }
 
-- (void)reloadData:(id)a3
+- (void)reloadData:(id)data
 {
-  v4 = a3;
-  v5 = [(ICCoreDataIndexer *)self reloadDataSerialQueue];
+  dataCopy = data;
+  reloadDataSerialQueue = [(ICCoreDataIndexer *)self reloadDataSerialQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__ICCoreDataIndexer_reloadData___block_invoke;
   v7[3] = &unk_1E8468CF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dataCopy;
+  v6 = dataCopy;
+  dispatch_async(reloadDataSerialQueue, v7);
 }
 
 uint64_t __32__ICCoreDataIndexer_reloadData___block_invoke(uint64_t a1)
@@ -218,7 +218,7 @@ uint64_t __32__ICCoreDataIndexer_reloadData___block_invoke(uint64_t a1)
 - (void)reloadDataAndWait
 {
   v3 = dispatch_semaphore_create(0);
-  v4 = [(ICCoreDataIndexer *)self reloadDataSerialQueue];
+  reloadDataSerialQueue = [(ICCoreDataIndexer *)self reloadDataSerialQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__ICCoreDataIndexer_reloadDataAndWait__block_invoke;
@@ -226,7 +226,7 @@ uint64_t __32__ICCoreDataIndexer_reloadData___block_invoke(uint64_t a1)
   v8[4] = self;
   v5 = v3;
   v9 = v5;
-  dispatch_sync(v4, v8);
+  dispatch_sync(reloadDataSerialQueue, v8);
 
   v6 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v5, v6))
@@ -247,19 +247,19 @@ intptr_t __38__ICCoreDataIndexer_reloadDataAndWait__block_invoke(uint64_t a1)
   return dispatch_semaphore_signal(v2);
 }
 
-- (void)indexObjectsWithCompletion:(id)a3
+- (void)indexObjectsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(ICCoreDataIndexer *)self reloadDataSerialQueue];
+  reloadDataSerialQueue = [(ICCoreDataIndexer *)self reloadDataSerialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__ICCoreDataIndexer_indexObjectsWithCompletion___block_invoke;
   block[3] = &unk_1E846D350;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(reloadDataSerialQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -290,33 +290,33 @@ void __48__ICCoreDataIndexer_indexObjectsWithCompletion___block_invoke(uint64_t 
   }
 }
 
-- (id)sectionSnapshotsForSectionType:(unint64_t)a3
+- (id)sectionSnapshotsForSectionType:(unint64_t)type
 {
-  v5 = [(ICCoreDataIndexer *)self legacyManagedObjectContext];
-  v6 = [(ICCoreDataIndexer *)self modernManagedObjectContext];
-  v7 = [(ICCoreDataIndexer *)self sectionSnapshotsForSectionType:a3 legacyManagedObjectContext:v5 modernManagedObjectContext:v6];
+  legacyManagedObjectContext = [(ICCoreDataIndexer *)self legacyManagedObjectContext];
+  modernManagedObjectContext = [(ICCoreDataIndexer *)self modernManagedObjectContext];
+  v7 = [(ICCoreDataIndexer *)self sectionSnapshotsForSectionType:type legacyManagedObjectContext:legacyManagedObjectContext modernManagedObjectContext:modernManagedObjectContext];
 
   return v7;
 }
 
-- (void)controller:(id)a3 didChangeContentWithDifference:(id)a4
+- (void)controller:(id)controller didChangeContentWithDifference:(id)difference
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICCoreDataIndexer *)self delegate];
-  [v8 indexer:self didChangeContentWithDifference:v6 controller:v7];
+  differenceCopy = difference;
+  controllerCopy = controller;
+  delegate = [(ICCoreDataIndexer *)self delegate];
+  [delegate indexer:self didChangeContentWithDifference:differenceCopy controller:controllerCopy];
 }
 
-- (void)performAndWaitForFetchedResultsControllers:(id)a3 block:(id)a4
+- (void)performAndWaitForFetchedResultsControllers:(id)controllers block:(id)block
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  controllersCopy = controllers;
+  blockCopy = block;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  v7 = [controllersCopy countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v7)
   {
     v8 = v7;
@@ -327,28 +327,28 @@ void __48__ICCoreDataIndexer_indexObjectsWithCompletion___block_invoke(uint64_t 
       {
         if (*v38 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(controllersCopy);
         }
 
         v11 = *(*(&v37 + 1) + 8 * i);
-        v12 = [v11 managedObjectContext];
-        v13 = [v12 concurrencyType];
+        managedObjectContext = [v11 managedObjectContext];
+        concurrencyType = [managedObjectContext concurrencyType];
 
-        if (v13 == 2)
+        if (concurrencyType == 2)
         {
-          v14 = [v11 managedObjectContext];
+          managedObjectContext2 = [v11 managedObjectContext];
           v35[0] = MEMORY[0x1E69E9820];
           v35[1] = 3221225472;
           v35[2] = __70__ICCoreDataIndexer_performAndWaitForFetchedResultsControllers_block___block_invoke;
           v35[3] = &unk_1E8468CD0;
-          v15 = v6;
+          v15 = blockCopy;
           v35[4] = v11;
           v36 = v15;
-          [v14 performBlockAndWait:v35];
+          [managedObjectContext2 performBlockAndWait:v35];
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v8 = [controllersCopy countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v8);
@@ -359,7 +359,7 @@ void __48__ICCoreDataIndexer_indexObjectsWithCompletion___block_invoke(uint64_t 
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v17 = v5;
+  v17 = controllersCopy;
   v18 = [v17 countByEnumeratingWithState:&v31 objects:v41 count:16];
   if (v18)
   {
@@ -375,21 +375,21 @@ void __48__ICCoreDataIndexer_indexObjectsWithCompletion___block_invoke(uint64_t 
         }
 
         v22 = *(*(&v31 + 1) + 8 * j);
-        v23 = [v22 managedObjectContext];
-        v24 = [v23 concurrencyType];
+        managedObjectContext3 = [v22 managedObjectContext];
+        concurrencyType2 = [managedObjectContext3 concurrencyType];
 
-        if (v24 != 2)
+        if (concurrencyType2 != 2)
         {
           dispatch_group_enter(v16);
-          v25 = [v22 managedObjectContext];
+          managedObjectContext4 = [v22 managedObjectContext];
           v28[0] = MEMORY[0x1E69E9820];
           v28[1] = 3221225472;
           v28[2] = __70__ICCoreDataIndexer_performAndWaitForFetchedResultsControllers_block___block_invoke_2;
           v28[3] = &unk_1E846AFD0;
-          v30 = v6;
+          v30 = blockCopy;
           v28[4] = v22;
           v29 = v16;
-          [v25 performBlock:v28];
+          [managedObjectContext4 performBlock:v28];
         }
       }
 
@@ -434,18 +434,18 @@ void __70__ICCoreDataIndexer_performAndWaitForFetchedResultsControllers_block___
   dispatch_group_leave(v3);
 }
 
-- (void)unsafelyIndexAllObjectsForFetchedResultsController:(id)a3
+- (void)unsafelyIndexAllObjectsForFetchedResultsController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 sections];
+  controllerCopy = controller;
+  sections = [controllerCopy sections];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__ICCoreDataIndexer_unsafelyIndexAllObjectsForFetchedResultsController___block_invoke;
   v7[3] = &unk_1E846DBC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = controllerCopy;
+  v6 = controllerCopy;
+  [sections enumerateObjectsUsingBlock:v7];
 }
 
 - (ICCoreDataIndexerDelegate)delegate

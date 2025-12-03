@@ -1,10 +1,10 @@
 @interface TSWPDropCapSpacing
-+ (id)dropCapSpacingWithLineCount:(unint64_t)a3 elevatedLineCount:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)dropCapSpacingWithLineCount:(unint64_t)count elevatedLineCount:(unint64_t)lineCount;
+- (BOOL)isEqual:(id)equal;
 - (TSWPDropCapSpacing)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (unint64_t)computedFlagsWithPropertyMap:(id)a3;
+- (unint64_t)computedFlagsWithPropertyMap:(id)map;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -37,21 +37,21 @@
   [(TSWPDropCapSpacing *)&v2 dealloc];
 }
 
-+ (id)dropCapSpacingWithLineCount:(unint64_t)a3 elevatedLineCount:(unint64_t)a4
++ (id)dropCapSpacingWithLineCount:(unint64_t)count elevatedLineCount:(unint64_t)lineCount
 {
-  v6 = objc_alloc_init(a1);
-  [v6 setLineCount:a3];
-  [v6 setElevatedLineCount:a4];
+  v6 = objc_alloc_init(self);
+  [v6 setLineCount:count];
+  [v6 setElevatedLineCount:lineCount];
   return v6;
 }
 
-- (unint64_t)computedFlagsWithPropertyMap:(id)a3
+- (unint64_t)computedFlagsWithPropertyMap:(id)map
 {
   result = self->_flags;
   if (!result)
   {
     [(TSWPDropCapSpacing *)self padding];
-    if (v6 == 0.0 && ![a3 containsProperty:38])
+    if (v6 == 0.0 && ![map containsProperty:38])
     {
       return 102;
     }
@@ -65,7 +65,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setLineCount:self->_lineCount];
@@ -78,18 +78,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
   if (v4)
   {
     v5 = v4;
-    v6 = [(TSWPDropCapSpacing *)self allowSpanParagraphs];
-    if (v6 == [v5 allowSpanParagraphs] && (v7 = -[TSWPDropCapSpacing lineCount](self, "lineCount"), v7 == objc_msgSend(v5, "lineCount")) && (v8 = -[TSWPDropCapSpacing elevatedLineCount](self, "elevatedLineCount"), v8 == objc_msgSend(v5, "elevatedLineCount")) && (-[TSWPDropCapSpacing padding](self, "padding"), v10 = v9, objc_msgSend(v5, "padding"), v10 == v11) && (v12 = -[TSWPDropCapSpacing followingLineCount](self, "followingLineCount"), v12 == objc_msgSend(v5, "followingLineCount")))
+    allowSpanParagraphs = [(TSWPDropCapSpacing *)self allowSpanParagraphs];
+    if (allowSpanParagraphs == [v5 allowSpanParagraphs] && (v7 = -[TSWPDropCapSpacing lineCount](self, "lineCount"), v7 == objc_msgSend(v5, "lineCount")) && (v8 = -[TSWPDropCapSpacing elevatedLineCount](self, "elevatedLineCount"), v8 == objc_msgSend(v5, "elevatedLineCount")) && (-[TSWPDropCapSpacing padding](self, "padding"), v10 = v9, objc_msgSend(v5, "padding"), v10 == v11) && (v12 = -[TSWPDropCapSpacing followingLineCount](self, "followingLineCount"), v12 == objc_msgSend(v5, "followingLineCount")))
     {
-      v13 = [(TSWPDropCapSpacing *)self flags];
-      LOBYTE(v4) = v13 == [v5 flags];
+      flags = [(TSWPDropCapSpacing *)self flags];
+      LOBYTE(v4) = flags == [v5 flags];
     }
 
     else
@@ -103,8 +103,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TSWPDropCapSpacing *)self allowSpanParagraphs];
-  v4 = v3 | (2 * [(TSWPDropCapSpacing *)self lineCount]);
+  allowSpanParagraphs = [(TSWPDropCapSpacing *)self allowSpanParagraphs];
+  v4 = allowSpanParagraphs | (2 * [(TSWPDropCapSpacing *)self lineCount]);
   v5 = v4 ^ (8 * [(TSWPDropCapSpacing *)self elevatedLineCount]);
   [(TSWPDropCapSpacing *)self padding];
   return v5 ^ (v6 << 6) ^ ([(TSWPDropCapSpacing *)self followingLineCount]<< 10) ^ self->_flags;
@@ -115,10 +115,10 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TSWPDropCapSpacing *)self lineCount];
-  v7 = [(TSWPDropCapSpacing *)self elevatedLineCount];
+  lineCount = [(TSWPDropCapSpacing *)self lineCount];
+  elevatedLineCount = [(TSWPDropCapSpacing *)self elevatedLineCount];
   padding = self->_padding;
-  v9 = [(TSWPDropCapSpacing *)self followingLineCount];
+  followingLineCount = [(TSWPDropCapSpacing *)self followingLineCount];
   if ([(TSWPDropCapSpacing *)self allowSpanParagraphs])
   {
     v10 = @"YES";
@@ -129,7 +129,7 @@
     v10 = @"NO";
   }
 
-  return [v3 stringWithFormat:@"<%@: lineCount=%lu elevatedLineCount=%lu padding=%f followingLineCount=%lu allowSpanParagraphs=%@ flags=%lu>", v5, v6, v7, *&padding, v9, v10, -[TSWPDropCapSpacing flags](self, "flags")];
+  return [v3 stringWithFormat:@"<%@: lineCount=%lu elevatedLineCount=%lu padding=%f followingLineCount=%lu allowSpanParagraphs=%@ flags=%lu>", v5, lineCount, elevatedLineCount, *&padding, followingLineCount, v10, -[TSWPDropCapSpacing flags](self, "flags")];
 }
 
 @end

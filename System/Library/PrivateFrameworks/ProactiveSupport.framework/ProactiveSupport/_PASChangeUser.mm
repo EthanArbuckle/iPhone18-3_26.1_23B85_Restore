@@ -54,8 +54,8 @@ LABEL_15:
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v5];
     v7 = [MEMORY[0x1E696AD98] numberWithInt:getpid()];
-    v8 = [v7 stringValue];
-    v9 = [v6 stringByReplacingOccurrencesOfString:@"%p" withString:v8];
+    stringValue = [v7 stringValue];
+    v9 = [v6 stringByReplacingOccurrencesOfString:@"%p" withString:stringValue];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {

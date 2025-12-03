@@ -1,25 +1,25 @@
 @interface MCActivityViewController
-- (MCActivityViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MCActivityViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIActivityIndicatorView)spinnerView;
 - (UIImageView)completionIconImageView;
 - (UILabel)longWaitingWarningLabel;
 - (UILabel)textLabel;
 - (void)_scheduleLongWaitingWarning;
-- (void)completeActivityAnimated:(BOOL)a3;
+- (void)completeActivityAnimated:(BOOL)animated;
 - (void)loadView;
-- (void)setCompletionText:(id)a3;
-- (void)setInProgresText:(id)a3;
-- (void)setIsInProgress:(BOOL)a3;
+- (void)setCompletionText:(id)text;
+- (void)setInProgresText:(id)text;
+- (void)setIsInProgress:(BOOL)progress;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation MCActivityViewController
 
-- (MCActivityViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MCActivityViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = MCActivityViewController;
-  result = [(MCActivityViewController *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(MCActivityViewController *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->_isInProgress = 1;
@@ -33,25 +33,25 @@
   v13.receiver = self;
   v13.super_class = MCActivityViewController;
   [(MCActivityViewController *)&v13 loadView];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(MCActivityViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(MCActivityViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(MCActivityViewController *)self view];
-  v6 = [(MCActivityViewController *)self spinnerView];
-  [v5 addSubview:v6];
+  view2 = [(MCActivityViewController *)self view];
+  spinnerView = [(MCActivityViewController *)self spinnerView];
+  [view2 addSubview:spinnerView];
 
-  v7 = [(MCActivityViewController *)self view];
-  v8 = [(MCActivityViewController *)self textLabel];
-  [v7 addSubview:v8];
+  view3 = [(MCActivityViewController *)self view];
+  textLabel = [(MCActivityViewController *)self textLabel];
+  [view3 addSubview:textLabel];
 
-  v9 = [(MCActivityViewController *)self view];
-  v10 = [(MCActivityViewController *)self completionIconImageView];
-  [v9 addSubview:v10];
+  view4 = [(MCActivityViewController *)self view];
+  completionIconImageView = [(MCActivityViewController *)self completionIconImageView];
+  [view4 addSubview:completionIconImageView];
 
-  v11 = [(MCActivityViewController *)self view];
-  v12 = [(MCActivityViewController *)self longWaitingWarningLabel];
-  [v11 addSubview:v12];
+  view5 = [(MCActivityViewController *)self view];
+  longWaitingWarningLabel = [(MCActivityViewController *)self longWaitingWarningLabel];
+  [view5 addSubview:longWaitingWarningLabel];
 }
 
 - (void)viewDidLayoutSubviews
@@ -59,59 +59,59 @@
   v37.receiver = self;
   v37.super_class = MCActivityViewController;
   [(MCActivityViewController *)&v37 viewDidLayoutSubviews];
-  v3 = [(MCActivityViewController *)self view];
-  [v3 center];
+  view = [(MCActivityViewController *)self view];
+  [view center];
   v5 = v4;
   v7 = v6;
-  v8 = [(MCActivityViewController *)self spinnerView];
-  [v8 setCenter:{v5, v7}];
+  spinnerView = [(MCActivityViewController *)self spinnerView];
+  [spinnerView setCenter:{v5, v7}];
 
-  v9 = [(MCActivityViewController *)self spinnerView];
-  [v9 frame];
+  spinnerView2 = [(MCActivityViewController *)self spinnerView];
+  [spinnerView2 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(MCActivityViewController *)self completionIconImageView];
-  [v18 setFrame:{v11, v13, v15, v17}];
+  completionIconImageView = [(MCActivityViewController *)self completionIconImageView];
+  [completionIconImageView setFrame:{v11, v13, v15, v17}];
 
-  v19 = [(MCActivityViewController *)self textLabel];
-  v20 = [(MCActivityViewController *)self view];
-  [v20 bounds];
-  [v19 sizeThatFits:{CGRectGetWidth(v38) + -16.0, 1.79769313e308}];
+  textLabel = [(MCActivityViewController *)self textLabel];
+  view2 = [(MCActivityViewController *)self view];
+  [view2 bounds];
+  [textLabel sizeThatFits:{CGRectGetWidth(v38) + -16.0, 1.79769313e308}];
   v22 = v21;
 
-  v23 = [(MCActivityViewController *)self spinnerView];
-  [v23 frame];
+  spinnerView3 = [(MCActivityViewController *)self spinnerView];
+  [spinnerView3 frame];
   v24 = CGRectGetMaxY(v39) + 8.0;
-  v25 = [(MCActivityViewController *)self view];
-  [v25 bounds];
+  view3 = [(MCActivityViewController *)self view];
+  [view3 bounds];
   v26 = CGRectGetWidth(v40) + -16.0;
-  v27 = [(MCActivityViewController *)self textLabel];
-  [v27 setFrame:{8.0, v24, v26, v22}];
+  textLabel2 = [(MCActivityViewController *)self textLabel];
+  [textLabel2 setFrame:{8.0, v24, v26, v22}];
 
-  v28 = [(MCActivityViewController *)self longWaitingWarningLabel];
-  v29 = [(MCActivityViewController *)self view];
-  [v29 bounds];
-  [v28 sizeThatFits:{CGRectGetWidth(v41) + -16.0, 1.79769313e308}];
+  longWaitingWarningLabel = [(MCActivityViewController *)self longWaitingWarningLabel];
+  view4 = [(MCActivityViewController *)self view];
+  [view4 bounds];
+  [longWaitingWarningLabel sizeThatFits:{CGRectGetWidth(v41) + -16.0, 1.79769313e308}];
   v31 = v30;
 
-  v32 = [(MCActivityViewController *)self textLabel];
-  [v32 frame];
+  textLabel3 = [(MCActivityViewController *)self textLabel];
+  [textLabel3 frame];
   v33 = CGRectGetMaxY(v42) + 8.0;
-  v34 = [(MCActivityViewController *)self view];
-  [v34 bounds];
+  view5 = [(MCActivityViewController *)self view];
+  [view5 bounds];
   v35 = CGRectGetWidth(v43) + -16.0;
-  v36 = [(MCActivityViewController *)self longWaitingWarningLabel];
-  [v36 setFrame:{8.0, v33, v35, v31}];
+  longWaitingWarningLabel2 = [(MCActivityViewController *)self longWaitingWarningLabel];
+  [longWaitingWarningLabel2 setFrame:{8.0, v33, v35, v31}];
 }
 
-- (void)completeActivityAnimated:(BOOL)a3
+- (void)completeActivityAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(MCActivityViewController *)self setIsInProgress:0];
   v5 = 0.200000003;
-  if (!v3)
+  if (!animatedCopy)
   {
     v5 = 0.0;
   }
@@ -140,12 +140,12 @@ void __53__MCActivityViewController_completeActivityAnimated___block_invoke(uint
   [v6 setNeedsDisplay];
 }
 
-- (void)setInProgresText:(id)a3
+- (void)setInProgresText:(id)text
 {
-  v8 = a3;
+  textCopy = text;
   if (![(NSString *)self->_inProgresText isEqualToString:?])
   {
-    v4 = [v8 copy];
+    v4 = [textCopy copy];
     inProgresText = self->_inProgresText;
     self->_inProgresText = v4;
   }
@@ -153,27 +153,27 @@ void __53__MCActivityViewController_completeActivityAnimated___block_invoke(uint
   if ([(MCActivityViewController *)self isInProgress])
   {
     v6 = self->_inProgresText;
-    v7 = [(MCActivityViewController *)self textLabel];
-    [v7 setText:v6];
+    textLabel = [(MCActivityViewController *)self textLabel];
+    [textLabel setText:v6];
   }
 }
 
-- (void)setIsInProgress:(BOOL)a3
+- (void)setIsInProgress:(BOOL)progress
 {
-  self->_isInProgress = a3;
-  if (!a3)
+  self->_isInProgress = progress;
+  if (!progress)
   {
-    v4 = [(MCActivityViewController *)self longWaitingWarningLabel];
-    [v4 setHidden:1];
+    longWaitingWarningLabel = [(MCActivityViewController *)self longWaitingWarningLabel];
+    [longWaitingWarningLabel setHidden:1];
   }
 }
 
-- (void)setCompletionText:(id)a3
+- (void)setCompletionText:(id)text
 {
-  v8 = a3;
+  textCopy = text;
   if (![(NSString *)self->_completionText isEqualToString:?])
   {
-    v4 = [v8 copy];
+    v4 = [textCopy copy];
     completionText = self->_completionText;
     self->_completionText = v4;
   }
@@ -181,8 +181,8 @@ void __53__MCActivityViewController_completeActivityAnimated___block_invoke(uint
   if (![(MCActivityViewController *)self isInProgress])
   {
     v6 = self->_completionText;
-    v7 = [(MCActivityViewController *)self textLabel];
-    [v7 setText:v6];
+    textLabel = [(MCActivityViewController *)self textLabel];
+    [textLabel setText:v6];
   }
 }
 
@@ -210,11 +210,11 @@ void __53__MCActivityViewController_completeActivityAnimated___block_invoke(uint
     v5 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark.circle.fill"];
     v6 = [v4 initWithImage:v5];
 
-    v7 = [MEMORY[0x277D75348] DMCProfileVerifiedColor];
-    [(UIImageView *)v6 setTintColor:v7];
+    dMCProfileVerifiedColor = [MEMORY[0x277D75348] DMCProfileVerifiedColor];
+    [(UIImageView *)v6 setTintColor:dMCProfileVerifiedColor];
 
-    v8 = [(UIImageView *)v6 image];
-    v9 = [v8 imageWithRenderingMode:2];
+    image = [(UIImageView *)v6 image];
+    v9 = [image imageWithRenderingMode:2];
     [(UIImageView *)v6 setImage:v9];
 
     [(UIImageView *)v6 setContentMode:1];

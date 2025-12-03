@@ -1,26 +1,26 @@
 @interface BLSecureOfflineKeyDeliveryRequest
 - (BLSecureOfflineKeyDeliveryRequest)init;
-- (BLSecureOfflineKeyDeliveryRequest)initWithRequestContext:(id)a3;
+- (BLSecureOfflineKeyDeliveryRequest)initWithRequestContext:(id)context;
 - (id)_deviceGUID;
 - (void)_createSPCData;
-- (void)_ksq_fetchCKCDataUsingSPC:(id)a3 forKeyRequest:(id)a4;
-- (void)contentKeySession:(id)a3 contentKeyRequest:(id)a4 didFailWithError:(id)a5;
-- (void)contentKeySession:(id)a3 didProvideContentKeyRequest:(id)a4;
-- (void)contentKeySession:(id)a3 didProvidePersistableContentKeyRequest:(id)a4;
+- (void)_ksq_fetchCKCDataUsingSPC:(id)c forKeyRequest:(id)request;
+- (void)contentKeySession:(id)session contentKeyRequest:(id)request didFailWithError:(id)error;
+- (void)contentKeySession:(id)session didProvideContentKeyRequest:(id)request;
+- (void)contentKeySession:(id)session didProvidePersistableContentKeyRequest:(id)request;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation BLSecureOfflineKeyDeliveryRequest
 
-- (BLSecureOfflineKeyDeliveryRequest)initWithRequestContext:(id)a3
+- (BLSecureOfflineKeyDeliveryRequest)initWithRequestContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9 = objc_msgSend_init(self, v6, v7, v8);
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong((v9 + 320), a3);
+    objc_storeStrong((v9 + 320), context);
   }
 
   return v10;
@@ -48,17 +48,17 @@
   return v2;
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8 = objc_msgSend_bl_sharedHLSKeyRequestOperationQueue(MEMORY[0x277CCABD8], v5, v6, v7);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_241D13498;
   v11[3] = &unk_278D158A0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
   objc_msgSend_performRequestOnOperationQueue_withCompletionHandler_(self, v10, v8, v11);
 }
 
@@ -72,7 +72,7 @@
     {
       v7 = objc_msgSend_title(self->_mediaItem, v4, v5, v6);
       *buf = 138412290;
-      v31 = v7;
+      selfCopy = v7;
       _os_log_impl(&dword_241D0D000, v3, OS_LOG_TYPE_DEFAULT, "Fetching key request certificate for '%@'", buf, 0xCu);
     }
 
@@ -98,7 +98,7 @@
       keyCertificateURL = self->_keyCertificateURL;
       keyServerURL = self->_keyServerURL;
       *buf = 138543874;
-      v31 = self;
+      selfCopy = self;
       v32 = 2114;
       v33 = keyCertificateURL;
       v34 = 2114;
@@ -141,13 +141,13 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_ksq_fetchCKCDataUsingSPC:(id)a3 forKeyRequest:(id)a4
+- (void)_ksq_fetchCKCDataUsingSPC:(id)c forKeyRequest:(id)request
 {
   v109[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  cCopy = c;
+  requestCopy = request;
   dispatch_assert_queue_V2(self->_keySessionQueue);
-  if (v6)
+  if (cCopy)
   {
     v8 = objc_alloc(MEMORY[0x277CBEB38]);
     v11 = objc_msgSend_initWithObjectsAndKeys_(v8, v9, &unk_2853E1F60, v10, @"id", 0);
@@ -158,9 +158,9 @@
     }
 
     v95 = v18;
-    if (objc_msgSend_length(v6, v15, v16, v17))
+    if (objc_msgSend_length(cCopy, v15, v16, v17))
     {
-      v21 = objc_msgSend_base64EncodedStringWithOptions_(v6, v19, 0, v20);
+      v21 = objc_msgSend_base64EncodedStringWithOptions_(cCopy, v19, 0, v20);
       if (objc_msgSend_length(v21, v22, v23, v24))
       {
         objc_msgSend_setObject_forKey_(v11, v25, v21, @"spc");
@@ -194,7 +194,7 @@
         if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v102 = self;
+          selfCopy3 = self;
           _os_log_impl(&dword_241D0D000, v54, OS_LOG_TYPE_ERROR, "[%{public}@]: Failed to obtain companion guid.", buf, 0xCu);
         }
       }
@@ -221,7 +221,7 @@
       if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v102 = self;
+        selfCopy3 = self;
         v103 = 2112;
         v104 = v62;
         _os_log_impl(&dword_241D0D000, v64, OS_LOG_TYPE_ERROR, "[%{public}@]: Failed to serialize key server request data with error:  %@", buf, 0x16u);
@@ -251,7 +251,7 @@
       {
         v68 = objc_msgSend_title(self->_mediaItem, v65, v66, v67);
         *buf = 138412290;
-        v102 = v68;
+        selfCopy3 = v68;
         _os_log_impl(&dword_241D0D000, v64, OS_LOG_TYPE_DEFAULT, "Performing offline key request for '%@'", buf, 0xCu);
       }
 
@@ -268,7 +268,7 @@
       v96[2] = sub_241D14114;
       v96[3] = &unk_278D15A88;
       v96[4] = self;
-      v97 = v7;
+      v97 = requestCopy;
       objc_msgSend_enqueueDataRequest_withCompletionHandler_(v84, v85, v80, v96);
     }
   }
@@ -279,7 +279,7 @@
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v102 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_241D0D000, v50, OS_LOG_TYPE_ERROR, "[%{public}@]: Failed to generate server playback context data", buf, 0xCu);
     }
 
@@ -290,10 +290,10 @@
   v93 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contentKeySession:(id)a3 didProvideContentKeyRequest:(id)a4
+- (void)contentKeySession:(id)session didProvideContentKeyRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  requestCopy = request;
   dispatch_assert_queue_V2(self->_keySessionQueue);
   v7 = BLHLSKeyFetchingLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -314,9 +314,9 @@
 
   else
   {
-    objc_storeStrong(&self->_activeKeyRequest, a4);
+    objc_storeStrong(&self->_activeKeyRequest, request);
     v16 = 0;
-    v11 = objc_msgSend_respondByRequestingPersistableContentKeyRequestAndReturnError_(v6, v9, &v16, v10);
+    v11 = objc_msgSend_respondByRequestingPersistableContentKeyRequestAndReturnError_(requestCopy, v9, &v16, v10);
     v8 = v16;
     if ((v11 & 1) == 0)
     {
@@ -335,9 +335,9 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contentKeySession:(id)a3 didProvidePersistableContentKeyRequest:(id)a4
+- (void)contentKeySession:(id)session didProvidePersistableContentKeyRequest:(id)request
 {
-  v6 = a4;
+  requestCopy = request;
   dispatch_assert_queue_V2(self->_keySessionQueue);
   v7 = BLHLSKeyFetchingLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -358,7 +358,7 @@
 
   else
   {
-    objc_storeStrong(&self->_activePersistableKeyRequest, a4);
+    objc_storeStrong(&self->_activePersistableKeyRequest, request);
     v8 = objc_msgSend_dataUsingEncoding_(self->_identity, v9, 4, v10);
     certificateData = self->_certificateData;
     v13[0] = MEMORY[0x277D85DD0];
@@ -366,18 +366,18 @@
     v13[2] = sub_241D14C7C;
     v13[3] = &unk_278D15AB0;
     v13[4] = self;
-    v14 = v6;
+    v14 = requestCopy;
     objc_msgSend_makeStreamingContentKeyRequestDataForApp_contentIdentifier_options_completionHandler_(v14, v12, certificateData, v8, 0, v13);
   }
 }
 
-- (void)contentKeySession:(id)a3 contentKeyRequest:(id)a4 didFailWithError:(id)a5
+- (void)contentKeySession:(id)session contentKeyRequest:(id)request didFailWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_keySessionQueue);
-  if (self->_activeKeyRequest == v7 || self->_activePersistableKeyRequest == v7)
+  if (self->_activeKeyRequest == requestCopy || self->_activePersistableKeyRequest == requestCopy)
   {
     v9 = BLHLSKeyFetchingLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -386,11 +386,11 @@
       v17 = 138412546;
       v18 = v13;
       v19 = 2112;
-      v20 = v8;
+      v20 = errorCopy;
       _os_log_impl(&dword_241D0D000, v9, OS_LOG_TYPE_ERROR, "Content key request failed for '%@' with error:  %@", &v17, 0x16u);
     }
 
-    objc_msgSend_finishWithError_(self, v14, v8, v15);
+    objc_msgSend_finishWithError_(self, v14, errorCopy, v15);
   }
 
   v16 = *MEMORY[0x277D85DE8];

@@ -1,16 +1,16 @@
 @interface SASBookendCallbackConfiguration
-- (SASBookendCallbackConfiguration)initWithAnimationWillBeginBlock:(id)a3 animationDidFinishBlock:(id)a4;
-- (id)initOnAnimationWillBegin:(id)a3 onAnimationDidFinish:(id)a4;
+- (SASBookendCallbackConfiguration)initWithAnimationWillBeginBlock:(id)block animationDidFinishBlock:(id)finishBlock;
+- (id)initOnAnimationWillBegin:(id)begin onAnimationDidFinish:(id)finish;
 - (id)onAnimationDidFinish;
 - (id)onAnimationDidFinishLegacy;
 - (id)onAnimationError;
 - (id)onAnimationUIUpdateSignal;
 - (id)onAnimationWillBegin;
 - (id)onAnimationWillBeginLegacy;
-- (void)setOnAnimationDidFinish:(id)a3;
-- (void)setOnAnimationError:(id)a3;
-- (void)setOnAnimationUIUpdateSignal:(id)a3;
-- (void)setOnAnimationWillBegin:(id)a3;
+- (void)setOnAnimationDidFinish:(id)finish;
+- (void)setOnAnimationError:(id)error;
+- (void)setOnAnimationUIUpdateSignal:(id)signal;
+- (void)setOnAnimationWillBegin:(id)begin;
 @end
 
 @implementation SASBookendCallbackConfiguration
@@ -39,9 +39,9 @@
   return v4;
 }
 
-- (void)setOnAnimationWillBegin:(id)a3
+- (void)setOnAnimationWillBegin:(id)begin
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(begin);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -59,7 +59,7 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_265A56D6C(v7);
 }
 
@@ -87,9 +87,9 @@
   return v4;
 }
 
-- (void)setOnAnimationDidFinish:(id)a3
+- (void)setOnAnimationDidFinish:(id)finish
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(finish);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -107,7 +107,7 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_265A56D6C(v7);
 }
 
@@ -135,9 +135,9 @@
   return v4;
 }
 
-- (void)setOnAnimationUIUpdateSignal:(id)a3
+- (void)setOnAnimationUIUpdateSignal:(id)signal
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(signal);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -155,7 +155,7 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_265A56D6C(v7);
 }
 
@@ -183,9 +183,9 @@
   return v4;
 }
 
-- (void)setOnAnimationError:(id)a3
+- (void)setOnAnimationError:(id)error
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(error);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -203,7 +203,7 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_265A56D6C(v7);
 }
 
@@ -251,10 +251,10 @@
   return v3;
 }
 
-- (id)initOnAnimationWillBegin:(id)a3 onAnimationDidFinish:(id)a4
+- (id)initOnAnimationWillBegin:(id)begin onAnimationDidFinish:(id)finish
 {
-  v5 = _Block_copy(a3);
-  v6 = _Block_copy(a4);
+  v5 = _Block_copy(begin);
+  v6 = _Block_copy(finish);
   v7 = v6;
   if (!v5)
   {
@@ -285,10 +285,10 @@ LABEL_3:
   return sub_265AA599C(v5, v8, v10, v9);
 }
 
-- (SASBookendCallbackConfiguration)initWithAnimationWillBeginBlock:(id)a3 animationDidFinishBlock:(id)a4
+- (SASBookendCallbackConfiguration)initWithAnimationWillBeginBlock:(id)block animationDidFinishBlock:(id)finishBlock
 {
-  v6 = _Block_copy(a3);
-  v7 = _Block_copy(a4);
+  v6 = _Block_copy(block);
+  v7 = _Block_copy(finishBlock);
   v8 = v7;
   if (!v6)
   {

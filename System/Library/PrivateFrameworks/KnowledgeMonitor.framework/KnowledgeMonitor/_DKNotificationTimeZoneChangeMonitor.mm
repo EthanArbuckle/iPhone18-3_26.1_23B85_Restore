@@ -1,12 +1,12 @@
 @interface _DKNotificationTimeZoneChangeMonitor
 + (id)log;
 - (_DKNotificationTimeZoneChangeMonitor)init;
-- (void)_updateWithTimeZone:(id)a3 timestamp:(double)a4;
+- (void)_updateWithTimeZone:(id)zone timestamp:(double)timestamp;
 - (void)activate;
 - (void)deactivate;
 - (void)dealloc;
 - (void)enqueueTimeZoneUpdate;
-- (void)receiveNotificationEvent:(id)a3;
+- (void)receiveNotificationEvent:(id)event;
 - (void)start;
 - (void)stop;
 @end
@@ -71,11 +71,11 @@
   dispatch_suspend(self->_donationQueue);
   self->_resumed = 0;
   Current = CFAbsoluteTimeGetCurrent();
-  v5 = [MEMORY[0x277CBEBB0] systemTimeZone];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
   v6 = objc_alloc(MEMORY[0x277CF1130]);
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "secondsFromGMT")}];
-  v8 = [v5 name];
-  v9 = [v6 initWithSecondsFromGMT:v7 name:v8];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(systemTimeZone, "secondsFromGMT")}];
+  name = [systemTimeZone name];
+  v9 = [v6 initWithSecondsFromGMT:v7 name:name];
 
   donationQueue = self->_donationQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -120,31 +120,31 @@
   dispatch_barrier_sync(donationQueue, &__block_literal_global_34);
 }
 
-- (void)_updateWithTimeZone:(id)a3 timestamp:(double)a4
+- (void)_updateWithTimeZone:(id)zone timestamp:(double)timestamp
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  zoneCopy = zone;
   dispatch_assert_queue_V2(self->_donationQueue);
   v7 = [objc_opt_class() log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412546;
-    v16 = v6;
+    v16 = zoneCopy;
     v17 = 2048;
-    v18 = a4;
+    timestampCopy = timestamp;
     _os_log_impl(&dword_22595A000, v7, OS_LOG_TYPE_DEFAULT, "Writing timezone event %@ at %f", &v15, 0x16u);
   }
 
   timeZone = self->_timeZone;
-  self->_timeZone = v6;
-  v9 = v6;
+  self->_timeZone = zoneCopy;
+  v9 = zoneCopy;
 
-  self->_lastUpdate = a4;
+  self->_lastUpdate = timestamp;
   v10 = BiomeLibrary();
-  v11 = [v10 Device];
-  v12 = [v11 TimeZone];
-  v13 = [v12 source];
-  [v13 sendEvent:v9 timestamp:a4];
+  device = [v10 Device];
+  timeZone = [device TimeZone];
+  source = [timeZone source];
+  [source sendEvent:v9 timestamp:timestamp];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -152,11 +152,11 @@
 - (void)enqueueTimeZoneUpdate
 {
   Current = CFAbsoluteTimeGetCurrent();
-  v4 = [MEMORY[0x277CBEBB0] systemTimeZone];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
   v5 = objc_alloc(MEMORY[0x277CF1130]);
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "secondsFromGMT")}];
-  v7 = [v4 name];
-  v8 = [v5 initWithSecondsFromGMT:v6 name:v7];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(systemTimeZone, "secondsFromGMT")}];
+  name = [systemTimeZone name];
+  v8 = [v5 initWithSecondsFromGMT:v6 name:name];
 
   donationQueue = self->_donationQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -170,14 +170,14 @@
   dispatch_async(donationQueue, block);
 }
 
-- (void)receiveNotificationEvent:(id)a3
+- (void)receiveNotificationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = os_transaction_create();
   v6 = objc_autoreleasePoolPush();
   if (self->_enabled)
   {
-    v7 = [v4 objectForKeyedSubscript:@"Notification"];
+    v7 = [eventCopy objectForKeyedSubscript:@"Notification"];
     v8 = [v7 isEqual:@"SignificantTimeChangeNotification"];
 
     if (v8)

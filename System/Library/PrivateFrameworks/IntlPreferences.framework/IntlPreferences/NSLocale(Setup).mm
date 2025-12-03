@@ -9,7 +9,7 @@
 
 - (BOOL)_requiresMultilingualSetupWithKeyboardIDs:()Setup
 {
-  v2 = [a1 _languagesForMultilingualSetupWithKeyboardsIDs:?];
+  v2 = [self _languagesForMultilingualSetupWithKeyboardsIDs:?];
   if ([v2 count] < 2)
   {
     v8 = 0;
@@ -17,11 +17,11 @@
 
   else
   {
-    v3 = [a1 countryCode];
-    if ([v3 length])
+    countryCode = [self countryCode];
+    if ([countryCode length])
     {
       v4 = MEMORY[0x277CBEAF8];
-      v5 = [@"zxx_" stringByAppendingString:v3];
+      v5 = [@"zxx_" stringByAppendingString:countryCode];
       v6 = [v4 localeWithLocaleIdentifier:v5];
       v7 = [v6 _languagesForMultilingualSetupWithKeyboardsIDs:0];
     }
@@ -32,13 +32,13 @@
     }
 
     v9 = MEMORY[0x277CBEAF8];
-    v10 = [a1 languageIdentifier];
-    v11 = [v9 baseLanguageFromLanguage:v10];
+    languageIdentifier = [self languageIdentifier];
+    v11 = [v9 baseLanguageFromLanguage:languageIdentifier];
 
     if ([v7 containsObject:v11])
     {
-      v12 = [MEMORY[0x277CBEAF8] baseSystemLanguages];
-      v13 = [v2 arrayByExcludingObjectsInArray:v12];
+      baseSystemLanguages = [MEMORY[0x277CBEAF8] baseSystemLanguages];
+      v13 = [v2 arrayByExcludingObjectsInArray:baseSystemLanguages];
 
       v8 = [v13 count] != 0;
     }
@@ -54,31 +54,31 @@
 
 - (id)_languagesForMultilingualSetupWithKeyboardsIDs:()Setup
 {
-  v2 = [MEMORY[0x277CBEB40] orderedSet];
-  v3 = [a1 languageIdentifier];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  languageIdentifier = [self languageIdentifier];
 
-  if (v3)
+  if (languageIdentifier)
   {
     v4 = MEMORY[0x277CBEAF8];
-    v5 = [a1 languageIdentifier];
-    v6 = [v4 canonicalLanguageIdentifierFromString:v5];
+    languageIdentifier2 = [self languageIdentifier];
+    v6 = [v4 canonicalLanguageIdentifierFromString:languageIdentifier2];
     v7 = [v4 baseLanguageFromLanguage:v6];
-    [v2 addObject:v7];
+    [orderedSet addObject:v7];
   }
 
   v8 = MEMORY[0x277CBEAF8];
-  v9 = [a1 localeIdentifier];
-  v10 = [v8 componentsFromLocaleIdentifier:v9];
+  localeIdentifier = [self localeIdentifier];
+  v10 = [v8 componentsFromLocaleIdentifier:localeIdentifier];
   v11 = [v10 objectForKey:@"sd"];
 
   if ([v11 length])
   {
     v12 = MEMORY[0x277CBEAF8];
-    v13 = [a1 countryCode];
+    countryCode = [self countryCode];
     v14 = objc_opt_class();
-    v15 = [a1 countryCode];
-    v16 = [v14 _subdivisionCodeFromSubdivisionTag:v11 restrictedToRegionCode:v15];
-    v17 = [v12 languagesForRegion:v13 subdivision:v16 withThreshold:1 filter:2];
+    countryCode2 = [self countryCode];
+    v16 = [v14 _subdivisionCodeFromSubdivisionTag:v11 restrictedToRegionCode:countryCode2];
+    v17 = [v12 languagesForRegion:countryCode subdivision:v16 withThreshold:1 filter:2];
 
     if (v17)
     {
@@ -87,47 +87,47 @@
   }
 
   v18 = MEMORY[0x277CBEAF8];
-  v19 = [a1 countryCode];
-  v17 = [v18 languagesForRegion:v19 subdivision:0 withThreshold:1 filter:2];
+  countryCode3 = [self countryCode];
+  v17 = [v18 languagesForRegion:countryCode3 subdivision:0 withThreshold:1 filter:2];
 
   if (v17)
   {
 LABEL_6:
-    [v2 addObjectsFromArray:v17];
+    [orderedSet addObjectsFromArray:v17];
   }
 
-  v20 = [v2 array];
+  array = [orderedSet array];
 
-  return v20;
+  return array;
 }
 
 - (id)defaultLanguagesForMultilingualSetup
 {
-  v2 = [MEMORY[0x277CBEB40] orderedSet];
-  v3 = [a1 languageIdentifier];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  languageIdentifier = [self languageIdentifier];
 
-  if (v3)
+  if (languageIdentifier)
   {
     v4 = MEMORY[0x277CBEAF8];
-    v5 = [a1 languageIdentifier];
-    v6 = [v4 canonicalLanguageIdentifierFromString:v5];
+    languageIdentifier2 = [self languageIdentifier];
+    v6 = [v4 canonicalLanguageIdentifierFromString:languageIdentifier2];
     v7 = [v4 baseLanguageFromLanguage:v6];
-    [v2 addObject:v7];
+    [orderedSet addObject:v7];
   }
 
   v8 = MEMORY[0x277CBEAF8];
-  v9 = [a1 localeIdentifier];
-  v10 = [v8 componentsFromLocaleIdentifier:v9];
+  localeIdentifier = [self localeIdentifier];
+  v10 = [v8 componentsFromLocaleIdentifier:localeIdentifier];
   v11 = [v10 objectForKey:@"sd"];
 
   if ([v11 length])
   {
     v12 = MEMORY[0x277CBEAF8];
-    v13 = [a1 countryCode];
+    countryCode = [self countryCode];
     v14 = objc_opt_class();
-    v15 = [a1 countryCode];
-    v16 = [v14 _subdivisionCodeFromSubdivisionTag:v11 restrictedToRegionCode:v15];
-    v17 = [v12 languagesForRegion:v13 subdivision:v16 withThreshold:2 filter:2];
+    countryCode2 = [self countryCode];
+    v16 = [v14 _subdivisionCodeFromSubdivisionTag:v11 restrictedToRegionCode:countryCode2];
+    v17 = [v12 languagesForRegion:countryCode subdivision:v16 withThreshold:2 filter:2];
 
     if (v17)
     {
@@ -136,34 +136,34 @@ LABEL_6:
   }
 
   v18 = MEMORY[0x277CBEAF8];
-  v19 = [a1 countryCode];
-  v17 = [v18 languagesForRegion:v19 subdivision:0 withThreshold:2 filter:2];
+  countryCode3 = [self countryCode];
+  v17 = [v18 languagesForRegion:countryCode3 subdivision:0 withThreshold:2 filter:2];
 
   if (v17)
   {
 LABEL_6:
-    [v2 addObjectsFromArray:v17];
+    [orderedSet addObjectsFromArray:v17];
   }
 
-  v20 = [v2 array];
+  array = [orderedSet array];
 
-  return v20;
+  return array;
 }
 
 + (id)_subdivisionCodeFromSubdivisionTag:()Setup restrictedToRegionCode:
 {
   v5 = a3;
-  v6 = [a4 uppercaseString];
+  uppercaseString = [a4 uppercaseString];
   v7 = [v5 substringToIndex:2];
-  v8 = [v7 uppercaseString];
+  uppercaseString2 = [v7 uppercaseString];
 
   v9 = [v5 substringFromIndex:2];
 
-  v10 = [v9 uppercaseString];
+  uppercaseString3 = [v9 uppercaseString];
 
-  if ([v6 isEqualToString:v8])
+  if ([uppercaseString isEqualToString:uppercaseString2])
   {
-    v11 = v10;
+    v11 = uppercaseString3;
   }
 
   else

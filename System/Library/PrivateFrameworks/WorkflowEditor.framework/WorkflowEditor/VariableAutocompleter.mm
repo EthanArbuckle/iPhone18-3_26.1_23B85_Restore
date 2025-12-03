@@ -6,7 +6,7 @@
 
 - (void)availableVariablesDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_2745BF64C();
 }
 

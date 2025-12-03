@@ -1,26 +1,26 @@
 @interface CVNLPCaptionEncoderTransformer
-- (CVNLPCaptionEncoderTransformer)initWithOptions:(id)a3 runTimeParams:(id)a4;
+- (CVNLPCaptionEncoderTransformer)initWithOptions:(id)options runTimeParams:(id)params;
 - (id).cxx_construct;
-- (void)computeCaptionForImage:(vImage_Buffer *)a3 outputs:(id *)a4;
-- (void)computeCaptionForImageImpl:(vImage_Buffer *)a3 outputs:(id *)a4;
-- (void)computeCaptionForPixelBuffer:(__CVBuffer *)a3 outputs:(id *)a4;
-- (void)computeCaptionForPixelBufferImpl:(__CVBuffer *)a3 outputs:(id *)a4;
-- (void)computeCaptionForVideoPixelBuffer:(void *)a3 outputs:(id *)a4;
-- (void)computeCaptionForVideoPixelBufferImpl:(void *)a3 outputs:(id *)a4;
+- (void)computeCaptionForImage:(vImage_Buffer *)image outputs:(id *)outputs;
+- (void)computeCaptionForImageImpl:(vImage_Buffer *)impl outputs:(id *)outputs;
+- (void)computeCaptionForPixelBuffer:(__CVBuffer *)buffer outputs:(id *)outputs;
+- (void)computeCaptionForPixelBufferImpl:(__CVBuffer *)impl outputs:(id *)outputs;
+- (void)computeCaptionForVideoPixelBuffer:(void *)buffer outputs:(id *)outputs;
+- (void)computeCaptionForVideoPixelBufferImpl:(void *)impl outputs:(id *)outputs;
 - (void)dealloc;
 @end
 
 @implementation CVNLPCaptionEncoderTransformer
 
-- (CVNLPCaptionEncoderTransformer)initWithOptions:(id)a3 runTimeParams:(id)a4
+- (CVNLPCaptionEncoderTransformer)initWithOptions:(id)options runTimeParams:(id)params
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  paramsCopy = params;
   v14.receiver = self;
   v14.super_class = CVNLPCaptionEncoderTransformer;
-  if ([(CVNLPCaptionModelBase *)&v14 initWithOptions:v6 runTimeParams:v7])
+  if ([(CVNLPCaptionModelBase *)&v14 initWithOptions:optionsCopy runTimeParams:paramsCopy])
   {
-    v10 = objc_msgSend_objectForKeyedSubscript_(v6, v8, CVNLPCaptionModelPath, v9);
+    v10 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v8, CVNLPCaptionModelPath, v9);
     objc_msgSend_URLByAppendingPathComponent_(v10, v11, @"encoder_opt.espresso.net", v12, v10);
     objc_claimAutoreleasedReturnValue();
     operator new();
@@ -40,20 +40,20 @@
   [(CVNLPCaptionEncoderTransformer *)&v5 dealloc];
 }
 
-- (void)computeCaptionForImage:(vImage_Buffer *)a3 outputs:(id *)a4
+- (void)computeCaptionForImage:(vImage_Buffer *)image outputs:(id *)outputs
 {
-  v7 = objc_msgSend_perfResults(self, a2, a3, a4);
+  v7 = objc_msgSend_perfResults(self, a2, image, outputs);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1D9D944E8;
   v9[3] = &unk_1E858E040;
   v9[4] = self;
-  v9[5] = a3;
-  v9[6] = a4;
+  v9[5] = image;
+  v9[6] = outputs;
   objc_msgSend_run_block_(v7, v8, @"Encode", v9);
 }
 
-- (void)computeCaptionForImageImpl:(vImage_Buffer *)a3 outputs:(id *)a4
+- (void)computeCaptionForImageImpl:(vImage_Buffer *)impl outputs:(id *)outputs
 {
   v44[1] = *MEMORY[0x1E69E9840];
   p_encoderNet = &self->encoderNet;
@@ -65,8 +65,8 @@
     v10 = *begin;
   }
 
-  v11 = *&a3->width;
-  v33 = *&a3->data;
+  v11 = *&impl->width;
+  v33 = *&impl->data;
   v34 = v11;
   if (espresso_network_bind_input_vimagebuffer_rgba8())
   {
@@ -108,25 +108,25 @@
   v22 = objc_msgSend__blob_size_(self, v13, &v33, v14);
   v24 = objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(v15, v23, data, 4 * v22, 0);
   v44[0] = v24;
-  *a4 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v25, v44, 1);
+  *outputs = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v25, v44, 1);
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)computeCaptionForPixelBuffer:(__CVBuffer *)a3 outputs:(id *)a4
+- (void)computeCaptionForPixelBuffer:(__CVBuffer *)buffer outputs:(id *)outputs
 {
-  v7 = objc_msgSend_perfResults(self, a2, a3, a4);
+  v7 = objc_msgSend_perfResults(self, a2, buffer, outputs);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1D9D947C4;
   v9[3] = &unk_1E858E040;
   v9[4] = self;
-  v9[5] = a3;
-  v9[6] = a4;
+  v9[5] = buffer;
+  v9[6] = outputs;
   objc_msgSend_run_block_(v7, v8, @"EncodePx", v9);
 }
 
-- (void)computeCaptionForPixelBufferImpl:(__CVBuffer *)a3 outputs:(id *)a4
+- (void)computeCaptionForPixelBufferImpl:(__CVBuffer *)impl outputs:(id *)outputs
 {
   v31[1] = *MEMORY[0x1E69E9840];
   p_encoderNet = &self->encoderNet;
@@ -168,29 +168,29 @@
   v21 = objc_msgSend__blob_size_(self, v12, v29, v13);
   v23 = objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(v14, v22, data, 4 * v21, 0);
   v31[0] = v23;
-  *a4 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v24, v31, 1);
+  *outputs = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v24, v31, 1);
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)computeCaptionForVideoPixelBuffer:(void *)a3 outputs:(id *)a4
+- (void)computeCaptionForVideoPixelBuffer:(void *)buffer outputs:(id *)outputs
 {
-  v7 = objc_msgSend_perfResults(self, a2, a3, a4);
+  v7 = objc_msgSend_perfResults(self, a2, buffer, outputs);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1D9D94A6C;
   v9[3] = &unk_1E858E040;
   v9[4] = self;
-  v9[5] = a3;
-  v9[6] = a4;
+  v9[5] = buffer;
+  v9[6] = outputs;
   objc_msgSend_run_block_(v7, v8, @"EncodePx", v9);
 }
 
-- (void)computeCaptionForVideoPixelBufferImpl:(void *)a3 outputs:(id *)a4
+- (void)computeCaptionForVideoPixelBufferImpl:(void *)impl outputs:(id *)outputs
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = *a3;
-  if (*(a3 + 1) != *a3)
+  v6 = *impl;
+  if (*(impl + 1) != *impl)
   {
     v8 = 0;
     v9 = 0;
@@ -212,9 +212,9 @@
       }
 
       ++v9;
-      v6 = *a3;
+      v6 = *impl;
       v8 += 24;
-      if (v9 >= (*(a3 + 1) - *a3) >> 3)
+      if (v9 >= (*(impl + 1) - *impl) >> 3)
       {
         goto LABEL_7;
       }
@@ -256,7 +256,7 @@ LABEL_7:
   v26 = objc_msgSend__blob_size_(self, v17, v34, v18);
   v28 = objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(v19, v27, data, 4 * v26, 0);
   v36[0] = v28;
-  *a4 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v29, v36, 1);
+  *outputs = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v29, v36, 1);
 
   v30 = *MEMORY[0x1E69E9840];
 }

@@ -1,5 +1,5 @@
 @interface DYEAGLDebugPlaybackEngine
-- (DYEAGLDebugPlaybackEngine)initWithCaptureStore:(id)a3;
+- (DYEAGLDebugPlaybackEngine)initWithCaptureStore:(id)store;
 - (DYEAGLDebugPlaybackEngineDelegate)delegate;
 - (DYEAGLDebugPlaybackEngineDelegate)strongDelegate;
 - (id)newFunctionPlayer;
@@ -7,12 +7,12 @@
 
 @implementation DYEAGLDebugPlaybackEngine
 
-- (DYEAGLDebugPlaybackEngine)initWithCaptureStore:(id)a3
+- (DYEAGLDebugPlaybackEngine)initWithCaptureStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = DYEAGLDebugPlaybackEngine;
-  v5 = [(DYEAGLDebugPlaybackEngine *)&v12 initWithCaptureStore:v4];
+  v5 = [(DYEAGLDebugPlaybackEngine *)&v12 initWithCaptureStore:storeCopy];
   if (v5)
   {
     v6 = objc_opt_new();
@@ -42,8 +42,8 @@
 - (id)newFunctionPlayer
 {
   v3 = [DYEAGLDebugFunctionPlayer alloc];
-  v4 = [(DYEAGLDebugPlaybackEngine *)self captureStore];
-  v5 = [(DYEAGLDebugFunctionPlayer *)v3 initWithCaptureStore:v4];
+  captureStore = [(DYEAGLDebugPlaybackEngine *)self captureStore];
+  v5 = [(DYEAGLDebugFunctionPlayer *)v3 initWithCaptureStore:captureStore];
 
   [(DYEAGLFunctionPlayer *)v5 setLayerManager:self];
   return v5;

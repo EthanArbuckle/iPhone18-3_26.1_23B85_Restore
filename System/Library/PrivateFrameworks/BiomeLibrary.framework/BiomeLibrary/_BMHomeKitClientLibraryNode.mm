@@ -8,7 +8,7 @@
 + (id)storeConfigurationForAccessoryControl;
 + (id)storeConfigurationForActionSet;
 + (id)storeConfigurationForMediaAccessoryControl;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -17,7 +17,7 @@
 + (id)ActionSet
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForActionSet];
+  configurationForActionSet = [self configurationForActionSet];
   v3 = +[BMHomeKitClientActionSet columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -29,7 +29,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"HomeKit.Client.ActionSet" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"HomeKit.Client.ActionSet" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"HomeKit.Client.ActionSet" schema:v9 configuration:configurationForActionSet];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -46,13 +46,13 @@
 
 + (id)configurationForMediaAccessoryControl
 {
-  v3 = [a1 storeConfigurationForMediaAccessoryControl];
-  v4 = [a1 syncPolicyForMediaAccessoryControl];
+  storeConfigurationForMediaAccessoryControl = [self storeConfigurationForMediaAccessoryControl];
+  syncPolicyForMediaAccessoryControl = [self syncPolicyForMediaAccessoryControl];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"3F6BD669-59BB-4F24-AD3C-943A7225EB9B"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"HomeKit.Client.MediaAccessoryControl" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EBEB0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Home" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"HomeKit.Client.MediaAccessoryControl" eventClass:objc_opt_class() storeConfig:storeConfigurationForMediaAccessoryControl syncPolicy:syncPolicyForMediaAccessoryControl legacyNames:&unk_1EF3EBEB0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Home" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -68,7 +68,7 @@
 + (id)AccessoryControl
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAccessoryControl];
+  configurationForAccessoryControl = [self configurationForAccessoryControl];
   v3 = +[BMHomeKitClientAccessoryControl columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -80,7 +80,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"HomeKit.Client.AccessoryControl" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"HomeKit.Client.AccessoryControl" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"HomeKit.Client.AccessoryControl" schema:v9 configuration:configurationForAccessoryControl];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -89,13 +89,13 @@
 
 + (id)configurationForAccessoryControl
 {
-  v3 = [a1 storeConfigurationForAccessoryControl];
-  v4 = [a1 syncPolicyForAccessoryControl];
+  storeConfigurationForAccessoryControl = [self storeConfigurationForAccessoryControl];
+  syncPolicyForAccessoryControl = [self syncPolicyForAccessoryControl];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"A51A9719-8FB9-4A6E-B2F2-1FB82C094042"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"HomeKit.Client.AccessoryControl" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EBE80 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Home" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"HomeKit.Client.AccessoryControl" eventClass:objc_opt_class() storeConfig:storeConfigurationForAccessoryControl syncPolicy:syncPolicyForAccessoryControl legacyNames:&unk_1EF3EBE80 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Home" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -110,13 +110,13 @@
 
 + (id)configurationForActionSet
 {
-  v3 = [a1 storeConfigurationForActionSet];
-  v4 = [a1 syncPolicyForActionSet];
+  storeConfigurationForActionSet = [self storeConfigurationForActionSet];
+  syncPolicyForActionSet = [self syncPolicyForActionSet];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"B92625D2-A9B8-4645-941E-E65E433D27CF"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"HomeKit.Client.ActionSet" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EBE98 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Home" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"HomeKit.Client.ActionSet" eventClass:objc_opt_class() storeConfig:storeConfigurationForActionSet syncPolicy:syncPolicyForActionSet legacyNames:&unk_1EF3EBE98 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Home" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -124,7 +124,7 @@
 + (id)MediaAccessoryControl
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForMediaAccessoryControl];
+  configurationForMediaAccessoryControl = [self configurationForMediaAccessoryControl];
   v3 = +[BMHomeKitClientMediaAccessoryControl columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -136,33 +136,33 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"HomeKit.Client.MediaAccessoryControl" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"HomeKit.Client.MediaAccessoryControl" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"HomeKit.Client.MediaAccessoryControl" schema:v9 configuration:configurationForMediaAccessoryControl];
 
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"AccessoryControl"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"AccessoryControl"])
   {
-    v5 = [a1 AccessoryControl];
+    accessoryControl = [self AccessoryControl];
 LABEL_7:
-    v6 = v5;
+    v6 = accessoryControl;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"ActionSet"])
+  if ([nameCopy isEqualToString:@"ActionSet"])
   {
-    v5 = [a1 ActionSet];
+    accessoryControl = [self ActionSet];
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"MediaAccessoryControl"])
+  if ([nameCopy isEqualToString:@"MediaAccessoryControl"])
   {
-    v5 = [a1 MediaAccessoryControl];
+    accessoryControl = [self MediaAccessoryControl];
     goto LABEL_7;
   }
 

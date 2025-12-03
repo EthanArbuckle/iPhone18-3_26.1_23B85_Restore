@@ -1,51 +1,51 @@
 @interface MRNowPlayingClient
 - (BOOL)canBeNowPlaying;
-- (BOOL)canBeNowPlayingForPlayer:(id)a3;
+- (BOOL)canBeNowPlayingForPlayer:(id)player;
 - (BOOL)perPlayerCanBeNowPlaying;
 - (MRClient)client;
-- (MRNowPlayingClient)initWithPlayerPath:(id)a3;
+- (MRNowPlayingClient)initWithPlayerPath:(id)path;
 - (MRPlayerPath)activePlayerPath;
 - (NSArray)playerClients;
 - (id)debugDescription;
 - (id)description;
-- (id)nowPlayingPlayerClientForPlayerPath:(id)a3;
-- (void)_avSessionMediaServicesResetNotification:(id)a3;
+- (id)nowPlayingPlayerClientForPlayerPath:(id)path;
+- (void)_avSessionMediaServicesResetNotification:(id)notification;
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForeground;
 - (void)dealloc;
-- (void)mergeClient:(id)a3;
-- (void)reevaluateActivePlayerWithReason:(id)a3 completion:(id)a4;
-- (void)removePlayer:(id)a3;
-- (void)requestActiveForPlayerPath:(id)a3 completion:(id)a4;
+- (void)mergeClient:(id)client;
+- (void)reevaluateActivePlayerWithReason:(id)reason completion:(id)completion;
+- (void)removePlayer:(id)player;
+- (void)requestActiveForPlayerPath:(id)path completion:(id)completion;
 - (void)restoreNowPlayingClientState;
-- (void)sendQueuedCommandsWithReason:(id)a3;
-- (void)setActivePlayerPath:(id)a3 reason:(id)a4 completion:(id)a5;
-- (void)setCanBeNowPlaying:(BOOL)a3;
-- (void)setClient:(id)a3;
-- (void)setPerPlayerCanBeNowPlaying:(BOOL)a3;
-- (void)updateActivePlayerPath:(id)a3 completion:(id)a4;
+- (void)sendQueuedCommandsWithReason:(id)reason;
+- (void)setActivePlayerPath:(id)path reason:(id)reason completion:(id)completion;
+- (void)setCanBeNowPlaying:(BOOL)playing;
+- (void)setClient:(id)client;
+- (void)setPerPlayerCanBeNowPlaying:(BOOL)playing;
+- (void)updateActivePlayerPath:(id)path completion:(id)completion;
 @end
 
 @implementation MRNowPlayingClient
 
 - (NSArray)playerClients
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_playerClients copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_playerClients copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (MRClient)client
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MRPlayerPath *)v2->_playerPath client];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  client = [(MRPlayerPath *)selfCopy->_playerPath client];
+  v4 = [client copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -53,15 +53,15 @@
 - (BOOL)canBeNowPlaying
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_perPlayerCanBeNowPlaying)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_perPlayerCanBeNowPlaying)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = v2->_playerClients;
+    v3 = selfCopy->_playerClients;
     v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
@@ -102,19 +102,19 @@
 
   else
   {
-    canBeNowPlaying = v2->_canBeNowPlaying;
+    canBeNowPlaying = selfCopy->_canBeNowPlaying;
   }
 
 LABEL_13:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x1E69E9840];
   return canBeNowPlaying & 1;
 }
 
-- (MRNowPlayingClient)initWithPlayerPath:(id)a3
+- (MRNowPlayingClient)initWithPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v27.receiver = self;
   v27.super_class = MRNowPlayingClient;
   v5 = [(MRNowPlayingClient *)&v27 init];
@@ -125,7 +125,7 @@ LABEL_13:
     avscQueue = v5->_avscQueue;
     v5->_avscQueue = v7;
 
-    v9 = [v4 copy];
+    v9 = [pathCopy copy];
     playerPath = v5->_playerPath;
     v5->_playerPath = v9;
 
@@ -137,20 +137,20 @@ LABEL_13:
       v11 = v28;
     }
 
-    v12 = [(MRPlayerPath *)v11 client];
-    if (!v12)
+    client = [(MRPlayerPath *)v11 client];
+    if (!client)
     {
       [MRNowPlayingClient initWithPlayerPath:];
     }
 
-    v13 = [v12 bundleIdentifier];
+    bundleIdentifier = [client bundleIdentifier];
 
-    if (!v13)
+    if (!bundleIdentifier)
     {
       [MRNowPlayingClient initWithPlayerPath:];
     }
 
-    if (![v12 processIdentifier])
+    if (![client processIdentifier])
     {
       [MRNowPlayingClient initWithPlayerPath:];
     }
@@ -159,10 +159,10 @@ LABEL_13:
     playerClients = v5->_playerClients;
     v5->_playerClients = v14;
 
-    v16 = [(MRPlayerPath *)v5->_playerPath origin];
-    v17 = [v16 isLocal];
+    origin = [(MRPlayerPath *)v5->_playerPath origin];
+    isLocal = [origin isLocal];
 
-    if (v17)
+    if (isLocal)
     {
       v18 = v5->_avscQueue;
       v25[0] = MEMORY[0x1E69E9820];
@@ -180,9 +180,9 @@ LABEL_13:
     replayQueue = v5->_replayQueue;
     v5->_replayQueue = v20;
 
-    v22 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     commandQueue = v5->_commandQueue;
-    v5->_commandQueue = v22;
+    v5->_commandQueue = array;
   }
 
   return v5;
@@ -213,16 +213,16 @@ void __41__MRNowPlayingClient_initWithPlayerPath___block_invoke(uint64_t a1)
   [(MRNowPlayingClient *)&v2 dealloc];
 }
 
-- (void)setCanBeNowPlaying:(BOOL)a3
+- (void)setCanBeNowPlaying:(BOOL)playing
 {
-  v3 = a3;
+  playingCopy = playing;
   obj = self;
   objc_sync_enter(obj);
   v4 = obj;
-  if (obj->_canBeNowPlaying != v3)
+  if (obj->_canBeNowPlaying != playingCopy)
   {
-    obj->_canBeNowPlaying = v3;
-    if (v3)
+    obj->_canBeNowPlaying = playingCopy;
+    if (playingCopy)
     {
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       v4 = obj;
@@ -240,13 +240,13 @@ void __41__MRNowPlayingClient_initWithPlayerPath___block_invoke(uint64_t a1)
   objc_sync_exit(v4);
 }
 
-- (void)setPerPlayerCanBeNowPlaying:(BOOL)a3
+- (void)setPerPlayerCanBeNowPlaying:(BOOL)playing
 {
-  v3 = a3;
+  playingCopy = playing;
   obj = self;
   objc_sync_enter(obj);
-  obj->_perPlayerCanBeNowPlaying = v3;
-  if (v3)
+  obj->_perPlayerCanBeNowPlaying = playingCopy;
+  if (playingCopy)
   {
     [(MRNowPlayingClient *)obj sendQueuedCommandsWithReason:@"perPlayCanBeNowPlaying=YES"];
   }
@@ -256,41 +256,41 @@ void __41__MRNowPlayingClient_initWithPlayerPath___block_invoke(uint64_t a1)
 
 - (BOOL)perPlayerCanBeNowPlaying
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  perPlayerCanBeNowPlaying = v2->_perPlayerCanBeNowPlaying;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  perPlayerCanBeNowPlaying = selfCopy->_perPlayerCanBeNowPlaying;
+  objc_sync_exit(selfCopy);
 
   return perPlayerCanBeNowPlaying;
 }
 
-- (void)setClient:(id)a3
+- (void)setClient:(id)client
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(MRPlayerPath *)v4->_playerPath setClient:v5];
-  objc_sync_exit(v4);
+  clientCopy = client;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MRPlayerPath *)selfCopy->_playerPath setClient:clientCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)mergeClient:(id)a3
+- (void)mergeClient:(id)client
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MRPlayerPath *)v4->_playerPath client];
-  [v5 mergeFrom:v6];
+  clientCopy = client;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  client = [(MRPlayerPath *)selfCopy->_playerPath client];
+  [client mergeFrom:clientCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)requestActiveForPlayerPath:(id)a3 completion:(id)a4
+- (void)requestActiveForPlayerPath:(id)path completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(MRNowPlayingClient *)v8 nowPlayingPlayerClientForPlayerPath:v6];
+  pathCopy = path;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(MRNowPlayingClient *)selfCopy nowPlayingPlayerClientForPlayerPath:pathCopy];
   v10 = [MEMORY[0x1E695DF00] now];
   [v9 setActiveRequestedDate:v10];
 
@@ -298,16 +298,16 @@ void __41__MRNowPlayingClient_initWithPlayerPath___block_invoke(uint64_t a1)
   v14[1] = 3221225472;
   v14[2] = __60__MRNowPlayingClient_requestActiveForPlayerPath_completion___block_invoke;
   v14[3] = &unk_1E76A2B88;
-  v14[4] = v8;
-  v11 = v6;
+  v14[4] = selfCopy;
+  v11 = pathCopy;
   v15 = v11;
   v12 = v9;
   v16 = v12;
-  v13 = v7;
+  v13 = completionCopy;
   v17 = v13;
-  [(MRNowPlayingClient *)v8 reevaluateActivePlayerWithReason:@"Attempting to set now playing player if possible" completion:v14];
+  [(MRNowPlayingClient *)selfCopy reevaluateActivePlayerWithReason:@"Attempting to set now playing player if possible" completion:v14];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 void __60__MRNowPlayingClient_requestActiveForPlayerPath_completion___block_invoke(uint64_t a1, void *a2)
@@ -344,29 +344,29 @@ LABEL_7:
   }
 }
 
-- (void)updateActivePlayerPath:(id)a3 completion:(id)a4
+- (void)updateActivePlayerPath:(id)path completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v7->_useMediaRemoteActivePlayerHeuristic = 0;
-  [(MRNowPlayingClient *)v7 setActivePlayerPath:v8 reason:@"API Usage" completion:v6];
-  objc_sync_exit(v7);
+  pathCopy = path;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_useMediaRemoteActivePlayerHeuristic = 0;
+  [(MRNowPlayingClient *)selfCopy setActivePlayerPath:pathCopy reason:@"API Usage" completion:completionCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setActivePlayerPath:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)setActivePlayerPath:(id)path reason:(id)reason completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  activePlayer = v11->_activePlayer;
-  v13 = [v8 player];
+  pathCopy = path;
+  reasonCopy = reason;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activePlayer = selfCopy->_activePlayer;
+  player = [pathCopy player];
   v14 = activePlayer;
-  v15 = v13;
+  v15 = player;
   v16 = v15;
   if (v14 == v15)
   {
@@ -378,21 +378,21 @@ LABEL_7:
 
     if (!v17)
     {
-      if (v11->_activePlayer)
+      if (selfCopy->_activePlayer)
       {
         v18 = _MRLogForCategory(0);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = v11->_activePlayer;
-          v20 = [v8 player];
+          v19 = selfCopy->_activePlayer;
+          player2 = [pathCopy player];
           *buf = 138544130;
-          v41 = v8;
+          v41 = pathCopy;
           v42 = 2114;
           v43 = @"ActivePlayerPath";
           v44 = 2112;
           v45 = v19;
           v46 = 2112;
-          v47 = v20;
+          v47 = player2;
           _os_log_impl(&dword_1A2860000, v18, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ from <%@> to <%@>", buf, 0x2Au);
         }
       }
@@ -402,35 +402,35 @@ LABEL_7:
         v18 = _MRLogForCategory(0);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [v8 player];
+          player3 = [pathCopy player];
           *buf = 138543874;
-          v41 = v8;
+          v41 = pathCopy;
           v42 = 2114;
           v43 = @"ActivePlayerPath";
           v44 = 2112;
-          v45 = v21;
+          v45 = player3;
           _os_log_impl(&dword_1A2860000, v18, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ to <%@>", buf, 0x20u);
         }
       }
 
-      v22 = [v8 player];
-      v23 = v11->_activePlayer;
-      v11->_activePlayer = v22;
+      player4 = [pathCopy player];
+      v23 = selfCopy->_activePlayer;
+      selfCopy->_activePlayer = player4;
 
       v24 = [MEMORY[0x1E695DF00] now];
-      v25 = [MEMORY[0x1E696AFB0] UUID];
-      v26 = [v25 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
 
-      v27 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"setNowPlayingPlayer", v26];
+      v27 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"setNowPlayingPlayer", uUIDString];
       v28 = v27;
-      if (v8)
+      if (pathCopy)
       {
-        [v27 appendFormat:@" for %@", v8];
+        [v27 appendFormat:@" for %@", pathCopy];
       }
 
-      if (v9)
+      if (reasonCopy)
       {
-        [v28 appendFormat:@" because %@", v9];
+        [v28 appendFormat:@" because %@", reasonCopy];
       }
 
       v29 = _MRLogForCategory(0xAuLL);
@@ -447,25 +447,25 @@ LABEL_7:
       v35[1] = 3221225472;
       v35[2] = __60__MRNowPlayingClient_setActivePlayerPath_reason_completion___block_invoke;
       v35[3] = &unk_1E769ABF0;
-      v36 = v8;
-      v32 = v26;
+      v36 = pathCopy;
+      v32 = uUIDString;
       v37 = v32;
       v33 = v24;
       v38 = v33;
-      v39 = v10;
+      v39 = completionCopy;
       MRMediaRemoteServiceSetNowPlayingPlayer(v30, v36, v31, v35);
 
       goto LABEL_18;
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_18:
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 
   v34 = *MEMORY[0x1E69E9840];
 }
@@ -573,17 +573,17 @@ LABEL_14:
   return result;
 }
 
-- (void)reevaluateActivePlayerWithReason:(id)a3 completion:(id)a4
+- (void)reevaluateActivePlayerWithReason:(id)reason completion:(id)completion
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  if (v8->_useMediaRemoteActivePlayerHeuristic)
+  reasonCopy = reason;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_useMediaRemoteActivePlayerHeuristic)
   {
-    v9 = [(MRNowPlayingClient *)v8 playerClients];
-    v10 = [v9 mr_filter:&__block_literal_global_89];
+    playerClients = [(MRNowPlayingClient *)selfCopy playerClients];
+    v10 = [playerClients mr_filter:&__block_literal_global_89];
 
     v11 = MEMORY[0x1E696AEB0];
     v12 = NSStringFromSelector(sel_activeRequestedDate);
@@ -593,7 +593,7 @@ LABEL_14:
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
     v15 = [v10 sortedArrayUsingDescriptors:v14];
 
-    isForeground = v8->_isForeground;
+    isForeground = selfCopy->_isForeground;
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __66__MRNowPlayingClient_reevaluateActivePlayerWithReason_completion___block_invoke_2;
@@ -602,25 +602,25 @@ LABEL_14:
     v17 = [v15 mr_first:v23];
     if (!v17)
     {
-      v18 = [v15 firstObject];
-      v19 = v18;
-      if (v18)
+      firstObject = [v15 firstObject];
+      v19 = firstObject;
+      if (firstObject)
       {
-        v17 = v18;
+        v17 = firstObject;
       }
 
       else
       {
-        v20 = [(MRNowPlayingClient *)v8 playerClients];
-        v17 = [v20 mr_first:&__block_literal_global_286];
+        playerClients2 = [(MRNowPlayingClient *)selfCopy playerClients];
+        v17 = [playerClients2 mr_first:&__block_literal_global_286];
       }
     }
 
-    v21 = [v17 playerPath];
-    [(MRNowPlayingClient *)v8 setActivePlayerPath:v21 reason:v6 completion:v7];
+    playerPath = [v17 playerPath];
+    [(MRNowPlayingClient *)selfCopy setActivePlayerPath:playerPath reason:reasonCopy completion:completionCopy];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v22 = *MEMORY[0x1E69E9840];
 }
@@ -698,28 +698,28 @@ uint64_t __66__MRNowPlayingClient_reevaluateActivePlayerWithReason_completion___
 
 - (MRPlayerPath)activePlayerPath
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MRPlayerPath *)v2->_playerPath copy];
-  v4 = [(MRPlayer *)v2->_activePlayer copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(MRPlayerPath *)selfCopy->_playerPath copy];
+  v4 = [(MRPlayer *)selfCopy->_activePlayer copy];
   [v3 setPlayer:v4];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)nowPlayingPlayerClientForPlayerPath:(id)a3
+- (id)nowPlayingPlayerClientForPlayerPath:(id)path
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  pathCopy = path;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v5->_playerClients;
+  v6 = selfCopy->_playerClients;
   v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -734,8 +734,8 @@ LABEL_3:
       }
 
       v10 = *(*(&v16 + 1) + 8 * v9);
-      v11 = [v10 playerPath];
-      if ([v11 isEqual:v4])
+      playerPath = [v10 playerPath];
+      if ([playerPath isEqual:pathCopy])
       {
         break;
       }
@@ -765,30 +765,30 @@ LABEL_3:
 LABEL_9:
   }
 
-  v12 = [[MRNowPlayingPlayerClient alloc] initWithPlayerPath:v4];
-  [(NSMutableArray *)v5->_playerClients addObject:v12];
-  v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"New player %@ was added", v4];
-  [(MRNowPlayingClient *)v5 reevaluateActivePlayerWithReason:v13 completion:0];
+  v12 = [[MRNowPlayingPlayerClient alloc] initWithPlayerPath:pathCopy];
+  [(NSMutableArray *)selfCopy->_playerClients addObject:v12];
+  pathCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"New player %@ was added", pathCopy];
+  [(MRNowPlayingClient *)selfCopy reevaluateActivePlayerWithReason:pathCopy completion:0];
 
 LABEL_12:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v14 = *MEMORY[0x1E69E9840];
 
   return v12;
 }
 
-- (void)removePlayer:(id)a3
+- (void)removePlayer:(id)player
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  playerCopy = player;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v5->_playerClients;
+  v6 = selfCopy->_playerClients;
   v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v7)
   {
@@ -806,20 +806,20 @@ LABEL_12:
       }
 
       v10 = *(*(&v18 + 1) + 8 * i);
-      v11 = [v10 playerPath];
-      if ([v11 isEqual:v4])
+      playerPath = [v10 playerPath];
+      if ([playerPath isEqual:playerCopy])
       {
-        [(NSMutableArray *)v5->_playerClients removeObject:v10];
-        v12 = [(MRNowPlayingClient *)v5 activePlayerPath];
-        v13 = v4;
+        [(NSMutableArray *)selfCopy->_playerClients removeObject:v10];
+        activePlayerPath = [(MRNowPlayingClient *)selfCopy activePlayerPath];
+        v13 = playerCopy;
         v14 = v13;
-        if (v12 == v13)
+        if (activePlayerPath == v13)
         {
         }
 
         else
         {
-          v15 = [v12 isEqual:v13];
+          v15 = [activePlayerPath isEqual:v13];
 
           if (!v15)
           {
@@ -828,7 +828,7 @@ LABEL_12:
         }
 
         v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Active player %@ was removed", v14];
-        [(MRNowPlayingClient *)v5 reevaluateActivePlayerWithReason:v16 completion:0];
+        [(MRNowPlayingClient *)selfCopy reevaluateActivePlayerWithReason:v16 completion:0];
 
 LABEL_15:
         goto LABEL_16;
@@ -846,14 +846,14 @@ LABEL_15:
 
 LABEL_16:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)canBeNowPlayingForPlayer:(id)a3
+- (BOOL)canBeNowPlayingForPlayer:(id)player
 {
-  v4 = a3;
-  v5 = v4;
+  playerCopy = player;
+  v5 = playerCopy;
   if (self->_perPlayerCanBeNowPlaying || !self->_canBeNowPlaying)
   {
     playerClients = self->_playerClients;
@@ -861,17 +861,17 @@ LABEL_16:
     v10[1] = 3221225472;
     v10[2] = __47__MRNowPlayingClient_canBeNowPlayingForPlayer___block_invoke;
     v10[3] = &unk_1E76A3758;
-    v11 = v4;
+    v11 = playerCopy;
     v8 = [(NSMutableArray *)playerClients mr_first:v10];
-    v6 = [v8 canBeNowPlayingPlayer];
+    canBeNowPlayingPlayer = [v8 canBeNowPlayingPlayer];
   }
 
   else
   {
-    v6 = 1;
+    canBeNowPlayingPlayer = 1;
   }
 
-  return v6;
+  return canBeNowPlayingPlayer;
 }
 
 uint64_t __47__MRNowPlayingClient_canBeNowPlayingForPlayer___block_invoke(uint64_t a1, void *a2)
@@ -944,27 +944,27 @@ void __74__MRNowPlayingClient_enqueueCommand_options_playerPath_commandCompletio
   v2[2](v2, v1);
 }
 
-- (void)sendQueuedCommandsWithReason:(id)a3
+- (void)sendQueuedCommandsWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(NSMutableArray *)v5->_commandQueue count])
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableArray *)selfCopy->_commandQueue count])
   {
-    v6 = [(NSMutableArray *)v5->_commandQueue copy];
-    [(NSMutableArray *)v5->_commandQueue removeAllObjects];
-    replayQueue = v5->_replayQueue;
+    v6 = [(NSMutableArray *)selfCopy->_commandQueue copy];
+    [(NSMutableArray *)selfCopy->_commandQueue removeAllObjects];
+    replayQueue = selfCopy->_replayQueue;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __51__MRNowPlayingClient_sendQueuedCommandsWithReason___block_invoke;
     v9[3] = &unk_1E769A4A0;
     v10 = v6;
-    v11 = v4;
+    v11 = reasonCopy;
     v8 = v6;
     dispatch_async(replayQueue, v9);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __51__MRNowPlayingClient_sendQueuedCommandsWithReason___block_invoke(uint64_t a1)
@@ -1023,7 +1023,7 @@ void __51__MRNowPlayingClient_sendQueuedCommandsWithReason___block_invoke(uint64
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_avSessionMediaServicesResetNotification:(id)a3
+- (void)_avSessionMediaServicesResetNotification:(id)notification
 {
   v4 = _MRLogForCategory(1uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1081,33 +1081,33 @@ void __63__MRNowPlayingClient__avSessionMediaServicesResetNotification___block_i
 - (void)restoreNowPlayingClientState
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_canBeNowPlaying)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_canBeNowPlaying)
   {
     v3 = MRGetSharedService();
-    MRMediaRemoteServiceSetCanBeNowPlayingApp(v3, 1, v2->_canBeNowPlayingTimestamp);
+    MRMediaRemoteServiceSetCanBeNowPlayingApp(v3, 1, selfCopy->_canBeNowPlayingTimestamp);
   }
 
-  if (v2->_activePlayer)
+  if (selfCopy->_activePlayer)
   {
     v4 = MRGetSharedService();
-    v5 = [(MRNowPlayingClient *)v2 activePlayerPath];
-    MRMediaRemoteServiceSetNowPlayingPlayer(v4, v5, 0, 0);
+    activePlayerPath = [(MRNowPlayingClient *)selfCopy activePlayerPath];
+    MRMediaRemoteServiceSetNowPlayingPlayer(v4, activePlayerPath, 0, 0);
   }
 
-  v6 = [(MRPlayerPath *)v2->_playerPath client];
-  if ([v6 hasAuxiliaryProperties])
+  client = [(MRPlayerPath *)selfCopy->_playerPath client];
+  if ([client hasAuxiliaryProperties])
   {
     v7 = MRGetSharedService();
-    MRMediaRemoteServiceUpdateClientProperties(v7, v2->_playerPath, 0, 0);
+    MRMediaRemoteServiceUpdateClientProperties(v7, selfCopy->_playerPath, 0, 0);
   }
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = v2->_playerClients;
+  v8 = selfCopy->_playerClients;
   v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
@@ -1132,35 +1132,35 @@ void __63__MRNowPlayingClient__avSessionMediaServicesResetNotification___block_i
     while (v9);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v12 = *MEMORY[0x1E69E9840];
 }
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v7.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7.receiver = selfCopy;
   v7.super_class = MRNowPlayingClient;
   v3 = [(MRNowPlayingClient *)&v7 description];
-  v4 = [(MRPlayerPath *)v2->_playerPath client];
-  v5 = [v3 stringByAppendingFormat:@"Client: %@ Players: %@", v4, v2->_playerClients];
+  client = [(MRPlayerPath *)selfCopy->_playerPath client];
+  v5 = [v3 stringByAppendingFormat:@"Client: %@ Players: %@", client, selfCopy->_playerClients];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (id)debugDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = MEMORY[0x1E696AEC0];
-  playerPath = v2->_playerPath;
-  v22 = [(MRPlayerPath *)playerPath client];
-  v21 = MRCreateIndentedDebugDescriptionFromObject(v22);
-  v20 = MRCreateIndentedDebugDescriptionFromObject(v2->_activePlayer);
-  if (v2->_isForeground)
+  playerPath = selfCopy->_playerPath;
+  client = [(MRPlayerPath *)playerPath client];
+  v21 = MRCreateIndentedDebugDescriptionFromObject(client);
+  v20 = MRCreateIndentedDebugDescriptionFromObject(selfCopy->_activePlayer);
+  if (selfCopy->_isForeground)
   {
     v5 = @"YES";
   }
@@ -1171,7 +1171,7 @@ void __63__MRNowPlayingClient__avSessionMediaServicesResetNotification___block_i
   }
 
   v19 = MRCreateIndentedDebugDescriptionFromObject(v5);
-  if (v2->_perPlayerCanBeNowPlaying)
+  if (selfCopy->_perPlayerCanBeNowPlaying)
   {
     v6 = @"YES";
   }
@@ -1182,7 +1182,7 @@ void __63__MRNowPlayingClient__avSessionMediaServicesResetNotification___block_i
   }
 
   v7 = MRCreateIndentedDebugDescriptionFromObject(v6);
-  if (v2->_canBeNowPlaying)
+  if (selfCopy->_canBeNowPlaying)
   {
     v8 = @"YES";
   }
@@ -1193,9 +1193,9 @@ void __63__MRNowPlayingClient__avSessionMediaServicesResetNotification___block_i
   }
 
   v9 = MRCreateIndentedDebugDescriptionFromObject(v8);
-  v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:v2->_canBeNowPlayingTimestamp];
+  v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:selfCopy->_canBeNowPlayingTimestamp];
   v11 = MRCreateIndentedDebugDescriptionFromObject(v10);
-  if ([(MRNowPlayingClient *)v2 canBeNowPlaying])
+  if ([(MRNowPlayingClient *)selfCopy canBeNowPlaying])
   {
     v12 = @"YES";
   }
@@ -1206,12 +1206,12 @@ void __63__MRNowPlayingClient__avSessionMediaServicesResetNotification___block_i
   }
 
   v13 = MRCreateIndentedDebugDescriptionFromObject(v12);
-  v14 = MRCreateIndentedDebugDescriptionFromArray(v2->_commandQueue);
-  v15 = MRCreateIndentedDebugDescriptionFromArray(v2->_playerClients);
+  v14 = MRCreateIndentedDebugDescriptionFromArray(selfCopy->_commandQueue);
+  v15 = MRCreateIndentedDebugDescriptionFromArray(selfCopy->_playerClients);
   v16 = [v3 stringWithFormat:@"    playerPath = %@\n    client = %@\n    activePlayer = %@\n    isForeground = %@\n    perPlayerCanBeNowPlaying = %@\n    canBeNowPlaying = %@\n    canBeNowPlayingTimeStamp = %@\n    effectiveCanBeNowPlaying = %@\n    enqueueCommands = %@\n    playerClients = %@\n", playerPath, v21, v20, v19, v7, v9, v11, v13, v14, v15];
-  v17 = MRCreateFormattedDebugDescriptionFromClass(v2, v16);
+  v17 = MRCreateFormattedDebugDescriptionFromClass(selfCopy, v16);
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v17;
 }

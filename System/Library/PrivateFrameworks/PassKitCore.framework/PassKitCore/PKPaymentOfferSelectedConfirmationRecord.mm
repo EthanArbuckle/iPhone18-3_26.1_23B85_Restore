@@ -1,12 +1,12 @@
 @interface PKPaymentOfferSelectedConfirmationRecord
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferSelectedConfirmationRecord)initWithCoder:(id)a3;
-- (PKPaymentOfferSelectedConfirmationRecord)initWithTransaction:(id)a3 context:(unint64_t)a4 selectedOffer:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferSelectedConfirmationRecord)initWithCoder:(id)coder;
+- (PKPaymentOfferSelectedConfirmationRecord)initWithTransaction:(id)transaction context:(unint64_t)context selectedOffer:(id)offer;
 - (id)_init;
 - (id)description;
 - (id)rewardsRedemptionIntent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferSelectedConfirmationRecord
@@ -18,19 +18,19 @@
   return [(PKPaymentOfferConfirmationRecord *)&v3 _init];
 }
 
-- (PKPaymentOfferSelectedConfirmationRecord)initWithTransaction:(id)a3 context:(unint64_t)a4 selectedOffer:(id)a5
+- (PKPaymentOfferSelectedConfirmationRecord)initWithTransaction:(id)transaction context:(unint64_t)context selectedOffer:(id)offer
 {
-  v9 = a5;
-  v10 = a3;
-  v11 = [v9 passUniqueID];
-  v12 = [v9 criteriaIdentifier];
+  offerCopy = offer;
+  transactionCopy = transaction;
+  passUniqueID = [offerCopy passUniqueID];
+  criteriaIdentifier = [offerCopy criteriaIdentifier];
   v15.receiver = self;
   v15.super_class = PKPaymentOfferSelectedConfirmationRecord;
-  v13 = [(PKPaymentOfferConfirmationRecord *)&v15 initWithTransaction:v10 passUniqueID:v11 criteriaIdentifier:v12 context:a4 type:1];
+  v13 = [(PKPaymentOfferConfirmationRecord *)&v15 initWithTransaction:transactionCopy passUniqueID:passUniqueID criteriaIdentifier:criteriaIdentifier context:context type:1];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_selectedOffer, a5);
+    objc_storeStrong(&v13->_selectedOffer, offer);
   }
 
   return v13;
@@ -40,26 +40,26 @@
 {
   if ([(PKSelectedPaymentOffer *)self->_selectedOffer type]== 2)
   {
-    v3 = [(PKSelectedPaymentOffer *)self->_selectedOffer rewardsRedemptionIntent];
+    rewardsRedemptionIntent = [(PKSelectedPaymentOffer *)self->_selectedOffer rewardsRedemptionIntent];
   }
 
   else
   {
-    v3 = 0;
+    rewardsRedemptionIntent = 0;
   }
 
-  return v3;
+  return rewardsRedemptionIntent;
 }
 
-- (PKPaymentOfferSelectedConfirmationRecord)initWithCoder:(id)a3
+- (PKPaymentOfferSelectedConfirmationRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPaymentOfferSelectedConfirmationRecord;
-  v5 = [(PKPaymentOfferConfirmationRecord *)&v9 initWithCoder:v4];
+  v5 = [(PKPaymentOfferConfirmationRecord *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedOffer"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedOffer"];
     selectedOffer = v5->_selectedOffer;
     v5->_selectedOffer = v6;
   }
@@ -67,25 +67,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPaymentOfferSelectedConfirmationRecord;
-  v4 = a3;
-  [(PKPaymentOfferConfirmationRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_selectedOffer forKey:{@"selectedOffer", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKPaymentOfferConfirmationRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_selectedOffer forKey:{@"selectedOffer", v5.receiver, v5.super_class}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v12.receiver = self;
@@ -145,11 +145,11 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v3 appendFormat:@"<%@: %p; ", objc_opt_class(), self];
-  v4 = [(PKPaymentOfferConfirmationRecord *)self transaction];
-  [v3 appendFormat:@"transaction: '%@'; ", v4];
+  transaction = [(PKPaymentOfferConfirmationRecord *)self transaction];
+  [v3 appendFormat:@"transaction: '%@'; ", transaction];
 
-  v5 = [(PKPaymentOfferConfirmationRecord *)self passUniqueID];
-  [v3 appendFormat:@"passUniqueID: '%@'; ", v5];
+  passUniqueID = [(PKPaymentOfferConfirmationRecord *)self passUniqueID];
+  [v3 appendFormat:@"passUniqueID: '%@'; ", passUniqueID];
 
   v6 = PKPaymentOffersSessionDetailsContextToString([(PKPaymentOfferConfirmationRecord *)self context]);
   [v3 appendFormat:@"context: '%@'; ", v6];

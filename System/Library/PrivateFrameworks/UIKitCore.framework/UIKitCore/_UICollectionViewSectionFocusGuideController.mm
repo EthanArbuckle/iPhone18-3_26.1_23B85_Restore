@@ -1,21 +1,21 @@
 @interface _UICollectionViewSectionFocusGuideController
-- (CGRect)_sectionEndFrameForSection:(int64_t)a3 layout:(id)a4;
-- (CGRect)_sectionFrameForSection:(int64_t)a3 layout:(id)a4;
+- (CGRect)_sectionEndFrameForSection:(int64_t)section layout:(id)layout;
+- (CGRect)_sectionFrameForSection:(int64_t)section layout:(id)layout;
 - (UICollectionView)collectionView;
-- (_UICollectionViewSectionFocusGuideController)initWithCollectionView:(id)a3;
-- (id)_createOrUpdateSectionFocusGuidePackageForSection:(int64_t)a3;
+- (_UICollectionViewSectionFocusGuideController)initWithCollectionView:(id)view;
+- (id)_createOrUpdateSectionFocusGuidePackageForSection:(int64_t)section;
 - (id)_focusGuides;
-- (id)_sectionFocusGuidePackageForSection:(int64_t)a3;
+- (id)_sectionFocusGuidePackageForSection:(int64_t)section;
 - (id)_sectionsToLoad;
-- (void)_layoutSectionFocusGuide:(id)a3 forSection:(int64_t)a4 inLayout:(id)a5;
-- (void)_layoutSectionFocusGuide:(id)a3 forSection:(int64_t)a4 withFrame:(CGRect)a5;
-- (void)_removeSectionFocusGuidesForSection:(int64_t)a3;
+- (void)_layoutSectionFocusGuide:(id)guide forSection:(int64_t)section inLayout:(id)layout;
+- (void)_layoutSectionFocusGuide:(id)guide forSection:(int64_t)section withFrame:(CGRect)frame;
+- (void)_removeSectionFocusGuidesForSection:(int64_t)section;
 - (void)_updatePivotSection;
-- (void)_updateSectionEndFocusGuideForSection:(int64_t)a3 inPackage:(id)a4 layout:(id)a5;
+- (void)_updateSectionEndFocusGuideForSection:(int64_t)section inPackage:(id)package layout:(id)layout;
 - (void)cleanupSectionFocusGuides;
 - (void)performLayout;
 - (void)reloadSectionFocusGuides;
-- (void)updateFocusedIndexPath:(id)a3 immediatelyReevaluatePivotIndex:(BOOL)a4;
+- (void)updateFocusedIndexPath:(id)path immediatelyReevaluatePivotIndex:(BOOL)index;
 @end
 
 @implementation _UICollectionViewSectionFocusGuideController
@@ -27,38 +27,38 @@
   v3 = WeakRetained;
   if (WeakRetained)
   {
-    v4 = [WeakRetained _needsReload];
+    _needsReload = [WeakRetained _needsReload];
     v3 = WeakRetained;
-    if ((v4 & 1) == 0)
+    if ((_needsReload & 1) == 0)
     {
-      v5 = [WeakRetained collectionViewLayout];
-      if (v5)
+      collectionViewLayout = [WeakRetained collectionViewLayout];
+      if (collectionViewLayout)
       {
-        v6 = [WeakRetained _collectionViewData];
-        if (v6)
+        _collectionViewData = [WeakRetained _collectionViewData];
+        if (_collectionViewData)
         {
-          v8 = v6[13];
-          v7 = v6[14];
+          v8 = _collectionViewData[13];
+          v7 = _collectionViewData[14];
 
           v9 = v7 - v8;
           if (v7 != v8)
           {
-            v10 = [(_UICollectionViewSectionFocusGuideController *)self focusedIndexPath];
+            focusedIndexPath = [(_UICollectionViewSectionFocusGuideController *)self focusedIndexPath];
 
-            if (v10)
+            if (focusedIndexPath)
             {
-              v11 = [(_UICollectionViewSectionFocusGuideController *)self focusedIndexPath];
-              -[_UICollectionViewSectionFocusGuideController setPivotSection:](self, "setPivotSection:", [v11 section]);
+              focusedIndexPath2 = [(_UICollectionViewSectionFocusGuideController *)self focusedIndexPath];
+              -[_UICollectionViewSectionFocusGuideController setPivotSection:](self, "setPivotSection:", [focusedIndexPath2 section]);
             }
 
             if ([(_UICollectionViewSectionFocusGuideController *)self pivotSection]== 0x7FFFFFFFFFFFFFFFLL)
             {
-              v12 = [WeakRetained _existingVisibleCells];
-              v13 = [v12 firstObject];
+              _existingVisibleCells = [WeakRetained _existingVisibleCells];
+              firstObject = [_existingVisibleCells firstObject];
 
-              if (v13)
+              if (firstObject)
               {
-                v14 = [WeakRetained indexPathForCell:v13];
+                v14 = [WeakRetained indexPathForCell:firstObject];
                 v15 = v14;
                 if (v14)
                 {
@@ -74,15 +74,15 @@
 
             if ([(_UICollectionViewSectionFocusGuideController *)self pivotSection]!= 0x7FFFFFFFFFFFFFFFLL)
             {
-              v16 = [(_UICollectionViewSectionFocusGuideController *)self pivotSection];
-              if ((v16 & ~(v16 >> 63)) >= (v9 >> 3) - 1)
+              pivotSection = [(_UICollectionViewSectionFocusGuideController *)self pivotSection];
+              if ((pivotSection & ~(pivotSection >> 63)) >= (v9 >> 3) - 1)
               {
                 v17 = (v9 >> 3) - 1;
               }
 
               else
               {
-                v17 = v16 & ~(v16 >> 63);
+                v17 = pivotSection & ~(pivotSection >> 63);
               }
 
               [(_UICollectionViewSectionFocusGuideController *)self setPivotSection:v17];
@@ -102,27 +102,27 @@
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = [WeakRetained collectionViewLayout];
-    if (v5 && ([v4 _collectionViewData], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v6[13], v7 = v6[14], v6, (v9 = v7 - v8) != 0) && -[_UICollectionViewSectionFocusGuideController pivotSection](self, "pivotSection") != 0x7FFFFFFFFFFFFFFFLL)
+    collectionViewLayout = [WeakRetained collectionViewLayout];
+    if (collectionViewLayout && ([v4 _collectionViewData], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v6[13], v7 = v6[14], v6, (v9 = v7 - v8) != 0) && -[_UICollectionViewSectionFocusGuideController pivotSection](self, "pivotSection") != 0x7FFFFFFFFFFFFFFFLL)
     {
       v12 = v9 >> 3;
-      v13 = [(_UICollectionViewSectionFocusGuideController *)self pivotSection];
-      if (v13 <= 6)
+      pivotSection = [(_UICollectionViewSectionFocusGuideController *)self pivotSection];
+      if (pivotSection <= 6)
       {
         v14 = 6;
       }
 
       else
       {
-        v14 = v13;
+        v14 = pivotSection;
       }
 
       v15 = v14 - 6;
       v16 = v12 - 1;
-      v17 = [(_UICollectionViewSectionFocusGuideController *)self pivotSection];
-      if (v16 >= v17 + 6)
+      pivotSection2 = [(_UICollectionViewSectionFocusGuideController *)self pivotSection];
+      if (v16 >= pivotSection2 + 6)
       {
-        v16 = v17 + 6;
+        v16 = pivotSection2 + 6;
       }
 
       v10 = [MEMORY[0x1E695DFA8] set];
@@ -162,12 +162,12 @@
   WeakRetained = objc_loadWeakRetained(&self->_collectionView);
   if (WeakRetained)
   {
-    v4 = [(_UICollectionViewSectionFocusGuideController *)self _focusGuides];
+    _focusGuides = [(_UICollectionViewSectionFocusGuideController *)self _focusGuides];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v5 = [_focusGuides countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -178,7 +178,7 @@
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_focusGuides);
           }
 
           v9 = *(*(&v12 + 1) + 8 * i);
@@ -186,25 +186,25 @@
           [WeakRetained removeLayoutGuide:v9];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [_focusGuides countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);
     }
   }
 
-  v10 = [(_UICollectionViewSectionFocusGuideController *)self focusGuideFromSectionMap];
-  [v10 removeAllObjects];
+  focusGuideFromSectionMap = [(_UICollectionViewSectionFocusGuideController *)self focusGuideFromSectionMap];
+  [focusGuideFromSectionMap removeAllObjects];
 
-  v11 = [(_UICollectionViewSectionFocusGuideController *)self focusGuideToSectionMap];
-  [v11 removeAllObjects];
+  focusGuideToSectionMap = [(_UICollectionViewSectionFocusGuideController *)self focusGuideToSectionMap];
+  [focusGuideToSectionMap removeAllObjects];
 }
 
 - (id)_focusGuides
 {
-  v2 = [(NSMapTable *)self->_focusGuideFromSectionMap objectEnumerator];
-  v3 = [v2 allObjects];
-  v4 = [v3 valueForKeyPath:@"@unionOfArrays.focusGuides"];
+  objectEnumerator = [(NSMapTable *)self->_focusGuideFromSectionMap objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  v4 = [allObjects valueForKeyPath:@"@unionOfArrays.focusGuides"];
 
   return v4;
 }
@@ -216,19 +216,19 @@
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = [WeakRetained collectionViewLayout];
-    v6 = v5;
-    if (v5 && [v5 _layoutAxis] == 2)
+    collectionViewLayout = [WeakRetained collectionViewLayout];
+    v6 = collectionViewLayout;
+    if (collectionViewLayout && [collectionViewLayout _layoutAxis] == 2)
     {
       [(_UICollectionViewSectionFocusGuideController *)self _updatePivotSection];
-      v7 = [(_UICollectionViewSectionFocusGuideController *)self _sectionsToLoad];
+      _sectionsToLoad = [(_UICollectionViewSectionFocusGuideController *)self _sectionsToLoad];
       v8 = MEMORY[0x1E695DFD8];
-      v9 = [(NSMapTable *)self->_focusGuideToSectionMap objectEnumerator];
-      v10 = [v9 allObjects];
-      v11 = [v8 setWithArray:v10];
+      objectEnumerator = [(NSMapTable *)self->_focusGuideToSectionMap objectEnumerator];
+      allObjects = [objectEnumerator allObjects];
+      v11 = [v8 setWithArray:allObjects];
 
       v12 = [v11 mutableCopy];
-      [v12 minusSet:v7];
+      [v12 minusSet:_sectionsToLoad];
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -263,7 +263,7 @@
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v18 = v7;
+      v18 = _sectionsToLoad;
       v19 = [v18 countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v19)
       {
@@ -300,20 +300,20 @@
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = [WeakRetained _focusSystem];
+    _focusSystem = [WeakRetained _focusSystem];
 
-    if (v5)
+    if (_focusSystem)
     {
-      v6 = [v4 collectionViewLayout];
-      v7 = v6;
-      if (v6 && [v6 _layoutAxis] == 2)
+      collectionViewLayout = [v4 collectionViewLayout];
+      v7 = collectionViewLayout;
+      if (collectionViewLayout && [collectionViewLayout _layoutAxis] == 2)
       {
-        v8 = [(_UICollectionViewSectionFocusGuideController *)self _sectionsToLoad];
+        _sectionsToLoad = [(_UICollectionViewSectionFocusGuideController *)self _sectionsToLoad];
         v14 = 0u;
         v15 = 0u;
         v16 = 0u;
         v17 = 0u;
-        v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [_sectionsToLoad countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v9)
         {
           v10 = v9;
@@ -325,14 +325,14 @@
             {
               if (*v15 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(_sectionsToLoad);
               }
 
               v13 = -[_UICollectionViewSectionFocusGuideController _createOrUpdateSectionFocusGuidePackageForSection:](self, "_createOrUpdateSectionFocusGuidePackageForSection:", [*(*(&v14 + 1) + 8 * v12++) integerValue]);
             }
 
             while (v10 != v12);
-            v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+            v10 = [_sectionsToLoad countByEnumeratingWithState:&v14 objects:v18 count:16];
           }
 
           while (v10);
@@ -342,23 +342,23 @@
   }
 }
 
-- (_UICollectionViewSectionFocusGuideController)initWithCollectionView:(id)a3
+- (_UICollectionViewSectionFocusGuideController)initWithCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = _UICollectionViewSectionFocusGuideController;
   v5 = [(_UICollectionViewSectionFocusGuideController *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_collectionView, v4);
-    v7 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeWeak(&v5->_collectionView, viewCopy);
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     focusGuideFromSectionMap = v6->_focusGuideFromSectionMap;
-    v6->_focusGuideFromSectionMap = v7;
+    v6->_focusGuideFromSectionMap = strongToStrongObjectsMapTable;
 
-    v9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     focusGuideToSectionMap = v6->_focusGuideToSectionMap;
-    v6->_focusGuideToSectionMap = v9;
+    v6->_focusGuideToSectionMap = strongToStrongObjectsMapTable2;
 
     v6->_pivotSection = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -366,22 +366,22 @@
   return v6;
 }
 
-- (void)updateFocusedIndexPath:(id)a3 immediatelyReevaluatePivotIndex:(BOOL)a4
+- (void)updateFocusedIndexPath:(id)path immediatelyReevaluatePivotIndex:(BOOL)index
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(_UICollectionViewSectionFocusGuideController *)self focusedIndexPath];
-  v8 = v6;
+  indexCopy = index;
+  pathCopy = path;
+  focusedIndexPath = [(_UICollectionViewSectionFocusGuideController *)self focusedIndexPath];
+  v8 = pathCopy;
   v10 = v8;
-  if (v7 == v8)
+  if (focusedIndexPath == v8)
   {
 
     goto LABEL_10;
   }
 
-  if (v8 && v7)
+  if (v8 && focusedIndexPath)
   {
-    v9 = [v7 isEqual:v8];
+    v9 = [focusedIndexPath isEqual:v8];
 
     if (v9)
     {
@@ -394,7 +394,7 @@
   }
 
   [(_UICollectionViewSectionFocusGuideController *)self setFocusedIndexPath:v10];
-  if (v4)
+  if (indexCopy)
   {
     [(_UICollectionViewSectionFocusGuideController *)self _updatePivotSection];
   }
@@ -402,24 +402,24 @@
 LABEL_10:
 }
 
-- (id)_sectionFocusGuidePackageForSection:(int64_t)a3
+- (id)_sectionFocusGuidePackageForSection:(int64_t)section
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (section == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
   }
 
   else
   {
-    v5 = [(_UICollectionViewSectionFocusGuideController *)self focusGuideFromSectionMap];
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v3 = [v5 objectForKey:v6];
+    focusGuideFromSectionMap = [(_UICollectionViewSectionFocusGuideController *)self focusGuideFromSectionMap];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:section];
+    v3 = [focusGuideFromSectionMap objectForKey:v6];
   }
 
   return v3;
 }
 
-- (id)_createOrUpdateSectionFocusGuidePackageForSection:(int64_t)a3
+- (id)_createOrUpdateSectionFocusGuidePackageForSection:(int64_t)section
 {
   v28 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -430,15 +430,15 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  v7 = [WeakRetained _focusSystem];
+  _focusSystem = [WeakRetained _focusSystem];
 
   v8 = 0;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && v7)
+  if (section != 0x7FFFFFFFFFFFFFFFLL && _focusSystem)
   {
-    v9 = [v6 collectionViewLayout];
-    if (v9)
+    collectionViewLayout = [v6 collectionViewLayout];
+    if (collectionViewLayout)
     {
-      if (a3 < 0 || (([v6 _collectionViewData], (v10 = objc_claimAutoreleasedReturnValue()) == 0) ? (v11 = 0) : (v11 = (v10[14] - v10[13]) >> 3), v10, v11 <= a3))
+      if (section < 0 || (([v6 _collectionViewData], (v10 = objc_claimAutoreleasedReturnValue()) == 0) ? (v11 = 0) : (v11 = (v10[14] - v10[13]) >> 3), v10, v11 <= section))
       {
         if (os_variant_has_internal_diagnostics())
         {
@@ -446,7 +446,7 @@ LABEL_10:
           if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
           {
             *buf = 134217984;
-            v27 = a3;
+            sectionCopy2 = section;
             _os_log_fault_impl(&dword_188A29000, v25, OS_LOG_TYPE_FAULT, "Attempting to create or update focus guide for invalid section: %li", buf, 0xCu);
           }
         }
@@ -457,7 +457,7 @@ LABEL_10:
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
             *buf = 134217984;
-            v27 = a3;
+            sectionCopy2 = section;
             _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "Attempting to create or update focus guide for invalid section: %li", buf, 0xCu);
           }
         }
@@ -465,44 +465,44 @@ LABEL_10:
 
       else
       {
-        v12 = [(_UICollectionViewSectionFocusGuideController *)self _sectionFocusGuidePackageForSection:a3];
+        v12 = [(_UICollectionViewSectionFocusGuideController *)self _sectionFocusGuidePackageForSection:section];
         if (v12)
         {
           v8 = v12;
-          v13 = [(_UISectionFocusContainerGuidePackage *)v12 sectionFocusGuide];
-          [(_UICollectionViewSectionFocusGuideController *)self _layoutSectionFocusGuide:v13 forSection:a3 inLayout:v9];
+          sectionFocusGuide = [(_UISectionFocusContainerGuidePackage *)v12 sectionFocusGuide];
+          [(_UICollectionViewSectionFocusGuideController *)self _layoutSectionFocusGuide:sectionFocusGuide forSection:section inLayout:collectionViewLayout];
 
 LABEL_11:
-          [(_UICollectionViewSectionFocusGuideController *)self _updateSectionEndFocusGuideForSection:a3 inPackage:v8 layout:v9];
+          [(_UICollectionViewSectionFocusGuideController *)self _updateSectionEndFocusGuideForSection:section inPackage:v8 layout:collectionViewLayout];
 LABEL_17:
 
           goto LABEL_18;
         }
 
-        [(_UICollectionViewSectionFocusGuideController *)self _sectionFrameForSection:a3 layout:v9];
+        [(_UICollectionViewSectionFocusGuideController *)self _sectionFrameForSection:section layout:collectionViewLayout];
         x = v30.origin.x;
         y = v30.origin.y;
         width = v30.size.width;
         height = v30.size.height;
         if (!CGRectIsNull(v30))
         {
-          v20 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+          v20 = [MEMORY[0x1E696AD98] numberWithInteger:section];
           v21 = [[_UIFocusCollectionViewSectionContainerGuide alloc] initWithCollectionView:v6];
           [v6 addLayoutGuide:v21];
           [(UILayoutGuide *)v21 _setLockedToOwningView:1];
           v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UICollectionViewSectionFocusContainerGuide_%@", v20];
           [(UILayoutGuide *)v21 setIdentifier:v22];
 
-          [(_UIFocusCollectionViewSectionContainerGuide *)v21 setSection:a3];
+          [(_UIFocusCollectionViewSectionContainerGuide *)v21 setSection:section];
           v8 = objc_alloc_init(_UISectionFocusContainerGuidePackage);
           [(_UISectionFocusContainerGuidePackage *)v8 setSectionFocusGuide:v21];
-          v23 = [(_UICollectionViewSectionFocusGuideController *)self focusGuideFromSectionMap];
-          [v23 setObject:v8 forKey:v20];
+          focusGuideFromSectionMap = [(_UICollectionViewSectionFocusGuideController *)self focusGuideFromSectionMap];
+          [focusGuideFromSectionMap setObject:v8 forKey:v20];
 
-          v24 = [(_UICollectionViewSectionFocusGuideController *)self focusGuideToSectionMap];
-          [v24 setObject:v20 forKey:v8];
+          focusGuideToSectionMap = [(_UICollectionViewSectionFocusGuideController *)self focusGuideToSectionMap];
+          [focusGuideToSectionMap setObject:v20 forKey:v8];
 
-          [(_UICollectionViewSectionFocusGuideController *)self _layoutSectionFocusGuide:v21 forSection:a3 withFrame:x, y, width, height];
+          [(_UICollectionViewSectionFocusGuideController *)self _layoutSectionFocusGuide:v21 forSection:section withFrame:x, y, width, height];
           if (!v8)
           {
             goto LABEL_17;
@@ -522,16 +522,16 @@ LABEL_18:
   return v8;
 }
 
-- (void)_updateSectionEndFocusGuideForSection:(int64_t)a3 inPackage:(id)a4 layout:(id)a5
+- (void)_updateSectionEndFocusGuideForSection:(int64_t)section inPackage:(id)package layout:(id)layout
 {
-  v20 = a4;
-  [(_UICollectionViewSectionFocusGuideController *)self _sectionEndFrameForSection:a3 layout:a5];
+  packageCopy = package;
+  [(_UICollectionViewSectionFocusGuideController *)self _sectionEndFrameForSection:section layout:layout];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v17 = [v20 sectionEndFocusGuide];
+  v16 = [MEMORY[0x1E696AD98] numberWithInteger:section];
+  sectionEndFocusGuide = [packageCopy sectionEndFocusGuide];
   WeakRetained = objc_loadWeakRetained(&self->_collectionView);
   v22.origin.x = v9;
   v22.origin.y = v11;
@@ -539,41 +539,41 @@ LABEL_18:
   v22.size.height = v15;
   if (CGRectIsNull(v22))
   {
-    if (!v17)
+    if (!sectionEndFocusGuide)
     {
       goto LABEL_8;
     }
 
-    [(UILayoutGuide *)v17 _setLockedToOwningView:0];
-    [WeakRetained removeLayoutGuide:v17];
-    [v20 setSectionEndFocusGuide:0];
+    [(UILayoutGuide *)sectionEndFocusGuide _setLockedToOwningView:0];
+    [WeakRetained removeLayoutGuide:sectionEndFocusGuide];
+    [packageCopy setSectionEndFocusGuide:0];
   }
 
   else
   {
-    if (!v17)
+    if (!sectionEndFocusGuide)
     {
-      v17 = [[_UIFocusCollectionViewSectionContainerGuide alloc] initWithCollectionView:WeakRetained];
-      [WeakRetained addLayoutGuide:v17];
-      [(UILayoutGuide *)v17 _setLockedToOwningView:1];
+      sectionEndFocusGuide = [[_UIFocusCollectionViewSectionContainerGuide alloc] initWithCollectionView:WeakRetained];
+      [WeakRetained addLayoutGuide:sectionEndFocusGuide];
+      [(UILayoutGuide *)sectionEndFocusGuide _setLockedToOwningView:1];
       v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UICollectionViewSectionEndFocusContainerGuide_%@", v16];
-      [(UILayoutGuide *)v17 setIdentifier:v19];
+      [(UILayoutGuide *)sectionEndFocusGuide setIdentifier:v19];
 
-      [(_UIFocusCollectionViewSectionContainerGuide *)v17 setSection:a3];
-      [v20 setSectionEndFocusGuide:v17];
+      [(_UIFocusCollectionViewSectionContainerGuide *)sectionEndFocusGuide setSection:section];
+      [packageCopy setSectionEndFocusGuide:sectionEndFocusGuide];
     }
 
-    [(UILayoutGuide *)v17 _setManualLayoutFrame:v9, v11, v13, v15];
+    [(UILayoutGuide *)sectionEndFocusGuide _setManualLayoutFrame:v9, v11, v13, v15];
   }
 
 LABEL_8:
 }
 
-- (void)_removeSectionFocusGuidesForSection:(int64_t)a3
+- (void)_removeSectionFocusGuidesForSection:(int64_t)section
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = [(_UICollectionViewSectionFocusGuideController *)self _sectionFocusGuidePackageForSection:?];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:section];
   WeakRetained = objc_loadWeakRetained(&self->_collectionView);
   if (v5)
   {
@@ -581,8 +581,8 @@ LABEL_8:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [v5 focusGuides];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    focusGuides = [v5 focusGuides];
+    v9 = [focusGuides countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -593,7 +593,7 @@ LABEL_8:
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(focusGuides);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
@@ -601,40 +601,40 @@ LABEL_8:
           [WeakRetained removeLayoutGuide:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [focusGuides countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);
     }
 
-    v14 = [(_UICollectionViewSectionFocusGuideController *)self focusGuideToSectionMap];
-    [v14 removeObjectForKey:v5];
+    focusGuideToSectionMap = [(_UICollectionViewSectionFocusGuideController *)self focusGuideToSectionMap];
+    [focusGuideToSectionMap removeObjectForKey:v5];
   }
 
-  v15 = [(_UICollectionViewSectionFocusGuideController *)self focusGuideFromSectionMap];
-  [v15 removeObjectForKey:v6];
+  focusGuideFromSectionMap = [(_UICollectionViewSectionFocusGuideController *)self focusGuideFromSectionMap];
+  [focusGuideFromSectionMap removeObjectForKey:v6];
 }
 
-- (void)_layoutSectionFocusGuide:(id)a3 forSection:(int64_t)a4 inLayout:(id)a5
+- (void)_layoutSectionFocusGuide:(id)guide forSection:(int64_t)section inLayout:(id)layout
 {
-  v8 = a3;
-  [(_UICollectionViewSectionFocusGuideController *)self _sectionFrameForSection:a4 layout:a5];
-  [(_UICollectionViewSectionFocusGuideController *)self _layoutSectionFocusGuide:v8 forSection:a4 withFrame:?];
+  guideCopy = guide;
+  [(_UICollectionViewSectionFocusGuideController *)self _sectionFrameForSection:section layout:layout];
+  [(_UICollectionViewSectionFocusGuideController *)self _layoutSectionFocusGuide:guideCopy forSection:section withFrame:?];
 }
 
-- (void)_layoutSectionFocusGuide:(id)a3 forSection:(int64_t)a4 withFrame:(CGRect)a5
+- (void)_layoutSectionFocusGuide:(id)guide forSection:(int64_t)section withFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  guideCopy = guide;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v12 = [v10 section];
+  section = [guideCopy section];
   if (has_internal_diagnostics)
   {
-    if (v12 == a4)
+    if (section == section)
     {
       goto LABEL_4;
     }
@@ -645,12 +645,12 @@ LABEL_8:
       goto LABEL_13;
     }
 
-    v15 = [v10 section];
-    v16 = [v10 debugDescription];
+    section2 = [guideCopy section];
+    v16 = [guideCopy debugDescription];
     v20 = 134218498;
-    v21 = v15;
+    v21 = section2;
     v22 = 2048;
-    v23 = a4;
+    sectionCopy2 = section;
     v24 = 2112;
     v25 = v16;
     _os_log_fault_impl(&dword_188A29000, v14, OS_LOG_TYPE_FAULT, "Attempting to layout focus guide for section: %li with mismatched sectionIndex: %li.\n%@", &v20, 0x20u);
@@ -660,18 +660,18 @@ LABEL_13:
     goto LABEL_4;
   }
 
-  if (v12 != a4)
+  if (section != section)
   {
     v17 = *(__UILogGetCategoryCachedImpl("Assert", &_layoutSectionFocusGuide_forSection_withFrame____s_category) + 8);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v14 = v17;
-      v19 = [v10 section];
-      v16 = [v10 debugDescription];
+      section3 = [guideCopy section];
+      v16 = [guideCopy debugDescription];
       v20 = 134218498;
-      v21 = v19;
+      v21 = section3;
       v22 = 2048;
-      v23 = a4;
+      sectionCopy2 = section;
       v24 = 2112;
       v25 = v16;
       _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "Attempting to layout focus guide for section: %li with mismatched sectionIndex: %li.\n%@", &v20, 0x20u);
@@ -687,23 +687,23 @@ LABEL_4:
   IsNull = CGRectIsNull(v27);
   if (!IsNull)
   {
-    [v10 _setManualLayoutFrame:{x, y, width, height}];
+    [guideCopy _setManualLayoutFrame:{x, y, width, height}];
   }
 
-  [v10 setEnabled:!IsNull];
+  [guideCopy setEnabled:!IsNull];
 }
 
-- (CGRect)_sectionFrameForSection:(int64_t)a3 layout:(id)a4
+- (CGRect)_sectionFrameForSection:(int64_t)section layout:(id)layout
 {
-  if (a4)
+  if (layout)
   {
-    v6 = a4;
-    [v6 _layoutFrameForSection:a3];
+    layoutCopy = layout;
+    [layoutCopy _layoutFrameForSection:section];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [v6 _layoutAxis];
+    _layoutAxis = [layoutCopy _layoutAxis];
 
     WeakRetained = objc_loadWeakRetained(&self->_collectionView);
     [WeakRetained bounds];
@@ -711,7 +711,7 @@ LABEL_4:
     v20 = v19;
 
     v21 = 0.0;
-    if (v15 == 1)
+    if (_layoutAxis == 1)
     {
       v22 = v20;
     }
@@ -721,7 +721,7 @@ LABEL_4:
       v22 = v14;
     }
 
-    if (v15 == 1)
+    if (_layoutAxis == 1)
     {
       v23 = 0.0;
     }
@@ -731,7 +731,7 @@ LABEL_4:
       v23 = v10;
     }
 
-    if (v15 == 2)
+    if (_layoutAxis == 2)
     {
       v24 = v14;
     }
@@ -741,7 +741,7 @@ LABEL_4:
       v24 = v22;
     }
 
-    if (v15 == 2)
+    if (_layoutAxis == 2)
     {
       v25 = v18;
     }
@@ -751,7 +751,7 @@ LABEL_4:
       v25 = v12;
     }
 
-    if (v15 == 2)
+    if (_layoutAxis == 2)
     {
       v26 = v10;
     }
@@ -761,7 +761,7 @@ LABEL_4:
       v26 = v23;
     }
 
-    if (v15 != 2)
+    if (_layoutAxis != 2)
     {
       v21 = v8;
     }
@@ -782,17 +782,17 @@ LABEL_4:
   return result;
 }
 
-- (CGRect)_sectionEndFrameForSection:(int64_t)a3 layout:(id)a4
+- (CGRect)_sectionEndFrameForSection:(int64_t)section layout:(id)layout
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && (v8 = [v6 _layoutAxis]) != 0 && (v9 = v8, WeakRetained = objc_loadWeakRetained(&self->_collectionView), objc_msgSend(WeakRetained, "_collectionViewData"), v11 = objc_claimAutoreleasedReturnValue(), v12 = -[UICollectionViewData _existingNumberOfItemsInSection:](v11, a3), v11, WeakRetained, v12 > 0))
+  layoutCopy = layout;
+  v7 = layoutCopy;
+  if (layoutCopy && (v8 = [layoutCopy _layoutAxis]) != 0 && (v9 = v8, WeakRetained = objc_loadWeakRetained(&self->_collectionView), objc_msgSend(WeakRetained, "_collectionViewData"), v11 = objc_claimAutoreleasedReturnValue(), v12 = -[UICollectionViewData _existingNumberOfItemsInSection:](v11, section), v11, WeakRetained, v12 > 0))
   {
-    v13 = [MEMORY[0x1E696AC88] indexPathForItem:v12 - 1 inSection:a3];
+    v13 = [MEMORY[0x1E696AC88] indexPathForItem:v12 - 1 inSection:section];
     v14 = [v7 layoutAttributesForItemAtIndexPath:v13];
     if (v14)
     {
-      [(_UICollectionViewSectionFocusGuideController *)self _sectionFrameForSection:a3 layout:v7];
+      [(_UICollectionViewSectionFocusGuideController *)self _sectionFrameForSection:section layout:v7];
       v16 = v15;
       v18 = v17;
       rect = v19;

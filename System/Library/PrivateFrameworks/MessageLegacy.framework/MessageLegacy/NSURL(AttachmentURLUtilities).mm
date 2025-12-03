@@ -10,25 +10,25 @@
 
 - (uint64_t)mf_isValidAttachmentURL
 {
-  v1 = [a1 scheme];
+  scheme = [self scheme];
 
-  return [v1 hasPrefix:@"x-attach"];
+  return [scheme hasPrefix:@"x-attach"];
 }
 
 - (uint64_t)mf_rowID
 {
-  if (![a1 mf_isValidAttachmentURL])
+  if (![self mf_isValidAttachmentURL])
   {
     return 0xFFFFFFFFLL;
   }
 
-  v2 = [a1 host];
-  if (!v2)
+  host = [self host];
+  if (!host)
   {
     return 0xFFFFFFFFLL;
   }
 
-  result = [v2 integerValue];
+  result = [host integerValue];
   if (result < 0)
   {
     return -1;
@@ -39,12 +39,12 @@
 
 - (uint64_t)mf_partNumbers
 {
-  if (![a1 mf_isValidAttachmentURL])
+  if (![self mf_isValidAttachmentURL])
   {
     return 0;
   }
 
-  v2 = [objc_msgSend(a1 "absoluteString")];
+  v2 = [objc_msgSend(self "absoluteString")];
   if (![v2 count])
   {
     return 0;
@@ -57,19 +57,19 @@
 
 - (uint64_t)mf_lastPartNumber
 {
-  v1 = [a1 mf_partNumbers];
+  mf_partNumbers = [self mf_partNumbers];
 
-  return [v1 lastObject];
+  return [mf_partNumbers lastObject];
 }
 
 - (uint64_t)mf_firstPartNumber
 {
-  v1 = [a1 mf_partNumbers];
-  result = [v1 count];
+  mf_partNumbers = [self mf_partNumbers];
+  result = [mf_partNumbers count];
   if (result)
   {
 
-    return [v1 objectAtIndexedSubscript:0];
+    return [mf_partNumbers objectAtIndexedSubscript:0];
   }
 
   return result;

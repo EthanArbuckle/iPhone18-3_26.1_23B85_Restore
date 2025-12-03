@@ -1,19 +1,19 @@
 @interface PDSlideBase
-+ (int)inheritedPlaceholderType:(int)a3;
++ (int)inheritedPlaceholderType:(int)type;
 - (BOOL)hasPpt10Animations;
 - (BOOL)hasPpt9Animations;
 - (PDSlideBase)init;
 - (id)description;
-- (id)placeholderWithType:(int)a3 placeholderTypeIndex:(int)a4 useBaseTypeMatch:(BOOL)a5 overrideIndex:(BOOL)a6;
+- (id)placeholderWithType:(int)type placeholderTypeIndex:(int)index useBaseTypeMatch:(BOOL)match overrideIndex:(BOOL)overrideIndex;
 - (id)placeholders;
-- (void)addSlideNumberPlaceholder:(id)a3;
+- (void)addSlideNumberPlaceholder:(id)placeholder;
 - (void)doneWithContent;
-- (void)generatePpt9Animations:(id)a3;
-- (void)setDrawables:(id)a3;
-- (void)setPpt9AnimationDataForCacheItem:(id)a3 order:(int)a4 state:(id)a5;
+- (void)generatePpt9Animations:(id)animations;
+- (void)setDrawables:(id)drawables;
+- (void)setPpt9AnimationDataForCacheItem:(id)item order:(int)order state:(id)state;
 - (void)setUpDrawablePropertyHierarchy;
-- (void)setUpPropertyHierarchyForDrawable:(id)a3;
-- (void)setUpPropertyHierarchyForDrawablePreservingEffectiveValues:(id)a3;
+- (void)setUpPropertyHierarchyForDrawable:(id)drawable;
+- (void)setUpPropertyHierarchyForDrawablePreservingEffectiveValues:(id)values;
 - (void)setUpPropertyHierarchyPreservingEffectiveValues;
 @end
 
@@ -36,42 +36,42 @@
   return v3;
 }
 
-- (void)addSlideNumberPlaceholder:(id)a3
+- (void)addSlideNumberPlaceholder:(id)placeholder
 {
-  v6 = a3;
+  placeholderCopy = placeholder;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [(NSArray *)v4 addObject:v6];
+  [(NSArray *)v4 addObject:placeholderCopy];
   [(NSArray *)v4 addObjectsFromArray:self->mDrawables];
   mDrawables = self->mDrawables;
   self->mDrawables = v4;
 }
 
-- (void)setUpPropertyHierarchyForDrawable:(id)a3
+- (void)setUpPropertyHierarchyForDrawable:(id)drawable
 {
-  v29 = a3;
-  v4 = [(PDSlideBase *)self defaultTextListStyle];
+  drawableCopy = drawable;
+  defaultTextListStyle = [(PDSlideBase *)self defaultTextListStyle];
   v5 = objc_opt_class();
-  v6 = TSUDynamicCast(v5, v29);
+  v6 = TSUDynamicCast(v5, drawableCopy);
   if (v6)
   {
-    v7 = [(PDSlideBase *)self parentTextStyleForTables];
-    if (!v7)
+    parentTextStyleForTables = [(PDSlideBase *)self parentTextStyleForTables];
+    if (!parentTextStyleForTables)
     {
-      v7 = v4;
+      parentTextStyleForTables = defaultTextListStyle;
     }
 
-    [v6 setParentTextListStyle:v7];
+    [v6 setParentTextListStyle:parentTextStyleForTables];
   }
 
   else
   {
     v8 = objc_opt_class();
-    v9 = [v29 clientData];
-    v6 = TSUDynamicCast(v8, v9);
+    clientData = [drawableCopy clientData];
+    v6 = TSUDynamicCast(v8, clientData);
 
     v10 = objc_opt_class();
-    v11 = [v6 placeholder];
-    v7 = TSUDynamicCast(v10, v11);
+    placeholder = [v6 placeholder];
+    parentTextStyleForTables = TSUDynamicCast(v10, placeholder);
 
     if (v6 && [v6 inheritedTextStylePlaceholderType] != -1)
     {
@@ -81,54 +81,54 @@
       {
         v14 = v12;
 
-        v4 = v14;
+        defaultTextListStyle = v14;
       }
     }
 
-    if (!v7)
+    if (!parentTextStyleForTables)
     {
       goto LABEL_19;
     }
 
-    v15 = [v7 type];
-    v16 = [v7 index];
-    v17 = [(PDSlideBase *)self parentTextStyleForPlaceholderType:v15 placeholderTypeIndex:v16 defaultTextListStyle:v4 overrideIndex:0];
-    v27 = [(PDSlideBase *)self parentTextBodyPropertiesForPlaceholderType:v15 placeholderTypeIndex:v16 overrideIndex:0];
+    type = [parentTextStyleForTables type];
+    index = [parentTextStyleForTables index];
+    v17 = [(PDSlideBase *)self parentTextStyleForPlaceholderType:type placeholderTypeIndex:index defaultTextListStyle:defaultTextListStyle overrideIndex:0];
+    v27 = [(PDSlideBase *)self parentTextBodyPropertiesForPlaceholderType:type placeholderTypeIndex:index overrideIndex:0];
     if (v27)
     {
       v18 = objc_opt_class();
-      v19 = TSUDynamicCast(v18, v29);
-      v20 = [v19 textBody];
-      v21 = [v20 properties];
-      [v21 setParent:v27];
+      v19 = TSUDynamicCast(v18, drawableCopy);
+      textBody = [v19 textBody];
+      properties = [textBody properties];
+      [properties setParent:v27];
     }
 
-    v22 = [(PDSlideBase *)self parentShapePropertiesForPlaceholderType:v15 placeholderTypeIndex:v16 overrideIndex:0, v27];
+    v22 = [(PDSlideBase *)self parentShapePropertiesForPlaceholderType:type placeholderTypeIndex:index overrideIndex:0, v27];
     if (v22)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v23 = [v29 drawableProperties];
-        [v23 setParent:v22];
+        drawableProperties = [drawableCopy drawableProperties];
+        [drawableProperties setParent:v22];
       }
     }
 
-    v24 = [(PDSlideBase *)self masterGraphicForPlaceholderType:v15 placeholderTypeIndex:v16 overrideIndex:0];
+    v24 = [(PDSlideBase *)self masterGraphicForPlaceholderType:type placeholderTypeIndex:index overrideIndex:0];
     if (v24)
     {
       v25 = objc_opt_class();
-      v26 = TSUDynamicCast(v25, v29);
+      v26 = TSUDynamicCast(v25, drawableCopy);
       [v26 setMasterGraphic:v24];
     }
 
     if (!v17)
     {
 LABEL_19:
-      v17 = v4;
+      v17 = defaultTextListStyle;
     }
 
-    [v29 setParentTextListStyle:v17];
+    [drawableCopy setParentTextListStyle:v17];
   }
 }
 
@@ -165,32 +165,32 @@ LABEL_19:
   }
 }
 
-- (void)setUpPropertyHierarchyForDrawablePreservingEffectiveValues:(id)a3
+- (void)setUpPropertyHierarchyForDrawablePreservingEffectiveValues:(id)values
 {
-  v31 = a3;
-  v4 = [(PDSlideBase *)self defaultTextListStyle];
+  valuesCopy = values;
+  defaultTextListStyle = [(PDSlideBase *)self defaultTextListStyle];
   v5 = objc_opt_class();
-  v6 = TSUDynamicCast(v5, v31);
+  v6 = TSUDynamicCast(v5, valuesCopy);
   if (v6)
   {
-    v7 = [(PDSlideBase *)self parentTextStyleForTables];
-    if (!v7)
+    parentTextStyleForTables = [(PDSlideBase *)self parentTextStyleForTables];
+    if (!parentTextStyleForTables)
     {
-      v7 = v4;
+      parentTextStyleForTables = defaultTextListStyle;
     }
 
-    [v6 changeParentTextListStylePreservingEffectiveValues:v7];
+    [v6 changeParentTextListStylePreservingEffectiveValues:parentTextStyleForTables];
   }
 
   else
   {
     v8 = objc_opt_class();
-    v9 = [v31 clientData];
-    v6 = TSUDynamicCast(v8, v9);
+    clientData = [valuesCopy clientData];
+    v6 = TSUDynamicCast(v8, clientData);
 
     v10 = objc_opt_class();
-    v11 = [v6 placeholder];
-    v7 = TSUDynamicCast(v10, v11);
+    placeholder = [v6 placeholder];
+    parentTextStyleForTables = TSUDynamicCast(v10, placeholder);
 
     if (v6 && [v6 inheritedTextStylePlaceholderType] != -1)
     {
@@ -200,23 +200,23 @@ LABEL_19:
       {
         v14 = v12;
 
-        v4 = v14;
+        defaultTextListStyle = v14;
       }
     }
 
-    v29 = v4;
-    if (v7)
+    v29 = defaultTextListStyle;
+    if (parentTextStyleForTables)
     {
-      v15 = [v7 type];
-      v16 = [v7 index];
-      v17 = [(PDSlideBase *)self parentTextStyleForPlaceholderType:v15 placeholderTypeIndex:v16 defaultTextListStyle:v4 overrideIndex:0];
-      v18 = [(PDSlideBase *)self parentTextBodyPropertiesForPlaceholderType:v15 placeholderTypeIndex:v16 overrideIndex:0];
-      v19 = [(PDSlideBase *)self parentShapePropertiesForPlaceholderType:v15 placeholderTypeIndex:v16 overrideIndex:0];
-      v20 = [(PDSlideBase *)self masterGraphicForPlaceholderType:v15 placeholderTypeIndex:v16 overrideIndex:0];
+      type = [parentTextStyleForTables type];
+      index = [parentTextStyleForTables index];
+      v17 = [(PDSlideBase *)self parentTextStyleForPlaceholderType:type placeholderTypeIndex:index defaultTextListStyle:defaultTextListStyle overrideIndex:0];
+      v18 = [(PDSlideBase *)self parentTextBodyPropertiesForPlaceholderType:type placeholderTypeIndex:index overrideIndex:0];
+      defaultProperties = [(PDSlideBase *)self parentShapePropertiesForPlaceholderType:type placeholderTypeIndex:index overrideIndex:0];
+      v20 = [(PDSlideBase *)self masterGraphicForPlaceholderType:type placeholderTypeIndex:index overrideIndex:0];
       if (v20)
       {
         v21 = objc_opt_class();
-        v22 = TSUDynamicCast(v21, v31);
+        v22 = TSUDynamicCast(v21, valuesCopy);
         [v22 setMasterGraphic:v20];
       }
     }
@@ -225,11 +225,11 @@ LABEL_19:
     {
       v17 = 0;
       v18 = 0;
-      v19 = 0;
+      defaultProperties = 0;
     }
 
     v23 = objc_opt_class();
-    v24 = TSUDynamicCast(v23, v31);
+    v24 = TSUDynamicCast(v23, valuesCopy);
     if (v24)
     {
       if (!v18)
@@ -237,22 +237,22 @@ LABEL_19:
         v18 = +[OADTextBodyProperties defaultProperties];
       }
 
-      v25 = [v24 textBody];
-      v26 = [v25 properties];
-      [v26 changeParentPreservingEffectiveValues:v18];
+      textBody = [v24 textBody];
+      properties = [textBody properties];
+      [properties changeParentPreservingEffectiveValues:v18];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (!v19)
+      if (!defaultProperties)
       {
-        v27 = [v31 drawableProperties];
-        v19 = [objc_opt_class() defaultProperties];
+        drawableProperties = [valuesCopy drawableProperties];
+        defaultProperties = [objc_opt_class() defaultProperties];
       }
 
-      v28 = [v31 drawableProperties];
-      [v28 changeParentPreservingEffectiveValues:v19];
+      drawableProperties2 = [valuesCopy drawableProperties];
+      [drawableProperties2 changeParentPreservingEffectiveValues:defaultProperties];
     }
 
     if (!v17)
@@ -260,9 +260,9 @@ LABEL_19:
       v17 = v29;
     }
 
-    [v31 changeParentTextListStylePreservingEffectiveValues:{v17, v29}];
+    [valuesCopy changeParentTextListStylePreservingEffectiveValues:{v17, v29}];
 
-    v4 = v30;
+    defaultTextListStyle = v30;
   }
 }
 
@@ -299,20 +299,20 @@ LABEL_19:
   }
 }
 
-- (void)setDrawables:(id)a3
+- (void)setDrawables:(id)drawables
 {
-  v4 = a3;
+  drawablesCopy = drawables;
   [(PDSlideBase *)self setDrawablesNoHierarchy:?];
   [(PDSlideBase *)self setUpDrawablePropertyHierarchy];
 }
 
-- (id)placeholderWithType:(int)a3 placeholderTypeIndex:(int)a4 useBaseTypeMatch:(BOOL)a5 overrideIndex:(BOOL)a6
+- (id)placeholderWithType:(int)type placeholderTypeIndex:(int)index useBaseTypeMatch:(BOOL)match overrideIndex:(BOOL)overrideIndex
 {
-  v6 = a3;
-  v21 = a5;
-  if (a5)
+  typeCopy = type;
+  matchCopy = match;
+  if (match)
   {
-    v6 = [PDSlideBase inheritedPlaceholderType:*&a3];
+    typeCopy = [PDSlideBase inheritedPlaceholderType:*&type];
   }
 
   v8 = [(NSArray *)self->mDrawables count];
@@ -328,7 +328,7 @@ LABEL_14:
   while (1)
   {
     v11 = [(NSArray *)self->mDrawables objectAtIndex:v10];
-    v12 = [v11 clientData];
+    clientData = [v11 clientData];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -343,21 +343,21 @@ LABEL_13:
     }
   }
 
-  v13 = v12;
+  v13 = clientData;
   if (([v13 hasPlaceholder] & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  v14 = [v13 placeholder];
-  v15 = [v14 type];
+  placeholder = [v13 placeholder];
+  type = [placeholder type];
 
-  if (v21)
+  if (matchCopy)
   {
-    LODWORD(v15) = [PDSlideBase inheritedPlaceholderType:v15];
+    LODWORD(type) = [PDSlideBase inheritedPlaceholderType:type];
   }
 
-  if (v15 != v6 || ([v13 placeholder], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "index"), v16, v17 != a4) && !a6)
+  if (type != typeCopy || ([v13 placeholder], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "index"), v16, v17 != index) && !overrideIndex)
   {
 LABEL_12:
 
@@ -372,7 +372,7 @@ LABEL_15:
 - (id)placeholders
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -392,11 +392,11 @@ LABEL_15:
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 clientData];
+        clientData = [v8 clientData];
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 hasPlaceholder])
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [clientData hasPlaceholder])
         {
-          [v3 addObject:v8];
+          [array addObject:v8];
         }
       }
 
@@ -406,15 +406,15 @@ LABEL_15:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
-+ (int)inheritedPlaceholderType:(int)a3
++ (int)inheritedPlaceholderType:(int)type
 {
-  result = a3;
-  if (a3 <= 0xF && ((0xBF0Fu >> a3) & 1) != 0)
+  result = type;
+  if (type <= 0xF && ((0xBF0Fu >> type) & 1) != 0)
   {
-    return dword_25D70F8A0[a3];
+    return dword_25D70F8A0[type];
   }
 
   return result;
@@ -445,8 +445,8 @@ LABEL_15:
 
 - (BOOL)hasPpt10Animations
 {
-  v2 = [(PDAnimation *)self->mAnimation rootTimeNode];
-  v3 = v2 != 0;
+  rootTimeNode = [(PDAnimation *)self->mAnimation rootTimeNode];
+  v3 = rootTimeNode != 0;
 
   return v3;
 }
@@ -460,12 +460,12 @@ LABEL_15:
     do
     {
       v5 = [(NSArray *)self->mDrawables objectAtIndex:v3];
-      v6 = [v5 clientData];
+      clientData = [v5 clientData];
 
-      if (v6)
+      if (clientData)
       {
-        v7 = [v5 clientData];
-        LOBYTE(v6) = [v7 hasAnimationInfo];
+        clientData2 = [v5 clientData];
+        LOBYTE(clientData) = [clientData2 hasAnimationInfo];
       }
 
       if ([(NSArray *)self->mDrawables count]<= v4)
@@ -476,26 +476,26 @@ LABEL_15:
       v3 = v4++;
     }
 
-    while ((v6 & 1) == 0);
+    while ((clientData & 1) == 0);
   }
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(clientData) = 0;
   }
 
-  return v6;
+  return clientData;
 }
 
-- (void)generatePpt9Animations:(id)a3
+- (void)generatePpt9Animations:(id)animations
 {
-  v7 = a3;
+  animationsCopy = animations;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [PDAnimationCache loadAnimationCache:v4 pdAnimation:self->mAnimation state:v7];
+  [PDAnimationCache loadAnimationCache:v4 pdAnimation:self->mAnimation state:animationsCopy];
   for (i = 0; [v4 count] > i; ++i)
   {
     v6 = [v4 objectAtIndex:i];
-    [(PDSlideBase *)self setPpt9AnimationDataForCacheItem:v6 order:i state:v7];
+    [(PDSlideBase *)self setPpt9AnimationDataForCacheItem:v6 order:i state:animationsCopy];
   }
 }
 
@@ -508,23 +508,23 @@ LABEL_15:
   return v2;
 }
 
-- (void)setPpt9AnimationDataForCacheItem:(id)a3 order:(int)a4 state:(id)a5
+- (void)setPpt9AnimationDataForCacheItem:(id)item order:(int)order state:(id)state
 {
-  v8 = *&a4;
-  v31 = a3;
-  v9 = a5;
-  v10 = [v31 target];
-  v11 = [v10 drawable];
+  v8 = *&order;
+  itemCopy = item;
+  stateCopy = state;
+  target = [itemCopy target];
+  drawable = [target drawable];
 
-  v30 = v11;
-  v12 = [v11 clientData];
-  v13 = [(PDOfficeArtClient *)v12 animationInfo];
-  v14 = 0;
-  v15 = [v31 presetClass];
-  if (v15 == 1)
+  v30 = drawable;
+  clientData = [drawable clientData];
+  animationInfo = [(PDOfficeArtClient *)clientData animationInfo];
+  entranceData = 0;
+  presetClass = [itemCopy presetClass];
+  if (presetClass == 1)
   {
-    v14 = [v13 entranceData];
-    if (!v14)
+    entranceData = [animationInfo entranceData];
+    if (!entranceData)
     {
 LABEL_24:
 
@@ -532,13 +532,13 @@ LABEL_24:
     }
   }
 
-  v16 = [v31 presetClass];
-  if (v16 == 2)
+  presetClass2 = [itemCopy presetClass];
+  if (presetClass2 == 2)
   {
-    v5 = [v13 exitData];
-    if (!v5)
+    exitData = [animationInfo exitData];
+    if (!exitData)
     {
-      if (v15 != 1)
+      if (presetClass != 1)
       {
         goto LABEL_25;
       }
@@ -547,28 +547,28 @@ LABEL_24:
     }
   }
 
-  v29 = v9;
-  if ([v31 presetClass] != 6 || objc_msgSend(v31, "presetId") != 1)
+  v29 = stateCopy;
+  if ([itemCopy presetClass] != 6 || objc_msgSend(itemCopy, "presetId") != 1)
   {
     v17 = 0;
     goto LABEL_10;
   }
 
-  v6 = [v13 entranceData];
-  if (v6)
+  entranceData2 = [animationInfo entranceData];
+  if (entranceData2)
   {
     v17 = 1;
 LABEL_10:
-    if ([v31 presetClass] == 6 && objc_msgSend(v31, "presetId") == 3)
+    if ([itemCopy presetClass] == 6 && objc_msgSend(itemCopy, "presetId") == 3)
     {
-      v18 = [v13 exitData];
-      v19 = v18 == 0;
+      exitData2 = [animationInfo exitData];
+      v19 = exitData2 == 0;
 
       if (!v17)
       {
 LABEL_16:
-        v9 = v29;
-        if (v16 != 2)
+        stateCopy = v29;
+        if (presetClass2 != 2)
         {
           goto LABEL_18;
         }
@@ -590,13 +590,13 @@ LABEL_16:
   }
 
   v19 = 1;
-  if (v16 == 2)
+  if (presetClass2 == 2)
   {
 LABEL_17:
   }
 
 LABEL_18:
-  if (v15 != 1)
+  if (presetClass != 1)
   {
     if (v19)
     {
@@ -615,44 +615,44 @@ LABEL_22:
 
 LABEL_25:
   v20 = v30;
-  v21 = [PDAnimationCache createAnimationInfoDataForCacheItem:v31 order:v8];
+  v21 = [PDAnimationCache createAnimationInfoDataForCacheItem:itemCopy order:v8];
   if (v21)
   {
     v22 = v21;
-    if (!v12)
+    if (!clientData)
     {
-      v12 = objc_alloc_init(PDOfficeArtClient);
-      [v30 setClientData:v12];
+      clientData = objc_alloc_init(PDOfficeArtClient);
+      [v30 setClientData:clientData];
     }
 
-    v23 = [v30 clientData];
+    clientData2 = [v30 clientData];
 
-    if (v23 && !v13)
+    if (clientData2 && !animationInfo)
     {
       v24 = objc_alloc_init(PDAnimationInfo);
-      v25 = [v30 clientData];
-      [v25 setAnimationInfo:v24];
+      clientData3 = [v30 clientData];
+      [clientData3 setAnimationInfo:v24];
 
-      v13 = v24;
+      animationInfo = v24;
     }
 
-    if ([v31 presetClass] == 1 || objc_msgSend(v31, "presetClass") == 6 && objc_msgSend(v31, "presetId") == 1)
+    if ([itemCopy presetClass] == 1 || objc_msgSend(itemCopy, "presetClass") == 6 && objc_msgSend(itemCopy, "presetId") == 1)
     {
-      [v13 setEntranceData:v22];
+      [animationInfo setEntranceData:v22];
     }
 
-    else if ([v31 presetClass] == 2 || objc_msgSend(v31, "presetClass") == 6 && objc_msgSend(v31, "presetId") == 3)
+    else if ([itemCopy presetClass] == 2 || objc_msgSend(itemCopy, "presetClass") == 6 && objc_msgSend(itemCopy, "presetId") == 3)
     {
-      [v13 setExitData:v22];
+      [animationInfo setExitData:v22];
     }
 
-    v26 = [v9 mediaNodeMap];
-    v27 = [v31 target];
-    v28 = [v26 objectForKey:v27];
+    mediaNodeMap = [stateCopy mediaNodeMap];
+    target2 = [itemCopy target];
+    v28 = [mediaNodeMap objectForKey:target2];
 
     if (v28)
     {
-      [v13 setMediaNode:v28];
+      [animationInfo setMediaNode:v28];
     }
   }
 

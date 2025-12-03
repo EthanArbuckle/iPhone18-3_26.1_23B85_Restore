@@ -1,14 +1,14 @@
 @interface AudioComponentRegistrarClient
-- (void)registrationsChanged:(id)a3 includesExtensions:(BOOL)a4 fsHash:(id)a5;
+- (void)registrationsChanged:(id)changed includesExtensions:(BOOL)extensions fsHash:(id)hash;
 @end
 
 @implementation AudioComponentRegistrarClient
 
-- (void)registrationsChanged:(id)a3 includesExtensions:(BOOL)a4 fsHash:(id)a5
+- (void)registrationsChanged:(id)changed includesExtensions:(BOOL)extensions fsHash:(id)hash
 {
   v13 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  changedCopy = changed;
+  hashCopy = hash;
   if (!gAudioComponentLogCategory)
   {
     operator new();
@@ -25,7 +25,7 @@
   }
 
   GlobalComponentPluginMgr(v12);
-  AudioComponentMgr_RegistrarService::mergeServerRegistrations(*&v12[8], v7, !a4, v8, 0);
+  AudioComponentMgr_RegistrarService::mergeServerRegistrations(*&v12[8], changedCopy, !extensions, hashCopy, 0);
   if (*v12)
   {
     std::recursive_mutex::unlock(*v12);

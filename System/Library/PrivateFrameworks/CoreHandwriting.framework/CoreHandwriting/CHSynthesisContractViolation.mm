@@ -1,15 +1,15 @@
 @interface CHSynthesisContractViolation
-- (CHSynthesisContractViolation)initWithLocationRange:(_NSRange)a3 comment:(id)a4 kind:(int64_t)a5;
+- (CHSynthesisContractViolation)initWithLocationRange:(_NSRange)range comment:(id)comment kind:(int64_t)kind;
 - (_NSRange)locationRange;
 @end
 
 @implementation CHSynthesisContractViolation
 
-- (CHSynthesisContractViolation)initWithLocationRange:(_NSRange)a3 comment:(id)a4 kind:(int64_t)a5
+- (CHSynthesisContractViolation)initWithLocationRange:(_NSRange)range comment:(id)comment kind:(int64_t)kind
 {
-  length = a3.length;
-  location = a3.location;
-  v10 = a4;
+  length = range.length;
+  location = range.location;
+  commentCopy = comment;
   v14.receiver = self;
   v14.super_class = CHSynthesisContractViolation;
   v11 = [(CHSynthesisContractViolation *)&v14 init];
@@ -18,8 +18,8 @@
   {
     v11->_locationRange.location = location;
     v11->_locationRange.length = length;
-    objc_storeStrong(&v11->_comment, a4);
-    v12->_kind = a5;
+    objc_storeStrong(&v11->_comment, comment);
+    v12->_kind = kind;
   }
 
   return v12;

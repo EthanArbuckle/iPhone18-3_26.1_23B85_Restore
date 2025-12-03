@@ -1,22 +1,22 @@
 @interface _UILongDefinitionViewController
-- (_UILongDefinitionViewController)initWithDefinitionValue:(id)a3;
+- (_UILongDefinitionViewController)initWithDefinitionValue:(id)value;
 - (void)viewDidLoad;
 @end
 
 @implementation _UILongDefinitionViewController
 
-- (_UILongDefinitionViewController)initWithDefinitionValue:(id)a3
+- (_UILongDefinitionViewController)initWithDefinitionValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = _UILongDefinitionViewController;
   v6 = [(UIViewController *)&v10 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_definitionValue, a3);
-    v8 = [(_UIDefinitionValue *)v7->_definitionValue term];
-    [(UIViewController *)v7 setTitle:v8];
+    objc_storeStrong(&v6->_definitionValue, value);
+    term = [(_UIDefinitionValue *)v7->_definitionValue term];
+    [(UIViewController *)v7 setTitle:term];
   }
 
   return v7;
@@ -27,8 +27,8 @@
   v24.receiver = self;
   v24.super_class = _UILongDefinitionViewController;
   [(UIViewController *)&v24 viewDidLoad];
-  v3 = [(UIViewController *)self view];
-  [v3 setAutoresizingMask:18];
+  view = [(UIViewController *)self view];
+  [view setAutoresizingMask:18];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2050000000;
@@ -107,7 +107,7 @@
   v14 = v13;
   _Block_object_dispose(&v30, 8);
   v15 = [v13 alloc];
-  [v3 bounds];
+  [view bounds];
   v16 = [v15 initWithFrame:v12 configuration:?];
   [v16 setOpaque:0];
   v17 = +[UIColor systemBackgroundColor];
@@ -116,8 +116,8 @@
   [v16 setAllowsLinkPreview:0];
   [v16 setAutoresizingMask:18];
   v18 = MEMORY[0x1E696AD60];
-  v19 = [(_UIDefinitionValue *)self->_definitionValue longDefinition];
-  v20 = [v18 stringWithString:v19];
+  longDefinition = [(_UIDefinitionValue *)self->_definitionValue longDefinition];
+  v20 = [v18 stringWithString:longDefinition];
 
   v21 = [v20 rangeOfString:@"</head>"];
   if (v21 != 0x7FFFFFFFFFFFFFFFLL)
@@ -126,7 +126,7 @@
   }
 
   v23 = [v16 loadHTMLString:v20 baseURL:0];
-  [v3 addSubview:v16];
+  [view addSubview:v16];
 }
 
 @end

@@ -1,53 +1,53 @@
 @interface ABPKMLNetworkV2
-- (ABPKMLNetworkV2)initWithNetworkPath:(id)a3 networkConfig:(id)a4 inputNames:(id)a5 outputNames:(id)a6 useSurface:(BOOL)a7;
-- (BOOL)changeNetWorkConfig:(id)a3;
+- (ABPKMLNetworkV2)initWithNetworkPath:(id)path networkConfig:(id)config inputNames:(id)names outputNames:(id)outputNames useSurface:(BOOL)surface;
+- (BOOL)changeNetWorkConfig:(id)config;
 - (BOOL)execute;
 - (void)dealloc;
 @end
 
 @implementation ABPKMLNetworkV2
 
-- (ABPKMLNetworkV2)initWithNetworkPath:(id)a3 networkConfig:(id)a4 inputNames:(id)a5 outputNames:(id)a6 useSurface:(BOOL)a7
+- (ABPKMLNetworkV2)initWithNetworkPath:(id)path networkConfig:(id)config inputNames:(id)names outputNames:(id)outputNames useSurface:(BOOL)surface
 {
   v60 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  pathCopy = path;
+  configCopy = config;
+  namesCopy = names;
+  outputNamesCopy = outputNames;
   v55.receiver = self;
   v55.super_class = ABPKMLNetworkV2;
   v16 = [(ABPKMLNetworkV2 *)&v55 init];
   if (v16)
   {
-    v46 = v15;
+    v46 = outputNamesCopy;
     v17 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v59 = v13;
+      v59 = configCopy;
       _os_log_impl(&dword_23EDDC000, v17, OS_LOG_TYPE_DEBUG, " network  config %@. ", buf, 0xCu);
     }
 
-    [v12 UTF8String];
-    [v12 UTF8String];
-    [v13 UTF8String];
+    [pathCopy UTF8String];
+    [pathCopy UTF8String];
+    [configCopy UTF8String];
     if (e5rt_execution_stream_operation_create_precompiled_compute_operation())
     {
       goto LABEL_31;
     }
 
-    v18 = [v12 copy];
+    v18 = [pathCopy copy];
     networkPath = v16->_networkPath;
     v16->_networkPath = v18;
 
-    v16->_useSurface = a7;
+    v16->_useSurface = surface;
     v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v45 = v14;
-    v21 = v14;
+    v45 = namesCopy;
+    v21 = namesCopy;
     v22 = [v21 countByEnumeratingWithState:&v51 objects:v57 count:16];
     if (v22)
     {
@@ -75,8 +75,8 @@
             }
 
             v38 = 0;
-            v14 = v45;
-            v15 = v46;
+            namesCopy = v45;
+            outputNamesCopy = v46;
             goto LABEL_30;
           }
 
@@ -109,7 +109,7 @@
 
     v32 = v31;
     v33 = *v48;
-    v44 = v12;
+    v44 = pathCopy;
 LABEL_15:
     v34 = 0;
     while (1)
@@ -132,7 +132,7 @@ LABEL_15:
       if (v32 == ++v34)
       {
         v32 = [v30 countByEnumeratingWithState:&v47 objects:v56 count:16];
-        v12 = v44;
+        pathCopy = v44;
         if (!v32)
         {
 LABEL_21:
@@ -141,8 +141,8 @@ LABEL_21:
           if (!e5rt_execution_stream_create())
           {
 
-            v14 = v45;
-            v15 = v46;
+            namesCopy = v45;
+            outputNamesCopy = v46;
             goto LABEL_23;
           }
 
@@ -157,7 +157,7 @@ LABEL_31:
     }
 
     v40 = __ABPKLogSharedInstance();
-    v15 = v46;
+    outputNamesCopy = v46;
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
@@ -166,8 +166,8 @@ LABEL_31:
     }
 
     v38 = 0;
-    v12 = v44;
-    v14 = v45;
+    pathCopy = v44;
+    namesCopy = v45;
   }
 
   else
@@ -200,10 +200,10 @@ LABEL_30:
   return 1;
 }
 
-- (BOOL)changeNetWorkConfig:(id)a3
+- (BOOL)changeNetWorkConfig:(id)config
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configCopy = config;
   if (e5rt_execution_stream_operation_release())
   {
     goto LABEL_10;
@@ -211,7 +211,7 @@ LABEL_30:
 
   [(NSString *)self->_networkPath UTF8String];
   [(NSString *)self->_networkPath UTF8String];
-  [v4 UTF8String];
+  [configCopy UTF8String];
   if (e5rt_execution_stream_operation_create_precompiled_compute_operation())
   {
     goto LABEL_10;

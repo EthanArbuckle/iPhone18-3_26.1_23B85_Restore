@@ -1,45 +1,45 @@
 @interface SUUIProductPageInformationViewController
-- (SUUIProductPageInformationViewController)initWithItem:(id)a3 clientContext:(id)a4;
-- (SUUIProductPageInformationViewController)initWithProductInformation:(id)a3 clientContext:(id)a4;
+- (SUUIProductPageInformationViewController)initWithItem:(id)item clientContext:(id)context;
+- (SUUIProductPageInformationViewController)initWithProductInformation:(id)information clientContext:(id)context;
 - (id)_contentRatingResourceLoader;
-- (id)_informationLinesWithItem:(id)a3 ratingImage:(id)a4;
-- (id)_informationLinesWithProductInfo:(id)a3;
-- (void)_updateLinesWithRatingImage:(id)a3;
+- (id)_informationLinesWithItem:(id)item ratingImage:(id)image;
+- (id)_informationLinesWithProductInfo:(id)info;
+- (void)_updateLinesWithRatingImage:(id)image;
 - (void)dealloc;
 - (void)loadView;
 @end
 
 @implementation SUUIProductPageInformationViewController
 
-- (SUUIProductPageInformationViewController)initWithItem:(id)a3 clientContext:(id)a4
+- (SUUIProductPageInformationViewController)initWithItem:(id)item clientContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = SUUIProductPageInformationViewController;
   v9 = [(SUUIProductPageInformationViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientContext, a4);
-    objc_storeStrong(&v10->_item, a3);
+    objc_storeStrong(&v9->_clientContext, context);
+    objc_storeStrong(&v10->_item, item);
   }
 
   return v10;
 }
 
-- (SUUIProductPageInformationViewController)initWithProductInformation:(id)a3 clientContext:(id)a4
+- (SUUIProductPageInformationViewController)initWithProductInformation:(id)information clientContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  informationCopy = information;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = SUUIProductPageInformationViewController;
   v9 = [(SUUIProductPageInformationViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientContext, a4);
-    objc_storeStrong(&v10->_productInfo, a3);
+    objc_storeStrong(&v9->_clientContext, context);
+    objc_storeStrong(&v10->_productInfo, information);
   }
 
   return v10;
@@ -73,31 +73,31 @@
   v7 = ;
   [(SUUIProductInformationView *)v5 setTitle:v7];
 
-  v8 = [(SUUIProductPageItem *)self->_item secondaryContentRatings];
-  v9 = [v8 count];
+  secondaryContentRatings = [(SUUIProductPageItem *)self->_item secondaryContentRatings];
+  v9 = [secondaryContentRatings count];
 
   if (v9)
   {
     if (!self->_contentRatingArtworkLoader)
     {
-      v10 = [(SUUIProductPageInformationViewController *)self _contentRatingResourceLoader];
+      _contentRatingResourceLoader = [(SUUIProductPageInformationViewController *)self _contentRatingResourceLoader];
       contentRatingArtworkLoader = self->_contentRatingArtworkLoader;
-      self->_contentRatingArtworkLoader = v10;
+      self->_contentRatingArtworkLoader = _contentRatingResourceLoader;
 
       [(SUUIContentRatingArtworkResourceLoader *)self->_contentRatingArtworkLoader addObserver:self];
     }
 
-    v12 = [(SUUIProductPageItem *)self->_item secondaryContentRatings];
-    v13 = [v12 lastObject];
+    secondaryContentRatings2 = [(SUUIProductPageItem *)self->_item secondaryContentRatings];
+    lastObject = [secondaryContentRatings2 lastObject];
 
-    v14 = [(SUUIContentRatingArtworkResourceLoader *)self->_contentRatingArtworkLoader cachedImageForContentRating:v13 withClientContext:self->_clientContext];
-    if (!v14)
+    placeholderImage = [(SUUIContentRatingArtworkResourceLoader *)self->_contentRatingArtworkLoader cachedImageForContentRating:lastObject withClientContext:self->_clientContext];
+    if (!placeholderImage)
     {
-      [(SUUIContentRatingArtworkResourceLoader *)self->_contentRatingArtworkLoader loadImageForContentRating:v13 clientContent:self->_clientContext reason:1];
-      v14 = [(SUUIContentRatingArtworkResourceLoader *)self->_contentRatingArtworkLoader placeholderImage];
+      [(SUUIContentRatingArtworkResourceLoader *)self->_contentRatingArtworkLoader loadImageForContentRating:lastObject clientContent:self->_clientContext reason:1];
+      placeholderImage = [(SUUIContentRatingArtworkResourceLoader *)self->_contentRatingArtworkLoader placeholderImage];
     }
 
-    v15 = v14;
+    v15 = placeholderImage;
   }
 
   else
@@ -112,8 +112,8 @@
 - (id)_contentRatingResourceLoader
 {
   v3 = [SUUIResourceLoader alloc];
-  v4 = [(SUUIProductPageInformationViewController *)self clientContext];
-  v5 = [(SUUIResourceLoader *)v3 initWithClientContext:v4];
+  clientContext = [(SUUIProductPageInformationViewController *)self clientContext];
+  v5 = [(SUUIResourceLoader *)v3 initWithClientContext:clientContext];
 
   v6 = [[SUUIContentRatingArtworkResourceLoader alloc] initWithArtworkLoader:v5];
   v7 = [SUUIStyledImageDataConsumer appIconConsumerWithSize:11.0, 11.0];
@@ -122,14 +122,14 @@
   return v6;
 }
 
-- (id)_informationLinesWithItem:(id)a3 ratingImage:(id)a4
+- (id)_informationLinesWithItem:(id)item ratingImage:(id)image
 {
   v116[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [v6 artistName];
-  v10 = [v6 sellerName];
+  itemCopy = item;
+  imageCopy = image;
+  array = [MEMORY[0x277CBEB18] array];
+  artistName = [itemCopy artistName];
+  sellerName = [itemCopy sellerName];
   objc_opt_class();
   v11 = 0x277CBE000uLL;
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -148,9 +148,9 @@
     v20 = ;
 
     v116[0] = v20;
-    v116[1] = v10;
+    v116[1] = sellerName;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v116 count:2];
-    [v8 addObject:v21];
+    [array addObject:v21];
 
     v22 = self->_clientContext;
     if (v22)
@@ -167,7 +167,7 @@
 
     v115 = v16;
     v17 = &v115;
-    v18 = v9;
+    v18 = artistName;
     v11 = 0x277CBE000;
   }
 
@@ -191,7 +191,7 @@
 
       v114 = v16;
       v17 = &v114;
-      v18 = v10;
+      v18 = sellerName;
     }
 
     else
@@ -217,16 +217,16 @@
 
       v113 = v16;
       v17 = &v113;
-      v18 = v9;
+      v18 = artistName;
     }
   }
 
   v17[1] = v18;
   v25 = [*(v11 + 2656) arrayWithObjects:? count:?];
-  [v8 addObject:v25];
+  [array addObject:v25];
 
 LABEL_21:
-  v26 = [v6 categoryName];
+  categoryName = [itemCopy categoryName];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -244,20 +244,20 @@ LABEL_21:
     v29 = ;
 
     v112[0] = v29;
-    v112[1] = v26;
+    v112[1] = categoryName;
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v112 count:2];
-    [v8 addObject:v30];
+    [array addObject:v30];
   }
 
-  v98 = v10;
+  v98 = sellerName;
   if ([(SUUIItem *)self->_item itemKind]== 17)
   {
-    v31 = v26;
+    lastUpdateDateString = categoryName;
   }
 
   else
   {
-    v31 = [(SUUIProductPageItem *)self->_item lastUpdateDateString];
+    lastUpdateDateString = [(SUUIProductPageItem *)self->_item lastUpdateDateString];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -276,13 +276,13 @@ LABEL_21:
       v34 = ;
 
       v111[0] = v34;
-      v111[1] = v31;
+      v111[1] = lastUpdateDateString;
       v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v111 count:2];
-      [v8 addObject:v35];
+      [array addObject:v35];
     }
   }
 
-  v36 = [(SUUIItem *)self->_item versionString];
+  versionString = [(SUUIItem *)self->_item versionString];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -301,27 +301,27 @@ LABEL_21:
     v39 = ;
 
     v110[0] = v39;
-    v110[1] = v36;
+    v110[1] = versionString;
     v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v110 count:2];
-    [v8 addObject:v40];
+    [array addObject:v40];
   }
 
-  v99 = v9;
-  if ([v6 itemKind] == 17)
+  v99 = artistName;
+  if ([itemCopy itemKind] == 17)
   {
-    v41 = [v6 childItemIdentifiers];
-    v42 = [v41 count];
+    childItemIdentifiers = [itemCopy childItemIdentifiers];
+    v42 = [childItemIdentifiers count];
 
     if (v42 < 2)
     {
-      v97 = v36;
+      v97 = versionString;
       goto LABEL_53;
     }
 
     v43 = objc_alloc_init(MEMORY[0x277CCABB8]);
     [v43 setNumberStyle:1];
     v44 = [MEMORY[0x277CCABB0] numberWithInteger:v42];
-    v47 = [v43 stringFromNumber:v44];
+    fileSizeText = [v43 stringFromNumber:v44];
 
     v45 = self->_clientContext;
     if (v45)
@@ -337,21 +337,21 @@ LABEL_21:
     v51 = ;
 
     v108[0] = v51;
-    v108[1] = v47;
+    v108[1] = fileSizeText;
     v52 = [MEMORY[0x277CBEA60] arrayWithObjects:v108 count:2];
-    [v8 addObject:v52];
+    [array addObject:v52];
   }
 
   else
   {
-    v46 = [v6 primaryItemOffer];
-    v47 = [v46 fileSizeText];
+    primaryItemOffer = [itemCopy primaryItemOffer];
+    fileSizeText = [primaryItemOffer fileSizeText];
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if ((isKindOfClass & 1) == 0)
     {
-      v97 = v47;
+      v97 = fileSizeText;
       goto LABEL_53;
     }
 
@@ -369,25 +369,25 @@ LABEL_21:
     v43 = ;
 
     v109[0] = v43;
-    v109[1] = v47;
+    v109[1] = fileSizeText;
     v51 = [MEMORY[0x277CBEA60] arrayWithObjects:v109 count:2];
-    [v8 addObject:v51];
+    [array addObject:v51];
   }
 
-  v97 = v47;
+  v97 = fileSizeText;
 
 LABEL_53:
-  v54 = [v6 contentRating];
-  v55 = [v54 contentRatingName];
+  contentRating = [itemCopy contentRating];
+  contentRatingName = [contentRating contentRatingName];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_104;
   }
 
-  v92 = v7;
-  v57 = [v6 ageBandRange];
-  if (v57 == 0x7FFFFFFFFFFFFFFFLL)
+  v92 = imageCopy;
+  ageBandRange = [itemCopy ageBandRange];
+  if (ageBandRange == 0x7FFFFFFFFFFFFFFFLL)
   {
     v96 = 0;
     v94 = 0;
@@ -399,14 +399,14 @@ LABEL_53:
     v59 = objc_alloc_init(MEMORY[0x277CCABB8]);
     [v59 setNumberStyle:1];
     [v59 setUsesGroupingSeparator:0];
-    v60 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v57];
+    v60 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:ageBandRange];
     v94 = [v59 stringFromNumber:v60];
 
-    v61 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v57 + v58];
+    v61 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:ageBandRange + v58];
     v96 = [v59 stringFromNumber:v61];
   }
 
-  v95 = [v54 contentRatingAdvisories];
+  contentRatingAdvisories = [contentRating contentRatingAdvisories];
   v62 = self->_clientContext;
   if (v62)
   {
@@ -420,10 +420,10 @@ LABEL_53:
   }
   v93 = ;
 
-  if ([v95 count])
+  if ([contentRatingAdvisories count])
   {
     v64 = objc_alloc_init(MEMORY[0x277CCAB68]);
-    if (v57 || !v96)
+    if (ageBandRange || !v96)
     {
       v67 = self->_clientContext;
       if (v94 && v96)
@@ -438,7 +438,7 @@ LABEL_53:
           [SUUIClientContext localizedStringForKey:@"PRODUCT_PAGE_INFO_RATED_FOR_WITH_AGE_BAND" inBundles:0 inTable:@"ProductPage"];
         }
         v69 = ;
-        [MEMORY[0x277CCACA8] stringWithValidatedFormat:v69 validFormatSpecifiers:@"%@%@%@" error:0, v94, v96, v55];
+        [MEMORY[0x277CCACA8] stringWithValidatedFormat:v69 validFormatSpecifiers:@"%@%@%@" error:0, v94, v96, contentRatingName];
       }
 
       else
@@ -453,7 +453,7 @@ LABEL_53:
           [SUUIClientContext localizedStringForKey:@"PRODUCT_PAGE_INFO_RATED_FOR" inBundles:0 inTable:@"ProductPage"];
         }
         v69 = ;
-        [MEMORY[0x277CCACA8] stringWithValidatedFormat:v69 validFormatSpecifiers:@"%@" error:0, v55, v90, v91];
+        [MEMORY[0x277CCACA8] stringWithValidatedFormat:v69 validFormatSpecifiers:@"%@" error:0, contentRatingName, v90, v91];
       }
     }
 
@@ -470,7 +470,7 @@ LABEL_53:
         [SUUIClientContext localizedStringForKey:@"PRODUCT_PAGE_INFO_RATED_FOR_WITH_AGE_MINIMUM" inBundles:0 inTable:@"ProductPage"];
       }
       v69 = ;
-      [MEMORY[0x277CCACA8] stringWithValidatedFormat:v69 validFormatSpecifiers:@"%@%@" error:0, v96, v55, v91];
+      [MEMORY[0x277CCACA8] stringWithValidatedFormat:v69 validFormatSpecifiers:@"%@%@" error:0, v96, contentRatingName, v91];
     }
     v71 = ;
     [v64 appendString:v71];
@@ -487,7 +487,7 @@ LABEL_53:
       [SUUIClientContext localizedStringForKey:@"PRODUCT_PAGE_INFO_RATING_ADVISORY" inBundles:0 inTable:@"ProductPage"];
     }
     v74 = ;
-    v7 = v92;
+    imageCopy = v92;
 
     v100[0] = MEMORY[0x277D85DD0];
     v100[1] = 3221225472;
@@ -497,11 +497,11 @@ LABEL_53:
     v101 = v75;
     v76 = v74;
     v102 = v76;
-    [v95 enumerateObjectsUsingBlock:v100];
+    [contentRatingAdvisories enumerateObjectsUsingBlock:v100];
     v105[0] = v93;
     v105[1] = v75;
     v77 = [MEMORY[0x277CBEA60] arrayWithObjects:v105 count:2];
-    [v8 addObject:v77];
+    [array addObject:v77];
 
     if (v92)
     {
@@ -509,22 +509,22 @@ LABEL_53:
       v104[1] = &stru_286AECDE0;
       v104[2] = v92;
       v78 = [MEMORY[0x277CBEA60] arrayWithObjects:v104 count:3];
-      [v8 addObject:v78];
+      [array addObject:v78];
     }
 
     v79 = v93;
     goto LABEL_103;
   }
 
-  if (v57 || !v96)
+  if (ageBandRange || !v96)
   {
     if (!v94)
     {
-      v7 = v92;
+      imageCopy = v92;
       goto LABEL_97;
     }
 
-    v7 = v92;
+    imageCopy = v92;
     if (!v96)
     {
       goto LABEL_97;
@@ -541,7 +541,7 @@ LABEL_53:
       [SUUIClientContext localizedStringForKey:@"PRODUCT_PAGE_INFO_RATING_WITH_AGE_BAND" inBundles:0 inTable:@"ProductPage"];
     }
     v70 = ;
-    [MEMORY[0x277CCACA8] stringWithValidatedFormat:v70 validFormatSpecifiers:@"%@%@%@" error:0, v55, v94, v96];
+    [MEMORY[0x277CCACA8] stringWithValidatedFormat:v70 validFormatSpecifiers:@"%@%@%@" error:0, contentRatingName, v94, v96];
   }
 
   else
@@ -557,14 +557,14 @@ LABEL_53:
       [SUUIClientContext localizedStringForKey:@"PRODUCT_PAGE_INFO_RATING_WITH_AGE_MINIMUM" inBundles:0 inTable:@"ProductPage"];
     }
     v70 = ;
-    v7 = v92;
-    [MEMORY[0x277CCACA8] stringWithValidatedFormat:v70 validFormatSpecifiers:@"%@%@" error:0, v55, v96, v91];
+    imageCopy = v92;
+    [MEMORY[0x277CCACA8] stringWithValidatedFormat:v70 validFormatSpecifiers:@"%@%@" error:0, contentRatingName, v96, v91];
   }
   v80 = ;
 
-  v55 = v80;
+  contentRatingName = v80;
 LABEL_97:
-  if (v7)
+  if (imageCopy)
   {
     v81 = self->_clientContext;
     if (v81)
@@ -577,31 +577,31 @@ LABEL_97:
       [SUUIClientContext localizedStringForKey:@"PRODUCT_PAGE_INFO_RATING_WITH_SECONDARY_TYPE" inBundles:0 inTable:@"ProductPage"];
     }
     v75 = ;
-    v82 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v75 validFormatSpecifiers:@"%@" error:0, v55];
+    v82 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v75 validFormatSpecifiers:@"%@" error:0, contentRatingName];
 
     v107[0] = v93;
     v107[1] = v82;
-    v107[2] = v7;
+    v107[2] = imageCopy;
     v83 = [MEMORY[0x277CBEA60] arrayWithObjects:v107 count:3];
-    [v8 addObject:v83];
+    [array addObject:v83];
 
     v79 = v93;
-    v55 = v82;
+    contentRatingName = v82;
   }
 
   else
   {
     v79 = v93;
     v106[0] = v93;
-    v106[1] = v55;
+    v106[1] = contentRatingName;
     v75 = [MEMORY[0x277CBEA60] arrayWithObjects:v106 count:2];
-    [v8 addObject:v75];
+    [array addObject:v75];
   }
 
 LABEL_103:
 
 LABEL_104:
-  v84 = [v6 installationRequirementsDescription];
+  installationRequirementsDescription = [itemCopy installationRequirementsDescription];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -620,12 +620,12 @@ LABEL_104:
     v87 = ;
 
     v103[0] = v87;
-    v103[1] = v84;
+    v103[1] = installationRequirementsDescription;
     v88 = [MEMORY[0x277CBEA60] arrayWithObjects:v103 count:2];
-    [v8 addObject:v88];
+    [array addObject:v88];
   }
 
-  return v8;
+  return array;
 }
 
 void __82__SUUIProductPageInformationViewController__informationLinesWithItem_ratingImage___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -641,18 +641,18 @@ void __82__SUUIProductPageInformationViewController__informationLinesWithItem_ra
   [v5 appendString:v6];
 }
 
-- (id)_informationLinesWithProductInfo:(id)a3
+- (id)_informationLinesWithProductInfo:(id)info
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
+  infoCopy = info;
+  array = [v3 array];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__SUUIProductPageInformationViewController__informationLinesWithProductInfo___block_invoke;
   v8[3] = &unk_2798FDF50;
-  v6 = v5;
+  v6 = array;
   v9 = v6;
-  [v4 enumerateEntriesWithBlock:v8];
+  [infoCopy enumerateEntriesWithBlock:v8];
 
   return v6;
 }
@@ -667,17 +667,17 @@ void __77__SUUIProductPageInformationViewController__informationLinesWithProduct
   [*(a1 + 32) addObject:v8];
 }
 
-- (void)_updateLinesWithRatingImage:(id)a3
+- (void)_updateLinesWithRatingImage:(id)image
 {
   productInfo = self->_productInfo;
   if (productInfo)
   {
-    [(SUUIProductPageInformationViewController *)self _informationLinesWithProductInfo:productInfo, a3];
+    [(SUUIProductPageInformationViewController *)self _informationLinesWithProductInfo:productInfo, image];
   }
 
   else
   {
-    [(SUUIProductPageInformationViewController *)self _informationLinesWithItem:self->_item ratingImage:a3];
+    [(SUUIProductPageInformationViewController *)self _informationLinesWithItem:self->_item ratingImage:image];
   }
   v6 = ;
   [(SUUIProductInformationView *)self->_informationView setInformationLines:v6];

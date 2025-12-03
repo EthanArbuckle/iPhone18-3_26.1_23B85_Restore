@@ -1,16 +1,16 @@
 @interface BWInferencePrimaryCaptureRectDescriptor
-- ($2825F4736939C4A6D3AD43837233062D)maxCropForDimensions:(id)a3;
-- (CGRect)rectForSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- ($2825F4736939C4A6D3AD43837233062D)maxCropForDimensions:(id)dimensions;
+- (CGRect)rectForSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 @end
 
 @implementation BWInferencePrimaryCaptureRectDescriptor
 
-- (CGRect)rectForSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (CGRect)rectForSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v3 = *(MEMORY[0x1E695F050] + 16);
   v9.origin = *MEMORY[0x1E695F050];
   v9.size = v3;
-  v4 = CMGetAttachment(a3, *off_1E798A430, 0);
+  v4 = CMGetAttachment(buffer, *off_1E798A430, 0);
   if (v4)
   {
     CGRectMakeWithDictionaryRepresentation(v4, &v9);
@@ -27,11 +27,11 @@
   return result;
 }
 
-- ($2825F4736939C4A6D3AD43837233062D)maxCropForDimensions:(id)a3
+- ($2825F4736939C4A6D3AD43837233062D)maxCropForDimensions:(id)dimensions
 {
-  var0 = a3.var0;
-  var1 = a3.var1;
-  if (a3.var0 <= a3.var1)
+  var0 = dimensions.var0;
+  var1 = dimensions.var1;
+  if (dimensions.var0 <= dimensions.var1)
   {
     v5 = 0.5625;
   }
@@ -41,7 +41,7 @@
     v5 = 1.7778;
   }
 
-  v6 = FigCaptureMetadataUtilitiesRectWithAspectRatioInsideDimensions(a3.var0, a3.var1, v5);
+  v6 = FigCaptureMetadataUtilitiesRectWithAspectRatioInsideDimensions(dimensions.var0, dimensions.var1, v5);
   v8 = v7;
   v10 = v9;
   v12 = v11;

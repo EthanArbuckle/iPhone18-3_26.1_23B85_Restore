@@ -1,16 +1,16 @@
 @interface DisplayLinkHandler
 - (_TtC10PodcastsUIP33_F2E0E53B2EE06FB9F5D0B47C18CD8DEC18DisplayLinkHandler)init;
-- (void)handleDisplayLinkFired:(id)a3;
+- (void)handleDisplayLinkFired:(id)fired;
 @end
 
 @implementation DisplayLinkHandler
 
-- (void)handleDisplayLinkFired:(id)a3
+- (void)handleDisplayLinkFired:(id)fired
 {
-  if (a3)
+  if (fired)
   {
     v3 = *(&self->super.isa + OBJC_IVAR____TtC10PodcastsUIP33_F2E0E53B2EE06FB9F5D0B47C18CD8DEC18DisplayLinkHandler__handler);
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     objc_opt_self();
     v5 = swift_dynamicCastObjCClassUnconditional();

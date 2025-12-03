@@ -1,13 +1,13 @@
 @interface WFDrawerHeaderView
-- (_TtC10WorkflowUIP33_E1EBF4FF771D0942E2717CF38009080818WFDrawerHeaderView)initWithReuseIdentifier:(id)a3;
+- (_TtC10WorkflowUIP33_E1EBF4FF771D0942E2717CF38009080818WFDrawerHeaderView)initWithReuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation WFDrawerHeaderView
 
-- (_TtC10WorkflowUIP33_E1EBF4FF771D0942E2717CF38009080818WFDrawerHeaderView)initWithReuseIdentifier:(id)a3
+- (_TtC10WorkflowUIP33_E1EBF4FF771D0942E2717CF38009080818WFDrawerHeaderView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
   }
@@ -23,7 +23,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_27484C15C();
 }
 

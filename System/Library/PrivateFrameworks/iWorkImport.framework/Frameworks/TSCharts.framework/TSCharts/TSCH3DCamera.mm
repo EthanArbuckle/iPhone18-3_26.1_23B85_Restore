@@ -1,41 +1,41 @@
 @interface TSCH3DCamera
-+ (TSCH3DCamera)cameraWithLens:(id)a3 size:(void *)a4;
++ (TSCH3DCamera)cameraWithLens:(id)lens size:(void *)size;
 + (id)orthographic;
-+ (id)orthographicPerPixelWithBounds:(void *)a3;
-+ (id)orthographicPerPixelWithSize:(void *)a3;
-+ (id)orthographicWithSize:(void *)a3;
++ (id)orthographicPerPixelWithBounds:(void *)bounds;
++ (id)orthographicPerPixelWithSize:(void *)size;
++ (id)orthographicWithSize:(void *)size;
 + (id)perspective;
-+ (id)perspectiveWithSize:(void *)a3;
-- (TSCH3DCamera)initWithLens:(id)a3 size:(void *)a4;
++ (id)perspectiveWithSize:(void *)size;
+- (TSCH3DCamera)initWithLens:(id)lens size:(void *)size;
 - (box<glm::detail::tvec2<int>>)viewport;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)frustumSliceAtDistance:(float)a3;
+- (id)frustumSliceAtDistance:(float)distance;
 - (id)matrixDescription;
-- (id)narrowByNormalizedBounds:(void *)a3;
-- (id)narrowedByNormalizedBounds:(void *)a3;
-- (id)narrowedByViewport:(void *)a3;
-- (id)narrowedByViewport:(void *)a3 samples:(int64_t)a4;
-- (id)pixelAlignedForScaledViewport:(void *)a3 viewportScale:(float)a4 samples:(float)a5 correspondingNoramlizedBounds:(void *)a6;
-- (id)shiftByPixels:(void *)a3;
-- (id)shiftedByPixels:(void *)a3;
+- (id)narrowByNormalizedBounds:(void *)bounds;
+- (id)narrowedByNormalizedBounds:(void *)bounds;
+- (id)narrowedByViewport:(void *)viewport;
+- (id)narrowedByViewport:(void *)viewport samples:(int64_t)samples;
+- (id)pixelAlignedForScaledViewport:(void *)viewport viewportScale:(float)scale samples:(float)samples correspondingNoramlizedBounds:(void *)bounds;
+- (id)shiftByPixels:(void *)pixels;
+- (id)shiftedByPixels:(void *)pixels;
 - (tmat4x4<float>)modelViewNormalizedProjection;
 - (tmat4x4<float>)modelViewProjection;
-- (tmat4x4<float>)modelViewViewportProjectionWithViewportScale:(SEL)a3;
+- (tmat4x4<float>)modelViewViewportProjectionWithViewportScale:(SEL)scale;
 - (tmat4x4<float>)normalizedProjection;
 - (tmat4x4<float>)projection;
 - (tmat4x4<float>)transform;
 - (tmat4x4<float>)viewportProjection;
-- (tvec3<float>)backProjectCameraSpacePoint:(void *)a3;
+- (tvec3<float>)backProjectCameraSpacePoint:(void *)point;
 - (tvec3<float>)direction;
-- (tvec3<float>)fastProjectNormalizedPoint:(void *)a3 planeDistance:(float)a4;
+- (tvec3<float>)fastProjectNormalizedPoint:(void *)point planeDistance:(float)distance;
 - (tvec3<float>)position;
-- (tvec3<float>)projectNormalizedPoint:(void *)a3 planeDistance:(float)a4;
-- (void)calculateCullingPlanes:(void *)a3;
-- (void)setContainingViewportSize:(void *)a3;
-- (void)setDirection:(tvec3<float>)a3;
-- (void)setPosition:(tvec3<float>)a3;
+- (tvec3<float>)projectNormalizedPoint:(void *)point planeDistance:(float)distance;
+- (void)calculateCullingPlanes:(void *)planes;
+- (void)setContainingViewportSize:(void *)size;
+- (void)setDirection:(tvec3<float>)direction;
+- (void)setPosition:(tvec3<float>)position;
 @end
 
 @implementation TSCH3DCamera
@@ -43,15 +43,15 @@
 + (id)perspective
 {
   v7 = 0;
-  v5 = objc_msgSend_perspectiveWithSize_(a1, a2, v2, v3, v4, &v7);
+  v5 = objc_msgSend_perspectiveWithSize_(self, a2, v2, v3, v4, &v7);
 
   return v5;
 }
 
-+ (id)perspectiveWithSize:(void *)a3
++ (id)perspectiveWithSize:(void *)size
 {
   v8 = objc_msgSend_lens(TSCH3DPerspectiveLens, a2, v3, v4, v5);
-  v13 = objc_msgSend_cameraWithLens_size_(a1, v9, v10, v11, v12, v8, a3);
+  v13 = objc_msgSend_cameraWithLens_size_(self, v9, v10, v11, v12, v8, size);
 
   return v13;
 }
@@ -59,60 +59,60 @@
 + (id)orthographic
 {
   v7 = 0;
-  v5 = objc_msgSend_orthographicWithSize_(a1, a2, v2, v3, v4, &v7);
+  v5 = objc_msgSend_orthographicWithSize_(self, a2, v2, v3, v4, &v7);
 
   return v5;
 }
 
-+ (id)orthographicWithSize:(void *)a3
++ (id)orthographicWithSize:(void *)size
 {
   v8 = objc_msgSend_lens(TSCH3DOrthographicLens, a2, v3, v4, v5);
-  v13 = objc_msgSend_cameraWithLens_size_(a1, v9, v10, v11, v12, v8, a3);
+  v13 = objc_msgSend_cameraWithLens_size_(self, v9, v10, v11, v12, v8, size);
 
   return v13;
 }
 
-+ (id)orthographicPerPixelWithSize:(void *)a3
++ (id)orthographicPerPixelWithSize:(void *)size
 {
   v8 = objc_msgSend_lens(TSCH3DOrthographicLens, a2, v3, v4, v5);
-  objc_msgSend_setPerPixelSize_(v8, v9, v10, v11, v12, a3);
-  v17 = objc_msgSend_cameraWithLens_size_(a1, v13, v14, v15, v16, v8, a3);
+  objc_msgSend_setPerPixelSize_(v8, v9, v10, v11, v12, size);
+  v17 = objc_msgSend_cameraWithLens_size_(self, v13, v14, v15, v16, v8, size);
 
   return v17;
 }
 
-+ (id)orthographicPerPixelWithBounds:(void *)a3
++ (id)orthographicPerPixelWithBounds:(void *)bounds
 {
-  v5 = *a3;
-  v8 = COERCE_DOUBLE(vsub_s32(*(a3 + 8), *a3));
-  v6 = objc_msgSend_orthographicPerPixelWithSize_(a1, a2, v8, *&v5, v3, &v8);
-  v6[6] = *a3;
-  v6[7] = *(a3 + 1);
-  v6[8] = *(a3 + 2);
-  v6[9] = *(a3 + 3);
+  v5 = *bounds;
+  v8 = COERCE_DOUBLE(vsub_s32(*(bounds + 8), *bounds));
+  v6 = objc_msgSend_orthographicPerPixelWithSize_(self, a2, v8, *&v5, v3, &v8);
+  v6[6] = *bounds;
+  v6[7] = *(bounds + 1);
+  v6[8] = *(bounds + 2);
+  v6[9] = *(bounds + 3);
 
   return v6;
 }
 
-+ (TSCH3DCamera)cameraWithLens:(id)a3 size:(void *)a4
++ (TSCH3DCamera)cameraWithLens:(id)lens size:(void *)size
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v12 = objc_msgSend_initWithLens_size_(v7, v8, v9, v10, v11, v6, a4);
+  lensCopy = lens;
+  v7 = [self alloc];
+  v12 = objc_msgSend_initWithLens_size_(v7, v8, v9, v10, v11, lensCopy, size);
 
   return v12;
 }
 
-- (TSCH3DCamera)initWithLens:(id)a3 size:(void *)a4
+- (TSCH3DCamera)initWithLens:(id)lens size:(void *)size
 {
-  v7 = a3;
+  lensCopy = lens;
   v18.receiver = self;
   v18.super_class = TSCH3DCamera;
   v8 = [(TSCH3DCamera *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_lens, a3);
+    objc_storeStrong(&v8->_lens, lens);
     min = v9->_viewport._min;
     v11 = vcgt_s32(min, v9->_viewport._max);
     if ((v11.i32[0] | v11.i32[1]))
@@ -121,7 +121,7 @@
       v9->_viewport._min = 0;
     }
 
-    v9->_viewport._max = vadd_s32(*a4, min);
+    v9->_viewport._max = vadd_s32(*size, min);
     __asm { FMOV            V0.2S, #1.0 }
 
     *&v9->_viewportScale = _D0;
@@ -131,14 +131,14 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   v16 = objc_msgSend_init(v10, v11, v12, v13, v14);
   if (v16)
   {
-    v20 = objc_msgSend_copyWithZone_(self->_lens, v15, v17, v18, v19, a3);
+    v20 = objc_msgSend_copyWithZone_(self->_lens, v15, v17, v18, v19, zone);
     v21 = *(v16 + 8);
     *(v16 + 8) = v20;
 
@@ -219,7 +219,7 @@
   return v12;
 }
 
-- (void)setContainingViewportSize:(void *)a3
+- (void)setContainingViewportSize:(void *)size
 {
   min = self->_viewport._min;
   v4 = vcgt_s32(min, self->_viewport._max);
@@ -229,7 +229,7 @@
     self->_viewport._min = 0;
   }
 
-  self->_viewport._max = vadd_s32(*a3, min);
+  self->_viewport._max = vadd_s32(*size, min);
 }
 
 - (tvec3<float>)direction
@@ -243,10 +243,10 @@
   return result;
 }
 
-- (void)setDirection:(tvec3<float>)a3
+- (void)setDirection:(tvec3<float>)direction
 {
-  v3 = -*(*&a3.var0.var0 + 8);
-  *&self->_transform.value[2].var0.var0 = vneg_f32(**&a3.var0.var0);
+  v3 = -*(*&direction.var0.var0 + 8);
+  *&self->_transform.value[2].var0.var0 = vneg_f32(**&direction.var0.var0);
   self->_transform.value[2].var2.var0 = v3;
   self->_transform.value[2].var3.var0 = 0.0;
 }
@@ -261,17 +261,17 @@
   return result;
 }
 
-- (void)setPosition:(tvec3<float>)a3
+- (void)setPosition:(tvec3<float>)position
 {
-  v3 = *(*&a3.var0.var0 + 8);
-  *&self->_transform.value[3].var0.var0 = **&a3.var0.var0;
+  v3 = *(*&position.var0.var0 + 8);
+  *&self->_transform.value[3].var0.var0 = **&position.var0.var0;
   self->_transform.value[3].var2.var0 = v3;
   self->_transform.value[3].var3.var0 = 0.0;
 }
 
-- (id)frustumSliceAtDistance:(float)a3
+- (id)frustumSliceAtDistance:(float)distance
 {
-  v6 = objc_msgSend_frustumRectAtDistance_(self->_lens, a2, *&a3, v3, v4);
+  v6 = objc_msgSend_frustumRectAtDistance_(self->_lens, a2, *&distance, v3, v4);
   objc_msgSend_right(v6, v7, v8, v9, v10);
   v12 = *&v11;
   objc_msgSend_left(v6, v13, v11, v14, v15);
@@ -310,8 +310,8 @@
   *&v54 = v24 - v29;
   v55 = v77;
   v56 = v76;
-  v76 = COERCE_DOUBLE(vadd_f32(vadd_f32(vmul_n_f32(v69, v70), vmul_n_f32(v66, v67)), vadd_f32(vmul_n_f32(v46, a3), v61)));
-  v77 = ((v70 * v68) + (v67 * v65)) + ((v62 * a3) + v30.f32[0]);
+  v76 = COERCE_DOUBLE(vadd_f32(vadd_f32(vmul_n_f32(v69, v70), vmul_n_f32(v66, v67)), vadd_f32(vmul_n_f32(v46, distance), v61)));
+  v77 = ((v70 * v68) + (v67 * v65)) + ((v62 * distance) + v30.f32[0]);
   v78 = v56;
   v79 = v55;
   v74 = COERCE_DOUBLE(vmul_n_f32(v18, v45 - v17));
@@ -324,14 +324,14 @@
   return v59;
 }
 
-- (tvec3<float>)projectNormalizedPoint:(void *)a3 planeDistance:(float)a4
+- (tvec3<float>)projectNormalizedPoint:(void *)point planeDistance:(float)distance
 {
   v10 = v4;
-  objc_msgSend_near(self->_lens, a2, *&a4, v5, v6);
+  objc_msgSend_near(self->_lens, a2, *&distance, v5, v6);
   v15 = objc_msgSend_frustumSliceAtDistance_(self, v11, v12, v13, v14);
   v19 = v15;
-  v20 = *a3;
-  v40 = *a3;
+  v20 = *point;
+  v40 = *point;
   if (v15)
   {
     objc_msgSend_atNormalizedPosition_(v15, v16, v20, v17, v18, &v40);
@@ -352,7 +352,7 @@
   v32 = 1.0 / sqrtf((COERCE_FLOAT(vmul_f32(v31, v31).i32[1]) + (v31.f32[0] * v31.f32[0])) + ((v22 - v39) * (v22 - v39)));
   v33 = (v22 - v39) * v32;
   v34 = vmul_n_f32(v31, v32);
-  v35 = a4 / ((vmuls_lane_f32(v38.f32[1], v34, 1) + (v34.f32[0] * v38.f32[0])) + (v33 * v39));
+  v35 = distance / ((vmuls_lane_f32(v38.f32[1], v34, 1) + (v34.f32[0] * v38.f32[0])) + (v33 * v39));
   *v10 = vadd_f32(vmul_n_f32(v34, v35), v38);
   v10[1].f32[0] = (v33 * v35) + v39;
 
@@ -362,13 +362,13 @@
   return result;
 }
 
-- (tvec3<float>)fastProjectNormalizedPoint:(void *)a3 planeDistance:(float)a4
+- (tvec3<float>)fastProjectNormalizedPoint:(void *)point planeDistance:(float)distance
 {
   v8 = v4;
-  v9 = objc_msgSend_frustumSliceAtDistance_(self, a2, *&a4, v5, v6);
+  v9 = objc_msgSend_frustumSliceAtDistance_(self, a2, *&distance, v5, v6);
   v13 = v9;
-  v14 = *a3;
-  v17 = *a3;
+  v14 = *point;
+  v17 = *point;
   if (v9)
   {
     objc_msgSend_atNormalizedPosition_(v9, v10, v14, v11, v12, &v17);
@@ -386,7 +386,7 @@
   return result;
 }
 
-- (tvec3<float>)backProjectCameraSpacePoint:(void *)a3
+- (tvec3<float>)backProjectCameraSpacePoint:(void *)point
 {
   v9 = v3;
   lens = self->_lens;
@@ -416,9 +416,9 @@
     v99[1] = 0.0;
   }
 
-  __p[0] = *a3;
+  __p[0] = *point;
   *&v40 = sub_2761B63E0(__p, v99, &v98);
-  LODWORD(v40) = *(a3 + 2);
+  LODWORD(v40) = *(point + 2);
   if (*&v40 >= -v27)
   {
     v66 = v27;
@@ -430,8 +430,8 @@
     v42 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], *&v37, v40, v38, v39, "[TSCH3DCamera backProjectCameraSpacePoint:]");
     v47 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v43, v44, v45, v46, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DCamera.mm");
     v48 = MEMORY[0x277CCACA8];
-    v49 = *a3;
-    v96 = *(a3 + 2);
+    v49 = *point;
+    v96 = *(point + 2);
     sub_276152FD4("vec3(%f, %f, %f)", v50, v51, v52, v53, v54, v55, v56, SLOBYTE(v49));
     if (v101 >= 0)
     {
@@ -452,7 +452,7 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v41, v61, v63, v64, v65, v42, v47, 481, 0, "point must be behind near plane to back project %@ %f", v62, v27, *&v96);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v67, v68, v69, v70);
-    LODWORD(v40) = *(a3 + 2);
+    LODWORD(v40) = *(point + 2);
   }
 
   v71 = 2.0;
@@ -558,7 +558,7 @@
   return result;
 }
 
-- (tmat4x4<float>)modelViewViewportProjectionWithViewportScale:(SEL)a3
+- (tmat4x4<float>)modelViewViewportProjectionWithViewportScale:(SEL)scale
 {
   v6 = vmul_n_f32(vcvt_f32_s32(vsub_s32(self->_viewport._max, self->_viewport._min)), a4);
   v10 = v6.i32[0];
@@ -573,31 +573,31 @@
   v17 = 0;
   v16 = 0;
   v18 = 1065353216;
-  objc_msgSend_modelViewNormalizedProjection(self, a3, v12, 0.0, *v4.i64);
+  objc_msgSend_modelViewNormalizedProjection(self, scale, v12, 0.0, *v4.i64);
   sub_2761558A0(&v10, &v9, retstr);
   return result;
 }
 
-- (id)narrowByNormalizedBounds:(void *)a3
+- (id)narrowByNormalizedBounds:(void *)bounds
 {
   v8 = objc_msgSend_lens(self, a2, v3, v4, v5);
-  v13 = objc_msgSend_narrowedByNormalizedBounds_(v8, v9, v10, v11, v12, a3);
+  v13 = objc_msgSend_narrowedByNormalizedBounds_(v8, v9, v10, v11, v12, bounds);
   objc_msgSend_setLens_(self, v14, v15, v16, v17, v13);
 
   return self;
 }
 
-- (id)narrowedByNormalizedBounds:(void *)a3
+- (id)narrowedByNormalizedBounds:(void *)bounds
 {
   v7 = objc_msgSend_copy(self, a2, v3, v4, v5);
-  v12 = objc_msgSend_narrowByNormalizedBounds_(v7, v8, v9, v10, v11, a3);
+  v12 = objc_msgSend_narrowByNormalizedBounds_(v7, v8, v9, v10, v11, bounds);
 
   return v12;
 }
 
-- (id)narrowedByViewport:(void *)a3
+- (id)narrowedByViewport:(void *)viewport
 {
-  v4 = vcvtq_f32_s32(*a3);
+  v4 = vcvtq_f32_s32(*viewport);
   v11 = vcvtq_f32_s32(self->_viewport);
   v12 = v4;
   *&v5 = sub_276152C5C(&v12, &v11, &v13).u64[0];
@@ -606,54 +606,54 @@
   return v9;
 }
 
-- (id)shiftByPixels:(void *)a3
+- (id)shiftByPixels:(void *)pixels
 {
   v8 = objc_msgSend_lens(self, a2, v3, v4, v5);
-  v9 = *a3;
-  v18 = COERCE_DOUBLE(vdiv_f32(*a3, vcvt_f32_s32(vsub_s32(self->_viewport._max, self->_viewport._min))));
+  v9 = *pixels;
+  v18 = COERCE_DOUBLE(vdiv_f32(*pixels, vcvt_f32_s32(vsub_s32(self->_viewport._max, self->_viewport._min))));
   v12 = objc_msgSend_shiftedByPercentage_(v8, v10, v18, *&v9, v11, &v18);
   objc_msgSend_setLens_(self, v13, v14, v15, v16, v12);
 
   return self;
 }
 
-- (id)shiftedByPixels:(void *)a3
+- (id)shiftedByPixels:(void *)pixels
 {
   v7 = objc_msgSend_copy(self, a2, v3, v4, v5);
-  v12 = objc_msgSend_shiftByPixels_(v7, v8, v9, v10, v11, a3);
+  v12 = objc_msgSend_shiftByPixels_(v7, v8, v9, v10, v11, pixels);
 
   return v12;
 }
 
-- (id)pixelAlignedForScaledViewport:(void *)a3 viewportScale:(float)a4 samples:(float)a5 correspondingNoramlizedBounds:(void *)a6
+- (id)pixelAlignedForScaledViewport:(void *)viewport viewportScale:(float)scale samples:(float)samples correspondingNoramlizedBounds:(void *)bounds
 {
   v8 = a2;
-  *v10.f32 = vrndm_f32(*a3);
-  *&v10.u32[2] = vrndp_f32(*&vextq_s8(*a3, *a3, 8uLL));
-  v11 = vmulq_n_f32(*a3, a5);
+  *v10.f32 = vrndm_f32(*viewport);
+  *&v10.u32[2] = vrndp_f32(*&vextq_s8(*viewport, *viewport, 8uLL));
+  v11 = vmulq_n_f32(*viewport, samples);
   v180 = v11;
   v181 = v10;
-  v172 = *&a4;
-  v173 = *&a5;
-  v12 = vmulq_n_f32(v10, a5);
+  v172 = *&scale;
+  v173 = *&samples;
+  v12 = vmulq_n_f32(v10, samples);
   v179 = v12;
   v11.i32[0] = LODWORD(self->_viewportSamples);
   v12.i32[0] = 1.0;
   if (v11.f32[0] != 1.0)
   {
     v13 = MEMORY[0x277D81150];
-    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, *&a4, *v12.i64, *v11.i64, "[TSCH3DCamera pixelAlignedForScaledViewport:viewportScale:samples:correspondingNoramlizedBounds:]");
+    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, *&scale, *v12.i64, *v11.i64, "[TSCH3DCamera pixelAlignedForScaledViewport:viewportScale:samples:correspondingNoramlizedBounds:]");
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v16, v17, v18, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DCamera.mm");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v20, self->_viewportSamples, v21, v22, v14, v19, 549, 0, "only supports 1x camera right now, samples %f", self->_viewportSamples);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
-    a4 = *&v172;
+    scale = *&v172;
   }
 
-  v182 = vmulq_n_f32(vcvtq_f32_s32(self->_viewport), a4);
-  sub_2761526F4(a6, &v182, &v178);
+  v182 = vmulq_n_f32(vcvtq_f32_s32(self->_viewport), scale);
+  sub_2761526F4(bounds, &v182, &v178);
   v29 = *v178.i64;
-  v30 = COERCE_DOUBLE(vsub_f32(vsub_f32(*a3, *v181.f32), *v178.f32));
+  v30 = COERCE_DOUBLE(vsub_f32(vsub_f32(*viewport, *v181.f32), *v178.f32));
   v174 = v30;
   if (byte_280A46430 == 1)
   {
@@ -696,7 +696,7 @@
     }
 
     v66 = MEMORY[0x277CCACA8];
-    sub_276152EB4(a3, v58, v59, v60, v61, v62, v63, v64);
+    sub_276152EB4(viewport, v58, v59, v60, v61, v62, v63, v64);
     if (v183 >= 0)
     {
       objc_msgSend_stringWithUTF8String_(v66, v67, v68, v69, v70, &v182);
@@ -717,10 +717,10 @@
     v8 = v32;
   }
 
-  v72 = objc_msgSend_narrowedByNormalizedBounds_(self, v27, v30, v29, v28, a6);
-  v73.i64[0] = *a3;
-  *v74.f32 = vsub_f32(*(a3 + 8), *a3);
-  v73.i64[1] = *a3;
+  v72 = objc_msgSend_narrowedByNormalizedBounds_(self, v27, v30, v29, v28, bounds);
+  v73.i64[0] = *viewport;
+  *v74.f32 = vsub_f32(*(viewport + 8), *viewport);
+  v73.i64[1] = *viewport;
   v74.i64[1] = v74.i64[0];
   v177 = vdivq_f32(vsubq_f32(v181, v73), v74);
   v76 = objc_msgSend_narrowedByNormalizedBounds_(v72, v75, *v177.i64, *v74.i64, *v181.i64, &v177);
@@ -737,7 +737,7 @@
     v175 = NSStringFromSelector(v8);
     v171 = v72;
     v86 = MEMORY[0x277CCACA8];
-    sub_276152EB4(a3, v87, v88, v89, v90, v91, v92, v93);
+    sub_276152EB4(viewport, v87, v88, v89, v90, v91, v92, v93);
     if (v183 >= 0)
     {
       objc_msgSend_stringWithUTF8String_(v86, v94, v95, v96, v97, &v182);
@@ -864,24 +864,24 @@ LABEL_55:
   return v76;
 }
 
-- (id)narrowedByViewport:(void *)a3 samples:(int64_t)a4
+- (id)narrowedByViewport:(void *)viewport samples:(int64_t)samples
 {
-  v7 = vcvtq_f32_s32(*a3);
+  v7 = vcvtq_f32_s32(*viewport);
   v31 = vcvtq_f32_s32(self->_viewport);
   v32 = v7;
   *&v8 = sub_276152C5C(&v32, &v31, &v33).u64[0];
-  v9 = *a3;
+  v9 = *viewport;
   p_viewportSamples = &self->_viewportSamples;
   v11 = vld1_dup_f32(p_viewportSamples);
   v15 = objc_msgSend_narrowedByNormalizedBounds_(self, v12, v8, v13, v14, &v33);
   v32.i64[0] = 0;
-  v16 = vdup_n_s32(a4);
-  *&v32.u32[2] = vmul_s32(vsub_s32(*(a3 + 8), *a3), v16);
+  v16 = vdup_n_s32(samples);
+  *&v32.u32[2] = vmul_s32(vsub_s32(*(viewport + 8), *viewport), v16);
   objc_msgSend_setViewport_(v15, v17, *&v32.i64[1], *&v16, v18, &v32);
   *&v19 = self->_viewportScale;
   objc_msgSend_setViewportScale_(v15, v20, v19, v21, v22);
   *&v23 = self->_viewportSamples;
-  *&v24 = *&v23 * a4;
+  *&v24 = *&v23 * samples;
   objc_msgSend_setViewportSamples_(v15, v25, v24, v23, v26);
   containingViewportOffset = self->_containingViewportOffset;
   *v32.f32 = vsub_f32(containingViewportOffset, vdiv_f32(vcvt_f32_s32(v9), v11));
@@ -890,10 +890,10 @@ LABEL_55:
   return v15;
 }
 
-- (void)calculateCullingPlanes:(void *)a3
+- (void)calculateCullingPlanes:(void *)planes
 {
   v11 = objc_msgSend_lens(self, a2, v3, v4, v5);
-  objc_msgSend_calculateCullingPlanes_(v11, v7, v8, v9, v10, a3);
+  objc_msgSend_calculateCullingPlanes_(v11, v7, v8, v9, v10, planes);
 }
 
 - (box<glm::detail::tvec2<int>>)viewport

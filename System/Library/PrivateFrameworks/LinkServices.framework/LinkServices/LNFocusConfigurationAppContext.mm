@@ -1,55 +1,55 @@
 @interface LNFocusConfigurationAppContext
-- (BOOL)isEqual:(id)a3;
-- (LNFocusConfigurationAppContext)initWithCoder:(id)a3;
-- (LNFocusConfigurationAppContext)initWithNotificationFilterPredicate:(id)a3 targetContentIdentifierPrefix:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNFocusConfigurationAppContext)initWithCoder:(id)coder;
+- (LNFocusConfigurationAppContext)initWithNotificationFilterPredicate:(id)predicate targetContentIdentifierPrefix:(id)prefix;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNFocusConfigurationAppContext
 
-- (LNFocusConfigurationAppContext)initWithCoder:(id)a3
+- (LNFocusConfigurationAppContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"notificationFilterPredicate"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetContentIdentifierPrefix"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"notificationFilterPredicate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetContentIdentifierPrefix"];
 
   v7 = [(LNFocusConfigurationAppContext *)self initWithNotificationFilterPredicate:v5 targetContentIdentifierPrefix:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNFocusConfigurationAppContext *)self notificationFilterPredicate];
-  [v4 encodeObject:v5 forKey:@"notificationFilterPredicate"];
+  coderCopy = coder;
+  notificationFilterPredicate = [(LNFocusConfigurationAppContext *)self notificationFilterPredicate];
+  [coderCopy encodeObject:notificationFilterPredicate forKey:@"notificationFilterPredicate"];
 
-  v6 = [(LNFocusConfigurationAppContext *)self targetContentIdentifierPrefix];
-  [v4 encodeObject:v6 forKey:@"targetContentIdentifierPrefix"];
+  targetContentIdentifierPrefix = [(LNFocusConfigurationAppContext *)self targetContentIdentifierPrefix];
+  [coderCopy encodeObject:targetContentIdentifierPrefix forKey:@"targetContentIdentifierPrefix"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNFocusConfigurationAppContext *)self notificationFilterPredicate];
-  v4 = [v3 hash];
-  v5 = [(LNFocusConfigurationAppContext *)self targetContentIdentifierPrefix];
-  v6 = [v5 hash];
+  notificationFilterPredicate = [(LNFocusConfigurationAppContext *)self notificationFilterPredicate];
+  v4 = [notificationFilterPredicate hash];
+  targetContentIdentifierPrefix = [(LNFocusConfigurationAppContext *)self targetContentIdentifierPrefix];
+  v6 = [targetContentIdentifierPrefix hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(LNFocusConfigurationAppContext *)self notificationFilterPredicate];
-      v6 = [v4 notificationFilterPredicate];
-      v7 = v5;
-      v8 = v6;
+      notificationFilterPredicate = [(LNFocusConfigurationAppContext *)self notificationFilterPredicate];
+      notificationFilterPredicate2 = [equalCopy notificationFilterPredicate];
+      v7 = notificationFilterPredicate;
+      v8 = notificationFilterPredicate2;
       v9 = v8;
       if (v7 == v8)
       {
@@ -76,10 +76,10 @@ LABEL_17:
         }
       }
 
-      v13 = [(LNFocusConfigurationAppContext *)self targetContentIdentifierPrefix];
-      v14 = [v4 targetContentIdentifierPrefix];
-      v12 = v13;
-      v15 = v14;
+      targetContentIdentifierPrefix = [(LNFocusConfigurationAppContext *)self targetContentIdentifierPrefix];
+      targetContentIdentifierPrefix2 = [equalCopy targetContentIdentifierPrefix];
+      v12 = targetContentIdentifierPrefix;
+      v15 = targetContentIdentifierPrefix2;
       v11 = v15;
       if (v12 == v15)
       {
@@ -105,18 +105,18 @@ LABEL_18:
   return v10;
 }
 
-- (LNFocusConfigurationAppContext)initWithNotificationFilterPredicate:(id)a3 targetContentIdentifierPrefix:(id)a4
+- (LNFocusConfigurationAppContext)initWithNotificationFilterPredicate:(id)predicate targetContentIdentifierPrefix:(id)prefix
 {
-  v7 = a3;
-  v8 = a4;
+  predicateCopy = predicate;
+  prefixCopy = prefix;
   v15.receiver = self;
   v15.super_class = LNFocusConfigurationAppContext;
   v9 = [(LNFocusConfigurationAppContext *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_notificationFilterPredicate, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_notificationFilterPredicate, predicate);
+    v11 = [prefixCopy copy];
     targetContentIdentifierPrefix = v10->_targetContentIdentifierPrefix;
     v10->_targetContentIdentifierPrefix = v11;
 

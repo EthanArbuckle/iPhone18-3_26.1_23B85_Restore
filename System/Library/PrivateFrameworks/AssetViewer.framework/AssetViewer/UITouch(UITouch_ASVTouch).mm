@@ -7,8 +7,8 @@
 
 - (double)location
 {
-  v2 = [a1 view];
-  [a1 preciseLocationInView:v2];
+  view = [self view];
+  [self preciseLocationInView:view];
   v5 = pointToFloat2(v3, v4);
 
   return v5;
@@ -16,8 +16,8 @@
 
 - (double)previousLocation
 {
-  v2 = [a1 view];
-  [a1 precisePreviousLocationInView:v2];
+  view = [self view];
+  [self precisePreviousLocationInView:view];
   v5 = pointToFloat2(v3, v4);
 
   return v5;

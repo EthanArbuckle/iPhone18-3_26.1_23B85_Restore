@@ -1,45 +1,45 @@
 @interface SUUIViewController
 - (NSOperationQueue)operationQueue;
 - (SUUIIPadSearchController)IPadSearchController;
-- (SUUIViewController)initWithTabBarItem:(id)a3;
+- (SUUIViewController)initWithTabBarItem:(id)item;
 - (id)_defaultLeftBarButtonItems;
-- (id)_defaultRightBarButtonItemsIsCompact:(BOOL)a3;
+- (id)_defaultRightBarButtonItemsIsCompact:(BOOL)compact;
 - (id)_getIPadSearchController;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_presentWishlistFromPopover:(id)a3;
+- (void)_presentWishlistFromPopover:(id)popover;
 - (void)_presentWishlistFromSheet;
-- (void)_reloadForOrientation:(int64_t)a3;
-- (void)_showDialogWithError:(id)a3;
-- (void)_wishlistAction:(id)a3;
+- (void)_reloadForOrientation:(int64_t)orientation;
+- (void)_showDialogWithError:(id)error;
+- (void)_wishlistAction:(id)action;
 - (void)_wishlistPopoverDidDismiss;
 - (void)dealloc;
 - (void)forceOrientationBackToSupportedOrientation;
-- (void)networkErrorViewControllerInvalidated:(id)a3;
-- (void)productPageOverlayDidDismiss:(id)a3;
-- (void)setClientContext:(id)a3;
+- (void)networkErrorViewControllerInvalidated:(id)invalidated;
+- (void)productPageOverlayDidDismiss:(id)dismiss;
+- (void)setClientContext:(id)context;
 - (void)showDefaultNavigationItems;
-- (void)showDefaultNavigationItemsForSize:(CGSize)a3;
-- (void)showDefaultNavigationItemsIsCompact:(BOOL)a3;
-- (void)showError:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)wishlist:(id)a3 didSelectItem:(id)a4 atIndexPath:(id)a5;
+- (void)showDefaultNavigationItemsForSize:(CGSize)size;
+- (void)showDefaultNavigationItemsIsCompact:(BOOL)compact;
+- (void)showError:(id)error;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)wishlist:(id)wishlist didSelectItem:(id)item atIndexPath:(id)path;
 @end
 
 @implementation SUUIViewController
 
-- (SUUIViewController)initWithTabBarItem:(id)a3
+- (SUUIViewController)initWithTabBarItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = SUUIViewController;
   v5 = [(SUUIViewController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 underlyingTabBarItem];
-    [(SUUIViewController *)v5 setTabBarItem:v6];
-    v7 = [v6 _internalTitle];
-    [(SUUIViewController *)v5 setTitle:v7];
+    underlyingTabBarItem = [itemCopy underlyingTabBarItem];
+    [(SUUIViewController *)v5 setTabBarItem:underlyingTabBarItem];
+    _internalTitle = [underlyingTabBarItem _internalTitle];
+    [(SUUIViewController *)v5 setTitle:_internalTitle];
   }
 
   return v5;
@@ -59,33 +59,33 @@
 
 - (SUUIIPadSearchController)IPadSearchController
 {
-  v3 = SUUIUserInterfaceIdiom(self->_clientContext);
-  if (v3)
+  _getIPadSearchController = SUUIUserInterfaceIdiom(self->_clientContext);
+  if (_getIPadSearchController)
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v4 keyWindow];
-    [v5 bounds];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128] keyWindow];
+    [keyWindow bounds];
     if (v6 <= SUUICompactThreshold())
     {
     }
 
     else
     {
-      v7 = [(SUUIClientContext *)self->_clientContext shouldForceTransientSearchControllerBahavior];
+      shouldForceTransientSearchControllerBahavior = [(SUUIClientContext *)self->_clientContext shouldForceTransientSearchControllerBahavior];
 
-      if (!v7)
+      if (!shouldForceTransientSearchControllerBahavior)
       {
-        v3 = [(SUUIViewController *)self _getIPadSearchController];
+        _getIPadSearchController = [(SUUIViewController *)self _getIPadSearchController];
         goto LABEL_7;
       }
     }
 
-    v3 = 0;
+    _getIPadSearchController = 0;
   }
 
 LABEL_7:
 
-  return v3;
+  return _getIPadSearchController;
 }
 
 - (id)_getIPadSearchController
@@ -98,8 +98,8 @@ LABEL_7:
     self->_searchController = v4;
 
     v6 = self->_searchController;
-    v7 = [(SUUIViewController *)self clientContext];
-    [(SUUIIPadSearchController *)v6 setClientContext:v7];
+    clientContext = [(SUUIViewController *)self clientContext];
+    [(SUUIIPadSearchController *)v6 setClientContext:clientContext];
 
     searchController = self->_searchController;
   }
@@ -127,88 +127,88 @@ LABEL_7:
   return operationQueue;
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
-  v5 = a3;
-  if (self->_clientContext != v5)
+  contextCopy = context;
+  if (self->_clientContext != contextCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_clientContext, a3);
+    v6 = contextCopy;
+    objc_storeStrong(&self->_clientContext, context);
     [(SUUIIPadSearchController *)self->_searchController setClientContext:self->_clientContext];
-    v5 = v6;
+    contextCopy = v6;
   }
 }
 
 - (void)showDefaultNavigationItems
 {
-  v3 = [(SUUIViewController *)self navigationItem];
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  v5 = [v4 keyWindow];
-  [v5 bounds];
+  navigationItem = [(SUUIViewController *)self navigationItem];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  keyWindow = [mEMORY[0x277D75128] keyWindow];
+  [keyWindow bounds];
   v7 = [(SUUIViewController *)self _defaultRightBarButtonItemsIsCompact:v6 <= SUUICompactThreshold()];
-  [v3 setRightBarButtonItems:v7];
+  [navigationItem setRightBarButtonItems:v7];
 
-  v9 = [(SUUIViewController *)self navigationItem];
-  v8 = [(SUUIViewController *)self _defaultLeftBarButtonItems];
-  [v9 setLeftBarButtonItems:v8];
+  navigationItem2 = [(SUUIViewController *)self navigationItem];
+  _defaultLeftBarButtonItems = [(SUUIViewController *)self _defaultLeftBarButtonItems];
+  [navigationItem2 setLeftBarButtonItems:_defaultLeftBarButtonItems];
 }
 
-- (void)showDefaultNavigationItemsForSize:(CGSize)a3
+- (void)showDefaultNavigationItemsForSize:(CGSize)size
 {
-  width = a3.width;
-  v5 = [(SUUIViewController *)self navigationItem:a3.width];
-  v6 = [(SUUIViewController *)self _defaultLeftBarButtonItems];
-  [v5 setLeftBarButtonItems:v6];
+  width = size.width;
+  v5 = [(SUUIViewController *)self navigationItem:size.width];
+  _defaultLeftBarButtonItems = [(SUUIViewController *)self _defaultLeftBarButtonItems];
+  [v5 setLeftBarButtonItems:_defaultLeftBarButtonItems];
 
-  v8 = [(SUUIViewController *)self navigationItem];
+  navigationItem = [(SUUIViewController *)self navigationItem];
   v7 = [(SUUIViewController *)self _defaultRightBarButtonItemsIsCompact:width <= SUUICompactThreshold()];
-  [v8 setRightBarButtonItems:v7];
+  [navigationItem setRightBarButtonItems:v7];
 }
 
-- (void)showDefaultNavigationItemsIsCompact:(BOOL)a3
+- (void)showDefaultNavigationItemsIsCompact:(BOOL)compact
 {
-  v3 = a3;
-  v5 = [(SUUIViewController *)self navigationItem];
-  v6 = [(SUUIViewController *)self _defaultLeftBarButtonItems];
-  [v5 setLeftBarButtonItems:v6];
+  compactCopy = compact;
+  navigationItem = [(SUUIViewController *)self navigationItem];
+  _defaultLeftBarButtonItems = [(SUUIViewController *)self _defaultLeftBarButtonItems];
+  [navigationItem setLeftBarButtonItems:_defaultLeftBarButtonItems];
 
-  v8 = [(SUUIViewController *)self navigationItem];
-  v7 = [(SUUIViewController *)self _defaultRightBarButtonItemsIsCompact:v3];
-  [v8 setRightBarButtonItems:v7];
+  navigationItem2 = [(SUUIViewController *)self navigationItem];
+  v7 = [(SUUIViewController *)self _defaultRightBarButtonItemsIsCompact:compactCopy];
+  [navigationItem2 setRightBarButtonItems:v7];
 }
 
-- (void)showError:(id)a3
+- (void)showError:(id)error
 {
-  v10 = a3;
+  errorCopy = error;
   if ([SUUINetworkErrorViewController canDisplayError:?])
   {
     if (!self->_networkErrorViewController)
     {
-      v4 = [[SUUINetworkErrorViewController alloc] initWithError:v10];
+      v4 = [[SUUINetworkErrorViewController alloc] initWithError:errorCopy];
       networkErrorViewController = self->_networkErrorViewController;
       self->_networkErrorViewController = v4;
 
       v6 = self->_networkErrorViewController;
-      v7 = [(SUUIViewController *)self clientContext];
-      [(SUUINetworkErrorViewController *)v6 setClientContext:v7];
+      clientContext = [(SUUIViewController *)self clientContext];
+      [(SUUINetworkErrorViewController *)v6 setClientContext:clientContext];
 
       [(SUUINetworkErrorViewController *)self->_networkErrorViewController setDelegate:self];
       [(SUUIViewController *)self addChildViewController:self->_networkErrorViewController];
-      v8 = [(SUUIViewController *)self view];
-      v9 = [(SUUINetworkErrorViewController *)self->_networkErrorViewController view];
-      [v9 setAutoresizingMask:18];
-      [v8 bounds];
-      [v9 setFrame:?];
-      [v8 addSubview:v9];
+      view = [(SUUIViewController *)self view];
+      view2 = [(SUUINetworkErrorViewController *)self->_networkErrorViewController view];
+      [view2 setAutoresizingMask:18];
+      [view bounds];
+      [view2 setFrame:?];
+      [view addSubview:view2];
     }
   }
 
   else
   {
-    NSLog(&cfstr_LoadFailure.isa, v10);
+    NSLog(&cfstr_LoadFailure.isa, errorCopy);
     if (SUUIViewControllerIsVisible(self))
     {
-      [(SUUIViewController *)self _showDialogWithError:v10];
+      [(SUUIViewController *)self _showDialogWithError:errorCopy];
     }
   }
 }
@@ -228,69 +228,69 @@ LABEL_7:
   return 2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SUUIViewController;
-  [(SUUIViewController *)&v4 viewWillAppear:a3];
+  [(SUUIViewController *)&v4 viewWillAppear:appear];
   [(SUUIViewController *)self _reloadForOrientation:[(SUUIViewController *)self interfaceOrientation]];
   [(SUUIIPadSearchController *)self->_searchController reloadSearchField];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v6.receiver = self;
   v6.super_class = SUUIViewController;
-  [(SUUIViewController *)&v6 willAnimateRotationToInterfaceOrientation:a4 duration:?];
-  [(SUUIViewController *)self _reloadForOrientation:a3];
+  [(SUUIViewController *)&v6 willAnimateRotationToInterfaceOrientation:duration duration:?];
+  [(SUUIViewController *)self _reloadForOrientation:orientation];
 }
 
 - (void)forceOrientationBackToSupportedOrientation
 {
-  v7 = [MEMORY[0x277D75128] sharedApplication];
-  if (([v7 statusBarOrientation] - 3) <= 1 && (-[SUUIViewController supportedInterfaceOrientations](self, "supportedInterfaceOrientations") & 0x18) == 0)
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  if (([mEMORY[0x277D75128] statusBarOrientation] - 3) <= 1 && (-[SUUIViewController supportedInterfaceOrientations](self, "supportedInterfaceOrientations") & 0x18) == 0)
   {
-    if (!-[SUUIViewController isViewLoaded](self, "isViewLoaded") || (-[SUUIViewController view](self, "view"), v3 = objc_claimAutoreleasedReturnValue(), [v3 window], v4 = objc_claimAutoreleasedReturnValue(), v3, !v4))
+    if (!-[SUUIViewController isViewLoaded](self, "isViewLoaded") || (-[SUUIViewController view](self, "view"), v3 = objc_claimAutoreleasedReturnValue(), [v3 window], window = objc_claimAutoreleasedReturnValue(), v3, !window))
     {
-      v5 = [(SUUIViewController *)self presentedViewController];
-      v6 = [v5 view];
-      v4 = [v6 window];
+      presentedViewController = [(SUUIViewController *)self presentedViewController];
+      view = [presentedViewController view];
+      window = [view window];
 
-      if (!v4)
+      if (!window)
       {
-        v4 = [MEMORY[0x277D75DA0] keyWindow];
+        window = [MEMORY[0x277D75DA0] keyWindow];
       }
     }
 
-    [v4 _setRotatableViewOrientation:1 duration:1 force:0.0];
+    [window _setRotatableViewOrientation:1 duration:1 force:0.0];
   }
 }
 
-- (void)networkErrorViewControllerInvalidated:(id)a3
+- (void)networkErrorViewControllerInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   networkErrorViewController = self->_networkErrorViewController;
   if (networkErrorViewController)
   {
-    v8 = v4;
+    v8 = invalidatedCopy;
     [networkErrorViewController setDelegate:0];
-    v6 = [(SUUINetworkErrorViewController *)self->_networkErrorViewController view];
-    [v6 removeFromSuperview];
+    view = [(SUUINetworkErrorViewController *)self->_networkErrorViewController view];
+    [view removeFromSuperview];
 
     [(SUUINetworkErrorViewController *)self->_networkErrorViewController removeFromParentViewController];
     v7 = self->_networkErrorViewController;
     self->_networkErrorViewController = 0;
 
     networkErrorViewController = SUUIViewControllerIsVisible(self);
-    v4 = v8;
+    invalidatedCopy = v8;
     if (networkErrorViewController)
     {
       networkErrorViewController = [(SUUIViewController *)self reloadData];
-      v4 = v8;
+      invalidatedCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](networkErrorViewController, v4);
+  MEMORY[0x2821F96F8](networkErrorViewController, invalidatedCopy);
 }
 
 - (void)_wishlistPopoverDidDismiss
@@ -304,27 +304,27 @@ LABEL_7:
   self->_wishlistViewController = 0;
 }
 
-- (void)productPageOverlayDidDismiss:(id)a3
+- (void)productPageOverlayDidDismiss:(id)dismiss
 {
   [(SUUIProductPageOverlayController *)self->_productPageOverlayController setDelegate:0];
   productPageOverlayController = self->_productPageOverlayController;
   self->_productPageOverlayController = 0;
 }
 
-- (void)wishlist:(id)a3 didSelectItem:(id)a4 atIndexPath:(id)a5
+- (void)wishlist:(id)wishlist didSelectItem:(id)item atIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277D75418] currentDevice];
-  if (![v9 userInterfaceIdiom])
+  wishlistCopy = wishlist;
+  itemCopy = item;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if (![currentDevice userInterfaceIdiom])
   {
 
     goto LABEL_7;
   }
 
-  v10 = [MEMORY[0x277D75128] sharedApplication];
-  v11 = [v10 keyWindow];
-  [v11 bounds];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  keyWindow = [mEMORY[0x277D75128] keyWindow];
+  [keyWindow bounds];
   v13 = v12;
   v14 = SUUICompactThreshold();
 
@@ -337,9 +337,9 @@ LABEL_7:
     v28[3] = &unk_2798F5AF8;
     v23 = &v29;
     v28[4] = self;
-    v29 = v8;
-    v25 = v8;
-    [v7 dismissViewControllerAnimated:1 completion:v28];
+    v29 = itemCopy;
+    v25 = itemCopy;
+    [wishlistCopy dismissViewControllerAnimated:1 completion:v28];
     goto LABEL_8;
   }
 
@@ -359,8 +359,8 @@ LABEL_7:
     self->_productPageOverlayController = v17;
 
     v19 = self->_productPageOverlayController;
-    v20 = [(SUUIViewController *)self clientContext];
-    [(SUUIProductPageOverlayController *)v19 setClientContext:v20];
+    clientContext = [(SUUIViewController *)self clientContext];
+    [(SUUIProductPageOverlayController *)v19 setClientContext:clientContext];
 
     [(SUUIProductPageOverlayController *)self->_productPageOverlayController setDelegate:self];
   }
@@ -373,8 +373,8 @@ LABEL_7:
   v26[3] = &unk_2798F5AF8;
   v23 = &v27;
   v26[4] = self;
-  v27 = v8;
-  v24 = v8;
+  v27 = itemCopy;
+  v24 = itemCopy;
   dispatch_after(v22, MEMORY[0x277D85CD0], v26);
 LABEL_8:
 }
@@ -420,19 +420,19 @@ void __57__SUUIViewController_wishlist_didSelectItem_atIndexPath___block_invoke_
   [v2 pushViewController:v3 animated:1];
 }
 
-- (void)_wishlistAction:(id)a3
+- (void)_wishlistAction:(id)action
 {
-  v13 = a3;
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  if (![v4 userInterfaceIdiom])
+  actionCopy = action;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if (![currentDevice userInterfaceIdiom])
   {
 
     goto LABEL_7;
   }
 
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  v6 = [v5 keyWindow];
-  [v6 bounds];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  keyWindow = [mEMORY[0x277D75128] keyWindow];
+  [keyWindow bounds];
   v8 = v7;
   v9 = SUUICompactThreshold();
 
@@ -456,35 +456,35 @@ LABEL_7:
     self->_wishlistViewController = 0;
   }
 
-  [(SUUIViewController *)self _presentWishlistFromPopover:v13];
+  [(SUUIViewController *)self _presentWishlistFromPopover:actionCopy];
 LABEL_8:
 }
 
 - (void)_presentWishlistFromSheet
 {
-  v5 = [(SUUIViewController *)self clientContext];
+  clientContext = [(SUUIViewController *)self clientContext];
   v3 = objc_alloc_init(SUUIWishlistViewController);
-  [(SUUIWishlistViewController *)v3 setClientContext:v5];
+  [(SUUIWishlistViewController *)v3 setClientContext:clientContext];
   [(SUUIWishlistViewController *)v3 setDelegate:self];
   v4 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v3];
   [v4 setModalPresentationStyle:2];
   [(SUUIViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)_presentWishlistFromPopover:(id)a3
+- (void)_presentWishlistFromPopover:(id)popover
 {
-  v4 = a3;
-  v11 = [(SUUIViewController *)self clientContext];
+  popoverCopy = popover;
+  clientContext = [(SUUIViewController *)self clientContext];
   v5 = objc_alloc_init(SUUIWishlistViewController);
   wishlistViewController = self->_wishlistViewController;
   self->_wishlistViewController = v5;
 
-  [(SUUIWishlistViewController *)self->_wishlistViewController setClientContext:v11];
+  [(SUUIWishlistViewController *)self->_wishlistViewController setClientContext:clientContext];
   [(SUUIWishlistViewController *)self->_wishlistViewController setDelegate:self];
   v7 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:self->_wishlistViewController];
   v8 = [objc_alloc(MEMORY[0x277D758A0]) initWithContentViewController:v7];
   [v8 setPopoverContentSize:{320.0, 416.0}];
-  [v8 presentPopoverFromBarButtonItem:v4 permittedArrowDirections:1 animated:1];
+  [v8 presentPopoverFromBarButtonItem:popoverCopy permittedArrowDirections:1 animated:1];
 
   v9 = [[SUUIPopoverObserver alloc] initWithPopoverController:v8];
   wishlistPopoverObserver = self->_wishlistPopoverObserver;
@@ -493,26 +493,26 @@ LABEL_8:
   [(SUUIPopoverObserver *)self->_wishlistPopoverObserver setTarget:self selector:sel__wishlistPopoverDidDismiss];
 }
 
-- (void)_showDialogWithError:(id)a3
+- (void)_showDialogWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(SUUIViewController *)self clientContext];
-  v6 = [v5 localizedAlertWithError:v4];
+  errorCopy = error;
+  clientContext = [(SUUIViewController *)self clientContext];
+  v6 = [clientContext localizedAlertWithError:errorCopy];
 
   [v6 show];
 }
 
-- (void)_reloadForOrientation:(int64_t)a3
+- (void)_reloadForOrientation:(int64_t)orientation
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [(SUUIViewController *)self navigationItem];
-  v5 = [v4 rightBarButtonItems];
+  navigationItem = [(SUUIViewController *)self navigationItem];
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v5;
+  v6 = rightBarButtonItems;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -527,13 +527,13 @@ LABEL_8:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) customView];
+        customView = [*(*(&v14 + 1) + 8 * i) customView];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v11 sizeToFit];
-          [v11 frame];
-          [v11 setFrame:?];
+          [customView sizeToFit];
+          [customView frame];
+          [customView setFrame:?];
         }
       }
 
@@ -543,18 +543,18 @@ LABEL_8:
     while (v8);
   }
 
-  v12 = [(SUUIViewController *)self navigationItem];
-  [v12 setRightBarButtonItems:0];
+  navigationItem2 = [(SUUIViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItems:0];
 
-  v13 = [(SUUIViewController *)self navigationItem];
-  [v13 setRightBarButtonItems:v6];
+  navigationItem3 = [(SUUIViewController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItems:v6];
 }
 
 - (id)_defaultLeftBarButtonItems
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(SUUIViewController *)self clientContext];
-  v5 = [v4 additionalLeftBarButtonItemForViewController:self];
+  clientContext = [(SUUIViewController *)self clientContext];
+  v5 = [clientContext additionalLeftBarButtonItemForViewController:self];
 
   if (v5)
   {
@@ -564,43 +564,43 @@ LABEL_8:
   return v3;
 }
 
-- (id)_defaultRightBarButtonItemsIsCompact:(BOOL)a3
+- (id)_defaultRightBarButtonItemsIsCompact:(BOOL)compact
 {
-  v3 = a3;
+  compactCopy = compact;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(SUUIViewController *)self clientContext];
-  v7 = [v6 additionalRightBarButtonItemForViewController:self];
+  clientContext = [(SUUIViewController *)self clientContext];
+  v7 = [clientContext additionalRightBarButtonItemForViewController:self];
 
   if (v7)
   {
     [v5 addObject:v7];
   }
 
-  v8 = [(SUUIViewController *)self IPadSearchController];
-  v9 = [v8 newSearchFieldBarItem];
+  iPadSearchController = [(SUUIViewController *)self IPadSearchController];
+  newSearchFieldBarItem = [iPadSearchController newSearchFieldBarItem];
 
-  if (!v9 && !v3)
+  if (!newSearchFieldBarItem && !compactCopy)
   {
     if (SUUIUserInterfaceIdiom(self->_clientContext) != 1)
     {
-      v9 = 0;
+      newSearchFieldBarItem = 0;
       goto LABEL_12;
     }
 
-    v10 = [(SUUIViewController *)self _getIPadSearchController];
-    v9 = [v10 newSearchFieldBarItem];
+    _getIPadSearchController = [(SUUIViewController *)self _getIPadSearchController];
+    newSearchFieldBarItem = [_getIPadSearchController newSearchFieldBarItem];
   }
 
-  if (v9)
+  if (newSearchFieldBarItem)
   {
-    v11 = [(SUUIViewController *)self clientContext];
-    v12 = [v11 storeViewController:self shouldDisplayDefaultDarButton:0];
+    clientContext2 = [(SUUIViewController *)self clientContext];
+    v12 = [clientContext2 storeViewController:self shouldDisplayDefaultDarButton:0];
 
     if (v12)
     {
-      if (!v3)
+      if (!compactCopy)
       {
-        [v5 addObject:v9];
+        [v5 addObject:newSearchFieldBarItem];
       }
     }
   }
@@ -608,16 +608,16 @@ LABEL_8:
 LABEL_12:
   if (!self->_wishlistButtonHidden)
   {
-    v13 = [(SUUIViewController *)self clientContext];
-    v14 = [v13 storeViewController:self shouldDisplayDefaultDarButton:1];
+    clientContext3 = [(SUUIViewController *)self clientContext];
+    v14 = [clientContext3 storeViewController:self shouldDisplayDefaultDarButton:1];
 
     if (v14)
     {
       wishlistButtonItem = self->_wishlistButtonItem;
       if (!wishlistButtonItem)
       {
-        v16 = [(SUUIViewController *)self clientContext];
-        v17 = [SUUIWishlistViewController wishlistBarButtonItemWithClientContext:v16];
+        clientContext4 = [(SUUIViewController *)self clientContext];
+        v17 = [SUUIWishlistViewController wishlistBarButtonItemWithClientContext:clientContext4];
         v18 = self->_wishlistButtonItem;
         self->_wishlistButtonItem = v17;
 

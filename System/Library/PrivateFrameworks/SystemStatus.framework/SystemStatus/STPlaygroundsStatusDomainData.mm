@@ -1,15 +1,15 @@
 @interface STPlaygroundsStatusDomainData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (STPlaygroundsStatusDomainData)init;
-- (STPlaygroundsStatusDomainData)initWithCoder:(id)a3;
-- (id)dataByApplyingDiff:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffFromData:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (STPlaygroundsStatusDomainData)initWithCoder:(id)coder;
+- (id)dataByApplyingDiff:(id)diff;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffFromData:(id)data;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STPlaygroundsStatusDomainData
@@ -18,59 +18,59 @@
 {
   if (self)
   {
-    v2 = self;
-    v3 = [0 isPlaygroundsActive];
-    v4.receiver = v2;
+    selfCopy = self;
+    isPlaygroundsActive = [0 isPlaygroundsActive];
+    v4.receiver = selfCopy;
     v4.super_class = STPlaygroundsStatusDomainData;
     self = [(STPlaygroundsStatusDomainData *)&v4 init];
     if (self)
     {
-      self->_playgroundsActive = v3;
+      self->_playgroundsActive = isPlaygroundsActive;
     }
   }
 
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STPlaygroundsStatusDomainData *)self isPlaygroundsActive];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  isPlaygroundsActive = [(STPlaygroundsStatusDomainData *)self isPlaygroundsActive];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __41__STPlaygroundsStatusDomainData_isEqual___block_invoke;
   v10[3] = &unk_1E85DDD50;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v5 appendBool:v6 counterpart:v10];
-  LOBYTE(v6) = [v5 isEqual];
+  v11 = equalCopy;
+  v7 = equalCopy;
+  v8 = [v5 appendBool:isPlaygroundsActive counterpart:v10];
+  LOBYTE(isPlaygroundsActive) = [v5 isEqual];
 
-  return v6;
+  return isPlaygroundsActive;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendBool:{-[STPlaygroundsStatusDomainData isPlaygroundsActive](self, "isPlaygroundsActive")}];
-  v5 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendBool:{-[STPlaygroundsStatusDomainData isPlaygroundsActive](self, "isPlaygroundsActive")}];
+  v5 = [builder hash];
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  result = [STMutablePlaygroundsStatusDomainData allocWithZone:a3];
+  result = [STMutablePlaygroundsStatusDomainData allocWithZone:zone];
   if (result)
   {
     v5 = result;
-    v6 = [(STPlaygroundsStatusDomainData *)self isPlaygroundsActive];
+    isPlaygroundsActive = [(STPlaygroundsStatusDomainData *)self isPlaygroundsActive];
     v7.receiver = v5;
     v7.super_class = STPlaygroundsStatusDomainData;
     result = [(STPlaygroundsStatusDomainData *)&v7 init];
     if (result)
     {
-      *(result + 8) = v6;
+      *(result + 8) = isPlaygroundsActive;
     }
   }
 
@@ -79,44 +79,44 @@
 
 - (id)succinctDescription
 {
-  v2 = [(STPlaygroundsStatusDomainData *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STPlaygroundsStatusDomainData *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STPlaygroundsStatusDomainData *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STPlaygroundsStatusDomainData *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(STPlaygroundsStatusDomainData *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(STPlaygroundsStatusDomainData *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __71__STPlaygroundsStatusDomainData_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E85DDD00;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
 }
 
-- (id)diffFromData:(id)a3
+- (id)diffFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [STPlaygroundsStatusDomainDataDiff diffFromData:v4 toData:self];
+    v5 = [STPlaygroundsStatusDomainDataDiff diffFromData:dataCopy toData:self];
   }
 
   else
@@ -127,13 +127,13 @@
   return v5;
 }
 
-- (id)dataByApplyingDiff:(id)a3
+- (id)dataByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isEmpty])
+    if ([diffCopy isEmpty])
     {
       v5 = [(STPlaygroundsStatusDomainData *)self copy];
     }
@@ -141,7 +141,7 @@
     else
     {
       v5 = [(STPlaygroundsStatusDomainData *)self mutableCopy];
-      [v4 applyToMutableData:v5];
+      [diffCopy applyToMutableData:v5];
     }
   }
 
@@ -153,15 +153,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[STPlaygroundsStatusDomainData isPlaygroundsActive](self forKey:{"isPlaygroundsActive"), @"playgroundsActive"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[STPlaygroundsStatusDomainData isPlaygroundsActive](self forKey:{"isPlaygroundsActive"), @"playgroundsActive"}];
 }
 
-- (STPlaygroundsStatusDomainData)initWithCoder:(id)a3
+- (STPlaygroundsStatusDomainData)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"playgroundsActive"];
+  v4 = [coder decodeBoolForKey:@"playgroundsActive"];
   if (!self)
   {
     return 0;

@@ -3,7 +3,7 @@
 - (BOOL)hasEntitlement;
 - (BOOL)isSupported;
 - (DCAppAttestController)appAttestController;
-- (void)attestKey:(__SecKey *)a3 clientDataHash:(id)a4 options:(id)a5 completionHandler:(id)a6;
+- (void)attestKey:(__SecKey *)key clientDataHash:(id)hash options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation DCAppAttestDeviceService
@@ -47,11 +47,11 @@ uint64_t __41__DCAppAttestDeviceService_sharedService__block_invoke()
   v19 = *MEMORY[0x277D85DE8];
   if ([(DCAppAttestDeviceService *)self hasEntitlement])
   {
-    v3 = [(DCAppAttestDeviceService *)self appAttestController];
-    v4 = [v3 isSupported];
+    appAttestController = [(DCAppAttestDeviceService *)self appAttestController];
+    isSupported = [appAttestController isSupported];
 
     v5 = *MEMORY[0x277D85DE8];
-    return v4;
+    return isSupported;
   }
 
   else
@@ -105,25 +105,25 @@ uint64_t __41__DCAppAttestDeviceService_sharedService__block_invoke()
   }
 }
 
-- (void)attestKey:(__SecKey *)a3 clientDataHash:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (void)attestKey:(__SecKey *)key clientDataHash:(id)hash options:(id)options completionHandler:(id)handler
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  hashCopy = hash;
+  optionsCopy = options;
+  handlerCopy = handler;
   if ([(DCAppAttestDeviceService *)self isSupported])
   {
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    v14 = [v13 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
     v34 = 0;
-    v15 = store_keychain_item(a3, @"appattest-device", v14, &v34);
+    v15 = store_keychain_item(key, @"appattest-device", uUIDString, &v34);
     v16 = v34;
     if (v15)
     {
-      v17 = SecKeyCopyAttributes(a3);
-      v18 = [(DCAppAttestDeviceService *)self appAttestController];
-      [v18 attestKey:v14 keyAttributes:v17 clientDataHash:v10 authData:0 options:v11 completionHandler:v12];
+      v17 = SecKeyCopyAttributes(key);
+      appAttestController = [(DCAppAttestDeviceService *)self appAttestController];
+      [appAttestController attestKey:uUIDString keyAttributes:v17 clientDataHash:hashCopy authData:0 options:optionsCopy completionHandler:handlerCopy];
     }
 
     else
@@ -167,18 +167,18 @@ uint64_t __41__DCAppAttestDeviceService_sharedService__block_invoke()
           v31 = "/Library/Caches/com.apple.xbs/Sources/TwoBit/DeviceCheck/Source/Interfaces/Private/DCAppAttestDeviceService.m";
         }
 
-        v32 = [v16 localizedDescription];
+        localizedDescription = [v16 localizedDescription];
         *buf = 136315650;
         v36 = v31;
         v37 = 1024;
         v38 = 79;
         v39 = 2112;
-        v40 = v32;
+        v40 = localizedDescription;
         _os_log_impl(&dword_238044000, v26, OS_LOG_TYPE_ERROR, "%25s:%-5d Failed to save key to keychain. { error=%@ }", buf, 0x1Cu);
       }
 
       v17 = [MEMORY[0x277CCA9B8] dc_errorWithCode:0];
-      v12[2](v12, 0, v17);
+      handlerCopy[2](handlerCopy, 0, v17);
     }
   }
 

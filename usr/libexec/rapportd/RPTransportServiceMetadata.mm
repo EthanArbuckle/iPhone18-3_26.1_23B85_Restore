@@ -1,16 +1,16 @@
 @interface RPTransportServiceMetadata
-+ (id)metadataWithDictionary:(id)a3;
-- (RPTransportServiceMetadata)initWithDictionary:(id)a3;
-- (RPTransportServiceMetadata)initWithTransportServiceType:(unint64_t)a3;
-- (id)descriptionWithLevel:(int)a3;
++ (id)metadataWithDictionary:(id)dictionary;
+- (RPTransportServiceMetadata)initWithDictionary:(id)dictionary;
+- (RPTransportServiceMetadata)initWithTransportServiceType:(unint64_t)type;
+- (id)descriptionWithLevel:(int)level;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation RPTransportServiceMetadata
 
-+ (id)metadataWithDictionary:(id)a3
++ (id)metadataWithDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   CFStringGetTypeID();
   v4 = CFDictionaryGetTypedValue();
   v5 = v4;
@@ -24,33 +24,33 @@
     v6 = &off_1001A9AB8;
   }
 
-  v7 = [objc_alloc(*v6) initWithDictionary:v3];
+  v7 = [objc_alloc(*v6) initWithDictionary:dictionaryCopy];
 
   return v7;
 }
 
-- (RPTransportServiceMetadata)initWithTransportServiceType:(unint64_t)a3
+- (RPTransportServiceMetadata)initWithTransportServiceType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = RPTransportServiceMetadata;
   result = [(RPTransportServiceMetadata *)&v5 init];
   if (result)
   {
-    result->_serviceType = a3;
+    result->_serviceType = type;
   }
 
   return result;
 }
 
-- (RPTransportServiceMetadata)initWithDictionary:(id)a3
+- (RPTransportServiceMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = RPTransportServiceMetadata;
   v5 = [(RPTransportServiceMetadata *)&v10 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = dictionaryCopy;
     CFStringGetTypeID();
     v7 = CFDictionaryGetTypedValue();
 
@@ -94,7 +94,7 @@
   return v4;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   objc_opt_class();
   NSAppendPrintF();

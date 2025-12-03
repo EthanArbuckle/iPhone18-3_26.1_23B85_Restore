@@ -1,21 +1,21 @@
 @interface EMMailDropParser
-+ (BOOL)_domainIsAllowed:(id)a3;
-+ (BOOL)urlIsValid:(id)a3;
-+ (id)_parseURLQuery:(id)a3;
++ (BOOL)_domainIsAllowed:(id)allowed;
++ (BOOL)urlIsValid:(id)valid;
++ (id)_parseURLQuery:(id)query;
 + (id)allowedMailDropDownloadDomains;
-+ (id)parseExpiration:(double)a3;
-+ (id)parseHeaderValue:(id)a3 forField:(id)a4;
-+ (void)_parseDirectURL:(id)a3 intoMetadata:(id)a4;
-+ (void)_parseWrappedURL:(id)a3 intoMetadata:(id)a4;
-+ (void)parseURL:(id)a3 intoMetadata:(id)a4;
++ (id)parseExpiration:(double)expiration;
++ (id)parseHeaderValue:(id)value forField:(id)field;
++ (void)_parseDirectURL:(id)l intoMetadata:(id)metadata;
++ (void)_parseWrappedURL:(id)l intoMetadata:(id)metadata;
++ (void)parseURL:(id)l intoMetadata:(id)metadata;
 @end
 
 @implementation EMMailDropParser
 
 + (id)allowedMailDropDownloadDomains
 {
-  v2 = [MEMORY[0x1E695E000] em_userDefaults];
-  v3 = [v2 objectForKey:@"allowedDownloadDomains"];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v3 = [em_userDefaults objectForKey:@"allowedDownloadDomains"];
 
   if (![v3 count])
   {
@@ -26,22 +26,22 @@
   return v3;
 }
 
-+ (id)parseExpiration:(double)a3
++ (id)parseExpiration:(double)expiration
 {
-  if (a3 >= 9999999.0)
+  if (expiration >= 9999999.0)
   {
-    if (a3 > 1.0e10)
+    if (expiration > 1.0e10)
     {
-      a3 = a3 / 1000.0;
+      expiration = expiration / 1000.0;
     }
   }
 
   else
   {
-    a3 = a3 * 1000.0;
+    expiration = expiration * 1000.0;
   }
 
-  if (a3 == 0.0)
+  if (expiration == 0.0)
   {
     v5 = 0;
   }
@@ -54,13 +54,13 @@
   return v5;
 }
 
-+ (id)parseHeaderValue:(id)a3 forField:(id)a4
++ (id)parseHeaderValue:(id)value forField:(id)field
 {
   v38 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v27 = a4;
+  valueCopy = value;
+  fieldCopy = field;
   v31 = +[EMMailDropMetadata mailDropMetadata];
-  if ([v27 isEqualToString:*MEMORY[0x1E699B100]])
+  if ([fieldCopy isEqualToString:*MEMORY[0x1E699B100]])
   {
     [v31 setMimeType:@"application/zip"];
     v6 = [v31 flags] | 2;
@@ -69,17 +69,17 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v27 isEqualToString:*MEMORY[0x1E699B148]])
+  if ([fieldCopy isEqualToString:*MEMORY[0x1E699B148]])
   {
     v6 = [v31 flags] | 4;
     goto LABEL_5;
   }
 
 LABEL_6:
-  v28 = [v29 componentsSeparatedByString:@""];;
+  v28 = [valueCopy componentsSeparatedByString:@""];;
   if ([v28 count] < 2)
   {
-    v7 = [MEMORY[0x1E695DFF8] URLWithString:v29];
+    v7 = [MEMORY[0x1E695DFF8] URLWithString:valueCopy];
     if (v7)
     {
       goto LABEL_37;
@@ -104,7 +104,7 @@ LABEL_6:
   do
   {
     v10 = 0;
-    v11 = v4;
+    v11 = lastObject;
     do
     {
       if (*v34 != v9)
@@ -114,30 +114,30 @@ LABEL_6:
 
       v12 = *(*(&v33 + 1) + 8 * v10);
       v13 = [v12 componentsSeparatedByString:@"="];
-      v14 = [v13 firstObject];
-      v15 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v16 = [v14 stringByTrimmingCharactersInSet:v15];
+      firstObject = [v13 firstObject];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v16 = [firstObject stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       if ([v16 hasPrefix:@"https://"])
       {
         [MEMORY[0x1E695DFF8] URLWithString:v12];
-        v7 = v4 = v7;
+        v7 = lastObject = v7;
         goto LABEL_19;
       }
 
       if ([v16 isEqualToString:@"filename"])
       {
-        v4 = [v13 lastObject];
-        v17 = [v4 ef_sanitizedFileName];
-        [v31 setFileName:v17];
+        lastObject = [v13 lastObject];
+        ef_sanitizedFileName = [lastObject ef_sanitizedFileName];
+        [v31 setFileName:ef_sanitizedFileName];
         goto LABEL_18;
       }
 
       if ([v16 isEqualToString:@"mimeType"])
       {
-        v4 = [v13 lastObject];
-        v17 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@""];
-        v18 = [v4 stringByTrimmingCharactersInSet:v17];
+        lastObject = [v13 lastObject];
+        ef_sanitizedFileName = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@""];
+        v18 = [lastObject stringByTrimmingCharactersInSet:ef_sanitizedFileName];
         [v31 setMimeType:v18];
 
 LABEL_18:
@@ -148,8 +148,8 @@ LABEL_19:
 
       if ([v16 isEqualToString:@"filesize"])
       {
-        v4 = [v13 lastObject];
-        [v31 setFileSize:{objc_msgSend(v4, "integerValue")}];
+        lastObject = [v13 lastObject];
+        [v31 setFileSize:{objc_msgSend(lastObject, "integerValue")}];
         goto LABEL_19;
       }
 
@@ -157,34 +157,34 @@ LABEL_19:
       {
         if ([v16 isEqualToString:@"x-mac-auto-archive"])
         {
-          v4 = [v13 lastObject];
-          [v31 setAutoArchive:{objc_msgSend(v4, "BOOLValue")}];
+          lastObject = [v13 lastObject];
+          [v31 setAutoArchive:{objc_msgSend(lastObject, "BOOLValue")}];
           goto LABEL_19;
         }
 
 LABEL_20:
-        v4 = v11;
+        lastObject = v11;
         goto LABEL_21;
       }
 
-      v19 = [v13 lastObject];
-      [v19 doubleValue];
+      lastObject2 = [v13 lastObject];
+      [lastObject2 doubleValue];
       v21 = v20;
 
       if (v21 == 0.0)
       {
         v22 = 0;
-        v4 = v11;
+        lastObject = v11;
       }
 
       else
       {
-        v4 = [a1 parseExpiration:v21];
-        v22 = v4;
+        lastObject = [self parseExpiration:v21];
+        v22 = lastObject;
       }
 
       [v31 setExpiration:v22];
-      v11 = v4;
+      v11 = lastObject;
       if (v21 != 0.0)
       {
         goto LABEL_19;
@@ -193,7 +193,7 @@ LABEL_20:
 LABEL_21:
 
       ++v10;
-      v11 = v4;
+      v11 = lastObject;
     }
 
     while (v8 != v10);
@@ -210,7 +210,7 @@ LABEL_34:
   }
 
 LABEL_37:
-  [a1 parseURL:v7 intoMetadata:v31];
+  [self parseURL:v7 intoMetadata:v31];
 LABEL_38:
   v24 = v31;
 
@@ -218,57 +218,57 @@ LABEL_38:
   return v31;
 }
 
-+ (void)parseURL:(id)a3 intoMetadata:(id)a4
++ (void)parseURL:(id)l intoMetadata:(id)metadata
 {
-  v11 = a3;
-  v6 = a4;
-  if ([a1 _domainIsAllowed:v11])
+  lCopy = l;
+  metadataCopy = metadata;
+  if ([self _domainIsAllowed:lCopy])
   {
-    v7 = [v11 absoluteString];
-    v8 = [v7 hasPrefix:@"https://www.icloud.com/attachment/"];
+    absoluteString = [lCopy absoluteString];
+    v8 = [absoluteString hasPrefix:@"https://www.icloud.com/attachment/"];
 
     if (v8)
     {
-      [a1 _parseWrappedURL:v11 intoMetadata:v6];
+      [self _parseWrappedURL:lCopy intoMetadata:metadataCopy];
     }
 
     else
     {
-      [a1 _parseDirectURL:v11 intoMetadata:v6];
+      [self _parseDirectURL:lCopy intoMetadata:metadataCopy];
     }
 
-    v9 = [v6 fileName];
-    v10 = [v9 isEqualToString:@"Images.zip"];
+    fileName = [metadataCopy fileName];
+    v10 = [fileName isEqualToString:@"Images.zip"];
 
     if (v10)
     {
-      [v6 setFlags:{objc_msgSend(v6, "flags") | 2}];
+      [metadataCopy setFlags:{objc_msgSend(metadataCopy, "flags") | 2}];
     }
   }
 
   else
   {
-    [v6 setIsInvalid:1];
+    [metadataCopy setIsInvalid:1];
   }
 }
 
-+ (BOOL)urlIsValid:(id)a3
++ (BOOL)urlIsValid:(id)valid
 {
-  v3 = a3;
+  validCopy = valid;
   v4 = +[EMMailDropMetadata mailDropMetadata];
-  [EMMailDropParser parseURL:v3 intoMetadata:v4];
-  v5 = [v4 isInvalid];
+  [EMMailDropParser parseURL:validCopy intoMetadata:v4];
+  isInvalid = [v4 isInvalid];
 
-  return v5 ^ 1;
+  return isInvalid ^ 1;
 }
 
-+ (id)_parseURLQuery:(id)a3
++ (id)_parseURLQuery:(id)query
 {
   v21 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [v15 query];
-  [v4 componentsSeparatedByString:@"&"];
+  queryCopy = query;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  query = [queryCopy query];
+  [query componentsSeparatedByString:@"&"];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -291,17 +291,17 @@ LABEL_38:
         {
           if ([v9 count] == 2)
           {
-            v10 = [v9 lastObject];
-            v11 = [v10 stringByRemovingPercentEncoding];
+            lastObject = [v9 lastObject];
+            stringByRemovingPercentEncoding = [lastObject stringByRemovingPercentEncoding];
 
-            v12 = [v9 firstObject];
-            [v3 setValue:v11 forKey:v12];
+            firstObject = [v9 firstObject];
+            [dictionary setValue:stringByRemovingPercentEncoding forKey:firstObject];
           }
 
           else
           {
-            v11 = [v9 firstObject];
-            [v3 setValue:0 forKey:v11];
+            stringByRemovingPercentEncoding = [v9 firstObject];
+            [dictionary setValue:0 forKey:stringByRemovingPercentEncoding];
           }
         }
       }
@@ -314,24 +314,24 @@ LABEL_38:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-+ (BOOL)_domainIsAllowed:(id)a3
++ (BOOL)_domainIsAllowed:(id)allowed
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 scheme];
-  LODWORD(v6) = [v5 isEqualToString:@"https"];
+  allowedCopy = allowed;
+  scheme = [allowedCopy scheme];
+  LODWORD(v6) = [scheme isEqualToString:@"https"];
 
   if (v6)
   {
-    v7 = [v4 host];
+    host = [allowedCopy host];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __37__EMMailDropParser__domainIsAllowed___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (_domainIsAllowed__onceToken != -1)
     {
       dispatch_once(&_domainIsAllowed__onceToken, block);
@@ -355,7 +355,7 @@ LABEL_38:
             objc_enumerationMutation(v8);
           }
 
-          if ([v7 hasSuffix:{*(*(&v13 + 1) + 8 * i), v13}])
+          if ([host hasSuffix:{*(*(&v13 + 1) + 8 * i), v13}])
           {
             LOBYTE(v6) = 1;
             goto LABEL_14;
@@ -386,23 +386,23 @@ void __37__EMMailDropParser__domainIsAllowed___block_invoke(uint64_t a1)
   _allowedDownloadDomains = v1;
 }
 
-+ (void)_parseWrappedURL:(id)a3 intoMetadata:(id)a4
++ (void)_parseWrappedURL:(id)l intoMetadata:(id)metadata
 {
-  v19 = a3;
-  v6 = a4;
-  [v6 setWrappedUrl:v19];
-  v7 = [a1 _parseURLQuery:v19];
+  lCopy = l;
+  metadataCopy = metadata;
+  [metadataCopy setWrappedUrl:lCopy];
+  v7 = [self _parseURLQuery:lCopy];
   if ([v7 count] && (objc_msgSend(v7, "objectForKeyedSubscript:", @"u"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "mutableCopy"), v8, v9))
   {
     v10 = [v7 objectForKeyedSubscript:@"f"];
     if (v10)
     {
-      v11 = [MEMORY[0x1E695DFF8] ef_defaultAllowedCharacterSet];
-      v12 = [v10 stringByAddingPercentEncodingWithAllowedCharacters:v11];
+      ef_defaultAllowedCharacterSet = [MEMORY[0x1E695DFF8] ef_defaultAllowedCharacterSet];
+      v12 = [v10 stringByAddingPercentEncodingWithAllowedCharacters:ef_defaultAllowedCharacterSet];
 
       [v9 replaceOccurrencesOfString:@"${f}" withString:v12 options:0 range:{0, objc_msgSend(v9, "length")}];
-      v13 = [v10 ef_sanitizedFileName];
-      [v6 setFileName:v13];
+      ef_sanitizedFileName = [v10 ef_sanitizedFileName];
+      [metadataCopy setFileName:ef_sanitizedFileName];
     }
 
     v14 = [v7 objectForKeyedSubscript:@"uk"];
@@ -421,11 +421,11 @@ void __37__EMMailDropParser__domainIsAllowed___block_invoke(uint64_t a1)
 
     v17 = [MEMORY[0x1E695DFF8] URLWithString:v9];
     v18 = [v7 objectForKeyedSubscript:@"sz"];
-    [v6 setFileSize:{objc_msgSend(v18, "integerValue")}];
+    [metadataCopy setFileSize:{objc_msgSend(v18, "integerValue")}];
 
     if (v17)
     {
-      [a1 _parseDirectURL:v17 intoMetadata:v6];
+      [self _parseDirectURL:v17 intoMetadata:metadataCopy];
     }
   }
 
@@ -435,18 +435,18 @@ void __37__EMMailDropParser__domainIsAllowed___block_invoke(uint64_t a1)
   }
 }
 
-+ (void)_parseDirectURL:(id)a3 intoMetadata:(id)a4
++ (void)_parseDirectURL:(id)l intoMetadata:(id)metadata
 {
-  v16 = a3;
-  v6 = a4;
-  if ([a1 _domainIsAllowed:v16])
+  lCopy = l;
+  metadataCopy = metadata;
+  if ([self _domainIsAllowed:lCopy])
   {
-    [v6 setDirectUrl:v16];
-    v7 = [v16 lastPathComponent];
-    v8 = [v7 ef_sanitizedFileName];
-    [v6 setFileName:v8];
+    [metadataCopy setDirectUrl:lCopy];
+    lastPathComponent = [lCopy lastPathComponent];
+    ef_sanitizedFileName = [lastPathComponent ef_sanitizedFileName];
+    [metadataCopy setFileName:ef_sanitizedFileName];
 
-    v9 = [a1 _parseURLQuery:v16];
+    v9 = [self _parseURLQuery:lCopy];
     if ([v9 count])
     {
       v10 = [v9 objectForKeyedSubscript:@"e"];
@@ -460,23 +460,23 @@ void __37__EMMailDropParser__domainIsAllowed___block_invoke(uint64_t a1)
 
       else
       {
-        v13 = [a1 parseExpiration:v12];
+        v13 = [self parseExpiration:v12];
       }
 
-      [v6 setExpiration:v13];
+      [metadataCopy setExpiration:v13];
       if (v12 != 0.0)
       {
       }
 
       v14 = [v9 objectForKeyedSubscript:@"r"];
-      v15 = [v14 uppercaseString];
-      [v6 setUUID:v15];
+      uppercaseString = [v14 uppercaseString];
+      [metadataCopy setUUID:uppercaseString];
     }
   }
 
   else
   {
-    [v6 setIsInvalid:1];
+    [metadataCopy setIsInvalid:1];
   }
 }
 

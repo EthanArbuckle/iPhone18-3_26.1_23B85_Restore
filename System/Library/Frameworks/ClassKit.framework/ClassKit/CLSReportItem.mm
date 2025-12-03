@@ -1,24 +1,24 @@
 @interface CLSReportItem
-+ (void)endpointServer:(id)a3 willQueryForObjectWithPredicate:(id)a4;
++ (void)endpointServer:(id)server willQueryForObjectWithPredicate:(id)predicate;
 @end
 
 @implementation CLSReportItem
 
-+ (void)endpointServer:(id)a3 willQueryForObjectWithPredicate:(id)a4
++ (void)endpointServer:(id)server willQueryForObjectWithPredicate:(id)predicate
 {
-  v5 = a4;
-  v6 = a3;
-  v12 = [v6 database];
-  v7 = [v6 daemon];
-  v8 = sub_10008ED10([PDFetchReportsOperation alloc], v5, v12);
+  predicateCopy = predicate;
+  serverCopy = server;
+  database = [serverCopy database];
+  daemon = [serverCopy daemon];
+  v8 = sub_10008ED10([PDFetchReportsOperation alloc], predicateCopy, database);
 
-  v9 = [v6 client];
+  client = [serverCopy client];
 
-  v10 = sub_1000B2528(v9);
+  v10 = sub_1000B2528(client);
   [v8 setSourceApplicationBundleIdentifier:v10];
 
-  v11 = [v7 operationsManager];
-  sub_100123A84(v11, v8);
+  operationsManager = [daemon operationsManager];
+  sub_100123A84(operationsManager, v8);
 }
 
 @end

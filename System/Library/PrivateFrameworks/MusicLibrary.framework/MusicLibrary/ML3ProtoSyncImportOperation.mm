@@ -1,15 +1,15 @@
 @interface ML3ProtoSyncImportOperation
-- (BOOL)_performImportWithTransaction:(id)a3;
-- (BOOL)_processAlbumArtistOperation:(id)a3 withImportSession:(void *)a4;
-- (BOOL)_processAlbumOperation:(id)a3 withImportSession:(void *)a4;
-- (BOOL)_processLibraryPinOperation:(id)a3 withImportSession:(void *)a4;
-- (BOOL)_processMediaItemOperation:(id)a3 withImportSession:(void *)a4;
-- (BOOL)_processPlaylistOperation:(id)a3 withImportSession:(void *)a4;
-- (BOOL)_processSyncError:(id)a3;
-- (BOOL)_processSyncHeader:(id)a3;
-- (BOOL)_processSyncOperation:(id)a3 withImportSession:(void *)a4;
-- (BOOL)_processSyncPackage:(id)a3 withImportSession:(void *)a4;
-- (ML3ProtoSyncImportOperation)initWithDatabaseImport:(id)a3;
+- (BOOL)_performImportWithTransaction:(id)transaction;
+- (BOOL)_processAlbumArtistOperation:(id)operation withImportSession:(void *)session;
+- (BOOL)_processAlbumOperation:(id)operation withImportSession:(void *)session;
+- (BOOL)_processLibraryPinOperation:(id)operation withImportSession:(void *)session;
+- (BOOL)_processMediaItemOperation:(id)operation withImportSession:(void *)session;
+- (BOOL)_processPlaylistOperation:(id)operation withImportSession:(void *)session;
+- (BOOL)_processSyncError:(id)error;
+- (BOOL)_processSyncHeader:(id)header;
+- (BOOL)_processSyncOperation:(id)operation withImportSession:(void *)session;
+- (BOOL)_processSyncPackage:(id)package withImportSession:(void *)session;
+- (ML3ProtoSyncImportOperation)initWithDatabaseImport:(id)import;
 - (void)_unlinkUnavailableMediaItems;
 - (void)cancel;
 - (void)main;
@@ -29,16 +29,16 @@
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:3];
   v7 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v6];
 
-  v8 = [(ML3ImportOperation *)self import];
-  v9 = [v8 library];
-  v10 = [(ML3Entity *)ML3Track unrestrictedAllItemsQueryWithlibrary:v9 predicate:v7 orderingTerms:MEMORY[0x277CBEBF8]];
+  import = [(ML3ImportOperation *)self import];
+  library = [import library];
+  v10 = [(ML3Entity *)ML3Track unrestrictedAllItemsQueryWithlibrary:library predicate:v7 orderingTerms:MEMORY[0x277CBEBF8]];
 
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __59__ML3ProtoSyncImportOperation__unlinkUnavailableMediaItems__block_invoke;
   v29[3] = &unk_278765BD8;
-  v12 = v11;
+  v12 = array;
   v30 = v12;
   [v10 enumeratePersistentIDsUsingBlock:v29];
   if ([v12 count])
@@ -53,15 +53,15 @@
     }
 
     v15 = [MEMORY[0x277CBEB58] set];
-    v16 = [(ML3ImportOperation *)self import];
-    v17 = [v16 library];
+    import2 = [(ML3ImportOperation *)self import];
+    library2 = [import2 library];
     v24 = MEMORY[0x277D85DD0];
     v25 = 3221225472;
     v26 = __59__ML3ProtoSyncImportOperation__unlinkUnavailableMediaItems__block_invoke_40;
     v27 = &unk_278763DA8;
     v18 = v15;
     v28 = v18;
-    [ML3Track enumeratePathsToDeleteFromLibrary:v17 persistentIDs:v12 usingBlock:&v24];
+    [ML3Track enumeratePathsToDeleteFromLibrary:library2 persistentIDs:v12 usingBlock:&v24];
 
     v19 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -75,8 +75,8 @@
 
     ML3DeleteAssetsAtPaths(v18);
     v20 = [(ML3ImportOperation *)self import:v24];
-    v21 = [v20 library];
-    v22 = [ML3Track clearLocationFromLibrary:v21 persistentIDs:v12 usingConnection:self->_connection];
+    library3 = [v20 library];
+    v22 = [ML3Track clearLocationFromLibrary:library3 persistentIDs:v12 usingConnection:self->_connection];
 
     if (!v22)
     {
@@ -118,21 +118,21 @@ void __59__ML3ProtoSyncImportOperation__unlinkUnavailableMediaItems__block_invok
   }
 }
 
-- (BOOL)_processLibraryPinOperation:(id)a3 withImportSession:(void *)a4
+- (BOOL)_processLibraryPinOperation:(id)operation withImportSession:(void *)session
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  operationCopy = operation;
   if (self->_syncSessionStarted)
   {
     goto LABEL_4;
   }
 
-  if (ML3ImportSession::begin(a4, self->_totalSyncPackageCount, self->_syncType == 1, 0))
+  if (ML3ImportSession::begin(session, self->_totalSyncPackageCount, self->_syncType == 1, 0))
   {
     self->_syncSessionStarted = 1;
 LABEL_4:
-    v7 = [v6 libraryPin];
-    if ([v6 operationType] == 1)
+    libraryPin = [operationCopy libraryPin];
+    if ([operationCopy operationType] == 1)
     {
       operator new();
     }
@@ -141,11 +141,11 @@ LABEL_4:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      *&buf[4] = [v6 operationType];
+      *&buf[4] = [operationCopy operationType];
       _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_ERROR, "skipping library pin sync operation of type=%d", buf, 8u);
     }
 
-    v9 = v7;
+    v9 = libraryPin;
     goto LABEL_11;
   }
 
@@ -168,21 +168,21 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)_processAlbumOperation:(id)a3 withImportSession:(void *)a4
+- (BOOL)_processAlbumOperation:(id)operation withImportSession:(void *)session
 {
-  v6 = a3;
+  operationCopy = operation;
   if (self->_syncSessionStarted)
   {
     goto LABEL_4;
   }
 
-  if (ML3ImportSession::begin(a4, self->_totalSyncPackageCount, self->_syncType == 1, 0))
+  if (ML3ImportSession::begin(session, self->_totalSyncPackageCount, self->_syncType == 1, 0))
   {
     self->_syncSessionStarted = 1;
 LABEL_4:
-    v7 = [v6 album];
-    v8 = [v6 multiverseId];
-    if ([v6 operationType] == 2)
+    album = [operationCopy album];
+    multiverseId = [operationCopy multiverseId];
+    if ([operationCopy operationType] == 2)
     {
       operator new();
     }
@@ -211,22 +211,22 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)_processAlbumArtistOperation:(id)a3 withImportSession:(void *)a4
+- (BOOL)_processAlbumArtistOperation:(id)operation withImportSession:(void *)session
 {
-  v6 = a3;
+  operationCopy = operation;
   if (self->_syncSessionStarted)
   {
     goto LABEL_4;
   }
 
-  if (ML3ImportSession::begin(a4, self->_totalSyncPackageCount, self->_syncType == 1, 0))
+  if (ML3ImportSession::begin(session, self->_totalSyncPackageCount, self->_syncType == 1, 0))
   {
     self->_syncSessionStarted = 1;
 LABEL_4:
-    v7 = [v6 artist];
-    v8 = [v6 multiverseId];
-    v9 = [v6 operationType];
-    switch(v9)
+    artist = [operationCopy artist];
+    multiverseId = [operationCopy multiverseId];
+    operationType = [operationCopy operationType];
+    switch(operationType)
     {
       case 1:
         operator new();
@@ -260,27 +260,27 @@ LABEL_17:
   return v13;
 }
 
-- (BOOL)_processPlaylistOperation:(id)a3 withImportSession:(void *)a4
+- (BOOL)_processPlaylistOperation:(id)operation withImportSession:(void *)session
 {
-  v6 = a3;
+  operationCopy = operation;
   if (self->_syncSessionStarted)
   {
     goto LABEL_4;
   }
 
-  if (ML3ImportSession::begin(a4, self->_totalSyncPackageCount, self->_syncType == 1, 0))
+  if (ML3ImportSession::begin(session, self->_totalSyncPackageCount, self->_syncType == 1, 0))
   {
     self->_syncSessionStarted = 1;
 LABEL_4:
-    v7 = [v6 multiverseId];
-    v8 = [v6 playlist];
-    v9 = [v6 operationType];
-    if (v9 == 1)
+    multiverseId = [operationCopy multiverseId];
+    playlist = [operationCopy playlist];
+    operationType = [operationCopy operationType];
+    if (operationType == 1)
     {
       operator new();
     }
 
-    if (v9 == 3)
+    if (operationType == 3)
     {
       operator new();
     }
@@ -309,23 +309,23 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)_processMediaItemOperation:(id)a3 withImportSession:(void *)a4
+- (BOOL)_processMediaItemOperation:(id)operation withImportSession:(void *)session
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  operationCopy = operation;
   if (self->_syncSessionStarted)
   {
     goto LABEL_4;
   }
 
-  if (ML3ImportSession::begin(a4, self->_totalSyncPackageCount, self->_syncType == 1, 0))
+  if (ML3ImportSession::begin(session, self->_totalSyncPackageCount, self->_syncType == 1, 0))
   {
     self->_syncSessionStarted = 1;
 LABEL_4:
-    v7 = [v6 multiverseId];
-    v8 = [v6 mediaItem];
-    v9 = [v6 operationType];
-    switch(v9)
+    multiverseId = [operationCopy multiverseId];
+    mediaItem = [operationCopy mediaItem];
+    operationType = [operationCopy operationType];
+    switch(operationType)
     {
       case 1:
         operator new();
@@ -359,40 +359,40 @@ LABEL_17:
   return v11;
 }
 
-- (BOOL)_processSyncOperation:(id)a3 withImportSession:(void *)a4
+- (BOOL)_processSyncOperation:(id)operation withImportSession:(void *)session
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 multiverseId];
-  v8 = [v7 mediaObjectType];
-  v9 = v8;
-  if (v8 <= 6)
+  operationCopy = operation;
+  multiverseId = [operationCopy multiverseId];
+  mediaObjectType = [multiverseId mediaObjectType];
+  v9 = mediaObjectType;
+  if (mediaObjectType <= 6)
   {
-    if (v8 == 1)
+    if (mediaObjectType == 1)
     {
-      v10 = [(ML3ProtoSyncImportOperation *)self _processAlbumOperation:v6 withImportSession:a4];
+      v10 = [(ML3ProtoSyncImportOperation *)self _processAlbumOperation:operationCopy withImportSession:session];
       goto LABEL_12;
     }
 
-    if (v8 == 6)
+    if (mediaObjectType == 6)
     {
-      v10 = [(ML3ProtoSyncImportOperation *)self _processMediaItemOperation:v6 withImportSession:a4];
+      v10 = [(ML3ProtoSyncImportOperation *)self _processMediaItemOperation:operationCopy withImportSession:session];
       goto LABEL_12;
     }
   }
 
   else
   {
-    switch(v8)
+    switch(mediaObjectType)
     {
       case 7:
-        v10 = [(ML3ProtoSyncImportOperation *)self _processPlaylistOperation:v6 withImportSession:a4];
+        v10 = [(ML3ProtoSyncImportOperation *)self _processPlaylistOperation:operationCopy withImportSession:session];
         goto LABEL_12;
       case 8:
-        v10 = [(ML3ProtoSyncImportOperation *)self _processAlbumArtistOperation:v6 withImportSession:a4];
+        v10 = [(ML3ProtoSyncImportOperation *)self _processAlbumArtistOperation:operationCopy withImportSession:session];
         goto LABEL_12;
       case 9:
-        v10 = [(ML3ProtoSyncImportOperation *)self _processLibraryPinOperation:v6 withImportSession:a4];
+        v10 = [(ML3ProtoSyncImportOperation *)self _processLibraryPinOperation:operationCopy withImportSession:session];
 LABEL_12:
         v11 = v10;
         goto LABEL_13;
@@ -413,33 +413,33 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)_processSyncError:(id)a3
+- (BOOL)_processSyncError:(id)error
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  errorCopy = error;
   v4 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    v5 = [v3 errorCode];
-    v6 = [v3 errorDescription];
+    errorCode = [errorCopy errorCode];
+    errorDescription = [errorCopy errorDescription];
     v8[0] = 67109378;
-    v8[1] = v5;
+    v8[1] = errorCode;
     v9 = 2114;
-    v10 = v6;
+    v10 = errorDescription;
     _os_log_impl(&dword_22D2FA000, v4, OS_LOG_TYPE_ERROR, "received sync error package. err=%d, desc=%{public}@", v8, 0x12u);
   }
 
   return 0;
 }
 
-- (BOOL)_processSyncHeader:(id)a3
+- (BOOL)_processSyncHeader:(id)header
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  self->_totalSyncPackageCount = [v4 totalPackages];
-  v5 = [v4 syncType];
-  self->_syncType = v5;
-  if (v5 == 1 && !self->_isServerImport)
+  headerCopy = header;
+  self->_totalSyncPackageCount = [headerCopy totalPackages];
+  syncType = [headerCopy syncType];
+  self->_syncType = syncType;
+  if (syncType == 1 && !self->_isServerImport)
   {
     v6 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -448,16 +448,16 @@ LABEL_13:
       _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "preparing for a reset sync", &v13, 2u);
     }
 
-    v7 = [(ML3ImportOperation *)self import];
-    v8 = [v7 library];
-    v9 = [(ML3Entity *)ML3Container unrestrictedQueryWithLibrary:v8 predicate:0 orderingTerms:0];
+    import = [(ML3ImportOperation *)self import];
+    library = [import library];
+    v9 = [(ML3Entity *)ML3Container unrestrictedQueryWithLibrary:library predicate:0 orderingTerms:0];
 
     v10 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v9 countOfEntities];
+      countOfEntities = [v9 countOfEntities];
       v13 = 134217984;
-      v14 = v11;
+      v14 = countOfEntities;
       _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_DEFAULT, "Removing %ld playlists for a reset sync", &v13, 0xCu);
     }
 
@@ -467,23 +467,23 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)_processSyncPackage:(id)a3 withImportSession:(void *)a4
+- (BOOL)_processSyncPackage:(id)package withImportSession:(void *)session
 {
-  v6 = a3;
-  v7 = [v6 type];
-  switch(v7)
+  packageCopy = package;
+  type = [packageCopy type];
+  switch(type)
   {
     case 2:
-      v9 = [v6 header];
-      v10 = [(ML3ProtoSyncImportOperation *)self _processSyncHeader:v9];
+      header = [packageCopy header];
+      v10 = [(ML3ProtoSyncImportOperation *)self _processSyncHeader:header];
       goto LABEL_7;
     case 3:
-      v9 = [v6 error];
-      v10 = [(ML3ProtoSyncImportOperation *)self _processSyncError:v9];
+      header = [packageCopy error];
+      v10 = [(ML3ProtoSyncImportOperation *)self _processSyncError:header];
       goto LABEL_7;
     case 4:
-      v9 = [v6 syncOperation];
-      v10 = [(ML3ProtoSyncImportOperation *)self _processSyncOperation:v9 withImportSession:a4];
+      header = [packageCopy syncOperation];
+      v10 = [(ML3ProtoSyncImportOperation *)self _processSyncOperation:header withImportSession:session];
 LABEL_7:
       v11 = v10;
 
@@ -503,16 +503,16 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)_performImportWithTransaction:(id)a3
+- (BOOL)_performImportWithTransaction:(id)transaction
 {
   v20 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v4 = [v17 connection];
+  transactionCopy = transaction;
+  connection = [transactionCopy connection];
   connection = self->_connection;
-  self->_connection = v4;
+  self->_connection = connection;
 
-  v6 = [(ML3ImportOperation *)self import];
-  self->_isServerImport = [v6 isServerImport];
+  import = [(ML3ImportOperation *)self import];
+  self->_isServerImport = [import isServerImport];
 
   v7 = [MEMORY[0x277CBEB58] set];
   syncIdsToUnlink = self->_syncIdsToUnlink;
@@ -520,27 +520,27 @@ LABEL_9:
 
   if (!self->_isServerImport)
   {
-    v9 = [(ML3ImportOperation *)self import];
-    v10 = [v9 syncLibraryID];
+    import2 = [(ML3ImportOperation *)self import];
+    syncLibraryID = [import2 syncLibraryID];
 
     v11 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v19 = v10;
+      v19 = syncLibraryID;
       _os_log_impl(&dword_22D2FA000, v11, OS_LOG_TYPE_DEFAULT, "setting sync library id to %{public}@", buf, 0xCu);
     }
 
-    v12 = [(ML3ImportOperation *)self import];
-    v13 = [v12 library];
-    [v13 setSyncLibraryID:v10];
+    import3 = [(ML3ImportOperation *)self import];
+    library = [import3 library];
+    [library setSyncLibraryID:syncLibraryID];
   }
 
   MSVDeviceOSIsInternalInstall();
   [(ML3ImportOperation *)self import];
-  v14 = [objc_claimAutoreleasedReturnValue() library];
-  v15 = [v17 connection];
-  ML3ImportSession::ML3ImportSession(buf, v14, v15, 1, 1);
+  library2 = [objc_claimAutoreleasedReturnValue() library];
+  connection2 = [transactionCopy connection];
+  ML3ImportSession::ML3ImportSession(buf, library2, connection2, 1, 1);
 }
 
 void __61__ML3ProtoSyncImportOperation__performImportWithTransaction___block_invoke(uint64_t a1)
@@ -664,7 +664,7 @@ void __61__ML3ProtoSyncImportOperation__performImportWithTransaction___block_inv
   {
     isReadSourceCancelled = self->_isReadSourceCancelled;
     *buf = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 1024;
     v11 = isReadSourceCancelled;
     _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_DEFAULT, "[ML3ProtoSyncImportOperation] cancelling import operation %{public}@ _isReadSourceCancelled %d", buf, 0x12u);
@@ -706,11 +706,11 @@ void __37__ML3ProtoSyncImportOperation_cancel__block_invoke(uint64_t a1)
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
-  v3 = [(ML3ImportOperation *)self import];
-  v4 = [v3 library];
-  v5 = [v4 currentRevision];
+  import = [(ML3ImportOperation *)self import];
+  library = [import library];
+  currentRevision = [library currentRevision];
 
-  v25 = v5;
+  v25 = currentRevision;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -733,11 +733,11 @@ void __37__ML3ProtoSyncImportOperation_cancel__block_invoke(uint64_t a1)
   v8 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(ML3ProtoSyncImportOperation *)self isCancelled];
+    isCancelled = [(ML3ProtoSyncImportOperation *)self isCancelled];
     v10 = *(v27 + 24);
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     *buf = 67109632;
-    v33 = v9;
+    v33 = isCancelled;
     v34 = 1024;
     v35 = v10;
     v36 = 2048;
@@ -809,12 +809,12 @@ uint64_t __35__ML3ProtoSyncImportOperation_main__block_invoke(uint64_t a1, void 
   return v12 & 1;
 }
 
-- (ML3ProtoSyncImportOperation)initWithDatabaseImport:(id)a3
+- (ML3ProtoSyncImportOperation)initWithDatabaseImport:(id)import
 {
-  v4 = a3;
+  importCopy = import;
   v11.receiver = self;
   v11.super_class = ML3ProtoSyncImportOperation;
-  v5 = [(ML3ImportOperation *)&v11 initWithDatabaseImport:v4];
+  v5 = [(ML3ImportOperation *)&v11 initWithDatabaseImport:importCopy];
   v6 = v5;
   if (v5)
   {
@@ -824,7 +824,7 @@ uint64_t __35__ML3ProtoSyncImportOperation_main__block_invoke(uint64_t a1, void 
     v6->_importFinished = 0;
     v6->_isReadSourceCancelled = 0;
     v6->_readSourceState = 0;
-    v6->_pairedDeviceCanProcessStandAloneCollections = [v4 pairedDeviceCanProcessStandaloneCollections];
+    v6->_pairedDeviceCanProcessStandAloneCollections = [importCopy pairedDeviceCanProcessStandaloneCollections];
     v8 = dispatch_queue_create("com.apple.amp.MediaLibrary.ML3ProtoSyncImportOperation.accessQueue", 0);
     accessQueue = v6->_accessQueue;
     v6->_accessQueue = v8;

@@ -1,17 +1,17 @@
 @interface CRLCanvasRep
 - (BOOL)allowDragAcrossPageBoundaries;
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4;
-- (BOOL)containsPoint:(CGPoint)a3 withSlop:(CGSize)a4;
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision;
+- (BOOL)containsPoint:(CGPoint)point withSlop:(CGSize)slop;
 - (BOOL)containsUnknownContent;
-- (BOOL)directlyManagesVisibilityOfKnob:(id)a3;
+- (BOOL)directlyManagesVisibilityOfKnob:(id)knob;
 - (BOOL)everAllowedToBeSelectedAsADrawable;
 - (BOOL)forcesPlacementOnBottom;
 - (BOOL)forcesPlacementOnTop;
-- (BOOL)handleContextMenuClickAtPoint:(CGPoint)a3 withPlatformObject:(id)a4 onKnob:(id)a5;
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4;
-- (BOOL)i_shouldCountAsClosestSmallRepForSizeLimit:(double)a3;
+- (BOOL)handleContextMenuClickAtPoint:(CGPoint)point withPlatformObject:(id)object onKnob:(id)knob;
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point inputType:(int64_t)type;
+- (BOOL)i_shouldCountAsClosestSmallRepForSizeLimit:(double)limit;
 - (BOOL)inFreeTransformRotateResizeMode;
-- (BOOL)intersectsUnscaledRect:(CGRect)a3;
+- (BOOL)intersectsUnscaledRect:(CGRect)rect;
 - (BOOL)isBeingDragged;
 - (BOOL)isBeingFreeTransformDragged;
 - (BOOL)isBeingFreeTransformResized;
@@ -31,8 +31,8 @@
 - (BOOL)shouldCreateConnectionLineKnobs;
 - (BOOL)shouldCreateLockedKnobs;
 - (BOOL)shouldCreateSelectionKnobs;
-- (BOOL)shouldLayoutTilingLayer:(id)a3;
-- (BOOL)shouldPreventMarqueeInitiationAtPoint:(CGPoint)a3 withTouchType:(int64_t)a4;
+- (BOOL)shouldLayoutTilingLayer:(id)layer;
+- (BOOL)shouldPreventMarqueeInitiationAtPoint:(CGPoint)point withTouchType:(int64_t)type;
 - (BOOL)shouldShowCollaboratorCursorHighlight;
 - (BOOL)shouldShowKnobs;
 - (BOOL)shouldShowSelectionHighlight;
@@ -41,33 +41,33 @@
 - (CGAffineTransform)i_layerTransform;
 - (CGAffineTransform)knobPositionTransformForInspectorResize;
 - (CGAffineTransform)layerTransformInRootForZeroAnchor;
-- (CGAffineTransform)p_layerTransformForRotationFromPureTransformInRoot:(SEL)a3 toPureTransformInRoot:(CGAffineTransform *)a4;
+- (CGAffineTransform)p_layerTransformForRotationFromPureTransformInRoot:(SEL)root toPureTransformInRoot:(CGAffineTransform *)inRoot;
 - (CGAffineTransform)parentLayerInverseTransformInRootForZeroAnchor;
 - (CGAffineTransform)transformForCollaboratorCursorRenderable;
 - (CGAffineTransform)transformForHighlightLayer;
 - (CGAffineTransform)transformToConvertNaturalToLayerRelative;
-- (CGImage)newShadowImageWithSize:(CGSize)a3 shadow:(id)a4 drawSelector:(SEL)a5 unflipped:(BOOL)a6;
-- (CGImage)newShadowImageWithSize:(CGSize)a3 unflipped:(BOOL)a4 withChildren:(BOOL)a5;
+- (CGImage)newShadowImageWithSize:(CGSize)size shadow:(id)shadow drawSelector:(SEL)selector unflipped:(BOOL)unflipped;
+- (CGImage)newShadowImageWithSize:(CGSize)size unflipped:(BOOL)unflipped withChildren:(BOOL)children;
 - (CGPath)newHighlightPathInScaledSpace;
-- (CGPath)newPathInScaledCanvasFromNaturalRect:(CGRect)a3;
+- (CGPath)newPathInScaledCanvasFromNaturalRect:(CGRect)rect;
 - (CGPoint)centerForRotation;
-- (CGPoint)convertKnobPositionFromUnscaledCanvas:(CGPoint)a3;
-- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)a3;
-- (CGPoint)convertNaturalPointFromLayerRelative:(CGPoint)a3;
-- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)a3;
-- (CGPoint)convertNaturalPointToLayerRelative:(CGPoint)a3;
-- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)a3;
+- (CGPoint)convertKnobPositionFromUnscaledCanvas:(CGPoint)canvas;
+- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)canvas;
+- (CGPoint)convertNaturalPointFromLayerRelative:(CGPoint)relative;
+- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)canvas;
+- (CGPoint)convertNaturalPointToLayerRelative:(CGPoint)relative;
+- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)canvas;
 - (CGPoint)i_dragOffset;
 - (CGPoint)layerOffsetForDragging;
-- (CGPoint)p_centerForPreviewFrame:(CGRect)a3;
-- (CGPoint)p_transformNaturalPoint:(CGPoint)a3 inUnscaledSpaceWithTransformFromBlock:(id)a4;
-- (CGPoint)positionOfStandardKnob:(id)a3 forBounds:(CGRect)a4;
+- (CGPoint)p_centerForPreviewFrame:(CGRect)frame;
+- (CGPoint)p_transformNaturalPoint:(CGPoint)point inUnscaledSpaceWithTransformFromBlock:(id)block;
+- (CGPoint)positionOfStandardKnob:(id)knob forBounds:(CGRect)bounds;
 - (CGPoint)unscaledGuidePosition;
 - (CGRect)boundsForStandardKnobs;
-- (CGRect)convertNaturalRectFromLayerRelative:(CGRect)a3;
-- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)a3;
-- (CGRect)convertNaturalRectToLayerRelative:(CGRect)a3;
-- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)a3;
+- (CGRect)convertNaturalRectFromLayerRelative:(CGRect)relative;
+- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)canvas;
+- (CGRect)convertNaturalRectToLayerRelative:(CGRect)relative;
+- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)canvas;
 - (CGRect)frameInScreenSpace;
 - (CGRect)frameInUnscaledCanvas;
 - (CGRect)i_clipRectRecursive;
@@ -77,10 +77,10 @@
 - (CGRect)layerFrameInScaledCanvasRelativeToParent;
 - (CGRect)naturalBounds;
 - (CGRect)rectToClipChildRepRenderables;
-- (CGRect)snapRectForDynamicDragWithOffset:(CGPoint)a3;
+- (CGRect)snapRectForDynamicDragWithOffset:(CGPoint)offset;
 - (CGRect)targetRectForEditMenu;
 - (CGRect)trackingBoundsForStandardKnobs;
-- (CGRect)visibleBoundsForTilingLayer:(id)a3;
+- (CGRect)visibleBoundsForTilingLayer:(id)layer;
 - (CRLCanvas)canvas;
 - (CRLCanvasElementInfo)info;
 - (CRLCanvasKnob)knobForInspectorResize;
@@ -89,7 +89,7 @@
 - (CRLCanvasRenderable)dragAndDropHighlightRenderable;
 - (CRLCanvasRenderable)selectionHighlightRenderable;
 - (CRLCanvasRep)ancestorRepForDrawingIntoLayer;
-- (CRLCanvasRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (CRLCanvasRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (CRLCanvasRep)parentRep;
 - (CRLCanvasRep)parentRepToPerformSelecting;
 - (CRLCanvasRep)repForFreeTransforming;
@@ -118,64 +118,64 @@
 - (double)additionalRotationForKnobOrientation;
 - (double)angleForRotation;
 - (double)contentsScale;
-- (id)additionalRepsForDraggingConnectionLine:(id)a3;
-- (id)cursorAtPoint:(CGPoint)a3 forKnob:(id)a4 withCursorPlatformObject:(id)a5;
+- (id)additionalRepsForDraggingConnectionLine:(id)line;
+- (id)cursorAtPoint:(CGPoint)point forKnob:(id)knob withCursorPlatformObject:(id)object;
 - (id)description;
-- (id)dragItemsForBeginningDragAtPoint:(CGPoint)a3;
-- (id)dragItemsForBeginningDragWithItemProvider:(id)a3 deepCopiedBoardItems:(id)a4 withUnscaledTracedPaths:(id)a5 previewBackgroundColor:(id)a6 localObjectProvider:(id)a7;
+- (id)dragItemsForBeginningDragAtPoint:(CGPoint)point;
+- (id)dragItemsForBeginningDragWithItemProvider:(id)provider deepCopiedBoardItems:(id)items withUnscaledTracedPaths:(id)paths previewBackgroundColor:(id)color localObjectProvider:(id)objectProvider;
 - (id)dynamicResizeDidBegin;
 - (id)getConnectionLineLayoutToCopyStyleForNewConnectionLine;
-- (id)hitRep:(CGPoint)a3 withPrecision:(BOOL)a4 passingTest:(id)a5;
-- (id)hitRepChrome:(CGPoint)a3 passingTest:(id)a4;
-- (id)hitReps:(CGPoint)a3 withSlop:(CGSize)a4;
-- (id)hitReps:(CGPoint)a3 withSlopBlock:(id)a4;
+- (id)hitRep:(CGPoint)rep withPrecision:(BOOL)precision passingTest:(id)test;
+- (id)hitRepChrome:(CGPoint)chrome passingTest:(id)test;
+- (id)hitReps:(CGPoint)reps withSlop:(CGSize)slop;
+- (id)hitReps:(CGPoint)reps withSlopBlock:(id)block;
 - (id)i_additionalRenderablesOverRenderableIncludingKnobs;
-- (id)i_smallHitRepNearPoint:(CGPoint)a3 smallRepOutset:(double)a4 forShortestDistance:(double *)a5 unscaledPointTransformForRep:(id)a6 passingTest:(id)a7;
-- (id)knobForTag:(unint64_t)a3;
+- (id)i_smallHitRepNearPoint:(CGPoint)point smallRepOutset:(double)outset forShortestDistance:(double *)distance unscaledPointTransformForRep:(id)rep passingTest:(id)test;
+- (id)knobForTag:(unint64_t)tag;
 - (id)makeSelectionHighlightRenderable;
-- (id)newCommandToApplyGeometry:(id)a3 toInfo:(id)a4;
-- (id)newSelectionKnobForType:(unint64_t)a3 tag:(unint64_t)a4;
-- (id)newTrackerForKnob:(id)a3;
-- (id)p_addRenderablesForKnobsToArray:(id)a3 withDelegate:(id)a4 isOverlay:(BOOL)a5;
+- (id)newCommandToApplyGeometry:(id)geometry toInfo:(id)info;
+- (id)newSelectionKnobForType:(unint64_t)type tag:(unint64_t)tag;
+- (id)newTrackerForKnob:(id)knob;
+- (id)p_addRenderablesForKnobsToArray:(id)array withDelegate:(id)delegate isOverlay:(BOOL)overlay;
 - (id)p_connectedReps;
 - (id)p_currentCollaboratorPresence;
 - (id)p_highlightRenderable;
-- (id)p_newImagerToGenerateSystemPreviewOfBoardItems:(id)a3;
-- (id)p_repForDraggingIgnoringTopLevelEditing:(BOOL)a3;
-- (id)p_repForSelectingIgnoringTopLevelEditing:(BOOL)a3 ignoringInlineEditing:(BOOL)a4;
-- (id)resizedGeometryForTransform:(CGAffineTransform *)a3;
+- (id)p_newImagerToGenerateSystemPreviewOfBoardItems:(id)items;
+- (id)p_repForDraggingIgnoringTopLevelEditing:(BOOL)editing;
+- (id)p_repForSelectingIgnoringTopLevelEditing:(BOOL)editing ignoringInlineEditing:(BOOL)inlineEditing;
+- (id)resizedGeometryForTransform:(CGAffineTransform *)transform;
 - (id)unscaledPathToIncludeForSystemPreviewOutline;
-- (int64_t)dragTypeAtCanvasPoint:(CGPoint)a3 forTouchType:(int64_t)a4;
+- (int64_t)dragTypeAtCanvasPoint:(CGPoint)point forTouchType:(int64_t)type;
 - (unint64_t)enabledKnobMask;
-- (void)addKnobsToArray:(id)a3;
-- (void)addLockedKnobsToArray:(id)a3;
-- (void)addSelectionKnobsToArray:(id)a3;
-- (void)antiAliasDefeatLayerFrame:(CGRect *)a3 forTransform:(CGAffineTransform *)a4;
-- (void)antiAliasDefeatLayerTransform:(CGAffineTransform *)a3 forFrame:(CGRect)a4;
+- (void)addKnobsToArray:(id)array;
+- (void)addLockedKnobsToArray:(id)array;
+- (void)addSelectionKnobsToArray:(id)array;
+- (void)antiAliasDefeatLayerFrame:(CGRect *)frame forTransform:(CGAffineTransform *)transform;
+- (void)antiAliasDefeatLayerTransform:(CGAffineTransform *)transform forFrame:(CGRect)frame;
 - (void)becameNotSelectable;
 - (void)becameNotSelected;
 - (void)becameSelectable;
 - (void)becameSelected;
-- (void)collaboratorCursorChangedToSelectionPath:(id)a3;
-- (void)commitTableAnchoringChangesAt:(CGPoint)a3 dueToResizing:(BOOL)a4;
-- (void)computeDirectLayerFrame:(CGRect *)a3 andTransform:(CGAffineTransform *)a4;
-- (void)computeDirectLayerFrame:(CGRect *)a3 andTransform:(CGAffineTransform *)a4 basedOnLayoutGeometry:(id)a5;
-- (void)computeDirectLayerFrame:(CGRect *)a3 andTransform:(CGAffineTransform *)a4 basedOnTransform:(CGAffineTransform *)a5 andSize:(CGSize)a6;
+- (void)collaboratorCursorChangedToSelectionPath:(id)path;
+- (void)commitTableAnchoringChangesAt:(CGPoint)at dueToResizing:(BOOL)resizing;
+- (void)computeDirectLayerFrame:(CGRect *)frame andTransform:(CGAffineTransform *)transform;
+- (void)computeDirectLayerFrame:(CGRect *)frame andTransform:(CGAffineTransform *)transform basedOnLayoutGeometry:(id)geometry;
+- (void)computeDirectLayerFrame:(CGRect *)frame andTransform:(CGAffineTransform *)transform basedOnTransform:(CGAffineTransform *)onTransform andSize:(CGSize)size;
 - (void)dealloc;
-- (void)didAddChildRep:(id)a3;
-- (void)didDrawInLayer:(id)a3 context:(CGContext *)a4;
+- (void)didAddChildRep:(id)rep;
+- (void)didDrawInLayer:(id)layer context:(CGContext *)context;
 - (void)dynamicDragDidBegin;
-- (void)dynamicDragDidEndAt:(CGPoint)a3;
-- (void)dynamicFreeTransformDidBeginWithTracker:(id)a3;
-- (void)dynamicFreeTransformDidEndWithTracker:(id)a3;
-- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)a3;
+- (void)dynamicDragDidEndAt:(CGPoint)at;
+- (void)dynamicFreeTransformDidBeginWithTracker:(id)tracker;
+- (void)dynamicFreeTransformDidEndWithTracker:(id)tracker;
+- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)commands;
 - (void)dynamicOperationDidEnd;
-- (void)dynamicResizeDidEndWithTracker:(id)a3;
+- (void)dynamicResizeDidEndWithTracker:(id)tracker;
 - (void)dynamicRotateDidBegin;
-- (void)dynamicRotateDidEndWithTracker:(id)a3;
-- (void)dynamicallyFreeTransformingWithTracker:(id)a3;
-- (void)dynamicallyResizingWithTracker:(id)a3;
-- (void)dynamicallyRotatingWithTracker:(id)a3;
+- (void)dynamicRotateDidEndWithTracker:(id)tracker;
+- (void)dynamicallyFreeTransformingWithTracker:(id)tracker;
+- (void)dynamicallyResizingWithTracker:(id)tracker;
+- (void)dynamicallyRotatingWithTracker:(id)tracker;
 - (void)fadeKnobsIn;
 - (void)fadeKnobsOut;
 - (void)hideCollaboratorCursors;
@@ -188,57 +188,57 @@
 - (void)invalidateKnobPositions;
 - (void)invalidateKnobs;
 - (void)invalidateSelectionHighlightRenderable;
-- (void)layoutInRootChangedFrom:(id)a3 to:(id)a4 translatedOnly:(BOOL)a5;
-- (void)p_didUpdateEffectRenderablesForRenderable:(id)a3;
+- (void)layoutInRootChangedFrom:(id)from to:(id)to translatedOnly:(BOOL)only;
+- (void)p_didUpdateEffectRenderablesForRenderable:(id)renderable;
 - (void)p_dynamicDragDidBegin;
-- (void)p_dynamicOperationDidBeginWithRealTimeCommands:(id)a3;
+- (void)p_dynamicOperationDidBeginWithRealTimeCommands:(id)commands;
 - (void)p_dynamicOperationDidEnd;
 - (void)p_dynamicRotateDidBegin;
 - (void)p_dynamicRotateDidEnd;
 - (void)p_invalidateChildKnobPositionsForEndingDynamicOperation;
 - (void)p_invalidateContentLayers;
-- (void)p_positionShadowRenderable:(id)a3 forShadow:(id)a4 withNaturalBounds:(CGRect)a5;
-- (void)p_setChildReps:(id)a3;
+- (void)p_positionShadowRenderable:(id)renderable forShadow:(id)shadow withNaturalBounds:(CGRect)bounds;
+- (void)p_setChildReps:(id)reps;
 - (void)p_setNeedsDisplayForParentChangeIfNeeded;
 - (void)p_showAlertForGroupWithUnknownContent;
 - (void)p_toggleHyperlinkUIVisibility;
-- (void)p_willUpdateEffectRenderablesForRenderable:(id)a3;
-- (void)prepareForPrintingWithCompletionHandler:(id)a3;
-- (void)processChangedProperty:(unint64_t)a3;
-- (void)processChanges:(id)a3;
-- (void)recursivelyDrawChildrenInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4;
-- (void)recursivelyDrawInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4;
-- (void)recursivelyPerformSelector:(SEL)a3;
-- (void)recursivelyPerformSelector:(SEL)a3 withObject:(id)a4;
-- (void)recursivelyPerformSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5;
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3;
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3 withObject:(id)a4;
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3 withObject:(id)a4 withObject:(id)a5;
-- (void)releaseFromAnchoringTableIfNeededAt:(CGPoint)a3;
-- (void)removeChildRep:(id)a3;
+- (void)p_willUpdateEffectRenderablesForRenderable:(id)renderable;
+- (void)prepareForPrintingWithCompletionHandler:(id)handler;
+- (void)processChangedProperty:(unint64_t)property;
+- (void)processChanges:(id)changes;
+- (void)recursivelyDrawChildrenInContext:(CGContext *)context keepingChildrenPassingTest:(id)test;
+- (void)recursivelyDrawInContext:(CGContext *)context keepingChildrenPassingTest:(id)test;
+- (void)recursivelyPerformSelector:(SEL)selector;
+- (void)recursivelyPerformSelector:(SEL)selector withObject:(id)object;
+- (void)recursivelyPerformSelector:(SEL)selector withObject:(id)object withObject:(id)withObject;
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented;
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented withObject:(id)object;
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented withObject:(id)object withObject:(id)withObject;
+- (void)releaseFromAnchoringTableIfNeededAt:(CGPoint)at;
+- (void)removeChildRep:(id)rep;
 - (void)screenScaleDidChange;
-- (void)selectChildRep:(id)a3 extendingSelection:(BOOL)a4;
+- (void)selectChildRep:(id)rep extendingSelection:(BOOL)selection;
 - (void)setNeedsDisplay;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)setParentRep:(id)a3;
-- (void)setupForDrawingInLayer:(id)a3 context:(CGContext *)a4;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)setParentRep:(id)rep;
+- (void)setupForDrawingInLayer:(id)layer context:(CGContext *)context;
 - (void)turnKnobsOn;
 - (void)updateChildrenFromLayout;
-- (void)updateDragAndDropUIForPoint:(CGPoint)a3 dragInfo:(id)a4;
+- (void)updateDragAndDropUIForPoint:(CGPoint)point dragInfo:(id)info;
 - (void)updateFromLayout;
-- (void)updatePositionsOfKnobs:(id)a3;
-- (void)updateRenderableGeometryFromLayout:(id)a3;
-- (void)updateSelectionHighlightRenderable:(id)a3;
+- (void)updatePositionsOfKnobs:(id)knobs;
+- (void)updateRenderableGeometryFromLayout:(id)layout;
+- (void)updateSelectionHighlightRenderable:(id)renderable;
 - (void)viewScaleDidChange;
 @end
 
 @implementation CRLCanvasRep
 
-- (CRLCanvasRep)initWithLayout:(id)a3 canvas:(id)a4
+- (CRLCanvasRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  layoutCopy = layout;
+  canvasCopy = canvas;
+  if (!layoutCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -273,11 +273,11 @@
   v13 = v12;
   if (v12)
   {
-    if (v7)
+    if (layoutCopy)
     {
-      objc_storeStrong(&v12->mLayout, a3);
-      v14 = objc_storeWeak(&v13->mCanvas, v8);
-      [v8 i_registerRep:v13];
+      objc_storeStrong(&v12->mLayout, layout);
+      v14 = objc_storeWeak(&v13->mCanvas, canvasCopy);
+      [canvasCopy i_registerRep:v13];
 
       v13->mShowKnobsWhenManipulated = 0;
       v15 = dispatch_queue_create("com.apple.freeform.CRLCanvasRep.knobsQueue", 0);
@@ -309,17 +309,17 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CRLCanvasRep *)self info];
+  info = [(CRLCanvasRep *)self info];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(CRLCanvasRep *)self info];
-  v9 = [(CRLCanvasRep *)self layout];
+  info2 = [(CRLCanvasRep *)self info];
+  layout = [(CRLCanvasRep *)self layout];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [(CRLCanvasRep *)self layout];
+  layout2 = [(CRLCanvasRep *)self layout];
   [(CRLCanvasRep *)self frameInUnscaledCanvas];
   v13 = NSStringFromCGRect(v17);
-  v14 = [NSString stringWithFormat:@"<%@ %p info=<%@ %p> layout=<%@ %p> frameInUnscaledCanvas=%@>", v4, self, v7, v8, v11, v12, v13];
+  v14 = [NSString stringWithFormat:@"<%@ %p info=<%@ %p> layout=<%@ %p> frameInUnscaledCanvas=%@>", v4, self, v7, info2, v11, layout2, v13];
 
   return v14;
 }
@@ -327,9 +327,9 @@
 - (CRLInteractiveCanvasController)interactiveCanvasController
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvas);
-  v4 = [WeakRetained canvasController];
+  canvasController = [WeakRetained canvasController];
 
-  if (!v4)
+  if (!canvasController)
   {
     v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -358,36 +358,36 @@
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:183 isFatal:0 description:"no ICC for this rep (%@); consider asking self.canvas instead", self];
   }
 
-  return v4;
+  return canvasController;
 }
 
 - (CRLCanvasElementInfo)info
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  v3 = [v2 info];
+  layout = [(CRLCanvasRep *)self layout];
+  info = [layout info];
 
-  return v3;
+  return info;
 }
 
 - (_TtC8Freeform20CRLCommandController)commandController
 {
-  v2 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v3 = [v2 commandController];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
 
-  return v3;
+  return commandController;
 }
 
 - (id)p_connectedReps
 {
-  v3 = [(CRLCanvasRep *)self layout];
-  v4 = [v3 connectedLayouts];
+  layout = [(CRLCanvasRep *)self layout];
+  connectedLayouts = [layout connectedLayouts];
 
   v5 = +[NSMutableSet set];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = connectedLayouts;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -403,8 +403,8 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [(CRLCanvasRep *)self canvas];
-        v13 = [v12 repForLayout:v11];
+        canvas = [(CRLCanvasRep *)self canvas];
+        v13 = [canvas repForLayout:v11];
 
         if (v13)
         {
@@ -427,25 +427,25 @@
   if (WeakRetained)
   {
     v4 = WeakRetained;
-    v5 = [(CRLCanvasRep *)self canvas];
-    v6 = [v5 isCanvasInteractive];
+    canvas = [(CRLCanvasRep *)self canvas];
+    isCanvasInteractive = [canvas isCanvasInteractive];
 
-    if (v6)
+    if (isCanvasInteractive)
     {
-      v7 = [(CRLCanvasRep *)self ancestorRepForDrawingIntoLayer];
-      if (v7)
+      ancestorRepForDrawingIntoLayer = [(CRLCanvasRep *)self ancestorRepForDrawingIntoLayer];
+      if (ancestorRepForDrawingIntoLayer)
       {
-        v8 = v7;
+        v8 = ancestorRepForDrawingIntoLayer;
         [(CRLCanvasRep *)self setNeedsDisplay];
-        v7 = v8;
+        ancestorRepForDrawingIntoLayer = v8;
       }
     }
   }
 }
 
-- (void)setParentRep:(id)a3
+- (void)setParentRep:(id)rep
 {
-  obj = a3;
+  obj = rep;
   WeakRetained = objc_loadWeakRetained(&self->mParentRep);
 
   if (WeakRetained != obj)
@@ -469,19 +469,19 @@
   }
 }
 
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented
 {
   if (objc_opt_respondsToSelector())
   {
-    [(CRLCanvasRep *)self performSelector:a3];
+    [(CRLCanvasRep *)self performSelector:implemented];
   }
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(CRLCanvasRep *)self childReps];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v6 = [childReps countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -493,35 +493,35 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childReps);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) recursivelyPerformSelectorIfImplemented:a3];
+        [*(*(&v10 + 1) + 8 * v9) recursivelyPerformSelectorIfImplemented:implemented];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [childReps countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3 withObject:(id)a4
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented withObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   if (objc_opt_respondsToSelector())
   {
-    [(CRLCanvasRep *)self performSelector:a3 withObject:v6];
+    [(CRLCanvasRep *)self performSelector:implemented withObject:objectCopy];
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(CRLCanvasRep *)self childReps];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v8 = [childReps countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -533,36 +533,36 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childReps);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) recursivelyPerformSelectorIfImplemented:a3 withObject:v6];
+        [*(*(&v12 + 1) + 8 * v11) recursivelyPerformSelectorIfImplemented:implemented withObject:objectCopy];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [childReps countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3 withObject:(id)a4 withObject:(id)a5
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented withObject:(id)object withObject:(id)withObject
 {
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  withObjectCopy = withObject;
   if (objc_opt_respondsToSelector())
   {
-    [(CRLCanvasRep *)self performSelector:a3 withObject:v8 withObject:v9];
+    [(CRLCanvasRep *)self performSelector:implemented withObject:objectCopy withObject:withObjectCopy];
   }
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = [(CRLCanvasRep *)self childReps];
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v11 = [childReps countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
     v12 = v11;
@@ -574,30 +574,30 @@
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(childReps);
         }
 
-        [*(*(&v15 + 1) + 8 * v14) recursivelyPerformSelectorIfImplemented:a3 withObject:v8 withObject:v9];
+        [*(*(&v15 + 1) + 8 * v14) recursivelyPerformSelectorIfImplemented:implemented withObject:objectCopy withObject:withObjectCopy];
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v12 = [childReps countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)recursivelyPerformSelector:(SEL)a3
+- (void)recursivelyPerformSelector:(SEL)selector
 {
   [(CRLCanvasRep *)self performSelector:?];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CRLCanvasRep *)self childReps];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v6 = [childReps countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -609,31 +609,31 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childReps);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) recursivelyPerformSelector:a3];
+        [*(*(&v10 + 1) + 8 * v9) recursivelyPerformSelector:selector];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [childReps countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)recursivelyPerformSelector:(SEL)a3 withObject:(id)a4
+- (void)recursivelyPerformSelector:(SEL)selector withObject:(id)object
 {
-  v6 = a4;
-  [(CRLCanvasRep *)self performSelector:a3 withObject:v6];
+  objectCopy = object;
+  [(CRLCanvasRep *)self performSelector:selector withObject:objectCopy];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(CRLCanvasRep *)self childReps];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v8 = [childReps countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -645,32 +645,32 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childReps);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) recursivelyPerformSelector:a3 withObject:v6];
+        [*(*(&v12 + 1) + 8 * v11) recursivelyPerformSelector:selector withObject:objectCopy];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [childReps countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)recursivelyPerformSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5
+- (void)recursivelyPerformSelector:(SEL)selector withObject:(id)object withObject:(id)withObject
 {
-  v8 = a4;
-  v9 = a5;
-  [(CRLCanvasRep *)self performSelector:a3 withObject:v8 withObject:v9];
+  objectCopy = object;
+  withObjectCopy = withObject;
+  [(CRLCanvasRep *)self performSelector:selector withObject:objectCopy withObject:withObjectCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(CRLCanvasRep *)self childReps];
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v11 = [childReps countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
     v12 = v11;
@@ -682,15 +682,15 @@
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(childReps);
         }
 
-        [*(*(&v15 + 1) + 8 * v14) recursivelyPerformSelector:a3 withObject:v8 withObject:v9];
+        [*(*(&v15 + 1) + 8 * v14) recursivelyPerformSelector:selector withObject:objectCopy withObject:withObjectCopy];
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v12 = [childReps countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v12);
@@ -714,15 +714,15 @@
   WeakRetained = objc_loadWeakRetained(&self->mCanvas);
   [WeakRetained i_unregisterRep:self];
 
-  v6 = [(CRLCanvasRep *)self canvas];
-  v7 = [v6 isCanvasInteractive];
+  canvas = [(CRLCanvasRep *)self canvas];
+  isCanvasInteractive = [canvas isCanvasInteractive];
 
-  if (v7)
+  if (isCanvasInteractive)
   {
     [(CRLCanvasRep *)self i_invalidateSelectionHighlightRenderable];
-    v8 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v9 = [v8 i_interactiveCanvasLayerHelper];
-    [v9 repWasRemoved:self];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    i_interactiveCanvasLayerHelper = [interactiveCanvasController i_interactiveCanvasLayerHelper];
+    [i_interactiveCanvasLayerHelper repWasRemoved:self];
   }
 
   [NSRunLoop cancelPreviousPerformRequestsWithTarget:self];
@@ -731,30 +731,30 @@
 
 - (CRLCanvasRep)parentRepToPerformSelecting
 {
-  v3 = [(CRLCanvasRep *)self parentRep];
-  if (v3)
+  parentRep = [(CRLCanvasRep *)self parentRep];
+  if (parentRep)
   {
     do
     {
-      if ([v3 canSelectChildRep:self])
+      if ([parentRep canSelectChildRep:self])
       {
         break;
       }
 
-      v4 = [v3 parentRep];
+      v3ParentRep = [parentRep parentRep];
 
-      v3 = v4;
+      parentRep = v3ParentRep;
     }
 
-    while (v4);
+    while (v3ParentRep);
   }
 
-  return v3;
+  return parentRep;
 }
 
-- (void)selectChildRep:(id)a3 extendingSelection:(BOOL)a4
+- (void)selectChildRep:(id)rep extendingSelection:(BOOL)selection
 {
-  [CRLAssertionHandler _atomicIncrementAssertCount:a3];
+  [CRLAssertionHandler _atomicIncrementAssertCount:rep];
   if (qword_101AD5A10 != -1)
   {
     sub_10135258C();
@@ -783,10 +783,10 @@
 
 - (BOOL)occludesSelectedRep
 {
-  v4 = [(CRLCanvasRep *)self repForSelecting];
-  v5 = [v4 isSelected];
+  repForSelecting = [(CRLCanvasRep *)self repForSelecting];
+  isSelected = [repForSelecting isSelected];
 
-  if (v5)
+  if (isSelected)
   {
     v6 = 0;
   }
@@ -794,13 +794,13 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->mCanvas);
-    v8 = [WeakRetained allRepsOrdered];
+    allRepsOrdered = [WeakRetained allRepsOrdered];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = v8;
+    v9 = allRepsOrdered;
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
@@ -824,12 +824,12 @@ LABEL_17:
             goto LABEL_18;
           }
 
-          v15 = [*(*(&v19 + 1) + 8 * i) repForSelecting];
-          if ([v15 isSelected])
+          repForSelecting2 = [*(*(&v19 + 1) + 8 * i) repForSelecting];
+          if ([repForSelecting2 isSelected])
           {
-            v16 = [(CRLCanvasRep *)v14 canBeOccluded];
+            canBeOccluded = [(CRLCanvasRep *)v14 canBeOccluded];
 
-            if (v16)
+            if (canBeOccluded)
             {
               [(CRLCanvasRep *)v14 frameInUnscaledCanvas];
               if ([(CRLCanvasRep *)self intersectsUnscaledRect:?])
@@ -875,12 +875,12 @@ LABEL_18:
         break;
       }
 
-      v3 = [WeakRetained parentRep];
+      parentRep = [WeakRetained parentRep];
 
-      WeakRetained = v3;
+      WeakRetained = parentRep;
     }
 
-    while (v3);
+    while (parentRep);
   }
 
   return WeakRetained;
@@ -888,9 +888,9 @@ LABEL_18:
 
 - (CGRect)naturalBounds
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  v3 = [v2 geometry];
-  [v3 size];
+  layout = [(CRLCanvasRep *)self layout];
+  geometry = [layout geometry];
+  [geometry size];
   v4 = sub_10011ECB4();
   v6 = v5;
   v8 = v7;
@@ -907,14 +907,14 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)a3
+- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)canvas
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(CRLCanvasRep *)self layout];
-  [v7 convertNaturalRectToUnscaledCanvas:{x, y, width, height}];
+  height = canvas.size.height;
+  width = canvas.size.width;
+  y = canvas.origin.y;
+  x = canvas.origin.x;
+  layout = [(CRLCanvasRep *)self layout];
+  [layout convertNaturalRectToUnscaledCanvas:{x, y, width, height}];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -931,14 +931,14 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)a3
+- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)canvas
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(CRLCanvasRep *)self layout];
-  [v7 convertNaturalRectFromUnscaledCanvas:{x, y, width, height}];
+  height = canvas.size.height;
+  width = canvas.size.width;
+  y = canvas.origin.y;
+  x = canvas.origin.x;
+  layout = [(CRLCanvasRep *)self layout];
+  [layout convertNaturalRectFromUnscaledCanvas:{x, y, width, height}];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -955,21 +955,21 @@ LABEL_18:
   return result;
 }
 
-- (CGPath)newPathInScaledCanvasFromNaturalRect:(CGRect)a3
+- (CGPath)newPathInScaledCanvasFromNaturalRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   Mutable = CGPathCreateMutable();
   v32 = 0u;
   v33 = 0u;
   v31 = 0u;
-  v9 = [(CRLCanvasRep *)self layout];
-  v10 = v9;
-  if (v9)
+  layout = [(CRLCanvasRep *)self layout];
+  v10 = layout;
+  if (layout)
   {
-    [v9 transformInRoot];
+    [layout transformInRoot];
   }
 
   else
@@ -1039,12 +1039,12 @@ LABEL_18:
   return Mutable;
 }
 
-- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CRLCanvasRep *)self layout];
-  [v5 convertNaturalPointToUnscaledCanvas:{x, y}];
+  y = canvas.y;
+  x = canvas.x;
+  layout = [(CRLCanvasRep *)self layout];
+  [layout convertNaturalPointToUnscaledCanvas:{x, y}];
   v7 = v6;
   v9 = v8;
 
@@ -1055,12 +1055,12 @@ LABEL_18:
   return result;
 }
 
-- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CRLCanvasRep *)self layout];
-  [v5 convertNaturalPointFromUnscaledCanvas:{x, y}];
+  y = canvas.y;
+  x = canvas.x;
+  layout = [(CRLCanvasRep *)self layout];
+  [layout convertNaturalPointFromUnscaledCanvas:{x, y}];
   v7 = v6;
   v9 = v8;
 
@@ -1073,8 +1073,8 @@ LABEL_18:
 
 - (CGRect)frameInUnscaledCanvas
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  [v2 frameInRoot];
+  layout = [(CRLCanvasRep *)self layout];
+  [layout frameInRoot];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1093,21 +1093,21 @@ LABEL_18:
 
 - (CGRect)frameInScreenSpace
 {
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
   [(CRLCanvasRep *)self frameInUnscaledCanvas];
-  [v3 convertUnscaledToBoundsRect:?];
+  [interactiveCanvasController convertUnscaledToBoundsRect:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v3 canvasView];
-  [v12 convertRect:0 toView:{v5, v7, v9, v11}];
+  canvasView = [interactiveCanvasController canvasView];
+  [canvasView convertRect:0 toView:{v5, v7, v9, v11}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v12 window];
-  [v21 convertRect:0 toWindow:{v14, v16, v18, v20}];
+  window = [canvasView window];
+  [window convertRect:0 toWindow:{v14, v16, v18, v20}];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -1126,25 +1126,25 @@ LABEL_18:
 
 - (CGRect)layerFrameInScaledCanvas
 {
-  v3 = [(CRLCanvasRep *)self layout];
-  v4 = [v3 parentAutosizes];
+  layout = [(CRLCanvasRep *)self layout];
+  parentAutosizes = [layout parentAutosizes];
 
   if ([(CRLCanvasRep *)self isBeingRotated])
   {
-    if (v4 && (-[CRLCanvasRep parentRep](self, "parentRep"), v3 = objc_claimAutoreleasedReturnValue(), ([v3 isBeingRotated] & 1) == 0))
+    if (parentAutosizes && (-[CRLCanvasRep parentRep](self, "parentRep"), layout = objc_claimAutoreleasedReturnValue(), ([layout isBeingRotated] & 1) == 0))
     {
     }
 
     else
     {
-      v5 = [(CRLCanvasRep *)self layout];
-      v6 = [v5 wantsNormalLayoutDuringDynamicRotation];
+      layout2 = [(CRLCanvasRep *)self layout];
+      wantsNormalLayoutDuringDynamicRotation = [layout2 wantsNormalLayoutDuringDynamicRotation];
 
-      if (v4)
+      if (parentAutosizes)
       {
       }
 
-      if ((v6 & 1) == 0)
+      if ((wantsNormalLayoutDuringDynamicRotation & 1) == 0)
       {
         x = self->mOriginalLayerFrameInScaledCanvas.origin.x;
         y = self->mOriginalLayerFrameInScaledCanvas.origin.y;
@@ -1164,8 +1164,8 @@ LABEL_18:
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [(CRLCanvasRep *)self canvas];
-    [v20 contentsScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas contentsScale];
     x = sub_1001221E8(v13, v15, v17, v19, v21);
     y = v22;
     width = v23;
@@ -1181,8 +1181,8 @@ LABEL_18:
     [(CRLCanvasRep *)self layerOffsetForDragging];
     v28 = v27;
     v30 = v29;
-    v31 = [(CRLCanvasRep *)self canvas];
-    [v31 contentsScale];
+    canvas2 = [(CRLCanvasRep *)self canvas];
+    [canvas2 contentsScale];
     v33 = sub_10012218C(v28, v30, v32);
     x = sub_10011F334(v25, v26, v33);
     y = v34;
@@ -1211,17 +1211,17 @@ LABEL_14:
 
 - (CGRect)i_layerFrameInScaledCanvasIgnoringDragging
 {
-  v3 = [(CRLCanvasRep *)self layout];
-  v4 = [v3 parentAutosizes];
+  layout = [(CRLCanvasRep *)self layout];
+  parentAutosizes = [layout parentAutosizes];
 
-  if ((v4 & 1) == 0)
+  if ((parentAutosizes & 1) == 0)
   {
     if ([(CRLCanvasRep *)self isBeingRotated])
     {
-      v5 = [(CRLCanvasRep *)self layout];
-      v6 = [v5 wantsNormalLayoutDuringDynamicRotation];
+      layout2 = [(CRLCanvasRep *)self layout];
+      wantsNormalLayoutDuringDynamicRotation = [layout2 wantsNormalLayoutDuringDynamicRotation];
 
-      if ((v6 & 1) == 0)
+      if ((wantsNormalLayoutDuringDynamicRotation & 1) == 0)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -1252,7 +1252,7 @@ LABEL_14:
     }
   }
 
-  v10 = [(CRLCanvasRep *)self directlyManagesLayerContent];
+  directlyManagesLayerContent = [(CRLCanvasRep *)self directlyManagesLayerContent];
   WeakRetained = objc_loadWeakRetained(&self->mCanvas);
   [(CRLCanvasRep *)self i_baseFrameInUnscaledCanvasForPositioningLayer];
   [WeakRetained convertUnscaledToBoundsRect:?];
@@ -1260,10 +1260,10 @@ LABEL_14:
   v17 = v13;
   v18 = v14;
   v19 = v15;
-  if (v10)
+  if (directlyManagesLayerContent)
   {
-    v20 = [(CRLCanvasRep *)self canvas];
-    [v20 contentsScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas contentsScale];
     v22 = sub_1001221E8(v16, v17, v18, v19, v21);
     v24 = v23;
     v26 = v25;
@@ -1296,12 +1296,12 @@ LABEL_14:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CRLCanvasRep *)self parentRep];
+  parentRep = [(CRLCanvasRep *)self parentRep];
 
-  if (v11)
+  if (parentRep)
   {
-    v12 = [(CRLCanvasRep *)self parentRep];
-    [v12 layerFrameInScaledCanvas];
+    parentRep2 = [(CRLCanvasRep *)self parentRep];
+    [parentRep2 layerFrameInScaledCanvas];
     v4 = sub_10011F31C(v4, v6, v13);
     v6 = v14;
   }
@@ -1320,14 +1320,14 @@ LABEL_14:
 - (CGPoint)layerOffsetForDragging
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self layout];
-  v5 = [v4 parent];
-  v6 = sub_100014370(v3, v5);
+  layout = [(CRLCanvasRep *)self layout];
+  parent = [layout parent];
+  v6 = sub_100014370(v3, parent);
 
   if (v6)
   {
-    v7 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v8 = [v7 repForLayout:v6];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    v8 = [interactiveCanvasController repForLayout:v6];
   }
 
   else
@@ -1337,19 +1337,19 @@ LABEL_14:
 
   if ([v8 isBeingDragged])
   {
-    v9 = v8;
-    [(CRLCanvasRep *)v9 layerFrameInScaledCanvas];
+    selfCopy = v8;
+    [(CRLCanvasRep *)selfCopy layerFrameInScaledCanvas];
   }
 
   else
   {
-    v9 = self;
-    [(CRLCanvasRep *)v9 i_layerFrameInScaledCanvasIgnoringDragging];
+    selfCopy = self;
+    [(CRLCanvasRep *)selfCopy i_layerFrameInScaledCanvasIgnoringDragging];
   }
 
   v12 = v10;
   v13 = v11;
-  [(CRLCanvasRep *)v9 i_originalLayerFrameInScaledCanvas];
+  [(CRLCanvasRep *)selfCopy i_originalLayerFrameInScaledCanvas];
   v15 = sub_10011F31C(v12, v13, v14);
   v17 = v16;
 
@@ -1363,11 +1363,11 @@ LABEL_14:
 - (CGAffineTransform)transformToConvertNaturalToLayerRelative
 {
   memset(&v17, 0, sizeof(v17));
-  v5 = [(CRLCanvasRep *)self layout];
-  v6 = v5;
-  if (v5)
+  layout = [(CRLCanvasRep *)self layout];
+  v6 = layout;
+  if (layout)
   {
-    [v5 transformInRoot];
+    [layout transformInRoot];
   }
 
   else
@@ -1394,10 +1394,10 @@ LABEL_14:
   return CGAffineTransformConcat(retstr, &t1, &v13);
 }
 
-- (CGPoint)convertNaturalPointToLayerRelative:(CGPoint)a3
+- (CGPoint)convertNaturalPointToLayerRelative:(CGPoint)relative
 {
-  y = a3.y;
-  x = a3.x;
+  y = relative.y;
+  x = relative.x;
   [(CRLCanvasRep *)self transformToConvertNaturalToLayerRelative];
   v3 = vaddq_f64(v9, vmlaq_n_f64(vmulq_n_f64(v8, y), v7, x));
   v4 = v3.f64[1];
@@ -1406,10 +1406,10 @@ LABEL_14:
   return result;
 }
 
-- (CGPoint)convertNaturalPointFromLayerRelative:(CGPoint)a3
+- (CGPoint)convertNaturalPointFromLayerRelative:(CGPoint)relative
 {
-  y = a3.y;
-  x = a3.x;
+  y = relative.y;
+  x = relative.x;
   [(CRLCanvasRep *)self transformToConvertNaturalFromLayerRelative];
   v3 = vaddq_f64(v9, vmlaq_n_f64(vmulq_n_f64(v8, y), v7, x));
   v4 = v3.f64[1];
@@ -1418,12 +1418,12 @@ LABEL_14:
   return result;
 }
 
-- (CGRect)convertNaturalRectToLayerRelative:(CGRect)a3
+- (CGRect)convertNaturalRectToLayerRelative:(CGRect)relative
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = relative.size.height;
+  width = relative.size.width;
+  y = relative.origin.y;
+  x = relative.origin.x;
   [(CRLCanvasRep *)self transformToConvertNaturalToLayerRelative];
   v8.origin.x = x;
   v8.origin.y = y;
@@ -1432,12 +1432,12 @@ LABEL_14:
   return CGRectApplyAffineTransform(v8, &v7);
 }
 
-- (CGRect)convertNaturalRectFromLayerRelative:(CGRect)a3
+- (CGRect)convertNaturalRectFromLayerRelative:(CGRect)relative
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = relative.size.height;
+  width = relative.size.width;
+  y = relative.origin.y;
+  x = relative.origin.x;
   [(CRLCanvasRep *)self transformToConvertNaturalFromLayerRelative];
   v8.origin.x = x;
   v8.origin.y = y;
@@ -1446,10 +1446,10 @@ LABEL_14:
   return CGRectApplyAffineTransform(v8, &v7);
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CRLCanvasRep *)self naturalBounds];
   v10 = x;
   v11 = y;
@@ -1457,9 +1457,9 @@ LABEL_14:
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 withSlop:(CGSize)a4
+- (BOOL)containsPoint:(CGPoint)point withSlop:(CGSize)slop
 {
-  v5 = sub_10011EC70(a3.x, a3.y, a4.width + a4.width);
+  v5 = sub_10011EC70(point.x, point.y, slop.width + slop.width);
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1472,21 +1472,21 @@ LABEL_14:
   return CGRectIntersectsRect(*&v12, *&v16);
 }
 
-- (id)hitRep:(CGPoint)a3 withPrecision:(BOOL)a4 passingTest:(id)a5
+- (id)hitRep:(CGPoint)rep withPrecision:(BOOL)precision passingTest:(id)test
 {
-  v5 = a4;
-  y = a3.y;
-  x = a3.x;
-  v7 = a5;
+  precisionCopy = precision;
+  y = rep.y;
+  x = rep.x;
+  testCopy = test;
   if ([(CRLCanvasRep *)self shouldHitTestChildrenLikeTopLevelReps])
   {
     [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:x, y];
     v9 = v8;
     v11 = v10;
-    v12 = [(CRLCanvasRep *)self canvas];
-    v13 = [(CRLCanvasRep *)self childRepsForHitTesting];
-    [CRLInteractiveCanvasController smallRepOutsetForHitTestingWithPrecision:v5];
-    v15 = [v12 hitRep:v5 withPrecision:v13 inTopLevelReps:0 smallRepOutset:v7 unscaledPointTransformForRep:v9 passingTest:{v11, v14}];
+    canvas = [(CRLCanvasRep *)self canvas];
+    childRepsForHitTesting = [(CRLCanvasRep *)self childRepsForHitTesting];
+    [CRLInteractiveCanvasController smallRepOutsetForHitTestingWithPrecision:precisionCopy];
+    selfCopy2 = [canvas hitRep:precisionCopy withPrecision:childRepsForHitTesting inTopLevelReps:0 smallRepOutset:testCopy unscaledPointTransformForRep:v9 passingTest:{v11, v14}];
   }
 
   else
@@ -1495,10 +1495,10 @@ LABEL_14:
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v16 = [(CRLCanvasRep *)self childRepsForHitTesting];
-    v12 = [v16 reverseObjectEnumerator];
+    childRepsForHitTesting2 = [(CRLCanvasRep *)self childRepsForHitTesting];
+    canvas = [childRepsForHitTesting2 reverseObjectEnumerator];
 
-    v17 = [v12 countByEnumeratingWithState:&v40 objects:v44 count:16];
+    v17 = [canvas countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v17)
     {
       v18 = v17;
@@ -1510,16 +1510,16 @@ LABEL_14:
         {
           if (*v41 != v19)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(canvas);
           }
 
           v21 = *(*(&v40 + 1) + 8 * i);
-          v22 = [v21 layout];
-          v23 = [v22 geometry];
-          v24 = v23;
-          if (v23)
+          layout = [v21 layout];
+          geometry = [layout geometry];
+          v24 = geometry;
+          if (geometry)
           {
-            [v23 inverseTransform];
+            [geometry inverseTransform];
             v25 = v37;
             v26 = v38;
             v27 = v39;
@@ -1534,15 +1534,15 @@ LABEL_14:
 
           v36 = vaddq_f64(v27, vmlaq_f64(vmulq_n_f64(v26, y), v34, v25));
 
-          v28 = [v21 hitRep:v5 withPrecision:v7 passingTest:*&v36];
+          v28 = [v21 hitRep:precisionCopy withPrecision:testCopy passingTest:*&v36];
           if (v28)
           {
-            v15 = v28;
+            selfCopy2 = v28;
             goto LABEL_16;
           }
         }
 
-        v18 = [v12 countByEnumeratingWithState:&v40 objects:v44 count:16];
+        v18 = [canvas countByEnumeratingWithState:&v40 objects:v44 count:16];
         if (v18)
         {
           continue;
@@ -1552,70 +1552,70 @@ LABEL_14:
       }
     }
 
-    v15 = 0;
+    selfCopy2 = 0;
   }
 
 LABEL_16:
 
-  if (!v15)
+  if (!selfCopy2)
   {
-    if ([(CRLCanvasRep *)self containsPoint:v5 withPrecision:x, y])
+    if ([(CRLCanvasRep *)self containsPoint:precisionCopy withPrecision:x, y])
     {
-      v29 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v29 = 0;
+      selfCopy = 0;
     }
 
-    v30 = v29;
+    v30 = selfCopy;
     v31 = v30;
-    if (v7 && v30)
+    if (testCopy && v30)
     {
-      v15 = self;
-      if ((v7[2](v7, v30) & 1) == 0)
+      selfCopy2 = self;
+      if ((testCopy[2](testCopy, v30) & 1) == 0)
       {
 
-        v15 = 0;
+        selfCopy2 = 0;
       }
     }
 
     else
     {
-      v15 = v30;
+      selfCopy2 = v30;
     }
   }
 
-  return v15;
+  return selfCopy2;
 }
 
-- (id)hitReps:(CGPoint)a3 withSlop:(CGSize)a4
+- (id)hitReps:(CGPoint)reps withSlop:(CGSize)slop
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100315EC8;
   v6[3] = &unk_101855850;
-  v7 = a4;
-  v4 = [(CRLCanvasRep *)self hitReps:v6 withSlopBlock:a3.x, a3.y];
+  slopCopy = slop;
+  v4 = [(CRLCanvasRep *)self hitReps:v6 withSlopBlock:reps.x, reps.y];
 
   return v4;
 }
 
-- (id)hitReps:(CGPoint)a3 withSlopBlock:(id)a4
+- (id)hitReps:(CGPoint)reps withSlopBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = a4;
+  y = reps.y;
+  x = reps.x;
+  blockCopy = block;
   v6 = +[NSMutableArray array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = [(CRLCanvasRep *)self childRepsForHitTesting];
-  v8 = [v7 reverseObjectEnumerator];
+  childRepsForHitTesting = [(CRLCanvasRep *)self childRepsForHitTesting];
+  reverseObjectEnumerator = [childRepsForHitTesting reverseObjectEnumerator];
 
-  v9 = [v8 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1627,16 +1627,16 @@ LABEL_16:
       {
         if (*v33 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v13 = *(*(&v32 + 1) + 8 * i);
-        v14 = [v13 layout];
-        v15 = [v14 geometry];
-        v16 = v15;
-        if (v15)
+        layout = [v13 layout];
+        geometry = [layout geometry];
+        v16 = geometry;
+        if (geometry)
         {
-          [v15 inverseTransform];
+          [geometry inverseTransform];
           v17 = v29;
           v18 = v30;
           v19 = v31;
@@ -1651,22 +1651,22 @@ LABEL_16:
 
         v28 = vaddq_f64(v19, vmlaq_f64(vmulq_n_f64(v18, y), v26, v17));
 
-        v20 = [v13 hitReps:v5 withSlopBlock:*&v28];
+        v20 = [v13 hitReps:blockCopy withSlopBlock:*&v28];
         if ([v20 count])
         {
           [v6 addObjectsFromArray:v20];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v10);
   }
 
-  if (v5)
+  if (blockCopy)
   {
-    width = v5[2](v5, self);
+    width = blockCopy[2](blockCopy, self);
     height = v22;
   }
 
@@ -1684,19 +1684,19 @@ LABEL_16:
   return v6;
 }
 
-- (id)hitRepChrome:(CGPoint)a3 passingTest:(id)a4
+- (id)hitRepChrome:(CGPoint)chrome passingTest:(id)test
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = a4;
+  y = chrome.y;
+  x = chrome.x;
+  testCopy = test;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = [(CRLCanvasRep *)self childRepsForHitTesting];
-  v7 = [v6 reverseObjectEnumerator];
+  childRepsForHitTesting = [(CRLCanvasRep *)self childRepsForHitTesting];
+  selfCopy = [childRepsForHitTesting reverseObjectEnumerator];
 
-  v8 = [(CRLCanvasRep *)v7 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  v8 = [(CRLCanvasRep *)selfCopy countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1708,16 +1708,16 @@ LABEL_16:
       {
         if (*v32 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         v12 = *(*(&v31 + 1) + 8 * i);
-        v13 = [v12 layout];
-        v14 = [v13 geometry];
-        v15 = v14;
-        if (v14)
+        layout = [v12 layout];
+        geometry = [layout geometry];
+        v15 = geometry;
+        if (geometry)
         {
-          [v14 inverseTransform];
+          [geometry inverseTransform];
           v16 = v28;
           v17 = v29;
           v18 = v30;
@@ -1732,7 +1732,7 @@ LABEL_16:
 
         v27 = vaddq_f64(v18, vmlaq_f64(vmulq_n_f64(v17, y), v25, v16));
 
-        v19 = [v12 hitRepChrome:v5 passingTest:*&v27];
+        v19 = [v12 hitRepChrome:testCopy passingTest:*&v27];
         if (v19)
         {
           v22 = v19;
@@ -1740,7 +1740,7 @@ LABEL_16:
         }
       }
 
-      v9 = [(CRLCanvasRep *)v7 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v9 = [(CRLCanvasRep *)selfCopy countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v9)
       {
         continue;
@@ -1752,13 +1752,13 @@ LABEL_16:
 
   if ([(CRLCanvasRep *)self hitRepChrome:x, y])
   {
-    v7 = self;
+    selfCopy = self;
     v20 = 0;
-    if (v7)
+    if (selfCopy)
     {
-      if (v5)
+      if (testCopy)
       {
-        v21 = v5[2](v5, v7);
+        v21 = testCopy[2](testCopy, selfCopy);
         v22 = 0;
         v20 = 0;
         if ((v21 & 1) == 0)
@@ -1766,7 +1766,7 @@ LABEL_16:
 LABEL_18:
 
           v20 = v22;
-          v7 = v22;
+          selfCopy = v22;
         }
       }
     }
@@ -1775,29 +1775,29 @@ LABEL_18:
   else
   {
     v20 = 0;
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)i_smallHitRepNearPoint:(CGPoint)a3 smallRepOutset:(double)a4 forShortestDistance:(double *)a5 unscaledPointTransformForRep:(id)a6 passingTest:(id)a7
+- (id)i_smallHitRepNearPoint:(CGPoint)point smallRepOutset:(double)outset forShortestDistance:(double *)distance unscaledPointTransformForRep:(id)rep passingTest:(id)test
 {
-  y = a3.y;
-  x = a3.x;
-  v54 = a6;
-  v11 = a7;
+  y = point.y;
+  x = point.x;
+  repCopy = rep;
+  testCopy = test;
   if ([(CRLCanvasRep *)self i_shouldSmallHitRepTestingRecurse])
   {
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v50 = self;
-    v12 = [(CRLCanvasRep *)self childRepsForHitTesting];
-    v13 = [v12 reverseObjectEnumerator];
+    selfCopy = self;
+    childRepsForHitTesting = [(CRLCanvasRep *)self childRepsForHitTesting];
+    reverseObjectEnumerator = [childRepsForHitTesting reverseObjectEnumerator];
 
-    v14 = [v13 countByEnumeratingWithState:&v57 objects:v61 count:16];
+    v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v57 objects:v61 count:16];
     if (v14)
     {
       v15 = v14;
@@ -1810,16 +1810,16 @@ LABEL_18:
         {
           if (*v58 != v17)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v19 = *(*(&v57 + 1) + 8 * i);
-          v20 = [v19 layout];
-          v21 = [v20 geometry];
-          v22 = v21;
-          if (v21)
+          layout = [v19 layout];
+          geometry = [layout geometry];
+          v22 = geometry;
+          if (geometry)
           {
-            [v21 inverseTransform];
+            [geometry inverseTransform];
             v23 = v56[0];
             v24 = v56[1];
             v25 = v56[2];
@@ -1834,19 +1834,19 @@ LABEL_18:
 
           v55 = vaddq_f64(v25, vmlaq_f64(vmulq_n_f64(v24, y), v52, v23));
 
-          *v56 = *a5;
-          v26 = [v19 i_smallHitRepNearPoint:v56 smallRepOutset:v54 forShortestDistance:v11 unscaledPointTransformForRep:*&v55 passingTest:a4];
+          *v56 = *distance;
+          v26 = [v19 i_smallHitRepNearPoint:v56 smallRepOutset:repCopy forShortestDistance:testCopy unscaledPointTransformForRep:*&v55 passingTest:outset];
           v27 = v26;
-          if (v26 && *v56 < *a5)
+          if (v26 && *v56 < *distance)
           {
             v28 = v26;
 
-            *a5 = *v56;
+            *distance = *v56;
             v16 = v28;
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v57 objects:v61 count:16];
+        v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v57 objects:v61 count:16];
       }
 
       while (v15);
@@ -1857,7 +1857,7 @@ LABEL_18:
       v16 = 0;
     }
 
-    self = v50;
+    self = selfCopy;
   }
 
   else
@@ -1865,10 +1865,10 @@ LABEL_18:
     v16 = 0;
   }
 
-  [(CRLCanvasRep *)self p_transformNaturalPoint:v54 inUnscaledSpaceWithTransformFromBlock:x, y];
+  [(CRLCanvasRep *)self p_transformNaturalPoint:repCopy inUnscaledSpaceWithTransformFromBlock:x, y];
   v30 = v29;
   v32 = v31;
-  if (![(CRLCanvasRep *)self i_shouldCountAsClosestSmallRepForSizeLimit:a4])
+  if (![(CRLCanvasRep *)self i_shouldCountAsClosestSmallRepForSizeLimit:outset])
   {
     LOBYTE(v56[0]) = 0;
     [(CRLCanvasRep *)self shortestDistanceToPoint:v56 countAsHit:v30, v32];
@@ -1880,8 +1880,8 @@ LABEL_18:
     goto LABEL_27;
   }
 
-  v33 = [(CRLCanvasRep *)self canvas];
-  [v33 viewScale];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas viewScale];
   v35 = v34;
 
   [(CRLCanvasRep *)self naturalBounds];
@@ -1891,14 +1891,14 @@ LABEL_18:
   v43 = v39;
   v44 = 0.0;
   v45 = 0.0;
-  if (v35 * v38 < a4)
+  if (v35 * v38 < outset)
   {
-    v45 = -a4 / v35;
+    v45 = -outset / v35;
   }
 
-  if (v35 * v39 < a4)
+  if (v35 * v39 < outset)
   {
-    v44 = -a4 / v35;
+    v44 = -outset / v35;
   }
 
   v64 = CGRectInset(*&v36, v45, v44);
@@ -1909,12 +1909,12 @@ LABEL_18:
     v46 = sub_1001200A8(v30, v32, v40, v41, v42, v43);
 LABEL_27:
     v47 = v46;
-    if (v46 < *a5 && (!v11 || v11[2](v11, self)))
+    if (v46 < *distance && (!testCopy || testCopy[2](testCopy, self)))
     {
-      *a5 = v47;
-      v48 = self;
+      *distance = v47;
+      selfCopy2 = self;
 
-      v16 = v48;
+      v16 = selfCopy2;
     }
   }
 
@@ -1923,20 +1923,20 @@ LABEL_31:
   return v16;
 }
 
-- (CGPoint)p_transformNaturalPoint:(CGPoint)a3 inUnscaledSpaceWithTransformFromBlock:(id)a4
+- (CGPoint)p_transformNaturalPoint:(CGPoint)point inUnscaledSpaceWithTransformFromBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
-  if (a4)
+  y = point.y;
+  x = point.x;
+  if (block)
   {
-    v7 = a4;
+    blockCopy = block;
     [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:x, y];
     v14 = v9;
     v15 = v8;
     v17 = 0u;
     v18 = 0u;
     v16 = 0u;
-    v7[2](&v16, v7, self);
+    blockCopy[2](&v16, blockCopy, self);
 
     [(CRLCanvasRep *)self convertNaturalPointFromUnscaledCanvas:vaddq_f64(v18, vmlaq_n_f64(vmulq_n_f64(v17, v14), v16, v15))];
     x = v10;
@@ -1950,7 +1950,7 @@ LABEL_31:
   return result;
 }
 
-- (BOOL)i_shouldCountAsClosestSmallRepForSizeLimit:(double)a3
+- (BOOL)i_shouldCountAsClosestSmallRepForSizeLimit:(double)limit
 {
   [(CRLCanvasRep *)self naturalBounds];
   v6 = v5;
@@ -1963,27 +1963,27 @@ LABEL_31:
   v9 = v6;
   v10 = v8;
   v11 = fminf(v9, v10);
-  v12 = [(CRLCanvasRep *)self canvas];
-  [v12 viewScale];
-  v14 = v13 * v11 < a3;
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas viewScale];
+  v14 = v13 * v11 < limit;
 
   return v14;
 }
 
-- (BOOL)intersectsUnscaledRect:(CGRect)a3
+- (BOOL)intersectsUnscaledRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(CRLCanvasRep *)self layout];
-  v8 = [v7 geometry];
-  [v8 size];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layout = [(CRLCanvasRep *)self layout];
+  geometry = [layout geometry];
+  [geometry size];
   v9 = [CRLBezierPath bezierPathWithRect:sub_10011ECB4()];
 
-  if (v7)
+  if (layout)
   {
-    [v7 transformInRoot];
+    [layout transformInRoot];
   }
 
   else
@@ -1997,26 +1997,26 @@ LABEL_31:
   return v10;
 }
 
-- (id)cursorAtPoint:(CGPoint)a3 forKnob:(id)a4 withCursorPlatformObject:(id)a5
+- (id)cursorAtPoint:(CGPoint)point forKnob:(id)knob withCursorPlatformObject:(id)object
 {
-  v7 = a4;
-  v8 = a5;
-  if (v7)
+  knobCopy = knob;
+  objectCopy = object;
+  if (knobCopy)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 && (sub_100345928([v7 tag]) & 0x3DE) != 0)
+    if ((objc_opt_isKindOfClass() & 1) == 0 && (sub_100345928([knobCopy tag]) & 0x3DE) != 0)
     {
-      v9 = [v8 pointerRequest];
-      v10 = [v9 modifiers];
+      pointerRequest = [objectCopy pointerRequest];
+      modifiers = [pointerRequest modifiers];
 
-      if ((v10 & 0x100000) != 0 && (-[CRLCanvasRep repForRotating](self, "repForRotating"), v11 = objc_claimAutoreleasedReturnValue(), [v7 rep], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v11 == v12))
+      if ((modifiers & 0x100000) != 0 && (-[CRLCanvasRep repForRotating](self, "repForRotating"), v11 = objc_claimAutoreleasedReturnValue(), [knobCopy rep], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v11 == v12))
       {
-        v13 = [v7 rotateCursor];
+        rotateCursor = [knobCopy rotateCursor];
       }
 
       else
       {
-        v13 = [v7 resizeCursor];
+        rotateCursor = [knobCopy resizeCursor];
       }
 
       goto LABEL_9;
@@ -2025,9 +2025,9 @@ LABEL_31:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = +[CRLCursor defaultCursor];
+      rotateCursor = +[CRLCursor defaultCursor];
 LABEL_9:
-      v14 = v13;
+      v14 = rotateCursor;
       goto LABEL_11;
     }
   }
@@ -2038,18 +2038,18 @@ LABEL_11:
   return v14;
 }
 
-- (id)p_repForDraggingIgnoringTopLevelEditing:(BOOL)a3
+- (id)p_repForDraggingIgnoringTopLevelEditing:(BOOL)editing
 {
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v6 = [(CRLCanvasRep *)self layout];
-  if (![v6 isDraggable])
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  layout = [(CRLCanvasRep *)self layout];
+  if (![layout isDraggable])
   {
     goto LABEL_6;
   }
 
-  v7 = [v5 canvasEditor];
-  v8 = [(CRLCanvasRep *)self layout];
-  if (![v7 isLayoutSelectable:v8] || -[CRLCanvasRep isLocked](self, "isLocked"))
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  layout2 = [(CRLCanvasRep *)self layout];
+  if (![canvasEditor isLayoutSelectable:layout2] || -[CRLCanvasRep isLocked](self, "isLocked"))
   {
 
 LABEL_5:
@@ -2058,26 +2058,26 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v12 = [v5 documentIsSharedReadOnly];
+  documentIsSharedReadOnly = [interactiveCanvasController documentIsSharedReadOnly];
 
-  if ((v12 & 1) == 0)
+  if ((documentIsSharedReadOnly & 1) == 0)
   {
-    if (-[CRLCanvasRep isSelected](self, "isSelected") || ([v5 layerHost], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "asUIKitHost"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isCurrentlyInQuickSelectMode"), v14, v13, (v15 & 1) == 0))
+    if (-[CRLCanvasRep isSelected](self, "isSelected") || ([interactiveCanvasController layerHost], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "asUIKitHost"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isCurrentlyInQuickSelectMode"), v14, v13, (v15 & 1) == 0))
     {
-      if ([v5 hasSelectedInfosInMultipleContainers])
+      if ([interactiveCanvasController hasSelectedInfosInMultipleContainers])
       {
-        v6 = [v5 infosForCurrentSelectionPath];
-        v16 = [(CRLCanvasRep *)self info];
-        v7 = [v16 parentInfo];
+        layout = [interactiveCanvasController infosForCurrentSelectionPath];
+        info = [(CRLCanvasRep *)self info];
+        canvasEditor = [info parentInfo];
 
-        if (v7)
+        if (canvasEditor)
         {
-          while (([v6 containsObject:v7] & 1) == 0)
+          while (([layout containsObject:canvasEditor] & 1) == 0)
           {
-            v17 = [v7 parentInfo];
+            parentInfo = [canvasEditor parentInfo];
 
-            v7 = v17;
-            if (!v17)
+            canvasEditor = parentInfo;
+            if (!parentInfo)
             {
               goto LABEL_16;
             }
@@ -2089,61 +2089,61 @@ LABEL_6:
 LABEL_16:
       }
 
-      else if (!a3)
+      else if (!editing)
       {
-        v18 = [(CRLCanvasRep *)self layout];
-        v19 = [v18 isInTopLevelContainerForEditing];
+        layout3 = [(CRLCanvasRep *)self layout];
+        isInTopLevelContainerForEditing = [layout3 isInTopLevelContainerForEditing];
 
-        if ((v19 & 1) == 0)
+        if ((isInTopLevelContainerForEditing & 1) == 0)
         {
-          v10 = [(CRLCanvasRep *)self parentRep];
+          parentRep = [(CRLCanvasRep *)self parentRep];
           goto LABEL_21;
         }
       }
 
-      v20 = self;
+      selfCopy = self;
       goto LABEL_23;
     }
   }
 
 LABEL_7:
-  v9 = [(CRLCanvasRep *)self parentRep];
-  v10 = v9;
-  if (!a3)
+  parentRep2 = [(CRLCanvasRep *)self parentRep];
+  parentRep = parentRep2;
+  if (!editing)
   {
 LABEL_21:
-    v11 = [v10 repForDragging];
+    repForDragging = [parentRep repForDragging];
     goto LABEL_22;
   }
 
-  v11 = [v9 i_repForDraggingIgnoringTopLevelEditing];
+  repForDragging = [parentRep2 i_repForDraggingIgnoringTopLevelEditing];
 LABEL_22:
-  v20 = v11;
+  selfCopy = repForDragging;
 
 LABEL_23:
 
-  return v20;
+  return selfCopy;
 }
 
-- (id)additionalRepsForDraggingConnectionLine:(id)a3
+- (id)additionalRepsForDraggingConnectionLine:(id)line
 {
-  v4 = a3;
+  lineCopy = line;
   v5 = objc_opt_class();
-  v6 = [v4 info];
+  info = [lineCopy info];
 
-  v7 = sub_100014370(v5, v6);
+  v7 = sub_100014370(v5, info);
 
   if (v7)
   {
-    v8 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v9 = [v8 editingCoordinator];
-    v10 = [v9 mainBoard];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    editingCoordinator = [interactiveCanvasController editingCoordinator];
+    mainBoard = [editingCoordinator mainBoard];
 
     v11 = objc_opt_class();
-    v12 = [(CRLCanvasRep *)self info];
-    v13 = sub_100014370(v11, v12);
+    info2 = [(CRLCanvasRep *)self info];
+    v13 = sub_100014370(v11, info2);
 
-    if ([v7 isConnectedWithBoardItem:v13 boardItemOwner:v10])
+    if ([v7 isConnectedWithBoardItem:v13 boardItemOwner:mainBoard])
     {
       v14 = [NSSet setWithObject:self];
     }
@@ -2216,63 +2216,63 @@ LABEL_23:
   return v18;
 }
 
-- (id)p_repForSelectingIgnoringTopLevelEditing:(BOOL)a3 ignoringInlineEditing:(BOOL)a4
+- (id)p_repForSelectingIgnoringTopLevelEditing:(BOOL)editing ignoringInlineEditing:(BOOL)inlineEditing
 {
-  v6 = [(CRLCanvasRep *)self interactiveCanvasController:a3];
-  v7 = [(CRLCanvasRep *)self layout];
-  if ([v7 isSelectable])
+  v6 = [(CRLCanvasRep *)self interactiveCanvasController:editing];
+  layout = [(CRLCanvasRep *)self layout];
+  if ([layout isSelectable])
   {
-    v8 = [v6 canvasEditor];
-    v9 = [(CRLCanvasRep *)self layout];
-    v10 = [v8 isLayoutSelectable:v9];
+    canvasEditor = [v6 canvasEditor];
+    layout2 = [(CRLCanvasRep *)self layout];
+    v10 = [canvasEditor isLayoutSelectable:layout2];
 
     if (!v10)
     {
       goto LABEL_29;
     }
 
-    v11 = [v6 hasSelectedInfosInMultipleContainers];
-    v12 = [v6 freehandDrawingToolkit];
-    v13 = [v12 isInDrawingMode];
+    hasSelectedInfosInMultipleContainers = [v6 hasSelectedInfosInMultipleContainers];
+    freehandDrawingToolkit = [v6 freehandDrawingToolkit];
+    isInDrawingMode = [freehandDrawingToolkit isInDrawingMode];
 
-    if ((v13 & 1) == 0 && !v11)
+    if ((isInDrawingMode & 1) == 0 && !hasSelectedInfosInMultipleContainers)
     {
-      if (!a3)
+      if (!editing)
       {
-        v14 = [(CRLCanvasRep *)self layout];
-        v15 = [v14 isInTopLevelContainerForEditing];
+        layout3 = [(CRLCanvasRep *)self layout];
+        isInTopLevelContainerForEditing = [layout3 isInTopLevelContainerForEditing];
 
-        if ((v15 & 1) == 0)
+        if ((isInTopLevelContainerForEditing & 1) == 0)
         {
-          v16 = [(CRLCanvasRep *)self parentRep];
+          parentRep = [(CRLCanvasRep *)self parentRep];
 LABEL_31:
-          v32 = [v16 repForSelecting];
+          repForSelecting = [parentRep repForSelecting];
           goto LABEL_32;
         }
       }
 
 LABEL_25:
-      v30 = self;
+      selfCopy = self;
       goto LABEL_33;
     }
 
-    v7 = [v6 infosForCurrentSelectionPath];
-    v17 = [(CRLCanvasRep *)self info];
-    v18 = [v7 containsObject:v17];
+    layout = [v6 infosForCurrentSelectionPath];
+    info = [(CRLCanvasRep *)self info];
+    v18 = [layout containsObject:info];
 
     if (!v18)
     {
-      v19 = [(CRLCanvasRep *)self info];
-      v20 = [v19 parentInfo];
+      info2 = [(CRLCanvasRep *)self info];
+      parentInfo = [info2 parentInfo];
 
-      if (v20)
+      if (parentInfo)
       {
-        while (([v7 containsObject:v20] & 1) == 0)
+        while (([layout containsObject:parentInfo] & 1) == 0)
         {
-          v21 = [v20 parentInfo];
+          v20ParentInfo = [parentInfo parentInfo];
 
-          v20 = v21;
-          if (!v21)
+          parentInfo = v20ParentInfo;
+          if (!v20ParentInfo)
           {
             goto LABEL_12;
           }
@@ -2286,8 +2286,8 @@ LABEL_12:
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v7 = v7;
-      v22 = [v7 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      layout = layout;
+      v22 = [layout countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v22)
       {
         v23 = v22;
@@ -2298,26 +2298,26 @@ LABEL_12:
           {
             if (*v35 != v24)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(layout);
             }
 
-            v26 = [*(*(&v34 + 1) + 8 * i) parentInfo];
-            if (v26)
+            parentInfo2 = [*(*(&v34 + 1) + 8 * i) parentInfo];
+            if (parentInfo2)
             {
-              v27 = v26;
+              v27 = parentInfo2;
               while (1)
               {
-                v28 = [(CRLCanvasRep *)self info];
+                info3 = [(CRLCanvasRep *)self info];
 
-                if (v27 == v28)
+                if (v27 == info3)
                 {
                   break;
                 }
 
-                v29 = [v27 parentInfo];
+                parentInfo3 = [v27 parentInfo];
 
-                v27 = v29;
-                if (!v29)
+                v27 = parentInfo3;
+                if (!parentInfo3)
                 {
                   goto LABEL_21;
                 }
@@ -2330,7 +2330,7 @@ LABEL_21:
             ;
           }
 
-          v23 = [v7 countByEnumeratingWithState:&v34 objects:v38 count:16];
+          v23 = [layout countByEnumeratingWithState:&v34 objects:v38 count:16];
           if (v23)
           {
             continue;
@@ -2347,150 +2347,150 @@ LABEL_21:
 LABEL_28:
 
 LABEL_29:
-  v31 = [(CRLCanvasRep *)self parentRep];
-  v16 = v31;
-  if (!a3)
+  parentRep2 = [(CRLCanvasRep *)self parentRep];
+  parentRep = parentRep2;
+  if (!editing)
   {
     goto LABEL_31;
   }
 
-  v32 = [v31 i_repForSelectingIgnoringTopLevelEditing];
+  repForSelecting = [parentRep2 i_repForSelectingIgnoringTopLevelEditing];
 LABEL_32:
-  v30 = v32;
+  selfCopy = repForSelecting;
 
 LABEL_33:
 
-  return v30;
+  return selfCopy;
 }
 
 - (BOOL)everAllowedToBeSelectedAsADrawable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(CRLCanvasRep *)self p_repForSelectingIgnoringTopLevelEditing:1 ignoringInlineEditing:1];
-  LOBYTE(v2) = v3 == v2;
+  LOBYTE(selfCopy) = v3 == selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 - (CRLCanvasRep)repForRotating
 {
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  if ([v3 hasSelectedInfosInMultipleContainers])
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  if ([interactiveCanvasController hasSelectedInfosInMultipleContainers])
   {
-    v4 = 1;
+    isInTopLevelContainerForEditing = 1;
   }
 
   else
   {
-    v5 = [(CRLCanvasRep *)self layout];
-    v4 = [v5 isInTopLevelContainerForEditing];
+    layout = [(CRLCanvasRep *)self layout];
+    isInTopLevelContainerForEditing = [layout isInTopLevelContainerForEditing];
   }
 
-  v6 = [(CRLCanvasRep *)self layout];
-  if (![v6 supportsRotation] || !v4)
+  layout2 = [(CRLCanvasRep *)self layout];
+  if (![layout2 supportsRotation] || !isInTopLevelContainerForEditing)
   {
     goto LABEL_9;
   }
 
-  v7 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v8 = [v7 canvasEditor];
-  v9 = [(CRLCanvasRep *)self layout];
-  if (![v8 isLayoutSelectable:v9] || -[CRLCanvasRep isLocked](self, "isLocked"))
+  interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController2 canvasEditor];
+  layout3 = [(CRLCanvasRep *)self layout];
+  if (![canvasEditor isLayoutSelectable:layout3] || -[CRLCanvasRep isLocked](self, "isLocked"))
   {
 
 LABEL_9:
 LABEL_10:
-    v10 = [(CRLCanvasRep *)self parentRep];
-    v11 = [v10 repForRotating];
+    parentRep = [(CRLCanvasRep *)self parentRep];
+    selfCopy = [parentRep repForRotating];
 
     goto LABEL_11;
   }
 
-  v13 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v14 = [v13 documentIsSharedReadOnly];
+  interactiveCanvasController3 = [(CRLCanvasRep *)self interactiveCanvasController];
+  documentIsSharedReadOnly = [interactiveCanvasController3 documentIsSharedReadOnly];
 
-  if (v14)
+  if (documentIsSharedReadOnly)
   {
     goto LABEL_10;
   }
 
-  v11 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v11;
+  return selfCopy;
 }
 
 - (CRLCanvasRep)repForFreeTransforming
 {
-  v3 = [(CRLCanvasRep *)self repForRotating];
-  if (!v3)
+  repForRotating = [(CRLCanvasRep *)self repForRotating];
+  if (!repForRotating)
   {
-    v3 = [(CRLCanvasRep *)self repForDragging];
+    repForRotating = [(CRLCanvasRep *)self repForDragging];
   }
 
-  return v3;
+  return repForRotating;
 }
 
 - (BOOL)p_isNotSelectableDueToUnknownContent
 {
-  v3 = [(CRLCanvasRep *)self info];
-  v4 = sub_100125F34(v3);
+  info = [(CRLCanvasRep *)self info];
+  v4 = sub_100125F34(info);
 
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v6 = [v5 repForInfo:v4];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  v6 = [interactiveCanvasController repForInfo:v4];
 
-  LOBYTE(v5) = [v6 containsUnknownContent];
-  return v5;
+  LOBYTE(interactiveCanvasController) = [v6 containsUnknownContent];
+  return interactiveCanvasController;
 }
 
 - (void)p_showAlertForGroupWithUnknownContent
 {
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v2 = [v3 layerHost];
-  [_TtC8Freeform13CRLUnknownRep presentUnsupportedItemAlertWithLayerHost:v2 forGroup:1];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  [_TtC8Freeform13CRLUnknownRep presentUnsupportedItemAlertWithLayerHost:layerHost forGroup:1];
 }
 
 - (CRLCanvasRep)repForHandleSingleTap
 {
-  v3 = [(CRLCanvasRep *)self repForSelecting];
-  if (!v3)
+  selfCopy = [(CRLCanvasRep *)self repForSelecting];
+  if (!selfCopy)
   {
     if ([(CRLCanvasRep *)self p_isNotSelectableDueToUnknownContent])
     {
-      v3 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v3 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (CRLCanvasRep)repForPreviewing
 {
-  v2 = self;
-  v3 = v2;
+  selfCopy = self;
+  v3 = selfCopy;
   while (1)
   {
-    v4 = [v3 repForSelecting];
-    if ([v4 isPreviewable])
+    repForSelecting = [v3 repForSelecting];
+    if ([repForSelecting isPreviewable])
     {
       break;
     }
 
-    v5 = [v3 parentRep];
+    parentRep = [v3 parentRep];
 
-    v3 = v5;
-    if (!v5)
+    v3 = parentRep;
+    if (!parentRep)
     {
       goto LABEL_6;
     }
   }
 
-  if (v4)
+  if (repForSelecting)
   {
     goto LABEL_18;
   }
@@ -2505,7 +2505,7 @@ LABEL_6:
   v7 = off_1019EDA68;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    sub_1013528B0(v2, v6, v7);
+    sub_1013528B0(selfCopy, v6, v7);
   }
 
   if (qword_101AD5A10 != -1)
@@ -2521,11 +2521,11 @@ LABEL_6:
 
   v9 = [NSString stringWithUTF8String:"[CRLCanvasRep repForPreviewing]"];
   v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCanvasRep.m"];
-  if (v2)
+  if (selfCopy)
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:1143 isFatal:0 description:"There should have been a rep suitable for previewing <%{public}@: %{public}p>", v12, v2];
+    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:1143 isFatal:0 description:"There should have been a rep suitable for previewing <%{public}@: %{public}p>", v12, selfCopy];
   }
 
   else
@@ -2533,28 +2533,28 @@ LABEL_6:
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:1143 isFatal:0 description:"There should have been a rep suitable for previewing <%{public}@: %{public}p>", @"Nil", 0];
   }
 
-  v4 = 0;
+  repForSelecting = 0;
 LABEL_18:
 
-  return v4;
+  return repForSelecting;
 }
 
 - (NSArray)layoutsForChildReps
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  v3 = [v2 children];
+  layout = [(CRLCanvasRep *)self layout];
+  children = [layout children];
 
-  return v3;
+  return children;
 }
 
 - (void)updateChildrenFromLayout
 {
-  v3 = [(CRLCanvasRep *)self childReps];
-  v4 = [(CRLCanvasRep *)self layoutsForChildReps];
-  v5 = [v4 count];
-  v30 = v3;
-  v29 = v4;
-  if (v5 != [v3 count])
+  childReps = [(CRLCanvasRep *)self childReps];
+  layoutsForChildReps = [(CRLCanvasRep *)self layoutsForChildReps];
+  v5 = [layoutsForChildReps count];
+  v30 = childReps;
+  v29 = layoutsForChildReps;
+  if (v5 != [childReps count])
   {
     goto LABEL_14;
   }
@@ -2563,8 +2563,8 @@ LABEL_18:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = v4;
-  v7 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  canvas = layoutsForChildReps;
+  v7 = [canvas countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2576,26 +2576,26 @@ LABEL_18:
       {
         if (*v36 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(canvas);
         }
 
         v12 = *(*(&v35 + 1) + 8 * i);
         v13 = [v30 objectAtIndexedSubscript:v9];
-        v14 = [v13 layout];
-        v15 = v14;
-        if (v14 != v12)
+        layout = [v13 layout];
+        v15 = layout;
+        if (layout != v12)
         {
 
 LABEL_13:
-          v4 = v29;
+          layoutsForChildReps = v29;
 LABEL_14:
-          v6 = [(CRLCanvasRep *)self canvas];
+          canvas = [(CRLCanvasRep *)self canvas];
           v17 = objc_alloc_init(NSMutableArray);
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
           v34 = 0u;
-          v18 = v4;
+          v18 = layoutsForChildReps;
           v19 = [v18 countByEnumeratingWithState:&v31 objects:v39 count:16];
           if (!v19)
           {
@@ -2614,25 +2614,25 @@ LABEL_17:
             }
 
             v23 = *(*(&v31 + 1) + 8 * v22);
-            v24 = [v6 repForLayout:v23];
+            v24 = [canvas repForLayout:v23];
             if (v24)
             {
               goto LABEL_25;
             }
 
             v24 = [objc_alloc(objc_msgSend(v23 "repClassOverride"))];
-            v25 = [(CRLCanvasRep *)self canvas];
-            if (![v25 isCanvasInteractive])
+            canvas2 = [(CRLCanvasRep *)self canvas];
+            if (![canvas2 isCanvasInteractive])
             {
               goto LABEL_23;
             }
 
-            v26 = [(CRLCanvasRep *)self isInDynamicOperation];
+            isInDynamicOperation = [(CRLCanvasRep *)self isInDynamicOperation];
 
-            if (v26)
+            if (isInDynamicOperation)
             {
-              v25 = [(CRLCanvasRep *)self layout];
-              [v24 dynamicOperationDidBeginWithRealTimeCommands:{objc_msgSend(v25, "isInRealTimeDynamicOperation")}];
+              canvas2 = [(CRLCanvasRep *)self layout];
+              [v24 dynamicOperationDidBeginWithRealTimeCommands:{objc_msgSend(canvas2, "isInRealTimeDynamicOperation")}];
 LABEL_23:
             }
 
@@ -2651,7 +2651,7 @@ LABEL_25:
               {
 LABEL_28:
 
-                [v6 orderRepsForLayout:v17];
+                [canvas orderRepsForLayout:v17];
                 [(CRLCanvasRep *)self p_setChildReps:v17];
 
                 goto LABEL_29;
@@ -2664,9 +2664,9 @@ LABEL_28:
           }
         }
 
-        v16 = [v13 parentRep];
+        parentRep = [v13 parentRep];
 
-        if (v16 != self)
+        if (parentRep != self)
         {
           goto LABEL_13;
         }
@@ -2674,26 +2674,26 @@ LABEL_28:
         ++v9;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v8 = [canvas countByEnumeratingWithState:&v35 objects:v40 count:16];
       if (!v8)
       {
 LABEL_29:
-        v4 = v29;
+        layoutsForChildReps = v29;
         break;
       }
     }
   }
 
-  v27 = [(CRLCanvasRep *)self childReps];
-  [v27 makeObjectsPerformSelector:a2];
+  childReps2 = [(CRLCanvasRep *)self childReps];
+  [childReps2 makeObjectsPerformSelector:a2];
 }
 
-- (void)p_setChildReps:(id)a3
+- (void)p_setChildReps:(id)reps
 {
-  v4 = a3;
-  if (([v4 isEqual:self->mChildReps] & 1) == 0)
+  repsCopy = reps;
+  if (([repsCopy isEqual:self->mChildReps] & 1) == 0)
   {
-    v5 = [[NSSet alloc] initWithArray:v4];
+    v5 = [[NSSet alloc] initWithArray:repsCopy];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -2716,9 +2716,9 @@ LABEL_29:
           v11 = *(*(&v27 + 1) + 8 * i);
           if (([v5 containsObject:v11] & 1) == 0)
           {
-            v12 = [v11 parentRep];
+            parentRep = [v11 parentRep];
 
-            if (v12 == self)
+            if (parentRep == self)
             {
               [v11 setParentRep:0];
             }
@@ -2745,7 +2745,7 @@ LABEL_29:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v14 = v4;
+    v14 = repsCopy;
     v15 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v15)
     {
@@ -2763,8 +2763,8 @@ LABEL_29:
           v19 = *(*(&v23 + 1) + 8 * j);
           if (([v13 containsObject:{v19, v23}] & 1) == 0)
           {
-            v20 = [v19 parentRep];
-            [v20 removeChildRep:v19];
+            parentRep2 = [v19 parentRep];
+            [parentRep2 removeChildRep:v19];
 
             [v19 setParentRep:self];
           }
@@ -2782,69 +2782,69 @@ LABEL_29:
   }
 }
 
-- (void)removeChildRep:(id)a3
+- (void)removeChildRep:(id)rep
 {
-  v5 = a3;
+  repCopy = rep;
   v4 = [(NSMutableArray *)self->mChildReps indexOfObjectIdenticalTo:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableArray *)self->mChildReps removeObjectAtIndex:v4];
-    [v5 setParentRep:0];
+    [repCopy setParentRep:0];
   }
 }
 
-- (void)didAddChildRep:(id)a3
+- (void)didAddChildRep:(id)rep
 {
-  v6 = a3;
+  repCopy = rep;
   if ([(CRLCanvasRep *)self isInDynamicOperation])
   {
-    v4 = [(CRLCanvasRep *)self layout];
-    [v6 dynamicOperationDidBeginWithRealTimeCommands:{objc_msgSend(v4, "isInRealTimeDynamicOperation")}];
+    layout = [(CRLCanvasRep *)self layout];
+    [repCopy dynamicOperationDidBeginWithRealTimeCommands:{objc_msgSend(layout, "isInRealTimeDynamicOperation")}];
 
     if ([(CRLCanvasRep *)self isBeingRotated])
     {
-      [v6 dynamicRotateDidBegin];
+      [repCopy dynamicRotateDidBegin];
     }
 
     else if ([(CRLCanvasRep *)self isBeingResized])
     {
-      v5 = [v6 dynamicResizeDidBegin];
+      dynamicResizeDidBegin = [repCopy dynamicResizeDidBegin];
     }
   }
 }
 
 - (void)updateFromLayout
 {
-  v3 = [(CRLCanvasRep *)self canvas];
-  v4 = [v3 isCanvasInteractive];
+  canvas = [(CRLCanvasRep *)self canvas];
+  isCanvasInteractive = [canvas isCanvasInteractive];
 
-  if (v4)
+  if (isCanvasInteractive)
   {
     if (-[CRLCanvasRep providesBackgroundLayerMaskingRect](self, "providesBackgroundLayerMaskingRect") || !-[CRLCanvasRep p_isBeingDraggedRecursive](self, "p_isBeingDraggedRecursive") && (!-[CRLCanvasRep isBeingRotated](self, "isBeingRotated") || (-[CRLCanvasRep layout](self, "layout"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 wantsNormalLayoutDuringDynamicRotation], v14, v15)))
     {
-      v5 = [(CRLCanvasRep *)self layout];
-      v6 = [v5 geometryInRoot];
+      layout = [(CRLCanvasRep *)self layout];
+      geometryInRoot = [layout geometryInRoot];
 
-      if (([v6 isEqual:self->mLastGeometryInRoot] & 1) == 0)
+      if (([geometryInRoot isEqual:self->mLastGeometryInRoot] & 1) == 0)
       {
-        -[CRLCanvasRep layoutInRootChangedFrom:to:translatedOnly:](self, "layoutInRootChangedFrom:to:translatedOnly:", self->mLastGeometryInRoot, v6, [v6 differsInMoreThanTranslationFrom:self->mLastGeometryInRoot] ^ 1);
+        -[CRLCanvasRep layoutInRootChangedFrom:to:translatedOnly:](self, "layoutInRootChangedFrom:to:translatedOnly:", self->mLastGeometryInRoot, geometryInRoot, [geometryInRoot differsInMoreThanTranslationFrom:self->mLastGeometryInRoot] ^ 1);
         if ([(CRLCanvasRep *)self providesBackgroundLayerMaskingRect])
         {
-          v7 = [(CRLCanvasRep *)self interactiveCanvasController];
-          v8 = [v7 layerHost];
-          v9 = [v8 canvasLayer];
-          v10 = [v9 associatedBackgroundLayer];
-          [v10 setNeedsLayout];
+          interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+          layerHost = [interactiveCanvasController layerHost];
+          canvasLayer = [layerHost canvasLayer];
+          associatedBackgroundLayer = [canvasLayer associatedBackgroundLayer];
+          [associatedBackgroundLayer setNeedsLayout];
         }
       }
 
-      v11 = [v6 copy];
+      v11 = [geometryInRoot copy];
       mLastGeometryInRoot = self->mLastGeometryInRoot;
       self->mLastGeometryInRoot = v11;
     }
 
-    v13 = [(CRLCanvasRep *)self layout];
-    [v13 i_takeDirtyRect];
+    layout2 = [(CRLCanvasRep *)self layout];
+    [layout2 i_takeDirtyRect];
     [(CRLCanvasRep *)self setNeedsDisplayInRect:?];
 
     [(CRLCanvasRep *)self i_invalidateSelectionHighlightRenderable];
@@ -2866,10 +2866,10 @@ LABEL_29:
   v4 = 1;
   if (![(CRLCanvasRep *)self isBeingDragged]&& (v3 & 1) == 0)
   {
-    v5 = [(CRLCanvasRep *)self layout];
-    v6 = [v5 layoutState];
+    layout = [(CRLCanvasRep *)self layout];
+    layoutState = [layout layoutState];
 
-    if (v6 == 1 && ([(CRLCanvasRep *)self parentRep], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (layoutState == 1 && ([(CRLCanvasRep *)self parentRep], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v8 = v7;
       do
@@ -2890,12 +2890,12 @@ LABEL_29:
           break;
         }
 
-        v10 = [v8 parentRep];
+        parentRep = [v8 parentRep];
 
-        v8 = v10;
+        v8 = parentRep;
       }
 
-      while (v10);
+      while (parentRep);
     }
 
     else
@@ -2907,12 +2907,12 @@ LABEL_29:
   return v4 & 1;
 }
 
-- (void)layoutInRootChangedFrom:(id)a3 to:(id)a4 translatedOnly:(BOOL)a5
+- (void)layoutInRootChangedFrom:(id)from to:(id)to translatedOnly:(BOOL)only
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  onlyCopy = only;
+  fromCopy = from;
+  toCopy = to;
+  if (onlyCopy)
   {
     if (![(CRLCanvasRep *)self skipsRerenderForTranslation])
     {
@@ -2920,9 +2920,9 @@ LABEL_29:
       v12 = 0uLL;
       v13 = 0uLL;
       v14 = 0uLL;
-      if (v8)
+      if (fromCopy)
       {
-        [v8 transform];
+        [fromCopy transform];
         v13 = v41;
         v14 = v42;
         v12 = v43;
@@ -2935,9 +2935,9 @@ LABEL_29:
       v18 = 0uLL;
       v19 = 0uLL;
       v20 = 0uLL;
-      if (v9)
+      if (toCopy)
       {
-        [v9 transform];
+        [toCopy transform];
         v18 = v41;
         v19 = v42;
         v20 = v43;
@@ -2949,8 +2949,8 @@ LABEL_29:
 
       v25 = sub_10011F31C(v22, v24, v16);
       v27 = v26;
-      v28 = [(CRLCanvasRep *)self canvas];
-      [v28 contentsScale];
+      canvas = [(CRLCanvasRep *)self canvas];
+      [canvas contentsScale];
       v30 = sub_10011F340(v25, v27, v29);
       v32 = v31;
 
@@ -2982,26 +2982,26 @@ LABEL_29:
     return result;
   }
 
-  v6 = [(CRLCanvasRep *)self parentRep];
-  if ([v6 isBeingRotated])
+  parentRep = [(CRLCanvasRep *)self parentRep];
+  if ([parentRep isBeingRotated])
   {
   }
 
   else
   {
-    v7 = [(CRLCanvasRep *)self layout];
-    v8 = [v7 wantsNormalLayoutDuringDynamicRotation];
+    layout = [(CRLCanvasRep *)self layout];
+    wantsNormalLayoutDuringDynamicRotation = [layout wantsNormalLayoutDuringDynamicRotation];
 
-    if ((v8 & 1) == 0)
+    if ((wantsNormalLayoutDuringDynamicRotation & 1) == 0)
     {
       v38 = 0u;
       v39 = 0u;
       v37 = 0u;
-      v19 = [(CRLCanvasRep *)self layout];
-      v20 = v19;
-      if (v19)
+      layout2 = [(CRLCanvasRep *)self layout];
+      v20 = layout2;
+      if (layout2)
       {
-        [v19 originalPureTransformInRoot];
+        [layout2 originalPureTransformInRoot];
       }
 
       else
@@ -3014,11 +3014,11 @@ LABEL_29:
       v35 = 0u;
       v36 = 0u;
       v34 = 0u;
-      v21 = [(CRLCanvasRep *)self layout];
-      v22 = v21;
-      if (v21)
+      layout3 = [(CRLCanvasRep *)self layout];
+      v22 = layout3;
+      if (layout3)
       {
-        [v21 pureTransformInRoot];
+        [layout3 pureTransformInRoot];
       }
 
       else
@@ -3038,14 +3038,14 @@ LABEL_29:
     }
   }
 
-  v27 = [(CRLCanvasRep *)self parentRep];
-  if (([v27 isBeingRotated] & 1) == 0)
+  parentRep2 = [(CRLCanvasRep *)self parentRep];
+  if (([parentRep2 isBeingRotated] & 1) == 0)
   {
     goto LABEL_25;
   }
 
-  v9 = [(CRLCanvasRep *)self layout];
-  if (([v9 wantsNormalLayoutDuringDynamicRotation] & 1) == 0)
+  layout4 = [(CRLCanvasRep *)self layout];
+  if (([layout4 wantsNormalLayoutDuringDynamicRotation] & 1) == 0)
   {
 
 LABEL_25:
@@ -3053,32 +3053,32 @@ LABEL_25:
     return result;
   }
 
-  v10 = [(CRLCanvasRep *)self layout];
-  v11 = [v10 i_anyAncestorCurrentlyBeingRotatedWantsNormalLayoutDuringDynamicRotation];
+  layout5 = [(CRLCanvasRep *)self layout];
+  i_anyAncestorCurrentlyBeingRotatedWantsNormalLayoutDuringDynamicRotation = [layout5 i_anyAncestorCurrentlyBeingRotatedWantsNormalLayoutDuringDynamicRotation];
 
-  if ((v11 & 1) == 0)
+  if ((i_anyAncestorCurrentlyBeingRotatedWantsNormalLayoutDuringDynamicRotation & 1) == 0)
   {
-    v12 = [(CRLCanvasRep *)self parentRep];
-    if (v12)
+    parentRep3 = [(CRLCanvasRep *)self parentRep];
+    if (parentRep3)
     {
-      v13 = v12;
+      v13 = parentRep3;
       while (1)
       {
         if ([v13 isBeingRotated])
         {
-          v14 = [v13 parentRep];
-          v15 = [v14 isBeingRotated];
+          parentRep4 = [v13 parentRep];
+          isBeingRotated = [parentRep4 isBeingRotated];
 
-          if (!v15)
+          if (!isBeingRotated)
           {
             break;
           }
         }
 
-        v16 = [v13 parentRep];
+        parentRep5 = [v13 parentRep];
 
-        v13 = v16;
-        if (!v16)
+        v13 = parentRep5;
+        if (!parentRep5)
         {
           goto LABEL_13;
         }
@@ -3087,11 +3087,11 @@ LABEL_25:
       v38 = 0u;
       v39 = 0u;
       v37 = 0u;
-      v23 = [v13 layout];
-      v24 = v23;
-      if (v23)
+      layout6 = [v13 layout];
+      v24 = layout6;
+      if (layout6)
       {
-        [v23 originalPureTransformInRoot];
+        [layout6 originalPureTransformInRoot];
       }
 
       else
@@ -3104,11 +3104,11 @@ LABEL_25:
       v35 = 0u;
       v36 = 0u;
       v34 = 0u;
-      v25 = [v13 layout];
-      v26 = v25;
-      if (v25)
+      layout7 = [v13 layout];
+      v26 = layout7;
+      if (layout7)
       {
-        [v25 pureTransformInRoot];
+        [layout7 pureTransformInRoot];
       }
 
       else
@@ -3161,15 +3161,15 @@ LABEL_13:
   return result;
 }
 
-- (CGAffineTransform)p_layerTransformForRotationFromPureTransformInRoot:(SEL)a3 toPureTransformInRoot:(CGAffineTransform *)a4
+- (CGAffineTransform)p_layerTransformForRotationFromPureTransformInRoot:(SEL)root toPureTransformInRoot:(CGAffineTransform *)inRoot
 {
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  v8 = *&a4->c;
-  *&v33.a = *&a4->a;
+  v8 = *&inRoot->c;
+  *&v33.a = *&inRoot->a;
   *&v33.c = v8;
-  *&v33.tx = *&a4->tx;
+  *&v33.tx = *&inRoot->tx;
   CGAffineTransformInvert(&t1, &v33);
   v9 = *&a5->c;
   *&v33.a = *&a5->a;
@@ -3212,15 +3212,15 @@ LABEL_13:
   *&retstr->a = *&CGAffineTransformIdentity.a;
   *&retstr->c = v5;
   *&retstr->tx = *&CGAffineTransformIdentity.tx;
-  v6 = [(CRLCanvasRep *)self parentRep];
+  parentRep = [(CRLCanvasRep *)self parentRep];
 
-  if (v6)
+  if (parentRep)
   {
-    v8 = [(CRLCanvasRep *)self parentRep];
-    v9 = v8;
-    if (v8)
+    parentRep2 = [(CRLCanvasRep *)self parentRep];
+    v9 = parentRep2;
+    if (parentRep2)
     {
-      [v8 layerTransformInRootForZeroAnchor];
+      [parentRep2 layerTransformInRootForZeroAnchor];
     }
 
     else
@@ -3279,20 +3279,20 @@ LABEL_13:
       *&t2.c = *&v22.c;
       *&t2.tx = v16;
       CGAffineTransformConcat(retstr, &t1, &t2);
-      v18 = [(CGAffineTransform *)v6 parentRep];
+      parentRep = [(CGAffineTransform *)v6 parentRep];
 
-      v6 = v18;
+      v6 = parentRep;
     }
 
-    while (v18);
+    while (parentRep);
   }
 
   return result;
 }
 
-- (void)updateRenderableGeometryFromLayout:(id)a3
+- (void)updateRenderableGeometryFromLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   [(CRLCanvasRep *)self layerFrameInScaledCanvasRelativeToParent];
   v6 = v5;
   v8 = v7;
@@ -3305,26 +3305,26 @@ LABEL_13:
   v13[0] = v14;
   v13[1] = v15;
   v13[2] = v16;
-  [v4 setIfDifferentFrame:v13 orTransform:{v6, v8, v10, v12}];
+  [layoutCopy setIfDifferentFrame:v13 orTransform:{v6, v8, v10, v12}];
 }
 
-- (void)antiAliasDefeatLayerTransform:(CGAffineTransform *)a3 forFrame:(CGRect)a4
+- (void)antiAliasDefeatLayerTransform:(CGAffineTransform *)transform forFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = *&a3->c;
-  *&v37.a = *&a3->a;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v10 = *&transform->c;
+  *&v37.a = *&transform->a;
   *&v37.c = v10;
-  *&v37.tx = *&a3->tx;
-  if (sub_100139A98(&v37.a, a4.size.width, a4.size.height))
+  *&v37.tx = *&transform->tx;
+  if (sub_100139A98(&v37.a, frame.size.width, frame.size.height))
   {
     memset(&v37, 0, sizeof(v37));
-    v11 = *&a3->c;
-    *&v36.a = *&a3->a;
+    v11 = *&transform->c;
+    *&v36.a = *&transform->a;
     *&v36.c = v11;
-    *&v36.tx = *&a3->tx;
+    *&v36.tx = *&transform->tx;
     sub_100139EB4(&v36, &v37, width * -0.5, height * -0.5);
     v36 = v37;
     v38.origin.x = x;
@@ -3336,8 +3336,8 @@ LABEL_13:
     v13 = v39.origin.y;
     v14 = v39.size.width;
     v15 = v39.size.height;
-    v16 = [(CRLCanvasRep *)self canvas];
-    [v16 contentsScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas contentsScale];
     v18 = sub_1001221E8(v12, v13, v14, v15, v17);
     v30 = v19;
     v31 = v18;
@@ -3378,45 +3378,45 @@ LABEL_13:
     t2 = v35;
     sub_100139EB4(&t2, &v35, width * 0.5, v32 * 0.5);
     v36 = v35;
-    v28 = *&a3->c;
-    *&t2.a = *&a3->a;
+    v28 = *&transform->c;
+    *&t2.a = *&transform->a;
     *&t2.c = v28;
-    *&t2.tx = *&a3->tx;
+    *&t2.tx = *&transform->tx;
     t1 = v35;
     CGAffineTransformConcat(&v35, &t2, &t1);
     v29 = *&v35.c;
-    *&a3->a = *&v35.a;
-    *&a3->c = v29;
-    *&a3->tx = *&v35.tx;
+    *&transform->a = *&v35.a;
+    *&transform->c = v29;
+    *&transform->tx = *&v35.tx;
   }
 }
 
-- (void)antiAliasDefeatLayerFrame:(CGRect *)a3 forTransform:(CGAffineTransform *)a4
+- (void)antiAliasDefeatLayerFrame:(CGRect *)frame forTransform:(CGAffineTransform *)transform
 {
-  v7 = *&a4->c;
-  *&v30.a = *&a4->a;
+  v7 = *&transform->c;
+  *&v30.a = *&transform->a;
   *&v30.c = v7;
-  *&v30.tx = *&a4->tx;
-  if (sub_100139A98(&v30.a, a3->size.width, a3->size.height))
+  *&v30.tx = *&transform->tx;
+  if (sub_100139A98(&v30.a, frame->size.width, frame->size.height))
   {
     __asm { FMOV            V1.2D, #-0.5 }
 
-    v13 = vmulq_f64(a3->size, _Q1);
-    v14 = *&a4->c;
-    *&v29.a = *&a4->a;
+    v13 = vmulq_f64(frame->size, _Q1);
+    v14 = *&transform->c;
+    *&v29.a = *&transform->a;
     *&v29.c = v14;
-    *&v29.tx = *&a4->tx;
+    *&v29.tx = *&transform->tx;
     memset(&v30, 0, sizeof(v30));
     sub_100139EB4(&v29, &v30, v13.f64[0], v13.f64[1]);
-    v31 = *a3;
+    v31 = *frame;
     v29 = v30;
     v32 = CGRectApplyAffineTransform(v31, &v29);
     x = v32.origin.x;
     y = v32.origin.y;
     width = v32.size.width;
     height = v32.size.height;
-    v19 = [(CRLCanvasRep *)self canvas];
-    [v19 contentsScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas contentsScale];
     v21 = sub_1001221E8(x, y, width, height, v20);
     v23 = v22;
     v25 = v24;
@@ -3428,11 +3428,11 @@ LABEL_13:
     v33.origin.y = v23;
     v33.size.width = v25;
     v33.size.height = v27;
-    *a3 = CGRectApplyAffineTransform(v33, &v29);
+    *frame = CGRectApplyAffineTransform(v33, &v29);
   }
 }
 
-- (void)computeDirectLayerFrame:(CGRect *)a3 andTransform:(CGAffineTransform *)a4 basedOnTransform:(CGAffineTransform *)a5 andSize:(CGSize)a6
+- (void)computeDirectLayerFrame:(CGRect *)frame andTransform:(CGAffineTransform *)transform basedOnTransform:(CGAffineTransform *)onTransform andSize:(CGSize)size
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvas);
   [WeakRetained convertUnscaledToBoundsRect:sub_10011ECB4()];
@@ -3442,9 +3442,9 @@ LABEL_13:
   v18 = v17;
 
   v19 = objc_opt_class();
-  v20 = [(CRLCanvasRep *)self layout];
-  v21 = [v20 parent];
-  v22 = sub_100014370(v19, v21);
+  layout = [(CRLCanvasRep *)self layout];
+  parent = [layout parent];
+  v22 = sub_100014370(v19, parent);
 
   if (v22)
   {
@@ -3459,72 +3459,72 @@ LABEL_13:
       [v22 transformInRoot];
     }
 
-    v25 = *&a5->c;
-    *&t1.a = *&a5->a;
+    v25 = *&onTransform->c;
+    *&t1.a = *&onTransform->a;
     *&t1.c = v25;
-    *&t1.tx = *&a5->tx;
+    *&t1.tx = *&onTransform->tx;
     t2 = v44;
     CGAffineTransformConcat(&v43, &t1, &t2);
     v26 = *&v43.c;
-    *&a5->a = *&v43.a;
-    *&a5->c = v26;
-    *&a5->tx = *&v43.tx;
+    *&onTransform->a = *&v43.a;
+    *&onTransform->c = v26;
+    *&onTransform->tx = *&v43.tx;
   }
 
   v27 = objc_loadWeakRetained(&self->mCanvas);
   [v27 viewScale];
   v39 = v28;
 
-  v29 = *&a5->c;
-  *&a5->tx = vmulq_n_f64(*&a5->tx, v39);
-  *&v43.a = *&a5->a;
+  v29 = *&onTransform->c;
+  *&onTransform->tx = vmulq_n_f64(*&onTransform->tx, v39);
+  *&v43.a = *&onTransform->a;
   *&v43.c = v29;
-  *&v43.tx = *&a5->tx;
+  *&v43.tx = *&onTransform->tx;
   sub_100139EB4(&v43, &v44, v16 * 0.5, v18 * 0.5);
   v30 = *&v44.c;
-  *&a5->a = *&v44.a;
-  *&a5->c = v30;
-  *&a5->tx = *&v44.tx;
-  v31 = [(CRLCanvasRep *)self parentRep];
+  *&onTransform->a = *&v44.a;
+  *&onTransform->c = v30;
+  *&onTransform->tx = *&v44.tx;
+  parentRep = [(CRLCanvasRep *)self parentRep];
 
-  if (v31)
+  if (parentRep)
   {
-    v32 = [(CRLCanvasRep *)self parentRep];
-    [v32 layerFrameInScaledCanvas];
+    parentRep2 = [(CRLCanvasRep *)self parentRep];
+    [parentRep2 layerFrameInScaledCanvas];
     v38 = v34;
     v40 = v33;
 
     v35.f64[0] = v40;
     v35.f64[1] = v38;
-    *&a5->tx = vsubq_f64(*&a5->tx, v35);
+    *&onTransform->tx = vsubq_f64(*&onTransform->tx, v35);
   }
 
-  if (a3)
+  if (frame)
   {
-    a3->origin.x = v12;
-    a3->origin.y = v14;
-    a3->size.width = v16;
-    a3->size.height = v18;
+    frame->origin.x = v12;
+    frame->origin.y = v14;
+    frame->size.width = v16;
+    frame->size.height = v18;
   }
 
-  if (a4)
+  if (transform)
   {
-    v36 = *&a5->a;
-    v37 = *&a5->tx;
-    *&a4->c = *&a5->c;
-    *&a4->tx = v37;
-    *&a4->a = v36;
+    v36 = *&onTransform->a;
+    v37 = *&onTransform->tx;
+    *&transform->c = *&onTransform->c;
+    *&transform->tx = v37;
+    *&transform->a = v36;
   }
 }
 
-- (void)computeDirectLayerFrame:(CGRect *)a3 andTransform:(CGAffineTransform *)a4
+- (void)computeDirectLayerFrame:(CGRect *)frame andTransform:(CGAffineTransform *)transform
 {
-  v7 = [(CRLCanvasRep *)self layout];
-  v8 = [v7 geometry];
-  v9 = v8;
-  if (v8)
+  layout = [(CRLCanvasRep *)self layout];
+  geometry = [layout geometry];
+  v9 = geometry;
+  if (geometry)
   {
-    [v8 transform];
+    [geometry transform];
   }
 
   else
@@ -3535,18 +3535,18 @@ LABEL_13:
   }
 
   v10 = [(CRLCanvasRep *)self layout:v12];
-  v11 = [v10 geometry];
-  [v11 size];
-  [(CRLCanvasRep *)self computeDirectLayerFrame:a3 andTransform:a4 basedOnTransform:&v12 andSize:?];
+  geometry2 = [v10 geometry];
+  [geometry2 size];
+  [(CRLCanvasRep *)self computeDirectLayerFrame:frame andTransform:transform basedOnTransform:&v12 andSize:?];
 }
 
-- (void)computeDirectLayerFrame:(CGRect *)a3 andTransform:(CGAffineTransform *)a4 basedOnLayoutGeometry:(id)a5
+- (void)computeDirectLayerFrame:(CGRect *)frame andTransform:(CGAffineTransform *)transform basedOnLayoutGeometry:(id)geometry
 {
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  geometryCopy = geometry;
+  v9 = geometryCopy;
+  if (geometryCopy)
   {
-    [v8 transform];
+    [geometryCopy transform];
   }
 
   else
@@ -3557,18 +3557,18 @@ LABEL_13:
   }
 
   [v9 size];
-  [(CRLCanvasRep *)self computeDirectLayerFrame:a3 andTransform:a4 basedOnTransform:&v10 andSize:?];
+  [(CRLCanvasRep *)self computeDirectLayerFrame:frame andTransform:transform basedOnTransform:&v10 andSize:?];
 }
 
-- (void)processChanges:(id)a3
+- (void)processChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v5 = objc_alloc_init(NSMutableOrderedSet);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = v4;
+  v6 = changesCopy;
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
   {
@@ -3584,16 +3584,16 @@ LABEL_13:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v23 + 1) + 8 * v10) details];
-        v12 = v11;
-        if (v11)
+        details = [*(*(&v23 + 1) + 8 * v10) details];
+        v12 = details;
+        if (details)
         {
           v22[0] = _NSConcreteStackBlock;
           v22[1] = 3221225472;
           v22[2] = sub_100319770;
           v22[3] = &unk_101855978;
           v22[4] = v5;
-          [v11 enumeratePropertiesUsingBlock:v22];
+          [details enumeratePropertiesUsingBlock:v22];
         }
 
         v10 = v10 + 1;
@@ -3640,18 +3640,18 @@ LABEL_13:
 
 - (void)setNeedsDisplay
 {
-  v4 = [(CRLCanvasRep *)self canvas];
-  v3 = [v4 canvasController];
-  [v3 i_repNeedsDisplay:self];
+  canvas = [(CRLCanvasRep *)self canvas];
+  canvasController = [canvas canvasController];
+  [canvasController i_repNeedsDisplay:self];
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsNull(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectIsNull(rect))
   {
     v11.origin.x = x;
     v11.origin.y = y;
@@ -3659,17 +3659,17 @@ LABEL_13:
     v11.size.height = height;
     if (!CGRectIsEmpty(v11))
     {
-      v9 = [(CRLCanvasRep *)self canvas];
-      v8 = [v9 canvasController];
-      [v8 i_repNeedsDisplay:self inRect:{x, y, width, height}];
+      canvas = [(CRLCanvasRep *)self canvas];
+      canvasController = [canvas canvasController];
+      [canvasController i_repNeedsDisplay:self inRect:{x, y, width, height}];
     }
   }
 }
 
 - (void)p_invalidateContentLayers
 {
-  v3 = [(CRLCanvasRep *)self canvas];
-  [v3 invalidateContentLayersForRep:self];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas invalidateContentLayersForRep:self];
 }
 
 - (void)screenScaleDidChange
@@ -3687,15 +3687,15 @@ LABEL_13:
   [(CRLCanvasRep *)self invalidateKnobs];
   [(CRLCanvasRep *)self i_invalidateSelectionHighlightRenderable];
   self->mShadowRenderableInvalid = mShadowRenderableInvalid;
-  v4 = [(CRLCanvasRep *)self shadow];
+  shadow = [(CRLCanvasRep *)self shadow];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     v6 = fmin(self->mShadowCurrentViewScale, 1.0);
-    v7 = [(CRLCanvasRep *)self canvas];
-    [v7 viewScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas viewScale];
     v9 = v8;
 
     if (fmin(v9, 1.0) > v6)
@@ -3706,99 +3706,99 @@ LABEL_13:
   }
 }
 
-- (void)setupForDrawingInLayer:(id)a3 context:(CGContext *)a4
+- (void)setupForDrawingInLayer:(id)layer context:(CGContext *)context
 {
-  v6 = a3;
+  layerCopy = layer;
   [(CRLCanvasRep *)self layerFrameInScaledCanvas];
-  CGContextTranslateCTM(a4, -v7, -v8);
+  CGContextTranslateCTM(context, -v7, -v8);
   WeakRetained = objc_loadWeakRetained(&self->mCanvas);
   [WeakRetained viewScale];
   v11 = v10;
 
-  CGContextScaleCTM(a4, v11, v11);
+  CGContextScaleCTM(context, v11, v11);
   if (-[CRLCanvasRep isBeingRotated](self, "isBeingRotated") && (-[CRLCanvasRep layout](self, "layout"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 wantsNormalLayoutDuringDynamicRotation], v12, !v13))
   {
-    v16 = [(CRLCanvasRep *)self layout];
-    v15 = v16;
-    if (v16)
+    layout = [(CRLCanvasRep *)self layout];
+    v15 = layout;
+    if (layout)
     {
-      [v16 originalTransformInRoot];
+      [layout originalTransformInRoot];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v14 = [(CRLCanvasRep *)self layout];
-    v15 = v14;
-    if (v14)
+    layout2 = [(CRLCanvasRep *)self layout];
+    v15 = layout2;
+    if (layout2)
     {
-      [v14 transformInRoot];
+      [layout2 transformInRoot];
       goto LABEL_8;
     }
   }
 
   memset(&v27, 0, sizeof(v27));
 LABEL_8:
-  CGContextConcatCTM(a4, &v27);
+  CGContextConcatCTM(context, &v27);
 
-  if (v6)
+  if (layerCopy)
   {
-    if ([v6 contentsAreFlipped])
+    if ([layerCopy contentsAreFlipped])
     {
       v17 = +[NSThread currentThread];
-      v18 = [v17 threadDictionary];
+      threadDictionary = [v17 threadDictionary];
       v19 = [NSNumber numberWithBool:1];
       v20 = [NSValue valueWithPointer:self];
-      [v18 setObject:v19 forKey:v20];
+      [threadDictionary setObject:v19 forKey:v20];
     }
 
-    [(CRLCanvasRep *)self i_configureFontSmoothingForContext:a4 layer:v6, *&v27.a, *&v27.c, *&v27.tx];
+    [(CRLCanvasRep *)self i_configureFontSmoothingForContext:context layer:layerCopy, *&v27.a, *&v27.c, *&v27.tx];
   }
 
   v21 = [(CRLCanvasRep *)self canvas:*&v27.a];
-  v22 = [v21 allowsFontSubpixelQuantization];
+  allowsFontSubpixelQuantization = [v21 allowsFontSubpixelQuantization];
 
-  if ((v22 & 1) == 0)
+  if ((allowsFontSubpixelQuantization & 1) == 0)
   {
-    CGContextSetAllowsFontSubpixelQuantization(a4, 0);
-    CGContextSetShouldSubpixelQuantizeFonts(a4, 0);
+    CGContextSetAllowsFontSubpixelQuantization(context, 0);
+    CGContextSetShouldSubpixelQuantizeFonts(context, 0);
   }
 
-  v23 = [(CRLCanvasRep *)self canvas];
-  [v23 contentsScale];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas contentsScale];
   v25 = v24;
-  v26 = [(CRLCanvasRep *)self canvas];
-  sub_10050DE7C(a4, 0, 0, v6 != 0, [v26 shouldSuppressBackgrounds], v25);
+  canvas2 = [(CRLCanvasRep *)self canvas];
+  sub_10050DE7C(context, 0, 0, layerCopy != 0, [canvas2 shouldSuppressBackgrounds], v25);
 }
 
-- (void)didDrawInLayer:(id)a3 context:(CGContext *)a4
+- (void)didDrawInLayer:(id)layer context:(CGContext *)context
 {
-  sub_10050D814(a4);
+  sub_10050D814(context);
   v7 = +[NSThread currentThread];
-  v5 = [v7 threadDictionary];
+  threadDictionary = [v7 threadDictionary];
   v6 = [NSValue valueWithPointer:self];
-  [v5 removeObjectForKey:v6];
+  [threadDictionary removeObjectForKey:v6];
 }
 
 - (BOOL)isDrawingInFlippedContext
 {
   v3 = +[NSThread currentThread];
-  v4 = [v3 threadDictionary];
+  threadDictionary = [v3 threadDictionary];
   v5 = [NSValue valueWithPointer:self];
-  v6 = [v4 objectForKey:v5];
+  v6 = [threadDictionary objectForKey:v5];
 
   if (v6)
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (CGRect)i_clipRectRecursive
@@ -3858,8 +3858,8 @@ LABEL_8:
         }
 
         v14 = *(*(&v39 + 1) + 8 * v13);
-        v15 = [v14 layout];
-        if (!v15)
+        layout = [v14 layout];
+        if (!layout)
         {
           v16 = +[CRLAssertionHandler _atomicIncrementAssertCount];
           if (qword_101AD5A10 != -1)
@@ -3954,9 +3954,9 @@ LABEL_8:
           [CRLAssertionHandler handleFailureInFunction:v28 file:v29 lineNumber:1699 isFatal:0 description:"The child's i_clipRectRecursive should not be null."];
         }
 
-        if (v15)
+        if (layout)
         {
-          [v15 transform];
+          [layout transform];
         }
 
         else
@@ -4000,17 +4000,17 @@ LABEL_8:
   return result;
 }
 
-- (void)recursivelyDrawInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4
+- (void)recursivelyDrawInContext:(CGContext *)context keepingChildrenPassingTest:(id)test
 {
-  v6 = a4;
-  v7 = sub_10050FEFC(a3);
+  testCopy = test;
+  v7 = sub_10050FEFC(context);
   [v7 beginObject:self];
-  v8 = [(CRLCanvasRep *)self layout];
-  v9 = [v8 geometry];
-  v10 = v9;
-  if (v9)
+  layout = [(CRLCanvasRep *)self layout];
+  geometry = [layout geometry];
+  v10 = geometry;
+  if (geometry)
   {
-    [v9 transform];
+    [geometry transform];
   }
 
   else
@@ -4018,58 +4018,58 @@ LABEL_8:
     memset(&v21, 0, sizeof(v21));
   }
 
-  CGContextConcatCTM(a3, &v21);
+  CGContextConcatCTM(context, &v21);
 
   [(CRLCanvasRep *)self clipRect];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(CRLCanvasRep *)self masksToBounds];
-  v20 = v19;
-  if (v19)
+  masksToBounds = [(CRLCanvasRep *)self masksToBounds];
+  v20 = masksToBounds;
+  if (masksToBounds)
   {
     v22.origin.x = v12;
     v22.origin.y = v14;
     v22.size.width = v16;
     v22.size.height = v18;
-    CGContextClipToRect(a3, v22);
+    CGContextClipToRect(context, v22);
   }
 
-  ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   v23.origin.x = v12;
   v23.origin.y = v14;
   v23.size.width = v16;
   v23.size.height = v18;
   if (CGRectIntersectsRect(v23, ClipBoundingBox))
   {
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     if ((v20 & 1) == 0)
     {
       v24.origin.x = v12;
       v24.origin.y = v14;
       v24.size.width = v16;
       v24.size.height = v18;
-      CGContextClipToRect(a3, v24);
+      CGContextClipToRect(context, v24);
     }
 
-    [(CRLCanvasRep *)self drawInContext:a3, *&v21.a, *&v21.c, *&v21.tx];
-    CGContextRestoreGState(a3);
+    [(CRLCanvasRep *)self drawInContext:context, *&v21.a, *&v21.c, *&v21.tx];
+    CGContextRestoreGState(context);
   }
 
-  [(CRLCanvasRep *)self recursivelyDrawChildrenInContext:a3 keepingChildrenPassingTest:v6, *&v21.a, *&v21.c, *&v21.tx];
+  [(CRLCanvasRep *)self recursivelyDrawChildrenInContext:context keepingChildrenPassingTest:testCopy, *&v21.a, *&v21.c, *&v21.tx];
   [v7 endObject:self];
 }
 
-- (void)recursivelyDrawChildrenInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4
+- (void)recursivelyDrawChildrenInContext:(CGContext *)context keepingChildrenPassingTest:(id)test
 {
-  v6 = a4;
+  testCopy = test;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(CRLCanvasRep *)self childReps];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v8 = [childReps countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4081,22 +4081,22 @@ LABEL_8:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childReps);
         }
 
         v12 = *(*(&v13 + 1) + 8 * v11);
-        if (!v6 || v6[2](v6, *(*(&v13 + 1) + 8 * v11)))
+        if (!testCopy || testCopy[2](testCopy, *(*(&v13 + 1) + 8 * v11)))
         {
-          CGContextSaveGState(a3);
-          [v12 recursivelyDrawInContext:a3 keepingChildrenPassingTest:v6];
-          CGContextRestoreGState(a3);
+          CGContextSaveGState(context);
+          [v12 recursivelyDrawInContext:context keepingChildrenPassingTest:testCopy];
+          CGContextRestoreGState(context);
         }
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [childReps countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -4105,23 +4105,23 @@ LABEL_8:
 
 - (BOOL)isSelectedIgnoringLocking
 {
-  v3 = [(CRLCanvasRep *)self layout];
-  if (([v3 isSelectable] & 1) == 0)
+  layout = [(CRLCanvasRep *)self layout];
+  if (([layout isSelectable] & 1) == 0)
   {
 
     return 0;
   }
 
-  v4 = [(CRLCanvasRep *)self canvas];
-  v5 = [v4 isCanvasInteractive];
+  canvas = [(CRLCanvasRep *)self canvas];
+  isCanvasInteractive = [canvas isCanvasInteractive];
 
-  if (!v5)
+  if (!isCanvasInteractive)
   {
     return 0;
   }
 
-  v6 = [(CRLCanvasRep *)self interactiveCanvasController];
-  if (!v6)
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  if (!interactiveCanvasController)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -4150,47 +4150,47 @@ LABEL_8:
     [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:1769 isFatal:0 description:"invalid nil value for '%{public}s'", "interactiveCanvasController"];
   }
 
-  v10 = [(CRLCanvasRep *)self info];
-  v11 = [v6 currentSelectionPathContainsInfo:v10];
+  info = [(CRLCanvasRep *)self info];
+  v11 = [interactiveCanvasController currentSelectionPathContainsInfo:info];
 
   return v11;
 }
 
 - (BOOL)isSelected
 {
-  v3 = [(CRLCanvasRep *)self isSelectedIgnoringLocking];
-  if (v3)
+  isSelectedIgnoringLocking = [(CRLCanvasRep *)self isSelectedIgnoringLocking];
+  if (isSelectedIgnoringLocking)
   {
-    LOBYTE(v3) = ![(CRLCanvasRep *)self isLocked];
+    LOBYTE(isSelectedIgnoringLocking) = ![(CRLCanvasRep *)self isLocked];
   }
 
-  return v3;
+  return isSelectedIgnoringLocking;
 }
 
 - (void)becameSelected
 {
   [(CRLCanvasRep *)self invalidateKnobs];
-  v3 = [(CRLCanvasRep *)self info];
+  info = [(CRLCanvasRep *)self info];
   v4 = objc_opt_class();
-  v5 = [v3 parentInfo];
-  v6 = sub_100014370(v4, v5);
+  parentInfo = [info parentInfo];
+  v6 = sub_100014370(v4, parentInfo);
 
-  for (i = v6 == 0; v3 && !v6; i = v6 == 0)
+  for (i = v6 == 0; info && !v6; i = v6 == 0)
   {
-    v8 = v3;
-    v3 = [v3 parentInfo];
+    v8 = info;
+    info = [info parentInfo];
 
     v9 = objc_opt_class();
-    v10 = [v3 parentInfo];
-    v6 = sub_100014370(v9, v10);
+    parentInfo2 = [info parentInfo];
+    v6 = sub_100014370(v9, parentInfo2);
   }
 
   if (!i)
   {
-    v11 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v12 = [v11 editorController];
-    v13 = [v12 selectionPath];
-    v14 = [v13 mostSpecificSelectionOfClass:objc_opt_class()];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    editorController = [interactiveCanvasController editorController];
+    selectionPath = [editorController selectionPath];
+    v14 = [selectionPath mostSpecificSelectionOfClass:objc_opt_class()];
 
     if (!v14)
     {
@@ -4245,8 +4245,8 @@ LABEL_8:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(CRLCanvasRep *)self childRepsToInformForSelectabilityChanges];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  childRepsToInformForSelectabilityChanges = [(CRLCanvasRep *)self childRepsToInformForSelectabilityChanges];
+  v4 = [childRepsToInformForSelectabilityChanges countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4258,7 +4258,7 @@ LABEL_8:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childRepsToInformForSelectabilityChanges);
         }
 
         [*(*(&v8 + 1) + 8 * v7) becameSelectable];
@@ -4266,7 +4266,7 @@ LABEL_8:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [childRepsToInformForSelectabilityChanges countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -4280,8 +4280,8 @@ LABEL_8:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(CRLCanvasRep *)self childRepsToInformForSelectabilityChanges];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  childRepsToInformForSelectabilityChanges = [(CRLCanvasRep *)self childRepsToInformForSelectabilityChanges];
+  v4 = [childRepsToInformForSelectabilityChanges countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4293,7 +4293,7 @@ LABEL_8:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childRepsToInformForSelectabilityChanges);
         }
 
         [*(*(&v8 + 1) + 8 * v7) becameNotSelectable];
@@ -4301,7 +4301,7 @@ LABEL_8:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [childRepsToInformForSelectabilityChanges countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -4310,42 +4310,42 @@ LABEL_8:
 
 - (NSSet)childRepsToInformForSelectabilityChanges
 {
-  v2 = [(CRLCanvasRep *)self childReps];
-  v3 = [NSSet setWithArray:v2];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v3 = [NSSet setWithArray:childReps];
 
   return v3;
 }
 
 - (BOOL)shouldShowCollaboratorCursorHighlight
 {
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v4 = [(CRLCanvasRep *)self layout];
-  v5 = [v3 i_shouldShowCollaboratorCursorForLayout:v4];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  layout = [(CRLCanvasRep *)self layout];
+  v5 = [interactiveCanvasController i_shouldShowCollaboratorCursorForLayout:layout];
 
   return v5;
 }
 
 - (id)p_currentCollaboratorPresence
 {
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v4 = [(CRLCanvasRep *)self layout];
-  v5 = [v3 i_collaboratorPresenceSelectingLayout:v4];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  layout = [(CRLCanvasRep *)self layout];
+  v5 = [interactiveCanvasController i_collaboratorPresenceSelectingLayout:layout];
 
   return v5;
 }
 
 - (CRLColor)currentCollaboratorCursorColor
 {
-  v2 = [(CRLCanvasRep *)self p_currentCollaboratorPresence];
-  v3 = [v2 owner];
-  v4 = [v3 collaboratorColorForType:2];
+  p_currentCollaboratorPresence = [(CRLCanvasRep *)self p_currentCollaboratorPresence];
+  owner = [p_currentCollaboratorPresence owner];
+  v4 = [owner collaboratorColorForType:2];
 
   return v4;
 }
 
-- (void)collaboratorCursorChangedToSelectionPath:(id)a3
+- (void)collaboratorCursorChangedToSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (qword_101AD5B90 != -1)
   {
     sub_101352D9C();
@@ -4355,7 +4355,7 @@ LABEL_8:
   if (os_log_type_enabled(off_1019EDBE8, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Collaborator Cursor: Selection Path Changed called for rep: %{public}@", &v6, 0xCu);
   }
 
@@ -4374,7 +4374,7 @@ LABEL_8:
   if (os_log_type_enabled(off_1019EDBE8, OS_LOG_TYPE_INFO))
   {
     v4 = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Collaborator Cursor: Hiding collaborator cursors for rep: %{public}@", &v4, 0xCu);
   }
 
@@ -4398,11 +4398,11 @@ LABEL_8:
 
   else
   {
-    v7 = [(CRLCanvasRep *)self layout];
-    v6 = v7;
-    if (v7)
+    layout = [(CRLCanvasRep *)self layout];
+    v6 = layout;
+    if (layout)
     {
-      [v7 transformInRoot];
+      [layout transformInRoot];
       goto LABEL_7;
     }
   }
@@ -4418,9 +4418,9 @@ LABEL_7:
 - (void)invalidateCollaboratorCursorRenderable
 {
   self->mCollaboratorCursorRenderableValid = 0;
-  v4 = [(CRLCanvasRep *)self canvas];
-  v3 = [v4 canvasController];
-  [v3 invalidateOverlayLayersForRep:self];
+  canvas = [(CRLCanvasRep *)self canvas];
+  canvasController = [canvas canvasController];
+  [canvasController invalidateOverlayLayersForRep:self];
 }
 
 - (void)invalidateDragAndDropHighlightLayer
@@ -4482,8 +4482,8 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Collaborator Cursor: Actually re-generating renderable for base rep: %{public}@", &buf, 0xCu);
     }
 
-    v10 = [(CRLCanvasRenderable *)self->mCollaboratorCursorRenderable subrenderables];
-    if ([v10 count] != 4)
+    subrenderables = [(CRLCanvasRenderable *)self->mCollaboratorCursorRenderable subrenderables];
+    if ([subrenderables count] != 4)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -4512,10 +4512,10 @@ LABEL_7:
       [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:1945 isFatal:0 description:"Expect four collaborator sublayers"];
     }
 
-    if ([v10 count] == 4)
+    if ([subrenderables count] == 4)
     {
       v14 = objc_opt_class();
-      v15 = [v10 objectAtIndexedSubscript:0];
+      v15 = [subrenderables objectAtIndexedSubscript:0];
       v16 = sub_100013F00(v14, v15);
 
       WeakRetained = objc_loadWeakRetained(&self->mCanvas);
@@ -4528,8 +4528,8 @@ LABEL_7:
       v24 = v23;
       v26 = v25;
       v28 = v27;
-      v29 = [(CRLCanvasRep *)self interactiveCanvasController];
-      [v29 convertUnscaledToBoundsRect:{v22, v24, v26, v28}];
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      [interactiveCanvasController convertUnscaledToBoundsRect:{v22, v24, v26, v28}];
       v31 = v30;
       v33 = v32;
       v35 = v34;
@@ -4562,8 +4562,8 @@ LABEL_7:
       y = v109.origin.y;
       width = v109.size.width;
       height = v109.size.height;
-      v50 = [(CRLCanvasRep *)self interactiveCanvasController];
-      [v50 convertBoundsToUnscaledRect:{x, y, width, height}];
+      interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+      [interactiveCanvasController2 convertBoundsToUnscaledRect:{x, y, width, height}];
       v52 = v51;
       v54 = v53;
       v56 = v55;
@@ -4615,15 +4615,15 @@ LABEL_7:
       v117.size.width = v56;
       v117.size.height = v58;
       MaxY = CGRectGetMaxY(v117);
-      v59 = [(CRLCanvasRep *)self canvas];
-      [v59 contentsScale];
+      canvas = [(CRLCanvasRep *)self canvas];
+      [canvas contentsScale];
       v61 = v60;
       *v62.i64 = v52;
       *v63.i64 = v56;
       sub_10018F260(&v102.a, &buf, 4, v62, v54, v63, v58, 4.0, v61);
 
-      v64 = [(CRLCanvasRep *)self currentCollaboratorCursorColor];
-      v65 = [v64 CGColor];
+      currentCollaboratorCursorColor = [(CRLCanvasRep *)self currentCollaboratorCursorColor];
+      cGColor = [currentCollaboratorCursorColor CGColor];
 
       +[CATransaction begin];
       [CATransaction setDisableActions:1];
@@ -4638,7 +4638,7 @@ LABEL_7:
       [v16 setPath:Mutable];
       CGPathRelease(Mutable);
       v69 = objc_opt_class();
-      v70 = [v10 objectAtIndexedSubscript:1];
+      v70 = [subrenderables objectAtIndexedSubscript:1];
       v71 = sub_100013F00(v69, v70);
 
       t1 = v102;
@@ -4653,7 +4653,7 @@ LABEL_7:
       CGPathRelease(v74);
 
       v75 = objc_opt_class();
-      v76 = [v10 objectAtIndexedSubscript:2];
+      v76 = [subrenderables objectAtIndexedSubscript:2];
       v77 = sub_100013F00(v75, v76);
 
       t1 = v102;
@@ -4668,7 +4668,7 @@ LABEL_7:
       CGPathRelease(v80);
 
       v81 = objc_opt_class();
-      v82 = [v10 objectAtIndexedSubscript:3];
+      v82 = [subrenderables objectAtIndexedSubscript:3];
       v83 = sub_100013F00(v81, v82);
 
       t1 = v102;
@@ -4686,7 +4686,7 @@ LABEL_7:
       v99 = 0u;
       v96 = 0u;
       v97 = 0u;
-      v87 = v10;
+      v87 = subrenderables;
       v88 = [v87 countByEnumeratingWithState:&v96 objects:v103 count:16];
       if (v88)
       {
@@ -4703,7 +4703,7 @@ LABEL_7:
             }
 
             v93 = *(*(&v96 + 1) + 8 * i);
-            [v93 setStrokeColor:{v65, v96}];
+            [v93 setStrokeColor:{cGColor, v96}];
             [v93 setLineWidth:v91];
             t2 = v102;
             [v93 setAffineTransform:&t2];
@@ -4744,8 +4744,8 @@ LABEL_10:
 
 - (CGRect)boundsForStandardKnobs
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  [v2 boundsForStandardKnobs];
+  layout = [(CRLCanvasRep *)self layout];
+  [layout boundsForStandardKnobs];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -4857,7 +4857,7 @@ LABEL_10:
           if (!mShowKnobsWhenManipulated)
           {
             v16 = objc_loadWeakRetained(&self->mKnobTracker);
-            v17 = [v16 enabledKnobMask];
+            enabledKnobMask = [v16 enabledKnobMask];
 
             v18 = v35[5];
             v32[0] = _NSConcreteStackBlock;
@@ -4865,7 +4865,7 @@ LABEL_10:
             v32[2] = sub_10031C86C;
             v32[3] = &unk_101855BE8;
             v32[4] = self;
-            v32[5] = v17;
+            v32[5] = enabledKnobMask;
             v19 = [v18 crl_arrayOfObjectsPassingTest:v32];
 LABEL_19:
             v21 = v35[5];
@@ -4932,16 +4932,16 @@ LABEL_21:
   block[3] = &unk_10183AB38;
   block[4] = self;
   dispatch_sync(mKnobsAccessQueue, block);
-  v4 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v4 invalidateOverlayLayersForRep:self];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController invalidateOverlayLayersForRep:self];
 }
 
 - (unint64_t)enabledKnobMask
 {
-  v3 = [(CRLCanvasRep *)self layout];
-  v4 = [v3 resizeMayChangeAspectRatio];
+  layout = [(CRLCanvasRep *)self layout];
+  resizeMayChangeAspectRatio = [layout resizeMayChangeAspectRatio];
 
-  if (v4)
+  if (resizeMayChangeAspectRatio)
   {
     v5 = 990;
   }
@@ -4959,10 +4959,10 @@ LABEL_21:
   v12 = sub_10011F340(v7, v9, v11);
   v14 = v13;
 
-  v15 = [(CRLCanvasRep *)self layout];
-  v16 = [v15 resizeMayChangeAspectRatio];
+  layout2 = [(CRLCanvasRep *)self layout];
+  resizeMayChangeAspectRatio2 = [layout2 resizeMayChangeAspectRatio];
 
-  if (v16)
+  if (resizeMayChangeAspectRatio2)
   {
     width = CGSizeZero.width;
     height = CGSizeZero.height;
@@ -4970,8 +4970,8 @@ LABEL_21:
 
   else
   {
-    v19 = [(CRLCanvasRep *)self layout];
-    [v19 minimumSize];
+    layout3 = [(CRLCanvasRep *)self layout];
+    [layout3 minimumSize];
     v21 = v20;
     v23 = v22;
 
@@ -5027,43 +5027,43 @@ LABEL_21:
   return result;
 }
 
-- (void)addKnobsToArray:(id)a3
+- (void)addKnobsToArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   v4 = [(CRLCanvasKnob *)[CRLCanvasPlaceholderInvisibleKnob alloc] initWithType:1 position:0 radius:self tag:CGPointZero.x onRep:CGPointZero.y, 0.0];
-  [v5 addObject:v4];
+  [arrayCopy addObject:v4];
   if ([(CRLCanvasRep *)self shouldCreateSelectionKnobs])
   {
-    [(CRLCanvasRep *)self addSelectionKnobsToArray:v5];
+    [(CRLCanvasRep *)self addSelectionKnobsToArray:arrayCopy];
   }
 
   else if ([(CRLCanvasRep *)self shouldCreateLockedKnobs])
   {
-    [(CRLCanvasRep *)self addLockedKnobsToArray:v5];
+    [(CRLCanvasRep *)self addLockedKnobsToArray:arrayCopy];
   }
 }
 
-- (id)newSelectionKnobForType:(unint64_t)a3 tag:(unint64_t)a4
+- (id)newSelectionKnobForType:(unint64_t)type tag:(unint64_t)tag
 {
   v7 = [CRLCanvasKnob alloc];
   y = CGPointZero.y;
 
-  return [(CRLCanvasKnob *)v7 initWithType:a3 position:a4 radius:self tag:CGPointZero.x onRep:y, 15.0];
+  return [(CRLCanvasKnob *)v7 initWithType:type position:tag radius:self tag:CGPointZero.x onRep:y, 15.0];
 }
 
-- (void)addSelectionKnobsToArray:(id)a3
+- (void)addSelectionKnobsToArray:(id)array
 {
-  v4 = a3;
-  v5 = [(CRLCanvasRep *)self enabledKnobMask];
-  if (v5)
+  arrayCopy = array;
+  enabledKnobMask = [(CRLCanvasRep *)self enabledKnobMask];
+  if (enabledKnobMask)
   {
-    v6 = v5;
+    v6 = enabledKnobMask;
     for (i = 1; i != 10; ++i)
     {
       if ((sub_100345928(i) & v6) != 0)
       {
         v8 = [(CRLCanvasRep *)self newSelectionKnobForType:0 tag:i];
-        [v4 addObject:v8];
+        [arrayCopy addObject:v8];
       }
     }
   }
@@ -5079,13 +5079,13 @@ LABEL_21:
     v12 = [[_TtC8Freeform21CRLConnectionLineKnob alloc] initWithTag:4 onRep:self];
     v14[3] = v12;
     v13 = [NSArray arrayWithObjects:v14 count:4];
-    [v4 addObjectsFromArray:v13];
+    [arrayCopy addObjectsFromArray:v13];
   }
 }
 
-- (void)addLockedKnobsToArray:(id)a3
+- (void)addLockedKnobsToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = +[NSMutableArray array];
   [(CRLCanvasRep *)self addSelectionKnobsToArray:v5];
   v13 = 0u;
@@ -5119,7 +5119,7 @@ LABEL_21:
     while (v8);
   }
 
-  [v4 addObjectsFromArray:v6];
+  [arrayCopy addObjectsFromArray:v6];
 }
 
 - (CGRect)trackingBoundsForStandardKnobs
@@ -5156,9 +5156,9 @@ LABEL_21:
   return result;
 }
 
-- (void)updatePositionsOfKnobs:(id)a3
+- (void)updatePositionsOfKnobs:(id)knobs
 {
-  v4 = a3;
+  knobsCopy = knobs;
   [(CRLCanvasRep *)self trackingBoundsForStandardKnobs];
   v6 = v5;
   v8 = v7;
@@ -5168,7 +5168,7 @@ LABEL_21:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = v4;
+  v13 = knobsCopy;
   v14 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v14)
   {
@@ -5201,31 +5201,31 @@ LABEL_21:
 - (BOOL)forcesPlacementOnTop
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self info];
-  v5 = sub_100014370(v3, v4);
-  v6 = [v5 forcesPlacementOnTop];
+  info = [(CRLCanvasRep *)self info];
+  v5 = sub_100014370(v3, info);
+  forcesPlacementOnTop = [v5 forcesPlacementOnTop];
 
-  return v6;
+  return forcesPlacementOnTop;
 }
 
 - (BOOL)forcesPlacementOnBottom
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self info];
-  v5 = sub_100014370(v3, v4);
-  v6 = [v5 forcesPlacementOnBottom];
+  info = [(CRLCanvasRep *)self info];
+  v5 = sub_100014370(v3, info);
+  forcesPlacementOnBottom = [v5 forcesPlacementOnBottom];
 
-  return v6;
+  return forcesPlacementOnBottom;
 }
 
-- (CGPoint)positionOfStandardKnob:(id)a3 forBounds:(CGRect)a4
+- (CGPoint)positionOfStandardKnob:(id)knob forBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  if (![v9 tag] || objc_msgSend(v9, "tag") >= 0xA)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  knobCopy = knob;
+  if (![knobCopy tag] || objc_msgSend(knobCopy, "tag") >= 0xA)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -5254,23 +5254,23 @@ LABEL_21:
     [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:2330 isFatal:0 description:"-positionOfStandardKnob:forBounds: works for standard knobs only"];
   }
 
-  [v9 offset];
+  [knobCopy offset];
   v14 = v13;
   v16 = v15;
-  if (![v9 offsetValid])
+  if (![knobCopy offsetValid])
   {
-    v17 = [(CRLCanvasRep *)self canvas];
-    [v17 viewScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas viewScale];
     v19 = v18;
 
     if (width * v19 <= 16.0)
     {
-      if ([v9 tag] == 1 || objc_msgSend(v9, "tag") == 4 || objc_msgSend(v9, "tag") == 7)
+      if ([knobCopy tag] == 1 || objc_msgSend(knobCopy, "tag") == 4 || objc_msgSend(knobCopy, "tag") == 7)
       {
         v14 = v14 - (8.0 / v19 + width * -0.5);
       }
 
-      else if ([v9 tag] == 3 || objc_msgSend(v9, "tag") == 6 || objc_msgSend(v9, "tag") == 9)
+      else if ([knobCopy tag] == 3 || objc_msgSend(knobCopy, "tag") == 6 || objc_msgSend(knobCopy, "tag") == 9)
       {
         v14 = v14 + 8.0 / v19 + width * -0.5;
       }
@@ -5281,50 +5281,50 @@ LABEL_21:
       goto LABEL_24;
     }
 
-    if ([v9 tag] == 1 || objc_msgSend(v9, "tag") == 2 || objc_msgSend(v9, "tag") == 3)
+    if ([knobCopy tag] == 1 || objc_msgSend(knobCopy, "tag") == 2 || objc_msgSend(knobCopy, "tag") == 3)
     {
-      v20 = [(CRLCanvasRep *)self interactiveCanvasController];
-      [v20 viewScale];
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      [interactiveCanvasController viewScale];
       v16 = v16 - (8.0 / v21 + height * -0.5);
     }
 
     else
     {
-      if ([v9 tag] != 7 && objc_msgSend(v9, "tag") != 8 && objc_msgSend(v9, "tag") != 9)
+      if ([knobCopy tag] != 7 && objc_msgSend(knobCopy, "tag") != 8 && objc_msgSend(knobCopy, "tag") != 9)
       {
         goto LABEL_24;
       }
 
-      v20 = [(CRLCanvasRep *)self interactiveCanvasController];
-      [v20 viewScale];
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      [interactiveCanvasController viewScale];
       v16 = v16 + 8.0 / v43 + height * -0.5;
     }
 
 LABEL_24:
-    [v9 setOffset:{v14, v16}];
-    [v9 setOffsetValid:1];
+    [knobCopy setOffset:{v14, v16}];
+    [knobCopy setOffsetValid:1];
   }
 
-  v22 = sub_100345F44([v9 tag], x, y, width, height);
+  v22 = sub_100345F44([knobCopy tag], x, y, width, height);
   v24 = sub_10011F334(v22, v23, v14);
   v26 = v25;
-  v27 = [(CRLCanvasRep *)self canvas];
-  [v27 viewScale];
+  canvas2 = [(CRLCanvasRep *)self canvas];
+  [canvas2 viewScale];
   v29 = v28;
 
   +[_TtC8Freeform21CRLConnectionLineKnob unscaledConnectionKnobOffsetWithEdgeKnob];
   v31 = v30;
   +[_TtC8Freeform21CRLConnectionLineKnob unscaledConnectionKnobOffsetWithoutEdgeKnob];
   v33 = v32;
-  v34 = [(CRLCanvasRep *)self enabledKnobMask];
+  enabledKnobMask = [(CRLCanvasRep *)self enabledKnobMask];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v35 = v31 / v29;
     v36 = v33 / v29;
-    if ([v9 tag] == 6)
+    if ([knobCopy tag] == 6)
     {
-      if ((v34 & 0x40) != 0)
+      if ((enabledKnobMask & 0x40) != 0)
       {
         v37 = v35;
       }
@@ -5337,9 +5337,9 @@ LABEL_24:
       v24 = v24 + v37;
     }
 
-    else if ([v9 tag] == 4)
+    else if ([knobCopy tag] == 4)
     {
-      if ((v34 & 0x10) != 0)
+      if ((enabledKnobMask & 0x10) != 0)
       {
         v38 = v35;
       }
@@ -5352,9 +5352,9 @@ LABEL_24:
       v24 = v24 - v38;
     }
 
-    else if ([v9 tag] == 2)
+    else if ([knobCopy tag] == 2)
     {
-      if ((v34 & 4) != 0)
+      if ((enabledKnobMask & 4) != 0)
       {
         v39 = v35;
       }
@@ -5367,9 +5367,9 @@ LABEL_24:
       v26 = v26 - v39;
     }
 
-    else if ([v9 tag] == 8)
+    else if ([knobCopy tag] == 8)
     {
-      if ((v34 & 0x100) != 0)
+      if ((enabledKnobMask & 0x100) != 0)
       {
         v40 = v35;
       }
@@ -5394,15 +5394,15 @@ LABEL_24:
 {
   self->mKnobPositionsInvalid = 1;
   [(CRLCanvasRep *)self i_invalidateSelectionHighlightRenderable];
-  v4 = [(CRLCanvasRep *)self canvas];
-  v3 = [v4 canvasController];
-  [v3 invalidateOverlayLayersForRep:self];
+  canvas = [(CRLCanvasRep *)self canvas];
+  canvasController = [canvas canvasController];
+  [canvasController invalidateOverlayLayersForRep:self];
 }
 
-- (id)newTrackerForKnob:(id)a3
+- (id)newTrackerForKnob:(id)knob
 {
-  v4 = a3;
-  if (!v4)
+  knobCopy = knob;
+  if (!knobCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -5431,7 +5431,7 @@ LABEL_24:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:2407 isFatal:0 description:"invalid nil value for '%{public}s'", "knob"];
   }
 
-  v8 = [v4 tag];
+  v8 = [knobCopy tag];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -5449,7 +5449,7 @@ LABEL_24:
     v9 = off_10182F920;
   }
 
-  v10 = [objc_alloc(*v9) initWithRep:self knob:v4];
+  v10 = [objc_alloc(*v9) initWithRep:self knob:knobCopy];
 LABEL_17:
 
   return v10;
@@ -5457,18 +5457,18 @@ LABEL_17:
 
 - (void)p_toggleHyperlinkUIVisibility
 {
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v3 toggleHyperlinkUIForRep:self];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController toggleHyperlinkUIForRep:self];
 }
 
-- (id)knobForTag:(unint64_t)a3
+- (id)knobForTag:(unint64_t)tag
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CRLCanvasRep *)self knobs];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  knobs = [(CRLCanvasRep *)self knobs];
+  v5 = [knobs countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -5479,18 +5479,18 @@ LABEL_17:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(knobs);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 tag] == a3)
+        if ([v9 tag] == tag)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [knobs countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -5508,11 +5508,11 @@ LABEL_11:
 
 - (double)additionalRotationForKnobOrientation
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  v3 = v2;
-  if (v2)
+  layout = [(CRLCanvasRep *)self layout];
+  v3 = layout;
+  if (layout)
   {
-    [v2 transformInRoot];
+    [layout transformInRoot];
   }
 
   else
@@ -5527,10 +5527,10 @@ LABEL_11:
 
 - (CRLCanvasKnob)knobForInspectorResize
 {
-  v3 = [(CRLCanvasRep *)self canvas];
-  v4 = [v3 isAnchoredAtRight];
+  canvas = [(CRLCanvasRep *)self canvas];
+  isAnchoredAtRight = [canvas isAnchoredAtRight];
 
-  if (v4)
+  if (isAnchoredAtRight)
   {
     v5 = 7;
   }
@@ -5558,13 +5558,13 @@ LABEL_11:
 
 - (BOOL)shouldShowSelectionHighlight
 {
-  v4 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v5 = [v4 delegate];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  delegate = [interactiveCanvasController delegate];
   v6 = objc_opt_respondsToSelector();
   if (v6)
   {
-    v2 = [v4 delegate];
-    if ([v2 shouldSuppressSelectionHighlightForInteractiveCanvasController:v4])
+    delegate2 = [interactiveCanvasController delegate];
+    if ([delegate2 shouldSuppressSelectionHighlightForInteractiveCanvasController:interactiveCanvasController])
     {
       LOBYTE(v7) = 0;
       goto LABEL_11;
@@ -5606,16 +5606,16 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(CRLCanvasRep *)self layout];
-  if ([v3 isInGroup])
+  layout = [(CRLCanvasRep *)self layout];
+  if ([layout isInGroup])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-    if ([v5 connectorKnobsEnabled])
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    if ([interactiveCanvasController connectorKnobsEnabled])
     {
       v4 = [CRLConnectionLineRep canConnectToRep:self];
     }
@@ -5636,39 +5636,39 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  if ([v3 usesAlternateDrawableSelectionHighlight])
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  if ([interactiveCanvasController usesAlternateDrawableSelectionHighlight])
   {
-    v4 = 0;
+    shouldIgnoreICCSuppressSelectionKnobs = 0;
   }
 
   else
   {
-    v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-    if ([v5 shouldSuppressSelectionKnobsForRep:self])
+    interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+    if ([interactiveCanvasController2 shouldSuppressSelectionKnobsForRep:self])
     {
-      v4 = [(CRLCanvasRep *)self shouldIgnoreICCSuppressSelectionKnobs];
+      shouldIgnoreICCSuppressSelectionKnobs = [(CRLCanvasRep *)self shouldIgnoreICCSuppressSelectionKnobs];
     }
 
     else
     {
-      v4 = 1;
+      shouldIgnoreICCSuppressSelectionKnobs = 1;
     }
   }
 
-  return v4;
+  return shouldIgnoreICCSuppressSelectionKnobs;
 }
 
 - (BOOL)shouldCreateLockedKnobs
 {
-  v3 = [(CRLCanvasRep *)self isLocked];
-  if (v3)
+  isLocked = [(CRLCanvasRep *)self isLocked];
+  if (isLocked)
   {
 
-    LOBYTE(v3) = [(CRLCanvasRep *)self isSelectedIgnoringLocking];
+    LOBYTE(isLocked) = [(CRLCanvasRep *)self isSelectedIgnoringLocking];
   }
 
-  return v3;
+  return isLocked;
 }
 
 - (BOOL)shouldShowKnobs
@@ -5741,9 +5741,9 @@ LABEL_12:
   dispatch_sync(mKnobsAccessQueue, v9);
 }
 
-- (BOOL)directlyManagesVisibilityOfKnob:(id)a3
+- (BOOL)directlyManagesVisibilityOfKnob:(id)knob
 {
-  v3 = a3;
+  knobCopy = knob;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -5759,26 +5759,26 @@ LABEL_12:
       sub_10135309C();
     }
 
-    v3 = qword_101A34C10;
+    defaultSelectionHighlightColor = qword_101A34C10;
   }
 
   else
   {
-    v4 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v5 = [v4 selectionHighlightColor];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    selectionHighlightColor = [interactiveCanvasController selectionHighlightColor];
 
-    if (v5)
+    if (selectionHighlightColor)
     {
       goto LABEL_8;
     }
 
-    v3 = [(CRLCanvasRep *)self defaultSelectionHighlightColor];
+    defaultSelectionHighlightColor = [(CRLCanvasRep *)self defaultSelectionHighlightColor];
   }
 
-  v5 = v3;
+  selectionHighlightColor = defaultSelectionHighlightColor;
 LABEL_8:
 
-  return v5;
+  return selectionHighlightColor;
 }
 
 - (CGAffineTransform)transformForHighlightLayer
@@ -5797,11 +5797,11 @@ LABEL_8:
 
   else
   {
-    v7 = [(CRLCanvasRep *)self layout];
-    v6 = v7;
-    if (v7)
+    layout = [(CRLCanvasRep *)self layout];
+    v6 = layout;
+    if (layout)
     {
-      [v7 transformInRoot];
+      [layout transformInRoot];
       goto LABEL_7;
     }
   }
@@ -5828,12 +5828,12 @@ LABEL_7:
   mSelectionHighlightRenderable = self->mSelectionHighlightRenderable;
   if (!mSelectionHighlightRenderable)
   {
-    v4 = [(CRLCanvasRep *)self makeSelectionHighlightRenderable];
+    makeSelectionHighlightRenderable = [(CRLCanvasRep *)self makeSelectionHighlightRenderable];
     v5 = self->mSelectionHighlightRenderable;
-    self->mSelectionHighlightRenderable = v4;
+    self->mSelectionHighlightRenderable = makeSelectionHighlightRenderable;
 
-    v6 = [(CRLCanvasRep *)self interactiveCanvasController];
-    [(CRLCanvasRenderable *)self->mSelectionHighlightRenderable setDelegate:v6];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    [(CRLCanvasRenderable *)self->mSelectionHighlightRenderable setDelegate:interactiveCanvasController];
 
     self->mSelectionHighlightRenderableValid = 0;
     mSelectionHighlightRenderable = self->mSelectionHighlightRenderable;
@@ -5861,16 +5861,16 @@ LABEL_5:
   return v3;
 }
 
-- (void)updateSelectionHighlightRenderable:(id)a3
+- (void)updateSelectionHighlightRenderable:(id)renderable
 {
-  v4 = a3;
+  renderableCopy = renderable;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, renderableCopy);
 
   if (v6)
   {
-    v7 = [(CRLCanvasRep *)self selectionHighlightColor];
-    [v6 setStrokeColor:{objc_msgSend(v7, "CGColor")}];
+    selectionHighlightColor = [(CRLCanvasRep *)self selectionHighlightColor];
+    [v6 setStrokeColor:{objc_msgSend(selectionHighlightColor, "CGColor")}];
 
     [(CRLCanvasRep *)self selectionHighlightWidth];
     [v6 setLineWidth:?];
@@ -5891,8 +5891,8 @@ LABEL_5:
     v27 = v26;
     [v6 lineWidth];
     v20 = v19;
-    v21 = [(CRLCanvasRep *)self canvas];
-    [v21 contentsScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas contentsScale];
     v23 = sub_10018F420(&v27.a, v12, v14, v16, v18, v20, v22);
 
     [v6 setPath:v23];
@@ -5908,10 +5908,10 @@ LABEL_5:
   [(CRLCanvasRep *)self invalidateDragAndDropHighlightLayer];
 }
 
-- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
+  y = canvas.y;
+  x = canvas.x;
   WeakRetained = objc_loadWeakRetained(&self->mKnobTracker);
 
   if (WeakRetained)
@@ -5936,10 +5936,10 @@ LABEL_5:
   return result;
 }
 
-- (CGPoint)convertKnobPositionFromUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertKnobPositionFromUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
+  y = canvas.y;
+  x = canvas.x;
   WeakRetained = objc_loadWeakRetained(&self->mKnobTracker);
 
   if (WeakRetained)
@@ -5964,30 +5964,30 @@ LABEL_5:
   return result;
 }
 
-- (id)p_addRenderablesForKnobsToArray:(id)a3 withDelegate:(id)a4 isOverlay:(BOOL)a5
+- (id)p_addRenderablesForKnobsToArray:(id)array withDelegate:(id)delegate isOverlay:(BOOL)overlay
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CRLCanvasRep *)self knobs];
-  if (![v10 count] || objc_msgSend(v10, "count") == 1 && (objc_msgSend(v10, "crl_anyObject"), v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v11, (isKindOfClass & 1) != 0))
+  arrayCopy = array;
+  delegateCopy = delegate;
+  knobs = [(CRLCanvasRep *)self knobs];
+  if (![knobs count] || objc_msgSend(knobs, "count") == 1 && (objc_msgSend(knobs, "crl_anyObject"), v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v11, (isKindOfClass & 1) != 0))
   {
-    v13 = v8;
+    v13 = arrayCopy;
   }
 
   else
   {
-    v14 = [(CRLCanvasRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_10031F130;
     v26[3] = &unk_101855D40;
-    v27 = a5;
-    v26[4] = v10;
+    overlayCopy = overlay;
+    v26[4] = knobs;
     v26[5] = self;
     v15 = objc_retainBlock(v26);
-    if (!v8)
+    if (!arrayCopy)
     {
-      v8 = +[NSMutableArray array];
+      arrayCopy = +[NSMutableArray array];
     }
 
     v24[0] = _NSConcreteStackBlock;
@@ -5995,16 +5995,16 @@ LABEL_5:
     v24[2] = sub_10031F5B0;
     v24[3] = &unk_101855D68;
     v24[4] = self;
-    v16 = v8;
+    v16 = arrayCopy;
     v25 = v16;
     (v15[2])(v15, v24);
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10031F63C;
     v19[3] = &unk_101855DD0;
-    v20 = v9;
-    v21 = v14;
-    v22 = self;
+    v20 = delegateCopy;
+    v21 = interactiveCanvasController;
+    selfCopy = self;
     v17 = v16;
     v23 = v17;
     (v15[2])(v15, v19);
@@ -6019,33 +6019,33 @@ LABEL_5:
   v3 = +[NSMutableArray array];
   if ([(CRLCanvasRep *)self shouldShowCollaboratorCursorHighlight]&& [(CRLCanvasRep *)self shouldAddCollaboratorLayerToOverlays])
   {
-    v4 = [(CRLCanvasRep *)self collaboratorCursorRenderable];
-    if (v4)
+    collaboratorCursorRenderable = [(CRLCanvasRep *)self collaboratorCursorRenderable];
+    if (collaboratorCursorRenderable)
     {
-      [v3 addObject:v4];
+      [v3 addObject:collaboratorCursorRenderable];
     }
   }
 
   if ([(CRLCanvasRep *)self p_shouldShowSelectionHighlight])
   {
-    v5 = [(CRLCanvasRep *)self selectionHighlightRenderable];
-    if (v5)
+    selectionHighlightRenderable = [(CRLCanvasRep *)self selectionHighlightRenderable];
+    if (selectionHighlightRenderable)
     {
-      [v3 addObject:v5];
+      [v3 addObject:selectionHighlightRenderable];
     }
   }
 
   if ([(CRLCanvasRep *)self shouldShowDragAndDropHighlight])
   {
-    v6 = [(CRLCanvasRep *)self dragAndDropHighlightRenderable];
-    if (v6)
+    dragAndDropHighlightRenderable = [(CRLCanvasRep *)self dragAndDropHighlightRenderable];
+    if (dragAndDropHighlightRenderable)
     {
-      [v3 addObject:v6];
+      [v3 addObject:dragAndDropHighlightRenderable];
     }
   }
 
-  v7 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v8 = [(CRLCanvasRep *)self p_addRenderablesForKnobsToArray:v3 withDelegate:v7 isOverlay:1];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  v8 = [(CRLCanvasRep *)self p_addRenderablesForKnobsToArray:v3 withDelegate:interactiveCanvasController isOverlay:1];
 
   return v8;
 }
@@ -6054,8 +6054,8 @@ LABEL_5:
 {
   if (![(CRLCanvasRep *)self shouldSuppressSelectionHighlightDuringMultiselection])
   {
-    v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v4 = [v3 shouldSuppressSelectionKnobsForRep:self];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    v4 = [interactiveCanvasController shouldSuppressSelectionKnobsForRep:self];
 
     if (v4)
     {
@@ -6068,22 +6068,22 @@ LABEL_5:
 
 - (double)contentsScale
 {
-  v2 = [(CRLCanvasRep *)self canvas];
-  [v2 contentsScale];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas contentsScale];
   v4 = v3;
 
   return v4;
 }
 
-- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)a3
+- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)commands
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:commands];
   [(CRLCanvasRep *)self recursivelyPerformSelector:"p_dynamicOperationDidBeginWithRealTimeCommands:" withObject:v4];
 }
 
-- (void)p_dynamicOperationDidBeginWithRealTimeCommands:(id)a3
+- (void)p_dynamicOperationDidBeginWithRealTimeCommands:(id)commands
 {
-  v4 = a3;
+  commandsCopy = commands;
   if ([(CRLCanvasRep *)self isInDynamicOperation])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -6118,10 +6118,10 @@ LABEL_5:
   self->mOriginalLayerFrameInScaledCanvas.origin.y = v9;
   self->mOriginalLayerFrameInScaledCanvas.size.width = v10;
   self->mOriginalLayerFrameInScaledCanvas.size.height = v11;
-  v12 = [(CRLCanvasRep *)self layout];
-  v13 = [v4 BOOLValue];
+  layout = [(CRLCanvasRep *)self layout];
+  bOOLValue = [commandsCopy BOOLValue];
 
-  [v12 beginDynamicOperationWithRealTimeCommands:v13];
+  [layout beginDynamicOperationWithRealTimeCommands:bOOLValue];
   WeakRetained = objc_loadWeakRetained(&self->mCanvas);
   [WeakRetained canvasInvalidatedForRep:self];
 }
@@ -6129,17 +6129,17 @@ LABEL_5:
 - (void)dynamicOperationDidEnd
 {
   [(CRLCanvasRep *)self recursivelyPerformSelector:"p_dynamicOperationDidEnd"];
-  v3 = [(CRLCanvasRep *)self p_connectedReps];
-  [v3 makeObjectsPerformSelector:"invalidateKnobs"];
+  p_connectedReps = [(CRLCanvasRep *)self p_connectedReps];
+  [p_connectedReps makeObjectsPerformSelector:"invalidateKnobs"];
 
   [(CRLCanvasRep *)self invalidateKnobs];
-  v4 = [(CRLCanvasRep *)self layout];
-  v5 = [v4 isInGroup];
+  layout = [(CRLCanvasRep *)self layout];
+  isInGroup = [layout isInGroup];
 
-  if (v5)
+  if (isInGroup)
   {
-    v6 = [(CRLCanvasRep *)self parentRep];
-    [v6 p_invalidateChildKnobPositionsForEndingDynamicOperation];
+    parentRep = [(CRLCanvasRep *)self parentRep];
+    [parentRep p_invalidateChildKnobPositionsForEndingDynamicOperation];
   }
 }
 
@@ -6148,17 +6148,17 @@ LABEL_5:
   if (!self->mHasInvalidatedChildKnobPositionsForEndingDynamicOperation)
   {
     self->mHasInvalidatedChildKnobPositionsForEndingDynamicOperation = 1;
-    v3 = [(CRLCanvasRep *)self childReps];
-    [v3 makeObjectsPerformSelector:"invalidateKnobPositions"];
+    childReps = [(CRLCanvasRep *)self childReps];
+    [childReps makeObjectsPerformSelector:"invalidateKnobPositions"];
 
     objc_initWeak(&location, self);
-    v4 = [(CRLCanvasRep *)self canvas];
+    canvas = [(CRLCanvasRep *)self canvas];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_10031FFF8;
     v5[3] = &unk_10183AF10;
     objc_copyWeak(&v6, &location);
-    [v4 performBlockAfterLayoutIfNecessary:v5];
+    [canvas performBlockAfterLayoutIfNecessary:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -6167,8 +6167,8 @@ LABEL_5:
 
 - (void)p_dynamicOperationDidEnd
 {
-  v3 = [(CRLCanvasRep *)self layout];
-  [v3 endDynamicOperation];
+  layout = [(CRLCanvasRep *)self layout];
+  [layout endDynamicOperation];
 
   if ([(CRLCanvasRep *)self shouldShowKnobs])
   {
@@ -6179,8 +6179,8 @@ LABEL_5:
 
 - (BOOL)isInDynamicOperation
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  v3 = [v2 layoutState] != 0;
+  layout = [(CRLCanvasRep *)self layout];
+  v3 = [layout layoutState] != 0;
 
   return v3;
 }
@@ -6188,20 +6188,20 @@ LABEL_5:
 - (CRLShadow)shadow
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasRep *)self info];
+  v5 = sub_100014370(v3, info);
 
-  v6 = [v5 shadow];
+  shadow = [v5 shadow];
 
-  return v6;
+  return shadow;
 }
 
 - (BOOL)shouldShowShadow
 {
-  v3 = [(CRLCanvasRep *)self canvas];
-  v4 = [v3 suppressesShadowsAndReflections];
+  canvas = [(CRLCanvasRep *)self canvas];
+  suppressesShadowsAndReflections = [canvas suppressesShadowsAndReflections];
 
-  if ((v4 & 1) != 0 || [(CRLCanvasRep *)self isBeingResized]|| [(CRLCanvasRep *)self isBeingRotated]|| [(CRLCanvasRep *)self isBeingFreeTransformResized])
+  if ((suppressesShadowsAndReflections & 1) != 0 || [(CRLCanvasRep *)self isBeingResized]|| [(CRLCanvasRep *)self isBeingRotated]|| [(CRLCanvasRep *)self isBeingFreeTransformResized])
   {
     return 0;
   }
@@ -6212,10 +6212,10 @@ LABEL_5:
   }
 }
 
-- (void)p_willUpdateEffectRenderablesForRenderable:(id)a3
+- (void)p_willUpdateEffectRenderablesForRenderable:(id)renderable
 {
-  v7 = [(CRLCanvasRep *)self shadow];
-  if (v7 && [v7 isEnabled] && -[CRLCanvasRep shouldShowShadow](self, "shouldShowShadow"))
+  shadow = [(CRLCanvasRep *)self shadow];
+  if (shadow && [shadow isEnabled] && -[CRLCanvasRep shouldShowShadow](self, "shouldShowShadow"))
   {
     if (!self->mShadowRenderable)
     {
@@ -6237,34 +6237,34 @@ LABEL_5:
   }
 }
 
-- (void)p_didUpdateEffectRenderablesForRenderable:(id)a3
+- (void)p_didUpdateEffectRenderablesForRenderable:(id)renderable
 {
   if (![(CRLCanvasRep *)self isInvisible])
   {
-    v55 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v5 = [v55 createRepsForOffscreenLayouts];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    createRepsForOffscreenLayouts = [interactiveCanvasController createRepsForOffscreenLayouts];
     mShadowRenderable = self->mShadowRenderable;
-    if (mShadowRenderable && (v5 & 1) == 0)
+    if (mShadowRenderable && (createRepsForOffscreenLayouts & 1) == 0)
     {
-      [v55 visibleBoundsRectForTiling];
-      [v55 convertBoundsToUnscaledRect:?];
+      [interactiveCanvasController visibleBoundsRectForTiling];
+      [interactiveCanvasController convertBoundsToUnscaledRect:?];
       v8 = v7;
       v10 = v9;
       v12 = v11;
       v14 = v13;
-      v15 = [(CRLCanvasRep *)self layout];
-      [v15 frameForCulling];
+      layout = [(CRLCanvasRep *)self layout];
+      [layout frameForCulling];
       v17 = v16;
       v19 = v18;
       v21 = v20;
       v23 = v22;
 
-      v24 = [(CRLCanvasRep *)self layout];
-      v25 = [v24 parent];
+      layout2 = [(CRLCanvasRep *)self layout];
+      parent = [layout2 parent];
 
-      if (v25)
+      if (parent)
       {
-        [v25 rectInRoot:{v17, v19, v21, v23}];
+        [parent rectInRoot:{v17, v19, v21, v23}];
         v17 = v26;
         v19 = v27;
         v21 = v28;
@@ -6291,8 +6291,8 @@ LABEL_5:
 
     if (mShadowRenderable && ![(CRLCanvasRep *)self isBeingResized]&& ![(CRLCanvasRep *)self inFreeTransformRotateResizeMode])
     {
-      v30 = [(CRLCanvasRep *)self shadow];
-      if (!v30)
+      shadow = [(CRLCanvasRep *)self shadow];
+      if (!shadow)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -6321,7 +6321,7 @@ LABEL_5:
         [CRLAssertionHandler handleFailureInFunction:v32 file:v33 lineNumber:3008 isFatal:0 description:"invalid nil value for '%{public}s'", "shadow"];
       }
 
-      if (([v30 isEnabled] & 1) == 0)
+      if (([shadow isEnabled] & 1) == 0)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -6350,11 +6350,11 @@ LABEL_5:
         [CRLAssertionHandler handleFailureInFunction:v35 file:v36 lineNumber:3009 isFatal:0 description:"shouldn't have shadow renderable if shadow is not enabled"];
       }
 
-      if (v30 && [v30 isEnabled])
+      if (shadow && [shadow isEnabled])
       {
         [(CRLCanvasRep *)self opacity];
         v38 = v37;
-        [v30 opacity];
+        [shadow opacity];
         v40 = v38 * v39;
         [(CRLCanvasRenderable *)self->mShadowRenderable opacity];
         v42 = v41;
@@ -6366,9 +6366,9 @@ LABEL_5:
 
         if (v40 != 0.0)
         {
-          v43 = [(CRLCanvasRenderable *)self->mShadowRenderable contents];
+          contents = [(CRLCanvasRenderable *)self->mShadowRenderable contents];
 
-          if (!v43)
+          if (!contents)
           {
             [(CRLCanvasRep *)self invalidateShadowRenderable];
           }
@@ -6380,9 +6380,9 @@ LABEL_5:
         }
 
         v44 = self->mShadowRenderable;
-        v45 = [(CRLCanvasRep *)self layout];
-        [v45 shadowedNaturalBoundsWithoutOffset];
-        [(CRLCanvasRep *)self p_positionShadowRenderable:v44 forShadow:v30 withNaturalBounds:?];
+        layout3 = [(CRLCanvasRep *)self layout];
+        [layout3 shadowedNaturalBoundsWithoutOffset];
+        [(CRLCanvasRep *)self p_positionShadowRenderable:v44 forShadow:shadow withNaturalBounds:?];
       }
 
       if (self->mShadowRenderableInvalid)
@@ -6390,13 +6390,13 @@ LABEL_5:
         [(CRLCanvasRenderable *)self->mShadowRenderable bounds];
         v47 = v46;
         v49 = v48;
-        v50 = [(CRLCanvasRep *)self canvas];
-        [v50 viewScale];
+        canvas = [(CRLCanvasRep *)self canvas];
+        [canvas viewScale];
         v52 = [(CRLCanvasRep *)self newShadowImageWithSize:0 unflipped:1 withChildren:sub_10011F340(v47, v49, 1.0 / v51)];
 
         [(CRLCanvasRenderable *)self->mShadowRenderable setContents:v52];
-        v53 = [(CRLCanvasRep *)self canvas];
-        [v53 viewScale];
+        canvas2 = [(CRLCanvasRep *)self canvas];
+        [canvas2 viewScale];
         self->mShadowCurrentViewScale = v54;
 
         self->mShadowRenderableInvalid = 0;
@@ -6414,19 +6414,19 @@ LABEL_50:
   [(CRLCanvasRenderable *)v4 setContents:0];
 }
 
-- (void)p_positionShadowRenderable:(id)a3 forShadow:(id)a4 withNaturalBounds:(CGRect)a5
+- (void)p_positionShadowRenderable:(id)renderable forShadow:(id)shadow withNaturalBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
-  v13 = [(CRLCanvasRep *)self canvas];
-  [v13 viewScale];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  renderableCopy = renderable;
+  shadowCopy = shadow;
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas viewScale];
   v15 = v14;
 
-  if ([v12 isDropShadow])
+  if ([shadowCopy isDropShadow])
   {
     sub_10011FFD8(x, y, width, height, v15);
     v96 = 0u;
@@ -6437,11 +6437,11 @@ LABEL_50:
     [(CRLCanvasRep *)self computeDirectLayerFrame:&v96 andTransform:&v93];
     v16 = sub_100120414(*&v96, *(&v96 + 1), *&v97, *(&v97 + 1));
     v18 = v17;
-    [v12 offsetDelta];
+    [shadowCopy offsetDelta];
     v21 = sub_10011F340(v19, v20, v15);
     v23 = sub_100122154(v21, v22);
-    [v11 setPosition:{sub_10011F334(v16, v18, v23)}];
-    [v11 setBounds:sub_10011ECB4()];
+    [renderableCopy setPosition:{sub_10011F334(v16, v18, v23)}];
+    [renderableCopy setBounds:sub_10011ECB4()];
     v90 = v93;
     v91 = v94;
     v92 = v95;
@@ -6450,10 +6450,10 @@ LABEL_50:
 
   else
   {
-    if ([v12 isContactShadow])
+    if ([shadowCopy isContactShadow])
     {
-      v25 = [(CRLCanvasRep *)self shadow];
-      [v25 boundsForRep:self];
+      shadow = [(CRLCanvasRep *)self shadow];
+      [shadow boundsForRep:self];
       v27 = v26;
       v29 = v28;
       v31 = v30;
@@ -6462,20 +6462,20 @@ LABEL_50:
       v34 = sub_10011FFD8(v27, v29, v31, v33, v15);
       v38 = sub_100120414(v34, v35, v36, v37);
       v40 = v39;
-      [v12 offset];
+      [shadowCopy offset];
       v42 = v41;
       v43 = 0.0;
     }
 
     else
     {
-      if (![v12 isCurvedShadow])
+      if (![shadowCopy isCurvedShadow])
       {
         goto LABEL_11;
       }
 
-      v44 = [(CRLCanvasRep *)self shadow];
-      [v44 boundsForRep:self];
+      shadow2 = [(CRLCanvasRep *)self shadow];
+      [shadow2 boundsForRep:self];
       v46 = v45;
       v48 = v47;
       v50 = v49;
@@ -6484,19 +6484,19 @@ LABEL_50:
       v53 = sub_10011FFD8(v46, v48, v50, v52, v15);
       v38 = sub_100120414(v53, v54, v55, v56);
       v40 = v57;
-      [v12 offsetDelta];
+      [shadowCopy offsetDelta];
     }
 
     v58 = sub_10011F340(v43, v42, v15);
     v60 = sub_100122154(v58, v59);
     v61 = sub_10011F334(v38, v40, v60);
     v63 = v62;
-    v64 = [(CRLCanvasRep *)self parentRep];
+    parentRep = [(CRLCanvasRep *)self parentRep];
 
-    if (v64)
+    if (parentRep)
     {
-      v65 = [(CRLCanvasRep *)self parentRep];
-      [v65 layerFrameInScaledCanvas];
+      parentRep2 = [(CRLCanvasRep *)self parentRep];
+      [parentRep2 layerFrameInScaledCanvas];
       v67 = v66;
       v69 = v68;
 
@@ -6504,8 +6504,8 @@ LABEL_50:
       v63 = v63 - v69;
     }
 
-    [v11 setPosition:{v61, v63}];
-    [v11 setBounds:sub_10011ECB4()];
+    [renderableCopy setPosition:{v61, v63}];
+    [renderableCopy setBounds:sub_10011ECB4()];
     v70 = *&CGAffineTransformIdentity.c;
     v93 = *&CGAffineTransformIdentity.a;
     v94 = v70;
@@ -6513,69 +6513,69 @@ LABEL_50:
     v24 = &v93;
   }
 
-  [v11 setAffineTransform:{v24, v90, v91, v92, v93, v94, v95}];
+  [renderableCopy setAffineTransform:{v24, v90, v91, v92, v93, v94, v95}];
 LABEL_11:
-  [v11 frame];
+  [renderableCopy frame];
   v72 = v71;
   v74 = v73;
-  v75 = [v11 superlayer];
-  if (v75)
+  superlayer = [renderableCopy superlayer];
+  if (superlayer)
   {
-    v76 = v75;
+    v76 = superlayer;
     do
     {
       [v76 frame];
       v72 = sub_10011F334(v72, v74, v77);
       v74 = v78;
-      v79 = [v76 superlayer];
+      superlayer2 = [v76 superlayer];
 
-      v76 = v79;
+      v76 = superlayer2;
     }
 
-    while (v79);
+    while (superlayer2);
   }
 
-  [v11 position];
+  [renderableCopy position];
   v81 = v80;
   v83 = v82;
-  v84 = [(CRLCanvasRep *)self canvas];
-  [v84 contentsScale];
+  canvas2 = [(CRLCanvasRep *)self canvas];
+  [canvas2 contentsScale];
   v86 = sub_10012218C(v72, v74, v85);
   v88 = v87;
 
   v89 = sub_10011F31C(v86, v88, v72);
-  [v11 setPosition:{sub_10011F334(v81, v83, v89)}];
+  [renderableCopy setPosition:{sub_10011F334(v81, v83, v89)}];
 }
 
-- (CGImage)newShadowImageWithSize:(CGSize)a3 shadow:(id)a4 drawSelector:(SEL)a5 unflipped:(BOOL)a6
+- (CGImage)newShadowImageWithSize:(CGSize)size shadow:(id)shadow drawSelector:(SEL)selector unflipped:(BOOL)unflipped
 {
-  v6 = a6;
-  height = a3.height;
-  width = a3.width;
-  v11 = a4;
-  v12 = [(CRLCanvasRep *)self canvas];
-  [v12 viewScale];
-  v14 = [v11 newShadowImageForRep:self withUnscaledSize:a5 viewScale:v6 drawSelector:width unflipped:{height, v13}];
+  unflippedCopy = unflipped;
+  height = size.height;
+  width = size.width;
+  shadowCopy = shadow;
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas viewScale];
+  v14 = [shadowCopy newShadowImageForRep:self withUnscaledSize:selector viewScale:unflippedCopy drawSelector:width unflipped:{height, v13}];
 
   return v14;
 }
 
-- (CGImage)newShadowImageWithSize:(CGSize)a3 unflipped:(BOOL)a4 withChildren:(BOOL)a5
+- (CGImage)newShadowImageWithSize:(CGSize)size unflipped:(BOOL)unflipped withChildren:(BOOL)children
 {
-  v5 = a4;
-  height = a3.height;
-  width = a3.width;
+  unflippedCopy = unflipped;
+  height = size.height;
+  width = size.width;
   v9 = &selRef_drawInContextWithoutEffectsForAlphaOnly_;
-  if (!a5)
+  if (!children)
   {
     v9 = &selRef_drawInContextWithoutEffectsOrChildrenForAlphaOnly_;
   }
 
   v10 = *v9;
-  v11 = [(CRLCanvasRep *)self shadow];
-  v12 = [(CRLCanvasRep *)self newShadowImageWithSize:v11 shadow:v10 drawSelector:v5 unflipped:width, height];
+  shadow = [(CRLCanvasRep *)self shadow];
+  height = [(CRLCanvasRep *)self newShadowImageWithSize:shadow shadow:v10 drawSelector:unflippedCopy unflipped:width, height];
 
-  return v12;
+  return height;
 }
 
 - (void)dynamicDragDidBegin
@@ -6624,24 +6624,24 @@ LABEL_11:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:3160 isFatal:0 description:"dynamic drag beginning outside of dynamic operation"];
   }
 
-  v6 = [(CRLCanvasRep *)self layout];
-  [v6 beginDrag];
+  layout = [(CRLCanvasRep *)self layout];
+  [layout beginDrag];
 }
 
 - (BOOL)isBeingDragged
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  v3 = [v2 layoutState] == 2;
+  layout = [(CRLCanvasRep *)self layout];
+  v3 = [layout layoutState] == 2;
 
   return v3;
 }
 
-- (CGRect)snapRectForDynamicDragWithOffset:(CGPoint)a3
+- (CGRect)snapRectForDynamicDragWithOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CRLCanvasRep *)self layout];
-  [v5 alignmentFrameInRoot];
+  y = offset.y;
+  x = offset.x;
+  layout = [(CRLCanvasRep *)self layout];
+  [layout alignmentFrameInRoot];
   v15 = CGRectOffset(v14, x, y);
   v6 = v15.origin.x;
   v7 = v15.origin.y;
@@ -6661,20 +6661,20 @@ LABEL_11:
 
 - (void)i_dynamicDragDidEnd
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  [v2 endDrag];
+  layout = [(CRLCanvasRep *)self layout];
+  [layout endDrag];
 }
 
 - (CGPoint)i_dragOffset
 {
-  v3 = [(CRLCanvasRep *)self layout];
-  v4 = [v3 dynamicGeometry];
-  [v4 frame];
+  layout = [(CRLCanvasRep *)self layout];
+  dynamicGeometry = [layout dynamicGeometry];
+  [dynamicGeometry frame];
   v6 = v5;
   v8 = v7;
-  v9 = [(CRLCanvasRep *)self layout];
-  v10 = [v9 originalGeometry];
-  [v10 frame];
+  layout2 = [(CRLCanvasRep *)self layout];
+  originalGeometry = [layout2 originalGeometry];
+  [originalGeometry frame];
   v12 = sub_10011F31C(v6, v8, v11);
   v14 = v13;
 
@@ -6698,10 +6698,10 @@ LABEL_11:
   return result;
 }
 
-- (void)dynamicDragDidEndAt:(CGPoint)a3
+- (void)dynamicDragDidEndAt:(CGPoint)at
 {
-  y = a3.y;
-  x = a3.x;
+  y = at.y;
+  x = at.x;
   [(CRLCanvasRep *)self i_dragOffset];
   v7 = v6;
   WeakRetained = objc_loadWeakRetained(&self->mCanvas);
@@ -6714,32 +6714,32 @@ LABEL_11:
 
     if ([(CRLCanvasRep *)self dragDidChangeGeometry])
     {
-      v10 = [(CRLCanvasRep *)self layout];
-      v11 = [v10 isInRealTimeDynamicOperation];
+      layout = [(CRLCanvasRep *)self layout];
+      isInRealTimeDynamicOperation = [layout isInRealTimeDynamicOperation];
 
-      if ((v11 & 1) == 0)
+      if ((isInRealTimeDynamicOperation & 1) == 0)
       {
-        v12 = [(CRLCanvasRep *)self info];
-        v13 = [v12 geometry];
-        v14 = [v13 mutableCopy];
+        info = [(CRLCanvasRep *)self info];
+        geometry = [info geometry];
+        v14 = [geometry mutableCopy];
 
         [v14 position];
         [v14 setPosition:{sub_10011F334(v15, v16, v7)}];
         v17 = objc_opt_class();
-        v18 = sub_100014370(v17, v12);
+        v18 = sub_100014370(v17, info);
         if (v18)
         {
-          v19 = [(CRLCanvasRep *)self interactiveCanvasController];
-          v20 = [v19 temporaryAdditionalBoardItemsToDisplay];
-          v21 = [v20 containsObject:v18];
+          interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+          temporaryAdditionalBoardItemsToDisplay = [interactiveCanvasController temporaryAdditionalBoardItemsToDisplay];
+          v21 = [temporaryAdditionalBoardItemsToDisplay containsObject:v18];
 
           if ((v21 & 1) == 0)
           {
             v22 = [(CRLCanvasRep *)self newCommandToApplyGeometry:v14 toInfo:v18];
             if (v22)
             {
-              v23 = [(CRLCanvasRep *)self commandController];
-              [v23 enqueueCommand:v22];
+              commandController = [(CRLCanvasRep *)self commandController];
+              [commandController enqueueCommand:v22];
             }
 
             else
@@ -6772,8 +6772,8 @@ LABEL_11:
             }
 
             [(CRLCanvasRep *)self releaseFromAnchoringTableIfNeededAt:x, y];
-            v27 = [(CRLCanvasRep *)self layout];
-            [v27 enqueueCommandsForAdjustingPathSourcesAfterRoutingChanges];
+            layout2 = [(CRLCanvasRep *)self layout];
+            [layout2 enqueueCommandsForAdjustingPathSourcesAfterRoutingChanges];
           }
         }
       }
@@ -6785,10 +6785,10 @@ LABEL_11:
 
 - (BOOL)allowDragAcrossPageBoundaries
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  v3 = [v2 isInGroup];
+  layout = [(CRLCanvasRep *)self layout];
+  isInGroup = [layout isInGroup];
 
-  return v3 ^ 1;
+  return isInGroup ^ 1;
 }
 
 - (void)dynamicRotateDidBegin
@@ -6829,16 +6829,16 @@ LABEL_11:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:3342 isFatal:0 description:"dynamic rotate began outside of dynamic operation"];
   }
 
-  v6 = [(CRLCanvasRep *)self layout];
-  [v6 beginRotate];
+  layout = [(CRLCanvasRep *)self layout];
+  [layout beginRotate];
 
   [(CRLCanvasRep *)self invalidateKnobs];
 }
 
 - (BOOL)isBeingRotated
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  v3 = [v2 layoutState] == 3;
+  layout = [(CRLCanvasRep *)self layout];
+  v3 = [layout layoutState] == 3;
 
   return v3;
 }
@@ -6853,9 +6853,9 @@ LABEL_11:
 
 - (double)angleForRotation
 {
-  v2 = [(CRLCanvasRep *)self info];
-  v3 = [v2 geometry];
-  [v3 angle];
+  info = [(CRLCanvasRep *)self info];
+  geometry = [info geometry];
+  [geometry angle];
   v5 = v4;
 
   return v5;
@@ -6881,39 +6881,39 @@ LABEL_11:
   return result;
 }
 
-- (void)dynamicallyRotatingWithTracker:(id)a3
+- (void)dynamicallyRotatingWithTracker:(id)tracker
 {
-  v4 = a3;
-  v5 = [(CRLCanvasRep *)self layout];
-  [v5 takeRotationFromTracker:v4];
+  trackerCopy = tracker;
+  layout = [(CRLCanvasRep *)self layout];
+  [layout takeRotationFromTracker:trackerCopy];
 }
 
 - (void)p_dynamicRotateDidEnd
 {
-  v3 = [(CRLCanvasRep *)self layout];
-  [v3 endRotate];
+  layout = [(CRLCanvasRep *)self layout];
+  [layout endRotate];
 
   [(CRLCanvasRep *)self invalidateKnobs];
 }
 
-- (void)dynamicRotateDidEndWithTracker:(id)a3
+- (void)dynamicRotateDidEndWithTracker:(id)tracker
 {
-  v4 = a3;
-  v5 = [(CRLCanvasRep *)self info];
+  trackerCopy = tracker;
+  info = [(CRLCanvasRep *)self info];
   [(CRLCanvasRep *)self recursivelyPerformSelector:"p_dynamicRotateDidEnd"];
   WeakRetained = objc_loadWeakRetained(&self->mCanvas);
   [WeakRetained canvasInvalidatedForRep:self];
 
-  v7 = [(CRLCanvasRep *)self layout];
-  v8 = [v7 isInRealTimeDynamicOperation];
+  layout = [(CRLCanvasRep *)self layout];
+  isInRealTimeDynamicOperation = [layout isInRealTimeDynamicOperation];
 
-  if ((v8 & 1) == 0)
+  if ((isInRealTimeDynamicOperation & 1) == 0)
   {
     v9 = objc_opt_class();
-    v10 = sub_100014370(v9, v5);
-    if (v4)
+    v10 = sub_100014370(v9, info);
+    if (trackerCopy)
     {
-      [v4 rotateTransform];
+      [trackerCopy rotateTransform];
     }
 
     else
@@ -6927,8 +6927,8 @@ LABEL_11:
       v12 = [(CRLCanvasRep *)self newCommandToApplyGeometry:v11 toInfo:v10];
       if (v12)
       {
-        v13 = [(CRLCanvasRep *)self commandController];
-        [v13 enqueueCommand:v12];
+        commandController = [(CRLCanvasRep *)self commandController];
+        [commandController enqueueCommand:v12];
       }
 
       else
@@ -6955,9 +6955,9 @@ LABEL_11:
           sub_10130DA10(v19);
         }
 
-        v13 = [NSString stringWithUTF8String:"[CRLCanvasRep dynamicRotateDidEndWithTracker:]"];
+        commandController = [NSString stringWithUTF8String:"[CRLCanvasRep dynamicRotateDidEndWithTracker:]"];
         v20 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCanvasRep.m"];
-        [CRLAssertionHandler handleFailureInFunction:v13 file:v20 lineNumber:3402 isFatal:0 description:"invalid nil value for '%{public}s'", "cmd"];
+        [CRLAssertionHandler handleFailureInFunction:commandController file:v20 lineNumber:3402 isFatal:0 description:"invalid nil value for '%{public}s'", "cmd"];
       }
     }
 
@@ -6987,10 +6987,10 @@ LABEL_11:
       }
 
       v12 = [NSString stringWithUTF8String:"[CRLCanvasRep dynamicRotateDidEndWithTracker:]"];
-      v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCanvasRep.m"];
+      commandController = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCanvasRep.m"];
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
-      [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:3408 isFatal:0 description:"We don't know how to rotate a %@", v18];
+      [CRLAssertionHandler handleFailureInFunction:v12 file:commandController lineNumber:3408 isFatal:0 description:"We don't know how to rotate a %@", v18];
     }
   }
 }
@@ -7029,18 +7029,18 @@ LABEL_11:
   WeakRetained = objc_loadWeakRetained(&self->mCanvas);
   [WeakRetained canvasInvalidatedForRep:self];
 
-  v7 = [(CRLCanvasRep *)self layout];
-  [v7 beginResize];
+  layout = [(CRLCanvasRep *)self layout];
+  [layout beginResize];
 
-  v8 = [(CRLCanvasRep *)self layout];
+  layout2 = [(CRLCanvasRep *)self layout];
 
-  return v8;
+  return layout2;
 }
 
 - (BOOL)isBeingResized
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  v3 = [v2 layoutState] == 4;
+  layout = [(CRLCanvasRep *)self layout];
+  v3 = [layout layoutState] == 4;
 
   return v3;
 }
@@ -7053,13 +7053,13 @@ LABEL_11:
   return v3;
 }
 
-- (void)dynamicallyResizingWithTracker:(id)a3
+- (void)dynamicallyResizingWithTracker:(id)tracker
 {
-  v8 = a3;
-  v4 = [v8 rep];
+  trackerCopy = tracker;
+  v4 = [trackerCopy rep];
   if ([v4 willHandleResizingLayoutForRep:self])
   {
-    v5 = [v8 rep];
+    v5 = [trackerCopy rep];
 
     if (v5 != self)
     {
@@ -7071,33 +7071,33 @@ LABEL_11:
   {
   }
 
-  v6 = [v8 resizingLayoutForRep:self];
-  [v6 takeSizeFromTracker:v8];
+  v6 = [trackerCopy resizingLayoutForRep:self];
+  [v6 takeSizeFromTracker:trackerCopy];
 
 LABEL_6:
   WeakRetained = objc_loadWeakRetained(&self->mCanvas);
   [WeakRetained canvasInvalidatedForRep:self];
 }
 
-- (void)dynamicResizeDidEndWithTracker:(id)a3
+- (void)dynamicResizeDidEndWithTracker:(id)tracker
 {
-  v4 = [(CRLCanvasRep *)self layout];
-  [v4 endResize];
+  layout = [(CRLCanvasRep *)self layout];
+  [layout endResize];
 
   WeakRetained = objc_loadWeakRetained(&self->mCanvas);
   [WeakRetained canvasInvalidatedForRep:self];
 }
 
-- (id)newCommandToApplyGeometry:(id)a3 toInfo:(id)a4
+- (id)newCommandToApplyGeometry:(id)geometry toInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  geometryCopy = geometry;
+  infoCopy = info;
   v7 = objc_opt_class();
-  v8 = sub_100014370(v7, v6);
+  v8 = sub_100014370(v7, infoCopy);
 
   if (v8)
   {
-    v9 = [[_TtC8Freeform25CRLCommandSetInfoGeometry alloc] initWithBoardItem:v8 geometry:v5];
+    v9 = [[_TtC8Freeform25CRLCommandSetInfoGeometry alloc] initWithBoardItem:v8 geometry:geometryCopy];
   }
 
   else
@@ -7134,9 +7134,9 @@ LABEL_6:
   return v9;
 }
 
-- (void)dynamicFreeTransformDidBeginWithTracker:(id)a3
+- (void)dynamicFreeTransformDidBeginWithTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   if (![(CRLCanvasRep *)self isInDynamicOperation])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -7169,14 +7169,14 @@ LABEL_6:
   WeakRetained = objc_loadWeakRetained(&self->mCanvas);
   [WeakRetained canvasInvalidatedForRep:self];
 
-  v9 = [(CRLCanvasRep *)self layout];
-  [v9 beginFreeTransformWithTracker:v4];
+  layout = [(CRLCanvasRep *)self layout];
+  [layout beginFreeTransformWithTracker:trackerCopy];
 }
 
 - (BOOL)isBeingFreeTransformed
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  v3 = [v2 layoutState] == 5;
+  layout = [(CRLCanvasRep *)self layout];
+  v3 = [layout layoutState] == 5;
 
   return v3;
 }
@@ -7185,8 +7185,8 @@ LABEL_6:
 {
   if ([(CRLCanvasRep *)self isBeingFreeTransformed])
   {
-    v3 = [(CRLCanvasRep *)self layout];
-    v4 = [v3 freeTransformState] & 1;
+    layout = [(CRLCanvasRep *)self layout];
+    v4 = [layout freeTransformState] & 1;
   }
 
   else
@@ -7201,8 +7201,8 @@ LABEL_6:
 {
   if ([(CRLCanvasRep *)self isBeingFreeTransformed])
   {
-    v3 = [(CRLCanvasRep *)self layout];
-    v4 = ([v3 freeTransformState] >> 1) & 1;
+    layout = [(CRLCanvasRep *)self layout];
+    v4 = ([layout freeTransformState] >> 1) & 1;
   }
 
   else
@@ -7217,8 +7217,8 @@ LABEL_6:
 {
   if ([(CRLCanvasRep *)self isBeingFreeTransformed])
   {
-    v3 = [(CRLCanvasRep *)self layout];
-    v4 = ([v3 freeTransformState] >> 2) & 1;
+    layout = [(CRLCanvasRep *)self layout];
+    v4 = ([layout freeTransformState] >> 2) & 1;
   }
 
   else
@@ -7233,8 +7233,8 @@ LABEL_6:
 {
   if ([(CRLCanvasRep *)self isBeingFreeTransformed])
   {
-    v3 = [(CRLCanvasRep *)self layout];
-    v4 = ([v3 freeTransformState] >> 3) & 1;
+    layout = [(CRLCanvasRep *)self layout];
+    v4 = ([layout freeTransformState] >> 3) & 1;
   }
 
   else
@@ -7253,16 +7253,16 @@ LABEL_6:
   return v3;
 }
 
-- (void)dynamicallyFreeTransformingWithTracker:(id)a3
+- (void)dynamicallyFreeTransformingWithTracker:(id)tracker
 {
-  v8 = a3;
-  v4 = [(CRLCanvasRep *)self layout];
-  v5 = [v8 selectedRepForLayout:v4];
+  trackerCopy = tracker;
+  layout = [(CRLCanvasRep *)self layout];
+  v5 = [trackerCopy selectedRepForLayout:layout];
 
   if (v5 && (v5 == self || ![(CRLCanvasRep *)v5 willHandleFreeTransformingLayoutForRep:self]))
   {
-    v6 = [(CRLCanvasRep *)self layout];
-    [v6 takeFreeTransformFromTracker:v8];
+    layout2 = [(CRLCanvasRep *)self layout];
+    [layout2 takeFreeTransformFromTracker:trackerCopy];
   }
 
   if ([(CRLCanvasRep *)self isBeingFreeTransformResized]|| [(CRLCanvasRep *)self isBeingFreeTransformRotated])
@@ -7272,54 +7272,54 @@ LABEL_6:
   }
 }
 
-- (void)dynamicFreeTransformDidEndWithTracker:(id)a3
+- (void)dynamicFreeTransformDidEndWithTracker:(id)tracker
 {
-  v4 = [(CRLCanvasRep *)self layout];
-  [v4 endFreeTransform];
+  layout = [(CRLCanvasRep *)self layout];
+  [layout endFreeTransform];
 
   WeakRetained = objc_loadWeakRetained(&self->mCanvas);
   [WeakRetained canvasInvalidatedForRep:self];
 }
 
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point inputType:(int64_t)type
 {
-  v5 = [(CRLCanvasRep *)self p_isNotSelectableDueToUnknownContent:a4];
+  v5 = [(CRLCanvasRep *)self p_isNotSelectableDueToUnknownContent:type];
   if (v5)
   {
     [(CRLCanvasRep *)self p_showAlertForGroupWithUnknownContent];
   }
 
-  v6 = [(CRLCanvasRep *)self interactiveCanvasController];
-  if ([v6 editingDisabled])
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  if ([interactiveCanvasController editingDisabled])
   {
-    v7 = [(CRLCanvasRep *)self hyperlinkRegions];
-    v8 = [v7 count];
+    hyperlinkRegions = [(CRLCanvasRep *)self hyperlinkRegions];
+    v8 = [hyperlinkRegions count];
 
     if (v8)
     {
-      v9 = [v6 layerHost];
-      v10 = [v9 asiOSCVC];
-      LOBYTE(v5) = [v10 allowOpenLinkOnSingleTapForRepWhenEditingDisabled:self];
+      layerHost = [interactiveCanvasController layerHost];
+      asiOSCVC = [layerHost asiOSCVC];
+      LOBYTE(v5) = [asiOSCVC allowOpenLinkOnSingleTapForRepWhenEditingDisabled:self];
     }
   }
 
   return v5;
 }
 
-- (BOOL)shouldLayoutTilingLayer:(id)a3
+- (BOOL)shouldLayoutTilingLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v6 = [v5 shouldLayoutTilingLayer:v4];
+  layerCopy = layer;
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  v6 = [interactiveCanvasController shouldLayoutTilingLayer:layerCopy];
 
   return v6;
 }
 
-- (CGRect)visibleBoundsForTilingLayer:(id)a3
+- (CGRect)visibleBoundsForTilingLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v5 visibleBoundsForTilingLayer:v4];
+  layerCopy = layer;
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController visibleBoundsForTilingLayer:layerCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -7336,23 +7336,23 @@ LABEL_6:
   return result;
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
-  if (a3 <= 7)
+  if (property <= 7)
   {
-    if (a3 == 6)
+    if (property == 6)
     {
       [(CRLCanvasRep *)self invalidateKnobPositions];
     }
 
     else
     {
-      if (a3 != 7)
+      if (property != 7)
       {
 LABEL_24:
-        if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 6)
+        if ((property & 0xFFFFFFFFFFFFFFFELL) != 6)
         {
-          if (a3 != 9)
+          if (property != 9)
           {
             return;
           }
@@ -7366,13 +7366,13 @@ LABEL_24:
       [(CRLCanvasRep *)self invalidateKnobs];
     }
 
-    v4 = [(CRLCanvasRep *)self interactiveCanvasController];
-    [v4 invalidateCollaboratorHUDControllers];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    [interactiveCanvasController invalidateCollaboratorHUDControllers];
 
 LABEL_20:
-    v5 = [(CRLCanvasRep *)self ancestorRepForDrawingIntoLayer];
+    ancestorRepForDrawingIntoLayer = [(CRLCanvasRep *)self ancestorRepForDrawingIntoLayer];
 
-    if (v5)
+    if (ancestorRepForDrawingIntoLayer)
     {
 
       [(CRLCanvasRep *)self setNeedsDisplay];
@@ -7381,7 +7381,7 @@ LABEL_20:
     return;
   }
 
-  switch(a3)
+  switch(property)
   {
     case 8uLL:
 
@@ -7392,8 +7392,8 @@ LABEL_20:
       [(CRLCanvasRep *)self invalidateSelectionHighlightRenderable];
       if ([(CRLCanvasRep *)self isSelectedIgnoringLocking])
       {
-        v6 = [(CRLCanvasRep *)self interactiveCanvasController];
-        [v6 updateMultiselectResizeInfoIfNeeded];
+        interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+        [interactiveCanvasController2 updateMultiselectResizeInfoIfNeeded];
       }
 
       break;
@@ -7407,11 +7407,11 @@ LABEL_5:
   }
 }
 
-- (void)prepareForPrintingWithCompletionHandler:(id)a3
+- (void)prepareForPrintingWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3);
+    (*(handler + 2))(handler);
   }
 }
 
@@ -7451,8 +7451,8 @@ LABEL_5:
         v9 = *(*(&v12 + 1) + 8 * i);
         if ([v9 shouldDisplayDirectlyOverRep] && objc_msgSend(v9, "wantsToFadeDuringZoom"))
         {
-          v10 = [v9 renderable];
-          [v3 addObject:v10];
+          renderable = [v9 renderable];
+          [v3 addObject:renderable];
         }
       }
 
@@ -7468,11 +7468,11 @@ LABEL_5:
 - (id)i_additionalRenderablesOverRenderableIncludingKnobs
 {
   v3 = +[NSMutableArray array];
-  v4 = [(CRLCanvasRep *)self additionalRenderablesOverRenderable];
-  [v3 addObjectsFromArray:v4];
+  additionalRenderablesOverRenderable = [(CRLCanvasRep *)self additionalRenderablesOverRenderable];
+  [v3 addObjectsFromArray:additionalRenderablesOverRenderable];
 
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v6 = [(CRLCanvasRep *)self p_addRenderablesForKnobsToArray:v3 withDelegate:v5 isOverlay:0];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  v6 = [(CRLCanvasRep *)self p_addRenderablesForKnobsToArray:v3 withDelegate:interactiveCanvasController isOverlay:0];
 
   return v6;
 }
@@ -7480,18 +7480,18 @@ LABEL_5:
 - (NSArray)allRenderables
 {
   v3 = +[NSMutableArray array];
-  v4 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v5 = [v4 renderableForRep:self];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  v5 = [interactiveCanvasController renderableForRep:self];
   [v3 crl_addNonNilObject:v5];
 
-  v6 = [(CRLCanvasRep *)self i_additionalRenderablesOverRenderableIncludingKnobs];
-  [v3 addObjectsFromArray:v6];
+  i_additionalRenderablesOverRenderableIncludingKnobs = [(CRLCanvasRep *)self i_additionalRenderablesOverRenderableIncludingKnobs];
+  [v3 addObjectsFromArray:i_additionalRenderablesOverRenderableIncludingKnobs];
 
-  v7 = [(CRLCanvasRep *)self additionalRenderablesUnderRenderable];
-  [v3 addObjectsFromArray:v7];
+  additionalRenderablesUnderRenderable = [(CRLCanvasRep *)self additionalRenderablesUnderRenderable];
+  [v3 addObjectsFromArray:additionalRenderablesUnderRenderable];
 
-  v8 = [(CRLCanvasRep *)self overlayRenderables];
-  [v3 addObjectsFromArray:v8];
+  overlayRenderables = [(CRLCanvasRep *)self overlayRenderables];
+  [v3 addObjectsFromArray:overlayRenderables];
 
   return v3;
 }
@@ -7499,36 +7499,36 @@ LABEL_5:
 - (NSArray)allPlatformViews
 {
   v3 = objc_opt_new();
-  v4 = [(CRLCanvasRep *)self contentPlatformView];
+  contentPlatformView = [(CRLCanvasRep *)self contentPlatformView];
 
-  if (v4)
+  if (contentPlatformView)
   {
-    v5 = [(CRLCanvasRep *)self contentPlatformView];
-    [v3 addObject:v5];
+    contentPlatformView2 = [(CRLCanvasRep *)self contentPlatformView];
+    [v3 addObject:contentPlatformView2];
   }
 
-  v6 = [(CRLCanvasRep *)self additionalPlatformViewOverRenderable];
+  additionalPlatformViewOverRenderable = [(CRLCanvasRep *)self additionalPlatformViewOverRenderable];
 
-  if (v6)
+  if (additionalPlatformViewOverRenderable)
   {
-    v7 = [(CRLCanvasRep *)self additionalPlatformViewOverRenderable];
-    [v3 addObject:v7];
+    additionalPlatformViewOverRenderable2 = [(CRLCanvasRep *)self additionalPlatformViewOverRenderable];
+    [v3 addObject:additionalPlatformViewOverRenderable2];
   }
 
-  v8 = [(CRLCanvasRep *)self additionalPlatformViewUnderRenderable];
+  additionalPlatformViewUnderRenderable = [(CRLCanvasRep *)self additionalPlatformViewUnderRenderable];
 
-  if (v8)
+  if (additionalPlatformViewUnderRenderable)
   {
-    v9 = [(CRLCanvasRep *)self additionalPlatformViewUnderRenderable];
-    [v3 addObject:v9];
+    additionalPlatformViewUnderRenderable2 = [(CRLCanvasRep *)self additionalPlatformViewUnderRenderable];
+    [v3 addObject:additionalPlatformViewUnderRenderable2];
   }
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [(CRLCanvasRep *)self childReps];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v11 = [childReps countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -7539,14 +7539,14 @@ LABEL_5:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(childReps);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * i) allPlatformViews];
-        [v3 addObjectsFromArray:v15];
+        allPlatformViews = [*(*(&v18 + 1) + 8 * i) allPlatformViews];
+        [v3 addObjectsFromArray:allPlatformViews];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [childReps countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
@@ -7572,35 +7572,35 @@ LABEL_5:
 
 - (BOOL)shouldSuppressFontSmoothing
 {
-  v2 = [(CRLCanvasRep *)self canvas];
-  v3 = [v2 canvasController];
+  canvas = [(CRLCanvasRep *)self canvas];
+  canvasController = [canvas canvasController];
 
-  if (v3)
+  if (canvasController)
   {
-    v4 = [v3 shouldSuppressFontSmoothing];
+    shouldSuppressFontSmoothing = [canvasController shouldSuppressFontSmoothing];
   }
 
   else
   {
-    v4 = 1;
+    shouldSuppressFontSmoothing = 1;
   }
 
-  return v4;
+  return shouldSuppressFontSmoothing;
 }
 
-- (int64_t)dragTypeAtCanvasPoint:(CGPoint)a3 forTouchType:(int64_t)a4
+- (int64_t)dragTypeAtCanvasPoint:(CGPoint)point forTouchType:(int64_t)type
 {
-  v5 = [(CRLCanvasRep *)self repForSelecting:a3.x];
-  v6 = [v5 isSelected];
+  v5 = [(CRLCanvasRep *)self repForSelecting:point.x];
+  isSelected = [v5 isSelected];
 
-  if (a4 == 3)
+  if (type == 3)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = v6;
+    v7 = isSelected;
   }
 
   if (v7)
@@ -7616,8 +7616,8 @@ LABEL_5:
 
 - (BOOL)isLocked
 {
-  v2 = [(CRLCanvasRep *)self info];
-  v3 = sub_10012602C(v2);
+  info = [(CRLCanvasRep *)self info];
+  v3 = sub_10012602C(info);
 
   return v3;
 }
@@ -7635,54 +7635,54 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)handleContextMenuClickAtPoint:(CGPoint)a3 withPlatformObject:(id)a4 onKnob:(id)a5
+- (BOOL)handleContextMenuClickAtPoint:(CGPoint)point withPlatformObject:(id)object onKnob:(id)knob
 {
-  v6 = [(CRLCanvasRep *)self repForSelecting:a4];
+  v6 = [(CRLCanvasRep *)self repForSelecting:object];
   v7 = v6;
   if (v6 && ([v6 isSelectedIgnoringLocking] & 1) == 0)
   {
-    v8 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v9 = [v8 canvasEditor];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    canvasEditor = [interactiveCanvasController canvasEditor];
 
-    v10 = [v7 info];
-    v11 = [v9 selectionPathWithInfo:v10];
-    v12 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v13 = [v12 editorController];
-    [v13 setSelectionPath:v11];
+    info = [v7 info];
+    v11 = [canvasEditor selectionPathWithInfo:info];
+    interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+    editorController = [interactiveCanvasController2 editorController];
+    [editorController setSelectionPath:v11];
   }
 
   return v7 != 0;
 }
 
-- (id)resizedGeometryForTransform:(CGAffineTransform *)a3
+- (id)resizedGeometryForTransform:(CGAffineTransform *)transform
 {
-  v5 = [(CRLCanvasRep *)self layout];
-  v6 = [v5 infoGeometryBeforeDynamicOperation];
-  v7 = v6;
-  if (v6)
+  layout = [(CRLCanvasRep *)self layout];
+  infoGeometryBeforeDynamicOperation = [layout infoGeometryBeforeDynamicOperation];
+  v7 = infoGeometryBeforeDynamicOperation;
+  if (infoGeometryBeforeDynamicOperation)
   {
-    v8 = v6;
+    geometry = infoGeometryBeforeDynamicOperation;
   }
 
   else
   {
-    v9 = [(CRLCanvasRep *)self info];
-    v8 = [v9 geometry];
+    info = [(CRLCanvasRep *)self info];
+    geometry = [info geometry];
   }
 
-  v10 = *&a3->c;
-  v13[0] = *&a3->a;
+  v10 = *&transform->c;
+  v13[0] = *&transform->a;
   v13[1] = v10;
-  v13[2] = *&a3->tx;
-  v11 = [v8 geometryByAppendingTransform:v13];
+  v13[2] = *&transform->tx;
+  v11 = [geometry geometryByAppendingTransform:v13];
 
   return v11;
 }
 
 - (CGPoint)centerForRotation
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  [v2 centerForRotation];
+  layout = [(CRLCanvasRep *)self layout];
+  [layout centerForRotation];
   v4 = v3;
   v6 = v5;
 
@@ -7693,12 +7693,12 @@ LABEL_5:
   return result;
 }
 
-- (void)updateDragAndDropUIForPoint:(CGPoint)a3 dragInfo:(id)a4
+- (void)updateDragAndDropUIForPoint:(CGPoint)point dragInfo:(id)info
 {
   if (!self->mShowDragAndDropHighlight)
   {
     self->mShowDragAndDropHighlight = 1;
-    v6 = [(CRLCanvasRep *)self interactiveCanvasController:a4];
+    v6 = [(CRLCanvasRep *)self interactiveCanvasController:info];
     [v6 invalidateOverlayLayersForRep:self];
   }
 }
@@ -7711,8 +7711,8 @@ LABEL_5:
     mDragAndDropHighlightRenderable = self->mDragAndDropHighlightRenderable;
     self->mDragAndDropHighlightRenderable = 0;
 
-    v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-    [v5 invalidateOverlayLayersForRep:self];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    [interactiveCanvasController invalidateOverlayLayersForRep:self];
   }
 }
 
@@ -7745,9 +7745,9 @@ LABEL_5:
   mDragAndDropHighlightRenderable = self->mDragAndDropHighlightRenderable;
   if (!mDragAndDropHighlightRenderable)
   {
-    v4 = [(CRLCanvasRep *)self p_highlightRenderable];
+    p_highlightRenderable = [(CRLCanvasRep *)self p_highlightRenderable];
     v5 = self->mDragAndDropHighlightRenderable;
-    self->mDragAndDropHighlightRenderable = v4;
+    self->mDragAndDropHighlightRenderable = p_highlightRenderable;
 
     mDragAndDropHighlightRenderable = self->mDragAndDropHighlightRenderable;
   }
@@ -7757,35 +7757,35 @@ LABEL_5:
 
 - (id)p_highlightRenderable
 {
-  v3 = [(CRLCanvasRep *)self newHighlightPathInScaledSpace];
+  newHighlightPathInScaledSpace = [(CRLCanvasRep *)self newHighlightPathInScaledSpace];
   v4 = [CRLDragAndDropCanvasHighlightDecorator alloc];
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v6 = [(CRLDragAndDropCanvasHighlightDecorator *)v4 initWithInteractiveCanvasController:v5 highlightPath:v3];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  v6 = [(CRLDragAndDropCanvasHighlightDecorator *)v4 initWithInteractiveCanvasController:interactiveCanvasController highlightPath:newHighlightPathInScaledSpace];
 
-  CFRelease(v3);
-  v7 = [(CRLDragAndDropCanvasHighlightDecorator *)v6 dragAndDropHighlightRenderable];
+  CFRelease(newHighlightPathInScaledSpace);
+  dragAndDropHighlightRenderable = [(CRLDragAndDropCanvasHighlightDecorator *)v6 dragAndDropHighlightRenderable];
 
-  return v7;
+  return dragAndDropHighlightRenderable;
 }
 
 - (NSArray)hyperlinkRegions
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasRep *)self info];
+  v5 = sub_100014370(v3, info);
 
   if (v5 && ([v5 hyperlinkURL], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, objc_msgSend(v5, "hyperlinkURL"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "absoluteString"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v8, v7, v10))
   {
     v11 = objc_opt_class();
-    v12 = [(CRLCanvasRep *)self layout];
-    v13 = sub_100014370(v11, v12);
+    layout = [(CRLCanvasRep *)self layout];
+    v13 = sub_100014370(v11, layout);
 
     if (v13)
     {
-      v14 = [v13 i_wrapPath];
+      i_wrapPath = [v13 i_wrapPath];
       v15 = [CRLHyperlinkRegion alloc];
-      v16 = [v5 hyperlinkURL];
-      v17 = [(CRLHyperlinkRegion *)v15 initWithURL:v16 bezierPath:v14];
+      hyperlinkURL = [v5 hyperlinkURL];
+      v17 = [(CRLHyperlinkRegion *)v15 initWithURL:hyperlinkURL bezierPath:i_wrapPath];
 
       v18 = [NSArray arrayWithObject:v17];
     }
@@ -7806,17 +7806,17 @@ LABEL_5:
 
 - (BOOL)containsUnknownContent
 {
-  v2 = [(CRLCanvasRep *)self info];
-  v3 = [v2 isSupported];
+  info = [(CRLCanvasRep *)self info];
+  isSupported = [info isSupported];
 
-  return v3 ^ 1;
+  return isSupported ^ 1;
 }
 
-- (CGPoint)p_centerForPreviewFrame:(CGRect)a3
+- (CGPoint)p_centerForPreviewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v5 = sub_100120414(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  height = frame.size.height;
+  width = frame.size.width;
+  v5 = sub_100120414(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
   if (width < 50.0 && height < 50.0)
   {
     v6 = v6 + (50.0 - height) * -0.5;
@@ -7827,26 +7827,26 @@ LABEL_5:
   return result;
 }
 
-- (id)dragItemsForBeginningDragAtPoint:(CGPoint)a3
+- (id)dragItemsForBeginningDragAtPoint:(CGPoint)point
 {
-  v4 = [NSMutableArray array:a3.x];
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v6 = [(CRLCanvasRep *)self repForSelecting];
+  v4 = [NSMutableArray array:point.x];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  repForSelecting = [(CRLCanvasRep *)self repForSelecting];
   v7 = objc_opt_class();
-  v8 = [v6 info];
-  v9 = sub_100014370(v7, v8);
+  info = [repForSelecting info];
+  v9 = sub_100014370(v7, info);
 
   if ([v9 allowedToBeDragAndDropped])
   {
-    v56 = self;
-    if ([v6 isSelected] && (objc_msgSend(v5, "canvasEditor"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "canvasEditorCanCopyWithSender:", 0), v10, v11))
+    selfCopy = self;
+    if ([repForSelecting isSelected] && (objc_msgSend(interactiveCanvasController, "canvasEditor"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "canvasEditorCanCopyWithSender:", 0), v10, v11))
     {
-      v57 = v6;
+      v57 = repForSelecting;
       v59 = v4;
-      v12 = [v5 selectionModelTranslator];
-      v13 = [v5 editorController];
-      v14 = [v13 selectionPath];
-      v15 = [v12 boardItemsForSelectionPath:v14];
+      selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
+      editorController = [interactiveCanvasController editorController];
+      selectionPath = [editorController selectionPath];
+      v15 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath];
 
       v16 = +[NSMutableSet set];
       v72 = 0u;
@@ -7882,17 +7882,17 @@ LABEL_5:
       }
 
       v23 = [v16 copy];
-      v6 = v57;
+      repForSelecting = v57;
       v4 = v59;
     }
 
     else
     {
-      v24 = [v5 layerHost];
-      v25 = [v24 asiOSCVC];
-      v26 = [v25 delegate];
+      layerHost = [interactiveCanvasController layerHost];
+      asiOSCVC = [layerHost asiOSCVC];
+      delegate = [asiOSCVC delegate];
 
-      if ((objc_opt_respondsToSelector() & 1) != 0 && ([v26 currentDocumentMode], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "allowsDragOnUnselectedReps"), v27, v28) && (objc_msgSend(v9, "shouldBeIgnoredWhenCopying") & 1) == 0)
+      if ((objc_opt_respondsToSelector() & 1) != 0 && ([delegate currentDocumentMode], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "allowsDragOnUnselectedReps"), v27, v28) && (objc_msgSend(v9, "shouldBeIgnoredWhenCopying") & 1) == 0)
       {
         v23 = [NSSet setWithObject:v9];
       }
@@ -7907,7 +7907,7 @@ LABEL_5:
     {
       v60 = v4;
       v61 = objc_alloc_init(CRLItemProviderItemWriter);
-      v29 = [v5 topLevelZOrderedSiblingsOfInfos:v23];
+      v29 = [interactiveCanvasController topLevelZOrderedSiblingsOfInfos:v23];
       v54 = v23;
       v30 = [v29 crl_arrayWithObjectsInSet:v23];
 
@@ -7950,7 +7950,7 @@ LABEL_5:
       }
 
       v55 = v9;
-      v58 = v6;
+      v58 = repForSelecting;
 
       v38 = +[NSMutableArray array];
       v39 = +[UIColor clearColor];
@@ -7973,18 +7973,18 @@ LABEL_5:
               objc_enumerationMutation(v40);
             }
 
-            v45 = [v5 repForInfo:*(*(&v64 + 1) + 8 * k)];
-            v46 = [v45 unscaledPathToIncludeForSystemPreviewOutline];
-            if (v46)
+            v45 = [interactiveCanvasController repForInfo:*(*(&v64 + 1) + 8 * k)];
+            unscaledPathToIncludeForSystemPreviewOutline = [v45 unscaledPathToIncludeForSystemPreviewOutline];
+            if (unscaledPathToIncludeForSystemPreviewOutline)
             {
-              [v38 addObject:v46];
+              [v38 addObject:unscaledPathToIncludeForSystemPreviewOutline];
             }
 
             if ([v40 count] == 1)
             {
-              v47 = [v45 backgroundColorForDragPreview];
+              backgroundColorForDragPreview = [v45 backgroundColorForDragPreview];
 
-              v39 = v47;
+              v39 = backgroundColorForDragPreview;
             }
           }
 
@@ -7995,12 +7995,12 @@ LABEL_5:
       }
 
       v63 = 0;
-      v48 = [(CRLItemProviderItemWriter *)v61 createItemProviderWithCopyOfBoardItems:v40 fromInteractiveCanvasController:v5 outCopiedBoardItems:&v63];
+      v48 = [(CRLItemProviderItemWriter *)v61 createItemProviderWithCopyOfBoardItems:v40 fromInteractiveCanvasController:interactiveCanvasController outCopiedBoardItems:&v63];
       v49 = v63;
       if (v48)
       {
-        v4 = [(CRLCanvasRep *)v56 dragItemsForBeginningDragWithItemProvider:v48 deepCopiedBoardItems:v49 withUnscaledTracedPaths:v38 previewBackgroundColor:v39 localObjectProvider:0];
-        v6 = v58;
+        v4 = [(CRLCanvasRep *)selfCopy dragItemsForBeginningDragWithItemProvider:v48 deepCopiedBoardItems:v49 withUnscaledTracedPaths:v38 previewBackgroundColor:v39 localObjectProvider:0];
+        repForSelecting = v58;
         v50 = v60;
       }
 
@@ -8022,7 +8022,7 @@ LABEL_5:
           sub_101353B38();
         }
 
-        v6 = v58;
+        repForSelecting = v58;
         v51 = off_1019EDA68;
         if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
         {
@@ -8044,21 +8044,21 @@ LABEL_5:
   return v4;
 }
 
-- (id)dragItemsForBeginningDragWithItemProvider:(id)a3 deepCopiedBoardItems:(id)a4 withUnscaledTracedPaths:(id)a5 previewBackgroundColor:(id)a6 localObjectProvider:(id)a7
+- (id)dragItemsForBeginningDragWithItemProvider:(id)provider deepCopiedBoardItems:(id)items withUnscaledTracedPaths:(id)paths previewBackgroundColor:(id)color localObjectProvider:(id)objectProvider
 {
-  v47 = a3;
-  v12 = a4;
-  v46 = a5;
-  v44 = a6;
-  v45 = a7;
-  v13 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v14 = [(CRLCanvasRep *)self p_newImagerToGenerateSystemPreviewOfBoardItems:v12];
+  providerCopy = provider;
+  itemsCopy = items;
+  pathsCopy = paths;
+  colorCopy = color;
+  objectProviderCopy = objectProvider;
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  v14 = [(CRLCanvasRep *)self p_newImagerToGenerateSystemPreviewOfBoardItems:itemsCopy];
   [v14 unscaledClipRect];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [v14 newImage];
+  newImage = [v14 newImage];
   v68[0] = 0;
   v68[1] = v68;
   v68[2] = 0x3032000000;
@@ -8066,14 +8066,14 @@ LABEL_5:
   v68[4] = sub_10031C79C;
   v69 = 0;
   v24 = dispatch_semaphore_create(0);
-  if (v23)
+  if (newImage)
   {
     v25 = objc_alloc_init(UIView);
-    v26 = [v25 layer];
-    [v26 setContents:v23];
+    layer = [v25 layer];
+    [layer setContents:newImage];
 
-    v27 = [(CRLCanvasRep *)self interactiveCanvasController];
-    [v27 viewScale];
+    interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+    [interactiveCanvasController2 viewScale];
     [v25 setFrame:{sub_10011FFD8(v16, v18, v20, v22, v28)}];
 
     v29 = dispatch_get_global_queue(0, 0);
@@ -8081,15 +8081,15 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_100324878;
     block[3] = &unk_1018560F8;
-    v57 = v46;
-    v58 = v12;
+    v57 = pathsCopy;
+    v58 = itemsCopy;
     v62 = v68;
     v63 = v16;
     v64 = v18;
     v65 = v20;
     v66 = v22;
-    v59 = v13;
-    v67 = v23;
+    v59 = interactiveCanvasController;
+    v67 = newImage;
     v60 = v14;
     v61 = v24;
     dispatch_async(v29, block);
@@ -8107,7 +8107,7 @@ LABEL_5:
 
     if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
     {
-      sub_101353B88(v12, v31);
+      sub_101353B88(itemsCopy, v31);
     }
 
     if (qword_101AD5A10 != -1)
@@ -8124,7 +8124,7 @@ LABEL_5:
 
     v30 = [NSString stringWithUTF8String:"[CRLCanvasRep dragItemsForBeginningDragWithItemProvider:deepCopiedBoardItems:withUnscaledTracedPaths:previewBackgroundColor:localObjectProvider:]"];
     v34 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCanvasRep.m"];
-    [CRLAssertionHandler handleFailureInFunction:v30 file:v34 lineNumber:4430 isFatal:0 description:"Unable to make a preview drag image for infos %@", v12, v44];
+    [CRLAssertionHandler handleFailureInFunction:v30 file:v34 lineNumber:4430 isFatal:0 description:"Unable to make a preview drag image for infos %@", itemsCopy, colorCopy];
 
     v25 = 0;
   }
@@ -8139,14 +8139,14 @@ LABEL_5:
   v37 = v24;
   v50 = v37;
   v55 = v68;
-  v38 = v13;
+  v38 = interactiveCanvasController;
   v51 = v38;
-  v52 = self;
-  v39 = v44;
+  selfCopy = self;
+  v39 = colorCopy;
   v53 = v39;
-  v40 = v45;
+  v40 = objectProviderCopy;
   v54 = v40;
-  v41 = [(CRLiOSCanvasDragItem *)v35 initWithItemProvider:v47 previewGeneratingBlock:v48];
+  v41 = [(CRLiOSCanvasDragItem *)v35 initWithItemProvider:providerCopy previewGeneratingBlock:v48];
   v70 = v41;
   v42 = [NSArray arrayWithObjects:&v70 count:1];
 
@@ -8155,25 +8155,25 @@ LABEL_5:
   return v42;
 }
 
-- (id)p_newImagerToGenerateSystemPreviewOfBoardItems:(id)a3
+- (id)p_newImagerToGenerateSystemPreviewOfBoardItems:(id)items
 {
-  v4 = a3;
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v6 = [(CRLCanvasRep *)self canvas];
+  itemsCopy = items;
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  canvas = [(CRLCanvasRep *)self canvas];
   v7 = [CRLCanvasImager alloc];
-  v8 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v9 = [v8 board];
-  v10 = [(CRLCanvasImager *)v7 initWithBoard:v9];
+  interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+  board = [interactiveCanvasController2 board];
+  v10 = [(CRLCanvasImager *)v7 initWithBoard:board];
 
-  [(CRLCanvasImager *)v10 setInfos:v4];
-  [v5 viewScale];
+  [(CRLCanvasImager *)v10 setInfos:itemsCopy];
+  [interactiveCanvasController viewScale];
   [(CRLCanvasImager *)v10 setViewScale:?];
-  v11 = [(CRLCanvasImager *)v10 canvas];
-  [v11 setSuppressesShadowsAndReflections:1];
-  [v11 setShouldRenderInvisibleContentForNonInteractiveCanvas:1];
-  [v6 viewScale];
-  [v11 setI_viewScaleForAudioObjectsInNonInteractiveCanvas:?];
-  [v6 contentsScale];
+  canvas2 = [(CRLCanvasImager *)v10 canvas];
+  [canvas2 setSuppressesShadowsAndReflections:1];
+  [canvas2 setShouldRenderInvisibleContentForNonInteractiveCanvas:1];
+  [canvas viewScale];
+  [canvas2 setI_viewScaleForAudioObjectsInNonInteractiveCanvas:?];
+  [canvas contentsScale];
   [(CRLCanvasImager *)v10 setContentsScale:?];
   v12 = sub_10050CFD8();
   v14 = v13;
@@ -8191,8 +8191,8 @@ LABEL_5:
     v22 = v14;
   }
 
-  v23 = [(CRLCanvasImager *)v10 canvas];
-  [v23 viewScale];
+  canvas3 = [(CRLCanvasImager *)v10 canvas];
+  [canvas3 viewScale];
   v25 = sub_10011FFD8(v18, v20, v21, v22, 1.0 / v24);
   v27 = v26;
   v29 = v28;
@@ -8205,9 +8205,9 @@ LABEL_5:
 
 - (id)unscaledPathToIncludeForSystemPreviewOutline
 {
-  v3 = [(CRLCanvasRep *)self layout];
-  v4 = [v3 i_wrapPath];
-  v5 = [v4 copy];
+  layout = [(CRLCanvasRep *)self layout];
+  i_wrapPath = [layout i_wrapPath];
+  v5 = [i_wrapPath copy];
 
   if (!v5 || [v5 isEmpty])
   {
@@ -8217,9 +8217,9 @@ LABEL_5:
     v5 = v6;
   }
 
-  if (v3)
+  if (layout)
   {
-    [v3 transformInRoot];
+    [layout transformInRoot];
   }
 
   else
@@ -8234,21 +8234,21 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)shouldPreventMarqueeInitiationAtPoint:(CGPoint)a3 withTouchType:(int64_t)a4
+- (BOOL)shouldPreventMarqueeInitiationAtPoint:(CGPoint)point withTouchType:(int64_t)type
 {
-  v5 = [(CRLCanvasRep *)self repForDragging:a4];
+  v5 = [(CRLCanvasRep *)self repForDragging:type];
   if (v5)
   {
-    v6 = 1;
+    demandsExclusiveSelection = 1;
   }
 
   else
   {
-    v7 = [(CRLCanvasRep *)self repForSelecting];
-    v6 = [v7 demandsExclusiveSelection];
+    repForSelecting = [(CRLCanvasRep *)self repForSelecting];
+    demandsExclusiveSelection = [repForSelecting demandsExclusiveSelection];
   }
 
-  return v6;
+  return demandsExclusiveSelection;
 }
 
 - (CRLCanvas)canvas
@@ -8274,27 +8274,27 @@ LABEL_5:
 
 - (id)getConnectionLineLayoutToCopyStyleForNewConnectionLine
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1008A45E4();
 
   return v3;
 }
 
-- (void)releaseFromAnchoringTableIfNeededAt:(CGPoint)a3
+- (void)releaseFromAnchoringTableIfNeededAt:(CGPoint)at
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = at.y;
+  x = at.x;
+  selfCopy = self;
   sub_1008A5258(x, y);
 }
 
-- (void)commitTableAnchoringChangesAt:(CGPoint)a3 dueToResizing:(BOOL)a4
+- (void)commitTableAnchoringChangesAt:(CGPoint)at dueToResizing:(BOOL)resizing
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v7 = self;
-  sub_1008A5F54(v4, x, y);
+  resizingCopy = resizing;
+  y = at.y;
+  x = at.x;
+  selfCopy = self;
+  sub_1008A5F54(resizingCopy, x, y);
 }
 
 @end

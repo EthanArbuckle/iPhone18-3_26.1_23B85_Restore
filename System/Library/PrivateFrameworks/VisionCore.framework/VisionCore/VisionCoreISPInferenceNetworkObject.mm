@@ -1,6 +1,6 @@
 @interface VisionCoreISPInferenceNetworkObject
 - (CGRect)boundingBox;
-- (VisionCoreISPInferenceNetworkObject)initWithANSTObject:(id)a3;
+- (VisionCoreISPInferenceNetworkObject)initWithANSTObject:(id)object;
 @end
 
 @implementation VisionCoreISPInferenceNetworkObject
@@ -18,21 +18,21 @@
   return result;
 }
 
-- (VisionCoreISPInferenceNetworkObject)initWithANSTObject:(id)a3
+- (VisionCoreISPInferenceNetworkObject)initWithANSTObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = VisionCoreISPInferenceNetworkObject;
   v5 = [(VisionCoreISPInferenceNetworkObject *)&v11 init];
   if (v5)
   {
-    [v4 boundingBox];
+    [objectCopy boundingBox];
     v5->_boundingBox.origin.x = v6;
     v5->_boundingBox.origin.y = v7;
     v5->_boundingBox.size.width = v8;
     v5->_boundingBox.size.height = v9;
-    v5->_groupID = [v4 groupID];
-    v5->_confidence = [v4 confidence];
+    v5->_groupID = [objectCopy groupID];
+    v5->_confidence = [objectCopy confidence];
   }
 
   return v5;

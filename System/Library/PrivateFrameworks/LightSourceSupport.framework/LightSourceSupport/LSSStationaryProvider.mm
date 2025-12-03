@@ -1,16 +1,16 @@
 @interface LSSStationaryProvider
 - (LSSProviderDelegate)delegate;
-- (LSSStationaryProvider)initWithQueue:(id)a3 delegate:(id)a4;
+- (LSSStationaryProvider)initWithQueue:(id)queue delegate:(id)delegate;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation LSSStationaryProvider
 
-- (LSSStationaryProvider)initWithQueue:(id)a3 delegate:(id)a4
+- (LSSStationaryProvider)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = LSSStationaryProvider;
   v9 = [(LSSStationaryProvider *)&v20 init];
@@ -40,19 +40,19 @@ LABEL_4:
   }
 
 LABEL_5:
-  objc_storeStrong(v9 + 1, a3);
-  objc_storeWeak(v9 + 3, v8);
+  objc_storeStrong(v9 + 1, queue);
+  objc_storeWeak(v9 + 3, delegateCopy);
   v11 = +[LSSSettings currentSettings];
   v12 = *(v9 + 2);
   *(v9 + 2) = v11;
 
   if ([(LSSSettings *)*(v9 + 2) dynamic])
   {
-    v13 = [(LSSSettings *)*(v9 + 2) defaults];
-    [v13 addObserver:v9 forKeyPath:@"lightDefaultAzimuth" options:1 context:0];
+    defaults = [(LSSSettings *)*(v9 + 2) defaults];
+    [defaults addObserver:v9 forKeyPath:@"lightDefaultAzimuth" options:1 context:0];
 
-    v14 = [(LSSSettings *)*(v9 + 2) defaults];
-    [v14 addObserver:v9 forKeyPath:@"lightDefaultAltitude" options:1 context:0];
+    defaults2 = [(LSSSettings *)*(v9 + 2) defaults];
+    [defaults2 addObserver:v9 forKeyPath:@"lightDefaultAltitude" options:1 context:0];
   }
 
   v15 = *(v9 + 1);
@@ -67,10 +67,10 @@ LABEL_8:
   return v9;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
-  if (([v7 isEqualToString:@"lightDefaultAzimuth"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"lightDefaultAltitude"))
+  pathCopy = path;
+  if (([pathCopy isEqualToString:@"lightDefaultAzimuth"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"lightDefaultAltitude"))
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -86,11 +86,11 @@ LABEL_8:
 {
   if ([(LSSSettings *)self->_settings dynamic])
   {
-    v3 = [(LSSSettings *)self->_settings defaults];
-    [v3 removeObserver:self forKeyPath:@"lightDefaultAzimuth"];
+    defaults = [(LSSSettings *)self->_settings defaults];
+    [defaults removeObserver:self forKeyPath:@"lightDefaultAzimuth"];
 
-    v4 = [(LSSSettings *)self->_settings defaults];
-    [v4 removeObserver:self forKeyPath:@"lightDefaultAltitude"];
+    defaults2 = [(LSSSettings *)self->_settings defaults];
+    [defaults2 removeObserver:self forKeyPath:@"lightDefaultAltitude"];
   }
 }
 

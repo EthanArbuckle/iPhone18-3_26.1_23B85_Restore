@@ -3,9 +3,9 @@
 + (void)registerAnsweringMachineTerminate;
 + (void)registerBlocksForService;
 - (VCAnsweringMachineManager)init;
-- (void)answeringMachine:(id)a3 didFinishAnnouncement:(BOOL)a4 error:(id)a5;
-- (void)answeringMachine:(id)a3 didStart:(BOOL)a4 error:(id)a5;
-- (void)answeringMachine:(id)a3 didStop:(BOOL)a4 recordingURL:(id)a5 error:(id)a6;
+- (void)answeringMachine:(id)machine didFinishAnnouncement:(BOOL)announcement error:(id)error;
+- (void)answeringMachine:(id)machine didStart:(BOOL)start error:(id)error;
+- (void)answeringMachine:(id)machine didStop:(BOOL)stop recordingURL:(id)l error:(id)error;
 - (void)dealloc;
 - (void)init;
 @end
@@ -121,7 +121,7 @@ id __63__VCAnsweringMachineManager_registerAnsweringMachineInitialize__block_inv
 {
   v3[1] = *MEMORY[0x1E69E9840];
   v3[0] = objc_opt_class();
-  [a1 registerTerminateBlock:&__block_literal_global_31 forService:"vcAnsweringMachineTerminate" expectedClasses:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v3, 1)}];
+  [self registerTerminateBlock:&__block_literal_global_31 forService:"vcAnsweringMachineTerminate" expectedClasses:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v3, 1)}];
 }
 
 uint64_t __62__VCAnsweringMachineManager_registerAnsweringMachineTerminate__block_invoke(uint64_t a1, void *a2)
@@ -135,32 +135,32 @@ uint64_t __62__VCAnsweringMachineManager_registerAnsweringMachineTerminate__bloc
 
 + (void)registerBlocksForService
 {
-  [a1 registerAnsweringMachineInitialize];
-  [a1 registerAnsweringMachineTerminate];
-  [a1 registerAnsweringMachineStart];
-  [a1 registerAnsweringMachineStop];
+  [self registerAnsweringMachineInitialize];
+  [self registerAnsweringMachineTerminate];
+  [self registerAnsweringMachineStart];
+  [self registerAnsweringMachineStop];
 
-  [a1 registerAnsweringMachineAnnouncementAsset];
+  [self registerAnsweringMachineAnnouncementAsset];
 }
 
-- (void)answeringMachine:(id)a3 didStart:(BOOL)a4 error:(id)a5
+- (void)answeringMachine:(id)machine didStart:(BOOL)start error:(id)error
 {
-  v6 = a4;
+  startCopy = start;
   dispatch_assert_queue_V2(self->_callbackQueue);
   v8 = objc_alloc(MEMORY[0x1E695DF90]);
-  v9 = [v8 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v6), @"vcAnsweringMachineStatus", 0}];
-  [VCXPCManager addNSError:a5 toXPCArgumentDictionary:v9];
+  v9 = [v8 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", startCopy), @"vcAnsweringMachineStatus", 0}];
+  [VCXPCManager addNSError:error toXPCArgumentDictionary:v9];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)answeringMachine:(id)a3 didStop:(BOOL)a4 recordingURL:(id)a5 error:(id)a6
+- (void)answeringMachine:(id)machine didStop:(BOOL)stop recordingURL:(id)l error:(id)error
 {
-  v8 = a4;
+  stopCopy = stop;
   v34 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_callbackQueue);
   v11 = objc_alloc(MEMORY[0x1E695DF90]);
-  v12 = [v11 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v8), @"vcAnsweringMachineStatus", 0}];
-  if (!a5)
+  v12 = [v11 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", stopCopy), @"vcAnsweringMachineStatus", 0}];
+  if (!l)
   {
     [VCAnsweringMachineManager answeringMachine:didStop:recordingURL:error:];
 LABEL_20:
@@ -168,7 +168,7 @@ LABEL_20:
     goto LABEL_4;
   }
 
-  [objc_msgSend(a5 "path")];
+  [objc_msgSend(l "path")];
   v13 = sandbox_extension_issue_file();
   if (!v13)
   {
@@ -209,11 +209,11 @@ LABEL_20:
           v26 = 1024;
           v27 = 180;
           v28 = 2112;
-          v29 = v15;
+          lCopy2 = v15;
           v30 = 2048;
-          v31 = self;
+          selfCopy = self;
           v32 = 2112;
-          v33 = a5;
+          lCopy = l;
           _os_log_error_impl(&dword_1DB56E000, v18, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to issue sandbox extension for url=%@, removing url", buf, 0x3Au);
         }
       }
@@ -233,9 +233,9 @@ LABEL_20:
         v26 = 1024;
         v27 = 190;
         v28 = 2112;
-        v29 = a5;
+        lCopy2 = l;
         v30 = 2112;
-        v31 = v21;
+        selfCopy = v21;
         _os_log_error_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_ERROR, " [%s] %s:%d Failed to remove recordingURL=%@: error=%@", buf, 0x30u);
       }
     }
@@ -244,21 +244,21 @@ LABEL_20:
   }
 
   v14 = v13;
-  [v12 setObject:a5 forKeyedSubscript:@"vcAnsweringMachineMessageRecordingURL"];
+  [v12 setObject:l forKeyedSubscript:@"vcAnsweringMachineMessageRecordingURL"];
   [v12 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKeyedSubscript:{"stringWithUTF8String:", v14), @"vcAnsweringMachineMessageRecordingURLSandboxExtensionToken"}];
 LABEL_4:
   free(v14);
-  [VCXPCManager addNSError:a6 toXPCArgumentDictionary:v12];
+  [VCXPCManager addNSError:error toXPCArgumentDictionary:v12];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)answeringMachine:(id)a3 didFinishAnnouncement:(BOOL)a4 error:(id)a5
+- (void)answeringMachine:(id)machine didFinishAnnouncement:(BOOL)announcement error:(id)error
 {
-  v6 = a4;
+  announcementCopy = announcement;
   dispatch_assert_queue_V2(self->_callbackQueue);
   v8 = objc_alloc(MEMORY[0x1E695DF90]);
-  v9 = [v8 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v6), @"vcAnsweringMachineStatus", 0}];
-  [VCXPCManager addNSError:a5 toXPCArgumentDictionary:v9];
+  v9 = [v8 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", announcementCopy), @"vcAnsweringMachineStatus", 0}];
+  [VCXPCManager addNSError:error toXPCArgumentDictionary:v9];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 

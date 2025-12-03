@@ -1,45 +1,45 @@
 @interface _INPBPlatformSupport
-- (BOOL)isEqual:(id)a3;
-- (_INPBPlatformSupport)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPlatformSupport)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsSupportedPlatform:(id)a3;
+- (int)StringAsSupportedPlatform:(id)platform;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMinimumOsVersion:(id)a3;
-- (void)setSupportedPlatform:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMinimumOsVersion:(id)version;
+- (void)setSupportedPlatform:(int)platform;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPlatformSupport
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_minimumOsVersion)
   {
-    v4 = [(_INPBPlatformSupport *)self minimumOsVersion];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"minimum_os_version"];
+    minimumOsVersion = [(_INPBPlatformSupport *)self minimumOsVersion];
+    v5 = [minimumOsVersion copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"minimum_os_version"];
   }
 
   if ([(_INPBPlatformSupport *)self hasSupportedPlatform])
   {
-    v6 = [(_INPBPlatformSupport *)self supportedPlatform];
-    if ((v6 - 1) >= 3)
+    supportedPlatform = [(_INPBPlatformSupport *)self supportedPlatform];
+    if ((supportedPlatform - 1) >= 3)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", supportedPlatform];
     }
 
     else
     {
-      v7 = off_1E7285960[(v6 - 1)];
+      v7 = off_1E7285960[(supportedPlatform - 1)];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"supported_platform"];
+    [dictionary setObject:v7 forKeyedSubscript:@"supported_platform"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -58,26 +58,26 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = [(_INPBPlatformSupport *)self minimumOsVersion];
-  v6 = [v4 minimumOsVersion];
-  v7 = v6;
-  if ((v5 != 0) != (v6 == 0))
+  minimumOsVersion = [(_INPBPlatformSupport *)self minimumOsVersion];
+  minimumOsVersion2 = [equalCopy minimumOsVersion];
+  v7 = minimumOsVersion2;
+  if ((minimumOsVersion != 0) != (minimumOsVersion2 == 0))
   {
-    v8 = [(_INPBPlatformSupport *)self minimumOsVersion];
-    if (v8)
+    minimumOsVersion3 = [(_INPBPlatformSupport *)self minimumOsVersion];
+    if (minimumOsVersion3)
     {
-      v9 = v8;
-      v10 = [(_INPBPlatformSupport *)self minimumOsVersion];
-      v11 = [v4 minimumOsVersion];
-      v12 = [v10 isEqual:v11];
+      v9 = minimumOsVersion3;
+      minimumOsVersion4 = [(_INPBPlatformSupport *)self minimumOsVersion];
+      minimumOsVersion5 = [equalCopy minimumOsVersion];
+      v12 = [minimumOsVersion4 isEqual:minimumOsVersion5];
 
       if (!v12)
       {
@@ -89,10 +89,10 @@
     {
     }
 
-    v13 = [(_INPBPlatformSupport *)self hasSupportedPlatform];
-    if (v13 == [v4 hasSupportedPlatform])
+    hasSupportedPlatform = [(_INPBPlatformSupport *)self hasSupportedPlatform];
+    if (hasSupportedPlatform == [equalCopy hasSupportedPlatform])
     {
-      if (!-[_INPBPlatformSupport hasSupportedPlatform](self, "hasSupportedPlatform") || ![v4 hasSupportedPlatform] || (supportedPlatform = self->_supportedPlatform, supportedPlatform == objc_msgSend(v4, "supportedPlatform")))
+      if (!-[_INPBPlatformSupport hasSupportedPlatform](self, "hasSupportedPlatform") || ![equalCopy hasSupportedPlatform] || (supportedPlatform = self->_supportedPlatform, supportedPlatform == objc_msgSend(equalCopy, "supportedPlatform")))
       {
         v14 = 1;
         goto LABEL_10;
@@ -111,10 +111,10 @@ LABEL_10:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPlatformSupport allocWithZone:](_INPBPlatformSupport init];
-  v6 = [(NSString *)self->_minimumOsVersion copyWithZone:a3];
+  v6 = [(NSString *)self->_minimumOsVersion copyWithZone:zone];
   [(_INPBPlatformSupport *)v5 setMinimumOsVersion:v6];
 
   if ([(_INPBPlatformSupport *)self hasSupportedPlatform])
@@ -125,36 +125,36 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPlatformSupport *)self data];
+  coderCopy = coder;
+  data = [(_INPBPlatformSupport *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPlatformSupport)initWithCoder:(id)a3
+- (_INPBPlatformSupport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPlatformSupport *)self initWithData:v6];
+    self = [(_INPBPlatformSupport *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_INPBPlatformSupport *)self minimumOsVersion];
+  toCopy = to;
+  minimumOsVersion = [(_INPBPlatformSupport *)self minimumOsVersion];
 
-  if (v4)
+  if (minimumOsVersion)
   {
     minimumOsVersion = self->_minimumOsVersion;
     PBDataWriterWriteStringField();
@@ -167,20 +167,20 @@ LABEL_10:
   }
 }
 
-- (int)StringAsSupportedPlatform:(id)a3
+- (int)StringAsSupportedPlatform:(id)platform
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"IOS"])
+  platformCopy = platform;
+  if ([platformCopy isEqualToString:@"IOS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TVOS"])
+  else if ([platformCopy isEqualToString:@"TVOS"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WATCHOS"])
+  else if ([platformCopy isEqualToString:@"WATCHOS"])
   {
     v4 = 3;
   }
@@ -193,10 +193,10 @@ LABEL_10:
   return v4;
 }
 
-- (void)setSupportedPlatform:(int)a3
+- (void)setSupportedPlatform:(int)platform
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (platform == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -204,13 +204,13 @@ LABEL_10:
   else
   {
     *&self->_has = has | 1;
-    self->_supportedPlatform = a3;
+    self->_supportedPlatform = platform;
   }
 }
 
-- (void)setMinimumOsVersion:(id)a3
+- (void)setMinimumOsVersion:(id)version
 {
-  v4 = [a3 copy];
+  v4 = [version copy];
   minimumOsVersion = self->_minimumOsVersion;
   self->_minimumOsVersion = v4;
 

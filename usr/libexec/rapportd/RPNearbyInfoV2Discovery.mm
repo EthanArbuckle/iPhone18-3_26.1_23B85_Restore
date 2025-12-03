@@ -1,9 +1,9 @@
 @interface RPNearbyInfoV2Discovery
 - (RPNearbyInfoV2Discovery)init;
 - (id)description;
-- (void)_deviceFound:(id)a3;
-- (void)_deviceLost:(id)a3;
-- (void)activateWithCompletion:(id)a3;
+- (void)_deviceFound:(id)found;
+- (void)_deviceLost:(id)lost;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -27,9 +27,9 @@
   return v2;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!self->_discovery)
   {
     v5 = objc_alloc_init(off_1001D4328());
@@ -67,7 +67,7 @@
     v8[1] = 3221225472;
     v8[2] = sub_10007B130;
     v8[3] = &unk_1001AC998;
-    v9 = v4;
+    v9 = completionCopy;
     [(CBDiscovery *)v7 activateWithCompletion:v8];
   }
 }
@@ -94,21 +94,21 @@
   }
 }
 
-- (void)_deviceFound:(id)a3
+- (void)_deviceFound:(id)found
 {
-  v11 = a3;
-  v4 = [v11 stableIdentifier];
-  if (!v4)
+  foundCopy = found;
+  stableIdentifier = [foundCopy stableIdentifier];
+  if (!stableIdentifier)
   {
-    v4 = [v11 identifier];
-    if (!v4)
+    stableIdentifier = [foundCopy identifier];
+    if (!stableIdentifier)
     {
       sub_10011EBD4();
       goto LABEL_16;
     }
   }
 
-  v5 = v4;
+  v5 = stableIdentifier;
   devices = self->_devices;
   if (!devices)
   {
@@ -142,7 +142,7 @@ LABEL_13:
   v10 = v9;
   if (v9)
   {
-    (*(v9 + 2))(v9, v11);
+    (*(v9 + 2))(v9, foundCopy);
   }
 
 LABEL_16:
@@ -163,14 +163,14 @@ LABEL_16:
   return v3;
 }
 
-- (void)_deviceLost:(id)a3
+- (void)_deviceLost:(id)lost
 {
-  v8 = a3;
-  v4 = [v8 stableIdentifier];
-  if (v4 || ([v8 identifier], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  lostCopy = lost;
+  stableIdentifier = [lostCopy stableIdentifier];
+  if (stableIdentifier || ([lostCopy identifier], (stableIdentifier = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = v4;
-    if ([(NSMutableArray *)self->_devices containsObject:v4])
+    v5 = stableIdentifier;
+    if ([(NSMutableArray *)self->_devices containsObject:stableIdentifier])
     {
       [(NSMutableArray *)self->_devices removeObject:v5];
       if (dword_1001D42B8 <= 30 && (dword_1001D42B8 != -1 || _LogCategory_Initialize()))
@@ -182,7 +182,7 @@ LABEL_16:
       v7 = v6;
       if (v6)
       {
-        (*(v6 + 2))(v6, v8);
+        (*(v6 + 2))(v6, lostCopy);
       }
     }
   }

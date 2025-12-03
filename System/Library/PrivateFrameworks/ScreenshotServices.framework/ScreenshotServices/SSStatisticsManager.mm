@@ -1,14 +1,14 @@
 @interface SSStatisticsManager
 + (id)sharedStatisticsManager;
-- (id)_triggerTypeForPresentationMode:(unint64_t)a3;
-- (void)_appendSettingsAndSendEvent:(id)a3 block:(id)a4;
-- (void)_sendEvent:(id)a3 block:(id)a4;
-- (void)didSubmitFeedbackWithAnnotationCount:(unint64_t)a3;
-- (void)drewStrokes:(unint64_t)a3;
-- (void)logTotalAnnotations:(unint64_t)a3;
-- (void)screenshotGestureTriggered:(unint64_t)a3;
-- (void)screenshotGestureTriggeredWhileAnotherScreenshotWasShowing:(unint64_t)a3;
-- (void)sendDismissalEventWithContext:(id)a3;
+- (id)_triggerTypeForPresentationMode:(unint64_t)mode;
+- (void)_appendSettingsAndSendEvent:(id)event block:(id)block;
+- (void)_sendEvent:(id)event block:(id)block;
+- (void)didSubmitFeedbackWithAnnotationCount:(unint64_t)count;
+- (void)drewStrokes:(unint64_t)strokes;
+- (void)logTotalAnnotations:(unint64_t)annotations;
+- (void)screenshotGestureTriggered:(unint64_t)triggered;
+- (void)screenshotGestureTriggeredWhileAnotherScreenshotWasShowing:(unint64_t)showing;
+- (void)sendDismissalEventWithContext:(id)context;
 @end
 
 @implementation SSStatisticsManager
@@ -32,9 +32,9 @@ uint64_t __46__SSStatisticsManager_sharedStatisticsManager__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)screenshotGestureTriggered:(unint64_t)a3
+- (void)screenshotGestureTriggered:(unint64_t)triggered
 {
-  v4 = [(SSStatisticsManager *)self _triggerTypeForPresentationMode:a3];
+  v4 = [(SSStatisticsManager *)self _triggerTypeForPresentationMode:triggered];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__SSStatisticsManager_screenshotGestureTriggered___block_invoke;
@@ -57,9 +57,9 @@ id __50__SSStatisticsManager_screenshotGestureTriggered___block_invoke(uint64_t 
   return v2;
 }
 
-- (void)screenshotGestureTriggeredWhileAnotherScreenshotWasShowing:(unint64_t)a3
+- (void)screenshotGestureTriggeredWhileAnotherScreenshotWasShowing:(unint64_t)showing
 {
-  v4 = [(SSStatisticsManager *)self _triggerTypeForPresentationMode:a3];
+  v4 = [(SSStatisticsManager *)self _triggerTypeForPresentationMode:showing];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __82__SSStatisticsManager_screenshotGestureTriggeredWhileAnotherScreenshotWasShowing___block_invoke;
@@ -82,15 +82,15 @@ id __82__SSStatisticsManager_screenshotGestureTriggeredWhileAnotherScreenshotWas
   return v2;
 }
 
-- (id)_triggerTypeForPresentationMode:(unint64_t)a3
+- (id)_triggerTypeForPresentationMode:(unint64_t)mode
 {
   v3 = @"keychord";
-  if (a3 == 2)
+  if (mode == 2)
   {
     v3 = @"keyboard";
   }
 
-  if (a3 == 3)
+  if (mode == 3)
   {
     return @"pencil";
   }
@@ -201,13 +201,13 @@ id __42__SSStatisticsManager_didAccidentallyDraw__block_invoke()
   return v0;
 }
 
-- (void)drewStrokes:(unint64_t)a3
+- (void)drewStrokes:(unint64_t)strokes
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __35__SSStatisticsManager_drewStrokes___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = strokes;
   [(SSStatisticsManager *)self _sendEvent:@"edit" block:v3];
 }
 
@@ -222,13 +222,13 @@ id __35__SSStatisticsManager_drewStrokes___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)logTotalAnnotations:(unint64_t)a3
+- (void)logTotalAnnotations:(unint64_t)annotations
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __43__SSStatisticsManager_logTotalAnnotations___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = annotations;
   [(SSStatisticsManager *)self _sendEvent:@"edit" block:v3];
 }
 
@@ -253,13 +253,13 @@ id __47__SSStatisticsManager_didTapBetaFeedbackButton__block_invoke()
   return v0;
 }
 
-- (void)didSubmitFeedbackWithAnnotationCount:(unint64_t)a3
+- (void)didSubmitFeedbackWithAnnotationCount:(unint64_t)count
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __60__SSStatisticsManager_didSubmitFeedbackWithAnnotationCount___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = count;
   [(SSStatisticsManager *)self _sendEvent:@"beta_feedback_submitted" block:v3];
 }
 
@@ -494,27 +494,27 @@ id __49__SSStatisticsManager_didDeleteScreenshotDueToVI__block_invoke()
   return v0;
 }
 
-- (void)_sendEvent:(id)a3 block:(id)a4
+- (void)_sendEvent:(id)event block:(id)block
 {
-  v8 = a3;
-  v6 = a4;
+  eventCopy = event;
+  blockCopy = block;
   if ([(SSStatisticsManager *)self _statisticsEnabled])
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.screenshotservices.%@", v8];
+    eventCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.screenshotservices.%@", eventCopy];
     AnalyticsSendEventLazy();
   }
 }
 
-- (void)_appendSettingsAndSendEvent:(id)a3 block:(id)a4
+- (void)_appendSettingsAndSendEvent:(id)event block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__SSStatisticsManager__appendSettingsAndSendEvent_block___block_invoke;
   v8[3] = &unk_1E8590750;
-  v9 = v6;
-  v7 = v6;
-  [(SSStatisticsManager *)self _sendEvent:a3 block:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [(SSStatisticsManager *)self _sendEvent:event block:v8];
 }
 
 id __57__SSStatisticsManager__appendSettingsAndSendEvent_block___block_invoke(uint64_t a1)
@@ -536,15 +536,15 @@ id __57__SSStatisticsManager__appendSettingsAndSendEvent_block___block_invoke(ui
   return v6;
 }
 
-- (void)sendDismissalEventWithContext:(id)a3
+- (void)sendDismissalEventWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__SSStatisticsManager_sendDismissalEventWithContext___block_invoke;
   v6[3] = &unk_1E85906E8;
-  v7 = v4;
-  v5 = v4;
+  v7 = contextCopy;
+  v5 = contextCopy;
   [(SSStatisticsManager *)self _sendEvent:@"dismissal" block:v6];
 }
 

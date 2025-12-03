@@ -1,16 +1,16 @@
 @interface PKPass
-+ (BOOL)isValidObjectWithFileDataAccessor:(id)a3 validationOptions:(unint64_t)a4 warnings:(id *)a5 error:(id *)a6 signingDate:(id *)a7 passDictionary:(id)a8;
-+ (Class)classForDictionary:(id)a3 bundle:(id)a4;
-+ (Class)classForPassType:(unint64_t)a3;
-+ (id)_dateForPassComparison:(id)a3 searchOption:(unint64_t)a4;
-+ (id)fetchSigningDateForObjectWithFileDataAccessor:(id)a3 passDictionary:(id)a4;
-+ (id)recordNameForUniqueID:(id)a3;
-+ (id)uniqueIDFromRecordName:(id)a3;
++ (BOOL)isValidObjectWithFileDataAccessor:(id)accessor validationOptions:(unint64_t)options warnings:(id *)warnings error:(id *)error signingDate:(id *)date passDictionary:(id)dictionary;
++ (Class)classForDictionary:(id)dictionary bundle:(id)bundle;
++ (Class)classForPassType:(unint64_t)type;
++ (id)_dateForPassComparison:(id)comparison searchOption:(unint64_t)option;
++ (id)fetchSigningDateForObjectWithFileDataAccessor:(id)accessor passDictionary:(id)dictionary;
++ (id)recordNameForUniqueID:(id)d;
++ (id)uniqueIDFromRecordName:(id)name;
 - (BOOL)availableForAutomaticPresentationUsingBeaconContext;
 - (BOOL)hasFlightDetails;
 - (BOOL)hasTimeOrLocationRelevancyInfo;
 - (BOOL)hasValidNFCPayload;
-- (BOOL)isEqualToPassIncludingMetadata:(id)a3;
+- (BOOL)isEqualToPassIncludingMetadata:(id)metadata;
 - (BOOL)isExpired;
 - (BOOL)isExpiredBasedOnSigningDate;
 - (BOOL)isPassStyleExpiresOnSigningDate;
@@ -21,11 +21,11 @@
 - (BOOL)linksToApp;
 - (BOOL)shouldRampBacklight;
 - (BOOL)silenceRequested;
-- (BOOL)supportsFeature:(unint64_t)a3 forDevice:(id)a4 version:(id)a5;
-- (BOOL)supportsFeatureForCurrentDevice:(unint64_t)a3;
+- (BOOL)supportsFeature:(unint64_t)feature forDevice:(id)device version:(id)version;
+- (BOOL)supportsFeatureForCurrentDevice:(unint64_t)device;
 - (BOOL)supportsIssuerBinding;
 - (BOOL)supportsSyncing;
-- (BOOL)wasAchivedInCloudStoreWithIdentifier:(id)a3;
+- (BOOL)wasAchivedInCloudStoreWithIdentifier:(id)identifier;
 - (CGRect)cobrandLogoRect;
 - (CGRect)logoRect;
 - (CGRect)stripRect;
@@ -72,23 +72,23 @@
 - (PKImage)rawIcon;
 - (PKLiveRenderedShaderSet)liveRenderedShaderSet;
 - (PKLocation)eventLocation;
-- (PKPass)initWithCloudStoreCoder:(id)a3;
-- (PKPass)initWithCoder:(id)a3;
+- (PKPass)initWithCloudStoreCoder:(id)coder;
+- (PKPass)initWithCoder:(id)coder;
 - (PKPass)initWithData:(NSData *)data error:(NSError *)error;
-- (PKPass)initWithDictionary:(id)a3 bundle:(id)a4;
+- (PKPass)initWithDictionary:(id)dictionary bundle:(id)bundle;
 - (PKPassBarcodeSettings)barcodeSettings;
 - (PKPassPersonalization)personalization;
 - (PKPassUpcomingPassInformation)upcomingPassInformation;
 - (PKPaymentPass)paymentPass;
 - (PKSeatingInformation)seatingInformation;
 - (PKSecureElementPass)secureElementPass;
-- (id)_changeMessageForDateSemantic:(id)a3 newSemantic:(id)a4;
-- (id)_changeMessageForDictionariesSemantic:(id)a3 newSemantic:(id)a4 passStyle:(int64_t)a5;
-- (id)_changeMessageForEventDateInfoSemantic:(id)a3 newSemantic:(id)a4;
-- (id)_changeMessageForFieldKey:(id)a3;
-- (id)_changeMessageForPersonNameComponentsSemantic:(id)a3 newSemantic:(id)a4;
-- (id)_changeMessageForSemantic:(id)a3 newSemantic:(id)a4 passStyle:(int64_t)a5;
-- (id)_changeMessageForStringSemantic:(id)a3 newSemantic:(id)a4;
+- (id)_changeMessageForDateSemantic:(id)semantic newSemantic:(id)newSemantic;
+- (id)_changeMessageForDictionariesSemantic:(id)semantic newSemantic:(id)newSemantic passStyle:(int64_t)style;
+- (id)_changeMessageForEventDateInfoSemantic:(id)semantic newSemantic:(id)newSemantic;
+- (id)_changeMessageForFieldKey:(id)key;
+- (id)_changeMessageForPersonNameComponentsSemantic:(id)semantic newSemantic:(id)newSemantic;
+- (id)_changeMessageForSemantic:(id)semantic newSemantic:(id)newSemantic passStyle:(int64_t)style;
+- (id)_changeMessageForStringSemantic:(id)semantic newSemantic:(id)newSemantic;
 - (id)_localizationKeyForMultipleDiff;
 - (id)additionalInfoFields;
 - (id)allSemantics;
@@ -96,46 +96,46 @@
 - (id)backgroundImage;
 - (id)balanceFields;
 - (id)balances;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)currencyAmountForSemanticKey:(id)a3;
-- (id)dateForSemanticKey:(id)a3;
-- (id)dictionariesForSemanticKey:(id)a3;
-- (id)diff:(id)a3;
-- (id)eventDateInfoForSemanticKey:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)currencyAmountForSemanticKey:(id)key;
+- (id)dateForSemanticKey:(id)key;
+- (id)dictionariesForSemanticKey:(id)key;
+- (id)diff:(id)diff;
+- (id)eventDateInfoForSemanticKey:(id)key;
 - (id)fidoProfile;
-- (id)fieldForKey:(id)a3;
+- (id)fieldForKey:(id)key;
 - (id)issuerBindingInformation;
 - (id)liveDataConfiguration;
-- (id)localizedDescriptionForDiff:(id)a3;
+- (id)localizedDescriptionForDiff:(id)diff;
 - (id)localizedValueForFieldKey:(NSString *)key;
-- (id)locationForSemanticKey:(id)a3;
+- (id)locationForSemanticKey:(id)key;
 - (id)logoImage;
-- (id)numberForSemanticKey:(id)a3;
-- (id)passLocalizedStringForKey:(id)a3;
-- (id)personNameComponentsForSemanticKey:(id)a3;
+- (id)numberForSemanticKey:(id)key;
+- (id)passLocalizedStringForKey:(id)key;
+- (id)personNameComponentsForSemanticKey:(id)key;
 - (id)primaryFields;
-- (id)recordTypesAndNamesForCodingType:(unint64_t)a3;
+- (id)recordTypesAndNamesForCodingType:(unint64_t)type;
 - (id)secondaryLogoImage;
 - (id)semantics;
-- (id)stringForSemanticKey:(id)a3;
-- (id)stringsForSemanticKey:(id)a3;
+- (id)stringForSemanticKey:(id)key;
+- (id)stringsForSemanticKey:(id)key;
 - (id)stripImage;
-- (id)systemFieldsDataForCloudStoreWithIdentifier:(id)a3;
+- (id)systemFieldsDataForCloudStoreWithIdentifier:(id)identifier;
 - (id)thumbnailImage;
-- (id)timeZoneForSemanticKey:(id)a3;
+- (id)timeZoneForSemanticKey:(id)key;
 - (id)venueMapImage;
-- (int64_t)comparePassDatesToPass:(id)a3 searchOption:(unint64_t)a4;
+- (int64_t)comparePassDatesToPass:(id)pass searchOption:(unint64_t)option;
 - (int64_t)eventType;
 - (int64_t)style;
 - (int64_t)transitType;
 - (unint64_t)flightNumber;
-- (void)downloadRemoteAssetsWithConfiguration:(id)a3 completion:(id)a4;
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadFlightsWithCompletionHandler:(id)a3;
-- (void)setEmbeddedLocations:(id)a3;
-- (void)setRelevantDate:(id)a3;
-- (void)setSystemFieldsMetata:(id)a3 forCloudStoreWithIdentifier:(id)a4;
+- (void)downloadRemoteAssetsWithConfiguration:(id)configuration completion:(id)completion;
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadFlightsWithCompletionHandler:(id)handler;
+- (void)setEmbeddedLocations:(id)locations;
+- (void)setRelevantDate:(id)date;
+- (void)setSystemFieldsMetata:(id)metata forCloudStoreWithIdentifier:(id)identifier;
 @end
 
 @implementation PKPass
@@ -145,15 +145,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (PKSecureElementPass)secureElementPass
@@ -161,30 +161,30 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (int64_t)style
 {
-  v2 = [(PKObject *)self displayProfile];
-  v3 = [v2 passStyle];
+  displayProfile = [(PKObject *)self displayProfile];
+  passStyle = [displayProfile passStyle];
 
-  return v3;
+  return passStyle;
 }
 
 - (BOOL)isExpired
 {
-  v2 = [(PKPass *)self expirationDate];
-  v3 = [MEMORY[0x1E695DF00] date];
-  [v2 timeIntervalSinceDate:v3];
+  expirationDate = [(PKPass *)self expirationDate];
+  date = [MEMORY[0x1E695DF00] date];
+  [expirationDate timeIntervalSinceDate:date];
   v5 = v4 < 0.0;
 
   return v5;
@@ -192,12 +192,12 @@
 
 - (BOOL)hasValidNFCPayload
 {
-  v2 = [(PKPass *)self nfcPayload];
-  v3 = [v2 message];
-  if (v3 && ![v2 payloadState])
+  nfcPayload = [(PKPass *)self nfcPayload];
+  message = [nfcPayload message];
+  if (message && ![nfcPayload payloadState])
   {
-    v5 = [v2 encryptionPublicKeyData];
-    if (v5)
+    encryptionPublicKeyData = [nfcPayload encryptionPublicKeyData];
+    if (encryptionPublicKeyData)
     {
       v4 = 1;
     }
@@ -218,42 +218,42 @@
 
 - (PKBarcode)barcode
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 barcode];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  barcode = [contentLoadedIfNeeded barcode];
 
-  return v3;
+  return barcode;
 }
 
 - (id)logoImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:4];
-  v3 = [v2 logoImage];
+  logoImage = [v2 logoImage];
 
-  return v3;
+  return logoImage;
 }
 
 - (NSString)localizedDescription
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 localizedDescription];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  localizedDescription = [contentLoadedIfNeeded localizedDescription];
 
-  return v3;
+  return localizedDescription;
 }
 
 - (PKImage)iconImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:1];
-  v3 = [v2 iconImage];
+  iconImage = [v2 iconImage];
 
-  return v3;
+  return iconImage;
 }
 
 - (NSArray)frontFieldBuckets
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 frontFieldBuckets];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  frontFieldBuckets = [contentLoadedIfNeeded frontFieldBuckets];
 
-  return v3;
+  return frontFieldBuckets;
 }
 
 - (CGRect)cobrandLogoRect
@@ -278,18 +278,18 @@
 
 - (NSString)logoText
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 logoText];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  logoText = [contentLoadedIfNeeded logoText];
 
-  return v3;
+  return logoText;
 }
 
 - (PKImage)frontFaceImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:0];
-  v3 = [v2 faceImage];
+  faceImage = [v2 faceImage];
 
-  return v3;
+  return faceImage;
 }
 
 - (PKColor)frontFaceImageAverageColor
@@ -297,16 +297,16 @@
   if ([(PKObject *)self isImageSetLoaded:0]|| ![(PKObject *)self isImageSetLoaded:2])
   {
     v3 = [(PKObject *)self imageSetLoadedIfNeeded:0];
-    v4 = [v3 faceImageAverageColor];
+    faceImageAverageColor = [v3 faceImageAverageColor];
   }
 
   else
   {
     v3 = [(PKObject *)self imageSetLoadedIfNeeded:2];
-    v4 = [v3 placeHolderImageAverageColor];
+    faceImageAverageColor = [v3 placeHolderImageAverageColor];
   }
 
-  v5 = v4;
+  v5 = faceImageAverageColor;
 
   return v5;
 }
@@ -314,17 +314,17 @@
 - (PKImage)frontFaceShadowImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:0];
-  v3 = [v2 faceShadowImage];
+  faceShadowImage = [v2 faceShadowImage];
 
-  return v3;
+  return faceShadowImage;
 }
 
 - (PKImage)partialFrontFaceImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:2];
-  v3 = [v2 placeHolderImage];
+  placeHolderImage = [v2 placeHolderImage];
 
-  return v3;
+  return placeHolderImage;
 }
 
 - (PKColor)partialFrontFaceImageAverageColor
@@ -332,16 +332,16 @@
   if ([(PKObject *)self isImageSetLoaded:2]|| ![(PKObject *)self isImageSetLoaded:0])
   {
     v3 = [(PKObject *)self imageSetLoadedIfNeeded:2];
-    v4 = [v3 placeHolderImageAverageColor];
+    placeHolderImageAverageColor = [v3 placeHolderImageAverageColor];
   }
 
   else
   {
     v3 = [(PKObject *)self imageSetLoadedIfNeeded:0];
-    v4 = [v3 faceImageAverageColor];
+    placeHolderImageAverageColor = [v3 faceImageAverageColor];
   }
 
-  v5 = v4;
+  v5 = placeHolderImageAverageColor;
 
   return v5;
 }
@@ -353,23 +353,23 @@
     return 0;
   }
 
-  v4 = [(PKPass *)self nfcPayload];
+  nfcPayload = [(PKPass *)self nfcPayload];
 
-  if (!v4)
+  if (!nfcPayload)
   {
     return 0;
   }
 
-  v5 = [(PKPass *)self issuerBindingInformation];
-  if (v5)
+  issuerBindingInformation = [(PKPass *)self issuerBindingInformation];
+  if (issuerBindingInformation)
   {
     v3 = 1;
   }
 
   else
   {
-    v6 = [(PKPass *)self fidoProfile];
-    v3 = v6 != 0;
+    fidoProfile = [(PKPass *)self fidoProfile];
+    v3 = fidoProfile != 0;
   }
 
   return v3;
@@ -377,18 +377,18 @@
 
 - (id)issuerBindingInformation
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 issuerBindingInformation];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  issuerBindingInformation = [contentLoadedIfNeeded issuerBindingInformation];
 
-  return v3;
+  return issuerBindingInformation;
 }
 
 - (id)fidoProfile
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 fidoProfile];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  fidoProfile = [contentLoadedIfNeeded fidoProfile];
 
-  return v3;
+  return fidoProfile;
 }
 
 - (BOOL)isValid
@@ -423,9 +423,9 @@
 - (BOOL)silenceRequested
 {
   v2 = [(PKPass *)self numberForSemanticKey:@"silenceRequested"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)eventType
@@ -451,37 +451,37 @@
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    localizedName = v3;
   }
 
   else
   {
-    v5 = [(PKPass *)self localizedName];
+    localizedName = [(PKPass *)self localizedName];
   }
 
-  v6 = v5;
+  v6 = localizedName;
 
   return v6;
 }
 
 - (PKLocation)eventLocation
 {
-  v3 = [(PKPass *)self locationForSemanticKey:@"venueLocation"];
-  if (!v3)
+  firstObject = [(PKPass *)self locationForSemanticKey:@"venueLocation"];
+  if (!firstObject)
   {
     if ([(PKPass *)self hasLocationRelevancyInfo])
     {
-      v4 = [(PKPass *)self embeddedLocationsArray];
-      v3 = [v4 firstObject];
+      embeddedLocationsArray = [(PKPass *)self embeddedLocationsArray];
+      firstObject = [embeddedLocationsArray firstObject];
     }
 
     else
     {
-      v3 = 0;
+      firstObject = 0;
     }
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (PKPass)initWithData:(NSData *)data error:(NSError *)error
@@ -491,56 +491,56 @@
   return [(PKObject *)&v5 initWithData:data error:error];
 }
 
-+ (Class)classForPassType:(unint64_t)a3
++ (Class)classForPassType:(unint64_t)type
 {
   v4 = objc_opt_class();
 
   return v4;
 }
 
-- (PKPass)initWithDictionary:(id)a3 bundle:(id)a4
+- (PKPass)initWithDictionary:(id)dictionary bundle:(id)bundle
 {
   v166 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
   v157.receiver = self;
   v157.super_class = PKPass;
-  v8 = [(PKObject *)&v157 initWithDictionary:v6 bundle:v7];
+  v8 = [(PKObject *)&v157 initWithDictionary:dictionaryCopy bundle:bundleCopy];
 
-  if (!v6 || !v8)
+  if (!dictionaryCopy || !v8)
   {
     goto LABEL_124;
   }
 
-  v150 = v7;
-  v152 = [PKDisplayProfile displayProfileOfType:0 withDictionary:v6 bundle:v7];
+  v150 = bundleCopy;
+  v152 = [PKDisplayProfile displayProfileOfType:0 withDictionary:dictionaryCopy bundle:bundleCopy];
   [(PKObject *)v8 setDisplayProfile:?];
-  v9 = [v6 PKStringForKey:@"passTypeIdentifier"];
+  v9 = [dictionaryCopy PKStringForKey:@"passTypeIdentifier"];
   [(PKPass *)v8 setPassTypeIdentifier:v9];
 
-  v10 = [v6 PKStringForKey:@"serialNumber"];
+  v10 = [dictionaryCopy PKStringForKey:@"serialNumber"];
   [(PKPass *)v8 setSerialNumber:v10];
 
-  v11 = [v6 PKNumberForKey:@"sequenceCounter"];
+  v11 = [dictionaryCopy PKNumberForKey:@"sequenceCounter"];
   [(PKPass *)v8 setSequenceCounter:v11];
 
-  v12 = [(PKPass *)v8 passTypeIdentifier];
-  v13 = [(PKPass *)v8 serialNumber];
-  v14 = PKGeneratePassUniqueID(v12, v13);
+  passTypeIdentifier = [(PKPass *)v8 passTypeIdentifier];
+  serialNumber = [(PKPass *)v8 serialNumber];
+  v14 = PKGeneratePassUniqueID(passTypeIdentifier, serialNumber);
   [(PKObject *)v8 setUniqueID:v14];
 
-  v15 = [v6 PKStringForKey:@"teamIdentifier"];
+  v15 = [dictionaryCopy PKStringForKey:@"teamIdentifier"];
   [(PKPass *)v8 setTeamID:v15];
 
-  v16 = [v6 PKStringForKey:@"organizationName"];
+  v16 = [dictionaryCopy PKStringForKey:@"organizationName"];
   [(PKPass *)v8 setOrganizationName:v16];
 
-  v17 = [v6 PKDateForKey:@"expirationDate"];
+  v17 = [dictionaryCopy PKDateForKey:@"expirationDate"];
   [(PKPass *)v8 setExpirationDate:v17];
 
-  -[PKPass setVoided:](v8, "setVoided:", [v6 PKBoolForKey:@"voided"]);
-  v151 = v6;
-  v18 = v6;
+  -[PKPass setVoided:](v8, "setVoided:", [dictionaryCopy PKBoolForKey:@"voided"]);
+  v151 = dictionaryCopy;
+  v18 = dictionaryCopy;
   v19 = 0x1E695D000uLL;
   v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21 = [v18 PKArrayContaining:objc_opt_class() forKey:@"relevantDates"];
@@ -894,28 +894,28 @@ LABEL_77:
   }
 
   [(PKPass *)v8 setNFCPayload:v78];
-  v79 = [(PKPass *)v8 passTypeIdentifier];
-  v80 = PKPassTypeForPassTypeIdentifier(v79);
+  passTypeIdentifier2 = [(PKPass *)v8 passTypeIdentifier];
+  v80 = PKPassTypeForPassTypeIdentifier(passTypeIdentifier2);
 
   [(PKPass *)v8 setPassType:v80];
-  v81 = [v152 passStyle];
+  passStyle = [v152 passStyle];
   v82 = v57;
   v83 = v82;
   if (v80 == 1)
   {
 LABEL_95:
-    v79 = [v82 PKStringForKey:@"groupingIdentifier"];
+    passTypeIdentifier2 = [v82 PKStringForKey:@"groupingIdentifier"];
     goto LABEL_96;
   }
 
-  if (v81 > 0xD)
+  if (passStyle > 0xD)
   {
     goto LABEL_96;
   }
 
-  if (((1 << v81) & 0x20EB) == 0)
+  if (((1 << passStyle) & 0x20EB) == 0)
   {
-    if (((1 << v81) & 0x714) == 0)
+    if (((1 << passStyle) & 0x714) == 0)
     {
       goto LABEL_96;
     }
@@ -936,10 +936,10 @@ LABEL_95:
     _os_log_impl(&dword_1AD337000, v84, OS_LOG_TYPE_DEFAULT, "groupingIdentifier is only supported for boardingPass, eventTicket, and healthPass styles as well as PKPassTypeSecureElement pass type. Ignoring.", buf, 2u);
   }
 
-  v79 = 0;
+  passTypeIdentifier2 = 0;
 LABEL_96:
 
-  [(PKPass *)v8 setGroupingID:v79];
+  [(PKPass *)v8 setGroupingID:passTypeIdentifier2];
   v85 = [v83 PKStringForKey:@"provisioningCredentialHash"];
   [(PKPass *)v8 setProvisioningCredentialHash:v85];
   v86 = [v83 objectForKey:@"sharingProhibited"];
@@ -1066,9 +1066,9 @@ LABEL_107:
     {
       if (([v124 hasPrefix:@"mailto:"] & 1) == 0)
       {
-        v126 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mailto:%@", v124];
+        v124 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mailto:%@", v124];
 
-        v124 = v126;
+        v124 = v124;
       }
     }
   }
@@ -1103,9 +1103,9 @@ LABEL_107:
     {
       if (([v135 hasPrefix:@"mailto:"] & 1) == 0)
       {
-        v137 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mailto:%@", v135];
+        v135 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mailto:%@", v135];
 
-        v135 = v137;
+        v135 = v135;
       }
     }
   }
@@ -1130,54 +1130,54 @@ LABEL_107:
   v144 = [v83 PKURLForKey:@"transitProviderWebsiteURL"];
   [(PKPass *)v8 setTransitProviderWebsiteURL:v144];
 
-  v7 = v150;
-  v6 = v151;
+  bundleCopy = v150;
+  dictionaryCopy = v151;
 LABEL_124:
   v145 = v8;
 
   return v145;
 }
 
-+ (Class)classForDictionary:(id)a3 bundle:(id)a4
++ (Class)classForDictionary:(id)dictionary bundle:(id)bundle
 {
-  v4 = [a3 PKStringForKey:{@"passTypeIdentifier", a4}];
+  v4 = [dictionary PKStringForKey:{@"passTypeIdentifier", bundle}];
   v5 = [PKPass classForPassType:PKPassTypeForPassTypeIdentifier(v4)];
 
   return v5;
 }
 
-+ (BOOL)isValidObjectWithFileDataAccessor:(id)a3 validationOptions:(unint64_t)a4 warnings:(id *)a5 error:(id *)a6 signingDate:(id *)a7 passDictionary:(id)a8
++ (BOOL)isValidObjectWithFileDataAccessor:(id)accessor validationOptions:(unint64_t)options warnings:(id *)warnings error:(id *)error signingDate:(id *)date passDictionary:(id)dictionary
 {
-  v11 = a4;
-  v13 = a8;
-  v14 = [a3 fileURL];
-  LOBYTE(a7) = PKValidatePassWithOptions(v14, v11, a6, a5, a7, v13);
+  optionsCopy = options;
+  dictionaryCopy = dictionary;
+  fileURL = [accessor fileURL];
+  LOBYTE(date) = PKValidatePassWithOptions(fileURL, optionsCopy, error, warnings, date, dictionaryCopy);
 
-  return a7;
+  return date;
 }
 
-+ (id)fetchSigningDateForObjectWithFileDataAccessor:(id)a3 passDictionary:(id)a4
++ (id)fetchSigningDateForObjectWithFileDataAccessor:(id)accessor passDictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = [a3 fileURL];
-  v7 = PKFetchSigningDate(v6, v5);
+  dictionaryCopy = dictionary;
+  fileURL = [accessor fileURL];
+  v7 = PKFetchSigningDate(fileURL, dictionaryCopy);
 
   return v7;
 }
 
-- (void)downloadRemoteAssetsWithConfiguration:(id)a3 completion:(id)a4
+- (void)downloadRemoteAssetsWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__PKPass_downloadRemoteAssetsWithConfiguration_completion___block_invoke;
   v9[3] = &unk_1E79DAD50;
   v9[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   v8.receiver = self;
   v8.super_class = PKPass;
-  v7 = v6;
-  [(PKObject *)&v8 downloadRemoteAssetsWithConfiguration:a3 completion:v9];
+  v7 = completionCopy;
+  [(PKObject *)&v8 downloadRemoteAssetsWithConfiguration:configuration completion:v9];
 }
 
 void __59__PKPass_downloadRemoteAssetsWithConfiguration_completion___block_invoke(uint64_t a1, int a2, void *a3, float a4)
@@ -1192,13 +1192,13 @@ void __59__PKPass_downloadRemoteAssetsWithConfiguration_completion___block_invok
   (*(*(a1 + 40) + 16))(a4);
 }
 
-- (void)setRelevantDate:(id)a3
+- (void)setRelevantDate:(id)date
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
-    v5 = [[PKPassRelevantDate alloc] initWithRelevantDate:v4];
+    v5 = [[PKPassRelevantDate alloc] initWithRelevantDate:dateCopy];
     v7[0] = v5;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
     [(PKPass *)self setRelevantDates:v6];
@@ -1212,10 +1212,10 @@ void __59__PKPass_downloadRemoteAssetsWithConfiguration_completion___block_invok
 
 - (NSDate)relevantDate
 {
-  v2 = [(NSArray *)self->_relevantDates firstObject];
-  v3 = [v2 date];
+  firstObject = [(NSArray *)self->_relevantDates firstObject];
+  date = [firstObject date];
 
-  return v3;
+  return date;
 }
 
 - (NSArray)relevantDates
@@ -1231,18 +1231,18 @@ void __59__PKPass_downloadRemoteAssetsWithConfiguration_completion___block_invok
   }
 }
 
-- (PKPass)initWithCloudStoreCoder:(id)a3
+- (PKPass)initWithCloudStoreCoder:(id)coder
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = [a3 recordsWithRecordType:@"Pass"];
-  v5 = [v4 firstObject];
+  v4 = [coder recordsWithRecordType:@"Pass"];
+  firstObject = [v4 firstObject];
 
-  v6 = [v5 objectForKey:@"pkpass"];
+  v6 = [firstObject objectForKey:@"pkpass"];
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x1E695DEF0]);
-    v8 = [v6 fileURL];
-    v9 = [v7 initWithContentsOfURL:v8];
+    fileURL = [v6 fileURL];
+    v9 = [v7 initWithContentsOfURL:fileURL];
 
     if (v9)
     {
@@ -1261,18 +1261,18 @@ void __59__PKPass_downloadRemoteAssetsWithConfiguration_completion___block_invok
         }
       }
 
-      v13 = [v5 creationDate];
-      [(PKPass *)self setIngestedDate:v13];
+      creationDate = [firstObject creationDate];
+      [(PKPass *)self setIngestedDate:creationDate];
 
-      v14 = [v5 modificationDate];
-      [(PKPass *)self setModifiedDate:v14];
+      modificationDate = [firstObject modificationDate];
+      [(PKPass *)self setModifiedDate:modificationDate];
 
-      v15 = [v5 recordID];
-      v16 = [v15 recordName];
-      v17 = [PKPass uniqueIDFromRecordName:v16];
+      recordID = [firstObject recordID];
+      recordName = [recordID recordName];
+      v17 = [PKPass uniqueIDFromRecordName:recordName];
       [(PKObject *)self setUniqueID:v17];
 
-      v18 = self;
+      selfCopy = self;
     }
 
     else
@@ -1284,7 +1284,7 @@ void __59__PKPass_downloadRemoteAssetsWithConfiguration_completion___block_invok
         _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Cannot create a PKPass with nil data", buf, 2u);
       }
 
-      v18 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -1297,37 +1297,37 @@ void __59__PKPass_downloadRemoteAssetsWithConfiguration_completion___block_invok
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Cannot create a PKPass with no asset data from CloudKit.", buf, 2u);
     }
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type
 {
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_autoreleasePoolPush();
-  v7 = [v5 recordsWithRecordType:@"Pass"];
-  v8 = [v7 firstObject];
+  v7 = [coderCopy recordsWithRecordType:@"Pass"];
+  firstObject = [v7 firstObject];
 
-  v9 = [(PKObject *)self archiveData];
-  if (v9)
+  archiveData = [(PKObject *)self archiveData];
+  if (archiveData)
   {
     v10 = NSTemporaryDirectory();
-    v11 = [(PKObject *)self uniqueID];
-    v12 = [v10 stringByAppendingPathComponent:v11];
+    uniqueID = [(PKObject *)self uniqueID];
+    v12 = [v10 stringByAppendingPathComponent:uniqueID];
 
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
-    [v13 removeItemAtPath:v12 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtPath:v12 error:0];
 
-    [v9 writeToFile:v12 atomically:1];
+    [archiveData writeToFile:v12 atomically:1];
     v14 = objc_alloc(MEMORY[0x1E695B878]);
     v15 = [MEMORY[0x1E695DFF8] fileURLWithPath:v12];
     v16 = [v14 initWithFileURL:v15];
 
     if (v16)
     {
-      [v8 setObject:v16 forKey:@"pkpass"];
+      [firstObject setObject:v16 forKey:@"pkpass"];
     }
 
     else
@@ -1354,17 +1354,17 @@ void __59__PKPass_downloadRemoteAssetsWithConfiguration_completion___block_invok
   objc_autoreleasePoolPop(v6);
 }
 
-- (id)recordTypesAndNamesForCodingType:(unint64_t)a3
+- (id)recordTypesAndNamesForCodingType:(unint64_t)type
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PKObject *)self uniqueID];
-  v5 = [v4 length];
+  uniqueID = [(PKObject *)self uniqueID];
+  v5 = [uniqueID length];
 
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [(PKObject *)self uniqueID];
-    v8 = [v6 recordNameForUniqueID:v7];
+    uniqueID2 = [(PKObject *)self uniqueID];
+    v8 = [v6 recordNameForUniqueID:uniqueID2];
     v13 = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v14[0] = v9;
@@ -1379,48 +1379,48 @@ void __59__PKPass_downloadRemoteAssetsWithConfiguration_completion___block_invok
   return v10;
 }
 
-- (id)systemFieldsDataForCloudStoreWithIdentifier:(id)a3
+- (id)systemFieldsDataForCloudStoreWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = @"com.apple.passes.sync";
   v6 = v5;
-  if (v5 == v4)
+  if (v5 == identifierCopy)
   {
 
     goto LABEL_7;
   }
 
-  if (!v4 || !v5)
+  if (!identifierCopy || !v5)
   {
 
     goto LABEL_9;
   }
 
-  v7 = [(__CFString *)v4 isEqualToString:v5];
+  v7 = [(__CFString *)identifierCopy isEqualToString:v5];
 
   if (v7)
   {
 LABEL_7:
-    v8 = [(PKPass *)self cloudKitMetadata];
+    cloudKitMetadata = [(PKPass *)self cloudKitMetadata];
 LABEL_16:
-    v13 = v8;
+    v13 = cloudKitMetadata;
     goto LABEL_21;
   }
 
 LABEL_9:
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = @"com.apple.passes.sync.secure";
   v11 = v10;
   if (v10 == v9)
   {
 
 LABEL_15:
-    v8 = [(PKPass *)self cloudKitSecureMetadata];
+    cloudKitMetadata = [(PKPass *)self cloudKitSecureMetadata];
     goto LABEL_16;
   }
 
-  if (v4 && v10)
+  if (identifierCopy && v10)
   {
     v12 = [(__CFString *)v9 isEqualToString:v10];
 
@@ -1447,48 +1447,48 @@ LABEL_21:
   return v13;
 }
 
-- (BOOL)wasAchivedInCloudStoreWithIdentifier:(id)a3
+- (BOOL)wasAchivedInCloudStoreWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = @"com.apple.passes.sync";
   v6 = v5;
-  if (v5 == v4)
+  if (v5 == identifierCopy)
   {
 
     goto LABEL_7;
   }
 
-  if (!v4 || !v5)
+  if (!identifierCopy || !v5)
   {
 
     goto LABEL_9;
   }
 
-  v7 = [(__CFString *)v4 isEqualToString:v5];
+  v7 = [(__CFString *)identifierCopy isEqualToString:v5];
 
   if (v7)
   {
 LABEL_7:
-    v8 = [(PKPass *)self isCloudKitArchived];
+    isCloudKitArchived = [(PKPass *)self isCloudKitArchived];
 LABEL_16:
-    v13 = v8;
+    v13 = isCloudKitArchived;
     goto LABEL_21;
   }
 
 LABEL_9:
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = @"com.apple.passes.sync.secure";
   v11 = v10;
   if (v10 == v9)
   {
 
 LABEL_15:
-    v8 = [(PKPass *)self isCloudKitSecurelyArchived];
+    isCloudKitArchived = [(PKPass *)self isCloudKitSecurelyArchived];
     goto LABEL_16;
   }
 
-  if (v4 && v10)
+  if (identifierCopy && v10)
   {
     v12 = [(__CFString *)v9 isEqualToString:v10];
 
@@ -1515,37 +1515,37 @@ LABEL_21:
   return v13;
 }
 
-- (void)setSystemFieldsMetata:(id)a3 forCloudStoreWithIdentifier:(id)a4
+- (void)setSystemFieldsMetata:(id)metata forCloudStoreWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  metataCopy = metata;
+  identifierCopy = identifier;
   v8 = @"com.apple.passes.sync";
   v9 = v8;
-  if (v8 == v7)
+  if (v8 == identifierCopy)
   {
 
     goto LABEL_7;
   }
 
-  if (!v7 || !v8)
+  if (!identifierCopy || !v8)
   {
 
     goto LABEL_9;
   }
 
-  v10 = [(__CFString *)v7 isEqualToString:v8];
+  v10 = [(__CFString *)identifierCopy isEqualToString:v8];
 
   if (v10)
   {
 LABEL_7:
     [(PKPass *)self setIsCloudKitArchived:1];
-    [(PKPass *)self setCloudKitMetadata:v6];
+    [(PKPass *)self setCloudKitMetadata:metataCopy];
     goto LABEL_20;
   }
 
 LABEL_9:
-  v11 = v7;
+  v11 = identifierCopy;
   v12 = @"com.apple.passes.sync.secure";
   v13 = v12;
   if (v12 == v11)
@@ -1554,7 +1554,7 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  if (v7 && v12)
+  if (identifierCopy && v12)
   {
     v14 = [(__CFString *)v11 isEqualToString:v12];
 
@@ -1565,7 +1565,7 @@ LABEL_9:
 
 LABEL_15:
     [(PKPass *)self setIsCloudKitSecurelyArchived:1];
-    [(PKPass *)self setCloudKitSecureMetadata:v6];
+    [(PKPass *)self setCloudKitSecureMetadata:metataCopy];
     goto LABEL_20;
   }
 
@@ -1581,26 +1581,26 @@ LABEL_17:
 LABEL_20:
 }
 
-+ (id)recordNameForUniqueID:(id)a3
++ (id)recordNameForUniqueID:(id)d
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [a1 recordNamePrefix];
-  v7 = [v4 stringWithFormat:@"%@%@", v6, v5];
+  dCopy = d;
+  recordNamePrefix = [self recordNamePrefix];
+  dCopy = [v4 stringWithFormat:@"%@%@", recordNamePrefix, dCopy];
 
-  return v7;
+  return dCopy;
 }
 
-+ (id)uniqueIDFromRecordName:(id)a3
++ (id)uniqueIDFromRecordName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 recordNamePrefix];
-  v6 = [v4 hasPrefix:v5];
+  nameCopy = name;
+  recordNamePrefix = [self recordNamePrefix];
+  v6 = [nameCopy hasPrefix:recordNamePrefix];
 
   if (v6)
   {
-    v7 = [a1 recordNamePrefix];
-    v8 = [v4 stringByReplacingOccurrencesOfString:v7 withString:&stru_1F227FD28];
+    recordNamePrefix2 = [self recordNamePrefix];
+    v8 = [nameCopy stringByReplacingOccurrencesOfString:recordNamePrefix2 withString:&stru_1F227FD28];
   }
 
   else
@@ -1626,24 +1626,24 @@ LABEL_20:
   return v2;
 }
 
-- (void)setEmbeddedLocations:(id)a3
+- (void)setEmbeddedLocations:(id)locations
 {
-  v4 = [a3 pk_arrayCopy];
+  pk_arrayCopy = [locations pk_arrayCopy];
   embeddedLocations = self->_embeddedLocations;
-  self->_embeddedLocations = v4;
+  self->_embeddedLocations = pk_arrayCopy;
 }
 
 - (NSString)localizedName
 {
-  v2 = [(PKPass *)self style];
-  if (v2 > 0xA)
+  style = [(PKPass *)self style];
+  if (style > 0xA)
   {
     v3 = @"TEMPLATE_NAME_PASS";
   }
 
   else
   {
-    v3 = off_1E79DAD88[v2];
+    v3 = off_1E79DAD88[style];
   }
 
   v4 = PKCoreLocalizedString(&v3->isa, 0);
@@ -1653,15 +1653,15 @@ LABEL_20:
 
 - (NSString)lowercaseLocalizedName
 {
-  v2 = [(PKPass *)self style];
-  if (v2 > 0xA)
+  style = [(PKPass *)self style];
+  if (style > 0xA)
   {
     v3 = @"TEMPLATE_NAME_LOWERCASE_PASS";
   }
 
   else
   {
-    v3 = off_1E79DADE0[v2];
+    v3 = off_1E79DADE0[style];
   }
 
   v4 = PKCoreLocalizedString(&v3->isa, 0);
@@ -1671,15 +1671,15 @@ LABEL_20:
 
 - (NSString)pluralLocalizedName
 {
-  v2 = [(PKPass *)self style];
-  if (v2 > 0xA)
+  style = [(PKPass *)self style];
+  if (style > 0xA)
   {
     v3 = @"TEMPLATE_NAME_PASSES";
   }
 
   else
   {
-    v3 = off_1E79DAE38[v2];
+    v3 = off_1E79DAE38[style];
   }
 
   v4 = PKCoreLocalizedString(&v3->isa, 0);
@@ -1689,14 +1689,14 @@ LABEL_20:
 
 - (NSURL)passURL
 {
-  v3 = [(PKObject *)self uniqueID];
-  if (v3 && !self->_remotePass)
+  uniqueID = [(PKObject *)self uniqueID];
+  if (uniqueID && !self->_remotePass)
   {
     v5 = objc_alloc_init(MEMORY[0x1E696AF20]);
     [v5 setScheme:@"shoebox"];
     [v5 setHost:@"card"];
-    v6 = [(PKObject *)self uniqueID];
-    v7 = [@"/" stringByAppendingString:v6];
+    uniqueID2 = [(PKObject *)self uniqueID];
+    v7 = [@"/" stringByAppendingString:uniqueID2];
     [v5 setPath:v7];
 
     v8 = [v5 URL];
@@ -1723,13 +1723,13 @@ LABEL_20:
 
 - (BOOL)isPastRelevancy
 {
-  v2 = [(PKPass *)self relevantDates];
-  v3 = [PKPassRelevantDate findDateFromDates:v2 option:3];
+  relevantDates = [(PKPass *)self relevantDates];
+  v3 = [PKPassRelevantDate findDateFromDates:relevantDates option:3];
 
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
-    [v4 timeIntervalSinceDate:v3];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:v3];
     v6 = v5 > 86400.0;
   }
 
@@ -1743,24 +1743,24 @@ LABEL_20:
 
 - (BOOL)isUpdatable
 {
-  v2 = [(PKObject *)self webServiceURL];
-  v3 = v2 != 0;
+  webServiceURL = [(PKObject *)self webServiceURL];
+  v3 = webServiceURL != 0;
 
   return v3;
 }
 
 - (BOOL)isPassStyleExpiresOnSigningDate
 {
-  v2 = [(PKPass *)self style];
+  style = [(PKPass *)self style];
   result = 0;
-  if (v2 <= 0xD)
+  if (style <= 0xD)
   {
-    if (((1 << v2) & 0x614) != 0)
+    if (((1 << style) & 0x614) != 0)
     {
       return 1;
     }
 
-    else if (v2 == 13)
+    else if (style == 13)
     {
       __break(1u);
     }
@@ -1771,11 +1771,11 @@ LABEL_20:
 
 - (BOOL)isExpiredBasedOnSigningDate
 {
-  v3 = [(PKObject *)self signingDate];
-  if (v3)
+  signingDate = [(PKObject *)self signingDate];
+  if (signingDate)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
-    [v4 timeIntervalSinceDate:v3];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:signingDate];
     v6 = v5 > 31536000.0 && [(PKPass *)self isPassStyleExpiresOnSigningDate];
   }
 
@@ -1789,50 +1789,50 @@ LABEL_20:
 
 - (NSDate)effectiveExpirationDate
 {
-  v3 = [(PKPass *)self expirationDate];
+  expirationDate = [(PKPass *)self expirationDate];
 
-  if (v3)
+  if (expirationDate)
   {
-    v4 = [(PKPass *)self expirationDate];
+    expirationDate2 = [(PKPass *)self expirationDate];
   }
 
   else
   {
-    v5 = [(PKPass *)self relevantDates];
-    v6 = [PKPassRelevantDate findDateFromDates:v5 option:3];
+    relevantDates = [(PKPass *)self relevantDates];
+    v6 = [PKPassRelevantDate findDateFromDates:relevantDates option:3];
 
     if (v6)
     {
-      v4 = [v6 dateByAddingTimeInterval:86400.0];
+      expirationDate2 = [v6 dateByAddingTimeInterval:86400.0];
     }
 
     else if ([(PKPass *)self isPassStyleExpiresOnSigningDate]&& ([(PKObject *)self signingDate], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
     {
-      v8 = [(PKObject *)self signingDate];
-      v4 = [v8 dateByAddingTimeInterval:31536000.0];
+      signingDate = [(PKObject *)self signingDate];
+      expirationDate2 = [signingDate dateByAddingTimeInterval:31536000.0];
     }
 
     else
     {
-      v4 = 0;
+      expirationDate2 = 0;
     }
   }
 
-  return v4;
+  return expirationDate2;
 }
 
 - (BOOL)linksToApp
 {
-  v3 = [(PKPass *)self storeIdentifiers];
-  if ([v3 count])
+  storeIdentifiers = [(PKPass *)self storeIdentifiers];
+  if ([storeIdentifiers count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PKPass *)self systemAppBundleIdentifiers];
-    v4 = [v5 count] != 0;
+    systemAppBundleIdentifiers = [(PKPass *)self systemAppBundleIdentifiers];
+    v4 = [systemAppBundleIdentifiers count] != 0;
   }
 
   return v4;
@@ -1844,27 +1844,27 @@ LABEL_20:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 unformattedValue];
+    unformattedValue = [v3 unformattedValue];
   }
 
   else
   {
-    v5 = 0;
+    unformattedValue = 0;
   }
 
-  return v5;
+  return unformattedValue;
 }
 
-- (id)fieldForKey:(id)a3
+- (id)fieldForKey:(id)key
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v5 = [(PKPass *)self frontFieldBuckets];
-  v36 = [v5 countByEnumeratingWithState:&v50 objects:v57 count:16];
+  frontFieldBuckets = [(PKPass *)self frontFieldBuckets];
+  v36 = [frontFieldBuckets countByEnumeratingWithState:&v50 objects:v57 count:16];
   if (!v36)
   {
 
@@ -1910,7 +1910,7 @@ LABEL_21:
 
                 v26 = *(*(&v38 + 1) + 8 * j);
                 v27 = [v26 key];
-                v28 = [v27 isEqual:v4];
+                v28 = [v27 isEqual:keyCopy];
 
                 if (v28)
                 {
@@ -1944,8 +1944,8 @@ LABEL_36:
     goto LABEL_39;
   }
 
-  v31 = self;
-  obj = v5;
+  selfCopy = self;
+  obj = frontFieldBuckets;
   v6 = 0;
   v34 = *v51;
   do
@@ -1979,7 +1979,7 @@ LABEL_36:
 
             v14 = *(*(&v46 + 1) + 8 * m);
             v15 = [v14 key];
-            v16 = [v15 isEqual:v4];
+            v16 = [v15 isEqual:keyCopy];
 
             if (v16)
             {
@@ -2008,7 +2008,7 @@ LABEL_16:
 
   while (v36);
 
-  self = v31;
+  self = selfCopy;
   if (!v6)
   {
     goto LABEL_21;
@@ -2019,17 +2019,17 @@ LABEL_39:
   return v6;
 }
 
-- (id)localizedDescriptionForDiff:(id)a3
+- (id)localizedDescriptionForDiff:(id)diff
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 hunkCount] == 1)
+  diffCopy = diff;
+  if ([diffCopy hunkCount] == 1)
   {
     v30 = 0;
     v31 = 0;
     v28 = 0;
     v29 = 0;
-    [v4 key:&v31 oldValue:&v30 newValue:&v29 message:&v28 forHunkAtIndex:0];
+    [diffCopy key:&v31 oldValue:&v30 newValue:&v29 message:&v28 forHunkAtIndex:0];
     v5 = v31;
     v6 = v30;
     v7 = v29;
@@ -2044,8 +2044,8 @@ LABEL_39:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [(PKPass *)self allSemantics];
-        v10 = [v9 objectForKey:v5];
+        allSemantics = [(PKPass *)self allSemantics];
+        v10 = [allSemantics objectForKey:v5];
 
         if (v10)
         {
@@ -2093,17 +2093,17 @@ LABEL_23:
     v22 = PKLogFacilityTypeGetObject(0);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v26 = [(PKPass *)self passTypeIdentifier];
-      v24 = [(PKPass *)self serialNumber];
-      v27 = [v19 userInfo];
-      v25 = [v27 objectForKey:*MEMORY[0x1E696AA08]];
-      v23 = [v25 localizedDescription];
+      passTypeIdentifier = [(PKPass *)self passTypeIdentifier];
+      serialNumber = [(PKPass *)self serialNumber];
+      userInfo = [v19 userInfo];
+      v25 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
+      localizedDescription = [v25 localizedDescription];
       *buf = 138543874;
-      v33 = v26;
+      v33 = passTypeIdentifier;
       v34 = 2114;
-      v35 = v24;
+      v35 = serialNumber;
       v36 = 2114;
-      v37 = v23;
+      v37 = localizedDescription;
       _os_log_error_impl(&dword_1AD337000, v22, OS_LOG_TYPE_ERROR, "Change message didn't validate in pass %{public}@/%{public}@: %{public}@", buf, 0x20u);
     }
 
@@ -2112,8 +2112,8 @@ LABEL_23:
   }
 
 LABEL_15:
-  v20 = [(PKPass *)self _localizationKeyForMultipleDiff];
-  v10 = PKCoreLocalizedString(v20, 0);
+  _localizationKeyForMultipleDiff = [(PKPass *)self _localizationKeyForMultipleDiff];
+  v10 = PKCoreLocalizedString(_localizationKeyForMultipleDiff, 0);
 
 LABEL_16:
 
@@ -2122,38 +2122,38 @@ LABEL_16:
 
 - (NSURL)localLocationsURL
 {
-  v2 = [(PKObject *)self dataAccessor];
-  v3 = [v2 bundle];
-  v4 = [v3 bundleURL];
+  dataAccessor = [(PKObject *)self dataAccessor];
+  bundle = [dataAccessor bundle];
+  bundleURL = [bundle bundleURL];
 
-  return v4;
+  return bundleURL;
 }
 
-- (id)diff:(id)a3
+- (id)diff:(id)diff
 {
   v107 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  diffCopy = diff;
   v5 = objc_alloc_init(PKDiff);
-  v6 = [(PKObject *)self uniqueID];
-  [(PKDiff *)v5 setPassUniqueID:v6];
+  uniqueID = [(PKObject *)self uniqueID];
+  [(PKDiff *)v5 setPassUniqueID:uniqueID];
 
-  v7 = [(PKObject *)self manifestHash];
+  manifestHash = [(PKObject *)self manifestHash];
   v87 = v5;
-  [(PKDiff *)v5 setPassManifestHash:v7];
+  [(PKDiff *)v5 setPassManifestHash:manifestHash];
 
   v8 = 0x1E695D000uLL;
-  v85 = v4;
+  v85 = diffCopy;
   if ([(PKPass *)self style]== 9 || [(PKPass *)self style]== 10)
   {
-    v9 = [(PKPass *)self allSemantics];
-    v10 = [v4 allSemantics];
+    allSemantics = [(PKPass *)self allSemantics];
+    allSemantics2 = [diffCopy allSemantics];
     v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v88 = v9;
-    v12 = [v9 allKeys];
-    [v11 addObjectsFromArray:v12];
+    v88 = allSemantics;
+    allKeys = [allSemantics allKeys];
+    [v11 addObjectsFromArray:allKeys];
 
-    v13 = [v10 allKeys];
-    [v11 addObjectsFromArray:v13];
+    allKeys2 = [allSemantics2 allKeys];
+    [v11 addObjectsFromArray:allKeys2];
 
     v101 = 0u;
     v100 = 0u;
@@ -2167,7 +2167,7 @@ LABEL_16:
     }
 
     v15 = v14;
-    v16 = self;
+    selfCopy = self;
     v17 = *v99;
     v84 = @"airPlay";
     while (1)
@@ -2341,11 +2341,11 @@ LABEL_117:
 LABEL_118:
 LABEL_119:
           v34 = [v88 objectForKeyedSubscript:{v19, v84}];
-          v35 = [v10 objectForKeyedSubscript:v19];
+          v35 = [allSemantics2 objectForKeyedSubscript:v19];
           v36 = v35;
           if (v35 && ([v35 isEqual:v34] & 1) == 0)
           {
-            v37 = [(PKPass *)v16 _changeMessageForSemantic:v34 newSemantic:v36 passStyle:[(PKPass *)v16 style]];
+            v37 = [(PKPass *)selfCopy _changeMessageForSemantic:v34 newSemantic:v36 passStyle:[(PKPass *)selfCopy style]];
             if (v37)
             {
               [(PKDiff *)v87 addHunkWithKey:v19 oldValue:v34 newValue:v36 message:v37];
@@ -2390,27 +2390,27 @@ LABEL_125:
       v15 = v41;
       if (!v41)
       {
-        self = v16;
+        self = selfCopy;
         v8 = 0x1E695D000;
-        v4 = v85;
+        diffCopy = v85;
         goto LABEL_151;
       }
     }
   }
 
-  v42 = [(PKPass *)self frontFieldBuckets];
-  v43 = _FieldsByKey(v42);
+  frontFieldBuckets = [(PKPass *)self frontFieldBuckets];
+  v43 = _FieldsByKey(frontFieldBuckets);
 
-  v44 = [v4 frontFieldBuckets];
-  v10 = _FieldsByKey(v44);
+  frontFieldBuckets2 = [diffCopy frontFieldBuckets];
+  allSemantics2 = _FieldsByKey(frontFieldBuckets2);
 
   v45 = [MEMORY[0x1E695DFA8] set];
   v88 = v43;
-  v46 = [v43 allKeys];
-  [v45 addObjectsFromArray:v46];
+  allKeys3 = [v43 allKeys];
+  [v45 addObjectsFromArray:allKeys3];
 
-  v47 = [v10 allKeys];
-  [v45 addObjectsFromArray:v47];
+  allKeys4 = [allSemantics2 allKeys];
+  [v45 addObjectsFromArray:allKeys4];
 
   v96 = 0u;
   v97 = 0u;
@@ -2433,11 +2433,11 @@ LABEL_125:
 
         v52 = *(*(&v94 + 1) + 8 * i);
         v53 = [v88 valueForKey:v52];
-        v54 = [v53 value];
-        v55 = v54;
-        if (v54)
+        value = [v53 value];
+        v55 = value;
+        if (value)
         {
-          v56 = v54;
+          v56 = value;
         }
 
         else
@@ -2447,15 +2447,15 @@ LABEL_125:
 
         v57 = v56;
 
-        v58 = [v10 valueForKey:v52];
-        v59 = [v58 value];
+        v58 = [allSemantics2 valueForKey:v52];
+        value2 = [v58 value];
 
-        v60 = [v10 valueForKey:v52];
-        v61 = [v60 changeMessage];
+        v60 = [allSemantics2 valueForKey:v52];
+        changeMessage = [v60 changeMessage];
 
-        if (v59 && ([v59 isEqual:v57] & 1) == 0 && v61)
+        if (value2 && ([value2 isEqual:v57] & 1) == 0 && changeMessage)
         {
-          [(PKDiff *)v87 addHunkWithKey:v52 oldValue:v57 newValue:v59 message:v61];
+          [(PKDiff *)v87 addHunkWithKey:v52 oldValue:v57 newValue:value2 message:changeMessage];
         }
       }
 
@@ -2463,24 +2463,24 @@ LABEL_125:
     }
 
     while (v49);
-    v4 = v85;
+    diffCopy = v85;
     v8 = 0x1E695D000uLL;
   }
 
 LABEL_151:
 
-  v62 = [(PKPass *)self backFieldBuckets];
-  v63 = _FieldsByKey(v62);
+  backFieldBuckets = [(PKPass *)self backFieldBuckets];
+  v63 = _FieldsByKey(backFieldBuckets);
 
-  v64 = [v4 backFieldBuckets];
-  v65 = _FieldsByKey(v64);
+  backFieldBuckets2 = [diffCopy backFieldBuckets];
+  v65 = _FieldsByKey(backFieldBuckets2);
 
   v66 = [*(v8 + 4008) set];
-  v67 = [v63 allKeys];
-  [v66 addObjectsFromArray:v67];
+  allKeys5 = [v63 allKeys];
+  [v66 addObjectsFromArray:allKeys5];
 
-  v68 = [v65 allKeys];
-  [v66 addObjectsFromArray:v68];
+  allKeys6 = [v65 allKeys];
+  [v66 addObjectsFromArray:allKeys6];
 
   v92 = 0u;
   v93 = 0u;
@@ -2503,25 +2503,25 @@ LABEL_151:
 
         v73 = *(*(&v90 + 1) + 8 * j);
         v74 = [v63 valueForKey:{v73, v84}];
-        v75 = [v74 value];
-        v76 = v75;
+        value3 = [v74 value];
+        v76 = value3;
         v77 = &stru_1F227FD28;
-        if (v75)
+        if (value3)
         {
-          v77 = v75;
+          v77 = value3;
         }
 
         v78 = v77;
 
         v79 = [v65 valueForKey:v73];
-        v80 = [v79 value];
+        value4 = [v79 value];
 
         v81 = [v65 valueForKey:v73];
-        v82 = [v81 changeMessage];
+        changeMessage2 = [v81 changeMessage];
 
-        if (v80 && ([v80 isEqual:v78] & 1) == 0 && v82)
+        if (value4 && ([value4 isEqual:v78] & 1) == 0 && changeMessage2)
         {
-          [(PKDiff *)v87 addHunkWithKey:v73 oldValue:v78 newValue:v80 message:v82];
+          [(PKDiff *)v87 addHunkWithKey:v73 oldValue:v78 newValue:value4 message:changeMessage2];
         }
       }
 
@@ -2536,8 +2536,8 @@ LABEL_151:
 
 - (BOOL)shouldRampBacklight
 {
-  v3 = [(PKPass *)self barcode];
-  if (v3 && !PKValueAddedServicesEnabledForPass(self))
+  barcode = [(PKPass *)self barcode];
+  if (barcode && !PKValueAddedServicesEnabledForPass(self))
   {
     v4 = ![(PKPass *)self supportsIssuerBinding];
   }
@@ -2552,179 +2552,179 @@ LABEL_151:
 
 - (NSArray)barcodes
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 barcodes];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  barcodes = [contentLoadedIfNeeded barcodes];
 
-  return v3;
+  return barcodes;
 }
 
 - (int64_t)transitType
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 transitType];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  transitType = [contentLoadedIfNeeded transitType];
 
-  return v3;
+  return transitType;
 }
 
 - (NSArray)backFieldBuckets
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 backFieldBuckets];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  backFieldBuckets = [contentLoadedIfNeeded backFieldBuckets];
 
-  return v3;
+  return backFieldBuckets;
 }
 
 - (NSArray)passDetailSections
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 passDetailSections];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  passDetailSections = [contentLoadedIfNeeded passDetailSections];
 
-  return v3;
+  return passDetailSections;
 }
 
 - (NSArray)auxiliaryPassInformation
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 auxiliaryPassInformationSections];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  auxiliaryPassInformationSections = [contentLoadedIfNeeded auxiliaryPassInformationSections];
 
-  return v3;
+  return auxiliaryPassInformationSections;
 }
 
 - (PKPassUpcomingPassInformation)upcomingPassInformation
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 upcomingPassInformation];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  upcomingPassInformation = [contentLoadedIfNeeded upcomingPassInformation];
 
-  return v3;
+  return upcomingPassInformation;
 }
 
 - (id)primaryFields
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 primaryFields];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  primaryFields = [contentLoadedIfNeeded primaryFields];
 
-  return v3;
+  return primaryFields;
 }
 
 - (id)balanceFields
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 balanceFields];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  balanceFields = [contentLoadedIfNeeded balanceFields];
 
-  return v3;
+  return balanceFields;
 }
 
 - (id)autoTopUpFields
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 autoTopUpFields];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  autoTopUpFields = [contentLoadedIfNeeded autoTopUpFields];
 
-  return v3;
+  return autoTopUpFields;
 }
 
 - (id)additionalInfoFields
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 additionalInfoFields];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  additionalInfoFields = [contentLoadedIfNeeded additionalInfoFields];
 
-  return v3;
+  return additionalInfoFields;
 }
 
 - (id)balances
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 balances];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  balances = [contentLoadedIfNeeded balances];
 
-  return v3;
+  return balances;
 }
 
 - (NSArray)storeIdentifiers
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 storeIdentifiers];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  storeIdentifiers = [contentLoadedIfNeeded storeIdentifiers];
 
-  return v3;
+  return storeIdentifiers;
 }
 
 - (NSArray)auxiliaryStoreIdentifiers
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 auxiliaryStoreIdentifiers];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  auxiliaryStoreIdentifiers = [contentLoadedIfNeeded auxiliaryStoreIdentifiers];
 
-  return v3;
+  return auxiliaryStoreIdentifiers;
 }
 
 - (NSArray)systemAppBundleIdentifiers
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 systemAppBundleIdentifiers];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  systemAppBundleIdentifiers = [contentLoadedIfNeeded systemAppBundleIdentifiers];
 
-  return v3;
+  return systemAppBundleIdentifiers;
 }
 
 - (NSURL)appLaunchURL
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 appLaunchURL];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  appLaunchURL = [contentLoadedIfNeeded appLaunchURL];
 
-  return v3;
+  return appLaunchURL;
 }
 
 - (PKPassPersonalization)personalization
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 personalization];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  personalization = [contentLoadedIfNeeded personalization];
 
-  return v3;
+  return personalization;
 }
 
 - (BOOL)isPersonalizable
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 personalization];
-  v4 = v3 != 0;
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  personalization = [contentLoadedIfNeeded personalization];
+  v4 = personalization != 0;
 
   return v4;
 }
 
 - (id)semantics
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 semantics];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  semantics = [contentLoadedIfNeeded semantics];
 
-  return v3;
+  return semantics;
 }
 
 - (id)allSemantics
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 allSemantics];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  allSemantics = [contentLoadedIfNeeded allSemantics];
 
-  return v3;
+  return allSemantics;
 }
 
 - (id)liveDataConfiguration
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 liveDataConfiguration];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  liveDataConfiguration = [contentLoadedIfNeeded liveDataConfiguration];
 
-  return v3;
+  return liveDataConfiguration;
 }
 
 - (PKImage)rawIcon
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:1];
-  v3 = [v2 rawIcon];
+  rawIcon = [v2 rawIcon];
 
-  return v3;
+  return rawIcon;
 }
 
 - (PKImage)notificationIconImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:1];
-  v3 = [v2 notificationIconImage];
+  notificationIconImage = [v2 notificationIconImage];
 
-  return v3;
+  return notificationIconImage;
 }
 
 - (CGRect)thumbnailRect
@@ -2770,113 +2770,113 @@ LABEL_151:
 - (PKImage)footerImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:0];
-  v3 = [v2 footerImage];
+  footerImage = [v2 footerImage];
 
-  return v3;
+  return footerImage;
 }
 
 - (PKImage)altImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:4];
-  v3 = [v2 altImage];
+  altImage = [v2 altImage];
 
-  return v3;
+  return altImage;
 }
 
 - (PKImage)cardHolderPicture
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:5];
-  v3 = [v2 cardHolderPicture];
+  cardHolderPicture = [v2 cardHolderPicture];
 
-  return v3;
+  return cardHolderPicture;
 }
 
 - (PKImage)personalizationLogoImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:3];
-  v3 = [v2 logoImage];
+  logoImage = [v2 logoImage];
 
-  return v3;
+  return logoImage;
 }
 
 - (id)backgroundImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:4];
-  v3 = [v2 backgroundImage];
+  backgroundImage = [v2 backgroundImage];
 
-  return v3;
+  return backgroundImage;
 }
 
 - (id)stripImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:4];
-  v3 = [v2 stripImage];
+  stripImage = [v2 stripImage];
 
-  return v3;
+  return stripImage;
 }
 
 - (id)thumbnailImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:4];
-  v3 = [v2 thumbnailImage];
+  thumbnailImage = [v2 thumbnailImage];
 
-  return v3;
+  return thumbnailImage;
 }
 
 - (PKImage)compactBankLogoDarkImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:4];
-  v3 = [v2 compactBankLogoDarkImage];
+  compactBankLogoDarkImage = [v2 compactBankLogoDarkImage];
 
-  return v3;
+  return compactBankLogoDarkImage;
 }
 
 - (PKImage)compactBankLogoLightImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:4];
-  v3 = [v2 compactBankLogoLightImage];
+  compactBankLogoLightImage = [v2 compactBankLogoLightImage];
 
-  return v3;
+  return compactBankLogoLightImage;
 }
 
 - (id)secondaryLogoImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:4];
-  v3 = [v2 secondaryLogoImage];
+  secondaryLogoImage = [v2 secondaryLogoImage];
 
-  return v3;
+  return secondaryLogoImage;
 }
 
 - (id)venueMapImage
 {
   v2 = [(PKObject *)self imageSetLoadedIfNeeded:8];
-  v3 = [v2 venueMapImage];
+  venueMapImage = [v2 venueMapImage];
 
-  return v3;
+  return venueMapImage;
 }
 
 - (NSString)businessChatIdentifier
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 businessChatIdentifier];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  businessChatIdentifier = [contentLoadedIfNeeded businessChatIdentifier];
 
-  return v3;
+  return businessChatIdentifier;
 }
 
 - (PKPassBarcodeSettings)barcodeSettings
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 barcodeSettings];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  barcodeSettings = [contentLoadedIfNeeded barcodeSettings];
 
-  return v3;
+  return barcodeSettings;
 }
 
 - (NSString)cardholderInfoSectionTitle
 {
-  v2 = [(PKObject *)self contentLoadedIfNeeded];
-  v3 = [v2 cardholderInfoSectionTitle];
+  contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+  cardholderInfoSectionTitle = [contentLoadedIfNeeded cardholderInfoSectionTitle];
 
-  return v3;
+  return cardholderInfoSectionTitle;
 }
 
 - (PKLiveRenderedShaderSet)liveRenderedShaderSet
@@ -2885,8 +2885,8 @@ LABEL_151:
   if (!liveRenderedShaderSet)
   {
     v4 = [PKLiveRenderedShaderSet alloc];
-    v5 = [(PKObject *)self dataAccessor];
-    v6 = [(PKLiveRenderedShaderSet *)v4 initWithDataAccessor:v5 suffix:0];
+    dataAccessor = [(PKObject *)self dataAccessor];
+    v6 = [(PKLiveRenderedShaderSet *)v4 initWithDataAccessor:dataAccessor suffix:0];
     v7 = self->_liveRenderedShaderSet;
     self->_liveRenderedShaderSet = v6;
 
@@ -2896,20 +2896,20 @@ LABEL_151:
   return liveRenderedShaderSet;
 }
 
-- (id)passLocalizedStringForKey:(id)a3
+- (id)passLocalizedStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKObject *)self dataAccessor];
-  v6 = [v5 passLocalizedStringForKey:v4];
+  keyCopy = key;
+  dataAccessor = [(PKObject *)self dataAccessor];
+  v6 = [dataAccessor passLocalizedStringForKey:keyCopy];
 
   return v6;
 }
 
-- (int64_t)comparePassDatesToPass:(id)a3 searchOption:(unint64_t)a4
+- (int64_t)comparePassDatesToPass:(id)pass searchOption:(unint64_t)option
 {
-  v6 = a3;
-  v7 = [PKPass _dateForPassComparison:self searchOption:a4];
-  v8 = [PKPass _dateForPassComparison:v6 searchOption:a4];
+  passCopy = pass;
+  v7 = [PKPass _dateForPassComparison:self searchOption:option];
+  v8 = [PKPass _dateForPassComparison:passCopy searchOption:option];
 
   if (v7)
   {
@@ -2942,11 +2942,11 @@ LABEL_151:
   return v10;
 }
 
-+ (id)_dateForPassComparison:(id)a3 searchOption:(unint64_t)a4
++ (id)_dateForPassComparison:(id)comparison searchOption:(unint64_t)option
 {
-  v5 = a3;
-  v6 = [v5 relevantDates];
-  v7 = [PKPassRelevantDate findDateFromDates:v6 option:a4];
+  comparisonCopy = comparison;
+  relevantDates = [comparisonCopy relevantDates];
+  v7 = [PKPassRelevantDate findDateFromDates:relevantDates option:option];
 
   if (v7)
   {
@@ -2955,19 +2955,19 @@ LABEL_151:
 
   else
   {
-    v9 = [v5 expirationDate];
-    v10 = v9;
-    if (v9)
+    expirationDate = [comparisonCopy expirationDate];
+    v10 = expirationDate;
+    if (expirationDate)
     {
-      v11 = v9;
+      modifiedDate = expirationDate;
     }
 
     else
     {
-      v11 = [v5 modifiedDate];
+      modifiedDate = [comparisonCopy modifiedDate];
     }
 
-    v8 = v11;
+    v8 = modifiedDate;
   }
 
   return v8;
@@ -3005,70 +3005,70 @@ LABEL_151:
 
 - (PKSeatingInformation)seatingInformation
 {
-  v2 = [(PKPass *)self allSemantics];
-  v3 = [v2 objectForKeyedSubscript:@"seats"];
+  allSemantics = [(PKPass *)self allSemantics];
+  v3 = [allSemantics objectForKeyedSubscript:@"seats"];
 
   v4 = [[PKSeatingInformation alloc] initFromSemantic:v3];
 
   return v4;
 }
 
-- (BOOL)isEqualToPassIncludingMetadata:(id)a3
+- (BOOL)isEqualToPassIncludingMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(PKObject *)self manifestHash];
-  v6 = [v4 manifestHash];
-  v7 = v6;
-  if (v5 && v6)
+  metadataCopy = metadata;
+  manifestHash = [(PKObject *)self manifestHash];
+  manifestHash2 = [metadataCopy manifestHash];
+  v7 = manifestHash2;
+  if (manifestHash && manifestHash2)
   {
-    if ([v5 isEqual:v6])
+    if ([manifestHash isEqual:manifestHash2])
     {
 LABEL_4:
-      v8 = [(PKPass *)self ingestedDate];
-      v9 = [v4 ingestedDate];
-      v10 = v9;
-      if (v8 && v9)
+      ingestedDate = [(PKPass *)self ingestedDate];
+      ingestedDate2 = [metadataCopy ingestedDate];
+      v10 = ingestedDate2;
+      if (ingestedDate && ingestedDate2)
       {
-        if ([v8 isEqual:v9])
+        if ([ingestedDate isEqual:ingestedDate2])
         {
 LABEL_7:
-          v11 = [(PKPass *)self modifiedDate];
-          v12 = [v4 modifiedDate];
-          v13 = v12;
-          if (v11 && v12)
+          modifiedDate = [(PKPass *)self modifiedDate];
+          modifiedDate2 = [metadataCopy modifiedDate];
+          v13 = modifiedDate2;
+          if (modifiedDate && modifiedDate2)
           {
-            if ([v11 isEqual:v12])
+            if ([modifiedDate isEqual:modifiedDate2])
             {
 LABEL_10:
-              v14 = [(PKObject *)self signingDate];
-              v15 = [v4 signingDate];
-              v16 = v15;
-              if (v14 && v15)
+              signingDate = [(PKObject *)self signingDate];
+              signingDate2 = [metadataCopy signingDate];
+              v16 = signingDate2;
+              if (signingDate && signingDate2)
               {
-                if ([v14 isEqual:v15])
+                if ([signingDate isEqual:signingDate2])
                 {
 LABEL_13:
-                  v28 = v14;
-                  v17 = [(PKPass *)self nfcPayload];
-                  v18 = [v4 nfcPayload];
-                  v19 = v18;
-                  v29 = v17;
-                  if (v17 && v18)
+                  v28 = signingDate;
+                  nfcPayload = [(PKPass *)self nfcPayload];
+                  nfcPayload2 = [metadataCopy nfcPayload];
+                  v19 = nfcPayload2;
+                  v29 = nfcPayload;
+                  if (nfcPayload && nfcPayload2)
                   {
-                    v20 = v18;
-                    v21 = [v29 isEqual:v18];
+                    v20 = nfcPayload2;
+                    v21 = [v29 isEqual:nfcPayload2];
                     v19 = v20;
                     if (v21)
                     {
 LABEL_16:
                       v27 = v19;
-                      v22 = [(PKObject *)self settings];
-                      v23 = v22 == [v4 settings];
-                      v14 = v28;
+                      settings = [(PKObject *)self settings];
+                      v23 = settings == [metadataCopy settings];
+                      signingDate = v28;
                       if (v23)
                       {
-                        v24 = [(PKPass *)self isRevoked];
-                        v25 = v24 ^ [v4 isRevoked] ^ 1;
+                        isRevoked = [(PKPass *)self isRevoked];
+                        v25 = isRevoked ^ [metadataCopy isRevoked] ^ 1;
                       }
 
                       else
@@ -3081,20 +3081,20 @@ LABEL_16:
                     }
                   }
 
-                  else if (v17 == v18)
+                  else if (nfcPayload == nfcPayload2)
                   {
                     goto LABEL_16;
                   }
 
                   LOBYTE(v25) = 0;
-                  v14 = v28;
+                  signingDate = v28;
 LABEL_30:
 
                   goto LABEL_31;
                 }
               }
 
-              else if (v14 == v15)
+              else if (signingDate == signingDate2)
               {
                 goto LABEL_13;
               }
@@ -3106,7 +3106,7 @@ LABEL_31:
             }
           }
 
-          else if (v11 == v12)
+          else if (modifiedDate == modifiedDate2)
           {
             goto LABEL_10;
           }
@@ -3118,7 +3118,7 @@ LABEL_32:
         }
       }
 
-      else if (v8 == v9)
+      else if (ingestedDate == ingestedDate2)
       {
         goto LABEL_7;
       }
@@ -3130,7 +3130,7 @@ LABEL_33:
     }
   }
 
-  else if (v5 == v6)
+  else if (manifestHash == manifestHash2)
   {
     goto LABEL_4;
   }
@@ -3141,12 +3141,12 @@ LABEL_34:
   return v25;
 }
 
-- (PKPass)initWithCoder:(id)a3
+- (PKPass)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v126.receiver = self;
   v126.super_class = PKPass;
-  v5 = [(PKObject *)&v126 initWithCoder:v4];
+  v5 = [(PKObject *)&v126 initWithCoder:coderCopy];
   if (v5)
   {
     context = objc_autoreleasePoolPush();
@@ -3159,74 +3159,74 @@ LABEL_34:
     v120 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = objc_opt_class();
-    v12 = [v4 decodeObjectOfClass:v7 forKey:@"passLibraryMachServiceName"];
+    v12 = [coderCopy decodeObjectOfClass:v7 forKey:@"passLibraryMachServiceName"];
     passLibraryMachServiceName = v5->_passLibraryMachServiceName;
     v5->_passLibraryMachServiceName = v12;
 
-    v14 = [v4 decodeObjectOfClass:v7 forKey:@"deviceName"];
+    v14 = [coderCopy decodeObjectOfClass:v7 forKey:@"deviceName"];
     deviceName = v5->_deviceName;
     v5->_deviceName = v14;
 
-    v5->_remotePass = [v4 decodeBoolForKey:@"remotePass"];
-    v16 = [v4 decodeObjectOfClass:v7 forKey:@"provisioningCredentialHash"];
+    v5->_remotePass = [coderCopy decodeBoolForKey:@"remotePass"];
+    v16 = [coderCopy decodeObjectOfClass:v7 forKey:@"provisioningCredentialHash"];
     provisioningCredentialHash = v5->_provisioningCredentialHash;
     v5->_provisioningCredentialHash = v16;
 
-    v18 = [v4 decodeObjectOfClass:v7 forKey:@"passTypeID"];
+    v18 = [coderCopy decodeObjectOfClass:v7 forKey:@"passTypeID"];
     passTypeIdentifier = v5->_passTypeIdentifier;
     v5->_passTypeIdentifier = v18;
 
-    v20 = [v4 decodeObjectOfClass:v7 forKey:@"teamID"];
+    v20 = [coderCopy decodeObjectOfClass:v7 forKey:@"teamID"];
     teamID = v5->_teamID;
     v5->_teamID = v20;
 
-    v22 = [v4 decodeObjectOfClass:v7 forKey:@"serialNumber"];
+    v22 = [coderCopy decodeObjectOfClass:v7 forKey:@"serialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v22;
 
-    v24 = [v4 decodeObjectOfClass:v10 forKey:@"sequenceCounter"];
+    v24 = [coderCopy decodeObjectOfClass:v10 forKey:@"sequenceCounter"];
     sequenceCounter = v5->_sequenceCounter;
     v5->_sequenceCounter = v24;
 
-    v26 = [v4 decodeObjectOfClass:v7 forKey:@"organizationName"];
+    v26 = [coderCopy decodeObjectOfClass:v7 forKey:@"organizationName"];
     organizationName = v5->_organizationName;
     v5->_organizationName = v26;
 
-    v28 = [v4 decodeObjectOfClass:v8 forKey:@"expirationDate"];
+    v28 = [coderCopy decodeObjectOfClass:v8 forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v28;
 
-    v5->_voided = [v4 decodeBoolForKey:@"voided"];
+    v5->_voided = [coderCopy decodeBoolForKey:@"voided"];
     v122 = v8;
     v124 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v123, v6, v7, v120, v10, v8, v11, 0}];
-    v30 = [v4 decodeObjectOfClasses:? forKey:?];
+    v30 = [coderCopy decodeObjectOfClasses:? forKey:?];
     userInfo = v5->_userInfo;
     v5->_userInfo = v30;
 
-    v32 = [v4 decodeObjectOfClass:v7 forKey:@"groupingID"];
+    v32 = [coderCopy decodeObjectOfClass:v7 forKey:@"groupingID"];
     groupingID = v5->_groupingID;
     v5->_groupingID = v32;
 
     v34 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v6, objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"relevantDates"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"relevantDates"];
     relevantDates = v5->_relevantDates;
     v5->_relevantDates = v35;
 
-    v5->_sharingMethod = [v4 decodeIntegerForKey:@"sharingMethod"];
-    v37 = [v4 decodeObjectOfClass:v7 forKey:@"sharingText"];
+    v5->_sharingMethod = [coderCopy decodeIntegerForKey:@"sharingMethod"];
+    v37 = [coderCopy decodeObjectOfClass:v7 forKey:@"sharingText"];
     sharingText = v5->_sharingText;
     v5->_sharingText = v37;
 
-    v39 = [v4 decodeObjectOfClass:v9 forKey:@"sharingURL"];
+    v39 = [coderCopy decodeObjectOfClass:v9 forKey:@"sharingURL"];
     sharingURL = v5->_sharingURL;
     v5->_sharingURL = v39;
 
     v41 = objc_autoreleasePoolPush();
     v42 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v6, v121, objc_opt_class(), 0}];
-    v43 = [v4 decodeObjectOfClasses:v42 forKey:@"embeddedLocations"];
+    v43 = [coderCopy decodeObjectOfClasses:v42 forKey:@"embeddedLocations"];
     if (objc_opt_isKindOfClass())
     {
-      v44 = [v43 copy];
+      pk_arrayCopy = [v43 copy];
     }
 
     else
@@ -3236,25 +3236,25 @@ LABEL_34:
         goto LABEL_7;
       }
 
-      v44 = [v43 pk_arrayCopy];
+      pk_arrayCopy = [v43 pk_arrayCopy];
     }
 
     embeddedLocations = v5->_embeddedLocations;
-    v5->_embeddedLocations = v44;
+    v5->_embeddedLocations = pk_arrayCopy;
 
 LABEL_7:
     objc_autoreleasePoolPop(v41);
     v46 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v121, objc_opt_class(), 0}];
-    v47 = [v4 decodeObjectOfClasses:v46 forKey:@"embeddedBeacons"];
+    v47 = [coderCopy decodeObjectOfClasses:v46 forKey:@"embeddedBeacons"];
     embeddedBeacons = v5->_embeddedBeacons;
     v5->_embeddedBeacons = v47;
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nfcPayload"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nfcPayload"];
     nfcPayload = v5->_nfcPayload;
     v5->_nfcPayload = v49;
 
-    v5->_hasStoredValue = [v4 decodeBoolForKey:@"hasStoredValue"];
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"liveRenderType"];
+    v5->_hasStoredValue = [coderCopy decodeBoolForKey:@"hasStoredValue"];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"liveRenderType"];
     v52 = v51;
     if (v51)
     {
@@ -3263,137 +3263,137 @@ LABEL_7:
       v5->_liveRenderedBackground = v53 != 0;
       if (v53 == 2)
       {
-        v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeKeyLiveRenderType"];
+        v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeKeyLiveRenderType"];
         v5->_homeKeyLiveRenderType = PKPassHomeKeyLiveRenderTypeFromString(v54);
 
 LABEL_12:
-        v5->_supportsCategoryVisualization = [v4 decodeBoolForKey:@"supportsCategoryVisualization"];
-        v5->_liveRenderingRequiresEnablement = [v4 decodeBoolForKey:@"liveRenderingRequiresEnablement"];
-        v5->_passType = [v4 decodeIntegerForKey:@"passType"];
-        v56 = [v4 decodeObjectOfClass:v122 forKey:@"ingestedDate"];
+        v5->_supportsCategoryVisualization = [coderCopy decodeBoolForKey:@"supportsCategoryVisualization"];
+        v5->_liveRenderingRequiresEnablement = [coderCopy decodeBoolForKey:@"liveRenderingRequiresEnablement"];
+        v5->_passType = [coderCopy decodeIntegerForKey:@"passType"];
+        v56 = [coderCopy decodeObjectOfClass:v122 forKey:@"ingestedDate"];
         ingestedDate = v5->_ingestedDate;
         v5->_ingestedDate = v56;
 
-        v58 = [v4 decodeObjectOfClass:v122 forKey:@"modifiedDate"];
+        v58 = [coderCopy decodeObjectOfClass:v122 forKey:@"modifiedDate"];
         modifiedDate = v5->_modifiedDate;
         v5->_modifiedDate = v58;
 
-        v5->_revoked = [v4 decodeBoolForKey:@"revoked"];
-        v5->_muteReadyForUseNotification = [v4 decodeBoolForKey:@"muteReadyForUseNotification"];
+        v5->_revoked = [coderCopy decodeBoolForKey:@"revoked"];
+        v5->_muteReadyForUseNotification = [coderCopy decodeBoolForKey:@"muteReadyForUseNotification"];
         v60 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v121, v7, 0}];
-        v61 = [v4 decodeObjectOfClasses:v60 forKey:@"associatedPassTypeIdentifiers"];
+        v61 = [coderCopy decodeObjectOfClasses:v60 forKey:@"associatedPassTypeIdentifiers"];
         associatedPassTypeIdentifiers = v5->_associatedPassTypeIdentifiers;
         v5->_associatedPassTypeIdentifiers = v61;
 
-        v63 = [v4 decodeObjectOfClass:v9 forKey:@"transferURL"];
+        v63 = [coderCopy decodeObjectOfClass:v9 forKey:@"transferURL"];
         transferURL = v5->_transferURL;
         v5->_transferURL = v63;
 
-        v65 = [v4 decodeObjectOfClass:v9 forKey:@"sellURL"];
+        v65 = [coderCopy decodeObjectOfClass:v9 forKey:@"sellURL"];
         sellURL = v5->_sellURL;
         v5->_sellURL = v65;
 
-        v67 = [v4 decodeObjectOfClass:v9 forKey:@"upgradeURL"];
+        v67 = [coderCopy decodeObjectOfClass:v9 forKey:@"upgradeURL"];
         upgradeURL = v5->_upgradeURL;
         v5->_upgradeURL = v67;
 
-        v69 = [v4 decodeObjectOfClass:v9 forKey:@"managementURL"];
+        v69 = [coderCopy decodeObjectOfClass:v9 forKey:@"managementURL"];
         managementURL = v5->_managementURL;
         v5->_managementURL = v69;
 
-        v71 = [v4 decodeObjectOfClass:v9 forKey:@"bagPolicyURL"];
+        v71 = [coderCopy decodeObjectOfClass:v9 forKey:@"bagPolicyURL"];
         bagPolicyURL = v5->_bagPolicyURL;
         v5->_bagPolicyURL = v71;
 
-        v73 = [v4 decodeObjectOfClass:v9 forKey:@"orderFoodURL"];
+        v73 = [coderCopy decodeObjectOfClass:v9 forKey:@"orderFoodURL"];
         orderFoodURL = v5->_orderFoodURL;
         v5->_orderFoodURL = v73;
 
-        v75 = [v4 decodeObjectOfClass:v9 forKey:@"transitInformationURL"];
+        v75 = [coderCopy decodeObjectOfClass:v9 forKey:@"transitInformationURL"];
         transitInformationURL = v5->_transitInformationURL;
         v5->_transitInformationURL = v75;
 
-        v77 = [v4 decodeObjectOfClass:v9 forKey:@"parkingInformationURL"];
+        v77 = [coderCopy decodeObjectOfClass:v9 forKey:@"parkingInformationURL"];
         parkingInformationURL = v5->_parkingInformationURL;
         v5->_parkingInformationURL = v77;
 
-        v79 = [v4 decodeObjectOfClass:v9 forKey:@"directionsInformationURL"];
+        v79 = [coderCopy decodeObjectOfClass:v9 forKey:@"directionsInformationURL"];
         directionsInformationURL = v5->_directionsInformationURL;
         v5->_directionsInformationURL = v79;
 
-        v81 = [v4 decodeObjectOfClass:v9 forKey:@"merchandiseURL"];
+        v81 = [coderCopy decodeObjectOfClass:v9 forKey:@"merchandiseURL"];
         merchandiseURL = v5->_merchandiseURL;
         v5->_merchandiseURL = v81;
 
-        v83 = [v4 decodeObjectOfClass:v9 forKey:@"accessibilityURL"];
+        v83 = [coderCopy decodeObjectOfClass:v9 forKey:@"accessibilityURL"];
         accessibilityURL = v5->_accessibilityURL;
         v5->_accessibilityURL = v83;
 
-        v85 = [v4 decodeObjectOfClass:v9 forKey:@"purchaseParkingURL"];
+        v85 = [coderCopy decodeObjectOfClass:v9 forKey:@"purchaseParkingURL"];
         purchaseParkingURL = v5->_purchaseParkingURL;
         v5->_purchaseParkingURL = v85;
 
-        v87 = [v4 decodeObjectOfClass:v9 forKey:@"addOnURL"];
+        v87 = [coderCopy decodeObjectOfClass:v9 forKey:@"addOnURL"];
         partnerAddOnURL = v5->_partnerAddOnURL;
         v5->_partnerAddOnURL = v87;
 
-        v89 = [v4 decodeObjectOfClass:v9 forKey:@"purchaseWifiURL"];
+        v89 = [coderCopy decodeObjectOfClass:v9 forKey:@"purchaseWifiURL"];
         purchaseWifiURL = v5->_purchaseWifiURL;
         v5->_purchaseWifiURL = v89;
 
-        v91 = [v4 decodeObjectOfClass:v9 forKey:@"changeSeatURL"];
+        v91 = [coderCopy decodeObjectOfClass:v9 forKey:@"changeSeatURL"];
         changeSeatURL = v5->_changeSeatURL;
         v5->_changeSeatURL = v91;
 
-        v93 = [v4 decodeObjectOfClass:v9 forKey:@"entertainmentURL"];
+        v93 = [coderCopy decodeObjectOfClass:v9 forKey:@"entertainmentURL"];
         entertainmentURL = v5->_entertainmentURL;
         v5->_entertainmentURL = v93;
 
-        v95 = [v4 decodeObjectOfClass:v9 forKey:@"purchaseAdditionalBaggageURL"];
+        v95 = [coderCopy decodeObjectOfClass:v9 forKey:@"purchaseAdditionalBaggageURL"];
         purchaseAdditionalBaggageURL = v5->_purchaseAdditionalBaggageURL;
         v5->_purchaseAdditionalBaggageURL = v95;
 
-        v97 = [v4 decodeObjectOfClass:v9 forKey:@"purchaseLoungeAccessURL"];
+        v97 = [coderCopy decodeObjectOfClass:v9 forKey:@"purchaseLoungeAccessURL"];
         purchaseLoungeAccessURL = v5->_purchaseLoungeAccessURL;
         v5->_purchaseLoungeAccessURL = v97;
 
-        v99 = [v4 decodeObjectOfClass:v9 forKey:@"reportLostBagURL"];
+        v99 = [coderCopy decodeObjectOfClass:v9 forKey:@"reportLostBagURL"];
         reportLostBagURL = v5->_reportLostBagURL;
         v5->_reportLostBagURL = v99;
 
-        v101 = [v4 decodeObjectOfClass:v9 forKey:@"trackBagsURL"];
+        v101 = [coderCopy decodeObjectOfClass:v9 forKey:@"trackBagsURL"];
         trackBagsURL = v5->_trackBagsURL;
         v5->_trackBagsURL = v101;
 
-        v103 = [v4 decodeObjectOfClass:v9 forKey:@"requestWheelchairURL"];
+        v103 = [coderCopy decodeObjectOfClass:v9 forKey:@"requestWheelchairURL"];
         requestWheelchairURL = v5->_requestWheelchairURL;
         v5->_requestWheelchairURL = v103;
 
-        v105 = [v4 decodeObjectOfClass:v9 forKey:@"registerServiceAnimalURL"];
+        v105 = [coderCopy decodeObjectOfClass:v9 forKey:@"registerServiceAnimalURL"];
         registerServiceAnimalURL = v5->_registerServiceAnimalURL;
         v5->_registerServiceAnimalURL = v105;
 
-        v107 = [v4 decodeObjectOfClass:v9 forKey:@"contactVenuePhoneNumber"];
+        v107 = [coderCopy decodeObjectOfClass:v9 forKey:@"contactVenuePhoneNumber"];
         contactVenuePhoneNumber = v5->_contactVenuePhoneNumber;
         v5->_contactVenuePhoneNumber = v107;
 
-        v109 = [v4 decodeObjectOfClass:v9 forKey:@"contactVenueEmail"];
+        v109 = [coderCopy decodeObjectOfClass:v9 forKey:@"contactVenueEmail"];
         contactVenueEmail = v5->_contactVenueEmail;
         v5->_contactVenueEmail = v109;
 
-        v111 = [v4 decodeObjectOfClass:v9 forKey:@"contactVenueWebsite"];
+        v111 = [coderCopy decodeObjectOfClass:v9 forKey:@"contactVenueWebsite"];
         contactVenueWebsite = v5->_contactVenueWebsite;
         v5->_contactVenueWebsite = v111;
 
-        v113 = [v4 decodeObjectOfClass:v9 forKey:@"transitProviderPhoneNumberURL"];
+        v113 = [coderCopy decodeObjectOfClass:v9 forKey:@"transitProviderPhoneNumberURL"];
         transitProviderPhoneNumberURL = v5->_transitProviderPhoneNumberURL;
         v5->_transitProviderPhoneNumberURL = v113;
 
-        v115 = [v4 decodeObjectOfClass:v9 forKey:@"transitProviderEmailURL"];
+        v115 = [coderCopy decodeObjectOfClass:v9 forKey:@"transitProviderEmailURL"];
         transitProviderEmailURL = v5->_transitProviderEmailURL;
         v5->_transitProviderEmailURL = v115;
 
-        v117 = [v4 decodeObjectOfClass:v9 forKey:@"transitProviderWebsiteURL"];
+        v117 = [coderCopy decodeObjectOfClass:v9 forKey:@"transitProviderWebsiteURL"];
         transitProviderWebsiteURL = v5->_transitProviderWebsiteURL;
         v5->_transitProviderWebsiteURL = v117;
 
@@ -3404,7 +3404,7 @@ LABEL_12:
 
     else
     {
-      v55 = [v4 decodeBoolForKey:@"liveRendered"];
+      v55 = [coderCopy decodeBoolForKey:@"liveRendered"];
       v5->_liveRenderedBackground = v55;
       v5->_liveRenderType = v55;
     }
@@ -3418,147 +3418,147 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PKPass;
-  [(PKObject *)&v8 encodeWithCoder:v4];
+  [(PKObject *)&v8 encodeWithCoder:coderCopy];
   v5 = objc_autoreleasePoolPush();
-  [v4 encodeObject:self->_passLibraryMachServiceName forKey:@"passLibraryMachServiceName"];
-  [v4 encodeObject:self->_deviceName forKey:@"deviceName"];
-  [v4 encodeBool:self->_remotePass forKey:@"remotePass"];
-  [v4 encodeObject:self->_provisioningCredentialHash forKey:@"provisioningCredentialHash"];
-  [v4 encodeObject:self->_passTypeIdentifier forKey:@"passTypeID"];
-  [v4 encodeObject:self->_teamID forKey:@"teamID"];
-  [v4 encodeObject:self->_serialNumber forKey:@"serialNumber"];
-  [v4 encodeObject:self->_sequenceCounter forKey:@"sequenceCounter"];
-  [v4 encodeObject:self->_organizationName forKey:@"organizationName"];
-  [v4 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v4 encodeBool:self->_voided forKey:@"voided"];
-  [v4 encodeObject:self->_userInfo forKey:@"userInfo"];
-  [v4 encodeObject:self->_groupingID forKey:@"groupingID"];
-  [v4 encodeObject:self->_relevantDates forKey:@"relevantDates"];
-  [v4 encodeInteger:self->_sharingMethod forKey:@"sharingMethod"];
-  [v4 encodeObject:self->_sharingText forKey:@"sharingText"];
-  [v4 encodeObject:self->_sharingURL forKey:@"sharingURL"];
-  [v4 encodeObject:self->_embeddedLocations forKey:@"embeddedLocations"];
-  [v4 encodeObject:self->_embeddedBeacons forKey:@"embeddedBeacons"];
-  [v4 encodeObject:self->_nfcPayload forKey:@"nfcPayload"];
-  [v4 encodeBool:self->_hasStoredValue forKey:@"hasStoredValue"];
-  [v4 encodeBool:self->_liveRenderedBackground forKey:@"liveRendered"];
+  [coderCopy encodeObject:self->_passLibraryMachServiceName forKey:@"passLibraryMachServiceName"];
+  [coderCopy encodeObject:self->_deviceName forKey:@"deviceName"];
+  [coderCopy encodeBool:self->_remotePass forKey:@"remotePass"];
+  [coderCopy encodeObject:self->_provisioningCredentialHash forKey:@"provisioningCredentialHash"];
+  [coderCopy encodeObject:self->_passTypeIdentifier forKey:@"passTypeID"];
+  [coderCopy encodeObject:self->_teamID forKey:@"teamID"];
+  [coderCopy encodeObject:self->_serialNumber forKey:@"serialNumber"];
+  [coderCopy encodeObject:self->_sequenceCounter forKey:@"sequenceCounter"];
+  [coderCopy encodeObject:self->_organizationName forKey:@"organizationName"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeBool:self->_voided forKey:@"voided"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"userInfo"];
+  [coderCopy encodeObject:self->_groupingID forKey:@"groupingID"];
+  [coderCopy encodeObject:self->_relevantDates forKey:@"relevantDates"];
+  [coderCopy encodeInteger:self->_sharingMethod forKey:@"sharingMethod"];
+  [coderCopy encodeObject:self->_sharingText forKey:@"sharingText"];
+  [coderCopy encodeObject:self->_sharingURL forKey:@"sharingURL"];
+  [coderCopy encodeObject:self->_embeddedLocations forKey:@"embeddedLocations"];
+  [coderCopy encodeObject:self->_embeddedBeacons forKey:@"embeddedBeacons"];
+  [coderCopy encodeObject:self->_nfcPayload forKey:@"nfcPayload"];
+  [coderCopy encodeBool:self->_hasStoredValue forKey:@"hasStoredValue"];
+  [coderCopy encodeBool:self->_liveRenderedBackground forKey:@"liveRendered"];
   v6 = PKPassLiveRenderTypeToString(self->_liveRenderType);
-  [v4 encodeObject:v6 forKey:@"liveRenderType"];
+  [coderCopy encodeObject:v6 forKey:@"liveRenderType"];
 
   if (self->_liveRenderType == 2)
   {
     v7 = PKPassHomeKeyLiveRenderTypeToString(self->_homeKeyLiveRenderType);
-    [v4 encodeObject:v7 forKey:@"homeKeyLiveRenderType"];
+    [coderCopy encodeObject:v7 forKey:@"homeKeyLiveRenderType"];
   }
 
-  [v4 encodeBool:self->_supportsCategoryVisualization forKey:@"supportsCategoryVisualization"];
-  [v4 encodeBool:self->_liveRenderingRequiresEnablement forKey:@"liveRenderingRequiresEnablement"];
-  [v4 encodeInteger:self->_passType forKey:@"passType"];
-  [v4 encodeObject:self->_ingestedDate forKey:@"ingestedDate"];
-  [v4 encodeObject:self->_modifiedDate forKey:@"modifiedDate"];
-  [v4 encodeBool:self->_revoked forKey:@"revoked"];
-  [v4 encodeObject:self->_associatedPassTypeIdentifiers forKey:@"associatedPassTypeIdentifiers"];
-  [v4 encodeBool:self->_muteReadyForUseNotification forKey:@"muteReadyForUseNotification"];
-  [v4 encodeObject:self->_transferURL forKey:@"transferURL"];
-  [v4 encodeObject:self->_sellURL forKey:@"sellURL"];
-  [v4 encodeObject:self->_upgradeURL forKey:@"upgradeURL"];
-  [v4 encodeObject:self->_managementURL forKey:@"managementURL"];
-  [v4 encodeObject:self->_bagPolicyURL forKey:@"bagPolicyURL"];
-  [v4 encodeObject:self->_orderFoodURL forKey:@"orderFoodURL"];
-  [v4 encodeObject:self->_transitInformationURL forKey:@"transitInformationURL"];
-  [v4 encodeObject:self->_parkingInformationURL forKey:@"parkingInformationURL"];
-  [v4 encodeObject:self->_directionsInformationURL forKey:@"directionsInformationURL"];
-  [v4 encodeObject:self->_merchandiseURL forKey:@"merchandiseURL"];
-  [v4 encodeObject:self->_accessibilityURL forKey:@"accessibilityURL"];
-  [v4 encodeObject:self->_purchaseParkingURL forKey:@"purchaseParkingURL"];
-  [v4 encodeObject:self->_partnerAddOnURL forKey:@"addOnURL"];
-  [v4 encodeObject:self->_purchaseWifiURL forKey:@"purchaseWifiURL"];
-  [v4 encodeObject:self->_changeSeatURL forKey:@"changeSeatURL"];
-  [v4 encodeObject:self->_entertainmentURL forKey:@"entertainmentURL"];
-  [v4 encodeObject:self->_purchaseAdditionalBaggageURL forKey:@"purchaseAdditionalBaggageURL"];
-  [v4 encodeObject:self->_purchaseLoungeAccessURL forKey:@"purchaseLoungeAccessURL"];
-  [v4 encodeObject:self->_reportLostBagURL forKey:@"reportLostBagURL"];
-  [v4 encodeObject:self->_trackBagsURL forKey:@"trackBagsURL"];
-  [v4 encodeObject:self->_requestWheelchairURL forKey:@"requestWheelchairURL"];
-  [v4 encodeObject:self->_registerServiceAnimalURL forKey:@"registerServiceAnimalURL"];
-  [v4 encodeObject:self->_contactVenuePhoneNumber forKey:@"contactVenuePhoneNumber"];
-  [v4 encodeObject:self->_contactVenueEmail forKey:@"contactVenueEmail"];
-  [v4 encodeObject:self->_contactVenueWebsite forKey:@"contactVenueWebsite"];
-  [v4 encodeObject:self->_transitProviderPhoneNumberURL forKey:@"transitProviderPhoneNumberURL"];
-  [v4 encodeObject:self->_transitProviderEmailURL forKey:@"transitProviderEmailURL"];
-  [v4 encodeObject:self->_transitProviderWebsiteURL forKey:@"transitProviderWebsiteURL"];
+  [coderCopy encodeBool:self->_supportsCategoryVisualization forKey:@"supportsCategoryVisualization"];
+  [coderCopy encodeBool:self->_liveRenderingRequiresEnablement forKey:@"liveRenderingRequiresEnablement"];
+  [coderCopy encodeInteger:self->_passType forKey:@"passType"];
+  [coderCopy encodeObject:self->_ingestedDate forKey:@"ingestedDate"];
+  [coderCopy encodeObject:self->_modifiedDate forKey:@"modifiedDate"];
+  [coderCopy encodeBool:self->_revoked forKey:@"revoked"];
+  [coderCopy encodeObject:self->_associatedPassTypeIdentifiers forKey:@"associatedPassTypeIdentifiers"];
+  [coderCopy encodeBool:self->_muteReadyForUseNotification forKey:@"muteReadyForUseNotification"];
+  [coderCopy encodeObject:self->_transferURL forKey:@"transferURL"];
+  [coderCopy encodeObject:self->_sellURL forKey:@"sellURL"];
+  [coderCopy encodeObject:self->_upgradeURL forKey:@"upgradeURL"];
+  [coderCopy encodeObject:self->_managementURL forKey:@"managementURL"];
+  [coderCopy encodeObject:self->_bagPolicyURL forKey:@"bagPolicyURL"];
+  [coderCopy encodeObject:self->_orderFoodURL forKey:@"orderFoodURL"];
+  [coderCopy encodeObject:self->_transitInformationURL forKey:@"transitInformationURL"];
+  [coderCopy encodeObject:self->_parkingInformationURL forKey:@"parkingInformationURL"];
+  [coderCopy encodeObject:self->_directionsInformationURL forKey:@"directionsInformationURL"];
+  [coderCopy encodeObject:self->_merchandiseURL forKey:@"merchandiseURL"];
+  [coderCopy encodeObject:self->_accessibilityURL forKey:@"accessibilityURL"];
+  [coderCopy encodeObject:self->_purchaseParkingURL forKey:@"purchaseParkingURL"];
+  [coderCopy encodeObject:self->_partnerAddOnURL forKey:@"addOnURL"];
+  [coderCopy encodeObject:self->_purchaseWifiURL forKey:@"purchaseWifiURL"];
+  [coderCopy encodeObject:self->_changeSeatURL forKey:@"changeSeatURL"];
+  [coderCopy encodeObject:self->_entertainmentURL forKey:@"entertainmentURL"];
+  [coderCopy encodeObject:self->_purchaseAdditionalBaggageURL forKey:@"purchaseAdditionalBaggageURL"];
+  [coderCopy encodeObject:self->_purchaseLoungeAccessURL forKey:@"purchaseLoungeAccessURL"];
+  [coderCopy encodeObject:self->_reportLostBagURL forKey:@"reportLostBagURL"];
+  [coderCopy encodeObject:self->_trackBagsURL forKey:@"trackBagsURL"];
+  [coderCopy encodeObject:self->_requestWheelchairURL forKey:@"requestWheelchairURL"];
+  [coderCopy encodeObject:self->_registerServiceAnimalURL forKey:@"registerServiceAnimalURL"];
+  [coderCopy encodeObject:self->_contactVenuePhoneNumber forKey:@"contactVenuePhoneNumber"];
+  [coderCopy encodeObject:self->_contactVenueEmail forKey:@"contactVenueEmail"];
+  [coderCopy encodeObject:self->_contactVenueWebsite forKey:@"contactVenueWebsite"];
+  [coderCopy encodeObject:self->_transitProviderPhoneNumberURL forKey:@"transitProviderPhoneNumberURL"];
+  [coderCopy encodeObject:self->_transitProviderEmailURL forKey:@"transitProviderEmailURL"];
+  [coderCopy encodeObject:self->_transitProviderWebsiteURL forKey:@"transitProviderWebsiteURL"];
   objc_autoreleasePoolPop(v5);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v95.receiver = self;
   v95.super_class = PKPass;
   v5 = [(PKObject *)&v95 copyWithZone:?];
-  v6 = [(NSString *)self->_passLibraryMachServiceName copyWithZone:a3];
+  v6 = [(NSString *)self->_passLibraryMachServiceName copyWithZone:zone];
   v7 = *(v5 + 37);
   *(v5 + 37) = v6;
 
-  v8 = [(NSString *)self->_deviceName copyWithZone:a3];
+  v8 = [(NSString *)self->_deviceName copyWithZone:zone];
   v9 = *(v5 + 36);
   *(v5 + 36) = v8;
 
   *(v5 + 208) = self->_remotePass;
-  v10 = [(NSString *)self->_passTypeIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_passTypeIdentifier copyWithZone:zone];
   v11 = *(v5 + 31);
   *(v5 + 31) = v10;
 
-  v12 = [(NSString *)self->_teamID copyWithZone:a3];
+  v12 = [(NSString *)self->_teamID copyWithZone:zone];
   v13 = *(v5 + 41);
   *(v5 + 41) = v12;
 
-  v14 = [(NSString *)self->_serialNumber copyWithZone:a3];
+  v14 = [(NSString *)self->_serialNumber copyWithZone:zone];
   v15 = *(v5 + 30);
   *(v5 + 30) = v14;
 
-  v16 = [(NSString *)self->_provisioningCredentialHash copyWithZone:a3];
+  v16 = [(NSString *)self->_provisioningCredentialHash copyWithZone:zone];
   v17 = *(v5 + 83);
   *(v5 + 83) = v16;
 
-  v18 = [(NSNumber *)self->_sequenceCounter copyWithZone:a3];
+  v18 = [(NSNumber *)self->_sequenceCounter copyWithZone:zone];
   v19 = *(v5 + 38);
   *(v5 + 38) = v18;
 
-  v20 = [(NSString *)self->_organizationName copyWithZone:a3];
+  v20 = [(NSString *)self->_organizationName copyWithZone:zone];
   v21 = *(v5 + 32);
   *(v5 + 32) = v20;
 
-  v22 = [(NSArray *)self->_relevantDates copyWithZone:a3];
+  v22 = [(NSArray *)self->_relevantDates copyWithZone:zone];
   v23 = *(v5 + 33);
   *(v5 + 33) = v22;
 
-  v24 = [(NSDate *)self->_expirationDate copyWithZone:a3];
+  v24 = [(NSDate *)self->_expirationDate copyWithZone:zone];
   v25 = *(v5 + 42);
   *(v5 + 42) = v24;
 
   *(v5 + 211) = self->_voided;
-  v26 = [(NSDictionary *)self->_userInfo copyWithZone:a3];
+  v26 = [(NSDictionary *)self->_userInfo copyWithZone:zone];
   v27 = *(v5 + 34);
   *(v5 + 34) = v26;
 
-  v28 = [(NSString *)self->_groupingID copyWithZone:a3];
+  v28 = [(NSString *)self->_groupingID copyWithZone:zone];
   v29 = *(v5 + 43);
   *(v5 + 43) = v28;
 
-  v30 = [(NSArray *)self->_embeddedLocations copyWithZone:a3];
+  v30 = [(NSArray *)self->_embeddedLocations copyWithZone:zone];
   v31 = *(v5 + 28);
   *(v5 + 28) = v30;
 
-  v32 = [(NSSet *)self->_embeddedBeacons copyWithZone:a3];
+  v32 = [(NSSet *)self->_embeddedBeacons copyWithZone:zone];
   v33 = *(v5 + 44);
   *(v5 + 44) = v32;
 
-  v34 = [(PKNFCPayload *)self->_nfcPayload copyWithZone:a3];
+  v34 = [(PKNFCPayload *)self->_nfcPayload copyWithZone:zone];
   v35 = *(v5 + 51);
   *(v5 + 51) = v34;
 
@@ -3575,120 +3575,120 @@ LABEL_13:
   objc_storeStrong(v5 + 85, self->_ingestedDate);
   objc_storeStrong(v5 + 86, self->_modifiedDate);
   *(v5 + 218) = self->_revoked;
-  v36 = [(NSSet *)self->_associatedPassTypeIdentifiers copyWithZone:a3];
+  v36 = [(NSSet *)self->_associatedPassTypeIdentifiers copyWithZone:zone];
   v37 = *(v5 + 50);
   *(v5 + 50) = v36;
 
   *(v5 + 216) = self->_muteReadyForUseNotification;
-  v38 = [(NSURL *)self->_transferURL copyWithZone:a3];
+  v38 = [(NSURL *)self->_transferURL copyWithZone:zone];
   v39 = *(v5 + 52);
   *(v5 + 52) = v38;
 
-  v40 = [(NSURL *)self->_sellURL copyWithZone:a3];
+  v40 = [(NSURL *)self->_sellURL copyWithZone:zone];
   v41 = *(v5 + 53);
   *(v5 + 53) = v40;
 
-  v42 = [(NSURL *)self->_upgradeURL copyWithZone:a3];
+  v42 = [(NSURL *)self->_upgradeURL copyWithZone:zone];
   v43 = *(v5 + 54);
   *(v5 + 54) = v42;
 
-  v44 = [(NSURL *)self->_managementURL copyWithZone:a3];
+  v44 = [(NSURL *)self->_managementURL copyWithZone:zone];
   v45 = *(v5 + 55);
   *(v5 + 55) = v44;
 
-  v46 = [(NSURL *)self->_bagPolicyURL copyWithZone:a3];
+  v46 = [(NSURL *)self->_bagPolicyURL copyWithZone:zone];
   v47 = *(v5 + 56);
   *(v5 + 56) = v46;
 
-  v48 = [(NSURL *)self->_orderFoodURL copyWithZone:a3];
+  v48 = [(NSURL *)self->_orderFoodURL copyWithZone:zone];
   v49 = *(v5 + 57);
   *(v5 + 57) = v48;
 
-  v50 = [(NSURL *)self->_transitInformationURL copyWithZone:a3];
+  v50 = [(NSURL *)self->_transitInformationURL copyWithZone:zone];
   v51 = *(v5 + 58);
   *(v5 + 58) = v50;
 
-  v52 = [(NSURL *)self->_parkingInformationURL copyWithZone:a3];
+  v52 = [(NSURL *)self->_parkingInformationURL copyWithZone:zone];
   v53 = *(v5 + 59);
   *(v5 + 59) = v52;
 
-  v54 = [(NSURL *)self->_directionsInformationURL copyWithZone:a3];
+  v54 = [(NSURL *)self->_directionsInformationURL copyWithZone:zone];
   v55 = *(v5 + 60);
   *(v5 + 60) = v54;
 
-  v56 = [(NSURL *)self->_merchandiseURL copyWithZone:a3];
+  v56 = [(NSURL *)self->_merchandiseURL copyWithZone:zone];
   v57 = *(v5 + 61);
   *(v5 + 61) = v56;
 
-  v58 = [(NSURL *)self->_accessibilityURL copyWithZone:a3];
+  v58 = [(NSURL *)self->_accessibilityURL copyWithZone:zone];
   v59 = *(v5 + 62);
   *(v5 + 62) = v58;
 
-  v60 = [(NSURL *)self->_purchaseParkingURL copyWithZone:a3];
+  v60 = [(NSURL *)self->_purchaseParkingURL copyWithZone:zone];
   v61 = *(v5 + 63);
   *(v5 + 63) = v60;
 
-  v62 = [(NSURL *)self->_partnerAddOnURL copyWithZone:a3];
+  v62 = [(NSURL *)self->_partnerAddOnURL copyWithZone:zone];
   v63 = *(v5 + 64);
   *(v5 + 64) = v62;
 
-  v64 = [(NSURL *)self->_purchaseWifiURL copyWithZone:a3];
+  v64 = [(NSURL *)self->_purchaseWifiURL copyWithZone:zone];
   v65 = *(v5 + 65);
   *(v5 + 65) = v64;
 
-  v66 = [(NSURL *)self->_changeSeatURL copyWithZone:a3];
+  v66 = [(NSURL *)self->_changeSeatURL copyWithZone:zone];
   v67 = *(v5 + 66);
   *(v5 + 66) = v66;
 
-  v68 = [(NSURL *)self->_entertainmentURL copyWithZone:a3];
+  v68 = [(NSURL *)self->_entertainmentURL copyWithZone:zone];
   v69 = *(v5 + 67);
   *(v5 + 67) = v68;
 
-  v70 = [(NSURL *)self->_purchaseAdditionalBaggageURL copyWithZone:a3];
+  v70 = [(NSURL *)self->_purchaseAdditionalBaggageURL copyWithZone:zone];
   v71 = *(v5 + 68);
   *(v5 + 68) = v70;
 
-  v72 = [(NSURL *)self->_purchaseLoungeAccessURL copyWithZone:a3];
+  v72 = [(NSURL *)self->_purchaseLoungeAccessURL copyWithZone:zone];
   v73 = *(v5 + 69);
   *(v5 + 69) = v72;
 
-  v74 = [(NSURL *)self->_reportLostBagURL copyWithZone:a3];
+  v74 = [(NSURL *)self->_reportLostBagURL copyWithZone:zone];
   v75 = *(v5 + 70);
   *(v5 + 70) = v74;
 
-  v76 = [(NSURL *)self->_trackBagsURL copyWithZone:a3];
+  v76 = [(NSURL *)self->_trackBagsURL copyWithZone:zone];
   v77 = *(v5 + 71);
   *(v5 + 71) = v76;
 
-  v78 = [(NSURL *)self->_requestWheelchairURL copyWithZone:a3];
+  v78 = [(NSURL *)self->_requestWheelchairURL copyWithZone:zone];
   v79 = *(v5 + 72);
   *(v5 + 72) = v78;
 
-  v80 = [(NSURL *)self->_registerServiceAnimalURL copyWithZone:a3];
+  v80 = [(NSURL *)self->_registerServiceAnimalURL copyWithZone:zone];
   v81 = *(v5 + 73);
   *(v5 + 73) = v80;
 
-  v82 = [(NSURL *)self->_contactVenuePhoneNumber copyWithZone:a3];
+  v82 = [(NSURL *)self->_contactVenuePhoneNumber copyWithZone:zone];
   v83 = *(v5 + 74);
   *(v5 + 74) = v82;
 
-  v84 = [(NSURL *)self->_contactVenueEmail copyWithZone:a3];
+  v84 = [(NSURL *)self->_contactVenueEmail copyWithZone:zone];
   v85 = *(v5 + 75);
   *(v5 + 75) = v84;
 
-  v86 = [(NSURL *)self->_contactVenueWebsite copyWithZone:a3];
+  v86 = [(NSURL *)self->_contactVenueWebsite copyWithZone:zone];
   v87 = *(v5 + 76);
   *(v5 + 76) = v86;
 
-  v88 = [(NSURL *)self->_transitProviderPhoneNumberURL copyWithZone:a3];
+  v88 = [(NSURL *)self->_transitProviderPhoneNumberURL copyWithZone:zone];
   v89 = *(v5 + 77);
   *(v5 + 77) = v88;
 
-  v90 = [(NSURL *)self->_transitProviderEmailURL copyWithZone:a3];
+  v90 = [(NSURL *)self->_transitProviderEmailURL copyWithZone:zone];
   v91 = *(v5 + 78);
   *(v5 + 78) = v90;
 
-  v92 = [(NSURL *)self->_transitProviderWebsiteURL copyWithZone:a3];
+  v92 = [(NSURL *)self->_transitProviderWebsiteURL copyWithZone:zone];
   v93 = *(v5 + 79);
   *(v5 + 79) = v92;
 
@@ -3697,149 +3697,149 @@ LABEL_13:
 
 - (BOOL)availableForAutomaticPresentationUsingBeaconContext
 {
-  v2 = [(PKPass *)self embeddedBeacons];
-  v3 = [v2 count] != 0;
+  embeddedBeacons = [(PKPass *)self embeddedBeacons];
+  v3 = [embeddedBeacons count] != 0;
 
   return v3;
 }
 
-- (id)stringForSemanticKey:(id)a3
+- (id)stringForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPass *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPass *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 stringValue];
+  stringValue = [v6 stringValue];
 
-  return v7;
+  return stringValue;
 }
 
-- (id)dateForSemanticKey:(id)a3
+- (id)dateForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPass *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPass *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 dateValue];
+  dateValue = [v6 dateValue];
 
-  return v7;
+  return dateValue;
 }
 
-- (id)timeZoneForSemanticKey:(id)a3
+- (id)timeZoneForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPass *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPass *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 timeZoneValue];
+  timeZoneValue = [v6 timeZoneValue];
 
-  return v7;
+  return timeZoneValue;
 }
 
-- (id)eventDateInfoForSemanticKey:(id)a3
+- (id)eventDateInfoForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPass *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPass *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 eventDateInfoValue];
+  eventDateInfoValue = [v6 eventDateInfoValue];
 
-  return v7;
+  return eventDateInfoValue;
 }
 
-- (id)numberForSemanticKey:(id)a3
+- (id)numberForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPass *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPass *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 numberValue];
+  numberValue = [v6 numberValue];
 
-  return v7;
+  return numberValue;
 }
 
-- (id)locationForSemanticKey:(id)a3
+- (id)locationForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPass *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPass *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 locationValue];
+  locationValue = [v6 locationValue];
 
-  return v7;
+  return locationValue;
 }
 
-- (id)currencyAmountForSemanticKey:(id)a3
+- (id)currencyAmountForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPass *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPass *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 currencyAmountValue];
+  currencyAmountValue = [v6 currencyAmountValue];
 
-  return v7;
+  return currencyAmountValue;
 }
 
-- (id)personNameComponentsForSemanticKey:(id)a3
+- (id)personNameComponentsForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPass *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPass *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 personNameComponentsValue];
+  personNameComponentsValue = [v6 personNameComponentsValue];
 
-  return v7;
+  return personNameComponentsValue;
 }
 
-- (id)stringsForSemanticKey:(id)a3
+- (id)stringsForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPass *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPass *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 stringsValue];
+  stringsValue = [v6 stringsValue];
 
-  return v7;
+  return stringsValue;
 }
 
-- (id)dictionariesForSemanticKey:(id)a3
+- (id)dictionariesForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPass *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPass *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 dictionariesValue];
+  dictionariesValue = [v6 dictionariesValue];
 
-  return v7;
+  return dictionariesValue;
 }
 
-- (BOOL)supportsFeatureForCurrentDevice:(unint64_t)a3
+- (BOOL)supportsFeatureForCurrentDevice:(unint64_t)device
 {
   v5 = PKDeviceClass();
   v6 = +[PKOSVersionRequirement fromDeviceVersion];
-  LOBYTE(a3) = [(PKPass *)self supportsFeature:a3 forDevice:v5 version:v6];
+  LOBYTE(device) = [(PKPass *)self supportsFeature:device forDevice:v5 version:v6];
 
-  return a3;
+  return device;
 }
 
-- (BOOL)supportsFeature:(unint64_t)a3 forDevice:(id)a4 version:(id)a5
+- (BOOL)supportsFeature:(unint64_t)feature forDevice:(id)device version:(id)version
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = PKPassFeatureTypeToString(a3);
+  deviceCopy = device;
+  versionCopy = version;
+  v10 = PKPassFeatureTypeToString(feature);
   if (v10)
   {
-    v11 = [(PKObject *)self contentLoadedIfNeeded];
-    v12 = [v11 features];
-    v13 = [v12 objectForKeyedSubscript:v10];
+    contentLoadedIfNeeded = [(PKObject *)self contentLoadedIfNeeded];
+    features = [contentLoadedIfNeeded features];
+    v13 = [features objectForKeyedSubscript:v10];
 
     if (v13 && [v13 enabled])
     {
-      v14 = [v13 versionRange];
-      v15 = v14;
-      if (v14)
+      versionRange = [v13 versionRange];
+      v15 = versionRange;
+      if (versionRange)
       {
-        v16 = [v14 versionMeetsRequirements:v9 deviceClass:v8];
+        v16 = [versionRange versionMeetsRequirements:versionCopy deviceClass:deviceCopy];
       }
 
       else
@@ -3864,30 +3864,30 @@ LABEL_13:
 
 - (id)_localizationKeyForMultipleDiff
 {
-  v2 = [(PKPass *)self style];
-  if (v2 > 0xA)
+  style = [(PKPass *)self style];
+  if (style > 0xA)
   {
     return @"PASS_MULTIPLE_CHANGES_BULLETIN_PASS";
   }
 
   else
   {
-    return off_1E79DAE90[v2];
+    return off_1E79DAE90[style];
   }
 }
 
-- (id)_changeMessageForFieldKey:(id)a3
+- (id)_changeMessageForFieldKey:(id)key
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v5 = [(PKPass *)self frontFieldBuckets];
-  v46[0] = v5;
-  v6 = [(PKPass *)self backFieldBuckets];
-  v46[1] = v6;
+  frontFieldBuckets = [(PKPass *)self frontFieldBuckets];
+  v46[0] = frontFieldBuckets;
+  backFieldBuckets = [(PKPass *)self backFieldBuckets];
+  v46[1] = backFieldBuckets;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:2];
 
   v8 = [v7 countByEnumeratingWithState:&v40 objects:v47 count:16];
@@ -3950,11 +3950,11 @@ LABEL_13:
 
                     v21 = *(*(&v32 + 1) + 8 * j);
                     v22 = [v21 key];
-                    v23 = [v22 isEqual:v4];
+                    v23 = [v22 isEqual:keyCopy];
 
                     if (v23)
                     {
-                      v24 = [v21 changeMessage];
+                      changeMessage = [v21 changeMessage];
 
                       v7 = v29;
                       goto LABEL_26;
@@ -3989,7 +3989,7 @@ LABEL_13:
       while (v10 != v26);
       v8 = [v7 countByEnumeratingWithState:&v40 objects:v47 count:16];
       v9 = v27;
-      v24 = 0;
+      changeMessage = 0;
     }
 
     while (v8);
@@ -3997,87 +3997,87 @@ LABEL_13:
 
   else
   {
-    v24 = 0;
+    changeMessage = 0;
   }
 
 LABEL_26:
 
-  return v24;
+  return changeMessage;
 }
 
-- (id)_changeMessageForStringSemantic:(id)a3 newSemantic:(id)a4
+- (id)_changeMessageForStringSemantic:(id)semantic newSemantic:(id)newSemantic
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 semanticKey];
-  if (([v7 isEqualToString:@"departureLocationDescription"] & 1) != 0
-    || ([v7 isEqualToString:@"destinationLocationDescription"] & 1) != 0
-    || ([v7 isEqualToString:@"transitProvider"] & 1) != 0
-    || ([v7 isEqualToString:@"vehicleName"] & 1) != 0
-    || ([v7 isEqualToString:@"vehicleNumber"] & 1) != 0
-    || ([v7 isEqualToString:@"vehicleType"] & 1) != 0
-    || ([v7 isEqualToString:@"boardingGroup"] & 1) != 0
-    || ([v7 isEqualToString:@"boardingZone"] & 1) != 0
-    || ([v7 isEqualToString:@"boardingSequenceNumber"] & 1) != 0
-    || ([v7 isEqualToString:@"confirmationNumber"] & 1) != 0
-    || ([v7 isEqualToString:@"transitStatus"] & 1) != 0
-    || ([v7 isEqualToString:@"transitStatusReason"] & 1) != 0
-    || ([v7 isEqualToString:@"membershipProgramName"] & 1) != 0
-    || ([v7 isEqualToString:@"membershipProgramNumber"] & 1) != 0
-    || ([v7 isEqualToString:@"membershipProgramStatus"] & 1) != 0
-    || ([v7 isEqualToString:@"priorityStatus"] & 1) != 0
-    || ([v7 isEqualToString:@"securityScreening"] & 1) != 0
-    || ([v7 isEqualToString:@"flightCode"] & 1) != 0
-    || ([v7 isEqualToString:@"airlineCode"] & 1) != 0
-    || ([v7 isEqualToString:@"departureAirportCode"] & 1) != 0
-    || ([v7 isEqualToString:@"departureAirportName"] & 1) != 0
-    || ([v7 isEqualToString:@"departureCityName"] & 1) != 0
-    || ([v7 isEqualToString:@"departureTerminal"] & 1) != 0
-    || ([v7 isEqualToString:@"departureGate"] & 1) != 0
-    || ([v7 isEqualToString:@"destinationAirportCode"] & 1) != 0
-    || ([v7 isEqualToString:@"destinationAirportName"] & 1) != 0
-    || ([v7 isEqualToString:@"destinationCityName"] & 1) != 0
-    || ([v7 isEqualToString:@"destinationTerminal"] & 1) != 0
-    || ([v7 isEqualToString:@"destinationGate"] & 1) != 0
-    || ([v7 isEqualToString:@"departurePlatform"] & 1) != 0
-    || ([v7 isEqualToString:@"departureStationName"] & 1) != 0
-    || ([v7 isEqualToString:@"destinationPlatform"] & 1) != 0
-    || ([v7 isEqualToString:@"destinationStationName"] & 1) != 0
-    || ([v7 isEqualToString:@"carNumber"] & 1) != 0
-    || ([v7 isEqualToString:?] & 1) != 0
-    || ([v7 isEqualToString:@"venueName"] & 1) != 0
-    || ([v7 isEqualToString:@"venueEntrance"] & 1) != 0
-    || ([v7 isEqualToString:@"venueEntranceGate"] & 1) != 0
-    || ([v7 isEqualToString:@"venueEntranceDoor"] & 1) != 0
-    || ([v7 isEqualToString:@"venueEntrancePortal"] & 1) != 0
-    || ([v7 isEqualToString:@"venueRegionName"] & 1) != 0
-    || ([v7 isEqualToString:@"venueRoom"] & 1) != 0
-    || ([v7 isEqualToString:@"venuePhoneNumber"] & 1) != 0
-    || ([v7 isEqualToString:@"venuePlaceID"] & 1) != 0
-    || ([v7 isEqualToString:@"leagueName"] & 1) != 0
-    || ([v7 isEqualToString:@"leagueAbbreviation"] & 1) != 0
-    || ([v7 isEqualToString:@"homeTeamLocation"] & 1) != 0
-    || ([v7 isEqualToString:@"homeTeamName"] & 1) != 0
-    || ([v7 isEqualToString:@"homeTeamAbbreviation"] & 1) != 0
-    || ([v7 isEqualToString:@"awayTeamLocation"] & 1) != 0
-    || ([v7 isEqualToString:@"awayTeamName"] & 1) != 0
-    || ([v7 isEqualToString:@"awayTeamAbbreviation"] & 1) != 0
-    || ([v7 isEqualToString:@"sportName"] & 1) != 0
-    || ([v7 isEqualToString:@"genre"] & 1) != 0
-    || ([v7 isEqualToString:@"eventType"] & 1) != 0
-    || ([v7 isEqualToString:@"eventLiveMessage"] & 1) != 0
-    || ([v7 isEqualToString:@"admissionLevel"] & 1) != 0
-    || ([v7 isEqualToString:@"admissionLevelAbbreviation"] & 1) != 0
-    || ([v7 isEqualToString:@"attendeeName"] & 1) != 0
-    || ([v7 isEqualToString:@"entranceDescription"] & 1) != 0
-    || ([v7 isEqualToString:@"additionalTicketAttributes"] & 1) != 0
-    || [v7 isEqualToString:@"internationalDocumentsVerifiedDeclarationName"])
+  semanticCopy = semantic;
+  newSemanticCopy = newSemantic;
+  semanticKey = [newSemanticCopy semanticKey];
+  if (([semanticKey isEqualToString:@"departureLocationDescription"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationLocationDescription"] & 1) != 0
+    || ([semanticKey isEqualToString:@"transitProvider"] & 1) != 0
+    || ([semanticKey isEqualToString:@"vehicleName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"vehicleNumber"] & 1) != 0
+    || ([semanticKey isEqualToString:@"vehicleType"] & 1) != 0
+    || ([semanticKey isEqualToString:@"boardingGroup"] & 1) != 0
+    || ([semanticKey isEqualToString:@"boardingZone"] & 1) != 0
+    || ([semanticKey isEqualToString:@"boardingSequenceNumber"] & 1) != 0
+    || ([semanticKey isEqualToString:@"confirmationNumber"] & 1) != 0
+    || ([semanticKey isEqualToString:@"transitStatus"] & 1) != 0
+    || ([semanticKey isEqualToString:@"transitStatusReason"] & 1) != 0
+    || ([semanticKey isEqualToString:@"membershipProgramName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"membershipProgramNumber"] & 1) != 0
+    || ([semanticKey isEqualToString:@"membershipProgramStatus"] & 1) != 0
+    || ([semanticKey isEqualToString:@"priorityStatus"] & 1) != 0
+    || ([semanticKey isEqualToString:@"securityScreening"] & 1) != 0
+    || ([semanticKey isEqualToString:@"flightCode"] & 1) != 0
+    || ([semanticKey isEqualToString:@"airlineCode"] & 1) != 0
+    || ([semanticKey isEqualToString:@"departureAirportCode"] & 1) != 0
+    || ([semanticKey isEqualToString:@"departureAirportName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"departureCityName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"departureTerminal"] & 1) != 0
+    || ([semanticKey isEqualToString:@"departureGate"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationAirportCode"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationAirportName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationCityName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationTerminal"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationGate"] & 1) != 0
+    || ([semanticKey isEqualToString:@"departurePlatform"] & 1) != 0
+    || ([semanticKey isEqualToString:@"departureStationName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationPlatform"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationStationName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"carNumber"] & 1) != 0
+    || ([semanticKey isEqualToString:?] & 1) != 0
+    || ([semanticKey isEqualToString:@"venueName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venueEntrance"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venueEntranceGate"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venueEntranceDoor"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venueEntrancePortal"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venueRegionName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venueRoom"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venuePhoneNumber"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venuePlaceID"] & 1) != 0
+    || ([semanticKey isEqualToString:@"leagueName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"leagueAbbreviation"] & 1) != 0
+    || ([semanticKey isEqualToString:@"homeTeamLocation"] & 1) != 0
+    || ([semanticKey isEqualToString:@"homeTeamName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"homeTeamAbbreviation"] & 1) != 0
+    || ([semanticKey isEqualToString:@"awayTeamLocation"] & 1) != 0
+    || ([semanticKey isEqualToString:@"awayTeamName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"awayTeamAbbreviation"] & 1) != 0
+    || ([semanticKey isEqualToString:@"sportName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"genre"] & 1) != 0
+    || ([semanticKey isEqualToString:@"eventType"] & 1) != 0
+    || ([semanticKey isEqualToString:@"eventLiveMessage"] & 1) != 0
+    || ([semanticKey isEqualToString:@"admissionLevel"] & 1) != 0
+    || ([semanticKey isEqualToString:@"admissionLevelAbbreviation"] & 1) != 0
+    || ([semanticKey isEqualToString:@"attendeeName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"entranceDescription"] & 1) != 0
+    || ([semanticKey isEqualToString:@"additionalTicketAttributes"] & 1) != 0
+    || [semanticKey isEqualToString:@"internationalDocumentsVerifiedDeclarationName"])
   {
   }
 
   else
   {
-    v22 = [v7 isEqualToString:@"ticketFareClass"];
+    v22 = [semanticKey isEqualToString:@"ticketFareClass"];
 
     result = @"eventName";
     if ((v22 & 1) == 0)
@@ -4087,34 +4087,34 @@ LABEL_26:
     }
   }
 
-  if (![@"eventName" isEqualToString:v7])
+  if (![@"eventName" isEqualToString:semanticKey])
   {
-    if ([@"performerNames" isEqualToString:v7])
+    if ([@"performerNames" isEqualToString:semanticKey])
     {
       v8 = @"SEMANTICS_PERFORMER_NAMES_CHANGE_MESSAGE";
       goto LABEL_68;
     }
 
-    if ([@"venueEntrance" isEqualToString:v7])
+    if ([@"venueEntrance" isEqualToString:semanticKey])
     {
       v10 = PKLocalizedTicketingString(&cfstr_SemanticsVenue.isa, 0);
     }
 
     else
     {
-      if ([@"boardingGroup" isEqualToString:v7])
+      if ([@"boardingGroup" isEqualToString:semanticKey])
       {
         v11 = @"SEMANTICS_BOARDING_GROUP_CHANGE_MESSAGE";
       }
 
-      else if ([@"boardingZone" isEqualToString:v7])
+      else if ([@"boardingZone" isEqualToString:semanticKey])
       {
         v11 = @"SEMANTICS_BOARDING_ZONE_CHANGE_MESSAGE";
       }
 
       else
       {
-        if (![@"flightCode" isEqualToString:v7])
+        if (![@"flightCode" isEqualToString:semanticKey])
         {
           v12 = 0;
           goto LABEL_83;
@@ -4138,8 +4138,8 @@ LABEL_85:
         goto LABEL_86;
       }
 
-      v14 = [v6 stringValue];
-      v9 = PKStringWithValidatedFormat(v12, @"%@", v15, v16, v17, v18, v19, v20, v14);
+      stringValue = [newSemanticCopy stringValue];
+      v9 = PKStringWithValidatedFormat(v12, @"%@", v15, v16, v17, v18, v19, v20, stringValue);
 
 LABEL_84:
       v13 = 0;
@@ -4159,18 +4159,18 @@ LABEL_86:
   return v9;
 }
 
-- (id)_changeMessageForDateSemantic:(id)a3 newSemantic:(id)a4
+- (id)_changeMessageForDateSemantic:(id)semantic newSemantic:(id)newSemantic
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 semanticKey];
-  if (([v7 isEqualToString:@"originalDepartureDate"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"currentDepartureDate") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"originalArrivalDate") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"currentArrivalDate") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"originalBoardingDate") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"currentBoardingDate") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"eventStartDate") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"venueDoorsOpenDate") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"venueGatesOpenDate") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"venueParkingLotsOpenDate") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"venueBoxOfficeOpenDate") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"venueFanZoneOpenDate") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"venueOpenDate") & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"venueCloseDate"))
+  semanticCopy = semantic;
+  newSemanticCopy = newSemantic;
+  semanticKey = [newSemanticCopy semanticKey];
+  if (([semanticKey isEqualToString:@"originalDepartureDate"] & 1) != 0 || (objc_msgSend(semanticKey, "isEqualToString:", @"currentDepartureDate") & 1) != 0 || (objc_msgSend(semanticKey, "isEqualToString:", @"originalArrivalDate") & 1) != 0 || (objc_msgSend(semanticKey, "isEqualToString:", @"currentArrivalDate") & 1) != 0 || (objc_msgSend(semanticKey, "isEqualToString:", @"originalBoardingDate") & 1) != 0 || (objc_msgSend(semanticKey, "isEqualToString:", @"currentBoardingDate") & 1) != 0 || (objc_msgSend(semanticKey, "isEqualToString:", @"eventStartDate") & 1) != 0 || (objc_msgSend(semanticKey, "isEqualToString:", @"venueDoorsOpenDate") & 1) != 0 || (objc_msgSend(semanticKey, "isEqualToString:", @"venueGatesOpenDate") & 1) != 0 || (objc_msgSend(semanticKey, "isEqualToString:", @"venueParkingLotsOpenDate") & 1) != 0 || (objc_msgSend(semanticKey, "isEqualToString:", @"venueBoxOfficeOpenDate") & 1) != 0 || (objc_msgSend(semanticKey, "isEqualToString:", @"venueFanZoneOpenDate") & 1) != 0 || (objc_msgSend(semanticKey, "isEqualToString:", @"venueOpenDate") & 1) != 0 || objc_msgSend(semanticKey, "isEqualToString:", @"venueCloseDate"))
   {
   }
 
   else
   {
-    v23 = [v7 isEqualToString:@"eventEndDate"];
+    v23 = [semanticKey isEqualToString:@"eventEndDate"];
 
     if ((v23 & 1) == 0)
     {
@@ -4179,26 +4179,26 @@ LABEL_86:
     }
   }
 
-  v8 = [v5 dateValue];
-  v9 = [v6 dateValue];
-  if ([@"eventStartDate" isEqualToString:v7])
+  dateValue = [semanticCopy dateValue];
+  dateValue2 = [newSemanticCopy dateValue];
+  if ([@"eventStartDate" isEqualToString:semanticKey])
   {
     v10 = @"SEMANTICS_EVENT_START_";
-    if (!v8)
+    if (!dateValue)
     {
       goto LABEL_27;
     }
 
 LABEL_21:
-    v24 = v5;
-    v11 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-    v12 = [v11 components:96 fromDate:v8];
-    v13 = [v11 components:96 fromDate:v9];
-    v14 = [v12 hour];
-    if (v14 == [v13 hour])
+    v24 = semanticCopy;
+    autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+    v12 = [autoupdatingCurrentCalendar components:96 fromDate:dateValue];
+    v13 = [autoupdatingCurrentCalendar components:96 fromDate:dateValue2];
+    hour = [v12 hour];
+    if (hour == [v13 hour])
     {
-      v15 = [v12 minute];
-      v16 = v15 != [v13 minute];
+      minute = [v12 minute];
+      v16 = minute != [v13 minute];
     }
 
     else
@@ -4206,21 +4206,21 @@ LABEL_21:
       v16 = 1;
     }
 
-    v18 = [v11 isDate:v9 equalToDate:v8 toUnitGranularity:16];
+    v18 = [autoupdatingCurrentCalendar isDate:dateValue2 equalToDate:dateValue toUnitGranularity:16];
 
-    v5 = v24;
+    semanticCopy = v24;
     if (!v16 || (v18 & 1) != 0)
     {
       if (v16)
       {
         v19 = [(__CFString *)v10 stringByAppendingString:@"TIME_CHANGE_MESSAGE"];
-        PKTimeStringFromDate(v9, 0);
+        PKTimeStringFromDate(dateValue2, 0);
       }
 
       else
       {
         v19 = [(__CFString *)v10 stringByAppendingString:@"DATE_CHANGE_MESSAGE"];
-        PKMediumDayAndLongMonthStringFromDate(v9, 0);
+        PKMediumDayAndLongMonthStringFromDate(dateValue2, 0);
       }
       v20 = ;
       goto LABEL_28;
@@ -4228,7 +4228,7 @@ LABEL_21:
 
 LABEL_27:
     v19 = [(__CFString *)v10 stringByAppendingString:@"DATE_TIME_CHANGE_MESSAGE"];
-    v20 = PKMediumDayLongMonthAndTimeStringFromDate(v9);
+    v20 = PKMediumDayLongMonthAndTimeStringFromDate(dateValue2);
 LABEL_28:
     v21 = v20;
     v17 = PKLocalizedTicketingString(v19, &stru_1F2281668.isa, v20);
@@ -4236,10 +4236,10 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if ([@"eventEndDate" isEqualToString:v7])
+  if ([@"eventEndDate" isEqualToString:semanticKey])
   {
     v10 = @"SEMANTICS_EVENT_END_";
-    if (!v8)
+    if (!dateValue)
     {
       goto LABEL_27;
     }
@@ -4253,67 +4253,67 @@ LABEL_29:
   return v17;
 }
 
-- (id)_changeMessageForEventDateInfoSemantic:(id)a3 newSemantic:(id)a4
+- (id)_changeMessageForEventDateInfoSemantic:(id)semantic newSemantic:(id)newSemantic
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 semanticKey];
-  result = [v7 isEqualToString:@"eventStartDateInfo"];
+  semanticCopy = semantic;
+  newSemanticCopy = newSemantic;
+  semanticKey = [newSemanticCopy semanticKey];
+  result = [semanticKey isEqualToString:@"eventStartDateInfo"];
   if ((result & 1) == 0)
   {
     __break(1u);
     return result;
   }
 
-  v9 = [v5 eventDateInfoValue];
-  v10 = [v6 eventDateInfoValue];
-  v11 = [v9 date];
-  v12 = [v10 date];
-  if (!v12)
+  eventDateInfoValue = [semanticCopy eventDateInfoValue];
+  eventDateInfoValue2 = [newSemanticCopy eventDateInfoValue];
+  date = [eventDateInfoValue date];
+  date2 = [eventDateInfoValue2 date];
+  if (!date2)
   {
     goto LABEL_28;
   }
 
-  if ([v9 ignoreTimeComponents] & 1) != 0 || (objc_msgSend(v9, "isUnannounced"))
+  if ([eventDateInfoValue ignoreTimeComponents] & 1) != 0 || (objc_msgSend(eventDateInfoValue, "isUnannounced"))
   {
-    v13 = 1;
+    isUndetermined = 1;
   }
 
   else
   {
-    v13 = [v9 isUndetermined];
+    isUndetermined = [eventDateInfoValue isUndetermined];
   }
 
-  if ([v10 ignoreTimeComponents] & 1) != 0 || (objc_msgSend(v10, "isUnannounced"))
+  if ([eventDateInfoValue2 ignoreTimeComponents] & 1) != 0 || (objc_msgSend(eventDateInfoValue2, "isUnannounced"))
   {
-    v14 = 1;
+    isUndetermined2 = 1;
   }
 
   else
   {
-    v14 = [v10 isUndetermined];
+    isUndetermined2 = [eventDateInfoValue2 isUndetermined];
   }
 
-  v29 = v7;
-  if (v11)
+  v29 = semanticKey;
+  if (date)
   {
-    v28 = v5;
-    v15 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-    v16 = [v15 components:96 fromDate:v11];
-    v17 = [v15 components:96 fromDate:v12];
-    if (v14)
+    v28 = semanticCopy;
+    autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+    v16 = [autoupdatingCurrentCalendar components:96 fromDate:date];
+    v17 = [autoupdatingCurrentCalendar components:96 fromDate:date2];
+    if (isUndetermined2)
     {
       v18 = 0;
     }
 
     else
     {
-      v27 = v13;
-      v21 = [v16 hour];
-      if (v21 == [v17 hour])
+      v27 = isUndetermined;
+      hour = [v16 hour];
+      if (hour == [v17 hour])
       {
-        v22 = [v16 minute];
-        v18 = v22 != [v17 minute];
+        minute = [v16 minute];
+        v18 = minute != [v17 minute];
       }
 
       else
@@ -4321,16 +4321,16 @@ LABEL_29:
         v18 = 1;
       }
 
-      v13 = v27;
+      isUndetermined = v27;
     }
 
-    v20 = v18 | (v14 ^ 1) & v13;
-    v19 = [v15 isDate:v12 equalToDate:v11 toUnitGranularity:16];
+    v20 = v18 | (isUndetermined2 ^ 1) & isUndetermined;
+    v19 = [autoupdatingCurrentCalendar isDate:date2 equalToDate:date toUnitGranularity:16];
 
     if (v19)
     {
-      v5 = v28;
-      v7 = v29;
+      semanticCopy = v28;
+      semanticKey = v29;
       if ((v20 & 1) == 0)
       {
         goto LABEL_28;
@@ -4339,31 +4339,31 @@ LABEL_29:
 
     else
     {
-      v5 = v28;
-      v7 = v29;
+      semanticCopy = v28;
+      semanticKey = v29;
     }
   }
 
   else
   {
     LOBYTE(v19) = 0;
-    v20 = v14 ^ 1;
+    v20 = isUndetermined2 ^ 1;
   }
 
-  if ([@"eventStartDateInfo" isEqualToString:v7])
+  if ([@"eventStartDateInfo" isEqualToString:semanticKey])
   {
     if (v19 & 1 | ((v20 & 1) == 0))
     {
       if (v20)
       {
         v23 = [@"SEMANTICS_EVENT_START_" stringByAppendingString:@"TIME_CHANGE_MESSAGE"];
-        PKTimeStringFromDate(v12, 0);
+        PKTimeStringFromDate(date2, 0);
       }
 
       else
       {
         v23 = [@"SEMANTICS_EVENT_START_" stringByAppendingString:@"DATE_CHANGE_MESSAGE"];
-        PKMediumDayAndLongMonthStringFromDate(v12, 0);
+        PKMediumDayAndLongMonthStringFromDate(date2, 0);
       }
       v24 = ;
     }
@@ -4371,13 +4371,13 @@ LABEL_29:
     else
     {
       v23 = [@"SEMANTICS_EVENT_START_" stringByAppendingString:@"DATE_TIME_CHANGE_MESSAGE"];
-      v24 = PKMediumDayLongMonthAndTimeStringFromDate(v12);
+      v24 = PKMediumDayLongMonthAndTimeStringFromDate(date2);
     }
 
     v26 = v24;
     v25 = PKLocalizedTicketingString(v23, &stru_1F2281668.isa, v24);
 
-    v7 = v29;
+    semanticKey = v29;
     goto LABEL_32;
   }
 
@@ -4388,18 +4388,18 @@ LABEL_32:
   return v25;
 }
 
-- (id)_changeMessageForPersonNameComponentsSemantic:(id)a3 newSemantic:(id)a4
+- (id)_changeMessageForPersonNameComponentsSemantic:(id)semantic newSemantic:(id)newSemantic
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 semanticKey];
-  result = [v7 isEqualToString:@"passengerName"];
+  semanticCopy = semantic;
+  newSemanticCopy = newSemantic;
+  semanticKey = [newSemanticCopy semanticKey];
+  result = [semanticKey isEqualToString:@"passengerName"];
   if (result)
   {
-    if ([@"passengerName" isEqualToString:v7])
+    if ([@"passengerName" isEqualToString:semanticKey])
     {
-      v9 = [v6 personNameComponentsValue];
-      v10 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v9 style:2 options:0];
+      personNameComponentsValue = [newSemanticCopy personNameComponentsValue];
+      v10 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:personNameComponentsValue style:2 options:0];
       v11 = PKLocalizedFlightString(&cfstr_SemanticsBoard_2.isa, &stru_1F2281668.isa, v10);
     }
 
@@ -4419,19 +4419,19 @@ LABEL_32:
   return result;
 }
 
-- (id)_changeMessageForDictionariesSemantic:(id)a3 newSemantic:(id)a4 passStyle:(int64_t)a5
+- (id)_changeMessageForDictionariesSemantic:(id)semantic newSemantic:(id)newSemantic passStyle:(int64_t)style
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 semanticKey];
-  if ([v9 isEqualToString:@"seats"])
+  semanticCopy = semantic;
+  newSemanticCopy = newSemantic;
+  semanticKey = [newSemanticCopy semanticKey];
+  if ([semanticKey isEqualToString:@"seats"])
   {
     _os_feature_enabled_impl();
   }
 
   else
   {
-    v10 = [v9 isEqualToString:@"wifiAccess"];
+    v10 = [semanticKey isEqualToString:@"wifiAccess"];
     v11 = _os_feature_enabled_impl();
     if (!v11 || (v10 & 1) != 0)
     {
@@ -4440,7 +4440,7 @@ LABEL_32:
 
     else
     {
-      v12 = [v9 isEqualToString:@"airPlay"];
+      v12 = [semanticKey isEqualToString:@"airPlay"];
     }
 
     if ((v12 & 1) == 0)
@@ -4450,11 +4450,11 @@ LABEL_32:
     }
   }
 
-  if ([@"seats" isEqualToString:v9])
+  if ([@"seats" isEqualToString:semanticKey])
   {
-    v14 = [[PKSeatingInformation alloc] initFromSemantic:v7];
-    v15 = [[PKSeatingInformation alloc] initFromSemantic:v8];
-    v16 = [v15 changeMessageFromInformation:v14 isTransit:a5 == 10];
+    v14 = [[PKSeatingInformation alloc] initFromSemantic:semanticCopy];
+    v15 = [[PKSeatingInformation alloc] initFromSemantic:newSemanticCopy];
+    v16 = [v15 changeMessageFromInformation:v14 isTransit:style == 10];
   }
 
   else
@@ -4465,96 +4465,96 @@ LABEL_32:
   return v16;
 }
 
-- (id)_changeMessageForSemantic:(id)a3 newSemantic:(id)a4 passStyle:(int64_t)a5
+- (id)_changeMessageForSemantic:(id)semantic newSemantic:(id)newSemantic passStyle:(int64_t)style
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 semanticKey];
-  if (([v10 isEqualToString:@"departureLocationDescription"] & 1) != 0
-    || ([v10 isEqualToString:@"destinationLocationDescription"] & 1) != 0
-    || ([v10 isEqualToString:@"transitProvider"] & 1) != 0
-    || ([v10 isEqualToString:@"vehicleName"] & 1) != 0
-    || ([v10 isEqualToString:@"vehicleNumber"] & 1) != 0
-    || ([v10 isEqualToString:@"vehicleType"] & 1) != 0
-    || ([v10 isEqualToString:@"boardingGroup"] & 1) != 0
-    || ([v10 isEqualToString:@"boardingZone"] & 1) != 0
-    || ([v10 isEqualToString:@"boardingSequenceNumber"] & 1) != 0
-    || ([v10 isEqualToString:@"confirmationNumber"] & 1) != 0
-    || ([v10 isEqualToString:@"transitStatus"] & 1) != 0
-    || ([v10 isEqualToString:@"transitStatusReason"] & 1) != 0
-    || ([v10 isEqualToString:@"membershipProgramName"] & 1) != 0
-    || ([v10 isEqualToString:@"membershipProgramNumber"] & 1) != 0
-    || ([v10 isEqualToString:@"membershipProgramStatus"] & 1) != 0
-    || ([v10 isEqualToString:@"priorityStatus"] & 1) != 0
-    || ([v10 isEqualToString:@"securityScreening"] & 1) != 0
-    || ([v10 isEqualToString:@"flightCode"] & 1) != 0
-    || ([v10 isEqualToString:@"airlineCode"] & 1) != 0
-    || ([v10 isEqualToString:@"departureAirportCode"] & 1) != 0
-    || ([v10 isEqualToString:@"departureAirportName"] & 1) != 0
-    || ([v10 isEqualToString:@"departureCityName"] & 1) != 0
-    || ([v10 isEqualToString:@"departureTerminal"] & 1) != 0
-    || ([v10 isEqualToString:@"departureGate"] & 1) != 0
-    || ([v10 isEqualToString:@"destinationAirportCode"] & 1) != 0
-    || ([v10 isEqualToString:@"destinationAirportName"] & 1) != 0
-    || ([v10 isEqualToString:@"destinationCityName"] & 1) != 0
-    || ([v10 isEqualToString:@"destinationTerminal"] & 1) != 0
-    || ([v10 isEqualToString:@"destinationGate"] & 1) != 0
-    || ([v10 isEqualToString:@"departurePlatform"] & 1) != 0
-    || ([v10 isEqualToString:@"departureStationName"] & 1) != 0
-    || ([v10 isEqualToString:@"destinationPlatform"] & 1) != 0
-    || ([v10 isEqualToString:@"destinationStationName"] & 1) != 0
-    || ([v10 isEqualToString:@"carNumber"] & 1) != 0
-    || ([v10 isEqualToString:@"eventName"] & 1) != 0
-    || ([v10 isEqualToString:@"venueName"] & 1) != 0
-    || ([v10 isEqualToString:@"venueEntrance"] & 1) != 0
-    || ([v10 isEqualToString:@"venueEntranceGate"] & 1) != 0
-    || ([v10 isEqualToString:@"venueEntranceDoor"] & 1) != 0
-    || ([v10 isEqualToString:@"venueEntrancePortal"] & 1) != 0
-    || ([v10 isEqualToString:@"venueRegionName"] & 1) != 0
-    || ([v10 isEqualToString:@"venueRoom"] & 1) != 0
-    || ([v10 isEqualToString:@"venuePhoneNumber"] & 1) != 0
-    || ([v10 isEqualToString:@"venuePlaceID"] & 1) != 0
-    || ([v10 isEqualToString:@"leagueName"] & 1) != 0
-    || ([v10 isEqualToString:@"leagueAbbreviation"] & 1) != 0
-    || ([v10 isEqualToString:@"homeTeamLocation"] & 1) != 0
-    || ([v10 isEqualToString:@"homeTeamName"] & 1) != 0
-    || ([v10 isEqualToString:@"homeTeamAbbreviation"] & 1) != 0
-    || ([v10 isEqualToString:@"awayTeamLocation"] & 1) != 0
-    || ([v10 isEqualToString:@"awayTeamName"] & 1) != 0
-    || ([v10 isEqualToString:@"awayTeamAbbreviation"] & 1) != 0
-    || ([v10 isEqualToString:@"sportName"] & 1) != 0
-    || ([v10 isEqualToString:@"genre"] & 1) != 0
-    || ([v10 isEqualToString:@"eventType"] & 1) != 0
-    || ([v10 isEqualToString:@"eventLiveMessage"] & 1) != 0
-    || ([v10 isEqualToString:@"admissionLevel"] & 1) != 0
-    || ([v10 isEqualToString:@"admissionLevelAbbreviation"] & 1) != 0
-    || ([v10 isEqualToString:@"attendeeName"] & 1) != 0
-    || ([v10 isEqualToString:@"entranceDescription"] & 1) != 0
-    || ([v10 isEqualToString:@"additionalTicketAttributes"] & 1) != 0
-    || [v10 isEqualToString:@"internationalDocumentsVerifiedDeclarationName"])
+  semanticCopy = semantic;
+  newSemanticCopy = newSemantic;
+  semanticKey = [newSemanticCopy semanticKey];
+  if (([semanticKey isEqualToString:@"departureLocationDescription"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationLocationDescription"] & 1) != 0
+    || ([semanticKey isEqualToString:@"transitProvider"] & 1) != 0
+    || ([semanticKey isEqualToString:@"vehicleName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"vehicleNumber"] & 1) != 0
+    || ([semanticKey isEqualToString:@"vehicleType"] & 1) != 0
+    || ([semanticKey isEqualToString:@"boardingGroup"] & 1) != 0
+    || ([semanticKey isEqualToString:@"boardingZone"] & 1) != 0
+    || ([semanticKey isEqualToString:@"boardingSequenceNumber"] & 1) != 0
+    || ([semanticKey isEqualToString:@"confirmationNumber"] & 1) != 0
+    || ([semanticKey isEqualToString:@"transitStatus"] & 1) != 0
+    || ([semanticKey isEqualToString:@"transitStatusReason"] & 1) != 0
+    || ([semanticKey isEqualToString:@"membershipProgramName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"membershipProgramNumber"] & 1) != 0
+    || ([semanticKey isEqualToString:@"membershipProgramStatus"] & 1) != 0
+    || ([semanticKey isEqualToString:@"priorityStatus"] & 1) != 0
+    || ([semanticKey isEqualToString:@"securityScreening"] & 1) != 0
+    || ([semanticKey isEqualToString:@"flightCode"] & 1) != 0
+    || ([semanticKey isEqualToString:@"airlineCode"] & 1) != 0
+    || ([semanticKey isEqualToString:@"departureAirportCode"] & 1) != 0
+    || ([semanticKey isEqualToString:@"departureAirportName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"departureCityName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"departureTerminal"] & 1) != 0
+    || ([semanticKey isEqualToString:@"departureGate"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationAirportCode"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationAirportName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationCityName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationTerminal"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationGate"] & 1) != 0
+    || ([semanticKey isEqualToString:@"departurePlatform"] & 1) != 0
+    || ([semanticKey isEqualToString:@"departureStationName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationPlatform"] & 1) != 0
+    || ([semanticKey isEqualToString:@"destinationStationName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"carNumber"] & 1) != 0
+    || ([semanticKey isEqualToString:@"eventName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venueName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venueEntrance"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venueEntranceGate"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venueEntranceDoor"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venueEntrancePortal"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venueRegionName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venueRoom"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venuePhoneNumber"] & 1) != 0
+    || ([semanticKey isEqualToString:@"venuePlaceID"] & 1) != 0
+    || ([semanticKey isEqualToString:@"leagueName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"leagueAbbreviation"] & 1) != 0
+    || ([semanticKey isEqualToString:@"homeTeamLocation"] & 1) != 0
+    || ([semanticKey isEqualToString:@"homeTeamName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"homeTeamAbbreviation"] & 1) != 0
+    || ([semanticKey isEqualToString:@"awayTeamLocation"] & 1) != 0
+    || ([semanticKey isEqualToString:@"awayTeamName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"awayTeamAbbreviation"] & 1) != 0
+    || ([semanticKey isEqualToString:@"sportName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"genre"] & 1) != 0
+    || ([semanticKey isEqualToString:@"eventType"] & 1) != 0
+    || ([semanticKey isEqualToString:@"eventLiveMessage"] & 1) != 0
+    || ([semanticKey isEqualToString:@"admissionLevel"] & 1) != 0
+    || ([semanticKey isEqualToString:@"admissionLevelAbbreviation"] & 1) != 0
+    || ([semanticKey isEqualToString:@"attendeeName"] & 1) != 0
+    || ([semanticKey isEqualToString:@"entranceDescription"] & 1) != 0
+    || ([semanticKey isEqualToString:@"additionalTicketAttributes"] & 1) != 0
+    || [semanticKey isEqualToString:@"internationalDocumentsVerifiedDeclarationName"])
   {
 
 LABEL_64:
-    v11 = [(PKPass *)self _changeMessageForStringSemantic:v8 newSemantic:v9];
+    v11 = [(PKPass *)self _changeMessageForStringSemantic:semanticCopy newSemantic:newSemanticCopy];
 LABEL_65:
     v12 = v11;
     goto LABEL_66;
   }
 
-  v14 = [v10 isEqualToString:@"ticketFareClass"];
+  v14 = [semanticKey isEqualToString:@"ticketFareClass"];
 
   if (v14)
   {
     goto LABEL_64;
   }
 
-  v15 = v10;
+  v15 = semanticKey;
   if (([v15 isEqualToString:@"originalDepartureDate"] & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"currentDepartureDate") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"originalArrivalDate") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"currentArrivalDate") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"originalBoardingDate") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"currentBoardingDate") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"eventStartDate") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"venueDoorsOpenDate") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"venueGatesOpenDate") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"venueParkingLotsOpenDate") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"venueBoxOfficeOpenDate") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"venueFanZoneOpenDate") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"venueOpenDate") & 1) != 0 || objc_msgSend(v15, "isEqualToString:", @"venueCloseDate"))
   {
 
 LABEL_86:
-    v11 = [(PKPass *)self _changeMessageForDateSemantic:v8 newSemantic:v9];
+    v11 = [(PKPass *)self _changeMessageForDateSemantic:semanticCopy newSemantic:newSemanticCopy];
     goto LABEL_65;
   }
 
@@ -4567,13 +4567,13 @@ LABEL_86:
 
   if ([v15 isEqualToString:@"eventStartDateInfo"])
   {
-    v11 = [(PKPass *)self _changeMessageForEventDateInfoSemantic:v8 newSemantic:v9];
+    v11 = [(PKPass *)self _changeMessageForEventDateInfoSemantic:semanticCopy newSemantic:newSemanticCopy];
     goto LABEL_65;
   }
 
   if ([v15 isEqualToString:@"passengerName"])
   {
-    v11 = [(PKPass *)self _changeMessageForPersonNameComponentsSemantic:v8 newSemantic:v9];
+    v11 = [(PKPass *)self _changeMessageForPersonNameComponentsSemantic:semanticCopy newSemantic:newSemanticCopy];
     goto LABEL_65;
   }
 
@@ -4583,7 +4583,7 @@ LABEL_86:
     _os_feature_enabled_impl();
 
 LABEL_98:
-    v11 = [(PKPass *)self _changeMessageForDictionariesSemantic:v8 newSemantic:v9 passStyle:a5];
+    v11 = [(PKPass *)self _changeMessageForDictionariesSemantic:semanticCopy newSemantic:newSemanticCopy passStyle:style];
     goto LABEL_65;
   }
 
@@ -4620,14 +4620,14 @@ LABEL_66:
 
 - (BOOL)hasFlightDetails
 {
-  v3 = [(PKPass *)self style];
-  if (v3 < 0xE && ((0x23EFu >> v3) & 1) != 0 || [(PKPass *)self transitType]!= 1 || ![(PKPass *)self flightNumber])
+  style = [(PKPass *)self style];
+  if (style < 0xE && ((0x23EFu >> style) & 1) != 0 || [(PKPass *)self transitType]!= 1 || ![(PKPass *)self flightNumber])
   {
     return 0;
   }
 
-  v4 = [(PKPass *)self flightCode];
-  v5 = [v4 length] != 0;
+  flightCode = [(PKPass *)self flightCode];
+  v5 = [flightCode length] != 0;
 
   return v5;
 }
@@ -4635,17 +4635,17 @@ LABEL_66:
 - (unint64_t)flightNumber
 {
   v2 = [(PKPass *)self numberForSemanticKey:@"flightNumber"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (NSString)airlineCode
 {
   v2 = [(PKPass *)self stringForSemanticKey:@"airlineCode"];
-  v3 = [v2 uppercaseString];
+  uppercaseString = [v2 uppercaseString];
 
-  return v3;
+  return uppercaseString;
 }
 
 - (NSString)flightCode
@@ -4654,28 +4654,28 @@ LABEL_66:
   v4 = v3;
   if (v3 && (v5 = [v3 length], v4, v5))
   {
-    v6 = [v4 uppercaseString];
+    uppercaseString = [v4 uppercaseString];
   }
 
   else
   {
-    v7 = [(PKPass *)self airlineCode];
-    v8 = [(PKPass *)self flightNumber];
-    v6 = 0;
-    if ([v7 length] && v8)
+    airlineCode = [(PKPass *)self airlineCode];
+    flightNumber = [(PKPass *)self flightNumber];
+    uppercaseString = 0;
+    if ([airlineCode length] && flightNumber)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%ld", v7, v8];
+      uppercaseString = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%ld", airlineCode, flightNumber];
     }
   }
 
-  return v6;
+  return uppercaseString;
 }
 
-- (void)loadFlightsWithCompletionHandler:(id)a3
+- (void)loadFlightsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PKPass *)self flightNumber];
-  v6 = [(PKPass *)self airlineCode];
+  handlerCopy = handler;
+  flightNumber = [(PKPass *)self flightNumber];
+  airlineCode = [(PKPass *)self airlineCode];
   v7 = [(PKPass *)self dateForSemanticKey:@"currentDepartureDate"];
   v8 = [(PKPass *)self dateForSemanticKey:@"originalDepartureDate"];
   v9 = [(PKPass *)self dateForSemanticKey:@"currentArrivalDate"];
@@ -4726,15 +4726,15 @@ LABEL_10:
   v21[1] = 3221225472;
   v21[2] = __51__PKPass_Flight__loadFlightsWithCompletionHandler___block_invoke;
   v21[3] = &unk_1E79DDDE0;
-  v22 = v6;
+  v22 = airlineCode;
   v23 = v13;
-  v25 = v5;
+  v25 = flightNumber;
   v26 = v12;
-  v24 = v4;
-  v17 = v4;
+  v24 = handlerCopy;
+  v17 = handlerCopy;
   v18 = v13;
-  v19 = v6;
-  [v16 loadFlightsWithNumber:v5 airlineCode:v19 date:v18 dateType:v12 completionHandler:v21];
+  v19 = airlineCode;
+  [v16 loadFlightsWithNumber:flightNumber airlineCode:v19 date:v18 dateType:v12 completionHandler:v21];
 }
 
 void __51__PKPass_Flight__loadFlightsWithCompletionHandler___block_invoke(void *a1, void *a2, void *a3)

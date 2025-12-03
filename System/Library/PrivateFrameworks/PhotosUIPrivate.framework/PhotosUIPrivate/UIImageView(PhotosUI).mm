@@ -17,8 +17,8 @@
 
   else
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:a1 file:@"UIImageView+PhotosUI.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIImageView+PhotosUI.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
 
     if (!a3)
     {
@@ -32,13 +32,13 @@
   }
 
 LABEL_5:
-  v12 = [a1 image];
-  [a1 bounds];
+  image = [self image];
+  [self bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [a1 contentMode];
+  contentMode = [self contentMode];
   v22 = objc_alloc_init(PUImageViewExtraction);
   if (pu_extractPlayOverlayBackgroundImageFromCenter_asynchronously_handler__onceToken_10 != -1)
   {
@@ -53,13 +53,13 @@ LABEL_5:
   v32 = v23;
   v35 = a5;
   v36 = a6;
-  v24 = v12;
+  v24 = image;
   v33 = v24;
   v37 = v14;
   v38 = v16;
   v39 = v18;
   v40 = v20;
-  v41 = v21;
+  v41 = contentMode;
   v42 = a3;
   v25 = v11;
   v34 = v25;

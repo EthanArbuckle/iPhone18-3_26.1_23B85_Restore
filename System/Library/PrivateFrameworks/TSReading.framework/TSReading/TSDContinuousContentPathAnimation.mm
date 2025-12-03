@@ -1,6 +1,6 @@
 @interface TSDContinuousContentPathAnimation
 - (void)dealloc;
-- (void)i_applyToLayer:(id)a3 withTransformBlock:(id)a4 completionBlock:(id)a5;
+- (void)i_applyToLayer:(id)layer withTransformBlock:(id)block completionBlock:(id)completionBlock;
 @end
 
 @implementation TSDContinuousContentPathAnimation
@@ -12,7 +12,7 @@
   [(TSDContinuousContentPathAnimation *)&v3 dealloc];
 }
 
-- (void)i_applyToLayer:(id)a3 withTransformBlock:(id)a4 completionBlock:(id)a5
+- (void)i_applyToLayer:(id)layer withTransformBlock:(id)block completionBlock:(id)completionBlock
 {
   tick = self->_tick;
   if (tick)
@@ -20,7 +20,7 @@
     if (self->_isFinished)
     {
       v10 = tick[2](tick, a2, 0.0, 0.0);
-      (*(a4 + 2))(v22, a4, v10);
+      (*(block + 2))(v22, block, v10);
       v19 = v22[5];
       v20 = v22[6];
       v21 = v22[7];
@@ -29,7 +29,7 @@
       v16 = v22[2];
       v17 = v22[3];
       v18 = v22[4];
-      [a3 setTransform:&v14];
+      [layer setTransform:&v14];
       v11 = objc_alloc_init(TSDDisplayLink);
       *&v14 = 0;
       *(&v14 + 1) = &v14;
@@ -42,16 +42,16 @@
       v13[2] = __87__TSDContinuousContentPathAnimation_i_applyToLayer_withTransformBlock_completionBlock___block_invoke;
       v13[3] = &unk_279D492A0;
       v13[4] = self;
-      v13[5] = a3;
-      v13[6] = a4;
+      v13[5] = layer;
+      v13[6] = block;
       v13[7] = &v14;
       [(TSDDisplayLink *)v11 setTickBlock:v13];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __87__TSDContinuousContentPathAnimation_i_applyToLayer_withTransformBlock_completionBlock___block_invoke_2;
       v12[3] = &unk_279D48418;
-      v12[4] = a3;
-      v12[5] = a5;
+      v12[4] = layer;
+      v12[5] = completionBlock;
       v12[6] = &v14;
       [(TSDDisplayLink *)v11 setCompletionBlock:v12];
       [(TSDDisplayLink *)v11 start];

@@ -1,7 +1,7 @@
 @interface BGSystemTaskScheduler
-- (BOOL)cancelReturnToServiceTaskRequestWithError:(id *)a3;
+- (BOOL)cancelReturnToServiceTaskRequestWithError:(id *)error;
 - (BOOL)deregisterRapidReturnToService;
-- (BOOL)registerForRapidReturnToServiceWithLaunchHandler:(id)a3;
+- (BOOL)registerForRapidReturnToServiceWithLaunchHandler:(id)handler;
 - (id)rapidReturnToServiceTaskRequest;
 @end
 
@@ -15,20 +15,20 @@
   return v4;
 }
 
-- (BOOL)cancelReturnToServiceTaskRequestWithError:(id *)a3
+- (BOOL)cancelReturnToServiceTaskRequestWithError:(id *)error
 {
   v5 = +[BGNonRepeatingSystemTaskRequest rapidReturnToServiceTaskIdentifier];
-  LOBYTE(a3) = [(BGSystemTaskScheduler *)self cancelTaskRequestWithIdentifier:v5 error:a3];
+  LOBYTE(error) = [(BGSystemTaskScheduler *)self cancelTaskRequestWithIdentifier:v5 error:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)registerForRapidReturnToServiceWithLaunchHandler:(id)a3
+- (BOOL)registerForRapidReturnToServiceWithLaunchHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[BGNonRepeatingSystemTaskRequest rapidReturnToServiceTaskIdentifier];
   v6 = dispatch_get_global_queue(9, 0);
-  LOBYTE(self) = [(BGSystemTaskScheduler *)self registerForTaskWithIdentifier:v5 usingQueue:v6 launchHandler:v4];
+  LOBYTE(self) = [(BGSystemTaskScheduler *)self registerForTaskWithIdentifier:v5 usingQueue:v6 launchHandler:handlerCopy];
 
   return self;
 }

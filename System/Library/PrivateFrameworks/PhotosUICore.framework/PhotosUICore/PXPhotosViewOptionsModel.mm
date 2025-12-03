@@ -1,24 +1,24 @@
 @interface PXPhotosViewOptionsModel
 - (NSString)sortOrderTitle;
-- (PXPhotosViewOptionsModel)initWithPhotoLibrary:(id)a3;
+- (PXPhotosViewOptionsModel)initWithPhotoLibrary:(id)library;
 - (UIMenu)sortOrderMenu;
 - (id)_makeSortOrderMenu;
 - (id)_makeSortOrderTitle;
 - (id)_makeStandardLensControlItems;
-- (id)browserTitleForProposedTitle:(id)a3;
-- (id)titleForSortOrderAtIndex:(int64_t)a3;
+- (id)browserTitleForProposedTitle:(id)title;
+- (id)titleForSortOrderAtIndex:(int64_t)index;
 - (int64_t)centralizedFeedbackMode;
-- (int64_t)menuActionStateForSortOrderAtIndex:(int64_t)a3;
+- (int64_t)menuActionStateForSortOrderAtIndex:(int64_t)index;
 - (unint64_t)browserDateType;
 - (void)_updateLensControlItems;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performActionForSortOrderAtIndex:(int64_t)a3;
-- (void)setAdditionalLensControlItems:(id)a3;
-- (void)setHidesSortOrderMenu:(BOOL)a3;
-- (void)setLensControlItems:(id)a3;
-- (void)setSelectedLensControlItem:(id)a3;
-- (void)setSortOrderMenu:(id)a3;
-- (void)setSortOrderTitle:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performActionForSortOrderAtIndex:(int64_t)index;
+- (void)setAdditionalLensControlItems:(id)items;
+- (void)setHidesSortOrderMenu:(BOOL)menu;
+- (void)setLensControlItems:(id)items;
+- (void)setSelectedLensControlItem:(id)item;
+- (void)setSortOrderMenu:(id)menu;
+- (void)setSortOrderTitle:(id)title;
 @end
 
 @implementation PXPhotosViewOptionsModel
@@ -26,20 +26,20 @@
 - (void)_updateLensControlItems
 {
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [(PXPhotosViewOptionsModel *)self additionalLensControlItems];
-  v4 = [v3 reverseObjectEnumerator];
-  v5 = [v4 allObjects];
-  [v9 addObjectsFromArray:v5];
+  additionalLensControlItems = [(PXPhotosViewOptionsModel *)self additionalLensControlItems];
+  reverseObjectEnumerator = [additionalLensControlItems reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
+  [v9 addObjectsFromArray:allObjects];
 
-  v6 = [(PXPhotosViewOptionsModel *)self _makeStandardLensControlItems];
-  [v9 addObjectsFromArray:v6];
+  _makeStandardLensControlItems = [(PXPhotosViewOptionsModel *)self _makeStandardLensControlItems];
+  [v9 addObjectsFromArray:_makeStandardLensControlItems];
 
-  v7 = [(PXPhotosViewOptionsModel *)self lensControlItems];
+  lensControlItems = [(PXPhotosViewOptionsModel *)self lensControlItems];
 
-  if (!v7)
+  if (!lensControlItems)
   {
-    v8 = [v9 lastObject];
-    [(PXPhotosViewOptionsModel *)self setSelectedLensControlItem:v8];
+    lastObject = [v9 lastObject];
+    [(PXPhotosViewOptionsModel *)self setSelectedLensControlItem:lastObject];
   }
 
   [(PXPhotosViewOptionsModel *)self setLensControlItems:v9];
@@ -50,9 +50,9 @@
   v8 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v3 = +[PXLemonadeSettings sharedInstance];
-  v4 = [v3 yearsAndMonthsMode];
+  yearsAndMonthsMode = [v3 yearsAndMonthsMode];
 
-  if (!v4)
+  if (!yearsAndMonthsMode)
   {
     v5 = [off_1E7721518 alloc];
     PXLocalizedLensTitleForViewMode();
@@ -62,25 +62,25 @@
   PXLocalizedLensTitleForViewMode();
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXSortOrderStateObserverContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXSortOrderStateObserverContext != context)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXPhotosViewOptionsModel.m" lineNumber:298 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewOptionsModel.m" lineNumber:298 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if (v6)
+  v10 = observableCopy;
+  if (changeCopy)
   {
-    v11 = [(PXSortOrderState *)self->_sortOrderState sortOrder];
+    sortOrder = [(PXSortOrderState *)self->_sortOrderState sortOrder];
     v12 = MEMORY[0x1E696AD98];
     v13 = self->_localDefaults;
-    v14 = [v12 numberWithUnsignedInteger:v11];
+    v14 = [v12 numberWithUnsignedInteger:sortOrder];
     [(PXPhotoLibraryLocalDefaults *)v13 setNumber:v14 forKey:@"PXPhotosViewOptionsSortOrder-v2"];
 
     [(PXPhotosViewOptionsModel *)self _invalidateLensControlItems];
@@ -105,13 +105,13 @@ void __57__PXPhotosViewOptionsModel_observable_didChange_context___block_invoke(
 
 - (id)_makeSortOrderMenu
 {
-  v2 = [(PXPhotosViewOptionsModel *)self sortOrderState];
+  sortOrderState = [(PXPhotosViewOptionsModel *)self sortOrderState];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__PXPhotosViewOptionsModel__makeSortOrderMenu__block_invoke;
   v6[3] = &unk_1E77495C0;
-  v7 = v2;
-  v3 = v2;
+  v7 = sortOrderState;
+  v3 = sortOrderState;
   v4 = [PXMenuBuilder menuWithDeferredConfiguration:v6];
 
   return v4;
@@ -158,21 +158,21 @@ uint64_t __46__PXPhotosViewOptionsModel__makeSortOrderMenu__block_invoke_3(uint6
 
 - (id)_makeSortOrderTitle
 {
-  v2 = [(PXPhotosViewOptionsModel *)self sortOrderState];
-  v3 = PXLocalizedTitleForSortOrder([v2 sortOrder]);
+  sortOrderState = [(PXPhotosViewOptionsModel *)self sortOrderState];
+  v3 = PXLocalizedTitleForSortOrder([sortOrderState sortOrder]);
 
   return v3;
 }
 
-- (void)setLensControlItems:(id)a3
+- (void)setLensControlItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   lensControlItems = self->_lensControlItems;
-  if (lensControlItems != v4)
+  if (lensControlItems != itemsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)lensControlItems isEqual:v4];
-    v4 = v9;
+    v9 = itemsCopy;
+    v6 = [(NSArray *)lensControlItems isEqual:itemsCopy];
+    itemsCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSArray *)v9 copy];
@@ -180,17 +180,17 @@ uint64_t __46__PXPhotosViewOptionsModel__makeSortOrderMenu__block_invoke_3(uint6
       self->_lensControlItems = v7;
 
       [(PXPhotosViewOptionsModel *)self signalChange:8];
-      v4 = v9;
+      itemsCopy = v9;
     }
   }
 }
 
-- (void)setSelectedLensControlItem:(id)a3
+- (void)setSelectedLensControlItem:(id)item
 {
-  v8 = a3;
+  itemCopy = item;
   v5 = self->_selectedLensControlItem;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == itemCopy)
   {
   }
 
@@ -200,21 +200,21 @@ uint64_t __46__PXPhotosViewOptionsModel__makeSortOrderMenu__block_invoke_3(uint6
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_selectedLensControlItem, a3);
+      objc_storeStrong(&self->_selectedLensControlItem, item);
       [(PXPhotosViewOptionsModel *)self signalChange:4];
     }
   }
 }
 
-- (void)setAdditionalLensControlItems:(id)a3
+- (void)setAdditionalLensControlItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   additionalLensControlItems = self->_additionalLensControlItems;
-  if (additionalLensControlItems != v4)
+  if (additionalLensControlItems != itemsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)additionalLensControlItems isEqual:v4];
-    v4 = v9;
+    v9 = itemsCopy;
+    v6 = [(NSArray *)additionalLensControlItems isEqual:itemsCopy];
+    itemsCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSArray *)v9 copy];
@@ -222,7 +222,7 @@ uint64_t __46__PXPhotosViewOptionsModel__makeSortOrderMenu__block_invoke_3(uint6
       self->_additionalLensControlItems = v7;
 
       [(PXPhotosViewOptionsModel *)self _invalidateLensControlItems];
-      v4 = v9;
+      itemsCopy = v9;
     }
   }
 }
@@ -244,20 +244,20 @@ uint64_t __46__PXPhotosViewOptionsModel__makeSortOrderMenu__block_invoke_3(uint6
 
 - (unint64_t)browserDateType
 {
-  v2 = [(PXPhotosViewOptionsModel *)self sortOrderState];
-  v3 = [v2 sortOrder] == 2;
+  sortOrderState = [(PXPhotosViewOptionsModel *)self sortOrderState];
+  v3 = [sortOrderState sortOrder] == 2;
 
   return v3;
 }
 
-- (id)browserTitleForProposedTitle:(id)a3
+- (id)browserTitleForProposedTitle:(id)title
 {
-  v5 = a3;
-  v6 = [(PXPhotosViewOptionsModel *)self sortOrderState];
-  v7 = [v6 sortOrder];
-  if (v7 >= 2)
+  titleCopy = title;
+  sortOrderState = [(PXPhotosViewOptionsModel *)self sortOrderState];
+  sortOrder = [sortOrderState sortOrder];
+  if (sortOrder >= 2)
   {
-    if (v7 != 2)
+    if (sortOrder != 2)
     {
       goto LABEL_6;
     }
@@ -267,7 +267,7 @@ uint64_t __46__PXPhotosViewOptionsModel__makeSortOrderMenu__block_invoke_3(uint6
 
   else
   {
-    v8 = v5;
+    v8 = titleCopy;
   }
 
   v3 = v8;
@@ -276,64 +276,64 @@ LABEL_6:
   return v3;
 }
 
-- (void)performActionForSortOrderAtIndex:(int64_t)a3
+- (void)performActionForSortOrderAtIndex:(int64_t)index
 {
-  v5 = [(PXPhotosViewOptionsModel *)self sortOrderState];
-  v6 = [v5 possibleSortOrders];
+  sortOrderState = [(PXPhotosViewOptionsModel *)self sortOrderState];
+  possibleSortOrders = [sortOrderState possibleSortOrders];
 
-  if ([v6 count] > a3)
+  if ([possibleSortOrders count] > index)
   {
-    v7 = [v6 objectAtIndexedSubscript:a3];
-    v8 = [v7 unsignedIntegerValue];
+    v7 = [possibleSortOrders objectAtIndexedSubscript:index];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-    v9 = [(PXPhotosViewOptionsModel *)self sortOrderState];
+    sortOrderState2 = [(PXPhotosViewOptionsModel *)self sortOrderState];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __61__PXPhotosViewOptionsModel_performActionForSortOrderAtIndex___block_invoke;
     v10[3] = &__block_descriptor_40_e35_v16__0___PXMutableSortOrderState__8l;
-    v10[4] = v8;
-    [v9 performChanges:v10];
+    v10[4] = unsignedIntegerValue;
+    [sortOrderState2 performChanges:v10];
   }
 }
 
-- (int64_t)menuActionStateForSortOrderAtIndex:(int64_t)a3
+- (int64_t)menuActionStateForSortOrderAtIndex:(int64_t)index
 {
-  v5 = [(PXPhotosViewOptionsModel *)self sortOrderState];
-  v6 = [v5 possibleSortOrders];
+  sortOrderState = [(PXPhotosViewOptionsModel *)self sortOrderState];
+  possibleSortOrders = [sortOrderState possibleSortOrders];
 
-  if ([v6 count] <= a3)
+  if ([possibleSortOrders count] <= index)
   {
     v10 = 0;
   }
 
   else
   {
-    v7 = [v6 objectAtIndexedSubscript:a3];
-    v8 = [v7 unsignedIntegerValue];
+    v7 = [possibleSortOrders objectAtIndexedSubscript:index];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-    v9 = [(PXPhotosViewOptionsModel *)self sortOrderState];
-    v10 = [v9 sortOrder] == v8;
+    sortOrderState2 = [(PXPhotosViewOptionsModel *)self sortOrderState];
+    v10 = [sortOrderState2 sortOrder] == unsignedIntegerValue;
   }
 
   return v10;
 }
 
-- (id)titleForSortOrderAtIndex:(int64_t)a3
+- (id)titleForSortOrderAtIndex:(int64_t)index
 {
-  v4 = [(PXPhotosViewOptionsModel *)self sortOrderState];
-  v5 = [v4 possibleSortOrders];
+  sortOrderState = [(PXPhotosViewOptionsModel *)self sortOrderState];
+  possibleSortOrders = [sortOrderState possibleSortOrders];
 
-  if ([v5 count] <= a3)
+  if ([possibleSortOrders count] <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndexedSubscript:a3];
-    v7 = [v6 unsignedIntegerValue];
+    v6 = [possibleSortOrders objectAtIndexedSubscript:index];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-    v8 = PXLocalizedTitleForSortOrder(v7);
+    v8 = PXLocalizedTitleForSortOrder(unsignedIntegerValue);
   }
 
   return v8;
@@ -351,9 +351,9 @@ LABEL_6:
     sortOrderMenu = self->_sortOrderMenu;
     if (!sortOrderMenu)
     {
-      v5 = [(PXPhotosViewOptionsModel *)self _makeSortOrderMenu];
+      _makeSortOrderMenu = [(PXPhotosViewOptionsModel *)self _makeSortOrderMenu];
       v6 = self->_sortOrderMenu;
-      self->_sortOrderMenu = v5;
+      self->_sortOrderMenu = _makeSortOrderMenu;
 
       sortOrderMenu = self->_sortOrderMenu;
     }
@@ -364,24 +364,24 @@ LABEL_6:
   return v3;
 }
 
-- (void)setHidesSortOrderMenu:(BOOL)a3
+- (void)setHidesSortOrderMenu:(BOOL)menu
 {
-  if (self->_hidesSortOrderMenu != a3)
+  if (self->_hidesSortOrderMenu != menu)
   {
-    self->_hidesSortOrderMenu = a3;
+    self->_hidesSortOrderMenu = menu;
     [(PXPhotosViewOptionsModel *)self signalChange:16];
   }
 }
 
-- (void)setSortOrderMenu:(id)a3
+- (void)setSortOrderMenu:(id)menu
 {
-  v5 = a3;
-  if (self->_sortOrderMenu != v5)
+  menuCopy = menu;
+  if (self->_sortOrderMenu != menuCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_sortOrderMenu, a3);
+    v6 = menuCopy;
+    objc_storeStrong(&self->_sortOrderMenu, menu);
     [(PXPhotosViewOptionsModel *)self signalChange:2];
-    v5 = v6;
+    menuCopy = v6;
   }
 }
 
@@ -390,9 +390,9 @@ LABEL_6:
   sortOrderTitle = self->_sortOrderTitle;
   if (!sortOrderTitle)
   {
-    v4 = [(PXPhotosViewOptionsModel *)self _makeSortOrderTitle];
+    _makeSortOrderTitle = [(PXPhotosViewOptionsModel *)self _makeSortOrderTitle];
     v5 = self->_sortOrderTitle;
-    self->_sortOrderTitle = v4;
+    self->_sortOrderTitle = _makeSortOrderTitle;
 
     sortOrderTitle = self->_sortOrderTitle;
   }
@@ -400,12 +400,12 @@ LABEL_6:
   return sortOrderTitle;
 }
 
-- (void)setSortOrderTitle:(id)a3
+- (void)setSortOrderTitle:(id)title
 {
-  v8 = a3;
+  titleCopy = title;
   v5 = self->_sortOrderTitle;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == titleCopy)
   {
   }
 
@@ -415,35 +415,35 @@ LABEL_6:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_sortOrderTitle, a3);
+      objc_storeStrong(&self->_sortOrderTitle, title);
       [(PXPhotosViewOptionsModel *)self signalChange:1];
     }
   }
 }
 
-- (PXPhotosViewOptionsModel)initWithPhotoLibrary:(id)a3
+- (PXPhotosViewOptionsModel)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v17.receiver = self;
   v17.super_class = PXPhotosViewOptionsModel;
   v5 = [(PXPhotosViewOptionsModel *)&v17 init];
   if (v5)
   {
-    v6 = [v4 px_localDefaults];
+    px_localDefaults = [libraryCopy px_localDefaults];
     localDefaults = v5->_localDefaults;
-    v5->_localDefaults = v6;
+    v5->_localDefaults = px_localDefaults;
 
     v8 = [PXSortOrderState alloc];
     v9 = [(PXPhotoLibraryLocalDefaults *)v5->_localDefaults numberForKey:@"PXPhotosViewOptionsSortOrder-v2"];
-    v10 = [v9 unsignedIntegerValue];
-    if ((v10 - 1) >= 2)
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
+    if ((unsignedIntegerValue - 1) >= 2)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = v10;
+      v11 = unsignedIntegerValue;
     }
 
     v12 = [(PXSortOrderState *)v8 initWithSortOrder:v11];

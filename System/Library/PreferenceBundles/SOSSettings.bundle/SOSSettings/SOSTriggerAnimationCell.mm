@@ -1,17 +1,17 @@
 @interface SOSTriggerAnimationCell
-- (SOSTriggerAnimationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (SOSTriggerAnimationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)dealloc;
-- (void)loadTriggerImageViewWithCompletion:(id)a3;
+- (void)loadTriggerImageViewWithCompletion:(id)completion;
 - (void)updateAssets;
 @end
 
 @implementation SOSTriggerAnimationCell
 
-- (SOSTriggerAnimationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (SOSTriggerAnimationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = SOSTriggerAnimationCell;
-  v5 = [(SOSSettingsAssetCell *)&v9 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(SOSSettingsAssetCell *)&v9 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
@@ -32,15 +32,15 @@
   [(SOSTriggerAnimationCell *)&v4 dealloc];
 }
 
-- (void)loadTriggerImageViewWithCompletion:(id)a3
+- (void)loadTriggerImageViewWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_2730;
   v4[3] = &unk_20DE0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  completionCopy = completion;
+  v3 = completionCopy;
   [SOSUtilities getAssetViewForPhoneWithCompletion:v4];
 }
 

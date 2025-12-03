@@ -1,12 +1,12 @@
 @interface RBMutableSystemState
 - (RBMutableSystemState)init;
-- (void)addAllowLaunchPredicate:(id)a3;
-- (void)addPreventIdleSleepIdentifier:(id)a3;
-- (void)addPreventLaunchPredicate:(id)a3;
-- (void)addTag:(id)a3;
-- (void)prewarmIdentity:(id)a3 withInterval:(double)a4;
-- (void)unionState:(id)a3;
-- (void)upgradeCondition:(id)a3 toValue:(int64_t)a4;
+- (void)addAllowLaunchPredicate:(id)predicate;
+- (void)addPreventIdleSleepIdentifier:(id)identifier;
+- (void)addPreventLaunchPredicate:(id)predicate;
+- (void)addTag:(id)tag;
+- (void)prewarmIdentity:(id)identity withInterval:(double)interval;
+- (void)unionState:(id)state;
+- (void)upgradeCondition:(id)condition toValue:(int64_t)value;
 @end
 
 @implementation RBMutableSystemState
@@ -18,16 +18,16 @@
   return [(RBSystemState *)&v3 _init];
 }
 
-- (void)unionState:(id)a3
+- (void)unionState:(id)state
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && v4 != self)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (stateCopy && stateCopy != self)
   {
-    self->super._preventIdleSleep |= v4->super._preventIdleSleep;
-    self->super._preventLaunch |= v4->super._preventLaunch;
-    v6 = v4->super._preventIdleSleepIdentifiers;
+    self->super._preventIdleSleep |= stateCopy->super._preventIdleSleep;
+    self->super._preventLaunch |= stateCopy->super._preventLaunch;
+    v6 = stateCopy->super._preventIdleSleepIdentifiers;
     if ([(NSMutableSet *)v6 count])
     {
       preventIdleSleepIdentifiers = self->super._preventIdleSleepIdentifiers;
@@ -101,8 +101,8 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v22 = [(NSMutableDictionary *)v5->super._conditions allKeys];
-    v23 = [v22 countByEnumeratingWithState:&v34 objects:v38 count:16];
+    allKeys = [(NSMutableDictionary *)v5->super._conditions allKeys];
+    v23 = [allKeys countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v23)
     {
       v24 = v23;
@@ -113,7 +113,7 @@
         {
           if (*v35 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(allKeys);
           }
 
           v27 = *(*(&v34 + 1) + 8 * i);
@@ -121,7 +121,7 @@
           -[RBMutableSystemState upgradeCondition:toValue:](self, "upgradeCondition:toValue:", v27, [v28 integerValue]);
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        v24 = [allKeys countByEnumeratingWithState:&v34 objects:v38 count:16];
       }
 
       while (v24);
@@ -147,119 +147,119 @@ void __35__RBMutableSystemState_unionState___block_invoke(uint64_t a1, void *a2,
   [v4 prewarmIdentity:v5 withInterval:?];
 }
 
-- (void)addPreventIdleSleepIdentifier:(id)a3
+- (void)addPreventIdleSleepIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   preventIdleSleepIdentifiers = self->super._preventIdleSleepIdentifiers;
-  v8 = v4;
+  v8 = identifierCopy;
   if (!preventIdleSleepIdentifiers)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->super._preventIdleSleepIdentifiers;
     self->super._preventIdleSleepIdentifiers = v6;
 
-    v4 = v8;
+    identifierCopy = v8;
     preventIdleSleepIdentifiers = self->super._preventIdleSleepIdentifiers;
   }
 
-  [(NSMutableSet *)preventIdleSleepIdentifiers addObject:v4];
+  [(NSMutableSet *)preventIdleSleepIdentifiers addObject:identifierCopy];
 }
 
-- (void)addTag:(id)a3
+- (void)addTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   tags = self->super._tags;
-  v8 = v4;
+  v8 = tagCopy;
   if (!tags)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->super._tags;
     self->super._tags = v6;
 
-    v4 = v8;
+    tagCopy = v8;
     tags = self->super._tags;
   }
 
-  [(NSMutableSet *)tags addObject:v4];
+  [(NSMutableSet *)tags addObject:tagCopy];
 }
 
-- (void)addPreventLaunchPredicate:(id)a3
+- (void)addPreventLaunchPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   preventLaunchPredicates = self->super._preventLaunchPredicates;
-  v8 = v4;
+  v8 = predicateCopy;
   if (!preventLaunchPredicates)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->super._preventLaunchPredicates;
     self->super._preventLaunchPredicates = v6;
 
-    v4 = v8;
+    predicateCopy = v8;
     preventLaunchPredicates = self->super._preventLaunchPredicates;
   }
 
-  [(NSMutableSet *)preventLaunchPredicates addObject:v4];
+  [(NSMutableSet *)preventLaunchPredicates addObject:predicateCopy];
 }
 
-- (void)addAllowLaunchPredicate:(id)a3
+- (void)addAllowLaunchPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   allowLaunchPredicates = self->super._allowLaunchPredicates;
-  v8 = v4;
+  v8 = predicateCopy;
   if (!allowLaunchPredicates)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->super._allowLaunchPredicates;
     self->super._allowLaunchPredicates = v6;
 
-    v4 = v8;
+    predicateCopy = v8;
     allowLaunchPredicates = self->super._allowLaunchPredicates;
   }
 
-  [(NSMutableSet *)allowLaunchPredicates addObject:v4];
+  [(NSMutableSet *)allowLaunchPredicates addObject:predicateCopy];
 }
 
-- (void)upgradeCondition:(id)a3 toValue:(int64_t)a4
+- (void)upgradeCondition:(id)condition toValue:(int64_t)value
 {
-  v6 = a3;
+  conditionCopy = condition;
   conditions = self->super._conditions;
-  v14 = v6;
+  v14 = conditionCopy;
   if (!conditions)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v9 = self->super._conditions;
-    self->super._conditions = v8;
+    self->super._conditions = dictionary;
 
-    v6 = v14;
+    conditionCopy = v14;
     conditions = self->super._conditions;
   }
 
-  v10 = [(NSMutableDictionary *)conditions objectForKey:v6];
+  v10 = [(NSMutableDictionary *)conditions objectForKey:conditionCopy];
   v11 = v10;
-  if (!v10 || [v10 integerValue] < a4)
+  if (!v10 || [v10 integerValue] < value)
   {
     v12 = self->super._conditions;
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:value];
     [(NSMutableDictionary *)v12 setValue:v13 forKey:v14];
   }
 }
 
-- (void)prewarmIdentity:(id)a3 withInterval:(double)a4
+- (void)prewarmIdentity:(id)identity withInterval:(double)interval
 {
-  v6 = a3;
-  if (!v6)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     [RBMutableSystemState prewarmIdentity:withInterval:];
   }
 
-  v7 = v6;
+  v7 = identityCopy;
   prewarmConfiguration = self->super._prewarmConfiguration;
   v16 = v7;
   if (!prewarmConfiguration)
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v10 = self->super._prewarmConfiguration;
-    self->super._prewarmConfiguration = v9;
+    self->super._prewarmConfiguration = dictionary;
 
     v7 = v16;
     prewarmConfiguration = self->super._prewarmConfiguration;
@@ -267,10 +267,10 @@ void __35__RBMutableSystemState_unionState___block_invoke(uint64_t a1, void *a2,
 
   v11 = [(NSMutableDictionary *)prewarmConfiguration objectForKey:v7];
   v12 = v11;
-  if (!v11 || ([v11 doubleValue], v13 > a4))
+  if (!v11 || ([v11 doubleValue], v13 > interval))
   {
     v14 = self->super._prewarmConfiguration;
-    v15 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v15 = [MEMORY[0x277CCABB0] numberWithDouble:interval];
     [(NSMutableDictionary *)v14 setObject:v15 forKey:v16];
   }
 }

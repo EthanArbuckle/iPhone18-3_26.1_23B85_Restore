@@ -1,31 +1,31 @@
 @interface _MFLoginAuthenticator
-- (id)responseForServerData:(id)a3;
+- (id)responseForServerData:(id)data;
 @end
 
 @implementation _MFLoginAuthenticator
 
-- (id)responseForServerData:(id)a3
+- (id)responseForServerData:(id)data
 {
   *(&self->super._authenticationState + 4) = 0;
-  if (!a3)
+  if (!data)
   {
     return 0;
   }
 
-  v5 = [a3 bytes];
-  if ([a3 length] < 4)
+  bytes = [data bytes];
+  if ([data length] < 4)
   {
     return 0;
   }
 
-  if (!strncasecmp(v5, "user", 4uLL))
+  if (!strncasecmp(bytes, "user", 4uLL))
   {
     v7 = [-[MFSASLAuthenticator account](self "account")];
   }
 
   else
   {
-    if (strncasecmp(v5, "pass", 4uLL))
+    if (strncasecmp(bytes, "pass", 4uLL))
     {
       return 0;
     }

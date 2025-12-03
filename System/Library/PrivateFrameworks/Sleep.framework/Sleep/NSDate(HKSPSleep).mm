@@ -16,7 +16,7 @@
 - (id)hkspDescription
 {
   v2 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US"];
-  v3 = [a1 descriptionWithLocale:v2];
+  v3 = [self descriptionWithLocale:v2];
 
   return v3;
 }
@@ -26,14 +26,14 @@
   v5 = a3;
   if (!v5)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"NSDate+HKSPSleep.m" lineNumber:22 description:@"date can't be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSDate+HKSPSleep.m" lineNumber:22 description:@"date can't be nil"];
   }
 
-  v6 = [a1 earlierDate:v5];
-  if (v6 == a1)
+  v6 = [self earlierDate:v5];
+  if (v6 == self)
   {
-    v7 = [a1 isEqualToDate:v5] ^ 1;
+    v7 = [self isEqualToDate:v5] ^ 1;
   }
 
   else
@@ -49,12 +49,12 @@
   v5 = a3;
   if (!v5)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"NSDate+HKSPSleep.m" lineNumber:27 description:@"date can't be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSDate+HKSPSleep.m" lineNumber:27 description:@"date can't be nil"];
   }
 
-  v6 = [a1 earlierDate:v5];
-  v7 = v6 == a1;
+  v6 = [self earlierDate:v5];
+  v7 = v6 == self;
 
   return v7;
 }
@@ -64,14 +64,14 @@
   v5 = a3;
   if (!v5)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"NSDate+HKSPSleep.m" lineNumber:32 description:@"date can't be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSDate+HKSPSleep.m" lineNumber:32 description:@"date can't be nil"];
   }
 
-  v6 = [a1 laterDate:v5];
-  if (v6 == a1)
+  v6 = [self laterDate:v5];
+  if (v6 == self)
   {
-    v7 = [a1 isEqualToDate:v5] ^ 1;
+    v7 = [self isEqualToDate:v5] ^ 1;
   }
 
   else
@@ -87,12 +87,12 @@
   v5 = a3;
   if (!v5)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"NSDate+HKSPSleep.m" lineNumber:37 description:@"date can't be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSDate+HKSPSleep.m" lineNumber:37 description:@"date can't be nil"];
   }
 
-  v6 = [a1 laterDate:v5];
-  v7 = v6 == a1;
+  v6 = [self laterDate:v5];
+  v7 = v6 == self;
 
   return v7;
 }
@@ -102,21 +102,21 @@
   v4 = a3;
   v5 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
   [v4 setSecond:0];
-  v6 = [v5 components:224 fromDate:a1];
+  v6 = [v5 components:224 fromDate:self];
   v7 = [v6 isEqual:v4];
 
   if (v7)
   {
-    v8 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = [v5 hksp_previousDateBeforeDate:a1 matchingComponents:v4];
-    v10 = [v5 hksp_nextDateAfterDate:a1 matchingComponents:v4];
-    [a1 timeIntervalSinceDate:v9];
+    v9 = [v5 hksp_previousDateBeforeDate:self matchingComponents:v4];
+    v10 = [v5 hksp_nextDateAfterDate:self matchingComponents:v4];
+    [self timeIntervalSinceDate:v9];
     v12 = v11;
-    [v10 timeIntervalSinceDate:a1];
+    [v10 timeIntervalSinceDate:self];
     if (v13 >= v12)
     {
       v14 = v9;
@@ -127,10 +127,10 @@
       v14 = v10;
     }
 
-    v8 = v14;
+    selfCopy = v14;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 + (id)hksp_latestFromDates:()HKSPSleep
@@ -143,7 +143,7 @@
     v9 = 0x3032000000;
     v10 = __Block_byref_object_copy__0;
     v11 = __Block_byref_object_dispose__0;
-    v12 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __42__NSDate_HKSPSleep__hksp_latestFromDates___block_invoke;
@@ -172,7 +172,7 @@
     v9 = 0x3032000000;
     v10 = __Block_byref_object_copy__0;
     v11 = __Block_byref_object_dispose__0;
-    v12 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __44__NSDate_HKSPSleep__hksp_earliestFromDates___block_invoke;
@@ -202,7 +202,7 @@
     v16 = 0x3032000000;
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
-    v19 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     v13[0] = 0;
     v13[1] = v13;
     v13[2] = 0x2020000000;
@@ -234,8 +234,8 @@
   v6 = MEMORY[0x277CCA970];
   v7 = a4;
   v8 = [v6 alloc];
-  v9 = [a1 dateByAddingTimeInterval:-a2];
-  v10 = [a1 dateByAddingTimeInterval:a2];
+  v9 = [self dateByAddingTimeInterval:-a2];
+  v10 = [self dateByAddingTimeInterval:a2];
   v11 = [v8 initWithStartDate:v9 endDate:v10];
 
   v12 = [v11 hksp_containsDate:v7];

@@ -1,7 +1,7 @@
 @interface PXStoryResourcesDataSourceManager
 - (PXStoryResourcesDataSource)dataSource;
 - (PXStoryResourcesDataSourceManager)init;
-- (PXStoryResourcesDataSourceManager)initWithRecipeManager:(id)a3;
+- (PXStoryResourcesDataSourceManager)initWithRecipeManager:(id)manager;
 - (void)_invalidateDataSource;
 - (void)_invalidateIsDataSourceFinal;
 - (void)_invalidateRecipe;
@@ -9,24 +9,24 @@
 - (void)_updateIsDataSourceFinal;
 - (void)_updateRecipe;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)setDataSource:(id)a3;
-- (void)setIsDataSourceFinal:(BOOL)a3;
-- (void)setRecipe:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)setDataSource:(id)source;
+- (void)setIsDataSourceFinal:(BOOL)final;
+- (void)setRecipe:(id)recipe;
 @end
 
 @implementation PXStoryResourcesDataSourceManager
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __66__PXStoryResourcesDataSourceManager_observable_didChange_context___block_invoke;
   v5[3] = &unk_1E7746748;
   v5[4] = self;
-  v5[5] = a5;
-  v5[6] = a4;
+  v5[5] = context;
+  v5[6] = change;
   v5[7] = a2;
   [(PXStoryResourcesDataSourceManager *)self performChanges:v5];
 }
@@ -53,30 +53,30 @@ void __66__PXStoryResourcesDataSourceManager_observable_didChange_context___bloc
 
 - (void)_updateIsDataSourceFinal
 {
-  v3 = [(PXStoryResourcesDataSourceManager *)self recipeManager];
-  -[PXStoryResourcesDataSourceManager setIsDataSourceFinal:](self, "setIsDataSourceFinal:", ([v3 recipeAttributes] & 3) != 0);
+  recipeManager = [(PXStoryResourcesDataSourceManager *)self recipeManager];
+  -[PXStoryResourcesDataSourceManager setIsDataSourceFinal:](self, "setIsDataSourceFinal:", ([recipeManager recipeAttributes] & 3) != 0);
 }
 
 - (void)_invalidateIsDataSourceFinal
 {
-  v2 = [(PXStoryResourcesDataSourceManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateIsDataSourceFinal];
+  updater = [(PXStoryResourcesDataSourceManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateIsDataSourceFinal];
 }
 
 - (void)_updateDataSource
 {
-  v3 = [(PXStoryResourcesDataSourceManager *)self recipe];
+  recipe = [(PXStoryResourcesDataSourceManager *)self recipe];
   v14 = [PXStoryResourcesDataSource alloc];
-  v4 = [v3 keyAsset];
-  v5 = [v3 curatedAssets];
-  v6 = [v3 allAssets];
-  v7 = [v3 movieHighlights];
-  v8 = [v3 detailedSaliency];
-  v9 = [v3 chapterCollection];
-  v10 = [v3 assetCollection];
-  if (v3)
+  keyAsset = [recipe keyAsset];
+  curatedAssets = [recipe curatedAssets];
+  allAssets = [recipe allAssets];
+  movieHighlights = [recipe movieHighlights];
+  detailedSaliency = [recipe detailedSaliency];
+  chapterCollection = [recipe chapterCollection];
+  assetCollection = [recipe assetCollection];
+  if (recipe)
   {
-    [v3 overallDurationInfo];
+    [recipe overallDurationInfo];
   }
 
   else
@@ -84,30 +84,30 @@ void __66__PXStoryResourcesDataSourceManager_observable_didChange_context___bloc
     memset(v16, 0, sizeof(v16));
   }
 
-  v11 = [(PXStoryResourcesDataSourceManager *)self configuration];
-  v12 = [(PXStoryResourcesDataSource *)v14 initWithKeyAsset:v4 displayAssets:v5 availableDisplayAssets:v6 movieHighlights:v7 detailedSaliency:v8 chapterCollection:v9 audioAssets:0 assetCollection:v10 overallDurationInfo:v16 storyConfiguration:v11];
-  v15 = v4;
+  configuration = [(PXStoryResourcesDataSourceManager *)self configuration];
+  v12 = [(PXStoryResourcesDataSource *)v14 initWithKeyAsset:keyAsset displayAssets:curatedAssets availableDisplayAssets:allAssets movieHighlights:movieHighlights detailedSaliency:detailedSaliency chapterCollection:chapterCollection audioAssets:0 assetCollection:assetCollection overallDurationInfo:v16 storyConfiguration:configuration];
+  v15 = keyAsset;
   v13 = v12;
   [(PXStoryResourcesDataSourceManager *)self setDataSource:v12];
 }
 
 - (void)_invalidateDataSource
 {
-  v2 = [(PXStoryResourcesDataSourceManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDataSource];
+  updater = [(PXStoryResourcesDataSourceManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDataSource];
 }
 
 - (void)_updateRecipe
 {
-  v4 = [(PXStoryResourcesDataSourceManager *)self recipeManager];
-  v3 = [v4 recipe];
-  [(PXStoryResourcesDataSourceManager *)self setRecipe:v3];
+  recipeManager = [(PXStoryResourcesDataSourceManager *)self recipeManager];
+  recipe = [recipeManager recipe];
+  [(PXStoryResourcesDataSourceManager *)self setRecipe:recipe];
 }
 
 - (void)_invalidateRecipe
 {
-  v2 = [(PXStoryResourcesDataSourceManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateRecipe];
+  updater = [(PXStoryResourcesDataSourceManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateRecipe];
 }
 
 - (void)didPerformChanges
@@ -115,47 +115,47 @@ void __66__PXStoryResourcesDataSourceManager_observable_didChange_context___bloc
   v4.receiver = self;
   v4.super_class = PXStoryResourcesDataSourceManager;
   [(PXStoryResourcesDataSourceManager *)&v4 didPerformChanges];
-  v3 = [(PXStoryResourcesDataSourceManager *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryResourcesDataSourceManager *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(PXStoryResourcesDataSourceManager *)self storyQueue];
-  dispatch_assert_queue_V2(v5);
+  changesCopy = changes;
+  storyQueue = [(PXStoryResourcesDataSourceManager *)self storyQueue];
+  dispatch_assert_queue_V2(storyQueue);
 
   v6.receiver = self;
   v6.super_class = PXStoryResourcesDataSourceManager;
-  [(PXStoryResourcesDataSourceManager *)&v6 performChanges:v4];
+  [(PXStoryResourcesDataSourceManager *)&v6 performChanges:changesCopy];
 }
 
-- (void)setIsDataSourceFinal:(BOOL)a3
+- (void)setIsDataSourceFinal:(BOOL)final
 {
-  if (self->_isDataSourceFinal != a3)
+  if (self->_isDataSourceFinal != final)
   {
-    if (!a3 && self->_isDataSourceFinal)
+    if (!final && self->_isDataSourceFinal)
     {
       PXAssertGetLog();
     }
 
-    self->_isDataSourceFinal = a3;
+    self->_isDataSourceFinal = final;
     [(PXStoryResourcesDataSourceManager *)self signalChange:2];
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_dataSource != v5)
+  sourceCopy = source;
+  v6 = sourceCopy;
+  if (self->_dataSource != sourceCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryResourcesDataSource *)v5 isEqual:?];
+    v8 = sourceCopy;
+    v7 = [(PXStoryResourcesDataSource *)sourceCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_dataSource, a3);
+      objc_storeStrong(&self->_dataSource, source);
       [(PXStoryResourcesDataSourceManager *)self signalChange:1];
       v6 = v8;
     }
@@ -167,8 +167,8 @@ void __66__PXStoryResourcesDataSourceManager_observable_didChange_context___bloc
   dataSource = self->_dataSource;
   if (!dataSource)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXStoryResourcesDataSourceManager.m" lineNumber:90 description:@"data source not set"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryResourcesDataSourceManager.m" lineNumber:90 description:@"data source not set"];
 
     dataSource = self->_dataSource;
   }
@@ -176,45 +176,45 @@ void __66__PXStoryResourcesDataSourceManager_observable_didChange_context___bloc
   return dataSource;
 }
 
-- (void)setRecipe:(id)a3
+- (void)setRecipe:(id)recipe
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_recipe != v5 && ([(PXStoryRecipe *)v5 isEqual:?]& 1) == 0)
+  recipeCopy = recipe;
+  v6 = recipeCopy;
+  if (self->_recipe != recipeCopy && ([(PXStoryRecipe *)recipeCopy isEqual:?]& 1) == 0)
   {
     v7 = self->_recipe;
-    objc_storeStrong(&self->_recipe, a3);
-    v8 = [(PXStoryRecipe *)v6 keyAsset];
-    v9 = [(PXStoryRecipe *)v7 keyAsset];
-    if (v8 == v9 || [v8 isEqual:v9])
+    objc_storeStrong(&self->_recipe, recipe);
+    keyAsset = [(PXStoryRecipe *)v6 keyAsset];
+    keyAsset2 = [(PXStoryRecipe *)v7 keyAsset];
+    if (keyAsset == keyAsset2 || [keyAsset isEqual:keyAsset2])
     {
-      v10 = [(PXStoryRecipe *)v6 curatedAssets];
-      v11 = [(PXStoryRecipe *)v7 curatedAssets];
-      if (v10 == v11 || [v10 isEqual:v11])
+      curatedAssets = [(PXStoryRecipe *)v6 curatedAssets];
+      curatedAssets2 = [(PXStoryRecipe *)v7 curatedAssets];
+      if (curatedAssets == curatedAssets2 || [curatedAssets isEqual:curatedAssets2])
       {
-        v12 = [(PXStoryRecipe *)v6 movieHighlights];
-        v13 = [(PXStoryRecipe *)v7 movieHighlights];
-        if (v12 == v13 || [v12 isEqual:v13])
+        movieHighlights = [(PXStoryRecipe *)v6 movieHighlights];
+        movieHighlights2 = [(PXStoryRecipe *)v7 movieHighlights];
+        if (movieHighlights == movieHighlights2 || [movieHighlights isEqual:movieHighlights2])
         {
-          v29 = v12;
-          v14 = [(PXStoryRecipe *)v6 detailedSaliency];
-          v15 = [(PXStoryRecipe *)v7 detailedSaliency];
-          if (v14 == v15 || [v14 isEqual:v15])
+          v29 = movieHighlights;
+          detailedSaliency = [(PXStoryRecipe *)v6 detailedSaliency];
+          detailedSaliency2 = [(PXStoryRecipe *)v7 detailedSaliency];
+          if (detailedSaliency == detailedSaliency2 || [detailedSaliency isEqual:detailedSaliency2])
           {
-            v27 = v13;
-            v28 = v15;
-            v16 = [(PXStoryRecipe *)v6 chapterCollection];
-            v17 = [(PXStoryRecipe *)v7 chapterCollection];
-            if (v16 == v17 || [v16 isEqual:v17])
+            v27 = movieHighlights2;
+            v28 = detailedSaliency2;
+            chapterCollection = [(PXStoryRecipe *)v6 chapterCollection];
+            chapterCollection2 = [(PXStoryRecipe *)v7 chapterCollection];
+            if (chapterCollection == chapterCollection2 || [chapterCollection isEqual:chapterCollection2])
             {
-              v25 = v16;
-              v26 = v17;
-              v18 = [(PXStoryRecipe *)v6 assetCollection];
-              v19 = [(PXStoryRecipe *)v7 assetCollection];
-              v20 = v18;
-              if (v18 == v19)
+              v25 = chapterCollection;
+              v26 = chapterCollection2;
+              assetCollection = [(PXStoryRecipe *)v6 assetCollection];
+              assetCollection2 = [(PXStoryRecipe *)v7 assetCollection];
+              v20 = assetCollection;
+              if (assetCollection == assetCollection2)
               {
-                v22 = v19;
+                v22 = assetCollection2;
                 if (v6)
                 {
                   [(PXStoryRecipe *)v6 overallDurationInfo];
@@ -253,7 +253,7 @@ void __66__PXStoryResourcesDataSourceManager_observable_didChange_context___bloc
                   v24 = CMTimeCompare(&time1, &time2) != 0;
                 }
 
-                v19 = v22;
+                assetCollection2 = v22;
                 v21 = v24;
               }
 
@@ -270,11 +270,11 @@ void __66__PXStoryResourcesDataSourceManager_observable_didChange_context___bloc
               goto LABEL_20;
             }
 
-            v13 = v27;
-            v15 = v28;
+            movieHighlights2 = v27;
+            detailedSaliency2 = v28;
           }
 
-          v12 = v29;
+          movieHighlights = v29;
         }
       }
     }
@@ -285,25 +285,25 @@ LABEL_21:
   }
 }
 
-- (PXStoryResourcesDataSourceManager)initWithRecipeManager:(id)a3
+- (PXStoryResourcesDataSourceManager)initWithRecipeManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = PXStoryResourcesDataSourceManager;
   v6 = [(PXStoryResourcesDataSourceManager *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    [(PXStoryResourcesDataSourceManager *)v6 copyLogConfigurationFrom:v5];
-    objc_storeStrong(&v7->_recipeManager, a3);
+    [(PXStoryResourcesDataSourceManager *)v6 copyLogConfigurationFrom:managerCopy];
+    objc_storeStrong(&v7->_recipeManager, manager);
     [(PXStoryRecipeManager *)v7->_recipeManager registerChangeObserver:v7 context:RecipeManagerObservationContext_97872];
-    v8 = [(PXStoryRecipeManager *)v7->_recipeManager storyQueue];
+    storyQueue = [(PXStoryRecipeManager *)v7->_recipeManager storyQueue];
     storyQueue = v7->_storyQueue;
-    v7->_storyQueue = v8;
+    v7->_storyQueue = storyQueue;
 
-    v10 = [(PXStoryRecipeManager *)v7->_recipeManager configuration];
+    configuration = [(PXStoryRecipeManager *)v7->_recipeManager configuration];
     configuration = v7->_configuration;
-    v7->_configuration = v10;
+    v7->_configuration = configuration;
 
     v12 = [[off_1E7721940 alloc] initWithTarget:v7 needsUpdateSelector:sel__setNeedsUpdate];
     updater = v7->_updater;
@@ -334,8 +334,8 @@ uint64_t __59__PXStoryResourcesDataSourceManager_initWithRecipeManager___block_i
 
 - (PXStoryResourcesDataSourceManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryResourcesDataSourceManager.m" lineNumber:41 description:{@"%s is not available as initializer", "-[PXStoryResourcesDataSourceManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryResourcesDataSourceManager.m" lineNumber:41 description:{@"%s is not available as initializer", "-[PXStoryResourcesDataSourceManager init]"}];
 
   abort();
 }

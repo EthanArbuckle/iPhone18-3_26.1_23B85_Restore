@@ -1,32 +1,32 @@
 @interface SemanticStylesPlist
-- (const)bgTuningForSceneType:(unsigned int)a3;
-- (int)readBackgroundTuning:(id)a3 forSceneType:(unsigned int)a4;
-- (int)readForegroundTuning:(id)a3;
-- (int)readPlist:(id)a3;
-- (int)readToneBiasRemap:(id)a3;
+- (const)bgTuningForSceneType:(unsigned int)type;
+- (int)readBackgroundTuning:(id)tuning forSceneType:(unsigned int)type;
+- (int)readForegroundTuning:(id)tuning;
+- (int)readPlist:(id)plist;
+- (int)readToneBiasRemap:(id)remap;
 @end
 
 @implementation SemanticStylesPlist
 
-- (const)bgTuningForSceneType:(unsigned int)a3
+- (const)bgTuningForSceneType:(unsigned int)type
 {
-  if (a3 <= 4)
+  if (type <= 4)
   {
-    v3 = a3;
+    typeCopy = type;
   }
 
   else
   {
-    v3 = 0;
+    typeCopy = 0;
   }
 
-  return &self->_bgTuning[v3];
+  return &self->_bgTuning[typeCopy];
 }
 
-- (int)readToneBiasRemap:(id)a3
+- (int)readToneBiasRemap:(id)remap
 {
-  v4 = a3;
-  v10 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"ZeroPoint", v6);
+  remapCopy = remap;
+  v10 = objc_msgSend_objectForKeyedSubscript_(remapCopy, v5, @"ZeroPoint", v6);
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v11 = 0;
@@ -41,7 +41,7 @@
   v13 = v12;
 
   self->_toneBiasRemap.zeroPoint = v13;
-  v19 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"NegCutoff", v15);
+  v19 = objc_msgSend_objectForKeyedSubscript_(remapCopy, v14, @"NegCutoff", v15);
   if (!v19 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v11 = 25;
@@ -51,7 +51,7 @@
   v21 = v20;
 
   self->_toneBiasRemap.negCutoff = v21;
-  v27 = objc_msgSend_objectForKeyedSubscript_(v4, v22, @"PosCutoff", v23);
+  v27 = objc_msgSend_objectForKeyedSubscript_(remapCopy, v22, @"PosCutoff", v23);
   if (!v27 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v11 = 25;
@@ -64,17 +64,17 @@
   return v11;
 }
 
-- (int)readBackgroundTuning:(id)a3 forSceneType:(unsigned int)a4
+- (int)readBackgroundTuning:(id)tuning forSceneType:(unsigned int)type
 {
   v157 = 0;
-  v6 = a3;
-  v7 = sub_29586565C(a4);
+  tuningCopy = tuning;
+  v7 = sub_29586565C(type);
   v10 = objc_msgSend_stringByAppendingPathComponent_(@"Background", v8, v7, v9);
-  v12 = sub_29586E880(v6, v7, &v157, v11);
+  v12 = sub_29586E880(tuningCopy, v7, &v157, v11);
 
   if (v12)
   {
-    v15 = &self->_bgTuning[a4];
+    v15 = &self->_bgTuning[type];
     v16 = objc_msgSend_stringByAppendingPathComponent_(v10, v13, @"Positive", v14);
 
     v18 = sub_29586E880(v12, @"Positive", &v157, v17);
@@ -264,11 +264,11 @@
   return v155;
 }
 
-- (int)readForegroundTuning:(id)a3
+- (int)readForegroundTuning:(id)tuning
 {
-  v4 = a3;
+  tuningCopy = tuning;
   v85 = 0;
-  v10 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"PersonMix", v6);
+  v10 = objc_msgSend_objectForKeyedSubscript_(tuningCopy, v5, @"PersonMix", v6);
   if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v85 = 25;
@@ -278,7 +278,7 @@
   v12 = v11;
 
   self->_fgTuning.personMix = v12;
-  v18 = objc_msgSend_objectForKeyedSubscript_(v4, v13, @"SkinMix", v14);
+  v18 = objc_msgSend_objectForKeyedSubscript_(tuningCopy, v13, @"SkinMix", v14);
   if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v85 = 25;
@@ -289,7 +289,7 @@
 
   self->_fgTuning.skinMix = v20;
   v23 = objc_msgSend_stringByAppendingPathComponent_(@"Foreground", v21, @"Warm", v22);
-  v25 = sub_29586E880(v4, @"Warm", &v85, v24);
+  v25 = sub_29586E880(tuningCopy, @"Warm", &v85, v24);
   v29 = v25;
   if (v25)
   {
@@ -329,7 +329,7 @@
 
   v55 = objc_msgSend_stringByAppendingPathComponent_(v52, v53, @"Cool", v54);
 
-  v57 = sub_29586E880(v4, @"Cool", &v85, v56);
+  v57 = sub_29586E880(tuningCopy, @"Cool", &v85, v56);
   v60 = v57;
   if (v57)
   {
@@ -370,10 +370,10 @@
   return v83;
 }
 
-- (int)readPlist:(id)a3
+- (int)readPlist:(id)plist
 {
-  v4 = a3;
-  v9 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"ToneBiasRemap", v6);
+  plistCopy = plist;
+  v9 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v5, @"ToneBiasRemap", v6);
   if (v9)
   {
     objc_opt_class();
@@ -383,7 +383,7 @@
     }
   }
 
-  v10 = objc_msgSend_objectForKeyedSubscript_(v4, v7, @"Background", v8);
+  v10 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v7, @"Background", v8);
 
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -402,7 +402,7 @@
     }
 
     while (v12 != 4);
-    v15 = objc_msgSend_objectForKeyedSubscript_(v4, v11, @"Foreground", v14);
+    v15 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v11, @"Foreground", v14);
 
     if (v15)
     {

@@ -1,64 +1,64 @@
 @interface WBSBrowsingAssistantController
 + (BOOL)shouldShowConsentCard;
 + (int64_t)userConsentState;
-+ (void)setUserConsentState:(int64_t)a3;
++ (void)setUserConsentState:(int64_t)state;
 + (void)subscribeToAssistantAssetIfNeeded;
-- (BOOL)_checkAssistantAvailabilityForPageLocale:(id)a3;
-- (BOOL)_shouldContinueFetchingRemoteContent:(id)a3;
+- (BOOL)_checkAssistantAvailabilityForPageLocale:(id)locale;
+- (BOOL)_shouldContinueFetchingRemoteContent:(id)content;
 - (BOOL)isSummaryAvailable;
 - (WBSBrowsingAssistantController)init;
 - (WBSBrowsingAssistantControllerDelegate)delegate;
-- (id)_currentResultForURL:(id)a3;
-- (void)_foundContentOptions:(unint64_t)a3 fromURL:(id)a4;
+- (id)_currentResultForURL:(id)l;
+- (void)_foundContentOptions:(unint64_t)options fromURL:(id)l;
 - (void)_registerForUserDefaultObserverIfNeeded;
-- (void)checkForAssistantContentFromPegasusForURL:(id)a3 locale:(id)a4;
+- (void)checkForAssistantContentFromPegasusForURL:(id)l locale:(id)locale;
 - (void)clearAssistantResult;
-- (void)didFindLocalContentWithOptions:(unint64_t)a3 forURL:(id)a4;
-- (void)fetchAssistantContentFromPegasusForURL:(id)a3 withCompletionHandler:(id)a4;
+- (void)didFindLocalContentWithOptions:(unint64_t)options forURL:(id)l;
+- (void)fetchAssistantContentFromPegasusForURL:(id)l withCompletionHandler:(id)handler;
 - (void)performPrefetchingOfAssistantPegasusContentAfterChangingConsentState;
-- (void)updateAssistantContentForURL:(id)a3 completionHandler:(id)a4;
+- (void)updateAssistantContentForURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation WBSBrowsingAssistantController
 
 + (BOOL)shouldShowConsentCard
 {
-  v3 = [a1 isAvailableInCurrentLocale];
-  if (v3)
+  isAvailableInCurrentLocale = [self isAvailableInCurrentLocale];
+  if (isAvailableInCurrentLocale)
   {
-    LOBYTE(v3) = [a1 userConsentState] == 0;
+    LOBYTE(isAvailableInCurrentLocale) = [self userConsentState] == 0;
   }
 
-  return v3;
+  return isAvailableInCurrentLocale;
 }
 
 + (int64_t)userConsentState
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 integerForKey:@"BrowsingAssistantConsentState"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults integerForKey:@"BrowsingAssistantConsentState"];
 
   return v3;
 }
 
-+ (void)setUserConsentState:(int64_t)a3
++ (void)setUserConsentState:(int64_t)state
 {
-  if ([a1 userConsentState] != a3)
+  if ([self userConsentState] != state)
   {
-    v4 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    [v4 setInteger:a3 forKey:@"BrowsingAssistantConsentState"];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    [safari_browserDefaults setInteger:state forKey:@"BrowsingAssistantConsentState"];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v6 = [MEMORY[0x1E695E000] safari_notificationNameForUserDefaultsKey:@"BrowsingAssistantConsentState"];
-    [v5 postNotificationName:v6 object:0];
+    [defaultCenter postNotificationName:v6 object:0];
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
 
     +[WBSBrowsingAssistantContentProvider unsubscribeFromAssistantAsset];
   }
 
-  else if (a3 == 1)
+  else if (state == 1)
   {
 
     [WBSBrowsingAssistantContentProvider subscribeToAssistantAssetAndDownloadNow:1];
@@ -67,7 +67,7 @@
 
 + (void)subscribeToAssistantAssetIfNeeded
 {
-  if ([a1 userConsentState] != 2)
+  if ([self userConsentState] != 2)
   {
 
     [WBSBrowsingAssistantContentProvider subscribeToAssistantAssetAndDownloadNow:0];
@@ -91,13 +91,13 @@
   return v2;
 }
 
-- (id)_currentResultForURL:(id)a3
+- (id)_currentResultForURL:(id)l
 {
   v4 = self->_result;
   if (!v4)
   {
-    v5 = a3;
-    v6 = [[WBSBrowsingAssistantResult alloc] initWithURL:v5 contentOptions:0];
+    lCopy = l;
+    v6 = [[WBSBrowsingAssistantResult alloc] initWithURL:lCopy contentOptions:0];
 
     v7 = self->_result;
     self->_result = v6;
@@ -108,31 +108,31 @@
   return v4;
 }
 
-- (void)_foundContentOptions:(unint64_t)a3 fromURL:(id)a4
+- (void)_foundContentOptions:(unint64_t)options fromURL:(id)l
 {
-  v6 = a4;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained browsingAssistantController:self didUpdateContentOptionsForURL:v6];
+    [WeakRetained browsingAssistantController:self didUpdateContentOptionsForURL:lCopy];
   }
 }
 
-- (void)didFindLocalContentWithOptions:(unint64_t)a3 forURL:(id)a4
+- (void)didFindLocalContentWithOptions:(unint64_t)options forURL:(id)l
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ((a3 & 0xFFFFFFFFFFFFFF9FLL) != 0)
+  lCopy = l;
+  if ((options & 0xFFFFFFFFFFFFFF9FLL) != 0)
   {
     v7 = WBS_LOG_CHANNEL_PREFIXBrowsingAssistant();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(WBSBrowsingAssistantController *)v6 didFindLocalContentWithOptions:a3 forURL:v7];
+      [(WBSBrowsingAssistantController *)lCopy didFindLocalContentWithOptions:options forURL:v7];
     }
   }
 
-  v8 = [(WBSBrowsingAssistantController *)self _currentResultForURL:v6];
-  [v8 updateForLocalContentWithOptions:a3];
+  v8 = [(WBSBrowsingAssistantController *)self _currentResultForURL:lCopy];
+  [v8 updateForLocalContentWithOptions:options];
 
   if (-[WBSBrowsingAssistantResult remoteContentState](self->_result, "remoteContentState") <= 1 && [objc_opt_class() hasUserConsent])
   {
@@ -142,16 +142,16 @@
       result = self->_result;
       v11 = v9;
       v12 = 134349312;
-      v13 = a3;
+      optionsCopy = options;
       v14 = 2050;
-      v15 = [(WBSBrowsingAssistantResult *)result remoteContentState];
+      remoteContentState = [(WBSBrowsingAssistantResult *)result remoteContentState];
       _os_log_impl(&dword_1BB6F3000, v11, OS_LOG_TYPE_INFO, "Discarding content options: %{public}ld, due to remote content state: %{public}ld", &v12, 0x16u);
     }
   }
 
   else
   {
-    [(WBSBrowsingAssistantController *)self _foundContentOptions:a3 fromURL:v6];
+    [(WBSBrowsingAssistantController *)self _foundContentOptions:options fromURL:lCopy];
   }
 }
 
@@ -177,8 +177,8 @@
     return 1;
   }
 
-  v3 = [(WBSBrowsingAssistantResult *)self->_result summaryResult];
-  v4 = v3 != 0;
+  summaryResult = [(WBSBrowsingAssistantResult *)self->_result summaryResult];
+  v4 = summaryResult != 0;
 
   return v4;
 }
@@ -188,7 +188,7 @@
   if (!self->_userDefaultObservation)
   {
     objc_initWeak(&location, self);
-    v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
     v4 = MEMORY[0x1E69E96A0];
     v5 = MEMORY[0x1E69E96A0];
     v8[0] = MEMORY[0x1E69E9820];
@@ -196,7 +196,7 @@
     v8[2] = __73__WBSBrowsingAssistantController__registerForUserDefaultObserverIfNeeded__block_invoke;
     v8[3] = &unk_1E7FB7130;
     objc_copyWeak(&v9, &location);
-    v6 = [v3 safari_observeValueForKey:@"BrowsingAssistantConsentState" onQueue:v4 notifyForInitialValue:0 handler:v8];
+    v6 = [safari_browserDefaults safari_observeValueForKey:@"BrowsingAssistantConsentState" onQueue:v4 notifyForInitialValue:0 handler:v8];
     userDefaultObservation = self->_userDefaultObservation;
     self->_userDefaultObservation = v6;
 
@@ -227,17 +227,17 @@ void __73__WBSBrowsingAssistantController__registerForUserDefaultObserverIfNeede
   [WeakRetained browsingAssistantControllerDidUpdateUserConsentState:self];
 }
 
-- (BOOL)_checkAssistantAvailabilityForPageLocale:(id)a3
+- (BOOL)_checkAssistantAvailabilityForPageLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   if ([MEMORY[0x1E69C8880] isBrowsingAssistantEnabled])
   {
-    v5 = [objc_opt_class() userConsentState];
-    if (v5)
+    userConsentState = [objc_opt_class() userConsentState];
+    if (userConsentState)
     {
-      if (v5 != 2)
+      if (userConsentState != 2)
       {
-        v8 = [WBSBrowsingAssistantContentProvider assistantEnabledForLocale:v4];
+        v8 = [WBSBrowsingAssistantContentProvider assistantEnabledForLocale:localeCopy];
         goto LABEL_10;
       }
 
@@ -268,33 +268,33 @@ LABEL_10:
   return v8;
 }
 
-- (void)checkForAssistantContentFromPegasusForURL:(id)a3 locale:(id)a4
+- (void)checkForAssistantContentFromPegasusForURL:(id)l locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
-  if (![objc_opt_class() isAvailableInCurrentLocale] || !-[WBSBrowsingAssistantController _checkAssistantAvailabilityForPageLocale:](self, "_checkAssistantAvailabilityForPageLocale:", v7))
+  lCopy = l;
+  localeCopy = locale;
+  if (![objc_opt_class() isAvailableInCurrentLocale] || !-[WBSBrowsingAssistantController _checkAssistantAvailabilityForPageLocale:](self, "_checkAssistantAvailabilityForPageLocale:", localeCopy))
   {
-    v12 = [(WBSBrowsingAssistantController *)self _currentResultForURL:v6];
+    v12 = [(WBSBrowsingAssistantController *)self _currentResultForURL:lCopy];
     [v12 setRemoteContentState:4];
-    [(WBSBrowsingAssistantController *)self _foundContentOptions:0 fromURL:v6];
+    [(WBSBrowsingAssistantController *)self _foundContentOptions:0 fromURL:lCopy];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v8 = [(WBSBrowsingAssistantResult *)self->_result pageURL];
-  v9 = [v8 isEqual:v6];
+  pageURL = [(WBSBrowsingAssistantResult *)self->_result pageURL];
+  v9 = [pageURL isEqual:lCopy];
 
   if (!v9)
   {
     goto LABEL_12;
   }
 
-  v10 = [(WBSBrowsingAssistantResult *)self->_result remoteContentState];
+  remoteContentState = [(WBSBrowsingAssistantResult *)self->_result remoteContentState];
   result = self->_result;
-  if (v10 >= 2)
+  if (remoteContentState >= 2)
   {
-    [(WBSBrowsingAssistantController *)self _foundContentOptions:[(WBSBrowsingAssistantResult *)result contentOptions] fromURL:v6];
+    [(WBSBrowsingAssistantController *)self _foundContentOptions:[(WBSBrowsingAssistantResult *)result contentOptions] fromURL:lCopy];
     goto LABEL_8;
   }
 
@@ -318,11 +318,11 @@ LABEL_12:
       objc_storeStrong(&self->_previousWebpageIdentifier, self->_webpageIdentifier);
     }
 
-    v17 = [MEMORY[0x1E696AFB0] UUID];
-    v18 = [v17 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
     v19 = +[WBSBiomeDonationManager sharedManager];
-    [v19 donateBrowsingAssistantServerRequestStartedEventWithWebPageID:self->_webpageIdentifier requestIdentifier:v18 requestType:1];
+    [v19 donateBrowsingAssistantServerRequestStartedEventWithWebPageID:self->_webpageIdentifier requestIdentifier:uUIDString requestType:1];
 
     contentProvider = self->_contentProvider;
     webpageIdentifier = self->_webpageIdentifier;
@@ -331,10 +331,10 @@ LABEL_12:
     v22[2] = __83__WBSBrowsingAssistantController_checkForAssistantContentFromPegasusForURL_locale___block_invoke;
     v22[3] = &unk_1E7FB7180;
     v22[4] = self;
-    v23 = v6;
-    v24 = v18;
-    v12 = v18;
-    [(WBSBrowsingAssistantContentProvider *)contentProvider checkContentAvailabilityForURL:v23 locale:v7 webpageIdentifier:webpageIdentifier completion:v22];
+    v23 = lCopy;
+    v24 = uUIDString;
+    v12 = uUIDString;
+    [(WBSBrowsingAssistantContentProvider *)contentProvider checkContentAvailabilityForURL:v23 locale:localeCopy webpageIdentifier:webpageIdentifier completion:v22];
 
     goto LABEL_7;
   }
@@ -393,23 +393,23 @@ uint64_t __83__WBSBrowsingAssistantController_checkForAssistantContentFromPegasu
   return [v6 _foundContentOptions:v5 fromURL:v7];
 }
 
-- (void)fetchAssistantContentFromPegasusForURL:(id)a3 withCompletionHandler:(id)a4
+- (void)fetchAssistantContentFromPegasusForURL:(id)l withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(WBSBrowsingAssistantController *)self _shouldContinueFetchingRemoteContent:v6])
+  lCopy = l;
+  handlerCopy = handler;
+  if ([(WBSBrowsingAssistantController *)self _shouldContinueFetchingRemoteContent:lCopy])
   {
-    v8 = [(WBSBrowsingAssistantResult *)self->_result remoteContentState];
-    v9 = [(WBSBrowsingAssistantController *)self result];
-    if ([v9 tableOfContentsAvailable])
+    remoteContentState = [(WBSBrowsingAssistantResult *)self->_result remoteContentState];
+    result = [(WBSBrowsingAssistantController *)self result];
+    if ([result tableOfContentsAvailable])
     {
-      v10 = [(WBSBrowsingAssistantController *)self tableOfContentsTitles];
-      v11 = [v10 count];
+      tableOfContentsTitles = [(WBSBrowsingAssistantController *)self tableOfContentsTitles];
+      v11 = [tableOfContentsTitles count];
 
-      if (v8 == 4 && v11)
+      if (remoteContentState == 4 && v11)
       {
-        v12 = [(WBSBrowsingAssistantResult *)self->_result allResults];
-        v7[2](v7, v12);
+        allResults = [(WBSBrowsingAssistantResult *)self->_result allResults];
+        handlerCopy[2](handlerCopy, allResults);
 LABEL_9:
 
         goto LABEL_10;
@@ -421,14 +421,14 @@ LABEL_9:
     }
 
     [(WBSBrowsingAssistantResult *)self->_result setRemoteContentState:3];
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v14 = [v13 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
     v15 = +[WBSBiomeDonationManager sharedManager];
-    [v15 donateBrowsingAssistantWebpageURLSentWithWebPageID:self->_webpageIdentifier urlSent:v6];
+    [v15 donateBrowsingAssistantWebpageURLSentWithWebPageID:self->_webpageIdentifier urlSent:lCopy];
 
     v16 = +[WBSBiomeDonationManager sharedManager];
-    [v16 donateBrowsingAssistantServerRequestStartedEventWithWebPageID:self->_webpageIdentifier requestIdentifier:v14 requestType:2];
+    [v16 donateBrowsingAssistantServerRequestStartedEventWithWebPageID:self->_webpageIdentifier requestIdentifier:uUIDString requestType:2];
 
     objc_initWeak(&location, self);
     contentProvider = self->_contentProvider;
@@ -437,10 +437,10 @@ LABEL_9:
     v18[2] = __95__WBSBrowsingAssistantController_fetchAssistantContentFromPegasusForURL_withCompletionHandler___block_invoke;
     v18[3] = &unk_1E7FB71D0;
     objc_copyWeak(&v22, &location);
-    v19 = v6;
-    v12 = v14;
-    v20 = v12;
-    v21 = v7;
+    v19 = lCopy;
+    allResults = uUIDString;
+    v20 = allResults;
+    v21 = handlerCopy;
     [(WBSBrowsingAssistantContentProvider *)contentProvider fetchContentForURL:v19 completion:v18];
 
     objc_destroyWeak(&v22);
@@ -448,7 +448,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_10:
 }
 
@@ -494,14 +494,14 @@ uint64_t __95__WBSBrowsingAssistantController_fetchAssistantContentFromPegasusFo
   return v8();
 }
 
-- (BOOL)_shouldContinueFetchingRemoteContent:(id)a3
+- (BOOL)_shouldContinueFetchingRemoteContent:(id)content
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contentCopy = content;
   if ([objc_opt_class() userConsentState] == 1)
   {
-    v5 = [(WBSBrowsingAssistantResult *)self->_result pageURL];
-    v6 = [v5 isEqual:v4];
+    pageURL = [(WBSBrowsingAssistantResult *)self->_result pageURL];
+    v6 = [pageURL isEqual:contentCopy];
 
     if (v6)
     {
@@ -516,7 +516,7 @@ uint64_t __95__WBSBrowsingAssistantController_fetchAssistantContentFromPegasusFo
         v9 = WBS_LOG_CHANNEL_PREFIXBrowsingAssistant();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
-          [(WBSBrowsingAssistantController *)v4 _shouldContinueFetchingRemoteContent:v9];
+          [(WBSBrowsingAssistantController *)contentCopy _shouldContinueFetchingRemoteContent:v9];
         }
       }
 
@@ -526,7 +526,7 @@ uint64_t __95__WBSBrowsingAssistantController_fetchAssistantContentFromPegasusFo
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
           v14 = 138739971;
-          v15 = v4;
+          v15 = contentCopy;
           _os_log_impl(&dword_1BB6F3000, v13, OS_LOG_TYPE_INFO, "Don't fetch assistant content since first hop check says there is no remote content for %{sensitive}@.", &v14, 0xCu);
         }
       }
@@ -537,7 +537,7 @@ uint64_t __95__WBSBrowsingAssistantController_fetchAssistantContentFromPegasusFo
       v10 = WBS_LOG_CHANNEL_PREFIXBrowsingAssistant();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [(WBSBrowsingAssistantController *)v4 _shouldContinueFetchingRemoteContent:v10];
+        [(WBSBrowsingAssistantController *)contentCopy _shouldContinueFetchingRemoteContent:v10];
       }
     }
   }
@@ -548,16 +548,16 @@ LABEL_11:
   return v11;
 }
 
-- (void)updateAssistantContentForURL:(id)a3 completionHandler:(id)a4
+- (void)updateAssistantContentForURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __81__WBSBrowsingAssistantController_updateAssistantContentForURL_completionHandler___block_invoke;
   v8[3] = &unk_1E7FB71F8;
-  v9 = v6;
-  v7 = v6;
-  [(WBSBrowsingAssistantController *)self fetchAssistantContentFromPegasusForURL:a3 withCompletionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(WBSBrowsingAssistantController *)self fetchAssistantContentFromPegasusForURL:l withCompletionHandler:v8];
 }
 
 uint64_t __81__WBSBrowsingAssistantController_updateAssistantContentForURL_completionHandler___block_invoke(uint64_t a1, void *a2)

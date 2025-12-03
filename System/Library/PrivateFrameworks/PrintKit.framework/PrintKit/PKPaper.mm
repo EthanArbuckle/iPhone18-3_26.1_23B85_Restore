@@ -1,21 +1,21 @@
 @interface PKPaper
 + (BOOL)useMetric;
-+ (id)defaultGenericPaperForLocale:(id)a3;
++ (id)defaultGenericPaperForLocale:(id)locale;
 + (id)documentPapers;
 + (id)generic3_5x5Paper;
 + (id)generic4x6Paper;
 + (id)genericA6Paper;
-+ (id)genericBorderlessWithName:(id)a3;
++ (id)genericBorderlessWithName:(id)name;
 + (id)genericHagakiPaper;
 + (id)genericPRC32KPaper;
-+ (id)genericWithName:(id)a3;
-+ (id)mediaNameForWidth:(int)a3 Height:(int)a4 mediaType:(id)a5 Borderless:(BOOL)a6 Simplex:(BOOL)a7;
-+ (id)mediaNameForWidth:(int)a3 height:(int)a4 borderless:(BOOL)a5 simplex:(BOOL)a6;
-+ (id)paperWithAttributes:(id)a3;
++ (id)genericWithName:(id)name;
++ (id)mediaNameForWidth:(int)width Height:(int)height mediaType:(id)type Borderless:(BOOL)borderless Simplex:(BOOL)simplex;
++ (id)mediaNameForWidth:(int)width height:(int)height borderless:(BOOL)borderless simplex:(BOOL)simplex;
++ (id)paperWithAttributes:(id)attributes;
 + (id)photoPapers;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualSize:(id)a3;
-- (BOOL)isEqualSizeAndMediaType:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualSize:(id)size;
+- (BOOL)isEqualSizeAndMediaType:(id)type;
 - (BOOL)isRoll;
 - (CGRect)imageableAreaRect;
 - (CGSize)paperSize;
@@ -23,52 +23,52 @@
 - (NSString)description;
 - (NSString)localizedName;
 - (NSString)mediaTypeName;
-- (PKPaper)initWithCoder:(id)a3;
-- (PKPaper)initWithUserCodableDictionary:(id)a3;
-- (PKPaper)initWithWidth:(int)a3 Height:(int)a4 Left:(int)a5 Top:(int)a6 Right:(int)a7 Bottom:(int)a8 localizedName:(id)a9 codeName:(id)a10 mediaInfo:(id)a11;
-- (PKPaper)paperWithMarginsAdjustedForDuplexMode:(id)a3;
+- (PKPaper)initWithCoder:(id)coder;
+- (PKPaper)initWithUserCodableDictionary:(id)dictionary;
+- (PKPaper)initWithWidth:(int)width Height:(int)height Left:(int)left Top:(int)top Right:(int)right Bottom:(int)bottom localizedName:(id)name codeName:(id)self0 mediaInfo:(id)self1;
+- (PKPaper)paperWithMarginsAdjustedForDuplexMode:(id)mode;
 - (double)imageableArea;
 - (id)baseName;
-- (id)createMediaColAndDoMargins:(BOOL)a3;
-- (id)cutToPWGLength:(int)a3;
+- (id)createMediaColAndDoMargins:(BOOL)margins;
+- (id)cutToPWGLength:(int)length;
 - (id)localizedNameFromDimensions;
 - (id)mediaType;
-- (id)nameWithoutSuffixes:(id)a3;
+- (id)nameWithoutSuffixes:(id)suffixes;
 - (id)userCodableDictionary;
 - (int)maxHeight;
 - (int)minHeight;
-- (int64_t)sizeAndImageableCompare:(id)a3;
-- (int64_t)sizeMediaTypeAndImageableCompare:(id)a3;
+- (int64_t)sizeAndImageableCompare:(id)compare;
+- (int64_t)sizeMediaTypeAndImageableCompare:(id)compare;
 - (unint64_t)hash;
-- (void)addToMediaCol:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)visitProperties:(Visitor *)a3;
+- (void)addToMediaCol:(id)col;
+- (void)encodeWithCoder:(id)coder;
+- (void)visitProperties:(Visitor *)properties;
 @end
 
 @implementation PKPaper
 
-+ (id)defaultGenericPaperForLocale:(id)a3
++ (id)defaultGenericPaperForLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   if (+[PKPaper defaultGenericPaperForLocale:]::onceToken != -1)
   {
     +[PKPaper defaultGenericPaperForLocale:];
   }
 
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  v6 = [v5 objectForKey:*MEMORY[0x277CBE690]];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v6 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
 
   if (v6 && [+[PKPaper defaultGenericPaperForLocale:]::_letterCountries containsObject:v6])
   {
-    v7 = [a1 genericLetterPaper];
+    genericLetterPaper = [self genericLetterPaper];
   }
 
   else
   {
-    v7 = [a1 genericA4Paper];
+    genericLetterPaper = [self genericA4Paper];
   }
 
-  v8 = v7;
+  v8 = genericLetterPaper;
 
   return v8;
 }
@@ -82,39 +82,39 @@ void __40__PKPaper_defaultGenericPaperForLocale___block_invoke()
 
 + (BOOL)useMetric
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 objectForKey:*MEMORY[0x277CBE718]];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v3 = [currentLocale objectForKey:*MEMORY[0x277CBE718]];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (id)mediaNameForWidth:(int)a3 Height:(int)a4 mediaType:(id)a5 Borderless:(BOOL)a6 Simplex:(BOOL)a7
++ (id)mediaNameForWidth:(int)width Height:(int)height mediaType:(id)type Borderless:(BOOL)borderless Simplex:(BOOL)simplex
 {
-  v7 = *&a3;
+  v7 = *&width;
   v16 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (height)
   {
-    v8 = a7;
-    v9 = a6;
-    v10 = *&a4;
-    v11 = pwgMediaForSize(*&a3, *&a4, v15);
+    simplexCopy = simplex;
+    borderlessCopy = borderless;
+    v10 = *&height;
+    v11 = pwgMediaForSize(*&width, *&height, v15);
     v12 = "";
-    if (v8)
+    if (simplexCopy)
     {
       v12 = "-simplex";
     }
 
-    if (v9)
+    if (borderlessCopy)
     {
       v12 = "-fullbleed";
     }
@@ -132,65 +132,65 @@ void __40__PKPaper_defaultGenericPaperForLocale___block_invoke()
 
   else
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"roll-%dx0", *&a4, a5, a6, a7, *&a3];
+    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"roll-%dx0", *&height, type, borderless, simplex, *&width];
   }
 
   return v13;
 }
 
-+ (id)paperWithAttributes:(id)a3
++ (id)paperWithAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"media-size"];
+  attributesCopy = attributes;
+  v5 = [attributesCopy objectForKeyedSubscript:@"media-size"];
   v6 = [v5 objectForKeyedSubscript:@"x-dimension"];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
-  v30 = [v4 objectForKeyedSubscript:@"media-type"];
+  v30 = [attributesCopy objectForKeyedSubscript:@"media-type"];
   v8 = [v5 objectForKeyedSubscript:@"y-dimension"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
     v10 = [v8 objectAtIndexedSubscript:0];
-    v11 = [v10 intValue];
+    intValue2 = [v10 intValue];
 
     v12 = [v8 objectAtIndexedSubscript:1];
-    v13 = [v12 intValue];
+    intValue3 = [v12 intValue];
   }
 
   else
   {
     v12 = [v5 objectForKeyedSubscript:@"y-dimension"];
-    v13 = [v12 intValue];
-    v11 = v13;
+    intValue3 = [v12 intValue];
+    intValue2 = intValue3;
   }
 
   v14 = 0;
-  if (v7 >= 1 && v13 >= v11)
+  if (intValue >= 1 && intValue3 >= intValue2)
   {
-    v15 = [v4 objectForKeyedSubscript:@"media-left-margin"];
-    v29 = [v15 intValue];
+    v15 = [attributesCopy objectForKeyedSubscript:@"media-left-margin"];
+    intValue4 = [v15 intValue];
 
-    v16 = [v4 objectForKeyedSubscript:@"media-top-margin"];
-    v28 = [v16 intValue];
+    v16 = [attributesCopy objectForKeyedSubscript:@"media-top-margin"];
+    intValue5 = [v16 intValue];
 
-    v17 = [v4 objectForKeyedSubscript:@"media-right-margin"];
-    v18 = [v17 intValue];
+    v17 = [attributesCopy objectForKeyedSubscript:@"media-right-margin"];
+    intValue6 = [v17 intValue];
 
-    v19 = [v4 objectForKeyedSubscript:@"media-bottom-margin"];
-    v20 = [v19 intValue];
+    v19 = [attributesCopy objectForKeyedSubscript:@"media-bottom-margin"];
+    intValue7 = [v19 intValue];
 
     if (isKindOfClass)
     {
-      v21 = [a1 useMetric];
-      v22 = v7;
+      useMetric = [self useMetric];
+      v22 = intValue;
       v23 = "";
-      if (!(v29 | v28 | v18 | v20))
+      if (!(intValue4 | intValue5 | intValue6 | intValue7))
       {
         v23 = "-fullbleed";
       }
 
-      if (v21)
+      if (useMetric)
       {
         v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"roll_anon_%.1fx0mm%s", v22 / 100.0, v23];
         v25 = 0x279A85000;
@@ -206,48 +206,48 @@ void __40__PKPaper_defaultGenericPaperForLocale___block_invoke()
     else
     {
       v25 = 0x279A85000uLL;
-      v24 = [PKPaper mediaNameForWidth:v7 Height:v13 mediaType:v30 Borderless:(v29 | v28 | v18 | v20) == 0 Simplex:0];
+      v24 = [PKPaper mediaNameForWidth:intValue Height:intValue3 mediaType:v30 Borderless:(intValue4 | intValue5 | intValue6 | intValue7) == 0 Simplex:0];
     }
 
     v26 = v24;
-    v14 = [objc_alloc(*(v25 + 728)) initWithWidth:v7 Height:v13 Left:v29 Top:v28 Right:v18 Bottom:v20 localizedName:0 codeName:v24 mediaInfo:v4];
+    v14 = [objc_alloc(*(v25 + 728)) initWithWidth:intValue Height:intValue3 Left:intValue4 Top:intValue5 Right:intValue6 Bottom:intValue7 localizedName:0 codeName:v24 mediaInfo:attributesCopy];
   }
 
   return v14;
 }
 
-- (id)cutToPWGLength:(int)a3
+- (id)cutToPWGLength:(int)length
 {
-  v3 = *&a3;
-  v5 = [(PKPaper *)self topMargin];
-  v6 = [(PKPaper *)self bottomMargin];
-  if ([(PKPaper *)self minHeight]<= v3)
+  maxHeight = *&length;
+  topMargin = [(PKPaper *)self topMargin];
+  bottomMargin = [(PKPaper *)self bottomMargin];
+  if ([(PKPaper *)self minHeight]<= maxHeight)
   {
-    if ([(PKPaper *)self maxHeight]< v3)
+    if ([(PKPaper *)self maxHeight]< maxHeight)
     {
-      v3 = [(PKPaper *)self maxHeight];
+      maxHeight = [(PKPaper *)self maxHeight];
     }
   }
 
   else
   {
-    v7 = [(PKPaper *)self minHeight]- v3;
-    v8 = [(PKPaper *)self topMargin];
-    v9 = [(PKPaper *)self bottomMargin];
-    v3 = [(PKPaper *)self minHeight];
-    v6 = (v6 + (v8 + v7 - v9) / 2);
-    v5 = (v7 + v5 - (v8 + v7 - v9) / 2);
+    v7 = [(PKPaper *)self minHeight]- maxHeight;
+    topMargin2 = [(PKPaper *)self topMargin];
+    bottomMargin2 = [(PKPaper *)self bottomMargin];
+    maxHeight = [(PKPaper *)self minHeight];
+    bottomMargin = (bottomMargin + (topMargin2 + v7 - bottomMargin2) / 2);
+    topMargin = (v7 + topMargin - (topMargin2 + v7 - bottomMargin2) / 2);
   }
 
   if ([(PKPaper *)self isRoll])
   {
     v10 = [PKPaper alloc];
-    v11 = [(PKPaper *)self width];
-    v12 = [(PKPaper *)self leftMargin];
-    v13 = [(PKPaper *)self rightMargin];
-    v14 = [(PKPaper *)self name];
-    v15 = [(PKPaper *)self mediaInfo];
-    v16 = [(PKPaper *)v10 initWithWidth:v11 Height:v3 Left:v12 Top:v5 Right:v13 Bottom:v6 localizedName:0 codeName:v14 mediaInfo:v15];
+    width = [(PKPaper *)self width];
+    leftMargin = [(PKPaper *)self leftMargin];
+    rightMargin = [(PKPaper *)self rightMargin];
+    name = [(PKPaper *)self name];
+    mediaInfo = [(PKPaper *)self mediaInfo];
+    v16 = [(PKPaper *)v10 initWithWidth:width Height:maxHeight Left:leftMargin Top:topMargin Right:rightMargin Bottom:bottomMargin localizedName:0 codeName:name mediaInfo:mediaInfo];
   }
 
   else
@@ -258,17 +258,17 @@ void __40__PKPaper_defaultGenericPaperForLocale___block_invoke()
   return v16;
 }
 
-- (PKPaper)initWithWidth:(int)a3 Height:(int)a4 Left:(int)a5 Top:(int)a6 Right:(int)a7 Bottom:(int)a8 localizedName:(id)a9 codeName:(id)a10 mediaInfo:(id)a11
+- (PKPaper)initWithWidth:(int)width Height:(int)height Left:(int)left Top:(int)top Right:(int)right Bottom:(int)bottom localizedName:(id)name codeName:(id)self0 mediaInfo:(id)self1
 {
-  v11 = *&a8;
-  v12 = *&a7;
-  v13 = *&a6;
-  v14 = *&a5;
-  v15 = *&a4;
-  v16 = *&a3;
+  v11 = *&bottom;
+  v12 = *&right;
+  v13 = *&top;
+  v14 = *&left;
+  v15 = *&height;
+  v16 = *&width;
   v37[2] = *MEMORY[0x277D85DE8];
-  v32 = a10;
-  v18 = a11;
+  codeNameCopy = codeName;
+  infoCopy = info;
   v33.receiver = self;
   v33.super_class = PKPaper;
   v19 = [(PKPaper *)&v33 init];
@@ -281,10 +281,10 @@ void __40__PKPaper_defaultGenericPaperForLocale___block_invoke()
     v19->_topMargin = v13;
     v19->_rightMargin = v12;
     v19->_bottomMargin = v11;
-    objc_storeStrong(&v19->_name, a10);
-    if (v18)
+    objc_storeStrong(&v19->_name, codeName);
+    if (infoCopy)
     {
-      v21 = v18;
+      v21 = infoCopy;
       mediaInfo = v20->_mediaInfo;
       v20->_mediaInfo = v21;
     }
@@ -336,12 +336,12 @@ void __40__PKPaper_defaultGenericPaperForLocale___block_invoke()
 {
   v3 = [(PKPaper *)self leftMargin]* 72.0 / 2540.0;
   v4 = [(PKPaper *)self topMargin]* 72.0 / 2540.0;
-  v5 = [(PKPaper *)self width];
-  v6 = [(PKPaper *)self leftMargin];
-  v7 = (v5 - (v6 + [(PKPaper *)self rightMargin])) * 72.0 / 2540.0;
-  v8 = [(PKPaper *)self height];
-  v9 = [(PKPaper *)self topMargin];
-  v10 = (v8 - (v9 + [(PKPaper *)self bottomMargin])) * 72.0 / 2540.0;
+  width = [(PKPaper *)self width];
+  leftMargin = [(PKPaper *)self leftMargin];
+  v7 = (width - (leftMargin + [(PKPaper *)self rightMargin])) * 72.0 / 2540.0;
+  height = [(PKPaper *)self height];
+  topMargin = [(PKPaper *)self topMargin];
+  v10 = (height - (topMargin + [(PKPaper *)self bottomMargin])) * 72.0 / 2540.0;
   v11 = v3;
   v12 = v4;
   v13 = v7;
@@ -354,25 +354,25 @@ void __40__PKPaper_defaultGenericPaperForLocale___block_invoke()
 
 - (double)imageableArea
 {
-  v3 = [(PKPaper *)self width];
-  v4 = [(PKPaper *)self leftMargin];
-  v5 = (v3 - (v4 + [(PKPaper *)self rightMargin])) * 72.0 / 2540.0;
-  v6 = [(PKPaper *)self height];
-  v7 = [(PKPaper *)self topMargin];
-  return v5 * ((v6 - (v7 + [(PKPaper *)self bottomMargin])) * 72.0 / 2540.0);
+  width = [(PKPaper *)self width];
+  leftMargin = [(PKPaper *)self leftMargin];
+  v5 = (width - (leftMargin + [(PKPaper *)self rightMargin])) * 72.0 / 2540.0;
+  height = [(PKPaper *)self height];
+  topMargin = [(PKPaper *)self topMargin];
+  return v5 * ((height - (topMargin + [(PKPaper *)self bottomMargin])) * 72.0 / 2540.0);
 }
 
-- (id)nameWithoutSuffixes:(id)a3
+- (id)nameWithoutSuffixes:(id)suffixes
 {
-  v4 = a3;
-  v5 = [(PKPaper *)self name];
-  v6 = v4;
+  suffixesCopy = suffixes;
+  name = [(PKPaper *)self name];
+  v6 = suffixesCopy;
   v7 = v6;
   v13 = &v15;
   if (v6)
   {
     v8 = v6;
-    while (![v5 hasSuffix:v8])
+    while (![name hasSuffix:v8])
     {
       v9 = v13++;
       v10 = *v9;
@@ -384,14 +384,14 @@ void __40__PKPaper_defaultGenericPaperForLocale___block_invoke()
       }
     }
 
-    v11 = [v5 substringToIndex:{objc_msgSend(v5, "length") - objc_msgSend(v8, "length")}];
+    v11 = [name substringToIndex:{objc_msgSend(name, "length") - objc_msgSend(v8, "length")}];
   }
 
   else
   {
     v8 = 0;
 LABEL_7:
-    v11 = v5;
+    v11 = name;
   }
 
   return v11;
@@ -399,70 +399,70 @@ LABEL_7:
 
 - (id)baseName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_cachedBaseName)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_cachedBaseName)
   {
-    v3 = [(PKPaper *)v2 nameWithoutSuffixes:@"-fullbleed", @"-simplex", @"-transverse", 0];
-    cachedBaseName = v2->_cachedBaseName;
-    v2->_cachedBaseName = v3;
+    v3 = [(PKPaper *)selfCopy nameWithoutSuffixes:@"-fullbleed", @"-simplex", @"-transverse", 0];
+    cachedBaseName = selfCopy->_cachedBaseName;
+    selfCopy->_cachedBaseName = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_cachedBaseName;
+  v5 = selfCopy->_cachedBaseName;
 
   return v5;
 }
 
 - (int)minHeight
 {
-  v3 = [(PKPaper *)self height];
-  v4 = [(PKPaper *)self mediaInfo];
+  height = [(PKPaper *)self height];
+  mediaInfo = [(PKPaper *)self mediaInfo];
 
-  if (v4)
+  if (mediaInfo)
   {
-    v5 = [(PKPaper *)self mediaInfo];
-    v6 = [v5 objectForKey:@"media-size"];
+    mediaInfo2 = [(PKPaper *)self mediaInfo];
+    v6 = [mediaInfo2 objectForKey:@"media-size"];
 
     v7 = [v6 objectForKey:@"y-dimension"];
     v8 = [v7 objectAtIndexedSubscript:0];
     v9 = v8;
     if (v8)
     {
-      v3 = [v8 intValue];
+      height = [v8 intValue];
     }
   }
 
-  return v3;
+  return height;
 }
 
 - (int)maxHeight
 {
-  v3 = [(PKPaper *)self height];
-  v4 = [(PKPaper *)self mediaInfo];
+  height = [(PKPaper *)self height];
+  mediaInfo = [(PKPaper *)self mediaInfo];
 
-  if (v4)
+  if (mediaInfo)
   {
-    v5 = [(PKPaper *)self mediaInfo];
-    v6 = [v5 objectForKey:@"media-size"];
+    mediaInfo2 = [(PKPaper *)self mediaInfo];
+    v6 = [mediaInfo2 objectForKey:@"media-size"];
 
     v7 = [v6 objectForKey:@"y-dimension"];
     v8 = [v7 objectAtIndexedSubscript:1];
     v9 = v8;
     if (v8)
     {
-      v3 = [v8 intValue];
+      height = [v8 intValue];
     }
   }
 
-  return v3;
+  return height;
 }
 
 - (BOOL)isRoll
 {
-  v2 = [(PKPaper *)self mediaInfo];
-  v3 = [v2 objectForKeyedSubscript:@"media-size"];
+  mediaInfo = [(PKPaper *)self mediaInfo];
+  v3 = [mediaInfo objectForKeyedSubscript:@"media-size"];
   v4 = [v3 objectForKeyedSubscript:@"y-dimension"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -472,8 +472,8 @@ LABEL_7:
 
 - (id)mediaType
 {
-  v2 = [(PKPaper *)self mediaInfo];
-  v3 = [v2 objectForKeyedSubscript:@"media-type"];
+  mediaInfo = [(PKPaper *)self mediaInfo];
+  v3 = [mediaInfo objectForKeyedSubscript:@"media-type"];
 
   if (v3)
   {
@@ -492,8 +492,8 @@ LABEL_7:
 
 - (NSString)mediaTypeName
 {
-  v3 = [(PKPaper *)self mediaInfo];
-  v4 = [v3 objectForKeyedSubscript:@"media-type"];
+  mediaInfo = [(PKPaper *)self mediaInfo];
+  v4 = [mediaInfo objectForKeyedSubscript:@"media-type"];
 
   if (v4)
   {
@@ -517,8 +517,8 @@ LABEL_7:
     v6 = 0;
   }
 
-  v7 = [(PKPaper *)self mediaInfo];
-  v8 = [v7 objectForKeyedSubscript:@"_vendor_media-type"];
+  mediaInfo2 = [(PKPaper *)self mediaInfo];
+  v8 = [mediaInfo2 objectForKeyedSubscript:@"_vendor_media-type"];
 
   v6 = v8;
   if (v8)
@@ -534,34 +534,34 @@ LABEL_9:
   return v6;
 }
 
-- (void)addToMediaCol:(id)a3
+- (void)addToMediaCol:(id)col
 {
-  v4 = a3;
-  v5 = [(PKPaper *)self mediaInfo];
+  colCopy = col;
+  mediaInfo = [(PKPaper *)self mediaInfo];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __25__PKPaper_addToMediaCol___block_invoke;
   v7[3] = &unk_279A92440;
-  v6 = v4;
+  v6 = colCopy;
   v8 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  [mediaInfo enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (id)createMediaColAndDoMargins:(BOOL)a3
+- (id)createMediaColAndDoMargins:(BOOL)margins
 {
-  v3 = a3;
+  marginsCopy = margins;
   v5 = objc_opt_new();
   v6 = [PKMediaSize mediaSizeWithWidth:[(PKPaper *)self width] height:[(PKPaper *)self height]];
   [v5 setMediaSize:v6];
 
-  v7 = [(PKPaper *)self mediaInfo];
+  mediaInfo = [(PKPaper *)self mediaInfo];
 
-  if (v7)
+  if (mediaInfo)
   {
     [(PKPaper *)self addToMediaCol:v5];
   }
 
-  else if (v3)
+  else if (marginsCopy)
   {
     [v5 setMarginsTop:-[PKPaper topMargin](self left:"topMargin") bottom:-[PKPaper leftMargin](self right:{"leftMargin"), -[PKPaper bottomMargin](self, "bottomMargin"), -[PKPaper rightMargin](self, "rightMargin")}];
   }
@@ -571,11 +571,11 @@ LABEL_9:
 
 - (id)localizedNameFromDimensions
 {
-  v3 = [(PKPaper *)self baseName];
-  v4 = [PKMediaName pkMediaNameWithString:v3];
+  baseName = [(PKPaper *)self baseName];
+  v4 = [PKMediaName pkMediaNameWithString:baseName];
 
-  v5 = [v4 unitStr];
-  v6 = [v5 isEqualToString:@"in"];
+  unitStr = [v4 unitStr];
+  v6 = [unitStr isEqualToString:@"in"];
 
   if (v6)
   {
@@ -586,8 +586,8 @@ LABEL_9:
 
   else
   {
-    v10 = [v4 unitStr];
-    v11 = [v10 isEqualToString:@"mm"];
+    unitStr2 = [v4 unitStr];
+    v11 = [unitStr2 isEqualToString:@"mm"];
 
     v12 = v11 == 0;
     if (v11)
@@ -639,10 +639,10 @@ LABEL_11:
       [v19 setMaximumFractionDigits:1];
       v20 = [v19 stringFromNumber:v17];
       v21 = [v19 stringFromNumber:v18];
-      v22 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v16 validFormatSpecifiers:@"%@ %@" error:0, v20, v21];
+      baseName2 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v16 validFormatSpecifiers:@"%@ %@" error:0, v20, v21];
 
       v23 = v16;
-      if (v22)
+      if (baseName2)
       {
         goto LABEL_16;
       }
@@ -653,21 +653,21 @@ LABEL_11:
 
   v23 = 0;
 LABEL_15:
-  v22 = [(PKPaper *)self baseName];
+  baseName2 = [(PKPaper *)self baseName];
   v16 = v23;
 LABEL_16:
 
-  return v22;
+  return baseName2;
 }
 
-- (BOOL)isEqualSizeAndMediaType:(id)a3
+- (BOOL)isEqualSizeAndMediaType:(id)type
 {
-  v4 = a3;
-  if (v4 && (v5 = -[PKPaper height](self, "height"), v5 == [v4 height]) && (v6 = -[PKPaper width](self, "width"), v6 == objc_msgSend(v4, "width")))
+  typeCopy = type;
+  if (typeCopy && (v5 = -[PKPaper height](self, "height"), v5 == [typeCopy height]) && (v6 = -[PKPaper width](self, "width"), v6 == objc_msgSend(typeCopy, "width")))
   {
-    v7 = [(PKPaper *)self mediaType];
-    v8 = [v4 mediaType];
-    v9 = [v7 isEqualToString:v8];
+    mediaType = [(PKPaper *)self mediaType];
+    mediaType2 = [typeCopy mediaType];
+    v9 = [mediaType isEqualToString:mediaType2];
   }
 
   else
@@ -678,13 +678,13 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)isEqualSize:(id)a3
+- (BOOL)isEqualSize:(id)size
 {
-  v4 = a3;
-  if (v4 && (v5 = -[PKPaper height](self, "height"), v5 == [v4 height]))
+  sizeCopy = size;
+  if (sizeCopy && (v5 = -[PKPaper height](self, "height"), v5 == [sizeCopy height]))
   {
-    v6 = [(PKPaper *)self width];
-    v7 = v6 == [v4 width];
+    width = [(PKPaper *)self width];
+    v7 = width == [sizeCopy width];
   }
 
   else
@@ -695,22 +695,22 @@ LABEL_16:
   return v7;
 }
 
-- (int64_t)sizeAndImageableCompare:(id)a3
+- (int64_t)sizeAndImageableCompare:(id)compare
 {
-  v4 = a3;
-  v5 = [(PKPaper *)self width];
-  v6 = [v4 width];
-  v7 = v5 - v6;
-  if (v5 == v6)
+  compareCopy = compare;
+  width = [(PKPaper *)self width];
+  width2 = [compareCopy width];
+  v7 = width - width2;
+  if (width == width2)
   {
-    v8 = [(PKPaper *)self height];
-    v9 = [v4 height];
-    v7 = v8 - v9;
-    if (v8 == v9)
+    height = [(PKPaper *)self height];
+    height2 = [compareCopy height];
+    v7 = height - height2;
+    if (height == height2)
     {
       [(PKPaper *)self imageableArea];
       v11 = v10;
-      [v4 imageableArea];
+      [compareCopy imageableArea];
       v7 = (v11 - v12);
     }
   }
@@ -730,28 +730,28 @@ LABEL_16:
   return v15;
 }
 
-- (int64_t)sizeMediaTypeAndImageableCompare:(id)a3
+- (int64_t)sizeMediaTypeAndImageableCompare:(id)compare
 {
-  v4 = a3;
-  v5 = [(PKPaper *)self width];
-  v6 = [v4 width];
-  v7 = v5 - v6;
-  if (v5 == v6)
+  compareCopy = compare;
+  width = [(PKPaper *)self width];
+  width2 = [compareCopy width];
+  v7 = width - width2;
+  if (width == width2)
   {
-    v8 = [(PKPaper *)self height];
-    v9 = [v4 height];
-    v7 = v8 - v9;
-    if (v8 == v9)
+    height = [(PKPaper *)self height];
+    height2 = [compareCopy height];
+    v7 = height - height2;
+    if (height == height2)
     {
-      v10 = [(PKPaper *)self mediaType];
-      v11 = [v4 mediaType];
-      v7 = [v10 compare:v11];
+      mediaType = [(PKPaper *)self mediaType];
+      mediaType2 = [compareCopy mediaType];
+      v7 = [mediaType compare:mediaType2];
 
       if (!v7)
       {
         [(PKPaper *)self imageableArea];
         v13 = v12;
-        [v4 imageableArea];
+        [compareCopy imageableArea];
         v7 = (v13 - v14);
       }
     }
@@ -773,14 +773,14 @@ LABEL_16:
 - (NSString)localizedName
 {
   v3 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.framework.PrintKit"];
-  v4 = [(PKPaper *)self baseName];
-  v5 = [v3 localizedStringForKey:v4 value:@"." table:@"PaperNames"];
+  baseName = [(PKPaper *)self baseName];
+  v5 = [v3 localizedStringForKey:baseName value:@"." table:@"PaperNames"];
 
   if ([v5 isEqualToString:@"."])
   {
-    v6 = [(PKPaper *)self localizedNameFromDimensions];
+    localizedNameFromDimensions = [(PKPaper *)self localizedNameFromDimensions];
 
-    v5 = v6;
+    v5 = localizedNameFromDimensions;
   }
 
   return v5;
@@ -792,8 +792,8 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = PKPaper;
   v4 = [(PKPaper *)&v8 description];
-  v5 = [(PKPaper *)self name];
-  v6 = [v3 stringWithFormat:@"%@ { %@ }", v4, v5];
+  name = [(PKPaper *)self name];
+  v6 = [v3 stringWithFormat:@"%@ { %@ }", v4, name];
 
   return v6;
 }
@@ -806,11 +806,11 @@ LABEL_16:
   v8 = v7;
   v10 = v9;
   v11 = MEMORY[0x277CCACA8];
-  v12 = [(PKPaper *)self name];
-  v13 = [(PKPaper *)self width];
-  v14 = [(PKPaper *)self height];
-  v15 = [(PKPaper *)self mediaType];
-  v16 = [v11 stringWithFormat:@"%@ width = %.2f height = %.2f imageableAreaRect origin = (%.2f, %.2f), size = (%.2f, %.2f) media-type=%@", v12, v13 * 72.0 / 2540.0, v14 * 72.0 / 2540.0, v4, v6, v8, v10, v15];
+  name = [(PKPaper *)self name];
+  width = [(PKPaper *)self width];
+  height = [(PKPaper *)self height];
+  mediaType = [(PKPaper *)self mediaType];
+  v16 = [v11 stringWithFormat:@"%@ width = %.2f height = %.2f imageableAreaRect origin = (%.2f, %.2f), size = (%.2f, %.2f) media-type=%@", name, width * 72.0 / 2540.0, height * 72.0 / 2540.0, v4, v6, v8, v10, mediaType];
 
   return v16;
 }
@@ -850,12 +850,12 @@ LABEL_16:
   return v2;
 }
 
-+ (id)genericWithName:(id)a3
++ (id)genericWithName:(id)name
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (v5 = pwgMediaForPWG(v3, v12)) != 0)
+  nameCopy = name;
+  v4 = nameCopy;
+  if (nameCopy && (v5 = pwgMediaForPWG(nameCopy, v12)) != 0)
   {
     v6 = *(v5 + 6);
     v7 = *(v5 + 7);
@@ -880,14 +880,14 @@ LABEL_16:
   return v10;
 }
 
-+ (id)genericBorderlessWithName:(id)a3
++ (id)genericBorderlessWithName:(id)name
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  nameCopy = name;
+  v4 = nameCopy;
+  if (nameCopy)
   {
-    v5 = pwgMediaForPWG(v3, v7);
+    v5 = pwgMediaForPWG(nameCopy, v7);
     if (v5)
     {
       v5 = [[PKPaper alloc] initWithWidth:v5->_width Height:v5->_height Left:0 Top:0 Right:0 Bottom:0 localizedName:0 codeName:v4 mediaInfo:0];
@@ -902,70 +902,70 @@ LABEL_16:
   return v5;
 }
 
-- (PKPaper)paperWithMarginsAdjustedForDuplexMode:(id)a3
+- (PKPaper)paperWithMarginsAdjustedForDuplexMode:(id)mode
 {
-  v4 = a3;
-  v5 = self;
-  if (([v4 isEqualToString:@"one-sided"] & 1) == 0)
+  modeCopy = mode;
+  selfCopy = self;
+  if (([modeCopy isEqualToString:@"one-sided"] & 1) == 0)
   {
-    v6 = [(PKPaper *)v5 topMargin];
-    v7 = [(PKPaper *)v5 bottomMargin];
-    v8 = [(PKPaper *)v5 leftMargin];
-    if (v8 <= [(PKPaper *)v5 rightMargin])
+    topMargin = [(PKPaper *)selfCopy topMargin];
+    bottomMargin = [(PKPaper *)selfCopy bottomMargin];
+    leftMargin = [(PKPaper *)selfCopy leftMargin];
+    if (leftMargin <= [(PKPaper *)selfCopy rightMargin])
     {
-      v9 = [(PKPaper *)v5 rightMargin];
+      rightMargin = [(PKPaper *)selfCopy rightMargin];
     }
 
     else
     {
-      v9 = [(PKPaper *)v5 leftMargin];
+      rightMargin = [(PKPaper *)selfCopy leftMargin];
     }
 
-    v10 = v9;
-    if ([v4 isEqualToString:@"two-sided-short-edge"])
+    v10 = rightMargin;
+    if ([modeCopy isEqualToString:@"two-sided-short-edge"])
     {
-      v11 = [(PKPaper *)v5 topMargin];
-      if (v11 <= [(PKPaper *)v5 bottomMargin])
+      topMargin2 = [(PKPaper *)selfCopy topMargin];
+      if (topMargin2 <= [(PKPaper *)selfCopy bottomMargin])
       {
-        v12 = [(PKPaper *)v5 bottomMargin];
+        bottomMargin2 = [(PKPaper *)selfCopy bottomMargin];
       }
 
       else
       {
-        v12 = [(PKPaper *)v5 topMargin];
+        bottomMargin2 = [(PKPaper *)selfCopy topMargin];
       }
 
-      v6 = v12;
-      v7 = v12;
+      topMargin = bottomMargin2;
+      bottomMargin = bottomMargin2;
     }
 
     v13 = [PKPaper alloc];
-    v14 = [(PKPaper *)v5 width];
-    v15 = [(PKPaper *)v5 height];
-    v16 = [(PKPaper *)v5 localizedName];
-    v17 = [(PKPaper *)v5 name];
-    v18 = [(PKPaper *)v13 initWithWidth:v14 Height:v15 Left:v10 Top:v6 Right:v10 Bottom:v7 localizedName:v16 codeName:v17 mediaInfo:0];
+    width = [(PKPaper *)selfCopy width];
+    height = [(PKPaper *)selfCopy height];
+    localizedName = [(PKPaper *)selfCopy localizedName];
+    name = [(PKPaper *)selfCopy name];
+    v18 = [(PKPaper *)v13 initWithWidth:width Height:height Left:v10 Top:topMargin Right:v10 Bottom:bottomMargin localizedName:localizedName codeName:name mediaInfo:0];
 
-    v5 = v18;
+    selfCopy = v18;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(PKPaper *)self name];
-    v7 = [(PKPaper *)v5 name];
-    v8 = [v6 isEqualToString:v7];
+    name = [(PKPaper *)self name];
+    name2 = [(PKPaper *)v5 name];
+    v8 = [name isEqualToString:name2];
   }
 
   else
@@ -978,8 +978,8 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v2 = [(PKPaper *)self name];
-  v3 = [v2 hash];
+  name = [(PKPaper *)self name];
+  v3 = [name hash];
 
   return v3;
 }
@@ -1011,23 +1011,23 @@ LABEL_16:
   return v5;
 }
 
-+ (id)mediaNameForWidth:(int)a3 height:(int)a4 borderless:(BOOL)a5 simplex:(BOOL)a6
++ (id)mediaNameForWidth:(int)width height:(int)height borderless:(BOOL)borderless simplex:(BOOL)simplex
 {
-  v6 = *&a3;
+  v6 = *&width;
   v15 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (height)
   {
-    v7 = a6;
-    v8 = a5;
-    v9 = *&a4;
-    v10 = pwgMediaForSize(*&a3, *&a4, v14);
+    simplexCopy = simplex;
+    borderlessCopy = borderless;
+    v9 = *&height;
+    v10 = pwgMediaForSize(*&width, *&height, v14);
     v11 = "";
-    if (v7)
+    if (simplexCopy)
     {
       v11 = "-simplex";
     }
 
-    if (v8)
+    if (borderlessCopy)
     {
       v11 = "-fullbleed";
     }
@@ -1045,31 +1045,31 @@ LABEL_16:
 
   else
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"roll-%dx0", *&a4, a5, a6, *&a3];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"roll-%dx0", *&height, borderless, simplex, *&width];
   }
 
   return v12;
 }
 
-- (PKPaper)initWithCoder:(id)a3
+- (PKPaper)initWithCoder:(id)coder
 {
   v15[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKPaper;
   v5 = [(PKPaper *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v5->_width = [v4 decodeIntegerForKey:@"_width"];
-    v5->_height = [v4 decodeIntegerForKey:@"_height"];
-    v5->_leftMargin = [v4 decodeIntegerForKey:@"_leftMargin"];
-    v5->_topMargin = [v4 decodeIntegerForKey:@"_topMargin"];
-    v5->_rightMargin = [v4 decodeIntegerForKey:@"_rightMargin"];
-    v5->_bottomMargin = [v4 decodeIntegerForKey:@"_bottomMargin"];
+    v5->_width = [coderCopy decodeIntegerForKey:@"_width"];
+    v5->_height = [coderCopy decodeIntegerForKey:@"_height"];
+    v5->_leftMargin = [coderCopy decodeIntegerForKey:@"_leftMargin"];
+    v5->_topMargin = [coderCopy decodeIntegerForKey:@"_topMargin"];
+    v5->_rightMargin = [coderCopy decodeIntegerForKey:@"_rightMargin"];
+    v5->_bottomMargin = [coderCopy decodeIntegerForKey:@"_bottomMargin"];
     v8 = MEMORY[0x277CBEB98];
     v15[0] = objc_opt_class();
     v15[1] = objc_opt_class();
@@ -1077,7 +1077,7 @@ LABEL_16:
     v15[3] = objc_opt_class();
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:4];
     v10 = [v8 setWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"_mediaInfo"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"_mediaInfo"];
     mediaInfo = v5->_mediaInfo;
     v5->_mediaInfo = v11;
   }
@@ -1085,17 +1085,17 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_name forKey:@"_name"];
-  [v4 encodeInteger:self->_width forKey:@"_width"];
-  [v4 encodeInteger:self->_height forKey:@"_height"];
-  [v4 encodeInteger:self->_leftMargin forKey:@"_leftMargin"];
-  [v4 encodeInteger:self->_topMargin forKey:@"_topMargin"];
-  [v4 encodeInteger:self->_rightMargin forKey:@"_rightMargin"];
-  [v4 encodeInteger:self->_bottomMargin forKey:@"_bottomMargin"];
-  [v4 encodeObject:self->_mediaInfo forKey:@"_mediaInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"_name"];
+  [coderCopy encodeInteger:self->_width forKey:@"_width"];
+  [coderCopy encodeInteger:self->_height forKey:@"_height"];
+  [coderCopy encodeInteger:self->_leftMargin forKey:@"_leftMargin"];
+  [coderCopy encodeInteger:self->_topMargin forKey:@"_topMargin"];
+  [coderCopy encodeInteger:self->_rightMargin forKey:@"_rightMargin"];
+  [coderCopy encodeInteger:self->_bottomMargin forKey:@"_bottomMargin"];
+  [coderCopy encodeObject:self->_mediaInfo forKey:@"_mediaInfo"];
 }
 
 - (id)userCodableDictionary
@@ -1124,9 +1124,9 @@ void __32__PKPaper_userCodableDictionary__block_invoke(uint64_t a1, void *a2, vo
   }
 }
 
-- (PKPaper)initWithUserCodableDictionary:(id)a3
+- (PKPaper)initWithUserCodableDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PKPaper;
   v5 = [(PKPaper *)&v9 init];
@@ -1136,7 +1136,7 @@ void __32__PKPaper_userCodableDictionary__block_invoke(uint64_t a1, void *a2, vo
     v7[1] = 3221225472;
     v7[2] = __41__PKPaper_initWithUserCodableDictionary___block_invoke;
     v7[3] = &unk_279A92468;
-    v8 = v4;
+    v8 = dictionaryCopy;
     UserCodedSerializationVisitor::visitProperties(v5, v7);
   }
 
@@ -1156,29 +1156,29 @@ void __41__PKPaper_initWithUserCodableDictionary___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)visitProperties:(Visitor *)a3
+- (void)visitProperties:(Visitor *)properties
 {
-  (*(a3->var0 + 2))(a3, a2);
-  (*(a3->var0 + 7))(a3, @"name", &self->_name);
-  (*(a3->var0 + 4))(a3, @"width", &self->_width);
-  (*(a3->var0 + 4))(a3, @"height", &self->_height);
-  (*(a3->var0 + 4))(a3, @"leftMargin", &self->_leftMargin);
-  (*(a3->var0 + 4))(a3, @"topMargin", &self->_topMargin);
-  (*(a3->var0 + 4))(a3, @"rightMargin", &self->_rightMargin);
-  (*(a3->var0 + 4))(a3, @"bottomMargin", &self->_bottomMargin);
+  (*(properties->var0 + 2))(properties, a2);
+  (*(properties->var0 + 7))(properties, @"name", &self->_name);
+  (*(properties->var0 + 4))(properties, @"width", &self->_width);
+  (*(properties->var0 + 4))(properties, @"height", &self->_height);
+  (*(properties->var0 + 4))(properties, @"leftMargin", &self->_leftMargin);
+  (*(properties->var0 + 4))(properties, @"topMargin", &self->_topMargin);
+  (*(properties->var0 + 4))(properties, @"rightMargin", &self->_rightMargin);
+  (*(properties->var0 + 4))(properties, @"bottomMargin", &self->_bottomMargin);
   v24 = objc_opt_new();
   v23 = objc_opt_new();
-  v5 = [(PKPaper *)self mediaInfo];
+  mediaInfo = [(PKPaper *)self mediaInfo];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __27__PKPaper_visitProperties___block_invoke;
   v20[3] = &unk_279A92490;
   v21 = v24;
   v22 = v23;
-  [v5 enumerateKeysAndObjectsUsingBlock:v20];
+  [mediaInfo enumerateKeysAndObjectsUsingBlock:v20];
 
-  (*(a3->var0 + 12))(a3, @"_strMediaInfo", &v24);
-  (*(a3->var0 + 18))(a3, @"_numMediaInfo", &v23);
+  (*(properties->var0 + 12))(properties, @"_strMediaInfo", &v24);
+  (*(properties->var0 + 18))(properties, @"_numMediaInfo", &v23);
   mediaInfo = self->_mediaInfo;
   p_mediaInfo = &self->_mediaInfo;
   v8 = [(NSDictionary *)mediaInfo mutableCopy];
@@ -1207,7 +1207,7 @@ void __41__PKPaper_initWithUserCodableDictionary___block_invoke(uint64_t a1, voi
   }
 
   objc_storeStrong(p_mediaInfo, v8);
-  (*(a3->var0 + 24))(a3);
+  (*(properties->var0 + 24))(properties);
 }
 
 void __27__PKPaper_visitProperties___block_invoke(uint64_t a1, void *a2, void *a3)

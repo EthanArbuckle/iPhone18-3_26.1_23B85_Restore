@@ -85,8 +85,8 @@
 
 - (double)outputTransform
 {
-  [a1 computeCameraIntrinsics];
-  *v2.f32 = CI::Perspective::getRotation([a1 computeRotation], *(a1 + 176), *(a1 + 180), *(a1 + 184));
+  [self computeCameraIntrinsics];
+  *v2.f32 = CI::Perspective::getRotation([self computeRotation], *(self + 176), *(self + 180), *(self + 184));
   v5 = 0;
   v6 = vaddq_f32(v4, vmlaq_f32(vmulq_f32(v2, 0), 0, v3));
   v7 = vdupq_laneq_s32(v6, 2);
@@ -96,9 +96,9 @@
   __asm { FMOV            V5.4S, #1.0 }
 
   v14 = vzip1q_s32(vzip2q_s32(vdupq_lane_s32(*v7.f32, 0), _Q5), v8);
-  v15 = *(a1 + 80);
-  v16 = *(a1 + 96);
-  v17 = *(a1 + 112);
+  v15 = *(self + 80);
+  v16 = *(self + 96);
+  v17 = *(self + 112);
   v29 = xmmword_19CF28470;
   v30 = xmmword_19CF28480;
   v31 = v14;
@@ -127,9 +127,9 @@
   v23 = v32;
   v24 = v33;
   v25 = v34;
-  v26 = *(a1 + 144);
-  v27 = *(a1 + 160);
-  v29 = *(a1 + 128);
+  v26 = *(self + 144);
+  v27 = *(self + 160);
+  v29 = *(self + 128);
   v30 = v26;
   v31 = v27;
   do

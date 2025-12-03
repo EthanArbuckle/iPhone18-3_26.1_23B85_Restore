@@ -1,15 +1,15 @@
 @interface DEDDiagnosticCollector
 - (BOOL)isDiagnosticExtensionAvailable;
 - (DEDDiagnosticCollector)init;
-- (id)_combineParametersWithParameters:(id)a3 extension:(id)a4 identifier:(id)a5;
+- (id)_combineParametersWithParameters:(id)parameters extension:(id)extension identifier:(id)identifier;
 - (id)availableDiagnosticExtensions;
-- (id)collectAnnotatedGroupWithIdentifier:(id)a3 parameters:(id)a4;
-- (id)collectItemsWithIdentifier:(id)a3 parameters:(id)a4;
-- (id)extensionForIdentifier:(id)a3;
-- (void)cleanupItemsWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5;
-- (void)loadExtensionTextDataInExtension:(id)a3 localization:(id)a4;
-- (void)prepareItemsWithDeferredExtensionInfo:(id)a3;
-- (void)prepareItemsWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5;
+- (id)collectAnnotatedGroupWithIdentifier:(id)identifier parameters:(id)parameters;
+- (id)collectItemsWithIdentifier:(id)identifier parameters:(id)parameters;
+- (id)extensionForIdentifier:(id)identifier;
+- (void)cleanupItemsWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session;
+- (void)loadExtensionTextDataInExtension:(id)extension localization:(id)localization;
+- (void)prepareItemsWithDeferredExtensionInfo:(id)info;
+- (void)prepareItemsWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session;
 @end
 
 @implementation DEDDiagnosticCollector
@@ -27,8 +27,8 @@
     }
 
     [(DEDDiagnosticCollector *)v2 setLog:Log_handle];
-    v3 = [(DEDDiagnosticCollector *)v2 extensionManager];
-    [v3 loadExtensions];
+    extensionManager = [(DEDDiagnosticCollector *)v2 extensionManager];
+    [extensionManager loadExtensions];
 
     [(DEDDiagnosticCollector *)v2 setCollectionTimeout:2100];
   }
@@ -36,22 +36,22 @@
   return v2;
 }
 
-- (id)collectAnnotatedGroupWithIdentifier:(id)a3 parameters:(id)a4
+- (id)collectAnnotatedGroupWithIdentifier:(id)identifier parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
   v8 = [(DEDDiagnosticCollector *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [DEDDiagnosticCollector collectAnnotatedGroupWithIdentifier:parameters:];
   }
 
-  v9 = [(DEDDiagnosticCollector *)self extensionManager];
-  v10 = [v9 extensionForIdentifier:v6];
+  extensionManager = [(DEDDiagnosticCollector *)self extensionManager];
+  v10 = [extensionManager extensionForIdentifier:identifierCopy];
 
   if (v10)
   {
-    v11 = [(DEDDiagnosticCollector *)self _combineParametersWithParameters:v7 extension:v10 identifier:v6];
+    v11 = [(DEDDiagnosticCollector *)self _combineParametersWithParameters:parametersCopy extension:v10 identifier:identifierCopy];
     v12 = dispatch_group_create();
     dispatch_group_enter(v12);
     v26 = 0;
@@ -64,8 +64,8 @@
     v19 = 3221225472;
     v20 = __73__DEDDiagnosticCollector_collectAnnotatedGroupWithIdentifier_parameters___block_invoke;
     v21 = &unk_278F66058;
-    v22 = self;
-    v23 = v6;
+    selfCopy = self;
+    v23 = identifierCopy;
     v25 = &v26;
     v13 = v12;
     v24 = v13;
@@ -85,7 +85,7 @@
       [DEDDiagnosticCollector collectAnnotatedGroupWithIdentifier:parameters:];
     }
 
-    [DEDAnalytics extensionWithIdentifier:v6 didCompleteWithFileCount:0 bytesCollected:0 duration:0 errorCode:2];
+    [DEDAnalytics extensionWithIdentifier:identifierCopy didCompleteWithFileCount:0 bytesCollected:0 duration:0 errorCode:2];
     v15 = 0;
   }
 
@@ -120,22 +120,22 @@ void __73__DEDDiagnosticCollector_collectAnnotatedGroupWithIdentifier_parameters
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)collectItemsWithIdentifier:(id)a3 parameters:(id)a4
+- (id)collectItemsWithIdentifier:(id)identifier parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
   v8 = [(DEDDiagnosticCollector *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [DEDDiagnosticCollector collectItemsWithIdentifier:parameters:];
   }
 
-  v9 = [(DEDDiagnosticCollector *)self extensionManager];
-  v10 = [v9 extensionForIdentifier:v6];
+  extensionManager = [(DEDDiagnosticCollector *)self extensionManager];
+  v10 = [extensionManager extensionForIdentifier:identifierCopy];
 
   if (v10)
   {
-    v11 = [(DEDDiagnosticCollector *)self _combineParametersWithParameters:v7 extension:v10 identifier:v6];
+    v11 = [(DEDDiagnosticCollector *)self _combineParametersWithParameters:parametersCopy extension:v10 identifier:identifierCopy];
     v12 = dispatch_group_create();
     dispatch_group_enter(v12);
     v26 = 0;
@@ -148,8 +148,8 @@ void __73__DEDDiagnosticCollector_collectAnnotatedGroupWithIdentifier_parameters
     v19 = 3221225472;
     v20 = __64__DEDDiagnosticCollector_collectItemsWithIdentifier_parameters___block_invoke;
     v21 = &unk_278F66080;
-    v22 = self;
-    v23 = v6;
+    selfCopy = self;
+    v23 = identifierCopy;
     v25 = &v26;
     v13 = v12;
     v24 = v13;
@@ -169,7 +169,7 @@ void __73__DEDDiagnosticCollector_collectAnnotatedGroupWithIdentifier_parameters
       [DEDDiagnosticCollector collectAnnotatedGroupWithIdentifier:parameters:];
     }
 
-    [DEDAnalytics extensionWithIdentifier:v6 didCompleteWithFileCount:0 bytesCollected:0 duration:0 errorCode:2];
+    [DEDAnalytics extensionWithIdentifier:identifierCopy didCompleteWithFileCount:0 bytesCollected:0 duration:0 errorCode:2];
     v15 = MEMORY[0x277CBEBF8];
   }
 
@@ -206,17 +206,17 @@ void __64__DEDDiagnosticCollector_collectItemsWithIdentifier_parameters___block_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_combineParametersWithParameters:(id)a3 extension:(id)a4 identifier:(id)a5
+- (id)_combineParametersWithParameters:(id)parameters extension:(id)extension identifier:(id)identifier
 {
-  v8 = a5;
+  identifierCopy = identifier;
   v9 = MEMORY[0x277CBEB38];
-  v10 = a4;
-  v11 = a3;
+  extensionCopy = extension;
+  parametersCopy = parameters;
   v12 = objc_alloc_init(v9);
   v13 = MEMORY[0x277CBEC10];
-  if (v11)
+  if (parametersCopy)
   {
-    v13 = v11;
+    v13 = parametersCopy;
   }
 
   v14 = v13;
@@ -232,13 +232,13 @@ void __64__DEDDiagnosticCollector_collectItemsWithIdentifier_parameters___block_
   else
   {
     v16 = +[DEDConfiguration sharedInstance];
-    v17 = [v16 identifier];
-    [v12 setObject:v17 forKeyedSubscript:@"DEExtensionHostAppKey"];
+    identifier = [v16 identifier];
+    [v12 setObject:identifier forKeyedSubscript:@"DEExtensionHostAppKey"];
   }
 
-  v18 = [v10 identifier];
+  identifier2 = [extensionCopy identifier];
 
-  if ([v18 isEqualToString:@"com.apple.DiagnosticExtensions.sysdiagnose"])
+  if ([identifier2 isEqualToString:@"com.apple.DiagnosticExtensions.sysdiagnose"])
   {
     v19 = [v12 objectForKey:@"coSysdiagnose"];
 
@@ -261,78 +261,78 @@ void __64__DEDDiagnosticCollector_collectItemsWithIdentifier_parameters___block_
   return v12;
 }
 
-- (void)prepareItemsWithDeferredExtensionInfo:(id)a3
+- (void)prepareItemsWithDeferredExtensionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [(DEDDiagnosticCollector *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [DEDDiagnosticCollector prepareItemsWithDeferredExtensionInfo:];
   }
 
-  v6 = [v4 dedIdentifier];
-  v7 = [v6 extensionIdentifier];
+  dedIdentifier = [infoCopy dedIdentifier];
+  extensionIdentifier = [dedIdentifier extensionIdentifier];
 
-  v8 = [(DEDDiagnosticCollector *)self extensionManager];
-  v9 = [v8 extensionForIdentifier:v7];
+  extensionManager = [(DEDDiagnosticCollector *)self extensionManager];
+  v9 = [extensionManager extensionForIdentifier:extensionIdentifier];
 
-  v10 = [v4 parameters];
-  v11 = [v4 bugSessionIdentifier];
-  v12 = [v4 triggerDate];
-  [v9 setupWithParameters:v10 session:v11 expirationDate:v12];
+  parameters = [infoCopy parameters];
+  bugSessionIdentifier = [infoCopy bugSessionIdentifier];
+  triggerDate = [infoCopy triggerDate];
+  [v9 setupWithParameters:parameters session:bugSessionIdentifier expirationDate:triggerDate];
 }
 
-- (void)prepareItemsWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5
+- (void)prepareItemsWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  sessionCopy = session;
   v11 = [(DEDDiagnosticCollector *)self log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v15 = 136315906;
     v16 = "[DEDDiagnosticCollector prepareItemsWithIdentifier:parameters:session:]";
     v17 = 2112;
-    v18 = v8;
+    v18 = identifierCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = parametersCopy;
     v21 = 2112;
-    v22 = v10;
+    v22 = sessionCopy;
     _os_log_debug_impl(&dword_248AD7000, v11, OS_LOG_TYPE_DEBUG, "%s %@ %@ %@", &v15, 0x2Au);
   }
 
-  v12 = [(DEDDiagnosticCollector *)self extensionManager];
-  v13 = [v12 extensionForIdentifier:v8];
+  extensionManager = [(DEDDiagnosticCollector *)self extensionManager];
+  v13 = [extensionManager extensionForIdentifier:identifierCopy];
 
-  [v13 setupWithParameters:v9 session:v10];
+  [v13 setupWithParameters:parametersCopy session:sessionCopy];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cleanupItemsWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5
+- (void)cleanupItemsWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  sessionCopy = session;
   v11 = [(DEDDiagnosticCollector *)self log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v15 = 136315906;
     v16 = "[DEDDiagnosticCollector cleanupItemsWithIdentifier:parameters:session:]";
     v17 = 2112;
-    v18 = v8;
+    v18 = identifierCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = parametersCopy;
     v21 = 2112;
-    v22 = v10;
+    v22 = sessionCopy;
     _os_log_debug_impl(&dword_248AD7000, v11, OS_LOG_TYPE_DEBUG, "%s %@ %@ %@", &v15, 0x2Au);
   }
 
-  v12 = [(DEDDiagnosticCollector *)self extensionManager];
-  v13 = [v12 extensionForIdentifier:v8];
+  extensionManager = [(DEDDiagnosticCollector *)self extensionManager];
+  v13 = [extensionManager extensionForIdentifier:identifierCopy];
 
-  [v13 teardownWithParameters:v9 session:v10];
+  [v13 teardownWithParameters:parametersCopy session:sessionCopy];
   v14 = *MEMORY[0x277D85DE8];
 }
 
@@ -386,23 +386,23 @@ void __56__DEDDiagnosticCollector_isDiagnosticExtensionAvailable__block_invoke(u
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)extensionForIdentifier:(id)a3
+- (id)extensionForIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DEDDiagnosticCollector *)self cachedExtensions];
+  identifierCopy = identifier;
+  cachedExtensions = [(DEDDiagnosticCollector *)self cachedExtensions];
 
-  if (!v5)
+  if (!cachedExtensions)
   {
-    v6 = [(DEDDiagnosticCollector *)self availableDiagnosticExtensions];
+    availableDiagnosticExtensions = [(DEDDiagnosticCollector *)self availableDiagnosticExtensions];
   }
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(DEDDiagnosticCollector *)self cachedExtensions];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  cachedExtensions2 = [(DEDDiagnosticCollector *)self cachedExtensions];
+  v8 = [cachedExtensions2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = *v17;
@@ -412,12 +412,12 @@ void __56__DEDDiagnosticCollector_isDiagnosticExtensionAvailable__block_invoke(u
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(cachedExtensions2);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        v13 = [v12 isEqualToString:v4];
+        identifier = [v11 identifier];
+        v13 = [identifier isEqualToString:identifierCopy];
 
         if (v13)
         {
@@ -426,7 +426,7 @@ void __56__DEDDiagnosticCollector_isDiagnosticExtensionAvailable__block_invoke(u
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [cachedExtensions2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -446,8 +446,8 @@ LABEL_13:
 - (id)availableDiagnosticExtensions
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(DEDDiagnosticCollector *)self extensionManager];
-  v4 = [v3 extensionsWithFilter:0];
+  extensionManager = [(DEDDiagnosticCollector *)self extensionManager];
+  v4 = [extensionManager extensionsWithFilter:0];
 
   v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
   v18 = 0u;
@@ -495,26 +495,26 @@ LABEL_13:
   return v15;
 }
 
-- (void)loadExtensionTextDataInExtension:(id)a3 localization:(id)a4
+- (void)loadExtensionTextDataInExtension:(id)extension localization:(id)localization
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DEDDiagnosticCollector *)self extensionManager];
-  v9 = [v7 identifier];
-  v14 = [v8 extensionForIdentifier:v9];
+  localizationCopy = localization;
+  extensionCopy = extension;
+  extensionManager = [(DEDDiagnosticCollector *)self extensionManager];
+  identifier = [extensionCopy identifier];
+  v14 = [extensionManager extensionForIdentifier:identifier];
 
-  v10 = [v14 localizedConsentTextWithLocalization:v6];
-  [v7 setLocalizedConsentText:v10];
+  v10 = [v14 localizedConsentTextWithLocalization:localizationCopy];
+  [extensionCopy setLocalizedConsentText:v10];
 
-  v11 = [v14 localizedDataCollectedSummaryWithLocalization:v6];
-  [v7 setLocalizedDataCollectedSummary:v11];
+  v11 = [v14 localizedDataCollectedSummaryWithLocalization:localizationCopy];
+  [extensionCopy setLocalizedDataCollectedSummary:v11];
 
-  v12 = [v14 localizedDataCollectedExplanationWithLocalization:v6];
-  [v7 setLocalizedDataCollectedExplanation:v12];
+  v12 = [v14 localizedDataCollectedExplanationWithLocalization:localizationCopy];
+  [extensionCopy setLocalizedDataCollectedExplanation:v12];
 
-  v13 = [v14 localizedCustomerConsentTextWithLocalization:v6];
+  v13 = [v14 localizedCustomerConsentTextWithLocalization:localizationCopy];
 
-  [v7 setLocalizedCustomerConsentText:v13];
+  [extensionCopy setLocalizedCustomerConsentText:v13];
 }
 
 - (void)collectAnnotatedGroupWithIdentifier:parameters:.cold.1()

@@ -1,35 +1,35 @@
 @interface PLFileSystemPersistence
-+ (id)filesystemPersistenceBatchItemForFileAtURL:(id)a3;
-+ (id)persistedAttributesForFileAtURL:(id)a3 exists:(BOOL *)a4 includeUnknownAttributes:(BOOL)a5;
++ (id)filesystemPersistenceBatchItemForFileAtURL:(id)l;
++ (id)persistedAttributesForFileAtURL:(id)l exists:(BOOL *)exists includeUnknownAttributes:(BOOL)attributes;
 + (id)persistenceKeyTypes;
 + (id)sharedInstance;
-+ (void)clearAllAttributesForFileAtUrl:(id)a3;
-+ (void)performBlockOnWriterQueue:(id)a3;
-+ (void)persistData:(id)a3 forKey:(id)a4 fileURL:(id)a5;
-+ (void)persistMetadata:(id)a3 fileURL:(id)a4;
-+ (void)persistString:(id)a3 forKey:(id)a4 fileURL:(id)a5;
-+ (void)persistUInt16:(unsigned __int16)a3 forKey:(id)a4 fileURL:(id)a5;
-+ (void)persistUUIDString:(id)a3 forKey:(id)a4 fileURL:(id)a5;
++ (void)clearAllAttributesForFileAtUrl:(id)url;
++ (void)performBlockOnWriterQueue:(id)queue;
++ (void)persistData:(id)data forKey:(id)key fileURL:(id)l;
++ (void)persistMetadata:(id)metadata fileURL:(id)l;
++ (void)persistString:(id)string forKey:(id)key fileURL:(id)l;
++ (void)persistUInt16:(unsigned __int16)int16 forKey:(id)key fileURL:(id)l;
++ (void)persistUUIDString:(id)string forKey:(id)key fileURL:(id)l;
 - (PLFileSystemPersistence)init;
-- (void)_backgroundWriteData:(id)a3 toFileAtURL:(id)a4;
-- (void)_performOnWriterQueueWithIdentifier:(const char *)a3 block:(id)a4;
+- (void)_backgroundWriteData:(id)data toFileAtURL:(id)l;
+- (void)_performOnWriterQueueWithIdentifier:(const char *)identifier block:(id)block;
 @end
 
 @implementation PLFileSystemPersistence
 
-- (void)_performOnWriterQueueWithIdentifier:(const char *)a3 block:(id)a4
+- (void)_performOnWriterQueueWithIdentifier:(const char *)identifier block:(id)block
 {
-  v6 = a4;
-  v7 = [PLXPCTransaction transaction:a3];
+  blockCopy = block;
+  v7 = [PLXPCTransaction transaction:identifier];
   writerQueue = self->_writerQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__PLFileSystemPersistence__performOnWriterQueueWithIdentifier_block___block_invoke;
   v11[3] = &unk_1E7932AB8;
   v12 = v7;
-  v13 = v6;
+  v13 = blockCopy;
   v9 = v7;
-  v10 = v6;
+  v10 = blockCopy;
   pl_dispatch_async(writerQueue, v11);
 }
 
@@ -41,18 +41,18 @@ uint64_t __69__PLFileSystemPersistence__performOnWriterQueueWithIdentifier_block
   return [v2 stillAlive];
 }
 
-- (void)_backgroundWriteData:(id)a3 toFileAtURL:(id)a4
+- (void)_backgroundWriteData:(id)data toFileAtURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  lCopy = l;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__PLFileSystemPersistence__backgroundWriteData_toFileAtURL___block_invoke;
   v10[3] = &unk_1E7932A28;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dataCopy;
+  v12 = lCopy;
+  v8 = lCopy;
+  v9 = dataCopy;
   [(PLFileSystemPersistence *)self _performOnWriterQueueWithIdentifier:"[PLFileSystemPersistence _backgroundWriteData:toFileAtURL:]" block:v10];
 }
 
@@ -98,92 +98,92 @@ void __60__PLFileSystemPersistence__backgroundWriteData_toFileAtURL___block_invo
   return v2;
 }
 
-+ (void)performBlockOnWriterQueue:(id)a3
++ (void)performBlockOnWriterQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   pl_dispatch_once(&PLIsReallyAssetsd_didCheckReadOnly, &__block_literal_global_129_3947);
   if ((PLIsReallyAssetsd_isAssetsd & 1) != 0 || (__PLIsAssetsdProxyService & 1) != 0 || (pl_dispatch_once(&PLIsInternalTool_didCheckReadOnly, &__block_literal_global_134_3958), PLIsInternalTool_isInternalTool == 1))
   {
-    v5 = [a1 sharedInstance];
-    [v5 _performOnWriterQueueWithIdentifier:"+[PLFileSystemPersistence performBlockOnWriterQueue:]" block:v4];
+    sharedInstance = [self sharedInstance];
+    [sharedInstance _performOnWriterQueueWithIdentifier:"+[PLFileSystemPersistence performBlockOnWriterQueue:]" block:queueCopy];
   }
 
   else
   {
-    v5 = PLBackendGetLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    sharedInstance = PLBackendGetLog();
+    if (os_log_type_enabled(sharedInstance, OS_LOG_TYPE_ERROR))
     {
       *v6 = 0;
-      _os_log_impl(&dword_1AA9BD000, v5, OS_LOG_TYPE_ERROR, "Unsupported client call to performBlockOnWriterQueue:", v6, 2u);
+      _os_log_impl(&dword_1AA9BD000, sharedInstance, OS_LOG_TYPE_ERROR, "Unsupported client call to performBlockOnWriterQueue:", v6, 2u);
     }
   }
 }
 
-+ (void)persistMetadata:(id)a3 fileURL:(id)a4
++ (void)persistMetadata:(id)metadata fileURL:(id)l
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  lCopy = l;
   pl_dispatch_once(&PLIsReallyAssetsd_didCheckReadOnly, &__block_literal_global_129_3947);
   if (PLIsReallyAssetsd_isAssetsd & 1) != 0 || (__PLIsAssetsdProxyService & 1) != 0 || (pl_dispatch_once(&PLIsInternalTool_didCheckReadOnly, &__block_literal_global_134_3958), (PLIsInternalTool_isInternalTool) || PFProcessIsLaunchedToExecuteTests())
   {
-    v8 = [a1 sharedInstance];
-    [v8 _backgroundWriteData:v6 toFileAtURL:v7];
+    sharedInstance = [self sharedInstance];
+    [sharedInstance _backgroundWriteData:metadataCopy toFileAtURL:lCopy];
   }
 
   else
   {
-    v8 = PLBackendGetLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    sharedInstance = PLBackendGetLog();
+    if (os_log_type_enabled(sharedInstance, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v7 path];
+      path = [lCopy path];
       v10 = 138543362;
-      v11 = v9;
-      _os_log_impl(&dword_1AA9BD000, v8, OS_LOG_TYPE_ERROR, "Unsupported client call to persistMetadata:fileURL: with path %{public}@", &v10, 0xCu);
+      v11 = path;
+      _os_log_impl(&dword_1AA9BD000, sharedInstance, OS_LOG_TYPE_ERROR, "Unsupported client call to persistMetadata:fileURL: with path %{public}@", &v10, 0xCu);
     }
   }
 }
 
-+ (void)persistString:(id)a3 forKey:(id)a4 fileURL:(id)a5
++ (void)persistString:(id)string forKey:(id)key fileURL:(id)l
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 dataUsingEncoding:4];
-  [a1 persistData:v10 forKey:v9 fileURL:v8];
+  lCopy = l;
+  keyCopy = key;
+  v10 = [string dataUsingEncoding:4];
+  [self persistData:v10 forKey:keyCopy fileURL:lCopy];
 }
 
-+ (void)persistUInt16:(unsigned __int16)a3 forKey:(id)a4 fileURL:(id)a5
++ (void)persistUInt16:(unsigned __int16)int16 forKey:(id)key fileURL:(id)l
 {
-  v11 = a3;
+  int16Copy = int16;
   v7 = MEMORY[0x1E695DEF0];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 dataWithBytes:&v11 length:2];
-  [a1 persistData:v10 forKey:v9 fileURL:v8];
+  lCopy = l;
+  keyCopy = key;
+  v10 = [v7 dataWithBytes:&int16Copy length:2];
+  [self persistData:v10 forKey:keyCopy fileURL:lCopy];
 }
 
-+ (void)persistUUIDString:(id)a3 forKey:(id)a4 fileURL:(id)a5
++ (void)persistUUIDString:(id)string forKey:(id)key fileURL:(id)l
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = PLUUIDDataFromString(a3);
-  [a1 persistData:v10 forKey:v9 fileURL:v8];
+  lCopy = l;
+  keyCopy = key;
+  v10 = PLUUIDDataFromString(string);
+  [self persistData:v10 forKey:keyCopy fileURL:lCopy];
 }
 
-+ (void)clearAllAttributesForFileAtUrl:(id)a3
++ (void)clearAllAttributesForFileAtUrl:(id)url
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  urlCopy = url;
   v4 = objc_autoreleasePoolPush();
-  if (!v3)
+  if (!urlCopy)
   {
     goto LABEL_22;
   }
 
-  v5 = [v3 path];
-  v6 = [v5 fileSystemRepresentation];
+  path = [urlCopy path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  v7 = open(v6, 0x200000);
+  v7 = open(fileSystemRepresentation, 0x200000);
   if ((v7 & 0x80000000) == 0)
   {
     v8 = v7;
@@ -193,11 +193,11 @@ void __60__PLFileSystemPersistence__backgroundWriteData_toFileAtURL___block_invo
       v25 = PLBackendGetLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v26 = [v3 path];
+        path2 = [urlCopy path];
         v27 = __error();
         v28 = strerror(*v27);
         *buf = 138412546;
-        v30 = v26;
+        v30 = path2;
         v31 = 2080;
         v32 = v28;
         _os_log_impl(&dword_1AA9BD000, v25, OS_LOG_TYPE_ERROR, "Unable to get xattr for '%@' (%s).", buf, 0x16u);
@@ -215,9 +215,9 @@ void __60__PLFileSystemPersistence__backgroundWriteData_toFileAtURL___block_invo
           v12 = 0;
           do
           {
-            v13 = [v11 bytes];
-            v14 = (v13 + v12);
-            v15 = strnlen((v13 + v12), v10 - v12);
+            bytes = [v11 bytes];
+            v14 = (bytes + v12);
+            v15 = strnlen((bytes + v12), v10 - v12);
             if (!v15)
             {
               break;
@@ -229,13 +229,13 @@ void __60__PLFileSystemPersistence__backgroundWriteData_toFileAtURL___block_invo
               v17 = PLBackendGetLog();
               if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
               {
-                v18 = [v3 path];
+                path3 = [urlCopy path];
                 v19 = __error();
                 v20 = strerror(*v19);
                 *buf = 136315650;
                 v30 = v14;
                 v31 = 2112;
-                v32 = v18;
+                v32 = path3;
                 v33 = 2080;
                 v34 = v20;
                 _os_log_impl(&dword_1AA9BD000, v17, OS_LOG_TYPE_ERROR, "Unable to remove xattr %s for '%@' (%s).", buf, 0x20u);
@@ -261,11 +261,11 @@ void __60__PLFileSystemPersistence__backgroundWriteData_toFileAtURL___block_invo
   v21 = PLBackendGetLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
-    v22 = [v3 path];
+    path4 = [urlCopy path];
     v23 = __error();
     v24 = strerror(*v23);
     *buf = 138412546;
-    v30 = v22;
+    v30 = path4;
     v31 = 2080;
     v32 = v24;
     _os_log_impl(&dword_1AA9BD000, v21, OS_LOG_TYPE_ERROR, "Unable to open file '%@' to retrieve extended attributes (%s).", buf, 0x16u);
@@ -275,37 +275,37 @@ LABEL_22:
   objc_autoreleasePoolPop(v4);
 }
 
-+ (id)persistedAttributesForFileAtURL:(id)a3 exists:(BOOL *)a4 includeUnknownAttributes:(BOOL)a5
++ (id)persistedAttributesForFileAtURL:(id)l exists:(BOOL *)exists includeUnknownAttributes:(BOOL)attributes
 {
-  v5 = a5;
+  attributesCopy = attributes;
   v55 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  lCopy = l;
   v8 = objc_autoreleasePoolPush();
-  if (!v7)
+  if (!lCopy)
   {
 LABEL_13:
-    if (a4)
+    if (exists)
     {
-      *a4 = 0;
+      *exists = 0;
     }
 
     goto LABEL_20;
   }
 
-  v9 = [v7 path];
-  v10 = [v9 fileSystemRepresentation];
+  path = [lCopy path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  v11 = open(v10, 0x200000);
+  v11 = open(fileSystemRepresentation, 0x200000);
   if (v11 < 0)
   {
     v17 = PLBackendGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v7 path];
+      path2 = [lCopy path];
       v19 = __error();
       v20 = strerror(*v19);
       *buf = 138412546;
-      v50 = v18;
+      v50 = path2;
       v51 = 2080;
       v52 = v20;
       _os_log_impl(&dword_1AA9BD000, v17, OS_LOG_TYPE_ERROR, "Unable to open file '%@' to retrieve extended attributes (%s).", buf, 0x16u);
@@ -315,9 +315,9 @@ LABEL_13:
   }
 
   v12 = v11;
-  if (a4)
+  if (exists)
   {
-    *a4 = 1;
+    *exists = 1;
   }
 
   v13 = flistxattr(v11, 0, 0, 0);
@@ -326,11 +326,11 @@ LABEL_13:
     v21 = PLBackendGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v7 path];
+      path3 = [lCopy path];
       v23 = __error();
       v24 = strerror(*v23);
       *buf = 138412546;
-      v50 = v22;
+      v50 = path3;
       v51 = 2080;
       v52 = v24;
       _os_log_impl(&dword_1AA9BD000, v21, OS_LOG_TYPE_ERROR, "Unable to get xattr for '%@' (%s).", buf, 0x16u);
@@ -361,9 +361,9 @@ LABEL_20:
   v47 = v12;
   v45 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:20];
   context = v8;
-  v43 = v7;
-  v41 = v10;
-  if (v5)
+  v43 = lCopy;
+  v41 = fileSystemRepresentation;
+  if (attributesCopy)
   {
     v44 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:20];
   }
@@ -376,13 +376,13 @@ LABEL_20:
   v27 = 0;
   *&v16 = 136315650;
   v40 = v16;
-  v48 = v5;
+  v48 = attributesCopy;
   v46 = v15;
   do
   {
-    v28 = [v15 bytes];
-    v29 = (v28 + v27);
-    v30 = strnlen((v28 + v27), v14 - v27);
+    bytes = [v15 bytes];
+    v29 = (bytes + v27);
+    v30 = strnlen((bytes + v27), v14 - v27);
     if (!v30)
     {
       break;
@@ -390,7 +390,7 @@ LABEL_20:
 
     v31 = v30;
     v32 = strncmp(v29, "com.apple.assetsd", 0x11uLL);
-    if (!v32 || v5)
+    if (!v32 || attributesCopy)
     {
       v33 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{v29, v40}];
       if (v33)
@@ -412,7 +412,7 @@ LABEL_20:
             _os_log_impl(&dword_1AA9BD000, v36, OS_LOG_TYPE_DEFAULT, "unexpected issue getting xttr length for %s %s: %s", buf, 0x20u);
           }
 
-          v5 = v48;
+          attributesCopy = v48;
         }
 
         else
@@ -435,7 +435,7 @@ LABEL_20:
           }
 
           v12 = v47;
-          v5 = v48;
+          attributesCopy = v48;
           v15 = v46;
         }
       }
@@ -449,32 +449,32 @@ LABEL_20:
   close(v12);
 
   objc_autoreleasePoolPop(context);
-  v7 = v43;
+  lCopy = v43;
 LABEL_21:
 
   return v25;
 }
 
-+ (void)persistData:(id)a3 forKey:(id)a4 fileURL:(id)a5
++ (void)persistData:(id)data forKey:(id)key fileURL:(id)l
 {
-  if (a5)
+  if (l)
   {
-    v7 = a5;
-    v8 = a4;
-    v9 = a3;
-    v10 = [[PLFileSystemPersistenceBatchItem alloc] initWithFileURL:v7];
+    lCopy = l;
+    keyCopy = key;
+    dataCopy = data;
+    v10 = [[PLFileSystemPersistenceBatchItem alloc] initWithFileURL:lCopy];
 
-    [(PLFileSystemPersistenceBatchItem *)v10 setData:v9 forKey:v8];
+    [(PLFileSystemPersistenceBatchItem *)v10 setData:dataCopy forKey:keyCopy];
     [(PLFileSystemPersistenceBatchItem *)v10 persist];
   }
 }
 
-+ (id)filesystemPersistenceBatchItemForFileAtURL:(id)a3
++ (id)filesystemPersistenceBatchItemForFileAtURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v3 = a3;
-    v4 = [[PLFileSystemPersistenceBatchItem alloc] initWithFileURL:v3];
+    lCopy = l;
+    v4 = [[PLFileSystemPersistenceBatchItem alloc] initWithFileURL:lCopy];
   }
 
   else

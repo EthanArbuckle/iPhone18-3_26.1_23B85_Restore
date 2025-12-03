@@ -1,27 +1,27 @@
 @interface SBKSyncRequestData
 - (BOOL)_needsConflictDetection;
-- (id)_serializableConflictDetectionOrdinalForKey:(id)a3;
+- (id)_serializableConflictDetectionOrdinalForKey:(id)key;
 - (id)_serializableConflictDetectionValue;
-- (id)_serializableDeleteItemPayloadDictionaryForKey:(id)a3;
-- (id)_serializableUpdateItemPayloadDictionaryForKey:(id)a3;
+- (id)_serializableDeleteItemPayloadDictionaryForKey:(id)key;
+- (id)_serializableUpdateItemPayloadDictionaryForKey:(id)key;
 - (id)serializableRequestBodyPropertyList;
 @end
 
 @implementation SBKSyncRequestData
 
-- (id)_serializableDeleteItemPayloadDictionaryForKey:(id)a3
+- (id)_serializableDeleteItemPayloadDictionaryForKey:(id)key
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v11[0] = @"op";
   v11[1] = @"key";
   v12[0] = @"delete";
-  v12[1] = a3;
+  v12[1] = key;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  keyCopy = key;
   v6 = [v4 dictionaryWithObjects:v12 forKeys:v11 count:2];
   v7 = [v6 mutableCopy];
 
-  v8 = [(SBKSyncRequestData *)self _serializableConflictDetectionOrdinalForKey:v5];
+  v8 = [(SBKSyncRequestData *)self _serializableConflictDetectionOrdinalForKey:keyCopy];
 
   if (v8)
   {
@@ -33,26 +33,26 @@
   return v7;
 }
 
-- (id)_serializableUpdateItemPayloadDictionaryForKey:(id)a3
+- (id)_serializableUpdateItemPayloadDictionaryForKey:(id)key
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBKSyncRequestData *)self syncTransaction];
-  v6 = [v5 keyValuePairForUpdatedKey:v4];
-  v7 = [v6 kvsPayload];
+  keyCopy = key;
+  syncTransaction = [(SBKSyncRequestData *)self syncTransaction];
+  v6 = [syncTransaction keyValuePairForUpdatedKey:keyCopy];
+  kvsPayload = [v6 kvsPayload];
 
-  if (v7)
+  if (kvsPayload)
   {
-    v8 = [v7 SBKDataByDeflatingWithNoZipHeader];
-    v9 = v8;
-    if (v8)
+    sBKDataByDeflatingWithNoZipHeader = [kvsPayload SBKDataByDeflatingWithNoZipHeader];
+    v9 = sBKDataByDeflatingWithNoZipHeader;
+    if (sBKDataByDeflatingWithNoZipHeader)
     {
-      v10 = v8;
+      v10 = sBKDataByDeflatingWithNoZipHeader;
     }
 
     else
     {
-      v10 = v7;
+      v10 = kvsPayload;
     }
 
     v11 = v10;
@@ -60,13 +60,13 @@
     v17[0] = @"op";
     v17[1] = @"key";
     v18[0] = @"put";
-    v18[1] = v4;
+    v18[1] = keyCopy;
     v17[2] = @"value";
     v18[2] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
 
     v13 = [v12 mutableCopy];
-    v14 = [(SBKSyncRequestData *)self _serializableConflictDetectionOrdinalForKey:v4];
+    v14 = [(SBKSyncRequestData *)self _serializableConflictDetectionOrdinalForKey:keyCopy];
     if (v14)
     {
       [v13 setObject:v14 forKey:@"ordinal"];
@@ -85,19 +85,19 @@
 
 - (BOOL)_needsConflictDetection
 {
-  v2 = [(SBKSyncRequestData *)self syncTransaction];
-  v3 = [v2 conflictDetectionType] != 0;
+  syncTransaction = [(SBKSyncRequestData *)self syncTransaction];
+  v3 = [syncTransaction conflictDetectionType] != 0;
 
   return v3;
 }
 
-- (id)_serializableConflictDetectionOrdinalForKey:(id)a3
+- (id)_serializableConflictDetectionOrdinalForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if ([(SBKSyncRequestData *)self _needsConflictDetection])
   {
-    v5 = [(SBKSyncRequestData *)self syncTransaction];
-    v6 = [v5 conflictDetectionOrdinalForKey:v4];
+    syncTransaction = [(SBKSyncRequestData *)self syncTransaction];
+    v6 = [syncTransaction conflictDetectionOrdinalForKey:keyCopy];
 
     if (v6)
     {
@@ -130,8 +130,8 @@ LABEL_6:
     v13[2] = @"version";
     v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
     v4 = MEMORY[0x277CCABB0];
-    v5 = [(SBKSyncRequestData *)self syncTransaction];
-    v6 = [v4 numberWithInteger:{objc_msgSend(v5, "conflictDetectionType")}];
+    syncTransaction = [(SBKSyncRequestData *)self syncTransaction];
+    v6 = [v4 numberWithInteger:{objc_msgSend(syncTransaction, "conflictDetectionType")}];
     v7 = [v3 objectForKey:v6];
 
     if (([(__CFString *)v7 isEqualToString:@"none"]& 1) != 0)
@@ -169,16 +169,16 @@ LABEL_6:
 {
   v47 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v5 = [(SBKSyncRequestData *)self syncTransaction];
-  v6 = [v5 keysToUpdate];
+  syncTransaction = [(SBKSyncRequestData *)self syncTransaction];
+  keysToUpdate = [syncTransaction keysToUpdate];
 
-  v7 = [v6 countByEnumeratingWithState:&v37 objects:v46 count:16];
+  v7 = [keysToUpdate countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (v7)
   {
     v8 = v7;
@@ -189,14 +189,14 @@ LABEL_6:
       {
         if (*v38 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keysToUpdate);
         }
 
         v11 = *(*(&v37 + 1) + 8 * i);
         v12 = [(SBKSyncRequestData *)self _serializableUpdateItemPayloadDictionaryForKey:v11];
         if (v12)
         {
-          [v3 addObject:v12];
+          [array addObject:v12];
         }
 
         else
@@ -211,7 +211,7 @@ LABEL_6:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v37 objects:v46 count:16];
+      v8 = [keysToUpdate countByEnumeratingWithState:&v37 objects:v46 count:16];
     }
 
     while (v8);
@@ -221,10 +221,10 @@ LABEL_6:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v14 = [(SBKSyncRequestData *)self syncTransaction];
-  v15 = [v14 keysToDelete];
+  syncTransaction2 = [(SBKSyncRequestData *)self syncTransaction];
+  keysToDelete = [syncTransaction2 keysToDelete];
 
-  v16 = [v15 countByEnumeratingWithState:&v33 objects:v43 count:16];
+  v16 = [keysToDelete countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (v16)
   {
     v17 = v16;
@@ -235,37 +235,37 @@ LABEL_6:
       {
         if (*v34 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(keysToDelete);
         }
 
         v20 = [(SBKSyncRequestData *)self _serializableDeleteItemPayloadDictionaryForKey:*(*(&v33 + 1) + 8 * j)];
-        [v4 addObject:v20];
+        [array2 addObject:v20];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v33 objects:v43 count:16];
+      v17 = [keysToDelete countByEnumeratingWithState:&v33 objects:v43 count:16];
     }
 
     while (v17);
   }
 
-  v21 = [(SBKSyncRequestData *)self _serializableConflictDetectionValue];
-  v22 = [v3 arrayByAddingObjectsFromArray:v4];
+  _serializableConflictDetectionValue = [(SBKSyncRequestData *)self _serializableConflictDetectionValue];
+  v22 = [array arrayByAddingObjectsFromArray:array2];
   v41[0] = @"domain";
-  v23 = [(SBKSyncRequestData *)self syncTransaction];
-  v24 = [v23 domain];
-  v42[0] = v24;
+  syncTransaction3 = [(SBKSyncRequestData *)self syncTransaction];
+  domain = [syncTransaction3 domain];
+  v42[0] = domain;
   v41[1] = @"version";
-  v25 = [(SBKSyncRequestData *)self syncTransaction];
-  v26 = [v25 syncAnchor];
+  syncTransaction4 = [(SBKSyncRequestData *)self syncTransaction];
+  syncAnchor = [syncTransaction4 syncAnchor];
   v41[2] = @"ops";
-  v42[1] = v26;
+  v42[1] = syncAnchor;
   v42[2] = v22;
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:3];
   v28 = [v27 mutableCopy];
 
-  if ([v21 length])
+  if ([_serializableConflictDetectionValue length])
   {
-    [v28 setObject:v21 forKey:@"conflict-detection"];
+    [v28 setObject:_serializableConflictDetectionValue forKey:@"conflict-detection"];
   }
 
   v29 = os_log_create("com.apple.amp.StoreBookkeeper", "KVS");

@@ -1,20 +1,20 @@
 @interface DeterministicUserSelector
-+ (id)calculateAnchorDateWithTargetSlot:(int64_t)a3;
-+ (id)calculateAnchorDateWithTargetSlot:(int64_t)a3 currentDate:(id)a4;
-+ (id)calculateUserSlotWithDeviceID:(id)a3 siriSharedUserId:(id)a4 locale:(id)a5;
++ (id)calculateAnchorDateWithTargetSlot:(int64_t)slot;
++ (id)calculateAnchorDateWithTargetSlot:(int64_t)slot currentDate:(id)date;
++ (id)calculateUserSlotWithDeviceID:(id)d siriSharedUserId:(id)id locale:(id)locale;
 - (_TtC23CoreSpeechDataAnalytics25DeterministicUserSelector)init;
 @end
 
 @implementation DeterministicUserSelector
 
-+ (id)calculateUserSlotWithDeviceID:(id)a3 siriSharedUserId:(id)a4 locale:(id)a5
++ (id)calculateUserSlotWithDeviceID:(id)d siriSharedUserId:(id)id locale:(id)locale
 {
   v6 = sub_24794EF04();
   v8 = v7;
-  if (a4)
+  if (id)
   {
     v9 = sub_24794EF04();
-    a4 = v10;
+    id = v10;
   }
 
   else
@@ -23,12 +23,12 @@
   }
 
   v11 = sub_24794EF04();
-  v13 = _s23CoreSpeechDataAnalytics25DeterministicUserSelectorC09calculateF4Slot8deviceID010siriSharedF2Id6localeSo8NSNumberCSgSS_SSSgSStFZ_0(v6, v8, v9, a4, v11, v12);
+  v13 = _s23CoreSpeechDataAnalytics25DeterministicUserSelectorC09calculateF4Slot8deviceID010siriSharedF2Id6localeSo8NSNumberCSgSS_SSSgSStFZ_0(v6, v8, v9, id, v11, v12);
 
   return v13;
 }
 
-+ (id)calculateAnchorDateWithTargetSlot:(int64_t)a3 currentDate:(id)a4
++ (id)calculateAnchorDateWithTargetSlot:(int64_t)slot currentDate:(id)date
 {
   v5 = sub_24794EBB4();
   v6 = *(v5 - 8);
@@ -40,7 +40,7 @@
   MEMORY[0x28223BE20](v10 - 8);
   v13 = &v19 - v12;
   sub_24794EB94();
-  static DeterministicUserSelector.calculateAnchorDate(targetSlot:currentDate:)(a3, v13);
+  static DeterministicUserSelector.calculateAnchorDate(targetSlot:currentDate:)(slot, v13);
   v14 = *(v6 + 8);
   v14(v9, v5);
   v15 = (*(v6 + 48))(v13, 1, v5);
@@ -55,13 +55,13 @@
   return v16;
 }
 
-+ (id)calculateAnchorDateWithTargetSlot:(int64_t)a3
++ (id)calculateAnchorDateWithTargetSlot:(int64_t)slot
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE572D0, &unk_2479504E0);
   v5 = *(*(v4 - 8) + 64);
   MEMORY[0x28223BE20](v4 - 8);
   v7 = &v14 - v6;
-  static DeterministicUserSelector.calculateAnchorDate(targetSlot:)(a3, &v14 - v6);
+  static DeterministicUserSelector.calculateAnchorDate(targetSlot:)(slot, &v14 - v6);
   v8 = sub_24794EBB4();
   v9 = *(v8 - 8);
   v10 = (*(v9 + 48))(v7, 1, v8);

@@ -1,30 +1,30 @@
 @interface MPModelStoreBrowseRequest
 - (MPModelStoreBrowseRequest)init;
-- (MPModelStoreBrowseRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
-- (void)configureWithParentSection:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MPModelStoreBrowseRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
+- (void)configureWithParentSection:(id)section;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPModelStoreBrowseRequest
 
-- (void)configureWithParentSection:(id)a3
+- (void)configureWithParentSection:(id)section
 {
-  v4 = a3;
-  v5 = [v4 loadAdditionalContentURL];
-  [(MPModelStoreBrowseRequest *)self setLoadAdditionalContentURL:v5];
+  sectionCopy = section;
+  loadAdditionalContentURL = [sectionCopy loadAdditionalContentURL];
+  [(MPModelStoreBrowseRequest *)self setLoadAdditionalContentURL:loadAdditionalContentURL];
 
-  v6 = [v4 previouslyRetrievedNestedResponse];
+  previouslyRetrievedNestedResponse = [sectionCopy previouslyRetrievedNestedResponse];
 
-  [(MPModelStoreBrowseRequest *)self setPreviousRetrievedNestedResponse:v6];
+  [(MPModelStoreBrowseRequest *)self setPreviousRetrievedNestedResponse:previouslyRetrievedNestedResponse];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = MPModelStoreBrowseRequest;
-  v4 = [(MPStoreModelRequest *)&v7 copyWithZone:a3];
+  v4 = [(MPStoreModelRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -42,53 +42,53 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPModelStoreBrowseRequest;
-  v4 = a3;
-  [(MPStoreModelRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_loadAdditionalContentURL forKey:{@"MPModelStoreBrowseRequestLoadAdditionalContentURL", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_domain forKey:@"MPModelStoreBrowseRequestDomain"];
-  [v4 encodeInteger:self->_filteringPolicy forKey:@"MPModelStoreBrowseRequestFilteringPolicy"];
-  [v4 encodeInteger:self->_requestEndpoint forKey:@"MPModelStoreBrowseRequestEndpoint"];
-  [v4 encodeInteger:self->_subscriptionStatus forKey:@"MPModelStoreBrowseRequestSubscriptionStatus"];
-  [v4 encodeInteger:self->_additionalContent forKey:@"MPModelStoreBrowseRequestAdditionalContent"];
-  [v4 encodeInteger:self->_options forKey:@"MPModelStoreBrowseRequestOptions"];
+  coderCopy = coder;
+  [(MPStoreModelRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_loadAdditionalContentURL forKey:{@"MPModelStoreBrowseRequestLoadAdditionalContentURL", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_domain forKey:@"MPModelStoreBrowseRequestDomain"];
+  [coderCopy encodeInteger:self->_filteringPolicy forKey:@"MPModelStoreBrowseRequestFilteringPolicy"];
+  [coderCopy encodeInteger:self->_requestEndpoint forKey:@"MPModelStoreBrowseRequestEndpoint"];
+  [coderCopy encodeInteger:self->_subscriptionStatus forKey:@"MPModelStoreBrowseRequestSubscriptionStatus"];
+  [coderCopy encodeInteger:self->_additionalContent forKey:@"MPModelStoreBrowseRequestAdditionalContent"];
+  [coderCopy encodeInteger:self->_options forKey:@"MPModelStoreBrowseRequestOptions"];
 }
 
-- (MPModelStoreBrowseRequest)initWithCoder:(id)a3
+- (MPModelStoreBrowseRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MPModelStoreBrowseRequest;
-  v5 = [(MPStoreModelRequest *)&v9 initWithCoder:v4];
+  v5 = [(MPStoreModelRequest *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_domain = [v4 decodeIntegerForKey:@"MPModelStoreBrowseRequestDomain"];
-    v5->_filteringPolicy = [v4 decodeIntegerForKey:@"MPModelStoreBrowseRequestFilteringPolicy"];
-    v5->_requestEndpoint = [v4 decodeIntegerForKey:@"MPModelStoreBrowseRequestEndpoint"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPModelStoreBrowseRequestLoadAdditionalContentURL"];
+    v5->_domain = [coderCopy decodeIntegerForKey:@"MPModelStoreBrowseRequestDomain"];
+    v5->_filteringPolicy = [coderCopy decodeIntegerForKey:@"MPModelStoreBrowseRequestFilteringPolicy"];
+    v5->_requestEndpoint = [coderCopy decodeIntegerForKey:@"MPModelStoreBrowseRequestEndpoint"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPModelStoreBrowseRequestLoadAdditionalContentURL"];
     loadAdditionalContentURL = v5->_loadAdditionalContentURL;
     v5->_loadAdditionalContentURL = v6;
 
-    v5->_subscriptionStatus = [v4 decodeIntegerForKey:@"MPModelStoreBrowseRequestSubscriptionStatus"];
-    v5->_additionalContent = [v4 decodeIntegerForKey:@"MPModelStoreBrowseRequestAdditionalContent"];
-    v5->_options = [v4 decodeIntegerForKey:@"MPModelStoreBrowseRequestOptions"];
+    v5->_subscriptionStatus = [coderCopy decodeIntegerForKey:@"MPModelStoreBrowseRequestSubscriptionStatus"];
+    v5->_additionalContent = [coderCopy decodeIntegerForKey:@"MPModelStoreBrowseRequestAdditionalContent"];
+    v5->_options = [coderCopy decodeIntegerForKey:@"MPModelStoreBrowseRequestOptions"];
   }
 
   return v5;
 }
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(MPModelStoreBrowseRequest *)self copy];
   if ([(MPModelStoreBrowseRequest *)self requestEndpoint]== 1)
   {
-    v6 = [(MPModelStoreBrowseRequest *)self domain];
+    domain = [(MPModelStoreBrowseRequest *)self domain];
     v7 = off_1E7672718;
-    if (v6 == 1)
+    if (domain == 1)
     {
       v7 = off_1E7672748;
     }
@@ -99,7 +99,7 @@
     v7 = off_1E7672728;
   }
 
-  v8 = [objc_alloc(*v7) initWithRequest:v5 responseHandler:v4];
+  v8 = [objc_alloc(*v7) initWithRequest:v5 responseHandler:handlerCopy];
 
   return v8;
 }

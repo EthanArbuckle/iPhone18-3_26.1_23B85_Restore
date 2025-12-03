@@ -1,15 +1,15 @@
 @interface _HearingAidInternalViewController
 - (_TtC21HearingModeSettingsUI33_HearingAidInternalViewController)init;
-- (id)makeMediaAssistViewControllerWithAddress:(id)a3 audiogramSample:(id)a4;
+- (id)makeMediaAssistViewControllerWithAddress:(id)address audiogramSample:(id)sample;
 @end
 
 @implementation _HearingAidInternalViewController
 
-- (id)makeMediaAssistViewControllerWithAddress:(id)a3 audiogramSample:(id)a4
+- (id)makeMediaAssistViewControllerWithAddress:(id)address audiogramSample:(id)sample
 {
   sub_2520046E0();
   v5 = objc_allocWithZone(sub_252003E10());
-  v6 = a4;
+  sampleCopy = sample;
   v7 = sub_252003E00();
 
   return v7;

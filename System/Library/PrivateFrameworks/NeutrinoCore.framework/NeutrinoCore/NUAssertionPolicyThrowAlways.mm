@@ -1,21 +1,21 @@
 @interface NUAssertionPolicyThrowAlways
-- (void)notifyAssertion:(id)a3;
+- (void)notifyAssertion:(id)assertion;
 @end
 
 @implementation NUAssertionPolicyThrowAlways
 
-- (void)notifyAssertion:(id)a3
+- (void)notifyAssertion:(id)assertion
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
-  v5 = a3;
-  v10 = [v5 prettyMethodName];
-  v6 = [v5 fileName];
-  v7 = [v5 lineNumber];
-  v8 = [v5 message];
-  v9 = [v5 currentlyExecutingJobName];
+  assertionCopy = assertion;
+  prettyMethodName = [assertionCopy prettyMethodName];
+  fileName = [assertionCopy fileName];
+  lineNumber = [assertionCopy lineNumber];
+  message = [assertionCopy message];
+  currentlyExecutingJobName = [assertionCopy currentlyExecutingJobName];
 
-  [v3 raise:v4 format:{@"Assertion failure in %@, %@:%ld: %@ %@", v10, v6, v7, v8, v9}];
+  [v3 raise:v4 format:{@"Assertion failure in %@, %@:%ld: %@ %@", prettyMethodName, fileName, lineNumber, message, currentlyExecutingJobName}];
 }
 
 @end

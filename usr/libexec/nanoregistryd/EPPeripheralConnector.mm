@@ -7,14 +7,14 @@
 
 - (void)setPeripheralConnectorShouldForceDisconnect
 {
-  v2 = [(EPResource *)self resourceManager];
-  [v2 setPeripheralConnectorShouldForceDisconnect];
+  resourceManager = [(EPResource *)self resourceManager];
+  [resourceManager setPeripheralConnectorShouldForceDisconnect];
 }
 
 - (void)peripheralWasInvalidated
 {
-  v2 = [(EPResource *)self resourceManager];
-  [v2 peripheralWasInvalidated];
+  resourceManager = [(EPResource *)self resourceManager];
+  [resourceManager peripheralWasInvalidated];
 }
 
 @end

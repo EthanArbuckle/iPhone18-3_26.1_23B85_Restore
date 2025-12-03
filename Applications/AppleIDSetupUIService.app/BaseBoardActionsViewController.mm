@@ -1,13 +1,13 @@
 @interface BaseBoardActionsViewController
-- (_TtC21AppleIDSetupUIService30BaseBoardActionsViewController)initWithCoder:(id)a3;
-- (_TtC21AppleIDSetupUIService30BaseBoardActionsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC21AppleIDSetupUIService30BaseBoardActionsViewController)initWithCoder:(id)coder;
+- (_TtC21AppleIDSetupUIService30BaseBoardActionsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation BaseBoardActionsViewController
 
-- (_TtC21AppleIDSetupUIService30BaseBoardActionsViewController)initWithCoder:(id)a3
+- (_TtC21AppleIDSetupUIService30BaseBoardActionsViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC21AppleIDSetupUIService30BaseBoardActionsViewController_viewSessionController) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -17,17 +17,17 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100006EE4();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10000CBBC(a3);
+  selfCopy = self;
+  sub_10000CBBC(appear);
 }
 
-- (_TtC21AppleIDSetupUIService30BaseBoardActionsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21AppleIDSetupUIService30BaseBoardActionsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

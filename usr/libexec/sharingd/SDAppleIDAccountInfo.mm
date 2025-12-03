@@ -1,16 +1,16 @@
 @interface SDAppleIDAccountInfo
 - (NSDictionary)personInfo;
 - (_TtC16DaemoniOSLibrary20SDAppleIDAccountInfo)init;
-- (void)setAccount:(id)a3;
+- (void)setAccount:(id)account;
 @end
 
 @implementation SDAppleIDAccountInfo
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
   v4 = *(self + OBJC_IVAR____TtC16DaemoniOSLibrary20SDAppleIDAccountInfo_account);
-  *(self + OBJC_IVAR____TtC16DaemoniOSLibrary20SDAppleIDAccountInfo_account) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC16DaemoniOSLibrary20SDAppleIDAccountInfo_account) = account;
+  accountCopy = account;
 }
 
 - (NSDictionary)personInfo

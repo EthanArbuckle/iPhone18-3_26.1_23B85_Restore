@@ -1,28 +1,28 @@
 @interface WFPhotoItemProviderContentItem
-+ (id)itemWithItemProviderItem:(id)a3 photoMediaFileRepresentation:(id)a4 assetIdentifier:(id)a5;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)itemWithItemProviderItem:(id)item photoMediaFileRepresentation:(id)representation assetIdentifier:(id)identifier;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
-- (id)defaultSourceForRepresentation:(id)a3;
+- (id)defaultSourceForRepresentation:(id)representation;
 - (id)outputTypes;
 @end
 
 @implementation WFPhotoItemProviderContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Photos app media (plural)", @"Photos app media");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Photos app media (singular)", @"Photos app media");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -36,23 +36,23 @@
   return v4;
 }
 
-+ (id)itemWithItemProviderItem:(id)a3 photoMediaFileRepresentation:(id)a4 assetIdentifier:(id)a5
++ (id)itemWithItemProviderItem:(id)item photoMediaFileRepresentation:(id)representation assetIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [WFPhotoMediaContentItem itemWithAssetIdentifier:v10 assetFile:v9];
+  itemCopy = item;
+  representationCopy = representation;
+  identifierCopy = identifier;
+  v11 = [WFPhotoMediaContentItem itemWithAssetIdentifier:identifierCopy assetFile:representationCopy];
   if (v11)
   {
-    v12 = [v8 itemProvider];
-    v13 = [a1 itemWithObject:v12 named:0];
+    itemProvider = [itemCopy itemProvider];
+    v13 = [self itemWithObject:itemProvider named:0];
 
-    v14 = [v8 contentName];
-    [v13 setContentName:v14];
+    contentName = [itemCopy contentName];
+    [v13 setContentName:contentName];
 
-    v15 = [v11 asset];
-    v16 = [WFObjectRepresentation object:v15];
+    asset = [v11 asset];
+    v16 = [WFObjectRepresentation object:asset];
     v27 = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
     v22 = 0;
@@ -88,7 +88,7 @@
       *buf = 136315394;
       *&buf[4] = "+[WFPhotoItemProviderContentItem itemWithItemProviderItem:photoMediaFileRepresentation:assetIdentifier:]";
       *&buf[12] = 2112;
-      *&buf[14] = v10;
+      *&buf[14] = identifierCopy;
       _os_log_impl(&dword_21E1BD000, v20, OS_LOG_TYPE_FAULT, "%s Failed to create photo asset with share sheet asset identifier %@", buf, 0x16u);
     }
 
@@ -98,23 +98,23 @@
   return v13;
 }
 
-- (id)defaultSourceForRepresentation:(id)a3
+- (id)defaultSourceForRepresentation:(id)representation
 {
   v4 = objc_alloc(MEMORY[0x277CD3A58]);
   v5 = [v4 initWithBundleIdentifier:*MEMORY[0x277D7A2A8]];
-  v6 = [MEMORY[0x277CD3A88] sharedResolver];
-  v7 = [v6 resolvedAppMatchingDescriptor:v5];
+  mEMORY[0x277CD3A88] = [MEMORY[0x277CD3A88] sharedResolver];
+  v7 = [mEMORY[0x277CD3A88] resolvedAppMatchingDescriptor:v5];
 
-  v8 = [(WFContentItem *)self cachingIdentifier];
-  v9 = [WFContentAttributionSet attributionSetWithAppDescriptor:v7 disclosureLevel:1 originalItemIdentifier:v8];
+  cachingIdentifier = [(WFContentItem *)self cachingIdentifier];
+  v9 = [WFContentAttributionSet attributionSetWithAppDescriptor:v7 disclosureLevel:1 originalItemIdentifier:cachingIdentifier];
 
   return v9;
 }
 
 - (id)outputTypes
 {
-  v2 = [objc_opt_class() outputTypes];
-  v3 = [v2 mutableCopy];
+  outputTypes = [objc_opt_class() outputTypes];
+  v3 = [outputTypes mutableCopy];
 
   v4 = [WFObjectType typeWithClass:objc_opt_class()];
   [v3 addObject:v4];

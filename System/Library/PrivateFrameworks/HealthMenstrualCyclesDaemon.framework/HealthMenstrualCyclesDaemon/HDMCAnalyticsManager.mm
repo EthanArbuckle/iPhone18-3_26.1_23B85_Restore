@@ -1,54 +1,54 @@
 @interface HDMCAnalyticsManager
-- (HDMCAnalyticsManager)initWithProfile:(id)a3 analysisManager:(id)a4 heartRateFeatureAvailabilityManager:(id)a5 deviationDetectionFeatureAvailabilityManager:(id)a6 wristTemperatureInputFeatureAvailabilityManager:(id)a7 pregnancyManager:(id)a8;
-- (void)_submitAnalyticsWithCompletion:(id)a3;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4;
+- (HDMCAnalyticsManager)initWithProfile:(id)profile analysisManager:(id)manager heartRateFeatureAvailabilityManager:(id)availabilityManager deviationDetectionFeatureAvailabilityManager:(id)featureAvailabilityManager wristTemperatureInputFeatureAvailabilityManager:(id)inputFeatureAvailabilityManager pregnancyManager:(id)pregnancyManager;
+- (void)_submitAnalyticsWithCompletion:(id)completion;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion;
 @end
 
 @implementation HDMCAnalyticsManager
 
-- (HDMCAnalyticsManager)initWithProfile:(id)a3 analysisManager:(id)a4 heartRateFeatureAvailabilityManager:(id)a5 deviationDetectionFeatureAvailabilityManager:(id)a6 wristTemperatureInputFeatureAvailabilityManager:(id)a7 pregnancyManager:(id)a8
+- (HDMCAnalyticsManager)initWithProfile:(id)profile analysisManager:(id)manager heartRateFeatureAvailabilityManager:(id)availabilityManager deviationDetectionFeatureAvailabilityManager:(id)featureAvailabilityManager wristTemperatureInputFeatureAvailabilityManager:(id)inputFeatureAvailabilityManager pregnancyManager:(id)pregnancyManager
 {
-  v14 = a3;
-  v23 = a4;
-  v22 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  profileCopy = profile;
+  managerCopy = manager;
+  availabilityManagerCopy = availabilityManager;
+  featureAvailabilityManagerCopy = featureAvailabilityManager;
+  inputFeatureAvailabilityManagerCopy = inputFeatureAvailabilityManager;
+  pregnancyManagerCopy = pregnancyManager;
   v24.receiver = self;
   v24.super_class = HDMCAnalyticsManager;
   v18 = [(HDMCAnalyticsManager *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_profile, v14);
-    objc_storeStrong(&v19->_analysisManager, a4);
-    objc_storeStrong(&v19->_heartRateFeatureAvailabilityManager, a5);
-    objc_storeStrong(&v19->_deviationDetectionFeatureAvailabilityManager, a6);
-    objc_storeStrong(&v19->_wristTemperatureInputFeatureAvailabilityManager, a7);
-    objc_storeStrong(&v19->_pregnancyManager, a8);
+    objc_storeWeak(&v18->_profile, profileCopy);
+    objc_storeStrong(&v19->_analysisManager, manager);
+    objc_storeStrong(&v19->_heartRateFeatureAvailabilityManager, availabilityManager);
+    objc_storeStrong(&v19->_deviationDetectionFeatureAvailabilityManager, featureAvailabilityManager);
+    objc_storeStrong(&v19->_wristTemperatureInputFeatureAvailabilityManager, inputFeatureAvailabilityManager);
+    objc_storeStrong(&v19->_pregnancyManager, pregnancyManager);
     WeakRetained = objc_loadWeakRetained(&v19->_profile);
-    [WeakRetained registerProfileReadyObserver:v19 queue:{0, v22, v23}];
+    [WeakRetained registerProfileReadyObserver:v19 queue:{0, availabilityManagerCopy, managerCopy}];
   }
 
   return v19;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained daemon];
-  v5 = [v4 analyticsSubmissionCoordinator];
-  [v5 addObserver:self queue:0];
+  daemon = [WeakRetained daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  [analyticsSubmissionCoordinator addObserver:self queue:0];
 }
 
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v6 = +[HDMCDailyAnalytics shouldSubmit];
-  v7 = [MEMORY[0x277CBEBD0] hkmc_menstrualCyclesDefaults];
-  v8 = [v7 hkmc_analyticsDebugModeEnabled];
+  hkmc_menstrualCyclesDefaults = [MEMORY[0x277CBEBD0] hkmc_menstrualCyclesDefaults];
+  hkmc_analyticsDebugModeEnabled = [hkmc_menstrualCyclesDefaults hkmc_analyticsDebugModeEnabled];
 
   _HKInitializeLogging();
   v9 = MEMORY[0x277CCC2E8];
@@ -60,7 +60,7 @@
     v13 = MEMORY[0x277CCABB0];
     v14 = v12;
     v15 = [v13 numberWithBool:v6];
-    v16 = [MEMORY[0x277CCABB0] numberWithBool:v8];
+    v16 = [MEMORY[0x277CCABB0] numberWithBool:hkmc_analyticsDebugModeEnabled];
     v22 = 138543874;
     v23 = v12;
     v24 = 2114;
@@ -70,9 +70,9 @@
     _os_log_impl(&dword_2293D1000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received daily analytics trigger. metricsEnabled: %{public}@, inDebugMode: %{public}@", &v22, 0x20u);
   }
 
-  if (v6 | v8)
+  if (v6 | hkmc_analyticsDebugModeEnabled)
   {
-    [(HDMCAnalyticsManager *)self _submitAnalyticsWithCompletion:v5];
+    [(HDMCAnalyticsManager *)self _submitAnalyticsWithCompletion:completionCopy];
   }
 
   else
@@ -89,16 +89,16 @@
       _os_log_impl(&dword_2293D1000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping analytics submission", &v22, 0xCu);
     }
 
-    (*(v5 + 2))(v5, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_submitAnalyticsWithCompletion:(id)a3
+- (void)_submitAnalyticsWithCompletion:(id)completion
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _HKLogPersistedSignposts();
   v6 = _HKLogSignpostIDGenerate();
 
@@ -130,10 +130,10 @@
     _os_log_impl(&dword_2293D1000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Beginning analytics submission", buf, 0xCu);
   }
 
-  v16 = [(HDMCAnalysisManager *)self->_analysisManager currentAnalysis];
-  v17 = [v16 cycles];
+  currentAnalysis = [(HDMCAnalysisManager *)self->_analysisManager currentAnalysis];
+  cycles = [currentAnalysis cycles];
 
-  if (v17)
+  if (cycles)
   {
     v18 = 0;
   }
@@ -145,11 +145,11 @@
     v20 = [(HDMCAnalysisManager *)analysisManager _analyzeWithForceIncludeCycles:1 forceAnalyzeCompleteHistory:0 error:&v48];
     v18 = v48;
 
-    v16 = v20;
+    currentAnalysis = v20;
   }
 
   _HKInitializeLogging();
-  if (v16)
+  if (currentAnalysis)
   {
     v21 = *v11;
     if (os_log_type_enabled(*v11, OS_LOG_TYPE_DEFAULT))
@@ -164,7 +164,7 @@
 
     v25 = [HDMCDailyAnalytics alloc];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v27 = [(HDMCDailyAnalytics *)v25 initWithProfile:WeakRetained analysis:v16 heartRateFeatureAvailabilityManager:self->_heartRateFeatureAvailabilityManager deviationDetectionFeatureAvailabilityManager:self->_deviationDetectionFeatureAvailabilityManager wristTemperatureInputFeatureAvailabilityManager:self->_wristTemperatureInputFeatureAvailabilityManager pregnancyManager:self->_pregnancyManager];
+    v27 = [(HDMCDailyAnalytics *)v25 initWithProfile:WeakRetained analysis:currentAnalysis heartRateFeatureAvailabilityManager:self->_heartRateFeatureAvailabilityManager deviationDetectionFeatureAvailabilityManager:self->_deviationDetectionFeatureAvailabilityManager wristTemperatureInputFeatureAvailabilityManager:self->_wristTemperatureInputFeatureAvailabilityManager pregnancyManager:self->_pregnancyManager];
 
     v47 = v18;
     v28 = [(HDMCDailyAnalytics *)v27 submitMetricWithError:&v47];
@@ -199,7 +199,7 @@
         _os_log_impl(&dword_2293D1000, v35, OS_LOG_TYPE_DEFAULT, "[%{public}@] Metric submission succeeded", buf, 0xCu);
       }
 
-      (*(v4 + 2))(v4, 0, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0);
     }
 
     else
@@ -222,7 +222,7 @@
         [HDMCAnalyticsManager _submitAnalyticsWithCompletion:v45];
       }
 
-      (*(v4 + 2))(v4, 0, 2, v29);
+      (*(completionCopy + 2))(completionCopy, 0, 2, v29);
     }
 
     v18 = v29;
@@ -251,7 +251,7 @@
       [HDMCAnalyticsManager _submitAnalyticsWithCompletion:v42];
     }
 
-    (*(v4 + 2))(v4, 0, 2, v18);
+    (*(completionCopy + 2))(completionCopy, 0, 2, v18);
   }
 
   v46 = *MEMORY[0x277D85DE8];

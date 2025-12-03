@@ -11,11 +11,11 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 startDate];
-  v4 = [v3 stringFromDate];
-  v5 = [a1 endDate];
-  v6 = [v5 stringFromDate];
-  v7 = [v2 stringWithFormat:@"startDate, %@, endDate, %@", v4, v6];
+  startDate = [self startDate];
+  stringFromDate = [startDate stringFromDate];
+  endDate = [self endDate];
+  stringFromDate2 = [endDate stringFromDate];
+  v7 = [v2 stringWithFormat:@"startDate, %@, endDate, %@", stringFromDate, stringFromDate2];
 
   return v7;
 }
@@ -68,13 +68,13 @@ LABEL_8:
   {
     v5 = [v3 sortedArrayUsingComparator:&__block_literal_global_54];
     v6 = objc_opt_new();
-    v7 = [v5 firstObject];
-    v8 = [v7 startDate];
-    v20 = v7;
-    v9 = [v7 endDate];
+    firstObject = [v5 firstObject];
+    startDate = [firstObject startDate];
+    v20 = firstObject;
+    endDate = [firstObject endDate];
     if ([v5 count] < 2)
     {
-      v17 = v9;
+      endDate3 = endDate;
     }
 
     else
@@ -83,38 +83,38 @@ LABEL_8:
       do
       {
         v11 = [v5 objectAtIndex:v10];
-        v12 = [v11 startDate];
-        v13 = [v12 earlierDate:v9];
-        v14 = [v11 startDate];
+        startDate2 = [v11 startDate];
+        v13 = [startDate2 earlierDate:endDate];
+        startDate3 = [v11 startDate];
 
-        if (v13 == v14)
+        if (v13 == startDate3)
         {
-          v15 = [v11 endDate];
-          v17 = [v9 laterDate:v15];
+          endDate2 = [v11 endDate];
+          endDate3 = [endDate laterDate:endDate2];
         }
 
         else
         {
-          v15 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v8 endDate:v9];
-          if (v15)
+          endDate2 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:startDate endDate:endDate];
+          if (endDate2)
           {
-            [v6 addObject:v15];
+            [v6 addObject:endDate2];
           }
 
-          v16 = [v11 startDate];
+          startDate4 = [v11 startDate];
 
-          v17 = [v11 endDate];
-          v8 = v16;
+          endDate3 = [v11 endDate];
+          startDate = startDate4;
         }
 
         ++v10;
-        v9 = v17;
+        endDate = endDate3;
       }
 
       while ([v5 count] > v10);
     }
 
-    v18 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v8 endDate:v17];
+    v18 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:startDate endDate:endDate3];
     if (v18)
     {
       [v6 addObject:v18];
@@ -138,9 +138,9 @@ LABEL_8:
   if ([v4 count])
   {
     v24 = v4;
-    v5 = [a1 mergeDateIntervals:v4];
+    v5 = [self mergeDateIntervals:v4];
     v6 = objc_opt_new();
-    v7 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -154,7 +154,7 @@ LABEL_8:
       do
       {
         v12 = 0;
-        v13 = v7;
+        v13 = distantPast;
         do
         {
           if (*v26 != v11)
@@ -164,8 +164,8 @@ LABEL_8:
 
           v14 = *(*(&v25 + 1) + 8 * v12);
           v15 = objc_alloc(MEMORY[0x277CCA970]);
-          v16 = [v14 startDate];
-          v17 = [v15 initWithStartDate:v13 endDate:v16];
+          startDate = [v14 startDate];
+          v17 = [v15 initWithStartDate:v13 endDate:startDate];
 
           [v17 duration];
           if (v18 > 0.0)
@@ -173,10 +173,10 @@ LABEL_8:
             [v6 addObject:v17];
           }
 
-          v7 = [v14 endDate];
+          distantPast = [v14 endDate];
 
           ++v12;
-          v13 = v7;
+          v13 = distantPast;
         }
 
         while (v10 != v12);
@@ -187,8 +187,8 @@ LABEL_8:
     }
 
     v19 = objc_alloc(MEMORY[0x277CCA970]);
-    v20 = [MEMORY[0x277CBEAA8] distantFuture];
-    v21 = [v19 initWithStartDate:v7 endDate:v20];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    v21 = [v19 initWithStartDate:distantPast endDate:distantFuture];
 
     [v21 duration];
     if (v22 > 0.0)

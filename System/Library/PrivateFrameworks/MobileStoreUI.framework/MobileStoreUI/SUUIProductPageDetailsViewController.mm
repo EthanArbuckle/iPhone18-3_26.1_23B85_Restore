@@ -1,7 +1,7 @@
 @interface SUUIProductPageDetailsViewController
-+ (double)defaultPageWidthForUserInterfaceIdiom:(int64_t)a3;
++ (double)defaultPageWidthForUserInterfaceIdiom:(int64_t)idiom;
 - (SUUIProductPageChildViewControllerDelegate)delegate;
-- (SUUIProductPageDetailsViewController)initWithProductPage:(id)a3;
+- (SUUIProductPageDetailsViewController)initWithProductPage:(id)page;
 - (UIScrollView)scrollView;
 - (id)_bundledAppsSection;
 - (id)_copyrightSection;
@@ -13,35 +13,35 @@
 - (id)_screenshotsSection;
 - (id)_storeNotesSection;
 - (id)_tableViewController;
-- (id)_textLayoutRequestWithText:(id)a3 widthOffset:(double)a4;
+- (id)_textLayoutRequestWithText:(id)text widthOffset:(double)offset;
 - (id)_whatsNewSection;
-- (void)_addTapRecognizerForView:(id)a3 action:(SEL)a4;
-- (void)_configureSwooshSection:(id)a3;
-- (void)_expandSection:(id)a3;
+- (void)_addTapRecognizerForView:(id)view action:(SEL)action;
+- (void)_configureSwooshSection:(id)section;
+- (void)_expandSection:(id)section;
 - (void)dealloc;
-- (void)itemStateCenterRestrictionsChanged:(id)a3;
+- (void)itemStateCenterRestrictionsChanged:(id)changed;
 - (void)loadView;
-- (void)screenshotsWillBeginDragging:(id)a3;
-- (void)setAskPermission:(BOOL)a3;
-- (void)setClientContext:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHeaderViewController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)screenshotsWillBeginDragging:(id)dragging;
+- (void)setAskPermission:(BOOL)permission;
+- (void)setClientContext:(id)context;
+- (void)setDelegate:(id)delegate;
+- (void)setHeaderViewController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation SUUIProductPageDetailsViewController
 
-- (SUUIProductPageDetailsViewController)initWithProductPage:(id)a3
+- (SUUIProductPageDetailsViewController)initWithProductPage:(id)page
 {
-  v5 = a3;
+  pageCopy = page;
   v10.receiver = self;
   v10.super_class = SUUIProductPageDetailsViewController;
   v6 = [(SUUIProductPageDetailsViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_productPage, a3);
+    objc_storeStrong(&v6->_productPage, page);
     v8 = +[SUUIItemStateCenter defaultCenter];
     [v8 addObserver:v7];
   }
@@ -90,54 +90,54 @@
   [(SUUIProductPageDetailsViewController *)&v9 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SUUIProductPageDetailsViewController;
-  [(SUUIProductPageDetailsViewController *)&v4 viewDidAppear:a3];
+  [(SUUIProductPageDetailsViewController *)&v4 viewDidAppear:appear];
   [(SUUIResourceLoader *)self->_resourceLoader enterForeground];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SUUIProductPageDetailsViewController;
-  [(SUUIProductPageDetailsViewController *)&v4 viewDidDisappear:a3];
+  [(SUUIProductPageDetailsViewController *)&v4 viewDidDisappear:disappear];
   [(SUUIResourceLoader *)self->_resourceLoader enterBackground];
 }
 
-+ (double)defaultPageWidthForUserInterfaceIdiom:(int64_t)a3
++ (double)defaultPageWidthForUserInterfaceIdiom:(int64_t)idiom
 {
-  if (a3 == 1)
+  if (idiom == 1)
   {
     return 630.0;
   }
 
-  if (!a3)
+  if (!idiom)
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v4)
+    if (userInterfaceIdiom)
     {
       return 320.0;
     }
   }
 
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v7;
 
   return v5;
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
-  v5 = a3;
-  if (self->_clientContext != v5)
+  contextCopy = context;
+  if (self->_clientContext != contextCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_clientContext, a3);
+    v8 = contextCopy;
+    objc_storeStrong(&self->_clientContext, context);
     clientContext = self->_clientContext;
     if (clientContext)
     {
@@ -151,15 +151,15 @@
     v7 = ;
     [(SUUIProductPageDetailsViewController *)self setTitle:v7];
 
-    v5 = v8;
+    contextCopy = v8;
   }
 }
 
-- (void)setAskPermission:(BOOL)a3
+- (void)setAskPermission:(BOOL)permission
 {
-  if (self->_askPermission != a3)
+  if (self->_askPermission != permission)
   {
-    self->_askPermission = a3;
+    self->_askPermission = permission;
     if ([(NSMutableArray *)self->_sections count])
     {
       if ([(NSMutableArray *)self->_sections count])
@@ -174,12 +174,12 @@
           if (isKindOfClass)
           {
             v7 = [SUUIProductPageTableLinksSection alloc];
-            v8 = [(SUUIProductPage *)self->_productPage item];
-            v9 = [(SUUIProductPageTableLinksSection *)v7 initWithItem:v8 clientContext:self->_clientContext askPermission:self->_askPermission];
+            item = [(SUUIProductPage *)self->_productPage item];
+            v9 = [(SUUIProductPageTableLinksSection *)v7 initWithItem:item clientContext:self->_clientContext askPermission:self->_askPermission];
 
-            v10 = [(SUUIProductPage *)self->_productPage uber];
-            v11 = [v10 colorScheme];
-            [(SUUIProductPageTableLinksSection *)v9 setColorScheme:v11];
+            uber = [(SUUIProductPage *)self->_productPage uber];
+            colorScheme = [uber colorScheme];
+            [(SUUIProductPageTableLinksSection *)v9 setColorScheme:colorScheme];
 
             [(SUUITableViewSection *)v9 setSectionIndex:v4];
             [(NSMutableArray *)self->_sections replaceObjectAtIndex:v4 withObject:v9];
@@ -195,8 +195,8 @@
       sections = self->_sections;
       self->_sections = v12;
 
-      v14 = [(SUUIProductPageDetailsViewController *)self _tableViewController];
-      [v14 setSections:self->_sections];
+      _tableViewController = [(SUUIProductPageDetailsViewController *)self _tableViewController];
+      [_tableViewController setSections:self->_sections];
     }
   }
 }
@@ -204,8 +204,8 @@
 - (void)loadView
 {
   v73 = *MEMORY[0x277D85DE8];
-  v3 = [(SUUIProductPageDetailsViewController *)self _tableViewController];
-  v4 = [v3 tableView];
+  _tableViewController = [(SUUIProductPageDetailsViewController *)self _tableViewController];
+  tableView = [_tableViewController tableView];
   if (![(NSMutableArray *)self->_sections count])
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -217,52 +217,52 @@
     textLayoutCache = self->_textLayoutCache;
     self->_textLayoutCache = v8;
 
-    v10 = [(SUUIProductPage *)self->_productPage uber];
-    v64 = [v10 colorScheme];
+    uber = [(SUUIProductPage *)self->_productPage uber];
+    colorScheme = [uber colorScheme];
 
-    v11 = [(SUUIProductPage *)self->_productPage item];
-    v12 = [(SUUIProductPageDetailsViewController *)self _storeNotesSection];
-    v67 = v11;
-    if (v12)
+    item = [(SUUIProductPage *)self->_productPage item];
+    _storeNotesSection = [(SUUIProductPageDetailsViewController *)self _storeNotesSection];
+    v67 = item;
+    if (_storeNotesSection)
     {
-      [v12 setStringIndex:{objc_msgSend(v5, "count")}];
-      v13 = [v11 storeNotes];
-      v14 = [v13 standardNotes];
-      v15 = [(SUUIProductPageDetailsViewController *)self _textLayoutRequestWithText:v14 widthOffset:0.0];
+      [_storeNotesSection setStringIndex:{objc_msgSend(v5, "count")}];
+      storeNotes = [item storeNotes];
+      standardNotes = [storeNotes standardNotes];
+      v15 = [(SUUIProductPageDetailsViewController *)self _textLayoutRequestWithText:standardNotes widthOffset:0.0];
       [v5 addObject:v15];
 
-      v11 = v67;
-      [v12 setSectionIndex:{-[NSMutableArray count](self->_sections, "count")}];
-      [(NSMutableArray *)self->_sections addObject:v12];
+      item = v67;
+      [_storeNotesSection setSectionIndex:{-[NSMutableArray count](self->_sections, "count")}];
+      [(NSMutableArray *)self->_sections addObject:_storeNotesSection];
     }
 
-    v62 = v12;
-    v16 = [(SUUIProductPageDetailsViewController *)self _bundledAppsSection];
-    if (v16)
+    v62 = _storeNotesSection;
+    _bundledAppsSection = [(SUUIProductPageDetailsViewController *)self _bundledAppsSection];
+    if (_bundledAppsSection)
     {
-      [v16 setSectionIndex:{-[NSMutableArray count](self->_sections, "count")}];
-      [(NSMutableArray *)self->_sections addObject:v16];
+      [_bundledAppsSection setSectionIndex:{-[NSMutableArray count](self->_sections, "count")}];
+      [(NSMutableArray *)self->_sections addObject:_bundledAppsSection];
     }
 
-    v61 = v16;
-    v17 = [(SUUIProductPageDetailsViewController *)self _parentBundlesSection];
-    v18 = v64;
-    if (v17)
+    v61 = _bundledAppsSection;
+    _parentBundlesSection = [(SUUIProductPageDetailsViewController *)self _parentBundlesSection];
+    v18 = colorScheme;
+    if (_parentBundlesSection)
     {
-      [v17 setSectionIndex:{-[NSMutableArray count](self->_sections, "count")}];
-      [(NSMutableArray *)self->_sections addObject:v17];
+      [_parentBundlesSection setSectionIndex:{-[NSMutableArray count](self->_sections, "count")}];
+      [(NSMutableArray *)self->_sections addObject:_parentBundlesSection];
     }
 
     [(SUUIProductPageDetailsViewController *)self _screenshotsSection];
-    v63 = v60 = v17;
+    v63 = v60 = _parentBundlesSection;
     if (v63)
     {
-      v19 = [v11 parentalControlsRank];
+      parentalControlsRank = [item parentalControlsRank];
       v20 = +[SUUIItemStateCenter defaultCenter];
-      v21 = [v20 parentalControlsRank];
+      parentalControlsRank2 = [v20 parentalControlsRank];
 
-      v22 = v19 < v21;
-      v11 = v67;
+      v22 = parentalControlsRank < parentalControlsRank2;
+      item = v67;
       if (v22)
       {
         [v63 setSectionIndex:{-[NSMutableArray count](self->_sections, "count")}];
@@ -270,76 +270,76 @@
       }
     }
 
-    v23 = [(SUUIProductPageDetailsViewController *)self _descriptionSection];
-    v66 = v23;
-    if (v23)
+    _descriptionSection = [(SUUIProductPageDetailsViewController *)self _descriptionSection];
+    v66 = _descriptionSection;
+    if (_descriptionSection)
     {
-      [v23 setStringIndex:{objc_msgSend(v5, "count")}];
-      v24 = [v11 itemDescription];
-      v25 = [(SUUIProductPageDetailsViewController *)self _textLayoutRequestWithText:v24 widthOffset:0.0];
+      [_descriptionSection setStringIndex:{objc_msgSend(v5, "count")}];
+      itemDescription = [item itemDescription];
+      v25 = [(SUUIProductPageDetailsViewController *)self _textLayoutRequestWithText:itemDescription widthOffset:0.0];
       [v5 addObject:v25];
 
       [v66 setSectionIndex:{-[NSMutableArray count](self->_sections, "count")}];
       [(NSMutableArray *)self->_sections addObject:v66];
     }
 
-    v26 = [(SUUIProductPageDetailsViewController *)self _whatsNewSection];
-    v65 = v26;
-    if (v26)
+    _whatsNewSection = [(SUUIProductPageDetailsViewController *)self _whatsNewSection];
+    v65 = _whatsNewSection;
+    if (_whatsNewSection)
     {
-      [v26 setStringIndex:{objc_msgSend(v5, "count")}];
-      v27 = [v11 updateDescription];
-      v28 = [(SUUIProductPageDetailsViewController *)self _textLayoutRequestWithText:v27 widthOffset:0.0];
+      [_whatsNewSection setStringIndex:{objc_msgSend(v5, "count")}];
+      updateDescription = [item updateDescription];
+      v28 = [(SUUIProductPageDetailsViewController *)self _textLayoutRequestWithText:updateDescription widthOffset:0.0];
       [v5 addObject:v28];
 
       [v65 setSectionIndex:{-[NSMutableArray count](self->_sections, "count")}];
       [(NSMutableArray *)self->_sections addObject:v65];
     }
 
-    v29 = [(SUUIProductPageDetailsViewController *)self _featuresSection];
-    if (v29)
+    _featuresSection = [(SUUIProductPageDetailsViewController *)self _featuresSection];
+    if (_featuresSection)
     {
-      [v29 setSectionIndex:{-[NSMutableArray count](self->_sections, "count")}];
-      [(NSMutableArray *)self->_sections addObject:v29];
+      [_featuresSection setSectionIndex:{-[NSMutableArray count](self->_sections, "count")}];
+      [(NSMutableArray *)self->_sections addObject:_featuresSection];
     }
 
-    v59 = v29;
-    v30 = [(SUUIProductPageDetailsViewController *)self _infoSection];
-    if (v30)
+    v59 = _featuresSection;
+    _infoSection = [(SUUIProductPageDetailsViewController *)self _infoSection];
+    if (_infoSection)
     {
-      [v30 setSectionIndex:{-[NSMutableArray count](self->_sections, "count")}];
-      [(NSMutableArray *)self->_sections addObject:v30];
+      [_infoSection setSectionIndex:{-[NSMutableArray count](self->_sections, "count")}];
+      [(NSMutableArray *)self->_sections addObject:_infoSection];
     }
 
-    v58 = v30;
+    v58 = _infoSection;
     if (SUUIUserInterfaceIdiom(self->_clientContext) == 1)
     {
-      v57 = v3;
-      v31 = [v11 inAppPurchases];
-      v32 = [v31 count];
+      v57 = _tableViewController;
+      inAppPurchases = [item inAppPurchases];
+      v32 = [inAppPurchases count];
 
       if (v32)
       {
         v33 = [SUUIProductPageTableInAppPurchasesSection alloc];
-        v34 = [v11 inAppPurchases];
-        v35 = [(SUUIProductPageTableInAppPurchasesSection *)v33 initWithInAppPurchases:v34 clientContext:self->_clientContext];
+        inAppPurchases2 = [item inAppPurchases];
+        v35 = [(SUUIProductPageTableInAppPurchasesSection *)v33 initWithInAppPurchases:inAppPurchases2 clientContext:self->_clientContext];
 
-        [(SUUIProductPageTableInAppPurchasesSection *)v35 setColorScheme:v64];
+        [(SUUIProductPageTableInAppPurchasesSection *)v35 setColorScheme:colorScheme];
         [(SUUITableViewSection *)v35 setSectionIndex:[(NSMutableArray *)self->_sections count]];
-        v36 = [(SUUIProductPageTableInAppPurchasesSection *)v35 headerViewForTableView:v4];
+        v36 = [(SUUIProductPageTableInAppPurchasesSection *)v35 headerViewForTableView:tableView];
         [(SUUIProductPageDetailsViewController *)self _addTapRecognizerForView:v36 action:sel__expandSection_];
 
         [(NSMutableArray *)self->_sections addObject:v35];
       }
 
-      v56 = v4;
-      v37 = [v11 releaseNotes];
+      v56 = tableView;
+      releaseNotes = [item releaseNotes];
       v38 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v68 = 0u;
       v69 = 0u;
       v70 = 0u;
       v71 = 0u;
-      v39 = v37;
+      v39 = releaseNotes;
       v40 = [v39 countByEnumeratingWithState:&v68 objects:v72 count:16];
       if (v40)
       {
@@ -354,11 +354,11 @@
               objc_enumerationMutation(v39);
             }
 
-            v44 = [*(*(&v68 + 1) + 8 * i) changeNotes];
-            v45 = v44;
-            if (v44)
+            changeNotes = [*(*(&v68 + 1) + 8 * i) changeNotes];
+            v45 = changeNotes;
+            if (changeNotes)
             {
-              v46 = v44;
+              v46 = changeNotes;
             }
 
             else
@@ -376,15 +376,15 @@
         while (v41);
       }
 
-      v4 = v56;
-      v18 = v64;
+      tableView = v56;
+      v18 = colorScheme;
       if ([v39 count])
       {
         v48 = [[SUUIProductPageTableUpdateHistorySection alloc] initWithClientContext:self->_clientContext];
         v49 = [(SUUIProductPageTableUpdateHistorySection *)v48 headerViewForTableView:v56];
         [(SUUIProductPageDetailsViewController *)self _addTapRecognizerForView:v49 action:sel__expandSection_];
 
-        [(SUUIProductPageTableUpdateHistorySection *)v48 setColorScheme:v64];
+        [(SUUIProductPageTableUpdateHistorySection *)v48 setColorScheme:colorScheme];
         -[SUUIProductPageTableUpdateHistorySection setFirstStringIndex:](v48, "setFirstStringIndex:", [v5 count]);
         [(SUUIProductPageTableUpdateHistorySection *)v48 setReleaseNotes:v39];
         [(SUUITableViewSection *)v48 setSectionIndex:[(NSMutableArray *)self->_sections count]];
@@ -396,11 +396,11 @@
         [(NSMutableArray *)self->_sections addObject:v48];
       }
 
-      v3 = v57;
-      v11 = v67;
+      _tableViewController = v57;
+      item = v67;
     }
 
-    v51 = [[SUUIProductPageTableLinksSection alloc] initWithItem:v11 clientContext:self->_clientContext askPermission:self->_askPermission];
+    v51 = [[SUUIProductPageTableLinksSection alloc] initWithItem:item clientContext:self->_clientContext askPermission:self->_askPermission];
     [(SUUIProductPageTableLinksSection *)v51 setColorScheme:v18];
     if ([(SUUIProductPageTableLinksSection *)v51 numberOfRowsInSection]>= 1)
     {
@@ -408,64 +408,64 @@
       [(NSMutableArray *)self->_sections addObject:v51];
     }
 
-    v52 = [(SUUIProductPageDetailsViewController *)self _copyrightSection];
-    if (v52)
+    _copyrightSection = [(SUUIProductPageDetailsViewController *)self _copyrightSection];
+    if (_copyrightSection)
     {
-      [v52 setSectionIndex:{-[NSMutableArray count](self->_sections, "count")}];
-      [(NSMutableArray *)self->_sections addObject:v52];
+      [_copyrightSection setSectionIndex:{-[NSMutableArray count](self->_sections, "count")}];
+      [(NSMutableArray *)self->_sections addObject:_copyrightSection];
     }
 
     [(SUUILayoutCache *)self->_textLayoutCache populateCacheWithLayoutRequests:v5];
-    [v3 setTextLayoutCache:self->_textLayoutCache];
-    [v3 setSections:self->_sections];
+    [_tableViewController setTextLayoutCache:self->_textLayoutCache];
+    [_tableViewController setSections:self->_sections];
   }
 
-  v53 = [v3 view];
+  view = [_tableViewController view];
   v54 = objc_alloc(MEMORY[0x277D75D18]);
-  [v53 frame];
+  [view frame];
   v55 = [v54 initWithFrame:?];
-  [v53 setAutoresizingMask:18];
+  [view setAutoresizingMask:18];
   [v55 bounds];
-  [v53 setFrame:?];
-  [v55 addSubview:v53];
+  [view setFrame:?];
+  [v55 addSubview:view];
   [(SUUIProductPageDetailsViewController *)self setView:v55];
 }
 
-- (void)setHeaderViewController:(id)a3
+- (void)setHeaderViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SUUIProductPageDetailsViewController *)self _tableViewController];
-  [v5 setHeaderViewController:v4];
+  controllerCopy = controller;
+  _tableViewController = [(SUUIProductPageDetailsViewController *)self _tableViewController];
+  [_tableViewController setHeaderViewController:controllerCopy];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
-  v5 = [(SUUIProductPageDetailsViewController *)self _tableViewController];
+  objc_storeWeak(&self->_delegate, delegate);
+  _tableViewController = [(SUUIProductPageDetailsViewController *)self _tableViewController];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [v5 setDelegate:WeakRetained];
+  [_tableViewController setDelegate:WeakRetained];
 }
 
 - (UIScrollView)scrollView
 {
-  v2 = [(SUUIProductPageDetailsViewController *)self _tableViewController];
-  v3 = [v2 tableView];
+  _tableViewController = [(SUUIProductPageDetailsViewController *)self _tableViewController];
+  tableView = [_tableViewController tableView];
 
-  return v3;
+  return tableView;
 }
 
-- (void)screenshotsWillBeginDragging:(id)a3
+- (void)screenshotsWillBeginDragging:(id)dragging
 {
   if (!SUUIUserInterfaceIdiom(self->_clientContext))
   {
-    v6 = [(SUUIProductPageDetailsViewController *)self _tableViewController];
-    v4 = [(SUUIProductPageDetailsViewController *)self _screenshotsSection];
-    v5 = [v4 headerView];
-    [v6 scrollToView:v5 animated:1];
+    _tableViewController = [(SUUIProductPageDetailsViewController *)self _tableViewController];
+    _screenshotsSection = [(SUUIProductPageDetailsViewController *)self _screenshotsSection];
+    headerView = [_screenshotsSection headerView];
+    [_tableViewController scrollToView:headerView animated:1];
   }
 }
 
-- (void)itemStateCenterRestrictionsChanged:(id)a3
+- (void)itemStateCenterRestrictionsChanged:(id)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -536,13 +536,13 @@ void __75__SUUIProductPageDetailsViewController_itemStateCenterRestrictionsChang
 LABEL_20:
 }
 
-- (void)_expandSection:(id)a3
+- (void)_expandSection:(id)section
 {
-  v4 = a3;
-  v5 = [(SUUIProductPageDetailsViewController *)self _tableViewController];
-  v6 = [v5 tableView];
+  sectionCopy = section;
+  _tableViewController = [(SUUIProductPageDetailsViewController *)self _tableViewController];
+  tableView = [_tableViewController tableView];
 
-  [v4 locationInView:v6];
+  [sectionCopy locationInView:tableView];
   v8 = v7;
   v10 = v9;
 
@@ -551,10 +551,10 @@ LABEL_20:
   v13[1] = 3221225472;
   v13[2] = __55__SUUIProductPageDetailsViewController__expandSection___block_invoke;
   v13[3] = &unk_2798FDD38;
-  v14 = v6;
+  v14 = tableView;
   v15 = v8;
   v16 = v10;
-  v12 = v6;
+  v12 = tableView;
   [(NSMutableArray *)sections enumerateObjectsUsingBlock:v13];
 }
 
@@ -595,26 +595,26 @@ uint64_t __55__SUUIProductPageDetailsViewController__expandSection___block_invok
   return MEMORY[0x2821F96F8](v7, v8);
 }
 
-- (void)_addTapRecognizerForView:(id)a3 action:(SEL)a4
+- (void)_addTapRecognizerForView:(id)view action:(SEL)action
 {
   v6 = MEMORY[0x277D75B80];
-  v7 = a3;
-  v10 = [[v6 alloc] initWithTarget:self action:a4];
-  v8 = [(SUUIProductPageTableViewController *)self->_tableViewController tableView];
-  v9 = [v8 panGestureRecognizer];
-  [v10 requireGestureRecognizerToFail:v9];
+  viewCopy = view;
+  v10 = [[v6 alloc] initWithTarget:self action:action];
+  tableView = [(SUUIProductPageTableViewController *)self->_tableViewController tableView];
+  panGestureRecognizer = [tableView panGestureRecognizer];
+  [v10 requireGestureRecognizerToFail:panGestureRecognizer];
 
-  [v7 addGestureRecognizer:v10];
+  [viewCopy addGestureRecognizer:v10];
 }
 
 - (id)_bundledAppsSection
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [(SUUIProductPage *)self->_productPage item];
-  if ([v3 itemKind] == 17)
+  item = [(SUUIProductPage *)self->_productPage item];
+  if ([item itemKind] == 17)
   {
-    v29 = self;
-    v4 = [v3 childItemIdentifiers];
+    selfCopy = self;
+    childItemIdentifiers = [item childItemIdentifiers];
     v36 = 0uLL;
     v37 = 0;
     SUUILockupStyleDefault(&v36);
@@ -623,7 +623,7 @@ uint64_t __55__SUUIProductPageDetailsViewController__expandSection___block_invok
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v6 = v4;
+    v6 = childItemIdentifiers;
     v7 = [v6 countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v7)
     {
@@ -639,7 +639,7 @@ uint64_t __55__SUUIProductPageDetailsViewController__expandSection___block_invok
           }
 
           v11 = *(*(&v32 + 1) + 8 * i);
-          v12 = [v3 childItemForIdentifier:v11];
+          v12 = [item childItemForIdentifier:v11];
           v13 = [SUUILockupComponent alloc];
           v14 = v13;
           if (v12)
@@ -651,10 +651,10 @@ uint64_t __55__SUUIProductPageDetailsViewController__expandSection___block_invok
 
           else
           {
-            v16 = [v11 longLongValue];
+            longLongValue = [v11 longLongValue];
             v30 = v36;
             v31 = v37;
-            v15 = [(SUUILockupComponent *)v14 initWithItemIdentifier:v16 style:&v30];
+            v15 = [(SUUILockupComponent *)v14 initWithItemIdentifier:longLongValue style:&v30];
           }
 
           v17 = v15;
@@ -681,7 +681,7 @@ uint64_t __55__SUUIProductPageDetailsViewController__expandSection___block_invok
       v19 = v18;
       v20 = objc_alloc_init(MEMORY[0x277CCABB8]);
       [v20 setNumberStyle:1];
-      clientContext = v29->_clientContext;
+      clientContext = selfCopy->_clientContext;
       if (clientContext)
       {
         [(SUUIClientContext *)clientContext localizedStringForKey:@"PRODUCT_PAGE_BUNDLED_APPS_%@" inTable:@"ProductPage"];
@@ -698,7 +698,7 @@ uint64_t __55__SUUIProductPageDetailsViewController__expandSection___block_invok
       v27 = [v24 stringWithValidatedFormat:v23 validFormatSpecifiers:@"%@" error:0, v26];
 
       v22 = [[SUUIProductPageTableSwooshSection alloc] initWithLockups:v5 title:v27];
-      [(SUUIProductPageDetailsViewController *)v29 _configureSwooshSection:v22];
+      [(SUUIProductPageDetailsViewController *)selfCopy _configureSwooshSection:v22];
     }
   }
 
@@ -710,37 +710,37 @@ uint64_t __55__SUUIProductPageDetailsViewController__expandSection___block_invok
   return v22;
 }
 
-- (void)_configureSwooshSection:(id)a3
+- (void)_configureSwooshSection:(id)section
 {
-  v4 = a3;
-  v5 = [(SUUIProductPageDetailsViewController *)self _tableViewController];
-  v6 = [(SUUIProductPageDetailsViewController *)self clientContext];
-  [v4 setClientContext:v6];
+  sectionCopy = section;
+  _tableViewController = [(SUUIProductPageDetailsViewController *)self _tableViewController];
+  clientContext = [(SUUIProductPageDetailsViewController *)self clientContext];
+  [sectionCopy setClientContext:clientContext];
 
-  v7 = [(SUUIProductPageDetailsViewController *)self _resourceLoader];
-  [v4 setResourceLoader:v7];
+  _resourceLoader = [(SUUIProductPageDetailsViewController *)self _resourceLoader];
+  [sectionCopy setResourceLoader:_resourceLoader];
 
-  v8 = [(SUUIProductPage *)self->_productPage uber];
-  v9 = [v8 colorScheme];
+  uber = [(SUUIProductPage *)self->_productPage uber];
+  colorScheme = [uber colorScheme];
 
-  if (!v9)
+  if (!colorScheme)
   {
-    v9 = objc_alloc_init(SUUIColorScheme);
-    v10 = [v5 tableView];
-    v11 = [v10 backgroundColor];
-    [(SUUIColorScheme *)v9 setBackgroundColor:v11];
+    colorScheme = objc_alloc_init(SUUIColorScheme);
+    tableView = [_tableViewController tableView];
+    backgroundColor = [tableView backgroundColor];
+    [(SUUIColorScheme *)colorScheme setBackgroundColor:backgroundColor];
   }
 
-  [v4 setColorScheme:v9];
+  [sectionCopy setColorScheme:colorScheme];
   objc_initWeak(&location, self);
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __64__SUUIProductPageDetailsViewController__configureSwooshSection___block_invoke;
   v16 = &unk_2798FDD60;
   objc_copyWeak(&v17, &location);
-  [v4 setActionBlock:&v13];
-  v12 = [v4 swooshViewController];
-  [v5 addChildViewController:v12];
+  [sectionCopy setActionBlock:&v13];
+  swooshViewController = [sectionCopy swooshViewController];
+  [_tableViewController addChildViewController:swooshViewController];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -769,17 +769,17 @@ void __64__SUUIProductPageDetailsViewController__configureSwooshSection___block_
   copyrightSection = self->_copyrightSection;
   if (!copyrightSection)
   {
-    v4 = [(SUUIProductPage *)self->_productPage item];
-    v5 = [v4 copyrightString];
+    item = [(SUUIProductPage *)self->_productPage item];
+    copyrightString = [item copyrightString];
 
-    if ([v5 length])
+    if ([copyrightString length])
     {
       v6 = objc_alloc_init(SUUIProductPageCopyrightView);
-      v7 = [(SUUIProductPage *)self->_productPage uber];
-      v8 = [v7 colorScheme];
-      [(SUUIProductPageCopyrightView *)v6 setColorScheme:v8];
+      uber = [(SUUIProductPage *)self->_productPage uber];
+      colorScheme = [uber colorScheme];
+      [(SUUIProductPageCopyrightView *)v6 setColorScheme:colorScheme];
 
-      [(SUUIProductPageCopyrightView *)v6 setCopyrightString:v5];
+      [(SUUIProductPageCopyrightView *)v6 setCopyrightString:copyrightString];
       [(SUUIProductPageCopyrightView *)v6 frame];
       v10 = v9;
       v12 = v11;
@@ -805,10 +805,10 @@ void __64__SUUIProductPageDetailsViewController__configureSwooshSection___block_
   descriptionSection = self->_descriptionSection;
   if (!descriptionSection)
   {
-    v4 = [(SUUIProductPage *)self->_productPage item];
-    v5 = [v4 itemDescription];
+    item = [(SUUIProductPage *)self->_productPage item];
+    itemDescription = [item itemDescription];
 
-    if (v5)
+    if (itemDescription)
     {
       v6 = [[SUUIProductPageTableTextBoxSection alloc] initWithClientContext:self->_clientContext];
       v7 = self->_descriptionSection;
@@ -830,9 +830,9 @@ void __64__SUUIProductPageDetailsViewController__configureSwooshSection___block_
       [(SUUIProductPageTableTextBoxSection *)v8 setTitle:v10];
 
       v11 = self->_descriptionSection;
-      v12 = [(SUUIProductPage *)self->_productPage uber];
-      v13 = [v12 colorScheme];
-      [(SUUIProductPageTableTextBoxSection *)v11 setColorScheme:v13];
+      uber = [(SUUIProductPage *)self->_productPage uber];
+      colorScheme = [uber colorScheme];
+      [(SUUIProductPageTableTextBoxSection *)v11 setColorScheme:colorScheme];
     }
 
     descriptionSection = self->_descriptionSection;
@@ -843,21 +843,21 @@ void __64__SUUIProductPageDetailsViewController__configureSwooshSection___block_
 
 - (id)_featuresSection
 {
-  v3 = [(SUUIProductPage *)self->_productPage item];
-  v4 = [v3 supportedFeatures];
+  item = [(SUUIProductPage *)self->_productPage item];
+  supportedFeatures = [item supportedFeatures];
 
-  v5 = [(SUUIProductPage *)self->_productPage item];
-  v6 = [v5 supportedGameCenterFeatures];
+  item2 = [(SUUIProductPage *)self->_productPage item];
+  supportedGameCenterFeatures = [item2 supportedGameCenterFeatures];
 
-  if (v4)
+  if (supportedFeatures)
   {
     v7 = objc_alloc_init(SUUIProductPageFeaturesView);
     [(SUUIProductPageFeaturesView *)v7 setClientContext:self->_clientContext];
-    v8 = [(SUUIProductPage *)self->_productPage uber];
-    v9 = [v8 colorScheme];
-    [(SUUIProductPageFeaturesView *)v7 setColorScheme:v9];
+    uber = [(SUUIProductPage *)self->_productPage uber];
+    colorScheme = [uber colorScheme];
+    [(SUUIProductPageFeaturesView *)v7 setColorScheme:colorScheme];
 
-    [(SUUIProductPageFeaturesView *)v7 setFeatures:v4 gameCenterFeatures:v6];
+    [(SUUIProductPageFeaturesView *)v7 setFeatures:supportedFeatures gameCenterFeatures:supportedGameCenterFeatures];
     clientContext = self->_clientContext;
     if (clientContext)
     {
@@ -892,13 +892,13 @@ void __64__SUUIProductPageDetailsViewController__configureSwooshSection___block_
 
 - (id)_infoSection
 {
-  v3 = [(SUUIProductPage *)self->_productPage item];
-  v4 = [(SUUIProductPage *)self->_productPage productInformation];
-  if (!v4)
+  item = [(SUUIProductPage *)self->_productPage item];
+  productInformation = [(SUUIProductPage *)self->_productPage productInformation];
+  if (!productInformation)
   {
-    if (v3)
+    if (item)
     {
-      v5 = [[SUUIProductPageInformationViewController alloc] initWithItem:v3 clientContext:self->_clientContext];
+      v5 = [[SUUIProductPageInformationViewController alloc] initWithItem:item clientContext:self->_clientContext];
       if (v5)
       {
         goto LABEL_6;
@@ -915,35 +915,35 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v5 = [[SUUIProductPageInformationViewController alloc] initWithProductInformation:v4 clientContext:self->_clientContext];
+  v5 = [[SUUIProductPageInformationViewController alloc] initWithProductInformation:productInformation clientContext:self->_clientContext];
   if (!v5)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  v6 = [(SUUIProductPageDetailsViewController *)self operationQueue];
-  [(SUUIProductPageInformationViewController *)v5 setOperationQueue:v6];
+  operationQueue = [(SUUIProductPageDetailsViewController *)self operationQueue];
+  [(SUUIProductPageInformationViewController *)v5 setOperationQueue:operationQueue];
 
-  v7 = [(SUUIProductPageInformationViewController *)v5 view];
-  v8 = [(SUUIProductPage *)self->_productPage uber];
-  v9 = [v8 colorScheme];
-  [v7 setColorScheme:v9];
+  view = [(SUUIProductPageInformationViewController *)v5 view];
+  uber = [(SUUIProductPage *)self->_productPage uber];
+  colorScheme = [uber colorScheme];
+  [view setColorScheme:colorScheme];
 
-  v10 = [(SUUIProductPageDetailsViewController *)self _tableViewController];
-  [v10 addChildViewController:v5];
+  _tableViewController = [(SUUIProductPageDetailsViewController *)self _tableViewController];
+  [_tableViewController addChildViewController:v5];
 
-  v11 = [(SUUIProductPageInformationViewController *)v5 view];
-  [v11 frame];
+  view2 = [(SUUIProductPageInformationViewController *)v5 view];
+  [view2 frame];
   v13 = v12;
   v15 = v14;
   v16 = objc_opt_class();
   [v16 defaultPageWidthForUserInterfaceIdiom:SUUIUserInterfaceIdiom(self->_clientContext)];
   v18 = v17;
-  [v11 sizeThatFits:?];
-  [v11 setFrame:{v13, v15, v18, v19}];
+  [view2 sizeThatFits:?];
+  [view2 setFrame:{v13, v15, v18, v19}];
   v20 = objc_alloc_init(SUUIProductPageTableHeaderOnlySection);
-  [(SUUIProductPageTableHeaderOnlySection *)v20 setHeaderView:v11];
+  [(SUUIProductPageTableHeaderOnlySection *)v20 setHeaderView:view2];
 
 LABEL_9:
   v21 = v20;
@@ -954,12 +954,12 @@ LABEL_9:
 - (id)_parentBundlesSection
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(SUUIProductPage *)self->_productPage item];
-  v4 = [v3 parentBundleItemIdentifiers];
+  item = [(SUUIProductPage *)self->_productPage item];
+  parentBundleItemIdentifiers = [item parentBundleItemIdentifiers];
 
   v26 = 0uLL;
   v27 = 0;
-  if ([v4 count] == 1 && SUUIUserInterfaceIdiom(self->_clientContext) == 1)
+  if ([parentBundleItemIdentifiers count] == 1 && SUUIUserInterfaceIdiom(self->_clientContext) == 1)
   {
     v27 = 466;
   }
@@ -969,7 +969,7 @@ LABEL_9:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v4;
+  v6 = parentBundleItemIdentifiers;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v7)
   {
@@ -986,10 +986,10 @@ LABEL_9:
 
         v11 = *(*(&v22 + 1) + 8 * i);
         v12 = [SUUILockupComponent alloc];
-        v13 = [v11 longLongValue];
+        longLongValue = [v11 longLongValue];
         v20 = v26;
         v21 = v27;
-        v14 = [(SUUILockupComponent *)v12 initWithItemIdentifier:v13 style:&v20];
+        v14 = [(SUUILockupComponent *)v12 initWithItemIdentifier:longLongValue style:&v20];
         [v5 addObject:v14];
       }
 
@@ -1014,8 +1014,8 @@ LABEL_9:
   {
     v17 = [[SUUIProductPageTableLockupsSection alloc] initWithLockups:v5 title:v16];
     [(SUUITableViewSection *)v17 setDelegate:self];
-    v18 = [(SUUIProductPageDetailsViewController *)self _resourceLoader];
-    [(SUUIProductPageTableLockupsSection *)v17 setResourceLoader:v18];
+    _resourceLoader = [(SUUIProductPageDetailsViewController *)self _resourceLoader];
+    [(SUUIProductPageTableLockupsSection *)v17 setResourceLoader:_resourceLoader];
   }
 
   else if ([v5 count] < 2)
@@ -1038,8 +1038,8 @@ LABEL_9:
   if (!resourceLoader)
   {
     v4 = [SUUIResourceLoader alloc];
-    v5 = [(SUUIProductPageDetailsViewController *)self clientContext];
-    v6 = [(SUUIResourceLoader *)v4 initWithClientContext:v5];
+    clientContext = [(SUUIProductPageDetailsViewController *)self clientContext];
+    v6 = [(SUUIResourceLoader *)v4 initWithClientContext:clientContext];
     v7 = self->_resourceLoader;
     self->_resourceLoader = v6;
 
@@ -1058,29 +1058,29 @@ LABEL_9:
   screenshotsSection = self->_screenshotsSection;
   if (!screenshotsSection)
   {
-    v4 = [(SUUIProductPage *)self->_productPage item];
-    v5 = [v4 screenshots];
-    v6 = [v4 videos];
-    if ([v5 count] || objc_msgSend(v6, "count"))
+    item = [(SUUIProductPage *)self->_productPage item];
+    screenshots = [item screenshots];
+    videos = [item videos];
+    if ([screenshots count] || objc_msgSend(videos, "count"))
     {
       v7 = [SUUIScreenshotsViewController alloc];
-      v8 = [(SUUIProductPageDetailsViewController *)self clientContext];
-      v9 = [(SUUIScreenshotsViewController *)v7 initWithTrailers:v6 screenshots:v5 clientContext:v8];
+      clientContext = [(SUUIProductPageDetailsViewController *)self clientContext];
+      v9 = [(SUUIScreenshotsViewController *)v7 initWithTrailers:videos screenshots:screenshots clientContext:clientContext];
 
       [(SUUIScreenshotsViewController *)v9 setDelegate:self];
-      v10 = [(SUUIProductPageDetailsViewController *)self operationQueue];
-      [(SUUIScreenshotsViewController *)v9 setOperationQueue:v10];
+      operationQueue = [(SUUIProductPageDetailsViewController *)self operationQueue];
+      [(SUUIScreenshotsViewController *)v9 setOperationQueue:operationQueue];
 
-      v11 = [(SUUIProductPageDetailsViewController *)self _tableViewController];
-      [v11 addChildViewController:v9];
+      _tableViewController = [(SUUIProductPageDetailsViewController *)self _tableViewController];
+      [_tableViewController addChildViewController:v9];
 
-      v12 = [(SUUIScreenshotsViewController *)v9 view];
-      [v12 setAutoresizingMask:2];
+      view = [(SUUIScreenshotsViewController *)v9 view];
+      [view setAutoresizingMask:2];
       v13 = objc_alloc_init(SUUIProductPageTableHeaderOnlySection);
       v14 = self->_screenshotsSection;
       self->_screenshotsSection = v13;
 
-      [(SUUIProductPageTableHeaderOnlySection *)self->_screenshotsSection setHeaderView:v12];
+      [(SUUIProductPageTableHeaderOnlySection *)self->_screenshotsSection setHeaderView:view];
       [(SUUIScreenshotsViewController *)v9 reloadData];
     }
 
@@ -1095,11 +1095,11 @@ LABEL_9:
   storeNotesSection = self->_storeNotesSection;
   if (!storeNotesSection)
   {
-    v4 = [(SUUIProductPage *)self->_productPage item];
-    v5 = [v4 storeNotes];
-    v6 = [v5 standardNotes];
+    item = [(SUUIProductPage *)self->_productPage item];
+    storeNotes = [item storeNotes];
+    standardNotes = [storeNotes standardNotes];
 
-    if (v6)
+    if (standardNotes)
     {
       v7 = [[SUUIProductPageTableTextBoxSection alloc] initWithClientContext:self->_clientContext];
       v8 = self->_storeNotesSection;
@@ -1121,9 +1121,9 @@ LABEL_9:
       [(SUUIProductPageTableTextBoxSection *)v9 setTitle:v11];
 
       v12 = self->_storeNotesSection;
-      v13 = [(SUUIProductPage *)self->_productPage uber];
-      v14 = [v13 colorScheme];
-      [(SUUIProductPageTableTextBoxSection *)v12 setColorScheme:v14];
+      uber = [(SUUIProductPage *)self->_productPage uber];
+      colorScheme = [uber colorScheme];
+      [(SUUIProductPageTableTextBoxSection *)v12 setColorScheme:colorScheme];
     }
 
     storeNotesSection = self->_storeNotesSection;
@@ -1148,9 +1148,9 @@ LABEL_9:
     [(SUUIProductPageTableViewController *)v6 setDelegate:WeakRetained];
 
     v8 = self->_tableViewController;
-    v9 = [(SUUIProductPage *)self->_productPage uber];
-    v10 = [v9 colorScheme];
-    [(SUUIProductPageTableViewController *)v8 setColorScheme:v10];
+    uber = [(SUUIProductPage *)self->_productPage uber];
+    colorScheme = [uber colorScheme];
+    [(SUUIProductPageTableViewController *)v8 setColorScheme:colorScheme];
 
     [(SUUIProductPageTableViewController *)self->_tableViewController setSections:self->_sections];
     [(SUUIProductPageTableViewController *)self->_tableViewController setTextLayoutCache:self->_textLayoutCache];
@@ -1161,16 +1161,16 @@ LABEL_9:
   return tableViewController;
 }
 
-- (id)_textLayoutRequestWithText:(id)a3 widthOffset:(double)a4
+- (id)_textLayoutRequestWithText:(id)text widthOffset:(double)offset
 {
-  v6 = a3;
+  textCopy = text;
   v7 = objc_alloc_init(SUUITextLayoutRequest);
   [(SUUITextLayoutRequest *)v7 setNumberOfLines:5];
-  [(SUUITextLayoutRequest *)v7 setText:v6];
+  [(SUUITextLayoutRequest *)v7 setText:textCopy];
 
   v8 = objc_opt_class();
   [v8 defaultPageWidthForUserInterfaceIdiom:SUUIUserInterfaceIdiom(self->_clientContext)];
-  [(SUUITextLayoutRequest *)v7 setWidth:v9 + -30.0 - a4];
+  [(SUUITextLayoutRequest *)v7 setWidth:v9 + -30.0 - offset];
 
   return v7;
 }
@@ -1180,9 +1180,9 @@ LABEL_9:
   whatsNewSection = self->_whatsNewSection;
   if (!whatsNewSection)
   {
-    v4 = [(SUUIProductPage *)self->_productPage item];
-    v5 = [v4 updateDescription];
-    if (v5)
+    item = [(SUUIProductPage *)self->_productPage item];
+    updateDescription = [item updateDescription];
+    if (updateDescription)
     {
       v6 = [[SUUIProductPageTableTextBoxSection alloc] initWithClientContext:self->_clientContext];
       v7 = self->_whatsNewSection;
@@ -1204,14 +1204,14 @@ LABEL_9:
       [(SUUIProductPageTableTextBoxSection *)v8 setTitle:v10];
 
       v11 = self->_whatsNewSection;
-      v12 = [(SUUIProductPage *)self->_productPage uber];
-      v13 = [v12 colorScheme];
-      [(SUUIProductPageTableTextBoxSection *)v11 setColorScheme:v13];
+      uber = [(SUUIProductPage *)self->_productPage uber];
+      colorScheme = [uber colorScheme];
+      [(SUUIProductPageTableTextBoxSection *)v11 setColorScheme:colorScheme];
 
-      v14 = [v4 lastUpdateDateString];
-      if (v14)
+      lastUpdateDateString = [item lastUpdateDateString];
+      if (lastUpdateDateString)
       {
-        [(SUUIProductPageTableTextBoxSection *)self->_whatsNewSection setSubtitle:v14];
+        [(SUUIProductPageTableTextBoxSection *)self->_whatsNewSection setSubtitle:lastUpdateDateString];
       }
     }
 

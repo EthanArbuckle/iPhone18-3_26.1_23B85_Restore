@@ -1,15 +1,15 @@
 @interface EBPageProperties
-+ (void)readWithState:(id)a3;
++ (void)readWithState:(id)state;
 @end
 
 @implementation EBPageProperties
 
-+ (void)readWithState:(id)a3
++ (void)readWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   XlPageProperties::XlPageProperties(&v20);
-  v5 = [v4 xlReader];
-  (*(*v5 + 512))(v5, &v20);
+  xlReader = [stateCopy xlReader];
+  (*(*xlReader + 512))(xlReader, &v20);
   v6 = objc_alloc_init(EDHeaderFooter);
   v7 = [MEMORY[0x277CCACA8] stringWithOcText:XlPageProperties::getHeaderString(&v20)];
   v8 = v7;
@@ -25,11 +25,11 @@
     [(EDHeaderFooter *)v6 setFooterString:v10];
   }
 
-  v11 = [v4 edSheet];
-  [v11 setHeaderFooter:v6];
+  edSheet = [stateCopy edSheet];
+  [edSheet setHeaderFooter:v6];
 
   v12 = +[EDPageSetup pageSetup];
-  [v12 setOrientation:{objc_msgSend(a1, "convertXlPageOrientationEnumToED:", v30)}];
+  [v12 setOrientation:{objc_msgSend(self, "convertXlPageOrientationEnumToED:", v30)}];
   [v12 setOrder:v29];
   [v12 setFirstPageNumber:v26];
   [v12 setCustomFirstPageNumber:v32];
@@ -58,8 +58,8 @@
     [v12 setScale:?];
   }
 
-  v19 = [v4 edSheet];
-  [v19 setPageSetup:v12];
+  edSheet2 = [stateCopy edSheet];
+  [edSheet2 setPageSetup:v12];
 
   XlPageProperties::~XlPageProperties(&v20);
 }

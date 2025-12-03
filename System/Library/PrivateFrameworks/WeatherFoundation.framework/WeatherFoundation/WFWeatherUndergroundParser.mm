@@ -1,26 +1,26 @@
 @interface WFWeatherUndergroundParser
 + (NSSet)componentsForCurrentForecast;
 + (NSSet)componentsForHourlyForecasts;
-+ (unint64_t)conditionFromWeatherUndergroundPhrase:(id)a3;
-- (id)dateFromUTCDict:(id)a3 toUnitGranularity:(unint64_t)a4;
-- (id)parseForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 locale:(id)a6 date:(id)a7 error:(id *)a8 rules:(id)a9;
-- (id)parseHistoricalForecast:(id)a3 error:(id *)a4;
-- (id)sanitizedNumberForKeyPath:(id)a3 dict:(id)a4;
-- (id)sanitizedTemperatureForCelsiusKeyPath:(id)a3 fahrenheitKeyPath:(id)a4 dict:(id)a5;
-- (void)logParsingErrorAtKeyPath:(id)a3 error:(id *)a4;
++ (unint64_t)conditionFromWeatherUndergroundPhrase:(id)phrase;
+- (id)dateFromUTCDict:(id)dict toUnitGranularity:(unint64_t)granularity;
+- (id)parseForecastData:(id)data types:(unint64_t)types location:(id)location locale:(id)locale date:(id)date error:(id *)error rules:(id)rules;
+- (id)parseHistoricalForecast:(id)forecast error:(id *)error;
+- (id)sanitizedNumberForKeyPath:(id)path dict:(id)dict;
+- (id)sanitizedTemperatureForCelsiusKeyPath:(id)path fahrenheitKeyPath:(id)keyPath dict:(id)dict;
+- (void)logParsingErrorAtKeyPath:(id)path error:(id *)error;
 @end
 
 @implementation WFWeatherUndergroundParser
 
-- (id)parseForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 locale:(id)a6 date:(id)a7 error:(id *)a8 rules:(id)a9
+- (id)parseForecastData:(id)data types:(unint64_t)types location:(id)location locale:(id)locale date:(id)date error:(id *)error rules:(id)rules
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v24 = 0;
-  v11 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:{&v24, a6, a7}];
+  v11 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:{&v24, locale, date}];
   v12 = v24;
   if (v11)
   {
-    v13 = [(WFWeatherUndergroundParser *)self parseHistoricalForecast:v11 error:a8];
+    v13 = [(WFWeatherUndergroundParser *)self parseHistoricalForecast:v11 error:error];
   }
 
   else
@@ -37,7 +37,7 @@
       v25 = *MEMORY[0x277CCA450];
       v26[0] = @"Failed to parse JSON forecast data";
       v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-      *a8 = [v21 wf_errorWithCode:1 encapsulatedError:v12 userInfo:v22];
+      *error = [v21 wf_errorWithCode:1 encapsulatedError:v12 userInfo:v22];
     }
 
     v13 = 0;
@@ -90,11 +90,11 @@
   return v4;
 }
 
-- (id)parseHistoricalForecast:(id)a3 error:(id *)a4
+- (id)parseHistoricalForecast:(id)forecast error:(id *)error
 {
   v65[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 wf_stringForKeyPath:&unk_288254B98];
+  forecastCopy = forecast;
+  v7 = [forecastCopy wf_stringForKeyPath:&unk_288254B98];
   if (v7)
   {
     v8 = WFLogForCategory(7uLL);
@@ -103,7 +103,7 @@
       [(WFWeatherUndergroundParser *)v7 parseHistoricalForecast:v8 error:v9, v10, v11, v12, v13, v14];
     }
 
-    if (!a4)
+    if (!error)
     {
       v17 = 0;
       goto LABEL_24;
@@ -114,51 +114,51 @@
     v65[0] = v7;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v65 forKeys:&v64 count:1];
     [v15 wf_errorWithCode:1 userInfo:v16];
-    *a4 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
   {
-    v16 = [v6 wf_dictionaryForKeyPath:&unk_288254BB0];
+    v16 = [forecastCopy wf_dictionaryForKeyPath:&unk_288254BB0];
     if (v16)
     {
       v18 = objc_alloc_init(WFParsedForecastData);
       v19 = [v16 wf_arrayForKeyPath:&unk_288254BE0];
-      v20 = [v19 firstObject];
+      firstObject = [v19 firstObject];
 
-      if (v20)
+      if (firstObject)
       {
         v21 = objc_alloc_init(WFWeatherConditions);
         v22 = [v16 wf_dictionaryForKeyPath:&unk_288254BF8];
         v23 = [(WFWeatherUndergroundParser *)self dateFromUTCDict:v22 toUnitGranularity:16];
         [(WFWeatherConditions *)v21 setValue:v23 forComponent:?];
 
-        v24 = [(WFWeatherUndergroundParser *)self sanitizedTemperatureForCelsiusKeyPath:&unk_288254C10 fahrenheitKeyPath:&unk_288254C28 dict:v20];
+        v24 = [(WFWeatherUndergroundParser *)self sanitizedTemperatureForCelsiusKeyPath:&unk_288254C10 fahrenheitKeyPath:&unk_288254C28 dict:firstObject];
         [(WFWeatherConditions *)v21 setValue:v24 forComponent:?];
 
-        v25 = [(WFWeatherUndergroundParser *)self sanitizedTemperatureForCelsiusKeyPath:&unk_288254C40 fahrenheitKeyPath:&unk_288254C58 dict:v20];
+        v25 = [(WFWeatherUndergroundParser *)self sanitizedTemperatureForCelsiusKeyPath:&unk_288254C40 fahrenheitKeyPath:&unk_288254C58 dict:firstObject];
         [(WFWeatherConditions *)v21 setValue:v25 forComponent:@"WFWeatherHighTemperatureComponent"];
 
-        v26 = [(WFWeatherUndergroundParser *)self sanitizedTemperatureForCelsiusKeyPath:&unk_288254C70 fahrenheitKeyPath:&unk_288254C88 dict:v20];
+        v26 = [(WFWeatherUndergroundParser *)self sanitizedTemperatureForCelsiusKeyPath:&unk_288254C70 fahrenheitKeyPath:&unk_288254C88 dict:firstObject];
         [(WFWeatherConditions *)v21 setValue:v26 forComponent:@"WFWeatherLowTemperatureComponent"];
 
-        v27 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:&unk_288254CA0 dict:v20];
+        v27 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:&unk_288254CA0 dict:firstObject];
         [(WFWeatherConditions *)v21 setValue:v27 forComponent:?];
 
-        v28 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:&unk_288254CB8 dict:v20];
+        v28 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:&unk_288254CB8 dict:firstObject];
         [(WFWeatherConditions *)v21 setValue:v28 forComponent:?];
 
-        v29 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:&unk_288254CD0 dict:v20];
+        v29 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:&unk_288254CD0 dict:firstObject];
         [(WFWeatherConditions *)v21 setValue:v29 forComponent:?];
 
-        v30 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:&unk_288254CE8 dict:v20];
+        v30 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:&unk_288254CE8 dict:firstObject];
         [(WFWeatherConditions *)v21 setValue:v30 forComponent:?];
 
-        v31 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:&unk_288254D00 dict:v20];
+        v31 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:&unk_288254D00 dict:firstObject];
         [(WFWeatherConditions *)v21 setValue:v31 forComponent:?];
 
-        v56 = v20;
-        v32 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:&unk_288254D18 dict:v20];
+        v56 = firstObject;
+        v32 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:&unk_288254D18 dict:firstObject];
         [(WFWeatherConditions *)v21 setValue:v32 forComponent:?];
 
         [(WFParsedForecastData *)v18 setCurrentConditions:v21];
@@ -166,7 +166,7 @@
         if ([v33 count])
         {
           v54 = v18;
-          v55 = v6;
+          v55 = forecastCopy;
           v58 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v33, "count")}];
           v59 = 0u;
           v60 = 0u;
@@ -235,29 +235,29 @@
           [(WFParsedForecastData *)v54 setHourlyForecasts:v58];
 
           v17 = v54;
-          v6 = v55;
+          forecastCopy = v55;
           v33 = v53;
         }
 
         else
         {
-          [(WFWeatherUndergroundParser *)self logParsingErrorAtKeyPath:&unk_288254E50 error:a4];
+          [(WFWeatherUndergroundParser *)self logParsingErrorAtKeyPath:&unk_288254E50 error:error];
           v17 = 0;
         }
 
-        v20 = v56;
+        firstObject = v56;
       }
 
       else
       {
-        [(WFWeatherUndergroundParser *)self logParsingErrorAtKeyPath:&unk_288254D30 error:a4];
+        [(WFWeatherUndergroundParser *)self logParsingErrorAtKeyPath:&unk_288254D30 error:error];
         v17 = 0;
       }
     }
 
     else
     {
-      [(WFWeatherUndergroundParser *)self logParsingErrorAtKeyPath:&unk_288254BC8 error:a4];
+      [(WFWeatherUndergroundParser *)self logParsingErrorAtKeyPath:&unk_288254BC8 error:error];
       v17 = 0;
     }
   }
@@ -267,11 +267,11 @@ LABEL_24:
   return v17;
 }
 
-- (void)logParsingErrorAtKeyPath:(id)a3 error:(id *)a4
+- (void)logParsingErrorAtKeyPath:(id)path error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [WFForecastDataParserUtils stringFromKeyPath:a3];
+  v6 = [WFForecastDataParserUtils stringFromKeyPath:path];
   v7 = [v5 stringWithFormat:@"Missing object at key path %@", v6];
 
   v8 = WFLogForCategory(7uLL);
@@ -280,38 +280,38 @@ LABEL_24:
     [(WFWeatherUndergroundParser *)v7 logParsingErrorAtKeyPath:v8 error:v9, v10, v11, v12, v13, v14];
   }
 
-  if (a4)
+  if (error)
   {
     v15 = MEMORY[0x277CCA9B8];
     v17 = *MEMORY[0x277CCA450];
     v18[0] = v7;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-    *a4 = [v15 wf_errorWithCode:1 userInfo:v16];
+    *error = [v15 wf_errorWithCode:1 userInfo:v16];
   }
 }
 
-- (id)sanitizedNumberForKeyPath:(id)a3 dict:(id)a4
+- (id)sanitizedNumberForKeyPath:(id)path dict:(id)dict
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 wf_integerForKeyPath:v5];
+  pathCopy = path;
+  dictCopy = dict;
+  v7 = [dictCopy wf_integerForKeyPath:pathCopy];
   v8 = 0;
   if (v7 != -9999 && v7 != -999)
   {
     v9 = MEMORY[0x277CCABB0];
-    [v6 wf_floatForKeyPath:v5];
+    [dictCopy wf_floatForKeyPath:pathCopy];
     v8 = [v9 numberWithFloat:?];
   }
 
   return v8;
 }
 
-- (id)sanitizedTemperatureForCelsiusKeyPath:(id)a3 fahrenheitKeyPath:(id)a4 dict:(id)a5
+- (id)sanitizedTemperatureForCelsiusKeyPath:(id)path fahrenheitKeyPath:(id)keyPath dict:(id)dict
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:a4 dict:v8];
-  v11 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:v9 dict:v8];
+  dictCopy = dict;
+  pathCopy = path;
+  v10 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:keyPath dict:dictCopy];
+  v11 = [(WFWeatherUndergroundParser *)self sanitizedNumberForKeyPath:pathCopy dict:dictCopy];
 
   if (v10 | v11)
   {
@@ -337,23 +337,23 @@ LABEL_24:
   return v12;
 }
 
-+ (unint64_t)conditionFromWeatherUndergroundPhrase:(id)a3
++ (unint64_t)conditionFromWeatherUndergroundPhrase:(id)phrase
 {
-  v3 = a3;
+  phraseCopy = phrase;
   v4 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"^(Light|Heavy)\\s" options:0 error:0];
-  v5 = [v4 firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v5 = [v4 firstMatchInString:phraseCopy options:0 range:{0, objc_msgSend(phraseCopy, "length")}];
   v6 = v5;
-  v7 = v3;
+  v7 = phraseCopy;
   if (v5)
   {
     v8 = [v5 rangeAtIndex:1];
-    v7 = [v3 substringWithRange:{v8, v9}];
+    v7 = [phraseCopy substringWithRange:{v8, v9}];
 
     [v6 range];
     v11 = v10;
-    v12 = [v3 length];
+    v12 = [phraseCopy length];
     [v6 range];
-    [v3 substringWithRange:{v11, v12 - v13}];
+    [phraseCopy substringWithRange:{v11, v12 - v13}];
   }
 
   if ([v7 isEqual:@"Drizzle"])
@@ -569,35 +569,35 @@ LABEL_20:
   return v14;
 }
 
-- (id)dateFromUTCDict:(id)a3 toUnitGranularity:(unint64_t)a4
+- (id)dateFromUTCDict:(id)dict toUnitGranularity:(unint64_t)granularity
 {
-  v5 = a3;
-  if (!v5)
+  dictCopy = dict;
+  if (!dictCopy)
   {
     v8 = 0;
     goto LABEL_14;
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  v7 = __ROR8__(a4 - 4, 2);
+  v7 = __ROR8__(granularity - 4, 2);
   if (v7 > 2)
   {
     if (v7 == 3)
     {
 LABEL_11:
-      [v6 setDay:{objc_msgSend(v5, "wf_integerForKeyPath:", &unk_288254E98)}];
+      [v6 setDay:{objc_msgSend(dictCopy, "wf_integerForKeyPath:", &unk_288254E98)}];
       goto LABEL_12;
     }
 
     if (v7 == 7)
     {
 LABEL_10:
-      [v6 setHour:{objc_msgSend(v5, "wf_integerForKeyPath:", &unk_288254E80)}];
+      [v6 setHour:{objc_msgSend(dictCopy, "wf_integerForKeyPath:", &unk_288254E80)}];
       goto LABEL_11;
     }
 
 LABEL_9:
-    [v6 setMinute:{objc_msgSend(v5, "wf_integerForKeyPath:", &unk_288254E68)}];
+    [v6 setMinute:{objc_msgSend(dictCopy, "wf_integerForKeyPath:", &unk_288254E68)}];
     goto LABEL_10;
   }
 
@@ -606,7 +606,7 @@ LABEL_9:
     if (v7 == 1)
     {
 LABEL_12:
-      [v6 setMonth:{objc_msgSend(v5, "wf_integerForKeyPath:", &unk_288254EB0)}];
+      [v6 setMonth:{objc_msgSend(dictCopy, "wf_integerForKeyPath:", &unk_288254EB0)}];
       goto LABEL_13;
     }
 
@@ -614,7 +614,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  [v6 setYear:{objc_msgSend(v5, "wf_integerForKeyPath:", &unk_288254EC8)}];
+  [v6 setYear:{objc_msgSend(dictCopy, "wf_integerForKeyPath:", &unk_288254EC8)}];
   v9 = +[WFWeatherConditions calendar];
   v8 = [v9 dateFromComponents:v6];
 

@@ -7,10 +7,10 @@
 - (unsigned)videoHeight;
 - (unsigned)videoWidth;
 - (unsigned)width;
-- (void)setHeight:(unsigned int)a3;
-- (void)setPlaysInline:(BOOL)a3;
-- (void)setPoster:(id)a3;
-- (void)setWidth:(unsigned int)a3;
+- (void)setHeight:(unsigned int)height;
+- (void)setPlaysInline:(BOOL)inline;
+- (void)setPoster:(id)poster;
+- (void)setWidth:(unsigned int)width;
 - (void)webkitEnterFullscreen;
 - (void)webkitExitFullscreen;
 @end
@@ -44,7 +44,7 @@
   return v5;
 }
 
-- (void)setWidth:(unsigned int)a3
+- (void)setWidth:(unsigned int)width
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   internal = self->super.super.super.super.super._internal;
@@ -98,7 +98,7 @@ LABEL_6:
   return v5;
 }
 
-- (void)setHeight:(unsigned int)a3
+- (void)setHeight:(unsigned int)height
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   internal = self->super.super.super.super.super._internal;
@@ -239,7 +239,7 @@ LABEL_6:
   return v5;
 }
 
-- (void)setPoster:(id)a3
+- (void)setPoster:(id)poster
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v10);
   internal = self->super.super.super.super.super._internal;
@@ -248,7 +248,7 @@ LABEL_6:
     *(internal + 7) += 2;
   }
 
-  WTF::AtomStringImpl::add(&v11, a3, v5);
+  WTF::AtomStringImpl::add(&v11, poster, v5);
   v9 = v11;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v9)
@@ -358,7 +358,7 @@ LABEL_19:
   return v9;
 }
 
-- (void)setPlaysInline:(BOOL)a3
+- (void)setPlaysInline:(BOOL)inline
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   internal = self->super.super.super.super.super._internal;

@@ -1,24 +1,24 @@
 @interface _TUIRenderUpdateDeletionInterest
-- (_TUIRenderUpdateDeletionInterest)initWithModels:(id)a3 tracker:(id)a4;
+- (_TUIRenderUpdateDeletionInterest)initWithModels:(id)models tracker:(id)tracker;
 - (void)dealloc;
 @end
 
 @implementation _TUIRenderUpdateDeletionInterest
 
-- (_TUIRenderUpdateDeletionInterest)initWithModels:(id)a3 tracker:(id)a4
+- (_TUIRenderUpdateDeletionInterest)initWithModels:(id)models tracker:(id)tracker
 {
-  v6 = a3;
-  v7 = a4;
+  modelsCopy = models;
+  trackerCopy = tracker;
   v12.receiver = self;
   v12.super_class = _TUIRenderUpdateDeletionInterest;
   v8 = [(_TUIRenderUpdateDeletionInterest *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [modelsCopy copy];
     models = v8->_models;
     v8->_models = v9;
 
-    objc_storeStrong(&v8->_tracker, a4);
+    objc_storeStrong(&v8->_tracker, tracker);
     [(TUIRenderUpdateArrayTracker *)v8->_tracker incrementInterestInDeletedModels:v8->_models];
   }
 

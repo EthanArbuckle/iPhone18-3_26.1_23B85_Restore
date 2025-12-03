@@ -1,23 +1,23 @@
 @interface NFAppletExtraInfo
-+ (id)infoWithDictionary:(id)a3 applet:(id)a4;
++ (id)infoWithDictionary:(id)dictionary applet:(id)applet;
 - (id)debugDescription;
 @end
 
 @implementation NFAppletExtraInfo
 
-+ (id)infoWithDictionary:(id)a3 applet:(id)a4
++ (id)infoWithDictionary:(id)dictionary applet:(id)applet
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  appletCopy = applet;
   v9 = objc_opt_new();
-  objc_storeStrong(v9 + 1, a4);
-  v10 = [v8 identifier];
-  v11 = [v7 objectForKeyedSubscript:@"appletAid"];
-  v12 = [v10 isEqual:v11];
+  objc_storeStrong(v9 + 1, applet);
+  identifier = [appletCopy identifier];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"appletAid"];
+  v12 = [identifier isEqual:v11];
 
   if (v12)
   {
-    v13 = [v7 objectForKeyedSubscript:@"associatedSSD"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"associatedSSD"];
     if (v13)
     {
       objc_opt_class();
@@ -31,7 +31,7 @@
       }
     }
 
-    v15 = [v7 objectForKeyedSubscript:@"obgk"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"obgk"];
 
     if (v15)
     {
@@ -56,9 +56,9 @@
     if (Logger)
     {
       v19 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v23 = 45;
       if (isMetaClass)
@@ -73,7 +73,7 @@
     v24 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v25 = object_getClass(a1);
+      v25 = object_getClass(self);
       if (class_isMetaClass(v25))
       {
         v26 = 43;
@@ -87,7 +87,7 @@
       *buf = 67109890;
       v30 = v26;
       v31 = 2082;
-      v32 = object_getClassName(a1);
+      v32 = object_getClassName(self);
       v33 = 2082;
       v34 = sel_getName(a2);
       v35 = 1024;
@@ -107,9 +107,9 @@
   v4 = [(NFApplet *)self->_applet debugDescription];
   [v3 appendFormat:@"%@", v4];
 
-  v5 = [(NSData *)self->_ssdAID NF_asHexString];
-  v6 = [(NSData *)self->_obgk NF_asHexString];
-  [v3 appendFormat:@", { ssdID=%@, OBGK=%@ }", v5, v6];
+  nF_asHexString = [(NSData *)self->_ssdAID NF_asHexString];
+  nF_asHexString2 = [(NSData *)self->_obgk NF_asHexString];
+  [v3 appendFormat:@", { ssdID=%@, OBGK=%@ }", nF_asHexString, nF_asHexString2];
 
   return v3;
 }

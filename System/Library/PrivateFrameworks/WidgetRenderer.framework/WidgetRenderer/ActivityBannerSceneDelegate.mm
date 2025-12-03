@@ -1,17 +1,17 @@
 @interface ActivityBannerSceneDelegate
 - (_TtC14WidgetRenderer27ActivityBannerSceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 @end
 
 @implementation ActivityBannerSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1DAE6DB14(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_1DAE6DB14(sceneCopy);
 }
 
 - (_TtC14WidgetRenderer27ActivityBannerSceneDelegate)init

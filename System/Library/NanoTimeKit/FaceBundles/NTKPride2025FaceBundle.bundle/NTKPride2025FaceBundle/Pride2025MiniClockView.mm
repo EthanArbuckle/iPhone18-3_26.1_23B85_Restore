@@ -1,16 +1,16 @@
 @interface Pride2025MiniClockView
 - (CLKUITimeViewConfiguration)configuration;
 - (NSDate)overrideDate;
-- (_TtC22NTKPride2025FaceBundle22Pride2025MiniClockView)initWithCoder:(id)a3;
+- (_TtC22NTKPride2025FaceBundle22Pride2025MiniClockView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setConfiguration:(id)a3;
-- (void)setOverrideDate:(id)a3;
-- (void)traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)setConfiguration:(id)configuration;
+- (void)setOverrideDate:(id)date;
+- (void)traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 @end
 
 @implementation Pride2025MiniClockView
 
-- (_TtC22NTKPride2025FaceBundle22Pride2025MiniClockView)initWithCoder:(id)a3
+- (_TtC22NTKPride2025FaceBundle22Pride2025MiniClockView)initWithCoder:(id)coder
 {
   *&self->CLKUIAnalogTimeView_opaque[OBJC_IVAR____TtC22NTKPride2025FaceBundle22Pride2025MiniClockView_token] = 0;
   *&self->CLKUIAnalogTimeView_opaque[OBJC_IVAR____TtC22NTKPride2025FaceBundle22Pride2025MiniClockView_liveHour] = -1;
@@ -36,12 +36,12 @@
   [v4 setFrame:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  sub_7BC4(a3, v7);
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_7BC4(change, collectionCopy);
   swift_unknownObjectRelease();
 }
 
@@ -56,11 +56,11 @@
   v10 = type metadata accessor for Pride2025MiniClockView();
   v21.receiver = self;
   v21.super_class = v10;
-  v11 = self;
-  v12 = [(Pride2025MiniClockView *)&v21 overrideDate];
-  if (v12)
+  selfCopy = self;
+  overrideDate = [(Pride2025MiniClockView *)&v21 overrideDate];
+  if (overrideDate)
   {
-    v13 = v12;
+    v13 = overrideDate;
     sub_12684();
 
     v14 = 0;
@@ -87,7 +87,7 @@
   return v18;
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
   v5 = sub_3EA8(&qword_1E5C0, qword_146F0);
   v6 = *(*(v5 - 8) + 64);
@@ -95,7 +95,7 @@
   v9 = &v18 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v7);
   v11 = &v18 - v10;
-  if (a3)
+  if (date)
   {
     sub_12684();
     v12 = sub_126A4();
@@ -112,7 +112,7 @@
   sub_126A4();
   v13 = *(v12 - 8);
   v14 = (*(v13 + 48))(v9, 1, v12);
-  v15 = self;
+  selfCopy = self;
   isa = 0;
   if (v14 != 1)
   {
@@ -121,7 +121,7 @@
   }
 
   v17 = type metadata accessor for Pride2025MiniClockView();
-  v18.receiver = v15;
+  v18.receiver = selfCopy;
   v18.super_class = v17;
   [(Pride2025MiniClockView *)&v18 setOverrideDate:isa];
 
@@ -133,16 +133,16 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for Pride2025MiniClockView();
-  v2 = [(Pride2025MiniClockView *)&v4 configuration];
+  configuration = [(Pride2025MiniClockView *)&v4 configuration];
 
-  return v2;
+  return configuration;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = self;
-  sub_8614(a3);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_8614(configuration);
 }
 
 @end

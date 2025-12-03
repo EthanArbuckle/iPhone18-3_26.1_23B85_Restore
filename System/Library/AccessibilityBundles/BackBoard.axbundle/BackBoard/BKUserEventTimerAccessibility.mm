@@ -1,24 +1,24 @@
 @interface BKUserEventTimerAccessibility
-- (void)_axSetTimerDisabled:(BOOL)a3;
+- (void)_axSetTimerDisabled:(BOOL)disabled;
 @end
 
 @implementation BKUserEventTimerAccessibility
 
-- (void)_axSetTimerDisabled:(BOOL)a3
+- (void)_axSetTimerDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   v21 = *MEMORY[0x29EDCA608];
-  if ([(BKUserEventTimerAccessibility *)self _axIsTimerDisabled]!= a3)
+  if ([(BKUserEventTimerAccessibility *)self _axIsTimerDisabled]!= disabled)
   {
     v5 = AXLogBackboardServer();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *&buf[4] = v3;
+      *&buf[4] = disabledCopy;
       _os_log_impl(&dword_29BBBD000, v5, OS_LOG_TYPE_DEFAULT, "setting idle timer disabled: %d", buf, 8u);
     }
 
-    if (v3)
+    if (disabledCopy)
     {
       *buf = 0;
       v18 = buf;
@@ -58,7 +58,7 @@
       [(BKUserEventTimerAccessibility *)self _axSetDesiredTimeout:*(v18 + 3)];
       [(BKUserEventTimerAccessibility *)self _axSetDesiredMode:*(v14 + 6)];
       [(BKUserEventTimerAccessibility *)self resetTimer:0 mode:-1.0];
-      _IsTimerDisabled = v3;
+      _IsTimerDisabled = disabledCopy;
 
       _Block_object_dispose(&v13, 8);
       _Block_object_dispose(buf, 8);

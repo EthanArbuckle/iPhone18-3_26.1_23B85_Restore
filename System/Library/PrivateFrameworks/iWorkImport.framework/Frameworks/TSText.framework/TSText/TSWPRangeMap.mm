@@ -1,35 +1,35 @@
 @interface TSWPRangeMap
-- (TSWPRangeMap)initWithSubRange:(_NSRange)a3 unmappedIndexes:(const void *)a4 affinity:(int)a5;
-- (TSWPRangeMap)initWithSubRange:(_NSRange)a3 unmappedIndexes:(const void *)a4 isBackwardAffinities:(const void *)a5;
-- (TSWPRangeMap)initWithSubRange:(_NSRange)a3 unmappedPairIndexes:(const void *)a4;
-- (_NSRange)mappedCharRange:(_NSRange)a3;
+- (TSWPRangeMap)initWithSubRange:(_NSRange)range unmappedIndexes:(const void *)indexes affinity:(int)affinity;
+- (TSWPRangeMap)initWithSubRange:(_NSRange)range unmappedIndexes:(const void *)indexes isBackwardAffinities:(const void *)affinities;
+- (TSWPRangeMap)initWithSubRange:(_NSRange)range unmappedPairIndexes:(const void *)indexes;
+- (_NSRange)mappedCharRange:(_NSRange)range;
 - (_NSRange)subRange;
-- (_NSRange)unmappedCharRange:(_NSRange)a3;
+- (_NSRange)unmappedCharRange:(_NSRange)range;
 - (id).cxx_construct;
-- (unint64_t)mappedCharIndex:(unint64_t)a3;
-- (unint64_t)p_extendBackwardMappedIndex:(unint64_t)a3;
-- (unint64_t)p_extendForwardMappedIndex:(unint64_t)a3;
-- (unint64_t)unmappedCharIndex:(unint64_t)a3;
+- (unint64_t)mappedCharIndex:(unint64_t)index;
+- (unint64_t)p_extendBackwardMappedIndex:(unint64_t)index;
+- (unint64_t)p_extendForwardMappedIndex:(unint64_t)index;
+- (unint64_t)unmappedCharIndex:(unint64_t)index;
 - (vector<_TSWPCharIndexAndAffinity,)mappedIndexes;
 - (vector<_TSWPCharIndexAndAffinity,)unmappedIndexes;
-- (void)adjustByDelta:(int64_t)a3 startingAt:(unint64_t)a4;
+- (void)adjustByDelta:(int64_t)delta startingAt:(unint64_t)at;
 - (void)setMappedIndexes:()vector<_TSWPCharIndexAndAffinity;
 - (void)setUnmappedIndexes:()vector<_TSWPCharIndexAndAffinity;
 @end
 
 @implementation TSWPRangeMap
 
-- (TSWPRangeMap)initWithSubRange:(_NSRange)a3 unmappedPairIndexes:(const void *)a4
+- (TSWPRangeMap)initWithSubRange:(_NSRange)range unmappedPairIndexes:(const void *)indexes
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = objc_msgSend_initWithSubRange_unmappedIndexes_affinity_(self, a2, a3.location, a3.length, a4, 0);
+  length = range.length;
+  location = range.location;
+  v7 = objc_msgSend_initWithSubRange_unmappedIndexes_affinity_(self, a2, range.location, range.length, indexes, 0);
   v9 = v7;
   if (v7)
   {
     *(v7 + 8) = location;
     *(v7 + 16) = length;
-    v10 = *(a4 + 1) - *a4;
+    v10 = *(indexes + 1) - *indexes;
     if ((v10 & 8) != 0)
     {
       v11 = MEMORY[0x277D81150];
@@ -79,19 +79,19 @@
   return v9;
 }
 
-- (TSWPRangeMap)initWithSubRange:(_NSRange)a3 unmappedIndexes:(const void *)a4 isBackwardAffinities:(const void *)a5
+- (TSWPRangeMap)initWithSubRange:(_NSRange)range unmappedIndexes:(const void *)indexes isBackwardAffinities:(const void *)affinities
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = objc_msgSend_initWithSubRange_unmappedIndexes_affinity_(self, a2, a3.location, a3.length, a4, 0);
+  length = range.length;
+  location = range.location;
+  v9 = objc_msgSend_initWithSubRange_unmappedIndexes_affinity_(self, a2, range.location, range.length, indexes, 0);
   v11 = v9;
   if (v9)
   {
     v9->_subRange.location = location;
     v9->_subRange.length = length;
-    v13 = *a4;
-    v12 = *(a4 + 1);
-    v14 = (v12 - *a4) >> 3;
+    v13 = *indexes;
+    v12 = *(indexes + 1);
+    v14 = (v12 - *indexes) >> 3;
     if (v14 != (v9->_unmappedIndexes.__end_ - v9->_unmappedIndexes.__begin_) >> 4 || v14 != (v9->_mappedIndexes.__end_ - v9->_mappedIndexes.__begin_) >> 4)
     {
       v15 = MEMORY[0x277D81150];
@@ -105,7 +105,7 @@
     if (v12 != v13)
     {
       v22 = 0;
-      v23 = *a5;
+      v23 = *affinities;
       if (v14 <= 1)
       {
         v24 = 1;
@@ -144,10 +144,10 @@
   return v11;
 }
 
-- (TSWPRangeMap)initWithSubRange:(_NSRange)a3 unmappedIndexes:(const void *)a4 affinity:(int)a5
+- (TSWPRangeMap)initWithSubRange:(_NSRange)range unmappedIndexes:(const void *)indexes affinity:(int)affinity
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v42.receiver = self;
   v42.super_class = TSWPRangeMap;
   v9 = [(TSWPRangeMap *)&v42 init];
@@ -156,9 +156,9 @@
   {
     v9->_subRange.location = location;
     v9->_subRange.length = length;
-    v12 = *a4;
-    v11 = *(a4 + 1);
-    v13 = (v11 - *a4) >> 3;
+    v12 = *indexes;
+    v11 = *(indexes + 1);
+    v13 = (v11 - *indexes) >> 3;
     sub_276E49FD4(&v9->_unmappedIndexes.__begin_, v13);
     sub_276E49FD4(&v10->_mappedIndexes.__begin_, v13);
     v38 = v13;
@@ -177,10 +177,10 @@
 
       v17 = 0x277D81000uLL;
       v18 = 0x277CCA000uLL;
-      v37 = a5;
+      affinityCopy = affinity;
       do
       {
-        v19 = *(*a4 + 8 * v15);
+        v19 = *(*indexes + 8 * v15);
         v20 = v10->_subRange.location;
         v21 = v10->_subRange.length;
         v22 = v19 - v20 < v21 && v19 >= v20;
@@ -190,7 +190,7 @@
           v25 = *(v17 + 336);
           v39 = objc_msgSend_stringWithUTF8String_(*(v18 + 3240), v14, "[TSWPRangeMap initWithSubRange:unmappedIndexes:affinity:]");
           v26 = v16;
-          v27 = a4;
+          indexesCopy = indexes;
           v28 = v17;
           v29 = v18;
           v31 = objc_msgSend_stringWithUTF8String_(*(v18 + 3240), v30, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPRangeMap.mm");
@@ -199,17 +199,17 @@
 
           v17 = v28;
           objc_msgSend_logBacktraceThrottled(*(v28 + 336), v34, v35);
-          a4 = v27;
+          indexes = indexesCopy;
           v16 = v26;
-          a5 = v37;
+          affinity = affinityCopy;
           v18 = v29;
         }
 
         *&v41 = v19;
-        *(&v41 + 1) = a5;
+        *(&v41 + 1) = affinity;
         sub_276E4A074(&v10->_unmappedIndexes, &v41);
         *&v40 = v15 + v19 - v10->_subRange.location;
-        *(&v40 + 1) = a5;
+        *(&v40 + 1) = affinity;
         sub_276E4A074(&v10->_mappedIndexes, &v40);
         ++v15;
       }
@@ -221,9 +221,9 @@
   return v10;
 }
 
-- (unint64_t)mappedCharIndex:(unint64_t)a3
+- (unint64_t)mappedCharIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPRangeMap mappedCharIndex:]");
@@ -233,7 +233,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v10, v11);
   }
 
-  v12 = a3 - objc_msgSend_subRange(self, a2, a3);
+  v12 = index - objc_msgSend_subRange(self, a2, index);
   objc_msgSend_subRange(self, v13, v14);
   if (v12 > v15)
   {
@@ -253,7 +253,7 @@
       v24 = *v22;
       v23 = (v22 + 2);
       v20 += ~(v20 >> 1);
-      if (v24 > a3)
+      if (v24 > index)
       {
         v20 = v21;
       }
@@ -267,13 +267,13 @@
     while (v20);
   }
 
-  return a3 - objc_msgSend_subRange(self, v15, v16) + ((end - begin) >> 4);
+  return index - objc_msgSend_subRange(self, v15, v16) + ((end - begin) >> 4);
 }
 
-- (unint64_t)unmappedCharIndex:(unint64_t)a3
+- (unint64_t)unmappedCharIndex:(unint64_t)index
 {
-  v3 = a3;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  indexCopy = index;
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPRangeMap unmappedCharIndex:]");
@@ -301,7 +301,7 @@
       v19 = *v17;
       v18 = (v17 + 2);
       v14 += ~(v14 >> 1);
-      if (v19 < v3)
+      if (v19 < indexCopy)
       {
         v15 = v18;
       }
@@ -315,20 +315,20 @@
     while (v14);
   }
 
-  if (end == v15 || *v15 != v3)
+  if (end == v15 || *v15 != indexCopy)
   {
-    return v3 - ((v15 - begin) >> 4) + objc_msgSend_subRange(self, a2, a3);
+    return indexCopy - ((v15 - begin) >> 4) + objc_msgSend_subRange(self, a2, index);
   }
 
   v20 = *(v15 + 2);
   if (v20 == 2)
   {
-    ++v3;
+    ++indexCopy;
   }
 
   else if (v20 == 1)
   {
-    --v3;
+    --indexCopy;
   }
 
   else
@@ -341,18 +341,18 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28);
   }
 
-  return objc_msgSend_unmappedCharIndex_(self, a2, v3);
+  return objc_msgSend_unmappedCharIndex_(self, a2, indexCopy);
 }
 
-- (unint64_t)p_extendBackwardMappedIndex:(unint64_t)a3
+- (unint64_t)p_extendBackwardMappedIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
     begin = self->_mappedIndexes.__begin_;
     end = self->_mappedIndexes.__end_;
     if (end != begin)
     {
-      v5 = a3 - 1;
+      v5 = index - 1;
       v6 = (end - begin) >> 4;
       do
       {
@@ -375,21 +375,21 @@
       while (v6);
       if (begin != end && *begin == v5 && *(begin + 2) == 2)
       {
-        --a3;
+        --index;
       }
     }
   }
 
-  return a3;
+  return index;
 }
 
-- (unint64_t)p_extendForwardMappedIndex:(unint64_t)a3
+- (unint64_t)p_extendForwardMappedIndex:(unint64_t)index
 {
   begin = self->_mappedIndexes.__begin_;
   end = self->_mappedIndexes.__end_;
   if (end != begin)
   {
-    v5 = a3 + 1;
+    v5 = index + 1;
     v6 = (end - begin) >> 4;
     do
     {
@@ -412,18 +412,18 @@
     while (v6);
     if (begin != end && *begin == v5 && *(begin + 2) == 1)
     {
-      ++a3;
+      ++index;
     }
   }
 
-  return a3;
+  return index;
 }
 
-- (_NSRange)mappedCharRange:(_NSRange)a3
+- (_NSRange)mappedCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v39.location = objc_msgSend_subRange(self, a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v39.location = objc_msgSend_subRange(self, a2, range.location);
   v39.length = v6;
   v35.location = location;
   v35.length = length;
@@ -507,11 +507,11 @@
   return result;
 }
 
-- (_NSRange)unmappedCharRange:(_NSRange)a3
+- (_NSRange)unmappedCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_unmappedCharIndex_(self, a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v6 = objc_msgSend_unmappedCharIndex_(self, a2, range.location);
   v8 = v6;
   if (length)
   {
@@ -549,20 +549,20 @@
   return result;
 }
 
-- (void)adjustByDelta:(int64_t)a3 startingAt:(unint64_t)a4
+- (void)adjustByDelta:(int64_t)delta startingAt:(unint64_t)at
 {
-  if (objc_msgSend_subRange(self, a2, a3) >= a4)
+  if (objc_msgSend_subRange(self, a2, delta) >= at)
   {
-    self->_subRange.location += a3;
+    self->_subRange.location += delta;
   }
 
   begin = self->_unmappedIndexes.__begin_;
   end = self->_unmappedIndexes.__end_;
   while (begin != end)
   {
-    if (*begin >= a4)
+    if (*begin >= at)
     {
-      *begin += a3;
+      *begin += delta;
     }
 
     begin = (begin + 16);

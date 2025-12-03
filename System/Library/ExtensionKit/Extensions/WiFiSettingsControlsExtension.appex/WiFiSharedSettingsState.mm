@@ -8,8 +8,8 @@
 - (int64_t)askToJoinMode;
 - (int64_t)askToJoinNetworks;
 - (int64_t)autoHotspotMode;
-- (void)setWifiSettingsBundleIdentifier:(id)a3;
-- (void)set_wifiSettingsBundleIdentifier:(id)a3;
+- (void)setWifiSettingsBundleIdentifier:(id)identifier;
+- (void)set_wifiSettingsBundleIdentifier:(id)identifier;
 @end
 
 @implementation WiFiSharedSettingsState
@@ -36,7 +36,7 @@
   return v4;
 }
 
-- (void)set_wifiSettingsBundleIdentifier:(id)a3
+- (void)set_wifiSettingsBundleIdentifier:(id)identifier
 {
   v4 = sub_10001CC14();
   v5 = (self + OBJC_IVAR____TtC29WiFiSettingsControlsExtension23WiFiSharedSettingsState__wifiSettingsBundleIdentifier);
@@ -49,28 +49,28 @@
 {
   swift_getKeyPath();
   sub_1000082F0();
-  v3 = self;
+  selfCopy = self;
   sub_10001CAA4();
 
-  v4 = *(v3 + OBJC_IVAR____TtC29WiFiSettingsControlsExtension23WiFiSharedSettingsState__wifiSettingsBundleIdentifier);
-  v5 = *(v3 + OBJC_IVAR____TtC29WiFiSettingsControlsExtension23WiFiSharedSettingsState__wifiSettingsBundleIdentifier + 8);
+  v4 = *(selfCopy + OBJC_IVAR____TtC29WiFiSettingsControlsExtension23WiFiSharedSettingsState__wifiSettingsBundleIdentifier);
+  v5 = *(selfCopy + OBJC_IVAR____TtC29WiFiSettingsControlsExtension23WiFiSharedSettingsState__wifiSettingsBundleIdentifier + 8);
 
   v6 = sub_10001CC04();
 
   return v6;
 }
 
-- (void)setWifiSettingsBundleIdentifier:(id)a3
+- (void)setWifiSettingsBundleIdentifier:(id)identifier
 {
   v4 = sub_10001CC14();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1000112F0(v4, v6);
 }
 
 - (BOOL)powerState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000109C0();
 
   return v3 & 1;
@@ -78,7 +78,7 @@
 
 - (int64_t)askToJoinMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100010B04();
 
   return v3;
@@ -86,7 +86,7 @@
 
 - (int64_t)autoHotspotMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10001182C();
 
   return v3;
@@ -94,7 +94,7 @@
 
 - (int64_t)askToJoinNetworks
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100011F5C();
 
   return v3;
@@ -102,7 +102,7 @@
 
 - (BOOL)askToJoinHotspots
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10001232C();
 
   return v3;
@@ -110,7 +110,7 @@
 
 - (BOOL)autoJoinState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100010848();
 
   return v3 & 1;

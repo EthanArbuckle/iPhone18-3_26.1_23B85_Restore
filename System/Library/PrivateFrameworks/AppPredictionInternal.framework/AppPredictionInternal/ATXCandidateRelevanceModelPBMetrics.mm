@@ -1,33 +1,33 @@
 @interface ATXCandidateRelevanceModelPBMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCandidateMetrics:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCandidateMetrics:(id)metrics;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXCandidateRelevanceModelPBMetrics
 
-- (void)addCandidateMetrics:(id)a3
+- (void)addCandidateMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   candidateMetrics = self->_candidateMetrics;
-  v8 = v4;
+  v8 = metricsCopy;
   if (!candidateMetrics)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_candidateMetrics;
     self->_candidateMetrics = v6;
 
-    v4 = v8;
+    metricsCopy = v8;
     candidateMetrics = self->_candidateMetrics;
   }
 
-  [(NSMutableArray *)candidateMetrics addObject:v4];
+  [(NSMutableArray *)candidateMetrics addObject:metricsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = ATXCandidateRelevanceModelPBMetrics;
   v4 = [(ATXCandidateRelevanceModelPBMetrics *)&v8 description];
-  v5 = [(ATXCandidateRelevanceModelPBMetrics *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXCandidateRelevanceModelPBMetrics *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,47 +45,47 @@
 - (id)dictionaryRepresentation
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   modelMetrics = self->_modelMetrics;
   if (modelMetrics)
   {
-    v5 = [(ATXCandidateRelevanceModelPBModelMetrics *)modelMetrics dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"modelMetrics"];
+    dictionaryRepresentation = [(ATXCandidateRelevanceModelPBModelMetrics *)modelMetrics dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"modelMetrics"];
   }
 
   evaluationMetricsOneWeekAgo = self->_evaluationMetricsOneWeekAgo;
   if (evaluationMetricsOneWeekAgo)
   {
-    v7 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)evaluationMetricsOneWeekAgo dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"evaluationMetricsOneWeekAgo"];
+    dictionaryRepresentation2 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)evaluationMetricsOneWeekAgo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"evaluationMetricsOneWeekAgo"];
   }
 
   evaluationMetricsTwoWeeksAgo = self->_evaluationMetricsTwoWeeksAgo;
   if (evaluationMetricsTwoWeeksAgo)
   {
-    v9 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)evaluationMetricsTwoWeeksAgo dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"evaluationMetricsTwoWeeksAgo"];
+    dictionaryRepresentation3 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)evaluationMetricsTwoWeeksAgo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"evaluationMetricsTwoWeeksAgo"];
   }
 
   evaluationMetricsThreeWeeksAgo = self->_evaluationMetricsThreeWeeksAgo;
   if (evaluationMetricsThreeWeeksAgo)
   {
-    v11 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)evaluationMetricsThreeWeeksAgo dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"evaluationMetricsThreeWeeksAgo"];
+    dictionaryRepresentation4 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)evaluationMetricsThreeWeeksAgo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"evaluationMetricsThreeWeeksAgo"];
   }
 
   evaluationMetricsFourWeeksAgo = self->_evaluationMetricsFourWeeksAgo;
   if (evaluationMetricsFourWeeksAgo)
   {
-    v13 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)evaluationMetricsFourWeeksAgo dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"evaluationMetricsFourWeeksAgo"];
+    dictionaryRepresentation5 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)evaluationMetricsFourWeeksAgo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"evaluationMetricsFourWeeksAgo"];
   }
 
   evaluationMetricsLastFourWeeks = self->_evaluationMetricsLastFourWeeks;
   if (evaluationMetricsLastFourWeeks)
   {
-    v15 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)evaluationMetricsLastFourWeeks dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"evaluationMetricsLastFourWeeks"];
+    dictionaryRepresentation6 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)evaluationMetricsLastFourWeeks dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"evaluationMetricsLastFourWeeks"];
   }
 
   if ([(NSMutableArray *)self->_candidateMetrics count])
@@ -110,8 +110,8 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v16 addObject:v22];
+          dictionaryRepresentation7 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [v16 addObject:dictionaryRepresentation7];
         }
 
         v19 = [(NSMutableArray *)v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -120,18 +120,18 @@
       while (v19);
     }
 
-    [v3 setObject:v16 forKey:@"candidateMetrics"];
+    [dictionary setObject:v16 forKey:@"candidateMetrics"];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_modelMetrics)
   {
     PBDataWriterWriteSubmessage();
@@ -197,80 +197,80 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_modelMetrics)
   {
-    [v8 setModelMetrics:?];
+    [toCopy setModelMetrics:?];
   }
 
   if (self->_evaluationMetricsOneWeekAgo)
   {
-    [v8 setEvaluationMetricsOneWeekAgo:?];
+    [toCopy setEvaluationMetricsOneWeekAgo:?];
   }
 
   if (self->_evaluationMetricsTwoWeeksAgo)
   {
-    [v8 setEvaluationMetricsTwoWeeksAgo:?];
+    [toCopy setEvaluationMetricsTwoWeeksAgo:?];
   }
 
   if (self->_evaluationMetricsThreeWeeksAgo)
   {
-    [v8 setEvaluationMetricsThreeWeeksAgo:?];
+    [toCopy setEvaluationMetricsThreeWeeksAgo:?];
   }
 
   if (self->_evaluationMetricsFourWeeksAgo)
   {
-    [v8 setEvaluationMetricsFourWeeksAgo:?];
+    [toCopy setEvaluationMetricsFourWeeksAgo:?];
   }
 
   if (self->_evaluationMetricsLastFourWeeks)
   {
-    [v8 setEvaluationMetricsLastFourWeeks:?];
+    [toCopy setEvaluationMetricsLastFourWeeks:?];
   }
 
   if ([(ATXCandidateRelevanceModelPBMetrics *)self candidateMetricsCount])
   {
-    [v8 clearCandidateMetrics];
-    v4 = [(ATXCandidateRelevanceModelPBMetrics *)self candidateMetricsCount];
-    if (v4)
+    [toCopy clearCandidateMetrics];
+    candidateMetricsCount = [(ATXCandidateRelevanceModelPBMetrics *)self candidateMetricsCount];
+    if (candidateMetricsCount)
     {
-      v5 = v4;
+      v5 = candidateMetricsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ATXCandidateRelevanceModelPBMetrics *)self candidateMetricsAtIndex:i];
-        [v8 addCandidateMetrics:v7];
+        [toCopy addCandidateMetrics:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ATXCandidateRelevanceModelPBModelMetrics *)self->_modelMetrics copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ATXCandidateRelevanceModelPBModelMetrics *)self->_modelMetrics copyWithZone:zone];
   v7 = v5[7];
   v5[7] = v6;
 
-  v8 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)self->_evaluationMetricsOneWeekAgo copyWithZone:a3];
+  v8 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)self->_evaluationMetricsOneWeekAgo copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)self->_evaluationMetricsTwoWeeksAgo copyWithZone:a3];
+  v10 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)self->_evaluationMetricsTwoWeeksAgo copyWithZone:zone];
   v11 = v5[6];
   v5[6] = v10;
 
-  v12 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)self->_evaluationMetricsThreeWeeksAgo copyWithZone:a3];
+  v12 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)self->_evaluationMetricsThreeWeeksAgo copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
-  v14 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)self->_evaluationMetricsFourWeeksAgo copyWithZone:a3];
+  v14 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)self->_evaluationMetricsFourWeeksAgo copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
-  v16 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)self->_evaluationMetricsLastFourWeeks copyWithZone:a3];
+  v16 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)self->_evaluationMetricsLastFourWeeks copyWithZone:zone];
   v17 = v5[3];
   v5[3] = v16;
 
@@ -294,7 +294,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v26 + 1) + 8 * v22) copyWithZone:{a3, v26}];
+        v23 = [*(*(&v26 + 1) + 8 * v22) copyWithZone:{zone, v26}];
         [v5 addCandidateMetrics:v23];
 
         ++v22;
@@ -311,13 +311,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((modelMetrics = self->_modelMetrics, !(modelMetrics | v4[7])) || -[ATXCandidateRelevanceModelPBModelMetrics isEqual:](modelMetrics, "isEqual:")) && ((evaluationMetricsOneWeekAgo = self->_evaluationMetricsOneWeekAgo, !(evaluationMetricsOneWeekAgo | v4[4])) || -[ATXCandidateRelevanceModelPBEvaluationMetrics isEqual:](evaluationMetricsOneWeekAgo, "isEqual:")) && ((evaluationMetricsTwoWeeksAgo = self->_evaluationMetricsTwoWeeksAgo, !(evaluationMetricsTwoWeeksAgo | v4[6])) || -[ATXCandidateRelevanceModelPBEvaluationMetrics isEqual:](evaluationMetricsTwoWeeksAgo, "isEqual:")) && ((evaluationMetricsThreeWeeksAgo = self->_evaluationMetricsThreeWeeksAgo, !(evaluationMetricsThreeWeeksAgo | v4[5])) || -[ATXCandidateRelevanceModelPBEvaluationMetrics isEqual:](evaluationMetricsThreeWeeksAgo, "isEqual:")) && ((evaluationMetricsFourWeeksAgo = self->_evaluationMetricsFourWeeksAgo, !(evaluationMetricsFourWeeksAgo | v4[2])) || -[ATXCandidateRelevanceModelPBEvaluationMetrics isEqual:](evaluationMetricsFourWeeksAgo, "isEqual:")) && ((evaluationMetricsLastFourWeeks = self->_evaluationMetricsLastFourWeeks, !(evaluationMetricsLastFourWeeks | v4[3])) || -[ATXCandidateRelevanceModelPBEvaluationMetrics isEqual:](evaluationMetricsLastFourWeeks, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((modelMetrics = self->_modelMetrics, !(modelMetrics | equalCopy[7])) || -[ATXCandidateRelevanceModelPBModelMetrics isEqual:](modelMetrics, "isEqual:")) && ((evaluationMetricsOneWeekAgo = self->_evaluationMetricsOneWeekAgo, !(evaluationMetricsOneWeekAgo | equalCopy[4])) || -[ATXCandidateRelevanceModelPBEvaluationMetrics isEqual:](evaluationMetricsOneWeekAgo, "isEqual:")) && ((evaluationMetricsTwoWeeksAgo = self->_evaluationMetricsTwoWeeksAgo, !(evaluationMetricsTwoWeeksAgo | equalCopy[6])) || -[ATXCandidateRelevanceModelPBEvaluationMetrics isEqual:](evaluationMetricsTwoWeeksAgo, "isEqual:")) && ((evaluationMetricsThreeWeeksAgo = self->_evaluationMetricsThreeWeeksAgo, !(evaluationMetricsThreeWeeksAgo | equalCopy[5])) || -[ATXCandidateRelevanceModelPBEvaluationMetrics isEqual:](evaluationMetricsThreeWeeksAgo, "isEqual:")) && ((evaluationMetricsFourWeeksAgo = self->_evaluationMetricsFourWeeksAgo, !(evaluationMetricsFourWeeksAgo | equalCopy[2])) || -[ATXCandidateRelevanceModelPBEvaluationMetrics isEqual:](evaluationMetricsFourWeeksAgo, "isEqual:")) && ((evaluationMetricsLastFourWeeks = self->_evaluationMetricsLastFourWeeks, !(evaluationMetricsLastFourWeeks | equalCopy[3])) || -[ATXCandidateRelevanceModelPBEvaluationMetrics isEqual:](evaluationMetricsLastFourWeeks, "isEqual:")))
   {
     candidateMetrics = self->_candidateMetrics;
-    if (candidateMetrics | v4[1])
+    if (candidateMetrics | equalCopy[1])
     {
       v12 = [(NSMutableArray *)candidateMetrics isEqual:?];
     }
@@ -347,12 +347,12 @@
   return v6 ^ v8 ^ [(NSMutableArray *)self->_candidateMetrics hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   modelMetrics = self->_modelMetrics;
-  v6 = *(v4 + 7);
+  v6 = *(fromCopy + 7);
   if (modelMetrics)
   {
     if (v6)
@@ -367,7 +367,7 @@
   }
 
   evaluationMetricsOneWeekAgo = self->_evaluationMetricsOneWeekAgo;
-  v8 = *(v4 + 4);
+  v8 = *(fromCopy + 4);
   if (evaluationMetricsOneWeekAgo)
   {
     if (v8)
@@ -382,7 +382,7 @@
   }
 
   evaluationMetricsTwoWeeksAgo = self->_evaluationMetricsTwoWeeksAgo;
-  v10 = *(v4 + 6);
+  v10 = *(fromCopy + 6);
   if (evaluationMetricsTwoWeeksAgo)
   {
     if (v10)
@@ -397,7 +397,7 @@
   }
 
   evaluationMetricsThreeWeeksAgo = self->_evaluationMetricsThreeWeeksAgo;
-  v12 = *(v4 + 5);
+  v12 = *(fromCopy + 5);
   if (evaluationMetricsThreeWeeksAgo)
   {
     if (v12)
@@ -412,7 +412,7 @@
   }
 
   evaluationMetricsFourWeeksAgo = self->_evaluationMetricsFourWeeksAgo;
-  v14 = *(v4 + 2);
+  v14 = *(fromCopy + 2);
   if (evaluationMetricsFourWeeksAgo)
   {
     if (v14)
@@ -427,7 +427,7 @@
   }
 
   evaluationMetricsLastFourWeeks = self->_evaluationMetricsLastFourWeeks;
-  v16 = *(v4 + 3);
+  v16 = *(fromCopy + 3);
   if (evaluationMetricsLastFourWeeks)
   {
     if (v16)
@@ -445,7 +445,7 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v17 = *(v4 + 1);
+  v17 = *(fromCopy + 1);
   v18 = [v17 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v18)
   {

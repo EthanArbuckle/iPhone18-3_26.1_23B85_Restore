@@ -1,10 +1,10 @@
 @interface MCGlobalEthernetPayloadHandler
-- (BOOL)_install:(id)a3 username:(id)a4 password:(id)a5 identity:(__SecIdentity *)a6;
-- (BOOL)_isMetadataValid:(__EAPOLClientProfile *)a3;
-- (BOOL)_setEAPConfig:(id)a3;
+- (BOOL)_install:(id)_install username:(id)username password:(id)password identity:(__SecIdentity *)identity;
+- (BOOL)_isMetadataValid:(__EAPOLClientProfile *)valid;
+- (BOOL)_setEAPConfig:(id)config;
 - (BOOL)_uninstall;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
-- (MCGlobalEthernetPayloadHandler)initWithPayload:(id)a3 profileHandler:(id)a4;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
+- (MCGlobalEthernetPayloadHandler)initWithPayload:(id)payload profileHandler:(id)handler;
 - (id)profileMetadata;
 - (void)remove;
 - (void)setAside;
@@ -13,28 +13,28 @@
 
 @implementation MCGlobalEthernetPayloadHandler
 
-- (MCGlobalEthernetPayloadHandler)initWithPayload:(id)a3 profileHandler:(id)a4
+- (MCGlobalEthernetPayloadHandler)initWithPayload:(id)payload profileHandler:(id)handler
 {
   v5.receiver = self;
   v5.super_class = MCGlobalEthernetPayloadHandler;
-  return [(MCNewPayloadHandler *)&v5 initWithPayload:a3 profileHandler:a4];
+  return [(MCNewPayloadHandler *)&v5 initWithPayload:payload profileHandler:handler];
 }
 
 - (id)profileMetadata
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v2 UUID];
-  v4 = [NSDictionary dictionaryWithObject:v3 forKey:kMCPayloadUUIDKey];
+  payload = [(MCNewPayloadHandler *)self payload];
+  uUID = [payload UUID];
+  v4 = [NSDictionary dictionaryWithObject:uUID forKey:kMCPayloadUUIDKey];
 
   return v4;
 }
 
-- (BOOL)_install:(id)a3 username:(id)a4 password:(id)a5 identity:(__SecIdentity *)a6
+- (BOOL)_install:(id)_install username:(id)username password:(id)password identity:(__SecIdentity *)identity
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(MCNewPayloadHandler *)self payload];
+  _installCopy = _install;
+  usernameCopy = username;
+  passwordCopy = password;
+  payload = [(MCNewPayloadHandler *)self payload];
   v14 = EAPOLClientConfigurationCreateWithAuthorization();
   if (v14)
   {
@@ -67,17 +67,17 @@ LABEL_26:
           if (v19)
           {
             v20 = v19;
-            v21 = [v13 displayName];
+            displayName = [payload displayName];
 
-            if (v21)
+            if (displayName)
             {
-              v22 = [v13 displayName];
+              displayName2 = [payload displayName];
               EAPOLClientProfileSetUserDefinedName();
             }
 
             EAPOLClientProfileSetAuthenticationProperties();
-            v23 = [(MCGlobalEthernetPayloadHandler *)self profileMetadata];
-            if (v23 && !EAPOLClientProfileSetInformation())
+            profileMetadata = [(MCGlobalEthernetPayloadHandler *)self profileMetadata];
+            if (profileMetadata && !EAPOLClientProfileSetInformation())
             {
               v38 = _MCLogObjects[0];
               if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
@@ -92,7 +92,7 @@ LABEL_26:
               goto LABEL_46;
             }
 
-            if (v11 && v12 && !EAPOLClientItemIDSetPasswordItem())
+            if (usernameCopy && passwordCopy && !EAPOLClientItemIDSetPasswordItem())
             {
               v46 = _MCLogObjects[0];
               if (!os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
@@ -107,7 +107,7 @@ LABEL_26:
               v44 = "%{public}@ EAPOLClientItemIDSetPasswordItem() failed";
             }
 
-            else if (a6 && !EAPOLClientItemIDSetIdentity())
+            else if (identity && !EAPOLClientItemIDSetIdentity())
             {
               v45 = _MCLogObjects[0];
               if (!os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
@@ -413,13 +413,13 @@ LABEL_28:
   return 0;
 }
 
-- (BOOL)_setEAPConfig:(id)a3
+- (BOOL)_setEAPConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   cf = 0;
-  v5 = [(MCNewPayloadHandler *)self payload];
-  v6 = [v4 mutableCopy];
-  if ([v5 usernameRequired] && (objc_msgSend(v5, "username"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+  payload = [(MCNewPayloadHandler *)self payload];
+  v6 = [configCopy mutableCopy];
+  if ([payload usernameRequired] && (objc_msgSend(payload, "username"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
     v10 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
@@ -436,7 +436,7 @@ LABEL_10:
 
   else
   {
-    if (![v5 passwordRequired] || (objc_msgSend(v5, "password"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    if (![payload passwordRequired] || (objc_msgSend(payload, "password"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
       v9 = 1;
       goto LABEL_12;
@@ -470,14 +470,14 @@ LABEL_12:
   {
     v63 = v9;
     v64 = v6;
-    v66 = v4;
+    v66 = configCopy;
     v67 = +[NSMutableArray array];
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v65 = v5;
-    obj = [v5 payloadCertificateAnchorUUIDs];
+    v65 = payload;
+    obj = [payload payloadCertificateAnchorUUIDs];
     v16 = [obj countByEnumeratingWithState:&v69 objects:v80 count:16];
     if (v16)
     {
@@ -493,16 +493,16 @@ LABEL_12:
           }
 
           v20 = *(*(&v69 + 1) + 8 * i);
-          v21 = [(MCNewPayloadHandler *)self profileHandler];
-          v22 = [v21 persistentIDForCertificateUUID:v20];
+          profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+          v22 = [profileHandler persistentIDForCertificateUUID:v20];
 
           if (v22)
           {
-            v23 = [(MCNewPayloadHandler *)self profileHandler];
-            v24 = [v23 profile];
-            v25 = [v24 isInstalledForSystem];
+            profileHandler2 = [(MCNewPayloadHandler *)self profileHandler];
+            profile = [profileHandler2 profile];
+            isInstalledForSystem = [profile isInstalledForSystem];
 
-            v26 = [MCKeychain copyCertificateWithPersistentID:v22 useSystemKeychain:v25];
+            v26 = [MCKeychain copyCertificateWithPersistentID:v22 useSystemKeychain:isInstalledForSystem];
             if (v26)
             {
               v27 = v26;
@@ -519,7 +519,7 @@ LABEL_12:
                   v76 = 2114;
                   v77 = v20;
                   v78 = 1026;
-                  v79 = v25;
+                  v79 = isInstalledForSystem;
                   v32 = v31;
                   _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ adding trusted certificate UUID %{public}@ with system keychain? %{public}d", buf, 0x1Cu);
                 }
@@ -560,21 +560,21 @@ LABEL_12:
       [v64 setObject:v67 forKey:@"TLSTrustedCertificates"];
     }
 
-    v5 = v65;
-    v4 = v66;
+    payload = v65;
+    configCopy = v66;
     if (!v63)
     {
       goto LABEL_48;
     }
   }
 
-  v37 = [v5 certificateUUID];
+  certificateUUID = [payload certificateUUID];
 
-  if (v37)
+  if (certificateUUID)
   {
-    v38 = [(MCNewPayloadHandler *)self profileHandler];
-    v39 = [v5 certificateUUID];
-    v40 = [v38 persistentIDForCertificateUUID:v39];
+    profileHandler3 = [(MCNewPayloadHandler *)self profileHandler];
+    certificateUUID2 = [payload certificateUUID];
+    v40 = [profileHandler3 persistentIDForCertificateUUID:certificateUUID2];
 
     v41 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
@@ -606,14 +606,14 @@ LABEL_12:
     }
   }
 
-  v45 = [v5 username];
-  v46 = [v45 dataUsingEncoding:4];
+  username = [payload username];
+  v46 = [username dataUsingEncoding:4];
 
-  v47 = [v5 password];
-  v48 = [v47 dataUsingEncoding:4];
+  password = [payload password];
+  v48 = [password dataUsingEncoding:4];
 
-  LODWORD(v47) = [(MCGlobalEthernetPayloadHandler *)self _install:v6 username:v46 password:v48 identity:cf];
-  if (!v47)
+  LODWORD(password) = [(MCGlobalEthernetPayloadHandler *)self _install:v6 username:v46 password:v48 identity:cf];
+  if (!password)
   {
 LABEL_48:
     v58 = _MCLogObjects[0];
@@ -654,9 +654,9 @@ LABEL_51:
   return v53;
 }
 
-- (BOOL)_isMetadataValid:(__EAPOLClientProfile *)a3
+- (BOOL)_isMetadataValid:(__EAPOLClientProfile *)valid
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
+  payload = [(MCNewPayloadHandler *)self payload];
   v4 = EAPOLClientProfileGetInformation();
   v5 = v4;
   if (!v4)
@@ -675,8 +675,8 @@ LABEL_51:
   }
 
   v9 = [v5 objectForKey:v6];
-  v10 = [v3 UUID];
-  v11 = [v9 isEqualToString:v10];
+  uUID = [payload UUID];
+  v11 = [v9 isEqualToString:uUID];
 
   if (v11)
   {
@@ -692,39 +692,39 @@ LABEL_5:
   return v12;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v8 = [(MCNewPayloadHandler *)self payload:a3];
-  v9 = [v8 eapClientConfiguration];
+  v8 = [(MCNewPayloadHandler *)self payload:installer];
+  eapClientConfiguration = [v8 eapClientConfiguration];
 
-  if (!v9)
+  if (!eapClientConfiguration)
   {
     goto LABEL_6;
   }
 
-  v10 = [v8 eapClientConfiguration];
-  v11 = [(MCGlobalEthernetPayloadHandler *)self _setEAPConfig:v10];
+  eapClientConfiguration2 = [v8 eapClientConfiguration];
+  v11 = [(MCGlobalEthernetPayloadHandler *)self _setEAPConfig:eapClientConfiguration2];
 
   if ((v11 & 1) == 0)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_7;
     }
 
     v12 = MCGlobalEthernetErrorDomain;
     v13 = MCErrorArray();
-    *a6 = [NSError MCErrorWithDomain:v12 code:62000 descriptionArray:v13 errorType:MCErrorTypeFatal, 0];
+    *error = [NSError MCErrorWithDomain:v12 code:62000 descriptionArray:v13 errorType:MCErrorTypeFatal, 0];
 
 LABEL_6:
-    LOBYTE(a6) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_7;
   }
 
-  LOBYTE(a6) = 1;
+  LOBYTE(error) = 1;
 LABEL_7:
 
-  return a6;
+  return error;
 }
 
 - (void)remove
@@ -877,8 +877,8 @@ LABEL_19:
 
 - (void)unsetAside
 {
-  v17 = [(MCNewPayloadHandler *)self profileHandler];
-  if ([v17 isSetAside])
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  if ([profileHandler isSetAside])
   {
     setAsideProfileID = self->_setAsideProfileID;
 

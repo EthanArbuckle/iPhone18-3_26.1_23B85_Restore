@@ -1,8 +1,8 @@
 @interface PXApplicationVideoMuteController
 - (PXApplicationVideoMuteController)init;
-- (PXApplicationVideoMuteController)initWithAutoplaySetting:(BOOL)a3;
+- (PXApplicationVideoMuteController)initWithAutoplaySetting:(BOOL)setting;
 - (void)dealloc;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)preferencesDidChange;
 @end
 
@@ -15,14 +15,14 @@
   [(PXVideoMuteController *)self setAutoplayEnabled:IsVideoAutoplayEnabled];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (ApplicationStateContext_105541 == a5)
+  if (ApplicationStateContext_105541 == context)
   {
-    v6 = [PXApplicationState sharedState:a3];
-    v7 = [v6 visibilityState];
+    v6 = [PXApplicationState sharedState:observable];
+    visibilityState = [v6 visibilityState];
 
-    if (v7 == 3)
+    if (visibilityState == 3)
     {
 
       [(PXVideoMuteController *)self applicationDidMoveToBackground];
@@ -41,11 +41,11 @@
   [(PXApplicationVideoMuteController *)&v4 dealloc];
 }
 
-- (PXApplicationVideoMuteController)initWithAutoplaySetting:(BOOL)a3
+- (PXApplicationVideoMuteController)initWithAutoplaySetting:(BOOL)setting
 {
   v6.receiver = self;
   v6.super_class = PXApplicationVideoMuteController;
-  v3 = [(PXVideoMuteController *)&v6 initWithAutoplaySetting:a3];
+  v3 = [(PXVideoMuteController *)&v6 initWithAutoplaySetting:setting];
   if (v3)
   {
     v4 = +[PXApplicationState sharedState];

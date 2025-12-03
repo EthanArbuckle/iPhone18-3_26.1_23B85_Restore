@@ -12,8 +12,8 @@
   v14 = 0;
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 view];
-  v4 = [v3 _accessibilityFindDescendant:&__block_literal_global_1];
+  view = [v2 view];
+  v4 = [view _accessibilityFindDescendant:&__block_literal_global_1];
 
   v9 = MEMORY[0x29EDCA5F8];
   v10 = 3221225472;

@@ -1,32 +1,32 @@
 @interface ISGraphicSymbolResource
 + (id)defaultResource;
-+ (id)graphicSymbolResourceWithConfiguration:(id)a3 symbolName:(id)a4 url:(id)a5;
-+ (id)graphicSymbolResourceWithRecipe:(id)a3 url:(id)a4;
-- (ISGraphicSymbolResource)initWithGraphicSymbolDescriptor:(id)a3 symbolName:(id)a4 url:(id)a5;
-- (id)imageForSize:(CGSize)a3 scale:(double)a4;
-- (void)updateDescriptorWithImageDescriptor:(id)a3;
++ (id)graphicSymbolResourceWithConfiguration:(id)configuration symbolName:(id)name url:(id)url;
++ (id)graphicSymbolResourceWithRecipe:(id)recipe url:(id)url;
+- (ISGraphicSymbolResource)initWithGraphicSymbolDescriptor:(id)descriptor symbolName:(id)name url:(id)url;
+- (id)imageForSize:(CGSize)size scale:(double)scale;
+- (void)updateDescriptorWithImageDescriptor:(id)descriptor;
 @end
 
 @implementation ISGraphicSymbolResource
 
-+ (id)graphicSymbolResourceWithRecipe:(id)a3 url:(id)a4
++ (id)graphicSymbolResourceWithRecipe:(id)recipe url:(id)url
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [ISGraphicSymbolDescriptor descriptorFromGraphicSymbolRecipe:v5];
+  recipeCopy = recipe;
+  urlCopy = url;
+  v7 = [ISGraphicSymbolDescriptor descriptorFromGraphicSymbolRecipe:recipeCopy];
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x1E69A89B0]);
-    v9 = [v7 name];
-    v10 = [v8 initWithSymbolName:v9 bundleURL:v6];
+    name = [v7 name];
+    v10 = [v8 initWithSymbolName:name bundleURL:urlCopy];
 
     v11 = [v10 imageForDescriptor:v7];
     if (v11)
     {
       v12 = [ISGraphicSymbolResource alloc];
-      v13 = [v7 name];
-      v14 = [(ISGraphicSymbolResource *)v12 initWithGraphicSymbolDescriptor:v7 symbolName:v13 url:v6];
+      name2 = [v7 name];
+      v14 = [(ISGraphicSymbolResource *)v12 initWithGraphicSymbolDescriptor:v7 symbolName:name2 url:urlCopy];
     }
 
     else
@@ -34,11 +34,11 @@
       v15 = _ISDefaultLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v16 = [v7 name];
+        name3 = [v7 name];
         v19 = 138412546;
-        v20 = v16;
+        v20 = name3;
         v21 = 2112;
-        v22 = v6;
+        v22 = urlCopy;
       }
 
       v14 = 0;
@@ -50,7 +50,7 @@
     v10 = _ISDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(ISGraphicSymbolResource *)v5 graphicSymbolResourceWithRecipe:v6 url:v10];
+      [(ISGraphicSymbolResource *)recipeCopy graphicSymbolResourceWithRecipe:urlCopy url:v10];
     }
 
     v14 = 0;
@@ -61,27 +61,27 @@
   return v14;
 }
 
-+ (id)graphicSymbolResourceWithConfiguration:(id)a3 symbolName:(id)a4 url:(id)a5
++ (id)graphicSymbolResourceWithConfiguration:(id)configuration symbolName:(id)name url:(id)url
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [ISGraphicSymbolDescriptor descriptorFromGraphicIconConfiguration:v7];
+  configurationCopy = configuration;
+  nameCopy = name;
+  urlCopy = url;
+  v10 = [ISGraphicSymbolDescriptor descriptorFromGraphicIconConfiguration:configurationCopy];
   v11 = v10;
   if (v10)
   {
-    [v10 setName:v8];
+    [v10 setName:nameCopy];
     v12 = objc_alloc(MEMORY[0x1E69A89B0]);
-    v13 = [v11 name];
-    v14 = [v12 initWithSymbolName:v13 bundleURL:v9];
+    name = [v11 name];
+    v14 = [v12 initWithSymbolName:name bundleURL:urlCopy];
 
     v15 = [v14 imageForDescriptor:v11];
     if (v15)
     {
       v16 = [ISGraphicSymbolResource alloc];
-      v17 = [v11 name];
-      v18 = [(ISGraphicSymbolResource *)v16 initWithGraphicSymbolDescriptor:v11 symbolName:v17 url:v9];
+      name2 = [v11 name];
+      v18 = [(ISGraphicSymbolResource *)v16 initWithGraphicSymbolDescriptor:v11 symbolName:name2 url:urlCopy];
     }
 
     else
@@ -89,13 +89,13 @@
       v19 = _ISDefaultLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = [v11 name];
+        name3 = [v11 name];
         v23 = 138412802;
-        v24 = v20;
+        v24 = name3;
         v25 = 2112;
-        v26 = v9;
+        v26 = urlCopy;
         v27 = 2112;
-        v28 = v7;
+        v28 = configurationCopy;
       }
 
       v18 = 0;
@@ -108,11 +108,11 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v23 = 138412802;
-      v24 = v7;
+      v24 = configurationCopy;
       v25 = 2112;
-      v26 = v8;
+      v26 = nameCopy;
       v27 = 2112;
-      v28 = v9;
+      v28 = urlCopy;
       _os_log_error_impl(&dword_1A77B8000, v14, OS_LOG_TYPE_ERROR, "Failed to read config %@ - %@ - %@.", &v23, 0x20u);
     }
 
@@ -128,32 +128,32 @@
 {
   v2 = [ISGraphicSymbolDescriptor descriptorFromGraphicSymbolRecipe:MEMORY[0x1E695E0F8]];
   v3 = [ISGraphicSymbolResource alloc];
-  v4 = [v2 name];
-  v5 = [v2 _url];
-  v6 = [(ISGraphicSymbolResource *)v3 initWithGraphicSymbolDescriptor:v2 symbolName:v4 url:v5];
+  name = [v2 name];
+  _url = [v2 _url];
+  v6 = [(ISGraphicSymbolResource *)v3 initWithGraphicSymbolDescriptor:v2 symbolName:name url:_url];
 
   return v6;
 }
 
-- (ISGraphicSymbolResource)initWithGraphicSymbolDescriptor:(id)a3 symbolName:(id)a4 url:(id)a5
+- (ISGraphicSymbolResource)initWithGraphicSymbolDescriptor:(id)descriptor symbolName:(id)name url:(id)url
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptorCopy = descriptor;
+  nameCopy = name;
+  urlCopy = url;
   v19.receiver = self;
   v19.super_class = ISGraphicSymbolResource;
   v11 = [(ISGraphicSymbolResource *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [descriptorCopy copy];
     descriptor = v11->_descriptor;
     v11->_descriptor = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     symbolName = v11->_symbolName;
     v11->_symbolName = v14;
 
-    v16 = [v10 copy];
+    v16 = [urlCopy copy];
     url = v11->_url;
     v11->_url = v16;
   }
@@ -161,39 +161,39 @@
   return v11;
 }
 
-- (id)imageForSize:(CGSize)a3 scale:(double)a4
+- (id)imageForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v24 = *MEMORY[0x1E69E9840];
   v8 = objc_alloc(MEMORY[0x1E69A89B0]);
-  v9 = [(ISGraphicSymbolResource *)self symbolName];
+  symbolName = [(ISGraphicSymbolResource *)self symbolName];
   v10 = [(ISGraphicSymbolResource *)self url];
-  v11 = [v8 initWithSymbolName:v9 bundleURL:v10];
+  v11 = [v8 initWithSymbolName:symbolName bundleURL:v10];
 
   if (v11)
   {
-    v12 = [(ISGraphicSymbolResource *)self descriptor];
-    [v12 setSize:{width, height}];
+    descriptor = [(ISGraphicSymbolResource *)self descriptor];
+    [descriptor setSize:{width, height}];
 
-    v13 = [(ISGraphicSymbolResource *)self descriptor];
-    [v13 setScale:a4];
+    descriptor2 = [(ISGraphicSymbolResource *)self descriptor];
+    [descriptor2 setScale:scale];
 
-    v14 = [(ISGraphicSymbolResource *)self descriptor];
-    v15 = [v11 imageForGraphicSymbolDescriptor:v14];
+    descriptor3 = [(ISGraphicSymbolResource *)self descriptor];
+    v15 = [v11 imageForGraphicSymbolDescriptor:descriptor3];
 
     if (v15)
     {
-      v16 = [objc_alloc(MEMORY[0x1E69A8988]) initWithCGImage:-[NSObject CGImage](v15 scale:{"CGImage"), a4}];
+      v16 = [objc_alloc(MEMORY[0x1E69A8988]) initWithCGImage:-[NSObject CGImage](v15 scale:{"CGImage"), scale}];
       goto LABEL_10;
     }
 
     v18 = _ISDefaultLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = [(ISGraphicSymbolResource *)self symbolName];
+      symbolName2 = [(ISGraphicSymbolResource *)self symbolName];
       v22 = 138412290;
-      v23 = v19;
+      v23 = symbolName2;
     }
   }
 
@@ -202,9 +202,9 @@
     v15 = _ISDefaultLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v17 = [(ISGraphicSymbolResource *)self symbolName];
+      symbolName3 = [(ISGraphicSymbolResource *)self symbolName];
       v22 = 138412290;
-      v23 = v17;
+      v23 = symbolName3;
     }
   }
 
@@ -216,60 +216,60 @@ LABEL_10:
   return v16;
 }
 
-- (void)updateDescriptorWithImageDescriptor:(id)a3
+- (void)updateDescriptorWithImageDescriptor:(id)descriptor
 {
-  v22 = a3;
-  v4 = [v22 appearance];
-  v5 = [(ISGraphicSymbolResource *)self descriptor];
-  [v5 setAppearance:v4];
+  descriptorCopy = descriptor;
+  appearance = [descriptorCopy appearance];
+  descriptor = [(ISGraphicSymbolResource *)self descriptor];
+  [descriptor setAppearance:appearance];
 
-  v6 = [v22 contrast];
-  v7 = [(ISGraphicSymbolResource *)self descriptor];
-  [v7 setContrast:v6];
+  contrast = [descriptorCopy contrast];
+  descriptor2 = [(ISGraphicSymbolResource *)self descriptor];
+  [descriptor2 setContrast:contrast];
 
-  v8 = [v22 vibrancy];
-  v9 = [(ISGraphicSymbolResource *)self descriptor];
-  [v9 setVibrancy:v8];
+  vibrancy = [descriptorCopy vibrancy];
+  descriptor3 = [(ISGraphicSymbolResource *)self descriptor];
+  [descriptor3 setVibrancy:vibrancy];
 
-  v10 = [v22 layoutDirection];
-  v11 = [(ISGraphicSymbolResource *)self descriptor];
-  [v11 setLayoutDirection:v10];
+  layoutDirection = [descriptorCopy layoutDirection];
+  descriptor4 = [(ISGraphicSymbolResource *)self descriptor];
+  [descriptor4 setLayoutDirection:layoutDirection];
 
-  v12 = [v22 tintColor];
-  v13 = [(ISGraphicSymbolResource *)self descriptor];
-  [v13 setTintColor:v12];
+  tintColor = [descriptorCopy tintColor];
+  descriptor5 = [(ISGraphicSymbolResource *)self descriptor];
+  [descriptor5 setTintColor:tintColor];
 
-  v14 = [v22 appearanceVariant];
-  v15 = [(ISGraphicSymbolResource *)self descriptor];
-  [v15 setAppearanceVariant:v14];
+  appearanceVariant = [descriptorCopy appearanceVariant];
+  descriptor6 = [(ISGraphicSymbolResource *)self descriptor];
+  [descriptor6 setAppearanceVariant:appearanceVariant];
 
-  if ([v22 platformStyle] == 1)
+  if ([descriptorCopy platformStyle] == 1)
   {
-    v16 = [(ISGraphicSymbolResource *)self descriptor];
-    [v16 setPlatform:4];
+    descriptor7 = [(ISGraphicSymbolResource *)self descriptor];
+    [descriptor7 setPlatform:4];
   }
 
   else
   {
-    v16 = +[ISPlatformInfo sharedInstance];
-    v17 = [v16 nativePlatform];
-    v18 = [(ISGraphicSymbolResource *)self descriptor];
-    [v18 setPlatform:v17];
+    descriptor7 = +[ISPlatformInfo sharedInstance];
+    nativePlatform = [descriptor7 nativePlatform];
+    descriptor8 = [(ISGraphicSymbolResource *)self descriptor];
+    [descriptor8 setPlatform:nativePlatform];
   }
 
-  v19 = [v22 shape];
-  if (v19 == 2)
+  shape = [descriptorCopy shape];
+  if (shape == 2)
   {
     v20 = 2;
   }
 
   else
   {
-    v20 = v19 == 1;
+    v20 = shape == 1;
   }
 
-  v21 = [(ISGraphicSymbolResource *)self descriptor];
-  [v21 setShape:v20];
+  descriptor9 = [(ISGraphicSymbolResource *)self descriptor];
+  [descriptor9 setShape:v20];
 }
 
 + (void)graphicSymbolResourceWithRecipe:(os_log_t)log url:.cold.1(uint64_t a1, uint64_t a2, os_log_t log)

@@ -1,18 +1,18 @@
 @interface MSDIDSHandler
-- (MSDIDSHandler)initWithDelegate:(id)a3;
+- (MSDIDSHandler)initWithDelegate:(id)delegate;
 - (MSDIDSHandlerDelegate)delegate;
 - (id)getPairedDevice;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
 - (void)start;
 @end
 
 @implementation MSDIDSHandler
 
-- (MSDIDSHandler)initWithDelegate:(id)a3
+- (MSDIDSHandler)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = MSDIDSHandler;
   v6 = [(MSDIDSHandler *)&v9 init];
@@ -21,12 +21,12 @@
     v7 = objc_alloc_init(NSMutableDictionary);
     [(MSDIDSHandler *)v6 setResponseHandlers:v7];
 
-    if (([v5 conformsToProtocol:&OBJC_PROTOCOL___MSDIDSHandlerDelegate] & 1) == 0)
+    if (([delegateCopy conformsToProtocol:&OBJC_PROTOCOL___MSDIDSHandlerDelegate] & 1) == 0)
     {
       sub_1000CF68C(a2, v6);
     }
 
-    [(MSDIDSHandler *)v6 setDelegate:v5];
+    [(MSDIDSHandler *)v6 setDelegate:delegateCopy];
     [(MSDIDSHandler *)v6 setIsDeviceReachable:1];
   }
 
@@ -41,71 +41,71 @@
   v4 = dispatch_queue_create("com.apple.msdidsservicequeue", 0);
   [(MSDIDSHandler *)self setIdsServiceQueue:v4];
 
-  v6 = [(MSDIDSHandler *)self getPairedDevice];
-  v5 = [(MSDIDSHandler *)self delegate];
-  [v5 didUpdateDeviceReachability:{objc_msgSend(v6, "isConnected")}];
+  getPairedDevice = [(MSDIDSHandler *)self getPairedDevice];
+  delegate = [(MSDIDSHandler *)self delegate];
+  [delegate didUpdateDeviceReachability:{objc_msgSend(getPairedDevice, "isConnected")}];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v10 = a5;
-  v11 = a7;
-  if (!a6)
+  identifierCopy = identifier;
+  errorCopy = error;
+  if (!success)
   {
     v12 = sub_100063A54();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_1000CF80C(v10, v11);
+      sub_1000CF80C(identifierCopy, errorCopy);
     }
 
-    v13 = [(MSDIDSHandler *)self responseHandlers];
-    v14 = [v13 objectForKey:v10];
+    responseHandlers = [(MSDIDSHandler *)self responseHandlers];
+    v14 = [responseHandlers objectForKey:identifierCopy];
 
     if (v14)
     {
       v14[2](v14, 0);
-      v15 = [(MSDIDSHandler *)self responseHandlers];
-      [v15 removeObjectForKey:v10];
+      responseHandlers2 = [(MSDIDSHandler *)self responseHandlers];
+      [responseHandlers2 removeObjectForKey:identifierCopy];
     }
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context
 {
-  v10 = a5;
-  v7 = [(MSDIDSHandler *)self responseHandlers];
-  v8 = [v7 objectForKey:v10];
+  identifierCopy = identifier;
+  responseHandlers = [(MSDIDSHandler *)self responseHandlers];
+  v8 = [responseHandlers objectForKey:identifierCopy];
 
   if (v8)
   {
     v8[2](v8, 1);
-    v9 = [(MSDIDSHandler *)self responseHandlers];
-    [v9 removeObjectForKey:v10];
+    responseHandlers2 = [(MSDIDSHandler *)self responseHandlers];
+    [responseHandlers2 removeObjectForKey:identifierCopy];
   }
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
-  v7 = [(MSDIDSHandler *)self getPairedDevice:a3];
-  v5 = [v7 isConnected];
-  if (v5 != [(MSDIDSHandler *)self isDeviceReachable])
+  v7 = [(MSDIDSHandler *)self getPairedDevice:service];
+  isConnected = [v7 isConnected];
+  if (isConnected != [(MSDIDSHandler *)self isDeviceReachable])
   {
     -[MSDIDSHandler setIsDeviceReachable:](self, "setIsDeviceReachable:", [v7 isConnected]);
-    v6 = [(MSDIDSHandler *)self delegate];
-    [v6 didUpdateDeviceReachability:{-[MSDIDSHandler isDeviceReachable](self, "isDeviceReachable")}];
+    delegate = [(MSDIDSHandler *)self delegate];
+    [delegate didUpdateDeviceReachability:{-[MSDIDSHandler isDeviceReachable](self, "isDeviceReachable")}];
   }
 }
 
 - (id)getPairedDevice
 {
-  v2 = [(MSDIDSHandler *)self idsService];
-  v3 = [v2 devices];
+  idsService = [(MSDIDSHandler *)self idsService];
+  devices = [idsService devices];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = v3;
+  v4 = devices;
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {

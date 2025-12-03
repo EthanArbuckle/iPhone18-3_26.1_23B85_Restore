@@ -1,32 +1,32 @@
 @interface CKVMatchingSpanMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMatchingSpanMetadata:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMatchingSpanMetadata:(id)metadata;
 - (CKVMatchingSpanMetadata)init;
-- (CKVMatchingSpanMetadata)initWithCoder:(id)a3;
-- (CKVMatchingSpanMetadata)initWithMatchingSpanPriorInfo:(id)a3 matchScore:(float)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CKVMatchingSpanMetadata)initWithCoder:(id)coder;
+- (CKVMatchingSpanMetadata)initWithMatchingSpanPriorInfo:(id)info matchScore:(float)score;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKVMatchingSpanMetadata
 
-- (BOOL)isEqualToMatchingSpanMetadata:(id)a3
+- (BOOL)isEqualToMatchingSpanMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   matchScore = self->_matchScore;
-  [v4 matchScore];
+  [metadataCopy matchScore];
   if (matchScore == v6)
   {
-    v8 = [v4 priorInfo];
+    priorInfo = [metadataCopy priorInfo];
     priorInfo = self->_priorInfo;
-    if (priorInfo | v8)
+    if (priorInfo | priorInfo)
     {
       v7 = 0;
-      if (priorInfo && v8)
+      if (priorInfo && priorInfo)
       {
-        v7 = [(CKVMatchingSpanPriorInfo *)priorInfo isEqual:v8];
+        v7 = [(CKVMatchingSpanPriorInfo *)priorInfo isEqual:priorInfo];
       }
     }
 
@@ -44,34 +44,34 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CKVMatchingSpanMetadata *)self isEqualToMatchingSpanMetadata:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CKVMatchingSpanMetadata *)self isEqualToMatchingSpanMetadata:v5];
   }
 
   return v6;
 }
 
-- (CKVMatchingSpanMetadata)initWithCoder:(id)a3
+- (CKVMatchingSpanMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CKVMatchingSpanMetadata;
   v5 = [(CKVMatchingSpanMetadata *)&v10 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"matchScore"];
+    [coderCopy decodeFloatForKey:@"matchScore"];
     v5->_matchScore = v6;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"priorInfo"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"priorInfo"];
     priorInfo = v5->_priorInfo;
     v5->_priorInfo = v7;
   }
@@ -79,13 +79,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   matchScore = self->_matchScore;
-  v6 = a3;
+  coderCopy = coder;
   *&v5 = matchScore;
-  [v6 encodeFloat:@"matchScore" forKey:v5];
-  [v6 encodeObject:self->_priorInfo forKey:@"priorInfo"];
+  [coderCopy encodeFloat:@"matchScore" forKey:v5];
+  [coderCopy encodeObject:self->_priorInfo forKey:@"priorInfo"];
 }
 
 - (unint64_t)hash
@@ -108,9 +108,9 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   *(v4 + 8) = self->_matchScore;
   v5 = [(CKVMatchingSpanPriorInfo *)self->_priorInfo copy];
   v6 = *(v4 + 16);
@@ -125,10 +125,10 @@
   objc_exception_throw(v2);
 }
 
-- (CKVMatchingSpanMetadata)initWithMatchingSpanPriorInfo:(id)a3 matchScore:(float)a4
+- (CKVMatchingSpanMetadata)initWithMatchingSpanPriorInfo:(id)info matchScore:(float)score
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = CKVMatchingSpanMetadata;
   v8 = [(CKVMatchingSpanMetadata *)&v13 init];
@@ -138,10 +138,10 @@
     goto LABEL_7;
   }
 
-  if (a4 >= 0.0)
+  if (score >= 0.0)
   {
-    objc_storeStrong(&v8->_priorInfo, a3);
-    v9[2] = a4;
+    objc_storeStrong(&v8->_priorInfo, info);
+    v9[2] = score;
 LABEL_7:
     v11 = v9;
     goto LABEL_8;

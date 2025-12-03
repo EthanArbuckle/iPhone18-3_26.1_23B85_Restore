@@ -1,5 +1,5 @@
 @interface FMExtendedPlatterInfoViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
@@ -7,16 +7,16 @@
 
 @implementation FMExtendedPlatterInfoViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FindMy.FMExtendedPlatterInfoView" hasSwiftField:@"title" withSwiftType:"Optional<String>"];
-  [v3 validateClass:@"FindMy.FMExtendedPlatterInfoView" hasSwiftField:@"subtitle" withSwiftType:"Optional<String>"];
-  [v3 validateClass:@"FindMy.FMExtendedPlatterInfoView" hasSwiftField:@"actionTitle" withSwiftType:"Optional<String>"];
-  [v3 validateClass:@"FindMy.FMExtendedPlatterInfoView" hasSwiftField:@"hasAction" withSwiftType:"Bool"];
-  [v3 validateClass:@"FindMy.FMExtendedPlatterInfoView" hasSwiftField:@"dismissable" withSwiftType:"Bool"];
-  [v3 validateClass:@"FindMy.FMExtendedPlatterInfoView" hasSwiftField:@"actionLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"FindMy.FMExtendedPlatterInfoView" hasInstanceMethod:@"handleCloseAction" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FindMy.FMExtendedPlatterInfoView" hasSwiftField:@"title" withSwiftType:"Optional<String>"];
+  [validationsCopy validateClass:@"FindMy.FMExtendedPlatterInfoView" hasSwiftField:@"subtitle" withSwiftType:"Optional<String>"];
+  [validationsCopy validateClass:@"FindMy.FMExtendedPlatterInfoView" hasSwiftField:@"actionTitle" withSwiftType:"Optional<String>"];
+  [validationsCopy validateClass:@"FindMy.FMExtendedPlatterInfoView" hasSwiftField:@"hasAction" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"FindMy.FMExtendedPlatterInfoView" hasSwiftField:@"dismissable" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"FindMy.FMExtendedPlatterInfoView" hasSwiftField:@"actionLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"FindMy.FMExtendedPlatterInfoView" hasInstanceMethod:@"handleCloseAction" withFullSignature:{"v", 0}];
 }
 
 - (id)accessibilityLabel
@@ -30,7 +30,7 @@
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   objc_initWeak(&location, self);
   if ([(FMExtendedPlatterInfoViewAccessibility *)self safeSwiftBoolForKey:@"dismissable"])
   {
@@ -43,7 +43,7 @@
     objc_copyWeak(&v15, &location);
     v6 = [v4 initWithName:v5 actionHandler:&v11];
 
-    [v3 axSafelyAddObject:{v6, v11, v12, v13, v14}];
+    [array axSafelyAddObject:{v6, v11, v12, v13, v14}];
     objc_destroyWeak(&v15);
   }
 
@@ -55,12 +55,12 @@
 
     [(FMExtendedPlatterInfoViewAccessibility *)self accessibilityActivationPoint];
     [v9 setActivationPoint:?];
-    [v3 axSafelyAddObject:v9];
+    [array axSafelyAddObject:v9];
   }
 
   objc_destroyWeak(&location);
 
-  return v3;
+  return array;
 }
 
 uint64_t __68__FMExtendedPlatterInfoViewAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1, void *a2)

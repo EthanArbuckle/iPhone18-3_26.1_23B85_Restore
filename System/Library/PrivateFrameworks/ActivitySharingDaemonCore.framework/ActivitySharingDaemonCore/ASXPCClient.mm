@@ -75,14 +75,14 @@ void __19__ASXPCClient_init__block_invoke_340(uint64_t a1)
 - (void)launch
 {
   v7 = *MEMORY[0x277D85DE8];
-  v2 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  [v2 launch];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy launch];
   ASLoggingInitialize();
   v3 = *MEMORY[0x277CE8FE8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FE8], OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v2;
+    v6 = remoteObjectProxy;
     _os_log_impl(&dword_23E5E3000, v3, OS_LOG_TYPE_DEFAULT, "ASXPCClient launching server %@", &v5, 0xCu);
   }
 

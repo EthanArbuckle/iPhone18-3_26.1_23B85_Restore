@@ -1,15 +1,15 @@
 @interface SocialProfilesShelfCollectionViewLayout
 - (_TtC16MusicApplication39SocialProfilesShelfCollectionViewLayout)init;
-- (_TtC16MusicApplication39SocialProfilesShelfCollectionViewLayout)initWithCoder:(id)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (_TtC16MusicApplication39SocialProfilesShelfCollectionViewLayout)initWithCoder:(id)coder;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (void)finalizeCollectionViewUpdates;
-- (void)prepareForCollectionViewUpdates:(id)a3;
+- (void)prepareForCollectionViewUpdates:(id)updates;
 @end
 
 @implementation SocialProfilesShelfCollectionViewLayout
 
-- (_TtC16MusicApplication39SocialProfilesShelfCollectionViewLayout)initWithCoder:(id)a3
+- (_TtC16MusicApplication39SocialProfilesShelfCollectionViewLayout)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication39SocialProfilesShelfCollectionViewLayout_updateItems) = 0;
   result = sub_ABAFD0();
@@ -17,13 +17,13 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_3DA068(x, y, width, height);
 
   if (v8)
@@ -40,7 +40,7 @@
   return v9.super.isa;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = sub_AB3820();
   v8 = *(v7 - 8);
@@ -49,9 +49,9 @@
   v11 = sub_AB92A0();
   v13 = v12;
   sub_AB3790();
-  v14 = a3;
-  v15 = a4;
-  v16 = self;
+  kindCopy = kind;
+  pathCopy = path;
+  selfCopy = self;
   v17 = sub_3DA210(v11, v13);
 
   (*(v8 + 8))(v10, v7);
@@ -59,16 +59,16 @@
   return v17;
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
   ObjectType = swift_getObjectType();
   sub_13C80(0, &qword_E00108);
   v6 = sub_AB9760();
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v7 = self;
-  [(SocialProfilesShelfCollectionViewLayout *)&v8 prepareForCollectionViewUpdates:a3];
-  *(&v7->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication39SocialProfilesShelfCollectionViewLayout_updateItems) = v6;
+  selfCopy = self;
+  [(SocialProfilesShelfCollectionViewLayout *)&v8 prepareForCollectionViewUpdates:updates];
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication39SocialProfilesShelfCollectionViewLayout_updateItems) = v6;
 }
 
 - (void)finalizeCollectionViewUpdates

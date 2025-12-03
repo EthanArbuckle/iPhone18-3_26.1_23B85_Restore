@@ -17,9 +17,9 @@
   if (self->isValid_)
   {
     self->isValid_ = 0;
-    v3 = [(JavaNioChannelsSelectionKey *)self selector];
+    selector = [(JavaNioChannelsSelectionKey *)self selector];
     objc_opt_class();
-    if (!v3)
+    if (!selector)
     {
       JreThrowNullPointerException();
     }
@@ -29,7 +29,7 @@
       JreThrowClassCastException();
     }
 
-    [v3 cancelWithJavaNioChannelsSelectionKey:self];
+    [selector cancelWithJavaNioChannelsSelectionKey:self];
   }
 }
 

@@ -1,10 +1,10 @@
 @interface GKFairPlaySAPSession
-- (BOOL)_getHardwareInfo:(FairPlayHWInfo_ *)a3;
+- (BOOL)_getHardwareInfo:(FairPlayHWInfo_ *)info;
 - (GKFairPlaySAPSession)init;
-- (id)exchangeData:(id)a3 error:(id *)a4;
-- (id)processSignedData:(id)a3 withSignature:(id)a4 error:(id *)a5;
-- (id)signatureForData:(id)a3 error:(id *)a4;
-- (id)signatureStringForData:(id)a3 error:(id *)a4;
+- (id)exchangeData:(id)data error:(id *)error;
+- (id)processSignedData:(id)data withSignature:(id)signature error:(id *)error;
+- (id)signatureForData:(id)data error:(id *)error;
+- (id)signatureStringForData:(id)data error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -62,7 +62,7 @@ LABEL_8:
   [(GKFairPlaySAPSession *)&v4 dealloc];
 }
 
-- (id)exchangeData:(id)a3 error:(id *)a4
+- (id)exchangeData:(id)data error:(id *)error
 {
   session = self->_session;
   if (!session)
@@ -74,7 +74,7 @@ LABEL_8:
   v15 = 0;
   v14 = 0;
   v13 = -1;
-  sub_10003FFFC(200, &self->_hardwareInfo, session, [a3 bytes], objc_msgSend(a3, "length"), &v15, &v14, &v13);
+  sub_10003FFFC(200, &self->_hardwareInfo, session, [data bytes], objc_msgSend(data, "length"), &v15, &v14, &v13);
   if (v7)
   {
     v8 = v7;
@@ -94,7 +94,7 @@ LABEL_8:
     v10 = [NSError errorWithDomain:@"GKFairPlay" code:v8 userInfo:0];
 LABEL_11:
     v11 = 0;
-    if (!a4)
+    if (!error)
     {
       return v11;
     }
@@ -105,7 +105,7 @@ LABEL_11:
   v11 = sub_10015CFC0(v15, v14);
   v10 = 0;
   self->_complete = v13 == 0;
-  if (!a4)
+  if (!error)
   {
     return v11;
   }
@@ -113,19 +113,19 @@ LABEL_11:
 LABEL_12:
   if (!v11)
   {
-    *a4 = v10;
+    *error = v10;
   }
 
   return v11;
 }
 
-- (id)processSignedData:(id)a3 withSignature:(id)a4 error:(id *)a5
+- (id)processSignedData:(id)data withSignature:(id)signature error:(id *)error
 {
   if (self->_session)
   {
-    v7 = [a3 mutableCopy];
-    [a4 bytes];
-    [a4 length];
+    v7 = [data mutableCopy];
+    [signature bytes];
+    [signature length];
     [v7 mutableBytes];
     [v7 length];
     sub_100034ADC();
@@ -148,7 +148,7 @@ LABEL_12:
     if (!v9)
     {
       v11 = 0;
-      if (!a5)
+      if (!error)
       {
         return v7;
       }
@@ -180,7 +180,7 @@ LABEL_12:
   }
 
   v7 = 0;
-  if (!a5)
+  if (!error)
   {
     return v7;
   }
@@ -188,13 +188,13 @@ LABEL_12:
 LABEL_16:
   if (!v7)
   {
-    *a5 = v11;
+    *error = v11;
   }
 
   return v7;
 }
 
-- (id)signatureForData:(id)a3 error:(id *)a4
+- (id)signatureForData:(id)data error:(id *)error
 {
   session = self->_session;
   if (!session)
@@ -205,7 +205,7 @@ LABEL_16:
 
   v13 = 0;
   v12 = 0;
-  sub_1000363B8(session, [a3 bytes], objc_msgSend(a3, "length"), &v13, &v12);
+  sub_1000363B8(session, [data bytes], objc_msgSend(data, "length"), &v13, &v12);
   if (v6)
   {
     v7 = v6;
@@ -225,7 +225,7 @@ LABEL_16:
     v9 = [NSError errorWithDomain:@"GKFairPlay" code:v7 userInfo:0];
 LABEL_11:
     v10 = 0;
-    if (!a4)
+    if (!error)
     {
       return v10;
     }
@@ -235,7 +235,7 @@ LABEL_11:
 
   v10 = sub_10015CFC0(v13, v12);
   v9 = 0;
-  if (!a4)
+  if (!error)
   {
     return v10;
   }
@@ -243,36 +243,36 @@ LABEL_11:
 LABEL_12:
   if (!v10)
   {
-    *a4 = v9;
+    *error = v9;
   }
 
   return v10;
 }
 
-- (id)signatureStringForData:(id)a3 error:(id *)a4
+- (id)signatureStringForData:(id)data error:(id *)error
 {
   v7 = 0;
-  v5 = [(GKFairPlaySAPSession *)self signatureForData:a3 error:&v7];
+  v5 = [(GKFairPlaySAPSession *)self signatureForData:data error:&v7];
   result = [v5 length];
   if (result)
   {
     result = [v5 base64EncodedStringWithOptions:0];
   }
 
-  if (a4)
+  if (error)
   {
     if (!result)
     {
-      *a4 = v7;
+      *error = v7;
     }
   }
 
   return result;
 }
 
-- (BOOL)_getHardwareInfo:(FairPlayHWInfo_ *)a3
+- (BOOL)_getHardwareInfo:(FairPlayHWInfo_ *)info
 {
-  sub_10004FA2C(0, 0, a3);
+  sub_10004FA2C(0, 0, info);
   v4 = v3;
   if (v3)
   {

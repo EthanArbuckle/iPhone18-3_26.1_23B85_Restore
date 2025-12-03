@@ -1,12 +1,12 @@
 @interface TPSHRAccountInfoStatusValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSHRAccountInfoStatusValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[TPSHealthKitDefines sharedHealthStore];
   v12 = 0;
   v13 = &v12;
@@ -18,7 +18,7 @@
   if (!v6)
   {
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-    v4[2](v4, 0, v7);
+    completionCopy[2](completionCopy, 0, v7);
 
     v6 = v13[5];
   }
@@ -28,7 +28,7 @@
   v9[2] = __59__TPSHRAccountInfoStatusValidation_validateWithCompletion___block_invoke;
   v9[3] = &unk_2789B0F50;
   v9[4] = self;
-  v8 = v4;
+  v8 = completionCopy;
   v10 = v8;
   v11 = &v12;
   [v6 determineMedicalRecordsAccountInfoStatusWithCompletion:v9];

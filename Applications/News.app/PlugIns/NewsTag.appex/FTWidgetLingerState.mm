@@ -1,6 +1,6 @@
 @interface FTWidgetLingerState
 - (FTWidgetLingerState)init;
-- (FTWidgetLingerState)initWithTodaySource:(id)a3 appConfigTreatmentID:(id)a4 widgetDisplayMode:(unint64_t)a5 appearanceType:(unint64_t)a6;
+- (FTWidgetLingerState)initWithTodaySource:(id)source appConfigTreatmentID:(id)d widgetDisplayMode:(unint64_t)mode appearanceType:(unint64_t)type;
 @end
 
 @implementation FTWidgetLingerState
@@ -28,11 +28,11 @@
   objc_exception_throw(v4);
 }
 
-- (FTWidgetLingerState)initWithTodaySource:(id)a3 appConfigTreatmentID:(id)a4 widgetDisplayMode:(unint64_t)a5 appearanceType:(unint64_t)a6
+- (FTWidgetLingerState)initWithTodaySource:(id)source appConfigTreatmentID:(id)d widgetDisplayMode:(unint64_t)mode appearanceType:(unint64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  if (!v10 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  sourceCopy = source;
+  dCopy = d;
+  if (!sourceCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10009DA78();
   }
@@ -42,16 +42,16 @@
   v12 = [(FTWidgetLingerState *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [sourceCopy copy];
     todaySourceIdentifier = v12->_todaySourceIdentifier;
     v12->_todaySourceIdentifier = v13;
 
-    v15 = [v11 copy];
+    v15 = [dCopy copy];
     appConfigTreatmentID = v12->_appConfigTreatmentID;
     v12->_appConfigTreatmentID = v15;
 
-    v12->_widgetDisplayMode = a5;
-    v12->_appearanceType = a6;
+    v12->_widgetDisplayMode = mode;
+    v12->_appearanceType = type;
   }
 
   return v12;

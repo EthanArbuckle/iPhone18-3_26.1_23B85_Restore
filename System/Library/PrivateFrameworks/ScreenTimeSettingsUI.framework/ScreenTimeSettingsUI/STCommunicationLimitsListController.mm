@@ -1,55 +1,55 @@
 @interface STCommunicationLimitsListController
-- (STCommunicationLimitsListController)initWithRootViewModelCoordinator:(id)a3;
-- (id)_allowContactEditing:(id)a3;
-- (id)_manageContacts:(id)a3;
+- (STCommunicationLimitsListController)initWithRootViewModelCoordinator:(id)coordinator;
+- (id)_allowContactEditing:(id)editing;
+- (id)_manageContacts:(id)contacts;
 - (id)_manageContactsGroupFooterText;
-- (id)_statusPendingDetailText:(id)a3;
-- (id)_totaliCloudContactsDetailText:(id)a3;
+- (id)_statusPendingDetailText:(id)text;
+- (id)_totaliCloudContactsDetailText:(id)text;
 - (id)specifiers;
-- (void)_communicationLimitsDidChangeFrom:(id)a3 to:(id)a4;
+- (void)_communicationLimitsDidChangeFrom:(id)from to:(id)to;
 - (void)_didCancelSyncingiCloudContacts;
 - (void)_didFinishSyncingiCloudContacts;
 - (void)_didStartSyncingiCloudContacts;
-- (void)_enableAllowContactEditingSwitch:(BOOL)a3;
+- (void)_enableAllowContactEditingSwitch:(BOOL)switch;
 - (void)_indicateiCloudContactsSyncingStatus;
-- (void)_setAllowContactEditing:(id)a3 specifier:(id)a4;
-- (void)_setManageContacts:(id)a3 specifier:(id)a4;
+- (void)_setAllowContactEditing:(id)editing specifier:(id)specifier;
+- (void)_setManageContacts:(id)contacts specifier:(id)specifier;
 - (void)_startSyncingiCloudContacts;
-- (void)_updateAllowContactEditing:(id)a3;
-- (void)_updateAllowContactEditingWithAlertIfNeeded:(id)a3 forSpecifier:(id)a4;
+- (void)_updateAllowContactEditing:(id)editing;
+- (void)_updateAllowContactEditingWithAlertIfNeeded:(id)needed forSpecifier:(id)specifier;
 - (void)_updateManageContactsGroupFooterView;
 - (void)dealloc;
 - (void)familyMemberContactsDidChange;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation STCommunicationLimitsListController
 
-- (STCommunicationLimitsListController)initWithRootViewModelCoordinator:(id)a3
+- (STCommunicationLimitsListController)initWithRootViewModelCoordinator:(id)coordinator
 {
   v32[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v28.receiver = self;
   v28.super_class = STCommunicationLimitsListController;
-  v5 = [(STPINListViewController *)&v28 initWithRootViewModelCoordinator:v4];
-  v6 = [v4 contentPrivacyCoordinator];
-  v7 = [v6 viewModel];
-  v8 = [v7 communicationLimits];
-  v9 = [v8 copy];
+  v5 = [(STPINListViewController *)&v28 initWithRootViewModelCoordinator:coordinatorCopy];
+  contentPrivacyCoordinator = [coordinatorCopy contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  communicationLimits = [viewModel communicationLimits];
+  v9 = [communicationLimits copy];
   communicationLimits = v5->_communicationLimits;
   v5->_communicationLimits = v9;
 
-  v11 = [v4 viewModel];
-  v12 = [v11 me];
+  viewModel2 = [coordinatorCopy viewModel];
+  v12 = [viewModel2 me];
 
   if (([v12 isManaged] & 1) != 0 || objc_msgSend(v12, "hasPasscode"))
   {
-    v13 = [v12 altDSID];
-    if (v13)
+    altDSID = [v12 altDSID];
+    if (altDSID)
     {
       if (![v12 isRemoteUser])
       {
@@ -58,17 +58,17 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v14 = [v12 givenName];
-      v15 = v14;
-      if (v14)
+      givenName = [v12 givenName];
+      v15 = givenName;
+      if (givenName)
       {
-        v32[0] = v14;
+        v32[0] = givenName;
         v31[0] = @"member-first-name";
         v31[1] = @"member-dsid";
-        v16 = [v12 dsid];
+        dsid = [v12 dsid];
         v31[2] = @"member-altDSID";
-        v32[1] = v16;
-        v32[2] = v13;
+        v32[1] = dsid;
+        v32[2] = altDSID;
         v17 = MEMORY[0x277CBEAC0];
         v18 = v32;
         v19 = v31;
@@ -85,10 +85,10 @@ LABEL_14:
         }
 
         v29[0] = @"member-dsid";
-        v16 = [v12 dsid];
+        dsid = [v12 dsid];
         v29[1] = @"member-altDSID";
-        v30[0] = v16;
-        v30[1] = v13;
+        v30[0] = dsid;
+        v30[1] = altDSID;
         v17 = MEMORY[0x277CBEAC0];
         v18 = v30;
         v19 = v29;
@@ -116,7 +116,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  [v4 addObserver:v5 forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" options:3 context:"KVOContextCommunicationLimitsListController"];
+  [coordinatorCopy addObserver:v5 forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" options:3 context:"KVOContextCommunicationLimitsListController"];
 
   return v5;
 }
@@ -134,24 +134,24 @@ LABEL_15:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = STCommunicationLimitsListController;
-  [(STPINListViewController *)&v16 viewDidAppear:a3];
+  [(STPINListViewController *)&v16 viewDidAppear:appear];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.ScreenTime/COMMUNICATION_LIMITS"];
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v7 = +[STScreenTimeSettingsUIBundle bundle];
-  v8 = [v7 bundleURL];
-  v9 = [v5 initWithKey:@"CommunicationLimitsSpecifierName" table:@"Localizable" locale:v6 bundleURL:v8];
+  bundleURL = [v7 bundleURL];
+  v9 = [v5 initWithKey:@"CommunicationLimitsSpecifierName" table:@"Localizable" locale:currentLocale bundleURL:bundleURL];
 
   v10 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v11 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
   v12 = +[STScreenTimeSettingsUIBundle bundle];
-  v13 = [v12 bundleURL];
-  v14 = [v10 initWithKey:@"ScreenTimeControllerTitle" table:@"Localizable" locale:v11 bundleURL:v13];
+  bundleURL2 = [v12 bundleURL];
+  v14 = [v10 initWithKey:@"ScreenTimeControllerTitle" table:@"Localizable" locale:currentLocale2 bundleURL:bundleURL2];
 
   v17[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
@@ -160,62 +160,62 @@ LABEL_15:
 
 - (void)dealloc
 {
-  v3 = [(STPINListViewController *)self coordinator];
-  [v3 removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits"];
+  coordinator = [(STPINListViewController *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits"];
 
   v4.receiver = self;
   v4.super_class = STCommunicationLimitsListController;
   [(STListViewController *)&v4 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STPINListViewController *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STPINListViewController *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits"];
   v14.receiver = self;
   v14.super_class = STCommunicationLimitsListController;
-  [(STPINListViewController *)&v14 setCoordinator:v4];
-  v6 = [v5 contentPrivacyCoordinator];
-  v7 = [v6 viewModel];
-  v8 = [v7 communicationLimits];
-  v9 = [v4 contentPrivacyCoordinator];
-  v10 = [v9 viewModel];
-  v11 = [v10 communicationLimits];
-  [(STCommunicationLimitsListController *)self _communicationLimitsDidChangeFrom:v8 to:v11];
+  [(STPINListViewController *)&v14 setCoordinator:coordinatorCopy];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  communicationLimits = [viewModel communicationLimits];
+  contentPrivacyCoordinator2 = [coordinatorCopy contentPrivacyCoordinator];
+  viewModel2 = [contentPrivacyCoordinator2 viewModel];
+  communicationLimits2 = [viewModel2 communicationLimits];
+  [(STCommunicationLimitsListController *)self _communicationLimitsDidChangeFrom:communicationLimits to:communicationLimits2];
 
-  [v4 addObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" options:3 context:"KVOContextCommunicationLimitsListController"];
-  v12 = [(STCommunicationLimitsListController *)self duringDowntimeSpecifier];
-  [v12 setObject:v4 forKeyedSubscript:0x287675C48];
+  [coordinatorCopy addObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" options:3 context:"KVOContextCommunicationLimitsListController"];
+  duringDowntimeSpecifier = [(STCommunicationLimitsListController *)self duringDowntimeSpecifier];
+  [duringDowntimeSpecifier setObject:coordinatorCopy forKeyedSubscript:0x287675C48];
 
-  v13 = [(STCommunicationLimitsListController *)self duringScreenTimeSpecifier];
-  [v13 setObject:v4 forKeyedSubscript:0x287675C48];
+  duringScreenTimeSpecifier = [(STCommunicationLimitsListController *)self duringScreenTimeSpecifier];
+  [duringScreenTimeSpecifier setObject:coordinatorCopy forKeyedSubscript:0x287675C48];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  if (a6 == "KVOContextCommunicationLimitsListController")
+  changeCopy = change;
+  if (context == "KVOContextCommunicationLimitsListController")
   {
-    v12 = a3;
-    v13 = [(STPINListViewController *)self coordinator];
-    v14 = [v12 isEqualToString:@"contentPrivacyCoordinator.viewModel.communicationLimits"];
+    pathCopy = path;
+    coordinator = [(STPINListViewController *)self coordinator];
+    v14 = [pathCopy isEqualToString:@"contentPrivacyCoordinator.viewModel.communicationLimits"];
 
     if (v14)
     {
-      v15 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v16 = [MEMORY[0x277CBEB68] null];
+      v15 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v15 == v16)
+      if (v15 == null)
       {
 
         v15 = 0;
       }
 
-      v17 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v18 = [MEMORY[0x277CBEB68] null];
+      v17 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null2 = [MEMORY[0x277CBEB68] null];
 
-      if (v17 == v18)
+      if (v17 == null2)
       {
 
         v17 = 0;
@@ -229,20 +229,20 @@ LABEL_15:
   {
     v19.receiver = self;
     v19.super_class = STCommunicationLimitsListController;
-    v11 = a3;
-    [(STListViewController *)&v19 observeValueForKeyPath:v11 ofObject:a4 change:v10 context:a6];
+    pathCopy2 = path;
+    [(STListViewController *)&v19 observeValueForKeyPath:pathCopy2 ofObject:object change:changeCopy context:context];
   }
 }
 
-- (void)_communicationLimitsDidChangeFrom:(id)a3 to:(id)a4
+- (void)_communicationLimitsDidChangeFrom:(id)from to:(id)to
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7 != v6 && ([v7 isEqualToCommunicationLimits:v6] & 1) == 0)
+  fromCopy = from;
+  toCopy = to;
+  if (fromCopy != toCopy && ([fromCopy isEqualToCommunicationLimits:toCopy] & 1) == 0)
   {
-    [(STCommunicationLimitsListController *)self setCommunicationLimits:v6];
+    [(STCommunicationLimitsListController *)self setCommunicationLimits:toCopy];
     [(STCommunicationLimitsListController *)self reloadSpecifiers];
-    if ([v7 contactManagementState] == 1 && objc_msgSend(v6, "contactManagementState") == 2)
+    if ([fromCopy contactManagementState] == 1 && objc_msgSend(toCopy, "contactManagementState") == 2)
     {
       [(STCommunicationLimitsListController *)self _indicateiCloudContactsSyncingStatus];
     }
@@ -260,23 +260,23 @@ LABEL_15:
   v102 = *MEMORY[0x277D3FC48];
   v5 = objc_opt_new();
   v6 = +[STScreenTimeSettingsUIBundle bundle];
-  v113 = [(STPINListViewController *)self coordinator];
-  v7 = [v113 viewModel];
-  v8 = [v7 me];
+  coordinator = [(STPINListViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v8 = [viewModel me];
 
-  v9 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   v10 = v8;
   v108 = v10;
   if ([v10 isRemoteUser])
   {
-    v11 = [v10 givenName];
+    givenName = [v10 givenName];
     v12 = +[STScreenTimeSettingsUIBundle bundle];
     v13 = v12;
-    if (v11)
+    if (givenName)
     {
       v14 = [v12 localizedStringForKey:@"CommunicationLimitsRemoteHeaderText" value:&stru_28766E5A8 table:0];
 
-      v15 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v14, v11];
+      v15 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v14, givenName];
       v13 = v14;
       v10 = v108;
     }
@@ -289,31 +289,31 @@ LABEL_15:
 
   else
   {
-    v11 = +[STScreenTimeSettingsUIBundle bundle];
-    v15 = [v11 localizedStringForKey:@"CommunicationLimitsLocalHeaderText" value:&stru_28766E5A8 table:0];
+    givenName = +[STScreenTimeSettingsUIBundle bundle];
+    v15 = [givenName localizedStringForKey:@"CommunicationLimitsLocalHeaderText" value:&stru_28766E5A8 table:0];
   }
 
   v109 = *MEMORY[0x277D3FF88];
-  [v9 setObject:v15 forKeyedSubscript:?];
+  [emptyGroupSpecifier setObject:v15 forKeyedSubscript:?];
 
-  [v5 addObject:v9];
+  [v5 addObject:emptyGroupSpecifier];
   v16 = MEMORY[0x277D3FAD8];
   v17 = [v6 localizedStringForKey:@"AllowedCommunicationSectionTitle" value:&stru_28766E5A8 table:0];
   v18 = [v16 groupSpecifierWithName:v17];
 
-  v19 = [v10 givenName];
-  v107 = v19;
-  v112 = [v10 isRemoteUser];
-  v101 = v9;
-  if (v112)
+  givenName2 = [v10 givenName];
+  v107 = givenName2;
+  isRemoteUser = [v10 isRemoteUser];
+  v101 = emptyGroupSpecifier;
+  if (isRemoteUser)
   {
-    if (v19)
+    if (givenName2)
     {
-      v20 = v19;
+      v20 = givenName2;
       v21 = [v6 localizedStringForKey:@"DuringScreenTimeSpecifierRemoteFooterText" value:&stru_28766E5A8 table:0];
       v22 = objc_alloc(MEMORY[0x277CCACA8]);
-      v23 = [MEMORY[0x277CBEAF8] currentLocale];
-      v24 = [v22 initWithFormat:v21 locale:v23, v20];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      v24 = [v22 initWithFormat:v21 locale:currentLocale, v20];
 
       goto LABEL_14;
     }
@@ -347,7 +347,7 @@ LABEL_14:
   v32 = objc_opt_class();
   v105 = *MEMORY[0x277D3FE58];
   [v29 setObject:v32 forKeyedSubscript:?];
-  [v29 setObject:v113 forKeyedSubscript:0x287675C48];
+  [v29 setObject:coordinator forKeyedSubscript:0x287675C48];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __49__STCommunicationLimitsListController_specifiers__block_invoke;
@@ -357,14 +357,14 @@ LABEL_14:
   v33 = _Block_copy(v97);
   [v29 setObject:v33 forKeyedSubscript:0x287675888];
 
-  v111 = [(STCommunicationLimitsListController *)self communicationLimits];
-  v34 = [v111 screenTimeCommunicationLimit];
+  communicationLimits = [(STCommunicationLimitsListController *)self communicationLimits];
+  screenTimeCommunicationLimit = [communicationLimits screenTimeCommunicationLimit];
   v35 = 0;
-  if (v34 <= 1)
+  if (screenTimeCommunicationLimit <= 1)
   {
-    if (v34)
+    if (screenTimeCommunicationLimit)
     {
-      if (v34 != 1)
+      if (screenTimeCommunicationLimit != 1)
       {
         goto LABEL_24;
       }
@@ -380,7 +380,7 @@ LABEL_14:
     goto LABEL_23;
   }
 
-  if (v34 == 2)
+  if (screenTimeCommunicationLimit == 2)
   {
     v36 = @"AllowContactsOnlySpecifierName";
 LABEL_23:
@@ -388,10 +388,10 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v34 == 3)
+  if (screenTimeCommunicationLimit == 3)
   {
-    v37 = [MEMORY[0x277CCA890] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"STCommunicationLimitsListController.m" lineNumber:223 description:@"Unexpected general communication policy whitelisted contacts"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"STCommunicationLimitsListController.m" lineNumber:223 description:@"Unexpected general communication policy whitelisted contacts"];
 
     v35 = 0;
   }
@@ -402,18 +402,18 @@ LABEL_24:
   [v29 setObject:v35 forKeyedSubscript:*MEMORY[0x277D40160]];
   [(STCommunicationLimitsListController *)self setDuringScreenTimeSpecifier:v29];
   [v5 addObject:v29];
-  v39 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  emptyGroupSpecifier2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   v100 = v18;
-  if (v112)
+  if (isRemoteUser)
   {
     if (v107)
     {
       [v6 localizedStringForKey:@"DuringDowntimeRemoteFooterText" value:&stru_28766E5A8 table:0];
       v40 = v5;
-      v42 = v41 = v39;
-      v43 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v42, v107];
+      v42 = v41 = emptyGroupSpecifier2;
+      v107 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v42, v107];
 
-      v39 = v41;
+      emptyGroupSpecifier2 = v41;
       v5 = v40;
       goto LABEL_30;
     }
@@ -428,12 +428,12 @@ LABEL_24:
     v45 = v6;
   }
 
-  v43 = [v45 localizedStringForKey:v44 value:&stru_28766E5A8 table:0];
+  v107 = [v45 localizedStringForKey:v44 value:&stru_28766E5A8 table:0];
 LABEL_30:
-  v94 = v43;
-  [v39 setObject:v43 forKeyedSubscript:v109];
-  v95 = v39;
-  [v5 addObject:v39];
+  v94 = v107;
+  [emptyGroupSpecifier2 setObject:v107 forKeyedSubscript:v109];
+  v95 = emptyGroupSpecifier2;
+  [v5 addObject:emptyGroupSpecifier2];
   v46 = [v6 localizedStringForKey:@"DuringDowntimeSpecifierName" value:&stru_28766E5A8 table:0];
   v47 = MEMORY[0x277D3FAD8];
   v48 = objc_opt_class();
@@ -446,7 +446,7 @@ LABEL_30:
   [v49 setObject:&unk_28769D0B8 forKeyedSubscript:v103];
   [v49 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287675A28];
   [v49 setObject:objc_opt_class() forKeyedSubscript:v105];
-  [v49 setObject:v113 forKeyedSubscript:0x287675C48];
+  [v49 setObject:coordinator forKeyedSubscript:0x287675C48];
   v114[0] = MEMORY[0x277D85DD0];
   v114[1] = 3221225472;
   v114[2] = __49__STCommunicationLimitsListController_specifiers__block_invoke_2;
@@ -456,18 +456,18 @@ LABEL_30:
   v52 = _Block_copy(v92);
   [v49 setObject:v52 forKeyedSubscript:0x287675888];
 
-  v53 = [v111 downtimeCommunicationLimit];
+  downtimeCommunicationLimit = [communicationLimits downtimeCommunicationLimit];
   v54 = 0;
-  if (v53 <= 3)
+  if (downtimeCommunicationLimit <= 3)
   {
-    v54 = [v6 localizedStringForKey:off_279B7D1D0[v53] value:&stru_28766E5A8 table:0];
+    v54 = [v6 localizedStringForKey:off_279B7D1D0[downtimeCommunicationLimit] value:&stru_28766E5A8 table:0];
   }
 
   v91 = v54;
   [v49 setObject:v54 forKeyedSubscript:v38];
   [(STCommunicationLimitsListController *)self setDuringDowntimeSpecifier:v49];
   [v5 addObject:v49];
-  v106 = [(STCommunicationLimitsListController *)self familyMemberContactsController];
+  familyMemberContactsController = [(STCommunicationLimitsListController *)self familyMemberContactsController];
   v55 = v108;
   if (![v108 isManaged])
   {
@@ -476,17 +476,17 @@ LABEL_30:
 
   v56 = MEMORY[0x277D3FAD8];
   v57 = objc_opt_new();
-  v58 = [v57 UUIDString];
-  v59 = [v56 groupSpecifierWithID:v58];
+  uUIDString = [v57 UUIDString];
+  v59 = [v56 groupSpecifierWithID:uUIDString];
 
-  v89 = [v111 contactManagementState];
-  v60 = v112 ^ 1;
-  if (v89 != 2)
+  contactManagementState = [communicationLimits contactManagementState];
+  v60 = isRemoteUser ^ 1;
+  if (contactManagementState != 2)
   {
     v60 = 1;
   }
 
-  if ((v60 & 1) == 0 && ![v106 fetchStatus])
+  if ((v60 & 1) == 0 && ![familyMemberContactsController fetchStatus])
   {
     v61 = objc_opt_class();
     v62 = NSStringFromClass(v61);
@@ -495,19 +495,19 @@ LABEL_30:
     [(STCommunicationLimitsListController *)self _startSyncingiCloudContacts];
   }
 
-  v63 = [(STCommunicationLimitsListController *)self _manageContactsGroupFooterText];
-  [v59 setObject:v63 forKeyedSubscript:v109];
+  _manageContactsGroupFooterText = [(STCommunicationLimitsListController *)self _manageContactsGroupFooterText];
+  [v59 setObject:_manageContactsGroupFooterText forKeyedSubscript:v109];
 
   [(STCommunicationLimitsListController *)self setManageContactsGroupSpecifier:v59];
   [v5 addObject:v59];
-  if (v112)
+  if (isRemoteUser)
   {
     if (v107)
     {
       v64 = [v6 localizedStringForKey:@"ManageContactsRemoteSpecifierName" value:&stru_28766E5A8 table:0];
       v65 = objc_alloc(MEMORY[0x277CCACA8]);
-      v66 = [MEMORY[0x277CBEAF8] currentLocale];
-      v67 = [v65 initWithFormat:v64 locale:v66, v107];
+      currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+      v1072 = [v65 initWithFormat:v64 locale:currentLocale2, v107];
 
       goto LABEL_44;
     }
@@ -522,17 +522,17 @@ LABEL_30:
     v69 = v6;
   }
 
-  v67 = [v69 localizedStringForKey:v68 value:&stru_28766E5A8 table:0];
+  v1072 = [v69 localizedStringForKey:v68 value:&stru_28766E5A8 table:0];
 LABEL_44:
-  v70 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v67 target:self set:sel__setManageContacts_specifier_ get:sel__manageContacts_ detail:0 cell:6 edit:objc_opt_class()];
+  v70 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v1072 target:self set:sel__setManageContacts_specifier_ get:sel__manageContacts_ detail:0 cell:6 edit:objc_opt_class()];
   [(STPINListViewController *)self setUpPasscodeAndLineWrapBehaviorForSpecifier:v70];
   [(STCommunicationLimitsListController *)self setManageContactsSpecifier:v70];
   [v5 addObject:v70];
-  if (v112)
+  if (isRemoteUser)
   {
-    if (v89 == 2)
+    if (contactManagementState == 2)
     {
-      v110 = v67;
+      v110 = v1072;
       v90 = [v6 localizedStringForKey:@"iCloudContactsSpecifierName" value:&stru_28766E5A8 table:0];
       v72 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v90 target:self set:0 get:sel__totaliCloudContactsDetailText_ detail:0 cell:2 edit:objc_opt_class()];
       v73 = objc_opt_class();
@@ -547,7 +547,7 @@ LABEL_44:
       {
 LABEL_50:
 
-        v67 = v110;
+        v1072 = v110;
         goto LABEL_51;
       }
 
@@ -556,9 +556,9 @@ LABEL_49:
       goto LABEL_50;
     }
 
-    if (v89 == 1)
+    if (contactManagementState == 1)
     {
-      v110 = v67;
+      v110 = v1072;
       v71 = [v6 localizedStringForKey:@"iCloudContactsSpecifierName" value:&stru_28766E5A8 table:0];
       v72 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v71 target:self set:0 get:sel__statusPendingDetailText_ detail:0 cell:4 edit:0];
       [v72 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277D3FF38]];
@@ -575,8 +575,8 @@ LABEL_52:
   {
     v75 = MEMORY[0x277D3FAD8];
     v76 = objc_opt_new();
-    v77 = [v76 UUIDString];
-    v78 = [v75 groupSpecifierWithID:v77];
+    uUIDString2 = [v76 UUIDString];
+    v78 = [v75 groupSpecifierWithID:uUIDString2];
 
     [v5 addObject:v78];
     v79 = [v6 localizedStringForKey:@"AllowContactEditingSpecifierName" value:&stru_28766E5A8 table:0];
@@ -587,15 +587,15 @@ LABEL_52:
 
     [v80 setObject:&unk_28769D0B8 forKeyedSubscript:v103];
     [v80 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287675A28];
-    v83 = [v106 fetchStatus];
-    if (v83 == 2)
+    fetchStatus = [familyMemberContactsController fetchStatus];
+    if (fetchStatus == 2)
     {
       v84 = 1;
     }
 
     else
     {
-      v84 = v112 ^ 1;
+      v84 = isRemoteUser ^ 1;
     }
 
     if ((v84 & 1) == 0)
@@ -605,14 +605,14 @@ LABEL_52:
 
     [(STCommunicationLimitsListController *)self setAllowContactEditingSpecifier:v80];
     [v5 addObject:v80];
-    if (v83)
+    if (fetchStatus)
     {
       v85 = 1;
     }
 
     else
     {
-      v85 = v112 ^ 1;
+      v85 = isRemoteUser ^ 1;
     }
 
     if ((v85 & 1) == 0)
@@ -663,39 +663,39 @@ void __49__STCommunicationLimitsListController_specifiers__block_invoke_2(uint64
   }
 }
 
-- (id)_totaliCloudContactsDetailText:(id)a3
+- (id)_totaliCloudContactsDetailText:(id)text
 {
   v4 = +[STScreenTimeSettingsUIBundle bundle];
   v5 = [v4 localizedStringForKey:@"TotaliCloudContacts" value:&stru_28766E5A8 table:0];
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(STCommunicationLimitsListController *)self familyMemberContactsController];
-  v8 = [v6 localizedStringWithFormat:v5, objc_msgSend(v7, "countOfFamilyMemberContacts")];
+  familyMemberContactsController = [(STCommunicationLimitsListController *)self familyMemberContactsController];
+  v8 = [v6 localizedStringWithFormat:v5, objc_msgSend(familyMemberContactsController, "countOfFamilyMemberContacts")];
 
   return v8;
 }
 
-- (id)_manageContacts:(id)a3
+- (id)_manageContacts:(id)contacts
 {
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x277D401A8]];
+  v4 = [contacts objectForKeyedSubscript:*MEMORY[0x277D401A8]];
   if (!v4)
   {
-    v5 = [(STCommunicationLimitsListController *)self communicationLimits];
-    v6 = [v5 contactManagementState];
+    communicationLimits = [(STCommunicationLimitsListController *)self communicationLimits];
+    contactManagementState = [communicationLimits contactManagementState];
 
-    v7 = [(STPINListViewController *)self coordinator];
-    v8 = [v7 viewModel];
-    v9 = [v8 me];
-    v10 = [v9 isRemoteUser];
+    coordinator = [(STPINListViewController *)self coordinator];
+    viewModel = [coordinator viewModel];
+    v9 = [viewModel me];
+    isRemoteUser = [v9 isRemoteUser];
 
-    if (v10)
+    if (isRemoteUser)
     {
-      v11 = (v6 - 1) < 2;
+      v11 = (contactManagementState - 1) < 2;
     }
 
     else
     {
-      v11 = v6 == 2;
+      v11 = contactManagementState == 2;
     }
 
     v4 = [MEMORY[0x277CCABB0] numberWithInt:v11];
@@ -704,24 +704,24 @@ void __49__STCommunicationLimitsListController_specifiers__block_invoke_2(uint64
   return v4;
 }
 
-- (void)_setManageContacts:(id)a3 specifier:(id)a4
+- (void)_setManageContacts:(id)contacts specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = [a3 BOOLValue];
-  v8 = [(STPINListViewController *)self coordinator];
-  v9 = [v8 viewModel];
-  v10 = [v9 me];
+  specifierCopy = specifier;
+  bOOLValue = [contacts BOOLValue];
+  coordinator = [(STPINListViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v10 = [viewModel me];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__STCommunicationLimitsListController__setManageContacts_specifier___block_invoke;
   aBlock[3] = &unk_279B7D188;
   aBlock[4] = self;
-  v18 = v7;
-  v11 = v6;
+  v18 = bOOLValue;
+  v11 = specifierCopy;
   v17 = v11;
   v12 = _Block_copy(aBlock);
-  if ([v10 hasPasscode] && (objc_msgSend(v8, "hasAlreadyEnteredPINForSession") & 1) == 0)
+  if ([v10 hasPasscode] && (objc_msgSend(coordinator, "hasAlreadyEnteredPINForSession") & 1) == 0)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -796,7 +796,7 @@ uint64_t __68__STCommunicationLimitsListController__setManageContacts_specifier_
   }
 }
 
-- (id)_statusPendingDetailText:(id)a3
+- (id)_statusPendingDetailText:(id)text
 {
   v3 = +[STScreenTimeSettingsUIBundle bundle];
   v4 = [v3 localizedStringForKey:@"ManageContactsStatusPendingDetailText" value:&stru_28766E5A8 table:0];
@@ -807,13 +807,13 @@ uint64_t __68__STCommunicationLimitsListController__setManageContacts_specifier_
 - (id)_manageContactsGroupFooterText
 {
   v3 = +[STScreenTimeSettingsUIBundle bundle];
-  v4 = [(STPINListViewController *)self coordinator];
-  v5 = [v4 viewModel];
-  v6 = [v5 me];
+  coordinator = [(STPINListViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v6 = [viewModel me];
 
-  v7 = [v6 givenName];
-  v8 = [(STCommunicationLimitsListController *)self communicationLimits];
-  v9 = [v8 contactManagementState];
+  givenName = [v6 givenName];
+  communicationLimits = [(STCommunicationLimitsListController *)self communicationLimits];
+  contactManagementState = [communicationLimits contactManagementState];
 
   if (([v6 isRemoteUser] & 1) == 0)
   {
@@ -823,14 +823,14 @@ uint64_t __68__STCommunicationLimitsListController__setManageContacts_specifier_
 
   if ([(STCommunicationLimitsListController *)self syncingiCloudContacts])
   {
-    if (v7)
+    if (givenName)
     {
       v10 = @"iCloudContactsSyncingRemoteFooterText";
 LABEL_15:
       v13 = [v3 localizedStringForKey:v10 value:&stru_28766E5A8 table:0];
       v16 = MEMORY[0x277CCACA8];
       v15 = [v3 localizedStringForKey:v13 value:&stru_28766E5A8 table:0];
-      [v16 localizedStringWithFormat:v15, v7, v18];
+      [v16 localizedStringWithFormat:v15, givenName, v18];
       goto LABEL_16;
     }
 
@@ -838,11 +838,11 @@ LABEL_15:
     goto LABEL_6;
   }
 
-  if (v9 != 1)
+  if (contactManagementState != 1)
   {
-    if (v7)
+    if (givenName)
     {
-      if (v9)
+      if (contactManagementState)
       {
         v10 = @"iCloudContactsSpecifierRemoteFooterText";
       }
@@ -855,7 +855,7 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    if (v9)
+    if (contactManagementState)
     {
       v11 = @"iCloudContactsSpecifierRemoteGenericFooterText";
     }
@@ -872,12 +872,12 @@ LABEL_6:
 
   if ([v6 isRemoteUser])
   {
-    if (v7)
+    if (givenName)
     {
       v13 = [v3 localizedStringForKey:@"iCloudContactsPendingRemoteFooterText" value:&stru_28766E5A8 table:0];
       v14 = MEMORY[0x277CCACA8];
       v15 = [v3 localizedStringForKey:v13 value:&stru_28766E5A8 table:0];
-      [v14 localizedStringWithFormat:v15, v7, v7];
+      [v14 localizedStringWithFormat:v15, givenName, givenName];
       v12 = LABEL_16:;
 
       goto LABEL_17;
@@ -893,34 +893,34 @@ LABEL_17:
   return v12;
 }
 
-- (id)_allowContactEditing:(id)a3
+- (id)_allowContactEditing:(id)editing
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(STCommunicationLimitsListController *)self communicationLimits];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "contactsEditable")}];
+  communicationLimits = [(STCommunicationLimitsListController *)self communicationLimits];
+  v5 = [v3 numberWithBool:{objc_msgSend(communicationLimits, "contactsEditable")}];
 
   return v5;
 }
 
-- (void)_setAllowContactEditing:(id)a3 specifier:(id)a4
+- (void)_setAllowContactEditing:(id)editing specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STPINListViewController *)self coordinator];
-  v9 = [v8 viewModel];
-  v10 = [v9 me];
+  editingCopy = editing;
+  specifierCopy = specifier;
+  coordinator = [(STPINListViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v10 = [viewModel me];
   if (![v10 hasPasscode])
   {
 
     goto LABEL_5;
   }
 
-  v11 = [v8 hasAlreadyEnteredPINForSession];
+  hasAlreadyEnteredPINForSession = [coordinator hasAlreadyEnteredPINForSession];
 
-  if (v11)
+  if (hasAlreadyEnteredPINForSession)
   {
 LABEL_5:
-    [(STCommunicationLimitsListController *)self _updateAllowContactEditingWithAlertIfNeeded:v6 forSpecifier:v7];
+    [(STCommunicationLimitsListController *)self _updateAllowContactEditingWithAlertIfNeeded:editingCopy forSpecifier:specifierCopy];
     goto LABEL_6;
   }
 
@@ -929,8 +929,8 @@ LABEL_5:
   v12[2] = __73__STCommunicationLimitsListController__setAllowContactEditing_specifier___block_invoke;
   v12[3] = &unk_279B7CC40;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = editingCopy;
+  v14 = specifierCopy;
   [(STPINListViewController *)self showPINSheet:v14 completion:v12];
 
 LABEL_6:
@@ -950,32 +950,32 @@ uint64_t __73__STCommunicationLimitsListController__setAllowContactEditing_speci
   }
 }
 
-- (void)_updateAllowContactEditingWithAlertIfNeeded:(id)a3 forSpecifier:(id)a4
+- (void)_updateAllowContactEditingWithAlertIfNeeded:(id)needed forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STCommunicationLimitsListController *)self communicationLimits];
-  v9 = [v8 screenTimeCommunicationLimit];
+  neededCopy = needed;
+  specifierCopy = specifier;
+  communicationLimits = [(STCommunicationLimitsListController *)self communicationLimits];
+  screenTimeCommunicationLimit = [communicationLimits screenTimeCommunicationLimit];
 
-  if ([v6 BOOLValue] && (v9 - 1) <= 1)
+  if ([neededCopy BOOLValue] && (screenTimeCommunicationLimit - 1) <= 1)
   {
     v10 = +[STScreenTimeSettingsUIBundle bundle];
-    v11 = [(STPINListViewController *)self coordinator];
-    v12 = [v11 viewModel];
-    v13 = [v12 me];
+    coordinator = [(STPINListViewController *)self coordinator];
+    viewModel = [coordinator viewModel];
+    v13 = [viewModel me];
 
     v29 = v13;
-    v30 = v7;
+    v30 = specifierCopy;
     if ([v13 isRemoteUser])
     {
-      v14 = [v13 givenName];
-      if (v14)
+      givenName = [v13 givenName];
+      if (givenName)
       {
         v15 = [v10 localizedStringForKey:@"AllowContactEditingRemoteAlertTitle" value:&stru_28766E5A8 table:0];
-        v16 = [MEMORY[0x277CBEAF8] currentLocale];
-        v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v15 locale:v16, v14];
+        currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+        v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v15 locale:currentLocale, givenName];
         v18 = [v10 localizedStringForKey:@"AllowContactEditingRemoteAlertPrompt" value:&stru_28766E5A8 table:0];
-        v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v18 locale:v16, v14];
+        v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v18 locale:currentLocale, givenName];
       }
 
       else
@@ -1001,7 +1001,7 @@ uint64_t __73__STCommunicationLimitsListController__setAllowContactEditing_speci
     v33[2] = __96__STCommunicationLimitsListController__updateAllowContactEditingWithAlertIfNeeded_forSpecifier___block_invoke;
     v33[3] = &unk_279B7CDF0;
     v33[4] = self;
-    v34 = v6;
+    v34 = neededCopy;
     v23 = [v21 actionWithTitle:v22 style:0 handler:v33];
 
     [v20 addAction:v23];
@@ -1013,7 +1013,7 @@ uint64_t __73__STCommunicationLimitsListController__setAllowContactEditing_speci
     v31[2] = __96__STCommunicationLimitsListController__updateAllowContactEditingWithAlertIfNeeded_forSpecifier___block_invoke_2;
     v31[3] = &unk_279B7CDF0;
     v31[4] = self;
-    v7 = v30;
+    specifierCopy = v30;
     v32 = v30;
     v26 = [v24 actionWithTitle:v25 style:1 handler:v31];
     [v20 addAction:v26];
@@ -1023,37 +1023,37 @@ uint64_t __73__STCommunicationLimitsListController__setAllowContactEditing_speci
 
   else
   {
-    [(STCommunicationLimitsListController *)self _updateAllowContactEditing:v6];
+    [(STCommunicationLimitsListController *)self _updateAllowContactEditing:neededCopy];
   }
 }
 
-- (void)_updateAllowContactEditing:(id)a3
+- (void)_updateAllowContactEditing:(id)editing
 {
-  v4 = a3;
-  v8 = [(STCommunicationLimitsListController *)self communicationLimits];
-  v5 = [v4 BOOLValue];
+  editingCopy = editing;
+  communicationLimits = [(STCommunicationLimitsListController *)self communicationLimits];
+  bOOLValue = [editingCopy BOOLValue];
 
-  [v8 setContactsEditable:v5];
-  v6 = [(STPINListViewController *)self coordinator];
-  v7 = [v6 contentPrivacyCoordinator];
-  [v7 saveCommunicationLimits:v8 completionHandler:0];
+  [communicationLimits setContactsEditable:bOOLValue];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  [contentPrivacyCoordinator saveCommunicationLimits:communicationLimits completionHandler:0];
 
-  [STCommunicationLimitsScreenTimeDetailListController showCompatibilityAlertIfNeededWithCoordinator:v6 presentingViewController:self okHandler:0];
+  [STCommunicationLimitsScreenTimeDetailListController showCompatibilityAlertIfNeededWithCoordinator:coordinator presentingViewController:self okHandler:0];
 }
 
 - (void)_startSyncingiCloudContacts
 {
-  v4 = [(STCommunicationLimitsListController *)self familyMemberContactsController];
-  [v4 countOfFamilyMemberContacts];
-  v3 = [v4 fetchStatus];
-  if (v3 == 2)
+  familyMemberContactsController = [(STCommunicationLimitsListController *)self familyMemberContactsController];
+  [familyMemberContactsController countOfFamilyMemberContacts];
+  fetchStatus = [familyMemberContactsController fetchStatus];
+  if (fetchStatus == 2)
   {
     [(STCommunicationLimitsListController *)self _didFinishSyncingiCloudContacts];
   }
 
   else
   {
-    [(STCommunicationLimitsListController *)self setSyncingiCloudContacts:(v3 & 0xFFFFFFFFFFFFFFFDLL) == 1];
+    [(STCommunicationLimitsListController *)self setSyncingiCloudContacts:(fetchStatus & 0xFFFFFFFFFFFFFFFDLL) == 1];
     [(STCommunicationLimitsListController *)self _didStartSyncingiCloudContacts];
   }
 }
@@ -1064,21 +1064,21 @@ uint64_t __73__STCommunicationLimitsListController__setAllowContactEditing_speci
   [(STCommunicationLimitsListController *)self _enableAllowContactEditingSwitch:0];
   [(STCommunicationLimitsListController *)self _updateManageContactsGroupFooterView];
   [(STCommunicationLimitsListController *)self _indicateiCloudContactsSyncingStatus];
-  v3 = [(STCommunicationLimitsListController *)self familyMemberContactsController];
-  v4 = [v3 fetchStatus];
-  v5 = [(STPINListViewController *)self coordinator];
-  v6 = [v5 viewModel];
-  v7 = [v6 me];
-  v8 = [v7 givenName];
-  if (v4 > 1)
+  familyMemberContactsController = [(STCommunicationLimitsListController *)self familyMemberContactsController];
+  fetchStatus = [familyMemberContactsController fetchStatus];
+  coordinator = [(STPINListViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v7 = [viewModel me];
+  givenName = [v7 givenName];
+  if (fetchStatus > 1)
   {
-    if (v4 == 2)
+    if (fetchStatus == 2)
     {
       v9 = +[STUILog communication];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v8;
+        v12 = givenName;
         v10 = "Finished syncing %@'s iCloud contacts.";
         goto LABEL_14;
       }
@@ -1086,13 +1086,13 @@ uint64_t __73__STCommunicationLimitsListController__setAllowContactEditing_speci
       goto LABEL_15;
     }
 
-    if (v4 == 3)
+    if (fetchStatus == 3)
     {
       v9 = +[STUILog communication];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v8;
+        v12 = givenName;
         v10 = "Syncing %@'s iCloud contacts.";
         goto LABEL_14;
       }
@@ -1103,13 +1103,13 @@ LABEL_15:
 
   else
   {
-    if (!v4)
+    if (!fetchStatus)
     {
       v9 = +[STUILog communication];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v8;
+        v12 = givenName;
         v10 = "Did not fetch %@'s iCloud contacts.";
         goto LABEL_14;
       }
@@ -1117,13 +1117,13 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    if (v4 == 1)
+    if (fetchStatus == 1)
     {
       v9 = +[STUILog communication];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v8;
+        v12 = givenName;
         v10 = "Fetching %@'s iCloud contacts.";
 LABEL_14:
         _os_log_impl(&dword_264BA2000, v9, OS_LOG_TYPE_DEFAULT, v10, &v11, 0xCu);
@@ -1140,17 +1140,17 @@ LABEL_14:
   v20 = *MEMORY[0x277D85DE8];
   [(STCommunicationLimitsListController *)self setSyncingiCloudContacts:0];
   [(STCommunicationLimitsListController *)self _enableAllowContactEditingSwitch:1];
-  v3 = [(STCommunicationLimitsListController *)self communicationLimits];
-  v4 = [v3 contactManagementState];
-  v5 = [(STCommunicationLimitsListController *)self manageContactsSpecifier];
-  v6 = [(STCommunicationLimitsListController *)self familyMemberContactsController];
-  v7 = [(STPINListViewController *)self coordinator];
-  v8 = [(STCommunicationLimitsListController *)self _manageContacts:v5];
-  v9 = [v8 BOOLValue];
+  communicationLimits = [(STCommunicationLimitsListController *)self communicationLimits];
+  contactManagementState = [communicationLimits contactManagementState];
+  manageContactsSpecifier = [(STCommunicationLimitsListController *)self manageContactsSpecifier];
+  familyMemberContactsController = [(STCommunicationLimitsListController *)self familyMemberContactsController];
+  coordinator = [(STPINListViewController *)self coordinator];
+  v8 = [(STCommunicationLimitsListController *)self _manageContacts:manageContactsSpecifier];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9 && !v4)
+  if (bOOLValue && !contactManagementState)
   {
-    if ([v6 countOfFamilyMemberContacts] >= 1)
+    if ([familyMemberContactsController countOfFamilyMemberContacts] >= 1)
     {
       v10 = 1;
     }
@@ -1160,42 +1160,42 @@ LABEL_14:
       v10 = 2;
     }
 
-    [v3 setContactManagementState:v10];
-    v11 = [v7 contentPrivacyCoordinator];
-    [v11 saveCommunicationLimits:v3 completionHandler:0];
+    [communicationLimits setContactManagementState:v10];
+    contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+    [contentPrivacyCoordinator saveCommunicationLimits:communicationLimits completionHandler:0];
 LABEL_7:
 
     goto LABEL_11;
   }
 
-  if (v4 == 2)
+  if (contactManagementState == 2)
   {
-    v11 = [(STCommunicationLimitsListController *)self iCloudContactsSpecifier];
-    if (([(STCommunicationLimitsListController *)self containsSpecifier:v11]& 1) == 0)
+    contentPrivacyCoordinator = [(STCommunicationLimitsListController *)self iCloudContactsSpecifier];
+    if (([(STCommunicationLimitsListController *)self containsSpecifier:contentPrivacyCoordinator]& 1) == 0)
     {
-      [(STCommunicationLimitsListController *)self insertSpecifier:v11 afterSpecifier:v5 animated:1];
+      [(STCommunicationLimitsListController *)self insertSpecifier:contentPrivacyCoordinator afterSpecifier:manageContactsSpecifier animated:1];
     }
 
     goto LABEL_7;
   }
 
 LABEL_11:
-  [v5 removePropertyForKey:*MEMORY[0x277D401A8]];
+  [manageContactsSpecifier removePropertyForKey:*MEMORY[0x277D401A8]];
   [(STCommunicationLimitsListController *)self _updateManageContactsGroupFooterView];
   [(STCommunicationLimitsListController *)self _indicateiCloudContactsSyncingStatus];
-  v12 = [v6 fetchStatus];
-  v13 = [v7 viewModel];
-  v14 = [v13 me];
-  v15 = [v14 givenName];
-  if (v12 > 1)
+  fetchStatus = [familyMemberContactsController fetchStatus];
+  viewModel = [coordinator viewModel];
+  v14 = [viewModel me];
+  givenName = [v14 givenName];
+  if (fetchStatus > 1)
   {
-    if (v12 == 2)
+    if (fetchStatus == 2)
     {
       v16 = +[STUILog communication];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = v15;
+        v19 = givenName;
         v17 = "Finished syncing %@'s iCloud contacts.";
         goto LABEL_24;
       }
@@ -1203,13 +1203,13 @@ LABEL_11:
       goto LABEL_25;
     }
 
-    if (v12 == 3)
+    if (fetchStatus == 3)
     {
       v16 = +[STUILog communication];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = v15;
+        v19 = givenName;
         v17 = "Syncing %@'s iCloud contacts.";
         goto LABEL_24;
       }
@@ -1220,13 +1220,13 @@ LABEL_25:
 
   else
   {
-    if (!v12)
+    if (!fetchStatus)
     {
       v16 = +[STUILog communication];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = v15;
+        v19 = givenName;
         v17 = "Did not fetch %@'s iCloud contacts.";
         goto LABEL_24;
       }
@@ -1234,13 +1234,13 @@ LABEL_25:
       goto LABEL_25;
     }
 
-    if (v12 == 1)
+    if (fetchStatus == 1)
     {
       v16 = +[STUILog communication];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = v15;
+        v19 = givenName;
         v17 = "Fetching %@'s iCloud contacts.";
 LABEL_24:
         _os_log_impl(&dword_264BA2000, v16, OS_LOG_TYPE_DEFAULT, v17, &v18, 0xCu);
@@ -1257,8 +1257,8 @@ LABEL_24:
   if ([(STCommunicationLimitsListController *)self syncingiCloudContacts])
   {
     [(STCommunicationLimitsListController *)self setSyncingiCloudContacts:0];
-    v3 = [(STCommunicationLimitsListController *)self manageContactsSpecifier];
-    [v3 removePropertyForKey:*MEMORY[0x277D401A8]];
+    manageContactsSpecifier = [(STCommunicationLimitsListController *)self manageContactsSpecifier];
+    [manageContactsSpecifier removePropertyForKey:*MEMORY[0x277D401A8]];
 
     [(STCommunicationLimitsListController *)self _updateManageContactsGroupFooterView];
 
@@ -1268,29 +1268,29 @@ LABEL_24:
 
 - (void)_updateManageContactsGroupFooterView
 {
-  v6 = [(STCommunicationLimitsListController *)self manageContactsGroupSpecifier];
+  manageContactsGroupSpecifier = [(STCommunicationLimitsListController *)self manageContactsGroupSpecifier];
   if ([(STCommunicationLimitsListController *)self syncingiCloudContacts])
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    [v6 setObject:v4 forKeyedSubscript:*MEMORY[0x277D3FF48]];
+    [manageContactsGroupSpecifier setObject:v4 forKeyedSubscript:*MEMORY[0x277D3FF48]];
   }
 
   else
   {
-    [v6 removePropertyForKey:*MEMORY[0x277D3FF48]];
+    [manageContactsGroupSpecifier removePropertyForKey:*MEMORY[0x277D3FF48]];
   }
 
-  v5 = [(STCommunicationLimitsListController *)self _manageContactsGroupFooterText];
-  [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+  _manageContactsGroupFooterText = [(STCommunicationLimitsListController *)self _manageContactsGroupFooterText];
+  [manageContactsGroupSpecifier setObject:_manageContactsGroupFooterText forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
-  [(STCommunicationLimitsListController *)self reloadSpecifier:v6 animated:0];
+  [(STCommunicationLimitsListController *)self reloadSpecifier:manageContactsGroupSpecifier animated:0];
 }
 
 - (void)_indicateiCloudContactsSyncingStatus
 {
-  v3 = [(STCommunicationLimitsListController *)self manageContactsGroupSpecifier];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D3FF90]];
+  manageContactsGroupSpecifier = [(STCommunicationLimitsListController *)self manageContactsGroupSpecifier];
+  v4 = [manageContactsGroupSpecifier objectForKeyedSubscript:*MEMORY[0x277D3FF90]];
 
   if ([(STCommunicationLimitsListController *)self syncingiCloudContacts])
   {
@@ -1303,29 +1303,29 @@ LABEL_24:
   }
 }
 
-- (void)_enableAllowContactEditingSwitch:(BOOL)a3
+- (void)_enableAllowContactEditingSwitch:(BOOL)switch
 {
-  v3 = a3;
-  v6 = [(STCommunicationLimitsListController *)self allowContactEditingSpecifier];
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x277D3FF38]];
+  switchCopy = switch;
+  allowContactEditingSpecifier = [(STCommunicationLimitsListController *)self allowContactEditingSpecifier];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:switchCopy];
+  [allowContactEditingSpecifier setObject:v5 forKeyedSubscript:*MEMORY[0x277D3FF38]];
 
-  [(STCommunicationLimitsListController *)self reloadSpecifier:v6 animated:1];
+  [(STCommunicationLimitsListController *)self reloadSpecifier:allowContactEditingSpecifier animated:1];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STCommunicationLimitsListController *)self specifierAtIndexPath:v7];
-  v9 = [(STCommunicationLimitsListController *)self iCloudContactsSpecifier];
-  v10 = v9;
-  if (v8 == v9)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(STCommunicationLimitsListController *)self specifierAtIndexPath:pathCopy];
+  iCloudContactsSpecifier = [(STCommunicationLimitsListController *)self iCloudContactsSpecifier];
+  v10 = iCloudContactsSpecifier;
+  if (v8 == iCloudContactsSpecifier)
   {
-    v11 = [(STCommunicationLimitsListController *)self communicationLimits];
-    v12 = [v11 contactManagementState];
+    communicationLimits = [(STCommunicationLimitsListController *)self communicationLimits];
+    contactManagementState = [communicationLimits contactManagementState];
 
-    if (v12 != 2)
+    if (contactManagementState != 2)
     {
       goto LABEL_7;
     }
@@ -1334,18 +1334,18 @@ LABEL_24:
     aBlock[1] = 3221225472;
     aBlock[2] = __73__STCommunicationLimitsListController_tableView_didSelectRowAtIndexPath___block_invoke;
     aBlock[3] = &unk_279B7CC40;
-    v20 = v6;
-    v21 = v7;
-    v22 = self;
+    v20 = viewCopy;
+    v21 = pathCopy;
+    selfCopy = self;
     v13 = _Block_copy(aBlock);
-    v14 = [(STPINListViewController *)self coordinator];
-    v15 = [v14 viewModel];
-    v16 = [v15 me];
+    coordinator = [(STPINListViewController *)self coordinator];
+    viewModel = [coordinator viewModel];
+    v16 = [viewModel me];
     if ([v16 hasPasscode])
     {
-      v17 = [v14 hasAlreadyEnteredPINForSession];
+      hasAlreadyEnteredPINForSession = [coordinator hasAlreadyEnteredPINForSession];
 
-      if ((v17 & 1) == 0)
+      if ((hasAlreadyEnteredPINForSession & 1) == 0)
       {
         [(STPINListViewController *)self showPINSheet:v8 completion:v13];
 LABEL_11:
@@ -1365,7 +1365,7 @@ LABEL_11:
 LABEL_7:
   v18.receiver = self;
   v18.super_class = STCommunicationLimitsListController;
-  [(STPINListViewController *)&v18 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(STPINListViewController *)&v18 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 LABEL_8:
 }
 

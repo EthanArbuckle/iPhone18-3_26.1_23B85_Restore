@@ -1,40 +1,40 @@
 @interface WKFileUploadMediaTranscoder
-- (WKFileUploadMediaTranscoder)initWithItems:(id)a3 videoCount:(unint64_t)a4 completionHandler:(void *)a5;
+- (WKFileUploadMediaTranscoder)initWithItems:(id)items videoCount:(unint64_t)count completionHandler:(void *)handler;
 - (id).cxx_construct;
 - (id)_temporaryDirectoryCreateIfNecessary;
 - (void)_dismissProgress;
 - (void)_finishedProcessing;
-- (void)_processItemAtIndex:(unint64_t)a3;
-- (void)_updateProgress:(id)a3;
+- (void)_processItemAtIndex:(unint64_t)index;
+- (void)_updateProgress:(id)progress;
 - (void)start;
 @end
 
 @implementation WKFileUploadMediaTranscoder
 
-- (WKFileUploadMediaTranscoder)initWithItems:(id)a3 videoCount:(unint64_t)a4 completionHandler:(void *)a5
+- (WKFileUploadMediaTranscoder)initWithItems:(id)items videoCount:(unint64_t)count completionHandler:(void *)handler
 {
   v14.receiver = self;
   v14.super_class = WKFileUploadMediaTranscoder;
   v8 = [(WKFileUploadMediaTranscoder *)&v14 init];
   if (v8)
   {
-    if (a3)
+    if (items)
     {
-      v9 = a3;
+      itemsCopy = items;
     }
 
     m_ptr = v8->_items.m_ptr;
-    v8->_items.m_ptr = a3;
+    v8->_items.m_ptr = items;
     if (m_ptr)
     {
     }
 
     v8->_processedVideoCount = 0;
-    v11 = *a5;
-    *a5 = 0;
+    v11 = *handler;
+    *handler = 0;
     ptr = v8->_completionHandler.m_callableWrapper.__ptr_;
     v8->_completionHandler.m_callableWrapper.__ptr_ = v11;
-    v8->_videoCount = a4;
+    v8->_videoCount = count;
     if (ptr)
     {
       (*(*ptr + 8))(ptr);
@@ -125,23 +125,23 @@
   [(WKFileUploadMediaTranscoder *)self _processItemAtIndex:0];
 }
 
-- (void)_processItemAtIndex:(unint64_t)a3
+- (void)_processItemAtIndex:(unint64_t)index
 {
   if (([(PXActivityProgressController *)self->_progressController.m_ptr isCancelled]& 1) != 0)
   {
     return;
   }
 
-  if ([(NSArray *)self->_items.m_ptr count]> a3)
+  if ([(NSArray *)self->_items.m_ptr count]> index)
   {
-    v5 = [(NSArray *)self->_items.m_ptr objectAtIndex:a3];
+    v5 = [(NSArray *)self->_items.m_ptr objectAtIndex:index];
     if ([v5 isVideo])
     {
 LABEL_7:
-      v6 = [(WKFileUploadMediaTranscoder *)self _temporaryDirectoryCreateIfNecessary];
-      if (v6)
+      _temporaryDirectoryCreateIfNecessary = [(WKFileUploadMediaTranscoder *)self _temporaryDirectoryCreateIfNecessary];
+      if (_temporaryDirectoryCreateIfNecessary)
       {
-        v7 = v6;
+        v7 = _temporaryDirectoryCreateIfNecessary;
         v8 = [objc_msgSend(objc_msgSend(v5 "fileURL")];
         v9 = [v7 stringByAppendingPathComponent:{objc_msgSend(v8, "stringByAppendingPathExtension:", objc_msgSend(objc_msgSend(*MEMORY[0x1E6982F80], "preferredFilenameExtension"), "uppercaseString"))}];
         v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9 isDirectory:0];
@@ -160,10 +160,10 @@ LABEL_7:
         v15 = self->_exportSession.m_ptr;
         v17 = 0;
         objc_initWeak(&v17, self);
-        v18 = a3;
+        indexCopy = index;
         to = 0;
         objc_moveWeak(&to, &v17);
-        v20 = v18;
+        v20 = indexCopy;
         v16 = malloc_type_malloc(0x30uLL, 0x10E00401A191054uLL);
         *v16 = MEMORY[0x1E69E9818];
         *(v16 + 1) = 50331650;
@@ -186,9 +186,9 @@ LABEL_7:
 
     else
     {
-      while (++a3 != [(NSArray *)self->_items.m_ptr count])
+      while (++index != [(NSArray *)self->_items.m_ptr count])
       {
-        v5 = [(NSArray *)self->_items.m_ptr objectAtIndex:a3];
+        v5 = [(NSArray *)self->_items.m_ptr objectAtIndex:index];
         if ([v5 isVideo])
         {
           goto LABEL_7;
@@ -222,7 +222,7 @@ LABEL_7:
   [(PXActivityProgressController *)m_ptr hideAnimated:0 allowDelay:0];
 }
 
-- (void)_updateProgress:(id)a3
+- (void)_updateProgress:(id)progress
 {
   [(AVAssetExportSession *)self->_exportSession.m_ptr progress];
   m_ptr = self->_progressController.m_ptr;

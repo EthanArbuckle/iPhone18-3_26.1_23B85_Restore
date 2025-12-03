@@ -9,13 +9,13 @@
 - (double)minimumAccuracy;
 - (double)presentationAccuracy;
 - (double)presentationCourse;
-- (void)setAnimatingAccuracy:(BOOL)a3;
-- (void)setAnimatingToCoordinate:(BOOL)a3;
-- (void)setPresentationAccuracy:(double)a3;
-- (void)setPresentationCoordinate:(id)a3;
-- (void)setPresentationCourse:(double)a3;
-- (void)setRouteMatch:(id)a3;
-- (void)setTracking:(BOOL)a3;
+- (void)setAnimatingAccuracy:(BOOL)accuracy;
+- (void)setAnimatingToCoordinate:(BOOL)coordinate;
+- (void)setPresentationAccuracy:(double)accuracy;
+- (void)setPresentationCoordinate:(id)coordinate;
+- (void)setPresentationCourse:(double)course;
+- (void)setRouteMatch:(id)match;
+- (void)setTracking:(BOOL)tracking;
 @end
 
 @implementation MKUserLocationAnnotationViewProxy
@@ -29,8 +29,8 @@
 
 - (CGSize)collisionSize
 {
-  v2 = [(MKUserLocationAnnotationViewProxy *)self annotationView];
-  [v2 _collisionFrame];
+  annotationView = [(MKUserLocationAnnotationViewProxy *)self annotationView];
+  [annotationView _collisionFrame];
   v4 = v3;
   v6 = v5;
 
@@ -43,10 +43,10 @@
 
 - (GEORouteMatch)routeMatch
 {
-  v2 = [(MKUserLocationAnnotationViewProxy *)self annotationView];
-  v3 = [v2 _routeMatch];
+  annotationView = [(MKUserLocationAnnotationViewProxy *)self annotationView];
+  _routeMatch = [annotationView _routeMatch];
 
-  return v3;
+  return _routeMatch;
 }
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)presentationCoordinate
@@ -65,8 +65,8 @@
 
 - (VKEdgeInsets)annotationTrackingEdgeInsets
 {
-  v2 = [(MKUserLocationAnnotationViewProxy *)self annotationView];
-  [v2 _annotationTrackingInsets];
+  annotationView = [(MKUserLocationAnnotationViewProxy *)self annotationView];
+  [annotationView _annotationTrackingInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -83,35 +83,35 @@
   return result;
 }
 
-- (void)setRouteMatch:(id)a3
+- (void)setRouteMatch:(id)match
 {
-  v4 = a3;
-  v5 = [(MKUserLocationAnnotationViewProxy *)self annotationView];
-  [v5 _setRouteMatch:v4];
+  matchCopy = match;
+  annotationView = [(MKUserLocationAnnotationViewProxy *)self annotationView];
+  [annotationView _setRouteMatch:matchCopy];
 }
 
-- (void)setTracking:(BOOL)a3
+- (void)setTracking:(BOOL)tracking
 {
-  v3 = a3;
-  v4 = [(MKUserLocationAnnotationViewProxy *)self annotationView];
-  [v4 _setTracking:v3];
+  trackingCopy = tracking;
+  annotationView = [(MKUserLocationAnnotationViewProxy *)self annotationView];
+  [annotationView _setTracking:trackingCopy];
 }
 
 - (BOOL)tracking
 {
-  v2 = [(MKUserLocationAnnotationViewProxy *)self annotationView];
-  v3 = [v2 _isTracking];
+  annotationView = [(MKUserLocationAnnotationViewProxy *)self annotationView];
+  _isTracking = [annotationView _isTracking];
 
-  return v3;
+  return _isTracking;
 }
 
 - (double)minimumAccuracy
 {
-  v2 = [(MKUserLocationAnnotationViewProxy *)self annotationView];
+  annotationView = [(MKUserLocationAnnotationViewProxy *)self annotationView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    _mkUserLocationView = annotationView;
   }
 
   else
@@ -123,10 +123,10 @@
       goto LABEL_7;
     }
 
-    v3 = [v2 _mkUserLocationView];
+    _mkUserLocationView = [annotationView _mkUserLocationView];
   }
 
-  v4 = v3;
+  v4 = _mkUserLocationView;
 LABEL_7:
 
   [v4 _minimumAccuracyUncertainty];
@@ -135,46 +135,46 @@ LABEL_7:
   return v6;
 }
 
-- (void)setAnimatingToCoordinate:(BOOL)a3
+- (void)setAnimatingToCoordinate:(BOOL)coordinate
 {
-  v3 = a3;
-  v4 = [(MKUserLocationAnnotationViewProxy *)self annotationView];
-  [v4 _setAnimatingToCoordinate:v3];
+  coordinateCopy = coordinate;
+  annotationView = [(MKUserLocationAnnotationViewProxy *)self annotationView];
+  [annotationView _setAnimatingToCoordinate:coordinateCopy];
 }
 
-- (void)setAnimatingAccuracy:(BOOL)a3
+- (void)setAnimatingAccuracy:(BOOL)accuracy
 {
-  v3 = a3;
-  v6 = [(MKUserLocationAnnotationViewProxy *)self annotationView];
+  accuracyCopy = accuracy;
+  annotationView = [(MKUserLocationAnnotationViewProxy *)self annotationView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v6;
+    _mkUserLocationView = annotationView;
 LABEL_5:
-    v5 = v4;
+    v5 = _mkUserLocationView;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v6 _mkUserLocationView];
+    _mkUserLocationView = [annotationView _mkUserLocationView];
     goto LABEL_5;
   }
 
   v5 = 0;
 LABEL_7:
 
-  [v5 setAnimatingPresentationAccuracy:v3];
+  [v5 setAnimatingPresentationAccuracy:accuracyCopy];
 }
 
 - (BOOL)isAnimatingAccuracy
 {
-  v2 = [(MKUserLocationAnnotationViewProxy *)self annotationView];
+  annotationView = [(MKUserLocationAnnotationViewProxy *)self annotationView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    _mkUserLocationView = annotationView;
   }
 
   else
@@ -186,48 +186,48 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v3 = [v2 _mkUserLocationView];
+    _mkUserLocationView = [annotationView _mkUserLocationView];
   }
 
-  v4 = v3;
+  v4 = _mkUserLocationView;
 LABEL_7:
 
-  v5 = [v4 isAnimatingPresentationAccuracy];
-  return v5;
+  isAnimatingPresentationAccuracy = [v4 isAnimatingPresentationAccuracy];
+  return isAnimatingPresentationAccuracy;
 }
 
-- (void)setPresentationAccuracy:(double)a3
+- (void)setPresentationAccuracy:(double)accuracy
 {
-  v6 = [(MKUserLocationAnnotationViewProxy *)self annotationView];
+  annotationView = [(MKUserLocationAnnotationViewProxy *)self annotationView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v6;
+    _mkUserLocationView = annotationView;
 LABEL_5:
-    v5 = v4;
+    v5 = _mkUserLocationView;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v6 _mkUserLocationView];
+    _mkUserLocationView = [annotationView _mkUserLocationView];
     goto LABEL_5;
   }
 
   v5 = 0;
 LABEL_7:
 
-  [v5 setPresentationAccuracy:a3];
+  [v5 setPresentationAccuracy:accuracy];
 }
 
 - (double)presentationAccuracy
 {
-  v2 = [(MKUserLocationAnnotationViewProxy *)self annotationView];
+  annotationView = [(MKUserLocationAnnotationViewProxy *)self annotationView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    _mkUserLocationView = annotationView;
   }
 
   else
@@ -239,10 +239,10 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v3 = [v2 _mkUserLocationView];
+    _mkUserLocationView = [annotationView _mkUserLocationView];
   }
 
-  v4 = v3;
+  v4 = _mkUserLocationView;
 LABEL_7:
 
   [v4 presentationAccuracy];
@@ -251,27 +251,27 @@ LABEL_7:
   return v6;
 }
 
-- (void)setPresentationCourse:(double)a3
+- (void)setPresentationCourse:(double)course
 {
-  v4 = [(MKUserLocationAnnotationViewProxy *)self annotationView];
-  [v4 _setPresentationCourse:a3];
+  annotationView = [(MKUserLocationAnnotationViewProxy *)self annotationView];
+  [annotationView _setPresentationCourse:course];
 }
 
 - (double)presentationCourse
 {
-  v2 = [(MKUserLocationAnnotationViewProxy *)self annotationView];
-  [v2 _presentationCourse];
+  annotationView = [(MKUserLocationAnnotationViewProxy *)self annotationView];
+  [annotationView _presentationCourse];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPresentationCoordinate:(id)a3
+- (void)setPresentationCoordinate:(id)coordinate
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = [(MKUserLocationAnnotationViewProxy *)self annotationView];
-  [v5 _setPresentationCoordinate:{var0, var1}];
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  annotationView = [(MKUserLocationAnnotationViewProxy *)self annotationView];
+  [annotationView _setPresentationCoordinate:{var0, var1}];
 }
 
 @end

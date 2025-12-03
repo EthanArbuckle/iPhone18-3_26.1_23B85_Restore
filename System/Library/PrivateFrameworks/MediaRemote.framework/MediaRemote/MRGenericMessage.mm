@@ -1,23 +1,23 @@
 @interface MRGenericMessage
-- (MRGenericMessage)initWithKey:(id)a3 data:(id)a4;
+- (MRGenericMessage)initWithKey:(id)key data:(id)data;
 - (NSData)data;
 - (NSString)key;
 @end
 
 @implementation MRGenericMessage
 
-- (MRGenericMessage)initWithKey:(id)a3 data:(id)a4
+- (MRGenericMessage)initWithKey:(id)key data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = MRGenericMessage;
   v8 = [(MRProtocolMessage *)&v11 init];
   if (v8)
   {
     v9 = objc_alloc_init(_MRGenericMessageProtobuf);
-    [(_MRGenericMessageProtobuf *)v9 setKey:v6];
-    [(_MRGenericMessageProtobuf *)v9 setData:v7];
+    [(_MRGenericMessageProtobuf *)v9 setKey:keyCopy];
+    [(_MRGenericMessageProtobuf *)v9 setData:dataCopy];
     [(MRProtocolMessage *)v8 setUnderlyingCodableMessage:v9];
   }
 
@@ -26,18 +26,18 @@
 
 - (NSString)key
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 key];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  v3 = [underlyingCodableMessage key];
 
   return v3;
 }
 
 - (NSData)data
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 data];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  data = [underlyingCodableMessage data];
 
-  return v3;
+  return data;
 }
 
 @end

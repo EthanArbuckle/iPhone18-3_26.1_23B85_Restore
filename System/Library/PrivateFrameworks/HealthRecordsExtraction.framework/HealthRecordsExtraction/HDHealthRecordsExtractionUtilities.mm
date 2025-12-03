@@ -1,125 +1,125 @@
 @interface HDHealthRecordsExtractionUtilities
-+ (BOOL)_determineEnteredInError:(id)a3;
-+ (id)BOOLeanNotDoneFromStatusCode:(id)a3 error:(id *)a4;
-+ (id)BOOLeanNotTakenFromStatusCode:(id)a3 error:(id *)a4;
-+ (id)_FHIRMedicalCodingWithCode:(id)a3 medicalCodingSystem:(id)a4 codingVersion:(id)a5 error:(id *)a6;
-+ (id)_earliestDosageDateWithMedicationDosageArray:(id)a3 error:(id *)a4;
-+ (id)_firstCodingForSystem:(id)a3 inCodeableConcept:(id)a4 error:(id *)a5;
-+ (id)_medicalDateIntervalWithDosage:(id)a3 error:(id *)a4;
-+ (id)_medicalDateWithDateTimeString:(id)a3 range:(_NSRange)a4 error:(id *)a5;
-+ (id)_medicalDateWithOnlyDateString:(id)a3 range:(_NSRange)a4 error:(id *)a5;
-+ (id)_medicationDosagesWithDosageArray:(id)a3 FHIRRelease:(id)a4 error:(id *)a5;
-+ (id)_transformArray:(id)a3 error:(id *)a4 transformBlock:(id)a5;
-+ (id)allergyIntoleranceClinicalStatusCodingWithCodeableConcept:(id)a3 error:(id *)a4;
-+ (id)allergyIntoleranceVerificationStatusCodingWithCodeableConcept:(id)a3 error:(id *)a4;
-+ (id)allergyReactionsWithAllergyIntoleranceReaction:(id)a3 error:(id *)a4;
-+ (id)codedQuantityWithQuantity:(id)a3 error:(id *)a4;
-+ (id)codedValueWithObservationComponent:(id)a3 FHIRVersion:(id)a4 error:(id *)a5;
-+ (id)conditionClinicalStatusCodingWithCodeableConcept:(id)a3 error:(id *)a4;
-+ (id)conditionVerificationStatusCodingWithCodeableConcept:(id)a3 error:(id *)a4;
-+ (id)coverageClassificationWithClassElements:(id)a3 error:(id *)a4;
-+ (id)enteredInErrorWithAllergyIntoleranceVerificationStatusCodeableConcept:(id)a3 error:(id *)a4;
-+ (id)enteredInErrorWithConditionVerificationStatusCodeableConcept:(id)a3 error:(id *)a4;
-+ (id)enteredInErrorWithStatusString:(id)a3 error:(id *)a4;
-+ (id)identifierFromReference:(id)a3 error:(id *)a4;
-+ (id)identifierWithReference:(id)a3 parentResource:(id)a4 error:(id *)a5;
-+ (id)identifiersWithReferences:(id)a3 parentResource:(id)a4 error:(id *)a5;
-+ (id)inspectableValueCollectionWithCodeableConcept:(id)a3 error:(id *)a4;
-+ (id)inspectableValueCollectionWithDateTime:(id)a3 error:(id *)a4;
-+ (id)inspectableValueCollectionWithObservationComponents:(id)a3 FHIRVersion:(id)a4 error:(id *)a5;
-+ (id)inspectableValueCollectionWithObservationValues:(id)a3 FHIRVersion:(id)a4 error:(id *)a5;
-+ (id)inspectableValueCollectionWithPeriod:(id)a3 error:(id *)a4;
-+ (id)inspectableValueCollectionWithQuantity:(id)a3 error:(id *)a4;
-+ (id)inspectableValueCollectionWithRatio:(id)a3 error:(id *)a4;
-+ (id)inspectableValueCollectionWithString:(id)a3 error:(id *)a4;
-+ (id)inspectableValueCollectionWithTime:(id)a3 error:(id *)a4;
-+ (id)inspectableValueWithAbatementValue:(id)a3 error:(id *)a4;
-+ (id)inspectableValueWithObservationValues:(id)a3 FHIRVersion:(id)a4 error:(id *)a5;
-+ (id)inspectableValueWithOnsetValue:(id)a3 error:(id *)a4;
-+ (id)localeFromLanguage:(id)a3 error:(id *)a4;
-+ (id)medicalCodingCollectionArrayWithCodeableConcepts:(id)a3 error:(id *)a4;
-+ (id)medicalCodingCollectionWithCodeableConcept:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithAllergyIntoleranceCategoryCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithAllergyIntoleranceCriticalityCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithAllergyIntoleranceSeverityCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithAllergyIntoleranceStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithAllergyIntoleranceTypeCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithCarePlanStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithCoding:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithConditionClinicalStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithConditionVerificationStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithCoverageStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithDeviceStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithDiagnosticReportStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithEventStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithGoalStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithImmunizationStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithMedicationAdminStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithMedicationDispenseStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithMedicationOrderStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithMedicationStatementStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithObservationStatus:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithProcedureStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithR4AllergyIntoleranceCriticalityCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithR4MedicationDispenseStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingWithR4MedicationRequestStatusCode:(id)a3 error:(id *)a4;
-+ (id)medicalCodingsArrayWithCodeableConcept:(id)a3 error:(id *)a4;
-+ (id)medicalCodingsWithCodeableConcept:(id)a3 error:(id *)a4;
-+ (id)medicalCodingsWithCodeableConcepts:(id)a3 error:(id *)a4;
-+ (id)medicalCodingsWithReference:(id)a3 error:(id *)a4;
-+ (id)medicalDateIntervalWithPeriod:(id)a3 error:(id *)a4;
-+ (id)medicalDateWithDateString:(id)a3 error:(id *)a4;
-+ (id)medicalDateWithDateTimeString:(id)a3 error:(id *)a4;
-+ (id)medicalDateWithInstantString:(id)a3 error:(id *)a4;
-+ (id)observationCategoryWithObservationCategories:(id)a3 error:(id *)a4;
-+ (id)observationCategoryWithObservationCategory:(id)a3 error:(id *)a4;
-+ (id)preferredNameWithHumanNames:(id)a3 FHIRVersion:(id)a4 error:(id *)a5;
-+ (id)preferredSupporedCategory:(id)a3 unsupportedCategories:(id)a4 error:(id *)a5;
-+ (id)ratioValueWithRatio:(id)a3 error:(id *)a4;
-+ (id)referenceRangeWithObservationReferenceRange:(id)a3 error:(id *)a4;
-+ (id)referenceRangesWithObservationReferenceRanges:(id)a3 error:(id *)a4;
-+ (id)referencedMedicationStatementActorTypeWithString:(id)a3 error:(id *)a4;
-+ (id)resourceReferencedBy:(id)a3 containedIn:(id)a4 error:(id *)a5;
-+ (id)stringArrayWithStrings:(id)a3 error:(id *)a4;
-+ (id)stringWithAttachment:(id)a3 error:(id *)a4;
-+ (id)stringWithRTF:(id)a3 error:(id *)a4;
-+ (id)timeSinceMidnightWithTimeString:(id)a3 error:(id *)a4;
-+ (id)wasEnteredInError:(id)a3 error:(id *)a4;
-+ (id)wrapInArray:(id)a3 error:(id *)a4;
-+ (int64_t)_integerFromTextCheckingResult:(id)a3 string:(id)a4 index:(int64_t)a5;
++ (BOOL)_determineEnteredInError:(id)error;
++ (id)BOOLeanNotDoneFromStatusCode:(id)code error:(id *)error;
++ (id)BOOLeanNotTakenFromStatusCode:(id)code error:(id *)error;
++ (id)_FHIRMedicalCodingWithCode:(id)code medicalCodingSystem:(id)system codingVersion:(id)version error:(id *)error;
++ (id)_earliestDosageDateWithMedicationDosageArray:(id)array error:(id *)error;
++ (id)_firstCodingForSystem:(id)system inCodeableConcept:(id)concept error:(id *)error;
++ (id)_medicalDateIntervalWithDosage:(id)dosage error:(id *)error;
++ (id)_medicalDateWithDateTimeString:(id)string range:(_NSRange)range error:(id *)error;
++ (id)_medicalDateWithOnlyDateString:(id)string range:(_NSRange)range error:(id *)error;
++ (id)_medicationDosagesWithDosageArray:(id)array FHIRRelease:(id)release error:(id *)error;
++ (id)_transformArray:(id)array error:(id *)error transformBlock:(id)block;
++ (id)allergyIntoleranceClinicalStatusCodingWithCodeableConcept:(id)concept error:(id *)error;
++ (id)allergyIntoleranceVerificationStatusCodingWithCodeableConcept:(id)concept error:(id *)error;
++ (id)allergyReactionsWithAllergyIntoleranceReaction:(id)reaction error:(id *)error;
++ (id)codedQuantityWithQuantity:(id)quantity error:(id *)error;
++ (id)codedValueWithObservationComponent:(id)component FHIRVersion:(id)version error:(id *)error;
++ (id)conditionClinicalStatusCodingWithCodeableConcept:(id)concept error:(id *)error;
++ (id)conditionVerificationStatusCodingWithCodeableConcept:(id)concept error:(id *)error;
++ (id)coverageClassificationWithClassElements:(id)elements error:(id *)error;
++ (id)enteredInErrorWithAllergyIntoleranceVerificationStatusCodeableConcept:(id)concept error:(id *)error;
++ (id)enteredInErrorWithConditionVerificationStatusCodeableConcept:(id)concept error:(id *)error;
++ (id)enteredInErrorWithStatusString:(id)string error:(id *)error;
++ (id)identifierFromReference:(id)reference error:(id *)error;
++ (id)identifierWithReference:(id)reference parentResource:(id)resource error:(id *)error;
++ (id)identifiersWithReferences:(id)references parentResource:(id)resource error:(id *)error;
++ (id)inspectableValueCollectionWithCodeableConcept:(id)concept error:(id *)error;
++ (id)inspectableValueCollectionWithDateTime:(id)time error:(id *)error;
++ (id)inspectableValueCollectionWithObservationComponents:(id)components FHIRVersion:(id)version error:(id *)error;
++ (id)inspectableValueCollectionWithObservationValues:(id)values FHIRVersion:(id)version error:(id *)error;
++ (id)inspectableValueCollectionWithPeriod:(id)period error:(id *)error;
++ (id)inspectableValueCollectionWithQuantity:(id)quantity error:(id *)error;
++ (id)inspectableValueCollectionWithRatio:(id)ratio error:(id *)error;
++ (id)inspectableValueCollectionWithString:(id)string error:(id *)error;
++ (id)inspectableValueCollectionWithTime:(id)time error:(id *)error;
++ (id)inspectableValueWithAbatementValue:(id)value error:(id *)error;
++ (id)inspectableValueWithObservationValues:(id)values FHIRVersion:(id)version error:(id *)error;
++ (id)inspectableValueWithOnsetValue:(id)value error:(id *)error;
++ (id)localeFromLanguage:(id)language error:(id *)error;
++ (id)medicalCodingCollectionArrayWithCodeableConcepts:(id)concepts error:(id *)error;
++ (id)medicalCodingCollectionWithCodeableConcept:(id)concept error:(id *)error;
++ (id)medicalCodingWithAllergyIntoleranceCategoryCode:(id)code error:(id *)error;
++ (id)medicalCodingWithAllergyIntoleranceCriticalityCode:(id)code error:(id *)error;
++ (id)medicalCodingWithAllergyIntoleranceSeverityCode:(id)code error:(id *)error;
++ (id)medicalCodingWithAllergyIntoleranceStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithAllergyIntoleranceTypeCode:(id)code error:(id *)error;
++ (id)medicalCodingWithCarePlanStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithCode:(id)code error:(id *)error;
++ (id)medicalCodingWithCoding:(id)coding error:(id *)error;
++ (id)medicalCodingWithConditionClinicalStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithConditionVerificationStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithCoverageStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithDeviceStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithDiagnosticReportStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithEventStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithGoalStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithImmunizationStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithMedicationAdminStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithMedicationDispenseStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithMedicationOrderStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithMedicationStatementStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithObservationStatus:(id)status error:(id *)error;
++ (id)medicalCodingWithProcedureStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithR4AllergyIntoleranceCriticalityCode:(id)code error:(id *)error;
++ (id)medicalCodingWithR4MedicationDispenseStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingWithR4MedicationRequestStatusCode:(id)code error:(id *)error;
++ (id)medicalCodingsArrayWithCodeableConcept:(id)concept error:(id *)error;
++ (id)medicalCodingsWithCodeableConcept:(id)concept error:(id *)error;
++ (id)medicalCodingsWithCodeableConcepts:(id)concepts error:(id *)error;
++ (id)medicalCodingsWithReference:(id)reference error:(id *)error;
++ (id)medicalDateIntervalWithPeriod:(id)period error:(id *)error;
++ (id)medicalDateWithDateString:(id)string error:(id *)error;
++ (id)medicalDateWithDateTimeString:(id)string error:(id *)error;
++ (id)medicalDateWithInstantString:(id)string error:(id *)error;
++ (id)observationCategoryWithObservationCategories:(id)categories error:(id *)error;
++ (id)observationCategoryWithObservationCategory:(id)category error:(id *)error;
++ (id)preferredNameWithHumanNames:(id)names FHIRVersion:(id)version error:(id *)error;
++ (id)preferredSupporedCategory:(id)category unsupportedCategories:(id)categories error:(id *)error;
++ (id)ratioValueWithRatio:(id)ratio error:(id *)error;
++ (id)referenceRangeWithObservationReferenceRange:(id)range error:(id *)error;
++ (id)referenceRangesWithObservationReferenceRanges:(id)ranges error:(id *)error;
++ (id)referencedMedicationStatementActorTypeWithString:(id)string error:(id *)error;
++ (id)resourceReferencedBy:(id)by containedIn:(id)in error:(id *)error;
++ (id)stringArrayWithStrings:(id)strings error:(id *)error;
++ (id)stringWithAttachment:(id)attachment error:(id *)error;
++ (id)stringWithRTF:(id)f error:(id *)error;
++ (id)timeSinceMidnightWithTimeString:(id)string error:(id *)error;
++ (id)wasEnteredInError:(id)error error:(id *)a4;
++ (id)wrapInArray:(id)array error:(id *)error;
++ (int64_t)_integerFromTextCheckingResult:(id)result string:(id)string index:(int64_t)index;
 @end
 
 @implementation HDHealthRecordsExtractionUtilities
 
-+ (id)_FHIRMedicalCodingWithCode:(id)a3 medicalCodingSystem:(id)a4 codingVersion:(id)a5 error:(id *)a6
++ (id)_FHIRMedicalCodingWithCode:(id)code medicalCodingSystem:(id)system codingVersion:(id)version error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  codeCopy = code;
+  systemCopy = system;
+  versionCopy = version;
   objc_opt_class();
   v11 = HKSafeObject();
 
   if (v11)
   {
-    v11 = [MEMORY[0x277CCD5C0] medicalCodingWithSystem:v9 codingVersion:v10 code:v8 displayString:0];
+    v11 = [MEMORY[0x277CCD5C0] medicalCodingWithSystem:systemCopy codingVersion:versionCopy code:codeCopy displayString:0];
   }
 
   return v11;
 }
 
-+ (id)_firstCodingForSystem:(id)a3 inCodeableConcept:(id)a4 error:(id *)a5
++ (id)_firstCodingForSystem:(id)system inCodeableConcept:(id)concept error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 medicalCodingsWithCodeableConcept:v9 error:a5];
+  systemCopy = system;
+  conceptCopy = concept;
+  v10 = [self medicalCodingsWithCodeableConcept:conceptCopy error:error];
   if (v10)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __84__HDHealthRecordsExtractionUtilities__firstCodingForSystem_inCodeableConcept_error___block_invoke;
     v16[3] = &unk_2796E2978;
-    v11 = v8;
+    v11 = systemCopy;
     v17 = v11;
     v12 = [v10 hk_firstObjectPassingTest:v16];
     v13 = v12;
@@ -130,7 +130,7 @@
 
     else
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 format:{@"Expecting codeable concept with system %@ but none was present in %@", v11, v9}];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Expecting codeable concept with system %@ but none was present in %@", v11, conceptCopy}];
     }
   }
 
@@ -150,12 +150,12 @@ uint64_t __84__HDHealthRecordsExtractionUtilities__firstCodingForSystem_inCodeab
   return v4;
 }
 
-+ (id)wrapInArray:(id)a3 error:(id *)a4
++ (id)wrapInArray:(id)array error:(id *)error
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v9[0] = a3;
+  v9[0] = array;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
+  arrayCopy = array;
   v6 = [v4 arrayWithObjects:v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -163,10 +163,10 @@ uint64_t __84__HDHealthRecordsExtractionUtilities__firstCodingForSystem_inCodeab
   return v6;
 }
 
-+ (id)stringArrayWithStrings:(id)a3 error:(id *)a4
++ (id)stringArrayWithStrings:(id)strings error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringsCopy = strings;
   objc_opt_class();
   v5 = HKSafeObject();
 
@@ -176,7 +176,7 @@ uint64_t __84__HDHealthRecordsExtractionUtilities__firstCodingForSystem_inCodeab
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = stringsCopy;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
@@ -226,9 +226,9 @@ LABEL_12:
   return v13;
 }
 
-+ (id)medicalCodingWithCoding:(id)a3 error:(id *)a4
++ (id)medicalCodingWithCoding:(id)coding error:(id *)error
 {
-  v5 = a3;
+  codingCopy = coding;
   objc_opt_class();
   v6 = HKSafeObject();
 
@@ -237,9 +237,9 @@ LABEL_12:
     goto LABEL_5;
   }
 
-  if ([v5 hk_hasValueForKeyPath:@"system"])
+  if ([codingCopy hk_hasValueForKeyPath:@"system"])
   {
-    v7 = [v5 hk_safeStringForKeyPath:@"system" error:a4];
+    v7 = [codingCopy hk_safeStringForKeyPath:@"system" error:error];
     if (v7)
     {
       v8 = v7;
@@ -255,13 +255,13 @@ LABEL_5:
 
   v9 = 0;
 LABEL_7:
-  if (![v5 hk_hasValueForKeyPath:@"version"])
+  if (![codingCopy hk_hasValueForKeyPath:@"version"])
   {
     v11 = 0;
 LABEL_11:
-    if ([v5 hk_hasValueForKeyPath:@"code"])
+    if ([codingCopy hk_hasValueForKeyPath:@"code"])
     {
-      v12 = [v5 hk_safeStringForKeyPath:@"code" error:a4];
+      v12 = [codingCopy hk_safeStringForKeyPath:@"code" error:error];
       if (!v12)
       {
         v10 = 0;
@@ -276,9 +276,9 @@ LABEL_21:
       v12 = 0;
     }
 
-    if ([v5 hk_hasValueForKeyPath:@"display"])
+    if ([codingCopy hk_hasValueForKeyPath:@"display"])
     {
-      v13 = [v5 hk_safeStringForKeyPath:@"display" error:a4];
+      v13 = [codingCopy hk_safeStringForKeyPath:@"display" error:error];
       if (!v13)
       {
         v10 = 0;
@@ -298,7 +298,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v11 = [v5 hk_safeStringForKeyPath:@"version" error:a4];
+  v11 = [codingCopy hk_safeStringForKeyPath:@"version" error:error];
   if (v11)
   {
     goto LABEL_11;
@@ -312,9 +312,9 @@ LABEL_23:
   return v10;
 }
 
-+ (id)medicalCodingCollectionWithCodeableConcept:(id)a3 error:(id *)a4
++ (id)medicalCodingCollectionWithCodeableConcept:(id)concept error:(id *)error
 {
-  v4 = [a1 medicalCodingsWithCodeableConcept:a3 error:a4];
+  v4 = [self medicalCodingsWithCodeableConcept:concept error:error];
   if (v4)
   {
     v5 = [MEMORY[0x277CCD5C8] collectionWithCodings:v4];
@@ -328,10 +328,10 @@ LABEL_23:
   return v5;
 }
 
-+ (id)medicalCodingsWithCodeableConcept:(id)a3 error:(id *)a4
++ (id)medicalCodingsWithCodeableConcept:(id)concept error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  conceptCopy = concept;
   objc_opt_class();
   v7 = HKSafeObject();
 
@@ -340,9 +340,9 @@ LABEL_23:
     goto LABEL_4;
   }
 
-  if ([v6 hk_hasValueForKeyPath:@"text"])
+  if ([conceptCopy hk_hasValueForKeyPath:@"text"])
   {
-    v8 = [v6 hk_safeStringForKeyPath:@"text" error:a4];
+    v8 = [conceptCopy hk_safeStringForKeyPath:@"text" error:error];
     if (!v8)
     {
 LABEL_4:
@@ -356,13 +356,13 @@ LABEL_4:
     v8 = 0;
   }
 
-  if (![v6 hk_hasValueForKeyPath:@"coding"])
+  if (![conceptCopy hk_hasValueForKeyPath:@"coding"])
   {
     v10 = MEMORY[0x277CBEBF8];
     goto LABEL_10;
   }
 
-  v10 = [v6 hk_safeArrayForKeyPath:@"coding" error:a4];
+  v10 = [conceptCopy hk_safeArrayForKeyPath:@"coding" error:error];
   if (v10)
   {
 LABEL_10:
@@ -370,8 +370,8 @@ LABEL_10:
     if (v8)
     {
       v12 = MEMORY[0x277CCD5C0];
-      v13 = [MEMORY[0x277CCD5D0] textSystem];
-      v14 = [v12 medicalCodingWithSystem:v13 codingVersion:*MEMORY[0x277CCC360] code:v8 displayString:v8];
+      textSystem = [MEMORY[0x277CCD5D0] textSystem];
+      v14 = [v12 medicalCodingWithSystem:textSystem codingVersion:*MEMORY[0x277CCC360] code:v8 displayString:v8];
       [v11 addObject:v14];
     }
 
@@ -394,7 +394,7 @@ LABEL_10:
             objc_enumerationMutation(v15);
           }
 
-          v20 = [a1 medicalCodingWithCoding:*(*(&v24 + 1) + 8 * i) error:{a4, v24}];
+          v20 = [self medicalCodingWithCoding:*(*(&v24 + 1) + 8 * i) error:{error, v24}];
           if (!v20)
           {
 
@@ -422,7 +422,7 @@ LABEL_10:
 
     else
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Medical codings has no valid text or coding"];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Medical codings has no valid text or coding"];
 LABEL_23:
       v9 = 0;
     }
@@ -439,11 +439,11 @@ LABEL_26:
   return v9;
 }
 
-+ (id)_transformArray:(id)a3 error:(id *)a4 transformBlock:(id)a5
++ (id)_transformArray:(id)array error:(id *)error transformBlock:(id)block
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  arrayCopy = array;
+  blockCopy = block;
   objc_opt_class();
   v9 = HKSafeObject();
 
@@ -454,7 +454,7 @@ LABEL_26:
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v11 = v7;
+    v11 = arrayCopy;
     v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v12)
     {
@@ -469,7 +469,7 @@ LABEL_26:
             objc_enumerationMutation(v11);
           }
 
-          v16 = v8[2](v8, *(*(&v21 + 1) + 8 * i), a4);
+          v16 = blockCopy[2](blockCopy, *(*(&v21 + 1) + 8 * i), error);
           if (!v16)
           {
 
@@ -505,34 +505,34 @@ LABEL_12:
   return v18;
 }
 
-+ (id)medicalCodingCollectionArrayWithCodeableConcepts:(id)a3 error:(id *)a4
++ (id)medicalCodingCollectionArrayWithCodeableConcepts:(id)concepts error:(id *)error
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __93__HDHealthRecordsExtractionUtilities_medicalCodingCollectionArrayWithCodeableConcepts_error___block_invoke;
   v6[3] = &__block_descriptor_40_e12__24__0_8__16l;
-  v6[4] = a1;
-  v4 = [a1 _transformArray:a3 error:a4 transformBlock:v6];
+  v6[4] = self;
+  v4 = [self _transformArray:concepts error:error transformBlock:v6];
 
   return v4;
 }
 
-+ (id)medicalCodingsWithCodeableConcepts:(id)a3 error:(id *)a4
++ (id)medicalCodingsWithCodeableConcepts:(id)concepts error:(id *)error
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __79__HDHealthRecordsExtractionUtilities_medicalCodingsWithCodeableConcepts_error___block_invoke;
   v6[3] = &__block_descriptor_40_e12__24__0_8__16l;
-  v6[4] = a1;
-  v4 = [a1 _transformArray:a3 error:a4 transformBlock:v6];
+  v6[4] = self;
+  v4 = [self _transformArray:concepts error:error transformBlock:v6];
 
   return v4;
 }
 
-+ (id)medicalCodingsArrayWithCodeableConcept:(id)a3 error:(id *)a4
++ (id)medicalCodingsArrayWithCodeableConcept:(id)concept error:(id *)error
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = [a1 medicalCodingsWithCodeableConcept:a3 error:a4];
+  v4 = [self medicalCodingsWithCodeableConcept:concept error:error];
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
@@ -541,26 +541,26 @@ LABEL_12:
   return v5;
 }
 
-+ (id)medicalCodingWithCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithCode:(id)code error:(id *)error
 {
-  v4 = a3;
+  codeCopy = code;
   objc_opt_class();
   v5 = HKSafeObject();
 
   if (v5)
   {
-    v6 = [&unk_28641A1D8 objectForKeyedSubscript:v4];
+    v6 = [&unk_28641A1D8 objectForKeyedSubscript:codeCopy];
     v7 = MEMORY[0x277CCD5C0];
-    v8 = [MEMORY[0x277CCD5D0] FHIRQuantityComparatorSystem];
-    v5 = [v7 medicalCodingWithSystem:v8 codingVersion:0 code:v4 displayString:v6];
+    fHIRQuantityComparatorSystem = [MEMORY[0x277CCD5D0] FHIRQuantityComparatorSystem];
+    v5 = [v7 medicalCodingWithSystem:fHIRQuantityComparatorSystem codingVersion:0 code:codeCopy displayString:v6];
   }
 
   return v5;
 }
 
-+ (id)codedQuantityWithQuantity:(id)a3 error:(id *)a4
++ (id)codedQuantityWithQuantity:(id)quantity error:(id *)error
 {
-  v6 = a3;
+  quantityCopy = quantity;
   objc_opt_class();
   v7 = HKSafeObject();
 
@@ -570,14 +570,14 @@ LABEL_12:
     goto LABEL_32;
   }
 
-  v8 = [v6 hk_safeNumberForKeyPath:@"value" error:a4];
+  v8 = [quantityCopy hk_safeNumberForKeyPath:@"value" error:error];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 stringValue];
-    if (!v10)
+    stringValue = [v8 stringValue];
+    if (!stringValue)
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 description:@"Unable to convert number to string"];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Unable to convert number to string"];
 LABEL_10:
       v12 = 0;
 LABEL_30:
@@ -585,9 +585,9 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    if ([v6 hk_hasValueForKeyPath:@"unit"])
+    if ([quantityCopy hk_hasValueForKeyPath:@"unit"])
     {
-      v11 = [v6 hk_safeStringForKeyPath:@"unit" error:a4];
+      v11 = [quantityCopy hk_safeStringForKeyPath:@"unit" error:error];
       if (!v11)
       {
         goto LABEL_10;
@@ -599,9 +599,9 @@ LABEL_30:
       v11 = 0;
     }
 
-    if ([v6 hk_hasValueForKeyPath:@"system"])
+    if ([quantityCopy hk_hasValueForKeyPath:@"system"])
     {
-      v13 = [v6 hk_safeStringForKeyPath:@"system" error:a4];
+      v13 = [quantityCopy hk_safeStringForKeyPath:@"system" error:error];
       if (!v13)
       {
         v12 = 0;
@@ -617,9 +617,9 @@ LABEL_30:
       v15 = 0;
     }
 
-    if ([v6 hk_hasValueForKeyPath:@"code"])
+    if ([quantityCopy hk_hasValueForKeyPath:@"code"])
     {
-      v16 = [v6 hk_safeStringForKeyPath:@"code" error:a4];
+      v16 = [quantityCopy hk_safeStringForKeyPath:@"code" error:error];
       if (!v16)
       {
         v12 = 0;
@@ -644,10 +644,10 @@ LABEL_29:
     v18 = [MEMORY[0x277CCD5C0] medicalCodingWithSystem:v15 codingVersion:0 code:v16 displayString:v11];
     v17 = v16;
 LABEL_21:
-    if ([v6 hk_hasValueForKeyPath:@"comparator"])
+    if ([quantityCopy hk_hasValueForKeyPath:@"comparator"])
     {
-      v19 = [v6 hk_safeStringForKeyPath:@"comparator" error:a4];
-      if (!v19 || (v20 = v19, [a1 medicalCodingWithCode:v19 error:a4], v21 = objc_claimAutoreleasedReturnValue(), v20, !v21))
+      v19 = [quantityCopy hk_safeStringForKeyPath:@"comparator" error:error];
+      if (!v19 || (v20 = v19, [self medicalCodingWithCode:v19 error:error], v21 = objc_claimAutoreleasedReturnValue(), v20, !v21))
       {
         v12 = 0;
 LABEL_27:
@@ -661,7 +661,7 @@ LABEL_27:
       v21 = 0;
     }
 
-    v12 = [MEMORY[0x277CCD198] codedQuantityWithValue:v10 comparatorCoding:v21 unitCoding:v18];
+    v12 = [MEMORY[0x277CCD198] codedQuantityWithValue:stringValue comparatorCoding:v21 unitCoding:v18];
 
     goto LABEL_27;
   }
@@ -674,21 +674,21 @@ LABEL_32:
   return v12;
 }
 
-+ (id)ratioValueWithRatio:(id)a3 error:(id *)a4
++ (id)ratioValueWithRatio:(id)ratio error:(id *)error
 {
-  v6 = a3;
+  ratioCopy = ratio;
   objc_opt_class();
   v7 = HKSafeObject();
 
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"numerator"];
-    v9 = [a1 codedQuantityWithQuantity:v8 error:a4];
+    v8 = [ratioCopy objectForKeyedSubscript:@"numerator"];
+    v9 = [self codedQuantityWithQuantity:v8 error:error];
 
     if (v9)
     {
-      v10 = [v6 objectForKeyedSubscript:@"denominator"];
-      v11 = [a1 codedQuantityWithQuantity:v10 error:a4];
+      v10 = [ratioCopy objectForKeyedSubscript:@"denominator"];
+      v11 = [self codedQuantityWithQuantity:v10 error:error];
 
       if (v11)
       {
@@ -715,9 +715,9 @@ LABEL_32:
   return v12;
 }
 
-+ (id)stringWithAttachment:(id)a3 error:(id *)a4
++ (id)stringWithAttachment:(id)attachment error:(id *)error
 {
-  v6 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
   v7 = HKSafeObject();
 
@@ -727,13 +727,13 @@ LABEL_32:
     goto LABEL_30;
   }
 
-  v8 = [v6 hk_safeStringForKeyPath:@"contentType" error:a4];
+  v8 = [attachmentCopy hk_safeStringForKeyPath:@"contentType" error:error];
   v9 = v8;
   if (v8)
   {
     if (v8 == @"text/plain" || (v10 = [(__CFString *)v8 isEqualToString:@"text/plain"], v9 == @"application/rtf") || (v10 & 1) != 0 || ([(__CFString *)v9 isEqualToString:@"application/rtf"]& 1) != 0)
     {
-      v11 = [v6 hk_safeStringForKeyPath:@"data" error:a4];
+      v11 = [attachmentCopy hk_safeStringForKeyPath:@"data" error:error];
       if (v11)
       {
         v12 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v11 options:0];
@@ -743,7 +743,7 @@ LABEL_32:
           v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v13 encoding:4];
           if (v14)
           {
-            v15 = [a1 stringWithRTF:v14 error:a4];
+            v15 = [self stringWithRTF:v14 error:error];
             v16 = v15;
             if (v15)
             {
@@ -752,7 +752,7 @@ LABEL_32:
 
             else
             {
-              [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Error RTF scrubbing valueAttachment.data"];
+              [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Error RTF scrubbing valueAttachment.data"];
               _HKInitializeLogging();
               v34 = *MEMORY[0x277CCC2C0];
               if (os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_ERROR))
@@ -764,7 +764,7 @@ LABEL_32:
 
           else
           {
-            [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Decoded valueAttachment.data is not a UTF8 String"];
+            [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Decoded valueAttachment.data is not a UTF8 String"];
             _HKInitializeLogging();
             v26 = *MEMORY[0x277CCC2C0];
             if (os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_ERROR))
@@ -778,7 +778,7 @@ LABEL_32:
 
         else
         {
-          [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Could not Base64 decode valueAttachment.data"];
+          [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Could not Base64 decode valueAttachment.data"];
           _HKInitializeLogging();
           v18 = *MEMORY[0x277CCC2C0];
           if (os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_ERROR))
@@ -798,7 +798,7 @@ LABEL_32:
       goto LABEL_29;
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:{@"Unsupported MIME type for valueAttachment.contentType %@", v9}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Unsupported MIME type for valueAttachment.contentType %@", v9}];
   }
 
   v16 = 0;
@@ -809,13 +809,13 @@ LABEL_30:
   return v16;
 }
 
-+ (id)observationCategoryWithObservationCategory:(id)a3 error:(id *)a4
++ (id)observationCategoryWithObservationCategory:(id)category error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = [a1 medicalCodingsWithCodeableConcept:a3 error:?];
+  v5 = [self medicalCodingsWithCodeableConcept:category error:?];
   if (v5)
   {
-    v21 = a4;
+    errorCopy = error;
     if (observationCategoryWithObservationCategory_error__onceToken != -1)
     {
       +[HDHealthRecordsExtractionUtilities observationCategoryWithObservationCategory:error:];
@@ -844,28 +844,28 @@ LABEL_30:
           }
 
           v13 = *(*(&v23 + 1) + 8 * i);
-          v14 = [v13 codingSystem];
-          if ([v14 isEqual:observationCategoryWithObservationCategory_error__observationCategorySystem])
+          codingSystem = [v13 codingSystem];
+          if ([codingSystem isEqual:observationCategoryWithObservationCategory_error__observationCategorySystem])
           {
-            v15 = [v13 code];
+            code = [v13 code];
 
-            if (!v15)
+            if (!code)
             {
               continue;
             }
 
-            v16 = [v13 code];
-            v14 = HKDiagnosticTestResultCategoryFromNSString();
+            code2 = [v13 code];
+            codingSystem = HKDiagnosticTestResultCategoryFromNSString();
 
-            if (v14)
+            if (codingSystem)
             {
-              [v6 addObject:v14];
+              [v6 addObject:codingSystem];
             }
 
             else
             {
-              v17 = [v13 code];
-              [v7 addObject:v17];
+              code3 = [v13 code];
+              [v7 addObject:code3];
             }
           }
         }
@@ -876,7 +876,7 @@ LABEL_30:
       while (v10);
     }
 
-    v18 = [HDHealthRecordsExtractionUtilities preferredSupporedCategory:v6 unsupportedCategories:v7 error:v21];
+    v18 = [HDHealthRecordsExtractionUtilities preferredSupporedCategory:v6 unsupportedCategories:v7 error:errorCopy];
 
     v5 = v22;
   }
@@ -898,17 +898,17 @@ uint64_t __87__HDHealthRecordsExtractionUtilities_observationCategoryWithObserva
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)observationCategoryWithObservationCategories:(id)a3 error:(id *)a4
++ (id)observationCategoryWithObservationCategories:(id)categories error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = [a1 medicalCodingCollectionArrayWithCodeableConcepts:a3 error:?];
+  v5 = [self medicalCodingCollectionArrayWithCodeableConcepts:categories error:?];
   if (!v5)
   {
     v23 = 0;
     goto LABEL_29;
   }
 
-  v33 = a4;
+  errorCopy = error;
   if (observationCategoryWithObservationCategories_error__onceToken != -1)
   {
     +[HDHealthRecordsExtractionUtilities observationCategoryWithObservationCategories:error:];
@@ -947,8 +947,8 @@ uint64_t __87__HDHealthRecordsExtractionUtilities_observationCategoryWithObserva
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v11 = [v10 codings];
-      v12 = [v11 countByEnumeratingWithState:&v36 objects:v44 count:16];
+      codings = [v10 codings];
+      v12 = [codings countByEnumeratingWithState:&v36 objects:v44 count:16];
       if (!v12)
       {
         goto LABEL_23;
@@ -963,32 +963,32 @@ uint64_t __87__HDHealthRecordsExtractionUtilities_observationCategoryWithObserva
         {
           if (*v37 != v15)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(codings);
           }
 
           v17 = *(*(&v36 + 1) + 8 * i);
-          v18 = [v17 codingSystem];
-          if ([v18 isEqual:observationCategoryWithObservationCategories_error__observationCategorySystem])
+          codingSystem = [v17 codingSystem];
+          if ([codingSystem isEqual:observationCategoryWithObservationCategories_error__observationCategorySystem])
           {
-            v19 = [v17 code];
+            code = [v17 code];
 
-            if (!v19)
+            if (!code)
             {
               continue;
             }
 
-            v20 = [v17 code];
-            v18 = HKDiagnosticTestResultCategoryFromNSString();
+            code2 = [v17 code];
+            codingSystem = HKDiagnosticTestResultCategoryFromNSString();
 
-            if (v18)
+            if (codingSystem)
             {
-              [v6 addObject:v18];
+              [v6 addObject:codingSystem];
               if (v14 > 0)
               {
                 v24 = MEMORY[0x277CCA9B8];
-                v25 = [v6 allObjects];
-                v26 = [v25 componentsJoinedByString:{@", "}];
-                [v24 hk_assignError:v33 code:3 format:{@"More than 1 supported Observation category in same R4 coding: %@", v26}];
+                allObjects = [v6 allObjects];
+                v26 = [allObjects componentsJoinedByString:{@", "}];
+                [v24 hk_assignError:errorCopy code:3 format:{@"More than 1 supported Observation category in same R4 coding: %@", v26}];
 
                 v23 = 0;
                 v22 = v35;
@@ -1000,13 +1000,13 @@ uint64_t __87__HDHealthRecordsExtractionUtilities_observationCategoryWithObserva
 
             else
             {
-              v21 = [v17 code];
-              [v35 addObject:v21];
+              code3 = [v17 code];
+              [v35 addObject:code3];
             }
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v36 objects:v44 count:16];
+        v13 = [codings countByEnumeratingWithState:&v36 objects:v44 count:16];
         if (v13)
         {
           continue;
@@ -1030,7 +1030,7 @@ LABEL_23:
 LABEL_25:
 
   v22 = v35;
-  v23 = [HDHealthRecordsExtractionUtilities preferredSupporedCategory:v6 unsupportedCategories:v35 error:v33];
+  v23 = [HDHealthRecordsExtractionUtilities preferredSupporedCategory:v6 unsupportedCategories:v35 error:errorCopy];
 LABEL_27:
 
   v5 = v34;
@@ -1048,36 +1048,36 @@ uint64_t __89__HDHealthRecordsExtractionUtilities_observationCategoryWithObserva
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)preferredSupporedCategory:(id)a3 unsupportedCategories:(id)a4 error:(id *)a5
++ (id)preferredSupporedCategory:(id)category unsupportedCategories:(id)categories error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 count] && !objc_msgSend(v7, "count"))
+  categoryCopy = category;
+  categoriesCopy = categories;
+  if ([categoriesCopy count] && !objc_msgSend(categoryCopy, "count"))
   {
     v12 = MEMORY[0x277CCA9B8];
-    v13 = [v8 allObjects];
-    v14 = [v13 componentsJoinedByString:{@", "}];
-    [v12 hk_assignError:a5 code:3 format:{@"unsupported Observation categories: %@", v14}];
+    allObjects = [categoriesCopy allObjects];
+    v14 = [allObjects componentsJoinedByString:{@", "}];
+    [v12 hk_assignError:error code:3 format:{@"unsupported Observation categories: %@", v14}];
   }
 
   else
   {
-    if ([v7 count] < 2)
+    if ([categoryCopy count] < 2)
     {
-      v10 = [v7 anyObject];
+      anyObject = [categoryCopy anyObject];
       goto LABEL_8;
     }
 
     v9 = *MEMORY[0x277CCBC98];
-    if ([v7 containsObject:*MEMORY[0x277CCBC98]] || (v9 = *MEMORY[0x277CCBC90], objc_msgSend(v7, "containsObject:", *MEMORY[0x277CCBC90])))
+    if ([categoryCopy containsObject:*MEMORY[0x277CCBC98]] || (v9 = *MEMORY[0x277CCBC90], objc_msgSend(categoryCopy, "containsObject:", *MEMORY[0x277CCBC90])))
     {
-      v10 = v9;
+      anyObject = v9;
 LABEL_8:
-      v11 = v10;
+      v11 = anyObject;
       goto LABEL_12;
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 format:@"No supported Observation categories found"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"No supported Observation categories found"];
   }
 
   v11 = 0;
@@ -1086,10 +1086,10 @@ LABEL_12:
   return v11;
 }
 
-+ (id)referenceRangesWithObservationReferenceRanges:(id)a3 error:(id *)a4
++ (id)referenceRangesWithObservationReferenceRanges:(id)ranges error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  rangesCopy = ranges;
   objc_opt_class();
   v7 = HKSafeObject();
 
@@ -1100,7 +1100,7 @@ LABEL_12:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = v6;
+    v9 = rangesCopy;
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
@@ -1115,7 +1115,7 @@ LABEL_12:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [a1 referenceRangeWithObservationReferenceRange:*(*(&v19 + 1) + 8 * i) error:{a4, v19}];
+          v14 = [self referenceRangeWithObservationReferenceRange:*(*(&v19 + 1) + 8 * i) error:{error, v19}];
           if (!v14)
           {
 
@@ -1151,9 +1151,9 @@ LABEL_12:
   return v16;
 }
 
-+ (id)referenceRangeWithObservationReferenceRange:(id)a3 error:(id *)a4
++ (id)referenceRangeWithObservationReferenceRange:(id)range error:(id *)error
 {
-  v6 = a3;
+  rangeCopy = range;
   objc_opt_class();
   v7 = HKSafeObject();
 
@@ -1162,10 +1162,10 @@ LABEL_12:
     goto LABEL_4;
   }
 
-  if ([v6 hk_hasValueForKeyPath:@"low"])
+  if ([rangeCopy hk_hasValueForKeyPath:@"low"])
   {
-    v8 = [v6 objectForKeyedSubscript:@"low"];
-    v9 = [a1 codedQuantityWithQuantity:v8 error:a4];
+    v8 = [rangeCopy objectForKeyedSubscript:@"low"];
+    v9 = [self codedQuantityWithQuantity:v8 error:error];
 
     if (!v9)
     {
@@ -1180,14 +1180,14 @@ LABEL_4:
     v9 = 0;
   }
 
-  if (![v6 hk_hasValueForKeyPath:@"high"])
+  if (![rangeCopy hk_hasValueForKeyPath:@"high"])
   {
     v12 = 0;
 LABEL_10:
-    if ([v6 hk_hasValueForKeyPath:@"meaning"])
+    if ([rangeCopy hk_hasValueForKeyPath:@"meaning"])
     {
-      v13 = [v6 objectForKeyedSubscript:@"meaning"];
-      v14 = [a1 medicalCodingsWithCodeableConcept:v13 error:a4];
+      v13 = [rangeCopy objectForKeyedSubscript:@"meaning"];
+      v14 = [self medicalCodingsWithCodeableConcept:v13 error:error];
 
       if (!v14)
       {
@@ -1229,9 +1229,9 @@ LABEL_23:
     {
       if (!v12)
       {
-        if (([v6 hk_hasValueForKeyPath:@"text"] & 1) == 0)
+        if (([rangeCopy hk_hasValueForKeyPath:@"text"] & 1) == 0)
         {
-          [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:{@"Observation.ReferenceRange missing high, low and text"}];
+          [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Observation.ReferenceRange missing high, low and text"}];
         }
 
         v10 = 0;
@@ -1248,8 +1248,8 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"high"];
-  v12 = [a1 codedQuantityWithQuantity:v11 error:a4];
+  v11 = [rangeCopy objectForKeyedSubscript:@"high"];
+  v12 = [self codedQuantityWithQuantity:v11 error:error];
 
   if (v12)
   {
@@ -1282,81 +1282,81 @@ void __88__HDHealthRecordsExtractionUtilities_referenceRangeWithObservationRefer
   }
 }
 
-+ (id)medicalCodingWithObservationStatus:(id)a3 error:(id *)a4
++ (id)medicalCodingWithObservationStatus:(id)status error:(id *)error
 {
-  v4 = a3;
+  statusCopy = status;
   objc_opt_class();
   v5 = HKSafeObject();
 
   if (v5)
   {
     v6 = MEMORY[0x277CCD5C0];
-    v7 = [MEMORY[0x277CCD5D0] FHIRObservationStatus];
-    v5 = [v6 medicalCodingWithSystem:v7 codingVersion:*MEMORY[0x277CCC338] code:v4 displayString:0];
+    fHIRObservationStatus = [MEMORY[0x277CCD5D0] FHIRObservationStatus];
+    v5 = [v6 medicalCodingWithSystem:fHIRObservationStatus codingVersion:*MEMORY[0x277CCC338] code:statusCopy displayString:0];
   }
 
   return v5;
 }
 
-+ (id)medicalCodingWithMedicationStatementStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithMedicationStatementStatusCode:(id)code error:(id *)error
 {
-  v4 = a3;
+  codeCopy = code;
   objc_opt_class();
   v5 = HKSafeObject();
 
   if (v5)
   {
     v6 = MEMORY[0x277CCD5C0];
-    v7 = [MEMORY[0x277CCD5D0] FHIRMedicationStatementStatus];
-    v5 = [v6 medicalCodingWithSystem:v7 codingVersion:*MEMORY[0x277CCC338] code:v4 displayString:0];
+    fHIRMedicationStatementStatus = [MEMORY[0x277CCD5D0] FHIRMedicationStatementStatus];
+    v5 = [v6 medicalCodingWithSystem:fHIRMedicationStatementStatus codingVersion:*MEMORY[0x277CCC338] code:codeCopy displayString:0];
   }
 
   return v5;
 }
 
-+ (id)BOOLeanNotDoneFromStatusCode:(id)a3 error:(id *)a4
++ (id)BOOLeanNotDoneFromStatusCode:(id)code error:(id *)error
 {
-  v4 = a3;
+  codeCopy = code;
   objc_opt_class();
   v5 = HKSafeObject();
 
   if (v5)
   {
     v6 = MEMORY[0x277CCABB0];
-    v7 = [v4 lowercaseString];
-    v5 = [v6 numberWithBool:{objc_msgSend(v7, "isEqualToString:", @"not-done"}];
+    lowercaseString = [codeCopy lowercaseString];
+    v5 = [v6 numberWithBool:{objc_msgSend(lowercaseString, "isEqualToString:", @"not-done"}];
   }
 
   return v5;
 }
 
-+ (id)BOOLeanNotTakenFromStatusCode:(id)a3 error:(id *)a4
++ (id)BOOLeanNotTakenFromStatusCode:(id)code error:(id *)error
 {
-  v4 = a3;
+  codeCopy = code;
   objc_opt_class();
   v5 = HKSafeObject();
 
   if (v5)
   {
     v6 = MEMORY[0x277CCABB0];
-    v7 = [v4 lowercaseString];
-    v5 = [v6 numberWithBool:{objc_msgSend(v7, "isEqualToString:", @"not-taken"}];
+    lowercaseString = [codeCopy lowercaseString];
+    v5 = [v6 numberWithBool:{objc_msgSend(lowercaseString, "isEqualToString:", @"not-taken"}];
   }
 
   return v5;
 }
 
-+ (id)medicalCodingsWithReference:(id)a3 error:(id *)a4
++ (id)medicalCodingsWithReference:(id)reference error:(id *)error
 {
-  v5 = a3;
+  referenceCopy = reference;
   objc_opt_class();
   v6 = HKSafeObject();
 
   if (v6)
   {
-    if ([v5 hk_hasValueForKeyPath:@"display"])
+    if ([referenceCopy hk_hasValueForKeyPath:@"display"])
     {
-      v6 = [v5 hk_safeStringForKeyPath:@"display" error:a4];
+      v6 = [referenceCopy hk_safeStringForKeyPath:@"display" error:error];
       if (!v6)
       {
         goto LABEL_7;
@@ -1364,8 +1364,8 @@ void __88__HDHealthRecordsExtractionUtilities_referenceRangeWithObservationRefer
 
       v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v8 = MEMORY[0x277CCD5C0];
-      v9 = [MEMORY[0x277CCD5D0] textSystem];
-      v10 = [v8 medicalCodingWithSystem:v9 codingVersion:*MEMORY[0x277CCC360] code:v6 displayString:v6];
+      textSystem = [MEMORY[0x277CCD5D0] textSystem];
+      v10 = [v8 medicalCodingWithSystem:textSystem codingVersion:*MEMORY[0x277CCC360] code:v6 displayString:v6];
       [v7 addObject:v10];
     }
 
@@ -1382,19 +1382,19 @@ LABEL_7:
   return v6;
 }
 
-+ (id)resourceReferencedBy:(id)a3 containedIn:(id)a4 error:(id *)a5
++ (id)resourceReferencedBy:(id)by containedIn:(id)in error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  byCopy = by;
+  inCopy = in;
   objc_opt_class();
   v9 = HKSafeObject();
 
   if (v9)
   {
-    v10 = [HDFHIRReferenceProcessor resourceReferenceInReference:v7 error:a5];
+    v10 = [HDFHIRReferenceProcessor resourceReferenceInReference:byCopy error:error];
     if (v10)
     {
-      v11 = [HDFHIRReferenceProcessor resourceContainedInResource:v8 reference:v10 error:a5];
+      v11 = [HDFHIRReferenceProcessor resourceContainedInResource:inCopy reference:v10 error:error];
     }
 
     else
@@ -1411,15 +1411,15 @@ LABEL_7:
   return v11;
 }
 
-+ (id)inspectableValueWithObservationValues:(id)a3 FHIRVersion:(id)a4 error:(id *)a5
++ (id)inspectableValueWithObservationValues:(id)values FHIRVersion:(id)version error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  valuesCopy = values;
+  versionCopy = version;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v8 hk_hasValueForKeyPath:@"valueQuantity"])
+  if ([valuesCopy hk_hasValueForKeyPath:@"valueQuantity"])
   {
-    v11 = [v8 objectForKeyedSubscript:@"valueQuantity"];
-    v12 = [a1 codedQuantityWithQuantity:v11 error:a5];
+    v11 = [valuesCopy objectForKeyedSubscript:@"valueQuantity"];
+    v12 = [self codedQuantityWithQuantity:v11 error:error];
 
     if (!v12)
     {
@@ -1430,10 +1430,10 @@ LABEL_7:
     [v10 addObject:v13];
   }
 
-  if ([v8 hk_hasValueForKeyPath:@"valueCodeableConcept"])
+  if ([valuesCopy hk_hasValueForKeyPath:@"valueCodeableConcept"])
   {
-    v14 = [v8 objectForKeyedSubscript:@"valueCodeableConcept"];
-    v15 = [a1 medicalCodingsWithCodeableConcept:v14 error:a5];
+    v14 = [valuesCopy objectForKeyedSubscript:@"valueCodeableConcept"];
+    v15 = [self medicalCodingsWithCodeableConcept:v14 error:error];
 
     if (!v15)
     {
@@ -1444,9 +1444,9 @@ LABEL_7:
     [v10 addObject:v16];
   }
 
-  if ([v8 hk_hasValueForKeyPath:@"valueString"])
+  if ([valuesCopy hk_hasValueForKeyPath:@"valueString"])
   {
-    v17 = [v8 hk_safeStringForKeyPath:@"valueString" error:a5];
+    v17 = [valuesCopy hk_safeStringForKeyPath:@"valueString" error:error];
     if (!v17)
     {
       goto LABEL_51;
@@ -1457,9 +1457,9 @@ LABEL_7:
     [v10 addObject:v19];
   }
 
-  if ([v8 hk_hasValueForKeyPath:@"valueBoolean"] && (objc_msgSend(v9, "FHIRRelease"), v20 = objc_claimAutoreleasedReturnValue(), v21 = *MEMORY[0x277CCBDD0], v20, v20 == v21))
+  if ([valuesCopy hk_hasValueForKeyPath:@"valueBoolean"] && (objc_msgSend(versionCopy, "FHIRRelease"), v20 = objc_claimAutoreleasedReturnValue(), v21 = *MEMORY[0x277CCBDD0], v20, v20 == v21))
   {
-    v22 = [v8 hk_safeNumberForKeyPath:@"valueBoolean" error:a5];
+    v22 = [valuesCopy hk_safeNumberForKeyPath:@"valueBoolean" error:error];
     if (!v22)
     {
       goto LABEL_51;
@@ -1470,14 +1470,14 @@ LABEL_7:
     [v10 addObject:v24];
   }
 
-  else if (![v8 hk_expectMissingKeyPath:@"valueBoolean" error:a5])
+  else if (![valuesCopy hk_expectMissingKeyPath:@"valueBoolean" error:error])
   {
     goto LABEL_51;
   }
 
-  if ([v8 hk_hasValueForKeyPath:@"valueInteger"] && (objc_msgSend(v9, "FHIRRelease"), v25 = objc_claimAutoreleasedReturnValue(), v26 = *MEMORY[0x277CCBDD0], v25, v25 == v26))
+  if ([valuesCopy hk_hasValueForKeyPath:@"valueInteger"] && (objc_msgSend(versionCopy, "FHIRRelease"), v25 = objc_claimAutoreleasedReturnValue(), v26 = *MEMORY[0x277CCBDD0], v25, v25 == v26))
   {
-    v27 = [v8 hk_safeNumberForKeyPath:@"valueInteger" error:a5];
+    v27 = [valuesCopy hk_safeNumberForKeyPath:@"valueInteger" error:error];
     if (!v27)
     {
       goto LABEL_51;
@@ -1488,20 +1488,20 @@ LABEL_7:
     [v10 addObject:v29];
   }
 
-  else if (![v8 hk_expectMissingKeyPath:@"valueInteger" error:a5])
+  else if (![valuesCopy hk_expectMissingKeyPath:@"valueInteger" error:error])
   {
     goto LABEL_51;
   }
 
-  if (![v8 hk_expectMissingKeyPath:@"valueRange" error:a5])
+  if (![valuesCopy hk_expectMissingKeyPath:@"valueRange" error:error])
   {
     goto LABEL_51;
   }
 
-  if ([v8 hk_hasValueForKeyPath:@"valueRatio"])
+  if ([valuesCopy hk_hasValueForKeyPath:@"valueRatio"])
   {
-    v30 = [v8 objectForKeyedSubscript:@"valueRatio"];
-    v31 = [a1 ratioValueWithRatio:v30 error:a5];
+    v30 = [valuesCopy objectForKeyedSubscript:@"valueRatio"];
+    v31 = [self ratioValueWithRatio:v30 error:error];
 
     if (!v31)
     {
@@ -1512,15 +1512,15 @@ LABEL_7:
     [v10 addObject:v32];
   }
 
-  if (![v8 hk_expectMissingKeyPath:@"valueSampledData" error:a5])
+  if (![valuesCopy hk_expectMissingKeyPath:@"valueSampledData" error:error])
   {
     goto LABEL_51;
   }
 
-  if ([v8 hk_hasValueForKeyPath:@"valueAttachment"] && (objc_msgSend(v9, "FHIRRelease"), v33 = objc_claimAutoreleasedReturnValue(), v34 = *MEMORY[0x277CCBDC8], v33, v33 == v34))
+  if ([valuesCopy hk_hasValueForKeyPath:@"valueAttachment"] && (objc_msgSend(versionCopy, "FHIRRelease"), v33 = objc_claimAutoreleasedReturnValue(), v34 = *MEMORY[0x277CCBDC8], v33, v33 == v34))
   {
-    v35 = [v8 objectForKeyedSubscript:@"valueAttachment"];
-    v36 = [a1 stringWithAttachment:v35 error:a5];
+    v35 = [valuesCopy objectForKeyedSubscript:@"valueAttachment"];
+    v36 = [self stringWithAttachment:v35 error:error];
 
     if (!v36)
     {
@@ -1531,21 +1531,21 @@ LABEL_7:
     [v10 addObject:v37];
   }
 
-  else if (![v8 hk_expectMissingKeyPath:@"valueAttachment" error:a5])
+  else if (![valuesCopy hk_expectMissingKeyPath:@"valueAttachment" error:error])
   {
     goto LABEL_51;
   }
 
-  if ([v8 hk_hasValueForKeyPath:@"valueTime"])
+  if ([valuesCopy hk_hasValueForKeyPath:@"valueTime"])
   {
-    v38 = [v8 hk_safeStringForKeyPath:@"valueTime" error:a5];
+    v38 = [valuesCopy hk_safeStringForKeyPath:@"valueTime" error:error];
     if (!v38)
     {
       goto LABEL_51;
     }
 
     v39 = v38;
-    v40 = [a1 timeSinceMidnightWithTimeString:v38 error:a5];
+    v40 = [self timeSinceMidnightWithTimeString:v38 error:error];
     if (!v40)
     {
       goto LABEL_50;
@@ -1556,16 +1556,16 @@ LABEL_7:
     [v10 addObject:v42];
   }
 
-  if ([v8 hk_hasValueForKeyPath:@"valueDateTime"])
+  if ([valuesCopy hk_hasValueForKeyPath:@"valueDateTime"])
   {
-    v43 = [v8 hk_safeStringForKeyPath:@"valueDateTime" error:a5];
+    v43 = [valuesCopy hk_safeStringForKeyPath:@"valueDateTime" error:error];
     if (!v43)
     {
       goto LABEL_51;
     }
 
     v39 = v43;
-    v44 = [a1 medicalDateWithDateTimeString:v43 error:a5];
+    v44 = [self medicalDateWithDateTimeString:v43 error:error];
     if (!v44)
     {
       goto LABEL_50;
@@ -1576,19 +1576,19 @@ LABEL_7:
     [v10 addObject:v46];
   }
 
-  if (![v8 hk_hasValueForKeyPath:@"valuePeriod"])
+  if (![valuesCopy hk_hasValueForKeyPath:@"valuePeriod"])
   {
     goto LABEL_45;
   }
 
-  v47 = [v8 hk_safeDictionaryForKeyPath:@"valuePeriod" error:a5];
+  v47 = [valuesCopy hk_safeDictionaryForKeyPath:@"valuePeriod" error:error];
   if (!v47)
   {
     goto LABEL_51;
   }
 
   v39 = v47;
-  v48 = [a1 medicalDateIntervalWithPeriod:v47 error:a5];
+  v48 = [self medicalDateIntervalWithPeriod:v47 error:error];
   if (!v48)
   {
 LABEL_50:
@@ -1601,18 +1601,18 @@ LABEL_50:
   [v10 addObject:v50];
 
 LABEL_45:
-  if (![v8 hk_hasValueForKeyPath:@"dataAbsentReason"])
+  if (![valuesCopy hk_hasValueForKeyPath:@"dataAbsentReason"])
   {
     goto LABEL_48;
   }
 
-  v51 = [v8 objectForKeyedSubscript:@"dataAbsentReason"];
-  v52 = [a1 medicalCodingsWithCodeableConcept:v51 error:a5];
+  v51 = [valuesCopy objectForKeyedSubscript:@"dataAbsentReason"];
+  v52 = [self medicalCodingsWithCodeableConcept:v51 error:error];
 
   if (!v52)
   {
 LABEL_51:
-    v54 = 0;
+    firstObject = 0;
     goto LABEL_52;
   }
 
@@ -1622,29 +1622,29 @@ LABEL_51:
 LABEL_48:
   if ([v10 count] >= 2)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"Encountered values of more than one type"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Encountered values of more than one type"];
     goto LABEL_51;
   }
 
-  v54 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 LABEL_52:
 
-  return v54;
+  return firstObject;
 }
 
-+ (id)inspectableValueWithAbatementValue:(id)a3 error:(id *)a4
++ (id)inspectableValueWithAbatementValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   objc_opt_class();
   v7 = HKSafeObject();
 
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if ([v6 hk_hasValueForKeyPath:@"abatementAge"])
+    if ([valueCopy hk_hasValueForKeyPath:@"abatementAge"])
     {
-      v9 = [v6 objectForKeyedSubscript:@"abatementAge"];
-      v10 = [a1 codedQuantityWithQuantity:v9 error:a4];
+      v9 = [valueCopy objectForKeyedSubscript:@"abatementAge"];
+      v10 = [self codedQuantityWithQuantity:v9 error:error];
 
       if (!v10)
       {
@@ -1655,10 +1655,10 @@ LABEL_52:
       [v8 addObject:v11];
     }
 
-    if ([v6 hk_hasValueForKeyPath:@"abatementQuantity"])
+    if ([valueCopy hk_hasValueForKeyPath:@"abatementQuantity"])
     {
-      v12 = [v6 objectForKeyedSubscript:@"abatementQuantity"];
-      v13 = [a1 codedQuantityWithQuantity:v12 error:a4];
+      v12 = [valueCopy objectForKeyedSubscript:@"abatementQuantity"];
+      v13 = [self codedQuantityWithQuantity:v12 error:error];
 
       if (!v13)
       {
@@ -1669,10 +1669,10 @@ LABEL_52:
       [v8 addObject:v14];
     }
 
-    if ([v6 hk_hasValueForKeyPath:@"abatementDateTime"])
+    if ([valueCopy hk_hasValueForKeyPath:@"abatementDateTime"])
     {
-      v15 = [v6 objectForKeyedSubscript:@"abatementDateTime"];
-      v16 = [a1 medicalDateWithDateTimeString:v15 error:a4];
+      v15 = [valueCopy objectForKeyedSubscript:@"abatementDateTime"];
+      v16 = [self medicalDateWithDateTimeString:v15 error:error];
 
       if (!v16)
       {
@@ -1683,9 +1683,9 @@ LABEL_52:
       [v8 addObject:v17];
     }
 
-    if ([v6 hk_hasValueForKeyPath:@"abatementBoolean"])
+    if ([valueCopy hk_hasValueForKeyPath:@"abatementBoolean"])
     {
-      v18 = [v6 hk_safeNumberForKeyPath:@"abatementBoolean" error:a4];
+      v18 = [valueCopy hk_safeNumberForKeyPath:@"abatementBoolean" error:error];
       if (!v18)
       {
         goto LABEL_26;
@@ -1706,10 +1706,10 @@ LABEL_52:
       [v8 addObject:v21];
     }
 
-    if ([v6 hk_hasValueForKeyPath:@"abatementPeriod"])
+    if ([valueCopy hk_hasValueForKeyPath:@"abatementPeriod"])
     {
-      v22 = [v6 objectForKeyedSubscript:@"abatementPeriod"];
-      v23 = [a1 medicalDateIntervalWithPeriod:v22 error:a4];
+      v22 = [valueCopy objectForKeyedSubscript:@"abatementPeriod"];
+      v23 = [self medicalDateIntervalWithPeriod:v22 error:error];
 
       if (!v23)
       {
@@ -1720,9 +1720,9 @@ LABEL_52:
       [v8 addObject:v24];
     }
 
-    if ([v6 hk_hasValueForKeyPath:@"abatementString"])
+    if ([valueCopy hk_hasValueForKeyPath:@"abatementString"])
     {
-      v25 = [v6 hk_safeStringForKeyPath:@"abatementString" error:a4];
+      v25 = [valueCopy hk_safeStringForKeyPath:@"abatementString" error:error];
       if (!v25)
       {
         goto LABEL_26;
@@ -1733,63 +1733,63 @@ LABEL_52:
       [v8 addObject:v27];
     }
 
-    if ([v6 hk_expectMissingKeyPath:@"abatementRange" error:a4])
+    if ([valueCopy hk_expectMissingKeyPath:@"abatementRange" error:error])
     {
       if ([v8 count] < 2)
       {
-        v28 = [v8 firstObject];
+        firstObject = [v8 firstObject];
         goto LABEL_27;
       }
 
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 description:@"Encountered values of more than one type"];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Encountered values of more than one type"];
     }
 
 LABEL_26:
-    v28 = 0;
+    firstObject = 0;
 LABEL_27:
 
     goto LABEL_29;
   }
 
-  v28 = 0;
+  firstObject = 0;
 LABEL_29:
 
-  return v28;
+  return firstObject;
 }
 
-+ (id)medicalCodingWithConditionClinicalStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithConditionClinicalStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRConditionClinicalStatus];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC338] error:a4];
+  codeCopy = code;
+  fHIRConditionClinicalStatus = [v6 FHIRConditionClinicalStatus];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRConditionClinicalStatus codingVersion:*MEMORY[0x277CCC338] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithConditionVerificationStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithConditionVerificationStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRConditionVerificationStatus];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC338] error:a4];
+  codeCopy = code;
+  fHIRConditionVerificationStatus = [v6 FHIRConditionVerificationStatus];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRConditionVerificationStatus codingVersion:*MEMORY[0x277CCC338] error:error];
 
   return v9;
 }
 
-+ (id)inspectableValueWithOnsetValue:(id)a3 error:(id *)a4
++ (id)inspectableValueWithOnsetValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   objc_opt_class();
   v7 = HKSafeObject();
 
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if ([v6 hk_hasValueForKeyPath:@"onsetQuantity"])
+    if ([valueCopy hk_hasValueForKeyPath:@"onsetQuantity"])
     {
-      v9 = [v6 objectForKeyedSubscript:@"onsetQuantity"];
-      v10 = [a1 codedQuantityWithQuantity:v9 error:a4];
+      v9 = [valueCopy objectForKeyedSubscript:@"onsetQuantity"];
+      v10 = [self codedQuantityWithQuantity:v9 error:error];
 
       if (!v10)
       {
@@ -1800,10 +1800,10 @@ LABEL_29:
       [v8 addObject:v11];
     }
 
-    if ([v6 hk_hasValueForKeyPath:@"onsetDateTime"])
+    if ([valueCopy hk_hasValueForKeyPath:@"onsetDateTime"])
     {
-      v12 = [v6 objectForKeyedSubscript:@"onsetDateTime"];
-      v13 = [a1 medicalDateWithDateTimeString:v12 error:a4];
+      v12 = [valueCopy objectForKeyedSubscript:@"onsetDateTime"];
+      v13 = [self medicalDateWithDateTimeString:v12 error:error];
 
       if (!v13)
       {
@@ -1814,10 +1814,10 @@ LABEL_29:
       [v8 addObject:v14];
     }
 
-    if ([v6 hk_hasValueForKeyPath:@"onsetPeriod"])
+    if ([valueCopy hk_hasValueForKeyPath:@"onsetPeriod"])
     {
-      v15 = [v6 objectForKeyedSubscript:@"onsetPeriod"];
-      v16 = [a1 medicalDateIntervalWithPeriod:v15 error:a4];
+      v15 = [valueCopy objectForKeyedSubscript:@"onsetPeriod"];
+      v16 = [self medicalDateIntervalWithPeriod:v15 error:error];
 
       if (!v16)
       {
@@ -1828,9 +1828,9 @@ LABEL_29:
       [v8 addObject:v17];
     }
 
-    if ([v6 hk_hasValueForKeyPath:@"onsetString"])
+    if ([valueCopy hk_hasValueForKeyPath:@"onsetString"])
     {
-      v18 = [v6 hk_safeStringForKeyPath:@"onsetString" error:a4];
+      v18 = [valueCopy hk_safeStringForKeyPath:@"onsetString" error:error];
       if (!v18)
       {
         goto LABEL_17;
@@ -1841,40 +1841,40 @@ LABEL_29:
       [v8 addObject:v20];
     }
 
-    if ([v6 hk_expectMissingKeyPath:@"onsetRange" error:a4])
+    if ([valueCopy hk_expectMissingKeyPath:@"onsetRange" error:error])
     {
       if ([v8 count] < 2)
       {
-        v21 = [v8 firstObject];
+        firstObject = [v8 firstObject];
         goto LABEL_18;
       }
 
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 description:@"Encountered values of more than one type"];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Encountered values of more than one type"];
     }
 
 LABEL_17:
-    v21 = 0;
+    firstObject = 0;
 LABEL_18:
 
     goto LABEL_20;
   }
 
-  v21 = 0;
+  firstObject = 0;
 LABEL_20:
 
-  return v21;
+  return firstObject;
 }
 
-+ (id)conditionClinicalStatusCodingWithCodeableConcept:(id)a3 error:(id *)a4
++ (id)conditionClinicalStatusCodingWithCodeableConcept:(id)concept error:(id *)error
 {
   v6 = conditionClinicalStatusCodingWithCodeableConcept_error__onceToken;
-  v7 = a3;
+  conceptCopy = concept;
   if (v6 != -1)
   {
     +[HDHealthRecordsExtractionUtilities conditionClinicalStatusCodingWithCodeableConcept:error:];
   }
 
-  v8 = [a1 _firstCodingForSystem:conditionClinicalStatusCodingWithCodeableConcept_error__conditionClinicalStatusCoding inCodeableConcept:v7 error:a4];
+  v8 = [self _firstCodingForSystem:conditionClinicalStatusCodingWithCodeableConcept_error__conditionClinicalStatusCoding inCodeableConcept:conceptCopy error:error];
 
   return v8;
 }
@@ -1886,16 +1886,16 @@ uint64_t __93__HDHealthRecordsExtractionUtilities_conditionClinicalStatusCodingW
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)conditionVerificationStatusCodingWithCodeableConcept:(id)a3 error:(id *)a4
++ (id)conditionVerificationStatusCodingWithCodeableConcept:(id)concept error:(id *)error
 {
   v6 = conditionVerificationStatusCodingWithCodeableConcept_error__onceToken;
-  v7 = a3;
+  conceptCopy = concept;
   if (v6 != -1)
   {
     +[HDHealthRecordsExtractionUtilities conditionVerificationStatusCodingWithCodeableConcept:error:];
   }
 
-  v8 = [a1 _firstCodingForSystem:conditionVerificationStatusCodingWithCodeableConcept_error__conditionVerificationStatusCoding inCodeableConcept:v7 error:a4];
+  v8 = [self _firstCodingForSystem:conditionVerificationStatusCodingWithCodeableConcept_error__conditionVerificationStatusCoding inCodeableConcept:conceptCopy error:error];
 
   return v8;
 }
@@ -1907,15 +1907,15 @@ uint64_t __97__HDHealthRecordsExtractionUtilities_conditionVerificationStatusCod
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)enteredInErrorWithConditionVerificationStatusCodeableConcept:(id)a3 error:(id *)a4
++ (id)enteredInErrorWithConditionVerificationStatusCodeableConcept:(id)concept error:(id *)error
 {
-  v5 = [a1 conditionVerificationStatusCodingWithCodeableConcept:a3 error:a4];
+  v5 = [self conditionVerificationStatusCodingWithCodeableConcept:concept error:error];
   v6 = v5;
   if (v5)
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = [v5 code];
-    v9 = [v7 numberWithBool:{objc_msgSend(a1, "_determineEnteredInError:", v8)}];
+    code = [v5 code];
+    v9 = [v7 numberWithBool:{objc_msgSend(self, "_determineEnteredInError:", code)}];
   }
 
   else
@@ -1926,24 +1926,24 @@ uint64_t __97__HDHealthRecordsExtractionUtilities_conditionVerificationStatusCod
   return v9;
 }
 
-+ (id)medicalCodingWithCoverageStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithCoverageStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRCoverageStatus];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC340] error:a4];
+  codeCopy = code;
+  fHIRCoverageStatus = [v6 FHIRCoverageStatus];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRCoverageStatus codingVersion:*MEMORY[0x277CCC340] error:error];
 
   return v9;
 }
 
-+ (id)coverageClassificationWithClassElements:(id)a3 error:(id *)a4
++ (id)coverageClassificationWithClassElements:(id)elements error:(id *)error
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __84__HDHealthRecordsExtractionUtilities_coverageClassificationWithClassElements_error___block_invoke;
   v6[3] = &__block_descriptor_40_e26__24__0__NSDictionary_8__16l;
-  v6[4] = a1;
-  v4 = [a1 _transformArray:a3 error:a4 transformBlock:v6];
+  v6[4] = self;
+  v4 = [self _transformArray:elements error:error transformBlock:v6];
 
   return v4;
 }
@@ -1999,196 +1999,196 @@ id __84__HDHealthRecordsExtractionUtilities_coverageClassificationWithClassEleme
   return v11;
 }
 
-+ (id)medicalCodingWithDeviceStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithDeviceStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRDeviceStatus];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC340] error:a4];
+  codeCopy = code;
+  fHIRDeviceStatus = [v6 FHIRDeviceStatus];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRDeviceStatus codingVersion:*MEMORY[0x277CCC340] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithCarePlanStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithCarePlanStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRCarePlanStatus];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC338] error:a4];
+  codeCopy = code;
+  fHIRCarePlanStatus = [v6 FHIRCarePlanStatus];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRCarePlanStatus codingVersion:*MEMORY[0x277CCC338] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithGoalStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithGoalStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRGoalStatus];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC338] error:a4];
+  codeCopy = code;
+  fHIRGoalStatus = [v6 FHIRGoalStatus];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRGoalStatus codingVersion:*MEMORY[0x277CCC338] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithDiagnosticReportStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithDiagnosticReportStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRDiagnosticReportStatus];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC338] error:a4];
+  codeCopy = code;
+  fHIRDiagnosticReportStatus = [v6 FHIRDiagnosticReportStatus];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRDiagnosticReportStatus codingVersion:*MEMORY[0x277CCC338] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithEventStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithEventStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIREventStatus];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC340] error:a4];
+  codeCopy = code;
+  fHIREventStatus = [v6 FHIREventStatus];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIREventStatus codingVersion:*MEMORY[0x277CCC340] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithImmunizationStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithImmunizationStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRImmunizationStatus];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC340] error:a4];
+  codeCopy = code;
+  fHIRImmunizationStatus = [v6 FHIRImmunizationStatus];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRImmunizationStatus codingVersion:*MEMORY[0x277CCC340] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithMedicationAdminStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithMedicationAdminStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRMedicationAdminStatus];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC338] error:a4];
+  codeCopy = code;
+  fHIRMedicationAdminStatus = [v6 FHIRMedicationAdminStatus];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRMedicationAdminStatus codingVersion:*MEMORY[0x277CCC338] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithMedicationDispenseStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithMedicationDispenseStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRMedicationDispenseStatus];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC338] error:a4];
+  codeCopy = code;
+  fHIRMedicationDispenseStatus = [v6 FHIRMedicationDispenseStatus];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRMedicationDispenseStatus codingVersion:*MEMORY[0x277CCC338] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithR4MedicationDispenseStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithR4MedicationDispenseStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRMedicationDispenseStatusR4];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC340] error:a4];
+  codeCopy = code;
+  fHIRMedicationDispenseStatusR4 = [v6 FHIRMedicationDispenseStatusR4];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRMedicationDispenseStatusR4 codingVersion:*MEMORY[0x277CCC340] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithMedicationOrderStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithMedicationOrderStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRMedicationOrderStatus];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC338] error:a4];
+  codeCopy = code;
+  fHIRMedicationOrderStatus = [v6 FHIRMedicationOrderStatus];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRMedicationOrderStatus codingVersion:*MEMORY[0x277CCC338] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithR4MedicationRequestStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithR4MedicationRequestStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRMedicationRequestStatus];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC340] error:a4];
+  codeCopy = code;
+  fHIRMedicationRequestStatus = [v6 FHIRMedicationRequestStatus];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRMedicationRequestStatus codingVersion:*MEMORY[0x277CCC340] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithProcedureStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithProcedureStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRProcedureStatus];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC338] error:a4];
+  codeCopy = code;
+  fHIRProcedureStatus = [v6 FHIRProcedureStatus];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRProcedureStatus codingVersion:*MEMORY[0x277CCC338] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithAllergyIntoleranceStatusCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithAllergyIntoleranceStatusCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRAllergyIntoleranceStatus];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC338] error:a4];
+  codeCopy = code;
+  fHIRAllergyIntoleranceStatus = [v6 FHIRAllergyIntoleranceStatus];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRAllergyIntoleranceStatus codingVersion:*MEMORY[0x277CCC338] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithAllergyIntoleranceCategoryCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithAllergyIntoleranceCategoryCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRAllergyIntoleranceCategory];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC338] error:a4];
+  codeCopy = code;
+  fHIRAllergyIntoleranceCategory = [v6 FHIRAllergyIntoleranceCategory];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRAllergyIntoleranceCategory codingVersion:*MEMORY[0x277CCC338] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithAllergyIntoleranceCriticalityCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithAllergyIntoleranceCriticalityCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRAllergyIntoleranceCriticality];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC338] error:a4];
+  codeCopy = code;
+  fHIRAllergyIntoleranceCriticality = [v6 FHIRAllergyIntoleranceCriticality];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRAllergyIntoleranceCriticality codingVersion:*MEMORY[0x277CCC338] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithAllergyIntoleranceSeverityCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithAllergyIntoleranceSeverityCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRAllergyIntoleranceSeverity];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC338] error:a4];
+  codeCopy = code;
+  fHIRAllergyIntoleranceSeverity = [v6 FHIRAllergyIntoleranceSeverity];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRAllergyIntoleranceSeverity codingVersion:*MEMORY[0x277CCC338] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithAllergyIntoleranceTypeCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithAllergyIntoleranceTypeCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRAllergyIntoleranceType];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC338] error:a4];
+  codeCopy = code;
+  fHIRAllergyIntoleranceType = [v6 FHIRAllergyIntoleranceType];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRAllergyIntoleranceType codingVersion:*MEMORY[0x277CCC338] error:error];
 
   return v9;
 }
 
-+ (id)medicalCodingWithR4AllergyIntoleranceCriticalityCode:(id)a3 error:(id *)a4
++ (id)medicalCodingWithR4AllergyIntoleranceCriticalityCode:(id)code error:(id *)error
 {
   v6 = MEMORY[0x277CCD5D0];
-  v7 = a3;
-  v8 = [v6 FHIRAllergyIntoleranceCriticality];
-  v9 = [a1 _FHIRMedicalCodingWithCode:v7 medicalCodingSystem:v8 codingVersion:*MEMORY[0x277CCC340] error:a4];
+  codeCopy = code;
+  fHIRAllergyIntoleranceCriticality = [v6 FHIRAllergyIntoleranceCriticality];
+  v9 = [self _FHIRMedicalCodingWithCode:codeCopy medicalCodingSystem:fHIRAllergyIntoleranceCriticality codingVersion:*MEMORY[0x277CCC340] error:error];
 
   return v9;
 }
 
-+ (id)allergyIntoleranceClinicalStatusCodingWithCodeableConcept:(id)a3 error:(id *)a4
++ (id)allergyIntoleranceClinicalStatusCodingWithCodeableConcept:(id)concept error:(id *)error
 {
   v6 = allergyIntoleranceClinicalStatusCodingWithCodeableConcept_error__onceToken;
-  v7 = a3;
+  conceptCopy = concept;
   if (v6 != -1)
   {
     +[HDHealthRecordsExtractionUtilities allergyIntoleranceClinicalStatusCodingWithCodeableConcept:error:];
   }
 
-  v8 = [a1 _firstCodingForSystem:allergyIntoleranceClinicalStatusCodingWithCodeableConcept_error__codingSystem inCodeableConcept:v7 error:a4];
+  v8 = [self _firstCodingForSystem:allergyIntoleranceClinicalStatusCodingWithCodeableConcept_error__codingSystem inCodeableConcept:conceptCopy error:error];
 
   return v8;
 }
@@ -2200,16 +2200,16 @@ uint64_t __102__HDHealthRecordsExtractionUtilities_allergyIntoleranceClinicalSta
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)allergyIntoleranceVerificationStatusCodingWithCodeableConcept:(id)a3 error:(id *)a4
++ (id)allergyIntoleranceVerificationStatusCodingWithCodeableConcept:(id)concept error:(id *)error
 {
   v6 = allergyIntoleranceVerificationStatusCodingWithCodeableConcept_error__onceToken;
-  v7 = a3;
+  conceptCopy = concept;
   if (v6 != -1)
   {
     +[HDHealthRecordsExtractionUtilities allergyIntoleranceVerificationStatusCodingWithCodeableConcept:error:];
   }
 
-  v8 = [a1 _firstCodingForSystem:allergyIntoleranceVerificationStatusCodingWithCodeableConcept_error__codingSystem inCodeableConcept:v7 error:a4];
+  v8 = [self _firstCodingForSystem:allergyIntoleranceVerificationStatusCodingWithCodeableConcept_error__codingSystem inCodeableConcept:conceptCopy error:error];
 
   return v8;
 }
@@ -2221,15 +2221,15 @@ uint64_t __106__HDHealthRecordsExtractionUtilities_allergyIntoleranceVerificatio
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)enteredInErrorWithAllergyIntoleranceVerificationStatusCodeableConcept:(id)a3 error:(id *)a4
++ (id)enteredInErrorWithAllergyIntoleranceVerificationStatusCodeableConcept:(id)concept error:(id *)error
 {
-  v5 = [a1 allergyIntoleranceVerificationStatusCodingWithCodeableConcept:a3 error:a4];
+  v5 = [self allergyIntoleranceVerificationStatusCodingWithCodeableConcept:concept error:error];
   v6 = v5;
   if (v5)
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = [v5 code];
-    v9 = [v7 numberWithBool:{objc_msgSend(a1, "_determineEnteredInError:", v8)}];
+    code = [v5 code];
+    v9 = [v7 numberWithBool:{objc_msgSend(self, "_determineEnteredInError:", code)}];
   }
 
   else
@@ -2240,14 +2240,14 @@ uint64_t __106__HDHealthRecordsExtractionUtilities_allergyIntoleranceVerificatio
   return v9;
 }
 
-+ (id)allergyReactionsWithAllergyIntoleranceReaction:(id)a3 error:(id *)a4
++ (id)allergyReactionsWithAllergyIntoleranceReaction:(id)reaction error:(id *)error
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __91__HDHealthRecordsExtractionUtilities_allergyReactionsWithAllergyIntoleranceReaction_error___block_invoke;
   v6[3] = &__block_descriptor_40_e26__24__0__NSDictionary_8__16l;
-  v6[4] = a1;
-  v4 = [a1 _transformArray:a3 error:a4 transformBlock:v6];
+  v6[4] = self;
+  v4 = [self _transformArray:reaction error:error transformBlock:v6];
 
   return v4;
 }
@@ -2320,10 +2320,10 @@ LABEL_15:
   return v13;
 }
 
-+ (id)identifierWithReference:(id)a3 parentResource:(id)a4 error:(id *)a5
++ (id)identifierWithReference:(id)reference parentResource:(id)resource error:(id *)error
 {
-  v7 = a4;
-  v8 = [HDFHIRReferenceProcessor resourceReferenceInReference:a3 error:a5];
+  resourceCopy = resource;
+  v8 = [HDFHIRReferenceProcessor resourceReferenceInReference:reference error:error];
   if (!v8)
   {
     goto LABEL_5;
@@ -2331,11 +2331,11 @@ LABEL_15:
 
   if ([HDFHIRReferenceProcessor referenceRequiresContaining:v8])
   {
-    v9 = [HDFHIRReferenceProcessor resourceContainedInResource:v7 reference:v8 error:a5];
+    v9 = [HDFHIRReferenceProcessor resourceContainedInResource:resourceCopy reference:v8 error:error];
     if (v9)
     {
       v10 = v9;
-      v11 = [HDFHIRReferenceProcessor identifierForResource:v9 containedInResource:v7 error:a5];
+      v11 = [HDFHIRReferenceProcessor identifierForResource:v9 containedInResource:resourceCopy error:error];
 LABEL_8:
       v12 = v11;
 
@@ -2354,17 +2354,17 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v12 = [MEMORY[0x277CCD3B8] FHIRIdentifierWithString:v8 error:a5];
+  v12 = [MEMORY[0x277CCD3B8] FHIRIdentifierWithString:v8 error:error];
 LABEL_10:
 
   return v12;
 }
 
-+ (id)identifiersWithReferences:(id)a3 parentResource:(id)a4 error:(id *)a5
++ (id)identifiersWithReferences:(id)references parentResource:(id)resource error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  referencesCopy = references;
+  resourceCopy = resource;
   objc_opt_class();
   v10 = HKSafeObject();
 
@@ -2375,7 +2375,7 @@ LABEL_10:
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v12 = v8;
+    v12 = referencesCopy;
     v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v13)
     {
@@ -2390,7 +2390,7 @@ LABEL_10:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [a1 identifierWithReference:*(*(&v22 + 1) + 8 * i) parentResource:v9 error:{a5, v22}];
+          v17 = [self identifierWithReference:*(*(&v22 + 1) + 8 * i) parentResource:resourceCopy error:{error, v22}];
           if (!v17)
           {
 
@@ -2426,23 +2426,23 @@ LABEL_12:
   return v19;
 }
 
-+ (id)identifierFromReference:(id)a3 error:(id *)a4
++ (id)identifierFromReference:(id)reference error:(id *)error
 {
-  v6 = a3;
+  referenceCopy = reference;
   objc_opt_class();
   v7 = HKSafeObject();
 
   if (v7)
   {
-    v8 = [v6 hk_safeDictionaryIfExistsForKeyPath:@"identifier" error:a4];
+    v8 = [referenceCopy hk_safeDictionaryIfExistsForKeyPath:@"identifier" error:error];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 hk_safeDictionaryIfExistsForKeyPath:@"type" error:a4];
+      v10 = [v8 hk_safeDictionaryIfExistsForKeyPath:@"type" error:error];
       if (v10)
       {
-        v11 = [a1 medicalCodingsWithCodeableConcept:v10 error:a4];
-        v12 = [v9 hk_safeStringIfExistsForKeyPath:@"value" error:a4];
+        v11 = [self medicalCodingsWithCodeableConcept:v10 error:error];
+        v12 = [v9 hk_safeStringIfExistsForKeyPath:@"value" error:error];
         v13 = [MEMORY[0x277CCD3C0] identifierWithTypeCodings:v11 value:v12];
       }
 
@@ -2466,10 +2466,10 @@ LABEL_12:
   return v13;
 }
 
-+ (id)codedValueWithObservationComponent:(id)a3 FHIRVersion:(id)a4 error:(id *)a5
++ (id)codedValueWithObservationComponent:(id)component FHIRVersion:(id)version error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  componentCopy = component;
+  versionCopy = version;
   objc_opt_class();
   v10 = HKSafeObject();
 
@@ -2479,27 +2479,27 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v11 = [v8 objectForKeyedSubscript:@"code"];
-  v12 = [a1 medicalCodingsWithCodeableConcept:v11 error:a5];
+  v11 = [componentCopy objectForKeyedSubscript:@"code"];
+  v12 = [self medicalCodingsWithCodeableConcept:v11 error:error];
 
   if (!v12)
   {
     goto LABEL_5;
   }
 
-  if (![v8 hk_hasValueForKeyPath:@"referenceRange"])
+  if (![componentCopy hk_hasValueForKeyPath:@"referenceRange"])
   {
     v14 = 0;
     goto LABEL_8;
   }
 
-  v13 = [v8 objectForKeyedSubscript:@"referenceRange"];
-  v14 = [a1 referenceRangesWithObservationReferenceRanges:v13 error:a5];
+  v13 = [componentCopy objectForKeyedSubscript:@"referenceRange"];
+  v14 = [self referenceRangesWithObservationReferenceRanges:v13 error:error];
 
   if (v14)
   {
 LABEL_8:
-    v16 = [a1 inspectableValueWithObservationValues:v8 FHIRVersion:v9 error:a5];
+    v16 = [self inspectableValueWithObservationValues:componentCopy FHIRVersion:versionCopy error:error];
     if (v16)
     {
       v15 = [MEMORY[0x277CCD1A0] codedValueWithCodings:v12 value:v16 referenceRanges:v14];
@@ -2522,9 +2522,9 @@ LABEL_13:
   return v15;
 }
 
-+ (id)inspectableValueCollectionWithQuantity:(id)a3 error:(id *)a4
++ (id)inspectableValueCollectionWithQuantity:(id)quantity error:(id *)error
 {
-  v4 = [a1 codedQuantityWithQuantity:a3 error:a4];
+  v4 = [self codedQuantityWithQuantity:quantity error:error];
   if (v4)
   {
     v5 = MEMORY[0x277CCD558];
@@ -2540,9 +2540,9 @@ LABEL_13:
   return v7;
 }
 
-+ (id)inspectableValueCollectionWithRatio:(id)a3 error:(id *)a4
++ (id)inspectableValueCollectionWithRatio:(id)ratio error:(id *)error
 {
-  v4 = [a1 ratioValueWithRatio:a3 error:a4];
+  v4 = [self ratioValueWithRatio:ratio error:error];
   if (v4)
   {
     v5 = MEMORY[0x277CCD558];
@@ -2558,25 +2558,25 @@ LABEL_13:
   return v7;
 }
 
-+ (id)inspectableValueCollectionWithString:(id)a3 error:(id *)a4
++ (id)inspectableValueCollectionWithString:(id)string error:(id *)error
 {
-  v4 = a3;
+  stringCopy = string;
   objc_opt_class();
   v5 = HKSafeObject();
 
   if (v5)
   {
     v6 = MEMORY[0x277CCD558];
-    v7 = [MEMORY[0x277CCD550] inspectableValueWithString:v4];
+    v7 = [MEMORY[0x277CCD550] inspectableValueWithString:stringCopy];
     v5 = [v6 inspectableValueCollectionSingleWithValue:v7];
   }
 
   return v5;
 }
 
-+ (id)inspectableValueCollectionWithCodeableConcept:(id)a3 error:(id *)a4
++ (id)inspectableValueCollectionWithCodeableConcept:(id)concept error:(id *)error
 {
-  v4 = [a1 medicalCodingsWithCodeableConcept:a3 error:a4];
+  v4 = [self medicalCodingsWithCodeableConcept:concept error:error];
   if (v4)
   {
     v5 = MEMORY[0x277CCD558];
@@ -2592,11 +2592,11 @@ LABEL_13:
   return v7;
 }
 
-+ (id)inspectableValueCollectionWithObservationComponents:(id)a3 FHIRVersion:(id)a4 error:(id *)a5
++ (id)inspectableValueCollectionWithObservationComponents:(id)components FHIRVersion:(id)version error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  componentsCopy = components;
+  versionCopy = version;
   objc_opt_class();
   v10 = HKSafeObject();
 
@@ -2607,7 +2607,7 @@ LABEL_13:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v12 = v8;
+    v12 = componentsCopy;
     v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v13)
     {
@@ -2622,7 +2622,7 @@ LABEL_13:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [a1 codedValueWithObservationComponent:*(*(&v24 + 1) + 8 * i) FHIRVersion:v9 error:{a5, v24}];
+          v17 = [self codedValueWithObservationComponent:*(*(&v24 + 1) + 8 * i) FHIRVersion:versionCopy error:{error, v24}];
           if (!v17)
           {
             v21 = 0;
@@ -2661,12 +2661,12 @@ LABEL_12:
   return v21;
 }
 
-+ (id)inspectableValueCollectionWithObservationValues:(id)a3 FHIRVersion:(id)a4 error:(id *)a5
++ (id)inspectableValueCollectionWithObservationValues:(id)values FHIRVersion:(id)version error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  valuesCopy = values;
+  versionCopy = version;
   v24 = 0;
-  v10 = [a1 inspectableValueWithObservationValues:v8 FHIRVersion:v9 error:&v24];
+  v10 = [self inspectableValueWithObservationValues:valuesCopy FHIRVersion:versionCopy error:&v24];
   v11 = v24;
   v12 = v11;
   if (v10)
@@ -2679,12 +2679,12 @@ LABEL_12:
   {
     v13 = 0;
 LABEL_3:
-    if (![v8 hk_hasValueForKeyPath:@"component"])
+    if (![valuesCopy hk_hasValueForKeyPath:@"component"])
     {
       v17 = v13;
       if (!v17)
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"No Observation value provided"];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"No Observation value provided"];
         goto LABEL_24;
       }
 
@@ -2696,13 +2696,13 @@ LABEL_24:
     }
 
     v23 = v12;
-    v14 = [v8 hk_safeArrayForKeyPath:@"component" error:&v23];
+    v14 = [valuesCopy hk_safeArrayForKeyPath:@"component" error:&v23];
     v15 = v23;
 
     if (v14)
     {
       v22 = v15;
-      v16 = [a1 inspectableValueCollectionWithObservationComponents:v14 FHIRVersion:v9 error:&v22];
+      v16 = [self inspectableValueCollectionWithObservationComponents:v14 FHIRVersion:versionCopy error:&v22];
       v12 = v22;
 
       if (v16)
@@ -2710,7 +2710,7 @@ LABEL_24:
 
         if (v13)
         {
-          [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"Encountered values of more than one type"];
+          [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Encountered values of more than one type"];
 
 LABEL_23:
           v17 = 0;
@@ -2725,14 +2725,14 @@ LABEL_23:
       v12 = v12;
       if (v12)
       {
-        if (!a5)
+        if (!error)
         {
           goto LABEL_21;
         }
 
 LABEL_16:
         v20 = v12;
-        *a5 = v12;
+        *error = v12;
       }
     }
 
@@ -2741,7 +2741,7 @@ LABEL_16:
       v12 = v15;
       if (v12)
       {
-        if (!a5)
+        if (!error)
         {
 LABEL_21:
           _HKLogDroppedError();
@@ -2757,11 +2757,11 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a5)
+  if (error)
   {
     v19 = v11;
     v17 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
   else
@@ -2775,9 +2775,9 @@ LABEL_25:
   return v17;
 }
 
-+ (id)inspectableValueCollectionWithDateTime:(id)a3 error:(id *)a4
++ (id)inspectableValueCollectionWithDateTime:(id)time error:(id *)error
 {
-  v4 = [a1 medicalDateWithDateTimeString:a3 error:a4];
+  v4 = [self medicalDateWithDateTimeString:time error:error];
   if (v4)
   {
     v5 = [MEMORY[0x277CCD550] inspectableValueWithMedicalDate:v4];
@@ -2792,9 +2792,9 @@ LABEL_25:
   return v6;
 }
 
-+ (id)inspectableValueCollectionWithTime:(id)a3 error:(id *)a4
++ (id)inspectableValueCollectionWithTime:(id)time error:(id *)error
 {
-  v4 = [a1 timeSinceMidnightWithTimeString:a3 error:a4];
+  v4 = [self timeSinceMidnightWithTimeString:time error:error];
   if (v4)
   {
     v5 = [MEMORY[0x277CCD550] inspectableValueWithDateComponents:v4];
@@ -2809,9 +2809,9 @@ LABEL_25:
   return v6;
 }
 
-+ (id)inspectableValueCollectionWithPeriod:(id)a3 error:(id *)a4
++ (id)inspectableValueCollectionWithPeriod:(id)period error:(id *)error
 {
-  v4 = [a1 medicalDateIntervalWithPeriod:a3 error:a4];
+  v4 = [self medicalDateIntervalWithPeriod:period error:error];
   if (v4)
   {
     v5 = [MEMORY[0x277CCD550] inspectableValueWithMedicalDateInterval:v4];
@@ -2826,58 +2826,58 @@ LABEL_25:
   return v6;
 }
 
-+ (int64_t)_integerFromTextCheckingResult:(id)a3 string:(id)a4 index:(int64_t)a5
++ (int64_t)_integerFromTextCheckingResult:(id)result string:(id)string index:(int64_t)index
 {
-  v7 = a4;
-  v8 = [a3 rangeAtIndex:a5];
-  v10 = [v7 substringWithRange:{v8, v9}];
+  stringCopy = string;
+  v8 = [result rangeAtIndex:index];
+  v10 = [stringCopy substringWithRange:{v8, v9}];
 
-  v11 = [v10 integerValue];
-  return v11;
+  integerValue = [v10 integerValue];
+  return integerValue;
 }
 
-+ (id)_medicalDateWithDateTimeString:(id)a3 range:(_NSRange)a4 error:(id *)a5
++ (id)_medicalDateWithDateTimeString:(id)string range:(_NSRange)range error:(id *)error
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v10 = _DateTimeFormatRegularExpressionYearMonthDayTime();
-  v11 = [v10 matchesInString:v9 options:0 range:{location, length}];
+  v11 = [v10 matchesInString:stringCopy options:0 range:{location, length}];
   v12 = 0;
   if ([v11 count] == 1)
   {
-    v13 = [v11 firstObject];
-    v23 = [a1 _integerFromTextCheckingResult:v13 string:v9 index:1];
-    v22 = [a1 _integerFromTextCheckingResult:v13 string:v9 index:2];
-    v14 = [a1 _integerFromTextCheckingResult:v13 string:v9 index:3];
-    v15 = [a1 _integerFromTextCheckingResult:v13 string:v9 index:4];
-    v16 = [a1 _integerFromTextCheckingResult:v13 string:v9 index:5];
-    v17 = [a1 _integerFromTextCheckingResult:v13 string:v9 index:6];
-    v18 = [v13 rangeAtIndex:7];
-    v20 = [v9 substringWithRange:{v18, v19}];
-    v12 = [MEMORY[0x277CCD5D8] medicalDateWithYear:v23 month:v22 day:v14 hour:v15 minute:v16 second:v17 originalTimeZoneString:v20 error:a5];
+    firstObject = [v11 firstObject];
+    v23 = [self _integerFromTextCheckingResult:firstObject string:stringCopy index:1];
+    v22 = [self _integerFromTextCheckingResult:firstObject string:stringCopy index:2];
+    v14 = [self _integerFromTextCheckingResult:firstObject string:stringCopy index:3];
+    v15 = [self _integerFromTextCheckingResult:firstObject string:stringCopy index:4];
+    v16 = [self _integerFromTextCheckingResult:firstObject string:stringCopy index:5];
+    v17 = [self _integerFromTextCheckingResult:firstObject string:stringCopy index:6];
+    v18 = [firstObject rangeAtIndex:7];
+    v20 = [stringCopy substringWithRange:{v18, v19}];
+    v12 = [MEMORY[0x277CCD5D8] medicalDateWithYear:v23 month:v22 day:v14 hour:v15 minute:v16 second:v17 originalTimeZoneString:v20 error:error];
   }
 
   return v12;
 }
 
-+ (id)_medicalDateWithOnlyDateString:(id)a3 range:(_NSRange)a4 error:(id *)a5
++ (id)_medicalDateWithOnlyDateString:(id)string range:(_NSRange)range error:(id *)error
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   if (_DateTimeFormatRegularExpressionYear_onceToken != -1)
   {
     +[HDHealthRecordsExtractionUtilities _medicalDateWithOnlyDateString:range:error:];
   }
 
   v10 = _DateTimeFormatRegularExpressionYear_regex;
-  v11 = [v10 matchesInString:v9 options:0 range:{location, length}];
+  v11 = [v10 matchesInString:stringCopy options:0 range:{location, length}];
   if ([v11 count] == 1)
   {
-    v12 = [v11 firstObject];
-    v13 = [a1 _integerFromTextCheckingResult:v12 string:v9 index:1];
-    v14 = [MEMORY[0x277CCD5D8] medicalDateWithYear:v13 error:a5];
+    firstObject = [v11 firstObject];
+    v13 = [self _integerFromTextCheckingResult:firstObject string:stringCopy index:1];
+    v14 = [MEMORY[0x277CCD5D8] medicalDateWithYear:v13 error:error];
 LABEL_5:
     v15 = v14;
 LABEL_10:
@@ -2892,14 +2892,14 @@ LABEL_10:
 
   v16 = _DateTimeFormatRegularExpressionYearMonth_regex;
 
-  v17 = [v16 matchesInString:v9 options:0 range:{location, length}];
+  v17 = [v16 matchesInString:stringCopy options:0 range:{location, length}];
 
   if ([v17 count] == 1)
   {
-    v12 = [v17 firstObject];
-    v18 = [a1 _integerFromTextCheckingResult:v12 string:v9 index:1];
-    v19 = [a1 _integerFromTextCheckingResult:v12 string:v9 index:2];
-    v15 = [MEMORY[0x277CCD5D8] medicalDateWithYear:v18 month:v19 error:a5];
+    firstObject = [v17 firstObject];
+    v18 = [self _integerFromTextCheckingResult:firstObject string:stringCopy index:1];
+    v19 = [self _integerFromTextCheckingResult:firstObject string:stringCopy index:2];
+    v15 = [MEMORY[0x277CCD5D8] medicalDateWithYear:v18 month:v19 error:error];
     v11 = v17;
     v10 = v16;
     goto LABEL_10;
@@ -2912,15 +2912,15 @@ LABEL_10:
 
   v10 = _DateTimeFormatRegularExpressionYearMonthDay_regex;
 
-  v11 = [v10 matchesInString:v9 options:0 range:{location, length}];
+  v11 = [v10 matchesInString:stringCopy options:0 range:{location, length}];
 
   if ([v11 count] == 1)
   {
-    v12 = [v11 firstObject];
-    v21 = [a1 _integerFromTextCheckingResult:v12 string:v9 index:1];
-    v22 = [a1 _integerFromTextCheckingResult:v12 string:v9 index:2];
-    v23 = [a1 _integerFromTextCheckingResult:v12 string:v9 index:3];
-    v14 = [MEMORY[0x277CCD5D8] medicalDateWithYear:v21 month:v22 day:v23 error:a5];
+    firstObject = [v11 firstObject];
+    v21 = [self _integerFromTextCheckingResult:firstObject string:stringCopy index:1];
+    v22 = [self _integerFromTextCheckingResult:firstObject string:stringCopy index:2];
+    v23 = [self _integerFromTextCheckingResult:firstObject string:stringCopy index:3];
+    v14 = [MEMORY[0x277CCD5D8] medicalDateWithYear:v21 month:v22 day:v23 error:error];
     goto LABEL_5;
   }
 
@@ -2930,16 +2930,16 @@ LABEL_11:
   return v15;
 }
 
-+ (id)medicalDateWithDateTimeString:(id)a3 error:(id *)a4
++ (id)medicalDateWithDateTimeString:(id)string error:(id *)error
 {
-  v6 = a3;
+  stringCopy = string;
   objc_opt_class();
   v7 = HKSafeObject();
 
   if (v7)
   {
-    v8 = [v6 length];
-    v9 = [a1 _medicalDateWithDateTimeString:v6 range:0 error:{v8, a4}];
+    v8 = [stringCopy length];
+    v9 = [self _medicalDateWithDateTimeString:stringCopy range:0 error:{v8, error}];
     if (v9)
     {
       v7 = v9;
@@ -2947,10 +2947,10 @@ LABEL_11:
 
     else
     {
-      v7 = [a1 _medicalDateWithOnlyDateString:v6 range:0 error:{v8, a4}];
+      v7 = [self _medicalDateWithOnlyDateString:stringCopy range:0 error:{v8, error}];
       if (!v7)
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"FHIR date string not parseable"];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"FHIR date string not parseable"];
       }
     }
   }
@@ -2958,17 +2958,17 @@ LABEL_11:
   return v7;
 }
 
-+ (id)medicalDateWithDateString:(id)a3 error:(id *)a4
++ (id)medicalDateWithDateString:(id)string error:(id *)error
 {
-  v6 = a3;
+  stringCopy = string;
   objc_opt_class();
   v7 = HKSafeObject();
 
   if (v7)
   {
-    v8 = [v6 length];
+    v8 = [stringCopy length];
     v9 = _DateTimeFormatRegularExpressionYearMonthDayTime();
-    v10 = [v9 matchesInString:v6 options:0 range:{0, v8}];
+    v10 = [v9 matchesInString:stringCopy options:0 range:{0, v8}];
     if ([v10 count] == 1)
     {
       _HKInitializeLogging();
@@ -2979,13 +2979,13 @@ LABEL_11:
         _os_log_impl(&dword_251CC8000, v11, OS_LOG_TYPE_DEFAULT, "HDHealthRecordsExtractionUtilities: received 'date' string with time, dropping time", v17, 2u);
       }
 
-      v12 = [v6 substringWithRange:{0, objc_msgSend(v6, "rangeOfString:", @"T"}];
+      v12 = [stringCopy substringWithRange:{0, objc_msgSend(stringCopy, "rangeOfString:", @"T"}];
 
       v8 = [v12 length];
-      v6 = v12;
+      stringCopy = v12;
     }
 
-    v14 = [a1 _medicalDateWithOnlyDateString:v6 range:0 error:{v8, a4}];
+    v14 = [self _medicalDateWithOnlyDateString:stringCopy range:0 error:{v8, error}];
     v13 = v14;
     if (v14)
     {
@@ -2994,7 +2994,7 @@ LABEL_11:
 
     else
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"FHIR instant string not parseable"];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"FHIR instant string not parseable"];
     }
   }
 
@@ -3006,15 +3006,15 @@ LABEL_11:
   return v13;
 }
 
-+ (id)medicalDateWithInstantString:(id)a3 error:(id *)a4
++ (id)medicalDateWithInstantString:(id)string error:(id *)error
 {
-  v6 = a3;
+  stringCopy = string;
   objc_opt_class();
   v7 = HKSafeObject();
 
   if (v7)
   {
-    v8 = [a1 _medicalDateWithDateTimeString:v6 range:0 error:{objc_msgSend(v6, "length"), a4}];
+    v8 = [self _medicalDateWithDateTimeString:stringCopy range:0 error:{objc_msgSend(stringCopy, "length"), error}];
     v9 = v8;
     if (v8)
     {
@@ -3023,7 +3023,7 @@ LABEL_11:
 
     else
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"FHIR instant string not parseable"];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"FHIR instant string not parseable"];
     }
   }
 
@@ -3035,33 +3035,33 @@ LABEL_11:
   return v9;
 }
 
-+ (id)timeSinceMidnightWithTimeString:(id)a3 error:(id *)a4
++ (id)timeSinceMidnightWithTimeString:(id)string error:(id *)error
 {
-  v6 = a3;
+  stringCopy = string;
   objc_opt_class();
   v7 = HKSafeObject();
 
   if (v7)
   {
-    v8 = [v6 length];
+    v8 = [stringCopy length];
     if (_TimeFormatRegularExpressionTimeSinceMidnight_onceToken != -1)
     {
       +[HDHealthRecordsExtractionUtilities timeSinceMidnightWithTimeString:error:];
     }
 
-    v9 = [_TimeFormatRegularExpressionTimeSinceMidnight_regex matchesInString:v6 options:0 range:{0, v8}];
+    v9 = [_TimeFormatRegularExpressionTimeSinceMidnight_regex matchesInString:stringCopy options:0 range:{0, v8}];
     if ([v9 count] == 1)
     {
-      v10 = [v9 firstObject];
+      firstObject = [v9 firstObject];
       v11 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-      [v11 setHour:{objc_msgSend(a1, "_integerFromTextCheckingResult:string:index:", v10, v6, 1)}];
-      [v11 setMinute:{objc_msgSend(a1, "_integerFromTextCheckingResult:string:index:", v10, v6, 2)}];
-      [v11 setSecond:{objc_msgSend(a1, "_integerFromTextCheckingResult:string:index:", v10, v6, 3)}];
+      [v11 setHour:{objc_msgSend(self, "_integerFromTextCheckingResult:string:index:", firstObject, stringCopy, 1)}];
+      [v11 setMinute:{objc_msgSend(self, "_integerFromTextCheckingResult:string:index:", firstObject, stringCopy, 2)}];
+      [v11 setSecond:{objc_msgSend(self, "_integerFromTextCheckingResult:string:index:", firstObject, stringCopy, 3)}];
     }
 
     else
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"FHIR time string not parseable"];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"FHIR time string not parseable"];
       v11 = 0;
     }
   }
@@ -3074,9 +3074,9 @@ LABEL_11:
   return v11;
 }
 
-+ (id)medicalDateIntervalWithPeriod:(id)a3 error:(id *)a4
++ (id)medicalDateIntervalWithPeriod:(id)period error:(id *)error
 {
-  v6 = a3;
+  periodCopy = period;
   objc_opt_class();
   v7 = HKSafeObject();
 
@@ -3085,13 +3085,13 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  if ([v6 hk_hasValueForKeyPath:@"start"])
+  if ([periodCopy hk_hasValueForKeyPath:@"start"])
   {
-    v8 = [v6 hk_safeStringForKeyPath:@"start" error:a4];
+    v8 = [periodCopy hk_safeStringForKeyPath:@"start" error:error];
     if (v8)
     {
       v9 = v8;
-      v10 = [a1 medicalDateWithDateTimeString:v8 error:a4];
+      v10 = [self medicalDateWithDateTimeString:v8 error:error];
 
       goto LABEL_7;
     }
@@ -3103,16 +3103,16 @@ LABEL_5:
 
   v10 = 0;
 LABEL_7:
-  if ([v6 hk_hasValueForKeyPath:@"end"])
+  if ([periodCopy hk_hasValueForKeyPath:@"end"])
   {
-    v12 = [v6 hk_safeStringForKeyPath:@"end" error:a4];
+    v12 = [periodCopy hk_safeStringForKeyPath:@"end" error:error];
     if (!v12)
     {
       goto LABEL_13;
     }
 
     v13 = v12;
-    v14 = [a1 medicalDateWithDateTimeString:v12 error:a4];
+    v14 = [self medicalDateWithDateTimeString:v12 error:error];
   }
 
   else
@@ -3126,7 +3126,7 @@ LABEL_7:
     {
       if (v10)
       {
-        [MEMORY[0x277CCD5E0] medicalDateIntervalWithStartDate:v10 endDate:v14 error:a4];
+        [MEMORY[0x277CCD5E0] medicalDateIntervalWithStartDate:v10 endDate:v14 error:error];
       }
 
       else
@@ -3144,7 +3144,7 @@ LABEL_7:
     goto LABEL_20;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"FHIR Period must have either start or end"];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"FHIR Period must have either start or end"];
 LABEL_13:
   v11 = 0;
 LABEL_20:
@@ -3154,10 +3154,10 @@ LABEL_21:
   return v11;
 }
 
-+ (id)_earliestDosageDateWithMedicationDosageArray:(id)a3 error:(id *)a4
++ (id)_earliestDosageDateWithMedicationDosageArray:(id)array error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  arrayCopy = array;
   objc_opt_class();
   v7 = HKSafeObject();
 
@@ -3167,15 +3167,15 @@ LABEL_21:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v26 = v6;
-    obj = v6;
+    v26 = arrayCopy;
+    obj = arrayCopy;
     v8 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v8)
     {
       v9 = v8;
       v10 = 0;
       v11 = *v31;
-      v27 = a1;
+      selfCopy = self;
       v28 = *v31;
       do
       {
@@ -3186,36 +3186,36 @@ LABEL_21:
             objc_enumerationMutation(obj);
           }
 
-          v13 = [a1 _medicalDateIntervalWithDosage:*(*(&v30 + 1) + 8 * i) error:{a4, v26}];
-          v14 = [v13 startDate];
+          v13 = [self _medicalDateIntervalWithDosage:*(*(&v30 + 1) + 8 * i) error:{error, v26}];
+          startDate = [v13 startDate];
 
-          if (v14)
+          if (startDate)
           {
-            v15 = [v10 dateForUTC];
-            if (!v15)
+            dateForUTC = [v10 dateForUTC];
+            if (!dateForUTC)
             {
               goto LABEL_10;
             }
 
-            v16 = v15;
+            v16 = dateForUTC;
             [v13 startDate];
-            v18 = v17 = a4;
+            v18 = v17 = error;
             [v18 dateForUTC];
             v20 = v19 = v9;
-            v21 = [v10 dateForUTC];
-            v22 = [v20 hk_isBeforeDate:v21];
+            dateForUTC2 = [v10 dateForUTC];
+            v22 = [v20 hk_isBeforeDate:dateForUTC2];
 
             v9 = v19;
-            a4 = v17;
-            a1 = v27;
+            error = v17;
+            self = selfCopy;
             v11 = v28;
 
             if (v22)
             {
 LABEL_10:
-              v23 = [v13 startDate];
+              startDate2 = [v13 startDate];
 
-              v10 = v23;
+              v10 = startDate2;
             }
           }
         }
@@ -3231,7 +3231,7 @@ LABEL_10:
       v10 = 0;
     }
 
-    v6 = v26;
+    arrayCopy = v26;
   }
 
   else
@@ -3244,23 +3244,23 @@ LABEL_10:
   return v10;
 }
 
-+ (id)_medicationDosagesWithDosageArray:(id)a3 FHIRRelease:(id)a4 error:(id *)a5
++ (id)_medicationDosagesWithDosageArray:(id)array FHIRRelease:(id)release error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  arrayCopy = array;
+  releaseCopy = release;
   objc_opt_class();
   v10 = HKSafeObject();
 
   if (v10)
   {
     [MEMORY[0x277CBEB18] array];
-    v32 = v31 = v8;
+    v32 = v31 = arrayCopy;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v11 = v8;
+    v11 = arrayCopy;
     v33 = [v11 countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v33)
     {
@@ -3276,7 +3276,7 @@ LABEL_4:
         }
 
         v15 = *(*(&v34 + 1) + 8 * v14);
-        if (v12 != v9)
+        if (v12 != releaseCopy)
         {
           if ([*(*(&v34 + 1) + 8 * v14) hk_hasValueForKeyPath:@"patientInstruction"])
           {
@@ -3293,24 +3293,24 @@ LABEL_4:
 
         v19 = 0;
 LABEL_15:
-        v20 = [a1 _medicalDateIntervalWithDosage:v15 error:a5];
+        v20 = [self _medicalDateIntervalWithDosage:v15 error:error];
         if (v19 | v20)
         {
           [MEMORY[0x277CCD648] dosageWithInstruction:v19 timingPeriod:v20];
-          v21 = a5;
+          errorCopy = error;
           v22 = v13;
           v23 = v12;
-          v24 = a1;
-          v25 = v9;
+          selfCopy = self;
+          v25 = releaseCopy;
           v27 = v26 = v11;
           [v32 addObject:v27];
 
           v11 = v26;
-          v9 = v25;
-          a1 = v24;
+          releaseCopy = v25;
+          self = selfCopy;
           v12 = v23;
           v13 = v22;
-          a5 = v21;
+          error = errorCopy;
         }
 
         if (v33 == ++v14)
@@ -3328,12 +3328,12 @@ LABEL_15:
       v16 = v15;
       v17 = @"patientInstruction";
 LABEL_12:
-      v18 = [v16 hk_safeStringForKeyPath:v17 error:a5];
+      v18 = [v16 hk_safeStringForKeyPath:v17 error:error];
       if (!v18)
       {
 
         v10 = 0;
-        v8 = v31;
+        arrayCopy = v31;
         v28 = v32;
         goto LABEL_26;
       }
@@ -3354,13 +3354,13 @@ LABEL_19:
     {
       if (![v11 count])
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"Dosage array must be nonempty if present"];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Dosage array must be nonempty if present"];
       }
 
       v10 = 0;
     }
 
-    v8 = v31;
+    arrayCopy = v31;
 LABEL_26:
   }
 
@@ -3369,13 +3369,13 @@ LABEL_26:
   return v10;
 }
 
-+ (id)_medicalDateIntervalWithDosage:(id)a3 error:(id *)a4
++ (id)_medicalDateIntervalWithDosage:(id)dosage error:(id *)error
 {
-  v6 = a3;
+  dosageCopy = dosage;
   objc_opt_class();
   v7 = HKSafeObject();
 
-  if (!v7 || ![v6 hk_hasValueForKeyPath:@"timing"] || (objc_msgSend(v6, "hk_safeDictionaryForKeyPath:error:", @"timing", a4), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v7 || ![dosageCopy hk_hasValueForKeyPath:@"timing"] || (objc_msgSend(dosageCopy, "hk_safeDictionaryForKeyPath:error:", @"timing", error), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v13 = 0;
     goto LABEL_9;
@@ -3390,7 +3390,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v10 = [v9 hk_safeDictionaryForKeyPath:@"repeat" error:a4];
+  v10 = [v9 hk_safeDictionaryForKeyPath:@"repeat" error:error];
   v11 = v10;
   if (!v10 || ![v10 hk_hasValueForKeyPath:@"boundsPeriod"])
   {
@@ -3398,7 +3398,7 @@ LABEL_13:
   }
 
   v12 = [v11 objectForKeyedSubscript:@"boundsPeriod"];
-  v13 = [a1 medicalDateIntervalWithPeriod:v12 error:a4];
+  v13 = [self medicalDateIntervalWithPeriod:v12 error:error];
 
 LABEL_14:
 LABEL_9:
@@ -3406,35 +3406,35 @@ LABEL_9:
   return v13;
 }
 
-+ (id)referencedMedicationStatementActorTypeWithString:(id)a3 error:(id *)a4
++ (id)referencedMedicationStatementActorTypeWithString:(id)string error:(id *)error
 {
-  v4 = a3;
+  stringCopy = string;
   objc_opt_class();
   v5 = HKSafeObject();
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEBC0] URLWithString:v4];
+    v6 = [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
     v7 = [HDFHIRReferenceProcessor identifierFromAbsoluteReferenceURL:v6];
-    v8 = [v7 resourceType];
-    if ([v8 length])
+    resourceType = [v7 resourceType];
+    if ([resourceType length])
     {
-      if ([v8 isEqualToString:@"Organization"])
+      if ([resourceType isEqualToString:@"Organization"])
       {
         v9 = &unk_28641A218;
       }
 
-      else if ([v8 isEqualToString:@"Patient"])
+      else if ([resourceType isEqualToString:@"Patient"])
       {
         v9 = &unk_28641A230;
       }
 
-      else if ([v8 isEqualToString:@"Practitioner"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"PractitionerRole"))
+      else if ([resourceType isEqualToString:@"Practitioner"] & 1) != 0 || (objc_msgSend(resourceType, "isEqualToString:", @"PractitionerRole"))
       {
         v9 = &unk_28641A248;
       }
 
-      else if ([v8 isEqualToString:@"RelatedPerson"])
+      else if ([resourceType isEqualToString:@"RelatedPerson"])
       {
         v9 = &unk_28641A260;
       }
@@ -3459,44 +3459,44 @@ LABEL_9:
   return v9;
 }
 
-+ (id)preferredNameWithHumanNames:(id)a3 FHIRVersion:(id)a4 error:(id *)a5
++ (id)preferredNameWithHumanNames:(id)names FHIRVersion:(id)version error:(id *)error
 {
-  v7 = a4;
-  v8 = [HDHealthRecordParsedHumanName parsedNamesWithHumanNames:a3 FHIRVersion:v7 error:a5];
+  versionCopy = version;
+  v8 = [HDHealthRecordParsedHumanName parsedNamesWithHumanNames:names FHIRVersion:versionCopy error:error];
   if (v8)
   {
-    v9 = [HDHealthRecordParsedHumanName preferredNameInNames:v8 FHIRVersion:v7];
+    v9 = [HDHealthRecordParsedHumanName preferredNameInNames:v8 FHIRVersion:versionCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 fullName];
+      fullName = [v9 fullName];
     }
 
     else
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"no preferred name available"];
-      v11 = 0;
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"no preferred name available"];
+      fullName = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    fullName = 0;
   }
 
-  return v11;
+  return fullName;
 }
 
-+ (id)stringWithRTF:(id)a3 error:(id *)a4
++ (id)stringWithRTF:(id)f error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fCopy = f;
   objc_opt_class();
   v5 = HKSafeObject();
 
   if (v5)
   {
-    v6 = [v4 dataUsingEncoding:4];
+    v6 = [fCopy dataUsingEncoding:4];
     v7 = objc_alloc(MEMORY[0x277CCA898]);
     v21 = 0;
     v22 = &v21;
@@ -3546,15 +3546,15 @@ LABEL_9:
     v16 = [v7 initWithData:v6 options:v15 documentAttributes:0 error:0];
     if (v16)
     {
-      v17 = [v16 string];
+      string = [v16 string];
     }
 
     else
     {
-      v17 = v4;
+      string = fCopy;
     }
 
-    v18 = v17;
+    v18 = string;
   }
 
   else
@@ -3567,33 +3567,33 @@ LABEL_9:
   return v18;
 }
 
-+ (BOOL)_determineEnteredInError:(id)a3
++ (BOOL)_determineEnteredInError:(id)error
 {
-  v3 = a3;
-  if (v3)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v4 = v3;
-    v5 = [v3 lowercaseString];
+    v4 = errorCopy;
+    lowercaseString = [errorCopy lowercaseString];
     v6 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@" -"];
-    v7 = [v5 componentsSeparatedByCharactersInSet:v6];
+    v7 = [lowercaseString componentsSeparatedByCharactersInSet:v6];
     v8 = [v7 componentsJoinedByString:@"-"];
 
     LOBYTE(v4) = [v8 isEqualToString:@"entered-in-error"];
-    LOBYTE(v3) = v4;
+    LOBYTE(errorCopy) = v4;
   }
 
-  return v3;
+  return errorCopy;
 }
 
-+ (id)enteredInErrorWithStatusString:(id)a3 error:(id *)a4
++ (id)enteredInErrorWithStatusString:(id)string error:(id *)error
 {
-  v5 = a3;
+  stringCopy = string;
   objc_opt_class();
   v6 = HKSafeObject();
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "_determineEnteredInError:", v5)}];
+    v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "_determineEnteredInError:", stringCopy)}];
   }
 
   else
@@ -3604,10 +3604,10 @@ LABEL_9:
   return v7;
 }
 
-+ (id)wasEnteredInError:(id)a3 error:(id *)a4
++ (id)wasEnteredInError:(id)error error:(id *)a4
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"status"];
+  errorCopy = error;
+  v7 = [errorCopy objectForKeyedSubscript:@"status"];
   v8 = v7;
   if (v7)
   {
@@ -3616,7 +3616,7 @@ LABEL_9:
 
   else
   {
-    v9 = [v6 objectForKeyedSubscript:@"verificationStatus"];
+    v9 = [errorCopy objectForKeyedSubscript:@"verificationStatus"];
   }
 
   v10 = v9;
@@ -3624,7 +3624,7 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "_determineEnteredInError:", v10)}];
+    v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "_determineEnteredInError:", v10)}];
 LABEL_8:
     v12 = v11;
     goto LABEL_10;
@@ -3633,7 +3633,7 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [a1 enteredInErrorWithConditionVerificationStatusCodeableConcept:v10 error:a4];
+    v11 = [self enteredInErrorWithConditionVerificationStatusCodeableConcept:v10 error:a4];
     goto LABEL_8;
   }
 
@@ -3647,14 +3647,14 @@ LABEL_10:
   return v12;
 }
 
-+ (id)localeFromLanguage:(id)a3 error:(id *)a4
++ (id)localeFromLanguage:(id)language error:(id *)error
 {
-  v4 = a3;
+  languageCopy = language;
   objc_opt_class();
   v5 = HKSafeObject();
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v4];
+    v6 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:languageCopy];
   }
 
   else

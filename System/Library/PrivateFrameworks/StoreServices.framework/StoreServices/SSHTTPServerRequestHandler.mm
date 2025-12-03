@@ -1,25 +1,25 @@
 @interface SSHTTPServerRequestHandler
-- (BOOL)_handleReceivedDataWithError:(id *)a3;
+- (BOOL)_handleReceivedDataWithError:(id *)error;
 - (BOOL)_shouldKeepRunning;
-- (SSHTTPServerRequestHandler)initWithReadStream:(id)a3 writeStream:(id)a4 runLoop:(id)a5;
+- (SSHTTPServerRequestHandler)initWithReadStream:(id)stream writeStream:(id)writeStream runLoop:(id)loop;
 - (SSHTTPServerRequestHandlerDelegate)delegate;
-- (id)_errorResponseDataWithStatus:(signed __int16)a3 message:(id)a4;
+- (id)_errorResponseDataWithStatus:(signed __int16)status message:(id)message;
 - (int64_t)_throttledWriteSpeed;
-- (int64_t)_writeResponseData:(id)a3 error:(id *)a4;
+- (int64_t)_writeResponseData:(id)data error:(id *)error;
 - (void)_close;
-- (void)_respondWithRequest:(id)a3 error:(id)a4;
+- (void)_respondWithRequest:(id)request error:(id)error;
 - (void)close;
 - (void)dealloc;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation SSHTTPServerRequestHandler
 
-- (SSHTTPServerRequestHandler)initWithReadStream:(id)a3 writeStream:(id)a4 runLoop:(id)a5
+- (SSHTTPServerRequestHandler)initWithReadStream:(id)stream writeStream:(id)writeStream runLoop:(id)loop
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  streamCopy = stream;
+  writeStreamCopy = writeStream;
+  loopCopy = loop;
   v16.receiver = self;
   v16.super_class = SSHTTPServerRequestHandler;
   v12 = [(SSHTTPServerRequestHandler *)&v16 init];
@@ -29,10 +29,10 @@
     requestQueue = v12->_requestQueue;
     v12->_requestQueue = v13;
 
-    objc_storeStrong(&v12->_output, a4);
+    objc_storeStrong(&v12->_output, writeStream);
     [(NSOutputStream *)v12->_output open];
-    objc_storeStrong(&v12->_input, a3);
-    [(NSInputStream *)v12->_input scheduleInRunLoop:v11 forMode:*MEMORY[0x1E695D918]];
+    objc_storeStrong(&v12->_input, stream);
+    [(NSInputStream *)v12->_input scheduleInRunLoop:loopCopy forMode:*MEMORY[0x1E695D918]];
     [(NSInputStream *)v12->_input setDelegate:v12];
     [(NSInputStream *)v12->_input open];
   }
@@ -66,7 +66,7 @@
   dispatch_sync(requestQueue, block);
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
   requestQueue = self->_requestQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -74,7 +74,7 @@
   v5[2] = __49__SSHTTPServerRequestHandler_stream_handleEvent___block_invoke;
   v5[3] = &unk_1E84ADDB8;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = event;
   dispatch_async(requestQueue, v5);
 }
 
@@ -136,7 +136,7 @@ void __49__SSHTTPServerRequestHandler_stream_handleEvent___block_invoke(uint64_t
   }
 }
 
-- (BOOL)_handleReceivedDataWithError:(id *)a3
+- (BOOL)_handleReceivedDataWithError:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_requestQueue);
@@ -220,9 +220,9 @@ void __49__SSHTTPServerRequestHandler_stream_handleEvent___block_invoke(uint64_t
       }
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = SSError(@"SSHTTPServerResponseErrorDomain", 500, @"Socket Read Error", @"Length < 0");
+      *error = SSError(@"SSHTTPServerResponseErrorDomain", 500, @"Socket Read Error", @"Length < 0");
     }
   }
 
@@ -234,11 +234,11 @@ LABEL_19:
       return 0;
     }
 
-    v22 = [(NSMutableURLRequest *)self->_request allHTTPHeaderFields];
-    v23 = [v22 objectForKeyedSubscript:@"Content-Length"];
-    v24 = [v23 integerValue];
+    allHTTPHeaderFields = [(NSMutableURLRequest *)self->_request allHTTPHeaderFields];
+    v23 = [allHTTPHeaderFields objectForKeyedSubscript:@"Content-Length"];
+    integerValue = [v23 integerValue];
 
-    if ([(NSMutableData *)self->_incommingMessageBody length]< v24)
+    if ([(NSMutableData *)self->_incommingMessageBody length]< integerValue)
     {
       return 0;
     }
@@ -249,31 +249,31 @@ LABEL_19:
   return 1;
 }
 
-- (void)_respondWithRequest:(id)a3 error:(id)a4
+- (void)_respondWithRequest:(id)request error:(id)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_requestQueue);
-  v8 = [(SSHTTPServerRequestHandler *)self delegate];
-  v9 = [v6 URL];
-  v10 = [v9 path];
-  v11 = [v8 responseBlockForPath:v10];
+  delegate = [(SSHTTPServerRequestHandler *)self delegate];
+  v9 = [requestCopy URL];
+  path = [v9 path];
+  v11 = [delegate responseBlockForPath:path];
 
   v41 = v11;
-  v42 = v6;
-  if (v7)
+  v42 = requestCopy;
+  if (errorCopy)
   {
-    v12 = -[SSHTTPServerResponse initWithStatusCode:]([SSHTTPServerResponse alloc], "initWithStatusCode:", [v7 code]);
-    v13 = [v7 code];
-    v14 = [v7 description];
-    v15 = [(SSHTTPServerRequestHandler *)self _errorResponseDataWithStatus:v13 message:v14];
+    v12 = -[SSHTTPServerResponse initWithStatusCode:]([SSHTTPServerResponse alloc], "initWithStatusCode:", [errorCopy code]);
+    code = [errorCopy code];
+    v14 = [errorCopy description];
+    v15 = [(SSHTTPServerRequestHandler *)self _errorResponseDataWithStatus:code message:v14];
     [(SSHTTPServerResponse *)v12 setBody:v15];
   }
 
   else if (v11)
   {
-    v12 = (*(v11 + 16))(v11, v6);
+    v12 = (*(v11 + 16))(v11, requestCopy);
   }
 
   else
@@ -283,9 +283,9 @@ LABEL_19:
     [(SSHTTPServerResponse *)v12 setBody:v16];
   }
 
-  v17 = [(SSHTTPServerResponse *)v12 copyHTTPMessage];
-  v18 = CFHTTPMessageCopySerializedMessage(v17);
-  CFRelease(v17);
+  copyHTTPMessage = [(SSHTTPServerResponse *)v12 copyHTTPMessage];
+  v18 = CFHTTPMessageCopySerializedMessage(copyHTTPMessage);
+  CFRelease(copyHTTPMessage);
   v43 = 0;
   v19 = [(SSHTTPServerRequestHandler *)self _writeResponseData:v18 error:&v43];
   v20 = v43;
@@ -298,21 +298,21 @@ LABEL_19:
       v22 = +[SSLogConfig sharedConfig];
     }
 
-    v29 = [v22 shouldLog];
+    shouldLog = [v22 shouldLog];
     if ([v22 shouldLogToDisk])
     {
-      v29 |= 2u;
+      shouldLog |= 2u;
     }
 
-    v25 = [v22 OSLogObject];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
-      v30 = v29;
+      v30 = shouldLog;
     }
 
     else
     {
-      v30 = v29 & 2;
+      v30 = shouldLog & 2;
     }
 
     if (v30)
@@ -321,7 +321,7 @@ LABEL_19:
       v44 = 138412546;
       v45 = v31;
       v46 = 2114;
-      v47 = self;
+      selfCopy = self;
       v28 = v31;
       LODWORD(v40) = 22;
       goto LABEL_26;
@@ -337,19 +337,19 @@ LABEL_28:
     v22 = +[SSLogConfig sharedConfig];
   }
 
-  v23 = [v22 shouldLog];
+  shouldLog2 = [v22 shouldLog];
   if ([v22 shouldLogToDisk])
   {
-    v24 = v23 | 2;
+    v24 = shouldLog2 | 2;
   }
 
   else
   {
-    v24 = v23;
+    v24 = shouldLog2;
   }
 
-  v25 = [v22 OSLogObject];
-  if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v22 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v26 = v24;
   }
@@ -368,7 +368,7 @@ LABEL_28:
   v44 = 138412802;
   v45 = v27;
   v46 = 2048;
-  v47 = v19;
+  selfCopy = v19;
   v48 = 2112;
   v49 = v20;
   v28 = v27;
@@ -383,9 +383,9 @@ LABEL_26:
   }
 
   v33 = v42;
-  v25 = [MEMORY[0x1E696AEC0] stringWithCString:v32 encoding:{4, &v44, v40}];
+  oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v32 encoding:{4, &v44, v40}];
   free(v32);
-  SSFileLog(v22, @"%@", v34, v35, v36, v37, v38, v39, v25);
+  SSFileLog(v22, @"%@", v34, v35, v36, v37, v38, v39, oSLogObject);
 LABEL_29:
 
 LABEL_31:
@@ -410,19 +410,19 @@ LABEL_31:
     self->_output = 0;
   }
 
-  v7 = [(SSHTTPServerRequestHandler *)self delegate];
-  [v7 requestDidFinish:self];
+  delegate = [(SSHTTPServerRequestHandler *)self delegate];
+  [delegate requestDidFinish:self];
 }
 
-- (id)_errorResponseDataWithStatus:(signed __int16)a3 message:(id)a4
+- (id)_errorResponseDataWithStatus:(signed __int16)status message:(id)message
 {
-  v4 = a3;
-  v5 = a4;
+  statusCopy = status;
+  messageCopy = message;
   v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  [v6 appendFormat:@"<html><head><title>%d</title></head><body><div align='center'><h1>%d</h1>", v4, v4];
-  if (v5)
+  [v6 appendFormat:@"<html><head><title>%d</title></head><body><div align='center'><h1>%d</h1>", statusCopy, statusCopy];
+  if (messageCopy)
   {
-    [v6 appendFormat:@"<p>%@</p>", v5];
+    [v6 appendFormat:@"<p>%@</p>", messageCopy];
   }
 
   [v6 appendString:@"</div></body></html>"];
@@ -482,16 +482,16 @@ uint64_t __48__SSHTTPServerRequestHandler__shouldKeepRunning__block_invoke(uint6
   return result;
 }
 
-- (int64_t)_writeResponseData:(id)a3 error:(id *)a4
+- (int64_t)_writeResponseData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   dispatch_assert_queue_V2(self->_requestQueue);
-  if (v6 && [v6 length])
+  if (dataCopy && [dataCopy length])
   {
-    v7 = [(SSHTTPServerRequestHandler *)self _throttledWriteSpeed];
+    _throttledWriteSpeed = [(SSHTTPServerRequestHandler *)self _throttledWriteSpeed];
     v8 = 0;
-    v9 = vcvtd_n_f64_u64(v7, 1uLL);
-    if (v7)
+    v9 = vcvtd_n_f64_u64(_throttledWriteSpeed, 1uLL);
+    if (_throttledWriteSpeed)
     {
       v10 = v9;
     }
@@ -501,7 +501,7 @@ uint64_t __48__SSHTTPServerRequestHandler__shouldKeepRunning__block_invoke(uint6
       v10 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (v7)
+    if (_throttledWriteSpeed)
     {
       v11 = 0.5;
     }
@@ -513,35 +513,35 @@ uint64_t __48__SSHTTPServerRequestHandler__shouldKeepRunning__block_invoke(uint6
 
     while (1)
     {
-      if (v8 >= [v6 length])
+      if (v8 >= [dataCopy length])
       {
         v18 = 0;
         goto LABEL_26;
       }
 
-      v12 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v13 = v10;
-      if (v10 >= [v6 length] - v8)
+      if (v10 >= [dataCopy length] - v8)
       {
-        v13 = [v6 length] - v8;
+        v13 = [dataCopy length] - v8;
       }
 
-      v14 = -[NSOutputStream write:maxLength:](self->_output, "write:maxLength:", [v6 bytes] + v8, v13);
+      v14 = -[NSOutputStream write:maxLength:](self->_output, "write:maxLength:", [dataCopy bytes] + v8, v13);
       if (v14 < 0)
       {
         break;
       }
 
       v8 += v14;
-      [v12 timeIntervalSinceNow];
+      [date timeIntervalSinceNow];
       if (v15 >= 0.0)
       {
-        [v12 timeIntervalSinceNow];
+        [date timeIntervalSinceNow];
       }
 
       else
       {
-        [v12 timeIntervalSinceNow];
+        [date timeIntervalSinceNow];
         v17 = -v16;
       }
 
@@ -553,19 +553,19 @@ uint64_t __48__SSHTTPServerRequestHandler__shouldKeepRunning__block_invoke(uint6
 
     v18 = SSError(@"SSHTTPServerResponseErrorDomain", 500, @"Write Error", @"Error writing data to socket. [2]");
 
-    if (a4 && v18)
+    if (error && v18)
     {
       v19 = v18;
-      *a4 = v18;
+      *error = v18;
     }
 
 LABEL_26:
   }
 
-  else if (a4)
+  else if (error)
   {
     SSError(@"SSHTTPServerResponseErrorDomain", 500, @"Write Error", @"No data to write");
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else

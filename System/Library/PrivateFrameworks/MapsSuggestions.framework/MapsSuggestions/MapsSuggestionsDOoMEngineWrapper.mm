@@ -1,24 +1,24 @@
 @interface MapsSuggestionsDOoMEngineWrapper
-- (MapsSuggestionsDOoMEngineWrapper)initWithResourceDepot:(id)a3 conditions:(id)a4;
+- (MapsSuggestionsDOoMEngineWrapper)initWithResourceDepot:(id)depot conditions:(id)conditions;
 - (MapsSuggestionsDOoMEngineWrapperStatusUpdateDelegate)statusUpdateDelegate;
-- (void)commuteWindowChangedWithWindow:(id)a3 nextDestination:(id)a4 travelTime:(double)a5 haveBudgetForCommuteRequest:(BOOL)a6 exitTime:(id)a7 routeSet:(id)a8;
+- (void)commuteWindowChangedWithWindow:(id)window nextDestination:(id)destination travelTime:(double)time haveBudgetForCommuteRequest:(BOOL)request exitTime:(id)exitTime routeSet:(id)set;
 - (void)dealloc;
 - (void)getCurrentCommuteStatus;
 @end
 
 @implementation MapsSuggestionsDOoMEngineWrapper
 
-- (MapsSuggestionsDOoMEngineWrapper)initWithResourceDepot:(id)a3 conditions:(id)a4
+- (MapsSuggestionsDOoMEngineWrapper)initWithResourceDepot:(id)depot conditions:(id)conditions
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  depotCopy = depot;
+  conditionsCopy = conditions;
   v14.receiver = self;
   v14.super_class = MapsSuggestionsDOoMEngineWrapper;
   v8 = [(MapsSuggestionsDOoMEngineWrapper *)&v14 init];
   if (v8)
   {
-    v9 = [[_TtC15MapsSuggestions25MapsSuggestionsDOoMEngine alloc] initWithResourceDepot:v6 conditions:v7];
+    v9 = [[_TtC15MapsSuggestions25MapsSuggestionsDOoMEngine alloc] initWithResourceDepot:depotCopy conditions:conditionsCopy];
     doomEngine = v8->_doomEngine;
     v8->_doomEngine = v9;
 
@@ -54,19 +54,19 @@
   [(MapsSuggestionsDOoMEngineWrapper *)&v4 dealloc];
 }
 
-- (void)commuteWindowChangedWithWindow:(id)a3 nextDestination:(id)a4 travelTime:(double)a5 haveBudgetForCommuteRequest:(BOOL)a6 exitTime:(id)a7 routeSet:(id)a8
+- (void)commuteWindowChangedWithWindow:(id)window nextDestination:(id)destination travelTime:(double)time haveBudgetForCommuteRequest:(BOOL)request exitTime:(id)exitTime routeSet:(id)set
 {
   v25 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  v17 = [(MapsSuggestionsDOoMEngineWrapper *)self statusUpdateDelegate];
-  if (v17)
+  windowCopy = window;
+  destinationCopy = destination;
+  exitTimeCopy = exitTime;
+  setCopy = set;
+  statusUpdateDelegate = [(MapsSuggestionsDOoMEngineWrapper *)self statusUpdateDelegate];
+  if (statusUpdateDelegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v17 commuteWindowIs:v13 forNextDestination:v14 travelTime:v16 commuteRouteSet:a5];
+      [statusUpdateDelegate commuteWindowIs:windowCopy forNextDestination:destinationCopy travelTime:setCopy commuteRouteSet:time];
       [(MapsSuggestionsDOoMEngine *)self->_doomEngine unregisterObserver:self];
     }
   }

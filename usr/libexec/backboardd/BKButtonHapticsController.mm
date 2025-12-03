@@ -1,31 +1,31 @@
 @interface BKButtonHapticsController
 + (id)sharedInstance;
 - (BKButtonHapticsController)init;
-- (BKButtonHapticsController)initWithBHButtonHapticsController:(id)a3;
-- (id)_queue_assetOfType:(int64_t)a3 parameters:(id)a4;
+- (BKButtonHapticsController)initWithBHButtonHapticsController:(id)controller;
+- (id)_queue_assetOfType:(int64_t)type parameters:(id)parameters;
 - (id)description;
-- (void)_configureAsyncWithBlock:(id)a3;
-- (void)_configureSyncWithBlock:(id)a3;
-- (void)_queue_addChangesForPendingState:(id)a3 configuredState:(id)a4 toStates:(id)a5 configs:(id)a6 assets:(id)a7 enable:(id)a8 disable:(id)a9;
-- (void)_queue_addConfigsAndAssetsForClickState:(id)a3 toStates:(id)a4 configs:(id)a5 assets:(id)a6;
+- (void)_configureAsyncWithBlock:(id)block;
+- (void)_configureSyncWithBlock:(id)block;
+- (void)_queue_addChangesForPendingState:(id)state configuredState:(id)configuredState toStates:(id)states configs:(id)configs assets:(id)assets enable:(id)enable disable:(id)disable;
+- (void)_queue_addConfigsAndAssetsForClickState:(id)state toStates:(id)states configs:(id)configs assets:(id)assets;
 - (void)_queue_applyConfigurationChanges;
-- (void)_queue_applyDefinitions:(id)a3;
-- (void)_queue_getSlowHapticType:(int64_t *)a3 getMediumHapticType:(int64_t *)a4 getFastHapticType:(int64_t *)a5 fromAssetType:(int64_t)a6 clickCount:(int64_t)a7;
-- (void)applyDefinitions:(id)a3;
-- (void)playHapticForClickState:(unint64_t)a3 clickSpeed:(unint64_t)a4;
+- (void)_queue_applyDefinitions:(id)definitions;
+- (void)_queue_getSlowHapticType:(int64_t *)type getMediumHapticType:(int64_t *)hapticType getFastHapticType:(int64_t *)fastHapticType fromAssetType:(int64_t)assetType clickCount:(int64_t)count;
+- (void)applyDefinitions:(id)definitions;
+- (void)playHapticForClickState:(unint64_t)state clickSpeed:(unint64_t)speed;
 - (void)removeAllHaptics;
 @end
 
 @implementation BKButtonHapticsController
 
-- (void)playHapticForClickState:(unint64_t)a3 clickSpeed:(unint64_t)a4
+- (void)playHapticForClickState:(unint64_t)state clickSpeed:(unint64_t)speed
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10002217C;
   v4[3] = &unk_1000FA560;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = state;
+  v4[6] = speed;
   v4[4] = self;
   [(BKButtonHapticsController *)self _configureSyncWithBlock:v4];
 }
@@ -40,13 +40,13 @@
   [(BKButtonHapticsController *)self _configureAsyncWithBlock:v2];
 }
 
-- (void)applyDefinitions:(id)a3
+- (void)applyDefinitions:(id)definitions
 {
-  v4 = a3;
+  definitionsCopy = definitions;
   v5 = +[BSPlatform sharedInstance];
-  v6 = [v5 homeButtonType];
+  homeButtonType = [v5 homeButtonType];
 
-  if (v6 == 2)
+  if (homeButtonType == 2)
   {
     v7 = sub_100008528();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -64,14 +64,14 @@
     v9[2] = sub_1000225E4;
     v9[3] = &unk_1000FD128;
     v9[4] = self;
-    v10 = v4;
+    v10 = definitionsCopy;
     dispatch_async(queue, v9);
   }
 }
 
-- (void)_queue_applyDefinitions:(id)a3
+- (void)_queue_applyDefinitions:(id)definitions
 {
-  v4 = a3;
+  definitionsCopy = definitions;
   dispatch_assert_queue_V2(self->_queue);
   v19 = 0;
   v20 = &v19;
@@ -81,7 +81,7 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v4;
+  v5 = definitionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v25 count:16];
   if (v6)
   {
@@ -165,18 +165,18 @@
         }
 
         v10 = *(*(&v42 + 1) + 8 * i);
-        v11 = [v10 clickState];
-        v12 = [(NSMutableArray *)self->_clickStatesConfigured objectAtIndexedSubscript:v11];
+        clickState = [v10 clickState];
+        v12 = [(NSMutableArray *)self->_clickStatesConfigured objectAtIndexedSubscript:clickState];
         [(BKButtonHapticsController *)self _queue_addChangesForPendingState:v10 configuredState:v12 toStates:v4 configs:v36 assets:v3 enable:v38 disable:v37];
         if ([v10 isEnabled])
         {
           v13 = [v10 copy];
-          [(NSMutableArray *)self->_clickStatesConfigured setObject:v13 atIndexedSubscript:v11];
+          [(NSMutableArray *)self->_clickStatesConfigured setObject:v13 atIndexedSubscript:clickState];
         }
 
         else
         {
-          v13 = [(NSMutableArray *)self->_clickStatesConfigured objectAtIndexedSubscript:v11];
+          v13 = [(NSMutableArray *)self->_clickStatesConfigured objectAtIndexedSubscript:clickState];
           [v13 setEnabled:0];
         }
       }
@@ -222,13 +222,13 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v20 = [NSOrderedSet orderedSetWithArray:v4];
-      v21 = [v20 array];
-      v22 = [v21 bs_map:&stru_1000FA4F0];
-      v23 = [(BRButtonResolverController *)self->_BRController unusedAssetSlots];
+      array = [v20 array];
+      v22 = [array bs_map:&stru_1000FA4F0];
+      unusedAssetSlots = [(BRButtonResolverController *)self->_BRController unusedAssetSlots];
       *buf = 138543618;
       v47 = v22;
       v48 = 1024;
-      LODWORD(v49) = v23;
+      LODWORD(v49) = unusedAssetSlots;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "configuring %{public}@ unusedAssetSlots:%d", buf, 0x12u);
     }
 
@@ -287,15 +287,15 @@
   }
 }
 
-- (void)_queue_addChangesForPendingState:(id)a3 configuredState:(id)a4 toStates:(id)a5 configs:(id)a6 assets:(id)a7 enable:(id)a8 disable:(id)a9
+- (void)_queue_addChangesForPendingState:(id)state configuredState:(id)configuredState toStates:(id)states configs:(id)configs assets:(id)assets enable:(id)enable disable:(id)disable
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  stateCopy = state;
+  configuredStateCopy = configuredState;
+  statesCopy = states;
+  configsCopy = configs;
+  assetsCopy = assets;
+  enableCopy = enable;
+  disableCopy = disable;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -314,19 +314,19 @@
   v25[3] = &unk_1000FA4B0;
   v27 = &v34;
   v28 = &v38;
-  v22 = v15;
+  v22 = stateCopy;
   v26 = v22;
   v29 = &v30;
-  [BKButtonHapticsClickState inspectChangesFromState:v16 toState:v22 withBlock:v25];
+  [BKButtonHapticsClickState inspectChangesFromState:configuredStateCopy toState:v22 withBlock:v25];
   if ([v22 isEnabled])
   {
     if (v39[3])
     {
       v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v22 clickState]);
-      [v21 addObject:v23];
+      [disableCopy addObject:v23];
 
 LABEL_8:
-      [(BKButtonHapticsController *)self _queue_addConfigsAndAssetsForClickState:v22 toStates:v17 configs:v18 assets:v19];
+      [(BKButtonHapticsController *)self _queue_addConfigsAndAssetsForClickState:v22 toStates:statesCopy configs:configsCopy assets:assetsCopy];
       goto LABEL_9;
     }
 
@@ -341,14 +341,14 @@ LABEL_8:
     }
 
     v24 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v22 clickState]);
-    [v20 addObject:v24];
+    [enableCopy addObject:v24];
     goto LABEL_6;
   }
 
   if (*(v35 + 24) == 1)
   {
     v24 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v22 clickState]);
-    [v21 addObject:v24];
+    [disableCopy addObject:v24];
 LABEL_6:
   }
 
@@ -359,18 +359,18 @@ LABEL_9:
   _Block_object_dispose(&v38, 8);
 }
 
-- (void)_queue_addConfigsAndAssetsForClickState:(id)a3 toStates:(id)a4 configs:(id)a5 assets:(id)a6
+- (void)_queue_addConfigsAndAssetsForClickState:(id)state toStates:(id)states configs:(id)configs assets:(id)assets
 {
-  v11 = a3;
-  v51 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [v11 clickState];
-  v15 = [v11 shouldUseHaptic];
+  stateCopy = state;
+  assetsCopy = assets;
+  configsCopy = configs;
+  statesCopy = states;
+  clickState = [stateCopy clickState];
+  shouldUseHaptic = [stateCopy shouldUseHaptic];
   v53 = 0;
   v54 = 0;
   v52 = 0;
-  if (v14 == 16)
+  if (clickState == 16)
   {
     v53 = 100;
     v54 = 100;
@@ -379,50 +379,50 @@ LABEL_9:
 
   else
   {
-    if (v15)
+    if (shouldUseHaptic)
     {
-      v16 = v14;
-      v17 = [v11 hapticClickCount];
-      v18 = [v11 assetType];
-      v19 = v17;
-      v14 = v16;
-      [(BKButtonHapticsController *)self _queue_getSlowHapticType:&v54 getMediumHapticType:&v53 getFastHapticType:&v52 fromAssetType:v18 clickCount:v19];
+      v16 = clickState;
+      hapticClickCount = [stateCopy hapticClickCount];
+      assetType = [stateCopy assetType];
+      v19 = hapticClickCount;
+      clickState = v16;
+      [(BKButtonHapticsController *)self _queue_getSlowHapticType:&v54 getMediumHapticType:&v53 getFastHapticType:&v52 fromAssetType:assetType clickCount:v19];
     }
 
-    if (v14 >= 0x11)
+    if (clickState >= 0x11)
     {
       +[NSAssertionHandler currentHandler];
-      v34 = v33 = v14;
+      v34 = v33 = clickState;
       [v34 handleFailureInMethod:a2 object:self file:@"BKButtonHapticsController.m" lineNumber:454 description:{@"Invalid parameter not satisfying: %@", @"bhClickState < BRClickStateCount"}];
 
-      v14 = v33;
+      clickState = v33;
     }
 
     if (v54 < 0)
     {
       +[NSAssertionHandler currentHandler];
-      v36 = v35 = v14;
+      v36 = v35 = clickState;
       [v36 handleFailureInMethod:a2 object:self file:@"BKButtonHapticsController.m" lineNumber:455 description:{@"Invalid parameter not satisfying: %@", @"slowHapticType >= HAButtonHapticType_Default"}];
 
-      v14 = v35;
+      clickState = v35;
     }
 
     if (v53 < 0)
     {
       +[NSAssertionHandler currentHandler];
-      v38 = v37 = v14;
+      v38 = v37 = clickState;
       [v38 handleFailureInMethod:a2 object:self file:@"BKButtonHapticsController.m" lineNumber:456 description:{@"Invalid parameter not satisfying: %@", @"mediumHapticType >= HAButtonHapticType_Default"}];
 
-      v14 = v37;
+      clickState = v37;
     }
 
     if (v52 < 0)
     {
       +[NSAssertionHandler currentHandler];
-      v40 = v39 = v14;
+      v40 = v39 = clickState;
       [v40 handleFailureInMethod:a2 object:self file:@"BKButtonHapticsController.m" lineNumber:457 description:{@"Invalid parameter not satisfying: %@", @"fastHapticType >= HAButtonHapticType_Default"}];
 
-      v14 = v39;
+      clickState = v39;
     }
   }
 
@@ -433,17 +433,17 @@ LABEL_9:
   v23 = sub_100008528();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v48 = v14;
-    v49 = v12;
-    v47 = self;
-    if (v14 > 0x10)
+    v48 = clickState;
+    v49 = configsCopy;
+    selfCopy = self;
+    if (clickState > 0x10)
     {
       v24 = @"<unknown>";
     }
 
     else
     {
-      v24 = off_1000FA580[v14];
+      v24 = off_1000FA580[clickState];
     }
 
     v25 = v24;
@@ -460,9 +460,9 @@ LABEL_9:
     v62 = v28;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "state:%{public}@ haptics: %{public}@,%{public}@,%{public}@", buf, 0x2Au);
 
-    v14 = v48;
-    v12 = v49;
-    self = v47;
+    clickState = v48;
+    configsCopy = v49;
+    self = selfCopy;
   }
 
   if (v20)
@@ -474,10 +474,10 @@ LABEL_9:
 
 LABEL_23:
     +[NSAssertionHandler currentHandler];
-    v44 = v43 = v14;
+    v44 = v43 = clickState;
     [v44 handleFailureInMethod:v50 object:self file:@"BKButtonHapticsController.m" lineNumber:470 description:@"nope"];
 
-    v14 = v43;
+    clickState = v43;
     if (v22)
     {
       goto LABEL_21;
@@ -485,18 +485,18 @@ LABEL_23:
 
 LABEL_24:
     +[NSAssertionHandler currentHandler];
-    v46 = v45 = v14;
+    v46 = v45 = clickState;
     [v46 handleFailureInMethod:v50 object:self file:@"BKButtonHapticsController.m" lineNumber:471 description:@"nope"];
 
-    v14 = v45;
+    clickState = v45;
     goto LABEL_21;
   }
 
   +[NSAssertionHandler currentHandler];
-  v42 = v41 = v14;
+  v42 = v41 = clickState;
   [v42 handleFailureInMethod:v50 object:self file:@"BKButtonHapticsController.m" lineNumber:469 description:@"nope"];
 
-  v14 = v41;
+  clickState = v41;
   if (!v21)
   {
     goto LABEL_23;
@@ -509,70 +509,70 @@ LABEL_20:
   }
 
 LABEL_21:
-  v29 = [v11 slowConfigDictionaryForHAButtonHapticType:v54];
-  v30 = [v11 normalConfigDictionaryForHAButtonHapticType:v53];
-  v31 = [v11 fastConfigDictionaryForHAButtonHapticType:v52];
-  v32 = [NSNumber numberWithUnsignedInteger:v14];
-  [v13 addObject:v32];
-  [v13 addObject:v32];
-  [v13 addObject:v32];
+  v29 = [stateCopy slowConfigDictionaryForHAButtonHapticType:v54];
+  v30 = [stateCopy normalConfigDictionaryForHAButtonHapticType:v53];
+  v31 = [stateCopy fastConfigDictionaryForHAButtonHapticType:v52];
+  v32 = [NSNumber numberWithUnsignedInteger:clickState];
+  [statesCopy addObject:v32];
+  [statesCopy addObject:v32];
+  [statesCopy addObject:v32];
 
-  [v12 addObject:v29];
-  [v12 addObject:v30];
-  [v12 addObject:v31];
+  [configsCopy addObject:v29];
+  [configsCopy addObject:v30];
+  [configsCopy addObject:v31];
 
-  [v51 addObject:v20];
-  [v51 addObject:v21];
-  [v51 addObject:v22];
+  [assetsCopy addObject:v20];
+  [assetsCopy addObject:v21];
+  [assetsCopy addObject:v22];
 }
 
-- (void)_queue_getSlowHapticType:(int64_t *)a3 getMediumHapticType:(int64_t *)a4 getFastHapticType:(int64_t *)a5 fromAssetType:(int64_t)a6 clickCount:(int64_t)a7
+- (void)_queue_getSlowHapticType:(int64_t *)type getMediumHapticType:(int64_t *)hapticType getFastHapticType:(int64_t *)fastHapticType fromAssetType:(int64_t)assetType clickCount:(int64_t)count
 {
-  *a3 = 0;
-  *a4 = 0;
-  *a5 = 0;
-  if (a6)
+  *type = 0;
+  *hapticType = 0;
+  *fastHapticType = 0;
+  if (assetType)
   {
-    v13 = a6;
+    assetTypeCopy = assetType;
   }
 
   else
   {
-    v13 = 2;
+    assetTypeCopy = 2;
   }
 
-  if (v13 >= 4)
+  if (assetTypeCopy >= 4)
   {
     v17 = +[NSAssertionHandler currentHandler];
     [v17 handleFailureInMethod:a2 object:self file:@"BKButtonHapticsController.m" lineNumber:280 description:@"unexpected assetType"];
   }
 
-  if ((a7 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  if ((count - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v18 = +[NSAssertionHandler currentHandler];
     [v18 handleFailureInMethod:a2 object:self file:@"BKButtonHapticsController.m" lineNumber:281 description:@"unexpected hapticClickCount"];
   }
 
-  v14 = [(BRButtonResolverController *)self->_BRController maxAssetSlots];
-  if (v14 >= 4)
+  maxAssetSlots = [(BRButtonResolverController *)self->_BRController maxAssetSlots];
+  if (maxAssetSlots >= 4)
   {
     v15 = &unk_1000BFA30;
-    if (v14 > 5)
+    if (maxAssetSlots > 5)
     {
       v15 = &unk_1000BFAC0;
     }
 
-    v16 = v15 + 72 * a7 + 8 * v13;
-    *a3 = *(v16 - 80);
-    *a4 = *(v16 - 56);
-    *a5 = *(v16 - 32);
+    v16 = v15 + 72 * count + 8 * assetTypeCopy;
+    *type = *(v16 - 80);
+    *hapticType = *(v16 - 56);
+    *fastHapticType = *(v16 - 32);
   }
 }
 
-- (id)_queue_assetOfType:(int64_t)a3 parameters:(id)a4
+- (id)_queue_assetOfType:(int64_t)type parameters:(id)parameters
 {
-  v6 = a4;
-  if (a3)
+  parametersCopy = parameters;
+  if (type)
   {
     if (!self->_assetCache)
     {
@@ -581,11 +581,11 @@ LABEL_21:
       self->_assetCache = v7;
     }
 
-    v9 = [NSNumber numberWithInteger:a3];
+    v9 = [NSNumber numberWithInteger:type];
     v10 = [(NSMutableDictionary *)self->_assetCache objectForKey:v9];
     if (!v10)
     {
-      v10 = [BRAsset withType:a3 andParameters:v6];
+      v10 = [BRAsset withType:type andParameters:parametersCopy];
       [(NSMutableDictionary *)self->_assetCache setObject:v10 forKey:v9];
     }
   }
@@ -598,24 +598,24 @@ LABEL_21:
   return v10;
 }
 
-- (void)_configureSyncWithBlock:(id)a3
+- (void)_configureSyncWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002419C;
   v7[3] = &unk_1000FC300;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_configureAsyncWithBlock:(id)a3
+- (void)_configureAsyncWithBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v8 = +[NSAssertionHandler currentHandler];
     [v8 handleFailureInMethod:a2 object:self file:@"BKButtonHapticsController.m" lineNumber:233 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
@@ -627,8 +627,8 @@ LABEL_21:
   block[2] = sub_1000242E0;
   block[3] = &unk_1000FC300;
   block[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = blockCopy;
+  v7 = blockCopy;
   dispatch_async(queue, block);
 }
 
@@ -637,21 +637,21 @@ LABEL_21:
   v3 = [BSDescriptionBuilder builderWithObject:self];
   [v3 appendArraySection:self->_clickStatesPending withName:@"clickStatesPending" multilinePrefix:@" " skipIfEmpty:0];
   [v3 appendArraySection:self->_clickStatesConfigured withName:@"clickStatesConfigured" multilinePrefix:@" " skipIfEmpty:0];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (BKButtonHapticsController)initWithBHButtonHapticsController:(id)a3
+- (BKButtonHapticsController)initWithBHButtonHapticsController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v33.receiver = self;
   v33.super_class = BKButtonHapticsController;
   v6 = [(BKButtonHapticsController *)&v33 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_BRController, a3);
+    objc_storeStrong(&v6->_BRController, controller);
     v8 = dispatch_group_create();
     controllerReadyGroup = v7->_controllerReadyGroup;
     v7->_controllerReadyGroup = v8;
@@ -692,9 +692,9 @@ LABEL_21:
     [(BRButtonResolverController *)BRController scheduleReadyNotificationOnDispatchQueue:v22 withBlock:v31];
 
     v24 = +[BSPlatform sharedInstance];
-    v25 = [v24 homeButtonType];
+    homeButtonType = [v24 homeButtonType];
 
-    if (v25 == 2)
+    if (homeButtonType == 2)
     {
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
@@ -738,7 +738,7 @@ LABEL_21:
   block[1] = 3221225472;
   block[2] = sub_1000248FC;
   block[3] = &unk_1000FC018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100125D90 != -1)
   {
     dispatch_once(&qword_100125D90, block);

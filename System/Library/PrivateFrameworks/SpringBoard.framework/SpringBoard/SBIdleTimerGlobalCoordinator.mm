@@ -1,39 +1,39 @@
 @interface SBIdleTimerGlobalCoordinator
-+ (id)_sharedInstanceCreateIfNeeded:(BOOL)a3;
++ (id)_sharedInstanceCreateIfNeeded:(BOOL)needed;
 - (BOOL)_areIdleTimerDisableAssertionsPrevented;
 - (BOOL)_hasIdleTimerDisableAssertions;
-- (BOOL)_updateIdleTimerForReason:(id)a3;
+- (BOOL)_updateIdleTimerForReason:(id)reason;
 - (BOOL)isIdleTimerDisabled;
 - (SBIdleTimerGlobalCoordinator)init;
 - (SBIdleTimerGlobalCoordinatorDelegate)delegate;
 - (SBIdleTimerProviding)_idleTimerProvider;
 - (id)_activeIdleTimerProvider;
 - (id)_stateCaptureDescription;
-- (id)_updateIdleTimerForProvider:(id)a3 behavior:(id)a4 descriptor:(id)a5 forReason:(id)a6;
-- (id)_updateIdleTimerForProvider:(id)a3 behavior:(id)a4 forReason:(id)a5;
-- (id)acquireIdleTimerDisableAssertionForReason:(id)a3;
-- (id)idleTimerProvider:(id)a3 didProposeBehavior:(id)a4 forReason:(id)a5;
+- (id)_updateIdleTimerForProvider:(id)provider behavior:(id)behavior descriptor:(id)descriptor forReason:(id)reason;
+- (id)_updateIdleTimerForProvider:(id)provider behavior:(id)behavior forReason:(id)reason;
+- (id)acquireIdleTimerDisableAssertionForReason:(id)reason;
+- (id)idleTimerProvider:(id)provider didProposeBehavior:(id)behavior forReason:(id)reason;
 - (void)_addStateCaptureHandlers;
-- (void)_applyActiveIdleTimerDescriptorForReason:(id)a3;
+- (void)_applyActiveIdleTimerDescriptorForReason:(id)reason;
 - (void)_logEffectiveLockTimeout;
-- (void)_logTelemetryForIdleTimerUpdatedFromTimer:(id)a3 toTimer:(id)a4 withReason:(id)a5;
+- (void)_logTelemetryForIdleTimerUpdatedFromTimer:(id)timer toTimer:(id)toTimer withReason:(id)reason;
 - (void)_registerClientDisableAssertionsTestRecipe;
 - (void)_registerInternalDisableAssertionsTestRecipe;
 - (void)_registerTestRecipes;
-- (void)_setIdleTimerProvider:(id)a3;
-- (void)_setIdleTimerSourceEnabled:(BOOL)a3 forReason:(id)a4;
-- (void)_setIdleTimerWithDescriptor:(id)a3 forReason:(id)a4;
+- (void)_setIdleTimerProvider:(id)provider;
+- (void)_setIdleTimerSourceEnabled:(BOOL)enabled forReason:(id)reason;
+- (void)_setIdleTimerWithDescriptor:(id)descriptor forReason:(id)reason;
 - (void)_unregisterTestRecipes;
 - (void)_updateGlobalStateDisableAssertions;
 - (void)dealloc;
-- (void)idleTimerDidRefresh:(id)a3;
-- (void)idleTimerDidResetForUserAttention:(id)a3;
-- (void)idleTimerGlobalStateMonitor:(id)a3 changedForReason:(id)a4;
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5;
-- (void)resetIdleTimerForReason:(id)a3;
-- (void)resetIdleTimerIfCurrentIdealDurationAtLeast:(int64_t)a3 forReason:(id)a4;
-- (void)resetIdleTimerIfNonConsecutiveSource:(id)a3 forReason:(id)a4;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)idleTimerDidRefresh:(id)refresh;
+- (void)idleTimerDidResetForUserAttention:(id)attention;
+- (void)idleTimerGlobalStateMonitor:(id)monitor changedForReason:(id)reason;
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context;
+- (void)resetIdleTimerForReason:(id)reason;
+- (void)resetIdleTimerIfCurrentIdealDurationAtLeast:(int64_t)least forReason:(id)reason;
+- (void)resetIdleTimerIfNonConsecutiveSource:(id)source forReason:(id)reason;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 - (void)start;
 @end
 
@@ -63,9 +63,9 @@ void __37__SBIdleTimerGlobalCoordinator_start__block_invoke(uint64_t a1, void *a
   else
   {
     v4 = +[SBSyncController sharedInstance];
-    v5 = [v4 isInUse];
+    isInUse = [v4 isInUse];
 
-    if (!v5)
+    if (!isInUse)
     {
       if ([v2 isVisible])
       {
@@ -76,31 +76,31 @@ void __37__SBIdleTimerGlobalCoordinator_start__block_invoke(uint64_t a1, void *a
       {
         +[SBWorkspace mainWorkspace];
       }
-      v6 = ;
+      sharedInstance = ;
       goto LABEL_6;
     }
 
     v3 = SBSyncController;
   }
 
-  v6 = [(__objc2_class *)v3 sharedInstance];
+  sharedInstance = [(__objc2_class *)v3 sharedInstance];
 LABEL_6:
-  v7 = v6;
+  v7 = sharedInstance;
 
   return v7;
 }
 
 - (BOOL)isIdleTimerDisabled
 {
-  v2 = [(SBIdleTimerGlobalCoordinator *)self idleTimer];
-  v3 = [v2 isDisabled];
+  idleTimer = [(SBIdleTimerGlobalCoordinator *)self idleTimer];
+  isDisabled = [idleTimer isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (void)_updateGlobalStateDisableAssertions
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBIdleTimerGlobalCoordinator _updateGlobalStateDisableAssertions]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
@@ -119,9 +119,9 @@ LABEL_6:
   return WeakRetained;
 }
 
-+ (id)_sharedInstanceCreateIfNeeded:(BOOL)a3
++ (id)_sharedInstanceCreateIfNeeded:(BOOL)needed
 {
-  if (a3 && _sharedInstanceCreateIfNeeded__onceToken != -1)
+  if (needed && _sharedInstanceCreateIfNeeded__onceToken != -1)
   {
     +[SBIdleTimerGlobalCoordinator _sharedInstanceCreateIfNeeded:];
   }
@@ -206,14 +206,14 @@ void __62__SBIdleTimerGlobalCoordinator__sharedInstanceCreateIfNeeded___block_in
 
 - (void)start
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBIdleTimerGlobalCoordinator.m" lineNumber:151 description:@"Cannot start if already started."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBIdleTimerGlobalCoordinator.m" lineNumber:151 description:@"Cannot start if already started."];
 }
 
-- (void)resetIdleTimerForReason:(id)a3
+- (void)resetIdleTimerForReason:(id)reason
 {
-  v6 = a3;
-  if (![v6 length])
+  reasonCopy = reason;
+  if (![reasonCopy length])
   {
     [(SBIdleTimerGlobalCoordinator *)a2 resetIdleTimerForReason:?];
   }
@@ -223,19 +223,19 @@ void __62__SBIdleTimerGlobalCoordinator__sharedInstanceCreateIfNeeded___block_in
     [SBIdleTimerGlobalCoordinator resetIdleTimerForReason:];
   }
 
-  if (![(SBIdleTimerGlobalCoordinator *)self _updateIdleTimerForReason:v6])
+  if (![(SBIdleTimerGlobalCoordinator *)self _updateIdleTimerForReason:reasonCopy])
   {
-    v5 = [(SBIdleTimerGlobalCoordinator *)self idleTimer];
-    [v5 reset];
+    idleTimer = [(SBIdleTimerGlobalCoordinator *)self idleTimer];
+    [idleTimer reset];
   }
 }
 
-- (void)resetIdleTimerIfNonConsecutiveSource:(id)a3 forReason:(id)a4
+- (void)resetIdleTimerIfNonConsecutiveSource:(id)source forReason:(id)reason
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = v10;
-  if (!v10)
+  sourceCopy = source;
+  reasonCopy = reason;
+  v9 = sourceCopy;
+  if (!sourceCopy)
   {
     [SBIdleTimerGlobalCoordinator resetIdleTimerIfNonConsecutiveSource:a2 forReason:self];
     v9 = 0;
@@ -243,37 +243,37 @@ void __62__SBIdleTimerGlobalCoordinator__sharedInstanceCreateIfNeeded___block_in
 
   if (self->_lastResetSource != v9)
   {
-    [(SBIdleTimerGlobalCoordinator *)self resetIdleTimerForReason:v8];
-    objc_storeStrong(&self->_lastResetSource, a3);
+    [(SBIdleTimerGlobalCoordinator *)self resetIdleTimerForReason:reasonCopy];
+    objc_storeStrong(&self->_lastResetSource, source);
   }
 }
 
-- (void)resetIdleTimerIfCurrentIdealDurationAtLeast:(int64_t)a3 forReason:(id)a4
+- (void)resetIdleTimerIfCurrentIdealDurationAtLeast:(int64_t)least forReason:(id)reason
 {
-  v9 = a4;
-  v6 = [(SBIdleTimerGlobalCoordinator *)self _activeIdleTimerProvider];
-  v7 = v6;
-  if (v6)
+  reasonCopy = reason;
+  _activeIdleTimerProvider = [(SBIdleTimerGlobalCoordinator *)self _activeIdleTimerProvider];
+  v7 = _activeIdleTimerProvider;
+  if (_activeIdleTimerProvider)
   {
-    v8 = [v6 coordinatorRequestedIdleTimerBehavior:self];
-    if ([v8 idleTimerDuration] >= a3)
+    v8 = [_activeIdleTimerProvider coordinatorRequestedIdleTimerBehavior:self];
+    if ([v8 idleTimerDuration] >= least)
     {
-      [(SBIdleTimerGlobalCoordinator *)self resetIdleTimerForReason:v9];
+      [(SBIdleTimerGlobalCoordinator *)self resetIdleTimerForReason:reasonCopy];
     }
   }
 }
 
-- (id)acquireIdleTimerDisableAssertionForReason:(id)a3
+- (id)acquireIdleTimerDisableAssertionForReason:(id)reason
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBIdleTimerGlobalCoordinator acquireIdleTimerDisableAssertionForReason:];
   }
 
   idleTimerDisableAssertions = self->_idleTimerDisableAssertions;
-  if (!idleTimerDisableAssertions || ([(NSMutableDictionary *)idleTimerDisableAssertions objectForKey:v4], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!idleTimerDisableAssertions || ([(NSMutableDictionary *)idleTimerDisableAssertions objectForKey:reasonCopy], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     objc_initWeak(&location, self);
     v8 = objc_alloc(MEMORY[0x277CF0CE8]);
@@ -284,11 +284,11 @@ void __62__SBIdleTimerGlobalCoordinator__sharedInstanceCreateIfNeeded___block_in
     v21[3] = &unk_2783AEA48;
     objc_copyWeak(&v22, &location);
     v21[4] = self;
-    v6 = [v8 initWithIdentifier:@"DisableIdleTimer" forReason:v4 queue:MEMORY[0x277D85CD0] invalidationBlock:v21];
+    v6 = [v8 initWithIdentifier:@"DisableIdleTimer" forReason:reasonCopy queue:MEMORY[0x277D85CD0] invalidationBlock:v21];
 
-    v10 = [(SBIdleTimerGlobalCoordinator *)self _idleTimerDisableAssertions];
-    v11 = [v10 count];
-    [v10 setObject:v6 forKey:v4];
+    _idleTimerDisableAssertions = [(SBIdleTimerGlobalCoordinator *)self _idleTimerDisableAssertions];
+    v11 = [_idleTimerDisableAssertions count];
+    [_idleTimerDisableAssertions setObject:v6 forKey:reasonCopy];
     if (v11)
     {
       v12 = SBLogIdleTimer();
@@ -299,7 +299,7 @@ void __62__SBIdleTimerGlobalCoordinator__sharedInstanceCreateIfNeeded___block_in
         *buf = 138543618;
         v25 = v14;
         v26 = 2114;
-        v27 = v4;
+        v27 = reasonCopy;
         _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ - Idle timer disable assertion: Added a new idle timer disable assertion for reason: %{public}@", buf, 0x16u);
       }
     }
@@ -316,11 +316,11 @@ void __62__SBIdleTimerGlobalCoordinator__sharedInstanceCreateIfNeeded___block_in
           *buf = 138543618;
           v25 = v20;
           v26 = 2114;
-          v27 = v4;
+          v27 = reasonCopy;
           _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ - Idle timer disable assertion: Disabling idle timer for reason: %{public}@", buf, 0x16u);
         }
 
-        [(SBIdleTimerGlobalCoordinator *)self _setIdleTimerSourceEnabled:0 forReason:v4];
+        [(SBIdleTimerGlobalCoordinator *)self _setIdleTimerSourceEnabled:0 forReason:reasonCopy];
         goto LABEL_15;
       }
 
@@ -332,7 +332,7 @@ void __62__SBIdleTimerGlobalCoordinator__sharedInstanceCreateIfNeeded___block_in
         *buf = 138543618;
         v25 = v16;
         v26 = 2114;
-        v27 = v4;
+        v27 = reasonCopy;
         _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ - Idle timer disable assertion: Added a new idle timer disable assertion for reason: %{public}@ but disable is prevented.", buf, 0x16u);
       }
     }
@@ -346,7 +346,7 @@ LABEL_15:
   v7 = SBLogIdleTimer();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [(SBIdleTimerGlobalCoordinator *)self acquireIdleTimerDisableAssertionForReason:v4, v7];
+    [(SBIdleTimerGlobalCoordinator *)self acquireIdleTimerDisableAssertionForReason:reasonCopy, v7];
   }
 
 LABEL_16:
@@ -399,39 +399,39 @@ void __74__SBIdleTimerGlobalCoordinator_acquireIdleTimerDisableAssertionForReaso
   }
 }
 
-- (id)idleTimerProvider:(id)a3 didProposeBehavior:(id)a4 forReason:(id)a5
+- (id)idleTimerProvider:(id)provider didProposeBehavior:(id)behavior forReason:(id)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  behaviorCopy = behavior;
+  reasonCopy = reason;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBIdleTimerGlobalCoordinator idleTimerProvider:didProposeBehavior:forReason:];
   }
 
-  v11 = [(SBIdleTimerGlobalCoordinator *)self _activeIdleTimerProvider];
-  if (v11 == v8)
+  _activeIdleTimerProvider = [(SBIdleTimerGlobalCoordinator *)self _activeIdleTimerProvider];
+  if (_activeIdleTimerProvider == providerCopy)
   {
-    v14 = [SBIdleTimerBehavior behaviorForBehaviorProvider:v9];
-    v13 = [(SBIdleTimerGlobalCoordinator *)self _updateIdleTimerForProvider:v8 behavior:v14 forReason:v10];
+    v14 = [SBIdleTimerBehavior behaviorForBehaviorProvider:behaviorCopy];
+    v13 = [(SBIdleTimerGlobalCoordinator *)self _updateIdleTimerForProvider:providerCopy behavior:v14 forReason:reasonCopy];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_idleTimerProvider);
 
-    if (v11 != WeakRetained)
+    if (_activeIdleTimerProvider != WeakRetained)
     {
       [(SBIdleTimerGlobalCoordinator *)self _updateIdleTimerForReason:@"ActiveProviderChanged"];
     }
 
-    v13 = [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper updateProvider:v8 behavior:v9 reason:v10];
+    v13 = [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper updateProvider:providerCopy behavior:behaviorCopy reason:reasonCopy];
   }
 
   return v13;
 }
 
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = SBLogIdleTimer();
@@ -493,11 +493,11 @@ id __56__SBIdleTimerGlobalCoordinator__logEffectiveLockTimeout__block_invoke(uin
 
 - (BOOL)_hasIdleTimerDisableAssertions
 {
-  v2 = [(SBIdleTimerGlobalCoordinator *)self _idleTimerDisableAssertions];
-  v3 = v2;
-  if (v2)
+  _idleTimerDisableAssertions = [(SBIdleTimerGlobalCoordinator *)self _idleTimerDisableAssertions];
+  v3 = _idleTimerDisableAssertions;
+  if (_idleTimerDisableAssertions)
   {
-    v4 = [v2 count] != 0;
+    v4 = [_idleTimerDisableAssertions count] != 0;
   }
 
   else
@@ -510,15 +510,15 @@ id __56__SBIdleTimerGlobalCoordinator__logEffectiveLockTimeout__block_invoke(uin
 
 - (BOOL)_areIdleTimerDisableAssertionsPrevented
 {
-  v2 = [(SBIdleTimerGlobalStateMonitor *)self->_globalStateMonitor aggregatedClientConfiguration];
-  v3 = v2;
-  if (v2)
+  aggregatedClientConfiguration = [(SBIdleTimerGlobalStateMonitor *)self->_globalStateMonitor aggregatedClientConfiguration];
+  v3 = aggregatedClientConfiguration;
+  if (aggregatedClientConfiguration)
   {
-    v4 = [v2 maxExpirationTimeoutSettings];
-    v5 = v4;
-    if (v4)
+    maxExpirationTimeoutSettings = [aggregatedClientConfiguration maxExpirationTimeoutSettings];
+    v5 = maxExpirationTimeoutSettings;
+    if (maxExpirationTimeoutSettings)
     {
-      v6 = [v4 highestPrecedence] > 1;
+      v6 = [maxExpirationTimeoutSettings highestPrecedence] > 1;
     }
 
     else
@@ -535,10 +535,10 @@ id __56__SBIdleTimerGlobalCoordinator__logEffectiveLockTimeout__block_invoke(uin
   return v6;
 }
 
-- (BOOL)_updateIdleTimerForReason:(id)a3
+- (BOOL)_updateIdleTimerForReason:(id)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBIdleTimerGlobalCoordinator _updateIdleTimerForReason:];
@@ -552,33 +552,33 @@ id __56__SBIdleTimerGlobalCoordinator__logEffectiveLockTimeout__block_invoke(uin
     v17 = 138543618;
     v18 = v7;
     v19 = 2114;
-    v20 = v4;
+    v20 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - updateIdleTimerForReason:%{public}@]", &v17, 0x16u);
   }
 
   [(SBIdleTimerGlobalCoordinator *)self _updateGlobalStateDisableAssertions];
-  v8 = [(SBIdleTimerGlobalCoordinator *)self _activeIdleTimerProvider];
-  if (v8)
+  _activeIdleTimerProvider = [(SBIdleTimerGlobalCoordinator *)self _activeIdleTimerProvider];
+  if (_activeIdleTimerProvider)
   {
-    v9 = [(SBIdleTimerGlobalCoordinator *)self _idleTimerProvider];
+    _idleTimerProvider = [(SBIdleTimerGlobalCoordinator *)self _idleTimerProvider];
 
-    if (v8 != v9)
+    if (_activeIdleTimerProvider != _idleTimerProvider)
     {
-      [(SBIdleTimerGlobalCoordinator *)self _setIdleTimerProvider:v8];
+      [(SBIdleTimerGlobalCoordinator *)self _setIdleTimerProvider:_activeIdleTimerProvider];
     }
 
-    v10 = [v8 coordinatorRequestedIdleTimerBehavior:self];
+    v10 = [_activeIdleTimerProvider coordinatorRequestedIdleTimerBehavior:self];
     v11 = [SBIdleTimerBehavior behaviorForBehaviorProvider:v10];
     v12 = [(SBIdleTimerDescriptorFactory *)self->_idleTimerDescriptorFactory idleTimerDescriptorForBehavior:v11];
     v13 = v12;
-    if (v8 == v9 && ([v12 isEqual:self->_enabledIdleTimerDescriptor] & 1) != 0)
+    if (_activeIdleTimerProvider == _idleTimerProvider && ([v12 isEqual:self->_enabledIdleTimerDescriptor] & 1) != 0)
     {
       v14 = 0;
     }
 
     else
     {
-      v15 = [(SBIdleTimerGlobalCoordinator *)self _updateIdleTimerForProvider:v8 behavior:v11 descriptor:v13 forReason:v4];
+      v15 = [(SBIdleTimerGlobalCoordinator *)self _updateIdleTimerForProvider:_activeIdleTimerProvider behavior:v11 descriptor:v13 forReason:reasonCopy];
       v14 = 1;
     }
   }
@@ -591,9 +591,9 @@ id __56__SBIdleTimerGlobalCoordinator__logEffectiveLockTimeout__block_invoke(uin
   return v14;
 }
 
-- (void)_setIdleTimerProvider:(id)a3
+- (void)_setIdleTimerProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBIdleTimerGlobalCoordinator _setIdleTimerProvider:];
@@ -609,35 +609,35 @@ id __56__SBIdleTimerGlobalCoordinator__logEffectiveLockTimeout__block_invoke(uin
   }
 }
 
-- (id)_updateIdleTimerForProvider:(id)a3 behavior:(id)a4 descriptor:(id)a5 forReason:(id)a6
+- (id)_updateIdleTimerForProvider:(id)provider behavior:(id)behavior descriptor:(id)descriptor forReason:(id)reason
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  providerCopy = provider;
+  behaviorCopy = behavior;
+  descriptorCopy = descriptor;
+  reasonCopy = reason;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBIdleTimerGlobalCoordinator _updateIdleTimerForProvider:behavior:descriptor:forReason:];
   }
 
-  [(SBIdleTimerGlobalCoordinator *)self _setIdleTimerProvider:v10];
-  v14 = [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper idleTimerProxyForProvider:v10];
+  [(SBIdleTimerGlobalCoordinator *)self _setIdleTimerProvider:providerCopy];
+  v14 = [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper idleTimerProxyForProvider:providerCopy];
   if (v14)
   {
     v15 = v14;
-    v16 = [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper updateProvider:v10 behavior:v11 reason:v13];
+    v16 = [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper updateProvider:providerCopy behavior:behaviorCopy reason:reasonCopy];
   }
 
   else
   {
     v15 = [[SBIdleTimerProxy alloc] initWithIdleTimerSource:0];
-    [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper bindProvider:v10 toSourceTimer:v15 behavior:v11 forReason:v13];
+    [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper bindProvider:providerCopy toSourceTimer:v15 behavior:behaviorCopy forReason:reasonCopy];
   }
 
   [(SBIdleTimerProxy *)self->_enabledIdleTimerProxy setSourceTimer:0];
   objc_storeStrong(&self->_enabledIdleTimerProxy, v15);
-  objc_storeStrong(&self->_enabledIdleTimerDescriptor, a5);
+  objc_storeStrong(&self->_enabledIdleTimerDescriptor, descriptor);
   idleTimerSourceEnabled = self->_idleTimerSourceEnabled;
   v18 = SBLogIdleTimer();
   v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -649,11 +649,11 @@ id __56__SBIdleTimerGlobalCoordinator__logEffectiveLockTimeout__block_invoke(uin
       v23 = 138543618;
       v24 = enabledIdleTimerDescriptor;
       v25 = 2114;
-      v26 = v13;
+      v26 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "applying updated idle timer descriptor: %{public}@ reason:%{public}@", &v23, 0x16u);
     }
 
-    [(SBIdleTimerGlobalCoordinator *)self _applyActiveIdleTimerDescriptorForReason:v13];
+    [(SBIdleTimerGlobalCoordinator *)self _applyActiveIdleTimerDescriptorForReason:reasonCopy];
   }
 
   else
@@ -664,7 +664,7 @@ id __56__SBIdleTimerGlobalCoordinator__logEffectiveLockTimeout__block_invoke(uin
       v23 = 138543618;
       v24 = v21;
       v25 = 2114;
-      v26 = v13;
+      v26 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "not applying updated idle timer descriptor: %{public}@ reason:%{public}@", &v23, 0x16u);
     }
   }
@@ -672,43 +672,43 @@ id __56__SBIdleTimerGlobalCoordinator__logEffectiveLockTimeout__block_invoke(uin
   return v15;
 }
 
-- (id)_updateIdleTimerForProvider:(id)a3 behavior:(id)a4 forReason:(id)a5
+- (id)_updateIdleTimerForProvider:(id)provider behavior:(id)behavior forReason:(id)reason
 {
   v8 = MEMORY[0x277CCACC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  reasonCopy = reason;
+  behaviorCopy = behavior;
+  providerCopy = provider;
   if (([v8 isMainThread] & 1) == 0)
   {
     [SBIdleTimerGlobalCoordinator _updateIdleTimerForProvider:behavior:forReason:];
   }
 
-  v12 = [(SBIdleTimerDescriptorFactory *)self->_idleTimerDescriptorFactory idleTimerDescriptorForBehavior:v10];
-  v13 = [(SBIdleTimerGlobalCoordinator *)self _updateIdleTimerForProvider:v11 behavior:v10 descriptor:v12 forReason:v9];
+  v12 = [(SBIdleTimerDescriptorFactory *)self->_idleTimerDescriptorFactory idleTimerDescriptorForBehavior:behaviorCopy];
+  v13 = [(SBIdleTimerGlobalCoordinator *)self _updateIdleTimerForProvider:providerCopy behavior:behaviorCopy descriptor:v12 forReason:reasonCopy];
 
   return v13;
 }
 
-- (void)_setIdleTimerSourceEnabled:(BOOL)a3 forReason:(id)a4
+- (void)_setIdleTimerSourceEnabled:(BOOL)enabled forReason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  reasonCopy = reason;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBIdleTimerGlobalCoordinator _setIdleTimerSourceEnabled:forReason:];
   }
 
-  if (self->_idleTimerSourceEnabled != v4)
+  if (self->_idleTimerSourceEnabled != enabledCopy)
   {
-    self->_idleTimerSourceEnabled = v4;
-    [(SBIdleTimerGlobalCoordinator *)self _applyActiveIdleTimerDescriptorForReason:v6];
+    self->_idleTimerSourceEnabled = enabledCopy;
+    [(SBIdleTimerGlobalCoordinator *)self _applyActiveIdleTimerDescriptorForReason:reasonCopy];
   }
 }
 
-- (void)_applyActiveIdleTimerDescriptorForReason:(id)a3
+- (void)_applyActiveIdleTimerDescriptorForReason:(id)reason
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBIdleTimerGlobalCoordinator _applyActiveIdleTimerDescriptorForReason:];
@@ -722,11 +722,11 @@ id __56__SBIdleTimerGlobalCoordinator__logEffectiveLockTimeout__block_invoke(uin
     if (v7)
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "_applyActiveIdleTimerDescriptorForReason:%{public}@ enabled", &v9, 0xCu);
     }
 
-    [(SBIdleTimerGlobalCoordinator *)self _setIdleTimerWithDescriptor:self->_enabledIdleTimerDescriptor forReason:v4];
+    [(SBIdleTimerGlobalCoordinator *)self _setIdleTimerWithDescriptor:self->_enabledIdleTimerDescriptor forReason:reasonCopy];
     [(SBIdleTimerProxy *)self->_enabledIdleTimerProxy setSourceTimer:self->_idleTimerProxy];
   }
 
@@ -735,21 +735,21 @@ id __56__SBIdleTimerGlobalCoordinator__logEffectiveLockTimeout__block_invoke(uin
     if (v7)
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "_applyActiveIdleTimerDescriptorForReason:%{public}@ disabled", &v9, 0xCu);
     }
 
     [(SBIdleTimerProxy *)self->_enabledIdleTimerProxy setSourceTimer:0];
     v8 = +[SBIdleTimerDescriptorFactory disabledIdleTimerDescriptor];
-    [(SBIdleTimerGlobalCoordinator *)self _setIdleTimerWithDescriptor:v8 forReason:v4];
+    [(SBIdleTimerGlobalCoordinator *)self _setIdleTimerWithDescriptor:v8 forReason:reasonCopy];
   }
 }
 
-- (void)_setIdleTimerWithDescriptor:(id)a3 forReason:(id)a4
+- (void)_setIdleTimerWithDescriptor:(id)descriptor forReason:(id)reason
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  reasonCopy = reason;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBIdleTimerGlobalCoordinator _setIdleTimerWithDescriptor:forReason:];
@@ -759,24 +759,24 @@ id __56__SBIdleTimerGlobalCoordinator__logEffectiveLockTimeout__block_invoke(uin
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543618;
-    v15 = v6;
+    v15 = descriptorCopy;
     v16 = 2114;
-    v17 = v7;
+    v17 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "_setIdleTimerWithDescriptor:%{public}@ reason:%{public}@]", &v14, 0x16u);
   }
 
-  v9 = [(SBIdleTimerGlobalCoordinator *)self _activeIdleTimerProvider];
-  [(SBIdleTimerGlobalCoordinator *)self _setIdleTimerProvider:v9];
+  _activeIdleTimerProvider = [(SBIdleTimerGlobalCoordinator *)self _activeIdleTimerProvider];
+  [(SBIdleTimerGlobalCoordinator *)self _setIdleTimerProvider:_activeIdleTimerProvider];
 
-  v10 = [(SBIdleTimerGlobalCoordinator *)self idleTimer];
+  idleTimer = [(SBIdleTimerGlobalCoordinator *)self idleTimer];
   LOBYTE(v14) = 0;
-  v11 = [SBIdleTimerFactory idleTimerForDescriptor:v6 didLogDescriptor:&v14];
-  if (v11 == v10)
+  v11 = [SBIdleTimerFactory idleTimerForDescriptor:descriptorCopy didLogDescriptor:&v14];
+  if (v11 == idleTimer)
   {
-    v13 = SBLogIdleTimer();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+    delegate = SBLogIdleTimer();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEBUG))
     {
-      [(SBIdleTimerGlobalCoordinator *)self _setIdleTimerWithDescriptor:v11 forReason:v13];
+      [(SBIdleTimerGlobalCoordinator *)self _setIdleTimerWithDescriptor:v11 forReason:delegate];
     }
   }
 
@@ -785,12 +785,12 @@ id __56__SBIdleTimerGlobalCoordinator__logEffectiveLockTimeout__block_invoke(uin
     if ((v14 & 1) == 0)
     {
       v12 = SBLogIdleTimer();
-      [v6 logAuditReasons:v12];
+      [descriptorCopy logAuditReasons:v12];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v10 setActivated:0];
+      [idleTimer setActivated:0];
     }
 
     [(SBIdleTimerProxy *)self->_idleTimerProxy setSourceTimer:v11];
@@ -799,18 +799,18 @@ id __56__SBIdleTimerGlobalCoordinator__logEffectiveLockTimeout__block_invoke(uin
       [v11 setActivated:1];
     }
 
-    v13 = [(SBIdleTimerGlobalCoordinator *)self delegate];
-    [v13 idleTimerGlobalCoordinator:self didActivateIdleTimer:v11];
+    delegate = [(SBIdleTimerGlobalCoordinator *)self delegate];
+    [delegate idleTimerGlobalCoordinator:self didActivateIdleTimer:v11];
   }
 
-  [(SBIdleTimerGlobalCoordinator *)self _logTelemetryForIdleTimerUpdatedFromTimer:v10 toTimer:v11 withReason:v7];
+  [(SBIdleTimerGlobalCoordinator *)self _logTelemetryForIdleTimerUpdatedFromTimer:idleTimer toTimer:v11 withReason:reasonCopy];
   [v11 reset];
 }
 
 - (void)_addStateCaptureHandlers
 {
-  v5 = self;
-  v2 = v5;
+  selfCopy = self;
+  v2 = selfCopy;
   v3 = BSLogAddStateCaptureBlockWithTitle();
   stateCaptureAssertion = v2->_stateCaptureAssertion;
   v2->_stateCaptureAssertion = v3;
@@ -839,13 +839,13 @@ __CFString *__56__SBIdleTimerGlobalCoordinator__addStateCaptureHandlers__block_i
   v8 = 3221225472;
   v9 = __56__SBIdleTimerGlobalCoordinator__stateCaptureDescription__block_invoke;
   v10 = &unk_2783A92D8;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendBodySectionWithName:0 multilinePrefix:0 block:&v7];
-  v5 = [v4 build];
+  build = [v4 build];
 
-  return v5;
+  return build;
 }
 
 void __56__SBIdleTimerGlobalCoordinator__stateCaptureDescription__block_invoke(uint64_t a1)
@@ -863,18 +863,18 @@ void __56__SBIdleTimerGlobalCoordinator__stateCaptureDescription__block_invoke(u
   v9 = [v7 appendObject:WeakRetained withName:@"IdleTimerProvider"];
 }
 
-- (void)_logTelemetryForIdleTimerUpdatedFromTimer:(id)a3 toTimer:(id)a4 withReason:(id)a5
+- (void)_logTelemetryForIdleTimerUpdatedFromTimer:(id)timer toTimer:(id)toTimer withReason:(id)reason
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 isDisabled])
+  timerCopy = timer;
+  toTimerCopy = toTimer;
+  reasonCopy = reason;
+  if ([toTimerCopy isDisabled])
   {
-    if (([v9 hasPrefix:@"IdleTimerDisableChangedForSceneManager - client:"] & 1) != 0 || objc_msgSend(v9, "hasPrefix:", @"IdleTimerServiceTimeoutAssertionsDidChange - client:"))
+    if (([reasonCopy hasPrefix:@"IdleTimerDisableChangedForSceneManager - client:"] & 1) != 0 || objc_msgSend(reasonCopy, "hasPrefix:", @"IdleTimerServiceTimeoutAssertionsDidChange - client:"))
     {
-      if ([v9 hasPrefix:@"IdleTimerDisableChangedForSceneManager - client:"])
+      if ([reasonCopy hasPrefix:@"IdleTimerDisableChangedForSceneManager - client:"])
       {
-        v10 = [v9 substringFromIndex:{objc_msgSend(@"IdleTimerDisableChangedForSceneManager - client:", "length")}];
+        v10 = [reasonCopy substringFromIndex:{objc_msgSend(@"IdleTimerDisableChangedForSceneManager - client:", "length")}];
       }
 
       else
@@ -882,9 +882,9 @@ void __56__SBIdleTimerGlobalCoordinator__stateCaptureDescription__block_invoke(u
         v10 = 0;
       }
 
-      if ([v9 hasPrefix:@"IdleTimerServiceTimeoutAssertionsDidChange - client:"])
+      if ([reasonCopy hasPrefix:@"IdleTimerServiceTimeoutAssertionsDidChange - client:"])
       {
-        v11 = [v9 substringFromIndex:{objc_msgSend(@"IdleTimerServiceTimeoutAssertionsDidChange - client:", "length")}];
+        v11 = [reasonCopy substringFromIndex:{objc_msgSend(@"IdleTimerServiceTimeoutAssertionsDidChange - client:", "length")}];
 
         v10 = v11;
       }
@@ -901,54 +901,54 @@ void __56__SBIdleTimerGlobalCoordinator__stateCaptureDescription__block_invoke(u
     v10 = 0;
   }
 
-  v12 = [v17 isDisabled];
-  if (v12 != [v8 isDisabled] || !BSEqualStrings() || objc_msgSend(v9, "hasSuffix:", @"AutoLockTimeout"))
+  isDisabled = [timerCopy isDisabled];
+  if (isDisabled != [toTimerCopy isDisabled] || !BSEqualStrings() || objc_msgSend(reasonCopy, "hasSuffix:", @"AutoLockTimeout"))
   {
     idleTimerTelemetryEmitter = self->_idleTimerTelemetryEmitter;
-    v14 = [v8 isDisabled];
-    v15 = [(SBIdleTimerGlobalStateMonitor *)self->_globalStateMonitor autoLockTimeout];
-    [(SBIdleTimerTelemetryEmitter *)idleTimerTelemetryEmitter logTelemetryForUpdatedIdleTimerState:v14 disablingClientBundleIdentifier:v10 autoLockTimeoutDuration:v15];
+    isDisabled2 = [toTimerCopy isDisabled];
+    autoLockTimeout = [(SBIdleTimerGlobalStateMonitor *)self->_globalStateMonitor autoLockTimeout];
+    [(SBIdleTimerTelemetryEmitter *)idleTimerTelemetryEmitter logTelemetryForUpdatedIdleTimerState:isDisabled2 disablingClientBundleIdentifier:v10 autoLockTimeoutDuration:autoLockTimeout];
   }
 
   currentDisablingClientBundleIdentifier = self->_currentDisablingClientBundleIdentifier;
   self->_currentDisablingClientBundleIdentifier = &v10->isa;
 }
 
-- (void)idleTimerGlobalStateMonitor:(id)a3 changedForReason:(id)a4
+- (void)idleTimerGlobalStateMonitor:(id)monitor changedForReason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   [(SBIdleTimerGlobalCoordinator *)self _updateIdleTimerForReason:?];
   if ([(SBIdleTimerGlobalCoordinator *)self _hasIdleTimerDisableAssertions])
   {
-    v5 = [(SBIdleTimerGlobalCoordinator *)self _areIdleTimerDisableAssertionsPrevented];
+    _areIdleTimerDisableAssertionsPrevented = [(SBIdleTimerGlobalCoordinator *)self _areIdleTimerDisableAssertionsPrevented];
   }
 
   else
   {
-    v5 = 1;
+    _areIdleTimerDisableAssertionsPrevented = 1;
   }
 
-  if (self->_idleTimerSourceEnabled != v5)
+  if (self->_idleTimerSourceEnabled != _areIdleTimerDisableAssertionsPrevented)
   {
     [SBIdleTimerGlobalCoordinator _setIdleTimerSourceEnabled:"_setIdleTimerSourceEnabled:forReason:" forReason:?];
   }
 }
 
-- (void)idleTimerDidRefresh:(id)a3
+- (void)idleTimerDidRefresh:(id)refresh
 {
   lastResetSource = self->_lastResetSource;
   self->_lastResetSource = 0;
 }
 
-- (void)idleTimerDidResetForUserAttention:(id)a3
+- (void)idleTimerDidResetForUserAttention:(id)attention
 {
   lastResetSource = self->_lastResetSource;
   self->_lastResetSource = 0;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_idleTimerPrototypeSettings == a3)
+  if (self->_idleTimerPrototypeSettings == settings)
   {
     BSDispatchMain();
   }

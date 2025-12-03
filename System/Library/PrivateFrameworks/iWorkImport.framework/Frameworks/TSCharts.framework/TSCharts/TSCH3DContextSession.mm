@@ -1,14 +1,14 @@
 @interface TSCH3DContextSession
-+ (void)performBlockWithContext:(id)a3 block:(id)a4;
++ (void)performBlockWithContext:(id)context block:(id)block;
 @end
 
 @implementation TSCH3DContextSession
 
-+ (void)performBlockWithContext:(id)a3 block:(id)a4
++ (void)performBlockWithContext:(id)context block:(id)block
 {
-  v25 = a3;
-  v6 = a4;
-  if (!v25)
+  contextCopy = context;
+  blockCopy = block;
+  if (!contextCopy)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, v7, v8, v9, "+[TSCH3DContextSession performBlockWithContext:block:]");
@@ -18,7 +18,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
   }
 
-  objc_msgSend_performBlock_(v25, v5, v7, v8, v9, v6);
+  objc_msgSend_performBlock_(contextCopy, v5, v7, v8, v9, blockCopy);
 }
 
 @end

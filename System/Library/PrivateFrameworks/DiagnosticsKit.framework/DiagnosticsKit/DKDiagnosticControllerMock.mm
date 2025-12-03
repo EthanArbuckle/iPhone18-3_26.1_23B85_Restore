@@ -1,11 +1,11 @@
 @interface DKDiagnosticControllerMock
 - (BOOL)isCancelled;
 - (DKDiagnosticControllerMock)init;
-- (void)beginRequestWithInputsClass:(Class)a3 predicates:(id)a4 specifications:(id)a5 parameters:(id)a6 completion:(id)a7;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCancelled:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
-- (void)setProgress:(id)a3;
+- (void)beginRequestWithInputsClass:(Class)class predicates:(id)predicates specifications:(id)specifications parameters:(id)parameters completion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCancelled:(BOOL)cancelled;
+- (void)setFinished:(BOOL)finished;
+- (void)setProgress:(id)progress;
 @end
 
 @implementation DKDiagnosticControllerMock
@@ -32,12 +32,12 @@
   return v3;
 }
 
-- (void)beginRequestWithInputsClass:(Class)a3 predicates:(id)a4 specifications:(id)a5 parameters:(id)a6 completion:(id)a7
+- (void)beginRequestWithInputsClass:(Class)class predicates:(id)predicates specifications:(id)specifications parameters:(id)parameters completion:(id)completion
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [a7 copy];
+  parametersCopy = parameters;
+  specificationsCopy = specifications;
+  predicatesCopy = predicates;
+  v15 = [completion copy];
   [(DKDiagnosticControllerMock *)self setCompletion:v15];
 
   v16 = objc_opt_new();
@@ -49,16 +49,16 @@
   v18 = objc_alloc_init(DKMutableDiagnosticResult);
   [(DKDiagnosticControllerMock *)self setResult:v18];
 
-  [(DKDiagnosticControllerMock *)self setInputsClass:a3];
-  v20 = [DKUtilities inputsForDiagnostic:self predicates:v14 specifications:v13 parameters:v12];
+  [(DKDiagnosticControllerMock *)self setInputsClass:class];
+  v20 = [DKUtilities inputsForDiagnostic:self predicates:predicatesCopy specifications:specificationsCopy parameters:parametersCopy];
 
   if (![(DKDiagnosticControllerMock *)self isFinished])
   {
     [(DKDiagnosticControllerMock *)self setSetup:1];
     if (objc_opt_respondsToSelector())
     {
-      v19 = [(DKDiagnosticControllerMock *)self context];
-      [(DKDiagnosticControllerMock *)self setupWithInputs:v20 responder:v19];
+      context = [(DKDiagnosticControllerMock *)self context];
+      [(DKDiagnosticControllerMock *)self setupWithInputs:v20 responder:context];
     }
 
     if (![(DKDiagnosticControllerMock *)self isFinished])
@@ -68,80 +68,80 @@
   }
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  v3 = a3;
-  v5 = [(DKDiagnosticControllerMock *)self finishedLock];
-  [v5 lock];
+  finishedCopy = finished;
+  finishedLock = [(DKDiagnosticControllerMock *)self finishedLock];
+  [finishedLock lock];
 
-  if (!v3 || self->_finished)
+  if (!finishedCopy || self->_finished)
   {
-    v7 = [(DKDiagnosticControllerMock *)self finishedLock];
-    [v7 unlock];
+    finishedLock2 = [(DKDiagnosticControllerMock *)self finishedLock];
+    [finishedLock2 unlock];
   }
 
   else
   {
-    self->_finished = v3;
-    v6 = [(DKDiagnosticControllerMock *)self finishedLock];
-    [v6 unlock];
+    self->_finished = finishedCopy;
+    finishedLock3 = [(DKDiagnosticControllerMock *)self finishedLock];
+    [finishedLock3 unlock];
 
-    self->_finished = v3;
+    self->_finished = finishedCopy;
     if ([(DKDiagnosticControllerMock *)self isSetup]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
       [(DKDiagnosticControllerMock *)self teardown];
     }
 
-    v7 = [(DKDiagnosticControllerMock *)self completion];
-    v7[2]();
+    finishedLock2 = [(DKDiagnosticControllerMock *)self completion];
+    finishedLock2[2]();
   }
 }
 
-- (void)setCancelled:(BOOL)a3
+- (void)setCancelled:(BOOL)cancelled
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_cancelled = a3;
+  obj->_cancelled = cancelled;
   objc_sync_exit(obj);
 }
 
 - (BOOL)isCancelled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cancelled = v2->_cancelled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cancelled = selfCopy->_cancelled;
+  objc_sync_exit(selfCopy);
 
   return cancelled;
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  objc_storeStrong(&self->_progress, a3);
-  v5 = a3;
-  [v5 addObserver:self forKeyPath:@"fractionCompleted" options:1 context:ProgressObserverContext_1];
-  [v5 addObserver:self forKeyPath:@"totalUnitCount" options:1 context:ProgressObserverContext_1];
-  [v5 addObserver:self forKeyPath:@"indeterminate" options:1 context:ProgressObserverContext_1];
-  [v5 addObserver:self forKeyPath:@"userInfo.NSProgressEstimatedTimeRemainingKey" options:1 context:ProgressObserverContext_1];
+  objc_storeStrong(&self->_progress, progress);
+  progressCopy = progress;
+  [progressCopy addObserver:self forKeyPath:@"fractionCompleted" options:1 context:ProgressObserverContext_1];
+  [progressCopy addObserver:self forKeyPath:@"totalUnitCount" options:1 context:ProgressObserverContext_1];
+  [progressCopy addObserver:self forKeyPath:@"indeterminate" options:1 context:ProgressObserverContext_1];
+  [progressCopy addObserver:self forKeyPath:@"userInfo.NSProgressEstimatedTimeRemainingKey" options:1 context:ProgressObserverContext_1];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (ProgressObserverContext_1 == a6)
+  if (ProgressObserverContext_1 == context)
   {
     v7 = [DKDiagnosticProgress alloc];
-    v8 = [(DKDiagnosticControllerMock *)self progress];
-    v10 = [(DKDiagnosticProgress *)v7 initWithProgress:v8];
+    progress = [(DKDiagnosticControllerMock *)self progress];
+    v10 = [(DKDiagnosticProgress *)v7 initWithProgress:progress];
 
-    v9 = [(DKDiagnosticControllerMock *)self context];
-    [v9 updateProgress:v10 forTest:&unk_285B92888];
+    context = [(DKDiagnosticControllerMock *)self context];
+    [context updateProgress:v10 forTest:&unk_285B92888];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = DKDiagnosticControllerMock;
-    [(DKDiagnosticControllerMock *)&v11 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(DKDiagnosticControllerMock *)&v11 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

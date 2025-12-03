@@ -1,7 +1,7 @@
 @interface HMDSiriEndpointProfileMetricsDispatcher
 + (id)logCategory;
 - (BOOL)dataSourceShouldSubmitRoutineConfigurationEvent;
-- (HMDSiriEndpointProfileMetricsDispatcher)initWithAccessoryUUID:(id)a3 homeUUID:(id)a4 logEventSubmitter:(id)a5;
+- (HMDSiriEndpointProfileMetricsDispatcher)initWithAccessoryUUID:(id)d homeUUID:(id)iD logEventSubmitter:(id)submitter;
 - (HMDSiriEndpointProfileMetricsDispatcherDataSource)dataSource;
 - (id)dataSourceAccessoryCategoryType;
 - (id)dataSourceCompositeSettingsControllerManager;
@@ -9,7 +9,7 @@
 - (id)fetchAccessorySettingFields;
 - (id)logIdentifier;
 - (void)submitRoutineConfigurationEvent;
-- (void)submitRoutineConfigurationEventWithAccessorySettingFields:(id)a3;
+- (void)submitRoutineConfigurationEventWithAccessorySettingFields:(id)fields;
 @end
 
 @implementation HMDSiriEndpointProfileMetricsDispatcher
@@ -23,26 +23,26 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDSiriEndpointProfileMetricsDispatcher *)self accessoryUUID];
-  v3 = [v2 UUIDString];
+  accessoryUUID = [(HMDSiriEndpointProfileMetricsDispatcher *)self accessoryUUID];
+  uUIDString = [accessoryUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)dataSourceProfileFields
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSiriEndpointProfileMetricsDispatcher *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(HMDSiriEndpointProfileMetricsDispatcher *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    v5 = [v3 profileFieldsForSiriEndpointProfileMetricsDispatcher:self];
+    v5 = [dataSource profileFieldsForSiriEndpointProfileMetricsDispatcher:self];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -66,11 +66,11 @@
 - (id)dataSourceCompositeSettingsControllerManager
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSiriEndpointProfileMetricsDispatcher *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(HMDSiriEndpointProfileMetricsDispatcher *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    v5 = [v3 compositeSettingsControllerManagerForSiriEndpointProfileMetricsDispatcher:self];
+    v5 = [dataSource compositeSettingsControllerManagerForSiriEndpointProfileMetricsDispatcher:self];
     if (v5)
     {
       v6 = [v4 compositeSettingsControllerManagerForSiriEndpointProfileMetricsDispatcher:self];
@@ -79,7 +79,7 @@
     else
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -99,7 +99,7 @@
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -121,17 +121,17 @@
 - (id)dataSourceAccessoryCategoryType
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSiriEndpointProfileMetricsDispatcher *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(HMDSiriEndpointProfileMetricsDispatcher *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    v5 = [v3 accessoryCategoryTypeForSiriEndpointProfileMetricsDispatcher:self];
+    v5 = [dataSource accessoryCategoryTypeForSiriEndpointProfileMetricsDispatcher:self];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -153,17 +153,17 @@
 - (BOOL)dataSourceShouldSubmitRoutineConfigurationEvent
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSiriEndpointProfileMetricsDispatcher *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(HMDSiriEndpointProfileMetricsDispatcher *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    v5 = [v3 shouldSubmitRoutineConfigurationEventForSiriEndpointProfileMetricsDispatcher:self];
+    v5 = [dataSource shouldSubmitRoutineConfigurationEventForSiriEndpointProfileMetricsDispatcher:self];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -184,11 +184,11 @@
 - (id)fetchAccessorySettingFields
 {
   v3 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v4 = [(HMDSiriEndpointProfileMetricsDispatcher *)self dataSourceCompositeSettingsControllerManager];
-  if (v4)
+  dataSourceCompositeSettingsControllerManager = [(HMDSiriEndpointProfileMetricsDispatcher *)self dataSourceCompositeSettingsControllerManager];
+  if (dataSourceCompositeSettingsControllerManager)
   {
-    v5 = [(HMDSiriEndpointProfileMetricsDispatcher *)self accessoryUUID];
-    v6 = [(HMDSiriEndpointProfileMetricsDispatcher *)self homeUUID];
+    accessoryUUID = [(HMDSiriEndpointProfileMetricsDispatcher *)self accessoryUUID];
+    homeUUID = [(HMDSiriEndpointProfileMetricsDispatcher *)self homeUUID];
     v7 = +[HMDSiriEndpointProfileAccessorySettingFields keyPaths];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -197,7 +197,7 @@
     v13[4] = self;
     v8 = v3;
     v14 = v8;
-    [v4 localFetchSettingsForUUID:v5 homeUUID:v6 withKeyPaths:v7 completion:v13];
+    [dataSourceCompositeSettingsControllerManager localFetchSettingsForUUID:accessoryUUID homeUUID:homeUUID withKeyPaths:v7 completion:v13];
 
     v9 = v8;
   }
@@ -381,15 +381,15 @@ void __70__HMDSiriEndpointProfileMetricsDispatcher_fetchAccessorySettingFields__
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitRoutineConfigurationEventWithAccessorySettingFields:(id)a3
+- (void)submitRoutineConfigurationEventWithAccessorySettingFields:(id)fields
 {
-  v4 = a3;
-  v8 = [(HMDSiriEndpointProfileMetricsDispatcher *)self dataSourceAccessoryCategoryType];
-  v5 = [(HMDSiriEndpointProfileMetricsDispatcher *)self dataSourceProfileFields];
-  v6 = [[HMDSiriEndpointProfileRoutineConfigurationEvent alloc] initWithAccessoryCategoryType:v8 profileFields:v5 accessorySettingFields:v4];
+  fieldsCopy = fields;
+  dataSourceAccessoryCategoryType = [(HMDSiriEndpointProfileMetricsDispatcher *)self dataSourceAccessoryCategoryType];
+  dataSourceProfileFields = [(HMDSiriEndpointProfileMetricsDispatcher *)self dataSourceProfileFields];
+  v6 = [[HMDSiriEndpointProfileRoutineConfigurationEvent alloc] initWithAccessoryCategoryType:dataSourceAccessoryCategoryType profileFields:dataSourceProfileFields accessorySettingFields:fieldsCopy];
 
-  v7 = [(HMDSiriEndpointProfileMetricsDispatcher *)self logEventSubmitter];
-  [v7 submitLogEvent:v6];
+  logEventSubmitter = [(HMDSiriEndpointProfileMetricsDispatcher *)self logEventSubmitter];
+  [logEventSubmitter submitLogEvent:v6];
 }
 
 - (void)submitRoutineConfigurationEvent
@@ -398,7 +398,7 @@ void __70__HMDSiriEndpointProfileMetricsDispatcher_fetchAccessorySettingFields__
   if ([(HMDSiriEndpointProfileMetricsDispatcher *)self dataSourceShouldSubmitRoutineConfigurationEvent])
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -409,19 +409,19 @@ void __70__HMDSiriEndpointProfileMetricsDispatcher_fetchAccessorySettingFields__
     }
 
     objc_autoreleasePoolPop(v3);
-    v7 = [(HMDSiriEndpointProfileMetricsDispatcher *)v4 fetchAccessorySettingFields];
+    fetchAccessorySettingFields = [(HMDSiriEndpointProfileMetricsDispatcher *)selfCopy fetchAccessorySettingFields];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __74__HMDSiriEndpointProfileMetricsDispatcher_submitRoutineConfigurationEvent__block_invoke;
     v12[3] = &unk_27868A250;
-    v12[4] = v4;
-    v8 = [v7 addFailureBlock:v12];
+    v12[4] = selfCopy;
+    v8 = [fetchAccessorySettingFields addFailureBlock:v12];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __74__HMDSiriEndpointProfileMetricsDispatcher_submitRoutineConfigurationEvent__block_invoke_5;
     v11[3] = &unk_27867AC58;
-    v11[4] = v4;
-    v9 = [v7 addSuccessBlock:v11];
+    v11[4] = selfCopy;
+    v9 = [fetchAccessorySettingFields addSuccessBlock:v11];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -449,19 +449,19 @@ void __74__HMDSiriEndpointProfileMetricsDispatcher_submitRoutineConfigurationEve
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDSiriEndpointProfileMetricsDispatcher)initWithAccessoryUUID:(id)a3 homeUUID:(id)a4 logEventSubmitter:(id)a5
+- (HMDSiriEndpointProfileMetricsDispatcher)initWithAccessoryUUID:(id)d homeUUID:(id)iD logEventSubmitter:(id)submitter
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dCopy = d;
+  iDCopy = iD;
+  submitterCopy = submitter;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = submitterCopy;
+  if (!submitterCopy)
   {
 LABEL_7:
     v16 = _HMFPreconditionFailure();
@@ -474,9 +474,9 @@ LABEL_7:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_homeUUID, a4);
-    objc_storeStrong(&v14->_accessoryUUID, a3);
-    objc_storeStrong(&v14->_logEventSubmitter, a5);
+    objc_storeStrong(&v13->_homeUUID, iD);
+    objc_storeStrong(&v14->_accessoryUUID, d);
+    objc_storeStrong(&v14->_logEventSubmitter, submitter);
   }
 
   return v14;

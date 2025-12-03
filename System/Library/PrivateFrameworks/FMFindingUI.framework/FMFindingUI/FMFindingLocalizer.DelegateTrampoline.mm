@@ -1,10 +1,10 @@
 @interface FMFindingLocalizer.DelegateTrampoline
 - (_TtCC11FMFindingUI18FMFindingLocalizerP33_22F1FFC3BC980B33F05B7EB45077AC7718DelegateTrampoline)init;
-- (void)didFailWithError:(id)a3 onItem:(id)a4;
-- (void)didFindItem:(id)a3;
-- (void)didUpdateBTProximity:(id)a3;
+- (void)didFailWithError:(id)error onItem:(id)item;
+- (void)didFindItem:(id)item;
+- (void)didUpdateBTProximity:(id)proximity;
 - (void)invalidPoseDetected;
-- (void)willIntegrateBTRSSI:(id)a3;
+- (void)willIntegrateBTRSSI:(id)i;
 @end
 
 @implementation FMFindingLocalizer.DelegateTrampoline
@@ -20,21 +20,21 @@
   return [(FMFindingLocalizer.DelegateTrampoline *)&v4 init];
 }
 
-- (void)willIntegrateBTRSSI:(id)a3
+- (void)willIntegrateBTRSSI:(id)i
 {
-  v4 = a3;
-  v5 = self;
-  sub_24A55AD54(v4);
+  iCopy = i;
+  selfCopy = self;
+  sub_24A55AD54(iCopy);
 }
 
-- (void)didUpdateBTProximity:(id)a3
+- (void)didUpdateBTProximity:(id)proximity
 {
-  v4 = a3;
-  v5 = self;
-  sub_24A54DF58(v4);
+  proximityCopy = proximity;
+  selfCopy = self;
+  sub_24A54DF58(proximityCopy);
 }
 
-- (void)didFindItem:(id)a3
+- (void)didFindItem:(id)item
 {
   v4 = sub_24A62E214();
   v5 = *(v4 - 8);
@@ -42,13 +42,13 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_24A62E1F4();
-  v9 = self;
+  selfCopy = self;
   sub_24A54E4BC(v8);
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)didFailWithError:(id)a3 onItem:(id)a4
+- (void)didFailWithError:(id)error onItem:(id)item
 {
   v6 = sub_24A62E214();
   v7 = *(v6 - 8);
@@ -56,9 +56,9 @@
   MEMORY[0x28223BE20](v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_24A62E1F4();
-  v11 = a3;
-  v12 = self;
-  sub_24A54E8DC(v11, v10);
+  errorCopy = error;
+  selfCopy = self;
+  sub_24A54E8DC(errorCopy, v10);
 
   (*(v7 + 8))(v10, v6);
 }

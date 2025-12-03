@@ -1,25 +1,25 @@
 @interface HKHRAFibBurdenTachogramClassificationsBuilder
-- (HKHRAFibBurdenTachogramClassificationsBuilder)initWithProfile:(id)a3 classifier:(id)a4;
-- (id)buildClassificationsAndWaitForNewClassificationSaves:(BOOL)a3;
-- (id)classificationForSample:(id)a3;
-- (void)_saveNewClassification:(id)a3;
-- (void)addSampleToClassify:(id)a3 dayIndex:(int64_t)a4;
+- (HKHRAFibBurdenTachogramClassificationsBuilder)initWithProfile:(id)profile classifier:(id)classifier;
+- (id)buildClassificationsAndWaitForNewClassificationSaves:(BOOL)saves;
+- (id)classificationForSample:(id)sample;
+- (void)_saveNewClassification:(id)classification;
+- (void)addSampleToClassify:(id)classify dayIndex:(int64_t)index;
 @end
 
 @implementation HKHRAFibBurdenTachogramClassificationsBuilder
 
-- (HKHRAFibBurdenTachogramClassificationsBuilder)initWithProfile:(id)a3 classifier:(id)a4
+- (HKHRAFibBurdenTachogramClassificationsBuilder)initWithProfile:(id)profile classifier:(id)classifier
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  classifierCopy = classifier;
   v17.receiver = self;
   v17.super_class = HKHRAFibBurdenTachogramClassificationsBuilder;
   v8 = [(HKHRAFibBurdenTachogramClassificationsBuilder *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    objc_storeStrong(&v9->_classifier, a4);
+    objc_storeWeak(&v8->_profile, profileCopy);
+    objc_storeStrong(&v9->_classifier, classifier);
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
     julianDayToClassifications = v9->_julianDayToClassifications;
     v9->_julianDayToClassifications = v10;
@@ -36,14 +36,14 @@
   return v9;
 }
 
-- (void)addSampleToClassify:(id)a3 dayIndex:(int64_t)a4
+- (void)addSampleToClassify:(id)classify dayIndex:(int64_t)index
 {
-  v6 = [(HKHRAFibBurdenTachogramClassificationsBuilder *)self classificationForSample:a3];
+  v6 = [(HKHRAFibBurdenTachogramClassificationsBuilder *)self classificationForSample:classify];
   if (v6)
   {
     v15 = v6;
     julianDayToClassifications = self->_julianDayToClassifications;
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     v9 = [(NSMutableDictionary *)julianDayToClassifications objectForKey:v8];
     v10 = v9;
     if (v9)
@@ -60,16 +60,16 @@
 
     [v12 addObject:v15];
     v13 = self->_julianDayToClassifications;
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     [(NSMutableDictionary *)v13 setObject:v12 forKey:v14];
 
     v6 = v15;
   }
 }
 
-- (id)buildClassificationsAndWaitForNewClassificationSaves:(BOOL)a3
+- (id)buildClassificationsAndWaitForNewClassificationSaves:(BOOL)saves
 {
-  if (a3)
+  if (saves)
   {
     group = self->_group;
     v5 = dispatch_time(0, 60000000000);
@@ -84,15 +84,15 @@
     }
   }
 
-  v7 = [(NSMutableDictionary *)self->_julianDayToClassifications hk_allValuesBySortedKeys];
+  hk_allValuesBySortedKeys = [(NSMutableDictionary *)self->_julianDayToClassifications hk_allValuesBySortedKeys];
 
-  return v7;
+  return hk_allValuesBySortedKeys;
 }
 
-- (id)classificationForSample:(id)a3
+- (id)classificationForSample:(id)sample
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sampleCopy = sample;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -100,16 +100,16 @@
   v30 = __Block_byref_object_dispose__6;
   v31 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained database];
+  database = [WeakRetained database];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __73__HKHRAFibBurdenTachogramClassificationsBuilder_classificationForSample___block_invoke;
   v22[3] = &unk_278660CB0;
   v24 = &v26;
   v25 = 0;
-  v7 = v4;
+  v7 = sampleCopy;
   v23 = v7;
-  v8 = [(HDHealthEntity *)HDHRSampleClassificationEntity performReadTransactionWithHealthDatabase:v6 error:&v25 block:v22];
+  v8 = [(HDHealthEntity *)HDHRSampleClassificationEntity performReadTransactionWithHealthDatabase:database error:&v25 block:v22];
   v9 = v25;
 
   if (v9)
@@ -128,11 +128,11 @@
     v11 = HKHRAFibBurdenLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v7 UUID];
+      uUID = [v7 UUID];
       *buf = 138412802;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2112;
-      v35 = v21;
+      v35 = uUID;
       v36 = 2112;
       v37 = v9;
       _os_log_error_impl(&dword_229486000, v11, OS_LOG_TYPE_ERROR, "[%@] Error when retrieving cached tachogram classification for sample UUID %@: %@", buf, 0x20u);
@@ -156,18 +156,18 @@
       v16 = HKHRAFibBurdenLogForCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        v17 = [v7 UUID];
+        uUID2 = [v7 UUID];
         *buf = 138412546;
-        v33 = self;
+        selfCopy2 = self;
         v34 = 2112;
-        v35 = v17;
+        v35 = uUID2;
         _os_log_impl(&dword_229486000, v16, OS_LOG_TYPE_INFO, "[%@] Classifying tachogram sample with UUID %@", buf, 0x16u);
       }
     }
 
     v13 = [(HKHRAFibBurdenTachogramClassifier *)self->_classifier classifyHeartbeatSeries:v7];
-    v18 = [(HKHRAFibBurdenTachogramClassificationProvider *)v13 sampleClassification];
-    [(HKHRAFibBurdenTachogramClassificationsBuilder *)self _saveNewClassification:v18];
+    sampleClassification = [(HKHRAFibBurdenTachogramClassificationProvider *)v13 sampleClassification];
+    [(HKHRAFibBurdenTachogramClassificationsBuilder *)self _saveNewClassification:sampleClassification];
   }
 
   _Block_object_dispose(&v26, 8);
@@ -190,9 +190,9 @@ uint64_t __73__HKHRAFibBurdenTachogramClassificationsBuilder_classificationForSa
   return 1;
 }
 
-- (void)_saveNewClassification:(id)a3
+- (void)_saveNewClassification:(id)classification
 {
-  v4 = a3;
+  classificationCopy = classification;
   dispatch_group_enter(self->_group);
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -200,8 +200,8 @@ uint64_t __73__HKHRAFibBurdenTachogramClassificationsBuilder_classificationForSa
   v7[2] = __72__HKHRAFibBurdenTachogramClassificationsBuilder__saveNewClassification___block_invoke;
   v7[3] = &unk_27865FE98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = classificationCopy;
+  v6 = classificationCopy;
   dispatch_async(queue, v7);
 }
 

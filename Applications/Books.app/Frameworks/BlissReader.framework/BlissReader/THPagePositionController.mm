@@ -1,51 +1,51 @@
 @interface THPagePositionController
-+ (CGSize)fixedPageSizeForLandscapeOrientation:(BOOL)a3;
-+ (id)flowPositionerWithDelegate:(id)a3;
-+ (id)paginatedPositionerWithDelegate:(id)a3;
-- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)a3;
-- (CGPoint)sectionOriginWithPrecedingSectionSizes:(id)a3;
-- (CGRect)offsetRect:(CGRect)a3 inPagingDirectionWithOffset:(CGPoint)a4;
-- (CGRect)pageRectForRelativePageIndex:(unint64_t)a3;
-- (CGSize)canvasSizeForPageCount:(unint64_t)a3;
-- (CGSize)offsetSize:(CGSize)a3 inPagingDirectionWithOffset:(CGSize)a4;
-- (CGSize)p_sequentialPageSizeOffsetFromPageSize:(CGSize)a3;
++ (CGSize)fixedPageSizeForLandscapeOrientation:(BOOL)orientation;
++ (id)flowPositionerWithDelegate:(id)delegate;
++ (id)paginatedPositionerWithDelegate:(id)delegate;
+- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)index;
+- (CGPoint)sectionOriginWithPrecedingSectionSizes:(id)sizes;
+- (CGRect)offsetRect:(CGRect)rect inPagingDirectionWithOffset:(CGPoint)offset;
+- (CGRect)pageRectForRelativePageIndex:(unint64_t)index;
+- (CGSize)canvasSizeForPageCount:(unint64_t)count;
+- (CGSize)offsetSize:(CGSize)size inPagingDirectionWithOffset:(CGSize)offset;
+- (CGSize)p_sequentialPageSizeOffsetFromPageSize:(CGSize)size;
 - (CGSize)pageSize;
 - (CGSize)pageSizeWithZeroInPagingDirection;
-- (CGSize)sequentialSizeFromPageSizes:(id)a3;
-- (THPagePositionController)initWithDelegate:(id)a3 enablePaging:(BOOL)a4 pageHorizontally:(BOOL)a5;
-- (_NSRange)visibleRelativePageIndexRangeForRect:(CGRect)a3 withPadding:(BOOL)a4 pageCount:(unint64_t)a5;
-- (unint64_t)mostVisibleRelativePageIndexForCanvasBoundsRect:(CGRect)a3;
-- (unint64_t)relativePageIndexFromCanvasPoint:(CGPoint)a3;
-- (void)arrangeLayouts:(id)a3;
+- (CGSize)sequentialSizeFromPageSizes:(id)sizes;
+- (THPagePositionController)initWithDelegate:(id)delegate enablePaging:(BOOL)paging pageHorizontally:(BOOL)horizontally;
+- (_NSRange)visibleRelativePageIndexRangeForRect:(CGRect)rect withPadding:(BOOL)padding pageCount:(unint64_t)count;
+- (unint64_t)mostVisibleRelativePageIndexForCanvasBoundsRect:(CGRect)rect;
+- (unint64_t)relativePageIndexFromCanvasPoint:(CGPoint)point;
+- (void)arrangeLayouts:(id)layouts;
 @end
 
 @implementation THPagePositionController
 
-- (THPagePositionController)initWithDelegate:(id)a3 enablePaging:(BOOL)a4 pageHorizontally:(BOOL)a5
+- (THPagePositionController)initWithDelegate:(id)delegate enablePaging:(BOOL)paging pageHorizontally:(BOOL)horizontally
 {
   v9.receiver = self;
   v9.super_class = THPagePositionController;
   result = [(THPagePositionController *)&v9 init];
   if (result)
   {
-    result->mDelegate = a3;
-    result->mShouldEnablePaging = a4;
-    result->mPageHorizontally = a5;
+    result->mDelegate = delegate;
+    result->mShouldEnablePaging = paging;
+    result->mPageHorizontally = horizontally;
   }
 
   return result;
 }
 
-+ (CGSize)fixedPageSizeForLandscapeOrientation:(BOOL)a3
++ (CGSize)fixedPageSizeForLandscapeOrientation:(BOOL)orientation
 {
   v3 = 768.0;
-  if (a3)
+  if (orientation)
   {
     v3 = 1024.0;
   }
 
   v4 = 1004.0;
-  if (a3)
+  if (orientation)
   {
     v4 = 748.0;
   }
@@ -55,16 +55,16 @@
   return result;
 }
 
-+ (id)paginatedPositionerWithDelegate:(id)a3
++ (id)paginatedPositionerWithDelegate:(id)delegate
 {
-  v3 = [[a1 alloc] initWithDelegate:a3 enablePaging:1 pageHorizontally:1];
+  v3 = [[self alloc] initWithDelegate:delegate enablePaging:1 pageHorizontally:1];
 
   return v3;
 }
 
-+ (id)flowPositionerWithDelegate:(id)a3
++ (id)flowPositionerWithDelegate:(id)delegate
 {
-  v3 = [[a1 alloc] initWithDelegate:a3 enablePaging:0 pageHorizontally:0];
+  v3 = [[self alloc] initWithDelegate:delegate enablePaging:0 pageHorizontally:0];
 
   return v3;
 }
@@ -77,15 +77,15 @@
   return result;
 }
 
-- (unint64_t)relativePageIndexFromCanvasPoint:(CGPoint)a3
+- (unint64_t)relativePageIndexFromCanvasPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(THPagePositionController *)self pageSize];
   v7 = v6;
   v9 = v8;
-  v10 = [(THPagePositionController *)self pageHorizontally];
-  if (v10)
+  pageHorizontally = [(THPagePositionController *)self pageHorizontally];
+  if (pageHorizontally)
   {
     v11 = x;
   }
@@ -95,7 +95,7 @@
     v11 = y;
   }
 
-  if (v10)
+  if (pageHorizontally)
   {
     v12 = v7;
   }
@@ -113,20 +113,20 @@
   return (v11 / v12);
 }
 
-- (CGSize)canvasSizeForPageCount:(unint64_t)a3
+- (CGSize)canvasSizeForPageCount:(unint64_t)count
 {
   [(THPagePositionController *)self pageSize];
   v6 = v5;
   v8 = v7;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (count == 0x7FFFFFFFFFFFFFFFLL)
   {
-    a3 = 1;
+    count = 1;
   }
 
-  v9 = [(THPagePositionController *)self pageHorizontally];
-  v10 = v8 * a3;
-  v11 = v6 * a3;
-  if (v9)
+  pageHorizontally = [(THPagePositionController *)self pageHorizontally];
+  v10 = v8 * count;
+  v11 = v6 * count;
+  if (pageHorizontally)
   {
     v10 = v8;
   }
@@ -141,9 +141,9 @@
   return result;
 }
 
-- (_NSRange)visibleRelativePageIndexRangeForRect:(CGRect)a3 withPadding:(BOOL)a4 pageCount:(unint64_t)a5
+- (_NSRange)visibleRelativePageIndexRangeForRect:(CGRect)rect withPadding:(BOOL)padding pageCount:(unint64_t)count
 {
-  if (a3.size.height <= 0.0)
+  if (rect.size.height <= 0.0)
   {
     v19 = NSInvalidRange[0];
     v18 = NSInvalidRange[1];
@@ -151,11 +151,11 @@
 
   else
   {
-    v6 = a4;
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    paddingCopy = padding;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
     [(THPagePositionController *)self pageSize];
     v13 = v12;
     v15 = v14;
@@ -185,8 +185,8 @@
       v20 = 0;
     }
 
-    v21 = v17 + v6;
-    if (v6)
+    v21 = v17 + paddingCopy;
+    if (paddingCopy)
     {
       v19 = v20;
     }
@@ -201,8 +201,8 @@
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    v22 = a5 - 1;
-    if (v21 < a5 - 1)
+    v22 = count - 1;
+    if (v21 < count - 1)
     {
       v22 = v21;
     }
@@ -216,13 +216,13 @@
   return result;
 }
 
-- (unint64_t)mostVisibleRelativePageIndexForCanvasBoundsRect:(CGRect)a3
+- (unint64_t)mostVisibleRelativePageIndexForCanvasBoundsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MidX = CGRectGetMidX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MidX = CGRectGetMidX(rect);
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
@@ -232,9 +232,9 @@
   return [(THPagePositionController *)self relativePageIndexFromCanvasPoint:MidX, MidY];
 }
 
-- (CGRect)pageRectForRelativePageIndex:(unint64_t)a3
+- (CGRect)pageRectForRelativePageIndex:(unint64_t)index
 {
-  [(THPagePositionController *)self pageOriginForRelativePageIndex:a3];
+  [(THPagePositionController *)self pageOriginForRelativePageIndex:index];
   v5 = v4;
   v7 = v6;
   [(THPagePositionController *)self pageSize];
@@ -249,15 +249,15 @@
   return result;
 }
 
-- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)a3
+- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)index
 {
   [(THPagePositionController *)self pageSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(THPagePositionController *)self pageHorizontally];
-  if (v9)
+  pageHorizontally = [(THPagePositionController *)self pageHorizontally];
+  if (pageHorizontally)
   {
-    v10 = v6 * a3;
+    v10 = v6 * index;
   }
 
   else
@@ -265,14 +265,14 @@
     v10 = 0.0;
   }
 
-  if (v9)
+  if (pageHorizontally)
   {
     v11 = 0.0;
   }
 
   else
   {
-    v11 = v8 * a3;
+    v11 = v8 * index;
   }
 
   result.y = v11;
@@ -282,9 +282,9 @@
 
 - (CGSize)pageSizeWithZeroInPagingDirection
 {
-  v3 = [(THPagePositionController *)self pageHorizontally];
+  pageHorizontally = [(THPagePositionController *)self pageHorizontally];
   [(THPagePositionController *)self pageSize];
-  if (v3)
+  if (pageHorizontally)
   {
     v4 = 0.0;
   }
@@ -299,7 +299,7 @@
   return result;
 }
 
-- (CGPoint)sectionOriginWithPrecedingSectionSizes:(id)a3
+- (CGPoint)sectionOriginWithPrecedingSectionSizes:(id)sizes
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -307,7 +307,7 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v7 = [sizes countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -319,15 +319,15 @@
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(sizes);
         }
 
         [*(*(&v19 + 1) + 8 * v10) CGSizeValue];
         v12 = v11;
         v14 = v13;
-        v15 = [(THPagePositionController *)self pageHorizontally];
+        pageHorizontally = [(THPagePositionController *)self pageHorizontally];
         v16 = x + v12;
-        if (v15)
+        if (pageHorizontally)
         {
           x = x + v12;
         }
@@ -341,7 +341,7 @@
       }
 
       while (v8 != v10);
-      v8 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:{16, v16}];
+      v8 = [sizes countByEnumeratingWithState:&v19 objects:v23 count:{16, v16}];
     }
 
     while (v8);
@@ -354,13 +354,13 @@
   return result;
 }
 
-- (CGSize)p_sequentialPageSizeOffsetFromPageSize:(CGSize)a3
+- (CGSize)p_sequentialPageSizeOffsetFromPageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(THPagePositionController *)self pageHorizontally];
+  height = size.height;
+  width = size.width;
+  pageHorizontally = [(THPagePositionController *)self pageHorizontally];
   v6 = 0.0;
-  if (v5)
+  if (pageHorizontally)
   {
     v7 = width;
   }
@@ -370,7 +370,7 @@
     v7 = 0.0;
   }
 
-  if (!v5)
+  if (!pageHorizontally)
   {
     v6 = height;
   }
@@ -380,13 +380,13 @@
   return result;
 }
 
-- (void)arrangeLayouts:(id)a3
+- (void)arrangeLayouts:(id)layouts
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [layouts countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -400,7 +400,7 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(layouts);
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
@@ -420,14 +420,14 @@
       }
 
       while (v6 != v10);
-      v6 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [layouts countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
   }
 }
 
-- (CGSize)sequentialSizeFromPageSizes:(id)a3
+- (CGSize)sequentialSizeFromPageSizes:(id)sizes
 {
   [(THPagePositionController *)self pageSizeWithZeroInPagingDirection];
   v6 = v5;
@@ -436,7 +436,7 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v9 = [sizes countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -448,7 +448,7 @@
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(sizes);
         }
 
         [*(*(&v17 + 1) + 8 * v12) CGSizeValue];
@@ -460,7 +460,7 @@
       }
 
       while (v10 != v12);
-      v10 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [sizes countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -473,18 +473,18 @@
   return result;
 }
 
-- (CGRect)offsetRect:(CGRect)a3 inPagingDirectionWithOffset:(CGPoint)a4
+- (CGRect)offsetRect:(CGRect)rect inPagingDirectionWithOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v8 = a3.origin.y;
-  v9 = a3.origin.x;
-  v10 = [(THPagePositionController *)self pageHorizontally];
+  y = offset.y;
+  x = offset.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  v8 = rect.origin.y;
+  v9 = rect.origin.x;
+  pageHorizontally = [(THPagePositionController *)self pageHorizontally];
   v11 = v9 + x;
   v12 = v8 + y;
-  if (v10)
+  if (pageHorizontally)
   {
     v12 = v8;
   }
@@ -503,16 +503,16 @@
   return result;
 }
 
-- (CGSize)offsetSize:(CGSize)a3 inPagingDirectionWithOffset:(CGSize)a4
+- (CGSize)offsetSize:(CGSize)size inPagingDirectionWithOffset:(CGSize)offset
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
-  v8 = [(THPagePositionController *)self pageHorizontally];
+  height = offset.height;
+  width = offset.width;
+  v6 = size.height;
+  v7 = size.width;
+  pageHorizontally = [(THPagePositionController *)self pageHorizontally];
   v9 = v7 + width;
   v10 = v6 + height;
-  if (v8)
+  if (pageHorizontally)
   {
     v10 = v6;
   }

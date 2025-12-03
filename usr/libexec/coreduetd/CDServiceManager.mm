@@ -41,18 +41,18 @@
     v4->_knowledgeDaemon = v7;
 
     v9 = [CDPeopleDaemon alloc];
-    v10 = [(CDKnowledgeDaemon *)v4->_knowledgeDaemon storage];
-    v11 = [(CDPeopleDaemon *)v9 initWithKnowledgeStore:v10];
+    storage = [(CDKnowledgeDaemon *)v4->_knowledgeDaemon storage];
+    v11 = [(CDPeopleDaemon *)v9 initWithKnowledgeStore:storage];
     peopleDaemon = v4->_peopleDaemon;
     v4->_peopleDaemon = v11;
 
-    v13 = [(CDKnowledgeDaemon *)v4->_knowledgeDaemon storage];
+    storage2 = [(CDKnowledgeDaemon *)v4->_knowledgeDaemon storage];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [_DKKnowledgeStorage storageWithShallowCopyFromStorage:v13 clientIdentifier:v15];
+    v16 = [_DKKnowledgeStorage storageWithShallowCopyFromStorage:storage2 clientIdentifier:v15];
 
-    v17 = [(CDPeopleDaemon *)v4->_peopleDaemon store];
-    v18 = [_CDSpotlightItemRecorder spotlightItemRecorderWithInteractionRecorder:v17 knowledgeStore:v16];
+    store = [(CDPeopleDaemon *)v4->_peopleDaemon store];
+    v18 = [_CDSpotlightItemRecorder spotlightItemRecorderWithInteractionRecorder:store knowledgeStore:v16];
     spotlightRecorder = v4->_spotlightRecorder;
     v4->_spotlightRecorder = v18;
 

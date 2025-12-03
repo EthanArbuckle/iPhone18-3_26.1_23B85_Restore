@@ -1,16 +1,16 @@
 @interface VCPMADVisualSearchFetchProcessingTask
-- (BOOL)shouldProcessAsset:(id)a3;
-- (VCPMADVisualSearchFetchProcessingTask)initWithFetchBlock:(id)a3 photoLibraryWithURL:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 completionHandler:(id)a7;
+- (BOOL)shouldProcessAsset:(id)asset;
+- (VCPMADVisualSearchFetchProcessingTask)initWithFetchBlock:(id)block photoLibraryWithURL:(id)l cancelBlock:(id)cancelBlock progressHandler:(id)handler completionHandler:(id)completionHandler;
 - (void)dealloc;
 @end
 
 @implementation VCPMADVisualSearchFetchProcessingTask
 
-- (VCPMADVisualSearchFetchProcessingTask)initWithFetchBlock:(id)a3 photoLibraryWithURL:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 completionHandler:(id)a7
+- (VCPMADVisualSearchFetchProcessingTask)initWithFetchBlock:(id)block photoLibraryWithURL:(id)l cancelBlock:(id)cancelBlock progressHandler:(id)handler completionHandler:(id)completionHandler
 {
   v13.receiver = self;
   v13.super_class = VCPMADVisualSearchFetchProcessingTask;
-  v7 = [(VCPMADPhotosFetchProcessingTask *)&v13 initWithFetchBlock:a3 photoLibraryWithURL:a4 cancelBlock:a5 progressHandler:a6 completionHandler:a7];
+  v7 = [(VCPMADPhotosFetchProcessingTask *)&v13 initWithFetchBlock:block photoLibraryWithURL:l cancelBlock:cancelBlock progressHandler:handler completionHandler:completionHandler];
   if (v7)
   {
     v8 = [VCPObjectPool objectPoolWithAllocator:&stru_100286A30];
@@ -35,20 +35,20 @@
   [(VCPMADVisualSearchFetchProcessingTask *)&v4 dealloc];
 }
 
-- (BOOL)shouldProcessAsset:(id)a3
+- (BOOL)shouldProcessAsset:(id)asset
 {
-  v3 = a3;
-  if ([v3 vcp_needsVisualSearchProcessing])
+  assetCopy = asset;
+  if ([assetCopy vcp_needsVisualSearchProcessing])
   {
-    v4 = 1;
+    vcp_needsStickerGatingProcessing = 1;
   }
 
   else
   {
-    v4 = [v3 vcp_needsStickerGatingProcessing];
+    vcp_needsStickerGatingProcessing = [assetCopy vcp_needsStickerGatingProcessing];
   }
 
-  return v4;
+  return vcp_needsStickerGatingProcessing;
 }
 
 @end

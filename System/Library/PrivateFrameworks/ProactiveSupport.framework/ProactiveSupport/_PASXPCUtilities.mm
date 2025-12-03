@@ -1,15 +1,15 @@
 @interface _PASXPCUtilities
-+ (void)runWithExceptionBarrier:(id)a3;
++ (void)runWithExceptionBarrier:(id)barrier;
 @end
 
 @implementation _PASXPCUtilities
 
-+ (void)runWithExceptionBarrier:(id)a3
++ (void)runWithExceptionBarrier:(id)barrier
 {
-  v3 = a3;
+  barrierCopy = barrier;
   [MEMORY[0x1E696B0B8] currentConnection];
 
-  v3[2](v3);
+  barrierCopy[2](barrierCopy);
 }
 
 @end

@@ -2,16 +2,16 @@
 - (NSString)description;
 - (NSString)name;
 - (SBHSimpleIconEffect)init;
-- (SBHSimpleIconEffect)initWithName:(id)a3 viewBuilder:(id)a4;
+- (SBHSimpleIconEffect)initWithName:(id)name viewBuilder:(id)builder;
 - (id)makeNewEffectView;
 - (id)viewBuilder;
 @end
 
 @implementation SBHSimpleIconEffect
 
-- (SBHSimpleIconEffect)initWithName:(id)a3 viewBuilder:(id)a4
+- (SBHSimpleIconEffect)initWithName:(id)name viewBuilder:(id)builder
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(builder);
   v6 = sub_1BEE4708C();
   v8 = v7;
   v9 = swift_allocObject();
@@ -29,19 +29,19 @@
 
 - (id)makeNewEffectView
 {
-  v2 = self;
-  v3 = [(SBHSimpleIconEffect *)v2 viewBuilder];
-  v4 = v3[2](v3, v2);
-  _Block_release(v3);
+  selfCopy = self;
+  viewBuilder = [(SBHSimpleIconEffect *)selfCopy viewBuilder];
+  v4 = viewBuilder[2](viewBuilder, selfCopy);
+  _Block_release(viewBuilder);
 
   return v4;
 }
 
 - (NSString)description
 {
-  v2 = [(SBHSimpleIconEffect *)self name];
+  name = [(SBHSimpleIconEffect *)self name];
 
-  return v2;
+  return name;
 }
 
 - (NSString)name

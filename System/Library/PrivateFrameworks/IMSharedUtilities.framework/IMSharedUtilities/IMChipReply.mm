@@ -1,18 +1,18 @@
 @interface IMChipReply
 - (IMChipReply)init;
-- (IMChipReply)initWithSuggestion:(id)a3;
+- (IMChipReply)initWithSuggestion:(id)suggestion;
 - (id)dictionaryRepresentation;
 - (id)suggestedReplyBody;
 @end
 
 @implementation IMChipReply
 
-- (IMChipReply)initWithSuggestion:(id)a3
+- (IMChipReply)initWithSuggestion:(id)suggestion
 {
-  *(&self->super.isa + OBJC_IVAR___IMChipReply_suggestion) = a3;
+  *(&self->super.isa + OBJC_IVAR___IMChipReply_suggestion) = suggestion;
   v5.receiver = self;
   v5.super_class = IMChipReply;
-  v3 = a3;
+  suggestionCopy = suggestion;
   return [(IMChipReply *)&v5 init];
 }
 
@@ -23,9 +23,9 @@
   *(inited + 16) = xmmword_1A88E14F0;
   *(inited + 32) = 0x6974736567677573;
   *(inited + 40) = 0xEA00000000006E6FLL;
-  v4 = self;
-  v5 = [(IMChipReply *)v4 suggestion];
-  v6 = [(IMChipSuggestion *)v5 dictionaryRepresentation];
+  selfCopy = self;
+  suggestion = [(IMChipReply *)selfCopy suggestion];
+  dictionaryRepresentation = [(IMChipSuggestion *)suggestion dictionaryRepresentation];
 
   v7 = sub_1A88C81A8();
   *(inited + 72) = sub_1A870CCE0(&unk_1EB3091D0);
@@ -41,7 +41,7 @@
 
 - (id)suggestedReplyBody
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A888EB50();
 
   return v3;

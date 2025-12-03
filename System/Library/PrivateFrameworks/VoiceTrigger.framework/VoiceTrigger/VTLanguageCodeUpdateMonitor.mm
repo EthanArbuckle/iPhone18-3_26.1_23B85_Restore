@@ -2,21 +2,21 @@
 + (id)sharedInstance;
 - (VTLanguageCodeUpdateMonitor)init;
 - (void)_didReceiveLanguageCodeUpdate;
-- (void)_notifyObserver:(id)a3 withLanguageCode:(id)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer withLanguageCode:(id)code;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
 @implementation VTLanguageCodeUpdateMonitor
 
-- (void)_notifyObserver:(id)a3 withLanguageCode:(id)a4
+- (void)_notifyObserver:(id)observer withLanguageCode:(id)code
 {
-  v7 = a3;
-  v6 = a4;
-  [(VTEventMonitor *)self notifyObserver:v7];
+  observerCopy = observer;
+  codeCopy = code;
+  [(VTEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v7 VTLanguageCodeUpdateMonitor:self didReceiveLanguageCodeChanged:v6];
+    [observerCopy VTLanguageCodeUpdateMonitor:self didReceiveLanguageCodeChanged:codeCopy];
   }
 }
 
@@ -57,7 +57,7 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   if (objc_opt_class())
   {

@@ -1,11 +1,11 @@
 @interface GCGenericDeviceInputEventDriverModel
-+ (id)modelWithDictionaryRepresentation:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)modelWithDictionaryRepresentation:(id)representation error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (GCGenericDeviceInputEventDriverModel)init;
-- (GCGenericDeviceInputEventDriverModel)initWithCoder:(id)a3;
+- (GCGenericDeviceInputEventDriverModel)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCGenericDeviceInputEventDriverModel
@@ -17,18 +17,18 @@
   return 0;
 }
 
-- (GCGenericDeviceInputEventDriverModel)initWithCoder:(id)a3
+- (GCGenericDeviceInputEventDriverModel)initWithCoder:(id)coder
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = GCGenericDeviceInputEventDriverModel;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(GCGenericDeviceInputEventDriverModel *)&v16 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"gamepadLeftThumbstickDeadzoneRadius"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gamepadLeftThumbstickDeadzoneRadius"];
   gamepadLeftThumbstickDeadzoneRadius = v4->_gamepadLeftThumbstickDeadzoneRadius;
   v4->_gamepadLeftThumbstickDeadzoneRadius = v5;
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"gamepadRightThumbstickDeadzoneRadius"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gamepadRightThumbstickDeadzoneRadius"];
   gamepadRightThumbstickDeadzoneRadius = v4->_gamepadRightThumbstickDeadzoneRadius;
   v4->_gamepadRightThumbstickDeadzoneRadius = v7;
 
@@ -37,7 +37,7 @@
   v17[1] = objc_opt_class();
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v11 = [v9 setWithArray:v10];
-  v12 = [v3 decodeObjectOfClasses:v11 forKey:@"gamepadEventFields"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"gamepadEventFields"];
 
   gamepadEventFields = v4->_gamepadEventFields;
   v4->_gamepadEventFields = v12;
@@ -46,17 +46,17 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(GCGenericDeviceInputEventDriverModel *)self gamepadLeftThumbstickDeadzoneRadius];
-  [v4 encodeObject:v5 forKey:@"gamepadLeftThumbstickDeadzoneRadius"];
+  coderCopy = coder;
+  gamepadLeftThumbstickDeadzoneRadius = [(GCGenericDeviceInputEventDriverModel *)self gamepadLeftThumbstickDeadzoneRadius];
+  [coderCopy encodeObject:gamepadLeftThumbstickDeadzoneRadius forKey:@"gamepadLeftThumbstickDeadzoneRadius"];
 
-  v6 = [(GCGenericDeviceInputEventDriverModel *)self gamepadRightThumbstickDeadzoneRadius];
-  [v4 encodeObject:v6 forKey:@"gamepadRightThumbstickDeadzoneRadius"];
+  gamepadRightThumbstickDeadzoneRadius = [(GCGenericDeviceInputEventDriverModel *)self gamepadRightThumbstickDeadzoneRadius];
+  [coderCopy encodeObject:gamepadRightThumbstickDeadzoneRadius forKey:@"gamepadRightThumbstickDeadzoneRadius"];
 
-  v7 = [(GCGenericDeviceInputEventDriverModel *)self gamepadEventFields];
-  [v4 encodeObject:v7 forKey:@"gamepadEventFields"];
+  gamepadEventFields = [(GCGenericDeviceInputEventDriverModel *)self gamepadEventFields];
+  [coderCopy encodeObject:gamepadEventFields forKey:@"gamepadEventFields"];
 }
 
 - (unint64_t)hash
@@ -66,9 +66,9 @@
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -79,9 +79,9 @@
     }
 
 LABEL_6:
-    v5 = [(GCGenericDeviceInputEventDriverModel *)self gamepadEventFields];
-    v6 = [v4 gamepadEventFields];
-    if (![v5 isEqual:v6])
+    gamepadEventFields = [(GCGenericDeviceInputEventDriverModel *)self gamepadEventFields];
+    gamepadEventFields2 = [equalCopy gamepadEventFields];
+    if (![gamepadEventFields isEqual:gamepadEventFields2])
     {
       v11 = 0;
 LABEL_20:
@@ -89,18 +89,18 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(GCGenericDeviceInputEventDriverModel *)self gamepadLeftThumbstickDeadzoneRadius];
-    v8 = [v4 gamepadLeftThumbstickDeadzoneRadius];
-    if (v7 == v8)
+    gamepadLeftThumbstickDeadzoneRadius = [(GCGenericDeviceInputEventDriverModel *)self gamepadLeftThumbstickDeadzoneRadius];
+    gamepadLeftThumbstickDeadzoneRadius2 = [equalCopy gamepadLeftThumbstickDeadzoneRadius];
+    if (gamepadLeftThumbstickDeadzoneRadius == gamepadLeftThumbstickDeadzoneRadius2)
     {
       [(GCGenericDeviceInputEventDriverModel *)self gamepadRightThumbstickDeadzoneRadius:v18];
     }
 
     else
     {
-      v9 = [(GCGenericDeviceInputEventDriverModel *)self gamepadLeftThumbstickDeadzoneRadius];
-      v10 = [v4 gamepadLeftThumbstickDeadzoneRadius];
-      if (![v9 isEqual:v10])
+      gamepadLeftThumbstickDeadzoneRadius3 = [(GCGenericDeviceInputEventDriverModel *)self gamepadLeftThumbstickDeadzoneRadius];
+      gamepadLeftThumbstickDeadzoneRadius4 = [equalCopy gamepadLeftThumbstickDeadzoneRadius];
+      if (![gamepadLeftThumbstickDeadzoneRadius3 isEqual:gamepadLeftThumbstickDeadzoneRadius4])
       {
         v11 = 0;
 LABEL_18:
@@ -109,12 +109,12 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      [(GCGenericDeviceInputEventDriverModel *)self gamepadRightThumbstickDeadzoneRadius:v10];
+      [(GCGenericDeviceInputEventDriverModel *)self gamepadRightThumbstickDeadzoneRadius:gamepadLeftThumbstickDeadzoneRadius4];
     }
     v12 = ;
-    v13 = [v4 gamepadRightThumbstickDeadzoneRadius];
-    v14 = v13;
-    if (v12 == v13)
+    gamepadRightThumbstickDeadzoneRadius = [equalCopy gamepadRightThumbstickDeadzoneRadius];
+    v14 = gamepadRightThumbstickDeadzoneRadius;
+    if (v12 == gamepadRightThumbstickDeadzoneRadius)
     {
 
       v11 = 1;
@@ -122,14 +122,14 @@ LABEL_19:
 
     else
     {
-      v15 = [(GCGenericDeviceInputEventDriverModel *)self gamepadRightThumbstickDeadzoneRadius];
-      v16 = [v4 gamepadRightThumbstickDeadzoneRadius];
-      v11 = [v15 isEqual:v16];
+      gamepadRightThumbstickDeadzoneRadius2 = [(GCGenericDeviceInputEventDriverModel *)self gamepadRightThumbstickDeadzoneRadius];
+      gamepadRightThumbstickDeadzoneRadius3 = [equalCopy gamepadRightThumbstickDeadzoneRadius];
+      v11 = [gamepadRightThumbstickDeadzoneRadius2 isEqual:gamepadRightThumbstickDeadzoneRadius3];
     }
 
-    v10 = v19;
-    v9 = v21;
-    if (v7 == v8)
+    gamepadLeftThumbstickDeadzoneRadius4 = v19;
+    gamepadLeftThumbstickDeadzoneRadius3 = v21;
+    if (gamepadLeftThumbstickDeadzoneRadius == gamepadLeftThumbstickDeadzoneRadius2)
     {
       goto LABEL_19;
     }
@@ -154,22 +154,22 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(GCGenericDeviceInputEventDriverModel *)self gamepadLeftThumbstickDeadzoneRadius];
-  v7 = [(GCGenericDeviceInputEventDriverModel *)self gamepadRightThumbstickDeadzoneRadius];
-  v8 = [(GCGenericDeviceInputEventDriverModel *)self gamepadEventFields];
-  v9 = [v8 debugDescription];
+  gamepadLeftThumbstickDeadzoneRadius = [(GCGenericDeviceInputEventDriverModel *)self gamepadLeftThumbstickDeadzoneRadius];
+  gamepadRightThumbstickDeadzoneRadius = [(GCGenericDeviceInputEventDriverModel *)self gamepadRightThumbstickDeadzoneRadius];
+  gamepadEventFields = [(GCGenericDeviceInputEventDriverModel *)self gamepadEventFields];
+  v9 = [gamepadEventFields debugDescription];
   v10 = [v9 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v11 = [v3 stringWithFormat:@"<%@ %p> {\n\t gamepadLeftThumbstickDeadzoneRadius = %@\n\t gamepadRightThumbstickDeadzoneRadius = %@\n\t gamepadEventFields = %@\n}", v5, self, v6, v7, v10];
+  v11 = [v3 stringWithFormat:@"<%@ %p> {\n\t gamepadLeftThumbstickDeadzoneRadius = %@\n\t gamepadRightThumbstickDeadzoneRadius = %@\n\t gamepadEventFields = %@\n}", v5, self, gamepadLeftThumbstickDeadzoneRadius, gamepadRightThumbstickDeadzoneRadius, v10];
 
   return v11;
 }
 
-+ (id)modelWithDictionaryRepresentation:(id)a3 error:(id *)a4
++ (id)modelWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v70[2] = *MEMORY[0x1E69E9840];
   v49 = objc_opt_new();
   v62[0] = 0;
-  v5 = [a3 gc_objectForKey:@"GamepadLeftThumbstickDeadzoneRadius" ofClass:objc_opt_class() error:v62];
+  v5 = [representation gc_objectForKey:@"GamepadLeftThumbstickDeadzoneRadius" ofClass:objc_opt_class() error:v62];
   v6 = v62[0];
   v7 = v6;
   if (v5)
@@ -184,21 +184,21 @@ LABEL_21:
 
   if (!v8)
   {
-    if (a4)
+    if (error)
     {
       v30 = MEMORY[0x1E696ABC0];
       v69[0] = *MEMORY[0x1E696A578];
-      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
       v70[0] = v31;
       v69[1] = *MEMORY[0x1E696A588];
-      v32 = [v7 localizedFailureReason];
-      v70[1] = v32;
+      localizedFailureReason = [v7 localizedFailureReason];
+      v70[1] = localizedFailureReason;
       v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v70 forKeys:v69 count:2];
-      *a4 = [(NSError *)v30 gc_modelError:v33 userInfo:?];
+      *error = [(NSError *)v30 gc_modelError:v33 userInfo:?];
     }
 
 LABEL_42:
-    v27 = 0;
+    build = 0;
     goto LABEL_31;
   }
 
@@ -208,22 +208,22 @@ LABEL_42:
   }
 
   v61 = 0;
-  v9 = [a3 gc_objectForKey:@"GamepadRightThumbstickDeadzoneRadius" ofClass:objc_opt_class() error:&v61];
+  v9 = [representation gc_objectForKey:@"GamepadRightThumbstickDeadzoneRadius" ofClass:objc_opt_class() error:&v61];
   v10 = v61;
   v7 = v10;
   if (!v9 && v10)
   {
-    if (a4)
+    if (error)
     {
       v34 = MEMORY[0x1E696ABC0];
       v67[0] = *MEMORY[0x1E696A578];
-      v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
       v68[0] = v35;
       v67[1] = *MEMORY[0x1E696A588];
-      v36 = [v7 localizedFailureReason];
-      v68[1] = v36;
+      localizedFailureReason2 = [v7 localizedFailureReason];
+      v68[1] = localizedFailureReason2;
       v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v68 forKeys:v67 count:2];
-      *a4 = [(NSError *)v34 gc_modelError:v37 userInfo:?];
+      *error = [(NSError *)v34 gc_modelError:v37 userInfo:?];
     }
 
     goto LABEL_42;
@@ -235,21 +235,21 @@ LABEL_42:
   }
 
   v60 = 0;
-  v11 = [a3 gc_requiredObjectForKey:@"GamepadEventFields" ofClass:objc_opt_class() error:&v60];
+  v11 = [representation gc_requiredObjectForKey:@"GamepadEventFields" ofClass:objc_opt_class() error:&v60];
   v7 = v60;
   if (!v11)
   {
-    if (a4)
+    if (error)
     {
       v38 = MEMORY[0x1E696ABC0];
       v65[0] = *MEMORY[0x1E696A578];
-      v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
       v66[0] = v39;
       v65[1] = *MEMORY[0x1E696A588];
-      v40 = [v7 localizedFailureReason];
-      v66[1] = v40;
+      localizedFailureReason3 = [v7 localizedFailureReason];
+      v66[1] = localizedFailureReason3;
       v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:v65 count:2];
-      *a4 = [(NSError *)v38 gc_modelError:v41 userInfo:?];
+      *error = [(NSError *)v38 gc_modelError:v41 userInfo:?];
     }
 
     goto LABEL_42;
@@ -280,29 +280,29 @@ LABEL_42:
     [v49 setGamepadEventFields:v15];
   }
 
-  else if (a4)
+  else if (error)
   {
     v43 = MEMORY[0x1E696ABC0];
     v63[0] = *MEMORY[0x1E696A578];
-    v46 = [v55[5] localizedDescription];
-    if ([v46 length])
+    localizedDescription = [v55[5] localizedDescription];
+    if ([localizedDescription length])
     {
       [v55[5] localizedDescription];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
     }
     v45 = ;
     v64[0] = v45;
     v63[1] = *MEMORY[0x1E696A588];
-    v18 = [v55[5] localizedFailureReason];
-    v44 = v18;
+    localizedFailureReason4 = [v55[5] localizedFailureReason];
+    v44 = localizedFailureReason4;
     v19 = &stru_1F4E1BE30;
-    if (v18)
+    if (localizedFailureReason4)
     {
-      v19 = v18;
+      v19 = localizedFailureReason4;
     }
 
     v64[1] = v19;
@@ -311,29 +311,29 @@ LABEL_42:
     if (v20)
     {
       v21 = v55[5];
-      v22 = v21;
+      null = v21;
     }
 
     else
     {
-      v22 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v21 = v55[5];
     }
 
-    v42 = v22;
-    v64[2] = v22;
+    v42 = null;
+    v64[2] = null;
     v63[3] = @"GCFailingKeyPathErrorKey";
-    v23 = [v21 gc_failingKeyPath];
-    v24 = v23;
-    if (!v23)
+    gc_failingKeyPath = [v21 gc_failingKeyPath];
+    v24 = gc_failingKeyPath;
+    if (!gc_failingKeyPath)
     {
-      v23 = MEMORY[0x1E695E0F0];
+      gc_failingKeyPath = MEMORY[0x1E695E0F0];
     }
 
-    v25 = [v23 arrayByAddingObject:@"GamepadEventFields"];
+    v25 = [gc_failingKeyPath arrayByAddingObject:@"GamepadEventFields"];
     v64[3] = v25;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:v63 count:4];
-    *a4 = [(NSError *)v43 gc_modelError:v26 userInfo:?];
+    *error = [(NSError *)v43 gc_modelError:v26 userInfo:?];
 
     if (!v20)
     {
@@ -344,19 +344,19 @@ LABEL_42:
   if (v16 == v17)
   {
     v7 = v49;
-    v27 = [v49 build];
+    build = [v49 build];
     v49 = 0;
 LABEL_31:
 
     goto LABEL_33;
   }
 
-  v27 = 0;
+  build = 0;
 LABEL_33:
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return v27;
+  return build;
 }
 
 void __95__GCGenericDeviceInputEventDriverModel_Serialization__modelWithDictionaryRepresentation_error___block_invoke(uint64_t a1, void (**a2)(void, void, void), uint64_t a3, _BYTE *a4)

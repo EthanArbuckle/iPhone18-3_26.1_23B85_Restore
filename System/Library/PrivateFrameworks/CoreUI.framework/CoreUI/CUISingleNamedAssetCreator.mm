@@ -1,46 +1,46 @@
 @interface CUISingleNamedAssetCreator
-- (BOOL)_distillNameEntries:(id *)a3;
-- (BOOL)_distillRenditions:(id *)a3;
-- (BOOL)_extractFlattenedImages:(id *)a3;
-- (BOOL)distillAndSave:(id *)a3;
+- (BOOL)_distillNameEntries:(id *)entries;
+- (BOOL)_distillRenditions:(id *)renditions;
+- (BOOL)_extractFlattenedImages:(id *)images;
+- (BOOL)distillAndSave:(id *)save;
 - (BOOL)updateBitmapIndex;
-- (BOOL)writeFlattenedImageToOutput:(id)a3 error:(id *)a4;
-- (CUISingleNamedAssetCreator)initWithOutputURL:(id)a3 versionString:(id)a4;
+- (BOOL)writeFlattenedImageToOutput:(id)output error:(id *)error;
+- (CUISingleNamedAssetCreator)initWithOutputURL:(id)l versionString:(id)string;
 - (const)_keyFormat;
-- (id)_addImage:(CGImage *)a3 withBaseKey:(id)a4 name:(id)a5 atScale:(int64_t)a6;
-- (id)_colorBaseKeyWithScale:(int64_t)a3;
-- (id)_defaultBaseKeyWithScale:(int64_t)a3;
-- (id)_flattenedImageBaseKeyWithScale:(int64_t)a3;
-- (id)_generatorForName:(id)a3;
-- (id)_generatorWithName:(id)a3;
-- (id)_gradientBaseKeyWithScale:(int64_t)a3;
-- (id)_iconGroupBaseKeyWithScale:(int64_t)a3;
-- (id)_iconStackBaseKeyWithScale:(int64_t)a3;
-- (id)_keyDataFromKey:(const _renditionkeytoken *)a3;
-- (id)_radiosityImageBaseKeyWithScale:(int64_t)a3;
-- (id)_textureBaseKeyWithScale:(int64_t)a3;
-- (id)_textureImageBaseKeyWithScale:(int64_t)a3;
-- (id)_vectorImageBaseKeyWithScale:(int64_t)a3;
-- (void)_addImageAsJPEG:(CGImage *)a3 withBaseKey:(id)a4 withName:(id)a5 atScale:(int64_t)a6;
-- (void)_addLayerStackWithSize:(CGSize)a3 type:(int64_t)a4 stackData:(id)a5 name:(id)a6 atScale:(int64_t)a7 withRenderingProperties:(id)a8;
+- (id)_addImage:(CGImage *)image withBaseKey:(id)key name:(id)name atScale:(int64_t)scale;
+- (id)_colorBaseKeyWithScale:(int64_t)scale;
+- (id)_defaultBaseKeyWithScale:(int64_t)scale;
+- (id)_flattenedImageBaseKeyWithScale:(int64_t)scale;
+- (id)_generatorForName:(id)name;
+- (id)_generatorWithName:(id)name;
+- (id)_gradientBaseKeyWithScale:(int64_t)scale;
+- (id)_iconGroupBaseKeyWithScale:(int64_t)scale;
+- (id)_iconStackBaseKeyWithScale:(int64_t)scale;
+- (id)_keyDataFromKey:(const _renditionkeytoken *)key;
+- (id)_radiosityImageBaseKeyWithScale:(int64_t)scale;
+- (id)_textureBaseKeyWithScale:(int64_t)scale;
+- (id)_textureImageBaseKeyWithScale:(int64_t)scale;
+- (id)_vectorImageBaseKeyWithScale:(int64_t)scale;
+- (void)_addImageAsJPEG:(CGImage *)g withBaseKey:(id)key withName:(id)name atScale:(int64_t)scale;
+- (void)_addLayerStackWithSize:(CGSize)size type:(int64_t)type stackData:(id)data name:(id)name atScale:(int64_t)scale withRenderingProperties:(id)properties;
 - (void)_configureDefaultStorageParameters;
 - (void)_finalizeNameIdentifiers;
-- (void)addColor:(CGColor *)a3 withName:(id)a4 atScale:(int64_t)a5;
-- (void)addFlattenedImage:(CGImage *)a3 forLayerStackWithName:(id)a4 atScale:(int64_t)a5;
-- (void)addGradient:(id)a3 withStops:(id)a4 ofType:(int64_t)a5 startPoint:(CGPoint)a6 endPoint:(CGPoint)a7 withName:(id)a8 atScale:(int64_t)a9;
-- (void)addImage:(CGImage *)a3 withName:(id)a4 atScale:(int64_t)a5;
-- (void)addImageAsJPEG:(CGImage *)a3 withName:(id)a4 atScale:(int64_t)a5;
-- (void)addLayerReference:(id)a3 forColorToLayerStackWithName:(id)a4 atScale:(int64_t)a5;
-- (void)addLayerReference:(id)a3 forGradientToLayerStackWithName:(id)a4 atScale:(int64_t)a5;
-- (void)addLayerReference:(id)a3 forGroupToLayerStackWithName:(id)a4 atScale:(int64_t)a5;
-- (void)addLayerReference:(id)a3 forImage:(CGImage *)a4 toLayerStackWithName:(id)a5 atScale:(int64_t)a6;
-- (void)addLayerReference:(id)a3 forSVGDocumentToLayerStackWithName:(id)a4 atScale:(int64_t)a5;
-- (void)addSVGDocument:(CGSVGDocument *)a3 withName:(id)a4 atScale:(int64_t)a5;
-- (void)addTexture:(id)a3 withName:(id)a4 atScale:(int64_t)a5;
+- (void)addColor:(CGColor *)color withName:(id)name atScale:(int64_t)scale;
+- (void)addFlattenedImage:(CGImage *)image forLayerStackWithName:(id)name atScale:(int64_t)scale;
+- (void)addGradient:(id)gradient withStops:(id)stops ofType:(int64_t)type startPoint:(CGPoint)point endPoint:(CGPoint)endPoint withName:(id)name atScale:(int64_t)scale;
+- (void)addImage:(CGImage *)image withName:(id)name atScale:(int64_t)scale;
+- (void)addImageAsJPEG:(CGImage *)g withName:(id)name atScale:(int64_t)scale;
+- (void)addLayerReference:(id)reference forColorToLayerStackWithName:(id)name atScale:(int64_t)scale;
+- (void)addLayerReference:(id)reference forGradientToLayerStackWithName:(id)name atScale:(int64_t)scale;
+- (void)addLayerReference:(id)reference forGroupToLayerStackWithName:(id)name atScale:(int64_t)scale;
+- (void)addLayerReference:(id)reference forImage:(CGImage *)image toLayerStackWithName:(id)name atScale:(int64_t)scale;
+- (void)addLayerReference:(id)reference forSVGDocumentToLayerStackWithName:(id)name atScale:(int64_t)scale;
+- (void)addSVGDocument:(CGSVGDocument *)document withName:(id)name atScale:(int64_t)scale;
+- (void)addTexture:(id)texture withName:(id)name atScale:(int64_t)scale;
 - (void)dealloc;
-- (void)setCompressionQuality:(double)a3;
-- (void)setThinningArguments:(id)a3;
-- (void)setUpdateBitmapIndex:(BOOL)a3;
+- (void)setCompressionQuality:(double)quality;
+- (void)setThinningArguments:(id)arguments;
+- (void)setUpdateBitmapIndex:(BOOL)index;
 @end
 
 @implementation CUISingleNamedAssetCreator
@@ -49,9 +49,9 @@
 {
   [(CUISingleNamedAssetCreator *)self _keyFormat];
   v3 = [NSData dataWithBytes:"dataWithBytes:length:" length:?];
-  v4 = [(CUISingleNamedAssetCreator *)self targetPlatform];
-  v5 = [(CUISingleNamedAssetCreator *)self store];
-  if (v4)
+  targetPlatform = [(CUISingleNamedAssetCreator *)self targetPlatform];
+  store = [(CUISingleNamedAssetCreator *)self store];
+  if (targetPlatform)
   {
     v6 = 1;
   }
@@ -61,13 +61,13 @@
     v6 = 2;
   }
 
-  [(CUIMutableCommonAssetStorage *)v5 setKeySemantics:v6];
+  [(CUIMutableCommonAssetStorage *)store setKeySemantics:v6];
   [(CUIMutableCommonAssetStorage *)[(CUISingleNamedAssetCreator *)self store] setKeyFormatData:v3];
   [(CUIMutableCommonAssetStorage *)[(CUISingleNamedAssetCreator *)self store] setDeploymentPlatform:CUIPlatformNameForPlatform([(CUISingleNamedAssetCreator *)self targetPlatform])];
   [(CUIMutableCommonAssetStorage *)[(CUISingleNamedAssetCreator *)self store] setStorageVersion:17];
-  v7 = [(CUISingleNamedAssetCreator *)self store];
+  store2 = [(CUISingleNamedAssetCreator *)self store];
 
-  [(CUIMutableCommonAssetStorage *)v7 setSchemaVersion:5];
+  [(CUIMutableCommonAssetStorage *)store2 setSchemaVersion:5];
 }
 
 - (const)_keyFormat
@@ -225,26 +225,26 @@ void __54__CUISingleNamedAssetCreator__finalizeNameIdentifiers__block_invoke_4(u
   }
 }
 
-- (void)setCompressionQuality:(double)a3
+- (void)setCompressionQuality:(double)quality
 {
   [(CUISingleNamedAssetCreator *)self setFlattenedLossyCompressionQuality:?];
 
-  [(CUISingleNamedAssetCreator *)self setLayersLossyCompressionQuality:a3];
+  [(CUISingleNamedAssetCreator *)self setLayersLossyCompressionQuality:quality];
 }
 
-- (CUISingleNamedAssetCreator)initWithOutputURL:(id)a3 versionString:(id)a4
+- (CUISingleNamedAssetCreator)initWithOutputURL:(id)l versionString:(id)string
 {
   v9.receiver = self;
   v9.super_class = CUISingleNamedAssetCreator;
   v6 = [(CUISingleNamedAssetCreator *)&v9 init];
   if (v6)
   {
-    v7 = -[CUIMutableCommonAssetStorage initWithPath:]([CUISingleNamedAssetMutableStorage alloc], "initWithPath:", [a3 path]);
+    v7 = -[CUIMutableCommonAssetStorage initWithPath:]([CUISingleNamedAssetMutableStorage alloc], "initWithPath:", [l path]);
     v6->_store = &v7->super;
     if (v7)
     {
       [(CUIMutableCommonAssetStorage *)[(CUISingleNamedAssetCreator *)v6 store] setUseBitmapIndex:0];
-      -[CUIMutableCommonAssetStorage setVersionString:](-[CUISingleNamedAssetCreator store](v6, "store"), "setVersionString:", [a4 UTF8String]);
+      -[CUIMutableCommonAssetStorage setVersionString:](-[CUISingleNamedAssetCreator store](v6, "store"), "setVersionString:", [string UTF8String]);
       [(CUISingleNamedAssetCreator *)v6 setGenerators:+[NSMutableArray array]];
       [(CUISingleNamedAssetCreator *)v6 setNames:+[NSMutableArray array]];
       *&v6->_radiosityCompressionQuaility = xmmword_18E020140;
@@ -266,116 +266,116 @@ void __54__CUISingleNamedAssetCreator__finalizeNameIdentifiers__block_invoke_4(u
 
 - (BOOL)updateBitmapIndex
 {
-  v2 = [(CUISingleNamedAssetCreator *)self store];
+  store = [(CUISingleNamedAssetCreator *)self store];
 
-  return [(CUIMutableCommonAssetStorage *)v2 useBitmapIndex];
+  return [(CUIMutableCommonAssetStorage *)store useBitmapIndex];
 }
 
-- (void)setUpdateBitmapIndex:(BOOL)a3
+- (void)setUpdateBitmapIndex:(BOOL)index
 {
-  v3 = a3;
-  v4 = [(CUISingleNamedAssetCreator *)self store];
+  indexCopy = index;
+  store = [(CUISingleNamedAssetCreator *)self store];
 
-  [(CUIMutableCommonAssetStorage *)v4 setUseBitmapIndex:v3];
+  [(CUIMutableCommonAssetStorage *)store setUseBitmapIndex:indexCopy];
 }
 
-- (id)_defaultBaseKeyWithScale:(int64_t)a3
+- (id)_defaultBaseKeyWithScale:(int64_t)scale
 {
   v4 = 0xB5000200550001;
   v5 = 12;
-  v6 = a3;
+  scaleCopy = scale;
   v7 = 0;
   return [[CUIRenditionKey alloc] initWithKeyList:&v4];
 }
 
-- (id)_iconStackBaseKeyWithScale:(int64_t)a3
+- (id)_iconStackBaseKeyWithScale:(int64_t)scale
 {
   v4 = 0xF5000200550001;
   v5 = 12;
-  v6 = a3;
+  scaleCopy = scale;
   v7 = 0;
   return [[CUIRenditionKey alloc] initWithKeyList:&v4];
 }
 
-- (id)_iconGroupBaseKeyWithScale:(int64_t)a3
+- (id)_iconGroupBaseKeyWithScale:(int64_t)scale
 {
   v4 = 0xF6000200550001;
   v5 = 12;
-  v6 = a3;
+  scaleCopy = scale;
   v7 = 0;
   return [[CUIRenditionKey alloc] initWithKeyList:&v4];
 }
 
-- (id)_flattenedImageBaseKeyWithScale:(int64_t)a3
+- (id)_flattenedImageBaseKeyWithScale:(int64_t)scale
 {
   v4 = 0xD0000200550001;
   v5 = 12;
-  v6 = a3;
+  scaleCopy = scale;
   v7 = 0;
   return [[CUIRenditionKey alloc] initWithKeyList:&v4];
 }
 
-- (id)_radiosityImageBaseKeyWithScale:(int64_t)a3
+- (id)_radiosityImageBaseKeyWithScale:(int64_t)scale
 {
   v4 = 0xD1000200550001;
   v5 = 12;
-  v6 = a3;
+  scaleCopy = scale;
   v7 = 0;
   return [[CUIRenditionKey alloc] initWithKeyList:&v4];
 }
 
-- (id)_colorBaseKeyWithScale:(int64_t)a3
+- (id)_colorBaseKeyWithScale:(int64_t)scale
 {
   v4 = 0xD9000200550001;
   v5 = 12;
-  v6 = a3;
+  scaleCopy = scale;
   v7 = 0;
   return [[CUIRenditionKey alloc] initWithKeyList:&v4];
 }
 
-- (id)_textureBaseKeyWithScale:(int64_t)a3
+- (id)_textureBaseKeyWithScale:(int64_t)scale
 {
   v4 = 0x200290001;
   v5 = 12;
-  v6 = a3;
+  scaleCopy = scale;
   v7 = 0;
   return [[CUIRenditionKey alloc] initWithKeyList:&v4];
 }
 
-- (id)_textureImageBaseKeyWithScale:(int64_t)a3
+- (id)_textureImageBaseKeyWithScale:(int64_t)scale
 {
   v4 = 0xB5000200290001;
   v5 = 12;
-  v6 = a3;
+  scaleCopy = scale;
   v7 = 0;
   return [[CUIRenditionKey alloc] initWithKeyList:&v4];
 }
 
-- (id)_vectorImageBaseKeyWithScale:(int64_t)a3
+- (id)_vectorImageBaseKeyWithScale:(int64_t)scale
 {
   v4 = 0x2A000200550001;
   v5 = 12;
-  v6 = a3;
+  scaleCopy = scale;
   v7 = 0;
   return [[CUIRenditionKey alloc] initWithKeyList:&v4];
 }
 
-- (id)_gradientBaseKeyWithScale:(int64_t)a3
+- (id)_gradientBaseKeyWithScale:(int64_t)scale
 {
   v4 = 0xF7000200550001;
   v5 = 12;
-  v6 = a3;
+  scaleCopy = scale;
   v7 = 0;
   return [[CUIRenditionKey alloc] initWithKeyList:&v4];
 }
 
-- (id)_generatorForName:(id)a3
+- (id)_generatorForName:(id)name
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __48__CUISingleNamedAssetCreator__generatorForName___block_invoke;
   v6[3] = &unk_1E7249830;
-  v6[4] = a3;
+  v6[4] = name;
   v4 = [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self generators] indexOfObjectPassingTest:v6];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -396,29 +396,29 @@ id __48__CUISingleNamedAssetCreator__generatorForName___block_invoke(uint64_t a1
   return [v3 isEqualToString:v4];
 }
 
-- (id)_addImage:(CGImage *)a3 withBaseKey:(id)a4 name:(id)a5 atScale:(int64_t)a6
+- (id)_addImage:(CGImage *)image withBaseKey:(id)key name:(id)name atScale:(int64_t)scale
 {
-  Width = CGImageGetWidth(a3);
+  Width = CGImageGetWidth(image);
   v12 = Width;
-  Height = CGImageGetHeight(a3);
-  AlphaInfo = CGImageGetAlphaInfo(a3);
-  v14 = [[CUICatalogCSIGenerator alloc] initWithCanvasSize:1 sliceCount:10 layout:Width, Height];
+  Height = CGImageGetHeight(image);
+  AlphaInfo = CGImageGetAlphaInfo(image);
+  height = [[CUICatalogCSIGenerator alloc] initWithCanvasSize:1 sliceCount:10 layout:Width, Height];
   if ([(CUISingleNamedAssetCreator *)self checkForMonochrome])
   {
-    IsMonochrome = CUIImageIsMonochrome(a3);
+    IsMonochrome = CUIImageIsMonochrome(image);
   }
 
   else
   {
-    ColorSpace = CGImageGetColorSpace(a3);
+    ColorSpace = CGImageGetColorSpace(image);
     IsMonochrome = CGColorSpaceGetModel(ColorSpace) == kCGColorSpaceModelMonochrome;
   }
 
-  v17 = self->_allowsWideGamutImages && CUIImageIsWideGamut(a3);
-  [(CSIGenerator *)v14 setTargetPlatform:[(CUISingleNamedAssetCreator *)self targetPlatform]];
-  [(CUICatalogCSIGenerator *)v14 setBaseKey:a4];
-  [(CSIGenerator *)v14 setName:a5];
-  [(CSIGenerator *)v14 setAllowsPaletteImageCompression:[(CUISingleNamedAssetCreator *)self allowsPaletteImageCompression]];
+  v17 = self->_allowsWideGamutImages && CUIImageIsWideGamut(image);
+  [(CSIGenerator *)height setTargetPlatform:[(CUISingleNamedAssetCreator *)self targetPlatform]];
+  [(CUICatalogCSIGenerator *)height setBaseKey:key];
+  [(CSIGenerator *)height setName:name];
+  [(CSIGenerator *)height setAllowsPaletteImageCompression:[(CUISingleNamedAssetCreator *)self allowsPaletteImageCompression]];
   if (IsMonochrome)
   {
     v18 = 2;
@@ -449,14 +449,14 @@ id __48__CUISingleNamedAssetCreator__generatorForName___block_invoke(uint64_t a1
     v20 = v18;
   }
 
-  [(CSIGenerator *)v14 setColorSpaceID:v20];
+  [(CSIGenerator *)height setColorSpaceID:v20];
   if (self->_allowsWideGamutImages)
   {
-    [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v14 baseKey] setThemeDisplayGamut:1];
+    [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)height baseKey] setThemeDisplayGamut:1];
   }
 
-  [(CSIGenerator *)v14 setScaleFactor:a6];
-  [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v14 baseKey] setThemeScale:a6];
+  [(CSIGenerator *)height setScaleFactor:scale];
+  [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)height baseKey] setThemeScale:scale];
   v21 = [[CSIBitmapWrapper alloc] initWithPixelWidth:Width pixelHeight:Height];
   v22 = v21;
   if (v17)
@@ -510,24 +510,24 @@ id __48__CUISingleNamedAssetCreator__generatorForName___block_invoke(uint64_t a1
   [(CSIBitmapWrapper *)v22 setSourceAlphaInfo:AlphaInfo];
   if ((((self->_compressionType & 0xFFFFFFFFFFFFFFFELL) != 4) & IsMonochrome) == 0)
   {
-    [(CSIGenerator *)v14 setCompressionType:?];
+    [(CSIGenerator *)height setCompressionType:?];
     [(CUISingleNamedAssetCreator *)self layersLossyCompressionQuality];
-    [(CSIGenerator *)v14 setCompressionQuality:?];
+    [(CSIGenerator *)height setCompressionQuality:?];
   }
 
-  [(CSIGenerator *)v14 addBitmap:v22];
-  v25 = [(CSIBitmapWrapper *)v22 bitmapContext];
+  [(CSIGenerator *)height addBitmap:v22];
+  bitmapContext = [(CSIBitmapWrapper *)v22 bitmapContext];
 
   v34.origin.x = 0.0;
   v34.origin.y = 0.0;
   v34.size.width = v12;
   v34.size.height = Height;
-  CGContextDrawImage(v25, v34, a3);
-  [(CSIGenerator *)v14 addSliceRect:0.0, 0.0, v12, Height];
+  CGContextDrawImage(bitmapContext, v34, image);
+  [(CSIGenerator *)height addSliceRect:0.0, 0.0, v12, Height];
   memset(v31, 0, sizeof(v31));
   v32 = v12;
   v33 = Height;
-  [(CSIGenerator *)v14 addMetrics:v31];
+  [(CSIGenerator *)height addMetrics:v31];
   if (IsMonochrome)
   {
     v26 = 1195456544;
@@ -558,26 +558,26 @@ id __48__CUISingleNamedAssetCreator__generatorForName___block_invoke(uint64_t a1
     v28 = v26;
   }
 
-  [(CSIGenerator *)v14 setPixelFormat:v28];
-  [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self generators] addObject:v14];
+  [(CSIGenerator *)height setPixelFormat:v28];
+  [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self generators] addObject:height];
 
-  return v14;
+  return height;
 }
 
-- (void)addImage:(CGImage *)a3 withName:(id)a4 atScale:(int64_t)a5
+- (void)addImage:(CGImage *)image withName:(id)name atScale:(int64_t)scale
 {
-  [(CUISingleNamedAssetCreator *)self _addImage:a3 withBaseKey:[(CUISingleNamedAssetCreator *)self _defaultBaseKeyWithScale:a5] name:a4 atScale:a5];
-  v7 = [(CUISingleNamedAssetCreator *)self names];
+  [(CUISingleNamedAssetCreator *)self _addImage:image withBaseKey:[(CUISingleNamedAssetCreator *)self _defaultBaseKeyWithScale:scale] name:name atScale:scale];
+  names = [(CUISingleNamedAssetCreator *)self names];
 
-  [(NSMutableArray *)v7 addObject:a4];
+  [(NSMutableArray *)names addObject:name];
 }
 
-- (void)_addImageAsJPEG:(CGImage *)a3 withBaseKey:(id)a4 withName:(id)a5 atScale:(int64_t)a6
+- (void)_addImageAsJPEG:(CGImage *)g withBaseKey:(id)key withName:(id)name atScale:(int64_t)scale
 {
   if (self->_allowsWideGamutImages)
   {
     DisplayP3 = _CUIColorSpaceGetDisplayP3();
-    a3 = CUIConvertDeepImageTo8(a3, DisplayP3);
+    g = CUIConvertDeepImageTo8(g, DisplayP3);
   }
 
   Mutable = CFDataCreateMutable(kCFAllocatorDefault, 0);
@@ -586,14 +586,14 @@ id __48__CUISingleNamedAssetCreator__generatorForName___block_invoke(uint64_t a1
   flattenedCompressionQuality = self->_flattenedCompressionQuality;
   *&flattenedCompressionQuality = flattenedCompressionQuality;
   v16 = [v14 initWithObjectsAndKeys:{+[NSNumber numberWithFloat:](NSNumber, "numberWithFloat:", flattenedCompressionQuality), kCGImageDestinationLossyCompressionQuality, 0, 0}];
-  CGImageDestinationAddImage(v13, a3, v16);
+  CGImageDestinationAddImage(v13, g, v16);
   if (CGImageDestinationFinalize(v13))
   {
     v17 = [[CUICatalogCSIGenerator alloc] initWithRawData:Mutable pixelFormat:1246774599 layout:10];
-    [(CUICatalogCSIGenerator *)v17 setBaseKey:a4];
-    [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v17 baseKey] setThemeScale:a6];
-    [(CSIGenerator *)v17 setScaleFactor:a6];
-    [(CSIGenerator *)v17 setName:a5];
+    [(CUICatalogCSIGenerator *)v17 setBaseKey:key];
+    [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v17 baseKey] setThemeScale:scale];
+    [(CSIGenerator *)v17 setScaleFactor:scale];
+    [(CSIGenerator *)v17 setName:name];
     if (self->_allowsWideGamutImages)
     {
       [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v17 baseKey] setThemeDisplayGamut:1];
@@ -609,19 +609,19 @@ id __48__CUISingleNamedAssetCreator__generatorForName___block_invoke(uint64_t a1
   if (self->_allowsWideGamutImages)
   {
 
-    CGImageRelease(a3);
+    CGImageRelease(g);
   }
 }
 
-- (void)addImageAsJPEG:(CGImage *)a3 withName:(id)a4 atScale:(int64_t)a5
+- (void)addImageAsJPEG:(CGImage *)g withName:(id)name atScale:(int64_t)scale
 {
-  [(CUISingleNamedAssetCreator *)self _addImageAsJPEG:a3 withBaseKey:[(CUISingleNamedAssetCreator *)self _defaultBaseKeyWithScale:a5] withName:a4 atScale:a5];
-  v7 = [(CUISingleNamedAssetCreator *)self names];
+  [(CUISingleNamedAssetCreator *)self _addImageAsJPEG:g withBaseKey:[(CUISingleNamedAssetCreator *)self _defaultBaseKeyWithScale:scale] withName:name atScale:scale];
+  names = [(CUISingleNamedAssetCreator *)self names];
 
-  [(NSMutableArray *)v7 addObject:a4];
+  [(NSMutableArray *)names addObject:name];
 }
 
-- (void)addColor:(CGColor *)a3 withName:(id)a4 atScale:(int64_t)a5
+- (void)addColor:(CGColor *)color withName:(id)name atScale:(int64_t)scale
 {
   v20[0] = kCGColorSpaceSRGB;
   v20[1] = kCGColorSpaceGenericGrayGamma2_2;
@@ -636,17 +636,17 @@ id __48__CUISingleNamedAssetCreator__generatorForName___block_invoke(uint64_t a1
   v21[4] = &unk_1F00F7B98;
   v21[5] = &unk_1F00F7B50;
   v10 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:6];
-  Components = CGColorGetComponents(a3);
+  Components = CGColorGetComponents(color);
   v12 = objc_alloc_init(NSMutableArray);
-  ColorSpace = CGColorGetColorSpace(a3);
+  ColorSpace = CGColorGetColorSpace(color);
   v14 = [(NSDictionary *)v10 objectForKey:CGColorSpaceGetName(ColorSpace)];
   if (!v14)
   {
-    [CUISingleNamedAssetCreator addColor:a3 withName:a2 atScale:self];
+    [CUISingleNamedAssetCreator addColor:color withName:a2 atScale:self];
   }
 
-  v15 = [v14 intValue];
-  NumberOfComponents = CGColorGetNumberOfComponents(a3);
+  intValue = [v14 intValue];
+  NumberOfComponents = CGColorGetNumberOfComponents(color);
   if (NumberOfComponents)
   {
     v17 = NumberOfComponents;
@@ -660,105 +660,105 @@ id __48__CUISingleNamedAssetCreator__generatorForName___block_invoke(uint64_t a1
     while (v17);
   }
 
-  v19 = [[CUICatalogCSIGenerator alloc] initWithColorNamed:a4 colorSpaceID:v15 components:v12];
+  v19 = [[CUICatalogCSIGenerator alloc] initWithColorNamed:name colorSpaceID:intValue components:v12];
 
-  [(CUICatalogCSIGenerator *)v19 setBaseKey:[(CUISingleNamedAssetCreator *)self _colorBaseKeyWithScale:a5]];
-  [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v19 baseKey] setThemeScale:a5];
-  [(CSIGenerator *)v19 setScaleFactor:a5];
-  [(CSIGenerator *)v19 setName:a4];
+  [(CUICatalogCSIGenerator *)v19 setBaseKey:[(CUISingleNamedAssetCreator *)self _colorBaseKeyWithScale:scale]];
+  [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v19 baseKey] setThemeScale:scale];
+  [(CSIGenerator *)v19 setScaleFactor:scale];
+  [(CSIGenerator *)v19 setName:name];
   [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self generators] addObject:v19];
-  [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self names] addObject:a4];
+  [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self names] addObject:name];
 }
 
-- (void)addGradient:(id)a3 withStops:(id)a4 ofType:(int64_t)a5 startPoint:(CGPoint)a6 endPoint:(CGPoint)a7 withName:(id)a8 atScale:(int64_t)a9
+- (void)addGradient:(id)gradient withStops:(id)stops ofType:(int64_t)type startPoint:(CGPoint)point endPoint:(CGPoint)endPoint withName:(id)name atScale:(int64_t)scale
 {
-  y = a7.y;
-  x = a7.x;
-  v13 = a6.y;
-  v14 = a6.x;
-  v19 = [a3 count];
-  if (v19 != [a4 count])
+  y = endPoint.y;
+  x = endPoint.x;
+  v13 = point.y;
+  v14 = point.x;
+  v19 = [gradient count];
+  if (v19 != [stops count])
   {
     [CUISingleNamedAssetCreator addGradient:a2 withStops:self ofType:? startPoint:? endPoint:? withName:? atScale:?];
   }
 
-  v20 = [a3 count];
+  v20 = [gradient count];
   v26 = objc_alloc_init(NSMutableArray);
   if (v20)
   {
     for (i = 0; i != v20; ++i)
     {
-      v22 = [a3 objectAtIndex:i];
-      v23 = [NSString stringWithFormat:@"%@/Gradient Color %d", a8, i];
-      [(CUISingleNamedAssetCreator *)self addColor:v22 withName:v23 atScale:a9];
+      v22 = [gradient objectAtIndex:i];
+      v23 = [NSString stringWithFormat:@"%@/Gradient Color %d", name, i];
+      [(CUISingleNamedAssetCreator *)self addColor:v22 withName:v23 atScale:scale];
       [v26 addObject:v23];
     }
   }
 
-  v24 = [[CUICatalogCSIGenerator alloc] initWithGradientNamed:a8 type:a5 startPoint:v26 endPoint:a4 colorNames:v14 colorStops:v13, x, y];
-  [(CUICatalogCSIGenerator *)v24 setBaseKey:[(CUISingleNamedAssetCreator *)self _gradientBaseKeyWithScale:a9]];
-  [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v24 baseKey] setThemeScale:a9];
-  [(CSIGenerator *)v24 setScaleFactor:a9];
-  [(CSIGenerator *)v24 setName:a8];
+  v24 = [[CUICatalogCSIGenerator alloc] initWithGradientNamed:name type:type startPoint:v26 endPoint:stops colorNames:v14 colorStops:v13, x, y];
+  [(CUICatalogCSIGenerator *)v24 setBaseKey:[(CUISingleNamedAssetCreator *)self _gradientBaseKeyWithScale:scale]];
+  [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v24 baseKey] setThemeScale:scale];
+  [(CSIGenerator *)v24 setScaleFactor:scale];
+  [(CSIGenerator *)v24 setName:name];
   [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self generators] addObject:v24];
-  [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self names] addObject:a8];
+  [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self names] addObject:name];
 }
 
-- (void)addSVGDocument:(CGSVGDocument *)a3 withName:(id)a4 atScale:(int64_t)a5
+- (void)addSVGDocument:(CGSVGDocument *)document withName:(id)name atScale:(int64_t)scale
 {
   Mutable = CFDataCreateMutable(kCFAllocatorDefault, 0);
   CGSVGDocumentWriteToData();
   v10 = [[CUICatalogCSIGenerator alloc] initWithRawData:Mutable pixelFormat:1145132097 layout:9];
-  v9 = [(CUISingleNamedAssetCreator *)self _vectorImageBaseKeyWithScale:a5];
+  v9 = [(CUISingleNamedAssetCreator *)self _vectorImageBaseKeyWithScale:scale];
   [(CSIGenerator *)v10 setTargetPlatform:[(CUISingleNamedAssetCreator *)self targetPlatform]];
   [(CSIGenerator *)v10 setIsVectorBased:1];
   [(CUICatalogCSIGenerator *)v10 setBaseKey:v9];
-  [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v10 baseKey] setThemeScale:a5];
-  [(CSIGenerator *)v10 setScaleFactor:a5];
-  [(CSIGenerator *)v10 setName:a4];
+  [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v10 baseKey] setThemeScale:scale];
+  [(CSIGenerator *)v10 setScaleFactor:scale];
+  [(CSIGenerator *)v10 setName:name];
   [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self generators] addObject:v10];
-  [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self names] addObject:a4];
+  [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self names] addObject:name];
   CFRelease(Mutable);
 }
 
-- (void)addTexture:(id)a3 withName:(id)a4 atScale:(int64_t)a5
+- (void)addTexture:(id)texture withName:(id)name atScale:(int64_t)scale
 {
   memset(v35, 0, sizeof(v35));
-  v9 = -[CSIGenerator initWithTextureForPixelFormat:]([CUICatalogCSIGenerator alloc], "initWithTextureForPixelFormat:", CUIConvertFromTXRPixelFormat([a3 pixelFormat]));
-  v10 = [(CUISingleNamedAssetCreator *)self _textureBaseKeyWithScale:a5];
-  v11 = [(CUISingleNamedAssetCreator *)self _textureImageBaseKeyWithScale:a5];
+  v9 = -[CSIGenerator initWithTextureForPixelFormat:]([CUICatalogCSIGenerator alloc], "initWithTextureForPixelFormat:", CUIConvertFromTXRPixelFormat([texture pixelFormat]));
+  v10 = [(CUISingleNamedAssetCreator *)self _textureBaseKeyWithScale:scale];
+  v11 = [(CUISingleNamedAssetCreator *)self _textureImageBaseKeyWithScale:scale];
   [(CSIGenerator *)v9 setTargetPlatform:[(CUISingleNamedAssetCreator *)self targetPlatform]];
   [(CSIGenerator *)v9 setCubemap:0];
   [(CSIGenerator *)v9 addMipReference:v11];
   [(CUICatalogCSIGenerator *)v9 setBaseKey:v10];
-  [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v9 baseKey] setThemeScale:a5];
-  [(CSIGenerator *)v9 setScaleFactor:a5];
-  [a3 dimensions];
+  [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v9 baseKey] setThemeScale:scale];
+  [(CSIGenerator *)v9 setScaleFactor:scale];
+  [texture dimensions];
   v13 = v12;
-  [a3 dimensions];
+  [texture dimensions];
   v15 = v14;
-  [(CSIGenerator *)v9 setName:a4];
-  [a3 dimensions];
+  [(CSIGenerator *)v9 setName:name];
+  [texture dimensions];
   v17 = v16;
-  [a3 dimensions];
+  [texture dimensions];
   [(CSIGenerator *)v9 setSize:v17, v18];
-  -[CSIGenerator setTextureFormat:](v9, "setTextureFormat:", CUIConvertFromTXRPixelFormat([a3 pixelFormat]));
+  -[CSIGenerator setTextureFormat:](v9, "setTextureFormat:", CUIConvertFromTXRPixelFormat([texture pixelFormat]));
   v36 = v13;
   v37 = v15;
   [(CSIGenerator *)v9 addMetrics:v35];
   [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self generators] addObject:v9];
-  [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self names] addObject:a4];
+  [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self names] addObject:name];
 
   v19 = [CUICatalogCSIGenerator alloc];
-  [a3 dimensions];
+  [texture dimensions];
   v21 = v20;
-  [a3 dimensions];
-  v23 = -[CSIGenerator initWithTextureImageWithSize:forPixelFormat:cubeMap:](v19, "initWithTextureImageWithSize:forPixelFormat:cubeMap:", CUIConvertFromTXRPixelFormat([a3 pixelFormat]), 0, v21, v22);
+  [texture dimensions];
+  v23 = -[CSIGenerator initWithTextureImageWithSize:forPixelFormat:cubeMap:](v19, "initWithTextureImageWithSize:forPixelFormat:cubeMap:", CUIConvertFromTXRPixelFormat([texture pixelFormat]), 0, v21, v22);
   [(CUICatalogCSIGenerator *)v23 setBaseKey:v11];
-  [(CSIGenerator *)v23 setScaleFactor:a5];
-  v34 = a4;
-  [(CSIGenerator *)v23 setName:a4];
-  v24 = [objc_msgSend(a3 "mipmapLevels")];
+  [(CSIGenerator *)v23 setScaleFactor:scale];
+  nameCopy = name;
+  [(CSIGenerator *)v23 setName:name];
+  v24 = [objc_msgSend(texture "mipmapLevels")];
   if ([objc_msgSend(v24 "elements")])
   {
     v25 = 0;
@@ -767,10 +767,10 @@ id __48__CUISingleNamedAssetCreator__generatorForName___block_invoke(uint64_t a1
       v26 = [objc_msgSend(objc_msgSend(objc_msgSend(v24 "elements")];
       v27 = [objc_msgSend(v26 "buffer")];
       v28 = [CSIBitmapWrapper alloc];
-      [a3 dimensions];
+      [texture dimensions];
       v30 = v29;
-      [a3 dimensions];
-      v32 = -[CSIBitmapWrapper initWithCGImage:width:height:texturePixelFormat:](v28, "initWithCGImage:width:height:texturePixelFormat:", 0, v30, v31, CUIConvertFromTXRPixelFormat([a3 pixelFormat]));
+      [texture dimensions];
+      v32 = -[CSIBitmapWrapper initWithCGImage:width:height:texturePixelFormat:](v28, "initWithCGImage:width:height:texturePixelFormat:", 0, v30, v31, CUIConvertFromTXRPixelFormat([texture pixelFormat]));
       [(CSIBitmapWrapper *)v32 setSourceAlphaInfo:0];
       -[CSIBitmapWrapper setRowbytes:](v32, "setRowbytes:", [v26 bytesPerRow]);
       [(CSIBitmapWrapper *)v32 setTargetPlatform:[(CUISingleNamedAssetCreator *)self targetPlatform]];
@@ -787,62 +787,62 @@ id __48__CUISingleNamedAssetCreator__generatorForName___block_invoke(uint64_t a1
   }
 
   [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self generators] addObject:v23];
-  [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self names] addObject:v34];
+  [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self names] addObject:nameCopy];
 }
 
-- (void)_addLayerStackWithSize:(CGSize)a3 type:(int64_t)a4 stackData:(id)a5 name:(id)a6 atScale:(int64_t)a7 withRenderingProperties:(id)a8
+- (void)_addLayerStackWithSize:(CGSize)size type:(int64_t)type stackData:(id)data name:(id)name atScale:(int64_t)scale withRenderingProperties:(id)properties
 {
-  v15 = [[CUICatalogCSIGenerator alloc] initWithLayerStackData:a5 type:a4 withCanvasSize:1 isOpaque:self->_allowsWideGamutImages allowsWide:a7 atScale:a3.width, a3.height];
+  v15 = [[CUICatalogCSIGenerator alloc] initWithLayerStackData:data type:type withCanvasSize:1 isOpaque:self->_allowsWideGamutImages allowsWide:scale atScale:size.width, size.height];
   [(CSIGenerator *)v15 setTargetPlatform:[(CUISingleNamedAssetCreator *)self targetPlatform]];
-  if (a4 == 1002)
+  if (type == 1002)
   {
-    v13 = [(CUISingleNamedAssetCreator *)self _defaultBaseKeyWithScale:a7];
+    v13 = [(CUISingleNamedAssetCreator *)self _defaultBaseKeyWithScale:scale];
     v14 = @"public.layeredicon";
   }
 
-  else if (a4 == 1019)
+  else if (type == 1019)
   {
-    v13 = [(CUISingleNamedAssetCreator *)self _iconStackBaseKeyWithScale:a7];
+    v13 = [(CUISingleNamedAssetCreator *)self _iconStackBaseKeyWithScale:scale];
     v14 = @"public.layeredimage";
   }
 
   else
   {
-    v13 = [(CUISingleNamedAssetCreator *)self _iconGroupBaseKeyWithScale:a7];
+    v13 = [(CUISingleNamedAssetCreator *)self _iconGroupBaseKeyWithScale:scale];
     v14 = @"public.layeredgroup";
   }
 
   [(CUICatalogCSIGenerator *)v15 setBaseKey:v13];
   [(CSIGenerator *)v15 setUtiType:v14];
-  [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v15 baseKey] setThemeScale:a7];
+  [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v15 baseKey] setThemeScale:scale];
   if (self->_allowsWideGamutImages)
   {
     [(CUIRenditionKey *)[(CUICatalogCSIGenerator *)v15 baseKey] setThemeDisplayGamut:1];
   }
 
-  [(CSIGenerator *)v15 setName:a6];
+  [(CSIGenerator *)v15 setName:name];
   [(CSIGenerator *)v15 setColorSpaceID:1];
-  [(CSIGenerator *)v15 setScaleFactor:a7];
-  [(CSIGenerator *)v15 setRenditionProperties:a8];
+  [(CSIGenerator *)v15 setScaleFactor:scale];
+  [(CSIGenerator *)v15 setRenditionProperties:properties];
   [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self generators] addObject:v15];
-  [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self names] addObject:a6];
-  if (a4 != 1020)
+  [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self names] addObject:name];
+  if (type != 1020)
   {
-    [(CUISingleNamedAssetCreator *)self setPrimaryName:a6];
+    [(CUISingleNamedAssetCreator *)self setPrimaryName:name];
     [(CUISingleNamedAssetCreator *)self setPrimaryIndex:[(NSMutableArray *)[(CUISingleNamedAssetCreator *)self generators] indexOfObject:v15]];
   }
 }
 
-- (id)_generatorWithName:(id)a3
+- (id)_generatorWithName:(id)name
 {
-  if ([(CUISingleNamedAssetCreator *)self primaryName]&& [(NSString *)[(CUISingleNamedAssetCreator *)self primaryName] isEqualToString:a3])
+  if ([(CUISingleNamedAssetCreator *)self primaryName]&& [(NSString *)[(CUISingleNamedAssetCreator *)self primaryName] isEqualToString:name])
   {
     v5 = [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self generators] objectAtIndexedSubscript:[(CUISingleNamedAssetCreator *)self primaryIndex]];
   }
 
   else
   {
-    v5 = [(CUISingleNamedAssetCreator *)self _generatorForName:a3];
+    v5 = [(CUISingleNamedAssetCreator *)self _generatorForName:name];
   }
 
   v6 = v5;
@@ -854,64 +854,64 @@ id __48__CUISingleNamedAssetCreator__generatorForName___block_invoke(uint64_t a1
   return v6;
 }
 
-- (void)addLayerReference:(id)a3 forImage:(CGImage *)a4 toLayerStackWithName:(id)a5 atScale:(int64_t)a6
+- (void)addLayerReference:(id)reference forImage:(CGImage *)image toLayerStackWithName:(id)name atScale:(int64_t)scale
 {
-  v9 = [(CUISingleNamedAssetCreator *)self _generatorWithName:a5];
+  v9 = [(CUISingleNamedAssetCreator *)self _generatorWithName:name];
 
-  [v9 addLayerReference:a3 withImage:a4 atScale:a6];
+  [v9 addLayerReference:reference withImage:image atScale:scale];
 }
 
-- (void)addLayerReference:(id)a3 forColorToLayerStackWithName:(id)a4 atScale:(int64_t)a5
+- (void)addLayerReference:(id)reference forColorToLayerStackWithName:(id)name atScale:(int64_t)scale
 {
-  v8 = [(CUISingleNamedAssetCreator *)self _generatorWithName:a4];
-  [a3 setReferenceKey:{-[CUISingleNamedAssetCreator _colorBaseKeyWithScale:](self, "_colorBaseKeyWithScale:", a5)}];
+  v8 = [(CUISingleNamedAssetCreator *)self _generatorWithName:name];
+  [reference setReferenceKey:{-[CUISingleNamedAssetCreator _colorBaseKeyWithScale:](self, "_colorBaseKeyWithScale:", scale)}];
 
-  [v8 addLayerReference:a3];
+  [v8 addLayerReference:reference];
 }
 
-- (void)addLayerReference:(id)a3 forSVGDocumentToLayerStackWithName:(id)a4 atScale:(int64_t)a5
+- (void)addLayerReference:(id)reference forSVGDocumentToLayerStackWithName:(id)name atScale:(int64_t)scale
 {
-  v8 = [(CUISingleNamedAssetCreator *)self _generatorWithName:a4];
-  [a3 setReferenceKey:{-[CUISingleNamedAssetCreator _vectorImageBaseKeyWithScale:](self, "_vectorImageBaseKeyWithScale:", a5)}];
+  v8 = [(CUISingleNamedAssetCreator *)self _generatorWithName:name];
+  [reference setReferenceKey:{-[CUISingleNamedAssetCreator _vectorImageBaseKeyWithScale:](self, "_vectorImageBaseKeyWithScale:", scale)}];
 
-  [v8 addLayerReference:a3];
+  [v8 addLayerReference:reference];
 }
 
-- (void)addLayerReference:(id)a3 forGradientToLayerStackWithName:(id)a4 atScale:(int64_t)a5
+- (void)addLayerReference:(id)reference forGradientToLayerStackWithName:(id)name atScale:(int64_t)scale
 {
-  v8 = [(CUISingleNamedAssetCreator *)self _generatorWithName:a4];
-  [a3 setReferenceKey:{-[CUISingleNamedAssetCreator _gradientBaseKeyWithScale:](self, "_gradientBaseKeyWithScale:", a5)}];
+  v8 = [(CUISingleNamedAssetCreator *)self _generatorWithName:name];
+  [reference setReferenceKey:{-[CUISingleNamedAssetCreator _gradientBaseKeyWithScale:](self, "_gradientBaseKeyWithScale:", scale)}];
 
-  [v8 addLayerReference:a3];
+  [v8 addLayerReference:reference];
 }
 
-- (void)addLayerReference:(id)a3 forGroupToLayerStackWithName:(id)a4 atScale:(int64_t)a5
+- (void)addLayerReference:(id)reference forGroupToLayerStackWithName:(id)name atScale:(int64_t)scale
 {
-  v8 = [(CUISingleNamedAssetCreator *)self _generatorWithName:a4];
-  [a3 setReferenceKey:{-[CUISingleNamedAssetCreator _iconGroupBaseKeyWithScale:](self, "_iconGroupBaseKeyWithScale:", a5)}];
+  v8 = [(CUISingleNamedAssetCreator *)self _generatorWithName:name];
+  [reference setReferenceKey:{-[CUISingleNamedAssetCreator _iconGroupBaseKeyWithScale:](self, "_iconGroupBaseKeyWithScale:", scale)}];
 
-  [v8 addLayerReference:a3];
+  [v8 addLayerReference:reference];
 }
 
-- (void)addFlattenedImage:(CGImage *)a3 forLayerStackWithName:(id)a4 atScale:(int64_t)a5
+- (void)addFlattenedImage:(CGImage *)image forLayerStackWithName:(id)name atScale:(int64_t)scale
 {
-  v9 = [(CUISingleNamedAssetCreator *)self _generatorWithName:a4];
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  v9 = [(CUISingleNamedAssetCreator *)self _generatorWithName:name];
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
   [v9 size];
   if (v13 != Height && v12 != Width)
   {
     [+[NSException exceptionWithName:reason:userInfo:](NSException raise:NSInvalidArgumentException];
   }
 
-  [(CUISingleNamedAssetCreator *)self _addImage:a3 withBaseKey:[(CUISingleNamedAssetCreator *)self _flattenedImageBaseKeyWithScale:a5] name:a4 atScale:a5];
-  v15 = [CUINamedLayerStack createRadiosityImageWithImage:a3 displayScale:a5];
-  [(CUISingleNamedAssetCreator *)self _addImage:v15 withBaseKey:[(CUISingleNamedAssetCreator *)self _radiosityImageBaseKeyWithScale:a5] name:a4 atScale:a5];
+  [(CUISingleNamedAssetCreator *)self _addImage:image withBaseKey:[(CUISingleNamedAssetCreator *)self _flattenedImageBaseKeyWithScale:scale] name:name atScale:scale];
+  v15 = [CUINamedLayerStack createRadiosityImageWithImage:image displayScale:scale];
+  [(CUISingleNamedAssetCreator *)self _addImage:v15 withBaseKey:[(CUISingleNamedAssetCreator *)self _radiosityImageBaseKeyWithScale:scale] name:name atScale:scale];
 
   CGImageRelease(v15);
 }
 
-- (BOOL)_extractFlattenedImages:(id *)a3
+- (BOOL)_extractFlattenedImages:(id *)images
 {
   v4 = +[NSMutableArray array];
   v5 = +[NSMutableArray array];
@@ -1053,7 +1053,7 @@ void __54__CUISingleNamedAssetCreator__extractFlattenedImages___block_invoke(id 
   }
 }
 
-- (BOOL)_distillNameEntries:(id *)a3
+- (BOOL)_distillNameEntries:(id *)entries
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -1074,9 +1074,9 @@ id __50__CUISingleNamedAssetCreator__distillNameEntries___block_invoke(uint64_t 
   return [objc_msgSend(*(a1 + 32) "store")];
 }
 
-- (BOOL)writeFlattenedImageToOutput:(id)a3 error:(id *)a4
+- (BOOL)writeFlattenedImageToOutput:(id)output error:(id *)error
 {
-  if (![(CUISingleNamedAssetCreator *)self _extractFlattenedImages:a4])
+  if (![(CUISingleNamedAssetCreator *)self _extractFlattenedImages:error])
   {
     return 0;
   }
@@ -1085,8 +1085,8 @@ id __50__CUISingleNamedAssetCreator__distillNameEntries___block_invoke(uint64_t 
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(CUISingleNamedAssetCreator *)self generators];
-  v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  generators = [(CUISingleNamedAssetCreator *)self generators];
+  v7 = [(NSMutableArray *)generators countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v7)
   {
     return 0;
@@ -1100,20 +1100,20 @@ id __50__CUISingleNamedAssetCreator__distillNameEntries___block_invoke(uint64_t 
     {
       if (*v16 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(generators);
       }
 
       v11 = *(*(&v15 + 1) + 8 * i);
       if ([objc_msgSend(v11 "name")])
       {
-        v13 = [v11 rawData];
+        rawData = [v11 rawData];
         v12 = 1;
-        [v13 writeToURL:a3 atomically:1];
+        [rawData writeToURL:output atomically:1];
         return v12;
       }
     }
 
-    v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [(NSMutableArray *)generators countByEnumeratingWithState:&v15 objects:v19 count:16];
     v12 = 0;
     if (v8)
     {
@@ -1126,7 +1126,7 @@ id __50__CUISingleNamedAssetCreator__distillNameEntries___block_invoke(uint64_t 
   return v12;
 }
 
-- (id)_keyDataFromKey:(const _renditionkeytoken *)a3
+- (id)_keyDataFromKey:(const _renditionkeytoken *)key
 {
   *v13 = 0u;
   v4 = [(CUISingleNamedAssetCreator *)self _keyFormat:0];
@@ -1141,7 +1141,7 @@ id __50__CUISingleNamedAssetCreator__distillNameEntries___block_invoke(uint64_t 
     v6 = malloc_type_calloc(var2, 2uLL, 0x1000040BDFB0063uLL);
   }
 
-  CUIFillCARKeyArrayForRenditionKey(v6, a3, v4);
+  CUIFillCARKeyArrayForRenditionKey(v6, key, v4);
   v7 = v4->var2;
   v8 = [NSData alloc];
   v9 = 2 * v4->var2;
@@ -1158,7 +1158,7 @@ id __50__CUISingleNamedAssetCreator__distillNameEntries___block_invoke(uint64_t 
   return v10;
 }
 
-- (BOOL)_distillRenditions:(id *)a3
+- (BOOL)_distillRenditions:(id *)renditions
 {
   v14 = 0;
   v15 = &v14;
@@ -1181,12 +1181,12 @@ id __50__CUISingleNamedAssetCreator__distillNameEntries___block_invoke(uint64_t 
   v8[6] = v9;
   v8[7] = &v14;
   [(NSMutableArray *)[(CUISingleNamedAssetCreator *)self generators] enumerateObjectsUsingBlock:v8];
-  v5 = [(CUISingleNamedAssetCreator *)self store];
-  [(CUIMutableCommonAssetStorage *)v5 setRenditionCount:*(v11 + 6)];
+  store = [(CUISingleNamedAssetCreator *)self store];
+  [(CUIMutableCommonAssetStorage *)store setRenditionCount:*(v11 + 6)];
   v6 = *(v15 + 24);
-  if (a3 && (v15[3] & 1) != 0)
+  if (renditions && (v15[3] & 1) != 0)
   {
-    *a3 = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:[NSDictionary dictionaryWithObject:@"Error while distilling rendition" forKey:NSLocalizedDescriptionKey]];
+    *renditions = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:[NSDictionary dictionaryWithObject:@"Error while distilling rendition" forKey:NSLocalizedDescriptionKey]];
     v6 = *(v15 + 24);
   }
 
@@ -1228,25 +1228,25 @@ id __49__CUISingleNamedAssetCreator__distillRenditions___block_invoke(uint64_t a
   return result;
 }
 
-- (BOOL)distillAndSave:(id *)a3
+- (BOOL)distillAndSave:(id *)save
 {
   [(CUISingleNamedAssetCreator *)self _configureDefaultStorageParameters];
   [(CUISingleNamedAssetCreator *)self _finalizeNameIdentifiers];
-  if ([(CUISingleNamedAssetCreator *)self generateFlattenedImages]&& ![(CUISingleNamedAssetCreator *)self _extractFlattenedImages:a3]|| ![(CUISingleNamedAssetCreator *)self _distillNameEntries:a3]|| ![(CUISingleNamedAssetCreator *)self _distillRenditions:a3])
+  if ([(CUISingleNamedAssetCreator *)self generateFlattenedImages]&& ![(CUISingleNamedAssetCreator *)self _extractFlattenedImages:save]|| ![(CUISingleNamedAssetCreator *)self _distillNameEntries:save]|| ![(CUISingleNamedAssetCreator *)self _distillRenditions:save])
   {
     return 0;
   }
 
-  v5 = [(CUISingleNamedAssetCreator *)self store];
+  store = [(CUISingleNamedAssetCreator *)self store];
 
-  return [(CUIMutableCommonAssetStorage *)v5 writeToDiskAndCompact:1];
+  return [(CUIMutableCommonAssetStorage *)store writeToDiskAndCompact:1];
 }
 
-- (void)setThinningArguments:(id)a3
+- (void)setThinningArguments:(id)arguments
 {
-  v4 = [(CUISingleNamedAssetCreator *)self store];
+  store = [(CUISingleNamedAssetCreator *)self store];
 
-  [(CUIMutableCommonAssetStorage *)v4 setThinningArguments:a3];
+  [(CUIMutableCommonAssetStorage *)store setThinningArguments:arguments];
 }
 
 - (id)addGradient:(uint64_t)a1 withStops:(uint64_t)a2 ofType:startPoint:endPoint:withName:atScale:.cold.1(uint64_t a1, uint64_t a2)

@@ -2,12 +2,12 @@
 - (CACornerRadii)cornerRadii;
 - (NSString)cornerCurve;
 - (_TtCC7Journal31ThirdPartyMediaShadowEffectViewP33_12A01373AF1737769C2E66ABF7AEC5025Layer)init;
-- (_TtCC7Journal31ThirdPartyMediaShadowEffectViewP33_12A01373AF1737769C2E66ABF7AEC5025Layer)initWithCoder:(id)a3;
-- (_TtCC7Journal31ThirdPartyMediaShadowEffectViewP33_12A01373AF1737769C2E66ABF7AEC5025Layer)initWithLayer:(id)a3;
+- (_TtCC7Journal31ThirdPartyMediaShadowEffectViewP33_12A01373AF1737769C2E66ABF7AEC5025Layer)initWithCoder:(id)coder;
+- (_TtCC7Journal31ThirdPartyMediaShadowEffectViewP33_12A01373AF1737769C2E66ABF7AEC5025Layer)initWithLayer:(id)layer;
 - (double)cornerRadius;
-- (void)setCornerCurve:(id)a3;
-- (void)setCornerRadii:(CACornerRadii *)a3;
-- (void)setCornerRadius:(double)a3;
+- (void)setCornerCurve:(id)curve;
+- (void)setCornerRadii:(CACornerRadii *)radii;
+- (void)setCornerRadius:(double)radius;
 @end
 
 @implementation ThirdPartyMediaShadowEffectView.Layer
@@ -20,26 +20,26 @@
   return result;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = self;
-  sub_100786B7C(a3);
+  selfCopy = self;
+  sub_100786B7C(radius);
 }
 
 - (NSString)cornerCurve
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for ThirdPartyMediaShadowEffectView.Layer();
-  v2 = [(ThirdPartyMediaShadowEffectView.Layer *)&v4 cornerCurve];
+  cornerCurve = [(ThirdPartyMediaShadowEffectView.Layer *)&v4 cornerCurve];
 
-  return v2;
+  return cornerCurve;
 }
 
-- (void)setCornerCurve:(id)a3
+- (void)setCornerCurve:(id)curve
 {
-  v4 = a3;
-  v5 = self;
-  sub_100786D2C(v4);
+  curveCopy = curve;
+  selfCopy = self;
+  sub_100786D2C(curveCopy);
 }
 
 - (CACornerRadii)cornerRadii
@@ -57,15 +57,15 @@
   return result;
 }
 
-- (void)setCornerRadii:(CACornerRadii *)a3
+- (void)setCornerRadii:(CACornerRadii *)radii
 {
-  var1 = a3->var1;
-  v6[0] = a3->var0;
+  var1 = radii->var1;
+  v6[0] = radii->var0;
   v6[1] = var1;
-  var3 = a3->var3;
-  v6[2] = a3->var2;
+  var3 = radii->var3;
+  v6[2] = radii->var2;
   v6[3] = var3;
-  v5 = self;
+  selfCopy = self;
   sub_100786EFC(v6);
 }
 
@@ -76,7 +76,7 @@
   return [(ThirdPartyMediaShadowEffectView.Layer *)&v3 init];
 }
 
-- (_TtCC7Journal31ThirdPartyMediaShadowEffectViewP33_12A01373AF1737769C2E66ABF7AEC5025Layer)initWithLayer:(id)a3
+- (_TtCC7Journal31ThirdPartyMediaShadowEffectViewP33_12A01373AF1737769C2E66ABF7AEC5025Layer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -91,12 +91,12 @@
   return v5;
 }
 
-- (_TtCC7Journal31ThirdPartyMediaShadowEffectViewP33_12A01373AF1737769C2E66ABF7AEC5025Layer)initWithCoder:(id)a3
+- (_TtCC7Journal31ThirdPartyMediaShadowEffectViewP33_12A01373AF1737769C2E66ABF7AEC5025Layer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ThirdPartyMediaShadowEffectView.Layer();
-  v4 = a3;
-  v5 = [(ThirdPartyMediaShadowEffectView.Layer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ThirdPartyMediaShadowEffectView.Layer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

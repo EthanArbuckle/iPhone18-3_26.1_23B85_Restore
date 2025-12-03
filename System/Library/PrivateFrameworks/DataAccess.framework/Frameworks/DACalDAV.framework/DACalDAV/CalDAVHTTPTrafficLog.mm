@@ -1,9 +1,9 @@
 @interface CalDAVHTTPTrafficLog
 + (id)instance;
 - (CalDAVHTTPTrafficLog)init;
-- (void)logData:(id)a3;
-- (void)logString:(id)a3;
-- (void)logStringWithFormat:(id)a3;
+- (void)logData:(id)data;
+- (void)logString:(id)string;
+- (void)logStringWithFormat:(id)format;
 @end
 
 @implementation CalDAVHTTPTrafficLog
@@ -38,30 +38,30 @@
   return v2;
 }
 
-- (void)logString:(id)a3
+- (void)logString:(id)string
 {
-  v4 = a3;
-  v6 = [(CalDAVHTTPTrafficLog *)self curLogger];
-  v5 = [v4 dataUsingEncoding:4];
+  stringCopy = string;
+  curLogger = [(CalDAVHTTPTrafficLog *)self curLogger];
+  v5 = [stringCopy dataUsingEncoding:4];
 
-  [v6 logSnippet:v5];
+  [curLogger logSnippet:v5];
 }
 
-- (void)logStringWithFormat:(id)a3
+- (void)logStringWithFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   if ([(CalDAVHTTPTrafficLog *)self enabled])
   {
-    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v4 arguments:&v6];
+    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:formatCopy arguments:&v6];
     [(CalDAVHTTPTrafficLog *)self logString:v5];
   }
 }
 
-- (void)logData:(id)a3
+- (void)logData:(id)data
 {
-  v4 = a3;
-  v5 = [(CalDAVHTTPTrafficLog *)self curLogger];
-  [v5 logSnippet:v4];
+  dataCopy = data;
+  curLogger = [(CalDAVHTTPTrafficLog *)self curLogger];
+  [curLogger logSnippet:dataCopy];
 }
 
 @end

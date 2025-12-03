@@ -1,18 +1,18 @@
 @interface PKPaymentVehicleManufacturerRequest
-+ (id)requestMetadataWithPartnerIdentifier:(id)a3 brandIdentifier:(id)a4;
-- (PKPaymentVehicleManufacturerRequest)initWithInvitation:(id)a3 encryptedVehicleDataRequest:(id)a4;
-- (PKPaymentVehicleManufacturerRequest)initWithPartnerIdentifier:(id)a3 brandIdentifier:(id)a4 encryptedVehicleDataRequest:(id)a5;
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
++ (id)requestMetadataWithPartnerIdentifier:(id)identifier brandIdentifier:(id)brandIdentifier;
+- (PKPaymentVehicleManufacturerRequest)initWithInvitation:(id)invitation encryptedVehicleDataRequest:(id)request;
+- (PKPaymentVehicleManufacturerRequest)initWithPartnerIdentifier:(id)identifier brandIdentifier:(id)brandIdentifier encryptedVehicleDataRequest:(id)request;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
 - (id)requestBody;
 @end
 
 @implementation PKPaymentVehicleManufacturerRequest
 
-+ (id)requestMetadataWithPartnerIdentifier:(id)a3 brandIdentifier:(id)a4
++ (id)requestMetadataWithPartnerIdentifier:(id)identifier brandIdentifier:(id)brandIdentifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  brandIdentifierCopy = brandIdentifier;
   v7 = PKPartnerIdentifierOverride();
   v8 = v7;
   if (v7)
@@ -22,7 +22,7 @@
 
   else
   {
-    v9 = v5;
+    v9 = identifierCopy;
   }
 
   v10 = v9;
@@ -34,39 +34,39 @@
       v15 = 138412546;
       v16 = v8;
       v17 = 2112;
-      v18 = v5;
+      v18 = identifierCopy;
       _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Overriding partner identifier with value %@ (was %@)", &v15, 0x16u);
     }
   }
 
   v12 = 0;
-  if (v6 && v10)
+  if (brandIdentifierCopy && v10)
   {
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v13 setObject:v10 forKeyedSubscript:@"partnerID"];
-    [v13 setObject:v6 forKeyedSubscript:@"brand"];
+    [v13 setObject:brandIdentifierCopy forKeyedSubscript:@"brand"];
     v12 = [v13 copy];
   }
 
   return v12;
 }
 
-- (PKPaymentVehicleManufacturerRequest)initWithInvitation:(id)a3 encryptedVehicleDataRequest:(id)a4
+- (PKPaymentVehicleManufacturerRequest)initWithInvitation:(id)invitation encryptedVehicleDataRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 partnerIdentifier];
-  v9 = [v7 brandIdentifier];
+  requestCopy = request;
+  invitationCopy = invitation;
+  partnerIdentifier = [invitationCopy partnerIdentifier];
+  brandIdentifier = [invitationCopy brandIdentifier];
 
-  v10 = [(PKPaymentVehicleManufacturerRequest *)self initWithPartnerIdentifier:v8 brandIdentifier:v9 encryptedVehicleDataRequest:v6];
+  v10 = [(PKPaymentVehicleManufacturerRequest *)self initWithPartnerIdentifier:partnerIdentifier brandIdentifier:brandIdentifier encryptedVehicleDataRequest:requestCopy];
   return v10;
 }
 
-- (PKPaymentVehicleManufacturerRequest)initWithPartnerIdentifier:(id)a3 brandIdentifier:(id)a4 encryptedVehicleDataRequest:(id)a5
+- (PKPaymentVehicleManufacturerRequest)initWithPartnerIdentifier:(id)identifier brandIdentifier:(id)brandIdentifier encryptedVehicleDataRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  brandIdentifierCopy = brandIdentifier;
+  requestCopy = request;
   v21.receiver = self;
   v21.super_class = PKPaymentVehicleManufacturerRequest;
   v11 = [(PKOverlayableWebServiceRequest *)&v21 init];
@@ -75,7 +75,7 @@
     goto LABEL_4;
   }
 
-  v12 = dictionaryFromSubcredentialEncryptedRequest(v10);
+  v12 = dictionaryFromSubcredentialEncryptedRequest(requestCopy);
   encryptedVehicleDataRequest = v11->_encryptedVehicleDataRequest;
   v11->_encryptedVehicleDataRequest = v12;
 
@@ -96,7 +96,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v14 = [objc_opt_class() requestMetadataWithPartnerIdentifier:v8 brandIdentifier:v9];
+  v14 = [objc_opt_class() requestMetadataWithPartnerIdentifier:identifierCopy brandIdentifier:brandIdentifierCopy];
   metadata = v11->_metadata;
   v11->_metadata = v14;
 
@@ -130,24 +130,24 @@ LABEL_11:
   return v4;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
   v22 = *MEMORY[0x1E69E9840];
   v19 = @"devices";
-  v20 = a4;
+  identifierCopy = identifier;
   v21 = @"vehicleManufacturerData";
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  informationCopy = information;
+  identifierCopy2 = identifier;
+  lCopy = l;
   v12 = [v8 arrayWithObjects:&v19 count:3];
 
-  v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v11 endpointComponents:v12 queryParameters:0 appleAccountInformation:v9, v19, v20, v21, v22];
+  v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v12 queryParameters:0 appleAccountInformation:informationCopy, v19, identifierCopy, v21, v22];
 
   [v13 setHTTPMethod:@"POST"];
   v14 = objc_opt_class();
-  v15 = [(PKPaymentVehicleManufacturerRequest *)self requestBody];
-  v16 = [v14 _HTTPBodyWithDictionary:v15];
+  requestBody = [(PKPaymentVehicleManufacturerRequest *)self requestBody];
+  v16 = [v14 _HTTPBodyWithDictionary:requestBody];
   [v13 setHTTPBody:v16];
 
   v17 = [v13 copy];

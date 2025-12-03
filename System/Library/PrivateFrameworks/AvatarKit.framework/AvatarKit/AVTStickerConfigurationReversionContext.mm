@@ -1,11 +1,11 @@
 @interface AVTStickerConfigurationReversionContext
 - (AVTStickerConfigurationReversionContext)init;
-- (void)resetForAvatar:(id)a3;
-- (void)revertChangesWithScope:(unint64_t)a3 animationDuration:(double)a4;
-- (void)saveCustomMaterialPropertyNamed:(id)a3 forMaterial:(id)a4;
-- (void)saveExtraCameraNode:(id)a3;
-- (void)saveExtraPropsNode:(id)a3;
-- (void)saveShaderModifiers:(id)a3 forMaterial:(id)a4;
+- (void)resetForAvatar:(id)avatar;
+- (void)revertChangesWithScope:(unint64_t)scope animationDuration:(double)duration;
+- (void)saveCustomMaterialPropertyNamed:(id)named forMaterial:(id)material;
+- (void)saveExtraCameraNode:(id)node;
+- (void)saveExtraPropsNode:(id)node;
+- (void)saveShaderModifiers:(id)modifiers forMaterial:(id)material;
 @end
 
 @implementation AVTStickerConfigurationReversionContext
@@ -41,10 +41,10 @@
   return v2;
 }
 
-- (void)resetForAvatar:(id)a3
+- (void)resetForAvatar:(id)avatar
 {
-  v5 = a3;
-  objc_storeStrong(&self->_avatar, a3);
+  avatarCopy = avatar;
+  objc_storeStrong(&self->_avatar, avatar);
   if ([(NSMutableArray *)self->_presetOverrides count])
   {
     v6 = avt_default_log();
@@ -125,56 +125,56 @@
   objc_storeWeak(&self->_environmentForPointOfViewUpdateFromFramingMode, 0);
 }
 
-- (void)saveShaderModifiers:(id)a3 forMaterial:(id)a4
+- (void)saveShaderModifiers:(id)modifiers forMaterial:(id)material
 {
   shaderModifiers = self->_shaderModifiers;
-  if (a3)
+  if (modifiers)
   {
-    v8 = a4;
-    NSMapInsertIfAbsent(shaderModifiers, v8, a3);
+    materialCopy = material;
+    NSMapInsertIfAbsent(shaderModifiers, materialCopy, modifiers);
   }
 
   else
   {
     v6 = MEMORY[0x1E695DFB0];
-    v7 = a4;
-    v8 = [v6 null];
-    NSMapInsertIfAbsent(shaderModifiers, v7, v8);
+    materialCopy2 = material;
+    materialCopy = [v6 null];
+    NSMapInsertIfAbsent(shaderModifiers, materialCopy2, materialCopy);
   }
 }
 
-- (void)saveCustomMaterialPropertyNamed:(id)a3 forMaterial:(id)a4
+- (void)saveCustomMaterialPropertyNamed:(id)named forMaterial:(id)material
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(NSMapTable *)self->_customMaterialProperties objectForKey:v6];
+  namedCopy = named;
+  materialCopy = material;
+  v7 = [(NSMapTable *)self->_customMaterialProperties objectForKey:materialCopy];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:1];
-    [(NSMapTable *)self->_customMaterialProperties setObject:v7 forKey:v6];
+    [(NSMapTable *)self->_customMaterialProperties setObject:v7 forKey:materialCopy];
   }
 
-  v8 = [v7 objectForKeyedSubscript:v11];
+  v8 = [v7 objectForKeyedSubscript:namedCopy];
 
   if (!v8)
   {
-    v9 = [v6 valueForKey:v11];
+    v9 = [materialCopy valueForKey:namedCopy];
     if (v9)
     {
-      [v7 setObject:v9 forKeyedSubscript:v11];
+      [v7 setObject:v9 forKeyedSubscript:namedCopy];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v7 setObject:v10 forKeyedSubscript:v11];
+      null = [MEMORY[0x1E695DFB0] null];
+      [v7 setObject:null forKeyedSubscript:namedCopy];
     }
   }
 }
 
-- (void)saveExtraCameraNode:(id)a3
+- (void)saveExtraCameraNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   if (self->_extraCameraNode)
   {
     v5 = avt_default_log();
@@ -185,12 +185,12 @@
   }
 
   extraCameraNode = self->_extraCameraNode;
-  self->_extraCameraNode = v4;
+  self->_extraCameraNode = nodeCopy;
 }
 
-- (void)saveExtraPropsNode:(id)a3
+- (void)saveExtraPropsNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   if (self->_extraPropsNode)
   {
     v5 = avt_default_log();
@@ -201,24 +201,24 @@
   }
 
   extraPropsNode = self->_extraPropsNode;
-  self->_extraPropsNode = v4;
+  self->_extraPropsNode = nodeCopy;
 }
 
-- (void)revertChangesWithScope:(unint64_t)a3 animationDuration:(double)a4
+- (void)revertChangesWithScope:(unint64_t)scope animationDuration:(double)duration
 {
   v79 = *MEMORY[0x1E69E9840];
-  if (a4 > 0.0)
+  if (duration > 0.0)
   {
     [MEMORY[0x1E69DF378] begin];
-    [MEMORY[0x1E69DF378] setAnimationDuration:a4];
+    [MEMORY[0x1E69DF378] setAnimationDuration:duration];
     v7 = MEMORY[0x1E69DF378];
     v8 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
     [v7 setAnimationTimingFunction:v8];
   }
 
-  if (a3 != 1)
+  if (scope != 1)
   {
-    if (a3)
+    if (scope)
     {
       goto LABEL_53;
     }
@@ -228,10 +228,10 @@
     if (WeakRetained)
     {
       v10 = objc_loadWeakRetained(&self->_environmentForPointOfViewUpdateFromFramingMode);
-      v11 = [v10 currentPointOfView];
+      currentPointOfView = [v10 currentPointOfView];
       extraCameraNode = self->_extraCameraNode;
 
-      if (v11 == extraCameraNode)
+      if (currentPointOfView == extraCameraNode)
       {
         v13 = objc_loadWeakRetained(&self->_environmentForPointOfViewUpdateFromFramingMode);
         [v13 updatePointOfViewFromFramingMode];
@@ -266,8 +266,8 @@
 
         v20 = *(*(&v70 + 1) + 8 * i);
         avatar = self->_avatar;
-        v22 = [(AVTAvatar *)avatar avatarNode];
-        [v20 applyToAvatar:avatar inHierarchy:v22 reversionContext:0];
+        avatarNode = [(AVTAvatar *)avatar avatarNode];
+        [v20 applyToAvatar:avatar inHierarchy:avatarNode reversionContext:0];
       }
 
       v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v70 objects:v78 count:16];
@@ -310,8 +310,8 @@
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v28 = [(NSMapTable *)self->_shaderModifiers keyEnumerator];
-  v29 = [v28 countByEnumeratingWithState:&v62 objects:v76 count:16];
+  keyEnumerator = [(NSMapTable *)self->_shaderModifiers keyEnumerator];
+  v29 = [keyEnumerator countByEnumeratingWithState:&v62 objects:v76 count:16];
   if (v29)
   {
     v30 = v29;
@@ -322,13 +322,13 @@
       {
         if (*v63 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v33 = *(*(&v62 + 1) + 8 * k);
         v34 = [(NSMapTable *)self->_shaderModifiers objectForKey:v33];
-        v35 = [MEMORY[0x1E695DFB0] null];
-        v36 = [v34 isEqual:v35];
+        null = [MEMORY[0x1E695DFB0] null];
+        v36 = [v34 isEqual:null];
 
         if (v36)
         {
@@ -339,7 +339,7 @@
         [v33 setShaderModifiers:v34];
       }
 
-      v30 = [v28 countByEnumeratingWithState:&v62 objects:v76 count:16];
+      v30 = [keyEnumerator countByEnumeratingWithState:&v62 objects:v76 count:16];
     }
 
     while (v30);
@@ -350,8 +350,8 @@
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v37 = [(NSMapTable *)self->_customMaterialProperties keyEnumerator];
-  v38 = [v37 countByEnumeratingWithState:&v58 objects:v75 count:16];
+  keyEnumerator2 = [(NSMapTable *)self->_customMaterialProperties keyEnumerator];
+  v38 = [keyEnumerator2 countByEnumeratingWithState:&v58 objects:v75 count:16];
   if (v38)
   {
     v39 = v38;
@@ -362,7 +362,7 @@
       {
         if (*v59 != v40)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(keyEnumerator2);
         }
 
         v42 = *(*(&v58 + 1) + 8 * m);
@@ -375,7 +375,7 @@
         [v43 enumerateKeysAndObjectsUsingBlock:v57];
       }
 
-      v39 = [v37 countByEnumeratingWithState:&v58 objects:v75 count:16];
+      v39 = [keyEnumerator2 countByEnumeratingWithState:&v58 objects:v75 count:16];
     }
 
     while (v39);
@@ -436,7 +436,7 @@
   self->_extraPropsNode = 0;
 
 LABEL_53:
-  if (a4 > 0.0)
+  if (duration > 0.0)
   {
     [MEMORY[0x1E69DF378] commit];
   }

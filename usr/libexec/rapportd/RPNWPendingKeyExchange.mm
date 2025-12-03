@@ -1,28 +1,28 @@
 @interface RPNWPendingKeyExchange
 - (NSString)identifier;
-- (RPNWPendingKeyExchange)initWithApplicationService:(id)a3 publicKey:(id)a4 handler:(id)a5;
+- (RPNWPendingKeyExchange)initWithApplicationService:(id)service publicKey:(id)key handler:(id)handler;
 @end
 
 @implementation RPNWPendingKeyExchange
 
-- (RPNWPendingKeyExchange)initWithApplicationService:(id)a3 publicKey:(id)a4 handler:(id)a5
+- (RPNWPendingKeyExchange)initWithApplicationService:(id)service publicKey:(id)key handler:(id)handler
 {
   v18.receiver = self;
   v18.super_class = RPNWPendingKeyExchange;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  keyCopy = key;
+  serviceCopy = service;
   v10 = [(RPNWPendingKeyExchange *)&v18 init];
-  v11 = [v9 copy];
+  v11 = [serviceCopy copy];
 
   applicationService = v10->_applicationService;
   v10->_applicationService = v11;
 
-  v13 = [v8 copy];
+  v13 = [keyCopy copy];
   publicKey = v10->_publicKey;
   v10->_publicKey = v13;
 
-  v15 = objc_retainBlock(v7);
+  v15 = objc_retainBlock(handlerCopy);
   handler = v10->_handler;
   v10->_handler = v15;
 
@@ -31,9 +31,9 @@
 
 - (NSString)identifier
 {
-  v3 = [(RPNWPendingKeyExchange *)self applicationService];
-  v4 = [(RPNWPendingKeyExchange *)self publicKey];
-  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.%lu", v3, [v4 hash]);
+  applicationService = [(RPNWPendingKeyExchange *)self applicationService];
+  publicKey = [(RPNWPendingKeyExchange *)self publicKey];
+  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.%lu", applicationService, [publicKey hash]);
 
   return v5;
 }

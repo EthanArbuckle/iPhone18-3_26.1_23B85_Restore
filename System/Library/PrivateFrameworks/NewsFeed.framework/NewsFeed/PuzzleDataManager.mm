@@ -1,6 +1,6 @@
 @interface PuzzleDataManager
 - (_TtC8NewsFeed17PuzzleDataManager)init;
-- (void)bundleSubscriptionDidSubscribe:(id)a3;
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe;
 @end
 
 @implementation PuzzleDataManager
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)bundleSubscriptionDidSubscribe:(id)a3
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe
 {
-  v4 = a3;
-  v5 = self;
+  subscribeCopy = subscribe;
+  selfCopy = self;
   sub_1D5FE3920();
 }
 

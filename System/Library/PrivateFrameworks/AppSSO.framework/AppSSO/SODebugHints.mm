@@ -1,6 +1,6 @@
 @interface SODebugHints
 + (id)sharedInstance;
-- (SODebugHints)debugHintsWithCompletion:(id)a3;
+- (SODebugHints)debugHintsWithCompletion:(id)completion;
 @end
 
 @implementation SODebugHints
@@ -24,10 +24,10 @@ uint64_t __30__SODebugHints_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (SODebugHints)debugHintsWithCompletion:(id)a3
+- (SODebugHints)debugHintsWithCompletion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (SO_LOG_SODebugConfiguration_once != -1)
   {
     [SODebugHints debugHintsWithCompletion:];
@@ -43,7 +43,7 @@ uint64_t __30__SODebugHints_sharedInstance__block_invoke()
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (completionCopy)
   {
     if ([getSOUtilsClass() isInternalBuild])
     {
@@ -54,18 +54,18 @@ uint64_t __30__SODebugHints_sharedInstance__block_invoke()
 
       if (v8)
       {
-        v4[2](v4, 0, v8);
+        completionCopy[2](completionCopy, 0, v8);
       }
 
       else
       {
         SOUtilsClass = getSOUtilsClass();
         v12 = +[SOExtensionManager sharedInstance];
-        v13 = [v12 loadedExtensions];
-        v32 = [SOUtilsClass mapArray:v13 usingBlock:&__block_literal_global_27];
+        loadedExtensions = [v12 loadedExtensions];
+        v32 = [SOUtilsClass mapArray:loadedExtensions usingBlock:&__block_literal_global_27];
 
         v14 = +[SOConfigurationHost defaultManager];
-        v15 = [v14 realms];
+        realms = [v14 realms];
 
         v38[0] = @"Configuration";
         v16 = [v7 description];
@@ -90,9 +90,9 @@ uint64_t __30__SODebugHints_sharedInstance__block_invoke()
         v39[1] = v19;
         v38[1] = @"Plugins";
         v38[2] = @"Realms";
-        if (v15)
+        if (realms)
         {
-          v20 = v15;
+          v20 = realms;
         }
 
         else
@@ -146,7 +146,7 @@ uint64_t __30__SODebugHints_sharedInstance__block_invoke()
         v39[6] = v28;
         v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:7];
 
-        (v4)[2](v4, v29, 0);
+        (completionCopy)[2](completionCopy, v29, 0);
       }
     }
 
@@ -171,7 +171,7 @@ uint64_t __30__SODebugHints_sharedInstance__block_invoke()
       v10 = v9;
       _Block_object_dispose(&v34, 8);
       v8 = [v9 internalErrorWithMessage:@"not internal build"];
-      v4[2](v4, 0, v8);
+      completionCopy[2](completionCopy, 0, v8);
     }
   }
 

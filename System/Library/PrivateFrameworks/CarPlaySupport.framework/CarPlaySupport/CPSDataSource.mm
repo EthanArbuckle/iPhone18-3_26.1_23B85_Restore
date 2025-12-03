@@ -1,21 +1,21 @@
 @interface CPSDataSource
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
 - (CPSDataSource)init;
 - (UITableView)tableView;
-- (id)indexPathForItemWithIdentifier:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)deleteItemsAtIndexPaths:(id)a3;
-- (void)deleteSectionsAtIndexes:(id)a3;
-- (void)insertItemsAtIndexPaths:(id)a3;
-- (void)insertSectionsAtIndexes:(id)a3;
-- (void)moveItemAtIndexPath:(id)a3 toIndexPath:(id)a4;
+- (id)indexPathForItemWithIdentifier:(id)identifier;
+- (id)itemAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)deleteItemsAtIndexPaths:(id)paths;
+- (void)deleteSectionsAtIndexes:(id)indexes;
+- (void)insertItemsAtIndexPaths:(id)paths;
+- (void)insertSectionsAtIndexes:(id)indexes;
+- (void)moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)reloadData;
-- (void)reloadItemsAtIndexPaths:(id)a3;
-- (void)setTableView:(id)a3;
+- (void)reloadItemsAtIndexPaths:(id)paths;
+- (void)setTableView:(id)view;
 @end
 
 @implementation CPSDataSource
@@ -39,73 +39,73 @@
   return v3;
 }
 
-- (void)setTableView:(id)a3
+- (void)setTableView:(id)view
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeWeak(&v4->_tableView, location[0]);
+  objc_storeStrong(location, view);
+  objc_storeWeak(&selfCopy->_tableView, location[0]);
   if (location[0])
   {
-    [location[0] setDataSource:v4];
+    [location[0] setDataSource:selfCopy];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  [(CPSDataSource *)v6 doesNotRecognizeSelector:v5];
+  objc_storeStrong(&location, path);
+  [(CPSDataSource *)selfCopy doesNotRecognizeSelector:v5];
   objc_storeStrong(&location, 0);
   return 0;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(CPSDataSource *)v6 numberOfSections];
+  objc_storeStrong(location, view);
+  numberOfSections = [(CPSDataSource *)selfCopy numberOfSections];
   objc_storeStrong(location, 0);
-  return v4;
+  return numberOfSections;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(CPSDataSource *)v8 numberOfItemsInSection:a4];
+  objc_storeStrong(location, view);
+  v6 = [(CPSDataSource *)selfCopy numberOfItemsInSection:section];
   objc_storeStrong(location, 0);
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v13 = [(CPSDataSource *)v16 itemAtIndexPath:v14];
-  v9 = [(CPSDataSource *)v16 cellCreateBlock];
-  v12 = v9[2](v9, v13, v14, location[0]);
-  *&v4 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  v10 = [(CPSDataSource *)v16 cellConfigureBlock];
-  *&v5 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  if (v10)
+  objc_storeStrong(&v14, path);
+  v13 = [(CPSDataSource *)selfCopy itemAtIndexPath:v14];
+  cellCreateBlock = [(CPSDataSource *)selfCopy cellCreateBlock];
+  v12 = cellCreateBlock[2](cellCreateBlock, v13, v14, location[0]);
+  *&v4 = MEMORY[0x277D82BD8](cellCreateBlock).n128_u64[0];
+  cellConfigureBlock = [(CPSDataSource *)selfCopy cellConfigureBlock];
+  *&v5 = MEMORY[0x277D82BD8](cellConfigureBlock).n128_u64[0];
+  if (cellConfigureBlock)
   {
-    v8 = [(CPSDataSource *)v16 cellConfigureBlock];
-    v8[2](v8, v12, v13, v14);
-    MEMORY[0x277D82BD8](v8);
+    cellConfigureBlock2 = [(CPSDataSource *)selfCopy cellConfigureBlock];
+    cellConfigureBlock2[2](cellConfigureBlock2, v12, v13, v14);
+    MEMORY[0x277D82BD8](cellConfigureBlock2);
   }
 
   v7 = MEMORY[0x277D82BE0](v12);
@@ -117,125 +117,125 @@
   return v7;
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, path);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, path);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-- (id)indexPathForItemWithIdentifier:(id)a3
+- (id)indexPathForItemWithIdentifier:(id)identifier
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  [(CPSDataSource *)v6 doesNotRecognizeSelector:v5];
+  objc_storeStrong(&location, identifier);
+  [(CPSDataSource *)selfCopy doesNotRecognizeSelector:v5];
   objc_storeStrong(&location, 0);
   return 0;
 }
 
-- (void)insertItemsAtIndexPaths:(id)a3
+- (void)insertItemsAtIndexPaths:(id)paths
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(CPSDataSource *)v5 tableView];
-  [(UITableView *)v3 insertRowsAtIndexPaths:location[0] withRowAnimation:[(CPSDataSource *)v5 rowAnimation]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, paths);
+  tableView = [(CPSDataSource *)selfCopy tableView];
+  [(UITableView *)tableView insertRowsAtIndexPaths:location[0] withRowAnimation:[(CPSDataSource *)selfCopy rowAnimation]];
+  MEMORY[0x277D82BD8](tableView);
   objc_storeStrong(location, 0);
 }
 
-- (void)deleteItemsAtIndexPaths:(id)a3
+- (void)deleteItemsAtIndexPaths:(id)paths
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(CPSDataSource *)v5 tableView];
-  [(UITableView *)v3 deleteRowsAtIndexPaths:location[0] withRowAnimation:[(CPSDataSource *)v5 rowAnimation]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, paths);
+  tableView = [(CPSDataSource *)selfCopy tableView];
+  [(UITableView *)tableView deleteRowsAtIndexPaths:location[0] withRowAnimation:[(CPSDataSource *)selfCopy rowAnimation]];
+  MEMORY[0x277D82BD8](tableView);
   objc_storeStrong(location, 0);
 }
 
-- (void)reloadItemsAtIndexPaths:(id)a3
+- (void)reloadItemsAtIndexPaths:(id)paths
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(CPSDataSource *)v5 tableView];
-  [(UITableView *)v3 reloadRowsAtIndexPaths:location[0] withRowAnimation:[(CPSDataSource *)v5 rowAnimation]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, paths);
+  tableView = [(CPSDataSource *)selfCopy tableView];
+  [(UITableView *)tableView reloadRowsAtIndexPaths:location[0] withRowAnimation:[(CPSDataSource *)selfCopy rowAnimation]];
+  MEMORY[0x277D82BD8](tableView);
   objc_storeStrong(location, 0);
 }
 
-- (void)moveItemAtIndexPath:(id)a3 toIndexPath:(id)a4
+- (void)moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, path);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(CPSDataSource *)v8 tableView];
-  [(UITableView *)v5 moveRowAtIndexPath:location[0] toIndexPath:v6];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(&v6, indexPath);
+  tableView = [(CPSDataSource *)selfCopy tableView];
+  [(UITableView *)tableView moveRowAtIndexPath:location[0] toIndexPath:v6];
+  MEMORY[0x277D82BD8](tableView);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)insertSectionsAtIndexes:(id)a3
+- (void)insertSectionsAtIndexes:(id)indexes
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(CPSDataSource *)v5 tableView];
-  [(UITableView *)v3 insertSections:location[0] withRowAnimation:[(CPSDataSource *)v5 rowAnimation]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, indexes);
+  tableView = [(CPSDataSource *)selfCopy tableView];
+  [(UITableView *)tableView insertSections:location[0] withRowAnimation:[(CPSDataSource *)selfCopy rowAnimation]];
+  MEMORY[0x277D82BD8](tableView);
   objc_storeStrong(location, 0);
 }
 
-- (void)deleteSectionsAtIndexes:(id)a3
+- (void)deleteSectionsAtIndexes:(id)indexes
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(CPSDataSource *)v5 tableView];
-  [(UITableView *)v3 deleteSections:location[0] withRowAnimation:[(CPSDataSource *)v5 rowAnimation]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, indexes);
+  tableView = [(CPSDataSource *)selfCopy tableView];
+  [(UITableView *)tableView deleteSections:location[0] withRowAnimation:[(CPSDataSource *)selfCopy rowAnimation]];
+  MEMORY[0x277D82BD8](tableView);
   objc_storeStrong(location, 0);
 }
 
 - (void)reloadData
 {
   v16 = *MEMORY[0x277D85DE8];
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
-  v10 = [(CPSDataSource *)self tableView];
-  location[0] = [(UITableView *)v10 visibleCells];
+  tableView = [(CPSDataSource *)self tableView];
+  location[0] = [(UITableView *)tableView visibleCells];
   if ([location[0] count])
   {
     memset(__b, 0, sizeof(__b));
@@ -277,9 +277,9 @@
     *&v2 = MEMORY[0x277D82BD8](obj).n128_u64[0];
   }
 
-  v3 = [(CPSDataSource *)v14 tableView];
-  [(UITableView *)v3 reloadData];
-  MEMORY[0x277D82BD8](v3);
+  tableView2 = [(CPSDataSource *)selfCopy tableView];
+  [(UITableView *)tableView2 reloadData];
+  MEMORY[0x277D82BD8](tableView2);
   objc_storeStrong(location, 0);
 }
 

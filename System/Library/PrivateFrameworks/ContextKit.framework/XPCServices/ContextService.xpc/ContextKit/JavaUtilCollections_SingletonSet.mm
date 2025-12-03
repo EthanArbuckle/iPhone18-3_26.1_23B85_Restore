@@ -1,30 +1,30 @@
 @interface JavaUtilCollections_SingletonSet
-- (BOOL)containsWithId:(id)a3;
-- (JavaUtilCollections_SingletonSet)initWithId:(id)a3;
+- (BOOL)containsWithId:(id)id;
+- (JavaUtilCollections_SingletonSet)initWithId:(id)id;
 - (id)iterator;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilCollections_SingletonSet
 
-- (JavaUtilCollections_SingletonSet)initWithId:(id)a3
+- (JavaUtilCollections_SingletonSet)initWithId:(id)id
 {
   JavaUtilAbstractSet_init(self, a2);
-  JreStrongAssign(&self->element_, a3);
+  JreStrongAssign(&self->element_, id);
   return self;
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   element = self->element_;
   if (element)
   {
-    LOBYTE(v4) = [element isEqual:a3];
+    LOBYTE(v4) = [element isEqual:id];
   }
 
   else
   {
-    return a3 == 0;
+    return id == 0;
   }
 
   return v4;

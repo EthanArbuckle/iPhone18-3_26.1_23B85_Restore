@@ -1,7 +1,7 @@
 @interface AppReceiptOperationResult
-- (void)addExpiring:(id)a3 expirationDate:(id)a4;
-- (void)addRefreshed:(id)a3;
-- (void)addRevoked:(id)a3;
+- (void)addExpiring:(id)expiring expirationDate:(id)date;
+- (void)addRefreshed:(id)refreshed;
+- (void)addRevoked:(id)revoked;
 - (void)dealloc;
 @end
 
@@ -14,9 +14,9 @@
   [(AppReceiptOperationResult *)&v3 dealloc];
 }
 
-- (void)addExpiring:(id)a3 expirationDate:(id)a4
+- (void)addExpiring:(id)expiring expirationDate:(id)date
 {
-  if (a3)
+  if (expiring)
   {
     expiring = self->_expiring;
     if (!expiring)
@@ -25,22 +25,22 @@
       self->_expiring = expiring;
     }
 
-    [(NSMutableSet *)expiring addObject:a3];
+    [(NSMutableSet *)expiring addObject:expiring];
     [(NSDate *)self->_soonestExpirationDate timeIntervalSinceNow];
     v9 = v8;
-    [a4 timeIntervalSinceNow];
+    [date timeIntervalSinceNow];
     if (v10 >= 1 && (!self->_soonestExpirationDate || v9 > v10))
     {
-      [(AppReceiptOperationResult *)self setSoonestExpirationDate:a4];
+      [(AppReceiptOperationResult *)self setSoonestExpirationDate:date];
 
-      [(AppReceiptOperationResult *)self setSoonestExpiring:a3];
+      [(AppReceiptOperationResult *)self setSoonestExpiring:expiring];
     }
   }
 }
 
-- (void)addRevoked:(id)a3
+- (void)addRevoked:(id)revoked
 {
-  if (a3)
+  if (revoked)
   {
     revoked = self->_revoked;
     if (!revoked)
@@ -49,13 +49,13 @@
       self->_revoked = revoked;
     }
 
-    [(NSMutableSet *)revoked addObject:a3];
+    [(NSMutableSet *)revoked addObject:revoked];
   }
 }
 
-- (void)addRefreshed:(id)a3
+- (void)addRefreshed:(id)refreshed
 {
-  if (a3)
+  if (refreshed)
   {
     refreshed = self->_refreshed;
     if (!refreshed)
@@ -64,7 +64,7 @@
       self->_refreshed = refreshed;
     }
 
-    [(NSMutableSet *)refreshed addObject:a3];
+    [(NSMutableSet *)refreshed addObject:refreshed];
   }
 }
 

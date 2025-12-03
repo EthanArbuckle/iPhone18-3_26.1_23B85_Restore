@@ -1,17 +1,17 @@
 @interface SBSSKExternalDisplayService
 - (SBSSKExternalDisplayService)init;
-- (SBSSKExternalDisplayService)initWithServiceListenerFactory:(id)a3 connectedDisplayInfoFactory:(id)a4 defaults:(id)a5;
-- (id)_extendedModeDisplayConfigurationForHardwareIdentifier:(id)a3 error:(id *)a4;
-- (void)_notifyOfPropertyChangesForDisplayConfiguration:(id)a3 requestingClient:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)client:(id)a3 getConnectedDisplayInfoWithCompletion:(id)a4;
-- (void)client:(id)a3 setDisplayArrangement:(id)a4 forDisplay:(id)a5;
-- (void)client:(id)a3 setDisplayMirroringEnabled:(id)a4 forDisplay:(id)a5;
-- (void)client:(id)a3 setDisplayModeSettings:(id)a4 forDisplay:(id)a5 options:(id)a6 completionHandler:(id)a7;
+- (SBSSKExternalDisplayService)initWithServiceListenerFactory:(id)factory connectedDisplayInfoFactory:(id)infoFactory defaults:(id)defaults;
+- (id)_extendedModeDisplayConfigurationForHardwareIdentifier:(id)identifier error:(id *)error;
+- (void)_notifyOfPropertyChangesForDisplayConfiguration:(id)configuration requestingClient:(id)client;
+- (void)addObserver:(id)observer;
+- (void)client:(id)client getConnectedDisplayInfoWithCompletion:(id)completion;
+- (void)client:(id)client setDisplayArrangement:(id)arrangement forDisplay:(id)display;
+- (void)client:(id)client setDisplayMirroringEnabled:(id)enabled forDisplay:(id)display;
+- (void)client:(id)client setDisplayModeSettings:(id)settings forDisplay:(id)display options:(id)options completionHandler:(id)handler;
 - (void)dealloc;
-- (void)didConnectParticipant:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)willDisconnectParticipant:(id)a3;
+- (void)didConnectParticipant:(id)participant;
+- (void)removeObserver:(id)observer;
+- (void)willDisconnectParticipant:(id)participant;
 @end
 
 @implementation SBSSKExternalDisplayService
@@ -21,25 +21,25 @@
   v3 = objc_alloc_init(SBExternalDisplayServiceConnectionListenerFactory);
   v4 = objc_alloc_init(SBSConnectedDisplayInfoFactory);
   v5 = +[SBDefaults localDefaults];
-  v6 = [v5 externalDisplayDefaults];
-  v7 = [(SBSSKExternalDisplayService *)self initWithServiceListenerFactory:v3 connectedDisplayInfoFactory:v4 defaults:v6];
+  externalDisplayDefaults = [v5 externalDisplayDefaults];
+  v7 = [(SBSSKExternalDisplayService *)self initWithServiceListenerFactory:v3 connectedDisplayInfoFactory:v4 defaults:externalDisplayDefaults];
 
   return v7;
 }
 
-- (SBSSKExternalDisplayService)initWithServiceListenerFactory:(id)a3 connectedDisplayInfoFactory:(id)a4 defaults:(id)a5
+- (SBSSKExternalDisplayService)initWithServiceListenerFactory:(id)factory connectedDisplayInfoFactory:(id)infoFactory defaults:(id)defaults
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  factoryCopy = factory;
+  infoFactoryCopy = infoFactory;
+  defaultsCopy = defaults;
   v20.receiver = self;
   v20.super_class = SBSSKExternalDisplayService;
   v11 = [(SBSSKExternalDisplayService *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_connectedDisplayInfoFactory, a4);
-    objc_storeStrong(&v12->_defaults, a5);
+    objc_storeStrong(&v11->_connectedDisplayInfoFactory, infoFactory);
+    objc_storeStrong(&v12->_defaults, defaults);
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     rootToConnectedParticipants = v12->_rootToConnectedParticipants;
     v12->_rootToConnectedParticipants = v13;
@@ -48,7 +48,7 @@
     serviceQueue = v12->_serviceQueue;
     v12->_serviceQueue = v15;
 
-    v17 = [v8 newExternalDisplayServiceListenerForDelegate:v12 serviceQueue:v12->_serviceQueue];
+    v17 = [factoryCopy newExternalDisplayServiceListenerForDelegate:v12 serviceQueue:v12->_serviceQueue];
     serviceConnectionListener = v12->_serviceConnectionListener;
     v12->_serviceConnectionListener = v17;
   }
@@ -64,27 +64,27 @@
   [(SBSSKExternalDisplayService *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(NSHashTable *)self->_observers removeObject:a3];
+  [(NSHashTable *)self->_observers removeObject:observer];
   if (![(NSHashTable *)self->_observers count])
   {
     observers = self->_observers;
@@ -92,18 +92,18 @@
   }
 }
 
-- (void)didConnectParticipant:(id)a3
+- (void)didConnectParticipant:(id)participant
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 displayConfiguration];
-  v6 = [v5 identity];
+  participantCopy = participant;
+  displayConfiguration = [participantCopy displayConfiguration];
+  identity = [displayConfiguration identity];
 
-  v7 = [v6 rootIdentity];
-  v8 = v7;
-  if (v6)
+  rootIdentity = [identity rootIdentity];
+  v8 = rootIdentity;
+  if (identity)
   {
-    if (v7)
+    if (rootIdentity)
     {
       goto LABEL_3;
     }
@@ -129,38 +129,38 @@ LABEL_3:
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   }
 
-  [v11 addObject:v4];
+  [v11 addObject:participantCopy];
   [(NSMutableDictionary *)self->_rootToConnectedParticipants setObject:v11 forKey:v8];
-  if (!v10 && [v4 isExtendedDisplayCapable])
+  if (!v10 && [participantCopy isExtendedDisplayCapable])
   {
     v12 = SBLogDisplayControlling();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543362;
-      v17 = v6;
+      v17 = identity;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "SBSSKExternalDisplayService: connected extended display capable participant with identity: %{public}@", &v16, 0xCu);
     }
 
     connectedDisplayInfoFactory = self->_connectedDisplayInfoFactory;
-    v14 = [v4 displayConfiguration];
-    v15 = [(SBSConnectedDisplayInfoFactory *)connectedDisplayInfoFactory connectedDisplayInfoForDisplayConfiguration:v14 externalDisplayDefaults:self->_defaults];
+    displayConfiguration2 = [participantCopy displayConfiguration];
+    v15 = [(SBSConnectedDisplayInfoFactory *)connectedDisplayInfoFactory connectedDisplayInfoForDisplayConfiguration:displayConfiguration2 externalDisplayDefaults:self->_defaults];
 
     [(_SBExternalDisplayServiceConnectionListening *)self->_serviceConnectionListener notifyObserversExternalDisplayDidConnect:v15];
   }
 }
 
-- (void)willDisconnectParticipant:(id)a3
+- (void)willDisconnectParticipant:(id)participant
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 displayConfiguration];
-  v6 = [v5 identity];
+  participantCopy = participant;
+  displayConfiguration = [participantCopy displayConfiguration];
+  identity = [displayConfiguration identity];
 
-  v7 = [v6 rootIdentity];
-  v8 = v7;
-  if (v6)
+  rootIdentity = [identity rootIdentity];
+  v8 = rootIdentity;
+  if (identity)
   {
-    if (v7)
+    if (rootIdentity)
     {
       goto LABEL_3;
     }
@@ -180,12 +180,12 @@ LABEL_3:
   v9 = [(NSMutableDictionary *)self->_rootToConnectedParticipants objectForKey:v8];
   v10 = [v9 mutableCopy];
 
-  if (([v10 containsObject:v4] & 1) == 0)
+  if (([v10 containsObject:participantCopy] & 1) == 0)
   {
     [SBSSKExternalDisplayService willDisconnectParticipant:];
   }
 
-  [v10 removeObject:v4];
+  [v10 removeObject:participantCopy];
   v11 = [v10 count];
   rootToConnectedParticipants = self->_rootToConnectedParticipants;
   if (v11)
@@ -196,29 +196,29 @@ LABEL_3:
   else
   {
     [(NSMutableDictionary *)rootToConnectedParticipants removeObjectForKey:v8];
-    if ([v4 isExtendedDisplayCapable])
+    if ([participantCopy isExtendedDisplayCapable])
     {
       v13 = SBLogDisplayControlling();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138543362;
-        v18 = v6;
+        v18 = identity;
         _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "SBSSKExternalDisplayService: disconnected extended display capable participant with identity: %{public}@", &v17, 0xCu);
       }
 
       connectedDisplayInfoFactory = self->_connectedDisplayInfoFactory;
-      v15 = [v4 displayConfiguration];
-      v16 = [(SBSConnectedDisplayInfoFactory *)connectedDisplayInfoFactory connectedDisplayInfoForDisplayConfiguration:v15 externalDisplayDefaults:self->_defaults];
+      displayConfiguration2 = [participantCopy displayConfiguration];
+      v16 = [(SBSConnectedDisplayInfoFactory *)connectedDisplayInfoFactory connectedDisplayInfoForDisplayConfiguration:displayConfiguration2 externalDisplayDefaults:self->_defaults];
 
       [(_SBExternalDisplayServiceConnectionListening *)self->_serviceConnectionListener notifyObserversExternalDisplayWillDisconnect:v16];
     }
   }
 }
 
-- (void)client:(id)a3 getConnectedDisplayInfoWithCompletion:(id)a4
+- (void)client:(id)client getConnectedDisplayInfoWithCompletion:(id)completion
 {
-  v5 = a4;
-  v4 = v5;
+  completionCopy = completion;
+  v4 = completionCopy;
   BSDispatchMain();
 }
 
@@ -315,15 +315,15 @@ LABEL_11:
   }
 }
 
-- (void)client:(id)a3 setDisplayArrangement:(id)a4 forDisplay:(id)a5
+- (void)client:(id)client setDisplayArrangement:(id)arrangement forDisplay:(id)display
 {
-  v7 = a3;
-  v8 = a4;
-  v12 = a5;
-  v13 = v8;
-  v9 = v8;
-  v10 = v12;
-  v11 = v7;
+  clientCopy = client;
+  arrangementCopy = arrangement;
+  displayCopy = display;
+  v13 = arrangementCopy;
+  v9 = arrangementCopy;
+  v10 = displayCopy;
+  v11 = clientCopy;
   BSDispatchMain();
 }
 
@@ -408,14 +408,14 @@ void __71__SBSSKExternalDisplayService_client_setDisplayArrangement_forDisplay__
   }
 }
 
-- (void)client:(id)a3 setDisplayMirroringEnabled:(id)a4 forDisplay:(id)a5
+- (void)client:(id)client setDisplayMirroringEnabled:(id)enabled forDisplay:(id)display
 {
-  v7 = a3;
-  v11 = a4;
-  v12 = a5;
-  v8 = v12;
-  v9 = v11;
-  v10 = v7;
+  clientCopy = client;
+  enabledCopy = enabled;
+  displayCopy = display;
+  v8 = displayCopy;
+  v9 = enabledCopy;
+  v10 = clientCopy;
   BSDispatchMain();
 }
 
@@ -485,20 +485,20 @@ void __76__SBSSKExternalDisplayService_client_setDisplayMirroringEnabled_forDisp
   }
 }
 
-- (void)client:(id)a3 setDisplayModeSettings:(id)a4 forDisplay:(id)a5 options:(id)a6 completionHandler:(id)a7
+- (void)client:(id)client setDisplayModeSettings:(id)settings forDisplay:(id)display options:(id)options completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v18 = v11;
-  v19 = a5;
-  v20 = v12;
-  v21 = a6;
-  v22 = a7;
-  v13 = v22;
-  v14 = v21;
-  v15 = v12;
-  v16 = v19;
-  v17 = v11;
+  clientCopy = client;
+  settingsCopy = settings;
+  v18 = clientCopy;
+  displayCopy = display;
+  v20 = settingsCopy;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v13 = handlerCopy;
+  v14 = optionsCopy;
+  v15 = settingsCopy;
+  v16 = displayCopy;
+  v17 = clientCopy;
   BSDispatchMain();
 }
 
@@ -586,10 +586,10 @@ void __98__SBSSKExternalDisplayService_client_setDisplayModeSettings_forDisplay_
   }
 }
 
-- (id)_extendedModeDisplayConfigurationForHardwareIdentifier:(id)a3 error:(id *)a4
+- (id)_extendedModeDisplayConfigurationForHardwareIdentifier:(id)identifier error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -601,7 +601,7 @@ void __98__SBSSKExternalDisplayService_client_setDisplayModeSettings_forDisplay_
   v29[1] = 3221225472;
   v29[2] = __92__SBSSKExternalDisplayService__extendedModeDisplayConfigurationForHardwareIdentifier_error___block_invoke;
   v29[3] = &unk_2783BD578;
-  v7 = v5;
+  v7 = identifierCopy;
   v30 = v7;
   v31 = &v32;
   [(NSMutableDictionary *)rootToConnectedParticipants enumerateKeysAndObjectsUsingBlock:v29];
@@ -611,13 +611,13 @@ void __98__SBSSKExternalDisplayService_client_setDisplayModeSettings_forDisplay_
   v26 = 0u;
   v8 = v33[5];
   v9 = 0;
-  v10 = [v8 countByEnumeratingWithState:&v25 objects:v40 count:16];
-  if (v10)
+  displayConfiguration2 = [v8 countByEnumeratingWithState:&v25 objects:v40 count:16];
+  if (displayConfiguration2)
   {
     v11 = *v26;
     while (2)
     {
-      for (i = 0; i != v10; i = i + 1)
+      for (i = 0; i != displayConfiguration2; i = i + 1)
       {
         if (*v26 != v11)
         {
@@ -625,26 +625,26 @@ void __98__SBSSKExternalDisplayService_client_setDisplayModeSettings_forDisplay_
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [v13 displayConfiguration];
-        v15 = [v14 identity];
-        v16 = [v15 sb_displayWindowingMode] == 1;
+        displayConfiguration = [v13 displayConfiguration];
+        identity = [displayConfiguration identity];
+        v16 = [identity sb_displayWindowingMode] == 1;
 
         if (v16)
         {
-          v10 = [v13 displayConfiguration];
+          displayConfiguration2 = [v13 displayConfiguration];
           goto LABEL_13;
         }
 
         if ([v13 isExtendedDisplayCapable])
         {
-          v17 = [v13 displayConfiguration];
+          displayConfiguration3 = [v13 displayConfiguration];
 
-          v9 = v17;
+          v9 = displayConfiguration3;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v25 objects:v40 count:16];
-      if (v10)
+      displayConfiguration2 = [v8 countByEnumeratingWithState:&v25 objects:v40 count:16];
+      if (displayConfiguration2)
       {
         continue;
       }
@@ -655,7 +655,7 @@ void __98__SBSSKExternalDisplayService_client_setDisplayModeSettings_forDisplay_
 
 LABEL_13:
 
-  if (a4 && !v10)
+  if (error && !displayConfiguration2)
   {
     if (v7)
     {
@@ -687,14 +687,14 @@ LABEL_23:
       v20 = 1;
     }
 
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D66FB0] code:v20 userInfo:v19];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D66FB0] code:v20 userInfo:v19];
     goto LABEL_23;
   }
 
 LABEL_24:
-  if (v10)
+  if (displayConfiguration2)
   {
-    v21 = v10;
+    v21 = displayConfiguration2;
   }
 
   else
@@ -728,13 +728,13 @@ void __92__SBSSKExternalDisplayService__extendedModeDisplayConfigurationForHardw
   }
 }
 
-- (void)_notifyOfPropertyChangesForDisplayConfiguration:(id)a3 requestingClient:(id)a4
+- (void)_notifyOfPropertyChangesForDisplayConfiguration:(id)configuration requestingClient:(id)client
 {
   connectedDisplayInfoFactory = self->_connectedDisplayInfoFactory;
   defaults = self->_defaults;
-  v8 = a4;
-  v9 = [(SBSConnectedDisplayInfoFactory *)connectedDisplayInfoFactory connectedDisplayInfoForDisplayConfiguration:a3 externalDisplayDefaults:defaults];
-  [(_SBExternalDisplayServiceConnectionListening *)self->_serviceConnectionListener notifyObserversExternalDisplayDidUpdateProperties:v9 requestingClient:v8];
+  clientCopy = client;
+  v9 = [(SBSConnectedDisplayInfoFactory *)connectedDisplayInfoFactory connectedDisplayInfoForDisplayConfiguration:configuration externalDisplayDefaults:defaults];
+  [(_SBExternalDisplayServiceConnectionListening *)self->_serviceConnectionListener notifyObserversExternalDisplayDidUpdateProperties:v9 requestingClient:clientCopy];
 }
 
 - (void)didConnectParticipant:.cold.1()

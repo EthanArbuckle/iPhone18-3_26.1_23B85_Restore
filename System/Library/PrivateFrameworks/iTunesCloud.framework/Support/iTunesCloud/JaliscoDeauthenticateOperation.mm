@@ -22,9 +22,9 @@
   {
     v6 = [[MSVXPCTransaction alloc] initWithName:@"JaliscoDeauthenticateOperation"];
     [v6 beginTransaction];
-    v7 = [(CloudLibraryOperation *)self musicLibrary];
-    v8 = [(CloudLibraryOperation *)self clientIdentity];
-    [v7 setClientIdentity:v8];
+    musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+    clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+    [musicLibrary setClientIdentity:clientIdentity];
 
     [(CloudLibraryOperation *)self musicLibrary];
     v12 = _NSConcreteStackBlock;
@@ -35,9 +35,9 @@
     v9 = v17;
     [v9 performDatabaseTransactionWithBlock:&v12];
     [(CloudLibraryOperation *)self setStatus:1, v12, v13, v14, v15, v16];
-    v10 = [(CloudLibraryOperation *)self musicLibrary];
+    musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
     v11 = MSVTCCIdentityForCurrentProcess();
-    [v10 setClientIdentity:v11];
+    [musicLibrary2 setClientIdentity:v11];
 
     [v6 endTransaction];
   }

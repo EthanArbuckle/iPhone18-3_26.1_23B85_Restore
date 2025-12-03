@@ -1,27 +1,27 @@
 @interface CKDUpdateDeviceCapabilitiesURLRequest
-- (CKDUpdateDeviceCapabilitiesURLRequest)initWithOperation:(id)a3 supportedCapabilities:(id)a4 zoneUsages:(id)a5 shareUsages:(id)a6;
+- (CKDUpdateDeviceCapabilitiesURLRequest)initWithOperation:(id)operation supportedCapabilities:(id)capabilities zoneUsages:(id)usages shareUsages:(id)shareUsages;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDUpdateDeviceCapabilitiesURLRequest
 
-- (CKDUpdateDeviceCapabilitiesURLRequest)initWithOperation:(id)a3 supportedCapabilities:(id)a4 zoneUsages:(id)a5 shareUsages:(id)a6
+- (CKDUpdateDeviceCapabilitiesURLRequest)initWithOperation:(id)operation supportedCapabilities:(id)capabilities zoneUsages:(id)usages shareUsages:(id)shareUsages
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  capabilitiesCopy = capabilities;
+  usagesCopy = usages;
+  shareUsagesCopy = shareUsages;
   v17.receiver = self;
   v17.super_class = CKDUpdateDeviceCapabilitiesURLRequest;
-  v14 = [(CKDURLRequest *)&v17 initWithOperation:a3];
+  v14 = [(CKDURLRequest *)&v17 initWithOperation:operation];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_supportedCapabilities, a4);
-    objc_storeStrong(&v15->_zoneUsages, a5);
-    objc_storeStrong(&v15->_shareUsages, a6);
+    objc_storeStrong(&v14->_supportedCapabilities, capabilities);
+    objc_storeStrong(&v15->_zoneUsages, usages);
+    objc_storeStrong(&v15->_shareUsages, shareUsages);
   }
 
   return v15;
@@ -190,19 +190,19 @@ LABEL_16:
   return v61;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v91 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_response(v4, v5, v6);
+  objectCopy = object;
+  v7 = objc_msgSend_response(objectCopy, v5, v6);
   v10 = objc_msgSend_operationUUID(v7, v8, v9);
 
-  v13 = objc_msgSend_response(v4, v11, v12);
+  v13 = objc_msgSend_response(objectCopy, v11, v12);
   v16 = objc_msgSend_type(v13, v14, v15);
 
   if (v16 != 407)
   {
-    v31 = objc_msgSend_response(v4, v17, v18);
+    v31 = objc_msgSend_response(objectCopy, v17, v18);
     v34 = objc_msgSend_type(v31, v32, v33);
 
     if (v34 == 409)
@@ -222,7 +222,7 @@ LABEL_16:
           v50 = objc_msgSend_zoneUsageUpdatedBlock(self, v48, v49);
 LABEL_20:
           v73 = v50;
-          v74 = objc_msgSend_result(v4, v51, v52);
+          v74 = objc_msgSend_result(objectCopy, v51, v52);
           (v73)[2](v73, v39, v44, v74);
 
           goto LABEL_21;
@@ -253,7 +253,7 @@ LABEL_40:
 
     else
     {
-      v56 = objc_msgSend_response(v4, v35, v36);
+      v56 = objc_msgSend_response(objectCopy, v35, v36);
       v59 = objc_msgSend_type(v56, v57, v58);
 
       if (v59 != 410)
@@ -269,7 +269,7 @@ LABEL_40:
           *buf = 138412546;
           v86 = v10;
           v87 = 2112;
-          v88 = v4;
+          v88 = objectCopy;
           _os_log_error_impl(&dword_22506F000, v78, OS_LOG_TYPE_ERROR, "Unexpected response type for operationUUID %@: %@", buf, 0x16u);
         }
 
@@ -332,7 +332,7 @@ LABEL_35:
     if (v24)
     {
       v27 = objc_msgSend_deviceCapabilitiesUpdatedBlock(self, v25, v26);
-      v30 = objc_msgSend_result(v4, v28, v29);
+      v30 = objc_msgSend_result(objectCopy, v28, v29);
       (v27)[2](v27, v30);
     }
 
@@ -366,11 +366,11 @@ LABEL_36:
   return v55;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_response(v4, v5, v6);
+  failureCopy = failure;
+  v7 = objc_msgSend_response(failureCopy, v5, v6);
   v10 = objc_msgSend_operationUUID(v7, v8, v9);
 
   v13 = objc_msgSend_deviceCapabilitiesSaveRequestID(self, v11, v12);
@@ -391,7 +391,7 @@ LABEL_36:
       if (v34)
       {
         v37 = objc_msgSend_zoneUsageUpdatedBlock(self, v35, v36);
-        v40 = objc_msgSend_result(v4, v38, v39);
+        v40 = objc_msgSend_result(failureCopy, v38, v39);
         (v37)[2](v37, v21, v31, v40);
       }
     }
@@ -411,7 +411,7 @@ LABEL_36:
         if (v50)
         {
           v53 = objc_msgSend_shareUsageUpdatedBlock(self, v51, v52);
-          v56 = objc_msgSend_result(v4, v54, v55);
+          v56 = objc_msgSend_result(failureCopy, v54, v55);
           (v53)[2](v53, v31, v47, v56);
         }
       }
@@ -429,7 +429,7 @@ LABEL_36:
           v59 = 138412546;
           v60 = v10;
           v61 = 2112;
-          v62 = v4;
+          v62 = failureCopy;
           _os_log_error_impl(&dword_22506F000, v57, OS_LOG_TYPE_ERROR, "Unexpected response for operationUUID %@: %@", &v59, 0x16u);
         }
       }
@@ -443,7 +443,7 @@ LABEL_36:
   if (v18)
   {
     v21 = objc_msgSend_deviceCapabilitiesUpdatedBlock(self, v19, v20);
-    v24 = objc_msgSend_result(v4, v22, v23);
+    v24 = objc_msgSend_result(failureCopy, v22, v23);
     (v21)[2](v21, v24);
 
 LABEL_16:

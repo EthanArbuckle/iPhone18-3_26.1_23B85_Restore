@@ -1,34 +1,34 @@
 @interface _TVLabel
 - (CGRect)cachedTextRectForBounds;
 - (CGRect)previousBounds;
-- (CGRect)textRectForBounds:(CGRect)a3 limitedToNumberOfLines:(int64_t)a4;
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(int64_t)lines;
 - (CGSize)cachedSizeThatFits;
 - (CGSize)previousTargetSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)padding;
-- (_TVLabel)initWithFrame:(CGRect)a3;
+- (_TVLabel)initWithFrame:(CGRect)frame;
 - (void)_clearCachedValues;
-- (void)drawTextInRect:(CGRect)a3;
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setBaselineAdjustment:(int64_t)a3;
-- (void)setFont:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLineBreakMode:(int64_t)a3;
-- (void)setNumberOfLines:(int64_t)a3;
-- (void)setPadding:(UIEdgeInsets)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)drawTextInRect:(CGRect)rect;
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width;
+- (void)setAttributedText:(id)text;
+- (void)setBaselineAdjustment:(int64_t)adjustment;
+- (void)setFont:(id)font;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLineBreakMode:(int64_t)mode;
+- (void)setNumberOfLines:(int64_t)lines;
+- (void)setPadding:(UIEdgeInsets)padding;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation _TVLabel
 
-- (_TVLabel)initWithFrame:(CGRect)a3
+- (_TVLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = _TVLabel;
   result = [(_TVLabel *)&v9 initWithFrame:?];
@@ -50,11 +50,11 @@
   return result;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   objc_initWeak(&location, self);
-  v5 = [v4 length];
+  v5 = [textCopy length];
   v6 = *MEMORY[0x277D74060];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -62,11 +62,11 @@
   v18[3] = &unk_279D6F188;
   v18[4] = self;
   objc_copyWeak(&v19, &location);
-  [v4 enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{0, v18}];
-  v7 = [v4 mutableCopy];
+  [textCopy enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{0, v18}];
+  v7 = [textCopy mutableCopy];
   if (UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v8 = [v4 length];
+    v8 = [textCopy length];
     v9 = *MEMORY[0x277D740C0];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
@@ -74,7 +74,7 @@
     v15[3] = &unk_279D6E9F0;
     objc_copyWeak(&v17, &location);
     v16 = v7;
-    [v4 enumerateAttribute:v9 inRange:0 options:v8 usingBlock:{0, v15}];
+    [textCopy enumerateAttribute:v9 inRange:0 options:v8 usingBlock:{0, v15}];
 
     objc_destroyWeak(&v17);
   }
@@ -86,8 +86,8 @@
     {
       if ([(_TVLabel *)self textAlignment]== 1)
       {
-        v11 = [MEMORY[0x277D74248] defaultParagraphStyle];
-        v12 = [v11 mutableCopy];
+        defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+        v12 = [defaultParagraphStyle mutableCopy];
 
         [v12 setAlignment:{-[_TVLabel textAlignment](self, "textAlignment")}];
         [v12 setLineBreakMode:{-[_TVLabel lineBreakMode](self, "lineBreakMode")}];
@@ -114,34 +114,34 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = [(_TVLabel *)self _accessibilityHigherContrastTintColorForColor:a3];
+  v4 = [(_TVLabel *)self _accessibilityHigherContrastTintColorForColor:color];
   v5.receiver = self;
   v5.super_class = _TVLabel;
   [(_TVLabel *)&v5 setTextColor:v4];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(_TVLabel *)self attributedText];
+  highlightedCopy = highlighted;
+  attributedText = [(_TVLabel *)self attributedText];
 
-  if (v5)
+  if (attributedText)
   {
     objc_initWeak(&location, self);
-    v6 = [(_TVLabel *)self attributedText];
-    v7 = [(_TVLabel *)self attributedText];
-    v8 = [v7 length];
+    attributedText2 = [(_TVLabel *)self attributedText];
+    attributedText3 = [(_TVLabel *)self attributedText];
+    v8 = [attributedText3 length];
     v9 = *MEMORY[0x277D74060];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __27___TVLabel_setHighlighted___block_invoke;
     v11[3] = &unk_279D70748;
     v11[4] = self;
-    v13 = v3;
+    v13 = highlightedCopy;
     objc_copyWeak(&v12, &location);
-    [v6 enumerateAttribute:v9 inRange:0 options:v8 usingBlock:{0, v11}];
+    [attributedText2 enumerateAttribute:v9 inRange:0 options:v8 usingBlock:{0, v11}];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -149,89 +149,89 @@
 
   v10.receiver = self;
   v10.super_class = _TVLabel;
-  [(UIView *)&v10 setHighlighted:v3];
+  [(UIView *)&v10 setHighlighted:highlightedCopy];
 }
 
-- (void)setPadding:(UIEdgeInsets)a3
+- (void)setPadding:(UIEdgeInsets)padding
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = padding.top;
+  v3.f64[1] = padding.left;
+  v4.f64[0] = padding.bottom;
+  v4.f64[1] = padding.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_padding.top, v3), vceqq_f64(*&self->_padding.bottom, v4)))) & 1) == 0)
   {
-    self->_padding = a3;
+    self->_padding = padding;
     [(_TVLabel *)self _clearCachedValues];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4.receiver = self;
   v4.super_class = _TVLabel;
-  [(_TVLabel *)&v4 setText:a3];
+  [(_TVLabel *)&v4 setText:text];
   [(_TVLabel *)self _clearCachedValues];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   v4.receiver = self;
   v4.super_class = _TVLabel;
-  [(_TVLabel *)&v4 setFont:a3];
+  [(_TVLabel *)&v4 setFont:font];
   [(_TVLabel *)self _clearCachedValues];
 }
 
-- (void)setLineBreakMode:(int64_t)a3
+- (void)setLineBreakMode:(int64_t)mode
 {
   v4.receiver = self;
   v4.super_class = _TVLabel;
-  [(_TVLabel *)&v4 setLineBreakMode:a3];
+  [(_TVLabel *)&v4 setLineBreakMode:mode];
   [(_TVLabel *)self _clearCachedValues];
 }
 
-- (void)setNumberOfLines:(int64_t)a3
+- (void)setNumberOfLines:(int64_t)lines
 {
   v4.receiver = self;
   v4.super_class = _TVLabel;
-  [(_TVLabel *)&v4 setNumberOfLines:a3];
+  [(_TVLabel *)&v4 setNumberOfLines:lines];
   [(_TVLabel *)self _clearCachedValues];
 }
 
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width
 {
   v4.receiver = self;
   v4.super_class = _TVLabel;
-  [(_TVLabel *)&v4 setAdjustsFontSizeToFitWidth:a3];
+  [(_TVLabel *)&v4 setAdjustsFontSizeToFitWidth:width];
   [(_TVLabel *)self _clearCachedValues];
 }
 
-- (void)setBaselineAdjustment:(int64_t)a3
+- (void)setBaselineAdjustment:(int64_t)adjustment
 {
   v4.receiver = self;
   v4.super_class = _TVLabel;
-  [(_TVLabel *)&v4 setBaselineAdjustment:a3];
+  [(_TVLabel *)&v4 setBaselineAdjustment:adjustment];
   [(_TVLabel *)self _clearCachedValues];
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3 limitedToNumberOfLines:(int64_t)a4
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(int64_t)lines
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(_TVLabel *)self previousBounds];
   v18.origin.x = x;
   v18.origin.y = y;
   v18.size.width = width;
   v18.size.height = height;
-  if (!CGRectEqualToRect(v15, v18) || [(_TVLabel *)self previousNumberOfLines]!= a4 || ([(_TVLabel *)self cachedTextRectForBounds], CGRectEqualToRect(v16, *MEMORY[0x277CBF3A0])))
+  if (!CGRectEqualToRect(v15, v18) || [(_TVLabel *)self previousNumberOfLines]!= lines || ([(_TVLabel *)self cachedTextRectForBounds], CGRectEqualToRect(v16, *MEMORY[0x277CBF3A0])))
   {
     v14.receiver = self;
     v14.super_class = _TVLabel;
-    [(_TVLabel *)&v14 textRectForBounds:a4 limitedToNumberOfLines:x, y, width, height];
+    [(_TVLabel *)&v14 textRectForBounds:lines limitedToNumberOfLines:x, y, width, height];
     [(_TVLabel *)self setCachedTextRectForBounds:?];
     [(_TVLabel *)self setPreviousBounds:x, y, width, height];
-    [(_TVLabel *)self setPreviousNumberOfLines:a4];
+    [(_TVLabel *)self setPreviousNumberOfLines:lines];
   }
 
   [(_TVLabel *)self cachedTextRectForBounds];
@@ -242,10 +242,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(_TVLabel *)self padding];
   v7 = v6;
   v9 = v8;
@@ -289,12 +289,12 @@
   return result;
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(_TVLabel *)self bounds];
   v9 = v8;
   v11 = v10;

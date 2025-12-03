@@ -1,11 +1,11 @@
 @interface IDSFamilyManager
 + (IDSFamilyManager)sharedInstance;
 - (IDSFamilyManager)init;
-- (IDSFamilyManager)initWithFamilyRequest:(id)a3;
-- (id)handlesFromFamilyMember:(id)a3;
-- (void)_familyDidUpdate:(id)a3;
+- (IDSFamilyManager)initWithFamilyRequest:(id)request;
+- (id)handlesFromFamilyMember:(id)member;
+- (void)_familyDidUpdate:(id)update;
 - (void)_notifyFamilyServicesOfUpdate;
-- (void)fetchFamilyWithFamilyRequest:(id)a3;
+- (void)fetchFamilyWithFamilyRequest:(id)request;
 - (void)forceFamilyFetch;
 @end
 
@@ -23,15 +23,15 @@
   return v3;
 }
 
-- (id)handlesFromFamilyMember:(id)a3
+- (id)handlesFromFamilyMember:(id)member
 {
-  v3 = a3;
+  memberCopy = member;
   v4 = objc_alloc_init(NSMutableSet);
-  v5 = [v3 appleID];
-  [v4 addObject:v5];
+  appleID = [memberCopy appleID];
+  [v4 addObject:appleID];
 
-  v6 = [v3 dictionary];
-  v7 = [v6 objectForKey:@"member-appleID-aliases"];
+  dictionary = [memberCopy dictionary];
+  v7 = [dictionary objectForKey:@"member-appleID-aliases"];
 
   if (v7 && [v7 count])
   {
@@ -39,8 +39,8 @@
     [v4 unionSet:v8];
   }
 
-  v9 = [v3 dictionary];
-  v10 = [v9 objectForKey:@"member-phone-numbers"];
+  dictionary2 = [memberCopy dictionary];
+  v10 = [dictionary2 objectForKey:@"member-phone-numbers"];
 
   if (v10 && [v10 length])
   {
@@ -52,9 +52,9 @@
   return v4;
 }
 
-- (void)fetchFamilyWithFamilyRequest:(id)a3
+- (void)fetchFamilyWithFamilyRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   self->_isPendingFetch = 1;
   [(NSMutableSet *)self->_familyHandles removeAllObjects];
   v5 = OSLogHandleForIDSCategory();
@@ -74,7 +74,7 @@
   v6[2] = sub_1004480FC;
   v6[3] = &unk_100BDC5D0;
   v6[4] = self;
-  [v4 startRequestWithCompletionHandler:v6];
+  [requestCopy startRequestWithCompletionHandler:v6];
 }
 
 - (IDSFamilyManager)init
@@ -97,9 +97,9 @@
   return v5;
 }
 
-- (IDSFamilyManager)initWithFamilyRequest:(id)a3
+- (IDSFamilyManager)initWithFamilyRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v10.receiver = self;
   v10.super_class = IDSFamilyManager;
   v5 = [(IDSFamilyManager *)&v10 init];
@@ -115,7 +115,7 @@
     v5->_storedIncomingFamilyMessage = 0;
     v5->currentFetchCount = 0;
     *&v5->allowForceFetch = 1;
-    [(IDSFamilyManager *)v5 fetchFamilyWithFamilyRequest:v4];
+    [(IDSFamilyManager *)v5 fetchFamilyWithFamilyRequest:requestCopy];
   }
 
   return v5;
@@ -163,9 +163,9 @@
   }
 }
 
-- (void)_familyDidUpdate:(id)a3
+- (void)_familyDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -187,12 +187,12 @@
 - (void)_notifyFamilyServicesOfUpdate
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(NSMutableSet *)self->_familyHandles allObjects];
-  v5 = [v4 copy];
+  allObjects = [(NSMutableSet *)self->_familyHandles allObjects];
+  v5 = [allObjects copy];
 
   v6 = objc_alloc_init(NSMutableDictionary);
   v7 = +[IDSDServiceController sharedInstance];
-  v8 = [v7 allFamilyServices];
+  allFamilyServices = [v7 allFamilyServices];
 
   v38 = 0u;
   v39 = 0u;
@@ -215,8 +215,8 @@
 
         v14 = *(*(&v36 + 1) + 8 * i);
         v15 = objc_autoreleasePoolPush();
-        v16 = [v14 dictionaryRepresentation];
-        [v3 addObject:v16];
+        dictionaryRepresentation = [v14 dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
 
         objc_autoreleasePoolPop(v15);
       }
@@ -235,7 +235,7 @@
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v8;
+  obj = allFamilyServices;
   v17 = [obj countByEnumeratingWithState:&v32 objects:v42 count:16];
   if (v17)
   {
@@ -253,20 +253,20 @@
         v21 = *(*(&v32 + 1) + 8 * j);
         v22 = objc_alloc_init(IMMessageContext);
         v23 = +[IDSDaemon sharedInstance];
-        v24 = [v21 pushTopic];
-        v25 = [v23 broadcasterForTopic:v24 messageContext:v22];
+        pushTopic = [v21 pushTopic];
+        v25 = [v23 broadcasterForTopic:pushTopic messageContext:v22];
 
         v26 = +[IMRGLog registration];
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [v21 pushTopic];
+          pushTopic2 = [v21 pushTopic];
           *buf = 138412290;
-          v41 = v27;
+          v41 = pushTopic2;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "broadcasting family update on %@", buf, 0xCu);
         }
 
-        v28 = [v21 pushTopic];
-        [v25 service:v28 familyInfoUpdated:v6];
+        pushTopic3 = [v21 pushTopic];
+        [v25 service:pushTopic3 familyInfoUpdated:v6];
       }
 
       v18 = [obj countByEnumeratingWithState:&v32 objects:v42 count:16];

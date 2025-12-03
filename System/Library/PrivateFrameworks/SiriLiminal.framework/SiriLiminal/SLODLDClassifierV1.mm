@@ -1,28 +1,28 @@
 @interface SLODLDClassifierV1
-- (SLODLDClassifierV1)initWithConfigFile:(id)a3 bnnsIrWeightPath:(id)a4;
-- (float)processEncodedTokens:(id)a3;
-- (id)_constructFeatureDictionary:(id)a3 withCtx:(id)a4;
-- (id)_createDataBufferForTensor:(id)a3 withData:(id)a4 properties:(id)a5;
+- (SLODLDClassifierV1)initWithConfigFile:(id)file bnnsIrWeightPath:(id)path;
+- (float)processEncodedTokens:(id)tokens;
+- (id)_constructFeatureDictionary:(id)dictionary withCtx:(id)ctx;
+- (id)_createDataBufferForTensor:(id)tensor withData:(id)data properties:(id)properties;
 - (id)_extractModelSpecs;
-- (void)processEncodedTokens:(id)a3 withContext:(id)a4 withCompletion:(id)a5;
+- (void)processEncodedTokens:(id)tokens withContext:(id)context withCompletion:(id)completion;
 @end
 
 @implementation SLODLDClassifierV1
 
-- (id)_constructFeatureDictionary:(id)a3 withCtx:(id)a4
+- (id)_constructFeatureDictionary:(id)dictionary withCtx:(id)ctx
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  ctxCopy = ctx;
   v8 = [(NSDictionary *)self->_inputSpecs objectForKeyedSubscript:@"minibatch_input_ids"];
-  v9 = [v8 shape];
+  shape = [v8 shape];
 
-  v10 = [[SLODLDInputTokenParams alloc] initWithShape:v9];
+  v10 = [[SLODLDInputTokenParams alloc] initWithShape:shape];
   v11 = v10;
   if (v10)
   {
     v44 = 0;
-    [(SLODLDInputTokenParams *)v10 populateWithTokens:v6 error:&v44];
+    [(SLODLDInputTokenParams *)v10 populateWithTokens:dictionaryCopy error:&v44];
     v12 = v44;
     if (v12)
     {
@@ -41,9 +41,9 @@
       goto LABEL_22;
     }
 
-    v17 = [[SLODLDInputTokenParams alloc] initWithShape:v9];
-    v18 = [v7 prevTokens];
-    v19 = [v18 count] == 0;
+    v17 = [[SLODLDInputTokenParams alloc] initWithShape:shape];
+    prevTokens = [ctxCopy prevTokens];
+    v19 = [prevTokens count] == 0;
 
     if (!v19)
     {
@@ -61,26 +61,26 @@
         goto LABEL_20;
       }
 
-      v20 = [v7 prevTokens];
+      prevTokens2 = [ctxCopy prevTokens];
       v43 = 0;
-      [(SLODLDInputTokenParams *)v17 populateWithTokens:v20 error:&v43];
+      [(SLODLDInputTokenParams *)v17 populateWithTokens:prevTokens2 error:&v43];
       v13 = v43;
 
       v21 = SLLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(SLLogContextFacilityCoreSpeech, OS_LOG_TYPE_INFO))
       {
         v29 = v21;
-        v30 = [v7 prevTokens];
-        v22 = [(SLODLDInputTokenParams *)v17 mlAttnMask];
-        v23 = [(SLODLDInputTokenParams *)v17 mlInputIds];
+        prevTokens3 = [ctxCopy prevTokens];
+        mlAttnMask = [(SLODLDInputTokenParams *)v17 mlAttnMask];
+        mlInputIds = [(SLODLDInputTokenParams *)v17 mlInputIds];
         *buf = 136316162;
         *&buf[4] = "[SLODLDClassifierV1 _constructFeatureDictionary:withCtx:]";
         *&buf[12] = 2112;
-        *&buf[14] = v30;
+        *&buf[14] = prevTokens3;
         *&buf[22] = 2112;
-        v46 = v22;
+        v46 = mlAttnMask;
         *v47 = 2112;
-        *&v47[2] = v23;
+        *&v47[2] = mlInputIds;
         *&v47[10] = 2112;
         *&v47[12] = v13;
         _os_log_impl(&dword_26754E000, v29, OS_LOG_TYPE_INFO, "%s Setting prevtoks %@, paramAttnMask %@,  paraIpids %@ with error: %@", buf, 0x34u);
@@ -130,8 +130,8 @@ LABEL_20:
     v36 = v39;
     v32 = v11;
     v33 = v17;
-    v34 = v7;
-    v35 = self;
+    v34 = ctxCopy;
+    selfCopy = self;
     v37 = v41;
     v38 = buf;
     [(NSDictionary *)inputSpecs enumerateKeysAndObjectsUsingBlock:v31];
@@ -283,14 +283,14 @@ LABEL_22:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createDataBufferForTensor:(id)a3 withData:(id)a4 properties:(id)a5
+- (id)_createDataBufferForTensor:(id)tensor withData:(id)data properties:(id)properties
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277D01770] getRankOfTensor:v8];
-  if (v10 < 0 || (v11 = v10, [v9 shape], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v11 != v13))
+  tensorCopy = tensor;
+  dataCopy = data;
+  propertiesCopy = properties;
+  v10 = [MEMORY[0x277D01770] getRankOfTensor:dataCopy];
+  if (v10 < 0 || (v11 = v10, [propertiesCopy shape], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v11 != v13))
   {
     v17 = SLLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(SLLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -298,7 +298,7 @@ LABEL_22:
       *buf = 136315394;
       v23 = "[SLODLDClassifierV1 _createDataBufferForTensor:withData:properties:]";
       v24 = 2112;
-      v25 = v7;
+      v25 = tensorCopy;
       _os_log_error_impl(&dword_26754E000, v17, OS_LOG_TYPE_ERROR, "%s Invalid or mismatched shape for tensor: %@", buf, 0x16u);
     }
 
@@ -308,7 +308,7 @@ LABEL_22:
   else
   {
     v21 = 0;
-    v14 = [objc_alloc(MEMORY[0x277D01750]) initWithInputArray:v8 name:v7 properties:v9 errOut:&v21];
+    v14 = [objc_alloc(MEMORY[0x277D01750]) initWithInputArray:dataCopy name:tensorCopy properties:propertiesCopy errOut:&v21];
     v15 = v21;
     if (v15 || !v14)
     {
@@ -318,7 +318,7 @@ LABEL_22:
         *buf = 136315394;
         v23 = "[SLODLDClassifierV1 _createDataBufferForTensor:withData:properties:]";
         v24 = 2112;
-        v25 = v7;
+        v25 = tensorCopy;
         _os_log_error_impl(&dword_26754E000, v18, OS_LOG_TYPE_ERROR, "%s Unable to create data buffer for tensor: %@", buf, 0x16u);
       }
 
@@ -339,17 +339,17 @@ LABEL_22:
 - (id)_extractModelSpecs
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v3 = [(CSFModelComputeBackend *)self->_odldClassifier getExpectedInputTensors];
+  getExpectedInputTensors = [(CSFModelComputeBackend *)self->_odldClassifier getExpectedInputTensors];
   inputSpecs = self->_inputSpecs;
-  self->_inputSpecs = v3;
+  self->_inputSpecs = getExpectedInputTensors;
 
   v5 = self->_inputSpecs;
   if (v5 && [(NSDictionary *)v5 count])
   {
-    v6 = [(CSFModelComputeBackend *)self->_odldClassifier getExpectedOutputTensors];
-    v7 = [v6 allKeys];
+    getExpectedOutputTensors = [(CSFModelComputeBackend *)self->_odldClassifier getExpectedOutputTensors];
+    allKeys = [getExpectedOutputTensors allKeys];
     outputNodes = self->_outputNodes;
-    self->_outputNodes = v7;
+    self->_outputNodes = allKeys;
 
     v9 = self->_outputNodes;
     if (v9 && [(NSArray *)v9 count])
@@ -381,13 +381,13 @@ LABEL_9:
   return v10;
 }
 
-- (void)processEncodedTokens:(id)a3 withContext:(id)a4 withCompletion:(id)a5
+- (void)processEncodedTokens:(id)tokens withContext:(id)context withCompletion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SLODLDClassifierV1 *)self _constructFeatureDictionary:v8 withCtx:v9];
+  tokensCopy = tokens;
+  contextCopy = context;
+  completionCopy = completion;
+  v11 = [(SLODLDClassifierV1 *)self _constructFeatureDictionary:tokensCopy withCtx:contextCopy];
   if (v11)
   {
     odldClassifier = self->_odldClassifier;
@@ -406,9 +406,9 @@ LABEL_9:
         _os_log_impl(&dword_26754E000, v15, OS_LOG_TYPE_DEFAULT, "%s error when executing :%@", buf, 0x16u);
       }
 
-      if (v10)
+      if (completionCopy)
       {
-        v10[2](v10, -1.0, -1.0, -1.0);
+        completionCopy[2](completionCopy, -1.0, -1.0, -1.0);
       }
     }
 
@@ -445,9 +445,9 @@ LABEL_9:
     v26 = &v32;
     v27 = &v28;
     [(NSArray *)outputNodes enumerateObjectsUsingBlock:v23];
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, *(*&buf[8] + 24), v33[6], v29[6]);
+      completionCopy[2](completionCopy, *(*&buf[8] + 24), v33[6], v29[6]);
     }
 
     _Block_object_dispose(&v28, 8);
@@ -461,19 +461,19 @@ LABEL_9:
     if (os_log_type_enabled(SLLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
       v21 = v19;
-      v22 = [0 localizedDescription];
+      localizedDescription = [0 localizedDescription];
       *buf = 136315650;
       *&buf[4] = "[SLODLDClassifierV1 processEncodedTokens:withContext:withCompletion:]";
       *&buf[12] = 2112;
-      *&buf[14] = v22;
+      *&buf[14] = localizedDescription;
       *&buf[22] = 2112;
       v38 = 0;
       _os_log_error_impl(&dword_26754E000, v21, OS_LOG_TYPE_ERROR, "%s Unable to create feature dict with error %@ from %@", buf, 0x20u);
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, -1.0, -1.0, -1.0);
+      completionCopy[2](completionCopy, -1.0, -1.0, -1.0);
     }
   }
 
@@ -511,7 +511,7 @@ LABEL_4:
 LABEL_5:
 }
 
-- (float)processEncodedTokens:(id)a3
+- (float)processEncodedTokens:(id)tokens
 {
   v8 = *MEMORY[0x277D85DE8];
   v3 = SLLogContextFacilityCoreSpeech;
@@ -526,11 +526,11 @@ LABEL_5:
   return -1.0;
 }
 
-- (SLODLDClassifierV1)initWithConfigFile:(id)a3 bnnsIrWeightPath:(id)a4
+- (SLODLDClassifierV1)initWithConfigFile:(id)file bnnsIrWeightPath:(id)path
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  fileCopy = file;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = SLODLDClassifierV1;
   v8 = [(SLODLDClassifierV1 *)&v20 init];
@@ -540,7 +540,7 @@ LABEL_5:
   }
 
   v19 = 0;
-  v9 = [MEMORY[0x277D01768] provideComputeBackendWithModelFile:v6 separateWeight:v7 error:&v19];
+  v9 = [MEMORY[0x277D01768] provideComputeBackendWithModelFile:fileCopy separateWeight:pathCopy error:&v19];
   v10 = v19;
   odldClassifier = v8->_odldClassifier;
   v8->_odldClassifier = v9;
@@ -573,15 +573,15 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v15 = [(SLODLDClassifierV1 *)v8 _extractModelSpecs];
-  if (!v15)
+  _extractModelSpecs = [(SLODLDClassifierV1 *)v8 _extractModelSpecs];
+  if (!_extractModelSpecs)
   {
 LABEL_13:
     v16 = v8;
     goto LABEL_14;
   }
 
-  v10 = v15;
+  v10 = _extractModelSpecs;
   v13 = SLLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(SLLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {

@@ -7,19 +7,19 @@
 
 - (id)sectionMatchID
 {
-  v2 = [a1 universalSectionID];
-  v3 = v2;
-  if (v2)
+  universalSectionID = [self universalSectionID];
+  v3 = universalSectionID;
+  if (universalSectionID)
   {
-    v4 = v2;
+    sectionID = universalSectionID;
   }
 
   else
   {
-    v4 = [a1 sectionID];
+    sectionID = [self sectionID];
   }
 
-  v5 = v4;
+  v5 = sectionID;
 
   return v5;
 }
@@ -39,8 +39,8 @@
   v8 = v7;
   v9 = a4;
   v10 = a3;
-  v11 = [a1 publisherMatchID];
-  v12 = [v11 isEqualToString:v8];
+  publisherMatchID = [self publisherMatchID];
+  v12 = [publisherMatchID isEqualToString:v8];
 
   return v12;
 }

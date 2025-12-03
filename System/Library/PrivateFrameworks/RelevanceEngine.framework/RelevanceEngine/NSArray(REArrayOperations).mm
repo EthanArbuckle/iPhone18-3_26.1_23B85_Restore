@@ -29,7 +29,7 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [a1 indexOfObject:{v11, v17}];
+        v12 = [self indexOfObject:{v11, v17}];
         if (v12 == 0x7FFFFFFFFFFFFFFFLL)
         {
           [v5 addObject:v11];
@@ -37,7 +37,7 @@
 
         else
         {
-          v13 = [a1 objectAtIndex:v12];
+          v13 = [self objectAtIndex:v12];
           [v5 addObject:v13];
         }
       }

@@ -1,6 +1,6 @@
 @interface RTLearnedLocationOfInterestVisitMO
 + (id)fetchRequest;
-+ (id)managedObjectWithVisit:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5;
++ (id)managedObjectWithVisit:(id)visit managedObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation RTLearnedLocationOfInterestVisitMO
@@ -12,13 +12,13 @@
   return v2;
 }
 
-+ (id)managedObjectWithVisit:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5
++ (id)managedObjectWithVisit:(id)visit managedObject:(id)object inManagedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7)
+  visitCopy = visit;
+  objectCopy = object;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (!visitCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v9)
+  if (contextCopy)
   {
     *buf = 0;
     v21 = buf;
@@ -46,9 +46,9 @@ LABEL_12:
     v15[2] = __98__RTLearnedLocationOfInterestVisitMO_managedObjectWithVisit_managedObject_inManagedObjectContext___block_invoke;
     v15[3] = &unk_2788C5DA0;
     v19 = buf;
-    v16 = v8;
+    v16 = objectCopy;
     v17 = v10;
-    v18 = v7;
+    v18 = visitCopy;
     [v17 performBlockAndWait:v15];
     v11 = *(v21 + 5);
 

@@ -1,40 +1,40 @@
 @interface ULRecordingEventMO_deprecated
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4;
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context;
 - (void)convertToDO;
 @end
 
 @implementation ULRecordingEventMO_deprecated
 
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [[ULRecordingEventMO_deprecated alloc] initWithContext:a4];
-  v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3];
-  v7 = [v6 UUIDString];
-  [(ULRecordingEventMO_deprecated *)v5 setRecordingUUID:v7];
+  v5 = [[ULRecordingEventMO_deprecated alloc] initWithContext:context];
+  v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:o];
+  uUIDString = [v6 UUIDString];
+  [(ULRecordingEventMO_deprecated *)v5 setRecordingUUID:uUIDString];
 
-  [(ULRecordingEventMO_deprecated *)v5 setRecordingTimestamp:*(a3 + 2)];
-  if (*(a3 + 47) >= 0)
+  [(ULRecordingEventMO_deprecated *)v5 setRecordingTimestamp:*(o + 2)];
+  if (*(o + 47) >= 0)
   {
-    v8 = a3 + 24;
+    v8 = o + 24;
   }
 
   else
   {
-    v8 = *(a3 + 3);
+    v8 = *(o + 3);
   }
 
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:v8];
   [(ULRecordingEventMO_deprecated *)v5 setLoiType:v9];
 
-  [(ULRecordingEventMO_deprecated *)v5 setReceivedTimestamp:*(a3 + 8)];
-  v10 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3 + 48];
-  v11 = [v10 UUIDString];
-  [(ULRecordingEventMO_deprecated *)v5 setLoiId:v11];
+  [(ULRecordingEventMO_deprecated *)v5 setReceivedTimestamp:*(o + 8)];
+  v10 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:o + 48];
+  uUIDString2 = [v10 UUIDString];
+  [(ULRecordingEventMO_deprecated *)v5 setLoiId:uUIDString2];
 
-  if (*(a3 + 240) == 1)
+  if (*(o + 240) == 1)
   {
-    v20 = *(a3 + 14);
+    v20 = *(o + 14);
   }
 
   else
@@ -43,16 +43,16 @@
   }
 
   v12 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&v20];
-  v13 = [v12 UUIDString];
-  [(ULRecordingEventMO_deprecated *)v5 setTriggerUUID:v13];
+  uUIDString3 = [v12 UUIDString];
+  [(ULRecordingEventMO_deprecated *)v5 setTriggerUUID:uUIDString3];
 
-  v14 = [(ULRecordingEventMO_deprecated *)v5 setEventType:*(a3 + 18)];
-  v15 = *(a3 + 18);
+  v14 = [(ULRecordingEventMO_deprecated *)v5 setEventType:*(o + 18)];
+  v15 = *(o + 18);
   if (v15 == 13)
   {
-    if ((*(a3 + 221) & 4) != 0)
+    if ((*(o + 221) & 4) != 0)
     {
-      v18 = *(a3 + 21);
+      v18 = *(o + 21);
       if (!v18)
       {
         v14 = CLMicroLocationProto::RecordingEvent::default_instance(v14);
@@ -61,7 +61,7 @@
 
       if ((*(v18 + 44) & 2) != 0)
       {
-        v17 = *(a3 + 21);
+        v17 = *(o + 21);
         if (!v17)
         {
           v17 = *(CLMicroLocationProto::RecordingEvent::default_instance(v14) + 88);
@@ -72,9 +72,9 @@
     }
   }
 
-  else if (v15 == 1 && (*(a3 + 220) & 4) != 0)
+  else if (v15 == 1 && (*(o + 220) & 4) != 0)
   {
-    v16 = *(a3 + 12);
+    v16 = *(o + 12);
     if (!v16)
     {
       v14 = CLMicroLocationProto::RecordingEvent::default_instance(v14);
@@ -83,7 +83,7 @@
 
     if ((*(v16 + 44) & 2) != 0)
     {
-      v17 = *(a3 + 12);
+      v17 = *(o + 12);
       if (!v17)
       {
         v17 = *(CLMicroLocationProto::RecordingEvent::default_instance(v14) + 16);
@@ -94,18 +94,18 @@ LABEL_21:
     }
   }
 
-  CLMicroLocationProto::RecordingEvent::ByteSize((a3 + 80));
+  CLMicroLocationProto::RecordingEvent::ByteSize((o + 80));
   operator new[]();
 }
 
 - (void)convertToDO
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = [a1 recordingUUID];
-  v5 = v4;
-  if (v4)
+  recordingUUID = [self recordingUUID];
+  v5 = recordingUUID;
+  if (recordingUUID)
   {
-    [v4 boostUUID];
+    [recordingUUID boostUUID];
   }
 
   else
@@ -117,15 +117,15 @@ LABEL_21:
 
   if (v49)
   {
-    [a1 recordingTimestamp];
+    [self recordingTimestamp];
     v7 = v6;
-    [a1 receivedTimestamp];
+    [self receivedTimestamp];
     v9 = v8;
-    v10 = [a1 loiType];
-    v11 = v10;
-    if (v10)
+    loiType = [self loiType];
+    v11 = loiType;
+    if (loiType)
     {
-      [v10 stdString];
+      [loiType stdString];
     }
 
     else
@@ -136,11 +136,11 @@ LABEL_21:
 
     if (BYTE8(v32))
     {
-      v13 = [a1 loiId];
-      v14 = v13;
-      if (v13)
+      loiId = [self loiId];
+      v14 = loiId;
+      if (loiId)
       {
-        [v13 boostUUID];
+        [loiId boostUUID];
       }
 
       else
@@ -157,12 +157,12 @@ LABEL_21:
         v46 = 1;
       }
 
-      v16 = [a1 eventType];
-      v17 = [a1 triggerUUID];
-      v18 = v17;
-      if (v17)
+      eventType = [self eventType];
+      triggerUUID = [self triggerUUID];
+      v18 = triggerUUID;
+      if (triggerUUID)
       {
-        [v17 boostUUID];
+        [triggerUUID boostUUID];
       }
 
       else
@@ -176,14 +176,14 @@ LABEL_21:
         v43 = 0;
       }
 
-      v19 = [a1 event];
-      v20 = v19;
-      v21 = [v19 bytes];
-      v22 = [a1 event];
-      [v22 length];
-      LOBYTE(v21) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(v30, v21);
+      event = [self event];
+      v20 = event;
+      bytes = [event bytes];
+      event2 = [self event];
+      [event2 length];
+      LOBYTE(bytes) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(v30, bytes);
 
-      if (v21)
+      if (bytes)
       {
         if (v49 != 1 || (BYTE8(v32) & 1) == 0)
         {
@@ -210,7 +210,7 @@ LABEL_21:
           std::__throw_bad_optional_access[abi:ne200100]();
         }
 
-        ULRecordingEventDO::ULRecordingEventDO(buf, v24, v25, &v29, v16, v30, &v33, v23, v7, v9, v44, v45);
+        ULRecordingEventDO::ULRecordingEventDO(buf, v24, v25, &v29, eventType, v30, &v33, v23, v7, v9, v44, v45);
         if (SHIBYTE(v29.__r_.__value_.__r.__words[2]) < 0)
         {
           operator delete(v29.__r_.__value_.__l.__data_);

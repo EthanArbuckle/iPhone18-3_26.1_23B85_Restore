@@ -1,43 +1,43 @@
 @interface WXTableCell
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 @end
 
 @implementation WXTableCell
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 WXMainNamespace];
+  toCopy = to;
+  stateCopy = state;
+  wXMainNamespace = [stateCopy WXMainNamespace];
   v35 = 0;
-  v10 = CXOptionalStringAttribute(a3, v9, "id", &v35);
+  v10 = CXOptionalStringAttribute(from, wXMainNamespace, "id", &v35);
   v11 = v35;
 
   if (v10)
   {
-    [v7 setIdentifier:v11];
+    [toCopy setIdentifier:v11];
   }
 
-  v12 = [v8 WXMainNamespace];
-  v13 = OCXFindChild(a3, v12, "tcPr");
+  wXMainNamespace2 = [stateCopy WXMainNamespace];
+  v13 = OCXFindChild(from, wXMainNamespace2, "tcPr");
 
   if (v13)
   {
-    v14 = [v7 properties];
-    [WXTableCellProperties readFrom:v13 to:v14 state:v8];
+    properties = [toCopy properties];
+    [WXTableCellProperties readFrom:v13 to:properties state:stateCopy];
   }
 
-  v15 = [v7 row];
-  v16 = [v15 table];
+  v15 = [toCopy row];
+  table = [v15 table];
 
-  v34 = [v16 properties];
-  v17 = [v8 currentCellCNFStyle];
-  v18 = [v8 currentRowCNFStyle];
-  v19 = [v34 isBaseStyleOverridden];
-  v20 = v18 | v17;
-  if (v18 | v17)
+  properties2 = [table properties];
+  currentCellCNFStyle = [stateCopy currentCellCNFStyle];
+  currentRowCNFStyle = [stateCopy currentRowCNFStyle];
+  isBaseStyleOverridden = [properties2 isBaseStyleOverridden];
+  v20 = currentRowCNFStyle | currentCellCNFStyle;
+  if (currentRowCNFStyle | currentCellCNFStyle)
   {
-    v21 = v19;
+    v21 = isBaseStyleOverridden;
   }
 
   else
@@ -48,19 +48,19 @@
   if (v21 == 1)
   {
     v33 = v11;
-    v22 = [v34 baseStyle];
+    baseStyle = [properties2 baseStyle];
     v23 = 0;
     do
     {
       if ((v20 >> v23))
       {
-        v24 = [v22 tableStyleOverrideForPart:v23];
+        v24 = [baseStyle tableStyleOverrideForPart:v23];
         v25 = v24;
         if (v24 && [v24 isTableCellStylePropertiesOverridden])
         {
-          v26 = [v7 properties];
-          v27 = [v25 tableCellStyleProperties];
-          [v26 addProperties:v27];
+          properties3 = [toCopy properties];
+          tableCellStyleProperties = [v25 tableCellStyleProperties];
+          [properties3 addProperties:tableCellStyleProperties];
         }
       }
 
@@ -72,22 +72,22 @@
     v11 = v33;
   }
 
-  v28 = [v16 properties];
-  v29 = [v28 isBaseStyleOverridden];
+  properties4 = [table properties];
+  isBaseStyleOverridden2 = [properties4 isBaseStyleOverridden];
 
-  if (v29)
+  if (isBaseStyleOverridden2)
   {
-    v30 = [v16 properties];
-    v31 = [v30 baseStyle];
+    properties5 = [table properties];
+    baseStyle2 = [properties5 baseStyle];
   }
 
   else
   {
-    v31 = 0;
+    baseStyle2 = 0;
   }
 
-  v32 = [v7 text];
-  [WXText readFrom:a3 baseStyle:v31 to:v32 state:v8];
+  text = [toCopy text];
+  [WXText readFrom:from baseStyle:baseStyle2 to:text state:stateCopy];
 }
 
 @end

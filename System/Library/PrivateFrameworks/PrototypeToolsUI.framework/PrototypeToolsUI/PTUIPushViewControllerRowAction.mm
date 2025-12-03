@@ -1,15 +1,15 @@
 @interface PTUIPushViewControllerRowAction
-+ (id)actionWithViewControllerCreator:(id)a3;
++ (id)actionWithViewControllerCreator:(id)creator;
 - (id)defaultHandler;
 @end
 
 @implementation PTUIPushViewControllerRowAction
 
-+ (id)actionWithViewControllerCreator:(id)a3
++ (id)actionWithViewControllerCreator:(id)creator
 {
-  v3 = a3;
+  creatorCopy = creator;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v3 copy];
+  v5 = [creatorCopy copy];
 
   v6 = v4[3];
   v4[3] = v5;

@@ -1,16 +1,16 @@
 @interface _PKDistributedAppLauncher
-+ (void)launchAppWithDistributorBundleID:(id)a3 itemID:(unint64_t)a4 completion:(id)a5;
++ (void)launchAppWithDistributorBundleID:(id)d itemID:(unint64_t)iD completion:(id)completion;
 - (_TtC9PassKitUI25_PKDistributedAppLauncher)init;
 @end
 
 @implementation _PKDistributedAppLauncher
 
-+ (void)launchAppWithDistributorBundleID:(id)a3 itemID:(unint64_t)a4 completion:(id)a5
++ (void)launchAppWithDistributorBundleID:(id)d itemID:(unint64_t)iD completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBD3E580);
   MEMORY[0x1EEE9AC00](v7 - 8, v8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a5);
+  v11 = _Block_copy(completion);
   v12 = sub_1BE052434();
   v14 = v13;
   if (v11)
@@ -32,7 +32,7 @@
   v17[3] = 0;
   v17[4] = v12;
   v17[5] = v14;
-  v17[6] = a4;
+  v17[6] = iD;
   v17[7] = v11;
   v17[8] = v15;
   sub_1BD122C00(0, 0, v10, &unk_1BE0F8FB0, v17);

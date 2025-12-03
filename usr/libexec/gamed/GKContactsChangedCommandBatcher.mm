@@ -1,151 +1,151 @@
 @interface GKContactsChangedCommandBatcher
 - (BOOL)shouldExecuteCommands;
-- (GKContactsChangedCommandBatcher)initWithPlayerProvider:(id)a3 meContactID:(id)a4 batchSize:(unint64_t)a5 batchStartCommand:(id)a6 batchEndCommand:(id)a7 finishedCommand:(id)a8;
-- (GKContactsChangedCommandBatcher)initWithPlayerProvider:(id)a3 meContactID:(id)a4 batchSize:(unint64_t)a5 finishedCommand:(id)a6;
-- (id)executeCommandsWithContext:(id)a3;
-- (void)addCommand:(id)a3;
-- (void)addCommand:(id)a3 withContext:(id)a4;
+- (GKContactsChangedCommandBatcher)initWithPlayerProvider:(id)provider meContactID:(id)d batchSize:(unint64_t)size batchStartCommand:(id)command batchEndCommand:(id)endCommand finishedCommand:(id)finishedCommand;
+- (GKContactsChangedCommandBatcher)initWithPlayerProvider:(id)provider meContactID:(id)d batchSize:(unint64_t)size finishedCommand:(id)command;
+- (id)executeCommandsWithContext:(id)context;
+- (void)addCommand:(id)command;
+- (void)addCommand:(id)command withContext:(id)context;
 - (void)finish;
-- (void)finishWithContext:(id)a3;
-- (void)visitAddContactEvent:(id)a3;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitDropEverythingEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
+- (void)finishWithContext:(id)context;
+- (void)visitAddContactEvent:(id)event;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitDropEverythingEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
 @end
 
 @implementation GKContactsChangedCommandBatcher
 
-- (GKContactsChangedCommandBatcher)initWithPlayerProvider:(id)a3 meContactID:(id)a4 batchSize:(unint64_t)a5 finishedCommand:(id)a6
+- (GKContactsChangedCommandBatcher)initWithPlayerProvider:(id)provider meContactID:(id)d batchSize:(unint64_t)size finishedCommand:(id)command
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  commandCopy = command;
+  dCopy = d;
+  providerCopy = provider;
   v13 = objc_alloc_init(GKContactsCacheUpdateBatchStartCommand);
   v14 = objc_alloc_init(GKContactsCacheUpdateBatchEndCommand);
-  v15 = [(GKContactsChangedCommandBatcher *)self initWithPlayerProvider:v12 meContactID:v11 batchSize:a5 batchStartCommand:v13 batchEndCommand:v14 finishedCommand:v10];
+  v15 = [(GKContactsChangedCommandBatcher *)self initWithPlayerProvider:providerCopy meContactID:dCopy batchSize:size batchStartCommand:v13 batchEndCommand:v14 finishedCommand:commandCopy];
 
   return v15;
 }
 
-- (GKContactsChangedCommandBatcher)initWithPlayerProvider:(id)a3 meContactID:(id)a4 batchSize:(unint64_t)a5 batchStartCommand:(id)a6 batchEndCommand:(id)a7 finishedCommand:(id)a8
+- (GKContactsChangedCommandBatcher)initWithPlayerProvider:(id)provider meContactID:(id)d batchSize:(unint64_t)size batchStartCommand:(id)command batchEndCommand:(id)endCommand finishedCommand:(id)finishedCommand
 {
-  v24 = a3;
-  v23 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  providerCopy = provider;
+  dCopy = d;
+  commandCopy = command;
+  endCommandCopy = endCommand;
+  finishedCommandCopy = finishedCommand;
   v25.receiver = self;
   v25.super_class = GKContactsChangedCommandBatcher;
   v18 = [(GKContactsChangedCommandBatcher *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    v18->_batchSize = a5;
-    objc_storeStrong(&v18->_meContactID, a4);
-    v20 = [NSMutableSet setWithCapacity:a5, v23, v24];
+    v18->_batchSize = size;
+    objc_storeStrong(&v18->_meContactID, d);
+    providerCopy = [NSMutableSet setWithCapacity:size, dCopy, providerCopy];
     commands = v19->_commands;
-    v19->_commands = v20;
+    v19->_commands = providerCopy;
 
-    objc_storeStrong(&v19->_playerProvider, a3);
-    objc_storeStrong(&v19->_batchStartCommand, a6);
-    objc_storeStrong(&v19->_batchEndCommand, a7);
-    objc_storeStrong(&v19->_finishedCommand, a8);
+    objc_storeStrong(&v19->_playerProvider, provider);
+    objc_storeStrong(&v19->_batchStartCommand, command);
+    objc_storeStrong(&v19->_batchEndCommand, endCommand);
+    objc_storeStrong(&v19->_finishedCommand, finishedCommand);
   }
 
   return v19;
 }
 
-- (void)visitAddContactEvent:(id)a3
+- (void)visitAddContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [GKContactsChangedAddOrUpdateCommand alloc];
-  v6 = [v4 contact];
+  contact = [eventCopy contact];
 
-  v7 = [(GKContactsChangedCommandBatcher *)self meContactID];
-  v8 = [(GKContactsChangedAddOrUpdateCommand *)v5 initWithContact:v6 meContactID:v7];
+  meContactID = [(GKContactsChangedCommandBatcher *)self meContactID];
+  v8 = [(GKContactsChangedAddOrUpdateCommand *)v5 initWithContact:contact meContactID:meContactID];
 
   [(GKContactsChangedCommandBatcher *)self addCommand:v8];
 }
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [GKContactsChangedDeleteCommand alloc];
-  v6 = [v4 contactIdentifier];
+  contactIdentifier = [eventCopy contactIdentifier];
 
-  v7 = [(GKContactsChangedDeleteCommand *)v5 initWithContactID:v6];
+  v7 = [(GKContactsChangedDeleteCommand *)v5 initWithContactID:contactIdentifier];
   [(GKContactsChangedCommandBatcher *)self addCommand:v7];
 }
 
-- (void)visitDropEverythingEvent:(id)a3
+- (void)visitDropEverythingEvent:(id)event
 {
   v4 = objc_alloc_init(GKContactsChangedClearCommand);
   [(GKContactsChangedCommandBatcher *)self addCommand:v4];
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [GKContactsChangedAddOrUpdateCommand alloc];
-  v6 = [v4 contact];
+  contact = [eventCopy contact];
 
-  v7 = [(GKContactsChangedCommandBatcher *)self meContactID];
-  v8 = [(GKContactsChangedAddOrUpdateCommand *)v5 initWithContact:v6 meContactID:v7];
+  meContactID = [(GKContactsChangedCommandBatcher *)self meContactID];
+  v8 = [(GKContactsChangedAddOrUpdateCommand *)v5 initWithContact:contact meContactID:meContactID];
 
   [(GKContactsChangedCommandBatcher *)self addCommand:v8];
 }
 
-- (void)addCommand:(id)a3
+- (void)addCommand:(id)command
 {
-  v4 = a3;
-  v5 = [(GKContactsChangedCommandBatcher *)self commands];
-  [v5 addObject:v4];
+  commandCopy = command;
+  commands = [(GKContactsChangedCommandBatcher *)self commands];
+  [commands addObject:commandCopy];
 
   if ([(GKContactsChangedCommandBatcher *)self shouldExecuteCommands])
   {
-    v6 = [(GKContactsChangedCommandBatcher *)self playerProvider];
-    v7 = [v6 localPlayerCacheGroup];
+    playerProvider = [(GKContactsChangedCommandBatcher *)self playerProvider];
+    localPlayerCacheGroup = [playerProvider localPlayerCacheGroup];
 
-    v8 = [v7 context];
+    context = [localPlayerCacheGroup context];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10016899C;
     v10[3] = &unk_1003610B8;
     v10[4] = self;
-    v11 = v7;
-    v9 = v7;
-    [v8 performBlockAndWait:v10];
+    v11 = localPlayerCacheGroup;
+    v9 = localPlayerCacheGroup;
+    [context performBlockAndWait:v10];
   }
 }
 
 - (BOOL)shouldExecuteCommands
 {
-  v2 = self;
-  v3 = [(GKContactsChangedCommandBatcher *)self commands];
-  v4 = [v3 count];
-  LOBYTE(v2) = v4 >= [(GKContactsChangedCommandBatcher *)v2 batchSize];
+  selfCopy = self;
+  commands = [(GKContactsChangedCommandBatcher *)self commands];
+  v4 = [commands count];
+  LOBYTE(selfCopy) = v4 >= [(GKContactsChangedCommandBatcher *)selfCopy batchSize];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)addCommand:(id)a3 withContext:(id)a4
+- (void)addCommand:(id)command withContext:(id)context
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(GKContactsChangedCommandBatcher *)self commands];
-  [v7 addObject:v6];
+  contextCopy = context;
+  commandCopy = command;
+  commands = [(GKContactsChangedCommandBatcher *)self commands];
+  [commands addObject:commandCopy];
 
   if ([(GKContactsChangedCommandBatcher *)self shouldExecuteCommands])
   {
-    v8 = [(GKContactsChangedCommandBatcher *)self executeCommandsWithContext:v9];
+    v8 = [(GKContactsChangedCommandBatcher *)self executeCommandsWithContext:contextCopy];
   }
 }
 
-- (id)executeCommandsWithContext:(id)a3
+- (id)executeCommandsWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(GKContactsChangedCommandBatcher *)self commands];
-  v6 = [v5 count];
+  contextCopy = context;
+  commands = [(GKContactsChangedCommandBatcher *)self commands];
+  v6 = [commands count];
 
   if (!v6)
   {
@@ -164,9 +164,9 @@
     goto LABEL_12;
   }
 
-  v7 = [(GKContactsChangedCommandBatcher *)self error];
+  error = [(GKContactsChangedCommandBatcher *)self error];
 
-  if (v7)
+  if (error)
   {
     if (!os_log_GKGeneral)
     {
@@ -182,13 +182,13 @@
     goto LABEL_12;
   }
 
-  v12 = [(GKContactsChangedCommandBatcher *)self batchStartCommand];
-  v13 = [v12 executeWithContext:v4];
+  batchStartCommand = [(GKContactsChangedCommandBatcher *)self batchStartCommand];
+  v13 = [batchStartCommand executeWithContext:contextCopy];
   [(GKContactsChangedCommandBatcher *)self setError:v13];
 
-  v14 = [(GKContactsChangedCommandBatcher *)self error];
+  error2 = [(GKContactsChangedCommandBatcher *)self error];
 
-  if (v14)
+  if (error2)
   {
 LABEL_12:
     v15 = 0;
@@ -208,15 +208,15 @@ LABEL_12:
   }
 
   v19 = [NSMutableSet alloc];
-  v20 = [(GKContactsChangedCommandBatcher *)self commands];
-  v15 = [v19 initWithCapacity:{objc_msgSend(v20, "count")}];
+  commands2 = [(GKContactsChangedCommandBatcher *)self commands];
+  v15 = [v19 initWithCapacity:{objc_msgSend(commands2, "count")}];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v21 = [(GKContactsChangedCommandBatcher *)self commands];
-  v22 = [v21 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  commands3 = [(GKContactsChangedCommandBatcher *)self commands];
+  v22 = [commands3 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v22)
   {
     v23 = v22;
@@ -227,28 +227,28 @@ LABEL_12:
       {
         if (*v31 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(commands3);
         }
 
-        v26 = [*(*(&v30 + 1) + 8 * i) executeWithContext:v4];
+        v26 = [*(*(&v30 + 1) + 8 * i) executeWithContext:contextCopy];
         if (v26)
         {
           [v15 unionSet:v26];
         }
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v23 = [commands3 countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v23);
   }
 
-  v27 = [(GKContactsChangedCommandBatcher *)self batchEndCommand];
+  batchEndCommand = [(GKContactsChangedCommandBatcher *)self batchEndCommand];
   v28 = [v15 copy];
-  [v27 executeWithHandles:v28 context:v4];
+  [batchEndCommand executeWithHandles:v28 context:contextCopy];
 
-  v29 = [(GKContactsChangedCommandBatcher *)self commands];
-  [v29 removeAllObjects];
+  commands4 = [(GKContactsChangedCommandBatcher *)self commands];
+  [commands4 removeAllObjects];
 
 LABEL_13:
 
@@ -257,30 +257,30 @@ LABEL_13:
 
 - (void)finish
 {
-  v3 = [(GKContactsChangedCommandBatcher *)self playerProvider];
-  v4 = [v3 localPlayerCacheGroup];
+  playerProvider = [(GKContactsChangedCommandBatcher *)self playerProvider];
+  localPlayerCacheGroup = [playerProvider localPlayerCacheGroup];
 
-  v5 = [v4 context];
+  context = [localPlayerCacheGroup context];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100168F0C;
   v7[3] = &unk_1003610B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlockAndWait:v7];
+  v8 = localPlayerCacheGroup;
+  v6 = localPlayerCacheGroup;
+  [context performBlockAndWait:v7];
 }
 
-- (void)finishWithContext:(id)a3
+- (void)finishWithContext:(id)context
 {
-  v7 = a3;
+  contextCopy = context;
   v4 = [(GKContactsChangedCommandBatcher *)self executeCommandsWithContext:?];
-  v5 = [(GKContactsChangedCommandBatcher *)self error];
+  error = [(GKContactsChangedCommandBatcher *)self error];
 
-  if (!v5)
+  if (!error)
   {
-    v6 = [(GKContactsChangedCommandBatcher *)self finishedCommand];
-    [v6 executeWithContext:v7];
+    finishedCommand = [(GKContactsChangedCommandBatcher *)self finishedCommand];
+    [finishedCommand executeWithContext:contextCopy];
   }
 }
 

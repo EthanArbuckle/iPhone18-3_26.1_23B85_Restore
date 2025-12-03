@@ -52,14 +52,14 @@
   [v12 pointSize];
   v15 = [v12 fontWithSize:v14 * a3];
 
-  v16 = [MEMORY[0x1E69DC888] whiteColor];
-  v28[1] = v16;
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v28[1] = whiteColor;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:2];
 
   [v11 sizeWithAttributes:v17];
-  v19 = (a1 - v18) * 0.5;
+  v19 = (self - v18) * 0.5;
   v21 = (a2 - v20) * 0.5;
-  v33.width = a1;
+  v33.width = self;
   v33.height = a2;
   UIGraphicsBeginImageContext(v33);
   [v11 drawAtPoint:v17 withAttributes:{v19, v21}];
@@ -90,8 +90,8 @@
   }
 
   v17 = [[AVMobileImageConfiguration alloc] initWithString:v13 font:v14];
-  v18 = [MEMORY[0x1E69DCAB8] _avkit_textImageCache];
-  v19 = [v18 objectForKey:v17];
+  _avkit_textImageCache = [MEMORY[0x1E69DCAB8] _avkit_textImageCache];
+  v19 = [_avkit_textImageCache objectForKey:v17];
   if (v19)
   {
     v15[2](v15, v19);
@@ -99,20 +99,20 @@
 
   else
   {
-    v20 = [MEMORY[0x1E69DCAB8] _avkit_imageLoadingQueue];
+    _avkit_imageLoadingQueue = [MEMORY[0x1E69DCAB8] _avkit_imageLoadingQueue];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __79__UIImage_AVAdditions__avkit_imageWithSize_ofText_font_scaleFactor_completion___block_invoke;
     v21[3] = &unk_1E72090B0;
-    v27 = a1;
+    selfCopy = self;
     v28 = a2;
     v22 = v13;
     v23 = v14;
     v29 = a3;
-    v24 = v18;
+    v24 = _avkit_textImageCache;
     v25 = v17;
     v26 = v15;
-    dispatch_async(v20, v21);
+    dispatch_async(_avkit_imageLoadingQueue, v21);
   }
 }
 
@@ -141,15 +141,15 @@
 
     if ([MapImageNameNumberAware_sDigitAwareSet containsObject:v8])
     {
-      v12 = [MEMORY[0x1E695DF58] currentLocale];
-      v13 = [v12 languageCode];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      languageCode = [currentLocale languageCode];
 
-      if (([v13 isEqualToString:@"ar"] & 1) != 0 || objc_msgSend(v13, "isEqualToString:", @"hi"))
+      if (([languageCode isEqualToString:@"ar"] & 1) != 0 || objc_msgSend(languageCode, "isEqualToString:", @"hi"))
       {
-        v14 = [MEMORY[0x1E695DF58] currentLocale];
-        v15 = [v14 numberingSystem];
+        currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
+        numberingSystem = [currentLocale2 numberingSystem];
 
-        if ([v15 isEqualToString:@"latn"])
+        if ([numberingSystem isEqualToString:@"latn"])
         {
           v16 = [(__CFString *)v8 stringByAppendingFormat:@".westernarabic"];
         }
@@ -171,8 +171,8 @@
       v16 = 0;
     }
 
-    v17 = [MEMORY[0x1E695DF58] currentLocale];
-    v18 = [v17 languageCode];
+    currentLocale3 = [MEMORY[0x1E695DF58] currentLocale];
+    languageCode2 = [currentLocale3 languageCode];
 
     v11 = v16 != 0;
     if (v16)
@@ -182,12 +182,12 @@
 
     else
     {
-      if (([v18 isEqualToString:@"ar"] & 1) == 0 && !objc_msgSend(v18, "isEqualToString:", @"hi"))
+      if (([languageCode2 isEqualToString:@"ar"] & 1) == 0 && !objc_msgSend(languageCode2, "isEqualToString:", @"hi"))
       {
         goto LABEL_22;
       }
 
-      v19 = [(__CFString *)v8 stringByAppendingFormat:@".%@", v18];
+      v19 = [(__CFString *)v8 stringByAppendingFormat:@".%@", languageCode2];
     }
 
     v20 = v19;
@@ -202,7 +202,7 @@ LABEL_22:
 LABEL_23:
   v21 = [[AVMobileImageConfiguration alloc] initWithImageName:v8 font:v9 imageContainedInBundle:v11];
 
-  if ([MEMORY[0x1E696AF00] isMainThread] && v8 && (objc_msgSend(a1, "avkit_loadedImageConfigurations"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "containsObject:", v21), v22, v23))
+  if ([MEMORY[0x1E696AF00] isMainThread] && v8 && (objc_msgSend(self, "avkit_loadedImageConfigurations"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "containsObject:", v21), v22, v23))
   {
     v24 = [AVImage imageWithConfiguration:v21];
     (v10)[2](v10, v24);
@@ -210,16 +210,16 @@ LABEL_23:
 
   else if (v9 && v8)
   {
-    v25 = [MEMORY[0x1E69DCAB8] _avkit_imageLoadingQueue];
+    _avkit_imageLoadingQueue = [MEMORY[0x1E69DCAB8] _avkit_imageLoadingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __67__UIImage_AVAdditions__avkit_imageWithSymbolNamed_font_completion___block_invoke;
     block[3] = &unk_1E7209060;
     v27 = v21;
     v28 = v8;
-    v30 = a1;
+    selfCopy = self;
     v29 = v10;
-    dispatch_async(v25, block);
+    dispatch_async(_avkit_imageLoadingQueue, block);
   }
 }
 
@@ -228,11 +228,11 @@ LABEL_23:
   v6 = a3;
   v7 = [a4 copy];
   v8 = [[AVMobileImageConfiguration alloc] initWithImageName:v6 font:0 imageContainedInBundle:0];
-  v9 = [MEMORY[0x1E696AF00] isMainThread];
-  if (v6 && v9)
+  isMainThread = [MEMORY[0x1E696AF00] isMainThread];
+  if (v6 && isMainThread)
   {
-    v10 = [a1 avkit_loadedImageConfigurations];
-    v11 = [v10 containsObject:v8];
+    avkit_loadedImageConfigurations = [self avkit_loadedImageConfigurations];
+    v11 = [avkit_loadedImageConfigurations containsObject:v8];
 
     if (v11)
     {
@@ -260,7 +260,7 @@ LABEL_23:
   v15[2] = __52__UIImage_AVAdditions__avkit_imageNamed_completion___block_invoke_2;
   v15[3] = &unk_1E7209060;
   v16 = v6;
-  v19 = a1;
+  selfCopy = self;
   v17 = v8;
   v18 = v7;
   dispatch_async(v14, v15);

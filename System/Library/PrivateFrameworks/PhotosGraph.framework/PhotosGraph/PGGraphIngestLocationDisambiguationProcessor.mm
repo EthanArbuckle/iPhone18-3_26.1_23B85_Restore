@@ -1,20 +1,20 @@
 @interface PGGraphIngestLocationDisambiguationProcessor
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestLocationDisambiguationProcessor)initWithGraphBuilder:(id)a3;
-- (void)removeDuplicateCityNodes:(id)a3 graph:(id)a4 loggingConnection:(id)a5 progressBlock:(id)a6;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestLocationDisambiguationProcessor)initWithGraphBuilder:(id)builder;
+- (void)removeDuplicateCityNodes:(id)nodes graph:(id)graph loggingConnection:(id)connection progressBlock:(id)block;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphIngestLocationDisambiguationProcessor
 
-- (void)removeDuplicateCityNodes:(id)a3 graph:(id)a4 loggingConnection:(id)a5 progressBlock:(id)a6
+- (void)removeDuplicateCityNodes:(id)nodes graph:(id)graph loggingConnection:(id)connection progressBlock:(id)block
 {
   v49 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = _Block_copy(v12);
+  nodesCopy = nodes;
+  graphCopy = graph;
+  connectionCopy = connection;
+  blockCopy = block;
+  v13 = _Block_copy(blockCopy);
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -36,14 +36,14 @@
 
   else
   {
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __111__PGGraphIngestLocationDisambiguationProcessor_removeDuplicateCityNodes_graph_loggingConnection_progressBlock___block_invoke;
     v33[3] = &unk_278885E70;
-    v17 = v16;
+    v17 = dictionary;
     v34 = v17;
-    [v9 enumerateNodesUsingBlock:v33];
+    [nodesCopy enumerateNodesUsingBlock:v33];
     v18 = [v17 count];
     buf = 0;
     *&v47 = &buf;
@@ -60,8 +60,8 @@
     v29 = &v35;
     v32 = 0x3F847AE147AE147BLL;
     v30 = &v39;
-    v25 = v11;
-    v26 = v10;
+    v25 = connectionCopy;
+    v26 = graphCopy;
     [v17 enumerateKeysAndObjectsUsingBlock:v24];
     if (v13)
     {
@@ -464,15 +464,15 @@ void __111__PGGraphIngestLocationDisambiguationProcessor_removeDuplicateCityNode
   [v2 addObject:v3];
 }
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PGGraphBuilder *)self->_graphBuilder graph];
-  v9 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  v10 = os_signpost_id_generate(v9);
-  v11 = v9;
+  updateCopy = update;
+  blockCopy = block;
+  graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  v10 = os_signpost_id_generate(loggingConnection);
+  v11 = loggingConnection;
   v12 = v11;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
@@ -483,20 +483,20 @@ void __111__PGGraphIngestLocationDisambiguationProcessor_removeDuplicateCityNode
   info = 0;
   mach_timebase_info(&info);
   v13 = mach_absolute_time();
-  if ([v6 isResumingFullAnalysis])
+  if ([updateCopy isResumingFullAnalysis])
   {
-    v14 = [(PGGraphNodeCollection *)PGGraphLocationCityNodeCollection nodesInGraph:v8];
+    cityNodes = [(PGGraphNodeCollection *)PGGraphLocationCityNodeCollection nodesInGraph:graph];
   }
 
   else
   {
-    v15 = [v6 momentNodesToProcessInGraph:v8 forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
-    v14 = [v15 cityNodes];
+    v15 = [updateCopy momentNodesToProcessInGraph:graph forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
+    cityNodes = [v15 cityNodes];
   }
 
-  if ([v14 count])
+  if ([cityNodes count])
   {
-    [(PGGraphIngestLocationDisambiguationProcessor *)self removeDuplicateCityNodes:v14 graph:v8 loggingConnection:v12 progressBlock:v7];
+    [(PGGraphIngestLocationDisambiguationProcessor *)self removeDuplicateCityNodes:cityNodes graph:graph loggingConnection:v12 progressBlock:blockCopy];
   }
 
   v16 = mach_absolute_time();
@@ -522,33 +522,33 @@ void __111__PGGraphIngestLocationDisambiguationProcessor_removeDuplicateCityNode
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
-  v3 = a3;
-  if ([v3 isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(v3, "hasInsertedMomentNodes"))
+  updateCopy = update;
+  if ([updateCopy isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(updateCopy, "hasInsertedMomentNodes"))
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v3 momentUpdateTypes];
-    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & v5) != 0;
+    momentUpdateTypes = [updateCopy momentUpdateTypes];
+    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & momentUpdateTypes) != 0;
   }
 
   return v4;
 }
 
-- (PGGraphIngestLocationDisambiguationProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestLocationDisambiguationProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = PGGraphIngestLocationDisambiguationProcessor;
   v6 = [(PGGraphIngestLocationDisambiguationProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
   }
 
   return v7;

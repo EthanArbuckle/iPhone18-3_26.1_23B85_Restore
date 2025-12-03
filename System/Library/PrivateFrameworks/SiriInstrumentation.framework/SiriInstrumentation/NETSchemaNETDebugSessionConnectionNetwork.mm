@@ -1,35 +1,35 @@
 @interface NETSchemaNETDebugSessionConnectionNetwork
-- (BOOL)isEqual:(id)a3;
-- (NETSchemaNETDebugSessionConnectionNetwork)initWithDictionary:(id)a3;
-- (NETSchemaNETDebugSessionConnectionNetwork)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NETSchemaNETDebugSessionConnectionNetwork)initWithDictionary:(id)dictionary;
+- (NETSchemaNETDebugSessionConnectionNetwork)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasConnectedSubflowCount:(BOOL)a3;
-- (void)setHasOpenTimeInMs:(BOOL)a3;
-- (void)setHasSignalStrengthBars:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasConnectedSubflowCount:(BOOL)count;
+- (void)setHasOpenTimeInMs:(BOOL)ms;
+- (void)setHasSignalStrengthBars:(BOOL)bars;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NETSchemaNETDebugSessionConnectionNetwork
 
-- (NETSchemaNETDebugSessionConnectionNetwork)initWithDictionary:(id)a3
+- (NETSchemaNETDebugSessionConnectionNetwork)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = NETSchemaNETDebugSessionConnectionNetwork;
   v5 = [(NETSchemaNETDebugSessionConnectionNetwork *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"wiFiPhyMode"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"wiFiPhyMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETDebugSessionConnectionNetwork setWiFiPhyMode:](v5, "setWiFiPhyMode:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"signalStrengthBars"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"signalStrengthBars"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(NETSchemaNETDebugSessionConnectionNetwork *)v5 setSignalStrengthBars:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"openTimeInMs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"openTimeInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(NETSchemaNETDebugSessionConnectionNetwork *)v5 setOpenTimeInMs:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"connectedSubflowCount"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"connectedSubflowCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,30 +58,30 @@
   return v5;
 }
 
-- (NETSchemaNETDebugSessionConnectionNetwork)initWithJSON:(id)a3
+- (NETSchemaNETDebugSessionConnectionNetwork)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NETSchemaNETDebugSessionConnectionNetwork *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NETSchemaNETDebugSessionConnectionNetwork *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NETSchemaNETDebugSessionConnectionNetwork *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -94,12 +94,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NETSchemaNETDebugSessionConnectionNetwork connectedSubflowCount](self, "connectedSubflowCount")}];
-    [v3 setObject:v5 forKeyedSubscript:@"connectedSubflowCount"];
+    [dictionary setObject:v5 forKeyedSubscript:@"connectedSubflowCount"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -114,7 +114,7 @@ LABEL_8:
       v8 = MEMORY[0x1E696AD98];
       [(NETSchemaNETDebugSessionConnectionNetwork *)self signalStrengthBars];
       v9 = [v8 numberWithDouble:?];
-      [v3 setObject:v9 forKeyedSubscript:@"signalStrengthBars"];
+      [dictionary setObject:v9 forKeyedSubscript:@"signalStrengthBars"];
 
       if ((*&self->_has & 1) == 0)
       {
@@ -133,7 +133,7 @@ LABEL_9:
         v11 = off_1E78DB0F0[v10];
       }
 
-      [v3 setObject:v11 forKeyedSubscript:@"wiFiPhyMode"];
+      [dictionary setObject:v11 forKeyedSubscript:@"wiFiPhyMode"];
       goto LABEL_13;
     }
   }
@@ -146,7 +146,7 @@ LABEL_9:
   v6 = MEMORY[0x1E696AD98];
   [(NETSchemaNETDebugSessionConnectionNetwork *)self openTimeInMs];
   v7 = [v6 numberWithDouble:?];
-  [v3 setObject:v7 forKeyedSubscript:@"openTimeInMs"];
+  [dictionary setObject:v7 forKeyedSubscript:@"openTimeInMs"];
 
   has = self->_has;
   if ((has & 2) != 0)
@@ -161,9 +161,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -261,16 +261,16 @@ LABEL_9:
   return v8 ^ v4 ^ v9 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[36];
+  v6 = equalCopy[36];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -279,13 +279,13 @@ LABEL_9:
   if (*&has)
   {
     wiFiPhyMode = self->_wiFiPhyMode;
-    if (wiFiPhyMode != [v4 wiFiPhyMode])
+    if (wiFiPhyMode != [equalCopy wiFiPhyMode])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -297,14 +297,14 @@ LABEL_9:
   if (v8)
   {
     signalStrengthBars = self->_signalStrengthBars;
-    [v4 signalStrengthBars];
+    [equalCopy signalStrengthBars];
     if (signalStrengthBars != v10)
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v11 = (*&has >> 2) & 1;
@@ -316,11 +316,11 @@ LABEL_9:
   if (v11)
   {
     openTimeInMs = self->_openTimeInMs;
-    [v4 openTimeInMs];
+    [equalCopy openTimeInMs];
     if (openTimeInMs == v13)
     {
       has = self->_has;
-      v6 = v4[36];
+      v6 = equalCopy[36];
       goto LABEL_14;
     }
 
@@ -339,7 +339,7 @@ LABEL_14:
   if (v14)
   {
     connectedSubflowCount = self->_connectedSubflowCount;
-    if (connectedSubflowCount != [v4 connectedSubflowCount])
+    if (connectedSubflowCount != [equalCopy connectedSubflowCount])
     {
       goto LABEL_18;
     }
@@ -351,9 +351,9 @@ LABEL_19:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -400,9 +400,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasConnectedSubflowCount:(BOOL)a3
+- (void)setHasConnectedSubflowCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -415,9 +415,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasOpenTimeInMs:(BOOL)a3
+- (void)setHasOpenTimeInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -430,9 +430,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSignalStrengthBars:(BOOL)a3
+- (void)setHasSignalStrengthBars:(BOOL)bars
 {
-  if (a3)
+  if (bars)
   {
     v3 = 2;
   }

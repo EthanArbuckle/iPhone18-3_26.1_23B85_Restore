@@ -1,11 +1,11 @@
 @interface NSArray
-- (id)arrayOfObjectsContainingMatchingKey:(id)a3 matchingStrings:(id)a4;
-- (id)arrayRemovingMatchingStrings:(id)a3;
+- (id)arrayOfObjectsContainingMatchingKey:(id)key matchingStrings:(id)strings;
+- (id)arrayRemovingMatchingStrings:(id)strings;
 - (id)arrayRemovingNonStrings;
-- (id)arrayRemovingObjectsByKey:(id)a3 matchingStrings:(id)a4;
-- (id)presortedArrayOfObjectsContainingMatchingKey:(id)a3 matchingPresortedStrings:(id)a4;
-- (id)presortedArrayRemovingMatchingPresortedStrings:(id)a3;
-- (id)presortedArrayRemovingObjectsByKey:(id)a3 matchingPresortedStrings:(id)a4;
+- (id)arrayRemovingObjectsByKey:(id)key matchingStrings:(id)strings;
+- (id)presortedArrayOfObjectsContainingMatchingKey:(id)key matchingPresortedStrings:(id)strings;
+- (id)presortedArrayRemovingMatchingPresortedStrings:(id)strings;
+- (id)presortedArrayRemovingObjectsByKey:(id)key matchingPresortedStrings:(id)strings;
 @end
 
 @implementation NSArray
@@ -52,46 +52,46 @@
   return v3;
 }
 
-- (id)arrayOfObjectsContainingMatchingKey:(id)a3 matchingStrings:(id)a4
+- (id)arrayOfObjectsContainingMatchingKey:(id)key matchingStrings:(id)strings
 {
   v6 = [(NSArray *)self arrayOfDictionariesSortedByKey:?];
-  v7 = [a4 sortedArrayUsingSelector:"compare:"];
+  v7 = [strings sortedArrayUsingSelector:"compare:"];
 
-  return [v6 presortedArrayOfObjectsContainingMatchingKey:a3 matchingPresortedStrings:v7];
+  return [v6 presortedArrayOfObjectsContainingMatchingKey:key matchingPresortedStrings:v7];
 }
 
-- (id)arrayRemovingObjectsByKey:(id)a3 matchingStrings:(id)a4
+- (id)arrayRemovingObjectsByKey:(id)key matchingStrings:(id)strings
 {
   v6 = [(NSArray *)self arrayOfDictionariesSortedByKey:?];
-  v7 = [a4 sortedArrayUsingSelector:"compare:"];
+  v7 = [strings sortedArrayUsingSelector:"compare:"];
 
-  return [v6 presortedArrayRemovingObjectsByKey:a3 matchingPresortedStrings:v7];
+  return [v6 presortedArrayRemovingObjectsByKey:key matchingPresortedStrings:v7];
 }
 
-- (id)arrayRemovingMatchingStrings:(id)a3
+- (id)arrayRemovingMatchingStrings:(id)strings
 {
   v4 = [(NSArray *)self sortedArrayUsingSelector:"compare:"];
-  v5 = [a3 sortedArrayUsingSelector:"compare:"];
+  v5 = [strings sortedArrayUsingSelector:"compare:"];
 
   return [(NSArray *)v4 presortedArrayRemovingMatchingPresortedStrings:v5];
 }
 
-- (id)presortedArrayRemovingMatchingPresortedStrings:(id)a3
+- (id)presortedArrayRemovingMatchingPresortedStrings:(id)strings
 {
-  if (![a3 count] || !-[NSArray count](self, "count"))
+  if (![strings count] || !-[NSArray count](self, "count"))
   {
     return self;
   }
 
   v19 = a2;
-  v6 = [a3 count];
-  v7 = [a3 objectAtIndex:0];
+  v6 = [strings count];
+  v7 = [strings objectAtIndex:0];
   v20 = +[NSMutableArray array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = self;
+  selfCopy = self;
   v9 = [(NSArray *)self countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -105,7 +105,7 @@
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(selfCopy);
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
@@ -125,7 +125,7 @@
               goto LABEL_17;
             }
 
-            v7 = [a3 objectAtIndex:v12];
+            v7 = [strings objectAtIndex:v12];
           }
 
           if (v16 == &dword_0 + 1)
@@ -146,7 +146,7 @@ LABEL_17:
         }
       }
 
-      v10 = [(NSArray *)v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [(NSArray *)selfCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
@@ -158,24 +158,24 @@ LABEL_17:
   }
 
   v17 = [v20 count] + v11;
-  if (v17 != [(NSArray *)v8 count])
+  if (v17 != [(NSArray *)selfCopy count])
   {
-    -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:](+[NSAssertionHandler currentHandler](NSAssertionHandler, "currentHandler"), "handleFailureInMethod:object:file:lineNumber:description:", v19, v8, @"NSArray+IMAdditions.m", 163, @"Unexpected Counts: Unfiltered: %lu; Filter: %lu; Filtered: %lu; Filter Hit: %lu", -[NSArray count](v8, "count"), [a3 count], objc_msgSend(v20, "count"), v11);
+    -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:](+[NSAssertionHandler currentHandler](NSAssertionHandler, "currentHandler"), "handleFailureInMethod:object:file:lineNumber:description:", v19, selfCopy, @"NSArray+IMAdditions.m", 163, @"Unexpected Counts: Unfiltered: %lu; Filter: %lu; Filtered: %lu; Filter Hit: %lu", -[NSArray count](selfCopy, "count"), [strings count], objc_msgSend(v20, "count"), v11);
   }
 
   return v20;
 }
 
-- (id)presortedArrayOfObjectsContainingMatchingKey:(id)a3 matchingPresortedStrings:(id)a4
+- (id)presortedArrayOfObjectsContainingMatchingKey:(id)key matchingPresortedStrings:(id)strings
 {
-  if (![a4 count] || !-[NSArray count](self, "count") || !objc_msgSend(a3, "length"))
+  if (![strings count] || !-[NSArray count](self, "count") || !objc_msgSend(key, "length"))
   {
     return 0;
   }
 
   v23 = a2;
-  v7 = [a4 count];
-  v8 = [a4 objectAtIndex:0];
+  v7 = [strings count];
+  v8 = [strings objectAtIndex:0];
   v24 = +[NSMutableArray array];
   v27 = 0u;
   v28 = 0u;
@@ -201,7 +201,7 @@ LABEL_17:
         v15 = *(*(&v27 + 1) + 8 * i);
         v16 = objc_opt_class();
         v17 = BCDynamicCast(v16, v15);
-        v18 = [v17 objectForKey:a3];
+        v18 = [v17 objectForKey:key];
         if ([v18 length])
         {
           v19 = v8 == 0;
@@ -234,7 +234,7 @@ LABEL_19:
               goto LABEL_19;
             }
 
-            v8 = [a4 objectAtIndex:v11];
+            v8 = [strings objectAtIndex:v11];
           }
 
           if (v20)
@@ -261,22 +261,22 @@ LABEL_19:
   v21 = [v24 count] + v12;
   if (v21 != [(NSArray *)self count])
   {
-    -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:](+[NSAssertionHandler currentHandler](NSAssertionHandler, "currentHandler"), "handleFailureInMethod:object:file:lineNumber:description:", v23, self, @"NSArray+IMAdditions.m", 242, @"Unexpected Counts: Unfiltered: %lu; Filter: %lu; Filtered: %lu; Filter Hit: %lu", -[NSArray count](self, "count"), [a4 count], objc_msgSend(v24, "count"), v12);
+    -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:](+[NSAssertionHandler currentHandler](NSAssertionHandler, "currentHandler"), "handleFailureInMethod:object:file:lineNumber:description:", v23, self, @"NSArray+IMAdditions.m", 242, @"Unexpected Counts: Unfiltered: %lu; Filter: %lu; Filtered: %lu; Filter Hit: %lu", -[NSArray count](self, "count"), [strings count], objc_msgSend(v24, "count"), v12);
   }
 
   return v24;
 }
 
-- (id)presortedArrayRemovingObjectsByKey:(id)a3 matchingPresortedStrings:(id)a4
+- (id)presortedArrayRemovingObjectsByKey:(id)key matchingPresortedStrings:(id)strings
 {
-  if (![a4 count] || !-[NSArray count](self, "count") || !objc_msgSend(a3, "length"))
+  if (![strings count] || !-[NSArray count](self, "count") || !objc_msgSend(key, "length"))
   {
     return self;
   }
 
   v24 = a2;
-  v8 = [a4 count];
-  v9 = [a4 objectAtIndex:0];
+  v8 = [strings count];
+  v9 = [strings objectAtIndex:0];
   v27 = +[NSMutableArray array];
   v28 = 0u;
   v29 = 0u;
@@ -302,7 +302,7 @@ LABEL_19:
         v15 = *(*(&v28 + 1) + 8 * i);
         v16 = objc_opt_class();
         v17 = BCDynamicCast(v16, v15);
-        v18 = [v17 objectForKey:a3];
+        v18 = [v17 objectForKey:key];
         if ([v18 length])
         {
           v19 = v9 == 0;
@@ -335,7 +335,7 @@ LABEL_21:
               goto LABEL_21;
             }
 
-            v9 = [a4 objectAtIndex:v12];
+            v9 = [strings objectAtIndex:v12];
           }
 
           if (v20 == &dword_0 + 1)
@@ -368,7 +368,7 @@ LABEL_21:
   v22 = [v27 count] + v25;
   if (v22 != [(NSArray *)self count])
   {
-    -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:](+[NSAssertionHandler currentHandler](NSAssertionHandler, "currentHandler"), "handleFailureInMethod:object:file:lineNumber:description:", v24, self, @"NSArray+IMAdditions.m", 320, @"Unexpected Counts: Unfiltered: %lu; Filter: %lu; Filtered: %lu; Filter Hit: %lu", -[NSArray count](self, "count"), [a4 count], objc_msgSend(v27, "count"), v25);
+    -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:](+[NSAssertionHandler currentHandler](NSAssertionHandler, "currentHandler"), "handleFailureInMethod:object:file:lineNumber:description:", v24, self, @"NSArray+IMAdditions.m", 320, @"Unexpected Counts: Unfiltered: %lu; Filter: %lu; Filtered: %lu; Filter Hit: %lu", -[NSArray count](self, "count"), [strings count], objc_msgSend(v27, "count"), v25);
   }
 
   return v27;

@@ -4,15 +4,15 @@
 - (BOOL)decrementAccessCount;
 - (BOOL)incrementAccessCount;
 - (BOOL)isValid;
-- (_NUImageTile)initWithStorage:(id)a3;
-- (int64_t)copyFromTile:(id)a3 region:(id)a4;
-- (int64_t)readStorageInRegion:(id)a3 block:(id)a4;
-- (int64_t)writeStorageInRegion:(id)a3 block:(id)a4;
+- (_NUImageTile)initWithStorage:(id)storage;
+- (int64_t)copyFromTile:(id)tile region:(id)region;
+- (int64_t)readStorageInRegion:(id)region block:(id)block;
+- (int64_t)writeStorageInRegion:(id)region block:(id)block;
 - (unint64_t)accessCount;
-- (void)_visitRead:(id)a3;
+- (void)_visitRead:(id)read;
 - (void)dealloc;
 - (void)decrementAccessCountButLeaveAccessedIfLastUse;
-- (void)returnToStorageFactory:(id)a3;
+- (void)returnToStorageFactory:(id)factory;
 @end
 
 @implementation _NUImageTile
@@ -36,12 +36,12 @@
   return v3;
 }
 
-- (int64_t)copyFromTile:(id)a3 region:(id)a4
+- (int64_t)copyFromTile:(id)tile region:(id)region
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  tileCopy = tile;
+  regionCopy = region;
+  if (!tileCopy)
   {
     v13 = NUAssertLogger_31651();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -62,8 +62,8 @@
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v20;
         *&buf[12] = 2114;
@@ -74,8 +74,8 @@
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -94,11 +94,11 @@
   block[2] = __36___NUImageTile_copyFromTile_region___block_invoke;
   block[3] = &unk_1E810BA20;
   block[4] = self;
-  v30 = v6;
-  v31 = v7;
+  v30 = tileCopy;
+  v31 = regionCopy;
   v32 = buf;
-  v9 = v7;
-  v10 = v6;
+  v9 = regionCopy;
+  v10 = tileCopy;
   dispatch_barrier_sync(queue, block);
   v11 = *(*&buf[8] + 24);
 
@@ -106,16 +106,16 @@
   return v11;
 }
 
-- (int64_t)writeStorageInRegion:(id)a3 block:(id)a4
+- (int64_t)writeStorageInRegion:(id)region block:(id)block
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  regionCopy = region;
+  blockCopy = block;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  if (!v7)
+  if (!blockCopy)
   {
     v12 = NUAssertLogger_31651();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -134,8 +134,8 @@
       if (v16)
       {
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v34 = v19;
         v35 = 2114;
@@ -146,8 +146,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v34 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -161,10 +161,10 @@
   block[1] = 3221225472;
   block[2] = __43___NUImageTile_writeStorageInRegion_block___block_invoke;
   block[3] = &unk_1E810B9D0;
-  v27 = v7;
+  v27 = blockCopy;
   v28 = &v29;
   block[4] = self;
-  v9 = v7;
+  v9 = blockCopy;
   dispatch_barrier_sync(queue, block);
   v10 = v30[3];
 
@@ -172,16 +172,16 @@
   return v10;
 }
 
-- (int64_t)readStorageInRegion:(id)a3 block:(id)a4
+- (int64_t)readStorageInRegion:(id)region block:(id)block
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  regionCopy = region;
+  blockCopy = block;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  if (!v7)
+  if (!blockCopy)
   {
     v12 = NUAssertLogger_31651();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -200,8 +200,8 @@
       if (v16)
       {
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v34 = v19;
         v35 = 2114;
@@ -212,8 +212,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v34 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -227,10 +227,10 @@
   block[1] = 3221225472;
   block[2] = __42___NUImageTile_readStorageInRegion_block___block_invoke;
   block[3] = &unk_1E810B9D0;
-  v27 = v7;
+  v27 = blockCopy;
   v28 = &v29;
   block[4] = self;
-  v9 = v7;
+  v9 = blockCopy;
   dispatch_sync(queue, block);
   v10 = v30[3];
 
@@ -238,17 +238,17 @@
   return v10;
 }
 
-- (void)_visitRead:(id)a3
+- (void)_visitRead:(id)read
 {
-  v4 = a3;
+  readCopy = read;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __27___NUImageTile__visitRead___block_invoke;
   v7[3] = &unk_1E810BA70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = readCopy;
+  v6 = readCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -344,11 +344,11 @@
   return v3;
 }
 
-- (void)returnToStorageFactory:(id)a3
+- (void)returnToStorageFactory:(id)factory
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  factoryCopy = factory;
+  if (!factoryCopy)
   {
     v7 = NUAssertLogger_31651();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -369,8 +369,8 @@
         v14 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v14;
         v28 = 2114;
@@ -381,8 +381,8 @@
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -396,9 +396,9 @@
   block[1] = 3221225472;
   block[2] = __39___NUImageTile_returnToStorageFactory___block_invoke;
   block[3] = &unk_1E810B958;
-  v24 = v4;
-  v25 = self;
-  v6 = v4;
+  v24 = factoryCopy;
+  selfCopy = self;
+  v6 = factoryCopy;
   dispatch_sync(queue, block);
 }
 
@@ -418,9 +418,9 @@
       v4 = MEMORY[0x1E696AEC0];
       accessCount = self->_accessCount;
       v6 = v3;
-      v7 = [v4 stringWithFormat:@"bad access count: %lu", accessCount];
+      accessCount = [v4 stringWithFormat:@"bad access count: %lu", accessCount];
       *buf = 138543362;
-      v27 = v7;
+      v27 = accessCount;
       _os_log_impl(&dword_1C0184000, v6, OS_LOG_TYPE_DEFAULT, "Continue: %{public}@", buf, 0xCu);
 
       v8 = _NULogOnceToken;
@@ -450,8 +450,8 @@ LABEL_9:
         v15 = MEMORY[0x1E696AF00];
         v16 = specific;
         v17 = v9;
-        v18 = [v15 callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v19 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = specific;
         v28 = 2114;
@@ -469,8 +469,8 @@ LABEL_15:
     {
       v21 = MEMORY[0x1E696AF00];
       v22 = v20;
-      v23 = [v21 callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v21 callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v24;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -485,11 +485,11 @@ LABEL_16:
   [(_NUImageTile *)&v25 dealloc];
 }
 
-- (_NUImageTile)initWithStorage:(id)a3
+- (_NUImageTile)initWithStorage:(id)storage
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  storageCopy = storage;
+  if (!storageCopy)
   {
     v12 = NUAssertLogger_31651();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -510,8 +510,8 @@ LABEL_16:
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v19;
         v31 = 2114;
@@ -522,8 +522,8 @@ LABEL_16:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -532,7 +532,7 @@ LABEL_16:
     _NUAssertFailHandler("[_NUImageTile initWithStorage:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageTile.m", 25, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "storage != nil");
   }
 
-  v6 = v5;
+  v6 = storageCopy;
   v28.receiver = self;
   v28.super_class = _NUImageTile;
   v7 = [(_NUImageTile *)&v28 init];
@@ -543,7 +543,7 @@ LABEL_16:
     queue = v7->_queue;
     v7->_queue = v9;
 
-    objc_storeStrong(&v7->_storage, a3);
+    objc_storeStrong(&v7->_storage, storage);
     v7->_accessCount = 1;
     v7->_wasPurged = 0;
   }

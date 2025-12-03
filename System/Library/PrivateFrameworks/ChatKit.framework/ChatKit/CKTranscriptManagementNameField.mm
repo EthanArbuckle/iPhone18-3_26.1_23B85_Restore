@@ -1,14 +1,14 @@
 @interface CKTranscriptManagementNameField
-- (CKTranscriptManagementNameField)initWithFrame:(CGRect)a3;
+- (CKTranscriptManagementNameField)initWithFrame:(CGRect)frame;
 - (CKTranscriptManagementNameFieldDelegate)delegate;
 - (NSString)groupName;
 - (void)commitGroupName;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setGroupName:(id)a3;
-- (void)setIsOverlay:(BOOL)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setGroupName:(id)name;
+- (void)setIsOverlay:(BOOL)overlay;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation CKTranscriptManagementNameField
@@ -21,11 +21,11 @@
   [(CKTranscriptManagementNameField *)&v3 dealloc];
 }
 
-- (CKTranscriptManagementNameField)initWithFrame:(CGRect)a3
+- (CKTranscriptManagementNameField)initWithFrame:(CGRect)frame
 {
   v35.receiver = self;
   v35.super_class = CKTranscriptManagementNameField;
-  v3 = [(CKTranscriptManagementNameField *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptManagementNameField *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -40,14 +40,14 @@
     v10 = *(MEMORY[0x1E695F058] + 24);
     v11 = [v6 initWithFrame:{*MEMORY[0x1E695F058], v8, v9, v10}];
     v12 = +[CKUIBehavior sharedBehaviors];
-    v13 = [v12 nameFieldFont];
-    [v11 setFont:v13];
+    nameFieldFont = [v12 nameFieldFont];
+    [v11 setFont:nameFieldFont];
 
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [v11 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v11 setBackgroundColor:clearColor];
 
-    v15 = [MEMORY[0x1E69DC888] darkGrayColor];
-    [v11 setTextColor:v15];
+    darkGrayColor = [MEMORY[0x1E69DC888] darkGrayColor];
+    [v11 setTextColor:darkGrayColor];
 
     v16 = CKFrameworkBundle();
     v17 = [v16 localizedStringForKey:@"GROUP_NAME_LABEL" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -57,11 +57,11 @@
     [(CKTranscriptManagementNameField *)v4 setFieldLabel:v11];
     v18 = [objc_alloc(MEMORY[0x1E69DD0B0]) initWithFrame:{v7, v8, v9, v10}];
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 nameFieldFont];
-    [v18 setFont:v20];
+    nameFieldFont2 = [v19 nameFieldFont];
+    [v18 setFont:nameFieldFont2];
 
-    v21 = [MEMORY[0x1E69DC888] clearColor];
-    [v18 setBackgroundColor:v21];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [v18 setBackgroundColor:clearColor2];
 
     v22 = CKFrameworkBundle();
     v23 = [v22 localizedStringForKey:@"GROUP_NAME_PLACEHOLDER" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -74,23 +74,23 @@
     [(CKTranscriptManagementNameField *)v4 setTextField:v18];
     v24 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v7, v8, v9, v10}];
     v25 = +[CKUIBehavior sharedBehaviors];
-    v26 = [v25 theme];
-    v27 = [v26 recipientsDividerColor];
-    [v24 setBackgroundColor:v27];
+    theme = [v25 theme];
+    recipientsDividerColor = [theme recipientsDividerColor];
+    [v24 setBackgroundColor:recipientsDividerColor];
 
     [(CKTranscriptManagementNameField *)v4 setTopSeparator:v24];
-    v28 = [(CKTranscriptManagementNameField *)v4 topSeparator];
-    [(CKTranscriptManagementNameField *)v4 addSubview:v28];
+    topSeparator = [(CKTranscriptManagementNameField *)v4 topSeparator];
+    [(CKTranscriptManagementNameField *)v4 addSubview:topSeparator];
 
     v29 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v7, v8, v9, v10}];
     v30 = +[CKUIBehavior sharedBehaviors];
-    v31 = [v30 theme];
-    v32 = [v31 recipientsDividerColor];
-    [v29 setBackgroundColor:v32];
+    theme2 = [v30 theme];
+    recipientsDividerColor2 = [theme2 recipientsDividerColor];
+    [v29 setBackgroundColor:recipientsDividerColor2];
 
     [(CKTranscriptManagementNameField *)v4 setBottomSeparator:v29];
-    v33 = [(CKTranscriptManagementNameField *)v4 bottomSeparator];
-    [(CKTranscriptManagementNameField *)v4 addSubview:v33];
+    bottomSeparator = [(CKTranscriptManagementNameField *)v4 bottomSeparator];
+    [(CKTranscriptManagementNameField *)v4 addSubview:bottomSeparator];
 
     [(CKTranscriptManagementNameField *)v4 setBackgroundColor:0];
   }
@@ -108,15 +108,15 @@
   v5 = v4;
   v6 = MEMORY[0x1E695F058];
   v7 = *MEMORY[0x1E695F058];
-  v8 = [(CKTranscriptManagementNameField *)self fieldLabel];
+  fieldLabel = [(CKTranscriptManagementNameField *)self fieldLabel];
   [(CKTranscriptManagementNameField *)self bounds];
-  [v8 sizeThatFits:{v9, 1.79769313e308}];
+  [fieldLabel sizeThatFits:{v9, 1.79769313e308}];
   v11 = v10;
 
-  v12 = [MEMORY[0x1E69DC668] sharedApplication];
-  v13 = [v12 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v13)
+  if (userInterfaceLayoutDirection)
   {
     v14 = *(v6 + 8);
     [(CKTranscriptManagementNameField *)self bounds];
@@ -135,10 +135,10 @@
 
   [(CKTranscriptManagementNameField *)self bounds];
   v18 = v17 + -44.0 + -1.0;
-  v19 = [(CKTranscriptManagementNameField *)self fieldLabel];
-  [v19 setFrame:{v16, v18, v11, 44.0}];
+  fieldLabel2 = [(CKTranscriptManagementNameField *)self fieldLabel];
+  [fieldLabel2 setFrame:{v16, v18, v11, 44.0}];
 
-  if (v13)
+  if (userInterfaceLayoutDirection)
   {
     [(CKTranscriptManagementNameField *)self bounds];
     v21 = v20;
@@ -167,8 +167,8 @@
     v26 = v28 - v22 - v5;
   }
 
-  v29 = [(CKTranscriptManagementNameField *)self textField];
-  [v29 setFrame:{v22, v21 + -44.0, v26, 44.0}];
+  textField = [(CKTranscriptManagementNameField *)self textField];
+  [textField setFrame:{v22, v21 + -44.0, v26, 44.0}];
 
   [(CKTranscriptManagementNameField *)self bounds];
   v31 = v30;
@@ -182,100 +182,100 @@
   [v37 defaultSeparatorHeight];
   v39 = v36 - v38;
 
-  v40 = [(CKTranscriptManagementNameField *)self bottomSeparator];
-  [v40 setFrame:{v7, v39, v31, v34}];
+  bottomSeparator = [(CKTranscriptManagementNameField *)self bottomSeparator];
+  [bottomSeparator setFrame:{v7, v39, v31, v34}];
 
-  v41 = [(CKTranscriptManagementNameField *)self topSeparator];
-  [v41 setFrame:{v7, 0.0, v31, v34}];
+  topSeparator = [(CKTranscriptManagementNameField *)self topSeparator];
+  [topSeparator setFrame:{v7, 0.0, v31, v34}];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v6 = [(CKTranscriptManagementNameField *)self delegate];
-  v5 = [v4 text];
+  editingCopy = editing;
+  delegate = [(CKTranscriptManagementNameField *)self delegate];
+  text = [editingCopy text];
 
-  [v6 nameField:self didCommitGroupName:v5];
+  [delegate nameField:self didCommitGroupName:text];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v4 = a3;
-    self->_enabled = a3;
+    enabledCopy = enabled;
+    self->_enabled = enabled;
     [(CKTranscriptManagementNameField *)self setUserInteractionEnabled:?];
-    v6 = [(CKTranscriptManagementNameField *)self textField];
-    [v6 setUserInteractionEnabled:v4];
+    textField = [(CKTranscriptManagementNameField *)self textField];
+    [textField setUserInteractionEnabled:enabledCopy];
 
-    LODWORD(v6) = [(CKTranscriptManagementNameField *)self isEnabled];
-    v7 = [(CKTranscriptManagementNameField *)self fieldLabel];
-    if (v6)
+    LODWORD(textField) = [(CKTranscriptManagementNameField *)self isEnabled];
+    fieldLabel = [(CKTranscriptManagementNameField *)self fieldLabel];
+    if (textField)
     {
-      v8 = [MEMORY[0x1E69DC888] darkGrayColor];
-      [v7 setTextColor:v8];
+      darkGrayColor = [MEMORY[0x1E69DC888] darkGrayColor];
+      [fieldLabel setTextColor:darkGrayColor];
 
-      v11 = [(CKTranscriptManagementNameField *)self textField];
+      textField2 = [(CKTranscriptManagementNameField *)self textField];
       [MEMORY[0x1E69DC888] blackColor];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69DC888] lightGrayColor];
-      [v7 setTextColor:v9];
+      lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+      [fieldLabel setTextColor:lightGrayColor];
 
-      v11 = [(CKTranscriptManagementNameField *)self textField];
+      textField2 = [(CKTranscriptManagementNameField *)self textField];
       [MEMORY[0x1E69DC888] lightGrayColor];
     }
     v10 = ;
-    [v11 setTextColor:v10];
+    [textField2 setTextColor:v10];
   }
 }
 
-- (void)setIsOverlay:(BOOL)a3
+- (void)setIsOverlay:(BOOL)overlay
 {
-  v3 = a3;
-  self->_isOverlay = a3;
-  if (a3)
+  overlayCopy = overlay;
+  self->_isOverlay = overlay;
+  if (overlay)
   {
     [(CKTranscriptManagementNameField *)self setBackgroundColor:0];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    [(CKTranscriptManagementNameField *)self setBackgroundColor:v5];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(CKTranscriptManagementNameField *)self setBackgroundColor:whiteColor];
   }
 
-  v6 = [(CKTranscriptManagementNameField *)self backdropView];
-  [v6 setHidden:v3 ^ 1];
+  backdropView = [(CKTranscriptManagementNameField *)self backdropView];
+  [backdropView setHidden:overlayCopy ^ 1];
 
-  v7 = [(CKTranscriptManagementNameField *)self bottomSeparator];
-  [v7 setHidden:v3 ^ 1];
+  bottomSeparator = [(CKTranscriptManagementNameField *)self bottomSeparator];
+  [bottomSeparator setHidden:overlayCopy ^ 1];
 
-  v8 = [(CKTranscriptManagementNameField *)self topSeparator];
-  [v8 setHidden:v3];
+  topSeparator = [(CKTranscriptManagementNameField *)self topSeparator];
+  [topSeparator setHidden:overlayCopy];
 }
 
 - (NSString)groupName
 {
-  v2 = [(CKTranscriptManagementNameField *)self textField];
-  v3 = [v2 text];
+  textField = [(CKTranscriptManagementNameField *)self textField];
+  text = [textField text];
 
-  return v3;
+  return text;
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
-  v4 = a3;
-  v5 = [(CKTranscriptManagementNameField *)self textField];
-  [v5 setText:v4];
+  nameCopy = name;
+  textField = [(CKTranscriptManagementNameField *)self textField];
+  [textField setText:nameCopy];
 }
 
 - (void)commitGroupName
 {
-  v2 = [(CKTranscriptManagementNameField *)self textField];
-  [v2 resignFirstResponder];
+  textField = [(CKTranscriptManagementNameField *)self textField];
+  [textField resignFirstResponder];
 }
 
 - (CKTranscriptManagementNameFieldDelegate)delegate

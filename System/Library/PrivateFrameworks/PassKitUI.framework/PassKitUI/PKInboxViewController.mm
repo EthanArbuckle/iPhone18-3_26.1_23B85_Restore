@@ -1,49 +1,49 @@
 @interface PKInboxViewController
-- (PKInboxViewController)initWithInboxDataSource:(id)a3 contactAvatarManager:(id)a4 context:(int64_t)a5;
-- (id)_configurationForInboxMessage:(id)a3;
-- (void)_checkManateeCapabilityForFeatureApplication:(id)a3 completion:(id)a4;
-- (void)_presentAccountUserInvitation:(id)a3;
-- (void)_presentExpiredAlertForInboxMessage:(id)a3;
-- (void)_presentInboxMessage:(id)a3;
-- (void)_presentManateeUpgradeForFeatureApplication:(id)a3 completion:(id)a4;
-- (void)_showSpinner:(BOOL)a3;
-- (void)_updateDiffableDataSourceAnimated:(BOOL)a3;
-- (void)_updateImage:(id)a3 onCellAtIndexPath:(id)a4;
-- (void)presentInboxMessageWithIdentifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewControllerDidCancelSetupFlow:(id)a3;
-- (void)viewControllerDidTerminateSetupFlow:(id)a3;
+- (PKInboxViewController)initWithInboxDataSource:(id)source contactAvatarManager:(id)manager context:(int64_t)context;
+- (id)_configurationForInboxMessage:(id)message;
+- (void)_checkManateeCapabilityForFeatureApplication:(id)application completion:(id)completion;
+- (void)_presentAccountUserInvitation:(id)invitation;
+- (void)_presentExpiredAlertForInboxMessage:(id)message;
+- (void)_presentInboxMessage:(id)message;
+- (void)_presentManateeUpgradeForFeatureApplication:(id)application completion:(id)completion;
+- (void)_showSpinner:(BOOL)spinner;
+- (void)_updateDiffableDataSourceAnimated:(BOOL)animated;
+- (void)_updateImage:(id)image onCellAtIndexPath:(id)path;
+- (void)presentInboxMessageWithIdentifier:(id)identifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewControllerDidCancelSetupFlow:(id)flow;
+- (void)viewControllerDidTerminateSetupFlow:(id)flow;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKInboxViewController
 
-- (PKInboxViewController)initWithInboxDataSource:(id)a3 contactAvatarManager:(id)a4 context:(int64_t)a5
+- (PKInboxViewController)initWithInboxDataSource:(id)source contactAvatarManager:(id)manager context:(int64_t)context
 {
-  v9 = a3;
-  v10 = a4;
+  sourceCopy = source;
+  managerCopy = manager;
   v16.receiver = self;
   v16.super_class = PKInboxViewController;
   v11 = [(PKInboxViewController *)&v16 initWithStyle:2];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_dataSource, a3);
-    objc_storeStrong(&v12->_avatarManager, a4);
-    v12->_context = a5;
-    v13 = [(PKInboxViewController *)v12 navigationItem];
+    objc_storeStrong(&v11->_dataSource, source);
+    objc_storeStrong(&v12->_avatarManager, manager);
+    v12->_context = context;
+    navigationItem = [(PKInboxViewController *)v12 navigationItem];
     v14 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:v12 action:sel__doneButtonTapped_];
     [v14 setAccessibilityIdentifier:*MEMORY[0x1E69B9708]];
-    [v13 setLeftBarButtonItem:v14];
+    [navigationItem setLeftBarButtonItem:v14];
   }
 
   return v12;
 }
 
-- (void)presentInboxMessageWithIdentifier:(id)a3
+- (void)presentInboxMessageWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(PKInboxDataSource *)self->_dataSource inboxMessageWithIdentifier:?];
     if (v4)
@@ -60,26 +60,26 @@
   v13.receiver = self;
   v13.super_class = PKInboxViewController;
   [(PKInboxViewController *)&v13 viewDidLoad];
-  v3 = [(PKInboxViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"InboxMessageCellReuseIdentifier"];
+  tableView = [(PKInboxViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"InboxMessageCellReuseIdentifier"];
   v4 = [PKTableHeaderView alloc];
   v5 = [(PKTableHeaderView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   headerView = self->_headerView;
   self->_headerView = v5;
 
-  v7 = [(PKTableHeaderView *)self->_headerView titleLabel];
+  titleLabel = [(PKTableHeaderView *)self->_headerView titleLabel];
   v8 = PKLocalizedFeatureString();
-  [v7 setText:v8];
+  [titleLabel setText:v8];
 
   [(PKTableHeaderView *)self->_headerView setStyle:3];
-  [v3 setTableHeaderView:self->_headerView];
+  [tableView setTableHeaderView:self->_headerView];
   v9 = [PKTableViewDiffableDataSource alloc];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __36__PKInboxViewController_viewDidLoad__block_invoke;
   v12[3] = &unk_1E80182B8;
   v12[4] = self;
-  v10 = [(UITableViewDiffableDataSource *)v9 initWithTableView:v3 cellProvider:v12];
+  v10 = [(UITableViewDiffableDataSource *)v9 initWithTableView:tableView cellProvider:v12];
   diffableDataSource = self->_diffableDataSource;
   self->_diffableDataSource = v10;
 
@@ -118,8 +118,8 @@ id __36__PKInboxViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2, 
   v10.super_class = PKInboxViewController;
   [(PKInboxViewController *)&v10 viewWillLayoutSubviews];
   headerView = self->_headerView;
-  v4 = [(PKInboxViewController *)self view];
-  [v4 bounds];
+  view = [(PKInboxViewController *)self view];
+  [view bounds];
   [(PKTableHeaderView *)headerView sizeThatFits:CGRectGetWidth(v11), 1.79769313e308];
   v6 = v5;
   v8 = v7;
@@ -128,56 +128,56 @@ id __36__PKInboxViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2, 
   {
     self->_previousHeaderHeight = v8;
     [(PKTableHeaderView *)self->_headerView setFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v6, v8];
-    v9 = [(PKInboxViewController *)self tableView];
-    [v9 _tableHeaderHeightDidChangeToHeight:v8];
+    tableView = [(PKInboxViewController *)self tableView];
+    [tableView _tableHeaderHeightDidChangeToHeight:v8];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   diffableDataSource = self->_diffableDataSource;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(UITableViewDiffableDataSource *)diffableDataSource itemIdentifierForIndexPath:v7];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = [(UITableViewDiffableDataSource *)diffableDataSource itemIdentifierForIndexPath:pathCopy];
   [(PKInboxViewController *)self _presentInboxMessage:v9];
-  [v8 deselectRowAtIndexPath:v7 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)viewControllerDidTerminateSetupFlow:(id)a3
+- (void)viewControllerDidTerminateSetupFlow:(id)flow
 {
-  v3 = [a3 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [flow presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)viewControllerDidCancelSetupFlow:(id)a3
+- (void)viewControllerDidCancelSetupFlow:(id)flow
 {
-  v3 = [a3 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [flow presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_presentInboxMessage:(id)a3
+- (void)_presentInboxMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy)
   {
-    v8 = v4;
-    if ([v4 isExpired])
+    v8 = messageCopy;
+    if ([messageCopy isExpired])
     {
       [(PKInboxViewController *)self _presentExpiredAlertForInboxMessage:v8];
     }
 
     else
     {
-      v6 = [v8 type];
+      type = [v8 type];
       v5 = v8;
-      if (v6)
+      if (type)
       {
         goto LABEL_7;
       }
 
-      v7 = [v8 accountUserInvitation];
-      [(PKInboxViewController *)self _presentAccountUserInvitation:v7];
+      accountUserInvitation = [v8 accountUserInvitation];
+      [(PKInboxViewController *)self _presentAccountUserInvitation:accountUserInvitation];
     }
 
     v5 = v8;
@@ -186,13 +186,13 @@ id __36__PKInboxViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2, 
 LABEL_7:
 }
 
-- (void)_presentExpiredAlertForInboxMessage:(id)a3
+- (void)_presentExpiredAlertForInboxMessage:(id)message
 {
-  v4 = a3;
-  if (v4)
+  messageCopy = message;
+  if (messageCopy)
   {
-    v18 = v4;
-    if ([v4 type])
+    v18 = messageCopy;
+    if ([messageCopy type])
     {
       v5 = 0;
       v6 = 0;
@@ -200,21 +200,21 @@ LABEL_7:
 
     else
     {
-      v7 = [v18 accountUserInvitation];
-      v8 = [v7 invitationDetails];
+      accountUserInvitation = [v18 accountUserInvitation];
+      invitationDetails = [accountUserInvitation invitationDetails];
 
       v9 = MEMORY[0x1E69B8740];
-      v10 = [v18 familyMember];
-      v11 = [v8 originatorNameComponents];
-      v12 = [v9 contactForFamilyMember:v10 nameComponents:v11 imageData:0];
+      familyMember = [v18 familyMember];
+      originatorNameComponents = [invitationDetails originatorNameComponents];
+      v12 = [v9 contactForFamilyMember:familyMember nameComponents:originatorNameComponents imageData:0];
 
       v5 = PKLocalizedFeatureString();
-      v17 = [v12 pkFullName];
+      pkFullName = [v12 pkFullName];
       v6 = PKLocalizedFeatureString();
 
       if (v5 && v6)
       {
-        v13 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v5 message:v6 preferredStyle:{1, v17}];
+        v13 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v5 message:v6 preferredStyle:{1, pkFullName}];
         v14 = MEMORY[0x1E69DC648];
         v15 = PKLocalizedFeatureString();
         v16 = [v14 actionWithTitle:v15 style:0 handler:0];
@@ -224,44 +224,44 @@ LABEL_7:
       }
     }
 
-    v4 = v18;
+    messageCopy = v18;
   }
 }
 
-- (id)_configurationForInboxMessage:(id)a3
+- (id)_configurationForInboxMessage:(id)message
 {
-  v3 = a3;
-  if ([v3 type])
+  messageCopy = message;
+  if ([messageCopy type])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [PKInboxMessageContentConfiguration configurationWithInboxMessage:v3];
+    v4 = [PKInboxMessageContentConfiguration configurationWithInboxMessage:messageCopy];
   }
 
   return v4;
 }
 
-- (void)_updateDiffableDataSourceAnimated:(BOOL)a3
+- (void)_updateDiffableDataSourceAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v14[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E69955A0]);
-  v6 = [(PKInboxDataSource *)self->_dataSource activeInboxMessages];
-  if ([v6 count])
+  activeInboxMessages = [(PKInboxDataSource *)self->_dataSource activeInboxMessages];
+  if ([activeInboxMessages count])
   {
     v7 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"ActiveInboxMessageSectionIdentifier"];
     v14[0] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
     [v5 appendSectionsWithIdentifiers:v8];
 
-    [v5 appendItemsWithIdentifiers:v6 intoSectionWithIdentifier:v7];
+    [v5 appendItemsWithIdentifiers:activeInboxMessages intoSectionWithIdentifier:v7];
   }
 
-  v9 = [(PKInboxDataSource *)self->_dataSource expiredInboxMessages];
-  if ([v9 count])
+  expiredInboxMessages = [(PKInboxDataSource *)self->_dataSource expiredInboxMessages];
+  if ([expiredInboxMessages count])
   {
     v10 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"ExpiredInboxMessageSectionIdentifier"];
     v11 = PKLocalizedFeatureString();
@@ -271,55 +271,55 @@ LABEL_7:
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
     [v5 appendSectionsWithIdentifiers:v12];
 
-    [v5 appendItemsWithIdentifiers:v9 intoSectionWithIdentifier:v10];
+    [v5 appendItemsWithIdentifiers:expiredInboxMessages intoSectionWithIdentifier:v10];
   }
 
-  [(UITableViewDiffableDataSource *)self->_diffableDataSource applySnapshot:v5 animatingDifferences:v3];
+  [(UITableViewDiffableDataSource *)self->_diffableDataSource applySnapshot:v5 animatingDifferences:animatedCopy];
 }
 
-- (void)_updateImage:(id)a3 onCellAtIndexPath:(id)a4
+- (void)_updateImage:(id)image onCellAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(PKInboxViewController *)self tableView];
-  v8 = [v7 cellForRowAtIndexPath:v6];
+  imageCopy = image;
+  pathCopy = path;
+  tableView = [(PKInboxViewController *)self tableView];
+  v8 = [tableView cellForRowAtIndexPath:pathCopy];
 
   if (v8)
   {
-    v9 = [v8 contentConfiguration];
-    [v9 setImage:v10];
-    [v8 setContentConfiguration:v9];
+    contentConfiguration = [v8 contentConfiguration];
+    [contentConfiguration setImage:imageCopy];
+    [v8 setContentConfiguration:contentConfiguration];
   }
 }
 
-- (void)_showSpinner:(BOOL)a3
+- (void)_showSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  self->_disableSelection = a3;
-  v4 = [(PKTableHeaderView *)self->_headerView activityIndicator];
-  v5 = v4;
-  if (v3)
+  spinnerCopy = spinner;
+  self->_disableSelection = spinner;
+  activityIndicator = [(PKTableHeaderView *)self->_headerView activityIndicator];
+  v5 = activityIndicator;
+  if (spinnerCopy)
   {
-    [v4 startAnimating];
+    [activityIndicator startAnimating];
   }
 
   else
   {
-    [v4 stopAnimating];
+    [activityIndicator stopAnimating];
   }
 }
 
-- (void)_presentAccountUserInvitation:(id)a3
+- (void)_presentAccountUserInvitation:(id)invitation
 {
-  v4 = a3;
+  invitationCopy = invitation;
   [(PKInboxViewController *)self _showSpinner:1];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__PKInboxViewController__presentAccountUserInvitation___block_invoke;
   aBlock[3] = &unk_1E8010A10;
-  v5 = v4;
+  v5 = invitationCopy;
   v13 = v5;
-  v14 = self;
+  selfCopy = self;
   v6 = _Block_copy(aBlock);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -487,16 +487,16 @@ void __55__PKInboxViewController__presentAccountUserInvitation___block_invoke_7(
 LABEL_6:
 }
 
-- (void)_checkManateeCapabilityForFeatureApplication:(id)a3 completion:(id)a4
+- (void)_checkManateeCapabilityForFeatureApplication:(id)application completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = a3;
+    applicationCopy = application;
     v8 = [PKSecurityCapabilitiesController alloc];
-    v9 = [v7 feature];
+    feature = [applicationCopy feature];
 
-    v10 = [(PKSecurityCapabilitiesController *)v8 initWithRequirements:8 feature:v9 context:self->_context];
+    v10 = [(PKSecurityCapabilitiesController *)v8 initWithRequirements:8 feature:feature context:self->_context];
     securityCapabilitiesController = self->_securityCapabilitiesController;
     self->_securityCapabilitiesController = v10;
 
@@ -505,7 +505,7 @@ LABEL_6:
     v13[1] = 3221225472;
     v13[2] = __81__PKInboxViewController__checkManateeCapabilityForFeatureApplication_completion___block_invoke;
     v13[3] = &unk_1E8018328;
-    v14 = v6;
+    v14 = completionCopy;
     [(PKSecurityCapabilitiesController *)v12 isEnabledForSecuirtyRequirementsWithCompletion:v13];
   }
 }
@@ -521,23 +521,23 @@ void __81__PKInboxViewController__checkManateeCapabilityForFeatureApplication_co
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
-- (void)_presentManateeUpgradeForFeatureApplication:(id)a3 completion:(id)a4
+- (void)_presentManateeUpgradeForFeatureApplication:(id)application completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v7)
+  if (completionCopy)
   {
-    v8 = -[PKSecurityCapabilitiesController initWithRequirements:feature:context:]([PKSecurityCapabilitiesController alloc], "initWithRequirements:feature:context:", 8, [v6 feature], self->_context);
+    v8 = -[PKSecurityCapabilitiesController initWithRequirements:feature:context:]([PKSecurityCapabilitiesController alloc], "initWithRequirements:feature:context:", 8, [applicationCopy feature], self->_context);
     securityCapabilitiesController = self->_securityCapabilitiesController;
     self->_securityCapabilitiesController = v8;
 
-    v10 = [(PKInboxViewController *)self navigationController];
-    v11 = v10;
+    navigationController = [(PKInboxViewController *)self navigationController];
+    lastObject = navigationController;
     if (PKPaymentSetupContextIsBridge())
     {
-      v12 = [v10 viewControllers];
-      v11 = [v12 lastObject];
+      viewControllers = [navigationController viewControllers];
+      lastObject = [viewControllers lastObject];
     }
 
     v13 = PKLogFacilityTypeGetObject();
@@ -553,9 +553,9 @@ void __81__PKInboxViewController__checkManateeCapabilityForFeatureApplication_co
     v15[2] = __80__PKInboxViewController__presentManateeUpgradeForFeatureApplication_completion___block_invoke;
     v15[3] = &unk_1E8018378;
     v15[4] = self;
-    v16 = v6;
-    v17 = v7;
-    [(PKSecurityCapabilitiesController *)v14 presentSecurityRepairFlowWithPresentingViewController:v11 completion:v15];
+    v16 = applicationCopy;
+    v17 = completionCopy;
+    [(PKSecurityCapabilitiesController *)v14 presentSecurityRepairFlowWithPresentingViewController:lastObject completion:v15];
   }
 }
 

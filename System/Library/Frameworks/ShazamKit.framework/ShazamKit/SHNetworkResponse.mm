@@ -1,23 +1,23 @@
 @interface SHNetworkResponse
-- (SHNetworkResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5;
+- (SHNetworkResponse)initWithData:(id)data urlResponse:(id)response error:(id)error;
 @end
 
 @implementation SHNetworkResponse
 
-- (SHNetworkResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5
+- (SHNetworkResponse)initWithData:(id)data urlResponse:(id)response error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  responseCopy = response;
+  errorCopy = error;
   v15.receiver = self;
   v15.super_class = SHNetworkResponse;
   v12 = [(SHNetworkResponse *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_data, a3);
-    objc_storeStrong(&v13->_urlResponse, a4);
-    objc_storeStrong(&v13->_error, a5);
+    objc_storeStrong(&v12->_data, data);
+    objc_storeStrong(&v13->_urlResponse, response);
+    objc_storeStrong(&v13->_error, error);
   }
 
   return v13;

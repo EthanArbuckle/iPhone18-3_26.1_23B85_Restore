@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery_$1_$1
 - (BOOL)matches;
-- (OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery_$1_$1)initWithOrgApacheLuceneUtilBits:(id)a3 withOrgApacheLuceneSearchDocIdSetIterator:(id)a4;
+- (OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery_$1_$1)initWithOrgApacheLuceneUtilBits:(id)bits withOrgApacheLuceneSearchDocIdSetIterator:(id)iterator;
 - (void)dealloc;
 @end
 
@@ -17,10 +17,10 @@
   return [(OrgApacheLuceneUtilBits *)v5 getWithInt:v4];
 }
 
-- (OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery_$1_$1)initWithOrgApacheLuceneUtilBits:(id)a3 withOrgApacheLuceneSearchDocIdSetIterator:(id)a4
+- (OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery_$1_$1)initWithOrgApacheLuceneUtilBits:(id)bits withOrgApacheLuceneSearchDocIdSetIterator:(id)iterator
 {
-  JreStrongAssign(&self->val$bits_, a3);
-  OrgApacheLuceneSearchTwoPhaseIterator_initWithOrgApacheLuceneSearchDocIdSetIterator_(self, a4);
+  JreStrongAssign(&self->val$bits_, bits);
+  OrgApacheLuceneSearchTwoPhaseIterator_initWithOrgApacheLuceneSearchDocIdSetIterator_(self, iterator);
   return self;
 }
 

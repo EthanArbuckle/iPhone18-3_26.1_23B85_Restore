@@ -1,19 +1,19 @@
 @interface PUPickerOnboardingHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 @end
 
 @implementation PUPickerOnboardingHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUPickerOnboardingHeaderView" hasSwiftFieldOfAnyClass:@"icon"];
-  [v3 validateClass:@"PUPickerOnboardingHeaderView" hasSwiftFieldOfAnyClass:@"title"];
-  [v3 validateClass:@"PUPickerOnboardingHeaderView" hasSwiftFieldOfAnyClass:@"subtitle"];
-  [v3 validateClass:@"PUPickerOnboardingHeaderView" hasSwiftFieldOfAnyClass:@"closeButton"];
-  [v3 validateClass:@"PUPickerOnboardingHeaderView" hasSwiftFieldOfAnyClass:@"learnMoreButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUPickerOnboardingHeaderView" hasSwiftFieldOfAnyClass:@"icon"];
+  [validationsCopy validateClass:@"PUPickerOnboardingHeaderView" hasSwiftFieldOfAnyClass:@"title"];
+  [validationsCopy validateClass:@"PUPickerOnboardingHeaderView" hasSwiftFieldOfAnyClass:@"subtitle"];
+  [validationsCopy validateClass:@"PUPickerOnboardingHeaderView" hasSwiftFieldOfAnyClass:@"closeButton"];
+  [validationsCopy validateClass:@"PUPickerOnboardingHeaderView" hasSwiftFieldOfAnyClass:@"learnMoreButton"];
 }
 
 - (id)accessibilityLabel
@@ -30,20 +30,20 @@
   v3 = MEMORY[0x29EDB8DE8];
   v13.receiver = self;
   v13.super_class = PUPickerOnboardingHeaderViewAccessibility;
-  v4 = [(PUPickerOnboardingHeaderViewAccessibility *)&v13 _accessibilitySupplementaryFooterViews];
-  v5 = [v3 axArrayWithPossiblyNilArrays:{1, v4}];
+  _accessibilitySupplementaryFooterViews = [(PUPickerOnboardingHeaderViewAccessibility *)&v13 _accessibilitySupplementaryFooterViews];
+  v5 = [v3 axArrayWithPossiblyNilArrays:{1, _accessibilitySupplementaryFooterViews}];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    array = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v8 = v7;
+  v8 = array;
 
   v9 = [(PUPickerOnboardingHeaderViewAccessibility *)self safeSwiftValueForKey:@"icon"];
   if ([v9 _accessibilityViewIsVisible])

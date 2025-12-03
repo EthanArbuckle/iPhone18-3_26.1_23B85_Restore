@@ -1,7 +1,7 @@
 @interface FCNewsTabiConfiguration
 - (FCNewsTabiChannelPickerSuggestionsConfiguration)channelPickerSuggestionsConfiguration;
 - (FCNewsTabiConfiguration)init;
-- (FCNewsTabiConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiConfiguration)initWithDictionary:(id)dictionary;
 - (FCNewsTabiFeedPersonalizationConfiguration)feedPersonalizationConfiguration;
 - (FCNewsTabiMyMagazinesConfiguration)myMagazinesConfiguration;
 - (FCNewsTabiNotificationScoringConfiguration)notificationScoringConfiguration;
@@ -26,156 +26,156 @@
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
   if (self->_packageAssetIDs)
   {
-    v4 = [(FCNewsTabiConfiguration *)self channelPickerSuggestionsConfiguration];
-    v5 = [v4 indentedDescription];
-    [v3 appendFormat:@"\n\tchannelPickerSuggestionsConfiguration: %@;", v5];
+    channelPickerSuggestionsConfiguration = [(FCNewsTabiConfiguration *)self channelPickerSuggestionsConfiguration];
+    indentedDescription = [channelPickerSuggestionsConfiguration indentedDescription];
+    [v3 appendFormat:@"\n\tchannelPickerSuggestionsConfiguration: %@;", indentedDescription];
 
-    v6 = [(FCNewsTabiConfiguration *)self eventAggregationConfiguration];
-    v7 = [v6 indentedDescription];
-    [v3 appendFormat:@"\n\teventAggregationConfiguration: %@;", v7];
+    eventAggregationConfiguration = [(FCNewsTabiConfiguration *)self eventAggregationConfiguration];
+    indentedDescription2 = [eventAggregationConfiguration indentedDescription];
+    [v3 appendFormat:@"\n\teventAggregationConfiguration: %@;", indentedDescription2];
 
-    v8 = [(FCNewsTabiConfiguration *)self feedPersonalizationConfiguration];
-    v9 = [v8 indentedDescription];
-    [v3 appendFormat:@"\n\tfeedPersonalizationConfiguration: %@;", v9];
+    feedPersonalizationConfiguration = [(FCNewsTabiConfiguration *)self feedPersonalizationConfiguration];
+    indentedDescription3 = [feedPersonalizationConfiguration indentedDescription];
+    [v3 appendFormat:@"\n\tfeedPersonalizationConfiguration: %@;", indentedDescription3];
 
     v10 = [MEMORY[0x1E696AD98] numberWithInteger:{-[FCNewsTabiConfiguration mlComputeUnits](self, "mlComputeUnits")}];
     [v3 appendFormat:@"\n\tmlComputeUnits: %@;", v10];
 
-    v11 = [(FCNewsTabiConfiguration *)self myMagazinesConfiguration];
-    v12 = [v11 indentedDescription];
-    [v3 appendFormat:@"\n\tmyMagazinesConfiguration: %@;", v12];
+    myMagazinesConfiguration = [(FCNewsTabiConfiguration *)self myMagazinesConfiguration];
+    indentedDescription4 = [myMagazinesConfiguration indentedDescription];
+    [v3 appendFormat:@"\n\tmyMagazinesConfiguration: %@;", indentedDescription4];
 
-    v13 = [(FCNewsTabiConfiguration *)self notificationScoringConfiguration];
-    v14 = [v13 indentedDescription];
-    [v3 appendFormat:@"\n\tnotificationScoringConfiguration: %@;", v14];
+    notificationScoringConfiguration = [(FCNewsTabiConfiguration *)self notificationScoringConfiguration];
+    indentedDescription5 = [notificationScoringConfiguration indentedDescription];
+    [v3 appendFormat:@"\n\tnotificationScoringConfiguration: %@;", indentedDescription5];
 
-    v15 = [(FCNewsTabiConfiguration *)self packageAssetIDs];
-    v16 = [v15 indentedDescription];
-    [v3 appendFormat:@"\n\tpackageAssetIDs: %@;", v16];
+    packageAssetIDs = [(FCNewsTabiConfiguration *)self packageAssetIDs];
+    indentedDescription6 = [packageAssetIDs indentedDescription];
+    [v3 appendFormat:@"\n\tpackageAssetIDs: %@;", indentedDescription6];
 
-    v17 = [(FCNewsTabiConfiguration *)self personalizedPaywallsConfiguration];
-    v18 = [v17 indentedDescription];
-    [v3 appendFormat:@"\n\tpersonalizedPaywallsConfiguration: %@;", v18];
+    personalizedPaywallsConfiguration = [(FCNewsTabiConfiguration *)self personalizedPaywallsConfiguration];
+    indentedDescription7 = [personalizedPaywallsConfiguration indentedDescription];
+    [v3 appendFormat:@"\n\tpersonalizedPaywallsConfiguration: %@;", indentedDescription7];
 
-    v19 = [(FCNewsTabiConfiguration *)self recommendedTagsConfiguration];
-    v20 = [v19 indentedDescription];
-    [v3 appendFormat:@"\n\trecommendedTagsConfiguration: %@;", v20];
+    recommendedTagsConfiguration = [(FCNewsTabiConfiguration *)self recommendedTagsConfiguration];
+    indentedDescription8 = [recommendedTagsConfiguration indentedDescription];
+    [v3 appendFormat:@"\n\trecommendedTagsConfiguration: %@;", indentedDescription8];
 
-    v21 = [(FCNewsTabiConfiguration *)self recommendedIssuesConfiguration];
-    v22 = [v21 indentedDescription];
-    [v3 appendFormat:@"\n\trecommendedIssuesConfiguration: %@;", v22];
+    recommendedIssuesConfiguration = [(FCNewsTabiConfiguration *)self recommendedIssuesConfiguration];
+    indentedDescription9 = [recommendedIssuesConfiguration indentedDescription];
+    [v3 appendFormat:@"\n\trecommendedIssuesConfiguration: %@;", indentedDescription9];
 
-    v23 = [(FCNewsTabiConfiguration *)self tagCohortMembershipConfiguration];
-    v24 = [v23 indentedDescription];
-    [v3 appendFormat:@"\n\ttagCohortMembershipConfiguration: %@;", v24];
+    tagCohortMembershipConfiguration = [(FCNewsTabiConfiguration *)self tagCohortMembershipConfiguration];
+    indentedDescription10 = [tagCohortMembershipConfiguration indentedDescription];
+    [v3 appendFormat:@"\n\ttagCohortMembershipConfiguration: %@;", indentedDescription10];
 
-    v25 = [(FCNewsTabiConfiguration *)self tagScoringConfiguration];
-    v26 = [v25 indentedDescription];
-    [v3 appendFormat:@"\n\ttagScoringConfiguration: %@;", v26];
+    tagScoringConfiguration = [(FCNewsTabiConfiguration *)self tagScoringConfiguration];
+    indentedDescription11 = [tagScoringConfiguration indentedDescription];
+    [v3 appendFormat:@"\n\ttagScoringConfiguration: %@;", indentedDescription11];
 
-    v27 = [(FCNewsTabiConfiguration *)self tagSuggestionsConfiguration];
-    v28 = [v27 indentedDescription];
-    [v3 appendFormat:@"\n\ttagSuggestionsConfiguration: %@;", v28];
+    tagSuggestionsConfiguration = [(FCNewsTabiConfiguration *)self tagSuggestionsConfiguration];
+    indentedDescription12 = [tagSuggestionsConfiguration indentedDescription];
+    [v3 appendFormat:@"\n\ttagSuggestionsConfiguration: %@;", indentedDescription12];
 
-    v29 = [(FCNewsTabiConfiguration *)self unloadGraphOnBackgroundConfiguration];
-    v30 = [v29 indentedDescription];
-    [v3 appendFormat:@"\n\tunloadGraphOnBackgroundConfiguration: %@;", v30];
+    unloadGraphOnBackgroundConfiguration = [(FCNewsTabiConfiguration *)self unloadGraphOnBackgroundConfiguration];
+    indentedDescription13 = [unloadGraphOnBackgroundConfiguration indentedDescription];
+    [v3 appendFormat:@"\n\tunloadGraphOnBackgroundConfiguration: %@;", indentedDescription13];
 
-    v31 = [(FCNewsTabiConfiguration *)self recipeScoringConfiguration];
-    v32 = [v31 indentedDescription];
-    [v3 appendFormat:@"\n\trecipeScoringConfiguration: %@;", v32];
+    recipeScoringConfiguration = [(FCNewsTabiConfiguration *)self recipeScoringConfiguration];
+    indentedDescription14 = [recipeScoringConfiguration indentedDescription];
+    [v3 appendFormat:@"\n\trecipeScoringConfiguration: %@;", indentedDescription14];
 
-    v33 = [(FCNewsTabiConfiguration *)self recipeDiversificationConfiguration];
-    v34 = [v33 indentedDescription];
-    [v3 appendFormat:@"\n\trecipeDiversificationConfiguration: %@;", v34];
+    recipeDiversificationConfiguration = [(FCNewsTabiConfiguration *)self recipeDiversificationConfiguration];
+    indentedDescription15 = [recipeDiversificationConfiguration indentedDescription];
+    [v3 appendFormat:@"\n\trecipeDiversificationConfiguration: %@;", indentedDescription15];
 
-    v35 = [(FCNewsTabiConfiguration *)self recipeTagSuggestionsConfiguration];
-    v36 = [v35 indentedDescription];
-    [v3 appendFormat:@"\n\trecipeTagSuggestionsConfiguration: %@;", v36];
+    recipeTagSuggestionsConfiguration = [(FCNewsTabiConfiguration *)self recipeTagSuggestionsConfiguration];
+    indentedDescription16 = [recipeTagSuggestionsConfiguration indentedDescription];
+    [v3 appendFormat:@"\n\trecipeTagSuggestionsConfiguration: %@;", indentedDescription16];
 
-    v37 = [(FCNewsTabiConfiguration *)self smarterFetchConfiguration];
+    smarterFetchConfiguration = [(FCNewsTabiConfiguration *)self smarterFetchConfiguration];
     v38 = @"\n\tsmarterFetchConfiguration: %@;";
   }
 
   else
   {
-    v39 = [(FCNewsTabiConfiguration *)self adSegmentsEndpoint];
-    v40 = [v39 indentedDescription];
-    [v3 appendFormat:@"\n\tadSegmentsEndpoint: %@;", v40];
+    adSegmentsEndpoint = [(FCNewsTabiConfiguration *)self adSegmentsEndpoint];
+    indentedDescription17 = [adSegmentsEndpoint indentedDescription];
+    [v3 appendFormat:@"\n\tadSegmentsEndpoint: %@;", indentedDescription17];
 
-    v41 = [(FCNewsTabiConfiguration *)self channelPickerSuggestionsEndpoint];
-    v42 = [v41 indentedDescription];
-    [v3 appendFormat:@"\n\tchannelPickerSuggestionsEndpoint: %@;", v42];
+    channelPickerSuggestionsEndpoint = [(FCNewsTabiConfiguration *)self channelPickerSuggestionsEndpoint];
+    indentedDescription18 = [channelPickerSuggestionsEndpoint indentedDescription];
+    [v3 appendFormat:@"\n\tchannelPickerSuggestionsEndpoint: %@;", indentedDescription18];
 
-    v43 = [(FCNewsTabiConfiguration *)self eventAggregationConfiguration];
-    v44 = [v43 indentedDescription];
-    [v3 appendFormat:@"\n\teventAggregationConfiguration: %@;", v44];
+    eventAggregationConfiguration2 = [(FCNewsTabiConfiguration *)self eventAggregationConfiguration];
+    indentedDescription19 = [eventAggregationConfiguration2 indentedDescription];
+    [v3 appendFormat:@"\n\teventAggregationConfiguration: %@;", indentedDescription19];
 
-    v45 = [(FCNewsTabiConfiguration *)self feedPersonalizationEndpoint];
-    v46 = [v45 indentedDescription];
-    [v3 appendFormat:@"\n\tfeedPersonalizationEndpoint: %@;", v46];
+    feedPersonalizationEndpoint = [(FCNewsTabiConfiguration *)self feedPersonalizationEndpoint];
+    indentedDescription20 = [feedPersonalizationEndpoint indentedDescription];
+    [v3 appendFormat:@"\n\tfeedPersonalizationEndpoint: %@;", indentedDescription20];
 
     v47 = [MEMORY[0x1E696AD98] numberWithInteger:{-[FCNewsTabiConfiguration mlComputeUnits](self, "mlComputeUnits")}];
     [v3 appendFormat:@"\n\tmlComputeUnits: %@;", v47];
 
-    v48 = [(FCNewsTabiConfiguration *)self myMagazinesEndpoint];
-    v49 = [v48 indentedDescription];
-    [v3 appendFormat:@"\n\tmyMagazinesEndpoint: %@;", v49];
+    myMagazinesEndpoint = [(FCNewsTabiConfiguration *)self myMagazinesEndpoint];
+    indentedDescription21 = [myMagazinesEndpoint indentedDescription];
+    [v3 appendFormat:@"\n\tmyMagazinesEndpoint: %@;", indentedDescription21];
 
-    v50 = [(FCNewsTabiConfiguration *)self notificationScoringEndpoint];
-    v51 = [v50 indentedDescription];
-    [v3 appendFormat:@"\n\tnotificationScoringEndpoint: %@;", v51];
+    notificationScoringEndpoint = [(FCNewsTabiConfiguration *)self notificationScoringEndpoint];
+    indentedDescription22 = [notificationScoringEndpoint indentedDescription];
+    [v3 appendFormat:@"\n\tnotificationScoringEndpoint: %@;", indentedDescription22];
 
-    v52 = [(FCNewsTabiConfiguration *)self packageAssetIDs];
-    v53 = [v52 indentedDescription];
-    [v3 appendFormat:@"\n\tpackageAssetIDs: %@;", v53];
+    packageAssetIDs2 = [(FCNewsTabiConfiguration *)self packageAssetIDs];
+    indentedDescription23 = [packageAssetIDs2 indentedDescription];
+    [v3 appendFormat:@"\n\tpackageAssetIDs: %@;", indentedDescription23];
 
-    v54 = [(FCNewsTabiConfiguration *)self personalizedPaywallsEndpoint];
-    v55 = [v54 indentedDescription];
-    [v3 appendFormat:@"\n\tpersonalizedPaywallsEndpoint: %@;", v55];
+    personalizedPaywallsEndpoint = [(FCNewsTabiConfiguration *)self personalizedPaywallsEndpoint];
+    indentedDescription24 = [personalizedPaywallsEndpoint indentedDescription];
+    [v3 appendFormat:@"\n\tpersonalizedPaywallsEndpoint: %@;", indentedDescription24];
 
-    v56 = [(FCNewsTabiConfiguration *)self recommendedIssuesEndpoint];
-    v57 = [v56 indentedDescription];
-    [v3 appendFormat:@"\n\trecommendedIssuesEndpoint: %@;", v57];
+    recommendedIssuesEndpoint = [(FCNewsTabiConfiguration *)self recommendedIssuesEndpoint];
+    indentedDescription25 = [recommendedIssuesEndpoint indentedDescription];
+    [v3 appendFormat:@"\n\trecommendedIssuesEndpoint: %@;", indentedDescription25];
 
-    v58 = [(FCNewsTabiConfiguration *)self recommendedTagsEndpoint];
-    v59 = [v58 indentedDescription];
-    [v3 appendFormat:@"\n\trecommendedTagsEndpoint: %@;", v59];
+    recommendedTagsEndpoint = [(FCNewsTabiConfiguration *)self recommendedTagsEndpoint];
+    indentedDescription26 = [recommendedTagsEndpoint indentedDescription];
+    [v3 appendFormat:@"\n\trecommendedTagsEndpoint: %@;", indentedDescription26];
 
-    v60 = [(FCNewsTabiConfiguration *)self tagCohortMembershipEndpoint];
-    v61 = [v60 indentedDescription];
-    [v3 appendFormat:@"\n\ttagCohortMembershipEndpoint: %@;", v61];
+    tagCohortMembershipEndpoint = [(FCNewsTabiConfiguration *)self tagCohortMembershipEndpoint];
+    indentedDescription27 = [tagCohortMembershipEndpoint indentedDescription];
+    [v3 appendFormat:@"\n\ttagCohortMembershipEndpoint: %@;", indentedDescription27];
 
-    v62 = [(FCNewsTabiConfiguration *)self tagScoringEndpoint];
-    v63 = [v62 indentedDescription];
-    [v3 appendFormat:@"\n\ttagScoringEndpoint: %@;", v63];
+    tagScoringEndpoint = [(FCNewsTabiConfiguration *)self tagScoringEndpoint];
+    indentedDescription28 = [tagScoringEndpoint indentedDescription];
+    [v3 appendFormat:@"\n\ttagScoringEndpoint: %@;", indentedDescription28];
 
-    v64 = [(FCNewsTabiConfiguration *)self tagSuggestionsEndpoint];
-    v65 = [v64 indentedDescription];
-    [v3 appendFormat:@"\n\ttagSuggestionsEndpoint: %@;", v65];
+    tagSuggestionsEndpoint = [(FCNewsTabiConfiguration *)self tagSuggestionsEndpoint];
+    indentedDescription29 = [tagSuggestionsEndpoint indentedDescription];
+    [v3 appendFormat:@"\n\ttagSuggestionsEndpoint: %@;", indentedDescription29];
 
-    v66 = [(FCNewsTabiConfiguration *)self unloadGraphOnBackgroundConfiguration];
-    v67 = [v66 indentedDescription];
-    [v3 appendFormat:@"\n\tunloadGraphOnBackgroundConfiguration: %@;", v67];
+    unloadGraphOnBackgroundConfiguration2 = [(FCNewsTabiConfiguration *)self unloadGraphOnBackgroundConfiguration];
+    indentedDescription30 = [unloadGraphOnBackgroundConfiguration2 indentedDescription];
+    [v3 appendFormat:@"\n\tunloadGraphOnBackgroundConfiguration: %@;", indentedDescription30];
 
-    v68 = [(FCNewsTabiConfiguration *)self recipeScoringEndpoint];
-    v69 = [v68 indentedDescription];
-    [v3 appendFormat:@"\n\trecipeScoringEndpoint: %@;", v69];
+    recipeScoringEndpoint = [(FCNewsTabiConfiguration *)self recipeScoringEndpoint];
+    indentedDescription31 = [recipeScoringEndpoint indentedDescription];
+    [v3 appendFormat:@"\n\trecipeScoringEndpoint: %@;", indentedDescription31];
 
-    v70 = [(FCNewsTabiConfiguration *)self recipeDiversificationEndpoint];
-    v71 = [v70 indentedDescription];
-    [v3 appendFormat:@"\n\trecipeDiversificationEndpoint: %@;", v71];
+    recipeDiversificationEndpoint = [(FCNewsTabiConfiguration *)self recipeDiversificationEndpoint];
+    indentedDescription32 = [recipeDiversificationEndpoint indentedDescription];
+    [v3 appendFormat:@"\n\trecipeDiversificationEndpoint: %@;", indentedDescription32];
 
-    v72 = [(FCNewsTabiConfiguration *)self recipeTagSuggestionsEndpoint];
-    v73 = [v72 indentedDescription];
-    [v3 appendFormat:@"\n\trecipeTagSuggestionsEndpoint: %@;", v73];
+    recipeTagSuggestionsEndpoint = [(FCNewsTabiConfiguration *)self recipeTagSuggestionsEndpoint];
+    indentedDescription33 = [recipeTagSuggestionsEndpoint indentedDescription];
+    [v3 appendFormat:@"\n\trecipeTagSuggestionsEndpoint: %@;", indentedDescription33];
 
-    v37 = [(FCNewsTabiConfiguration *)self smarterFetchEndpoint];
+    smarterFetchConfiguration = [(FCNewsTabiConfiguration *)self smarterFetchEndpoint];
     v38 = @"\n\tsmarterFetchEndpoint: %@;";
   }
 
-  v74 = [v37 indentedDescription];
-  [v3 appendFormat:v38, v74];
+  indentedDescription34 = [smarterFetchConfiguration indentedDescription];
+  [v3 appendFormat:v38, indentedDescription34];
 
   [v3 appendString:@"\n>"];
 
@@ -307,20 +307,20 @@ void __42__FCNewsTabiConfiguration_packageAssetIDs__block_invoke_2(uint64_t a1, 
   objc_exception_throw(v6);
 }
 
-- (FCNewsTabiConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiConfiguration)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v7 = v5;
+    v7 = dictionaryCopy;
     v90.receiver = self;
     v90.super_class = FCNewsTabiConfiguration;
     v8 = [(FCNewsTabiConfiguration *)&v90 init];
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_dictionary, a3);
+      objc_storeStrong(&v8->_dictionary, dictionary);
       v85 = MEMORY[0x1E69E9820];
       v86 = 3221225472;
       v87 = __46__FCNewsTabiConfiguration_initWithDictionary___block_invoke_2;
@@ -463,15 +463,15 @@ void __42__FCNewsTabiConfiguration_packageAssetIDs__block_invoke_2(uint64_t a1, 
 
     self = v9;
 
-    v68 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v68 = 0;
+    selfCopy = 0;
   }
 
-  return v68;
+  return selfCopy;
 }
 
 uint64_t __46__FCNewsTabiConfiguration_initWithDictionary___block_invoke_2(uint64_t a1)
@@ -525,10 +525,10 @@ void __46__FCNewsTabiConfiguration_initWithDictionary___block_invoke_3(uint64_t 
 
 - (FCNewsTabiChannelPickerSuggestionsConfiguration)channelPickerSuggestionsConfiguration
 {
-  v3 = [(FCNewsTabiConfiguration *)self channelPickerSuggestionsEndpoint];
-  v4 = [v3 configuration];
-  channelPickerSuggestionsConfiguration = v4;
-  if (!v4)
+  channelPickerSuggestionsEndpoint = [(FCNewsTabiConfiguration *)self channelPickerSuggestionsEndpoint];
+  configuration = [channelPickerSuggestionsEndpoint configuration];
+  channelPickerSuggestionsConfiguration = configuration;
+  if (!configuration)
   {
     channelPickerSuggestionsConfiguration = self->_channelPickerSuggestionsConfiguration;
   }
@@ -540,10 +540,10 @@ void __46__FCNewsTabiConfiguration_initWithDictionary___block_invoke_3(uint64_t 
 
 - (FCNewsTabiFeedPersonalizationConfiguration)feedPersonalizationConfiguration
 {
-  v3 = [(FCNewsTabiConfiguration *)self feedPersonalizationEndpoint];
-  v4 = [v3 configuration];
-  feedPersonalizationConfiguration = v4;
-  if (!v4)
+  feedPersonalizationEndpoint = [(FCNewsTabiConfiguration *)self feedPersonalizationEndpoint];
+  configuration = [feedPersonalizationEndpoint configuration];
+  feedPersonalizationConfiguration = configuration;
+  if (!configuration)
   {
     feedPersonalizationConfiguration = self->_feedPersonalizationConfiguration;
   }
@@ -555,26 +555,26 @@ void __46__FCNewsTabiConfiguration_initWithDictionary___block_invoke_3(uint64_t 
 
 - (FCNewsTabiMyMagazinesConfiguration)myMagazinesConfiguration
 {
-  v2 = [(FCNewsTabiConfiguration *)self myMagazinesEndpoint];
-  v3 = [v2 configuration];
+  myMagazinesEndpoint = [(FCNewsTabiConfiguration *)self myMagazinesEndpoint];
+  configuration = [myMagazinesEndpoint configuration];
 
-  return v3;
+  return configuration;
 }
 
 - (FCNewsTabiNotificationScoringConfiguration)notificationScoringConfiguration
 {
-  v2 = [(FCNewsTabiConfiguration *)self notificationScoringEndpoint];
-  v3 = [v2 configuration];
+  notificationScoringEndpoint = [(FCNewsTabiConfiguration *)self notificationScoringEndpoint];
+  configuration = [notificationScoringEndpoint configuration];
 
-  return v3;
+  return configuration;
 }
 
 - (FCNewsTabiPersonalizedPaywallsConfiguration)personalizedPaywallsConfiguration
 {
-  v3 = [(FCNewsTabiConfiguration *)self personalizedPaywallsEndpoint];
-  v4 = [v3 configuration];
-  personalizedPaywallsConfiguration = v4;
-  if (!v4)
+  personalizedPaywallsEndpoint = [(FCNewsTabiConfiguration *)self personalizedPaywallsEndpoint];
+  configuration = [personalizedPaywallsEndpoint configuration];
+  personalizedPaywallsConfiguration = configuration;
+  if (!configuration)
   {
     personalizedPaywallsConfiguration = self->_personalizedPaywallsConfiguration;
   }
@@ -586,10 +586,10 @@ void __46__FCNewsTabiConfiguration_initWithDictionary___block_invoke_3(uint64_t 
 
 - (FCNewsTabiRecommendedIssuesConfiguration)recommendedIssuesConfiguration
 {
-  v3 = [(FCNewsTabiConfiguration *)self recommendedIssuesEndpoint];
-  v4 = [v3 configuration];
-  recommendedIssuesConfiguration = v4;
-  if (!v4)
+  recommendedIssuesEndpoint = [(FCNewsTabiConfiguration *)self recommendedIssuesEndpoint];
+  configuration = [recommendedIssuesEndpoint configuration];
+  recommendedIssuesConfiguration = configuration;
+  if (!configuration)
   {
     recommendedIssuesConfiguration = self->_recommendedIssuesConfiguration;
   }
@@ -601,66 +601,66 @@ void __46__FCNewsTabiConfiguration_initWithDictionary___block_invoke_3(uint64_t 
 
 - (FCNewsTabiRecommendedTagsConfiguration)recommendedTagsConfiguration
 {
-  v2 = [(FCNewsTabiConfiguration *)self recommendedTagsEndpoint];
-  v3 = [v2 configuration];
+  recommendedTagsEndpoint = [(FCNewsTabiConfiguration *)self recommendedTagsEndpoint];
+  configuration = [recommendedTagsEndpoint configuration];
 
-  return v3;
+  return configuration;
 }
 
 - (FCNewsTabiTagCohortMembershipConfiguration)tagCohortMembershipConfiguration
 {
-  v2 = [(FCNewsTabiConfiguration *)self tagCohortMembershipEndpoint];
-  v3 = [v2 configuration];
+  tagCohortMembershipEndpoint = [(FCNewsTabiConfiguration *)self tagCohortMembershipEndpoint];
+  configuration = [tagCohortMembershipEndpoint configuration];
 
-  return v3;
+  return configuration;
 }
 
 - (FCNewsTabiTagScoringConfiguration)tagScoringConfiguration
 {
-  v2 = [(FCNewsTabiConfiguration *)self tagScoringEndpoint];
-  v3 = [v2 configuration];
+  tagScoringEndpoint = [(FCNewsTabiConfiguration *)self tagScoringEndpoint];
+  configuration = [tagScoringEndpoint configuration];
 
-  return v3;
+  return configuration;
 }
 
 - (FCNewsTabiTagSuggestionsConfiguration)tagSuggestionsConfiguration
 {
-  v2 = [(FCNewsTabiConfiguration *)self tagSuggestionsEndpoint];
-  v3 = [v2 configuration];
+  tagSuggestionsEndpoint = [(FCNewsTabiConfiguration *)self tagSuggestionsEndpoint];
+  configuration = [tagSuggestionsEndpoint configuration];
 
-  return v3;
+  return configuration;
 }
 
 - (FCNewsTabiRecipeScoringConfiguration)recipeScoringConfiguration
 {
-  v2 = [(FCNewsTabiConfiguration *)self recipeScoringEndpoint];
-  v3 = [v2 configuration];
+  recipeScoringEndpoint = [(FCNewsTabiConfiguration *)self recipeScoringEndpoint];
+  configuration = [recipeScoringEndpoint configuration];
 
-  return v3;
+  return configuration;
 }
 
 - (FCNewsTabiRecipeDiversificationConfiguration)recipeDiversificationConfiguration
 {
-  v2 = [(FCNewsTabiConfiguration *)self recipeDiversificationEndpoint];
-  v3 = [v2 configuration];
+  recipeDiversificationEndpoint = [(FCNewsTabiConfiguration *)self recipeDiversificationEndpoint];
+  configuration = [recipeDiversificationEndpoint configuration];
 
-  return v3;
+  return configuration;
 }
 
 - (FCNewsTabiRecipeTagSuggestionsConfiguration)recipeTagSuggestionsConfiguration
 {
-  v2 = [(FCNewsTabiConfiguration *)self recipeTagSuggestionsEndpoint];
-  v3 = [v2 configuration];
+  recipeTagSuggestionsEndpoint = [(FCNewsTabiConfiguration *)self recipeTagSuggestionsEndpoint];
+  configuration = [recipeTagSuggestionsEndpoint configuration];
 
-  return v3;
+  return configuration;
 }
 
 - (FCNewsTabiSmarterFetchConfiguration)smarterFetchConfiguration
 {
-  v2 = [(FCNewsTabiConfiguration *)self smarterFetchEndpoint];
-  v3 = [v2 configuration];
+  smarterFetchEndpoint = [(FCNewsTabiConfiguration *)self smarterFetchEndpoint];
+  configuration = [smarterFetchEndpoint configuration];
 
-  return v3;
+  return configuration;
 }
 
 @end

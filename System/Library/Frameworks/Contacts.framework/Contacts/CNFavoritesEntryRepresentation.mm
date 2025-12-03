@@ -1,75 +1,75 @@
 @interface CNFavoritesEntryRepresentation
-- (CNFavoritesEntryRepresentation)initWithCoder:(id)a3;
-- (CNFavoritesEntryRepresentation)initWithDictionaryRepresentation:(id)a3;
-- (CNFavoritesEntryRepresentation)initWithIdentifier:(id)a3 name:(id)a4 value:(id)a5 label:(id)a6 propertyKey:(id)a7 actionType:(id)a8 bundleIdentifier:(id)a9 actionChannel:(id)a10 contactIdentifier:(id)a11 labeledValueIdentifier:(id)a12;
-- (CNFavoritesEntryRepresentation)initWithRemoteRepresentation:(id)a3;
+- (CNFavoritesEntryRepresentation)initWithCoder:(id)coder;
+- (CNFavoritesEntryRepresentation)initWithDictionaryRepresentation:(id)representation;
+- (CNFavoritesEntryRepresentation)initWithIdentifier:(id)identifier name:(id)name value:(id)value label:(id)label propertyKey:(id)key actionType:(id)type bundleIdentifier:(id)bundleIdentifier actionChannel:(id)self0 contactIdentifier:(id)self1 labeledValueIdentifier:(id)self2;
+- (CNFavoritesEntryRepresentation)initWithRemoteRepresentation:(id)representation;
 - (id)debugDescription;
-- (id)dictionaryRepresentationWithRedaction:(BOOL)a3;
-- (id)mapBundleIdentifier:(id)a3;
+- (id)dictionaryRepresentationWithRedaction:(BOOL)redaction;
+- (id)mapBundleIdentifier:(id)identifier;
 - (id)remoteRepresentation;
 - (unint64_t)equivalencyHash;
 - (unint64_t)hash;
-- (void)copyContactMatchingInfoFrom:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)rematchWithContactStore:(id)a3;
+- (void)copyContactMatchingInfoFrom:(id)from;
+- (void)encodeWithCoder:(id)coder;
+- (void)rematchWithContactStore:(id)store;
 @end
 
 @implementation CNFavoritesEntryRepresentation
 
-- (CNFavoritesEntryRepresentation)initWithIdentifier:(id)a3 name:(id)a4 value:(id)a5 label:(id)a6 propertyKey:(id)a7 actionType:(id)a8 bundleIdentifier:(id)a9 actionChannel:(id)a10 contactIdentifier:(id)a11 labeledValueIdentifier:(id)a12
+- (CNFavoritesEntryRepresentation)initWithIdentifier:(id)identifier name:(id)name value:(id)value label:(id)label propertyKey:(id)key actionType:(id)type bundleIdentifier:(id)bundleIdentifier actionChannel:(id)self0 contactIdentifier:(id)self1 labeledValueIdentifier:(id)self2
 {
-  v17 = a3;
-  v50 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
+  identifierCopy = identifier;
+  nameCopy = name;
+  valueCopy = value;
+  labelCopy = label;
+  keyCopy = key;
+  typeCopy = type;
+  bundleIdentifierCopy = bundleIdentifier;
+  channelCopy = channel;
+  contactIdentifierCopy = contactIdentifier;
+  valueIdentifierCopy = valueIdentifier;
   v51.receiver = self;
   v51.super_class = CNFavoritesEntryRepresentation;
   v26 = [(CNFavoritesEntryRepresentation *)&v51 init];
   if (v26)
   {
-    v27 = [v17 copy];
+    v27 = [identifierCopy copy];
     entryIdentifier = v26->_entryIdentifier;
     v26->_entryIdentifier = v27;
 
-    v29 = [v50 copy];
+    v29 = [nameCopy copy];
     name = v26->_name;
     v26->_name = v29;
 
-    v31 = [v18 copy];
+    v31 = [valueCopy copy];
     value = v26->_value;
     v26->_value = v31;
 
-    v33 = [v19 copy];
+    v33 = [labelCopy copy];
     label = v26->_label;
     v26->_label = v33;
 
-    v35 = [v20 copy];
+    v35 = [keyCopy copy];
     propertyKey = v26->_propertyKey;
     v26->_propertyKey = v35;
 
-    v37 = [v21 copy];
+    v37 = [typeCopy copy];
     actionType = v26->_actionType;
     v26->_actionType = v37;
 
-    v39 = [v22 copy];
+    v39 = [bundleIdentifierCopy copy];
     bundleIdentifier = v26->_bundleIdentifier;
     v26->_bundleIdentifier = v39;
 
-    v41 = [v23 copy];
+    v41 = [channelCopy copy];
     actionChannel = v26->_actionChannel;
     v26->_actionChannel = v41;
 
-    v43 = [v24 copy];
+    v43 = [contactIdentifierCopy copy];
     contactIdentifier = v26->_contactIdentifier;
     v26->_contactIdentifier = v43;
 
-    v45 = [v25 copy];
+    v45 = [valueIdentifierCopy copy];
     labeledValueIdentifier = v26->_labeledValueIdentifier;
     v26->_labeledValueIdentifier = v45;
 
@@ -79,39 +79,39 @@
   return v26;
 }
 
-- (CNFavoritesEntryRepresentation)initWithRemoteRepresentation:(id)a3
+- (CNFavoritesEntryRepresentation)initWithRemoteRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v26.receiver = self;
   v26.super_class = CNFavoritesEntryRepresentation;
   v5 = [(CNFavoritesEntryRepresentation *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"EntryIdentifier"];
+    v6 = [representationCopy objectForKeyedSubscript:@"EntryIdentifier"];
     entryIdentifier = v5->_entryIdentifier;
     v5->_entryIdentifier = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"Name"];
+    v8 = [representationCopy objectForKeyedSubscript:@"Name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"Value"];
+    v10 = [representationCopy objectForKeyedSubscript:@"Value"];
     value = v5->_value;
     v5->_value = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"Label"];
+    v12 = [representationCopy objectForKeyedSubscript:@"Label"];
     label = v5->_label;
     v5->_label = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"ContactProperty"];
+    v14 = [representationCopy objectForKeyedSubscript:@"ContactProperty"];
     propertyKey = v5->_propertyKey;
     v5->_propertyKey = v14;
 
-    v16 = [v4 objectForKeyedSubscript:@"ActionType"];
+    v16 = [representationCopy objectForKeyedSubscript:@"ActionType"];
     actionType = v5->_actionType;
     v5->_actionType = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"BundleIdentifier"];
+    v18 = [representationCopy objectForKeyedSubscript:@"BundleIdentifier"];
     v19 = [(CNFavoritesEntryRepresentation *)v5 mapBundleIdentifier:v18];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v19;
@@ -131,61 +131,61 @@
   return v5;
 }
 
-- (void)copyContactMatchingInfoFrom:(id)a3
+- (void)copyContactMatchingInfoFrom:(id)from
 {
-  v4 = a3;
-  v5 = [v4 contactIdentifier];
+  fromCopy = from;
+  contactIdentifier = [fromCopy contactIdentifier];
   contactIdentifier = self->_contactIdentifier;
-  self->_contactIdentifier = v5;
+  self->_contactIdentifier = contactIdentifier;
 
-  v7 = [v4 labeledValueIdentifier];
+  labeledValueIdentifier = [fromCopy labeledValueIdentifier];
 
   labeledValueIdentifier = self->_labeledValueIdentifier;
-  self->_labeledValueIdentifier = v7;
+  self->_labeledValueIdentifier = labeledValueIdentifier;
 }
 
-- (void)rematchWithContactStore:(id)a3
+- (void)rematchWithContactStore:(id)store
 {
-  v4 = a3;
-  v16 = [[CNFavoritesEntry alloc] initWithEntryRepresentation:self store:v4];
+  storeCopy = store;
+  v16 = [[CNFavoritesEntry alloc] initWithEntryRepresentation:self store:storeCopy];
 
-  v5 = [(CNFavoritesEntry *)v16 rematch];
-  v6 = [v5 second];
-  v7 = [v6 BOOLValue];
+  rematch = [(CNFavoritesEntry *)v16 rematch];
+  second = [rematch second];
+  bOOLValue = [second BOOLValue];
 
-  if ((v7 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    v8 = [v5 first];
-    v9 = [v8 contactIdentifier];
+    first = [rematch first];
+    contactIdentifier = [first contactIdentifier];
     contactIdentifier = self->_contactIdentifier;
-    self->_contactIdentifier = v9;
+    self->_contactIdentifier = contactIdentifier;
 
-    v11 = [v8 labeledValueIdentifier];
+    labeledValueIdentifier = [first labeledValueIdentifier];
     labeledValueIdentifier = self->_labeledValueIdentifier;
-    self->_labeledValueIdentifier = v11;
+    self->_labeledValueIdentifier = labeledValueIdentifier;
 
-    v13 = [v8 name];
+    name = [first name];
 
-    if (v13)
+    if (name)
     {
-      v14 = [v8 name];
+      name2 = [first name];
       name = self->_name;
-      self->_name = v14;
+      self->_name = name2;
     }
   }
 }
 
-- (id)mapBundleIdentifier:(id)a3
+- (id)mapBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     if (mapBundleIdentifier__cn_once_token_0 != -1)
     {
       [CNFavoritesEntryRepresentation mapBundleIdentifier:];
     }
 
-    v4 = [mapBundleIdentifier__cn_once_object_0 objectForKeyedSubscript:v3];
+    v4 = [mapBundleIdentifier__cn_once_object_0 objectForKeyedSubscript:identifierCopy];
     v5 = v4;
     if (v4)
     {
@@ -194,7 +194,7 @@
 
     else
     {
-      v6 = v3;
+      v6 = identifierCopy;
     }
 
     v7 = v6;
@@ -217,51 +217,51 @@ uint64_t __54__CNFavoritesEntryRepresentation_mapBundleIdentifier___block_invoke
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNFavoritesEntryRepresentation)initWithDictionaryRepresentation:(id)a3
+- (CNFavoritesEntryRepresentation)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v28.receiver = self;
   v28.super_class = CNFavoritesEntryRepresentation;
   v5 = [(CNFavoritesEntryRepresentation *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"EntryIdentifier"];
+    v6 = [representationCopy objectForKey:@"EntryIdentifier"];
     entryIdentifier = v5->_entryIdentifier;
     v5->_entryIdentifier = v6;
 
-    v8 = [v4 objectForKey:@"Name"];
+    v8 = [representationCopy objectForKey:@"Name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 objectForKey:@"Value"];
+    v10 = [representationCopy objectForKey:@"Value"];
     value = v5->_value;
     v5->_value = v10;
 
-    v12 = [v4 objectForKey:@"Label"];
+    v12 = [representationCopy objectForKey:@"Label"];
     label = v5->_label;
     v5->_label = v12;
 
-    v14 = [v4 objectForKey:@"ContactProperty"];
+    v14 = [representationCopy objectForKey:@"ContactProperty"];
     propertyKey = v5->_propertyKey;
     v5->_propertyKey = v14;
 
-    v16 = [v4 objectForKey:@"ActionType"];
+    v16 = [representationCopy objectForKey:@"ActionType"];
     actionType = v5->_actionType;
     v5->_actionType = v16;
 
-    v18 = [v4 objectForKey:@"BundleIdentifier"];
+    v18 = [representationCopy objectForKey:@"BundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v18;
 
-    v20 = [v4 objectForKey:@"ActionChannel"];
+    v20 = [representationCopy objectForKey:@"ActionChannel"];
     actionChannel = v5->_actionChannel;
     v5->_actionChannel = v20;
 
-    v22 = [v4 objectForKey:@"ContactIdentifier"];
+    v22 = [representationCopy objectForKey:@"ContactIdentifier"];
     contactIdentifier = v5->_contactIdentifier;
     v5->_contactIdentifier = v22;
 
-    v24 = [v4 objectForKey:@"LabeledValueIdentifier"];
+    v24 = [representationCopy objectForKey:@"LabeledValueIdentifier"];
     labeledValueIdentifier = v5->_labeledValueIdentifier;
     v5->_labeledValueIdentifier = v24;
 
@@ -273,72 +273,72 @@ uint64_t __54__CNFavoritesEntryRepresentation_mapBundleIdentifier___block_invoke
 
 - (id)remoteRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(CNFavoritesEntryRepresentation *)self entryIdentifier];
-  [v3 _cn_setNonNilObject:v4 forKey:@"EntryIdentifier"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  entryIdentifier = [(CNFavoritesEntryRepresentation *)self entryIdentifier];
+  [dictionary _cn_setNonNilObject:entryIdentifier forKey:@"EntryIdentifier"];
 
-  v5 = [(CNFavoritesEntryRepresentation *)self name];
-  [v3 _cn_setNonNilObject:v5 forKey:@"Name"];
+  name = [(CNFavoritesEntryRepresentation *)self name];
+  [dictionary _cn_setNonNilObject:name forKey:@"Name"];
 
-  v6 = [(CNFavoritesEntryRepresentation *)self value];
-  [v3 _cn_setNonNilObject:v6 forKey:@"Value"];
+  value = [(CNFavoritesEntryRepresentation *)self value];
+  [dictionary _cn_setNonNilObject:value forKey:@"Value"];
 
-  v7 = [(CNFavoritesEntryRepresentation *)self label];
-  [v3 _cn_setNonNilObject:v7 forKey:@"Label"];
+  label = [(CNFavoritesEntryRepresentation *)self label];
+  [dictionary _cn_setNonNilObject:label forKey:@"Label"];
 
-  v8 = [(CNFavoritesEntryRepresentation *)self propertyKey];
-  [v3 _cn_setNonNilObject:v8 forKey:@"ContactProperty"];
+  propertyKey = [(CNFavoritesEntryRepresentation *)self propertyKey];
+  [dictionary _cn_setNonNilObject:propertyKey forKey:@"ContactProperty"];
 
-  v9 = [(CNFavoritesEntryRepresentation *)self actionType];
-  [v3 _cn_setNonNilObject:v9 forKey:@"ActionType"];
+  actionType = [(CNFavoritesEntryRepresentation *)self actionType];
+  [dictionary _cn_setNonNilObject:actionType forKey:@"ActionType"];
 
-  v10 = [(CNFavoritesEntryRepresentation *)self bundleIdentifier];
-  [v3 _cn_setNonNilObject:v10 forKey:@"BundleIdentifier"];
+  bundleIdentifier = [(CNFavoritesEntryRepresentation *)self bundleIdentifier];
+  [dictionary _cn_setNonNilObject:bundleIdentifier forKey:@"BundleIdentifier"];
 
-  v11 = [v3 copy];
+  v11 = [dictionary copy];
 
   return v11;
 }
 
-- (id)dictionaryRepresentationWithRedaction:(BOOL)a3
+- (id)dictionaryRepresentationWithRedaction:(BOOL)redaction
 {
-  v3 = a3;
+  redactionCopy = redaction;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(CNFavoritesEntryRepresentation *)self entryIdentifier];
-  [v5 _cn_setNonNilObject:v6 forKey:@"EntryIdentifier"];
+  entryIdentifier = [(CNFavoritesEntryRepresentation *)self entryIdentifier];
+  [v5 _cn_setNonNilObject:entryIdentifier forKey:@"EntryIdentifier"];
 
-  v7 = [(CNFavoritesEntryRepresentation *)self name];
-  [v5 _cn_setNonNilObject:v7 forKey:@"Name"];
+  name = [(CNFavoritesEntryRepresentation *)self name];
+  [v5 _cn_setNonNilObject:name forKey:@"Name"];
 
-  v8 = [(CNFavoritesEntryRepresentation *)self value];
-  [v5 _cn_setNonNilObject:v8 forKey:@"Value"];
+  value = [(CNFavoritesEntryRepresentation *)self value];
+  [v5 _cn_setNonNilObject:value forKey:@"Value"];
 
-  v9 = [(CNFavoritesEntryRepresentation *)self label];
-  [v5 _cn_setNonNilObject:v9 forKey:@"Label"];
+  label = [(CNFavoritesEntryRepresentation *)self label];
+  [v5 _cn_setNonNilObject:label forKey:@"Label"];
 
-  v10 = [(CNFavoritesEntryRepresentation *)self propertyKey];
-  [v5 _cn_setNonNilObject:v10 forKey:@"ContactProperty"];
+  propertyKey = [(CNFavoritesEntryRepresentation *)self propertyKey];
+  [v5 _cn_setNonNilObject:propertyKey forKey:@"ContactProperty"];
 
-  v11 = [(CNFavoritesEntryRepresentation *)self actionType];
-  [v5 _cn_setNonNilObject:v11 forKey:@"ActionType"];
+  actionType = [(CNFavoritesEntryRepresentation *)self actionType];
+  [v5 _cn_setNonNilObject:actionType forKey:@"ActionType"];
 
-  v12 = [(CNFavoritesEntryRepresentation *)self bundleIdentifier];
-  [v5 _cn_setNonNilObject:v12 forKey:@"BundleIdentifier"];
+  bundleIdentifier = [(CNFavoritesEntryRepresentation *)self bundleIdentifier];
+  [v5 _cn_setNonNilObject:bundleIdentifier forKey:@"BundleIdentifier"];
 
-  v13 = [(CNFavoritesEntryRepresentation *)self actionChannel];
-  [v5 _cn_setNonNilObject:v13 forKey:@"ActionChannel"];
+  actionChannel = [(CNFavoritesEntryRepresentation *)self actionChannel];
+  [v5 _cn_setNonNilObject:actionChannel forKey:@"ActionChannel"];
 
-  v14 = [(CNFavoritesEntryRepresentation *)self contactIdentifier];
-  [v5 _cn_setNonNilObject:v14 forKey:@"ContactIdentifier"];
+  contactIdentifier = [(CNFavoritesEntryRepresentation *)self contactIdentifier];
+  [v5 _cn_setNonNilObject:contactIdentifier forKey:@"ContactIdentifier"];
 
-  v15 = [(CNFavoritesEntryRepresentation *)self labeledValueIdentifier];
-  [v5 _cn_setNonNilObject:v15 forKey:@"LabeledValueIdentifier"];
+  labeledValueIdentifier = [(CNFavoritesEntryRepresentation *)self labeledValueIdentifier];
+  [v5 _cn_setNonNilObject:labeledValueIdentifier forKey:@"LabeledValueIdentifier"];
 
-  if (v3)
+  if (redactionCopy)
   {
-    v16 = [(CNFavoritesEntryRepresentation *)self name];
+    name2 = [(CNFavoritesEntryRepresentation *)self name];
 
-    if (v16)
+    if (name2)
     {
       [v5 setObject:@"<redacted>" forKeyedSubscript:@"Name"];
     }
@@ -352,9 +352,9 @@ uint64_t __54__CNFavoritesEntryRepresentation_mapBundleIdentifier___block_invoke
 - (id)debugDescription
 {
   v2 = -[CNFavoritesEntryRepresentation dictionaryRepresentationWithRedaction:](self, "dictionaryRepresentationWithRedaction:", [objc_opt_class() shouldLogAnonymousEntry]);
-  v3 = [v2 descriptionInStringsFileFormat];
+  descriptionInStringsFileFormat = [v2 descriptionInStringsFileFormat];
 
-  return v3;
+  return descriptionInStringsFileFormat;
 }
 
 - (unint64_t)hash
@@ -566,85 +566,85 @@ uint64_t __49__CNFavoritesEntryRepresentation_equivalencyHash__block_invoke_6(ui
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CNFavoritesEntryRepresentation *)self entryIdentifier];
-  [v4 encodeObject:v5 forKey:@"EntryIdentifier"];
+  coderCopy = coder;
+  entryIdentifier = [(CNFavoritesEntryRepresentation *)self entryIdentifier];
+  [coderCopy encodeObject:entryIdentifier forKey:@"EntryIdentifier"];
 
-  v6 = [(CNFavoritesEntryRepresentation *)self name];
-  [v4 encodeObject:v6 forKey:@"Name"];
+  name = [(CNFavoritesEntryRepresentation *)self name];
+  [coderCopy encodeObject:name forKey:@"Name"];
 
-  v7 = [(CNFavoritesEntryRepresentation *)self value];
-  [v4 encodeObject:v7 forKey:@"Value"];
+  value = [(CNFavoritesEntryRepresentation *)self value];
+  [coderCopy encodeObject:value forKey:@"Value"];
 
-  v8 = [(CNFavoritesEntryRepresentation *)self label];
-  [v4 encodeObject:v8 forKey:@"Label"];
+  label = [(CNFavoritesEntryRepresentation *)self label];
+  [coderCopy encodeObject:label forKey:@"Label"];
 
-  v9 = [(CNFavoritesEntryRepresentation *)self propertyKey];
-  [v4 encodeObject:v9 forKey:@"ContactProperty"];
+  propertyKey = [(CNFavoritesEntryRepresentation *)self propertyKey];
+  [coderCopy encodeObject:propertyKey forKey:@"ContactProperty"];
 
-  v10 = [(CNFavoritesEntryRepresentation *)self actionType];
-  [v4 encodeObject:v10 forKey:@"ActionType"];
+  actionType = [(CNFavoritesEntryRepresentation *)self actionType];
+  [coderCopy encodeObject:actionType forKey:@"ActionType"];
 
-  v11 = [(CNFavoritesEntryRepresentation *)self bundleIdentifier];
-  [v4 encodeObject:v11 forKey:@"BundleIdentifier"];
+  bundleIdentifier = [(CNFavoritesEntryRepresentation *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"BundleIdentifier"];
 
-  v12 = [(CNFavoritesEntryRepresentation *)self actionChannel];
-  [v4 encodeObject:v12 forKey:@"ActionChannel"];
+  actionChannel = [(CNFavoritesEntryRepresentation *)self actionChannel];
+  [coderCopy encodeObject:actionChannel forKey:@"ActionChannel"];
 
-  v13 = [(CNFavoritesEntryRepresentation *)self contactIdentifier];
-  [v4 encodeObject:v13 forKey:@"ContactIdentifier"];
+  contactIdentifier = [(CNFavoritesEntryRepresentation *)self contactIdentifier];
+  [coderCopy encodeObject:contactIdentifier forKey:@"ContactIdentifier"];
 
-  v14 = [(CNFavoritesEntryRepresentation *)self labeledValueIdentifier];
-  [v4 encodeObject:v14 forKey:@"LabeledValueIdentifier"];
+  labeledValueIdentifier = [(CNFavoritesEntryRepresentation *)self labeledValueIdentifier];
+  [coderCopy encodeObject:labeledValueIdentifier forKey:@"LabeledValueIdentifier"];
 }
 
-- (CNFavoritesEntryRepresentation)initWithCoder:(id)a3
+- (CNFavoritesEntryRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = CNFavoritesEntryRepresentation;
   v5 = [(CNFavoritesEntryRepresentation *)&v28 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EntryIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EntryIdentifier"];
     entryIdentifier = v5->_entryIdentifier;
     v5->_entryIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
     value = v5->_value;
     v5->_value = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Label"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Label"];
     label = v5->_label;
     v5->_label = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ContactProperty"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ContactProperty"];
     propertyKey = v5->_propertyKey;
     v5->_propertyKey = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ActionType"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ActionType"];
     actionType = v5->_actionType;
     v5->_actionType = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BundleIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ActionChannel"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ActionChannel"];
     actionChannel = v5->_actionChannel;
     v5->_actionChannel = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ContactIdentifier"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ContactIdentifier"];
     contactIdentifier = v5->_contactIdentifier;
     v5->_contactIdentifier = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LabeledValueIdentifier"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LabeledValueIdentifier"];
     labeledValueIdentifier = v5->_labeledValueIdentifier;
     v5->_labeledValueIdentifier = v24;
 

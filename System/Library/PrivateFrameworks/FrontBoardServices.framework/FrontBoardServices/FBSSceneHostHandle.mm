@@ -1,5 +1,5 @@
 @interface FBSSceneHostHandle
-+ (FBSSceneHostHandle)handleWithAuditToken:(id)a3;
++ (FBSSceneHostHandle)handleWithAuditToken:(id)token;
 + (id)localHandle;
 - (id)description;
 @end
@@ -32,22 +32,22 @@ uint64_t __33__FBSSceneHostHandle_localHandle__block_invoke()
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-+ (FBSSceneHostHandle)handleWithAuditToken:(id)a3
++ (FBSSceneHostHandle)handleWithAuditToken:(id)token
 {
-  v5 = a3;
-  v6 = [v5 pid];
+  tokenCopy = token;
+  v6 = [tokenCopy pid];
   if (v6 == getpid())
   {
-    v7 = [a1 localHandle];
+    localHandle = [self localHandle];
   }
 
   else
   {
-    v7 = objc_alloc_init(FBSSceneHostHandle);
-    objc_storeStrong(&v7->_auditToken, a3);
+    localHandle = objc_alloc_init(FBSSceneHostHandle);
+    objc_storeStrong(&localHandle->_auditToken, token);
   }
 
-  return v7;
+  return localHandle;
 }
 
 - (id)description

@@ -15,9 +15,9 @@
 - (BOOL)isTrue
 {
   v2 = +[MapsSuggestionsNavdLBALocationManager sharedLocationManager];
-  v3 = [v2 hasLocationAccess];
+  hasLocationAccess = [v2 hasLocationAccess];
 
-  return v3;
+  return hasLocationAccess;
 }
 
 @end

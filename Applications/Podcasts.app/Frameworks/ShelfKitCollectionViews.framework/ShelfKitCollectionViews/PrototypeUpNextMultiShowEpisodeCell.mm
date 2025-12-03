@@ -1,16 +1,16 @@
 @interface PrototypeUpNextMultiShowEpisodeCell
-- (_TtC23ShelfKitCollectionViews35PrototypeUpNextMultiShowEpisodeCell)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews35PrototypeUpNextMultiShowEpisodeCell)initWithFrame:(CGRect)frame;
 - (void)buttonPressed;
 @end
 
 @implementation PrototypeUpNextMultiShowEpisodeCell
 
-- (_TtC23ShelfKitCollectionViews35PrototypeUpNextMultiShowEpisodeCell)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews35PrototypeUpNextMultiShowEpisodeCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews35PrototypeUpNextMultiShowEpisodeCell____lazy_storage___infoButton) = 0;
   v9 = (&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews35PrototypeUpNextMultiShowEpisodeCell_podcastUuid);
@@ -18,17 +18,17 @@
   v9[1] = 0;
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v10 = [(MultiShowEpisodeCell *)&v14 initWithFrame:x, y, width, height];
-  v11 = [(PrototypeUpNextMultiShowEpisodeCell *)v10 contentView];
+  height = [(MultiShowEpisodeCell *)&v14 initWithFrame:x, y, width, height];
+  contentView = [(PrototypeUpNextMultiShowEpisodeCell *)height contentView];
   v12 = sub_FE7E8();
-  [v11 addSubview:v12];
+  [contentView addSubview:v12];
 
-  return v10;
+  return height;
 }
 
 - (void)buttonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_FED44();
 }
 

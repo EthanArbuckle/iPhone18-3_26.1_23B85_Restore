@@ -1,24 +1,24 @@
 @interface PeerPaymentAmountEntryKeypadView.Coordinator
 - (_TtCV9PassKitUI32PeerPaymentAmountEntryKeypadView11Coordinator)init;
 - (id)currentBalance;
-- (void)amountDidChangeTo:(id)a3;
-- (void)memoDidChangeTo:(id)a3;
+- (void)amountDidChangeTo:(id)to;
+- (void)memoDidChangeTo:(id)to;
 @end
 
 @implementation PeerPaymentAmountEntryKeypadView.Coordinator
 
 - (id)currentBalance
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtCV9PassKitUI32PeerPaymentAmountEntryKeypadView11Coordinator_peerPaymentAccount) currentBalance];
+  currentBalance = [*(&self->super.isa + OBJC_IVAR____TtCV9PassKitUI32PeerPaymentAmountEntryKeypadView11Coordinator_peerPaymentAccount) currentBalance];
 
-  return v2;
+  return currentBalance;
 }
 
-- (void)amountDidChangeTo:(id)a3
+- (void)amountDidChangeTo:(id)to
 {
-  if (a3)
+  if (to)
   {
-    v3 = a3;
+    toCopy = to;
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBD48B68);
     sub_1BE0518F4();
   }
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)memoDidChangeTo:(id)a3
+- (void)memoDidChangeTo:(id)to
 {
-  if (a3)
+  if (to)
   {
     sub_1BE052434();
   }

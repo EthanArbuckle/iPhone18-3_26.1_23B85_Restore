@@ -1,27 +1,27 @@
 @interface THBodyRep
-- (BOOL)p_doesRep:(id)a3 containCharIndex:(unint64_t)a4 isStart:(BOOL)a5;
-- (THBodyRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (id)hitRep:(CGPoint)a3;
-- (id)hitRepChrome:(CGPoint)a3;
-- (id)hitReps:(CGPoint)a3 withSlop:(CGSize)a4;
+- (BOOL)p_doesRep:(id)rep containCharIndex:(unint64_t)index isStart:(BOOL)start;
+- (THBodyRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (id)hitRep:(CGPoint)rep;
+- (id)hitRepChrome:(CGPoint)chrome;
+- (id)hitReps:(CGPoint)reps withSlop:(CGSize)slop;
 - (id)marginNotesController;
 - (id)marginNotesOwner;
-- (id)repForCharIndex:(unint64_t)a3 isStart:(BOOL)a4;
+- (id)repForCharIndex:(unint64_t)index isStart:(BOOL)start;
 - (id)siblings;
 - (id)storage;
 - (void)dealloc;
-- (void)setupMarginNotesControllerForHighlightController:(id)a3;
+- (void)setupMarginNotesControllerForHighlightController:(id)controller;
 - (void)updateFromLayout;
 - (void)willBeRemoved;
 @end
 
 @implementation THBodyRep
 
-- (THBodyRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THBodyRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v7.receiver = self;
   v7.super_class = THBodyRep;
-  v4 = [(THWPRep *)&v7 initWithLayout:a3 canvas:a4];
+  v4 = [(THWPRep *)&v7 initWithLayout:layout canvas:canvas];
   v5 = v4;
   if (v4)
   {
@@ -40,15 +40,15 @@
 
 - (id)storage
 {
-  v2 = [(THBodyRep *)self info];
+  info = [(THBodyRep *)self info];
 
-  return [v2 bodyStorage];
+  return [info bodyStorage];
 }
 
-- (id)hitRep:(CGPoint)a3
+- (id)hitRep:(CGPoint)rep
 {
-  y = a3.y;
-  x = a3.x;
+  y = rep.y;
+  x = rep.x;
   result = [-[THBodyRep columns](self "columns")];
   if (result)
   {
@@ -60,12 +60,12 @@
   return result;
 }
 
-- (id)hitReps:(CGPoint)a3 withSlop:(CGSize)a4
+- (id)hitReps:(CGPoint)reps withSlop:(CGSize)slop
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
+  height = slop.height;
+  width = slop.width;
+  y = reps.y;
+  x = reps.x;
   result = [-[THBodyRep columns](self "columns")];
   if (result)
   {
@@ -77,10 +77,10 @@
   return result;
 }
 
-- (id)hitRepChrome:(CGPoint)a3
+- (id)hitRepChrome:(CGPoint)chrome
 {
-  y = a3.y;
-  x = a3.x;
+  y = chrome.y;
+  x = chrome.x;
   result = [-[THBodyRep columns](self "columns")];
   if (result)
   {
@@ -92,28 +92,28 @@
   return result;
 }
 
-- (BOOL)p_doesRep:(id)a3 containCharIndex:(unint64_t)a4 isStart:(BOOL)a5
+- (BOOL)p_doesRep:(id)rep containCharIndex:(unint64_t)index isStart:(BOOL)start
 {
-  v5 = a5;
-  v7 = [a3 range];
-  if (v5 && v7 <= a4)
+  startCopy = start;
+  range = [rep range];
+  if (startCopy && range <= index)
   {
-    return v7 + v8 > a4;
+    return range + v8 > index;
   }
 
-  v10 = v7 + v8 >= a4;
-  if (v7 >= a4)
+  v10 = range + v8 >= index;
+  if (range >= index)
   {
     v10 = 0;
   }
 
-  return !v5 && v10;
+  return !startCopy && v10;
 }
 
-- (id)repForCharIndex:(unint64_t)a3 isStart:(BOOL)a4
+- (id)repForCharIndex:(unint64_t)index isStart:(BOOL)start
 {
-  v4 = a4;
-  if ([(THBodyRep *)self p_doesRep:self containCharIndex:a3 isStart:a4])
+  startCopy = start;
+  if ([(THBodyRep *)self p_doesRep:self containCharIndex:index isStart:start])
   {
     return self;
   }
@@ -122,8 +122,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(THBodyRep *)self siblings];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  siblings = [(THBodyRep *)self siblings];
+  v9 = [siblings countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!v9)
   {
     return 0;
@@ -137,18 +137,18 @@ LABEL_5:
   {
     if (*v15 != v11)
     {
-      objc_enumerationMutation(v8);
+      objc_enumerationMutation(siblings);
     }
 
     v7 = *(*(&v14 + 1) + 8 * v12);
-    if ([(THBodyRep *)self p_doesRep:v7 containCharIndex:a3 isStart:v4])
+    if ([(THBodyRep *)self p_doesRep:v7 containCharIndex:index isStart:startCopy])
     {
       return v7;
     }
 
     if (v10 == ++v12)
     {
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [siblings countByEnumeratingWithState:&v14 objects:v18 count:16];
       v7 = 0;
       if (v10)
       {
@@ -188,8 +188,8 @@ LABEL_5:
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v9 = [v8 modelBodyInfos];
-        v10 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        modelBodyInfos = [v8 modelBodyInfos];
+        v10 = [modelBodyInfos countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v10)
         {
           v11 = v10;
@@ -201,7 +201,7 @@ LABEL_5:
             {
               if (*v19 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(modelBodyInfos);
               }
 
               v14 = [-[THBodyRep interactiveCanvasController](self "interactiveCanvasController")];
@@ -224,7 +224,7 @@ LABEL_5:
             }
 
             while (v11 != v13);
-            v11 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v11 = [modelBodyInfos countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v11);
@@ -260,9 +260,9 @@ LABEL_5:
 
 - (id)marginNotesController
 {
-  v2 = [(THBodyRep *)self parentRep];
+  parentRep = [(THBodyRep *)self parentRep];
 
-  return [v2 marginNotesController];
+  return [parentRep marginNotesController];
 }
 
 - (id)marginNotesOwner
@@ -272,11 +272,11 @@ LABEL_5:
   return TSUProtocolCast();
 }
 
-- (void)setupMarginNotesControllerForHighlightController:(id)a3
+- (void)setupMarginNotesControllerForHighlightController:(id)controller
 {
-  v4 = [(THBodyRep *)self marginNotesController];
+  marginNotesController = [(THBodyRep *)self marginNotesController];
 
-  [a3 setMarginNotesController:v4];
+  [controller setMarginNotesController:marginNotesController];
 }
 
 @end

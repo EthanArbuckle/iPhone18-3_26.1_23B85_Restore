@@ -1,5 +1,5 @@
 @interface MPAVTelevisionRoute
-- (MPAVTelevisionRoute)initWithTelevision:(void *)a3;
+- (MPAVTelevisionRoute)initWithTelevision:(void *)television;
 - (id)routeUID;
 - (void)dealloc;
 @end
@@ -21,20 +21,20 @@
   [(MPAVTelevisionRoute *)&v3 dealloc];
 }
 
-- (MPAVTelevisionRoute)initWithTelevision:(void *)a3
+- (MPAVTelevisionRoute)initWithTelevision:(void *)television
 {
   v14.receiver = self;
   v14.super_class = MPAVTelevisionRoute;
   v5 = [(MPAVTelevisionRoute *)&v14 init];
   if (v5)
   {
-    if (!a3)
+    if (!television)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:v5 file:@"MPAVTelevisionRoute.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"television"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v5 file:@"MPAVTelevisionRoute.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"television"}];
     }
 
-    v5->_television = CFRetain(a3);
+    v5->_television = CFRetain(television);
     v6 = MRExternalDeviceCopyName();
     routeName = v5->super._routeName;
     v5->super._routeName = v6;

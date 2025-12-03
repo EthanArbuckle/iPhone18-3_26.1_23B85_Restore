@@ -1,29 +1,29 @@
 @interface TPPBPeerDynamicInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDispositions:(id)a3;
-- (void)addExcluded:(id)a3;
-- (void)addIncluded:(id)a3;
-- (void)addPositivelyExcluded:(id)a3;
-- (void)addPreapprovals:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDispositions:(id)dispositions;
+- (void)addExcluded:(id)excluded;
+- (void)addIncluded:(id)included;
+- (void)addPositivelyExcluded:(id)excluded;
+- (void)addPreapprovals:(id)preapprovals;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TPPBPeerDynamicInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 56))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 56))
   {
-    self->_clock = *(v4 + 1);
+    self->_clock = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -31,7 +31,7 @@
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   v7 = [v6 countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v7)
   {
@@ -199,24 +199,24 @@
   return v6 ^ v7 ^ [(NSMutableArray *)self->_positivelyExcludeds hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(equalCopy + 56);
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_clock != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_clock != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
 LABEL_17:
     v11 = 0;
@@ -224,13 +224,13 @@ LABEL_17:
   }
 
   includeds = self->_includeds;
-  if (includeds | *(v4 + 4) && ![(NSMutableArray *)includeds isEqual:?])
+  if (includeds | *(equalCopy + 4) && ![(NSMutableArray *)includeds isEqual:?])
   {
     goto LABEL_17;
   }
 
   excludeds = self->_excludeds;
-  if (excludeds | *(v4 + 3))
+  if (excludeds | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)excludeds isEqual:?])
     {
@@ -239,7 +239,7 @@ LABEL_17:
   }
 
   dispositions = self->_dispositions;
-  if (dispositions | *(v4 + 2))
+  if (dispositions | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)dispositions isEqual:?])
     {
@@ -248,7 +248,7 @@ LABEL_17:
   }
 
   preapprovals = self->_preapprovals;
-  if (preapprovals | *(v4 + 6))
+  if (preapprovals | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)preapprovals isEqual:?])
     {
@@ -257,7 +257,7 @@ LABEL_17:
   }
 
   positivelyExcludeds = self->_positivelyExcludeds;
-  if (positivelyExcludeds | *(v4 + 5))
+  if (positivelyExcludeds | *(equalCopy + 5))
   {
     v11 = [(NSMutableArray *)positivelyExcludeds isEqual:?];
   }
@@ -272,10 +272,10 @@ LABEL_18:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v64 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -303,7 +303,7 @@ LABEL_18:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v55 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v55 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addIncluded:v12];
 
         ++v11;
@@ -336,7 +336,7 @@ LABEL_18:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v51 + 1) + 8 * v17) copyWithZone:a3];
+        v18 = [*(*(&v51 + 1) + 8 * v17) copyWithZone:zone];
         [v6 addExcluded:v18];
 
         ++v17;
@@ -369,7 +369,7 @@ LABEL_18:
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v47 + 1) + 8 * v23) copyWithZone:a3];
+        v24 = [*(*(&v47 + 1) + 8 * v23) copyWithZone:zone];
         [v6 addDispositions:v24];
 
         ++v23;
@@ -402,7 +402,7 @@ LABEL_18:
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v43 + 1) + 8 * v29) copyWithZone:a3];
+        v30 = [*(*(&v43 + 1) + 8 * v29) copyWithZone:zone];
         [v6 addPreapprovals:v30];
 
         ++v29;
@@ -435,7 +435,7 @@ LABEL_18:
           objc_enumerationMutation(v31);
         }
 
-        v36 = [*(*(&v39 + 1) + 8 * v35) copyWithZone:{a3, v39}];
+        v36 = [*(*(&v39 + 1) + 8 * v35) copyWithZone:{zone, v39}];
         [v6 addPositivelyExcluded:v36];
 
         ++v35;
@@ -452,23 +452,23 @@ LABEL_18:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_clock;
-    *(v4 + 56) |= 1u;
+    toCopy[1] = self->_clock;
+    *(toCopy + 56) |= 1u;
   }
 
-  v25 = v4;
+  v25 = toCopy;
   if ([(TPPBPeerDynamicInfo *)self includedsCount])
   {
     [v25 clearIncludeds];
-    v5 = [(TPPBPeerDynamicInfo *)self includedsCount];
-    if (v5)
+    includedsCount = [(TPPBPeerDynamicInfo *)self includedsCount];
+    if (includedsCount)
     {
-      v6 = v5;
+      v6 = includedsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(TPPBPeerDynamicInfo *)self includedAtIndex:i];
@@ -480,10 +480,10 @@ LABEL_18:
   if ([(TPPBPeerDynamicInfo *)self excludedsCount])
   {
     [v25 clearExcludeds];
-    v9 = [(TPPBPeerDynamicInfo *)self excludedsCount];
-    if (v9)
+    excludedsCount = [(TPPBPeerDynamicInfo *)self excludedsCount];
+    if (excludedsCount)
     {
-      v10 = v9;
+      v10 = excludedsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(TPPBPeerDynamicInfo *)self excludedAtIndex:j];
@@ -495,10 +495,10 @@ LABEL_18:
   if ([(TPPBPeerDynamicInfo *)self dispositionsCount])
   {
     [v25 clearDispositions];
-    v13 = [(TPPBPeerDynamicInfo *)self dispositionsCount];
-    if (v13)
+    dispositionsCount = [(TPPBPeerDynamicInfo *)self dispositionsCount];
+    if (dispositionsCount)
     {
-      v14 = v13;
+      v14 = dispositionsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(TPPBPeerDynamicInfo *)self dispositionsAtIndex:k];
@@ -510,10 +510,10 @@ LABEL_18:
   if ([(TPPBPeerDynamicInfo *)self preapprovalsCount])
   {
     [v25 clearPreapprovals];
-    v17 = [(TPPBPeerDynamicInfo *)self preapprovalsCount];
-    if (v17)
+    preapprovalsCount = [(TPPBPeerDynamicInfo *)self preapprovalsCount];
+    if (preapprovalsCount)
     {
-      v18 = v17;
+      v18 = preapprovalsCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(TPPBPeerDynamicInfo *)self preapprovalsAtIndex:m];
@@ -525,10 +525,10 @@ LABEL_18:
   if ([(TPPBPeerDynamicInfo *)self positivelyExcludedsCount])
   {
     [v25 clearPositivelyExcludeds];
-    v21 = [(TPPBPeerDynamicInfo *)self positivelyExcludedsCount];
-    if (v21)
+    positivelyExcludedsCount = [(TPPBPeerDynamicInfo *)self positivelyExcludedsCount];
+    if (positivelyExcludedsCount)
     {
-      v22 = v21;
+      v22 = positivelyExcludedsCount;
       for (n = 0; n != v22; ++n)
       {
         v24 = [(TPPBPeerDynamicInfo *)self positivelyExcludedAtIndex:n];
@@ -538,10 +538,10 @@ LABEL_18:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     clock = self->_clock;
@@ -714,23 +714,23 @@ LABEL_18:
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_clock];
-    [v3 setObject:v4 forKey:@"clock"];
+    [dictionary setObject:v4 forKey:@"clock"];
   }
 
   includeds = self->_includeds;
   if (includeds)
   {
-    [v3 setObject:includeds forKey:@"included"];
+    [dictionary setObject:includeds forKey:@"included"];
   }
 
   excludeds = self->_excludeds;
   if (excludeds)
   {
-    [v3 setObject:excludeds forKey:@"excluded"];
+    [dictionary setObject:excludeds forKey:@"excluded"];
   }
 
   if ([(NSMutableArray *)self->_dispositions count])
@@ -755,8 +755,8 @@ LABEL_18:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -765,13 +765,13 @@ LABEL_18:
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"dispositions"];
+    [dictionary setObject:v7 forKey:@"dispositions"];
   }
 
   preapprovals = self->_preapprovals;
   if (preapprovals)
   {
-    [v3 setObject:preapprovals forKey:@"preapprovals"];
+    [dictionary setObject:preapprovals forKey:@"preapprovals"];
   }
 
   if ([(NSMutableArray *)self->_positivelyExcludeds count])
@@ -796,8 +796,8 @@ LABEL_18:
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation2 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation2];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -806,12 +806,12 @@ LABEL_18:
       while (v18);
     }
 
-    [v3 setObject:v15 forKey:@"positivelyExcluded"];
+    [dictionary setObject:v15 forKey:@"positivelyExcluded"];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -820,100 +820,100 @@ LABEL_18:
   v8.receiver = self;
   v8.super_class = TPPBPeerDynamicInfo;
   v4 = [(TPPBPeerDynamicInfo *)&v8 description];
-  v5 = [(TPPBPeerDynamicInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(TPPBPeerDynamicInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addPositivelyExcluded:(id)a3
+- (void)addPositivelyExcluded:(id)excluded
 {
-  v4 = a3;
+  excludedCopy = excluded;
   positivelyExcludeds = self->_positivelyExcludeds;
-  v8 = v4;
+  v8 = excludedCopy;
   if (!positivelyExcludeds)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_positivelyExcludeds;
     self->_positivelyExcludeds = v6;
 
-    v4 = v8;
+    excludedCopy = v8;
     positivelyExcludeds = self->_positivelyExcludeds;
   }
 
-  [(NSMutableArray *)positivelyExcludeds addObject:v4];
+  [(NSMutableArray *)positivelyExcludeds addObject:excludedCopy];
 }
 
-- (void)addPreapprovals:(id)a3
+- (void)addPreapprovals:(id)preapprovals
 {
-  v4 = a3;
+  preapprovalsCopy = preapprovals;
   preapprovals = self->_preapprovals;
-  v8 = v4;
+  v8 = preapprovalsCopy;
   if (!preapprovals)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_preapprovals;
     self->_preapprovals = v6;
 
-    v4 = v8;
+    preapprovalsCopy = v8;
     preapprovals = self->_preapprovals;
   }
 
-  [(NSMutableArray *)preapprovals addObject:v4];
+  [(NSMutableArray *)preapprovals addObject:preapprovalsCopy];
 }
 
-- (void)addDispositions:(id)a3
+- (void)addDispositions:(id)dispositions
 {
-  v4 = a3;
+  dispositionsCopy = dispositions;
   dispositions = self->_dispositions;
-  v8 = v4;
+  v8 = dispositionsCopy;
   if (!dispositions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_dispositions;
     self->_dispositions = v6;
 
-    v4 = v8;
+    dispositionsCopy = v8;
     dispositions = self->_dispositions;
   }
 
-  [(NSMutableArray *)dispositions addObject:v4];
+  [(NSMutableArray *)dispositions addObject:dispositionsCopy];
 }
 
-- (void)addExcluded:(id)a3
+- (void)addExcluded:(id)excluded
 {
-  v4 = a3;
+  excludedCopy = excluded;
   excludeds = self->_excludeds;
-  v8 = v4;
+  v8 = excludedCopy;
   if (!excludeds)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_excludeds;
     self->_excludeds = v6;
 
-    v4 = v8;
+    excludedCopy = v8;
     excludeds = self->_excludeds;
   }
 
-  [(NSMutableArray *)excludeds addObject:v4];
+  [(NSMutableArray *)excludeds addObject:excludedCopy];
 }
 
-- (void)addIncluded:(id)a3
+- (void)addIncluded:(id)included
 {
-  v4 = a3;
+  includedCopy = included;
   includeds = self->_includeds;
-  v8 = v4;
+  v8 = includedCopy;
   if (!includeds)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_includeds;
     self->_includeds = v6;
 
-    v4 = v8;
+    includedCopy = v8;
     includeds = self->_includeds;
   }
 
-  [(NSMutableArray *)includeds addObject:v4];
+  [(NSMutableArray *)includeds addObject:includedCopy];
 }
 
 @end

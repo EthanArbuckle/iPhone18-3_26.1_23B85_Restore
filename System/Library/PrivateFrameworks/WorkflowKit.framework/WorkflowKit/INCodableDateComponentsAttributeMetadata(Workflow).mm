@@ -17,7 +17,7 @@
     if (objc_opt_isKindOfClass())
     {
       v10 = [MEMORY[0x1E696EA80] localizerForLanguage:0];
-      v11 = [v9 _intents_readableTitleWithLocalizer:v10 metadata:a1];
+      v11 = [v9 _intents_readableTitleWithLocalizer:v10 metadata:self];
 
       v12 = [[WFVariableString alloc] initWithString:v11];
       v13 = [(WFVariableStringParameterState *)[WFDateFieldParameterState alloc] initWithVariableString:v12];
@@ -41,7 +41,7 @@
     }
   }
 
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = &off_1F4AFD808;
   v13 = objc_msgSendSuper2(&v18, sel_wf_parameterStateForIntentValue_parameterDefinition_, v9, v7);
 LABEL_8:
@@ -54,11 +54,11 @@ LABEL_8:
 - (id)wf_updatedParameterDefinition:()Workflow forCodableAttribute:localizer:
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &off_1F4AFD808;
   v2 = objc_msgSendSuper2(&v10, sel_wf_updatedParameterDefinition_forCodableAttribute_localizer_);
-  v3 = [a1 type];
-  if (v3 <= 2 && (v4 = *off_1E8375DE0[v3]) != 0)
+  type = [self type];
+  if (type <= 2 && (v4 = *off_1E8375DE0[type]) != 0)
   {
     v5 = v4;
     v11 = @"HintDateMode";

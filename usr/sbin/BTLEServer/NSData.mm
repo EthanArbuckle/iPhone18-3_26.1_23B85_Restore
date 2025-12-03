@@ -6,7 +6,7 @@
 
 - (BOOL)isZeroValue
 {
-  v3 = [(NSData *)self bytes];
+  bytes = [(NSData *)self bytes];
   if (![(NSData *)self length])
   {
     return 1;
@@ -16,8 +16,8 @@
   v5 = 0;
   do
   {
-    v6 = v3[v4] == 0;
-    if (v3[v4])
+    v6 = bytes[v4] == 0;
+    if (bytes[v4])
     {
       break;
     }

@@ -2,69 +2,69 @@
 - (_TtC16MagnifierSupport13SceneDelegate)init;
 - (uint64_t)sceneDidBecomeActive:;
 - (uint64_t)sceneWillResignActive:;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 - (void)sceneDidEnterBackground:;
 - (void)sceneWillEnterForeground:;
-- (void)setWindow:(id)a3;
-- (void)updateAppearanceForReduceTransparency:(id)a3;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
+- (void)setWindow:(id)window;
+- (void)updateAppearanceForReduceTransparency:(id)transparency;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation SceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC16MagnifierSupport13SceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC16MagnifierSupport13SceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC16MagnifierSupport13SceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_257E4D800(v8, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_257E4D800(sceneCopy, optionsCopy);
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_257E4E0E4(v7);
+  sceneCopy = scene;
+  activityCopy = activity;
+  selfCopy = self;
+  sub_257E4E0E4(activityCopy);
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
-  v8 = a4;
-  v9 = self;
-  sub_257E493A4(a4);
+  v7 = _Block_copy(handler);
+  itemCopy = item;
+  selfCopy = self;
+  sub_257E493A4(item);
   v7[2](v7, 1);
 
   _Block_release(v7);
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   sub_257BD2C2C(0, &qword_281543F58);
   sub_257E4D770(&qword_281543F50, &qword_281543F58);
   v6 = sub_257ECFA70();
-  v7 = a3;
-  v8 = self;
-  sub_257E49A10(v7, v6);
+  sceneCopy = scene;
+  selfCopy = self;
+  sub_257E49A10(sceneCopy, v6);
 }
 
-- (void)updateAppearanceForReduceTransparency:(id)a3
+- (void)updateAppearanceForReduceTransparency:(id)transparency
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F8F9E30);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (transparency)
   {
     sub_257ECC7E0();
     v8 = sub_257ECC810();
@@ -77,7 +77,7 @@
     (*(*(v9 - 8) + 56))(v7, 1, 1, v9);
   }
 
-  v10 = self;
+  selfCopy = self;
   sub_257E4D264();
 
   sub_257BE4084(v7, &qword_27F8F9E30);
@@ -141,8 +141,8 @@
   v1 = *(v0 - 8);
   MEMORY[0x28223BE20](v0);
   v3 = &v9 - ((v2 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v4 = [objc_opt_self() sharedApplication];
-  [v4 setShortcutItems_];
+  sharedApplication = [objc_opt_self() sharedApplication];
+  [sharedApplication setShortcutItems_];
 
   sub_257ECD4E0();
   v5 = sub_257ECDA20();
@@ -200,8 +200,8 @@
   }
 
   (*(v1 + 8))(v3, v0);
-  v16 = [objc_opt_self() currentDevice];
-  [v16 beginGeneratingDeviceOrientationNotifications];
+  currentDevice = [objc_opt_self() currentDevice];
+  [currentDevice beginGeneratingDeviceOrientationNotifications];
 }
 
 - (void)sceneDidEnterBackground:
@@ -222,8 +222,8 @@
   }
 
   (*(v1 + 8))(v3, v0);
-  v7 = [objc_opt_self() currentDevice];
-  [v7 endGeneratingDeviceOrientationNotifications];
+  currentDevice = [objc_opt_self() currentDevice];
+  [currentDevice endGeneratingDeviceOrientationNotifications];
 }
 
 @end

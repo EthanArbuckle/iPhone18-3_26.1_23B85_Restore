@@ -1,6 +1,6 @@
 @interface AVMediaDataStorage
 - (AVMediaDataStorage)initWithURL:(NSURL *)URL options:(NSDictionary *)options;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -35,10 +35,10 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -49,7 +49,7 @@ LABEL_6:
     if (objc_opt_isKindOfClass())
     {
       v5 = [(AVMediaDataStorage *)self URL];
-      v6 = [(AVMediaDataStorage *)v4 URL];
+      v6 = [(AVMediaDataStorage *)equalCopy URL];
       v7 = [v5 isEqual:v6];
     }
 

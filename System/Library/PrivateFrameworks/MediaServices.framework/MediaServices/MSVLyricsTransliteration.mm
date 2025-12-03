@@ -1,17 +1,17 @@
 @interface MSVLyricsTransliteration
 - (id)description;
-- (id)transliterationForLine:(id)a3;
+- (id)transliterationForLine:(id)line;
 @end
 
 @implementation MSVLyricsTransliteration
 
-- (id)transliterationForLine:(id)a3
+- (id)transliterationForLine:(id)line
 {
-  v4 = a3;
-  v5 = [(MSVLyricsTransliteration *)self linesMap];
-  v6 = [v4 translationKey];
+  lineCopy = line;
+  linesMap = [(MSVLyricsTransliteration *)self linesMap];
+  translationKey = [lineCopy translationKey];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [linesMap objectForKeyedSubscript:translationKey];
 
   return v7;
 }
@@ -20,8 +20,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MSVLyricsTransliteration *)self language];
-  v6 = [v3 stringWithFormat:@"<%@ %p> language: %@", v4, self, v5];
+  language = [(MSVLyricsTransliteration *)self language];
+  v6 = [v3 stringWithFormat:@"<%@ %p> language: %@", v4, self, language];
 
   return v6;
 }

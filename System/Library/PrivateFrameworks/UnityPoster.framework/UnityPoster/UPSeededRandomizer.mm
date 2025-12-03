@@ -1,8 +1,8 @@
 @interface UPSeededRandomizer
-+ (id)randomizerWithSeedValue:(unint64_t)a3;
-- (BOOL)BOOLValueWithChance:(double)a3;
-- (CGPoint)pointBetweenFirstPoint:(CGPoint)a3 secondPoint:(CGPoint)a4;
-- (double)floatValueBetweenFirstValue:(double)a3 secondValue:(double)a4;
++ (id)randomizerWithSeedValue:(unint64_t)value;
+- (BOOL)BOOLValueWithChance:(double)chance;
+- (CGPoint)pointBetweenFirstPoint:(CGPoint)point secondPoint:(CGPoint)secondPoint;
+- (double)floatValueBetweenFirstValue:(double)value secondValue:(double)secondValue;
 - (unint64_t)unsignedLongValue;
 @end
 
@@ -15,25 +15,25 @@
   return v2;
 }
 
-- (BOOL)BOOLValueWithChance:(double)a3
+- (BOOL)BOOLValueWithChance:(double)chance
 {
-  v3 = a3 * 100.0;
-  v4 = [(UPSeededRandomizer *)self unsignedLongValue];
-  return v3 > (v4 / 0x64 - 100 * (((v4 / 0x64 * 0x51EB851EB851EB9uLL) >> 64) >> 1));
+  v3 = chance * 100.0;
+  unsignedLongValue = [(UPSeededRandomizer *)self unsignedLongValue];
+  return v3 > (unsignedLongValue / 0x64 - 100 * (((unsignedLongValue / 0x64 * 0x51EB851EB851EB9uLL) >> 64) >> 1));
 }
 
-- (double)floatValueBetweenFirstValue:(double)a3 secondValue:(double)a4
+- (double)floatValueBetweenFirstValue:(double)value secondValue:(double)secondValue
 {
-  v5 = a4 - a3;
+  v5 = secondValue - value;
   [(UPSeededRandomizer *)self fractionValue];
-  return a3 + v6 * v5;
+  return value + v6 * v5;
 }
 
-- (CGPoint)pointBetweenFirstPoint:(CGPoint)a3 secondPoint:(CGPoint)a4
+- (CGPoint)pointBetweenFirstPoint:(CGPoint)point secondPoint:(CGPoint)secondPoint
 {
-  y = a4.y;
-  v5 = a3.y;
-  [(UPSeededRandomizer *)self floatValueBetweenFirstValue:a3.x secondValue:a4.x];
+  y = secondPoint.y;
+  v5 = point.y;
+  [(UPSeededRandomizer *)self floatValueBetweenFirstValue:point.x secondValue:secondPoint.x];
   v8 = v7;
   [(UPSeededRandomizer *)self floatValueBetweenFirstValue:v5 secondValue:y];
   v10 = v9;
@@ -43,21 +43,21 @@
   return result;
 }
 
-+ (id)randomizerWithSeedValue:(unint64_t)a3
++ (id)randomizerWithSeedValue:(unint64_t)value
 {
-  v4 = [a1 new];
-  if (a3 <= 1)
+  v4 = [self new];
+  if (value <= 1)
   {
-    v5 = 1;
+    valueCopy = 1;
   }
 
   else
   {
-    v5 = a3;
+    valueCopy = value;
   }
 
-  v4[1] = v5;
-  v4[2] = v5;
+  v4[1] = valueCopy;
+  v4[2] = valueCopy;
 
   return v4;
 }

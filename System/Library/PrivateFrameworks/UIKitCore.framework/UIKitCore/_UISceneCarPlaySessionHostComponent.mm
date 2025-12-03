@@ -1,102 +1,102 @@
 @interface _UISceneCarPlaySessionHostComponent
 - (NSArray)touchpads;
 - (_UISceneCarPlaySessionTouchpadFeedbackDelegate)touchpadFeedbackDelegate;
-- (id)handlePrivateActions:(id)a3;
+- (id)handlePrivateActions:(id)actions;
 - (int64_t)touchLevel;
 - (unint64_t)availableInteractionModels;
 - (unint64_t)primaryInteractionModel;
-- (void)setAvailableInteractionModels:(unint64_t)a3;
-- (void)setPrimaryInteractionModel:(unint64_t)a3;
-- (void)setTouchLevel:(int64_t)a3;
-- (void)setTouchpads:(id)a3;
+- (void)setAvailableInteractionModels:(unint64_t)models;
+- (void)setPrimaryInteractionModel:(unint64_t)model;
+- (void)setTouchLevel:(int64_t)level;
+- (void)setTouchpads:(id)touchpads;
 @end
 
 @implementation _UISceneCarPlaySessionHostComponent
 
-- (void)setAvailableInteractionModels:(unint64_t)a3
+- (void)setAvailableInteractionModels:(unint64_t)models
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __69___UISceneCarPlaySessionHostComponent_setAvailableInteractionModels___block_invoke;
   v3[3] = &__block_descriptor_40_e65_v16__0__FBSMutableSceneSettings__UISceneCarPlaySessionSettings__8l;
-  v3[4] = a3;
+  v3[4] = models;
   [(_UISceneInterfaceProtectionHostComponent *)self updateSettings:v3];
 }
 
 - (unint64_t)availableInteractionModels
 {
-  v2 = [(_UISceneInterfaceProtectionClientComponent *)self settings];
-  v3 = [v2 carPlayAvailableInteractionModels];
+  settings = [(_UISceneInterfaceProtectionClientComponent *)self settings];
+  carPlayAvailableInteractionModels = [settings carPlayAvailableInteractionModels];
 
-  return v3;
+  return carPlayAvailableInteractionModels;
 }
 
-- (void)setPrimaryInteractionModel:(unint64_t)a3
+- (void)setPrimaryInteractionModel:(unint64_t)model
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __66___UISceneCarPlaySessionHostComponent_setPrimaryInteractionModel___block_invoke;
   v3[3] = &__block_descriptor_40_e65_v16__0__FBSMutableSceneSettings__UISceneCarPlaySessionSettings__8l;
-  v3[4] = a3;
+  v3[4] = model;
   [(_UISceneInterfaceProtectionHostComponent *)self updateSettings:v3];
 }
 
 - (unint64_t)primaryInteractionModel
 {
-  v2 = [(_UISceneInterfaceProtectionClientComponent *)self settings];
-  v3 = [v2 carPlayPrimaryInteractionModel];
+  settings = [(_UISceneInterfaceProtectionClientComponent *)self settings];
+  carPlayPrimaryInteractionModel = [settings carPlayPrimaryInteractionModel];
 
-  return v3;
+  return carPlayPrimaryInteractionModel;
 }
 
-- (void)setTouchLevel:(int64_t)a3
+- (void)setTouchLevel:(int64_t)level
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __53___UISceneCarPlaySessionHostComponent_setTouchLevel___block_invoke;
   v3[3] = &__block_descriptor_40_e65_v16__0__FBSMutableSceneSettings__UISceneCarPlaySessionSettings__8l;
-  v3[4] = a3;
+  v3[4] = level;
   [(_UISceneInterfaceProtectionHostComponent *)self updateSettings:v3];
 }
 
 - (int64_t)touchLevel
 {
-  v2 = [(_UISceneInterfaceProtectionClientComponent *)self settings];
-  v3 = [v2 carPlayTouchLevel];
+  settings = [(_UISceneInterfaceProtectionClientComponent *)self settings];
+  carPlayTouchLevel = [settings carPlayTouchLevel];
 
-  return v3;
+  return carPlayTouchLevel;
 }
 
-- (void)setTouchpads:(id)a3
+- (void)setTouchpads:(id)touchpads
 {
-  v4 = a3;
+  touchpadsCopy = touchpads;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52___UISceneCarPlaySessionHostComponent_setTouchpads___block_invoke;
   v6[3] = &unk_1E712AC30;
-  v7 = v4;
-  v5 = v4;
+  v7 = touchpadsCopy;
+  v5 = touchpadsCopy;
   [(_UISceneInterfaceProtectionHostComponent *)self updateSettings:v6];
 }
 
 - (NSArray)touchpads
 {
-  v2 = [(_UISceneInterfaceProtectionClientComponent *)self settings];
-  v3 = [v2 carPlayTouchpads];
+  settings = [(_UISceneInterfaceProtectionClientComponent *)self settings];
+  carPlayTouchpads = [settings carPlayTouchpads];
 
-  return v3;
+  return carPlayTouchpads;
 }
 
-- (id)handlePrivateActions:(id)a3
+- (id)handlePrivateActions:(id)actions
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v16 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v4, "count")}];
+  actionsCopy = actions;
+  v16 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(actionsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v4;
+  v5 = actionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -116,10 +116,10 @@
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [(_UISceneCarPlaySessionHostComponent *)self touchpadFeedbackDelegate];
-          v13 = [v11 feedbackType];
-          v14 = [v11 touchpad];
-          [v12 carPlaySession:self performFeedbackOfType:v13 forTouchpad:v14];
+          touchpadFeedbackDelegate = [(_UISceneCarPlaySessionHostComponent *)self touchpadFeedbackDelegate];
+          feedbackType = [v11 feedbackType];
+          touchpad = [v11 touchpad];
+          [touchpadFeedbackDelegate carPlaySession:self performFeedbackOfType:feedbackType forTouchpad:touchpad];
 
           [v16 addObject:v11];
         }

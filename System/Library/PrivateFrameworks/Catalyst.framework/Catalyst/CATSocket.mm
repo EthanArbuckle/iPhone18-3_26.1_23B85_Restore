@@ -1,23 +1,23 @@
 @interface CATSocket
-- (BOOL)connectToEndPoint:(id)a3 error:(id *)a4;
-- (BOOL)delegateShouldAcceptNewSocket:(id)a3;
-- (BOOL)listenWithEndPoint:(id)a3 error:(id *)a4;
+- (BOOL)connectToEndPoint:(id)point error:(id *)error;
+- (BOOL)delegateShouldAcceptNewSocket:(id)socket;
+- (BOOL)listenWithEndPoint:(id)point error:(id *)error;
 - (CATSocket)init;
 - (CATSocketDelegate)delegate;
 - (void)acceptPendingConnection;
 - (void)dealloc;
 - (void)delegateDidClose;
 - (void)delegateDidConnect;
-- (void)delegateDidFailWithError:(id)a3;
-- (void)delegateDidReceiveData:(id)a3;
+- (void)delegateDidFailWithError:(id)error;
+- (void)delegateDidReceiveData:(id)data;
 - (void)invalidate;
 - (void)populateLocalEndPoint;
 - (void)populateRemoteEndPoint;
 - (void)resume;
-- (void)setNativeSocket:(int)a3;
+- (void)setNativeSocket:(int)socket;
 - (void)socketDidCancel;
 - (void)socketDidConnect;
-- (void)socketDidFailWithError:(id)a3;
+- (void)socketDidFailWithError:(id)error;
 - (void)socketDidReceiveData;
 - (void)socketDidReceiveEvent;
 - (void)socketDidReceiveListeningEvent;
@@ -26,7 +26,7 @@
 
 @implementation CATSocket
 
-- (void)setNativeSocket:(int)a3
+- (void)setNativeSocket:(int)socket
 {
   if ([(CATSocket *)self nativeSocket]!= -1)
   {
@@ -38,10 +38,10 @@
     [CATSocket setNativeSocket:];
   }
 
-  if (self->_nativeSocket != a3)
+  if (self->_nativeSocket != socket)
   {
-    self->_nativeSocket = a3;
-    v5 = dispatch_source_create(MEMORY[0x277D85D28], a3, 0, self->_socketQueue);
+    self->_nativeSocket = socket;
+    v5 = dispatch_source_create(MEMORY[0x277D85D28], socket, 0, self->_socketQueue);
     socketSource = self->_socketSource;
     self->_socketSource = v5;
 
@@ -91,14 +91,14 @@
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1();
-  v2 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0();
   [v1 handleFailureInMethod:v0 object:? file:? lineNumber:? description:?];
 }
 
-- (BOOL)listenWithEndPoint:(id)a3 error:(id *)a4
+- (BOOL)listenWithEndPoint:(id)point error:(id *)error
 {
-  v6 = a3;
+  pointCopy = point;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -109,21 +109,21 @@
   v18 = __Block_byref_object_copy__1;
   v19 = __Block_byref_object_dispose__1;
   v20 = 0;
-  v7 = [(CATSocket *)self socketQueue];
+  socketQueue = [(CATSocket *)self socketQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __38__CATSocket_listenWithEndPoint_error___block_invoke;
   v11[3] = &unk_278DA7850;
   v11[4] = self;
   v13 = &v15;
-  v8 = v6;
+  v8 = pointCopy;
   v12 = v8;
   v14 = &v21;
-  dispatch_sync(v7, v11);
+  dispatch_sync(socketQueue, v11);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v9 = *(v22 + 24);
@@ -206,10 +206,10 @@ LABEL_5:
   return [*(a1 + 32) setNativeSocket:v14];
 }
 
-- (BOOL)connectToEndPoint:(id)a3 error:(id *)a4
+- (BOOL)connectToEndPoint:(id)point error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  pointCopy = point;
+  if (!pointCopy)
   {
     [CATSocket connectToEndPoint:error:];
   }
@@ -224,21 +224,21 @@ LABEL_5:
   v18 = __Block_byref_object_copy__1;
   v19 = __Block_byref_object_dispose__1;
   v20 = 0;
-  v7 = [(CATSocket *)self socketQueue];
+  socketQueue = [(CATSocket *)self socketQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __37__CATSocket_connectToEndPoint_error___block_invoke;
   v11[3] = &unk_278DA7850;
   v11[4] = self;
   v13 = &v15;
-  v8 = v6;
+  v8 = pointCopy;
   v12 = v8;
   v14 = &v21;
-  dispatch_sync(v7, v11);
+  dispatch_sync(socketQueue, v11);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v9 = *(v22 + 24);
@@ -355,13 +355,13 @@ void __37__CATSocket_connectToEndPoint_error___block_invoke_2(uint64_t a1)
 
 - (void)resume
 {
-  v3 = [(CATSocket *)self socketQueue];
+  socketQueue = [(CATSocket *)self socketQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __19__CATSocket_resume__block_invoke;
   block[3] = &unk_278DA72D0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(socketQueue, block);
 }
 
 void __19__CATSocket_resume__block_invoke(uint64_t a1)
@@ -377,13 +377,13 @@ void __19__CATSocket_resume__block_invoke(uint64_t a1)
 
 - (void)suspend
 {
-  v3 = [(CATSocket *)self socketQueue];
+  socketQueue = [(CATSocket *)self socketQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __20__CATSocket_suspend__block_invoke;
   block[3] = &unk_278DA72D0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(socketQueue, block);
 }
 
 void __20__CATSocket_suspend__block_invoke(uint64_t a1)
@@ -399,13 +399,13 @@ void __20__CATSocket_suspend__block_invoke(uint64_t a1)
 
 - (void)invalidate
 {
-  v3 = [(CATSocket *)self socketQueue];
+  socketQueue = [(CATSocket *)self socketQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __23__CATSocket_invalidate__block_invoke;
   block[3] = &unk_278DA72D0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(socketQueue, block);
 }
 
 void __23__CATSocket_invalidate__block_invoke(uint64_t a1)
@@ -440,8 +440,8 @@ void __23__CATSocket_invalidate__block_invoke(uint64_t a1)
 
 - (void)socketDidReceiveListeningEvent
 {
-  v3 = [(CATSocket *)self socketSource];
-  data = dispatch_source_get_data(v3);
+  socketSource = [(CATSocket *)self socketSource];
+  data = dispatch_source_get_data(socketSource);
 
   for (; data; --data)
   {
@@ -457,7 +457,7 @@ void __23__CATSocket_invalidate__block_invoke(uint64_t a1)
   v7 = strerror(*v6);
   v8 = *__error();
   v10 = 138413058;
-  v11 = a1;
+  selfCopy = self;
   v12 = 1024;
   v13 = a3;
   v14 = 2080;
@@ -484,8 +484,8 @@ uint64_t __36__CATSocket_acceptPendingConnection__block_invoke(uint64_t a1)
 
 - (void)socketDidReceiveData
 {
-  v3 = [(CATSocket *)self socketSource];
-  data = dispatch_source_get_data(v3);
+  socketSource = [(CATSocket *)self socketSource];
+  data = dispatch_source_get_data(socketSource);
 
   if (data)
   {
@@ -505,27 +505,27 @@ uint64_t __36__CATSocket_acceptPendingConnection__block_invoke(uint64_t a1)
 
     else if (!v6)
     {
-      v7 = [(CATSocket *)self socketSource];
-      dispatch_source_cancel(v7);
+      socketSource2 = [(CATSocket *)self socketSource];
+      dispatch_source_cancel(socketSource2);
 
 LABEL_11:
       return;
     }
 
-    v8 = [(CATSocket *)self userQueue];
+    userQueue = [(CATSocket *)self userQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __33__CATSocket_socketDidReceiveData__block_invoke;
     block[3] = &unk_278DA7470;
     block[4] = self;
     v12 = v5;
-    dispatch_async(v8, block);
+    dispatch_async(userQueue, block);
 
     goto LABEL_11;
   }
 
-  v10 = [(CATSocket *)self socketSource];
-  dispatch_source_cancel(v10);
+  socketSource3 = [(CATSocket *)self socketSource];
+  dispatch_source_cancel(socketSource3);
 }
 
 void __33__CATSocket_socketDidReceiveData__block_invoke(uint64_t a1)
@@ -539,13 +539,13 @@ void __33__CATSocket_socketDidReceiveData__block_invoke(uint64_t a1)
 {
   self->mState = 3;
   [(CATSocket *)self populateRemoteEndPoint];
-  v3 = [(CATSocket *)self userQueue];
+  userQueue = [(CATSocket *)self userQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__CATSocket_socketDidConnect__block_invoke;
   block[3] = &unk_278DA72D0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(userQueue, block);
 }
 
 - (void)socketDidCancel
@@ -558,29 +558,29 @@ void __33__CATSocket_socketDidReceiveData__block_invoke(uint64_t a1)
   if ((self->mState | 2) == 3)
   {
     self->mState = 5;
-    v4 = [(CATSocket *)self userQueue];
+    userQueue = [(CATSocket *)self userQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __28__CATSocket_socketDidCancel__block_invoke;
     block[3] = &unk_278DA72D0;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(userQueue, block);
   }
 }
 
-- (void)socketDidFailWithError:(id)a3
+- (void)socketDidFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   self->mState = 4;
-  v5 = [(CATSocket *)self userQueue];
+  userQueue = [(CATSocket *)self userQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__CATSocket_socketDidFailWithError___block_invoke;
   v7[3] = &unk_278DA7470;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  v6 = errorCopy;
+  dispatch_async(userQueue, v7);
 }
 
 uint64_t __36__CATSocket_socketDidFailWithError___block_invoke(uint64_t a1)
@@ -619,16 +619,16 @@ uint64_t __36__CATSocket_socketDidFailWithError___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)delegateShouldAcceptNewSocket:(id)a3
+- (BOOL)delegateShouldAcceptNewSocket:(id)socket
 {
-  v4 = a3;
-  v5 = [(CATSocket *)self delegate];
+  socketCopy = socket;
+  delegate = [(CATSocket *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CATSocket *)self delegate];
-    v8 = [v7 socket:self shouldAcceptNewSocket:v4];
+    delegate2 = [(CATSocket *)self delegate];
+    v8 = [delegate2 socket:self shouldAcceptNewSocket:socketCopy];
   }
 
   else
@@ -639,54 +639,54 @@ uint64_t __36__CATSocket_socketDidFailWithError___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)delegateDidReceiveData:(id)a3
+- (void)delegateDidReceiveData:(id)data
 {
-  v8 = a3;
-  v4 = [(CATSocket *)self delegate];
+  dataCopy = data;
+  delegate = [(CATSocket *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CATSocket *)self delegate];
-    v7 = [v8 copy];
-    [v6 socket:self didReceiveData:v7];
+    delegate2 = [(CATSocket *)self delegate];
+    v7 = [dataCopy copy];
+    [delegate2 socket:self didReceiveData:v7];
   }
 }
 
 - (void)delegateDidClose
 {
-  v3 = [(CATSocket *)self delegate];
+  delegate = [(CATSocket *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CATSocket *)self delegate];
-    [v5 socketDidClose:self];
+    delegate2 = [(CATSocket *)self delegate];
+    [delegate2 socketDidClose:self];
   }
 }
 
 - (void)delegateDidConnect
 {
-  v3 = [(CATSocket *)self delegate];
+  delegate = [(CATSocket *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CATSocket *)self delegate];
-    [v5 socketDidConnect:self];
+    delegate2 = [(CATSocket *)self delegate];
+    [delegate2 socketDidConnect:self];
   }
 }
 
-- (void)delegateDidFailWithError:(id)a3
+- (void)delegateDidFailWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(CATSocket *)self delegate];
+  errorCopy = error;
+  delegate = [(CATSocket *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CATSocket *)self delegate];
-    [v6 socket:self didFailWithError:v7];
+    delegate2 = [(CATSocket *)self delegate];
+    [delegate2 socket:self didFailWithError:errorCopy];
   }
 }
 

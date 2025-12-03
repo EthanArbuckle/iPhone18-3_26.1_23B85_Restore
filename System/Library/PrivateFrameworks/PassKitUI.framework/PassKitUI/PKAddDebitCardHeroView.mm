@@ -1,14 +1,14 @@
 @interface PKAddDebitCardHeroView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (PKAddDebitCardHeroView)initWithPassSnapShot:(id)a3;
+- (PKAddDebitCardHeroView)initWithPassSnapShot:(id)shot;
 - (void)layoutSubviews;
 @end
 
 @implementation PKAddDebitCardHeroView
 
-- (PKAddDebitCardHeroView)initWithPassSnapShot:(id)a3
+- (PKAddDebitCardHeroView)initWithPassSnapShot:(id)shot
 {
-  v4 = a3;
+  shotCopy = shot;
   v16.receiver = self;
   v16.super_class = PKAddDebitCardHeroView;
   v5 = [(PKAddDebitCardHeroView *)&v16 init];
@@ -21,23 +21,23 @@
     v5->_debitCardView = v8;
 
     [(PKAddDebitCardHeroView *)v5 addSubview:v5->_debitCardView];
-    v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v4];
+    v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:shotCopy];
     passSnapshotView = v5->_passSnapshotView;
     v5->_passSnapshotView = v10;
 
     [(UIImageView *)v5->_passSnapshotView setContentMode:1];
     [(UIImageView *)v5->_passSnapshotView setAccessibilityIgnoresInvertColors:1];
     [(PKAddDebitCardHeroView *)v5 addSubview:v5->_passSnapshotView];
-    v12 = [(UIImageView *)v5->_passSnapshotView layer];
-    [v12 setShouldRasterize:1];
-    [v12 setRasterizationScale:PKUIScreenScale()];
+    layer = [(UIImageView *)v5->_passSnapshotView layer];
+    [layer setShouldRasterize:1];
+    [layer setRasterizationScale:PKUIScreenScale()];
     v13 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.0 blue:0.25 alpha:1.0];
-    [v12 setShadowColor:{objc_msgSend(v13, "CGColor")}];
+    [layer setShadowColor:{objc_msgSend(v13, "CGColor")}];
 
     LODWORD(v14) = 1041865114;
-    [v12 setShadowOpacity:v14];
-    [v12 setShadowOffset:{0.0, 4.0}];
-    [v12 setShadowRadius:4.0];
+    [layer setShadowOpacity:v14];
+    [layer setShadowOffset:{0.0, 4.0}];
+    [layer setShadowRadius:4.0];
   }
 
   return v5;

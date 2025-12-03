@@ -1,25 +1,25 @@
 @interface WBSAvailableAppWithExtension
-- (BOOL)isEqual:(id)a3;
-- (WBSAvailableAppWithExtension)initWithAdamID:(id)a3 platformSpecificBundleID:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (WBSAvailableAppWithExtension)initWithAdamID:(id)d platformSpecificBundleID:(id)iD;
 - (unint64_t)hash;
 @end
 
 @implementation WBSAvailableAppWithExtension
 
-- (WBSAvailableAppWithExtension)initWithAdamID:(id)a3 platformSpecificBundleID:(id)a4
+- (WBSAvailableAppWithExtension)initWithAdamID:(id)d platformSpecificBundleID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v15.receiver = self;
   v15.super_class = WBSAvailableAppWithExtension;
   v8 = [(WBSAvailableAppWithExtension *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     adamID = v8->_adamID;
     v8->_adamID = v9;
 
-    v11 = [v7 copy];
+    v11 = [iDCopy copy];
     platformSpecificBundleID = v8->_platformSpecificBundleID;
     v8->_platformSpecificBundleID = v11;
 
@@ -29,17 +29,17 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 adamID];
+    v4 = equalCopy;
+    adamID = [v4 adamID];
     if (WBSIsEqual())
     {
-      v6 = [v4 platformSpecificBundleID];
+      platformSpecificBundleID = [v4 platformSpecificBundleID];
       v7 = WBSIsEqual();
     }
 

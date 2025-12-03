@@ -1,11 +1,11 @@
 @interface _OSLogIndexEnumerator
-- (void)_initTimesyncBounds:(id *)a3;
+- (void)_initTimesyncBounds:(id *)bounds;
 - (void)dealloc;
 @end
 
 @implementation _OSLogIndexEnumerator
 
-- (void)_initTimesyncBounds:(id *)a3
+- (void)_initTimesyncBounds:(id *)bounds
 {
   v3 = *MEMORY[0x277D85DE8];
   [(_OSLogIndex *)self->_index timesync];

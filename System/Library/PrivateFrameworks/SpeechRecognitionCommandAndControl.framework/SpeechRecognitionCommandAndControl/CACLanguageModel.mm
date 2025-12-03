@@ -1,110 +1,110 @@
 @interface CACLanguageModel
-- (CACLanguageModel)initWithText:(id)a3 identifier:(id)a4 attributes:(id)a5;
+- (CACLanguageModel)initWithText:(id)text identifier:(id)identifier attributes:(id)attributes;
 - (__RXLanguageObject)createRXLanguageObjectRef;
-- (id)_initWithLanguageModel:(id)a3;
+- (id)_initWithLanguageModel:(id)model;
 - (id)_mutableAttributes;
 - (id)_mutableChildren;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addChildLanguageModel:(id)a3;
-- (void)logTreeDescriptionWithLevel:(int)a3;
-- (void)setObject:(id)a3 forAttribute:(id)a4;
+- (void)addChildLanguageModel:(id)model;
+- (void)logTreeDescriptionWithLevel:(int)level;
+- (void)setObject:(id)object forAttribute:(id)attribute;
 @end
 
 @implementation CACLanguageModel
 
-- (CACLanguageModel)initWithText:(id)a3 identifier:(id)a4 attributes:(id)a5
+- (CACLanguageModel)initWithText:(id)text identifier:(id)identifier attributes:(id)attributes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  identifierCopy = identifier;
+  attributesCopy = attributes;
   v11 = [(CACLanguageModel *)self init];
   v12 = v11;
   if (v11)
   {
-    [(CACLanguageModel *)v11 setText:v8];
-    [(CACLanguageModel *)v12 setIdentifier:v9];
-    if ([v10 count])
+    [(CACLanguageModel *)v11 setText:textCopy];
+    [(CACLanguageModel *)v12 setIdentifier:identifierCopy];
+    if ([attributesCopy count])
     {
-      v13 = [(CACLanguageModel *)v12 _mutableAttributes];
-      [v13 addEntriesFromDictionary:v10];
+      _mutableAttributes = [(CACLanguageModel *)v12 _mutableAttributes];
+      [_mutableAttributes addEntriesFromDictionary:attributesCopy];
     }
   }
 
   return v12;
 }
 
-- (id)_initWithLanguageModel:(id)a3
+- (id)_initWithLanguageModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 text];
-  v6 = [v4 identifier];
-  v7 = [v4 attributes];
+  modelCopy = model;
+  text = [modelCopy text];
+  identifier = [modelCopy identifier];
+  attributes = [modelCopy attributes];
 
-  v8 = [(CACLanguageModel *)self initWithText:v5 identifier:v6 attributes:v7];
+  v8 = [(CACLanguageModel *)self initWithText:text identifier:identifier attributes:attributes];
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 _initWithLanguageModel:self];
 }
 
 - (id)_mutableAttributes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  attributes = v2->_attributes;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  attributes = selfCopy->_attributes;
   if (!attributes)
   {
     v4 = objc_opt_new();
-    v5 = v2->_attributes;
-    v2->_attributes = v4;
+    v5 = selfCopy->_attributes;
+    selfCopy->_attributes = v4;
 
-    attributes = v2->_attributes;
+    attributes = selfCopy->_attributes;
   }
 
   v6 = attributes;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)_mutableChildren
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  children = v2->_children;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  children = selfCopy->_children;
   if (!children)
   {
     v4 = objc_opt_new();
-    v5 = v2->_children;
-    v2->_children = v4;
+    v5 = selfCopy->_children;
+    selfCopy->_children = v4;
 
-    children = v2->_children;
+    children = selfCopy->_children;
   }
 
   v6 = children;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)addChildLanguageModel:(id)a3
+- (void)addChildLanguageModel:(id)model
 {
-  v4 = a3;
-  v5 = [(CACLanguageModel *)self _mutableChildren];
-  [v5 addObject:v4];
+  modelCopy = model;
+  _mutableChildren = [(CACLanguageModel *)self _mutableChildren];
+  [_mutableChildren addObject:modelCopy];
 }
 
-- (void)setObject:(id)a3 forAttribute:(id)a4
+- (void)setObject:(id)object forAttribute:(id)attribute
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CACLanguageModel *)self _mutableAttributes];
-  [v8 setObject:v7 forKey:v6];
+  attributeCopy = attribute;
+  objectCopy = object;
+  _mutableAttributes = [(CACLanguageModel *)self _mutableAttributes];
+  [_mutableAttributes setObject:objectCopy forKey:attributeCopy];
 }
 
 - (__RXLanguageObject)createRXLanguageObjectRef
@@ -115,20 +115,20 @@
   return v4;
 }
 
-- (void)logTreeDescriptionWithLevel:(int)a3
+- (void)logTreeDescriptionWithLevel:(int)level
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
-  if (a3 >= 1)
+  if (level >= 1)
   {
-    v6 = a3;
+    levelCopy = level;
     do
     {
       [v5 appendString:@">"];
-      --v6;
+      --levelCopy;
     }
 
-    while (v6);
+    while (levelCopy);
   }
 
   v7 = CACLogGeneral();
@@ -162,7 +162,7 @@
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13++) logTreeDescriptionWithLevel:{(a3 + 1), v14}];
+        [*(*(&v14 + 1) + 8 * v13++) logTreeDescriptionWithLevel:{(level + 1), v14}];
       }
 
       while (v11 != v13);

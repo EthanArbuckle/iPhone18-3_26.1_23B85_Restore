@@ -1,48 +1,48 @@
 @interface VMUStackLogReaderBase
-- (BOOL)shouldIgnoreSymbolWithName:(id)a3 binaryPath:(id)a4;
+- (BOOL)shouldIgnoreSymbolWithName:(id)name binaryPath:(id)path;
 - (_CSTypeRef)symbolicator;
-- (_VMURange)binaryImageRangeForPCaddress:(unint64_t)a3;
-- (_VMURange)functionRangeContainingPCaddress:(unint64_t)a3;
-- (id)_allocationTypeNameForStackID:(unint64_t)a3 returnedBinaryPath:(id *)a4;
-- (id)binaryImagePathForPCaddress:(unint64_t)a3;
-- (id)functionNameForPCaddress:(unint64_t)a3;
-- (id)identifierForBinaryImagePath:(id)a3;
-- (id)sourceFileNameAndLineNumberForPCaddress:(unint64_t)a3 fullPath:(BOOL)a4;
-- (id)sourceFileNameForPCaddress:(unint64_t)a3;
-- (id)sourcePathForPCaddress:(unint64_t)a3;
-- (id)symbolicatedBacktraceForFrames:(unint64_t *)a3 frameCount:(int64_t)a4 options:(unint64_t)a5;
-- (id)symbolicatedBacktraceForStackID:(unint64_t)a3 options:(unint64_t)a4;
-- (unsigned)sourceLineNumberForPCaddress:(unint64_t)a3;
-- (void)identifyNonObjectsUsingStackBacktraces:(id)a3 classInfoMap:(id)a4 classInfoSetterBlock:(id)a5;
+- (_VMURange)binaryImageRangeForPCaddress:(unint64_t)caddress;
+- (_VMURange)functionRangeContainingPCaddress:(unint64_t)caddress;
+- (id)_allocationTypeNameForStackID:(unint64_t)d returnedBinaryPath:(id *)path;
+- (id)binaryImagePathForPCaddress:(unint64_t)caddress;
+- (id)functionNameForPCaddress:(unint64_t)caddress;
+- (id)identifierForBinaryImagePath:(id)path;
+- (id)sourceFileNameAndLineNumberForPCaddress:(unint64_t)caddress fullPath:(BOOL)path;
+- (id)sourceFileNameForPCaddress:(unint64_t)caddress;
+- (id)sourcePathForPCaddress:(unint64_t)caddress;
+- (id)symbolicatedBacktraceForFrames:(unint64_t *)frames frameCount:(int64_t)count options:(unint64_t)options;
+- (id)symbolicatedBacktraceForStackID:(unint64_t)d options:(unint64_t)options;
+- (unsigned)sourceLineNumberForPCaddress:(unint64_t)caddress;
+- (void)identifyNonObjectsUsingStackBacktraces:(id)backtraces classInfoMap:(id)map classInfoSetterBlock:(id)block;
 @end
 
 @implementation VMUStackLogReaderBase
 
-- (id)symbolicatedBacktraceForStackID:(unint64_t)a3 options:(unint64_t)a4
+- (id)symbolicatedBacktraceForStackID:(unint64_t)d options:(unint64_t)options
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = [(VMUStackLogReaderBase *)self symbolicatedBacktraceForFrames:v7 frameCount:[(VMUStackLogReaderBase *)self getFramesForStackID:a3 stackFramesBuffer:v7] options:a4];
+  v4 = [(VMUStackLogReaderBase *)self symbolicatedBacktraceForFrames:v7 frameCount:[(VMUStackLogReaderBase *)self getFramesForStackID:d stackFramesBuffer:v7] options:options];
   v5 = *MEMORY[0x1E69E9840];
 
   return v4;
 }
 
-- (id)identifierForBinaryImagePath:(id)a3
+- (id)identifierForBinaryImagePath:(id)path
 {
-  v4 = a3;
-  if (!v4)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v5 = @"???";
+    lastPathComponent = @"???";
     goto LABEL_11;
   }
 
-  v5 = [(NSMutableDictionary *)self->_binaryImagePathToIdentifierMap objectForKeyedSubscript:v4];
-  if (v5)
+  lastPathComponent = [(NSMutableDictionary *)self->_binaryImagePathToIdentifierMap objectForKeyedSubscript:pathCopy];
+  if (lastPathComponent)
   {
     goto LABEL_11;
   }
 
-  v6 = CFURLCreateWithFileSystemPath(*MEMORY[0x1E695E480], v4, kCFURLPOSIXPathStyle, 1u);
+  v6 = CFURLCreateWithFileSystemPath(*MEMORY[0x1E695E480], pathCopy, kCFURLPOSIXPathStyle, 1u);
   if (!v6)
   {
     goto LABEL_9;
@@ -54,39 +54,39 @@
   {
     CFRelease(v7);
 LABEL_9:
-    v5 = [(__CFString *)v4 lastPathComponent];
+    lastPathComponent = [(__CFString *)pathCopy lastPathComponent];
     goto LABEL_10;
   }
 
   v9 = v8;
-  v5 = CFBundleGetIdentifier(v8);
+  lastPathComponent = CFBundleGetIdentifier(v8);
   CFRelease(v9);
   CFRelease(v7);
-  if (!v5)
+  if (!lastPathComponent)
   {
     goto LABEL_9;
   }
 
 LABEL_10:
-  [(NSMutableDictionary *)self->_binaryImagePathToIdentifierMap setObject:v5 forKeyedSubscript:v4];
+  [(NSMutableDictionary *)self->_binaryImagePathToIdentifierMap setObject:lastPathComponent forKeyedSubscript:pathCopy];
 LABEL_11:
 
-  return v5;
+  return lastPathComponent;
 }
 
-- (id)symbolicatedBacktraceForFrames:(unint64_t *)a3 frameCount:(int64_t)a4 options:(unint64_t)a5
+- (id)symbolicatedBacktraceForFrames:(unint64_t *)frames frameCount:(int64_t)count options:(unint64_t)options
 {
   v65 = *MEMORY[0x1E69E9840];
-  v5 = a4 - 1;
-  if (a4 < 1)
+  v5 = count - 1;
+  if (count < 1)
   {
     v15 = 0;
   }
 
   else
   {
-    v6 = a5;
-    v7 = a4;
+    optionsCopy = options;
+    countCopy = count;
     if (!self->_binaryImagePathToIdentifierMap)
     {
       v10 = objc_opt_new();
@@ -95,7 +95,7 @@ LABEL_11:
     }
 
     context = objc_autoreleasePoolPush();
-    if ((v6 & 0x20) != 0)
+    if ((optionsCopy & 0x20) != 0)
     {
       v14 = 0;
       v13 = 0;
@@ -105,7 +105,7 @@ LABEL_11:
     {
       v12 = objc_opt_new();
       v13 = v12;
-      if ((v6 & 4) != 0)
+      if ((optionsCopy & 4) != 0)
       {
         [(__CFString *)v12 appendString:@"\n"];
       }
@@ -117,8 +117,8 @@ LABEL_11:
 
       else
       {
-        [(__CFString *)v13 appendFormat:@"[thread %#llx]:", a3[v5] - 1];
-        if ((v6 & 8) != 0)
+        [(__CFString *)v13 appendFormat:@"[thread %#llx]:", frames[v5] - 1];
+        if ((optionsCopy & 8) != 0)
         {
           [(__CFString *)v13 appendString:@"\t"];
           v14 = 0;
@@ -129,7 +129,7 @@ LABEL_11:
           v14 = 1;
         }
 
-        v7 = v5;
+        countCopy = v5;
       }
 
       if (!self->_addressToSymbolicationMap)
@@ -141,7 +141,7 @@ LABEL_11:
     }
 
     v62 = v13;
-    if ((v6 & 4) != 0)
+    if ((optionsCopy & 4) != 0)
     {
       if ([(VMUStackLogReaderBase *)self is64bit])
       {
@@ -164,10 +164,10 @@ LABEL_11:
 
     v57 = v18;
     v58 = v18;
-    v19 = v7;
+    v19 = countCopy;
     v20 = v14;
 LABEL_24:
-    v21 = v7 - v19;
+    v21 = countCopy - v19;
     while (1)
     {
       v22 = v19;
@@ -177,7 +177,7 @@ LABEL_24:
       }
 
       --v19;
-      if ((v6 & 0x44) == 4)
+      if ((optionsCopy & 0x44) == 4)
       {
         v23 = v21;
       }
@@ -187,16 +187,16 @@ LABEL_24:
         v23 = v19;
       }
 
-      v24 = a3[v23];
+      v24 = frames[v23];
       ++v21;
       if (v24 >= 0x1000)
       {
-        v60 = v7;
+        v60 = countCopy;
         v25 = NSMapGet(self->_addressToSymbolicationMap, v24);
         if (!v25)
         {
           v53 = v20;
-          if ((v6 & 2) != 0)
+          if ((optionsCopy & 2) != 0)
           {
             v54 = 0;
             v52 = v59;
@@ -207,7 +207,7 @@ LABEL_24:
             v26 = [(VMUStackLogReaderBase *)self binaryImagePathForPCaddress:v24];
             v27 = [(VMUStackLogReaderBase *)self identifierForBinaryImagePath:v26];
             v54 = v27;
-            if ((v6 & 4) != 0)
+            if ((optionsCopy & 4) != 0)
             {
               v29 = [v27 length];
               v28 = v59;
@@ -263,23 +263,23 @@ LABEL_24:
             }
 
             v56 = v31;
-            v38 = [v31 UTF8String];
-            v39 = v38;
-            if ((v6 & 0x10) == 0 || (v40 = *v38, v40 == 43) || v40 == 45)
+            uTF8String = [v31 UTF8String];
+            v39 = uTF8String;
+            if ((optionsCopy & 0x10) == 0 || (v40 = *uTF8String, v40 == 43) || v40 == 45)
             {
-              v41 = strlen(v38);
+              v41 = strlen(uTF8String);
             }
 
             else
             {
-              v41 = strcspn(v38, "(<");
+              v41 = strcspn(uTF8String, "(<");
             }
 
             v37 = v54;
             v25 = [objc_alloc(MEMORY[0x1E696AD60]) initWithBytes:v39 length:v41 encoding:4];
-            if ((v6 & 4) == 0)
+            if ((optionsCopy & 4) == 0)
             {
-              if ((v6 & 2) == 0)
+              if ((optionsCopy & 2) == 0)
               {
 LABEL_55:
                 [MEMORY[0x1E696AD60] stringWithFormat:@"%#*llx (%-*s) %@", v57, v24, v52, objc_msgSend(v37, "UTF8String"), v25];
@@ -296,10 +296,10 @@ LABEL_55:
           else
           {
 LABEL_44:
-            if ((v6 & 4) == 0)
+            if ((optionsCopy & 4) == 0)
             {
               v37 = v54;
-              if ((v6 & 2) == 0)
+              if ((optionsCopy & 2) == 0)
               {
                 v25 = [MEMORY[0x1E696AD60] stringWithString:@"???"];
                 v56 = 0;
@@ -323,7 +323,7 @@ LABEL_44:
 
           v25 = v44;
 LABEL_60:
-          v45 = [(VMUStackLogReaderBase *)self sourceFileNameAndLineNumberForPCaddress:v24 fullPath:v6 & 1];
+          v45 = [(VMUStackLogReaderBase *)self sourceFileNameAndLineNumberForPCaddress:v24 fullPath:optionsCopy & 1];
           v46 = v45;
           if (v45)
           {
@@ -338,7 +338,7 @@ LABEL_60:
         *__str = 0;
         v64 = 0;
         v47 = " | ";
-        if ((v6 & 4) != 0)
+        if ((optionsCopy & 4) != 0)
         {
           snprintf(__str, 0x10uLL, "%-3d ", v23);
           v47 = "\n";
@@ -355,7 +355,7 @@ LABEL_60:
         }
 
         v20 = 1;
-        v7 = v60;
+        countCopy = v60;
         goto LABEL_24;
       }
     }
@@ -376,7 +376,7 @@ LABEL_60:
   return v15;
 }
 
-- (id)binaryImagePathForPCaddress:(unint64_t)a3
+- (id)binaryImagePathForPCaddress:(unint64_t)caddress
 {
   opaque_1 = self->_symbolicator._opaque_1;
   opaque_2 = self->_symbolicator._opaque_2;
@@ -390,7 +390,7 @@ LABEL_60:
   return Path;
 }
 
-- (_VMURange)binaryImageRangeForPCaddress:(unint64_t)a3
+- (_VMURange)binaryImageRangeForPCaddress:(unint64_t)caddress
 {
   opaque_1 = self->_symbolicator._opaque_1;
   opaque_2 = self->_symbolicator._opaque_2;
@@ -408,7 +408,7 @@ LABEL_60:
   return result;
 }
 
-- (id)functionNameForPCaddress:(unint64_t)a3
+- (id)functionNameForPCaddress:(unint64_t)caddress
 {
   opaque_1 = self->_symbolicator._opaque_1;
   opaque_2 = self->_symbolicator._opaque_2;
@@ -422,7 +422,7 @@ LABEL_60:
   return Name;
 }
 
-- (_VMURange)functionRangeContainingPCaddress:(unint64_t)a3
+- (_VMURange)functionRangeContainingPCaddress:(unint64_t)caddress
 {
   opaque_1 = self->_symbolicator._opaque_1;
   opaque_2 = self->_symbolicator._opaque_2;
@@ -434,7 +434,7 @@ LABEL_60:
   return result;
 }
 
-- (id)sourcePathForPCaddress:(unint64_t)a3
+- (id)sourcePathForPCaddress:(unint64_t)caddress
 {
   opaque_1 = self->_symbolicator._opaque_1;
   opaque_2 = self->_symbolicator._opaque_2;
@@ -448,7 +448,7 @@ LABEL_60:
   return Path;
 }
 
-- (id)sourceFileNameForPCaddress:(unint64_t)a3
+- (id)sourceFileNameForPCaddress:(unint64_t)caddress
 {
   opaque_1 = self->_symbolicator._opaque_1;
   opaque_2 = self->_symbolicator._opaque_2;
@@ -462,7 +462,7 @@ LABEL_60:
   return Filename;
 }
 
-- (unsigned)sourceLineNumberForPCaddress:(unint64_t)a3
+- (unsigned)sourceLineNumberForPCaddress:(unint64_t)caddress
 {
   opaque_1 = self->_symbolicator._opaque_1;
   opaque_2 = self->_symbolicator._opaque_2;
@@ -471,13 +471,13 @@ LABEL_60:
   return CSSourceInfoGetLineNumber();
 }
 
-- (id)sourceFileNameAndLineNumberForPCaddress:(unint64_t)a3 fullPath:(BOOL)a4
+- (id)sourceFileNameAndLineNumberForPCaddress:(unint64_t)caddress fullPath:(BOOL)path
 {
-  v4 = a4;
+  pathCopy = path;
   opaque_1 = self->_symbolicator._opaque_1;
   opaque_2 = self->_symbolicator._opaque_2;
   CSSymbolicatorGetSourceInfoWithAddressAtTime();
-  if (v4)
+  if (pathCopy)
   {
     Path = CSSourceInfoGetPath();
   }
@@ -491,49 +491,49 @@ LABEL_60:
   LineNumber = CSSourceInfoGetLineNumber();
   if (v8)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%u", v8, LineNumber];
+    lineNumber = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%u", v8, LineNumber];
   }
 
   else
   {
-    v10 = 0;
+    lineNumber = 0;
   }
 
-  return v10;
+  return lineNumber;
 }
 
-- (BOOL)shouldIgnoreSymbolWithName:(id)a3 binaryPath:(id)a4
+- (BOOL)shouldIgnoreSymbolWithName:(id)name binaryPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  nameCopy = name;
+  pathCopy = path;
+  v7 = pathCopy;
+  if (!nameCopy)
   {
     v9 = 0;
     goto LABEL_21;
   }
 
-  if (!v6)
+  if (!pathCopy)
   {
     v9 = 1;
     goto LABEL_21;
   }
 
-  v8 = [v6 lastPathComponent];
+  lastPathComponent = [pathCopy lastPathComponent];
   if (shouldIgnoreSymbolWithName_binaryPath__onceToken != -1)
   {
     [VMUStackLogReaderBase shouldIgnoreSymbolWithName:binaryPath:];
   }
 
-  if (([shouldIgnoreSymbolWithName_binaryPath__exactMatchLibrariesToIgnore containsObject:v8] & 1) == 0 && (objc_msgSend(shouldIgnoreSymbolWithName_binaryPath__exactMatchSymbolsToIgnore, "containsObject:", v5) & 1) == 0)
+  if (([shouldIgnoreSymbolWithName_binaryPath__exactMatchLibrariesToIgnore containsObject:lastPathComponent] & 1) == 0 && (objc_msgSend(shouldIgnoreSymbolWithName_binaryPath__exactMatchSymbolsToIgnore, "containsObject:", nameCopy) & 1) == 0)
   {
-    if (([v5 hasSuffix:@"alloc_typed"] & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"operator new") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"__typed_operator_new_impl") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"operator_new_impl") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"$_0::operator()") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"caulk::alloc::darwin_resource") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"objc::DenseMap") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"objc::detail::DenseMapPair") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"llvm::BumpPtrAllocatorImpl") & 1) == 0 && (!objc_msgSend(v5, "hasPrefix:", @"bmalloc_") || (objc_msgSend(v5, "containsString:", @"_allocate") & 1) == 0) && (!objc_msgSend(v5, "hasPrefix:", @"WTF::") || (objc_msgSend(v5, "hasPrefix:", @"WTF::fastZeroedMalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::fastStrDup") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::fastMemDup") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::tryFastZeroedMalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::fastAlignedMalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::tryFastAlignedMalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::tryFastMalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::fastMalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::tryFastCalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::fastCalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::tryFastRealloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::fastRealloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::fastCompactMalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::fastCompactZeroedMalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::fastCompactCalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::fastCompactRealloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::tryFastCompactMalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::tryFastCompactZeroedMalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::tryFastCompactCalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::tryFastCompactRealloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::fastCompactStrDup") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::fastCompactMemDup") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::fastCompactAlignedMalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"WTF::tryFastCompactAlignedMalloc") & 1) == 0) && (!objc_msgSend(v5, "hasPrefix:", @"Gigacage::") || (objc_msgSend(v5, "hasPrefix:", @"Gigacage::tryMalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"Gigacage::tryRealloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"Gigacage::tryAllocateZeroedVirtualPages") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"Gigacage::tryAlignedMalloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"Gigacage::malloc") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"Gigacage::tryMallocArray") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"Gigacage::mallocArray") & 1) == 0) && (!objc_msgSend(v5, "hasPrefix:", @"JSC::") || (objc_msgSend(v5, "hasPrefix:", @"JSC::IsoAlignedMemoryAllocator") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"JSC::tryAllocateAlignedMemory") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"JSC::tryAllocateMemory") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"JSC::FastMallocAlignedMemoryAllocator") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"JSC::CompleteSubspace::allocatorForSlow") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"JSC::CompleteSubspace::tryAllocateSlow") & 1) == 0 && (objc_msgSend(v5, "hasPrefix:", @"JSC::IsoMemoryAllocatorBase::tryAllocateAlignedMemory") & 1) == 0 && !objc_msgSend(v5, "hasPrefix:", @"JSC::LocalAllocator::allocateSlowCase")))
+    if (([nameCopy hasSuffix:@"alloc_typed"] & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"operator new") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"__typed_operator_new_impl") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"operator_new_impl") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"$_0::operator()") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"caulk::alloc::darwin_resource") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"objc::DenseMap") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"objc::detail::DenseMapPair") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"llvm::BumpPtrAllocatorImpl") & 1) == 0 && (!objc_msgSend(nameCopy, "hasPrefix:", @"bmalloc_") || (objc_msgSend(nameCopy, "containsString:", @"_allocate") & 1) == 0) && (!objc_msgSend(nameCopy, "hasPrefix:", @"WTF::") || (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::fastZeroedMalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::fastStrDup") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::fastMemDup") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::tryFastZeroedMalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::fastAlignedMalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::tryFastAlignedMalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::tryFastMalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::fastMalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::tryFastCalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::fastCalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::tryFastRealloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::fastRealloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::fastCompactMalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::fastCompactZeroedMalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::fastCompactCalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::fastCompactRealloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::tryFastCompactMalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::tryFastCompactZeroedMalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::tryFastCompactCalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::tryFastCompactRealloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::fastCompactStrDup") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::fastCompactMemDup") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::fastCompactAlignedMalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"WTF::tryFastCompactAlignedMalloc") & 1) == 0) && (!objc_msgSend(nameCopy, "hasPrefix:", @"Gigacage::") || (objc_msgSend(nameCopy, "hasPrefix:", @"Gigacage::tryMalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"Gigacage::tryRealloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"Gigacage::tryAllocateZeroedVirtualPages") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"Gigacage::tryAlignedMalloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"Gigacage::malloc") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"Gigacage::tryMallocArray") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"Gigacage::mallocArray") & 1) == 0) && (!objc_msgSend(nameCopy, "hasPrefix:", @"JSC::") || (objc_msgSend(nameCopy, "hasPrefix:", @"JSC::IsoAlignedMemoryAllocator") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"JSC::tryAllocateAlignedMemory") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"JSC::tryAllocateMemory") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"JSC::FastMallocAlignedMemoryAllocator") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"JSC::CompleteSubspace::allocatorForSlow") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"JSC::CompleteSubspace::tryAllocateSlow") & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @"JSC::IsoMemoryAllocatorBase::tryAllocateAlignedMemory") & 1) == 0 && !objc_msgSend(nameCopy, "hasPrefix:", @"JSC::LocalAllocator::allocateSlowCase")))
     {
       v9 = 0;
       goto LABEL_18;
     }
 
-    [shouldIgnoreSymbolWithName_binaryPath__exactMatchSymbolsToIgnore addObject:v5];
+    [shouldIgnoreSymbolWithName_binaryPath__exactMatchSymbolsToIgnore addObject:nameCopy];
   }
 
   v9 = 1;
@@ -554,22 +554,22 @@ void __63__VMUStackLogReaderBase_shouldIgnoreSymbolWithName_binaryPath___block_i
   shouldIgnoreSymbolWithName_binaryPath__exactMatchSymbolsToIgnore = v2;
 }
 
-- (id)_allocationTypeNameForStackID:(unint64_t)a3 returnedBinaryPath:(id *)a4
+- (id)_allocationTypeNameForStackID:(unint64_t)d returnedBinaryPath:(id *)path
 {
-  v4 = a4;
+  pathCopy = path;
   v46[512] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (path)
   {
-    *a4 = @"<unknown>";
+    *path = @"<unknown>";
   }
 
-  if (a3 == -1)
+  if (d == -1)
   {
     goto LABEL_10;
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = [(VMUStackLogReaderBase *)self getFramesForStackID:a3 stackFramesBuffer:v46];
+  v8 = [(VMUStackLogReaderBase *)self getFramesForStackID:d stackFramesBuffer:v46];
   if (!v8)
   {
     objc_autoreleasePoolPop(v7);
@@ -638,8 +638,8 @@ LABEL_10:
   }
 
   v43 = 0;
-  v44 = self;
-  v41 = v4;
+  selfCopy = self;
+  v41 = pathCopy;
   v42 = v11;
   v40 = v7;
   v17 = 0;
@@ -653,10 +653,10 @@ LABEL_10:
   {
     v23 = v21;
     v24 = v18;
-    v25 = [(VMUStackLogReaderBase *)v44 functionNameForPCaddress:*v22];
+    v25 = [(VMUStackLogReaderBase *)selfCopy functionNameForPCaddress:*v22];
 
     v26 = *v22++;
-    v21 = [(VMUStackLogReaderBase *)v44 binaryImagePathForPCaddress:v26];
+    v21 = [(VMUStackLogReaderBase *)selfCopy binaryImagePathForPCaddress:v26];
 
     v18 = v25;
     v20 = _removeReturnValueFromCPlusPlusSymbolName(v18);
@@ -695,7 +695,7 @@ LABEL_10:
       goto LABEL_31;
     }
 
-    if ((!v20 || ([(__CFString *)v42 containsString:v20]& 1) == 0) && ![(VMUStackLogReaderBase *)v44 shouldIgnoreSymbolWithName:v20 binaryPath:v21])
+    if ((!v20 || ([(__CFString *)v42 containsString:v20]& 1) == 0) && ![(VMUStackLogReaderBase *)selfCopy shouldIgnoreSymbolWithName:v20 binaryPath:v21])
     {
       break;
     }
@@ -715,21 +715,21 @@ LABEL_28:
     v11 = v42;
     v32 = [(__CFString *)v42 stringByAppendingFormat:@" in %@", v31];
     v7 = v40;
-    v4 = v41;
+    pathCopy = v41;
     v33 = v43;
     goto LABEL_36;
   }
 
 LABEL_31:
   v7 = v40;
-  v4 = v41;
+  pathCopy = v41;
   v11 = v42;
   v33 = v43;
 LABEL_32:
-  v36 = [v21 lastPathComponent];
-  if (v36)
+  lastPathComponent = [v21 lastPathComponent];
+  if (lastPathComponent)
   {
-    v32 = [@"non-object from " stringByAppendingString:v36];
+    v32 = [@"non-object from " stringByAppendingString:lastPathComponent];
   }
 
   else
@@ -741,10 +741,10 @@ LABEL_32:
 LABEL_36:
 
   objc_autoreleasePoolPop(v7);
-  if (v4)
+  if (pathCopy)
   {
     v37 = v21;
-    *v4 = v21;
+    *pathCopy = v21;
   }
 
   v16 = v32;
@@ -755,12 +755,12 @@ LABEL_39:
   return v16;
 }
 
-- (void)identifyNonObjectsUsingStackBacktraces:(id)a3 classInfoMap:(id)a4 classInfoSetterBlock:(id)a5
+- (void)identifyNonObjectsUsingStackBacktraces:(id)backtraces classInfoMap:(id)map classInfoSetterBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [[VMUStackLogConsolidator alloc] initWithScannerOrGraph:v10 stackLogReader:self];
+  mapCopy = map;
+  blockCopy = block;
+  backtracesCopy = backtraces;
+  v11 = [[VMUStackLogConsolidator alloc] initWithScannerOrGraph:backtracesCopy stackLogReader:self];
 
   if ([(VMUStackLogReaderBase *)self usesLiteMode]|| [(VMUStackLogReaderBase *)self usesCoreFile])
   {
@@ -778,9 +778,9 @@ LABEL_39:
   v25[3] = &unk_1E8277F98;
   v25[4] = self;
   v26 = v12;
-  v13 = v8;
+  v13 = mapCopy;
   v27 = v13;
-  v14 = v9;
+  v14 = blockCopy;
   v28 = v14;
   v15 = v12;
   v16 = [(VMUStackLogConsolidator *)v11 stackIDsToNodesFilteredBy:v25];

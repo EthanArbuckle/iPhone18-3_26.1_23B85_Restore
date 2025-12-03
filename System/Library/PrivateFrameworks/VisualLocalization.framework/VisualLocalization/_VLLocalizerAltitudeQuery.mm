@@ -1,6 +1,6 @@
 @interface _VLLocalizerAltitudeQuery
 - (_VLLocalizerAltitudeQuery)init;
-- (_VLLocalizerAltitudeQuery)initWithLocation:(id)a3 callbackQueue:(id)a4 callback:(id)a5;
+- (_VLLocalizerAltitudeQuery)initWithLocation:(id)location callbackQueue:(id)queue callback:(id)callback;
 @end
 
 @implementation _VLLocalizerAltitudeQuery
@@ -12,26 +12,26 @@
   return result;
 }
 
-- (_VLLocalizerAltitudeQuery)initWithLocation:(id)a3 callbackQueue:(id)a4 callback:(id)a5
+- (_VLLocalizerAltitudeQuery)initWithLocation:(id)location callbackQueue:(id)queue callback:(id)callback
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  locationCopy = location;
+  queueCopy = queue;
+  callbackCopy = callback;
   v18.receiver = self;
   v18.super_class = _VLLocalizerAltitudeQuery;
   v12 = [(_VLLocalizerAltitudeQuery *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_location, a3);
+    objc_storeStrong(&v12->_location, location);
     if (qword_281181CD8 != -1)
     {
       dispatch_once(&qword_281181CD8, &__block_literal_global_225);
     }
 
     v13->_signpostID = os_signpost_id_generate(qword_281181CD0);
-    objc_storeStrong(&v13->_callbackQueue, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v13->_callbackQueue, queue);
+    v14 = [callbackCopy copy];
     callback = v13->_callback;
     v13->_callback = v14;
 

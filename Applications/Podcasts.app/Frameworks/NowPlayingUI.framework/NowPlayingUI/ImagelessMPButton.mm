@@ -1,27 +1,27 @@
 @interface ImagelessMPButton
-- (_TtC12NowPlayingUIP33_20B7ED5F4C86462350B4C8940E4EFBD517ImagelessMPButton)initWithCoder:(id)a3;
-- (_TtC12NowPlayingUIP33_20B7ED5F4C86462350B4C8940E4EFBD517ImagelessMPButton)initWithFrame:(CGRect)a3;
+- (_TtC12NowPlayingUIP33_20B7ED5F4C86462350B4C8940E4EFBD517ImagelessMPButton)initWithCoder:(id)coder;
+- (_TtC12NowPlayingUIP33_20B7ED5F4C86462350B4C8940E4EFBD517ImagelessMPButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ImagelessMPButton
 
-- (_TtC12NowPlayingUIP33_20B7ED5F4C86462350B4C8940E4EFBD517ImagelessMPButton)initWithFrame:(CGRect)a3
+- (_TtC12NowPlayingUIP33_20B7ED5F4C86462350B4C8940E4EFBD517ImagelessMPButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ImagelessMPButton();
   return [(ImagelessMPButton *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC12NowPlayingUIP33_20B7ED5F4C86462350B4C8940E4EFBD517ImagelessMPButton)initWithCoder:(id)a3
+- (_TtC12NowPlayingUIP33_20B7ED5F4C86462350B4C8940E4EFBD517ImagelessMPButton)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ImagelessMPButton();
-  v4 = a3;
-  v5 = [(ImagelessMPButton *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ImagelessMPButton *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

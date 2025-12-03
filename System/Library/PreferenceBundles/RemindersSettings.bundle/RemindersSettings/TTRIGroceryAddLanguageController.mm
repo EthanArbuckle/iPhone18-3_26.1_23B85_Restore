@@ -1,18 +1,18 @@
 @interface TTRIGroceryAddLanguageController
-- (_TtC17RemindersSettings32TTRIGroceryAddLanguageController)initWithCoder:(id)a3;
-- (_TtC17RemindersSettings32TTRIGroceryAddLanguageController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC17RemindersSettings32TTRIGroceryAddLanguageController)initWithCoder:(id)coder;
+- (_TtC17RemindersSettings32TTRIGroceryAddLanguageController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)automaticSecondaryGroceryLocale;
 - (id)secondaryGroceryLanguageDisplayName;
 - (id)specifiers;
-- (void)setAutomaticSecondaryGroceryLocale:(id)a3;
+- (void)setAutomaticSecondaryGroceryLocale:(id)locale;
 - (void)viewDidLoad;
 @end
 
 @implementation TTRIGroceryAddLanguageController
 
-- (_TtC17RemindersSettings32TTRIGroceryAddLanguageController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17RemindersSettings32TTRIGroceryAddLanguageController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_23C90();
   }
@@ -20,7 +20,7 @@
   return sub_1EF7C();
 }
 
-- (_TtC17RemindersSettings32TTRIGroceryAddLanguageController)initWithCoder:(id)a3
+- (_TtC17RemindersSettings32TTRIGroceryAddLanguageController)initWithCoder:(id)coder
 {
   *&self->PSListController_opaque[OBJC_IVAR____TtC17RemindersSettings32TTRIGroceryAddLanguageController_languageListSpecifier] = 0;
   *&self->PSListController_opaque[OBJC_IVAR____TtC17RemindersSettings32TTRIGroceryAddLanguageController_fixLanguageSpecifier] = 0;
@@ -36,13 +36,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BCFC();
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C498();
 
   if (v3)
@@ -60,7 +60,7 @@
 
 - (id)secondaryGroceryLanguageDisplayName
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D2A4();
 
   v3 = sub_23C80();
@@ -70,24 +70,24 @@
 
 - (id)automaticSecondaryGroceryLocale
 {
-  v2 = self;
-  v3 = &dword_0 + 1;
+  selfCopy = self;
+  isAutomatic = &dword_0 + 1;
   v4 = sub_1F268(1);
   if (v4)
   {
-    v3 = [v4 isAutomatic];
+    isAutomatic = [v4 isAutomatic];
   }
 
-  v5 = [objc_allocWithZone(NSNumber) initWithBool:v3];
+  v5 = [objc_allocWithZone(NSNumber) initWithBool:isAutomatic];
 
   return v5;
 }
 
-- (void)setAutomaticSecondaryGroceryLocale:(id)a3
+- (void)setAutomaticSecondaryGroceryLocale:(id)locale
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D614(v4);
+  localeCopy = locale;
+  selfCopy = self;
+  sub_1D614(localeCopy);
 }
 
 @end

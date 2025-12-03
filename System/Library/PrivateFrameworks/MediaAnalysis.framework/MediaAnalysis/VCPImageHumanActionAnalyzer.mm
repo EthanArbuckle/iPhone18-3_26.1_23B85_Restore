@@ -1,32 +1,32 @@
 @interface VCPImageHumanActionAnalyzer
-+ (id)sharedModel:(id)a3 outputNames:(id)a4 properties:(id)a5;
-- (CGRect)rectFromPHFace:(id)a3;
-- (VCPImageHumanActionAnalyzer)initWithPHFaces:(id)a3 existingResults:(id)a4;
++ (id)sharedModel:(id)model outputNames:(id)names properties:(id)properties;
+- (CGRect)rectFromPHFace:(id)face;
+- (VCPImageHumanActionAnalyzer)initWithPHFaces:(id)faces existingResults:(id)results;
 - (id).cxx_construct;
-- (int)aggregateWith:(id)a3;
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6;
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4;
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6 crop:(CGRect)a7;
+- (int)aggregateWith:(id)with;
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel;
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data;
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width crop:(CGRect)crop;
 - (void)dealloc;
 @end
 
 @implementation VCPImageHumanActionAnalyzer
 
-+ (id)sharedModel:(id)a3 outputNames:(id)a4 properties:(id)a5
++ (id)sharedModel:(id)model outputNames:(id)names properties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  modelCopy = model;
+  namesCopy = names;
+  propertiesCopy = properties;
   v10 = +[VCPSharedInstanceManager sharedManager];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __66__VCPImageHumanActionAnalyzer_sharedModel_outputNames_properties___block_invoke;
   v16[3] = &unk_1E834E480;
-  v11 = v7;
+  v11 = modelCopy;
   v17 = v11;
-  v12 = v8;
+  v12 = namesCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = propertiesCopy;
   v19 = v13;
   v14 = [v10 sharedInstanceWithIdentifier:@"VCPImageHumanActionEspresso" andCreationBlock:v16];
 
@@ -40,33 +40,33 @@ VCPCNNModelEspresso *__66__VCPImageHumanActionAnalyzer_sharedModel_outputNames_p
   return v1;
 }
 
-- (VCPImageHumanActionAnalyzer)initWithPHFaces:(id)a3 existingResults:(id)a4
+- (VCPImageHumanActionAnalyzer)initWithPHFaces:(id)faces existingResults:(id)results
 {
-  v7 = a3;
-  v8 = a4;
+  facesCopy = faces;
+  resultsCopy = results;
   v21.receiver = self;
   v21.super_class = VCPImageHumanActionAnalyzer;
   v9 = [(VCPImageHumanActionAnalyzer *)&v21 init];
-  v10 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v11 = [v10 resourceURL];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-  v12 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_image_human_action.espresso.net" relativeToURL:v11];
+  v12 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_image_human_action.espresso.net" relativeToURL:resourceURL];
   if (!v9)
   {
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v9->_phFaces, a3);
-  v13 = [MEMORY[0x1E695DF70] array];
+  objc_storeStrong(&v9->_phFaces, faces);
+  array = [MEMORY[0x1E695DF70] array];
   results = v9->_results;
-  v9->_results = v13;
+  v9->_results = array;
 
   v15 = [objc_opt_class() sharedModel:v12 outputNames:0 properties:0];
   model = v9->_model;
   v9->_model = v15;
 
   v9->_inputData = operator new[](0xC0000uLL, MEMORY[0x1E69E5398]);
-  objc_storeStrong(&v9->_existingResults, a4);
+  objc_storeStrong(&v9->_existingResults, results);
   v17 = v9->_model;
   if (!v17)
   {
@@ -106,18 +106,18 @@ LABEL_7:
   [(VCPImageHumanActionAnalyzer *)&v4 dealloc];
 }
 
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data
 {
-  if (CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  pixelBuffer = a3;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (!a3)
+  if (!image)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -128,7 +128,7 @@ LABEL_7:
   }
 
   v8 = Height;
-  v9 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v9 = CVPixelBufferLockBaseAddress(image, 1uLL);
   v23 = v9;
   if (v9)
   {
@@ -141,14 +141,14 @@ LABEL_7:
 
   else
   {
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-    bzero(a4, 3 * 4 * Width * v8);
+    BaseAddress = CVPixelBufferGetBaseAddress(image);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+    bzero(data, 3 * 4 * Width * v8);
     if (v8 >= 1)
     {
       v15 = 0;
-      v16 = &a4[2 * v8 * Width];
-      v17 = &a4[v8 * Width];
+      v16 = &data[2 * v8 * Width];
+      v17 = &data[v8 * Width];
       v18 = 4 * Width;
       do
       {
@@ -161,7 +161,7 @@ LABEL_7:
             LOBYTE(v14) = BaseAddress[(v19 * 4) + 2];
             v21 = *&v14 / 255.0;
             *&v21 = v21;
-            a4[v19] = *&v21;
+            data[v19] = *&v21;
             LOBYTE(v21) = BaseAddress[(v19 * 4) + 1];
             v22 = *&v21 / 255.0;
             *&v22 = v22;
@@ -180,7 +180,7 @@ LABEL_7:
         ++v15;
         v16 = (v16 + v18);
         v17 = (v17 + v18);
-        a4 = (a4 + v18);
+        data = (data + v18);
       }
 
       while (v15 != v8);
@@ -196,14 +196,14 @@ LABEL_7:
   return v10;
 }
 
-- (int)aggregateWith:(id)a3
+- (int)aggregateWith:(id)with
 {
   v63 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v42 = self;
+  withCopy = with;
+  selfCopy = self;
   if ([(NSMutableArray *)self->_results count])
   {
-    v45 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
@@ -241,7 +241,7 @@ LABEL_7:
 
           if (!v12)
           {
-            [v45 setObject:v7 forKeyedSubscript:v9];
+            [dictionary setObject:v7 forKeyedSubscript:v9];
           }
         }
 
@@ -251,13 +251,13 @@ LABEL_7:
       while (v4);
     }
 
-    [(NSMutableArray *)v42->_results removeAllObjects];
-    v40 = [MEMORY[0x1E695DF70] array];
+    [(NSMutableArray *)selfCopy->_results removeAllObjects];
+    array = [MEMORY[0x1E695DF70] array];
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v39 = v38;
+    v39 = withCopy;
     v13 = [v39 countByEnumeratingWithState:&v50 objects:v61 count:16];
     if (v13)
     {
@@ -291,24 +291,24 @@ LABEL_7:
 
           if (v20)
           {
-            [v40 addObject:v15];
+            [array addObject:v15];
           }
 
           else
           {
-            v21 = [v45 objectForKeyedSubscript:v17];
+            v21 = [dictionary objectForKeyedSubscript:v17];
             v22 = v21 == 0;
 
             if (!v22)
             {
               v23 = [v15 mutableCopy];
               v24 = [v19 mutableCopy];
-              v25 = [v45 objectForKeyedSubscript:v17];
+              v25 = [dictionary objectForKeyedSubscript:v17];
               v26 = [v25 objectForKeyedSubscript:@"attributes"];
               v27 = [v26 objectForKeyedSubscript:@"humanActions"];
               [v24 addEntriesFromDictionary:v27];
 
-              [v45 removeObjectForKey:v17];
+              [dictionary removeObjectForKey:v17];
               v28 = [v15 objectForKeyedSubscript:@"attributes"];
               v29 = [v28 mutableCopy];
               [v23 setObject:v29 forKeyedSubscript:@"attributes"];
@@ -316,7 +316,7 @@ LABEL_7:
               v30 = [v23 objectForKeyedSubscript:@"attributes"];
               [v30 setObject:v24 forKeyedSubscript:@"humanActions"];
 
-              [v40 addObject:v23];
+              [array addObject:v23];
               if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
@@ -333,12 +333,12 @@ LABEL_7:
       while (v13);
     }
 
-    [(NSMutableArray *)v42->_results addObjectsFromArray:v40];
+    [(NSMutableArray *)selfCopy->_results addObjectsFromArray:array];
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v31 = v45;
+    v31 = dictionary;
     v32 = [v31 countByEnumeratingWithState:&v46 objects:v58 count:16];
     if (v32)
     {
@@ -352,7 +352,7 @@ LABEL_7:
             objc_enumerationMutation(v31);
           }
 
-          results = v42->_results;
+          results = selfCopy->_results;
           v36 = [v31 objectForKeyedSubscript:*(*(&v46 + 1) + 8 * k)];
           [(NSMutableArray *)results addObject:v36];
         }
@@ -366,24 +366,24 @@ LABEL_7:
 
   else
   {
-    [(NSMutableArray *)self->_results addObjectsFromArray:v38];
+    [(NSMutableArray *)self->_results addObjectsFromArray:withCopy];
   }
 
   return 0;
 }
 
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6 crop:(CGRect)a7
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width crop:(CGRect)crop
 {
-  if (!a3)
+  if (!input)
   {
     return -108;
   }
 
   cf = 0;
-  v9 = Scaler::ScaleCropped(&self->_scaler, a7, a4, &cf, *&a6, *&a5, 1111970369);
+  v9 = Scaler::ScaleCropped(&self->_scaler, crop, buffer, &cf, *&width, *&height, 1111970369);
   if (!v9)
   {
-    v9 = [(VCPImageHumanActionAnalyzer *)self copyImage:cf toData:a3];
+    v9 = [(VCPImageHumanActionAnalyzer *)self copyImage:cf toData:input];
   }
 
   if (cf)
@@ -394,65 +394,65 @@ LABEL_7:
   return v9;
 }
 
-- (CGRect)rectFromPHFace:(id)a3
+- (CGRect)rectFromPHFace:(id)face
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  faceCopy = face;
   v4 = *MEMORY[0x1E695F058];
   v5 = *(MEMORY[0x1E695F058] + 8);
   v6 = *(MEMORY[0x1E695F058] + 16);
   v7 = *(MEMORY[0x1E695F058] + 24);
-  [v3 bodyWidth];
+  [faceCopy bodyWidth];
   v9 = v8;
-  [v3 bodyHeight];
-  if (v9 * v10 < 0.00499999989 || ([v3 size], v11 == 0.0))
+  [faceCopy bodyHeight];
+  if (v9 * v10 < 0.00499999989 || ([faceCopy size], v11 == 0.0))
   {
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v12 = [v3 localIdentifier];
+      localIdentifier = [faceCopy localIdentifier];
       *buf = 138412290;
-      v56 = v12;
+      v56 = localIdentifier;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Image Action classifier - torso or face not detected %@", buf, 0xCu);
     }
   }
 
   else
   {
-    [v3 centerX];
+    [faceCopy centerX];
     v14 = v13;
-    [v3 size];
+    [faceCopy size];
     v16 = v15;
-    [v3 bodyCenterX];
+    [faceCopy bodyCenterX];
     v18 = v17;
-    [v3 bodyWidth];
+    [faceCopy bodyWidth];
     v20 = v19;
-    [v3 centerX];
+    [faceCopy centerX];
     v22 = v21;
-    [v3 size];
+    [faceCopy size];
     v24 = v23;
-    [v3 bodyCenterX];
+    [faceCopy bodyCenterX];
     v26 = v25;
-    [v3 bodyWidth];
+    [faceCopy bodyWidth];
     v54 = v27;
     v50 = v26;
     v51 = v24;
     v52 = v22;
     v53 = v20;
-    [v3 centerY];
+    [faceCopy centerY];
     v49 = v28;
-    [v3 size];
+    [faceCopy size];
     v48 = v29;
-    [v3 bodyCenterY];
+    [faceCopy bodyCenterY];
     v31 = v30;
-    [v3 bodyHeight];
+    [faceCopy bodyHeight];
     v33 = v32;
-    [v3 centerY];
+    [faceCopy centerY];
     v35 = v34;
-    [v3 size];
+    [faceCopy size];
     v37 = v36;
-    [v3 bodyCenterY];
+    [faceCopy bodyCenterY];
     v39 = v38;
-    [v3 bodyHeight];
+    [faceCopy bodyHeight];
     v40 = fmax(fmin(v14 + v16 * -0.5, v18 + v53 * -1.5), 0.00999999978);
     v41 = fmin(fmax(v52 + v51 * 0.5, v50 + v54 * 1.5), 0.99000001);
     v42 = fmax(fmin(v49 + v48 * -0.5, v31 + v33 * -1.70000005), 0.00999999978);
@@ -474,13 +474,13 @@ LABEL_7:
   return result;
 }
 
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel
 {
   v70 = *MEMORY[0x1E69E9840];
-  v55 = a6;
+  cancelCopy = cancel;
   [(NSMutableArray *)self->_results removeAllObjects];
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
   if (Height >= Width)
   {
     v10 = Width;
@@ -493,7 +493,7 @@ LABEL_7:
 
   if (v10 >= 64)
   {
-    if (v55 && (v55[2]() & 1) != 0)
+    if (cancelCopy && (cancelCopy[2]() & 1) != 0)
     {
       v11 = -128;
     }
@@ -534,13 +534,13 @@ LABEL_7:
                 v20 = v71.size.height;
                 if (!CGRectIsEmpty(v71))
                 {
-                  v21 = [v16 localIdentifier];
-                  v22 = v21 == 0;
+                  localIdentifier = [v16 localIdentifier];
+                  v22 = localIdentifier == 0;
 
                   if (!v22)
                   {
-                    v52 = [MEMORY[0x1E695DF90] dictionary];
-                    v11 = [(VCPImageHumanActionAnalyzer *)self createInput:self->_inputData withBuffer:a3 cnnInputHeight:256 cnnInputWidth:256 crop:x, 1.0 - y - v20, v19, v20];
+                    dictionary = [MEMORY[0x1E695DF90] dictionary];
+                    v11 = [(VCPImageHumanActionAnalyzer *)self createInput:self->_inputData withBuffer:buffer cnnInputHeight:256 cnnInputWidth:256 crop:x, 1.0 - y - v20, v19, v20];
                     if (v11 || (v11 = [(VCPCNNModelEspresso *)self->_model espressoForward:self->_inputData]) != 0)
                     {
 
@@ -582,15 +582,15 @@ LABEL_7:
                     {
                       *&v33 = v32;
                       v35 = [MEMORY[0x1E696AD98] numberWithFloat:v33];
-                      v36 = [MEMORY[0x1E696AD98] numberWithInt:v31 + 10000];
-                      v37 = [v36 stringValue];
-                      [v52 setObject:v35 forKeyedSubscript:v37];
+                      10000 = [MEMORY[0x1E696AD98] numberWithInt:v31 + 10000];
+                      stringValue = [10000 stringValue];
+                      [dictionary setObject:v35 forKeyedSubscript:stringValue];
 
                       v38 = MEMORY[0x1E695DF90];
                       v65[0] = @"faceIdentifier";
-                      v39 = [v16 localIdentifier];
-                      v66[0] = v39;
-                      v66[1] = v52;
+                      localIdentifier2 = [v16 localIdentifier];
+                      v66[0] = localIdentifier2;
+                      v66[1] = dictionary;
                       v65[1] = @"humanActions";
                       v65[2] = @"humanBounds";
                       v72.origin.x = x;
@@ -649,7 +649,7 @@ LABEL_7:
         {
           v61 = @"HumanActionClassificationResults";
           v62 = v47;
-          *a5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
+          *results = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
         }
 
         v11 = 0;

@@ -1,10 +1,10 @@
 @interface HDClinicalIngestionTaskWorkItem
 + (id)new;
 - (BOOL)_download;
-- (BOOL)getDataFromResourceFetchOperation:(id)a3;
+- (BOOL)getDataFromResourceFetchOperation:(id)operation;
 - (HDClinicalIngestionTaskWorkItem)init;
-- (HDClinicalIngestionTaskWorkItem)initWithResourceFetchOperation:(id)a3 targetResourceURLsBySourceResource:(id)a4 schemaContext:(id)a5;
-- (id)_extractReferencesAfterFetchSuccess:(BOOL)a3;
+- (HDClinicalIngestionTaskWorkItem)initWithResourceFetchOperation:(id)operation targetResourceURLsBySourceResource:(id)resource schemaContext:(id)context;
+- (id)_extractReferencesAfterFetchSuccess:(BOOL)success;
 - (id)_newExtractReferencesOperation;
 - (void)main;
 @end
@@ -27,12 +27,12 @@
   return 0;
 }
 
-- (HDClinicalIngestionTaskWorkItem)initWithResourceFetchOperation:(id)a3 targetResourceURLsBySourceResource:(id)a4 schemaContext:(id)a5
+- (HDClinicalIngestionTaskWorkItem)initWithResourceFetchOperation:(id)operation targetResourceURLsBySourceResource:(id)resource schemaContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ((v10 == 0) != (v11 != 0))
+  operationCopy = operation;
+  resourceCopy = resource;
+  contextCopy = context;
+  if ((operationCopy == 0) != (resourceCopy != 0))
   {
     sub_A4B5C(a2, self);
   }
@@ -43,12 +43,12 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_resourceFetchOperation, a3);
-    v15 = [v11 copy];
+    objc_storeStrong(&v13->_resourceFetchOperation, operation);
+    v15 = [resourceCopy copy];
     targetResourceURLsBySourceResource = v14->_targetResourceURLsBySourceResource;
     v14->_targetResourceURLsBySourceResource = v15;
 
-    objc_storeStrong(&v14->_schemaOperation, a5);
+    objc_storeStrong(&v14->_schemaOperation, context);
     v17 = objc_alloc_init(NSMutableArray);
     fetchedResourceData = v14->_fetchedResourceData;
     v14->_fetchedResourceData = v17;
@@ -69,24 +69,24 @@
   return v14;
 }
 
-- (BOOL)getDataFromResourceFetchOperation:(id)a3
+- (BOOL)getDataFromResourceFetchOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [v4 fetchedData];
-  if (v5)
+  operationCopy = operation;
+  fetchedData = [operationCopy fetchedData];
+  if (fetchedData)
   {
-    [(NSMutableArray *)self->_fetchedResourceData addObject:v5];
+    [(NSMutableArray *)self->_fetchedResourceData addObject:fetchedData];
   }
 
   else
   {
-    v6 = [v4 fetchError];
+    fetchError = [operationCopy fetchError];
 
-    if (v6)
+    if (fetchError)
     {
-      v7 = [(HDClinicalIngestionTaskResourceSchemaOperation *)self->_schemaOperation accountContext];
-      v8 = [v4 fetchError];
-      [v7 didEncounterError:v8];
+      accountContext = [(HDClinicalIngestionTaskResourceSchemaOperation *)self->_schemaOperation accountContext];
+      fetchError2 = [operationCopy fetchError];
+      [accountContext didEncounterError:fetchError2];
 
       _HKInitializeLogging();
       v9 = HKLogHealthRecords;
@@ -94,21 +94,21 @@
       {
         schemaOperation = self->_schemaOperation;
         log = v9;
-        v11 = [(HDClinicalIngestionTaskResourceSchemaOperation *)schemaOperation accountContext];
-        v12 = [v11 account];
-        v13 = [v12 identifier];
-        v14 = [v4 effectiveRequestURL];
+        accountContext2 = [(HDClinicalIngestionTaskResourceSchemaOperation *)schemaOperation accountContext];
+        account = [accountContext2 account];
+        identifier = [account identifier];
+        effectiveRequestURL = [operationCopy effectiveRequestURL];
         v15 = HKSensitiveLogItem();
-        v16 = [v4 fetchError];
-        v17 = [v16 hrs_safelyLoggableDescription];
+        fetchError3 = [operationCopy fetchError];
+        hrs_safelyLoggableDescription = [fetchError3 hrs_safelyLoggableDescription];
         *buf = 138544130;
-        v29 = self;
+        selfCopy2 = self;
         v30 = 2114;
-        v31 = v13;
+        v31 = identifier;
         v32 = 2112;
         v33 = v15;
         v34 = 2114;
-        v35 = v17;
+        v35 = hrs_safelyLoggableDescription;
         _os_log_error_impl(&dword_0, log, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: couldn't fetch data from URL %@: %{public}@", buf, 0x2Au);
       }
     }
@@ -121,15 +121,15 @@
       {
         v19 = self->_schemaOperation;
         v20 = v18;
-        v21 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v19 accountContext];
-        v22 = [v21 account];
-        v23 = [v22 identifier];
-        v24 = [v4 effectiveRequestURL];
+        accountContext3 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v19 accountContext];
+        account2 = [accountContext3 account];
+        identifier2 = [account2 identifier];
+        effectiveRequestURL2 = [operationCopy effectiveRequestURL];
         v25 = HKSensitiveLogItem();
         *buf = 138543874;
-        v29 = self;
+        selfCopy2 = self;
         v30 = 2114;
-        v31 = v23;
+        v31 = identifier2;
         v32 = 2112;
         v33 = v25;
         _os_log_impl(&dword_0, v20, OS_LOG_TYPE_INFO, "%{public}@ Account %{public}@: did not fetch data from URL %@", buf, 0x20u);
@@ -137,7 +137,7 @@
     }
   }
 
-  return v5 != 0;
+  return fetchedData != 0;
 }
 
 - (void)main
@@ -206,11 +206,11 @@ LABEL_33:
 
             v11 = *(*(&v70 + 1) + 8 * j);
             v12 = v6[503];
-            v13 = [(HDClinicalIngestionTaskResourceSchemaOperation *)self->_schemaOperation accountContext];
-            v14 = [v13 task];
-            v15 = [v14 profile];
+            accountContext = [(HDClinicalIngestionTaskResourceSchemaOperation *)self->_schemaOperation accountContext];
+            task = [accountContext task];
+            profile = [task profile];
             v69 = 0;
-            v16 = [v12 resourceDataForOriginalFHIRResourceWithSourceURL:v11 profile:v15 error:&v69];
+            v16 = [v12 resourceDataForOriginalFHIRResourceWithSourceURL:v11 profile:profile error:&v69];
             v17 = v69;
 
             if (v16)
@@ -225,14 +225,14 @@ LABEL_33:
 
               schemaOperation = self->_schemaOperation;
               v20 = v18;
-              v21 = [(HDClinicalIngestionTaskResourceSchemaOperation *)schemaOperation accountContext];
-              v22 = [v21 account];
-              v23 = [v22 identifier];
+              accountContext2 = [(HDClinicalIngestionTaskResourceSchemaOperation *)schemaOperation accountContext];
+              account = [accountContext2 account];
+              identifier = [account identifier];
               v24 = HKSensitiveLogItem();
               *buf = 138543874;
-              v79 = self;
+              selfCopy5 = self;
               v80 = 2114;
-              v81 = v23;
+              v81 = identifier;
               v82 = 2114;
               v83 = v24;
               _os_log_impl(&dword_0, v20, OS_LOG_TYPE_INFO, "%{public}@ Account %{public}@: data for URL %{public}@ is already in db, will use it and not re-download", buf, 0x20u);
@@ -252,13 +252,13 @@ LABEL_33:
                   {
                     v38 = self->_schemaOperation;
                     v39 = v25;
-                    v40 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v38 accountContext];
-                    v41 = [v40 account];
-                    v42 = [v41 identifier];
+                    accountContext3 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v38 accountContext];
+                    account2 = [accountContext3 account];
+                    identifier2 = [account2 identifier];
                     *buf = 138543874;
-                    v79 = self;
+                    selfCopy5 = self;
                     v80 = 2114;
-                    v81 = v42;
+                    v81 = identifier2;
                     v82 = 2114;
                     v83 = v17;
                     _os_log_error_impl(&dword_0, v39, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: failed to retrieve resource data from db, will try to download. Error: %{public}@", buf, 0x20u);
@@ -274,14 +274,14 @@ LABEL_33:
               {
                 v28 = self->_schemaOperation;
                 v29 = v26;
-                v62 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v28 accountContext];
-                v30 = [v62 account];
-                v31 = [v30 identifier];
+                accountContext4 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v28 accountContext];
+                account3 = [accountContext4 account];
+                identifier3 = [account3 identifier];
                 v32 = HKSensitiveLogItem();
                 *buf = 138543874;
-                v79 = self;
+                selfCopy5 = self;
                 v80 = 2114;
-                v81 = v31;
+                v81 = identifier3;
                 v82 = 2114;
                 v83 = v32;
                 _os_log_debug_impl(&dword_0, v29, OS_LOG_TYPE_DEBUG, "%{public}@ Account %{public}@: data for URL %{public}@ needs to be downloaded", buf, 0x20u);
@@ -303,14 +303,14 @@ LABEL_33:
                 {
                   v33 = self->_schemaOperation;
                   v34 = v27;
-                  v65 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v33 accountContext];
-                  v35 = [v65 account];
-                  v36 = [v35 identifier];
+                  accountContext5 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v33 accountContext];
+                  account4 = [accountContext5 account];
+                  identifier4 = [account4 identifier];
                   v37 = HKSensitiveLogItem();
                   *buf = 138543874;
-                  v79 = self;
+                  selfCopy5 = self;
                   v80 = 2114;
-                  v81 = v36;
+                  v81 = identifier4;
                   v82 = 2114;
                   v83 = v37;
                   _os_log_error_impl(&dword_0, v34, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: unable to run resource fetch operation for URL %{public}@", buf, 0x20u);
@@ -336,12 +336,12 @@ LABEL_30:
           goto LABEL_33;
         }
 
-        v43 = [v60 JSONObject];
-        v44 = [v60 sourceURL];
-        v45 = [v60 FHIRVersion];
-        v46 = [v60 receivedDate];
+        jSONObject = [v60 JSONObject];
+        sourceURL = [v60 sourceURL];
+        fHIRVersion = [v60 FHIRVersion];
+        receivedDate = [v60 receivedDate];
         v68 = 0;
-        v47 = [HDFHIRResourceObject resourceObjectWithJSONObject:v43 sourceURL:v44 FHIRVersion:v45 receivedDate:v46 extractionHints:1 error:&v68];
+        v47 = [HDFHIRResourceObject resourceObjectWithJSONObject:jSONObject sourceURL:sourceURL FHIRVersion:fHIRVersion receivedDate:receivedDate extractionHints:1 error:&v68];
         v48 = v68;
 
         v6 = &BiomeLibrary_ptr;
@@ -354,16 +354,16 @@ LABEL_30:
           {
             v51 = self->_schemaOperation;
             v52 = v50;
-            v53 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v51 accountContext];
-            v54 = [v53 account];
-            v55 = [v54 identifier];
-            v56 = [v48 hrs_safelyLoggableDescription];
+            accountContext6 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v51 accountContext];
+            account5 = [accountContext6 account];
+            identifier5 = [account5 identifier];
+            hrs_safelyLoggableDescription = [v48 hrs_safelyLoggableDescription];
             *buf = 138543874;
-            v79 = self;
+            selfCopy5 = self;
             v80 = 2114;
-            v81 = v55;
+            v81 = identifier5;
             v82 = 2112;
-            v83 = v56;
+            v83 = hrs_safelyLoggableDescription;
             _os_log_error_impl(&dword_0, v52, OS_LOG_TYPE_ERROR, "%{public}@ Account %{public}@: failed to add extraction hint to unresolvable resource: %@", buf, 0x20u);
 
             v6 = &BiomeLibrary_ptr;
@@ -394,38 +394,38 @@ LABEL_41:
   return [(HDClinicalIngestionTaskWorkItem *)self getDataFromResourceFetchOperation:v4];
 }
 
-- (id)_extractReferencesAfterFetchSuccess:(BOOL)a3
+- (id)_extractReferencesAfterFetchSuccess:(BOOL)success
 {
-  v69 = a3;
-  v3 = self;
-  v4 = [(HDClinicalIngestionTaskWorkItem *)self _newExtractReferencesOperation];
-  [v4 start];
-  v5 = [v4 resolutionError];
+  successCopy = success;
+  selfCopy = self;
+  _newExtractReferencesOperation = [(HDClinicalIngestionTaskWorkItem *)self _newExtractReferencesOperation];
+  [_newExtractReferencesOperation start];
+  resolutionError = [_newExtractReferencesOperation resolutionError];
 
-  if (v5)
+  if (resolutionError)
   {
-    v6 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v3->_schemaOperation accountContext];
-    v7 = [v4 resolutionError];
-    [v6 didEncounterError:v7];
+    accountContext = [(HDClinicalIngestionTaskResourceSchemaOperation *)selfCopy->_schemaOperation accountContext];
+    resolutionError2 = [_newExtractReferencesOperation resolutionError];
+    [accountContext didEncounterError:resolutionError2];
   }
 
-  v8 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v3->_schemaOperation accountContext];
-  v9 = [v8 account];
-  v10 = [v9 gateway];
-  v11 = [v10 baseURL];
+  accountContext2 = [(HDClinicalIngestionTaskResourceSchemaOperation *)selfCopy->_schemaOperation accountContext];
+  account = [accountContext2 account];
+  gateway = [account gateway];
+  baseURL = [gateway baseURL];
 
   v71 = +[NSMutableDictionary dictionary];
-  v70 = v4;
-  v12 = [v4 extractionResult];
-  v13 = [v12 incompleteResources];
+  v70 = _newExtractReferencesOperation;
+  extractionResult = [_newExtractReferencesOperation extractionResult];
+  incompleteResources = [extractionResult incompleteResources];
 
   v86 = 0u;
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  obj = v13;
+  obj = incompleteResources;
   v74 = [obj countByEnumeratingWithState:&v84 objects:v98 count:16];
-  v75 = v3;
+  v75 = selfCopy;
   if (v74)
   {
     v73 = *v85;
@@ -439,50 +439,50 @@ LABEL_41:
         }
 
         v15 = *(*(&v84 + 1) + 8 * i);
-        v16 = [v15 resource];
-        if ([(NSMutableSet *)v3->_resolvableResourceObjects containsObject:v16])
+        resource = [v15 resource];
+        if ([(NSMutableSet *)selfCopy->_resolvableResourceObjects containsObject:resource])
         {
           _HKInitializeLogging();
           v17 = HKLogHealthRecords;
           if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
           {
-            schemaOperation = v3->_schemaOperation;
+            schemaOperation = selfCopy->_schemaOperation;
             v19 = v17;
-            v20 = [(HDClinicalIngestionTaskResourceSchemaOperation *)schemaOperation accountContext];
-            v21 = [v20 account];
-            v22 = [v21 identifier];
-            v23 = [v16 identifier];
+            accountContext3 = [(HDClinicalIngestionTaskResourceSchemaOperation *)schemaOperation accountContext];
+            account2 = [accountContext3 account];
+            identifier = [account2 identifier];
+            identifier2 = [resource identifier];
             v24 = HKSensitiveLogItem();
-            v25 = [v15 references];
-            v26 = [v25 count];
+            references = [v15 references];
+            v26 = [references count];
             *buf = 138544130;
             v91 = v75;
             v92 = 2114;
-            v93 = v22;
+            v93 = identifier;
             v94 = 2112;
             v95 = v24;
             v96 = 2048;
             v97 = v26;
             _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ Account %{public}@: reference extraction for resource %@ still returned %lu unresolved references, unable to resolve", buf, 0x2Au);
 
-            v3 = v75;
+            selfCopy = v75;
           }
 
-          v27 = 0;
-          v16 = 0;
+          references2 = 0;
+          resource = 0;
         }
 
         else
         {
-          if (v16)
+          if (resource)
           {
             v28 = +[NSMutableSet set];
-            [v71 setObject:v28 forKey:v16];
-            v27 = [v15 references];
+            [v71 setObject:v28 forKey:resource];
+            references2 = [v15 references];
             goto LABEL_16;
           }
 
-          v27 = 0;
+          references2 = 0;
         }
 
         v28 = 0;
@@ -491,7 +491,7 @@ LABEL_16:
         v83 = 0u;
         v80 = 0u;
         v81 = 0u;
-        v29 = v27;
+        v29 = references2;
         v30 = [v29 countByEnumeratingWithState:&v80 objects:v89 count:16];
         if (v30)
         {
@@ -506,7 +506,7 @@ LABEL_16:
                 objc_enumerationMutation(v29);
               }
 
-              v34 = [v11 hrs_URLByExpandingReference:*(*(&v80 + 1) + 8 * j)];
+              v34 = [baseURL hrs_URLByExpandingReference:*(*(&v80 + 1) + 8 * j)];
               if (v34)
               {
                 [v28 addObject:v34];
@@ -535,19 +535,19 @@ LABEL_16:
   }
 
   v38 = v70;
-  v39 = [v70 extractionResult];
-  v40 = [v39 unresolvableReferences];
+  extractionResult2 = [v70 extractionResult];
+  unresolvableReferences = [extractionResult2 unresolvableReferences];
 
-  if (v40)
+  if (unresolvableReferences)
   {
-    v41 = [v70 extractionResult];
-    v42 = [v41 unresolvableReferences];
+    extractionResult3 = [v70 extractionResult];
+    unresolvableReferences2 = [extractionResult3 unresolvableReferences];
 
     v78 = 0u;
     v79 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v43 = v42;
+    v43 = unresolvableReferences2;
     v44 = [v43 countByEnumeratingWithState:&v76 objects:v88 count:16];
     if (v44)
     {
@@ -563,8 +563,8 @@ LABEL_16:
           }
 
           unresolvableResourceObjects = v75->_unresolvableResourceObjects;
-          v49 = [*(*(&v76 + 1) + 8 * k) resource];
-          [(NSMutableArray *)unresolvableResourceObjects hk_addNonNilObject:v49];
+          resource2 = [*(*(&v76 + 1) + 8 * k) resource];
+          [(NSMutableArray *)unresolvableResourceObjects hk_addNonNilObject:resource2];
         }
 
         v45 = [v43 countByEnumeratingWithState:&v76 objects:v88 count:16];
@@ -576,10 +576,10 @@ LABEL_16:
     v38 = v70;
   }
 
-  v50 = [v38 extractionResult];
-  v51 = [v50 nextSearchResultURL];
+  extractionResult4 = [v38 extractionResult];
+  nextSearchResultURL = [extractionResult4 nextSearchResultURL];
 
-  if (v51)
+  if (nextSearchResultURL)
   {
     _HKInitializeLogging();
     v52 = HKLogHealthRecords;
@@ -587,34 +587,34 @@ LABEL_16:
     {
       v53 = v75->_schemaOperation;
       v54 = v52;
-      v55 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v53 accountContext];
-      v56 = [v55 account];
-      v57 = [v56 identifier];
+      accountContext4 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v53 accountContext];
+      account3 = [accountContext4 account];
+      identifier3 = [account3 identifier];
       v58 = HKSensitiveLogItem();
       *buf = 138543874;
       v91 = v75;
       v36 = v71;
       v92 = 2114;
-      v93 = v57;
+      v93 = identifier3;
       v94 = 2114;
       v95 = v58;
       _os_log_impl(&dword_0, v54, OS_LOG_TYPE_INFO, "%{public}@ Account %{public}@: reference extraction found next page URL %{public}@", buf, 0x20u);
     }
 
-    v59 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v75->_schemaOperation newResourceFetchOperationWithPredefinedURL:v51];
+    v59 = [(HDClinicalIngestionTaskResourceSchemaOperation *)v75->_schemaOperation newResourceFetchOperationWithPredefinedURL:nextSearchResultURL];
     v60 = [[HDClinicalIngestionTaskWorkItem alloc] initWithResourceFetchOperation:v59 schemaContext:v75->_schemaOperation];
     [v35 addObject:v60];
   }
 
-  v61 = [v70 extractionResult];
-  v62 = [v61 completeResources];
+  extractionResult5 = [v70 extractionResult];
+  completeResources = [extractionResult5 completeResources];
 
   if ([(NSMutableArray *)v75->_unresolvableResourceObjects count])
   {
-    v63 = v69;
-    if ([v62 count])
+    v63 = successCopy;
+    if ([completeResources count])
     {
-      v64 = [v62 arrayByAddingObjectsFromArray:v75->_unresolvableResourceObjects];
+      v64 = [completeResources arrayByAddingObjectsFromArray:v75->_unresolvableResourceObjects];
     }
 
     else
@@ -625,16 +625,16 @@ LABEL_16:
     v66 = v64;
     v65 = v70;
 
-    v62 = v66;
+    completeResources = v66;
   }
 
   else
   {
     v65 = v70;
-    v63 = v69;
+    v63 = successCopy;
   }
 
-  v67 = [[HDClinicalIngestionTaskWorkItemOutcome alloc] initWithFetchSuccess:v63 saveableResources:v62 followUpWorkItems:v35];
+  v67 = [[HDClinicalIngestionTaskWorkItemOutcome alloc] initWithFetchSuccess:v63 saveableResources:completeResources followUpWorkItems:v35];
 
   return v67;
 }
@@ -643,12 +643,12 @@ LABEL_16:
 {
   v3 = [(NSMutableArray *)self->_fetchedResourceData arrayByAddingObjectsFromArray:self->_existingResourceData];
   v4 = [HDClinicalIngestionExtractReferencesOperation alloc];
-  v5 = [(HDClinicalIngestionTaskResourceSchemaOperation *)self->_schemaOperation accountContext];
-  v6 = [v5 task];
-  v7 = [(HDClinicalIngestionTaskResourceSchemaOperation *)self->_schemaOperation accountContext];
-  v8 = [v7 account];
-  v9 = [(NSMutableSet *)self->_resolvableResourceObjects allObjects];
-  v10 = [(HDClinicalIngestionExtractReferencesOperation *)v4 initWithTask:v6 account:v8 resourceData:v3 sourceResourceObjects:v9 nextOperation:0];
+  accountContext = [(HDClinicalIngestionTaskResourceSchemaOperation *)self->_schemaOperation accountContext];
+  task = [accountContext task];
+  accountContext2 = [(HDClinicalIngestionTaskResourceSchemaOperation *)self->_schemaOperation accountContext];
+  account = [accountContext2 account];
+  allObjects = [(NSMutableSet *)self->_resolvableResourceObjects allObjects];
+  v10 = [(HDClinicalIngestionExtractReferencesOperation *)v4 initWithTask:task account:account resourceData:v3 sourceResourceObjects:allObjects nextOperation:0];
 
   return v10;
 }

@@ -1,20 +1,20 @@
 @interface ENDifferentialPrivacyManager
-+ (id)hashForServerExposureConfiguration:(id)a3;
-+ (unsigned)userRiskScoreForExposureDetectionSummary:(id)a3;
-- (BOOL)_submitVectorValue:(id)a3 toRecorder:(id)a4 description:(const char *)a5;
-- (ENDifferentialPrivacyManager)initWithServerConfiguration:(id)a3 serverExposureConfiguration:(id)a4;
-- (void)_submitValue:(id)a3 toRecorder:(id)a4 description:(const char *)a5;
-- (void)reportUserDiagnosedVaccineStatus:(id)a3;
-- (void)reportUserRiskScoreWithSummary:(id)a3;
-- (void)updatedServerConfiguration:(id)a3 serverExposureConfiguration:(id)a4;
++ (id)hashForServerExposureConfiguration:(id)configuration;
++ (unsigned)userRiskScoreForExposureDetectionSummary:(id)summary;
+- (BOOL)_submitVectorValue:(id)value toRecorder:(id)recorder description:(const char *)description;
+- (ENDifferentialPrivacyManager)initWithServerConfiguration:(id)configuration serverExposureConfiguration:(id)exposureConfiguration;
+- (void)_submitValue:(id)value toRecorder:(id)recorder description:(const char *)description;
+- (void)reportUserDiagnosedVaccineStatus:(id)status;
+- (void)reportUserRiskScoreWithSummary:(id)summary;
+- (void)updatedServerConfiguration:(id)configuration serverExposureConfiguration:(id)exposureConfiguration;
 @end
 
 @implementation ENDifferentialPrivacyManager
 
-- (ENDifferentialPrivacyManager)initWithServerConfiguration:(id)a3 serverExposureConfiguration:(id)a4
+- (ENDifferentialPrivacyManager)initWithServerConfiguration:(id)configuration serverExposureConfiguration:(id)exposureConfiguration
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  exposureConfigurationCopy = exposureConfiguration;
   v40.receiver = self;
   v40.super_class = ENDifferentialPrivacyManager;
   v8 = [(ENDifferentialPrivacyManager *)&v40 init];
@@ -80,31 +80,31 @@
     userDateExposureV2Recorder = v8->_userDateExposureV2Recorder;
     v8->_userDateExposureV2Recorder = v37;
 
-    [(ENDifferentialPrivacyManager *)v8 updatedServerConfiguration:v6 serverExposureConfiguration:v7];
+    [(ENDifferentialPrivacyManager *)v8 updatedServerConfiguration:configurationCopy serverExposureConfiguration:exposureConfigurationCopy];
   }
 
   return v8;
 }
 
-- (void)updatedServerConfiguration:(id)a3 serverExposureConfiguration:(id)a4
+- (void)updatedServerConfiguration:(id)configuration serverExposureConfiguration:(id)exposureConfiguration
 {
-  v16 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  exposureConfigurationCopy = exposureConfiguration;
   if (gLogCategory_ENDifferentialPrivacyManager <= 30 && (gLogCategory_ENDifferentialPrivacyManager != -1 || _LogCategory_Initialize()))
   {
     [ENDifferentialPrivacyManager updatedServerConfiguration:serverExposureConfiguration:];
   }
 
-  v7 = [v16 region];
-  v8 = [v7 countryCode];
+  region = [configurationCopy region];
+  countryCode = [region countryCode];
 
-  v9 = [v16 region];
-  v10 = [v9 subdivisionCode];
+  region2 = [configurationCopy region];
+  subdivisionCode = [region2 subdivisionCode];
 
-  v11 = [ENDifferentialPrivacyManager hashForServerExposureConfiguration:v6];
+  v11 = [ENDifferentialPrivacyManager hashForServerExposureConfiguration:exposureConfigurationCopy];
   v12 = objc_alloc_init(MEMORY[0x277CBEB30]);
-  [v12 setObject:v8 forKeyedSubscript:*MEMORY[0x277D05338]];
-  [v12 setObject:v10 forKeyedSubscript:*MEMORY[0x277D053F8]];
+  [v12 setObject:countryCode forKeyedSubscript:*MEMORY[0x277D05338]];
+  [v12 setObject:subdivisionCode forKeyedSubscript:*MEMORY[0x277D053F8]];
   [v12 setObject:v11 forKeyedSubscript:*MEMORY[0x277D05418]];
   v13 = [v12 copy];
   metadata = self->_metadata;
@@ -117,22 +117,22 @@
   }
 }
 
-- (void)reportUserRiskScoreWithSummary:(id)a3
+- (void)reportUserRiskScoreWithSummary:(id)summary
 {
-  v4 = [ENDifferentialPrivacyManager userRiskScoreForExposureDetectionSummary:a3];
+  v4 = [ENDifferentialPrivacyManager userRiskScoreForExposureDetectionSummary:summary];
   v5 = [MEMORY[0x277CCABA8] numberWithUnsignedShort:v4];
   [(ENDifferentialPrivacyManager *)self _submitValue:v5 toRecorder:self->_userRiskRecorder description:"user risk score"];
 }
 
-- (BOOL)_submitVectorValue:(id)a3 toRecorder:(id)a4 description:(const char *)a5
+- (BOOL)_submitVectorValue:(id)value toRecorder:(id)recorder description:(const char *)description
 {
   v15 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  valueCopy = value;
   v7 = MEMORY[0x277CBEA68];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 arrayWithObjects:&v14 count:1];
-  v11 = [v8 recordBitVectors:v10 metadata:{self->_metadata, v14, v15}];
+  recorderCopy = recorder;
+  valueCopy2 = value;
+  v10 = [v7 arrayWithObjects:&valueCopy count:1];
+  v11 = [recorderCopy recordBitVectors:v10 metadata:{self->_metadata, valueCopy, v15}];
 
   if (v11)
   {
@@ -151,15 +151,15 @@
   return v11;
 }
 
-- (void)_submitValue:(id)a3 toRecorder:(id)a4 description:(const char *)a5
+- (void)_submitValue:(id)value toRecorder:(id)recorder description:(const char *)description
 {
   v13 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  valueCopy = value;
   v7 = MEMORY[0x277CBEA68];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 arrayWithObjects:&v12 count:1];
-  LOBYTE(self) = [v8 record:v10 metadata:{self->_metadata, v12, v13}];
+  recorderCopy = recorder;
+  valueCopy2 = value;
+  v10 = [v7 arrayWithObjects:&valueCopy count:1];
+  LOBYTE(self) = [recorderCopy record:v10 metadata:{self->_metadata, valueCopy, v13}];
 
   if (self)
   {
@@ -177,15 +177,15 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (unsigned)userRiskScoreForExposureDetectionSummary:(id)a3
++ (unsigned)userRiskScoreForExposureDetectionSummary:(id)summary
 {
   v31 = *MEMORY[0x277D85DE8];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v3 = [a3 daySummaries];
-  v4 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  daySummaries = [summary daySummaries];
+  v4 = [daySummaries countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v4)
   {
     v5 = v4;
@@ -199,20 +199,20 @@
       {
         if (*v27 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(daySummaries);
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [v11 daySummary];
-        [v12 maximumScore];
+        daySummary = [v11 daySummary];
+        [daySummary maximumScore];
         v14 = v13;
 
-        v15 = [v11 daySummary];
-        [v15 scoreSum];
+        daySummary2 = [v11 daySummary];
+        [daySummary2 scoreSum];
         v17 = v16;
 
-        v18 = [v11 daySummary];
-        [v18 weightedDurationSum];
+        daySummary3 = [v11 daySummary];
+        [daySummary3 weightedDurationSum];
         v20 = v19;
 
         if (v14 > v9)
@@ -231,7 +231,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v5 = [daySummaries countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v5);
@@ -277,28 +277,28 @@
   return k + 8 * j + (m << 6);
 }
 
-- (void)reportUserDiagnosedVaccineStatus:(id)a3
+- (void)reportUserDiagnosedVaccineStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   userDiagnosedVaccineStatusRecorder = self->_userDiagnosedVaccineStatusRecorder;
-  v12 = v4;
+  v12 = statusCopy;
   if ([ENDifferentialPrivacyManager _submitVectorValue:"_submitVectorValue:toRecorder:description:" toRecorder:? description:?])
   {
     if ([(ENDifferentialPrivacyManager *)self _submitVectorValue:v12 toRecorder:self->_userDiagnosedVaccineStatusV2Recorder description:"user diagnosed vaccine status v2"])
     {
       v6 = v12;
-      v7 = [v12 bytes];
+      bytes = [v12 bytes];
       if ([v12 length])
       {
         v8 = 0;
         do
         {
-          if (*(v7 + v8) == 1)
+          if (*(bytes + v8) == 1)
           {
             v9 = +[ENLoggingPrefs sharedENLoggingPrefs];
-            v10 = [v9 isSensitiveLoggingAllowed];
+            isSensitiveLoggingAllowed = [v9 isSensitiveLoggingAllowed];
 
-            if (v10)
+            if (isSensitiveLoggingAllowed)
             {
               if (gLogCategory_ENDifferentialPrivacyManager <= 50 && (gLogCategory_ENDifferentialPrivacyManager != -1 || _LogCategory_Initialize()))
               {
@@ -317,13 +317,13 @@
   }
 }
 
-+ (id)hashForServerExposureConfiguration:(id)a3
++ (id)hashForServerExposureConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   bzero(v31, 0x87uLL);
-  if (v3)
+  if (configurationCopy)
   {
-    v4 = [v3 exposureConfigurationValues];
+    exposureConfigurationValues = [configurationCopy exposureConfigurationValues];
     v30[0] = CFDictionaryGetInt64Ranged();
     v30[1] = OUTLINED_FUNCTION_0_6();
     v30[2] = OUTLINED_FUNCTION_0_6();
@@ -366,30 +366,30 @@
     v36 = OUTLINED_FUNCTION_0_6();
     v37 = OUTLINED_FUNCTION_0_6();
     v38 = OUTLINED_FUNCTION_2_1();
-    v28 = v4;
+    v28 = exposureConfigurationValues;
     v39 = OUTLINED_FUNCTION_2_1();
-    v29 = v3;
-    v13 = [v3 classificationCriteria];
+    v29 = configurationCopy;
+    classificationCriteria = [configurationCopy classificationCriteria];
     v26 = v9;
-    if ([v13 count] > 3)
+    if ([classificationCriteria count] > 3)
     {
       v14 = 4;
     }
 
     else
     {
-      v14 = [v13 count];
+      v14 = [classificationCriteria count];
       if (!v14)
       {
 LABEL_14:
         v22 = [objc_alloc(MEMORY[0x277CBEA98]) initWithBytes:v30 length:143];
-        v23 = [v22 sha256];
-        [v23 bytes];
-        [v23 length];
-        [v23 length];
+        sha256 = [v22 sha256];
+        [sha256 bytes];
+        [sha256 length];
+        [sha256 length];
         v24 = NSPrintF();
 
-        v3 = v29;
+        configurationCopy = v29;
         goto LABEL_15;
       }
     }
@@ -399,7 +399,7 @@ LABEL_14:
     do
     {
       v17 = [OUTLINED_FUNCTION_3_2() objectAtIndexedSubscript:?];
-      v18 = [v17 perDaySumERVThresholdsByDiagnosisReportType];
+      perDaySumERVThresholdsByDiagnosisReportType = [v17 perDaySumERVThresholdsByDiagnosisReportType];
 
       *(v16 - 6) = OUTLINED_FUNCTION_1_3();
       *(v16 - 5) = OUTLINED_FUNCTION_1_3();

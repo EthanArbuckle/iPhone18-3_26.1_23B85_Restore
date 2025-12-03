@@ -1,23 +1,23 @@
 @interface SBInteractiveScreenshotGestureHostRootViewController
-- (SBInteractiveScreenshotGestureHostRootViewController)initWithScreen:(id)a3;
+- (SBInteractiveScreenshotGestureHostRootViewController)initWithScreen:(id)screen;
 - (void)_reloadLayerHostView;
 - (void)invalidate;
-- (void)setHostingContextID:(unsigned int)a3 pid:(int)a4;
+- (void)setHostingContextID:(unsigned int)d pid:(int)pid;
 - (void)viewDidLoad;
 @end
 
 @implementation SBInteractiveScreenshotGestureHostRootViewController
 
-- (SBInteractiveScreenshotGestureHostRootViewController)initWithScreen:(id)a3
+- (SBInteractiveScreenshotGestureHostRootViewController)initWithScreen:(id)screen
 {
-  v5 = a3;
+  screenCopy = screen;
   v9.receiver = self;
   v9.super_class = SBInteractiveScreenshotGestureHostRootViewController;
   v6 = [(SBInteractiveScreenshotGestureHostRootViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_screen, a3);
+    objc_storeStrong(&v6->_screen, screen);
   }
 
   return v7;
@@ -38,12 +38,12 @@
   self->_layerHostView = 0;
 }
 
-- (void)setHostingContextID:(unsigned int)a3 pid:(int)a4
+- (void)setHostingContextID:(unsigned int)d pid:(int)pid
 {
-  if (self->_hostingContextID != a3 || self->_hostingPid != a4)
+  if (self->_hostingContextID != d || self->_hostingPid != pid)
   {
-    self->_hostingContextID = a3;
-    self->_hostingPid = a4;
+    self->_hostingContextID = d;
+    self->_hostingPid = pid;
     if ([(SBInteractiveScreenshotGestureHostRootViewController *)self isViewLoaded])
     {
 
@@ -64,8 +64,8 @@
 
   if (self->_hostingContextID && self->_hostingPid)
   {
-    v5 = [(SBInteractiveScreenshotGestureHostRootViewController *)self view];
-    [v5 bounds];
+    view = [(SBInteractiveScreenshotGestureHostRootViewController *)self view];
+    [view bounds];
     [(UIScreen *)self->_screen nativeBounds];
     v7 = v6;
     v9 = v8;
@@ -121,7 +121,7 @@
     CGAffineTransformScale(&v30, &v29, 1.0 / v21, 1.0 / v21);
     v31 = v30;
     [(_UILayerHostView *)self->_layerHostView setTransform:&v30];
-    [v5 addSubview:self->_layerHostView];
+    [view addSubview:self->_layerHostView];
   }
 }
 

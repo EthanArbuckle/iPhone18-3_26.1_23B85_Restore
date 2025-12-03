@@ -9,7 +9,7 @@
 - (id)_createActiveFindSessionIfNecessary;
 - (id)_currentFindNavigatorController;
 - (id)_findNavigatorHosting;
-- (id)_findNavigatorHostingForStrategy:(unint64_t)a3;
+- (id)_findNavigatorHostingForStrategy:(unint64_t)strategy;
 - (id)_findNavigatorSceneComponent;
 - (id)_hostScrollView;
 - (id)delegate;
@@ -20,17 +20,17 @@
 - (void)_didEndActiveFindSession;
 - (void)_recomputeHostingStrategyIfNecessary;
 - (void)_resetToolbarHidingAndHostViewController;
-- (void)_setHostView:(id)a3;
+- (void)_setHostView:(id)view;
 - (void)_updateHostViewConformance;
-- (void)_willChangeNavigatorPlacement:(id)a3;
-- (void)didMoveToView:(id)a3;
+- (void)_willChangeNavigatorPlacement:(id)placement;
+- (void)didMoveToView:(id)view;
 - (void)dismissFindNavigator;
 - (void)findNext;
 - (void)findPrevious;
 - (void)presentFindNavigatorShowingReplace:(BOOL)showingReplace;
 - (void)setReplacementText:(NSString *)replacementText;
 - (void)setSearchText:(NSString *)searchText;
-- (void)setSearchableObject:(id)a3;
+- (void)setSearchableObject:(id)object;
 - (void)updateResultCount;
 @end
 
@@ -38,19 +38,19 @@
 
 - (void)dismissFindNavigator
 {
-  v3 = [(UIFindInteraction *)self view];
-  v4 = [v3 window];
+  view = [(UIFindInteraction *)self view];
+  window = [view window];
 
-  if (v4)
+  if (window)
   {
-    v5 = [(UIFindInteraction *)self _findNavigatorHosting];
-    [v5 dismissFindNavigatorEndingActiveSession:1];
+    _findNavigatorHosting = [(UIFindInteraction *)self _findNavigatorHosting];
+    [_findNavigatorHosting dismissFindNavigatorEndingActiveSession:1];
   }
 }
 
 - (void)_updateHostViewConformance
 {
-  v3 = [(UIFindInteraction *)self _hostView];
+  _hostView = [(UIFindInteraction *)self _hostView];
   NSClassFromString(&cfstr_Mfcomposewebvi.isa);
   if (objc_opt_isKindOfClass())
   {
@@ -64,7 +64,7 @@
 
   *&self->_hostViewIs = *&self->_hostViewIs & 0xFD | v4;
 
-  v5 = [(UIFindInteraction *)self _hostView];
+  _hostView2 = [(UIFindInteraction *)self _hostView];
   NSClassFromString(&cfstr_Wkwebview.isa);
   *&self->_hostViewIs = *&self->_hostViewIs & 0xFE | objc_opt_isKindOfClass() & 1;
 }
@@ -103,9 +103,9 @@
   }
 
   v2 = [(UIFindInteraction *)self _findNavigatorHostingForStrategy:self->_lastUsedHostingStrategy];
-  v3 = [v2 isFindNavigatorVisible];
+  isFindNavigatorVisible = [v2 isFindNavigatorVisible];
 
-  return v3;
+  return isFindNavigatorVisible;
 }
 
 - (UIFindInteraction)initWithSessionDelegate:(id)sessionDelegate
@@ -133,19 +133,19 @@
 
     *&v6->_privateDelegateDoes = *&v6->_privateDelegateDoes & 0xFD | v9;
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v6 selector:sel__systemInputAssistantCenterVisibilityChanged_ name:0x1EFB455F0 object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__systemInputAssistantCenterVisibilityChanged_ name:0x1EFB455F0 object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v6 selector:sel__keyboardDidChangePlacementNotification_ name:@"UIKeyboardDidChangeFrameNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__keyboardDidChangePlacementNotification_ name:@"UIKeyboardDidChangeFrameNotification" object:0];
   }
 
   return v6;
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  objc_storeWeak(&self->_view, a3);
+  objc_storeWeak(&self->_view, view);
 
   [(UIFindInteraction *)self _updateHostViewConformance];
 }
@@ -161,14 +161,14 @@
     [v5 findInteraction:self didBeginFindSession:self->_activeFindSession];
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"UIFindInteractionFindSessionDidBeginNotification" object:self->_activeFindSession];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"UIFindInteractionFindSessionDidBeginNotification" object:self->_activeFindSession];
 
   [(UIFindInteraction *)self _resetToolbarHidingAndHostViewController];
   v7 = objc_loadWeakRetained(&self->_view);
-  v8 = [v7 _viewControllerForAncestor];
-  v9 = [v8 navigationController];
-  obj = [v9 _outermostNavigationController];
+  _viewControllerForAncestor = [v7 _viewControllerForAncestor];
+  navigationController = [_viewControllerForAncestor navigationController];
+  obj = [navigationController _outermostNavigationController];
 
   if (obj)
   {
@@ -180,14 +180,14 @@
 
 - (void)_resetToolbarHidingAndHostViewController
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
+    WeakRetained = objc_loadWeakRetained((self + 24));
     if (WeakRetained)
     {
       v3 = WeakRetained;
       [(UINavigationController *)WeakRetained _setRequiresToolbarHiddenForFindAndReplace:?];
-      objc_storeWeak((a1 + 24), 0);
+      objc_storeWeak((self + 24), 0);
       WeakRetained = v3;
     }
   }
@@ -206,8 +206,8 @@
     [v5 findInteraction:self didEndFindSession:self->_activeFindSession];
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"UIFindInteractionFindSessionDidEndNotification" object:self->_activeFindSession];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"UIFindInteractionFindSessionDidEndNotification" object:self->_activeFindSession];
 }
 
 - (id)_createActiveFindSessionIfNecessary
@@ -216,13 +216,13 @@
   if (!activeFindSession)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [(UIFindInteraction *)self view];
-    v6 = [WeakRetained findInteraction:self sessionForView:v5];
+    view = [(UIFindInteraction *)self view];
+    v6 = [WeakRetained findInteraction:self sessionForView:view];
     v7 = self->_activeFindSession;
     self->_activeFindSession = v6;
 
-    v8 = [(UIFindInteraction *)self view];
-    [(UIFindSession *)self->_activeFindSession setSearchableResponder:v8];
+    view2 = [(UIFindInteraction *)self view];
+    [(UIFindSession *)self->_activeFindSession setSearchableResponder:view2];
 
     [(UIFindSession *)self->_activeFindSession setParentInteraction:self];
     [(UIFindSession *)self->_activeFindSession setReplacementText:self->_replacementText];
@@ -230,9 +230,9 @@
     activeFindSession = self->_activeFindSession;
   }
 
-  v9 = [(UIFindSession *)activeFindSession searchText];
+  searchText = [(UIFindSession *)activeFindSession searchText];
 
-  if (!v9)
+  if (!searchText)
   {
     v10 = +[UIFindInteraction _globalFindBuffer];
     [(UIFindSession *)self->_activeFindSession setSearchText:v10];
@@ -245,29 +245,29 @@
 
 - (id)_findNavigatorSceneComponent
 {
-  v2 = [(UIFindInteraction *)self view];
-  v3 = [_UIFindNavigatorSceneComponent sceneComponentForView:v2];
+  view = [(UIFindInteraction *)self view];
+  v3 = [_UIFindNavigatorSceneComponent sceneComponentForView:view];
 
   return v3;
 }
 
 - (unint64_t)_computedHostingStrategy
 {
-  v2 = [(UIFindInteraction *)self view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 keyboardSceneDelegate];
+  view = [(UIFindInteraction *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
 
-  v6 = [v5 systemInputAssistantViewController];
-  v7 = [v6 view];
-  v8 = [v7 window];
+  systemInputAssistantViewController = [keyboardSceneDelegate systemInputAssistantViewController];
+  view2 = [systemInputAssistantViewController view];
+  window2 = [view2 window];
 
-  if (v8)
+  if (window2)
   {
-    v9 = [v5 systemInputAssistantViewController];
-    v10 = [v9 _hidesCenterViewForActiveWindowingMode];
+    systemInputAssistantViewController2 = [keyboardSceneDelegate systemInputAssistantViewController];
+    _hidesCenterViewForActiveWindowingMode = [systemInputAssistantViewController2 _hidesCenterViewForActiveWindowingMode];
 
-    if (v10)
+    if (_hidesCenterViewForActiveWindowingMode)
     {
       goto LABEL_12;
     }
@@ -276,14 +276,14 @@
   else
   {
     v11 = +[UIKeyboardImpl sharedInstance];
-    v12 = [v5 visualModeManager];
-    v13 = [v12 shouldShowWithinAppWindow];
+    visualModeManager = [keyboardSceneDelegate visualModeManager];
+    shouldShowWithinAppWindow = [visualModeManager shouldShowWithinAppWindow];
 
-    v14 = [v5 scene];
-    v15 = [v14 traitCollection];
-    v16 = [v15 horizontalSizeClass];
+    scene = [keyboardSceneDelegate scene];
+    traitCollection = [scene traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (v13 && v16 == 1)
+    if (shouldShowWithinAppWindow && horizontalSizeClass == 1)
     {
       goto LABEL_12;
     }
@@ -330,14 +330,14 @@ LABEL_13:
   return result;
 }
 
-- (id)_findNavigatorHostingForStrategy:(unint64_t)a3
+- (id)_findNavigatorHostingForStrategy:(unint64_t)strategy
 {
-  if (a3 == 1)
+  if (strategy == 1)
   {
-    v12 = [(UIFindInteraction *)self _findNavigatorSceneComponent];
+    _findNavigatorSceneComponent = [(UIFindInteraction *)self _findNavigatorSceneComponent];
   }
 
-  else if (a3 == 2)
+  else if (strategy == 2)
   {
     if (!self->_findNavigatorHarness)
     {
@@ -345,64 +345,64 @@ LABEL_13:
       [(UIFindInteraction *)self setFindNavigatorHarness:v4];
     }
 
-    v5 = [(UIFindInteraction *)self _hostView];
+    _hostView = [(UIFindInteraction *)self _hostView];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v5 scrollView];
+      scrollView = [_hostView scrollView];
 
-      v5 = v6;
+      _hostView = scrollView;
     }
 
-    v7 = [(UIFindInteraction *)self findNavigatorHarness];
-    [v7 setHostView:v5];
+    findNavigatorHarness = [(UIFindInteraction *)self findNavigatorHarness];
+    [findNavigatorHarness setHostView:_hostView];
 
-    v8 = [(UIFindInteraction *)self _hostScrollView];
-    v9 = [(UIFindInteraction *)self findNavigatorHarness];
-    [v9 setHostScrollView:v8];
+    _hostScrollView = [(UIFindInteraction *)self _hostScrollView];
+    findNavigatorHarness2 = [(UIFindInteraction *)self findNavigatorHarness];
+    [findNavigatorHarness2 setHostScrollView:_hostScrollView];
 
-    v10 = [(UIFindInteraction *)self view];
-    v11 = [(UIFindInteraction *)self findNavigatorHarness];
-    [v11 setInteractionView:v10];
+    view = [(UIFindInteraction *)self view];
+    findNavigatorHarness3 = [(UIFindInteraction *)self findNavigatorHarness];
+    [findNavigatorHarness3 setInteractionView:view];
 
-    v12 = [(UIFindInteraction *)self findNavigatorHarness];
+    _findNavigatorSceneComponent = [(UIFindInteraction *)self findNavigatorHarness];
   }
 
   else
   {
-    v12 = 0;
+    _findNavigatorSceneComponent = 0;
   }
 
-  return v12;
+  return _findNavigatorSceneComponent;
 }
 
 - (id)_findNavigatorHosting
 {
-  v3 = [(UIFindInteraction *)self _computedHostingStrategy];
+  _computedHostingStrategy = [(UIFindInteraction *)self _computedHostingStrategy];
 
-  return [(UIFindInteraction *)self _findNavigatorHostingForStrategy:v3];
+  return [(UIFindInteraction *)self _findNavigatorHostingForStrategy:_computedHostingStrategy];
 }
 
 - (void)_recomputeHostingStrategyIfNecessary
 {
-  v3 = [(UIFindInteraction *)self _computedHostingStrategy];
+  _computedHostingStrategy = [(UIFindInteraction *)self _computedHostingStrategy];
   v4 = [(UIFindInteraction *)self _findNavigatorHostingForStrategy:self->_lastUsedHostingStrategy];
-  if ([v4 isFindNavigatorVisible] && v3 != self->_lastUsedHostingStrategy)
+  if ([v4 isFindNavigatorVisible] && _computedHostingStrategy != self->_lastUsedHostingStrategy)
   {
-    v5 = [v4 findNavigatorViewController];
-    v6 = [v5 findNavigatorView];
-    v7 = [v6 mode] == 1;
+    findNavigatorViewController = [v4 findNavigatorViewController];
+    findNavigatorView = [findNavigatorViewController findNavigatorView];
+    v7 = [findNavigatorView mode] == 1;
 
-    v8 = [MEMORY[0x1E695DFD0] mainRunLoop];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __57__UIFindInteraction__recomputeHostingStrategyIfNecessary__block_invoke;
     v9[3] = &unk_1E70F5AF0;
     v10 = v4;
-    v11 = self;
+    selfCopy = self;
     v12 = v7;
-    [v8 performBlock:v9];
+    [mainRunLoop performBlock:v9];
 
-    self->_lastUsedHostingStrategy = v3;
+    self->_lastUsedHostingStrategy = _computedHostingStrategy;
   }
 }
 
@@ -420,51 +420,51 @@ void __57__UIFindInteraction__recomputeHostingStrategyIfNecessary__block_invoke(
 - (void)presentFindNavigatorShowingReplace:(BOOL)showingReplace
 {
   v3 = showingReplace;
-  v5 = [(UIFindInteraction *)self _createActiveFindSessionIfNecessary];
-  if (v5)
+  _createActiveFindSessionIfNecessary = [(UIFindInteraction *)self _createActiveFindSessionIfNecessary];
+  if (_createActiveFindSessionIfNecessary)
   {
-    v12 = v5;
-    v6 = [(UIFindSession *)self->_activeFindSession supportsReplacement];
-    v7 = [(UIFindInteraction *)self view];
-    v8 = [_UIContextMenuSceneComponent sceneComponentForView:v7];
+    v12 = _createActiveFindSessionIfNecessary;
+    supportsReplacement = [(UIFindSession *)self->_activeFindSession supportsReplacement];
+    view = [(UIFindInteraction *)self view];
+    v8 = [_UIContextMenuSceneComponent sceneComponentForView:view];
     [v8 dismissActiveMenus];
 
-    v9 = [(UIFindInteraction *)self _findNavigatorHosting];
-    v10 = [(UIFindInteraction *)self view];
-    v11 = [v10 traitCollection];
-    [v9 presentFindNavigatorWithFindSession:v12 showingReplace:v6 & v3 idiom:{objc_msgSend(v11, "userInterfaceIdiom")}];
+    _findNavigatorHosting = [(UIFindInteraction *)self _findNavigatorHosting];
+    view2 = [(UIFindInteraction *)self view];
+    traitCollection = [view2 traitCollection];
+    [_findNavigatorHosting presentFindNavigatorWithFindSession:v12 showingReplace:supportsReplacement & v3 idiom:{objc_msgSend(traitCollection, "userInterfaceIdiom")}];
 
     self->_lastUsedHostingStrategy = [(UIFindInteraction *)self _computedHostingStrategy];
     [(UIFindInteraction *)self _didBeginActiveFindSession];
 
-    v5 = v12;
+    _createActiveFindSessionIfNecessary = v12;
   }
 }
 
 - (id)_currentFindNavigatorController
 {
-  v2 = [(UIFindInteraction *)self _findNavigatorHosting];
-  v3 = [v2 findNavigatorViewController];
+  _findNavigatorHosting = [(UIFindInteraction *)self _findNavigatorHosting];
+  findNavigatorViewController = [_findNavigatorHosting findNavigatorViewController];
 
-  return v3;
+  return findNavigatorViewController;
 }
 
 - (void)updateResultCount
 {
-  v2 = [(UIFindInteraction *)self _currentFindNavigatorController];
-  [v2 updateViewForActiveFindSession];
+  _currentFindNavigatorController = [(UIFindInteraction *)self _currentFindNavigatorController];
+  [_currentFindNavigatorController updateViewForActiveFindSession];
 }
 
 - (void)findNext
 {
-  v2 = [(UIFindInteraction *)self _createActiveFindSessionIfNecessary];
-  [v2 highlightNextResultInDirection:0];
+  _createActiveFindSessionIfNecessary = [(UIFindInteraction *)self _createActiveFindSessionIfNecessary];
+  [_createActiveFindSessionIfNecessary highlightNextResultInDirection:0];
 }
 
 - (void)findPrevious
 {
-  v2 = [(UIFindInteraction *)self _createActiveFindSessionIfNecessary];
-  [v2 highlightNextResultInDirection:1];
+  _createActiveFindSessionIfNecessary = [(UIFindInteraction *)self _createActiveFindSessionIfNecessary];
+  [_createActiveFindSessionIfNecessary highlightNextResultInDirection:1];
 }
 
 - (NSString)searchText
@@ -472,15 +472,15 @@ void __57__UIFindInteraction__recomputeHostingStrategyIfNecessary__block_invoke(
   activeFindSession = self->_activeFindSession;
   if (activeFindSession)
   {
-    v4 = [(UIFindSession *)activeFindSession searchText];
+    searchText = [(UIFindSession *)activeFindSession searchText];
   }
 
   else
   {
-    v4 = self->_searchText;
+    searchText = self->_searchText;
   }
 
-  return v4;
+  return searchText;
 }
 
 - (void)setSearchText:(NSString *)searchText
@@ -493,15 +493,15 @@ void __57__UIFindInteraction__recomputeHostingStrategyIfNecessary__block_invoke(
     [(UIFindSession *)activeFindSession setSearchText:v11];
   }
 
-  v6 = [(UIFindInteraction *)self _currentFindNavigatorController];
-  v7 = [v6 viewIfLoaded];
+  _currentFindNavigatorController = [(UIFindInteraction *)self _currentFindNavigatorController];
+  viewIfLoaded = [_currentFindNavigatorController viewIfLoaded];
 
-  if (v7)
+  if (viewIfLoaded)
   {
-    v8 = [(UIFindInteraction *)self _currentFindNavigatorController];
-    v9 = [v8 findNavigatorView];
-    v10 = [v9 searchTextField];
-    [v10 setText:v11];
+    _currentFindNavigatorController2 = [(UIFindInteraction *)self _currentFindNavigatorController];
+    findNavigatorView = [_currentFindNavigatorController2 findNavigatorView];
+    searchTextField = [findNavigatorView searchTextField];
+    [searchTextField setText:v11];
   }
 }
 
@@ -510,15 +510,15 @@ void __57__UIFindInteraction__recomputeHostingStrategyIfNecessary__block_invoke(
   activeFindSession = self->_activeFindSession;
   if (activeFindSession)
   {
-    v4 = [(UIFindSession *)activeFindSession replacementText];
+    replacementText = [(UIFindSession *)activeFindSession replacementText];
   }
 
   else
   {
-    v4 = self->_replacementText;
+    replacementText = self->_replacementText;
   }
 
-  return v4;
+  return replacementText;
 }
 
 - (void)setReplacementText:(NSString *)replacementText
@@ -531,40 +531,40 @@ void __57__UIFindInteraction__recomputeHostingStrategyIfNecessary__block_invoke(
     [(UIFindSession *)activeFindSession setReplacementText:v11];
   }
 
-  v6 = [(UIFindInteraction *)self _currentFindNavigatorController];
-  v7 = [v6 viewIfLoaded];
+  _currentFindNavigatorController = [(UIFindInteraction *)self _currentFindNavigatorController];
+  viewIfLoaded = [_currentFindNavigatorController viewIfLoaded];
 
-  if (v7)
+  if (viewIfLoaded)
   {
-    v8 = [(UIFindInteraction *)self _currentFindNavigatorController];
-    v9 = [v8 findNavigatorView];
-    v10 = [v9 replaceTextField];
-    [v10 setText:v11];
+    _currentFindNavigatorController2 = [(UIFindInteraction *)self _currentFindNavigatorController];
+    findNavigatorView = [_currentFindNavigatorController2 findNavigatorView];
+    replaceTextField = [findNavigatorView replaceTextField];
+    [replaceTextField setText:v11];
   }
 }
 
-- (void)_setHostView:(id)a3
+- (void)_setHostView:(id)view
 {
-  objc_storeWeak(&self->_alternateHostView, a3);
+  objc_storeWeak(&self->_alternateHostView, view);
 
   [(UIFindInteraction *)self _updateHostViewConformance];
 }
 
 - (UITextSearchOptions)_configuredSearchOptions
 {
-  v2 = [(UIFindInteraction *)self _createActiveFindSessionIfNecessary];
-  v3 = [v2 configuredSearchOptions];
+  _createActiveFindSessionIfNecessary = [(UIFindInteraction *)self _createActiveFindSessionIfNecessary];
+  configuredSearchOptions = [_createActiveFindSessionIfNecessary configuredSearchOptions];
 
-  return v3;
+  return configuredSearchOptions;
 }
 
-- (void)_willChangeNavigatorPlacement:(id)a3
+- (void)_willChangeNavigatorPlacement:(id)placement
 {
   if (*&self->_privateDelegateDoes)
   {
-    v5 = a3;
+    placementCopy = placement;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained _findInteraction:self navigatorPlacementWillChange:v5];
+    [WeakRetained _findInteraction:self navigatorPlacementWillChange:placementCopy];
   }
 }
 
@@ -578,16 +578,16 @@ void __57__UIFindInteraction__recomputeHostingStrategyIfNecessary__block_invoke(
   if ((*&self->_privateDelegateDoes & 2) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v8 = [WeakRetained _findInteractionScrollViewForInsetAdjustment:self];
+    scrollView = [WeakRetained _findInteractionScrollViewForInsetAdjustment:self];
   }
 
   else
   {
-    v4 = [(UIFindInteraction *)self _hostView];
-    v5 = [v4 __isKindOfUIScrollView];
+    _hostView = [(UIFindInteraction *)self _hostView];
+    __isKindOfUIScrollView = [_hostView __isKindOfUIScrollView];
 
-    v3 = [(UIFindInteraction *)self _hostView];
-    if (v5)
+    _hostView2 = [(UIFindInteraction *)self _hostView];
+    if (__isKindOfUIScrollView)
     {
       goto LABEL_10;
     }
@@ -598,19 +598,19 @@ void __57__UIFindInteraction__recomputeHostingStrategyIfNecessary__block_invoke(
     if ((isKindOfClass & 1) == 0)
     {
 LABEL_3:
-      v3 = 0;
+      _hostView2 = 0;
       goto LABEL_10;
     }
 
     WeakRetained = [(UIFindInteraction *)self _hostView];
-    v8 = [WeakRetained scrollView];
+    scrollView = [WeakRetained scrollView];
   }
 
-  v3 = v8;
+  _hostView2 = scrollView;
 
 LABEL_10:
 
-  return v3;
+  return _hostView2;
 }
 
 - (id)searchableObject
@@ -618,25 +618,25 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(UIFindSession *)self->_activeFindSession searchableObject];
+    searchableObject = [(UIFindSession *)self->_activeFindSession searchableObject];
   }
 
   else
   {
-    v3 = 0;
+    searchableObject = 0;
   }
 
-  return v3;
+  return searchableObject;
 }
 
-- (void)setSearchableObject:(id)a3
+- (void)setSearchableObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(UIFindInteraction *)self _createActiveFindSessionIfNecessary];
-    [v4 setSearchableObject:v5];
+    _createActiveFindSessionIfNecessary = [(UIFindInteraction *)self _createActiveFindSessionIfNecessary];
+    [_createActiveFindSessionIfNecessary setSearchableObject:objectCopy];
   }
 }
 

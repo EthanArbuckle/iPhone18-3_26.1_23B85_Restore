@@ -1,20 +1,20 @@
 @interface MCSignInPageAuthenticationSectionController
 - (AKInlineSignInViewController)inlineSignInViewController;
 - (MCSignInPageAuthenticationCell)cell;
-- (void)registerCellClassWithTableView:(id)a3;
+- (void)registerCellClassWithTableView:(id)view;
 @end
 
 @implementation MCSignInPageAuthenticationSectionController
 
-- (void)registerCellClassWithTableView:(id)a3
+- (void)registerCellClassWithTableView:(id)view
 {
-  v4 = [(MCSignInPageAuthenticationSectionController *)self inlineSignInViewController];
-  v5 = [v4 view];
-  [v5 sizeToFit];
+  inlineSignInViewController = [(MCSignInPageAuthenticationSectionController *)self inlineSignInViewController];
+  view = [inlineSignInViewController view];
+  [view sizeToFit];
 
-  v7 = [(MCSignInPageAuthenticationSectionController *)self inlineSignInViewController];
-  v6 = [v7 view];
-  [v6 frame];
+  inlineSignInViewController2 = [(MCSignInPageAuthenticationSectionController *)self inlineSignInViewController];
+  view2 = [inlineSignInViewController2 view];
+  [view2 frame];
   [(MCSignInPageAuthenticationSectionController *)self setAuthSectionHeight:CGRectGetHeight(v9)];
 }
 
@@ -24,9 +24,9 @@
   if (!cell)
   {
     v4 = [MCSignInPageAuthenticationCell alloc];
-    v5 = [(MCSignInPageAuthenticationSectionController *)self inlineSignInViewController];
-    v6 = [v5 view];
-    v7 = [(MCSignInPageAuthenticationCell *)v4 initWithAuthView:v6];
+    inlineSignInViewController = [(MCSignInPageAuthenticationSectionController *)self inlineSignInViewController];
+    view = [inlineSignInViewController view];
+    v7 = [(MCSignInPageAuthenticationCell *)v4 initWithAuthView:view];
     v8 = self->_cell;
     self->_cell = v7;
 

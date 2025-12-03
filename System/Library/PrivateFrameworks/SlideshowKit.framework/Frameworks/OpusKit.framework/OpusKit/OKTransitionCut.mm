@@ -1,48 +1,48 @@
 @interface OKTransitionCut
-- (void)_transitionInView:(id)a3 fromSubview:(id)a4 toSubview:(id)a5 wasInteractive:(BOOL)a6 duration:(double)a7 doEaseIn:(BOOL)a8 doEaseOut:(BOOL)a9 isCompleting:(BOOL)a10 wasCancelled:(BOOL)a11 fromProgress:(double)a12 completionHandler:(id)a13;
-- (void)startInteractiveTransitionWithContext:(id)a3;
-- (void)updateInteractiveTransitionWithContext:(id)a3 andProgress:(double)a4;
+- (void)_transitionInView:(id)view fromSubview:(id)subview toSubview:(id)toSubview wasInteractive:(BOOL)interactive duration:(double)duration doEaseIn:(BOOL)in doEaseOut:(BOOL)out isCompleting:(BOOL)self0 wasCancelled:(BOOL)self1 fromProgress:(double)self2 completionHandler:(id)self3;
+- (void)startInteractiveTransitionWithContext:(id)context;
+- (void)updateInteractiveTransitionWithContext:(id)context andProgress:(double)progress;
 @end
 
 @implementation OKTransitionCut
 
-- (void)_transitionInView:(id)a3 fromSubview:(id)a4 toSubview:(id)a5 wasInteractive:(BOOL)a6 duration:(double)a7 doEaseIn:(BOOL)a8 doEaseOut:(BOOL)a9 isCompleting:(BOOL)a10 wasCancelled:(BOOL)a11 fromProgress:(double)a12 completionHandler:(id)a13
+- (void)_transitionInView:(id)view fromSubview:(id)subview toSubview:(id)toSubview wasInteractive:(BOOL)interactive duration:(double)duration doEaseIn:(BOOL)in doEaseOut:(BOOL)out isCompleting:(BOOL)self0 wasCancelled:(BOOL)self1 fromProgress:(double)self2 completionHandler:(id)self3
 {
-  [a3 bounds];
+  [view bounds];
   Width = CGRectGetWidth(v21);
-  [a3 bounds];
+  [view bounds];
   v18.n128_f64[0] = CGRectGetHeight(v22);
-  if (!a6)
+  if (!interactive)
   {
-    [a5 setFrame:{0.0, 0.0, Width, v18.n128_f64[0]}];
-    [a3 insertSubview:a5 aboveSubview:a4];
+    [toSubview setFrame:{0.0, 0.0, Width, v18.n128_f64[0]}];
+    [view insertSubview:toSubview aboveSubview:subview];
   }
 
-  if (a13)
+  if (handler)
   {
-    v19 = *(a13 + 2);
+    v19 = *(handler + 2);
 
-    v19(a13, !a11, v18);
+    v19(handler, !cancelled, v18);
   }
 }
 
-- (void)startInteractiveTransitionWithContext:(id)a3
+- (void)startInteractiveTransitionWithContext:(id)context
 {
   v10.receiver = self;
   v10.super_class = OKTransitionCut;
   [(OKTransition *)&v10 startInteractiveTransitionWithContext:?];
-  v4 = [a3 fromViewController];
-  v5 = [a3 toViewController];
-  [objc_msgSend(a3 "containerView")];
-  [objc_msgSend(v5 "view")];
-  [objc_msgSend(a3 "containerView")];
+  fromViewController = [context fromViewController];
+  toViewController = [context toViewController];
+  [objc_msgSend(context "containerView")];
+  [objc_msgSend(toViewController "view")];
+  [objc_msgSend(context "containerView")];
 }
 
-- (void)updateInteractiveTransitionWithContext:(id)a3 andProgress:(double)a4
+- (void)updateInteractiveTransitionWithContext:(id)context andProgress:(double)progress
 {
   v4.receiver = self;
   v4.super_class = OKTransitionCut;
-  [(OKTransition *)&v4 updateInteractiveTransitionWithContext:a3 andProgress:a4];
+  [(OKTransition *)&v4 updateInteractiveTransitionWithContext:context andProgress:progress];
 }
 
 @end

@@ -7,13 +7,13 @@
 - (id)jsonData
 {
   v3 = objc_opt_new();
-  v4 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self host];
-  v5 = [v4 length];
+  host = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self host];
+  v5 = [host length];
 
   if (v5)
   {
-    v6 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self host];
-    [v3 setObject:v6 forKeyedSubscript:@"host"];
+    host2 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self host];
+    [v3 setObject:host2 forKeyedSubscript:@"host"];
   }
 
   if ([(VUIDocumentPreFetchedDataPlaybackUpNext *)self updateEvent])
@@ -36,47 +36,47 @@
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[VUIDocumentPreFetchedDataPlaybackUpNext refetchUpNextData](self, "refetchUpNextData")}];
   [v3 setObject:v10 forKeyedSubscript:@"refetchUpNextData"];
 
-  v11 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self showID];
-  v12 = [v11 length];
+  showID = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self showID];
+  v12 = [showID length];
 
   if (v12)
   {
-    v13 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self showID];
-    [v3 setObject:v13 forKeyedSubscript:@"showId"];
+    showID2 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self showID];
+    [v3 setObject:showID2 forKeyedSubscript:@"showId"];
   }
 
-  v14 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self productID];
-  v15 = [v14 length];
+  productID = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self productID];
+  v15 = [productID length];
 
   if (v15)
   {
-    v16 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self productID];
-    [v3 setObject:v16 forKeyedSubscript:@"id"];
+    productID2 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self productID];
+    [v3 setObject:productID2 forKeyedSubscript:@"id"];
   }
 
-  v17 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self adamID];
+  adamID = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self adamID];
 
-  if (v17)
+  if (adamID)
   {
-    v18 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self adamID];
-    [v3 setObject:v18 forKeyedSubscript:@"adamId"];
+    adamID2 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self adamID];
+    [v3 setObject:adamID2 forKeyedSubscript:@"adamId"];
   }
 
-  v19 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self seasonNumber];
+  seasonNumber = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self seasonNumber];
 
-  if (v19)
+  if (seasonNumber)
   {
-    v20 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self seasonNumber];
-    [v3 setObject:v20 forKeyedSubscript:@"seasonNumber"];
+    seasonNumber2 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self seasonNumber];
+    [v3 setObject:seasonNumber2 forKeyedSubscript:@"seasonNumber"];
   }
 
-  v21 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self excludedCanonicals];
-  v22 = [v21 count];
+  excludedCanonicals = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self excludedCanonicals];
+  v22 = [excludedCanonicals count];
 
   if (v22)
   {
-    v23 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self excludedCanonicals];
-    [v3 setObject:v23 forKeyedSubscript:@"excludedCanonicals"];
+    excludedCanonicals2 = [(VUIDocumentPreFetchedDataPlaybackUpNext *)self excludedCanonicals];
+    [v3 setObject:excludedCanonicals2 forKeyedSubscript:@"excludedCanonicals"];
   }
 
   v24 = [v3 copy];

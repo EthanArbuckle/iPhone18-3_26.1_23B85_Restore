@@ -7,18 +7,18 @@
 - (id)loadTranscriptText
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(CKChatItem *)self IMChatItem];
-  v4 = [v3 text];
-  v5 = [v4 string];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  text = [iMChatItem text];
+  string = [text string];
 
-  v6 = [(CKChatItem *)self IMChatItem];
-  v7 = [v6 message];
-  v8 = [v7 sender];
+  iMChatItem2 = [(CKChatItem *)self IMChatItem];
+  message = [iMChatItem2 message];
+  sender = [message sender];
 
   v9 = +[CKUIBehavior sharedBehaviors];
-  v10 = [v9 transcriptRegularFontAttributes];
+  transcriptRegularFontAttributes = [v9 transcriptRegularFontAttributes];
 
-  v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v5 attributes:v10];
+  v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:string attributes:transcriptRegularFontAttributes];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -38,18 +38,18 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [v5 rangeOfString:*(*(&v26 + 1) + 8 * i) options:{8, v26}];
+        v17 = [string rangeOfString:*(*(&v26 + 1) + 8 * i) options:{8, v26}];
         if (v18)
         {
           v19 = v17;
           v20 = v18;
           v21 = *MEMORY[0x1E69DB648];
           v22 = +[CKUIBehavior sharedBehaviors];
-          v23 = [v22 transcriptBoldFont];
-          [v11 addAttribute:v21 value:v23 range:{v19, v20}];
+          transcriptBoldFont = [v22 transcriptBoldFont];
+          [v11 addAttribute:v21 value:transcriptBoldFont range:{v19, v20}];
 
-          v24 = [v8 name];
-          [v11 replaceCharactersInRange:v19 withString:{v20, v24}];
+          name = [sender name];
+          [v11 replaceCharactersInRange:v19 withString:{v20, name}];
 
           goto LABEL_11;
         }

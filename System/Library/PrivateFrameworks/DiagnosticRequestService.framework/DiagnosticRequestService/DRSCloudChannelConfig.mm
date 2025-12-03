@@ -3,57 +3,57 @@
 + (id)_smallPopulationCountDict;
 + (id)currentDeviceDefaultCloudChannelConfig;
 + (id)staticSnapshotDeviceDefaultCloudChannelConfig;
-+ (id)stringForChannelType:(unsigned __int8)a3;
-+ (id)stringForEnvironment:(unsigned __int8)a3;
-+ (unsigned)channelTypeForIsInternal:(BOOL)a3 isSeed:(BOOL)a4 isQA:(BOOL)a5 isCarrier:(BOOL)a6;
-+ (unsigned)populationSliceForDevice:(unsigned __int16)a3;
-- (BOOL)isEqual:(id)a3;
-- (DRSCloudChannelConfig)initWithMO:(id)a3;
++ (id)stringForChannelType:(unsigned __int8)type;
++ (id)stringForEnvironment:(unsigned __int8)environment;
++ (unsigned)channelTypeForIsInternal:(BOOL)internal isSeed:(BOOL)seed isQA:(BOOL)a isCarrier:(BOOL)carrier;
++ (unsigned)populationSliceForDevice:(unsigned __int16)device;
+- (BOOL)isEqual:(id)equal;
+- (DRSCloudChannelConfig)initWithMO:(id)o;
 - (NSString)channelID;
 - (NSString)channelName;
 - (id)debugDescription;
-- (id)initNoChecksWithPlatform:(unsigned __int8)a3 channelType:(unsigned __int8)a4 environment:(unsigned __int8)a5 populationSliceNumber:(id)a6 overridesDeviceDefault:(BOOL)a7;
-- (id)initNoSubscriptionConfig:(BOOL)a3;
+- (id)initNoChecksWithPlatform:(unsigned __int8)platform channelType:(unsigned __int8)type environment:(unsigned __int8)environment populationSliceNumber:(id)number overridesDeviceDefault:(BOOL)default;
+- (id)initNoSubscriptionConfig:(BOOL)config;
 - (id)jsonDictionaryRepresentation;
 @end
 
 @implementation DRSCloudChannelConfig
 
-+ (id)stringForChannelType:(unsigned __int8)a3
++ (id)stringForChannelType:(unsigned __int8)type
 {
-  if (a3 > 4u)
+  if (type > 4u)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27899FB78[a3];
+    return off_27899FB78[type];
   }
 }
 
-+ (id)stringForEnvironment:(unsigned __int8)a3
++ (id)stringForEnvironment:(unsigned __int8)environment
 {
-  if (a3 > 2u)
+  if (environment > 2u)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27899FBA0[a3];
+    return off_27899FBA0[environment];
   }
 }
 
 - (id)debugDescription
 {
-  v3 = [(DRSCloudChannelConfig *)self isNoSubscriptionConfig];
+  isNoSubscriptionConfig = [(DRSCloudChannelConfig *)self isNoSubscriptionConfig];
   v4 = MEMORY[0x277CCACA8];
-  if (v3)
+  if (isNoSubscriptionConfig)
   {
-    v5 = [(DRSCloudChannelConfig *)self overridesDeviceDefault];
+    overridesDeviceDefault = [(DRSCloudChannelConfig *)self overridesDeviceDefault];
     v6 = @"DEFAULT";
-    if (v5)
+    if (overridesDeviceDefault)
     {
       v6 = @"Override";
     }
@@ -63,7 +63,7 @@
 
   else
   {
-    v8 = [(DRSCloudChannelConfig *)self channelName];
+    channelName = [(DRSCloudChannelConfig *)self channelName];
     if ([(DRSCloudChannelConfig *)self overridesDeviceDefault])
     {
       v9 = @"Override";
@@ -74,33 +74,33 @@
       v9 = @"DEFAULT";
     }
 
-    v10 = [(DRSCloudChannelConfig *)self channelID];
-    v7 = [v4 stringWithFormat:@"%@ (%@, %@)", v8, v9, v10];
+    channelID = [(DRSCloudChannelConfig *)self channelID];
+    v7 = [v4 stringWithFormat:@"%@ (%@, %@)", channelName, v9, channelID];
   }
 
   return v7;
 }
 
-- (id)initNoChecksWithPlatform:(unsigned __int8)a3 channelType:(unsigned __int8)a4 environment:(unsigned __int8)a5 populationSliceNumber:(id)a6 overridesDeviceDefault:(BOOL)a7
+- (id)initNoChecksWithPlatform:(unsigned __int8)platform channelType:(unsigned __int8)type environment:(unsigned __int8)environment populationSliceNumber:(id)number overridesDeviceDefault:(BOOL)default
 {
-  v13 = a6;
+  numberCopy = number;
   v17.receiver = self;
   v17.super_class = DRSCloudChannelConfig;
   v14 = [(DRSCloudChannelConfig *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_platform = a3;
-    v14->_type = a4;
-    v14->_environment = a5;
-    objc_storeStrong(&v14->_populationSliceNumber, a6);
-    v15->_overridesDeviceDefault = a7;
+    v14->_platform = platform;
+    v14->_type = type;
+    v14->_environment = environment;
+    objc_storeStrong(&v14->_populationSliceNumber, number);
+    v15->_overridesDeviceDefault = default;
   }
 
   return v15;
 }
 
-- (id)initNoSubscriptionConfig:(BOOL)a3
+- (id)initNoSubscriptionConfig:(BOOL)config
 {
   v8.receiver = self;
   v8.super_class = DRSCloudChannelConfig;
@@ -113,70 +113,70 @@
     populationSliceNumber = v4->_populationSliceNumber;
     v4->_populationSliceNumber = 0;
 
-    v5->_overridesDeviceDefault = a3;
+    v5->_overridesDeviceDefault = config;
   }
 
   return v5;
 }
 
-- (DRSCloudChannelConfig)initWithMO:(id)a3
+- (DRSCloudChannelConfig)initWithMO:(id)o
 {
-  if (a3)
+  if (o)
   {
-    v4 = a3;
-    v5 = [v4 platform];
-    v6 = [v4 channelType];
-    v7 = [v4 environment];
-    v8 = [v4 populationSliceNumber];
-    v9 = [v4 overridesDeviceDefault];
+    oCopy = o;
+    platform = [oCopy platform];
+    channelType = [oCopy channelType];
+    environment = [oCopy environment];
+    populationSliceNumber = [oCopy populationSliceNumber];
+    overridesDeviceDefault = [oCopy overridesDeviceDefault];
 
-    self = [(DRSCloudChannelConfig *)self initNoChecksWithPlatform:v5 channelType:v6 environment:v7 populationSliceNumber:v8 overridesDeviceDefault:v9];
-    v10 = self;
+    self = [(DRSCloudChannelConfig *)self initNoChecksWithPlatform:platform channelType:channelType environment:environment populationSliceNumber:populationSliceNumber overridesDeviceDefault:overridesDeviceDefault];
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 == self)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v9) = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(DRSCloudChannelConfig *)self populationSliceNumber];
-        if (!v8 || ([(DRSCloudChannelConfig *)v7 populationSliceNumber], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        populationSliceNumber = [(DRSCloudChannelConfig *)self populationSliceNumber];
+        if (!populationSliceNumber || ([(DRSCloudChannelConfig *)v7 populationSliceNumber], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v10 = [(DRSCloudChannelConfig *)v7 populationSliceNumber];
-          if (v10)
+          populationSliceNumber2 = [(DRSCloudChannelConfig *)v7 populationSliceNumber];
+          if (populationSliceNumber2)
           {
-            v11 = [(DRSCloudChannelConfig *)self populationSliceNumber];
+            populationSliceNumber3 = [(DRSCloudChannelConfig *)self populationSliceNumber];
 
-            if (v8)
+            if (populationSliceNumber)
             {
 
-              if (!v11)
+              if (!populationSliceNumber3)
               {
                 goto LABEL_22;
               }
             }
 
-            else if (!v11)
+            else if (!populationSliceNumber3)
             {
               goto LABEL_22;
             }
@@ -185,26 +185,26 @@
           else
           {
 
-            if (v8)
+            if (populationSliceNumber)
             {
             }
           }
 
-          v12 = [(DRSCloudChannelConfig *)self populationSliceNumber];
+          populationSliceNumber4 = [(DRSCloudChannelConfig *)self populationSliceNumber];
 
-          if (!v12 || (-[DRSCloudChannelConfig populationSliceNumber](self, "populationSliceNumber"), v13 = objc_claimAutoreleasedReturnValue(), -[DRSCloudChannelConfig populationSliceNumber](v7, "populationSliceNumber"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v13 isEqualToNumber:v14], v14, v13, v15))
+          if (!populationSliceNumber4 || (-[DRSCloudChannelConfig populationSliceNumber](self, "populationSliceNumber"), v13 = objc_claimAutoreleasedReturnValue(), -[DRSCloudChannelConfig populationSliceNumber](v7, "populationSliceNumber"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v13 isEqualToNumber:v14], v14, v13, v15))
           {
-            v16 = [(DRSCloudChannelConfig *)self platform];
-            if (v16 == [(DRSCloudChannelConfig *)v7 platform])
+            platform = [(DRSCloudChannelConfig *)self platform];
+            if (platform == [(DRSCloudChannelConfig *)v7 platform])
             {
-              v17 = [(DRSCloudChannelConfig *)self environment];
-              if (v17 == [(DRSCloudChannelConfig *)v7 environment])
+              environment = [(DRSCloudChannelConfig *)self environment];
+              if (environment == [(DRSCloudChannelConfig *)v7 environment])
               {
-                v18 = [(DRSCloudChannelConfig *)self type];
-                if (v18 == [(DRSCloudChannelConfig *)v7 type])
+                type = [(DRSCloudChannelConfig *)self type];
+                if (type == [(DRSCloudChannelConfig *)v7 type])
                 {
-                  v19 = [(DRSCloudChannelConfig *)self overridesDeviceDefault];
-                  v9 = v19 ^ [(DRSCloudChannelConfig *)v7 overridesDeviceDefault]^ 1;
+                  overridesDeviceDefault = [(DRSCloudChannelConfig *)self overridesDeviceDefault];
+                  v9 = overridesDeviceDefault ^ [(DRSCloudChannelConfig *)v7 overridesDeviceDefault]^ 1;
 LABEL_23:
 
                   goto LABEL_24;
@@ -235,10 +235,10 @@ LABEL_24:
 - (id)jsonDictionaryRepresentation
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = [(DRSCloudChannelConfig *)self isNoSubscriptionConfig];
-  v6 = v5;
+  isNoSubscriptionConfig = [(DRSCloudChannelConfig *)self isNoSubscriptionConfig];
+  v6 = isNoSubscriptionConfig;
   v22 = @"platform";
-  if (v5)
+  if (isNoSubscriptionConfig)
   {
     v30 = @"(None)";
     v31 = @"(None)";
@@ -264,11 +264,11 @@ LABEL_24:
   v33 = v7;
   v25 = @"isSubscribed";
   v26 = @"populationSliceNumber";
-  v9 = [(DRSCloudChannelConfig *)self populationSliceNumber];
-  v10 = v9;
-  if (v9)
+  populationSliceNumber = [(DRSCloudChannelConfig *)self populationSliceNumber];
+  v10 = populationSliceNumber;
+  if (populationSliceNumber)
   {
-    v11 = v9;
+    v11 = populationSliceNumber;
   }
 
   else
@@ -281,11 +281,11 @@ LABEL_24:
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[DRSCloudChannelConfig overridesDeviceDefault](self, "overridesDeviceDefault")}];
   v35 = v12;
   v28 = @"channelName";
-  v13 = [(DRSCloudChannelConfig *)self channelName];
-  v14 = v13;
-  if (v13)
+  channelName = [(DRSCloudChannelConfig *)self channelName];
+  v14 = channelName;
+  if (channelName)
   {
-    v15 = v13;
+    v15 = channelName;
   }
 
   else
@@ -295,11 +295,11 @@ LABEL_24:
 
   v36 = v15;
   v29 = @"channelID";
-  v16 = [(DRSCloudChannelConfig *)self channelID];
-  v17 = v16;
-  if (v16)
+  channelID = [(DRSCloudChannelConfig *)self channelID];
+  v17 = channelID;
+  if (channelID)
   {
-    v18 = v16;
+    v18 = channelID;
   }
 
   else
@@ -322,10 +322,10 @@ LABEL_24:
 - (NSString)channelName
 {
   v3 = objc_opt_class();
-  v4 = [(DRSCloudChannelConfig *)self platform];
-  v5 = [(DRSCloudChannelConfig *)self type];
-  v6 = [(DRSCloudChannelConfig *)self populationSliceNumber];
-  v7 = [v3 channelNameForPlatform:v4 type:v5 sliceNum:v6];
+  platform = [(DRSCloudChannelConfig *)self platform];
+  type = [(DRSCloudChannelConfig *)self type];
+  populationSliceNumber = [(DRSCloudChannelConfig *)self populationSliceNumber];
+  v7 = [v3 channelNameForPlatform:platform type:type sliceNum:populationSliceNumber];
 
   return v7;
 }
@@ -333,15 +333,15 @@ LABEL_24:
 - (NSString)channelID
 {
   v3 = objc_opt_class();
-  v4 = [(DRSCloudChannelConfig *)self channelName];
-  v5 = [v3 channelIDForName:v4];
+  channelName = [(DRSCloudChannelConfig *)self channelName];
+  v5 = [v3 channelIDForName:channelName];
 
   return v5;
 }
 
-+ (unsigned)channelTypeForIsInternal:(BOOL)a3 isSeed:(BOOL)a4 isQA:(BOOL)a5 isCarrier:(BOOL)a6
++ (unsigned)channelTypeForIsInternal:(BOOL)internal isSeed:(BOOL)seed isQA:(BOOL)a isCarrier:(BOOL)carrier
 {
-  if (a4)
+  if (seed)
   {
     v6 = 3;
   }
@@ -351,14 +351,14 @@ LABEL_24:
     v6 = 4;
   }
 
-  if (a3)
+  if (internal)
   {
     v6 = 2;
   }
 
-  if (a5 || a6)
+  if (a || carrier)
   {
-    return !a6;
+    return !carrier;
   }
 
   else
@@ -373,7 +373,7 @@ LABEL_24:
   block[1] = 3221225472;
   block[2] = __70__DRSCloudChannelConfig_staticSnapshotDeviceDefaultCloudChannelConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (staticSnapshotDeviceDefaultCloudChannelConfig_onceToken != -1)
   {
     dispatch_once(&staticSnapshotDeviceDefaultCloudChannelConfig_onceToken, block);
@@ -394,11 +394,11 @@ void __70__DRSCloudChannelConfig_staticSnapshotDeviceDefaultCloudChannelConfig__
 + (id)currentDeviceDefaultCloudChannelConfig
 {
   v3 = +[DRSSystemProfile sharedInstance];
-  v4 = [a1 channelTypeForIsInternal:objc_msgSend(v3 isSeed:"isInternal") isQA:objc_msgSend(v3 isCarrier:{"isSeed"), 0, objc_msgSend(v3, "isCarrier")}];
+  v4 = [self channelTypeForIsInternal:objc_msgSend(v3 isSeed:"isInternal") isQA:objc_msgSend(v3 isCarrier:{"isSeed"), 0, objc_msgSend(v3, "isCarrier")}];
   if (v4)
   {
     v5 = v4;
-    v6 = [a1 sliceCountForPlatform:objc_msgSend(v3 channelType:{"platform"), v4}];
+    v6 = [self sliceCountForPlatform:objc_msgSend(v3 channelType:{"platform"), v4}];
     v7 = v6;
     if (v6)
     {
@@ -421,13 +421,13 @@ void __70__DRSCloudChannelConfig_staticSnapshotDeviceDefaultCloudChannelConfig__
   return v9;
 }
 
-+ (unsigned)populationSliceForDevice:(unsigned __int16)a3
++ (unsigned)populationSliceForDevice:(unsigned __int16)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = +[DRSSystemProfile sharedInstance];
-  LOWORD(v3) = [v4 deviceHash] % v3;
+  LOWORD(deviceCopy) = [v4 deviceHash] % deviceCopy;
 
-  return v3;
+  return deviceCopy;
 }
 
 + (id)_smallPopulationCountDict

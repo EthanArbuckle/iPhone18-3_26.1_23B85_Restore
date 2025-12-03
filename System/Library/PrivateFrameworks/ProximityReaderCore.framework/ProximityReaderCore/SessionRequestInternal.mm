@@ -1,15 +1,15 @@
 @interface SessionRequestInternal
 - (_TtC19ProximityReaderCore22SessionRequestInternal)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SessionRequestInternal
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2611AEE90(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2611AEE90(coderCopy);
 }
 
 - (_TtC19ProximityReaderCore22SessionRequestInternal)init

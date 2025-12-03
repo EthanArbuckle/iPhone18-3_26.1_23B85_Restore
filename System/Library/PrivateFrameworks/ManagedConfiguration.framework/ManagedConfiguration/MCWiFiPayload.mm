@@ -1,15 +1,15 @@
 @interface MCWiFiPayload
 + (id)localizedPluralForm;
 + (id)localizedSingularForm;
-- (BOOL)_eapConfigIsValid:(id)a3 error:(id *)a4;
-- (BOOL)_isEAPSIMConfig:(id)a3;
-- (BOOL)_qosMarkingConfigIsValid:(id)a3 error:(id *)a4;
-- (MCWiFiPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
-- (id)_createDictionaryWithAllowListKeyMigrated:(id)a3;
-- (id)_eapPasswordFromConfig:(id)a3 isRequired:(BOOL *)a4;
-- (id)_eapUsernameFromConfig:(id)a3 isRequired:(BOOL *)a4;
+- (BOOL)_eapConfigIsValid:(id)valid error:(id *)error;
+- (BOOL)_isEAPSIMConfig:(id)config;
+- (BOOL)_qosMarkingConfigIsValid:(id)valid error:(id *)error;
+- (MCWiFiPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
+- (id)_createDictionaryWithAllowListKeyMigrated:(id)migrated;
+- (id)_eapPasswordFromConfig:(id)config isRequired:(BOOL *)required;
+- (id)_eapUsernameFromConfig:(id)config isRequired:(BOOL *)required;
 - (id)_localizedEncryptionTypeString;
-- (id)filterForUserEnrollmentOutError:(id *)a3;
+- (id)filterForUserEnrollmentOutError:(id *)error;
 - (id)installationWarnings;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
@@ -23,24 +23,24 @@
 
 + (id)localizedSingularForm
 {
-  v2 = [@"WIFI_NETWORK_DESCRIPTION_SINGULAR_FORMAT" MCAppendGreenteaSuffix];
-  v10 = MCLocalizedFormat(v2, v3, v4, v5, v6, v7, v8, v9, v12);
+  mCAppendGreenteaSuffix = [@"WIFI_NETWORK_DESCRIPTION_SINGULAR_FORMAT" MCAppendGreenteaSuffix];
+  v10 = MCLocalizedFormat(mCAppendGreenteaSuffix, v3, v4, v5, v6, v7, v8, v9, v12);
 
   return v10;
 }
 
 + (id)localizedPluralForm
 {
-  v2 = [@"WIFI_NETWORK_DESCRIPTION_PLURAL_FORMAT" MCAppendGreenteaSuffix];
-  v10 = MCLocalizedFormat(v2, v3, v4, v5, v6, v7, v8, v9, v12);
+  mCAppendGreenteaSuffix = [@"WIFI_NETWORK_DESCRIPTION_PLURAL_FORMAT" MCAppendGreenteaSuffix];
+  v10 = MCLocalizedFormat(mCAppendGreenteaSuffix, v3, v4, v5, v6, v7, v8, v9, v12);
 
   return v10;
 }
 
-- (BOOL)_eapConfigIsValid:(id)a3 error:(id *)a4
+- (BOOL)_eapConfigIsValid:(id)valid error:(id *)error
 {
   v94 = *MEMORY[0x1E69E9840];
-  v6 = [a3 mutableCopy];
+  v6 = [valid mutableCopy];
   v86 = 0;
   v7 = [v6 MCValidateAndRemoveNonZeroLengthStringWithKey:@"UserName" isRequired:0 outError:&v86];
   v8 = v86;
@@ -353,9 +353,9 @@ LABEL_30:
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEFAULT))
     {
       v34 = v33;
-      v35 = [(MCPayload *)self friendlyName];
+      friendlyName = [(MCPayload *)self friendlyName];
       *buf = 138543618;
-      v88 = v35;
+      v88 = friendlyName;
       v89 = 2114;
       v90 = v6;
       _os_log_impl(&dword_1A795B000, v34, OS_LOG_TYPE_DEFAULT, "Payload “%{public}@” contains unexpected fields in EAP Configuration. They are: %{public}@", buf, 0x16u);
@@ -365,20 +365,20 @@ LABEL_30:
   v10 = 0;
   v11 = 1;
 LABEL_7:
-  if (a4)
+  if (error)
   {
     v17 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   v18 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (BOOL)_qosMarkingConfigIsValid:(id)a3 error:(id *)a4
+- (BOOL)_qosMarkingConfigIsValid:(id)valid error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = [a3 mutableCopy];
+  v6 = [valid mutableCopy];
   v25 = 0;
   v7 = [v6 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"QoSMarkingWhitelistedAppIdentifiers" isRequired:0 allowZeroLengthString:0 outError:&v25];
   v8 = v25;
@@ -403,11 +403,11 @@ LABEL_7:
 LABEL_6:
     v13 = v8;
     v14 = 0;
-    if (a4)
+    if (error)
     {
 LABEL_7:
       v15 = v13;
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -419,9 +419,9 @@ LABEL_7:
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEFAULT))
       {
         v19 = v18;
-        v20 = [(MCPayload *)self friendlyName];
+        friendlyName = [(MCPayload *)self friendlyName];
         *buf = 138543618;
-        v27 = v20;
+        v27 = friendlyName;
         v28 = 2114;
         v29 = v6;
         _os_log_impl(&dword_1A795B000, v19, OS_LOG_TYPE_DEFAULT, "Payload “%{public}@” contains unexpected fields in QoS Marking Configuration. They are: %{public}@", buf, 0x16u);
@@ -430,7 +430,7 @@ LABEL_7:
 
     v13 = 0;
     v14 = 1;
-    if (a4)
+    if (error)
     {
       goto LABEL_7;
     }
@@ -440,14 +440,14 @@ LABEL_7:
   return v14;
 }
 
-- (id)_createDictionaryWithAllowListKeyMigrated:(id)a3
+- (id)_createDictionaryWithAllowListKeyMigrated:(id)migrated
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"QoSMarkingAllowListAppIdentifiers"];
+  migratedCopy = migrated;
+  v4 = [migratedCopy objectForKeyedSubscript:@"QoSMarkingAllowListAppIdentifiers"];
 
   if (v4)
   {
-    v5 = [v3 mutableCopy];
+    v5 = [migratedCopy mutableCopy];
     v6 = [v5 objectForKeyedSubscript:@"QoSMarkingAllowListAppIdentifiers"];
     [v5 setObject:v6 forKeyedSubscript:@"QoSMarkingWhitelistedAppIdentifiers"];
 
@@ -457,19 +457,19 @@ LABEL_7:
 
   else
   {
-    v7 = v3;
+    v7 = migratedCopy;
   }
 
   return v7;
 }
 
-- (id)_eapUsernameFromConfig:(id)a3 isRequired:(BOOL *)a4
+- (id)_eapUsernameFromConfig:(id)config isRequired:(BOOL *)required
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  configCopy = config;
+  v6 = configCopy;
+  if (configCopy)
   {
-    v7 = [v5 objectForKey:@"AcceptEAPTypes"];
+    v7 = [configCopy objectForKey:@"AcceptEAPTypes"];
     if (v7)
     {
       v8 = [MEMORY[0x1E696AD98] numberWithInt:13];
@@ -481,9 +481,9 @@ LABEL_7:
           v12 = [MEMORY[0x1E696AD98] numberWithInt:23];
           v13 = [v7 containsObject:v12];
 
-          if (a4 && (v13 & 1) == 0)
+          if (required && (v13 & 1) == 0)
           {
-            *a4 = 1;
+            *required = 1;
           }
 
           goto LABEL_7;
@@ -503,13 +503,13 @@ LABEL_9:
   return v10;
 }
 
-- (id)_eapPasswordFromConfig:(id)a3 isRequired:(BOOL *)a4
+- (id)_eapPasswordFromConfig:(id)config isRequired:(BOOL *)required
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  configCopy = config;
+  v6 = configCopy;
+  if (configCopy)
   {
-    v7 = [v5 objectForKey:@"AcceptEAPTypes"];
+    v7 = [configCopy objectForKey:@"AcceptEAPTypes"];
     if (v7)
     {
       v8 = [MEMORY[0x1E696AD98] numberWithInt:13];
@@ -521,9 +521,9 @@ LABEL_9:
           v12 = [MEMORY[0x1E696AD98] numberWithInt:23];
           v13 = [v7 containsObject:v12];
 
-          if (a4 && (v13 & 1) == 0)
+          if (required && (v13 & 1) == 0)
           {
-            *a4 = 1;
+            *required = 1;
           }
 
           goto LABEL_7;
@@ -543,9 +543,9 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)_isEAPSIMConfig:(id)a3
+- (BOOL)_isEAPSIMConfig:(id)config
 {
-  v3 = [a3 objectForKey:@"AcceptEAPTypes"];
+  v3 = [config objectForKey:@"AcceptEAPTypes"];
   if (v3)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:18];
@@ -560,135 +560,135 @@ LABEL_9:
   return v5;
 }
 
-- (MCWiFiPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCWiFiPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v176 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v170.receiver = self;
   v170.super_class = MCWiFiPayload;
-  v10 = [(MCPayload *)&v170 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCPayload *)&v170 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (!v10)
   {
     goto LABEL_25;
   }
 
   v169 = 0;
-  v11 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"IsHotspot" isRequired:0 outError:&v169];
-  v12 = v169;
+  v11 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"IsHotspot" isRequired:0 outError:&v169];
+  qosMarkingConfig = v169;
   isHotspotNum = v10->_isHotspotNum;
   v10->_isHotspotNum = v11;
 
-  if (v12)
+  if (qosMarkingConfig)
   {
     goto LABEL_15;
   }
 
   v10->_isHotspot = [(NSNumber *)v10->_isHotspotNum BOOLValue];
   v168 = 0;
-  v14 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ServiceProviderRoamingEnabled" isRequired:0 outError:&v168];
-  v12 = v168;
+  v14 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ServiceProviderRoamingEnabled" isRequired:0 outError:&v168];
+  qosMarkingConfig = v168;
   serviceProviderRoamingEnabledNum = v10->_serviceProviderRoamingEnabledNum;
   v10->_serviceProviderRoamingEnabledNum = v14;
 
-  if (v12)
+  if (qosMarkingConfig)
   {
     goto LABEL_15;
   }
 
   v10->_serviceProviderRoamingEnabled = [(NSNumber *)v10->_serviceProviderRoamingEnabledNum BOOLValue];
   v167 = 0;
-  v16 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ProxyPACFallbackAllowed" isRequired:0 outError:&v167];
-  v12 = v167;
+  v16 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ProxyPACFallbackAllowed" isRequired:0 outError:&v167];
+  qosMarkingConfig = v167;
   proxyPACFallbackAllowedNum = v10->_proxyPACFallbackAllowedNum;
   v10->_proxyPACFallbackAllowedNum = v16;
 
-  if (v12)
+  if (qosMarkingConfig)
   {
     goto LABEL_15;
   }
 
   v10->_proxyPACFallbackAllowed = [(NSNumber *)v10->_proxyPACFallbackAllowedNum BOOLValue];
   v166 = 0;
-  v18 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"DomainName" isRequired:0 outError:&v166];
-  v12 = v166;
+  v18 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"DomainName" isRequired:0 outError:&v166];
+  qosMarkingConfig = v166;
   domainName = v10->_domainName;
   v10->_domainName = v18;
 
-  if (v12)
+  if (qosMarkingConfig)
   {
     goto LABEL_15;
   }
 
   v165 = 0;
-  v20 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"HESSID" isRequired:0 outError:&v165];
-  v12 = v165;
+  v20 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"HESSID" isRequired:0 outError:&v165];
+  qosMarkingConfig = v165;
   HESSID = v10->_HESSID;
   v10->_HESSID = v20;
 
-  if (v12)
+  if (qosMarkingConfig)
   {
     goto LABEL_15;
   }
 
   v164 = 0;
-  v22 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"RoamingConsortiumOIs" isRequired:0 outError:&v164];
-  v12 = v164;
+  v22 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"RoamingConsortiumOIs" isRequired:0 outError:&v164];
+  qosMarkingConfig = v164;
   roamingConsortiumOIs = v10->_roamingConsortiumOIs;
   v10->_roamingConsortiumOIs = v22;
 
-  if (v12)
+  if (qosMarkingConfig)
   {
     goto LABEL_15;
   }
 
   v163 = 0;
-  v24 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"NAIRealmNames" isRequired:0 outError:&v163];
-  v12 = v163;
+  v24 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"NAIRealmNames" isRequired:0 outError:&v163];
+  qosMarkingConfig = v163;
   NAIRealmNames = v10->_NAIRealmNames;
   v10->_NAIRealmNames = v24;
 
-  if (v12)
+  if (qosMarkingConfig)
   {
     goto LABEL_15;
   }
 
   v162 = 0;
-  v26 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"MCCAndMNCs" isRequired:0 outError:&v162];
-  v12 = v162;
+  v26 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"MCCAndMNCs" isRequired:0 outError:&v162];
+  qosMarkingConfig = v162;
   MCCAndMNCs = v10->_MCCAndMNCs;
   v10->_MCCAndMNCs = v26;
 
-  if (v12)
+  if (qosMarkingConfig)
   {
     goto LABEL_15;
   }
 
   v161 = 0;
-  v28 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"DisplayedOperatorName" isRequired:0 outError:&v161];
-  v12 = v161;
+  v28 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"DisplayedOperatorName" isRequired:0 outError:&v161];
+  qosMarkingConfig = v161;
   displayedOperatorName = v10->_displayedOperatorName;
   v10->_displayedOperatorName = v28;
 
-  if (v12)
+  if (qosMarkingConfig)
   {
     goto LABEL_15;
   }
 
   v160 = 0;
-  v30 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"HIDDEN_NETWORK" isRequired:0 outError:&v160];
-  v12 = v160;
+  v30 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"HIDDEN_NETWORK" isRequired:0 outError:&v160];
+  qosMarkingConfig = v160;
   isHiddenNum = v10->_isHiddenNum;
   v10->_isHiddenNum = v30;
 
-  if (v12)
+  if (qosMarkingConfig)
   {
     goto LABEL_15;
   }
 
   v10->_isHidden = [(NSNumber *)v10->_isHiddenNum BOOLValue];
   v159 = 0;
-  v32 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"SSID_STR" isRequired:0 outError:&v159];
+  v32 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"SSID_STR" isRequired:0 outError:&v159];
   v33 = v159;
   ssid = v10->_ssid;
   v10->_ssid = v32;
@@ -699,7 +699,7 @@ LABEL_9:
   }
 
   v158 = 0;
-  v35 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"EncryptionType" isRequired:0 outError:&v158];
+  v35 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"EncryptionType" isRequired:0 outError:&v158];
   v33 = v158;
   encryptionType = v10->_encryptionType;
   v10->_encryptionType = v35;
@@ -715,10 +715,10 @@ LABEL_9:
     v10->_encryptionType = @"Any";
   }
 
-  if ([v9 isStub])
+  if ([profileCopy isStub])
   {
     v157 = 0;
-    v50 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"CredentialUUID" isRequired:0 outError:&v157];
+    v50 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"CredentialUUID" isRequired:0 outError:&v157];
     v33 = v157;
     credentialUUID = v10->_credentialUUID;
     v10->_credentialUUID = v50;
@@ -726,14 +726,14 @@ LABEL_9:
     if (v33)
     {
 LABEL_14:
-      v12 = v33;
+      qosMarkingConfig = v33;
 LABEL_15:
-      v37 = [(MCPayload *)v10 malformedPayloadErrorWithError:v12];
+      v37 = [(MCPayload *)v10 malformedPayloadErrorWithError:qosMarkingConfig];
       v38 = v37;
-      if (a5)
+      if (error)
       {
         v39 = v37;
-        *a5 = v38;
+        *error = v38;
       }
 
       v40 = _MCLogObjects;
@@ -742,11 +742,11 @@ LABEL_15:
         v41 = v40;
         v42 = objc_opt_class();
         v43 = v42;
-        v44 = [v38 MCVerboseDescription];
+        mCVerboseDescription = [v38 MCVerboseDescription];
         *buf = 138543618;
         v172 = v42;
         v173 = 2114;
-        v174 = v44;
+        v174 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v41, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
       }
 
@@ -755,29 +755,29 @@ LABEL_15:
     }
 
     v156 = 0;
-    v128 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ProxyType" isRequired:0 outError:&v156];
+    v128 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ProxyType" isRequired:0 outError:&v156];
     v52 = v156;
     if (!v52)
     {
-      v53 = [v128 intValue];
-      v10->_proxyType = v53;
-      if (v53 == 1)
+      intValue = [v128 intValue];
+      v10->_proxyType = intValue;
+      if (intValue == 1)
       {
         v151 = 0;
-        v61 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyPACURL" isRequired:0 outError:&v151];
+        v61 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyPACURL" isRequired:0 outError:&v151];
         v55 = v151;
         v62 = 216;
       }
 
       else
       {
-        if (v53 != 2)
+        if (intValue != 2)
         {
           goto LABEL_65;
         }
 
         v155 = 0;
-        v54 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyServer" isRequired:0 outError:&v155];
+        v54 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyServer" isRequired:0 outError:&v155];
         v55 = v155;
         proxyServer = v10->_proxyServer;
         v10->_proxyServer = v54;
@@ -788,7 +788,7 @@ LABEL_15:
         }
 
         v154 = 0;
-        v57 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ProxyServerPort" isRequired:0 outError:&v154];
+        v57 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ProxyServerPort" isRequired:0 outError:&v154];
         v55 = v154;
         proxyServerPort = v10->_proxyServerPort;
         v10->_proxyServerPort = v57;
@@ -799,7 +799,7 @@ LABEL_15:
         }
 
         v153 = 0;
-        v59 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyUsername" isRequired:0 outError:&v153];
+        v59 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyUsername" isRequired:0 outError:&v153];
         v55 = v153;
         proxyUsername = v10->_proxyUsername;
         v10->_proxyUsername = v59;
@@ -810,7 +810,7 @@ LABEL_15:
         }
 
         v152 = 0;
-        v61 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyPassword" isRequired:0 outError:&v152];
+        v61 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyPassword" isRequired:0 outError:&v152];
         v55 = v152;
         v62 = 208;
       }
@@ -824,12 +824,12 @@ LABEL_15:
       }
 
 LABEL_95:
-      v12 = v55;
+      qosMarkingConfig = v55;
       goto LABEL_46;
     }
 
 LABEL_45:
-    v12 = v52;
+    qosMarkingConfig = v52;
 LABEL_46:
 
     goto LABEL_15;
@@ -858,7 +858,7 @@ LABEL_46:
   {
 LABEL_44:
     v150 = 0;
-    v128 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"EAPClientConfiguration" isRequired:0 outError:&v150];
+    v128 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"EAPClientConfiguration" isRequired:0 outError:&v150];
     v52 = v150;
     if (v52)
     {
@@ -890,21 +890,21 @@ LABEL_44:
 
         if (v71)
         {
-          v12 = v71;
+          qosMarkingConfig = v71;
 LABEL_70:
 
           goto LABEL_46;
         }
 
         v147 = 0;
-        v83 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"PayloadCertificateUUID" isRequired:0 outError:&v147];
+        v83 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"PayloadCertificateUUID" isRequired:0 outError:&v147];
         v84 = v147;
         certificateUUID = v10->_certificateUUID;
         v10->_certificateUUID = v83;
 
         if (v84)
         {
-          v12 = v84;
+          qosMarkingConfig = v84;
           goto LABEL_70;
         }
 
@@ -920,7 +920,7 @@ LABEL_70:
     }
 
     v146 = v65;
-    v73 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"Password" isRequired:0 outError:&v146];
+    v73 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"Password" isRequired:0 outError:&v146];
     v74 = v146;
 
     v75 = v10->_password;
@@ -928,7 +928,7 @@ LABEL_70:
 
     if (v74)
     {
-      v12 = v74;
+      qosMarkingConfig = v74;
       goto LABEL_46;
     }
 
@@ -937,7 +937,7 @@ LABEL_58:
   }
 
   v145 = 0;
-  v128 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyType" isRequired:0 outError:&v145];
+  v128 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyType" isRequired:0 outError:&v145];
   v52 = v145;
   if (v52)
   {
@@ -977,7 +977,7 @@ LABEL_87:
   if ([(MCWiFiPayload *)v10 proxyType]== 2)
   {
     v144 = 0;
-    v93 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyServer" isRequired:1 outError:&v144];
+    v93 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyServer" isRequired:1 outError:&v144];
     v55 = v144;
     v94 = v10->_proxyServer;
     v10->_proxyServer = v93;
@@ -988,7 +988,7 @@ LABEL_87:
     }
 
     v143 = 0;
-    v95 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ProxyServerPort" isRequired:0 outError:&v143];
+    v95 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ProxyServerPort" isRequired:0 outError:&v143];
     v55 = v143;
     v96 = v10->_proxyServerPort;
     v10->_proxyServerPort = v95;
@@ -999,7 +999,7 @@ LABEL_87:
     }
 
     v142 = 0;
-    v97 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyUsername" isRequired:0 outError:&v142];
+    v97 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyUsername" isRequired:0 outError:&v142];
     v55 = v142;
     v98 = v10->_proxyUsername;
     v10->_proxyUsername = v97;
@@ -1010,7 +1010,7 @@ LABEL_87:
     }
 
     v141 = 0;
-    v99 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyPassword" isRequired:0 outError:&v141];
+    v99 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyPassword" isRequired:0 outError:&v141];
     v55 = v141;
     v100 = 208;
   }
@@ -1023,7 +1023,7 @@ LABEL_87:
     }
 
     v140 = 0;
-    v99 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyPACURL" isRequired:0 outError:&v140];
+    v99 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProxyPACURL" isRequired:0 outError:&v140];
     v55 = v140;
     v100 = 216;
   }
@@ -1037,59 +1037,59 @@ LABEL_87:
   }
 
 LABEL_96:
-  v102 = [(MCWiFiPayload *)v10 ssid];
-  v103 = [v102 length];
+  ssid = [(MCWiFiPayload *)v10 ssid];
+  v103 = [ssid length];
 
   if (v103)
   {
 LABEL_97:
-    v12 = 0;
+    qosMarkingConfig = 0;
     goto LABEL_102;
   }
 
   if ([(MCWiFiPayload *)v10 isHotspot])
   {
-    v104 = [(MCWiFiPayload *)v10 domainName];
-    v105 = [v104 length];
+    domainName = [(MCWiFiPayload *)v10 domainName];
+    v105 = [domainName length];
 
     if (v105)
     {
       v106 = MEMORY[0x1E696AEC0];
-      v107 = [(MCWiFiPayload *)v10 domainName];
-      v108 = [MEMORY[0x1E696AEC0] MCMakeUUID];
-      v109 = [v106 stringWithFormat:@"%@-%@", v107, v108];
+      domainName2 = [(MCWiFiPayload *)v10 domainName];
+      mCMakeUUID = [MEMORY[0x1E696AEC0] MCMakeUUID];
+      v108 = [v106 stringWithFormat:@"%@-%@", domainName2, mCMakeUUID];
       v110 = v10->_ssid;
-      v10->_ssid = v109;
+      v10->_ssid = v108;
 
       goto LABEL_97;
     }
   }
 
-  v12 = [MCPayload badFieldTypeErrorWithField:@"SSID_STR"];
+  qosMarkingConfig = [MCPayload badFieldTypeErrorWithField:@"SSID_STR"];
 LABEL_102:
-  v111 = [(MCWiFiPayload *)v10 roamingConsortiumOIs];
-  v112 = [v111 count];
+  roamingConsortiumOIs = [(MCWiFiPayload *)v10 roamingConsortiumOIs];
+  v112 = [roamingConsortiumOIs count];
 
   if (!v112)
   {
     [(MCWiFiPayload *)v10 setRoamingConsortiumOIs:0];
   }
 
-  if (v12)
+  if (qosMarkingConfig)
   {
     goto LABEL_46;
   }
 
-  v113 = [(MCWiFiPayload *)v10 NAIRealmNames];
-  v114 = [v113 count];
+  nAIRealmNames = [(MCWiFiPayload *)v10 NAIRealmNames];
+  v114 = [nAIRealmNames count];
 
   if (!v114)
   {
     [(MCWiFiPayload *)v10 setNAIRealmNames:0];
   }
 
-  v115 = [(MCWiFiPayload *)v10 MCCAndMNCs];
-  v116 = [v115 count];
+  mCCAndMNCs = [(MCWiFiPayload *)v10 MCCAndMNCs];
+  v116 = [mCCAndMNCs count];
 
   if (v116)
   {
@@ -1185,7 +1185,7 @@ LABEL_126:
 LABEL_65:
 
   v135 = 0;
-  v79 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"AutoJoin" isRequired:0 outError:&v135];
+  v79 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"AutoJoin" isRequired:0 outError:&v135];
   v33 = v135;
   autoJoinNum = v10->_autoJoinNum;
   v10->_autoJoinNum = v79;
@@ -1199,7 +1199,7 @@ LABEL_65:
   v82 = !v81 || [(NSNumber *)v81 BOOLValue];
   v10->_autoJoin = v82;
   v134 = 0;
-  v86 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"FirstAutoJoinRestricted" isRequired:0 outError:&v134];
+  v86 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"FirstAutoJoinRestricted" isRequired:0 outError:&v134];
   v33 = v134;
   isFirstAutoJoinRestricted = v10->_isFirstAutoJoinRestricted;
   v10->_isFirstAutoJoinRestricted = v86;
@@ -1210,7 +1210,7 @@ LABEL_65:
   }
 
   v133 = 0;
-  v88 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"CaptiveBypass" isRequired:0 outError:&v133];
+  v88 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"CaptiveBypass" isRequired:0 outError:&v133];
   v33 = v133;
   captiveBypassNum = v10->_captiveBypassNum;
   v10->_captiveBypassNum = v88;
@@ -1228,7 +1228,7 @@ LABEL_65:
 
   v10->_captiveBypass = v90;
   v132 = 0;
-  v91 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"DisableAssociationMACRandomization" isRequired:0 outError:&v132];
+  v91 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"DisableAssociationMACRandomization" isRequired:0 outError:&v132];
   v33 = v132;
   disableAssociationMACRandomization = v10->_disableAssociationMACRandomization;
   v10->_disableAssociationMACRandomization = v91;
@@ -1239,7 +1239,7 @@ LABEL_65:
   }
 
   v131 = 0;
-  v128 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"QoSMarkingPolicy" isRequired:0 outError:&v131];
+  v128 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"QoSMarkingPolicy" isRequired:0 outError:&v131];
   v52 = v131;
   if (v52)
   {
@@ -1266,7 +1266,7 @@ LABEL_134:
   [(MCWiFiPayload *)v10 setQosMarkingConfig:v38];
   if (!v10->_allowJoinBeforeFirstUnlock)
   {
-    v12 = 0;
+    qosMarkingConfig = 0;
 LABEL_20:
 
     goto LABEL_21;
@@ -1274,33 +1274,33 @@ LABEL_20:
 
   if (![(MCWiFiPayload *)v10 isHotspot]&& !v10->_eapClientConfig && ![(MCWiFiPayload *)v10 proxyType])
   {
-    v12 = [(MCWiFiPayload *)v10 qosMarkingConfig];
+    qosMarkingConfig = [(MCWiFiPayload *)v10 qosMarkingConfig];
 
-    if (!v12)
+    if (!qosMarkingConfig)
     {
       goto LABEL_20;
     }
   }
 
-  v12 = [MCPayload badFieldTypeErrorWithField:@"AllowJoinBeforeFirstUnlock"];
+  qosMarkingConfig = [MCPayload badFieldTypeErrorWithField:@"AllowJoinBeforeFirstUnlock"];
 
-  if (v12)
+  if (qosMarkingConfig)
   {
     goto LABEL_15;
   }
 
 LABEL_21:
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v45 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v46 = v45;
-      v47 = [(MCPayload *)v10 friendlyName];
+      friendlyName = [(MCPayload *)v10 friendlyName];
       *buf = 138543618;
-      v172 = v47;
+      v172 = friendlyName;
       v173 = 2114;
-      v174 = v8;
+      v174 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v46, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -1314,12 +1314,12 @@ LABEL_25:
 {
   v39.receiver = self;
   v39.super_class = MCWiFiPayload;
-  v3 = [(MCPayload *)&v39 stubDictionary];
-  v4 = v3;
+  stubDictionary = [(MCPayload *)&v39 stubDictionary];
+  v4 = stubDictionary;
   ssid = self->_ssid;
   if (ssid)
   {
-    [v3 setObject:ssid forKey:@"SSID_STR"];
+    [stubDictionary setObject:ssid forKey:@"SSID_STR"];
   }
 
   encryptionType = self->_encryptionType;
@@ -1376,47 +1376,47 @@ LABEL_25:
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[MCWiFiPayload isHotspot](self, "isHotspot")}];
   [v4 setObject:v16 forKeyedSubscript:@"IsHotspot"];
 
-  v17 = [(MCWiFiPayload *)self HESSID];
+  hESSID = [(MCWiFiPayload *)self HESSID];
 
-  if (v17)
+  if (hESSID)
   {
-    v18 = [(MCWiFiPayload *)self HESSID];
-    [v4 setObject:v18 forKeyedSubscript:@"HESSID"];
+    hESSID2 = [(MCWiFiPayload *)self HESSID];
+    [v4 setObject:hESSID2 forKeyedSubscript:@"HESSID"];
   }
 
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[MCWiFiPayload isServiceProviderRoamingEnabled](self, "isServiceProviderRoamingEnabled")}];
   [v4 setObject:v19 forKeyedSubscript:@"ServiceProviderRoamingEnabled"];
 
-  v20 = [(MCWiFiPayload *)self roamingConsortiumOIs];
+  roamingConsortiumOIs = [(MCWiFiPayload *)self roamingConsortiumOIs];
 
-  if (v20)
+  if (roamingConsortiumOIs)
   {
-    v21 = [(MCWiFiPayload *)self roamingConsortiumOIs];
-    [v4 setObject:v21 forKeyedSubscript:@"RoamingConsortiumOIs"];
+    roamingConsortiumOIs2 = [(MCWiFiPayload *)self roamingConsortiumOIs];
+    [v4 setObject:roamingConsortiumOIs2 forKeyedSubscript:@"RoamingConsortiumOIs"];
   }
 
-  v22 = [(MCWiFiPayload *)self NAIRealmNames];
+  nAIRealmNames = [(MCWiFiPayload *)self NAIRealmNames];
 
-  if (v22)
+  if (nAIRealmNames)
   {
-    v23 = [(MCWiFiPayload *)self NAIRealmNames];
-    [v4 setObject:v23 forKeyedSubscript:@"NAIRealmNames"];
+    nAIRealmNames2 = [(MCWiFiPayload *)self NAIRealmNames];
+    [v4 setObject:nAIRealmNames2 forKeyedSubscript:@"NAIRealmNames"];
   }
 
-  v24 = [(MCWiFiPayload *)self MCCAndMNCs];
+  mCCAndMNCs = [(MCWiFiPayload *)self MCCAndMNCs];
 
-  if (v24)
+  if (mCCAndMNCs)
   {
-    v25 = [(MCWiFiPayload *)self MCCAndMNCs];
-    [v4 setObject:v25 forKeyedSubscript:@"MCCAndMNCs"];
+    mCCAndMNCs2 = [(MCWiFiPayload *)self MCCAndMNCs];
+    [v4 setObject:mCCAndMNCs2 forKeyedSubscript:@"MCCAndMNCs"];
   }
 
-  v26 = [(MCWiFiPayload *)self displayedOperatorName];
+  displayedOperatorName = [(MCWiFiPayload *)self displayedOperatorName];
 
-  if (v26)
+  if (displayedOperatorName)
   {
-    v27 = [(MCWiFiPayload *)self displayedOperatorName];
-    [v4 setObject:v27 forKeyedSubscript:@"DisplayedOperatorName"];
+    displayedOperatorName2 = [(MCWiFiPayload *)self displayedOperatorName];
+    [v4 setObject:displayedOperatorName2 forKeyedSubscript:@"DisplayedOperatorName"];
   }
 
   v28 = [MEMORY[0x1E696AD98] numberWithBool:self->_proxyPACFallbackAllowed];
@@ -1425,12 +1425,12 @@ LABEL_25:
   v29 = [MEMORY[0x1E696AD98] numberWithBool:self->_isHidden];
   [v4 setObject:v29 forKeyedSubscript:@"HIDDEN_NETWORK"];
 
-  v30 = [(MCWiFiPayload *)self qosMarkingConfig];
+  qosMarkingConfig = [(MCWiFiPayload *)self qosMarkingConfig];
 
-  if (v30)
+  if (qosMarkingConfig)
   {
-    v31 = [(MCWiFiPayload *)self qosMarkingConfig];
-    [v4 setObject:v31 forKeyedSubscript:@"QoSMarkingPolicy"];
+    qosMarkingConfig2 = [(MCWiFiPayload *)self qosMarkingConfig];
+    [v4 setObject:qosMarkingConfig2 forKeyedSubscript:@"QoSMarkingPolicy"];
   }
 
   eapClientConfig = self->_eapClientConfig;
@@ -1468,8 +1468,8 @@ void __31__MCWiFiPayload_stubDictionary__block_invoke(uint64_t a1, void *a2, voi
 
 - (id)subtitle1Label
 {
-  v2 = [(MCWiFiPayload *)self ssid];
-  if (v2)
+  ssid = [(MCWiFiPayload *)self ssid];
+  if (ssid)
   {
     v3 = @"NETWORK_COLON";
   }
@@ -1486,8 +1486,8 @@ void __31__MCWiFiPayload_stubDictionary__block_invoke(uint64_t a1, void *a2, voi
 
 - (id)subtitle2Label
 {
-  v2 = [(MCWiFiPayload *)self ssid];
-  if (v2)
+  ssid = [(MCWiFiPayload *)self ssid];
+  if (ssid)
   {
     v3 = MCLocalizedString(@"ENCRYPTION_COLON");
   }
@@ -1502,16 +1502,16 @@ void __31__MCWiFiPayload_stubDictionary__block_invoke(uint64_t a1, void *a2, voi
 
 - (id)_localizedEncryptionTypeString
 {
-  v3 = [(MCWiFiPayload *)self encryptionType];
-  v4 = [(MCWiFiPayload *)self ssid];
+  encryptionType = [(MCWiFiPayload *)self encryptionType];
+  ssid = [(MCWiFiPayload *)self ssid];
 
-  if (v4)
+  if (ssid)
   {
-    if (v3)
+    if (encryptionType)
     {
-      if (![v3 isEqualToString:@"Any"])
+      if (![encryptionType isEqualToString:@"Any"])
       {
-        v6 = v3;
+        v6 = encryptionType;
         goto LABEL_8;
       }
 
@@ -1525,10 +1525,10 @@ void __31__MCWiFiPayload_stubDictionary__block_invoke(uint64_t a1, void *a2, voi
 
     v6 = MCLocalizedString(v5);
 LABEL_8:
-    v4 = v6;
+    ssid = v6;
   }
 
-  return v4;
+  return ssid;
 }
 
 - (id)payloadDescriptionKeyValueSections
@@ -1555,57 +1555,57 @@ LABEL_8:
     [v4 addObject:v12];
   }
 
-  v13 = [(MCWiFiPayload *)self ssid];
+  ssid = [(MCWiFiPayload *)self ssid];
 
-  if (v13)
+  if (ssid)
   {
     v14 = [MCKeyValue alloc];
-    v15 = [(MCWiFiPayload *)self ssid];
+    ssid2 = [(MCWiFiPayload *)self ssid];
     v16 = MCLocalizedString(@"WIFI_SSID");
-    v17 = [(MCKeyValue *)v14 initWithLocalizedString:v15 localizedKey:v16];
+    v17 = [(MCKeyValue *)v14 initWithLocalizedString:ssid2 localizedKey:v16];
 
     [v4 addObject:v17];
   }
 
-  v18 = [(MCWiFiPayload *)self HESSID];
+  hESSID = [(MCWiFiPayload *)self HESSID];
 
-  if (v18)
+  if (hESSID)
   {
     v19 = [MCKeyValue alloc];
-    v20 = [(MCWiFiPayload *)self HESSID];
+    hESSID2 = [(MCWiFiPayload *)self HESSID];
     v21 = MCLocalizedString(@"WIFI_HESSID");
-    v22 = [(MCKeyValue *)v19 initWithLocalizedString:v20 localizedKey:v21];
+    v22 = [(MCKeyValue *)v19 initWithLocalizedString:hESSID2 localizedKey:v21];
 
     [v4 addObject:v22];
   }
 
-  v23 = [(MCWiFiPayload *)self displayedOperatorName];
+  displayedOperatorName = [(MCWiFiPayload *)self displayedOperatorName];
 
-  if (v23)
+  if (displayedOperatorName)
   {
     v24 = [MCKeyValue alloc];
-    v25 = [(MCWiFiPayload *)self displayedOperatorName];
+    displayedOperatorName2 = [(MCWiFiPayload *)self displayedOperatorName];
     v26 = MCLocalizedString(@"WIFI_OPERATOR");
-    v27 = [(MCKeyValue *)v24 initWithLocalizedString:v25 localizedKey:v26];
+    v27 = [(MCKeyValue *)v24 initWithLocalizedString:displayedOperatorName2 localizedKey:v26];
 
     [v4 addObject:v27];
   }
 
-  v28 = [(MCWiFiPayload *)self domainName];
+  domainName = [(MCWiFiPayload *)self domainName];
 
-  if (v28)
+  if (domainName)
   {
     v29 = [MCKeyValue alloc];
-    v30 = [(MCWiFiPayload *)self domainName];
+    domainName2 = [(MCWiFiPayload *)self domainName];
     v31 = MCLocalizedString(@"WIFI_DOMAIN");
-    v32 = [(MCKeyValue *)v29 initWithLocalizedString:v30 localizedKey:v31];
+    v32 = [(MCKeyValue *)v29 initWithLocalizedString:domainName2 localizedKey:v31];
 
     [v4 addObject:v32];
   }
 
-  v33 = [(MCWiFiPayload *)self isHiddenNum];
+  isHiddenNum = [(MCWiFiPayload *)self isHiddenNum];
 
-  if (v33)
+  if (isHiddenNum)
   {
     v34 = [MCKeyValue alloc];
     v35 = MCLocalizedStringForBool([(NSNumber *)self->_isHiddenNum BOOLValue]);
@@ -1615,18 +1615,18 @@ LABEL_8:
     [v4 addObject:v37];
   }
 
-  v38 = [(MCWiFiPayload *)self _localizedEncryptionTypeString];
-  if (v38)
+  _localizedEncryptionTypeString = [(MCWiFiPayload *)self _localizedEncryptionTypeString];
+  if (_localizedEncryptionTypeString)
   {
     v39 = [MCKeyValue alloc];
     v40 = MCLocalizedString(@"WIFI_ENCRYPTION");
-    v41 = [(MCKeyValue *)v39 initWithLocalizedString:v38 localizedKey:v40];
+    v41 = [(MCKeyValue *)v39 initWithLocalizedString:_localizedEncryptionTypeString localizedKey:v40];
     [v4 addObject:v41];
   }
 
-  v42 = [(MCWiFiPayload *)self autoJoinNum];
+  autoJoinNum = [(MCWiFiPayload *)self autoJoinNum];
 
-  if (v42)
+  if (autoJoinNum)
   {
     v43 = [MCKeyValue alloc];
     v44 = MCLocalizedStringForBool([(NSNumber *)self->_autoJoinNum BOOLValue]);
@@ -1646,9 +1646,9 @@ LABEL_8:
     [v4 addObject:v50];
   }
 
-  v51 = [(MCWiFiPayload *)self disableAssociationMACRandomization];
+  disableAssociationMACRandomization = [(MCWiFiPayload *)self disableAssociationMACRandomization];
 
-  if (v51)
+  if (disableAssociationMACRandomization)
   {
     v52 = [MCKeyValue alloc];
     v53 = MCLocalizedStringForBool([(NSNumber *)self->_disableAssociationMACRandomization BOOLValue]);
@@ -1658,9 +1658,9 @@ LABEL_8:
     [v4 addObject:v55];
   }
 
-  v56 = [(MCWiFiPayload *)self password];
+  password = [(MCWiFiPayload *)self password];
 
-  if (v56)
+  if (password)
   {
     v57 = [MCKeyValue alloc];
     v58 = MCLocalizedString(@"PRESENT");
@@ -1670,9 +1670,9 @@ LABEL_8:
     [v4 addObject:v60];
   }
 
-  v61 = [(MCWiFiPayload *)self eapClientConfig];
+  eapClientConfig = [(MCWiFiPayload *)self eapClientConfig];
 
-  if (v61)
+  if (eapClientConfig)
   {
     v62 = [MCKeyValue alloc];
     v63 = MCLocalizedString(@"PRESENT");
@@ -1691,15 +1691,15 @@ LABEL_8:
     v4 = v67;
   }
 
-  v68 = [(MCWiFiPayload *)self proxyType];
-  if (v68 > 2)
+  proxyType = [(MCWiFiPayload *)self proxyType];
+  if (proxyType > 2)
   {
     v69 = @"WIFI_PROXY_TYPE_UNKNOWN";
   }
 
   else
   {
-    v69 = off_1E77D2338[v68];
+    v69 = off_1E77D2338[proxyType];
   }
 
   v70 = MCLocalizedString(v69);
@@ -1709,25 +1709,25 @@ LABEL_8:
   v73 = [(MCKeyValue *)v71 initWithLocalizedString:v70 localizedKey:v72];
   [v4 addObject:v73];
 
-  v74 = [(MCWiFiPayload *)self proxyServer];
+  proxyServer = [(MCWiFiPayload *)self proxyServer];
 
-  if (v74)
+  if (proxyServer)
   {
     v75 = [MCKeyValue alloc];
-    v76 = [(MCWiFiPayload *)self proxyServer];
+    proxyServer2 = [(MCWiFiPayload *)self proxyServer];
     v77 = MCLocalizedString(@"SERVER");
-    v78 = [(MCKeyValue *)v75 initWithLocalizedString:v76 localizedKey:v77];
+    v78 = [(MCKeyValue *)v75 initWithLocalizedString:proxyServer2 localizedKey:v77];
 
     [v4 addObject:v78];
   }
 
-  v79 = [(MCWiFiPayload *)self proxyServerPort];
+  proxyServerPort = [(MCWiFiPayload *)self proxyServerPort];
 
-  if (v79)
+  if (proxyServerPort)
   {
     v80 = MEMORY[0x1E696AEC0];
-    v81 = [(MCWiFiPayload *)self proxyServerPort];
-    v82 = [v80 stringWithFormat:@"%@", v81];
+    proxyServerPort2 = [(MCWiFiPayload *)self proxyServerPort];
+    v82 = [v80 stringWithFormat:@"%@", proxyServerPort2];
 
     v83 = [MCKeyValue alloc];
     v84 = MCLocalizedString(@"PORT");
@@ -1736,22 +1736,22 @@ LABEL_8:
     [v4 addObject:v85];
   }
 
-  v86 = [(MCWiFiPayload *)self proxyUsername];
+  proxyUsername = [(MCWiFiPayload *)self proxyUsername];
 
   v87 = 0x1E77CF000uLL;
-  if (v86)
+  if (proxyUsername)
   {
     v88 = [MCKeyValue alloc];
-    v89 = [(MCWiFiPayload *)self proxyUsername];
+    proxyUsername2 = [(MCWiFiPayload *)self proxyUsername];
     v90 = MCLocalizedString(@"USERNAME");
-    v91 = [(MCKeyValue *)v88 initWithLocalizedString:v89 localizedKey:v90];
+    v91 = [(MCKeyValue *)v88 initWithLocalizedString:proxyUsername2 localizedKey:v90];
 
     [v4 addObject:v91];
   }
 
-  v92 = [(MCWiFiPayload *)self proxyPassword];
+  proxyPassword = [(MCWiFiPayload *)self proxyPassword];
 
-  if (v92)
+  if (proxyPassword)
   {
     v93 = [MCKeyValue alloc];
     v94 = MCLocalizedString(@"PRESENT");
@@ -1761,14 +1761,14 @@ LABEL_8:
     [v4 addObject:v96];
   }
 
-  v97 = [(MCWiFiPayload *)self proxyPACURLString];
+  proxyPACURLString = [(MCWiFiPayload *)self proxyPACURLString];
 
-  if (v97)
+  if (proxyPACURLString)
   {
     v98 = [MCKeyValue alloc];
-    v99 = [(MCWiFiPayload *)self proxyPACURLString];
+    proxyPACURLString2 = [(MCWiFiPayload *)self proxyPACURLString];
     v100 = MCLocalizedString(@"WIFI_PROXY_PAC_URL");
-    v101 = [(MCKeyValue *)v98 initWithLocalizedString:v99 localizedKey:v100];
+    v101 = [(MCKeyValue *)v98 initWithLocalizedString:proxyPACURLString2 localizedKey:v100];
 
     [v4 addObject:v101];
   }
@@ -1789,51 +1789,51 @@ LABEL_8:
     [v3 addObject:v106];
   }
 
-  v107 = [(MCWiFiPayload *)self roamingConsortiumOIs];
-  v108 = [v107 count];
+  roamingConsortiumOIs = [(MCWiFiPayload *)self roamingConsortiumOIs];
+  v108 = [roamingConsortiumOIs count];
 
   if (v108)
   {
-    v109 = [(MCWiFiPayload *)self roamingConsortiumOIs];
+    roamingConsortiumOIs2 = [(MCWiFiPayload *)self roamingConsortiumOIs];
     v110 = MCLocalizedString(@"WIFI_ROAMING_CONSORTIUM_OIS");
-    v111 = [MCKeyValueSection sectionWithLocalizedArray:v109 title:v110 footer:0];
+    v111 = [MCKeyValueSection sectionWithLocalizedArray:roamingConsortiumOIs2 title:v110 footer:0];
 
     [v3 addObject:v111];
   }
 
-  v112 = [(MCWiFiPayload *)self NAIRealmNames];
-  v113 = [v112 count];
+  nAIRealmNames = [(MCWiFiPayload *)self NAIRealmNames];
+  v113 = [nAIRealmNames count];
 
   if (v113)
   {
-    v114 = [(MCWiFiPayload *)self NAIRealmNames];
+    nAIRealmNames2 = [(MCWiFiPayload *)self NAIRealmNames];
     v115 = MCLocalizedString(@"WIFI_NAI_REALM_NAMES");
-    v116 = [MCKeyValueSection sectionWithLocalizedArray:v114 title:v115 footer:0];
+    v116 = [MCKeyValueSection sectionWithLocalizedArray:nAIRealmNames2 title:v115 footer:0];
 
     [v3 addObject:v116];
   }
 
-  v117 = [(MCWiFiPayload *)self MCCAndMNCs];
-  v118 = [v117 count];
+  mCCAndMNCs = [(MCWiFiPayload *)self MCCAndMNCs];
+  v118 = [mCCAndMNCs count];
 
   if (v118)
   {
-    v119 = [(MCWiFiPayload *)self MCCAndMNCs];
+    mCCAndMNCs2 = [(MCWiFiPayload *)self MCCAndMNCs];
     v120 = MCLocalizedString(@"WIFI_MCC_AND_MNCS");
-    v121 = [MCKeyValueSection sectionWithLocalizedArray:v119 title:v120 footer:0];
+    v121 = [MCKeyValueSection sectionWithLocalizedArray:mCCAndMNCs2 title:v120 footer:0];
 
     [v3 addObject:v121];
   }
 
-  v122 = [(MCWiFiPayload *)self qosMarkingConfig];
-  v123 = [v122 count];
+  qosMarkingConfig = [(MCWiFiPayload *)self qosMarkingConfig];
+  v123 = [qosMarkingConfig count];
 
   if (v123)
   {
-    v154 = v38;
+    v154 = _localizedEncryptionTypeString;
     v124 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v125 = [(MCWiFiPayload *)self qosMarkingConfig];
-    v126 = [v125 objectForKeyedSubscript:@"QoSMarkingEnabled"];
+    qosMarkingConfig2 = [(MCWiFiPayload *)self qosMarkingConfig];
+    v126 = [qosMarkingConfig2 objectForKeyedSubscript:@"QoSMarkingEnabled"];
 
     if (v126)
     {
@@ -1845,8 +1845,8 @@ LABEL_8:
       [v124 addObject:v130];
     }
 
-    v131 = [(MCWiFiPayload *)self qosMarkingConfig];
-    v132 = [v131 objectForKeyedSubscript:@"QoSMarkingAppleAudioVideoCalls"];
+    qosMarkingConfig3 = [(MCWiFiPayload *)self qosMarkingConfig];
+    v132 = [qosMarkingConfig3 objectForKeyedSubscript:@"QoSMarkingAppleAudioVideoCalls"];
 
     if (v132)
     {
@@ -1858,8 +1858,8 @@ LABEL_8:
       [v124 addObject:v136];
     }
 
-    v137 = [(MCWiFiPayload *)self qosMarkingConfig];
-    v138 = [v137 objectForKeyedSubscript:@"QoSMarkingURL"];
+    qosMarkingConfig4 = [(MCWiFiPayload *)self qosMarkingConfig];
+    v138 = [qosMarkingConfig4 objectForKeyedSubscript:@"QoSMarkingURL"];
 
     if (v138)
     {
@@ -1870,8 +1870,8 @@ LABEL_8:
       [v124 addObject:v141];
     }
 
-    v142 = [(MCWiFiPayload *)self qosMarkingConfig];
-    v143 = [v142 objectForKeyedSubscript:@"QoSMarkingAllowListAppIdentifiers"];
+    qosMarkingConfig5 = [(MCWiFiPayload *)self qosMarkingConfig];
+    v143 = [qosMarkingConfig5 objectForKeyedSubscript:@"QoSMarkingAllowListAppIdentifiers"];
     v144 = v143;
     if (v143)
     {
@@ -1880,8 +1880,8 @@ LABEL_8:
 
     else
     {
-      v146 = [(MCWiFiPayload *)self qosMarkingConfig];
-      v145 = [v146 objectForKeyedSubscript:@"QoSMarkingWhitelistedAppIdentifiers"];
+      qosMarkingConfig6 = [(MCWiFiPayload *)self qosMarkingConfig];
+      v145 = [qosMarkingConfig6 objectForKeyedSubscript:@"QoSMarkingWhitelistedAppIdentifiers"];
 
       v87 = 0x1E77CF000;
     }
@@ -1905,7 +1905,7 @@ LABEL_8:
       [v3 addObject:v150];
     }
 
-    v38 = v154;
+    _localizedEncryptionTypeString = v154;
   }
 
   if (![v3 count])
@@ -1924,167 +1924,167 @@ LABEL_8:
   v3 = MEMORY[0x1E696AD60];
   v45.receiver = self;
   v45.super_class = MCWiFiPayload;
-  v4 = [(MCPayload *)&v45 verboseDescription];
-  v5 = [v3 stringWithString:v4];
+  verboseDescription = [(MCPayload *)&v45 verboseDescription];
+  v5 = [v3 stringWithString:verboseDescription];
 
   if ([(MCWiFiPayload *)self isHotspot])
   {
     [v5 appendString:@"IsHotspot   : Yes\n"];
   }
 
-  v6 = [(MCWiFiPayload *)self ssid];
+  ssid = [(MCWiFiPayload *)self ssid];
 
-  if (v6)
+  if (ssid)
   {
-    v7 = [(MCWiFiPayload *)self ssid];
-    [v5 appendFormat:@"SSID        : %@\n", v7];
+    ssid2 = [(MCWiFiPayload *)self ssid];
+    [v5 appendFormat:@"SSID        : %@\n", ssid2];
   }
 
-  v8 = [(MCWiFiPayload *)self HESSID];
+  hESSID = [(MCWiFiPayload *)self HESSID];
 
-  if (v8)
+  if (hESSID)
   {
-    v9 = [(MCWiFiPayload *)self HESSID];
-    [v5 appendFormat:@"HESSID      : %@\n", v9];
+    hESSID2 = [(MCWiFiPayload *)self HESSID];
+    [v5 appendFormat:@"HESSID      : %@\n", hESSID2];
   }
 
-  v10 = [(MCWiFiPayload *)self roamingConsortiumOIs];
+  roamingConsortiumOIs = [(MCWiFiPayload *)self roamingConsortiumOIs];
 
-  if (v10)
+  if (roamingConsortiumOIs)
   {
-    v11 = [(MCWiFiPayload *)self roamingConsortiumOIs];
-    [v5 appendFormat:@"Roaming Consortium OIs:\n%@\n", v11];
+    roamingConsortiumOIs2 = [(MCWiFiPayload *)self roamingConsortiumOIs];
+    [v5 appendFormat:@"Roaming Consortium OIs:\n%@\n", roamingConsortiumOIs2];
   }
 
-  v12 = [(MCWiFiPayload *)self NAIRealmNames];
+  nAIRealmNames = [(MCWiFiPayload *)self NAIRealmNames];
 
-  if (v12)
+  if (nAIRealmNames)
   {
-    v13 = [(MCWiFiPayload *)self NAIRealmNames];
-    [v5 appendFormat:@"NAI Realm Names:\n%@\n", v13];
+    nAIRealmNames2 = [(MCWiFiPayload *)self NAIRealmNames];
+    [v5 appendFormat:@"NAI Realm Names:\n%@\n", nAIRealmNames2];
   }
 
-  v14 = [(MCWiFiPayload *)self MCCAndMNCs];
+  mCCAndMNCs = [(MCWiFiPayload *)self MCCAndMNCs];
 
-  if (v14)
+  if (mCCAndMNCs)
   {
-    v15 = [(MCWiFiPayload *)self MCCAndMNCs];
-    [v5 appendFormat:@"MCC and MNCs:\n%@\n", v15];
+    mCCAndMNCs2 = [(MCWiFiPayload *)self MCCAndMNCs];
+    [v5 appendFormat:@"MCC and MNCs:\n%@\n", mCCAndMNCs2];
   }
 
-  v16 = [(MCWiFiPayload *)self displayedOperatorName];
+  displayedOperatorName = [(MCWiFiPayload *)self displayedOperatorName];
 
-  if (v16)
+  if (displayedOperatorName)
   {
-    v17 = [(MCWiFiPayload *)self displayedOperatorName];
-    [v5 appendFormat:@"Operator    : %@\n", v17];
+    displayedOperatorName2 = [(MCWiFiPayload *)self displayedOperatorName];
+    [v5 appendFormat:@"Operator    : %@\n", displayedOperatorName2];
   }
 
-  v18 = [(MCWiFiPayload *)self domainName];
+  domainName = [(MCWiFiPayload *)self domainName];
 
-  if (v18)
+  if (domainName)
   {
-    v19 = [(MCWiFiPayload *)self domainName];
-    [v5 appendFormat:@"Domain      : %@\n", v19];
+    domainName2 = [(MCWiFiPayload *)self domainName];
+    [v5 appendFormat:@"Domain      : %@\n", domainName2];
   }
 
   v20 = MCStringForBool(self->_isHidden);
   [v5 appendFormat:@"Hidden      : %@\n", v20];
 
-  v21 = [(MCWiFiPayload *)self encryptionType];
-  [v5 appendFormat:@"Encryption  : %@\n", v21];
+  encryptionType = [(MCWiFiPayload *)self encryptionType];
+  [v5 appendFormat:@"Encryption  : %@\n", encryptionType];
 
   v22 = MCStringForBool(self->_autoJoin);
   [v5 appendFormat:@"Autojoin    : %@\n", v22];
 
-  v23 = [(MCWiFiPayload *)self isFirstAutoJoinRestricted];
+  isFirstAutoJoinRestricted = [(MCWiFiPayload *)self isFirstAutoJoinRestricted];
 
-  if (v23)
+  if (isFirstAutoJoinRestricted)
   {
-    v24 = [(MCWiFiPayload *)self isFirstAutoJoinRestricted];
-    v25 = MCStringForBool([v24 BOOLValue]);
+    isFirstAutoJoinRestricted2 = [(MCWiFiPayload *)self isFirstAutoJoinRestricted];
+    v25 = MCStringForBool([isFirstAutoJoinRestricted2 BOOLValue]);
     [v5 appendFormat:@"First Autojoin Restricted: %@\n", v25];
   }
 
-  v26 = [(MCWiFiPayload *)self password];
+  password = [(MCWiFiPayload *)self password];
 
-  if (v26)
+  if (password)
   {
     [v5 appendFormat:@"Password    : (present)\n"];
   }
 
-  v27 = [(MCWiFiPayload *)self eapClientConfig];
+  eapClientConfig = [(MCWiFiPayload *)self eapClientConfig];
 
-  if (v27)
+  if (eapClientConfig)
   {
     [v5 appendFormat:@"EAP Config  : (present)\n"];
   }
 
-  v28 = [(MCWiFiPayload *)self qosMarkingConfig];
+  qosMarkingConfig = [(MCWiFiPayload *)self qosMarkingConfig];
 
-  if (v28)
+  if (qosMarkingConfig)
   {
     [v5 appendFormat:@"QoS Marking Policy Config  : (present)\n"];
   }
 
-  v29 = [(MCWiFiPayload *)self disableAssociationMACRandomization];
+  disableAssociationMACRandomization = [(MCWiFiPayload *)self disableAssociationMACRandomization];
 
-  if (v29)
+  if (disableAssociationMACRandomization)
   {
-    v30 = [(MCWiFiPayload *)self disableAssociationMACRandomization];
-    v31 = MCStringForBool([v30 BOOLValue] ^ 1);
+    disableAssociationMACRandomization2 = [(MCWiFiPayload *)self disableAssociationMACRandomization];
+    v31 = MCStringForBool([disableAssociationMACRandomization2 BOOLValue] ^ 1);
     [v5 appendFormat:@"Randomization: %@\n", v31];
   }
 
-  v32 = [(MCWiFiPayload *)self proxyType];
-  if (v32 > 2)
+  proxyType = [(MCWiFiPayload *)self proxyType];
+  if (proxyType > 2)
   {
     v33 = @"Unknown";
   }
 
   else
   {
-    v33 = off_1E77D2350[v32];
+    v33 = off_1E77D2350[proxyType];
   }
 
   [v5 appendFormat:@"Proxy       : %@\n", v33];
-  v34 = [(MCWiFiPayload *)self proxyServer];
+  proxyServer = [(MCWiFiPayload *)self proxyServer];
 
-  if (v34)
+  if (proxyServer)
   {
-    v35 = [(MCWiFiPayload *)self proxyServer];
-    [v5 appendFormat:@"  Server    : %@\n", v35];
+    proxyServer2 = [(MCWiFiPayload *)self proxyServer];
+    [v5 appendFormat:@"  Server    : %@\n", proxyServer2];
   }
 
-  v36 = [(MCWiFiPayload *)self proxyServerPort];
+  proxyServerPort = [(MCWiFiPayload *)self proxyServerPort];
 
-  if (v36)
+  if (proxyServerPort)
   {
-    v37 = [(MCWiFiPayload *)self proxyServerPort];
-    [v5 appendFormat:@"  Port      : %@\n", v37];
+    proxyServerPort2 = [(MCWiFiPayload *)self proxyServerPort];
+    [v5 appendFormat:@"  Port      : %@\n", proxyServerPort2];
   }
 
-  v38 = [(MCWiFiPayload *)self proxyUsername];
+  proxyUsername = [(MCWiFiPayload *)self proxyUsername];
 
-  if (v38)
+  if (proxyUsername)
   {
-    v39 = [(MCWiFiPayload *)self proxyUsername];
-    [v5 appendFormat:@"  Username  : %@\n", v39];
+    proxyUsername2 = [(MCWiFiPayload *)self proxyUsername];
+    [v5 appendFormat:@"  Username  : %@\n", proxyUsername2];
   }
 
-  v40 = [(MCWiFiPayload *)self proxyPassword];
+  proxyPassword = [(MCWiFiPayload *)self proxyPassword];
 
-  if (v40)
+  if (proxyPassword)
   {
     [v5 appendFormat:@"  Password  : (present)\n"];
   }
 
-  v41 = [(MCWiFiPayload *)self proxyPACURLString];
+  proxyPACURLString = [(MCWiFiPayload *)self proxyPACURLString];
 
-  if (v41)
+  if (proxyPACURLString)
   {
-    v42 = [(MCWiFiPayload *)self proxyPACURLString];
-    [v5 appendFormat:@"  PAC URL   : %@\n", v42];
+    proxyPACURLString2 = [(MCWiFiPayload *)self proxyPACURLString];
+    [v5 appendFormat:@"  PAC URL   : %@\n", proxyPACURLString2];
   }
 
   if ([(MCWiFiPayload *)self proxyType]== 1)
@@ -2120,10 +2120,10 @@ LABEL_8:
     v5 = 0;
   }
 
-  v6 = [(MCWiFiPayload *)self disableAssociationMACRandomization];
-  v7 = [v6 BOOLValue];
+  disableAssociationMACRandomization = [(MCWiFiPayload *)self disableAssociationMACRandomization];
+  bOOLValue = [disableAssociationMACRandomization BOOLValue];
 
-  if ((v7 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v10 = 0;
     v11 = v5 != 0;
@@ -2196,63 +2196,63 @@ LABEL_19:
 
 - (id)userInputFields
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(MCWiFiPayload *)self username];
-  if (!v4 && [(MCWiFiPayload *)self usernameRequired])
+  array = [MEMORY[0x1E695DF70] array];
+  username = [(MCWiFiPayload *)self username];
+  if (!username && [(MCWiFiPayload *)self usernameRequired])
   {
     v5 = MCLocalizedString(@"USERNAME_PROMPT_TITLE");
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [@"WIFI_USERNAME_PROMPT_DESCRIPTION" MCAppendGreenteaSuffix];
-    v8 = MCLocalizedString(v7);
-    v9 = [(MCWiFiPayload *)self ssid];
-    v10 = [v6 stringWithFormat:v8, v9];
+    mCAppendGreenteaSuffix = [@"WIFI_USERNAME_PROMPT_DESCRIPTION" MCAppendGreenteaSuffix];
+    v8 = MCLocalizedString(mCAppendGreenteaSuffix);
+    ssid = [(MCWiFiPayload *)self ssid];
+    v10 = [v6 stringWithFormat:v8, ssid];
     v11 = [MCPayloadUserPromptUtilities promptDictionaryForKey:@"UsernameUserInputKey" title:v5 description:v10 retypeDescription:0 finePrint:0 defaultValue:0 placeholderValue:0 minimumLength:0 fieldType:0x100000000 flags:?];
-    [v3 addObject:v11];
+    [array addObject:v11];
   }
 
-  v12 = [(MCWiFiPayload *)self password];
-  if (!v12)
+  password = [(MCWiFiPayload *)self password];
+  if (!password)
   {
     if (![(MCWiFiPayload *)self passwordRequired])
     {
       goto LABEL_11;
     }
 
-    v13 = [v4 length];
+    v13 = [username length];
     v14 = MEMORY[0x1E696AEC0];
     if (v13)
     {
-      v15 = [@"WIFI_PASSWORD_ACCOUNT_PROMPT_DESCRIPTION" MCAppendGreenteaSuffix];
-      v16 = MCLocalizedString(v15);
-      v12 = [v14 stringWithFormat:v16, v4];
+      mCAppendGreenteaSuffix2 = [@"WIFI_PASSWORD_ACCOUNT_PROMPT_DESCRIPTION" MCAppendGreenteaSuffix];
+      v16 = MCLocalizedString(mCAppendGreenteaSuffix2);
+      password = [v14 stringWithFormat:v16, username];
     }
 
     else
     {
-      v15 = [@"WIFI_PASSWORD_PROMPT_DESCRIPTION" MCAppendGreenteaSuffix];
-      v16 = MCLocalizedString(v15);
-      v17 = [(MCWiFiPayload *)self ssid];
-      v12 = [v14 stringWithFormat:v16, v17];
+      mCAppendGreenteaSuffix2 = [@"WIFI_PASSWORD_PROMPT_DESCRIPTION" MCAppendGreenteaSuffix];
+      v16 = MCLocalizedString(mCAppendGreenteaSuffix2);
+      ssid2 = [(MCWiFiPayload *)self ssid];
+      password = [v14 stringWithFormat:v16, ssid2];
     }
 
     v18 = MCLocalizedString(@"PASSWORD_PROMPT_TITLE");
-    v19 = [MCPayloadUserPromptUtilities promptDictionaryForKey:@"PasswordUserInputKey" title:v18 description:v12 retypeDescription:0 finePrint:0 defaultValue:0 placeholderValue:0 minimumLength:0 fieldType:0x100000003 flags:?];
-    [v3 addObject:v19];
+    v19 = [MCPayloadUserPromptUtilities promptDictionaryForKey:@"PasswordUserInputKey" title:v18 description:password retypeDescription:0 finePrint:0 defaultValue:0 placeholderValue:0 minimumLength:0 fieldType:0x100000003 flags:?];
+    [array addObject:v19];
   }
 
 LABEL_11:
 
-  return v3;
+  return array;
 }
 
-- (id)filterForUserEnrollmentOutError:(id *)a3
+- (id)filterForUserEnrollmentOutError:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = v4;
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = array;
   if (self->_proxyType)
   {
-    [v4 addObject:@"ProxyType"];
+    [array addObject:@"ProxyType"];
     self->_proxyType = 0;
   }
 
@@ -2310,9 +2310,9 @@ LABEL_11:
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v13 = v12;
-      v14 = [(MCPayload *)self friendlyName];
+      friendlyName = [(MCPayload *)self friendlyName];
       v17 = 138543618;
-      v18 = v14;
+      v18 = friendlyName;
       v19 = 2114;
       v20 = v5;
       _os_log_impl(&dword_1A795B000, v13, OS_LOG_TYPE_INFO, "Payload “%{public}@” has ignored proxy keys. They are: %{public}@", &v17, 0x16u);

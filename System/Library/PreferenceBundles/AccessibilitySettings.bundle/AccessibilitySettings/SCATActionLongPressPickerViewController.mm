@@ -3,11 +3,11 @@
 - (double)numericalPreferenceValue;
 - (id)_pauseScanningGroupSpecifier;
 - (id)_pauseScanningSpecifier;
-- (id)pauseScanningEnabled:(id)a3;
+- (id)pauseScanningEnabled:(id)enabled;
 - (id)specifiers;
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
-- (void)setPauseScanningEnabled:(id)a3 specifier:(id)a4;
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
+- (void)setPauseScanningEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation SCATActionLongPressPickerViewController
@@ -21,41 +21,41 @@
   return v4;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setAssistiveTouchLongPressDuration:a3];
+  [v4 setAssistiveTouchLongPressDuration:user];
 }
 
 - (BOOL)numericalPreferenceEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchLongPressEnabled];
+  assistiveTouchLongPressEnabled = [v2 assistiveTouchLongPressEnabled];
 
-  return v3;
+  return assistiveTouchLongPressEnabled;
 }
 
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user
 {
-  v3 = a3;
+  userCopy = user;
   v8 = +[AXSettings sharedInstance];
-  [v8 setAssistiveTouchLongPressEnabled:v3];
-  if (v3)
+  [v8 setAssistiveTouchLongPressEnabled:userCopy];
+  if (userCopy)
   {
-    v5 = [(SCATActionLongPressPickerViewController *)self _pauseScanningSpecifier];
-    [(SCATActionLongPressPickerViewController *)self insertSpecifier:v5 afterSpecifierID:@"NumericalPreferencePickerGroupIdentifier" animated:1];
+    _pauseScanningSpecifier = [(SCATActionLongPressPickerViewController *)self _pauseScanningSpecifier];
+    [(SCATActionLongPressPickerViewController *)self insertSpecifier:_pauseScanningSpecifier afterSpecifierID:@"NumericalPreferencePickerGroupIdentifier" animated:1];
 
-    v6 = [(SCATActionLongPressPickerViewController *)self _pauseScanningGroupSpecifier];
-    [(SCATActionLongPressPickerViewController *)self insertSpecifier:v6 afterSpecifierID:@"NumericalPreferencePickerGroupIdentifier" animated:1];
+    _pauseScanningGroupSpecifier = [(SCATActionLongPressPickerViewController *)self _pauseScanningGroupSpecifier];
+    [(SCATActionLongPressPickerViewController *)self insertSpecifier:_pauseScanningGroupSpecifier afterSpecifierID:@"NumericalPreferencePickerGroupIdentifier" animated:1];
   }
 
   else
   {
-    v7 = [(SCATActionLongPressPickerViewController *)self _pauseScanningGroupSpecifier];
-    [(SCATActionLongPressPickerViewController *)self removeSpecifier:v7 animated:1];
+    _pauseScanningGroupSpecifier2 = [(SCATActionLongPressPickerViewController *)self _pauseScanningGroupSpecifier];
+    [(SCATActionLongPressPickerViewController *)self removeSpecifier:_pauseScanningGroupSpecifier2 animated:1];
 
-    v6 = [(SCATActionLongPressPickerViewController *)self _pauseScanningSpecifier];
-    [(SCATActionLongPressPickerViewController *)self removeSpecifier:v6 animated:1];
+    _pauseScanningGroupSpecifier = [(SCATActionLongPressPickerViewController *)self _pauseScanningSpecifier];
+    [(SCATActionLongPressPickerViewController *)self removeSpecifier:_pauseScanningGroupSpecifier animated:1];
   }
 }
 
@@ -68,16 +68,16 @@
     v5 = objc_alloc_init(NSMutableArray);
     v11.receiver = self;
     v11.super_class = SCATActionLongPressPickerViewController;
-    v6 = [(SCATActionLongPressPickerViewController *)&v11 specifiers];
-    [v5 axSafelyAddObjectsFromArray:v6];
+    specifiers = [(SCATActionLongPressPickerViewController *)&v11 specifiers];
+    [v5 axSafelyAddObjectsFromArray:specifiers];
 
     if ([(SCATActionLongPressPickerViewController *)self numericalPreferenceEnabled])
     {
-      v7 = [(SCATActionLongPressPickerViewController *)self _pauseScanningGroupSpecifier];
-      [v5 addObject:v7];
+      _pauseScanningGroupSpecifier = [(SCATActionLongPressPickerViewController *)self _pauseScanningGroupSpecifier];
+      [v5 addObject:_pauseScanningGroupSpecifier];
 
-      v8 = [(SCATActionLongPressPickerViewController *)self _pauseScanningSpecifier];
-      [v5 addObject:v8];
+      _pauseScanningSpecifier = [(SCATActionLongPressPickerViewController *)self _pauseScanningSpecifier];
+      [v5 addObject:_pauseScanningSpecifier];
     }
 
     v9 = *&self->super.AXUISettingsNumericalPickerViewController_opaque[v3];
@@ -123,16 +123,16 @@
   return pauseScanningSpecifier;
 }
 
-- (void)setPauseScanningEnabled:(id)a3 specifier:(id)a4
+- (void)setPauseScanningEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setAssistiveTouchLongPressPauseScanningEnabled:v5];
+  [v6 setAssistiveTouchLongPressPauseScanningEnabled:bOOLValue];
 }
 
-- (id)pauseScanningEnabled:(id)a3
+- (id)pauseScanningEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchLongPressPauseScanningEnabled]);

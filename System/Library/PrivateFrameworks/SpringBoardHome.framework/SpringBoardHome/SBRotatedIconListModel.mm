@@ -1,19 +1,19 @@
 @interface SBRotatedIconListModel
-- (BOOL)representsSelf:(id)a3;
-- (BOOL)shouldRemoveAlreadyContainedIconWhenRemovingFromOtherPositionsInHierarchy:(id)a3 gridCellInfoOptions:(unint64_t)a4 mutationOptions:(unint64_t)a5;
+- (BOOL)representsSelf:(id)self;
+- (BOOL)shouldRemoveAlreadyContainedIconWhenRemovingFromOtherPositionsInHierarchy:(id)hierarchy gridCellInfoOptions:(unint64_t)options mutationOptions:(unint64_t)mutationOptions;
 - (SBIconListModel)unrotatedIconListModel;
-- (id)activeTransactionCreatingIfNecessary:(BOOL)a3;
-- (id)gridSizeClassSizesWithOptions:(unint64_t)a3;
+- (id)activeTransactionCreatingIfNecessary:(BOOL)necessary;
+- (id)gridSizeClassSizesWithOptions:(unint64_t)options;
 - (void)markIconStateDirty;
 @end
 
 @implementation SBRotatedIconListModel
 
-- (id)activeTransactionCreatingIfNecessary:(BOOL)a3
+- (id)activeTransactionCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
-  v4 = [(SBRotatedIconListModel *)self unrotatedIconListModel];
-  v5 = [v4 activeTransactionCreatingIfNecessary:v3];
+  necessaryCopy = necessary;
+  unrotatedIconListModel = [(SBRotatedIconListModel *)self unrotatedIconListModel];
+  v5 = [unrotatedIconListModel activeTransactionCreatingIfNecessary:necessaryCopy];
 
   return v5;
 }
@@ -23,50 +23,50 @@
   v4.receiver = self;
   v4.super_class = SBRotatedIconListModel;
   [(SBIconListModel *)&v4 markIconStateDirty];
-  v3 = [(SBRotatedIconListModel *)self unrotatedIconListModel];
-  [v3 markIconStateDirty];
+  unrotatedIconListModel = [(SBRotatedIconListModel *)self unrotatedIconListModel];
+  [unrotatedIconListModel markIconStateDirty];
 }
 
-- (id)gridSizeClassSizesWithOptions:(unint64_t)a3
+- (id)gridSizeClassSizesWithOptions:(unint64_t)options
 {
-  v4 = [(SBIconListModel *)self rotatedIconGridSizeClassSizes];
-  if (!v4)
+  rotatedIconGridSizeClassSizes = [(SBIconListModel *)self rotatedIconGridSizeClassSizes];
+  if (!rotatedIconGridSizeClassSizes)
   {
-    v4 = [(SBIconListModel *)self iconGridSizeClassSizes];
+    rotatedIconGridSizeClassSizes = [(SBIconListModel *)self iconGridSizeClassSizes];
   }
 
-  return v4;
+  return rotatedIconGridSizeClassSizes;
 }
 
-- (BOOL)representsSelf:(id)a3
+- (BOOL)representsSelf:(id)self
 {
-  v4 = a3;
+  selfCopy = self;
   v8.receiver = self;
   v8.super_class = SBRotatedIconListModel;
-  if ([(SBIconListModel *)&v8 representsSelf:v4])
+  if ([(SBIconListModel *)&v8 representsSelf:selfCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(SBRotatedIconListModel *)self unrotatedIconListModel];
-    v5 = v6 == v4;
+    unrotatedIconListModel = [(SBRotatedIconListModel *)self unrotatedIconListModel];
+    v5 = unrotatedIconListModel == selfCopy;
   }
 
   return v5;
 }
 
-- (BOOL)shouldRemoveAlreadyContainedIconWhenRemovingFromOtherPositionsInHierarchy:(id)a3 gridCellInfoOptions:(unint64_t)a4 mutationOptions:(unint64_t)a5
+- (BOOL)shouldRemoveAlreadyContainedIconWhenRemovingFromOtherPositionsInHierarchy:(id)hierarchy gridCellInfoOptions:(unint64_t)options mutationOptions:(unint64_t)mutationOptions
 {
-  if ((a5 & 0x80000000) != 0)
+  if ((mutationOptions & 0x80000000) != 0)
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = SBRotatedIconListModel;
-  return [(SBIconListModel *)&v6 shouldRemoveAlreadyContainedIconWhenRemovingFromOtherPositionsInHierarchy:a3 gridCellInfoOptions:a4 mutationOptions:?];
+  return [(SBIconListModel *)&v6 shouldRemoveAlreadyContainedIconWhenRemovingFromOtherPositionsInHierarchy:hierarchy gridCellInfoOptions:options mutationOptions:?];
 }
 
 - (SBIconListModel)unrotatedIconListModel

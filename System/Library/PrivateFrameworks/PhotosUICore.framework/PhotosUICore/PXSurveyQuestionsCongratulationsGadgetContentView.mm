@@ -1,7 +1,7 @@
 @interface PXSurveyQuestionsCongratulationsGadgetContentView
 - (CGSize)sizeThatFits:(CGSize)result;
 - (PXSurveyQuestionCongratulationsGadgetContentViewDelegate)delegate;
-- (PXSurveyQuestionsCongratulationsGadgetContentView)initWithDetailMessage:(id)a3 buttonTitle:(id)a4;
+- (PXSurveyQuestionsCongratulationsGadgetContentView)initWithDetailMessage:(id)message buttonTitle:(id)title;
 - (void)_didSelectActionButton;
 - (void)layoutSubviews;
 - (void)startConfettiAnimation;
@@ -89,24 +89,24 @@
 
 - (void)_didSelectActionButton
 {
-  v3 = [(PXSurveyQuestionsCongratulationsGadgetContentView *)self selectionFeedbackGenerator];
-  [v3 selectionChanged];
+  selectionFeedbackGenerator = [(PXSurveyQuestionsCongratulationsGadgetContentView *)self selectionFeedbackGenerator];
+  [selectionFeedbackGenerator selectionChanged];
 
-  v4 = [(PXSurveyQuestionsCongratulationsGadgetContentView *)self delegate];
-  [v4 congratulationsGadgetContentViewDidSelectActionButton:self];
+  delegate = [(PXSurveyQuestionsCongratulationsGadgetContentView *)self delegate];
+  [delegate congratulationsGadgetContentViewDidSelectActionButton:self];
 }
 
-- (PXSurveyQuestionsCongratulationsGadgetContentView)initWithDetailMessage:(id)a3 buttonTitle:(id)a4
+- (PXSurveyQuestionsCongratulationsGadgetContentView)initWithDetailMessage:(id)message buttonTitle:(id)title
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  titleCopy = title;
   v48.receiver = self;
   v48.super_class = PXSurveyQuestionsCongratulationsGadgetContentView;
   v8 = [(PXSurveyQuestionsCongratulationsGadgetContentView *)&v48 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(PXSurveyQuestionsCongratulationsGadgetContentView *)v8 setBackgroundColor:v9];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(PXSurveyQuestionsCongratulationsGadgetContentView *)v8 setBackgroundColor:secondarySystemBackgroundColor];
 
     v10 = objc_alloc(MEMORY[0x1E69DCC10]);
     v11 = *MEMORY[0x1E695F058];
@@ -122,8 +122,8 @@
     v17 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeCongratulationsTitle", @"PhotosUICore");
     [(UILabel *)v8->_congratulationsLabel setText:v17];
 
-    v18 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v8->_congratulationsLabel setBackgroundColor:v18];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v8->_congratulationsLabel setBackgroundColor:clearColor];
 
     v19 = [MEMORY[0x1E69DB878] px_preferredFontForTextStyle:*MEMORY[0x1E69DDDB8] withSymbolicTraits:2 options:1];
     [(UILabel *)v8->_congratulationsLabel setFont:v19];
@@ -135,29 +135,29 @@
 
     [(UILabel *)v8->_messageLabel setTextAlignment:1];
     [(UILabel *)v8->_messageLabel setAdjustsFontSizeToFitWidth:1];
-    [(UILabel *)v8->_messageLabel setText:v6];
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v8->_messageLabel setBackgroundColor:v22];
+    [(UILabel *)v8->_messageLabel setText:messageCopy];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v8->_messageLabel setBackgroundColor:clearColor2];
 
     [(UILabel *)v8->_messageLabel setNumberOfLines:2];
     v23 = [MEMORY[0x1E69DB878] px_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] withSymbolicTraits:0 options:1];
     [(UILabel *)v8->_messageLabel setFont:v23];
 
     [(PXSurveyQuestionsCongratulationsGadgetContentView *)v8 addSubview:v8->_messageLabel];
-    if (v7)
+    if (titleCopy)
     {
-      v24 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-      [v24 setButtonSize:1];
-      [v24 setCornerStyle:4];
-      v25 = [(PXSurveyQuestionsCongratulationsGadgetContentView *)v8 tintColor];
-      [v24 setBaseForegroundColor:v25];
+      filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+      [filledButtonConfiguration setButtonSize:1];
+      [filledButtonConfiguration setCornerStyle:4];
+      tintColor = [(PXSurveyQuestionsCongratulationsGadgetContentView *)v8 tintColor];
+      [filledButtonConfiguration setBaseForegroundColor:tintColor];
 
-      v26 = [MEMORY[0x1E69DC888] whiteColor];
-      [v24 setBaseBackgroundColor:v26];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [filledButtonConfiguration setBaseBackgroundColor:whiteColor];
 
-      [v24 setTitle:v7];
-      [v24 setTitleTextAttributesTransformer:&__block_literal_global_22610];
-      v27 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v24 primaryAction:0];
+      [filledButtonConfiguration setTitle:titleCopy];
+      [filledButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_22610];
+      v27 = [MEMORY[0x1E69DC738] buttonWithConfiguration:filledButtonConfiguration primaryAction:0];
       [v27 setMaximumContentSizeCategory:*MEMORY[0x1E69DDC70]];
       [v27 addTarget:v8 action:sel__didSelectActionButton forControlEvents:64];
       [(PXSurveyQuestionsCongratulationsGadgetContentView *)v8 addSubview:v27];

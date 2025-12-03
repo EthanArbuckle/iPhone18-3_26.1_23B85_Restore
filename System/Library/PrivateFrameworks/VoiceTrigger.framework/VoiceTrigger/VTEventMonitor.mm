@@ -1,28 +1,28 @@
 @interface VTEventMonitor
 - (VTEventMonitor)init;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)enumerateObservers:(id)a3;
-- (void)enumerateObserversInQueue:(id)a3;
-- (void)notifyObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)enumerateObservers:(id)observers;
+- (void)enumerateObserversInQueue:(id)queue;
+- (void)notifyObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation VTEventMonitor
 
-- (void)notifyObserver:(id)a3
+- (void)notifyObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (objc_opt_respondsToSelector())
   {
-    [v4 VTEventMonitorDidReceiveEvent:self];
+    [observerCopy VTEventMonitorDidReceiveEvent:self];
   }
 }
 
-- (void)enumerateObservers:(id)a3
+- (void)enumerateObservers:(id)observers
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observersCopy = observers;
   dispatch_assert_queue_V2(self->_queue);
   v12 = 0u;
   v13 = 0u;
@@ -34,7 +34,7 @@
   {
     v7 = v6;
     v8 = *v11;
-    if (v4)
+    if (observersCopy)
     {
       do
       {
@@ -46,7 +46,7 @@
             objc_enumerationMutation(v5);
           }
 
-          v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+          observersCopy[2](observersCopy, *(*(&v10 + 1) + 8 * v9++));
         }
 
         while (v7 != v9);
@@ -83,31 +83,31 @@
   }
 }
 
-- (void)enumerateObserversInQueue:(id)a3
+- (void)enumerateObserversInQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__VTEventMonitor_enumerateObserversInQueue___block_invoke;
   v7[3] = &unk_2784ECD30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queueCopy;
+  v6 = queueCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__VTEventMonitor_removeObserver___block_invoke;
   v7[3] = &unk_2784ED118;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -129,17 +129,17 @@ uint64_t __33__VTEventMonitor_removeObserver___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __30__VTEventMonitor_addObserver___block_invoke;
   v7[3] = &unk_2784ED118;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -177,9 +177,9 @@ uint64_t __30__VTEventMonitor_addObserver___block_invoke(uint64_t result)
   v2 = [(VTEventMonitor *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v5 = dispatch_queue_create("Serial VTEventMonitor queue", 0);
     queue = v2->_queue;

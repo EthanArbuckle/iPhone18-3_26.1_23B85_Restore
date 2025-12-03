@@ -1,15 +1,15 @@
 @interface ATXFakeNotificationSettingsReader
 - (ATXFakeNotificationSettingsReader)init;
-- (BOOL)appIsOnAllowList:(id)a3 dndModeUUID:(id)a4;
-- (BOOL)appIsOnAllowList:(id)a3 mode:(unint64_t)a4;
-- (BOOL)contactIsOnAllowList:(id)a3 dndModeUUID:(id)a4;
-- (BOOL)contactIsOnAllowList:(id)a3 mode:(unint64_t)a4;
-- (BOOL)doesAppAllowMessageBreakthrough:(id)a3;
-- (BOOL)doesAppSendNotificationsToDigest:(id)a3;
+- (BOOL)appIsOnAllowList:(id)list dndModeUUID:(id)d;
+- (BOOL)appIsOnAllowList:(id)list mode:(unint64_t)mode;
+- (BOOL)contactIsOnAllowList:(id)list dndModeUUID:(id)d;
+- (BOOL)contactIsOnAllowList:(id)list mode:(unint64_t)mode;
+- (BOOL)doesAppAllowMessageBreakthrough:(id)breakthrough;
+- (BOOL)doesAppSendNotificationsToDigest:(id)digest;
 - (id)allConfiguredDigestApps;
-- (void)setDoMessagesBreakthrough:(id)a3 doesBreakthrough:(BOOL)a4;
-- (void)setDoesSendToDigest:(id)a3 doesSend:(BOOL)a4;
-- (void)setIsAllowedForEntity:(id)a3 isAllowed:(BOOL)a4;
+- (void)setDoMessagesBreakthrough:(id)breakthrough doesBreakthrough:(BOOL)doesBreakthrough;
+- (void)setDoesSendToDigest:(id)digest doesSend:(BOOL)send;
+- (void)setIsAllowedForEntity:(id)entity isAllowed:(BOOL)allowed;
 @end
 
 @implementation ATXFakeNotificationSettingsReader
@@ -41,36 +41,76 @@
   return v3;
 }
 
-- (void)setIsAllowedForEntity:(id)a3 isAllowed:(BOOL)a4
+- (void)setIsAllowedForEntity:(id)entity isAllowed:(BOOL)allowed
 {
-  v4 = a4;
+  allowedCopy = allowed;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithBool:v4];
-  [(NSMutableDictionary *)self->_entityToIsAllowed setObject:v8 forKeyedSubscript:v7];
+  entityCopy = entity;
+  v8 = [v6 numberWithBool:allowedCopy];
+  [(NSMutableDictionary *)self->_entityToIsAllowed setObject:v8 forKeyedSubscript:entityCopy];
 }
 
-- (void)setDoesSendToDigest:(id)a3 doesSend:(BOOL)a4
+- (void)setDoesSendToDigest:(id)digest doesSend:(BOOL)send
 {
-  v4 = a4;
+  sendCopy = send;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithBool:v4];
-  [(NSMutableDictionary *)self->_sendToDigest setObject:v8 forKeyedSubscript:v7];
+  digestCopy = digest;
+  v8 = [v6 numberWithBool:sendCopy];
+  [(NSMutableDictionary *)self->_sendToDigest setObject:v8 forKeyedSubscript:digestCopy];
 }
 
-- (void)setDoMessagesBreakthrough:(id)a3 doesBreakthrough:(BOOL)a4
+- (void)setDoMessagesBreakthrough:(id)breakthrough doesBreakthrough:(BOOL)doesBreakthrough
 {
-  v4 = a4;
+  doesBreakthroughCopy = doesBreakthrough;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithBool:v4];
-  [(NSMutableDictionary *)self->_messagesBreakthrough setObject:v8 forKeyedSubscript:v7];
+  breakthroughCopy = breakthrough;
+  v8 = [v6 numberWithBool:doesBreakthroughCopy];
+  [(NSMutableDictionary *)self->_messagesBreakthrough setObject:v8 forKeyedSubscript:breakthroughCopy];
 }
 
-- (BOOL)appIsOnAllowList:(id)a3 mode:(unint64_t)a4
+- (BOOL)appIsOnAllowList:(id)list mode:(unint64_t)mode
 {
-  v5 = [(NSMutableDictionary *)self->_entityToIsAllowed objectForKeyedSubscript:a3, a4];
+  mode = [(NSMutableDictionary *)self->_entityToIsAllowed objectForKeyedSubscript:list, mode];
+  v6 = mode;
+  if (mode)
+  {
+    v7 = mode;
+  }
+
+  else
+  {
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_defaultIsAppAllowed];
+  }
+
+  v8 = v7;
+
+  bOOLValue = [v8 BOOLValue];
+  return bOOLValue;
+}
+
+- (BOOL)contactIsOnAllowList:(id)list mode:(unint64_t)mode
+{
+  mode = [(NSMutableDictionary *)self->_entityToIsAllowed objectForKeyedSubscript:list, mode];
+  v6 = mode;
+  if (mode)
+  {
+    v7 = mode;
+  }
+
+  else
+  {
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_defaultIsContactAllowed];
+  }
+
+  v8 = v7;
+
+  bOOLValue = [v8 BOOLValue];
+  return bOOLValue;
+}
+
+- (BOOL)appIsOnAllowList:(id)list dndModeUUID:(id)d
+{
+  v5 = [(NSMutableDictionary *)self->_entityToIsAllowed objectForKeyedSubscript:list, d];
   v6 = v5;
   if (v5)
   {
@@ -84,13 +124,13 @@
 
   v8 = v7;
 
-  v9 = [v8 BOOLValue];
-  return v9;
+  bOOLValue = [v8 BOOLValue];
+  return bOOLValue;
 }
 
-- (BOOL)contactIsOnAllowList:(id)a3 mode:(unint64_t)a4
+- (BOOL)contactIsOnAllowList:(id)list dndModeUUID:(id)d
 {
-  v5 = [(NSMutableDictionary *)self->_entityToIsAllowed objectForKeyedSubscript:a3, a4];
+  v5 = [(NSMutableDictionary *)self->_entityToIsAllowed objectForKeyedSubscript:list, d];
   v6 = v5;
   if (v5)
   {
@@ -104,82 +144,42 @@
 
   v8 = v7;
 
-  v9 = [v8 BOOLValue];
-  return v9;
+  bOOLValue = [v8 BOOLValue];
+  return bOOLValue;
 }
 
-- (BOOL)appIsOnAllowList:(id)a3 dndModeUUID:(id)a4
+- (BOOL)doesAppSendNotificationsToDigest:(id)digest
 {
-  v5 = [(NSMutableDictionary *)self->_entityToIsAllowed objectForKeyedSubscript:a3, a4];
-  v6 = v5;
-  if (v5)
-  {
-    v7 = v5;
-  }
-
-  else
-  {
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_defaultIsAppAllowed];
-  }
-
-  v8 = v7;
-
-  v9 = [v8 BOOLValue];
-  return v9;
-}
-
-- (BOOL)contactIsOnAllowList:(id)a3 dndModeUUID:(id)a4
-{
-  v5 = [(NSMutableDictionary *)self->_entityToIsAllowed objectForKeyedSubscript:a3, a4];
-  v6 = v5;
-  if (v5)
-  {
-    v7 = v5;
-  }
-
-  else
-  {
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_defaultIsContactAllowed];
-  }
-
-  v8 = v7;
-
-  v9 = [v8 BOOLValue];
-  return v9;
-}
-
-- (BOOL)doesAppSendNotificationsToDigest:(id)a3
-{
-  v3 = [(NSMutableDictionary *)self->_sendToDigest objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_sendToDigest objectForKeyedSubscript:digest];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)doesAppAllowMessageBreakthrough:(id)a3
+- (BOOL)doesAppAllowMessageBreakthrough:(id)breakthrough
 {
-  v3 = [(NSMutableDictionary *)self->_messagesBreakthrough objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_messagesBreakthrough objectForKeyedSubscript:breakthrough];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)allConfiguredDigestApps

@@ -1,32 +1,32 @@
 @interface FriendRequestComposeViewController
-- (_TtC12GameCenterUI34FriendRequestComposeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC12GameCenterUI34FriendRequestComposeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation FriendRequestComposeViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24E240420(a3);
+  selfCopy = self;
+  sub_24E240420(appear);
 }
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  v6 = a3;
-  v7 = self;
-  sub_24E24055C(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_24E24055C(controllerCopy, result);
 }
 
-- (_TtC12GameCenterUI34FriendRequestComposeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12GameCenterUI34FriendRequestComposeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_24E347CF8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_24E240E30();
 }
 

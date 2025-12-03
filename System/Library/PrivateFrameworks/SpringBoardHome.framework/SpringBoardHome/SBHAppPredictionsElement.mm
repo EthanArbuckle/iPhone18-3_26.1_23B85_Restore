@@ -1,6 +1,6 @@
 @interface SBHAppPredictionsElement
 - (id)displayName;
-- (id)icon:(id)a3 imageWithInfo:(SBIconImageInfo *)a4;
+- (id)icon:(id)icon imageWithInfo:(SBIconImageInfo *)info;
 - (id)supportedGridSizeClasses;
 @end
 
@@ -14,12 +14,12 @@
   return v3;
 }
 
-- (id)icon:(id)a3 imageWithInfo:(SBIconImageInfo *)a4
+- (id)icon:(id)icon imageWithInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
   v9 = v4;
-  v10 = a3;
+  iconCopy = icon;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;

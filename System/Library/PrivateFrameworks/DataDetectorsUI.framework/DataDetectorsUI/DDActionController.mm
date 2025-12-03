@@ -1,30 +1,30 @@
 @interface DDActionController
-+ (BOOL)presentingBaseView:(id)a3 isLargeEnoughForAction:(id)a4;
++ (BOOL)presentingBaseView:(id)view isLargeEnoughForAction:(id)action;
 - (BOOL)actionIsCancellable;
 - (BOOL)facetimeAvailable;
 - (BOOL)isPresentingInPopover;
 - (DDActionController)init;
-- (id)actionsForURL:(id)a3 result:(__DDResult *)a4 enclosingResult:(__DDResult *)a5 context:(id)a6;
-- (id)defaultActionForURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
+- (id)actionsForURL:(id)l result:(__DDResult *)result enclosingResult:(__DDResult *)enclosingResult context:(id)context;
+- (id)defaultActionForURL:(id)l result:(__DDResult *)result context:(id)context;
 - (void)_cleanup;
 - (void)_complete;
 - (void)_didDismissActionViewController;
 - (void)_dismissCurrentViewControllerOurselves;
-- (void)_presentController:(id)a3;
+- (void)_presentController:(id)controller;
 - (void)_presentCurrentViewControllerOurselves;
 - (void)_willPresentViewController;
-- (void)action:(id)a3 viewControllerReady:(id)a4;
-- (void)actionDidFinish:(id)a3 shouldDismiss:(BOOL)a4;
+- (void)action:(id)action viewControllerReady:(id)ready;
+- (void)actionDidFinish:(id)finish shouldDismiss:(BOOL)dismiss;
 - (void)cancelAction;
 - (void)cleanupNoDismiss;
 - (void)dealloc;
 - (void)dismissCurrentController;
-- (void)failedToPrepareViewControllerForAction:(id)a3;
-- (void)performAction:(id)a3;
-- (void)prepareForPopoverPresentation:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)setAlertController:(id)a3;
-- (void)tellDelegateActionDidFinishShouldDismiss:(BOOL)a3;
+- (void)failedToPrepareViewControllerForAction:(id)action;
+- (void)performAction:(id)action;
+- (void)prepareForPopoverPresentation:(id)presentation;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)setAlertController:(id)controller;
+- (void)tellDelegateActionDidFinishShouldDismiss:(BOOL)dismiss;
 @end
 
 @implementation DDActionController
@@ -52,7 +52,7 @@
   if (self->_idsListenerID)
   {
     Helper_x8__OBJC_CLASS___IDSServiceAvailabilityController = gotLoadHelper_x8__OBJC_CLASS___IDSServiceAvailabilityController(v2);
-    v6 = [*(v5 + 1920) sharedInstance];
+    sharedInstance = [*(v5 + 1920) sharedInstance];
     idsListenerID = self->_idsListenerID;
     Helper_x8__IDSServiceNameFaceTime = gotLoadHelper_x8__IDSServiceNameFaceTime(v8);
     v11 = **(v10 + 1688);
@@ -112,36 +112,36 @@
     v14 = self->_idsListenerID;
     self->_idsListenerID = v13;
 
-    v15 = [*(v2 + 1920) sharedInstance];
+    sharedInstance = [*(v2 + 1920) sharedInstance];
     v16 = self->_idsListenerID;
     v18 = gotLoadHelper_x8__IDSServiceNameFaceTime(v17);
     v10 = **(v19 + 1688);
     [v20 addListenerID:v18 forService:?];
   }
 
-  v21 = [*(v2 + 1920) sharedInstance];
-  v22 = [v21 availabilityForListenerID:self->_idsListenerID forService:v10] == 1;
+  sharedInstance2 = [*(v2 + 1920) sharedInstance];
+  v22 = [sharedInstance2 availabilityForListenerID:self->_idsListenerID forService:v10] == 1;
 
   return v22;
 }
 
-- (id)actionsForURL:(id)a3 result:(__DDResult *)a4 enclosingResult:(__DDResult *)a5 context:(id)a6
+- (id)actionsForURL:(id)l result:(__DDResult *)result enclosingResult:(__DDResult *)enclosingResult context:(id)context
 {
   v143[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = [v11 objectForKeyedSubscript:@"defaultActionOnly"];
+  lCopy = l;
+  contextCopy = context;
+  v12 = [contextCopy objectForKeyedSubscript:@"defaultActionOnly"];
 
-  if (!(v10 | a4))
+  if (!(lCopy | result))
   {
-    v13 = [v11 objectForKeyedSubscript:@"Contact"];
+    v13 = [contextCopy objectForKeyedSubscript:@"Contact"];
     if (v13)
     {
-      v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
+      sheetActions = objc_alloc_init(MEMORY[0x277CBEB18]);
       if ([DDAddToAddressBookAction actionAvailableForContact:v13])
       {
-        v15 = [(DDAction *)[DDAddToAddressBookAction alloc] initWithURL:0 result:0 context:v11];
-        [v14 addObject:v15];
+        v15 = [(DDAction *)[DDAddToAddressBookAction alloc] initWithURL:0 result:0 context:contextCopy];
+        [sheetActions addObject:v15];
 
         if (v12)
         {
@@ -151,8 +151,8 @@
 
       if ([(DDOpenMapsAction *)DDDirectionsAction actionAvailableForContact:v13])
       {
-        v16 = [(DDAction *)[DDDirectionsAction alloc] initWithURL:0 result:0 context:v11];
-        [v14 addObject:v16];
+        v16 = [(DDAction *)[DDDirectionsAction alloc] initWithURL:0 result:0 context:contextCopy];
+        [sheetActions addObject:v16];
 
         if (v12)
         {
@@ -162,74 +162,74 @@
 
       if ([DDOpenMapsAction actionAvailableForContact:v13])
       {
-        v17 = [(DDAction *)[DDOpenMapsAction alloc] initWithURL:0 result:0 context:v11];
-        [v14 addObject:v17];
+        v17 = [(DDAction *)[DDOpenMapsAction alloc] initWithURL:0 result:0 context:contextCopy];
+        [sheetActions addObject:v17];
       }
 
-      if ([v14 count])
+      if ([sheetActions count])
       {
         goto LABEL_37;
       }
     }
 
-    v18 = [v11 objectForKeyedSubscript:@"ICS"];
+    v18 = [contextCopy objectForKeyedSubscript:@"ICS"];
     if ([v18 length])
     {
       v19 = [DDAddEventAction cachedEventForICSString:v18];
       if (v19)
       {
-        v20 = [DDAction contextByAddingValue:v19 toKey:0x282C1E0C8 inContext:v11];
+        v20 = [DDAction contextByAddingValue:v19 toKey:0x282C1E0C8 inContext:contextCopy];
 
-        v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        if (!+[DDAddEventAction isAvailable](DDAddEventAction, "isAvailable") || (v21 = -[DDAction initWithURL:result:context:]([DDAddEventAction alloc], "initWithURL:result:context:", 0, 0, v20), [v14 addObject:v21], v21, !v12))
+        sheetActions = objc_alloc_init(MEMORY[0x277CBEB18]);
+        if (!+[DDAddEventAction isAvailable](DDAddEventAction, "isAvailable") || (v21 = -[DDAction initWithURL:result:context:]([DDAddEventAction alloc], "initWithURL:result:context:", 0, 0, v20), [sheetActions addObject:v21], v21, !v12))
         {
-          if (!+[DDOpenMapsAction actionAvailableForCachedEvent:](DDDirectionsAction, "actionAvailableForCachedEvent:", v19) || (v22 = -[DDAction initWithURL:result:context:]([DDDirectionsAction alloc], "initWithURL:result:context:", 0, 0, v20), [v14 addObject:v22], v22, !v12))
+          if (!+[DDOpenMapsAction actionAvailableForCachedEvent:](DDDirectionsAction, "actionAvailableForCachedEvent:", v19) || (v22 = -[DDAction initWithURL:result:context:]([DDDirectionsAction alloc], "initWithURL:result:context:", 0, 0, v20), [sheetActions addObject:v22], v22, !v12))
           {
-            if (!+[DDOpenMapsAction actionAvailableForCachedEvent:](DDOpenMapsAction, "actionAvailableForCachedEvent:", v19) || (v23 = -[DDAction initWithURL:result:context:]([DDOpenMapsAction alloc], "initWithURL:result:context:", 0, 0, v20), [v14 addObject:v23], v23, !v12))
+            if (!+[DDOpenMapsAction actionAvailableForCachedEvent:](DDOpenMapsAction, "actionAvailableForCachedEvent:", v19) || (v23 = -[DDAction initWithURL:result:context:]([DDOpenMapsAction alloc], "initWithURL:result:context:", 0, 0, v20), [sheetActions addObject:v23], v23, !v12))
             {
-              if (![v14 count])
+              if (![sheetActions count])
               {
 
-                v14 = 0;
+                sheetActions = 0;
               }
             }
           }
         }
 
-        v11 = v20;
+        contextCopy = v20;
       }
 
       else
       {
-        v14 = 0;
+        sheetActions = 0;
       }
     }
 
     else
     {
-      v14 = 0;
+      sheetActions = 0;
     }
 
 LABEL_37:
     goto LABEL_136;
   }
 
-  if (![DDMessagesCustomAction handlesUrl:v10 result:a4])
+  if (![DDMessagesCustomAction handlesUrl:lCopy result:result])
   {
-    if ([DDChatBotAction handlesUrl:v10 result:a4])
+    if ([DDChatBotAction handlesUrl:lCopy result:result])
     {
-      v25 = [(DDAction *)[DDChatBotAction alloc] initWithURL:v10 result:a4 context:v11];
-      v14 = [(DDChatBotAction *)v25 sheetActions];
+      lowercaseString = [(DDAction *)[DDChatBotAction alloc] initWithURL:lCopy result:result context:contextCopy];
+      sheetActions = [(DDChatBotAction *)lowercaseString sheetActions];
       goto LABEL_135;
     }
 
-    v26 = [v10 scheme];
-    v25 = [v26 lowercaseString];
+    scheme = [lCopy scheme];
+    lowercaseString = [scheme lowercaseString];
 
-    if (a4)
+    if (result)
     {
       Category = DDResultGetCategory();
-      if (!v25)
+      if (!lowercaseString)
       {
         goto LABEL_44;
       }
@@ -237,39 +237,39 @@ LABEL_37:
       if (Category == 2)
       {
 LABEL_40:
-        v30 = [DDTextMessageAction supportsURL:v10];
-        v31 = [MEMORY[0x277CBEB18] array];
+        v30 = [DDTextMessageAction supportsURL:lCopy];
+        array = [MEMORY[0x277CBEB18] array];
         if (v30)
         {
           if (v12)
           {
-            v32 = [[DDTextMessageAction alloc] initWithURL:v10 result:a4 context:v11];
+            v32 = [[DDTextMessageAction alloc] initWithURL:lCopy result:result context:contextCopy];
             v143[0] = v32;
             v33 = MEMORY[0x277CBEA60];
             v34 = v143;
 LABEL_43:
-            v14 = [v33 arrayWithObjects:v34 count:1];
+            sheetActions = [v33 arrayWithObjects:v34 count:1];
 
 LABEL_134:
             goto LABEL_135;
           }
 
-          v47 = [DDTextMessageAction actionsWithURL:v10 result:a4 context:v11];
-          [v31 addObjectsFromArray:v47];
+          v47 = [DDTextMessageAction actionsWithURL:lCopy result:result context:contextCopy];
+          [array addObjectsFromArray:v47];
         }
 
         else
         {
-          if (dd_phoneNumberResultCanBeRdarLink(a4))
+          if (dd_phoneNumberResultCanBeRdarLink(result))
           {
-            v42 = [(NSURL *)v10 dd_rdarLinkFromTelScheme];
-            if (v42)
+            dd_rdarLinkFromTelScheme = [(NSURL *)lCopy dd_rdarLinkFromTelScheme];
+            if (dd_rdarLinkFromTelScheme)
             {
-              [(DDAction *)DDOpenURLAction actionWithURL:v42 result:0 context:v11];
-              v44 = v43 = v10;
-              [v31 addObject:v44];
+              [(DDAction *)DDOpenURLAction actionWithURL:dd_rdarLinkFromTelScheme result:0 context:contextCopy];
+              v44 = v43 = lCopy;
+              [array addObject:v44];
 
-              v10 = v43;
+              lCopy = v43;
               if (v12)
               {
 
@@ -280,13 +280,13 @@ LABEL_134:
 
           if (v12)
           {
-            v48 = [DDCallKitAudioAction defaultActionWithURL:v10 result:a4 context:v11];
-            if (v48 || ([(DDCallKitAudioAction *)DDCallKitVideoAction defaultActionWithURL:v10 result:a4 context:v11], (v48 = objc_claimAutoreleasedReturnValue()) != 0))
+            v48 = [DDCallKitAudioAction defaultActionWithURL:lCopy result:result context:contextCopy];
+            if (v48 || ([(DDCallKitAudioAction *)DDCallKitVideoAction defaultActionWithURL:lCopy result:result context:contextCopy], (v48 = objc_claimAutoreleasedReturnValue()) != 0))
             {
               *(v48 + 85) = 1;
 LABEL_130:
               v72 = v48;
-              [v31 addObject:v48];
+              [array addObject:v48];
 
               goto LABEL_131;
             }
@@ -295,12 +295,12 @@ LABEL_130:
           }
         }
 
-        v129 = v10;
+        v129 = lCopy;
         v136 = 0u;
         v137 = 0u;
         v134 = 0u;
         v135 = 0u;
-        v49 = [DDCallKitAudioAction actionsWithURL:v10 result:a4 context:v11 defaultAppsOnly:1];
+        v49 = [DDCallKitAudioAction actionsWithURL:lCopy result:result context:contextCopy defaultAppsOnly:1];
         v50 = [v49 countByEnumeratingWithState:&v134 objects:v142 count:16];
         v128 = v30;
         if (v50)
@@ -317,7 +317,7 @@ LABEL_130:
               }
 
               *(*(*(&v134 + 1) + 8 * i) + 85) = 1;
-              [v31 addObject:?];
+              [array addObject:?];
             }
 
             v51 = [v49 countByEnumeratingWithState:&v134 objects:v142 count:16];
@@ -325,7 +325,7 @@ LABEL_130:
 
           while (v51);
 
-          v10 = v129;
+          lCopy = v129;
         }
 
         else
@@ -336,7 +336,7 @@ LABEL_130:
         v133 = 0u;
         v130 = 0u;
         v131 = 0u;
-        v57 = [(DDCallKitAudioAction *)DDCallKitVideoAction actionsWithURL:v10 result:a4 context:v11 defaultAppsOnly:1];
+        v57 = [(DDCallKitAudioAction *)DDCallKitVideoAction actionsWithURL:lCopy result:result context:contextCopy defaultAppsOnly:1];
         v58 = [v57 countByEnumeratingWithState:&v130 objects:v141 count:16];
         if (v58)
         {
@@ -352,7 +352,7 @@ LABEL_130:
               }
 
               *(*(*(&v130 + 1) + 8 * j) + 85) = 1;
-              [v31 addObject:?];
+              [array addObject:?];
             }
 
             v59 = [v57 countByEnumeratingWithState:&v130 objects:v141 count:16];
@@ -361,70 +361,70 @@ LABEL_130:
           while (v59);
         }
 
-        v10 = v129;
+        lCopy = v129;
         LOBYTE(v30) = v128;
 LABEL_109:
         if (!v30)
         {
           v62 = +[DDDetectionController sharedController];
-          v63 = [v62 shouldIgnoreMessageActionForURL:v10];
+          v63 = [v62 shouldIgnoreMessageActionForURL:lCopy];
 
           if ((v63 & 1) == 0)
           {
             if (v12)
             {
-              v32 = [[DDTextMessageAction alloc] initWithURL:v10 result:a4 context:v11];
+              v32 = [[DDTextMessageAction alloc] initWithURL:lCopy result:result context:contextCopy];
               v140 = v32;
               v33 = MEMORY[0x277CBEA60];
               v34 = &v140;
               goto LABEL_43;
             }
 
-            v70 = [DDTextMessageAction actionsWithURL:v10 result:a4 context:v11];
-            [v31 addObjectsFromArray:v70];
+            v70 = [DDTextMessageAction actionsWithURL:lCopy result:result context:contextCopy];
+            [array addObjectsFromArray:v70];
           }
         }
 
-        if (!+[DDAddToAddressBookAction isAvailable](DDAddToAddressBookAction, "isAvailable") || (+[DDAddressAction actionWithURL:result:enclosingResult:context:](DDAddToAddressBookAction, "actionWithURL:result:enclosingResult:context:", v10, a4, a5, v11), v71 = objc_claimAutoreleasedReturnValue(), [v31 addObject:v71], v71, !v12))
+        if (!+[DDAddToAddressBookAction isAvailable](DDAddToAddressBookAction, "isAvailable") || (+[DDAddressAction actionWithURL:result:enclosingResult:context:](DDAddToAddressBookAction, "actionWithURL:result:enclosingResult:context:", lCopy, result, enclosingResult, contextCopy), v71 = objc_claimAutoreleasedReturnValue(), [array addObject:v71], v71, !v12))
         {
-          v48 = [DDCopyAction actionWithURL:v10 result:a4 context:v11];
+          v48 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
           goto LABEL_130;
         }
 
 LABEL_131:
-        v73 = [MEMORY[0x277CCA8D8] mainBundle];
-        v74 = [v73 bundleIdentifier];
-        v75 = [v74 isEqualToString:@"com.apple.MobileSMS"];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        bundleIdentifier = [mainBundle bundleIdentifier];
+        v75 = [bundleIdentifier isEqualToString:@"com.apple.MobileSMS"];
 
         if (v75)
         {
-          v76 = [v31 objectAtIndex:0];
+          v76 = [array objectAtIndex:0];
           [v76 addToRecents];
         }
 
-        v14 = v31;
+        sheetActions = array;
         goto LABEL_134;
       }
     }
 
-    else if (!v25)
+    else if (!lowercaseString)
     {
       goto LABEL_44;
     }
 
-    if (dd_isAnySimpleTelephonyScheme(v10))
+    if (dd_isAnySimpleTelephonyScheme(lCopy))
     {
       goto LABEL_40;
     }
 
 LABEL_44:
-    if ((([v10 isFaceTimeURL] & 1) != 0 || objc_msgSend(v10, "isFaceTimePromptURL")) && -[DDActionController facetimeAvailable](self, "facetimeAvailable") || ((objc_msgSend(v10, "isFaceTimeAudioURL") & 1) != 0 || objc_msgSend(v10, "isFaceTimeAudioPromptURL")) && -[DDActionController facetimeAvailable](self, "facetimeAvailable"))
+    if ((([lCopy isFaceTimeURL] & 1) != 0 || objc_msgSend(lCopy, "isFaceTimePromptURL")) && -[DDActionController facetimeAvailable](self, "facetimeAvailable") || ((objc_msgSend(lCopy, "isFaceTimeAudioURL") & 1) != 0 || objc_msgSend(lCopy, "isFaceTimeAudioPromptURL")) && -[DDActionController facetimeAvailable](self, "facetimeAvailable"))
     {
-      v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
+      sheetActions = objc_alloc_init(MEMORY[0x277CBEB18]);
       if (+[DDFaceTimeAction isAvailable])
       {
-        v35 = [(DDAction *)DDFaceTimeAction actionWithURL:v10 result:a4 context:v11];
-        [v14 addObject:v35];
+        v35 = [(DDAction *)DDFaceTimeAction actionWithURL:lCopy result:result context:contextCopy];
+        [sheetActions addObject:v35];
 
         if (v12)
         {
@@ -432,79 +432,79 @@ LABEL_44:
         }
       }
 
-      if (+[DDFaceTimeAudioAction isAvailable](DDFaceTimeAudioAction, "isAvailable") && (+[DDAction actionWithURL:result:context:](DDFaceTimeAudioAction, "actionWithURL:result:context:", v10, a4, v11), v36 = objc_claimAutoreleasedReturnValue(), [v14 addObject:v36], v36, v12))
+      if (+[DDFaceTimeAudioAction isAvailable](DDFaceTimeAudioAction, "isAvailable") && (+[DDAction actionWithURL:result:context:](DDFaceTimeAudioAction, "actionWithURL:result:context:", lCopy, result, contextCopy), v36 = objc_claimAutoreleasedReturnValue(), [sheetActions addObject:v36], v36, v12))
       {
 LABEL_54:
-        v37 = v14;
+        v37 = sheetActions;
       }
 
       else
       {
-        v45 = [DDCopyAction actionWithURL:v10 result:a4 context:v11];
+        v45 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
         if (v45)
         {
-          [v14 addObject:v45];
+          [sheetActions addObject:v45];
         }
 
-        v46 = v14;
+        v46 = sheetActions;
       }
 
       goto LABEL_135;
     }
 
-    if ([(DDChatBotAction *)v25 isEqualToString:@"mailto"])
+    if ([(DDChatBotAction *)lowercaseString isEqualToString:@"mailto"])
     {
-      v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      if ([DDTextMessageAction supportsURL:v10])
+      sheetActions = objc_alloc_init(MEMORY[0x277CBEB18]);
+      if ([DDTextMessageAction supportsURL:lCopy])
       {
-        v38 = [[DDTextMessageAction alloc] initWithURL:v10 result:a4 context:v11];
+        v38 = [[DDTextMessageAction alloc] initWithURL:lCopy result:result context:contextCopy];
         if (v38)
         {
-          [v14 addObject:v38];
+          [sheetActions addObject:v38];
         }
       }
 
-      v31 = [(DDAction *)DDSendMailAction actionWithURL:v10 result:a4 context:v11];
-      if (v31)
+      array = [(DDAction *)DDSendMailAction actionWithURL:lCopy result:result context:contextCopy];
+      if (array)
       {
-        [v14 addObject:v31];
+        [sheetActions addObject:array];
       }
 
-      v39 = [DDCallKitAudioAction actionsWithURL:v10 result:a4 context:v11 defaultAppsOnly:1];
+      v39 = [DDCallKitAudioAction actionsWithURL:lCopy result:result context:contextCopy defaultAppsOnly:1];
       if (v39)
       {
-        [v14 addObjectsFromArray:v39];
+        [sheetActions addObjectsFromArray:v39];
       }
 
       if (!v12 && +[DDAddToAddressBookAction isAvailable])
       {
-        v40 = [(DDAddressAction *)DDAddToAddressBookAction actionWithURL:v10 result:a4 enclosingResult:a5 context:v11];
+        v40 = [(DDAddressAction *)DDAddToAddressBookAction actionWithURL:lCopy result:result enclosingResult:enclosingResult context:contextCopy];
         if (v40)
         {
-          [v14 addObject:v40];
+          [sheetActions addObject:v40];
         }
       }
 
-      v41 = [DDCopyAction actionWithURL:v10 result:a4 context:v11];
+      v41 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
       if (v41)
       {
-        [v14 addObject:v41];
+        [sheetActions addObject:v41];
       }
 
       goto LABEL_134;
     }
 
-    if ([(DDChatBotAction *)v25 isEqualToString:@"upi"])
+    if ([(DDChatBotAction *)lowercaseString isEqualToString:@"upi"])
     {
 LABEL_80:
-      v14 = [DDUPIAction actionsWithURL:v10 result:a4 context:v11];
+      sheetActions = [DDUPIAction actionsWithURL:lCopy result:result context:contextCopy];
       goto LABEL_135;
     }
 
-    if ([v10 dd_isMaps:0] && DDExtractMapLocationInformationFromURL(v10, 0, 0))
+    if ([lCopy dd_isMaps:0] && DDExtractMapLocationInformationFromURL(lCopy, 0, 0))
     {
       v54 = MEMORY[0x277CBEA60];
-      v55 = [(DDAction *)DDDirectionsAction actionWithURL:v10 result:a4 context:v11];
+      v55 = [(DDAction *)DDDirectionsAction actionWithURL:lCopy result:result context:contextCopy];
       if (v12)
       {
         v56 = 0;
@@ -512,22 +512,22 @@ LABEL_80:
 
       else
       {
-        v56 = [(DDAction *)DDOpenMapsAction actionWithURL:v10 result:a4 context:v11];
+        v56 = [(DDAction *)DDOpenMapsAction actionWithURL:lCopy result:result context:contextCopy];
       }
 
       v82 = DDCopyAction;
       goto LABEL_149;
     }
 
-    if ([DDClientPreviewAction clientCanPerformActionWithUrl:v10])
+    if ([DDClientPreviewAction clientCanPerformActionWithUrl:lCopy])
     {
-      v28 = [(DDAction *)DDClientPreviewAction actionWithURL:v10 result:0 context:v11];
+      v28 = [(DDAction *)DDClientPreviewAction actionWithURL:lCopy result:0 context:contextCopy];
       v139 = v28;
       v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v139 count:1];
       goto LABEL_32;
     }
 
-    if (a4)
+    if (result)
     {
       v64 = DDResultGetCategory();
       Type = DDResultGetType();
@@ -539,7 +539,7 @@ LABEL_80:
           {
             v79 = +[DDAddToAddressBookAction isAvailable];
             v80 = MEMORY[0x277CBEA60];
-            v31 = [(DDAction *)DDDirectionsAction actionWithURL:v10 result:a4 context:v11];
+            array = [(DDAction *)DDDirectionsAction actionWithURL:lCopy result:result context:contextCopy];
             if (v79)
             {
               if (v12)
@@ -549,12 +549,12 @@ LABEL_80:
 
               else
               {
-                v81 = [(DDAction *)DDOpenMapsAction actionWithURL:v10 result:a4 context:v11];
+                v81 = [(DDAction *)DDOpenMapsAction actionWithURL:lCopy result:result context:contextCopy];
               }
 
-              v108 = [(DDAddressAction *)DDAddToAddressBookAction actionWithURL:v10 result:a4 enclosingResult:a5 context:v11];
-              v109 = [DDCopyAction actionWithURL:v10 result:a4 context:v11];
-              v14 = [v80 arrayWithObjects:{v31, v81, v108, v109, 0}];
+              v108 = [(DDAddressAction *)DDAddToAddressBookAction actionWithURL:lCopy result:result enclosingResult:enclosingResult context:contextCopy];
+              v109 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
+              sheetActions = [v80 arrayWithObjects:{array, v81, v108, v109, 0}];
 
               if (!v12)
               {
@@ -570,11 +570,11 @@ LABEL_80:
 
             else
             {
-              v97 = [(DDAction *)DDOpenMapsAction actionWithURL:v10 result:a4 context:v11];
+              v97 = [(DDAction *)DDOpenMapsAction actionWithURL:lCopy result:result context:contextCopy];
             }
 
-            v110 = [DDCopyAction actionWithURL:v10 result:a4 context:v11];
-            v14 = [v80 arrayWithObjects:{v31, v97, v110, 0}];
+            v110 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
+            sheetActions = [v80 arrayWithObjects:{array, v97, v110, 0}];
 
             if (!v12)
             {
@@ -586,23 +586,23 @@ LABEL_80:
 LABEL_177:
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
-            [DDActionController actionsForURL:a4 result:v10 enclosingResult:? context:?];
+            [DDActionController actionsForURL:result result:lCopy enclosingResult:? context:?];
           }
 
-          v14 = [MEMORY[0x277CBEA60] array];
+          sheetActions = [MEMORY[0x277CBEA60] array];
           goto LABEL_135;
         }
 
-        if (!v10)
+        if (!lCopy)
         {
-          v10 = _DDURLFromResult(a4);
+          lCopy = _DDURLFromResult(result);
         }
 
-        if (![DDNewsPreviewAction handlesUrl:v10 result:a4]&& ![DDURLPreviewAction handlesUrl:v10 result:a4])
+        if (![DDNewsPreviewAction handlesUrl:lCopy result:result]&& ![DDURLPreviewAction handlesUrl:lCopy result:result])
         {
-          v100 = [v10 scheme];
-          v101 = [v100 lowercaseString];
-          v102 = [v101 isEqualToString:@"upi"];
+          scheme2 = [lCopy scheme];
+          lowercaseString2 = [scheme2 lowercaseString];
+          v102 = [lowercaseString2 isEqualToString:@"upi"];
 
           if (v102)
           {
@@ -618,7 +618,7 @@ LABEL_177:
         v54 = MEMORY[0x277CBEA60];
         if (v95)
         {
-          v55 = [(DDAction *)DDAddToReadingListAction actionWithURL:v10 result:a4 context:v11];
+          v55 = [(DDAction *)DDAddToReadingListAction actionWithURL:lCopy result:result context:contextCopy];
           if (v12)
           {
             v56 = 0;
@@ -626,13 +626,13 @@ LABEL_177:
 
           else
           {
-            v56 = [DDCopyAction actionWithURL:v10 result:a4 context:v11];
+            v56 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
           }
 
           v82 = DDShareAction;
 LABEL_149:
-          v83 = [(__objc2_class *)v82 actionWithURL:v10 result:a4 context:v11];
-          v14 = [v54 arrayWithObjects:{v55, v56, v83, 0}];
+          v83 = [(__objc2_class *)v82 actionWithURL:lCopy result:result context:contextCopy];
+          sheetActions = [v54 arrayWithObjects:{v55, v56, v83, 0}];
 
           if (!v12)
           {
@@ -641,7 +641,7 @@ LABEL_149:
           goto LABEL_151;
         }
 
-        v98 = [DDCopyAction actionWithURL:v10 result:a4 context:v11];
+        v98 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
         if (!v12)
         {
           v99 = DDShareAction;
@@ -653,11 +653,11 @@ LABEL_149:
       {
         if (v64 == 4)
         {
-          v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
+          sheetActions = objc_alloc_init(MEMORY[0x277CBEB18]);
           if (+[(DDAddEventAction *)DDCreateEventAction])
           {
-            v84 = [(DDAction *)DDCreateEventAction actionWithURL:v10 result:a4 context:v11];
-            [v14 addObject:v84];
+            v84 = [(DDAction *)DDCreateEventAction actionWithURL:lCopy result:result context:contextCopy];
+            [sheetActions addObject:v84];
 
             if (v12)
             {
@@ -667,8 +667,8 @@ LABEL_149:
 
           if (+[DDCreateReminderAction isAvailable])
           {
-            v85 = [(DDAction *)DDCreateReminderAction actionWithURL:v10 result:a4 context:v11];
-            [v14 addObject:v85];
+            v85 = [(DDAction *)DDCreateReminderAction actionWithURL:lCopy result:result context:contextCopy];
+            [sheetActions addObject:v85];
 
             if (v12)
             {
@@ -678,22 +678,22 @@ LABEL_149:
 
           if (+[DDEventsAction isAvailable])
           {
-            v86 = [(DDAction *)DDEventsAction actionWithURL:v10 result:a4 context:v11];
-            [v14 addObject:v86];
+            v86 = [(DDAction *)DDEventsAction actionWithURL:lCopy result:result context:contextCopy];
+            [sheetActions addObject:v86];
 
             if (v12)
             {
               goto LABEL_135;
             }
 
-            v87 = [(DDAction *)DDShowCalendarAction actionWithURL:v10 result:a4 context:v11];
-            [v14 addObject:v87];
+            v87 = [(DDAction *)DDShowCalendarAction actionWithURL:lCopy result:result context:contextCopy];
+            [sheetActions addObject:v87];
           }
 
           else
           {
-            v105 = [(DDAction *)DDShowCalendarAction actionWithURL:v10 result:a4 context:v11];
-            [v14 addObject:v105];
+            v105 = [(DDAction *)DDShowCalendarAction actionWithURL:lCopy result:result context:contextCopy];
+            [sheetActions addObject:v105];
 
             if (v12)
             {
@@ -701,14 +701,14 @@ LABEL_149:
             }
           }
 
-          if ([DDTimeZoneConversionAction actionAvailableForResult:a4])
+          if ([DDTimeZoneConversionAction actionAvailableForResult:result])
           {
-            v106 = [(DDAction *)DDTimeZoneConversionAction actionWithURL:0 result:a4 context:v11];
-            [v14 addObject:v106];
+            v106 = [(DDAction *)DDTimeZoneConversionAction actionWithURL:0 result:result context:contextCopy];
+            [sheetActions addObject:v106];
           }
 
-          v107 = [DDCopyAction actionWithURL:v10 result:a4 context:v11];
-          [v14 addObject:v107];
+          v107 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
+          [sheetActions addObject:v107];
 
           goto LABEL_135;
         }
@@ -717,32 +717,32 @@ LABEL_149:
         {
           if (v64 == 6)
           {
-            v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-            if ([DDMoneyPreviewAction actionAvailableForResult:a4 url:0 context:v11])
+            sheetActions = objc_alloc_init(MEMORY[0x277CBEB18]);
+            if ([DDMoneyPreviewAction actionAvailableForResult:result url:0 context:contextCopy])
             {
-              v66 = [(DDAction *)DDMoneyPreviewAction actionWithURL:v10 result:a4 context:v11];
-              [v14 addObject:v66];
+              v66 = [(DDAction *)DDMoneyPreviewAction actionWithURL:lCopy result:result context:contextCopy];
+              [sheetActions addObject:v66];
             }
 
-            if ([DDConversionAction actionAvailableForResult:a4])
+            if ([DDConversionAction actionAvailableForResult:result])
             {
-              v67 = [(DDAction *)DDConversionAction actionWithURL:v10 result:a4 context:v11];
-              [v14 addObject:v67];
-              v68 = [v67 specialCaseActions];
-              v69 = [(DDActionGroup *)v68 flattenedActions:?];
+              v67 = [(DDAction *)DDConversionAction actionWithURL:lCopy result:result context:contextCopy];
+              [sheetActions addObject:v67];
+              specialCaseActions = [v67 specialCaseActions];
+              v69 = [(DDActionGroup *)specialCaseActions flattenedActions:?];
 
               if ([v69 count])
               {
-                [v14 addObjectsFromArray:v69];
+                [sheetActions addObjectsFromArray:v69];
               }
             }
 
             else
             {
-              v96 = [DDCopyAction actionWithURL:v10 result:a4 context:v11];
+              v96 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
               if (v96)
               {
-                [v14 addObject:v96];
+                [sheetActions addObject:v96];
               }
             }
 
@@ -757,16 +757,16 @@ LABEL_149:
         {
           if (CFStringCompare(v88, *MEMORY[0x277D04108], 0))
           {
-            v89 = v10;
+            v89 = lCopy;
             if (CFStringCompare(v88, *MEMORY[0x277D04158], 0))
             {
               if (CFStringCompare(v88, *MEMORY[0x277D04168], 0) == kCFCompareEqualTo)
               {
-                v120 = [DDConversionAction allActionsForResult:a4 context:v11];
+                array2 = [DDConversionAction allActionsForResult:result context:contextCopy];
 LABEL_216:
-                v14 = v120;
+                sheetActions = array2;
 LABEL_227:
-                v10 = v89;
+                lCopy = v89;
                 goto LABEL_135;
               }
 
@@ -775,7 +775,7 @@ LABEL_227:
                 if (CFStringCompare(v88, *MEMORY[0x277D04048], 0) == kCFCompareEqualTo)
                 {
                   v123 = MEMORY[0x277CBEA60];
-                  v93 = [DDCopyAction actionWithURL:v10 result:a4 context:v11];
+                  v93 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
                   v94 = [v123 arrayWithObjects:{v93, 0}];
                   goto LABEL_222;
                 }
@@ -786,17 +786,17 @@ LABEL_227:
                   {
                     if (CFStringCompare(v88, *MEMORY[0x277D040B8], 0) == kCFCompareEqualTo)
                     {
-                      v90 = [MEMORY[0x277CCA8D8] mainBundle];
-                      v91 = [v90 bundleIdentifier];
-                      v92 = [v91 isEqualToString:@"com.apple.MobileSMS"];
+                      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+                      bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+                      v92 = [bundleIdentifier2 isEqualToString:@"com.apple.MobileSMS"];
 
                       if (v92)
                       {
-                        v93 = [DDCopyAction actionWithURL:v10 result:a4 context:v11];
+                        v93 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
                         v138 = v93;
                         v94 = [MEMORY[0x277CBEA60] arrayWithObjects:&v138 count:1];
 LABEL_222:
-                        v14 = v94;
+                        sheetActions = v94;
 
                         goto LABEL_135;
                       }
@@ -804,10 +804,10 @@ LABEL_222:
 
                     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                     {
-                      [DDActionController actionsForURL:v88 result:v10 enclosingResult:? context:?];
+                      [DDActionController actionsForURL:v88 result:lCopy enclosingResult:? context:?];
                     }
 
-                    v120 = [MEMORY[0x277CBEA60] array];
+                    array2 = [MEMORY[0x277CBEA60] array];
                     goto LABEL_216;
                   }
 
@@ -819,21 +819,21 @@ LABEL_222:
                   v125 = DDUPIAction;
                 }
 
-                v14 = [(__objc2_class *)v125 actionsWithURL:v10 result:a4 context:v11];
+                sheetActions = [(__objc2_class *)v125 actionsWithURL:lCopy result:result context:contextCopy];
                 goto LABEL_135;
               }
 
               v121 = MEMORY[0x277CBEA60];
-              v113 = [(DDAction *)DDFlightAction actionWithURL:v10 result:a4 context:v11];
+              v113 = [(DDAction *)DDFlightAction actionWithURL:lCopy result:result context:contextCopy];
               if (v12)
               {
-                v14 = [v121 arrayWithObjects:{v113, 0, 0}];
+                sheetActions = [v121 arrayWithObjects:{v113, 0, 0}];
               }
 
               else
               {
-                v126 = [DDCopyAction actionWithURL:v10 result:a4 context:v11];
-                v14 = [v121 arrayWithObjects:{v113, v126, 0}];
+                v126 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
+                sheetActions = [v121 arrayWithObjects:{v113, v126, 0}];
               }
             }
 
@@ -843,37 +843,37 @@ LABEL_222:
               v112 = MEMORY[0x277CBEA60];
               if (ShouldKeepParsecScoresBelowThreshold)
               {
-                v113 = [(DDAction *)DDSearchWebAction actionWithURL:v10 result:a4 context:v11];
-                v114 = [(DDAction *)DDParsecYeaAction actionWithURL:v10 result:a4 context:v11];
-                v115 = [(DDAction *)DDParsecNayAction actionWithURL:v10 result:a4 context:v11];
-                v116 = [(DDAction *)DDParsecAction actionWithURL:v10 result:a4 context:v11];
+                v113 = [(DDAction *)DDSearchWebAction actionWithURL:lCopy result:result context:contextCopy];
+                v114 = [(DDAction *)DDParsecYeaAction actionWithURL:lCopy result:result context:contextCopy];
+                v115 = [(DDAction *)DDParsecNayAction actionWithURL:lCopy result:result context:contextCopy];
+                v116 = [(DDAction *)DDParsecAction actionWithURL:lCopy result:result context:contextCopy];
                 v117 = v116;
                 if (v12)
                 {
-                  v14 = [v112 arrayWithObjects:{v113, v114, v115, v116, 0, 0}];
+                  sheetActions = [v112 arrayWithObjects:{v113, v114, v115, v116, 0, 0}];
                 }
 
                 else
                 {
-                  v124 = [DDCopyAction actionWithURL:v89 result:a4 context:v11];
-                  v14 = [v112 arrayWithObjects:{v113, v114, v115, v117, v124, 0}];
+                  v124 = [DDCopyAction actionWithURL:v89 result:result context:contextCopy];
+                  sheetActions = [v112 arrayWithObjects:{v113, v114, v115, v117, v124, 0}];
                 }
               }
 
               else
               {
-                v113 = [(DDAction *)DDParsecAction actionWithURL:v10 result:a4 context:v11];
-                v122 = [(DDAction *)DDSearchWebAction actionWithURL:v10 result:a4 context:v11];
+                v113 = [(DDAction *)DDParsecAction actionWithURL:lCopy result:result context:contextCopy];
+                v122 = [(DDAction *)DDSearchWebAction actionWithURL:lCopy result:result context:contextCopy];
                 v114 = v122;
                 if (v12)
                 {
-                  v14 = [v112 arrayWithObjects:{v113, v122, 0, 0}];
+                  sheetActions = [v112 arrayWithObjects:{v113, v122, 0, 0}];
                 }
 
                 else
                 {
-                  v127 = [DDCopyAction actionWithURL:v10 result:a4 context:v11];
-                  v14 = [v112 arrayWithObjects:{v113, v114, v127, 0}];
+                  v127 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
+                  sheetActions = [v112 arrayWithObjects:{v113, v114, v127, 0}];
                 }
               }
             }
@@ -884,16 +884,16 @@ LABEL_222:
           v103 = MEMORY[0x277CBEA60];
           v104 = DDShowItemAction;
 LABEL_196:
-          v55 = [(__objc2_class *)v104 actionWithURL:v10 result:a4 context:v11];
+          v55 = [(__objc2_class *)v104 actionWithURL:lCopy result:result context:contextCopy];
           if (v12)
           {
-            v14 = [v103 arrayWithObjects:{v55, 0, 0}];
+            sheetActions = [v103 arrayWithObjects:{v55, 0, 0}];
           }
 
           else
           {
-            v119 = [DDCopyAction actionWithURL:v10 result:a4 context:v11];
-            v14 = [v103 arrayWithObjects:{v55, v119, 0}];
+            v119 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
+            sheetActions = [v103 arrayWithObjects:{v55, v119, 0}];
           }
 
 LABEL_151:
@@ -902,19 +902,19 @@ LABEL_151:
         }
 
         v54 = MEMORY[0x277CBEA60];
-        v98 = [(DDAction *)DDTrackShipmentAction actionWithURL:v10 result:a4 context:v11];
+        v98 = [(DDAction *)DDTrackShipmentAction actionWithURL:lCopy result:result context:contextCopy];
         if (!v12)
         {
           v99 = DDCopyAction;
 LABEL_213:
-          v118 = [(__objc2_class *)v99 actionWithURL:v10 result:a4 context:v11];
-          v14 = [v54 arrayWithObjects:{v98, v118, 0}];
+          v118 = [(__objc2_class *)v99 actionWithURL:lCopy result:result context:contextCopy];
+          sheetActions = [v54 arrayWithObjects:{v98, v118, 0}];
 
           goto LABEL_135;
         }
       }
 
-      v14 = [v54 arrayWithObjects:{v98, 0, 0}];
+      sheetActions = [v54 arrayWithObjects:{v98, 0, 0}];
 
       goto LABEL_135;
     }
@@ -931,53 +931,53 @@ LABEL_213:
     else if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
 LABEL_141:
-      v14 = 0;
+      sheetActions = 0;
       goto LABEL_135;
     }
 
-    [DDActionController actionsForURL:v10 result:? enclosingResult:? context:?];
+    [DDActionController actionsForURL:lCopy result:? enclosingResult:? context:?];
     goto LABEL_141;
   }
 
   v24 = MEMORY[0x277CBEA60];
-  v25 = [(DDAction *)DDMessagesCustomAction actionWithURL:v10 result:a4 context:v11];
+  lowercaseString = [(DDAction *)DDMessagesCustomAction actionWithURL:lCopy result:result context:contextCopy];
   if (!v12)
   {
-    v28 = [DDCopyAction actionWithURL:v10 result:a4 context:v11];
-    v29 = [v24 arrayWithObjects:{v25, v28, 0}];
+    v28 = [DDCopyAction actionWithURL:lCopy result:result context:contextCopy];
+    v29 = [v24 arrayWithObjects:{lowercaseString, v28, 0}];
 LABEL_32:
-    v14 = v29;
+    sheetActions = v29;
 
     goto LABEL_135;
   }
 
-  v14 = [v24 arrayWithObjects:{v25, 0, 0}];
+  sheetActions = [v24 arrayWithObjects:{lowercaseString, 0, 0}];
 LABEL_135:
 
 LABEL_136:
   v77 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return sheetActions;
 }
 
-- (id)defaultActionForURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
+- (id)defaultActionForURL:(id)l result:(__DDResult *)result context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  if ([DDMessagesCustomAction handlesUrl:v8 result:a4])
+  lCopy = l;
+  contextCopy = context;
+  if ([DDMessagesCustomAction handlesUrl:lCopy result:result])
   {
-    v10 = [(DDAction *)DDMessagesCustomAction actionWithURL:v8 result:a4 context:v9];
+    defaultAction = [(DDAction *)DDMessagesCustomAction actionWithURL:lCopy result:result context:contextCopy];
     goto LABEL_18;
   }
 
-  v11 = [v8 scheme];
-  v12 = [v11 lowercaseString];
+  scheme = [lCopy scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if (![v12 isEqualToString:@"mailto"])
+  if (![lowercaseString isEqualToString:@"mailto"])
   {
-    if (dd_isAnySimpleTelephonyScheme(v8))
+    if (dd_isAnySimpleTelephonyScheme(lCopy))
     {
-      v16 = [v9 mutableCopy];
+      v16 = [contextCopy mutableCopy];
       v17 = v16;
       if (v16)
       {
@@ -992,25 +992,25 @@ LABEL_136:
       v20 = v18;
 
       [v20 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"defaultActionOnly"];
-      v21 = [(DDActionController *)self actionsForURL:v8 result:a4 enclosingResult:0 context:v20];
-      v22 = [v21 firstObject];
+      v21 = [(DDActionController *)self actionsForURL:lCopy result:result enclosingResult:0 context:v20];
+      firstObject = [v21 firstObject];
 
-      v10 = [v22 defaultAction];
+      defaultAction = [firstObject defaultAction];
 
       goto LABEL_17;
     }
 
-    if ([DDClientPreviewAction clientCanPerformActionWithUrl:v8])
+    if ([DDClientPreviewAction clientCanPerformActionWithUrl:lCopy])
     {
       v13 = DDClientPreviewAction;
-      v14 = v8;
-      v15 = 0;
+      v14 = lCopy;
+      resultCopy = 0;
       goto LABEL_6;
     }
 
-    if (![v8 isSpringboardHandledURL])
+    if (![lCopy isSpringboardHandledURL])
     {
-      if (!a4)
+      if (!result)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
@@ -1026,7 +1026,7 @@ LABEL_136:
           goto LABEL_44;
         }
 
-        [DDActionController actionsForURL:v8 result:? enclosingResult:? context:?];
+        [DDActionController actionsForURL:lCopy result:? enclosingResult:? context:?];
         goto LABEL_44;
       }
 
@@ -1055,7 +1055,7 @@ LABEL_136:
             goto LABEL_5;
           }
 
-          if ([DDEventsAction actionAvailableForResult:a4 url:v8 context:v9])
+          if ([DDEventsAction actionAvailableForResult:result url:lCopy context:contextCopy])
           {
             v13 = DDEventsAction;
             goto LABEL_5;
@@ -1063,11 +1063,11 @@ LABEL_136:
 
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
-            [DDActionController defaultActionForURL:v27 result:v8 context:?];
+            [DDActionController defaultActionForURL:v27 result:lCopy context:?];
           }
 
 LABEL_44:
-          v10 = 0;
+          defaultAction = 0;
           goto LABEL_17;
         }
 
@@ -1095,17 +1095,17 @@ LABEL_44:
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        [DDActionController actionsForURL:a4 result:v8 enclosingResult:? context:?];
+        [DDActionController actionsForURL:result result:lCopy enclosingResult:? context:?];
       }
 
       goto LABEL_44;
     }
 
-    if (![v8 hasTelephonyScheme])
+    if (![lCopy hasTelephonyScheme])
     {
-      if (([v8 isFaceTimeURL] & 1) != 0 || (objc_msgSend(v8, "isFaceTimeAudioURL") & 1) != 0 || (objc_msgSend(v8, "isFaceTimePromptURL") & 1) != 0 || objc_msgSend(v8, "isFaceTimeAudioPromptURL"))
+      if (([lCopy isFaceTimeURL] & 1) != 0 || (objc_msgSend(lCopy, "isFaceTimeAudioURL") & 1) != 0 || (objc_msgSend(lCopy, "isFaceTimePromptURL") & 1) != 0 || objc_msgSend(lCopy, "isFaceTimeAudioPromptURL"))
       {
-        v26 = [objc_alloc(MEMORY[0x277D6EED0]) initWithURL:v8];
+        v26 = [objc_alloc(MEMORY[0x277D6EED0]) initWithURL:lCopy];
         [v26 setShowUIPrompt:1];
         [v26 setPerformDialAssist:1];
         [v26 setPreferDefaultApp:0];
@@ -1113,13 +1113,13 @@ LABEL_44:
         v19 = [v26 URL];
         if (!v19 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
-          [DDActionController defaultActionForURL:v8 result:? context:?];
+          [DDActionController defaultActionForURL:lCopy result:? context:?];
         }
 
 LABEL_34:
         if (v19)
         {
-          v10 = [(DDAction *)DDOpenURLAction defaultActionWithURL:v19 result:a4 context:v9];
+          defaultAction = [(DDAction *)DDOpenURLAction defaultActionWithURL:v19 result:result context:contextCopy];
 
           goto LABEL_17;
         }
@@ -1127,12 +1127,12 @@ LABEL_34:
         goto LABEL_44;
       }
 
-      if (!dd_schemeIsHttp(v12))
+      if (!dd_schemeIsHttp(lowercaseString))
       {
         goto LABEL_44;
       }
 
-      v28 = [v9 objectForKeyedSubscript:@"defaultHttpActionRequested"];
+      v28 = [contextCopy objectForKeyedSubscript:@"defaultHttpActionRequested"];
 
       if (!v28)
       {
@@ -1140,33 +1140,33 @@ LABEL_34:
       }
     }
 
-    v19 = v8;
+    v19 = lCopy;
     goto LABEL_34;
   }
 
   v13 = DDSendMailAction;
 LABEL_5:
-  v14 = v8;
-  v15 = a4;
+  v14 = lCopy;
+  resultCopy = result;
 LABEL_6:
-  v10 = [(__objc2_class *)v13 defaultActionWithURL:v14 result:v15 context:v9];
+  defaultAction = [(__objc2_class *)v13 defaultActionWithURL:v14 result:resultCopy context:contextCopy];
 LABEL_17:
 
 LABEL_18:
 
-  return v10;
+  return defaultAction;
 }
 
-- (void)_presentController:(id)a3
+- (void)_presentController:(id)controller
 {
-  v5 = a3;
-  if (v5)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     if (self->_presentedViewController || self->_currentBaseViewController || self->_originalWindow)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        [(DDActionController *)v5 _presentController:?];
+        [(DDActionController *)controllerCopy _presentController:?];
       }
 
       presentedViewController = self->_presentedViewController;
@@ -1185,19 +1185,19 @@ LABEL_18:
       [(DDDetectionControllerInteractionDelegate *)self->_interactionDelegate actionWillStart:self->_currentAction];
     }
 
-    objc_storeStrong(&self->_presentedViewController, a3);
-    v9 = [(DDActionController *)self isPresentingInPopover];
+    objc_storeStrong(&self->_presentedViewController, controller);
+    isPresentingInPopover = [(DDActionController *)self isPresentingInPopover];
     alertController = self->_alertController;
     if (alertController)
     {
-      v11 = [(UIAlertController *)alertController presentingViewController];
+      presentingViewController = [(UIAlertController *)alertController presentingViewController];
       v12 = self->_currentBaseViewController;
-      self->_currentBaseViewController = v11;
+      self->_currentBaseViewController = presentingViewController;
 
       if ([(DDAction *)self->_currentAction interactionType]== 1 || [(DDAction *)self->_currentAction interactionType]== 3)
       {
-        v13 = [(UIAlertController *)self->_alertController popoverPresentationController];
-        if (v13)
+        popoverPresentationController = [(UIAlertController *)self->_alertController popoverPresentationController];
+        if (popoverPresentationController)
         {
 
           v14 = 7;
@@ -1205,9 +1205,9 @@ LABEL_18:
 
         else
         {
-          v22 = [MEMORY[0x277CCA8D8] mainBundle];
-          v23 = [v22 bundleIdentifier];
-          v24 = [v23 isEqualToString:@"com.apple.mobilesafari"];
+          mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+          bundleIdentifier = [mainBundle bundleIdentifier];
+          v24 = [bundleIdentifier isEqualToString:@"com.apple.mobilesafari"];
 
           if (v24)
           {
@@ -1221,19 +1221,19 @@ LABEL_18:
         }
 
         [(UIViewController *)self->_presentedViewController setModalPresentationStyle:v14];
-        v25 = [(UIViewController *)self->_presentedViewController popoverPresentationController];
-        v26 = [(UIAlertController *)self->_alertController popoverPresentationController];
-        v27 = [v26 sourceView];
-        [v25 setSourceView:v27];
+        popoverPresentationController2 = [(UIViewController *)self->_presentedViewController popoverPresentationController];
+        popoverPresentationController3 = [(UIAlertController *)self->_alertController popoverPresentationController];
+        sourceView = [popoverPresentationController3 sourceView];
+        [popoverPresentationController2 setSourceView:sourceView];
 
-        v28 = [(UIAlertController *)self->_alertController popoverPresentationController];
-        [v28 sourceRect];
-        [v25 setSourceRect:?];
+        popoverPresentationController4 = [(UIAlertController *)self->_alertController popoverPresentationController];
+        [popoverPresentationController4 sourceRect];
+        [popoverPresentationController2 setSourceRect:?];
 
-        [v25 setDelegate:self];
+        [popoverPresentationController2 setDelegate:self];
       }
 
-      if (v9)
+      if (isPresentingInPopover)
       {
         [(UIAlertController *)self->_alertController setModalTransitionStyle:2];
       }
@@ -1247,26 +1247,26 @@ LABEL_18:
       [(UIAlertController *)v29 dismissViewControllerAnimated:1 completion:v30];
     }
 
-    else if (v9)
+    else if (isPresentingInPopover)
     {
-      v15 = [(UIViewController *)self->_presentedViewController popoverPresentationController];
-      [(DDAction *)self->_currentAction setupPopoverPresentationController:v15 view:self->_baseView];
-      [v15 setDelegate:self];
+      popoverPresentationController5 = [(UIViewController *)self->_presentedViewController popoverPresentationController];
+      [(DDAction *)self->_currentAction setupPopoverPresentationController:popoverPresentationController5 view:self->_baseView];
+      [popoverPresentationController5 setDelegate:self];
       v16 = self->_currentBaseViewController;
       if (v16)
       {
-        v17 = [(UIView *)self->_baseView window];
-        if (!v17)
+        window = [(UIView *)self->_baseView window];
+        if (!window)
         {
           goto LABEL_33;
         }
 
-        v18 = v17;
-        v19 = [(UIViewController *)self->_currentBaseViewController view];
-        v20 = [v19 window];
-        v21 = [(UIView *)self->_baseView window];
+        v18 = window;
+        view = [(UIViewController *)self->_currentBaseViewController view];
+        window2 = [view window];
+        window3 = [(UIView *)self->_baseView window];
 
-        if (v20 == v21)
+        if (window2 == window3)
         {
 LABEL_33:
           [(UIViewController *)self->_currentBaseViewController presentViewController:self->_presentedViewController animated:1 completion:0];
@@ -1344,9 +1344,9 @@ LABEL_8:
   }
 }
 
-- (void)tellDelegateActionDidFinishShouldDismiss:(BOOL)a3
+- (void)tellDelegateActionDidFinishShouldDismiss:(BOOL)dismiss
 {
-  if (a3)
+  if (dismiss)
   {
     [(DDActionController *)self _didDismissActionViewController];
   }
@@ -1362,14 +1362,14 @@ LABEL_8:
 
 - (void)_willPresentViewController
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"DDDetectionControllerWillPresentActionNotification" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"DDDetectionControllerWillPresentActionNotification" object:0 userInfo:0];
 }
 
 - (void)_didDismissActionViewController
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"DDDetectionControllerDidDismissActionNotification" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"DDDetectionControllerDidDismissActionNotification" object:0 userInfo:0];
 }
 
 - (void)dismissCurrentController
@@ -1404,8 +1404,8 @@ LABEL_8:
         v11 = p_alertController;
       }
 
-      v12 = [*v11 presentingViewController];
-      [v12 dismissViewControllerAnimated:1 completion:v5];
+      presentingViewController = [*v11 presentingViewController];
+      [presentingViewController dismissViewControllerAnimated:1 completion:v5];
     }
 
     else
@@ -1448,7 +1448,7 @@ uint64_t __46__DDActionController_dismissCurrentController__block_invoke_2(uint6
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   [(DDAction *)self->_currentAction invalidate];
   if (self->_interactionDelegate)
@@ -1464,9 +1464,9 @@ uint64_t __46__DDActionController_dismissCurrentController__block_invoke_2(uint6
   [(DDActionController *)self _cleanup];
 }
 
-- (void)prepareForPopoverPresentation:(id)a3
+- (void)prepareForPopoverPresentation:(id)presentation
 {
-  [a3 _setCentersPopoverIfSourceViewNotSet:1];
+  [presentation _setCentersPopoverIfSourceViewNotSet:1];
   currentAction = self->_currentAction;
 
   [(DDAction *)currentAction adaptForPresentationInPopover:1];
@@ -1477,30 +1477,30 @@ uint64_t __46__DDActionController_dismissCurrentController__block_invoke_2(uint6
   baseView = self->_baseView;
   if (!baseView)
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v4 keyWindow];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128] keyWindow];
     v6 = self->_baseView;
-    self->_baseView = v5;
+    self->_baseView = keyWindow;
 
     baseView = self->_baseView;
   }
 
   v20 = [MEMORY[0x277D75D28] _viewControllerForFullScreenPresentationFromView:baseView];
-  v7 = [(DDFallbackController *)v20 view];
-  v8 = [v7 window];
-  v9 = v8;
-  if (v8)
+  view = [(DDFallbackController *)v20 view];
+  window = [view window];
+  v9 = window;
+  if (window)
   {
-    v10 = v8;
+    window2 = window;
   }
 
   else
   {
-    v10 = [(UIView *)self->_baseView window];
+    window2 = [(UIView *)self->_baseView window];
   }
 
   originalWindow = self->_originalWindow;
-  self->_originalWindow = v10;
+  self->_originalWindow = window2;
 
   if (self->_originalWindow)
   {
@@ -1528,13 +1528,13 @@ LABEL_9:
 
 - (void)_dismissCurrentViewControllerOurselves
 {
-  v3 = [(UIViewController *)self->_presentedViewController presentingViewController];
+  presentingViewController = [(UIViewController *)self->_presentedViewController presentingViewController];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __60__DDActionController__dismissCurrentViewControllerOurselves__block_invoke;
   v4[3] = &unk_278290B50;
   v4[4] = self;
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [presentingViewController dismissViewControllerAnimated:1 completion:v4];
 }
 
 uint64_t __60__DDActionController__dismissCurrentViewControllerOurselves__block_invoke(uint64_t a1)
@@ -1545,11 +1545,11 @@ uint64_t __60__DDActionController__dismissCurrentViewControllerOurselves__block_
   return [v2 _cleanup];
 }
 
-+ (BOOL)presentingBaseView:(id)a3 isLargeEnoughForAction:(id)a4
++ (BOOL)presentingBaseView:(id)view isLargeEnoughForAction:(id)action
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 interactionType] != 1 || !_UIApplicationIsExtension())
+  viewCopy = view;
+  actionCopy = action;
+  if ([actionCopy interactionType] != 1 || !_UIApplicationIsExtension())
   {
     v13 = 1;
     goto LABEL_17;
@@ -1560,8 +1560,8 @@ uint64_t __60__DDActionController__dismissCurrentViewControllerOurselves__block_
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__1;
   v20 = __Block_byref_object_dispose__1;
-  v7 = [v5 window];
-  v21 = [v7 screen];
+  window = [viewCopy window];
+  screen = [window screen];
 
   if (v17[5])
   {
@@ -1627,10 +1627,10 @@ void __64__DDActionController_presentingBaseView_isLargeEnoughForAction___block_
   *(v5 + 40) = v4;
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -1639,10 +1639,10 @@ void __64__DDActionController_presentingBaseView_isLargeEnoughForAction___block_
     }
 
 LABEL_7:
-    [DDActionController performAction:v4];
-    v9 = [v4 analyticsReporter];
+    [DDActionController performAction:actionCopy];
+    analyticsReporter = [actionCopy analyticsReporter];
 
-    if (!v9)
+    if (!analyticsReporter)
     {
       goto LABEL_5;
     }
@@ -1659,13 +1659,13 @@ LABEL_7:
   }
 
 LABEL_3:
-  v5 = [v4 analyticsReporter];
+  analyticsReporter2 = [actionCopy analyticsReporter];
 
-  if (v5)
+  if (analyticsReporter2)
   {
 LABEL_4:
-    v6 = [v4 analyticsReporter];
-    [v6 logForAction:v4];
+    analyticsReporter3 = [actionCopy analyticsReporter];
+    [analyticsReporter3 logForAction:actionCopy];
   }
 
 LABEL_5:
@@ -1674,8 +1674,8 @@ LABEL_5:
   v10[2] = __36__DDActionController_performAction___block_invoke;
   v10[3] = &unk_278290BC8;
   v10[4] = self;
-  v11 = v4;
-  v7 = v4;
+  v11 = actionCopy;
+  v7 = actionCopy;
   _os_activity_initiate(&dword_21AB70000, "performing Data Detectors action", OS_ACTIVITY_FLAG_DEFAULT, v10);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -1760,27 +1760,27 @@ LABEL_15:
   }
 }
 
-- (void)setAlertController:(id)a3
+- (void)setAlertController:(id)controller
 {
-  objc_storeStrong(&self->_alertController, a3);
+  objc_storeStrong(&self->_alertController, controller);
 
   [(DDActionController *)self viewControllerRequiresModalInPopover:0];
 }
 
-- (void)action:(id)a3 viewControllerReady:(id)a4
+- (void)action:(id)action viewControllerReady:(id)ready
 {
-  v6 = a4;
-  [a3 setDelegate:self];
-  [(DDActionController *)self _presentController:v6];
+  readyCopy = ready;
+  [action setDelegate:self];
+  [(DDActionController *)self _presentController:readyCopy];
 }
 
-- (void)failedToPrepareViewControllerForAction:(id)a3
+- (void)failedToPrepareViewControllerForAction:(id)action
 {
   alertController = self->_alertController;
   if (alertController)
   {
-    v5 = [(UIAlertController *)alertController view];
-    [v5 setUserInteractionEnabled:1];
+    view = [(UIAlertController *)alertController view];
+    [view setUserInteractionEnabled:1];
   }
 
   [(DDActionController *)self _complete];
@@ -1788,9 +1788,9 @@ LABEL_15:
   [(DDActionController *)self setCurrentAction:0];
 }
 
-- (void)actionDidFinish:(id)a3 shouldDismiss:(BOOL)a4
+- (void)actionDidFinish:(id)finish shouldDismiss:(BOOL)dismiss
 {
-  if (a4)
+  if (dismiss)
   {
     [(DDActionController *)self dismissCurrentController];
   }
@@ -1801,8 +1801,8 @@ LABEL_15:
   }
 
   [(DDActionController *)self _complete];
-  v5 = [(DDActionController *)self currentAction];
-  [v5 setDelegate:0];
+  currentAction = [(DDActionController *)self currentAction];
+  [currentAction setDelegate:0];
 
   [(DDActionController *)self setCurrentAction:0];
 }
@@ -1812,24 +1812,24 @@ LABEL_15:
   alertController = self->_alertController;
   if (alertController)
   {
-    v3 = alertController;
+    viewController = alertController;
   }
 
   else
   {
-    v3 = [(DDAction *)self->_currentAction viewController];
+    viewController = [(DDAction *)self->_currentAction viewController];
   }
 
-  v4 = v3;
-  v5 = [(UIAlertController *)v3 isModalInPresentation];
+  v4 = viewController;
+  isModalInPresentation = [(UIAlertController *)viewController isModalInPresentation];
 
-  return v5 ^ 1;
+  return isModalInPresentation ^ 1;
 }
 
 - (void)cancelAction
 {
-  v3 = [(DDActionController *)self currentAction];
-  [(DDActionController *)self actionDidFinish:v3];
+  currentAction = [(DDActionController *)self currentAction];
+  [(DDActionController *)self actionDidFinish:currentAction];
 }
 
 - (BOOL)isPresentingInPopover
@@ -1841,14 +1841,14 @@ LABEL_15:
   }
 
   v4 = alertController;
-  v5 = [(UIAlertController *)v4 presentationController];
-  v6 = [v5 presentationStyle];
-  if ([v5 _isAdapted] && -[DDAction interactionType](self->_currentAction, "interactionType") != 1)
+  presentationController = [(UIAlertController *)v4 presentationController];
+  presentationStyle = [presentationController presentationStyle];
+  if ([presentationController _isAdapted] && -[DDAction interactionType](self->_currentAction, "interactionType") != 1)
   {
-    v6 = [v5 adaptivePresentationStyle];
+    presentationStyle = [presentationController adaptivePresentationStyle];
   }
 
-  return v6 == 7;
+  return presentationStyle == 7;
 }
 
 - (void)actionsForURL:(uint64_t)a1 result:(uint64_t)a2 enclosingResult:context:.cold.1(uint64_t a1, uint64_t a2)

@@ -7,12 +7,12 @@
 - (void)main
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self profile];
-  v4 = [v3 daemon];
-  v5 = [v4 behavior];
-  v6 = [v5 healthAppHiddenOrNotInstalled];
+  profile = [(HDCloudSyncOperation *)self profile];
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  healthAppHiddenOrNotInstalled = [behavior healthAppHiddenOrNotInstalled];
 
-  if (v6)
+  if (healthAppHiddenOrNotInstalled)
   {
     _HKInitializeLogging();
     v7 = *MEMORY[0x277CCC328];
@@ -33,10 +33,10 @@
     self->_taskGroup = v8;
 
     [(HDSynchronousTaskGroup *)self->_taskGroup setDelegate:self];
-    v10 = [(HDCloudSyncOperation *)self configuration];
-    v11 = [v10 cachedCloudState];
+    configuration = [(HDCloudSyncOperation *)self configuration];
+    cachedCloudState = [configuration cachedCloudState];
     v40 = 0;
-    v12 = [v11 zonesByIdentifierWithError:&v40];
+    v12 = [cachedCloudState zonesByIdentifierWithError:&v40];
     v13 = v40;
 
     if (v12 || !v13)
@@ -86,9 +86,9 @@
               [(HDSynchronousTaskGroup *)v25 beginTask];
               v27 = [[HDInsertSharedSummaryTransactionOperation alloc] initWithZoneIdentifier:v26];
 
-              v28 = [(HDCloudSyncOperation *)self profile];
+              profile2 = [(HDCloudSyncOperation *)self profile];
               *buf = 0;
-              v29 = [(HDJournalableOperation *)v27 performOrJournalWithProfile:v28 error:buf];
+              v29 = [(HDJournalableOperation *)v27 performOrJournalWithProfile:profile2 error:buf];
               v30 = *buf;
 
               v31 = self->_taskGroup;

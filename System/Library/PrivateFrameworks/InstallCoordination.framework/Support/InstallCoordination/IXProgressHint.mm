@@ -1,13 +1,13 @@
 @interface IXProgressHint
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setPhaseProportionsForLoadingPhase:(id)a3 installingPhase:(id)a4 postProcessingPhase:(id)a5 error:(id *)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setPhaseProportionsForLoadingPhase:(id)phase installingPhase:(id)installingPhase postProcessingPhase:(id)processingPhase error:(id *)error;
 - (IXProgressHint)init;
-- (IXProgressHint)initWithCoder:(id)a3;
+- (IXProgressHint)initWithCoder:(id)coder;
 - (NSDictionary)progressProportionsDictionaryForLaunchServices;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IXProgressHint
@@ -19,47 +19,47 @@
   return [(IXProgressHint *)&v3 init];
 }
 
-- (IXProgressHint)initWithCoder:(id)a3
+- (IXProgressHint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = IXProgressHint;
   v5 = [(IXProgressHint *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"compressedAppAssetSizeInBytes"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"compressedAppAssetSizeInBytes"];
     compressedAppAssetSizeInBytes = v5->_compressedAppAssetSizeInBytes;
     v5->_compressedAppAssetSizeInBytes = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uncompressedAppAssetSizeInBytes"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uncompressedAppAssetSizeInBytes"];
     uncompressedAppAssetSizeInBytes = v5->_uncompressedAppAssetSizeInBytes;
     v5->_uncompressedAppAssetSizeInBytes = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"filesInAppAssetCount"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"filesInAppAssetCount"];
     filesInAppAssetCount = v5->_filesInAppAssetCount;
     v5->_filesInAppAssetCount = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalODRAssetSizeInBytes"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalODRAssetSizeInBytes"];
     totalODRAssetSizeInBytes = v5->_totalODRAssetSizeInBytes;
     v5->_totalODRAssetSizeInBytes = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalExpectedEssentialAssetSizeInBytes"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalExpectedEssentialAssetSizeInBytes"];
     totalExpectedEssentialAssetSizeInBytes = v5->_totalExpectedEssentialAssetSizeInBytes;
     v5->_totalExpectedEssentialAssetSizeInBytes = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalExpectedDataImportSizeInBytes"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalExpectedDataImportSizeInBytes"];
     totalExpectedDataImportSizeInBytes = v5->_totalExpectedDataImportSizeInBytes;
     v5->_totalExpectedDataImportSizeInBytes = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"loadingPhaseProportion"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"loadingPhaseProportion"];
     loadingPhaseProportion = v5->_loadingPhaseProportion;
     v5->_loadingPhaseProportion = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installingPhaseProportion"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installingPhaseProportion"];
     installingPhaseProportion = v5->_installingPhaseProportion;
     v5->_installingPhaseProportion = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"postProcessingPhaseProportion"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"postProcessingPhaseProportion"];
     postProcessingPhaseProportion = v5->_postProcessingPhaseProportion;
     v5->_postProcessingPhaseProportion = v22;
   }
@@ -67,70 +67,70 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IXProgressHint *)self compressedAppAssetSizeInBytes];
-  [v4 encodeObject:v5 forKey:@"compressedAppAssetSizeInBytes"];
+  coderCopy = coder;
+  compressedAppAssetSizeInBytes = [(IXProgressHint *)self compressedAppAssetSizeInBytes];
+  [coderCopy encodeObject:compressedAppAssetSizeInBytes forKey:@"compressedAppAssetSizeInBytes"];
 
-  v6 = [(IXProgressHint *)self uncompressedAppAssetSizeInBytes];
-  [v4 encodeObject:v6 forKey:@"uncompressedAppAssetSizeInBytes"];
+  uncompressedAppAssetSizeInBytes = [(IXProgressHint *)self uncompressedAppAssetSizeInBytes];
+  [coderCopy encodeObject:uncompressedAppAssetSizeInBytes forKey:@"uncompressedAppAssetSizeInBytes"];
 
-  v7 = [(IXProgressHint *)self filesInAppAssetCount];
-  [v4 encodeObject:v7 forKey:@"filesInAppAssetCount"];
+  filesInAppAssetCount = [(IXProgressHint *)self filesInAppAssetCount];
+  [coderCopy encodeObject:filesInAppAssetCount forKey:@"filesInAppAssetCount"];
 
-  v8 = [(IXProgressHint *)self totalODRAssetSizeInBytes];
-  [v4 encodeObject:v8 forKey:@"totalODRAssetSizeInBytes"];
+  totalODRAssetSizeInBytes = [(IXProgressHint *)self totalODRAssetSizeInBytes];
+  [coderCopy encodeObject:totalODRAssetSizeInBytes forKey:@"totalODRAssetSizeInBytes"];
 
-  v9 = [(IXProgressHint *)self totalExpectedEssentialAssetSizeInBytes];
-  [v4 encodeObject:v9 forKey:@"totalExpectedEssentialAssetSizeInBytes"];
+  totalExpectedEssentialAssetSizeInBytes = [(IXProgressHint *)self totalExpectedEssentialAssetSizeInBytes];
+  [coderCopy encodeObject:totalExpectedEssentialAssetSizeInBytes forKey:@"totalExpectedEssentialAssetSizeInBytes"];
 
-  v10 = [(IXProgressHint *)self totalExpectedDataImportSizeInBytes];
-  [v4 encodeObject:v10 forKey:@"totalExpectedDataImportSizeInBytes"];
+  totalExpectedDataImportSizeInBytes = [(IXProgressHint *)self totalExpectedDataImportSizeInBytes];
+  [coderCopy encodeObject:totalExpectedDataImportSizeInBytes forKey:@"totalExpectedDataImportSizeInBytes"];
 
-  v11 = [(IXProgressHint *)self loadingPhaseProportion];
-  [v4 encodeObject:v11 forKey:@"loadingPhaseProportion"];
+  loadingPhaseProportion = [(IXProgressHint *)self loadingPhaseProportion];
+  [coderCopy encodeObject:loadingPhaseProportion forKey:@"loadingPhaseProportion"];
 
-  v12 = [(IXProgressHint *)self installingPhaseProportion];
-  [v4 encodeObject:v12 forKey:@"installingPhaseProportion"];
+  installingPhaseProportion = [(IXProgressHint *)self installingPhaseProportion];
+  [coderCopy encodeObject:installingPhaseProportion forKey:@"installingPhaseProportion"];
 
-  v13 = [(IXProgressHint *)self postProcessingPhaseProportion];
-  [v4 encodeObject:v13 forKey:@"postProcessingPhaseProportion"];
+  postProcessingPhaseProportion = [(IXProgressHint *)self postProcessingPhaseProportion];
+  [coderCopy encodeObject:postProcessingPhaseProportion forKey:@"postProcessingPhaseProportion"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(IXProgressHint *)self compressedAppAssetSizeInBytes];
-  [v4 setCompressedAppAssetSizeInBytes:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  compressedAppAssetSizeInBytes = [(IXProgressHint *)self compressedAppAssetSizeInBytes];
+  [v4 setCompressedAppAssetSizeInBytes:compressedAppAssetSizeInBytes];
 
-  v6 = [(IXProgressHint *)self uncompressedAppAssetSizeInBytes];
-  [v4 setUncompressedAppAssetSizeInBytes:v6];
+  uncompressedAppAssetSizeInBytes = [(IXProgressHint *)self uncompressedAppAssetSizeInBytes];
+  [v4 setUncompressedAppAssetSizeInBytes:uncompressedAppAssetSizeInBytes];
 
-  v7 = [(IXProgressHint *)self filesInAppAssetCount];
-  [v4 setFilesInAppAssetCount:v7];
+  filesInAppAssetCount = [(IXProgressHint *)self filesInAppAssetCount];
+  [v4 setFilesInAppAssetCount:filesInAppAssetCount];
 
-  v8 = [(IXProgressHint *)self totalODRAssetSizeInBytes];
-  [v4 setTotalODRAssetSizeInBytes:v8];
+  totalODRAssetSizeInBytes = [(IXProgressHint *)self totalODRAssetSizeInBytes];
+  [v4 setTotalODRAssetSizeInBytes:totalODRAssetSizeInBytes];
 
-  v9 = [(IXProgressHint *)self totalExpectedEssentialAssetSizeInBytes];
-  [v4 setTotalExpectedEssentialAssetSizeInBytes:v9];
+  totalExpectedEssentialAssetSizeInBytes = [(IXProgressHint *)self totalExpectedEssentialAssetSizeInBytes];
+  [v4 setTotalExpectedEssentialAssetSizeInBytes:totalExpectedEssentialAssetSizeInBytes];
 
-  v10 = [(IXProgressHint *)self totalExpectedDataImportSizeInBytes];
-  [v4 setTotalExpectedDataImportSizeInBytes:v10];
+  totalExpectedDataImportSizeInBytes = [(IXProgressHint *)self totalExpectedDataImportSizeInBytes];
+  [v4 setTotalExpectedDataImportSizeInBytes:totalExpectedDataImportSizeInBytes];
 
-  v11 = [(IXProgressHint *)self loadingPhaseProportion];
-  v12 = [(IXProgressHint *)self installingPhaseProportion];
-  v13 = [(IXProgressHint *)self postProcessingPhaseProportion];
-  [v4 setPhaseProportionsForLoadingPhase:v11 installingPhase:v12 postProcessingPhase:v13 error:0];
+  loadingPhaseProportion = [(IXProgressHint *)self loadingPhaseProportion];
+  installingPhaseProportion = [(IXProgressHint *)self installingPhaseProportion];
+  postProcessingPhaseProportion = [(IXProgressHint *)self postProcessingPhaseProportion];
+  [v4 setPhaseProportionsForLoadingPhase:loadingPhaseProportion installingPhase:installingPhaseProportion postProcessingPhase:postProcessingPhaseProportion error:0];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v20 = 1;
     goto LABEL_21;
@@ -143,43 +143,43 @@
     goto LABEL_21;
   }
 
-  v5 = v4;
-  v6 = [(IXProgressHint *)self compressedAppAssetSizeInBytes];
-  v7 = [(IXProgressHint *)v5 compressedAppAssetSizeInBytes];
-  v8 = v6;
-  v9 = v7;
-  v10 = v9;
-  if ((v8 != 0) != (v9 != 0) || v8 && v9 && ![v8 isEqual:v9])
+  v5 = equalCopy;
+  compressedAppAssetSizeInBytes = [(IXProgressHint *)self compressedAppAssetSizeInBytes];
+  compressedAppAssetSizeInBytes2 = [(IXProgressHint *)v5 compressedAppAssetSizeInBytes];
+  postProcessingPhaseProportion = compressedAppAssetSizeInBytes;
+  v9 = compressedAppAssetSizeInBytes2;
+  postProcessingPhaseProportion2 = v9;
+  if ((postProcessingPhaseProportion != 0) != (v9 != 0) || postProcessingPhaseProportion && v9 && ![postProcessingPhaseProportion isEqual:v9])
   {
     goto LABEL_16;
   }
 
-  v11 = [(IXProgressHint *)self uncompressedAppAssetSizeInBytes];
-  v12 = [(IXProgressHint *)v5 uncompressedAppAssetSizeInBytes];
-  v8 = v11;
-  v13 = v12;
-  v10 = v13;
-  if ((v8 != 0) != (v13 != 0) || v8 && v13 && ![v8 isEqual:v13])
+  uncompressedAppAssetSizeInBytes = [(IXProgressHint *)self uncompressedAppAssetSizeInBytes];
+  uncompressedAppAssetSizeInBytes2 = [(IXProgressHint *)v5 uncompressedAppAssetSizeInBytes];
+  postProcessingPhaseProportion = uncompressedAppAssetSizeInBytes;
+  v13 = uncompressedAppAssetSizeInBytes2;
+  postProcessingPhaseProportion2 = v13;
+  if ((postProcessingPhaseProportion != 0) != (v13 != 0) || postProcessingPhaseProportion && v13 && ![postProcessingPhaseProportion isEqual:v13])
   {
     goto LABEL_16;
   }
 
-  v14 = [(IXProgressHint *)self filesInAppAssetCount];
-  v15 = [(IXProgressHint *)v5 filesInAppAssetCount];
-  v8 = v14;
-  v16 = v15;
-  v10 = v16;
-  if ((v8 != 0) != (v16 != 0) || v8 && v16 && ![v8 isEqual:v16])
+  filesInAppAssetCount = [(IXProgressHint *)self filesInAppAssetCount];
+  filesInAppAssetCount2 = [(IXProgressHint *)v5 filesInAppAssetCount];
+  postProcessingPhaseProportion = filesInAppAssetCount;
+  v16 = filesInAppAssetCount2;
+  postProcessingPhaseProportion2 = v16;
+  if ((postProcessingPhaseProportion != 0) != (v16 != 0) || postProcessingPhaseProportion && v16 && ![postProcessingPhaseProportion isEqual:v16])
   {
     goto LABEL_16;
   }
 
-  v17 = [(IXProgressHint *)self totalODRAssetSizeInBytes];
-  v18 = [(IXProgressHint *)v5 totalODRAssetSizeInBytes];
-  v8 = v17;
-  v19 = v18;
-  v10 = v19;
-  if ((v8 != 0) != (v19 != 0) || v8 && v19 && ![v8 isEqual:v19])
+  totalODRAssetSizeInBytes = [(IXProgressHint *)self totalODRAssetSizeInBytes];
+  totalODRAssetSizeInBytes2 = [(IXProgressHint *)v5 totalODRAssetSizeInBytes];
+  postProcessingPhaseProportion = totalODRAssetSizeInBytes;
+  v19 = totalODRAssetSizeInBytes2;
+  postProcessingPhaseProportion2 = v19;
+  if ((postProcessingPhaseProportion != 0) != (v19 != 0) || postProcessingPhaseProportion && v19 && ![postProcessingPhaseProportion isEqual:v19])
   {
 LABEL_16:
 
@@ -189,27 +189,27 @@ LABEL_16:
   else
   {
 
-    v22 = [(IXProgressHint *)self totalExpectedEssentialAssetSizeInBytes];
-    v23 = [(IXProgressHint *)v5 totalExpectedEssentialAssetSizeInBytes];
-    v24 = sub_100007900(v22, v23);
+    totalExpectedEssentialAssetSizeInBytes = [(IXProgressHint *)self totalExpectedEssentialAssetSizeInBytes];
+    totalExpectedEssentialAssetSizeInBytes2 = [(IXProgressHint *)v5 totalExpectedEssentialAssetSizeInBytes];
+    v24 = sub_100007900(totalExpectedEssentialAssetSizeInBytes, totalExpectedEssentialAssetSizeInBytes2);
 
     if (!v24)
     {
       goto LABEL_30;
     }
 
-    v25 = [(IXProgressHint *)self totalExpectedDataImportSizeInBytes];
-    v26 = [(IXProgressHint *)v5 totalExpectedDataImportSizeInBytes];
-    v27 = sub_100007900(v25, v26);
+    totalExpectedDataImportSizeInBytes = [(IXProgressHint *)self totalExpectedDataImportSizeInBytes];
+    totalExpectedDataImportSizeInBytes2 = [(IXProgressHint *)v5 totalExpectedDataImportSizeInBytes];
+    v27 = sub_100007900(totalExpectedDataImportSizeInBytes, totalExpectedDataImportSizeInBytes2);
 
     if (!v27)
     {
       goto LABEL_30;
     }
 
-    v28 = [(IXProgressHint *)self loadingPhaseProportion];
-    v29 = [(IXProgressHint *)v5 loadingPhaseProportion];
-    v30 = sub_100007900(v28, v29);
+    loadingPhaseProportion = [(IXProgressHint *)self loadingPhaseProportion];
+    loadingPhaseProportion2 = [(IXProgressHint *)v5 loadingPhaseProportion];
+    v30 = sub_100007900(loadingPhaseProportion, loadingPhaseProportion2);
 
     if (!v30 || ([(IXProgressHint *)self installingPhaseProportion], v31 = objc_claimAutoreleasedReturnValue(), [(IXProgressHint *)v5 installingPhaseProportion], v32 = objc_claimAutoreleasedReturnValue(), v33 = sub_100007900(v31, v32), v32, v31, !v33))
     {
@@ -218,9 +218,9 @@ LABEL_30:
       goto LABEL_18;
     }
 
-    v8 = [(IXProgressHint *)self postProcessingPhaseProportion];
-    v10 = [(IXProgressHint *)v5 postProcessingPhaseProportion];
-    v20 = sub_100007900(v8, v10);
+    postProcessingPhaseProportion = [(IXProgressHint *)self postProcessingPhaseProportion];
+    postProcessingPhaseProportion2 = [(IXProgressHint *)v5 postProcessingPhaseProportion];
+    v20 = sub_100007900(postProcessingPhaseProportion, postProcessingPhaseProportion2);
   }
 
 LABEL_18:
@@ -231,32 +231,32 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(IXProgressHint *)self compressedAppAssetSizeInBytes];
-  v4 = [v3 hash];
+  compressedAppAssetSizeInBytes = [(IXProgressHint *)self compressedAppAssetSizeInBytes];
+  v4 = [compressedAppAssetSizeInBytes hash];
 
-  v5 = [(IXProgressHint *)self uncompressedAppAssetSizeInBytes];
-  v6 = [v5 hash] ^ v4;
+  uncompressedAppAssetSizeInBytes = [(IXProgressHint *)self uncompressedAppAssetSizeInBytes];
+  v6 = [uncompressedAppAssetSizeInBytes hash] ^ v4;
 
-  v7 = [(IXProgressHint *)self filesInAppAssetCount];
-  v8 = [v7 hash];
+  filesInAppAssetCount = [(IXProgressHint *)self filesInAppAssetCount];
+  v8 = [filesInAppAssetCount hash];
 
-  v9 = [(IXProgressHint *)self totalODRAssetSizeInBytes];
-  v10 = v6 ^ v8 ^ [v9 hash];
+  totalODRAssetSizeInBytes = [(IXProgressHint *)self totalODRAssetSizeInBytes];
+  v10 = v6 ^ v8 ^ [totalODRAssetSizeInBytes hash];
 
-  v11 = [(IXProgressHint *)self totalExpectedEssentialAssetSizeInBytes];
-  v12 = [v11 hash];
+  totalExpectedEssentialAssetSizeInBytes = [(IXProgressHint *)self totalExpectedEssentialAssetSizeInBytes];
+  v12 = [totalExpectedEssentialAssetSizeInBytes hash];
 
-  v13 = [(IXProgressHint *)self totalExpectedDataImportSizeInBytes];
-  v14 = v12 ^ [v13 hash];
+  totalExpectedDataImportSizeInBytes = [(IXProgressHint *)self totalExpectedDataImportSizeInBytes];
+  v14 = v12 ^ [totalExpectedDataImportSizeInBytes hash];
 
-  v15 = [(IXProgressHint *)self loadingPhaseProportion];
-  v16 = v10 ^ v14 ^ [v15 hash];
+  loadingPhaseProportion = [(IXProgressHint *)self loadingPhaseProportion];
+  v16 = v10 ^ v14 ^ [loadingPhaseProportion hash];
 
-  v17 = [(IXProgressHint *)self installingPhaseProportion];
-  v18 = [v17 hash];
+  installingPhaseProportion = [(IXProgressHint *)self installingPhaseProportion];
+  v18 = [installingPhaseProportion hash];
 
-  v19 = [(IXProgressHint *)self postProcessingPhaseProportion];
-  v20 = v18 ^ [v19 hash];
+  postProcessingPhaseProportion = [(IXProgressHint *)self postProcessingPhaseProportion];
+  v20 = v18 ^ [postProcessingPhaseProportion hash];
 
   return v16 ^ v20;
 }
@@ -264,22 +264,22 @@ LABEL_21:
 - (NSDictionary)progressProportionsDictionaryForLaunchServices
 {
   v3 = objc_opt_new();
-  v4 = [(IXProgressHint *)self loadingPhaseProportion];
-  if (v4)
+  loadingPhaseProportion = [(IXProgressHint *)self loadingPhaseProportion];
+  if (loadingPhaseProportion)
   {
-    [v3 setObject:v4 forKey:&off_10010DD38];
+    [v3 setObject:loadingPhaseProportion forKey:&off_10010DD38];
   }
 
-  v5 = [(IXProgressHint *)self installingPhaseProportion];
-  if (v5)
+  installingPhaseProportion = [(IXProgressHint *)self installingPhaseProportion];
+  if (installingPhaseProportion)
   {
-    [v3 setObject:v5 forKey:&off_10010DD50];
+    [v3 setObject:installingPhaseProportion forKey:&off_10010DD50];
   }
 
-  v6 = [(IXProgressHint *)self postProcessingPhaseProportion];
-  if (v6)
+  postProcessingPhaseProportion = [(IXProgressHint *)self postProcessingPhaseProportion];
+  if (postProcessingPhaseProportion)
   {
-    [v3 setObject:v6 forKey:&off_10010DD68];
+    [v3 setObject:postProcessingPhaseProportion forKey:&off_10010DD68];
   }
 
   v7 = [v3 copy];
@@ -287,18 +287,18 @@ LABEL_21:
   return v7;
 }
 
-- (BOOL)setPhaseProportionsForLoadingPhase:(id)a3 installingPhase:(id)a4 postProcessingPhase:(id)a5 error:(id *)a6
+- (BOOL)setPhaseProportionsForLoadingPhase:(id)phase installingPhase:(id)installingPhase postProcessingPhase:(id)processingPhase error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  [a3 doubleValue];
+  processingPhaseCopy = processingPhase;
+  installingPhaseCopy = installingPhase;
+  [phase doubleValue];
   v13 = v12;
-  [v11 doubleValue];
+  [installingPhaseCopy doubleValue];
   v15 = v14;
 
-  if (v10)
+  if (processingPhaseCopy)
   {
-    [v10 doubleValue];
+    [processingPhaseCopy doubleValue];
   }
 
   else
@@ -393,11 +393,11 @@ LABEL_21:
   }
 
   v25 = sub_1000405FC("[IXProgressHint setPhaseProportionsForLoadingPhase:installingPhase:postProcessingPhase:error:]", v20, @"IXErrorDomain", 0x37uLL, 0, 0, v19, v18, v38);
-  if (a6)
+  if (error)
   {
     v25 = v25;
     v26 = 0;
-    *a6 = v25;
+    *error = v25;
   }
 
   else
@@ -414,10 +414,10 @@ LABEL_27:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(IXProgressHint *)self loadingPhaseProportion];
-  v6 = [(IXProgressHint *)self installingPhaseProportion];
-  v7 = [(IXProgressHint *)self postProcessingPhaseProportion];
-  v8 = [NSString stringWithFormat:@"<%@ loading:%@ installing:%@ postprocessing:%@>", v4, v5, v6, v7];
+  loadingPhaseProportion = [(IXProgressHint *)self loadingPhaseProportion];
+  installingPhaseProportion = [(IXProgressHint *)self installingPhaseProportion];
+  postProcessingPhaseProportion = [(IXProgressHint *)self postProcessingPhaseProportion];
+  v8 = [NSString stringWithFormat:@"<%@ loading:%@ installing:%@ postprocessing:%@>", v4, loadingPhaseProportion, installingPhaseProportion, postProcessingPhaseProportion];
 
   return v8;
 }

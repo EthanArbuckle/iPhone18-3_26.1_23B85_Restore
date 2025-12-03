@@ -1,33 +1,33 @@
 @interface HKHRAFibBurdenHistogramResult
-- (BOOL)isEqual:(id)a3;
-- (HKHRAFibBurdenHistogramResult)initWithCoder:(id)a3;
-- (HKHRAFibBurdenHistogramResult)initWithDayOfWeekHistogram:(id)a3 timeOfDayHistogram:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKHRAFibBurdenHistogramResult)initWithCoder:(id)coder;
+- (HKHRAFibBurdenHistogramResult)initWithDayOfWeekHistogram:(id)histogram timeOfDayHistogram:(id)dayHistogram;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKHRAFibBurdenHistogramResult
 
-- (HKHRAFibBurdenHistogramResult)initWithDayOfWeekHistogram:(id)a3 timeOfDayHistogram:(id)a4
+- (HKHRAFibBurdenHistogramResult)initWithDayOfWeekHistogram:(id)histogram timeOfDayHistogram:(id)dayHistogram
 {
-  v7 = a3;
-  v8 = a4;
+  histogramCopy = histogram;
+  dayHistogramCopy = dayHistogram;
   v12.receiver = self;
   v12.super_class = HKHRAFibBurdenHistogramResult;
   v9 = [(HKHRAFibBurdenHistogramResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dayOfWeekHistogram, a3);
-    objc_storeStrong(&v10->_timeOfDayHistogram, a4);
+    objc_storeStrong(&v9->_dayOfWeekHistogram, histogram);
+    objc_storeStrong(&v10->_timeOfDayHistogram, dayHistogram);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -37,7 +37,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(HKHRAFibBurdenDayOfWeekHistogram *)self->_dayOfWeekHistogram isEqual:v5->_dayOfWeekHistogram])
       {
         v6 = [(HKHRAFibBurdenTimeOfDayHistogram *)self->_timeOfDayHistogram isEqual:v5->_timeOfDayHistogram];
@@ -58,27 +58,27 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dayOfWeekHistogram = self->_dayOfWeekHistogram;
-  v5 = a3;
-  [v5 encodeObject:dayOfWeekHistogram forKey:@"DayOfWeekHistogramKey"];
-  [v5 encodeObject:self->_timeOfDayHistogram forKey:@"TimeOfDayHistogramKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dayOfWeekHistogram forKey:@"DayOfWeekHistogramKey"];
+  [coderCopy encodeObject:self->_timeOfDayHistogram forKey:@"TimeOfDayHistogramKey"];
 }
 
-- (HKHRAFibBurdenHistogramResult)initWithCoder:(id)a3
+- (HKHRAFibBurdenHistogramResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKHRAFibBurdenHistogramResult;
   v5 = [(HKHRAFibBurdenHistogramResult *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DayOfWeekHistogramKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DayOfWeekHistogramKey"];
     dayOfWeekHistogram = v5->_dayOfWeekHistogram;
     v5->_dayOfWeekHistogram = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TimeOfDayHistogramKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TimeOfDayHistogramKey"];
     timeOfDayHistogram = v5->_timeOfDayHistogram;
     v5->_timeOfDayHistogram = v8;
   }

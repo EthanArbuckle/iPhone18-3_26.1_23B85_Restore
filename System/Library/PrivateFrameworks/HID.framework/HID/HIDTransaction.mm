@@ -1,18 +1,18 @@
 @interface HIDTransaction
-- (BOOL)commitElements:(id)a3 error:(id *)a4 timeout:(int64_t)a5 callback:(id)a6;
-- (HIDTransaction)initWithDevice:(id)a3;
+- (BOOL)commitElements:(id)elements error:(id *)error timeout:(int64_t)timeout callback:(id)callback;
+- (HIDTransaction)initWithDevice:(id)device;
 - (void)dealloc;
 @end
 
 @implementation HIDTransaction
 
-- (HIDTransaction)initWithDevice:(id)a3
+- (HIDTransaction)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = HIDTransaction;
   v5 = [(HIDTransaction *)&v9 init];
-  if (v5 && (v6 = IOHIDTransactionCreate(*MEMORY[0x277CBECE8], v4, kIOHIDTransactionDirectionTypeInput, 1u), (v5->_transaction = v6) != 0))
+  if (v5 && (v6 = IOHIDTransactionCreate(*MEMORY[0x277CBECE8], deviceCopy, kIOHIDTransactionDirectionTypeInput, 1u), (v5->_transaction = v6) != 0))
   {
     v7 = v5;
   }
@@ -38,16 +38,16 @@
   [(HIDTransaction *)&v4 dealloc];
 }
 
-- (BOOL)commitElements:(id)a3 error:(id *)a4 timeout:(int64_t)a5 callback:(id)a6
+- (BOOL)commitElements:(id)elements error:(id *)error timeout:(int64_t)timeout callback:(id)callback
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  elementsCopy = elements;
+  callbackCopy = callback;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v12 = [elementsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
     v13 = v12;
@@ -59,24 +59,24 @@
       {
         if (*v23 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(elementsCopy);
         }
 
         IOHIDTransactionAddElement(self->_transaction, *(*(&v22 + 1) + 8 * v15++));
       }
 
       while (v13 != v15);
-      v13 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v13 = [elementsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v13);
   }
 
   transaction = self->_transaction;
-  if (v11)
+  if (callbackCopy)
   {
-    v17 = _Block_copy(v11);
-    v18 = IOHIDTransactionCommitWithCallback(transaction, a5, asyncCommitCallback, v17);
+    v17 = _Block_copy(callbackCopy);
+    v18 = IOHIDTransactionCommitWithCallback(transaction, timeout, asyncCommitCallback, v17);
   }
 
   else
@@ -88,14 +88,14 @@
   IOHIDTransactionClear(self->_transaction);
   if (v19)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithIOReturn:v19];
+      *error = [MEMORY[0x277CCA9B8] errorWithIOReturn:v19];
     }
 
-    if (v11)
+    if (callbackCopy)
     {
-      _Block_release(v11);
+      _Block_release(callbackCopy);
     }
   }
 

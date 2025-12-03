@@ -1,19 +1,19 @@
 @interface PDDPHandoutReportItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsGranularity:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsGranularity:(id)granularity;
+- (int)StringAsType:(id)type;
 - (int)granularity;
 - (int)type;
 - (unint64_t)hash;
-- (void)addAdditionalReports:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsCompleted:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAdditionalReports:(id)reports;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsCompleted:(BOOL)completed;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPHandoutReportItem
@@ -31,9 +31,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -46,30 +46,30 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BEFORE_DUE_DATE"])
+  else if ([typeCopy isEqualToString:@"BEFORE_DUE_DATE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AFTER_DUE_DATE"])
+  else if ([typeCopy isEqualToString:@"AFTER_DUE_DATE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AFTER_REVIEWED"])
+  else if ([typeCopy isEqualToString:@"AFTER_REVIEWED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NO_DUE_DATE"])
+  else if ([typeCopy isEqualToString:@"NO_DUE_DATE"])
   {
     v4 = 4;
   }
@@ -95,30 +95,30 @@
   }
 }
 
-- (int)StringAsGranularity:(id)a3
+- (int)StringAsGranularity:(id)granularity
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_GRANULARITY"])
+  granularityCopy = granularity;
+  if ([granularityCopy isEqualToString:@"UNKNOWN_GRANULARITY"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DAILY"])
+  else if ([granularityCopy isEqualToString:@"DAILY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EVERY_7_DAY"])
+  else if ([granularityCopy isEqualToString:@"EVERY_7_DAY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"EVERY_30_DAY"])
+  else if ([granularityCopy isEqualToString:@"EVERY_30_DAY"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"COMPLETE"])
+  else if ([granularityCopy isEqualToString:@"COMPLETE"])
   {
     v4 = 4;
   }
@@ -131,9 +131,9 @@
   return v4;
 }
 
-- (void)setHasIsCompleted:(BOOL)a3
+- (void)setHasIsCompleted:(BOOL)completed
 {
-  if (a3)
+  if (completed)
   {
     v3 = 4;
   }
@@ -146,22 +146,22 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addAdditionalReports:(id)a3
+- (void)addAdditionalReports:(id)reports
 {
-  v4 = a3;
+  reportsCopy = reports;
   additionalReports = self->_additionalReports;
-  v8 = v4;
+  v8 = reportsCopy;
   if (!additionalReports)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_additionalReports;
     self->_additionalReports = v6;
 
-    v4 = v8;
+    reportsCopy = v8;
     additionalReports = self->_additionalReports;
   }
 
-  [(NSMutableArray *)additionalReports addObject:v4];
+  [(NSMutableArray *)additionalReports addObject:reportsCopy];
 }
 
 - (id)description
@@ -169,8 +169,8 @@
   v7.receiver = self;
   v7.super_class = PDDPHandoutReportItem;
   v3 = [(PDDPHandoutReportItem *)&v7 description];
-  v4 = [(PDDPHandoutReportItem *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPHandoutReportItem *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -234,15 +234,15 @@
   startDate = self->_startDate;
   if (startDate)
   {
-    v13 = [(PDDPDate *)startDate dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"start_date"];
+    dictionaryRepresentation = [(PDDPDate *)startDate dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"start_date"];
   }
 
   endDate = self->_endDate;
   if (endDate)
   {
-    v15 = [(PDDPDate *)endDate dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"end_date"];
+    dictionaryRepresentation2 = [(PDDPDate *)endDate dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"end_date"];
   }
 
   attachmentId = self->_attachmentId;
@@ -260,8 +260,8 @@
   report = self->_report;
   if (report)
   {
-    v19 = [(PDDPActivityReport *)report dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"report"];
+    dictionaryRepresentation3 = [(PDDPActivityReport *)report dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"report"];
   }
 
   if ([(NSMutableArray *)self->_additionalReports count])
@@ -286,8 +286,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation4 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation4];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -308,9 +308,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -401,64 +401,64 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[22] = self->_type;
-    *(v4 + 96) |= 2u;
+    toCopy[22] = self->_type;
+    *(toCopy + 96) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[10] = self->_granularity;
-    *(v4 + 96) |= 1u;
+    toCopy[10] = self->_granularity;
+    *(toCopy + 96) |= 1u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_handoutId)
   {
-    [v4 setHandoutId:?];
-    v4 = v10;
+    [toCopy setHandoutId:?];
+    toCopy = v10;
   }
 
   if (self->_studentId)
   {
     [v10 setStudentId:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_classId)
   {
     [v10 setClassId:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_startDate)
   {
     [v10 setStartDate:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_endDate)
   {
     [v10 setEndDate:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_attachmentId)
   {
     [v10 setAttachmentId:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 92) = self->_isCompleted;
-    *(v4 + 96) |= 4u;
+    *(toCopy + 92) = self->_isCompleted;
+    *(toCopy + 96) |= 4u;
   }
 
   if (self->_report)
@@ -469,10 +469,10 @@
   if ([(PDDPHandoutReportItem *)self additionalReportsCount])
   {
     [v10 clearAdditionalReports];
-    v6 = [(PDDPHandoutReportItem *)self additionalReportsCount];
-    if (v6)
+    additionalReportsCount = [(PDDPHandoutReportItem *)self additionalReportsCount];
+    if (additionalReportsCount)
     {
-      v7 = v6;
+      v7 = additionalReportsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PDDPHandoutReportItem *)self additionalReportsAtIndex:i];
@@ -487,9 +487,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -505,27 +505,27 @@
     *(v5 + 96) |= 1u;
   }
 
-  v8 = [(NSString *)self->_handoutId copyWithZone:a3];
+  v8 = [(NSString *)self->_handoutId copyWithZone:zone];
   v9 = v6[6];
   v6[6] = v8;
 
-  v10 = [(NSString *)self->_studentId copyWithZone:a3];
+  v10 = [(NSString *)self->_studentId copyWithZone:zone];
   v11 = v6[10];
   v6[10] = v10;
 
-  v12 = [(NSString *)self->_classId copyWithZone:a3];
+  v12 = [(NSString *)self->_classId copyWithZone:zone];
   v13 = v6[3];
   v6[3] = v12;
 
-  v14 = [(PDDPDate *)self->_startDate copyWithZone:a3];
+  v14 = [(PDDPDate *)self->_startDate copyWithZone:zone];
   v15 = v6[9];
   v6[9] = v14;
 
-  v16 = [(PDDPDate *)self->_endDate copyWithZone:a3];
+  v16 = [(PDDPDate *)self->_endDate copyWithZone:zone];
   v17 = v6[4];
   v6[4] = v16;
 
-  v18 = [(NSString *)self->_attachmentId copyWithZone:a3];
+  v18 = [(NSString *)self->_attachmentId copyWithZone:zone];
   v19 = v6[2];
   v6[2] = v18;
 
@@ -535,7 +535,7 @@
     *(v6 + 96) |= 4u;
   }
 
-  v20 = [(PDDPActivityReport *)self->_report copyWithZone:a3];
+  v20 = [(PDDPActivityReport *)self->_report copyWithZone:zone];
   v21 = v6[7];
   v6[7] = v20;
 
@@ -558,7 +558,7 @@
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v31 + 1) + 8 * i) copyWithZone:{a3, v31}];
+        v27 = [*(*(&v31 + 1) + 8 * i) copyWithZone:{zone, v31}];
         [v6 addAdditionalReports:v27];
       }
 
@@ -568,56 +568,56 @@
     while (v24);
   }
 
-  v28 = [(NSString *)self->_reportItemId copyWithZone:a3];
+  v28 = [(NSString *)self->_reportItemId copyWithZone:zone];
   v29 = v6[8];
   v6[8] = v28;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_33;
   }
 
-  v5 = *(v4 + 96);
+  v5 = *(equalCopy + 96);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 96) & 2) == 0 || self->_type != *(v4 + 22))
+    if ((*(equalCopy + 96) & 2) == 0 || self->_type != *(equalCopy + 22))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 96) & 2) != 0)
+  else if ((*(equalCopy + 96) & 2) != 0)
   {
     goto LABEL_33;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 96) & 1) == 0 || self->_granularity != *(v4 + 10))
+    if ((*(equalCopy + 96) & 1) == 0 || self->_granularity != *(equalCopy + 10))
     {
       goto LABEL_33;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
     goto LABEL_33;
   }
 
   handoutId = self->_handoutId;
-  if (handoutId | *(v4 + 6) && ![(NSString *)handoutId isEqual:?])
+  if (handoutId | *(equalCopy + 6) && ![(NSString *)handoutId isEqual:?])
   {
     goto LABEL_33;
   }
 
   studentId = self->_studentId;
-  if (studentId | *(v4 + 10))
+  if (studentId | *(equalCopy + 10))
   {
     if (![(NSString *)studentId isEqual:?])
     {
@@ -626,7 +626,7 @@
   }
 
   classId = self->_classId;
-  if (classId | *(v4 + 3))
+  if (classId | *(equalCopy + 3))
   {
     if (![(NSString *)classId isEqual:?])
     {
@@ -635,7 +635,7 @@
   }
 
   startDate = self->_startDate;
-  if (startDate | *(v4 + 9))
+  if (startDate | *(equalCopy + 9))
   {
     if (![(PDDPDate *)startDate isEqual:?])
     {
@@ -644,7 +644,7 @@
   }
 
   endDate = self->_endDate;
-  if (endDate | *(v4 + 4))
+  if (endDate | *(equalCopy + 4))
   {
     if (![(PDDPDate *)endDate isEqual:?])
     {
@@ -653,7 +653,7 @@
   }
 
   attachmentId = self->_attachmentId;
-  if (attachmentId | *(v4 + 2))
+  if (attachmentId | *(equalCopy + 2))
   {
     if (![(NSString *)attachmentId isEqual:?])
     {
@@ -661,10 +661,10 @@
     }
   }
 
-  v12 = *(v4 + 96);
+  v12 = *(equalCopy + 96);
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 96) & 4) == 0)
+    if ((*(equalCopy + 96) & 4) == 0)
     {
       goto LABEL_26;
     }
@@ -674,34 +674,34 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if ((*(v4 + 96) & 4) == 0)
+  if ((*(equalCopy + 96) & 4) == 0)
   {
     goto LABEL_33;
   }
 
-  v18 = *(v4 + 92);
+  v18 = *(equalCopy + 92);
   if (self->_isCompleted)
   {
-    if ((*(v4 + 92) & 1) == 0)
+    if ((*(equalCopy + 92) & 1) == 0)
     {
       goto LABEL_33;
     }
   }
 
-  else if (*(v4 + 92))
+  else if (*(equalCopy + 92))
   {
     goto LABEL_33;
   }
 
 LABEL_26:
   report = self->_report;
-  if (report | *(v4 + 7) && ![(PDDPActivityReport *)report isEqual:?])
+  if (report | *(equalCopy + 7) && ![(PDDPActivityReport *)report isEqual:?])
   {
     goto LABEL_33;
   }
 
   additionalReports = self->_additionalReports;
-  if (additionalReports | *(v4 + 1))
+  if (additionalReports | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)additionalReports isEqual:?])
     {
@@ -710,7 +710,7 @@ LABEL_26:
   }
 
   reportItemId = self->_reportItemId;
-  if (reportItemId | *(v4 + 8))
+  if (reportItemId | *(equalCopy + 8))
   {
     v16 = [(NSString *)reportItemId isEqual:?];
   }
@@ -771,25 +771,25 @@ LABEL_6:
   return v12 ^ v14 ^ [(NSString *)self->_reportItemId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 96);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 96);
   if ((v6 & 2) != 0)
   {
-    self->_type = v4[22];
+    self->_type = fromCopy[22];
     *&self->_has |= 2u;
-    v6 = *(v4 + 96);
+    v6 = *(fromCopy + 96);
   }
 
   if (v6)
   {
-    self->_granularity = v4[10];
+    self->_granularity = fromCopy[10];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PDDPHandoutReportItem *)self setHandoutId:?];
   }

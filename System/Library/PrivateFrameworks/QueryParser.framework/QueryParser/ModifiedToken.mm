@@ -1,28 +1,28 @@
 @interface ModifiedToken
-- (ModifiedToken)initWithToken:(id)a3 tokenRange:(_NSRange)a4 argIdsForToken:(id)a5 argScoresForToken:(id)a6;
+- (ModifiedToken)initWithToken:(id)token tokenRange:(_NSRange)range argIdsForToken:(id)forToken argScoresForToken:(id)scoresForToken;
 - (_NSRange)tokenRange;
 @end
 
 @implementation ModifiedToken
 
-- (ModifiedToken)initWithToken:(id)a3 tokenRange:(_NSRange)a4 argIdsForToken:(id)a5 argScoresForToken:(id)a6
+- (ModifiedToken)initWithToken:(id)token tokenRange:(_NSRange)range argIdsForToken:(id)forToken argScoresForToken:(id)scoresForToken
 {
-  length = a4.length;
-  location = a4.location;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  length = range.length;
+  location = range.location;
+  tokenCopy = token;
+  forTokenCopy = forToken;
+  scoresForTokenCopy = scoresForToken;
   v18.receiver = self;
   v18.super_class = ModifiedToken;
   v15 = [(ModifiedToken *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_token, a3);
+    objc_storeStrong(&v15->_token, token);
     v16->_tokenRange.location = location;
     v16->_tokenRange.length = length;
-    objc_storeStrong(&v16->_argIdsForToken, a5);
-    objc_storeStrong(&v16->_argScoresForToken, a6);
+    objc_storeStrong(&v16->_argIdsForToken, forToken);
+    objc_storeStrong(&v16->_argScoresForToken, scoresForToken);
   }
 
   return v16;

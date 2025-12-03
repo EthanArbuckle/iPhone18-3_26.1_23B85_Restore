@@ -1,15 +1,15 @@
 @interface RTNSNumberArrayTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation RTNSNumberArrayTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_10;
   }
@@ -32,7 +32,7 @@
   if (objc_opt_isKindOfClass())
   {
     v10 = 0;
-    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v10];
+    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:valueCopy requiringSecureCoding:1 error:&v10];
     v6 = v10;
     if (v6 || !v5)
     {
@@ -40,7 +40,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v12 = v3;
+        v12 = valueCopy;
         v13 = 2112;
         v14 = v6;
         _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "failed number array serialization, value, %@, error, %@", buf, 0x16u);
@@ -64,11 +64,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_10;
   }
@@ -94,7 +94,7 @@ LABEL_10:
     v6 = objc_opt_class();
     v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
     v13 = 0;
-    v8 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v7 fromData:v3 error:&v13];
+    v8 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v7 fromData:valueCopy error:&v13];
     v9 = v13;
     if (v9 || !v8)
     {
@@ -104,7 +104,7 @@ LABEL_10:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v15 = v3;
+          v15 = valueCopy;
           v16 = 2112;
           v17 = v9;
           _os_log_debug_impl(&dword_2304B3000, v11, OS_LOG_TYPE_DEBUG, "failed number array deserialization, value, %@, error, %@", buf, 0x16u);

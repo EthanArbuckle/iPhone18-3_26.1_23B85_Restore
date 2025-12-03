@@ -1,36 +1,36 @@
 @interface _ATXClientModelShadowMetricsDataSourceBase
-- (BOOL)isPrediction:(id)a3 equalToPrediction:(id)a4;
-- (_ATXClientModelShadowMetricsDataSourceBase)initWithClientModelType:(int64_t)a3;
-- (id)_eventBodyDateForEvent:(id)a3;
-- (id)predictionCachePublisherFromStartDate:(id)a3;
-- (unint64_t)numberOfPredictionsInCache:(id)a3 ofType:(int64_t)a4;
-- (void)enumeratePredictionsInCache:(id)a3 ofType:(int64_t)a4 usingBlock:(id)a5;
-- (void)replayHistoryWithShadowEventPublisher:(id)a3 startDate:(id)a4 endDate:(id)a5 shadowEventHandler:(id)a6 predictionCacheHandler:(id)a7;
+- (BOOL)isPrediction:(id)prediction equalToPrediction:(id)toPrediction;
+- (_ATXClientModelShadowMetricsDataSourceBase)initWithClientModelType:(int64_t)type;
+- (id)_eventBodyDateForEvent:(id)event;
+- (id)predictionCachePublisherFromStartDate:(id)date;
+- (unint64_t)numberOfPredictionsInCache:(id)cache ofType:(int64_t)type;
+- (void)enumeratePredictionsInCache:(id)cache ofType:(int64_t)type usingBlock:(id)block;
+- (void)replayHistoryWithShadowEventPublisher:(id)publisher startDate:(id)date endDate:(id)endDate shadowEventHandler:(id)handler predictionCacheHandler:(id)cacheHandler;
 @end
 
 @implementation _ATXClientModelShadowMetricsDataSourceBase
 
-- (_ATXClientModelShadowMetricsDataSourceBase)initWithClientModelType:(int64_t)a3
+- (_ATXClientModelShadowMetricsDataSourceBase)initWithClientModelType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = _ATXClientModelShadowMetricsDataSourceBase;
   result = [(_ATXClientModelShadowMetricsDataSourceBase *)&v5 init];
   if (result)
   {
-    result->_clientModelType = a3;
+    result->_clientModelType = type;
   }
 
   return result;
 }
 
-- (id)predictionCachePublisherFromStartDate:(id)a3
+- (id)predictionCachePublisherFromStartDate:(id)date
 {
   v3 = MEMORY[0x277D42070];
   clientModelType = self->_clientModelType;
-  v5 = a3;
+  dateCopy = date;
   v6 = [v3 clientModelIdFromClientModelType:clientModelType];
   v7 = objc_opt_new();
-  [v5 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v9 = v8;
 
   v10 = [v7 publisherFromStartTime:v9];
@@ -46,47 +46,47 @@
   return v12;
 }
 
-- (void)replayHistoryWithShadowEventPublisher:(id)a3 startDate:(id)a4 endDate:(id)a5 shadowEventHandler:(id)a6 predictionCacheHandler:(id)a7
+- (void)replayHistoryWithShadowEventPublisher:(id)publisher startDate:(id)date endDate:(id)endDate shadowEventHandler:(id)handler predictionCacheHandler:(id)cacheHandler
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = a3;
-  v16 = [(_ATXClientModelShadowMetricsDataSourceBase *)self predictionCachePublisherFromStartDate:a4];
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  cacheHandlerCopy = cacheHandler;
+  publisherCopy = publisher;
+  v16 = [(_ATXClientModelShadowMetricsDataSourceBase *)self predictionCachePublisherFromStartDate:date];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __144___ATXClientModelShadowMetricsDataSourceBase_replayHistoryWithShadowEventPublisher_startDate_endDate_shadowEventHandler_predictionCacheHandler___block_invoke;
   v26[3] = &unk_27859DB08;
   v26[4] = self;
-  v17 = [v16 orderedMergeWithOther:v15 comparator:v26];
+  v17 = [v16 orderedMergeWithOther:publisherCopy comparator:v26];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __144___ATXClientModelShadowMetricsDataSourceBase_replayHistoryWithShadowEventPublisher_startDate_endDate_shadowEventHandler_predictionCacheHandler___block_invoke_73;
   v22[3] = &unk_27859DB30;
   v22[4] = self;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v23 = endDateCopy;
+  v24 = handlerCopy;
+  v25 = cacheHandlerCopy;
+  v18 = cacheHandlerCopy;
+  v19 = handlerCopy;
+  v20 = endDateCopy;
   v21 = [v17 sinkWithCompletion:&__block_literal_global_125 shouldContinue:v22];
 }
 
-- (id)_eventBodyDateForEvent:(id)a3
+- (id)_eventBodyDateForEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 eventBody];
-  v5 = [v4 conformsToProtocol:&unk_283AF6CC8];
+  eventCopy = event;
+  eventBody = [eventCopy eventBody];
+  v5 = [eventBody conformsToProtocol:&unk_283AF6CC8];
 
-  v6 = [v3 eventBody];
-  v7 = v6;
+  eventBody2 = [eventCopy eventBody];
+  eventBody3 = eventBody2;
   if (v5)
   {
-    v8 = [v6 absoluteTimestamp];
+    absoluteTimestamp = [eventBody2 absoluteTimestamp];
 LABEL_5:
-    v10 = v8;
+    v10 = absoluteTimestamp;
 
     goto LABEL_7;
   }
@@ -96,49 +96,49 @@ LABEL_5:
 
   if (isKindOfClass)
   {
-    v7 = [v3 eventBody];
-    v8 = [v7 date];
+    eventBody3 = [eventCopy eventBody];
+    absoluteTimestamp = [eventBody3 date];
     goto LABEL_5;
   }
 
   v11 = MEMORY[0x277CBEAA8];
-  [v3 timestamp];
+  [eventCopy timestamp];
   v10 = [v11 dateWithTimeIntervalSinceReferenceDate:?];
 LABEL_7:
 
   return v10;
 }
 
-- (BOOL)isPrediction:(id)a3 equalToPrediction:(id)a4
+- (BOOL)isPrediction:(id)prediction equalToPrediction:(id)toPrediction
 {
-  v5 = a3;
-  v6 = a4;
+  predictionCopy = prediction;
+  toPredictionCopy = toPrediction;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v7 = v5;
-    v8 = v6;
-    v9 = [v7 executableType];
-    if (v9 != [v8 executableType])
+    v7 = predictionCopy;
+    v8 = toPredictionCopy;
+    executableType = [v7 executableType];
+    if (executableType != [v8 executableType])
     {
       goto LABEL_8;
     }
 
-    v10 = [v7 predictionReasons];
-    if (v10 != [v8 predictionReasons])
+    predictionReasons = [v7 predictionReasons];
+    if (predictionReasons != [v8 predictionReasons])
     {
       goto LABEL_8;
     }
 
-    v11 = [v7 scoreSpecification];
-    v12 = [v8 scoreSpecification];
-    v13 = [v11 isEqual:v12];
+    scoreSpecification = [v7 scoreSpecification];
+    scoreSpecification2 = [v8 scoreSpecification];
+    v13 = [scoreSpecification isEqual:scoreSpecification2];
 
     if (v13)
     {
-      v14 = [v7 executableIdentifier];
-      v15 = [v8 executableIdentifier];
-      v16 = [v14 isEqualToString:v15];
+      executableIdentifier = [v7 executableIdentifier];
+      executableIdentifier2 = [v8 executableIdentifier];
+      v16 = [executableIdentifier isEqualToString:executableIdentifier2];
     }
 
     else
@@ -156,10 +156,10 @@ LABEL_8:
   return v16;
 }
 
-- (unint64_t)numberOfPredictionsInCache:(id)a3 ofType:(int64_t)a4
+- (unint64_t)numberOfPredictionsInCache:(id)cache ofType:(int64_t)type
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  cacheCopy = cache;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -167,8 +167,8 @@ LABEL_8:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [v5 suggestions];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    suggestions = [cacheCopy suggestions];
+    v7 = [suggestions countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -180,16 +180,16 @@ LABEL_8:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(suggestions);
           }
 
-          if ([*(*(&v14 + 1) + 8 * i) executableType] == a4)
+          if ([*(*(&v14 + 1) + 8 * i) executableType] == type)
           {
             ++v9;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [suggestions countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -210,21 +210,21 @@ LABEL_8:
   return v9;
 }
 
-- (void)enumeratePredictionsInCache:(id)a3 ofType:(int64_t)a4 usingBlock:(id)a5
+- (void)enumeratePredictionsInCache:(id)cache ofType:(int64_t)type usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
+  cacheCopy = cache;
+  blockCopy = block;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v7 suggestions];
+    suggestions = [cacheCopy suggestions];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __92___ATXClientModelShadowMetricsDataSourceBase_enumeratePredictionsInCache_ofType_usingBlock___block_invoke;
     v10[3] = &unk_27859DB58;
-    v12 = a4;
-    v11 = v8;
-    [v9 enumerateObjectsUsingBlock:v10];
+    typeCopy = type;
+    v11 = blockCopy;
+    [suggestions enumerateObjectsUsingBlock:v10];
   }
 }
 

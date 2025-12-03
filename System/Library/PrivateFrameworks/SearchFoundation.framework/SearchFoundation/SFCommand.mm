@@ -1,46 +1,46 @@
 @interface SFCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCommand)initWithCoder:(id)a3;
-- (SFCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCommand)initWithCoder:(id)coder;
+- (SFCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCommand
 
 - (unint64_t)hash
 {
-  v3 = [(SFCommand *)self commandDetail];
-  v4 = [v3 hash];
-  v5 = [(SFCommand *)self normalizedTopic];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SFCommand *)self backendData];
-  v8 = [v7 hash];
-  v9 = [(SFCommand *)self commandReference];
-  v10 = v8 ^ [v9 hash];
+  commandDetail = [(SFCommand *)self commandDetail];
+  v4 = [commandDetail hash];
+  normalizedTopic = [(SFCommand *)self normalizedTopic];
+  v6 = [normalizedTopic hash] ^ v4;
+  backendData = [(SFCommand *)self backendData];
+  v8 = [backendData hash];
+  commandReference = [(SFCommand *)self commandReference];
+  v10 = v8 ^ [commandReference hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFCommand *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFCommand *)self commandDetail];
-      v8 = [(SFCommand *)v6 commandDetail];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      commandDetail = [(SFCommand *)self commandDetail];
+      commandDetail2 = [(SFCommand *)v6 commandDetail];
+      if ((commandDetail != 0) == (commandDetail2 == 0))
       {
         v11 = 0;
 LABEL_37:
@@ -48,65 +48,65 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      v9 = [(SFCommand *)self commandDetail];
-      if (v9)
+      commandDetail3 = [(SFCommand *)self commandDetail];
+      if (commandDetail3)
       {
-        v10 = [(SFCommand *)self commandDetail];
-        v3 = [(SFCommand *)v6 commandDetail];
-        if (![v10 isEqual:v3])
+        commandDetail4 = [(SFCommand *)self commandDetail];
+        commandDetail5 = [(SFCommand *)v6 commandDetail];
+        if (![commandDetail4 isEqual:commandDetail5])
         {
           v11 = 0;
           goto LABEL_35;
         }
 
-        v41 = v10;
+        v41 = commandDetail4;
       }
 
-      v12 = [(SFCommand *)self normalizedTopic];
-      v13 = [(SFCommand *)v6 normalizedTopic];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      normalizedTopic = [(SFCommand *)self normalizedTopic];
+      normalizedTopic2 = [(SFCommand *)v6 normalizedTopic];
+      v14 = normalizedTopic2;
+      if ((normalizedTopic != 0) == (normalizedTopic2 == 0))
       {
 
         v11 = 0;
         goto LABEL_34;
       }
 
-      v15 = [(SFCommand *)self normalizedTopic];
-      v40 = v15;
-      if (v15)
+      normalizedTopic3 = [(SFCommand *)self normalizedTopic];
+      v40 = normalizedTopic3;
+      if (normalizedTopic3)
       {
-        v16 = v15;
+        v16 = normalizedTopic3;
         v35 = v14;
-        v17 = v12;
-        v18 = [(SFCommand *)self normalizedTopic];
-        v37 = [(SFCommand *)v6 normalizedTopic];
-        v38 = v18;
-        if (![v18 isEqual:?])
+        v17 = normalizedTopic;
+        normalizedTopic4 = [(SFCommand *)self normalizedTopic];
+        normalizedTopic5 = [(SFCommand *)v6 normalizedTopic];
+        v38 = normalizedTopic4;
+        if (![normalizedTopic4 isEqual:?])
         {
           v11 = 0;
-          v12 = v17;
+          normalizedTopic = v17;
           v14 = v35;
           goto LABEL_32;
         }
 
-        v39 = v3;
-        v12 = v17;
+        v39 = commandDetail5;
+        normalizedTopic = v17;
         v14 = v35;
       }
 
       else
       {
-        v39 = v3;
+        v39 = commandDetail5;
       }
 
-      v19 = [(SFCommand *)self backendData];
-      v20 = [(SFCommand *)v6 backendData];
-      if ((v19 != 0) == (v20 == 0))
+      backendData = [(SFCommand *)self backendData];
+      backendData2 = [(SFCommand *)v6 backendData];
+      if ((backendData != 0) == (backendData2 == 0))
       {
 
         v11 = 0;
-        v3 = v39;
+        commandDetail5 = v39;
         v16 = v40;
         if (!v40)
         {
@@ -116,15 +116,15 @@ LABEL_37:
         goto LABEL_32;
       }
 
-      v33 = v20;
-      v34 = v19;
+      v33 = backendData2;
+      v34 = backendData;
       [(SFCommand *)self backendData];
       v36 = v16 = v40;
       if (!v36 || (-[SFCommand backendData](self, "backendData"), v21 = objc_claimAutoreleasedReturnValue(), -[SFCommand backendData](v6, "backendData"), v31 = objc_claimAutoreleasedReturnValue(), v32 = v21, [v21 isEqual:?]))
       {
-        v22 = [(SFCommand *)self commandReference];
-        v23 = [(SFCommand *)v6 commandReference];
-        if ((v22 != 0) == (v23 == 0))
+        commandReference = [(SFCommand *)self commandReference];
+        commandReference2 = [(SFCommand *)v6 commandReference];
+        if ((commandReference != 0) == (commandReference2 == 0))
         {
 
           v11 = 0;
@@ -133,16 +133,16 @@ LABEL_37:
 
         else
         {
-          v29 = v22;
-          v30 = v23;
-          v24 = [(SFCommand *)self commandReference];
+          v29 = commandReference;
+          v30 = commandReference2;
+          commandReference3 = [(SFCommand *)self commandReference];
           v16 = v40;
-          if (v24)
+          if (commandReference3)
           {
-            v28 = v24;
-            v27 = [(SFCommand *)self commandReference];
-            v25 = [(SFCommand *)v6 commandReference];
-            v11 = [v27 isEqual:?];
+            v28 = commandReference3;
+            commandReference4 = [(SFCommand *)self commandReference];
+            commandReference5 = [(SFCommand *)v6 commandReference];
+            v11 = [commandReference4 isEqual:?];
           }
 
           else
@@ -152,7 +152,7 @@ LABEL_37:
           }
         }
 
-        v3 = v39;
+        commandDetail5 = v39;
         if (!v36)
         {
 LABEL_31:
@@ -162,8 +162,8 @@ LABEL_31:
 LABEL_33:
 
 LABEL_34:
-            v10 = v41;
-            if (!v9)
+            commandDetail4 = v41;
+            if (!commandDetail3)
             {
 LABEL_36:
 
@@ -184,7 +184,7 @@ LABEL_32:
       else
       {
         v11 = 0;
-        v3 = v39;
+        commandDetail5 = v39;
       }
 
       goto LABEL_31;
@@ -198,23 +198,23 @@ LABEL_38:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFCommand *)self commandDetail];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  commandDetail = [(SFCommand *)self commandDetail];
+  v6 = [commandDetail copy];
   [v4 setCommandDetail:v6];
 
-  v7 = [(SFCommand *)self normalizedTopic];
-  v8 = [v7 copy];
+  normalizedTopic = [(SFCommand *)self normalizedTopic];
+  v8 = [normalizedTopic copy];
   [v4 setNormalizedTopic:v8];
 
-  v9 = [(SFCommand *)self backendData];
-  v10 = [v9 copy];
+  backendData = [(SFCommand *)self backendData];
+  v10 = [backendData copy];
   [v4 setBackendData:v10];
 
-  v11 = [(SFCommand *)self commandReference];
-  v12 = [v11 copy];
+  commandReference = [(SFCommand *)self commandReference];
+  v12 = [commandReference copy];
   [v4 setCommandReference:v12];
 
   return v4;
@@ -223,31 +223,31 @@ LABEL_38:
 - (NSData)jsonData
 {
   v2 = [[_SFPBCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBCommand *)v2 jsonData];
+  jsonData = [(_SFPBCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBCommand alloc] initWithFacade:self];
-  v5 = [(_SFPBCommand *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBCommand *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFCommand)initWithCoder:(id)a3
+- (SFCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [SFCommand alloc];
   v7 = [[_SFPBCommand alloc] initWithData:v5];
@@ -256,619 +256,619 @@ LABEL_38:
   return v8;
 }
 
-- (SFCommand)initWithProtobuf:(id)a3
+- (SFCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v90.receiver = self;
   v90.super_class = SFCommand;
   v5 = [(SFCommand *)&v90 init];
   if (v5)
   {
-    v6 = [v4 commandDetail];
+    commandDetail = [protobufCopy commandDetail];
 
-    if (v6)
+    if (commandDetail)
     {
-      v7 = [v4 commandDetail];
-      [(SFCommand *)v5 setCommandDetail:v7];
+      commandDetail2 = [protobufCopy commandDetail];
+      [(SFCommand *)v5 setCommandDetail:commandDetail2];
     }
 
-    v8 = [v4 normalizedTopic];
+    normalizedTopic = [protobufCopy normalizedTopic];
 
-    if (v8)
+    if (normalizedTopic)
     {
-      v9 = [v4 normalizedTopic];
-      v10 = _SFPBTopicHandwrittenTranslator(v9);
+      normalizedTopic2 = [protobufCopy normalizedTopic];
+      v10 = _SFPBTopicHandwrittenTranslator(normalizedTopic2);
       [(SFCommand *)v5 setNormalizedTopic:v10];
     }
 
-    v11 = [v4 backendData];
+    backendData = [protobufCopy backendData];
 
-    if (v11)
+    if (backendData)
     {
-      v12 = [v4 backendData];
-      [(SFCommand *)v5 setBackendData:v12];
+      backendData2 = [protobufCopy backendData];
+      [(SFCommand *)v5 setBackendData:backendData2];
     }
 
-    v13 = [v4 commandReference];
+    commandReference = [protobufCopy commandReference];
 
-    if (v13)
+    if (commandReference)
     {
       v14 = [SFCommandReference alloc];
-      v15 = [v4 commandReference];
-      v16 = [(SFCommandReference *)v14 initWithProtobuf:v15];
+      commandReference2 = [protobufCopy commandReference];
+      v16 = [(SFCommandReference *)v14 initWithProtobuf:commandReference2];
       [(SFCommand *)v5 setCommandReference:v16];
     }
 
-    v17 = [v4 showContactCardCommand];
+    showContactCardCommand = [protobufCopy showContactCardCommand];
 
-    if (v17)
+    if (showContactCardCommand)
     {
       v18 = [SFShowContactCardCommand alloc];
-      v19 = [v4 showContactCardCommand];
+      showContactCardCommand2 = [protobufCopy showContactCardCommand];
     }
 
     else
     {
-      v21 = [v4 showSFCardCommand];
+      showSFCardCommand = [protobufCopy showSFCardCommand];
 
-      if (v21)
+      if (showSFCardCommand)
       {
         v18 = [SFShowSFCardCommand alloc];
-        v19 = [v4 showSFCardCommand];
+        showContactCardCommand2 = [protobufCopy showSFCardCommand];
       }
 
       else
       {
-        v22 = [v4 showAppStoreSheetCommand];
+        showAppStoreSheetCommand = [protobufCopy showAppStoreSheetCommand];
 
-        if (v22)
+        if (showAppStoreSheetCommand)
         {
           v18 = [SFShowAppStoreSheetCommand alloc];
-          v19 = [v4 showAppStoreSheetCommand];
+          showContactCardCommand2 = [protobufCopy showAppStoreSheetCommand];
         }
 
         else
         {
-          v23 = [v4 openPunchoutCommand];
+          openPunchoutCommand = [protobufCopy openPunchoutCommand];
 
-          if (v23)
+          if (openPunchoutCommand)
           {
             v18 = [SFOpenPunchoutCommand alloc];
-            v19 = [v4 openPunchoutCommand];
+            showContactCardCommand2 = [protobufCopy openPunchoutCommand];
           }
 
           else
           {
-            v24 = [v4 openFileProviderItemCommand];
+            openFileProviderItemCommand = [protobufCopy openFileProviderItemCommand];
 
-            if (v24)
+            if (openFileProviderItemCommand)
             {
               v18 = [SFOpenFileProviderItemCommand alloc];
-              v19 = [v4 openFileProviderItemCommand];
+              showContactCardCommand2 = [protobufCopy openFileProviderItemCommand];
             }
 
             else
             {
-              v25 = [v4 openAppClipCommand];
+              openAppClipCommand = [protobufCopy openAppClipCommand];
 
-              if (v25)
+              if (openAppClipCommand)
               {
                 v18 = [SFOpenAppClipCommand alloc];
-                v19 = [v4 openAppClipCommand];
+                showContactCardCommand2 = [protobufCopy openAppClipCommand];
               }
 
               else
               {
-                v26 = [v4 openWebClipCommand];
+                openWebClipCommand = [protobufCopy openWebClipCommand];
 
-                if (v26)
+                if (openWebClipCommand)
                 {
                   v18 = [SFOpenWebClipCommand alloc];
-                  v19 = [v4 openWebClipCommand];
+                  showContactCardCommand2 = [protobufCopy openWebClipCommand];
                 }
 
                 else
                 {
-                  v27 = [v4 requestAppClipInstallCommand];
+                  requestAppClipInstallCommand = [protobufCopy requestAppClipInstallCommand];
 
-                  if (v27)
+                  if (requestAppClipInstallCommand)
                   {
                     v18 = [SFRequestAppClipInstallCommand alloc];
-                    v19 = [v4 requestAppClipInstallCommand];
+                    showContactCardCommand2 = [protobufCopy requestAppClipInstallCommand];
                   }
 
                   else
                   {
-                    v28 = [v4 requestUserReportCommand];
+                    requestUserReportCommand = [protobufCopy requestUserReportCommand];
 
-                    if (v28)
+                    if (requestUserReportCommand)
                     {
                       v18 = [SFRequestUserReportCommand alloc];
-                      v19 = [v4 requestUserReportCommand];
+                      showContactCardCommand2 = [protobufCopy requestUserReportCommand];
                     }
 
                     else
                     {
-                      v29 = [v4 launchAppCommand];
+                      launchAppCommand = [protobufCopy launchAppCommand];
 
-                      if (v29)
+                      if (launchAppCommand)
                       {
                         v18 = [SFLaunchAppCommand alloc];
-                        v19 = [v4 launchAppCommand];
+                        showContactCardCommand2 = [protobufCopy launchAppCommand];
                       }
 
                       else
                       {
-                        v30 = [v4 runVoiceShortcutCommand];
+                        runVoiceShortcutCommand = [protobufCopy runVoiceShortcutCommand];
 
-                        if (v30)
+                        if (runVoiceShortcutCommand)
                         {
                           v18 = [SFRunVoiceShortcutCommand alloc];
-                          v19 = [v4 runVoiceShortcutCommand];
+                          showContactCardCommand2 = [protobufCopy runVoiceShortcutCommand];
                         }
 
                         else
                         {
-                          v31 = [v4 indexedUserActivityCommand];
+                          indexedUserActivityCommand = [protobufCopy indexedUserActivityCommand];
 
-                          if (v31)
+                          if (indexedUserActivityCommand)
                           {
                             v18 = [SFIndexedUserActivityCommand alloc];
-                            v19 = [v4 indexedUserActivityCommand];
+                            showContactCardCommand2 = [protobufCopy indexedUserActivityCommand];
                           }
 
                           else
                           {
-                            v32 = [v4 openCoreSpotlightItemCommand];
+                            openCoreSpotlightItemCommand = [protobufCopy openCoreSpotlightItemCommand];
 
-                            if (v32)
+                            if (openCoreSpotlightItemCommand)
                             {
                               v18 = [SFOpenCoreSpotlightItemCommand alloc];
-                              v19 = [v4 openCoreSpotlightItemCommand];
+                              showContactCardCommand2 = [protobufCopy openCoreSpotlightItemCommand];
                             }
 
                             else
                             {
-                              v33 = [v4 performIntentCommand];
+                              performIntentCommand = [protobufCopy performIntentCommand];
 
-                              if (v33)
+                              if (performIntentCommand)
                               {
                                 v18 = [SFPerformIntentCommand alloc];
-                                v19 = [v4 performIntentCommand];
+                                showContactCardCommand2 = [protobufCopy performIntentCommand];
                               }
 
                               else
                               {
-                                v34 = [v4 searchInAppCommand];
+                                searchInAppCommand = [protobufCopy searchInAppCommand];
 
-                                if (v34)
+                                if (searchInAppCommand)
                                 {
                                   v18 = [SFSearchInAppCommand alloc];
-                                  v19 = [v4 searchInAppCommand];
+                                  showContactCardCommand2 = [protobufCopy searchInAppCommand];
                                 }
 
                                 else
                                 {
-                                  v35 = [v4 updateSearchQueryCommand];
+                                  updateSearchQueryCommand = [protobufCopy updateSearchQueryCommand];
 
-                                  if (v35)
+                                  if (updateSearchQueryCommand)
                                   {
                                     v18 = [SFUpdateSearchQueryCommand alloc];
-                                    v19 = [v4 updateSearchQueryCommand];
+                                    showContactCardCommand2 = [protobufCopy updateSearchQueryCommand];
                                   }
 
                                   else
                                   {
-                                    v36 = [v4 searchWebCommand];
+                                    searchWebCommand = [protobufCopy searchWebCommand];
 
-                                    if (v36)
+                                    if (searchWebCommand)
                                     {
                                       v18 = [SFSearchWebCommand alloc];
-                                      v19 = [v4 searchWebCommand];
+                                      showContactCardCommand2 = [protobufCopy searchWebCommand];
                                     }
 
                                     else
                                     {
-                                      v37 = [v4 invokeSiriCommand];
+                                      invokeSiriCommand = [protobufCopy invokeSiriCommand];
 
-                                      if (v37)
+                                      if (invokeSiriCommand)
                                       {
                                         v18 = [SFInvokeSiriCommand alloc];
-                                        v19 = [v4 invokeSiriCommand];
+                                        showContactCardCommand2 = [protobufCopy invokeSiriCommand];
                                       }
 
                                       else
                                       {
-                                        v38 = [v4 performContactQueryCommand];
+                                        performContactQueryCommand = [protobufCopy performContactQueryCommand];
 
-                                        if (v38)
+                                        if (performContactQueryCommand)
                                         {
                                           v18 = [SFPerformContactQueryCommand alloc];
-                                          v19 = [v4 performContactQueryCommand];
+                                          showContactCardCommand2 = [protobufCopy performContactQueryCommand];
                                         }
 
                                         else
                                         {
-                                          v39 = [v4 openCalculationCommand];
+                                          openCalculationCommand = [protobufCopy openCalculationCommand];
 
-                                          if (v39)
+                                          if (openCalculationCommand)
                                           {
                                             v18 = [SFOpenCalculationCommand alloc];
-                                            v19 = [v4 openCalculationCommand];
+                                            showContactCardCommand2 = [protobufCopy openCalculationCommand];
                                           }
 
                                           else
                                           {
-                                            v40 = [v4 playVideoCommand];
+                                            playVideoCommand = [protobufCopy playVideoCommand];
 
-                                            if (v40)
+                                            if (playVideoCommand)
                                             {
                                               v18 = [SFPlayVideoCommand alloc];
-                                              v19 = [v4 playVideoCommand];
+                                              showContactCardCommand2 = [protobufCopy playVideoCommand];
                                             }
 
                                             else
                                             {
-                                              v41 = [v4 callCommand];
+                                              callCommand = [protobufCopy callCommand];
 
-                                              if (v41)
+                                              if (callCommand)
                                               {
                                                 v18 = [SFCallCommand alloc];
-                                                v19 = [v4 callCommand];
+                                                showContactCardCommand2 = [protobufCopy callCommand];
                                               }
 
                                               else
                                               {
-                                                v42 = [v4 emailCommand];
+                                                emailCommand = [protobufCopy emailCommand];
 
-                                                if (v42)
+                                                if (emailCommand)
                                                 {
                                                   v18 = [SFEmailCommand alloc];
-                                                  v19 = [v4 emailCommand];
+                                                  showContactCardCommand2 = [protobufCopy emailCommand];
                                                 }
 
                                                 else
                                                 {
-                                                  v43 = [v4 beginMapsRoutingCommand];
+                                                  beginMapsRoutingCommand = [protobufCopy beginMapsRoutingCommand];
 
-                                                  if (v43)
+                                                  if (beginMapsRoutingCommand)
                                                   {
                                                     v18 = [SFBeginMapsRoutingCommand alloc];
-                                                    v19 = [v4 beginMapsRoutingCommand];
+                                                    showContactCardCommand2 = [protobufCopy beginMapsRoutingCommand];
                                                   }
 
                                                   else
                                                   {
-                                                    v44 = [v4 toggleAudioCommand];
+                                                    toggleAudioCommand = [protobufCopy toggleAudioCommand];
 
-                                                    if (v44)
+                                                    if (toggleAudioCommand)
                                                     {
                                                       v18 = [SFToggleAudioCommand alloc];
-                                                      v19 = [v4 toggleAudioCommand];
+                                                      showContactCardCommand2 = [protobufCopy toggleAudioCommand];
                                                     }
 
                                                     else
                                                     {
-                                                      v45 = [v4 performPersonEntityQueryCommand];
+                                                      performPersonEntityQueryCommand = [protobufCopy performPersonEntityQueryCommand];
 
-                                                      if (v45)
+                                                      if (performPersonEntityQueryCommand)
                                                       {
                                                         v18 = [SFPerformPersonEntityQueryCommand alloc];
-                                                        v19 = [v4 performPersonEntityQueryCommand];
+                                                        showContactCardCommand2 = [protobufCopy performPersonEntityQueryCommand];
                                                       }
 
                                                       else
                                                       {
-                                                        v46 = [v4 showPurchaseRequestSheetCommand];
+                                                        showPurchaseRequestSheetCommand = [protobufCopy showPurchaseRequestSheetCommand];
 
-                                                        if (v46)
+                                                        if (showPurchaseRequestSheetCommand)
                                                         {
                                                           v18 = [SFShowPurchaseRequestSheetCommand alloc];
-                                                          v19 = [v4 showPurchaseRequestSheetCommand];
+                                                          showContactCardCommand2 = [protobufCopy showPurchaseRequestSheetCommand];
                                                         }
 
                                                         else
                                                         {
-                                                          v47 = [v4 showScreenTimeRequestSheetCommand];
+                                                          showScreenTimeRequestSheetCommand = [protobufCopy showScreenTimeRequestSheetCommand];
 
-                                                          if (v47)
+                                                          if (showScreenTimeRequestSheetCommand)
                                                           {
                                                             v18 = [SFShowScreenTimeRequestSheetCommand alloc];
-                                                            v19 = [v4 showScreenTimeRequestSheetCommand];
+                                                            showContactCardCommand2 = [protobufCopy showScreenTimeRequestSheetCommand];
                                                           }
 
                                                           else
                                                           {
-                                                            v48 = [v4 performEntityQueryCommand];
+                                                            performEntityQueryCommand = [protobufCopy performEntityQueryCommand];
 
-                                                            if (v48)
+                                                            if (performEntityQueryCommand)
                                                             {
                                                               v18 = [SFPerformEntityQueryCommand alloc];
-                                                              v19 = [v4 performEntityQueryCommand];
+                                                              showContactCardCommand2 = [protobufCopy performEntityQueryCommand];
                                                             }
 
                                                             else
                                                             {
-                                                              v49 = [v4 shareCommand];
+                                                              shareCommand = [protobufCopy shareCommand];
 
-                                                              if (v49)
+                                                              if (shareCommand)
                                                               {
                                                                 v18 = [SFShareCommand alloc];
-                                                                v19 = [v4 shareCommand];
+                                                                showContactCardCommand2 = [protobufCopy shareCommand];
                                                               }
 
                                                               else
                                                               {
-                                                                v50 = [v4 copyCommand];
+                                                                copyCommand = [protobufCopy copyCommand];
 
-                                                                if (v50)
+                                                                if (copyCommand)
                                                                 {
                                                                   v18 = [SFCopyCommand alloc];
-                                                                  v19 = [v4 copyCommand];
+                                                                  showContactCardCommand2 = [protobufCopy copyCommand];
                                                                 }
 
                                                                 else
                                                                 {
-                                                                  v51 = [v4 toggleWatchListStatusCommand];
+                                                                  toggleWatchListStatusCommand = [protobufCopy toggleWatchListStatusCommand];
 
-                                                                  if (v51)
+                                                                  if (toggleWatchListStatusCommand)
                                                                   {
                                                                     v18 = [SFToggleWatchListStatusCommand alloc];
-                                                                    v19 = [v4 toggleWatchListStatusCommand];
+                                                                    showContactCardCommand2 = [protobufCopy toggleWatchListStatusCommand];
                                                                   }
 
                                                                   else
                                                                   {
-                                                                    v52 = [v4 showPhotosOneUpViewCommand];
+                                                                    showPhotosOneUpViewCommand = [protobufCopy showPhotosOneUpViewCommand];
 
-                                                                    if (v52)
+                                                                    if (showPhotosOneUpViewCommand)
                                                                     {
                                                                       v18 = [SFShowPhotosOneUpViewCommand alloc];
-                                                                      v19 = [v4 showPhotosOneUpViewCommand];
+                                                                      showContactCardCommand2 = [protobufCopy showPhotosOneUpViewCommand];
                                                                     }
 
                                                                     else
                                                                     {
-                                                                      v53 = [v4 playMediaCommand];
+                                                                      playMediaCommand = [protobufCopy playMediaCommand];
 
-                                                                      if (v53)
+                                                                      if (playMediaCommand)
                                                                       {
                                                                         v18 = [SFPlayMediaCommand alloc];
-                                                                        v19 = [v4 playMediaCommand];
+                                                                        showContactCardCommand2 = [protobufCopy playMediaCommand];
                                                                       }
 
                                                                       else
                                                                       {
-                                                                        v54 = [v4 openMediaCommand];
+                                                                        openMediaCommand = [protobufCopy openMediaCommand];
 
-                                                                        if (v54)
+                                                                        if (openMediaCommand)
                                                                         {
                                                                           v18 = [SFOpenMediaCommand alloc];
-                                                                          v19 = [v4 openMediaCommand];
+                                                                          showContactCardCommand2 = [protobufCopy openMediaCommand];
                                                                         }
 
                                                                         else
                                                                         {
-                                                                          v55 = [v4 addToPhotosLibraryCommand];
+                                                                          addToPhotosLibraryCommand = [protobufCopy addToPhotosLibraryCommand];
 
-                                                                          if (v55)
+                                                                          if (addToPhotosLibraryCommand)
                                                                           {
                                                                             v18 = [SFAddToPhotosLibraryCommand alloc];
-                                                                            v19 = [v4 addToPhotosLibraryCommand];
+                                                                            showContactCardCommand2 = [protobufCopy addToPhotosLibraryCommand];
                                                                           }
 
                                                                           else
                                                                           {
-                                                                            v56 = [v4 performContactActionCommand];
+                                                                            performContactActionCommand = [protobufCopy performContactActionCommand];
 
-                                                                            if (v56)
+                                                                            if (performContactActionCommand)
                                                                             {
                                                                               v18 = [SFPerformContactActionCommand alloc];
-                                                                              v19 = [v4 performContactActionCommand];
+                                                                              showContactCardCommand2 = [protobufCopy performContactActionCommand];
                                                                             }
 
                                                                             else
                                                                             {
-                                                                              v57 = [v4 expandInlineCommand];
+                                                                              expandInlineCommand = [protobufCopy expandInlineCommand];
 
-                                                                              if (v57)
+                                                                              if (expandInlineCommand)
                                                                               {
                                                                                 v18 = [SFExpandInlineCommand alloc];
-                                                                                v19 = [v4 expandInlineCommand];
+                                                                                showContactCardCommand2 = [protobufCopy expandInlineCommand];
                                                                               }
 
                                                                               else
                                                                               {
-                                                                                v58 = [v4 subscribeForUpdatesCommand];
+                                                                                subscribeForUpdatesCommand = [protobufCopy subscribeForUpdatesCommand];
 
-                                                                                if (v58)
+                                                                                if (subscribeForUpdatesCommand)
                                                                                 {
                                                                                   v18 = [SFSubscribeForUpdatesCommand alloc];
-                                                                                  v19 = [v4 subscribeForUpdatesCommand];
+                                                                                  showContactCardCommand2 = [protobufCopy subscribeForUpdatesCommand];
                                                                                 }
 
                                                                                 else
                                                                                 {
-                                                                                  v59 = [v4 viewEmailCommand];
+                                                                                  viewEmailCommand = [protobufCopy viewEmailCommand];
 
-                                                                                  if (v59)
+                                                                                  if (viewEmailCommand)
                                                                                   {
                                                                                     v18 = [SFViewEmailCommand alloc];
-                                                                                    v19 = [v4 viewEmailCommand];
+                                                                                    showContactCardCommand2 = [protobufCopy viewEmailCommand];
                                                                                   }
 
                                                                                   else
                                                                                   {
-                                                                                    v60 = [v4 rejectPeopleInPhotoCommand];
+                                                                                    rejectPeopleInPhotoCommand = [protobufCopy rejectPeopleInPhotoCommand];
 
-                                                                                    if (v60)
+                                                                                    if (rejectPeopleInPhotoCommand)
                                                                                     {
                                                                                       v18 = [SFRejectPeopleInPhotoCommand alloc];
-                                                                                      v19 = [v4 rejectPeopleInPhotoCommand];
+                                                                                      showContactCardCommand2 = [protobufCopy rejectPeopleInPhotoCommand];
                                                                                     }
 
                                                                                     else
                                                                                     {
-                                                                                      v61 = [v4 showWrapperResponseViewCommand];
+                                                                                      showWrapperResponseViewCommand = [protobufCopy showWrapperResponseViewCommand];
 
-                                                                                      if (v61)
+                                                                                      if (showWrapperResponseViewCommand)
                                                                                       {
                                                                                         v18 = [SFShowWrapperResponseViewCommand alloc];
-                                                                                        v19 = [v4 showWrapperResponseViewCommand];
+                                                                                        showContactCardCommand2 = [protobufCopy showWrapperResponseViewCommand];
                                                                                       }
 
                                                                                       else
                                                                                       {
-                                                                                        v62 = [v4 clearProactiveCategoryCommand];
+                                                                                        clearProactiveCategoryCommand = [protobufCopy clearProactiveCategoryCommand];
 
-                                                                                        if (v62)
+                                                                                        if (clearProactiveCategoryCommand)
                                                                                         {
                                                                                           v18 = [SFClearProactiveCategoryCommand alloc];
-                                                                                          v19 = [v4 clearProactiveCategoryCommand];
+                                                                                          showContactCardCommand2 = [protobufCopy clearProactiveCategoryCommand];
                                                                                         }
 
                                                                                         else
                                                                                         {
-                                                                                          v63 = [v4 createContactCommand];
+                                                                                          createContactCommand = [protobufCopy createContactCommand];
 
-                                                                                          if (v63)
+                                                                                          if (createContactCommand)
                                                                                           {
                                                                                             v18 = [SFCreateContactCommand alloc];
-                                                                                            v19 = [v4 createContactCommand];
+                                                                                            showContactCardCommand2 = [protobufCopy createContactCommand];
                                                                                           }
 
                                                                                           else
                                                                                           {
-                                                                                            v64 = [v4 createCalendarEventCommand];
+                                                                                            createCalendarEventCommand = [protobufCopy createCalendarEventCommand];
 
-                                                                                            if (v64)
+                                                                                            if (createCalendarEventCommand)
                                                                                             {
                                                                                               v18 = [SFCreateCalendarEventCommand alloc];
-                                                                                              v19 = [v4 createCalendarEventCommand];
+                                                                                              showContactCardCommand2 = [protobufCopy createCalendarEventCommand];
                                                                                             }
 
                                                                                             else
                                                                                             {
-                                                                                              v65 = [v4 createReminderCommand];
+                                                                                              createReminderCommand = [protobufCopy createReminderCommand];
 
-                                                                                              if (v65)
+                                                                                              if (createReminderCommand)
                                                                                               {
                                                                                                 v18 = [SFCreateReminderCommand alloc];
-                                                                                                v19 = [v4 createReminderCommand];
+                                                                                                showContactCardCommand2 = [protobufCopy createReminderCommand];
                                                                                               }
 
                                                                                               else
                                                                                               {
-                                                                                                v66 = [v4 manageReservationCommand];
+                                                                                                manageReservationCommand = [protobufCopy manageReservationCommand];
 
-                                                                                                if (v66)
+                                                                                                if (manageReservationCommand)
                                                                                                 {
                                                                                                   v18 = [SFManageReservationCommand alloc];
-                                                                                                  v19 = [v4 manageReservationCommand];
+                                                                                                  showContactCardCommand2 = [protobufCopy manageReservationCommand];
                                                                                                 }
 
                                                                                                 else
                                                                                                 {
-                                                                                                  v67 = [v4 updateSportsFollowingStatusCommand];
+                                                                                                  updateSportsFollowingStatusCommand = [protobufCopy updateSportsFollowingStatusCommand];
 
-                                                                                                  if (v67)
+                                                                                                  if (updateSportsFollowingStatusCommand)
                                                                                                   {
                                                                                                     v18 = [SFUpdateSportsFollowingStatusCommand alloc];
-                                                                                                    v19 = [v4 updateSportsFollowingStatusCommand];
+                                                                                                    showContactCardCommand2 = [protobufCopy updateSportsFollowingStatusCommand];
                                                                                                   }
 
                                                                                                   else
                                                                                                   {
-                                                                                                    v68 = [v4 requestProductPageCommand];
+                                                                                                    requestProductPageCommand = [protobufCopy requestProductPageCommand];
 
-                                                                                                    if (v68)
+                                                                                                    if (requestProductPageCommand)
                                                                                                     {
                                                                                                       v18 = [SFRequestProductPageCommand alloc];
-                                                                                                      v19 = [v4 requestProductPageCommand];
+                                                                                                      showContactCardCommand2 = [protobufCopy requestProductPageCommand];
                                                                                                     }
 
                                                                                                     else
                                                                                                     {
-                                                                                                      v69 = [v4 flightCheckinCommand];
+                                                                                                      flightCheckinCommand = [protobufCopy flightCheckinCommand];
 
-                                                                                                      if (v69)
+                                                                                                      if (flightCheckinCommand)
                                                                                                       {
                                                                                                         v18 = [SFFlightCheckinCommand alloc];
-                                                                                                        v19 = [v4 flightCheckinCommand];
+                                                                                                        showContactCardCommand2 = [protobufCopy flightCheckinCommand];
                                                                                                       }
 
                                                                                                       else
                                                                                                       {
-                                                                                                        v70 = [v4 executeToolCommand];
+                                                                                                        executeToolCommand = [protobufCopy executeToolCommand];
 
-                                                                                                        if (v70)
+                                                                                                        if (executeToolCommand)
                                                                                                         {
                                                                                                           v18 = [SFExecuteToolCommand alloc];
-                                                                                                          v19 = [v4 executeToolCommand];
+                                                                                                          showContactCardCommand2 = [protobufCopy executeToolCommand];
                                                                                                         }
 
                                                                                                         else
                                                                                                         {
-                                                                                                          v71 = [v4 executeMenuItemCommand];
+                                                                                                          executeMenuItemCommand = [protobufCopy executeMenuItemCommand];
 
-                                                                                                          if (v71)
+                                                                                                          if (executeMenuItemCommand)
                                                                                                           {
                                                                                                             v18 = [SFExecuteMenuItemCommand alloc];
-                                                                                                            v19 = [v4 executeMenuItemCommand];
+                                                                                                            showContactCardCommand2 = [protobufCopy executeMenuItemCommand];
                                                                                                           }
 
                                                                                                           else
                                                                                                           {
-                                                                                                            v72 = [v4 fillToolParameterCommand];
+                                                                                                            fillToolParameterCommand = [protobufCopy fillToolParameterCommand];
 
-                                                                                                            if (v72)
+                                                                                                            if (fillToolParameterCommand)
                                                                                                             {
                                                                                                               v18 = [SFFillToolParameterCommand alloc];
-                                                                                                              v19 = [v4 fillToolParameterCommand];
+                                                                                                              showContactCardCommand2 = [protobufCopy fillToolParameterCommand];
                                                                                                             }
 
                                                                                                             else
                                                                                                             {
-                                                                                                              v73 = [v4 fillToolAppParameterCommand];
+                                                                                                              fillToolAppParameterCommand = [protobufCopy fillToolAppParameterCommand];
 
-                                                                                                              if (v73)
+                                                                                                              if (fillToolAppParameterCommand)
                                                                                                               {
                                                                                                                 v18 = [SFFillToolAppParameterCommand alloc];
-                                                                                                                v19 = [v4 fillToolAppParameterCommand];
+                                                                                                                showContactCardCommand2 = [protobufCopy fillToolAppParameterCommand];
                                                                                                               }
 
                                                                                                               else
                                                                                                               {
-                                                                                                                v74 = [v4 fillToolFileParameterCommand];
+                                                                                                                fillToolFileParameterCommand = [protobufCopy fillToolFileParameterCommand];
 
-                                                                                                                if (v74)
+                                                                                                                if (fillToolFileParameterCommand)
                                                                                                                 {
                                                                                                                   v18 = [SFFillToolFileParameterCommand alloc];
-                                                                                                                  v19 = [v4 fillToolFileParameterCommand];
+                                                                                                                  showContactCardCommand2 = [protobufCopy fillToolFileParameterCommand];
                                                                                                                 }
 
                                                                                                                 else
                                                                                                                 {
-                                                                                                                  v75 = [v4 fillToolAppEntityParameterCommand];
+                                                                                                                  fillToolAppEntityParameterCommand = [protobufCopy fillToolAppEntityParameterCommand];
 
-                                                                                                                  if (v75)
+                                                                                                                  if (fillToolAppEntityParameterCommand)
                                                                                                                   {
                                                                                                                     v18 = [SFFillToolAppEntityParameterCommand alloc];
-                                                                                                                    v19 = [v4 fillToolAppEntityParameterCommand];
+                                                                                                                    showContactCardCommand2 = [protobufCopy fillToolAppEntityParameterCommand];
                                                                                                                   }
 
                                                                                                                   else
                                                                                                                   {
-                                                                                                                    v76 = [v4 fillToolPersonParameterCommand];
+                                                                                                                    fillToolPersonParameterCommand = [protobufCopy fillToolPersonParameterCommand];
 
-                                                                                                                    if (!v76)
+                                                                                                                    if (!fillToolPersonParameterCommand)
                                                                                                                     {
                                                                                                                       v20 = v5;
                                                                                                                       goto LABEL_133;
                                                                                                                     }
 
                                                                                                                     v18 = [SFFillToolPersonParameterCommand alloc];
-                                                                                                                    v19 = [v4 fillToolPersonParameterCommand];
+                                                                                                                    showContactCardCommand2 = [protobufCopy fillToolPersonParameterCommand];
                                                                                                                   }
                                                                                                                 }
                                                                                                               }
@@ -926,41 +926,41 @@ LABEL_38:
       }
     }
 
-    v77 = v19;
-    v20 = [(SFShowContactCardCommand *)v18 initWithProtobuf:v19];
+    v77 = showContactCardCommand2;
+    v20 = [(SFShowContactCardCommand *)v18 initWithProtobuf:showContactCardCommand2];
 
-    v78 = [v4 commandDetail];
+    commandDetail3 = [protobufCopy commandDetail];
 
-    if (v78)
+    if (commandDetail3)
     {
-      v79 = [v4 commandDetail];
-      [(SFCommand *)v20 setCommandDetail:v79];
+      commandDetail4 = [protobufCopy commandDetail];
+      [(SFCommand *)v20 setCommandDetail:commandDetail4];
     }
 
-    v80 = [v4 normalizedTopic];
+    normalizedTopic3 = [protobufCopy normalizedTopic];
 
-    if (v80)
+    if (normalizedTopic3)
     {
-      v81 = [v4 normalizedTopic];
-      v82 = _SFPBTopicHandwrittenTranslator(v81);
+      normalizedTopic4 = [protobufCopy normalizedTopic];
+      v82 = _SFPBTopicHandwrittenTranslator(normalizedTopic4);
       [(SFCommand *)v20 setNormalizedTopic:v82];
     }
 
-    v83 = [v4 backendData];
+    backendData3 = [protobufCopy backendData];
 
-    if (v83)
+    if (backendData3)
     {
-      v84 = [v4 backendData];
-      [(SFCommand *)v20 setBackendData:v84];
+      backendData4 = [protobufCopy backendData];
+      [(SFCommand *)v20 setBackendData:backendData4];
     }
 
-    v85 = [v4 commandReference];
+    commandReference3 = [protobufCopy commandReference];
 
-    if (v85)
+    if (commandReference3)
     {
       v86 = [SFCommandReference alloc];
-      v87 = [v4 commandReference];
-      v88 = [(SFCommandReference *)v86 initWithProtobuf:v87];
+      commandReference4 = [protobufCopy commandReference];
+      v88 = [(SFCommandReference *)v86 initWithProtobuf:commandReference4];
       [(SFCommand *)v20 setCommandReference:v88];
     }
   }

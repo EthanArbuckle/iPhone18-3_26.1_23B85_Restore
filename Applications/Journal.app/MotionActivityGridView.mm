@@ -1,29 +1,29 @@
 @interface MotionActivityGridView
-- (_TtC7Journal22MotionActivityGridView)initWithCoder:(id)a3;
-- (_TtC7Journal22MotionActivityGridView)initWithFrame:(CGRect)a3;
+- (_TtC7Journal22MotionActivityGridView)initWithCoder:(id)coder;
+- (_TtC7Journal22MotionActivityGridView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MotionActivityGridView
 
-- (_TtC7Journal22MotionActivityGridView)initWithFrame:(CGRect)a3
+- (_TtC7Journal22MotionActivityGridView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal22MotionActivityGridView_previousSizeType) = 8;
   v8.receiver = self;
   v8.super_class = type metadata accessor for MotionActivityGridView();
   return [(MotionActivityAssetView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC7Journal22MotionActivityGridView)initWithCoder:(id)a3
+- (_TtC7Journal22MotionActivityGridView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal22MotionActivityGridView_previousSizeType) = 8;
   v7.receiver = self;
   v7.super_class = type metadata accessor for MotionActivityGridView();
-  v4 = a3;
-  v5 = [(MotionActivityAssetView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(MotionActivityAssetView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

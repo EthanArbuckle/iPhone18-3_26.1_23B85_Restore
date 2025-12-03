@@ -93,7 +93,7 @@
 - (__CFString)aa_accountClass
 {
   objc_opt_class();
-  v2 = [a1 objectForKeyedSubscript:@"accountClass"];
+  v2 = [self objectForKeyedSubscript:@"accountClass"];
   if (objc_opt_isKindOfClass())
   {
     v3 = v2;
@@ -112,7 +112,7 @@
   else
   {
     objc_opt_class();
-    v5 = [a1 objectForKeyedSubscript:@"primaryAccount"];
+    v5 = [self objectForKeyedSubscript:@"primaryAccount"];
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -123,9 +123,9 @@
       v6 = 0;
     }
 
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
     v8 = @"basic";
-    if (v7)
+    if (bOOLValue)
     {
       v8 = @"primary";
     }
@@ -138,59 +138,59 @@
 
 - (id)aa_personID
 {
-  v1 = [a1 accountPropertyForKey:@"personID"];
+  v1 = [self accountPropertyForKey:@"personID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 stringValue];
+    stringValue = [v1 stringValue];
   }
 
   else
   {
-    v2 = v1;
+    stringValue = v1;
   }
 
-  v3 = v2;
+  v3 = stringValue;
 
   return v3;
 }
 
 - (id)aa_fmfAccount
 {
-  v1 = [a1 childAccountsWithAccountTypeIdentifier:*MEMORY[0x1E6959850]];
-  v2 = [v1 firstObject];
+  v1 = [self childAccountsWithAccountTypeIdentifier:*MEMORY[0x1E6959850]];
+  firstObject = [v1 firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 - (AASuspensionInfo)aa_suspensionInfo
 {
-  v2 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v2)
+  if (parentAccount)
   {
-    v3 = [a1 parentAccount];
-    v4 = [v3 aa_suspensionInfo];
+    parentAccount2 = [self parentAccount];
+    aa_suspensionInfo = [parentAccount2 aa_suspensionInfo];
 LABEL_8:
-    v6 = v4;
+    v6 = aa_suspensionInfo;
     goto LABEL_9;
   }
 
   objc_opt_class();
-  v5 = [a1 accountPropertyForKey:@"suspendedInfo"];
+  v5 = [self accountPropertyForKey:@"suspendedInfo"];
   if (objc_opt_isKindOfClass())
   {
-    v3 = v5;
+    parentAccount2 = v5;
   }
 
   else
   {
-    v3 = 0;
+    parentAccount2 = 0;
   }
 
-  if (v3)
+  if (parentAccount2)
   {
-    v4 = [[AASuspensionInfo alloc] initWithDictionary:v3];
+    aa_suspensionInfo = [[AASuspensionInfo alloc] initWithDictionary:parentAccount2];
     goto LABEL_8;
   }
 
@@ -202,86 +202,86 @@ LABEL_9:
 
 - (uint64_t)aa_needsToVerifyTerms
 {
-  v2 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v2)
+  if (parentAccount)
   {
-    v3 = [a1 parentAccount];
-    v4 = [v3 aa_needsToVerifyTerms];
+    parentAccount2 = [self parentAccount];
+    aa_needsToVerifyTerms = [parentAccount2 aa_needsToVerifyTerms];
   }
 
   else
   {
-    v3 = [a1 accountPropertyForKey:@"needsToVerifyTerms"];
-    v4 = [v3 BOOLValue];
+    parentAccount2 = [self accountPropertyForKey:@"needsToVerifyTerms"];
+    aa_needsToVerifyTerms = [parentAccount2 BOOLValue];
   }
 
-  v5 = v4;
+  v5 = aa_needsToVerifyTerms;
 
   return v5;
 }
 
 - (uint64_t)aa_isSuspended
 {
-  v2 = [a1 aa_suspensionInfo];
-  if (v2)
+  aa_suspensionInfo = [self aa_suspensionInfo];
+  if (aa_suspensionInfo)
   {
-    v3 = 1;
+    aa_needsToVerifyTerms = 1;
   }
 
   else
   {
-    v3 = [a1 aa_needsToVerifyTerms];
+    aa_needsToVerifyTerms = [self aa_needsToVerifyTerms];
   }
 
-  return v3;
+  return aa_needsToVerifyTerms;
 }
 
 - (id)aa_fmipAccount
 {
-  v1 = [a1 childAccountsWithAccountTypeIdentifier:*MEMORY[0x1E6959838]];
-  v2 = [v1 firstObject];
+  v1 = [self childAccountsWithAccountTypeIdentifier:*MEMORY[0x1E6959838]];
+  firstObject = [v1 firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 - (uint64_t)aa_isManagedAppleID
 {
-  v1 = [a1 accountPropertyForKey:@"isManagedAppleID"];
-  v2 = [v1 BOOLValue];
+  v1 = [self accountPropertyForKey:@"isManagedAppleID"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (id)aa_cloudKitAccount
 {
-  v1 = [a1 childAccountsWithAccountTypeIdentifier:*MEMORY[0x1E6959828]];
-  v2 = [v1 firstObject];
+  v1 = [self childAccountsWithAccountTypeIdentifier:*MEMORY[0x1E6959828]];
+  firstObject = [v1 firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 - (uint64_t)aa_isPrimaryEmailVerified
 {
-  v1 = [a1 accountPropertyForKey:@"primaryEmailVerified"];
-  v2 = [v1 BOOLValue];
+  v1 = [self accountPropertyForKey:@"primaryEmailVerified"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (id)aa_authToken
 {
-  v1 = [a1 credential];
-  v2 = [v1 token];
+  credential = [self credential];
+  token = [credential token];
 
-  return v2;
+  return token;
 }
 
 - (id)aa_formattedUsername
 {
   v1 = MEMORY[0x1E698DE10];
-  v2 = [a1 username];
-  v3 = [v1 formattedUsernameFromUsername:v2];
+  username = [self username];
+  v3 = [v1 formattedUsernameFromUsername:username];
 
   return v3;
 }
@@ -289,34 +289,34 @@ LABEL_9:
 - (void)aa_setFirstName:()AppleAccount
 {
   v4 = [a3 copy];
-  [a1 setAccountProperty:v4 forKey:@"firstName"];
+  [self setAccountProperty:v4 forKey:@"firstName"];
 }
 
 - (void)aa_setMiddleName:()AppleAccount
 {
   v4 = [a3 copy];
-  [a1 setAccountProperty:v4 forKey:@"middleName"];
+  [self setAccountProperty:v4 forKey:@"middleName"];
 }
 
 - (void)aa_setLastName:()AppleAccount
 {
   v4 = [a3 copy];
-  [a1 setAccountProperty:v4 forKey:@"lastName"];
+  [self setAccountProperty:v4 forKey:@"lastName"];
 }
 
 - (id)aa_fullName
 {
   v2 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-  v3 = [a1 aa_firstName];
-  [v2 setGivenName:v3];
+  aa_firstName = [self aa_firstName];
+  [v2 setGivenName:aa_firstName];
 
-  v4 = [a1 aa_lastName];
-  [v2 setFamilyName:v4];
+  aa_lastName = [self aa_lastName];
+  [v2 setFamilyName:aa_lastName];
 
   v5 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v2 style:2 options:0];
   if (![v5 length])
   {
-    v6 = [a1 accountPropertyForKey:*MEMORY[0x1E6959758]];
+    v6 = [self accountPropertyForKey:*MEMORY[0x1E6959758]];
 
     v5 = v6;
   }
@@ -326,7 +326,7 @@ LABEL_9:
 
 - (AARegionInfo)aa_regionInfo
 {
-  v1 = [a1 accountPropertyForKey:@"regionInfo"];
+  v1 = [self accountPropertyForKey:@"regionInfo"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -343,7 +343,7 @@ LABEL_9:
 
 - (id)aa_normalizedPersonID
 {
-  v2 = [a1 accountPropertyForKey:*MEMORY[0x1E698C210]];
+  v2 = [self accountPropertyForKey:*MEMORY[0x1E698C210]];
   if (!v2)
   {
     goto LABEL_5;
@@ -356,29 +356,29 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v4 = [v3 stringValue];
+  stringValue = [v3 stringValue];
 
-  if (v4)
+  if (stringValue)
   {
-    v3 = v4;
+    v3 = stringValue;
   }
 
   else
   {
 LABEL_5:
-    v5 = [a1 accountType];
-    v6 = [v5 identifier];
-    v7 = [v6 isEqualToString:*MEMORY[0x1E69598B0]];
+    accountType = [self accountType];
+    identifier = [accountType identifier];
+    v7 = [identifier isEqualToString:*MEMORY[0x1E69598B0]];
 
-    if (!v7 || ([a1 accountPropertyForKey:@"profile-id"], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "stringByReplacingOccurrencesOfString:withString:", @"D:", &stru_1F2EF6280), v3 = objc_claimAutoreleasedReturnValue(), v8, !v3))
+    if (!v7 || ([self accountPropertyForKey:@"profile-id"], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "stringByReplacingOccurrencesOfString:withString:", @"D:", &stru_1F2EF6280), v3 = objc_claimAutoreleasedReturnValue(), v8, !v3))
     {
-      v9 = [a1 accountType];
-      v10 = [v9 identifier];
-      v11 = [v10 isEqualToString:*MEMORY[0x1E69597F8]];
+      accountType2 = [self accountType];
+      identifier2 = [accountType2 identifier];
+      v11 = [identifier2 isEqualToString:*MEMORY[0x1E69597F8]];
 
       if (v11)
       {
-        v3 = [a1 accountPropertyForKey:@"personID"];
+        v3 = [self accountPropertyForKey:@"personID"];
       }
 
       else
@@ -395,10 +395,10 @@ LABEL_10:
 
 - (uint64_t)aa_isPrimaryAccount
 {
-  v2 = [a1 aa_accountClass];
-  if (v2)
+  aa_accountClass = [self aa_accountClass];
+  if (aa_accountClass)
   {
-    v3 = [a1 aa_isAccountClass:@"primary"];
+    bOOLValue = [self aa_isAccountClass:@"primary"];
   }
 
   else
@@ -410,7 +410,7 @@ LABEL_10:
     }
 
     objc_opt_class();
-    v5 = [a1 objectForKeyedSubscript:@"primaryAccount"];
+    v5 = [self objectForKeyedSubscript:@"primaryAccount"];
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -421,10 +421,10 @@ LABEL_10:
       v6 = 0;
     }
 
-    v3 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)aa_setPrimaryAccount:()AppleAccount
@@ -444,14 +444,14 @@ LABEL_10:
     v4 = @"basic";
   }
 
-  return [a1 aa_setAccountClass:v4];
+  return [self aa_setAccountClass:v4];
 }
 
 - (uint64_t)aa_isAccountClass:()AppleAccount
 {
   v4 = a3;
-  v5 = [a1 aa_accountClass];
-  v6 = [v5 isEqualToString:v4];
+  aa_accountClass = [self aa_accountClass];
+  v6 = [aa_accountClass isEqualToString:v4];
 
   return v6;
 }
@@ -459,13 +459,13 @@ LABEL_10:
 - (void)aa_setAccountClass:()AppleAccount
 {
   v5 = a3;
-  v6 = [a1 accountType];
-  v7 = [v6 identifier];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E69597F8]];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  v8 = [identifier isEqualToString:*MEMORY[0x1E69597F8]];
 
   if ((v8 & 1) == 0)
   {
-    [(ACAccount(AppleAccount) *)a2 aa_setAccountClass:a1];
+    [(ACAccount(AppleAccount) *)a2 aa_setAccountClass:self];
   }
 
   v9 = _AALogSystem();
@@ -474,16 +474,16 @@ LABEL_10:
     [ACAccount(AppleAccount) aa_setAccountClass:];
   }
 
-  [a1 setObject:v5 forKeyedSubscript:@"accountClass"];
+  [self setObject:v5 forKeyedSubscript:@"accountClass"];
   v10 = [v5 isEqualToString:@"primary"];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:v10];
-  [a1 setObject:v11 forKeyedSubscript:@"primaryAccount"];
+  [self setObject:v11 forKeyedSubscript:@"primaryAccount"];
 }
 
 - (BOOL)aa_updateAccountClassIfNecessary
 {
   objc_opt_class();
-  v2 = [a1 objectForKeyedSubscript:@"accountClass"];
+  v2 = [self objectForKeyedSubscript:@"accountClass"];
   if (objc_opt_isKindOfClass())
   {
     v3 = v2;
@@ -497,7 +497,7 @@ LABEL_10:
   if (!v3)
   {
     objc_opt_class();
-    v4 = [a1 objectForKeyedSubscript:@"primaryAccount"];
+    v4 = [self objectForKeyedSubscript:@"primaryAccount"];
     if (objc_opt_isKindOfClass())
     {
       v5 = v4;
@@ -508,14 +508,14 @@ LABEL_10:
       v5 = 0;
     }
 
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
     v7 = _AALogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       [ACAccount(AppleAccount) aa_updateAccountClassIfNecessary];
     }
 
-    if (v6)
+    if (bOOLValue)
     {
       v8 = @"primary";
     }
@@ -525,7 +525,7 @@ LABEL_10:
       v8 = @"basic";
     }
 
-    [a1 setObject:v8 forKeyedSubscript:@"accountClass"];
+    [self setObject:v8 forKeyedSubscript:@"accountClass"];
   }
 
   return v3 == 0;
@@ -534,79 +534,79 @@ LABEL_10:
 - (void)aa_setPrimaryEmailVerified:()AppleAccount
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 setAccountProperty:v2 forKey:@"primaryEmailVerified"];
+  [self setAccountProperty:v2 forKey:@"primaryEmailVerified"];
 }
 
 - (void)aa_setNeedsToVerifyTerms:()AppleAccount
 {
-  v5 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v5)
+  if (parentAccount)
   {
-    v6 = [a1 parentAccount];
-    [v6 aa_setNeedsToVerifyTerms:a3];
+    parentAccount2 = [self parentAccount];
+    [parentAccount2 aa_setNeedsToVerifyTerms:a3];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-    [a1 setAccountProperty:? forKey:?];
+    parentAccount2 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+    [self setAccountProperty:? forKey:?];
   }
 }
 
 - (uint64_t)aa_isUsingCloudDocs
 {
-  v1 = [a1 accountPropertyForKey:@"usesCloudDocs"];
-  v2 = [v1 BOOLValue];
+  v1 = [self accountPropertyForKey:@"usesCloudDocs"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)aa_setUsesCloudDocs:()AppleAccount
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 setAccountProperty:v2 forKey:@"usesCloudDocs"];
+  [self setAccountProperty:v2 forKey:@"usesCloudDocs"];
 }
 
 - (uint64_t)aa_isCloudSubscriber
 {
-  v1 = [a1 accountPropertyForKey:@"isCloudSubscriber"];
-  v2 = [v1 BOOLValue];
+  v1 = [self accountPropertyForKey:@"isCloudSubscriber"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)aa_setIsCloudSubscriber:()AppleAccount
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 setAccountProperty:v2 forKey:@"isCloudSubscriber"];
+  [self setAccountProperty:v2 forKey:@"isCloudSubscriber"];
 }
 
 - (uint64_t)aa_isCloudDocsMigrationComplete
 {
-  v1 = [a1 accountPropertyForKey:@"cloudDocsMigrationComplete"];
-  v2 = [v1 BOOLValue];
+  v1 = [self accountPropertyForKey:@"cloudDocsMigrationComplete"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)aa_setCloudDocsMigrationComplete:()AppleAccount
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 setAccountProperty:v2 forKey:@"cloudDocsMigrationComplete"];
+  [self setAccountProperty:v2 forKey:@"cloudDocsMigrationComplete"];
 }
 
 - (BOOL)aa_isUsingiCloud
 {
-  v1 = [a1 enabledDataclasses];
-  v2 = [v1 count] != 0;
+  enabledDataclasses = [self enabledDataclasses];
+  v2 = [enabledDataclasses count] != 0;
 
   return v2;
 }
 
 - (BOOL)aa_isRemotelyManaged
 {
-  v1 = [a1 accountPropertyForKey:*MEMORY[0x1E69597B0]];
+  v1 = [self accountPropertyForKey:*MEMORY[0x1E69597B0]];
   v2 = v1 != 0;
 
   return v2;
@@ -614,103 +614,103 @@ LABEL_10:
 
 - (uint64_t)aa_isNotesMigrated
 {
-  v1 = [a1 accountPropertyForKey:@"notesMigrated"];
-  v2 = [v1 BOOLValue];
+  v1 = [self accountPropertyForKey:@"notesMigrated"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)aa_isRemindersMigrated
 {
-  v1 = [a1 accountPropertyForKey:@"remindersMigrated"];
-  v2 = [v1 BOOLValue];
+  v1 = [self accountPropertyForKey:@"remindersMigrated"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)aa_isRemindersAutoMigratableToCK
 {
-  v1 = [a1 accountPropertyForKey:@"remindersAutoMigratableToCK"];
-  v2 = [v1 BOOLValue];
+  v1 = [self accountPropertyForKey:@"remindersAutoMigratableToCK"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)aa_isSandboxAccount
 {
-  v1 = [a1 accountPropertyForKey:@"isSandboxAcct"];
-  v2 = [v1 BOOLValue];
+  v1 = [self accountPropertyForKey:@"isSandboxAcct"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (BOOL)aa_isAuthKitAccount
 {
-  v1 = [a1 accountType];
-  v2 = [v1 identifier];
-  v3 = [v2 compare:*MEMORY[0x1E6959888] options:4] == 0;
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  v3 = [identifier compare:*MEMORY[0x1E6959888] options:4] == 0;
 
   return v3;
 }
 
 - (uint64_t)aa_hasOptionalTerms
 {
-  v1 = [a1 objectForKeyedSubscript:@"hasOptionalTerms"];
-  v2 = [v1 BOOLValue];
+  v1 = [self objectForKeyedSubscript:@"hasOptionalTerms"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (id)aa_repairState
 {
-  v2 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v2)
+  if (parentAccount)
   {
-    v3 = [a1 parentAccount];
-    v4 = [v3 aa_repairState];
+    parentAccount2 = [self parentAccount];
+    aa_repairState = [parentAccount2 aa_repairState];
   }
 
   else
   {
-    v4 = [a1 accountPropertyForKey:@"repairState"];
+    aa_repairState = [self accountPropertyForKey:@"repairState"];
   }
 
-  return v4;
+  return aa_repairState;
 }
 
 - (void)aa_setRepairState:()AppleAccount
 {
   v6 = a3;
-  v4 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [a1 parentAccount];
-    [v5 aa_setRepairState:v6];
+    parentAccount2 = [self parentAccount];
+    [parentAccount2 aa_setRepairState:v6];
   }
 
   else
   {
-    [a1 setAccountProperty:v6 forKey:@"repairState"];
+    [self setAccountProperty:v6 forKey:@"repairState"];
   }
 }
 
 - (uint64_t)aa_needsEmailConfiguration
 {
-  result = [a1 isProvisionedForDataclass:*MEMORY[0x1E6959B28]];
+  result = [self isProvisionedForDataclass:*MEMORY[0x1E6959B28]];
   if (result)
   {
-    v3 = [a1 aa_childMailAccount];
+    aa_childMailAccount = [self aa_childMailAccount];
 
-    if (v3)
+    if (aa_childMailAccount)
     {
       return 0;
     }
 
     else
     {
-      return [a1 _hasMailDataclassProperties] ^ 1;
+      return [self _hasMailDataclassProperties] ^ 1;
     }
   }
 
@@ -720,11 +720,11 @@ LABEL_10:
 - (uint64_t)aa_serverDisabledDataclass:()AppleAccount
 {
   v4 = a3;
-  if ([a1 aa_isManagedAppleID] && (objc_msgSend(a1, "dataclassProperties"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if ([self aa_isManagedAppleID] && (objc_msgSend(self, "dataclassProperties"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [a1 dataclassProperties];
-    v7 = [v6 objectForKeyedSubscript:v4];
-    v8 = [a1 _dataclassIsDisabledForProperties:v7];
+    dataclassProperties = [self dataclassProperties];
+    v7 = [dataclassProperties objectForKeyedSubscript:v4];
+    v8 = [self _dataclassIsDisabledForProperties:v7];
   }
 
   else
@@ -745,12 +745,12 @@ LABEL_10:
 
 - (BOOL)_hasMailDataclassProperties
 {
-  v1 = [a1 propertiesForDataclass:*MEMORY[0x1E6959B28]];
+  v1 = [self propertiesForDataclass:*MEMORY[0x1E6959B28]];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 allKeys];
-    v4 = [v3 count] != 0;
+    allKeys = [v1 allKeys];
+    v4 = [allKeys count] != 0;
   }
 
   else
@@ -763,28 +763,28 @@ LABEL_10:
 
 - (uint64_t)aa_isFamilyEligible
 {
-  v1 = [a1 accountPropertyForKey:@"familyEligible"];
-  v2 = [v1 BOOLValue];
+  v1 = [self accountPropertyForKey:@"familyEligible"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)aa_ageCategory
 {
-  v1 = [a1 accountPropertyForKey:@"ageCategory"];
-  v2 = [v1 integerValue];
+  v1 = [self accountPropertyForKey:@"ageCategory"];
+  integerValue = [v1 integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 - (id)aa_pendingDOB
 {
   v2 = objc_opt_new();
-  v3 = [v2 ageMigrationFeatureEnabled];
+  ageMigrationFeatureEnabled = [v2 ageMigrationFeatureEnabled];
 
-  if (v3)
+  if (ageMigrationFeatureEnabled)
   {
-    v4 = [a1 accountPropertyForKey:@"pendingDOB"];
+    v4 = [self accountPropertyForKey:@"pendingDOB"];
   }
 
   else
@@ -799,59 +799,59 @@ LABEL_10:
 {
   v6 = a3;
   v4 = objc_opt_new();
-  v5 = [v4 ageMigrationFeatureEnabled];
+  ageMigrationFeatureEnabled = [v4 ageMigrationFeatureEnabled];
 
-  if (v5)
+  if (ageMigrationFeatureEnabled)
   {
-    [a1 setAccountProperty:v6 forKey:@"pendingDOB"];
+    [self setAccountProperty:v6 forKey:@"pendingDOB"];
   }
 }
 
 - (id)aa_childMailAccount
 {
-  if ([a1 isProvisionedForDataclass:*MEMORY[0x1E6959B28]])
+  if ([self isProvisionedForDataclass:*MEMORY[0x1E6959B28]])
   {
-    v2 = [a1 childAccountsWithAccountTypeIdentifier:*MEMORY[0x1E6959898]];
-    v3 = [v2 firstObject];
+    v2 = [self childAccountsWithAccountTypeIdentifier:*MEMORY[0x1E6959898]];
+    firstObject = [v2 firstObject];
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (id)aa_password
 {
-  v1 = [a1 credential];
-  v2 = [v1 password];
+  credential = [self credential];
+  password = [credential password];
 
-  return v2;
+  return password;
 }
 
 - (void)aa_setPassword:()AppleAccount
 {
   v9 = a3;
-  v4 = [a1 credential];
-  v5 = [v4 password];
-  v6 = [v9 isEqualToString:v5];
+  credential = [self credential];
+  password = [credential password];
+  v6 = [v9 isEqualToString:password];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [a1 credential];
+    credential2 = [self credential];
 
-    if (v7)
+    if (credential2)
     {
-      v8 = [a1 credential];
-      [v8 setPassword:v9];
+      credential3 = [self credential];
+      [credential3 setPassword:v9];
     }
 
     else
     {
-      v8 = [objc_alloc(MEMORY[0x1E6959A30]) initWithPassword:v9];
-      [a1 setCredential:v8];
+      credential3 = [objc_alloc(MEMORY[0x1E6959A30]) initWithPassword:v9];
+      [self setCredential:credential3];
     }
   }
 }
@@ -859,39 +859,39 @@ LABEL_10:
 - (void)aa_setAuthToken:()AppleAccount
 {
   v9 = a3;
-  v4 = [a1 credential];
-  v5 = [v4 token];
-  v6 = [v9 isEqualToString:v5];
+  credential = [self credential];
+  token = [credential token];
+  v6 = [v9 isEqualToString:token];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [a1 credential];
+    credential2 = [self credential];
 
-    if (v7)
+    if (credential2)
     {
-      v8 = [a1 credential];
-      [v8 setToken:v9];
+      credential3 = [self credential];
+      [credential3 setToken:v9];
     }
 
     else
     {
-      v8 = objc_alloc_init(MEMORY[0x1E6959A30]);
-      [v8 setToken:v9];
-      [a1 setCredential:v8];
+      credential3 = objc_alloc_init(MEMORY[0x1E6959A30]);
+      [credential3 setToken:v9];
+      [self setCredential:credential3];
     }
 
-    [a1 setAuthenticated:1];
+    [self setAuthenticated:1];
   }
 }
 
 - (id)aa_fmipToken
 {
-  v2 = [a1 aa_fmipAccount];
-  v3 = v2;
-  if (v2)
+  aa_fmipAccount = [self aa_fmipAccount];
+  v3 = aa_fmipAccount;
+  if (aa_fmipAccount)
   {
-    v4 = [v2 credential];
-    v5 = [v4 token];
+    credential = [aa_fmipAccount credential];
+    token = [credential token];
   }
 
   else
@@ -903,21 +903,21 @@ LABEL_10:
       _os_log_impl(&dword_1B6F6A000, v6, OS_LOG_TYPE_DEFAULT, "ERROR: Didn't find a child account, returning findMyiPhoneToken", v9, 2u);
     }
 
-    v4 = [a1 credential];
-    v5 = [v4 findMyiPhoneToken];
+    credential = [self credential];
+    token = [credential findMyiPhoneToken];
   }
 
-  v7 = v5;
+  v7 = token;
 
   return v7;
 }
 
 - (id)aa_mapsToken
 {
-  v1 = [a1 credential];
-  v2 = [v1 mapsToken];
+  credential = [self credential];
+  mapsToken = [credential mapsToken];
 
-  return v2;
+  return mapsToken;
 }
 
 - (void)aa_setMapsToken:()AppleAccount
@@ -926,26 +926,26 @@ LABEL_10:
   if (v4)
   {
     v10 = v4;
-    v5 = [a1 credential];
-    v6 = [v5 mapsToken];
-    v7 = [v10 isEqualToString:v6];
+    credential = [self credential];
+    mapsToken = [credential mapsToken];
+    v7 = [v10 isEqualToString:mapsToken];
 
     v4 = v10;
     if ((v7 & 1) == 0)
     {
-      v8 = [a1 credential];
+      credential2 = [self credential];
 
-      if (v8)
+      if (credential2)
       {
-        v9 = [a1 credential];
-        [v9 setMapsToken:v10];
+        credential3 = [self credential];
+        [credential3 setMapsToken:v10];
       }
 
       else
       {
-        v9 = objc_alloc_init(MEMORY[0x1E6959A30]);
-        [v9 setMapsToken:v10];
-        [a1 setCredential:v9];
+        credential3 = objc_alloc_init(MEMORY[0x1E6959A30]);
+        [credential3 setMapsToken:v10];
+        [self setCredential:credential3];
       }
 
       v4 = v10;
@@ -955,10 +955,10 @@ LABEL_10:
 
 - (id)aa_mdmServerToken
 {
-  v1 = [a1 credential];
-  v2 = [v1 mdmServerToken];
+  credential = [self credential];
+  mdmServerToken = [credential mdmServerToken];
 
-  return v2;
+  return mdmServerToken;
 }
 
 - (void)aa_setMDMServerToken:()AppleAccount
@@ -967,26 +967,26 @@ LABEL_10:
   if (v4)
   {
     v10 = v4;
-    v5 = [a1 credential];
-    v6 = [v5 mdmServerToken];
-    v7 = [v10 isEqualToString:v6];
+    credential = [self credential];
+    mdmServerToken = [credential mdmServerToken];
+    v7 = [v10 isEqualToString:mdmServerToken];
 
     v4 = v10;
     if ((v7 & 1) == 0)
     {
-      v8 = [a1 credential];
+      credential2 = [self credential];
 
-      if (v8)
+      if (credential2)
       {
-        v9 = [a1 credential];
-        [v9 setMdmServerToken:v10];
+        credential3 = [self credential];
+        [credential3 setMdmServerToken:v10];
       }
 
       else
       {
-        v9 = objc_alloc_init(MEMORY[0x1E6959A30]);
-        [v9 setMdmServerToken:v10];
-        [a1 setCredential:v9];
+        credential3 = objc_alloc_init(MEMORY[0x1E6959A30]);
+        [credential3 setMdmServerToken:v10];
+        [self setCredential:credential3];
       }
 
       v4 = v10;
@@ -997,22 +997,22 @@ LABEL_10:
 - (id)aa_authTokenWithError:()AppleAccount
 {
   v10 = 0;
-  v4 = [a1 credentialWithError:&v10];
+  v4 = [self credentialWithError:&v10];
   v5 = v10;
   v6 = v5;
   if (a3 && v5)
   {
     v7 = v5;
-    v8 = 0;
+    token = 0;
     *a3 = v6;
   }
 
   else
   {
-    v8 = [v4 token];
+    token = [v4 token];
   }
 
-  return v8;
+  return token;
 }
 
 - (uint64_t)aa_hsaTokenWithError:()AppleAccount
@@ -1029,7 +1029,7 @@ LABEL_10:
 - (uint64_t)aa_useCellularForDataclass:()AppleAccount
 {
   v4 = a3;
-  v5 = [a1 accountPropertyForKey:@"dataclassesDisabledForCellular"];
+  v5 = [self accountPropertyForKey:@"dataclassesDisabledForCellular"];
   v6 = [v5 containsObject:v4];
 
   return v6 ^ 1u;
@@ -1038,7 +1038,7 @@ LABEL_10:
 - (void)aa_setUseCellular:()AppleAccount forDataclass:
 {
   v8 = a4;
-  v6 = [a1 accountPropertyForKey:@"dataclassesDisabledForCellular"];
+  v6 = [self accountPropertyForKey:@"dataclassesDisabledForCellular"];
   v7 = [v6 mutableCopy];
 
   if (!v7)
@@ -1056,13 +1056,13 @@ LABEL_10:
     [v7 addObject:v8];
   }
 
-  [a1 setAccountProperty:v7 forKey:@"dataclassesDisabledForCellular"];
+  [self setAccountProperty:v7 forKey:@"dataclassesDisabledForCellular"];
 }
 
 - (uint64_t)aa_allowUnlimitedUpdatesForDataclass:()AppleAccount
 {
   v4 = a3;
-  v5 = [a1 accountPropertyForKey:@"unlimitedUpdates"];
+  v5 = [self accountPropertyForKey:@"unlimitedUpdates"];
   v6 = [v5 containsObject:v4];
 
   return v6;
@@ -1071,7 +1071,7 @@ LABEL_10:
 - (void)aa_setAllowUnlimitedUpdates:()AppleAccount forDataclass:
 {
   v8 = a4;
-  v6 = [a1 accountPropertyForKey:@"unlimitedUpdates"];
+  v6 = [self accountPropertyForKey:@"unlimitedUpdates"];
   v7 = [v6 mutableCopy];
 
   if (!v7)
@@ -1089,7 +1089,7 @@ LABEL_10:
     [v7 removeObject:v8];
   }
 
-  [a1 setAccountProperty:v7 forKey:@"unlimitedUpdates"];
+  [self setAccountProperty:v7 forKey:@"unlimitedUpdates"];
 }
 
 - (void)aa_updateWithProvisioningResponse:()AppleAccount
@@ -1098,103 +1098,103 @@ LABEL_10:
   v5 = a3;
   if (!v5)
   {
-    [(ACAccount(AppleAccount) *)a2 aa_updateWithProvisioningResponse:a1];
+    [(ACAccount(AppleAccount) *)a2 aa_updateWithProvisioningResponse:self];
   }
 
   v6 = _AALogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [a1 username];
+    username = [self username];
     *buf = 138412290;
-    v86 = v7;
+    v86 = username;
     _os_log_impl(&dword_1B6F6A000, v6, OS_LOG_TYPE_DEFAULT, "Updating account %@ with provisioning response.", buf, 0xCu);
   }
 
-  if ([a1 aa_needsToVerifyTerms])
+  if ([self aa_needsToVerifyTerms])
   {
-    [a1 aa_setNeedsToVerifyTerms:0];
+    [self aa_setNeedsToVerifyTerms:0];
   }
 
-  v8 = [a1 aa_suspensionInfo];
+  aa_suspensionInfo = [self aa_suspensionInfo];
 
-  if (v8)
+  if (aa_suspensionInfo)
   {
-    [a1 setAccountProperty:0 forKey:@"suspendedInfo"];
+    [self setAccountProperty:0 forKey:@"suspendedInfo"];
   }
 
-  v9 = [v5 altDSID];
-  if (v9)
+  altDSID = [v5 altDSID];
+  if (altDSID)
   {
-    [a1 setAccountProperty:v9 forKey:@"altDSID"];
+    [self setAccountProperty:altDSID forKey:@"altDSID"];
   }
 
-  v10 = [v5 dataclassProperties];
-  [a1 _aa_setDataclassProperties:v10];
+  dataclassProperties = [v5 dataclassProperties];
+  [self _aa_setDataclassProperties:dataclassProperties];
 
-  v11 = [v5 personID];
-  [a1 setAccountProperty:v11 forKey:@"personID"];
+  personID = [v5 personID];
+  [self setAccountProperty:personID forKey:@"personID"];
 
-  v12 = [v5 firstName];
-  [a1 setAccountProperty:v12 forKey:@"firstName"];
+  firstName = [v5 firstName];
+  [self setAccountProperty:firstName forKey:@"firstName"];
 
-  v13 = [v5 lastName];
-  [a1 setAccountProperty:v13 forKey:@"lastName"];
+  lastName = [v5 lastName];
+  [self setAccountProperty:lastName forKey:@"lastName"];
 
-  v14 = [v5 primaryEmail];
-  [a1 setAccountProperty:v14 forKey:@"primaryEmail"];
+  primaryEmail = [v5 primaryEmail];
+  [self setAccountProperty:primaryEmail forKey:@"primaryEmail"];
 
-  v15 = [v5 primaryEmailVerified];
-  [a1 setAccountProperty:v15 forKey:@"primaryEmailVerified"];
+  primaryEmailVerified = [v5 primaryEmailVerified];
+  [self setAccountProperty:primaryEmailVerified forKey:@"primaryEmailVerified"];
 
-  v16 = [v5 appleIDAliases];
-  [a1 setAccountProperty:v16 forKey:@"appleIDAliases"];
+  appleIDAliases = [v5 appleIDAliases];
+  [self setAccountProperty:appleIDAliases forKey:@"appleIDAliases"];
 
-  v17 = [v5 protocolVersion];
-  [a1 setAccountProperty:v17 forKey:@"protocolVersion"];
+  protocolVersion = [v5 protocolVersion];
+  [self setAccountProperty:protocolVersion forKey:@"protocolVersion"];
 
-  v18 = [v5 appleID];
-  [a1 setAccountProperty:v18 forKey:@"appleId"];
+  appleID = [v5 appleID];
+  [self setAccountProperty:appleID forKey:@"appleId"];
 
-  v19 = [v5 regionInfo];
-  [a1 setAccountProperty:v19 forKey:@"regionInfo"];
+  regionInfo = [v5 regionInfo];
+  [self setAccountProperty:regionInfo forKey:@"regionInfo"];
 
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "isManagedAppleID")}];
-  [a1 setAccountProperty:v20 forKey:@"isManagedAppleID"];
+  [self setAccountProperty:v20 forKey:@"isManagedAppleID"];
 
   v21 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "isNotesMigrated")}];
-  [a1 setAccountProperty:v21 forKey:@"notesMigrated"];
+  [self setAccountProperty:v21 forKey:@"notesMigrated"];
 
   v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "isRemindersMigrated")}];
-  [a1 setAccountProperty:v22 forKey:@"remindersMigrated"];
+  [self setAccountProperty:v22 forKey:@"remindersMigrated"];
 
   v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "isRemindersAutoMigratableToCK")}];
-  [a1 setAccountProperty:v23 forKey:@"remindersAutoMigratableToCK"];
+  [self setAccountProperty:v23 forKey:@"remindersAutoMigratableToCK"];
 
   v24 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "isSandboxAccount")}];
-  [a1 setAccountProperty:v24 forKey:@"isSandboxAcct"];
+  [self setAccountProperty:v24 forKey:@"isSandboxAcct"];
 
   v25 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "isCloudDocsMigrated")}];
-  [a1 setAccountProperty:v25 forKey:@"cloudDocsMigrationComplete"];
+  [self setAccountProperty:v25 forKey:@"cloudDocsMigrationComplete"];
 
   v26 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "isCloudDocsMigrated")}];
-  [a1 setAccountProperty:v26 forKey:@"usesCloudDocs"];
+  [self setAccountProperty:v26 forKey:@"usesCloudDocs"];
 
   v27 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "hasOptionalTerms")}];
-  [a1 setAccountProperty:v27 forKey:@"hasOptionalTerms"];
+  [self setAccountProperty:v27 forKey:@"hasOptionalTerms"];
 
   v28 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "isFamilyEligible")}];
-  [a1 setAccountProperty:v28 forKey:@"familyEligible"];
+  [self setAccountProperty:v28 forKey:@"familyEligible"];
 
   v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "ageCategory")}];
-  [a1 setAccountProperty:v29 forKey:@"ageCategory"];
+  [self setAccountProperty:v29 forKey:@"ageCategory"];
 
   v30 = MEMORY[0x1E695DFD8];
   v64 = v5;
-  v31 = [v5 provisionedDataclasses];
-  v32 = [v30 setWithArray:v31];
+  provisionedDataclasses = [v5 provisionedDataclasses];
+  v32 = [v30 setWithArray:provisionedDataclasses];
 
   v33 = +[AADataclassManager sharedManager];
-  v34 = [v33 filteredServerProvidedFeatures:v32 forAccount:a1];
+  v34 = [v33 filteredServerProvidedFeatures:v32 forAccount:self];
 
   v79 = 0u;
   v80 = 0u;
@@ -1215,7 +1215,7 @@ LABEL_10:
           objc_enumerationMutation(v35);
         }
 
-        [a1 setProvisioned:1 forDataclass:*(*(&v77 + 1) + 8 * i)];
+        [self setProvisioned:1 forDataclass:*(*(&v77 + 1) + 8 * i)];
       }
 
       v37 = [v35 countByEnumeratingWithState:&v77 objects:v84 count:16];
@@ -1225,9 +1225,9 @@ LABEL_10:
   }
 
   v62 = v32;
-  v63 = v9;
+  v63 = altDSID;
 
-  [a1 enabledDataclasses];
+  [self enabledDataclasses];
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
@@ -1257,7 +1257,7 @@ LABEL_10:
             _os_log_impl(&dword_1B6F6A000, v46, OS_LOG_TYPE_DEFAULT, "Disabling dataclass %@ because it is not provisioned.", buf, 0xCu);
           }
 
-          [a1 setEnabled:0 forDataclass:v45];
+          [self setEnabled:0 forDataclass:v45];
         }
       }
 
@@ -1267,12 +1267,12 @@ LABEL_10:
     while (v42);
   }
 
-  v47 = [a1 provisionedDataclasses];
+  provisionedDataclasses2 = [self provisionedDataclasses];
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v48 = [v47 countByEnumeratingWithState:&v69 objects:v82 count:16];
+  v48 = [provisionedDataclasses2 countByEnumeratingWithState:&v69 objects:v82 count:16];
   if (v48)
   {
     v49 = v48;
@@ -1283,7 +1283,7 @@ LABEL_10:
       {
         if (*v70 != v50)
         {
-          objc_enumerationMutation(v47);
+          objc_enumerationMutation(provisionedDataclasses2);
         }
 
         v52 = *(*(&v69 + 1) + 8 * k);
@@ -1297,25 +1297,25 @@ LABEL_10:
             _os_log_impl(&dword_1B6F6A000, v53, OS_LOG_TYPE_DEFAULT, "Removing dataclass provisioning %@ because it is not provisioned.", buf, 0xCu);
           }
 
-          [a1 setProvisioned:0 forDataclass:v52];
+          [self setProvisioned:0 forDataclass:v52];
         }
       }
 
-      v49 = [v47 countByEnumeratingWithState:&v69 objects:v82 count:16];
+      v49 = [provisionedDataclasses2 countByEnumeratingWithState:&v69 objects:v82 count:16];
     }
 
     while (v49);
   }
 
-  if ([a1 aa_isManagedAppleID])
+  if ([self aa_isManagedAppleID])
   {
-    v54 = [a1 enabledDataclasses];
+    enabledDataclasses = [self enabledDataclasses];
 
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v40 = v54;
+    v40 = enabledDataclasses;
     v55 = [v40 countByEnumeratingWithState:&v65 objects:v81 count:16];
     if (v55)
     {
@@ -1331,7 +1331,7 @@ LABEL_10:
           }
 
           v59 = *(*(&v65 + 1) + 8 * m);
-          if ([a1 aa_serverDisabledDataclass:v59])
+          if ([self aa_serverDisabledDataclass:v59])
           {
             v60 = _AALogSystem();
             if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
@@ -1341,7 +1341,7 @@ LABEL_10:
               _os_log_impl(&dword_1B6F6A000, v60, OS_LOG_TYPE_DEFAULT, "Disabling dataclass %@ because it has been restricted by the server.", buf, 0xCu);
             }
 
-            [a1 setEnabled:0 forDataclass:v59];
+            [self setEnabled:0 forDataclass:v59];
           }
         }
 
@@ -1352,7 +1352,7 @@ LABEL_10:
     }
   }
 
-  [a1 aa_updateTokensWithProvisioningResponse:v64];
+  [self aa_updateTokensWithProvisioningResponse:v64];
 
   v61 = *MEMORY[0x1E69E9840];
 }
@@ -1360,16 +1360,16 @@ LABEL_10:
 - (BOOL)aa_updateTokensWithProvisioningResponse:()AppleAccount
 {
   v4 = a3;
-  v5 = [v4 authToken];
-  v6 = v5 != 0;
-  if (v5)
+  authToken = [v4 authToken];
+  v6 = authToken != 0;
+  if (authToken)
   {
-    [a1 aa_setAuthToken:v5];
+    [self aa_setAuthToken:authToken];
   }
 
-  v46 = v5;
-  v7 = [v4 mapsToken];
-  if (v7)
+  v46 = authToken;
+  mapsToken = [v4 mapsToken];
+  if (mapsToken)
   {
     v8 = _AALogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1378,12 +1378,12 @@ LABEL_10:
       _os_log_impl(&dword_1B6F6A000, v8, OS_LOG_TYPE_DEFAULT, "Saving the Maps token", buf, 2u);
     }
 
-    [a1 aa_setMapsToken:v7];
+    [self aa_setMapsToken:mapsToken];
     v6 = 1;
   }
 
-  v9 = [v4 mdmServerToken];
-  if (v9)
+  mdmServerToken = [v4 mdmServerToken];
+  if (mdmServerToken)
   {
     v10 = _AALogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1392,12 +1392,12 @@ LABEL_10:
       _os_log_impl(&dword_1B6F6A000, v10, OS_LOG_TYPE_DEFAULT, "Saving the MDM Server token", buf, 2u);
     }
 
-    [a1 aa_setMDMServerToken:v9];
+    [self aa_setMDMServerToken:mdmServerToken];
     v6 = 1;
   }
 
-  v11 = [v4 searchPartyToken];
-  if (v11)
+  searchPartyToken = [v4 searchPartyToken];
+  if (searchPartyToken)
   {
     v12 = _AALogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1406,17 +1406,17 @@ LABEL_10:
       _os_log_impl(&dword_1B6F6A000, v12, OS_LOG_TYPE_DEFAULT, "Setting SearchParty token...", buf, 2u);
     }
 
-    v13 = [a1 credential];
-    [v13 setCredentialItem:v11 forKey:*MEMORY[0x1E6959A08]];
+    credential = [self credential];
+    [credential setCredentialItem:searchPartyToken forKey:*MEMORY[0x1E6959A08]];
 
     v6 = 1;
   }
 
-  v43 = v11;
-  v44 = v9;
-  v45 = v7;
-  v14 = [v4 keyTransparencyToken];
-  if (v14)
+  v43 = searchPartyToken;
+  v44 = mdmServerToken;
+  v45 = mapsToken;
+  keyTransparencyToken = [v4 keyTransparencyToken];
+  if (keyTransparencyToken)
   {
     v15 = _AALogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1425,14 +1425,14 @@ LABEL_10:
       _os_log_impl(&dword_1B6F6A000, v15, OS_LOG_TYPE_DEFAULT, "Setting KeyTransparency token...", buf, 2u);
     }
 
-    v16 = [a1 credential];
-    [v16 setCredentialItem:v14 forKey:*MEMORY[0x1E69599A8]];
+    credential2 = [self credential];
+    [credential2 setCredentialItem:keyTransparencyToken forKey:*MEMORY[0x1E69599A8]];
 
     v6 = 1;
   }
 
-  v17 = [v4 cloudKitToken];
-  if (v17)
+  cloudKitToken = [v4 cloudKitToken];
+  if (cloudKitToken)
   {
     v18 = _AALogSystem();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1441,21 +1441,21 @@ LABEL_10:
       _os_log_impl(&dword_1B6F6A000, v18, OS_LOG_TYPE_DEFAULT, "Setting CloudKit token...", buf, 2u);
     }
 
-    v19 = [a1 credential];
-    [v19 setCredentialItem:v17 forKey:*MEMORY[0x1E6959940]];
+    credential3 = [self credential];
+    [credential3 setCredentialItem:cloudKitToken forKey:*MEMORY[0x1E6959940]];
 
-    v20 = [a1 aa_cloudKitAccount];
-    v21 = v20;
-    if (v20)
+    aa_cloudKitAccount = [self aa_cloudKitAccount];
+    v21 = aa_cloudKitAccount;
+    if (aa_cloudKitAccount)
     {
-      [v20 setAuthenticated:1];
-      v22 = [v21 credential];
-      [v22 setToken:v17];
+      [aa_cloudKitAccount setAuthenticated:1];
+      credential4 = [v21 credential];
+      [credential4 setToken:cloudKitToken];
 
-      v23 = [a1 accountStore];
+      accountStore = [self accountStore];
       v47 = 0;
-      v24 = [v23 saveVerifiedAccount:v21 error:&v47];
-      v25 = v47;
+      v24 = [accountStore saveVerifiedAccount:v21 error:&v47];
+      username = v47;
 
       if ((v24 & 1) == 0)
       {
@@ -1476,24 +1476,24 @@ LABEL_10:
         _os_log_impl(&dword_1B6F6A000, v27, OS_LOG_TYPE_DEFAULT, "Couldn't find a CloudKit child account - stashing the token away", buf, 2u);
       }
 
-      v25 = [a1 username];
-      [AAKeychainManager setPassword:v17 forServiceName:@"com.apple.appleaccount.cloudkit.token" username:v25 accessGroup:@"appleaccount"];
+      username = [self username];
+      [AAKeychainManager setPassword:cloudKitToken forServiceName:@"com.apple.appleaccount.cloudkit.token" username:username accessGroup:@"appleaccount"];
     }
 
     v6 = 1;
   }
 
-  v28 = [v4 fmipToken];
-  if (v28)
+  fmipToken = [v4 fmipToken];
+  if (fmipToken)
   {
-    v29 = [a1 credential];
-    [v29 setFindMyiPhoneToken:v28];
+    credential5 = [self credential];
+    [credential5 setFindMyiPhoneToken:fmipToken];
 
     v6 = 1;
   }
 
-  v30 = [v4 fmipAppToken];
-  if (v30)
+  fmipAppToken = [v4 fmipAppToken];
+  if (fmipAppToken)
   {
     v31 = _AALogSystem();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -1502,14 +1502,14 @@ LABEL_10:
       _os_log_impl(&dword_1B6F6A000, v31, OS_LOG_TYPE_DEFAULT, "Setting FMIP App token...", buf, 2u);
     }
 
-    v32 = [a1 credential];
-    [v32 setCredentialItem:v30 forKey:*MEMORY[0x1E6959990]];
+    credential6 = [self credential];
+    [credential6 setCredentialItem:fmipAppToken forKey:*MEMORY[0x1E6959990]];
 
     v6 = 1;
   }
 
-  v33 = [v4 fmipSiriToken];
-  if (v33)
+  fmipSiriToken = [v4 fmipSiriToken];
+  if (fmipSiriToken)
   {
     v34 = _AALogSystem();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -1518,14 +1518,14 @@ LABEL_10:
       _os_log_impl(&dword_1B6F6A000, v34, OS_LOG_TYPE_DEFAULT, "Setting FMIP Siri token...", buf, 2u);
     }
 
-    v35 = [a1 credential];
-    [v35 setCredentialItem:v33 forKey:*MEMORY[0x1E6959998]];
+    credential7 = [self credential];
+    [credential7 setCredentialItem:fmipSiriToken forKey:*MEMORY[0x1E6959998]];
 
     v6 = 1;
   }
 
-  v36 = [v4 fmfToken];
-  if (v36)
+  fmfToken = [v4 fmfToken];
+  if (fmfToken)
   {
     v37 = _AALogSystem();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
@@ -1533,14 +1533,14 @@ LABEL_10:
       [ACAccount(AppleAccount) aa_updateTokensWithProvisioningResponse:];
     }
 
-    v38 = [a1 credential];
-    [v38 setCredentialItem:v36 forKey:*MEMORY[0x1E6959988]];
+    credential8 = [self credential];
+    [credential8 setCredentialItem:fmfToken forKey:*MEMORY[0x1E6959988]];
 
     v6 = 1;
   }
 
-  v39 = [v4 fmfAppToken];
-  if (v39)
+  fmfAppToken = [v4 fmfAppToken];
+  if (fmfAppToken)
   {
     v40 = _AALogSystem();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
@@ -1548,8 +1548,8 @@ LABEL_10:
       [ACAccount(AppleAccount) aa_updateTokensWithProvisioningResponse:];
     }
 
-    v41 = [a1 credential];
-    [v41 setCredentialItem:v39 forKey:*MEMORY[0x1E6959980]];
+    credential9 = [self credential];
+    [credential9 setCredentialItem:fmfAppToken forKey:*MEMORY[0x1E6959980]];
 
     v6 = 1;
   }
@@ -1560,11 +1560,11 @@ LABEL_10:
 - (uint64_t)aa_hasDuplicateAccount
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 accountStore];
+  accountStore = [self accountStore];
   v15[0] = *MEMORY[0x1E69597F8];
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   v14 = 0;
-  v4 = [v2 accountsWithAccountTypeIdentifiers:v3 error:&v14];
+  v4 = [accountStore accountsWithAccountTypeIdentifiers:v3 error:&v14];
   v5 = v14;
 
   if (!v4)
@@ -1582,13 +1582,13 @@ LABEL_10:
   v13[1] = 3221225472;
   v13[2] = __49__ACAccount_AppleAccount__aa_hasDuplicateAccount__block_invoke;
   v13[3] = &unk_1E7C9B248;
-  v13[4] = a1;
+  v13[4] = self;
   v6 = [v4 aaf_firstObjectPassingTest:v13];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __49__ACAccount_AppleAccount__aa_hasDuplicateAccount__block_invoke_2;
   v12[3] = &unk_1E7C9B248;
-  v12[4] = a1;
+  v12[4] = self;
   v7 = [v4 aaf_firstObjectPassingTest:v12];
 
   if (v6 || !v7)
@@ -1608,73 +1608,73 @@ LABEL_9:
 - (uint64_t)_aa_isExistingAccount:()AppleAccount
 {
   v4 = a3;
-  v5 = [a1 accountType];
-  v6 = [v5 identifier];
-  v7 = [v4 accountType];
-  v8 = [v7 identifier];
-  v9 = [v6 isEqualToString:v8];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  accountType2 = [v4 accountType];
+  identifier2 = [accountType2 identifier];
+  v9 = [identifier isEqualToString:identifier2];
 
-  v10 = [a1 identifier];
-  v11 = [v4 identifier];
+  identifier3 = [self identifier];
+  identifier4 = [v4 identifier];
 
-  LODWORD(v4) = [v10 isEqualToString:v11];
+  LODWORD(v4) = [identifier3 isEqualToString:identifier4];
   return v4 & v9;
 }
 
 - (uint64_t)aa_isDuplicateAccount:()AppleAccount
 {
   v4 = a3;
-  v5 = [a1 accountType];
-  v6 = [v5 identifier];
-  v7 = [v4 accountType];
-  v8 = [v7 identifier];
-  v9 = [v6 isEqualToString:v8];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  accountType2 = [v4 accountType];
+  identifier2 = [accountType2 identifier];
+  v9 = [identifier isEqualToString:identifier2];
 
-  v10 = [a1 identifier];
-  v11 = [v4 identifier];
-  LOBYTE(v7) = [v10 isEqualToString:v11];
+  identifier3 = [self identifier];
+  identifier4 = [v4 identifier];
+  LOBYTE(accountType2) = [identifier3 isEqualToString:identifier4];
 
-  v12 = 0;
-  if ((v7 & 1) == 0 && v9)
+  username4 = 0;
+  if ((accountType2 & 1) == 0 && v9)
   {
-    v13 = [a1 aa_personID];
-    if (!v13)
+    aa_personID = [self aa_personID];
+    if (!aa_personID)
     {
       goto LABEL_7;
     }
 
-    v14 = v13;
-    v15 = [a1 aa_personID];
-    v16 = [v4 aa_personID];
-    v17 = [v15 isEqualToString:v16];
+    v14 = aa_personID;
+    aa_personID2 = [self aa_personID];
+    aa_personID3 = [v4 aa_personID];
+    v17 = [aa_personID2 isEqualToString:aa_personID3];
 
     if (v17)
     {
-      v18 = _AALogSystem();
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+      aa_appleIDAliases = _AALogSystem();
+      if (os_log_type_enabled(aa_appleIDAliases, OS_LOG_TYPE_DEBUG))
       {
-        [ACAccount(AppleAccount) aa_isDuplicateAccount:a1];
+        [ACAccount(AppleAccount) aa_isDuplicateAccount:self];
       }
     }
 
     else
     {
 LABEL_7:
-      v19 = [a1 username];
-      if (!v19)
+      username = [self username];
+      if (!username)
       {
         goto LABEL_11;
       }
 
-      v20 = v19;
-      v21 = [a1 username];
-      v22 = [v4 username];
-      v23 = [v21 isEqualToString:v22];
+      v20 = username;
+      username2 = [self username];
+      username3 = [v4 username];
+      v23 = [username2 isEqualToString:username3];
 
       if (v23)
       {
-        v18 = _AALogSystem();
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+        aa_appleIDAliases = _AALogSystem();
+        if (os_log_type_enabled(aa_appleIDAliases, OS_LOG_TYPE_DEBUG))
         {
           [ACAccount(AppleAccount) aa_isDuplicateAccount:];
         }
@@ -1683,44 +1683,44 @@ LABEL_7:
       else
       {
 LABEL_11:
-        v24 = [a1 aa_altDSID];
-        if (!v24)
+        aa_altDSID = [self aa_altDSID];
+        if (!aa_altDSID)
         {
           goto LABEL_15;
         }
 
-        v25 = v24;
-        v26 = [a1 aa_altDSID];
-        v27 = [v4 aa_altDSID];
-        v28 = [v26 isEqualToString:v27];
+        v25 = aa_altDSID;
+        aa_altDSID2 = [self aa_altDSID];
+        aa_altDSID3 = [v4 aa_altDSID];
+        v28 = [aa_altDSID2 isEqualToString:aa_altDSID3];
 
         if (v28)
         {
-          v18 = _AALogSystem();
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+          aa_appleIDAliases = _AALogSystem();
+          if (os_log_type_enabled(aa_appleIDAliases, OS_LOG_TYPE_DEBUG))
           {
-            [ACAccount(AppleAccount) aa_isDuplicateAccount:a1];
+            [ACAccount(AppleAccount) aa_isDuplicateAccount:self];
           }
         }
 
         else
         {
 LABEL_15:
-          v18 = [v4 aa_appleIDAliases];
-          v12 = [a1 username];
-          if (!v12)
+          aa_appleIDAliases = [v4 aa_appleIDAliases];
+          username4 = [self username];
+          if (!username4)
           {
 LABEL_21:
 
             goto LABEL_22;
           }
 
-          v29 = [a1 username];
-          v30 = [v18 containsObject:v29];
+          username5 = [self username];
+          v30 = [aa_appleIDAliases containsObject:username5];
 
           if (!v30)
           {
-            v12 = 0;
+            username4 = 0;
             goto LABEL_21;
           }
 
@@ -1733,21 +1733,21 @@ LABEL_21:
       }
     }
 
-    v12 = 1;
+    username4 = 1;
     goto LABEL_21;
   }
 
 LABEL_22:
 
-  return v12;
+  return username4;
 }
 
 - (uint64_t)aa_isChildProtoAccount
 {
-  result = [a1 aa_isProtoAccount];
+  result = [self aa_isProtoAccount];
   if (result)
   {
-    return [a1 proto_ageRange] == 1;
+    return [self proto_ageRange] == 1;
   }
 
   return result;
@@ -1755,10 +1755,10 @@ LABEL_22:
 
 - (uint64_t)aa_isTeenProtoAccount
 {
-  result = [a1 aa_isProtoAccount];
+  result = [self aa_isProtoAccount];
   if (result)
   {
-    return [a1 proto_ageRange] == 2;
+    return [self proto_ageRange] == 2;
   }
 
   return result;
@@ -1766,12 +1766,12 @@ LABEL_22:
 
 - (uint64_t)aa_isProtoAccount
 {
-  v1 = [a1 accountType];
-  v2 = [v1 identifier];
-  v3 = [MEMORY[0x1E698DC80] sharedInstance];
-  v4 = [v3 protoAccountType];
-  v5 = [v4 identifier];
-  v6 = [v2 isEqualToString:v5];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  protoAccountType = [mEMORY[0x1E698DC80] protoAccountType];
+  identifier2 = [protoAccountType identifier];
+  v6 = [identifier isEqualToString:identifier2];
 
   return v6;
 }
@@ -1781,7 +1781,7 @@ LABEL_22:
   v4 = a3;
   if ([v4 length])
   {
-    [a1 setAccountProperty:v4 forKey:@"appleId"];
+    [self setAccountProperty:v4 forKey:@"appleId"];
   }
 }
 
@@ -1790,7 +1790,7 @@ LABEL_22:
   v4 = a3;
   if ([v4 length])
   {
-    [a1 setAccountProperty:v4 forKey:@"altDSID"];
+    [self setAccountProperty:v4 forKey:@"altDSID"];
   }
 }
 
@@ -1799,14 +1799,14 @@ LABEL_22:
   v4 = a3;
   if ([v4 length])
   {
-    [a1 setAccountProperty:v4 forKey:@"primaryEmail"];
+    [self setAccountProperty:v4 forKey:@"primaryEmail"];
   }
 }
 
 - (id)_aa_rawPassword
 {
-  v1 = [a1 credential];
-  v2 = [v1 credentialItemForKey:*MEMORY[0x1E6959A00]];
+  credential = [self credential];
+  v2 = [credential credentialItemForKey:*MEMORY[0x1E6959A00]];
 
   return v2;
 }
@@ -1817,24 +1817,24 @@ LABEL_22:
   if (v4)
   {
     v10 = v4;
-    v5 = [a1 _aa_rawPassword];
-    v6 = [v10 isEqualToString:v5];
+    _aa_rawPassword = [self _aa_rawPassword];
+    v6 = [v10 isEqualToString:_aa_rawPassword];
 
     v4 = v10;
     if ((v6 & 1) == 0)
     {
-      v7 = [a1 credential];
-      v8 = v7;
-      if (v7)
+      credential = [self credential];
+      v8 = credential;
+      if (credential)
       {
-        [v7 setCredentialItem:v10 forKey:*MEMORY[0x1E6959A00]];
+        [credential setCredentialItem:v10 forKey:*MEMORY[0x1E6959A00]];
       }
 
       else
       {
         v9 = objc_alloc_init(MEMORY[0x1E6959A30]);
         [v9 setCredentialItem:v10 forKey:*MEMORY[0x1E6959A00]];
-        [a1 setCredential:v9];
+        [self setCredential:v9];
       }
 
       v4 = v10;
@@ -1844,12 +1844,12 @@ LABEL_22:
 
 - (void)_aa_clearRawPassword
 {
-  v1 = [a1 credential];
-  if (v1)
+  credential = [self credential];
+  if (credential)
   {
-    v2 = v1;
-    [v1 setCredentialItem:0 forKey:*MEMORY[0x1E6959A00]];
-    v1 = v2;
+    v2 = credential;
+    [credential setCredentialItem:0 forKey:*MEMORY[0x1E6959A00]];
+    credential = v2;
   }
 }
 
@@ -1859,7 +1859,7 @@ LABEL_22:
   v6 = a3;
   v7 = a4;
   v8 = _AALogSystem();
-  v9 = v8;
+  aa_fetchUserAcknowledgementForAgeMigrationAlertForAllBundleIDs = v8;
   if (v6 && v7)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1868,18 +1868,18 @@ LABEL_22:
       v17 = v7;
       v18 = 2112;
       v19 = v6;
-      _os_log_impl(&dword_1B6F6A000, v9, OS_LOG_TYPE_DEFAULT, "Saving user action %@ for bundle id %@", &v16, 0x16u);
+      _os_log_impl(&dword_1B6F6A000, aa_fetchUserAcknowledgementForAgeMigrationAlertForAllBundleIDs, OS_LOG_TYPE_DEFAULT, "Saving user action %@ for bundle id %@", &v16, 0x16u);
     }
 
-    v9 = [a1 aa_fetchUserAcknowledgementForAgeMigrationAlertForAllBundleIDs];
+    aa_fetchUserAcknowledgementForAgeMigrationAlertForAllBundleIDs = [self aa_fetchUserAcknowledgementForAgeMigrationAlertForAllBundleIDs];
     v10 = _AALogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [ACAccount(AppleAccount) aa_saveUserAcknowledgementForAgeMigrationAlertForBundleID:v9 actionDetails:?];
+      [ACAccount(AppleAccount) aa_saveUserAcknowledgementForAgeMigrationAlertForBundleID:aa_fetchUserAcknowledgementForAgeMigrationAlertForAllBundleIDs actionDetails:?];
     }
 
-    v11 = [v9 mutableCopy];
-    if (!v9)
+    v11 = [aa_fetchUserAcknowledgementForAgeMigrationAlertForAllBundleIDs mutableCopy];
+    if (!aa_fetchUserAcknowledgementForAgeMigrationAlertForAllBundleIDs)
     {
       v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
 
@@ -1896,7 +1896,7 @@ LABEL_22:
       _os_log_impl(&dword_1B6F6A000, v13, OS_LOG_TYPE_DEFAULT, "All bundleId count is %lu... saving", &v16, 0xCu);
     }
 
-    [a1 setAccountProperty:v11 forKey:@"userAcknowledgeMigrationAlert"];
+    [self setAccountProperty:v11 forKey:@"userAcknowledgeMigrationAlert"];
   }
 
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1912,8 +1912,8 @@ LABEL_22:
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 aa_fetchUserAcknowledgementForAgeMigrationAlertForAllBundleIDs];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    aa_fetchUserAcknowledgementForAgeMigrationAlertForAllBundleIDs = [self aa_fetchUserAcknowledgementForAgeMigrationAlertForAllBundleIDs];
+    v6 = [aa_fetchUserAcknowledgementForAgeMigrationAlertForAllBundleIDs objectForKeyedSubscript:v4];
     v7 = _AALogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -1923,8 +1923,8 @@ LABEL_22:
 
   else
   {
-    v5 = _AALogSystem();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    aa_fetchUserAcknowledgementForAgeMigrationAlertForAllBundleIDs = _AALogSystem();
+    if (os_log_type_enabled(aa_fetchUserAcknowledgementForAgeMigrationAlertForAllBundleIDs, OS_LOG_TYPE_ERROR))
     {
       [ACAccount(AppleAccount) aa_fetchUserAcknowledgementForAgeMigrationAlertForBundleID:];
     }
@@ -1937,7 +1937,7 @@ LABEL_22:
 
 - (id)aa_fetchUserAcknowledgementForAgeMigrationAlertForAllBundleIDs
 {
-  v1 = [a1 accountPropertyForKey:@"userAcknowledgeMigrationAlert"];
+  v1 = [self accountPropertyForKey:@"userAcknowledgeMigrationAlert"];
   v2 = _AALogSystem();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
   {
@@ -1955,7 +1955,7 @@ LABEL_22:
     [ACAccount(AppleAccount) aa_clearUserAcknowledgeMigrationAlertForAllBundles];
   }
 
-  return [a1 setAccountProperty:0 forKey:@"userAcknowledgeMigrationAlert"];
+  return [self setAccountProperty:0 forKey:@"userAcknowledgeMigrationAlert"];
 }
 
 - (void)aa_isPrimaryAccount

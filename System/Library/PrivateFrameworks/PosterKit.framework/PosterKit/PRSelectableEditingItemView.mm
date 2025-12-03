@@ -1,17 +1,17 @@
 @interface PRSelectableEditingItemView
 - (CGSize)intrinsicContentSize;
-- (PRSelectableEditingItemView)initWithFrame:(CGRect)a3;
-- (void)setSelected:(BOOL)a3;
+- (PRSelectableEditingItemView)initWithFrame:(CGRect)frame;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation PRSelectableEditingItemView
 
-- (PRSelectableEditingItemView)initWithFrame:(CGRect)a3
+- (PRSelectableEditingItemView)initWithFrame:(CGRect)frame
 {
   v38[4] = *MEMORY[0x1E69E9840];
   v36.receiver = self;
   v36.super_class = PRSelectableEditingItemView;
-  v3 = [(PRSelectableEditingItemView *)&v36 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PRSelectableEditingItemView *)&v36 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     Mutable = CGPathCreateMutable();
@@ -23,15 +23,15 @@
     v40 = CGRectInset(v39, 1.0, 1.0);
     CGPathAddEllipseInRect(Mutable, 0, v40);
     v7 = objc_alloc_init(MEMORY[0x1E69C5638]);
-    v8 = [v7 shapeLayer];
-    [v8 setPath:Mutable];
-    [v8 setLineWidth:3.0];
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
-    v33 = v8;
-    [v8 setStrokeColor:{objc_msgSend(v9, "CGColor")}];
+    shapeLayer = [v7 shapeLayer];
+    [shapeLayer setPath:Mutable];
+    [shapeLayer setLineWidth:3.0];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v33 = shapeLayer;
+    [shapeLayer setStrokeColor:{objc_msgSend(whiteColor, "CGColor")}];
 
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [v8 setFillColor:{objc_msgSend(v10, "CGColor")}];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [shapeLayer setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
     [v7 setHidden:1];
     [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -42,22 +42,22 @@
 
     CGPathRelease(Mutable);
     v27 = MEMORY[0x1E696ACD8];
-    v31 = [v12 topAnchor];
-    v30 = [(PRSelectableEditingItemView *)v3 topAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    topAnchor = [v12 topAnchor];
+    topAnchor2 = [(PRSelectableEditingItemView *)v3 topAnchor];
+    v29 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v38[0] = v29;
-    v28 = [v12 leadingAnchor];
-    v13 = [(PRSelectableEditingItemView *)v3 leadingAnchor];
-    v14 = [v28 constraintEqualToAnchor:v13];
+    leadingAnchor = [v12 leadingAnchor];
+    leadingAnchor2 = [(PRSelectableEditingItemView *)v3 leadingAnchor];
+    v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v38[1] = v14;
     v32 = v12;
-    v15 = [v12 trailingAnchor];
-    v16 = [(PRSelectableEditingItemView *)v3 trailingAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    trailingAnchor = [v12 trailingAnchor];
+    trailingAnchor2 = [(PRSelectableEditingItemView *)v3 trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v38[2] = v17;
-    v18 = [v12 bottomAnchor];
-    v19 = [(PRSelectableEditingItemView *)v3 bottomAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    bottomAnchor = [v12 bottomAnchor];
+    bottomAnchor2 = [(PRSelectableEditingItemView *)v3 bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v38[3] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:4];
     [v27 activateConstraints:v21];
@@ -89,14 +89,14 @@ void __45__PRSelectableEditingItemView_initWithFrame___block_invoke(uint64_t a1)
   [v4 setFillColor:{objc_msgSend(v6, "CGColor")}];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    v4 = a3;
-    self->_selected = a3;
-    v5 = [(PRSelectableEditingItemView *)self selectionView];
-    [v5 setHidden:!v4];
+    selectedCopy = selected;
+    self->_selected = selected;
+    selectionView = [(PRSelectableEditingItemView *)self selectionView];
+    [selectionView setHidden:!selectedCopy];
   }
 }
 

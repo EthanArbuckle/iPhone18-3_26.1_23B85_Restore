@@ -1,42 +1,42 @@
 @interface ICASScrapPaperAttachmentItemData
-- (ICASScrapPaperAttachmentItemData)initWithTotalCountOfScrapPapersWithAttachmentDocScan:(id)a3 totalCountOfScrapPapersWithAttachmentInlineDrawingV1:(id)a4 totalCountOfScrapPapersWithAttachmentInlineDrawingV2:(id)a5 totalCountOfScrapPapersWithAttachmentPaperKit:(id)a6 totalCountOfScrapPapersWithAttachmentFullscreenDrawing:(id)a7 totalCountOfScrapPapersWithAttachmentTables:(id)a8 totalCountOfScrapPapersWithAttachmentOther:(id)a9 totalCountOfScrapPapersWithAttachmentRichUrl:(id)a10 totalCountOfScrapPapersWithAttachmentMapLink:(id)a11 totalCountOfScrapPapersWithAttachmentDeepLink:(id)a12;
+- (ICASScrapPaperAttachmentItemData)initWithTotalCountOfScrapPapersWithAttachmentDocScan:(id)scan totalCountOfScrapPapersWithAttachmentInlineDrawingV1:(id)v1 totalCountOfScrapPapersWithAttachmentInlineDrawingV2:(id)v2 totalCountOfScrapPapersWithAttachmentPaperKit:(id)kit totalCountOfScrapPapersWithAttachmentFullscreenDrawing:(id)drawing totalCountOfScrapPapersWithAttachmentTables:(id)tables totalCountOfScrapPapersWithAttachmentOther:(id)other totalCountOfScrapPapersWithAttachmentRichUrl:(id)self0 totalCountOfScrapPapersWithAttachmentMapLink:(id)self1 totalCountOfScrapPapersWithAttachmentDeepLink:(id)self2;
 - (id)toDict;
 @end
 
 @implementation ICASScrapPaperAttachmentItemData
 
-- (ICASScrapPaperAttachmentItemData)initWithTotalCountOfScrapPapersWithAttachmentDocScan:(id)a3 totalCountOfScrapPapersWithAttachmentInlineDrawingV1:(id)a4 totalCountOfScrapPapersWithAttachmentInlineDrawingV2:(id)a5 totalCountOfScrapPapersWithAttachmentPaperKit:(id)a6 totalCountOfScrapPapersWithAttachmentFullscreenDrawing:(id)a7 totalCountOfScrapPapersWithAttachmentTables:(id)a8 totalCountOfScrapPapersWithAttachmentOther:(id)a9 totalCountOfScrapPapersWithAttachmentRichUrl:(id)a10 totalCountOfScrapPapersWithAttachmentMapLink:(id)a11 totalCountOfScrapPapersWithAttachmentDeepLink:(id)a12
+- (ICASScrapPaperAttachmentItemData)initWithTotalCountOfScrapPapersWithAttachmentDocScan:(id)scan totalCountOfScrapPapersWithAttachmentInlineDrawingV1:(id)v1 totalCountOfScrapPapersWithAttachmentInlineDrawingV2:(id)v2 totalCountOfScrapPapersWithAttachmentPaperKit:(id)kit totalCountOfScrapPapersWithAttachmentFullscreenDrawing:(id)drawing totalCountOfScrapPapersWithAttachmentTables:(id)tables totalCountOfScrapPapersWithAttachmentOther:(id)other totalCountOfScrapPapersWithAttachmentRichUrl:(id)self0 totalCountOfScrapPapersWithAttachmentMapLink:(id)self1 totalCountOfScrapPapersWithAttachmentDeepLink:(id)self2
 {
-  v35 = a3;
-  obj = a4;
-  v34 = a4;
-  v27 = a5;
-  v33 = a5;
-  v32 = a6;
-  v28 = a7;
-  v31 = a7;
-  v29 = a8;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
+  scanCopy = scan;
+  obj = v1;
+  v1Copy = v1;
+  v2Copy = v2;
+  v2Copy2 = v2;
+  kitCopy = kit;
+  drawingCopy = drawing;
+  drawingCopy2 = drawing;
+  tablesCopy = tables;
+  tablesCopy2 = tables;
+  otherCopy = other;
+  urlCopy = url;
+  linkCopy = link;
+  deepLinkCopy = deepLink;
   v36.receiver = self;
   v36.super_class = ICASScrapPaperAttachmentItemData;
   v23 = [(ICASScrapPaperAttachmentItemData *)&v36 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_totalCountOfScrapPapersWithAttachmentDocScan, a3);
+    objc_storeStrong(&v23->_totalCountOfScrapPapersWithAttachmentDocScan, scan);
     objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentInlineDrawingV1, obj);
-    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentInlineDrawingV2, v27);
-    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentPaperKit, a6);
-    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentFullscreenDrawing, v28);
-    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentTables, v29);
-    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentOther, a9);
-    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentRichUrl, a10);
-    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentMapLink, a11);
-    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentDeepLink, a12);
+    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentInlineDrawingV2, v2Copy);
+    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentPaperKit, kit);
+    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentFullscreenDrawing, drawingCopy);
+    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentTables, tablesCopy);
+    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentOther, other);
+    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentRichUrl, url);
+    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentMapLink, link);
+    objc_storeStrong(&v24->_totalCountOfScrapPapersWithAttachmentDeepLink, deepLink);
   }
 
   return v24;
@@ -46,145 +46,145 @@
 {
   v37[10] = *MEMORY[0x277D85DE8];
   v36[0] = @"totalCountOfScrapPapersWithAttachmentDocScan";
-  v35 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentDocScan];
-  if (v35)
+  totalCountOfScrapPapersWithAttachmentDocScan = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentDocScan];
+  if (totalCountOfScrapPapersWithAttachmentDocScan)
   {
-    v3 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentDocScan];
+    totalCountOfScrapPapersWithAttachmentDocScan2 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentDocScan];
   }
 
   else
   {
-    v3 = objc_opt_new();
+    totalCountOfScrapPapersWithAttachmentDocScan2 = objc_opt_new();
   }
 
-  v34 = v3;
-  v37[0] = v3;
+  v34 = totalCountOfScrapPapersWithAttachmentDocScan2;
+  v37[0] = totalCountOfScrapPapersWithAttachmentDocScan2;
   v36[1] = @"totalCountOfScrapPapersWithAttachmentInlineDrawingV1";
-  v33 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentInlineDrawingV1];
-  if (v33)
+  totalCountOfScrapPapersWithAttachmentInlineDrawingV1 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentInlineDrawingV1];
+  if (totalCountOfScrapPapersWithAttachmentInlineDrawingV1)
   {
-    v4 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentInlineDrawingV1];
+    totalCountOfScrapPapersWithAttachmentInlineDrawingV12 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentInlineDrawingV1];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    totalCountOfScrapPapersWithAttachmentInlineDrawingV12 = objc_opt_new();
   }
 
-  v32 = v4;
-  v37[1] = v4;
+  v32 = totalCountOfScrapPapersWithAttachmentInlineDrawingV12;
+  v37[1] = totalCountOfScrapPapersWithAttachmentInlineDrawingV12;
   v36[2] = @"totalCountOfScrapPapersWithAttachmentInlineDrawingV2";
-  v31 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentInlineDrawingV2];
-  if (v31)
+  totalCountOfScrapPapersWithAttachmentInlineDrawingV2 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentInlineDrawingV2];
+  if (totalCountOfScrapPapersWithAttachmentInlineDrawingV2)
   {
-    v5 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentInlineDrawingV2];
+    totalCountOfScrapPapersWithAttachmentInlineDrawingV22 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentInlineDrawingV2];
   }
 
   else
   {
-    v5 = objc_opt_new();
+    totalCountOfScrapPapersWithAttachmentInlineDrawingV22 = objc_opt_new();
   }
 
-  v30 = v5;
-  v37[2] = v5;
+  v30 = totalCountOfScrapPapersWithAttachmentInlineDrawingV22;
+  v37[2] = totalCountOfScrapPapersWithAttachmentInlineDrawingV22;
   v36[3] = @"totalCountOfScrapPapersWithAttachmentPaperKit";
-  v29 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentPaperKit];
-  if (v29)
+  totalCountOfScrapPapersWithAttachmentPaperKit = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentPaperKit];
+  if (totalCountOfScrapPapersWithAttachmentPaperKit)
   {
-    v6 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentPaperKit];
+    totalCountOfScrapPapersWithAttachmentPaperKit2 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentPaperKit];
   }
 
   else
   {
-    v6 = objc_opt_new();
+    totalCountOfScrapPapersWithAttachmentPaperKit2 = objc_opt_new();
   }
 
-  v28 = v6;
-  v37[3] = v6;
+  v28 = totalCountOfScrapPapersWithAttachmentPaperKit2;
+  v37[3] = totalCountOfScrapPapersWithAttachmentPaperKit2;
   v36[4] = @"totalCountOfScrapPapersWithAttachmentFullscreenDrawing";
-  v27 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentFullscreenDrawing];
-  if (v27)
+  totalCountOfScrapPapersWithAttachmentFullscreenDrawing = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentFullscreenDrawing];
+  if (totalCountOfScrapPapersWithAttachmentFullscreenDrawing)
   {
-    v7 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentFullscreenDrawing];
+    totalCountOfScrapPapersWithAttachmentFullscreenDrawing2 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentFullscreenDrawing];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    totalCountOfScrapPapersWithAttachmentFullscreenDrawing2 = objc_opt_new();
   }
 
-  v26 = v7;
-  v37[4] = v7;
+  v26 = totalCountOfScrapPapersWithAttachmentFullscreenDrawing2;
+  v37[4] = totalCountOfScrapPapersWithAttachmentFullscreenDrawing2;
   v36[5] = @"totalCountOfScrapPapersWithAttachmentTables";
-  v25 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentTables];
-  if (v25)
+  totalCountOfScrapPapersWithAttachmentTables = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentTables];
+  if (totalCountOfScrapPapersWithAttachmentTables)
   {
-    v8 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentTables];
+    totalCountOfScrapPapersWithAttachmentTables2 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentTables];
   }
 
   else
   {
-    v8 = objc_opt_new();
+    totalCountOfScrapPapersWithAttachmentTables2 = objc_opt_new();
   }
 
-  v9 = v8;
-  v37[5] = v8;
+  v9 = totalCountOfScrapPapersWithAttachmentTables2;
+  v37[5] = totalCountOfScrapPapersWithAttachmentTables2;
   v36[6] = @"totalCountOfScrapPapersWithAttachmentOther";
-  v10 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentOther];
-  if (v10)
+  totalCountOfScrapPapersWithAttachmentOther = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentOther];
+  if (totalCountOfScrapPapersWithAttachmentOther)
   {
-    v11 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentOther];
+    totalCountOfScrapPapersWithAttachmentOther2 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentOther];
   }
 
   else
   {
-    v11 = objc_opt_new();
+    totalCountOfScrapPapersWithAttachmentOther2 = objc_opt_new();
   }
 
-  v12 = v11;
-  v37[6] = v11;
+  v12 = totalCountOfScrapPapersWithAttachmentOther2;
+  v37[6] = totalCountOfScrapPapersWithAttachmentOther2;
   v36[7] = @"totalCountOfScrapPapersWithAttachmentRichUrl";
-  v13 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentRichUrl];
-  if (v13)
+  totalCountOfScrapPapersWithAttachmentRichUrl = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentRichUrl];
+  if (totalCountOfScrapPapersWithAttachmentRichUrl)
   {
-    v14 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentRichUrl];
+    totalCountOfScrapPapersWithAttachmentRichUrl2 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentRichUrl];
   }
 
   else
   {
-    v14 = objc_opt_new();
+    totalCountOfScrapPapersWithAttachmentRichUrl2 = objc_opt_new();
   }
 
-  v15 = v14;
-  v37[7] = v14;
+  v15 = totalCountOfScrapPapersWithAttachmentRichUrl2;
+  v37[7] = totalCountOfScrapPapersWithAttachmentRichUrl2;
   v36[8] = @"totalCountOfScrapPapersWithAttachmentMapLink";
-  v16 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentMapLink];
-  if (v16)
+  totalCountOfScrapPapersWithAttachmentMapLink = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentMapLink];
+  if (totalCountOfScrapPapersWithAttachmentMapLink)
   {
-    v17 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentMapLink];
+    totalCountOfScrapPapersWithAttachmentMapLink2 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentMapLink];
   }
 
   else
   {
-    v17 = objc_opt_new();
+    totalCountOfScrapPapersWithAttachmentMapLink2 = objc_opt_new();
   }
 
-  v18 = v17;
-  v37[8] = v17;
+  v18 = totalCountOfScrapPapersWithAttachmentMapLink2;
+  v37[8] = totalCountOfScrapPapersWithAttachmentMapLink2;
   v36[9] = @"totalCountOfScrapPapersWithAttachmentDeepLink";
-  v19 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentDeepLink];
-  if (v19)
+  totalCountOfScrapPapersWithAttachmentDeepLink = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentDeepLink];
+  if (totalCountOfScrapPapersWithAttachmentDeepLink)
   {
-    v20 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentDeepLink];
+    totalCountOfScrapPapersWithAttachmentDeepLink2 = [(ICASScrapPaperAttachmentItemData *)self totalCountOfScrapPapersWithAttachmentDeepLink];
   }
 
   else
   {
-    v20 = objc_opt_new();
+    totalCountOfScrapPapersWithAttachmentDeepLink2 = objc_opt_new();
   }
 
-  v21 = v20;
-  v37[9] = v20;
+  v21 = totalCountOfScrapPapersWithAttachmentDeepLink2;
+  v37[9] = totalCountOfScrapPapersWithAttachmentDeepLink2;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:10];
 
   v23 = *MEMORY[0x277D85DE8];

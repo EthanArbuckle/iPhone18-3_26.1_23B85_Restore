@@ -1,11 +1,11 @@
 @interface MPModelLibraryPlaylistEditDataSource
-- (MPModelLibraryPlaylistEditDataSource)initWithIdentifier:(id)a3;
-- (MPModelLibraryPlaylistEditDataSource)initWithIdentifier:(id)a3 authorProfile:(id)a4;
+- (MPModelLibraryPlaylistEditDataSource)initWithIdentifier:(id)identifier;
+- (MPModelLibraryPlaylistEditDataSource)initWithIdentifier:(id)identifier authorProfile:(id)profile;
 - (MPMutableIdentifierListSection)dataSourceSection;
-- (id)newPlaylistEntryForTrack:(id)a3;
-- (void)_reloadWithCompletion:(id)a3;
-- (void)loadEntriesWithCompletion:(id)a3;
-- (void)reloadSection:(id)a3 completion:(id)a4;
+- (id)newPlaylistEntryForTrack:(id)track;
+- (void)_reloadWithCompletion:(id)completion;
+- (void)loadEntriesWithCompletion:(id)completion;
+- (void)reloadSection:(id)section completion:(id)completion;
 @end
 
 @implementation MPModelLibraryPlaylistEditDataSource
@@ -17,9 +17,9 @@
   return WeakRetained;
 }
 
-- (void)_reloadWithCompletion:(id)a3
+- (void)_reloadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_dataSourceSection);
   if (WeakRetained)
   {
@@ -28,14 +28,14 @@
     v6[2] = __62__MPModelLibraryPlaylistEditDataSource__reloadWithCompletion___block_invoke;
     v6[3] = &unk_1E767C058;
     v6[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v7 = WeakRetained;
     [(MPModelLibraryPlaylistEditDataSource *)self loadEntriesWithCompletion:v6];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -152,45 +152,45 @@ uint64_t __62__MPModelLibraryPlaylistEditDataSource__reloadWithCompletion___bloc
   return v7;
 }
 
-- (void)reloadSection:(id)a3 completion:(id)a4
+- (void)reloadSection:(id)section completion:(id)completion
 {
-  v6 = a4;
-  objc_storeWeak(&self->_dataSourceSection, a3);
+  completionCopy = completion;
+  objc_storeWeak(&self->_dataSourceSection, section);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__MPModelLibraryPlaylistEditDataSource_reloadSection_completion___block_invoke;
   v8[3] = &unk_1E76816D0;
-  v9 = v6;
-  v7 = v6;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(MPModelLibraryPlaylistEditDataSource *)self _reloadWithCompletion:v8];
 }
 
-- (void)loadEntriesWithCompletion:(id)a3
+- (void)loadEntriesWithCompletion:(id)completion
 {
   v5 = [objc_opt_class() instanceMethodForSelector:a2];
   if (v5 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = NSStringFromSelector(a2);
-    [v9 handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEditDataSource.m" lineNumber:72 description:{@"Subclass %@ must implement -%@ defined in %@.", v7, v8, @"[MPModelLibraryPlaylistEditDataSource class]"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEditDataSource.m" lineNumber:72 description:{@"Subclass %@ must implement -%@ defined in %@.", v7, v8, @"[MPModelLibraryPlaylistEditDataSource class]"}];
   }
 }
 
-- (id)newPlaylistEntryForTrack:(id)a3
+- (id)newPlaylistEntryForTrack:(id)track
 {
-  v5 = a3;
+  trackCopy = track;
   v6 = +[MPModelPlaylistEntry newUniversalIdentifier];
   v7 = +[MPModelPlaylistEntry newUniversalIdentifier];
-  v8 = [v5 identifiers];
+  identifiers = [trackCopy identifiers];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __65__MPModelLibraryPlaylistEditDataSource_newPlaylistEntryForTrack___block_invoke;
   v23[3] = &unk_1E7680B28;
   v9 = v6;
   v24 = v9;
-  v10 = [v8 copyWithSource:@"com.apple.MediaPlayer.MPModelLibraryPlaylistEditController" block:v23];
+  v10 = [identifiers copyWithSource:@"com.apple.MediaPlayer.MPModelLibraryPlaylistEditController" block:v23];
   v11 = [MPModelPlaylistEntry alloc];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -198,10 +198,10 @@ uint64_t __62__MPModelLibraryPlaylistEditDataSource__reloadWithCompletion___bloc
   v17[3] = &unk_1E767BF98;
   v18 = v9;
   v19 = v7;
-  v20 = self;
-  v21 = v5;
+  selfCopy = self;
+  v21 = trackCopy;
   v22 = a2;
-  v12 = v5;
+  v12 = trackCopy;
   v13 = v7;
   v14 = v9;
   v15 = [(MPModelObject *)v11 initWithIdentifiers:v10 block:v17];
@@ -255,35 +255,35 @@ void __65__MPModelLibraryPlaylistEditDataSource_newPlaylistEntryForTrack___block
   [v3 setPersistentID:0];
 }
 
-- (MPModelLibraryPlaylistEditDataSource)initWithIdentifier:(id)a3 authorProfile:(id)a4
+- (MPModelLibraryPlaylistEditDataSource)initWithIdentifier:(id)identifier authorProfile:(id)profile
 {
-  v7 = a4;
-  v8 = [(MPModelLibraryPlaylistEditDataSource *)self initWithIdentifier:a3];
+  profileCopy = profile;
+  v8 = [(MPModelLibraryPlaylistEditDataSource *)self initWithIdentifier:identifier];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_authorProfile, a4);
+    objc_storeStrong(&v8->_authorProfile, profile);
   }
 
   return v9;
 }
 
-- (MPModelLibraryPlaylistEditDataSource)initWithIdentifier:(id)a3
+- (MPModelLibraryPlaylistEditDataSource)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = MPModelLibraryPlaylistEditDataSource;
   v6 = [(MPModelLibraryPlaylistEditDataSource *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v8 = dispatch_queue_create("com.apple.MediaPlayerFramework.MPModelLibraryPlaylistEditDataSource.serialQueue", 0);
     serialQueue = v7->_serialQueue;
     v7->_serialQueue = v8;
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel__handleMPMediaLibraryEntitiesAddedOrRemovedNotification_ name:@"MPMediaLibraryEntitiesAddedOrRemovedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__handleMPMediaLibraryEntitiesAddedOrRemovedNotification_ name:@"MPMediaLibraryEntitiesAddedOrRemovedNotification" object:0];
   }
 
   return v7;

@@ -1,14 +1,14 @@
 @interface Artwork.View
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtCV11MusicCoreUI7Artwork4View)initWithCoder:(id)a3;
-- (_TtCV11MusicCoreUI7Artwork4View)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtCV11MusicCoreUI7Artwork4View)initWithCoder:(id)coder;
+- (_TtCV11MusicCoreUI7Artwork4View)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation Artwork.View
 
-- (_TtCV11MusicCoreUI7Artwork4View)initWithCoder:(id)a3
+- (_TtCV11MusicCoreUI7Artwork4View)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtCV11MusicCoreUI7Artwork4View_imageDidChangeHandler);
   *v4 = 0;
@@ -28,7 +28,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   Artwork.View.layoutSubviews()();
 }
 
@@ -40,14 +40,14 @@
   {
     v4 = v3[7];
     v5 = v3[5];
-    v6 = self;
+    selfCopy = self;
     v7 = v5;
     v8 = v4;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v7 = 0.0;
     v8 = 0.0;
   }
@@ -63,16 +63,16 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = self + OBJC_IVAR____TtCV11MusicCoreUI7Artwork4View_typedConfiguration;
   swift_beginAccess();
   v7 = v6[48];
   if (v7 == 255)
   {
-    v8 = self;
+    selfCopy = self;
     Artwork.View.fittingImageSize(in:)(width, height);
     v10 = v9;
     v12 = v11;
@@ -83,7 +83,7 @@
     v13 = *(v6 + 7);
     v14 = *(v6 + 5);
     v15 = v6[64];
-    v16 = self;
+    selfCopy2 = self;
     sub_1002B1FE8(width, height, v14, v7);
     v10 = v17;
     sub_1002B1FE8(width, height, v13, v15);
@@ -97,7 +97,7 @@
   return result;
 }
 
-- (_TtCV11MusicCoreUI7Artwork4View)initWithFrame:(CGRect)a3
+- (_TtCV11MusicCoreUI7Artwork4View)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

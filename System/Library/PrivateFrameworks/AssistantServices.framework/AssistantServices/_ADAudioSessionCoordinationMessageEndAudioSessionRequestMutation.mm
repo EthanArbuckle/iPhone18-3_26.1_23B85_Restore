@@ -1,5 +1,5 @@
 @interface _ADAudioSessionCoordinationMessageEndAudioSessionRequestMutation
-- (_ADAudioSessionCoordinationMessageEndAudioSessionRequestMutation)initWithBase:(id)a3;
+- (_ADAudioSessionCoordinationMessageEndAudioSessionRequestMutation)initWithBase:(id)base;
 - (id)getEffectiveDate;
 @end
 
@@ -9,27 +9,27 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_effectiveDate;
+    effectiveDate = self->_effectiveDate;
   }
 
   else
   {
-    v2 = [(ADAudioSessionCoordinationMessageEndAudioSessionRequest *)self->_base effectiveDate];
+    effectiveDate = [(ADAudioSessionCoordinationMessageEndAudioSessionRequest *)self->_base effectiveDate];
   }
 
-  return v2;
+  return effectiveDate;
 }
 
-- (_ADAudioSessionCoordinationMessageEndAudioSessionRequestMutation)initWithBase:(id)a3
+- (_ADAudioSessionCoordinationMessageEndAudioSessionRequestMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _ADAudioSessionCoordinationMessageEndAudioSessionRequestMutation;
   v6 = [(_ADAudioSessionCoordinationMessageEndAudioSessionRequestMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

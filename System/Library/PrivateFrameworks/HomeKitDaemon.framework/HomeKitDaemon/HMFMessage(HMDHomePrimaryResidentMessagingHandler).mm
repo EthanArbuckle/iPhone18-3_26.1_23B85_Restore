@@ -6,11 +6,11 @@
 
 - (BOOL)isRequestType
 {
-  v1 = a1;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    v2 = selfCopy;
   }
 
   else
@@ -22,15 +22,15 @@
 
   if (v3)
   {
-    v4 = [v3 type];
+    type = [v3 type];
 
-    return v4 == 0;
+    return type == 0;
   }
 
   else
   {
-    v6 = [v1 responseHandler];
-    v5 = v6 != 0;
+    responseHandler = [selfCopy responseHandler];
+    v5 = responseHandler != 0;
   }
 
   return v5;

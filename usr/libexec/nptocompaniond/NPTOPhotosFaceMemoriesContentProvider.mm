@@ -1,28 +1,28 @@
 @interface NPTOPhotosFaceMemoriesContentProvider
-- (NPTOPhotosFaceMemoriesContentProvider)initWithDevice:(id)a3;
+- (NPTOPhotosFaceMemoriesContentProvider)initWithDevice:(id)device;
 - (NPTOSyncContentProviderDelegate)delegate;
 - (id)_assetCollections;
 - (id)_defaultAssetFetchOptions;
 - (id)assetCollections;
-- (id)assetsForAssetCollection:(id)a3;
-- (id)keyAssetsForAssetCollection:(id)a3;
+- (id)assetsForAssetCollection:(id)collection;
+- (id)keyAssetsForAssetCollection:(id)collection;
 - (void)_invalidateContentIfNeeded;
 @end
 
 @implementation NPTOPhotosFaceMemoriesContentProvider
 
-- (NPTOPhotosFaceMemoriesContentProvider)initWithDevice:(id)a3
+- (NPTOPhotosFaceMemoriesContentProvider)initWithDevice:(id)device
 {
-  v4 = a3;
-  if (([v4 relationship] & 2) != 0)
+  deviceCopy = device;
+  if (([deviceCopy relationship] & 2) != 0)
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v5 = +[NRPairedDeviceRegistry sharedInstance];
-    v6 = [v5 deviceForIDSDevice:v4];
+    v6 = [v5 deviceForIDSDevice:deviceCopy];
 
     v7 = [[NSUUID alloc] initWithUUIDString:@"76EFD58C-2211-40CE-A4BA-891FE464B629"];
     v8 = [v6 supportsCapability:v7];
@@ -59,16 +59,16 @@
       }
 
       self = v9;
-      v17 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v17 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (id)assetCollections
@@ -76,9 +76,9 @@
   assetCollections = self->_assetCollections;
   if (!assetCollections)
   {
-    v4 = [(NPTOPhotosFaceMemoriesContentProvider *)self _assetCollections];
+    _assetCollections = [(NPTOPhotosFaceMemoriesContentProvider *)self _assetCollections];
     v5 = self->_assetCollections;
-    self->_assetCollections = v4;
+    self->_assetCollections = _assetCollections;
 
     assetCollections = self->_assetCollections;
   }
@@ -86,46 +86,46 @@
   return assetCollections;
 }
 
-- (id)assetsForAssetCollection:(id)a3
+- (id)assetsForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(NPTOPhotosFaceMemoriesContentProvider *)self _defaultAssetFetchOptions];
+  collectionCopy = collection;
+  _defaultAssetFetchOptions = [(NPTOPhotosFaceMemoriesContentProvider *)self _defaultAssetFetchOptions];
   v6 = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:1];
   v20 = v6;
   v7 = [NSArray arrayWithObjects:&v20 count:1];
-  [v5 setSortDescriptors:v7];
+  [_defaultAssetFetchOptions setSortDescriptors:v7];
 
-  [v5 setFetchLimit:15];
-  v8 = [PHAsset fetchReducedCuratedAssetsInMemory:v4 options:v5];
+  [_defaultAssetFetchOptions setFetchLimit:15];
+  v8 = [PHAsset fetchReducedCuratedAssetsInMemory:collectionCopy options:_defaultAssetFetchOptions];
   v9 = sub_10000268C();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = [v8 count];
-    v11 = [v4 localizedTitle];
-    v12 = [v4 localIdentifier];
+    localizedTitle = [collectionCopy localizedTitle];
+    localIdentifier = [collectionCopy localIdentifier];
     v14 = 134218498;
     v15 = v10;
     v16 = 2112;
-    v17 = v11;
+    v17 = localizedTitle;
     v18 = 2112;
-    v19 = v12;
+    v19 = localIdentifier;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "NPTOPhotosFaceMemory: Found %ld assets in memory %@ (%@)", &v14, 0x20u);
   }
 
   return v8;
 }
 
-- (id)keyAssetsForAssetCollection:(id)a3
+- (id)keyAssetsForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(NPTOPhotosFaceMemoriesContentProvider *)self _defaultAssetFetchOptions];
+  collectionCopy = collection;
+  _defaultAssetFetchOptions = [(NPTOPhotosFaceMemoriesContentProvider *)self _defaultAssetFetchOptions];
   v6 = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:1];
   v10 = v6;
   v7 = [NSArray arrayWithObjects:&v10 count:1];
-  [v5 setSortDescriptors:v7];
+  [_defaultAssetFetchOptions setSortDescriptors:v7];
 
-  [v5 setFetchLimit:1];
-  v8 = [PHAsset fetchKeyCuratedAssetInAssetCollection:v4 referenceAsset:0 options:v5];
+  [_defaultAssetFetchOptions setFetchLimit:1];
+  v8 = [PHAsset fetchKeyCuratedAssetInAssetCollection:collectionCopy referenceAsset:0 options:_defaultAssetFetchOptions];
 
   return v8;
 }
@@ -146,8 +146,8 @@
 - (id)_assetCollections
 {
   v2 = objc_alloc_init(PHFetchOptions);
-  v3 = [NSPredicate predicateWithFormat:@"score >= %f", PHMemoryGreatScoreThreshold];
-  [v2 setPredicate:v3];
+  pHMemoryGreatScoreThreshold = [NSPredicate predicateWithFormat:@"score >= %f", PHMemoryGreatScoreThreshold];
+  [v2 setPredicate:pHMemoryGreatScoreThreshold];
 
   v4 = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:0];
   v116 = v4;
@@ -184,8 +184,8 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v107 + 1) + 8 * i) localIdentifier];
-        [v9 addObject:v15];
+        localIdentifier = [*(*(&v107 + 1) + 8 * i) localIdentifier];
+        [v9 addObject:localIdentifier];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v107 objects:v123 count:16];
@@ -289,8 +289,8 @@ LABEL_31:
 LABEL_33:
 
   v29 = [NSMutableArray arrayWithCapacity:[v26 count]];
-  v30 = [v10 firstObject];
-  v96 = [v30 localIdentifier];
+  firstObject = [v10 firstObject];
+  localIdentifier2 = [firstObject localIdentifier];
 
   v105 = 0u;
   v106 = 0u;
@@ -308,16 +308,16 @@ LABEL_67:
     if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v125 = v96;
+      v125 = localIdentifier2;
       _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "pickGreatMemory: there's a new great memory: %@", buf, 0xCu);
     }
 
-    v57 = objc_opt_new();
-    [v57 setLocalIdentifier:v96];
+    anyObject = objc_opt_new();
+    [anyObject setLocalIdentifier:localIdentifier2];
     v63 = +[NSDate date];
-    [v57 setTimestamp:v63];
+    [anyObject setTimestamp:v63];
 
-    [v29 insertObject:v57 atIndex:0];
+    [v29 insertObject:anyObject atIndex:0];
 LABEL_70:
 
 LABEL_71:
@@ -344,8 +344,8 @@ LABEL_71:
               objc_enumerationMutation(v66);
             }
 
-            v71 = [*(*(&v111 + 1) + 8 * k) asDictionary];
-            [v65 addObject:v71];
+            asDictionary = [*(*(&v111 + 1) + 8 * k) asDictionary];
+            [v65 addObject:asDictionary];
           }
 
           v68 = [v66 countByEnumeratingWithState:&v111 objects:buf count:16];
@@ -383,21 +383,21 @@ LABEL_71:
       }
 
       v37 = *(*(&v103 + 1) + 8 * v36);
-      v38 = [v37 localIdentifier];
-      if ([v9 containsObject:v38])
+      localIdentifier3 = [v37 localIdentifier];
+      if ([v9 containsObject:localIdentifier3])
       {
-        v39 = [v37 timestamp];
-        [v39 timeIntervalSinceNow];
+        timestamp = [v37 timestamp];
+        [timestamp timeIntervalSinceNow];
         v41 = v40;
 
         v31 = v98;
         if (v41 > -2592000.0)
         {
           [v29 addObject:v37];
-          v42 = [v37 localIdentifier];
-          v43 = v96;
+          localIdentifier4 = [v37 localIdentifier];
+          v43 = localIdentifier2;
           v44 = v43;
-          if (v42 == v43 || v42 && ([v43 isEqualToString:v42]& 1) != 0)
+          if (localIdentifier4 == v43 || localIdentifier4 && ([v43 isEqualToString:localIdentifier4]& 1) != 0)
           {
 
             v95 = 0;
@@ -415,13 +415,13 @@ LABEL_71:
       {
       }
 
-      v42 = sub_10000268C();
-      if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+      localIdentifier4 = sub_10000268C();
+      if (os_log_type_enabled(localIdentifier4, OS_LOG_TYPE_DEFAULT))
       {
-        v45 = [v37 localIdentifier];
+        localIdentifier5 = [v37 localIdentifier];
         *buf = 138412290;
-        v125 = v45;
-        _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "pickGreatMemory: removing memory %@ from the history list", buf, 0xCu);
+        v125 = localIdentifier5;
+        _os_log_impl(&_mh_execute_header, localIdentifier4, OS_LOG_TYPE_DEFAULT, "pickGreatMemory: removing memory %@ from the history list", buf, 0xCu);
       }
 
       v34 = 1;
@@ -444,9 +444,9 @@ LABEL_48:
     goto LABEL_67;
   }
 
-  v47 = [v29 firstObject];
-  v48 = [v47 timestamp];
-  [v48 timeIntervalSinceNow];
+  firstObject2 = [v29 firstObject];
+  timestamp2 = [firstObject2 timestamp];
+  [timestamp2 timeIntervalSinceNow];
   v50 = v49;
 
   if (v50 < -604800.0)
@@ -470,8 +470,8 @@ LABEL_48:
             objc_enumerationMutation(v51);
           }
 
-          v56 = [*(*(&v99 + 1) + 8 * m) localIdentifier];
-          [v9 removeObject:v56];
+          localIdentifier6 = [*(*(&v99 + 1) + 8 * m) localIdentifier];
+          [v9 removeObject:localIdentifier6];
         }
 
         v53 = [v51 countByEnumeratingWithState:&v99 objects:v117 count:16];
@@ -480,11 +480,11 @@ LABEL_48:
       while (v53);
     }
 
-    v57 = [v9 anyObject];
-    if (!v57)
+    anyObject = [v9 anyObject];
+    if (!anyObject)
     {
-      v58 = [v51 lastObject];
-      v57 = [v58 localIdentifier];
+      lastObject = [v51 lastObject];
+      anyObject = [lastObject localIdentifier];
 
       [v51 removeLastObject];
     }
@@ -494,12 +494,12 @@ LABEL_48:
     if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v125 = v57;
+      v125 = anyObject;
       _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "pickGreatMemory: newest great memory has been shown for more than 7 days; changing to %@", buf, 0xCu);
     }
 
     v60 = objc_opt_new();
-    [v60 setLocalIdentifier:v57];
+    [v60 setLocalIdentifier:anyObject];
     v61 = +[NSDate date];
     [v60 setTimestamp:v61];
 
@@ -542,11 +542,11 @@ LABEL_82:
         }
 
         v77 = *(*(&v111 + 1) + 8 * n);
-        v78 = [v77 localIdentifier];
-        v79 = [v97 firstObject];
-        v80 = [v79 localIdentifier];
-        v81 = v78;
-        v82 = v80;
+        localIdentifier7 = [v77 localIdentifier];
+        firstObject3 = [v97 firstObject];
+        localIdentifier8 = [firstObject3 localIdentifier];
+        v81 = localIdentifier7;
+        v82 = localIdentifier8;
         v83 = v82;
         if (v81 == v82 || v81 && ([v82 isEqualToString:v81] & 1) != 0)
         {
@@ -582,26 +582,26 @@ LABEL_95:
   v2 = v93;
 LABEL_96:
 
-  v84 = sub_10000268C();
-  v85 = os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT);
+  localIdentifier10 = sub_10000268C();
+  v85 = os_log_type_enabled(localIdentifier10, OS_LOG_TYPE_DEFAULT);
   if (v27)
   {
     if (v85)
     {
-      v86 = [v27 localizedTitle];
-      v87 = [v27 localizedSubtitle];
-      v88 = [v27 localIdentifier];
+      localizedTitle = [v27 localizedTitle];
+      localizedSubtitle = [v27 localizedSubtitle];
+      localIdentifier9 = [v27 localIdentifier];
       *buf = 138412802;
-      v125 = v86;
+      v125 = localizedTitle;
       v126 = 2112;
-      v127 = v87;
+      v127 = localizedSubtitle;
       v128 = 2112;
-      v129 = v88;
-      _os_log_impl(&_mh_execute_header, v84, OS_LOG_TYPE_DEFAULT, "NPTOPhotosFaceMemory: great memory: title: %@, subtitle: %@, local id: %@", buf, 0x20u);
+      v129 = localIdentifier9;
+      _os_log_impl(&_mh_execute_header, localIdentifier10, OS_LOG_TYPE_DEFAULT, "NPTOPhotosFaceMemory: great memory: title: %@, subtitle: %@, local id: %@", buf, 0x20u);
     }
 
-    v84 = [v27 localIdentifier];
-    v115 = v84;
+    localIdentifier10 = [v27 localIdentifier];
+    v115 = localIdentifier10;
     v89 = [NSArray arrayWithObjects:&v115 count:1];
     v90 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:v89 options:0];
   }
@@ -611,7 +611,7 @@ LABEL_96:
     if (v85)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v84, OS_LOG_TYPE_DEFAULT, "NPTOPhotosFaceMemory: there were no great memories", buf, 2u);
+      _os_log_impl(&_mh_execute_header, localIdentifier10, OS_LOG_TYPE_DEFAULT, "NPTOPhotosFaceMemory: there were no great memories", buf, 2u);
     }
 
     v90 = 0;
@@ -634,21 +634,21 @@ LABEL_96:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", &v12, 0x1Cu);
   }
 
-  v4 = [(NPTOPhotosFaceMemoriesContentProvider *)self _assetCollections];
-  v5 = v4;
+  _assetCollections = [(NPTOPhotosFaceMemoriesContentProvider *)self _assetCollections];
+  v5 = _assetCollections;
   if (self->_assetCollections)
   {
-    v6 = [v4 firstObject];
-    v7 = [v6 localIdentifier];
-    v8 = [(PHFetchResult *)self->_assetCollections firstObject];
-    v9 = [v8 localIdentifier];
-    v10 = [v7 isEqual:v9];
+    firstObject = [_assetCollections firstObject];
+    localIdentifier = [firstObject localIdentifier];
+    firstObject2 = [(PHFetchResult *)self->_assetCollections firstObject];
+    localIdentifier2 = [firstObject2 localIdentifier];
+    v10 = [localIdentifier isEqual:localIdentifier2];
 
     if ((v10 & 1) == 0)
     {
       objc_storeStrong(&self->_assetCollections, v5);
-      v11 = [(NPTOPhotosFaceMemoriesContentProvider *)self delegate];
-      [v11 contentProviderDidInvalidateContent:self];
+      delegate = [(NPTOPhotosFaceMemoriesContentProvider *)self delegate];
+      [delegate contentProviderDidInvalidateContent:self];
     }
   }
 }

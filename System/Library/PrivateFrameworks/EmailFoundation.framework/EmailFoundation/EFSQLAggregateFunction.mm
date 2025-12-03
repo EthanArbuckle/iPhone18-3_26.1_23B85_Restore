@@ -1,30 +1,30 @@
 @interface EFSQLAggregateFunction
-+ (id)avg:(id)a3;
-+ (id)avgDistinct:(id)a3;
-+ (id)count:(id)a3;
-+ (id)countDistinct:(id)a3;
-+ (id)groupConcat:(id)a3 separator:(id)a4;
-+ (id)max:(id)a3;
-+ (id)maxDistinct:(id)a3;
-+ (id)min:(id)a3;
-+ (id)minDistinct:(id)a3;
-+ (id)sum:(id)a3;
-+ (id)sumDistinct:(id)a3;
-+ (id)total:(id)a3;
-+ (id)totalDistinct:(id)a3;
-- (EFSQLAggregateFunction)initWithName:(id)a3 arguments:(id)a4;
++ (id)avg:(id)avg;
++ (id)avgDistinct:(id)distinct;
++ (id)count:(id)count;
++ (id)countDistinct:(id)distinct;
++ (id)groupConcat:(id)concat separator:(id)separator;
++ (id)max:(id)max;
++ (id)maxDistinct:(id)distinct;
++ (id)min:(id)min;
++ (id)minDistinct:(id)distinct;
++ (id)sum:(id)sum;
++ (id)sumDistinct:(id)distinct;
++ (id)total:(id)total;
++ (id)totalDistinct:(id)distinct;
+- (EFSQLAggregateFunction)initWithName:(id)name arguments:(id)arguments;
 - (NSString)ef_SQLExpression;
-- (void)ef_renderSQLExpressionInto:(id)a3;
+- (void)ef_renderSQLExpressionInto:(id)into;
 @end
 
 @implementation EFSQLAggregateFunction
 
-+ (id)avg:(id)a3
++ (id)avg:(id)avg
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  avgCopy = avg;
   v4 = [EFSQLAggregateFunction alloc];
-  v9[0] = v3;
+  v9[0] = avgCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v6 = [(EFSQLAggregateFunction *)v4 initWithName:@"avg" arguments:v5];
 
@@ -33,23 +33,23 @@
   return v6;
 }
 
-+ (id)avgDistinct:(id)a3
++ (id)avgDistinct:(id)distinct
 {
-  v4 = a3;
-  v5 = [[_EFSQLDistinctExpression alloc] initWithExpression:v4];
-  v6 = [a1 avg:v5];
+  distinctCopy = distinct;
+  v5 = [[_EFSQLDistinctExpression alloc] initWithExpression:distinctCopy];
+  v6 = [self avg:v5];
 
   return v6;
 }
 
-+ (id)count:(id)a3
++ (id)count:(id)count
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  countCopy = count;
+  v4 = countCopy;
+  if (countCopy)
   {
-    v9[0] = v3;
+    v9[0] = countCopy;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 
@@ -65,31 +65,31 @@
   return v6;
 }
 
-+ (id)countDistinct:(id)a3
++ (id)countDistinct:(id)distinct
 {
-  v4 = a3;
-  v5 = [[_EFSQLDistinctExpression alloc] initWithExpression:v4];
-  v6 = [a1 count:v5];
+  distinctCopy = distinct;
+  v5 = [[_EFSQLDistinctExpression alloc] initWithExpression:distinctCopy];
+  v6 = [self count:v5];
 
   return v6;
 }
 
-+ (id)groupConcat:(id)a3 separator:(id)a4
++ (id)groupConcat:(id)concat separator:(id)separator
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  concatCopy = concat;
+  separatorCopy = separator;
+  v7 = separatorCopy;
+  if (separatorCopy)
   {
-    v14[0] = v5;
-    v14[1] = v6;
+    v14[0] = concatCopy;
+    v14[1] = separatorCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
   }
 
   else
   {
-    v13 = v5;
+    v13 = concatCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
   }
 
@@ -101,12 +101,12 @@
   return v10;
 }
 
-+ (id)max:(id)a3
++ (id)max:(id)max
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  maxCopy = max;
   v4 = [EFSQLAggregateFunction alloc];
-  v9[0] = v3;
+  v9[0] = maxCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v6 = [(EFSQLAggregateFunction *)v4 initWithName:@"max" arguments:v5];
 
@@ -115,21 +115,21 @@
   return v6;
 }
 
-+ (id)maxDistinct:(id)a3
++ (id)maxDistinct:(id)distinct
 {
-  v4 = a3;
-  v5 = [[_EFSQLDistinctExpression alloc] initWithExpression:v4];
-  v6 = [a1 max:v5];
+  distinctCopy = distinct;
+  v5 = [[_EFSQLDistinctExpression alloc] initWithExpression:distinctCopy];
+  v6 = [self max:v5];
 
   return v6;
 }
 
-+ (id)min:(id)a3
++ (id)min:(id)min
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  minCopy = min;
   v4 = [EFSQLAggregateFunction alloc];
-  v9[0] = v3;
+  v9[0] = minCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v6 = [(EFSQLAggregateFunction *)v4 initWithName:@"min" arguments:v5];
 
@@ -138,21 +138,21 @@
   return v6;
 }
 
-+ (id)minDistinct:(id)a3
++ (id)minDistinct:(id)distinct
 {
-  v4 = a3;
-  v5 = [[_EFSQLDistinctExpression alloc] initWithExpression:v4];
-  v6 = [a1 min:v5];
+  distinctCopy = distinct;
+  v5 = [[_EFSQLDistinctExpression alloc] initWithExpression:distinctCopy];
+  v6 = [self min:v5];
 
   return v6;
 }
 
-+ (id)sum:(id)a3
++ (id)sum:(id)sum
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  sumCopy = sum;
   v4 = [EFSQLAggregateFunction alloc];
-  v9[0] = v3;
+  v9[0] = sumCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v6 = [(EFSQLAggregateFunction *)v4 initWithName:@"sum" arguments:v5];
 
@@ -161,21 +161,21 @@
   return v6;
 }
 
-+ (id)sumDistinct:(id)a3
++ (id)sumDistinct:(id)distinct
 {
-  v4 = a3;
-  v5 = [[_EFSQLDistinctExpression alloc] initWithExpression:v4];
-  v6 = [a1 sum:v5];
+  distinctCopy = distinct;
+  v5 = [[_EFSQLDistinctExpression alloc] initWithExpression:distinctCopy];
+  v6 = [self sum:v5];
 
   return v6;
 }
 
-+ (id)total:(id)a3
++ (id)total:(id)total
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  totalCopy = total;
   v4 = [EFSQLAggregateFunction alloc];
-  v9[0] = v3;
+  v9[0] = totalCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v6 = [(EFSQLAggregateFunction *)v4 initWithName:@"total" arguments:v5];
 
@@ -184,29 +184,29 @@
   return v6;
 }
 
-+ (id)totalDistinct:(id)a3
++ (id)totalDistinct:(id)distinct
 {
-  v4 = a3;
-  v5 = [[_EFSQLDistinctExpression alloc] initWithExpression:v4];
-  v6 = [a1 total:v5];
+  distinctCopy = distinct;
+  v5 = [[_EFSQLDistinctExpression alloc] initWithExpression:distinctCopy];
+  v6 = [self total:v5];
 
   return v6;
 }
 
-- (EFSQLAggregateFunction)initWithName:(id)a3 arguments:(id)a4
+- (EFSQLAggregateFunction)initWithName:(id)name arguments:(id)arguments
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  argumentsCopy = arguments;
   v14.receiver = self;
   v14.super_class = EFSQLAggregateFunction;
   v8 = [(EFSQLAggregateFunction *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 copy];
+    v11 = [argumentsCopy copy];
     arguments = v8->_arguments;
     v8->_arguments = v11;
   }
@@ -216,18 +216,18 @@
 
 - (NSString)ef_SQLExpression
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(EFSQLAggregateFunction *)self ef_renderSQLExpressionInto:v3];
+  string = [MEMORY[0x1E696AD60] string];
+  [(EFSQLAggregateFunction *)self ef_renderSQLExpressionInto:string];
 
-  return v3;
+  return string;
 }
 
-- (void)ef_renderSQLExpressionInto:(id)a3
+- (void)ef_renderSQLExpressionInto:(id)into
 {
-  v4 = a3;
+  intoCopy = into;
   name = self->_name;
   arguments = self->_arguments;
-  v9 = v4;
+  v9 = intoCopy;
   v7 = name;
   v8 = arguments;
   [v9 appendString:v7];

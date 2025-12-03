@@ -1,32 +1,32 @@
 @interface CATSharingDeviceDiscovery
-- (CATSharingDeviceDiscovery)initWithDiscoveryPrimitives:(id)a3 delegate:(id)a4 delegateOperationQueue:(id)a5;
-- (id)pairingTerminalForDevice:(id)a3;
+- (CATSharingDeviceDiscovery)initWithDiscoveryPrimitives:(id)primitives delegate:(id)delegate delegateOperationQueue:(id)queue;
+- (id)pairingTerminalForDevice:(id)device;
 - (void)_activate;
-- (void)_invalidateWithError:(id)a3;
+- (void)_invalidateWithError:(id)error;
 - (void)activate;
 - (void)addPrimitiveHandlers;
-- (void)deviceFound:(id)a3;
-- (void)deviceLost:(id)a3;
+- (void)deviceFound:(id)found;
+- (void)deviceLost:(id)lost;
 - (void)invalidate;
 - (void)removePrimitiveHandlers;
 @end
 
 @implementation CATSharingDeviceDiscovery
 
-- (CATSharingDeviceDiscovery)initWithDiscoveryPrimitives:(id)a3 delegate:(id)a4 delegateOperationQueue:(id)a5
+- (CATSharingDeviceDiscovery)initWithDiscoveryPrimitives:(id)primitives delegate:(id)delegate delegateOperationQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  primitivesCopy = primitives;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = CATSharingDeviceDiscovery;
   v12 = [(CATSharingDeviceDiscovery *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->mDiscoveryPrimitives, a3);
-    objc_storeWeak(&v13->mDelegate, v10);
-    objc_storeStrong(&v13->mDelegationQueue, a5);
+    objc_storeStrong(&v12->mDiscoveryPrimitives, primitives);
+    objc_storeWeak(&v13->mDelegate, delegateCopy);
+    objc_storeStrong(&v13->mDelegationQueue, queue);
     nearbyDevices = v13->_nearbyDevices;
     v13->_nearbyDevices = MEMORY[0x277CBEBF8];
   }
@@ -89,18 +89,18 @@ void __39__CATSharingDeviceDiscovery_invalidate__block_invoke(uint64_t a1)
   [WeakRetained _invalidateWithError:v1];
 }
 
-- (id)pairingTerminalForDevice:(id)a3
+- (id)pairingTerminalForDevice:(id)device
 {
-  v5 = a3;
-  v6 = [(CATSharingDeviceDiscovery *)self nearbyDevices];
-  v7 = [v6 containsObject:v5];
+  deviceCopy = device;
+  nearbyDevices = [(CATSharingDeviceDiscovery *)self nearbyDevices];
+  v7 = [nearbyDevices containsObject:deviceCopy];
 
   if ((v7 & 1) == 0)
   {
     [(CATSharingDeviceDiscovery *)a2 pairingTerminalForDevice:?];
   }
 
-  v8 = [(CATSharingDiscoveryPrimitives *)self->mDiscoveryPrimitives sessionForDevice:v5];
+  v8 = [(CATSharingDiscoveryPrimitives *)self->mDiscoveryPrimitives sessionForDevice:deviceCopy];
   v9 = [[CATDeviceSessionBackedDevicePairingTerminal alloc] initWithDeviceSession:v8];
 
   return v9;
@@ -108,8 +108,8 @@ void __39__CATSharingDeviceDiscovery_invalidate__block_invoke(uint64_t a1)
 
 - (void)_activate
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"CATSharingDeviceDiscovery.m" lineNumber:96 description:@"Terminal must not be invalidated"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CATSharingDeviceDiscovery.m" lineNumber:96 description:@"Terminal must not be invalidated"];
 }
 
 void __38__CATSharingDeviceDiscovery__activate__block_invoke(uint64_t a1, void *a2)
@@ -141,10 +141,10 @@ void __38__CATSharingDeviceDiscovery__activate__block_invoke_2(uint64_t a1)
   [WeakRetained deviceDiscovery:*(a1 + 32) didActivateWithError:*(a1 + 40)];
 }
 
-- (void)_invalidateWithError:(id)a3
+- (void)_invalidateWithError:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  errorCopy = error;
   v6 = CATGetCatalystQueue();
   CATAssertIsQueue(v6);
 
@@ -165,7 +165,7 @@ void __38__CATSharingDeviceDiscovery__activate__block_invoke_2(uint64_t a1)
   [(CATSharingDeviceDiscovery *)self removePrimitiveHandlers];
   [(CATSharingDiscoveryPrimitives *)self->mDiscoveryPrimitives deactivate];
   v19 = *MEMORY[0x277CCA7E8];
-  v20 = v5;
+  v20 = errorCopy;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
   v12 = CATErrorWithCodeAndUserInfo(700, v11);
 
@@ -310,30 +310,30 @@ void __49__CATSharingDeviceDiscovery_addPrimitiveHandlers__block_invoke_6(uint64
   [WeakRetained deviceLost:*(a1 + 32)];
 }
 
-- (void)deviceFound:(id)a3
+- (void)deviceFound:(id)found
 {
-  v4 = a3;
+  foundCopy = found;
   v5 = CATGetCatalystQueue();
   CATAssertIsQueue(v5);
 
-  v6 = [(CATSharingDeviceDiscovery *)self nearbyDevices];
-  v8 = [v6 mutableCopy];
+  nearbyDevices = [(CATSharingDeviceDiscovery *)self nearbyDevices];
+  v8 = [nearbyDevices mutableCopy];
 
-  [v8 addObject:v4];
+  [v8 addObject:foundCopy];
   v7 = [v8 copy];
   [(CATSharingDeviceDiscovery *)self setNearbyDevices:v7];
 }
 
-- (void)deviceLost:(id)a3
+- (void)deviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   v5 = CATGetCatalystQueue();
   CATAssertIsQueue(v5);
 
-  v6 = [(CATSharingDeviceDiscovery *)self nearbyDevices];
-  v7 = [v6 mutableCopy];
+  nearbyDevices = [(CATSharingDeviceDiscovery *)self nearbyDevices];
+  v7 = [nearbyDevices mutableCopy];
 
-  [v7 removeObject:v4];
+  [v7 removeObject:lostCopy];
   v8 = [v7 copy];
   [(CATSharingDeviceDiscovery *)self setNearbyDevices:v8];
 
@@ -344,7 +344,7 @@ void __49__CATSharingDeviceDiscovery_addPrimitiveHandlers__block_invoke_6(uint64
   v11[2] = __40__CATSharingDeviceDiscovery_deviceLost___block_invoke;
   v11[3] = &unk_278DA7530;
   objc_copyWeak(&v13, &location);
-  v10 = v4;
+  v10 = lostCopy;
   v12 = v10;
   [(CATOperationQueue *)mDelegationQueue addOperationWithBlock:v11];
 

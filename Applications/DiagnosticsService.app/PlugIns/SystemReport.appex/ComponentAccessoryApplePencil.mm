@@ -2,7 +2,7 @@
 - (BOOL)isPresent;
 - (ComponentAccessoryApplePencil)init;
 - (id)getBatteryInfo;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentAccessoryApplePencil
@@ -24,43 +24,43 @@
 
 - (BOOL)isPresent
 {
-  v2 = [(ComponentAccessoryApplePencil *)self device];
-  v3 = v2 != 0;
+  device = [(ComponentAccessoryApplePencil *)self device];
+  v3 = device != 0;
 
   return v3;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v10 = a3;
-  v4 = [(ComponentAccessoryApplePencil *)self device];
-  v5 = [v4 serialNumber];
+  attributesCopy = attributes;
+  device = [(ComponentAccessoryApplePencil *)self device];
+  serialNumber = [device serialNumber];
 
-  if (v5)
+  if (serialNumber)
   {
-    [v10 setObject:v5 forKeyedSubscript:@"serialNumber"];
-    v6 = [DSEADevice deviceWithSerialNumber:v5];
+    [attributesCopy setObject:serialNumber forKeyedSubscript:@"serialNumber"];
+    v6 = [DSEADevice deviceWithSerialNumber:serialNumber];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 information];
-      [v10 addEntriesFromDictionary:v8];
+      information = [v6 information];
+      [attributesCopy addEntriesFromDictionary:information];
     }
   }
 
   else
   {
     v7 = +[NSNull null];
-    [v10 setObject:v7 forKeyedSubscript:@"serialNumber"];
+    [attributesCopy setObject:v7 forKeyedSubscript:@"serialNumber"];
   }
 
-  v9 = [(ComponentAccessoryApplePencil *)self getBatteryInfo];
-  [v10 setObject:v9 forKeyedSubscript:@"batteryInfo"];
+  getBatteryInfo = [(ComponentAccessoryApplePencil *)self getBatteryInfo];
+  [attributesCopy setObject:getBatteryInfo forKeyedSubscript:@"batteryInfo"];
 }
 
 - (id)getBatteryInfo
 {
-  v25 = self;
+  selfCopy = self;
   if (qword_1000D2008 != -1)
   {
     dispatch_once(&qword_1000D2008, &stru_100090BC8);
@@ -71,8 +71,8 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v3 = [qword_1000D2000 connectedDevices];
-  v4 = [v3 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  connectedDevices = [qword_1000D2000 connectedDevices];
+  v4 = [connectedDevices countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v4)
   {
     v5 = v4;
@@ -83,7 +83,7 @@
       {
         if (*v29 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectedDevices);
         }
 
         v8 = *(*(&v28 + 1) + 8 * i);
@@ -103,7 +103,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v5 = [connectedDevices countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v5);
@@ -111,8 +111,8 @@
 
   memset(v27, 0, 37);
   v26 = 37;
-  v13 = [(ComponentAccessoryApplePencil *)v25 device];
-  v14 = [v13 reportWithID:34 reportType:2 object:v27 length:&v26];
+  device = [(ComponentAccessoryApplePencil *)selfCopy device];
+  v14 = [device reportWithID:34 reportType:2 object:v27 length:&v26];
 
   if (v14)
   {

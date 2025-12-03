@@ -1,47 +1,47 @@
 @interface QUData
-- (QUData)initWithQueryContext:(id)a3;
+- (QUData)initWithQueryContext:(id)context;
 @end
 
 @implementation QUData
 
-- (QUData)initWithQueryContext:(id)a3
+- (QUData)initWithQueryContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v24.receiver = self;
   v24.super_class = QUData;
   v5 = [(QUData *)&v24 init];
   if (v5)
   {
     v6 = _os_feature_enabled_impl();
-    if (v4)
+    if (contextCopy)
     {
       if (v6)
       {
-        v7 = [v4 queryUnderstandingOutput];
-        v8 = [v7 count];
+        queryUnderstandingOutput = [contextCopy queryUnderstandingOutput];
+        v8 = [queryUnderstandingOutput count];
 
         if (v8 >= 2)
         {
-          v9 = [v4 queryUnderstandingOutput];
-          v10 = [v9 objectForKeyedSubscript:@"kQPQUIntentIds"];
+          queryUnderstandingOutput2 = [contextCopy queryUnderstandingOutput];
+          v10 = [queryUnderstandingOutput2 objectForKeyedSubscript:@"kQPQUIntentIds"];
 
-          v11 = [v4 queryUnderstandingOutput];
-          v12 = [v11 objectForKeyedSubscript:@"kQPQUIntentLabels"];
+          queryUnderstandingOutput3 = [contextCopy queryUnderstandingOutput];
+          v12 = [queryUnderstandingOutput3 objectForKeyedSubscript:@"kQPQUIntentLabels"];
 
-          v13 = [v4 queryUnderstandingOutput];
-          v14 = [v13 objectForKeyedSubscript:@"kQPQUIntentScores"];
+          queryUnderstandingOutput4 = [contextCopy queryUnderstandingOutput];
+          v14 = [queryUnderstandingOutput4 objectForKeyedSubscript:@"kQPQUIntentScores"];
 
-          v15 = [v10 firstObject];
-          v16 = [v15 intValue];
+          firstObject = [v10 firstObject];
+          intValue = [firstObject intValue];
 
-          if (v16 >= 1)
+          if (intValue >= 1)
           {
-            v17 = [v12 firstObject];
+            firstObject2 = [v12 firstObject];
             intentLabel = v5->_intentLabel;
-            v5->_intentLabel = v17;
+            v5->_intentLabel = firstObject2;
 
-            v19 = [v14 firstObject];
-            [v19 floatValue];
+            firstObject3 = [v14 firstObject];
+            [firstObject3 floatValue];
             v5->_intentScore = v20;
 
             if (v5->_intentLabel)

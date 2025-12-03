@@ -6,8 +6,8 @@
 
 - (void)reclaimResources
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(PXConcreteAVResourceReclamationController *)self reclamationEventDidOccur:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(PXConcreteAVResourceReclamationController *)self reclamationEventDidOccur:date];
 }
 
 @end

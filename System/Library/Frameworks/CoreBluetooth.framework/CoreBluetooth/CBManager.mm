@@ -5,21 +5,21 @@
 + (int)preflightCheckForTCC;
 + (unsigned)retrieveCurrentProcessSessionCount;
 - (CBPairingAgent)sharedPairingAgent;
-- (id)createCnxWithInfo:(id)a3;
-- (id)getCnxInstanceForIdentifier:(id)a3;
+- (id)createCnxWithInfo:(id)info;
+- (id)getCnxInstanceForIdentifier:(id)identifier;
 - (id)getCurrentQueue;
 - (id)initInternal;
-- (void)_handleAdvertisingAddressChanged:(id)a3;
+- (void)_handleAdvertisingAddressChanged:(id)changed;
 - (void)checkBTTCCAuth;
 - (void)checkForTCC;
 - (void)dealloc;
 - (void)doneWithTCC;
-- (void)extractLocalDeviceStatesDictionary:(id)a3;
-- (void)queryBluetoothStatus:(id)a3 completion:(id)a4;
-- (void)removeCnxInstanceForIdentifier:(id)a3;
-- (void)retrieveBundle:(id)a3 sessionCountWithCompletion:(id)a4;
-- (void)retrieveSupportedResources:(id)a3 subKey:(id)a4 completion:(id)a5;
-- (void)triggerBTErrorReport:(int64_t)a3;
+- (void)extractLocalDeviceStatesDictionary:(id)dictionary;
+- (void)queryBluetoothStatus:(id)status completion:(id)completion;
+- (void)removeCnxInstanceForIdentifier:(id)identifier;
+- (void)retrieveBundle:(id)bundle sessionCountWithCompletion:(id)completion;
+- (void)retrieveSupportedResources:(id)resources subKey:(id)key completion:(id)completion;
+- (void)triggerBTErrorReport:(int64_t)report;
 - (void)xpcConnectionDidReset;
 @end
 
@@ -80,8 +80,8 @@
 
 + (BOOL)checkIfExtension
 {
-  v2 = [MEMORY[0x1E6963628] bundleRecordForCurrentProcess];
-  if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  bundleRecordForCurrentProcess = [MEMORY[0x1E6963628] bundleRecordForCurrentProcess];
+  if (bundleRecordForCurrentProcess && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     if (CBLogInitOnce != -1)
     {
@@ -137,9 +137,9 @@
     v7[0] = 67109632;
     v7[1] = +[CBManager tccAvailable];
     v8 = 1024;
-    v9 = [(CBManager *)self tccRequired];
+    tccRequired = [(CBManager *)self tccRequired];
     v10 = 1024;
-    v11 = [(CBManager *)self tccComplete];
+    tccComplete = [(CBManager *)self tccComplete];
     _os_log_impl(&dword_1C0AC1000, v4, OS_LOG_TYPE_DEFAULT, "TCC available %d, req %d complete %d", v7, 0x14u);
   }
 
@@ -379,12 +379,12 @@ LABEL_27:
   return v4;
 }
 
-- (void)extractLocalDeviceStatesDictionary:(id)a3
+- (void)extractLocalDeviceStatesDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kCBMsgArgAddressString"];
-  v6 = [v4 objectForKeyedSubscript:@"kCBMsgArgName"];
-  v7 = [v4 objectForKeyedSubscript:@"kCBMsgArgState"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgAddressString"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgName"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgState"];
   if (v5)
   {
     objc_storeStrong(&self->_localAddressString, v5);
@@ -424,7 +424,7 @@ LABEL_10:
   }
 
 LABEL_11:
-  [(CBManager *)self handleLocalDeviceStateUpdatedMsg:v4];
+  [(CBManager *)self handleLocalDeviceStateUpdatedMsg:dictionaryCopy];
 }
 
 - (id)getCurrentQueue
@@ -445,46 +445,46 @@ LABEL_11:
   return v3;
 }
 
-- (void)_handleAdvertisingAddressChanged:(id)a3
+- (void)_handleAdvertisingAddressChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kCBConnectableAdvertisingAddress"];
-  v6 = [v4 objectForKeyedSubscript:@"kCBConnectableAdvertisingAddressType"];
-  v7 = [v6 integerValue];
+  changedCopy = changed;
+  v5 = [changedCopy objectForKeyedSubscript:@"kCBConnectableAdvertisingAddress"];
+  v6 = [changedCopy objectForKeyedSubscript:@"kCBConnectableAdvertisingAddressType"];
+  integerValue = [v6 integerValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"kCBNonConnectableAdvertisingAddress"];
-  v9 = [v4 objectForKeyedSubscript:@"kCBNonConnectableAdvertisingAddressType"];
-  v10 = [v9 integerValue];
+  v8 = [changedCopy objectForKeyedSubscript:@"kCBNonConnectableAdvertisingAddress"];
+  v9 = [changedCopy objectForKeyedSubscript:@"kCBNonConnectableAdvertisingAddressType"];
+  integerValue2 = [v9 integerValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"kCBNonConnectableSecondaryAdvertisingAddress"];
-  v12 = [v4 objectForKeyedSubscript:@"kCBNonConnectableSecondaryAdvertisingAddressType"];
+  v11 = [changedCopy objectForKeyedSubscript:@"kCBNonConnectableSecondaryAdvertisingAddress"];
+  v12 = [changedCopy objectForKeyedSubscript:@"kCBNonConnectableSecondaryAdvertisingAddressType"];
 
-  v13 = [v12 integerValue];
+  integerValue3 = [v12 integerValue];
   [(CBManager *)self willChangeValueForKey:@"advertisingAddress"];
   advertisingAddress = self->_advertisingAddress;
   self->_advertisingAddress = v5;
   v15 = v5;
 
   nonConnectableAdvertisingAddress = self->_nonConnectableAdvertisingAddress;
-  self->_advertisingAddressType = v7;
+  self->_advertisingAddressType = integerValue;
   self->_nonConnectableAdvertisingAddress = v8;
   v17 = v8;
 
   nonConnectableSecondaryAdvertisingAddress = self->_nonConnectableSecondaryAdvertisingAddress;
-  self->_nonConnectableAdvertisingAddressType = v10;
+  self->_nonConnectableAdvertisingAddressType = integerValue2;
   self->_nonConnectableSecondaryAdvertisingAddress = v11;
 
-  self->_nonConnectableSecondaryAdvertisingAddressType = v13;
+  self->_nonConnectableSecondaryAdvertisingAddressType = integerValue3;
 
   [(CBManager *)self didChangeValueForKey:@"advertisingAddress"];
 }
 
-- (id)createCnxWithInfo:(id)a3
+- (id)createCnxWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
-  v6 = [v4 objectForKeyedSubscript:@"kCBMsgArgWhbRemoteDeviceUUID"];
-  v7 = [v4 objectForKeyedSubscript:@"kCBMsgArgWhbRemoteControllerId"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+  v6 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgWhbRemoteDeviceUUID"];
+  v7 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgWhbRemoteControllerId"];
 
   v8 = [(CBManager *)self getCnxInstanceForIdentifier:v5];
   if (!v8)
@@ -500,13 +500,13 @@ LABEL_11:
 
     else
     {
-      v11 = [v5 UUIDString];
-      [(CBDevice *)v10 setIdentifier:v11];
+      uUIDString = [v5 UUIDString];
+      [(CBDevice *)v10 setIdentifier:uUIDString];
     }
 
     [(CBConnection *)v8 setPeerDevice:v10];
-    v12 = [(CBConnection *)v8 peerDevice];
-    v13 = [v12 identifier];
+    peerDevice = [(CBConnection *)v8 peerDevice];
+    identifier = [peerDevice identifier];
 
     v14 = objc_alloc_init(CBDevice);
     [(CBDevice *)v14 setIdentifier:v7];
@@ -526,7 +526,7 @@ LABEL_11:
     v24[4] = self;
     v16 = v15;
     v25 = v16;
-    v17 = v13;
+    v17 = identifier;
     v26 = v17;
     [(CBConnection *)v8 setErrorHandler:v24];
     v21[0] = MEMORY[0x1E69E9820];
@@ -602,9 +602,9 @@ uint64_t __31__CBManager_createCnxWithInfo___block_invoke_61(uint64_t a1)
   return [*(a1 + 32) removeWhbRemoteId:*(a1 + 48)];
 }
 
-- (id)getCnxInstanceForIdentifier:(id)a3
+- (id)getCnxInstanceForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   cnxDict = self->_cnxDict;
   if (!cnxDict)
   {
@@ -615,32 +615,32 @@ uint64_t __31__CBManager_createCnxWithInfo___block_invoke_61(uint64_t a1)
     cnxDict = self->_cnxDict;
   }
 
-  v8 = [(NSMutableDictionary *)cnxDict objectForKey:v4];
+  v8 = [(NSMutableDictionary *)cnxDict objectForKey:identifierCopy];
 
   return v8;
 }
 
-- (void)removeCnxInstanceForIdentifier:(id)a3
+- (void)removeCnxInstanceForIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v4 = [(NSMutableDictionary *)self->_cnxDict objectForKey:?];
   v5 = v4;
   if (v4)
   {
     [v4 invalidate];
-    [(NSMutableDictionary *)self->_cnxDict removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_cnxDict removeObjectForKey:identifierCopy];
   }
 }
 
-- (void)retrieveSupportedResources:(id)a3 subKey:(id)a4 completion:(id)a5
+- (void)retrieveSupportedResources:(id)resources subKey:(id)key completion:(id)completion
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  resourcesCopy = resources;
+  keyCopy = key;
+  completionCopy = completion;
+  if (resourcesCopy)
   {
-    if ([v9 length])
+    if ([resourcesCopy length])
     {
       goto LABEL_3;
     }
@@ -652,7 +652,7 @@ uint64_t __31__CBManager_createCnxWithInfo___block_invoke_61(uint64_t a1)
     if ([0 length])
     {
 LABEL_3:
-      if (v11)
+      if (completionCopy)
       {
         goto LABEL_4;
       }
@@ -660,7 +660,7 @@ LABEL_3:
 LABEL_14:
       [CBManager retrieveSupportedResources:a2 subKey:self completion:?];
       v12 = &off_1C0B82000;
-      if (v9)
+      if (resourcesCopy)
       {
         goto LABEL_5;
       }
@@ -670,36 +670,36 @@ LABEL_14:
   }
 
   [CBManager retrieveSupportedResources:a2 subKey:self completion:?];
-  if (!v11)
+  if (!completionCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_4:
   v12 = &off_1C0B82000;
-  if (v9)
+  if (resourcesCopy)
   {
 LABEL_5:
-    v13 = [v9 length];
-    if (v11 && v13)
+    v13 = [resourcesCopy length];
+    if (completionCopy && v13)
     {
       goto LABEL_8;
     }
   }
 
 LABEL_7:
-  v14 = [(CBXpcConnection *)self->_connection getEventQueue];
+  getEventQueue = [(CBXpcConnection *)self->_connection getEventQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = *(v12 + 305);
   block[2] = __58__CBManager_retrieveSupportedResources_subKey_completion___block_invoke;
   block[3] = &unk_1E8120B88;
-  v22 = v11;
-  dispatch_async(v14, block);
+  v22 = completionCopy;
+  dispatch_async(getEventQueue, block);
 
 LABEL_8:
-  if (v10)
+  if (keyCopy)
   {
-    v15 = v10;
+    v15 = keyCopy;
   }
 
   else
@@ -709,15 +709,15 @@ LABEL_8:
 
   v23[0] = @"kCBMsgArgResourceKey";
   v23[1] = @"kCBMsgArgResourceSubKey";
-  v24[0] = v9;
+  v24[0] = resourcesCopy;
   v24[1] = v15;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = *(v12 + 305);
   v19[2] = __58__CBManager_retrieveSupportedResources_subKey_completion___block_invoke_95;
   v19[3] = &unk_1E811CFC8;
-  v20 = v11;
-  v17 = v11;
+  v20 = completionCopy;
+  v17 = completionCopy;
   [(CBManager *)self sendMsg:34 args:v16 withReply:v19];
 
   v18 = *MEMORY[0x1E69E9840];
@@ -740,21 +740,21 @@ void __58__CBManager_retrieveSupportedResources_subKey_completion___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)retrieveBundle:(id)a3 sessionCountWithCompletion:(id)a4
+- (void)retrieveBundle:(id)bundle sessionCountWithCompletion:(id)completion
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v14 = @"kCBMsgArgApplicationID";
-  v15[0] = a3;
+  v15[0] = bundle;
   v7 = MEMORY[0x1E695DF20];
-  v8 = a3;
+  bundleCopy = bundle;
   v9 = [v7 dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __55__CBManager_retrieveBundle_sessionCountWithCompletion___block_invoke;
   v12[3] = &unk_1E811CFC8;
-  v13 = v6;
-  v10 = v6;
+  v13 = completionCopy;
+  v10 = completionCopy;
   [(CBManager *)self sendMsg:37 args:v9 withReply:v12];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -803,7 +803,7 @@ void __55__CBManager_retrieveBundle_sessionCountWithCompletion___block_invoke(ui
   [(CBPairingAgent *)pairingAgent updateRegistration];
 }
 
-- (void)triggerBTErrorReport:(int64_t)a3
+- (void)triggerBTErrorReport:(int64_t)report
 {
   if (CBLogInitOnce != -1)
   {
@@ -816,7 +816,7 @@ void __55__CBManager_retrieveBundle_sessionCountWithCompletion___block_invoke(ui
   }
 
   v5 = MEMORY[0x1E695DF90];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:report];
   v7 = [v5 dictionaryWithObjectsAndKeys:{v6, @"kCBMsgArgReasonEnum", 0}];
   [(CBManager *)self sendMsg:33 args:v7];
 }
@@ -839,31 +839,31 @@ void __55__CBManager_retrieveBundle_sessionCountWithCompletion___block_invoke(ui
   }
 }
 
-- (void)queryBluetoothStatus:(id)a3 completion:(id)a4
+- (void)queryBluetoothStatus:(id)status completion:(id)completion
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (status)
   {
-    v7 = a3;
+    statusCopy = status;
   }
 
   else
   {
-    v7 = MEMORY[0x1E695E0F8];
+    statusCopy = MEMORY[0x1E695E0F8];
   }
 
   v15 = @"kCBMsgArgOptions";
-  v16[0] = v7;
+  v16[0] = statusCopy;
   v8 = MEMORY[0x1E695DF20];
-  v9 = a3;
+  statusCopy2 = status;
   v10 = [v8 dictionaryWithObjects:v16 forKeys:&v15 count:1];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __45__CBManager_queryBluetoothStatus_completion___block_invoke;
   v13[3] = &unk_1E811CFC8;
-  v14 = v6;
-  v11 = v6;
+  v14 = completionCopy;
+  v11 = completionCopy;
   [(CBManager *)self sendMsg:36 args:v10 withReply:v13];
 
   v12 = *MEMORY[0x1E69E9840];

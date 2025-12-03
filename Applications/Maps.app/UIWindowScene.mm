@@ -8,7 +8,7 @@
 
 - (int64_t)carSceneType
 {
-  v3 = [(UIWindowScene *)self delegate];
+  delegate = [(UIWindowScene *)self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -16,7 +16,7 @@
 
   else
   {
-    v4 = [(UIWindowScene *)self delegate];
+    delegate2 = [(UIWindowScene *)self delegate];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -26,11 +26,11 @@
     }
   }
 
-  v6 = [(UIWindowScene *)self delegate];
+  delegate3 = [(UIWindowScene *)self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = delegate3;
   }
 
   else
@@ -42,7 +42,7 @@
 
   if (v8)
   {
-    v9 = [v8 sceneType];
+    sceneType = [v8 sceneType];
   }
 
   else
@@ -51,38 +51,38 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "carSceneType: failed to get scene delegate for scene: %@", &v12, 0xCu);
     }
 
-    v9 = 0;
+    sceneType = 0;
   }
 
-  return v9;
+  return sceneType;
 }
 
 - (int64_t)_maps_lightLevelPriority
 {
-  v2 = [(UIWindowScene *)self carSceneType];
-  if ((v2 - 1) > 5)
+  carSceneType = [(UIWindowScene *)self carSceneType];
+  if ((carSceneType - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_101212F48[v2 - 1];
+    return qword_101212F48[carSceneType - 1];
   }
 }
 
 - (int64_t)_maps_interfaceStyle
 {
-  v2 = [(UIWindowScene *)self windows];
-  v3 = [v2 firstObject];
-  v4 = [v3 traitCollection];
-  v5 = [v4 _car_userInterfaceStyle];
+  windows = [(UIWindowScene *)self windows];
+  firstObject = [windows firstObject];
+  traitCollection = [firstObject traitCollection];
+  _car_userInterfaceStyle = [traitCollection _car_userInterfaceStyle];
 
-  return v5;
+  return _car_userInterfaceStyle;
 }
 
 @end

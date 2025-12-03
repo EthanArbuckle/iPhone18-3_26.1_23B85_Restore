@@ -45,8 +45,8 @@ uint64_t __40__MRUMediaModuleProvider_sharedProvider__block_invoke()
 - (id)rootViewController
 {
   v3 = [MRUMediaControlsModuleViewController alloc];
-  v4 = [(MRUMediaModuleProvider *)self controller];
-  v5 = [(MRUMediaControlsModuleViewController *)v3 initWithController:v4];
+  controller = [(MRUMediaModuleProvider *)self controller];
+  v5 = [(MRUMediaControlsModuleViewController *)v3 initWithController:controller];
 
   return v5;
 }

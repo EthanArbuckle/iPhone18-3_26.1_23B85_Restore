@@ -2,17 +2,17 @@
 - (AMSBagProtocol)replacingSnapshotIfNeeded;
 - (NSDate)expirationDate;
 - (_TtC7JetCore16OverriddenAMSBag)init;
-- (_TtC7JetCore16OverriddenAMSBag)initWithData:(id)a3;
-- (id)BOOLForKey:(id)a3;
-- (id)URLForKey:(id)a3;
-- (id)arrayForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)doubleForKey:(id)a3;
-- (id)integerForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (void)createSnapshotWithCompletion:(id)a3;
+- (_TtC7JetCore16OverriddenAMSBag)initWithData:(id)data;
+- (id)BOOLForKey:(id)key;
+- (id)URLForKey:(id)key;
+- (id)arrayForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)doubleForKey:(id)key;
+- (id)integerForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (void)createSnapshotWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)forwardSnapshotBagExpiredValueAccessed:(id)a3;
+- (void)forwardSnapshotBagExpiredValueAccessed:(id)accessed;
 @end
 
 @implementation OverriddenAMSBag
@@ -21,16 +21,16 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(OverriddenAMSBag *)&v7 dealloc];
 }
 
-- (void)forwardSnapshotBagExpiredValueAccessed:(id)a3
+- (void)forwardSnapshotBagExpiredValueAccessed:(id)accessed
 {
   v4 = sub_1DB509960();
   v5 = *(v4 - 8);
@@ -38,7 +38,7 @@
   MEMORY[0x1EEE9AC00](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1DB509940();
-  v9 = self;
+  selfCopy = self;
   sub_1DB35DBE8();
 
   (*(v5 + 8))(v8, v4);
@@ -53,11 +53,11 @@
   MEMORY[0x1EEE9AC00](v7);
   v9 = &v20 - v8;
   v10 = *(&self->super.super.isa + OBJC_IVAR____TtC7JetCore16OverriddenAMSBag_backing);
-  v11 = self;
-  v12 = [v10 expirationDate];
-  if (v12)
+  selfCopy = self;
+  expirationDate = [v10 expirationDate];
+  if (expirationDate)
   {
-    v13 = v12;
+    v13 = expirationDate;
     sub_1DB509DB0();
 
     v14 = sub_1DB509DD0();
@@ -86,72 +86,72 @@
   return v17;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1DB35E2F4(v4, &selRef_arrayForKey_);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1DB35E2F4(keyCopy, &selRef_arrayForKey_);
 
   return v6;
 }
 
-- (id)BOOLForKey:(id)a3
+- (id)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1DB35E2F4(v4, &selRef_BOOLForKey_);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1DB35E2F4(keyCopy, &selRef_BOOLForKey_);
 
   return v6;
 }
 
-- (id)doubleForKey:(id)a3
+- (id)doubleForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1DB35E2F4(v4, &selRef_doubleForKey_);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1DB35E2F4(keyCopy, &selRef_doubleForKey_);
 
   return v6;
 }
 
-- (id)integerForKey:(id)a3
+- (id)integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1DB35E2F4(v4, &selRef_integerForKey_);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1DB35E2F4(keyCopy, &selRef_integerForKey_);
 
   return v6;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1DB35E2F4(v4, &selRef_stringForKey_);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1DB35E2F4(keyCopy, &selRef_stringForKey_);
 
   return v6;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1DB35E2F4(v4, &selRef_URLForKey_);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1DB35E2F4(keyCopy, &selRef_URLForKey_);
 
   return v6;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1DB35E2F4(v4, &selRef_dictionaryForKey_);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1DB35E2F4(keyCopy, &selRef_dictionaryForKey_);
 
   return v6;
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *(&self->super.super.isa + OBJC_IVAR____TtC7JetCore16OverriddenAMSBag_backing);
@@ -167,7 +167,7 @@
   v11[2] = sub_1DB46E918;
   v11[3] = &block_descriptor_4;
   v9 = _Block_copy(v11);
-  v10 = self;
+  selfCopy = self;
 
   [v6 createSnapshotWithCompletion_];
 
@@ -176,7 +176,7 @@
 
 - (AMSBagProtocol)replacingSnapshotIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1DB35E680();
 
   return v3;
@@ -189,9 +189,9 @@
   return result;
 }
 
-- (_TtC7JetCore16OverriddenAMSBag)initWithData:(id)a3
+- (_TtC7JetCore16OverriddenAMSBag)initWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   sub_1DB509CE0();
 
   result = _swift_stdlib_reportUnimplementedInitializer();

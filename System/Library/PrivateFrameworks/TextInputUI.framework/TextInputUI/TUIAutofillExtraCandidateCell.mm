@@ -7,45 +7,45 @@
 
 - (id)image
 {
-  v3 = [(TUICandidateBaseCell *)self style];
+  style = [(TUICandidateBaseCell *)self style];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v4 = [(TUICandidateBaseCell *)self style];
-  v5 = [v4 autofillExtraCandidateImage];
+  style2 = [(TUICandidateBaseCell *)self style];
+  autofillExtraCandidateImage = [style2 autofillExtraCandidateImage];
 
-  if (!v5)
+  if (!autofillExtraCandidateImage)
   {
 LABEL_5:
-    v8 = [(TUICandidateBaseCell *)self style];
-    v9 = [v8 textColor];
-    v10 = v9;
-    if (v9)
+    style3 = [(TUICandidateBaseCell *)self style];
+    textColor = [style3 textColor];
+    v10 = textColor;
+    if (textColor)
     {
-      v11 = v9;
+      clearColor = textColor;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E69DC888] clearColor];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
     }
 
-    v6 = v11;
+    style4 = clearColor;
 
     v12 = [MEMORY[0x1E69DCAB8] kitImageNamed:@"kb-autofill-key"];
-    v7 = [v12 _flatImageWithColor:v6];
+    autofillExtraCandidateImage2 = [v12 _flatImageWithColor:style4];
 
     goto LABEL_9;
   }
 
-  v6 = [(TUICandidateBaseCell *)self style];
-  v7 = [v6 autofillExtraCandidateImage];
+  style4 = [(TUICandidateBaseCell *)self style];
+  autofillExtraCandidateImage2 = [style4 autofillExtraCandidateImage];
 LABEL_9:
 
-  return v7;
+  return autofillExtraCandidateImage2;
 }
 
 - (id)bodyText

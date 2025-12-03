@@ -1,8 +1,8 @@
 @interface ATXNotificationsDedupeTracker
 + (ATXNotificationsDedupeTracker)sharedInstance;
 - (ATXNotificationsDedupeTracker)init;
-- (BOOL)addNotificationId:(id)a3;
-- (void)insertEvent:(int64_t)a3 notificationID:(id)a4;
+- (BOOL)addNotificationId:(id)id;
+- (void)insertEvent:(int64_t)event notificationID:(id)d;
 @end
 
 @implementation ATXNotificationsDedupeTracker
@@ -37,9 +37,9 @@ uint64_t __47__ATXNotificationsDedupeTracker_sharedInstance__block_invoke()
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     queue = v2->_queue;
     v2->_queue = v7;
 
@@ -51,9 +51,9 @@ uint64_t __47__ATXNotificationsDedupeTracker_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)addNotificationId:(id)a3
+- (BOOL)addNotificationId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -63,10 +63,10 @@ uint64_t __47__ATXNotificationsDedupeTracker_sharedInstance__block_invoke()
   block[1] = 3221225472;
   block[2] = __51__ATXNotificationsDedupeTracker_addNotificationId___block_invoke;
   block[3] = &unk_2785987E0;
-  v9 = v4;
-  v10 = self;
+  v9 = idCopy;
+  selfCopy = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = idCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v13 + 24);
 
@@ -90,18 +90,18 @@ uint64_t __51__ATXNotificationsDedupeTracker_addNotificationId___block_invoke(ui
   return result;
 }
 
-- (void)insertEvent:(int64_t)a3 notificationID:(id)a4
+- (void)insertEvent:(int64_t)event notificationID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__ATXNotificationsDedupeTracker_insertEvent_notificationID___block_invoke;
   block[3] = &unk_278599E28;
-  v11 = self;
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
+  selfCopy = self;
+  eventCopy = event;
+  v10 = dCopy;
+  v8 = dCopy;
   dispatch_async(queue, block);
 }
 

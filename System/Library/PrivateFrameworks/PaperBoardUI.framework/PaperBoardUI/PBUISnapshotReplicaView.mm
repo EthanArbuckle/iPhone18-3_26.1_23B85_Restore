@@ -2,21 +2,21 @@
 - (BOOL)isValid;
 - (PBUIFakeBlurObserver)observer;
 - (PBUIPosterReplicaSnapshotProviding)provider;
-- (PBUISnapshotReplicaView)initWithFrame:(CGRect)a3;
+- (PBUISnapshotReplicaView)initWithFrame:(CGRect)frame;
 - (void)_updateImageViewRotation;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)invalidate;
 - (void)layoutSubviews;
-- (void)setEffectiveStyle:(int64_t)a3;
+- (void)setEffectiveStyle:(int64_t)style;
 - (void)setNeedsProviderUpdate;
 - (void)setNeedsSourceUpdate;
-- (void)setProvider:(id)a3;
-- (void)setReason:(id)a3;
-- (void)setSubscribed:(BOOL)a3;
-- (void)willMoveToSuperview:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setProvider:(id)provider;
+- (void)setReason:(id)reason;
+- (void)setSubscribed:(BOOL)subscribed;
+- (void)willMoveToSuperview:(id)superview;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation PBUISnapshotReplicaView
@@ -62,18 +62,18 @@
 
 - (void)_updateImageViewRotation
 {
-  v3 = [(PBUISnapshotReplicaView *)self window];
-  if (!v3 || (v4 = v3, -[PBUISnapshotReplicaView window](self, "window"), v5 = objc_claimAutoreleasedReturnValue(), [v5 screen], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "_isEmbeddedScreen"), v6, v5, v4, v8 = 0.0, v7))
+  window = [(PBUISnapshotReplicaView *)self window];
+  if (!window || (v4 = window, -[PBUISnapshotReplicaView window](self, "window"), v5 = objc_claimAutoreleasedReturnValue(), [v5 screen], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "_isEmbeddedScreen"), v6, v5, v4, v8 = 0.0, v7))
   {
     v8 = 0.0;
     if (soft_PF_IS_PAD_DEVICE())
     {
       if (soft_PUIDynamicRotationIsActive())
       {
-        v9 = [*MEMORY[0x277D76620] activeInterfaceOrientation];
-        if ((v9 - 2) <= 2)
+        activeInterfaceOrientation = [*MEMORY[0x277D76620] activeInterfaceOrientation];
+        if ((activeInterfaceOrientation - 2) <= 2)
         {
-          v8 = dbl_21E70D7F0[v9 - 2];
+          v8 = dbl_21E70D7F0[activeInterfaceOrientation - 2];
         }
       }
     }
@@ -109,8 +109,8 @@
 
 - (void)didMoveToSuperview
 {
-  v3 = [(PBUISnapshotReplicaView *)self superview];
-  [(PBUISnapshotReplicaView *)self setSubscribed:v3 != 0];
+  superview = [(PBUISnapshotReplicaView *)self superview];
+  [(PBUISnapshotReplicaView *)self setSubscribed:superview != 0];
 }
 
 - (void)setNeedsSourceUpdate
@@ -118,9 +118,9 @@
   WeakRetained = objc_loadWeakRetained(&self->_provider);
   obj = [WeakRetained snapshotSourceForObserver:self];
 
-  v4 = [obj legibilitySettings];
+  legibilitySettings = [obj legibilitySettings];
   legibilitySettings = self->_legibilitySettings;
-  self->_legibilitySettings = v4;
+  self->_legibilitySettings = legibilitySettings;
 
   if (BSEqualObjects())
   {
@@ -156,9 +156,9 @@ LABEL_6:
 
 LABEL_7:
   [(PBUISnapshotReplicaView *)self willChangeValueForKey:@"valid"];
-  v11 = [obj snapshot];
-  v12 = v11;
-  if (!v11 || (([v11 size], v14 == *MEMORY[0x277CBF3A8]) ? (v15 = v13 == *(MEMORY[0x277CBF3A8] + 8)) : (v15 = 0), v15))
+  snapshot = [obj snapshot];
+  v12 = snapshot;
+  if (!snapshot || (([snapshot size], v14 == *MEMORY[0x277CBF3A8]) ? (v15 = v13 == *(MEMORY[0x277CBF3A8] + 8)) : (v15 = 0), v15))
   {
     imageView = self->_imageView;
     v17 = 0;
@@ -173,9 +173,9 @@ LABEL_7:
   [(UIImageView *)imageView setImage:v17];
   [(PBUISnapshotReplicaView *)self _updateImageViewRotation];
   [(PBUISnapshotReplicaView *)self didChangeValueForKey:@"valid"];
-  v18 = [MEMORY[0x277D75D18] _isInAnimationBlockWithAnimationsEnabled];
+  _isInAnimationBlockWithAnimationsEnabled = [MEMORY[0x277D75D18] _isInAnimationBlockWithAnimationsEnabled];
   [(PBUISnapshotReplicaView *)self setNeedsLayout];
-  if (v18)
+  if (_isInAnimationBlockWithAnimationsEnabled)
   {
     [(PBUISnapshotReplicaView *)self layoutIfNeeded];
   }
@@ -183,16 +183,16 @@ LABEL_7:
 
 - (void)didMoveToWindow
 {
-  v3 = [(PBUISnapshotReplicaView *)self window];
-  [(PBUISnapshotReplicaView *)self setSubscribed:v3 != 0];
+  window = [(PBUISnapshotReplicaView *)self window];
+  [(PBUISnapshotReplicaView *)self setSubscribed:window != 0];
 }
 
-- (PBUISnapshotReplicaView)initWithFrame:(CGRect)a3
+- (PBUISnapshotReplicaView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v20.receiver = self;
   v20.super_class = PBUISnapshotReplicaView;
   v7 = [(PBUISnapshotReplicaView *)&v20 initWithFrame:?];
@@ -208,8 +208,8 @@ LABEL_7:
 
     [(UIImageView *)v8->_imageView setContentMode:2];
     [(UIImageView *)v8->_imageView setOpaque:1];
-    v12 = [(UIImageView *)v8->_imageView layer];
-    [v12 setContentsOpaque:1];
+    layer = [(UIImageView *)v8->_imageView layer];
+    [layer setContentsOpaque:1];
 
     [(UIImageView *)v8->_imageView setAutoresizingMask:18];
     [(PBUISnapshotReplicaView *)v8 addSubview:v8->_imageView];
@@ -217,13 +217,13 @@ LABEL_7:
     [(PBUISnapshotReplicaView *)v8 setShouldMatchWallpaperPosition:1];
     if (PBUIReplicaDebugModeIsEnabled())
     {
-      v13 = [[PBUIReplicaDebugView alloc] initWithFrame:x, y, width, height];
+      height = [[PBUIReplicaDebugView alloc] initWithFrame:x, y, width, height];
       debugView = v8->_debugView;
-      v8->_debugView = v13;
+      v8->_debugView = height;
 
       v15 = v8->_debugView;
-      v16 = [MEMORY[0x277D75348] blueColor];
-      v17 = [v16 colorWithAlphaComponent:0.4];
+      blueColor = [MEMORY[0x277D75348] blueColor];
+      v17 = [blueColor colorWithAlphaComponent:0.4];
       [(PBUIReplicaDebugView *)v15 setColor:v17];
 
       [(PBUISnapshotReplicaView *)v8 addSubview:v8->_debugView];
@@ -239,11 +239,11 @@ LABEL_7:
   return v8;
 }
 
-- (void)setEffectiveStyle:(int64_t)a3
+- (void)setEffectiveStyle:(int64_t)style
 {
-  if (self->_effectiveStyle != a3)
+  if (self->_effectiveStyle != style)
   {
-    self->_effectiveStyle = a3;
+    self->_effectiveStyle = style;
     [(PBUISnapshotReplicaView *)self setNeedsSourceUpdate];
   }
 }
@@ -257,9 +257,9 @@ LABEL_7:
   [(PBUISnapshotReplicaView *)&v3 dealloc];
 }
 
-- (void)setProvider:(id)a3
+- (void)setProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_provider);
   v5 = BSEqualObjects();
 
@@ -277,32 +277,32 @@ LABEL_7:
     return 0;
   }
 
-  v2 = [(UIImageView *)self->_imageView image];
-  v3 = v2 != 0;
+  image = [(UIImageView *)self->_imageView image];
+  v3 = image != 0;
 
   return v3;
 }
 
-- (void)setReason:(id)a3
+- (void)setReason:(id)reason
 {
-  v7 = a3;
-  v4 = [v7 copy];
+  reasonCopy = reason;
+  v4 = [reasonCopy copy];
   reason = self->_reason;
   self->_reason = v4;
 
   debugView = self->_debugView;
   if (debugView)
   {
-    [(PBUIReplicaDebugView *)debugView setTitle:v7];
+    [(PBUIReplicaDebugView *)debugView setTitle:reasonCopy];
   }
 }
 
-- (void)setSubscribed:(BOOL)a3
+- (void)setSubscribed:(BOOL)subscribed
 {
-  if (!self->_invalidated && self->_subscribed != a3)
+  if (!self->_invalidated && self->_subscribed != subscribed)
   {
-    self->_subscribed = a3;
-    if (a3)
+    self->_subscribed = subscribed;
+    if (subscribed)
     {
 
       [(PBUISnapshotReplicaView *)self setNeedsProviderUpdate];
@@ -343,17 +343,17 @@ LABEL_7:
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  if (a3)
+  if (superview)
   {
     [(PBUISnapshotReplicaView *)self setSubscribed:1];
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  if (a3)
+  if (window)
   {
     [(PBUISnapshotReplicaView *)self setSubscribed:1];
   }

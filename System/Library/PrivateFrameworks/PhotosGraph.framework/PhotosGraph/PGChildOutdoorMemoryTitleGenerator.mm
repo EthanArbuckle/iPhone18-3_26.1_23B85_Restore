@@ -1,17 +1,17 @@
 @interface PGChildOutdoorMemoryTitleGenerator
-- (PGChildOutdoorMemoryTitleGenerator)initWithMomentNodes:(id)a3 personNode:(id)a4 type:(int64_t)a5 titleGenerationContext:(id)a6;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (PGChildOutdoorMemoryTitleGenerator)initWithMomentNodes:(id)nodes personNode:(id)node type:(int64_t)type titleGenerationContext:(id)context;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGChildOutdoorMemoryTitleGenerator
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
-  if (a3)
+  if (result)
   {
     personNode = self->_personNode;
     serviceManager = self->_serviceManager;
-    v6 = a3;
+    resultCopy = result;
     v20 = [PGPeopleTitleUtility nameFromPersonNode:personNode serviceManager:serviceManager];
     if ([v20 length])
     {
@@ -35,33 +35,33 @@
 
     v14 = [PGTitle titleWithString:v11 category:v12];
     v15 = objc_alloc_init(PGTimeTitleOptions);
-    v16 = [(PGTitleGenerator *)self momentNodes];
-    [(PGTimeTitleOptions *)v15 setMomentNodes:v16];
+    momentNodes = [(PGTitleGenerator *)self momentNodes];
+    [(PGTimeTitleOptions *)v15 setMomentNodes:momentNodes];
 
     [(PGTimeTitleOptions *)v15 setAllowedFormats:20];
-    v17 = [(PGTitleGenerator *)self featuredYearNodes];
-    [(PGTimeTitleOptions *)v15 setFeaturedYearNodes:v17];
+    featuredYearNodes = [(PGTitleGenerator *)self featuredYearNodes];
+    [(PGTimeTitleOptions *)v15 setFeaturedYearNodes:featuredYearNodes];
 
     v18 = [PGTimeTitleUtility timeTitleWithOptions:v15];
     v19 = [PGTitle titleWithString:v18 category:5];
-    v6[2](v6, v14, v19);
+    resultCopy[2](resultCopy, v14, v19);
   }
 }
 
-- (PGChildOutdoorMemoryTitleGenerator)initWithMomentNodes:(id)a3 personNode:(id)a4 type:(int64_t)a5 titleGenerationContext:(id)a6
+- (PGChildOutdoorMemoryTitleGenerator)initWithMomentNodes:(id)nodes personNode:(id)node type:(int64_t)type titleGenerationContext:(id)context
 {
-  v11 = a4;
-  v12 = a6;
+  nodeCopy = node;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = PGChildOutdoorMemoryTitleGenerator;
-  v13 = [(PGTitleGenerator *)&v18 initWithMomentNodes:a3 type:a5 titleGenerationContext:v12];
+  v13 = [(PGTitleGenerator *)&v18 initWithMomentNodes:nodes type:type titleGenerationContext:contextCopy];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_personNode, a4);
-    v15 = [v12 serviceManager];
+    objc_storeStrong(&v13->_personNode, node);
+    serviceManager = [contextCopy serviceManager];
     serviceManager = v14->_serviceManager;
-    v14->_serviceManager = v15;
+    v14->_serviceManager = serviceManager;
   }
 
   return v14;

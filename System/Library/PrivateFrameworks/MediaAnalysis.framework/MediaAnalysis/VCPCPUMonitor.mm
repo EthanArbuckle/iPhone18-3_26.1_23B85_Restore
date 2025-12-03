@@ -1,8 +1,8 @@
 @interface VCPCPUMonitor
 + (id)sharedCPUMonitor;
 - (VCPCPUMonitor)init;
-- (int)disableWithTimeoutSeconds:(int)a3;
-- (void)cancelRequest:(int)a3;
+- (int)disableWithTimeoutSeconds:(int)seconds;
+- (void)cancelRequest:(int)request;
 - (void)dealloc;
 @end
 
@@ -58,9 +58,9 @@
   [(VCPCPUMonitor *)&v4 dealloc];
 }
 
-- (int)disableWithTimeoutSeconds:(int)a3
+- (int)disableWithTimeoutSeconds:(int)seconds
 {
-  if (a3 <= 0)
+  if (seconds <= 0)
   {
     LODWORD(requestID) = -1;
   }
@@ -70,14 +70,14 @@
     v5 = self->_requests;
     objc_sync_enter(v5);
     v19 = +[NSDate date];
-    v6 = [v19 dateByAddingTimeInterval:a3];
+    v6 = [v19 dateByAddingTimeInterval:seconds];
     v7 = +[NSDate distantPast];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [(NSMutableDictionary *)self->_requests allValues];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v26 count:16];
+    allValues = [(NSMutableDictionary *)self->_requests allValues];
+    v9 = [allValues countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v9)
     {
       v10 = *v21;
@@ -89,7 +89,7 @@
         {
           if (*v21 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allValues);
           }
 
           v7 = [v12 laterDate:*(*(&v20 + 1) + 8 * v11)];
@@ -99,7 +99,7 @@
         }
 
         while (v9 != v11);
-        v9 = [v8 countByEnumeratingWithState:&v20 objects:v26 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v20 objects:v26 count:16];
       }
 
       while (v9);
@@ -153,9 +153,9 @@ LABEL_10:
   return requestID;
 }
 
-- (void)cancelRequest:(int)a3
+- (void)cancelRequest:(int)request
 {
-  v3 = *&a3;
+  v3 = *&request;
   v5 = self->_requests;
   objc_sync_enter(v5);
   requests = self->_requests;
@@ -173,8 +173,8 @@ LABEL_10:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = [(NSMutableDictionary *)self->_requests allValues];
-    v13 = [v12 countByEnumeratingWithState:&v23 objects:v29 count:16];
+    allValues = [(NSMutableDictionary *)self->_requests allValues];
+    v13 = [allValues countByEnumeratingWithState:&v23 objects:v29 count:16];
     if (v13)
     {
       v14 = *v24;
@@ -186,7 +186,7 @@ LABEL_10:
         {
           if (*v24 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allValues);
           }
 
           v11 = [v16 laterDate:*(*(&v23 + 1) + 8 * v15)];
@@ -196,7 +196,7 @@ LABEL_10:
         }
 
         while (v13 != v15);
-        v13 = [v12 countByEnumeratingWithState:&v23 objects:v29 count:16];
+        v13 = [allValues countByEnumeratingWithState:&v23 objects:v29 count:16];
       }
 
       while (v13);

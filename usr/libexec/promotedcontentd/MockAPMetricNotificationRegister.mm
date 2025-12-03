@@ -1,23 +1,23 @@
 @interface MockAPMetricNotificationRegister
-- (int64_t)registerHandlerForPurpose:(int64_t)a3 andMetric:(int64_t)a4 closure:(id)a5;
-- (void)callBlockWithMetric:(id)a3;
+- (int64_t)registerHandlerForPurpose:(int64_t)purpose andMetric:(int64_t)metric closure:(id)closure;
+- (void)callBlockWithMetric:(id)metric;
 @end
 
 @implementation MockAPMetricNotificationRegister
 
-- (int64_t)registerHandlerForPurpose:(int64_t)a3 andMetric:(int64_t)a4 closure:(id)a5
+- (int64_t)registerHandlerForPurpose:(int64_t)purpose andMetric:(int64_t)metric closure:(id)closure
 {
-  v6 = [a5 copy];
+  v6 = [closure copy];
   [(MockAPMetricNotificationRegister *)self setBlock:v6];
 
   return 0;
 }
 
-- (void)callBlockWithMetric:(id)a3
+- (void)callBlockWithMetric:(id)metric
 {
-  v4 = a3;
-  v5 = [(MockAPMetricNotificationRegister *)self block];
-  v5[2](v5, v4);
+  metricCopy = metric;
+  block = [(MockAPMetricNotificationRegister *)self block];
+  block[2](block, metricCopy);
 }
 
 @end

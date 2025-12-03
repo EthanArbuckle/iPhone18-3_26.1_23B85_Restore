@@ -1,22 +1,22 @@
 @interface FPTrashedItemsQueryDescriptor
-- (id)queryStringForMountPoint:(id)a3;
+- (id)queryStringForMountPoint:(id)point;
 @end
 
 @implementation FPTrashedItemsQueryDescriptor
 
-- (id)queryStringForMountPoint:(id)a3
+- (id)queryStringForMountPoint:(id)point
 {
-  v4 = [(FPSpotlightQueryDescriptor *)self settings];
-  [v4 excludedParentOIDs];
+  settings = [(FPSpotlightQueryDescriptor *)self settings];
+  [settings excludedParentOIDs];
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = FPIsTrashedQueryStringFragment(1);
-  v7 = [(FPSpotlightQueryDescriptor *)self settings];
-  v8 = [v7 allowedProviders];
-  v9 = FPFileProviderOriginatedItemsQueryStringFragment(v8);
-  v10 = [(FPSpotlightQueryDescriptor *)self settings];
-  v11 = [v10 excludedParentOIDs];
-  v12 = FPExcludedOIDParentsQueryStringFragment(v11);
+  settings2 = [(FPSpotlightQueryDescriptor *)self settings];
+  allowedProviders = [settings2 allowedProviders];
+  v9 = FPFileProviderOriginatedItemsQueryStringFragment(allowedProviders);
+  settings3 = [(FPSpotlightQueryDescriptor *)self settings];
+  excludedParentOIDs = [settings3 excludedParentOIDs];
+  v12 = FPExcludedOIDParentsQueryStringFragment(excludedParentOIDs);
   v13 = [v5 stringWithFormat:@"%@ && %@ && (%@)", v6, v9, v12];
 
   return v13;

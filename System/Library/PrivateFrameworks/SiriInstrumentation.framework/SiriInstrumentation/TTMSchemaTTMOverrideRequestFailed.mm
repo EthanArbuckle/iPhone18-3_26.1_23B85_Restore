@@ -1,35 +1,35 @@
 @interface TTMSchemaTTMOverrideRequestFailed
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (TTMSchemaTTMOverrideRequestFailed)initWithDictionary:(id)a3;
-- (TTMSchemaTTMOverrideRequestFailed)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (TTMSchemaTTMOverrideRequestFailed)initWithDictionary:(id)dictionary;
+- (TTMSchemaTTMOverrideRequestFailed)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addTcuFailures:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTcuFailures:(id)failures;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TTMSchemaTTMOverrideRequestFailed
 
-- (TTMSchemaTTMOverrideRequestFailed)initWithDictionary:(id)a3
+- (TTMSchemaTTMOverrideRequestFailed)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = TTMSchemaTTMOverrideRequestFailed;
   v5 = [(TTMSchemaTTMOverrideRequestFailed *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"reason"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"reason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTMSchemaTTMOverrideRequestFailed setReason:](v5, "setReason:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"tcuFailures"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"tcuFailures"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (TTMSchemaTTMOverrideRequestFailed)initWithJSON:(id)a3
+- (TTMSchemaTTMOverrideRequestFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(TTMSchemaTTMOverrideRequestFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(TTMSchemaTTMOverrideRequestFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(TTMSchemaTTMOverrideRequestFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,7 +118,7 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(TTMSchemaTTMOverrideRequestFailed *)self reason]- 1;
@@ -132,12 +132,12 @@
       v5 = off_1E78E7F50[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"reason"];
+    [dictionary setObject:v5 forKeyedSubscript:@"reason"];
   }
 
   if ([(NSArray *)self->_tcuFailures count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -157,16 +157,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -176,12 +176,12 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"tcuFailures"];
+    [dictionary setObject:array forKeyedSubscript:@"tcuFailures"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v15];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v15];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -199,22 +199,22 @@
   return [(NSArray *)self->_tcuFailures hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (reason = self->_reason, reason == [v4 reason]))
+      if ((*&self->_has & 1) == 0 || (reason = self->_reason, reason == [equalCopy reason]))
       {
-        v6 = [(TTMSchemaTTMOverrideRequestFailed *)self tcuFailures];
-        v7 = [v4 tcuFailures];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        tcuFailures = [(TTMSchemaTTMOverrideRequestFailed *)self tcuFailures];
+        tcuFailures2 = [equalCopy tcuFailures];
+        v8 = tcuFailures2;
+        if ((tcuFailures != 0) != (tcuFailures2 == 0))
         {
-          v9 = [(TTMSchemaTTMOverrideRequestFailed *)self tcuFailures];
-          if (!v9)
+          tcuFailures3 = [(TTMSchemaTTMOverrideRequestFailed *)self tcuFailures];
+          if (!tcuFailures3)
           {
 
 LABEL_13:
@@ -222,10 +222,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(TTMSchemaTTMOverrideRequestFailed *)self tcuFailures];
-          v12 = [v4 tcuFailures];
-          v13 = [v11 isEqual:v12];
+          v10 = tcuFailures3;
+          tcuFailures4 = [(TTMSchemaTTMOverrideRequestFailed *)self tcuFailures];
+          tcuFailures5 = [equalCopy tcuFailures];
+          v13 = [tcuFailures4 isEqual:tcuFailures5];
 
           if (v13)
           {
@@ -246,10 +246,10 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
@@ -287,32 +287,32 @@ LABEL_11:
   }
 }
 
-- (void)addTcuFailures:(id)a3
+- (void)addTcuFailures:(id)failures
 {
-  v4 = a3;
+  failuresCopy = failures;
   tcuFailures = self->_tcuFailures;
-  v8 = v4;
+  v8 = failuresCopy;
   if (!tcuFailures)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tcuFailures;
-    self->_tcuFailures = v6;
+    self->_tcuFailures = array;
 
-    v4 = v8;
+    failuresCopy = v8;
     tcuFailures = self->_tcuFailures;
   }
 
-  [(NSArray *)tcuFailures addObject:v4];
+  [(NSArray *)tcuFailures addObject:failuresCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = TTMSchemaTTMOverrideRequestFailed;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(TTMSchemaTTMOverrideRequestFailed *)self tcuFailures:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(TTMSchemaTTMOverrideRequestFailed *)self setTcuFailures:v7];
 

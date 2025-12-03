@@ -1,60 +1,60 @@
 @interface CFXEffectBrowserViewController
-+ (CGSize)CFX_droppedSizeForSticker:(id)a3 dropTarget:(id)a4;
-+ (CGSize)CFX_sizeOfImageAtURL:(id)a3;
++ (CGSize)CFX_droppedSizeForSticker:(id)sticker dropTarget:(id)target;
++ (CGSize)CFX_sizeOfImageAtURL:(id)l;
 - (BOOL)expandedAppShouldDismissOnDragSuccess;
 - (BOOL)shouldRotateCellsForDeviceOrientation;
 - (BOOL)showAppIconBorders;
 - (CFXEffectBrowserContentPresenterDelegate)contentPresenterDelegate;
-- (CFXEffectBrowserViewController)initWithDelegate:(id)a3 contentPresenter:(id)a4;
+- (CFXEffectBrowserViewController)initWithDelegate:(id)delegate contentPresenter:(id)presenter;
 - (CFXEffectBrowserViewControllerDelegate)delegate;
 - (CGSize)expandedAppViewControllerSize;
 - (UIViewController)contentPresenter;
 - (UIViewController)dockPresentationViewController;
-- (id)localizedPromptForHidingAnimojiForEffectBrowserViewController:(id)a3;
-- (id)selectedAnimojiIdentifierForEffectBrowserViewController:(id)a3;
-- (id)selectedFilterIdentifierForEffectPickerViewController:(id)a3;
-- (void)CFX_addSticker:(id)a3 atDropTarget:(id)a4;
-- (void)CFX_updateAVTAvatarPickerforViewController:(id)a3;
-- (void)avatarPicker:(id)a3 didSelectAvatarRecord:(id)a4;
-- (void)avatarPickerDidEndCameraSession:(id)a3;
-- (void)avatarPickerWillStartCameraSession:(id)a3;
+- (id)localizedPromptForHidingAnimojiForEffectBrowserViewController:(id)controller;
+- (id)selectedAnimojiIdentifierForEffectBrowserViewController:(id)controller;
+- (id)selectedFilterIdentifierForEffectPickerViewController:(id)controller;
+- (void)CFX_addSticker:(id)sticker atDropTarget:(id)target;
+- (void)CFX_updateAVTAvatarPickerforViewController:(id)controller;
+- (void)avatarPicker:(id)picker didSelectAvatarRecord:(id)record;
+- (void)avatarPickerDidEndCameraSession:(id)session;
+- (void)avatarPickerWillStartCameraSession:(id)session;
 - (void)commitAnimatedLayoutChanges;
 - (void)compactCurrentMessagesApp;
 - (void)configureUIForOrientation;
 - (void)dealloc;
 - (void)didDismissMemojiPicker;
-- (void)didSelectAppWithBundleIdentifier:(id)a3;
-- (void)dismissExpandedAppViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)displayPickerForEffectTypeIdentifier:(id)a3 messagesAppViewController:(id)a4 embedInMessageAppViewController:(BOOL)a5;
-- (void)dockDidMagnify:(BOOL)a3;
-- (void)effectPickerViewController:(id)a3 didPickEffect:(id)a4;
-- (void)hideBrowserAnimated:(BOOL)a3 completion:(id)a4;
+- (void)didSelectAppWithBundleIdentifier:(id)identifier;
+- (void)dismissExpandedAppViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)displayPickerForEffectTypeIdentifier:(id)identifier messagesAppViewController:(id)controller embedInMessageAppViewController:(BOOL)viewController;
+- (void)dockDidMagnify:(BOOL)magnify;
+- (void)effectPickerViewController:(id)controller didPickEffect:(id)effect;
+- (void)hideBrowserAnimated:(BOOL)animated completion:(id)completion;
 - (void)initMessagesAppsDockViewController;
 - (void)loadView;
-- (void)presentExpandedAppViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentExpandedAppViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)refreshEffectBrowserForCameraFlip;
 - (void)removeEffectPickerViewController;
-- (void)setShowAppIconBorders:(BOOL)a3;
-- (void)showMemojiPicker:(id)a3;
+- (void)setShowAppIconBorders:(BOOL)borders;
+- (void)showMemojiPicker:(id)picker;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CFXEffectBrowserViewController
 
-- (CFXEffectBrowserViewController)initWithDelegate:(id)a3 contentPresenter:(id)a4
+- (CFXEffectBrowserViewController)initWithDelegate:(id)delegate contentPresenter:(id)presenter
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  presenterCopy = presenter;
   v14.receiver = self;
   v14.super_class = CFXEffectBrowserViewController;
   v8 = [(CFXEffectBrowserViewController *)&v14 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeWeak(&v9->_contentPresenter, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeWeak(&v9->_contentPresenter, presenterCopy);
     v10 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v11 = dispatch_queue_create("AnimojiLoadingQueue", v10);
     animojiLoadingQueue = v9->_animojiLoadingQueue;
@@ -66,8 +66,8 @@
 
 - (void)dealloc
 {
-  v3 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-  [v3 cleanupRunningApps];
+  messagesAppsDockViewController = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+  [messagesAppsDockViewController cleanupRunningApps];
 
   v4.receiver = self;
   v4.super_class = CFXEffectBrowserViewController;
@@ -96,26 +96,26 @@
   [(CFXEffectBrowserViewController *)self configureUIForOrientation];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v14.receiver = self;
   v14.super_class = CFXEffectBrowserViewController;
-  [(CFXEffectBrowserViewController *)&v14 viewWillTransitionToSize:a4 withTransitionCoordinator:?];
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  if (![v7 userInterfaceIdiom])
+  [(CFXEffectBrowserViewController *)&v14 viewWillTransitionToSize:coordinator withTransitionCoordinator:?];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if (![currentDevice userInterfaceIdiom])
   {
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     if (v9 == 667)
     {
     }
 
     else
     {
-      v10 = [MEMORY[0x277D759A0] mainScreen];
-      [v10 bounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 bounds];
       v12 = v11;
 
       if (v12 != 667)
@@ -134,18 +134,18 @@
       v13 = -3.0;
     }
 
-    v7 = [(CFXEffectBrowserViewController *)self madTopConstraint];
-    [v7 setConstant:v13];
+    currentDevice = [(CFXEffectBrowserViewController *)self madTopConstraint];
+    [currentDevice setConstant:v13];
   }
 }
 
 - (void)configureUIForOrientation
 {
-  v60 = [MEMORY[0x277D75418] currentDevice];
-  if (![v60 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if (![currentDevice userInterfaceIdiom])
   {
-    v3 = [(CFXEffectBrowserViewController *)self delegate];
-    v4 = [v3 allowLandscapeForEffectBrowserViewController:self];
+    delegate = [(CFXEffectBrowserViewController *)self delegate];
+    v4 = [delegate allowLandscapeForEffectBrowserViewController:self];
 
     if (!v4)
     {
@@ -155,61 +155,61 @@
     v5 = +[JFXOrientationMonitor interfaceOrientation];
     if ((v5 - 3) > 1)
     {
-      v20 = [(CFXEffectBrowserViewController *)self madWidthConstraint];
+      madWidthConstraint = [(CFXEffectBrowserViewController *)self madWidthConstraint];
       v7 = 1132068864;
       LODWORD(v21) = 1132068864;
-      [v20 setPriority:v21];
+      [madWidthConstraint setPriority:v21];
 
-      v22 = [(CFXEffectBrowserViewController *)self madHeightConstraint];
+      madHeightConstraint = [(CFXEffectBrowserViewController *)self madHeightConstraint];
       LODWORD(v23) = 1144750080;
-      [v22 setPriority:v23];
+      [madHeightConstraint setPriority:v23];
 
-      v24 = [(CFXEffectBrowserViewController *)self madLeadingConstraint];
+      madLeadingConstraint = [(CFXEffectBrowserViewController *)self madLeadingConstraint];
       LODWORD(v25) = 1144750080;
-      [v24 setPriority:v25];
+      [madLeadingConstraint setPriority:v25];
 
-      v26 = [(CFXEffectBrowserViewController *)self madTrailingConstraint];
+      madTrailingConstraint = [(CFXEffectBrowserViewController *)self madTrailingConstraint];
       LODWORD(v27) = 1144750080;
-      [v26 setPriority:v27];
+      [madTrailingConstraint setPriority:v27];
 
-      v28 = [(CFXEffectBrowserViewController *)self madTopConstraint];
+      madTopConstraint = [(CFXEffectBrowserViewController *)self madTopConstraint];
       LODWORD(v29) = 1144750080;
-      [v28 setPriority:v29];
+      [madTopConstraint setPriority:v29];
 
-      v18 = [(CFXEffectBrowserViewController *)self madBottomConstraint];
+      madBottomConstraint = [(CFXEffectBrowserViewController *)self madBottomConstraint];
     }
 
     else
     {
-      v6 = [(CFXEffectBrowserViewController *)self madWidthConstraint];
+      madWidthConstraint2 = [(CFXEffectBrowserViewController *)self madWidthConstraint];
       v7 = 1144750080;
       LODWORD(v8) = 1144750080;
-      [v6 setPriority:v8];
+      [madWidthConstraint2 setPriority:v8];
 
-      v9 = [(CFXEffectBrowserViewController *)self madHeightConstraint];
+      madHeightConstraint2 = [(CFXEffectBrowserViewController *)self madHeightConstraint];
       LODWORD(v10) = 1132068864;
-      [v9 setPriority:v10];
+      [madHeightConstraint2 setPriority:v10];
 
-      v11 = [(CFXEffectBrowserViewController *)self madTopConstraint];
+      madTopConstraint2 = [(CFXEffectBrowserViewController *)self madTopConstraint];
       LODWORD(v12) = 1144750080;
-      [v11 setPriority:v12];
+      [madTopConstraint2 setPriority:v12];
 
-      v13 = [(CFXEffectBrowserViewController *)self madBottomConstraint];
+      madBottomConstraint2 = [(CFXEffectBrowserViewController *)self madBottomConstraint];
       LODWORD(v14) = 1144750080;
-      [v13 setPriority:v14];
+      [madBottomConstraint2 setPriority:v14];
 
-      v15 = [(CFXEffectBrowserViewController *)self madLeadingConstraint];
-      v17 = v15;
+      madLeadingConstraint2 = [(CFXEffectBrowserViewController *)self madLeadingConstraint];
+      v17 = madLeadingConstraint2;
       if (v5 != 4)
       {
         LODWORD(v16) = 1144750080;
-        [v15 setPriority:v16];
+        [madLeadingConstraint2 setPriority:v16];
 
-        v18 = [(CFXEffectBrowserViewController *)self madTrailingConstraint];
-        v30 = v18;
+        madBottomConstraint = [(CFXEffectBrowserViewController *)self madTrailingConstraint];
+        v30 = madBottomConstraint;
         LODWORD(v19) = 1132068864;
 LABEL_12:
-        [v18 setPriority:v19];
+        [madBottomConstraint setPriority:v19];
 
         v31 = +[JFXOrientationMonitor keyWindow];
         [v31 bounds];
@@ -227,39 +227,39 @@ LABEL_12:
         [MEMORY[0x277D3D080] cameraBottomBarGeometryForReferenceBounds:v5 withOrientation:{v33, v35, v37, v39}];
         [MEMORY[0x277D3D080] cameraBottomBarFrameForReferenceBounds:{v33, v35, v37, v39}];
         Width = CGRectGetWidth(v72);
-        v41 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-        [v41 minimizedDockHeight];
+        messagesAppsDockViewController = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+        [messagesAppsDockViewController minimizedDockHeight];
         v43 = v42;
 
         v62 = v68;
         v63 = v69;
         v64 = v70;
-        v44 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-        v45 = [v44 view];
+        messagesAppsDockViewController2 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+        view = [messagesAppsDockViewController2 view];
         v61[0] = v62;
         v61[1] = v63;
         v61[2] = v64;
-        [v45 setTransform:v61];
+        [view setTransform:v61];
 
-        v46 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-        v47 = [v46 view];
-        [v47 setBounds:{0.0, 0.0, Width, v43}];
+        messagesAppsDockViewController3 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+        view2 = [messagesAppsDockViewController3 view];
+        [view2 setBounds:{0.0, 0.0, Width, v43}];
 
         if ((v5 - 3) > 1)
         {
           v52 = Width * 0.5;
           Width = v43;
 LABEL_24:
-          v58 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-          v59 = [v58 view];
-          [v59 setCenter:{v52, Width * 0.5}];
+          messagesAppsDockViewController4 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+          view3 = [messagesAppsDockViewController4 view];
+          [view3 setCenter:{v52, Width * 0.5}];
 
           return;
         }
 
         v48 = v43 * 0.5;
-        v49 = [MEMORY[0x277D75418] currentDevice];
-        if ([v49 userInterfaceIdiom])
+        currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+        if ([currentDevice2 userInterfaceIdiom])
         {
 
 LABEL_15:
@@ -275,16 +275,16 @@ LABEL_21:
           goto LABEL_24;
         }
 
-        v53 = [MEMORY[0x277D759A0] mainScreen];
-        [v53 bounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen bounds];
         if (v54 == 667)
         {
         }
 
         else
         {
-          v55 = [MEMORY[0x277D759A0] mainScreen];
-          [v55 bounds];
+          mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen2 bounds];
           v57 = v56;
 
           if (v57 != 667)
@@ -299,12 +299,12 @@ LABEL_21:
       }
 
       LODWORD(v16) = 1132068864;
-      [v15 setPriority:v16];
+      [madLeadingConstraint2 setPriority:v16];
 
-      v18 = [(CFXEffectBrowserViewController *)self madTrailingConstraint];
+      madBottomConstraint = [(CFXEffectBrowserViewController *)self madTrailingConstraint];
     }
 
-    v30 = v18;
+    v30 = madBottomConstraint;
     LODWORD(v19) = v7;
     goto LABEL_12;
   }
@@ -312,21 +312,21 @@ LABEL_21:
 
 - (void)compactCurrentMessagesApp
 {
-  v3 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-  v4 = [v3 currentAppViewController];
+  messagesAppsDockViewController = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+  currentAppViewController = [messagesAppsDockViewController currentAppViewController];
 
-  if (!v4)
+  if (!currentAppViewController)
   {
-    v6 = [(CFXEffectBrowserViewController *)self memojiPicker];
-    v7 = [v6 sheetPresentationController];
+    memojiPicker = [(CFXEffectBrowserViewController *)self memojiPicker];
+    sheetPresentationController = [memojiPicker sheetPresentationController];
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __59__CFXEffectBrowserViewController_compactCurrentMessagesApp__block_invoke;
     v8[3] = &unk_278D79C88;
-    v9 = v7;
-    v10 = self;
-    v5 = v7;
+    v9 = sheetPresentationController;
+    selfCopy = self;
+    v5 = sheetPresentationController;
     [v5 animateChanges:v8];
 
 LABEL_6:
@@ -336,7 +336,7 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = currentAppViewController;
     if ([v5 presentationStyle] == 1)
     {
       [v5 requestPresentationStyle:0];
@@ -354,21 +354,21 @@ void __59__CFXEffectBrowserViewController_compactCurrentMessagesApp__block_invok
   [*(a1 + 32) setSelectedDetentIdentifier:v2];
 }
 
-- (void)displayPickerForEffectTypeIdentifier:(id)a3 messagesAppViewController:(id)a4 embedInMessageAppViewController:(BOOL)a5
+- (void)displayPickerForEffectTypeIdentifier:(id)identifier messagesAppViewController:(id)controller embedInMessageAppViewController:(BOOL)viewController
 {
-  v5 = a5;
+  viewControllerCopy = viewController;
   v44[4] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
-  v11 = [v10 effectType];
-  v12 = [v11 identifier];
-  if ([v12 isEqualToString:v8])
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  effectPickerViewController = [(CFXEffectBrowserViewController *)self effectPickerViewController];
+  effectType = [effectPickerViewController effectType];
+  identifier = [effectType identifier];
+  if ([identifier isEqualToString:identifierCopy])
   {
-    v13 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
-    v14 = [v13 parentViewController];
+    effectPickerViewController2 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
+    parentViewController = [effectPickerViewController2 parentViewController];
 
-    if (v14 == v9)
+    if (parentViewController == controllerCopy)
     {
       goto LABEL_13;
     }
@@ -378,9 +378,9 @@ void __59__CFXEffectBrowserViewController_compactCurrentMessagesApp__block_invok
   {
   }
 
-  v15 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
+  effectPickerViewController3 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
 
-  if (v15)
+  if (effectPickerViewController3)
   {
     [(CFXEffectBrowserViewController *)self removeEffectPickerViewController];
   }
@@ -388,70 +388,70 @@ void __59__CFXEffectBrowserViewController_compactCurrentMessagesApp__block_invok
   v16 = +[CFXEffectPickerViewController effectPickerViewController];
   [(CFXEffectBrowserViewController *)self setEffectPickerViewController:v16];
 
-  v17 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
-  [v17 setDelegate:self];
+  effectPickerViewController4 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
+  [effectPickerViewController4 setDelegate:self];
 
-  v18 = [CFXEffectType effectTypeWithIdentifier:v8];
-  v19 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
-  [v19 setEffectType:v18];
+  v18 = [CFXEffectType effectTypeWithIdentifier:identifierCopy];
+  effectPickerViewController5 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
+  [effectPickerViewController5 setEffectType:v18];
 
-  v20 = [(CFXEffectBrowserViewController *)self delegate];
-  LOBYTE(v19) = objc_opt_respondsToSelector();
+  delegate = [(CFXEffectBrowserViewController *)self delegate];
+  LOBYTE(effectPickerViewController5) = objc_opt_respondsToSelector();
 
-  if (v19)
+  if (effectPickerViewController5)
   {
-    v21 = [(CFXEffectBrowserViewController *)self delegate];
-    v22 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
-    v23 = [v22 effectType];
-    [v21 effectBrowserViewController:self didPresentPickerForEffectType:v23];
+    delegate2 = [(CFXEffectBrowserViewController *)self delegate];
+    effectPickerViewController6 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
+    effectType2 = [effectPickerViewController6 effectType];
+    [delegate2 effectBrowserViewController:self didPresentPickerForEffectType:effectType2];
   }
 
-  v24 = [(CFXEffectBrowserViewController *)self delegate];
+  delegate3 = [(CFXEffectBrowserViewController *)self delegate];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __129__CFXEffectBrowserViewController_displayPickerForEffectTypeIdentifier_messagesAppViewController_embedInMessageAppViewController___block_invoke;
   v43[3] = &unk_278D7BE78;
   v43[4] = self;
-  [v24 effectBrowserViewController:self filterPickerPreviewBackgroundImageAtSizeInPixels:v43 completion:{200.0, 200.0}];
+  [delegate3 effectBrowserViewController:self filterPickerPreviewBackgroundImageAtSizeInPixels:v43 completion:{200.0, 200.0}];
 
-  v25 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
-  if (v5)
+  effectPickerViewController7 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
+  if (viewControllerCopy)
   {
-    [v9 jfxAddChildViewController:v25 constrainRelativeToSafeAreas:0];
+    [controllerCopy jfxAddChildViewController:effectPickerViewController7 constrainRelativeToSafeAreas:0];
   }
 
   else
   {
-    [(UIViewController *)self jfxAddChildViewController:v25];
+    [(UIViewController *)self jfxAddChildViewController:effectPickerViewController7];
 
-    v26 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
-    v25 = [v26 view];
+    effectPickerViewController8 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
+    effectPickerViewController7 = [effectPickerViewController8 view];
 
-    v27 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-    [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
+    messagesAppsDockContainerView = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+    [effectPickerViewController7 setTranslatesAutoresizingMaskIntoConstraints:0];
     v37 = MEMORY[0x277CCAAD0];
-    v42 = [v25 leftAnchor];
-    v41 = [v27 leftAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    leftAnchor = [effectPickerViewController7 leftAnchor];
+    leftAnchor2 = [messagesAppsDockContainerView leftAnchor];
+    v40 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v44[0] = v40;
-    v39 = [v25 rightAnchor];
-    v38 = [v27 rightAnchor];
-    v36 = [v39 constraintEqualToAnchor:v38];
+    rightAnchor = [effectPickerViewController7 rightAnchor];
+    rightAnchor2 = [messagesAppsDockContainerView rightAnchor];
+    v36 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v44[1] = v36;
-    v28 = [v25 heightAnchor];
-    v29 = [v28 constraintEqualToConstant:300.0];
+    heightAnchor = [effectPickerViewController7 heightAnchor];
+    v29 = [heightAnchor constraintEqualToConstant:300.0];
     v44[2] = v29;
-    v30 = [v25 topAnchor];
-    v31 = [v27 topAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    topAnchor = [effectPickerViewController7 topAnchor];
+    topAnchor2 = [messagesAppsDockContainerView topAnchor];
+    v32 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v44[3] = v32;
     [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:4];
-    v33 = v9;
-    v35 = v34 = v8;
+    v33 = controllerCopy;
+    v35 = v34 = identifierCopy;
     [v37 activateConstraints:v35];
 
-    v8 = v34;
-    v9 = v33;
+    identifierCopy = v34;
+    controllerCopy = v33;
   }
 
 LABEL_13:
@@ -476,257 +476,257 @@ void __129__CFXEffectBrowserViewController_displayPickerForEffectTypeIdentifier_
     v4 = objc_alloc_init(MEMORY[0x277D7F8B8]);
     [(CFXEffectBrowserViewController *)self setMessagesAppsDockViewController:v4];
 
-    v5 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-    [v5 setDelegate:self];
+    messagesAppsDockViewController = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+    [messagesAppsDockViewController setDelegate:self];
 
     v6 = objc_alloc(MEMORY[0x277D75D18]);
     v7 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [(CFXEffectBrowserViewController *)self setMessagesAppsDockContainerView:v7];
 
-    v8 = [(CFXEffectBrowserViewController *)self view];
-    v9 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-    [v8 addSubview:v9];
+    view = [(CFXEffectBrowserViewController *)self view];
+    messagesAppsDockContainerView = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+    [view addSubview:messagesAppsDockContainerView];
 
-    v10 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    messagesAppsDockContainerView2 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+    [messagesAppsDockContainerView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v11 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
+    contentPresenterDelegate = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
-      v14 = [v13 shouldAlwaysPresentExpandedAppsForEffectBrowserViewController:self];
+      contentPresenterDelegate2 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
+      v14 = [contentPresenterDelegate2 shouldAlwaysPresentExpandedAppsForEffectBrowserViewController:self];
     }
 
     else
     {
-      v15 = [(CFXEffectBrowserViewController *)self delegate];
+      delegate = [(CFXEffectBrowserViewController *)self delegate];
       v16 = objc_opt_respondsToSelector();
 
       if (v16)
       {
-        v17 = [(CFXEffectBrowserViewController *)self delegate];
-        v18 = [v17 shouldAlwaysPresentExpandedAppsForEffectBrowserViewController:self];
+        delegate2 = [(CFXEffectBrowserViewController *)self delegate];
+        v18 = [delegate2 shouldAlwaysPresentExpandedAppsForEffectBrowserViewController:self];
 
-        v19 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-        [v19 setAlwaysPresentAppsExpanded:v18];
+        messagesAppsDockViewController2 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+        [messagesAppsDockViewController2 setAlwaysPresentAppsExpanded:v18];
 
         if (v18)
         {
-          v20 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-          v21 = [v20 widthAnchor];
-          v22 = [v21 constraintEqualToConstant:375.0];
+          messagesAppsDockContainerView3 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+          widthAnchor = [messagesAppsDockContainerView3 widthAnchor];
+          v22 = [widthAnchor constraintEqualToConstant:375.0];
           [(CFXEffectBrowserViewController *)self setMadWidthConstraint:v22];
 
-          v23 = [(CFXEffectBrowserViewController *)self madWidthConstraint];
+          madWidthConstraint = [(CFXEffectBrowserViewController *)self madWidthConstraint];
           LODWORD(v24) = 1144750080;
-          [v23 setPriority:v24];
+          [madWidthConstraint setPriority:v24];
 
-          v25 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-          v26 = [v25 heightAnchor];
-          v27 = [v26 constraintEqualToConstant:81.0];
+          messagesAppsDockContainerView4 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+          heightAnchor = [messagesAppsDockContainerView4 heightAnchor];
+          v27 = [heightAnchor constraintEqualToConstant:81.0];
           [(CFXEffectBrowserViewController *)self setMadHeightConstraint:v27];
 
-          v28 = [(CFXEffectBrowserViewController *)self madHeightConstraint];
+          madHeightConstraint = [(CFXEffectBrowserViewController *)self madHeightConstraint];
           LODWORD(v29) = 1144750080;
-          [v28 setPriority:v29];
+          [madHeightConstraint setPriority:v29];
 
-          v30 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-          v31 = [v30 leadingAnchor];
-          v32 = [(CFXEffectBrowserViewController *)self view];
-          v33 = [v32 leadingAnchor];
-          v34 = [v31 constraintEqualToAnchor:v33 constant:36.0];
+          messagesAppsDockContainerView5 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+          leadingAnchor = [messagesAppsDockContainerView5 leadingAnchor];
+          view2 = [(CFXEffectBrowserViewController *)self view];
+          leadingAnchor2 = [view2 leadingAnchor];
+          v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:36.0];
           [(CFXEffectBrowserViewController *)self setMadLeadingConstraint:v34];
 
-          v35 = [(CFXEffectBrowserViewController *)self madLeadingConstraint];
+          madLeadingConstraint = [(CFXEffectBrowserViewController *)self madLeadingConstraint];
           LODWORD(v36) = 1144750080;
-          [v35 setPriority:v36];
+          [madLeadingConstraint setPriority:v36];
 
-          v37 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-          v38 = [v37 bottomAnchor];
-          v39 = [(CFXEffectBrowserViewController *)self view];
-          v40 = [v39 bottomAnchor];
-          v41 = [v38 constraintEqualToAnchor:v40 constant:-36.0];
+          messagesAppsDockContainerView6 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+          bottomAnchor = [messagesAppsDockContainerView6 bottomAnchor];
+          view3 = [(CFXEffectBrowserViewController *)self view];
+          bottomAnchor2 = [view3 bottomAnchor];
+          v41 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-36.0];
           [(CFXEffectBrowserViewController *)self setMadBottomConstraint:v41];
 
-          v42 = [(CFXEffectBrowserViewController *)self madBottomConstraint];
+          madBottomConstraint = [(CFXEffectBrowserViewController *)self madBottomConstraint];
           LODWORD(v43) = 1144750080;
-          [v42 setPriority:v43];
+          [madBottomConstraint setPriority:v43];
 
           v44 = MEMORY[0x277CCAAD0];
-          v45 = [(CFXEffectBrowserViewController *)self madWidthConstraint];
-          v148[0] = v45;
-          v46 = [(CFXEffectBrowserViewController *)self madHeightConstraint];
-          v148[1] = v46;
-          v47 = [(CFXEffectBrowserViewController *)self madLeadingConstraint];
-          v148[2] = v47;
-          v48 = [(CFXEffectBrowserViewController *)self madBottomConstraint];
-          v148[3] = v48;
+          madWidthConstraint2 = [(CFXEffectBrowserViewController *)self madWidthConstraint];
+          v148[0] = madWidthConstraint2;
+          madHeightConstraint2 = [(CFXEffectBrowserViewController *)self madHeightConstraint];
+          v148[1] = madHeightConstraint2;
+          madLeadingConstraint2 = [(CFXEffectBrowserViewController *)self madLeadingConstraint];
+          v148[2] = madLeadingConstraint2;
+          madBottomConstraint2 = [(CFXEffectBrowserViewController *)self madBottomConstraint];
+          v148[3] = madBottomConstraint2;
           v49 = [MEMORY[0x277CBEA60] arrayWithObjects:v148 count:4];
           [v44 activateConstraints:v49];
 
-          v50 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-          v51 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-          [(UIViewController *)self jfxAddChildViewController:v50 containerView:v51];
+          messagesAppsDockViewController3 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+          messagesAppsDockContainerView7 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+          [(UIViewController *)self jfxAddChildViewController:messagesAppsDockViewController3 containerView:messagesAppsDockContainerView7];
 
-          v52 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-          v53 = [v52 view];
+          messagesAppsDockViewController4 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+          view4 = [messagesAppsDockViewController4 view];
 
-          [v53 setTranslatesAutoresizingMaskIntoConstraints:0];
-          v54 = [v53 heightAnchor];
-          v55 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-          [v55 minimizedDockHeight];
-          v56 = [v54 constraintEqualToConstant:?];
+          [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
+          heightAnchor2 = [view4 heightAnchor];
+          messagesAppsDockViewController5 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+          [messagesAppsDockViewController5 minimizedDockHeight];
+          v56 = [heightAnchor2 constraintEqualToConstant:?];
           [(CFXEffectBrowserViewController *)self setMadExpandedAppButtonsHeightConstraint:v56];
 
           v139 = MEMORY[0x277CCAAD0];
-          v143 = [v53 leftAnchor];
-          v144 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-          v142 = [v144 leftAnchor];
-          v141 = [v143 constraintEqualToAnchor:v142];
-          v146 = v53;
+          leftAnchor = [view4 leftAnchor];
+          messagesAppsDockContainerView8 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+          leftAnchor2 = [messagesAppsDockContainerView8 leftAnchor];
+          v141 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
+          v146 = view4;
           v147[0] = v141;
-          v140 = [v53 rightAnchor];
-          v57 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-          v58 = [v57 rightAnchor];
-          v59 = [v140 constraintEqualToAnchor:v58];
+          rightAnchor = [view4 rightAnchor];
+          messagesAppsDockContainerView9 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+          rightAnchor2 = [messagesAppsDockContainerView9 rightAnchor];
+          v59 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
           v147[1] = v59;
-          v60 = [(CFXEffectBrowserViewController *)self madExpandedAppButtonsHeightConstraint];
-          v147[2] = v60;
-          v61 = [v53 centerYAnchor];
-          v62 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-          v63 = [v62 centerYAnchor];
-          v64 = [v61 constraintEqualToAnchor:v63];
+          madExpandedAppButtonsHeightConstraint = [(CFXEffectBrowserViewController *)self madExpandedAppButtonsHeightConstraint];
+          v147[2] = madExpandedAppButtonsHeightConstraint;
+          centerYAnchor = [view4 centerYAnchor];
+          messagesAppsDockContainerView10 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+          centerYAnchor2 = [messagesAppsDockContainerView10 centerYAnchor];
+          v64 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
           v147[3] = v64;
           v65 = [MEMORY[0x277CBEA60] arrayWithObjects:v147 count:4];
           [v139 activateConstraints:v65];
 
-          v66 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-          v67 = [v66 layer];
-          [v67 setCornerRadius:12.0];
+          messagesAppsDockContainerView11 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+          layer = [messagesAppsDockContainerView11 layer];
+          [layer setCornerRadius:12.0];
 
           v68 = MEMORY[0x277D75348];
-          v69 = [MEMORY[0x277CCA8D8] jfxBundle];
-          v70 = [v68 colorNamed:@"appDockBackground" inBundle:v69 compatibleWithTraitCollection:0];
-          v71 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-          [v71 setBackgroundColor:v70];
+          jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+          v70 = [v68 colorNamed:@"appDockBackground" inBundle:jfxBundle compatibleWithTraitCollection:0];
+          messagesAppsDockContainerView12 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+          [messagesAppsDockContainerView12 setBackgroundColor:v70];
 
           return;
         }
 
 LABEL_12:
-        v73 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-        v74 = [v73 widthAnchor];
-        v75 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-        [v75 minimizedDockHeight];
-        v76 = [v74 constraintEqualToConstant:?];
+        messagesAppsDockContainerView13 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+        widthAnchor2 = [messagesAppsDockContainerView13 widthAnchor];
+        messagesAppsDockViewController6 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+        [messagesAppsDockViewController6 minimizedDockHeight];
+        v76 = [widthAnchor2 constraintEqualToConstant:?];
         [(CFXEffectBrowserViewController *)self setMadWidthConstraint:v76];
 
-        v77 = [(CFXEffectBrowserViewController *)self madWidthConstraint];
+        madWidthConstraint3 = [(CFXEffectBrowserViewController *)self madWidthConstraint];
         LODWORD(v78) = 1132068864;
-        [v77 setPriority:v78];
+        [madWidthConstraint3 setPriority:v78];
 
-        v79 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-        v80 = [v79 heightAnchor];
-        v81 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-        [v81 minimizedDockHeight];
-        v82 = [v80 constraintEqualToConstant:?];
+        messagesAppsDockContainerView14 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+        heightAnchor3 = [messagesAppsDockContainerView14 heightAnchor];
+        messagesAppsDockViewController7 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+        [messagesAppsDockViewController7 minimizedDockHeight];
+        v82 = [heightAnchor3 constraintEqualToConstant:?];
         [(CFXEffectBrowserViewController *)self setMadHeightConstraint:v82];
 
-        v83 = [(CFXEffectBrowserViewController *)self madHeightConstraint];
+        madHeightConstraint3 = [(CFXEffectBrowserViewController *)self madHeightConstraint];
         LODWORD(v84) = 1144750080;
-        [v83 setPriority:v84];
+        [madHeightConstraint3 setPriority:v84];
 
-        v85 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-        v86 = [v85 leadingAnchor];
-        v87 = [(CFXEffectBrowserViewController *)self view];
-        v88 = [v87 leadingAnchor];
-        v89 = [v86 constraintEqualToAnchor:v88];
+        messagesAppsDockContainerView15 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+        leadingAnchor3 = [messagesAppsDockContainerView15 leadingAnchor];
+        view5 = [(CFXEffectBrowserViewController *)self view];
+        leadingAnchor4 = [view5 leadingAnchor];
+        v89 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
         [(CFXEffectBrowserViewController *)self setMadLeadingConstraint:v89];
 
-        v90 = [(CFXEffectBrowserViewController *)self madLeadingConstraint];
+        madLeadingConstraint3 = [(CFXEffectBrowserViewController *)self madLeadingConstraint];
         LODWORD(v91) = 1144750080;
-        [v90 setPriority:v91];
+        [madLeadingConstraint3 setPriority:v91];
 
-        v92 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-        v93 = [v92 trailingAnchor];
-        v94 = [(CFXEffectBrowserViewController *)self view];
-        v95 = [v94 trailingAnchor];
-        v96 = [v93 constraintEqualToAnchor:v95];
+        messagesAppsDockContainerView16 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+        trailingAnchor = [messagesAppsDockContainerView16 trailingAnchor];
+        view6 = [(CFXEffectBrowserViewController *)self view];
+        trailingAnchor2 = [view6 trailingAnchor];
+        v96 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         [(CFXEffectBrowserViewController *)self setMadTrailingConstraint:v96];
 
-        v97 = [(CFXEffectBrowserViewController *)self madTrailingConstraint];
+        madTrailingConstraint = [(CFXEffectBrowserViewController *)self madTrailingConstraint];
         LODWORD(v98) = 1144750080;
-        [v97 setPriority:v98];
+        [madTrailingConstraint setPriority:v98];
 
-        v99 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-        v100 = [v99 topAnchor];
-        v101 = [(CFXEffectBrowserViewController *)self view];
-        v102 = [v101 topAnchor];
-        v103 = [v100 constraintEqualToAnchor:v102];
+        messagesAppsDockContainerView17 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+        topAnchor = [messagesAppsDockContainerView17 topAnchor];
+        view7 = [(CFXEffectBrowserViewController *)self view];
+        topAnchor2 = [view7 topAnchor];
+        v103 = [topAnchor constraintEqualToAnchor:topAnchor2];
         [(CFXEffectBrowserViewController *)self setMadTopConstraint:v103];
 
-        v104 = [(CFXEffectBrowserViewController *)self madTopConstraint];
+        madTopConstraint = [(CFXEffectBrowserViewController *)self madTopConstraint];
         LODWORD(v105) = 1144750080;
-        [v104 setPriority:v105];
+        [madTopConstraint setPriority:v105];
 
-        v106 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-        v107 = [v106 bottomAnchor];
-        v108 = [(CFXEffectBrowserViewController *)self view];
-        v109 = [v108 bottomAnchor];
-        v110 = [v107 constraintEqualToAnchor:v109];
+        messagesAppsDockContainerView18 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+        bottomAnchor3 = [messagesAppsDockContainerView18 bottomAnchor];
+        view8 = [(CFXEffectBrowserViewController *)self view];
+        bottomAnchor4 = [view8 bottomAnchor];
+        v110 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
         [(CFXEffectBrowserViewController *)self setMadBottomConstraint:v110];
 
-        v111 = [(CFXEffectBrowserViewController *)self madBottomConstraint];
+        madBottomConstraint3 = [(CFXEffectBrowserViewController *)self madBottomConstraint];
         LODWORD(v112) = 1132068864;
-        [v111 setPriority:v112];
+        [madBottomConstraint3 setPriority:v112];
 
         v113 = MEMORY[0x277CCAAD0];
-        v114 = [(CFXEffectBrowserViewController *)self madWidthConstraint];
-        v149[0] = v114;
-        v115 = [(CFXEffectBrowserViewController *)self madHeightConstraint];
-        v149[1] = v115;
-        v116 = [(CFXEffectBrowserViewController *)self madLeadingConstraint];
-        v149[2] = v116;
-        v117 = [(CFXEffectBrowserViewController *)self madTrailingConstraint];
-        v149[3] = v117;
-        v118 = [(CFXEffectBrowserViewController *)self madTopConstraint];
-        v149[4] = v118;
-        v119 = [(CFXEffectBrowserViewController *)self madBottomConstraint];
-        v149[5] = v119;
+        madWidthConstraint4 = [(CFXEffectBrowserViewController *)self madWidthConstraint];
+        v149[0] = madWidthConstraint4;
+        madHeightConstraint4 = [(CFXEffectBrowserViewController *)self madHeightConstraint];
+        v149[1] = madHeightConstraint4;
+        madLeadingConstraint4 = [(CFXEffectBrowserViewController *)self madLeadingConstraint];
+        v149[2] = madLeadingConstraint4;
+        madTrailingConstraint2 = [(CFXEffectBrowserViewController *)self madTrailingConstraint];
+        v149[3] = madTrailingConstraint2;
+        madTopConstraint2 = [(CFXEffectBrowserViewController *)self madTopConstraint];
+        v149[4] = madTopConstraint2;
+        madBottomConstraint4 = [(CFXEffectBrowserViewController *)self madBottomConstraint];
+        v149[5] = madBottomConstraint4;
         v120 = [MEMORY[0x277CBEA60] arrayWithObjects:v149 count:6];
         [v113 activateConstraints:v120];
 
-        v121 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-        v122 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-        v123 = [(CFXEffectBrowserViewController *)self delegate];
-        -[UIViewController jfxAddChildViewController:containerView:constrainToContainer:relativeToSafeArea:](self, "jfxAddChildViewController:containerView:constrainToContainer:relativeToSafeArea:", v121, v122, [v123 allowLandscapeForEffectBrowserViewController:self] ^ 1, 0);
+        messagesAppsDockViewController8 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+        messagesAppsDockContainerView19 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+        delegate3 = [(CFXEffectBrowserViewController *)self delegate];
+        -[UIViewController jfxAddChildViewController:containerView:constrainToContainer:relativeToSafeArea:](self, "jfxAddChildViewController:containerView:constrainToContainer:relativeToSafeArea:", messagesAppsDockViewController8, messagesAppsDockContainerView19, [delegate3 allowLandscapeForEffectBrowserViewController:self] ^ 1, 0);
 
-        v124 = [(CFXEffectBrowserViewController *)self delegate];
-        LODWORD(v122) = [v124 allowLandscapeForEffectBrowserViewController:self];
+        delegate4 = [(CFXEffectBrowserViewController *)self delegate];
+        LODWORD(messagesAppsDockContainerView19) = [delegate4 allowLandscapeForEffectBrowserViewController:self];
 
-        if (v122)
+        if (messagesAppsDockContainerView19)
         {
-          v125 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-          [v125 frame];
+          messagesAppsDockContainerView20 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+          [messagesAppsDockContainerView20 frame];
           Width = CGRectGetWidth(v151);
-          v127 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
-          [v127 frame];
+          messagesAppsDockContainerView21 = [(CFXEffectBrowserViewController *)self messagesAppsDockContainerView];
+          [messagesAppsDockContainerView21 frame];
           Height = CGRectGetHeight(v152);
-          v129 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-          v130 = [v129 view];
-          [v130 setFrame:{0.0, 0.0, Width, Height}];
+          messagesAppsDockViewController9 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+          view9 = [messagesAppsDockViewController9 view];
+          [view9 setFrame:{0.0, 0.0, Width, Height}];
         }
 
-        v131 = [MEMORY[0x277D75418] currentDevice];
-        if ([v131 userInterfaceIdiom])
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        if ([currentDevice userInterfaceIdiom])
         {
           goto LABEL_15;
         }
 
-        v132 = [MEMORY[0x277D759A0] mainScreen];
-        [v132 bounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen bounds];
         if (v133 == 667)
         {
           v134 = +[JFXOrientationMonitor interfaceOrientation];
@@ -739,8 +739,8 @@ LABEL_12:
 
         else
         {
-          v135 = [MEMORY[0x277D759A0] mainScreen];
-          [v135 bounds];
+          mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen2 bounds];
           if (v136 != 667)
           {
 
@@ -756,8 +756,8 @@ LABEL_15:
           }
         }
 
-        v138 = [(CFXEffectBrowserViewController *)self madTopConstraint];
-        [v138 setConstant:-3.0];
+        madTopConstraint3 = [(CFXEffectBrowserViewController *)self madTopConstraint];
+        [madTopConstraint3 setConstant:-3.0];
 
         return;
       }
@@ -765,8 +765,8 @@ LABEL_15:
       v14 = 0;
     }
 
-    v72 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-    [v72 setAlwaysPresentAppsExpanded:v14];
+    messagesAppsDockViewController10 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+    [messagesAppsDockViewController10 setAlwaysPresentAppsExpanded:v14];
 
     goto LABEL_12;
   }
@@ -774,60 +774,60 @@ LABEL_15:
   v3 = objc_alloc_init(CFXMemojiPickerViewController);
   [(CFXEffectBrowserViewController *)self setMemojiPicker:v3];
 
-  v145 = [(CFXEffectBrowserViewController *)self memojiPicker];
-  [v145 setDelegate:self];
+  memojiPicker = [(CFXEffectBrowserViewController *)self memojiPicker];
+  [memojiPicker setDelegate:self];
 }
 
 - (void)removeEffectPickerViewController
 {
-  v3 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
+  effectPickerViewController = [(CFXEffectBrowserViewController *)self effectPickerViewController];
 
-  if (v3)
+  if (effectPickerViewController)
   {
-    v4 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
-    v9 = [v4 effectType];
+    effectPickerViewController2 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
+    effectType = [effectPickerViewController2 effectType];
 
-    v5 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
-    [v5 jfxRemoveFromParentViewController];
+    effectPickerViewController3 = [(CFXEffectBrowserViewController *)self effectPickerViewController];
+    [effectPickerViewController3 jfxRemoveFromParentViewController];
 
     [(CFXEffectBrowserViewController *)self setEffectPickerViewController:0];
-    v6 = [(CFXEffectBrowserViewController *)self delegate];
+    delegate = [(CFXEffectBrowserViewController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CFXEffectBrowserViewController *)self delegate];
-      [v8 effectBrowserViewController:self didDismissPickerForEffectType:v9];
+      delegate2 = [(CFXEffectBrowserViewController *)self delegate];
+      [delegate2 effectBrowserViewController:self didDismissPickerForEffectType:effectType];
     }
   }
 }
 
-- (void)hideBrowserAnimated:(BOOL)a3 completion:(id)a4
+- (void)hideBrowserAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  messagesAppsDockViewController = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
 
-  if (v7)
+  if (messagesAppsDockViewController)
   {
-    v8 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-    [v8 hideAppViewControllerAnimated:v4 completion:v6];
+    messagesAppsDockViewController2 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+    [messagesAppsDockViewController2 hideAppViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 
   else
   {
-    v9 = [(CFXEffectBrowserViewController *)self memojiPicker];
+    memojiPicker = [(CFXEffectBrowserViewController *)self memojiPicker];
 
-    if (v9)
+    if (memojiPicker)
     {
-      v8 = [(CFXEffectBrowserViewController *)self memojiPicker];
-      [v8 dismissViewControllerAnimated:1 completion:&__block_literal_global_44];
+      messagesAppsDockViewController2 = [(CFXEffectBrowserViewController *)self memojiPicker];
+      [messagesAppsDockViewController2 dismissViewControllerAnimated:1 completion:&__block_literal_global_44];
     }
 
     else
     {
-      v8 = JFXLog_pickerUI();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      messagesAppsDockViewController2 = JFXLog_pickerUI();
+      if (os_log_type_enabled(messagesAppsDockViewController2, OS_LOG_TYPE_ERROR))
       {
         [CFXEffectBrowserViewController hideBrowserAnimated:completion:];
       }
@@ -837,28 +837,28 @@ LABEL_15:
 
 - (void)refreshEffectBrowserForCameraFlip
 {
-  v3 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+  messagesAppsDockViewController = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
 
-  if (v3)
+  if (messagesAppsDockViewController)
   {
-    v4 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-    v9 = [v4 currentAppViewController];
+    messagesAppsDockViewController2 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+    currentAppViewController = [messagesAppsDockViewController2 currentAppViewController];
 
-    v5 = self;
-    v6 = v9;
+    selfCopy2 = self;
+    memojiPicker2 = currentAppViewController;
 LABEL_5:
-    [(CFXEffectBrowserViewController *)v5 CFX_updateAVTAvatarPickerforViewController:v6];
+    [(CFXEffectBrowserViewController *)selfCopy2 CFX_updateAVTAvatarPickerforViewController:memojiPicker2];
 
     return;
   }
 
-  v7 = [(CFXEffectBrowserViewController *)self memojiPicker];
+  memojiPicker = [(CFXEffectBrowserViewController *)self memojiPicker];
 
-  if (v7)
+  if (memojiPicker)
   {
-    v6 = [(CFXEffectBrowserViewController *)self memojiPicker];
-    v9 = v6;
-    v5 = self;
+    memojiPicker2 = [(CFXEffectBrowserViewController *)self memojiPicker];
+    currentAppViewController = memojiPicker2;
+    selfCopy2 = self;
     goto LABEL_5;
   }
 
@@ -872,71 +872,71 @@ LABEL_5:
 - (BOOL)showAppIconBorders
 {
   [(CFXEffectBrowserViewController *)self loadViewIfNeeded];
-  v3 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-  v4 = [v3 showIconBorders];
+  messagesAppsDockViewController = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+  showIconBorders = [messagesAppsDockViewController showIconBorders];
 
-  return v4;
+  return showIconBorders;
 }
 
-- (void)setShowAppIconBorders:(BOOL)a3
+- (void)setShowAppIconBorders:(BOOL)borders
 {
-  v3 = a3;
+  bordersCopy = borders;
   [(CFXEffectBrowserViewController *)self loadViewIfNeeded];
-  v5 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-  [v5 setShowIconBorders:v3];
+  messagesAppsDockViewController = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+  [messagesAppsDockViewController setShowIconBorders:bordersCopy];
 }
 
-- (void)showMemojiPicker:(id)a3
+- (void)showMemojiPicker:(id)picker
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CFXEffectBrowserViewController *)self memojiPicker];
+  pickerCopy = picker;
+  memojiPicker = [(CFXEffectBrowserViewController *)self memojiPicker];
 
-  if (v5)
+  if (memojiPicker)
   {
-    v6 = [(CFXEffectBrowserViewController *)self memojiPicker];
-    [(CFXEffectBrowserViewController *)self CFX_updateAVTAvatarPickerforViewController:v6];
+    memojiPicker2 = [(CFXEffectBrowserViewController *)self memojiPicker];
+    [(CFXEffectBrowserViewController *)self CFX_updateAVTAvatarPickerforViewController:memojiPicker2];
 
-    v7 = [(CFXEffectBrowserViewController *)self memojiPicker];
-    v8 = v7;
-    if (v4)
+    memojiPicker3 = [(CFXEffectBrowserViewController *)self memojiPicker];
+    v8 = memojiPicker3;
+    if (pickerCopy)
     {
-      [v7 setModalPresentationStyle:7];
+      [memojiPicker3 setModalPresentationStyle:7];
 
-      v9 = [(CFXEffectBrowserViewController *)self memojiPicker];
-      v10 = [v9 popoverPresentationController];
+      memojiPicker4 = [(CFXEffectBrowserViewController *)self memojiPicker];
+      popoverPresentationController = [memojiPicker4 popoverPresentationController];
 
-      [v10 setSourceView:v4];
-      [v10 setPermittedArrowDirections:15];
+      [popoverPresentationController setSourceView:pickerCopy];
+      [popoverPresentationController setPermittedArrowDirections:15];
     }
 
     else
     {
-      v12 = [v7 sheetPresentationController];
+      sheetPresentationController = [memojiPicker3 sheetPresentationController];
 
       v13 = [MEMORY[0x277D75A28] customDetentWithIdentifier:0 resolver:&__block_literal_global_50];
       v20[0] = v13;
-      v14 = [MEMORY[0x277D75A28] largeDetent];
-      v20[1] = v14;
+      largeDetent = [MEMORY[0x277D75A28] largeDetent];
+      v20[1] = largeDetent;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
-      [v12 setDetents:v15];
+      [sheetPresentationController setDetents:v15];
 
-      v16 = [v13 identifier];
-      [(CFXEffectBrowserViewController *)self setCompactDetentIdentifier:v16];
+      identifier = [v13 identifier];
+      [(CFXEffectBrowserViewController *)self setCompactDetentIdentifier:identifier];
 
-      [v12 setPrefersScrollingExpandsWhenScrolledToEdge:0];
-      [v12 setPrefersGrabberVisible:1];
-      v17 = [(CFXEffectBrowserViewController *)self compactDetentIdentifier];
-      [v12 setLargestUndimmedDetentIdentifier:v17];
+      [sheetPresentationController setPrefersScrollingExpandsWhenScrolledToEdge:0];
+      [sheetPresentationController setPrefersGrabberVisible:1];
+      compactDetentIdentifier = [(CFXEffectBrowserViewController *)self compactDetentIdentifier];
+      [sheetPresentationController setLargestUndimmedDetentIdentifier:compactDetentIdentifier];
     }
 
-    v18 = [(CFXEffectBrowserViewController *)self memojiPicker];
+    memojiPicker5 = [(CFXEffectBrowserViewController *)self memojiPicker];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __51__CFXEffectBrowserViewController_showMemojiPicker___block_invoke_2;
     v19[3] = &unk_278D79D20;
     v19[4] = self;
-    [(CFXEffectBrowserViewController *)self presentViewController:v18 animated:1 completion:v19];
+    [(CFXEffectBrowserViewController *)self presentViewController:memojiPicker5 animated:1 completion:v19];
   }
 
   else
@@ -961,29 +961,29 @@ void __51__CFXEffectBrowserViewController_showMemojiPicker___block_invoke_2(uint
   }
 }
 
-- (void)avatarPicker:(id)a3 didSelectAvatarRecord:(id)a4
+- (void)avatarPicker:(id)picker didSelectAvatarRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
+  pickerCopy = picker;
+  recordCopy = record;
   v8 = JFXLog_pickerUI();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
-  if (v7)
+  if (recordCopy)
   {
     if (v9)
     {
-      [CFXEffectBrowserViewController avatarPicker:v7 didSelectAvatarRecord:v8];
+      [CFXEffectBrowserViewController avatarPicker:recordCopy didSelectAvatarRecord:v8];
     }
 
-    v10 = [(CFXEffectBrowserViewController *)self animojiLoadingQueue];
+    animojiLoadingQueue = [(CFXEffectBrowserViewController *)self animojiLoadingQueue];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __69__CFXEffectBrowserViewController_avatarPicker_didSelectAvatarRecord___block_invoke;
     v20 = &unk_278D79C88;
-    v21 = v7;
-    v22 = self;
-    dispatch_async(v10, &v17);
+    v21 = recordCopy;
+    selfCopy = self;
+    dispatch_async(animojiLoadingQueue, &v17);
 
-    v11 = v21;
+    delegate2 = v21;
     goto LABEL_9;
   }
 
@@ -992,22 +992,22 @@ void __51__CFXEffectBrowserViewController_showMemojiPicker___block_invoke_2(uint
     [CFXEffectBrowserViewController avatarPicker:didSelectAvatarRecord:];
   }
 
-  v12 = [(CFXEffectBrowserViewController *)self delegate];
+  delegate = [(CFXEffectBrowserViewController *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v11 = [(CFXEffectBrowserViewController *)self delegate];
+    delegate2 = [(CFXEffectBrowserViewController *)self delegate];
     v14 = [CFXEffectType effectTypeWithIdentifier:@"Animoji"];
-    [v11 effectBrowserViewController:self didRemoveAllEffectsOfType:v14];
+    [delegate2 effectBrowserViewController:self didRemoveAllEffectsOfType:v14];
 
 LABEL_9:
   }
 
-  v15 = [MEMORY[0x277D75418] currentDevice];
-  v16 = [v15 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v16)
+  if (!userInterfaceIdiom)
   {
     [(CFXEffectBrowserViewController *)self compactCurrentMessagesApp];
   }
@@ -1061,7 +1061,7 @@ void __69__CFXEffectBrowserViewController_avatarPicker_didSelectAvatarRecord___b
   [v2 effectBrowserViewController:*(a1 + 32) didSelectEffect:*(a1 + 40)];
 }
 
-- (void)avatarPickerDidEndCameraSession:(id)a3
+- (void)avatarPickerDidEndCameraSession:(id)session
 {
   v4 = JFXLog_pickerUI();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -1069,17 +1069,17 @@ void __69__CFXEffectBrowserViewController_avatarPicker_didSelectAvatarRecord___b
     [CFXEffectBrowserViewController avatarPickerDidEndCameraSession:];
   }
 
-  v5 = [(CFXEffectBrowserViewController *)self delegate];
+  delegate = [(CFXEffectBrowserViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CFXEffectBrowserViewController *)self delegate];
-    [v7 effectBrowserViewControllerDidStartCaptureSession:self];
+    delegate2 = [(CFXEffectBrowserViewController *)self delegate];
+    [delegate2 effectBrowserViewControllerDidStartCaptureSession:self];
   }
 }
 
-- (void)avatarPickerWillStartCameraSession:(id)a3
+- (void)avatarPickerWillStartCameraSession:(id)session
 {
   v4 = JFXLog_pickerUI();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -1087,46 +1087,46 @@ void __69__CFXEffectBrowserViewController_avatarPicker_didSelectAvatarRecord___b
     [CFXEffectBrowserViewController avatarPickerWillStartCameraSession:];
   }
 
-  v5 = [(CFXEffectBrowserViewController *)self delegate];
+  delegate = [(CFXEffectBrowserViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CFXEffectBrowserViewController *)self delegate];
-    [v7 effectBrowserViewControllerDidStopCaptureSession:self];
+    delegate2 = [(CFXEffectBrowserViewController *)self delegate];
+    [delegate2 effectBrowserViewControllerDidStopCaptureSession:self];
   }
 }
 
-- (void)effectPickerViewController:(id)a3 didPickEffect:(id)a4
+- (void)effectPickerViewController:(id)controller didPickEffect:(id)effect
 {
-  v10 = a4;
-  v5 = [(CFXEffectBrowserViewController *)self delegate];
+  effectCopy = effect;
+  delegate = [(CFXEffectBrowserViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CFXEffectBrowserViewController *)self delegate];
-    [v7 effectBrowserViewController:self didSelectEffect:v10];
+    delegate2 = [(CFXEffectBrowserViewController *)self delegate];
+    [delegate2 effectBrowserViewController:self didSelectEffect:effectCopy];
   }
 
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v9)
+  if (!userInterfaceIdiom)
   {
     [(CFXEffectBrowserViewController *)self compactCurrentMessagesApp];
   }
 }
 
-- (id)selectedFilterIdentifierForEffectPickerViewController:(id)a3
+- (id)selectedFilterIdentifierForEffectPickerViewController:(id)controller
 {
-  v4 = [(CFXEffectBrowserViewController *)self delegate];
+  delegate = [(CFXEffectBrowserViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CFXEffectBrowserViewController *)self delegate];
-    v7 = [v6 selectedFilterIdentifierForEffectBrowserViewController:self];
+    delegate2 = [(CFXEffectBrowserViewController *)self delegate];
+    v7 = [delegate2 selectedFilterIdentifierForEffectBrowserViewController:self];
   }
 
   else
@@ -1139,7 +1139,7 @@ void __69__CFXEffectBrowserViewController_avatarPicker_didSelectAvatarRecord___b
 
 - (BOOL)shouldRotateCellsForDeviceOrientation
 {
-  v3 = [(CFXEffectBrowserViewController *)self delegate];
+  delegate = [(CFXEffectBrowserViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -1147,21 +1147,21 @@ void __69__CFXEffectBrowserViewController_avatarPicker_didSelectAvatarRecord___b
     return 0;
   }
 
-  v5 = [(CFXEffectBrowserViewController *)self delegate];
-  v6 = [v5 shouldRotateCellsForDeviceOrientation];
+  delegate2 = [(CFXEffectBrowserViewController *)self delegate];
+  shouldRotateCellsForDeviceOrientation = [delegate2 shouldRotateCellsForDeviceOrientation];
 
-  return v6;
+  return shouldRotateCellsForDeviceOrientation;
 }
 
-- (id)selectedAnimojiIdentifierForEffectBrowserViewController:(id)a3
+- (id)selectedAnimojiIdentifierForEffectBrowserViewController:(id)controller
 {
-  v4 = [(CFXEffectBrowserViewController *)self delegate];
+  delegate = [(CFXEffectBrowserViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CFXEffectBrowserViewController *)self delegate];
-    v7 = [v6 selectedAnimojiIdentifierForEffectBrowserViewController:self];
+    delegate2 = [(CFXEffectBrowserViewController *)self delegate];
+    v7 = [delegate2 selectedAnimojiIdentifierForEffectBrowserViewController:self];
   }
 
   else
@@ -1172,15 +1172,15 @@ void __69__CFXEffectBrowserViewController_avatarPicker_didSelectAvatarRecord___b
   return v7;
 }
 
-- (id)localizedPromptForHidingAnimojiForEffectBrowserViewController:(id)a3
+- (id)localizedPromptForHidingAnimojiForEffectBrowserViewController:(id)controller
 {
-  v4 = [(CFXEffectBrowserViewController *)self delegate];
+  delegate = [(CFXEffectBrowserViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CFXEffectBrowserViewController *)self delegate];
-    v7 = [v6 localizedPromptForHidingAnimojiForEffectBrowserViewController:self];
+    delegate2 = [(CFXEffectBrowserViewController *)self delegate];
+    v7 = [delegate2 localizedPromptForHidingAnimojiForEffectBrowserViewController:self];
   }
 
   else
@@ -1191,12 +1191,12 @@ void __69__CFXEffectBrowserViewController_avatarPicker_didSelectAvatarRecord___b
   return v7;
 }
 
-+ (CGSize)CFX_sizeOfImageAtURL:(id)a3
++ (CGSize)CFX_sizeOfImageAtURL:(id)l
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
-  v5 = CGImageSourceCreateWithURL(a3, 0);
+  v5 = CGImageSourceCreateWithURL(l, 0);
   if (v5)
   {
     v6 = v5;
@@ -1226,11 +1226,11 @@ void __69__CFXEffectBrowserViewController_avatarPicker_didSelectAvatarRecord___b
   return result;
 }
 
-+ (CGSize)CFX_droppedSizeForSticker:(id)a3 dropTarget:(id)a4
++ (CGSize)CFX_droppedSizeForSticker:(id)sticker dropTarget:(id)target
 {
-  v6 = a4;
-  v7 = [a3 fileURL];
-  [a1 CFX_sizeOfImageAtURL:v7];
+  targetCopy = target;
+  fileURL = [sticker fileURL];
+  [self CFX_sizeOfImageAtURL:fileURL];
   v9 = v8;
   v11 = v10;
 
@@ -1238,7 +1238,7 @@ void __69__CFXEffectBrowserViewController_avatarPicker_didSelectAvatarRecord___b
   v13 = *(MEMORY[0x277CBF3A8] + 8);
   if (v9 != *MEMORY[0x277CBF3A8] || v11 != v13)
   {
-    [v6 scale];
+    [targetCopy scale];
     v16 = v15;
     [MEMORY[0x277D7F8C0] screenScale];
     v18 = 1.0 / v17;
@@ -1254,13 +1254,13 @@ void __69__CFXEffectBrowserViewController_avatarPicker_didSelectAvatarRecord___b
   return result;
 }
 
-- (void)CFX_addSticker:(id)a3 atDropTarget:(id)a4
+- (void)CFX_addSticker:(id)sticker atDropTarget:(id)target
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 stickerName];
-  v9 = [CFXEffectMessagesStickerUtilities overlayIDFromAnimatedPreviewFileName:v8];
+  stickerCopy = sticker;
+  targetCopy = target;
+  stickerName = [stickerCopy stickerName];
+  v9 = [CFXEffectMessagesStickerUtilities overlayIDFromAnimatedPreviewFileName:stickerName];
 
   if (v9)
   {
@@ -1268,19 +1268,19 @@ void __69__CFXEffectBrowserViewController_avatarPicker_didSelectAvatarRecord___b
     goto LABEL_8;
   }
 
-  v11 = [v6 fileURL];
+  fileURL = [stickerCopy fileURL];
 
-  if (v11)
+  if (fileURL)
   {
-    v12 = [v6 fileURL];
-    v13 = [v12 lastPathComponent];
-    v10 = [@"CFX" stringByAppendingString:v13];
+    fileURL2 = [stickerCopy fileURL];
+    lastPathComponent = [fileURL2 lastPathComponent];
+    v10 = [@"CFX" stringByAppendingString:lastPathComponent];
 
     v14 = NSTemporaryDirectory();
     v15 = [v14 stringByAppendingPathComponent:v10];
 
-    v16 = [MEMORY[0x277CCAA00] defaultManager];
-    v17 = [v16 fileExistsAtPath:v15];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v17 = [defaultManager fileExistsAtPath:v15];
 
     if (v17)
     {
@@ -1301,19 +1301,19 @@ LABEL_8:
       v25 = +[JFXEffectFactory sharedInstance];
       v26 = [v25 createEffectForType:2 fromID:v9 withProperties:v10];
 
-      v27 = [v6 accessibilityLabel];
-      [v26 setAccessibilityOverlayEffectLabel:v27];
+      accessibilityLabel = [stickerCopy accessibilityLabel];
+      [v26 setAccessibilityOverlayEffectLabel:accessibilityLabel];
 
       v28 = [CFXEffect effectWithJTEffect:v26];
-      if (v7)
+      if (targetCopy)
       {
-        [objc_opt_class() CFX_droppedSizeForSticker:v6 dropTarget:v7];
+        [objc_opt_class() CFX_droppedSizeForSticker:stickerCopy dropTarget:targetCopy];
         v31 = v30;
         v32 = v29;
         if (v30 == *MEMORY[0x277CBF3A8] && v29 == *(MEMORY[0x277CBF3A8] + 8))
         {
-          v33 = JFXLog_pickerUI();
-          if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+          delegate = JFXLog_pickerUI();
+          if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
           {
             [CFXEffectBrowserViewController CFX_addSticker:atDropTarget:];
           }
@@ -1328,28 +1328,28 @@ LABEL_8:
             v32 = v37;
           }
 
-          [v7 screenCoordinate];
+          [targetCopy screenCoordinate];
           v39 = v38;
           v41 = v40;
-          [v7 rotation];
+          [targetCopy rotation];
           v43 = v42;
-          v33 = [(CFXEffectBrowserViewController *)self delegate];
-          [v33 effectBrowserViewController:self didDropOverlayEffect:v28 atScreenLocation:v39 atScreenSize:v41 rotationAngle:v31, v32, v43];
+          delegate = [(CFXEffectBrowserViewController *)self delegate];
+          [delegate effectBrowserViewController:self didDropOverlayEffect:v28 atScreenLocation:v39 atScreenSize:v41 rotationAngle:v31, v32, v43];
         }
       }
 
       else
       {
-        v34 = [(CFXEffectBrowserViewController *)self delegate];
+        delegate2 = [(CFXEffectBrowserViewController *)self delegate];
         v35 = objc_opt_respondsToSelector();
 
         if ((v35 & 1) == 0)
         {
 LABEL_21:
-          v44 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-          v45 = [v44 alwaysPresentAppsExpanded];
+          messagesAppsDockViewController = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+          alwaysPresentAppsExpanded = [messagesAppsDockViewController alwaysPresentAppsExpanded];
 
-          if (v45)
+          if (alwaysPresentAppsExpanded)
           {
             [(CFXEffectBrowserViewController *)self hideBrowserAnimated:1 completion:0];
           }
@@ -1357,18 +1357,18 @@ LABEL_21:
           goto LABEL_24;
         }
 
-        v33 = [(CFXEffectBrowserViewController *)self delegate];
-        [v33 effectBrowserViewController:self didSelectEffect:v28];
+        delegate = [(CFXEffectBrowserViewController *)self delegate];
+        [delegate effectBrowserViewController:self didSelectEffect:v28];
       }
 
       goto LABEL_21;
     }
 
-    v18 = [MEMORY[0x277CCAA00] defaultManager];
-    v19 = [v6 fileURL];
-    v20 = [v19 path];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    fileURL3 = [stickerCopy fileURL];
+    path = [fileURL3 path];
     v47 = 0;
-    v21 = [v18 copyItemAtPath:v20 toPath:v15 error:&v47];
+    v21 = [defaultManager2 copyItemAtPath:path toPath:v15 error:&v47];
     v22 = v47;
 
     if (v21)
@@ -1380,7 +1380,7 @@ LABEL_21:
     v46 = JFXLog_pickerUI();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
-      [(CFXEffectBrowserViewController *)v6 CFX_addSticker:v22 atDropTarget:v46];
+      [(CFXEffectBrowserViewController *)stickerCopy CFX_addSticker:v22 atDropTarget:v46];
     }
   }
 
@@ -1396,59 +1396,59 @@ LABEL_21:
 LABEL_24:
 }
 
-- (void)didSelectAppWithBundleIdentifier:(id)a3
+- (void)didSelectAppWithBundleIdentifier:(id)identifier
 {
-  v11 = a3;
+  identifierCopy = identifier;
   [(CFXEffectBrowserViewController *)self setSelectedAppIdentifier:?];
-  v4 = [(CFXEffectBrowserViewController *)self delegate];
+  delegate = [(CFXEffectBrowserViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CFXEffectBrowserViewController *)self delegate];
-    [v6 effectBrowserViewController:self didSelectAppWithIdentifier:v11];
+    delegate2 = [(CFXEffectBrowserViewController *)self delegate];
+    [delegate2 effectBrowserViewController:self didSelectAppWithIdentifier:identifierCopy];
   }
 
-  if (v11)
+  if (identifierCopy)
   {
-    v7 = [v11 isEqualToString:@"com.apple.FunCamera.Filters"];
+    v7 = [identifierCopy isEqualToString:@"com.apple.FunCamera.Filters"];
     if (v7)
     {
-      v8 = @"Filter";
+      messagesAppsDockViewController2 = @"Filter";
     }
 
     else
     {
-      v8 = 0;
+      messagesAppsDockViewController2 = 0;
     }
 
-    v9 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-    v10 = [v9 currentAppViewController];
+    messagesAppsDockViewController = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+    currentAppViewController = [messagesAppsDockViewController currentAppViewController];
 
-    if (v8)
+    if (messagesAppsDockViewController2)
     {
-      [(CFXEffectBrowserViewController *)self displayPickerForEffectTypeIdentifier:v8 messagesAppViewController:v10 embedInMessageAppViewController:v7];
+      [(CFXEffectBrowserViewController *)self displayPickerForEffectTypeIdentifier:messagesAppsDockViewController2 messagesAppViewController:currentAppViewController embedInMessageAppViewController:v7];
     }
 
     else
     {
       [(CFXEffectBrowserViewController *)self removeEffectPickerViewController];
-      [(CFXEffectBrowserViewController *)self CFX_updateAVTAvatarPickerforViewController:v10];
+      [(CFXEffectBrowserViewController *)self CFX_updateAVTAvatarPickerforViewController:currentAppViewController];
     }
   }
 
   else
   {
     [(CFXEffectBrowserViewController *)self removeEffectPickerViewController];
-    v8 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
-    [(__CFString *)v8 cleanupRunningApps];
+    messagesAppsDockViewController2 = [(CFXEffectBrowserViewController *)self messagesAppsDockViewController];
+    [(__CFString *)messagesAppsDockViewController2 cleanupRunningApps];
   }
 }
 
-- (void)dockDidMagnify:(BOOL)a3
+- (void)dockDidMagnify:(BOOL)magnify
 {
-  v4 = a3;
-  if (a3)
+  magnifyCopy = magnify;
+  if (magnify)
   {
     v6 = 75.0;
   }
@@ -1458,104 +1458,104 @@ LABEL_24:
     v6 = 44.0;
   }
 
-  v7 = [(CFXEffectBrowserViewController *)self madExpandedAppButtonsHeightConstraint];
+  madExpandedAppButtonsHeightConstraint = [(CFXEffectBrowserViewController *)self madExpandedAppButtonsHeightConstraint];
 
-  if (v7)
+  if (madExpandedAppButtonsHeightConstraint)
   {
-    v8 = [(CFXEffectBrowserViewController *)self madExpandedAppButtonsHeightConstraint];
+    madExpandedAppButtonsHeightConstraint2 = [(CFXEffectBrowserViewController *)self madExpandedAppButtonsHeightConstraint];
 LABEL_8:
-    v11 = v8;
+    v11 = madExpandedAppButtonsHeightConstraint2;
     v12 = v6;
     goto LABEL_9;
   }
 
-  v9 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
+  contentPresenterDelegate = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v8 = [(CFXEffectBrowserViewController *)self madHeightConstraint];
+    madExpandedAppButtonsHeightConstraint2 = [(CFXEffectBrowserViewController *)self madHeightConstraint];
     goto LABEL_8;
   }
 
-  v18 = [MEMORY[0x277D75418] currentDevice];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
   v19 = 0.0;
-  if (![v18 userInterfaceIdiom])
+  if (![currentDevice userInterfaceIdiom])
   {
-    v20 = [MEMORY[0x277D759A0] mainScreen];
-    [v20 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v22 = v21;
     if (v21 != 667 && ([MEMORY[0x277D759A0] mainScreen], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "bounds"), v23 != 667) || (+[JFXOrientationMonitor interfaceOrientation](JFXOrientationMonitor, "interfaceOrientation") != 1 ? (v19 = 0.0) : (v19 = -3.0), v22 != 667))
     {
     }
   }
 
-  if (v4)
+  if (magnifyCopy)
   {
     v19 = 31.0;
   }
 
-  v8 = [(CFXEffectBrowserViewController *)self madTopConstraint];
-  v11 = v8;
+  madExpandedAppButtonsHeightConstraint2 = [(CFXEffectBrowserViewController *)self madTopConstraint];
+  v11 = madExpandedAppButtonsHeightConstraint2;
   v12 = v19;
 LABEL_9:
-  [v8 setConstant:v12];
+  [madExpandedAppButtonsHeightConstraint2 setConstant:v12];
 
-  v13 = [(CFXEffectBrowserViewController *)self delegate];
+  delegate = [(CFXEffectBrowserViewController *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(CFXEffectBrowserViewController *)self delegate];
-    [v15 effectBrowserViewController:self willChangeDockHeight:v6];
+    delegate2 = [(CFXEffectBrowserViewController *)self delegate];
+    [delegate2 effectBrowserViewController:self willChangeDockHeight:v6];
   }
 
-  v16 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
+  contentPresenterDelegate2 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v24 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
-    [v24 effectBrowserViewController:self willChangeDockHeight:v6];
+    contentPresenterDelegate3 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
+    [contentPresenterDelegate3 effectBrowserViewController:self willChangeDockHeight:v6];
   }
 }
 
 - (UIViewController)dockPresentationViewController
 {
-  v3 = [(CFXEffectBrowserViewController *)self contentPresenter];
-  if (v3)
+  contentPresenter = [(CFXEffectBrowserViewController *)self contentPresenter];
+  if (contentPresenter)
   {
-    v4 = [(CFXEffectBrowserViewController *)self contentPresenter];
+    selfCopy = [(CFXEffectBrowserViewController *)self contentPresenter];
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  v5 = v4;
+  v5 = selfCopy;
 
   return v5;
 }
 
 - (BOOL)expandedAppShouldDismissOnDragSuccess
 {
-  v2 = [(CFXEffectBrowserViewController *)self selectedAppIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.FunCamera.TextPicker.MessagesExtension"];
+  selectedAppIdentifier = [(CFXEffectBrowserViewController *)self selectedAppIdentifier];
+  v3 = [selectedAppIdentifier isEqualToString:@"com.apple.FunCamera.TextPicker.MessagesExtension"];
 
   return v3;
 }
 
-- (void)CFX_updateAVTAvatarPickerforViewController:(id)a3
+- (void)CFX_updateAVTAvatarPickerforViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(CFXEffectBrowserViewController *)self localizedPromptForHidingAnimojiForEffectBrowserViewController:self];
-  if (![v4 conformsToProtocol:&unk_285582A18])
+  if (![controllerCopy conformsToProtocol:&unk_285582A18])
   {
     goto LABEL_10;
   }
 
-  v6 = v4;
+  v6 = controllerCopy;
   [v6 setAvatarPickerDelegate:self];
   if (!v5)
   {
@@ -1565,7 +1565,7 @@ LABEL_9:
     v16[2] = __77__CFXEffectBrowserViewController_CFX_updateAVTAvatarPickerforViewController___block_invoke;
     v16[3] = &unk_278D7A600;
     v17 = v6;
-    v18 = self;
+    selfCopy = self;
     v19 = v17;
     dispatch_after(v10, MEMORY[0x277D85CD0], v16);
 
@@ -1609,17 +1609,17 @@ void __77__CFXEffectBrowserViewController_CFX_updateAVTAvatarPickerforViewContro
 
 - (CGSize)expandedAppViewControllerSize
 {
-  v3 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
+  contentPresenterDelegate = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
+    contentPresenterDelegate2 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
   }
 
   else
   {
-    v6 = [(CFXEffectBrowserViewController *)self delegate];
+    delegate = [(CFXEffectBrowserViewController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if ((v7 & 1) == 0)
@@ -1629,11 +1629,11 @@ void __77__CFXEffectBrowserViewController_CFX_updateAVTAvatarPickerforViewContro
       goto LABEL_7;
     }
 
-    v5 = [(CFXEffectBrowserViewController *)self delegate];
+    contentPresenterDelegate2 = [(CFXEffectBrowserViewController *)self delegate];
   }
 
-  v8 = v5;
-  [v5 expandedAppViewControllerSizeForEffectBrowserViewController:self];
+  v8 = contentPresenterDelegate2;
+  [contentPresenterDelegate2 expandedAppViewControllerSizeForEffectBrowserViewController:self];
   v10 = v9;
   v12 = v11;
 
@@ -1645,22 +1645,22 @@ LABEL_7:
   return result;
 }
 
-- (void)presentExpandedAppViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentExpandedAppViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v15 = a3;
-  v8 = a5;
-  v9 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  contentPresenterDelegate = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
+    contentPresenterDelegate2 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
   }
 
   else
   {
-    v12 = [(CFXEffectBrowserViewController *)self delegate];
+    delegate = [(CFXEffectBrowserViewController *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if ((v13 & 1) == 0)
@@ -1668,31 +1668,31 @@ LABEL_7:
       goto LABEL_6;
     }
 
-    v11 = [(CFXEffectBrowserViewController *)self delegate];
+    contentPresenterDelegate2 = [(CFXEffectBrowserViewController *)self delegate];
   }
 
-  v14 = v11;
-  [v11 effectBrowserViewController:self presentExpandedAppViewController:v15 animated:v6 completion:v8];
+  v14 = contentPresenterDelegate2;
+  [contentPresenterDelegate2 effectBrowserViewController:self presentExpandedAppViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 
 LABEL_6:
 }
 
-- (void)dismissExpandedAppViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissExpandedAppViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v15 = a3;
-  v8 = a5;
-  v9 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  contentPresenterDelegate = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
+    contentPresenterDelegate2 = [(CFXEffectBrowserViewController *)self contentPresenterDelegate];
   }
 
   else
   {
-    v12 = [(CFXEffectBrowserViewController *)self delegate];
+    delegate = [(CFXEffectBrowserViewController *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if ((v13 & 1) == 0)
@@ -1700,11 +1700,11 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v11 = [(CFXEffectBrowserViewController *)self delegate];
+    contentPresenterDelegate2 = [(CFXEffectBrowserViewController *)self delegate];
   }
 
-  v14 = v11;
-  [v11 effectBrowserViewController:self dismissExpandedAppViewController:v15 animated:v6 completion:v8];
+  v14 = contentPresenterDelegate2;
+  [contentPresenterDelegate2 effectBrowserViewController:self dismissExpandedAppViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 
 LABEL_6:
 }
@@ -1727,19 +1727,19 @@ void __61__CFXEffectBrowserViewController_commitAnimatedLayoutChanges__block_inv
 
 - (void)didDismissMemojiPicker
 {
-  v3 = [(CFXEffectBrowserViewController *)self memojiPicker];
+  memojiPicker = [(CFXEffectBrowserViewController *)self memojiPicker];
 
-  if (v3)
+  if (memojiPicker)
   {
     [(CFXEffectBrowserViewController *)self didSelectAppWithBundleIdentifier:0];
-    v4 = [(CFXEffectBrowserViewController *)self delegate];
+    delegate = [(CFXEffectBrowserViewController *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v8 = [(CFXEffectBrowserViewController *)self delegate];
+      delegate2 = [(CFXEffectBrowserViewController *)self delegate];
       v6 = [CFXEffectType effectTypeWithIdentifier:@"Animoji"];
-      [v8 effectBrowserViewController:self didDismissPickerForEffectType:v6];
+      [delegate2 effectBrowserViewController:self didDismissPickerForEffectType:v6];
     }
   }
 

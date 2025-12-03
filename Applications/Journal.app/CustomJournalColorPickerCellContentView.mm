@@ -1,5 +1,5 @@
 @interface CustomJournalColorPickerCellContentView
-- (_TtC7Journal39CustomJournalColorPickerCellContentView)initWithFrame:(CGRect)a3;
+- (_TtC7Journal39CustomJournalColorPickerCellContentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004F9BBC();
 }
 
-- (_TtC7Journal39CustomJournalColorPickerCellContentView)initWithFrame:(CGRect)a3
+- (_TtC7Journal39CustomJournalColorPickerCellContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

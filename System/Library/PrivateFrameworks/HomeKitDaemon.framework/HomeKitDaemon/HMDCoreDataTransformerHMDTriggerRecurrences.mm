@@ -1,18 +1,18 @@
 @interface HMDCoreDataTransformerHMDTriggerRecurrences
 + (id)allowedTopLevelClasses;
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation HMDCoreDataTransformerHMDTriggerRecurrences
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy)
   {
-    v6 = v4;
+    v6 = valueCopy;
     objc_opt_class();
     v7 = objc_opt_isKindOfClass() & 1;
     if (v7)
@@ -55,10 +55,10 @@
   return v11;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
-  if (v4)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -69,7 +69,7 @@
 
     v10.receiver = self;
     v10.super_class = HMDCoreDataTransformerHMDTriggerRecurrences;
-    v5 = [(HMDSecureUnarchiveFromDataTransformer *)&v10 transformedValue:v4];
+    v5 = [(HMDSecureUnarchiveFromDataTransformer *)&v10 transformedValue:valueCopy];
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:HMDaysOfTheWeekFromDateComponents()];
   }
 

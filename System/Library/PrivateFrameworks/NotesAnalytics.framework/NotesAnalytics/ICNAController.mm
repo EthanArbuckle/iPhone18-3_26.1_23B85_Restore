@@ -12,18 +12,18 @@
 + (id)osBundleVersion;
 + (id)privateUserID;
 + (id)sharedController;
-+ (int64_t)accountTypeEnumForHTMLAccount:(id)a3;
-+ (int64_t)accountTypeEnumForModernAccount:(id)a3;
++ (int64_t)accountTypeEnumForHTMLAccount:(id)account;
++ (int64_t)accountTypeEnumForModernAccount:(id)account;
 + (unint64_t)startMonth;
 + (unint64_t)startYear;
 - (BOOL)killEndSessionBackgroundTaskIfNecessary;
-- (BOOL)killEndSessionBackgroundTaskIfNecessaryForWindowScene:(id)a3;
+- (BOOL)killEndSessionBackgroundTaskIfNecessaryForWindowScene:(id)scene;
 - (ICNAController)init;
 - (ICNAControllerAppDelegate)appDelegate;
 - (ICNADebugEventProcessor)debugProcessor;
 - (NSString)name;
 - (NSURL)url;
-- (id)aaTrackerForWindowSceneIdentifier:(id)a3;
+- (id)aaTrackerForWindowSceneIdentifier:(id)identifier;
 - (id)accountTypeSummary;
 - (id)appData;
 - (id)cellularRadioAccessTechnology;
@@ -31,52 +31,52 @@
 - (id)debugData;
 - (id)deviceData;
 - (id)referralData;
-- (id)sessionManagerForWindowSceneIdentifier:(id)a3 shouldCreate:(BOOL)a4;
-- (id)sessionTrackerForWindowSceneIdentifier:(id)a3;
+- (id)sessionManagerForWindowSceneIdentifier:(id)identifier shouldCreate:(BOOL)create;
+- (id)sessionTrackerForWindowSceneIdentifier:(id)identifier;
 - (id)userData;
 - (int64_t)appSessionState;
 - (int64_t)globalSessionState;
-- (void)_immediatelySubmitEventOfType:(Class)a3 pushThenPopDataObjects:(id)a4 subTracker:(id)a5;
-- (void)_immediatelySubmitEventOfType:(Class)a3 subTracker:(id)a4;
-- (void)addReferralDataWithReferringInboundURL:(id)a3 referringApplication:(id)a4;
+- (void)_immediatelySubmitEventOfType:(Class)type pushThenPopDataObjects:(id)objects subTracker:(id)tracker;
+- (void)_immediatelySubmitEventOfType:(Class)type subTracker:(id)tracker;
+- (void)addReferralDataWithReferringInboundURL:(id)l referringApplication:(id)application;
 - (void)addSnapshotReferralDataToSessionLevel;
 - (void)appSessionDidTerminate;
-- (void)clearSessionForWindowSceneIdentifier:(id)a3;
+- (void)clearSessionForWindowSceneIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)endSessionSynchronously:(BOOL)a3 forSessionType:(int64_t)a4 endReason:(int64_t)a5;
-- (void)endWindowSceneSessionSynchronously:(BOOL)a3 forSessionType:(int64_t)a4 endReason:(int64_t)a5 windowScene:(id)a6;
-- (void)enterGroupWithSubtracker:(id)a3;
-- (void)flushWithCompletionHandler:(id)a3;
+- (void)endSessionSynchronously:(BOOL)synchronously forSessionType:(int64_t)type endReason:(int64_t)reason;
+- (void)endWindowSceneSessionSynchronously:(BOOL)synchronously forSessionType:(int64_t)type endReason:(int64_t)reason windowScene:(id)scene;
+- (void)enterGroupWithSubtracker:(id)subtracker;
+- (void)flushWithCompletionHandler:(id)handler;
 - (void)generatePrivateSessionIDIfNecessary;
-- (void)leaveGroupWithSubtracker:(id)a3 completionHandler:(id)a4;
-- (void)newAATrackerWithName:(id)a3 parentAATracker:(id)a4 completionBlock:(id)a5;
-- (void)newAATrackerWithName:(id)a3 parentTracker:(id)a4 completionBlock:(id)a5;
-- (void)performOnInstrumentationQueueWaitUntilDone:(BOOL)a3 block:(id)a4;
-- (void)popDataObjectWithType:(Class)a3 subTracker:(id)a4;
-- (void)popDataObjectsWithTypes:(id)a3 subTracker:(id)a4;
-- (void)pushDataObject:(id)a3 unique:(BOOL)a4 onlyOnce:(BOOL)a5 subTracker:(id)a6;
-- (void)pushDataObjects:(id)a3 unique:(BOOL)a4 onlyOnce:(BOOL)a5 subTracker:(id)a6;
-- (void)pushLongLivedDataObjects:(id)a3 privateSessionIdentifier:(id)a4;
-- (void)pushLongLivedOrientationData:(id)a3;
-- (void)pushLongLivedPrivateDeviceData:(id)a3;
-- (void)pushLongLivedPrivateEventData:(id)a3 privateSessionIdentifier:(id)a4;
-- (void)pushLongLivedPrivateUserData:(id)a3;
-- (void)pushLongLivedSessionSummaryData:(id)a3;
-- (void)pushReferralDataToSessionManager:(id)a3;
-- (void)pushToSessionManager:(id)a3 data:(id)a4 forKey:(id)a5 traits:(id)a6;
-- (void)pushToSessionManager:(id)a3 endReason:(int64_t)a4;
-- (void)pushUniqueDataObject:(id)a3 tracker:(id)a4;
+- (void)leaveGroupWithSubtracker:(id)subtracker completionHandler:(id)handler;
+- (void)newAATrackerWithName:(id)name parentAATracker:(id)tracker completionBlock:(id)block;
+- (void)newAATrackerWithName:(id)name parentTracker:(id)tracker completionBlock:(id)block;
+- (void)performOnInstrumentationQueueWaitUntilDone:(BOOL)done block:(id)block;
+- (void)popDataObjectWithType:(Class)type subTracker:(id)tracker;
+- (void)popDataObjectsWithTypes:(id)types subTracker:(id)tracker;
+- (void)pushDataObject:(id)object unique:(BOOL)unique onlyOnce:(BOOL)once subTracker:(id)tracker;
+- (void)pushDataObjects:(id)objects unique:(BOOL)unique onlyOnce:(BOOL)once subTracker:(id)tracker;
+- (void)pushLongLivedDataObjects:(id)objects privateSessionIdentifier:(id)identifier;
+- (void)pushLongLivedOrientationData:(id)data;
+- (void)pushLongLivedPrivateDeviceData:(id)data;
+- (void)pushLongLivedPrivateEventData:(id)data privateSessionIdentifier:(id)identifier;
+- (void)pushLongLivedPrivateUserData:(id)data;
+- (void)pushLongLivedSessionSummaryData:(id)data;
+- (void)pushReferralDataToSessionManager:(id)manager;
+- (void)pushToSessionManager:(id)manager data:(id)data forKey:(id)key traits:(id)traits;
+- (void)pushToSessionManager:(id)manager endReason:(int64_t)reason;
+- (void)pushUniqueDataObject:(id)object tracker:(id)tracker;
 - (void)removePreSydneyDAnalyticsData;
-- (void)setAppSessionState:(int64_t)a3;
-- (void)setGlobalSessionState:(int64_t)a3;
-- (void)startAppAndGlobalSessionIfNecessaryWithReferralURL:(id)a3 referralApplication:(id)a4;
+- (void)setAppSessionState:(int64_t)state;
+- (void)setGlobalSessionState:(int64_t)state;
+- (void)startAppAndGlobalSessionIfNecessaryWithReferralURL:(id)l referralApplication:(id)application;
 - (void)startAppSession;
-- (void)startSessionWithReferralURL:(id)a3 referralApplication:(id)a4 startingSessionType:(int64_t)a5;
-- (void)startSessionWithType:(int64_t)a3;
-- (void)startWindowSceneSessionWithType:(int64_t)a3 windowScene:(id)a4 successHandler:(id)a5;
-- (void)submitEventOfType:(Class)a3 pushThenPopDataObjects:(id)a4 subTracker:(id)a5;
-- (void)submitEventOfType:(Class)a3 subTracker:(id)a4 synchronousTaskBeforeSubmitting:(id)a5;
-- (void)trackTimedEventType:(Class)a3 subTracker:(id)a4 synchronousTaskBeforeStarting:(id)a5;
+- (void)startSessionWithReferralURL:(id)l referralApplication:(id)application startingSessionType:(int64_t)type;
+- (void)startSessionWithType:(int64_t)type;
+- (void)startWindowSceneSessionWithType:(int64_t)type windowScene:(id)scene successHandler:(id)handler;
+- (void)submitEventOfType:(Class)type pushThenPopDataObjects:(id)objects subTracker:(id)tracker;
+- (void)submitEventOfType:(Class)type subTracker:(id)tracker synchronousTaskBeforeSubmitting:(id)submitting;
+- (void)trackTimedEventType:(Class)type subTracker:(id)tracker synchronousTaskBeforeStarting:(id)starting;
 @end
 
 @implementation ICNAController
@@ -113,27 +113,27 @@ uint64_t __34__ICNAController_sharedController__block_invoke()
     instrumentationQueue = v2->_instrumentationQueue;
     v2->_instrumentationQueue = v5;
 
-    v7 = [MEMORY[0x277CEAF48] shared];
+    mEMORY[0x277CEAF48] = [MEMORY[0x277CEAF48] shared];
     if (+[ICNAOptedInObject isOptedInForAnalytics])
     {
-      [v7 allow];
+      [mEMORY[0x277CEAF48] allow];
     }
 
-    v8 = [objc_alloc(MEMORY[0x277CEAEE8]) initWithTrackingConsent:v7];
+    v8 = [objc_alloc(MEMORY[0x277CEAEE8]) initWithTrackingConsent:mEMORY[0x277CEAF48]];
     appSessionManager = v2->_appSessionManager;
     v2->_appSessionManager = v8;
 
     v10 = objc_alloc(MEMORY[0x277CEAEF0]);
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v10 initWithBundle:v11];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v12 = [v10 initWithBundle:mainBundle];
     client = v2->_client;
     v2->_client = v12;
 
-    v14 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-    v15 = [v14 BOOLForKey:@"analyticsEnableBatchDebugging"];
+    mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+    v15 = [mEMORY[0x277D36180] BOOLForKey:@"analyticsEnableBatchDebugging"];
 
-    v16 = [MEMORY[0x277CEAF50] default];
-    v17 = [v16 withDebuggingEnabled:v15];
+    default = [MEMORY[0x277CEAF50] default];
+    v17 = [default withDebuggingEnabled:v15];
     uploadBatchEventConfig = v2->_uploadBatchEventConfig;
     v2->_uploadBatchEventConfig = v17;
 
@@ -170,8 +170,8 @@ uint64_t __34__ICNAController_sharedController__block_invoke()
 
     v2->_deviceOrientationEnum = 0;
     performBlockOnMainThreadAndWait();
-    v33 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v33 addObserver:v2 selector:sel_orientationDidChange_ name:*MEMORY[0x277D76878] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_orientationDidChange_ name:*MEMORY[0x277D76878] object:0];
 
     v34 = +[ICNAInlineDrawingRecognitionReporter sharedReporter];
     [(ICNAController *)v2 removePreSydneyDAnalyticsData];
@@ -183,23 +183,23 @@ uint64_t __34__ICNAController_sharedController__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICNAController;
   [(ICNAController *)&v4 dealloc];
 }
 
-- (void)startSessionWithReferralURL:(id)a3 referralApplication:(id)a4 startingSessionType:(int64_t)a5
+- (void)startSessionWithReferralURL:(id)l referralApplication:(id)application startingSessionType:(int64_t)type
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  lCopy = l;
+  applicationCopy = application;
+  v9 = applicationCopy;
+  if (applicationCopy)
   {
-    v10 = [(__CFString *)v8 lowercaseString];
-    v11 = [v10 hasPrefix:@"com.apple."];
+    lowercaseString = [(__CFString *)applicationCopy lowercaseString];
+    v11 = [lowercaseString hasPrefix:@"com.apple."];
 
     if ((v11 & 1) == 0)
     {
@@ -208,21 +208,21 @@ uint64_t __34__ICNAController_sharedController__block_invoke()
     }
   }
 
-  v12 = [(ICNAController *)self referringApplication];
+  referringApplication = [(ICNAController *)self referringApplication];
 
-  if (!v12)
+  if (!referringApplication)
   {
     [(ICNAController *)self setReferringApplication:v9];
   }
 
-  v13 = [(ICNAController *)self referringInboundURL];
+  referringInboundURL = [(ICNAController *)self referringInboundURL];
 
-  if (!v13)
+  if (!referringInboundURL)
   {
-    [(ICNAController *)self setReferringInboundURL:v14];
+    [(ICNAController *)self setReferringInboundURL:lCopy];
   }
 
-  [(ICNAController *)self startSessionWithType:a5];
+  [(ICNAController *)self startSessionWithType:type];
 }
 
 void __22__ICNAController_init__block_invoke()
@@ -243,25 +243,25 @@ void __22__ICNAController_init__block_invoke_2()
 
 - (void)generatePrivateSessionIDIfNecessary
 {
-  v3 = [(ICNAController *)self privateSessionID];
-  if (!v3 || (v4 = v3, -[ICNAController privateSessionID](self, "privateSessionID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [@"session_inactive" isEqualToString:v5], v5, v4, v6))
+  privateSessionID = [(ICNAController *)self privateSessionID];
+  if (!privateSessionID || (v4 = privateSessionID, -[ICNAController privateSessionID](self, "privateSessionID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [@"session_inactive" isEqualToString:v5], v5, v4, v6))
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v7 = [v8 UUIDString];
-    [(ICNAController *)self setPrivateSessionID:v7];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(ICNAController *)self setPrivateSessionID:uUIDString];
   }
 }
 
 - (void)startAppSession
 {
   [(ICNAController *)self generatePrivateSessionIDIfNecessary];
-  v3 = [(ICNAController *)self instrumentationQueue];
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__ICNAController_startAppSession__block_invoke;
   block[3] = &unk_2799AF130;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(instrumentationQueue, block);
 }
 
 void __33__ICNAController_startAppSession__block_invoke(uint64_t a1)
@@ -292,10 +292,10 @@ void __33__ICNAController_startAppSession__block_invoke(uint64_t a1)
   [v7 pushLongLivedDataObjects:v8];
 }
 
-- (void)startAppAndGlobalSessionIfNecessaryWithReferralURL:(id)a3 referralApplication:(id)a4
+- (void)startAppAndGlobalSessionIfNecessaryWithReferralURL:(id)l referralApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  applicationCopy = application;
   if ([(ICNAController *)self appSessionState])
   {
     v8 = os_log_create("com.apple.notes", "Analytics");
@@ -326,7 +326,7 @@ void __33__ICNAController_startAppSession__block_invoke(uint64_t a1)
 
   else
   {
-    [(ICNAController *)self startSessionWithReferralURL:v6 referralApplication:v7 startingSessionType:4];
+    [(ICNAController *)self startSessionWithReferralURL:lCopy referralApplication:applicationCopy startingSessionType:4];
     v9 = os_log_create("com.apple.notes", "Analytics");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -337,13 +337,13 @@ void __33__ICNAController_startAppSession__block_invoke(uint64_t a1)
 
 - (void)appSessionDidTerminate
 {
-  v3 = [(ICNAController *)self instrumentationQueue];
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__ICNAController_appSessionDidTerminate__block_invoke;
   block[3] = &unk_2799AF130;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(instrumentationQueue, block);
 }
 
 void __40__ICNAController_appSessionDidTerminate__block_invoke(uint64_t a1)
@@ -390,120 +390,120 @@ void __40__ICNAController_appSessionDidTerminate__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sessionManagerForWindowSceneIdentifier:(id)a3 shouldCreate:(BOOL)a4
+- (id)sessionManagerForWindowSceneIdentifier:(id)identifier shouldCreate:(BOOL)create
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(ICNAController *)v7 sessionForWindowDict];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  createCopy = create;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sessionForWindowDict = [(ICNAController *)selfCopy sessionForWindowDict];
+  createSessionManager = [sessionForWindowDict objectForKeyedSubscript:identifierCopy];
 
-  if (!v9 && v4)
+  if (!createSessionManager && createCopy)
   {
-    v9 = [(ICNAController *)v7 createSessionManager];
-    v10 = [(ICNAController *)v7 sessionForWindowDict];
-    [v10 setObject:v9 forKeyedSubscript:v6];
+    createSessionManager = [(ICNAController *)selfCopy createSessionManager];
+    sessionForWindowDict2 = [(ICNAController *)selfCopy sessionForWindowDict];
+    [sessionForWindowDict2 setObject:createSessionManager forKeyedSubscript:identifierCopy];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
-  return v9;
+  return createSessionManager;
 }
 
-- (id)sessionTrackerForWindowSceneIdentifier:(id)a3
+- (id)sessionTrackerForWindowSceneIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(ICNAController *)v5 sessionTrackerForWindowDict];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sessionTrackerForWindowDict = [(ICNAController *)selfCopy sessionTrackerForWindowDict];
+  v7 = [sessionTrackerForWindowDict objectForKeyedSubscript:identifierCopy];
 
   if (!v7)
   {
     v7 = objc_alloc_init(ICNAMultiSceneSessionTracker);
-    v8 = [(ICNAController *)v5 sessionTrackerForWindowDict];
-    [v8 setObject:v7 forKeyedSubscript:v4];
+    sessionTrackerForWindowDict2 = [(ICNAController *)selfCopy sessionTrackerForWindowDict];
+    [sessionTrackerForWindowDict2 setObject:v7 forKeyedSubscript:identifierCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)clearSessionForWindowSceneIdentifier:(id)a3
+- (void)clearSessionForWindowSceneIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(ICNAController *)v4 sessionForWindowDict];
-  [v5 setObject:0 forKeyedSubscript:v7];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sessionForWindowDict = [(ICNAController *)selfCopy sessionForWindowDict];
+  [sessionForWindowDict setObject:0 forKeyedSubscript:identifierCopy];
 
-  v6 = [(ICNAController *)v4 sessionTrackerForWindowDict];
-  [v6 setObject:0 forKeyedSubscript:v7];
+  sessionTrackerForWindowDict = [(ICNAController *)selfCopy sessionTrackerForWindowDict];
+  [sessionTrackerForWindowDict setObject:0 forKeyedSubscript:identifierCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)aaTrackerForWindowSceneIdentifier:(id)a3
+- (id)aaTrackerForWindowSceneIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(ICNAController *)v5 sessionManagerForWindowSceneIdentifier:v4];
-    v7 = [v6 tracker];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(ICNAController *)selfCopy sessionManagerForWindowSceneIdentifier:identifierCopy];
+    tracker = [v6 tracker];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v7 = 0;
+    tracker = 0;
   }
 
-  return v7;
+  return tracker;
 }
 
 - (id)createSessionManager
 {
-  v3 = [(ICNAController *)self appSessionManager];
-  v4 = [v3 createSessionManager];
+  appSessionManager = [(ICNAController *)self appSessionManager];
+  createSessionManager = [appSessionManager createSessionManager];
 
   v5 = [objc_alloc(MEMORY[0x277CEAF18]) initWithFormat:2];
-  v6 = [v4 processorManager];
-  [v6 addEventProcessor:v5];
+  processorManager = [createSessionManager processorManager];
+  [processorManager addEventProcessor:v5];
 
   v7 = objc_alloc(MEMORY[0x277CEAF58]);
-  v8 = [(ICNAController *)self client];
-  v9 = [(ICNAController *)self uploadBatchEventConfig];
-  v10 = [v7 initWithClient:v8 endpoint:self config:v9];
+  client = [(ICNAController *)self client];
+  uploadBatchEventConfig = [(ICNAController *)self uploadBatchEventConfig];
+  v10 = [v7 initWithClient:client endpoint:self config:uploadBatchEventConfig];
 
-  v11 = [v4 processorManager];
-  [v11 addEventProcessor:v10];
+  processorManager2 = [createSessionManager processorManager];
+  [processorManager2 addEventProcessor:v10];
 
-  v12 = [(ICNAController *)self debugProcessor];
-  if (v12)
+  debugProcessor = [(ICNAController *)self debugProcessor];
+  if (debugProcessor)
   {
-    v13 = [v4 processorManager];
-    [v13 addEventProcessor:v12];
+    processorManager3 = [createSessionManager processorManager];
+    [processorManager3 addEventProcessor:debugProcessor];
   }
 
-  return v4;
+  return createSessionManager;
 }
 
-- (void)startSessionWithType:(int64_t)a3
+- (void)startSessionWithType:(int64_t)type
 {
   [(ICNAController *)self generatePrivateSessionIDIfNecessary];
-  v5 = [(ICNAController *)self instrumentationQueue];
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__ICNAController_startSessionWithType___block_invoke;
   v6[3] = &unk_2799B0070;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = type;
+  dispatch_async(instrumentationQueue, v6);
 }
 
 void __39__ICNAController_startSessionWithType___block_invoke(uint64_t a1)
@@ -633,27 +633,27 @@ void __39__ICNAController_startSessionWithType___block_invoke_101(uint64_t a1)
   [v2 pushSessionLevelDataIntoSessionManager:v3 withSessionType:*(a1 + 40) isGlobalSession:1];
 }
 
-- (void)startWindowSceneSessionWithType:(int64_t)a3 windowScene:(id)a4 successHandler:(id)a5
+- (void)startWindowSceneSessionWithType:(int64_t)type windowScene:(id)scene successHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 session];
-  v11 = [v10 persistentIdentifier];
+  sceneCopy = scene;
+  handlerCopy = handler;
+  session = [sceneCopy session];
+  persistentIdentifier = [session persistentIdentifier];
 
-  v12 = [(ICNAController *)self instrumentationQueue];
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__ICNAController_startWindowSceneSessionWithType_windowScene_successHandler___block_invoke;
   block[3] = &unk_2799B00E8;
   block[4] = self;
-  v17 = v11;
-  v19 = v9;
-  v20 = a3;
-  v18 = v8;
-  v13 = v9;
-  v14 = v8;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = persistentIdentifier;
+  v19 = handlerCopy;
+  typeCopy = type;
+  v18 = sceneCopy;
+  v13 = handlerCopy;
+  v14 = sceneCopy;
+  v15 = persistentIdentifier;
+  dispatch_async(instrumentationQueue, block);
 }
 
 void __77__ICNAController_startWindowSceneSessionWithType_windowScene_successHandler___block_invoke(uint64_t a1)
@@ -750,70 +750,70 @@ uint64_t __77__ICNAController_startWindowSceneSessionWithType_windowScene_succes
 
 - (int64_t)globalSessionState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  globalSessionState = v2->_globalSessionState;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  globalSessionState = selfCopy->_globalSessionState;
+  objc_sync_exit(selfCopy);
 
   return globalSessionState;
 }
 
 - (int64_t)appSessionState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  appSessionState = v2->_appSessionState;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  appSessionState = selfCopy->_appSessionState;
+  objc_sync_exit(selfCopy);
 
   return appSessionState;
 }
 
-- (void)setGlobalSessionState:(int64_t)a3
+- (void)setGlobalSessionState:(int64_t)state
 {
   [(ICNAController *)self assertInstrumentationQueue];
   obj = self;
   objc_sync_enter(obj);
   v5 = obj;
   globalSessionState = obj->_globalSessionState;
-  if (globalSessionState != a3)
+  if (globalSessionState != state)
   {
-    if (a3 < 1 || globalSessionState)
+    if (state < 1 || globalSessionState)
     {
-      if (a3 || globalSessionState < 1)
+      if (state || globalSessionState < 1)
       {
         goto LABEL_9;
       }
 
       [(ICNAController *)obj setPrivateSessionID:@"session_inactive"];
-      v7 = [(ICNAController *)obj sessionManager];
-      v8 = [v7 tracker];
-      [(ICNAController *)obj pushLongLivedPrivateEventData:v8];
+      sessionManager = [(ICNAController *)obj sessionManager];
+      tracker = [sessionManager tracker];
+      [(ICNAController *)obj pushLongLivedPrivateEventData:tracker];
     }
 
     else
     {
       [(ICNAController *)obj generatePrivateSessionIDIfNecessary];
-      v7 = [(ICNAController *)obj sessionManager];
-      v8 = [v7 tracker];
-      [(ICNAController *)obj pushLongLivedPrivateEventData:v8];
+      sessionManager = [(ICNAController *)obj sessionManager];
+      tracker = [sessionManager tracker];
+      [(ICNAController *)obj pushLongLivedPrivateEventData:tracker];
     }
 
     v5 = obj;
 LABEL_9:
-    v5->_globalSessionState = a3;
+    v5->_globalSessionState = state;
   }
 
   objc_sync_exit(v5);
 }
 
-- (void)setAppSessionState:(int64_t)a3
+- (void)setAppSessionState:(int64_t)state
 {
   [(ICNAController *)self assertInstrumentationQueue];
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_appSessionState != a3)
+  if (obj->_appSessionState != state)
   {
-    obj->_appSessionState = a3;
+    obj->_appSessionState = state;
   }
 
   objc_sync_exit(obj);
@@ -821,61 +821,61 @@ LABEL_9:
 
 - (BOOL)killEndSessionBackgroundTaskIfNecessary
 {
-  v3 = [(ICNAController *)self appDelegate];
+  appDelegate = [(ICNAController *)self appDelegate];
 
-  if (!v3)
+  if (!appDelegate)
   {
     return 0;
   }
 
-  v4 = [(ICNAController *)self endSessionBackgroundTaskIdentifier];
-  objc_sync_enter(v4);
-  v5 = [(ICNAController *)self endSessionBackgroundTaskIdentifier];
-  v6 = [v5 unsignedIntegerValue];
+  endSessionBackgroundTaskIdentifier = [(ICNAController *)self endSessionBackgroundTaskIdentifier];
+  objc_sync_enter(endSessionBackgroundTaskIdentifier);
+  endSessionBackgroundTaskIdentifier2 = [(ICNAController *)self endSessionBackgroundTaskIdentifier];
+  unsignedIntegerValue = [endSessionBackgroundTaskIdentifier2 unsignedIntegerValue];
 
   v7 = *MEMORY[0x277D767B0];
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:*MEMORY[0x277D767B0]];
   [(ICNAController *)self setEndSessionBackgroundTaskIdentifier:v8];
 
-  objc_sync_exit(v4);
-  if (v6 == v7)
+  objc_sync_exit(endSessionBackgroundTaskIdentifier);
+  if (unsignedIntegerValue == v7)
   {
     return 0;
   }
 
-  v10 = [(ICNAController *)self appDelegate];
-  [v10 endBackgroundTask:v6];
+  appDelegate2 = [(ICNAController *)self appDelegate];
+  [appDelegate2 endBackgroundTask:unsignedIntegerValue];
 
   return 1;
 }
 
-- (BOOL)killEndSessionBackgroundTaskIfNecessaryForWindowScene:(id)a3
+- (BOOL)killEndSessionBackgroundTaskIfNecessaryForWindowScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(ICNAController *)self appDelegate];
+  sceneCopy = scene;
+  appDelegate = [(ICNAController *)self appDelegate];
 
-  if (v5)
+  if (appDelegate)
   {
-    v6 = [v4 session];
-    v7 = [v6 persistentIdentifier];
+    session = [sceneCopy session];
+    persistentIdentifier = [session persistentIdentifier];
 
-    v8 = [(ICNAController *)self endSessionBackgroundTaskIdentifiersByWindowSceneIdentifier];
-    objc_sync_enter(v8);
-    v9 = [(ICNAController *)self endSessionBackgroundTaskIdentifiersByWindowSceneIdentifier];
-    v10 = [v9 objectForKeyedSubscript:v7];
-    v11 = [v10 unsignedIntegerValue];
+    endSessionBackgroundTaskIdentifiersByWindowSceneIdentifier = [(ICNAController *)self endSessionBackgroundTaskIdentifiersByWindowSceneIdentifier];
+    objc_sync_enter(endSessionBackgroundTaskIdentifiersByWindowSceneIdentifier);
+    endSessionBackgroundTaskIdentifiersByWindowSceneIdentifier2 = [(ICNAController *)self endSessionBackgroundTaskIdentifiersByWindowSceneIdentifier];
+    v10 = [endSessionBackgroundTaskIdentifiersByWindowSceneIdentifier2 objectForKeyedSubscript:persistentIdentifier];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
 
     v12 = *MEMORY[0x277D767B0];
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:*MEMORY[0x277D767B0]];
-    v14 = [(ICNAController *)self endSessionBackgroundTaskIdentifiersByWindowSceneIdentifier];
-    [v14 setObject:v13 forKeyedSubscript:v7];
+    endSessionBackgroundTaskIdentifiersByWindowSceneIdentifier3 = [(ICNAController *)self endSessionBackgroundTaskIdentifiersByWindowSceneIdentifier];
+    [endSessionBackgroundTaskIdentifiersByWindowSceneIdentifier3 setObject:v13 forKeyedSubscript:persistentIdentifier];
 
-    objc_sync_exit(v8);
-    v15 = v11 != v12;
-    if (v11 != v12)
+    objc_sync_exit(endSessionBackgroundTaskIdentifiersByWindowSceneIdentifier);
+    v15 = unsignedIntegerValue != v12;
+    if (unsignedIntegerValue != v12)
     {
-      v16 = [(ICNAController *)self appDelegate];
-      [v16 endBackgroundTask:v11];
+      appDelegate2 = [(ICNAController *)self appDelegate];
+      [appDelegate2 endBackgroundTask:unsignedIntegerValue];
     }
   }
 
@@ -887,39 +887,39 @@ LABEL_9:
   return v15;
 }
 
-- (void)performOnInstrumentationQueueWaitUntilDone:(BOOL)a3 block:(id)a4
+- (void)performOnInstrumentationQueueWaitUntilDone:(BOOL)done block:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(ICNAController *)self instrumentationQueue];
-  v8 = v7;
-  if (v4)
+  doneCopy = done;
+  blockCopy = block;
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
+  v8 = instrumentationQueue;
+  if (doneCopy)
   {
-    dispatch_sync(v7, v6);
+    dispatch_sync(instrumentationQueue, blockCopy);
   }
 
   else
   {
-    dispatch_async(v7, v6);
+    dispatch_async(instrumentationQueue, blockCopy);
   }
 }
 
-- (void)endSessionSynchronously:(BOOL)a3 forSessionType:(int64_t)a4 endReason:(int64_t)a5
+- (void)endSessionSynchronously:(BOOL)synchronously forSessionType:(int64_t)type endReason:(int64_t)reason
 {
-  v6 = a3;
+  synchronouslyCopy = synchronously;
   v23 = *MEMORY[0x277D85DE8];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __67__ICNAController_endSessionSynchronously_forSessionType_endReason___block_invoke;
   v19[3] = &unk_2799B0160;
-  v20 = a3;
+  synchronouslyCopy2 = synchronously;
   v19[4] = self;
-  v19[5] = a5;
+  v19[5] = reason;
   v8 = MEMORY[0x25F88B7A0](v19, a2);
-  if (v6)
+  if (synchronouslyCopy)
   {
-    v9 = [(ICNAController *)self multiSceneSessionTracker];
-    [v9 endAllSessionsAndInvalidate];
+    multiSceneSessionTracker = [(ICNAController *)self multiSceneSessionTracker];
+    [multiSceneSessionTracker endAllSessionsAndInvalidate];
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -930,10 +930,10 @@ LABEL_9:
     v10 = os_log_create("com.apple.notes", "Analytics");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(ICNAController *)self multiSceneSessionTracker];
-      v12 = [v11 sessionDetailDescription];
+      multiSceneSessionTracker2 = [(ICNAController *)self multiSceneSessionTracker];
+      sessionDetailDescription = [multiSceneSessionTracker2 sessionDetailDescription];
       *buf = 138412290;
-      v22 = v12;
+      v22 = sessionDetailDescription;
       _os_log_impl(&dword_25C6BF000, v10, OS_LOG_TYPE_INFO, "Synchronously ending AA Session. Session Type Detail: %@", buf, 0xCu);
     }
 
@@ -945,15 +945,15 @@ LABEL_9:
 
   else
   {
-    v13 = [(ICNAController *)self instrumentationQueue];
+    instrumentationQueue = [(ICNAController *)self instrumentationQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __67__ICNAController_endSessionSynchronously_forSessionType_endReason___block_invoke_121;
     block[3] = &unk_2799B0188;
-    v17 = a4;
+    typeCopy = type;
     block[4] = self;
     v16 = v8;
-    dispatch_async(v13, block);
+    dispatch_async(instrumentationQueue, block);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1274,27 +1274,27 @@ uint64_t __82__ICNAController_endSessionSynchronously_forSessionType_endReason_s
   return result;
 }
 
-- (void)endWindowSceneSessionSynchronously:(BOOL)a3 forSessionType:(int64_t)a4 endReason:(int64_t)a5 windowScene:(id)a6
+- (void)endWindowSceneSessionSynchronously:(BOOL)synchronously forSessionType:(int64_t)type endReason:(int64_t)reason windowScene:(id)scene
 {
-  v7 = a3;
-  v9 = a6;
-  v10 = [v9 session];
-  v11 = [v10 persistentIdentifier];
+  synchronouslyCopy = synchronously;
+  sceneCopy = scene;
+  session = [sceneCopy session];
+  persistentIdentifier = [session persistentIdentifier];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __90__ICNAController_endWindowSceneSessionSynchronously_forSessionType_endReason_windowScene___block_invoke;
   v18[3] = &unk_2799B0228;
   v18[4] = self;
-  v12 = v9;
+  v12 = sceneCopy;
   v19 = v12;
-  v13 = v11;
-  v22 = v7;
+  v13 = persistentIdentifier;
+  v22 = synchronouslyCopy;
   v20 = v13;
-  v21 = a5;
+  reasonCopy = reason;
   v14 = MEMORY[0x25F88B7A0](v18);
   v15 = v14;
-  if (v7)
+  if (synchronouslyCopy)
   {
     if (v14)
     {
@@ -1511,116 +1511,116 @@ uint64_t __105__ICNAController_endWindowSceneSessionSynchronously_forSessionType
   return result;
 }
 
-- (void)pushLongLivedDataObjects:(id)a3 privateSessionIdentifier:(id)a4
+- (void)pushLongLivedDataObjects:(id)objects privateSessionIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  objectsCopy = objects;
   [(ICNAController *)self assertInstrumentationQueue];
-  [(ICNAController *)self pushLongLivedPrivateUserData:v7];
-  [(ICNAController *)self pushLongLivedPrivateDeviceData:v7];
-  [(ICNAController *)self pushLongLivedPrivateEventData:v7 privateSessionIdentifier:v6];
+  [(ICNAController *)self pushLongLivedPrivateUserData:objectsCopy];
+  [(ICNAController *)self pushLongLivedPrivateDeviceData:objectsCopy];
+  [(ICNAController *)self pushLongLivedPrivateEventData:objectsCopy privateSessionIdentifier:identifierCopy];
 
-  [(ICNAController *)self pushLongLivedOrientationData:v7];
+  [(ICNAController *)self pushLongLivedOrientationData:objectsCopy];
 }
 
-- (void)pushUniqueDataObject:(id)a3 tracker:(id)a4
+- (void)pushUniqueDataObject:(id)object tracker:(id)tracker
 {
-  v6 = a4;
-  v7 = a3;
+  trackerCopy = tracker;
+  objectCopy = object;
   [(ICNAController *)self assertInstrumentationQueue];
   v8 = objc_alloc_init(MEMORY[0x277CEAEF8]);
   [v8 setUnique:1];
-  [v6 pushDataEvent:v7 traits:v8 file:@"/Library/Caches/com.apple.xbs/Sources/MobileNotes/NotesAnalytics/ICNAController.m" line:1012];
+  [trackerCopy pushDataEvent:objectCopy traits:v8 file:@"/Library/Caches/com.apple.xbs/Sources/MobileNotes/NotesAnalytics/ICNAController.m" line:1012];
 }
 
-- (void)pushLongLivedOrientationData:(id)a3
+- (void)pushLongLivedOrientationData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(ICNAController *)self assertInstrumentationQueue];
   v7 = [[ICASDeviceOrientation alloc] initWithDeviceOrientation:[(ICNAController *)self deviceOrientationEnum]];
   v5 = [[ICASInterfaceOrientation alloc] initWithInterfaceOrientation:0];
   v6 = [[ICASOrientationData alloc] initWithDeviceOrientation:v7 interfaceOrientation:v5];
-  [(ICNAController *)self pushUniqueDataObject:v6 tracker:v4];
+  [(ICNAController *)self pushUniqueDataObject:v6 tracker:dataCopy];
 }
 
-- (void)pushLongLivedSessionSummaryData:(id)a3
+- (void)pushLongLivedSessionSummaryData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(ICNAController *)self assertInstrumentationQueue];
-  v6 = [(ICNAController *)self multiSceneSessionTracker];
-  v5 = [v6 sessionSummaryData];
-  [(ICNAController *)self pushUniqueDataObject:v5 tracker:v4];
+  multiSceneSessionTracker = [(ICNAController *)self multiSceneSessionTracker];
+  sessionSummaryData = [multiSceneSessionTracker sessionSummaryData];
+  [(ICNAController *)self pushUniqueDataObject:sessionSummaryData tracker:dataCopy];
 }
 
-- (void)pushLongLivedPrivateUserData:(id)a3
+- (void)pushLongLivedPrivateUserData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(ICNAController *)self assertInstrumentationQueue];
   v5 = [ICASPrivateUserData alloc];
-  v6 = [objc_opt_class() privateUserID];
-  v7 = [objc_opt_class() saltVersion];
+  privateUserID = [objc_opt_class() privateUserID];
+  saltVersion = [objc_opt_class() saltVersion];
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "startMonth")}];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "startYear")}];
-  v18 = [(ICASPrivateUserData *)v5 initWithPrivateUserID:v6 saltVersion:v7 userStartMonth:v8 userStartYear:v9];
+  v18 = [(ICASPrivateUserData *)v5 initWithPrivateUserID:privateUserID saltVersion:saltVersion userStartMonth:v8 userStartYear:v9];
 
-  [(ICNAController *)self pushUniqueDataObject:v18 tracker:v4];
+  [(ICNAController *)self pushUniqueDataObject:v18 tracker:dataCopy];
   v10 = +[ICNAIdentityManager sharedManager];
-  v11 = [objc_opt_class() privateUserID];
-  v12 = [v10 saltedID:v11 forClass:objc_opt_class()];
+  privateUserID2 = [objc_opt_class() privateUserID];
+  v12 = [v10 saltedID:privateUserID2 forClass:objc_opt_class()];
 
   v13 = [[ICASSyncHealthPrivateUserData alloc] initWithSyncHealthPrivateUserID:v12];
-  [(ICNAController *)self pushUniqueDataObject:v13 tracker:v4];
+  [(ICNAController *)self pushUniqueDataObject:v13 tracker:dataCopy];
   v14 = +[ICNAIdentityManager sharedManager];
-  v15 = [objc_opt_class() privateUserID];
-  v16 = [v14 saltedID:v15 forClass:objc_opt_class()];
+  privateUserID3 = [objc_opt_class() privateUserID];
+  v16 = [v14 saltedID:privateUserID3 forClass:objc_opt_class()];
 
   v17 = [[ICASSnapshotHealthPrivateUserData alloc] initWithSnapshotHealthPrivateUserID:v16];
-  [(ICNAController *)self pushUniqueDataObject:v17 tracker:v4];
+  [(ICNAController *)self pushUniqueDataObject:v17 tracker:dataCopy];
 }
 
-- (void)pushLongLivedPrivateDeviceData:(id)a3
+- (void)pushLongLivedPrivateDeviceData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = +[ICNAIdentityManager sharedManager];
-  v6 = [objc_opt_class() deviceID];
-  v12 = [v5 saltedID:v6 forClass:objc_opt_class()];
+  deviceID = [objc_opt_class() deviceID];
+  v12 = [v5 saltedID:deviceID forClass:objc_opt_class()];
 
   v7 = [[ICASSyncHealthPrivateDeviceData alloc] initWithSyncHealthPrivateDeviceID:v12];
-  [(ICNAController *)self pushUniqueDataObject:v7 tracker:v4];
+  [(ICNAController *)self pushUniqueDataObject:v7 tracker:dataCopy];
   v8 = +[ICNAIdentityManager sharedManager];
-  v9 = [objc_opt_class() deviceID];
-  v10 = [v8 saltedID:v9 forClass:objc_opt_class()];
+  deviceID2 = [objc_opt_class() deviceID];
+  v10 = [v8 saltedID:deviceID2 forClass:objc_opt_class()];
 
   v11 = [[ICASSnapshotHealthPrivateDeviceData alloc] initWithSnapshotHealthPrivateDeviceID:v10];
-  [(ICNAController *)self pushUniqueDataObject:v11 tracker:v4];
+  [(ICNAController *)self pushUniqueDataObject:v11 tracker:dataCopy];
 }
 
-- (void)pushLongLivedPrivateEventData:(id)a3 privateSessionIdentifier:(id)a4
+- (void)pushLongLivedPrivateEventData:(id)data privateSessionIdentifier:(id)identifier
 {
-  v17 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  dataCopy = data;
   [(ICNAController *)self assertInstrumentationQueue];
-  if (!v17)
+  if (!identifierCopy)
   {
-    v17 = [(ICNAController *)self privateSessionID];
+    identifierCopy = [(ICNAController *)self privateSessionID];
   }
 
   v7 = [ICASSessionDetailType alloc];
-  v8 = [(ICNAController *)self multiSceneSessionTracker];
-  v9 = -[ICASSessionDetailType initWithSessionDetailType:](v7, "initWithSessionDetailType:", [v8 sessionDetailType]);
+  multiSceneSessionTracker = [(ICNAController *)self multiSceneSessionTracker];
+  v9 = -[ICASSessionDetailType initWithSessionDetailType:](v7, "initWithSessionDetailType:", [multiSceneSessionTracker sessionDetailType]);
 
-  v10 = [[ICASPrivateEventData alloc] initWithPrivateSessionID:v17 sessionDetailType:v9];
-  [(ICNAController *)self pushUniqueDataObject:v10 tracker:v6];
+  v10 = [[ICASPrivateEventData alloc] initWithPrivateSessionID:identifierCopy sessionDetailType:v9];
+  [(ICNAController *)self pushUniqueDataObject:v10 tracker:dataCopy];
   v11 = +[ICNAIdentityManager sharedManager];
-  v12 = [v11 saltedID:v17 forClass:objc_opt_class()];
+  v12 = [v11 saltedID:identifierCopy forClass:objc_opt_class()];
 
   v13 = [[ICASSyncHealthPrivateEventData alloc] initWithSyncHealthPrivateSessionID:v12];
-  [(ICNAController *)self pushUniqueDataObject:v13 tracker:v6];
+  [(ICNAController *)self pushUniqueDataObject:v13 tracker:dataCopy];
   v14 = +[ICNAIdentityManager sharedManager];
-  v15 = [v14 saltedID:v17 forClass:objc_opt_class()];
+  v15 = [v14 saltedID:identifierCopy forClass:objc_opt_class()];
 
   v16 = [[ICASSnapshotHealthPrivateEventData alloc] initWithSnapshotHealthPrivateSessionID:v15];
-  [(ICNAController *)self pushUniqueDataObject:v16 tracker:v6];
+  [(ICNAController *)self pushUniqueDataObject:v16 tracker:dataCopy];
 }
 
 void __39__ICNAController_orientationDidChange___block_invoke(uint64_t a1)
@@ -1689,35 +1689,35 @@ void __39__ICNAController_orientationDidChange___block_invoke_2(uint64_t a1)
 
 - (NSURL)url
 {
-  v2 = [(ICNAController *)self serverEnvironment];
-  v3 = [v2 targetURL];
+  serverEnvironment = [(ICNAController *)self serverEnvironment];
+  targetURL = [serverEnvironment targetURL];
 
-  return v3;
+  return targetURL;
 }
 
 - (NSString)name
 {
-  v2 = [(ICNAController *)self serverEnvironment];
-  v3 = [v2 aaEndPointTypeName];
+  serverEnvironment = [(ICNAController *)self serverEnvironment];
+  aaEndPointTypeName = [serverEnvironment aaEndPointTypeName];
 
-  return v3;
+  return aaEndPointTypeName;
 }
 
 - (void)addSnapshotReferralDataToSessionLevel
 {
-  v3 = [MEMORY[0x277D35DF0] referralURLForSnapshotBackgroundTask];
-  [(ICNAController *)self addReferralDataWithReferringInboundURL:v3 referringApplication:0];
+  referralURLForSnapshotBackgroundTask = [MEMORY[0x277D35DF0] referralURLForSnapshotBackgroundTask];
+  [(ICNAController *)self addReferralDataWithReferringInboundURL:referralURLForSnapshotBackgroundTask referringApplication:0];
 }
 
-- (void)addReferralDataWithReferringInboundURL:(id)a3 referringApplication:(id)a4
+- (void)addReferralDataWithReferringInboundURL:(id)l referringApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  lCopy = l;
+  applicationCopy = application;
+  v8 = applicationCopy;
+  if (applicationCopy)
   {
-    v9 = [(__CFString *)v7 lowercaseString];
-    v10 = [v9 hasPrefix:@"com.apple."];
+    lowercaseString = [(__CFString *)applicationCopy lowercaseString];
+    v10 = [lowercaseString hasPrefix:@"com.apple."];
 
     if ((v10 & 1) == 0)
     {
@@ -1726,17 +1726,17 @@ void __39__ICNAController_orientationDidChange___block_invoke_2(uint64_t a1)
     }
   }
 
-  v11 = [(ICNAController *)self instrumentationQueue];
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__ICNAController_addReferralDataWithReferringInboundURL_referringApplication___block_invoke;
   block[3] = &unk_2799B0250;
   block[4] = self;
-  v15 = v6;
+  v15 = lCopy;
   v16 = v8;
   v12 = v8;
-  v13 = v6;
-  dispatch_async(v11, block);
+  v13 = lCopy;
+  dispatch_async(instrumentationQueue, block);
 }
 
 void __78__ICNAController_addReferralDataWithReferringInboundURL_referringApplication___block_invoke(uint64_t a1)
@@ -1775,60 +1775,60 @@ void __78__ICNAController_addReferralDataWithReferringInboundURL_referringApplic
   [v6 pushReferralDataToSessionManager:v7];
 }
 
-- (void)pushReferralDataToSessionManager:(id)a3
+- (void)pushReferralDataToSessionManager:(id)manager
 {
-  v6 = a3;
+  managerCopy = manager;
   [(ICNAController *)self assertInstrumentationQueue];
-  v4 = [(ICNAController *)self referralData];
-  if (v4)
+  referralData = [(ICNAController *)self referralData];
+  if (referralData)
   {
     v5 = objc_alloc_init(MEMORY[0x277CEAEF8]);
     [v5 setOnlyOnce:1];
     [v5 setUnique:1];
-    [(ICNAController *)self pushToSessionManager:v6 data:v4 forKey:@"referralData" traits:v5];
+    [(ICNAController *)self pushToSessionManager:managerCopy data:referralData forKey:@"referralData" traits:v5];
   }
 }
 
-- (void)pushToSessionManager:(id)a3 endReason:(int64_t)a4
+- (void)pushToSessionManager:(id)manager endReason:(int64_t)reason
 {
-  v5 = a3;
-  v8 = [[ICASEndReason alloc] initWithEndReason:a4];
+  managerCopy = manager;
+  v8 = [[ICASEndReason alloc] initWithEndReason:reason];
   v6 = [[ICASSessionEndData alloc] initWithEndReason:v8];
-  v7 = [v5 tracker];
+  tracker = [managerCopy tracker];
 
-  [v7 pushDataEvent:v6 traits:0 file:@"/Library/Caches/com.apple.xbs/Sources/MobileNotes/NotesAnalytics/ICNAController.m" line:1230];
+  [tracker pushDataEvent:v6 traits:0 file:@"/Library/Caches/com.apple.xbs/Sources/MobileNotes/NotesAnalytics/ICNAController.m" line:1230];
 }
 
-- (void)pushToSessionManager:(id)a3 data:(id)a4 forKey:(id)a5 traits:(id)a6
+- (void)pushToSessionManager:(id)manager data:(id)data forKey:(id)key traits:(id)traits
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  managerCopy = manager;
+  dataCopy = data;
+  keyCopy = key;
+  traitsCopy = traits;
   [(ICNAController *)self assertInstrumentationQueue];
-  if (v10 && v11)
+  if (dataCopy && keyCopy)
   {
-    v13 = v12;
+    v13 = traitsCopy;
     if (!v13)
     {
       v13 = objc_alloc_init(MEMORY[0x277CEAEF8]);
     }
 
-    v14 = [objc_alloc(MEMORY[0x277CEAF20]) initWithKey:v11 data:v10];
-    [v15 pushSessionData:v14 traits:v13];
+    v14 = [objc_alloc(MEMORY[0x277CEAF20]) initWithKey:keyCopy data:dataCopy];
+    [managerCopy pushSessionData:v14 traits:v13];
   }
 }
 
 - (id)userData
 {
   [(ICNAController *)self assertInstrumentationQueue];
-  v2 = [objc_opt_class() storeFrontID];
-  v3 = [objc_opt_class() userID];
+  storeFrontID = [objc_opt_class() storeFrontID];
+  userID = [objc_opt_class() userID];
   v4 = [ICASUserData alloc];
-  v5 = [objc_opt_class() saltVersion];
+  saltVersion = [objc_opt_class() saltVersion];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "startMonth")}];
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "startYear")}];
-  v8 = [(ICASUserData *)v4 initWithUserID:v3 userStorefrontID:v2 saltVersion:v5 userStartMonth:v6 userStartYear:v7];
+  v8 = [(ICASUserData *)v4 initWithUserID:userID userStorefrontID:storeFrontID saltVersion:saltVersion userStartMonth:v6 userStartYear:v7];
 
   return v8;
 }
@@ -1848,16 +1848,16 @@ void __78__ICNAController_addReferralDataWithReferringInboundURL_referringApplic
   v28[3] = __Block_byref_object_copy__5;
   v28[4] = __Block_byref_object_dispose__5;
   v29 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v3 = [MEMORY[0x277D35F30] sharedContext];
-  v4 = [v3 workerManagedObjectContext];
+  mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+  workerManagedObjectContext = [mEMORY[0x277D35F30] workerManagedObjectContext];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __36__ICNAController_accountTypeSummary__block_invoke;
   v23[3] = &unk_2799B0278;
-  v5 = v4;
+  v5 = workerManagedObjectContext;
   v24 = v5;
-  v25 = self;
+  selfCopy = self;
   v26 = &v30;
   v27 = v28;
   [v5 performBlockAndWait:v23];
@@ -1868,7 +1868,7 @@ void __78__ICNAController_addReferralDataWithReferringInboundURL_referringApplic
   v18[3] = &unk_2799B0278;
   v7 = v6;
   v19 = v7;
-  v20 = self;
+  selfCopy2 = self;
   v21 = &v30;
   v22 = v28;
   [v7 performBlockAndWait:v18];
@@ -2076,15 +2076,15 @@ void __36__ICNAController_accountTypeSummary__block_invoke_3(uint64_t a1, void *
   [*(*(*(a1 + 40) + 8) + 40) addObject:v25];
 }
 
-+ (int64_t)accountTypeEnumForModernAccount:(id)a3
++ (int64_t)accountTypeEnumForModernAccount:(id)account
 {
-  v3 = a3;
-  if ([v3 accountType] == 3)
+  accountCopy = account;
+  if ([accountCopy accountType] == 3)
   {
     v4 = 10;
   }
 
-  else if ([v3 accountType] == 1)
+  else if ([accountCopy accountType] == 1)
   {
     v4 = 1;
   }
@@ -2097,53 +2097,53 @@ void __36__ICNAController_accountTypeSummary__block_invoke_3(uint64_t a1, void *
   return v4;
 }
 
-+ (int64_t)accountTypeEnumForHTMLAccount:(id)a3
++ (int64_t)accountTypeEnumForHTMLAccount:(id)account
 {
-  v3 = a3;
-  if ([v3 didChooseToMigrate])
+  accountCopy = account;
+  if ([accountCopy didChooseToMigrate])
   {
     v4 = 3;
   }
 
-  else if ([v3 isIMAPAccount])
+  else if ([accountCopy isIMAPAccount])
   {
-    v5 = [MEMORY[0x277D36178] sharedInstance];
-    v6 = [v5 accountStore];
+    mEMORY[0x277D36178] = [MEMORY[0x277D36178] sharedInstance];
+    accountStore = [mEMORY[0x277D36178] accountStore];
 
-    v7 = [v3 accountIdentifier];
-    v8 = [v6 accountWithIdentifier:v7];
+    accountIdentifier = [accountCopy accountIdentifier];
+    v8 = [accountStore accountWithIdentifier:accountIdentifier];
 
-    v9 = [v8 parentAccount];
-    v10 = v9;
-    if (!v9)
+    parentAccount = [v8 parentAccount];
+    v10 = parentAccount;
+    if (!parentAccount)
     {
-      v9 = v8;
+      parentAccount = v8;
     }
 
-    v11 = [v9 accountType];
-    v12 = [v11 identifier];
+    accountType = [parentAccount accountType];
+    identifier = [accountType identifier];
 
-    if ([v12 isEqualToString:*MEMORY[0x277CB8C40]])
+    if ([identifier isEqualToString:*MEMORY[0x277CB8C40]])
     {
       v4 = 5;
     }
 
-    else if ([v12 isEqualToString:*MEMORY[0x277CB8D38]])
+    else if ([identifier isEqualToString:*MEMORY[0x277CB8D38]])
     {
       v4 = 6;
     }
 
-    else if ([v12 isEqualToString:*MEMORY[0x277CB8B98]])
+    else if ([identifier isEqualToString:*MEMORY[0x277CB8B98]])
     {
       v4 = 7;
     }
 
-    else if ([v12 isEqualToString:*MEMORY[0x277CB8C00]])
+    else if ([identifier isEqualToString:*MEMORY[0x277CB8C00]])
     {
       v4 = 8;
     }
 
-    else if ([v12 isEqualToString:*MEMORY[0x277CB8BA0]])
+    else if ([identifier isEqualToString:*MEMORY[0x277CB8BA0]])
     {
       v4 = 2;
     }
@@ -2154,12 +2154,12 @@ void __36__ICNAController_accountTypeSummary__block_invoke_3(uint64_t a1, void *
     }
   }
 
-  else if ([v3 isExchangeAccount])
+  else if ([accountCopy isExchangeAccount])
   {
     v4 = 9;
   }
 
-  else if ([v3 isLocalAccount])
+  else if ([accountCopy isLocalAccount])
   {
     v4 = 11;
   }
@@ -2174,16 +2174,16 @@ void __36__ICNAController_accountTypeSummary__block_invoke_3(uint64_t a1, void *
 
 - (id)cellularRadioAccessTechnology
 {
-  v2 = [MEMORY[0x277D36240] reachabilityForInternetConnection];
-  v3 = [v2 currentReachabilityStatus];
-  if (v3 > 2)
+  reachabilityForInternetConnection = [MEMORY[0x277D36240] reachabilityForInternetConnection];
+  currentReachabilityStatus = [reachabilityForInternetConnection currentReachabilityStatus];
+  if (currentReachabilityStatus > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = qword_25C72AE00[v3];
+    v4 = qword_25C72AE00[currentReachabilityStatus];
   }
 
   v5 = [[ICASCellularRadioAccessTechnology alloc] initWithCellularRadioAccessTechnology:v4];
@@ -2194,13 +2194,13 @@ void __36__ICNAController_accountTypeSummary__block_invoke_3(uint64_t a1, void *
 - (id)appData
 {
   [(ICNAController *)self assertInstrumentationQueue];
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 infoDictionary];
-  v4 = [v3 objectForKey:@"CFBundleShortVersionString"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v4 = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
 
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 infoDictionary];
-  v7 = [v6 objectForKey:@"CFBundleVersion"];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary2 = [mainBundle2 infoDictionary];
+  v7 = [infoDictionary2 objectForKey:@"CFBundleVersion"];
 
   v8 = [[ICASAppData alloc] initWithAppVersion:v4 appBuild:v7];
 
@@ -2222,11 +2222,11 @@ void __36__ICNAController_accountTypeSummary__block_invoke_3(uint64_t a1, void *
 
   v3 = [[ICASOsInstallVariant alloc] initWithOsInstallVariant:v2];
   v4 = [ICASDeviceData alloc];
-  v5 = [objc_opt_class() deviceModel];
-  v6 = [objc_opt_class() devicePlatform];
-  v7 = [objc_opt_class() osVersion];
-  v8 = [objc_opt_class() osBundleVersion];
-  v9 = [(ICASDeviceData *)v4 initWithDeviceModel:v5 devicePlatform:v6 osInstallVariant:v3 osVersion:v7 osBundleVersion:v8];
+  deviceModel = [objc_opt_class() deviceModel];
+  devicePlatform = [objc_opt_class() devicePlatform];
+  osVersion = [objc_opt_class() osVersion];
+  osBundleVersion = [objc_opt_class() osBundleVersion];
+  v9 = [(ICASDeviceData *)v4 initWithDeviceModel:deviceModel devicePlatform:devicePlatform osInstallVariant:v3 osVersion:osVersion osBundleVersion:osBundleVersion];
 
   return v9;
 }
@@ -2234,8 +2234,8 @@ void __36__ICNAController_accountTypeSummary__block_invoke_3(uint64_t a1, void *
 - (id)debugData
 {
   [(ICNAController *)self assertInstrumentationQueue];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 stringForKey:@"analyticsDebugDataName"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"analyticsDebugDataName"];
 
   if (v3)
   {
@@ -2253,42 +2253,42 @@ void __36__ICNAController_accountTypeSummary__block_invoke_3(uint64_t a1, void *
 - (id)referralData
 {
   [(ICNAController *)self assertInstrumentationQueue];
-  v3 = [(ICNAController *)self referringInboundURL];
-  if (v3)
+  referringInboundURL = [(ICNAController *)self referringInboundURL];
+  if (referringInboundURL)
   {
   }
 
   else
   {
-    v4 = [(ICNAController *)self referringApplication];
+    referringApplication = [(ICNAController *)self referringApplication];
 
-    if (!v4)
+    if (!referringApplication)
     {
       goto LABEL_5;
     }
   }
 
-  v5 = [(ICNAController *)self referringInboundURL];
-  v6 = [ICNAReferringInboundURLFilter filterReferringInboundURL:v5];
+  referringInboundURL2 = [(ICNAController *)self referringInboundURL];
+  v6 = [ICNAReferringInboundURLFilter filterReferringInboundURL:referringInboundURL2];
 
   v7 = [ICASReferralData alloc];
-  v8 = [(ICNAController *)self referringApplication];
-  v4 = [(ICASReferralData *)v7 initWithReferringApplication:v8 referringInboundUrl:v6];
+  referringApplication2 = [(ICNAController *)self referringApplication];
+  referringApplication = [(ICASReferralData *)v7 initWithReferringApplication:referringApplication2 referringInboundUrl:v6];
 
   [(ICNAController *)self setReferringApplication:0];
   [(ICNAController *)self setReferringInboundURL:0];
 
 LABEL_5:
 
-  return v4;
+  return referringApplication;
 }
 
 - (ICNADebugEventProcessor)debugProcessor
 {
   if (!self->_debugProcessor)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 BOOLForKey:@"ICNAUseDebugProcessor"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults BOOLForKey:@"ICNAUseDebugProcessor"];
 
     if (v4)
     {
@@ -2303,36 +2303,36 @@ LABEL_5:
   return v7;
 }
 
-- (void)newAATrackerWithName:(id)a3 parentTracker:(id)a4 completionBlock:(id)a5
+- (void)newAATrackerWithName:(id)name parentTracker:(id)tracker completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 aaTracker];
-  [(ICNAController *)self newAATrackerWithName:v9 parentAATracker:v10 completionBlock:v8];
+  blockCopy = block;
+  nameCopy = name;
+  aaTracker = [tracker aaTracker];
+  [(ICNAController *)self newAATrackerWithName:nameCopy parentAATracker:aaTracker completionBlock:blockCopy];
 }
 
-- (void)newAATrackerWithName:(id)a3 parentAATracker:(id)a4 completionBlock:(id)a5
+- (void)newAATrackerWithName:(id)name parentAATracker:(id)tracker completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  nameCopy = name;
+  trackerCopy = tracker;
+  blockCopy = block;
+  if (trackerCopy)
   {
-    v11 = v9;
+    tracker = trackerCopy;
   }
 
   else
   {
-    v12 = [(ICNAController *)self sessionManager];
-    v11 = [v12 tracker];
+    sessionManager = [(ICNAController *)self sessionManager];
+    tracker = [sessionManager tracker];
   }
 
-  v16 = v11;
-  v17 = v8;
-  v18 = v10;
-  v13 = v10;
-  v14 = v8;
-  v15 = v11;
+  v16 = tracker;
+  v17 = nameCopy;
+  v18 = blockCopy;
+  v13 = blockCopy;
+  v14 = nameCopy;
+  v15 = tracker;
   performBlockOnMainThreadAndWait();
 }
 
@@ -2349,22 +2349,22 @@ uint64_t __71__ICNAController_newAATrackerWithName_parentAATracker_completionBlo
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)trackTimedEventType:(Class)a3 subTracker:(id)a4 synchronousTaskBeforeStarting:(id)a5
+- (void)trackTimedEventType:(Class)type subTracker:(id)tracker synchronousTaskBeforeStarting:(id)starting
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ICNAController *)self instrumentationQueue];
+  trackerCopy = tracker;
+  startingCopy = starting;
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __79__ICNAController_trackTimedEventType_subTracker_synchronousTaskBeforeStarting___block_invoke;
   v13[3] = &unk_2799B02F0;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a3;
-  v11 = v8;
-  v12 = v9;
-  dispatch_async(v10, v13);
+  v14 = trackerCopy;
+  selfCopy = self;
+  v16 = startingCopy;
+  typeCopy = type;
+  v11 = trackerCopy;
+  v12 = startingCopy;
+  dispatch_async(instrumentationQueue, v13);
 }
 
 void __79__ICNAController_trackTimedEventType_subTracker_synchronousTaskBeforeStarting___block_invoke(uint64_t a1)
@@ -2408,23 +2408,23 @@ LABEL_5:
 LABEL_10:
 }
 
-- (void)pushDataObject:(id)a3 unique:(BOOL)a4 onlyOnce:(BOOL)a5 subTracker:(id)a6
+- (void)pushDataObject:(id)object unique:(BOOL)unique onlyOnce:(BOOL)once subTracker:(id)tracker
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(ICNAController *)self instrumentationQueue];
+  objectCopy = object;
+  trackerCopy = tracker;
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__ICNAController_pushDataObject_unique_onlyOnce_subTracker___block_invoke;
   v15[3] = &unk_2799B0318;
-  v16 = v11;
-  v17 = self;
-  v19 = a4;
-  v20 = a5;
-  v18 = v10;
-  v13 = v10;
-  v14 = v11;
-  dispatch_async(v12, v15);
+  v16 = trackerCopy;
+  selfCopy = self;
+  uniqueCopy = unique;
+  onceCopy = once;
+  v18 = objectCopy;
+  v13 = objectCopy;
+  v14 = trackerCopy;
+  dispatch_async(instrumentationQueue, v15);
 }
 
 void __60__ICNAController_pushDataObject_unique_onlyOnce_subTracker___block_invoke(uint64_t a1)
@@ -2472,23 +2472,23 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)pushDataObjects:(id)a3 unique:(BOOL)a4 onlyOnce:(BOOL)a5 subTracker:(id)a6
+- (void)pushDataObjects:(id)objects unique:(BOOL)unique onlyOnce:(BOOL)once subTracker:(id)tracker
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(ICNAController *)self instrumentationQueue];
+  objectsCopy = objects;
+  trackerCopy = tracker;
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__ICNAController_pushDataObjects_unique_onlyOnce_subTracker___block_invoke;
   v15[3] = &unk_2799B0318;
-  v16 = v11;
-  v17 = self;
-  v19 = a4;
-  v20 = a5;
-  v18 = v10;
-  v13 = v10;
-  v14 = v11;
-  dispatch_async(v12, v15);
+  v16 = trackerCopy;
+  selfCopy = self;
+  uniqueCopy = unique;
+  onceCopy = once;
+  v18 = objectsCopy;
+  v13 = objectsCopy;
+  v14 = trackerCopy;
+  dispatch_async(instrumentationQueue, v15);
 }
 
 void __61__ICNAController_pushDataObjects_unique_onlyOnce_subTracker___block_invoke(uint64_t a1)
@@ -2596,19 +2596,19 @@ LABEL_23:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)popDataObjectWithType:(Class)a3 subTracker:(id)a4
+- (void)popDataObjectWithType:(Class)type subTracker:(id)tracker
 {
-  v6 = a4;
-  v7 = [(ICNAController *)self instrumentationQueue];
+  trackerCopy = tracker;
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__ICNAController_popDataObjectWithType_subTracker___block_invoke;
   block[3] = &unk_2799B0340;
-  v10 = v6;
-  v11 = self;
-  v12 = a3;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = trackerCopy;
+  selfCopy = self;
+  typeCopy = type;
+  v8 = trackerCopy;
+  dispatch_async(instrumentationQueue, block);
 }
 
 void __51__ICNAController_popDataObjectWithType_subTracker___block_invoke(uint64_t a1)
@@ -2646,21 +2646,21 @@ LABEL_3:
 LABEL_8:
 }
 
-- (void)popDataObjectsWithTypes:(id)a3 subTracker:(id)a4
+- (void)popDataObjectsWithTypes:(id)types subTracker:(id)tracker
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICNAController *)self instrumentationQueue];
+  typesCopy = types;
+  trackerCopy = tracker;
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__ICNAController_popDataObjectsWithTypes_subTracker___block_invoke;
   block[3] = &unk_2799B0250;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = trackerCopy;
+  selfCopy = self;
+  v14 = typesCopy;
+  v9 = typesCopy;
+  v10 = trackerCopy;
+  dispatch_async(instrumentationQueue, block);
 }
 
 void __53__ICNAController_popDataObjectsWithTypes_subTracker___block_invoke(uint64_t a1)
@@ -2728,22 +2728,22 @@ LABEL_14:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitEventOfType:(Class)a3 subTracker:(id)a4 synchronousTaskBeforeSubmitting:(id)a5
+- (void)submitEventOfType:(Class)type subTracker:(id)tracker synchronousTaskBeforeSubmitting:(id)submitting
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ICNAController *)self instrumentationQueue];
+  trackerCopy = tracker;
+  submittingCopy = submitting;
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __79__ICNAController_submitEventOfType_subTracker_synchronousTaskBeforeSubmitting___block_invoke;
   v13[3] = &unk_2799B0368;
-  v15 = v9;
-  v16 = a3;
+  v15 = submittingCopy;
+  typeCopy = type;
   v13[4] = self;
-  v14 = v8;
-  v11 = v8;
-  v12 = v9;
-  dispatch_async(v10, v13);
+  v14 = trackerCopy;
+  v11 = trackerCopy;
+  v12 = submittingCopy;
+  dispatch_async(instrumentationQueue, v13);
 }
 
 void __79__ICNAController_submitEventOfType_subTracker_synchronousTaskBeforeSubmitting___block_invoke(void *a1)
@@ -2768,24 +2768,24 @@ void __79__ICNAController_submitEventOfType_subTracker_synchronousTaskBeforeSubm
   }
 }
 
-- (void)_immediatelySubmitEventOfType:(Class)a3 subTracker:(id)a4
+- (void)_immediatelySubmitEventOfType:(Class)type subTracker:(id)tracker
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  trackerCopy = tracker;
+  v7 = trackerCopy;
+  if (trackerCopy)
   {
-    v8 = [v6 aaTracker];
+    aaTracker = [trackerCopy aaTracker];
   }
 
   else
   {
-    v9 = [(ICNAController *)self sessionManager];
-    v8 = [v9 tracker];
+    sessionManager = [(ICNAController *)self sessionManager];
+    aaTracker = [sessionManager tracker];
   }
 
   v10 = os_log_create("com.apple.notes", "Analytics");
   v11 = v10;
-  if (v8)
+  if (aaTracker)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -2797,8 +2797,8 @@ void __79__ICNAController_submitEventOfType_subTracker_synchronousTaskBeforeSubm
     v13[1] = 3221225472;
     v13[2] = __59__ICNAController__immediatelySubmitEventOfType_subTracker___block_invoke;
     v13[3] = &__block_descriptor_40_e36_v24__0__AAProcessEvent_8__NSError_16lu32l8;
-    v13[4] = a3;
-    [v8 submitEventType:v12 completion:v13];
+    v13[4] = type;
+    [aaTracker submitEventType:v12 completion:v13];
   }
 
   else
@@ -2823,43 +2823,43 @@ void __59__ICNAController__immediatelySubmitEventOfType_subTracker___block_invok
   }
 }
 
-- (void)submitEventOfType:(Class)a3 pushThenPopDataObjects:(id)a4 subTracker:(id)a5
+- (void)submitEventOfType:(Class)type pushThenPopDataObjects:(id)objects subTracker:(id)tracker
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ICNAController *)self instrumentationQueue];
+  objectsCopy = objects;
+  trackerCopy = tracker;
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __70__ICNAController_submitEventOfType_pushThenPopDataObjects_subTracker___block_invoke;
   v13[3] = &unk_2799B03B0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = objectsCopy;
+  v15 = trackerCopy;
+  typeCopy = type;
+  v11 = trackerCopy;
+  v12 = objectsCopy;
+  dispatch_async(instrumentationQueue, v13);
 }
 
-- (void)_immediatelySubmitEventOfType:(Class)a3 pushThenPopDataObjects:(id)a4 subTracker:(id)a5
+- (void)_immediatelySubmitEventOfType:(Class)type pushThenPopDataObjects:(id)objects subTracker:(id)tracker
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  objectsCopy = objects;
+  trackerCopy = tracker;
+  v10 = trackerCopy;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__5;
   v23 = __Block_byref_object_dispose__5;
-  if (v9)
+  if (trackerCopy)
   {
-    v24 = [v9 aaTracker];
+    aaTracker = [trackerCopy aaTracker];
   }
 
   else
   {
-    v11 = [(ICNAController *)self sessionManager];
-    v24 = [v11 tracker];
+    sessionManager = [(ICNAController *)self sessionManager];
+    aaTracker = [sessionManager tracker];
   }
 
   if (v20[5])
@@ -2869,7 +2869,7 @@ void __59__ICNAController__immediatelySubmitEventOfType_subTracker___block_invok
     v18[2] = __82__ICNAController__immediatelySubmitEventOfType_pushThenPopDataObjects_subTracker___block_invoke;
     v18[3] = &unk_2799B03D8;
     v18[4] = &v19;
-    [v8 enumerateObjectsUsingBlock:v18];
+    [objectsCopy enumerateObjectsUsingBlock:v18];
     v12 = os_log_create("com.apple.notes", "Analytics");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -2882,14 +2882,14 @@ void __59__ICNAController__immediatelySubmitEventOfType_subTracker___block_invok
     v17[1] = 3221225472;
     v17[2] = __82__ICNAController__immediatelySubmitEventOfType_pushThenPopDataObjects_subTracker___block_invoke_187;
     v17[3] = &__block_descriptor_40_e36_v24__0__AAProcessEvent_8__NSError_16lu32l8;
-    v17[4] = a3;
+    v17[4] = type;
     [v13 submitEventType:v14 completion:v17];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __82__ICNAController__immediatelySubmitEventOfType_pushThenPopDataObjects_subTracker___block_invoke_188;
     v16[3] = &unk_2799B03D8;
     v16[4] = &v19;
-    [v8 enumerateObjectsWithOptions:2 usingBlock:v16];
+    [objectsCopy enumerateObjectsWithOptions:2 usingBlock:v16];
   }
 
   else
@@ -2926,17 +2926,17 @@ uint64_t __82__ICNAController__immediatelySubmitEventOfType_pushThenPopDataObjec
   return [v1 popDataEventType:v2];
 }
 
-- (void)enterGroupWithSubtracker:(id)a3
+- (void)enterGroupWithSubtracker:(id)subtracker
 {
-  v4 = a3;
-  v5 = [(ICNAController *)self instrumentationQueue];
+  subtrackerCopy = subtracker;
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__ICNAController_enterGroupWithSubtracker___block_invoke;
   block[3] = &unk_2799AF130;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = subtrackerCopy;
+  v6 = subtrackerCopy;
+  dispatch_async(instrumentationQueue, block);
 }
 
 void __43__ICNAController_enterGroupWithSubtracker___block_invoke(uint64_t a1)
@@ -2945,20 +2945,20 @@ void __43__ICNAController_enterGroupWithSubtracker___block_invoke(uint64_t a1)
   [v1 enterGroup];
 }
 
-- (void)leaveGroupWithSubtracker:(id)a3 completionHandler:(id)a4
+- (void)leaveGroupWithSubtracker:(id)subtracker completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICNAController *)self instrumentationQueue];
+  subtrackerCopy = subtracker;
+  handlerCopy = handler;
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__ICNAController_leaveGroupWithSubtracker_completionHandler___block_invoke;
   v11[3] = &unk_2799B0400;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = subtrackerCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = subtrackerCopy;
+  dispatch_async(instrumentationQueue, v11);
 }
 
 uint64_t __61__ICNAController_leaveGroupWithSubtracker_completionHandler___block_invoke(uint64_t a1)
@@ -2979,8 +2979,8 @@ uint64_t __61__ICNAController_leaveGroupWithSubtracker_completionHandler___block
 
 - (void)removePreSydneyDAnalyticsData
 {
-  v2 = [(ICNAController *)self instrumentationQueue];
-  dispatch_async(v2, &__block_literal_global_190);
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
+  dispatch_async(instrumentationQueue, &__block_literal_global_190);
 }
 
 void __47__ICNAController_removePreSydneyDAnalyticsData__block_invoke()
@@ -3129,9 +3129,9 @@ void __47__ICNAController_removePreSydneyDAnalyticsData__block_invoke()
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)flushWithCompletionHandler:(id)a3
+- (void)flushWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.notes", "Analytics");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -3139,15 +3139,15 @@ void __47__ICNAController_removePreSydneyDAnalyticsData__block_invoke()
     _os_log_impl(&dword_25C6BF000, v5, OS_LOG_TYPE_INFO, "flushWithCompletionHandler started", buf, 2u);
   }
 
-  v6 = [(ICNAController *)self instrumentationQueue];
+  instrumentationQueue = [(ICNAController *)self instrumentationQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__ICNAController_flushWithCompletionHandler___block_invoke;
   v8[3] = &unk_2799B0400;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  dispatch_async(instrumentationQueue, v8);
 }
 
 void __45__ICNAController_flushWithCompletionHandler___block_invoke(uint64_t a1)
@@ -3159,41 +3159,41 @@ void __45__ICNAController_flushWithCompletionHandler___block_invoke(uint64_t a1)
 + (NSString)userID
 {
   v2 = +[ICNAIdentityManager sharedManager];
-  v3 = [v2 userID];
+  userID = [v2 userID];
 
-  return v3;
+  return userID;
 }
 
 + (id)privateUserID
 {
   v2 = +[ICNAIdentityManager sharedManager];
-  v3 = [v2 privateUserID];
+  privateUserID = [v2 privateUserID];
 
-  return v3;
+  return privateUserID;
 }
 
 + (NSString)saltVersion
 {
   v2 = +[ICNAIdentityManager sharedManager];
-  v3 = [v2 identityTimestampYYYYMM];
+  identityTimestampYYYYMM = [v2 identityTimestampYYYYMM];
 
-  return v3;
+  return identityTimestampYYYYMM;
 }
 
 + (unint64_t)startYear
 {
   v2 = +[ICNAIdentityManager sharedManager];
-  v3 = [v2 startYear];
+  startYear = [v2 startYear];
 
-  return v3;
+  return startYear;
 }
 
 + (unint64_t)startMonth
 {
   v2 = +[ICNAIdentityManager sharedManager];
-  v3 = [v2 startMonth];
+  startMonth = [v2 startMonth];
 
-  return v3;
+  return startMonth;
 }
 
 + (NSString)deviceModel
@@ -3209,34 +3209,34 @@ void __45__ICNAController_flushWithCompletionHandler___block_invoke(uint64_t a1)
 
 + (NSString)devicePlatform
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 systemName];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  systemName = [currentDevice systemName];
 
-  return v3;
+  return systemName;
 }
 
 + (BOOL)audioTranscriptEnabled
 {
-  v2 = [MEMORY[0x277D36218] sharedInstance];
-  v3 = [v2 supportsGeneralASR];
+  mEMORY[0x277D36218] = [MEMORY[0x277D36218] sharedInstance];
+  supportsGeneralASR = [mEMORY[0x277D36218] supportsGeneralASR];
 
-  return v3;
+  return supportsGeneralASR;
 }
 
 + (BOOL)audioSummaryEnabled
 {
-  v2 = [MEMORY[0x277D36218] sharedInstance];
-  v3 = [v2 supportsPrivateCloudComputeSummary];
+  mEMORY[0x277D36218] = [MEMORY[0x277D36218] sharedInstance];
+  supportsPrivateCloudComputeSummary = [mEMORY[0x277D36218] supportsPrivateCloudComputeSummary];
 
-  return v3;
+  return supportsPrivateCloudComputeSummary;
 }
 
 + (BOOL)localNotesEnabled
 {
   v2 = [MEMORY[0x277D36260] objectForKey:@"LocalNotes"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (NSString)osVersion
@@ -3281,40 +3281,40 @@ void __33__ICNAController_osBundleVersion__block_invoke()
 
 + (NSString)deviceID
 {
-  v2 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  v3 = [v2 stringForKey:@"analytics_device_id"];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  uUIDString = [mEMORY[0x277D36180] stringForKey:@"analytics_device_id"];
 
-  if (!v3)
+  if (!uUIDString)
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v3 = [v4 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v5 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-    [v5 setObject:v3 forKey:@"analytics_device_id"];
+    mEMORY[0x277D36180]2 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+    [mEMORY[0x277D36180]2 setObject:uUIDString forKey:@"analytics_device_id"];
   }
 
-  return v3;
+  return uUIDString;
 }
 
 + (NSString)storeFrontID
 {
-  v2 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  v3 = [v2 ams_activeiTunesAccount];
-  v4 = v3;
-  if (v3)
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+  v4 = ams_activeiTunesAccount;
+  if (ams_activeiTunesAccount)
   {
-    v5 = v3;
+    ams_localiTunesAccount = ams_activeiTunesAccount;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-    v5 = [v6 ams_localiTunesAccount];
+    ams_sharedAccountStore2 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+    ams_localiTunesAccount = [ams_sharedAccountStore2 ams_localiTunesAccount];
   }
 
-  v7 = [v5 ams_storefront];
+  ams_storefront = [ams_localiTunesAccount ams_storefront];
 
-  return v7;
+  return ams_storefront;
 }
 
 - (ICNAControllerAppDelegate)appDelegate

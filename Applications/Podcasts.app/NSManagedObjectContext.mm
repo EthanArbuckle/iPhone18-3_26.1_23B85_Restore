@@ -1,41 +1,41 @@
 @interface NSManagedObjectContext
 - (BOOL)deleteAllUPPMetadata;
-- (id)uppMetadataForMetadataIdentifier:(id)a3;
-- (id)uppMetadataForMetadataIdentifiers:(id)a3;
+- (id)uppMetadataForMetadataIdentifier:(id)identifier;
+- (id)uppMetadataForMetadataIdentifiers:(id)identifiers;
 @end
 
 @implementation NSManagedObjectContext
 
-- (id)uppMetadataForMetadataIdentifier:(id)a3
+- (id)uppMetadataForMetadataIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
+    identifierCopy = identifier;
     v5 = [[NSFetchRequest alloc] initWithEntityName:@"MTUPPMetadata"];
-    v6 = [NSPredicate predicateWithFormat:@"%K = %@", @"metadataIdentifier", v4];
+    identifierCopy = [NSPredicate predicateWithFormat:@"%K = %@", @"metadataIdentifier", identifierCopy];
 
-    [v5 setPredicate:v6];
+    [v5 setPredicate:identifierCopy];
     [v5 setReturnsObjectsAsFaults:0];
     [v5 setFetchLimit:1];
     v7 = [(NSManagedObjectContext *)self executeFetchRequest:v5];
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
   }
 
   else
   {
-    v8 = 0;
+    firstObject = 0;
   }
 
-  return v8;
+  return firstObject;
 }
 
-- (id)uppMetadataForMetadataIdentifiers:(id)a3
+- (id)uppMetadataForMetadataIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if ([v4 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v5 = [NSPredicate predicateWithFormat:@"%K IN %@", @"metadataIdentifier", v4];
-    v6 = [(NSManagedObjectContext *)self objectsInEntity:@"MTUPPMetadata" predicate:v5 sortDescriptors:0];
+    identifiersCopy = [NSPredicate predicateWithFormat:@"%K IN %@", @"metadataIdentifier", identifiersCopy];
+    v6 = [(NSManagedObjectContext *)self objectsInEntity:@"MTUPPMetadata" predicate:identifiersCopy sortDescriptors:0];
   }
 
   else

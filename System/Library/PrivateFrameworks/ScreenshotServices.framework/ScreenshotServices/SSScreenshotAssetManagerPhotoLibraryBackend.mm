@@ -1,81 +1,81 @@
 @interface SSScreenshotAssetManagerPhotoLibraryBackend
-+ (id)_gameHighlightsImageDataFromImage:(id)a3 withOptions:(id)a4;
-+ (id)_gameHighlightsImageDataFromImageData:(id)a3 withOptions:(id)a4;
-+ (id)jpegImageDataFromImage:(id)a3 withProperties:(id)a4;
-- (id)_ARKitImageDataFromImage:(id)a3;
++ (id)_gameHighlightsImageDataFromImage:(id)image withOptions:(id)options;
++ (id)_gameHighlightsImageDataFromImageData:(id)data withOptions:(id)options;
++ (id)jpegImageDataFromImage:(id)image withProperties:(id)properties;
+- (id)_ARKitImageDataFromImage:(id)image;
 - (id)photoLibrary;
-- (void)_registerEntryWithImage:(id)a3 options:(id)a4 retry:(BOOL)a5 identifierHandler:(id)a6;
-- (void)imageForPreviouslyRegisteredIdentifier:(id)a3 imageHandler:(id)a4;
-- (void)removeEntryWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)saveImageDataToTemporaryLocation:(id)a3 withName:(id)a4 imageDescription:(id)a5 completionHandler:(id)a6;
-- (void)saveImageToTemporaryLocation:(id)a3 withName:(id)a4 imageDescription:(id)a5 completionHandler:(id)a6;
-- (void)updateImageData:(id)a3 withModificationData:(id)a4 forEntryWithIdentifier:(id)a5 registrationOptions:(id)a6 imageDescription:(id)a7 completionHandler:(id)a8;
+- (void)_registerEntryWithImage:(id)image options:(id)options retry:(BOOL)retry identifierHandler:(id)handler;
+- (void)imageForPreviouslyRegisteredIdentifier:(id)identifier imageHandler:(id)handler;
+- (void)removeEntryWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)saveImageDataToTemporaryLocation:(id)location withName:(id)name imageDescription:(id)description completionHandler:(id)handler;
+- (void)saveImageToTemporaryLocation:(id)location withName:(id)name imageDescription:(id)description completionHandler:(id)handler;
+- (void)updateImageData:(id)data withModificationData:(id)modificationData forEntryWithIdentifier:(id)identifier registrationOptions:(id)options imageDescription:(id)description completionHandler:(id)handler;
 @end
 
 @implementation SSScreenshotAssetManagerPhotoLibraryBackend
 
 - (id)photoLibrary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  photoLibrary = v2->_photoLibrary;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  photoLibrary = selfCopy->_photoLibrary;
   if (!photoLibrary)
   {
     v4 = objc_alloc(MEMORY[0x1E69789A8]);
-    v5 = [MEMORY[0x1E69789A8] systemPhotoLibraryURL];
-    v6 = [v4 initWithPhotoLibraryURL:v5];
-    v7 = v2->_photoLibrary;
-    v2->_photoLibrary = v6;
+    systemPhotoLibraryURL = [MEMORY[0x1E69789A8] systemPhotoLibraryURL];
+    v6 = [v4 initWithPhotoLibraryURL:systemPhotoLibraryURL];
+    v7 = selfCopy->_photoLibrary;
+    selfCopy->_photoLibrary = v6;
 
-    photoLibrary = v2->_photoLibrary;
+    photoLibrary = selfCopy->_photoLibrary;
   }
 
   v8 = photoLibrary;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (id)_ARKitImageDataFromImage:(id)a3
+- (id)_ARKitImageDataFromImage:(id)image
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11 = *MEMORY[0x1E696DE30];
   v9 = *MEMORY[0x1E69867A0];
   v10 = MEMORY[0x1E695E118];
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  imageCopy = image;
   v5 = [v3 dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v12[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  v7 = [objc_opt_class() jpegImageDataFromImage:v4 withProperties:v6];
+  v7 = [objc_opt_class() jpegImageDataFromImage:imageCopy withProperties:v6];
 
   return v7;
 }
 
-+ (id)jpegImageDataFromImage:(id)a3 withProperties:(id)a4
++ (id)jpegImageDataFromImage:(id)image withProperties:(id)properties
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 CGImage];
-  if (v7)
+  imageCopy = image;
+  propertiesCopy = properties;
+  cGImage = [imageCopy CGImage];
+  if (cGImage)
   {
-    v8 = v7;
-    v9 = [MEMORY[0x1E695DF88] data];
-    v10 = CGImageDestinationCreateWithData(v9, @"public.jpeg", 1uLL, 0);
+    v8 = cGImage;
+    data = [MEMORY[0x1E695DF88] data];
+    v10 = CGImageDestinationCreateWithData(data, @"public.jpeg", 1uLL, 0);
     if (v10)
     {
       v11 = v10;
-      CGImageDestinationAddImage(v10, v8, v6);
+      CGImageDestinationAddImage(v10, v8, propertiesCopy);
       if (!CGImageDestinationFinalize(v11))
       {
         v12 = os_log_create("com.apple.screenshotservices", "PhotoLibrary");
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          [SSScreenshotAssetManagerPhotoLibraryBackend jpegImageDataFromImage:v5 withProperties:?];
+          [SSScreenshotAssetManagerPhotoLibraryBackend jpegImageDataFromImage:imageCopy withProperties:?];
         }
 
-        v9 = 0;
+        data = 0;
       }
 
       CFRelease(v11);
@@ -86,7 +86,7 @@
       v14 = os_log_create("com.apple.screenshotservices", "PhotoLibrary");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [SSScreenshotAssetManagerPhotoLibraryBackend jpegImageDataFromImage:v5 withProperties:?];
+        [SSScreenshotAssetManagerPhotoLibraryBackend jpegImageDataFromImage:imageCopy withProperties:?];
       }
     }
   }
@@ -96,32 +96,32 @@
     v13 = os_log_create("com.apple.screenshotservices", "PhotoLibrary");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [SSScreenshotAssetManagerPhotoLibraryBackend jpegImageDataFromImage:v5 withProperties:?];
+      [SSScreenshotAssetManagerPhotoLibraryBackend jpegImageDataFromImage:imageCopy withProperties:?];
     }
 
-    v9 = 0;
+    data = 0;
   }
 
-  return v9;
+  return data;
 }
 
-+ (id)_gameHighlightsImageDataFromImageData:(id)a3 withOptions:(id)a4
++ (id)_gameHighlightsImageDataFromImageData:(id)data withOptions:(id)options
 {
   v5 = MEMORY[0x1E69DCAB8];
-  v6 = a4;
-  v7 = [v5 imageWithData:a3];
-  v8 = [objc_opt_class() _gameHighlightsImageDataFromImage:v7 withOptions:v6];
+  optionsCopy = options;
+  v7 = [v5 imageWithData:data];
+  v8 = [objc_opt_class() _gameHighlightsImageDataFromImage:v7 withOptions:optionsCopy];
 
   return v8;
 }
 
-+ (id)_gameHighlightsImageDataFromImage:(id)a3 withOptions:(id)a4
++ (id)_gameHighlightsImageDataFromImage:(id)image withOptions:(id)options
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 assetMetadata];
-  v7 = [v6 assetDescription];
-  v8 = [v7 componentsJoinedByString:@" | "];
+  imageCopy = image;
+  assetMetadata = [options assetMetadata];
+  assetDescription = [assetMetadata assetDescription];
+  v8 = [assetDescription componentsJoinedByString:@" | "];
 
   v15 = *MEMORY[0x1E696DF40];
   v16[0] = v8;
@@ -129,18 +129,18 @@
   v13 = *MEMORY[0x1E696DF28];
   v14 = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-  v11 = [objc_opt_class() jpegImageDataFromImage:v5 withProperties:v10];
+  v11 = [objc_opt_class() jpegImageDataFromImage:imageCopy withProperties:v10];
 
   return v11;
 }
 
-- (void)_registerEntryWithImage:(id)a3 options:(id)a4 retry:(BOOL)a5 identifierHandler:(id)a6
+- (void)_registerEntryWithImage:(id)image options:(id)options retry:(BOOL)retry identifierHandler:(id)handler
 {
-  v7 = a5;
+  retryCopy = retry;
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  imageCopy = image;
+  optionsCopy = options;
+  handlerCopy = handler;
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
@@ -150,37 +150,37 @@
   v13 = os_log_create("com.apple.screenshotservices", "PhotoLibrary");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [v10 description];
+    v14 = [imageCopy description];
     *buf = 138412546;
     v33 = v14;
     v34 = 1024;
-    v35 = v7;
+    v35 = retryCopy;
     _os_log_impl(&dword_1D9E04000, v13, OS_LOG_TYPE_INFO, "Saving screenshot with image %@ to the photo library (retry:%d)", buf, 0x12u);
   }
 
-  v15 = [(SSScreenshotAssetManagerPhotoLibraryBackend *)self photoLibrary];
+  photoLibrary = [(SSScreenshotAssetManagerPhotoLibraryBackend *)self photoLibrary];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __103__SSScreenshotAssetManagerPhotoLibraryBackend__registerEntryWithImage_options_retry_identifierHandler___block_invoke;
   v25[3] = &unk_1E8590420;
-  v26 = v11;
-  v27 = v10;
-  v28 = self;
+  v26 = optionsCopy;
+  v27 = imageCopy;
+  selfCopy = self;
   v29 = v30;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __103__SSScreenshotAssetManagerPhotoLibraryBackend__registerEntryWithImage_options_retry_identifierHandler___block_invoke_51;
   v19[3] = &unk_1E8590448;
-  v24 = v7;
+  v24 = retryCopy;
   v19[4] = self;
   v16 = v27;
   v20 = v16;
   v17 = v26;
   v21 = v17;
-  v18 = v12;
+  v18 = handlerCopy;
   v22 = v18;
   v23 = v30;
-  [v15 performChanges:v25 completionHandler:v19];
+  [photoLibrary performChanges:v25 completionHandler:v19];
 
   _Block_object_dispose(v30, 8);
 }
@@ -314,18 +314,18 @@ LABEL_12:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)imageForPreviouslyRegisteredIdentifier:(id)a3 imageHandler:(id)a4
+- (void)imageForPreviouslyRegisteredIdentifier:(id)identifier imageHandler:(id)handler
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E6978630];
-  v23[0] = v6;
+  v23[0] = identifierCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
-  v10 = [(SSScreenshotAssetManagerPhotoLibraryBackend *)self photoLibrary];
-  v11 = [v10 librarySpecificFetchOptions];
-  v12 = [v8 fetchAssetsWithLocalIdentifiers:v9 options:v11];
-  v13 = [v12 firstObject];
+  photoLibrary = [(SSScreenshotAssetManagerPhotoLibraryBackend *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  v12 = [v8 fetchAssetsWithLocalIdentifiers:v9 options:librarySpecificFetchOptions];
+  firstObject = [v12 firstObject];
 
   v14 = *MEMORY[0x1E6978E30];
   v15 = *(MEMORY[0x1E6978E30] + 8);
@@ -333,16 +333,16 @@ LABEL_12:
   [v16 setSynchronous:1];
   [v16 setResizeMode:0];
   [v16 setDeliveryMode:1];
-  v17 = [MEMORY[0x1E6978860] defaultManager];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __99__SSScreenshotAssetManagerPhotoLibraryBackend_imageForPreviouslyRegisteredIdentifier_imageHandler___block_invoke;
   v20[3] = &unk_1E8590470;
-  v21 = v6;
-  v22 = v7;
-  v18 = v7;
-  v19 = v6;
-  [v17 requestImageForAsset:v13 targetSize:0 contentMode:v16 options:v20 resultHandler:{v14, v15}];
+  v21 = identifierCopy;
+  v22 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = identifierCopy;
+  [defaultManager requestImageForAsset:firstObject targetSize:0 contentMode:v16 options:v20 resultHandler:{v14, v15}];
 }
 
 void __99__SSScreenshotAssetManagerPhotoLibraryBackend_imageForPreviouslyRegisteredIdentifier_imageHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -387,65 +387,65 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)updateImageData:(id)a3 withModificationData:(id)a4 forEntryWithIdentifier:(id)a5 registrationOptions:(id)a6 imageDescription:(id)a7 completionHandler:(id)a8
+- (void)updateImageData:(id)data withModificationData:(id)modificationData forEntryWithIdentifier:(id)identifier registrationOptions:(id)options imageDescription:(id)description completionHandler:(id)handler
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v30 = a4;
-  v15 = a5;
-  v16 = a6;
-  v29 = a7;
-  v17 = a8;
-  v18 = [MEMORY[0x1E69DCAB8] ss_isHEICImageData:v14];
-  if ([v16 saveLocation] == 2)
+  dataCopy = data;
+  modificationDataCopy = modificationData;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  descriptionCopy = description;
+  handlerCopy = handler;
+  v18 = [MEMORY[0x1E69DCAB8] ss_isHEICImageData:dataCopy];
+  if ([optionsCopy saveLocation] == 2)
   {
-    v19 = [objc_opt_class() _gameHighlightsImageDataFromImageData:v14 withOptions:v16];
+    v19 = [objc_opt_class() _gameHighlightsImageDataFromImageData:dataCopy withOptions:optionsCopy];
 
     v18 = 0;
-    v14 = v19;
+    dataCopy = v19;
   }
 
   v20 = MEMORY[0x1E6978630];
-  v41[0] = v15;
+  v41[0] = identifierCopy;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
-  v22 = [(SSScreenshotAssetManagerPhotoLibraryBackend *)self photoLibrary];
-  v23 = [v22 librarySpecificFetchOptions];
-  v24 = [v20 fetchAssetsWithLocalIdentifiers:v21 options:v23];
-  v25 = [v24 firstObject];
+  photoLibrary = [(SSScreenshotAssetManagerPhotoLibraryBackend *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  v24 = [v20 fetchAssetsWithLocalIdentifiers:v21 options:librarySpecificFetchOptions];
+  firstObject = [v24 firstObject];
 
-  if (v25)
+  if (firstObject)
   {
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __162__SSScreenshotAssetManagerPhotoLibraryBackend_updateImageData_withModificationData_forEntryWithIdentifier_registrationOptions_imageDescription_completionHandler___block_invoke;
     v31[3] = &unk_1E85904E8;
     v38 = v18;
-    v26 = v30;
-    v32 = v30;
-    v33 = v14;
-    v34 = v15;
-    v35 = v25;
-    v37 = v17;
-    v27 = v29;
-    v36 = v29;
+    v26 = modificationDataCopy;
+    v32 = modificationDataCopy;
+    v33 = dataCopy;
+    v34 = identifierCopy;
+    v35 = firstObject;
+    v37 = handlerCopy;
+    v27 = descriptionCopy;
+    v36 = descriptionCopy;
     [v35 requestContentEditingInputWithOptions:0 completionHandler:v31];
   }
 
   else
   {
     v28 = os_log_create("com.apple.screenshotservices", "PhotoLibrary");
-    v26 = v30;
+    v26 = modificationDataCopy;
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v40 = v15;
+      v40 = identifierCopy;
       _os_log_impl(&dword_1D9E04000, v28, OS_LOG_TYPE_DEFAULT, "Asset update skipped: asset with identifier %@ not found in photo library", buf, 0xCu);
     }
 
-    v27 = v29;
-    if (v17)
+    v27 = descriptionCopy;
+    if (handlerCopy)
     {
-      (*(v17 + 2))(v17, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 }
@@ -583,37 +583,37 @@ void __162__SSScreenshotAssetManagerPhotoLibraryBackend_updateImageData_withModi
   }
 }
 
-- (void)saveImageToTemporaryLocation:(id)a3 withName:(id)a4 imageDescription:(id)a5 completionHandler:(id)a6
+- (void)saveImageToTemporaryLocation:(id)location withName:(id)name imageDescription:(id)description completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  if ([v13 ss_isHDRImage])
+  handlerCopy = handler;
+  descriptionCopy = description;
+  nameCopy = name;
+  locationCopy = location;
+  if ([locationCopy ss_isHDRImage])
   {
-    [v13 ss_heicDataWithImageDescription:0];
+    [locationCopy ss_heicDataWithImageDescription:0];
   }
 
   else
   {
-    [v13 ss_pngDataWithImageDescription:0];
+    [locationCopy ss_pngDataWithImageDescription:0];
   }
   v14 = ;
 
-  [(SSScreenshotAssetManagerPhotoLibraryBackend *)self saveImageDataToTemporaryLocation:v14 withName:v12 imageDescription:v11 completionHandler:v10];
+  [(SSScreenshotAssetManagerPhotoLibraryBackend *)self saveImageDataToTemporaryLocation:v14 withName:nameCopy imageDescription:descriptionCopy completionHandler:handlerCopy];
 }
 
-- (void)saveImageDataToTemporaryLocation:(id)a3 withName:(id)a4 imageDescription:(id)a5 completionHandler:(id)a6
+- (void)saveImageDataToTemporaryLocation:(id)location withName:(id)name imageDescription:(id)description completionHandler:(id)handler
 {
-  v35 = a3;
-  v9 = a4;
-  v34 = a5;
-  v33 = a6;
+  locationCopy = location;
+  nameCopy = name;
+  descriptionCopy = description;
+  handlerCopy = handler;
   v10 = 0;
   v11 = 1;
   do
   {
-    v12 = v9;
+    v12 = nameCopy;
 
     v13 = v12;
     if (v11 != 1)
@@ -626,7 +626,7 @@ void __162__SSScreenshotAssetManagerPhotoLibraryBackend_updateImageData_withModi
       v13 = [v17 stringByAppendingString:v16];
     }
 
-    v18 = [MEMORY[0x1E69DCAB8] ss_isHEICImageData:{v35, v33}];
+    v18 = [MEMORY[0x1E69DCAB8] ss_isHEICImageData:{locationCopy, handlerCopy}];
     v19 = NSTemporaryDirectory();
     if (v18)
     {
@@ -641,8 +641,8 @@ void __162__SSScreenshotAssetManagerPhotoLibraryBackend_updateImageData_withModi
     v21 = [v13 stringByAppendingPathExtension:v20];
     v10 = [v19 stringByAppendingPathComponent:v21];
 
-    v22 = [MEMORY[0x1E696AC08] defaultManager];
-    v23 = [v22 fileExistsAtPath:v10];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v23 = [defaultManager fileExistsAtPath:v10];
 
     ++v11;
   }
@@ -650,9 +650,9 @@ void __162__SSScreenshotAssetManagerPhotoLibraryBackend_updateImageData_withModi
   while ((v23 & 1) != 0);
   v24 = [MEMORY[0x1E695DFF8] fileURLWithPath:v10];
   v37 = 0;
-  [v35 writeToURL:v24 options:0 error:&v37];
+  [locationCopy writeToURL:v24 options:0 error:&v37];
   v25 = v37;
-  if ([v34 length])
+  if ([descriptionCopy length])
   {
     err = 0;
     v39 = 0;
@@ -679,7 +679,7 @@ void __162__SSScreenshotAssetManagerPhotoLibraryBackend_updateImageData_withModi
       _Unwind_Resume(v32);
     }
 
-    if ((v26(v24, v34, &err) & 1) == 0)
+    if ((v26(v24, descriptionCopy, &err) & 1) == 0)
     {
       if (err)
       {
@@ -719,40 +719,40 @@ void __162__SSScreenshotAssetManagerPhotoLibraryBackend_updateImageData_withModi
     }
   }
 
-  v33[2](v33, v24, v25);
+  handlerCopy[2](handlerCopy, v24, v25);
 }
 
-- (void)removeEntryWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)removeEntryWithIdentifier:(id)identifier completionHandler:(id)handler
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E6978630];
-  v25[0] = v6;
+  v25[0] = identifierCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
-  v10 = [(SSScreenshotAssetManagerPhotoLibraryBackend *)self photoLibrary];
-  v11 = [v10 librarySpecificFetchOptions];
-  v12 = [v8 fetchAssetsWithLocalIdentifiers:v9 options:v11];
-  v13 = [v12 firstObject];
+  photoLibrary = [(SSScreenshotAssetManagerPhotoLibraryBackend *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  v12 = [v8 fetchAssetsWithLocalIdentifiers:v9 options:librarySpecificFetchOptions];
+  firstObject = [v12 firstObject];
 
-  if (v13)
+  if (firstObject)
   {
-    v14 = [v13 photoLibrary];
-    if (v14)
+    photoLibrary2 = [firstObject photoLibrary];
+    if (photoLibrary2)
     {
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __91__SSScreenshotAssetManagerPhotoLibraryBackend_removeEntryWithIdentifier_completionHandler___block_invoke;
       v20[3] = &unk_1E85903B8;
-      v21 = v6;
-      v22 = self;
+      v21 = identifierCopy;
+      selfCopy = self;
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __91__SSScreenshotAssetManagerPhotoLibraryBackend_removeEntryWithIdentifier_completionHandler___block_invoke_2;
       v17[3] = &unk_1E85904C0;
       v18 = v21;
-      v19 = v7;
-      [v14 performChanges:v20 completionHandler:v17];
+      v19 = handlerCopy;
+      [photoLibrary2 performChanges:v20 completionHandler:v17];
     }
 
     else
@@ -763,9 +763,9 @@ void __162__SSScreenshotAssetManagerPhotoLibraryBackend_updateImageData_withModi
         [SSScreenshotAssetManagerPhotoLibraryBackend removeEntryWithIdentifier:completionHandler:];
       }
 
-      if (v7)
+      if (handlerCopy)
       {
-        (*(v7 + 2))(v7, 0, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0);
       }
     }
   }
@@ -776,13 +776,13 @@ void __162__SSScreenshotAssetManagerPhotoLibraryBackend_updateImageData_withModi
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v6;
+      v24 = identifierCopy;
       _os_log_impl(&dword_1D9E04000, v15, OS_LOG_TYPE_DEFAULT, "Asset with identifier %@ not found, assume already deleted", buf, 0xCu);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, 1, 0);
+      (*(handlerCopy + 2))(handlerCopy, 1, 0);
     }
   }
 }

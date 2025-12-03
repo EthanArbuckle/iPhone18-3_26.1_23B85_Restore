@@ -16,7 +16,7 @@
   {
     if (!sel_isEqual([v4 selector], sel_bundleId))
     {
-      v6.receiver = a1;
+      v6.receiver = self;
       v6.super_class = &off_2847610C0;
       objc_msgSendSuper2(&v6, sel_forwardInvocation_, v4);
       goto LABEL_7;

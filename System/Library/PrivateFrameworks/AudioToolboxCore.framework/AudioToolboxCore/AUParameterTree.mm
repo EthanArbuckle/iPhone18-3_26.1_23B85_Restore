@@ -5,15 +5,15 @@
 + (AUParameterTree)createTreeWithChildren:(NSArray *)children;
 - (AUAudioUnit_XH)_auXH;
 - (AUParameter)parameterWithAddress:(AUParameterAddress)address;
-- (AUParameterTree)initWithChildren:(id)a3;
-- (AUParameterTree)initWithCoder:(id)a3;
+- (AUParameterTree)initWithChildren:(id)children;
+- (AUParameterTree)initWithCoder:(id)coder;
 - (NSXPCConnection)remoteParameterSynchronizerXPCConnection;
 - (id).cxx_construct;
 - (vector<AddressToParameter,)addrToParamIndex;
 - (void)_checkInitTreeObservation;
 - (void)_init2;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAddrToParamIndex:()vector<AddressToParameter;
 @end
 
@@ -169,35 +169,35 @@
   return self;
 }
 
-- (AUParameterTree)initWithCoder:(id)a3
+- (AUParameterTree)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AUParameterTree;
-  v5 = [(AUParameterGroup *)&v7 initWithCoder:v4];
+  v5 = [(AUParameterGroup *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    -[AUParameterTree set_autoCreatedForV2AU:](v5, "set_autoCreatedForV2AU:", [v4 decodeIntForKey:@"autov2"]);
+    -[AUParameterTree set_autoCreatedForV2AU:](v5, "set_autoCreatedForV2AU:", [coderCopy decodeIntForKey:@"autov2"]);
     [(AUParameterTree *)v5 _init2];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = AUParameterTree;
-  [(AUParameterGroup *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt:-[AUParameterTree _autoCreatedForV2AU](self forKey:{"_autoCreatedForV2AU"), @"autov2"}];
+  [(AUParameterGroup *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt:-[AUParameterTree _autoCreatedForV2AU](self forKey:{"_autoCreatedForV2AU"), @"autov2"}];
 }
 
 - (void)_checkInitTreeObservation
 {
   if (!self->_observerController.__ptr_)
   {
-    v2 = self;
+    selfCopy = self;
     operator new();
   }
 }
@@ -254,12 +254,12 @@
   [(AUParameterGroup *)&v2 dealloc];
 }
 
-- (AUParameterTree)initWithChildren:(id)a3
+- (AUParameterTree)initWithChildren:(id)children
 {
-  v4 = a3;
+  childrenCopy = children;
   v8.receiver = self;
   v8.super_class = AUParameterTree;
-  v5 = [(AUParameterGroup *)&v8 initWithID:&stru_1F0340B48 name:&stru_1F0340B48 children:v4];
+  v5 = [(AUParameterGroup *)&v8 initWithID:&stru_1F0340B48 name:&stru_1F0340B48 children:childrenCopy];
   v6 = v5;
   if (v5)
   {

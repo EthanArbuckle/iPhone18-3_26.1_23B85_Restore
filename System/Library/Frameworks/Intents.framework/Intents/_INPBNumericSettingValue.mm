@@ -1,34 +1,34 @@
 @interface _INPBNumericSettingValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBNumericSettingValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBNumericSettingValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasValue:(BOOL)a3;
-- (void)setUnit:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasValue:(BOOL)value;
+- (void)setUnit:(int)unit;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBNumericSettingValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBNumericSettingValue *)self hasUnit])
   {
-    v4 = [(_INPBNumericSettingValue *)self unit];
-    if (v4 == 1)
+    unit = [(_INPBNumericSettingValue *)self unit];
+    if (unit == 1)
     {
       v5 = @"PERCENTAGE";
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", unit];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"unit"];
+    [dictionary setObject:v5 forKeyedSubscript:@"unit"];
   }
 
   if ([(_INPBNumericSettingValue *)self hasValue])
@@ -36,10 +36,10 @@
     v6 = MEMORY[0x1E696AD98];
     [(_INPBNumericSettingValue *)self value];
     v7 = [v6 numberWithDouble:?];
-    [v3 setObject:v7 forKeyedSubscript:@"value"];
+    [dictionary setObject:v7 forKeyedSubscript:@"value"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -90,21 +90,21 @@
   return v9 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBNumericSettingValue *)self hasUnit];
-    if (v5 == [v4 hasUnit])
+    hasUnit = [(_INPBNumericSettingValue *)self hasUnit];
+    if (hasUnit == [equalCopy hasUnit])
     {
-      if (!-[_INPBNumericSettingValue hasUnit](self, "hasUnit") || ![v4 hasUnit] || (unit = self->_unit, unit == objc_msgSend(v4, "unit")))
+      if (!-[_INPBNumericSettingValue hasUnit](self, "hasUnit") || ![equalCopy hasUnit] || (unit = self->_unit, unit == objc_msgSend(equalCopy, "unit")))
       {
-        v7 = [(_INPBNumericSettingValue *)self hasValue];
-        if (v7 == [v4 hasValue])
+        hasValue = [(_INPBNumericSettingValue *)self hasValue];
+        if (hasValue == [equalCopy hasValue])
         {
-          if (!-[_INPBNumericSettingValue hasValue](self, "hasValue") || ![v4 hasValue] || (value = self->_value, objc_msgSend(v4, "value"), value == v11))
+          if (!-[_INPBNumericSettingValue hasValue](self, "hasValue") || ![equalCopy hasValue] || (value = self->_value, objc_msgSend(equalCopy, "value"), value == v11))
           {
             v8 = 1;
           }
@@ -116,7 +116,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_INPBNumericSettingValue allocWithZone:?]];
   if ([(_INPBNumericSettingValue *)self hasUnit])
@@ -133,33 +133,33 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBNumericSettingValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBNumericSettingValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBNumericSettingValue)initWithCoder:(id)a3
+- (_INPBNumericSettingValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBNumericSettingValue *)self initWithData:v6];
+    self = [(_INPBNumericSettingValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ([(_INPBNumericSettingValue *)self hasUnit])
   {
     unit = self->_unit;
@@ -173,9 +173,9 @@
   }
 }
 
-- (void)setHasValue:(BOOL)a3
+- (void)setHasValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -188,10 +188,10 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setUnit:(int)a3
+- (void)setUnit:(int)unit
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (unit == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -199,7 +199,7 @@
   else
   {
     *&self->_has = has | 1;
-    self->_unit = a3;
+    self->_unit = unit;
   }
 }
 

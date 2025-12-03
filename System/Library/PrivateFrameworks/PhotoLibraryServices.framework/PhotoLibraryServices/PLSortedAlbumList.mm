@@ -1,40 +1,40 @@
 @interface PLSortedAlbumList
-- (BOOL)albumHasFixedOrder:(id)a3;
+- (BOOL)albumHasFixedOrder:(id)order;
 - (BOOL)canEditAlbums;
 - (BOOL)hasAtLeastOneAlbum;
 - (BOOL)isFolder;
-- (BOOL)mappedDataSourceChanged:(id)a3 remoteNotificationData:(id)a4;
+- (BOOL)mappedDataSourceChanged:(id)changed remoteNotificationData:(id)data;
 - (BOOL)needsReordering;
 - (NSMutableOrderedSet)_albums;
 - (NSObject)cachedIndexMapState;
 - (NSString)_typeDescription;
-- (PLSortedAlbumList)initWithAlbumList:(id)a3 sortComparator:(id)a4;
+- (PLSortedAlbumList)initWithAlbumList:(id)list sortComparator:(id)comparator;
 - (id)albums;
 - (id)albumsSortingComparator;
 - (id)managedObjectContext;
-- (id)objectInSortedAlbumsAtIndex:(unint64_t)a3;
+- (id)objectInSortedAlbumsAtIndex:(unint64_t)index;
 - (id)photoLibrary;
 - (int)filter;
 - (signed)albumListType;
 - (unint64_t)albumsCount;
-- (unint64_t)indexInSortedAlbumsOfObject:(id)a3;
+- (unint64_t)indexInSortedAlbumsOfObject:(id)object;
 - (unint64_t)unreadAlbumsCount;
 - (void)createSortedIndexesMap;
 - (void)dealloc;
-- (void)insertObject:(id)a3 inSortedAlbumsAtIndex:(unint64_t)a4;
-- (void)preheatAlbumsAtIndexes:(id)a3 forProperties:(id)a4 relationships:(id)a5;
-- (void)preheatAlbumsForProperties:(id)a3 relationships:(id)a4;
-- (void)removeObjectFromSortedAlbumsAtIndex:(unint64_t)a3;
-- (void)replaceObjectInSortedAlbumsAtIndex:(unint64_t)a3 withObject:(id)a4;
+- (void)insertObject:(id)object inSortedAlbumsAtIndex:(unint64_t)index;
+- (void)preheatAlbumsAtIndexes:(id)indexes forProperties:(id)properties relationships:(id)relationships;
+- (void)preheatAlbumsForProperties:(id)properties relationships:(id)relationships;
+- (void)removeObjectFromSortedAlbumsAtIndex:(unint64_t)index;
+- (void)replaceObjectInSortedAlbumsAtIndex:(unint64_t)index withObject:(id)object;
 - (void)setNeedsReordering;
 - (void)updateAlbumsOrderIfNeeded;
 @end
 
 @implementation PLSortedAlbumList
 
-- (BOOL)mappedDataSourceChanged:(id)a3 remoteNotificationData:(id)a4
+- (BOOL)mappedDataSourceChanged:(id)changed remoteNotificationData:(id)data
 {
-  [(PLSortedAlbumList *)self set_albums:0, a4];
+  [(PLSortedAlbumList *)self set_albums:0, data];
   toBackingMap = self->_toBackingMap;
   if (toBackingMap)
   {
@@ -63,55 +63,55 @@
   return fromBackingMap;
 }
 
-- (void)replaceObjectInSortedAlbumsAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectInSortedAlbumsAtIndex:(unint64_t)index withObject:(id)object
 {
-  v6 = a4;
-  v7 = backingIndexForIndex(self, a3);
-  v9 = [(PLSortedAlbumList *)self backingAlbumList];
-  v8 = [v9 albums];
-  [v8 replaceObjectAtIndex:v7 withObject:v6];
+  objectCopy = object;
+  v7 = backingIndexForIndex(self, index);
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  [albums replaceObjectAtIndex:v7 withObject:objectCopy];
 }
 
-- (void)removeObjectFromSortedAlbumsAtIndex:(unint64_t)a3
+- (void)removeObjectFromSortedAlbumsAtIndex:(unint64_t)index
 {
-  v4 = backingIndexForIndex(self, a3);
-  v6 = [(PLSortedAlbumList *)self backingAlbumList];
-  v5 = [v6 albums];
-  [v5 removeObjectAtIndex:v4];
+  v4 = backingIndexForIndex(self, index);
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  [albums removeObjectAtIndex:v4];
 }
 
-- (void)insertObject:(id)a3 inSortedAlbumsAtIndex:(unint64_t)a4
+- (void)insertObject:(id)object inSortedAlbumsAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = backingIndexForIndex(self, a4);
-  v9 = [(PLSortedAlbumList *)self backingAlbumList];
-  v8 = [v9 albums];
-  [v8 insertObject:v6 atIndex:v7];
+  objectCopy = object;
+  v7 = backingIndexForIndex(self, index);
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  [albums insertObject:objectCopy atIndex:v7];
 }
 
-- (id)objectInSortedAlbumsAtIndex:(unint64_t)a3
+- (id)objectInSortedAlbumsAtIndex:(unint64_t)index
 {
-  v4 = backingIndexForIndex(self, a3);
-  v5 = [(PLSortedAlbumList *)self backingAlbumList];
-  v6 = [v5 albums];
-  v7 = [v6 objectAtIndex:v4];
+  v4 = backingIndexForIndex(self, index);
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  v7 = [albums objectAtIndex:v4];
 
   return v7;
 }
 
-- (unint64_t)indexInSortedAlbumsOfObject:(id)a3
+- (unint64_t)indexInSortedAlbumsOfObject:(id)object
 {
-  v4 = a3;
-  v5 = [(PLSortedAlbumList *)self backingAlbumList];
-  v6 = [v5 albums];
-  v7 = [v6 indexOfObject:v4];
+  objectCopy = object;
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  v7 = [albums indexOfObject:objectCopy];
 
   result = 0x7FFFFFFFFFFFFFFFLL;
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = self;
-    [(PLSortedAlbumList *)v9 createSortedIndexesMap];
-    fromBackingMap = v9->_fromBackingMap;
+    selfCopy = self;
+    [(PLSortedAlbumList *)selfCopy createSortedIndexesMap];
+    fromBackingMap = selfCopy->_fromBackingMap;
 
     if (fromBackingMap)
     {
@@ -140,11 +140,11 @@
   {
     v28 = v2;
     v29 = v3;
-    v6 = [(PLSortedAlbumList *)self albumsCount];
-    if (v6)
+    albumsCount = [(PLSortedAlbumList *)self albumsCount];
+    if (albumsCount)
     {
-      v7 = v6;
-      v8 = malloc_type_malloc(8 * v6, 0x100004000313F17uLL);
+      v7 = albumsCount;
+      v8 = malloc_type_malloc(8 * albumsCount, 0x100004000313F17uLL);
       v9 = v8;
       v10 = 0;
       v11 = xmmword_19C609D60;
@@ -168,19 +168,19 @@
       }
 
       while (((v7 + 1) & 0xFFFFFFFFFFFFFFFELL) != v10);
-      v15 = [(PLSortedAlbumList *)self backingAlbumList];
-      v16 = [v15 albums];
-      v17 = [v16 array];
+      backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+      albums = [backingAlbumList albums];
+      array = [albums array];
 
-      v18 = [(PLSortedAlbumList *)self sortComparator];
-      if (v18)
+      sortComparator = [(PLSortedAlbumList *)self sortComparator];
+      if (sortComparator)
       {
-        v19 = [v17 sortedArrayWithOptions:16 usingComparator:v18];
+        v19 = [array sortedArrayWithOptions:16 usingComparator:sortComparator];
       }
 
       else
       {
-        v19 = v17;
+        v19 = array;
       }
 
       v20 = v19;
@@ -188,9 +188,9 @@
       v23[1] = 3221225472;
       v23[2] = __43__PLSortedAlbumList_createSortedIndexesMap__block_invoke;
       v23[3] = &unk_1E7574CB0;
-      v21 = v17;
+      v21 = array;
       v24 = v21;
-      v25 = self;
+      selfCopy = self;
       v26 = a2;
       v27 = v9;
       [v20 enumerateObjectsUsingBlock:v23];
@@ -226,39 +226,39 @@ void __43__PLSortedAlbumList_createSortedIndexesMap__block_invoke(uint64_t a1, u
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PLSortedAlbumList *)self backingAlbumList];
-  v7 = [v6 _typeDescription];
-  v8 = [v3 stringWithFormat:@"%@\nBacking album list = %@", v5, v7];
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  _typeDescription = [backingAlbumList _typeDescription];
+  v8 = [v3 stringWithFormat:@"%@\nBacking album list = %@", v5, _typeDescription];
 
   return v8;
 }
 
 - (id)photoLibrary
 {
-  v2 = [(PLSortedAlbumList *)self backingAlbumList];
-  v3 = [v2 photoLibrary];
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  photoLibrary = [backingAlbumList photoLibrary];
 
-  return v3;
+  return photoLibrary;
 }
 
-- (void)preheatAlbumsAtIndexes:(id)a3 forProperties:(id)a4 relationships:(id)a5
+- (void)preheatAlbumsAtIndexes:(id)indexes forProperties:(id)properties relationships:(id)relationships
 {
   v8 = MEMORY[0x1E696AD50];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  relationshipsCopy = relationships;
+  propertiesCopy = properties;
+  indexesCopy = indexes;
   v12 = objc_alloc_init(v8);
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __72__PLSortedAlbumList_preheatAlbumsAtIndexes_forProperties_relationships___block_invoke;
   v18 = &unk_1E7576388;
-  v19 = self;
+  selfCopy = self;
   v20 = v12;
   v13 = v12;
-  [v11 enumerateIndexesUsingBlock:&v15];
+  [indexesCopy enumerateIndexesUsingBlock:&v15];
 
   v14 = [(PLSortedAlbumList *)self backingAlbumList:v15];
-  [v14 preheatAlbumsAtIndexes:v13 forProperties:v10 relationships:v9];
+  [v14 preheatAlbumsAtIndexes:v13 forProperties:propertiesCopy relationships:relationshipsCopy];
 }
 
 uint64_t __72__PLSortedAlbumList_preheatAlbumsAtIndexes_forProperties_relationships___block_invoke(uint64_t a1, CFIndex a2)
@@ -269,121 +269,121 @@ uint64_t __72__PLSortedAlbumList_preheatAlbumsAtIndexes_forProperties_relationsh
   return [v4 addIndex:v3];
 }
 
-- (void)preheatAlbumsForProperties:(id)a3 relationships:(id)a4
+- (void)preheatAlbumsForProperties:(id)properties relationships:(id)relationships
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLSortedAlbumList *)self backingAlbumList];
-  [v8 preheatAlbumsForProperties:v7 relationships:v6];
+  relationshipsCopy = relationships;
+  propertiesCopy = properties;
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  [backingAlbumList preheatAlbumsForProperties:propertiesCopy relationships:relationshipsCopy];
 }
 
 - (void)updateAlbumsOrderIfNeeded
 {
-  v2 = [(PLSortedAlbumList *)self backingAlbumList];
-  [v2 updateAlbumsOrderIfNeeded];
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  [backingAlbumList updateAlbumsOrderIfNeeded];
 }
 
 - (BOOL)needsReordering
 {
-  v2 = [(PLSortedAlbumList *)self backingAlbumList];
-  v3 = [v2 needsReordering];
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  needsReordering = [backingAlbumList needsReordering];
 
-  return v3;
+  return needsReordering;
 }
 
 - (void)setNeedsReordering
 {
-  v2 = [(PLSortedAlbumList *)self backingAlbumList];
-  [v2 setNeedsReordering];
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  [backingAlbumList setNeedsReordering];
 }
 
 - (id)albumsSortingComparator
 {
-  v2 = [(PLSortedAlbumList *)self backingAlbumList];
-  v3 = [v2 albumsSortingComparator];
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  albumsSortingComparator = [backingAlbumList albumsSortingComparator];
 
-  return v3;
+  return albumsSortingComparator;
 }
 
-- (BOOL)albumHasFixedOrder:(id)a3
+- (BOOL)albumHasFixedOrder:(id)order
 {
-  v4 = a3;
-  v5 = [(PLSortedAlbumList *)self backingAlbumList];
-  v6 = [v5 albumHasFixedOrder:v4];
+  orderCopy = order;
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  v6 = [backingAlbumList albumHasFixedOrder:orderCopy];
 
   return v6;
 }
 
 - (BOOL)isFolder
 {
-  v2 = [(PLSortedAlbumList *)self backingAlbumList];
-  v3 = [v2 isFolder];
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  isFolder = [backingAlbumList isFolder];
 
-  return v3;
+  return isFolder;
 }
 
 - (BOOL)canEditAlbums
 {
-  v2 = [(PLSortedAlbumList *)self backingAlbumList];
-  v3 = [v2 canEditAlbums];
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  canEditAlbums = [backingAlbumList canEditAlbums];
 
-  return v3;
+  return canEditAlbums;
 }
 
 - (signed)albumListType
 {
-  v2 = [(PLSortedAlbumList *)self backingAlbumList];
-  v3 = [v2 albumListType];
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  albumListType = [backingAlbumList albumListType];
 
-  return v3;
+  return albumListType;
 }
 
 - (id)managedObjectContext
 {
-  v2 = [(PLSortedAlbumList *)self backingAlbumList];
-  v3 = [v2 managedObjectContext];
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  managedObjectContext = [backingAlbumList managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
 - (unint64_t)unreadAlbumsCount
 {
-  v2 = [(PLSortedAlbumList *)self backingAlbumList];
-  v3 = [v2 unreadAlbumsCount];
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  unreadAlbumsCount = [backingAlbumList unreadAlbumsCount];
 
-  return v3;
+  return unreadAlbumsCount;
 }
 
 - (BOOL)hasAtLeastOneAlbum
 {
-  v2 = [(PLSortedAlbumList *)self backingAlbumList];
-  v3 = [v2 hasAtLeastOneAlbum];
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  hasAtLeastOneAlbum = [backingAlbumList hasAtLeastOneAlbum];
 
-  return v3;
+  return hasAtLeastOneAlbum;
 }
 
 - (int)filter
 {
-  v2 = [(PLSortedAlbumList *)self backingAlbumList];
-  v3 = [v2 filter];
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  filter = [backingAlbumList filter];
 
-  return v3;
+  return filter;
 }
 
 - (unint64_t)albumsCount
 {
-  v2 = [(PLSortedAlbumList *)self backingAlbumList];
-  v3 = [v2 albums];
-  v4 = [v3 count];
+  backingAlbumList = [(PLSortedAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  v4 = [albums count];
 
   return v4;
 }
 
 - (id)albums
 {
-  v3 = [(PLSortedAlbumList *)self _albums];
+  _albums = [(PLSortedAlbumList *)self _albums];
 
-  if (!v3)
+  if (!_albums)
   {
     v4 = [(PLSortedAlbumList *)self mutableOrderedSetValueForKey:@"sortedAlbums"];
     [(PLSortedAlbumList *)self set_albums:v4];
@@ -414,25 +414,25 @@ uint64_t __72__PLSortedAlbumList_preheatAlbumsAtIndexes_forProperties_relationsh
   [(PLSortedAlbumList *)&v6 dealloc];
 }
 
-- (PLSortedAlbumList)initWithAlbumList:(id)a3 sortComparator:(id)a4
+- (PLSortedAlbumList)initWithAlbumList:(id)list sortComparator:(id)comparator
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  comparatorCopy = comparator;
   v14.receiver = self;
   v14.super_class = PLSortedAlbumList;
   v8 = [(PLSortedAlbumList *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    [(PLSortedAlbumList *)v8 setBackingAlbumList:v6];
-    [(PLSortedAlbumList *)v9 setSortComparator:v7];
-    v10 = [(PLSortedAlbumList *)v9 backingAlbumList];
-    v11 = [v10 conformsToProtocol:&unk_1F100DBA8];
+    [(PLSortedAlbumList *)v8 setBackingAlbumList:listCopy];
+    [(PLSortedAlbumList *)v9 setSortComparator:comparatorCopy];
+    backingAlbumList = [(PLSortedAlbumList *)v9 backingAlbumList];
+    v11 = [backingAlbumList conformsToProtocol:&unk_1F100DBA8];
 
     if (v11)
     {
-      v12 = [(PLSortedAlbumList *)v9 backingAlbumList];
-      [v12 registerDerivedAlbumList:v9];
+      backingAlbumList2 = [(PLSortedAlbumList *)v9 backingAlbumList];
+      [backingAlbumList2 registerDerivedAlbumList:v9];
     }
   }
 

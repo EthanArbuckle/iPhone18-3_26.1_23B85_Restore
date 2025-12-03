@@ -1,12 +1,12 @@
 @interface UICellAccessoryPopUpMenu
-- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)from;
+- (BOOL)isEqual:(id)equal;
 - (UICellAccessoryPopUpMenu)initWithCoder:(NSCoder *)coder;
 - (UICellAccessoryPopUpMenu)initWithMenu:(UIMenu *)menu;
 - (UIMenu)menu;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UICellAccessoryPopUpMenu
@@ -16,8 +16,8 @@
   v5 = menu;
   if (!v5)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UICellAccessory.m" lineNumber:647 description:{@"Invalid parameter not satisfying: %@", @"menu != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICellAccessory.m" lineNumber:647 description:{@"Invalid parameter not satisfying: %@", @"menu != nil"}];
   }
 
   v11.receiver = self;
@@ -67,20 +67,20 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UICellAccessoryPopUpMenu;
-  v4 = a3;
-  [(UICellAccessory *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_menu forKey:{@"menu", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(UICellAccessory *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_menu forKey:{@"menu", v5.receiver, v5.super_class}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = UICellAccessoryPopUpMenu;
-  v4 = [(UICellAccessory *)&v10 copyWithZone:a3];
+  v4 = [(UICellAccessory *)&v10 copyWithZone:zone];
   if (v4)
   {
     v5 = [(UIMenu *)self->_menu copy];
@@ -95,14 +95,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v14.receiver = self;
   v14.super_class = UICellAccessoryPopUpMenu;
-  if ([(UICellAccessory *)&v14 isEqual:v4])
+  if ([(UICellAccessory *)&v14 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[7];
     v7 = self->_menu;
     v8 = v6;
@@ -150,11 +150,11 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)a3
+- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)from
 {
   v4.receiver = self;
   v4.super_class = UICellAccessoryPopUpMenu;
-  return [(UICellAccessory *)&v4 _canDirectlyUpdateExistingAccessoryViewFrom:a3];
+  return [(UICellAccessory *)&v4 _canDirectlyUpdateExistingAccessoryViewFrom:from];
 }
 
 - (unint64_t)hash

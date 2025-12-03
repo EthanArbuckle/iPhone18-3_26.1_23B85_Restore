@@ -1,25 +1,25 @@
 @interface HMDCameraRemoteStreamTracker
 + (HMDCameraRemoteStreamTracker)sharedTracker;
 + (id)logCategory;
-- (BOOL)startTrackingStreamSession:(id)a3;
+- (BOOL)startTrackingStreamSession:(id)session;
 - (HMDCameraRemoteStreamTracker)init;
-- (void)stopTrackingStreamWithSessionID:(id)a3;
+- (void)stopTrackingStreamWithSessionID:(id)d;
 @end
 
 @implementation HMDCameraRemoteStreamTracker
 
-- (void)stopTrackingStreamWithSessionID:(id)a3
+- (void)stopTrackingStreamWithSessionID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDCameraRemoteStreamTracker *)self workQueue];
+  dCopy = d;
+  workQueue = [(HMDCameraRemoteStreamTracker *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__HMDCameraRemoteStreamTracker_stopTrackingStreamWithSessionID___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __64__HMDCameraRemoteStreamTracker_stopTrackingStreamWithSessionID___block_invoke(uint64_t a1)
@@ -69,27 +69,27 @@ void __64__HMDCameraRemoteStreamTracker_stopTrackingStreamWithSessionID___block_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)startTrackingStreamSession:(id)a3
+- (BOOL)startTrackingStreamSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(HMDCameraRemoteStreamTracker *)self workQueue];
+  workQueue = [(HMDCameraRemoteStreamTracker *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__HMDCameraRemoteStreamTracker_startTrackingStreamSession___block_invoke;
   block[3] = &unk_27868A4D8;
   block[4] = self;
-  v9 = v4;
+  v9 = sessionCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = sessionCopy;
+  dispatch_sync(workQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(sessionCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return sessionCopy;
 }
 
 void __59__HMDCameraRemoteStreamTracker_startTrackingStreamSession___block_invoke(uint64_t a1)
@@ -169,9 +169,9 @@ void __59__HMDCameraRemoteStreamTracker_startTrackingStreamSession___block_invok
     v2->_currentStreamIdentifiers = v3;
 
     v5 = HMDispatchQueueNameString();
-    v6 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v8 = dispatch_queue_create(v6, v7);
+    v8 = dispatch_queue_create(uTF8String, v7);
     workQueue = v2->_workQueue;
     v2->_workQueue = v8;
   }

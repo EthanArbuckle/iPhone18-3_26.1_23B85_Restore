@@ -9,8 +9,8 @@
 - (id)privacyBundles;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)alternateButtonPressed:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
@@ -42,16 +42,16 @@
 
 - (id)familyMember
 {
-  v2 = [(SCLWelcomeOptinViewController *)self flowController];
-  v3 = [v2 delegate];
+  flowController = [(SCLWelcomeOptinViewController *)self flowController];
+  delegate = [flowController delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [v3 setupFlowUserInfo];
-    v5 = v4;
-    if (v4)
+    setupFlowUserInfo = [delegate setupFlowUserInfo];
+    v5 = setupFlowUserInfo;
+    if (setupFlowUserInfo)
     {
-      v6 = [v4 objectForKey:BPSPairingFlowFamilyMember];
+      v6 = [setupFlowUserInfo objectForKey:BPSPairingFlowFamilyMember];
       if (v6)
       {
         goto LABEL_13;
@@ -94,40 +94,40 @@ LABEL_13:
 
 - (id)titleString
 {
-  v3 = [(SCLWelcomeOptinViewController *)self stringsBundle];
-  v4 = [v3 localizedStringForKey:@"SCHOOLTIME_ONBOARDING_TITLE" value:&stru_83D0 table:@"SchoolTimeSetup"];
+  stringsBundle = [(SCLWelcomeOptinViewController *)self stringsBundle];
+  v4 = [stringsBundle localizedStringForKey:@"SCHOOLTIME_ONBOARDING_TITLE" value:&stru_83D0 table:@"SchoolTimeSetup"];
 
-  v5 = [(SCLWelcomeOptinViewController *)self familyMember];
-  v6 = [v5 firstName];
-  v7 = [NSString stringWithFormat:v4, v6];
+  familyMember = [(SCLWelcomeOptinViewController *)self familyMember];
+  firstName = [familyMember firstName];
+  v7 = [NSString stringWithFormat:v4, firstName];
 
   return v7;
 }
 
 - (id)detailString
 {
-  v3 = [(SCLWelcomeOptinViewController *)self stringsBundle];
-  v4 = [v3 localizedStringForKey:@"SCHOOLTIME_ONBOARDING_DETAIL" value:&stru_83D0 table:@"SchoolTimeSetup"];
+  stringsBundle = [(SCLWelcomeOptinViewController *)self stringsBundle];
+  v4 = [stringsBundle localizedStringForKey:@"SCHOOLTIME_ONBOARDING_DETAIL" value:&stru_83D0 table:@"SchoolTimeSetup"];
 
-  v5 = [(SCLWelcomeOptinViewController *)self familyMember];
-  v6 = [v5 firstName];
-  v7 = [NSString stringWithFormat:v4, v6];
+  familyMember = [(SCLWelcomeOptinViewController *)self familyMember];
+  firstName = [familyMember firstName];
+  v7 = [NSString stringWithFormat:v4, firstName];
 
   return v7;
 }
 
 - (id)suggestedButtonTitle
 {
-  v2 = [(SCLWelcomeOptinViewController *)self stringsBundle];
-  v3 = [v2 localizedStringForKey:@"SCHOOLTIME_ONBOARDING_SUGGESTED_BUTTON_TITLE" value:&stru_83D0 table:@"SchoolTimeSetup"];
+  stringsBundle = [(SCLWelcomeOptinViewController *)self stringsBundle];
+  v3 = [stringsBundle localizedStringForKey:@"SCHOOLTIME_ONBOARDING_SUGGESTED_BUTTON_TITLE" value:&stru_83D0 table:@"SchoolTimeSetup"];
 
   return v3;
 }
 
 - (id)alternateButtonTitle
 {
-  v2 = [(SCLWelcomeOptinViewController *)self stringsBundle];
-  v3 = [v2 localizedStringForKey:@"SCHOOLTIME_ONBOARDING_SETUP_LATER_BUTTON_TITLE" value:&stru_83D0 table:@"SchoolTimeSetup"];
+  stringsBundle = [(SCLWelcomeOptinViewController *)self stringsBundle];
+  v3 = [stringsBundle localizedStringForKey:@"SCHOOLTIME_ONBOARDING_SETUP_LATER_BUTTON_TITLE" value:&stru_83D0 table:@"SchoolTimeSetup"];
 
   return v3;
 }
@@ -135,21 +135,21 @@ LABEL_13:
 - (id)imageResourceBundleIdentifier
 {
   v2 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v3 = [(SCLWelcomeOptinViewController *)self flowController];
-  [v3 showSettingsConfiguration];
+  flowController = [(SCLWelcomeOptinViewController *)self flowController];
+  [flowController showSettingsConfiguration];
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
-  v3 = [(SCLWelcomeOptinViewController *)self flowController];
-  [v3 skipSettingsConfiguration];
+  flowController = [(SCLWelcomeOptinViewController *)self flowController];
+  [flowController skipSettingsConfiguration];
 }
 
 - (id)privacyBundles

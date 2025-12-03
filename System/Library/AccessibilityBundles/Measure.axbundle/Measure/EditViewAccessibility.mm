@@ -1,20 +1,20 @@
 @interface EditViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)didTapEditButton;
-- (void)setAlpha:(double)a3;
+- (void)setAlpha:(double)alpha;
 @end
 
 @implementation EditViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Measure.EditView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"Measure.EditView" hasInstanceMethod:@"didTapEditButton" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"setAlpha:" withFullSignature:{"v", "d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Measure.EditView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"Measure.EditView" hasInstanceMethod:@"didTapEditButton" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"setAlpha:" withFullSignature:{"v", "d", 0}];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v10 = 0;
   objc_opt_class();
@@ -23,7 +23,7 @@
   v7 = v6;
   v9.receiver = self;
   v9.super_class = EditViewAccessibility;
-  [(EditViewAccessibility *)&v9 setAlpha:a3];
+  [(EditViewAccessibility *)&v9 setAlpha:alpha];
   [v5 alpha];
   if (vabdd_f64(v7, v8) >= 2.22044605e-16)
   {

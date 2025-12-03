@@ -1,5 +1,5 @@
 @interface _SUUIApplicationShutdownHelper
-- (_SUUIApplicationShutdownHelper)initWithApplicationController:(id)a3;
+- (_SUUIApplicationShutdownHelper)initWithApplicationController:(id)controller;
 - (void)dealloc;
 - (void)start;
 - (void)stop;
@@ -7,16 +7,16 @@
 
 @implementation _SUUIApplicationShutdownHelper
 
-- (_SUUIApplicationShutdownHelper)initWithApplicationController:(id)a3
+- (_SUUIApplicationShutdownHelper)initWithApplicationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = _SUUIApplicationShutdownHelper;
   v6 = [(_SUUIApplicationShutdownHelper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_applicationController, a3);
+    objc_storeStrong(&v6->_applicationController, controller);
   }
 
   return v7;
@@ -26,8 +26,8 @@
 {
   if (self->_taskID != *MEMORY[0x277D767B0])
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    [v3 endBackgroundTask:self->_taskID];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] endBackgroundTask:self->_taskID];
   }
 
   v4.receiver = self;
@@ -37,13 +37,13 @@
 
 - (void)start
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __39___SUUIApplicationShutdownHelper_start__block_invoke;
   v4[3] = &unk_2798F5BE8;
   v4[4] = self;
-  self->_taskID = [v3 beginBackgroundTaskWithExpirationHandler:v4];
+  self->_taskID = [mEMORY[0x277D75128] beginBackgroundTaskWithExpirationHandler:v4];
 }
 
 - (void)stop
@@ -54,8 +54,8 @@
   v4 = *MEMORY[0x277D767B0];
   if (self->_taskID != *MEMORY[0x277D767B0])
   {
-    v5 = [MEMORY[0x277D75128] sharedApplication];
-    [v5 endBackgroundTask:self->_taskID];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] endBackgroundTask:self->_taskID];
 
     self->_taskID = v4;
   }

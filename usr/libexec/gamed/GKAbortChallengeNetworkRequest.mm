@@ -1,36 +1,36 @@
 @interface GKAbortChallengeNetworkRequest
-- (BOOL)isDuplicateRequest:(id)a3;
+- (BOOL)isDuplicateRequest:(id)request;
 - (id)postBody;
-- (void)mergeRequestData:(id)a3;
+- (void)mergeRequestData:(id)data;
 @end
 
 @implementation GKAbortChallengeNetworkRequest
 
-- (BOOL)isDuplicateRequest:(id)a3
+- (BOOL)isDuplicateRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(GKChallengeNetworkRequest *)self challenges];
-  v6 = [v4 challenges];
+  requestCopy = request;
+  challenges = [(GKChallengeNetworkRequest *)self challenges];
+  challenges2 = [requestCopy challenges];
 
-  LOBYTE(v4) = [v5 isEqualToSet:v6];
-  return v4;
+  LOBYTE(requestCopy) = [challenges isEqualToSet:challenges2];
+  return requestCopy;
 }
 
-- (void)mergeRequestData:(id)a3
+- (void)mergeRequestData:(id)data
 {
-  v4 = a3;
-  v6 = [(GKChallengeNetworkRequest *)self challenges];
-  v5 = [v4 challenges];
+  dataCopy = data;
+  challenges = [(GKChallengeNetworkRequest *)self challenges];
+  challenges2 = [dataCopy challenges];
 
-  [v6 unionSet:v5];
+  [challenges unionSet:challenges2];
 }
 
 - (id)postBody
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(GKChallengeNetworkRequest *)self challenges];
-  v5 = [v4 allObjects];
-  [v3 setObject:v5 forKeyedSubscript:@"challenge-ids"];
+  challenges = [(GKChallengeNetworkRequest *)self challenges];
+  allObjects = [challenges allObjects];
+  [v3 setObject:allObjects forKeyedSubscript:@"challenge-ids"];
 
   return v3;
 }

@@ -1,8 +1,8 @@
 @interface ProxCardTranslationAssets
-- (BOOL)_isLanguageSuggested:(id)a3;
+- (BOOL)_isLanguageSuggested:(id)suggested;
 - (ProxCardTranslationAssets)init;
 - (void)getTranslationAssets;
-- (void)getTranslationAssets:(id)a3 error:(id)a4;
+- (void)getTranslationAssets:(id)assets error:(id)error;
 @end
 
 @implementation ProxCardTranslationAssets
@@ -27,9 +27,9 @@
   return v3;
 }
 
-- (BOOL)_isLanguageSuggested:(id)a3
+- (BOOL)_isLanguageSuggested:(id)suggested
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  v3 = [suggested stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
   +[NSLocale preferredLanguages];
   v9 = 0u;
   v10 = 0u;
@@ -81,23 +81,23 @@ LABEL_11:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)getTranslationAssets:(id)a3 error:(id)a4
+- (void)getTranslationAssets:(id)assets error:(id)error
 {
-  v10 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v8 = self;
-  objc_sync_enter(v8);
-  objc_storeStrong(&v8->_translationAssets, a3);
-  objc_sync_exit(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_translationAssets, assets);
+  objc_sync_exit(selfCopy);
 
-  translationAssetsInfoHandler = v8->_translationAssetsInfoHandler;
+  translationAssetsInfoHandler = selfCopy->_translationAssetsInfoHandler;
   if (translationAssetsInfoHandler)
   {
-    translationAssetsInfoHandler[2](translationAssetsInfoHandler, v8->_translationAssets, v7);
+    translationAssetsInfoHandler[2](translationAssetsInfoHandler, selfCopy->_translationAssets, errorCopy);
   }
 
-  [v10 enumerateObjectsUsingBlock:&stru_1001028A8];
+  [assetsCopy enumerateObjectsUsingBlock:&stru_1001028A8];
 }
 
 @end

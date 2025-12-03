@@ -1,12 +1,12 @@
 @interface CSReusablePrivateMemoryBackingStore
-- (CSReusablePrivateMemoryBackingStore)initWithBufferSize:(unint64_t)a3;
+- (CSReusablePrivateMemoryBackingStore)initWithBufferSize:(unint64_t)size;
 @end
 
 @implementation CSReusablePrivateMemoryBackingStore
 
-- (CSReusablePrivateMemoryBackingStore)initWithBufferSize:(unint64_t)a3
+- (CSReusablePrivateMemoryBackingStore)initWithBufferSize:(unint64_t)size
 {
-  v5 = malloc_type_malloc(a3, 0xFF94D64EuLL);
+  v5 = malloc_type_malloc(size, 0xFF94D64EuLL);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__CSReusablePrivateMemoryBackingStore_initWithBufferSize___block_invoke;
@@ -14,7 +14,7 @@
   v8[4] = v5;
   v7.receiver = self;
   v7.super_class = CSReusablePrivateMemoryBackingStore;
-  return [(CSReusableBufferBackingStore *)&v7 initWithBuffer:v5 bufferSize:a3 deallocator:v8];
+  return [(CSReusableBufferBackingStore *)&v7 initWithBuffer:v5 bufferSize:size deallocator:v8];
 }
 
 @end

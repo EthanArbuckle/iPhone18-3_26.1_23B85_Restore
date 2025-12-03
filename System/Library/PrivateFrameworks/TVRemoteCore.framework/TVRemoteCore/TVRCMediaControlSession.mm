@@ -1,14 +1,14 @@
 @interface TVRCMediaControlSession
 - (TVRCMediaControlSession)init;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_handleMediaControlEvent:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_handleMediaControlEvent:(id)event;
 - (void)_invalidate;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)mediaCaptionSettingGetFromDestinationID:(id)a3 completion:(id)a4;
-- (void)mediaGetVolumeFromDestinationID:(id)a3 completion:(id)a4;
-- (void)mediaSetVolume:(double)a3 destinationID:(id)a4 completion:(id)a5;
-- (void)mediaSkipBySeconds:(double)a3 destinationID:(id)a4 completion:(id)a5;
+- (void)mediaCaptionSettingGetFromDestinationID:(id)d completion:(id)completion;
+- (void)mediaGetVolumeFromDestinationID:(id)d completion:(id)completion;
+- (void)mediaSetVolume:(double)volume destinationID:(id)d completion:(id)completion;
+- (void)mediaSkipBySeconds:(double)seconds destinationID:(id)d completion:(id)completion;
 @end
 
 @implementation TVRCMediaControlSession
@@ -28,12 +28,12 @@
   return v3;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(RPMessageable *)self->_messenger dispatchQueue];
-  dispatchQueue = v5;
-  if (!v5)
+  completionCopy = completion;
+  dispatchQueue = [(RPMessageable *)self->_messenger dispatchQueue];
+  dispatchQueue = dispatchQueue;
+  if (!dispatchQueue)
   {
     dispatchQueue = self->_dispatchQueue;
   }
@@ -46,16 +46,16 @@
   v9[2] = __50__TVRCMediaControlSession_activateWithCompletion___block_invoke;
   v9[3] = &unk_279D82568;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(v7, v9);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_messenger)
   {
     if (self->_mediaControlFlagsChangedHandler)
@@ -85,9 +85,9 @@
       self->_registeredMediaControlInterest = 1;
     }
 
-    else if (v4)
+    else if (completionCopy)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
     v11 = _TVRCMediaEventsLog();
@@ -202,7 +202,7 @@ void __51__TVRCMediaControlSession__activateWithCompletion___block_invoke_2(uint
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleMediaControlEvent:(id)a3
+- (void)_handleMediaControlEvent:(id)event
 {
   v13 = *MEMORY[0x277D85DE8];
   Int64 = CFDictionaryGetInt64();
@@ -230,23 +230,23 @@ void __51__TVRCMediaControlSession__activateWithCompletion___block_invoke_2(uint
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mediaCaptionSettingGetFromDestinationID:(id)a3 completion:(id)a4
+- (void)mediaCaptionSettingGetFromDestinationID:(id)d completion:(id)completion
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   messenger = self->_messenger;
   v15 = @"MediaControlCommand";
   v16[0] = &unk_287E66B50;
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a3;
+  dCopy = d;
   v10 = [v8 dictionaryWithObjects:v16 forKeys:&v15 count:1];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__TVRCMediaControlSession_mediaCaptionSettingGetFromDestinationID_completion___block_invoke;
   v13[3] = &unk_279D82F80;
-  v14 = v6;
-  v11 = v6;
-  [(RPMessageable *)messenger sendRequestID:@"MediaControlCommand" request:v10 destinationID:v9 options:0 responseHandler:v13];
+  v14 = completionCopy;
+  v11 = completionCopy;
+  [(RPMessageable *)messenger sendRequestID:@"MediaControlCommand" request:v10 destinationID:dCopy options:0 responseHandler:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -280,26 +280,26 @@ uint64_t __65__TVRCMediaControlSession_mediaCommand_destinationID_completion___b
   return result;
 }
 
-- (void)mediaSkipBySeconds:(double)a3 destinationID:(id)a4 completion:(id)a5
+- (void)mediaSkipBySeconds:(double)seconds destinationID:(id)d completion:(id)completion
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   messenger = self->_messenger;
   v18[0] = @"MediaControlCommand";
   v18[1] = @"MessageKeySkipSeconds";
   v19[0] = &unk_287E66B80;
   v10 = MEMORY[0x277CCABB0];
-  v11 = a4;
-  v12 = [v10 numberWithDouble:a3];
+  dCopy = d;
+  v12 = [v10 numberWithDouble:seconds];
   v19[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __71__TVRCMediaControlSession_mediaSkipBySeconds_destinationID_completion___block_invoke;
   v16[3] = &unk_279D82F80;
-  v17 = v8;
-  v14 = v8;
-  [(RPMessageable *)messenger sendRequestID:@"MediaControlCommand" request:v13 destinationID:v11 options:0 responseHandler:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [(RPMessageable *)messenger sendRequestID:@"MediaControlCommand" request:v13 destinationID:dCopy options:0 responseHandler:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -315,23 +315,23 @@ uint64_t __71__TVRCMediaControlSession_mediaSkipBySeconds_destinationID_completi
   return result;
 }
 
-- (void)mediaGetVolumeFromDestinationID:(id)a3 completion:(id)a4
+- (void)mediaGetVolumeFromDestinationID:(id)d completion:(id)completion
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   messenger = self->_messenger;
   v15 = @"MediaControlCommand";
   v16[0] = &unk_287E66B98;
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a3;
+  dCopy = d;
   v10 = [v8 dictionaryWithObjects:v16 forKeys:&v15 count:1];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __70__TVRCMediaControlSession_mediaGetVolumeFromDestinationID_completion___block_invoke;
   v13[3] = &unk_279D82F80;
-  v14 = v6;
-  v11 = v6;
-  [(RPMessageable *)messenger sendRequestID:@"MediaControlCommand" request:v10 destinationID:v9 options:0 responseHandler:v13];
+  v14 = completionCopy;
+  v11 = completionCopy;
+  [(RPMessageable *)messenger sendRequestID:@"MediaControlCommand" request:v10 destinationID:dCopy options:0 responseHandler:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -343,27 +343,27 @@ void __70__TVRCMediaControlSession_mediaGetVolumeFromDestinationID_completion___
   (*(*(a1 + 32) + 16))(v6);
 }
 
-- (void)mediaSetVolume:(double)a3 destinationID:(id)a4 completion:(id)a5
+- (void)mediaSetVolume:(double)volume destinationID:(id)d completion:(id)completion
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   messenger = self->_messenger;
   v19[0] = @"MediaControlCommand";
   v19[1] = @"MessageKeyVolume";
   v20[0] = &unk_287E66BB0;
   v10 = MEMORY[0x277CCABB0];
-  v11 = a4;
-  v12 = [v10 numberWithDouble:a3];
+  dCopy = d;
+  v12 = [v10 numberWithDouble:volume];
   v20[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __67__TVRCMediaControlSession_mediaSetVolume_destinationID_completion___block_invoke;
   v16[3] = &unk_279D82FA8;
-  v18 = a3;
-  v17 = v8;
-  v14 = v8;
-  [(RPMessageable *)messenger sendRequestID:@"MediaControlCommand" request:v13 destinationID:v11 options:0 responseHandler:v16];
+  volumeCopy = volume;
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [(RPMessageable *)messenger sendRequestID:@"MediaControlCommand" request:v13 destinationID:dCopy options:0 responseHandler:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }

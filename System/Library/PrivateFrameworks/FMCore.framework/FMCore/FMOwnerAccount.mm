@@ -1,21 +1,21 @@
 @interface FMOwnerAccount
-+ (id)authTokenForSubAccount:(id)a3 type:(int64_t)a4 error:(id *)a5;
-+ (id)hostNameForAccount:(id)a3 type:(int64_t)a4;
++ (id)authTokenForSubAccount:(id)account type:(int64_t)type error:(id *)error;
++ (id)hostNameForAccount:(id)account type:(int64_t)type;
 + (id)ownerAccount;
-+ (id)ownerAccountWithType:(int64_t)a3;
-+ (id)personIdForAccount:(id)a3 error:(id *)a4;
-+ (id)primaryAccountWithStore:(id)a3 error:(id *)a4;
++ (id)ownerAccountWithType:(int64_t)type;
++ (id)personIdForAccount:(id)account error:(id *)error;
++ (id)primaryAccountWithStore:(id)store error:(id *)error;
 + (id)sharedInstance;
-+ (id)subAccountForAccount:(id)a3 type:(int64_t)a4;
++ (id)subAccountForAccount:(id)account type:(int64_t)type;
 - (FMOwnerAccount)init;
-- (FMOwnerAccount)initWithAuthToken:(id)a3 personId:(id)a4;
+- (FMOwnerAccount)initWithAuthToken:(id)token personId:(id)id;
 - (NSString)firstName;
 - (NSString)lastName;
 - (NSString)personId;
 - (NSString)username;
 - (id)description;
-- (id)hostNameOfType:(int64_t)a3;
-- (id)tokenOfType:(int64_t)a3;
+- (id)hostNameOfType:(int64_t)type;
+- (id)tokenOfType:(int64_t)type;
 - (void)accountChanged;
 - (void)dealloc;
 - (void)initializeAccount;
@@ -57,25 +57,25 @@ uint64_t __32__FMOwnerAccount_sharedInstance__block_invoke()
     [(FMOwnerAccount *)v2 initializeAccount];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v3, accountChanged, *MEMORY[0x277CB8DB8], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v3 selector:sel_accountChanged name:@"accountChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_accountChanged name:@"accountChangedNotification" object:0];
   }
 
   return v3;
 }
 
-- (FMOwnerAccount)initWithAuthToken:(id)a3 personId:(id)a4
+- (FMOwnerAccount)initWithAuthToken:(id)token personId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
+  tokenCopy = token;
+  idCopy = id;
   v12.receiver = self;
   v12.super_class = FMOwnerAccount;
   v9 = [(FMOwnerAccount *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_authToken, a3);
-    objc_storeStrong(&v10->_personId, a4);
+    objc_storeStrong(&v9->_authToken, token);
+    objc_storeStrong(&v10->_personId, id);
   }
 
   return v10;
@@ -87,8 +87,8 @@ uint64_t __32__FMOwnerAccount_sharedInstance__block_invoke()
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x277CB8DB8], 0);
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 
   v5.receiver = self;
@@ -114,11 +114,11 @@ uint64_t __32__FMOwnerAccount_sharedInstance__block_invoke()
 - (void)initializeAccount
 {
   v3 = objc_alloc_init(MEMORY[0x277CB8F48]);
-  v4 = [v3 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
   account = self->_account;
-  self->_account = v4;
+  self->_account = aa_primaryAppleAccount;
 
-  if (!v4)
+  if (!aa_primaryAppleAccount)
   {
     v6 = LogCategory_Unspecified();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -132,9 +132,9 @@ uint64_t __32__FMOwnerAccount_sharedInstance__block_invoke()
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(FMOwnerAccount *)self username];
-  v6 = [(FMOwnerAccount *)self personId];
-  v7 = [v3 stringWithFormat:@"<%@: %p %@[%@]>", v4, self, v5, v6];
+  username = [(FMOwnerAccount *)self username];
+  personId = [(FMOwnerAccount *)self personId];
+  v7 = [v3 stringWithFormat:@"<%@: %p %@[%@]>", v4, self, username, personId];
 
   return v7;
 }
@@ -143,94 +143,94 @@ uint64_t __32__FMOwnerAccount_sharedInstance__block_invoke()
 {
   if ([(FMOwnerAccount *)self legacyBehavior])
   {
-    v3 = [(FMOwnerAccount *)self account];
-    v4 = [v3 aa_personID];
+    account = [(FMOwnerAccount *)self account];
+    aa_personID = [account aa_personID];
   }
 
   else
   {
-    v4 = self->_personId;
+    aa_personID = self->_personId;
   }
 
-  return v4;
+  return aa_personID;
 }
 
 - (NSString)username
 {
   if ([(FMOwnerAccount *)self legacyBehavior])
   {
-    v3 = [(FMOwnerAccount *)self account];
-    v4 = [v3 username];
+    account = [(FMOwnerAccount *)self account];
+    username = [account username];
   }
 
   else
   {
-    v4 = self->_username;
+    username = self->_username;
   }
 
-  return v4;
+  return username;
 }
 
 - (NSString)firstName
 {
   if ([(FMOwnerAccount *)self legacyBehavior])
   {
-    v3 = [(FMOwnerAccount *)self account];
-    v4 = [v3 aa_firstName];
+    account = [(FMOwnerAccount *)self account];
+    aa_firstName = [account aa_firstName];
   }
 
   else
   {
-    v4 = self->_firstName;
+    aa_firstName = self->_firstName;
   }
 
-  return v4;
+  return aa_firstName;
 }
 
 - (NSString)lastName
 {
   if ([(FMOwnerAccount *)self legacyBehavior])
   {
-    v3 = [(FMOwnerAccount *)self account];
-    v4 = [v3 aa_lastName];
+    account = [(FMOwnerAccount *)self account];
+    aa_lastName = [account aa_lastName];
   }
 
   else
   {
-    v4 = self->_lastName;
+    aa_lastName = self->_lastName;
   }
 
-  return v4;
+  return aa_lastName;
 }
 
-- (id)tokenOfType:(int64_t)a3
+- (id)tokenOfType:(int64_t)type
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CB8F48]);
-  v6 = [v5 aa_primaryAppleAccount];
-  v7 = v6;
-  if (a3)
+  aa_primaryAppleAccount = [v5 aa_primaryAppleAccount];
+  v7 = aa_primaryAppleAccount;
+  if (type)
   {
     v8 = 0;
-    v9 = 0;
+    aa_fmfAccount = 0;
     v10 = 0;
     v11 = 0;
   }
 
   else
   {
-    if ([v6 isProvisionedForDataclass:*MEMORY[0x277CB91A0]])
+    if ([aa_primaryAppleAccount isProvisionedForDataclass:*MEMORY[0x277CB91A0]])
     {
-      v9 = [v7 aa_fmfAccount];
+      aa_fmfAccount = [v7 aa_fmfAccount];
     }
 
     else
     {
-      v9 = 0;
+      aa_fmfAccount = 0;
     }
 
     v19 = 0;
-    v8 = [v9 credentialWithError:&v19];
+    v8 = [aa_fmfAccount credentialWithError:&v19];
     v11 = v19;
     v12 = [v8 credentialItemForKey:*MEMORY[0x277CB8DE8]];
     v10 = v12;
@@ -246,9 +246,9 @@ uint64_t __32__FMOwnerAccount_sharedInstance__block_invoke()
     v14 = LogCategory_Unspecified();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v9 username];
+      username = [aa_fmfAccount username];
       *buf = 138412546;
-      v21 = v15;
+      typeCopy = username;
       v22 = 2112;
       v23 = v11;
       _os_log_impl(&dword_24A2EE000, v14, OS_LOG_TYPE_DEFAULT, "Count not retrieve app token for FMF account [%@]. Error: %@", buf, 0x16u);
@@ -259,7 +259,7 @@ uint64_t __32__FMOwnerAccount_sharedInstance__block_invoke()
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v21 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_24A2EE000, v16, OS_LOG_TYPE_INFO, "Unknown FMAuthTokenType: %ld", buf, 0xCu);
   }
 
@@ -271,19 +271,19 @@ LABEL_15:
   return v13;
 }
 
-- (id)hostNameOfType:(int64_t)a3
+- (id)hostNameOfType:(int64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [(FMOwnerAccount *)self account];
-  v5 = [v4 dataclassProperties];
+  account = [(FMOwnerAccount *)self account];
+  dataclassProperties = [account dataclassProperties];
 
-  if (a3)
+  if (type)
   {
     v6 = LogCategory_Unspecified();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134217984;
-      v12 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_24A2EE000, v6, OS_LOG_TYPE_DEFAULT, "Unknown FMAuthTokenType: %ld", &v11, 0xCu);
     }
 
@@ -292,7 +292,7 @@ LABEL_15:
 
   else
   {
-    v8 = [v5 objectForKeyedSubscript:*MEMORY[0x277CB91A0]];
+    v8 = [dataclassProperties objectForKeyedSubscript:*MEMORY[0x277CB91A0]];
     v7 = [v8 objectForKeyedSubscript:@"appHostname"];
   }
 
@@ -301,20 +301,20 @@ LABEL_15:
   return v7;
 }
 
-+ (id)authTokenForSubAccount:(id)a3 type:(int64_t)a4 error:(id *)a5
++ (id)authTokenForSubAccount:(id)account type:(int64_t)type error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
   v19 = 0;
-  v7 = [a3 credentialWithError:&v19];
+  v7 = [account credentialWithError:&v19];
   v8 = v19;
-  if (a4 == 1)
+  if (type == 1)
   {
     v10 = MEMORY[0x277CB8E00];
     goto LABEL_5;
   }
 
   v9 = 0;
-  if (!a4)
+  if (!type)
   {
     v10 = MEMORY[0x277CB8DE8];
 LABEL_5:
@@ -336,10 +336,10 @@ LABEL_5:
     v15 = objc_opt_new();
     [v15 fm_safeSetObject:v8 forKey:*MEMORY[0x277CCA7E8]];
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.icloud.fmcore.FMOwnerAccountError" code:2 userInfo:v15];
-    if (a5)
+    if (error)
     {
       v16 = v16;
-      *a5 = v16;
+      *error = v16;
     }
 
     v13 = 0;
@@ -355,14 +355,14 @@ LABEL_5:
   return v13;
 }
 
-+ (id)hostNameForAccount:(id)a3 type:(int64_t)a4
++ (id)hostNameForAccount:(id)account type:(int64_t)type
 {
-  v5 = [a3 dataclassProperties];
-  v6 = v5;
-  if (a4 == 1)
+  dataclassProperties = [account dataclassProperties];
+  v6 = dataclassProperties;
+  if (type == 1)
   {
     v9 = *MEMORY[0x277CB9128];
-    v10 = [v5 objectForKeyedSubscript:*MEMORY[0x277CB9128]];
+    v10 = [dataclassProperties objectForKeyedSubscript:*MEMORY[0x277CB9128]];
     v7 = [v10 objectForKeyedSubscript:@"appHostname"];
 
     v11 = [v6 objectForKeyedSubscript:v9];
@@ -383,9 +383,9 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!type)
   {
-    v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277CB91A0]];
+    v7 = [dataclassProperties objectForKeyedSubscript:*MEMORY[0x277CB91A0]];
     v8 = [v7 objectForKeyedSubscript:@"appHostname"];
 LABEL_8:
 
@@ -398,21 +398,21 @@ LABEL_10:
   return v8;
 }
 
-+ (id)subAccountForAccount:(id)a3 type:(int64_t)a4
++ (id)subAccountForAccount:(id)account type:(int64_t)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 1)
+  accountCopy = account;
+  v6 = accountCopy;
+  if (type == 1)
   {
-    v7 = [v5 aa_fmipAccount];
+    aa_fmipAccount = [accountCopy aa_fmipAccount];
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!type)
   {
-    v7 = [v5 aa_fmfAccount];
+    aa_fmipAccount = [accountCopy aa_fmfAccount];
 LABEL_5:
-    v8 = v7;
+    v8 = aa_fmipAccount;
     goto LABEL_7;
   }
 
@@ -422,13 +422,13 @@ LABEL_7:
   return v8;
 }
 
-+ (id)primaryAccountWithStore:(id)a3 error:(id *)a4
++ (id)primaryAccountWithStore:(id)store error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  storeCopy = store;
+  v6 = storeCopy;
+  if (storeCopy)
   {
-    v7 = v5;
+    v7 = storeCopy;
   }
 
   else
@@ -437,34 +437,34 @@ LABEL_7:
   }
 
   v8 = v7;
-  v9 = [v7 aa_primaryAppleAccount];
-  if (!v9)
+  aa_primaryAppleAccount = [v7 aa_primaryAppleAccount];
+  if (!aa_primaryAppleAccount)
   {
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.icloud.fmcore.FMOwnerAccountError" code:1 userInfo:0];
-    if (a4)
+    if (error)
     {
       v10 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
-  return v9;
+  return aa_primaryAppleAccount;
 }
 
-+ (id)personIdForAccount:(id)a3 error:(id *)a4
++ (id)personIdForAccount:(id)account error:(id *)error
 {
-  v5 = [a3 aa_personID];
-  if (!v5)
+  aa_personID = [account aa_personID];
+  if (!aa_personID)
   {
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.icloud.fmcore.FMOwnerAccountError" code:3 userInfo:0];
-    if (a4)
+    if (error)
     {
       v6 = v6;
-      *a4 = v6;
+      *error = v6;
     }
   }
 
-  return v5;
+  return aa_personID;
 }
 
 + (id)ownerAccount
@@ -499,7 +499,7 @@ void __30__FMOwnerAccount_ownerAccount__block_invoke(uint64_t a1)
   }
 }
 
-+ (id)ownerAccountWithType:(int64_t)a3
++ (id)ownerAccountWithType:(int64_t)type
 {
   v5 = objc_opt_new();
   v6 = dispatch_get_global_queue(21, 0);
@@ -509,8 +509,8 @@ void __30__FMOwnerAccount_ownerAccount__block_invoke(uint64_t a1)
   block[3] = &unk_278FD9A68;
   v7 = v5;
   v10 = v7;
-  v11 = a1;
-  v12 = a3;
+  selfCopy = self;
+  typeCopy = type;
   dispatch_async(v6, block);
 
   return v7;

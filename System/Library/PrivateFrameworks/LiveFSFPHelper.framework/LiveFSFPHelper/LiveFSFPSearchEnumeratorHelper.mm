@@ -1,31 +1,31 @@
 @interface LiveFSFPSearchEnumeratorHelper
-+ (id)criteriaForQuery:(id)a3;
-+ (id)newForQuery:(id)a3 withExtension:(id)a4;
++ (id)criteriaForQuery:(id)query;
++ (id)newForQuery:(id)query withExtension:(id)extension;
 - (id)copySearchCompletionBlock;
 - (id)copySearchResultBlock;
-- (id)initForQuery:(id)a3 withExtension:(id)a4;
-- (void)enumerateItemsForObserver:(id)a3 startingAtPage:(id)a4;
-- (void)finallyEnumerateItemsForObserver:(id)a3 inRange:(_NSRange)a4;
+- (id)initForQuery:(id)query withExtension:(id)extension;
+- (void)enumerateItemsForObserver:(id)observer startingAtPage:(id)page;
+- (void)finallyEnumerateItemsForObserver:(id)observer inRange:(_NSRange)range;
 - (void)scheduleReaders;
 - (void)start;
-- (void)waitForSearchResultsForObserver:(id)a3 startingAtPage:(id)a4;
+- (void)waitForSearchResultsForObserver:(id)observer startingAtPage:(id)page;
 @end
 
 @implementation LiveFSFPSearchEnumeratorHelper
 
-- (id)initForQuery:(id)a3 withExtension:(id)a4
+- (id)initForQuery:(id)query withExtension:(id)extension
 {
-  v7 = a3;
-  v8 = a4;
+  queryCopy = query;
+  extensionCopy = extension;
   v9 = *MEMORY[0x277CC6348];
   v24 = 0;
-  v10 = [v8 itemForIdentifier:v9 error:&v24];
+  v10 = [extensionCopy itemForIdentifier:v9 error:&v24];
   v11 = v24;
   if (v10)
   {
     v23.receiver = self;
     v23.super_class = LiveFSFPSearchEnumeratorHelper;
-    v12 = [(LiveFSFPEnumeratorHelper *)&v23 initForExtension:v8 item:v10];
+    v12 = [(LiveFSFPEnumeratorHelper *)&v23 initForExtension:extensionCopy item:v10];
     if (v12)
     {
       v13 = livefs_std_log();
@@ -34,7 +34,7 @@
         [LiveFSFPSearchEnumeratorHelper initForQuery:withExtension:];
       }
 
-      objc_storeStrong(v12 + 9, a3);
+      objc_storeStrong(v12 + 9, query);
       v14 = dispatch_queue_create("search work queue", 0);
       v15 = v12[11];
       v12[11] = v14;
@@ -49,7 +49,7 @@
     }
 
     self = v12;
-    v20 = self;
+    selfCopy = self;
   }
 
   else
@@ -60,55 +60,55 @@
       [LiveFSFPSearchEnumeratorHelper initForQuery:withExtension:];
     }
 
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-+ (id)newForQuery:(id)a3 withExtension:(id)a4
++ (id)newForQuery:(id)query withExtension:(id)extension
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initForQuery:v7 withExtension:v6];
+  extensionCopy = extension;
+  queryCopy = query;
+  v8 = [[self alloc] initForQuery:queryCopy withExtension:extensionCopy];
 
   return v8;
 }
 
-+ (id)criteriaForQuery:(id)a3
++ (id)criteriaForQuery:(id)query
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  queryCopy = query;
   v4 = objc_opt_new();
   [v4 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D23D70]];
   v5 = livefs_std_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v3 filename];
-    v7 = [v3 allowedContentTypes];
+    filename = [queryCopy filename];
+    allowedContentTypes = [queryCopy allowedContentTypes];
     *buf = 136315650;
     v25 = "+[LiveFSFPSearchEnumeratorHelper criteriaForQuery:]";
     v26 = 2112;
-    v27 = v6;
+    v27 = filename;
     v28 = 2112;
-    v29 = v7;
+    v29 = allowedContentTypes;
     _os_log_impl(&dword_255FE9000, v5, OS_LOG_TYPE_INFO, "%s: filename '%@' allowed '%@'", buf, 0x20u);
   }
 
-  v8 = [v3 filename];
-  v9 = v8;
-  if (v8)
+  filename2 = [queryCopy filename];
+  v9 = filename2;
+  if (filename2)
   {
-    v23 = v8;
+    v23 = filename2;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
     [v4 setObject:v10 forKey:*MEMORY[0x277D23D60]];
   }
 
-  v11 = [v3 allowedContentTypes];
-  if (([v11 containsObject:@"public.item"] & 1) == 0)
+  allowedContentTypes2 = [queryCopy allowedContentTypes];
+  if (([allowedContentTypes2 containsObject:@"public.item"] & 1) == 0)
   {
-    v12 = [v3 allowedPathExtensions];
-    if (v12)
+    allowedPathExtensions = [queryCopy allowedPathExtensions];
+    if (allowedPathExtensions)
     {
       v13 = objc_opt_new();
       v18 = MEMORY[0x277D85DD0];
@@ -117,12 +117,12 @@
       v21 = &unk_27981A628;
       v14 = v13;
       v22 = v14;
-      [v12 enumerateObjectsUsingBlock:&v18];
+      [allowedPathExtensions enumerateObjectsUsingBlock:&v18];
       v15 = livefs_std_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v25 = v11;
+        v25 = allowedContentTypes2;
         v26 = 2112;
         v27 = v14;
         _os_log_impl(&dword_255FE9000, v15, OS_LOG_TYPE_DEFAULT, "Content types %@ gave names %@", buf, 0x16u);
@@ -368,7 +368,7 @@ uint64_t __59__LiveFSFPSearchEnumeratorHelper_copySearchCompletionBlock__block_i
 - (void)start
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = *(*a1 + 40);
+  v1 = *(*self + 40);
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0x16u);
@@ -389,12 +389,12 @@ void __39__LiveFSFPSearchEnumeratorHelper_start__block_invoke_2(uint64_t a1, int
   }
 }
 
-- (void)finallyEnumerateItemsForObserver:(id)a3 inRange:(_NSRange)a4
+- (void)finallyEnumerateItemsForObserver:(id)observer inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  observerCopy = observer;
   v8 = objc_opt_new();
   v22 = location;
   if ([(LiveFSFPEnumeratorHelper *)self state]== 2)
@@ -402,7 +402,7 @@ void __39__LiveFSFPSearchEnumeratorHelper_start__block_invoke_2(uint64_t a1, int
     v9 = [(NSMutableArray *)self->searchResults count];
     if (v9 <= location)
     {
-      [v7 finishEnumeratingUpToPage:0];
+      [observerCopy finishEnumeratingUpToPage:0];
       goto LABEL_16;
     }
 
@@ -422,12 +422,12 @@ void __39__LiveFSFPSearchEnumeratorHelper_start__block_invoke_2(uint64_t a1, int
   v12 = livefs_std_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [(LiveFSFPEnumeratorHelper *)self state];
+    state = [(LiveFSFPEnumeratorHelper *)self state];
     searchResults = self->searchResults;
     *buf = 134219008;
-    v24 = self;
+    selfCopy = self;
     v25 = 1024;
-    v26 = v13;
+    v26 = state;
     v27 = 2048;
     v28 = location;
     v29 = 2048;
@@ -450,21 +450,21 @@ void __39__LiveFSFPSearchEnumeratorHelper_start__block_invoke_2(uint64_t a1, int
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v24 = v16;
+    selfCopy = v16;
     _os_log_impl(&dword_255FE9000, v17, OS_LOG_TYPE_INFO, "Built results %@", buf, 0xCu);
   }
 
-  [v7 didEnumerateItems:v16];
+  [observerCopy didEnumerateItems:v16];
   if (v11)
   {
     v22 = location + 64;
     v18 = [MEMORY[0x277CBEA90] dataWithBytes:&v22 length:4];
-    [v7 finishEnumeratingUpToPage:v18];
+    [observerCopy finishEnumeratingUpToPage:v18];
   }
 
   else
   {
-    [v7 finishEnumeratingUpToPage:0];
+    [observerCopy finishEnumeratingUpToPage:0];
   }
 
 LABEL_16:
@@ -494,21 +494,21 @@ void __75__LiveFSFPSearchEnumeratorHelper_finallyEnumerateItemsForObserver_inRan
   }
 }
 
-- (void)waitForSearchResultsForObserver:(id)a3 startingAtPage:(id)a4
+- (void)waitForSearchResultsForObserver:(id)observer startingAtPage:(id)page
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  pageCopy = page;
   v8 = livefs_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(LiveFSFPEnumeratorHelper *)self state];
-    v10 = [v7 isEqual:*MEMORY[0x277CC6328]];
-    v11 = [v7 isEqual:*MEMORY[0x277CC6320]];
+    state = [(LiveFSFPEnumeratorHelper *)self state];
+    v10 = [pageCopy isEqual:*MEMORY[0x277CC6328]];
+    v11 = [pageCopy isEqual:*MEMORY[0x277CC6320]];
     *buf = 136315906;
     *&buf[4] = "[LiveFSFPSearchEnumeratorHelper waitForSearchResultsForObserver:startingAtPage:]";
     *&buf[12] = 1024;
-    *&buf[14] = v9;
+    *&buf[14] = state;
     *&buf[18] = 1024;
     *&buf[20] = v10;
     LOWORD(v34) = 1024;
@@ -524,7 +524,7 @@ void __75__LiveFSFPSearchEnumeratorHelper_finallyEnumerateItemsForObserver_inRan
   if ([(LiveFSFPEnumeratorHelper *)self state]== 3)
   {
     v12 = [LiveFSFPExtensionHelper getNSErrorFromLiveFSErrno:89];
-    [v6 finishEnumeratingWithError:v12];
+    [observerCopy finishEnumeratingWithError:v12];
     v13 = livefs_std_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -534,15 +534,15 @@ void __75__LiveFSFPSearchEnumeratorHelper_finallyEnumerateItemsForObserver_inRan
 
   else
   {
-    if ([v7 isEqual:*MEMORY[0x277CC6328]] & 1) != 0 || (objc_msgSend(v7, "isEqual:", *MEMORY[0x277CC6320]))
+    if ([pageCopy isEqual:*MEMORY[0x277CC6328]] & 1) != 0 || (objc_msgSend(pageCopy, "isEqual:", *MEMORY[0x277CC6320]))
     {
       LODWORD(v14) = 0;
     }
 
-    else if ([v7 length] != 4 || (v21 = v7, v14 = *objc_msgSend(v7, "bytes"), (v14 & 0x3F) != 0) || -[NSMutableArray count](self->searchResults, "count") <= v14)
+    else if ([pageCopy length] != 4 || (v21 = pageCopy, v14 = *objc_msgSend(pageCopy, "bytes"), (v14 & 0x3F) != 0) || -[NSMutableArray count](self->searchResults, "count") <= v14)
     {
       v22 = [LiveFSFPExtensionHelper getNSErrorFromLiveFSErrno:22];
-      [v6 finishEnumeratingWithError:v22];
+      [observerCopy finishEnumeratingWithError:v22];
 
       goto LABEL_18;
     }
@@ -564,7 +564,7 @@ void __75__LiveFSFPSearchEnumeratorHelper_finallyEnumerateItemsForObserver_inRan
 
     if ([(LiveFSFPEnumeratorHelper *)self state]== 2 || [(NSMutableArray *)self->searchResults count]>= (v14 + 64))
     {
-      [(LiveFSFPSearchEnumeratorHelper *)self finallyEnumerateItemsForObserver:v6 inRange:v14, 64];
+      [(LiveFSFPSearchEnumeratorHelper *)self finallyEnumerateItemsForObserver:observerCopy inRange:v14, 64];
     }
 
     else
@@ -580,16 +580,16 @@ void __75__LiveFSFPSearchEnumeratorHelper_finallyEnumerateItemsForObserver_inRan
       v25 = __81__LiveFSFPSearchEnumeratorHelper_waitForSearchResultsForObserver_startingAtPage___block_invoke;
       v26 = &unk_27981A7B8;
       v29 = buf;
-      v27 = self;
+      selfCopy = self;
       v32 = v14;
-      v28 = v6;
+      v28 = observerCopy;
       v30 = v14;
       v31 = 64;
       v17 = MEMORY[0x259C563F0](&v23);
       objc_storeWeak((*&buf[8] + 40), v17);
       pendingReaderBlocks = self->_pendingReaderBlocks;
       v19 = MEMORY[0x259C563F0](v17);
-      [(NSMutableArray *)pendingReaderBlocks addObject:v19, v23, v24, v25, v26, v27];
+      [(NSMutableArray *)pendingReaderBlocks addObject:v19, v23, v24, v25, v26, selfCopy];
 
       _Block_object_dispose(buf, 8);
       objc_destroyWeak(&v35 + 1);
@@ -629,20 +629,20 @@ LABEL_4:
 LABEL_9:
 }
 
-- (void)enumerateItemsForObserver:(id)a3 startingAtPage:(id)a4
+- (void)enumerateItemsForObserver:(id)observer startingAtPage:(id)page
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  pageCopy = page;
   searchWorkQueue = self->_searchWorkQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__LiveFSFPSearchEnumeratorHelper_enumerateItemsForObserver_startingAtPage___block_invoke;
   block[3] = &unk_27981A7E0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = pageCopy;
+  v9 = pageCopy;
+  v10 = observerCopy;
   dispatch_async(searchWorkQueue, block);
 }
 

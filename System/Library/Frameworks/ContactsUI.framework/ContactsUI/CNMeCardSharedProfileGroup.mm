@@ -7,13 +7,13 @@
 - (id)displayItems
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNMeCardSharedProfileGroup *)self sharedProfileSettingsAction];
+  sharedProfileSettingsAction = [(CNMeCardSharedProfileGroup *)self sharedProfileSettingsAction];
 
-  if (v3)
+  if (sharedProfileSettingsAction)
   {
     v4 = objc_alloc_init(CNMeCardSharedProfileGroupActionItem);
-    v5 = [(CNMeCardSharedProfileGroup *)self sharedProfileSettingsAction];
-    [(CNMeCardSharedProfileGroupActionItem *)v4 setSharedProfileSettingsAction:v5];
+    sharedProfileSettingsAction2 = [(CNMeCardSharedProfileGroup *)self sharedProfileSettingsAction];
+    [(CNMeCardSharedProfileGroupActionItem *)v4 setSharedProfileSettingsAction:sharedProfileSettingsAction2];
 
     v8[0] = v4;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];

@@ -1,29 +1,29 @@
 @interface PXPhotosGridMessagesBodyLayout
 - (PXPhotosGridMessagesBodyLayout)init;
-- (double)cornerRadiusForShadowSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)assetForItemIndex:(int64_t)a3;
-- (id)assetReferenceForItemIndex:(int64_t)a3;
-- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)a3 inLayout:(id)a4;
+- (double)cornerRadiusForShadowSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)assetForItemIndex:(int64_t)index;
+- (id)assetReferenceForItemIndex:(int64_t)index;
+- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)range inLayout:(id)layout;
 - (void)_updateNumberOfColumns;
-- (void)setDataSource:(id)a3 section:(int64_t)a4;
-- (void)setSpec:(id)a3;
+- (void)setDataSource:(id)source section:(int64_t)section;
+- (void)setSpec:(id)spec;
 @end
 
 @implementation PXPhotosGridMessagesBodyLayout
 
-- (double)cornerRadiusForShadowSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (double)cornerRadiusForShadowSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = [(PXPhotosGridMessagesBodyLayout *)self spec:*&a3];
+  v4 = [(PXPhotosGridMessagesBodyLayout *)self spec:*&index];
   [v4 itemCornerRadius];
   v6 = v5;
 
   return v6;
 }
 
-- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)a3 inLayout:(id)a4
+- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)range inLayout:(id)layout
 {
-  v6 = a4;
-  if (v6)
+  layoutCopy = layout;
+  if (layoutCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -31,34 +31,34 @@
       goto LABEL_3;
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = objc_opt_class();
     v17 = NSStringFromClass(v18);
-    v19 = [v6 px_descriptionForAssertionMessage];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXPhotosGridMessagesBodyLayout.m" lineNumber:115 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout", v17, v19}];
+    px_descriptionForAssertionMessage = [layoutCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridMessagesBodyLayout.m" lineNumber:115 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout", v17, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    [v15 handleFailureInMethod:a2 object:self file:@"PXPhotosGridMessagesBodyLayout.m" lineNumber:115 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout", v17}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridMessagesBodyLayout.m" lineNumber:115 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout", v17}];
   }
 
 LABEL_3:
-  v7 = [v6 itemForSpriteIndex:0];
-  v8 = [v6 numberOfItems] - v7;
+  v7 = [layoutCopy itemForSpriteIndex:0];
+  v8 = [layoutCopy numberOfItems] - v7;
   v9 = self->_cachedClampedItemRange.location == v7 && self->_cachedClampedItemRange.length == v8;
   if (!v9 || (cachedClampedFetchResult = self->_cachedClampedFetchResult) == 0)
   {
-    v12 = [(PXPhotosGridMessagesBodyLayout *)self dataSource];
-    v20[0] = [v12 identifier];
+    dataSource = [(PXPhotosGridMessagesBodyLayout *)self dataSource];
+    v20[0] = [dataSource identifier];
     v20[1] = [(PXPhotosGridMessagesBodyLayout *)self section];
     v13.f64[0] = NAN;
     v13.f64[1] = NAN;
     v21 = vnegq_f64(v13);
-    [v12 assetsInSectionIndexPath:v20];
+    [dataSource assetsInSectionIndexPath:v20];
     objc_claimAutoreleasedReturnValue();
     PXDisplayAssetFetchResultSubfetchResultWithRange();
   }
@@ -68,69 +68,69 @@ LABEL_3:
   return v11;
 }
 
-- (id)assetReferenceForItemIndex:(int64_t)a3
+- (id)assetReferenceForItemIndex:(int64_t)index
 {
-  v5 = [(PXPhotosGridMessagesBodyLayout *)self dataSource];
-  v8[0] = [v5 identifier];
+  dataSource = [(PXPhotosGridMessagesBodyLayout *)self dataSource];
+  v8[0] = [dataSource identifier];
   v8[1] = [(PXPhotosGridMessagesBodyLayout *)self section];
-  v8[2] = a3;
+  v8[2] = index;
   v8[3] = 0x7FFFFFFFFFFFFFFFLL;
-  v6 = [v5 assetReferenceAtItemIndexPath:v8];
+  v6 = [dataSource assetReferenceAtItemIndexPath:v8];
 
   return v6;
 }
 
-- (id)assetForItemIndex:(int64_t)a3
+- (id)assetForItemIndex:(int64_t)index
 {
-  v5 = [(PXPhotosGridMessagesBodyLayout *)self dataSource];
-  v8[0] = [v5 identifier];
+  dataSource = [(PXPhotosGridMessagesBodyLayout *)self dataSource];
+  v8[0] = [dataSource identifier];
   v8[1] = [(PXPhotosGridMessagesBodyLayout *)self section];
-  v8[2] = a3;
+  v8[2] = index;
   v8[3] = 0x7FFFFFFFFFFFFFFFLL;
-  v6 = [v5 assetAtItemIndexPath:v8];
+  v6 = [dataSource assetAtItemIndexPath:v8];
 
   return v6;
 }
 
-- (void)setDataSource:(id)a3 section:(int64_t)a4
+- (void)setDataSource:(id)source section:(int64_t)section
 {
-  v7 = a3;
-  if (*&self->_section != __PAIR128__(v7, a4))
+  sourceCopy = source;
+  if (*&self->_section != __PAIR128__(sourceCopy, section))
   {
-    v10 = v7;
-    objc_storeStrong(&self->_dataSource, a3);
-    self->_section = a4;
-    v8 = [(PXPhotosGridMessagesBodyLayout *)self assetDecorationSource];
-    [v8 setDataSource:v10 section:a4];
+    v10 = sourceCopy;
+    objc_storeStrong(&self->_dataSource, source);
+    self->_section = section;
+    assetDecorationSource = [(PXPhotosGridMessagesBodyLayout *)self assetDecorationSource];
+    [assetDecorationSource setDataSource:v10 section:section];
 
     self->_cachedClampedItemRange = xmmword_1A5380D90;
     cachedClampedFetchResult = self->_cachedClampedFetchResult;
     self->_cachedClampedFetchResult = 0;
 
     [(PXPhotosGridMessagesBodyLayout *)self _updateNumberOfColumns];
-    v7 = v10;
+    sourceCopy = v10;
   }
 }
 
 - (void)_updateNumberOfColumns
 {
-  v3 = [(PXPhotosGridMessagesBodyLayout *)self dataSource];
-  if ([v3 numberOfSections] < 1)
+  dataSource = [(PXPhotosGridMessagesBodyLayout *)self dataSource];
+  if ([dataSource numberOfSections] < 1)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = [(PXPhotosGridMessagesBodyLayout *)self dataSource];
-    v5 = [v4 numberOfItemsInSection:0];
+    dataSource2 = [(PXPhotosGridMessagesBodyLayout *)self dataSource];
+    v5 = [dataSource2 numberOfItemsInSection:0];
   }
 
-  v7 = [(PXPhotosGridMessagesBodyLayout *)self spec];
-  if (v7)
+  spec = [(PXPhotosGridMessagesBodyLayout *)self spec];
+  if (spec)
   {
-    v6 = [(PXPhotosGridMessagesBodyLayout *)self spec];
-    -[PXPhotosGridMessagesBodyLayout setNumberOfColumns:](self, "setNumberOfColumns:", [v6 numberOfColumnsForNumberOfItems:v5]);
+    spec2 = [(PXPhotosGridMessagesBodyLayout *)self spec];
+    -[PXPhotosGridMessagesBodyLayout setNumberOfColumns:](self, "setNumberOfColumns:", [spec2 numberOfColumnsForNumberOfItems:v5]);
   }
 
   else
@@ -139,13 +139,13 @@ LABEL_3:
   }
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v21 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v21 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     [(PXPhotosGridMessagesLayoutSpec *)v21 interItemSpacing];
     [(PXPhotosGridMessagesBodyLayout *)self setInterItemSpacing:?];
     [(PXPhotosGridMessagesLayoutSpec *)v21 padding];
@@ -153,8 +153,8 @@ LABEL_3:
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(PXPhotosGridMessagesLayoutSpec *)v21 layoutDirection];
-    if (v14 == 2)
+    layoutDirection = [(PXPhotosGridMessagesLayoutSpec *)v21 layoutDirection];
+    if (layoutDirection == 2)
     {
       v15 = v9;
     }
@@ -164,7 +164,7 @@ LABEL_3:
       v15 = v13;
     }
 
-    if (v14 == 2)
+    if (layoutDirection == 2)
     {
       v16 = v13;
     }
@@ -182,7 +182,7 @@ LABEL_3:
     LODWORD(v20) = LODWORD(v17);
     [(PXPhotosGridMessagesBodyLayout *)self setItemCornerRadius:v17, v18, v19, v20];
     [(PXPhotosGridMessagesBodyLayout *)self _updateNumberOfColumns];
-    v5 = v21;
+    specCopy = v21;
   }
 }
 

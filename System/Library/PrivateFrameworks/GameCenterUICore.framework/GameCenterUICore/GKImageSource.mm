@@ -1,27 +1,27 @@
 @interface GKImageSource
-+ (id)cacheDirectoryForImageID:(id)a3;
++ (id)cacheDirectoryForImageID:(id)d;
 + (id)sharedCache;
 + (id)syncQueue;
 + (void)clearCache;
 - (BOOL)shouldUseTestImage;
-- (GKImageSource)initWithName:(id)a3 imageBrush:(id)a4;
+- (GKImageSource)initWithName:(id)name imageBrush:(id)brush;
 - (GKUtilityService)utilityService;
 - (UIImage)renderedDefaultImage;
-- (id)cachedImageForIdentifier:(id)a3;
-- (id)cachedImageForKey:(id)a3;
-- (id)fastCachedImageForIdentifier:(id)a3;
-- (id)fastCachedImageForKey:(id)a3;
-- (id)fastCachedOrDefaultImageForForKey:(id)a3;
-- (id)fastCachedOrDefaultImageForIdentifier:(id)a3;
-- (id)processAndCacheImage:(id)a3 forIdentifier:(id)a4;
-- (id)processAndCacheImageDataInContext:(id)a3 withImage:(id)a4 forIdentifier:(id)a5;
-- (id)processAndCacheImageDataInContext:(id)a3 withImage:(id)a4 forKey:(id)a5;
-- (id)renderedImageWithImage:(id)a3 defaultSize:(CGSize)a4 returnContext:(id *)a5;
+- (id)cachedImageForIdentifier:(id)identifier;
+- (id)cachedImageForKey:(id)key;
+- (id)fastCachedImageForIdentifier:(id)identifier;
+- (id)fastCachedImageForKey:(id)key;
+- (id)fastCachedOrDefaultImageForForKey:(id)key;
+- (id)fastCachedOrDefaultImageForIdentifier:(id)identifier;
+- (id)processAndCacheImage:(id)image forIdentifier:(id)identifier;
+- (id)processAndCacheImageDataInContext:(id)context withImage:(id)image forIdentifier:(id)identifier;
+- (id)processAndCacheImageDataInContext:(id)context withImage:(id)image forKey:(id)key;
+- (id)renderedImageWithImage:(id)image defaultSize:(CGSize)size returnContext:(id *)context;
 - (id)renderedTestImage;
-- (id)subsourceWithBrush:(id)a3;
-- (void)_storeImage:(id)a3 cacheKey:(id)a4 path:(id)a5 context:(id)a6;
-- (void)cacheImageFromContext:(id)a3 forIdentifier:(id)a4;
-- (void)clearCachedImageForIdentifier:(id)a3;
+- (id)subsourceWithBrush:(id)brush;
+- (void)_storeImage:(id)image cacheKey:(id)key path:(id)path context:(id)context;
+- (void)cacheImageFromContext:(id)context forIdentifier:(id)identifier;
+- (void)clearCachedImageForIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)validateFileSystemCache;
 @end
@@ -30,10 +30,10 @@
 
 - (GKUtilityService)utilityService
 {
-  v2 = [MEMORY[0x277D0C010] daemonProxy];
-  v3 = [v2 utilityService];
+  daemonProxy = [MEMORY[0x277D0C010] daemonProxy];
+  utilityService = [daemonProxy utilityService];
 
-  return v3;
+  return utilityService;
 }
 
 + (id)syncQueue
@@ -76,25 +76,25 @@ uint64_t __28__GKImageSource_sharedCache__block_invoke()
 
 + (void)clearCache
 {
-  v2 = [objc_opt_class() sharedCache];
-  [v2 removeAllObjects];
+  sharedCache = [objc_opt_class() sharedCache];
+  [sharedCache removeAllObjects];
 }
 
-- (GKImageSource)initWithName:(id)a3 imageBrush:(id)a4
+- (GKImageSource)initWithName:(id)name imageBrush:(id)brush
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  brushCopy = brush;
   v14.receiver = self;
   v14.super_class = GKImageSource;
   v9 = [(GKImageSource *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_imageBrush, a4);
-    v11 = [objc_opt_class() sharedCache];
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_imageBrush, brush);
+    sharedCache = [objc_opt_class() sharedCache];
     cache = v10->_cache;
-    v10->_cache = v11;
+    v10->_cache = sharedCache;
   }
 
   return v10;
@@ -102,18 +102,18 @@ uint64_t __28__GKImageSource_sharedCache__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKImageSource;
   [(GKImageSource *)&v4 dealloc];
 }
 
-- (id)subsourceWithBrush:(id)a3
+- (id)subsourceWithBrush:(id)brush
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithName:self->_name imageBrush:v4];
+  brushCopy = brush;
+  v5 = [objc_alloc(objc_opt_class()) initWithName:self->_name imageBrush:brushCopy];
 
   objc_storeStrong((v5 + 40), self->_defaultImage);
   objc_storeStrong((v5 + 16), self->_cache);
@@ -122,9 +122,9 @@ uint64_t __28__GKImageSource_sharedCache__block_invoke()
   return v5;
 }
 
-+ (id)cacheDirectoryForImageID:(id)a3
++ (id)cacheDirectoryForImageID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = GKImageCacheRoot();
   }
@@ -137,47 +137,47 @@ uint64_t __28__GKImageSource_sharedCache__block_invoke()
   return v4;
 }
 
-- (id)renderedImageWithImage:(id)a3 defaultSize:(CGSize)a4 returnContext:(id *)a5
+- (id)renderedImageWithImage:(id)image defaultSize:(CGSize)size returnContext:(id *)context
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = [(GKImageSource *)self imageBrush];
-  v11 = v10;
-  if (v10)
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  imageBrush = [(GKImageSource *)self imageBrush];
+  v11 = imageBrush;
+  if (imageBrush)
   {
-    [v10 scaleForInput:v9];
+    [imageBrush scaleForInput:imageCopy];
     v13 = v12;
     v14 = MEMORY[0x277CBF3A0];
-    if (v9)
+    if (imageCopy)
     {
-      [v11 sizeForInput:v9];
+      [v11 sizeForInput:imageCopy];
       width = v15;
       height = v16;
     }
 
     v17 = *v14;
     v18 = v14[1];
-    if (!a5 || (v19 = *a5) == 0)
+    if (!context || (v19 = *context) == 0)
     {
       v19 = [[GKImageContext alloc] initWithSize:0 scale:width options:height, v13];
     }
 
-    [v11 drawInRect:-[GKImageContext CGContext](v19 withContext:"CGContext") input:{v9, v17, v18, width, height}];
-    v20 = [(GKImageContext *)v19 image];
-    if (a5)
+    [v11 drawInRect:-[GKImageContext CGContext](v19 withContext:"CGContext") input:{imageCopy, v17, v18, width, height}];
+    image = [(GKImageContext *)v19 image];
+    if (context)
     {
       v21 = v19;
-      *a5 = v19;
+      *context = v19;
     }
   }
 
   else
   {
-    v20 = v9;
+    image = imageCopy;
   }
 
-  return v20;
+  return image;
 }
 
 - (UIImage)renderedDefaultImage
@@ -314,27 +314,27 @@ void __40__GKImageSource_validateFileSystemCache__block_invoke()
   }
 }
 
-- (id)fastCachedImageForKey:(id)a3
+- (id)fastCachedImageForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if ([(GKImageSource *)self shouldUseTestImage])
   {
-    v5 = [(GKImageSource *)self renderedTestImage];
+    renderedTestImage = [(GKImageSource *)self renderedTestImage];
   }
 
   else
   {
-    v6 = [v4 cacheKey];
-    v7 = [(GKImageSource *)self cache];
-    v5 = [v7 objectForKey:v6];
+    cacheKey = [keyCopy cacheKey];
+    cache = [(GKImageSource *)self cache];
+    renderedTestImage = [cache objectForKey:cacheKey];
   }
 
-  return v5;
+  return renderedTestImage;
 }
 
-- (id)fastCachedImageForIdentifier:(id)a3
+- (id)fastCachedImageForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(GKImageSource *)self keyForImageIdentifier:?];
     v5 = [(GKImageSource *)self fastCachedImageForKey:v4];
@@ -348,69 +348,69 @@ void __40__GKImageSource_validateFileSystemCache__block_invoke()
   return v5;
 }
 
-- (id)fastCachedOrDefaultImageForForKey:(id)a3
+- (id)fastCachedOrDefaultImageForForKey:(id)key
 {
-  v4 = [(GKImageSource *)self fastCachedImageForKey:a3];
-  if (!v4)
+  renderedDefaultImage = [(GKImageSource *)self fastCachedImageForKey:key];
+  if (!renderedDefaultImage)
   {
-    v4 = [(GKImageSource *)self renderedDefaultImage];
+    renderedDefaultImage = [(GKImageSource *)self renderedDefaultImage];
   }
 
-  return v4;
+  return renderedDefaultImage;
 }
 
-- (id)fastCachedOrDefaultImageForIdentifier:(id)a3
+- (id)fastCachedOrDefaultImageForIdentifier:(id)identifier
 {
-  v4 = [(GKImageSource *)self fastCachedImageForIdentifier:a3];
-  if (!v4)
+  renderedDefaultImage = [(GKImageSource *)self fastCachedImageForIdentifier:identifier];
+  if (!renderedDefaultImage)
   {
-    v4 = [(GKImageSource *)self renderedDefaultImage];
+    renderedDefaultImage = [(GKImageSource *)self renderedDefaultImage];
   }
 
-  return v4;
+  return renderedDefaultImage;
 }
 
-- (id)cachedImageForKey:(id)a3
+- (id)cachedImageForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if ([(GKImageSource *)self shouldUseTestImage])
   {
-    v5 = [(GKImageSource *)self renderedTestImage];
+    renderedTestImage = [(GKImageSource *)self renderedTestImage];
   }
 
   else
   {
-    v6 = [v4 cacheKey];
-    v7 = [(GKImageSource *)self cache];
-    v8 = [v7 objectForKey:v6];
+    cacheKey = [keyCopy cacheKey];
+    cache = [(GKImageSource *)self cache];
+    v8 = [cache objectForKey:cacheKey];
 
     if (v8)
     {
-      v5 = v8;
+      renderedTestImage = v8;
     }
 
     else
     {
       [(GKImageSource *)self validateFileSystemCache];
-      v9 = [v4 filePath];
-      v10 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v9 isDirectory:0];
-      v5 = [GKImageContext imageFromRawPixelsAtURL:v10];
-      if (v5)
+      filePath = [keyCopy filePath];
+      v10 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:filePath isDirectory:0];
+      renderedTestImage = [GKImageContext imageFromRawPixelsAtURL:v10];
+      if (renderedTestImage)
       {
-        v11 = [(GKImageSource *)self cache];
-        [v11 setObject:v5 forKey:v6];
+        cache2 = [(GKImageSource *)self cache];
+        [cache2 setObject:renderedTestImage forKey:cacheKey];
 
-        v12 = v5;
+        v12 = renderedTestImage;
       }
     }
   }
 
-  return v5;
+  return renderedTestImage;
 }
 
-- (id)cachedImageForIdentifier:(id)a3
+- (id)cachedImageForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(GKImageSource *)self keyForImageIdentifier:?];
     v5 = [(GKImageSource *)self cachedImageForKey:v4];
@@ -459,26 +459,26 @@ void __35__GKImageSource_shouldUseTestImage__block_invoke()
   return v5;
 }
 
-- (id)processAndCacheImage:(id)a3 forIdentifier:(id)a4
+- (id)processAndCacheImage:(id)image forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [(GKImageSource *)self keyForImageIdentifier:a4];
-  v8 = [(GKImageSource *)self processAndCacheImage:v6 forKey:v7];
+  imageCopy = image;
+  v7 = [(GKImageSource *)self keyForImageIdentifier:identifier];
+  v8 = [(GKImageSource *)self processAndCacheImage:imageCopy forKey:v7];
 
   return v8;
 }
 
-- (void)_storeImage:(id)a3 cacheKey:(id)a4 path:(id)a5 context:(id)a6
+- (void)_storeImage:(id)image cacheKey:(id)key path:(id)path context:(id)context
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
-  v14 = [v11 stringByDeletingLastPathComponent];
+  imageCopy = image;
+  keyCopy = key;
+  pathCopy = path;
+  contextCopy = context;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
   v28 = 0;
-  v15 = [v13 createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:0 error:&v28];
+  v15 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v28];
   v16 = v28;
 
   v17 = MEMORY[0x277D0C2A0];
@@ -496,9 +496,9 @@ void __35__GKImageSource_shouldUseTestImage__block_invoke()
     }
   }
 
-  v20 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v11 isDirectory:0];
+  v20 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:pathCopy isDirectory:0];
   v27 = 0;
-  v21 = [v12 writeRawPixelsToURL:v20 error:&v27];
+  v21 = [contextCopy writeRawPixelsToURL:v20 error:&v27];
   v22 = v27;
   if ((v21 & 1) == 0)
   {
@@ -511,13 +511,13 @@ void __35__GKImageSource_shouldUseTestImage__block_invoke()
     if (os_log_type_enabled(*MEMORY[0x277D0C290], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v30 = v11;
+      v30 = pathCopy;
       v31 = 2112;
-      v32 = v12;
+      v32 = contextCopy;
       v33 = 2112;
       v34 = v22;
       _os_log_error_impl(&dword_24E4A8000, v24, OS_LOG_TYPE_ERROR, "_storeImage path:%@ context:%@ -- error:%@", buf, 0x20u);
-      if (!v9)
+      if (!imageCopy)
       {
         goto LABEL_12;
       }
@@ -526,54 +526,54 @@ void __35__GKImageSource_shouldUseTestImage__block_invoke()
     }
   }
 
-  if (v9)
+  if (imageCopy)
   {
 LABEL_11:
-    v25 = [(GKImageSource *)self cache];
-    [v25 setObject:v9 forKey:v10];
+    cache = [(GKImageSource *)self cache];
+    [cache setObject:imageCopy forKey:keyCopy];
   }
 
 LABEL_12:
   _gkMarkFileAsPurgeable();
 }
 
-- (void)cacheImageFromContext:(id)a3 forIdentifier:(id)a4
+- (void)cacheImageFromContext:(id)context forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v10 = [(GKImageSource *)self keyForImageIdentifier:a4];
-  v7 = [v6 image];
-  v8 = [v10 cacheKey];
-  v9 = [v10 filePath];
-  [(GKImageSource *)self _storeImage:v7 cacheKey:v8 path:v9 context:v6];
+  contextCopy = context;
+  v10 = [(GKImageSource *)self keyForImageIdentifier:identifier];
+  image = [contextCopy image];
+  cacheKey = [v10 cacheKey];
+  filePath = [v10 filePath];
+  [(GKImageSource *)self _storeImage:image cacheKey:cacheKey path:filePath context:contextCopy];
 }
 
-- (id)processAndCacheImageDataInContext:(id)a3 withImage:(id)a4 forKey:(id)a5
+- (id)processAndCacheImageDataInContext:(id)context withImage:(id)image forKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 cacheKey];
-  v12 = [v10 filePath];
+  contextCopy = context;
+  imageCopy = image;
+  keyCopy = key;
+  cacheKey = [keyCopy cacheKey];
+  filePath = [keyCopy filePath];
   [(GKImageSource *)self validateFileSystemCache];
-  if (v12)
+  if (filePath)
   {
-    v13 = [(GKImageSource *)self imageBrush];
+    imageBrush = [(GKImageSource *)self imageBrush];
 
-    if (v13)
+    if (imageBrush)
     {
-      [v10 size];
-      v30 = v8;
-      v14 = [(GKImageSource *)self renderedImageWithImage:v9 defaultSize:&v30 returnContext:?];
+      [keyCopy size];
+      v30 = contextCopy;
+      v14 = [(GKImageSource *)self renderedImageWithImage:imageCopy defaultSize:&v30 returnContext:?];
       v15 = v30;
 
       if (!v14)
       {
         if (v15)
         {
-          v16 = [(GKImageContext *)v15 image];
-          if (v16)
+          image = [(GKImageContext *)v15 image];
+          if (image)
           {
-            v14 = v16;
+            v14 = image;
           }
 
           else
@@ -607,7 +607,7 @@ LABEL_12:
             [GKImageSource processAndCacheImageDataInContext:v27 withImage:? forKey:?];
           }
 
-          v14 = v9;
+          v14 = imageCopy;
           v15 = 0;
         }
       }
@@ -615,8 +615,8 @@ LABEL_12:
 
     else
     {
-      v14 = v9;
-      [v10 size];
+      v14 = imageCopy;
+      [keyCopy size];
       if (v17 == 0.0 || (v19 = v18, v18 == 0.0))
       {
         [v14 size];
@@ -638,8 +638,8 @@ LABEL_12:
       UIGraphicsPopContext();
     }
 
-    [(GKImageSource *)self _storeImage:v14 cacheKey:v11 path:v12 context:v15];
-    v8 = v15;
+    [(GKImageSource *)self _storeImage:v14 cacheKey:cacheKey path:filePath context:v15];
+    contextCopy = v15;
   }
 
   else
@@ -650,24 +650,24 @@ LABEL_12:
   return v14;
 }
 
-- (id)processAndCacheImageDataInContext:(id)a3 withImage:(id)a4 forIdentifier:(id)a5
+- (id)processAndCacheImageDataInContext:(id)context withImage:(id)image forIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(GKImageSource *)self keyForImageIdentifier:a5];
-  v11 = [(GKImageSource *)self processAndCacheImageDataInContext:v9 withImage:v8 forKey:v10];
+  imageCopy = image;
+  contextCopy = context;
+  v10 = [(GKImageSource *)self keyForImageIdentifier:identifier];
+  v11 = [(GKImageSource *)self processAndCacheImageDataInContext:contextCopy withImage:imageCopy forKey:v10];
 
   return v11;
 }
 
-- (void)clearCachedImageForIdentifier:(id)a3
+- (void)clearCachedImageForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v6 = [(GKImageSource *)self keyForImageIdentifier:?];
-    v4 = [v6 cacheKey];
-    v5 = [(GKImageSource *)self cache];
-    [v5 removeObjectForKey:v4];
+    cacheKey = [v6 cacheKey];
+    cache = [(GKImageSource *)self cache];
+    [cache removeObjectForKey:cacheKey];
   }
 }
 

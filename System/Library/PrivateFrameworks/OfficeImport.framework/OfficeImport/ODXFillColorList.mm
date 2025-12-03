@@ -3,7 +3,7 @@
 + (id)hueDirectionMap;
 + (void)colorApplicationMethodMap;
 + (void)hueDirectionMap;
-+ (void)readNode:(_xmlNode *)a3 list:(id)a4;
++ (void)readNode:(_xmlNode *)node list:(id)list;
 @end
 
 @implementation ODXFillColorList
@@ -48,17 +48,17 @@
   return v2;
 }
 
-+ (void)readNode:(_xmlNode *)a3 list:(id)a4
++ (void)readNode:(_xmlNode *)node list:(id)list
 {
-  v11 = a4;
-  v6 = [a1 hueDirectionMap];
-  [v11 setHueDirection:{objc_msgSend(v6, "readFromNode:ns:name:def:", a3, 0, "hueDir", 1)}];
+  listCopy = list;
+  hueDirectionMap = [self hueDirectionMap];
+  [listCopy setHueDirection:{objc_msgSend(hueDirectionMap, "readFromNode:ns:name:def:", node, 0, "hueDir", 1)}];
 
-  v7 = [a1 colorApplicationMethodMap];
-  [v11 setMethod:{objc_msgSend(v7, "readFromNode:ns:name:def:", a3, 0, "meth", 2)}];
+  colorApplicationMethodMap = [self colorApplicationMethodMap];
+  [listCopy setMethod:{objc_msgSend(colorApplicationMethodMap, "readFromNode:ns:name:def:", node, 0, "meth", 2)}];
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = OCXFirstChild(a3);
+  v9 = OCXFirstChild(node);
   while (v9)
   {
     v10 = [OAXColor readColorFromNode:v9];
@@ -71,7 +71,7 @@
     v9 = OCXNextSibling(v9);
   }
 
-  [v11 setColors:v8];
+  [listCopy setColors:v8];
 }
 
 + (void)hueDirectionMap

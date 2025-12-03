@@ -1,24 +1,24 @@
 @interface CIPortraitAntialias
-- (id)_kernel:(BOOL)a3 withAddedNoise:(BOOL)a4;
+- (id)_kernel:(BOOL)_kernel withAddedNoise:(BOOL)noise;
 - (id)_noiseGeneratorKernel;
 - (id)outputImage;
-- (id)outputImage:(id)a3 horizontal:(BOOL)a4;
+- (id)outputImage:(id)image horizontal:(BOOL)horizontal;
 @end
 
 @implementation CIPortraitAntialias
 
-- (id)_kernel:(BOOL)a3 withAddedNoise:(BOOL)a4
+- (id)_kernel:(BOOL)_kernel withAddedNoise:(BOOL)noise
 {
-  v4 = a4;
-  v5 = a3;
+  noiseCopy = noise;
+  _kernelCopy = _kernel;
   v6 = SDOFV2MetalLibURL();
   v7 = @"_sparserendering_antialias_y_no_noise";
-  if (v4)
+  if (noiseCopy)
   {
     v7 = @"_sparserendering_antialias_y";
   }
 
-  if (v5)
+  if (_kernelCopy)
   {
     v8 = @"_sparserendering_antialias_x";
   }
@@ -38,10 +38,10 @@
   return [(CIKernel *)CIColorKernel cachedKernelWithFunctionName:@"_noiseGenerator" fromMetalLibrary:v2 error:0];
 }
 
-- (id)outputImage:(id)a3 horizontal:(BOOL)a4
+- (id)outputImage:(id)image horizontal:(BOOL)horizontal
 {
   v92[4] = *MEMORY[0x1E69E9840];
-  if (a3 && ((v4 = a4, [(NSNumber *)[(CIPortraitAntialias *)self inputScale] floatValue], v8 = v7, v7 == 1.0) ? (v9 = 1) : (v9 = v4), (v10 = [(CIPortraitAntialias *)self _kernel:v4 withAddedNoise:(v7 == 1.0) & ~v4]) != 0))
+  if (image && ((v4 = horizontal, [(NSNumber *)[(CIPortraitAntialias *)self inputScale] floatValue], v8 = v7, v7 == 1.0) ? (v9 = 1) : (v9 = v4), (v10 = [(CIPortraitAntialias *)self _kernel:v4 withAddedNoise:(v7 == 1.0) & ~v4]) != 0))
   {
     v11 = v10;
     v76 = 0;
@@ -75,7 +75,7 @@
     if (v4)
     {
       inputMaxBlurInPixels = self->inputMaxBlurInPixels;
-      v92[0] = a3;
+      v92[0] = image;
       v92[1] = inputMaxBlurInPixels;
       *&v26 = v77[6];
       v28 = [MEMORY[0x1E696AD98] numberWithFloat:v26];
@@ -88,7 +88,7 @@
 
     else
     {
-      v91[0] = a3;
+      v91[0] = image;
       v91[1] = v20;
       v30 = v91;
       v31 = 3;
@@ -128,7 +128,7 @@
       v73[2] = __46__CIPortraitAntialias_outputImage_horizontal___block_invoke_2;
       v73[3] = &unk_1E75C2528;
       v73[4] = &v76;
-      v88[0] = a3;
+      v88[0] = image;
       v88[1] = v42;
       v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:v88 count:2];
       v86 = @"kCIKernelOutputFormat";
@@ -138,7 +138,7 @@
       LODWORD(v45) = v49;
       [(NSNumber *)self->inputLumaNoiseAmpl floatValue];
       v51 = [CIVector vectorWithX:*&v45 Y:v50];
-      v52 = [(CIPortraitAntialias *)self _noiseGeneratorKernel];
+      _noiseGeneratorKernel = [(CIPortraitAntialias *)self _noiseGeneratorKernel];
       [(CIVector *)self->inputSensorSize X];
       v54 = v53;
       [(CIVector *)self->inputSensorSize Y];
@@ -148,10 +148,10 @@
       v58 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v85 count:1];
       v83 = @"kCIKernelOutputFormat";
       v84 = [MEMORY[0x1E696AD98] numberWithInt:2053];
-      v59 = [v52 applyWithExtent:v58 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v84, &v83, 1), 0.0, 0.0, v55, v57}];
+      v59 = [_noiseGeneratorKernel applyWithExtent:v58 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v84, &v83, 1), 0.0, 0.0, v55, v57}];
       CGAffineTransformMakeScale(&v72, v23, v23);
       v60 = [v59 imageByApplyingTransform:&v72 highQualityDownsample:0];
-      v61 = [(CIPortraitAntialias *)self noiseColorKernel];
+      noiseColorKernel = [(CIPortraitAntialias *)self noiseColorKernel];
       [v48 extent];
       v63 = v62;
       v65 = v64;
@@ -163,7 +163,7 @@
       v70 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:3];
       v80 = @"kCIKernelOutputFormat";
       v81 = [MEMORY[0x1E696AD98] numberWithInt:2056];
-      v39 = [v61 applyWithExtent:v70 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v81, &v80, 1), v63, v65, v67, v69}];
+      v39 = [noiseColorKernel applyWithExtent:v70 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v81, &v80, 1), v63, v65, v67, v69}];
     }
 
     v71 = v39;

@@ -6,11 +6,11 @@
 
 - (SBHViewDarkeningHelper)sbh_darkener
 {
-  v2 = objc_getAssociatedObject(a1, &SBHViewDarkeningHelperKey);
+  v2 = objc_getAssociatedObject(self, &SBHViewDarkeningHelperKey);
   if (!v2)
   {
-    v2 = [[SBHViewDarkeningHelper alloc] initWithView:a1];
-    objc_setAssociatedObject(a1, &SBHViewDarkeningHelperKey, v2, 1);
+    v2 = [[SBHViewDarkeningHelper alloc] initWithView:self];
+    objc_setAssociatedObject(self, &SBHViewDarkeningHelperKey, v2, 1);
   }
 
   return v2;

@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __43__UIScreen_TelephonyUI__screenSizeCategory__block_invoke;
   block[3] = &unk_1E7C0C368;
-  block[4] = a1;
+  block[4] = self;
   if (screenSizeCategory_onceToken != -1)
   {
     dispatch_once(&screenSizeCategory_onceToken, block);
@@ -22,8 +22,8 @@
 
 - (BOOL)isUserInterfaceIdiomPad
 {
-  v1 = [a1 traitCollection];
-  v2 = [v1 userInterfaceIdiom] == 1;
+  traitCollection = [self traitCollection];
+  v2 = [traitCollection userInterfaceIdiom] == 1;
 
   return v2;
 }

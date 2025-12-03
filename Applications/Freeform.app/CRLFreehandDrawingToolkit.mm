@@ -1,63 +1,63 @@
 @interface CRLFreehandDrawingToolkit
-- ($F8C478D75979E1913FC0AA0A435BEEED)inputPointFromHoverGesture:(SEL)a3;
-- ($F8C478D75979E1913FC0AA0A435BEEED)inputPointInPKCanvasViewFromUnscaledSpace:(SEL)a3;
+- ($F8C478D75979E1913FC0AA0A435BEEED)inputPointFromHoverGesture:(SEL)gesture;
+- ($F8C478D75979E1913FC0AA0A435BEEED)inputPointInPKCanvasViewFromUnscaledSpace:(SEL)space;
 - (BOOL)canBeginFreehandDrawingMode;
-- (BOOL)currentToolAllowsDragForTouchType:(int64_t)a3 atUnscaledPoint:(CGPoint)a4;
+- (BOOL)currentToolAllowsDragForTouchType:(int64_t)type atUnscaledPoint:(CGPoint)point;
 - (BOOL)isInDrawingMode;
 - (BOOL)isInHandwritingMode;
 - (BOOL)isLassoAbleToSelectMixedType;
 - (BOOL)isLassoSelectionForMixedTypeEnabledInDrawingMode;
 - (BOOL)isObjectEraser;
 - (BOOL)supportsPencilHoverPreview;
-- (BOOL)wantsToAnimateForObjectUUID:(id)a3 animation:(id)a4;
+- (BOOL)wantsToAnimateForObjectUUID:(id)d animation:(id)animation;
 - (BOOL)wantsToSuppressKnobsOnTransformReps;
 - (CRLColor)colorForCurrentTool;
 - (CRLFreehandDrawingTool)currentTool;
-- (CRLFreehandDrawingToolkit)initWithDelegate:(id)a3 uiState:(id)a4;
+- (CRLFreehandDrawingToolkit)initWithDelegate:(id)delegate uiState:(id)state;
 - (PKCanvasView)pkCanvasView;
 - (double)opacityForCurrentTool;
 - (double)widthForCurrentTool;
-- (id)animationCompletionHandlerForObjectUUID:(id)a3 animation:(id)a4;
-- (unint64_t)freehandDrawingBehaviorForTouchType:(int64_t)a3 atUnscaledPoint:(CGPoint)a4;
-- (void)addToolkitObserver:(id)a3;
-- (void)beginDrawingModeIfNeededForTouchType:(int64_t)a3;
+- (id)animationCompletionHandlerForObjectUUID:(id)d animation:(id)animation;
+- (unint64_t)freehandDrawingBehaviorForTouchType:(int64_t)type atUnscaledPoint:(CGPoint)point;
+- (void)addToolkitObserver:(id)observer;
+- (void)beginDrawingModeIfNeededForTouchType:(int64_t)type;
 - (void)beginDrawingTransformModeIfNeeded;
-- (void)containedToolDidSetWidth:(id)a3;
+- (void)containedToolDidSetWidth:(id)width;
 - (void)endDrawingModeIfNeeded;
-- (void)enqueueAnimationForObjectUUID:(id)a3 animation:(id)a4 completion:(id)a5;
+- (void)enqueueAnimationForObjectUUID:(id)d animation:(id)animation completion:(id)completion;
 - (void)keepPencilShadowVisible;
 - (void)p_notifyObserversOfWidthChange;
 - (void)p_tearDownRunloopObserver;
-- (void)removeToolkitObserver:(id)a3;
+- (void)removeToolkitObserver:(id)observer;
 - (void)resetToMostRecentRestorableToolType;
-- (void)setColorForCurrentTool:(id)a3;
-- (void)setCurrentToolSelection:(unint64_t)a3;
-- (void)setOpacityForCurrentTool:(double)a3;
-- (void)setRulerToolShowing:(BOOL)a3;
-- (void)setUpdatedToolkitUIStateFromArchive:(id)a3;
-- (void)setWidthForCurrentTool:(double)a3;
+- (void)setColorForCurrentTool:(id)tool;
+- (void)setCurrentToolSelection:(unint64_t)selection;
+- (void)setOpacityForCurrentTool:(double)tool;
+- (void)setRulerToolShowing:(BOOL)showing;
+- (void)setUpdatedToolkitUIStateFromArchive:(id)archive;
+- (void)setWidthForCurrentTool:(double)tool;
 - (void)updatePencilShadowToScribbleMode;
-- (void)updatePencilShadowWithInputPoint:(id *)a3;
+- (void)updatePencilShadowWithInputPoint:(id *)point;
 @end
 
 @implementation CRLFreehandDrawingToolkit
 
-- (CRLFreehandDrawingToolkit)initWithDelegate:(id)a3 uiState:(id)a4
+- (CRLFreehandDrawingToolkit)initWithDelegate:(id)delegate uiState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  stateCopy = state;
   v22.receiver = self;
   v22.super_class = CRLFreehandDrawingToolkit;
   v8 = [(CRLFreehandDrawingToolkit *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v10 = [NSHashTable hashTableWithOptions:5];
     observers = v9->_observers;
     v9->_observers = v10;
 
-    if (!v7)
+    if (!stateCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -85,10 +85,10 @@
       v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingToolkit.m"];
       [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:63 isFatal:0 description:"Expected to get a toolkit UI state from the document!"];
 
-      v7 = objc_alloc_init(CRLFreehandDrawingToolkitUIState);
+      stateCopy = objc_alloc_init(CRLFreehandDrawingToolkitUIState);
     }
 
-    objc_storeStrong(&v9->_toolkitUIState, v7);
+    objc_storeStrong(&v9->_toolkitUIState, stateCopy);
     v15 = dispatch_queue_create("com.apple.freeform.freehand-drawing.canvas-animation", 0);
     animationSerialQueue = v9->_animationSerialQueue;
     v9->_animationSerialQueue = v15;
@@ -105,9 +105,9 @@
   return v9;
 }
 
-- (void)addToolkitObserver:(id)a3
+- (void)addToolkitObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -137,7 +137,7 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:76 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  if ([(NSHashTable *)self->_observers containsObject:v4])
+  if ([(NSHashTable *)self->_observers containsObject:observerCopy])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -166,12 +166,12 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:77 isFatal:0 description:"Should not add a freehand drawing toolkit observer that's already added."];
   }
 
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 }
 
-- (void)removeToolkitObserver:(id)a3
+- (void)removeToolkitObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -201,7 +201,7 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:83 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  if (![(NSHashTable *)self->_observers containsObject:v4])
+  if (![(NSHashTable *)self->_observers containsObject:observerCopy])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -230,7 +230,7 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:84 isFatal:0 description:"Should not remove a freehand drawing toolkit observer that has not been added."];
   }
 
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 }
 
 - (CRLFreehandDrawingTool)currentTool
@@ -240,10 +240,10 @@
   {
     toolkitUIState = self->_toolkitUIState;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v6 = [WeakRetained interactiveCanvasControllerForFreehandDrawingTools];
+    interactiveCanvasControllerForFreehandDrawingTools = [WeakRetained interactiveCanvasControllerForFreehandDrawingTools];
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 pencilKitCanvasViewControllerForFreehandDrawingTools];
-    v9 = [(CRLFreehandDrawingToolkitUIState *)toolkitUIState currentToolForInteractiveCanvasController:v6 pencilKitCanvasViewController:v8];
+    pencilKitCanvasViewControllerForFreehandDrawingTools = [v7 pencilKitCanvasViewControllerForFreehandDrawingTools];
+    v9 = [(CRLFreehandDrawingToolkitUIState *)toolkitUIState currentToolForInteractiveCanvasController:interactiveCanvasControllerForFreehandDrawingTools pencilKitCanvasViewController:pencilKitCanvasViewControllerForFreehandDrawingTools];
     v10 = self->_cachedCurrentTool;
     self->_cachedCurrentTool = v9;
 
@@ -253,16 +253,16 @@
   return cachedCurrentTool;
 }
 
-- (void)setCurrentToolSelection:(unint64_t)a3
+- (void)setCurrentToolSelection:(unint64_t)selection
 {
-  v5 = [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState currentToolType];
-  if (a3 == 9 || v5 != a3)
+  currentToolType = [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState currentToolType];
+  if (selection == 9 || currentToolType != selection)
   {
     cachedCurrentTool = self->_cachedCurrentTool;
     self->_cachedCurrentTool = 0;
 
     self->_askedDelegateForSmartAnnotationTool = 0;
-    [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState setCurrentToolType:a3];
+    [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState setCurrentToolType:selection];
     v7 = [(NSHashTable *)self->_observers copy];
     v13 = 0u;
     v14 = 0u;
@@ -299,88 +299,88 @@
 
 - (void)resetToMostRecentRestorableToolType
 {
-  v3 = [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState mostRecentRestorableToolType];
-  if (v3 != [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState currentToolType])
+  mostRecentRestorableToolType = [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState mostRecentRestorableToolType];
+  if (mostRecentRestorableToolType != [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState currentToolType])
   {
-    v4 = [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState mostRecentRestorableToolType];
+    mostRecentRestorableToolType2 = [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState mostRecentRestorableToolType];
 
-    [(CRLFreehandDrawingToolkit *)self setCurrentToolSelection:v4];
+    [(CRLFreehandDrawingToolkit *)self setCurrentToolSelection:mostRecentRestorableToolType2];
   }
 }
 
 - (CRLColor)colorForCurrentTool
 {
   toolkitUIState = self->_toolkitUIState;
-  v3 = [(CRLFreehandDrawingToolkit *)self currentTool];
-  v4 = -[CRLFreehandDrawingToolkitUIState colorForToolType:](toolkitUIState, "colorForToolType:", [v3 type]);
+  currentTool = [(CRLFreehandDrawingToolkit *)self currentTool];
+  v4 = -[CRLFreehandDrawingToolkitUIState colorForToolType:](toolkitUIState, "colorForToolType:", [currentTool type]);
 
   return v4;
 }
 
-- (void)setColorForCurrentTool:(id)a3
+- (void)setColorForCurrentTool:(id)tool
 {
-  [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState setCurrentToolColor:a3];
+  [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState setCurrentToolColor:tool];
   cachedCurrentTool = self->_cachedCurrentTool;
   self->_cachedCurrentTool = 0;
 
-  v8 = [(CRLFreehandDrawingToolkit *)self currentTool];
+  currentTool = [(CRLFreehandDrawingToolkit *)self currentTool];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
-  v7 = [v6 pencilKitCanvasView];
-  [v8 updatePencilKitToolIfAppropriateFor:v7];
+  pencilKitCanvasViewControllerForFreehandDrawingTools = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
+  pencilKitCanvasView = [pencilKitCanvasViewControllerForFreehandDrawingTools pencilKitCanvasView];
+  [currentTool updatePencilKitToolIfAppropriateFor:pencilKitCanvasView];
 }
 
 - (double)opacityForCurrentTool
 {
   toolkitUIState = self->_toolkitUIState;
-  v3 = [(CRLFreehandDrawingToolkit *)self currentTool];
-  -[CRLFreehandDrawingToolkitUIState opacityForToolType:](toolkitUIState, "opacityForToolType:", [v3 type]);
+  currentTool = [(CRLFreehandDrawingToolkit *)self currentTool];
+  -[CRLFreehandDrawingToolkitUIState opacityForToolType:](toolkitUIState, "opacityForToolType:", [currentTool type]);
   v5 = v4;
 
   return v5;
 }
 
-- (void)setOpacityForCurrentTool:(double)a3
+- (void)setOpacityForCurrentTool:(double)tool
 {
-  [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState setCurrentToolOpacity:a3];
+  [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState setCurrentToolOpacity:tool];
   cachedCurrentTool = self->_cachedCurrentTool;
   self->_cachedCurrentTool = 0;
 
-  v8 = [(CRLFreehandDrawingToolkit *)self currentTool];
+  currentTool = [(CRLFreehandDrawingToolkit *)self currentTool];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
-  v7 = [v6 pencilKitCanvasView];
-  [v8 updatePencilKitToolIfAppropriateFor:v7];
+  pencilKitCanvasViewControllerForFreehandDrawingTools = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
+  pencilKitCanvasView = [pencilKitCanvasViewControllerForFreehandDrawingTools pencilKitCanvasView];
+  [currentTool updatePencilKitToolIfAppropriateFor:pencilKitCanvasView];
 }
 
 - (double)widthForCurrentTool
 {
   toolkitUIState = self->_toolkitUIState;
-  v3 = [(CRLFreehandDrawingToolkit *)self currentTool];
-  -[CRLFreehandDrawingToolkitUIState strokeWidthForToolType:](toolkitUIState, "strokeWidthForToolType:", [v3 type]);
+  currentTool = [(CRLFreehandDrawingToolkit *)self currentTool];
+  -[CRLFreehandDrawingToolkitUIState strokeWidthForToolType:](toolkitUIState, "strokeWidthForToolType:", [currentTool type]);
   v5 = v4;
 
   return v5;
 }
 
-- (void)setWidthForCurrentTool:(double)a3
+- (void)setWidthForCurrentTool:(double)tool
 {
-  [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState setCurrentToolWidth:a3];
+  [(CRLFreehandDrawingToolkitUIState *)self->_toolkitUIState setCurrentToolWidth:tool];
   cachedCurrentTool = self->_cachedCurrentTool;
   self->_cachedCurrentTool = 0;
 
-  v5 = [(CRLFreehandDrawingToolkit *)self currentTool];
+  currentTool = [(CRLFreehandDrawingToolkit *)self currentTool];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
-  v8 = [v7 pencilKitCanvasView];
-  [v5 updatePencilKitToolIfAppropriateFor:v8];
+  pencilKitCanvasViewControllerForFreehandDrawingTools = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
+  pencilKitCanvasView = [pencilKitCanvasViewControllerForFreehandDrawingTools pencilKitCanvasView];
+  [currentTool updatePencilKitToolIfAppropriateFor:pencilKitCanvasView];
 
   [(CRLFreehandDrawingToolkit *)self p_notifyObserversOfWidthChange];
 }
 
-- (void)containedToolDidSetWidth:(id)a3
+- (void)containedToolDidSetWidth:(id)width
 {
-  if (self->_cachedCurrentTool == a3)
+  if (self->_cachedCurrentTool == width)
   {
     [(CRLFreehandDrawingToolkit *)self p_notifyObserversOfWidthChange];
   }
@@ -421,11 +421,11 @@
   }
 }
 
-- (void)setRulerToolShowing:(BOOL)a3
+- (void)setRulerToolShowing:(BOOL)showing
 {
-  if (self->_isRulerToolShowing != a3)
+  if (self->_isRulerToolShowing != showing)
   {
-    self->_isRulerToolShowing = a3;
+    self->_isRulerToolShowing = showing;
     v3 = [(NSHashTable *)self->_observers copy];
     v9 = 0u;
     v10 = 0u;
@@ -463,51 +463,51 @@
 - (PKCanvasView)pkCanvasView
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
-  v4 = [v3 pencilKitCanvasView];
+  pencilKitCanvasViewControllerForFreehandDrawingTools = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
+  pencilKitCanvasView = [pencilKitCanvasViewControllerForFreehandDrawingTools pencilKitCanvasView];
 
-  return v4;
+  return pencilKitCanvasView;
 }
 
 - (void)keepPencilShadowVisible
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v2 = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
-  v3 = [v2 pencilKitCanvasView];
-  [v3 _keepPencilShadowVisible];
+  pencilKitCanvasViewControllerForFreehandDrawingTools = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
+  pencilKitCanvasView = [pencilKitCanvasViewControllerForFreehandDrawingTools pencilKitCanvasView];
+  [pencilKitCanvasView _keepPencilShadowVisible];
 }
 
-- (void)updatePencilShadowWithInputPoint:(id *)a3
+- (void)updatePencilShadowWithInputPoint:(id *)point
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
-  v6 = [v5 pencilKitCanvasView];
-  v7 = *&a3->var13;
-  v11[6] = *&a3->var11;
+  pencilKitCanvasViewControllerForFreehandDrawingTools = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
+  pencilKitCanvasView = [pencilKitCanvasViewControllerForFreehandDrawingTools pencilKitCanvasView];
+  v7 = *&point->var13;
+  v11[6] = *&point->var11;
   v11[7] = v7;
-  var15 = a3->var15;
-  v8 = *&a3->var5;
-  v11[2] = *&a3->var3;
+  var15 = point->var15;
+  v8 = *&point->var5;
+  v11[2] = *&point->var3;
   v11[3] = v8;
-  v9 = *&a3->var9;
-  v11[4] = *&a3->var7;
+  v9 = *&point->var9;
+  v11[4] = *&point->var7;
   v11[5] = v9;
-  v10 = *&a3->var1;
-  v11[0] = a3->var0;
+  v10 = *&point->var1;
+  v11[0] = point->var0;
   v11[1] = v10;
-  [v6 _updatePencilShadowViewWithInputPoint:v11];
+  [pencilKitCanvasView _updatePencilShadowViewWithInputPoint:v11];
 }
 
 - (void)updatePencilShadowToScribbleMode
 {
   v6 = objc_alloc_init(PKHandwritingTool);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
-  v5 = [v4 pencilKitCanvasView];
-  [v5 setTool:v6];
+  pencilKitCanvasViewControllerForFreehandDrawingTools = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
+  pencilKitCanvasView = [pencilKitCanvasViewControllerForFreehandDrawingTools pencilKitCanvasView];
+  [pencilKitCanvasView setTool:v6];
 }
 
-- (void)beginDrawingModeIfNeededForTouchType:(int64_t)a3
+- (void)beginDrawingModeIfNeededForTouchType:(int64_t)type
 {
   if (![(CRLFreehandDrawingToolkit *)self canBeginFreehandDrawingMode])
   {
@@ -541,9 +541,9 @@
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained beginDrawingModeIfNeeded];
 
-  if (a3)
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v9 = objc_loadWeakRetained(&self->_delegate);
       [v9 toolkitDidDrawWithIndirectTouch];
@@ -551,7 +551,7 @@
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         return;
       }
@@ -612,44 +612,44 @@
 - (BOOL)canBeginFreehandDrawingMode
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained interactiveCanvasControllerForFreehandDrawingTools];
-  if ([v4 documentIsSharedReadOnly])
+  interactiveCanvasControllerForFreehandDrawingTools = [WeakRetained interactiveCanvasControllerForFreehandDrawingTools];
+  if ([interactiveCanvasControllerForFreehandDrawingTools documentIsSharedReadOnly])
   {
-    v5 = 0;
+    canBeginFreehandDrawingMode = 0;
   }
 
   else
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    v5 = [v6 canBeginFreehandDrawingMode];
+    canBeginFreehandDrawingMode = [v6 canBeginFreehandDrawingMode];
   }
 
-  return v5;
+  return canBeginFreehandDrawingMode;
 }
 
 - (BOOL)isInDrawingMode
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained isInDrawingMode];
+  isInDrawingMode = [WeakRetained isInDrawingMode];
 
-  return v3;
+  return isInDrawingMode;
 }
 
 - (BOOL)isInHandwritingMode
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained isInHandwritingMode];
+  isInHandwritingMode = [WeakRetained isInHandwritingMode];
 
-  return v3;
+  return isInHandwritingMode;
 }
 
 - (BOOL)isLassoSelectionForMixedTypeEnabledInDrawingMode
 {
   v3 = [CRLFeatureFlagsHelper isOSFeatureEnabled:1];
-  v4 = [(CRLFreehandDrawingToolkit *)self currentTool];
-  v5 = [v4 type];
+  currentTool = [(CRLFreehandDrawingToolkit *)self currentTool];
+  type = [currentTool type];
 
-  if (!v3 || ![(CRLFreehandDrawingToolkit *)self isInDrawingMode]|| v5 != 10)
+  if (!v3 || ![(CRLFreehandDrawingToolkit *)self isInDrawingMode]|| type != 10)
   {
     return 0;
   }
@@ -664,8 +664,8 @@
     return 0;
   }
 
-  v3 = [(CRLFreehandDrawingToolkit *)self toolkitUIState];
-  v4 = [v3 currentLassoType] == 0;
+  toolkitUIState = [(CRLFreehandDrawingToolkit *)self toolkitUIState];
+  v4 = [toolkitUIState currentLassoType] == 0;
 
   return v4;
 }
@@ -673,26 +673,26 @@
 - (BOOL)wantsToSuppressKnobsOnTransformReps
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained wantsToSuppressKnobsOnTransformReps];
+  wantsToSuppressKnobsOnTransformReps = [WeakRetained wantsToSuppressKnobsOnTransformReps];
 
-  return v3;
+  return wantsToSuppressKnobsOnTransformReps;
 }
 
-- (unint64_t)freehandDrawingBehaviorForTouchType:(int64_t)a3 atUnscaledPoint:(CGPoint)a4
+- (unint64_t)freehandDrawingBehaviorForTouchType:(int64_t)type atUnscaledPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [(CRLFreehandDrawingToolkit *)self isInDrawingMode];
-  v9 = v8;
-  if (a3 != 2 && !v8)
+  y = point.y;
+  x = point.x;
+  isInDrawingMode = [(CRLFreehandDrawingToolkit *)self isInDrawingMode];
+  v9 = isInDrawingMode;
+  if (type != 2 && !isInDrawingMode)
   {
     return 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v12 = [WeakRetained interactiveCanvasControllerForFreehandDrawingTools];
+  interactiveCanvasControllerForFreehandDrawingTools = [WeakRetained interactiveCanvasControllerForFreehandDrawingTools];
 
-  if ([v12 documentIsSharedReadOnly])
+  if ([interactiveCanvasControllerForFreehandDrawingTools documentIsSharedReadOnly])
   {
     v10 = 0;
   }
@@ -702,10 +702,10 @@
     v13 = objc_loadWeakRetained(&self->_delegate);
     v14 = [v13 freehandDrawingBehaviorAtUnscaledPoint:{x, y}];
 
-    v15 = [(CRLFreehandDrawingToolkit *)self currentTool];
-    v16 = [v15 type];
+    currentTool = [(CRLFreehandDrawingToolkit *)self currentTool];
+    type = [currentTool type];
 
-    if (v16 == 9 && (v14 - 1) < 2)
+    if (type == 9 && (v14 - 1) < 2)
     {
       v10 = 3;
     }
@@ -718,7 +718,7 @@
         v17 = 3;
       }
 
-      if (v14 == 2 && v16 == 10)
+      if (v14 == 2 && type == 10)
       {
         v10 = v17;
       }
@@ -733,45 +733,45 @@
   return v10;
 }
 
-- (BOOL)currentToolAllowsDragForTouchType:(int64_t)a3 atUnscaledPoint:(CGPoint)a4
+- (BOOL)currentToolAllowsDragForTouchType:(int64_t)type atUnscaledPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   if (![(CRLFreehandDrawingToolkit *)self isInDrawingMode])
   {
     return 1;
   }
 
-  v8 = [(CRLFreehandDrawingToolkit *)self currentTool];
-  v9 = [v8 wantsDragForTouchType:a3 atUnscaledPoint:{x, y}];
+  currentTool = [(CRLFreehandDrawingToolkit *)self currentTool];
+  v9 = [currentTool wantsDragForTouchType:type atUnscaledPoint:{x, y}];
 
   return v9;
 }
 
-- (void)enqueueAnimationForObjectUUID:(id)a3 animation:(id)a4 completion:(id)a5
+- (void)enqueueAnimationForObjectUUID:(id)d animation:(id)animation completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  animationCopy = animation;
+  completionCopy = completion;
   animationSerialQueue = self->_animationSerialQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1003B6744;
   v15[3] = &unk_101842D00;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = animationCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = animationCopy;
+  v14 = dCopy;
   dispatch_sync(animationSerialQueue, v15);
 }
 
-- (BOOL)wantsToAnimateForObjectUUID:(id)a3 animation:(id)a4
+- (BOOL)wantsToAnimateForObjectUUID:(id)d animation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  animationCopy = animation;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -782,11 +782,11 @@
   v12[2] = sub_1003B68DC;
   v12[3] = &unk_101842C40;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = dCopy;
+  v14 = animationCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
+  v9 = animationCopy;
+  v10 = dCopy;
   dispatch_sync(animationSerialQueue, v12);
   LOBYTE(animationSerialQueue) = *(v17 + 24);
 
@@ -794,10 +794,10 @@
   return animationSerialQueue;
 }
 
-- (id)animationCompletionHandlerForObjectUUID:(id)a3 animation:(id)a4
+- (id)animationCompletionHandlerForObjectUUID:(id)d animation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  animationCopy = animation;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -809,12 +809,12 @@
   v13[1] = 3221225472;
   v13[2] = sub_1003B6BE8;
   v13[3] = &unk_101847568;
-  v14 = v6;
-  v15 = v7;
-  v16 = self;
+  v14 = dCopy;
+  v15 = animationCopy;
+  selfCopy = self;
   v17 = &v18;
-  v9 = v7;
-  v10 = v6;
+  v9 = animationCopy;
+  v10 = dCopy;
   dispatch_sync(animationSerialQueue, v13);
   v11 = objc_retainBlock(v19[5]);
 
@@ -823,21 +823,21 @@
   return v11;
 }
 
-- (void)setUpdatedToolkitUIStateFromArchive:(id)a3
+- (void)setUpdatedToolkitUIStateFromArchive:(id)archive
 {
-  objc_storeStrong(&self->_toolkitUIState, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_toolkitUIState, archive);
+  archiveCopy = archive;
   cachedCurrentTool = self->_cachedCurrentTool;
   self->_cachedCurrentTool = 0;
 
-  v10 = [(CRLFreehandDrawingToolkit *)self currentTool];
+  currentTool = [(CRLFreehandDrawingToolkit *)self currentTool];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
-  v9 = [v8 pencilKitCanvasView];
-  [v10 updatePencilKitToolIfAppropriateFor:v9];
+  pencilKitCanvasViewControllerForFreehandDrawingTools = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
+  pencilKitCanvasView = [pencilKitCanvasViewControllerForFreehandDrawingTools pencilKitCanvasView];
+  [currentTool updatePencilKitToolIfAppropriateFor:pencilKitCanvasView];
 }
 
-- ($F8C478D75979E1913FC0AA0A435BEEED)inputPointFromHoverGesture:(SEL)a3
+- ($F8C478D75979E1913FC0AA0A435BEEED)inputPointFromHoverGesture:(SEL)gesture
 {
   v6 = *(&PKInputPointZero + 7);
   *&retstr->var11 = *(&PKInputPointZero + 6);
@@ -854,10 +854,10 @@
   *&retstr->var1 = v9;
   v10 = a4;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v12 = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
-  v23 = [v12 pencilKitCanvasView];
+  pencilKitCanvasViewControllerForFreehandDrawingTools = [WeakRetained pencilKitCanvasViewControllerForFreehandDrawingTools];
+  pencilKitCanvasView = [pencilKitCanvasViewControllerForFreehandDrawingTools pencilKitCanvasView];
 
-  [v10 locationInView:v23];
+  [v10 locationInView:pencilKitCanvasView];
   retstr->var0.var0.x = v13;
   retstr->var0.var0.y = v14;
   [v10 zOffset];
@@ -867,7 +867,7 @@
   retstr->var7 = CACurrentMediaTime();
   [v10 altitudeAngle];
   retstr->var3 = sub_1004C3240(1.57079633 - v18, 0.0, 1.57079633);
-  [v10 azimuthAngleInView:v23];
+  [v10 azimuthAngleInView:pencilKitCanvasView];
   v20 = v19;
 
   sub_1001210C4(v20 + -3.14159265);
@@ -877,17 +877,17 @@
   return result;
 }
 
-- ($F8C478D75979E1913FC0AA0A435BEEED)inputPointInPKCanvasViewFromUnscaledSpace:(SEL)a3
+- ($F8C478D75979E1913FC0AA0A435BEEED)inputPointInPKCanvasViewFromUnscaledSpace:(SEL)space
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [WeakRetained interactiveCanvasControllerForFreehandDrawingTools];
-  v9 = [v8 canvasView];
-  v10 = [v9 unscaledCoordinateSpace];
+  interactiveCanvasControllerForFreehandDrawingTools = [WeakRetained interactiveCanvasControllerForFreehandDrawingTools];
+  canvasView = [interactiveCanvasControllerForFreehandDrawingTools canvasView];
+  unscaledCoordinateSpace = [canvasView unscaledCoordinateSpace];
   v11 = objc_loadWeakRetained(&self->_delegate);
-  v12 = [v11 pencilKitCanvasViewControllerForFreehandDrawingTools];
-  v13 = [v12 pencilKitCanvasView];
-  v14 = [v13 coordinateSpace];
-  [v10 convertPoint:v14 toCoordinateSpace:{a4->var0.var0.x, a4->var0.var0.y}];
+  pencilKitCanvasViewControllerForFreehandDrawingTools = [v11 pencilKitCanvasViewControllerForFreehandDrawingTools];
+  pencilKitCanvasView = [pencilKitCanvasViewControllerForFreehandDrawingTools pencilKitCanvasView];
+  coordinateSpace = [pencilKitCanvasView coordinateSpace];
+  [unscaledCoordinateSpace convertPoint:coordinateSpace toCoordinateSpace:{a4->var0.var0.x, a4->var0.var0.y}];
   v16 = v15;
   v18 = v17;
 
@@ -922,7 +922,7 @@
 
 - (BOOL)supportsPencilHoverPreview
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100D89D88();
 
   return v3 != 3;
@@ -930,7 +930,7 @@
 
 - (BOOL)isObjectEraser
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100D89D88();
 
   return v3 == 1;

@@ -1,6 +1,6 @@
 @interface SDAirDropHandlerKeynoteLiveLinks
 - (BOOL)canHandleTransfer;
-- (SDAirDropHandlerKeynoteLiveLinks)initWithTransfer:(id)a3;
+- (SDAirDropHandlerKeynoteLiveLinks)initWithTransfer:(id)transfer;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
 - (void)updatePossibleActions;
@@ -8,11 +8,11 @@
 
 @implementation SDAirDropHandlerKeynoteLiveLinks
 
-- (SDAirDropHandlerKeynoteLiveLinks)initWithTransfer:(id)a3
+- (SDAirDropHandlerKeynoteLiveLinks)initWithTransfer:(id)transfer
 {
   v6.receiver = self;
   v6.super_class = SDAirDropHandlerKeynoteLiveLinks;
-  v3 = [(SDAirDropHandler *)&v6 initWithTransfer:a3];
+  v3 = [(SDAirDropHandler *)&v6 initWithTransfer:transfer];
   if (v3)
   {
     v4 = [LSBundleProxy bundleProxyForIdentifier:@"com.apple.Keynote"];
@@ -29,16 +29,16 @@
     return 0;
   }
 
-  v3 = [(SDAirDropHandler *)self bundleProxy];
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
 
-  if (v3)
+  if (bundleProxy)
   {
     goto LABEL_4;
   }
 
   v4 = [SDAirDropHandlerWebLinks alloc];
-  v5 = [(SDAirDropHandler *)self transfer];
-  v6 = [(SDAirDropHandlerWebLinks *)v4 initWithTransfer:v5];
+  transfer = [(SDAirDropHandler *)self transfer];
+  v6 = [(SDAirDropHandlerWebLinks *)v4 initWithTransfer:transfer];
   webLinksHandler = self->_webLinksHandler;
   self->_webLinksHandler = v6;
 
@@ -52,10 +52,10 @@ LABEL_4:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(SDAirDropHandler *)self transfer];
-  v9 = [v8 completedURLs];
+  transfer2 = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer2 completedURLs];
 
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [completedURLs countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -66,7 +66,7 @@ LABEL_4:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(completedURLs);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
@@ -77,7 +77,7 @@ LABEL_4:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [completedURLs countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v11)
       {
         continue;
@@ -102,10 +102,10 @@ LABEL_15:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
+  senderName = [(SDAirDropHandler *)self senderName];
   v4 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:&off_10090FEF0];
   v5 = SFLocalizedStringForKey();
-  v6 = [NSString localizedStringWithFormat:v5, v3];
+  v6 = [NSString localizedStringWithFormat:v5, senderName];
 
   return v6;
 }
@@ -116,8 +116,8 @@ LABEL_15:
   if (webLinksHandler)
   {
     [(SDAirDropHandlerGenericLinks *)webLinksHandler updatePossibleActions];
-    v4 = [(SDAirDropHandler *)self completionHandler];
-    [(SDAirDropHandler *)self->_webLinksHandler setCompletionHandler:v4];
+    completionHandler = [(SDAirDropHandler *)self completionHandler];
+    [(SDAirDropHandler *)self->_webLinksHandler setCompletionHandler:completionHandler];
   }
 
   else

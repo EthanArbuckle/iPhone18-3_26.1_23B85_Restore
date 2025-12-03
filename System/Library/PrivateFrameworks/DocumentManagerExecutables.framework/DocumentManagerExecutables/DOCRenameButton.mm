@@ -1,15 +1,15 @@
 @interface DOCRenameButton
-- (_TtC26DocumentManagerExecutables15DOCRenameButton)initWithFrame:(CGRect)a3;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (_TtC26DocumentManagerExecutables15DOCRenameButton)initWithFrame:(CGRect)frame;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3 forState:(unint64_t)a4;
+- (void)setTitle:(id)title forState:(unint64_t)state;
 @end
 
 @implementation DOCRenameButton
 
-- (void)setTitle:(id)a3 forState:(unint64_t)a4
+- (void)setTitle:(id)title forState:(unint64_t)state
 {
-  if (a3)
+  if (title)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -22,7 +22,7 @@
   }
 
   v8 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.super.isa) + 0xD8);
-  v9 = self;
+  selfCopy = self;
   v8(v5, v7);
 }
 
@@ -41,7 +41,7 @@
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v4 = type metadata accessor for UIPointerShape();
   v5 = *(v4 - 8);
@@ -59,7 +59,7 @@
   return v14;
 }
 
-- (_TtC26DocumentManagerExecutables15DOCRenameButton)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables15DOCRenameButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

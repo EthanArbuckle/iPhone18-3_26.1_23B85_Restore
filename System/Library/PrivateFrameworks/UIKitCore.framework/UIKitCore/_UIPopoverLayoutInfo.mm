@@ -3,17 +3,17 @@
 - (CGRect)containingFrame;
 - (CGRect)frame;
 - (CGRect)sourceViewRect;
-- (CGSize)_popoverViewSizeForContentSize:(CGSize)a3 arrowDirection:(unint64_t)a4;
+- (CGSize)_popoverViewSizeForContentSize:(CGSize)size arrowDirection:(unint64_t)direction;
 - (CGSize)preferredContentSize;
 - (UIEdgeInsets)containingFrameInsets;
 - (UIEdgeInsets)contentInset;
 - (_UIPopoverLayoutInfo)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_updateOutputs;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)updateProperties:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)updateProperties:(id)properties;
 @end
 
 @implementation _UIPopoverLayoutInfo
@@ -34,12 +34,12 @@
     *(v2 + 8) = _Q0;
     *(v2 + 24) = _Q0;
     *(v2 + 5) = 0x4032000000000000;
-    v9 = [objc_opt_class() _observationKeys];
+    _observationKeys = [objc_opt_class() _observationKeys];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    v10 = [_observationKeys countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -51,14 +51,14 @@
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(_observationKeys);
           }
 
           [(_UIPopoverLayoutInfo *)v3 addObserver:v3 forKeyPath:*(*(&v15 + 1) + 8 * v13++) options:1 context:0];
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v11 = [_observationKeys countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v11);
@@ -315,13 +315,13 @@
   {
     v37 = v26;
     v38 = v30;
-    v39 = [(_UIPopoverLayoutInfo *)self isRTL];
+    isRTL = [(_UIPopoverLayoutInfo *)self isRTL];
     v30 = v38;
     v24 = v170;
     v25 = v171;
     v26 = v37;
     v40 = v31 - v28;
-    if (!v39)
+    if (!isRTL)
     {
       v40 = v6;
     }
@@ -331,14 +331,14 @@
   {
     v75 = v26;
     v76 = v30;
-    v77 = [(_UIPopoverLayoutInfo *)self isRTL];
+    isRTL2 = [(_UIPopoverLayoutInfo *)self isRTL];
     v30 = v76;
     v24 = v170;
     v25 = v171;
     v26 = v75;
     v40 = v31 - v28;
     v6 = v157;
-    if (v77)
+    if (isRTL2)
     {
       v40 = v157;
     }
@@ -1034,12 +1034,12 @@ LABEL_135:
 - (void)dealloc
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() _observationKeys];
+  _observationKeys = [objc_opt_class() _observationKeys];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [_observationKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1051,14 +1051,14 @@ LABEL_135:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_observationKeys);
         }
 
         [(_UIPopoverLayoutInfo *)self removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [_observationKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -1069,7 +1069,7 @@ LABEL_135:
   [(_UIPopoverLayoutInfo *)&v8 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 _setUpdatesEnabled:0];
@@ -1135,64 +1135,64 @@ LABEL_135:
   return v16;
 }
 
-- (void)updateProperties:(id)a3
+- (void)updateProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   [(_UIPopoverLayoutInfo *)self _setUpdatesEnabled:0];
-  v4[2](v4);
+  propertiesCopy[2](propertiesCopy);
 
   [(_UIPopoverLayoutInfo *)self _setUpdatesEnabled:1];
 
   [(_UIPopoverLayoutInfo *)self _updateOutputs];
 }
 
-- (CGSize)_popoverViewSizeForContentSize:(CGSize)a3 arrowDirection:(unint64_t)a4
+- (CGSize)_popoverViewSizeForContentSize:(CGSize)size arrowDirection:(unint64_t)direction
 {
   v6 = *MEMORY[0x1E695F060];
   v7 = *(MEMORY[0x1E695F060] + 8);
-  if (a4 > 3)
+  if (direction > 3)
   {
-    if (a4 != 4)
+    if (direction != 4)
     {
       v10 = *(MEMORY[0x1E695F060] + 8);
       v8 = *MEMORY[0x1E695F060];
-      if (a4 != 8)
+      if (direction != 8)
       {
         goto LABEL_11;
       }
     }
 
     right = self->_contentInset.right;
-    v12 = a3.width + self->_arrowHeight + self->_contentInset.left;
+    v12 = size.width + self->_arrowHeight + self->_contentInset.left;
 LABEL_9:
     v8 = v12 + right;
-    height = a3.height;
+    height = size.height;
     goto LABEL_10;
   }
 
-  if (a4 - 1 >= 2)
+  if (direction - 1 >= 2)
   {
     v10 = *(MEMORY[0x1E695F060] + 8);
     v8 = *MEMORY[0x1E695F060];
-    if (a4)
+    if (direction)
     {
       goto LABEL_11;
     }
 
-    v12 = a3.width + self->_contentInset.left;
+    v12 = size.width + self->_contentInset.left;
     right = self->_contentInset.right;
     goto LABEL_9;
   }
 
-  v8 = a3.width + self->_contentInset.left + self->_contentInset.right;
-  height = a3.height + self->_arrowHeight;
+  v8 = size.width + self->_contentInset.left + self->_contentInset.right;
+  height = size.height + self->_arrowHeight;
 LABEL_10:
   v10 = height + self->_contentInset.top + self->_contentInset.bottom;
 LABEL_11:
-  if ((a3.width != v6 || a3.height != v7) && v8 == v6 && v10 == v7)
+  if ((size.width != v6 || size.height != v7) && v8 == v6 && v10 == v7)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_UIPopoverLayoutInfo.m" lineNumber:197 description:@"Unknown direction passed to _popoverViewSizeForContentSize:arrowDirection:"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPopoverLayoutInfo.m" lineNumber:197 description:@"Unknown direction passed to _popoverViewSizeForContentSize:arrowDirection:"];
   }
 
   v16 = v8;
@@ -1202,11 +1202,11 @@ LABEL_11:
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   if (self->_updatesEnabled)
   {
-    [(_UIPopoverLayoutInfo *)self _updateOutputs:a3];
+    [(_UIPopoverLayoutInfo *)self _updateOutputs:path];
   }
 }
 

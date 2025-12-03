@@ -1,6 +1,6 @@
 @interface SBApplicationInfo
-+ (uint64_t)_calculateApplicationSupportedTypesFromProxy:(uint64_t)a1;
-+ (uint64_t)_visibilityOverrideFromInfo:(void *)a3 entitlements:;
++ (uint64_t)_calculateApplicationSupportedTypesFromProxy:(uint64_t)proxy;
++ (uint64_t)_visibilityOverrideFromInfo:(void *)info entitlements:;
 - (BOOL)_supportsApplicationType:(_BOOL8)result;
 - (BOOL)browserEngineIsRegionallyRestricted;
 - (BOOL)embeddedBrowserEngineIsRegionallyRestricted;
@@ -8,13 +8,13 @@
 - (BOOL)statusBarHiddenWhenVerticallyCompact;
 - (NSArray)staticApplicationShortcutItems;
 - (NSUserDefaults)userDefaults;
-- (id)_configureTags:(char)a3 hasVisibilityOverride:;
+- (id)_configureTags:(char)tags hasVisibilityOverride:;
 - (id)dataContainerURL;
 - (int64_t)backgroundStyle;
-- (int64_t)backgroundStyleForRequestedBackgroundStyle:(int64_t)a3;
-- (uint64_t)_calculateVoipClassWithEntitlements:(uint64_t)a1;
+- (int64_t)backgroundStyleForRequestedBackgroundStyle:(int64_t)style;
+- (uint64_t)_calculateVoipClassWithEntitlements:(uint64_t)entitlements;
 - (unint64_t)uninstallCapability;
-- (void)_loadFromProxy:(id)a3;
+- (void)_loadFromProxy:(id)proxy;
 @end
 
 @implementation SBApplicationInfo
@@ -38,17 +38,17 @@
   dataContainerURLOverride = self->_dataContainerURLOverride;
   if (dataContainerURLOverride)
   {
-    v3 = dataContainerURLOverride;
+    dataContainerURL = dataContainerURLOverride;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBApplicationInfo;
-    v3 = [(SBApplicationInfo *)&v5 dataContainerURL];
+    dataContainerURL = [(SBApplicationInfo *)&v5 dataContainerURL];
   }
 
-  return v3;
+  return dataContainerURL;
 }
 
 - (BOOL)isAppleApplication
@@ -60,8 +60,8 @@
 
   else if (![(SBApplicationInfo *)self isProvisioningProfileValidated]|| (v3 = [(SBApplicationInfo *)self isBeta]) != 0)
   {
-    v4 = [(SBApplicationInfo *)self bundleIdentifier];
-    v5 = [v4 hasPrefix:@"com.apple."];
+    bundleIdentifier = [(SBApplicationInfo *)self bundleIdentifier];
+    v5 = [bundleIdentifier hasPrefix:@"com.apple."];
 
     LOBYTE(v3) = v5;
   }
@@ -88,8 +88,8 @@
   uninstallCapability = self->_uninstallCapability;
   if (uninstallCapability == 2)
   {
-    v3 = [(SBApplicationInfo *)self bundleIdentifier];
-    v4 = [objc_alloc(MEMORY[0x277D1C160]) initWithBundleIdentifier:v3];
+    bundleIdentifier = [(SBApplicationInfo *)self bundleIdentifier];
+    v4 = [objc_alloc(MEMORY[0x277D1C160]) initWithBundleIdentifier:bundleIdentifier];
     uninstallCapability = 2 * ([MEMORY[0x277D1C148] removabilityForAppWithIdentity:v4 error:0] != 3);
   }
 
@@ -214,11 +214,11 @@ void __33__SBApplicationInfo_userDefaults__block_invoke(uint64_t a1)
   }
 }
 
-- (int64_t)backgroundStyleForRequestedBackgroundStyle:(int64_t)a3
+- (int64_t)backgroundStyleForRequestedBackgroundStyle:(int64_t)style
 {
   if ([(SBApplicationInfo *)self canChangeBackgroundStyle])
   {
-    return a3;
+    return style;
   }
 
   return [(SBApplicationInfo *)self backgroundStyle];
@@ -228,10 +228,10 @@ void __33__SBApplicationInfo_userDefaults__block_invoke(uint64_t a1)
 {
   if ([(NSSet *)self->_eligibilityDomains containsObject:&unk_2833702E0])
   {
-    v3 = [(SBApplicationInfo *)self bundleIdentifier];
-    v4 = [(SBApplicationInfo *)self processIdentity];
-    v5 = [v4 personaString];
-    v6 = !_appIsEligibleForDomainWithIdentifierAndPersona(&unk_2833702E0, v3, v5);
+    bundleIdentifier = [(SBApplicationInfo *)self bundleIdentifier];
+    processIdentity = [(SBApplicationInfo *)self processIdentity];
+    personaString = [processIdentity personaString];
+    v6 = !_appIsEligibleForDomainWithIdentifierAndPersona(&unk_2833702E0, bundleIdentifier, personaString);
   }
 
   else
@@ -246,10 +246,10 @@ void __33__SBApplicationInfo_userDefaults__block_invoke(uint64_t a1)
 {
   if ([(NSSet *)self->_eligibilityDomains containsObject:&unk_2833702F8])
   {
-    v3 = [(SBApplicationInfo *)self bundleIdentifier];
-    v4 = [(SBApplicationInfo *)self processIdentity];
-    v5 = [v4 personaString];
-    v6 = !_appIsEligibleForDomainWithIdentifierAndPersona(&unk_2833702F8, v3, v5);
+    bundleIdentifier = [(SBApplicationInfo *)self bundleIdentifier];
+    processIdentity = [(SBApplicationInfo *)self processIdentity];
+    personaString = [processIdentity personaString];
+    v6 = !_appIsEligibleForDomainWithIdentifierAndPersona(&unk_2833702F8, bundleIdentifier, personaString);
   }
 
   else
@@ -260,10 +260,10 @@ void __33__SBApplicationInfo_userDefaults__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)_loadFromProxy:(id)a3
+- (void)_loadFromProxy:(id)proxy
 {
   v161 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  proxyCopy = proxy;
   if (_loadFromProxy__onceToken != -1)
   {
     [SBApplicationInfo _loadFromProxy:];
@@ -271,42 +271,42 @@ void __33__SBApplicationInfo_userDefaults__block_invoke(uint64_t a1)
 
   v155.receiver = self;
   v155.super_class = SBApplicationInfo;
-  [(SBApplicationInfo *)&v155 _loadFromProxy:v4];
-  v5 = [(SBApplicationInfo *)self bundleIdentifier];
-  v6 = [v4 objectsForInfoDictionaryKeys:_loadFromProxy____infoKeys];
-  v7 = [v4 entitlementValuesForKeys:_loadFromProxy____entitlementKeys];
-  v8 = [(SBApplicationInfo *)self bundleURL];
-  v9 = [v8 absoluteString];
+  [(SBApplicationInfo *)&v155 _loadFromProxy:proxyCopy];
+  bundleIdentifier = [(SBApplicationInfo *)self bundleIdentifier];
+  v6 = [proxyCopy objectsForInfoDictionaryKeys:_loadFromProxy____infoKeys];
+  v7 = [proxyCopy entitlementValuesForKeys:_loadFromProxy____entitlementKeys];
+  bundleURL = [(SBApplicationInfo *)self bundleURL];
+  absoluteString = [bundleURL absoluteString];
   installInstanceID = self->_installInstanceID;
-  self->_installInstanceID = v9;
+  self->_installInstanceID = absoluteString;
 
   self->_isNewsstand = [v6 BOOLForKey:@"UINewsstandApp"];
-  v146 = v5;
-  if ([v5 isEqualToString:@"com.apple.webapp"])
+  v146 = bundleIdentifier;
+  if ([bundleIdentifier isEqualToString:@"com.apple.webapp"])
   {
     self->_representsWebApplication = 1;
   }
 
-  v11 = [(SBApplicationInfo *)self dataContainerURL];
+  dataContainerURL = [(SBApplicationInfo *)self dataContainerURL];
   v147 = v7;
-  if (!v11)
+  if (!dataContainerURL)
   {
     if ([(SBApplicationInfo *)self isSystemApplication])
     {
       v12 = MEMORY[0x277CBEBC0];
       v13 = BSCurrentUserDirectory();
-      v11 = [v12 fileURLWithPath:v13];
+      dataContainerURL = [v12 fileURLWithPath:v13];
 
       v7 = v147;
     }
 
     else
     {
-      v11 = 0;
+      dataContainerURL = 0;
     }
   }
 
-  objc_storeStrong(&self->_restorationArchiveContainerURL, v11);
+  objc_storeStrong(&self->_restorationArchiveContainerURL, dataContainerURL);
   self->_isOkemoLinked = [(SBApplicationInfo *)self builtOnOrAfterSDKVersion:@"8.0"];
   self->_isMonarchLinked = [(SBApplicationInfo *)self builtOnOrAfterSDKVersion:@"9.0"];
   self->_isTigrisLinked = [(SBApplicationInfo *)self builtOnOrAfterSDKVersion:@"11.0"];
@@ -332,25 +332,25 @@ void __33__SBApplicationInfo_userDefaults__block_invoke(uint64_t a1)
   }
 
   self->_isLaunchableDuringSetup = v14;
-  self->_isLicensedToDevice = [v4 hasMIDBasedSINF];
+  self->_isLicensedToDevice = [proxyCopy hasMIDBasedSINF];
   v154.receiver = self;
   v154.super_class = SBApplicationInfo;
-  v15 = [(SBApplicationInfo *)&v154 displayName];
+  displayName = [(SBApplicationInfo *)&v154 displayName];
   v148 = v6;
-  if (![v15 length])
+  if (![displayName length])
   {
     [(SBApplicationInfo *)self bundleURL];
-    v17 = v16 = v15;
-    v18 = [v17 path];
-    v19 = [v18 lastPathComponent];
-    v15 = [v19 stringByDeletingPathExtension];
+    v17 = v16 = displayName;
+    path = [v17 path];
+    lastPathComponent = [path lastPathComponent];
+    displayName = [lastPathComponent stringByDeletingPathExtension];
 
     v6 = v148;
     v7 = v147;
   }
 
-  v143 = v15;
-  v20 = [v15 copy];
+  v143 = displayName;
+  v20 = [displayName copy];
   displayName = self->_displayName;
   self->_displayName = v20;
 
@@ -398,7 +398,7 @@ void __33__SBApplicationInfo_userDefaults__block_invoke(uint64_t a1)
     v6 = v148;
   }
 
-  v144 = v11;
+  v144 = dataContainerURL;
 
   if (!*p_usesSplashBoard)
   {
@@ -506,9 +506,9 @@ void __33__SBApplicationInfo_userDefaults__block_invoke(uint64_t a1)
 
   if ([(SBApplicationInfo *)self isSystemApplication])
   {
-    v56 = [v4 isDeletable];
+    isDeletable = [proxyCopy isDeletable];
     v57 = 2;
-    if (!v56)
+    if (!isDeletable)
     {
       v57 = 0;
     }
@@ -522,70 +522,70 @@ void __33__SBApplicationInfo_userDefaults__block_invoke(uint64_t a1)
   self->_uninstallCapability = v57;
   self->_visibilityOverride = [SBApplicationInfo _visibilityOverrideFromInfo:v148 entitlements:v7];
   v58 = +[SBPlatformController sharedInstance];
-  v59 = [v58 isInternalInstall];
-  v60 = [v58 isCarrierInstall];
-  if ((v59 & 1) != 0 || (v60 & 1) != 0 || (v61 = [v147 BOOLForKey:@"com.apple.springboard.allowIconVisibilityChanges"]) != 0)
+  isInternalInstall = [v58 isInternalInstall];
+  isCarrierInstall = [v58 isCarrierInstall];
+  if ((isInternalInstall & 1) != 0 || (isCarrierInstall & 1) != 0 || (v61 = [v147 BOOLForKey:@"com.apple.springboard.allowIconVisibilityChanges"]) != 0)
   {
     LOBYTE(v61) = [v148 BOOLForKey:@"SBIconVisibilityAppLibraryOnly"];
   }
 
   self->_appLibraryOnlyByDefault = v61;
-  v62 = [(SBApplicationInfo *)self tags];
+  tags = [(SBApplicationInfo *)self tags];
   v63 = self->_uninstallCapability == 2 || self->_visibilityOverride != 0;
-  v64 = [(SBApplicationInfo *)self _configureTags:v62 hasVisibilityOverride:v63];
+  v64 = [(SBApplicationInfo *)self _configureTags:tags hasVisibilityOverride:v63];
   [(SBApplicationInfo *)self _overrideTags:v64];
 
-  v65 = [(SBApplicationInfo *)self tags];
-  self->_hasHiddenTag = [v65 containsObject:@"hidden"];
+  tags2 = [(SBApplicationInfo *)self tags];
+  self->_hasHiddenTag = [tags2 containsObject:@"hidden"];
 
-  v66 = [(SBApplicationInfo *)self isSystemApplication];
-  if (v66)
+  isSystemApplication = [(SBApplicationInfo *)self isSystemApplication];
+  if (isSystemApplication)
   {
-    LOBYTE(v66) = [v148 BOOLForKey:@"SBDisableSnapshots"];
+    LOBYTE(isSystemApplication) = [v148 BOOLForKey:@"SBDisableSnapshots"];
   }
 
-  self->_disablesSnapshots = v66;
-  v67 = [(SBApplicationInfo *)self isSystemApplication];
-  if (v67)
+  self->_disablesSnapshots = isSystemApplication;
+  isSystemApplication2 = [(SBApplicationInfo *)self isSystemApplication];
+  if (isSystemApplication2)
   {
-    LOBYTE(v67) = [v148 BOOLForKey:@"SBPrefersSavedSnapshots"];
+    LOBYTE(isSystemApplication2) = [v148 BOOLForKey:@"SBPrefersSavedSnapshots"];
   }
 
-  self->_prefersSavedSnapshots = v67;
+  self->_prefersSavedSnapshots = isSystemApplication2;
   self->_wantsLaunchWithoutPNG = [v148 BOOLForKey:@"SBWantsLiveResume"];
-  self->_supportedTypes |= [SBApplicationInfo _calculateApplicationSupportedTypesFromProxy:v4];
+  self->_supportedTypes |= [SBApplicationInfo _calculateApplicationSupportedTypesFromProxy:proxyCopy];
   self->_defaultStatusBarStyle = [(SBApplicationInfo *)self requestedStatusBarStyle];
-  if ([MEMORY[0x277D0ACA8] _applicationTypeForProxy:v4] > 1)
+  if ([MEMORY[0x277D0ACA8] _applicationTypeForProxy:proxyCopy] > 1)
   {
     v69 = [v147 numberForKey:@"com.apple.springboard.appbackgroundstyle"];
-    v70 = [v69 BOOLValue];
+    bOOLValue = [v69 BOOLValue];
 
-    self->_canChangeBackgroundStyle = v70;
-    self->_allowNonDefaultBackgroundStyle = v70;
+    self->_canChangeBackgroundStyle = bOOLValue;
+    self->_allowNonDefaultBackgroundStyle = bOOLValue;
     v71 = [v147 numberForKey:@"com.apple.developer.openURL-source"];
-    v68 = [v71 BOOLValue];
+    bOOLValue2 = [v71 BOOLValue];
   }
 
   else
   {
-    v68 = 1;
+    bOOLValue2 = 1;
     self->_canChangeBackgroundStyle = 1;
     self->_allowNonDefaultBackgroundStyle = 1;
   }
 
-  self->_alwaysReceivesOpenURLSource = v68;
+  self->_alwaysReceivesOpenURLSource = bOOLValue2;
   supportedTypes = self->_supportedTypes;
   v73 = +[SBPlatformController sharedInstance];
-  v74 = [v73 isMedusaCapable];
+  isMedusaCapable = [v73 isMedusaCapable];
 
   LOBYTE(v75) = 1;
-  if (v74 && (supportedTypes & 2) != 0)
+  if (isMedusaCapable && (supportedTypes & 2) != 0)
   {
     v76 = +[SBDefaults localDefaults];
-    v77 = [v76 applicationDefaults];
-    v78 = [v77 forcesMedusaAdoption];
+    applicationDefaults = [v76 applicationDefaults];
+    forcesMedusaAdoption = [applicationDefaults forcesMedusaAdoption];
 
-    if (v78)
+    if (forcesMedusaAdoption)
     {
       self->_wantsFullScreen = 0;
       goto LABEL_70;
@@ -616,11 +616,11 @@ LABEL_70:
   }
 
   v83 = +[SBDefaults localDefaults];
-  v84 = [v83 applicationDefaults];
-  v85 = [v84 ignoresDeclaredNetworkUsage];
+  applicationDefaults2 = [v83 applicationDefaults];
+  ignoresDeclaredNetworkUsage = [applicationDefaults2 ignoresDeclaredNetworkUsage];
 
   v86 = v148;
-  if ((v85 & 1) == 0)
+  if ((ignoresDeclaredNetworkUsage & 1) == 0)
   {
     v87 = [v148 numberForKey:@"SBUsesNetwork"];
     self->_networkUsageTypes = [v87 unsignedIntValue];
@@ -633,8 +633,8 @@ LABEL_70:
 
   if (![(SBApplicationInfo *)self isSystemApplication])
   {
-    self->_isGameCenterEnabled = [v4 isGameCenterEnabled];
-    self->_wasGameCenterEverEnabled = [v4 gameCenterEverEnabled];
+    self->_isGameCenterEnabled = [proxyCopy isGameCenterEnabled];
+    self->_wasGameCenterEverEnabled = [proxyCopy gameCenterEverEnabled];
   }
 
   v88 = [v148 objectForKey:*MEMORY[0x277D76640]];
@@ -700,8 +700,8 @@ LABEL_91:
 
   self->_whitePointAdaptivityStyle = 0;
 LABEL_92:
-  v97 = [(SBApplicationInfo *)self dataContainerURL];
-  v98 = [v97 URLByAppendingPathComponent:@"Documents/Inbox/"];
+  dataContainerURL2 = [(SBApplicationInfo *)self dataContainerURL];
+  v98 = [dataContainerURL2 URLByAppendingPathComponent:@"Documents/Inbox/"];
   documentInboxURL = self->_documentInboxURL;
   self->_documentInboxURL = v98;
 
@@ -720,17 +720,17 @@ LABEL_92:
     v104 = v103;
     if (v103)
     {
-      v105 = [v103 integerValue];
-      self->_allowedNKNotificationsPerDay = v105 & ~(v105 >> 63);
+      integerValue = [v103 integerValue];
+      self->_allowedNKNotificationsPerDay = integerValue & ~(integerValue >> 63);
       v106 = SBLogCommon();
       if (os_log_type_enabled(v106, OS_LOG_TYPE_INFO))
       {
         allowedNKNotificationsPerDay = self->_allowedNKNotificationsPerDay;
-        v108 = [(SBApplicationInfo *)self bundleIdentifier];
+        bundleIdentifier2 = [(SBApplicationInfo *)self bundleIdentifier];
         *buf = 134218242;
         v157 = allowedNKNotificationsPerDay;
         v158 = 2114;
-        v159 = v108;
+        v159 = bundleIdentifier2;
         _os_log_impl(&dword_21ED4E000, v106, OS_LOG_TYPE_INFO, "NKThrottle: setting _allowedContentNotificationsPerDay=%lu for app=%{public}@", buf, 0x16u);
       }
 
@@ -748,8 +748,8 @@ LABEL_92:
     self->_allowedNKNotificationsPerDay = 0;
   }
 
-  v109 = [(SBApplicationInfo *)self type]!= 1 || [(SBApplicationInfo *)self systemAppSupportsLocalNotifications];
-  self->_usesRLNDataProvider = v109;
+  systemAppSupportsLocalNotifications = [(SBApplicationInfo *)self type]!= 1 || [(SBApplicationInfo *)self systemAppSupportsLocalNotifications];
+  self->_usesRLNDataProvider = systemAppSupportsLocalNotifications;
   if ([v86 BOOLForKey:@"SBShouldLaunchLiveImmediately"])
   {
     self->_shouldSkipCrossfadeToLive = 1;
@@ -757,20 +757,20 @@ LABEL_92:
 
   else
   {
-    v110 = [(SBApplicationInfo *)self bundleIdentifier];
-    self->_shouldSkipCrossfadeToLive = [v110 isEqualToString:@"com.apple.camera"];
+    bundleIdentifier3 = [(SBApplicationInfo *)self bundleIdentifier];
+    self->_shouldSkipCrossfadeToLive = [bundleIdentifier3 isEqualToString:@"com.apple.camera"];
   }
 
-  [v4 installType];
+  [proxyCopy installType];
   self->_cloudDemoted = FBSInstallTypeIsCloudDemoted();
-  self->_supports64Bit = [v4 compatibilityState] != 2;
+  self->_supports64Bit = [proxyCopy compatibilityState] != 2;
   v149.receiver = self;
   v149.super_class = SBApplicationInfo;
   self->_supportsMultiwindow = [(SBApplicationInfo *)&v149 supportsMultiwindow];
   v111 = [v147 numberForKey:@"com.apple.developer.on-demand-install-capable"];
-  v112 = [v111 BOOLValue];
+  bOOLValue3 = [v111 BOOLValue];
 
-  if (v112)
+  if (bOOLValue3)
   {
     self->_supportsMultiwindow = 0;
     self->_appClip = 1;
@@ -779,11 +779,11 @@ LABEL_92:
   self->_supportsYttrium = [v86 BOOLForKey:@"UISupportsYttrium"];
   self->_requiresPreSolariumDesign = [v86 BOOLForKey:@"UIDesignRequiresCompatibility"];
   self->_wantsExclusiveForeground = [v86 BOOLForKey:@"SBWantsExclusiveForeground"];
-  v113 = [v4 diskUsage];
-  v114 = [v113 staticUsage];
-  self->_applicationSizeInBytes = [v114 unsignedLongLongValue];
+  diskUsage = [proxyCopy diskUsage];
+  staticUsage = [diskUsage staticUsage];
+  self->_applicationSizeInBytes = [staticUsage unsignedLongLongValue];
 
-  self->_arcadeApplication = [v4 isArcadeApp];
+  self->_arcadeApplication = [proxyCopy isArcadeApp];
   v115 = objc_opt_new();
   v116 = v115;
   if (self->_arcadeApplication)
@@ -793,20 +793,20 @@ LABEL_92:
 
   else
   {
-    v117 = [v4 genre];
+    genre = [proxyCopy genre];
 
-    if (v117)
+    if (genre)
     {
-      v118 = [v4 genre];
-      [v116 addObject:v118];
+      genre2 = [proxyCopy genre];
+      [v116 addObject:genre2];
     }
 
-    v119 = [v4 subgenres];
+    subgenres = [proxyCopy subgenres];
 
-    if (v119)
+    if (subgenres)
     {
-      v120 = [v4 subgenres];
-      [v116 addObjectsFromArray:v120];
+      subgenres2 = [proxyCopy subgenres];
+      [v116 addObjectsFromArray:subgenres2];
     }
   }
 
@@ -839,9 +839,9 @@ LABEL_92:
   userActivityTeamIdentifier = self->_userActivityTeamIdentifier;
   self->_userActivityTeamIdentifier = v124;
 
-  self->_identifiedGame = [MEMORY[0x277D0C988] applicationIsIdentifiedGame:v4 info:v86 entitlements:v147];
-  v126 = [v4 vendorName];
-  v127 = [v126 copy];
+  self->_identifiedGame = [MEMORY[0x277D0C988] applicationIsIdentifiedGame:proxyCopy info:v86 entitlements:v147];
+  vendorName = [proxyCopy vendorName];
+  v127 = [vendorName copy];
   vendorName = self->_vendorName;
   self->_vendorName = v127;
 
@@ -874,9 +874,9 @@ LABEL_92:
   if (([v146 isEqualToString:@"com.apple.mobilesafari"] & 1) == 0 && (objc_msgSend(v146, "isEqualToString:", @"com.apple.SafariViewService") & 1) == 0)
   {
     v133 = [v147 numberForKey:@"com.apple.developer.web-browser-engine.host"];
-    v134 = [v133 BOOLValue];
+    bOOLValue4 = [v133 BOOLValue];
 
-    if (v134)
+    if (bOOLValue4)
     {
       v135 = [MEMORY[0x277CBEB98] setWithObject:&unk_2833702E0];
       eligibilityDomains = self->_eligibilityDomains;
@@ -884,9 +884,9 @@ LABEL_92:
     }
 
     v137 = [v147 numberForKey:@"com.apple.developer.embedded-web-browser-engine"];
-    v138 = [v137 BOOLValue];
+    bOOLValue5 = [v137 BOOLValue];
 
-    if (v138)
+    if (bOOLValue5)
     {
       v139 = self->_eligibilityDomains;
       if (v139)
@@ -925,15 +925,15 @@ void __36__SBApplicationInfo__loadFromProxy___block_invoke()
   _loadFromProxy____entitlementKeys = v5;
 }
 
-+ (uint64_t)_visibilityOverrideFromInfo:(void *)a3 entitlements:
++ (uint64_t)_visibilityOverrideFromInfo:(void *)info entitlements:
 {
   v4 = a2;
-  v5 = a3;
+  infoCopy = info;
   objc_opt_self();
   v6 = +[SBPlatformController sharedInstance];
-  v7 = [v6 isInternalInstall];
-  v8 = [v6 isCarrierInstall];
-  if ([v4 BOOLForKey:@"SBIconVisibilitySetByAppPreference"] && (((v7 | v8) & 1) != 0 || objc_msgSend(v5, "BOOLForKey:", @"com.apple.springboard.allowIconVisibilityChanges")))
+  isInternalInstall = [v6 isInternalInstall];
+  isCarrierInstall = [v6 isCarrierInstall];
+  if ([v4 BOOLForKey:@"SBIconVisibilitySetByAppPreference"] && (((isInternalInstall | isCarrierInstall) & 1) != 0 || objc_msgSend(infoCopy, "BOOLForKey:", @"com.apple.springboard.allowIconVisibilityChanges")))
   {
     v9 = [v4 objectForKey:@"SBIconVisibilityDefaultVisible"];
 
@@ -958,12 +958,12 @@ void __36__SBApplicationInfo__loadFromProxy___block_invoke()
       if (v13)
       {
         v14 = @"user";
-        if (v8)
+        if (isCarrierInstall)
         {
           v14 = @"carrier";
         }
 
-        if (v7)
+        if (isInternalInstall)
         {
           v15 = @"internal";
         }
@@ -986,8 +986,8 @@ void __36__SBApplicationInfo__loadFromProxy___block_invoke()
 
       if (v18)
       {
-        v19 = [v6 deviceClass];
-        v16 |= [v18 containsObject:v19];
+        deviceClass = [v6 deviceClass];
+        v16 |= [v18 containsObject:deviceClass];
       }
 
       v20 = [v4 stringForKey:@"SBIconVisibilityDefaultVisibleFeatureFlag"];
@@ -1025,7 +1025,7 @@ void __36__SBApplicationInfo__loadFromProxy___block_invoke()
   return v10;
 }
 
-+ (uint64_t)_calculateApplicationSupportedTypesFromProxy:(uint64_t)a1
++ (uint64_t)_calculateApplicationSupportedTypesFromProxy:(uint64_t)proxy
 {
   v20 = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -1042,24 +1042,24 @@ LABEL_3:
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v5 != 1)
+    if (userInterfaceIdiom != 1)
     {
       goto LABEL_3;
     }
   }
 
-  v6 = [v2 deviceFamily];
-  v7 = v6;
-  if (v6)
+  deviceFamily = [v2 deviceFamily];
+  v7 = deviceFamily;
+  if (deviceFamily)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [deviceFamily countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1109,13 +1109,13 @@ LABEL_20:
   return v3;
 }
 
-- (id)_configureTags:(char)a3 hasVisibilityOverride:
+- (id)_configureTags:(char)tags hasVisibilityOverride:
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if ((a3 & 1) != 0 || ![a1 isInternalApplication])
+    if ((tags & 1) != 0 || ![self isInternalApplication])
     {
       v6 = 0;
     }
@@ -1125,7 +1125,7 @@ LABEL_20:
       v6 = @"SBInternalAppTag";
     }
 
-    if ([a1 isAppleApplication])
+    if ([self isAppleApplication])
     {
       if ([v5 count])
       {
@@ -1138,7 +1138,7 @@ LABEL_20:
       }
 
       v8 = v7;
-      a1 = v8;
+      self = v8;
       if (!v6)
       {
         goto LABEL_16;
@@ -1148,7 +1148,7 @@ LABEL_20:
       {
         v9 = [v8 arrayByAddingObject:v6];
 
-        a1 = v9;
+        self = v9;
 LABEL_16:
 
         goto LABEL_17;
@@ -1157,18 +1157,18 @@ LABEL_16:
 
     else if (!v6)
     {
-      a1 = 0;
+      self = 0;
       goto LABEL_16;
     }
 
     v11[0] = v6;
-    a1 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
+    self = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     goto LABEL_16;
   }
 
 LABEL_17:
 
-  return a1;
+  return self;
 }
 
 - (BOOL)_supportsApplicationType:(_BOOL8)result
@@ -1181,14 +1181,14 @@ LABEL_17:
   return result;
 }
 
-- (uint64_t)_calculateVoipClassWithEntitlements:(uint64_t)a1
+- (uint64_t)_calculateVoipClassWithEntitlements:(uint64_t)entitlements
 {
   v3 = a2;
-  if (a1)
+  if (entitlements)
   {
-    if ([a1 supportsBackgroundMode:*MEMORY[0x277D76790]])
+    if ([entitlements supportsBackgroundMode:*MEMORY[0x277D76790]])
     {
-      if ([a1 builtOnOrAfterSDKVersion:@"10.0"])
+      if ([entitlements builtOnOrAfterSDKVersion:@"10.0"])
       {
         v4 = [v3 objectForKey:@"com.apple.developer.legacyvoip"];
 
@@ -1208,24 +1208,24 @@ LABEL_17:
         v5 = 1;
       }
 
-      if ([a1 builtOnOrAfterSDKVersion:@"15.0"])
+      if ([entitlements builtOnOrAfterSDKVersion:@"15.0"])
       {
-        a1 = 2;
+        entitlements = 2;
       }
 
       else
       {
-        a1 = v5;
+        entitlements = v5;
       }
     }
 
     else
     {
-      a1 = 0;
+      entitlements = 0;
     }
   }
 
-  return a1;
+  return entitlements;
 }
 
 void __51__SBApplicationInfo_staticApplicationShortcutItems__block_invoke_cold_1(id *a1, NSObject *a2)

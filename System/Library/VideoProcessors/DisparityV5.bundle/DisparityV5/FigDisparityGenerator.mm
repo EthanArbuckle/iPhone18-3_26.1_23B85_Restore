@@ -2,23 +2,23 @@
 - ($EE1E03F6ACF96C4AE943C45337DCA2FD)disparityConfig;
 - (BOOL)_extractAndRunSanityChecks;
 - (BOOL)allocateResources;
-- (BOOL)allocateResources:(id *)a3;
-- (BOOL)isImageScalerOutputResolution:(__CVBuffer *)a3;
-- (BOOL)isTextureScalerOutputResolution:(id)a3;
+- (BOOL)allocateResources:(id *)resources;
+- (BOOL)isImageScalerOutputResolution:(__CVBuffer *)resolution;
+- (BOOL)isTextureScalerOutputResolution:(id)resolution;
 - (CGRect)normalizedReferenceCropRect;
 - (DisparityProcessorInferenceDelegate)disparityInferenceProcessorDelegate;
-- (FigDisparityGenerator)initWithCommandQueue:(id)a3;
+- (FigDisparityGenerator)initWithCommandQueue:(id)queue;
 - (id)selectTuningParametersForCapture;
-- (int)_demosaic:(float)a3 andPreshift:(id)a4 tuningParameters:;
-- (int)_detectKeypointsLKTFlow:(float)a3 preShift:(id)a4 parameters:;
+- (int)_demosaic:(float)_demosaic andPreshift:(id)preshift tuningParameters:;
+- (int)_detectKeypointsLKTFlow:(float)flow preShift:(id)shift parameters:;
 - (int)prewarm;
-- (int)prewarmWithTuningParameters:(id)a3;
+- (int)prewarmWithTuningParameters:(id)parameters;
 - (int)process;
 - (void)dealloc;
-- (void)fillShiftMapMetadataWithCalModel:(CalModel *)a3 referenceGDC:(id *)a4 auxiliaryGDC:(id *)a5;
+- (void)fillShiftMapMetadataWithCalModel:(CalModel *)model referenceGDC:(id *)c auxiliaryGDC:(id *)dC;
 - (void)releaseResources;
-- (void)setDisparityConfig:(id *)a3;
-- (void)setOptions:(id)a3;
+- (void)setDisparityConfig:(id *)config;
+- (void)setOptions:(id)options;
 @end
 
 @implementation FigDisparityGenerator
@@ -32,9 +32,9 @@
   return self;
 }
 
-- (FigDisparityGenerator)initWithCommandQueue:(id)a3
+- (FigDisparityGenerator)initWithCommandQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v100.receiver = self;
   v100.super_class = FigDisparityGenerator;
   v5 = [(FigDisparityGenerator *)&v100 init];
@@ -49,7 +49,7 @@
   v7 = objc_opt_class();
   v15 = objc_msgSend_bundleForClass_(v6, v8, v7, v9, v10, v11, v12, v13, v14);
   v16 = objc_alloc(MEMORY[0x29EDC0A40]);
-  inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v16, v17, v15, v4, v18, v19, v20, v21, v22);
+  inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v16, v17, v15, queueCopy, v18, v19, v20, v21, v22);
   metalContext = v5->_metalContext;
   v5->_metalContext = inited;
 
@@ -82,7 +82,7 @@ LABEL_20:
     }
 
     v55 = objc_alloc(MEMORY[0x29EDC0A78]);
-    v63 = objc_msgSend_initWithOptionalCommandQueue_(v55, v56, v4, v57, v58, v59, v60, v61, v62);
+    v63 = objc_msgSend_initWithOptionalCommandQueue_(v55, v56, queueCopy, v57, v58, v59, v60, v61, v62);
     gdcTransform = v5->_gdcTransform;
     v5->_gdcTransform = v63;
 
@@ -146,9 +146,9 @@ LABEL_12:
   return v98;
 }
 
-- (int)prewarmWithTuningParameters:(id)a3
+- (int)prewarmWithTuningParameters:(id)parameters
 {
-  v11 = a3;
+  parametersCopy = parameters;
   metalContext = self->_metalContext;
   if (metalContext)
   {
@@ -200,12 +200,12 @@ LABEL_9:
   return v41;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  v5 = a3;
-  objc_storeStrong(&self->_options, a3);
-  v13 = objc_msgSend_objectForKeyedSubscript_(v5, v6, *MEMORY[0x29EDC0298], v7, v8, v9, v10, v11, v12);
-  v21 = objc_msgSend_objectForKeyedSubscript_(v5, v14, *MEMORY[0x29EDC0288], v15, v16, v17, v18, v19, v20);
+  optionsCopy = options;
+  objc_storeStrong(&self->_options, options);
+  v13 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v6, *MEMORY[0x29EDC0298], v7, v8, v9, v10, v11, v12);
+  v21 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v14, *MEMORY[0x29EDC0288], v15, v16, v17, v18, v19, v20);
   v102 = v21;
   if (v13)
   {
@@ -225,7 +225,7 @@ LABEL_9:
 
   else
   {
-    v101 = v5;
+    v101 = optionsCopy;
     v24 = objc_opt_new();
     v25 = self->_disparityTuningParameters;
     self->_disparityTuningParameters = v24;
@@ -289,20 +289,20 @@ LABEL_9:
 
 LABEL_19:
 
-    v5 = v101;
+    optionsCopy = v101;
   }
 }
 
-- (BOOL)allocateResources:(id *)a3
+- (BOOL)allocateResources:(id *)resources
 {
-  v8 = *&a3->var0;
-  v9 = *&a3->var2;
-  v10 = *&a3->var4;
-  *&self->_disparityConfig.keypointGridHeight = *&a3->var7;
+  v8 = *&resources->var0;
+  v9 = *&resources->var2;
+  v10 = *&resources->var4;
+  *&self->_disparityConfig.keypointGridHeight = *&resources->var7;
   *&self->_disparityConfig.inputIsLinearRGB = v9;
   *&self->_disparityConfig.outputDisparityHeight = v10;
   *&self->_disparityConfig.inputImageWidth = v8;
-  return objc_msgSend_allocateResources(self, a2, a3, v3, v4, v5, v6, v7, *&v8);
+  return objc_msgSend_allocateResources(self, a2, resources, v3, v4, v5, v6, v7, *&v8);
 }
 
 - (BOOL)allocateResources
@@ -800,7 +800,7 @@ LABEL_35:
   return 0;
 }
 
-- (void)fillShiftMapMetadataWithCalModel:(CalModel *)a3 referenceGDC:(id *)a4 auxiliaryGDC:(id *)a5
+- (void)fillShiftMapMetadataWithCalModel:(CalModel *)model referenceGDC:(id *)c auxiliaryGDC:(id *)dC
 {
   *(v235[0].i64 + 4) = 0;
   v235[0].i32[0] = 0;
@@ -813,7 +813,7 @@ LABEL_35:
   v229 = 0u;
   v226 = 0u;
   v227 = 0u;
-  sub_2957620D0(a3, &v232, &v229, &v226, v235, 0, 0);
+  sub_2957620D0(model, &v232, &v229, &v226, v235, 0, 0);
   v223 = *MEMORY[0x29EDCA928];
   v224 = *(MEMORY[0x29EDCA928] + 16);
   v225 = *(MEMORY[0x29EDCA928] + 32);
@@ -830,8 +830,8 @@ LABEL_35:
   v34 = objc_alloc(MEMORY[0x29EDB8DE8]);
   v49 = objc_msgSend_initWithCapacity_(v34, v35, 8, v36, v37, v38, v39, v40, v41);
   v50 = 0;
-  v220 = a4;
-  var1 = a4->var1;
+  cCopy = c;
+  var1 = c->var1;
   do
   {
     v52 = objc_msgSend_numberWithFloat_(MEMORY[0x29EDBA070], v42, v43, v44, v45, v46, v47, v48, *var1, *&v212, *&v214, *&v216, *&v218);
@@ -840,7 +840,7 @@ LABEL_35:
     v66 = objc_msgSend_numberWithFloat_(MEMORY[0x29EDBA070], v59, v60, v61, v62, v63, v64, v65, *(var1 - 8));
     objc_msgSend_setObject_atIndexedSubscript_(v24, v67, v66, v50, v68, v69, v70, v71, v72);
 
-    v73 = &a5->var0[v50];
+    v73 = &dC->var0[v50];
     v81 = objc_msgSend_numberWithFloat_(MEMORY[0x29EDBA070], v74, v75, v76, v77, v78, v79, v80, v73[8]);
     objc_msgSend_setObject_atIndexedSubscript_(v33, v82, v81, v50, v83, v84, v85, v86, v87);
 
@@ -866,18 +866,18 @@ LABEL_35:
   objc_msgSend_setBaseline_(self->_shiftMapMetadata, v42, v43, v44, v45, v46, v47, v48, sqrtf(v106.f32[2] + vaddv_f32(*v106.f32)));
   objc_msgSend_setTeleExtrinsicMatrix_(self->_shiftMapMetadata, v107, v108, v109, v110, v111, v112, v113, *&v223, *&v224, *&v225, 0.0);
   objc_msgSend_setTeleIntrinsicMatrix_(self->_shiftMapMetadata, v114, v115, v116, v117, v118, v119, v120, *&v232, *&v233, *&v234);
-  objc_msgSend_setTeleIntrinsicMatrixReferenceDimensions_(self->_shiftMapMetadata, v121, v122, v123, v124, v125, v126, v127, COERCE_FLOAT(*&a3->calibrationDimensions[0]), a3->calibrationDimensions[1]);
+  objc_msgSend_setTeleIntrinsicMatrixReferenceDimensions_(self->_shiftMapMetadata, v121, v122, v123, v124, v125, v126, v127, COERCE_FLOAT(*&model->calibrationDimensions[0]), model->calibrationDimensions[1]);
   objc_msgSend_setTeleInverseLensDistortionCoefficients_(self->_shiftMapMetadata, v128, v24, v129, v130, v131, v132, v133, v134);
   objc_msgSend_setTeleLensDistortionCoefficients_(self->_shiftMapMetadata, v135, v15, v136, v137, v138, v139, v140, v141);
-  objc_msgSend_setTeleLensDistortionOpticalCenter_(self->_shiftMapMetadata, v142, v143, v144, v145, v146, v147, v148, COERCE_FLOAT(COERCE_UNSIGNED_INT64(v220->var2)), v220->var3);
-  objc_msgSend_setTelePixelSizeInMillimeters_(self->_shiftMapMetadata, v149, v150, v151, v152, v153, v154, v155, v220->var8);
+  objc_msgSend_setTeleLensDistortionOpticalCenter_(self->_shiftMapMetadata, v142, v143, v144, v145, v146, v147, v148, COERCE_FLOAT(COERCE_UNSIGNED_INT64(cCopy->var2)), cCopy->var3);
+  objc_msgSend_setTelePixelSizeInMillimeters_(self->_shiftMapMetadata, v149, v150, v151, v152, v153, v154, v155, cCopy->var8);
   objc_msgSend_setWideExtrinsicMatrix_(self->_shiftMapMetadata, v156, v157, v158, v159, v160, v161, v162, v213, v215, v217, v219);
   objc_msgSend_setWideIntrinsicMatrix_(self->_shiftMapMetadata, v163, v164, v165, v166, v167, v168, v169, *&v229, *&v230, *&v231);
-  objc_msgSend_setWideIntrinsicMatrixReferenceDimensions_(self->_shiftMapMetadata, v170, v171, v172, v173, v174, v175, v176, COERCE_FLOAT(*&a3->calibrationDimensions[0]), a3->calibrationDimensions[1]);
+  objc_msgSend_setWideIntrinsicMatrixReferenceDimensions_(self->_shiftMapMetadata, v170, v171, v172, v173, v174, v175, v176, COERCE_FLOAT(*&model->calibrationDimensions[0]), model->calibrationDimensions[1]);
   objc_msgSend_setWideInverseLensDistortionCoefficients_(self->_shiftMapMetadata, v177, v49, v178, v179, v180, v181, v182, v183);
   objc_msgSend_setWideLensDistortionCoefficients_(self->_shiftMapMetadata, v184, v33, v185, v186, v187, v188, v189, v190);
-  objc_msgSend_setWideLensDistortionOpticalCenter_(self->_shiftMapMetadata, v191, v192, v193, v194, v195, v196, v197, COERCE_FLOAT(COERCE_UNSIGNED_INT64(a5->var2)), a5->var3);
-  objc_msgSend_setWidePixelSizeInMillimeters_(self->_shiftMapMetadata, v198, v199, v200, v201, v202, v203, v204, a5->var8);
+  objc_msgSend_setWideLensDistortionOpticalCenter_(self->_shiftMapMetadata, v191, v192, v193, v194, v195, v196, v197, COERCE_FLOAT(COERCE_UNSIGNED_INT64(dC->var2)), dC->var3);
+  objc_msgSend_setWidePixelSizeInMillimeters_(self->_shiftMapMetadata, v198, v199, v200, v201, v202, v203, v204, dC->var8);
   objc_msgSend_setVersion_(self->_shiftMapMetadata, v205, 5, v206, v207, v208, v209, v210, v211);
 }
 
@@ -1864,11 +1864,11 @@ LABEL_108:
   return v768;
 }
 
-- (int)_demosaic:(float)a3 andPreshift:(id)a4 tuningParameters:
+- (int)_demosaic:(float)_demosaic andPreshift:(id)preshift tuningParameters:
 {
   v5 = v4;
   auxiliarySampleBuffer = self->_auxiliarySampleBuffer;
-  v9 = a4;
+  preshiftCopy = preshift;
   ImageBuffer = CMSampleBufferGetImageBuffer(auxiliarySampleBuffer);
   v11 = CMSampleBufferGetImageBuffer(self->_referenceSampleBuffer);
   v12 = *&self->_inputCalibrationWidth;
@@ -1879,9 +1879,9 @@ LABEL_108:
   v22 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_textureSize_plane_(self->_metalContext, v19, self->_auxHalfResRectifiedRGBAPixelBuffer, 10, 22, 0, v20, v21, COERCE_FLOAT(COERCE_UNSIGNED_INT64(v17)), v18);
   objc_msgSend_setOutputImageHeight_(self->_referenceDemosaic, v23, self->_inputCalibrationHeight, v24, v25, v26, v27, v28, v29);
   objc_msgSend_setOutputImageHeight_(self->_auxiliaryDemosaic, v30, self->_inputCalibrationHeight, v31, v32, v33, v34, v35, v36);
-  objc_msgSend_maxAnalogGain(v9, v37, v38, v39, v40, v41, v42, v43, v44);
+  objc_msgSend_maxAnalogGain(preshiftCopy, v37, v38, v39, v40, v41, v42, v43, v44);
   objc_msgSend_setMaxAnalogGain_(self->_referenceDemosaic, v45, v46, v47, v48, v49, v50, v51, v52);
-  objc_msgSend_maxAnalogGain(v9, v53, v54, v55, v56, v57, v58, v59, v60);
+  objc_msgSend_maxAnalogGain(preshiftCopy, v53, v54, v55, v56, v57, v58, v59, v60);
   v62 = v61;
 
   objc_msgSend_setMaxAnalogGain_(self->_auxiliaryDemosaic, v63, v64, v65, v66, v67, v68, v69, v62);
@@ -1917,7 +1917,7 @@ LABEL_108:
       {
         v111 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(metalContext, v105, ImageBuffer, 90, 17, 0, v106, v107, v109);
         objc_msgSend_convertLinearRGB_toLuma_(self->_auxiliaryDemosaic, v112, v111, v16, v113, v114, v115, v116, v117);
-        objc_msgSend_resampleLuma_toLuma_magnification_preShift_(self->_auxiliaryDemosaic, v118, v16, v22, v119, v120, v121, v122, a3, v104);
+        objc_msgSend_resampleLuma_toLuma_magnification_preShift_(self->_auxiliaryDemosaic, v118, v16, v22, v119, v120, v121, v122, _demosaic, v104);
         v127 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v123, v11, 90, 17, 0, v124, v125, v126);
         objc_msgSend_convertLinearRGB_toLuma_(self->_referenceDemosaic, v128, v127, v16, v129, v130, v131, v132, v133);
       }
@@ -1928,7 +1928,7 @@ LABEL_108:
         v135 = self->_auxiliaryDemosaic;
         v136 = CVPixelBufferGetPixelFormatType(ImageBuffer);
         objc_msgSend_demosaic2x_rawImagePixelFormat_toLuma_toRGBA_(v135, v137, v134, v136, v16, self->_auxHalfResRGBATexture, v138, v139, v140);
-        objc_msgSend_resampleLuma_toLuma_magnification_preShift_(self->_auxiliaryDemosaic, v141, v16, v22, v142, v143, v144, v145, a3, v104);
+        objc_msgSend_resampleLuma_toLuma_magnification_preShift_(self->_auxiliaryDemosaic, v141, v16, v22, v142, v143, v144, v145, _demosaic, v104);
         v150 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v146, v11, 23, 17, 0, v147, v148, v149);
         v151 = self->_referenceDemosaic;
         v152 = CVPixelBufferGetPixelFormatType(v11);
@@ -1942,10 +1942,10 @@ LABEL_108:
   return v87;
 }
 
-- (int)_detectKeypointsLKTFlow:(float)a3 preShift:(id)a4 parameters:
+- (int)_detectKeypointsLKTFlow:(float)flow preShift:(id)shift parameters:
 {
   v6 = v4;
-  v9 = a4;
+  shiftCopy = shift;
   v188 = 0;
   LODWORD(v10) = self->_scalerOutputWidth;
   LODWORD(v11) = self->_scalerOutputHeight;
@@ -1977,13 +1977,13 @@ LABEL_14:
   v57 = objc_msgSend_uv_bwd(self->_lktKeypointDetector, v49, v50, v51, v52, v53, v54, v55, v56);
   v66 = objc_msgSend_conf_fwd(self->_lktKeypointDetector, v58, v59, v60, v61, v62, v63, v64, v65);
   v75 = objc_msgSend_conf_bwd(self->_lktKeypointDetector, v67, v68, v69, v70, v71, v72, v73, v74);
-  objc_msgSend_bidirectionalError(v9, v76, v77, v78, v79, v80, v81, v82, v83);
+  objc_msgSend_bidirectionalError(shiftCopy, v76, v77, v78, v79, v80, v81, v82, v83);
   v85 = v84;
-  objc_msgSend_confidenceRadialWeight(v9, v86, v87, v88, v89, v90, v91, v92, v84);
+  objc_msgSend_confidenceRadialWeight(shiftCopy, v86, v87, v88, v89, v90, v91, v92, v84);
   v94 = v93;
-  objc_msgSend_confidenceMinimum(v9, v95, v96, v97, v98, v99, v100, v101, v93);
+  objc_msgSend_confidenceMinimum(shiftCopy, v95, v96, v97, v98, v99, v100, v101, v93);
   v103 = v102;
-  v111 = objc_msgSend_blockSize(v9, v104, v105, v106, v107, v108, v109, v110, v102);
+  v111 = objc_msgSend_blockSize(shiftCopy, v104, v105, v106, v107, v108, v109, v110, v102);
   *&v112 = v94;
   *&v113 = v103;
   objc_msgSend_computeKeypointsFromForwardFlow_backwardFlow_forwardConfidence_backwardConfidence_bidirectionalError_confidenceRadialWeight_confidenceMinimum_blockSize_outNumKeypoints_(lktKeypointDetector, v114, v48, v57, v66, v75, v111, &v188, v85, v112, v113);
@@ -2009,7 +2009,7 @@ LABEL_14:
     if (v188)
     {
       v169 = 0;
-      v170 = 1.0 / a3;
+      v170 = 1.0 / flow;
       v171 = vcvt_f32_u32(v31);
       v172 = vdiv_f32(vmul_n_f32(v171, (1 << Scale)), vcvt_f32_u32(v32));
       v173 = vmul_n_f32(v172, v170);
@@ -2027,7 +2027,7 @@ LABEL_14:
           LOWORD(_Q0.f64[0]) = *v175;
           __asm { FCVT            S13, H0 }
 
-          objc_msgSend_confidenceMinimum(v9, v161, v162, v163, v164, v165, v166, v167, *_Q0.f64);
+          objc_msgSend_confidenceMinimum(shiftCopy, v161, v162, v163, v164, v165, v166, v167, *_Q0.f64);
           HIDWORD(_Q0.f64[0]) = v187.i32[1];
           if (*_Q0.f64 <= _S13)
           {
@@ -2070,7 +2070,7 @@ LABEL_11:
   if (v23)
   {
     v31 = v23;
-    v70 = self;
+    selfCopy = self;
     v32 = *v74;
     do
     {
@@ -2082,7 +2082,7 @@ LABEL_11:
         }
 
         v34 = *(*(&v73 + 1) + 8 * i);
-        v35 = objc_msgSend_objectForKeyedSubscript_(v34, v24, @"Reference", v25, v26, v27, v28, v29, v30, v70);
+        v35 = objc_msgSend_objectForKeyedSubscript_(v34, v24, @"Reference", v25, v26, v27, v28, v29, v30, selfCopy);
         if (objc_msgSend_isEqualToString_(v35, v36, v9, v37, v38, v39, v40, v41, v42))
         {
           v50 = objc_msgSend_objectForKeyedSubscript_(v34, v43, @"Auxiliary", v44, v45, v46, v47, v48, v49);
@@ -2090,7 +2090,7 @@ LABEL_11:
 
           if (isEqualToString)
           {
-            disparityTuningParameters = v70->_disparityTuningParameters;
+            disparityTuningParameters = selfCopy->_disparityTuningParameters;
             v60 = objc_msgSend_objectForKeyedSubscript_(v34, v24, @"Config", v25, v26, v27, v28, v29, v30);
             v68 = objc_msgSend_objectForKeyedSubscript_(disparityTuningParameters, v61, v60, v62, v63, v64, v65, v66, v67);
 
@@ -2115,19 +2115,19 @@ LABEL_13:
   return v68;
 }
 
-- (BOOL)isImageScalerOutputResolution:(__CVBuffer *)a3
+- (BOOL)isImageScalerOutputResolution:(__CVBuffer *)resolution
 {
   scalerOutputWidth = self->_scalerOutputWidth;
   scalerOutputHeight = self->_scalerOutputHeight;
-  return scalerOutputWidth == CVPixelBufferGetWidth(a3) && scalerOutputHeight == CVPixelBufferGetHeight(a3);
+  return scalerOutputWidth == CVPixelBufferGetWidth(resolution) && scalerOutputHeight == CVPixelBufferGetHeight(resolution);
 }
 
-- (BOOL)isTextureScalerOutputResolution:(id)a3
+- (BOOL)isTextureScalerOutputResolution:(id)resolution
 {
-  v4 = a3;
+  resolutionCopy = resolution;
   scalerOutputWidth = self->_scalerOutputWidth;
   scalerOutputHeight = self->_scalerOutputHeight;
-  v23 = scalerOutputWidth == objc_msgSend_width(v4, v7, v8, v9, v10, v11, v12, v13, v14) && scalerOutputHeight == objc_msgSend_height(v4, v15, v16, v17, v18, v19, v20, v21, v22);
+  v23 = scalerOutputWidth == objc_msgSend_width(resolutionCopy, v7, v8, v9, v10, v11, v12, v13, v14) && scalerOutputHeight == objc_msgSend_height(resolutionCopy, v15, v16, v17, v18, v19, v20, v21, v22);
 
   return v23;
 }
@@ -2149,12 +2149,12 @@ LABEL_13:
   return self;
 }
 
-- (void)setDisparityConfig:(id *)a3
+- (void)setDisparityConfig:(id *)config
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var2;
-  v5 = *&a3->var4;
-  *&self->_disparityConfig.keypointGridHeight = *&a3->var7;
+  v3 = *&config->var0;
+  v4 = *&config->var2;
+  v5 = *&config->var4;
+  *&self->_disparityConfig.keypointGridHeight = *&config->var7;
   *&self->_disparityConfig.inputIsLinearRGB = v4;
   *&self->_disparityConfig.outputDisparityHeight = v5;
   *&self->_disparityConfig.inputImageWidth = v3;

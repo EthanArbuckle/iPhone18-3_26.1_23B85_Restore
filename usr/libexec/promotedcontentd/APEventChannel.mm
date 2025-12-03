@@ -1,24 +1,24 @@
 @interface APEventChannel
 + (id)unused;
-- (APEventChannel)initWithCoder:(id)a3;
-- (APEventChannel)initWithDestination:(id)a3 purpose:(int64_t)a4;
+- (APEventChannel)initWithCoder:(id)coder;
+- (APEventChannel)initWithDestination:(id)destination purpose:(int64_t)purpose;
 - (APProtectedEventChannel)protectedEventChannel;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEventChannel:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEventChannel:(id)channel;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation APEventChannel
 
 - (unint64_t)hash
 {
-  v3 = [(APEventChannel *)self destination];
-  v4 = [v3 hash];
-  v5 = [(APEventChannel *)self purpose];
+  destination = [(APEventChannel *)self destination];
+  v4 = [destination hash];
+  purpose = [(APEventChannel *)self purpose];
 
-  return v5 ^ v4;
+  return purpose ^ v4;
 }
 
 + (id)unused
@@ -33,22 +33,22 @@
   return v3;
 }
 
-- (APEventChannel)initWithDestination:(id)a3 purpose:(int64_t)a4
+- (APEventChannel)initWithDestination:(id)destination purpose:(int64_t)purpose
 {
-  v7 = a3;
+  destinationCopy = destination;
   v11.receiver = self;
   v11.super_class = APEventChannel;
   v8 = [(APEventChannel *)&v11 init];
   if (v8)
   {
-    if (!v7 || !isExternalPurpose())
+    if (!destinationCopy || !isExternalPurpose())
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    objc_storeStrong(&v8->_destination, a3);
-    v8->_purpose = a4;
+    objc_storeStrong(&v8->_destination, destination);
+    v8->_purpose = purpose;
   }
 
   v9 = v8;
@@ -60,21 +60,21 @@ LABEL_7:
 - (APProtectedEventChannel)protectedEventChannel
 {
   v3 = [APProtectedEventChannel alloc];
-  v4 = [(APEventChannel *)self destination];
-  v5 = [(APProtectedEventChannel *)v3 initWithDestination:v4 purpose:[(APEventChannel *)self purpose]];
+  destination = [(APEventChannel *)self destination];
+  v5 = [(APProtectedEventChannel *)v3 initWithDestination:destination purpose:[(APEventChannel *)self purpose]];
 
   return v5;
 }
 
-- (BOOL)isEqualToEventChannel:(id)a3
+- (BOOL)isEqualToEventChannel:(id)channel
 {
-  v4 = a3;
-  v5 = [(APEventChannel *)self destination];
-  v6 = [v4 destination];
-  if ([v5 isEqualToDestination:v6])
+  channelCopy = channel;
+  destination = [(APEventChannel *)self destination];
+  destination2 = [channelCopy destination];
+  if ([destination isEqualToDestination:destination2])
   {
-    v7 = [(APEventChannel *)self purpose];
-    v8 = v7 == [v4 purpose];
+    purpose = [(APEventChannel *)self purpose];
+    v8 = purpose == [channelCopy purpose];
   }
 
   else
@@ -85,16 +85,16 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_7;
@@ -119,38 +119,38 @@ LABEL_7:
 
 - (id)description
 {
-  v3 = [(APEventChannel *)self destination];
+  destination = [(APEventChannel *)self destination];
   v4 = [NSNumber numberWithInteger:[(APEventChannel *)self purpose]];
-  v5 = [NSString stringWithFormat:@"%@/%@", v3, v4];
+  v5 = [NSString stringWithFormat:@"%@/%@", destination, v4];
 
   return v5;
 }
 
-- (APEventChannel)initWithCoder:(id)a3
+- (APEventChannel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = APEventChannel;
   v5 = [(APEventChannel *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destination"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destination"];
     destination = v5->_destination;
     v5->_destination = v6;
 
-    v5->_purpose = [v4 decodeIntegerForKey:@"purpose"];
+    v5->_purpose = [coderCopy decodeIntegerForKey:@"purpose"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(APEventChannel *)self destination];
-  [v5 encodeObject:v4 forKey:@"destination"];
+  coderCopy = coder;
+  destination = [(APEventChannel *)self destination];
+  [coderCopy encodeObject:destination forKey:@"destination"];
 
-  [v5 encodeInteger:-[APEventChannel purpose](self forKey:{"purpose"), @"purpose"}];
+  [coderCopy encodeInteger:-[APEventChannel purpose](self forKey:{"purpose"), @"purpose"}];
 }
 
 @end

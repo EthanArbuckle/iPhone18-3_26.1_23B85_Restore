@@ -1,43 +1,43 @@
 @interface WFEmbeddableActionUserInterface
-- (BOOL)presentContent:(id)a3 completion:(id)a4;
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)presentContent:(id)a3;
+- (BOOL)presentContent:(id)content completion:(id)completion;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)presentContent:(id)content;
 @end
 
 @implementation WFEmbeddableActionUserInterface
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(WFEmbeddableActionUserInterface *)self contentViewController];
+  contentViewController = [(WFEmbeddableActionUserInterface *)self contentViewController];
 
-  if (v5)
+  if (contentViewController)
   {
     if ([(WFEmbeddableActionUserInterface *)self prefersModalPresentation]&& ([(WFActionUserInterface *)self viewControllerForPresenting], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
     {
-      v7 = [(WFActionUserInterface *)self viewControllerForPresenting];
+      viewControllerForPresenting = [(WFActionUserInterface *)self viewControllerForPresenting];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __75__WFEmbeddableActionUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
       v12[3] = &unk_279EF51F0;
       v12[4] = self;
-      v13 = v4;
-      [v7 dismissViewControllerAnimated:1 completion:v12];
+      v13 = handlerCopy;
+      [viewControllerForPresenting dismissViewControllerAnimated:1 completion:v12];
 
       v8 = v13;
     }
 
     else
     {
-      v9 = [(WFActionUserInterface *)self delegate];
+      delegate = [(WFActionUserInterface *)self delegate];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __75__WFEmbeddableActionUserInterface_cancelPresentationWithCompletionHandler___block_invoke_2;
       v10[3] = &unk_279EF51F0;
       v10[4] = self;
-      v11 = v4;
-      [v9 dismissPlatterForActionUserInterface:self completionHandler:v10];
+      v11 = handlerCopy;
+      [delegate dismissPlatterForActionUserInterface:self completionHandler:v10];
 
       v8 = v11;
     }
@@ -45,7 +45,7 @@
 
   else
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -65,22 +65,22 @@ uint64_t __75__WFEmbeddableActionUserInterface_cancelPresentationWithCompletionH
   return v2();
 }
 
-- (BOOL)presentContent:(id)a3 completion:(id)a4
+- (BOOL)presentContent:(id)content completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  completionCopy = completion;
   if ([(WFEmbeddableActionUserInterface *)self prefersModalPresentation]&& ([(WFActionUserInterface *)self viewControllerForPresenting], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [(WFActionUserInterface *)self viewControllerForPresenting];
+    viewControllerForPresenting = [(WFActionUserInterface *)self viewControllerForPresenting];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __61__WFEmbeddableActionUserInterface_presentContent_completion___block_invoke;
     v12[3] = &unk_279EF51C8;
     v12[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = contentCopy;
+    v14 = completionCopy;
     v10 = 1;
-    [v9 presentViewController:v13 animated:1 completion:v12];
+    [viewControllerForPresenting presentViewController:v13 animated:1 completion:v12];
   }
 
   else
@@ -105,14 +105,14 @@ uint64_t __61__WFEmbeddableActionUserInterface_presentContent_completion___block
   return result;
 }
 
-- (void)presentContent:(id)a3
+- (void)presentContent:(id)content
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contentCopy = content;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(WFEmbeddableActionUserInterface *)self contentViewController];
+  contentViewController = [(WFEmbeddableActionUserInterface *)self contentViewController];
 
-  if (v5)
+  if (contentViewController)
   {
     v6 = getWFDialogLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -123,12 +123,12 @@ uint64_t __61__WFEmbeddableActionUserInterface_presentContent_completion___block
     }
   }
 
-  else if (![(WFEmbeddableActionUserInterface *)self presentContent:v4 completion:0])
+  else if (![(WFEmbeddableActionUserInterface *)self presentContent:contentCopy completion:0])
   {
-    v7 = [(WFActionUserInterface *)self delegate];
-    [v7 actionUserInterface:self showViewControllerInPlatter:v4];
+    delegate = [(WFActionUserInterface *)self delegate];
+    [delegate actionUserInterface:self showViewControllerInPlatter:contentCopy];
 
-    [(WFEmbeddableActionUserInterface *)self setContentViewController:v4];
+    [(WFEmbeddableActionUserInterface *)self setContentViewController:contentCopy];
   }
 }
 

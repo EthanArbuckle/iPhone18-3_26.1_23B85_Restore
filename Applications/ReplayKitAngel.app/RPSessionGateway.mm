@@ -21,13 +21,13 @@
 
 - (void)startReadyBanner
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002BE44();
 }
 
 - (void)stopReadyBanner
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002C024();
 }
 

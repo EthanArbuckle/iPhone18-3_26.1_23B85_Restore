@@ -1,9 +1,9 @@
 @interface _MFMailRecipientTextField
 - (id)_previousKeyResponder;
 - (id)insertDictationResultPlaceholder;
-- (void)_handleKeyUIEvent:(id)a3;
-- (void)paste:(id)a3;
-- (void)removeDictationResultPlaceholder:(id)a3 willInsertResult:(BOOL)a4;
+- (void)_handleKeyUIEvent:(id)event;
+- (void)paste:(id)paste;
+- (void)removeDictationResultPlaceholder:(id)placeholder willInsertResult:(BOOL)result;
 @end
 
 @implementation _MFMailRecipientTextField
@@ -13,17 +13,17 @@
   self->_isShowingDictationPlaceholder = 1;
   v4.receiver = self;
   v4.super_class = _MFMailRecipientTextField;
-  v2 = [(_MFMailRecipientTextField *)&v4 insertDictationResultPlaceholder];
+  insertDictationResultPlaceholder = [(_MFMailRecipientTextField *)&v4 insertDictationResultPlaceholder];
 
-  return v2;
+  return insertDictationResultPlaceholder;
 }
 
-- (void)removeDictationResultPlaceholder:(id)a3 willInsertResult:(BOOL)a4
+- (void)removeDictationResultPlaceholder:(id)placeholder willInsertResult:(BOOL)result
 {
   self->_isShowingDictationPlaceholder = 0;
   v4.receiver = self;
   v4.super_class = _MFMailRecipientTextField;
-  [(_MFMailRecipientTextField *)&v4 removeDictationResultPlaceholder:a3 willInsertResult:a4];
+  [(_MFMailRecipientTextField *)&v4 removeDictationResultPlaceholder:placeholder willInsertResult:result];
 }
 
 - (id)_previousKeyResponder
@@ -31,60 +31,60 @@
   MFComposeRecipientTextViewIsCollectingPreviousKeyResponder = 1;
   v4.receiver = self;
   v4.super_class = _MFMailRecipientTextField;
-  v2 = [(_MFMailRecipientTextField *)&v4 _previousKeyResponder];
+  _previousKeyResponder = [(_MFMailRecipientTextField *)&v4 _previousKeyResponder];
   MFComposeRecipientTextViewIsCollectingPreviousKeyResponder = 0;
 
-  return v2;
+  return _previousKeyResponder;
 }
 
-- (void)_handleKeyUIEvent:(id)a3
+- (void)_handleKeyUIEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 type] != 4)
+  eventCopy = event;
+  if ([eventCopy type] != 4)
   {
     goto LABEL_20;
   }
 
-  v5 = [(_MFMailRecipientTextField *)self delegate];
-  v6 = [v4 _modifiedInput];
-  v7 = v6;
+  delegate = [(_MFMailRecipientTextField *)self delegate];
+  _modifiedInput = [eventCopy _modifiedInput];
+  v7 = _modifiedInput;
   v8 = *MEMORY[0x1E69DDE90];
-  if (v6 == *MEMORY[0x1E69DDE90] || v6 == *MEMORY[0x1E69DDF30])
+  if (_modifiedInput == *MEMORY[0x1E69DDE90] || _modifiedInput == *MEMORY[0x1E69DDF30])
   {
-    if ([v5 mf_textFieldShowingSearchResults:self])
+    if ([delegate mf_textFieldShowingSearchResults:self])
     {
-      if (([v4 _isKeyDown] & 1) == 0)
+      if (([eventCopy _isKeyDown] & 1) == 0)
       {
         if (v7 == v8)
         {
-          [v5 mf_selectNextSearchResultForTextField:self];
+          [delegate mf_selectNextSearchResultForTextField:self];
         }
 
         else
         {
-          [v5 mf_selectPreviousSearchResultForTextField:self];
+          [delegate mf_selectPreviousSearchResultForTextField:self];
         }
       }
 
       goto LABEL_23;
     }
 
-    if (v7 != v8 || ![v4 _isKeyDown])
+    if (v7 != v8 || ![eventCopy _isKeyDown])
     {
       goto LABEL_19;
     }
 
-    v10 = [v5 mf_presentSearchResultsForTextField:self];
+    v10 = [delegate mf_presentSearchResultsForTextField:self];
   }
 
   else
   {
-    if ([v6 length] != 1 || objc_msgSend(v7, "characterAtIndex:", 0) != 13 || !objc_msgSend(v5, "mf_textFieldShowingSearchResults:", self))
+    if ([_modifiedInput length] != 1 || objc_msgSend(v7, "characterAtIndex:", 0) != 13 || !objc_msgSend(delegate, "mf_textFieldShowingSearchResults:", self))
     {
       goto LABEL_19;
     }
 
-    v10 = [v5 mf_chooseSelectedSearchResultForTextField:self];
+    v10 = [delegate mf_chooseSelectedSearchResultForTextField:self];
   }
 
   if (v10)
@@ -99,23 +99,23 @@ LABEL_19:
 LABEL_20:
   v11.receiver = self;
   v11.super_class = _MFMailRecipientTextField;
-  [(_MFMailRecipientTextField *)&v11 _handleKeyUIEvent:v4];
+  [(_MFMailRecipientTextField *)&v11 _handleKeyUIEvent:eventCopy];
 LABEL_21:
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pasteCopy = paste;
   v26[0] = 0xAAAAAAAAAAAAAAAALL;
-  v25 = [*MEMORY[0x1E6982F40] identifier];
+  identifier = [*MEMORY[0x1E6982F40] identifier];
   v26[0] = [*MEMORY[0x1E6983020] identifier];
-  v5 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  v6 = &v25;
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  v6 = &identifier;
   v7 = 1;
   do
   {
-    v8 = [v5 valueForPasteboardType:*v6];
+    v8 = [generalPasteboard valueForPasteboardType:*v6];
     v9 = (v8 == 0) & v7;
     v6 = v26;
     v7 = 0;
@@ -125,13 +125,13 @@ LABEL_21:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(_MFMailRecipientTextField *)self delegate];
+    delegate = [(_MFMailRecipientTextField *)self delegate];
     v11 = [v8 stringByReplacingOccurrencesOfString:@"\n" withString:{@", "}];
 
     v12 = [MEMORY[0x1E69AD6F8] addressListFromEncodedString:v11];
     if ([v12 count] > 1)
     {
-      [v10 mf_dismissSearchResults:self];
+      [delegate mf_dismissSearchResults:self];
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
@@ -150,7 +150,7 @@ LABEL_21:
               objc_enumerationMutation(v13);
             }
 
-            [v10 mf_recipientTextField:self didAddRecipientAddress:*(*(&v19 + 1) + 8 * i)];
+            [delegate mf_recipientTextField:self didAddRecipientAddress:*(*(&v19 + 1) + 8 * i)];
           }
 
           v14 = [v13 countByEnumeratingWithState:&v19 objects:v24 count:16];
@@ -164,7 +164,7 @@ LABEL_21:
     {
       v23.receiver = self;
       v23.super_class = _MFMailRecipientTextField;
-      [(_MFMailRecipientTextField *)&v23 paste:v4];
+      [(_MFMailRecipientTextField *)&v23 paste:pasteCopy];
     }
   }
 
@@ -172,7 +172,7 @@ LABEL_21:
   {
     v18.receiver = self;
     v18.super_class = _MFMailRecipientTextField;
-    [(_MFMailRecipientTextField *)&v18 paste:v4];
+    [(_MFMailRecipientTextField *)&v18 paste:pasteCopy];
     v11 = v8;
   }
 

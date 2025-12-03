@@ -2,14 +2,14 @@
 + (double)outlineLineWidth;
 + (id)reuseIdentifier;
 - (CGRect)swatchFrame;
-- (_NTKCFaceDetailCollectionCell)initWithFrame:(CGRect)a3;
+- (_NTKCFaceDetailCollectionCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setActive:(BOOL)active animated:(BOOL)a4 forced:(BOOL)a5;
-- (void)setDisabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setOutlineOutset:(double)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setSwatchFrame:(CGRect)a3;
-- (void)setText:(id)a3;
+- (void)setActive:(BOOL)active animated:(BOOL)animated forced:(BOOL)forced;
+- (void)setDisabled:(BOOL)disabled animated:(BOOL)animated;
+- (void)setOutlineOutset:(double)outset;
+- (void)setStyle:(int64_t)style;
+- (void)setSwatchFrame:(CGRect)frame;
+- (void)setText:(id)text;
 @end
 
 @implementation _NTKCFaceDetailCollectionCell
@@ -33,13 +33,13 @@
   return result;
 }
 
-- (_NTKCFaceDetailCollectionCell)initWithFrame:(CGRect)a3
+- (_NTKCFaceDetailCollectionCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v20.receiver = self;
   v20.super_class = _NTKCFaceDetailCollectionCell;
-  v5 = [(_NTKCFaceDetailCollectionCell *)&v20 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(_NTKCFaceDetailCollectionCell *)&v20 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
     v6 = objc_opt_new();
@@ -47,15 +47,15 @@
     v5->_imageView = v6;
 
     [(UIImageView *)v5->_imageView setContentMode:1];
-    v8 = [(_NTKCFaceDetailCollectionCell *)v5 contentView];
-    [v8 addSubview:v5->_imageView];
+    contentView = [(_NTKCFaceDetailCollectionCell *)v5 contentView];
+    [contentView addSubview:v5->_imageView];
 
-    v9 = [MEMORY[0x277CD9F90] layer];
+    layer = [MEMORY[0x277CD9F90] layer];
     outlineView = v5->_outlineView;
-    v5->_outlineView = v9;
+    v5->_outlineView = layer;
 
-    v11 = [MEMORY[0x277D75348] clearColor];
-    -[CAShapeLayer setFillColor:](v5->_outlineView, "setFillColor:", [v11 CGColor]);
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    -[CAShapeLayer setFillColor:](v5->_outlineView, "setFillColor:", [clearColor CGColor]);
 
     v12 = NTKCOutlineColor(1);
     -[CAShapeLayer setStrokeColor:](v5->_outlineView, "setStrokeColor:", [v12 CGColor]);
@@ -63,33 +63,33 @@
     [objc_opt_class() outlineLineWidth];
     [(CAShapeLayer *)v5->_outlineView setLineWidth:?];
     [(CAShapeLayer *)v5->_outlineView setHidden:1];
-    v13 = [(_NTKCFaceDetailCollectionCell *)v5 contentView];
-    v14 = [v13 layer];
-    [v14 addSublayer:v5->_outlineView];
+    contentView2 = [(_NTKCFaceDetailCollectionCell *)v5 contentView];
+    layer2 = [contentView2 layer];
+    [layer2 addSublayer:v5->_outlineView];
 
     v15 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, width, height}];
     disabledDimmingView = v5->_disabledDimmingView;
     v5->_disabledDimmingView = v15;
 
-    v17 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)v5->_disabledDimmingView setBackgroundColor:v17];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)v5->_disabledDimmingView setBackgroundColor:blackColor];
 
     [(UIView *)v5->_disabledDimmingView setAlpha:0.0];
-    v18 = [(_NTKCFaceDetailCollectionCell *)v5 contentView];
-    [v18 addSubview:v5->_disabledDimmingView];
+    contentView3 = [(_NTKCFaceDetailCollectionCell *)v5 contentView];
+    [contentView3 addSubview:v5->_disabledDimmingView];
   }
 
   return v5;
 }
 
-- (void)setSwatchFrame:(CGRect)a3
+- (void)setSwatchFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_swatchFrame = &self->_swatchFrame;
-  if (!CGRectEqualToRect(a3, self->_swatchFrame))
+  if (!CGRectEqualToRect(frame, self->_swatchFrame))
   {
     p_swatchFrame->origin.x = x;
     p_swatchFrame->origin.y = y;
@@ -100,9 +100,9 @@
   }
 }
 
-- (void)setOutlineOutset:(double)a3
+- (void)setOutlineOutset:(double)outset
 {
-  v3 = a3 - self->_outlineOutset;
+  v3 = outset - self->_outlineOutset;
   if (v3 < 0.0)
   {
     v3 = -v3;
@@ -110,20 +110,20 @@
 
   if (v3 > 0.00000011920929)
   {
-    self->_outlineOutset = a3;
+    self->_outlineOutset = outset;
     [(_NTKCFaceDetailCollectionCell *)self setNeedsLayout];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v12 = a3;
-  v4 = [(_NTKCFaceDetailCollectionCellLabel *)self->_label text];
+  textCopy = text;
+  text = [(_NTKCFaceDetailCollectionCellLabel *)self->_label text];
 
-  v5 = v12;
-  if (v4 != v12)
+  v5 = textCopy;
+  if (text != textCopy)
   {
-    v6 = [v12 length];
+    v6 = [textCopy length];
     label = self->_label;
     if (v6)
     {
@@ -134,18 +134,18 @@
         self->_label = v8;
 
         [(_NTKCFaceDetailCollectionCellLabel *)self->_label setUsesShortTextWidth:CGRectGetWidth(self->_swatchFrame) < 90.0];
-        v10 = [(_NTKCFaceDetailCollectionCell *)self contentView];
-        [v10 insertSubview:self->_label belowSubview:self->_disabledDimmingView];
+        contentView = [(_NTKCFaceDetailCollectionCell *)self contentView];
+        [contentView insertSubview:self->_label belowSubview:self->_disabledDimmingView];
 
         label = self->_label;
       }
 
-      [(_NTKCFaceDetailCollectionCellLabel *)label setText:v12];
+      [(_NTKCFaceDetailCollectionCellLabel *)label setText:textCopy];
     }
 
     else
     {
-      v5 = v12;
+      v5 = textCopy;
       if (!label)
       {
         goto LABEL_9;
@@ -157,22 +157,22 @@
     }
 
     [(_NTKCFaceDetailCollectionCell *)self setNeedsLayout];
-    v5 = v12;
+    v5 = textCopy;
   }
 
 LABEL_9:
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    v4 = [MEMORY[0x277CBBAE8] currentDevice];
-    v5 = [v4 deviceCategory];
+    self->_style = style;
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    deviceCategory = [currentDevice deviceCategory];
 
     v6 = 0.0;
-    if (v5 == 2)
+    if (deviceCategory == 2)
     {
       v7 = self->_style - 2;
       if (v7 <= 2)
@@ -181,10 +181,10 @@ LABEL_9:
       }
     }
 
-    v8 = [MEMORY[0x277CBBAE8] currentDevice];
-    v9 = [v8 deviceCategory];
+    currentDevice2 = [MEMORY[0x277CBBAE8] currentDevice];
+    deviceCategory2 = [currentDevice2 deviceCategory];
 
-    if (v9 == 3)
+    if (deviceCategory2 == 3)
     {
       v10 = self->_style - 2;
       if (v10 <= 2)
@@ -193,17 +193,17 @@ LABEL_9:
       }
     }
 
-    v11 = [MEMORY[0x277CBBAE8] currentDevice];
-    v12 = [v11 deviceCategory];
+    currentDevice3 = [MEMORY[0x277CBBAE8] currentDevice];
+    deviceCategory3 = [currentDevice3 deviceCategory];
 
-    if (v12 >= 4 && (self->_style - 2) <= 2)
+    if (deviceCategory3 >= 4 && (self->_style - 2) <= 2)
     {
-      v13 = [MEMORY[0x277CBBAE8] currentDevice];
-      [v13 screenCornerRadius];
+      currentDevice4 = [MEMORY[0x277CBBAE8] currentDevice];
+      [currentDevice4 screenCornerRadius];
       v15 = v14;
       Height = CGRectGetHeight(self->_swatchFrame);
-      v17 = [MEMORY[0x277CBBAE8] currentDevice];
-      [v17 screenBounds];
+      currentDevice5 = [MEMORY[0x277CBBAE8] currentDevice];
+      [currentDevice5 screenBounds];
       v6 = v15 * (Height / CGRectGetHeight(v21));
     }
 
@@ -266,10 +266,10 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  v28 = [MEMORY[0x277CBBAE8] currentDevice];
-  v29 = [v28 deviceCategory];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  deviceCategory = [currentDevice deviceCategory];
 
-  if (v29 == 2)
+  if (deviceCategory == 2)
   {
     v30 = self->_style - 2;
     v31 = 6.0;
@@ -283,27 +283,27 @@ LABEL_9:
 
   else
   {
-    v33 = [MEMORY[0x277CBBAE8] currentDevice];
-    v34 = [v33 deviceCategory];
+    currentDevice2 = [MEMORY[0x277CBBAE8] currentDevice];
+    deviceCategory2 = [currentDevice2 deviceCategory];
 
-    if (v34 != 3)
+    if (deviceCategory2 != 3)
     {
-      v35 = [MEMORY[0x277CBBAE8] currentDevice];
-      v36 = [v35 deviceCategory];
+      currentDevice3 = [MEMORY[0x277CBBAE8] currentDevice];
+      deviceCategory3 = [currentDevice3 deviceCategory];
 
       v31 = 6.0;
-      if (v36 >= 4 && (self->_style - 2) <= 2)
+      if (deviceCategory3 >= 4 && (self->_style - 2) <= 2)
       {
-        v37 = [MEMORY[0x277CBBAE8] currentDevice];
-        [v37 screenCornerRadius];
+        currentDevice4 = [MEMORY[0x277CBBAE8] currentDevice];
+        [currentDevice4 screenCornerRadius];
         v39 = v38;
         v62.origin.x = p_swatchFrame->origin.x;
         v62.origin.y = self->_swatchFrame.origin.y;
         v62.size.width = self->_swatchFrame.size.width;
         v62.size.height = self->_swatchFrame.size.height;
         v40 = CGRectGetHeight(v62);
-        v41 = [MEMORY[0x277CBBAE8] currentDevice];
-        [v41 screenBounds];
+        currentDevice5 = [MEMORY[0x277CBBAE8] currentDevice];
+        [currentDevice5 screenBounds];
         v42 = v39 * (v40 / CGRectGetHeight(v63));
 
         [(CAShapeLayer *)self->_outlineView lineWidth];
@@ -356,14 +356,14 @@ LABEL_14:
   [(UIView *)self->_disabledDimmingView setFrame:?];
 }
 
-- (void)setDisabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setDisabled:(BOOL)disabled animated:(BOOL)animated
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
-    self->_disabled = a3;
-    if (a3)
+    self->_disabled = disabled;
+    if (disabled)
     {
-      [(_NTKCFaceDetailCollectionCell *)self setActive:0, a4];
+      [(_NTKCFaceDetailCollectionCell *)self setActive:0, animated];
       v6 = 0.75;
     }
 
@@ -379,14 +379,14 @@ LABEL_14:
   }
 }
 
-- (void)setActive:(BOOL)active animated:(BOOL)a4 forced:(BOOL)a5
+- (void)setActive:(BOOL)active animated:(BOOL)animated forced:(BOOL)forced
 {
-  if (self->_active != active || a5)
+  if (self->_active != active || forced)
   {
     self->_active = active;
     if (!self->_disabled || !active)
     {
-      if (!a4)
+      if (!animated)
       {
         [MEMORY[0x277CD9FF0] begin];
         [MEMORY[0x277CD9FF0] setDisableActions:1];
@@ -395,7 +395,7 @@ LABEL_14:
 
       [(CAShapeLayer *)self->_outlineView setHidden:!active];
       [(_NTKCFaceDetailCollectionCellLabel *)self->_label setActive:self->_active];
-      if (!a4)
+      if (!animated)
       {
         [MEMORY[0x277CD9FF0] commit];
       }

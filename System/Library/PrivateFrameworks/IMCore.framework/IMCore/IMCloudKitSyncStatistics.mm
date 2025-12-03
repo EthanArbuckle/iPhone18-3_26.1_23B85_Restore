@@ -1,11 +1,11 @@
 @interface IMCloudKitSyncStatistics
-+ (double)calculatePercentageOfTotal:(double)a3 count:(double)a4;
-+ (id)_createSyncStatisticsDictionary:(int64_t)a3 messageSyncCount:(int64_t)a4 messageUnresolvedCount:(int64_t)a5 chatCount:(int64_t)a6 chatSyncCount:(int64_t)a7 chatUnresolvedCount:(int64_t)a8 attachmentCount:(int64_t)a9 attachmentSyncCount:(int64_t)a10 attachmentUnresolvedCount:(int64_t)a11 serverRecordCounts:(id)a12 syncStoreCounts:(id)a13;
-+ (id)_createSyncStatisticsDictionaryForSyncControllerSyncState:(unint64_t)a3 syncType:(int64_t)a4 count:(double)a5 max:(double)a6 unresolved:(double)a7;
-+ (id)percentStringFromDouble:(double)a3;
-+ (id)percentStringFromTotal:(double)a3 count:(double)a4;
++ (double)calculatePercentageOfTotal:(double)total count:(double)count;
++ (id)_createSyncStatisticsDictionary:(int64_t)dictionary messageSyncCount:(int64_t)count messageUnresolvedCount:(int64_t)unresolvedCount chatCount:(int64_t)chatCount chatSyncCount:(int64_t)syncCount chatUnresolvedCount:(int64_t)chatUnresolvedCount attachmentCount:(int64_t)attachmentCount attachmentSyncCount:(int64_t)self0 attachmentUnresolvedCount:(int64_t)self1 serverRecordCounts:(id)self2 syncStoreCounts:(id)self3;
++ (id)_createSyncStatisticsDictionaryForSyncControllerSyncState:(unint64_t)state syncType:(int64_t)type count:(double)count max:(double)max unresolved:(double)unresolved;
++ (id)percentStringFromDouble:(double)double;
++ (id)percentStringFromTotal:(double)total count:(double)count;
 - (IMCloudKitSyncStatistics)init;
-- (IMCloudKitSyncStatistics)initWithStatisticsDictionary:(id)a3;
+- (IMCloudKitSyncStatistics)initWithStatisticsDictionary:(id)dictionary;
 - (NSString)description;
 - (double)percentSynced;
 - (id)_syncStatisticsDictionary;
@@ -400,31 +400,31 @@
 
 - (double)percentSynced
 {
-  v2 = self;
-  v3 = [(IMCloudKitSyncStatistics *)v2 syncedRecordCount];
-  v4 = [(IMCloudKitSyncStatistics *)v2 totalRecordCount];
+  selfCopy = self;
+  syncedRecordCount = [(IMCloudKitSyncStatistics *)selfCopy syncedRecordCount];
+  totalRecordCount = [(IMCloudKitSyncStatistics *)selfCopy totalRecordCount];
 
-  return v3 / v4;
+  return syncedRecordCount / totalRecordCount;
 }
 
 - (int64_t)remainingMessagesCount
 {
-  v2 = self;
-  v3 = [(IMCloudKitSyncStatistics *)v2 totalMessageCount];
-  result = [(IMCloudKitSyncStatistics *)v2 syncedMessageCount];
-  v5 = &v3[-result];
-  if (__OFSUB__(v3, result))
+  selfCopy = self;
+  totalMessageCount = [(IMCloudKitSyncStatistics *)selfCopy totalMessageCount];
+  result = [(IMCloudKitSyncStatistics *)selfCopy syncedMessageCount];
+  v5 = &totalMessageCount[-result];
+  if (__OFSUB__(totalMessageCount, result))
   {
     __break(1u);
   }
 
   else
   {
-    v6 = [(IMCloudKitSyncStatistics *)v2 unresolvedMessageCount];
+    unresolvedMessageCount = [(IMCloudKitSyncStatistics *)selfCopy unresolvedMessageCount];
 
-    if (!__OFSUB__(v5, v6))
+    if (!__OFSUB__(v5, unresolvedMessageCount))
     {
-      return &v5[-v6] & ~(&v5[-v6] >> 63);
+      return &v5[-unresolvedMessageCount] & ~(&v5[-unresolvedMessageCount] >> 63);
     }
   }
 
@@ -432,10 +432,10 @@
   return result;
 }
 
-+ (double)calculatePercentageOfTotal:(double)a3 count:(double)a4
++ (double)calculatePercentageOfTotal:(double)total count:(double)count
 {
-  v4 = a4 / a3;
-  v5 = a3 == 0.0;
+  v4 = count / total;
+  v5 = total == 0.0;
   result = 1.0;
   if (!v5)
   {
@@ -445,10 +445,10 @@
   return result;
 }
 
-+ (id)percentStringFromDouble:(double)a3
++ (id)percentStringFromDouble:(double)double
 {
   sub_1A8244B68(0, &qword_1EB2E8050, 0x1E696ADA0);
-  MEMORY[0x1AC56ACF0](a3);
+  MEMORY[0x1AC56ACF0](double);
   if (v4)
   {
     v5 = sub_1A84E5D8C();
@@ -462,13 +462,13 @@
   return v5;
 }
 
-+ (id)percentStringFromTotal:(double)a3 count:(double)a4
++ (id)percentStringFromTotal:(double)total count:(double)count
 {
-  [a1 calculatePercentageOfTotal:a3 count:a4];
-  v5 = [a1 percentStringFromDouble_];
-  if (v5)
+  [self calculatePercentageOfTotal:total count:count];
+  percentStringFromDouble_ = [self percentStringFromDouble_];
+  if (percentStringFromDouble_)
   {
-    v6 = v5;
+    v6 = percentStringFromDouble_;
     sub_1A84E5DBC();
 
     v7 = sub_1A84E5D8C();
@@ -484,7 +484,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   IMCloudKitSyncStatistics.description.getter();
 
   v3 = sub_1A84E5D8C();
@@ -499,7 +499,7 @@
   return result;
 }
 
-- (IMCloudKitSyncStatistics)initWithStatisticsDictionary:(id)a3
+- (IMCloudKitSyncStatistics)initWithStatisticsDictionary:(id)dictionary
 {
   sub_1A84E5D3C();
   v3 = objc_allocWithZone(IMCloudKitSyncStatistics);
@@ -509,27 +509,27 @@
   return v4;
 }
 
-+ (id)_createSyncStatisticsDictionary:(int64_t)a3 messageSyncCount:(int64_t)a4 messageUnresolvedCount:(int64_t)a5 chatCount:(int64_t)a6 chatSyncCount:(int64_t)a7 chatUnresolvedCount:(int64_t)a8 attachmentCount:(int64_t)a9 attachmentSyncCount:(int64_t)a10 attachmentUnresolvedCount:(int64_t)a11 serverRecordCounts:(id)a12 syncStoreCounts:(id)a13
++ (id)_createSyncStatisticsDictionary:(int64_t)dictionary messageSyncCount:(int64_t)count messageUnresolvedCount:(int64_t)unresolvedCount chatCount:(int64_t)chatCount chatSyncCount:(int64_t)syncCount chatUnresolvedCount:(int64_t)chatUnresolvedCount attachmentCount:(int64_t)attachmentCount attachmentSyncCount:(int64_t)self0 attachmentUnresolvedCount:(int64_t)self1 serverRecordCounts:(id)self2 syncStoreCounts:(id)self3
 {
   v17 = sub_1A84E5D3C();
   sub_1A8244B68(0, &qword_1EB2E6F68, 0x1E696AD98);
   v18 = sub_1A84E5D3C();
-  v19 = sub_1A84DE4D0(a3, a4, a6, a7, a9, a10, v17, v18);
+  v19 = sub_1A84DE4D0(dictionary, count, chatCount, syncCount, attachmentCount, attachmentSyncCount, v17, v18);
 
   return v19;
 }
 
-+ (id)_createSyncStatisticsDictionaryForSyncControllerSyncState:(unint64_t)a3 syncType:(int64_t)a4 count:(double)a5 max:(double)a6 unresolved:(double)a7
++ (id)_createSyncStatisticsDictionaryForSyncControllerSyncState:(unint64_t)state syncType:(int64_t)type count:(double)count max:(double)max unresolved:(double)unresolved
 {
   swift_getObjCClassMetadata();
-  v11 = sub_1A84DE754(a4, a5, a6, a7);
+  v11 = sub_1A84DE754(type, count, max, unresolved);
 
   return v11;
 }
 
 - (id)_syncStatisticsDictionary
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A84DE2B0();
 
   return v3;

@@ -1,25 +1,25 @@
 @interface LTSchemaDisambiguationSpeechTranslationEvent
-- (BOOL)isEqual:(id)a3;
-- (LTSchemaDisambiguationSpeechTranslationEvent)initWithDictionary:(id)a3;
-- (LTSchemaDisambiguationSpeechTranslationEvent)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LTSchemaDisambiguationSpeechTranslationEvent)initWithDictionary:(id)dictionary;
+- (LTSchemaDisambiguationSpeechTranslationEvent)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LTSchemaDisambiguationSpeechTranslationEvent
 
-- (LTSchemaDisambiguationSpeechTranslationEvent)initWithDictionary:(id)a3
+- (LTSchemaDisambiguationSpeechTranslationEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = LTSchemaDisambiguationSpeechTranslationEvent;
   v5 = [(LTSchemaDisambiguationSpeechTranslationEvent *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"requestID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"requestID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(LTSchemaDisambiguationSpeechTranslationEvent *)v5 setRequestID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"sourceLocale"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sourceLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(LTSchemaDisambiguationSpeechTranslationEvent *)v5 setSourceLocale:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"senseID"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"senseID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (LTSchemaDisambiguationSpeechTranslationEvent)initWithJSON:(id)a3
+- (LTSchemaDisambiguationSpeechTranslationEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LTSchemaDisambiguationSpeechTranslationEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LTSchemaDisambiguationSpeechTranslationEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,31 +85,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_requestID)
   {
-    v4 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self requestID];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"requestID"];
+    requestID = [(LTSchemaDisambiguationSpeechTranslationEvent *)self requestID];
+    v5 = [requestID copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"requestID"];
   }
 
   if (self->_senseID)
   {
-    v6 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self senseID];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"senseID"];
+    senseID = [(LTSchemaDisambiguationSpeechTranslationEvent *)self senseID];
+    v7 = [senseID copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"senseID"];
   }
 
   if (self->_sourceLocale)
   {
-    v8 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self sourceLocale];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"sourceLocale"];
+    sourceLocale = [(LTSchemaDisambiguationSpeechTranslationEvent *)self sourceLocale];
+    v9 = [sourceLocale copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"sourceLocale"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -119,28 +119,28 @@
   return v4 ^ [(NSString *)self->_senseID hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self requestID];
-  v6 = [v4 requestID];
-  if ((v5 != 0) == (v6 == 0))
+  requestID = [(LTSchemaDisambiguationSpeechTranslationEvent *)self requestID];
+  requestID2 = [equalCopy requestID];
+  if ((requestID != 0) == (requestID2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self requestID];
-  if (v7)
+  requestID3 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self requestID];
+  if (requestID3)
   {
-    v8 = v7;
-    v9 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self requestID];
-    v10 = [v4 requestID];
-    v11 = [v9 isEqual:v10];
+    v8 = requestID3;
+    requestID4 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self requestID];
+    requestID5 = [equalCopy requestID];
+    v11 = [requestID4 isEqual:requestID5];
 
     if (!v11)
     {
@@ -152,20 +152,20 @@
   {
   }
 
-  v5 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self sourceLocale];
-  v6 = [v4 sourceLocale];
-  if ((v5 != 0) == (v6 == 0))
+  requestID = [(LTSchemaDisambiguationSpeechTranslationEvent *)self sourceLocale];
+  requestID2 = [equalCopy sourceLocale];
+  if ((requestID != 0) == (requestID2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self sourceLocale];
-  if (v12)
+  sourceLocale = [(LTSchemaDisambiguationSpeechTranslationEvent *)self sourceLocale];
+  if (sourceLocale)
   {
-    v13 = v12;
-    v14 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self sourceLocale];
-    v15 = [v4 sourceLocale];
-    v16 = [v14 isEqual:v15];
+    v13 = sourceLocale;
+    sourceLocale2 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self sourceLocale];
+    sourceLocale3 = [equalCopy sourceLocale];
+    v16 = [sourceLocale2 isEqual:sourceLocale3];
 
     if (!v16)
     {
@@ -177,12 +177,12 @@
   {
   }
 
-  v5 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self senseID];
-  v6 = [v4 senseID];
-  if ((v5 != 0) != (v6 == 0))
+  requestID = [(LTSchemaDisambiguationSpeechTranslationEvent *)self senseID];
+  requestID2 = [equalCopy senseID];
+  if ((requestID != 0) != (requestID2 == 0))
   {
-    v17 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self senseID];
-    if (!v17)
+    senseID = [(LTSchemaDisambiguationSpeechTranslationEvent *)self senseID];
+    if (!senseID)
     {
 
 LABEL_20:
@@ -190,10 +190,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self senseID];
-    v20 = [v4 senseID];
-    v21 = [v19 isEqual:v20];
+    v18 = senseID;
+    senseID2 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self senseID];
+    senseID3 = [equalCopy senseID];
+    v21 = [senseID2 isEqual:senseID3];
 
     if (v21)
     {
@@ -213,30 +213,30 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self requestID];
+  toCopy = to;
+  requestID = [(LTSchemaDisambiguationSpeechTranslationEvent *)self requestID];
 
-  if (v4)
+  if (requestID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self sourceLocale];
+  sourceLocale = [(LTSchemaDisambiguationSpeechTranslationEvent *)self sourceLocale];
 
-  if (v5)
+  if (sourceLocale)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(LTSchemaDisambiguationSpeechTranslationEvent *)self senseID];
+  senseID = [(LTSchemaDisambiguationSpeechTranslationEvent *)self senseID];
 
-  v7 = v8;
-  if (v6)
+  v7 = toCopy;
+  if (senseID)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 

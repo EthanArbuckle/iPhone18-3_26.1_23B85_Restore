@@ -3,17 +3,17 @@
 - (CGRect)slideRect;
 - (CGRect)unscaledSlideRect;
 - (KNAnimationContext)init;
-- (KNAnimationContext)initWithShowSize:(CGSize)a3 viewScale:(double)a4 showLayer:(id)a5;
+- (KNAnimationContext)initWithShowSize:(CGSize)size viewScale:(double)scale showLayer:(id)layer;
 - (double)showScale;
 - (void)dealloc;
-- (void)updateGeometryToFitShowLayerAtViewScale:(double)a3;
+- (void)updateGeometryToFitShowLayerAtViewScale:(double)scale;
 @end
 
 @implementation KNAnimationContext
 
-- (KNAnimationContext)initWithShowSize:(CGSize)a3 viewScale:(double)a4 showLayer:(id)a5
+- (KNAnimationContext)initWithShowSize:(CGSize)size viewScale:(double)scale showLayer:(id)layer
 {
-  v8 = a5;
+  layerCopy = layer;
   v19.receiver = self;
   v19.super_class = KNAnimationContext;
   v9 = [(KNAnimationContext *)&v19 init];
@@ -24,9 +24,9 @@
     *(v9 + 12) = v11;
     *(v9 + 13) = v12;
     *(v9 + 14) = v13;
-    objc_storeStrong(v9 + 5, a5);
+    objc_storeStrong(v9 + 5, layer);
     *(v9 + 24) = xmmword_275E71130;
-    objc_msgSend_updateGeometryToFitShowLayerAtViewScale_(v9, v14, v15, a4);
+    objc_msgSend_updateGeometryToFitShowLayerAtViewScale_(v9, v14, v15, scale);
     v16 = objc_alloc_init(MEMORY[0x277D801F0]);
     v17 = *(v9 + 1);
     *(v9 + 1) = v16;
@@ -117,9 +117,9 @@ LABEL_5:
   return v23;
 }
 
-- (void)updateGeometryToFitShowLayerAtViewScale:(double)a3
+- (void)updateGeometryToFitShowLayerAtViewScale:(double)scale
 {
-  self->_viewScale = a3;
+  self->_viewScale = scale;
   objc_msgSend_bounds(self->_showLayer, a2, v3);
   v6 = v5;
   self->_slideRect.origin.x = v7;

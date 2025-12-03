@@ -1,6 +1,6 @@
 @interface FMDRequest
 - (BOOL)canRequestBeRetriedNow;
-- (FMDRequest)initWithAccount:(id)a3;
+- (FMDRequest)initWithAccount:(id)account;
 - (NSMutableDictionary)requestBody;
 - (NSMutableDictionary)requestHeaders;
 - (NSString)authHeaderValue;
@@ -33,14 +33,14 @@
     v6 = 138412546;
     v7 = objc_opt_class();
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v4 = v7;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ (0x%lX) deinitializing...", &v6, 0x16u);
   }
 
   [(FMDRequest *)self setCompletionHandler:0];
-  v5 = [(FMDRequest *)self retryHelper];
-  [v5 deinitializeHelper];
+  retryHelper = [(FMDRequest *)self retryHelper];
+  [retryHelper deinitializeHelper];
 
   [(FMDRequest *)self setRetryHelper:0];
 }
@@ -48,23 +48,23 @@
 - (NSMutableDictionary)requestBody
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(FMDRequest *)self decorator];
+  decorator = [(FMDRequest *)self decorator];
 
-  if (v4)
+  if (decorator)
   {
-    v5 = [(FMDRequest *)self decorator];
-    v6 = [v5 serverContextGenerator];
-    v7 = v6[2]();
+    decorator2 = [(FMDRequest *)self decorator];
+    serverContextGenerator = [decorator2 serverContextGenerator];
+    v7 = serverContextGenerator[2]();
 
     [v3 fm_safelyMapKey:@"serverContext" toObject:v7];
-    v8 = [(FMDRequest *)self decorator];
-    v9 = [v8 deviceContextGenerator];
-    v10 = v9[2]();
+    decorator3 = [(FMDRequest *)self decorator];
+    deviceContextGenerator = [decorator3 deviceContextGenerator];
+    v10 = deviceContextGenerator[2]();
 
     [v3 fm_safelyMapKey:@"deviceContext" toObject:v10];
-    v11 = [(FMDRequest *)self decorator];
-    v12 = [v11 deviceInfoGenerator];
-    v13 = v12[2]();
+    decorator4 = [(FMDRequest *)self decorator];
+    deviceInfoGenerator = [decorator4 deviceInfoGenerator];
+    v13 = deviceInfoGenerator[2]();
 
     [v3 fm_safelyMapKey:@"deviceInfo" toObject:v13];
   }
@@ -75,20 +75,20 @@
 - (NSMutableDictionary)requestHeaders
 {
   v3 = objc_opt_new();
-  v4 = [(FMDRequest *)self authId];
+  authId = [(FMDRequest *)self authId];
 
-  if (v4)
+  if (authId)
   {
-    v5 = [(FMDRequest *)self authId];
-    [v3 setObject:v5 forKeyedSubscript:@"X-Apple-PrsId"];
+    authId2 = [(FMDRequest *)self authId];
+    [v3 setObject:authId2 forKeyedSubscript:@"X-Apple-PrsId"];
   }
 
-  v6 = [(FMDRequest *)self apsEnv];
+  apsEnv = [(FMDRequest *)self apsEnv];
 
-  if (v6)
+  if (apsEnv)
   {
-    v7 = [(FMDRequest *)self apsEnv];
-    [v3 setObject:v7 forKeyedSubscript:@"X-Apple-PushEnv"];
+    apsEnv2 = [(FMDRequest *)self apsEnv];
+    [v3 setObject:apsEnv2 forKeyedSubscript:@"X-Apple-PushEnv"];
   }
 
   v8 = +[FMDProtectedContextManager sharedManager];
@@ -110,18 +110,18 @@
   [v3 fm_safelyMapKey:@"X-Apple-Ctx" toObject:v9];
   [v3 setObject:@"6.0" forKeyedSubscript:@"X-Apple-Find-API-Ver"];
   v13 = +[FMDServerConfig sharedInstance];
-  v14 = [v13 userAgent];
+  userAgent = [v13 userAgent];
 
-  if (v14)
+  if (userAgent)
   {
-    [v3 setObject:v14 forKeyedSubscript:@"User-Agent"];
+    [v3 setObject:userAgent forKeyedSubscript:@"User-Agent"];
   }
 
   [v3 setObject:@"application/json" forKeyedSubscript:@"Content-Type"];
-  v15 = [(FMDRequest *)self authHeaderValue];
-  if (v15)
+  authHeaderValue = [(FMDRequest *)self authHeaderValue];
+  if (authHeaderValue)
   {
-    [v3 setObject:v15 forKeyedSubscript:@"Authorization"];
+    [v3 setObject:authHeaderValue forKeyedSubscript:@"Authorization"];
   }
 
   if (+[FMDPreferencesMgr userTestApplication])
@@ -141,9 +141,9 @@
 
 - (NSString)authHeaderValue
 {
-  v3 = [(FMDRequest *)self authId];
-  v4 = [(FMDRequest *)self authToken];
-  v5 = [NSString stringWithFormat:@"%@:%@", v3, v4];
+  authId = [(FMDRequest *)self authId];
+  authToken = [(FMDRequest *)self authToken];
+  v5 = [NSString stringWithFormat:@"%@:%@", authId, authToken];
 
   v6 = sub_100002880();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -155,10 +155,10 @@
   v8 = v7;
   if (v7 && [v7 length])
   {
-    v9 = [v8 base64EncodedString];
-    if (v9)
+    base64EncodedString = [v8 base64EncodedString];
+    if (base64EncodedString)
     {
-      v10 = [NSString stringWithFormat:@"Basic %@", v9];
+      v10 = [NSString stringWithFormat:@"Basic %@", base64EncodedString];
     }
 
     else
@@ -177,42 +177,42 @@
 
 - (int64_t)responseErrorType
 {
-  v3 = [(FMDRequest *)self httpResponseError];
+  httpResponseError = [(FMDRequest *)self httpResponseError];
 
-  if (v3)
+  if (httpResponseError)
   {
-    v4 = [(FMDRequest *)self httpResponseError];
-    v5 = [v4 domain];
-    v6 = [NSURLErrorDomain isEqualToString:v5];
+    httpResponseError2 = [(FMDRequest *)self httpResponseError];
+    domain = [httpResponseError2 domain];
+    v6 = [NSURLErrorDomain isEqualToString:domain];
 
     if (v6)
     {
-      v7 = [(FMDRequest *)self httpResponseError];
-      v8 = [v7 code];
+      httpResponseError3 = [(FMDRequest *)self httpResponseError];
+      code = [httpResponseError3 code];
 
-      if (v8 + 1019 >= 0x13)
+      if (code + 1019 >= 0x13)
       {
         v9 = &qword_100258670;
       }
 
       else
       {
-        v9 = off_1002CE678[v8 + 1019];
+        v9 = off_1002CE678[code + 1019];
       }
 
       return *v9;
     }
 
-    v10 = [(FMDRequest *)self httpResponseError];
-    v11 = [v10 domain];
-    v12 = [NSPOSIXErrorDomain isEqualToString:v11];
+    httpResponseError4 = [(FMDRequest *)self httpResponseError];
+    domain2 = [httpResponseError4 domain];
+    v12 = [NSPOSIXErrorDomain isEqualToString:domain2];
 
     if (v12)
     {
-      v13 = [(FMDRequest *)self httpResponseError];
-      v14 = [v13 code];
+      httpResponseError5 = [(FMDRequest *)self httpResponseError];
+      code2 = [httpResponseError5 code];
 
-      if (v14 == 22)
+      if (code2 == 22)
       {
         v9 = &qword_100258680;
         return *v9;
@@ -220,13 +220,13 @@
     }
   }
 
-  v15 = [(FMDRequest *)self httpResponseStatus];
-  if (v15 == 401)
+  httpResponseStatus = [(FMDRequest *)self httpResponseStatus];
+  if (httpResponseStatus == 401)
   {
     v9 = &qword_100258678;
   }
 
-  else if (v15 == 330)
+  else if (httpResponseStatus == 330)
   {
     v9 = &qword_100258690;
   }
@@ -243,25 +243,25 @@
   return *v9;
 }
 
-- (FMDRequest)initWithAccount:(id)a3
+- (FMDRequest)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v15.receiver = self;
   v15.super_class = FMDRequest;
   v5 = [(FMDRequest *)&v15 init];
   if (v5)
   {
-    v6 = [v4 authId];
+    authId = [accountCopy authId];
     authId = v5->_authId;
-    v5->_authId = v6;
+    v5->_authId = authId;
 
-    v8 = [v4 authToken];
+    authToken = [accountCopy authToken];
     authToken = v5->_authToken;
-    v5->_authToken = v8;
+    v5->_authToken = authToken;
 
-    v10 = [v4 apsEnvironment];
+    apsEnvironment = [accountCopy apsEnvironment];
     apsEnv = v5->_apsEnv;
-    v5->_apsEnv = v10;
+    v5->_apsEnv = apsEnvironment;
 
     v12 = +[NSUUID UUID];
     requestId = v5->_requestId;

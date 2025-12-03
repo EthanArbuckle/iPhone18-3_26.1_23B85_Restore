@@ -1,12 +1,12 @@
 @interface TTRITemplateSharingRouter.ShareSheetItem
 - (_TtCC9Reminders25TTRITemplateSharingRouterP33_B88B83D8B282D69A84EFFB48896895C814ShareSheetItem)init;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation TTRITemplateSharingRouter.ShareSheetItem
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v4 = type metadata accessor for URL();
   v5 = __chkstk_darwin(v4);
@@ -16,7 +16,7 @@
   return v8;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
   v5 = type metadata accessor for URL();
   v6 = __chkstk_darwin(v5);

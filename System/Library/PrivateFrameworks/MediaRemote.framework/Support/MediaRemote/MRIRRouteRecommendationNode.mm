@@ -2,8 +2,8 @@
 - (BOOL)isLocal;
 - (MRIRRouteRecommendationNode)init;
 - (NSString)avOutpuDeviceIdentifier;
-- (void)setAvOutpuDeviceIdentifier:(id)a3;
-- (void)setIsLocal:(BOOL)a3;
+- (void)setAvOutpuDeviceIdentifier:(id)identifier;
+- (void)setIsLocal:(BOOL)local;
 @end
 
 @implementation MRIRRouteRecommendationNode
@@ -15,17 +15,17 @@
   return *(self + v3);
 }
 
-- (void)setIsLocal:(BOOL)a3
+- (void)setIsLocal:(BOOL)local
 {
   v5 = OBJC_IVAR___MRIRRouteRecommendationNode_isLocal;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = local;
 }
 
 - (NSString)avOutpuDeviceIdentifier
 {
   v2 = *((swift_isaMask & *self) + 0x70);
-  v3 = self;
+  selfCopy = self;
   v2();
   v5 = v4;
 
@@ -42,9 +42,9 @@
   return v6;
 }
 
-- (void)setAvOutpuDeviceIdentifier:(id)a3
+- (void)setAvOutpuDeviceIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -57,7 +57,7 @@
   }
 
   v7 = *((swift_isaMask & *self) + 0x78);
-  v8 = self;
+  selfCopy = self;
   v7(v4, v6);
 }
 

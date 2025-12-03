@@ -3,41 +3,41 @@
 - (AVSpeechSynthesizer)avSynthesizer;
 - (SiriTTSDaemonSession)stsSynthesizer;
 - (WFSpeechSynthesizer)init;
-- (id)avSpeechUtteranceForVoice:(id)a3 utterance:(id)a4 rate:(double)a5 pitch:(double)a6;
+- (id)avSpeechUtteranceForVoice:(id)voice utterance:(id)utterance rate:(double)rate pitch:(double)pitch;
 - (id)invalidAudioBufferError;
-- (id)outputFileURLForUtterance:(id)a3;
-- (id)stsSpeechRequestForVoice:(id)a3 utterance:(id)a4 rate:(double)a5 pitch:(double)a6 intoFile:(BOOL)a7;
-- (unint64_t)audioFormatForSettings:(id)a3;
-- (void)failSpeakingAVUtterance:(id)a3 withError:(id)a4;
-- (void)failSpeakingUtterance:(id)a3 withError:(id)a4;
-- (void)speakUtterance:(id)a3 usingVoice:(id)a4 rate:(double)a5 pitch:(double)a6;
-- (void)speakUtteranceIntoFile:(id)a3 usingVoice:(id)a4 rate:(double)a5 pitch:(double)a6;
-- (void)speechSynthesizer:(id)a3 didFinishSpeechUtterance:(id)a4;
-- (void)speechSynthesizer:(id)a3 willSpeakRangeOfSpeechString:(_NSRange)a4 utterance:(id)a5;
+- (id)outputFileURLForUtterance:(id)utterance;
+- (id)stsSpeechRequestForVoice:(id)voice utterance:(id)utterance rate:(double)rate pitch:(double)pitch intoFile:(BOOL)file;
+- (unint64_t)audioFormatForSettings:(id)settings;
+- (void)failSpeakingAVUtterance:(id)utterance withError:(id)error;
+- (void)failSpeakingUtterance:(id)utterance withError:(id)error;
+- (void)speakUtterance:(id)utterance usingVoice:(id)voice rate:(double)rate pitch:(double)pitch;
+- (void)speakUtteranceIntoFile:(id)file usingVoice:(id)voice rate:(double)rate pitch:(double)pitch;
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeechUtterance:(id)utterance;
+- (void)speechSynthesizer:(id)synthesizer willSpeakRangeOfSpeechString:(_NSRange)string utterance:(id)utterance;
 @end
 
 @implementation WFSpeechSynthesizer
 
-- (void)speechSynthesizer:(id)a3 didFinishSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeechUtterance:(id)utterance
 {
-  v15 = a4;
-  v5 = [(WFSpeechSynthesizer *)self avUtteranceOutputTable];
-  v6 = [v5 objectForKey:v15];
+  utteranceCopy = utterance;
+  avUtteranceOutputTable = [(WFSpeechSynthesizer *)self avUtteranceOutputTable];
+  v6 = [avUtteranceOutputTable objectForKey:utteranceCopy];
 
-  v7 = [(WFSpeechSynthesizer *)self avUtteranceOutputTable];
-  [v7 removeObjectForKey:v15];
+  avUtteranceOutputTable2 = [(WFSpeechSynthesizer *)self avUtteranceOutputTable];
+  [avUtteranceOutputTable2 removeObjectForKey:utteranceCopy];
 
   if (v6 && ([(WFSpeechSynthesizer *)self delegate], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_respondsToSelector(), v8, (v9 & 1) != 0))
   {
-    v10 = [MEMORY[0x277CFC3C8] fileWithURL:v6 options:1];
-    v11 = [(WFSpeechSynthesizer *)self delegate];
-    v12 = [v15 speechString];
-    [v11 speechSynthesizer:self didFinishSpeakingUtterance:v12 intoFile:v10];
+    delegate3 = [MEMORY[0x277CFC3C8] fileWithURL:v6 options:1];
+    delegate = [(WFSpeechSynthesizer *)self delegate];
+    speechString = [utteranceCopy speechString];
+    [delegate speechSynthesizer:self didFinishSpeakingUtterance:speechString intoFile:delegate3];
   }
 
   else
   {
-    v13 = [(WFSpeechSynthesizer *)self delegate];
+    delegate2 = [(WFSpeechSynthesizer *)self delegate];
     v14 = objc_opt_respondsToSelector();
 
     if ((v14 & 1) == 0)
@@ -45,27 +45,27 @@
       goto LABEL_7;
     }
 
-    v10 = [(WFSpeechSynthesizer *)self delegate];
-    v11 = [v15 speechString];
-    [v10 speechSynthesizer:self didFinishSpeakingUtterance:v11];
+    delegate3 = [(WFSpeechSynthesizer *)self delegate];
+    delegate = [utteranceCopy speechString];
+    [delegate3 speechSynthesizer:self didFinishSpeakingUtterance:delegate];
   }
 
 LABEL_7:
 }
 
-- (void)speechSynthesizer:(id)a3 willSpeakRangeOfSpeechString:(_NSRange)a4 utterance:(id)a5
+- (void)speechSynthesizer:(id)synthesizer willSpeakRangeOfSpeechString:(_NSRange)string utterance:(id)utterance
 {
-  length = a4.length;
-  location = a4.location;
-  v12 = a5;
-  v8 = [(WFSpeechSynthesizer *)self delegate];
+  length = string.length;
+  location = string.location;
+  utteranceCopy = utterance;
+  delegate = [(WFSpeechSynthesizer *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(WFSpeechSynthesizer *)self delegate];
-    v11 = [v12 speechString];
-    [v10 speechSynthesizer:self willSpeakRangeOfUtterance:location utterance:{length, v11}];
+    delegate2 = [(WFSpeechSynthesizer *)self delegate];
+    speechString = [utteranceCopy speechString];
+    [delegate2 speechSynthesizer:self willSpeakRangeOfUtterance:location utterance:{length, speechString}];
   }
 }
 
@@ -84,9 +84,9 @@ LABEL_7:
   return v5;
 }
 
-- (unint64_t)audioFormatForSettings:(id)a3
+- (unint64_t)audioFormatForSettings:(id)settings
 {
-  v3 = a3;
+  settingsCopy = settings;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -107,17 +107,17 @@ LABEL_7:
   _Block_object_dispose(&v24, 8);
   if (!v4)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAVLinearPCMIsFloatKey(void)"];
-    [v18 handleFailureInFunction:v19 file:@"WFSpeechSynthesizer.m" lineNumber:44 description:{@"%s", dlerror(), v20, v21, v22, v23}];
+    [currentHandler handleFailureInFunction:v19 file:@"WFSpeechSynthesizer.m" lineNumber:44 description:{@"%s", dlerror(), v20, v21, v22, v23}];
 LABEL_22:
 
     __break(1u);
     return result;
   }
 
-  v6 = [v3 objectForKey:*v4];
-  v7 = [v6 BOOLValue];
+  v6 = [settingsCopy objectForKey:*v4];
+  bOOLValue = [v6 BOOLValue];
 
   v24 = 0;
   v25 = &v24;
@@ -139,34 +139,34 @@ LABEL_22:
   _Block_object_dispose(&v24, 8);
   if (!v8)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAVLinearPCMBitDepthKey(void)"];
-    [v18 handleFailureInFunction:v19 file:@"WFSpeechSynthesizer.m" lineNumber:43 description:{@"%s", dlerror(), v20, v21, v22, v23}];
+    [currentHandler handleFailureInFunction:v19 file:@"WFSpeechSynthesizer.m" lineNumber:43 description:{@"%s", dlerror(), v20, v21, v22, v23}];
     goto LABEL_22;
   }
 
-  v10 = [v3 objectForKey:*v8];
-  v11 = [v10 integerValue];
+  v10 = [settingsCopy objectForKey:*v8];
+  integerValue = [v10 integerValue];
 
   v12 = 16;
-  if (v7)
+  if (bOOLValue)
   {
     v12 = 64;
   }
 
   v13 = 2;
-  if (!v7)
+  if (!bOOLValue)
   {
     v13 = 3;
   }
 
   v14 = 4;
-  if (v7)
+  if (bOOLValue)
   {
     v14 = 1;
   }
 
-  if (v11 == v12)
+  if (integerValue == v12)
   {
     v15 = v13;
   }
@@ -176,7 +176,7 @@ LABEL_22:
     v15 = 0;
   }
 
-  if (v11 == 32)
+  if (integerValue == 32)
   {
     v16 = v14;
   }
@@ -189,14 +189,14 @@ LABEL_22:
   return v16;
 }
 
-- (id)avSpeechUtteranceForVoice:(id)a3 utterance:(id)a4 rate:(double)a5 pitch:(double)a6
+- (id)avSpeechUtteranceForVoice:(id)voice utterance:(id)utterance rate:(double)rate pitch:(double)pitch
 {
-  v12 = a3;
-  v13 = a4;
-  if (!v13)
+  voiceCopy = voice;
+  utteranceCopy = utterance;
+  if (!utteranceCopy)
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"WFSpeechSynthesizer.m" lineNumber:287 description:{@"Invalid parameter not satisfying: %@", @"utterance"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSpeechSynthesizer.m" lineNumber:287 description:{@"Invalid parameter not satisfying: %@", @"utterance"}];
   }
 
   v46 = 0;
@@ -217,8 +217,8 @@ LABEL_22:
 
   v15 = v14;
   _Block_object_dispose(&v46, 8);
-  v16 = [v14 speechUtteranceWithString:v13];
-  *&v17 = a6;
+  v16 = [v14 speechUtteranceWithString:utteranceCopy];
+  *&v17 = pitch;
   [v16 setPitchMultiplier:v17];
   v46 = 0;
   v47 = &v46;
@@ -243,21 +243,21 @@ LABEL_22:
   _Block_object_dispose(&v46, 8);
   if (!v19)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"float getAVSpeechUtteranceMinimumSpeechRate(void)"];
-    [v12 handleFailureInFunction:v13 file:@"WFSpeechSynthesizer.m" lineNumber:47 description:{@"%s", dlerror()}];
+    voiceCopy = [MEMORY[0x277CCA890] currentHandler];
+    utteranceCopy = [MEMORY[0x277CCACA8] stringWithUTF8String:"float getAVSpeechUtteranceMinimumSpeechRate(void)"];
+    [voiceCopy handleFailureInFunction:utteranceCopy file:@"WFSpeechSynthesizer.m" lineNumber:47 description:{@"%s", dlerror()}];
 LABEL_35:
 
     __break(1u);
 LABEL_36:
-    v35 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"CGFloat WFScaledValue(CGFloat, CGFloat, CGFloat, CGFloat)"}];
-    [v35 handleFailureInFunction:v36 file:@"WFSpeechSynthesizer.m" lineNumber:70 description:@"max must be >= min"];
+    [currentHandler2 handleFailureInFunction:v36 file:@"WFSpeechSynthesizer.m" lineNumber:70 description:@"max must be >= min"];
 
     goto LABEL_17;
   }
 
-  LODWORD(a6) = *v19;
+  LODWORD(pitch) = *v19;
   v46 = 0;
   v47 = &v46;
   v48 = 0x2020000000;
@@ -280,9 +280,9 @@ LABEL_36:
   _Block_object_dispose(&v46, 8);
   if (!v22)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"float getAVSpeechUtteranceMaximumSpeechRate(void)"];
-    [v12 handleFailureInFunction:v13 file:@"WFSpeechSynthesizer.m" lineNumber:48 description:{@"%s", dlerror()}];
+    voiceCopy = [MEMORY[0x277CCA890] currentHandler];
+    utteranceCopy = [MEMORY[0x277CCACA8] stringWithUTF8String:"float getAVSpeechUtteranceMaximumSpeechRate(void)"];
+    [voiceCopy handleFailureInFunction:utteranceCopy file:@"WFSpeechSynthesizer.m" lineNumber:48 description:{@"%s", dlerror()}];
     goto LABEL_35;
   }
 
@@ -309,45 +309,45 @@ LABEL_36:
   _Block_object_dispose(&v46, 8);
   if (!v25)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"float getAVSpeechUtteranceDefaultSpeechRate(void)"];
-    [v12 handleFailureInFunction:v13 file:@"WFSpeechSynthesizer.m" lineNumber:49 description:{@"%s", dlerror()}];
+    voiceCopy = [MEMORY[0x277CCA890] currentHandler];
+    utteranceCopy = [MEMORY[0x277CCACA8] stringWithUTF8String:"float getAVSpeechUtteranceDefaultSpeechRate(void)"];
+    [voiceCopy handleFailureInFunction:utteranceCopy file:@"WFSpeechSynthesizer.m" lineNumber:49 description:{@"%s", dlerror()}];
     goto LABEL_35;
   }
 
   v18 = *v25;
-  if (a5 < 0.0 || a5 > 1.0)
+  if (rate < 0.0 || rate > 1.0)
   {
-    v37 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"CGFloat WFScaledValue(CGFloat, CGFloat, CGFloat, CGFloat)"}];
-    [v37 handleFailureInFunction:v38 file:@"WFSpeechSynthesizer.m" lineNumber:69 description:{@"unitValue must be [0, 1]"}];
+    [currentHandler3 handleFailureInFunction:v38 file:@"WFSpeechSynthesizer.m" lineNumber:69 description:{@"unitValue must be [0, 1]"}];
   }
 
-  if (v6 < *&a6)
+  if (v6 < *&pitch)
   {
     goto LABEL_36;
   }
 
 LABEL_17:
-  if (v18 < *&a6 || v18 > v6)
+  if (v18 < *&pitch || v18 > v6)
   {
-    v39 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
     v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"CGFloat WFScaledValue(CGFloat, CGFloat, CGFloat, CGFloat)"}];
-    [v39 handleFailureInFunction:v40 file:@"WFSpeechSynthesizer.m" lineNumber:71 description:{@"default must be >= min, <= max"}];
+    [currentHandler4 handleFailureInFunction:v40 file:@"WFSpeechSynthesizer.m" lineNumber:71 description:{@"default must be >= min, <= max"}];
   }
 
-  v28 = a5 + -0.5;
-  if (a5 >= 0.5)
+  rateCopy = rate + -0.5;
+  if (rate >= 0.5)
   {
     v29 = v18;
   }
 
   else
   {
-    v29 = *&a6;
+    v29 = *&pitch;
   }
 
-  if (a5 >= 0.5)
+  if (rate >= 0.5)
   {
     v30 = v6;
   }
@@ -357,28 +357,28 @@ LABEL_17:
     v30 = v18;
   }
 
-  if (a5 < 0.5)
+  if (rate < 0.5)
   {
-    v28 = a5;
+    rateCopy = rate;
   }
 
-  v31 = v29 + (v30 - v29) * (v28 + v28);
+  v31 = v29 + (v30 - v29) * (rateCopy + rateCopy);
   *&v31 = v31;
   [v16 setRate:v31];
-  v32 = [v12 avVoice];
-  if (v32)
+  avVoice = [voiceCopy avVoice];
+  if (avVoice)
   {
-    [v16 setVoice:v32];
+    [v16 setVoice:avVoice];
   }
 
   return v16;
 }
 
-- (id)stsSpeechRequestForVoice:(id)a3 utterance:(id)a4 rate:(double)a5 pitch:(double)a6 intoFile:(BOOL)a7
+- (id)stsSpeechRequestForVoice:(id)voice utterance:(id)utterance rate:(double)rate pitch:(double)pitch intoFile:(BOOL)file
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
+  fileCopy = file;
+  voiceCopy = voice;
+  utteranceCopy = utterance;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2050000000;
@@ -398,9 +398,9 @@ LABEL_17:
   v15 = v14;
   _Block_object_dispose(&v38, 8);
   v16 = [v14 alloc];
-  v17 = [v12 languageCode];
-  v18 = [v12 vsVoiceName];
-  v19 = [v16 initWithLanguage:v17 name:v18];
+  languageCode = [voiceCopy languageCode];
+  vsVoiceName = [voiceCopy vsVoiceName];
+  v19 = [v16 initWithLanguage:languageCode name:vsVoiceName];
 
   v38 = 0;
   v39 = &v38;
@@ -420,25 +420,25 @@ LABEL_17:
 
   v21 = v20;
   _Block_object_dispose(&v38, 8);
-  v22 = [[v20 alloc] initWithText:v13 voice:v19];
-  if (a5 < 0.0 || a5 > 1.0)
+  v22 = [[v20 alloc] initWithText:utteranceCopy voice:v19];
+  if (rate < 0.0 || rate > 1.0)
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"CGFloat WFScaledValue(CGFloat, CGFloat, CGFloat, CGFloat)"}];
-    [v31 handleFailureInFunction:v32 file:@"WFSpeechSynthesizer.m" lineNumber:69 description:{@"unitValue must be [0, 1]"}];
+    [currentHandler handleFailureInFunction:v32 file:@"WFSpeechSynthesizer.m" lineNumber:69 description:{@"unitValue must be [0, 1]"}];
   }
 
-  v23 = a5 + -0.5;
+  rateCopy = rate + -0.5;
   v24 = 0.5;
   v25 = 1.0;
-  if (a5 < 0.5)
+  if (rate < 0.5)
   {
     v25 = 0.5;
-    v23 = a5;
+    rateCopy = rate;
   }
 
-  v26 = v23 + v23;
-  if (a5 >= 0.5)
+  v26 = rateCopy + rateCopy;
+  if (rate >= 0.5)
   {
     v24 = 3.0;
   }
@@ -446,11 +446,11 @@ LABEL_17:
   v27 = v25 + v24 * v26;
   *&v27 = v27;
   [v22 setRate:v27];
-  *&v28 = a6;
+  *&v28 = pitch;
   [v22 setPitch:v28];
-  if (v7)
+  if (fileCopy)
   {
-    v29 = [(WFSpeechSynthesizer *)self outputFileURLForUtterance:v13];
+    v29 = [(WFSpeechSynthesizer *)self outputFileURLForUtterance:utteranceCopy];
     [v22 setOutputPath:v29];
   }
 
@@ -490,56 +490,56 @@ LABEL_17:
   return stsSynthesizer;
 }
 
-- (id)outputFileURLForUtterance:(id)a3
+- (id)outputFileURLForUtterance:(id)utterance
 {
-  v5 = a3;
-  if (!v5)
+  utteranceCopy = utterance;
+  if (!utteranceCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFSpeechSynthesizer.m" lineNumber:253 description:{@"Invalid parameter not satisfying: %@", @"utterance"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSpeechSynthesizer.m" lineNumber:253 description:{@"Invalid parameter not satisfying: %@", @"utterance"}];
   }
 
-  v6 = [MEMORY[0x277CFC3C8] sanitizedFilename:v5 withExtension:@"caf"];
+  v6 = [MEMORY[0x277CFC3C8] sanitizedFilename:utteranceCopy withExtension:@"caf"];
   v7 = [MEMORY[0x277CFC538] proposedSharedTemporaryFileURLForFilename:v6];
 
   return v7;
 }
 
-- (void)failSpeakingUtterance:(id)a3 withError:(id)a4
+- (void)failSpeakingUtterance:(id)utterance withError:(id)error
 {
-  v12 = a3;
-  v7 = a4;
-  if (!v12)
+  utteranceCopy = utterance;
+  errorCopy = error;
+  if (!utteranceCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFSpeechSynthesizer.m" lineNumber:246 description:{@"Invalid parameter not satisfying: %@", @"utterance"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSpeechSynthesizer.m" lineNumber:246 description:{@"Invalid parameter not satisfying: %@", @"utterance"}];
   }
 
-  v8 = [(WFSpeechSynthesizer *)self delegate];
+  delegate = [(WFSpeechSynthesizer *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(WFSpeechSynthesizer *)self delegate];
-    [v10 speechSynthesizer:self didFailSpeakingUtterance:v12 error:v7];
+    delegate2 = [(WFSpeechSynthesizer *)self delegate];
+    [delegate2 speechSynthesizer:self didFailSpeakingUtterance:utteranceCopy error:errorCopy];
   }
 }
 
-- (void)failSpeakingAVUtterance:(id)a3 withError:(id)a4
+- (void)failSpeakingAVUtterance:(id)utterance withError:(id)error
 {
-  v11 = a3;
-  v7 = a4;
-  if (!v11)
+  utteranceCopy = utterance;
+  errorCopy = error;
+  if (!utteranceCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"WFSpeechSynthesizer.m" lineNumber:239 description:{@"Invalid parameter not satisfying: %@", @"utterance"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSpeechSynthesizer.m" lineNumber:239 description:{@"Invalid parameter not satisfying: %@", @"utterance"}];
   }
 
-  v8 = [(WFSpeechSynthesizer *)self avUtteranceOutputTable];
-  [v8 removeObjectForKey:v11];
+  avUtteranceOutputTable = [(WFSpeechSynthesizer *)self avUtteranceOutputTable];
+  [avUtteranceOutputTable removeObjectForKey:utteranceCopy];
 
-  v9 = [v11 speechString];
-  [(WFSpeechSynthesizer *)self failSpeakingUtterance:v9 withError:v7];
+  speechString = [utteranceCopy speechString];
+  [(WFSpeechSynthesizer *)self failSpeakingUtterance:speechString withError:errorCopy];
 }
 
 - (AVSpeechSynthesizer)avSynthesizer
@@ -577,15 +577,15 @@ LABEL_17:
   return avSynthesizer;
 }
 
-- (void)speakUtteranceIntoFile:(id)a3 usingVoice:(id)a4 rate:(double)a5 pitch:(double)a6
+- (void)speakUtteranceIntoFile:(id)file usingVoice:(id)voice rate:(double)rate pitch:(double)pitch
 {
   v34 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  if (!v11)
+  fileCopy = file;
+  voiceCopy = voice;
+  if (!fileCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFSpeechSynthesizer.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"utterance"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSpeechSynthesizer.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"utterance"}];
   }
 
   v13 = getWFTextToSpeechLogObject();
@@ -594,29 +594,29 @@ LABEL_17:
     *buf = 136316162;
     v25 = "[WFSpeechSynthesizer speakUtteranceIntoFile:usingVoice:rate:pitch:]";
     v26 = 2112;
-    v27 = v11;
+    v27 = fileCopy;
     v28 = 2048;
-    v29 = a5;
+    rateCopy = rate;
     v30 = 2048;
-    v31 = a6;
+    pitchCopy = pitch;
     v32 = 2112;
-    v33 = v12;
+    v33 = voiceCopy;
     _os_log_impl(&dword_23DE30000, v13, OS_LOG_TYPE_INFO, "%s Asked to synthesize '%@' into file at rate %f, pitch %f using voice %@", buf, 0x34u);
   }
 
-  v14 = [(WFSpeechSynthesizer *)self queue];
+  queue = [(WFSpeechSynthesizer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__WFSpeechSynthesizer_speakUtteranceIntoFile_usingVoice_rate_pitch___block_invoke;
   block[3] = &unk_278C1B988;
   block[4] = self;
-  v20 = v12;
-  v21 = v11;
-  v22 = a5;
-  v23 = a6;
-  v15 = v11;
-  v16 = v12;
-  dispatch_async(v14, block);
+  v20 = voiceCopy;
+  v21 = fileCopy;
+  rateCopy2 = rate;
+  pitchCopy2 = pitch;
+  v15 = fileCopy;
+  v16 = voiceCopy;
+  dispatch_async(queue, block);
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -792,15 +792,15 @@ LABEL_8:
   }
 }
 
-- (void)speakUtterance:(id)a3 usingVoice:(id)a4 rate:(double)a5 pitch:(double)a6
+- (void)speakUtterance:(id)utterance usingVoice:(id)voice rate:(double)rate pitch:(double)pitch
 {
   v35 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  if (!v11)
+  utteranceCopy = utterance;
+  voiceCopy = voice;
+  if (!utteranceCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFSpeechSynthesizer.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"utterance"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSpeechSynthesizer.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"utterance"}];
   }
 
   v13 = getWFTextToSpeechLogObject();
@@ -809,29 +809,29 @@ LABEL_8:
     *buf = 136316162;
     v26 = "[WFSpeechSynthesizer speakUtterance:usingVoice:rate:pitch:]";
     v27 = 2112;
-    v28 = v11;
+    v28 = utteranceCopy;
     v29 = 2048;
-    v30 = a5;
+    rateCopy = rate;
     v31 = 2048;
-    v32 = a6;
+    pitchCopy = pitch;
     v33 = 2112;
-    v34 = v12;
+    v34 = voiceCopy;
     _os_log_impl(&dword_23DE30000, v13, OS_LOG_TYPE_INFO, "%s Asked to synthesize '%@' at rate %f, pitch %f using voice %@", buf, 0x34u);
   }
 
-  v14 = [(WFSpeechSynthesizer *)self queue];
+  queue = [(WFSpeechSynthesizer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__WFSpeechSynthesizer_speakUtterance_usingVoice_rate_pitch___block_invoke;
   block[3] = &unk_278C1B988;
-  v20 = v12;
-  v21 = self;
-  v22 = v11;
-  v23 = a5;
-  v24 = a6;
-  v15 = v11;
-  v16 = v12;
-  dispatch_async(v14, block);
+  v20 = voiceCopy;
+  selfCopy = self;
+  v22 = utteranceCopy;
+  rateCopy2 = rate;
+  pitchCopy2 = pitch;
+  v15 = utteranceCopy;
+  v16 = voiceCopy;
+  dispatch_async(queue, block);
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -924,9 +924,9 @@ void __60__WFSpeechSynthesizer_speakUtterance_usingVoice_rate_pitch___block_invo
     queue = v2->_queue;
     v2->_queue = v5;
 
-    v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     avUtteranceOutputTable = v2->_avUtteranceOutputTable;
-    v2->_avUtteranceOutputTable = v7;
+    v2->_avUtteranceOutputTable = strongToStrongObjectsMapTable;
 
     v9 = v2;
   }
@@ -941,9 +941,9 @@ void __60__WFSpeechSynthesizer_speakUtterance_usingVoice_rate_pitch___block_invo
   v7 = 0x100000004;
   v6 = xmmword_23E24ABF0;
   v2 = [objc_alloc(MEMORY[0x277CB83A8]) initWithStreamDescription:&v5];
-  v3 = [v2 settings];
+  settings = [v2 settings];
 
-  return v3;
+  return settings;
 }
 
 @end

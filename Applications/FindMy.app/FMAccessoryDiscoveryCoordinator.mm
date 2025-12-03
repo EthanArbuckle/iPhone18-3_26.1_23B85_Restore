@@ -1,7 +1,7 @@
 @interface FMAccessoryDiscoveryCoordinator
 - (_TtC6FindMy31FMAccessoryDiscoveryCoordinator)init;
 - (void)dealloc;
-- (void)didCompleteAccessoryOnboarding:(id)a3 pairingSuccessful:(BOOL)a4;
+- (void)didCompleteAccessoryOnboarding:(id)onboarding pairingSuccessful:(BOOL)successful;
 - (void)proxCardFlowDidDismiss;
 - (void)systemOnboardingStarted;
 @end
@@ -11,11 +11,11 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  v6 = v4;
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  v6 = selfCopy;
   v7 = String._bridgeToObjectiveC()();
-  [v5 removeObserver:v6 name:v7 object:0];
+  [defaultCenter removeObserver:v6 name:v7 object:0];
 
   v8.receiver = v6;
   v8.super_class = type metadata accessor for FMAccessoryDiscoveryCoordinator(0);
@@ -24,7 +24,7 @@
 
 - (void)systemOnboardingStarted
 {
-  v2 = self;
+  selfCopy = self;
   sub_10026D5EC();
 }
 
@@ -37,14 +37,14 @@
 
 - (void)proxCardFlowDidDismiss
 {
-  v2 = self;
+  selfCopy = self;
   sub_100270D78();
 }
 
-- (void)didCompleteAccessoryOnboarding:(id)a3 pairingSuccessful:(BOOL)a4
+- (void)didCompleteAccessoryOnboarding:(id)onboarding pairingSuccessful:(BOOL)successful
 {
-  v5 = a3;
-  v6 = self;
+  onboardingCopy = onboarding;
+  selfCopy = self;
   sub_1002718C8();
 }
 

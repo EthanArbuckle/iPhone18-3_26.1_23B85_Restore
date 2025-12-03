@@ -1,21 +1,21 @@
 @interface PLFakeCPLPushChangeSession
-- (PLFakeCPLPushChangeSession)initWithLibraryManager:(id)a3 queue:(id)a4;
-- (void)commitChangeBatch:(id)a3 completionHandler:(id)a4;
-- (void)finalizeWithCompletionHandler:(id)a3;
+- (PLFakeCPLPushChangeSession)initWithLibraryManager:(id)manager queue:(id)queue;
+- (void)commitChangeBatch:(id)batch completionHandler:(id)handler;
+- (void)finalizeWithCompletionHandler:(id)handler;
 @end
 
 @implementation PLFakeCPLPushChangeSession
 
-- (void)finalizeWithCompletionHandler:(id)a3
+- (void)finalizeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__PLFakeCPLPushChangeSession_finalizeWithCompletionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v11 = v4;
-  v6 = v4;
+  v11 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, block);
   v7 = dispatch_time(0, 3000000000);
   v8 = self->_queue;
@@ -84,17 +84,17 @@ void __60__PLFakeCPLPushChangeSession_finalizeWithCompletionHandler___block_invo
   [v25 setLastSuccessfulSyncDate:v23];
 }
 
-- (void)commitChangeBatch:(id)a3 completionHandler:(id)a4
+- (void)commitChangeBatch:(id)batch completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  batchCopy = batch;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__PLFakeCPLPushChangeSession_commitChangeBatch_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v17 = v7;
-  v9 = v7;
+  v17 = handlerCopy;
+  v9 = handlerCopy;
   dispatch_async(queue, block);
   v10 = dispatch_time(0, 1000000000);
   v11 = self->_queue;
@@ -102,9 +102,9 @@ void __60__PLFakeCPLPushChangeSession_finalizeWithCompletionHandler___block_invo
   v13[1] = 3221225472;
   v13[2] = __66__PLFakeCPLPushChangeSession_commitChangeBatch_completionHandler___block_invoke_2;
   v13[3] = &unk_1E7578848;
-  v14 = v6;
-  v15 = self;
-  v12 = v6;
+  v14 = batchCopy;
+  selfCopy = self;
+  v12 = batchCopy;
   dispatch_after(v10, v11, v13);
 }
 
@@ -192,18 +192,18 @@ void __66__PLFakeCPLPushChangeSession_commitChangeBatch_completionHandler___bloc
   }
 }
 
-- (PLFakeCPLPushChangeSession)initWithLibraryManager:(id)a3 queue:(id)a4
+- (PLFakeCPLPushChangeSession)initWithLibraryManager:(id)manager queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = PLFakeCPLPushChangeSession;
   v8 = [(PLFakeCPLPushChangeSession *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_libraryManager, v6);
-    objc_storeStrong(&v9->_queue, a4);
+    objc_storeWeak(&v8->_libraryManager, managerCopy);
+    objc_storeStrong(&v9->_queue, queue);
   }
 
   return v9;

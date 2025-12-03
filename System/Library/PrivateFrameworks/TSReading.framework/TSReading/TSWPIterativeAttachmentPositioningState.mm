@@ -4,7 +4,7 @@
 - (CGPoint)position;
 - (TSWPIterativeAttachmentPositioningState)init;
 - (void)dealloc;
-- (void)setPosition:(CGPoint)a3 mismatch:(double)a4 afterLoop:(BOOL)a5;
+- (void)setPosition:(CGPoint)position mismatch:(double)mismatch afterLoop:(BOOL)loop;
 @end
 
 @implementation TSWPIterativeAttachmentPositioningState
@@ -22,17 +22,17 @@
   return result;
 }
 
-- (void)setPosition:(CGPoint)a3 mismatch:(double)a4 afterLoop:(BOOL)a5
+- (void)setPosition:(CGPoint)position mismatch:(double)mismatch afterLoop:(BOOL)loop
 {
-  y = a3.y;
-  x = a3.x;
-  self->_position = a3;
-  self->_mismatch = a4;
+  y = position.y;
+  x = position.x;
+  self->_position = position;
+  self->_mismatch = mismatch;
   passPositions = self->_passPositions;
   ++self->_passCount;
   if (passPositions)
   {
-    v11 = -[NSArray arrayByAddingObject:](passPositions, "arrayByAddingObject:", [MEMORY[0x277CCAE60] valueWithCGPoint:{a3.x, a3.y}]);
+    v11 = -[NSArray arrayByAddingObject:](passPositions, "arrayByAddingObject:", [MEMORY[0x277CCAE60] valueWithCGPoint:{position.x, position.y}]);
   }
 
   else
@@ -42,12 +42,12 @@
   }
 
   self->_passPositions = v11;
-  if (!a5)
+  if (!loop)
   {
-    v13 = -a4;
-    if (a4 >= 0.0)
+    mismatchCopy = -mismatch;
+    if (mismatch >= 0.0)
     {
-      v13 = a4;
+      mismatchCopy = mismatch;
     }
 
     smallestMismatch = self->_smallestMismatch;
@@ -56,9 +56,9 @@
       smallestMismatch = -smallestMismatch;
     }
 
-    if (v13 < smallestMismatch)
+    if (mismatchCopy < smallestMismatch)
     {
-      self->_smallestMismatch = a4;
+      self->_smallestMismatch = mismatch;
       self->_bestPosition.x = x;
       self->_bestPosition.y = y;
     }

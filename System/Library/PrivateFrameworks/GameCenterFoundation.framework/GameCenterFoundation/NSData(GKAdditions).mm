@@ -98,7 +98,7 @@
     +[NSData(GKAdditions) _gkLoadRemoteImageDataForURL:session:subdirectory:filename:queue:handler:];
   }
 
-  [a1 _gkLoadRemoteImageDataForUrl:v20 session:v19 subdirectory:v18 filename:v17 queue:v21 imageQueue:_gkLoadRemoteImageDataForURL_session_subdirectory_filename_queue_handler__imageQueue handler:v16];
+  [self _gkLoadRemoteImageDataForUrl:v20 session:v19 subdirectory:v18 filename:v17 queue:v21 imageQueue:_gkLoadRemoteImageDataForURL_session_subdirectory_filename_queue_handler__imageQueue handler:v16];
 }
 
 + (void)_gkLoadRemoteImageDataForUrl:()GKAdditions session:subdirectory:filename:queue:imageQueue:handler:
@@ -121,9 +121,9 @@
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v18 = v16;
-    v19 = [v14 absoluteString];
+    absoluteString = [v14 absoluteString];
     *buf = 138412290;
-    v61 = v19;
+    v61 = absoluteString;
     _os_log_impl(&dword_227904000, v18, OS_LOG_TYPE_INFO, "_gkLoadRemoteImageDataForUrl: %@", buf, 0xCu);
   }
 
@@ -135,22 +135,22 @@
   v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "NSData+GKAdditions.m", 136, "+[NSData(GKAdditions) _gkLoadRemoteImageDataForUrl:session:subdirectory:filename:queue:imageQueue:handler:]"];
   v44 = [GKDispatchGroup dispatchGroupWithName:v20];
 
-  v21 = [v14 path];
+  path = [v14 path];
   v22 = GKImageCacheRoot(&stru_283AFD1E0);
-  v23 = [v21 hasPrefix:v22];
+  v23 = [path hasPrefix:v22];
 
   v24 = +[GKPreferences shared];
   if ([v24 isInternalBuild])
   {
-    v25 = [v14 scheme];
-    if ([v25 isEqualToString:@"file"])
+    scheme = [v14 scheme];
+    if ([scheme isEqualToString:@"file"])
     {
-      v26 = [v14 path];
+      path2 = [v14 path];
       v27 = MEMORY[0x277CCACA8];
       v28 = +[GKGame currentGame];
-      v29 = [v28 bundleIdentifier];
-      v30 = [v27 stringWithFormat:@"/AppleInternal/Library/Bundles/GameKitFakeData.bundle/%@.gamekit", v29];
-      v31 = [v26 hasPrefix:v30];
+      bundleIdentifier = [v28 bundleIdentifier];
+      v30 = [v27 stringWithFormat:@"/AppleInternal/Library/Bundles/GameKitFakeData.bundle/%@.gamekit", bundleIdentifier];
+      v31 = [path2 hasPrefix:v30];
     }
 
     else
@@ -263,10 +263,10 @@
 
   else
   {
-    v10 = [v7 absoluteString];
-    v11 = GKImageCacheRoot(v10);
-    v12 = [v8 lastPathComponent];
-    v9 = [v11 stringByAppendingPathComponent:v12];
+    absoluteString = [v7 absoluteString];
+    v11 = GKImageCacheRoot(absoluteString);
+    lastPathComponent = [v8 lastPathComponent];
+    v9 = [v11 stringByAppendingPathComponent:lastPathComponent];
   }
 
   return v9;
@@ -274,17 +274,17 @@
 
 - (id)_gkAsHexString
 {
-  v2 = [MEMORY[0x277CCAB68] stringWithCapacity:{2 * objc_msgSend(a1, "length")}];
-  v3 = [a1 bytes];
-  if ([a1 length])
+  v2 = [MEMORY[0x277CCAB68] stringWithCapacity:{2 * objc_msgSend(self, "length")}];
+  bytes = [self bytes];
+  if ([self length])
   {
     v4 = 0;
     do
     {
-      [v2 appendFormat:@"%02X", *(v3 + v4++)];
+      [v2 appendFormat:@"%02X", *(bytes + v4++)];
     }
 
-    while ([a1 length] > v4);
+    while ([self length] > v4);
   }
 
   return v2;

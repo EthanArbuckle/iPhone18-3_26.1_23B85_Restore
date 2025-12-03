@@ -1,10 +1,10 @@
 @interface PDParser
-- (id)parseData:(id)a3 expectedClass:(Class)a4 error:(id *)a5;
+- (id)parseData:(id)data expectedClass:(Class)class error:(id *)error;
 @end
 
 @implementation PDParser
 
-- (id)parseData:(id)a3 expectedClass:(Class)a4 error:(id *)a5
+- (id)parseData:(id)data expectedClass:(Class)class error:(id *)error
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

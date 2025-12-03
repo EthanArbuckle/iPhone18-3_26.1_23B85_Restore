@@ -1,5 +1,5 @@
 @interface CACentralTableViewCell
-- (CACentralTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CACentralTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)createInitialConstraints;
 - (void)dealloc;
 - (void)startIndicator;
@@ -9,11 +9,11 @@
 
 @implementation CACentralTableViewCell
 
-- (CACentralTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CACentralTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = CACentralTableViewCell;
-  v4 = [(CACentralTableViewCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CACentralTableViewCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v4->_deviceNameLabel = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -63,10 +63,10 @@
   [-[CACentralTableViewCell contentView](self "contentView")];
   -[CACentralTableViewCell setActivityHConstraints:](self, "setActivityHConstraints:", [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:[_activityIndicator]-|" options:0 metrics:0 views:v3]);
   -[CACentralTableViewCell setActivityVConstraints:](self, "setActivityVConstraints:", [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-8-[_activityIndicator]" options:0 metrics:0 views:v3]);
-  v4 = [(CACentralTableViewCell *)self contentView];
-  [v4 addConstraints:{objc_msgSend(MEMORY[0x277CCAAD0], "constraintsWithVisualFormat:options:metrics:views:", @"V:|-5-[_deviceNameLabel]-2-[_inputLabel]-5-|", 0, 0, v3)}];
-  v5 = [(CACentralTableViewCell *)self contentView];
-  [v5 addConstraints:{objc_msgSend(MEMORY[0x277CCAAD0], "constraintsWithVisualFormat:options:metrics:views:", @"H:|-20-[_inputLabel]-2-[_slashLabel]-2-[_outputLabel]", 2048, 0, v3)}];
+  contentView = [(CACentralTableViewCell *)self contentView];
+  [contentView addConstraints:{objc_msgSend(MEMORY[0x277CCAAD0], "constraintsWithVisualFormat:options:metrics:views:", @"V:|-5-[_deviceNameLabel]-2-[_inputLabel]-5-|", 0, 0, v3)}];
+  contentView2 = [(CACentralTableViewCell *)self contentView];
+  [contentView2 addConstraints:{objc_msgSend(MEMORY[0x277CCAAD0], "constraintsWithVisualFormat:options:metrics:views:", @"H:|-20-[_inputLabel]-2-[_slashLabel]-2-[_outputLabel]", 2048, 0, v3)}];
   LODWORD(v6) = 1144766464;
   [(UILabel *)self->_connectionStatusLabel setContentCompressionResistancePriority:0 forAxis:v6];
   LODWORD(v7) = 1132134400;

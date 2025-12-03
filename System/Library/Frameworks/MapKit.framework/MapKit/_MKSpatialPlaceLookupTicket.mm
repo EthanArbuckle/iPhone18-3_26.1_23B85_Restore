@@ -1,15 +1,15 @@
 @interface _MKSpatialPlaceLookupTicket
-- (_MKSpatialPlaceLookupTicket)initWithTicket:(id)a3;
-- (void)submitWithHandler:(id)a3 queue:(id)a4;
+- (_MKSpatialPlaceLookupTicket)initWithTicket:(id)ticket;
+- (void)submitWithHandler:(id)handler queue:(id)queue;
 @end
 
 @implementation _MKSpatialPlaceLookupTicket
 
-- (void)submitWithHandler:(id)a3 queue:(id)a4
+- (void)submitWithHandler:(id)handler queue:(id)queue
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
     spatialPlaceLookupTicket = self->_spatialPlaceLookupTicket;
     v9[0] = MEMORY[0x1E69E9820];
@@ -17,21 +17,21 @@
     v9[2] = __55___MKSpatialPlaceLookupTicket_submitWithHandler_queue___block_invoke;
     v9[3] = &unk_1E76C8530;
     v9[4] = self;
-    v10 = v6;
-    [(GEOMapServiceSpatialPlaceLookupTicket *)spatialPlaceLookupTicket submitWithHandler:v9 queue:a4];
+    v10 = handlerCopy;
+    [(GEOMapServiceSpatialPlaceLookupTicket *)spatialPlaceLookupTicket submitWithHandler:v9 queue:queue];
   }
 }
 
-- (_MKSpatialPlaceLookupTicket)initWithTicket:(id)a3
+- (_MKSpatialPlaceLookupTicket)initWithTicket:(id)ticket
 {
-  v5 = a3;
+  ticketCopy = ticket;
   v9.receiver = self;
   v9.super_class = _MKSpatialPlaceLookupTicket;
   v6 = [(_MKSpatialPlaceLookupTicket *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_spatialPlaceLookupTicket, a3);
+    objc_storeStrong(&v6->_spatialPlaceLookupTicket, ticket);
   }
 
   return v7;

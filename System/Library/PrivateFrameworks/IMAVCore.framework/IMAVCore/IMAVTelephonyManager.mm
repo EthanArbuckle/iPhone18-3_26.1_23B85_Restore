@@ -1,7 +1,7 @@
 @interface IMAVTelephonyManager
 + (IMAVTelephonyManager)sharedInstance;
 - (IMAVTelephonyManager)init;
-- (void)_chatStateChanged:(id)a3;
+- (void)_chatStateChanged:(id)changed;
 - (void)dealloc;
 @end
 
@@ -46,10 +46,10 @@
   [(IMAVTelephonyManager *)&v16 dealloc];
 }
 
-- (void)_chatStateChanged:(id)a3
+- (void)_chatStateChanged:(id)changed
 {
   v55 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  changedCopy = changed;
   v8 = objc_msgSend_sharedInstance(IMAVController, v4, v5, v6, v7);
   if (objc_msgSend__shouldRunConferences(v8, v9, v10, v11, v12))
   {
@@ -63,7 +63,7 @@
   if (shouldRunACConferences)
   {
 LABEL_4:
-    v27 = objc_msgSend_object(v3, v17, v18, v19, v20);
+    v27 = objc_msgSend_object(changedCopy, v17, v18, v19, v20);
     if ((objc_msgSend__isProxy(v27, v28, v29, v30, v31) & 1) == 0)
     {
       v36 = objc_msgSend_state(v27, v32, v33, v34, v35);

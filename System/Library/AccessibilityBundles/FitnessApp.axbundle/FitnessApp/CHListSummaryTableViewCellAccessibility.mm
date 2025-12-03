@@ -1,19 +1,19 @@
 @interface CHListSummaryTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation CHListSummaryTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_CHWorkoutSummaryTabbedLabelContainer" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"CHListSummaryTableViewCell" hasInstanceVariable:@"_numberOfWorkoutsLabel" withType:"_CHWorkoutSummaryTabbedLabelContainer"];
-  [v3 validateClass:@"CHListSummaryTableViewCell" hasInstanceVariable:@"_activeEnergyLabel" withType:"_CHWorkoutSummaryTabbedLabelContainer"];
-  [v3 validateClass:@"CHListSummaryTableViewCell" hasInstanceVariable:@"_durationLabel" withType:"_CHWorkoutSummaryTabbedLabelContainer"];
-  [v3 validateClass:@"CHListSummaryTableViewCell" hasInstanceVariable:@"_distanceLabel" withType:"_CHWorkoutSummaryTabbedLabelContainer"];
-  [v3 validateClass:@"CHListSummaryTableViewCell" hasInstanceVariable:@"_paceLabel" withType:"_CHWorkoutSummaryTabbedLabelContainer"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_CHWorkoutSummaryTabbedLabelContainer" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"CHListSummaryTableViewCell" hasInstanceVariable:@"_numberOfWorkoutsLabel" withType:"_CHWorkoutSummaryTabbedLabelContainer"];
+  [validationsCopy validateClass:@"CHListSummaryTableViewCell" hasInstanceVariable:@"_activeEnergyLabel" withType:"_CHWorkoutSummaryTabbedLabelContainer"];
+  [validationsCopy validateClass:@"CHListSummaryTableViewCell" hasInstanceVariable:@"_durationLabel" withType:"_CHWorkoutSummaryTabbedLabelContainer"];
+  [validationsCopy validateClass:@"CHListSummaryTableViewCell" hasInstanceVariable:@"_distanceLabel" withType:"_CHWorkoutSummaryTabbedLabelContainer"];
+  [validationsCopy validateClass:@"CHListSummaryTableViewCell" hasInstanceVariable:@"_paceLabel" withType:"_CHWorkoutSummaryTabbedLabelContainer"];
 }
 
 - (id)accessibilityElements

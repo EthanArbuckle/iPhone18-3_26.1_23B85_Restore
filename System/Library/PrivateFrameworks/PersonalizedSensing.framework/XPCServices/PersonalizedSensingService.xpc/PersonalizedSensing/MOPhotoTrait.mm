@@ -1,62 +1,62 @@
 @interface MOPhotoTrait
-- (MOPhotoTrait)initWithCoder:(id)a3;
-- (MOPhotoTrait)initWithIdentifier:(id)a3 name:(id)a4 labelType:(id)a5 holidayIdentifier:(id)a6 meaningIdentifier:(id)a7 relevantAssetUUIDs:(id)a8 associatedPersonLocalIdentifiers:(id)a9;
-- (MOPhotoTrait)initWithIdentifier:(id)a3 name:(id)a4 labelType:(id)a5 holidayIdentifier:(id)a6 relevantAssetUUIDs:(id)a7;
-- (MOPhotoTrait)initWithIdentifier:(id)a3 name:(id)a4 relevantAssetUUIDs:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MOPhotoTrait)initWithCoder:(id)coder;
+- (MOPhotoTrait)initWithIdentifier:(id)identifier name:(id)name labelType:(id)type holidayIdentifier:(id)holidayIdentifier meaningIdentifier:(id)meaningIdentifier relevantAssetUUIDs:(id)ds associatedPersonLocalIdentifiers:(id)identifiers;
+- (MOPhotoTrait)initWithIdentifier:(id)identifier name:(id)name labelType:(id)type holidayIdentifier:(id)holidayIdentifier relevantAssetUUIDs:(id)ds;
+- (MOPhotoTrait)initWithIdentifier:(id)identifier name:(id)name relevantAssetUUIDs:(id)ds;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOPhotoTrait
 
-- (MOPhotoTrait)initWithIdentifier:(id)a3 name:(id)a4 relevantAssetUUIDs:(id)a5
+- (MOPhotoTrait)initWithIdentifier:(id)identifier name:(id)name relevantAssetUUIDs:(id)ds
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 copy];
-  v11 = [(MOPhotoTrait *)self initWithIdentifier:v9 name:v8 labelType:0 holidayIdentifier:0 meaningIdentifier:0 relevantAssetUUIDs:v10 associatedPersonLocalIdentifiers:0];
+  nameCopy = name;
+  identifierCopy = identifier;
+  v10 = [ds copy];
+  v11 = [(MOPhotoTrait *)self initWithIdentifier:identifierCopy name:nameCopy labelType:0 holidayIdentifier:0 meaningIdentifier:0 relevantAssetUUIDs:v10 associatedPersonLocalIdentifiers:0];
 
   return v11;
 }
 
-- (MOPhotoTrait)initWithIdentifier:(id)a3 name:(id)a4 labelType:(id)a5 holidayIdentifier:(id)a6 relevantAssetUUIDs:(id)a7
+- (MOPhotoTrait)initWithIdentifier:(id)identifier name:(id)name labelType:(id)type holidayIdentifier:(id)holidayIdentifier relevantAssetUUIDs:(id)ds
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [a7 copy];
-  v17 = [(MOPhotoTrait *)self initWithIdentifier:v15 name:v14 labelType:v13 holidayIdentifier:v12 meaningIdentifier:0 relevantAssetUUIDs:v16 associatedPersonLocalIdentifiers:0];
+  holidayIdentifierCopy = holidayIdentifier;
+  typeCopy = type;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v16 = [ds copy];
+  v17 = [(MOPhotoTrait *)self initWithIdentifier:identifierCopy name:nameCopy labelType:typeCopy holidayIdentifier:holidayIdentifierCopy meaningIdentifier:0 relevantAssetUUIDs:v16 associatedPersonLocalIdentifiers:0];
 
   return v17;
 }
 
-- (MOPhotoTrait)initWithIdentifier:(id)a3 name:(id)a4 labelType:(id)a5 holidayIdentifier:(id)a6 meaningIdentifier:(id)a7 relevantAssetUUIDs:(id)a8 associatedPersonLocalIdentifiers:(id)a9
+- (MOPhotoTrait)initWithIdentifier:(id)identifier name:(id)name labelType:(id)type holidayIdentifier:(id)holidayIdentifier meaningIdentifier:(id)meaningIdentifier relevantAssetUUIDs:(id)ds associatedPersonLocalIdentifiers:(id)identifiers
 {
-  v29 = a3;
-  v28 = a4;
-  v27 = a5;
-  v26 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  identifierCopy = identifier;
+  nameCopy = name;
+  typeCopy = type;
+  holidayIdentifierCopy = holidayIdentifier;
+  meaningIdentifierCopy = meaningIdentifier;
+  dsCopy = ds;
+  identifiersCopy = identifiers;
   v30.receiver = self;
   v30.super_class = MOPhotoTrait;
   v19 = [(MOPhotoTrait *)&v30 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_identifier, a3);
-    objc_storeStrong(&v20->_name, a4);
-    objc_storeStrong(&v20->_labelType, a5);
-    objc_storeStrong(&v20->_holidayIdentifier, a6);
-    objc_storeStrong(&v20->_meaningIdentifier, a7);
-    v21 = [v17 copy];
+    objc_storeStrong(&v19->_identifier, identifier);
+    objc_storeStrong(&v20->_name, name);
+    objc_storeStrong(&v20->_labelType, type);
+    objc_storeStrong(&v20->_holidayIdentifier, holidayIdentifier);
+    objc_storeStrong(&v20->_meaningIdentifier, meaningIdentifier);
+    v21 = [dsCopy copy];
     relevantAssetUUIDs = v20->_relevantAssetUUIDs;
     v20->_relevantAssetUUIDs = v21;
 
-    v23 = [v18 copy];
+    v23 = [identifiersCopy copy];
     associatedPersonLocalIdentifiers = v20->_associatedPersonLocalIdentifiers;
     v20->_associatedPersonLocalIdentifiers = v23;
   }
@@ -66,68 +66,68 @@
 
 - (id)description
 {
-  v3 = [(MOPhotoTrait *)self identifier];
-  v4 = [(MOPhotoTrait *)self name];
-  v5 = [(MOPhotoTrait *)self labelType];
-  v6 = [(MOPhotoTrait *)self holidayIdentifier];
-  v7 = [(MOPhotoTrait *)self meaningIdentifier];
-  v8 = [(MOPhotoTrait *)self relevantAssetUUIDs];
-  v9 = [(MOPhotoTrait *)self associatedPersonLocalIdentifiers];
-  v10 = [NSString stringWithFormat:@"<MOPhotoTrait localIdentifier, %@, name, %@, labelType, %@, holidayIdentifier, %@, meaningIdentifier, %@, relevantAssetUUIDs, %@, associatedPersonLocalIdentifiers, %@, >", v3, v4, v5, v6, v7, v8, v9];
+  identifier = [(MOPhotoTrait *)self identifier];
+  name = [(MOPhotoTrait *)self name];
+  labelType = [(MOPhotoTrait *)self labelType];
+  holidayIdentifier = [(MOPhotoTrait *)self holidayIdentifier];
+  meaningIdentifier = [(MOPhotoTrait *)self meaningIdentifier];
+  relevantAssetUUIDs = [(MOPhotoTrait *)self relevantAssetUUIDs];
+  associatedPersonLocalIdentifiers = [(MOPhotoTrait *)self associatedPersonLocalIdentifiers];
+  v10 = [NSString stringWithFormat:@"<MOPhotoTrait localIdentifier, %@, name, %@, labelType, %@, holidayIdentifier, %@, meaningIdentifier, %@, relevantAssetUUIDs, %@, associatedPersonLocalIdentifiers, %@, >", identifier, name, labelType, holidayIdentifier, meaningIdentifier, relevantAssetUUIDs, associatedPersonLocalIdentifiers];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_labelType forKey:@"labelType"];
-  [v5 encodeObject:self->_holidayIdentifier forKey:@"holidayIdentifier"];
-  [v5 encodeObject:self->_meaningIdentifier forKey:@"meaningIdentifier"];
-  [v5 encodeObject:self->_relevantAssetUUIDs forKey:@"relevantAssetUUIDs"];
-  [v5 encodeObject:self->_associatedPersonLocalIdentifiers forKey:@"associatedPersonLocalIdentifiers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_labelType forKey:@"labelType"];
+  [coderCopy encodeObject:self->_holidayIdentifier forKey:@"holidayIdentifier"];
+  [coderCopy encodeObject:self->_meaningIdentifier forKey:@"meaningIdentifier"];
+  [coderCopy encodeObject:self->_relevantAssetUUIDs forKey:@"relevantAssetUUIDs"];
+  [coderCopy encodeObject:self->_associatedPersonLocalIdentifiers forKey:@"associatedPersonLocalIdentifiers"];
 }
 
-- (MOPhotoTrait)initWithCoder:(id)a3
+- (MOPhotoTrait)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"labelType"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"holidayIdentifier"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"meaningIdentifier"];
+  coderCopy = coder;
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"labelType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"holidayIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"meaningIdentifier"];
   v8 = objc_opt_class();
   v9 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
-  v10 = [v3 decodeObjectOfClasses:v9 forKey:@"relevantAssetUUIDs"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"relevantAssetUUIDs"];
 
   v11 = objc_opt_class();
   v12 = [NSSet setWithObjects:v11, objc_opt_class(), 0];
-  v13 = [v3 decodeObjectOfClasses:v12 forKey:@"associatedPersonLocalIdentifiers"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"associatedPersonLocalIdentifiers"];
 
   v14 = [(MOPhotoTrait *)self initWithIdentifier:v16 name:v4 labelType:v5 holidayIdentifier:v6 meaningIdentifier:v7 relevantAssetUUIDs:v10 associatedPersonLocalIdentifiers:v13];
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15 = [MOPhotoTrait alloc];
-  v20 = [(MOPhotoTrait *)self identifier];
-  v4 = [v20 copy];
-  v19 = [(MOPhotoTrait *)self name];
-  v5 = [v19 copy];
-  v18 = [(MOPhotoTrait *)self labelType];
-  v6 = [v18 copy];
-  v17 = [(MOPhotoTrait *)self holidayIdentifier];
-  v7 = [v17 copy];
-  v8 = [(MOPhotoTrait *)self meaningIdentifier];
-  v9 = [v8 copy];
-  v10 = [(MOPhotoTrait *)self relevantAssetUUIDs];
-  v11 = [v10 copy];
-  v12 = [(MOPhotoTrait *)self associatedPersonLocalIdentifiers];
-  v13 = [v12 copy];
+  identifier = [(MOPhotoTrait *)self identifier];
+  v4 = [identifier copy];
+  name = [(MOPhotoTrait *)self name];
+  v5 = [name copy];
+  labelType = [(MOPhotoTrait *)self labelType];
+  v6 = [labelType copy];
+  holidayIdentifier = [(MOPhotoTrait *)self holidayIdentifier];
+  v7 = [holidayIdentifier copy];
+  meaningIdentifier = [(MOPhotoTrait *)self meaningIdentifier];
+  v9 = [meaningIdentifier copy];
+  relevantAssetUUIDs = [(MOPhotoTrait *)self relevantAssetUUIDs];
+  v11 = [relevantAssetUUIDs copy];
+  associatedPersonLocalIdentifiers = [(MOPhotoTrait *)self associatedPersonLocalIdentifiers];
+  v13 = [associatedPersonLocalIdentifiers copy];
   v16 = [(MOPhotoTrait *)v15 initWithIdentifier:v4 name:v5 labelType:v6 holidayIdentifier:v7 meaningIdentifier:v9 relevantAssetUUIDs:v11 associatedPersonLocalIdentifiers:v13];
 
   return v16;

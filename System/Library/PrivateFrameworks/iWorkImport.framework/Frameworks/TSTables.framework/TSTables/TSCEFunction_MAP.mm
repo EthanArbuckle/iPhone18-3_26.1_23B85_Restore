@@ -1,19 +1,19 @@
 @interface TSCEFunction_MAP
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_MAP
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = ((*(a5 + 1) - *a5) >> 3) - 1;
-  v9 = *(*a5 + 8 * v8);
+  v8 = ((*(arguments + 1) - *arguments) >> 3) - 1;
+  v9 = *(*arguments + 8 * v8);
   v125 = 0;
-  v106 = objc_msgSend_asFunctorValue_functionSpec_argumentIndex_outError_(v9, v10, a3, a4, v8, &v125);
+  v106 = objc_msgSend_asFunctorValue_functionSpec_argumentIndex_outError_(v9, v10, context, spec, v8, &v125);
   v15 = v125;
   if (v15)
   {
-    v16 = objc_msgSend_raiseErrorOrConvert_(a3, v11, v15, v13, v14);
+    v16 = objc_msgSend_raiseErrorOrConvert_(context, v11, v15, v13, v14);
 LABEL_30:
     v94 = v16;
     goto LABEL_31;
@@ -22,10 +22,10 @@ LABEL_30:
   v109 = objc_msgSend_functor(v106, v11, v12, v13, v14);
   if (v8 != v109->_numArgs)
   {
-    v95 = objc_msgSend_functionName(a4, v17, v18, v19, v20);
+    v95 = objc_msgSend_functionName(spec, v17, v18, v19, v20);
     v15 = objc_msgSend_wrongArityForLambdaError_providedArity_expectedArity_(TSCEError, v96, v95, v109->_numArgs + 1, (v8 + 1));
 
-    v16 = objc_msgSend_raiseErrorOrConvert_(a3, v97, v15, v98, v99);
+    v16 = objc_msgSend_raiseErrorOrConvert_(context, v97, v15, v98, v99);
     goto LABEL_30;
   }
 
@@ -39,7 +39,7 @@ LABEL_30:
     v25 = 0;
     while (1)
     {
-      if (objc_msgSend_isTokenOrEmptyArg(*(*a5 + 8 * v25), v21, v22, v23, v24))
+      if (objc_msgSend_isTokenOrEmptyArg(*(*arguments + 8 * v25), v21, v22, v23, v24))
       {
         v101 = objc_msgSend_requiredArgumentMissingError(TSCEError, v26, v27, v28, v29);
         v94 = objc_msgSend_errorValue_(TSCEErrorValue, v102, v101, v103, v104);
@@ -47,9 +47,9 @@ LABEL_30:
         goto LABEL_35;
       }
 
-      v30 = *(*a5 + 8 * v25);
+      v30 = *(*arguments + 8 * v25);
       v120 = 0;
-      v31 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v30, v26, a3, a4, v25, 0, &v120);
+      v31 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v30, v26, context, spec, v25, 0, &v120);
       v15 = v120;
       v114[0] = v31;
       if (v15)
@@ -76,7 +76,7 @@ LABEL_30:
       }
     }
 
-    v94 = objc_msgSend_raiseErrorOrConvert_(a3, v32, v15, v34, v35);
+    v94 = objc_msgSend_raiseErrorOrConvert_(context, v32, v15, v34, v35);
   }
 
   else
@@ -84,8 +84,8 @@ LABEL_30:
 LABEL_13:
     v105 = v9;
     v108 = objc_opt_new();
-    v114[0] = a3;
-    v114[1] = a4;
+    v114[0] = context;
+    v114[1] = spec;
     v115 = 0;
     v116[0] = 0;
     *(v116 + 7) = 0;
@@ -105,7 +105,7 @@ LABEL_13:
         v44 = objc_msgSend_dimensions(v39, v40, v41, v42, v43);
         if (v113.row >= HIDWORD(v44) || v113.column >= v44)
         {
-          v50 = objc_msgSend_functionName(a4, v45, v46, v47, v48);
+          v50 = objc_msgSend_functionName(spec, v45, v46, v47, v48);
           v54 = objc_msgSend_outOfArrayBoundsError_(TSCEError, v51, v50, v52, v53);
           v111 = objc_msgSend_errorValue_(TSCEErrorValue, v55, v54, v56, v57);
           sub_2210ED5B8(v112, &v111);
@@ -125,14 +125,14 @@ LABEL_13:
       v67 = v62;
       if (v62 && objc_msgSend_errorType(v62, v63, v64, v65, v66) == 168)
       {
-        v71 = objc_msgSend_functionName(a4, v63, v68, v69, v70);
+        v71 = objc_msgSend_functionName(spec, v63, v68, v69, v70);
         v75 = objc_msgSend_evaluationRecursingTooDeepError_(TSCEError, v72, v71, v73, v74);
         v79 = objc_msgSend_errorValue_(TSCEErrorValue, v76, v75, v77, v78);
 
         v58 = v79;
       }
 
-      objc_msgSend_collectAndApplyWarnings_functionSpec_arguments_result_(a1, v63, v107, a4, v112, v58, v105);
+      objc_msgSend_collectAndApplyWarnings_functionSpec_arguments_result_(self, v63, v107, spec, v112, v58, v105);
       objc_msgSend_clearAllWarnings(v107, v80, v81, v82, v83);
       objc_msgSend_setValue_atCoord_(v108, v84, v58, &v113, v85);
       v113 = TSCEGridDimensions::nextCoordRowMajorOrder(&v121, &v113);

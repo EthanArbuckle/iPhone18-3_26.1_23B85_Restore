@@ -1,62 +1,62 @@
 @interface REMTemplatesDataView
-- (REMTemplatesDataView)initWithStore:(id)a3;
-- (id)fetchTemplateWithObjectID:(id)a3 error:(id *)a4;
-- (id)fetchTemplatesInAccount:(id)a3 error:(id *)a4;
-- (id)fetchTemplatesWithObjectIDs:(id)a3 error:(id *)a4;
-- (id)templatesFromTemplateStorages:(id)a3 store:(id)a4;
+- (REMTemplatesDataView)initWithStore:(id)store;
+- (id)fetchTemplateWithObjectID:(id)d error:(id *)error;
+- (id)fetchTemplatesInAccount:(id)account error:(id *)error;
+- (id)fetchTemplatesWithObjectIDs:(id)ds error:(id *)error;
+- (id)templatesFromTemplateStorages:(id)storages store:(id)store;
 @end
 
 @implementation REMTemplatesDataView
 
-- (REMTemplatesDataView)initWithStore:(id)a3
+- (REMTemplatesDataView)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = REMTemplatesDataView;
   v6 = [(REMTemplatesDataView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (id)fetchTemplatesInAccount:(id)a3 error:(id *)a4
+- (id)fetchTemplatesInAccount:(id)account error:(id *)error
 {
-  v6 = a3;
+  accountCopy = account;
   v7 = [REMTemplatesDataViewInvocation_fetchTemplatesInAccount alloc];
-  v8 = [v6 objectID];
+  objectID = [accountCopy objectID];
 
-  v9 = [(REMTemplatesDataViewInvocation_fetchTemplatesInAccount *)v7 initWithParentAccountObjectID:v8];
-  v10 = [(REMTemplatesDataView *)self store];
-  v11 = [v10 resultFromPerformingInvocation:v9 error:a4];
+  v9 = [(REMTemplatesDataViewInvocation_fetchTemplatesInAccount *)v7 initWithParentAccountObjectID:objectID];
+  store = [(REMTemplatesDataView *)self store];
+  v11 = [store resultFromPerformingInvocation:v9 error:error];
 
   v12 = objc_opt_class();
   v13 = REMDynamicCast(v12, v11);
-  v14 = [v13 templateStorages];
-  v15 = [(REMTemplatesDataView *)self store];
-  v16 = [(REMTemplatesDataView *)self templatesFromTemplateStorages:v14 store:v15];
+  templateStorages = [v13 templateStorages];
+  store2 = [(REMTemplatesDataView *)self store];
+  v16 = [(REMTemplatesDataView *)self templatesFromTemplateStorages:templateStorages store:store2];
 
   return v16;
 }
 
-- (id)fetchTemplatesWithObjectIDs:(id)a3 error:(id *)a4
+- (id)fetchTemplatesWithObjectIDs:(id)ds error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v7 = [[REMTemplatesDataViewInvocation_fetchByObjectIDs alloc] initWithObjectIDs:v6];
-    v8 = [(REMTemplatesDataView *)self store];
-    v9 = [v8 resultFromPerformingInvocation:v7 error:a4];
+    v7 = [[REMTemplatesDataViewInvocation_fetchByObjectIDs alloc] initWithObjectIDs:dsCopy];
+    store = [(REMTemplatesDataView *)self store];
+    v9 = [store resultFromPerformingInvocation:v7 error:error];
 
     v10 = objc_opt_class();
     v11 = REMDynamicCast(v10, v9);
-    v12 = [v11 templateStorages];
-    v13 = [(REMTemplatesDataView *)self store];
-    v14 = [(REMTemplatesDataView *)self templatesFromTemplateStorages:v12 store:v13];
+    templateStorages = [v11 templateStorages];
+    store2 = [(REMTemplatesDataView *)self store];
+    v14 = [(REMTemplatesDataView *)self templatesFromTemplateStorages:templateStorages store:store2];
 
     if (v14)
     {
@@ -83,8 +83,8 @@
             }
 
             v21 = *(*(&v27 + 1) + 8 * i);
-            v22 = [v21 objectID];
-            [v15 setObject:v21 forKeyedSubscript:v22];
+            objectID = [v21 objectID];
+            [v15 setObject:v21 forKeyedSubscript:objectID];
           }
 
           v18 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -113,22 +113,22 @@
   return v15;
 }
 
-- (id)fetchTemplateWithObjectID:(id)a3 error:(id *)a4
+- (id)fetchTemplateWithObjectID:(id)d error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   v7 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v15[0] = v6;
+  v15[0] = dCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   v9 = [v7 initWithArray:v8];
-  v10 = [(REMTemplatesDataView *)self fetchTemplatesWithObjectIDs:v9 error:a4];
+  v10 = [(REMTemplatesDataView *)self fetchTemplatesWithObjectIDs:v9 error:error];
 
   if (!v10)
   {
     goto LABEL_7;
   }
 
-  v11 = [v10 objectForKeyedSubscript:v6];
+  v11 = [v10 objectForKeyedSubscript:dCopy];
   if (v11)
   {
     goto LABEL_8;
@@ -137,13 +137,13 @@
   v12 = +[REMLogStore read];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    [REMTemplatesDataView fetchTemplateWithObjectID:v6 error:v12];
+    [REMTemplatesDataView fetchTemplateWithObjectID:dCopy error:v12];
   }
 
-  if (a4)
+  if (error)
   {
-    [REMError noSuchObjectErrorWithObjectID:v6];
-    *a4 = v11 = 0;
+    [REMError noSuchObjectErrorWithObjectID:dCopy];
+    *error = v11 = 0;
   }
 
   else
@@ -159,17 +159,17 @@ LABEL_8:
   return v11;
 }
 
-- (id)templatesFromTemplateStorages:(id)a3 store:(id)a4
+- (id)templatesFromTemplateStorages:(id)storages store:(id)store
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  storagesCopy = storages;
+  storeCopy = store;
+  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(storagesCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = storagesCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -186,7 +186,7 @@ LABEL_8:
 
         v13 = *(*(&v18 + 1) + 8 * i);
         v14 = [REMTemplate alloc];
-        v15 = [(REMTemplate *)v14 initWithStore:v6 storage:v13, v18];
+        v15 = [(REMTemplate *)v14 initWithStore:storeCopy storage:v13, v18];
         [v7 addObject:v15];
       }
 

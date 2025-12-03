@@ -1,31 +1,31 @@
 @interface NoDetectionLabel
-- (_TtC16MagnifierSupport16NoDetectionLabel)initWithFrame:(CGRect)a3;
-- (void)drawTextInRect:(CGRect)a3;
+- (_TtC16MagnifierSupport16NoDetectionLabel)initWithFrame:(CGRect)frame;
+- (void)drawTextInRect:(CGRect)rect;
 @end
 
 @implementation NoDetectionLabel
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   ObjectType = swift_getObjectType();
-  v9 = self;
-  [(NoDetectionLabel *)v9 bounds];
-  v11 = UIEdgeInsetsInsetRect_1(x, y, width, height, v10 - *(&v9->super.super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport16NoDetectionLabel_kBottomInset), 20.0);
-  v12.receiver = v9;
+  selfCopy = self;
+  [(NoDetectionLabel *)selfCopy bounds];
+  v11 = UIEdgeInsetsInsetRect_1(x, y, width, height, v10 - *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport16NoDetectionLabel_kBottomInset), 20.0);
+  v12.receiver = selfCopy;
   v12.super_class = ObjectType;
   [(NoDetectionLabel *)&v12 drawTextInRect:v11];
 }
 
-- (_TtC16MagnifierSupport16NoDetectionLabel)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport16NoDetectionLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   if (qword_27F8F4670 != -1)
   {

@@ -6,19 +6,19 @@
 
 - (int64_t)resultCallbackCode
 {
-  v2 = [(SAExecuteOnRemoteResponse *)self result];
-  v3 = v2;
-  if (v2)
+  result = [(SAExecuteOnRemoteResponse *)self result];
+  v3 = result;
+  if (result)
   {
-    v4 = [v2 resultCallbackCode];
+    resultCallbackCode = [result resultCallbackCode];
   }
 
   else
   {
-    v4 = -1;
+    resultCallbackCode = -1;
   }
 
-  return v4;
+  return resultCallbackCode;
 }
 
 @end

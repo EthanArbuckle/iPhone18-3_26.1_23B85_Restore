@@ -1,17 +1,17 @@
 @interface HUQuickControlCollectionView
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)touchesShouldCancelInContentView:(id)a3;
-- (HUQuickControlCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)touchesShouldCancelInContentView:(id)view;
+- (HUQuickControlCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 @end
 
 @implementation HUQuickControlCollectionView
 
-- (HUQuickControlCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (HUQuickControlCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   v10.receiver = self;
   v10.super_class = HUQuickControlCollectionView;
-  v4 = [(HUQuickControlCollectionView *)&v10 initWithFrame:a4 collectionViewLayout:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(HUQuickControlCollectionView *)&v10 initWithFrame:layout collectionViewLayout:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
     v5 = objc_alloc_init(HUScrollGestureRecognitionResolver);
@@ -20,8 +20,8 @@
 
     [(HUScrollGestureRecognitionResolver *)v4->_scrollGestureResolver setConflictingGestureActivationDelay:0.0];
     v7 = v4->_scrollGestureResolver;
-    v8 = [(HUQuickControlCollectionView *)v4 panGestureRecognizer];
-    [(HUScrollGestureRecognitionResolver *)v7 addPanGestureRecognizer:v8];
+    panGestureRecognizer = [(HUQuickControlCollectionView *)v4 panGestureRecognizer];
+    [(HUScrollGestureRecognitionResolver *)v7 addPanGestureRecognizer:panGestureRecognizer];
 
     [(HUQuickControlCollectionView *)v4 setDirectionalLockEnabled:1];
   }
@@ -29,10 +29,10 @@
   return v4;
 }
 
-- (BOOL)touchesShouldCancelInContentView:(id)a3
+- (BOOL)touchesShouldCancelInContentView:(id)view
 {
-  v4 = a3;
-  if ([v4 isDescendantOfView:self])
+  viewCopy = view;
+  if ([viewCopy isDescendantOfView:self])
   {
     v5 = 0;
   }
@@ -41,27 +41,27 @@
   {
     v7.receiver = self;
     v7.super_class = HUQuickControlCollectionView;
-    v5 = [(HUQuickControlCollectionView *)&v7 touchesShouldCancelInContentView:v4];
+    v5 = [(HUQuickControlCollectionView *)&v7 touchesShouldCancelInContentView:viewCopy];
   }
 
   return v5;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HUQuickControlCollectionView *)self panGestureRecognizer];
-  v10 = v9;
-  if (v9 == v7)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  panGestureRecognizer = [(HUQuickControlCollectionView *)self panGestureRecognizer];
+  v10 = panGestureRecognizer;
+  if (panGestureRecognizer == recognizerCopy)
   {
-    v11 = [v8 view];
-    v12 = [v11 isDescendantOfView:self];
+    view = [gestureRecognizerCopy view];
+    v12 = [view isDescendantOfView:self];
 
     if (v12)
     {
-      v13 = [(HUQuickControlCollectionView *)self scrollGestureResolver];
-      [v13 addConflictingGestureRecognizer:v8];
+      scrollGestureResolver = [(HUQuickControlCollectionView *)self scrollGestureResolver];
+      [scrollGestureResolver addConflictingGestureRecognizer:gestureRecognizerCopy];
 
       v14 = 1;
       goto LABEL_8;
@@ -76,7 +76,7 @@
   {
     v16.receiver = self;
     v16.super_class = HUQuickControlCollectionView;
-    v14 = [(HUQuickControlCollectionView *)&v16 gestureRecognizer:v7 shouldRecognizeSimultaneouslyWithGestureRecognizer:v8];
+    v14 = [(HUQuickControlCollectionView *)&v16 gestureRecognizer:recognizerCopy shouldRecognizeSimultaneouslyWithGestureRecognizer:gestureRecognizerCopy];
   }
 
   else
@@ -89,28 +89,28 @@ LABEL_8:
   return v14;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HUQuickControlCollectionView *)self panGestureRecognizer];
-  if (v9 != v7)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  panGestureRecognizer = [(HUQuickControlCollectionView *)self panGestureRecognizer];
+  if (panGestureRecognizer != recognizerCopy)
   {
     goto LABEL_6;
   }
 
-  v10 = [v8 view];
-  if (([v10 isDescendantOfView:self] & 1) == 0)
+  view = [gestureRecognizerCopy view];
+  if (([view isDescendantOfView:self] & 1) == 0)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v11 = [v8 view];
-  v12 = [v11 hu_isDescendantOfPickerView];
+  view2 = [gestureRecognizerCopy view];
+  hu_isDescendantOfPickerView = [view2 hu_isDescendantOfPickerView];
 
-  if (v12)
+  if (hu_isDescendantOfPickerView)
   {
     v13 = 1;
     goto LABEL_10;
@@ -121,7 +121,7 @@ LABEL_7:
   {
     v15.receiver = self;
     v15.super_class = HUQuickControlCollectionView;
-    v13 = [(HUQuickControlCollectionView *)&v15 gestureRecognizer:v7 shouldRequireFailureOfGestureRecognizer:v8];
+    v13 = [(HUQuickControlCollectionView *)&v15 gestureRecognizer:recognizerCopy shouldRequireFailureOfGestureRecognizer:gestureRecognizerCopy];
   }
 
   else

@@ -1,30 +1,30 @@
 @interface CLSHandoutEventAttachmentDetail
-- (BOOL)validateObject:(id *)a3;
+- (BOOL)validateObject:(id *)object;
 - (CLSHandoutEventAttachmentDetail)init;
-- (CLSHandoutEventAttachmentDetail)initWithAttachmentID:(id)a3 handoutAttachmentType:(int)a4 contextType:(int64_t)a5 appIdentifier:(id)a6;
-- (CLSHandoutEventAttachmentDetail)initWithCoder:(id)a3;
+- (CLSHandoutEventAttachmentDetail)initWithAttachmentID:(id)d handoutAttachmentType:(int)type contextType:(int64_t)contextType appIdentifier:(id)identifier;
+- (CLSHandoutEventAttachmentDetail)initWithCoder:(id)coder;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeWithObject:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeWithObject:(id)object;
 @end
 
 @implementation CLSHandoutEventAttachmentDetail
 
-- (CLSHandoutEventAttachmentDetail)initWithAttachmentID:(id)a3 handoutAttachmentType:(int)a4 contextType:(int64_t)a5 appIdentifier:(id)a6
+- (CLSHandoutEventAttachmentDetail)initWithAttachmentID:(id)d handoutAttachmentType:(int)type contextType:(int64_t)contextType appIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a6;
+  dCopy = d;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = CLSHandoutEventAttachmentDetail;
-  v13 = [(CLSObject *)&v17 _init];
-  v14 = v13;
-  if (v13)
+  _init = [(CLSObject *)&v17 _init];
+  v14 = _init;
+  if (_init)
   {
-    objc_storeStrong(v13 + 14, a3);
-    v14->_handoutAttachmentType = a4;
-    v14->_contextType = a5;
-    objc_msgSend_setAppIdentifier_(v14, v15, v12);
+    objc_storeStrong(_init + 14, d);
+    v14->_handoutAttachmentType = type;
+    v14->_contextType = contextType;
+    objc_msgSend_setAppIdentifier_(v14, v15, identifierCopy);
   }
 
   return v14;
@@ -44,7 +44,7 @@
   objc_exception_throw(v11);
 }
 
-- (BOOL)validateObject:(id *)a3
+- (BOOL)validateObject:(id *)object
 {
   v19.receiver = self;
   v19.super_class = CLSHandoutEventAttachmentDetail;
@@ -65,7 +65,7 @@
       v14 = objc_msgSend_localizedStringForKey_value_table_(v12, v13, @"ERROR_DESCRIPTION_HANDOUT_EVENT_DETAIL_NO_ATTACHMENT_ID", &stru_284A08768, @"ClassKit");
       v16 = objc_msgSend_stringWithFormat_(v8, v15, v14);
 
-      objc_msgSend_cls_assignError_code_errorObject_description_(MEMORY[0x277CCA9B8], v17, a3, 2, self, v16);
+      objc_msgSend_cls_assignError_code_errorObject_description_(MEMORY[0x277CCA9B8], v17, object, 2, self, v16);
       LOBYTE(v5) = 0;
     }
   }
@@ -73,59 +73,59 @@
   return v5;
 }
 
-- (CLSHandoutEventAttachmentDetail)initWithCoder:(id)a3
+- (CLSHandoutEventAttachmentDetail)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CLSHandoutEventAttachmentDetail;
-  v5 = [(CLSObject *)&v13 initWithCoder:v4];
+  v5 = [(CLSObject *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"attachmentID");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"attachmentID");
     attachmentID = v5->_attachmentID;
     v5->_attachmentID = v8;
 
-    v5->_handoutAttachmentType = objc_msgSend_decodeIntegerForKey_(v4, v10, @"handoutAttachmentType");
-    v5->_contextType = objc_msgSend_decodeIntegerForKey_(v4, v11, @"contextType");
+    v5->_handoutAttachmentType = objc_msgSend_decodeIntegerForKey_(coderCopy, v10, @"handoutAttachmentType");
+    v5->_contextType = objc_msgSend_decodeIntegerForKey_(coderCopy, v11, @"contextType");
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CLSHandoutEventAttachmentDetail;
-  v4 = a3;
-  [(CLSObject *)&v8 encodeWithCoder:v4];
-  objc_msgSend_encodeObject_forKey_(v4, v5, self->_attachmentID, @"attachmentID", v8.receiver, v8.super_class);
-  objc_msgSend_encodeInteger_forKey_(v4, v6, self->_handoutAttachmentType, @"handoutAttachmentType");
-  objc_msgSend_encodeInteger_forKey_(v4, v7, self->_contextType, @"contextType");
+  coderCopy = coder;
+  [(CLSObject *)&v8 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, self->_attachmentID, @"attachmentID", v8.receiver, v8.super_class);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v6, self->_handoutAttachmentType, @"handoutAttachmentType");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v7, self->_contextType, @"contextType");
 }
 
 - (id)dictionaryRepresentation
 {
   v11.receiver = self;
   v11.super_class = CLSHandoutEventAttachmentDetail;
-  v3 = [(CLSObject *)&v11 dictionaryRepresentation];
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v4, self->_attachmentID, @"attachmentID");
+  dictionaryRepresentation = [(CLSObject *)&v11 dictionaryRepresentation];
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v4, self->_attachmentID, @"attachmentID");
   v6 = NSStringFromHandoutAttachmentType(self->_handoutAttachmentType, v5);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v7, v6, @"handoutAttachmentType");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v7, v6, @"handoutAttachmentType");
 
   v8 = DefaultNameFromContextType(self->_contextType);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v9, v8, @"contextType");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v9, v8, @"contextType");
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)mergeWithObject:(id)a3
+- (void)mergeWithObject:(id)object
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v21.receiver = self;
   v21.super_class = CLSHandoutEventAttachmentDetail;
-  [(CLSObject *)&v21 mergeWithObject:v4];
+  [(CLSObject *)&v21 mergeWithObject:objectCopy];
   v23[0] = @"attachmentID";
   v23[1] = @"handoutAttachmentType";
   v23[2] = @"contextType";
@@ -149,7 +149,7 @@
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = objc_msgSend_valueForKey_(v4, v9, v13, v17);
+        v14 = objc_msgSend_valueForKey_(objectCopy, v9, v13, v17);
         objc_msgSend_setValue_forKey_(self, v15, v14, v13);
       }
 

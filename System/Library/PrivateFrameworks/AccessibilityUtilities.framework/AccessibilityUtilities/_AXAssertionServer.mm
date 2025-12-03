@@ -1,9 +1,9 @@
 @interface _AXAssertionServer
 - (_AXAssertionServer)init;
-- (id)clientsHoldingAssertionOfType:(id)a3;
+- (id)clientsHoldingAssertionOfType:(id)type;
 - (id)description;
-- (void)addHeldAssertionOfType:(id)a3 byClient:(id)a4;
-- (void)removeHeldAssertionOfType:(id)a3 byClient:(id)a4;
+- (void)addHeldAssertionOfType:(id)type byClient:(id)client;
+- (void)removeHeldAssertionOfType:(id)type byClient:(id)client;
 @end
 
 @implementation _AXAssertionServer
@@ -15,8 +15,8 @@
   v2 = [(_AXAssertionServer *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
-    [(_AXAssertionServer *)v2 setHeldAssertionMap:v3];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(_AXAssertionServer *)v2 setHeldAssertionMap:dictionary];
   }
 
   return v2;
@@ -25,96 +25,96 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"_AXAssertionServer:<%p> Held Assertions:\n", self];
-  v4 = [(_AXAssertionServer *)self heldAssertionMap];
+  heldAssertionMap = [(_AXAssertionServer *)self heldAssertionMap];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33___AXAssertionServer_description__block_invoke;
   v7[3] = &unk_1E71EAE80;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [heldAssertionMap enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
 
-- (void)addHeldAssertionOfType:(id)a3 byClient:(id)a4
+- (void)addHeldAssertionOfType:(id)type byClient:(id)client
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [(_AXAssertionServer *)self heldAssertionMap];
-  v8 = [v7 objectForKey:v18];
+  typeCopy = type;
+  clientCopy = client;
+  heldAssertionMap = [(_AXAssertionServer *)self heldAssertionMap];
+  v8 = [heldAssertionMap objectForKey:typeCopy];
 
   v9 = v8;
   if (!v8)
   {
     v9 = [MEMORY[0x1E695DFA8] set];
-    v10 = [(_AXAssertionServer *)self heldAssertionMap];
-    [v10 setObject:v9 forKey:v18];
+    heldAssertionMap2 = [(_AXAssertionServer *)self heldAssertionMap];
+    [heldAssertionMap2 setObject:v9 forKey:typeCopy];
   }
 
-  if ([v9 containsObject:v6])
+  if ([v9 containsObject:clientCopy])
   {
-    v16 = v18;
+    v16 = typeCopy;
     v17 = v9;
     v14 = @"Trying to add assertion holder ID:(%@) with type:(%@), but that ID is already in the holders list: (%@). Something is out of wack";
-    v15 = v6;
+    v15 = clientCopy;
     LOBYTE(v13) = 1;
     _AXLogWithFacility();
   }
 
-  [v9 addObject:{v6, v13, v14, v15, v16, v17}];
+  [v9 addObject:{clientCopy, v13, v14, v15, v16, v17}];
   if (!v8)
   {
-    v11 = [(_AXAssertionServer *)self assertionWasAcquiredHandler];
+    assertionWasAcquiredHandler = [(_AXAssertionServer *)self assertionWasAcquiredHandler];
 
-    if (v11)
+    if (assertionWasAcquiredHandler)
     {
-      v12 = [(_AXAssertionServer *)self assertionWasAcquiredHandler];
-      (v12)[2](v12, v18);
+      assertionWasAcquiredHandler2 = [(_AXAssertionServer *)self assertionWasAcquiredHandler];
+      (assertionWasAcquiredHandler2)[2](assertionWasAcquiredHandler2, typeCopy);
     }
   }
 }
 
-- (void)removeHeldAssertionOfType:(id)a3 byClient:(id)a4
+- (void)removeHeldAssertionOfType:(id)type byClient:(id)client
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(_AXAssertionServer *)self heldAssertionMap];
-  v8 = [v7 objectForKey:v11];
+  typeCopy = type;
+  clientCopy = client;
+  heldAssertionMap = [(_AXAssertionServer *)self heldAssertionMap];
+  v8 = [heldAssertionMap objectForKey:typeCopy];
 
-  if (([v8 containsObject:v6] & 1) == 0)
+  if (([v8 containsObject:clientCopy] & 1) == 0)
   {
     _AXLogWithFacility();
     goto LABEL_6;
   }
 
-  [v8 removeObject:v6];
+  [v8 removeObject:clientCopy];
 
   if (![v8 count])
   {
-    v9 = [(_AXAssertionServer *)self heldAssertionMap];
-    [v9 removeObjectForKey:v11];
+    heldAssertionMap2 = [(_AXAssertionServer *)self heldAssertionMap];
+    [heldAssertionMap2 removeObjectForKey:typeCopy];
 
-    v10 = [(_AXAssertionServer *)self assertionWasReleasedHandler];
+    assertionWasReleasedHandler = [(_AXAssertionServer *)self assertionWasReleasedHandler];
 
-    if (v10)
+    if (assertionWasReleasedHandler)
     {
-      v6 = [(_AXAssertionServer *)self assertionWasReleasedHandler];
-      (*(v6 + 2))(v6, v11);
+      clientCopy = [(_AXAssertionServer *)self assertionWasReleasedHandler];
+      (*(clientCopy + 2))(clientCopy, typeCopy);
 LABEL_6:
     }
   }
 }
 
-- (id)clientsHoldingAssertionOfType:(id)a3
+- (id)clientsHoldingAssertionOfType:(id)type
 {
-  v4 = a3;
-  v5 = [(_AXAssertionServer *)self heldAssertionMap];
-  v6 = [v5 objectForKey:v4];
+  typeCopy = type;
+  heldAssertionMap = [(_AXAssertionServer *)self heldAssertionMap];
+  v6 = [heldAssertionMap objectForKey:typeCopy];
 
-  v7 = [v6 allObjects];
+  allObjects = [v6 allObjects];
 
-  return v7;
+  return allObjects;
 }
 
 @end

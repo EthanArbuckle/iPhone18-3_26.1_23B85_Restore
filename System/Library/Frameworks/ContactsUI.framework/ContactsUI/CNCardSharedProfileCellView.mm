@@ -3,7 +3,7 @@
 - (BOOL)shouldShowMenu;
 - (CNCardSharedProfileCellView)init;
 - (CNCardSharedProfileCellViewDelegate)delegate;
-- (id)avatarImageForActionType:(unint64_t)a3;
+- (id)avatarImageForActionType:(unint64_t)type;
 - (id)contactDisplayName;
 - (id)customMenu;
 - (id)menuActions;
@@ -13,13 +13,13 @@
 - (id)sharedMenuTitle;
 - (id)updateAction;
 - (int64_t)sharedPhotoDisplayPreference;
-- (void)avatarCacheDidUpdateForIdentifiers:(id)a3;
-- (void)invalidateAvatarCacheEntriesForContact:(id)a3;
+- (void)avatarCacheDidUpdateForIdentifiers:(id)identifiers;
+- (void)invalidateAvatarCacheEntriesForContact:(id)contact;
 - (void)performFallbackAction;
-- (void)setAllowsEditing:(BOOL)a3;
-- (void)setLabelTextAttributes:(id)a3;
-- (void)setPropertyItem:(id)a3;
-- (void)setSharedProfileStateOracle:(id)a3;
+- (void)setAllowsEditing:(BOOL)editing;
+- (void)setLabelTextAttributes:(id)attributes;
+- (void)setPropertyItem:(id)item;
+- (void)setSharedProfileStateOracle:(id)oracle;
 - (void)setUpAvatarView;
 - (void)setUpChevron;
 - (void)setUpChevronAndMenuIfNeeded;
@@ -41,15 +41,15 @@
   return WeakRetained;
 }
 
-- (void)avatarCacheDidUpdateForIdentifiers:(id)a3
+- (void)avatarCacheDidUpdateForIdentifiers:(id)identifiers
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = [(CNCardSharedProfileCellView *)self actionToPerformUponCacheInvalidation];
-  if (v4 == 1)
+  actionToPerformUponCacheInvalidation = [(CNCardSharedProfileCellView *)self actionToPerformUponCacheInvalidation];
+  if (actionToPerformUponCacheInvalidation == 1)
   {
-    v12 = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
+    sharedProfileStateOracle = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
     v19 = 0;
-    v6 = [v12 updateContactAndNicknamesForActionType:1 error:&v19];
+    v6 = [sharedProfileStateOracle updateContactAndNicknamesForActionType:1 error:&v19];
     v7 = v19;
 
     if (v6)
@@ -75,11 +75,11 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v4 == 3)
+  if (actionToPerformUponCacheInvalidation == 3)
   {
-    v11 = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
+    sharedProfileStateOracle2 = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
     v17 = 0;
-    v6 = [v11 updateContactAndNicknamesForActionType:3 error:&v17];
+    v6 = [sharedProfileStateOracle2 updateContactAndNicknamesForActionType:3 error:&v17];
     v7 = v17;
 
     if (v6)
@@ -111,16 +111,16 @@ LABEL_20:
     goto LABEL_17;
   }
 
-  if (v4 != 2)
+  if (actionToPerformUponCacheInvalidation != 2)
   {
 LABEL_13:
     [(CNCardSharedProfileCellView *)self setActionToPerformUponCacheInvalidation:0, v15, v16];
     return;
   }
 
-  v5 = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
+  sharedProfileStateOracle3 = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
   v21 = 0;
-  v6 = [v5 updateContactAndNicknamesForActionType:2 error:&v21];
+  v6 = [sharedProfileStateOracle3 updateContactAndNicknamesForActionType:2 error:&v21];
   v7 = v21;
 
   if (v6)
@@ -161,17 +161,17 @@ void __66__CNCardSharedProfileCellView_avatarCacheDidUpdateForIdentifiers___bloc
   [v1 viewDidSelectDisplayPreference:1];
 }
 
-- (void)invalidateAvatarCacheEntriesForContact:(id)a3
+- (void)invalidateAvatarCacheEntriesForContact:(id)contact
 {
-  v3 = a3;
-  if (v3)
+  contactCopy = contact;
+  if (contactCopy)
   {
     v4 = +[CNUIContactsEnvironment currentEnvironment];
-    v5 = [v4 cachingLikenessRenderer];
+    cachingLikenessRenderer = [v4 cachingLikenessRenderer];
     v6 = &unk_1F0E28E18;
-    if ([v5 conformsToProtocol:v6])
+    if ([cachingLikenessRenderer conformsToProtocol:v6])
     {
-      v7 = v5;
+      v7 = cachingLikenessRenderer;
     }
 
     else
@@ -189,7 +189,7 @@ void __66__CNCardSharedProfileCellView_avatarCacheDidUpdateForIdentifiers___bloc
       v10[2] = __70__CNCardSharedProfileCellView_invalidateAvatarCacheEntriesForContact___block_invoke;
       v10[3] = &unk_1E74E77C0;
       v11 = v8;
-      v12 = v3;
+      v12 = contactCopy;
       dispatch_async(v9, v10);
     }
   }
@@ -205,44 +205,44 @@ void __70__CNCardSharedProfileCellView_invalidateAvatarCacheEntriesForContact___
   [v1 updateContactsWithIdentifiers:v3];
 }
 
-- (id)avatarImageForActionType:(unint64_t)a3
+- (id)avatarImageForActionType:(unint64_t)type
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v5 = [(CNCardSharedProfileCellView *)self avatarImageRenderer];
+  avatarImageRenderer = [(CNCardSharedProfileCellView *)self avatarImageRenderer];
 
-  if (!v5)
+  if (!avatarImageRenderer)
   {
     v6 = [CNAvatarImageRenderer alloc];
     v7 = +[CNAvatarImageRendererSettings defaultSettings];
     v8 = [(CNAvatarImageRenderer *)v6 initWithSettings:v7];
     [(CNCardSharedProfileCellView *)self setAvatarImageRenderer:v8];
 
-    v9 = [(CNCardSharedProfileCellView *)self traitCollection];
-    v10 = [v9 layoutDirection] == 1;
+    traitCollection = [(CNCardSharedProfileCellView *)self traitCollection];
+    v10 = [traitCollection layoutDirection] == 1;
 
-    v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v11 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v13 = [CNAvatarImageRenderingScope scopeWithPointSize:v10 scale:0 rightToLeft:20.0 style:20.0, v12];
     [(CNCardSharedProfileCellView *)self setRenderingScope:v13];
   }
 
-  v14 = [(CNCardSharedProfileCellView *)self contact];
-  v15 = [v14 mutableCopy];
+  contact = [(CNCardSharedProfileCellView *)self contact];
+  v15 = [contact mutableCopy];
 
-  v16 = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
-  v17 = [v16 targetProfileForActionType:a3];
+  sharedProfileStateOracle = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
+  v17 = [sharedProfileStateOracle targetProfileForActionType:type];
 
-  v18 = [v17 thumbnailImageData];
-  [v15 setImageData:v18];
+  thumbnailImageData = [v17 thumbnailImageData];
+  [v15 setImageData:thumbnailImageData];
 
-  v19 = [v17 thumbnailImageData];
-  [v15 setThumbnailImageData:v19];
+  thumbnailImageData2 = [v17 thumbnailImageData];
+  [v15 setThumbnailImageData:thumbnailImageData2];
 
-  v20 = [(CNCardSharedProfileCellView *)self avatarImageRenderer];
+  avatarImageRenderer2 = [(CNCardSharedProfileCellView *)self avatarImageRenderer];
   v25[0] = v15;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
-  v22 = [(CNCardSharedProfileCellView *)self renderingScope];
-  v23 = [v20 avatarImageForContacts:v21 scope:v22];
+  renderingScope = [(CNCardSharedProfileCellView *)self renderingScope];
+  v23 = [avatarImageRenderer2 avatarImageForContacts:v21 scope:renderingScope];
 
   return v23;
 }
@@ -252,8 +252,8 @@ void __70__CNCardSharedProfileCellView_invalidateAvatarCacheEntriesForContact___
   v3 = objc_alloc_init(MEMORY[0x1E695CD80]);
   [v3 setStyle:1000];
   [v3 setFallbackStyle:-1];
-  v4 = [(CNCardSharedProfileCellView *)self contact];
-  v5 = [v3 stringFromContact:v4];
+  contact = [(CNCardSharedProfileCellView *)self contact];
+  v5 = [v3 stringFromContact:contact];
 
   if (v5)
   {
@@ -275,23 +275,23 @@ void __70__CNCardSharedProfileCellView_invalidateAvatarCacheEntriesForContact___
   v3 = MEMORY[0x1E696AEC0];
   v4 = CNContactsUIBundle();
   v5 = [v4 localizedStringForKey:@"SNAP_DISPLAY_PREFERENCE_SHARED_MENU_TITLE_%@" value:&stru_1F0CE7398 table:@"Localized"];
-  v6 = [(CNCardSharedProfileCellView *)self contactDisplayName];
-  v7 = [v3 stringWithFormat:v5, v6];
+  contactDisplayName = [(CNCardSharedProfileCellView *)self contactDisplayName];
+  v7 = [v3 stringWithFormat:v5, contactDisplayName];
 
   return v7;
 }
 
 - (id)revertToCustomAction
 {
-  v3 = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
-  v4 = [v3 effectiveStateForContact];
+  sharedProfileStateOracle = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
+  effectiveStateForContact = [sharedProfileStateOracle effectiveStateForContact];
 
   v5 = [(CNCardSharedProfileCellView *)self avatarImageForActionType:2];
   v6 = CNContactsUIBundle();
   v7 = [v6 localizedStringForKey:@"SNAP_DISPLAY_PREFERENCE_REVERT_TO_CUSTOM_MENU_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
   v8 = CNContactsUIBundle();
   v9 = [v8 localizedStringForKey:@"SNAP_DISPLAY_PREFERENCE_ASK_FOR_UPDATES" value:&stru_1F0CE7398 table:@"Localized"];
-  v10 = [CNSharedProfileUpdateMenuElement elementWithTitle:v7 subtitle:v9 avatarImage:v5 selected:v4 == 2];
+  v10 = [CNSharedProfileUpdateMenuElement elementWithTitle:v7 subtitle:v9 avatarImage:v5 selected:effectiveStateForContact == 2];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -342,15 +342,15 @@ void __53__CNCardSharedProfileCellView_revertToPreviousAction__block_invoke(uint
 
 - (id)updateAction
 {
-  v3 = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
-  v4 = [v3 effectiveStateForContactIsAutoUpdate];
+  sharedProfileStateOracle = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
+  effectiveStateForContactIsAutoUpdate = [sharedProfileStateOracle effectiveStateForContactIsAutoUpdate];
 
   v5 = [(CNCardSharedProfileCellView *)self avatarImageForActionType:3];
   v6 = CNContactsUIBundle();
   v7 = [v6 localizedStringForKey:@"SNAP_DISPLAY_PREFERENCE_UPDATE_MENU_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
   v8 = CNContactsUIBundle();
   v9 = [v8 localizedStringForKey:@"SNAP_DISPLAY_PREFERENCE_ALWAYS_UPDATE" value:&stru_1F0CE7398 table:@"Localized"];
-  v10 = [CNSharedProfileUpdateMenuElement elementWithTitle:v7 subtitle:v9 avatarImage:v5 selected:v4];
+  v10 = [CNSharedProfileUpdateMenuElement elementWithTitle:v7 subtitle:v9 avatarImage:v5 selected:effectiveStateForContactIsAutoUpdate];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -374,19 +374,19 @@ void __43__CNCardSharedProfileCellView_updateAction__block_invoke(uint64_t a1)
 - (id)customMenu
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
+  sharedProfileStateOracle = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
 
-  if (v3)
+  if (sharedProfileStateOracle)
   {
-    v4 = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
-    v5 = [v4 availableActionTypesForEffectiveState];
+    sharedProfileStateOracle2 = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
+    availableActionTypesForEffectiveState = [sharedProfileStateOracle2 availableActionTypesForEffectiveState];
 
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v5;
+    v7 = availableActionTypesForEffectiveState;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -403,8 +403,8 @@ void __43__CNCardSharedProfileCellView_updateAction__block_invoke(uint64_t a1)
 
           if ([*(*(&v15 + 1) + 8 * i) isEqualToNumber:{&unk_1F0D4B460, v15}])
           {
-            v12 = [(CNCardSharedProfileCellView *)self revertToCustomAction];
-            [v6 _cn_addNonNilObject:v12];
+            revertToCustomAction = [(CNCardSharedProfileCellView *)self revertToCustomAction];
+            [v6 _cn_addNonNilObject:revertToCustomAction];
           }
         }
 
@@ -436,19 +436,19 @@ void __43__CNCardSharedProfileCellView_updateAction__block_invoke(uint64_t a1)
 - (id)sharedMenu
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
+  sharedProfileStateOracle = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
 
-  if (v3)
+  if (sharedProfileStateOracle)
   {
-    v4 = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
-    v5 = [v4 availableActionTypesForEffectiveState];
+    sharedProfileStateOracle2 = [(CNCardSharedProfileCellView *)self sharedProfileStateOracle];
+    availableActionTypesForEffectiveState = [sharedProfileStateOracle2 availableActionTypesForEffectiveState];
 
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = v5;
+    v7 = availableActionTypesForEffectiveState;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (!v8)
     {
@@ -469,7 +469,7 @@ void __43__CNCardSharedProfileCellView_updateAction__block_invoke(uint64_t a1)
         v12 = *(*(&v19 + 1) + 8 * i);
         if ([v12 isEqualToNumber:{&unk_1F0D4B430, v19}])
         {
-          v13 = [(CNCardSharedProfileCellView *)self updateAction];
+          updateAction = [(CNCardSharedProfileCellView *)self updateAction];
         }
 
         else
@@ -479,11 +479,11 @@ void __43__CNCardSharedProfileCellView_updateAction__block_invoke(uint64_t a1)
             continue;
           }
 
-          v13 = [(CNCardSharedProfileCellView *)self revertToPreviousAction];
+          updateAction = [(CNCardSharedProfileCellView *)self revertToPreviousAction];
         }
 
-        v14 = v13;
-        [v6 _cn_addNonNilObject:v13];
+        v14 = updateAction;
+        [v6 _cn_addNonNilObject:updateAction];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -499,8 +499,8 @@ LABEL_14:
         else
         {
           v16 = MEMORY[0x1E69DCC60];
-          v17 = [(CNCardSharedProfileCellView *)self sharedMenuTitle];
-          v15 = [v16 menuWithTitle:v17 image:0 identifier:0 options:1 children:v6];
+          sharedMenuTitle = [(CNCardSharedProfileCellView *)self sharedMenuTitle];
+          v15 = [v16 menuWithTitle:sharedMenuTitle image:0 identifier:0 options:1 children:v6];
         }
 
         goto LABEL_19;
@@ -517,50 +517,50 @@ LABEL_19:
 - (id)menuActions
 {
   v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-  v4 = [(CNCardSharedProfileCellView *)self sharedMenu];
-  [v3 _cn_addNonNilObject:v4];
+  sharedMenu = [(CNCardSharedProfileCellView *)self sharedMenu];
+  [v3 _cn_addNonNilObject:sharedMenu];
 
-  v5 = [(CNCardSharedProfileCellView *)self customMenu];
-  [v3 _cn_addNonNilObject:v5];
+  customMenu = [(CNCardSharedProfileCellView *)self customMenu];
+  [v3 _cn_addNonNilObject:customMenu];
 
   return v3;
 }
 
 - (void)performFallbackAction
 {
-  v2 = [(CNCardSharedProfileCellView *)self delegate];
-  [v2 viewDidSelectFallbackAction];
+  delegate = [(CNCardSharedProfileCellView *)self delegate];
+  [delegate viewDidSelectFallbackAction];
 }
 
 - (BOOL)shouldShowMenu
 {
-  v2 = self;
+  selfCopy = self;
   v14 = *MEMORY[0x1E69E9840];
   if ([(CNCardSharedProfileCellView *)self allowsEditing])
   {
     v3 = MEMORY[0x1E695CF98];
-    v4 = [v2 contact];
-    v5 = [v3 effectiveStateForContact:v4];
+    contact = [selfCopy contact];
+    v5 = [v3 effectiveStateForContact:contact];
 
     if (v5 == 2)
     {
-      v9 = [v2 sharedProfileStateOracle];
-      v10 = [v9 currentNicknameHasValidVisualIdentityData];
+      sharedProfileStateOracle = [selfCopy sharedProfileStateOracle];
+      currentNicknameHasValidVisualIdentityData = [sharedProfileStateOracle currentNicknameHasValidVisualIdentityData];
 
-      v2 = [v2 sharedProfileStateOracle];
-      LOBYTE(v9) = [v2 pendingNicknameHasValidVisualIdentityData];
+      selfCopy = [selfCopy sharedProfileStateOracle];
+      LOBYTE(sharedProfileStateOracle) = [selfCopy pendingNicknameHasValidVisualIdentityData];
 
-      LOBYTE(v2) = v10 | v9;
+      LOBYTE(selfCopy) = currentNicknameHasValidVisualIdentityData | sharedProfileStateOracle;
       v7 = CNUILogContactCard();
       if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
 LABEL_10:
 
-        return v2 & 1;
+        return selfCopy & 1;
       }
 
       v12 = 67109120;
-      v13 = v2 & 1;
+      v13 = selfCopy & 1;
       v8 = "Contact has current or pending shared photo: %d";
     }
 
@@ -568,12 +568,12 @@ LABEL_10:
     {
       if (v5 != 3)
       {
-        LOBYTE(v2) = 1;
-        return v2 & 1;
+        LOBYTE(selfCopy) = 1;
+        return selfCopy & 1;
       }
 
-      v6 = [v2 sharedProfileStateOracle];
-      LODWORD(v2) = [v6 currentNicknameHasValidVisualIdentityData];
+      sharedProfileStateOracle2 = [selfCopy sharedProfileStateOracle];
+      LODWORD(selfCopy) = [sharedProfileStateOracle2 currentNicknameHasValidVisualIdentityData];
 
       v7 = CNUILogContactCard();
       if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -582,7 +582,7 @@ LABEL_10:
       }
 
       v12 = 67109120;
-      v13 = v2;
+      v13 = selfCopy;
       v8 = "Contact has a current shared photo: %d";
     }
 
@@ -590,34 +590,34 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  LOBYTE(v2) = 0;
-  return v2 & 1;
+  LOBYTE(selfCopy) = 0;
+  return selfCopy & 1;
 }
 
-- (void)setSharedProfileStateOracle:(id)a3
+- (void)setSharedProfileStateOracle:(id)oracle
 {
-  v5 = a3;
-  if (self->_sharedProfileStateOracle != v5)
+  oracleCopy = oracle;
+  if (self->_sharedProfileStateOracle != oracleCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_sharedProfileStateOracle, a3);
+    v9 = oracleCopy;
+    objc_storeStrong(&self->_sharedProfileStateOracle, oracle);
     [(CNCardSharedProfileCellView *)self setUpChevronAndMenuIfNeeded];
-    v6 = [(CNCardSharedProfileCellView *)self propertyItem];
-    v7 = [v6 displayValue];
-    v8 = [(CNCardSharedProfileCellView *)self valueLabel];
-    [v8 setText:v7];
+    propertyItem = [(CNCardSharedProfileCellView *)self propertyItem];
+    displayValue = [propertyItem displayValue];
+    valueLabel = [(CNCardSharedProfileCellView *)self valueLabel];
+    [valueLabel setText:displayValue];
 
-    v5 = v9;
+    oracleCopy = v9;
   }
 }
 
 - (int64_t)sharedPhotoDisplayPreference
 {
   objc_opt_class();
-  v3 = [(CNCardSharedProfileCellView *)self propertyItem];
+  propertyItem = [(CNCardSharedProfileCellView *)self propertyItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = propertyItem;
   }
 
   else
@@ -627,50 +627,50 @@ LABEL_10:
 
   v5 = v4;
 
-  v6 = [v5 sharedPhotoDisplayPreference];
-  return v6;
+  sharedPhotoDisplayPreference = [v5 sharedPhotoDisplayPreference];
+  return sharedPhotoDisplayPreference;
 }
 
-- (void)setPropertyItem:(id)a3
+- (void)setPropertyItem:(id)item
 {
-  v5 = a3;
-  if (self->_propertyItem != v5)
+  itemCopy = item;
+  if (self->_propertyItem != itemCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_propertyItem, a3);
-    v6 = [(CNPropertyGroupItem *)v10 displayValue];
-    v7 = [(CNCardSharedProfileCellView *)self valueLabel];
-    [v7 setText:v6];
+    v10 = itemCopy;
+    objc_storeStrong(&self->_propertyItem, item);
+    displayValue = [(CNPropertyGroupItem *)v10 displayValue];
+    valueLabel = [(CNCardSharedProfileCellView *)self valueLabel];
+    [valueLabel setText:displayValue];
 
-    v8 = [(CNCardSharedProfileCellView *)self avatarView];
-    v9 = [(CNPropertyGroupItem *)v10 contact];
-    [v8 setContact:v9];
+    avatarView = [(CNCardSharedProfileCellView *)self avatarView];
+    contact = [(CNPropertyGroupItem *)v10 contact];
+    [avatarView setContact:contact];
 
-    v5 = v10;
+    itemCopy = v10;
   }
 }
 
-- (void)setLabelTextAttributes:(id)a3
+- (void)setLabelTextAttributes:(id)attributes
 {
-  v10 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
+  v10 = [attributes objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
   if (v10)
   {
-    v4 = [(CNCardSharedProfileCellView *)self titleLabel];
-    v5 = [v4 font];
+    titleLabel = [(CNCardSharedProfileCellView *)self titleLabel];
+    font = [titleLabel font];
 
-    if (v5 != v10)
+    if (font != v10)
     {
-      v6 = [(CNCardSharedProfileCellView *)self titleLabel];
-      [v6 setFont:v10];
+      titleLabel2 = [(CNCardSharedProfileCellView *)self titleLabel];
+      [titleLabel2 setFont:v10];
     }
 
-    v7 = [(CNCardSharedProfileCellView *)self valueLabel];
-    v8 = [v7 font];
+    valueLabel = [(CNCardSharedProfileCellView *)self valueLabel];
+    font2 = [valueLabel font];
 
-    if (v8 != v10)
+    if (font2 != v10)
     {
-      v9 = [(CNCardSharedProfileCellView *)self valueLabel];
-      [v9 setFont:v10];
+      valueLabel2 = [(CNCardSharedProfileCellView *)self valueLabel];
+      [valueLabel2 setFont:v10];
     }
   }
 }
@@ -684,122 +684,122 @@ LABEL_10:
   }
 
   v3 = objc_opt_new();
-  v4 = [(CNCardSharedProfileCellView *)self labelStackView];
-  v5 = [v4 centerYAnchor];
-  v6 = [(CNCardSharedProfileCellView *)self centerYAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  labelStackView = [(CNCardSharedProfileCellView *)self labelStackView];
+  centerYAnchor = [labelStackView centerYAnchor];
+  centerYAnchor2 = [(CNCardSharedProfileCellView *)self centerYAnchor];
+  v7 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [(NSArray *)v3 addObject:v7];
 
-  v8 = [(CNCardSharedProfileCellView *)self labelStackView];
-  v9 = [v8 topAnchor];
-  v10 = [(CNCardSharedProfileCellView *)self topAnchor];
-  v11 = [v9 constraintGreaterThanOrEqualToAnchor:v10];
+  labelStackView2 = [(CNCardSharedProfileCellView *)self labelStackView];
+  topAnchor = [labelStackView2 topAnchor];
+  topAnchor2 = [(CNCardSharedProfileCellView *)self topAnchor];
+  v11 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   [(NSArray *)v3 addObject:v11];
 
-  v12 = [(CNCardSharedProfileCellView *)self labelStackView];
-  v13 = [v12 bottomAnchor];
-  v14 = [(CNCardSharedProfileCellView *)self bottomAnchor];
-  v15 = [v13 constraintLessThanOrEqualToAnchor:v14];
+  labelStackView3 = [(CNCardSharedProfileCellView *)self labelStackView];
+  bottomAnchor = [labelStackView3 bottomAnchor];
+  bottomAnchor2 = [(CNCardSharedProfileCellView *)self bottomAnchor];
+  v15 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v71 = v3;
   [(NSArray *)v3 addObject:v15];
 
   if ([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory])
   {
-    v16 = [(CNCardSharedProfileCellView *)self labelStackView];
-    v17 = [v16 leadingAnchor];
-    v18 = [(CNCardSharedProfileCellView *)self leadingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
-    [(NSArray *)v3 addObject:v19];
+    labelStackView4 = [(CNCardSharedProfileCellView *)self labelStackView];
+    leadingAnchor = [labelStackView4 leadingAnchor];
+    leadingAnchor2 = [(CNCardSharedProfileCellView *)self leadingAnchor];
+    trailingAnchor = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [(NSArray *)v3 addObject:trailingAnchor];
   }
 
   else
   {
-    v20 = [(CNCardSharedProfileCellView *)self avatarView];
-    v21 = [v20 centerYAnchor];
-    v22 = [(CNCardSharedProfileCellView *)self centerYAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    avatarView = [(CNCardSharedProfileCellView *)self avatarView];
+    centerYAnchor3 = [avatarView centerYAnchor];
+    centerYAnchor4 = [(CNCardSharedProfileCellView *)self centerYAnchor];
+    v23 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [(NSArray *)v3 addObject:v23];
 
-    v24 = [(CNCardSharedProfileCellView *)self avatarView];
-    v25 = [v24 leadingAnchor];
-    v26 = [(CNCardSharedProfileCellView *)self leadingAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    avatarView2 = [(CNCardSharedProfileCellView *)self avatarView];
+    leadingAnchor3 = [avatarView2 leadingAnchor];
+    leadingAnchor4 = [(CNCardSharedProfileCellView *)self leadingAnchor];
+    v27 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [(NSArray *)v3 addObject:v27];
 
-    v28 = [(CNCardSharedProfileCellView *)self avatarView];
-    v29 = [v28 heightAnchor];
-    v30 = [(CNCardSharedProfileCellView *)self avatarView];
-    v31 = [v30 widthAnchor];
-    v32 = [v29 constraintEqualToAnchor:v31];
+    avatarView3 = [(CNCardSharedProfileCellView *)self avatarView];
+    heightAnchor = [avatarView3 heightAnchor];
+    avatarView4 = [(CNCardSharedProfileCellView *)self avatarView];
+    widthAnchor = [avatarView4 widthAnchor];
+    v32 = [heightAnchor constraintEqualToAnchor:widthAnchor];
     [(NSArray *)v71 addObject:v32];
 
-    v33 = [(CNCardSharedProfileCellView *)self avatarView];
-    v34 = [v33 heightAnchor];
-    v35 = [v34 constraintEqualToConstant:40.0];
+    avatarView5 = [(CNCardSharedProfileCellView *)self avatarView];
+    heightAnchor2 = [avatarView5 heightAnchor];
+    v35 = [heightAnchor2 constraintEqualToConstant:40.0];
     [(NSArray *)v71 addObject:v35];
 
-    v16 = [(CNCardSharedProfileCellView *)self labelStackView];
-    v17 = [v16 leadingAnchor];
-    v18 = [(CNCardSharedProfileCellView *)self avatarView];
-    v19 = [v18 trailingAnchor];
-    v36 = [v17 constraintEqualToSystemSpacingAfterAnchor:v19 multiplier:1.0];
+    labelStackView4 = [(CNCardSharedProfileCellView *)self labelStackView];
+    leadingAnchor = [labelStackView4 leadingAnchor];
+    leadingAnchor2 = [(CNCardSharedProfileCellView *)self avatarView];
+    trailingAnchor = [leadingAnchor2 trailingAnchor];
+    v36 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:1.0];
     [(NSArray *)v71 addObject:v36];
   }
 
-  v69 = [(CNCardSharedProfileCellView *)self menuButton];
-  v67 = [v69 leadingAnchor];
-  v65 = [(CNCardSharedProfileCellView *)self leadingAnchor];
-  v63 = [v67 constraintEqualToAnchor:v65];
+  menuButton = [(CNCardSharedProfileCellView *)self menuButton];
+  leadingAnchor5 = [menuButton leadingAnchor];
+  leadingAnchor6 = [(CNCardSharedProfileCellView *)self leadingAnchor];
+  v63 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v73[0] = v63;
-  v61 = [(CNCardSharedProfileCellView *)self menuButton];
-  v60 = [v61 trailingAnchor];
-  v59 = [(CNCardSharedProfileCellView *)self trailingAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59];
+  menuButton2 = [(CNCardSharedProfileCellView *)self menuButton];
+  trailingAnchor2 = [menuButton2 trailingAnchor];
+  trailingAnchor3 = [(CNCardSharedProfileCellView *)self trailingAnchor];
+  v58 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v73[1] = v58;
-  v37 = [(CNCardSharedProfileCellView *)self menuButton];
-  v38 = [v37 topAnchor];
-  v39 = [(CNCardSharedProfileCellView *)self topAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  menuButton3 = [(CNCardSharedProfileCellView *)self menuButton];
+  topAnchor3 = [menuButton3 topAnchor];
+  topAnchor4 = [(CNCardSharedProfileCellView *)self topAnchor];
+  v40 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v73[2] = v40;
-  v41 = [(CNCardSharedProfileCellView *)self menuButton];
-  v42 = [v41 bottomAnchor];
-  v43 = [(CNCardSharedProfileCellView *)self bottomAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
+  menuButton4 = [(CNCardSharedProfileCellView *)self menuButton];
+  bottomAnchor3 = [menuButton4 bottomAnchor];
+  bottomAnchor4 = [(CNCardSharedProfileCellView *)self bottomAnchor];
+  v44 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v73[3] = v44;
   v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:4];
   [(NSArray *)v71 addObjectsFromArray:v45];
 
   if ([(CNCardSharedProfileCellView *)self shouldShowMenu])
   {
-    v70 = [(CNCardSharedProfileCellView *)self chevronImageView];
-    v46 = [v70 leadingAnchor];
-    v47 = [(CNCardSharedProfileCellView *)self labelStackView];
-    v48 = [v47 trailingAnchor];
-    v68 = [v46 constraintEqualToSystemSpacingAfterAnchor:v48 multiplier:1.0];
+    chevronImageView = [(CNCardSharedProfileCellView *)self chevronImageView];
+    leadingAnchor7 = [chevronImageView leadingAnchor];
+    labelStackView5 = [(CNCardSharedProfileCellView *)self labelStackView];
+    trailingAnchor4 = [labelStackView5 trailingAnchor];
+    v68 = [leadingAnchor7 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor4 multiplier:1.0];
     v72[0] = v68;
-    v66 = [(CNCardSharedProfileCellView *)self chevronImageView];
-    v64 = [v66 centerYAnchor];
-    v62 = [(CNCardSharedProfileCellView *)self centerYAnchor];
-    v49 = [v64 constraintEqualToAnchor:v62];
+    chevronImageView2 = [(CNCardSharedProfileCellView *)self chevronImageView];
+    centerYAnchor5 = [chevronImageView2 centerYAnchor];
+    centerYAnchor6 = [(CNCardSharedProfileCellView *)self centerYAnchor];
+    v49 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v72[1] = v49;
-    v50 = [(CNCardSharedProfileCellView *)self chevronImageView];
-    v51 = [v50 trailingAnchor];
-    v52 = [(CNCardSharedProfileCellView *)self trailingAnchor];
-    v53 = [v51 constraintEqualToAnchor:v52];
+    chevronImageView3 = [(CNCardSharedProfileCellView *)self chevronImageView];
+    trailingAnchor5 = [chevronImageView3 trailingAnchor];
+    trailingAnchor6 = [(CNCardSharedProfileCellView *)self trailingAnchor];
+    v53 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v72[2] = v53;
     v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:3];
     [(NSArray *)v71 addObjectsFromArray:v54];
 
-    v55 = v70;
+    labelStackView6 = chevronImageView;
   }
 
   else
   {
-    v55 = [(CNCardSharedProfileCellView *)self labelStackView];
-    v46 = [v55 trailingAnchor];
-    v47 = [(CNCardSharedProfileCellView *)self trailingAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47];
-    [(NSArray *)v71 addObject:v48];
+    labelStackView6 = [(CNCardSharedProfileCellView *)self labelStackView];
+    leadingAnchor7 = [labelStackView6 trailingAnchor];
+    labelStackView5 = [(CNCardSharedProfileCellView *)self trailingAnchor];
+    trailingAnchor4 = [leadingAnchor7 constraintEqualToAnchor:labelStackView5];
+    [(NSArray *)v71 addObject:trailingAnchor4];
   }
 
   constraints = self->_constraints;
@@ -814,14 +814,14 @@ LABEL_10:
   v7.receiver = self;
   v7.super_class = CNCardSharedProfileCellView;
   [(CNCardSharedProfileCellView *)&v7 updateConstraints];
-  v3 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
-  v4 = [(CNCardSharedProfileCellView *)self avatarView];
-  v5 = [v4 isHidden];
+  ab_preferredContentSizeCategoryIsAccessibilityCategory = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
+  avatarView = [(CNCardSharedProfileCellView *)self avatarView];
+  isHidden = [avatarView isHidden];
 
-  if (v3 != v5)
+  if (ab_preferredContentSizeCategoryIsAccessibilityCategory != isHidden)
   {
-    v6 = [(CNCardSharedProfileCellView *)self avatarView];
-    [v6 setHidden:v3];
+    avatarView2 = [(CNCardSharedProfileCellView *)self avatarView];
+    [avatarView2 setHidden:ab_preferredContentSizeCategoryIsAccessibilityCategory];
 
     [(CNCardSharedProfileCellView *)self setupConstraints];
   }
@@ -830,10 +830,10 @@ LABEL_10:
 - (void)startObservingAvatarCacheInvalidation
 {
   v3 = +[CNUIContactsEnvironment currentEnvironment];
-  v4 = [v3 cachingLikenessRenderer];
-  if ([v4 conformsToProtocol:&unk_1F0E28E18])
+  cachingLikenessRenderer = [v3 cachingLikenessRenderer];
+  if ([cachingLikenessRenderer conformsToProtocol:&unk_1F0E28E18])
   {
-    v5 = v4;
+    v5 = cachingLikenessRenderer;
   }
 
   else
@@ -855,43 +855,43 @@ LABEL_10:
 {
   if ([(CNCardSharedProfileCellView *)self allowsEditing])
   {
-    v3 = [(CNCardSharedProfileCellView *)self shouldShowMenu];
-    v4 = [(CNCardSharedProfileCellView *)self menuButton];
-    [v4 setShowsMenuAsPrimaryAction:v3];
+    shouldShowMenu = [(CNCardSharedProfileCellView *)self shouldShowMenu];
+    menuButton = [(CNCardSharedProfileCellView *)self menuButton];
+    [menuButton setShowsMenuAsPrimaryAction:shouldShowMenu];
 
     if ([(CNCardSharedProfileCellView *)self shouldShowMenu])
     {
       objc_initWeak(&location, self);
-      v5 = [(CNCardSharedProfileCellView *)self menuButton];
-      [v5 removeTarget:self action:sel_performFallbackAction forControlEvents:0x2000];
+      menuButton2 = [(CNCardSharedProfileCellView *)self menuButton];
+      [menuButton2 removeTarget:self action:sel_performFallbackAction forControlEvents:0x2000];
 
-      v6 = [(CNCardSharedProfileCellView *)self menuButton];
+      menuButton3 = [(CNCardSharedProfileCellView *)self menuButton];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __47__CNCardSharedProfileCellView_updateMenuButton__block_invoke;
       v10[3] = &unk_1E74E4F00;
       objc_copyWeak(&v11, &location);
-      [v6 _setMenuProvider:v10];
+      [menuButton3 _setMenuProvider:v10];
 
       objc_destroyWeak(&v11);
       objc_destroyWeak(&location);
       return;
     }
 
-    v8 = [(CNCardSharedProfileCellView *)self menuButton];
-    [v8 _setMenuProvider:0];
+    menuButton4 = [(CNCardSharedProfileCellView *)self menuButton];
+    [menuButton4 _setMenuProvider:0];
 
-    v9 = [(CNCardSharedProfileCellView *)self menuButton];
-    [v9 addTarget:self action:sel_performFallbackAction forControlEvents:0x2000];
+    menuButton5 = [(CNCardSharedProfileCellView *)self menuButton];
+    [menuButton5 addTarget:self action:sel_performFallbackAction forControlEvents:0x2000];
   }
 
   else
   {
-    v7 = [(CNCardSharedProfileCellView *)self menuButton];
-    [v7 removeTarget:self action:sel_performFallbackAction forControlEvents:0x2000];
+    menuButton6 = [(CNCardSharedProfileCellView *)self menuButton];
+    [menuButton6 removeTarget:self action:sel_performFallbackAction forControlEvents:0x2000];
 
-    v9 = [(CNCardSharedProfileCellView *)self menuButton];
-    [v9 _setMenuProvider:0];
+    menuButton5 = [(CNCardSharedProfileCellView *)self menuButton];
+    [menuButton5 _setMenuProvider:0];
   }
 }
 
@@ -907,30 +907,30 @@ id __47__CNCardSharedProfileCellView_updateMenuButton__block_invoke(uint64_t a1)
 
 - (void)setUpMenuButton
 {
-  v3 = [(CNCardSharedProfileCellView *)self menuButton];
+  menuButton = [(CNCardSharedProfileCellView *)self menuButton];
 
-  if (!v3)
+  if (!menuButton)
   {
     v4 = objc_alloc_init(CNCardSharedProfileCellMenuButton);
     [(CNCardSharedProfileCellMenuButton *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CNCardSharedProfileCellView *)self setMenuButton:v4];
   }
 
-  v5 = [(CNCardSharedProfileCellView *)self menuButton];
-  [(CNCardSharedProfileCellView *)self addSubview:v5];
+  menuButton2 = [(CNCardSharedProfileCellView *)self menuButton];
+  [(CNCardSharedProfileCellView *)self addSubview:menuButton2];
 }
 
 - (void)setUpChevron
 {
-  v3 = [(CNCardSharedProfileCellView *)self chevronImageView];
+  chevronImageView = [(CNCardSharedProfileCellView *)self chevronImageView];
 
-  if (!v3)
+  if (!chevronImageView)
   {
-    v4 = [MEMORY[0x1E69DCAB8] cnui_symbolImageForContactCardMenuChevron];
-    v5 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v4];
+    cnui_symbolImageForContactCardMenuChevron = [MEMORY[0x1E69DCAB8] cnui_symbolImageForContactCardMenuChevron];
+    v5 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:cnui_symbolImageForContactCardMenuChevron];
     [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v5 setTintColor:v6];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [v5 setTintColor:secondaryLabelColor];
 
     if ([(CNCardSharedProfileCellView *)self effectiveUserInterfaceLayoutDirection]== 1)
     {
@@ -946,8 +946,8 @@ id __47__CNCardSharedProfileCellView_updateMenuButton__block_invoke(uint64_t a1)
     [(CNCardSharedProfileCellView *)self setChevronImageView:v5];
   }
 
-  v8 = [(CNCardSharedProfileCellView *)self chevronImageView];
-  [(CNCardSharedProfileCellView *)self addSubview:v8];
+  chevronImageView2 = [(CNCardSharedProfileCellView *)self chevronImageView];
+  [(CNCardSharedProfileCellView *)self addSubview:chevronImageView2];
 }
 
 - (void)setUpChevronAndMenuIfNeeded
@@ -962,8 +962,8 @@ id __47__CNCardSharedProfileCellView_updateMenuButton__block_invoke(uint64_t a1)
 
   else
   {
-    v3 = [(CNCardSharedProfileCellView *)self chevronImageView];
-    [v3 removeFromSuperview];
+    chevronImageView = [(CNCardSharedProfileCellView *)self chevronImageView];
+    [chevronImageView removeFromSuperview];
   }
 }
 
@@ -987,8 +987,8 @@ id __47__CNCardSharedProfileCellView_updateMenuButton__block_invoke(uint64_t a1)
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v8 setText:&stru_1F0CE7398];
   [v8 setNumberOfLines:0];
-  v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v8 setTextColor:v9];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v8 setTextColor:secondaryLabelColor];
 
   v10 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v6];
   [v8 setFont:v10];
@@ -996,10 +996,10 @@ id __47__CNCardSharedProfileCellView_updateMenuButton__block_invoke(uint64_t a1)
   [(CNCardSharedProfileCellView *)self addSubview:v8];
   [(CNCardSharedProfileCellView *)self setValueLabel:v8];
   v11 = objc_alloc(MEMORY[0x1E69DCF90]);
-  v12 = [(CNCardSharedProfileCellView *)self titleLabel];
-  v16[0] = v12;
-  v13 = [(CNCardSharedProfileCellView *)self valueLabel];
-  v16[1] = v13;
+  titleLabel = [(CNCardSharedProfileCellView *)self titleLabel];
+  v16[0] = titleLabel;
+  valueLabel = [(CNCardSharedProfileCellView *)self valueLabel];
+  v16[1] = valueLabel;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
   v15 = [v11 initWithArrangedSubviews:v14];
 
@@ -1026,11 +1026,11 @@ id __47__CNCardSharedProfileCellView_updateMenuButton__block_invoke(uint64_t a1)
   [(CNCardSharedProfileCellView *)self setUpChevronAndMenuIfNeeded];
 }
 
-- (void)setAllowsEditing:(BOOL)a3
+- (void)setAllowsEditing:(BOOL)editing
 {
-  if (self->_allowsEditing != a3)
+  if (self->_allowsEditing != editing)
   {
-    self->_allowsEditing = a3;
+    self->_allowsEditing = editing;
     [(CNCardSharedProfileCellView *)self updateMenuButton];
   }
 }

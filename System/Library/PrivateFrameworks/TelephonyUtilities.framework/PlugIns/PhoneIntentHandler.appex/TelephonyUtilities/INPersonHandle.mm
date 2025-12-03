@@ -1,69 +1,69 @@
 @interface INPersonHandle
-- (id)tu_initUnlabledPersonHandleWithTUHandle:(id)a3 isoCountryCodes:(id)a4;
-- (id)tu_normalizedHandleForISOCountryCode:(id)a3;
+- (id)tu_initUnlabledPersonHandleWithTUHandle:(id)handle isoCountryCodes:(id)codes;
+- (id)tu_normalizedHandleForISOCountryCode:(id)code;
 @end
 
 @implementation INPersonHandle
 
-- (id)tu_initUnlabledPersonHandleWithTUHandle:(id)a3 isoCountryCodes:(id)a4
+- (id)tu_initUnlabledPersonHandleWithTUHandle:(id)handle isoCountryCodes:(id)codes
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 type];
-  if (v7 == 1)
+  handleCopy = handle;
+  codesCopy = codes;
+  type = [handleCopy type];
+  if (type == 1)
   {
-    v10 = [v5 value];
-    v11 = [v10 _appearsToBePhoneNumber];
+    value = [handleCopy value];
+    _appearsToBePhoneNumber = [value _appearsToBePhoneNumber];
 
-    if ((v11 & 1) == 0)
+    if ((_appearsToBePhoneNumber & 1) == 0)
     {
-      v16 = [v5 value];
-      LODWORD(v8) = [v16 _appearsToBeEmail];
+      value2 = [handleCopy value];
+      LODWORD(v8) = [value2 _appearsToBeEmail];
 
       v8 = v8;
       goto LABEL_4;
     }
   }
 
-  else if (v7 != 2)
+  else if (type != 2)
   {
-    v8 = v7 == 3;
+    v8 = type == 3;
 LABEL_4:
-    v9 = [v5 value];
+    value3 = [handleCopy value];
     goto LABEL_7;
   }
 
-  v12 = [v5 value];
-  v13 = [v6 firstObject];
-  v9 = TUFormattedPhoneNumber();
+  value4 = [handleCopy value];
+  firstObject = [codesCopy firstObject];
+  value3 = TUFormattedPhoneNumber();
 
   v8 = 2;
 LABEL_7:
-  v14 = [[INPersonHandle alloc] initWithValue:v9 type:v8 label:0];
+  v14 = [[INPersonHandle alloc] initWithValue:value3 type:v8 label:0];
 
   return v14;
 }
 
-- (id)tu_normalizedHandleForISOCountryCode:(id)a3
+- (id)tu_normalizedHandleForISOCountryCode:(id)code
 {
-  v4 = a3;
-  v5 = [(INPersonHandle *)self value];
-  v6 = [(INPersonHandle *)self type];
-  if (v6 == INPersonHandleTypePhoneNumber)
+  codeCopy = code;
+  value = [(INPersonHandle *)self value];
+  type = [(INPersonHandle *)self type];
+  if (type == INPersonHandleTypePhoneNumber)
   {
-    v7 = [TUHandle normalizedPhoneNumberHandleForValue:v5 isoCountryCode:v4];
+    v7 = [TUHandle normalizedPhoneNumberHandleForValue:value isoCountryCode:codeCopy];
   }
 
   else
   {
-    if (v6 == INPersonHandleTypeEmailAddress)
+    if (type == INPersonHandleTypeEmailAddress)
     {
-      [TUHandle normalizedEmailAddressHandleForValue:v5];
+      [TUHandle normalizedEmailAddressHandleForValue:value];
     }
 
     else
     {
-      [TUHandle normalizedHandleWithDestinationID:v5];
+      [TUHandle normalizedHandleWithDestinationID:value];
     }
     v7 = ;
   }

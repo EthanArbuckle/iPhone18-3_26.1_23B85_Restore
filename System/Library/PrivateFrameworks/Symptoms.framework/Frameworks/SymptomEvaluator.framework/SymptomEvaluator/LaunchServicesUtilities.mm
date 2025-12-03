@@ -1,29 +1,29 @@
 @interface LaunchServicesUtilities
-+ (id)appBundleIdentifierFromBundleRecord:(id)a3 isWebBrowser:(BOOL *)a4;
-+ (id)implicitlyAssumedIdentityEntitlementForBundleIdentifier:(id)a3;
-+ (void)bundleIdentifier:(id)a3 hasEntitlement:(id)a4 ofClass:(Class)a5 handler:(id)a6;
++ (id)appBundleIdentifierFromBundleRecord:(id)record isWebBrowser:(BOOL *)browser;
++ (id)implicitlyAssumedIdentityEntitlementForBundleIdentifier:(id)identifier;
++ (void)bundleIdentifier:(id)identifier hasEntitlement:(id)entitlement ofClass:(Class)class handler:(id)handler;
 @end
 
 @implementation LaunchServicesUtilities
 
-+ (void)bundleIdentifier:(id)a3 hasEntitlement:(id)a4 ofClass:(Class)a5 handler:(id)a6
++ (void)bundleIdentifier:(id)identifier hasEntitlement:(id)entitlement ofClass:(Class)class handler:(id)handler
 {
   v52 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  identifierCopy = identifier;
+  entitlementCopy = entitlement;
+  handlerCopy = handler;
   v12 = objc_autoreleasePoolPush();
   v41 = 0;
   v13 = otherLogHandle;
   if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v43 = v9;
+    v43 = identifierCopy;
     _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_INFO, "Fetching LSBundleRecord for %{private}@", buf, 0xCu);
   }
 
   v40 = 0;
-  v14 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v9 allowPlaceholder:0 error:&v40];
+  v14 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v40];
   v15 = v40;
   if (v14)
   {
@@ -35,20 +35,20 @@
       if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138478083;
-        v43 = v9;
+        v43 = identifierCopy;
         v44 = 2113;
         v45 = v14;
         _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_DEBUG, "No appBundleIdentifier found for %{private}@ in bundleRecord %{private}@", buf, 0x16u);
       }
 
-      (*(v11 + 2))(v11, 0, 6, v41);
+      (*(handlerCopy + 2))(handlerCopy, 0, 6, v41);
       goto LABEL_31;
     }
 
     v17 = v16;
-    if (([v16 isEqualToString:v9] & 1) == 0)
+    if (([v16 isEqualToString:identifierCopy] & 1) == 0)
     {
-      v37 = v10;
+      v37 = entitlementCopy;
       v18 = otherLogHandle;
       if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_INFO))
       {
@@ -63,10 +63,10 @@
 
       if (!v19)
       {
-        (*(v11 + 2))(v11, 0, 7, v41);
+        (*(handlerCopy + 2))(handlerCopy, 0, 7, v41);
         v14 = v17;
         v15 = v20;
-        v10 = v37;
+        entitlementCopy = v37;
         goto LABEL_31;
       }
 
@@ -75,7 +75,7 @@
       v17 = v21;
       v14 = v19;
       v15 = v20;
-      v10 = v37;
+      entitlementCopy = v37;
     }
 
     objc_opt_class();
@@ -91,16 +91,16 @@
         _os_log_impl(&dword_23255B000, v27, OS_LOG_TYPE_DEBUG, "Not an app for %{private}@, isWebBrowser: %d", buf, 0x12u);
       }
 
-      (*(v11 + 2))(v11, 0, 5, v41);
+      (*(handlerCopy + 2))(handlerCopy, 0, 5, v41);
 
       goto LABEL_32;
     }
 
-    v22 = v10;
+    v22 = entitlementCopy;
     v14 = v14;
-    v23 = [v14 appTags];
-    v24 = v23;
-    if (v23 && [v23 containsObject:@"hidden"])
+    appTags = [v14 appTags];
+    v24 = appTags;
+    if (appTags && [appTags containsObject:@"hidden"])
     {
       v25 = otherLogHandle;
       if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_INFO))
@@ -112,13 +112,13 @@
         _os_log_impl(&dword_23255B000, v25, OS_LOG_TYPE_INFO, "Hidden app for %{private}@, isWebBrowser: %d", buf, 0x12u);
       }
 
-      (*(v11 + 2))(v11, 0, 4, v41);
+      (*(handlerCopy + 2))(handlerCopy, 0, 4, v41);
     }
 
     else
     {
-      v28 = [v14 entitlements];
-      v29 = [v28 objectForKey:v22 ofClass:a5];
+      entitlements = [v14 entitlements];
+      v29 = [entitlements objectForKey:v22 ofClass:class];
 
       v30 = otherLogHandle;
       if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_INFO))
@@ -151,10 +151,10 @@
         v35 = 1;
       }
 
-      (*(v11 + 2))(v11, v34, v35, v41);
+      (*(handlerCopy + 2))(handlerCopy, v34, v35, v41);
     }
 
-    v10 = v22;
+    entitlementCopy = v22;
 LABEL_31:
     v12 = v38;
 LABEL_32:
@@ -162,28 +162,28 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  (*(v11 + 2))(v11, 0, 7, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 7, 0);
 LABEL_33:
 
   objc_autoreleasePoolPop(v12);
   v36 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)appBundleIdentifierFromBundleRecord:(id)a3 isWebBrowser:(BOOL *)a4
++ (id)appBundleIdentifierFromBundleRecord:(id)record isWebBrowser:(BOOL *)browser
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  recordCopy = record;
+  if (!recordCopy)
   {
 LABEL_20:
-    v7 = 0;
+    bundleIdentifier3 = 0;
     goto LABEL_21;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 containingBundleRecord];
+    containingBundleRecord = [recordCopy containingBundleRecord];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -191,27 +191,27 @@ LABEL_20:
       if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_ERROR))
       {
         v13 = v12;
-        v14 = [v5 bundleIdentifier];
-        v15 = [v6 bundleIdentifier];
+        bundleIdentifier = [recordCopy bundleIdentifier];
+        bundleIdentifier2 = [containingBundleRecord bundleIdentifier];
         v16 = objc_opt_class();
         v17 = NSStringFromClass(v16);
         v24 = 138478339;
-        v25 = v14;
+        v25 = bundleIdentifier;
         v26 = 2113;
-        v27 = v15;
+        v27 = bundleIdentifier2;
         v28 = 2112;
         v29 = v17;
         _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_ERROR, "Unexpected nested extensions: %{private}@ -> %{private}@ (%@)", &v24, 0x20u);
       }
 
-      v7 = 0;
+      bundleIdentifier3 = 0;
       goto LABEL_17;
     }
 
-    v7 = [v6 bundleIdentifier];
-    if (a4)
+    bundleIdentifier3 = [containingBundleRecord bundleIdentifier];
+    if (browser)
     {
-      *a4 = [v6 isWebBrowser];
+      *browser = [containingBundleRecord isWebBrowser];
     }
 
     v8 = otherLogHandle;
@@ -222,11 +222,11 @@ LABEL_17:
       goto LABEL_21;
     }
 
-    v9 = v8;
-    v10 = [v5 bundleIdentifier];
+    bundleIdentifier5 = v8;
+    bundleIdentifier4 = [recordCopy bundleIdentifier];
     v24 = 138477827;
-    v25 = v10;
-    _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_INFO, "Received containingBundleRecord for (%{private}@)", &v24, 0xCu);
+    v25 = bundleIdentifier4;
+    _os_log_impl(&dword_23255B000, bundleIdentifier5, OS_LOG_TYPE_INFO, "Received containingBundleRecord for (%{private}@)", &v24, 0xCu);
 
 LABEL_13:
     goto LABEL_17;
@@ -249,20 +249,20 @@ LABEL_13:
     goto LABEL_20;
   }
 
-  v7 = [v5 bundleIdentifier];
-  if (a4)
+  bundleIdentifier3 = [recordCopy bundleIdentifier];
+  if (browser)
   {
-    *a4 = [v5 isWebBrowser];
+    *browser = [recordCopy isWebBrowser];
   }
 
   v11 = otherLogHandle;
   if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_INFO))
   {
-    v6 = v11;
-    v9 = [v5 bundleIdentifier];
+    containingBundleRecord = v11;
+    bundleIdentifier5 = [recordCopy bundleIdentifier];
     v24 = 138477827;
-    v25 = v9;
-    _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_INFO, "Received LSApplication for (%{private}@)", &v24, 0xCu);
+    v25 = bundleIdentifier5;
+    _os_log_impl(&dword_23255B000, containingBundleRecord, OS_LOG_TYPE_INFO, "Received LSApplication for (%{private}@)", &v24, 0xCu);
     goto LABEL_13;
   }
 
@@ -270,13 +270,13 @@ LABEL_21:
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return bundleIdentifier3;
 }
 
-+ (id)implicitlyAssumedIdentityEntitlementForBundleIdentifier:(id)a3
++ (id)implicitlyAssumedIdentityEntitlementForBundleIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = implicitlyAssumedIdentityEntitlementForBundleIdentifier__privacyAttributionCache;
   if (!implicitlyAssumedIdentityEntitlementForBundleIdentifier__privacyAttributionCache)
   {
@@ -289,7 +289,7 @@ LABEL_21:
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__7;
   v20 = __Block_byref_object_dispose__7;
-  v21 = [v5 entryForKey:v4];
+  v21 = [v5 entryForKey:identifierCopy];
   v6 = v17[5];
   v7 = domainTrackingLogHandle;
   v8 = os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEBUG);
@@ -298,7 +298,7 @@ LABEL_21:
     if (v8)
     {
       *buf = 138477827;
-      v23 = v4;
+      v23 = identifierCopy;
       _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "Found privacy attribution cached entry for %{private}@", buf, 0xCu);
     }
   }
@@ -308,7 +308,7 @@ LABEL_21:
     if (v8)
     {
       *buf = 138412290;
-      v23 = v4;
+      v23 = identifierCopy;
       _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "Cache miss, looking up entitlements for %@", buf, 0xCu);
     }
 
@@ -317,9 +317,9 @@ LABEL_21:
     v13[1] = 3221225472;
     v13[2] = __121__LaunchServicesUtilities_ImplicitlyAssumedIdentityEntitlement__implicitlyAssumedIdentityEntitlementForBundleIdentifier___block_invoke;
     v13[3] = &unk_27898CDC8;
-    v14 = v4;
+    v14 = identifierCopy;
     v15 = &v16;
-    [a1 bundleIdentifier:v14 hasEntitlement:@"com.apple.private.attribution.implicitly-assumed-identity" ofClass:v9 handler:v13];
+    [self bundleIdentifier:v14 hasEntitlement:@"com.apple.private.attribution.implicitly-assumed-identity" ofClass:v9 handler:v13];
   }
 
   v10 = v17[5];

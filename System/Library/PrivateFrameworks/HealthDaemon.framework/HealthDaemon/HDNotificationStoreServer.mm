@@ -1,23 +1,23 @@
 @interface HDNotificationStoreServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
 + (id)requiredEntitlements;
 @end
 
 @implementation HDNotificationStoreServer
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 profile];
-  v16 = [v15 notificationManager];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
+  notificationManager = [profile notificationManager];
 
-  if (v16)
+  if (notificationManager)
   {
-    v17 = [(HDStandardTaskServer *)[HDNotificationStoreServer alloc] initWithUUID:v11 configuration:v12 client:v13 delegate:v14];
-    v18 = v16;
+    v17 = [(HDStandardTaskServer *)[HDNotificationStoreServer alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
+    v18 = notificationManager;
     notificationManager = v17->_notificationManager;
     v17->_notificationManager = v18;
   }
@@ -27,10 +27,10 @@
     notificationManager = [MEMORY[0x277CCA9B8] hk_featureUnavailableForProfileError];
     if (notificationManager)
     {
-      if (a7)
+      if (error)
       {
         v20 = notificationManager;
-        *a7 = notificationManager;
+        *error = notificationManager;
       }
 
       else

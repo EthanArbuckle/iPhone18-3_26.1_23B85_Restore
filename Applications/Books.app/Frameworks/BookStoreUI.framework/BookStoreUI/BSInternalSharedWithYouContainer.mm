@@ -1,25 +1,25 @@
 @interface BSInternalSharedWithYouContainer
-- (BSInternalSharedWithYouContainer)initWithAttributionView:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BSInternalSharedWithYouContainer)initWithAttributionView:(id)view;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation BSInternalSharedWithYouContainer
 
-- (BSInternalSharedWithYouContainer)initWithAttributionView:(id)a3
+- (BSInternalSharedWithYouContainer)initWithAttributionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [(BSInternalSharedWithYouContainer *)self init];
   v6 = v5;
   if (v5)
   {
-    [(BSInternalSharedWithYouContainer *)v5 setAttributionView:v4];
-    v7 = [(BSInternalSharedWithYouContainer *)v6 attributionView];
-    [v7 setHorizontalAlignment:1];
+    [(BSInternalSharedWithYouContainer *)v5 setAttributionView:viewCopy];
+    attributionView = [(BSInternalSharedWithYouContainer *)v6 attributionView];
+    [attributionView setHorizontalAlignment:1];
 
-    v8 = [(BSInternalSharedWithYouContainer *)v6 attributionView];
-    [(BSInternalSharedWithYouContainer *)v6 addSubview:v8];
+    attributionView2 = [(BSInternalSharedWithYouContainer *)v6 attributionView];
+    [(BSInternalSharedWithYouContainer *)v6 addSubview:attributionView2];
   }
 
   return v6;
@@ -34,35 +34,35 @@
   v4 = v3;
   v6 = v5;
   v8 = v7;
-  v9 = [(BSInternalSharedWithYouContainer *)self attributionView];
-  [v9 intrinsicContentSize];
+  attributionView = [(BSInternalSharedWithYouContainer *)self attributionView];
+  [attributionView intrinsicContentSize];
   v11 = v10;
 
-  v12 = [(BSInternalSharedWithYouContainer *)self attributionView];
-  [v12 setFrame:{v4, v6, v8, v11}];
+  attributionView2 = [(BSInternalSharedWithYouContainer *)self attributionView];
+  [attributionView2 setFrame:{v4, v6, v8, v11}];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = BSInternalSharedWithYouContainer;
-  [(BSInternalSharedWithYouContainer *)&v14 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(BSInternalSharedWithYouContainer *)&v14 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(BSInternalSharedWithYouContainer *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  v10 = [(BSInternalSharedWithYouContainer *)self attributionView];
-  [v10 intrinsicContentSize];
+  attributionView = [(BSInternalSharedWithYouContainer *)self attributionView];
+  [attributionView intrinsicContentSize];
   v12 = v11;
 
-  v13 = [(BSInternalSharedWithYouContainer *)self attributionView];
-  [v13 setFrame:{v5, v7, v9, v12}];
+  attributionView2 = [(BSInternalSharedWithYouContainer *)self attributionView];
+  [attributionView2 setFrame:{v5, v7, v9, v12}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = [(BSInternalSharedWithYouContainer *)self attributionView:a3.width];
+  width = fits.width;
+  v4 = [(BSInternalSharedWithYouContainer *)self attributionView:fits.width];
   [v4 intrinsicContentSize];
   v6 = v5;
 

@@ -1,42 +1,42 @@
 @interface FALocationSharingHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
 - (id)getFamilyCircle;
-- (void)_invokeLocationServicesWithServerAttributes:(id)a3 completion:(id)a4;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_invokeLocationServicesWithServerAttributes:(id)attributes completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation FALocationSharingHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"family:locationSharing"];
+  name = [element name];
+  v4 = [name isEqualToString:@"family:locationSharing"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEC988]];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKeyedSubscript:*MEMORY[0x277CEC988]];
   v5 = [v4 isEqualToString:@"family:locationSharing"];
 
   return v5;
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 clientInfo];
-  [(FALocationSharingHook *)self _invokeLocationServicesWithServerAttributes:v7 completion:v6];
+  completionCopy = completion;
+  clientInfo = [model clientInfo];
+  [(FALocationSharingHook *)self _invokeLocationServicesWithServerAttributes:clientInfo completion:completionCopy];
 }
 
-- (void)_invokeLocationServicesWithServerAttributes:(id)a3 completion:(id)a4
+- (void)_invokeLocationServicesWithServerAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -45,7 +45,7 @@
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v14 = [WeakRetained presentationContextForHook:self];
 
-  v9 = [(FALocationSharingHook *)self getFamilyCircle];
+  getFamilyCircle = [(FALocationSharingHook *)self getFamilyCircle];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __80__FALocationSharingHook__invokeLocationServicesWithServerAttributes_completion___block_invoke;
@@ -53,7 +53,7 @@
   v12[4] = v13;
   v10 = MEMORY[0x277D85CD0];
   v11 = MEMORY[0x277D85CD0];
-  [v9 onComplete:v12 onQueue:v10];
+  [getFamilyCircle onComplete:v12 onQueue:v10];
 
   _Block_object_dispose(v13, 8);
 }

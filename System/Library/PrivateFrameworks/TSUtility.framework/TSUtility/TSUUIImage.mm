@@ -1,33 +1,33 @@
 @interface TSUUIImage
-+ (id)imageNamed:(id)a3 inBundle:(id)a4;
++ (id)imageNamed:(id)named inBundle:(id)bundle;
 - (CGSize)size;
-- (TSUUIImage)initWithContentsOfFile:(id)a3;
-- (TSUUIImage)initWithData:(id)a3;
-- (TSUUIImage)initWithUIImage:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSUUIImage)initWithContentsOfFile:(id)file;
+- (TSUUIImage)initWithData:(id)data;
+- (TSUUIImage)initWithUIImage:(id)image;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation TSUUIImage
 
-+ (id)imageNamed:(id)a3 inBundle:(id)a4
++ (id)imageNamed:(id)named inBundle:(id)bundle
 {
-  v6 = [a1 alloc];
-  v7 = [v6 initWithUIImage:{objc_msgSend(MEMORY[0x277D755B8], "imageNamed:inBundle:compatibleWithTraitCollection:", a3, a4, objc_msgSend(objc_msgSend(MEMORY[0x277D759A0], "mainScreen"), "traitCollection"))}];
+  v6 = [self alloc];
+  v7 = [v6 initWithUIImage:{objc_msgSend(MEMORY[0x277D755B8], "imageNamed:inBundle:compatibleWithTraitCollection:", named, bundle, objc_msgSend(objc_msgSend(MEMORY[0x277D759A0], "mainScreen"), "traitCollection"))}];
 
   return v7;
 }
 
-- (TSUUIImage)initWithUIImage:(id)a3
+- (TSUUIImage)initWithUIImage:(id)image
 {
   v7.receiver = self;
   v7.super_class = TSUUIImage;
   v4 = [(TSUImage *)&v7 init];
   if (v4)
   {
-    v5 = a3;
-    v4->mUIImage = v5;
-    if (!v5)
+    imageCopy = image;
+    v4->mUIImage = imageCopy;
+    if (!imageCopy)
     {
 
       return 0;
@@ -37,21 +37,21 @@
   return v4;
 }
 
-- (TSUUIImage)initWithData:(id)a3
+- (TSUUIImage)initWithData:(id)data
 {
-  v4 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:a3];
+  v4 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:data];
 
   return [(TSUUIImage *)self initWithUIImage:v4];
 }
 
-- (TSUUIImage)initWithContentsOfFile:(id)a3
+- (TSUUIImage)initWithContentsOfFile:(id)file
 {
-  v4 = [objc_alloc(MEMORY[0x277D755B8]) initWithContentsOfFile:a3];
+  v4 = [objc_alloc(MEMORY[0x277D755B8]) initWithContentsOfFile:file];
 
   return [(TSUUIImage *)self initWithUIImage:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   mUIImage = self->mUIImage;

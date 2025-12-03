@@ -2,9 +2,9 @@
 - (CGRect)bounds;
 - (CGRect)frame;
 - (_TtC23ShelfKitCollectionViews18CachingArtworkView)init;
-- (_TtC23ShelfKitCollectionViews18CachingArtworkView)initWithFrame:(CGRect)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews18CachingArtworkView)initWithFrame:(CGRect)frame;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation CachingArtworkView
@@ -26,7 +26,7 @@
   return [(ArtworkView *)&v7 initWithFrame:0.0, 0.0, 0.0, 0.0];
 }
 
-- (_TtC23ShelfKitCollectionViews18CachingArtworkView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews18CachingArtworkView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -43,13 +43,13 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_21CFDC(&selRef_frame, &selRef_setFrame_, x, y, width, height);
 }
 
@@ -63,13 +63,13 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   sub_21CFDC(&selRef_bounds, &selRef_setBounds_, x, y, width, height);
 }
 

@@ -8,94 +8,94 @@
 
 - (void)configureForAdditiveBlending
 {
-  v2 = [a1 colorAttachments];
-  v3 = [v2 objectAtIndexedSubscript:0];
+  colorAttachments = [self colorAttachments];
+  v3 = [colorAttachments objectAtIndexedSubscript:0];
   [v3 setBlendingEnabled:1];
 
-  v4 = [a1 colorAttachments];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  colorAttachments2 = [self colorAttachments];
+  v5 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v5 setRgbBlendOperation:0];
 
-  v6 = [a1 colorAttachments];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  colorAttachments3 = [self colorAttachments];
+  v7 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v7 setAlphaBlendOperation:0];
 
-  v8 = [a1 colorAttachments];
-  v9 = [v8 objectAtIndexedSubscript:0];
+  colorAttachments4 = [self colorAttachments];
+  v9 = [colorAttachments4 objectAtIndexedSubscript:0];
   [v9 setSourceRGBBlendFactor:1];
 
-  v10 = [a1 colorAttachments];
-  v11 = [v10 objectAtIndexedSubscript:0];
+  colorAttachments5 = [self colorAttachments];
+  v11 = [colorAttachments5 objectAtIndexedSubscript:0];
   [v11 setDestinationRGBBlendFactor:1];
 
-  v12 = [a1 colorAttachments];
-  v13 = [v12 objectAtIndexedSubscript:0];
+  colorAttachments6 = [self colorAttachments];
+  v13 = [colorAttachments6 objectAtIndexedSubscript:0];
   [v13 setSourceAlphaBlendFactor:1];
 
-  v15 = [a1 colorAttachments];
-  v14 = [v15 objectAtIndexedSubscript:0];
+  colorAttachments7 = [self colorAttachments];
+  v14 = [colorAttachments7 objectAtIndexedSubscript:0];
   [v14 setDestinationAlphaBlendFactor:1];
 }
 
 - (void)configureForSourceOverBlending
 {
-  v2 = [a1 colorAttachments];
-  v3 = [v2 objectAtIndexedSubscript:0];
+  colorAttachments = [self colorAttachments];
+  v3 = [colorAttachments objectAtIndexedSubscript:0];
   [v3 setBlendingEnabled:1];
 
-  v4 = [a1 colorAttachments];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  colorAttachments2 = [self colorAttachments];
+  v5 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v5 setRgbBlendOperation:0];
 
-  v6 = [a1 colorAttachments];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  colorAttachments3 = [self colorAttachments];
+  v7 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v7 setAlphaBlendOperation:0];
 
-  v8 = [a1 colorAttachments];
-  v9 = [v8 objectAtIndexedSubscript:0];
+  colorAttachments4 = [self colorAttachments];
+  v9 = [colorAttachments4 objectAtIndexedSubscript:0];
   [v9 setSourceRGBBlendFactor:4];
 
-  v10 = [a1 colorAttachments];
-  v11 = [v10 objectAtIndexedSubscript:0];
+  colorAttachments5 = [self colorAttachments];
+  v11 = [colorAttachments5 objectAtIndexedSubscript:0];
   [v11 setDestinationRGBBlendFactor:5];
 
-  v12 = [a1 colorAttachments];
-  v13 = [v12 objectAtIndexedSubscript:0];
+  colorAttachments6 = [self colorAttachments];
+  v13 = [colorAttachments6 objectAtIndexedSubscript:0];
   [v13 setSourceAlphaBlendFactor:1];
 
-  v15 = [a1 colorAttachments];
-  v14 = [v15 objectAtIndexedSubscript:0];
+  colorAttachments7 = [self colorAttachments];
+  v14 = [colorAttachments7 objectAtIndexedSubscript:0];
   [v14 setDestinationAlphaBlendFactor:5];
 }
 
 - (void)configureForAlphaReductionBlending
 {
-  v2 = [a1 colorAttachments];
-  v3 = [v2 objectAtIndexedSubscript:0];
+  colorAttachments = [self colorAttachments];
+  v3 = [colorAttachments objectAtIndexedSubscript:0];
   [v3 setBlendingEnabled:1];
 
-  v4 = [a1 colorAttachments];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  colorAttachments2 = [self colorAttachments];
+  v5 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v5 setRgbBlendOperation:0];
 
-  v6 = [a1 colorAttachments];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  colorAttachments3 = [self colorAttachments];
+  v7 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v7 setAlphaBlendOperation:0];
 
-  v8 = [a1 colorAttachments];
-  v9 = [v8 objectAtIndexedSubscript:0];
+  colorAttachments4 = [self colorAttachments];
+  v9 = [colorAttachments4 objectAtIndexedSubscript:0];
   [v9 setSourceRGBBlendFactor:0];
 
-  v10 = [a1 colorAttachments];
-  v11 = [v10 objectAtIndexedSubscript:0];
+  colorAttachments5 = [self colorAttachments];
+  v11 = [colorAttachments5 objectAtIndexedSubscript:0];
   [v11 setDestinationRGBBlendFactor:4];
 
-  v12 = [a1 colorAttachments];
-  v13 = [v12 objectAtIndexedSubscript:0];
+  colorAttachments6 = [self colorAttachments];
+  v13 = [colorAttachments6 objectAtIndexedSubscript:0];
   [v13 setSourceAlphaBlendFactor:0];
 
-  v15 = [a1 colorAttachments];
-  v14 = [v15 objectAtIndexedSubscript:0];
+  colorAttachments7 = [self colorAttachments];
+  v14 = [colorAttachments7 objectAtIndexedSubscript:0];
   [v14 setDestinationAlphaBlendFactor:4];
 }
 

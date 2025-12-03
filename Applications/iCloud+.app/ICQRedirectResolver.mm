@@ -1,44 +1,44 @@
 @interface ICQRedirectResolver
-+ (void)processResolvedURL:(id)a3 originalURL:(id)a4 resolutionError:(id)a5 completion:(id)a6;
-+ (void)resolveWithURL:(id)a3 completion:(id)a4;
++ (void)processResolvedURL:(id)l originalURL:(id)rL resolutionError:(id)error completion:(id)completion;
++ (void)resolveWithURL:(id)l completion:(id)completion;
 @end
 
 @implementation ICQRedirectResolver
 
-+ (void)resolveWithURL:(id)a3 completion:(id)a4
++ (void)resolveWithURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = lCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Attempting to resolve chatterbot URL %@", buf, 0xCu);
   }
 
-  v9 = [[_SWCChatterboxResolver alloc] initWithURL:v6];
+  v9 = [[_SWCChatterboxResolver alloc] initWithURL:lCopy];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100002E10;
   v12[3] = &unk_1000082F8;
-  v14 = v7;
-  v15 = a1;
-  v13 = v6;
-  v10 = v7;
-  v11 = v6;
+  v14 = completionCopy;
+  selfCopy = self;
+  v13 = lCopy;
+  v10 = completionCopy;
+  v11 = lCopy;
   [v9 resolveWithCompletionHandler:v12];
 }
 
-+ (void)processResolvedURL:(id)a3 originalURL:(id)a4 resolutionError:(id)a5 completion:(id)a6
++ (void)processResolvedURL:(id)l originalURL:(id)rL resolutionError:(id)error completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v9)
+  lCopy = l;
+  rLCopy = rL;
+  errorCopy = error;
+  completionCopy = completion;
+  if (lCopy)
   {
-    if ([v9 isEqual:v10])
+    if ([lCopy isEqual:rLCopy])
     {
       v13 = _ICQGetLogSystem();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -49,13 +49,13 @@
 LABEL_16:
 
       v17 = ICQCreateError();
-      v12[2](v12, 0, v17);
+      completionCopy[2](completionCopy, 0, v17);
 
       goto LABEL_17;
     }
 
-    v15 = [v9 host];
-    v16 = [v15 isEqualToString:@"icq.icloud.com"];
+    host = [lCopy host];
+    v16 = [host isEqualToString:@"icq.icloud.com"];
 
     if ((v16 & 1) == 0)
     {
@@ -68,14 +68,14 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    (v12)[2](v12, v9, 0);
+    (completionCopy)[2](completionCopy, lCopy, 0);
   }
 
   else
   {
     v13 = _ICQGetLogSystem();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
-    if (!v11)
+    if (!errorCopy)
     {
       if (v14)
       {
@@ -90,7 +90,7 @@ LABEL_16:
       sub_10000368C();
     }
 
-    v12[2](v12, 0, v11);
+    completionCopy[2](completionCopy, 0, errorCopy);
   }
 
 LABEL_17:

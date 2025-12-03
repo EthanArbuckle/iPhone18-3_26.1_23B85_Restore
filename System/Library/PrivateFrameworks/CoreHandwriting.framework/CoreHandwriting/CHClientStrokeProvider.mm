@@ -1,38 +1,38 @@
 @interface CHClientStrokeProvider
-+ (BOOL)isNonTextSection:(id)a3;
++ (BOOL)isNonTextSection:(id)section;
 - (CGRect)boundingBox;
-- (CHClientStrokeProvider)initWithStrokes:(id)a3 version:(int64_t)a4;
-- (CHClientStrokeProvider)initWithURL:(id)a3 version:(int64_t)a4 keepTextOnly:(BOOL)a5;
-- (CHClientStrokeProvider)initWithURL:(id)a3 version:(int64_t)a4 keepTextOnly:(BOOL)a5 strokesFromSections:(id)a6 channels:(id)a7 sectionTypes:(id)a8;
+- (CHClientStrokeProvider)initWithStrokes:(id)strokes version:(int64_t)version;
+- (CHClientStrokeProvider)initWithURL:(id)l version:(int64_t)version keepTextOnly:(BOOL)only;
+- (CHClientStrokeProvider)initWithURL:(id)l version:(int64_t)version keepTextOnly:(BOOL)only strokesFromSections:(id)sections channels:(id)channels sectionTypes:(id)types;
 - (NSOrderedSet)visibleStrokeEncodedIdentifiers;
 - (NSString)description;
 - (id)drawing;
-- (id)drawingWithGroups:(id)a3 transforms:(id)a4;
-- (id)drawingWithStrokes:(id)a3;
-- (id)encodedStrokeIdentifier:(id)a3;
-- (id)getStrokeClassificationArray:(int64_t)a3 ofType:(int64_t)a4;
-- (id)strokeForIdentifier:(id)a3;
-- (id)strokeIdentifierFromData:(id)a3;
-- (int64_t)compareOrderOfStrokeWithIdentifier:(id)a3 toStrokeWithIdentifier:(id)a4;
-- (void)loadStrokesBasedOnSectionTypeFrom:(id)a3 section:(id)a4 withTime:(BOOL)a5 atTimestamp:(double)a6 channels:(id)a7 orderedStrokes:(id)a8;
-- (void)loadStrokesBasedOnStrokeClassicationType:(id)a3 section:(id)a4 withTime:(BOOL)a5 atTimestamp:(double)a6 channels:(id)a7 orderedStrokes:(id)a8;
-- (void)loadStrokesBasedOnUnicodeFrom:(id)a3 section:(id)a4 withTime:(BOOL)a5 atTimestamp:(double)a6 channels:(id)a7 orderedStrokes:(id)a8;
-- (void)loadStrokesFrom:(id)a3 section:(id)a4 withTime:(BOOL)a5 atTimestamp:(double)a6 channels:(id)a7 orderedStrokes:(id)a8;
-- (void)loadStrokesFrom:(id)a3 withStrokes:(id)a4 types:(id)a5 withTime:(BOOL)a6 atTimestamp:(double)a7 channels:(id)a8 orderedStrokes:(id)a9;
-- (void)setStrokeAttributes:(unint64_t)a3 atIndexes:(id)a4;
-- (void)updateWithAddedStrokes:(id)a3 removedStrokeIds:(id)a4;
-- (void)updateWithGroups:(id)a3 transforms:(id)a4;
+- (id)drawingWithGroups:(id)groups transforms:(id)transforms;
+- (id)drawingWithStrokes:(id)strokes;
+- (id)encodedStrokeIdentifier:(id)identifier;
+- (id)getStrokeClassificationArray:(int64_t)array ofType:(int64_t)type;
+- (id)strokeForIdentifier:(id)identifier;
+- (id)strokeIdentifierFromData:(id)data;
+- (int64_t)compareOrderOfStrokeWithIdentifier:(id)identifier toStrokeWithIdentifier:(id)withIdentifier;
+- (void)loadStrokesBasedOnSectionTypeFrom:(id)from section:(id)section withTime:(BOOL)time atTimestamp:(double)timestamp channels:(id)channels orderedStrokes:(id)strokes;
+- (void)loadStrokesBasedOnStrokeClassicationType:(id)type section:(id)section withTime:(BOOL)time atTimestamp:(double)timestamp channels:(id)channels orderedStrokes:(id)strokes;
+- (void)loadStrokesBasedOnUnicodeFrom:(id)from section:(id)section withTime:(BOOL)time atTimestamp:(double)timestamp channels:(id)channels orderedStrokes:(id)strokes;
+- (void)loadStrokesFrom:(id)from section:(id)section withTime:(BOOL)time atTimestamp:(double)timestamp channels:(id)channels orderedStrokes:(id)strokes;
+- (void)loadStrokesFrom:(id)from withStrokes:(id)strokes types:(id)types withTime:(BOOL)time atTimestamp:(double)timestamp channels:(id)channels orderedStrokes:(id)orderedStrokes;
+- (void)setStrokeAttributes:(unint64_t)attributes atIndexes:(id)indexes;
+- (void)updateWithAddedStrokes:(id)strokes removedStrokeIds:(id)ids;
+- (void)updateWithGroups:(id)groups transforms:(id)transforms;
 @end
 
 @implementation CHClientStrokeProvider
 
-+ (BOOL)isNonTextSection:(id)a3
++ (BOOL)isNonTextSection:(id)section
 {
-  v3 = a3;
-  v12 = objc_msgSend_objectForKey_(v3, v4, @"type", v5, v6, v7);
+  sectionCopy = section;
+  v12 = objc_msgSend_objectForKey_(sectionCopy, v4, @"type", v5, v6, v7);
   if (v12)
   {
-    v13 = objc_msgSend_objectForKey_(v3, v8, @"type", v9, v10, v11);
+    v13 = objc_msgSend_objectForKey_(sectionCopy, v8, @"type", v9, v10, v11);
     if (objc_msgSend_isEqualToString_(v13, v14, @"text", v15, v16, v17))
     {
       LOBYTE(v22) = 0;
@@ -40,7 +40,7 @@
 
     else
     {
-      v23 = objc_msgSend_objectForKey_(v3, v18, @"type", v19, v20, v21);
+      v23 = objc_msgSend_objectForKey_(sectionCopy, v18, @"type", v19, v20, v21);
       v22 = objc_msgSend_isEqualToString_(v23, v24, @"math", v25, v26, v27) ^ 1;
     }
   }
@@ -53,9 +53,9 @@
   return v22;
 }
 
-- (CHClientStrokeProvider)initWithStrokes:(id)a3 version:(int64_t)a4
+- (CHClientStrokeProvider)initWithStrokes:(id)strokes version:(int64_t)version
 {
-  v5 = a3;
+  strokesCopy = strokes;
   v40.receiver = self;
   v40.super_class = CHClientStrokeProvider;
   v6 = [(CHClientStrokeProvider *)&v40 init];
@@ -79,17 +79,17 @@
     transcriptionCache = v12->_transcriptionCache;
     v12->_transcriptionCache = v34;
 
-    objc_msgSend_updateWithAddedStrokes_removedStrokeIds_(v12, v36, v5, 0, v37, v38);
+    objc_msgSend_updateWithAddedStrokes_removedStrokeIds_(v12, v36, strokesCopy, 0, v37, v38);
   }
 
   return v12;
 }
 
-- (CHClientStrokeProvider)initWithURL:(id)a3 version:(int64_t)a4 keepTextOnly:(BOOL)a5
+- (CHClientStrokeProvider)initWithURL:(id)l version:(int64_t)version keepTextOnly:(BOOL)only
 {
-  v186 = a5;
+  onlyCopy = only;
   v194[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v192.receiver = self;
   v192.super_class = CHClientStrokeProvider;
   v7 = [(CHClientStrokeProvider *)&v192 init];
@@ -113,14 +113,14 @@
     transcriptionCache = v13->_transcriptionCache;
     v13->_transcriptionCache = v35;
 
-    v42 = objc_msgSend_pathExtension(v6, v37, v38, v39, v40, v41);
+    v42 = objc_msgSend_pathExtension(lCopy, v37, v38, v39, v40, v41);
     isEqualToString = objc_msgSend_isEqualToString_(v42, v43, @"json", v44, v45, v46);
 
     if (isEqualToString)
     {
       v53 = MEMORY[0x1E695DEF0];
-      v184 = v6;
-      v54 = objc_msgSend_path(v6, v48, v49, v50, v51, v52);
+      v184 = lCopy;
+      v54 = objc_msgSend_path(lCopy, v48, v49, v50, v51, v52);
       v59 = objc_msgSend_dataWithContentsOfFile_(v53, v55, v54, v56, v57, v58);
 
       v191 = 0;
@@ -179,7 +179,7 @@ LABEL_12:
                   }
 
                   v150 = *(*(&v187 + 1) + 8 * v142);
-                  if (!v186 || (objc_msgSend_isNonTextSection_(CHClientStrokeProvider, v134, *(*(&v187 + 1) + 8 * v142), v136, v137, v138) & 1) == 0)
+                  if (!onlyCopy || (objc_msgSend_isNonTextSection_(CHClientStrokeProvider, v134, *(*(&v187 + 1) + 8 * v142), v136, v137, v138) & 1) == 0)
                   {
                     v151 = objc_msgSend_array(MEMORY[0x1E695DF70], v134, v135, v136, v137, v138);
                     objc_msgSend_loadStrokesFrom_section_withTime_atTimestamp_channels_orderedStrokes_(v13, v152, v129, v150, v82, v185, v151, v141);
@@ -248,7 +248,7 @@ LABEL_11:
         v105 = v89;
 LABEL_25:
 
-        v6 = v184;
+        lCopy = v184;
         goto LABEL_26;
       }
 
@@ -272,33 +272,33 @@ LABEL_26:
   return v13;
 }
 
-- (id)getStrokeClassificationArray:(int64_t)a3 ofType:(int64_t)a4
+- (id)getStrokeClassificationArray:(int64_t)array ofType:(int64_t)type
 {
   v6 = objc_alloc(MEMORY[0x1E695DF70]);
-  v15 = objc_msgSend_initWithCapacity_(v6, v7, a3, v8, v9, v10);
-  if (a3 >= 1)
+  v15 = objc_msgSend_initWithCapacity_(v6, v7, array, v8, v9, v10);
+  if (array >= 1)
   {
     do
     {
-      v16 = objc_msgSend_numberWithLong_(MEMORY[0x1E696AD98], v11, a4, v12, v13, v14);
+      v16 = objc_msgSend_numberWithLong_(MEMORY[0x1E696AD98], v11, type, v12, v13, v14);
       objc_msgSend_addObject_(v15, v17, v16, v18, v19, v20);
 
-      --a3;
+      --array;
     }
 
-    while (a3);
+    while (array);
   }
 
   return v15;
 }
 
-- (CHClientStrokeProvider)initWithURL:(id)a3 version:(int64_t)a4 keepTextOnly:(BOOL)a5 strokesFromSections:(id)a6 channels:(id)a7 sectionTypes:(id)a8
+- (CHClientStrokeProvider)initWithURL:(id)l version:(int64_t)version keepTextOnly:(BOOL)only strokesFromSections:(id)sections channels:(id)channels sectionTypes:(id)types
 {
-  v11 = a5;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  onlyCopy = only;
+  lCopy = l;
+  sectionsCopy = sections;
+  channelsCopy = channels;
+  typesCopy = types;
   v117.receiver = self;
   v117.super_class = CHClientStrokeProvider;
   v17 = [(CHClientStrokeProvider *)&v117 init];
@@ -318,9 +318,9 @@ LABEL_26:
     strokeIdsByEncoding = v18->__strokeIdsByEncoding;
     v18->__strokeIdsByEncoding = v23;
 
-    if (v15)
+    if (channelsCopy)
     {
-      v30 = objc_msgSend_objectForKeyedSubscript_(v15, v25, @"t", v27, v28, v29);
+      v30 = objc_msgSend_objectForKeyedSubscript_(channelsCopy, v25, @"t", v27, v28, v29);
       v115 = v30 != 0;
     }
 
@@ -330,41 +330,41 @@ LABEL_26:
     }
 
     v116 = objc_msgSend_array(MEMORY[0x1E695DF70], v25, v26, v27, v28, v29);
-    if (objc_msgSend_count(v14, v31, v32, v33, v34, v35))
+    if (objc_msgSend_count(sectionsCopy, v31, v32, v33, v34, v35))
     {
       v40 = 0;
       v41 = 2.22507386e-308;
       v114 = v18;
-      objc_msgSend_objectAtIndex_(v14, v36, 0, v37, v38, v39, v16);
+      objc_msgSend_objectAtIndex_(sectionsCopy, v36, 0, v37, v38, v39, typesCopy);
       while (1)
         v58 = {;
-        v63 = objc_msgSend_objectAtIndex_(v16, v59, v40, v60, v61, v62);
+        v63 = objc_msgSend_objectAtIndex_(typesCopy, v59, v40, v60, v61, v62);
 
-        if (!v11 || objc_msgSend_isTextOrMathForStrokeType_(v18, v64, v63, v66, v67, v68))
+        if (!onlyCopy || objc_msgSend_isTextOrMathForStrokeType_(v18, v64, v63, v66, v67, v68))
         {
           v69 = objc_msgSend_array(MEMORY[0x1E695DF70], v64, v65, v66, v67, v68);
           v75 = objc_msgSend_count(v58, v70, v71, v72, v73, v74);
           v79 = objc_msgSend_getStrokeClassificationArray_ofType_(v18, v76, v75, v63, v77, v78);
           v80 = v18;
           v81 = v79;
-          objc_msgSend_loadStrokesFrom_withStrokes_types_withTime_atTimestamp_channels_orderedStrokes_(v80, v82, v13, v58, v79, v115, v15, v69, v41);
+          objc_msgSend_loadStrokesFrom_withStrokes_types_withTime_atTimestamp_channels_orderedStrokes_(v80, v82, lCopy, v58, v79, v115, channelsCopy, v69, v41);
           v88 = objc_msgSend_lastObject(v69, v83, v84, v85, v86, v87);
           objc_msgSend_endTimestamp(v88, v89, v90, v91, v92, v93);
           if (v41 <= v99)
           {
             objc_msgSend_lastObject(v69, v94, v95, v96, v97, v98);
-            v100 = v14;
-            v101 = v15;
-            v102 = v11;
-            v104 = v103 = v13;
+            v100 = sectionsCopy;
+            v101 = channelsCopy;
+            v102 = onlyCopy;
+            v104 = v103 = lCopy;
             objc_msgSend_endTimestamp(v104, v105, v106, v107, v108, v109);
             v41 = v110;
 
-            v13 = v103;
-            v11 = v102;
-            v15 = v101;
-            v14 = v100;
-            v16 = v113;
+            lCopy = v103;
+            onlyCopy = v102;
+            channelsCopy = v101;
+            sectionsCopy = v100;
+            typesCopy = v113;
           }
 
           objc_msgSend_updateWithAddedStrokes_removedStrokeIds_(v114, v42, v69, 0, v43, v44);
@@ -373,12 +373,12 @@ LABEL_26:
           v18 = v114;
         }
 
-        if (++v40 >= objc_msgSend_count(v14, v49, v50, v51, v52, v53))
+        if (++v40 >= objc_msgSend_count(sectionsCopy, v49, v50, v51, v52, v53))
         {
           break;
         }
 
-        objc_msgSend_objectAtIndex_(v14, v54, v40, v55, v56, v57, v113);
+        objc_msgSend_objectAtIndex_(sectionsCopy, v54, v40, v55, v56, v57, v113);
       }
     }
 
@@ -402,11 +402,11 @@ LABEL_26:
   return v26;
 }
 
-- (void)updateWithAddedStrokes:(id)a3 removedStrokeIds:(id)a4
+- (void)updateWithAddedStrokes:(id)strokes removedStrokeIds:(id)ids
 {
   v112 = *MEMORY[0x1E69E9840];
-  v95 = a3;
-  v6 = a4;
+  strokesCopy = strokes;
+  idsCopy = ids;
   v12 = objc_msgSend_array(MEMORY[0x1E695DF70], v7, v8, v9, v10, v11);
   v105 = 0u;
   v106 = 0u;
@@ -418,7 +418,7 @@ LABEL_26:
   {
     v22 = v16;
     v23 = *v106;
-    if (v6)
+    if (idsCopy)
     {
       do
       {
@@ -430,8 +430,8 @@ LABEL_26:
           }
 
           v25 = *(*(&v105 + 1) + 8 * i);
-          v26 = objc_msgSend_strokeIdentifier(v25, v17, v18, v19, v20, v21, v95);
-          v31 = objc_msgSend_containsObject_(v6, v27, v26, v28, v29, v30);
+          v26 = objc_msgSend_strokeIdentifier(v25, v17, v18, v19, v20, v21, strokesCopy);
+          v31 = objc_msgSend_containsObject_(idsCopy, v27, v26, v28, v29, v30);
 
           if ((v31 & 1) == 0)
           {
@@ -456,7 +456,7 @@ LABEL_26:
             objc_enumerationMutation(v13);
           }
 
-          objc_msgSend_addObject_(v12, v17, *(*(&v105 + 1) + 8 * j), v19, v20, v21, v95);
+          objc_msgSend_addObject_(v12, v17, *(*(&v105 + 1) + 8 * j), v19, v20, v21, strokesCopy);
         }
 
         v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v17, &v105, v111, 16, v21);
@@ -470,13 +470,13 @@ LABEL_26:
   v104 = 0u;
   v101 = 0u;
   v102 = 0u;
-  v33 = v95;
+  v33 = strokesCopy;
   v36 = objc_msgSend_countByEnumeratingWithState_objects_count_(v33, v34, &v101, v110, 16, v35);
   if (v36)
   {
     v42 = v36;
     v43 = *v102;
-    if (v6)
+    if (idsCopy)
     {
       do
       {
@@ -488,8 +488,8 @@ LABEL_26:
           }
 
           v45 = *(*(&v101 + 1) + 8 * k);
-          v46 = objc_msgSend_strokeIdentifier(v45, v37, v38, v39, v40, v41, v95);
-          v51 = objc_msgSend_containsObject_(v6, v47, v46, v48, v49, v50);
+          v46 = objc_msgSend_strokeIdentifier(v45, v37, v38, v39, v40, v41, strokesCopy);
+          v51 = objc_msgSend_containsObject_(idsCopy, v47, v46, v48, v49, v50);
 
           if ((v51 & 1) == 0)
           {
@@ -520,7 +520,7 @@ LABEL_26:
 
           v62 = *(*(&v101 + 1) + 8 * m);
           v63 = self->_strokesByID;
-          v64 = objc_msgSend_strokeIdentifier(v62, v37, v38, v39, v40, v41, v95);
+          v64 = objc_msgSend_strokeIdentifier(v62, v37, v38, v39, v40, v41, strokesCopy);
           objc_msgSend_setObject_forKey_(v63, v65, v62, v64, v66, v67);
 
           objc_msgSend_addObject_(v12, v68, v62, v69, v70, v71);
@@ -537,7 +537,7 @@ LABEL_26:
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v72 = v6;
+  v72 = idsCopy;
   v75 = objc_msgSend_countByEnumeratingWithState_objects_count_(v72, v73, &v97, v109, 16, v74);
   if (v75)
   {
@@ -552,7 +552,7 @@ LABEL_26:
           objc_enumerationMutation(v72);
         }
 
-        objc_msgSend_removeObjectForKey_(self->_strokesByID, v76, *(*(&v97 + 1) + 8 * n), v77, v78, v79, v95);
+        objc_msgSend_removeObjectForKey_(self->_strokesByID, v76, *(*(&v97 + 1) + 8 * n), v77, v78, v79, strokesCopy);
       }
 
       v80 = objc_msgSend_countByEnumeratingWithState_objects_count_(v72, v76, &v97, v109, 16, v79);
@@ -575,28 +575,28 @@ LABEL_26:
   ++self->_version;
 }
 
-- (void)setStrokeAttributes:(unint64_t)a3 atIndexes:(id)a4
+- (void)setStrokeAttributes:(unint64_t)attributes atIndexes:(id)indexes
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_1836E5B8C;
   v6[3] = &unk_1E6DDC958;
   v6[4] = self;
-  v6[5] = a3;
-  objc_msgSend_enumerateIndexesUsingBlock_(a4, a2, v6, a4, v4, v5);
+  v6[5] = attributes;
+  objc_msgSend_enumerateIndexesUsingBlock_(indexes, a2, v6, indexes, v4, v5);
 }
 
-- (void)loadStrokesFrom:(id)a3 section:(id)a4 withTime:(BOOL)a5 atTimestamp:(double)a6 channels:(id)a7 orderedStrokes:(id)a8
+- (void)loadStrokesFrom:(id)from section:(id)section withTime:(BOOL)time atTimestamp:(double)timestamp channels:(id)channels orderedStrokes:(id)strokes
 {
-  v11 = a5;
-  v50 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  v25 = objc_msgSend_objectForKey_(v14, v17, @"unicodeCodePoints", v18, v19, v20);
+  timeCopy = time;
+  fromCopy = from;
+  sectionCopy = section;
+  channelsCopy = channels;
+  strokesCopy = strokes;
+  v25 = objc_msgSend_objectForKey_(sectionCopy, v17, @"unicodeCodePoints", v18, v19, v20);
   if (v25)
   {
-    v26 = objc_msgSend_objectForKey_(v14, v21, @"segmentationStrokes", v22, v23, v24);
+    v26 = objc_msgSend_objectForKey_(sectionCopy, v21, @"segmentationStrokes", v22, v23, v24);
     v27 = v26 != 0;
   }
 
@@ -605,38 +605,38 @@ LABEL_26:
     v27 = 0;
   }
 
-  v32 = objc_msgSend_objectForKey_(v14, v28, @"strokeClassification", v29, v30, v31);
-  v42 = objc_msgSend_objectForKey_(v14, v33, @"data", v34, v35, v36);
+  v32 = objc_msgSend_objectForKey_(sectionCopy, v28, @"strokeClassification", v29, v30, v31);
+  v42 = objc_msgSend_objectForKey_(sectionCopy, v33, @"data", v34, v35, v36);
   if (v32 && (v43 = objc_msgSend_length(v32, v37, v38, v39, v40, v41), v43 == objc_msgSend_count(v42, v44, v45, v46, v47, v48)))
   {
-    objc_msgSend_loadStrokesBasedOnStrokeClassicationType_section_withTime_atTimestamp_channels_orderedStrokes_(self, v37, v50, v14, v11, v15, v16, a6);
+    objc_msgSend_loadStrokesBasedOnStrokeClassicationType_section_withTime_atTimestamp_channels_orderedStrokes_(self, v37, fromCopy, sectionCopy, timeCopy, channelsCopy, strokesCopy, timestamp);
     v49 = 2;
   }
 
   else if (v27)
   {
-    objc_msgSend_loadStrokesBasedOnUnicodeFrom_section_withTime_atTimestamp_channels_orderedStrokes_(self, v37, v50, v14, v11, v15, v16, a6);
+    objc_msgSend_loadStrokesBasedOnUnicodeFrom_section_withTime_atTimestamp_channels_orderedStrokes_(self, v37, fromCopy, sectionCopy, timeCopy, channelsCopy, strokesCopy, timestamp);
     v49 = 2;
   }
 
   else
   {
-    objc_msgSend_loadStrokesBasedOnSectionTypeFrom_section_withTime_atTimestamp_channels_orderedStrokes_(self, v37, v50, v14, v11, v15, v16, a6);
+    objc_msgSend_loadStrokesBasedOnSectionTypeFrom_section_withTime_atTimestamp_channels_orderedStrokes_(self, v37, fromCopy, sectionCopy, timeCopy, channelsCopy, strokesCopy, timestamp);
     v49 = 3;
   }
 
   self->_strokeClassificationGTSource = v49;
 }
 
-- (void)loadStrokesBasedOnStrokeClassicationType:(id)a3 section:(id)a4 withTime:(BOOL)a5 atTimestamp:(double)a6 channels:(id)a7 orderedStrokes:(id)a8
+- (void)loadStrokesBasedOnStrokeClassicationType:(id)type section:(id)section withTime:(BOOL)time atTimestamp:(double)timestamp channels:(id)channels orderedStrokes:(id)strokes
 {
-  v74 = a5;
-  v75 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = a8;
-  v20 = objc_msgSend_objectForKey_(v13, v16, @"strokeClassification", v17, v18, v19);
-  v25 = objc_msgSend_objectForKey_(v13, v21, @"data", v22, v23, v24);
+  timeCopy = time;
+  typeCopy = type;
+  sectionCopy = section;
+  channelsCopy = channels;
+  strokesCopy = strokes;
+  v20 = objc_msgSend_objectForKey_(sectionCopy, v16, @"strokeClassification", v17, v18, v19);
+  v25 = objc_msgSend_objectForKey_(sectionCopy, v21, @"data", v22, v23, v24);
   v26 = objc_alloc(MEMORY[0x1E695DF70]);
   v32 = objc_msgSend_length(v20, v27, v28, v29, v30, v31);
   v37 = objc_msgSend_initWithCapacity_(v26, v33, v32, v34, v35, v36);
@@ -674,18 +674,18 @@ LABEL_26:
     }
   }
 
-  objc_msgSend_loadStrokesFrom_withStrokes_types_withTime_atTimestamp_channels_orderedStrokes_(self, v43, v75, v25, v37, v74, v14, v15, a6);
+  objc_msgSend_loadStrokesFrom_withStrokes_types_withTime_atTimestamp_channels_orderedStrokes_(self, v43, typeCopy, v25, v37, timeCopy, channelsCopy, strokesCopy, timestamp);
 }
 
-- (void)loadStrokesBasedOnUnicodeFrom:(id)a3 section:(id)a4 withTime:(BOOL)a5 atTimestamp:(double)a6 channels:(id)a7 orderedStrokes:(id)a8
+- (void)loadStrokesBasedOnUnicodeFrom:(id)from section:(id)section withTime:(BOOL)time atTimestamp:(double)timestamp channels:(id)channels orderedStrokes:(id)strokes
 {
-  v11 = a5;
-  v90 = a3;
-  v13 = a4;
-  v89 = a7;
-  v88 = a8;
-  v18 = objc_msgSend_objectForKey_(v13, v14, @"segmentationStrokes", v15, v16, v17);
-  v23 = objc_msgSend_objectForKey_(v13, v19, @"data", v20, v21, v22);
+  timeCopy = time;
+  fromCopy = from;
+  sectionCopy = section;
+  channelsCopy = channels;
+  strokesCopy = strokes;
+  v18 = objc_msgSend_objectForKey_(sectionCopy, v14, @"segmentationStrokes", v15, v16, v17);
+  v23 = objc_msgSend_objectForKey_(sectionCopy, v19, @"data", v20, v21, v22);
   v29 = objc_msgSend_count(v23, v24, v25, v26, v27, v28);
 
   for (i = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v30, v29, v31, v32, v33);
@@ -694,8 +694,8 @@ LABEL_26:
     objc_msgSend_addObject_(i, v41, v40, v42, v43, v44);
   }
 
-  v45 = objc_msgSend_objectForKey_(v13, v34, @"annotatedCutPoints", v36, v37, v38);
-  v50 = objc_msgSend_objectForKey_(v13, v46, @"segmentationCodePoints", v47, v48, v49);
+  v45 = objc_msgSend_objectForKey_(sectionCopy, v34, @"annotatedCutPoints", v36, v37, v38);
+  v50 = objc_msgSend_objectForKey_(sectionCopy, v46, @"segmentationCodePoints", v47, v48, v49);
   v93[0] = MEMORY[0x1E69E9820];
   v93[1] = 3221225472;
   v93[2] = sub_1836E6260;
@@ -717,19 +717,19 @@ LABEL_26:
   v92 = v68;
   v69 = v68;
   objc_msgSend_enumerateObjectsUsingBlock_(v51, v70, v91, v71, v72, v73);
-  v78 = objc_msgSend_objectForKey_(v13, v74, @"data", v75, v76, v77);
+  v78 = objc_msgSend_objectForKey_(sectionCopy, v74, @"data", v75, v76, v77);
   v84 = objc_msgSend_copy(v69, v79, v80, v81, v82, v83);
-  objc_msgSend_loadStrokesFrom_withStrokes_types_withTime_atTimestamp_channels_orderedStrokes_(self, v85, v90, v78, v84, v11, v89, v88, a6);
+  objc_msgSend_loadStrokesFrom_withStrokes_types_withTime_atTimestamp_channels_orderedStrokes_(self, v85, fromCopy, v78, v84, timeCopy, channelsCopy, strokesCopy, timestamp);
 }
 
-- (void)loadStrokesBasedOnSectionTypeFrom:(id)a3 section:(id)a4 withTime:(BOOL)a5 atTimestamp:(double)a6 channels:(id)a7 orderedStrokes:(id)a8
+- (void)loadStrokesBasedOnSectionTypeFrom:(id)from section:(id)section withTime:(BOOL)time atTimestamp:(double)timestamp channels:(id)channels orderedStrokes:(id)strokes
 {
-  v11 = a5;
-  v79 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  v21 = objc_msgSend_objectForKey_(v14, v17, @"type", v18, v19, v20);
+  timeCopy = time;
+  fromCopy = from;
+  sectionCopy = section;
+  channelsCopy = channels;
+  strokesCopy = strokes;
+  v21 = objc_msgSend_objectForKey_(sectionCopy, v17, @"type", v18, v19, v20);
 
   if (!v21)
   {
@@ -737,11 +737,11 @@ LABEL_26:
     goto LABEL_20;
   }
 
-  v26 = objc_msgSend_objectForKey_(v14, v22, @"type", v23, v24, v25);
-  v31 = objc_msgSend_objectForKey_(v14, v27, @"collectionType", v28, v29, v30);
+  v26 = objc_msgSend_objectForKey_(sectionCopy, v22, @"type", v23, v24, v25);
+  v31 = objc_msgSend_objectForKey_(sectionCopy, v27, @"collectionType", v28, v29, v30);
   if (objc_msgSend_isEqualToString_(v26, v32, @"text", v33, v34, v35) && (objc_msgSend_isEqualToString_(v31, v36, @"math", v37, v38, v39) & 1) != 0 || objc_msgSend_isEqualToString_(v26, v36, @"math", v37, v38, v39))
   {
-    v40 = objc_msgSend_objectForKeyedSubscript_(v14, v36, @"string", v37, v38, v39);
+    v40 = objc_msgSend_objectForKeyedSubscript_(sectionCopy, v36, @"string", v37, v38, v39);
     if (objc_msgSend_containsString_(v40, v41, @"hline", v42, v43, v44) & 1) != 0 || objc_msgSend_containsString_(v40, v45, @"begin{array}{lr}", v46, v47, v48) && (objc_msgSend_containsString_(v40, v54, @"end{array}", v55, v56, v57))
     {
       v49 = 4;
@@ -764,14 +764,14 @@ LABEL_26:
   {
     if ((objc_msgSend_isEqualToString_(v26, v50, @"underline", v51, v52, v53) & 1) == 0)
     {
-      v62 = objc_msgSend_objectForKey_(v14, v58, @"box", v59, v60, v61);
+      v62 = objc_msgSend_objectForKey_(sectionCopy, v58, @"box", v59, v60, v61);
       if (v62)
       {
       }
 
       else
       {
-        v49 = objc_msgSend_objectForKey_(v14, v63, @"encircle", v64, v65, v66);
+        v49 = objc_msgSend_objectForKey_(sectionCopy, v63, @"encircle", v64, v65, v66);
 
         if (!v49)
         {
@@ -789,27 +789,27 @@ LABEL_26:
 LABEL_19:
 
 LABEL_20:
-  v67 = objc_msgSend_objectForKey_(v14, v22, @"data", v23, v24, v25);
+  v67 = objc_msgSend_objectForKey_(sectionCopy, v22, @"data", v23, v24, v25);
   v73 = objc_msgSend_count(v67, v68, v69, v70, v71, v72);
   v77 = objc_msgSend_getStrokeClassificationArray_ofType_(self, v74, v73, v49, v75, v76);
-  objc_msgSend_loadStrokesFrom_withStrokes_types_withTime_atTimestamp_channels_orderedStrokes_(self, v78, v79, v67, v77, v11, v15, v16, a6);
+  objc_msgSend_loadStrokesFrom_withStrokes_types_withTime_atTimestamp_channels_orderedStrokes_(self, v78, fromCopy, v67, v77, timeCopy, channelsCopy, strokesCopy, timestamp);
 }
 
-- (void)loadStrokesFrom:(id)a3 withStrokes:(id)a4 types:(id)a5 withTime:(BOOL)a6 atTimestamp:(double)a7 channels:(id)a8 orderedStrokes:(id)a9
+- (void)loadStrokesFrom:(id)from withStrokes:(id)strokes types:(id)types withTime:(BOOL)time atTimestamp:(double)timestamp channels:(id)channels orderedStrokes:(id)orderedStrokes
 {
   v137 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v24 = a9;
-  if (v16 && objc_msgSend_count(v16, v19, v20, v21, v22, v23))
+  fromCopy = from;
+  strokesCopy = strokes;
+  typesCopy = types;
+  channelsCopy = channels;
+  orderedStrokesCopy = orderedStrokes;
+  if (strokesCopy && objc_msgSend_count(strokesCopy, v19, v20, v21, v22, v23))
   {
     v30 = 0;
-    v31 = a7 + 1.0;
+    v31 = timestamp + 1.0;
     v32 = 0.0;
     v33 = 1;
-    objc_msgSend_objectAtIndex_(v16, v25, 0, v26, v27, v28, 138412290, v29);
+    objc_msgSend_objectAtIndex_(strokesCopy, v25, 0, v26, v27, v28, 138412290, v29);
     while (1)
       v43 = {;
       v49 = objc_msgSend_count(v43, v44, v45, v46, v47, v48);
@@ -826,12 +826,12 @@ LABEL_20:
           v54 = v32;
         }
 
-        if ((v33 & 1 & a6) == 1)
+        if ((v33 & 1 & time) == 1)
         {
-          v55 = objc_msgSend_objectAtIndex_(v16, v50, v30, v51, v52, v53);
+          v55 = objc_msgSend_objectAtIndex_(strokesCopy, v50, v30, v51, v52, v53);
           v60 = objc_msgSend_objectAtIndex_(v55, v56, 0, v57, v58, v59);
 
-          v65 = objc_msgSend_valueForKey_(v18, v61, @"t", v62, v63, v64);
+          v65 = objc_msgSend_valueForKey_(channelsCopy, v61, @"t", v62, v63, v64);
           v71 = objc_msgSend_intValue(v65, v66, v67, v68, v69, v70);
 
           if (objc_msgSend_count(v60, v72, v73, v74, v75, v76) > v71)
@@ -849,14 +849,14 @@ LABEL_20:
           v54 = v32;
         }
 
-        v89 = objc_msgSend_objectAtIndex_(v17, v50, v30, v51, v52, v53);
+        v89 = objc_msgSend_objectAtIndex_(typesCopy, v50, v30, v51, v52, v53);
         v95 = objc_msgSend_intValue(v89, v90, v91, v92, v93, v94);
 
         v96 = [CHClientStroke alloc];
-        v101 = objc_msgSend_objectAtIndex_(v16, v97, v30, v98, v99, v100);
-        v104 = objc_msgSend_initWithArray_channels_withTimeOffset_type_(v96, v102, v101, v18, v95, v103, v54);
+        v101 = objc_msgSend_objectAtIndex_(strokesCopy, v97, v30, v98, v99, v100);
+        v104 = objc_msgSend_initWithArray_channels_withTimeOffset_type_(v96, v102, v101, channelsCopy, v95, v103, v54);
 
-        objc_msgSend_addObject_(v24, v105, v104, v106, v107, v108);
+        objc_msgSend_addObject_(orderedStrokesCopy, v105, v104, v106, v107, v108);
         if (!objc_msgSend_pointsCount(v104, v109, v110, v111, v112, v113))
         {
           if (qword_1EA84DC48 != -1)
@@ -867,7 +867,7 @@ LABEL_20:
           v126 = qword_1EA84DC50[0];
           if (os_log_type_enabled(v126, OS_LOG_TYPE_ERROR))
           {
-            v132 = objc_msgSend_path(v15, v127, v128, v129, v130, v131);
+            v132 = objc_msgSend_path(fromCopy, v127, v128, v129, v130, v131);
             *buf = v133;
             v136 = v132;
             _os_log_impl(&dword_18366B000, v126, OS_LOG_TYPE_ERROR, "Unexpected empty stroke in document %@", buf, 0xCu);
@@ -878,7 +878,7 @@ LABEL_5:
           goto LABEL_6;
         }
 
-        if (a6)
+        if (time)
         {
           goto LABEL_5;
         }
@@ -898,7 +898,7 @@ LABEL_5:
         v104 = qword_1EA84DC50[0];
         if (os_log_type_enabled(v104, OS_LOG_TYPE_ERROR))
         {
-          v125 = objc_msgSend_path(v15, v120, v121, v122, v123, v124);
+          v125 = objc_msgSend_path(fromCopy, v120, v121, v122, v123, v124);
           *buf = v133;
           v136 = v125;
           _os_log_impl(&dword_18366B000, v104, OS_LOG_TYPE_ERROR, "Unexpected empty stroke in document %@", buf, 0xCu);
@@ -911,12 +911,12 @@ LABEL_6:
 
       ++v30;
       v32 = v54;
-      if (v30 >= objc_msgSend_count(v16, v34, v35, v36, v37, v38))
+      if (v30 >= objc_msgSend_count(strokesCopy, v34, v35, v36, v37, v38))
       {
         break;
       }
 
-      objc_msgSend_objectAtIndex_(v16, v39, v30, v40, v41, v42, v133, v134);
+      objc_msgSend_objectAtIndex_(strokesCopy, v39, v30, v40, v41, v42, v133, v134);
     }
   }
 }
@@ -991,16 +991,16 @@ LABEL_6:
   return v12;
 }
 
-- (id)drawingWithStrokes:(id)a3
+- (id)drawingWithStrokes:(id)strokes
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  strokesCopy = strokes;
   v5 = objc_alloc_init(CHDrawing);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v4;
+  obj = strokesCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v6, &v31, v35, 16, v7);
   if (v8)
   {
@@ -1035,19 +1035,19 @@ LABEL_6:
   return v5;
 }
 
-- (id)drawingWithGroups:(id)a3 transforms:(id)a4
+- (id)drawingWithGroups:(id)groups transforms:(id)transforms
 {
   v72 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  groupsCopy = groups;
+  transformsCopy = transforms;
   v8 = objc_alloc_init(CHDrawing);
   v14 = objc_msgSend_allKeys(self->_strokesByID, v9, v10, v11, v12, v13);
   v20 = objc_msgSend_mutableCopy(v14, v15, v16, v17, v18, v19);
 
-  if (objc_msgSend_count(v6, v21, v22, v23, v24, v25))
+  if (objc_msgSend_count(groupsCopy, v21, v22, v23, v24, v25))
   {
     v30 = 0;
-    objc_msgSend_objectAtIndexedSubscript_(v6, v26, 0, v27, v28, v29);
+    objc_msgSend_objectAtIndexedSubscript_(groupsCopy, v26, 0, v27, v28, v29);
     while (1)
       v55 = {;
       v67 = 0u;
@@ -1078,33 +1078,33 @@ LABEL_6:
       }
 
       v31 = objc_msgSend_drawingWithStrokes_(self, v59, v55, v60, v61, v62);
-      v36 = objc_msgSend_objectAtIndexedSubscript_(v7, v32, v30, v33, v34, v35);
+      v36 = objc_msgSend_objectAtIndexedSubscript_(transformsCopy, v32, v30, v33, v34, v35);
       v41 = objc_msgSend_newDrawingWithTransform_(v31, v37, v36, v38, v39, v40);
 
       objc_msgSend_appendDrawing_(v8, v42, v41, v43, v44, v45);
-      if (++v30 >= objc_msgSend_count(v6, v46, v47, v48, v49, v50))
+      if (++v30 >= objc_msgSend_count(groupsCopy, v46, v47, v48, v49, v50))
       {
         break;
       }
 
-      objc_msgSend_objectAtIndexedSubscript_(v6, v51, v30, v52, v53, v54);
+      objc_msgSend_objectAtIndexedSubscript_(groupsCopy, v51, v30, v52, v53, v54);
     }
   }
 
   return v8;
 }
 
-- (void)updateWithGroups:(id)a3 transforms:(id)a4
+- (void)updateWithGroups:(id)groups transforms:(id)transforms
 {
   v100 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v94 = a4;
+  groupsCopy = groups;
+  transformsCopy = transforms;
   v12 = objc_msgSend_array(MEMORY[0x1E695DF70], v7, v8, v9, v10, v11);
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v93 = self;
+  selfCopy = self;
   v18 = objc_msgSend_orderedStrokes(self, v13, v14, v15, v16, v17);
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v18, v19, &v95, v99, 16, v20);
   if (v21)
@@ -1124,7 +1124,7 @@ LABEL_6:
 
           v35 = *(*(&v95 + 1) + 8 * i);
           v36 = objc_msgSend_strokeIdentifier(v35, v22, v23, v24, v25, v26);
-          if (objc_msgSend_count(v6, v37, v38, v39, v40, v41))
+          if (objc_msgSend_count(groupsCopy, v37, v38, v39, v40, v41))
           {
             break;
           }
@@ -1142,19 +1142,19 @@ LABEL_5:
         v47 = 0;
         while (1)
         {
-          v48 = objc_msgSend_objectAtIndexedSubscript_(v6, v42, v47, v44, v45, v46);
+          v48 = objc_msgSend_objectAtIndexedSubscript_(groupsCopy, v42, v47, v44, v45, v46);
           if (objc_msgSend_containsObject_(v48, v49, v36, v50, v51, v52))
           {
             break;
           }
 
-          if (++v47 >= objc_msgSend_count(v6, v57, v58, v59, v60, v61))
+          if (++v47 >= objc_msgSend_count(groupsCopy, v57, v58, v59, v60, v61))
           {
             goto LABEL_5;
           }
         }
 
-        v62 = objc_msgSend_objectAtIndexedSubscript_(v94, v53, v47, v54, v55, v56);
+        v62 = objc_msgSend_objectAtIndexedSubscript_(transformsCopy, v53, v47, v54, v55, v56);
         v67 = objc_msgSend_newStrokeWithTransformation_(v35, v63, v62, v64, v65, v66);
         objc_msgSend_addObject_(v12, v68, v67, v69, v70, v71);
       }
@@ -1167,26 +1167,26 @@ LABEL_3:
   }
 
   v72 = MEMORY[0x1E695DFD8];
-  v78 = objc_msgSend_strokesByID(v93, v73, v74, v75, v76, v77);
+  v78 = objc_msgSend_strokesByID(selfCopy, v73, v74, v75, v76, v77);
   v84 = objc_msgSend_allKeys(v78, v79, v80, v81, v82, v83);
   v89 = objc_msgSend_setWithArray_(v72, v85, v84, v86, v87, v88);
-  objc_msgSend_updateWithAddedStrokes_removedStrokeIds_(v93, v90, v12, v89, v91, v92);
+  objc_msgSend_updateWithAddedStrokes_removedStrokeIds_(selfCopy, v90, v12, v89, v91, v92);
 }
 
-- (id)strokeForIdentifier:(id)a3
+- (id)strokeForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10 = objc_msgSend_strokesByID(self, v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_objectForKey_(v10, v11, v4, v12, v13, v14);
+  v15 = objc_msgSend_objectForKey_(v10, v11, identifierCopy, v12, v13, v14);
 
   return v15;
 }
 
-- (int64_t)compareOrderOfStrokeWithIdentifier:(id)a3 toStrokeWithIdentifier:(id)a4
+- (int64_t)compareOrderOfStrokeWithIdentifier:(id)identifier toStrokeWithIdentifier:(id)withIdentifier
 {
-  v5 = a4;
-  v11 = objc_msgSend_integerValue(a3, v6, v7, v8, v9, v10);
-  v17 = objc_msgSend_integerValue(v5, v12, v13, v14, v15, v16);
+  withIdentifierCopy = withIdentifier;
+  v11 = objc_msgSend_integerValue(identifier, v6, v7, v8, v9, v10);
+  v17 = objc_msgSend_integerValue(withIdentifierCopy, v12, v13, v14, v15, v16);
 
   if (v11 >= v17)
   {
@@ -1209,43 +1209,43 @@ LABEL_3:
   }
 }
 
-- (id)strokeIdentifierFromData:(id)a3
+- (id)strokeIdentifierFromData:(id)data
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v10 = objc_msgSend_objectForKey_(v5->__strokeIdsByEncoding, v6, v4, v7, v8, v9);
+  dataCopy = data;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10 = objc_msgSend_objectForKey_(selfCopy->__strokeIdsByEncoding, v6, dataCopy, v7, v8, v9);
 
   if (v10)
   {
-    v15 = objc_msgSend_objectForKey_(v5->__strokeIdsByEncoding, v11, v4, v12, v13, v14);
+    v15 = objc_msgSend_objectForKey_(selfCopy->__strokeIdsByEncoding, v11, dataCopy, v12, v13, v14);
   }
 
   else
   {
     v16 = MEMORY[0x1E696ACD0];
     v17 = objc_opt_class();
-    v23 = objc_msgSend_encodedStrokeIdentifier(v4, v18, v19, v20, v21, v22);
+    v23 = objc_msgSend_encodedStrokeIdentifier(dataCopy, v18, v19, v20, v21, v22);
     v31 = 0;
     v15 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v16, v24, v17, v23, &v31, v25);
     v26 = v31;
 
-    objc_msgSend_setObject_forKey_(v5->__strokeIdsByEncoding, v27, v15, v4, v28, v29);
+    objc_msgSend_setObject_forKey_(selfCopy->__strokeIdsByEncoding, v27, v15, dataCopy, v28, v29);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v15;
 }
 
-- (id)encodedStrokeIdentifier:(id)a3
+- (id)encodedStrokeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v9 = objc_msgSend_objectForKey_(self->_strokesByID, v5, v4, v6, v7, v8);
+  identifierCopy = identifier;
+  v9 = objc_msgSend_objectForKey_(self->_strokesByID, v5, identifierCopy, v6, v7, v8);
 
   if (v9)
   {
-    v14 = objc_msgSend_objectForKey_(self->_strokesByID, v10, v4, v11, v12, v13);
+    v14 = objc_msgSend_objectForKey_(self->_strokesByID, v10, identifierCopy, v11, v12, v13);
     v20 = objc_msgSend_encodedStrokeIdentifier(v14, v15, v16, v17, v18, v19);
   }
 
@@ -1253,22 +1253,22 @@ LABEL_3:
   {
     v21 = [CHEncodedStrokeIdentifier alloc];
     v39 = 0;
-    v14 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v22, v4, 1, &v39, v23);
+    v14 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v22, identifierCopy, 1, &v39, v23);
     v20 = objc_msgSend_initWithData_(v21, v24, v14, v25, v26, v27);
   }
 
   v28 = v20;
 
-  v29 = self;
-  objc_sync_enter(v29);
-  v34 = objc_msgSend_objectForKey_(v29->__strokeIdsByEncoding, v30, v28, v31, v32, v33);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v34 = objc_msgSend_objectForKey_(selfCopy->__strokeIdsByEncoding, v30, v28, v31, v32, v33);
 
   if (!v34)
   {
-    objc_msgSend_setObject_forKey_(v29->__strokeIdsByEncoding, v35, v4, v28, v36, v37);
+    objc_msgSend_setObject_forKey_(selfCopy->__strokeIdsByEncoding, v35, identifierCopy, v28, v36, v37);
   }
 
-  objc_sync_exit(v29);
+  objc_sync_exit(selfCopy);
 
   return v28;
 }

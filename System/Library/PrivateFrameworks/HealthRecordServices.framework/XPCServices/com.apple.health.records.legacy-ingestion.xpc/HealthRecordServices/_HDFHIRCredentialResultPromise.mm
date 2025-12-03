@@ -1,7 +1,7 @@
 @interface _HDFHIRCredentialResultPromise
 - (HDFHIRCredentialResult)result;
 - (_HDFHIRCredentialResultPromise)init;
-- (void)fulfillWithResult:(id)a3;
+- (void)fulfillWithResult:(id)result;
 @end
 
 @implementation _HDFHIRCredentialResultPromise
@@ -33,9 +33,9 @@
   return v3;
 }
 
-- (void)fulfillWithResult:(id)a3
+- (void)fulfillWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   os_unfair_lock_lock(&self->_resultLock);
   if (self->_result)
   {
@@ -43,7 +43,7 @@
   }
 
   result = self->_result;
-  self->_result = v4;
+  self->_result = resultCopy;
 
   os_unfair_lock_unlock(&self->_resultLock);
 }

@@ -1,39 +1,39 @@
 @interface MTHLSItem
-- (MTHLSItem)initWithStartOverallPosition:(unint64_t)a3 metricsData:(id)a4;
-- (int64_t)compare:(id)a3;
+- (MTHLSItem)initWithStartOverallPosition:(unint64_t)position metricsData:(id)data;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation MTHLSItem
 
-- (MTHLSItem)initWithStartOverallPosition:(unint64_t)a3 metricsData:(id)a4
+- (MTHLSItem)initWithStartOverallPosition:(unint64_t)position metricsData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = MTHLSItem;
   v7 = [(MTHLSItem *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(MTHLSItem *)v7 setStartOverallPosition:a3];
-    [(MTHLSItem *)v8 setEventData:v6];
+    [(MTHLSItem *)v7 setStartOverallPosition:position];
+    [(MTHLSItem *)v8 setEventData:dataCopy];
   }
 
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(MTHLSItem *)self startOverallPosition];
-  if (v5 == [v4 startOverallPosition])
+  compareCopy = compare;
+  startOverallPosition = [(MTHLSItem *)self startOverallPosition];
+  if (startOverallPosition == [compareCopy startOverallPosition])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(MTHLSItem *)self startOverallPosition];
-    if (v7 < [v4 startOverallPosition])
+    startOverallPosition2 = [(MTHLSItem *)self startOverallPosition];
+    if (startOverallPosition2 < [compareCopy startOverallPosition])
     {
       v6 = -1;
     }

@@ -1,22 +1,22 @@
 @interface CDPurgeableResultCache
 + (id)sharedPurgeableResultsCache;
 - (BOOL)hasInvalids;
-- (BOOL)hasSnapshotForVolume:(id)a3;
+- (BOOL)hasSnapshotForVolume:(id)volume;
 - (BOOL)isEmpty;
-- (BOOL)isInvalidForVolume:(id)a3;
+- (BOOL)isInvalidForVolume:(id)volume;
 - (BOOL)isStale;
-- (BOOL)isStaleForVolume:(id)a3;
-- (id)bsdDiskForVolume:(id)a3;
-- (id)dictionaryByMerging:(id)a3 with:(id)a4;
+- (BOOL)isStaleForVolume:(id)volume;
+- (id)bsdDiskForVolume:(id)volume;
+- (id)dictionaryByMerging:(id)merging with:(id)with;
 - (id)initEmpty;
-- (id)recentInfoForVolume:(id)a3 atUrgency:(int)a4 validateResults:(BOOL)a5;
-- (id)servicesForVolume:(id)a3;
-- (id)thresholdsForVolume:(id)a3;
-- (int64_t)recentStateForVolume:(id)a3;
-- (void)absorbRecentInfo:(id)a3;
-- (void)invalidateAllForgettingPushers:(BOOL)a3;
+- (id)recentInfoForVolume:(id)volume atUrgency:(int)urgency validateResults:(BOOL)results;
+- (id)servicesForVolume:(id)volume;
+- (id)thresholdsForVolume:(id)volume;
+- (int64_t)recentStateForVolume:(id)volume;
+- (void)absorbRecentInfo:(id)info;
+- (void)invalidateAllForgettingPushers:(BOOL)pushers;
 - (void)log;
-- (void)updateRecentVolumeInfo:(id)a3;
+- (void)updateRecentVolumeInfo:(id)info;
 @end
 
 @implementation CDPurgeableResultCache
@@ -61,27 +61,27 @@ uint64_t __53__CDPurgeableResultCache_sharedPurgeableResultsCache__block_invoke(
   return v2;
 }
 
-- (id)recentInfoForVolume:(id)a3 atUrgency:(int)a4 validateResults:(BOOL)a5
+- (id)recentInfoForVolume:(id)volume atUrgency:(int)urgency validateResults:(BOOL)results
 {
-  v8 = a3;
+  volumeCopy = volume;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__1;
   v22 = __Block_byref_object_dispose__1;
   v23 = 0;
-  v9 = [(CDPurgeableResultCache *)self queue];
+  queue = [(CDPurgeableResultCache *)self queue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__CDPurgeableResultCache_recentInfoForVolume_atUrgency_validateResults___block_invoke;
   v13[3] = &unk_1E7F02C78;
-  v14 = v8;
+  v14 = volumeCopy;
   v15 = &v18;
   v13[4] = self;
-  v16 = a4;
-  v17 = a5;
-  v10 = v8;
-  dispatch_sync(v9, v13);
+  urgencyCopy = urgency;
+  resultsCopy = results;
+  v10 = volumeCopy;
+  dispatch_sync(queue, v13);
 
   v11 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -98,22 +98,22 @@ void __72__CDPurgeableResultCache_recentInfoForVolume_atUrgency_validateResults_
   *(v3 + 40) = v2;
 }
 
-- (id)dictionaryByMerging:(id)a3 with:(id)a4
+- (id)dictionaryByMerging:(id)merging with:(id)with
 {
-  v6 = a3;
+  mergingCopy = merging;
   v7 = MEMORY[0x1E695DF90];
-  v8 = a4;
-  v9 = [[v7 alloc] initWithDictionary:v6];
+  withCopy = with;
+  v9 = [[v7 alloc] initWithDictionary:mergingCopy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __51__CDPurgeableResultCache_dictionaryByMerging_with___block_invoke;
   v14[3] = &unk_1E7F02CA0;
   v10 = v9;
   v15 = v10;
-  v16 = v6;
-  v17 = self;
-  v11 = v6;
-  [v8 enumerateKeysAndObjectsUsingBlock:v14];
+  v16 = mergingCopy;
+  selfCopy = self;
+  v11 = mergingCopy;
+  [withCopy enumerateKeysAndObjectsUsingBlock:v14];
 
   v12 = v10;
   return v10;
@@ -257,24 +257,24 @@ LABEL_28:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)recentStateForVolume:(id)a3
+- (int64_t)recentStateForVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if (v4)
+  if (volumeCopy)
   {
-    v5 = [(CDPurgeableResultCache *)self queue];
+    queue = [(CDPurgeableResultCache *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __47__CDPurgeableResultCache_recentStateForVolume___block_invoke;
     block[3] = &unk_1E7F02D18;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
-    dispatch_sync(v5, block);
+    v9 = volumeCopy;
+    dispatch_sync(queue, block);
 
     v6 = v12[3];
   }
@@ -296,25 +296,25 @@ void __47__CDPurgeableResultCache_recentStateForVolume___block_invoke(uint64_t a
   *(*(*(a1 + 48) + 8) + 24) = [v3 recentStateForVolume:v2];
 }
 
-- (void)updateRecentVolumeInfo:(id)a3
+- (void)updateRecentVolumeInfo:(id)info
 {
-  v4 = a3;
-  v7 = [(CDPurgeableResultCache *)self recentPurgeableResults];
-  v5 = [v7 volumes];
-  v6 = [v4 volume];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  infoCopy = info;
+  recentPurgeableResults = [(CDPurgeableResultCache *)self recentPurgeableResults];
+  volumes = [recentPurgeableResults volumes];
+  volume = [infoCopy volume];
+  [volumes setObject:infoCopy forKeyedSubscript:volume];
 }
 
-- (void)invalidateAllForgettingPushers:(BOOL)a3
+- (void)invalidateAllForgettingPushers:(BOOL)pushers
 {
-  v5 = [(CDPurgeableResultCache *)self queue];
+  queue = [(CDPurgeableResultCache *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__CDPurgeableResultCache_invalidateAllForgettingPushers___block_invoke;
   v6[3] = &unk_1E7F02CC8;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  pushersCopy = pushers;
+  dispatch_async(queue, v6);
 }
 
 void __57__CDPurgeableResultCache_invalidateAllForgettingPushers___block_invoke(uint64_t a1)
@@ -402,23 +402,23 @@ void __57__CDPurgeableResultCache_invalidateAllForgettingPushers___block_invoke(
 
 - (BOOL)isEmpty
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CDPurgeableResultCache *)self queue];
+  queue = [(CDPurgeableResultCache *)self queue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __33__CDPurgeableResultCache_isEmpty__block_invoke;
   v5[3] = &unk_1E7F02CF0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __33__CDPurgeableResultCache_isEmpty__block_invoke(uint64_t a1)
@@ -429,23 +429,23 @@ void __33__CDPurgeableResultCache_isEmpty__block_invoke(uint64_t a1)
 
 - (BOOL)isStale
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CDPurgeableResultCache *)self queue];
+  queue = [(CDPurgeableResultCache *)self queue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __33__CDPurgeableResultCache_isStale__block_invoke;
   v5[3] = &unk_1E7F02CF0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __33__CDPurgeableResultCache_isStale__block_invoke(uint64_t a1)
@@ -456,23 +456,23 @@ void __33__CDPurgeableResultCache_isStale__block_invoke(uint64_t a1)
 
 - (BOOL)hasInvalids
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CDPurgeableResultCache *)self queue];
+  queue = [(CDPurgeableResultCache *)self queue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __37__CDPurgeableResultCache_hasInvalids__block_invoke;
   v5[3] = &unk_1E7F02CF0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __37__CDPurgeableResultCache_hasInvalids__block_invoke(uint64_t a1)
@@ -481,25 +481,25 @@ void __37__CDPurgeableResultCache_hasInvalids__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 hasInvalids];
 }
 
-- (id)bsdDiskForVolume:(id)a3
+- (id)bsdDiskForVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__1;
   v16 = __Block_byref_object_dispose__1;
   v17 = 0;
-  v5 = [(CDPurgeableResultCache *)self queue];
+  queue = [(CDPurgeableResultCache *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__CDPurgeableResultCache_bsdDiskForVolume___block_invoke;
   block[3] = &unk_1E7F02D18;
-  v10 = v4;
+  v10 = volumeCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = volumeCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -516,25 +516,25 @@ void __43__CDPurgeableResultCache_bsdDiskForVolume___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)thresholdsForVolume:(id)a3
+- (id)thresholdsForVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__1;
   v16 = __Block_byref_object_dispose__1;
   v17 = 0;
-  v5 = [(CDPurgeableResultCache *)self queue];
+  queue = [(CDPurgeableResultCache *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__CDPurgeableResultCache_thresholdsForVolume___block_invoke;
   block[3] = &unk_1E7F02D18;
-  v10 = v4;
+  v10 = volumeCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = volumeCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -552,25 +552,25 @@ void __46__CDPurgeableResultCache_thresholdsForVolume___block_invoke(uint64_t a1
   *(v4 + 40) = v3;
 }
 
-- (id)servicesForVolume:(id)a3
+- (id)servicesForVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__1;
   v16 = __Block_byref_object_dispose__1;
   v17 = 0;
-  v5 = [(CDPurgeableResultCache *)self queue];
+  queue = [(CDPurgeableResultCache *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__CDPurgeableResultCache_servicesForVolume___block_invoke;
   block[3] = &unk_1E7F02D18;
-  v10 = v4;
+  v10 = volumeCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = volumeCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -587,27 +587,27 @@ void __44__CDPurgeableResultCache_servicesForVolume___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (BOOL)hasSnapshotForVolume:(id)a3
+- (BOOL)hasSnapshotForVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(CDPurgeableResultCache *)self queue];
+  queue = [(CDPurgeableResultCache *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__CDPurgeableResultCache_hasSnapshotForVolume___block_invoke;
   block[3] = &unk_1E7F02D18;
-  v9 = v4;
+  v9 = volumeCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = volumeCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(volumeCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return volumeCopy;
 }
 
 void __47__CDPurgeableResultCache_hasSnapshotForVolume___block_invoke(uint64_t a1)
@@ -616,27 +616,27 @@ void __47__CDPurgeableResultCache_hasSnapshotForVolume___block_invoke(uint64_t a
   *(*(*(a1 + 48) + 8) + 24) = [v2 hasSnapshotForVolume:*(a1 + 40)];
 }
 
-- (BOOL)isStaleForVolume:(id)a3
+- (BOOL)isStaleForVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(CDPurgeableResultCache *)self queue];
+  queue = [(CDPurgeableResultCache *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__CDPurgeableResultCache_isStaleForVolume___block_invoke;
   block[3] = &unk_1E7F02D18;
-  v9 = v4;
+  v9 = volumeCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = volumeCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(volumeCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return volumeCopy;
 }
 
 void __43__CDPurgeableResultCache_isStaleForVolume___block_invoke(uint64_t a1)
@@ -645,27 +645,27 @@ void __43__CDPurgeableResultCache_isStaleForVolume___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = [v2 isStaleForVolume:*(a1 + 40)];
 }
 
-- (BOOL)isInvalidForVolume:(id)a3
+- (BOOL)isInvalidForVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(CDPurgeableResultCache *)self queue];
+  queue = [(CDPurgeableResultCache *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__CDPurgeableResultCache_isInvalidForVolume___block_invoke;
   block[3] = &unk_1E7F02D18;
   block[4] = self;
-  v9 = v4;
+  v9 = volumeCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = volumeCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(volumeCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return volumeCopy;
 }
 
 void __45__CDPurgeableResultCache_isInvalidForVolume___block_invoke(uint64_t a1)
@@ -676,29 +676,29 @@ void __45__CDPurgeableResultCache_isInvalidForVolume___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = v3;
 }
 
-- (void)absorbRecentInfo:(id)a3
+- (void)absorbRecentInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CDPurgeableResultCache *)self queue];
+  infoCopy = info;
+  queue = [(CDPurgeableResultCache *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__CDPurgeableResultCache_absorbRecentInfo___block_invoke;
   v7[3] = &unk_1E7F02D40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = infoCopy;
+  v6 = infoCopy;
+  dispatch_sync(queue, v7);
 }
 
 - (void)log
 {
-  v3 = [(CDPurgeableResultCache *)self queue];
+  queue = [(CDPurgeableResultCache *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __29__CDPurgeableResultCache_log__block_invoke;
   block[3] = &unk_1E7F02D68;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __29__CDPurgeableResultCache_log__block_invoke(uint64_t a1)

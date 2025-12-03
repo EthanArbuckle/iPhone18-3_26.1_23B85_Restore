@@ -1,37 +1,37 @@
 @interface CSKappaCoreAnalytics
-+ (int)binValueForAge:(char)a3 bins:()array<float;
-- (CSKappaCoreAnalytics)initWithSilo:(id)a3 vendor:(id)a4 aopService:(void *)a5;
++ (int)binValueForAge:(char)age bins:()array<float;
+- (CSKappaCoreAnalytics)initWithSilo:(id)silo vendor:(id)vendor aopService:(void *)service;
 - (id).cxx_construct;
 - (id)sendUserInfoToCoreAnalytics;
 - (void)clearSessionInfo;
 - (void)clearUserInfo;
-- (void)onCompanionMessage:(int)a3 data:(id)a4 receivedTimestamp:(double)a5;
-- (void)onKappaSessionUpdate:(int)a3 data:(id)a4;
-- (void)processSessionDetails:(KappaSessionDetails *)a3;
+- (void)onCompanionMessage:(int)message data:(id)data receivedTimestamp:(double)timestamp;
+- (void)onKappaSessionUpdate:(int)update data:(id)data;
+- (void)processSessionDetails:(KappaSessionDetails *)details;
 - (void)sendLocalKappaSessionInfoToCompanion;
 - (void)sendSessionInfoToCoreAnalytics;
-- (void)startTimer:(double)a3;
+- (void)startTimer:(double)timer;
 - (void)stopTimer;
 - (void)updatePersistedUserInfo;
 - (void)updateUserInfoSettings;
 - (void)updateUserStats;
-- (void)uploadUserInfoWithHandler:(id)a3;
+- (void)uploadUserInfoWithHandler:(id)handler;
 @end
 
 @implementation CSKappaCoreAnalytics
 
-- (void)uploadUserInfoWithHandler:(id)a3
+- (void)uploadUserInfoWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   +[CSCoreAnalyticsUtils getSecondsSinceReboot];
   isSessionActive = self->_isSessionActive;
   if (isSessionActive)
   {
-    if (v4)
+    if (handlerCopy)
     {
       cachedUploadedResults = 0;
 LABEL_8:
-      (v4)[2](v4, !isSessionActive, cachedUploadedResults);
+      (handlerCopy)[2](handlerCopy, !isSessionActive, cachedUploadedResults);
     }
   }
 
@@ -52,7 +52,7 @@ LABEL_8:
     v14[2] = sub_1000362C4;
     v14[3] = &unk_100417988;
     objc_copyWeak(&v16, &location);
-    v10 = v4;
+    v10 = handlerCopy;
     v15 = v10;
     [(CLTimer *)self->_queryCompanionTimer setHandler:v14];
     v11[0] = _NSConcreteStackBlock;
@@ -68,17 +68,17 @@ LABEL_8:
     objc_destroyWeak(&location);
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
     cachedUploadedResults = self->_cachedUploadedResults;
     goto LABEL_8;
   }
 }
 
-- (CSKappaCoreAnalytics)initWithSilo:(id)a3 vendor:(id)a4 aopService:(void *)a5
+- (CSKappaCoreAnalytics)initWithSilo:(id)silo vendor:(id)vendor aopService:(void *)service
 {
-  v8 = a3;
-  v9 = a4;
+  siloCopy = silo;
+  vendorCopy = vendor;
   if (qword_1004568A8 != -1)
   {
     sub_10003A44C();
@@ -92,8 +92,8 @@ LABEL_8:
   }
 
   self->_valid = 1;
-  objc_storeStrong(&self->_vendor, a4);
-  self->_aopSvc = a5;
+  objc_storeStrong(&self->_vendor, vendor);
+  self->_aopSvc = service;
   v11 = +[NSUserDefaults standardUserDefaults];
   defaults = self->_defaults;
   self->_defaults = v11;
@@ -104,11 +104,11 @@ LABEL_8:
   queryCompletions = self->_queryCompletions;
   self->_queryCompletions = v15;
 
-  v17 = [v9 proxyForService:@"CSCompanionService"];
+  v17 = [vendorCopy proxyForService:@"CSCompanionService"];
   companion = self->_companion;
   self->_companion = v17;
 
-  [(CSCompanionServiceProtocol *)self->_companion registerDelegate:self inSilo:v8];
+  [(CSCompanionServiceProtocol *)self->_companion registerDelegate:self inSilo:siloCopy];
   [(CSCompanionServiceProtocol *)self->_companion registerClient:self];
   self->_isSessionActive = 0;
   [(CSKappaCoreAnalytics *)self clearUserInfo];
@@ -134,9 +134,9 @@ LABEL_8:
     [NSUserDefaults setObject:"setObject:forKey:" forKey:?];
   }
 
-  v22 = [v8 newTimer];
+  newTimer = [siloCopy newTimer];
   queryCompanionTimer = self->_queryCompanionTimer;
-  self->_queryCompanionTimer = v22;
+  self->_queryCompanionTimer = newTimer;
 
   v24 = +[CSPersistentConfiguration sharedConfiguration];
   self->_userInfoCadence = [v24 integerForKey:@"CoreAnalyticsUserInfoCadence"];
@@ -149,7 +149,7 @@ LABEL_8:
   return self;
 }
 
-- (void)startTimer:(double)a3
+- (void)startTimer:(double)timer
 {
   if (qword_1004568A8 != -1)
   {
@@ -163,7 +163,7 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "startTimer", v6, 2u);
   }
 
-  [(CLTimer *)self->_queryCompanionTimer setNextFireDelay:a3 interval:1.79769313e308];
+  [(CLTimer *)self->_queryCompanionTimer setNextFireDelay:timer interval:1.79769313e308];
 }
 
 - (void)stopTimer
@@ -221,7 +221,7 @@ LABEL_8:
   }
 
   v4 = +[CSPermissions sharedInstance];
-  v47 = [v4 isAuthorizedForIS];
+  isAuthorizedForIS = [v4 isAuthorizedForIS];
 
   +[CSCoreAnalyticsUtils getSecondsSinceReboot];
   v6 = v5;
@@ -275,7 +275,7 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Sending %d mins of Kappa userinfo to CA", buf, 8u);
   }
 
-  if (v47)
+  if (isAuthorizedForIS)
   {
     v56[0] = @"didEnableKappaDetection";
     v46 = [NSNumber numberWithBool:self->_kappaUserInfo.didEnableKappaDetection];
@@ -407,7 +407,7 @@ LABEL_8:
     *buf = 138412546;
     v51 = v24;
     v52 = 1024;
-    v53 = v47;
+    v53 = isAuthorizedForIS;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "Kappa UserInfo:%@, ImproveSafety:%d", buf, 0x12u);
   }
 
@@ -450,7 +450,7 @@ LABEL_8:
   *&self->_kappaSessionInfo.isSOSResponseAlreadyActive = 0;
 }
 
-- (void)processSessionDetails:(KappaSessionDetails *)a3
+- (void)processSessionDetails:(KappaSessionDetails *)details
 {
   if (qword_1004568A8 != -1)
   {
@@ -464,17 +464,17 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "processSessionDetails", v8, 2u);
   }
 
-  self->_kappaSessionInfo.trigger_bitmap = a3->trigger_bitmap;
-  signalEnvironment = a3->signalEnvironment;
-  self->_kappaSessionInfo.gpsDuration = a3->gpsCount;
-  self->_kappaSessionInfo.serverConfigVersion = a3->serverConfigVersion;
+  self->_kappaSessionInfo.trigger_bitmap = details->trigger_bitmap;
+  signalEnvironment = details->signalEnvironment;
+  self->_kappaSessionInfo.gpsDuration = details->gpsCount;
+  self->_kappaSessionInfo.serverConfigVersion = details->serverConfigVersion;
   self->_kappaSessionInfo.signalEnvironment = signalEnvironment;
-  *&self->_kappaSessionInfo.numPlanarCrashes = *&a3->numPlanarCrashes;
-  v7 = *&a3->maxDeltaVXYBiggestImpact;
-  *&self->_kappaSessionInfo.coarseLat = *&a3->coarseLat;
-  self->_kappaSessionInfo.sunElevation = a3->sunElevation;
+  *&self->_kappaSessionInfo.numPlanarCrashes = *&details->numPlanarCrashes;
+  v7 = *&details->maxDeltaVXYBiggestImpact;
+  *&self->_kappaSessionInfo.coarseLat = *&details->coarseLat;
+  self->_kappaSessionInfo.sunElevation = details->sunElevation;
   *&self->_kappaSessionInfo.maxDeltaVXYBiggestImpact = v7;
-  self->_kappaSessionInfo.deescalationBitmap = a3->deescalationBitmap;
+  self->_kappaSessionInfo.deescalationBitmap = details->deescalationBitmap;
 }
 
 - (void)sendLocalKappaSessionInfoToCompanion
@@ -535,9 +535,9 @@ LABEL_8:
   }
 
   v4 = +[CSPermissions sharedInstance];
-  v5 = [v4 isAuthorizedForIS];
+  isAuthorizedForIS = [v4 isAuthorizedForIS];
 
-  if (v5)
+  if (isAuthorizedForIS)
   {
     v57[0] = @"detectionDecision";
     v53 = [NSNumber numberWithBool:self->_kappaSessionInfo.detectionDecision];
@@ -984,9 +984,9 @@ LABEL_8:
 
   v4 = objc_alloc_init(CSCAStat);
   v5 = +[CSPlatformInfo sharedInstance];
-  v6 = [v5 isKappaLoggingDevice];
+  isKappaLoggingDevice = [v5 isKappaLoggingDevice];
 
-  if (v6)
+  if (isKappaLoggingDevice)
   {
     if (qword_1004568A8 != -1)
     {
@@ -1000,21 +1000,21 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "getStat not supported", &v13, 2u);
     }
 
-    v8 = -1;
+    armedSec = -1;
     self->_kappaUserInfo.userAgeBin = -1;
   }
 
   else
   {
     CSAOPSvc::getStat(self->_aopSvc, v4);
-    v9 = [(CSCAStat *)v4 userAge];
+    userAge = [(CSCAStat *)v4 userAge];
     v14 = 1112014848;
     v13 = xmmword_10037E438;
-    self->_kappaUserInfo.userAgeBin = [CSKappaCoreAnalytics binValueForAge:v9 bins:&v13];
-    v8 = [(CSCAStat *)v4 armedSec];
+    self->_kappaUserInfo.userAgeBin = [CSKappaCoreAnalytics binValueForAge:userAge bins:&v13];
+    armedSec = [(CSCAStat *)v4 armedSec];
   }
 
-  self->_kappaUserInfo.totalDrivingTime = v8;
+  self->_kappaUserInfo.totalDrivingTime = armedSec;
   if (qword_1004568A8 != -1)
   {
     sub_10003A460();
@@ -1033,11 +1033,11 @@ LABEL_8:
   }
 }
 
-+ (int)binValueForAge:(char)a3 bins:()array<float
++ (int)binValueForAge:(char)age bins:()array<float
 {
   for (i = 0; i != 5; ++i)
   {
-    if (a4->var0[i] >= a3)
+    if (a4->var0[i] >= age)
     {
       break;
     }
@@ -1046,9 +1046,9 @@ LABEL_8:
   return i;
 }
 
-- (void)onKappaSessionUpdate:(int)a3 data:(id)a4
+- (void)onKappaSessionUpdate:(int)update data:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   if (qword_1004568A8 != -1)
   {
     sub_10003A44C();
@@ -1058,18 +1058,18 @@ LABEL_8:
   if (os_log_type_enabled(qword_1004568B0, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    *&buf[4] = a3;
+    *&buf[4] = update;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "onKappaSessionUpdate type:%d", buf, 8u);
   }
 
-  if (a3 > 5)
+  if (update > 5)
   {
-    if (a3 <= 7)
+    if (update <= 7)
     {
-      if (a3 == 6)
+      if (update == 6)
       {
         buf[0] = 0;
-        [v6 getBytes:buf length:1];
+        [dataCopy getBytes:buf length:1];
         if (buf[0] == 1)
         {
           ++self->_kappaUserInfo.numCancelledUI;
@@ -1086,7 +1086,7 @@ LABEL_8:
       else
       {
         buf[0] = 0;
-        [v6 getBytes:buf length:1];
+        [dataCopy getBytes:buf length:1];
         v8 = 80;
         if (buf[0])
         {
@@ -1108,11 +1108,11 @@ LABEL_8:
 
     else
     {
-      switch(a3)
+      switch(update)
       {
         case 8:
           buf[0] = 0;
-          [v6 getBytes:buf length:1];
+          [dataCopy getBytes:buf length:1];
           v12 = 88;
           if (buf[0])
           {
@@ -1148,7 +1148,7 @@ LABEL_8:
             *&v23 = 0;
             v22 = 0uLL;
             DWORD2(v23) = 0;
-            [v6 getBytes:buf length:176];
+            [dataCopy getBytes:buf length:176];
             v14[8] = v22;
             v14[9] = v23;
             v14[10] = v24;
@@ -1175,17 +1175,17 @@ LABEL_8:
     }
   }
 
-  else if (a3 <= 2)
+  else if (update <= 2)
   {
-    if (a3 == 1)
+    if (update == 1)
     {
       ++self->_kappaUserInfo.numKappaEvents;
       self->_kappaSessionInfo.detectionDecision = 1;
     }
 
-    else if (a3 == 2)
+    else if (update == 2)
     {
-      [v6 getBytes:buf length:112];
+      [dataCopy getBytes:buf length:112];
       if ((buf[1] & 0x14) == 0)
       {
         if (self->_kappaSessionInfo.sessionStartTimestamp == -1.0)
@@ -1202,7 +1202,7 @@ LABEL_8:
     }
   }
 
-  else if (a3 == 3)
+  else if (update == 3)
   {
     self->_kappaSessionInfo.sessionDuration = (CFAbsoluteTimeGetCurrent() - self->_kappaSessionInfo.sessionStartTimestamp);
     if (qword_1004568A8 != -1)
@@ -1222,10 +1222,10 @@ LABEL_8:
 
   else
   {
-    if (a3 != 4)
+    if (update != 4)
     {
       buf[0] = 0;
-      [v6 getBytes:buf length:1];
+      [dataCopy getBytes:buf length:1];
       if (buf[0] == 1)
       {
         ++self->_kappaUserInfo.numUISurfaced;
@@ -1242,7 +1242,7 @@ LABEL_8:
     }
 
     *buf = 0;
-    [v6 getBytes:buf length:8];
+    [dataCopy getBytes:buf length:8];
     if (*buf <= 2)
     {
       if (!*buf)
@@ -1296,9 +1296,9 @@ LABEL_55:
 LABEL_60:
 }
 
-- (void)onCompanionMessage:(int)a3 data:(id)a4 receivedTimestamp:(double)a5
+- (void)onCompanionMessage:(int)message data:(id)data receivedTimestamp:(double)timestamp
 {
-  v7 = a4;
+  dataCopy = data;
   if (qword_1004568A8 != -1)
   {
     sub_10003A44C();
@@ -1308,22 +1308,22 @@ LABEL_60:
   if (os_log_type_enabled(qword_1004568B0, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    *&buf[4] = a3;
+    *&buf[4] = message;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "onCompanionMessage type:%d", buf, 8u);
   }
 
-  if (a3 <= 7)
+  if (message <= 7)
   {
-    if (a3 == 3)
+    if (message == 3)
     {
-      [v7 getBytes:buf length:40];
+      [dataCopy getBytes:buf length:40];
       if ((v30[1] & 4) == 0 && vabdd_f64(*buf, self->_kappaSessionInfo.sessionStartTimestamp) <= 5.0)
       {
         self->_kappaSessionInfo.didCompanionTrigger = 1;
       }
     }
 
-    else if (a3 == 6 && self->_isSessionActive)
+    else if (message == 6 && self->_isSessionActive)
     {
       self->_kappaSessionInfo.companionDetectionDecision = 1;
     }
@@ -1331,10 +1331,10 @@ LABEL_60:
 
   else
   {
-    switch(a3)
+    switch(message)
     {
       case 10:
-        [v7 getBytes:buf length:8];
+        [dataCopy getBytes:buf length:8];
         if (qword_1004568A8 != -1)
         {
           sub_10003A460();
@@ -1373,7 +1373,7 @@ LABEL_60:
           else
           {
             v17 = [(NSMutableArray *)self->_queryCompletions objectAtIndex:1];
-            (v17)[2](v17, v7, *buf);
+            (v17)[2](v17, dataCopy, *buf);
             queryCompletions = self->_queryCompletions;
             v19 = +[NSNull null];
             [(NSMutableArray *)queryCompletions replaceObjectAtIndex:1 withObject:v19];
@@ -1383,7 +1383,7 @@ LABEL_60:
         break;
       case 9:
         v28 = 0;
-        [v7 getBytes:&v28 length:4];
+        [dataCopy getBytes:&v28 length:4];
         if (qword_1004568A8 != -1)
         {
           sub_10003A460();
@@ -1434,7 +1434,7 @@ LABEL_60:
 
         break;
       case 8:
-        [v7 getBytes:v35 length:12];
+        [dataCopy getBytes:v35 length:12];
         if (qword_1004568A8 != -1)
         {
           sub_10003A460();

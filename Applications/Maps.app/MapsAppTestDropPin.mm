@@ -2,7 +2,7 @@
 - ($1AB5FA073B851C12C2339EC22442E995)region;
 - (BOOL)runTest;
 - (CLLocationCoordinate2D)pinCoordinate;
-- (MapsAppTestDropPin)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5;
+- (MapsAppTestDropPin)initWithApplication:(id)application testName:(id)name options:(id)options;
 - (void)didFinishJumping;
 - (void)didShowPlaceCard;
 @end
@@ -62,8 +62,8 @@
 {
   [(MapsAppTest *)self startedTest];
   [(MapsAppTest *)self startedSubTest:@"loadingScene"];
-  v3 = [(MapsAppTest *)self mainVKMapView];
-  [v3 _mapstest_jumpToCoords:1 pitch:self->_region.latitude yaw:self->_region.longitude altitudeIsRegionSize:{self->_region.altitude, self->_pitch, self->_yaw}];
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+  [mainVKMapView _mapstest_jumpToCoords:1 pitch:self->_region.latitude yaw:self->_region.longitude altitudeIsRegionSize:{self->_region.altitude, self->_pitch, self->_yaw}];
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -77,28 +77,28 @@
   return 1;
 }
 
-- (MapsAppTestDropPin)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5
+- (MapsAppTestDropPin)initWithApplication:(id)application testName:(id)name options:(id)options
 {
-  v8 = a5;
+  optionsCopy = options;
   v22.receiver = self;
   v22.super_class = MapsAppTestDropPin;
-  v9 = [(MapsAppTest *)&v22 initWithApplication:a3 testName:a4 options:v8];
+  v9 = [(MapsAppTest *)&v22 initWithApplication:application testName:name options:optionsCopy];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"pin_latitude"];
+    v10 = [optionsCopy objectForKeyedSubscript:@"pin_latitude"];
     [v10 doubleValue];
     v12 = v11;
 
-    v13 = [v8 objectForKeyedSubscript:@"pin_longitude"];
+    v13 = [optionsCopy objectForKeyedSubscript:@"pin_longitude"];
     [v13 doubleValue];
     v15 = v14;
 
     v9->_pinCoordinate = CLLocationCoordinate2DMake(v12, v15);
-    [v8 _mapstest_pitch];
+    [optionsCopy _mapstest_pitch];
     v9->_pitch = v16;
-    [v8 _mapstest_yaw];
+    [optionsCopy _mapstest_yaw];
     v9->_yaw = v17;
-    [v8 _mapstest_jumpPoint];
+    [optionsCopy _mapstest_jumpPoint];
     v9->_region.latitude = v18;
     v9->_region.longitude = v19;
     v9->_region.altitude = v20;

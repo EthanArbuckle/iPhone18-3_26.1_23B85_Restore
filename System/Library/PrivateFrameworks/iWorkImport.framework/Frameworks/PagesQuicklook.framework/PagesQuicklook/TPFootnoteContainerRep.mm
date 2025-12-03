@@ -1,17 +1,17 @@
 @interface TPFootnoteContainerRep
 - (BOOL)p_hasContent;
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation TPFootnoteContainerRep
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   if (objc_msgSend_p_hasContent(self, a2, v3, v4, v5, v6))
   {
     DeviceGray = TSUCGColorCreateDeviceGray();
-    CGContextSaveGState(a3);
-    CGContextSetFillColorWithColor(a3, DeviceGray);
+    CGContextSaveGState(context);
+    CGContextSetFillColorWithColor(context, DeviceGray);
     v78 = objc_msgSend_layout(self, v10, v11, v12, v13, v14);
     objc_msgSend_footnoteSeparatorLineFrame(v78, v15, v16, v17, v18, v19);
     v21 = v20.n128_f64[0];
@@ -59,8 +59,8 @@
     v80.origin.y = v23;
     v80.size.width = v25;
     v80.size.height = v27;
-    CGContextFillRect(a3, v80);
-    CGContextRestoreGState(a3);
+    CGContextFillRect(context, v80);
+    CGContextRestoreGState(context);
     CGColorRelease(DeviceGray);
   }
 }

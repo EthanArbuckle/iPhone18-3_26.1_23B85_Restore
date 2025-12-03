@@ -1,35 +1,35 @@
 @interface STUIStatusBarRegionAxisAligningLayout
-+ (id)aligningLayoutWithAlignment:(int64_t)a3;
-- (id)constraintsForDisplayItems:(id)a3 layoutGuides:(id)a4 inContainerItem:(id)a5 axis:(int64_t)a6;
++ (id)aligningLayoutWithAlignment:(int64_t)alignment;
+- (id)constraintsForDisplayItems:(id)items layoutGuides:(id)guides inContainerItem:(id)item axis:(int64_t)axis;
 @end
 
 @implementation STUIStatusBarRegionAxisAligningLayout
 
-+ (id)aligningLayoutWithAlignment:(int64_t)a3
++ (id)aligningLayoutWithAlignment:(int64_t)alignment
 {
   v4 = objc_alloc_init(STUIStatusBarRegionAxisAligningLayout);
-  [(STUIStatusBarRegionAxisAligningLayout *)v4 setAlignment:a3];
+  [(STUIStatusBarRegionAxisAligningLayout *)v4 setAlignment:alignment];
 
   return v4;
 }
 
-- (id)constraintsForDisplayItems:(id)a3 layoutGuides:(id)a4 inContainerItem:(id)a5 axis:(int64_t)a6
+- (id)constraintsForDisplayItems:(id)items layoutGuides:(id)guides inContainerItem:(id)item axis:(int64_t)axis
 {
-  v9 = a5;
+  itemCopy = item;
   v10 = MEMORY[0x277CBEB18];
-  v11 = a3;
-  v12 = [v10 array];
+  itemsCopy = items;
+  array = [v10 array];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __102__STUIStatusBarRegionAxisAligningLayout_constraintsForDisplayItems_layoutGuides_inContainerItem_axis___block_invoke;
   v18[3] = &unk_279D38968;
-  v21 = a6;
+  axisCopy = axis;
   v18[4] = self;
-  v13 = v12;
+  v13 = array;
   v19 = v13;
-  v20 = v9;
-  v14 = v9;
-  [v11 enumerateObjectsUsingBlock:v18];
+  v20 = itemCopy;
+  v14 = itemCopy;
+  [itemsCopy enumerateObjectsUsingBlock:v18];
 
   v15 = v20;
   v16 = v13;

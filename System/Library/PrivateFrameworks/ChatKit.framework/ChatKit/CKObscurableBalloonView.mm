@@ -9,96 +9,96 @@
 - (id)_containerView;
 - (id)blurVisualEffect;
 - (void)_menuWillPresent;
-- (void)_presentGetHelpAlert:(id)a3;
-- (void)_setupForAdultsIn:(id)a3 revealingContent:(BOOL)a4;
-- (void)_setupObscuringView:(BOOL)a3;
-- (void)_setupWarningButtonIn:(id)a3 forRevealing:(BOOL)a4;
-- (void)didAskForMoreHelp:(id)a3;
-- (void)didBlockContact:(id)a3;
-- (void)evidenceToReportWithContext:(id)a3 completionHandler:(id)a4;
+- (void)_presentGetHelpAlert:(id)alert;
+- (void)_setupForAdultsIn:(id)in revealingContent:(BOOL)content;
+- (void)_setupObscuringView:(BOOL)view;
+- (void)_setupWarningButtonIn:(id)in forRevealing:(BOOL)revealing;
+- (void)didAskForMoreHelp:(id)help;
+- (void)didBlockContact:(id)contact;
+- (void)evidenceToReportWithContext:(id)context completionHandler:(id)handler;
 - (void)layoutSubviews;
-- (void)obscureSensitiveContent:(BOOL)a3;
+- (void)obscureSensitiveContent:(BOOL)content;
 - (void)prepareForReuse;
-- (void)revealSensitiveContent:(BOOL)a3;
-- (void)tapGestureRecognized:(id)a3;
-- (void)updateObscuredStateForChatItem:(id)a3;
+- (void)revealSensitiveContent:(BOOL)content;
+- (void)tapGestureRecognized:(id)recognized;
+- (void)updateObscuredStateForChatItem:(id)item;
 @end
 
 @implementation CKObscurableBalloonView
 
-- (void)updateObscuredStateForChatItem:(id)a3
+- (void)updateObscuredStateForChatItem:(id)item
 {
-  v9 = a3;
-  v4 = [v9 commSafetyTransferLocalURL];
-  [(CKObscurableBalloonView *)self setCommSafetyTransferLocalURL:v4];
+  itemCopy = item;
+  commSafetyTransferLocalURL = [itemCopy commSafetyTransferLocalURL];
+  [(CKObscurableBalloonView *)self setCommSafetyTransferLocalURL:commSafetyTransferLocalURL];
 
-  v5 = [v9 commSafetyTransferGUID];
-  [(CKObscurableBalloonView *)self setCommSafetyTransferGUID:v5];
+  commSafetyTransferGUID = [itemCopy commSafetyTransferGUID];
+  [(CKObscurableBalloonView *)self setCommSafetyTransferGUID:commSafetyTransferGUID];
 
-  if ([v9 isCommSafetySensitiveViewable])
+  if ([itemCopy isCommSafetySensitiveViewable])
   {
-    -[CKObscurableBalloonView revealSensitiveContent:](self, "revealSensitiveContent:", [v9 itemIsReplyContextPreview]);
+    -[CKObscurableBalloonView revealSensitiveContent:](self, "revealSensitiveContent:", [itemCopy itemIsReplyContextPreview]);
   }
 
-  else if ([v9 isCommSafetySensitiveNotViewable])
+  else if ([itemCopy isCommSafetySensitiveNotViewable])
   {
-    -[CKObscurableBalloonView obscureSensitiveContent:](self, "obscureSensitiveContent:", [v9 itemIsReplyContextPreview]);
-    v6 = [v9 commSafetyTransferLocalURL];
-    v7 = [CKCommSafetyAnalytics contentTypeForURL:v6];
+    -[CKObscurableBalloonView obscureSensitiveContent:](self, "obscureSensitiveContent:", [itemCopy itemIsReplyContextPreview]);
+    commSafetyTransferLocalURL2 = [itemCopy commSafetyTransferLocalURL];
+    v7 = [CKCommSafetyAnalytics contentTypeForURL:commSafetyTransferLocalURL2];
 
-    v8 = [v9 commSafetyTransferGUID];
-    [CKCommSafetyAnalytics recordObscuredViewShownWithContentType:v7 subcontentType:0 identifier:v8];
+    commSafetyTransferGUID2 = [itemCopy commSafetyTransferGUID];
+    [CKCommSafetyAnalytics recordObscuredViewShownWithContentType:v7 subcontentType:0 identifier:commSafetyTransferGUID2];
   }
 }
 
-- (void)obscureSensitiveContent:(BOOL)a3
+- (void)obscureSensitiveContent:(BOOL)content
 {
-  [(CKObscurableBalloonView *)self _setupObscuringView:a3];
+  [(CKObscurableBalloonView *)self _setupObscuringView:content];
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 shouldUseRotisserieScrolling];
+  shouldUseRotisserieScrolling = [v4 shouldUseRotisserieScrolling];
 
-  if (v5)
+  if (shouldUseRotisserieScrolling)
   {
-    v7 = [(CKObscurableBalloonView *)self _cellHoldingView];
-    v6 = [v7 layer];
-    [v6 setAllowsGroupOpacity:1];
+    _cellHoldingView = [(CKObscurableBalloonView *)self _cellHoldingView];
+    layer = [_cellHoldingView layer];
+    [layer setAllowsGroupOpacity:1];
   }
 }
 
-- (void)revealSensitiveContent:(BOOL)a3
+- (void)revealSensitiveContent:(BOOL)content
 {
   if ([(CKObscurableBalloonView *)self isObscured])
   {
-    v5 = [(CKObscurableBalloonView *)self obscuringView];
-    [v5 removeFromSuperview];
+    obscuringView = [(CKObscurableBalloonView *)self obscuringView];
+    [obscuringView removeFromSuperview];
 
     [(CKObscurableBalloonView *)self setObscuringView:0];
   }
 
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 shouldUseRotisserieScrolling];
+  shouldUseRotisserieScrolling = [v6 shouldUseRotisserieScrolling];
 
-  if (v7)
+  if (shouldUseRotisserieScrolling)
   {
-    v8 = [(CKObscurableBalloonView *)self _cellHoldingView];
-    v9 = [v8 layer];
-    [v9 setAllowsGroupOpacity:0];
+    _cellHoldingView = [(CKObscurableBalloonView *)self _cellHoldingView];
+    layer = [_cellHoldingView layer];
+    [layer setAllowsGroupOpacity:0];
   }
 
-  if (!a3)
+  if (!content)
   {
-    v10 = [MEMORY[0x1E69A7FC8] sharedManager];
-    v11 = [v10 enablementGroup];
+    mEMORY[0x1E69A7FC8] = [MEMORY[0x1E69A7FC8] sharedManager];
+    enablementGroup = [mEMORY[0x1E69A7FC8] enablementGroup];
 
-    if (v11 == 2)
+    if (enablementGroup == 2)
     {
       [(CKObscurableBalloonView *)self _setupForAdultsIn:self revealingContent:1];
     }
 
-    v12 = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
-    v13 = [v12 isRevealingContentEnabled];
+    obscurableBalloonDelegate = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
+    isRevealingContentEnabled = [obscurableBalloonDelegate isRevealingContentEnabled];
 
-    if (v13)
+    if (isRevealingContentEnabled)
     {
 
       [(CKObscurableBalloonView *)self _setupWarningButtonIn:self forRevealing:1];
@@ -106,24 +106,24 @@
   }
 }
 
-- (void)tapGestureRecognized:(id)a3
+- (void)tapGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v4 locationInView:v5];
-  v6 = [v5 hitTest:0 withEvent:?];
+  recognizedCopy = recognized;
+  view = [recognizedCopy view];
+  [recognizedCopy locationInView:view];
+  v6 = [view hitTest:0 withEvent:?];
   if (!-[CKObscurableBalloonView isObscured](self, "isObscured") || ([MEMORY[0x1E69A7FC8] sharedManager], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "enablementGroup"), v7, v8 != 2) || (-[CKObscurableBalloonView showButton](self, "showButton"), v9 = objc_claimAutoreleasedReturnValue(), v9, v6 == v9))
   {
     v10.receiver = self;
     v10.super_class = CKObscurableBalloonView;
-    [(CKBalloonView *)&v10 tapGestureRecognized:v4];
+    [(CKBalloonView *)&v10 tapGestureRecognized:recognizedCopy];
   }
 }
 
 - (id)_cellHoldingView
 {
-  v2 = [(CKObscurableBalloonView *)self superview];
-  if (v2)
+  superview = [(CKObscurableBalloonView *)self superview];
+  if (superview)
   {
     do
     {
@@ -133,18 +133,18 @@
         break;
       }
 
-      v3 = [v2 superview];
+      v2Superview = [superview superview];
 
-      v2 = v3;
+      superview = v2Superview;
     }
 
-    while (v3);
+    while (v2Superview);
   }
 
-  return v2;
+  return superview;
 }
 
-- (void)_setupObscuringView:(BOOL)a3
+- (void)_setupObscuringView:(BOOL)view
 {
   v67[4] = *MEMORY[0x1E69E9840];
   if (![(CKObscurableBalloonView *)self isObscured])
@@ -155,27 +155,27 @@
     -[UIView _setOverrideUserInterfaceStyle:](v5, "_setOverrideUserInterfaceStyle:", [v6 obscurableBalloonBlurMaterialInterfaceStyle]);
 
     [(CKObscurableBalloonView *)self blurEffect];
-    v7 = v61 = a3;
+    v7 = v61 = view;
     [(UIView *)v5 addSubview:v7];
     [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
     v51 = MEMORY[0x1E696ACD8];
-    v59 = [v7 topAnchor];
-    v57 = [(UIView *)v5 topAnchor];
-    v55 = [v59 constraintEqualToAnchor:v57];
+    topAnchor = [v7 topAnchor];
+    topAnchor2 = [(UIView *)v5 topAnchor];
+    v55 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v67[0] = v55;
-    v53 = [v7 bottomAnchor];
-    v8 = [(UIView *)v5 bottomAnchor];
-    v9 = [v53 constraintEqualToAnchor:v8];
+    bottomAnchor = [v7 bottomAnchor];
+    bottomAnchor2 = [(UIView *)v5 bottomAnchor];
+    v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v67[1] = v9;
-    v10 = [v7 leadingAnchor];
-    v11 = [(UIView *)v5 leadingAnchor];
-    [v10 constraintEqualToAnchor:v11];
+    leadingAnchor = [v7 leadingAnchor];
+    leadingAnchor2 = [(UIView *)v5 leadingAnchor];
+    [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v12 = v64 = self;
     v67[2] = v12;
-    v13 = [v7 trailingAnchor];
+    trailingAnchor = [v7 trailingAnchor];
     v63 = v5;
-    v14 = [(UIView *)v5 trailingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    trailingAnchor2 = [(UIView *)v5 trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v67[3] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:4];
     [v51 activateConstraints:v16];
@@ -185,68 +185,68 @@
 
     if (!v61)
     {
-      v19 = [(CKObscurableBalloonView *)v64 sensitiveContentDescription];
-      v20 = [v17 contentView];
-      [v20 addSubview:v19];
+      sensitiveContentDescription = [(CKObscurableBalloonView *)v64 sensitiveContentDescription];
+      contentView = [v17 contentView];
+      [contentView addSubview:sensitiveContentDescription];
 
-      [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [sensitiveContentDescription setTranslatesAutoresizingMaskIntoConstraints:0];
       v21 = +[CKUIBehavior sharedBehaviors];
       [v21 sensitiveLabelPadding];
       v23 = v22;
 
-      v24 = [v19 centerYAnchor];
-      v25 = [v17 contentView];
-      v26 = [v25 centerYAnchor];
-      v27 = [v24 constraintEqualToAnchor:v26];
+      centerYAnchor = [sensitiveContentDescription centerYAnchor];
+      contentView2 = [v17 contentView];
+      centerYAnchor2 = [contentView2 centerYAnchor];
+      v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
       LODWORD(v28) = 1143930880;
       [v27 setPriority:v28];
       v50 = MEMORY[0x1E696ACD8];
-      v56 = [v19 centerXAnchor];
-      v58 = [v17 contentView];
-      v54 = [v58 centerXAnchor];
-      v52 = [v56 constraintEqualToAnchor:v54];
+      centerXAnchor = [sensitiveContentDescription centerXAnchor];
+      contentView3 = [v17 contentView];
+      centerXAnchor2 = [contentView3 centerXAnchor];
+      v52 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v66[0] = v52;
       v66[1] = v27;
       v60 = v27;
-      v29 = [v19 leadingAnchor];
-      v30 = [v17 contentView];
-      v31 = [v30 leadingAnchor];
-      v32 = [v29 constraintGreaterThanOrEqualToAnchor:v31 constant:v23];
+      leadingAnchor3 = [sensitiveContentDescription leadingAnchor];
+      contentView4 = [v17 contentView];
+      leadingAnchor4 = [contentView4 leadingAnchor];
+      v32 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:v23];
       v66[2] = v32;
-      v62 = v19;
-      v33 = [v19 trailingAnchor];
+      v62 = sensitiveContentDescription;
+      trailingAnchor3 = [sensitiveContentDescription trailingAnchor];
       v34 = v17;
-      v35 = [v17 contentView];
-      v36 = [v35 trailingAnchor];
-      v37 = [v33 constraintLessThanOrEqualToAnchor:v36 constant:-v23];
+      contentView5 = [v17 contentView];
+      trailingAnchor4 = [contentView5 trailingAnchor];
+      v37 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4 constant:-v23];
       v66[3] = v37;
       v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:4];
       [v50 activateConstraints:v38];
 
       v18 = v64;
-      v39 = [(CKObscurableBalloonView *)v64 obscurableBalloonDelegate];
-      LODWORD(v32) = [v39 isRevealingContentEnabled];
+      obscurableBalloonDelegate = [(CKObscurableBalloonView *)v64 obscurableBalloonDelegate];
+      LODWORD(v32) = [obscurableBalloonDelegate isRevealingContentEnabled];
 
       if (v32)
       {
-        v40 = [(CKObscurableBalloonView *)v64 _containerView];
-        [(CKObscurableBalloonView *)v64 _setupWarningButtonIn:v40 forRevealing:0];
+        _containerView = [(CKObscurableBalloonView *)v64 _containerView];
+        [(CKObscurableBalloonView *)v64 _setupWarningButtonIn:_containerView forRevealing:0];
       }
 
-      v41 = [MEMORY[0x1E69A7FC8] sharedManager];
-      v42 = [v41 enablementGroup];
+      mEMORY[0x1E69A7FC8] = [MEMORY[0x1E69A7FC8] sharedManager];
+      enablementGroup = [mEMORY[0x1E69A7FC8] enablementGroup];
 
-      v43 = [(CKObscurableBalloonView *)v64 _containerView];
-      if (v42 == 2)
+      _containerView2 = [(CKObscurableBalloonView *)v64 _containerView];
+      if (enablementGroup == 2)
       {
-        [(CKObscurableBalloonView *)v64 _setupForAdultsIn:v43 revealingContent:0];
+        [(CKObscurableBalloonView *)v64 _setupForAdultsIn:_containerView2 revealingContent:0];
       }
 
       else
       {
-        v44 = [(CKObscurableBalloonView *)v64 obscuredContentBadgeView];
-        [(CKObscurableBalloonView *)v64 _setupForChildrenIn:v43 withBadgeView:v44];
+        obscuredContentBadgeView = [(CKObscurableBalloonView *)v64 obscuredContentBadgeView];
+        [(CKObscurableBalloonView *)v64 _setupForChildrenIn:_containerView2 withBadgeView:obscuredContentBadgeView];
       }
 
       v17 = v34;
@@ -259,9 +259,9 @@
     v46 = [(CKBalloonMaskLayer *)v45 initWithDescriptor:v65];
     [(CKObscurableBalloonView *)v18 setMaskLayer:v46];
 
-    v47 = [(CKObscurableBalloonView *)v18 maskLayer];
-    v48 = [(UIView *)v63 layer];
-    [v48 setMask:v47];
+    maskLayer = [(CKObscurableBalloonView *)v18 maskLayer];
+    layer = [(UIView *)v63 layer];
+    [layer setMask:maskLayer];
 
     obscuringView = v18->_obscuringView;
     v18->_obscuringView = v63;
@@ -278,19 +278,19 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKObscurableBalloonView *)self obscuringView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  obscuringView = [(CKObscurableBalloonView *)self obscuringView];
+  [obscuringView setFrame:{v4, v6, v8, v10}];
 
   [(CKObscurableBalloonView *)self bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(CKObscurableBalloonView *)self maskLayer];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  maskLayer = [(CKObscurableBalloonView *)self maskLayer];
+  [maskLayer setFrame:{v13, v15, v17, v19}];
 
-  v21 = [MEMORY[0x1E69DC668] sharedApplication];
-  v22 = [v21 userInterfaceLayoutDirection] == 1;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  v22 = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection] == 1;
 
   v23 = +[CKUIBehavior sharedBehaviors];
   [v23 obscurableBalloonVerticalPadding];
@@ -311,14 +311,14 @@
   v29 = _Block_copy(v32);
   if (self->_obscuredContentBadgeView)
   {
-    v30 = [(CKObscurableBalloonView *)self obscuredContentBadgeView];
-    v29[2](v29, v30);
+    obscuredContentBadgeView = [(CKObscurableBalloonView *)self obscuredContentBadgeView];
+    v29[2](v29, obscuredContentBadgeView);
   }
 
   if (self->_showButton)
   {
-    v31 = [(CKObscurableBalloonView *)self showButton];
-    v29[2](v29, v31);
+    showButton = [(CKObscurableBalloonView *)self showButton];
+    v29[2](v29, showButton);
   }
 }
 
@@ -360,26 +360,26 @@ void __41__CKObscurableBalloonView_layoutSubviews__block_invoke(uint64_t a1, voi
   [v18 setFrame:{v10, v16 - v17, v7, v9}];
 }
 
-- (void)_setupForAdultsIn:(id)a3 revealingContent:(BOOL)a4
+- (void)_setupForAdultsIn:(id)in revealingContent:(BOOL)content
 {
-  if (!a4)
+  if (!content)
   {
-    v6 = a3;
-    v7 = [(CKObscurableBalloonView *)self showButton];
-    [v6 addSubview:v7];
+    inCopy = in;
+    showButton = [(CKObscurableBalloonView *)self showButton];
+    [inCopy addSubview:showButton];
   }
 }
 
-- (void)_setupWarningButtonIn:(id)a3 forRevealing:(BOOL)a4
+- (void)_setupWarningButtonIn:(id)in forRevealing:(BOOL)revealing
 {
-  v4 = a4;
+  revealingCopy = revealing;
   v27[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CKObscurableBalloonView *)self warningButton];
-  v8 = [v7 configuration];
+  inCopy = in;
+  warningButton = [(CKObscurableBalloonView *)self warningButton];
+  configuration = [warningButton configuration];
   v9 = +[CKUIBehavior sharedBehaviors];
   v10 = v9;
-  if (v4)
+  if (revealingCopy)
   {
     [v9 obscurableBalloonWarningButtonBackgroundConfigurationRevealed];
   }
@@ -390,10 +390,10 @@ void __41__CKObscurableBalloonView_layoutSubviews__block_invoke(uint64_t a1, voi
   }
   v11 = ;
 
-  [v8 setBackground:v11];
-  [v7 setConfiguration:v8];
-  [v6 addSubview:v7];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [configuration setBackground:v11];
+  [warningButton setConfiguration:configuration];
+  [inCopy addSubview:warningButton];
+  [warningButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v12 = +[CKUIBehavior sharedBehaviors];
   [v12 obscurableBalloonVerticalPadding];
   v14 = v13;
@@ -403,14 +403,14 @@ void __41__CKObscurableBalloonView_layoutSubviews__block_invoke(uint64_t a1, voi
   v17 = v16;
 
   v26 = MEMORY[0x1E696ACD8];
-  v18 = [v7 topAnchor];
-  v19 = [v6 topAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:v14];
+  topAnchor = [warningButton topAnchor];
+  topAnchor2 = [inCopy topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v14];
   v27[0] = v20;
-  v21 = [v7 trailingAnchor];
-  v22 = [v6 trailingAnchor];
+  trailingAnchor = [warningButton trailingAnchor];
+  trailingAnchor2 = [inCopy trailingAnchor];
 
-  v23 = [v21 constraintEqualToAnchor:v22 constant:-v17];
+  v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v17];
   v27[1] = v23;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
   v25 = v24 = v11;
@@ -424,8 +424,8 @@ void __41__CKObscurableBalloonView_layoutSubviews__block_invoke(uint64_t a1, voi
   [(CKBalloonView *)&v5 prepareForReuse];
   if ([(CKObscurableBalloonView *)self isObscured])
   {
-    v3 = [(CKObscurableBalloonView *)self obscuringView];
-    [v3 removeFromSuperview];
+    obscuringView = [(CKObscurableBalloonView *)self obscuringView];
+    [obscuringView removeFromSuperview];
 
     [(CKObscurableBalloonView *)self setObscuringView:0];
   }
@@ -461,12 +461,12 @@ void __41__CKObscurableBalloonView_layoutSubviews__block_invoke(uint64_t a1, voi
 
 - (id)blurVisualEffect
 {
-  v2 = [(CKObscurableBalloonView *)self blurEffect];
-  v3 = [v2 effect];
+  blurEffect = [(CKObscurableBalloonView *)self blurEffect];
+  effect = [blurEffect effect];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = effect;
   }
 
   else
@@ -479,10 +479,10 @@ void __41__CKObscurableBalloonView_layoutSubviews__block_invoke(uint64_t a1, voi
 
 - (id)_containerView
 {
-  v2 = [(CKObscurableBalloonView *)self blurEffect];
-  v3 = [v2 contentView];
+  blurEffect = [(CKObscurableBalloonView *)self blurEffect];
+  contentView = [blurEffect contentView];
 
-  return v3;
+  return contentView;
 }
 
 - (UILabel)sensitiveContentDescription
@@ -498,12 +498,12 @@ void __41__CKObscurableBalloonView_layoutSubviews__block_invoke(uint64_t a1, voi
     [(UILabel *)v4 setText:v6];
 
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 sensitiveLabelColor];
-    [(UILabel *)v4 setTextColor:v8];
+    sensitiveLabelColor = [v7 sensitiveLabelColor];
+    [(UILabel *)v4 setTextColor:sensitiveLabelColor];
 
     v9 = +[CKUIBehavior sharedBehaviors];
-    v10 = [v9 sensitiveLabelFont];
-    [(UILabel *)v4 setFont:v10];
+    sensitiveLabelFont = [v9 sensitiveLabelFont];
+    [(UILabel *)v4 setFont:sensitiveLabelFont];
 
     v11 = self->_sensitiveContentDescription;
     self->_sensitiveContentDescription = v4;
@@ -521,14 +521,14 @@ void __41__CKObscurableBalloonView_layoutSubviews__block_invoke(uint64_t a1, voi
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DC738]);
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 obscurableBalloonShowButtonConfiguration];
-    [(UIButton *)v4 setConfiguration:v6];
+    obscurableBalloonShowButtonConfiguration = [v5 obscurableBalloonShowButtonConfiguration];
+    [(UIButton *)v4 setConfiguration:obscurableBalloonShowButtonConfiguration];
 
-    v7 = [(UIButton *)v4 titleLabel];
-    [v7 _setOverrideUserInterfaceStyle:2];
+    titleLabel = [(UIButton *)v4 titleLabel];
+    [titleLabel _setOverrideUserInterfaceStyle:2];
 
-    v8 = [(UIButton *)v4 imageView];
-    [v8 _setOverrideUserInterfaceStyle:2];
+    imageView = [(UIButton *)v4 imageView];
+    [imageView _setOverrideUserInterfaceStyle:2];
 
     v9 = self->_showButton;
     self->_showButton = v4;
@@ -546,12 +546,12 @@ void __41__CKObscurableBalloonView_layoutSubviews__block_invoke(uint64_t a1, voi
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 obscurableBalloonObscuredContentBadgeImage];
-    v7 = [v4 initWithImage:v6];
+    obscurableBalloonObscuredContentBadgeImage = [v5 obscurableBalloonObscuredContentBadgeImage];
+    v7 = [v4 initWithImage:obscurableBalloonObscuredContentBadgeImage];
 
     v8 = +[CKUIBehavior sharedBehaviors];
-    v9 = [v8 obscurableBalloonBadgeTintColor];
-    [(UIImageView *)v7 setTintColor:v9];
+    obscurableBalloonBadgeTintColor = [v8 obscurableBalloonBadgeTintColor];
+    [(UIImageView *)v7 setTintColor:obscurableBalloonBadgeTintColor];
 
     [(UIImageView *)v7 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
     v10 = self->_obscuredContentBadgeView;
@@ -571,15 +571,15 @@ void __41__CKObscurableBalloonView_layoutSubviews__block_invoke(uint64_t a1, voi
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DC738]);
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 obscurableBalloonWarningButtonConfiguration];
-    [(UIButton *)v4 setConfiguration:v6];
+    obscurableBalloonWarningButtonConfiguration = [v5 obscurableBalloonWarningButtonConfiguration];
+    [(UIButton *)v4 setConfiguration:obscurableBalloonWarningButtonConfiguration];
 
-    v7 = [(UIButton *)v4 imageView];
-    [v7 _setOverrideUserInterfaceStyle:2];
+    imageView = [(UIButton *)v4 imageView];
+    [imageView _setOverrideUserInterfaceStyle:2];
 
     [(UIButton *)v4 setShowsMenuAsPrimaryAction:1];
-    v8 = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
-    if ([v8 isReportingEnabled])
+    obscurableBalloonDelegate = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
+    if ([obscurableBalloonDelegate isReportingEnabled])
     {
       v9 = 97;
     }
@@ -589,13 +589,13 @@ void __41__CKObscurableBalloonView_layoutSubviews__block_invoke(uint64_t a1, voi
       v9 = 1;
     }
 
-    if (v8)
+    if (obscurableBalloonDelegate)
     {
       if (self->_commSafetyTransferGUID)
       {
         v22 = @"SCUIAnalyticsContextKeyForContextDictionary";
-        v10 = [(CKObscurableBalloonView *)self _buildContextKeyIdentifierForContextMenuEvents];
-        v23[0] = v10;
+        _buildContextKeyIdentifierForContextMenuEvents = [(CKObscurableBalloonView *)self _buildContextKeyIdentifierForContextMenuEvents];
+        v23[0] = _buildContextKeyIdentifierForContextMenuEvents;
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
       }
 
@@ -636,15 +636,15 @@ void __41__CKObscurableBalloonView_layoutSubviews__block_invoke(uint64_t a1, voi
   return warningButton;
 }
 
-- (void)_presentGetHelpAlert:(id)a3
+- (void)_presentGetHelpAlert:(id)alert
 {
-  v4 = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
+  obscurableBalloonDelegate = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
-    [v6 presentGetHelpAlert];
+    obscurableBalloonDelegate2 = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
+    [obscurableBalloonDelegate2 presentGetHelpAlert];
   }
 }
 
@@ -653,41 +653,41 @@ void __41__CKObscurableBalloonView_layoutSubviews__block_invoke(uint64_t a1, voi
   if (self->_commSafetyTransferLocalURL)
   {
     v3 = [CKCommSafetyAnalytics contentTypeForURL:?];
-    v4 = [(CKObscurableBalloonView *)self isObscured];
-    v5 = [(CKObscurableBalloonView *)self _buildContextKeyIdentifierForContextMenuEvents];
-    [CKCommSafetyAnalytics recordContextMenuButtonTappedWithContentType:v3 subContentType:0 direction:2 options:0 isBlurred:v4 identifier:v5];
+    isObscured = [(CKObscurableBalloonView *)self isObscured];
+    _buildContextKeyIdentifierForContextMenuEvents = [(CKObscurableBalloonView *)self _buildContextKeyIdentifierForContextMenuEvents];
+    [CKCommSafetyAnalytics recordContextMenuButtonTappedWithContentType:v3 subContentType:0 direction:2 options:0 isBlurred:isObscured identifier:_buildContextKeyIdentifierForContextMenuEvents];
   }
 }
 
-- (void)didAskForMoreHelp:(id)a3
+- (void)didAskForMoreHelp:(id)help
 {
-  v3 = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
-  [v3 didTapWaysToGetHelp];
+  obscurableBalloonDelegate = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
+  [obscurableBalloonDelegate didTapWaysToGetHelp];
 }
 
-- (void)didBlockContact:(id)a3
+- (void)didBlockContact:(id)contact
 {
-  v4 = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
-  [v4 didTapBlockContactInBalloonView:self];
+  obscurableBalloonDelegate = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
+  [obscurableBalloonDelegate didTapBlockContactInBalloonView:self];
 }
 
-- (void)evidenceToReportWithContext:(id)a3 completionHandler:(id)a4
+- (void)evidenceToReportWithContext:(id)context completionHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
+  contextCopy = context;
+  handlerCopy = handler;
+  obscurableBalloonDelegate = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
-    [v9 evidenceToReportWithContext:v10 balloonView:self completionHandler:v6];
+    obscurableBalloonDelegate2 = [(CKObscurableBalloonView *)self obscurableBalloonDelegate];
+    [obscurableBalloonDelegate2 evidenceToReportWithContext:contextCopy balloonView:self completionHandler:handlerCopy];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:45 userInfo:0];
-    v6[2](v6, 0, v9);
+    obscurableBalloonDelegate2 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:45 userInfo:0];
+    handlerCopy[2](handlerCopy, 0, obscurableBalloonDelegate2);
   }
 }
 

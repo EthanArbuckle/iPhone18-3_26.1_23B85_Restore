@@ -2,7 +2,7 @@
 - (BOOL)shouldHideCredentials;
 - (NSString)description;
 - (NSString)portalURL;
-- (WFDetailsContext)initWithNetwork:(id)a3 profile:(id)a4 ipMonitor:(id)a5 interface:(id)a6 privateMACConfig:(id)a7 wifiModeConfig:(id)a8;
+- (WFDetailsContext)initWithNetwork:(id)network profile:(id)profile ipMonitor:(id)monitor interface:(id)interface privateMACConfig:(id)config wifiModeConfig:(id)modeConfig;
 - (WFDiagnosticsContext)diagnosticsContext;
 - (WFNetworkView)provider;
 - (unint64_t)networkOrigin;
@@ -10,7 +10,7 @@
 - (void)cancelNetworkQualityRun;
 - (void)dealloc;
 - (void)disableRandomMAC;
-- (void)enableRandomMAC:(BOOL)a3;
+- (void)enableRandomMAC:(BOOL)c;
 - (void)forget;
 - (void)join;
 - (void)manage;
@@ -18,27 +18,27 @@
 - (void)openRecommendationLink;
 - (void)overrideWiFiOutrank;
 - (void)renewLease;
-- (void)runNetworkQualityWithCompletionHandler:(id)a3;
-- (void)setWiFiOutranked:(BOOL)a3;
-- (void)setWiFiOutrankedDev:(BOOL)a3;
-- (void)setWifiMode:(int64_t)a3;
-- (void)setWifiModeConfig:(id)a3;
-- (void)updatePrivateAddressMode:(unint64_t)a3;
+- (void)runNetworkQualityWithCompletionHandler:(id)handler;
+- (void)setWiFiOutranked:(BOOL)outranked;
+- (void)setWiFiOutrankedDev:(BOOL)dev;
+- (void)setWifiMode:(int64_t)mode;
+- (void)setWifiModeConfig:(id)config;
+- (void)updatePrivateAddressMode:(unint64_t)mode;
 @end
 
 @implementation WFDetailsContext
 
-- (WFDetailsContext)initWithNetwork:(id)a3 profile:(id)a4 ipMonitor:(id)a5 interface:(id)a6 privateMACConfig:(id)a7 wifiModeConfig:(id)a8
+- (WFDetailsContext)initWithNetwork:(id)network profile:(id)profile ipMonitor:(id)monitor interface:(id)interface privateMACConfig:(id)config wifiModeConfig:(id)modeConfig
 {
   v137 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v126 = a4;
-  obj = a5;
-  v123 = a5;
-  v121 = a6;
-  v122 = a6;
-  v16 = a7;
-  v124 = a8;
+  networkCopy = network;
+  profileCopy = profile;
+  obj = monitor;
+  monitorCopy = monitor;
+  interfaceCopy = interface;
+  interfaceCopy2 = interface;
+  configCopy = config;
+  modeConfigCopy = modeConfig;
   v127.receiver = self;
   v127.super_class = WFDetailsContext;
   v17 = [(WFDetailsContext *)&v127 init];
@@ -48,7 +48,7 @@
     goto LABEL_141;
   }
 
-  if (!v15)
+  if (!networkCopy)
   {
     [WFDetailsContext initWithNetwork:buf profile:? ipMonitor:? interface:? privateMACConfig:? wifiModeConfig:?];
 LABEL_139:
@@ -56,15 +56,15 @@ LABEL_139:
     goto LABEL_140;
   }
 
-  objc_storeStrong(&v17->_network, a3);
-  v125 = v16;
-  if (v126)
+  objc_storeStrong(&v17->_network, network);
+  v125 = configCopy;
+  if (profileCopy)
   {
-    objc_storeStrong(&v17->_profile, a4);
+    objc_storeStrong(&v17->_profile, profile);
     v17->_knownNetwork = 1;
-    v19 = v122;
-    v18 = v123;
-    if ([v126 autoJoinConfigurable])
+    v19 = interfaceCopy2;
+    v18 = monitorCopy;
+    if ([profileCopy autoJoinConfigurable])
     {
       v20 = WFLogForCategory(0);
       v21 = OSLogForWFLogLevel(3uLL);
@@ -73,9 +73,9 @@ LABEL_139:
         v22 = v20;
         if (os_log_type_enabled(v22, v21))
         {
-          v23 = [v15 ssid];
+          ssid = [networkCopy ssid];
           *buf = 138412290;
-          *&buf[4] = v23;
+          *&buf[4] = ssid;
           _os_log_impl(&dword_273ECD000, v22, v21, "'%@' is autoJoinConfigurable", buf, 0xCu);
         }
       }
@@ -83,7 +83,7 @@ LABEL_139:
       v17->_requestedFields |= 0x20uLL;
     }
 
-    if ([v126 autoLoginConfigurable])
+    if ([profileCopy autoLoginConfigurable])
     {
       v24 = WFLogForCategory(0);
       v25 = OSLogForWFLogLevel(3uLL);
@@ -92,9 +92,9 @@ LABEL_139:
         v26 = v24;
         if (os_log_type_enabled(v26, v25))
         {
-          v27 = [v15 ssid];
+          ssid2 = [networkCopy ssid];
           *buf = 138412290;
-          *&buf[4] = v27;
+          *&buf[4] = ssid2;
           _os_log_impl(&dword_273ECD000, v26, v25, "'%@' is autoLoginConfigurable", buf, 0xCu);
         }
       }
@@ -102,7 +102,7 @@ LABEL_139:
       v17->_requestedFields |= 0x40uLL;
     }
 
-    if ([v126 saveDataModeConfigurable])
+    if ([profileCopy saveDataModeConfigurable])
     {
       v28 = WFLogForCategory(0);
       v29 = OSLogForWFLogLevel(3uLL);
@@ -111,9 +111,9 @@ LABEL_139:
         v30 = v28;
         if (os_log_type_enabled(v30, v29))
         {
-          v31 = [v15 ssid];
+          ssid3 = [networkCopy ssid];
           *buf = 138412290;
-          *&buf[4] = v31;
+          *&buf[4] = ssid3;
           _os_log_impl(&dword_273ECD000, v30, v29, "'%@' is saveDataModeConfigurable", buf, 0xCu);
         }
       }
@@ -121,21 +121,21 @@ LABEL_139:
       v17->_requestedFields |= 0x200uLL;
     }
 
-    v32 = [v126 networkQualityVisible];
+    networkQualityVisible = [profileCopy networkQualityVisible];
     v33 = WFLogForCategory(0);
     v34 = OSLogForWFLogLevel(3uLL);
     v36 = WFCurrentLogLevel() > 2 && v33 != 0;
-    if (v32)
+    if (networkQualityVisible)
     {
       if (v36)
       {
-        v32 = v33;
-        if (os_log_type_enabled(v32, v34))
+        networkQualityVisible = v33;
+        if (os_log_type_enabled(networkQualityVisible, v34))
         {
-          v37 = [v15 ssid];
+          ssid4 = [networkCopy ssid];
           *buf = 138412290;
-          *&buf[4] = v37;
-          _os_log_impl(&dword_273ECD000, v32, v34, "NetQuality: '%@' is networkQualityVisible", buf, 0xCu);
+          *&buf[4] = ssid4;
+          _os_log_impl(&dword_273ECD000, networkQualityVisible, v34, "NetQuality: '%@' is networkQualityVisible", buf, 0xCu);
         }
       }
 
@@ -146,33 +146,33 @@ LABEL_139:
     {
       if (v36)
       {
-        v32 = v33;
-        if (os_log_type_enabled(v32, v34))
+        networkQualityVisible = v33;
+        if (os_log_type_enabled(networkQualityVisible, v34))
         {
-          v41 = [v15 ssid];
+          ssid5 = [networkCopy ssid];
           *buf = 138412290;
-          *&buf[4] = v41;
-          _os_log_impl(&dword_273ECD000, v32, v34, "NetQuality: %@ is NOT networkQualityVisible", buf, 0xCu);
+          *&buf[4] = ssid5;
+          _os_log_impl(&dword_273ECD000, networkQualityVisible, v34, "NetQuality: %@ is NOT networkQualityVisible", buf, 0xCu);
         }
       }
     }
 
-    v16 = v125;
-    if ([v126 forgetable])
+    configCopy = v125;
+    if ([profileCopy forgetable])
     {
       v42 = WFLogForCategory(0);
-      v32 = OSLogForWFLogLevel(3uLL);
+      networkQualityVisible = OSLogForWFLogLevel(3uLL);
       if (WFCurrentLogLevel() >= 3 && v42)
       {
         v43 = v42;
-        if (os_log_type_enabled(v43, v32))
+        if (os_log_type_enabled(v43, networkQualityVisible))
         {
-          v44 = [v15 ssid];
+          ssid6 = [networkCopy ssid];
           *buf = 138412290;
-          *&buf[4] = v44;
-          _os_log_impl(&dword_273ECD000, v43, v32, "'%@' is forgettable", buf, 0xCu);
+          *&buf[4] = ssid6;
+          _os_log_impl(&dword_273ECD000, v43, networkQualityVisible, "'%@' is forgettable", buf, 0xCu);
 
-          v16 = v125;
+          configCopy = v125;
         }
       }
 
@@ -183,22 +183,22 @@ LABEL_139:
   else
   {
     v38 = WFLogForCategory(0);
-    v32 = OSLogForWFLogLevel(3uLL);
-    v19 = v122;
-    v18 = v123;
+    networkQualityVisible = OSLogForWFLogLevel(3uLL);
+    v19 = interfaceCopy2;
+    v18 = monitorCopy;
     if (WFCurrentLogLevel() >= 3 && v38)
     {
       v39 = v38;
-      if (os_log_type_enabled(v39, v32))
+      if (os_log_type_enabled(v39, networkQualityVisible))
       {
-        v40 = [v15 ssid];
+        ssid7 = [networkCopy ssid];
         *buf = 136315394;
         *&buf[4] = "[WFDetailsContext initWithNetwork:profile:ipMonitor:interface:privateMACConfig:wifiModeConfig:]";
         v129 = 2112;
-        *v130 = v40;
-        _os_log_impl(&dword_273ECD000, v39, v32, "%s: not a known network %@, nil profile", buf, 0x16u);
+        *v130 = ssid7;
+        _os_log_impl(&dword_273ECD000, v39, networkQualityVisible, "%s: not a known network %@, nil profile", buf, 0x16u);
 
-        v16 = v125;
+        configCopy = v125;
       }
     }
 
@@ -207,16 +207,16 @@ LABEL_139:
 
   if (_os_feature_enabled_impl())
   {
-    if ([v126 privateMACAddressModeConfigurationProfileSetting] == 1)
+    if ([profileCopy privateMACAddressModeConfigurationProfileSetting] == 1)
     {
-      v45 = [(WFInterface *)v17->_interface cInterface];
-      v46 = [v45 isDeviceSupervised];
-      if ((v46 & 1) != 0 || ([(WFInterface *)v17->_interface cInterface], v32 = objc_claimAutoreleasedReturnValue(), [v32 isNetworkManagedByMDM:v126]))
+      cInterface = [(WFInterface *)v17->_interface cInterface];
+      isDeviceSupervised = [cInterface isDeviceSupervised];
+      if ((isDeviceSupervised & 1) != 0 || ([(WFInterface *)v17->_interface cInterface], networkQualityVisible = objc_claimAutoreleasedReturnValue(), [networkQualityVisible isNetworkManagedByMDM:profileCopy]))
       {
-        v47 = [(WFInterface *)v17->_interface cInterface];
-        v48 = [v47 privateMACAddressModeForNetworkProfile:v126] != 1;
+        cInterface2 = [(WFInterface *)v17->_interface cInterface];
+        isRandomMACAddressEnabled = [cInterface2 privateMACAddressModeForNetworkProfile:profileCopy] != 1;
 
-        if (v46)
+        if (isDeviceSupervised)
         {
           goto LABEL_67;
         }
@@ -224,34 +224,34 @@ LABEL_139:
 
       else
       {
-        v48 = 1;
+        isRandomMACAddressEnabled = 1;
       }
 
 LABEL_67:
-      v16 = v125;
+      configCopy = v125;
       goto LABEL_68;
     }
 
     goto LABEL_64;
   }
 
-  if (![v15 isPrivateMACDisabledByProfile] || !objc_msgSend(v15, "isSupervised"))
+  if (![networkCopy isPrivateMACDisabledByProfile] || !objc_msgSend(networkCopy, "isSupervised"))
   {
 LABEL_64:
-    v48 = 1;
+    isRandomMACAddressEnabled = 1;
     goto LABEL_68;
   }
 
-  v48 = [v15 isRandomMACAddressEnabled];
+  isRandomMACAddressEnabled = [networkCopy isRandomMACAddressEnabled];
 LABEL_68:
-  v17->_randomMACAddressConfigurable = v48;
-  v49 = [v126 isAutoJoinDisabled];
-  v17->_autoJoinEnabled = v49 ^ 1;
-  if (((v49 ^ 1) & 1) == 0)
+  v17->_randomMACAddressConfigurable = isRandomMACAddressEnabled;
+  isAutoJoinDisabled = [profileCopy isAutoJoinDisabled];
+  v17->_autoJoinEnabled = isAutoJoinDisabled ^ 1;
+  if (((isAutoJoinDisabled ^ 1) & 1) == 0)
   {
-    v50 = [v126 hasDisabledUntilDate];
+    hasDisabledUntilDate = [profileCopy hasDisabledUntilDate];
 
-    if (v50)
+    if (hasDisabledUntilDate)
     {
       v51 = WFLogForCategory(0);
       v52 = OSLogForWFLogLevel(3uLL);
@@ -260,33 +260,33 @@ LABEL_68:
         v53 = v51;
         if (os_log_type_enabled(v53, v52))
         {
-          v54 = [v126 SSID];
-          v55 = [v126 hasDisabledUntilDate];
+          sSID = [profileCopy SSID];
+          hasDisabledUntilDate2 = [profileCopy hasDisabledUntilDate];
           *buf = 136315650;
           *&buf[4] = "[WFDetailsContext initWithNetwork:profile:ipMonitor:interface:privateMACConfig:wifiModeConfig:]";
           v129 = 2112;
-          *v130 = v54;
+          *v130 = sSID;
           *&v130[8] = 2112;
-          v131 = v55;
+          v131 = hasDisabledUntilDate2;
           _os_log_impl(&dword_273ECD000, v53, v52, "%s: %@ autojoin temporarily disabled until %@, overriding UI switch to show enabled", buf, 0x20u);
         }
 
-        v16 = v125;
+        configCopy = v125;
       }
 
       v17->_autoJoinEnabled = 1;
     }
   }
 
-  v17->_autoLoginEnabled = [v126 bypassCaptive] ^ 1;
-  if ([v126 lowDataMode] == 1)
+  v17->_autoLoginEnabled = [profileCopy bypassCaptive] ^ 1;
+  if ([profileCopy lowDataMode] == 1)
   {
     v56 = 1;
   }
 
-  else if ([v126 isPersonalHotspot])
+  else if ([profileCopy isPersonalHotspot])
   {
-    v56 = [v126 lowDataMode] == 0;
+    v56 = [profileCopy lowDataMode] == 0;
   }
 
   else
@@ -295,7 +295,7 @@ LABEL_68:
   }
 
   v17->_isInSaveDataMode = v56;
-  v17->_isPrivacyProxyEnabled = [v126 isPrivacyProxyEnabled];
+  v17->_isPrivacyProxyEnabled = [profileCopy isPrivacyProxyEnabled];
   if (MEMORY[0x282239978])
   {
     v17->_greenTeaLogger = ct_green_tea_logger_create();
@@ -308,22 +308,22 @@ LABEL_68:
     v59 = v57;
     if (os_log_type_enabled(v59, v58))
     {
-      v60 = [v16 hardwareMACAddress];
+      hardwareMACAddress = [configCopy hardwareMACAddress];
       *buf = 138412290;
-      *&buf[4] = v60;
+      *&buf[4] = hardwareMACAddress;
       _os_log_impl(&dword_273ECD000, v59, v58, "hardwareMAC is '%@'", buf, 0xCu);
     }
   }
 
-  v61 = [v16 hardwareMACAddress];
-  v62 = [v61 formattedWiFiAddress];
+  hardwareMACAddress2 = [configCopy hardwareMACAddress];
+  formattedWiFiAddress = [hardwareMACAddress2 formattedWiFiAddress];
   hardwareMACAddress = v17->_hardwareMACAddress;
-  v17->_hardwareMACAddress = v62;
+  v17->_hardwareMACAddress = formattedWiFiAddress;
 
   if (v17->_greenTeaLogger)
   {
-    v64 = [MEMORY[0x277CCAC38] processInfo];
-    v65 = [v64 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
 
     greenTeaLogger = v17->_greenTeaLogger;
     v67 = getCTGreenTeaOsLogHandle();
@@ -335,11 +335,11 @@ LABEL_68:
       {
         v70 = v17->_hardwareMACAddress;
         *buf = 138413058;
-        *&buf[4] = v65;
+        *&buf[4] = processName;
         v129 = 2080;
         *v130 = "com.apple.wifikit";
         *&v130[8] = 2112;
-        v131 = v65;
+        v131 = processName;
         *v132 = 2112;
         *&v132[2] = v70;
         _os_log_impl(&dword_273ECD000, v69, OS_LOG_TYPE_INFO, "<%@>[%s][%@]:WLAN hardware MAC address..%@", buf, 0x2Au);
@@ -347,15 +347,15 @@ LABEL_68:
     }
   }
 
-  v71 = [v16 randomMACAddress];
-  v72 = [v71 formattedWiFiAddress];
+  randomMACAddress = [configCopy randomMACAddress];
+  formattedWiFiAddress2 = [randomMACAddress formattedWiFiAddress];
   randomMACAddress = v17->_randomMACAddress;
-  v17->_randomMACAddress = v72;
+  v17->_randomMACAddress = formattedWiFiAddress2;
 
   if (v17->_greenTeaLogger)
   {
-    v74 = [MEMORY[0x277CCAC38] processInfo];
-    v75 = [v74 processName];
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    processName2 = [processInfo2 processName];
 
     v76 = v17->_greenTeaLogger;
     v77 = getCTGreenTeaOsLogHandle();
@@ -367,11 +367,11 @@ LABEL_68:
       {
         v80 = v17->_randomMACAddress;
         *buf = 138413058;
-        *&buf[4] = v75;
+        *&buf[4] = processName2;
         v129 = 2080;
         *v130 = "com.apple.wifikit";
         *&v130[8] = 2112;
-        v131 = v75;
+        v131 = processName2;
         *v132 = 2112;
         *&v132[2] = v80;
         _os_log_impl(&dword_273ECD000, v79, OS_LOG_TYPE_INFO, "<%@>[%s][%@]:WLAN random MAC address..%@", buf, 0x2Au);
@@ -379,7 +379,7 @@ LABEL_68:
     }
   }
 
-  v17->_randomMACFeatureEnabled = [v16 isPrivateAddressSupported];
+  v17->_randomMACFeatureEnabled = [configCopy isPrivateAddressSupported];
   v81 = WFLogForCategory(0);
   v82 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v81)
@@ -387,23 +387,23 @@ LABEL_68:
     v83 = v81;
     if (os_log_type_enabled(v83, v82))
     {
-      v84 = [v16 isConnectedWithHardwareAddress];
+      isConnectedWithHardwareAddress = [configCopy isConnectedWithHardwareAddress];
       *buf = 67109120;
-      *&buf[4] = v84;
+      *&buf[4] = isConnectedWithHardwareAddress;
       _os_log_impl(&dword_273ECD000, v83, v82, "Network connected with hardware Address: %d", buf, 8u);
     }
   }
 
-  v17->_connectedWithHardwareAddress = [v16 isConnectedWithHardwareAddress];
+  v17->_connectedWithHardwareAddress = [configCopy isConnectedWithHardwareAddress];
   if (v17->_randomMACFeatureEnabled)
   {
     v17->_requestedFields |= 0x400uLL;
   }
 
-  v85 = [v16 privateAddressMode];
-  v17->_privateAddressMode = v85;
-  v17->_randomMACAddressDisabled = v85 != 2;
-  v17->_randomMACSwitchOn = v85 == 2;
+  privateAddressMode = [configCopy privateAddressMode];
+  v17->_privateAddressMode = privateAddressMode;
+  v17->_randomMACAddressDisabled = privateAddressMode != 2;
+  v17->_randomMACSwitchOn = privateAddressMode == 2;
   v86 = WFLogForCategory(0);
   v87 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel() && v86)
@@ -411,30 +411,30 @@ LABEL_68:
     v88 = v86;
     if (os_log_type_enabled(v88, v87))
     {
-      v89 = [v15 ssid];
+      ssid8 = [networkCopy ssid];
       autoJoinEnabled = v17->_autoJoinEnabled;
       autoLoginEnabled = v17->_autoLoginEnabled;
       isInSaveDataMode = v17->_isInSaveDataMode;
       isPrivacyProxyEnabled = v17->_isPrivacyProxyEnabled;
       privateAddressMode = v17->_privateAddressMode;
-      v93 = [v15 randomMACAddress];
+      randomMACAddress2 = [networkCopy randomMACAddress];
       randomMACAddressConfigurable = v17->_randomMACAddressConfigurable;
       *buf = 138414082;
-      *&buf[4] = v89;
+      *&buf[4] = ssid8;
       v129 = 1024;
       *v130 = autoJoinEnabled;
       *&v130[4] = 1024;
       *&v130[6] = autoLoginEnabled;
       LOWORD(v131) = 1024;
       *(&v131 + 2) = isInSaveDataMode;
-      v19 = v122;
-      v18 = v123;
+      v19 = interfaceCopy2;
+      v18 = monitorCopy;
       HIWORD(v131) = 1024;
       *v132 = isPrivacyProxyEnabled;
       *&v132[4] = 2048;
       *&v132[6] = privateAddressMode;
       v133 = 2112;
-      v134 = v93;
+      v134 = randomMACAddress2;
       v135 = 1024;
       v136 = randomMACAddressConfigurable;
       _os_log_impl(&dword_273ECD000, v88, v87, "%@ - autoJoinEnabled=%d autoLoginEnabled=%d isInSaveDataMode=%d isPrivacyProxyEnabled=%d _privateAddressMode=%ld randomMAC='%@' _randomMACAddressConfigurable=%d", buf, 0x3Eu);
@@ -445,19 +445,19 @@ LABEL_68:
   {
     [WFDetailsContext initWithNetwork:buf profile:? ipMonitor:? interface:? privateMACConfig:? wifiModeConfig:?];
     v117 = *buf;
-    v16 = v125;
+    configCopy = v125;
 LABEL_140:
 
 LABEL_141:
     v17 = 0;
-    v19 = v122;
-    v18 = v123;
+    v19 = interfaceCopy2;
+    v18 = monitorCopy;
     goto LABEL_135;
   }
 
   objc_storeStrong(&v17->_ipMonitor, obj);
-  objc_storeStrong(&v17->_interface, v121);
-  v16 = v125;
+  objc_storeStrong(&v17->_interface, interfaceCopy);
+  configCopy = v125;
   if (!v19)
   {
     [WFDetailsContext initWithNetwork:buf profile:? ipMonitor:? interface:? privateMACConfig:? wifiModeConfig:?];
@@ -465,10 +465,10 @@ LABEL_141:
   }
 
   v17->_supportsAirportManagement = 0;
-  v17->_wifiModeConfigurable = [v124 isWifiModeConfigurable];
-  v17->_wifiMode = [v124 wifiMode];
-  v95 = [MEMORY[0x277D29518] sharedInstance];
-  v17->_demoModeEnabled = [v95 isStoreDemoModeEnabled:0];
+  v17->_wifiModeConfigurable = [modeConfigCopy isWifiModeConfigurable];
+  v17->_wifiMode = [modeConfigCopy wifiMode];
+  mEMORY[0x277D29518] = [MEMORY[0x277D29518] sharedInstance];
+  v17->_demoModeEnabled = [mEMORY[0x277D29518] isStoreDemoModeEnabled:0];
 
   if (v17->_demoModeEnabled)
   {
@@ -490,22 +490,22 @@ LABEL_141:
   v17->_credentialsTappedHandler = &__block_literal_global_3;
 
   v100 = [WFPortalContext alloc];
-  v101 = [v126 captiveProfile];
-  v102 = [v15 scanResult];
-  v103 = [v102 venueURLList];
-  v104 = [(WFPortalContext *)v100 initWithCaptiveProfile:v101 anqpVenueURLs:v103];
+  captiveProfile = [profileCopy captiveProfile];
+  scanResult = [networkCopy scanResult];
+  venueURLList = [scanResult venueURLList];
+  v104 = [(WFPortalContext *)v100 initWithCaptiveProfile:captiveProfile anqpVenueURLs:venueURLList];
   portalContext = v17->_portalContext;
   v17->_portalContext = v104;
 
   if (objc_opt_class())
   {
-    v106 = [MEMORY[0x277D243A0] shared];
-    v107 = [v106 enabled];
+    mEMORY[0x277D243A0] = [MEMORY[0x277D243A0] shared];
+    enabled = [mEMORY[0x277D243A0] enabled];
   }
 
   else
   {
-    v107 = 0;
+    enabled = 0;
   }
 
   v108 = WFLogForCategory(0);
@@ -516,7 +516,7 @@ LABEL_141:
     if (os_log_type_enabled(v110, v109))
     {
       v111 = "disabled";
-      if (v107)
+      if (enabled)
       {
         v111 = "enabled";
       }
@@ -529,10 +529,10 @@ LABEL_141:
     }
   }
 
-  v112 = [v15 scanResult];
-  v113 = [v112 isAllowedInLockdownMode];
+  scanResult2 = [networkCopy scanResult];
+  isAllowedInLockdownMode = [scanResult2 isAllowedInLockdownMode];
 
-  v17->_autoJoinConfigurable = v107 && (v113 & 1) == 0;
+  v17->_autoJoinConfigurable = enabled && (isAllowedInLockdownMode & 1) == 0;
 LABEL_135:
   v114 = v17;
 
@@ -564,8 +564,8 @@ void __96__WFDetailsContext_initWithNetwork_profile_ipMonitor_interface_privateM
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (MEMORY[0x282239980])
   {
@@ -579,33 +579,33 @@ void __96__WFDetailsContext_initWithNetwork_profile_ipMonitor_interface_privateM
   [(WFDetailsContext *)&v5 dealloc];
 }
 
-- (void)setWifiMode:(int64_t)a3
+- (void)setWifiMode:(int64_t)mode
 {
-  v5 = [(WFDetailsContext *)self WiFiModeChangedHandler];
+  wiFiModeChangedHandler = [(WFDetailsContext *)self WiFiModeChangedHandler];
 
-  if (v5)
+  if (wiFiModeChangedHandler)
   {
-    v6 = [(WFDetailsContext *)self WiFiModeChangedHandler];
-    v6[2](v6, a3);
+    wiFiModeChangedHandler2 = [(WFDetailsContext *)self WiFiModeChangedHandler];
+    wiFiModeChangedHandler2[2](wiFiModeChangedHandler2, mode);
   }
 
-  self->_wifiMode = a3;
+  self->_wifiMode = mode;
 }
 
-- (void)setWifiModeConfig:(id)a3
+- (void)setWifiModeConfig:(id)config
 {
-  v4 = a3;
-  self->_wifiModeConfigurable = [v4 isWifiModeConfigurable];
-  v5 = [v4 wifiMode];
+  configCopy = config;
+  self->_wifiModeConfigurable = [configCopy isWifiModeConfigurable];
+  wifiMode = [configCopy wifiMode];
 
-  self->_wifiMode = v5;
+  self->_wifiMode = wifiMode;
 }
 
-- (void)setWiFiOutranked:(BOOL)a3
+- (void)setWiFiOutranked:(BOOL)outranked
 {
-  self->_WiFiOutranked = a3;
+  self->_WiFiOutranked = outranked;
   v3 = 4096;
-  if (!a3)
+  if (!outranked)
   {
     v3 = 0;
   }
@@ -613,12 +613,12 @@ void __96__WFDetailsContext_initWithNetwork_profile_ipMonitor_interface_privateM
   self->_requestedFields = self->_requestedFields & 0xFFFFFFFFFFFFEFFFLL | v3;
 }
 
-- (void)setWiFiOutrankedDev:(BOOL)a3
+- (void)setWiFiOutrankedDev:(BOOL)dev
 {
   v15 = *MEMORY[0x277D85DE8];
-  self->_WiFiOutrankedDev = a3;
+  self->_WiFiOutrankedDev = dev;
   v4 = 0x2000;
-  if (!a3)
+  if (!dev)
   {
     v4 = 0;
   }
@@ -631,12 +631,12 @@ void __96__WFDetailsContext_initWithNetwork_profile_ipMonitor_interface_privateM
     v7 = v5;
     if (os_log_type_enabled(v7, v6))
     {
-      v8 = [(WFDetailsContext *)self network];
-      v9 = [v8 ssid];
+      network = [(WFDetailsContext *)self network];
+      ssid = [network ssid];
       v11 = 134218242;
       v12 = 0x2000;
       v13 = 2112;
-      v14 = v9;
+      v14 = ssid;
       _os_log_impl(&dword_273ECD000, v7, v6, "setting WiFiOutrankedDev=%ld for %@", &v11, 0x16u);
     }
   }
@@ -644,33 +644,33 @@ void __96__WFDetailsContext_initWithNetwork_profile_ipMonitor_interface_privateM
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runNetworkQualityWithCompletionHandler:(id)a3
+- (void)runNetworkQualityWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
   v16[3] = 0;
   v5 = objc_alloc_init(MEMORY[0x277D2C9A0]);
-  v6 = [(WFDetailsContext *)self ipMonitor];
-  v7 = [v6 interfaceName];
-  [v5 setNetworkInterfaceName:v7];
+  ipMonitor = [(WFDetailsContext *)self ipMonitor];
+  interfaceName = [ipMonitor interfaceName];
+  [v5 setNetworkInterfaceName:interfaceName];
 
   v8 = objc_alloc(MEMORY[0x277D2C990]);
   v9 = objc_alloc_init(MEMORY[0x277D2C9A0]);
   v10 = [v8 initWithConfiguration:v9];
   [(WFDetailsContext *)self setNetworkQualityAssessment:v10];
 
-  v11 = [(WFDetailsContext *)self networkQualityAssessment];
+  networkQualityAssessment = [(WFDetailsContext *)self networkQualityAssessment];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __59__WFDetailsContext_runNetworkQualityWithCompletionHandler___block_invoke;
   v13[3] = &unk_279EBDC68;
   v15 = v16;
   v13[4] = self;
-  v12 = v4;
+  v12 = handlerCopy;
   v14 = v12;
-  [v11 runWithCompletionHandler:v13];
+  [networkQualityAssessment runWithCompletionHandler:v13];
 
   _Block_object_dispose(v16, 8);
 }
@@ -738,12 +738,12 @@ void __59__WFDetailsContext_runNetworkQualityWithCompletionHandler___block_invok
 
 - (void)cancelNetworkQualityRun
 {
-  v3 = [(WFDetailsContext *)self networkQualityAssessment];
+  networkQualityAssessment = [(WFDetailsContext *)self networkQualityAssessment];
 
-  if (v3)
+  if (networkQualityAssessment)
   {
-    v4 = [(WFDetailsContext *)self networkQualityAssessment];
-    [v4 cancel];
+    networkQualityAssessment2 = [(WFDetailsContext *)self networkQualityAssessment];
+    [networkQualityAssessment2 cancel];
 
     [(WFDetailsContext *)self setNetworkQualityAssessment:0];
   }
@@ -759,8 +759,8 @@ void __59__WFDetailsContext_runNetworkQualityWithCompletionHandler___block_invok
     _os_log_impl(&dword_273ECD000, v3, v4, "User tapped forget in network details", v6, 2u);
   }
 
-  v5 = [(WFDetailsContext *)self actionHandler];
-  v5[2](v5, 0);
+  actionHandler = [(WFDetailsContext *)self actionHandler];
+  actionHandler[2](actionHandler, 0);
 }
 
 - (void)openRecommendationLink
@@ -773,8 +773,8 @@ void __59__WFDetailsContext_runNetworkQualityWithCompletionHandler___block_invok
     _os_log_impl(&dword_273ECD000, v3, v4, "User tapped recommendation link in network details", v6, 2u);
   }
 
-  v5 = [(WFDetailsContext *)self actionHandler];
-  v5[2](v5, 4);
+  actionHandler = [(WFDetailsContext *)self actionHandler];
+  actionHandler[2](actionHandler, 4);
 }
 
 - (void)renewLease
@@ -787,8 +787,8 @@ void __59__WFDetailsContext_runNetworkQualityWithCompletionHandler___block_invok
     _os_log_impl(&dword_273ECD000, v3, v4, "User tapped remew lease in network details", v6, 2u);
   }
 
-  v5 = [(WFDetailsContext *)self actionHandler];
-  v5[2](v5, 3);
+  actionHandler = [(WFDetailsContext *)self actionHandler];
+  actionHandler[2](actionHandler, 3);
 }
 
 - (void)join
@@ -801,8 +801,8 @@ void __59__WFDetailsContext_runNetworkQualityWithCompletionHandler___block_invok
     _os_log_impl(&dword_273ECD000, v3, v4, "User tapped join network in details", v6, 2u);
   }
 
-  v5 = [(WFDetailsContext *)self actionHandler];
-  v5[2](v5, 2);
+  actionHandler = [(WFDetailsContext *)self actionHandler];
+  actionHandler[2](actionHandler, 2);
 }
 
 - (void)manage
@@ -815,8 +815,8 @@ void __59__WFDetailsContext_runNetworkQualityWithCompletionHandler___block_invok
     _os_log_impl(&dword_273ECD000, v3, v4, "User tapped manage network in details", v6, 2u);
   }
 
-  v5 = [(WFDetailsContext *)self actionHandler];
-  v5[2](v5, 1);
+  actionHandler = [(WFDetailsContext *)self actionHandler];
+  actionHandler[2](actionHandler, 1);
 }
 
 - (void)disableRandomMAC
@@ -829,26 +829,26 @@ void __59__WFDetailsContext_runNetworkQualityWithCompletionHandler___block_invok
     v5 = v3;
     if (os_log_type_enabled(v5, v4))
     {
-      v6 = [(WFDetailsContext *)self network];
-      v7 = [v6 ssid];
+      network = [(WFDetailsContext *)self network];
+      ssid = [network ssid];
       v11 = 138412290;
-      v12 = v7;
+      v12 = ssid;
       _os_log_impl(&dword_273ECD000, v5, v4, "user disabled using random mac address for '%@'", &v11, 0xCu);
     }
   }
 
-  v8 = [(WFDetailsContext *)self privateMACHandler];
+  privateMACHandler = [(WFDetailsContext *)self privateMACHandler];
 
-  if (v8)
+  if (privateMACHandler)
   {
-    v9 = [(WFDetailsContext *)self privateMACHandler];
-    v9[2](v9, 3);
+    privateMACHandler2 = [(WFDetailsContext *)self privateMACHandler];
+    privateMACHandler2[2](privateMACHandler2, 3);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableRandomMAC:(BOOL)a3
+- (void)enableRandomMAC:(BOOL)c
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = WFLogForCategory(0);
@@ -858,26 +858,26 @@ void __59__WFDetailsContext_runNetworkQualityWithCompletionHandler___block_invok
     v6 = v4;
     if (os_log_type_enabled(v6, v5))
     {
-      v7 = [(WFDetailsContext *)self network];
-      v8 = [v7 ssid];
+      network = [(WFDetailsContext *)self network];
+      ssid = [network ssid];
       v12 = 138412290;
-      v13 = v8;
+      v13 = ssid;
       _os_log_impl(&dword_273ECD000, v6, v5, "user enabled using random mac address for '%@'", &v12, 0xCu);
     }
   }
 
-  v9 = [(WFDetailsContext *)self privateMACHandler];
+  privateMACHandler = [(WFDetailsContext *)self privateMACHandler];
 
-  if (v9)
+  if (privateMACHandler)
   {
-    v10 = [(WFDetailsContext *)self privateMACHandler];
-    v10[2](v10, 2);
+    privateMACHandler2 = [(WFDetailsContext *)self privateMACHandler];
+    privateMACHandler2[2](privateMACHandler2, 2);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatePrivateAddressMode:(unint64_t)a3
+- (void)updatePrivateAddressMode:(unint64_t)mode
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = WFLogForCategory(0);
@@ -885,30 +885,30 @@ void __59__WFDetailsContext_runNetworkQualityWithCompletionHandler___block_invok
   if (WFCurrentLogLevel() >= 3 && v5 && os_log_type_enabled(v5, v6))
   {
     v10 = 134217984;
-    v11 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_273ECD000, v5, v6, "User tried to set private address mode to : %ld", &v10, 0xCu);
   }
 
-  v7 = [(WFDetailsContext *)self privateMACHandler];
+  privateMACHandler = [(WFDetailsContext *)self privateMACHandler];
 
-  if (v7)
+  if (privateMACHandler)
   {
-    v8 = [(WFDetailsContext *)self privateMACHandler];
-    v8[2](v8, a3);
+    privateMACHandler2 = [(WFDetailsContext *)self privateMACHandler];
+    privateMACHandler2[2](privateMACHandler2, mode);
   }
 
-  [(WFDetailsContext *)self setPrivateAddressMode:a3];
+  [(WFDetailsContext *)self setPrivateAddressMode:mode];
   v9 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)shouldHideCredentials
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [(WFDetailsContext *)self profile];
-  v4 = [v3 addReason];
+  profile = [(WFDetailsContext *)self profile];
+  addReason = [profile addReason];
 
-  v5 = [(WFDetailsContext *)self profile];
-  v6 = [v5 addReason];
+  profile2 = [(WFDetailsContext *)self profile];
+  addReason2 = [profile2 addReason];
 
   v7 = WFLogForCategory(0);
   v8 = OSLogForWFLogLevel(3uLL);
@@ -917,50 +917,50 @@ void __59__WFDetailsContext_runNetworkQualityWithCompletionHandler___block_invok
     v9 = v7;
     if (os_log_type_enabled(v9, v8))
     {
-      v23 = [(WFDetailsContext *)self network];
-      v10 = [v23 ssid];
-      v22 = [(WFDetailsContext *)self network];
-      v20 = [v22 securityMode] == 0;
-      v21 = [(WFDetailsContext *)self network];
-      v11 = [v21 isSupervised];
-      v12 = [(WFDetailsContext *)self profile];
+      network = [(WFDetailsContext *)self network];
+      ssid = [network ssid];
+      network2 = [(WFDetailsContext *)self network];
+      v20 = [network2 securityMode] == 0;
+      network3 = [(WFDetailsContext *)self network];
+      isSupervised = [network3 isSupervised];
+      profile3 = [(WFDetailsContext *)self profile];
       *buf = 136316930;
       v25 = "[WFDetailsContext shouldHideCredentials]";
       v26 = 2112;
-      v27 = v10;
+      v27 = ssid;
       v28 = 1024;
       v29 = v20;
       v30 = 1024;
-      v31 = v11;
+      v31 = isSupervised;
       v32 = 1024;
-      v33 = [v12 isProfileBased];
+      isProfileBased = [profile3 isProfileBased];
       v34 = 1024;
-      v35 = v6 == 11;
+      v35 = addReason2 == 11;
       v36 = 1024;
-      v37 = [(WFDetailsContext *)self demoModeEnabled];
+      demoModeEnabled = [(WFDetailsContext *)self demoModeEnabled];
       v38 = 1024;
-      v39 = v4 == 10;
+      v39 = addReason == 10;
       _os_log_impl(&dword_273ECD000, v9, v8, "%s: Network %@ is open:%d supervised:%d profile-based:%d shared:%d demo-mode-enabled:%d carrier-based:%d", buf, 0x3Au);
     }
   }
 
-  v13 = [(WFDetailsContext *)self network];
-  if ([v13 securityMode])
+  network4 = [(WFDetailsContext *)self network];
+  if ([network4 securityMode])
   {
-    v14 = [(WFDetailsContext *)self network];
-    if ([v14 isSupervised])
+    network5 = [(WFDetailsContext *)self network];
+    if ([network5 isSupervised])
     {
       v15 = 1;
     }
 
     else
     {
-      v16 = [(WFDetailsContext *)self profile];
+      profile4 = [(WFDetailsContext *)self profile];
       v15 = 1;
-      if (([v16 isProfileBased] & 1) == 0 && v6 != 11)
+      if (([profile4 isProfileBased] & 1) == 0 && addReason2 != 11)
       {
-        v17 = [(WFDetailsContext *)self demoModeEnabled];
-        v15 = v4 == 10 || v17;
+        demoModeEnabled2 = [(WFDetailsContext *)self demoModeEnabled];
+        v15 = addReason == 10 || demoModeEnabled2;
       }
     }
   }
@@ -983,12 +983,12 @@ void __59__WFDetailsContext_runNetworkQualityWithCompletionHandler___block_invok
   }
 
   v4 = [WFNetworkProfile alloc];
-  v5 = [(WFDetailsContext *)self profile];
-  v6 = [(WFNetworkProfile *)v4 initWithCoreWiFiProfile:v5];
+  profile = [(WFDetailsContext *)self profile];
+  v6 = [(WFNetworkProfile *)v4 initWithCoreWiFiProfile:profile];
 
   v7 = [WFDiagnosticsContext alloc];
-  v8 = [(WFDetailsContext *)self network];
-  v9 = [(WFDiagnosticsContext *)v7 initWithNetwork:v8 profile:v6 detailsContext:self];
+  network = [(WFDetailsContext *)self network];
+  v9 = [(WFDiagnosticsContext *)v7 initWithNetwork:network profile:v6 detailsContext:self];
   v10 = self->_diagnosticsContext;
   self->_diagnosticsContext = v9;
 
@@ -1000,12 +1000,12 @@ void __59__WFDetailsContext_runNetworkQualityWithCompletionHandler___block_invok
 
 - (void)cancel
 {
-  v3 = [(WFDetailsContext *)self networkQualityAssessment];
+  networkQualityAssessment = [(WFDetailsContext *)self networkQualityAssessment];
 
-  if (v3)
+  if (networkQualityAssessment)
   {
-    v4 = [(WFDetailsContext *)self networkQualityAssessment];
-    [v4 cancel];
+    networkQualityAssessment2 = [(WFDetailsContext *)self networkQualityAssessment];
+    [networkQualityAssessment2 cancel];
 
     [(WFDetailsContext *)self setNetworkQualityAssessment:0];
   }
@@ -1024,49 +1024,49 @@ void __59__WFDetailsContext_runNetworkQualityWithCompletionHandler___block_invok
     v5 = v3;
     if (os_log_type_enabled(v5, v4))
     {
-      v6 = [(WFDetailsContext *)self network];
-      v7 = [v6 ssid];
+      network = [(WFDetailsContext *)self network];
+      ssid = [network ssid];
       v10 = 138412290;
-      v11 = v7;
+      v11 = ssid;
       _os_log_impl(&dword_273ECD000, v5, v4, "User is overriding WiFi outrank for network='%@'", &v10, 0xCu);
     }
   }
 
   [(WFDetailsContext *)self setWiFiOutranked:0];
-  v8 = [(WFDetailsContext *)self actionHandler];
-  v8[2](v8, 5);
+  actionHandler = [(WFDetailsContext *)self actionHandler];
+  actionHandler[2](actionHandler, 5);
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
 - (unint64_t)networkOrigin
 {
-  v2 = [(WFDetailsContext *)self profile];
-  v3 = [v2 addReason];
+  profile = [(WFDetailsContext *)self profile];
+  addReason = [profile addReason];
 
-  if (v3 == 10)
+  if (addReason == 10)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v3 == 9);
+    return 2 * (addReason == 9);
   }
 }
 
 - (NSString)portalURL
 {
-  v2 = [(WFDetailsContext *)self portalContext];
-  v3 = [v2 portalHostnameForDisplay];
+  portalContext = [(WFDetailsContext *)self portalContext];
+  portalHostnameForDisplay = [portalContext portalHostnameForDisplay];
 
-  return v3;
+  return portalHostnameForDisplay;
 }
 
 - (void)openPortalURL
 {
-  v2 = [(WFDetailsContext *)self actionHandler];
-  v2[2](v2, 6);
+  actionHandler = [(WFDetailsContext *)self actionHandler];
+  actionHandler[2](actionHandler, 6);
 }
 
 - (NSString)description
@@ -1074,9 +1074,9 @@ void __59__WFDetailsContext_runNetworkQualityWithCompletionHandler___block_invok
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFDetailsContext *)self network];
-  v7 = [v6 ssid];
-  v8 = [v3 stringWithFormat:@"<%@: %p SSID: %@ Current: %d Known: %d Context: %ld>", v5, self, v7, -[WFDetailsContext isCurrent](self, "isCurrent"), -[WFDetailsContext isKnownNetwork](self, "isKnownNetwork"), -[WFDetailsContext entryContext](self, "entryContext")];
+  network = [(WFDetailsContext *)self network];
+  ssid = [network ssid];
+  v8 = [v3 stringWithFormat:@"<%@: %p SSID: %@ Current: %d Known: %d Context: %ld>", v5, self, ssid, -[WFDetailsContext isCurrent](self, "isCurrent"), -[WFDetailsContext isKnownNetwork](self, "isKnownNetwork"), -[WFDetailsContext entryContext](self, "entryContext")];
 
   return v8;
 }

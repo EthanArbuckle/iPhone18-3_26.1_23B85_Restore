@@ -1,22 +1,22 @@
 @interface AskToIDSServiceDelegate
 - (_TtC11AskToDaemonP33_D5D2E3A5CDD8E512D4F6A05865E285B023AskToIDSServiceDelegate)init;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
 @end
 
 @implementation AskToIDSServiceDelegate
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  v8 = a6;
-  if (a5)
+  dCopy = d;
+  if (message)
   {
     v12 = sub_241165D18();
-    if (v8)
+    if (dCopy)
     {
 LABEL_3:
       v13 = sub_241165DD8();
-      v8 = v14;
+      dCopy = v14;
       goto LABEL_6;
     }
   }
@@ -24,7 +24,7 @@ LABEL_3:
   else
   {
     v12 = 0;
-    if (a6)
+    if (d)
     {
       goto LABEL_3;
     }
@@ -32,16 +32,16 @@ LABEL_3:
 
   v13 = 0;
 LABEL_6:
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = self;
-  sub_24114A088(a3, v12, v13, v8);
+  serviceCopy = service;
+  accountCopy = account;
+  contextCopy = context;
+  selfCopy = self;
+  sub_24114A088(service, v12, v13, dCopy);
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  if (a5)
+  if (identifier)
   {
     v12 = sub_241165DD8();
     v14 = v13;
@@ -53,11 +53,11 @@ LABEL_6:
     v14 = 0;
   }
 
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = self;
-  sub_24114A63C(v12, v14, a6, a7);
+  serviceCopy = service;
+  accountCopy = account;
+  errorCopy = error;
+  selfCopy = self;
+  sub_24114A63C(v12, v14, success, error);
 }
 
 - (_TtC11AskToDaemonP33_D5D2E3A5CDD8E512D4F6A05865E285B023AskToIDSServiceDelegate)init

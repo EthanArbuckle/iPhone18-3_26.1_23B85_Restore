@@ -1,45 +1,45 @@
 @interface PXFocusInfo
-+ (PXFocusInfo)focusInfoWithView:(id)a3;
-+ (PXFocusInfo)focusInfoWithView:(id)a3 cornerRadius:(double)a4 cornerCurve:(id)a5;
-- (id)makeHaloEffectForSourceView:(id)a3;
++ (PXFocusInfo)focusInfoWithView:(id)view;
++ (PXFocusInfo)focusInfoWithView:(id)view cornerRadius:(double)radius cornerCurve:(id)curve;
+- (id)makeHaloEffectForSourceView:(id)view;
 @end
 
 @implementation PXFocusInfo
 
-+ (PXFocusInfo)focusInfoWithView:(id)a3
++ (PXFocusInfo)focusInfoWithView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 layer];
-  [v5 cornerRadius];
+  viewCopy = view;
+  layer = [viewCopy layer];
+  [layer cornerRadius];
   v7 = v6;
-  v8 = [v5 cornerCurve];
-  v9 = [a1 focusInfoWithView:v4 cornerRadius:v8 cornerCurve:v7];
+  cornerCurve = [layer cornerCurve];
+  v9 = [self focusInfoWithView:viewCopy cornerRadius:cornerCurve cornerCurve:v7];
 
   return v9;
 }
 
-+ (PXFocusInfo)focusInfoWithView:(id)a3 cornerRadius:(double)a4 cornerCurve:(id)a5
++ (PXFocusInfo)focusInfoWithView:(id)view cornerRadius:(double)radius cornerCurve:(id)curve
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = objc_alloc_init(a1);
+  viewCopy = view;
+  curveCopy = curve;
+  v10 = objc_alloc_init(self);
   v11 = *(v10 + 2);
-  *(v10 + 2) = v8;
-  v12 = v8;
+  *(v10 + 2) = viewCopy;
+  v12 = viewCopy;
 
-  v10[3] = a4;
+  v10[3] = radius;
   v13 = *(v10 + 4);
-  *(v10 + 4) = v9;
+  *(v10 + 4) = curveCopy;
 
   return v10;
 }
 
-- (id)makeHaloEffectForSourceView:(id)a3
+- (id)makeHaloEffectForSourceView:(id)view
 {
   view = self->_view;
-  v5 = a3;
+  viewCopy = view;
   [(UIView *)view bounds];
-  [v5 convertRect:self->_view fromView:?];
+  [viewCopy convertRect:self->_view fromView:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;

@@ -1,28 +1,28 @@
 @interface TSCH3DArray2DResources
 + (id)_resources;
-+ (id)resourcesWithResource:(id)a3;
-+ (id)resourcesWithSize:(const void *)a3;
-- (TSCH3DArray2DResources)initWithSize:(const void *)a3;
++ (id)resourcesWithResource:(id)resource;
++ (id)resourcesWithSize:(const void *)size;
+- (TSCH3DArray2DResources)initWithSize:(const void *)size;
 - (tvec2<int>)size;
 @end
 
 @implementation TSCH3DArray2DResources
 
-+ (id)resourcesWithSize:(const void *)a3
++ (id)resourcesWithSize:(const void *)size
 {
-  v4 = [a1 alloc];
-  v9 = objc_msgSend_initWithSize_(v4, v5, v6, v7, v8, a3);
+  v4 = [self alloc];
+  v9 = objc_msgSend_initWithSize_(v4, v5, v6, v7, v8, size);
 
   return v9;
 }
 
-+ (id)resourcesWithResource:(id)a3
++ (id)resourcesWithResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v14 = 0x100000001;
-  v8 = objc_msgSend_resourcesWithSize_(a1, v5, COERCE_DOUBLE(0x100000001), v6, v7, &v14);
+  v8 = objc_msgSend_resourcesWithSize_(self, v5, COERCE_DOUBLE(0x100000001), v6, v7, &v14);
   v14 = 0;
-  objc_msgSend_setResource_atIndex_(v8, v9, v10, v11, v12, v4, &v14);
+  objc_msgSend_setResource_atIndex_(v8, v9, v10, v11, v12, resourceCopy, &v14);
 
   return v8;
 }
@@ -30,12 +30,12 @@
 + (id)_resources
 {
   v7 = 0;
-  v5 = objc_msgSend_resourcesWithSize_(a1, a2, v2, v3, v4, &v7);
+  v5 = objc_msgSend_resourcesWithSize_(self, a2, v2, v3, v4, &v7);
 
   return v5;
 }
 
-- (TSCH3DArray2DResources)initWithSize:(const void *)a3
+- (TSCH3DArray2DResources)initWithSize:(const void *)size
 {
   v13.receiver = self;
   v13.super_class = TSCH3DArray2DResources;
@@ -43,7 +43,7 @@
   if (v4)
   {
     v5 = [TSCH3DArray2D alloc];
-    v10 = objc_msgSend_initWithSize_(v5, v6, v7, v8, v9, a3);
+    v10 = objc_msgSend_initWithSize_(v5, v6, v7, v8, v9, size);
     resources = v4->_resources;
     v4->_resources = v10;
   }

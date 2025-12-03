@@ -1,33 +1,33 @@
 @interface TPLCDTextViewScrollingView
-- (TPLCDTextViewScrollingView)initWithFrame:(CGRect)a3 owner:(id)a4;
-- (void)drawRect:(CGRect)a3;
+- (TPLCDTextViewScrollingView)initWithFrame:(CGRect)frame owner:(id)owner;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation TPLCDTextViewScrollingView
 
-- (TPLCDTextViewScrollingView)initWithFrame:(CGRect)a3 owner:(id)a4
+- (TPLCDTextViewScrollingView)initWithFrame:(CGRect)frame owner:(id)owner
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  ownerCopy = owner;
   v14.receiver = self;
   v14.super_class = TPLCDTextViewScrollingView;
-  v11 = [(TPLCDTextViewScrollingView *)&v14 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(TPLCDTextViewScrollingView *)&v14 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_owner, a4);
+    objc_storeStrong(&height->_owner, owner);
     [(TPLCDTextViewScrollingView *)v12 setOpaque:0];
   }
 
   return v12;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(TPLCDTextViewScrollingView *)self bounds:a3.origin.x];
+  [(TPLCDTextViewScrollingView *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;

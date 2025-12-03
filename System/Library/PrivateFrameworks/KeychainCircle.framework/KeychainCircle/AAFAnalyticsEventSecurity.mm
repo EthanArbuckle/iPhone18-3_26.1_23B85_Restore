@@ -1,13 +1,13 @@
 @interface AAFAnalyticsEventSecurity
 + (BOOL)isAAAFoundationAvailable;
 + (BOOL)isAuthKitAvailable;
-+ (id)fetchDeviceSessionIDFromAuthKit:(id)a3;
-- (AAFAnalyticsEventSecurity)initWithKeychainCircleMetrics:(id)a3 altDSID:(id)a4 flowID:(id)a5 deviceSessionID:(id)a6 eventName:(id)a7 testsAreEnabled:(BOOL)a8 canSendMetrics:(BOOL)a9 category:(id)a10;
++ (id)fetchDeviceSessionIDFromAuthKit:(id)kit;
+- (AAFAnalyticsEventSecurity)initWithKeychainCircleMetrics:(id)metrics altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID eventName:(id)name testsAreEnabled:(BOOL)enabled canSendMetrics:(BOOL)sendMetrics category:(id)self0;
 - (BOOL)permittedToSendMetrics;
-- (void)addMetrics:(id)a3;
+- (void)addMetrics:(id)metrics;
 - (void)dealloc;
-- (void)populateUnderlyingErrorsStartingWithRootError:(id)a3;
-- (void)sendMetricWithResult:(BOOL)a3 error:(id)a4;
+- (void)populateUnderlyingErrorsStartingWithRootError:(id)error;
+- (void)sendMetricWithResult:(BOOL)result error:(id)error;
 @end
 
 @implementation AAFAnalyticsEventSecurity
@@ -19,19 +19,19 @@
   {
     if (!SecIsInternalRelease())
     {
-      v3 = secLogObjForScope("SecError");
-      if (!os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+      event2 = secLogObjForScope("SecError");
+      if (!os_log_type_enabled(event2, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_9:
 
         goto LABEL_10;
       }
 
-      v4 = [(AAFAnalyticsEventSecurity *)self event];
-      v5 = [v4 eventName];
+      event = [(AAFAnalyticsEventSecurity *)self event];
+      eventName = [event eventName];
       *buf = 138412290;
-      v9 = v5;
-      _os_log_impl(&dword_22EB09000, v3, OS_LOG_TYPE_DEFAULT, "metrics: failed to send metric event %@ before deallocation", buf, 0xCu);
+      v9 = eventName;
+      _os_log_impl(&dword_22EB09000, event2, OS_LOG_TYPE_DEFAULT, "metrics: failed to send metric event %@ before deallocation", buf, 0xCu);
 
 LABEL_8:
       goto LABEL_9;
@@ -39,10 +39,10 @@ LABEL_8:
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
     {
-      v3 = [(AAFAnalyticsEventSecurity *)self event];
-      v4 = [v3 eventName];
+      event2 = [(AAFAnalyticsEventSecurity *)self event];
+      event = [event2 eventName];
       *buf = 138412290;
-      v9 = v4;
+      v9 = event;
       _os_log_fault_impl(&dword_22EB09000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "failed to send metric event %@ before deallocation", buf, 0xCu);
       goto LABEL_8;
     }
@@ -55,20 +55,20 @@ LABEL_10:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMetricWithResult:(BOOL)a3 error:(id)a4
+- (void)sendMetricWithResult:(BOOL)result error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   if ([(AAFAnalyticsEventSecurity *)self permittedToSendMetrics])
   {
-    v7 = [(AAFAnalyticsEventSecurity *)self queue];
+    queue = [(AAFAnalyticsEventSecurity *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__AAFAnalyticsEventSecurity_sendMetricWithResult_error___block_invoke;
     block[3] = &unk_278863ED0;
     block[4] = self;
-    v10 = a3;
-    v9 = v6;
-    dispatch_sync(v7, block);
+    resultCopy = result;
+    v9 = errorCopy;
+    dispatch_sync(queue, block);
   }
 }
 
@@ -90,19 +90,19 @@ uint64_t __56__AAFAnalyticsEventSecurity_sendMetricWithResult_error___block_invo
   return [v7 setMetricSent:1];
 }
 
-- (void)addMetrics:(id)a3
+- (void)addMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   if ([(AAFAnalyticsEventSecurity *)self permittedToSendMetrics])
   {
-    v5 = [(AAFAnalyticsEventSecurity *)self queue];
+    queue = [(AAFAnalyticsEventSecurity *)self queue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __40__AAFAnalyticsEventSecurity_addMetrics___block_invoke;
     v6[3] = &unk_278863EA0;
-    v7 = v4;
-    v8 = self;
-    dispatch_async(v5, v6);
+    v7 = metricsCopy;
+    selfCopy = self;
+    dispatch_async(queue, v6);
   }
 }
 
@@ -143,19 +143,19 @@ void __40__AAFAnalyticsEventSecurity_addMetrics___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)populateUnderlyingErrorsStartingWithRootError:(id)a3
+- (void)populateUnderlyingErrorsStartingWithRootError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(AAFAnalyticsEventSecurity *)self permittedToSendMetrics])
   {
-    v5 = [(AAFAnalyticsEventSecurity *)self queue];
+    queue = [(AAFAnalyticsEventSecurity *)self queue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __75__AAFAnalyticsEventSecurity_populateUnderlyingErrorsStartingWithRootError___block_invoke;
     v6[3] = &unk_278863EA0;
     v6[4] = self;
-    v7 = v4;
-    dispatch_sync(v5, v6);
+    v7 = errorCopy;
+    dispatch_sync(queue, v6);
   }
 }
 
@@ -165,17 +165,17 @@ void __75__AAFAnalyticsEventSecurity_populateUnderlyingErrorsStartingWithRootErr
   [v2 populateUnderlyingErrorsStartingWithRootError:*(a1 + 40)];
 }
 
-- (AAFAnalyticsEventSecurity)initWithKeychainCircleMetrics:(id)a3 altDSID:(id)a4 flowID:(id)a5 deviceSessionID:(id)a6 eventName:(id)a7 testsAreEnabled:(BOOL)a8 canSendMetrics:(BOOL)a9 category:(id)a10
+- (AAFAnalyticsEventSecurity)initWithKeychainCircleMetrics:(id)metrics altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID eventName:(id)name testsAreEnabled:(BOOL)enabled canSendMetrics:(BOOL)sendMetrics category:(id)self0
 {
-  v10 = a8;
+  enabledCopy = enabled;
   v61 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
-  if (+[AAFAnalyticsEventSecurity isAAAFoundationAvailable](AAFAnalyticsEventSecurity, "isAAAFoundationAvailable") && +[AAFAnalyticsEventSecurity isAuthKitAvailable]&& a9 && !v10)
+  metricsCopy = metrics;
+  dCopy = d;
+  iDCopy = iD;
+  sessionIDCopy = sessionID;
+  nameCopy = name;
+  categoryCopy = category;
+  if (+[AAFAnalyticsEventSecurity isAAAFoundationAvailable](AAFAnalyticsEventSecurity, "isAAAFoundationAvailable") && +[AAFAnalyticsEventSecurity isAuthKitAvailable]&& sendMetrics && !enabledCopy)
   {
     v58.receiver = self;
     v58.super_class = AAFAnalyticsEventSecurity;
@@ -183,29 +183,29 @@ void __75__AAFAnalyticsEventSecurity_populateUnderlyingErrorsStartingWithRootErr
     if (v22)
     {
       dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v23 = v53 = v17;
+      v23 = v53 = dCopy;
       v24 = dispatch_queue_create("com.apple.security.aafanalyticsevent.queue", v23);
       queue = v22->_queue;
       v22->_queue = v24;
 
-      v17 = v53;
+      dCopy = v53;
       v22->_areTestsEnabled = 0;
-      v22->_canSendMetrics = a9;
+      v22->_canSendMetrics = sendMetrics;
       *&v22->_isAAAFoundationAvailable = 257;
       v22->_metricSent = 0;
       gotLoadHelper_x8__OBJC_CLASS___AAFAnalyticsEvent(v26);
-      v28 = [objc_alloc(*(v27 + 1232)) initWithEventName:v20 eventCategory:v21 initData:0 altDSID:v53];
-      if (v18 && ([v18 isEqualToString:&stru_2843734B8] & 1) == 0)
+      v28 = [objc_alloc(*(v27 + 1232)) initWithEventName:nameCopy eventCategory:categoryCopy initData:0 altDSID:v53];
+      if (iDCopy && ([iDCopy isEqualToString:&stru_2843734B8] & 1) == 0)
       {
         Helper_x8__kAAFFlowIdString = gotLoadHelper_x8__kAAFFlowIdString(v29);
-        [v28 setObject:v18 forKeyedSubscript:{**(v31 + 1456), Helper_x8__kAAFFlowIdString}];
+        [v28 setObject:iDCopy forKeyedSubscript:{**(v31 + 1456), Helper_x8__kAAFFlowIdString}];
       }
 
-      if (v19 && ([v19 isEqualToString:&stru_2843734B8] & 1) == 0)
+      if (sessionIDCopy && ([sessionIDCopy isEqualToString:&stru_2843734B8] & 1) == 0)
       {
         Helper_x8__kAAFDeviceSessionIdString = gotLoadHelper_x8__kAAFDeviceSessionIdString(v32);
-        [v28 setObject:v19 forKeyedSubscript:{**(v38 + 1408), Helper_x8__kAAFDeviceSessionIdString}];
-        if (!v16)
+        [v28 setObject:sessionIDCopy forKeyedSubscript:{**(v38 + 1408), Helper_x8__kAAFDeviceSessionIdString}];
+        if (!metricsCopy)
         {
 LABEL_24:
           event = v22->_event;
@@ -221,8 +221,8 @@ LABEL_24:
         v35 = gotLoadHelper_x8__kAAFDeviceSessionIdString(v34);
         [v28 setObject:v33 forKeyedSubscript:{**(v36 + 1408), v35}];
 
-        v17 = v53;
-        if (!v16)
+        dCopy = v53;
+        if (!metricsCopy)
         {
           goto LABEL_24;
         }
@@ -232,8 +232,8 @@ LABEL_24:
       v57 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v39 = [v16 allKeys];
-      v40 = [v39 countByEnumeratingWithState:&v54 objects:v60 count:16];
+      allKeys = [metricsCopy allKeys];
+      v40 = [allKeys countByEnumeratingWithState:&v54 objects:v60 count:16];
       if (v40)
       {
         v41 = v40;
@@ -244,24 +244,24 @@ LABEL_24:
           {
             if (*v55 != v42)
             {
-              objc_enumerationMutation(v39);
+              objc_enumerationMutation(allKeys);
             }
 
             v44 = *(*(&v54 + 1) + 8 * i);
-            v45 = [v16 objectForKeyedSubscript:v44];
+            v45 = [metricsCopy objectForKeyedSubscript:v44];
             [v28 setObject:v45 forKeyedSubscript:v44];
           }
 
-          v41 = [v39 countByEnumeratingWithState:&v54 objects:v60 count:16];
+          v41 = [allKeys countByEnumeratingWithState:&v54 objects:v60 count:16];
         }
 
         while (v41);
       }
 
-      v18 = v52;
-      v17 = v53;
-      v21 = v50;
-      v20 = v51;
+      iDCopy = v52;
+      dCopy = v53;
+      categoryCopy = v50;
+      nameCopy = v51;
       goto LABEL_24;
     }
   }
@@ -275,8 +275,8 @@ LABEL_24:
     {
       v22->_isAAAFoundationAvailable = +[AAFAnalyticsEventSecurity isAAAFoundationAvailable];
       v22->_isAuthKitAvailable = +[AAFAnalyticsEventSecurity isAuthKitAvailable];
-      v22->_areTestsEnabled = v10;
-      v22->_canSendMetrics = a9;
+      v22->_areTestsEnabled = enabledCopy;
+      v22->_canSendMetrics = sendMetrics;
     }
   }
 
@@ -297,16 +297,16 @@ LABEL_25:
   return [(AAFAnalyticsEventSecurity *)self canSendMetrics];
 }
 
-+ (id)fetchDeviceSessionIDFromAuthKit:(id)a3
++ (id)fetchDeviceSessionIDFromAuthKit:(id)kit
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CF0138] sharedInstance];
-  v5 = v4;
-  if (v3)
+  kitCopy = kit;
+  mEMORY[0x277CF0138] = [MEMORY[0x277CF0138] sharedInstance];
+  v5 = mEMORY[0x277CF0138];
+  if (kitCopy)
   {
     v12 = 0;
-    v6 = [v4 authKitAccountWithAltDSID:v3 error:&v12];
+    primaryAuthKitAccount = [mEMORY[0x277CF0138] authKitAccountWithAltDSID:kitCopy error:&v12];
     v7 = v12;
     if (v7)
     {
@@ -322,12 +322,12 @@ LABEL_25:
 
   else
   {
-    v6 = [v4 primaryAuthKitAccount];
+    primaryAuthKitAccount = [mEMORY[0x277CF0138] primaryAuthKitAccount];
   }
 
-  if ([v5 accountAccessTelemetryOptInForAccount:v6])
+  if ([v5 accountAccessTelemetryOptInForAccount:primaryAuthKitAccount])
   {
-    v9 = [v5 telemetryDeviceSessionIDForAccount:v6];
+    v9 = [v5 telemetryDeviceSessionIDForAccount:primaryAuthKitAccount];
   }
 
   else

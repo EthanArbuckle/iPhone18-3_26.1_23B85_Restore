@@ -1,10 +1,10 @@
 @interface WFRemotePINEntryViewController
 - (unint64_t)supportedInterfaceOrientations;
 - (void)dealloc;
-- (void)getIsPINPresentWithCompletion:(id)a3;
-- (void)permitURLWithCompletion:(id)a3;
-- (void)setPageTitle:(id)a3;
-- (void)setURL:(id)a3;
+- (void)getIsPINPresentWithCompletion:(id)completion;
+- (void)permitURLWithCompletion:(id)completion;
+- (void)setPageTitle:(id)title;
+- (void)setURL:(id)l;
 - (void)viewDidLoad;
 @end
 
@@ -36,18 +36,18 @@
   [(WFRemotePINEntryViewController *)&v3 dealloc];
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v4 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
 
-  [v4 setURL:a3];
+  [serviceViewControllerProxy setURL:l];
 }
 
-- (void)setPageTitle:(id)a3
+- (void)setPageTitle:(id)title
 {
-  v4 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
 
-  [v4 setPageTitle:a3];
+  [serviceViewControllerProxy setPageTitle:title];
 }
 
 - (unint64_t)supportedInterfaceOrientations
@@ -63,18 +63,18 @@
   }
 }
 
-- (void)getIsPINPresentWithCompletion:(id)a3
+- (void)getIsPINPresentWithCompletion:(id)completion
 {
-  v4 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
 
-  [v4 getIsPINPresentWithCompletion:a3];
+  [serviceViewControllerProxy getIsPINPresentWithCompletion:completion];
 }
 
-- (void)permitURLWithCompletion:(id)a3
+- (void)permitURLWithCompletion:(id)completion
 {
-  v4 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
 
-  [v4 permitURLWithCompletion:a3];
+  [serviceViewControllerProxy permitURLWithCompletion:completion];
 }
 
 @end

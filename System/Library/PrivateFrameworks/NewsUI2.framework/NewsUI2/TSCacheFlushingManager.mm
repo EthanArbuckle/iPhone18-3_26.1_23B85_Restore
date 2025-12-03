@@ -1,17 +1,17 @@
 @interface TSCacheFlushingManager
 - (TSCacheFlushingManager)init;
 - (id)createPreFlushTask;
-- (void)addPreFlushTask:(id)a3;
+- (void)addPreFlushTask:(id)task;
 - (void)enableFlushing;
 @end
 
 @implementation TSCacheFlushingManager
 
-- (void)addPreFlushTask:(id)a3
+- (void)addPreFlushTask:(id)task
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(task);
   v5 = *(&self->super.isa + OBJC_IVAR___TSCacheFlushingManager_preFlushGroup);
-  v6 = self;
+  selfCopy = self;
   dispatch_group_enter(v5);
   v7 = swift_allocObject();
   swift_unknownObjectWeakInit();
@@ -33,7 +33,7 @@
 - (id)createPreFlushTask
 {
   v2 = *(&self->super.isa + OBJC_IVAR___TSCacheFlushingManager_preFlushGroup);
-  v3 = self;
+  selfCopy = self;
   dispatch_group_enter(v2);
   v4 = swift_allocObject();
   swift_unknownObjectWeakInit();
@@ -51,7 +51,7 @@
 
 - (void)enableFlushing
 {
-  v2 = self;
+  selfCopy = self;
   _s7NewsUI220CacheFlushingManagerC06enableD0yyF_0();
 }
 

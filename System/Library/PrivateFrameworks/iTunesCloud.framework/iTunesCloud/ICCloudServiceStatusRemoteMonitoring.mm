@@ -87,7 +87,7 @@
   block[1] = 3221225472;
   block[2] = __56__ICCloudServiceStatusRemoteMonitoring_serviceInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (serviceInterface_sCloudServiceStatusRemoteMonitoringServiceInterfaceOnceToken != -1)
   {
     dispatch_once(&serviceInterface_sCloudServiceStatusRemoteMonitoringServiceInterfaceOnceToken, block);
@@ -113,7 +113,7 @@ uint64_t __56__ICCloudServiceStatusRemoteMonitoring_serviceInterface__block_invo
   block[1] = 3221225472;
   block[2] = __55__ICCloudServiceStatusRemoteMonitoring_clientInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (clientInterface_sCloudServiceStatusRemoteMonitoringClientInterfaceOnceToken != -1)
   {
     dispatch_once(&clientInterface_sCloudServiceStatusRemoteMonitoringClientInterfaceOnceToken, block);

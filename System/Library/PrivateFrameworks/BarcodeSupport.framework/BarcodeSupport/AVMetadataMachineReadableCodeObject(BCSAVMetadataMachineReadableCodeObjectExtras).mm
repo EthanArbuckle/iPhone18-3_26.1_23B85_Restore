@@ -7,12 +7,12 @@
 - (uint64_t)_bcs_probablyContainsSameCodeInBasicDescriptor:()BCSAVMetadataMachineReadableCodeObjectExtras
 {
   v4 = a3;
-  v5 = [a1 basicDescriptor];
-  v6 = v5;
+  basicDescriptor = [self basicDescriptor];
+  v6 = basicDescriptor;
   v7 = 0;
-  if (v4 && v5)
+  if (v4 && basicDescriptor)
   {
-    v8 = [v5 objectForKeyedSubscript:@"BarcodeType"];
+    v8 = [basicDescriptor objectForKeyedSubscript:@"BarcodeType"];
     v9 = [v4 objectForKeyedSubscript:@"BarcodeType"];
     if ([v8 isEqualToString:v9])
     {
@@ -41,13 +41,13 @@
         v13 = [v4 objectForKeyedSubscript:@"SymbolVersion"];
         v14 = [v4 objectForKeyedSubscript:@"QRMASK"];
         v15 = [v4 objectForKeyedSubscript:@"ErrorCorrectionLevel"];
-        v16 = [v12 integerValue];
+        integerValue = [v12 integerValue];
         v23 = v14;
-        if (v16 == [v15 integerValue] && (v17 = objc_msgSend(v11, "charValue"), v17 == objc_msgSend(v14, "charValue")))
+        if (integerValue == [v15 integerValue] && (v17 = objc_msgSend(v11, "charValue"), v17 == objc_msgSend(v14, "charValue")))
         {
           v10 = v22;
-          v18 = [v22 charValue];
-          if (v18 == [v13 charValue])
+          charValue = [v22 charValue];
+          if (charValue == [v13 charValue])
           {
             v21 = [v6 objectForKeyedSubscript:@"BarcodeRawData"];
             v20 = [v4 objectForKeyedSubscript:@"BarcodeRawData"];

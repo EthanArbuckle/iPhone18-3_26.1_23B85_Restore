@@ -6,15 +6,15 @@
 - (id)createInactiveEnvironmentSession;
 - (void)_notifyObserversOfPresentation;
 - (void)_rebuildPresentation;
-- (void)_setCurrentSession:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)didEndInactiveEnvironmentSession:(id)a3;
-- (void)invalidateBacklightSceneHostEnvironmentsForProvider:(id)a3;
-- (void)invalidateBacklightScenesForProvider:(id)a3;
-- (void)registerBacklightEnvironmentSceneProvider:(id)a3;
-- (void)registerBacklightSceneHostEnvironmentProvider:(id)a3;
-- (void)unregisterBacklightEnvironmentSceneProvider:(id)a3;
-- (void)unregisterBacklightSceneHostEnvironmentProvider:(id)a3;
+- (void)_setCurrentSession:(id)session;
+- (void)addObserver:(id)observer;
+- (void)didEndInactiveEnvironmentSession:(id)session;
+- (void)invalidateBacklightSceneHostEnvironmentsForProvider:(id)provider;
+- (void)invalidateBacklightScenesForProvider:(id)provider;
+- (void)registerBacklightEnvironmentSceneProvider:(id)provider;
+- (void)registerBacklightSceneHostEnvironmentProvider:(id)provider;
+- (void)unregisterBacklightEnvironmentSceneProvider:(id)provider;
+- (void)unregisterBacklightSceneHostEnvironmentProvider:(id)provider;
 @end
 
 @implementation SBBacklightEnvironmentSessionProvider
@@ -22,22 +22,22 @@
 - (void)_rebuildPresentation
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(SBBacklightEnvironmentSessionProvider *)self _currentSession];
-  if (v3)
+  _currentSession = [(SBBacklightEnvironmentSessionProvider *)self _currentSession];
+  if (_currentSession)
   {
-    v4 = [(SBBacklightEnvironmentSessionProvider *)self _buildPresentation];
-    v5 = [v3 presentation];
-    v6 = [v4 isEqual:v5];
-    v7 = [SBApp windowSceneManager];
-    v8 = [v7 embeddedDisplayWindowScene];
+    _buildPresentation = [(SBBacklightEnvironmentSessionProvider *)self _buildPresentation];
+    presentation = [_currentSession presentation];
+    v6 = [_buildPresentation isEqual:presentation];
+    windowSceneManager = [SBApp windowSceneManager];
+    embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-    v9 = [v8 _FBSScene];
-    if (v9)
+    _FBSScene = [embeddedDisplayWindowScene _FBSScene];
+    if (_FBSScene)
     {
       v10 = MEMORY[0x277D65DC0];
       v11 = self->_presentationUpdateLiveRenderAssertion;
-      v12 = [v10 sharedInstance];
-      v13 = [v12 acquireLiveRenderingAssertionForFBSScene:v9 reason:@"updatingPresentation"];
+      sharedInstance = [v10 sharedInstance];
+      v13 = [sharedInstance acquireLiveRenderingAssertionForFBSScene:_FBSScene reason:@"updatingPresentation"];
       presentationUpdateLiveRenderAssertion = self->_presentationUpdateLiveRenderAssertion;
       self->_presentationUpdateLiveRenderAssertion = v13;
 
@@ -48,11 +48,11 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v4;
+      v18 = _buildPresentation;
       _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "Rebuilt inactive environment presentation: %@", &v17, 0xCu);
     }
 
-    [v3 setPresentation:v4];
+    [_currentSession setPresentation:_buildPresentation];
     [(SBBacklightEnvironmentSessionProvider *)self _notifyObserversOfPresentation];
     if (v6)
     {
@@ -64,11 +64,11 @@
 
   else
   {
-    v4 = SBLogBacklight();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    _buildPresentation = SBLogBacklight();
+    if (os_log_type_enabled(_buildPresentation, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v17) = 0;
-      _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "No active session so not rebuilding inactive environment presentation", &v17, 2u);
+      _os_log_impl(&dword_21ED4E000, _buildPresentation, OS_LOG_TYPE_DEFAULT, "No active session so not rebuilding inactive environment presentation", &v17, 2u);
     }
   }
 }
@@ -77,22 +77,22 @@
 {
   if (SBFIsShellSceneKitAvailable())
   {
-    v3 = [SBApp displayProfileManager];
-    v4 = [v3 rootWindowCAContext];
+    displayProfileManager = [SBApp displayProfileManager];
+    rootWindowCAContext = [displayProfileManager rootWindowCAContext];
   }
 
   else
   {
     v5 = +[SBMainDisplayRootWindowScenePresentationBinder sharedInstance];
-    v3 = [v5 rootWindow];
+    displayProfileManager = [v5 rootWindow];
 
-    v6 = [v3 layer];
-    v4 = [v6 context];
+    layer = [displayProfileManager layer];
+    rootWindowCAContext = [layer context];
   }
 
-  v7 = [(SBBacklightEnvironmentSessionProvider *)self _backlightPresentationEntries];
-  v8 = [objc_alloc(MEMORY[0x277CF0A20]) initWithCAContext:v4 wantsTransform:0 inverted:0];
-  v9 = [objc_alloc(MEMORY[0x277CF0A08]) initWithPresentationEntries:v7 flipbookContext:v8 expirationDate:0];
+  _backlightPresentationEntries = [(SBBacklightEnvironmentSessionProvider *)self _backlightPresentationEntries];
+  v8 = [objc_alloc(MEMORY[0x277CF0A20]) initWithCAContext:rootWindowCAContext wantsTransform:0 inverted:0];
+  v9 = [objc_alloc(MEMORY[0x277CF0A08]) initWithPresentationEntries:_backlightPresentationEntries flipbookContext:v8 expirationDate:0];
 
   return v9;
 }
@@ -105,56 +105,56 @@
     v3 = objc_alloc_init(MEMORY[0x277CBEB98]);
     if (SBFIsShellSceneKitAvailable())
     {
-      v4 = [SBApp windowSceneManager];
-      v5 = [v4 embeddedDisplayWindowScene];
-      v6 = [v5 _fbsDisplayConfiguration];
+      windowSceneManager = [SBApp windowSceneManager];
+      embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+      _fbsDisplayConfiguration = [embeddedDisplayWindowScene _fbsDisplayConfiguration];
 
-      v7 = [MEMORY[0x277D46F48] currentProcess];
-      v8 = [SBApp displayProfileManager];
-      v9 = [v8 fbScenes];
+      currentProcess = [MEMORY[0x277D46F48] currentProcess];
+      displayProfileManager = [SBApp displayProfileManager];
+      fbScenes = [displayProfileManager fbScenes];
       v93[0] = MEMORY[0x277D85DD0];
       v93[1] = 3221225472;
       v93[2] = __70__SBBacklightEnvironmentSessionProvider__backlightPresentationEntries__block_invoke;
       v93[3] = &unk_2783AC480;
       v10 = &v94;
       v11 = &v95;
-      v94 = v6;
-      v95 = v7;
-      v12 = v7;
-      v13 = v6;
-      v14 = [v9 bs_filter:v93];
+      v94 = _fbsDisplayConfiguration;
+      v95 = currentProcess;
+      v12 = currentProcess;
+      v13 = _fbsDisplayConfiguration;
+      v14 = [fbScenes bs_filter:v93];
 
-      v3 = v9;
+      v3 = fbScenes;
     }
 
     else
     {
-      v17 = [MEMORY[0x277D0AA90] mainConfiguration];
-      v18 = [MEMORY[0x277D46F48] currentProcess];
-      v8 = [MEMORY[0x277D0AAD8] sharedInstance];
+      mainConfiguration = [MEMORY[0x277D0AA90] mainConfiguration];
+      currentProcess2 = [MEMORY[0x277D46F48] currentProcess];
+      displayProfileManager = [MEMORY[0x277D0AAD8] sharedInstance];
       v90[0] = MEMORY[0x277D85DD0];
       v90[1] = 3221225472;
       v90[2] = __70__SBBacklightEnvironmentSessionProvider__backlightPresentationEntries__block_invoke_2;
       v90[3] = &unk_2783C15C0;
       v10 = &v91;
       v11 = &v92;
-      v91 = v17;
-      v92 = v18;
-      v12 = v18;
-      v13 = v17;
-      v14 = [v8 scenesPassingTest:v90];
+      v91 = mainConfiguration;
+      v92 = currentProcess2;
+      v12 = currentProcess2;
+      v13 = mainConfiguration;
+      v14 = [displayProfileManager scenesPassingTest:v90];
     }
 
     v62 = v14;
-    v19 = [v14 allObjects];
-    v61 = [v19 bs_map:&__block_literal_global_74];
+    allObjects = [v14 allObjects];
+    v61 = [allObjects bs_map:&__block_literal_global_74];
 
-    v20 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v86 = 0u;
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
-    v60 = self;
+    selfCopy = self;
     obj = self->_backlightEnvironmentSceneProviders;
     v66 = [(NSHashTable *)obj countByEnumeratingWithState:&v86 objects:v101 count:16];
     if (v66)
@@ -176,8 +176,8 @@
           v83 = 0u;
           v84 = 0u;
           v85 = 0u;
-          v23 = [v22 scenesForBacklightSession];
-          v24 = [v23 countByEnumeratingWithState:&v82 objects:v100 count:16];
+          scenesForBacklightSession = [v22 scenesForBacklightSession];
+          v24 = [scenesForBacklightSession countByEnumeratingWithState:&v82 objects:v100 count:16];
           if (v24)
           {
             v25 = v24;
@@ -188,19 +188,19 @@
               {
                 if (*v83 != v26)
                 {
-                  objc_enumerationMutation(v23);
+                  objc_enumerationMutation(scenesForBacklightSession);
                 }
 
                 v28 = *(*(&v82 + 1) + 8 * i);
-                v29 = [v28 backlightSceneHostEnvironment];
+                backlightSceneHostEnvironment = [v28 backlightSceneHostEnvironment];
                 v30 = objc_alloc(MEMORY[0x277CF0A38]);
-                v31 = [v28 clientHandle];
-                v32 = [v31 bundleIdentifier];
-                v33 = [v30 initWithEnvironment:v29 userObject:v32];
-                [v20 addObject:v33];
+                clientHandle = [v28 clientHandle];
+                bundleIdentifier = [clientHandle bundleIdentifier];
+                v33 = [v30 initWithEnvironment:backlightSceneHostEnvironment userObject:bundleIdentifier];
+                [array addObject:v33];
               }
 
-              v25 = [v23 countByEnumeratingWithState:&v82 objects:v100 count:16];
+              v25 = [scenesForBacklightSession countByEnumeratingWithState:&v82 objects:v100 count:16];
             }
 
             while (v25);
@@ -220,7 +220,7 @@
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v65 = v60->_backlightSceneHostEnvironmentProviders;
+    v65 = selfCopy->_backlightSceneHostEnvironmentProviders;
     v69 = [(NSHashTable *)v65 countByEnumeratingWithState:&v78 objects:v99 count:16];
     if (v69)
     {
@@ -239,8 +239,8 @@
           v75 = 0u;
           v76 = 0u;
           v77 = 0u;
-          v36 = [v35 sceneHostEnvironmentEntriesForBacklightSession];
-          v37 = [v36 countByEnumeratingWithState:&v74 objects:v98 count:16];
+          sceneHostEnvironmentEntriesForBacklightSession = [v35 sceneHostEnvironmentEntriesForBacklightSession];
+          v37 = [sceneHostEnvironmentEntriesForBacklightSession countByEnumeratingWithState:&v74 objects:v98 count:16];
           if (v37)
           {
             v38 = v37;
@@ -251,18 +251,18 @@
               {
                 if (*v75 != v39)
                 {
-                  objc_enumerationMutation(v36);
+                  objc_enumerationMutation(sceneHostEnvironmentEntriesForBacklightSession);
                 }
 
                 v41 = *(*(&v74 + 1) + 8 * k);
                 v42 = objc_alloc(MEMORY[0x277CF0A38]);
-                v43 = [v41 environment];
-                v44 = [v41 bundleIdentifier];
-                v45 = [v42 initWithEnvironment:v43 userObject:v44];
-                [v20 addObject:v45];
+                environment = [v41 environment];
+                bundleIdentifier2 = [v41 bundleIdentifier];
+                v45 = [v42 initWithEnvironment:environment userObject:bundleIdentifier2];
+                [array addObject:v45];
               }
 
-              v38 = [v36 countByEnumeratingWithState:&v74 objects:v98 count:16];
+              v38 = [sceneHostEnvironmentEntriesForBacklightSession countByEnumeratingWithState:&v74 objects:v98 count:16];
             }
 
             while (v38);
@@ -275,12 +275,12 @@
       while (v69);
     }
 
-    v46 = [SBApp screenSleepCoordinator];
-    v47 = [v46 backlightSceneHostEnvironment];
+    screenSleepCoordinator = [SBApp screenSleepCoordinator];
+    backlightSceneHostEnvironment2 = [screenSleepCoordinator backlightSceneHostEnvironment];
 
-    if (v47)
+    if (backlightSceneHostEnvironment2)
     {
-      v48 = [objc_alloc(MEMORY[0x277CF0A38]) initWithEnvironment:v47 userObject:0];
+      v48 = [objc_alloc(MEMORY[0x277CF0A38]) initWithEnvironment:backlightSceneHostEnvironment2 userObject:0];
       v49 = v61;
       if (v48)
       {
@@ -305,7 +305,7 @@
 
     v52 = [v51 arrayByAddingObjectsFromArray:v49];
 
-    v53 = [v52 arrayByAddingObjectsFromArray:v20];
+    v53 = [v52 arrayByAddingObjectsFromArray:array];
 
     v72 = 0u;
     v73 = 0u;
@@ -326,8 +326,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v58 = [*(*(&v70 + 1) + 8 * m) environment];
-          [v58 setAlwaysOnEnabledForEnvironment:{objc_msgSend(v58, "clientSupportsAlwaysOn")}];
+          environment2 = [*(*(&v70 + 1) + 8 * m) environment];
+          [environment2 setAlwaysOnEnabledForEnvironment:{objc_msgSend(environment2, "clientSupportsAlwaysOn")}];
         }
 
         v55 = [v16 countByEnumeratingWithState:&v70 objects:v97 count:16];
@@ -405,10 +405,10 @@ id __70__SBBacklightEnvironmentSessionProvider__backlightPresentationEntries__bl
 - (void)_notifyObserversOfPresentation
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(SBBacklightEnvironmentSessionProvider *)self _currentSession];
-  v4 = [v3 presentation];
+  _currentSession = [(SBBacklightEnvironmentSessionProvider *)self _currentSession];
+  presentation = [_currentSession presentation];
 
-  v5 = [(SBBacklightEnvironmentSessionProvider *)self currentPresentationBundleIdentifiers];
+  currentPresentationBundleIdentifiers = [(SBBacklightEnvironmentSessionProvider *)self currentPresentationBundleIdentifiers];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -429,7 +429,7 @@ id __70__SBBacklightEnvironmentSessionProvider__backlightPresentationEntries__bl
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) backlightEnvironmentSessionsProvider:self didUpdatePresentation:v4 withBundleIdentifiers:{v5, v11}];
+        [*(*(&v11 + 1) + 8 * v10++) backlightEnvironmentSessionsProvider:self didUpdatePresentation:presentation withBundleIdentifiers:{currentPresentationBundleIdentifiers, v11}];
       }
 
       while (v8 != v10);
@@ -442,11 +442,11 @@ id __70__SBBacklightEnvironmentSessionProvider__backlightPresentationEntries__bl
 
 - (NSSet)currentPresentationBundleIdentifiers
 {
-  v2 = [(SBBacklightEnvironmentSessionProvider *)self _currentSession];
-  v3 = [v2 presentation];
+  _currentSession = [(SBBacklightEnvironmentSessionProvider *)self _currentSession];
+  presentation = [_currentSession presentation];
 
-  v4 = [v3 presentationEntries];
-  v5 = [v4 bs_compactMap:&__block_literal_global_390];
+  presentationEntries = [presentation presentationEntries];
+  v5 = [presentationEntries bs_compactMap:&__block_literal_global_390];
 
   if (v5)
   {
@@ -489,8 +489,8 @@ id __77__SBBacklightEnvironmentSessionProvider_currentPresentationBundleIdentifi
   if (v2)
   {
     v2->_springBoardBootCompleted = 0;
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    objc_initWeak(&location, v4);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    objc_initWeak(&location, defaultCenter);
 
     objc_initWeak(&from, v3);
     v13 = 0;
@@ -500,7 +500,7 @@ id __77__SBBacklightEnvironmentSessionProvider_currentPresentationBundleIdentifi
     v17 = __Block_byref_object_dispose__121;
     v18 = 0;
     v5 = objc_loadWeakRetained(&location);
-    v6 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __45__SBBacklightEnvironmentSessionProvider_init__block_invoke;
@@ -508,7 +508,7 @@ id __77__SBBacklightEnvironmentSessionProvider_currentPresentationBundleIdentifi
     objc_copyWeak(&v11, &from);
     objc_copyWeak(&v12, &location);
     v10[4] = &v13;
-    v7 = [v5 addObserverForName:@"SBBootCompleteNotification" object:0 queue:v6 usingBlock:v10];
+    v7 = [v5 addObserverForName:@"SBBootCompleteNotification" object:0 queue:mainQueue usingBlock:v10];
     v8 = v14[5];
     v14[5] = v7;
 
@@ -557,32 +557,32 @@ void __45__SBBacklightEnvironmentSessionProvider_init__block_invoke_2(uint64_t a
   [v5 removeObserver:*(*(*(a1 + 32) + 8) + 40)];
 }
 
-- (void)registerBacklightEnvironmentSceneProvider:(id)a3
+- (void)registerBacklightEnvironmentSceneProvider:(id)provider
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  providerCopy = provider;
   backlightEnvironmentSceneProviders = self->_backlightEnvironmentSceneProviders;
   if (!backlightEnvironmentSceneProviders)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_backlightEnvironmentSceneProviders;
-    self->_backlightEnvironmentSceneProviders = v6;
+    self->_backlightEnvironmentSceneProviders = weakObjectsHashTable;
 
     backlightEnvironmentSceneProviders = self->_backlightEnvironmentSceneProviders;
   }
 
-  [(NSHashTable *)backlightEnvironmentSceneProviders addObject:v4];
+  [(NSHashTable *)backlightEnvironmentSceneProviders addObject:providerCopy];
   v8 = SBLogBacklight();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     if (objc_opt_respondsToSelector())
     {
-      [v4 succinctDescription];
+      [providerCopy succinctDescription];
     }
 
     else
     {
-      [v4 description];
+      [providerCopy description];
     }
     v9 = ;
     v10 = 138412290;
@@ -593,22 +593,22 @@ void __45__SBBacklightEnvironmentSessionProvider_init__block_invoke_2(uint64_t a
   [(SBBacklightEnvironmentSessionProvider *)self _rebuildPresentation];
 }
 
-- (void)unregisterBacklightEnvironmentSceneProvider:(id)a3
+- (void)unregisterBacklightEnvironmentSceneProvider:(id)provider
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(NSHashTable *)self->_backlightEnvironmentSceneProviders removeObject:v4];
+  providerCopy = provider;
+  [(NSHashTable *)self->_backlightEnvironmentSceneProviders removeObject:providerCopy];
   v5 = SBLogBacklight();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     if (objc_opt_respondsToSelector())
     {
-      [v4 succinctDescription];
+      [providerCopy succinctDescription];
     }
 
     else
     {
-      [v4 description];
+      [providerCopy description];
     }
     v6 = ;
     v7 = 138412290;
@@ -619,32 +619,32 @@ void __45__SBBacklightEnvironmentSessionProvider_init__block_invoke_2(uint64_t a
   [(SBBacklightEnvironmentSessionProvider *)self _rebuildPresentation];
 }
 
-- (void)registerBacklightSceneHostEnvironmentProvider:(id)a3
+- (void)registerBacklightSceneHostEnvironmentProvider:(id)provider
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  providerCopy = provider;
   backlightSceneHostEnvironmentProviders = self->_backlightSceneHostEnvironmentProviders;
   if (!backlightSceneHostEnvironmentProviders)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_backlightSceneHostEnvironmentProviders;
-    self->_backlightSceneHostEnvironmentProviders = v6;
+    self->_backlightSceneHostEnvironmentProviders = weakObjectsHashTable;
 
     backlightSceneHostEnvironmentProviders = self->_backlightSceneHostEnvironmentProviders;
   }
 
-  [(NSHashTable *)backlightSceneHostEnvironmentProviders addObject:v4];
+  [(NSHashTable *)backlightSceneHostEnvironmentProviders addObject:providerCopy];
   v8 = SBLogBacklight();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     if (objc_opt_respondsToSelector())
     {
-      [v4 succinctDescription];
+      [providerCopy succinctDescription];
     }
 
     else
     {
-      [v4 description];
+      [providerCopy description];
     }
     v9 = ;
     v10 = 138412290;
@@ -655,22 +655,22 @@ void __45__SBBacklightEnvironmentSessionProvider_init__block_invoke_2(uint64_t a
   [(SBBacklightEnvironmentSessionProvider *)self _rebuildPresentation];
 }
 
-- (void)unregisterBacklightSceneHostEnvironmentProvider:(id)a3
+- (void)unregisterBacklightSceneHostEnvironmentProvider:(id)provider
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(NSHashTable *)self->_backlightSceneHostEnvironmentProviders removeObject:v4];
+  providerCopy = provider;
+  [(NSHashTable *)self->_backlightSceneHostEnvironmentProviders removeObject:providerCopy];
   v5 = SBLogBacklight();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     if (objc_opt_respondsToSelector())
     {
-      [v4 succinctDescription];
+      [providerCopy succinctDescription];
     }
 
     else
     {
-      [v4 description];
+      [providerCopy description];
     }
     v6 = ;
     v7 = 138412290;
@@ -681,21 +681,21 @@ void __45__SBBacklightEnvironmentSessionProvider_init__block_invoke_2(uint64_t a
   [(SBBacklightEnvironmentSessionProvider *)self _rebuildPresentation];
 }
 
-- (void)invalidateBacklightScenesForProvider:(id)a3
+- (void)invalidateBacklightScenesForProvider:(id)provider
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  providerCopy = provider;
   v5 = SBLogBacklight();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     if (objc_opt_respondsToSelector())
     {
-      [v4 succinctDescription];
+      [providerCopy succinctDescription];
     }
 
     else
     {
-      [v4 description];
+      [providerCopy description];
     }
     v6 = ;
     v7 = 138412290;
@@ -706,21 +706,21 @@ void __45__SBBacklightEnvironmentSessionProvider_init__block_invoke_2(uint64_t a
   [(SBBacklightEnvironmentSessionProvider *)self _rebuildPresentation];
 }
 
-- (void)invalidateBacklightSceneHostEnvironmentsForProvider:(id)a3
+- (void)invalidateBacklightSceneHostEnvironmentsForProvider:(id)provider
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  providerCopy = provider;
   v5 = SBLogBacklight();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     if (objc_opt_respondsToSelector())
     {
-      [v4 succinctDescription];
+      [providerCopy succinctDescription];
     }
 
     else
     {
-      [v4 description];
+      [providerCopy description];
     }
     v6 = ;
     v7 = 138412290;
@@ -731,22 +731,22 @@ void __45__SBBacklightEnvironmentSessionProvider_init__block_invoke_2(uint64_t a
   [(SBBacklightEnvironmentSessionProvider *)self _rebuildPresentation];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
 BOOL __70__SBBacklightEnvironmentSessionProvider__backlightPresentationEntries__block_invoke(uint64_t a1, void *a2)
@@ -786,18 +786,18 @@ BOOL __70__SBBacklightEnvironmentSessionProvider__backlightPresentationEntries__
   return v16;
 }
 
-- (void)_setCurrentSession:(id)a3
+- (void)_setCurrentSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   currentSession = self->_currentSession;
-  if (currentSession != v5)
+  if (currentSession != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [(BLSHBacklightInactiveEnvironmentSession *)currentSession removeObserver:self];
-    objc_storeStrong(&self->_currentSession, a3);
+    objc_storeStrong(&self->_currentSession, session);
     [(BLSHBacklightInactiveEnvironmentSession *)self->_currentSession addObserver:self];
     [(SBBacklightEnvironmentSessionProvider *)self _notifyObserversOfPresentation];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
@@ -809,10 +809,10 @@ void __92__SBBacklightEnvironmentSessionProvider_inactiveEnvironmentSession_didU
   *(v2 + 40) = 0;
 }
 
-- (void)didEndInactiveEnvironmentSession:(id)a3
+- (void)didEndInactiveEnvironmentSession:(id)session
 {
-  v4 = a3;
-  v3 = v4;
+  sessionCopy = session;
+  v3 = sessionCopy;
   BSDispatchMain();
 }
 
@@ -832,16 +832,16 @@ void __74__SBBacklightEnvironmentSessionProvider_didEndInactiveEnvironmentSessio
 - (id)createInactiveEnvironmentSession
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(SBBacklightEnvironmentSessionProvider *)self _buildPresentation];
+  _buildPresentation = [(SBBacklightEnvironmentSessionProvider *)self _buildPresentation];
   v4 = SBLogBacklight();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = _buildPresentation;
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "New inactive environment presentation: %@", &v7, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CF0A18] sessionWithPresentation:v3];
+  v5 = [MEMORY[0x277CF0A18] sessionWithPresentation:_buildPresentation];
   [v5 addObserver:self];
   [(SBBacklightEnvironmentSessionProvider *)self _setCurrentSession:v5];
 

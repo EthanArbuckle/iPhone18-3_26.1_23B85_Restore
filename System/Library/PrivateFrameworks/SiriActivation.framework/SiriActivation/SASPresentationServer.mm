@@ -1,25 +1,25 @@
 @interface SASPresentationServer
 + (id)interface;
-+ (id)serverForConnection:(id)a3;
-+ (void)_unregisterConnection:(id)a3;
++ (id)serverForConnection:(id)connection;
++ (void)_unregisterConnection:(id)connection;
 - (SASPresentationServer)init;
 - (SASPresentationServerDelegate)weak_delegate;
 - (id)allBulletins;
-- (id)bulletinForIdentifier:(id)a3;
+- (id)bulletinForIdentifier:(id)identifier;
 - (id)bulletinsOnLockScreen;
 - (id)description;
-- (void)_setConnection:(id)a3;
+- (void)_setConnection:(id)connection;
 - (void)dealloc;
 - (void)didDismiss;
 - (void)didPresentSiri;
-- (void)didUpdatePresentationConfiguration:(id)a3;
-- (void)didUpdatePresentationState:(id)a3;
-- (void)failedToPresentSiriWithError:(id)a3;
+- (void)didUpdatePresentationConfiguration:(id)configuration;
+- (void)didUpdatePresentationState:(id)state;
+- (void)failedToPresentSiriWithError:(id)error;
 - (void)init;
 - (void)pong;
-- (void)registerPresentationIdentifier:(id)a3;
+- (void)registerPresentationIdentifier:(id)identifier;
 - (void)resetSiriToActive;
-- (void)unregisterPresentationIdentifier:(id)a3;
+- (void)unregisterPresentationIdentifier:(id)identifier;
 - (void)willDismiss;
 @end
 
@@ -28,9 +28,9 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SASPresentationServer *)self connection];
+  connection = [(SASPresentationServer *)self connection];
   v5 = [MEMORY[0x1E696AEC0] stringWithSiriPresentationIdentifier:{-[SASPresentationServer presentationIdentifier](self, "presentationIdentifier")}];
-  v6 = [v3 stringWithFormat:@"<SASPresentationServer connection:%@, presentationIdentifier:%@>", v4, v5];
+  v6 = [v3 stringWithFormat:@"<SASPresentationServer connection:%@, presentationIdentifier:%@>", connection, v5];
 
   return v6;
 }
@@ -65,16 +65,16 @@ void __29__SASPresentationServer_pong__block_invoke(uint64_t a1)
     *buf = 136315394;
     v8 = "[SASPresentationServer didPresentSiri]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C8137000, v3, OS_LOG_TYPE_DEFAULT, "%s %p #activation Shell indicates Siri is presented", buf, 0x16u);
   }
 
-  v4 = [(SASPresentationServer *)self presentationIdentifier];
+  presentationIdentifier = [(SASPresentationServer *)self presentationIdentifier];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__SASPresentationServer_didPresentSiri__block_invoke;
   v6[3] = &__block_descriptor_40_e5_v8__0l;
-  v6[4] = v4;
+  v6[4] = presentationIdentifier;
   SiriInvokeOnMainQueue(v6);
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -85,10 +85,10 @@ void __39__SASPresentationServer_didPresentSiri__block_invoke(uint64_t a1)
   [v2 siriPresentationDisplayedWithIdentifier:*(a1 + 32)];
 }
 
-+ (id)serverForConnection:(id)a3
++ (id)serverForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [serversByConnection objectForKey:v4];
+  connectionCopy = connection;
+  v5 = [serversByConnection objectForKey:connectionCopy];
   if (!v5)
   {
     v6 = objc_alloc_init(SASPresentationServer);
@@ -103,7 +103,7 @@ void __39__SASPresentationServer_didPresentSiri__block_invoke(uint64_t a1)
       v7 = serversByConnection;
     }
 
-    [v7 setObject:v6 forKey:v4];
+    [v7 setObject:v6 forKey:connectionCopy];
     os_unfair_lock_unlock(&lock);
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
@@ -111,9 +111,9 @@ void __39__SASPresentationServer_didPresentSiri__block_invoke(uint64_t a1)
     v14 = &unk_1E82F3990;
     v5 = v6;
     v15 = v5;
-    v16 = a1;
-    [v4 configureConnection:&v11];
-    [(SASPresentationServer *)v5 _setConnection:v4, v11, v12, v13, v14];
+    selfCopy = self;
+    [connectionCopy configureConnection:&v11];
+    [(SASPresentationServer *)v5 _setConnection:connectionCopy, v11, v12, v13, v14];
   }
 
   return v5;
@@ -176,15 +176,15 @@ void __45__SASPresentationServer_serverForConnection___block_invoke_21(uint64_t 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_unregisterConnection:(id)a3
++ (void)_unregisterConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&lock);
-  v5 = [serversByConnection objectForKey:v3];
+  v5 = [serversByConnection objectForKey:connectionCopy];
   v4 = +[SiriActivationService service];
   [v4 unregisterSiriPresentationIdentifier:{objc_msgSend(v5, "presentationIdentifier")}];
 
-  [serversByConnection removeObjectForKey:v3];
+  [serversByConnection removeObjectForKey:connectionCopy];
   os_unfair_lock_unlock(&lock);
 }
 
@@ -211,13 +211,13 @@ void __45__SASPresentationServer_serverForConnection___block_invoke_21(uint64_t 
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setConnection:(id)a3
+- (void)_setConnection:(id)connection
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 remoteProcess];
-  v6 = v5;
-  if (v5 && ([v5 hasEntitlement:@"com.apple.siri.activation.service"] & 1) == 0)
+  connectionCopy = connection;
+  remoteProcess = [connectionCopy remoteProcess];
+  v6 = remoteProcess;
+  if (remoteProcess && ([remoteProcess hasEntitlement:@"com.apple.siri.activation.service"] & 1) == 0)
   {
     v8 = *MEMORY[0x1E698D0A0];
     if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_ERROR))
@@ -225,13 +225,13 @@ void __45__SASPresentationServer_serverForConnection___block_invoke_21(uint64_t 
       [(SASPresentationServer *)self _setConnection:v8, v6];
     }
 
-    [v4 invalidate];
+    [connectionCopy invalidate];
   }
 
   else
   {
-    v7 = [(SASPresentationServer *)self connection];
-    if (v7)
+    connection = [(SASPresentationServer *)self connection];
+    if (connection)
     {
 
 LABEL_9:
@@ -241,11 +241,11 @@ LABEL_9:
         *buf = 136315394;
         v26 = "[SASPresentationServer _setConnection:]";
         v27 = 2114;
-        v28 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1C8137000, v9, OS_LOG_TYPE_DEFAULT, "%s Unexpectedly attempted to assign a new connection to the activation server with an existing connection: %{public}@", buf, 0x16u);
       }
 
-      [v4 invalidate];
+      [connectionCopy invalidate];
       goto LABEL_12;
     }
 
@@ -254,7 +254,7 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    [(SASPresentationServer *)self setConnection:v4];
+    [(SASPresentationServer *)self setConnection:connectionCopy];
     objc_initWeak(buf, self);
     connection = self->_connection;
     v22[0] = MEMORY[0x1E69E9820];
@@ -265,16 +265,16 @@ LABEL_9:
     objc_copyWeak(&v23, buf);
     [(BSServiceConnectionHost *)connection configureConnection:v22];
     [(BSServiceConnectionHost *)self->_connection activate];
-    v12 = [(SASPresentationServer *)self waitForConnectBlocks];
+    waitForConnectBlocks = [(SASPresentationServer *)self waitForConnectBlocks];
     [(SASPresentationServer *)self setWaitForConnectBlocks:0];
-    if ([v12 count])
+    if ([waitForConnectBlocks count])
     {
-      v13 = [(BSServiceConnectionHost *)self->_connection remoteTarget];
+      remoteTarget = [(BSServiceConnectionHost *)self->_connection remoteTarget];
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v14 = v12;
+      v14 = waitForConnectBlocks;
       v15 = [v14 countByEnumeratingWithState:&v18 objects:v24 count:16];
       if (v15)
       {
@@ -352,21 +352,21 @@ void __40__SASPresentationServer__setConnection___block_invoke_2(uint64_t a1, vo
   return v4;
 }
 
-- (void)registerPresentationIdentifier:(id)a3
+- (void)registerPresentationIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   kdebug_trace();
   v5 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = v5;
-    v8 = [v6 stringWithSiriPresentationIdentifier:{objc_msgSend(v4, "siriPresentationIdentifier")}];
+    v8 = [v6 stringWithSiriPresentationIdentifier:{objc_msgSend(identifierCopy, "siriPresentationIdentifier")}];
     *buf = 136315650;
     v15 = "[SASPresentationServer registerPresentationIdentifier:]";
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = v8;
     _os_log_impl(&dword_1C8137000, v7, OS_LOG_TYPE_DEFAULT, "%s %p #activation registerPresentationIdentifier:%@", buf, 0x20u);
@@ -378,7 +378,7 @@ void __40__SASPresentationServer__setConnection___block_invoke_2(uint64_t a1, vo
   v11[2] = __56__SASPresentationServer_registerPresentationIdentifier___block_invoke;
   v11[3] = &unk_1E82F37D0;
   objc_copyWeak(&v13, buf);
-  v9 = v4;
+  v9 = identifierCopy;
   v12 = v9;
   SiriInvokeOnMainQueue(v11);
 
@@ -403,10 +403,10 @@ void __56__SASPresentationServer_registerPresentationIdentifier___block_invoke(u
   }
 }
 
-- (void)unregisterPresentationIdentifier:(id)a3
+- (void)unregisterPresentationIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   kdebug_trace();
   v5 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -414,9 +414,9 @@ void __56__SASPresentationServer_registerPresentationIdentifier___block_invoke(u
     *buf = 136315650;
     v11 = "[SASPresentationServer unregisterPresentationIdentifier:]";
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = identifierCopy;
     _os_log_impl(&dword_1C8137000, v5, OS_LOG_TYPE_DEFAULT, "%s %p #activation unregisterPresentationIdentifier:%@", buf, 0x20u);
   }
 
@@ -424,8 +424,8 @@ void __56__SASPresentationServer_registerPresentationIdentifier___block_invoke(u
   v8[1] = 3221225472;
   v8[2] = __58__SASPresentationServer_unregisterPresentationIdentifier___block_invoke;
   v8[3] = &unk_1E82F3A08;
-  v9 = v4;
-  v6 = v4;
+  v9 = identifierCopy;
+  v6 = identifierCopy;
   SiriInvokeOnMainQueue(v8);
 
   v7 = *MEMORY[0x1E69E9840];
@@ -446,16 +446,16 @@ void __58__SASPresentationServer_unregisterPresentationIdentifier___block_invoke
     *buf = 136315394;
     v8 = "[SASPresentationServer willDismiss]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C8137000, v3, OS_LOG_TYPE_DEFAULT, "%s %p #activation willDismiss", buf, 0x16u);
   }
 
-  v4 = [(SASPresentationServer *)self presentationIdentifier];
+  presentationIdentifier = [(SASPresentationServer *)self presentationIdentifier];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__SASPresentationServer_willDismiss__block_invoke;
   v6[3] = &__block_descriptor_40_e5_v8__0l;
-  v6[4] = v4;
+  v6[4] = presentationIdentifier;
   SiriInvokeOnMainQueue(v6);
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -476,16 +476,16 @@ void __36__SASPresentationServer_willDismiss__block_invoke(uint64_t a1)
     *buf = 136315394;
     v8 = "[SASPresentationServer didDismiss]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C8137000, v3, OS_LOG_TYPE_DEFAULT, "%s %p #activation didDismiss", buf, 0x16u);
   }
 
-  v4 = [(SASPresentationServer *)self presentationIdentifier];
+  presentationIdentifier = [(SASPresentationServer *)self presentationIdentifier];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__SASPresentationServer_didDismiss__block_invoke;
   v6[3] = &__block_descriptor_40_e5_v8__0l;
-  v6[4] = v4;
+  v6[4] = presentationIdentifier;
   SiriInvokeOnMainQueue(v6);
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -505,7 +505,7 @@ void __35__SASPresentationServer_didDismiss__block_invoke(uint64_t a1)
     v5 = 136315394;
     v6 = "[SASPresentationServer resetSiriToActive]";
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C8137000, v3, OS_LOG_TYPE_DEFAULT, "%s %p #activation resetSiriToActive", &v5, 0x16u);
   }
 
@@ -513,23 +513,23 @@ void __35__SASPresentationServer_didDismiss__block_invoke(uint64_t a1)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)failedToPresentSiriWithError:(id)a3
+- (void)failedToPresentSiriWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   kdebug_trace();
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_ERROR))
   {
     [SASPresentationServer failedToPresentSiriWithError:];
   }
 
-  v5 = [(SASPresentationServer *)self presentationIdentifier];
+  presentationIdentifier = [(SASPresentationServer *)self presentationIdentifier];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__SASPresentationServer_failedToPresentSiriWithError___block_invoke;
   v7[3] = &unk_1E82F3A30;
-  v8 = v4;
-  v9 = v5;
-  v6 = v4;
+  v8 = errorCopy;
+  v9 = presentationIdentifier;
+  v6 = errorCopy;
   SiriInvokeOnMainQueue(v7);
 }
 
@@ -539,19 +539,19 @@ void __54__SASPresentationServer_failedToPresentSiriWithError___block_invoke(uin
   [v2 siriPresentationFailureWithIdentifier:*(a1 + 40) error:*(a1 + 32)];
 }
 
-- (void)didUpdatePresentationState:(id)a3
+- (void)didUpdatePresentationState:(id)state
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   v5 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v11 = "[SASPresentationServer didUpdatePresentationState:]";
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = stateCopy;
     _os_log_impl(&dword_1C8137000, v5, OS_LOG_TYPE_DEFAULT, "%s %p #activation Presentation state did update: %@", buf, 0x20u);
   }
 
@@ -559,8 +559,8 @@ void __54__SASPresentationServer_failedToPresentSiriWithError___block_invoke(uin
   v8[1] = 3221225472;
   v8[2] = __52__SASPresentationServer_didUpdatePresentationState___block_invoke;
   v8[3] = &unk_1E82F3A08;
-  v9 = v4;
-  v6 = v4;
+  v9 = stateCopy;
+  v6 = stateCopy;
   SiriInvokeOnMainQueue(v8);
 
   v7 = *MEMORY[0x1E69E9840];
@@ -572,11 +572,11 @@ void __52__SASPresentationServer_didUpdatePresentationState___block_invoke(uint6
   [v2 siriPresentationDidUpdateState:*(a1 + 32)];
 }
 
-- (void)didUpdatePresentationConfiguration:(id)a3
+- (void)didUpdatePresentationConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = +[SiriActivationService service];
-  [v4 siriPresentationDidUpdatePresentationConfiguration:v3];
+  [v4 siriPresentationDidUpdatePresentationConfiguration:configurationCopy];
 }
 
 void __56__SASPresentationServer_speechRequestStartedFromSiriOrb__block_invoke()
@@ -625,11 +625,11 @@ void __58__SASPresentationServer_speechRequestCancelledFromSiriOrb__block_invoke
   }
 
   v3 = +[SiriActivationService service];
-  v4 = [v3 allBulletins];
+  allBulletins = [v3 allBulletins];
 
   v5 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return allBulletins;
 }
 
 - (id)bulletinsOnLockScreen
@@ -644,29 +644,29 @@ void __58__SASPresentationServer_speechRequestCancelledFromSiriOrb__block_invoke
   }
 
   v3 = +[SiriActivationService service];
-  v4 = [v3 bulletinsOnLockScreen];
+  bulletinsOnLockScreen = [v3 bulletinsOnLockScreen];
 
   v5 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return bulletinsOnLockScreen;
 }
 
-- (id)bulletinForIdentifier:(id)a3
+- (id)bulletinForIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[SASPresentationServer bulletinForIdentifier:]";
     v11 = 2112;
-    v12 = v3;
+    v12 = identifierCopy;
     _os_log_impl(&dword_1C8137000, v4, OS_LOG_TYPE_DEFAULT, "%s #activation bulletinForIdentifier: %@", &v9, 0x16u);
   }
 
   v5 = +[SiriActivationService service];
-  v6 = [v5 bulletinForIdentifier:v3];
+  v6 = [v5 bulletinForIdentifier:identifierCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 

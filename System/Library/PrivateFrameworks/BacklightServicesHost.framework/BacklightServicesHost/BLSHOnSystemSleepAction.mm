@@ -1,14 +1,14 @@
 @interface BLSHOnSystemSleepAction
-+ (id)actionWithIdentifier:(id)a3 delegate:(id)a4;
-+ (id)actionWithIdentifier:(id)a3 delegate:(id)a4 osInterfaceProvider:(id)a5;
-- (BLSHOnSystemSleepAction)initWithIdentifier:(id)a3 delegate:(id)a4 osInterfaceProvider:(id)a5;
++ (id)actionWithIdentifier:(id)identifier delegate:(id)delegate;
++ (id)actionWithIdentifier:(id)identifier delegate:(id)delegate osInterfaceProvider:(id)provider;
+- (BLSHOnSystemSleepAction)initWithIdentifier:(id)identifier delegate:(id)delegate osInterfaceProvider:(id)provider;
 - (NSString)description;
 - (int64_t)state;
 - (void)actionCompleted;
 - (void)install;
-- (void)systemSleepMonitor:(id)a3 prepareForSleepWithCompletion:(id)a4;
-- (void)systemSleepMonitor:(id)a3 sleepRequestedWithResult:(id)a4;
-- (void)systemWillWakeForReason:(id)a3;
+- (void)systemSleepMonitor:(id)monitor prepareForSleepWithCompletion:(id)completion;
+- (void)systemSleepMonitor:(id)monitor sleepRequestedWithResult:(id)result;
+- (void)systemWillWakeForReason:(id)reason;
 - (void)uninstall;
 @end
 
@@ -21,8 +21,8 @@
   lock_state = self->_lock_state;
   if (lock_state == 2)
   {
-    v4 = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
-    if ([v4 isAwakeOrAbortingSleep])
+    systemSleepMonitor = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
+    if ([systemSleepMonitor isAwakeOrAbortingSleep])
     {
       self->_lock_state = 0;
       v5 = bls_backlight_log();
@@ -30,7 +30,7 @@
       {
         identifier = self->_identifier;
         v9 = 134218242;
-        v10 = self;
+        selfCopy = self;
         v11 = 2114;
         v12 = identifier;
         _os_log_impl(&dword_21FD11000, v5, OS_LOG_TYPE_INFO, "%p:%{public}@ sleep action state now waiting (idle), system activity likely aborted sleep", &v9, 0x16u);
@@ -50,10 +50,10 @@
   return lock_state;
 }
 
-+ (id)actionWithIdentifier:(id)a3 delegate:(id)a4
++ (id)actionWithIdentifier:(id)identifier delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v9 = +[BLSHBacklightOSInterfaceProvider sharedProvider];
   if (!v9)
   {
@@ -61,26 +61,26 @@
   }
 
   v10 = v9;
-  v11 = [a1 actionWithIdentifier:v7 delegate:v8 osInterfaceProvider:v9];
+  v11 = [self actionWithIdentifier:identifierCopy delegate:delegateCopy osInterfaceProvider:v9];
 
   return v11;
 }
 
-+ (id)actionWithIdentifier:(id)a3 delegate:(id)a4 osInterfaceProvider:(id)a5
++ (id)actionWithIdentifier:(id)identifier delegate:(id)delegate osInterfaceProvider:(id)provider
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithIdentifier:v10 delegate:v9 osInterfaceProvider:v8];
+  providerCopy = provider;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
+  v11 = [[self alloc] initWithIdentifier:identifierCopy delegate:delegateCopy osInterfaceProvider:providerCopy];
 
   return v11;
 }
 
-- (BLSHOnSystemSleepAction)initWithIdentifier:(id)a3 delegate:(id)a4 osInterfaceProvider:(id)a5
+- (BLSHOnSystemSleepAction)initWithIdentifier:(id)identifier delegate:(id)delegate osInterfaceProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = BLSHOnSystemSleepAction;
   v12 = [(BLSHOnSystemSleepAction *)&v15 init];
@@ -88,9 +88,9 @@
   if (v12)
   {
     v12->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeWeak(&v13->_delegate, v10);
-    objc_storeStrong(&v13->_osInterfaceProvider, a5);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_osInterfaceProvider, provider);
     v13->_lock_state = 0;
   }
 
@@ -101,15 +101,15 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendObject:self->_identifier withName:@"identifier"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (void)install
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = *(a1 + 56);
+  v1 = *(self + 56);
   OUTLINED_FUNCTION_0_2();
   OUTLINED_FUNCTION_5(&dword_21FD11000, v2, v3, "%p:%{public}@ installing sleep action when sleep imminent", v4, v5, v6, v7, v9);
   v8 = *MEMORY[0x277D85DE8];
@@ -162,16 +162,16 @@ void __34__BLSHOnSystemSleepAction_install__block_invoke_2(void *a1, int a2, voi
 
 - (void)uninstall
 {
-  v3 = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
-  [v3 removeObserver:self];
+  systemSleepMonitor = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
+  [systemSleepMonitor removeObserver:self];
 }
 
-- (void)systemSleepMonitor:(id)a3 sleepRequestedWithResult:(id)a4
+- (void)systemSleepMonitor:(id)monitor sleepRequestedWithResult:(id)result
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 isAwakeOrAbortingSleep];
+  monitorCopy = monitor;
+  resultCopy = result;
+  isAwakeOrAbortingSleep = [monitorCopy isAwakeOrAbortingSleep];
   os_unfair_lock_lock(&self->_lock);
   lock_state = self->_lock_state;
   v11 = bls_backlight_log();
@@ -208,15 +208,15 @@ void __34__BLSHOnSystemSleepAction_install__block_invoke_2(void *a1, int a2, voi
 
     v26 = a2;
     v18 = v17;
-    v19 = [v7 aggregateState];
+    aggregateState = [monitorCopy aggregateState];
     *buf = 134218754;
-    v31 = self;
+    selfCopy = self;
     v32 = 2114;
     v33 = identifier;
     v34 = 2114;
     v35 = v18;
     v36 = 2114;
-    v37 = v19;
+    v37 = aggregateState;
     _os_log_impl(&dword_21FD11000, v12, v13, "%p:%{public}@ sleepRequested state:%{public}@ %{public}@ ", buf, 0x2Au);
 
     a2 = v26;
@@ -224,10 +224,10 @@ void __34__BLSHOnSystemSleepAction_install__block_invoke_2(void *a1, int a2, voi
 
   BSContinuousMachTimeNow();
   self->_lock_sleepRequestedTime = v20;
-  if ((lock_state != 0) | v9 & 1)
+  if ((lock_state != 0) | isAwakeOrAbortingSleep & 1)
   {
     os_unfair_lock_unlock(&self->_lock);
-    v21 = v8[2](v8, 1, 0);
+    v21 = resultCopy[2](resultCopy, 1, 0);
   }
 
   else
@@ -241,7 +241,7 @@ void __34__BLSHOnSystemSleepAction_install__block_invoke_2(void *a1, int a2, voi
     v28[1] = 3221225472;
     v28[2] = __71__BLSHOnSystemSleepAction_systemSleepMonitor_sleepRequestedWithResult___block_invoke;
     v28[3] = &unk_27841E998;
-    v29 = v8;
+    v29 = resultCopy;
     v22 = MEMORY[0x223D70730](v28);
     lock_proceedWithSleepBlock = self->_lock_proceedWithSleepBlock;
     self->_lock_proceedWithSleepBlock = v22;
@@ -260,12 +260,12 @@ void __34__BLSHOnSystemSleepAction_install__block_invoke_2(void *a1, int a2, voi
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)systemSleepMonitor:(id)a3 prepareForSleepWithCompletion:(id)a4
+- (void)systemSleepMonitor:(id)monitor prepareForSleepWithCompletion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 isAwakeOrAbortingSleep];
+  monitorCopy = monitor;
+  completionCopy = completion;
+  isAwakeOrAbortingSleep = [monitorCopy isAwakeOrAbortingSleep];
   os_unfair_lock_lock(&self->_lock);
   lock_state = self->_lock_state;
   v11 = bls_backlight_log();
@@ -282,7 +282,7 @@ void __34__BLSHOnSystemSleepAction_install__block_invoke_2(void *a1, int a2, voi
 
   if (os_log_type_enabled(v11, v13))
   {
-    v14 = v9;
+    v14 = isAwakeOrAbortingSleep;
     v15 = a2;
     v16 = self->_lock_state;
     identifier = self->_identifier;
@@ -303,21 +303,21 @@ void __34__BLSHOnSystemSleepAction_install__block_invoke_2(void *a1, int a2, voi
     }
 
     v20 = v19;
-    [v7 aggregateState];
-    v21 = v29 = v7;
+    [monitorCopy aggregateState];
+    v21 = v29 = monitorCopy;
     *buf = 134218754;
-    v34 = self;
+    selfCopy = self;
     v35 = 2114;
     v36 = identifier;
     a2 = v15;
-    v9 = v14;
+    isAwakeOrAbortingSleep = v14;
     v37 = 2114;
     v38 = v20;
     v39 = 2114;
     v40 = v21;
     _os_log_impl(&dword_21FD11000, v12, v13, "%p:%{public}@ prepareForSleep state:%{public}@ %{public}@", buf, 0x2Au);
 
-    v7 = v29;
+    monitorCopy = v29;
   }
 
   v22 = MEMORY[0x223D70730](self->_lock_proceedWithSleepBlock);
@@ -345,11 +345,11 @@ void __34__BLSHOnSystemSleepAction_install__block_invoke_2(void *a1, int a2, voi
     goto LABEL_19;
   }
 
-  if (v9)
+  if (isAwakeOrAbortingSleep)
   {
 LABEL_19:
     os_unfair_lock_unlock(&self->_lock);
-    dispatch_async(MEMORY[0x277D85CD0], v8);
+    dispatch_async(MEMORY[0x277D85CD0], completionCopy);
     goto LABEL_20;
   }
 
@@ -362,7 +362,7 @@ LABEL_19:
   v31[1] = 3221225472;
   v31[2] = __76__BLSHOnSystemSleepAction_systemSleepMonitor_prepareForSleepWithCompletion___block_invoke;
   v31[3] = &unk_27841E998;
-  v32 = v8;
+  v32 = completionCopy;
   v26 = MEMORY[0x223D70730](v31);
   v27 = self->_lock_proceedWithSleepBlock;
   self->_lock_proceedWithSleepBlock = v26;
@@ -384,10 +384,10 @@ LABEL_20:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)systemWillWakeForReason:(id)a3
+- (void)systemWillWakeForReason:(id)reason
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_lock);
   v5 = MEMORY[0x223D70730](self->_lock_proceedWithSleepBlock);
   lock_proceedWithSleepBlock = self->_lock_proceedWithSleepBlock;
@@ -427,25 +427,25 @@ LABEL_20:
     }
 
     v15 = v14;
-    v16 = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
-    v17 = [v16 aggregateState];
+    systemSleepMonitor = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
+    aggregateState = [systemSleepMonitor aggregateState];
     v21 = 134219010;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
     v24 = identifier;
     v25 = 2114;
-    v26 = v4;
+    v26 = reasonCopy;
     v27 = 2114;
     v28 = v15;
     v29 = 2114;
-    v30 = v17;
+    v30 = aggregateState;
     _os_log_impl(&dword_21FD11000, v9, v10, "%p:%{public}@ systemWillWakeForReason%{public}@ state:%{public}@ %{public}@", &v21, 0x34u);
   }
 
   self->_lock_state = 0;
   os_unfair_lock_unlock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained systemSleepAction:self systemWillWakeForReason:v4];
+  [WeakRetained systemSleepAction:self systemWillWakeForReason:reasonCopy];
 
   if (v5)
   {
@@ -504,10 +504,10 @@ LABEL_20:
 
     v13 = v12;
     v14 = MEMORY[0x223D70730](v4);
-    v15 = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
-    v16 = [v15 aggregateState];
+    systemSleepMonitor = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
+    aggregateState = [systemSleepMonitor aggregateState];
     v18 = 134219010;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
     v21 = identifier;
     v22 = 2114;
@@ -515,7 +515,7 @@ LABEL_20:
     v24 = 2048;
     v25 = v14;
     v26 = 2114;
-    v27 = v16;
+    v27 = aggregateState;
     _os_log_impl(&dword_21FD11000, v7, v8, "%p:%{public}@ actionCompleted state:%{public}@ proceedWithSleepBlock=%p %{public}@", &v18, 0x34u);
   }
 

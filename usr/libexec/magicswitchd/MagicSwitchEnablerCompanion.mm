@@ -1,10 +1,10 @@
 @interface MagicSwitchEnablerCompanion
 - (MagicSwitchEnablerCompanion)init;
 - (void)activeDeviceAssertionStateDidChange;
-- (void)activePairedDeviceSwitchForDevice:(id)a3 completedWithError:(id)a4;
-- (void)handleNanoRegistryNotification:(id)a3;
-- (void)initialSyncDidCompleteForDevice:(id)a3;
-- (void)magicSwitchManager:(id)a3 requestActiveDeviceSwitch:(id)a4;
+- (void)activePairedDeviceSwitchForDevice:(id)device completedWithError:(id)error;
+- (void)handleNanoRegistryNotification:(id)notification;
+- (void)initialSyncDidCompleteForDevice:(id)device;
+- (void)magicSwitchManager:(id)manager requestActiveDeviceSwitch:(id)switch;
 - (void)registerNanoRegistryObservers;
 - (void)updateState;
 @end
@@ -19,13 +19,13 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(MagicSwitchEnabler *)v2 workQueue];
+    workQueue = [(MagicSwitchEnabler *)v2 workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100002F94;
     block[3] = &unk_100018538;
     v7 = v3;
-    dispatch_async(v4, block);
+    dispatch_async(workQueue, block);
   }
 
   return v3;
@@ -83,23 +83,23 @@
   }
 }
 
-- (void)handleNanoRegistryNotification:(id)a3
+- (void)handleNanoRegistryNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:NRPairedDeviceRegistryDevice];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:NRPairedDeviceRegistryDevice];
   v7 = +[MagicSwitchEnabler sharedInstance];
-  v8 = [v7 workQueue];
+  workQueue = [v7 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003414;
   block[3] = &unk_100018560;
-  v12 = v4;
+  v12 = notificationCopy;
   v13 = v6;
-  v14 = self;
+  selfCopy = self;
   v9 = v6;
-  v10 = v4;
-  dispatch_async(v8, block);
+  v10 = notificationCopy;
+  dispatch_async(workQueue, block);
 }
 
 - (void)updateState
@@ -108,7 +108,7 @@
   if (self->_isSwitchingActivePairedDevice)
   {
     v3 = 0;
-    v4 = 0;
+    hasActiveAssertion = 0;
     v5 = "Switching device";
 LABEL_39:
     magicSwitchManager = self->_magicSwitchManager;
@@ -136,7 +136,7 @@ LABEL_39:
     }
 
     v34 = objc_opt_class();
-    if (v4)
+    if (hasActiveAssertion)
     {
       [v34 createMagicSwitchPathFile];
     }
@@ -152,15 +152,15 @@ LABEL_39:
   if (![(MagicSwitchEnabler *)self isSettingEnabled])
   {
     v3 = 0;
-    v4 = 0;
+    hasActiveAssertion = 0;
     v5 = "Setting disabled";
     goto LABEL_39;
   }
 
   v6 = +[NRPairedDeviceRegistry sharedInstance];
-  v7 = [v6 getActivePairedDevice];
+  getActivePairedDevice = [v6 getActivePairedDevice];
 
-  v8 = [v7 valueForProperty:NRDevicePropertyIsSetup];
+  v8 = [getActivePairedDevice valueForProperty:NRDevicePropertyIsSetup];
   if (([v8 BOOLValue] & 1) == 0)
   {
     v29 = qword_100021420;
@@ -173,23 +173,23 @@ LABEL_39:
     goto LABEL_32;
   }
 
-  if (!v7)
+  if (!getActivePairedDevice)
   {
 LABEL_32:
 
     v3 = 0;
-    v4 = 0;
+    hasActiveAssertion = 0;
     v5 = "No active + setup completed paired device";
     goto LABEL_39;
   }
 
   v9 = +[NRPairedDeviceRegistry sharedInstance];
-  v10 = [v9 getSetupCompletedDevices];
+  getSetupCompletedDevices = [v9 getSetupCompletedDevices];
 
-  v43 = v10;
-  if ([v10 count] < 2)
+  v43 = getSetupCompletedDevices;
+  if ([getSetupCompletedDevices count] < 2)
   {
-    v4 = 0;
+    hasActiveAssertion = 0;
     v3 = 0;
     v5 = "Less than two paired devices";
   }
@@ -197,24 +197,24 @@ LABEL_32:
   else
   {
     v11 = +[NRPairedDeviceRegistry sharedInstance];
-    v12 = [v11 compatibilityState];
+    compatibilityState = [v11 compatibilityState];
 
-    if (v12 == 4 || v12 == 2)
+    if (compatibilityState == 4 || compatibilityState == 2)
     {
       v42 = v8;
       v50 = 0u;
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v13 = v10;
+      v13 = getSetupCompletedDevices;
       v14 = [v13 countByEnumeratingWithState:&v48 objects:v54 count:16];
       if (v14)
       {
         v15 = v14;
         v46 = 0;
         obj = v13;
-        v40 = v7;
-        v41 = self;
+        v40 = getActivePairedDevice;
+        selfCopy = self;
         v16 = *v49;
         v45 = _NRDevicePropertyBluetoothIdentifier;
         v17 = NRDevicePropertyIsActive;
@@ -241,9 +241,9 @@ LABEL_32:
               }
 
               v24 = [v20 valueForProperty:{v17, v40}];
-              v25 = [v24 BOOLValue];
+              bOOLValue = [v24 BOOLValue];
 
-              if (v25)
+              if (bOOLValue)
               {
                 v26 = v23;
 
@@ -262,34 +262,34 @@ LABEL_32:
 
         while (v15);
 
-        v7 = v40;
+        getActivePairedDevice = v40;
         if (v18)
         {
-          self = v41;
+          self = selfCopy;
           v8 = v42;
           v3 = v46;
           if (v46 && [v44 count] >= 2)
           {
             v27 = [v40 valueForProperty:_NRDevicePropertyRemoteUnpairingStarted];
-            v28 = [v27 BOOLValue];
+            bOOLValue2 = [v27 BOOLValue];
 
-            if (v28)
+            if (bOOLValue2)
             {
-              v4 = 0;
+              hasActiveAssertion = 0;
               v5 = "Remote unpairing has started";
             }
 
             else
             {
               buf[0] = 0;
-              if ([(InitialSyncCompletionMonitor *)v41->_initialSyncMonitor hasCachedInitialSyncCompletionStateForDevice:v40 state:buf])
+              if ([(InitialSyncCompletionMonitor *)selfCopy->_initialSyncMonitor hasCachedInitialSyncCompletionStateForDevice:v40 state:buf])
               {
                 if (buf[0] == 1)
                 {
                   v39 = +[NRActiveDeviceAssertionMonitor sharedInstance];
-                  v4 = [v39 hasActiveAssertion];
+                  hasActiveAssertion = [v39 hasActiveAssertion];
 
-                  if (v4)
+                  if (hasActiveAssertion)
                   {
                     v5 = "An Active Device Assertion is active";
                   }
@@ -302,16 +302,16 @@ LABEL_32:
 
                 else
                 {
-                  [(InitialSyncCompletionMonitor *)v41->_initialSyncMonitor registerObserver:v41 device:v40];
-                  v4 = 0;
+                  [(InitialSyncCompletionMonitor *)selfCopy->_initialSyncMonitor registerObserver:selfCopy device:v40];
+                  hasActiveAssertion = 0;
                   v5 = "Initial Sync not complete yet";
                 }
               }
 
               else
               {
-                [(InitialSyncCompletionMonitor *)v41->_initialSyncMonitor registerObserver:v41 device:v40];
-                v4 = 1;
+                [(InitialSyncCompletionMonitor *)selfCopy->_initialSyncMonitor registerObserver:selfCopy device:v40];
+                hasActiveAssertion = 1;
                 v5 = "Initial Sync state for active device unknown";
               }
             }
@@ -319,16 +319,16 @@ LABEL_32:
 
           else
           {
-            v4 = 0;
+            hasActiveAssertion = 0;
             v5 = "A paired device has a missing Bluetooth ID";
           }
         }
 
         else
         {
-          v4 = 0;
+          hasActiveAssertion = 0;
           v5 = "Not all paired watches have capability";
-          self = v41;
+          self = selfCopy;
           v8 = v42;
           v3 = v46;
         }
@@ -337,7 +337,7 @@ LABEL_32:
       else
       {
 
-        v4 = 0;
+        hasActiveAssertion = 0;
         v3 = 0;
         v5 = "A paired device has a missing Bluetooth ID";
       }
@@ -345,7 +345,7 @@ LABEL_32:
 
     else
     {
-      v4 = 0;
+      hasActiveAssertion = 0;
       v3 = 0;
       v5 = "Not in Normal Compatibility state";
     }
@@ -378,11 +378,11 @@ LABEL_32:
 LABEL_48:
 }
 
-- (void)activePairedDeviceSwitchForDevice:(id)a3 completedWithError:(id)a4
+- (void)activePairedDeviceSwitchForDevice:(id)device completedWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  deviceCopy = device;
+  errorCopy = error;
+  if (!deviceCopy)
   {
     v8 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -393,19 +393,19 @@ LABEL_48:
   }
 
   self->_isSwitchingActivePairedDevice = 0;
-  v9 = [v6 valueForProperty:NRDevicePropertyPairingID];
+  v9 = [deviceCopy valueForProperty:NRDevicePropertyPairingID];
   v10 = qword_100021420;
   v11 = os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (errorCopy)
   {
     if (v11)
     {
       v12 = v10;
-      v13 = [v9 UUIDString];
+      uUIDString = [v9 UUIDString];
       *v17 = 138412546;
-      *&v17[4] = v13;
+      *&v17[4] = uUIDString;
       *&v17[12] = 2112;
-      *&v17[14] = v7;
+      *&v17[14] = errorCopy;
       v14 = "MagicSwitchEnabler --- MagicSwitch failed for device (%@); error: (%@)";
       v15 = v12;
       v16 = 22;
@@ -417,9 +417,9 @@ LABEL_9:
   else if (v11)
   {
     v12 = v10;
-    v13 = [v9 UUIDString];
+    uUIDString = [v9 UUIDString];
     *v17 = 138412290;
-    *&v17[4] = v13;
+    *&v17[4] = uUIDString;
     v14 = "MagicSwitchEnabler --- MagicSwitch completed with success for device (%@)";
     v15 = v12;
     v16 = 12;
@@ -429,11 +429,11 @@ LABEL_9:
   [(MagicSwitchEnablerCompanion *)self updateState:*v17];
 }
 
-- (void)magicSwitchManager:(id)a3 requestActiveDeviceSwitch:(id)a4
+- (void)magicSwitchManager:(id)manager requestActiveDeviceSwitch:(id)switch
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  managerCopy = manager;
+  switchCopy = switch;
+  if (!switchCopy)
   {
     v8 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -443,7 +443,7 @@ LABEL_9:
     }
   }
 
-  if (self->_magicSwitchManager != v6)
+  if (self->_magicSwitchManager != managerCopy)
   {
     v9 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -454,7 +454,7 @@ LABEL_9:
   }
 
   v10 = +[NRPairedDeviceRegistry sharedInstance];
-  v11 = [v10 deviceForBluetoothID:v7];
+  v11 = [v10 deviceForBluetoothID:switchCopy];
 
   if (!self->_isSwitchingActivePairedDevice)
   {
@@ -482,19 +482,19 @@ LABEL_9:
       if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
       {
         v14 = v13;
-        v15 = [v7 UUIDString];
+        uUIDString = [switchCopy UUIDString];
         *buf = 138412290;
-        v23 = v15;
+        v23 = uUIDString;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "MagicSwitchEnabler --- Failed to resolve the NRDevice associated with Bluetooth ID: (%@)", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)initialSyncDidCompleteForDevice:(id)a3
+- (void)initialSyncDidCompleteForDevice:(id)device
 {
-  v4 = a3;
-  if (!v4)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     v5 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -509,7 +509,7 @@ LABEL_9:
   {
     v7 = NRDevicePropertyPairingID;
     v8 = v6;
-    v9 = [v4 valueForProperty:v7];
+    v9 = [deviceCopy valueForProperty:v7];
     v10 = 138412290;
     v11 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "MagicSwitchEnabler --- Received initial sync did complete callback for device: (%@)", &v10, 0xCu);
@@ -521,13 +521,13 @@ LABEL_9:
 - (void)activeDeviceAssertionStateDidChange
 {
   v3 = +[MagicSwitchEnabler sharedInstance];
-  v4 = [v3 workQueue];
+  workQueue = [v3 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000428C;
   block[3] = &unk_100018538;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 @end

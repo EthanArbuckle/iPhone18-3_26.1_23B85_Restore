@@ -1,12 +1,12 @@
 @interface NSIncrementalStore
-+ (BOOL)setMetadata:(id)a3 forPersistentStoreWithURL:(id)a4 error:(id *)a5;
-+ (id)metadataForPersistentStoreWithURL:(id)a3 error:(id *)a4;
-- (BOOL)_prepareForExecuteRequest:(id)a3 withContext:(id)a4 error:(id *)a5;
++ (BOOL)setMetadata:(id)metadata forPersistentStoreWithURL:(id)l error:(id *)error;
++ (id)metadataForPersistentStoreWithURL:(id)l error:(id *)error;
+- (BOOL)_prepareForExecuteRequest:(id)request withContext:(id)context error:(id *)error;
 - (BOOL)loadMetadata:(NSError *)error;
 - (NSArray)obtainPermanentIDsForObjects:(NSArray *)array error:(NSError *)error;
 - (NSIncrementalStoreNode)newValuesForObjectWithID:(NSManagedObjectID *)objectID withContext:(NSManagedObjectContext *)context error:(NSError *)error;
 - (NSManagedObjectID)newObjectIDForEntity:(NSEntityDescription *)entity referenceObject:(id)data;
-- (id)_newObjectIDForEntityDescription:(id)a3 pk:(int64_t)a4;
+- (id)_newObjectIDForEntityDescription:(id)description pk:(int64_t)pk;
 - (id)executeRequest:(NSPersistentStoreRequest *)request withContext:(NSManagedObjectContext *)context error:(NSError *)error;
 - (id)metadata;
 - (id)newValueForRelationship:(NSRelationshipDescription *)relationship forObjectWithID:(NSManagedObjectID *)objectID withContext:(NSManagedObjectContext *)context error:(NSError *)error;
@@ -16,25 +16,25 @@
 
 @implementation NSIncrementalStore
 
-+ (id)metadataForPersistentStoreWithURL:(id)a3 error:(id *)a4
++ (id)metadataForPersistentStoreWithURL:(id)l error:(id *)error
 {
-  v5 = [[a1 alloc] initWithPersistentStoreCoordinator:0 configurationName:0 URL:a3 options:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", 1), @"NSReadOnlyPersistentStoreOption"}];
-  v6 = [v5 loadMetadata:a4];
-  v7 = 0;
+  v5 = [[self alloc] initWithPersistentStoreCoordinator:0 configurationName:0 URL:l options:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", 1), @"NSReadOnlyPersistentStoreOption"}];
+  v6 = [v5 loadMetadata:error];
+  metadata = 0;
   if (v6)
   {
-    v7 = [v5 metadata];
+    metadata = [v5 metadata];
   }
 
-  return v7;
+  return metadata;
 }
 
-+ (BOOL)setMetadata:(id)a3 forPersistentStoreWithURL:(id)a4 error:(id *)a5
++ (BOOL)setMetadata:(id)metadata forPersistentStoreWithURL:(id)l error:(id *)error
 {
-  v7 = [[a1 alloc] initWithPersistentStoreCoordinator:0 configurationName:0 URL:a4 options:0];
-  [v7 setMetadata:a3];
+  v7 = [[self alloc] initWithPersistentStoreCoordinator:0 configurationName:0 URL:l options:0];
+  [v7 setMetadata:metadata];
   v8 = objc_alloc_init(NSSaveChangesRequest);
-  v9 = [v7 executeRequest:v8 withContext:0 error:a5];
+  v9 = [v7 executeRequest:v8 withContext:0 error:error];
 
   return v9 != 0;
 }
@@ -112,7 +112,7 @@ LABEL_7:
   v7 = [(NSArray *)array count];
   if (__CFADD__(v7, self->_lastIdentifier))
   {
-    v8 = 0;
+    array = 0;
     if (error)
     {
       *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", @"Keyspace exhausted", @"Problem"}];
@@ -122,7 +122,7 @@ LABEL_7:
   else
   {
     v9 = v7;
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (v9)
     {
       for (i = 0; i != v9; ++i)
@@ -131,23 +131,23 @@ LABEL_7:
         v12 = MEMORY[0x1E696AD98];
         ++self->_lastIdentifier;
         v13 = -[NSIncrementalStore newObjectIDForEntity:referenceObject:](self, "newObjectIDForEntity:referenceObject:", v11, [v12 numberWithUnsignedLongLong:?]);
-        [(NSArray *)v8 addObject:v13];
+        [(NSArray *)array addObject:v13];
       }
     }
   }
 
-  return v8;
+  return array;
 }
 
-- (BOOL)_prepareForExecuteRequest:(id)a3 withContext:(id)a4 error:(id *)a5
+- (BOOL)_prepareForExecuteRequest:(id)request withContext:(id)context error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  if ([objc_msgSend(a3 "insertedObjects")])
+  if ([objc_msgSend(request "insertedObjects")])
   {
     v29 = 0;
     v24 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-    v9 = [objc_msgSend(a3 "insertedObjects")];
-    v10 = [MEMORY[0x1E695DF70] array];
+    v9 = [objc_msgSend(request "insertedObjects")];
+    array = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -169,7 +169,7 @@ LABEL_7:
           v15 = *(*(&v25 + 1) + 8 * i);
           if ([objc_msgSend(v15 "objectID")])
           {
-            [v10 addObject:v15];
+            [array addObject:v15];
           }
         }
 
@@ -179,14 +179,14 @@ LABEL_7:
       while (v12);
     }
 
-    v16 = [(NSIncrementalStore *)self obtainPermanentIDsForObjects:v10 error:&v29];
+    v16 = [(NSIncrementalStore *)self obtainPermanentIDsForObjects:array error:&v29];
     v17 = v16 != 0;
     if (v16)
     {
-      v18 = [(NSManagedObjectContext *)a4 _changeIDsForManagedObjects:v10 toIDs:v16];
+      v18 = [(NSManagedObjectContext *)context _changeIDsForManagedObjects:array toIDs:v16];
       if (v18)
       {
-        [(NSSaveChangesRequest *)a3 _addChangedObjectIDsNotification:v18];
+        [(NSSaveChangesRequest *)request _addChangedObjectIDsNotification:v18];
       }
     }
 
@@ -195,9 +195,9 @@ LABEL_7:
     v20 = v29;
     if (v29)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = v29;
+        *error = v29;
       }
 
       v21 = v20;
@@ -251,7 +251,7 @@ LABEL_7:
   return [(NSManagedObjectID *)objectID _referenceData];
 }
 
-- (id)_newObjectIDForEntityDescription:(id)a3 pk:(int64_t)a4
+- (id)_newObjectIDForEntityDescription:(id)description pk:(int64_t)pk
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

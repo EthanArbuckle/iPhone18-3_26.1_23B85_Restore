@@ -1,16 +1,16 @@
 @interface _UIEventDeferringEnvironmentsContainer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIEventDeferringEnvironmentsContainer)init;
-- (_UIEventDeferringEnvironmentsContainer)initWithCoder:(id)a3;
-- (_UIEventDeferringEnvironmentsContainer)initWithXPCDictionary:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_UIEventDeferringEnvironmentsContainer)initWithCoder:(id)coder;
+- (_UIEventDeferringEnvironmentsContainer)initWithXPCDictionary:(id)dictionary;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
-- (void)_initWithEnvironments:(void *)a1;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)_initWithEnvironments:(void *)environments;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 - (void)environments;
 @end
 
@@ -18,71 +18,71 @@
 
 - (_UIEventDeferringEnvironmentsContainer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIEventDeferringEnvironmentsContainer.m" lineNumber:54 description:{@"%s: init is not allowed on %@", "-[_UIEventDeferringEnvironmentsContainer init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIEventDeferringEnvironmentsContainer.m" lineNumber:54 description:{@"%s: init is not allowed on %@", "-[_UIEventDeferringEnvironmentsContainer init]", objc_opt_class()}];
 
   return 0;
 }
 
-- (void)_initWithEnvironments:(void *)a1
+- (void)_initWithEnvironments:(void *)environments
 {
-  v2 = a1;
-  if (a1)
+  environmentsCopy = environments;
+  if (environments)
   {
     if (!a2)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:sel__initWithEnvironments_ object:v2 file:@"_UIEventDeferringEnvironmentsContainer.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"environments"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithEnvironments_ object:environmentsCopy file:@"_UIEventDeferringEnvironmentsContainer.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"environments"}];
     }
 
-    v8.receiver = v2;
+    v8.receiver = environmentsCopy;
     v8.super_class = _UIEventDeferringEnvironmentsContainer;
-    v2 = objc_msgSendSuper2(&v8, sel_init);
-    if (v2)
+    environmentsCopy = objc_msgSendSuper2(&v8, sel_init);
+    if (environmentsCopy)
     {
       v4 = [a2 copy];
-      v5 = v2[1];
-      v2[1] = v4;
+      v5 = environmentsCopy[1];
+      environmentsCopy[1] = v4;
     }
   }
 
-  return v2;
+  return environmentsCopy;
 }
 
 - (void)environments
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[1];
+    v2 = self[1];
     if (v2)
     {
-      a1 = v2;
+      self = v2;
     }
 
     else
     {
-      a1 = objc_opt_new();
+      self = objc_opt_new();
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if ([v5 isEqual:objc_opt_class()] && (v6 = -[_UIEventDeferringEnvironmentsContainer hash](self, "hash"), v6 == objc_msgSend(v4, "hash")))
+  if ([v5 isEqual:objc_opt_class()] && (v6 = -[_UIEventDeferringEnvironmentsContainer hash](self, "hash"), v6 == objc_msgSend(equalCopy, "hash")))
   {
     environments = self->_environments;
-    if (environments == v4[1])
+    if (environments == equalCopy[1])
     {
       v8 = 1;
     }
@@ -103,19 +103,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_environments];
-  v5 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_environments];
+  v5 = [builder hash];
 
   return v5;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_UIEventDeferringEnvironmentsContainer *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIEventDeferringEnvironmentsContainer *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -127,40 +127,40 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIEventDeferringEnvironmentsContainer *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIEventDeferringEnvironmentsContainer *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIEventDeferringEnvironmentsContainer *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIEventDeferringEnvironmentsContainer *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v5 setActiveMultilinePrefix:a3];
+  [v5 setActiveMultilinePrefix:prefix];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80___UIEventDeferringEnvironmentsContainer_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E70F35B8;
   v6 = v5;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v7 = [v6 modifyBody:v10];
   v8 = v6;
 
   return v6;
 }
 
-- (_UIEventDeferringEnvironmentsContainer)initWithCoder:(id)a3
+- (_UIEventDeferringEnvironmentsContainer)initWithCoder:(id)coder
 {
   v14.receiver = self;
   v14.super_class = _UIEventDeferringEnvironmentsContainer;
@@ -170,7 +170,7 @@
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
     v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-    v8 = [a3 decodeObjectOfClasses:v7 forKey:@"_UIEventDeferringEnvironmentsContainerKey_Environments"];
+    v8 = [coder decodeObjectOfClasses:v7 forKey:@"_UIEventDeferringEnvironmentsContainerKey_Environments"];
 
     v9 = [v8 copy];
     v10 = v9;
@@ -191,15 +191,15 @@
   return v4;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v5 = [@"_UIEventDeferringEnvironmentsContainerKey_Environments" UTF8String];
+  uTF8String = [@"_UIEventDeferringEnvironmentsContainerKey_Environments" UTF8String];
   environments = self->_environments;
 
-  MEMORY[0x1EEDF02F8](environments, a3, v5, &__block_literal_global_573);
+  MEMORY[0x1EEDF02F8](environments, dictionary, uTF8String, &__block_literal_global_573);
 }
 
-- (_UIEventDeferringEnvironmentsContainer)initWithXPCDictionary:(id)a3
+- (_UIEventDeferringEnvironmentsContainer)initWithXPCDictionary:(id)dictionary
 {
   [@"_UIEventDeferringEnvironmentsContainerKey_Environments" UTF8String];
   v4 = BSDeserializeSetOfBSXPCEncodableObjectsFromXPCDictionaryWithKey();

@@ -13,7 +13,7 @@
   v5[3] = &unk_1E8480A40;
   v3 = v2;
   v6 = v3;
-  [a1 enumerateObjectsUsingBlock:v5];
+  [self enumerateObjectsUsingBlock:v5];
 
   return v3;
 }

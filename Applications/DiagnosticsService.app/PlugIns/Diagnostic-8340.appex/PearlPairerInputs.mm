@@ -1,28 +1,28 @@
 @interface PearlPairerInputs
-- (BOOL)validateAndInitializeParameters:(id)a3;
-- (void)_validateURL:(id)a3 failed:(BOOL *)a4;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
+- (void)_validateURL:(id)l failed:(BOOL *)failed;
 @end
 
 @implementation PearlPairerInputs
 
-- (void)_validateURL:(id)a3 failed:(BOOL *)a4
+- (void)_validateURL:(id)l failed:(BOOL *)failed
 {
-  v5 = a3;
-  if (v5)
+  lCopy = l;
+  if (lCopy)
   {
-    v6 = [NSURL URLWithString:v5];
+    v6 = [NSURL URLWithString:lCopy];
     v7 = v6;
     if (v6 && ([v6 host], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
-      v9 = [v7 scheme];
-      if (![v9 caseInsensitiveCompare:@"http"])
+      scheme = [v7 scheme];
+      if (![scheme caseInsensitiveCompare:@"http"])
       {
 
         goto LABEL_11;
       }
 
-      v10 = [v7 scheme];
-      v11 = [v10 caseInsensitiveCompare:@"https"];
+      scheme2 = [v7 scheme];
+      v11 = [scheme2 caseInsensitiveCompare:@"https"];
 
       if (!v11)
       {
@@ -34,7 +34,7 @@ LABEL_11:
       v12 = handleForCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_10000B8A4(v5, v12);
+        sub_10000B8A4(lCopy, v12);
       }
     }
 
@@ -43,20 +43,20 @@ LABEL_11:
       v12 = handleForCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_10000B91C(v5, v12);
+        sub_10000B91C(lCopy, v12);
       }
     }
 
-    *a4 = 1;
+    *failed = 1;
     goto LABEL_11;
   }
 
 LABEL_12:
 }
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v38 = 0;
   v5 = handleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -66,7 +66,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  self->_useAppleConnect = [v4 BOOLFromKey:@"UseAppleConnect" defaultValue:0 failed:&v38];
+  self->_useAppleConnect = [parametersCopy BOOLFromKey:@"UseAppleConnect" defaultValue:0 failed:&v38];
   v6 = handleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -85,7 +85,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Use AppleConnect: %@", buf, 0xCu);
   }
 
-  v8 = [v4 NSStringFromKey:@"SCPairURL" defaultValue:@"https://shps.apple.com/hps/pearl" failed:&v38];
+  v8 = [parametersCopy NSStringFromKey:@"SCPairURL" defaultValue:@"https://shps.apple.com/hps/pearl" failed:&v38];
   SCPairURL = self->_SCPairURL;
   self->_SCPairURL = v8;
 
@@ -99,7 +99,7 @@ LABEL_12:
   }
 
   [(PearlPairerInputs *)self _validateURL:self->_SCPairURL failed:&v38];
-  v12 = [v4 NSStringFromKey:@"CAURL" defaultValue:0 failed:&v38];
+  v12 = [parametersCopy NSStringFromKey:@"CAURL" defaultValue:0 failed:&v38];
   FDRCAURL = self->_FDRCAURL;
   self->_FDRCAURL = v12;
 
@@ -113,7 +113,7 @@ LABEL_12:
   }
 
   [(PearlPairerInputs *)self _validateURL:self->_FDRCAURL failed:&v38];
-  v16 = [v4 NSStringFromKey:@"DSURL" defaultValue:0 failed:&v38];
+  v16 = [parametersCopy NSStringFromKey:@"DSURL" defaultValue:0 failed:&v38];
   FDRDSURL = self->_FDRDSURL;
   self->_FDRDSURL = v16;
 
@@ -127,7 +127,7 @@ LABEL_12:
   }
 
   [(PearlPairerInputs *)self _validateURL:self->_FDRDSURL failed:&v38];
-  v20 = [v4 NSStringFromKey:@"TrustObjectURL" defaultValue:0 failed:&v38];
+  v20 = [parametersCopy NSStringFromKey:@"TrustObjectURL" defaultValue:0 failed:&v38];
   trustObjectURL = self->_trustObjectURL;
   self->_trustObjectURL = v20;
 
@@ -141,7 +141,7 @@ LABEL_12:
   }
 
   [(PearlPairerInputs *)self _validateURL:self->_trustObjectURL failed:&v38];
-  v24 = [v4 NSStringFromKey:@"TatsuURL" defaultValue:0 failed:&v38];
+  v24 = [parametersCopy NSStringFromKey:@"TatsuURL" defaultValue:0 failed:&v38];
   tatsuURL = self->_tatsuURL;
   self->_tatsuURL = v24;
 
@@ -170,7 +170,7 @@ LABEL_12:
   }
 
   [(PearlPairerInputs *)self _validateURL:self->_tatsuURL failed:&v38];
-  v29 = [v4 NSStringFromKey:@"keyBlob" defaultValue:0 failed:0];
+  v29 = [parametersCopy NSStringFromKey:@"keyBlob" defaultValue:0 failed:0];
   rikKeyBlob = self->_rikKeyBlob;
   self->_rikKeyBlob = v29;
 
@@ -192,7 +192,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Use keyBlob: %@", buf, 0xCu);
   }
 
-  self->_skipScPairingTicket = [v4 BOOLFromKey:@"SkipScPairingTicket" defaultValue:0 failed:&v38];
+  self->_skipScPairingTicket = [parametersCopy BOOLFromKey:@"SkipScPairingTicket" defaultValue:0 failed:&v38];
   v33 = handleForCategory();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {

@@ -1,11 +1,11 @@
 @interface TUMetadataDestinationID
-+ (id)metadataDestinationIDWithVoicemailMessage:(id)a3;
-+ (id)metadataDestinationIDsForVMVoicemails:(id)a3;
++ (id)metadataDestinationIDWithVoicemailMessage:(id)message;
++ (id)metadataDestinationIDsForVMVoicemails:(id)voicemails;
 @end
 
 @implementation TUMetadataDestinationID
 
-+ (id)metadataDestinationIDWithVoicemailMessage:(id)a3
++ (id)metadataDestinationIDWithVoicemailMessage:(id)message
 {
   swift_getObjCClassMetadata();
   swift_getKeyPath();
@@ -17,7 +17,7 @@
   return v3;
 }
 
-+ (id)metadataDestinationIDsForVMVoicemails:(id)a3
++ (id)metadataDestinationIDsForVMVoicemails:(id)voicemails
 {
   sub_100030744(&unk_1000C5360);
   v3 = sub_10007B528();

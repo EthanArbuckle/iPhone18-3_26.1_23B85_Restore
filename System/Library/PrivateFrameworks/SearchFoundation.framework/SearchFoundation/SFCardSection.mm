@@ -1,17 +1,17 @@
 @interface SFCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)embeddedCards;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
 - (SFCardSection)init;
-- (SFCardSection)initWithCoder:(id)a3;
-- (SFCardSection)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCardSection)initWithCoder:(id)coder;
+- (SFCardSection)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)addCardsFromButtonsTo:(id)a3;
-- (void)addCardsFromCommandsTo:(id)a3;
-- (void)addCardsFromEmbeddedSectionsTo:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addCardsFromButtonsTo:(id)to;
+- (void)addCardsFromCommandsTo:(id)to;
+- (void)addCardsFromEmbeddedSectionsTo:(id)to;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCardSection
@@ -23,10 +23,10 @@
   v2 = [(SFCardSection *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     cardSectionId = v2->_cardSectionId;
-    v2->_cardSectionId = v4;
+    v2->_cardSectionId = uUIDString;
   }
 
   return v2;
@@ -62,1471 +62,1471 @@
   return v21 ^ v27 ^ [(NSString *)self->_applicationBundleIdentifier hash];
 }
 
-- (SFCardSection)initWithProtobuf:(id)a3
+- (SFCardSection)initWithProtobuf:(id)protobuf
 {
   v846 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  protobufCopy = protobuf;
   v4 = objc_alloc_init(SFNullCardSection);
-  v5 = [v3 value];
-  v6 = [v5 appLinkCardSection];
+  value = [protobufCopy value];
+  appLinkCardSection = [value appLinkCardSection];
 
-  if (v6)
+  if (appLinkCardSection)
   {
     v7 = [SFAppLinkCardSection alloc];
-    v8 = [v3 value];
-    v9 = [v8 appLinkCardSection];
-    v10 = [(SFAppLinkCardSection *)v7 initWithProtobuf:v9];
+    value2 = [protobufCopy value];
+    appLinkCardSection2 = [value2 appLinkCardSection];
+    v10 = [(SFAppLinkCardSection *)v7 initWithProtobuf:appLinkCardSection2];
 
     v4 = v10;
   }
 
-  v11 = [v3 value];
-  v12 = [v11 descriptionCardSection];
+  value3 = [protobufCopy value];
+  descriptionCardSection = [value3 descriptionCardSection];
 
-  if (v12)
+  if (descriptionCardSection)
   {
     v13 = [SFDescriptionCardSection alloc];
-    v14 = [v3 value];
-    v15 = [v14 descriptionCardSection];
-    v16 = [(SFDescriptionCardSection *)v13 initWithProtobuf:v15];
+    value4 = [protobufCopy value];
+    descriptionCardSection2 = [value4 descriptionCardSection];
+    v16 = [(SFDescriptionCardSection *)v13 initWithProtobuf:descriptionCardSection2];
 
     v4 = v16;
   }
 
-  v17 = [v3 value];
-  v18 = [v17 keyValueDataCardSection];
+  value5 = [protobufCopy value];
+  keyValueDataCardSection = [value5 keyValueDataCardSection];
 
-  if (v18)
+  if (keyValueDataCardSection)
   {
     v19 = [SFKeyValueDataCardSection alloc];
-    v20 = [v3 value];
-    v21 = [v20 keyValueDataCardSection];
-    v22 = [(SFKeyValueDataCardSection *)v19 initWithProtobuf:v21];
+    value6 = [protobufCopy value];
+    keyValueDataCardSection2 = [value6 keyValueDataCardSection];
+    v22 = [(SFKeyValueDataCardSection *)v19 initWithProtobuf:keyValueDataCardSection2];
 
     v4 = v22;
   }
 
-  v23 = [v3 value];
-  v24 = [v23 mapCardSection];
+  value7 = [protobufCopy value];
+  mapCardSection = [value7 mapCardSection];
 
-  if (v24)
+  if (mapCardSection)
   {
     v25 = [SFMapCardSection alloc];
-    v26 = [v3 value];
-    v27 = [v26 mapCardSection];
-    v28 = [(SFMapCardSection *)v25 initWithProtobuf:v27];
+    value8 = [protobufCopy value];
+    mapCardSection2 = [value8 mapCardSection];
+    v28 = [(SFMapCardSection *)v25 initWithProtobuf:mapCardSection2];
 
     v4 = v28;
   }
 
-  v29 = [v3 value];
-  v30 = [v29 mediaInfoCardSection];
+  value9 = [protobufCopy value];
+  mediaInfoCardSection = [value9 mediaInfoCardSection];
 
-  if (v30)
+  if (mediaInfoCardSection)
   {
     v31 = [SFMediaInfoCardSection alloc];
-    v32 = [v3 value];
-    v33 = [v32 mediaInfoCardSection];
-    v34 = [(SFMediaInfoCardSection *)v31 initWithProtobuf:v33];
+    value10 = [protobufCopy value];
+    mediaInfoCardSection2 = [value10 mediaInfoCardSection];
+    v34 = [(SFMediaInfoCardSection *)v31 initWithProtobuf:mediaInfoCardSection2];
 
     v4 = v34;
   }
 
-  v35 = [v3 value];
-  v36 = [v35 mediaPlayerCardSection];
+  value11 = [protobufCopy value];
+  mediaPlayerCardSection = [value11 mediaPlayerCardSection];
 
-  if (v36)
+  if (mediaPlayerCardSection)
   {
     v37 = [SFMediaPlayerCardSection alloc];
-    v38 = [v3 value];
-    v39 = [v38 mediaPlayerCardSection];
-    v40 = [(SFMediaPlayerCardSection *)v37 initWithProtobuf:v39];
+    value12 = [protobufCopy value];
+    mediaPlayerCardSection2 = [value12 mediaPlayerCardSection];
+    v40 = [(SFMediaPlayerCardSection *)v37 initWithProtobuf:mediaPlayerCardSection2];
 
     v4 = v40;
   }
 
-  v41 = [v3 value];
-  v42 = [v41 nowPlayingCardSection];
+  value13 = [protobufCopy value];
+  nowPlayingCardSection = [value13 nowPlayingCardSection];
 
-  if (v42)
+  if (nowPlayingCardSection)
   {
     v43 = [SFNowPlayingCardSection alloc];
-    v44 = [v3 value];
-    v45 = [v44 nowPlayingCardSection];
-    v46 = [(SFNowPlayingCardSection *)v43 initWithProtobuf:v45];
+    value14 = [protobufCopy value];
+    nowPlayingCardSection2 = [value14 nowPlayingCardSection];
+    v46 = [(SFNowPlayingCardSection *)v43 initWithProtobuf:nowPlayingCardSection2];
 
     v4 = v46;
   }
 
-  v47 = [v3 value];
-  v48 = [v47 richTitleCardSection];
+  value15 = [protobufCopy value];
+  richTitleCardSection = [value15 richTitleCardSection];
 
-  if (v48)
+  if (richTitleCardSection)
   {
     v49 = [SFRichTitleCardSection alloc];
-    v50 = [v3 value];
-    v51 = [v50 richTitleCardSection];
-    v52 = [(SFRichTitleCardSection *)v49 initWithProtobuf:v51];
+    value16 = [protobufCopy value];
+    richTitleCardSection2 = [value16 richTitleCardSection];
+    v52 = [(SFRichTitleCardSection *)v49 initWithProtobuf:richTitleCardSection2];
 
     v4 = v52;
   }
 
-  v53 = [v3 value];
-  v54 = [v53 rowCardSection];
+  value17 = [protobufCopy value];
+  rowCardSection = [value17 rowCardSection];
 
-  if (v54)
+  if (rowCardSection)
   {
     v55 = [SFRowCardSection alloc];
-    v56 = [v3 value];
-    v57 = [v56 rowCardSection];
-    v58 = [(SFRowCardSection *)v55 initWithProtobuf:v57];
+    value18 = [protobufCopy value];
+    rowCardSection2 = [value18 rowCardSection];
+    v58 = [(SFRowCardSection *)v55 initWithProtobuf:rowCardSection2];
 
     v4 = v58;
   }
 
-  v59 = [v3 value];
-  v60 = [v59 scoreboardCardSection];
+  value19 = [protobufCopy value];
+  scoreboardCardSection = [value19 scoreboardCardSection];
 
-  if (v60)
+  if (scoreboardCardSection)
   {
     v61 = [SFScoreboardCardSection alloc];
-    v62 = [v3 value];
-    v63 = [v62 scoreboardCardSection];
-    v64 = [(SFScoreboardCardSection *)v61 initWithProtobuf:v63];
+    value20 = [protobufCopy value];
+    scoreboardCardSection2 = [value20 scoreboardCardSection];
+    v64 = [(SFScoreboardCardSection *)v61 initWithProtobuf:scoreboardCardSection2];
 
     v4 = v64;
   }
 
-  v65 = [v3 value];
-  v66 = [v65 socialMediaPostCardSection];
+  value21 = [protobufCopy value];
+  socialMediaPostCardSection = [value21 socialMediaPostCardSection];
 
-  if (v66)
+  if (socialMediaPostCardSection)
   {
     v67 = [SFSocialMediaPostCardSection alloc];
-    v68 = [v3 value];
-    v69 = [v68 socialMediaPostCardSection];
-    v70 = [(SFSocialMediaPostCardSection *)v67 initWithProtobuf:v69];
+    value22 = [protobufCopy value];
+    socialMediaPostCardSection2 = [value22 socialMediaPostCardSection];
+    v70 = [(SFSocialMediaPostCardSection *)v67 initWithProtobuf:socialMediaPostCardSection2];
 
     v4 = v70;
   }
 
-  v71 = [v3 value];
-  v72 = [v71 stockChartCardSection];
+  value23 = [protobufCopy value];
+  stockChartCardSection = [value23 stockChartCardSection];
 
-  if (v72)
+  if (stockChartCardSection)
   {
     v73 = [SFStockChartCardSection alloc];
-    v74 = [v3 value];
-    v75 = [v74 stockChartCardSection];
-    v76 = [(SFStockChartCardSection *)v73 initWithProtobuf:v75];
+    value24 = [protobufCopy value];
+    stockChartCardSection2 = [value24 stockChartCardSection];
+    v76 = [(SFStockChartCardSection *)v73 initWithProtobuf:stockChartCardSection2];
 
     v4 = v76;
   }
 
-  v77 = [v3 value];
-  v78 = [v77 tableHeaderRowCardSection];
+  value25 = [protobufCopy value];
+  tableHeaderRowCardSection = [value25 tableHeaderRowCardSection];
 
-  if (v78)
+  if (tableHeaderRowCardSection)
   {
     v79 = [SFTableHeaderRowCardSection alloc];
-    v80 = [v3 value];
-    v81 = [v80 tableHeaderRowCardSection];
-    v82 = [(SFTableHeaderRowCardSection *)v79 initWithProtobuf:v81];
+    value26 = [protobufCopy value];
+    tableHeaderRowCardSection2 = [value26 tableHeaderRowCardSection];
+    v82 = [(SFTableHeaderRowCardSection *)v79 initWithProtobuf:tableHeaderRowCardSection2];
 
     v4 = v82;
   }
 
-  v83 = [v3 value];
-  v84 = [v83 tableRowCardSection];
+  value27 = [protobufCopy value];
+  tableRowCardSection = [value27 tableRowCardSection];
 
-  if (v84)
+  if (tableRowCardSection)
   {
     v85 = [SFTableRowCardSection alloc];
-    v86 = [v3 value];
-    v87 = [v86 tableRowCardSection];
-    v88 = [(SFTableRowCardSection *)v85 initWithProtobuf:v87];
+    value28 = [protobufCopy value];
+    tableRowCardSection2 = [value28 tableRowCardSection];
+    v88 = [(SFTableRowCardSection *)v85 initWithProtobuf:tableRowCardSection2];
 
     v4 = v88;
   }
 
-  v89 = [v3 value];
-  v90 = [v89 textColumnsCardSection];
+  value29 = [protobufCopy value];
+  textColumnsCardSection = [value29 textColumnsCardSection];
 
-  if (v90)
+  if (textColumnsCardSection)
   {
     v91 = [SFTextColumnsCardSection alloc];
-    v92 = [v3 value];
-    v93 = [v92 textColumnsCardSection];
-    v94 = [(SFTextColumnsCardSection *)v91 initWithProtobuf:v93];
+    value30 = [protobufCopy value];
+    textColumnsCardSection2 = [value30 textColumnsCardSection];
+    v94 = [(SFTextColumnsCardSection *)v91 initWithProtobuf:textColumnsCardSection2];
 
     v4 = v94;
   }
 
-  v95 = [v3 value];
-  v96 = [v95 titleCardSection];
+  value31 = [protobufCopy value];
+  titleCardSection = [value31 titleCardSection];
 
-  if (v96)
+  if (titleCardSection)
   {
     v97 = [SFTitleCardSection alloc];
-    v98 = [v3 value];
-    v99 = [v98 titleCardSection];
-    v100 = [(SFTitleCardSection *)v97 initWithProtobuf:v99];
+    value32 = [protobufCopy value];
+    titleCardSection2 = [value32 titleCardSection];
+    v100 = [(SFTitleCardSection *)v97 initWithProtobuf:titleCardSection2];
 
     v4 = v100;
   }
 
-  v101 = [v3 value];
-  v102 = [v101 trackListCardSection];
+  value33 = [protobufCopy value];
+  trackListCardSection = [value33 trackListCardSection];
 
-  if (v102)
+  if (trackListCardSection)
   {
     v103 = [SFTrackListCardSection alloc];
-    v104 = [v3 value];
-    v105 = [v104 trackListCardSection];
-    v106 = [(SFTrackListCardSection *)v103 initWithProtobuf:v105];
+    value34 = [protobufCopy value];
+    trackListCardSection2 = [value34 trackListCardSection];
+    v106 = [(SFTrackListCardSection *)v103 initWithProtobuf:trackListCardSection2];
 
     v4 = v106;
   }
 
-  v107 = [v3 value];
-  v108 = [v107 audioPlaybackCardSection];
+  value35 = [protobufCopy value];
+  audioPlaybackCardSection = [value35 audioPlaybackCardSection];
 
-  if (v108)
+  if (audioPlaybackCardSection)
   {
     v109 = [SFAudioPlaybackCardSection alloc];
-    v110 = [v3 value];
-    v111 = [v110 audioPlaybackCardSection];
-    v112 = [(SFAudioPlaybackCardSection *)v109 initWithProtobuf:v111];
+    value36 = [protobufCopy value];
+    audioPlaybackCardSection2 = [value36 audioPlaybackCardSection];
+    v112 = [(SFAudioPlaybackCardSection *)v109 initWithProtobuf:audioPlaybackCardSection2];
 
     v4 = v112;
   }
 
-  v113 = [v3 value];
-  v114 = [v113 flightCardSection];
+  value37 = [protobufCopy value];
+  flightCardSection = [value37 flightCardSection];
 
-  if (v114)
+  if (flightCardSection)
   {
     v115 = [SFFlightCardSection alloc];
-    v116 = [v3 value];
-    v117 = [v116 flightCardSection];
-    v118 = [(SFFlightCardSection *)v115 initWithProtobuf:v117];
+    value38 = [protobufCopy value];
+    flightCardSection2 = [value38 flightCardSection];
+    v118 = [(SFFlightCardSection *)v115 initWithProtobuf:flightCardSection2];
 
     v4 = v118;
   }
 
-  v119 = [v3 value];
-  v120 = [v119 activityIndicatorCardSection];
+  value39 = [protobufCopy value];
+  activityIndicatorCardSection = [value39 activityIndicatorCardSection];
 
-  if (v120)
+  if (activityIndicatorCardSection)
   {
     v121 = [SFActivityIndicatorCardSection alloc];
-    v122 = [v3 value];
-    v123 = [v122 activityIndicatorCardSection];
-    v124 = [(SFActivityIndicatorCardSection *)v121 initWithProtobuf:v123];
+    value40 = [protobufCopy value];
+    activityIndicatorCardSection2 = [value40 activityIndicatorCardSection];
+    v124 = [(SFActivityIndicatorCardSection *)v121 initWithProtobuf:activityIndicatorCardSection2];
 
     v4 = v124;
   }
 
-  v125 = [v3 value];
-  v126 = [v125 webCardSection];
+  value41 = [protobufCopy value];
+  webCardSection = [value41 webCardSection];
 
-  if (v126)
+  if (webCardSection)
   {
     v127 = [SFWebCardSection alloc];
-    v128 = [v3 value];
-    v129 = [v128 webCardSection];
-    v130 = [(SFWebCardSection *)v127 initWithProtobuf:v129];
+    value42 = [protobufCopy value];
+    webCardSection2 = [value42 webCardSection];
+    v130 = [(SFWebCardSection *)v127 initWithProtobuf:webCardSection2];
 
     v4 = v130;
   }
 
-  v131 = [v3 value];
-  v132 = [v131 messageCardSection];
+  value43 = [protobufCopy value];
+  messageCardSection = [value43 messageCardSection];
 
-  if (v132)
+  if (messageCardSection)
   {
     v133 = [SFMessageCardSection alloc];
-    v134 = [v3 value];
-    v135 = [v134 messageCardSection];
-    v136 = [(SFMessageCardSection *)v133 initWithProtobuf:v135];
+    value44 = [protobufCopy value];
+    messageCardSection2 = [value44 messageCardSection];
+    v136 = [(SFMessageCardSection *)v133 initWithProtobuf:messageCardSection2];
 
     v4 = v136;
   }
 
-  v137 = [v3 value];
-  v138 = [v137 detailedRowCardSection];
+  value45 = [protobufCopy value];
+  detailedRowCardSection = [value45 detailedRowCardSection];
 
-  if (v138)
+  if (detailedRowCardSection)
   {
     v139 = [SFDetailedRowCardSection alloc];
-    v140 = [v3 value];
-    v141 = [v140 detailedRowCardSection];
-    v142 = [(SFDetailedRowCardSection *)v139 initWithProtobuf:v141];
+    value46 = [protobufCopy value];
+    detailedRowCardSection2 = [value46 detailedRowCardSection];
+    v142 = [(SFDetailedRowCardSection *)v139 initWithProtobuf:detailedRowCardSection2];
 
     v4 = v142;
   }
 
-  v143 = [v3 value];
-  v144 = [v143 imagesCardSection];
+  value47 = [protobufCopy value];
+  imagesCardSection = [value47 imagesCardSection];
 
-  if (v144)
+  if (imagesCardSection)
   {
     v145 = [SFImagesCardSection alloc];
-    v146 = [v3 value];
-    v147 = [v146 imagesCardSection];
-    v148 = [(SFImagesCardSection *)v145 initWithProtobuf:v147];
+    value48 = [protobufCopy value];
+    imagesCardSection2 = [value48 imagesCardSection];
+    v148 = [(SFImagesCardSection *)v145 initWithProtobuf:imagesCardSection2];
 
     v4 = v148;
   }
 
-  v149 = [v3 value];
-  v150 = [v149 suggestionCardSection];
+  value49 = [protobufCopy value];
+  suggestionCardSection = [value49 suggestionCardSection];
 
-  if (v150)
+  if (suggestionCardSection)
   {
     v151 = [SFSuggestionCardSection alloc];
-    v152 = [v3 value];
-    v153 = [v152 suggestionCardSection];
-    v154 = [(SFSuggestionCardSection *)v151 initWithProtobuf:v153];
+    value50 = [protobufCopy value];
+    suggestionCardSection2 = [value50 suggestionCardSection];
+    v154 = [(SFSuggestionCardSection *)v151 initWithProtobuf:suggestionCardSection2];
 
     v4 = v154;
   }
 
-  v155 = [v3 value];
-  v156 = [v155 selectableGridCardSection];
+  value51 = [protobufCopy value];
+  selectableGridCardSection = [value51 selectableGridCardSection];
 
-  if (v156)
+  if (selectableGridCardSection)
   {
     v157 = [SFSelectableGridCardSection alloc];
-    v158 = [v3 value];
-    v159 = [v158 selectableGridCardSection];
-    v160 = [(SFSelectableGridCardSection *)v157 initWithProtobuf:v159];
+    value52 = [protobufCopy value];
+    selectableGridCardSection2 = [value52 selectableGridCardSection];
+    v160 = [(SFSelectableGridCardSection *)v157 initWithProtobuf:selectableGridCardSection2];
 
     v4 = v160;
   }
 
-  v161 = [v3 value];
-  v162 = [v161 sectionHeaderCardSection];
+  value53 = [protobufCopy value];
+  sectionHeaderCardSection = [value53 sectionHeaderCardSection];
 
-  if (v162)
+  if (sectionHeaderCardSection)
   {
     v163 = [SFSectionHeaderCardSection alloc];
-    v164 = [v3 value];
-    v165 = [v164 sectionHeaderCardSection];
-    v166 = [(SFSectionHeaderCardSection *)v163 initWithProtobuf:v165];
+    value54 = [protobufCopy value];
+    sectionHeaderCardSection2 = [value54 sectionHeaderCardSection];
+    v166 = [(SFSectionHeaderCardSection *)v163 initWithProtobuf:sectionHeaderCardSection2];
 
     v4 = v166;
   }
 
-  v167 = [v3 value];
-  v168 = [v167 metaInfoCardSection];
+  value55 = [protobufCopy value];
+  metaInfoCardSection = [value55 metaInfoCardSection];
 
-  if (v168)
+  if (metaInfoCardSection)
   {
     v169 = [SFMetaInfoCardSection alloc];
-    v170 = [v3 value];
-    v171 = [v170 metaInfoCardSection];
-    v172 = [(SFMetaInfoCardSection *)v169 initWithProtobuf:v171];
+    value56 = [protobufCopy value];
+    metaInfoCardSection2 = [value56 metaInfoCardSection];
+    v172 = [(SFMetaInfoCardSection *)v169 initWithProtobuf:metaInfoCardSection2];
 
     v4 = v172;
   }
 
-  v173 = [v3 value];
-  v174 = [v173 watchListCardSection];
+  value57 = [protobufCopy value];
+  watchListCardSection = [value57 watchListCardSection];
 
-  if (v174)
+  if (watchListCardSection)
   {
     v175 = [SFWatchListCardSection alloc];
-    v176 = [v3 value];
-    v177 = [v176 watchListCardSection];
-    v178 = [(SFWatchListCardSection *)v175 initWithProtobuf:v177];
+    value58 = [protobufCopy value];
+    watchListCardSection2 = [value58 watchListCardSection];
+    v178 = [(SFWatchListCardSection *)v175 initWithProtobuf:watchListCardSection2];
 
     v4 = v178;
   }
 
-  v179 = [v3 value];
-  v180 = [v179 mapsDetailedRowCardSection];
+  value59 = [protobufCopy value];
+  mapsDetailedRowCardSection = [value59 mapsDetailedRowCardSection];
 
-  if (v180)
+  if (mapsDetailedRowCardSection)
   {
     v181 = [SFMapsDetailedRowCardSection alloc];
-    v182 = [v3 value];
-    v183 = [v182 mapsDetailedRowCardSection];
-    v184 = [(SFMapsDetailedRowCardSection *)v181 initWithProtobuf:v183];
+    value60 = [protobufCopy value];
+    mapsDetailedRowCardSection2 = [value60 mapsDetailedRowCardSection];
+    v184 = [(SFMapsDetailedRowCardSection *)v181 initWithProtobuf:mapsDetailedRowCardSection2];
 
     v4 = v184;
   }
 
-  v185 = [v3 value];
-  v186 = [v185 buttonCardSection];
+  value61 = [protobufCopy value];
+  buttonCardSection = [value61 buttonCardSection];
 
-  if (v186)
+  if (buttonCardSection)
   {
     v187 = [SFButtonCardSection alloc];
-    v188 = [v3 value];
-    v189 = [v188 buttonCardSection];
-    v190 = [(SFButtonCardSection *)v187 initWithProtobuf:v189];
+    value62 = [protobufCopy value];
+    buttonCardSection2 = [value62 buttonCardSection];
+    v190 = [(SFButtonCardSection *)v187 initWithProtobuf:buttonCardSection2];
 
     v4 = v190;
   }
 
-  v191 = [v3 value];
-  v192 = [v191 horizontalButtonCardSection];
+  value63 = [protobufCopy value];
+  horizontalButtonCardSection = [value63 horizontalButtonCardSection];
 
-  if (v192)
+  if (horizontalButtonCardSection)
   {
     v193 = [SFHorizontalButtonCardSection alloc];
-    v194 = [v3 value];
-    v195 = [v194 horizontalButtonCardSection];
-    v196 = [(SFHorizontalButtonCardSection *)v193 initWithProtobuf:v195];
+    value64 = [protobufCopy value];
+    horizontalButtonCardSection2 = [value64 horizontalButtonCardSection];
+    v196 = [(SFHorizontalButtonCardSection *)v193 initWithProtobuf:horizontalButtonCardSection2];
 
     v4 = v196;
   }
 
-  v197 = [v3 value];
-  v198 = [v197 verticalLayoutCardSection];
+  value65 = [protobufCopy value];
+  verticalLayoutCardSection = [value65 verticalLayoutCardSection];
 
-  if (v198)
+  if (verticalLayoutCardSection)
   {
     v199 = [SFVerticalLayoutCardSection alloc];
-    v200 = [v3 value];
-    v201 = [v200 verticalLayoutCardSection];
-    v202 = [(SFVerticalLayoutCardSection *)v199 initWithProtobuf:v201];
+    value66 = [protobufCopy value];
+    verticalLayoutCardSection2 = [value66 verticalLayoutCardSection];
+    v202 = [(SFVerticalLayoutCardSection *)v199 initWithProtobuf:verticalLayoutCardSection2];
 
     v4 = v202;
   }
 
-  v203 = [v3 value];
-  v204 = [v203 productCardSection];
+  value67 = [protobufCopy value];
+  productCardSection = [value67 productCardSection];
 
-  if (v204)
+  if (productCardSection)
   {
     v205 = [SFProductCardSection alloc];
-    v206 = [v3 value];
-    v207 = [v206 productCardSection];
-    v208 = [(SFProductCardSection *)v205 initWithProtobuf:v207];
+    value68 = [protobufCopy value];
+    productCardSection2 = [value68 productCardSection];
+    v208 = [(SFProductCardSection *)v205 initWithProtobuf:productCardSection2];
 
     v4 = v208;
   }
 
-  v209 = [v3 value];
-  v210 = [v209 horizontalScrollCardSection];
+  value69 = [protobufCopy value];
+  horizontalScrollCardSection = [value69 horizontalScrollCardSection];
 
-  if (v210)
+  if (horizontalScrollCardSection)
   {
     v211 = [SFHorizontalScrollCardSection alloc];
-    v212 = [v3 value];
-    v213 = [v212 horizontalScrollCardSection];
-    v214 = [(SFHorizontalScrollCardSection *)v211 initWithProtobuf:v213];
+    value70 = [protobufCopy value];
+    horizontalScrollCardSection2 = [value70 horizontalScrollCardSection];
+    v214 = [(SFHorizontalScrollCardSection *)v211 initWithProtobuf:horizontalScrollCardSection2];
 
     v4 = v214;
   }
 
-  v215 = [v3 value];
-  v216 = [v215 mediaRemoteControlCardSection];
+  value71 = [protobufCopy value];
+  mediaRemoteControlCardSection = [value71 mediaRemoteControlCardSection];
 
-  if (v216)
+  if (mediaRemoteControlCardSection)
   {
     v217 = [SFMediaRemoteControlCardSection alloc];
-    v218 = [v3 value];
-    v219 = [v218 mediaRemoteControlCardSection];
-    v220 = [(SFMediaRemoteControlCardSection *)v217 initWithProtobuf:v219];
+    value72 = [protobufCopy value];
+    mediaRemoteControlCardSection2 = [value72 mediaRemoteControlCardSection];
+    v220 = [(SFMediaRemoteControlCardSection *)v217 initWithProtobuf:mediaRemoteControlCardSection2];
 
     v4 = v220;
   }
 
-  v221 = [v3 value];
-  v222 = [v221 mapPlaceCardSection];
+  value73 = [protobufCopy value];
+  mapPlaceCardSection = [value73 mapPlaceCardSection];
 
-  if (v222)
+  if (mapPlaceCardSection)
   {
     v223 = [SFMapPlaceCardSection alloc];
-    v224 = [v3 value];
-    v225 = [v224 mapPlaceCardSection];
-    v226 = [(SFMapPlaceCardSection *)v223 initWithProtobuf:v225];
+    value74 = [protobufCopy value];
+    mapPlaceCardSection2 = [value74 mapPlaceCardSection];
+    v226 = [(SFMapPlaceCardSection *)v223 initWithProtobuf:mapPlaceCardSection2];
 
     v4 = v226;
   }
 
-  v227 = [v3 value];
-  v228 = [v227 compactRowCardSection];
+  value75 = [protobufCopy value];
+  compactRowCardSection = [value75 compactRowCardSection];
 
-  if (v228)
+  if (compactRowCardSection)
   {
     v229 = [SFCompactRowCardSection alloc];
-    v230 = [v3 value];
-    v231 = [v230 compactRowCardSection];
-    v232 = [(SFCompactRowCardSection *)v229 initWithProtobuf:v231];
+    value76 = [protobufCopy value];
+    compactRowCardSection2 = [value76 compactRowCardSection];
+    v232 = [(SFCompactRowCardSection *)v229 initWithProtobuf:compactRowCardSection2];
 
     v4 = v232;
   }
 
-  v233 = [v3 value];
-  v234 = [v233 worldMapCardSection];
+  value77 = [protobufCopy value];
+  worldMapCardSection = [value77 worldMapCardSection];
 
-  if (v234)
+  if (worldMapCardSection)
   {
     v235 = [SFWorldMapCardSection alloc];
-    v236 = [v3 value];
-    v237 = [v236 worldMapCardSection];
-    v238 = [(SFWorldMapCardSection *)v235 initWithProtobuf:v237];
+    value78 = [protobufCopy value];
+    worldMapCardSection2 = [value78 worldMapCardSection];
+    v238 = [(SFWorldMapCardSection *)v235 initWithProtobuf:worldMapCardSection2];
 
     v4 = v238;
   }
 
-  v239 = [v3 value];
-  v240 = [v239 attributionFooterCardSection];
+  value79 = [protobufCopy value];
+  attributionFooterCardSection = [value79 attributionFooterCardSection];
 
-  if (v240)
+  if (attributionFooterCardSection)
   {
     v241 = [SFAttributionFooterCardSection alloc];
-    v242 = [v3 value];
-    v243 = [v242 attributionFooterCardSection];
-    v244 = [(SFAttributionFooterCardSection *)v241 initWithProtobuf:v243];
+    value80 = [protobufCopy value];
+    attributionFooterCardSection2 = [value80 attributionFooterCardSection];
+    v244 = [(SFAttributionFooterCardSection *)v241 initWithProtobuf:attributionFooterCardSection2];
 
     v4 = v244;
   }
 
-  v245 = [v3 value];
-  v246 = [v245 gridCardSection];
+  value81 = [protobufCopy value];
+  gridCardSection = [value81 gridCardSection];
 
-  if (v246)
+  if (gridCardSection)
   {
     v247 = [SFGridCardSection alloc];
-    v248 = [v3 value];
-    v249 = [v248 gridCardSection];
-    v250 = [(SFGridCardSection *)v247 initWithProtobuf:v249];
+    value82 = [protobufCopy value];
+    gridCardSection2 = [value82 gridCardSection];
+    v250 = [(SFGridCardSection *)v247 initWithProtobuf:gridCardSection2];
 
     v4 = v250;
   }
 
-  v251 = [v3 value];
-  v252 = [v251 personHeaderCardSection];
+  value83 = [protobufCopy value];
+  personHeaderCardSection = [value83 personHeaderCardSection];
 
-  if (v252)
+  if (personHeaderCardSection)
   {
     v253 = [SFPersonHeaderCardSection alloc];
-    v254 = [v3 value];
-    v255 = [v254 personHeaderCardSection];
-    v256 = [(SFPersonHeaderCardSection *)v253 initWithProtobuf:v255];
+    value84 = [protobufCopy value];
+    personHeaderCardSection2 = [value84 personHeaderCardSection];
+    v256 = [(SFPersonHeaderCardSection *)v253 initWithProtobuf:personHeaderCardSection2];
 
     v4 = v256;
   }
 
-  v257 = [v3 value];
-  v258 = [v257 colorBarCardSection];
+  value85 = [protobufCopy value];
+  colorBarCardSection = [value85 colorBarCardSection];
 
-  if (v258)
+  if (colorBarCardSection)
   {
     v259 = [SFColorBarCardSection alloc];
-    v260 = [v3 value];
-    v261 = [v260 colorBarCardSection];
-    v262 = [(SFColorBarCardSection *)v259 initWithProtobuf:v261];
+    value86 = [protobufCopy value];
+    colorBarCardSection2 = [value86 colorBarCardSection];
+    v262 = [(SFColorBarCardSection *)v259 initWithProtobuf:colorBarCardSection2];
 
     v4 = v262;
   }
 
-  v263 = [v3 value];
-  v264 = [v263 splitCardSection];
+  value87 = [protobufCopy value];
+  splitCardSection = [value87 splitCardSection];
 
-  if (v264)
+  if (splitCardSection)
   {
     v265 = [SFSplitCardSection alloc];
-    v266 = [v3 value];
-    v267 = [v266 splitCardSection];
-    v268 = [(SFSplitCardSection *)v265 initWithProtobuf:v267];
+    value88 = [protobufCopy value];
+    splitCardSection2 = [value88 splitCardSection];
+    v268 = [(SFSplitCardSection *)v265 initWithProtobuf:splitCardSection2];
 
     v4 = v268;
   }
 
-  v269 = [v3 value];
-  v270 = [v269 linkPresentationCardSection];
+  value89 = [protobufCopy value];
+  linkPresentationCardSection = [value89 linkPresentationCardSection];
 
-  if (v270)
+  if (linkPresentationCardSection)
   {
     v271 = [SFLinkPresentationCardSection alloc];
-    v272 = [v3 value];
-    v273 = [v272 linkPresentationCardSection];
-    v274 = [(SFLinkPresentationCardSection *)v271 initWithProtobuf:v273];
+    value90 = [protobufCopy value];
+    linkPresentationCardSection2 = [value90 linkPresentationCardSection];
+    v274 = [(SFLinkPresentationCardSection *)v271 initWithProtobuf:linkPresentationCardSection2];
 
     v4 = v274;
   }
 
-  v275 = [v3 value];
-  v276 = [v275 findMyCardSection];
+  value91 = [protobufCopy value];
+  findMyCardSection = [value91 findMyCardSection];
 
-  if (v276)
+  if (findMyCardSection)
   {
     v277 = [SFFindMyCardSection alloc];
-    v278 = [v3 value];
-    v279 = [v278 findMyCardSection];
-    v280 = [(SFFindMyCardSection *)v277 initWithProtobuf:v279];
+    value92 = [protobufCopy value];
+    findMyCardSection2 = [value92 findMyCardSection];
+    v280 = [(SFFindMyCardSection *)v277 initWithProtobuf:findMyCardSection2];
 
     v4 = v280;
   }
 
-  v281 = [v3 value];
-  v282 = [v281 heroCardSection];
+  value93 = [protobufCopy value];
+  heroCardSection = [value93 heroCardSection];
 
-  if (v282)
+  if (heroCardSection)
   {
     v283 = [SFHeroCardSection alloc];
-    v284 = [v3 value];
-    v285 = [v284 heroCardSection];
-    v286 = [(SFHeroCardSection *)v283 initWithProtobuf:v285];
+    value94 = [protobufCopy value];
+    heroCardSection2 = [value94 heroCardSection];
+    v286 = [(SFHeroCardSection *)v283 initWithProtobuf:heroCardSection2];
 
     v4 = v286;
   }
 
-  v287 = [v3 value];
-  v288 = [v287 newsCardSection];
+  value95 = [protobufCopy value];
+  newsCardSection = [value95 newsCardSection];
 
-  if (v288)
+  if (newsCardSection)
   {
     v289 = [SFNewsCardSection alloc];
-    v290 = [v3 value];
-    v291 = [v290 newsCardSection];
-    v292 = [(SFNewsCardSection *)v289 initWithProtobuf:v291];
+    value96 = [protobufCopy value];
+    newsCardSection2 = [value96 newsCardSection];
+    v292 = [(SFNewsCardSection *)v289 initWithProtobuf:newsCardSection2];
 
     v4 = v292;
   }
 
-  v293 = [v3 value];
-  v294 = [v293 miniCardSection];
+  value97 = [protobufCopy value];
+  miniCardSection = [value97 miniCardSection];
 
-  if (v294)
+  if (miniCardSection)
   {
     v295 = [SFMiniCardSection alloc];
-    v296 = [v3 value];
-    v297 = [v296 miniCardSection];
-    v298 = [(SFMiniCardSection *)v295 initWithProtobuf:v297];
+    value98 = [protobufCopy value];
+    miniCardSection2 = [value98 miniCardSection];
+    v298 = [(SFMiniCardSection *)v295 initWithProtobuf:miniCardSection2];
 
     v4 = v298;
   }
 
-  v299 = [v3 value];
-  v300 = [v299 infoCardSection];
+  value99 = [protobufCopy value];
+  infoCardSection = [value99 infoCardSection];
 
-  if (v300)
+  if (infoCardSection)
   {
     v301 = [SFInfoCardSection alloc];
-    v302 = [v3 value];
-    v303 = [v302 infoCardSection];
-    v304 = [(SFInfoCardSection *)v301 initWithProtobuf:v303];
+    value100 = [protobufCopy value];
+    infoCardSection2 = [value100 infoCardSection];
+    v304 = [(SFInfoCardSection *)v301 initWithProtobuf:infoCardSection2];
 
     v4 = v304;
   }
 
-  v305 = [v3 value];
-  v306 = [v305 collectionCardSection];
+  value101 = [protobufCopy value];
+  collectionCardSection = [value101 collectionCardSection];
 
-  if (v306)
+  if (collectionCardSection)
   {
     v307 = [SFCollectionCardSection alloc];
-    v308 = [v3 value];
-    v309 = [v308 collectionCardSection];
-    v310 = [(SFCollectionCardSection *)v307 initWithProtobuf:v309];
+    value102 = [protobufCopy value];
+    collectionCardSection2 = [value102 collectionCardSection];
+    v310 = [(SFCollectionCardSection *)v307 initWithProtobuf:collectionCardSection2];
 
     v4 = v310;
   }
 
-  v311 = [v3 value];
-  v312 = [v311 combinedCardSection];
+  value103 = [protobufCopy value];
+  combinedCardSection = [value103 combinedCardSection];
 
-  if (v312)
+  if (combinedCardSection)
   {
     v313 = [SFCombinedCardSection alloc];
-    v314 = [v3 value];
-    v315 = [v314 combinedCardSection];
-    v316 = [(SFCombinedCardSection *)v313 initWithProtobuf:v315];
+    value104 = [protobufCopy value];
+    combinedCardSection2 = [value104 combinedCardSection];
+    v316 = [(SFCombinedCardSection *)v313 initWithProtobuf:combinedCardSection2];
 
     v4 = v316;
   }
 
-  v317 = [v3 value];
-  v318 = [v317 responseWrapperCardSection];
+  value105 = [protobufCopy value];
+  responseWrapperCardSection = [value105 responseWrapperCardSection];
 
-  if (v318)
+  if (responseWrapperCardSection)
   {
     v319 = [SFResponseWrapperCardSection alloc];
-    v320 = [v3 value];
-    v321 = [v320 responseWrapperCardSection];
-    v322 = [(SFResponseWrapperCardSection *)v319 initWithProtobuf:v321];
+    value106 = [protobufCopy value];
+    responseWrapperCardSection2 = [value106 responseWrapperCardSection];
+    v322 = [(SFResponseWrapperCardSection *)v319 initWithProtobuf:responseWrapperCardSection2];
 
     v4 = v322;
   }
 
-  v323 = [v3 value];
-  v324 = [v323 listenToCardSection];
+  value107 = [protobufCopy value];
+  listenToCardSection = [value107 listenToCardSection];
 
-  if (v324)
+  if (listenToCardSection)
   {
     v325 = [SFListenToCardSection alloc];
-    v326 = [v3 value];
-    v327 = [v326 listenToCardSection];
-    v328 = [(SFListenToCardSection *)v325 initWithProtobuf:v327];
+    value108 = [protobufCopy value];
+    listenToCardSection2 = [value108 listenToCardSection];
+    v328 = [(SFListenToCardSection *)v325 initWithProtobuf:listenToCardSection2];
 
     v4 = v328;
   }
 
-  v329 = [v3 value];
-  v330 = [v329 watchNowCardSection];
+  value109 = [protobufCopy value];
+  watchNowCardSection = [value109 watchNowCardSection];
 
-  if (v330)
+  if (watchNowCardSection)
   {
     v331 = [SFWatchNowCardSection alloc];
-    v332 = [v3 value];
-    v333 = [v332 watchNowCardSection];
-    v334 = [(SFWatchNowCardSection *)v331 initWithProtobuf:v333];
+    value110 = [protobufCopy value];
+    watchNowCardSection2 = [value110 watchNowCardSection];
+    v334 = [(SFWatchNowCardSection *)v331 initWithProtobuf:watchNowCardSection2];
 
     v4 = v334;
   }
 
-  v335 = [v3 value];
-  v336 = [v335 strokeAnimationCardSection];
+  value111 = [protobufCopy value];
+  strokeAnimationCardSection = [value111 strokeAnimationCardSection];
 
-  if (v336)
+  if (strokeAnimationCardSection)
   {
     v337 = [SFStrokeAnimationCardSection alloc];
-    v338 = [v3 value];
-    v339 = [v338 strokeAnimationCardSection];
-    v340 = [(SFStrokeAnimationCardSection *)v337 initWithProtobuf:v339];
+    value112 = [protobufCopy value];
+    strokeAnimationCardSection2 = [value112 strokeAnimationCardSection];
+    v340 = [(SFStrokeAnimationCardSection *)v337 initWithProtobuf:strokeAnimationCardSection2];
 
     v4 = v340;
   }
 
-  v341 = [v3 value];
-  v342 = [v341 buttonListCardSection];
+  value113 = [protobufCopy value];
+  buttonListCardSection = [value113 buttonListCardSection];
 
-  if (v342)
+  if (buttonListCardSection)
   {
     v343 = [SFButtonListCardSection alloc];
-    v344 = [v3 value];
-    v345 = [v344 buttonListCardSection];
-    v346 = [(SFButtonListCardSection *)v343 initWithProtobuf:v345];
+    value114 = [protobufCopy value];
+    buttonListCardSection2 = [value114 buttonListCardSection];
+    v346 = [(SFButtonListCardSection *)v343 initWithProtobuf:buttonListCardSection2];
 
     v4 = v346;
   }
 
-  v347 = [v3 value];
-  v348 = [v347 commandRowCardSection];
+  value115 = [protobufCopy value];
+  commandRowCardSection = [value115 commandRowCardSection];
 
-  if (v348)
+  if (commandRowCardSection)
   {
     v349 = [SFCommandRowCardSection alloc];
-    v350 = [v3 value];
-    v351 = [v350 commandRowCardSection];
-    v352 = [(SFCommandRowCardSection *)v349 initWithProtobuf:v351];
+    value116 = [protobufCopy value];
+    commandRowCardSection2 = [value116 commandRowCardSection];
+    v352 = [(SFCommandRowCardSection *)v349 initWithProtobuf:commandRowCardSection2];
 
     v4 = v352;
   }
 
-  v353 = [v3 value];
-  v354 = [v353 leadingTrailingCardSection];
+  value117 = [protobufCopy value];
+  leadingTrailingCardSection = [value117 leadingTrailingCardSection];
 
-  if (v354)
+  if (leadingTrailingCardSection)
   {
     v355 = [SFLeadingTrailingCardSection alloc];
-    v356 = [v3 value];
-    v357 = [v356 leadingTrailingCardSection];
-    v358 = [(SFLeadingTrailingCardSection *)v355 initWithProtobuf:v357];
+    value118 = [protobufCopy value];
+    leadingTrailingCardSection2 = [value118 leadingTrailingCardSection];
+    v358 = [(SFLeadingTrailingCardSection *)v355 initWithProtobuf:leadingTrailingCardSection2];
 
     v4 = v358;
   }
 
-  v359 = [v3 value];
-  v360 = [v359 heroTitleCardSection];
+  value119 = [protobufCopy value];
+  heroTitleCardSection = [value119 heroTitleCardSection];
 
-  if (v360)
+  if (heroTitleCardSection)
   {
     v361 = [SFHeroTitleCardSection alloc];
-    v362 = [v3 value];
-    v363 = [v362 heroTitleCardSection];
-    v364 = [(SFHeroTitleCardSection *)v361 initWithProtobuf:v363];
+    value120 = [protobufCopy value];
+    heroTitleCardSection2 = [value120 heroTitleCardSection];
+    v364 = [(SFHeroTitleCardSection *)v361 initWithProtobuf:heroTitleCardSection2];
 
     v4 = v364;
   }
 
-  v365 = [v3 value];
-  v366 = [v365 archiveViewCardSection];
+  value121 = [protobufCopy value];
+  archiveViewCardSection = [value121 archiveViewCardSection];
 
-  if (v366)
+  if (archiveViewCardSection)
   {
     v367 = [SFArchiveViewCardSection alloc];
-    v368 = [v3 value];
-    v369 = [v368 archiveViewCardSection];
-    v370 = [(SFArchiveViewCardSection *)v367 initWithProtobuf:v369];
+    value122 = [protobufCopy value];
+    archiveViewCardSection2 = [value122 archiveViewCardSection];
+    v370 = [(SFArchiveViewCardSection *)v367 initWithProtobuf:archiveViewCardSection2];
 
     v4 = v370;
   }
 
-  v371 = [v3 value];
-  v372 = [v371 appIconCardSection];
+  value123 = [protobufCopy value];
+  appIconCardSection = [value123 appIconCardSection];
 
-  if (v372)
+  if (appIconCardSection)
   {
     v373 = [SFAppIconCardSection alloc];
-    v374 = [v3 value];
-    v375 = [v374 appIconCardSection];
-    v376 = [(SFAppIconCardSection *)v373 initWithProtobuf:v375];
+    value124 = [protobufCopy value];
+    appIconCardSection2 = [value124 appIconCardSection];
+    v376 = [(SFAppIconCardSection *)v373 initWithProtobuf:appIconCardSection2];
 
     v4 = v376;
   }
 
-  v377 = [v3 value];
-  v378 = [v377 largeTitleDetailedRowCardSection];
+  value125 = [protobufCopy value];
+  largeTitleDetailedRowCardSection = [value125 largeTitleDetailedRowCardSection];
 
-  if (v378)
+  if (largeTitleDetailedRowCardSection)
   {
     v379 = [SFLargeTitleDetailedRowCardSection alloc];
-    v380 = [v3 value];
-    v381 = [v380 largeTitleDetailedRowCardSection];
-    v382 = [(SFLargeTitleDetailedRowCardSection *)v379 initWithProtobuf:v381];
+    value126 = [protobufCopy value];
+    largeTitleDetailedRowCardSection2 = [value126 largeTitleDetailedRowCardSection];
+    v382 = [(SFLargeTitleDetailedRowCardSection *)v379 initWithProtobuf:largeTitleDetailedRowCardSection2];
 
     v4 = v382;
   }
 
-  v383 = [v3 value];
-  v384 = [v383 safariTableOfContentsCardSection];
+  value127 = [protobufCopy value];
+  safariTableOfContentsCardSection = [value127 safariTableOfContentsCardSection];
 
-  if (v384)
+  if (safariTableOfContentsCardSection)
   {
     v385 = [SFSafariTableOfContentsCardSection alloc];
-    v386 = [v3 value];
-    v387 = [v386 safariTableOfContentsCardSection];
-    v388 = [(SFSafariTableOfContentsCardSection *)v385 initWithProtobuf:v387];
+    value128 = [protobufCopy value];
+    safariTableOfContentsCardSection2 = [value128 safariTableOfContentsCardSection];
+    v388 = [(SFSafariTableOfContentsCardSection *)v385 initWithProtobuf:safariTableOfContentsCardSection2];
 
     v4 = v388;
   }
 
-  v389 = [v3 value];
-  v390 = [v389 rfSummaryItemShortNumberCardSection];
+  value129 = [protobufCopy value];
+  rfSummaryItemShortNumberCardSection = [value129 rfSummaryItemShortNumberCardSection];
 
-  if (v390)
+  if (rfSummaryItemShortNumberCardSection)
   {
     v391 = [RFSummaryItemShortNumberCardSection alloc];
-    v392 = [v3 value];
-    v393 = [v392 rfSummaryItemShortNumberCardSection];
-    v394 = [(RFSummaryItemShortNumberCardSection *)v391 initWithProtobuf:v393];
+    value130 = [protobufCopy value];
+    rfSummaryItemShortNumberCardSection2 = [value130 rfSummaryItemShortNumberCardSection];
+    v394 = [(RFSummaryItemShortNumberCardSection *)v391 initWithProtobuf:rfSummaryItemShortNumberCardSection2];
 
     v4 = v394;
   }
 
-  v395 = [v3 value];
-  v396 = [v395 rfSummaryItemTextCardSection];
+  value131 = [protobufCopy value];
+  rfSummaryItemTextCardSection = [value131 rfSummaryItemTextCardSection];
 
-  if (v396)
+  if (rfSummaryItemTextCardSection)
   {
     v397 = [RFSummaryItemTextCardSection alloc];
-    v398 = [v3 value];
-    v399 = [v398 rfSummaryItemTextCardSection];
-    v400 = [(RFSummaryItemTextCardSection *)v397 initWithProtobuf:v399];
+    value132 = [protobufCopy value];
+    rfSummaryItemTextCardSection2 = [value132 rfSummaryItemTextCardSection];
+    v400 = [(RFSummaryItemTextCardSection *)v397 initWithProtobuf:rfSummaryItemTextCardSection2];
 
     v4 = v400;
   }
 
-  v401 = [v3 value];
-  v402 = [v401 rfSummaryItemStandardCardSection];
+  value133 = [protobufCopy value];
+  rfSummaryItemStandardCardSection = [value133 rfSummaryItemStandardCardSection];
 
-  if (v402)
+  if (rfSummaryItemStandardCardSection)
   {
     v403 = [RFSummaryItemStandardCardSection alloc];
-    v404 = [v3 value];
-    v405 = [v404 rfSummaryItemStandardCardSection];
-    v406 = [(RFSummaryItemStandardCardSection *)v403 initWithProtobuf:v405];
+    value134 = [protobufCopy value];
+    rfSummaryItemStandardCardSection2 = [value134 rfSummaryItemStandardCardSection];
+    v406 = [(RFSummaryItemStandardCardSection *)v403 initWithProtobuf:rfSummaryItemStandardCardSection2];
 
     v4 = v406;
   }
 
-  v407 = [v3 value];
-  v408 = [v407 rfFactItemShortNumberCardSection];
+  value135 = [protobufCopy value];
+  rfFactItemShortNumberCardSection = [value135 rfFactItemShortNumberCardSection];
 
-  if (v408)
+  if (rfFactItemShortNumberCardSection)
   {
     v409 = [RFFactItemShortNumberCardSection alloc];
-    v410 = [v3 value];
-    v411 = [v410 rfFactItemShortNumberCardSection];
-    v412 = [(RFFactItemShortNumberCardSection *)v409 initWithProtobuf:v411];
+    value136 = [protobufCopy value];
+    rfFactItemShortNumberCardSection2 = [value136 rfFactItemShortNumberCardSection];
+    v412 = [(RFFactItemShortNumberCardSection *)v409 initWithProtobuf:rfFactItemShortNumberCardSection2];
 
     v4 = v412;
   }
 
-  v413 = [v3 value];
-  v414 = [v413 rfFactItemStandardCardSection];
+  value137 = [protobufCopy value];
+  rfFactItemStandardCardSection = [value137 rfFactItemStandardCardSection];
 
-  if (v414)
+  if (rfFactItemStandardCardSection)
   {
     v415 = [RFFactItemStandardCardSection alloc];
-    v416 = [v3 value];
-    v417 = [v416 rfFactItemStandardCardSection];
-    v418 = [(RFFactItemStandardCardSection *)v415 initWithProtobuf:v417];
+    value138 = [protobufCopy value];
+    rfFactItemStandardCardSection2 = [value138 rfFactItemStandardCardSection];
+    v418 = [(RFFactItemStandardCardSection *)v415 initWithProtobuf:rfFactItemStandardCardSection2];
 
     v4 = v418;
   }
 
-  v419 = [v3 value];
-  v420 = [v419 rfLongItemStandardCardSection];
+  value139 = [protobufCopy value];
+  rfLongItemStandardCardSection = [value139 rfLongItemStandardCardSection];
 
-  if (v420)
+  if (rfLongItemStandardCardSection)
   {
     v421 = [RFLongItemStandardCardSection alloc];
-    v422 = [v3 value];
-    v423 = [v422 rfLongItemStandardCardSection];
-    v424 = [(RFLongItemStandardCardSection *)v421 initWithProtobuf:v423];
+    value140 = [protobufCopy value];
+    rfLongItemStandardCardSection2 = [value140 rfLongItemStandardCardSection];
+    v424 = [(RFLongItemStandardCardSection *)v421 initWithProtobuf:rfLongItemStandardCardSection2];
 
     v4 = v424;
   }
 
-  v425 = [v3 value];
-  v426 = [v425 rfPrimaryHeaderRichCardSection];
+  value141 = [protobufCopy value];
+  rfPrimaryHeaderRichCardSection = [value141 rfPrimaryHeaderRichCardSection];
 
-  if (v426)
+  if (rfPrimaryHeaderRichCardSection)
   {
     v427 = [RFPrimaryHeaderRichCardSection alloc];
-    v428 = [v3 value];
-    v429 = [v428 rfPrimaryHeaderRichCardSection];
-    v430 = [(RFPrimaryHeaderRichCardSection *)v427 initWithProtobuf:v429];
+    value142 = [protobufCopy value];
+    rfPrimaryHeaderRichCardSection2 = [value142 rfPrimaryHeaderRichCardSection];
+    v430 = [(RFPrimaryHeaderRichCardSection *)v427 initWithProtobuf:rfPrimaryHeaderRichCardSection2];
 
     v4 = v430;
   }
 
-  v431 = [v3 value];
-  v432 = [v431 rfPrimaryHeaderStandardCardSection];
+  value143 = [protobufCopy value];
+  rfPrimaryHeaderStandardCardSection = [value143 rfPrimaryHeaderStandardCardSection];
 
-  if (v432)
+  if (rfPrimaryHeaderStandardCardSection)
   {
     v433 = [RFPrimaryHeaderStandardCardSection alloc];
-    v434 = [v3 value];
-    v435 = [v434 rfPrimaryHeaderStandardCardSection];
-    v436 = [(RFPrimaryHeaderStandardCardSection *)v433 initWithProtobuf:v435];
+    value144 = [protobufCopy value];
+    rfPrimaryHeaderStandardCardSection2 = [value144 rfPrimaryHeaderStandardCardSection];
+    v436 = [(RFPrimaryHeaderStandardCardSection *)v433 initWithProtobuf:rfPrimaryHeaderStandardCardSection2];
 
     v4 = v436;
   }
 
-  v437 = [v3 value];
-  v438 = [v437 rfReferenceFootnoteCardSection];
+  value145 = [protobufCopy value];
+  rfReferenceFootnoteCardSection = [value145 rfReferenceFootnoteCardSection];
 
-  if (v438)
+  if (rfReferenceFootnoteCardSection)
   {
     v439 = [RFReferenceFootnoteCardSection alloc];
-    v440 = [v3 value];
-    v441 = [v440 rfReferenceFootnoteCardSection];
-    v442 = [(RFReferenceFootnoteCardSection *)v439 initWithProtobuf:v441];
+    value146 = [protobufCopy value];
+    rfReferenceFootnoteCardSection2 = [value146 rfReferenceFootnoteCardSection];
+    v442 = [(RFReferenceFootnoteCardSection *)v439 initWithProtobuf:rfReferenceFootnoteCardSection2];
 
     v4 = v442;
   }
 
-  v443 = [v3 value];
-  v444 = [v443 rfReferenceRichCardSection];
+  value147 = [protobufCopy value];
+  rfReferenceRichCardSection = [value147 rfReferenceRichCardSection];
 
-  if (v444)
+  if (rfReferenceRichCardSection)
   {
     v445 = [RFReferenceRichCardSection alloc];
-    v446 = [v3 value];
-    v447 = [v446 rfReferenceRichCardSection];
-    v448 = [(RFReferenceRichCardSection *)v445 initWithProtobuf:v447];
+    value148 = [protobufCopy value];
+    rfReferenceRichCardSection2 = [value148 rfReferenceRichCardSection];
+    v448 = [(RFReferenceRichCardSection *)v445 initWithProtobuf:rfReferenceRichCardSection2];
 
     v4 = v448;
   }
 
-  v449 = [v3 value];
-  v450 = [v449 rfSimpleItemRichCardSection];
+  value149 = [protobufCopy value];
+  rfSimpleItemRichCardSection = [value149 rfSimpleItemRichCardSection];
 
-  if (v450)
+  if (rfSimpleItemRichCardSection)
   {
     v451 = [RFSimpleItemRichCardSection alloc];
-    v452 = [v3 value];
-    v453 = [v452 rfSimpleItemRichCardSection];
-    v454 = [(RFSimpleItemRichCardSection *)v451 initWithProtobuf:v453];
+    value150 = [protobufCopy value];
+    rfSimpleItemRichCardSection2 = [value150 rfSimpleItemRichCardSection];
+    v454 = [(RFSimpleItemRichCardSection *)v451 initWithProtobuf:rfSimpleItemRichCardSection2];
 
     v4 = v454;
   }
 
-  v455 = [v3 value];
-  v456 = [v455 rfSimpleItemStandardCardSection];
+  value151 = [protobufCopy value];
+  rfSimpleItemStandardCardSection = [value151 rfSimpleItemStandardCardSection];
 
-  if (v456)
+  if (rfSimpleItemStandardCardSection)
   {
     v457 = [RFSimpleItemStandardCardSection alloc];
-    v458 = [v3 value];
-    v459 = [v458 rfSimpleItemStandardCardSection];
-    v460 = [(RFSimpleItemStandardCardSection *)v457 initWithProtobuf:v459];
+    value152 = [protobufCopy value];
+    rfSimpleItemStandardCardSection2 = [value152 rfSimpleItemStandardCardSection];
+    v460 = [(RFSimpleItemStandardCardSection *)v457 initWithProtobuf:rfSimpleItemStandardCardSection2];
 
     v4 = v460;
   }
 
-  v461 = [v3 value];
-  v462 = [v461 rfSummaryItemAlignedTextCardSection];
+  value153 = [protobufCopy value];
+  rfSummaryItemAlignedTextCardSection = [value153 rfSummaryItemAlignedTextCardSection];
 
-  if (v462)
+  if (rfSummaryItemAlignedTextCardSection)
   {
     v463 = [RFSummaryItemAlignedTextCardSection alloc];
-    v464 = [v3 value];
-    v465 = [v464 rfSummaryItemAlignedTextCardSection];
-    v466 = [(RFSummaryItemAlignedTextCardSection *)v463 initWithProtobuf:v465];
+    value154 = [protobufCopy value];
+    rfSummaryItemAlignedTextCardSection2 = [value154 rfSummaryItemAlignedTextCardSection];
+    v466 = [(RFSummaryItemAlignedTextCardSection *)v463 initWithProtobuf:rfSummaryItemAlignedTextCardSection2];
 
     v4 = v466;
   }
 
-  v467 = [v3 value];
-  v468 = [v467 rfExpandableStandardCardSection];
+  value155 = [protobufCopy value];
+  rfExpandableStandardCardSection = [value155 rfExpandableStandardCardSection];
 
-  if (v468)
+  if (rfExpandableStandardCardSection)
   {
     v469 = [RFExpandableStandardCardSection alloc];
-    v470 = [v3 value];
-    v471 = [v470 rfExpandableStandardCardSection];
-    v472 = [(RFExpandableStandardCardSection *)v469 initWithProtobuf:v471];
+    value156 = [protobufCopy value];
+    rfExpandableStandardCardSection2 = [value156 rfExpandableStandardCardSection];
+    v472 = [(RFExpandableStandardCardSection *)v469 initWithProtobuf:rfExpandableStandardCardSection2];
 
     v4 = v472;
   }
 
-  v473 = [v3 value];
-  v474 = [v473 rfFactItemButtonCardSection];
+  value157 = [protobufCopy value];
+  rfFactItemButtonCardSection = [value157 rfFactItemButtonCardSection];
 
-  if (v474)
+  if (rfFactItemButtonCardSection)
   {
     v475 = [RFFactItemButtonCardSection alloc];
-    v476 = [v3 value];
-    v477 = [v476 rfFactItemButtonCardSection];
-    v478 = [(RFFactItemButtonCardSection *)v475 initWithProtobuf:v477];
+    value158 = [protobufCopy value];
+    rfFactItemButtonCardSection2 = [value158 rfFactItemButtonCardSection];
+    v478 = [(RFFactItemButtonCardSection *)v475 initWithProtobuf:rfFactItemButtonCardSection2];
 
     v4 = v478;
   }
 
-  v479 = [v3 value];
-  v480 = [v479 rfFactItemHeroNumberCardSection];
+  value159 = [protobufCopy value];
+  rfFactItemHeroNumberCardSection = [value159 rfFactItemHeroNumberCardSection];
 
-  if (v480)
+  if (rfFactItemHeroNumberCardSection)
   {
     v481 = [RFFactItemHeroNumberCardSection alloc];
-    v482 = [v3 value];
-    v483 = [v482 rfFactItemHeroNumberCardSection];
-    v484 = [(RFFactItemHeroNumberCardSection *)v481 initWithProtobuf:v483];
+    value160 = [protobufCopy value];
+    rfFactItemHeroNumberCardSection2 = [value160 rfFactItemHeroNumberCardSection];
+    v484 = [(RFFactItemHeroNumberCardSection *)v481 initWithProtobuf:rfFactItemHeroNumberCardSection2];
 
     v4 = v484;
   }
 
-  v485 = [v3 value];
-  v486 = [v485 rfPrimaryHeaderMarqueeCardSection];
+  value161 = [protobufCopy value];
+  rfPrimaryHeaderMarqueeCardSection = [value161 rfPrimaryHeaderMarqueeCardSection];
 
-  if (v486)
+  if (rfPrimaryHeaderMarqueeCardSection)
   {
     v487 = [RFPrimaryHeaderMarqueeCardSection alloc];
-    v488 = [v3 value];
-    v489 = [v488 rfPrimaryHeaderMarqueeCardSection];
-    v490 = [(RFPrimaryHeaderMarqueeCardSection *)v487 initWithProtobuf:v489];
+    value162 = [protobufCopy value];
+    rfPrimaryHeaderMarqueeCardSection2 = [value162 rfPrimaryHeaderMarqueeCardSection];
+    v490 = [(RFPrimaryHeaderMarqueeCardSection *)v487 initWithProtobuf:rfPrimaryHeaderMarqueeCardSection2];
 
     v4 = v490;
   }
 
-  v491 = [v3 value];
-  v492 = [v491 rfSummaryItemDetailedTextCardSection];
+  value163 = [protobufCopy value];
+  rfSummaryItemDetailedTextCardSection = [value163 rfSummaryItemDetailedTextCardSection];
 
-  if (v492)
+  if (rfSummaryItemDetailedTextCardSection)
   {
     v493 = [RFSummaryItemDetailedTextCardSection alloc];
-    v494 = [v3 value];
-    v495 = [v494 rfSummaryItemDetailedTextCardSection];
-    v496 = [(RFSummaryItemDetailedTextCardSection *)v493 initWithProtobuf:v495];
+    value164 = [protobufCopy value];
+    rfSummaryItemDetailedTextCardSection2 = [value164 rfSummaryItemDetailedTextCardSection];
+    v496 = [(RFSummaryItemDetailedTextCardSection *)v493 initWithProtobuf:rfSummaryItemDetailedTextCardSection2];
 
     v4 = v496;
   }
 
-  v497 = [v3 value];
-  v498 = [v497 rfSimpleItemPlayerCardSection];
+  value165 = [protobufCopy value];
+  rfSimpleItemPlayerCardSection = [value165 rfSimpleItemPlayerCardSection];
 
-  if (v498)
+  if (rfSimpleItemPlayerCardSection)
   {
     v499 = [RFSimpleItemPlayerCardSection alloc];
-    v500 = [v3 value];
-    v501 = [v500 rfSimpleItemPlayerCardSection];
-    v502 = [(RFSimpleItemPlayerCardSection *)v499 initWithProtobuf:v501];
+    value166 = [protobufCopy value];
+    rfSimpleItemPlayerCardSection2 = [value166 rfSimpleItemPlayerCardSection];
+    v502 = [(RFSimpleItemPlayerCardSection *)v499 initWithProtobuf:rfSimpleItemPlayerCardSection2];
 
     v4 = v502;
   }
 
-  v503 = [v3 value];
-  v504 = [v503 rfSummaryItemPairCardSection];
+  value167 = [protobufCopy value];
+  rfSummaryItemPairCardSection = [value167 rfSummaryItemPairCardSection];
 
-  if (v504)
+  if (rfSummaryItemPairCardSection)
   {
     v505 = [RFSummaryItemPairCardSection alloc];
-    v506 = [v3 value];
-    v507 = [v506 rfSummaryItemPairCardSection];
-    v508 = [(RFSummaryItemPairCardSection *)v505 initWithProtobuf:v507];
+    value168 = [protobufCopy value];
+    rfSummaryItemPairCardSection2 = [value168 rfSummaryItemPairCardSection];
+    v508 = [(RFSummaryItemPairCardSection *)v505 initWithProtobuf:rfSummaryItemPairCardSection2];
 
     v4 = v508;
   }
 
-  v509 = [v3 value];
-  v510 = [v509 rfSummaryItemPairNumberCardSection];
+  value169 = [protobufCopy value];
+  rfSummaryItemPairNumberCardSection = [value169 rfSummaryItemPairNumberCardSection];
 
-  if (v510)
+  if (rfSummaryItemPairNumberCardSection)
   {
     v511 = [RFSummaryItemPairNumberCardSection alloc];
-    v512 = [v3 value];
-    v513 = [v512 rfSummaryItemPairNumberCardSection];
-    v514 = [(RFSummaryItemPairNumberCardSection *)v511 initWithProtobuf:v513];
+    value170 = [protobufCopy value];
+    rfSummaryItemPairNumberCardSection2 = [value170 rfSummaryItemPairNumberCardSection];
+    v514 = [(RFSummaryItemPairNumberCardSection *)v511 initWithProtobuf:rfSummaryItemPairNumberCardSection2];
 
     v4 = v514;
   }
 
-  v515 = [v3 value];
-  v516 = [v515 rfFactItemShortHeroNumberCardSection];
+  value171 = [protobufCopy value];
+  rfFactItemShortHeroNumberCardSection = [value171 rfFactItemShortHeroNumberCardSection];
 
-  if (v516)
+  if (rfFactItemShortHeroNumberCardSection)
   {
     v517 = [RFFactItemShortHeroNumberCardSection alloc];
-    v518 = [v3 value];
-    v519 = [v518 rfFactItemShortHeroNumberCardSection];
-    v520 = [(RFFactItemShortHeroNumberCardSection *)v517 initWithProtobuf:v519];
+    value172 = [protobufCopy value];
+    rfFactItemShortHeroNumberCardSection2 = [value172 rfFactItemShortHeroNumberCardSection];
+    v520 = [(RFFactItemShortHeroNumberCardSection *)v517 initWithProtobuf:rfFactItemShortHeroNumberCardSection2];
 
     v4 = v520;
   }
 
-  v521 = [v3 value];
-  v522 = [v521 rfFactItemDetailedNumberCardSection];
+  value173 = [protobufCopy value];
+  rfFactItemDetailedNumberCardSection = [value173 rfFactItemDetailedNumberCardSection];
 
-  if (v522)
+  if (rfFactItemDetailedNumberCardSection)
   {
     v523 = [RFFactItemDetailedNumberCardSection alloc];
-    v524 = [v3 value];
-    v525 = [v524 rfFactItemDetailedNumberCardSection];
-    v526 = [(RFFactItemDetailedNumberCardSection *)v523 initWithProtobuf:v525];
+    value174 = [protobufCopy value];
+    rfFactItemDetailedNumberCardSection2 = [value174 rfFactItemDetailedNumberCardSection];
+    v526 = [(RFFactItemDetailedNumberCardSection *)v523 initWithProtobuf:rfFactItemDetailedNumberCardSection2];
 
     v4 = v526;
   }
 
-  v527 = [v3 value];
-  v528 = [v527 rfFactItemHeroButtonCardSection];
+  value175 = [protobufCopy value];
+  rfFactItemHeroButtonCardSection = [value175 rfFactItemHeroButtonCardSection];
 
-  if (v528)
+  if (rfFactItemHeroButtonCardSection)
   {
     v529 = [RFFactItemHeroButtonCardSection alloc];
-    v530 = [v3 value];
-    v531 = [v530 rfFactItemHeroButtonCardSection];
-    v532 = [(RFFactItemHeroButtonCardSection *)v529 initWithProtobuf:v531];
+    value176 = [protobufCopy value];
+    rfFactItemHeroButtonCardSection2 = [value176 rfFactItemHeroButtonCardSection];
+    v532 = [(RFFactItemHeroButtonCardSection *)v529 initWithProtobuf:rfFactItemHeroButtonCardSection2];
 
     v4 = v532;
   }
 
-  v533 = [v3 value];
-  v534 = [v533 rfFactItemImageRightCardSection];
+  value177 = [protobufCopy value];
+  rfFactItemImageRightCardSection = [value177 rfFactItemImageRightCardSection];
 
-  if (v534)
+  if (rfFactItemImageRightCardSection)
   {
     v535 = [RFFactItemImageRightCardSection alloc];
-    v536 = [v3 value];
-    v537 = [v536 rfFactItemImageRightCardSection];
-    v538 = [(RFFactItemImageRightCardSection *)v535 initWithProtobuf:v537];
+    value178 = [protobufCopy value];
+    rfFactItemImageRightCardSection2 = [value178 rfFactItemImageRightCardSection];
+    v538 = [(RFFactItemImageRightCardSection *)v535 initWithProtobuf:rfFactItemImageRightCardSection2];
 
     v4 = v538;
   }
 
-  v539 = [v3 value];
-  v540 = [v539 rfSummaryItemSwitchV2CardSection];
+  value179 = [protobufCopy value];
+  rfSummaryItemSwitchV2CardSection = [value179 rfSummaryItemSwitchV2CardSection];
 
-  if (v540)
+  if (rfSummaryItemSwitchV2CardSection)
   {
     v541 = [RFSummaryItemSwitchV2CardSection alloc];
-    v542 = [v3 value];
-    v543 = [v542 rfSummaryItemSwitchV2CardSection];
-    v544 = [(RFSummaryItemSwitchV2CardSection *)v541 initWithProtobuf:v543];
+    value180 = [protobufCopy value];
+    rfSummaryItemSwitchV2CardSection2 = [value180 rfSummaryItemSwitchV2CardSection];
+    v544 = [(RFSummaryItemSwitchV2CardSection *)v541 initWithProtobuf:rfSummaryItemSwitchV2CardSection2];
 
     v4 = v544;
   }
 
-  v545 = [v3 value];
-  v546 = [v545 rfTableHeaderCardSection];
+  value181 = [protobufCopy value];
+  rfTableHeaderCardSection = [value181 rfTableHeaderCardSection];
 
-  if (v546)
+  if (rfTableHeaderCardSection)
   {
     v547 = [RFTableHeaderCardSection alloc];
-    v548 = [v3 value];
-    v549 = [v548 rfTableHeaderCardSection];
-    v550 = [(RFTableHeaderCardSection *)v547 initWithProtobuf:v549];
+    value182 = [protobufCopy value];
+    rfTableHeaderCardSection2 = [value182 rfTableHeaderCardSection];
+    v550 = [(RFTableHeaderCardSection *)v547 initWithProtobuf:rfTableHeaderCardSection2];
 
     v4 = v550;
   }
 
-  v551 = [v3 value];
-  v552 = [v551 rfTableRowCardSection];
+  value183 = [protobufCopy value];
+  rfTableRowCardSection = [value183 rfTableRowCardSection];
 
-  if (v552)
+  if (rfTableRowCardSection)
   {
     v553 = [RFTableRowCardSection alloc];
-    v554 = [v3 value];
-    v555 = [v554 rfTableRowCardSection];
-    v556 = [(RFTableRowCardSection *)v553 initWithProtobuf:v555];
+    value184 = [protobufCopy value];
+    rfTableRowCardSection2 = [value184 rfTableRowCardSection];
+    v556 = [(RFTableRowCardSection *)v553 initWithProtobuf:rfTableRowCardSection2];
 
     v4 = v556;
   }
 
-  v557 = [v3 value];
-  v558 = [v557 rfSimpleItemVisualElementCardSection];
+  value185 = [protobufCopy value];
+  rfSimpleItemVisualElementCardSection = [value185 rfSimpleItemVisualElementCardSection];
 
-  if (v558)
+  if (rfSimpleItemVisualElementCardSection)
   {
     v559 = [RFSimpleItemVisualElementCardSection alloc];
-    v560 = [v3 value];
-    v561 = [v560 rfSimpleItemVisualElementCardSection];
-    v562 = [(RFSimpleItemVisualElementCardSection *)v559 initWithProtobuf:v561];
+    value186 = [protobufCopy value];
+    rfSimpleItemVisualElementCardSection2 = [value186 rfSimpleItemVisualElementCardSection];
+    v562 = [(RFSimpleItemVisualElementCardSection *)v559 initWithProtobuf:rfSimpleItemVisualElementCardSection2];
 
     v4 = v562;
   }
 
-  v563 = [v3 value];
-  v564 = [v563 rfSummaryItemPlayerCardSection];
+  value187 = [protobufCopy value];
+  rfSummaryItemPlayerCardSection = [value187 rfSummaryItemPlayerCardSection];
 
-  if (v564)
+  if (rfSummaryItemPlayerCardSection)
   {
     v565 = [RFSummaryItemPlayerCardSection alloc];
-    v566 = [v3 value];
-    v567 = [v566 rfSummaryItemPlayerCardSection];
-    v568 = [(RFSummaryItemPlayerCardSection *)v565 initWithProtobuf:v567];
+    value188 = [protobufCopy value];
+    rfSummaryItemPlayerCardSection2 = [value188 rfSummaryItemPlayerCardSection];
+    v568 = [(RFSummaryItemPlayerCardSection *)v565 initWithProtobuf:rfSummaryItemPlayerCardSection2];
 
     v4 = v568;
   }
 
-  v569 = [v3 value];
-  v570 = [v569 rfSummaryItemImageRightCardSection];
+  value189 = [protobufCopy value];
+  rfSummaryItemImageRightCardSection = [value189 rfSummaryItemImageRightCardSection];
 
-  if (v570)
+  if (rfSummaryItemImageRightCardSection)
   {
     v571 = [RFSummaryItemImageRightCardSection alloc];
-    v572 = [v3 value];
-    v573 = [v572 rfSummaryItemImageRightCardSection];
-    v574 = [(RFSummaryItemImageRightCardSection *)v571 initWithProtobuf:v573];
+    value190 = [protobufCopy value];
+    rfSummaryItemImageRightCardSection2 = [value190 rfSummaryItemImageRightCardSection];
+    v574 = [(RFSummaryItemImageRightCardSection *)v571 initWithProtobuf:rfSummaryItemImageRightCardSection2];
 
     v4 = v574;
   }
 
-  v575 = [v3 value];
-  v576 = [v575 rfSummaryItemButtonCardSection];
+  value191 = [protobufCopy value];
+  rfSummaryItemButtonCardSection = [value191 rfSummaryItemButtonCardSection];
 
-  if (v576)
+  if (rfSummaryItemButtonCardSection)
   {
     v577 = [RFSummaryItemButtonCardSection alloc];
-    v578 = [v3 value];
-    v579 = [v578 rfSummaryItemButtonCardSection];
-    v580 = [(RFSummaryItemButtonCardSection *)v577 initWithProtobuf:v579];
+    value192 = [protobufCopy value];
+    rfSummaryItemButtonCardSection2 = [value192 rfSummaryItemButtonCardSection];
+    v580 = [(RFSummaryItemButtonCardSection *)v577 initWithProtobuf:rfSummaryItemButtonCardSection2];
 
     v4 = v580;
   }
 
-  v581 = [v3 value];
-  v582 = [v581 rfSimpleItemReverseRichCardSection];
+  value193 = [protobufCopy value];
+  rfSimpleItemReverseRichCardSection = [value193 rfSimpleItemReverseRichCardSection];
 
-  if (v582)
+  if (rfSimpleItemReverseRichCardSection)
   {
     v583 = [RFSimpleItemReverseRichCardSection alloc];
-    v584 = [v3 value];
-    v585 = [v584 rfSimpleItemReverseRichCardSection];
-    v586 = [(RFSimpleItemReverseRichCardSection *)v583 initWithProtobuf:v585];
+    value194 = [protobufCopy value];
+    rfSimpleItemReverseRichCardSection2 = [value194 rfSimpleItemReverseRichCardSection];
+    v586 = [(RFSimpleItemReverseRichCardSection *)v583 initWithProtobuf:rfSimpleItemReverseRichCardSection2];
 
     v4 = v586;
   }
 
-  v587 = [v3 value];
-  v588 = [v587 rfSimpleItemRichSearchResultCardSection];
+  value195 = [protobufCopy value];
+  rfSimpleItemRichSearchResultCardSection = [value195 rfSimpleItemRichSearchResultCardSection];
 
-  if (v588)
+  if (rfSimpleItemRichSearchResultCardSection)
   {
     v589 = [RFSimpleItemRichSearchResultCardSection alloc];
-    v590 = [v3 value];
-    v591 = [v590 rfSimpleItemRichSearchResultCardSection];
-    v592 = [(RFSimpleItemRichSearchResultCardSection *)v589 initWithProtobuf:v591];
+    value196 = [protobufCopy value];
+    rfSimpleItemRichSearchResultCardSection2 = [value196 rfSimpleItemRichSearchResultCardSection];
+    v592 = [(RFSimpleItemRichSearchResultCardSection *)v589 initWithProtobuf:rfSimpleItemRichSearchResultCardSection2];
 
     v4 = v592;
   }
 
-  v593 = [v3 value];
-  v594 = [v593 rfPrimaryHeaderStackedImageCardSection];
+  value197 = [protobufCopy value];
+  rfPrimaryHeaderStackedImageCardSection = [value197 rfPrimaryHeaderStackedImageCardSection];
 
-  if (v594)
+  if (rfPrimaryHeaderStackedImageCardSection)
   {
     v595 = [RFPrimaryHeaderStackedImageCardSection alloc];
-    v596 = [v3 value];
-    v597 = [v596 rfPrimaryHeaderStackedImageCardSection];
-    v598 = [(RFPrimaryHeaderStackedImageCardSection *)v595 initWithProtobuf:v597];
+    value198 = [protobufCopy value];
+    rfPrimaryHeaderStackedImageCardSection2 = [value198 rfPrimaryHeaderStackedImageCardSection];
+    v598 = [(RFPrimaryHeaderStackedImageCardSection *)v595 initWithProtobuf:rfPrimaryHeaderStackedImageCardSection2];
 
     v4 = v598;
   }
 
-  v599 = [v3 value];
-  v600 = [v599 rfReferenceItemLogoCardSection];
+  value199 = [protobufCopy value];
+  rfReferenceItemLogoCardSection = [value199 rfReferenceItemLogoCardSection];
 
-  if (v600)
+  if (rfReferenceItemLogoCardSection)
   {
     v601 = [RFReferenceItemLogoCardSection alloc];
-    v602 = [v3 value];
-    v603 = [v602 rfReferenceItemLogoCardSection];
-    v604 = [(RFReferenceItemLogoCardSection *)v601 initWithProtobuf:v603];
+    value200 = [protobufCopy value];
+    rfReferenceItemLogoCardSection2 = [value200 rfReferenceItemLogoCardSection];
+    v604 = [(RFReferenceItemLogoCardSection *)v601 initWithProtobuf:rfReferenceItemLogoCardSection2];
 
     v4 = v604;
   }
 
-  v605 = [v3 value];
-  v606 = [v605 rfReferenceItemButtonCardSection];
+  value201 = [protobufCopy value];
+  rfReferenceItemButtonCardSection = [value201 rfReferenceItemButtonCardSection];
 
-  if (v606)
+  if (rfReferenceItemButtonCardSection)
   {
     v607 = [RFReferenceItemButtonCardSection alloc];
-    v608 = [v3 value];
-    v609 = [v608 rfReferenceItemButtonCardSection];
-    v610 = [(RFReferenceItemButtonCardSection *)v607 initWithProtobuf:v609];
+    value202 = [protobufCopy value];
+    rfReferenceItemButtonCardSection2 = [value202 rfReferenceItemButtonCardSection];
+    v610 = [(RFReferenceItemButtonCardSection *)v607 initWithProtobuf:rfReferenceItemButtonCardSection2];
 
     v4 = v610;
   }
 
-  v611 = [v3 value];
-  v612 = [v611 rfButtonCardSection];
+  value203 = [protobufCopy value];
+  rfButtonCardSection = [value203 rfButtonCardSection];
 
-  if (v612)
+  if (rfButtonCardSection)
   {
     v613 = [RFButtonCardSection alloc];
-    v614 = [v3 value];
-    v615 = [v614 rfButtonCardSection];
-    v616 = [(RFButtonCardSection *)v613 initWithProtobuf:v615];
+    value204 = [protobufCopy value];
+    rfButtonCardSection2 = [value204 rfButtonCardSection];
+    v616 = [(RFButtonCardSection *)v613 initWithProtobuf:rfButtonCardSection2];
 
     v4 = v616;
   }
 
-  v617 = [v3 value];
-  v618 = [v617 rfBinaryButtonCardSection];
+  value205 = [protobufCopy value];
+  rfBinaryButtonCardSection = [value205 rfBinaryButtonCardSection];
 
-  if (v618)
+  if (rfBinaryButtonCardSection)
   {
     v619 = [RFBinaryButtonCardSection alloc];
-    v620 = [v3 value];
-    v621 = [v620 rfBinaryButtonCardSection];
-    v622 = [(RFBinaryButtonCardSection *)v619 initWithProtobuf:v621];
+    value206 = [protobufCopy value];
+    rfBinaryButtonCardSection2 = [value206 rfBinaryButtonCardSection];
+    v622 = [(RFBinaryButtonCardSection *)v619 initWithProtobuf:rfBinaryButtonCardSection2];
 
     v4 = v622;
   }
 
-  v623 = [v3 value];
-  v624 = [v623 rfReferenceCenteredCardSection];
+  value207 = [protobufCopy value];
+  rfReferenceCenteredCardSection = [value207 rfReferenceCenteredCardSection];
 
-  if (v624)
+  if (rfReferenceCenteredCardSection)
   {
     v625 = [RFReferenceCenteredCardSection alloc];
-    v626 = [v3 value];
-    v627 = [v626 rfReferenceCenteredCardSection];
-    v628 = [(RFReferenceCenteredCardSection *)v625 initWithProtobuf:v627];
+    value208 = [protobufCopy value];
+    rfReferenceCenteredCardSection2 = [value208 rfReferenceCenteredCardSection];
+    v628 = [(RFReferenceCenteredCardSection *)v625 initWithProtobuf:rfReferenceCenteredCardSection2];
 
     v4 = v628;
   }
 
-  v629 = [v3 value];
-  v630 = [v629 rfSecondaryHeaderStandardCardSection];
+  value209 = [protobufCopy value];
+  rfSecondaryHeaderStandardCardSection = [value209 rfSecondaryHeaderStandardCardSection];
 
-  if (v630)
+  if (rfSecondaryHeaderStandardCardSection)
   {
     v631 = [RFSecondaryHeaderStandardCardSection alloc];
-    v632 = [v3 value];
-    v633 = [v632 rfSecondaryHeaderStandardCardSection];
-    v634 = [(RFSecondaryHeaderStandardCardSection *)v631 initWithProtobuf:v633];
+    value210 = [protobufCopy value];
+    rfSecondaryHeaderStandardCardSection2 = [value210 rfSecondaryHeaderStandardCardSection];
+    v634 = [(RFSecondaryHeaderStandardCardSection *)v631 initWithProtobuf:rfSecondaryHeaderStandardCardSection2];
 
     v4 = v634;
   }
 
-  v635 = [v3 value];
-  v636 = [v635 rfSecondaryHeaderEmphasizedCardSection];
+  value211 = [protobufCopy value];
+  rfSecondaryHeaderEmphasizedCardSection = [value211 rfSecondaryHeaderEmphasizedCardSection];
 
-  if (v636)
+  if (rfSecondaryHeaderEmphasizedCardSection)
   {
     v637 = [RFSecondaryHeaderEmphasizedCardSection alloc];
-    v638 = [v3 value];
-    v639 = [v638 rfSecondaryHeaderEmphasizedCardSection];
-    v640 = [(RFSecondaryHeaderEmphasizedCardSection *)v637 initWithProtobuf:v639];
+    value212 = [protobufCopy value];
+    rfSecondaryHeaderEmphasizedCardSection2 = [value212 rfSecondaryHeaderEmphasizedCardSection];
+    v640 = [(RFSecondaryHeaderEmphasizedCardSection *)v637 initWithProtobuf:rfSecondaryHeaderEmphasizedCardSection2];
 
     v4 = v640;
   }
 
-  v641 = [v3 value];
-  v642 = [v641 rfMapCardSection];
+  value213 = [protobufCopy value];
+  rfMapCardSection = [value213 rfMapCardSection];
 
-  if (v642)
+  if (rfMapCardSection)
   {
     v643 = [RFMapCardSection alloc];
-    v644 = [v3 value];
-    v645 = [v644 rfMapCardSection];
-    v646 = [(RFMapCardSection *)v643 initWithProtobuf:v645];
+    value214 = [protobufCopy value];
+    rfMapCardSection2 = [value214 rfMapCardSection];
+    v646 = [(RFMapCardSection *)v643 initWithProtobuf:rfMapCardSection2];
 
     v4 = v646;
   }
 
-  v647 = [v3 value];
-  v648 = [v647 rfReferenceStandardCardSection];
+  value215 = [protobufCopy value];
+  rfReferenceStandardCardSection = [value215 rfReferenceStandardCardSection];
 
-  if (v648)
+  if (rfReferenceStandardCardSection)
   {
     v649 = [RFReferenceStandardCardSection alloc];
-    v650 = [v3 value];
-    v651 = [v650 rfReferenceStandardCardSection];
-    v652 = [(RFReferenceStandardCardSection *)v649 initWithProtobuf:v651];
+    value216 = [protobufCopy value];
+    rfReferenceStandardCardSection2 = [value216 rfReferenceStandardCardSection];
+    v652 = [(RFReferenceStandardCardSection *)v649 initWithProtobuf:rfReferenceStandardCardSection2];
 
     v4 = v652;
   }
 
-  v653 = [v3 value];
-  v654 = [v653 rfMultiButtonCardSection];
+  value217 = [protobufCopy value];
+  rfMultiButtonCardSection = [value217 rfMultiButtonCardSection];
 
-  if (v654)
+  if (rfMultiButtonCardSection)
   {
     v655 = [RFMultiButtonCardSection alloc];
-    v656 = [v3 value];
-    v657 = [v656 rfMultiButtonCardSection];
-    v658 = [(RFMultiButtonCardSection *)v655 initWithProtobuf:v657];
+    value218 = [protobufCopy value];
+    rfMultiButtonCardSection2 = [value218 rfMultiButtonCardSection];
+    v658 = [(RFMultiButtonCardSection *)v655 initWithProtobuf:rfMultiButtonCardSection2];
 
     v4 = v658;
   }
 
-  v659 = [v3 value];
-  v660 = [v659 rfDisambiguationTitleCardSection];
+  value219 = [protobufCopy value];
+  rfDisambiguationTitleCardSection = [value219 rfDisambiguationTitleCardSection];
 
-  if (v660)
+  if (rfDisambiguationTitleCardSection)
   {
     v661 = [RFDisambiguationTitleCardSection alloc];
-    v662 = [v3 value];
-    v663 = [v662 rfDisambiguationTitleCardSection];
-    v664 = [(RFDisambiguationTitleCardSection *)v661 initWithProtobuf:v663];
+    value220 = [protobufCopy value];
+    rfDisambiguationTitleCardSection2 = [value220 rfDisambiguationTitleCardSection];
+    v664 = [(RFDisambiguationTitleCardSection *)v661 initWithProtobuf:rfDisambiguationTitleCardSection2];
 
     v4 = v664;
   }
 
-  v665 = [v3 value];
-  v666 = [v665 rfSummaryItemExpandableCardSection];
+  value221 = [protobufCopy value];
+  rfSummaryItemExpandableCardSection = [value221 rfSummaryItemExpandableCardSection];
 
-  if (v666)
+  if (rfSummaryItemExpandableCardSection)
   {
     v667 = [RFSummaryItemExpandableCardSection alloc];
-    v668 = [v3 value];
-    v669 = [v668 rfSummaryItemExpandableCardSection];
-    v670 = [(RFSummaryItemExpandableCardSection *)v667 initWithProtobuf:v669];
+    value222 = [protobufCopy value];
+    rfSummaryItemExpandableCardSection2 = [value222 rfSummaryItemExpandableCardSection];
+    v670 = [(RFSummaryItemExpandableCardSection *)v667 initWithProtobuf:rfSummaryItemExpandableCardSection2];
 
     v4 = v670;
   }
 
-  v671 = [v3 nextCard];
+  nextCard = [protobufCopy nextCard];
 
-  if (v671)
+  if (nextCard)
   {
     v672 = [SFCard alloc];
-    v673 = [v3 nextCard];
-    v674 = [(SFCard *)v672 initWithProtobuf:v673];
+    nextCard2 = [protobufCopy nextCard];
+    v674 = [(SFCard *)v672 initWithProtobuf:nextCard2];
     [(SFCardSection *)v4 setNextCard:v674];
   }
 
-  v675 = [v3 commands];
-  v676 = [v675 count];
+  commands = [protobufCopy commands];
+  v676 = [commands count];
 
   if (v676)
   {
-    v677 = [v3 commands];
-    if (v677)
+    commands2 = [protobufCopy commands];
+    if (commands2)
     {
       v678 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -1540,8 +1540,8 @@
     v837 = 0u;
     v834 = 0u;
     v835 = 0u;
-    v679 = [v3 commands];
-    v680 = [v679 countByEnumeratingWithState:&v834 objects:v845 count:16];
+    commands3 = [protobufCopy commands];
+    v680 = [commands3 countByEnumeratingWithState:&v834 objects:v845 count:16];
     if (v680)
     {
       v681 = v680;
@@ -1552,7 +1552,7 @@
         {
           if (*v835 != v682)
           {
-            objc_enumerationMutation(v679);
+            objc_enumerationMutation(commands3);
           }
 
           v684 = [[SFAbstractCommand alloc] initWithProtobuf:*(*(&v834 + 1) + 8 * i)];
@@ -1562,7 +1562,7 @@
           }
         }
 
-        v681 = [v679 countByEnumeratingWithState:&v834 objects:v845 count:16];
+        v681 = [commands3 countByEnumeratingWithState:&v834 objects:v845 count:16];
       }
 
       while (v681);
@@ -1571,13 +1571,13 @@
     [(SFCardSection *)v4 setCommands:v678];
   }
 
-  v685 = [v3 parameterKeyPaths];
-  v686 = [v685 count];
+  parameterKeyPaths = [protobufCopy parameterKeyPaths];
+  v686 = [parameterKeyPaths count];
 
   if (v686)
   {
-    v687 = [v3 parameterKeyPaths];
-    if (v687)
+    parameterKeyPaths2 = [protobufCopy parameterKeyPaths];
+    if (parameterKeyPaths2)
     {
       v688 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -1591,8 +1591,8 @@
     v833 = 0u;
     v830 = 0u;
     v831 = 0u;
-    v689 = [v3 parameterKeyPaths];
-    v690 = [v689 countByEnumeratingWithState:&v830 objects:v844 count:16];
+    parameterKeyPaths3 = [protobufCopy parameterKeyPaths];
+    v690 = [parameterKeyPaths3 countByEnumeratingWithState:&v830 objects:v844 count:16];
     if (v690)
     {
       v691 = v690;
@@ -1603,7 +1603,7 @@
         {
           if (*v831 != v692)
           {
-            objc_enumerationMutation(v689);
+            objc_enumerationMutation(parameterKeyPaths3);
           }
 
           v694 = *(*(&v830 + 1) + 8 * j);
@@ -1613,7 +1613,7 @@
           }
         }
 
-        v691 = [v689 countByEnumeratingWithState:&v830 objects:v844 count:16];
+        v691 = [parameterKeyPaths3 countByEnumeratingWithState:&v830 objects:v844 count:16];
       }
 
       while (v691);
@@ -1622,59 +1622,59 @@
     [(SFCardSection *)v4 setParameterKeyPaths:v688];
   }
 
-  v695 = [v3 cardSectionId];
+  cardSectionId = [protobufCopy cardSectionId];
 
-  if (v695)
+  if (cardSectionId)
   {
-    v696 = [v3 cardSectionId];
-    [(SFCardSection *)v4 setCardSectionId:v696];
+    cardSectionId2 = [protobufCopy cardSectionId];
+    [(SFCardSection *)v4 setCardSectionId:cardSectionId2];
   }
 
-  v697 = [v3 resultIdentifier];
+  resultIdentifier = [protobufCopy resultIdentifier];
 
-  if (v697)
+  if (resultIdentifier)
   {
-    v698 = [v3 resultIdentifier];
-    [(SFCardSection *)v4 setResultIdentifier:v698];
+    resultIdentifier2 = [protobufCopy resultIdentifier];
+    [(SFCardSection *)v4 setResultIdentifier:resultIdentifier2];
   }
 
-  v699 = [v3 userReportRequest];
+  userReportRequest = [protobufCopy userReportRequest];
 
-  if (v699)
+  if (userReportRequest)
   {
     v700 = [SFUserReportRequest alloc];
-    v701 = [v3 userReportRequest];
-    v702 = [(SFUserReportRequest *)v700 initWithProtobuf:v701];
+    userReportRequest2 = [protobufCopy userReportRequest];
+    v702 = [(SFUserReportRequest *)v700 initWithProtobuf:userReportRequest2];
     [(SFCardSection *)v4 setUserReportRequest:v702];
   }
 
-  v703 = [v3 command];
+  command = [protobufCopy command];
 
-  if (v703)
+  if (command)
   {
     v704 = [SFCommand alloc];
-    v705 = [v3 command];
-    v706 = [(SFCommand *)v704 initWithProtobuf:v705];
+    command2 = [protobufCopy command];
+    v706 = [(SFCommand *)v704 initWithProtobuf:command2];
     [(SFCardSection *)v4 setCommand:v706];
   }
 
-  v707 = [v3 previewCommand];
+  previewCommand = [protobufCopy previewCommand];
 
-  if (v707)
+  if (previewCommand)
   {
     v708 = [SFCommand alloc];
-    v709 = [v3 previewCommand];
-    v710 = [(SFCommand *)v708 initWithProtobuf:v709];
+    previewCommand2 = [protobufCopy previewCommand];
+    v710 = [(SFCommand *)v708 initWithProtobuf:previewCommand2];
     [(SFCardSection *)v4 setPreviewCommand:v710];
   }
 
-  v711 = [v3 previewButtonItems];
-  v712 = [v711 count];
+  previewButtonItems = [protobufCopy previewButtonItems];
+  v712 = [previewButtonItems count];
 
   if (v712)
   {
-    v713 = [v3 previewButtonItems];
-    if (v713)
+    previewButtonItems2 = [protobufCopy previewButtonItems];
+    if (previewButtonItems2)
     {
       v714 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -1688,8 +1688,8 @@
     v829 = 0u;
     v826 = 0u;
     v827 = 0u;
-    v715 = [v3 previewButtonItems];
-    v716 = [v715 countByEnumeratingWithState:&v826 objects:v843 count:16];
+    previewButtonItems3 = [protobufCopy previewButtonItems];
+    v716 = [previewButtonItems3 countByEnumeratingWithState:&v826 objects:v843 count:16];
     if (v716)
     {
       v717 = v716;
@@ -1700,7 +1700,7 @@
         {
           if (*v827 != v718)
           {
-            objc_enumerationMutation(v715);
+            objc_enumerationMutation(previewButtonItems3);
           }
 
           v720 = [[SFButtonItem alloc] initWithProtobuf:*(*(&v826 + 1) + 8 * k)];
@@ -1710,7 +1710,7 @@
           }
         }
 
-        v717 = [v715 countByEnumeratingWithState:&v826 objects:v843 count:16];
+        v717 = [previewButtonItems3 countByEnumeratingWithState:&v826 objects:v843 count:16];
       }
 
       while (v717);
@@ -1719,44 +1719,44 @@
     [(SFCardSection *)v4 setPreviewButtonItems:v714];
   }
 
-  v721 = [v3 cardSectionDetail];
+  cardSectionDetail = [protobufCopy cardSectionDetail];
 
-  if (v721)
+  if (cardSectionDetail)
   {
-    v722 = [v3 cardSectionDetail];
-    [(SFCardSection *)v4 setCardSectionDetail:v722];
+    cardSectionDetail2 = [protobufCopy cardSectionDetail];
+    [(SFCardSection *)v4 setCardSectionDetail:cardSectionDetail2];
   }
 
-  v723 = [v3 previewButtonItemsTitle];
+  previewButtonItemsTitle = [protobufCopy previewButtonItemsTitle];
 
-  if (v723)
+  if (previewButtonItemsTitle)
   {
-    v724 = [v3 previewButtonItemsTitle];
-    [(SFCardSection *)v4 setPreviewButtonItemsTitle:v724];
+    previewButtonItemsTitle2 = [protobufCopy previewButtonItemsTitle];
+    [(SFCardSection *)v4 setPreviewButtonItemsTitle:previewButtonItemsTitle2];
   }
 
-  v725 = [v3 backgroundColor];
+  backgroundColor = [protobufCopy backgroundColor];
 
-  if (v725)
+  if (backgroundColor)
   {
     v726 = [SFColor alloc];
-    v727 = [v3 backgroundColor];
-    v728 = [(SFColor *)v726 initWithProtobuf:v727];
+    backgroundColor2 = [protobufCopy backgroundColor];
+    v728 = [(SFColor *)v726 initWithProtobuf:backgroundColor2];
     [(SFCardSection *)v4 setBackgroundColor:v728];
   }
 
-  if ([v3 shouldHideInAmbientMode])
+  if ([protobufCopy shouldHideInAmbientMode])
   {
-    -[SFCardSection setShouldHideInAmbientMode:](v4, "setShouldHideInAmbientMode:", [v3 shouldHideInAmbientMode]);
+    -[SFCardSection setShouldHideInAmbientMode:](v4, "setShouldHideInAmbientMode:", [protobufCopy shouldHideInAmbientMode]);
   }
 
-  v729 = [v3 leadingSwipeButtonItems];
-  v730 = [v729 count];
+  leadingSwipeButtonItems = [protobufCopy leadingSwipeButtonItems];
+  v730 = [leadingSwipeButtonItems count];
 
   if (v730)
   {
-    v731 = [v3 leadingSwipeButtonItems];
-    if (v731)
+    leadingSwipeButtonItems2 = [protobufCopy leadingSwipeButtonItems];
+    if (leadingSwipeButtonItems2)
     {
       v732 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -1770,8 +1770,8 @@
     v825 = 0u;
     v822 = 0u;
     v823 = 0u;
-    v733 = [v3 leadingSwipeButtonItems];
-    v734 = [v733 countByEnumeratingWithState:&v822 objects:v842 count:16];
+    leadingSwipeButtonItems3 = [protobufCopy leadingSwipeButtonItems];
+    v734 = [leadingSwipeButtonItems3 countByEnumeratingWithState:&v822 objects:v842 count:16];
     if (v734)
     {
       v735 = v734;
@@ -1782,7 +1782,7 @@
         {
           if (*v823 != v736)
           {
-            objc_enumerationMutation(v733);
+            objc_enumerationMutation(leadingSwipeButtonItems3);
           }
 
           v738 = [[SFButtonItem alloc] initWithProtobuf:*(*(&v822 + 1) + 8 * m)];
@@ -1792,7 +1792,7 @@
           }
         }
 
-        v735 = [v733 countByEnumeratingWithState:&v822 objects:v842 count:16];
+        v735 = [leadingSwipeButtonItems3 countByEnumeratingWithState:&v822 objects:v842 count:16];
       }
 
       while (v735);
@@ -1801,13 +1801,13 @@
     [(SFCardSection *)v4 setLeadingSwipeButtonItems:v732];
   }
 
-  v739 = [v3 trailingSwipeButtonItems];
-  v740 = [v739 count];
+  trailingSwipeButtonItems = [protobufCopy trailingSwipeButtonItems];
+  v740 = [trailingSwipeButtonItems count];
 
   if (v740)
   {
-    v741 = [v3 trailingSwipeButtonItems];
-    if (v741)
+    trailingSwipeButtonItems2 = [protobufCopy trailingSwipeButtonItems];
+    if (trailingSwipeButtonItems2)
     {
       v742 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -1821,8 +1821,8 @@
     v821 = 0u;
     v818 = 0u;
     v819 = 0u;
-    v743 = [v3 trailingSwipeButtonItems];
-    v744 = [v743 countByEnumeratingWithState:&v818 objects:v841 count:16];
+    trailingSwipeButtonItems3 = [protobufCopy trailingSwipeButtonItems];
+    v744 = [trailingSwipeButtonItems3 countByEnumeratingWithState:&v818 objects:v841 count:16];
     if (v744)
     {
       v745 = v744;
@@ -1833,7 +1833,7 @@
         {
           if (*v819 != v746)
           {
-            objc_enumerationMutation(v743);
+            objc_enumerationMutation(trailingSwipeButtonItems3);
           }
 
           v748 = [[SFButtonItem alloc] initWithProtobuf:*(*(&v818 + 1) + 8 * n)];
@@ -1843,7 +1843,7 @@
           }
         }
 
-        v745 = [v743 countByEnumeratingWithState:&v818 objects:v841 count:16];
+        v745 = [trailingSwipeButtonItems3 countByEnumeratingWithState:&v818 objects:v841 count:16];
       }
 
       while (v745);
@@ -1852,13 +1852,13 @@
     [(SFCardSection *)v4 setTrailingSwipeButtonItems:v742];
   }
 
-  v749 = [v3 punchoutOptions];
-  v750 = [v749 count];
+  punchoutOptions = [protobufCopy punchoutOptions];
+  v750 = [punchoutOptions count];
 
   if (v750)
   {
-    v751 = [v3 punchoutOptions];
-    if (v751)
+    punchoutOptions2 = [protobufCopy punchoutOptions];
+    if (punchoutOptions2)
     {
       v752 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -1872,8 +1872,8 @@
     v817 = 0u;
     v814 = 0u;
     v815 = 0u;
-    v753 = [v3 punchoutOptions];
-    v754 = [v753 countByEnumeratingWithState:&v814 objects:v840 count:16];
+    punchoutOptions3 = [protobufCopy punchoutOptions];
+    v754 = [punchoutOptions3 countByEnumeratingWithState:&v814 objects:v840 count:16];
     if (v754)
     {
       v755 = v754;
@@ -1884,7 +1884,7 @@
         {
           if (*v815 != v756)
           {
-            objc_enumerationMutation(v753);
+            objc_enumerationMutation(punchoutOptions3);
           }
 
           v758 = [[SFPunchout alloc] initWithProtobuf:*(*(&v814 + 1) + 8 * ii)];
@@ -1894,7 +1894,7 @@
           }
         }
 
-        v755 = [v753 countByEnumeratingWithState:&v814 objects:v840 count:16];
+        v755 = [punchoutOptions3 countByEnumeratingWithState:&v814 objects:v840 count:16];
       }
 
       while (v755);
@@ -1903,49 +1903,49 @@
     [(SFCardSection *)v4 setPunchoutOptions:v752];
   }
 
-  v759 = [v3 punchoutPickerTitle];
+  punchoutPickerTitle = [protobufCopy punchoutPickerTitle];
 
-  if (v759)
+  if (punchoutPickerTitle)
   {
-    v760 = [v3 punchoutPickerTitle];
-    [(SFCardSection *)v4 setPunchoutPickerTitle:v760];
+    punchoutPickerTitle2 = [protobufCopy punchoutPickerTitle];
+    [(SFCardSection *)v4 setPunchoutPickerTitle:punchoutPickerTitle2];
   }
 
-  v761 = [v3 punchoutPickerDismissText];
+  punchoutPickerDismissText = [protobufCopy punchoutPickerDismissText];
 
-  if (v761)
+  if (punchoutPickerDismissText)
   {
-    v762 = [v3 punchoutPickerDismissText];
-    [(SFCardSection *)v4 setPunchoutPickerDismissText:v762];
+    punchoutPickerDismissText2 = [protobufCopy punchoutPickerDismissText];
+    [(SFCardSection *)v4 setPunchoutPickerDismissText:punchoutPickerDismissText2];
   }
 
-  if ([v3 canBeHidden])
+  if ([protobufCopy canBeHidden])
   {
-    -[SFCardSection setCanBeHidden:](v4, "setCanBeHidden:", [v3 canBeHidden]);
+    -[SFCardSection setCanBeHidden:](v4, "setCanBeHidden:", [protobufCopy canBeHidden]);
   }
 
-  if ([v3 hasTopPadding])
+  if ([protobufCopy hasTopPadding])
   {
-    -[SFCardSection setHasTopPadding:](v4, "setHasTopPadding:", [v3 hasTopPadding]);
+    -[SFCardSection setHasTopPadding:](v4, "setHasTopPadding:", [protobufCopy hasTopPadding]);
   }
 
-  if ([v3 hasBottomPadding])
+  if ([protobufCopy hasBottomPadding])
   {
-    -[SFCardSection setHasBottomPadding:](v4, "setHasBottomPadding:", [v3 hasBottomPadding]);
+    -[SFCardSection setHasBottomPadding:](v4, "setHasBottomPadding:", [protobufCopy hasBottomPadding]);
   }
 
-  if ([v3 separatorStyle])
+  if ([protobufCopy separatorStyle])
   {
-    -[SFCardSection setSeparatorStyle:](v4, "setSeparatorStyle:", [v3 separatorStyle]);
+    -[SFCardSection setSeparatorStyle:](v4, "setSeparatorStyle:", [protobufCopy separatorStyle]);
   }
 
-  v763 = [v3 referencedCommands];
-  v764 = [v763 count];
+  referencedCommands = [protobufCopy referencedCommands];
+  v764 = [referencedCommands count];
 
   if (v764)
   {
-    v765 = [v3 referencedCommands];
-    if (v765)
+    referencedCommands2 = [protobufCopy referencedCommands];
+    if (referencedCommands2)
     {
       v766 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -1959,8 +1959,8 @@
     v813 = 0u;
     v810 = 0u;
     v811 = 0u;
-    v767 = [v3 referencedCommands];
-    v768 = [v767 countByEnumeratingWithState:&v810 objects:v839 count:16];
+    referencedCommands3 = [protobufCopy referencedCommands];
+    v768 = [referencedCommands3 countByEnumeratingWithState:&v810 objects:v839 count:16];
     if (v768)
     {
       v769 = v768;
@@ -1971,7 +1971,7 @@
         {
           if (*v811 != v770)
           {
-            objc_enumerationMutation(v767);
+            objc_enumerationMutation(referencedCommands3);
           }
 
           v772 = [[SFCommand alloc] initWithProtobuf:*(*(&v810 + 1) + 8 * jj)];
@@ -1981,7 +1981,7 @@
           }
         }
 
-        v769 = [v767 countByEnumeratingWithState:&v810 objects:v839 count:16];
+        v769 = [referencedCommands3 countByEnumeratingWithState:&v810 objects:v839 count:16];
       }
 
       while (v769);
@@ -1990,83 +1990,83 @@
     [(SFCardSection *)v4 setReferencedCommands:v766];
   }
 
-  if ([v3 forceEnable3DTouch])
+  if ([protobufCopy forceEnable3DTouch])
   {
-    -[SFCardSection setForceEnable3DTouch:](v4, "setForceEnable3DTouch:", [v3 forceEnable3DTouch]);
+    -[SFCardSection setForceEnable3DTouch:](v4, "setForceEnable3DTouch:", [protobufCopy forceEnable3DTouch]);
   }
 
-  if ([v3 shouldShowInSmartDialog])
+  if ([protobufCopy shouldShowInSmartDialog])
   {
-    -[SFCardSection setShouldShowInSmartDialog:](v4, "setShouldShowInSmartDialog:", [v3 shouldShowInSmartDialog]);
+    -[SFCardSection setShouldShowInSmartDialog:](v4, "setShouldShowInSmartDialog:", [protobufCopy shouldShowInSmartDialog]);
   }
 
-  v773 = [v3 appEntityAnnotation];
+  appEntityAnnotation = [protobufCopy appEntityAnnotation];
 
-  if (v773)
+  if (appEntityAnnotation)
   {
     v774 = [SFAppEntityAnnotation alloc];
-    v775 = [v3 appEntityAnnotation];
-    v776 = [(SFAppEntityAnnotation *)v774 initWithProtobuf:v775];
+    appEntityAnnotation2 = [protobufCopy appEntityAnnotation];
+    v776 = [(SFAppEntityAnnotation *)v774 initWithProtobuf:appEntityAnnotation2];
     [(SFCardSection *)v4 setAppEntityAnnotation:v776];
   }
 
-  v777 = [v3 emphasisSubjectId];
+  emphasisSubjectId = [protobufCopy emphasisSubjectId];
 
-  if (v777)
+  if (emphasisSubjectId)
   {
-    v778 = [v3 emphasisSubjectId];
-    [(SFCardSection *)v4 setEmphasisSubjectId:v778];
+    emphasisSubjectId2 = [protobufCopy emphasisSubjectId];
+    [(SFCardSection *)v4 setEmphasisSubjectId:emphasisSubjectId2];
   }
 
-  if ([v3 increasedContrastMode])
+  if ([protobufCopy increasedContrastMode])
   {
-    -[SFCardSection setIncreasedContrastMode:](v4, "setIncreasedContrastMode:", [v3 increasedContrastMode]);
+    -[SFCardSection setIncreasedContrastMode:](v4, "setIncreasedContrastMode:", [protobufCopy increasedContrastMode]);
   }
 
-  v779 = [v3 secondaryCommand];
+  secondaryCommand = [protobufCopy secondaryCommand];
 
-  if (v779)
+  if (secondaryCommand)
   {
     v780 = [SFCommand alloc];
-    v781 = [v3 secondaryCommand];
-    v782 = [(SFCommand *)v780 initWithProtobuf:v781];
+    secondaryCommand2 = [protobufCopy secondaryCommand];
+    v782 = [(SFCommand *)v780 initWithProtobuf:secondaryCommand2];
     [(SFCardSection *)v4 setSecondaryCommand:v782];
   }
 
-  if ([v3 requiredLevelOfDetail])
+  if ([protobufCopy requiredLevelOfDetail])
   {
-    -[SFCardSection setRequiredLevelOfDetail:](v4, "setRequiredLevelOfDetail:", [v3 requiredLevelOfDetail]);
+    -[SFCardSection setRequiredLevelOfDetail:](v4, "setRequiredLevelOfDetail:", [protobufCopy requiredLevelOfDetail]);
   }
 
-  v783 = [v3 racFeedbackSubfeatureId];
+  racFeedbackSubfeatureId = [protobufCopy racFeedbackSubfeatureId];
 
-  if (v783)
+  if (racFeedbackSubfeatureId)
   {
-    v784 = [v3 racFeedbackSubfeatureId];
-    [(SFCardSection *)v4 setRacFeedbackSubfeatureId:v784];
+    racFeedbackSubfeatureId2 = [protobufCopy racFeedbackSubfeatureId];
+    [(SFCardSection *)v4 setRacFeedbackSubfeatureId:racFeedbackSubfeatureId2];
   }
 
-  v785 = [v3 racFeedbackLoggingContent];
-  v786 = [v785 count];
+  racFeedbackLoggingContent = [protobufCopy racFeedbackLoggingContent];
+  v786 = [racFeedbackLoggingContent count];
 
   if (v786)
   {
-    v787 = [v3 racFeedbackLoggingContent];
+    racFeedbackLoggingContent2 = [protobufCopy racFeedbackLoggingContent];
     v808[0] = MEMORY[0x1E69E9820];
     v808[1] = 3221225472;
     v808[2] = __55__SFCardSection_ProtobufInitializer__initWithProtobuf___block_invoke;
     v808[3] = &unk_1E7ACDB40;
     v809 = v4;
-    [v787 enumerateKeysAndObjectsUsingBlock:v808];
+    [racFeedbackLoggingContent2 enumerateKeysAndObjectsUsingBlock:v808];
   }
 
-  v788 = [v3 copyableItems];
-  v789 = [v788 count];
+  copyableItems = [protobufCopy copyableItems];
+  v789 = [copyableItems count];
 
   if (v789)
   {
-    v790 = [v3 copyableItems];
-    if (v790)
+    copyableItems2 = [protobufCopy copyableItems];
+    if (copyableItems2)
     {
       v791 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -2080,8 +2080,8 @@
     v807 = 0u;
     v804 = 0u;
     v805 = 0u;
-    v792 = [v3 copyableItems];
-    v793 = [v792 countByEnumeratingWithState:&v804 objects:v838 count:16];
+    copyableItems3 = [protobufCopy copyableItems];
+    v793 = [copyableItems3 countByEnumeratingWithState:&v804 objects:v838 count:16];
     if (v793)
     {
       v794 = v793;
@@ -2092,7 +2092,7 @@
         {
           if (*v805 != v795)
           {
-            objc_enumerationMutation(v792);
+            objc_enumerationMutation(copyableItems3);
           }
 
           v797 = [[SFCopyItem alloc] initWithProtobuf:*(*(&v804 + 1) + 8 * kk)];
@@ -2102,7 +2102,7 @@
           }
         }
 
-        v794 = [v792 countByEnumeratingWithState:&v804 objects:v838 count:16];
+        v794 = [copyableItems3 countByEnumeratingWithState:&v804 objects:v838 count:16];
       }
 
       while (v794);
@@ -2111,12 +2111,12 @@
     [(SFCardSection *)v4 setCopyableItems:v791];
   }
 
-  v798 = [v3 applicationBundleIdentifier];
+  applicationBundleIdentifier = [protobufCopy applicationBundleIdentifier];
 
-  if (v798)
+  if (applicationBundleIdentifier)
   {
-    v799 = [v3 applicationBundleIdentifier];
-    [(SFCardSection *)v4 setApplicationBundleIdentifier:v799];
+    applicationBundleIdentifier2 = [protobufCopy applicationBundleIdentifier];
+    [(SFCardSection *)v4 setApplicationBundleIdentifier:applicationBundleIdentifier2];
   }
 
   v800 = v4;
@@ -2134,16 +2134,16 @@ void __55__SFCardSection_ProtobufInitializer__initWithProtobuf___block_invoke(ui
   [v7 setObject:v5 forKey:v6];
 }
 
-- (void)addCardsFromEmbeddedSectionsTo:(id)a3
+- (void)addCardsFromEmbeddedSectionsTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(SFCardSection *)self sectionsWithCards];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  sectionsWithCards = [(SFCardSection *)self sectionsWithCards];
+  v6 = [sectionsWithCards countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2155,17 +2155,17 @@ void __55__SFCardSection_ProtobufInitializer__initWithProtobuf___block_invoke(ui
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sectionsWithCards);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) embeddedCards];
-        [v4 addObjectsFromArray:v10];
+        embeddedCards = [*(*(&v12 + 1) + 8 * v9) embeddedCards];
+        [toCopy addObjectsFromArray:embeddedCards];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [sectionsWithCards countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -2174,16 +2174,16 @@ void __55__SFCardSection_ProtobufInitializer__initWithProtobuf___block_invoke(ui
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addCardsFromButtonsTo:(id)a3
+- (void)addCardsFromButtonsTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SFCardSection *)self previewButtonItems];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  previewButtonItems = [(SFCardSection *)self previewButtonItems];
+  v6 = [previewButtonItems countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2195,23 +2195,23 @@ void __55__SFCardSection_ProtobufInitializer__initWithProtobuf___block_invoke(ui
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(previewButtonItems);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 command];
-          v12 = [v11 embeddedCards];
-          [v4 addObjectsFromArray:v12];
+          command = [v10 command];
+          embeddedCards = [command embeddedCards];
+          [toCopy addObjectsFromArray:embeddedCards];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [previewButtonItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -2220,37 +2220,37 @@ void __55__SFCardSection_ProtobufInitializer__initWithProtobuf___block_invoke(ui
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addCardsFromCommandsTo:(id)a3
+- (void)addCardsFromCommandsTo:(id)to
 {
-  v4 = a3;
-  v5 = [(SFCardSection *)self previewCommand];
-  v6 = [v5 embeddedCards];
-  [v4 addObjectsFromArray:v6];
+  toCopy = to;
+  previewCommand = [(SFCardSection *)self previewCommand];
+  embeddedCards = [previewCommand embeddedCards];
+  [toCopy addObjectsFromArray:embeddedCards];
 
-  v8 = [(SFCardSection *)self command];
-  v7 = [v8 embeddedCards];
-  [v4 addObjectsFromArray:v7];
+  command = [(SFCardSection *)self command];
+  embeddedCards2 = [command embeddedCards];
+  [toCopy addObjectsFromArray:embeddedCards2];
 }
 
 - (NSArray)embeddedCards
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:10];
-  v4 = [(SFCardSection *)self nextCard];
+  nextCard = [(SFCardSection *)self nextCard];
 
-  if (v4)
+  if (nextCard)
   {
-    v5 = [(SFCardSection *)self nextCard];
-    [v3 addObject:v5];
+    nextCard2 = [(SFCardSection *)self nextCard];
+    [v3 addObject:nextCard2];
 
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(SFCardSection *)self nextCard];
-    v7 = [v6 cardSections];
+    nextCard3 = [(SFCardSection *)self nextCard];
+    cardSections = [nextCard3 cardSections];
 
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [cardSections countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2261,14 +2261,14 @@ void __55__SFCardSection_ProtobufInitializer__initWithProtobuf___block_invoke(ui
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(cardSections);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) embeddedCards];
-          [v3 addObjectsFromArray:v12];
+          embeddedCards = [*(*(&v15 + 1) + 8 * i) embeddedCards];
+          [v3 addObjectsFromArray:embeddedCards];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [cardSections countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -2283,17 +2283,17 @@ void __55__SFCardSection_ProtobufInitializer__initWithProtobuf___block_invoke(ui
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v30 = 1;
   }
 
-  else if ([(SFCardSection *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFCardSection *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     punchoutOptions = self->_punchoutOptions;
     if ((punchoutOptions != 0) == (v5->_punchoutOptions == 0) || punchoutOptions && ![(NSArray *)punchoutOptions isEqual:?])
     {
@@ -2430,9 +2430,9 @@ LABEL_86:
   return v30;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(SFColor *)self->_backgroundColor copy];
   v6 = *(v4 + 96);
   *(v4 + 96) = v5;
@@ -2535,31 +2535,31 @@ LABEL_86:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBCardSection alloc] initWithFacade:self];
-  v5 = [(_SFPBCardSection *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBCardSection *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 
-  [v4 encodeObject:self->_commandDetail forKey:@"_commandDetail"];
-  [v4 encodeObject:self->_type forKey:@"_type"];
+  [coderCopy encodeObject:self->_commandDetail forKey:@"_commandDetail"];
+  [coderCopy encodeObject:self->_type forKey:@"_type"];
 }
 
-- (SFCardSection)initWithCoder:(id)a3
+- (SFCardSection)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
   v6 = [[_SFPBCardSection alloc] initWithData:v5];
   v7 = [(SFCardSection *)self initWithProtobuf:v6];
 
   if (v7)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_commandDetail"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_commandDetail"];
     commandDetail = v7->_commandDetail;
     v7->_commandDetail = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_type"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_type"];
     type = v7->_type;
     v7->_type = v10;
   }
@@ -2569,10 +2569,10 @@ LABEL_86:
 
 - (NSData)jsonData
 {
-  v2 = [(SFCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SFCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -2586,19 +2586,19 @@ LABEL_86:
 - (NSDictionary)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(SFCardSection *)self punchoutOptions];
-  v5 = [v4 count];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  v5 = [punchoutOptions count];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [(SFCardSection *)self punchoutOptions];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    punchoutOptions2 = [(SFCardSection *)self punchoutOptions];
+    v8 = [punchoutOptions2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2609,25 +2609,25 @@ LABEL_86:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(punchoutOptions2);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [punchoutOptions2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"punchoutOptions"];
+    [dictionary setObject:array forKeyedSubscript:@"punchoutOptions"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 @end

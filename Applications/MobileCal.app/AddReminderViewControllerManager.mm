@@ -9,14 +9,14 @@
 - (UIViewController)viewController;
 - (_TtC9MobileCal32AddReminderViewControllerManager)init;
 - (id)confirmDismissAlertController;
-- (id)createViewController:(id)a3;
+- (id)createViewController:(id)controller;
 - (void)cancelEditing;
 - (void)completeAndSaveForDockedView;
-- (void)completeAndSaveWithContinueBlock:(id)a3;
+- (void)completeAndSaveWithContinueBlock:(id)block;
 - (void)presentationControllerDidDismiss;
-- (void)requestReminderSheet:(id)a3;
-- (void)updateStateFromUI:(id)a3;
-- (void)updateUIFromState:(id)a3;
+- (void)requestReminderSheet:(id)sheet;
+- (void)updateStateFromUI:(id)i;
+- (void)updateUIFromState:(id)state;
 @end
 
 @implementation AddReminderViewControllerManager
@@ -74,45 +74,45 @@
 
 - (EKCalendar)calendarToMakeVisibleOnSave
 {
-  v2 = [*(self + OBJC_IVAR____TtC9MobileCal32AddReminderViewControllerManager_model) reminderCalendar];
+  reminderCalendar = [*(self + OBJC_IVAR____TtC9MobileCal32AddReminderViewControllerManager_model) reminderCalendar];
 
-  return v2;
+  return reminderCalendar;
 }
 
-- (id)createViewController:(id)a3
+- (id)createViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_100159090(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v6 = sub_100159090(controllerCopy);
 
   return v6;
 }
 
 - (UIViewController)viewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10015A43C();
 
   return v3;
 }
 
-- (void)updateUIFromState:(id)a3
+- (void)updateUIFromState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_10015A604(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_10015A604(stateCopy);
 }
 
-- (void)updateStateFromUI:(id)a3
+- (void)updateStateFromUI:(id)i
 {
-  v4 = a3;
-  v5 = self;
-  sub_10015AAC8(v4);
+  iCopy = i;
+  selfCopy = self;
+  sub_10015AAC8(iCopy);
 }
 
 - (BOOL)canDismiss
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10015B1E0();
 
   return v3 & 1;
@@ -120,7 +120,7 @@
 
 - (id)confirmDismissAlertController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10015B518();
 
   return v3;
@@ -139,7 +139,7 @@
 
 - (BOOL)hasUnsavedChanges
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10015BE84();
 
   return v3 & 1;
@@ -147,15 +147,15 @@
 
 - (BOOL)willPresentDialogOnSave
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10015C0A0();
 
   return v3 & 1;
 }
 
-- (void)completeAndSaveWithContinueBlock:(id)a3
+- (void)completeAndSaveWithContinueBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = v4;
@@ -170,24 +170,24 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_10015C2D0(v7, v6);
   sub_10015F010(v7);
 }
 
 - (void)cancelEditing
 {
-  v2 = self;
+  selfCopy = self;
   sub_10015CB9C();
 }
 
 - (void)completeAndSaveForDockedView
 {
-  v2 = self;
+  selfCopy = self;
   sub_10015CDD8();
 }
 
-- (void)requestReminderSheet:(id)a3
+- (void)requestReminderSheet:(id)sheet
 {
   v4 = sub_10015E0CC(&qword_100251560);
   __chkstk_darwin(v4 - 8);
@@ -197,8 +197,8 @@
   v8 = swift_allocObject();
   v8[2] = 0;
   v8[3] = 0;
-  v8[4] = a3;
-  v9 = a3;
+  v8[4] = sheet;
+  sheetCopy = sheet;
   sub_100167F80(0, 0, v6, &unk_1001F89D8, v8);
 }
 

@@ -1,21 +1,21 @@
 @interface CHSWidgetDescriptorsPredicate
 + (CHSWidgetDescriptorsPredicate)visible;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CHSWidgetDescriptorsPredicate)init;
 - (NSString)description;
-- (id)copyWithZone:(void *)a3;
-- (id)initIncludingRelevanceBacked:(BOOL)a3;
+- (id)copyWithZone:(void *)zone;
+- (id)initIncludingRelevanceBacked:(BOOL)backed;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIncludeRemote:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIncludeRemote:(BOOL)remote;
 @end
 
 @implementation CHSWidgetDescriptorsPredicate
 
-- (id)initIncludingRelevanceBacked:(BOOL)a3
+- (id)initIncludingRelevanceBacked:(BOOL)backed
 {
   v4 = [objc_allocWithZone(swift_getObjCClassFromObject()) init];
-  v4[OBJC_IVAR___CHSWidgetDescriptorsPredicate_includeRelevanceBacked] = a3;
+  v4[OBJC_IVAR___CHSWidgetDescriptorsPredicate_includeRelevanceBacked] = backed;
   *&v4[OBJC_IVAR___CHSWidgetDescriptorsPredicate_remoteWidgetInclusions] = 0;
   swift_getObjectType();
   swift_deallocPartialClassInstance();
@@ -31,11 +31,11 @@
   return [(CHSWidgetDescriptorsPredicate *)&v3 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_195FA0E08();
     swift_unknownObjectRelease();
@@ -44,7 +44,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CHSWidgetDescriptorsPredicate.isEqual(_:)(v8);
@@ -53,27 +53,27 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v9 = self;
-  v5 = [(CHSWidgetDescriptorsPredicate *)v9 includeRelevanceBacked];
+  coderCopy = coder;
+  selfCopy = self;
+  includeRelevanceBacked = [(CHSWidgetDescriptorsPredicate *)selfCopy includeRelevanceBacked];
   v6 = sub_195FA0888();
-  [v4 encodeBool:v5 forKey:v6];
+  [coderCopy encodeBool:includeRelevanceBacked forKey:v6];
 
-  v7 = [(CHSWidgetDescriptorsPredicate *)v9 remoteWidgetInclusions];
+  remoteWidgetInclusions = [(CHSWidgetDescriptorsPredicate *)selfCopy remoteWidgetInclusions];
   v8 = sub_195FA0888();
-  [v4 encodeInteger:v7 forKey:v8];
+  [coderCopy encodeInteger:remoteWidgetInclusions forKey:v8];
 }
 
-- (void)setIncludeRemote:(BOOL)a3
+- (void)setIncludeRemote:(BOOL)remote
 {
-  if (a3)
+  if (remote)
   {
-    v3 = self;
-    if (![(CHSWidgetDescriptorsPredicate *)v3 remoteWidgetInclusions])
+    selfCopy = self;
+    if (![(CHSWidgetDescriptorsPredicate *)selfCopy remoteWidgetInclusions])
     {
-      [(CHSWidgetDescriptorsPredicate *)v3 setRemoteWidgetInclusions:1];
+      [(CHSWidgetDescriptorsPredicate *)selfCopy setRemoteWidgetInclusions:1];
     }
   }
 
@@ -91,14 +91,14 @@
   return v2;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
-  v4 = [(CHSWidgetDescriptorsPredicate *)v3 includeRelevanceBacked];
-  v5 = [(CHSWidgetDescriptorsPredicate *)v3 remoteWidgetInclusions];
+  selfCopy = self;
+  includeRelevanceBacked = [(CHSWidgetDescriptorsPredicate *)selfCopy includeRelevanceBacked];
+  remoteWidgetInclusions = [(CHSWidgetDescriptorsPredicate *)selfCopy remoteWidgetInclusions];
   v6 = [objc_allocWithZone(CHSWidgetDescriptorsPredicate) init];
-  v6[OBJC_IVAR___CHSWidgetDescriptorsPredicate_includeRelevanceBacked] = v4;
-  *&v6[OBJC_IVAR___CHSWidgetDescriptorsPredicate_remoteWidgetInclusions] = v5;
+  v6[OBJC_IVAR___CHSWidgetDescriptorsPredicate_includeRelevanceBacked] = includeRelevanceBacked;
+  *&v6[OBJC_IVAR___CHSWidgetDescriptorsPredicate_remoteWidgetInclusions] = remoteWidgetInclusions;
 
   return v6;
 }
@@ -106,10 +106,10 @@
 - (int64_t)hash
 {
   sub_195FA13F8();
-  v3 = self;
-  [(CHSWidgetDescriptorsPredicate *)v3 includeRelevanceBacked];
+  selfCopy = self;
+  [(CHSWidgetDescriptorsPredicate *)selfCopy includeRelevanceBacked];
   sub_195FA13B8();
-  MEMORY[0x19A8C4970]([(CHSWidgetDescriptorsPredicate *)v3 remoteWidgetInclusions]);
+  MEMORY[0x19A8C4970]([(CHSWidgetDescriptorsPredicate *)selfCopy remoteWidgetInclusions]);
   v4 = sub_195FA13D8();
 
   return v4;
@@ -117,7 +117,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CHSWidgetDescriptorsPredicate.description.getter();
 
   v3 = sub_195FA0888();

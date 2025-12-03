@@ -11,7 +11,7 @@
   v5[1] = 3221225472;
   v5[2] = __45__NSMapTable_FCAdditions__fc_objectsForKeys___block_invoke;
   v5[3] = &unk_1E7C38BD8;
-  v5[4] = a1;
+  v5[4] = self;
   v3 = [a3 fc_arrayByTransformingWithBlock:v5];
 
   return v3;

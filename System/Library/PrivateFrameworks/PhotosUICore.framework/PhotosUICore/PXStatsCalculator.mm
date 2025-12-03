@@ -1,32 +1,32 @@
 @interface PXStatsCalculator
 - (PXStatsCalculator)init;
-- (void)addValue:(double)a3;
+- (void)addValue:(double)value;
 @end
 
 @implementation PXStatsCalculator
 
-- (void)addValue:(double)a3
+- (void)addValue:(double)value
 {
-  v3 = self->_squareSum + a3 * a3;
-  self->_sum = self->_sum + a3;
+  v3 = self->_squareSum + value * value;
+  self->_sum = self->_sum + value;
   self->_squareSum = v3;
   count = self->_count;
   self->_count = count + 1;
   if (count)
   {
     v5 = *&self->_min;
-    v6 = vcgtq_f64(vdupq_lane_s64(*&a3, 0), v5);
+    v6 = vcgtq_f64(vdupq_lane_s64(*&value, 0), v5);
     v7.i64[0] = *&self->_min;
-    *&v7.i64[1] = a3;
-    v5.f64[0] = a3;
+    *&v7.i64[1] = value;
+    v5.f64[0] = value;
     *&self->_min = vbslq_s8(v6, v7, v5);
   }
 
   else
   {
-    self->_max = a3;
-    self->_first = a3;
-    self->_min = a3;
+    self->_max = value;
+    self->_first = value;
+    self->_min = value;
   }
 }
 

@@ -1,29 +1,29 @@
 @interface CRLPasteboardObjectItemProviderWriteAssistant
 - (_TtC8Freeform45CRLPasteboardObjectItemProviderWriteAssistant)init;
-- (_TtC8Freeform45CRLPasteboardObjectItemProviderWriteAssistant)initWithStore:(id)a3 context:(id)a4;
-- (void)writePasteboardObject:(_TtC8Freeform19CRLPasteboardObject *)a3 to:(NSItemProvider *)a4 completionHandler:(id)a5;
+- (_TtC8Freeform45CRLPasteboardObjectItemProviderWriteAssistant)initWithStore:(id)store context:(id)context;
+- (void)writePasteboardObject:(_TtC8Freeform19CRLPasteboardObject *)object to:(NSItemProvider *)to completionHandler:(id)handler;
 @end
 
 @implementation CRLPasteboardObjectItemProviderWriteAssistant
 
-- (_TtC8Freeform45CRLPasteboardObjectItemProviderWriteAssistant)initWithStore:(id)a3 context:(id)a4
+- (_TtC8Freeform45CRLPasteboardObjectItemProviderWriteAssistant)initWithStore:(id)store context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_1006913E4(v5, v6);
+  storeCopy = store;
+  contextCopy = context;
+  v7 = sub_1006913E4(storeCopy, contextCopy);
 
   return v7;
 }
 
-- (void)writePasteboardObject:(_TtC8Freeform19CRLPasteboardObject *)a3 to:(NSItemProvider *)a4 completionHandler:(id)a5
+- (void)writePasteboardObject:(_TtC8Freeform19CRLPasteboardObject *)object to:(NSItemProvider *)to completionHandler:(id)handler
 {
   v9 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v9 - 8);
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = object;
+  v13[3] = to;
   v13[4] = v12;
   v13[5] = self;
   v14 = type metadata accessor for TaskPriority();
@@ -38,9 +38,9 @@
   v16[3] = 0;
   v16[4] = &unk_1014938A0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  objectCopy = object;
+  toCopy = to;
+  selfCopy = self;
   sub_10119D67C(0, 0, v11, &unk_101470870, v16);
 }
 

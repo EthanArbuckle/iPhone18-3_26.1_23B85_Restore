@@ -1,7 +1,7 @@
 @interface PGGraphBusinessNodeCollection
-+ (id)businessNodeForBusinessMuid:(unint64_t)a3 inGraph:(id)a4;
-+ (id)businessNodesWithCIDINames:(id)a3 inGraph:(id)a4;
-+ (id)restaurantBusinessNodesInGraph:(id)a3;
++ (id)businessNodeForBusinessMuid:(unint64_t)muid inGraph:(id)graph;
++ (id)businessNodesWithCIDINames:(id)names inGraph:(id)graph;
++ (id)restaurantBusinessNodesInGraph:(id)graph;
 - (NSSet)businessNames;
 - (PGGraphBusinessCategoryNodeCollection)categoryNodes;
 - (PGGraphMomentNodeCollection)momentNodes;
@@ -57,51 +57,51 @@ void __46__PGGraphBusinessNodeCollection_businessNames__block_invoke(uint64_t a1
   return v4;
 }
 
-+ (id)restaurantBusinessNodesInGraph:(id)a3
++ (id)restaurantBusinessNodesInGraph:(id)graph
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB98];
   v12[0] = @"Restaurant";
   v12[1] = @"Nightlife";
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
+  graphCopy = graph;
   v6 = [v4 arrayWithObjects:v12 count:2];
   v7 = [v3 setWithArray:v6];
 
-  v8 = [PGGraphBusinessCategoryNodeCollection businessCategoryNodesForCategories:v7 inGraph:v5];
+  v8 = [PGGraphBusinessCategoryNodeCollection businessCategoryNodesForCategories:v7 inGraph:graphCopy];
 
-  v9 = [v8 businessNodes];
+  businessNodes = [v8 businessNodes];
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return businessNodes;
 }
 
-+ (id)businessNodesWithCIDINames:(id)a3 inGraph:(id)a4
++ (id)businessNodesWithCIDINames:(id)names inGraph:(id)graph
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  graphCopy = graph;
+  namesCopy = names;
   v8 = +[PGGraphBusinessNode filter];
   v15 = @"name";
-  v9 = [objc_alloc(MEMORY[0x277D22B98]) initWithComparator:8 value:v7];
+  v9 = [objc_alloc(MEMORY[0x277D22B98]) initWithComparator:8 value:namesCopy];
 
   v16[0] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   v11 = [v8 filterBySettingProperties:v10];
 
-  v12 = [a1 nodesMatchingFilter:v11 inGraph:v6];
+  v12 = [self nodesMatchingFilter:v11 inGraph:graphCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (id)businessNodeForBusinessMuid:(unint64_t)a3 inGraph:(id)a4
++ (id)businessNodeForBusinessMuid:(unint64_t)muid inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphBusinessNode filterWithMuid:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphBusinessNode filterWithMuid:muid];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }

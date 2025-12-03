@@ -1,22 +1,22 @@
 @interface ICTableCellTextStorage
-- (ICTableCellTextStorage)initWithDocument:(id)a3;
+- (ICTableCellTextStorage)initWithDocument:(id)document;
 @end
 
 @implementation ICTableCellTextStorage
 
-- (ICTableCellTextStorage)initWithDocument:(id)a3
+- (ICTableCellTextStorage)initWithDocument:(id)document
 {
-  v4 = a3;
-  v5 = [v4 mergeableString];
-  v6 = [v5 delegate];
+  documentCopy = document;
+  mergeableString = [documentCopy mergeableString];
+  delegate = [mergeableString delegate];
 
   v10.receiver = self;
   v10.super_class = ICTableCellTextStorage;
-  v7 = [(ICTableTextStorage *)&v10 initWithDocument:v4];
+  v7 = [(ICTableTextStorage *)&v10 initWithDocument:documentCopy];
   if (v7)
   {
-    v8 = [v4 mergeableString];
-    [v8 setDelegate:v6];
+    mergeableString2 = [documentCopy mergeableString];
+    [mergeableString2 setDelegate:delegate];
   }
 
   return v7;

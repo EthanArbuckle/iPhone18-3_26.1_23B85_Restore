@@ -1,7 +1,7 @@
 @interface SBScreenEdgePanGestureRecognizer
 - (BOOL)isLocationWithinGrabberActiveZone;
-- (SBScreenEdgePanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (SBScreenEdgePanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 type:(int64_t)a5 options:(unint64_t)a6;
+- (SBScreenEdgePanGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (SBScreenEdgePanGestureRecognizer)initWithTarget:(id)target action:(SEL)action type:(int64_t)type options:(unint64_t)options;
 - (double)grabberActiveZoneWidth;
 - (void)sb_commonInitScreenEdgePanGestureRecognizer;
 @end
@@ -18,11 +18,11 @@
   [(SBScreenEdgePanGestureRecognizer *)self sbf_setPencilTouchesAllowed:v3];
 }
 
-- (SBScreenEdgePanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (SBScreenEdgePanGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = SBScreenEdgePanGestureRecognizer;
-  v4 = [(UIScreenEdgePanGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIScreenEdgePanGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -32,11 +32,11 @@
   return v5;
 }
 
-- (SBScreenEdgePanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 type:(int64_t)a5 options:(unint64_t)a6
+- (SBScreenEdgePanGestureRecognizer)initWithTarget:(id)target action:(SEL)action type:(int64_t)type options:(unint64_t)options
 {
   v9.receiver = self;
   v9.super_class = SBScreenEdgePanGestureRecognizer;
-  v6 = [(UIScreenEdgePanGestureRecognizer *)&v9 initWithTarget:a3 action:a4 type:a5 options:a6];
+  v6 = [(UIScreenEdgePanGestureRecognizer *)&v9 initWithTarget:target action:action type:type options:options];
   v7 = v6;
   if (v6)
   {
@@ -59,8 +59,8 @@
 
 - (BOOL)isLocationWithinGrabberActiveZone
 {
-  v3 = [(SBScreenEdgePanGestureRecognizer *)self delegate];
-  v4 = [v3 viewForSystemGestureRecognizer:self];
+  delegate = [(SBScreenEdgePanGestureRecognizer *)self delegate];
+  v4 = [delegate viewForSystemGestureRecognizer:self];
 
   _UISystemGestureLocationInView();
   v6 = v5;
@@ -69,15 +69,15 @@
   MidX = CGRectGetMidX(v17);
   [(SBScreenEdgePanGestureRecognizer *)self grabberActiveZoneWidth];
   v11 = v10;
-  v12 = [(UIScreenEdgePanGestureRecognizer *)self edges];
-  v13 = (v12 & 0xA) == 0;
+  edges = [(UIScreenEdgePanGestureRecognizer *)self edges];
+  v13 = (edges & 0xA) == 0;
   if (vabdd_f64(v8, MidX) <= v11)
   {
     v13 = 1;
   }
 
   v14 = vabdd_f64(v6, MidX) <= v11 && v13;
-  if ((v12 & 5) != 0)
+  if ((edges & 5) != 0)
   {
     v15 = v14;
   }

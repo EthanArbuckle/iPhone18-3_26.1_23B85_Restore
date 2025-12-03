@@ -1,9 +1,9 @@
 @interface KNBuildSparkleSystem
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3;
-- (CGPoint)startingPointAtIndexPoint:(CGPoint)a3;
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point;
+- (CGPoint)startingPointAtIndexPoint:(CGPoint)point;
 - (double)p_globalScale;
-- (double)scaleAtIndexPoint:(CGPoint)a3;
+- (double)scaleAtIndexPoint:(CGPoint)point;
 - (double)speedMax;
 @end
 
@@ -40,10 +40,10 @@
   return v6 / sqrt(sqrt(v6 / v10)) * 0.25;
 }
 
-- (CGPoint)startingPointAtIndexPoint:(CGPoint)a3
+- (CGPoint)startingPointAtIndexPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(KNBuildSparkleSystem *)self duration];
   v7 = v6;
   v8 = [(KNBuildSparkleSystem *)self direction]== &dword_C + 1 || [(KNBuildSparkleSystem *)self direction]== &dword_C + 2;
@@ -99,9 +99,9 @@
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point
 {
-  v3 = [(KNBuildSparkleSystem *)self randomGenerator:a3.x];
+  v3 = [(KNBuildSparkleSystem *)self randomGenerator:point.x];
   [v3 metalPoint3DRandomDirection];
   v5 = v4;
   v7 = v6;
@@ -149,17 +149,17 @@
   return v6 / pow(v6 / v10, 0.667) * 0.25 * 1.5;
 }
 
-- (double)scaleAtIndexPoint:(CGPoint)a3
+- (double)scaleAtIndexPoint:(CGPoint)point
 {
-  [(KNBuildSparkleSystem *)self p_globalScale:a3.x];
+  [(KNBuildSparkleSystem *)self p_globalScale:point.x];
   v5 = v4;
   [(KNBuildSparkleSystem *)self particleSize];
   return v5 / v6;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point
 {
-  v4 = [(KNBuildSparkleSystem *)self indexFromPoint:a3.x, a3.y];
+  v4 = [(KNBuildSparkleSystem *)self indexFromPoint:point.x, point.y];
   v5 = v4 / [(KNBuildSparkleSystem *)self particleCount];
   [(KNBuildSparkleSystem *)self duration];
   v7 = 0.667 / fmax(v6, 0.75);

@@ -1,12 +1,12 @@
 @interface FLTCDMCATISwiftBitVector
-- (FLTCDMCATISwiftBitVector)initWithFlatbuffData:(id)a3 root:(const CDMCATISwiftBitVector *)a4 verify:(BOOL)a5;
-- (Offset<CDMCATISwiftBitVector>)addObjectToBuffer:(void *)a3;
+- (FLTCDMCATISwiftBitVector)initWithFlatbuffData:(id)data root:(const CDMCATISwiftBitVector *)root verify:(BOOL)verify;
+- (Offset<CDMCATISwiftBitVector>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (unint64_t)bit_shift;
 - (unint64_t)bits_per_block;
 - (unint64_t)number_of_bits;
 - (unint64_t)number_of_bytes;
-- (void)data:(id)a3;
+- (void)data:(id)data;
 @end
 
 @implementation FLTCDMCATISwiftBitVector
@@ -40,12 +40,12 @@ apple::aiml::flatbuffers2::DetachedBuffer *__40__FLTCDMCATISwiftBitVector_flatbu
   return result;
 }
 
-- (Offset<CDMCATISwiftBitVector>)addObjectToBuffer:(void *)a3
+- (Offset<CDMCATISwiftBitVector>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FLTCDMCATISwiftBitVector *)self number_of_bits];
-  v6 = [(FLTCDMCATISwiftBitVector *)self number_of_bytes];
-  v7 = [(FLTCDMCATISwiftBitVector *)self bits_per_block];
-  v8 = [(FLTCDMCATISwiftBitVector *)self bit_shift];
+  number_of_bits = [(FLTCDMCATISwiftBitVector *)self number_of_bits];
+  number_of_bytes = [(FLTCDMCATISwiftBitVector *)self number_of_bytes];
+  bits_per_block = [(FLTCDMCATISwiftBitVector *)self bits_per_block];
+  bit_shift = [(FLTCDMCATISwiftBitVector *)self bit_shift];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3812000000;
@@ -58,25 +58,25 @@ apple::aiml::flatbuffers2::DetachedBuffer *__40__FLTCDMCATISwiftBitVector_flatbu
   v16[2] = __46__FLTCDMCATISwiftBitVector_addObjectToBuffer___block_invoke;
   v16[3] = &unk_1E8328360;
   v16[4] = &v17;
-  v16[5] = a3;
+  v16[5] = buffer;
   [(FLTCDMCATISwiftBitVector *)self data:v16];
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v9 = *(a3 + 8);
-  v10 = *(a3 + 12);
-  v11 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(a3, 4, v5);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(a3, 6, v6);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(a3, 8, v7);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(a3, 10, v8);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v9 = *(buffer + 8);
+  v10 = *(buffer + 12);
+  v11 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(buffer, 4, number_of_bits);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(buffer, 6, number_of_bytes);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(buffer, 8, bits_per_block);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(buffer, 10, bit_shift);
   v12 = *(v18 + 12);
   if (v12)
   {
-    v13 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(a3, v12);
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 12, v13, 0);
+    v13 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(buffer, v12);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 12, v13, 0);
   }
 
-  v14.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v9 - v10 + v11);
+  v14.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v9 - v10 + v11);
   _Block_object_dispose(&v17, 8);
   return v14;
 }
@@ -104,14 +104,14 @@ uint64_t __46__FLTCDMCATISwiftBitVector_addObjectToBuffer___block_invoke(uint64_
   return result;
 }
 
-- (void)data:(id)a3
+- (void)data:(id)data
 {
   root = self->_root;
   v5 = &root[-*root->var0];
-  v6 = a3;
+  dataCopy = data;
   v7 = *root[*v5[12].var0 + *root[*v5[12].var0].var0].var0;
-  v8 = v6;
-  (*(a3 + 2))();
+  v8 = dataCopy;
+  (*(data + 2))();
 }
 
 - (unint64_t)bit_shift
@@ -174,10 +174,10 @@ uint64_t __46__FLTCDMCATISwiftBitVector_addObjectToBuffer___block_invoke(uint64_
   }
 }
 
-- (FLTCDMCATISwiftBitVector)initWithFlatbuffData:(id)a3 root:(const CDMCATISwiftBitVector *)a4 verify:(BOOL)a5
+- (FLTCDMCATISwiftBitVector)initWithFlatbuffData:(id)data root:(const CDMCATISwiftBitVector *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FLTCDMCATISwiftBitVector;
   v10 = [(FLTCDMCATISwiftBitVector *)&v25 init];
@@ -186,35 +186,35 @@ uint64_t __46__FLTCDMCATISwiftBitVector_addObjectToBuffer___block_invoke(uint64_
     goto LABEL_14;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_15;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_1C8C15D50;
   v23 = 0;

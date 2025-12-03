@@ -10,8 +10,8 @@
   v3 = [(CAMImageWellAccessibility *)self safeValueForKey:@"_thumbnailImageView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 image];
-  v6 = v5 != 0;
+  image = [v4 image];
+  v6 = image != 0;
 
   return v6;
 }

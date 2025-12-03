@@ -1,18 +1,18 @@
 @interface PKCarUnlockSupportedTerminal
-- (PKCarUnlockSupportedTerminal)initWithCoder:(id)a3;
-- (PKCarUnlockSupportedTerminal)initWithDictionary:(id)a3;
+- (PKCarUnlockSupportedTerminal)initWithCoder:(id)coder;
+- (PKCarUnlockSupportedTerminal)initWithDictionary:(id)dictionary;
 - (id)description;
-- (id)vehicleInitiatedPairingLaunchURLWithReferralSource:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)vehicleInitiatedPairingLaunchURLWithReferralSource:(unint64_t)source;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCarUnlockSupportedTerminal
 
-- (PKCarUnlockSupportedTerminal)initWithDictionary:(id)a3
+- (PKCarUnlockSupportedTerminal)initWithDictionary:(id)dictionary
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v29 = PKLogFacilityTypeGetObject(0x17uLL);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -28,13 +28,13 @@
   self = [(PKCarUnlockSupportedTerminal *)self init];
   if (self)
   {
-    v5 = [v4 PKArrayContaining:objc_opt_class() forKey:@"associatedApplicationIdentifiers"];
+    v5 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"associatedApplicationIdentifiers"];
     associatedApplicationIdentifiers = self->_associatedApplicationIdentifiers;
     self->_associatedApplicationIdentifiers = v5;
 
     if (![(NSArray *)self->_associatedApplicationIdentifiers count])
     {
-      v7 = [v4 PKStringForKey:@"associatedApplicationIdentifier"];
+      v7 = [dictionaryCopy PKStringForKey:@"associatedApplicationIdentifier"];
       v8 = v7;
       if (v7)
       {
@@ -45,26 +45,26 @@
       }
     }
 
-    v11 = [v4 PKStringForKey:@"partnerIdentifier"];
+    v11 = [dictionaryCopy PKStringForKey:@"partnerIdentifier"];
     partnerIdentifier = self->_partnerIdentifier;
     self->_partnerIdentifier = v11;
 
     if (self->_partnerIdentifier)
     {
-      v13 = [v4 PKStringForKey:@"partnerName"];
+      v13 = [dictionaryCopy PKStringForKey:@"partnerName"];
       partnerName = self->_partnerName;
       self->_partnerName = v13;
 
       if (self->_partnerName)
       {
-        v15 = [v4 PKStringForKey:@"manufacturerIdentifier"];
+        v15 = [dictionaryCopy PKStringForKey:@"manufacturerIdentifier"];
         manufacturerIdentifier = self->_manufacturerIdentifier;
         self->_manufacturerIdentifier = v15;
 
         if (self->_manufacturerIdentifier)
         {
-          v32 = self;
-          v17 = [v4 PKArrayContaining:objc_opt_class() forKey:@"terminalCriteria"];
+          selfCopy = self;
+          v17 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"terminalCriteria"];
           v18 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v17, "count")}];
           v33 = 0u;
           v34 = 0u;
@@ -110,9 +110,9 @@
           }
 
           v26 = [v18 copy];
-          self = v32;
-          terminalCriteria = v32->_terminalCriteria;
-          v32->_terminalCriteria = v26;
+          self = selfCopy;
+          terminalCriteria = selfCopy->_terminalCriteria;
+          selfCopy->_terminalCriteria = v26;
 
           goto LABEL_23;
         }
@@ -127,7 +127,7 @@
 
 LABEL_33:
 
-        v28 = 0;
+        selfCopy2 = 0;
         goto LABEL_34;
       }
 
@@ -160,10 +160,10 @@ LABEL_32:
 
 LABEL_23:
   self = self;
-  v28 = self;
+  selfCopy2 = self;
 LABEL_34:
 
-  return v28;
+  return selfCopy2;
 }
 
 - (id)description
@@ -178,53 +178,53 @@ LABEL_34:
   return v3;
 }
 
-- (id)vehicleInitiatedPairingLaunchURLWithReferralSource:(unint64_t)a3
+- (id)vehicleInitiatedPairingLaunchURLWithReferralSource:(unint64_t)source
 {
-  v4 = [(PKCarUnlockSupportedTerminal *)self partnerIdentifier];
-  v5 = PKVehicleInitiatedPairingLaunchURL(v4, 1, 0, a3);
+  partnerIdentifier = [(PKCarUnlockSupportedTerminal *)self partnerIdentifier];
+  v5 = PKVehicleInitiatedPairingLaunchURL(partnerIdentifier, 1, 0, source);
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   associatedApplicationIdentifiers = self->_associatedApplicationIdentifiers;
-  v5 = a3;
-  [v5 encodeObject:associatedApplicationIdentifiers forKey:@"associatedApplicationIdentifiers"];
-  [v5 encodeObject:self->_partnerIdentifier forKey:@"partnerIdentifier"];
-  [v5 encodeObject:self->_partnerName forKey:@"partnerName"];
-  [v5 encodeObject:self->_manufacturerIdentifier forKey:@"manufacturerIdentifier"];
-  [v5 encodeObject:self->_terminalCriteria forKey:@"terminalCriteria"];
+  coderCopy = coder;
+  [coderCopy encodeObject:associatedApplicationIdentifiers forKey:@"associatedApplicationIdentifiers"];
+  [coderCopy encodeObject:self->_partnerIdentifier forKey:@"partnerIdentifier"];
+  [coderCopy encodeObject:self->_partnerName forKey:@"partnerName"];
+  [coderCopy encodeObject:self->_manufacturerIdentifier forKey:@"manufacturerIdentifier"];
+  [coderCopy encodeObject:self->_terminalCriteria forKey:@"terminalCriteria"];
 }
 
-- (PKCarUnlockSupportedTerminal)initWithCoder:(id)a3
+- (PKCarUnlockSupportedTerminal)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = PKCarUnlockSupportedTerminal;
   v5 = [(PKCarUnlockSupportedTerminal *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"associatedApplicationIdentifiers"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"associatedApplicationIdentifiers"];
     associatedApplicationIdentifiers = v5->_associatedApplicationIdentifiers;
     v5->_associatedApplicationIdentifiers = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partnerIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partnerIdentifier"];
     partnerIdentifier = v5->_partnerIdentifier;
     v5->_partnerIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partnerName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partnerName"];
     partnerName = v5->_partnerName;
     v5->_partnerName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manufacturerIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manufacturerIdentifier"];
     manufacturerIdentifier = v5->_manufacturerIdentifier;
     v5->_manufacturerIdentifier = v12;
 
     v14 = objc_alloc(MEMORY[0x1E695DFD8]);
     v15 = objc_opt_class();
     v16 = [v14 initWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"terminalCriteria"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"terminalCriteria"];
     terminalCriteria = v5->_terminalCriteria;
     v5->_terminalCriteria = v17;
   }

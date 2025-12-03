@@ -1,89 +1,89 @@
 @interface ULFingerprintMetaInfo
-- (BOOL)isEqual:(id)a3;
-- (ULFingerprintMetaInfo)initWithCoder:(id)a3;
-- (ULFingerprintMetaInfo)initWithNumWiFiAccessPoints:(id)a3 numBLESources:(id)a4 numUWBSources:(id)a5 requestIdentifier:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ULFingerprintMetaInfo)initWithCoder:(id)coder;
+- (ULFingerprintMetaInfo)initWithNumWiFiAccessPoints:(id)points numBLESources:(id)sources numUWBSources:(id)bSources requestIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULFingerprintMetaInfo
 
-- (ULFingerprintMetaInfo)initWithNumWiFiAccessPoints:(id)a3 numBLESources:(id)a4 numUWBSources:(id)a5 requestIdentifier:(id)a6
+- (ULFingerprintMetaInfo)initWithNumWiFiAccessPoints:(id)points numBLESources:(id)sources numUWBSources:(id)bSources requestIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  pointsCopy = points;
+  sourcesCopy = sources;
+  bSourcesCopy = bSources;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = ULFingerprintMetaInfo;
   v15 = [(ULFingerprintMetaInfo *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_numberOfWiFiAccessPoints, a3);
-    objc_storeStrong(&v16->_numberOfBLESources, a4);
-    objc_storeStrong(&v16->_numberOfUWBSources, a5);
-    objc_storeStrong(&v16->_requestIdentifier, a6);
+    objc_storeStrong(&v15->_numberOfWiFiAccessPoints, points);
+    objc_storeStrong(&v16->_numberOfBLESources, sources);
+    objc_storeStrong(&v16->_numberOfUWBSources, bSources);
+    objc_storeStrong(&v16->_requestIdentifier, identifier);
   }
 
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(ULFingerprintMetaInfo *)self numberOfWiFiAccessPoints];
-  v7 = [v6 copyWithZone:a3];
-  v8 = [(ULFingerprintMetaInfo *)self numberOfBLESources];
-  v9 = [v8 copyWithZone:a3];
-  v10 = [(ULFingerprintMetaInfo *)self numberOfUWBSources];
-  v11 = [v10 copyWithZone:a3];
-  v12 = [(ULFingerprintMetaInfo *)self requestIdentifier];
-  v13 = [v12 copyWithZone:a3];
+  numberOfWiFiAccessPoints = [(ULFingerprintMetaInfo *)self numberOfWiFiAccessPoints];
+  v7 = [numberOfWiFiAccessPoints copyWithZone:zone];
+  numberOfBLESources = [(ULFingerprintMetaInfo *)self numberOfBLESources];
+  v9 = [numberOfBLESources copyWithZone:zone];
+  numberOfUWBSources = [(ULFingerprintMetaInfo *)self numberOfUWBSources];
+  v11 = [numberOfUWBSources copyWithZone:zone];
+  requestIdentifier = [(ULFingerprintMetaInfo *)self requestIdentifier];
+  v13 = [requestIdentifier copyWithZone:zone];
   v14 = [v5 initWithNumWiFiAccessPoints:v7 numBLESources:v9 numUWBSources:v11 requestIdentifier:v13];
 
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   numberOfWiFiAccessPoints = self->_numberOfWiFiAccessPoints;
-  v5 = a3;
-  [v5 encodeObject:numberOfWiFiAccessPoints forKey:@"numberOfWiFiAccessPoints"];
-  [v5 encodeObject:self->_numberOfBLESources forKey:@"numberOfBLESources"];
-  [v5 encodeObject:self->_numberOfUWBSources forKey:@"numberOfUWBSources"];
-  [v5 encodeObject:self->_requestIdentifier forKey:@"requestIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:numberOfWiFiAccessPoints forKey:@"numberOfWiFiAccessPoints"];
+  [coderCopy encodeObject:self->_numberOfBLESources forKey:@"numberOfBLESources"];
+  [coderCopy encodeObject:self->_numberOfUWBSources forKey:@"numberOfUWBSources"];
+  [coderCopy encodeObject:self->_requestIdentifier forKey:@"requestIdentifier"];
 }
 
-- (ULFingerprintMetaInfo)initWithCoder:(id)a3
+- (ULFingerprintMetaInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = ULFingerprintMetaInfo;
   v5 = [(ULFingerprintMetaInfo *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numberOfWiFiAccessPoints"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numberOfWiFiAccessPoints"];
     v7 = objc_opt_self();
 
     numberOfWiFiAccessPoints = v5->_numberOfWiFiAccessPoints;
     v5->_numberOfWiFiAccessPoints = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numberOfBLESources"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numberOfBLESources"];
     v10 = objc_opt_self();
 
     numberOfBLESources = v5->_numberOfBLESources;
     v5->_numberOfBLESources = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numberOfUWBSources"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numberOfUWBSources"];
     v13 = objc_opt_self();
 
     numberOfUWBSources = v5->_numberOfUWBSources;
     v5->_numberOfUWBSources = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestIdentifier"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestIdentifier"];
     v16 = objc_opt_self();
 
     requestIdentifier = v5->_requestIdentifier;
@@ -102,81 +102,81 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@: ", v5];
 
-  v7 = [(ULFingerprintMetaInfo *)self numberOfWiFiAccessPoints];
-  [v6 appendFormat:@", numberOfWiFiAccessPoints: %@", v7];
+  numberOfWiFiAccessPoints = [(ULFingerprintMetaInfo *)self numberOfWiFiAccessPoints];
+  [v6 appendFormat:@", numberOfWiFiAccessPoints: %@", numberOfWiFiAccessPoints];
 
-  v8 = [(ULFingerprintMetaInfo *)self numberOfBLESources];
-  [v6 appendFormat:@", numberOfBLESources: %@", v8];
+  numberOfBLESources = [(ULFingerprintMetaInfo *)self numberOfBLESources];
+  [v6 appendFormat:@", numberOfBLESources: %@", numberOfBLESources];
 
-  v9 = [(ULFingerprintMetaInfo *)self numberOfUWBSources];
-  [v6 appendFormat:@", numberOfUWBSources: %@", v9];
+  numberOfUWBSources = [(ULFingerprintMetaInfo *)self numberOfUWBSources];
+  [v6 appendFormat:@", numberOfUWBSources: %@", numberOfUWBSources];
 
-  v10 = [(ULFingerprintMetaInfo *)self requestIdentifier];
-  [v6 appendFormat:@", requestIdentifier: %@", v10];
+  requestIdentifier = [(ULFingerprintMetaInfo *)self requestIdentifier];
+  [v6 appendFormat:@", requestIdentifier: %@", requestIdentifier];
 
   [v6 appendString:@">"];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ULFingerprintMetaInfo *)self numberOfWiFiAccessPoints];
-    v7 = [v5 numberOfWiFiAccessPoints];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    numberOfWiFiAccessPoints = [(ULFingerprintMetaInfo *)self numberOfWiFiAccessPoints];
+    numberOfWiFiAccessPoints2 = [v5 numberOfWiFiAccessPoints];
+    if ([numberOfWiFiAccessPoints isEqual:numberOfWiFiAccessPoints2])
     {
     }
 
     else
     {
-      v9 = [(ULFingerprintMetaInfo *)self numberOfWiFiAccessPoints];
-      v10 = [v5 numberOfWiFiAccessPoints];
+      numberOfWiFiAccessPoints3 = [(ULFingerprintMetaInfo *)self numberOfWiFiAccessPoints];
+      numberOfWiFiAccessPoints4 = [v5 numberOfWiFiAccessPoints];
 
-      if (v9 != v10)
+      if (numberOfWiFiAccessPoints3 != numberOfWiFiAccessPoints4)
       {
         goto LABEL_12;
       }
     }
 
-    v11 = [(ULFingerprintMetaInfo *)self numberOfBLESources];
-    v12 = [v5 numberOfBLESources];
-    if ([v11 isEqual:v12])
+    numberOfBLESources = [(ULFingerprintMetaInfo *)self numberOfBLESources];
+    numberOfBLESources2 = [v5 numberOfBLESources];
+    if ([numberOfBLESources isEqual:numberOfBLESources2])
     {
     }
 
     else
     {
-      v13 = [(ULFingerprintMetaInfo *)self numberOfBLESources];
-      v14 = [v5 numberOfBLESources];
+      numberOfBLESources3 = [(ULFingerprintMetaInfo *)self numberOfBLESources];
+      numberOfBLESources4 = [v5 numberOfBLESources];
 
-      if (v13 != v14)
+      if (numberOfBLESources3 != numberOfBLESources4)
       {
         goto LABEL_12;
       }
     }
 
-    v15 = [(ULFingerprintMetaInfo *)self numberOfUWBSources];
-    v16 = [v5 numberOfUWBSources];
-    if ([v15 isEqual:v16])
+    numberOfUWBSources = [(ULFingerprintMetaInfo *)self numberOfUWBSources];
+    numberOfUWBSources2 = [v5 numberOfUWBSources];
+    if ([numberOfUWBSources isEqual:numberOfUWBSources2])
     {
 
       goto LABEL_15;
     }
 
-    v17 = [(ULFingerprintMetaInfo *)self numberOfUWBSources];
-    v18 = [v5 numberOfUWBSources];
+    numberOfUWBSources3 = [(ULFingerprintMetaInfo *)self numberOfUWBSources];
+    numberOfUWBSources4 = [v5 numberOfUWBSources];
 
-    if (v17 == v18)
+    if (numberOfUWBSources3 == numberOfUWBSources4)
     {
 LABEL_15:
-      v20 = [(ULFingerprintMetaInfo *)self requestIdentifier];
-      v21 = [v5 requestIdentifier];
-      if ([v20 isEqual:v21])
+      requestIdentifier = [(ULFingerprintMetaInfo *)self requestIdentifier];
+      requestIdentifier2 = [v5 requestIdentifier];
+      if ([requestIdentifier isEqual:requestIdentifier2])
       {
 
         v8 = 1;
@@ -184,9 +184,9 @@ LABEL_15:
 
       else
       {
-        v22 = [(ULFingerprintMetaInfo *)self requestIdentifier];
-        v23 = [v5 requestIdentifier];
-        v8 = v22 == v23;
+        requestIdentifier3 = [(ULFingerprintMetaInfo *)self requestIdentifier];
+        requestIdentifier4 = [v5 requestIdentifier];
+        v8 = requestIdentifier3 == requestIdentifier4;
       }
 
       goto LABEL_13;

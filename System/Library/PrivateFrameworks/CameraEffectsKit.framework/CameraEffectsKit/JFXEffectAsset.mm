@@ -1,31 +1,31 @@
 @interface JFXEffectAsset
-+ (id)firstAssetInAssets:(id)a3 matchingFilterAttributes:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (JFXEffectAsset)initWithAssetID:(id)a3 URL:(id)a4 copyOfAttributes:(id)a5 contentUpdateAvailable:(BOOL)a6;
++ (id)firstAssetInAssets:(id)assets matchingFilterAttributes:(id)attributes;
+- (BOOL)isEqual:(id)equal;
+- (JFXEffectAsset)initWithAssetID:(id)d URL:(id)l copyOfAttributes:(id)attributes contentUpdateAvailable:(BOOL)available;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation JFXEffectAsset
 
-- (JFXEffectAsset)initWithAssetID:(id)a3 URL:(id)a4 copyOfAttributes:(id)a5 contentUpdateAvailable:(BOOL)a6
+- (JFXEffectAsset)initWithAssetID:(id)d URL:(id)l copyOfAttributes:(id)attributes contentUpdateAvailable:(BOOL)available
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dCopy = d;
+  lCopy = l;
+  attributesCopy = attributes;
   v19.receiver = self;
   v19.super_class = JFXEffectAsset;
   v14 = [(JFXEffectAsset *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_assetID, a3);
-    objc_storeStrong(&v15->_localURL, a4);
-    v16 = [v13 copy];
+    objc_storeStrong(&v14->_assetID, d);
+    objc_storeStrong(&v15->_localURL, l);
+    v16 = [attributesCopy copy];
     attributes = v15->_attributes;
     v15->_attributes = v16;
 
-    v15->_contentUpdateAvailable = a6;
+    v15->_contentUpdateAvailable = available;
   }
 
   return v15;
@@ -34,12 +34,12 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(JFXEffectAsset *)self assetID];
-  v5 = [(JFXEffectAsset *)self localURL];
-  v6 = v5;
-  if (v5)
+  assetID = [(JFXEffectAsset *)self assetID];
+  localURL = [(JFXEffectAsset *)self localURL];
+  v6 = localURL;
+  if (localURL)
   {
-    v7 = v5;
+    v7 = localURL;
   }
 
   else
@@ -47,26 +47,26 @@
     v7 = @"Remote";
   }
 
-  v8 = [(JFXEffectAsset *)self attributes];
-  v9 = [v3 stringWithFormat:@"assetID %@ URL %@ attributes %@", v4, v7, v8];
+  attributes = [(JFXEffectAsset *)self attributes];
+  v9 = [v3 stringWithFormat:@"assetID %@ URL %@ attributes %@", assetID, v7, attributes];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(JFXEffectAsset *)v5 assetID];
-    v7 = [(JFXEffectAsset *)self assetID];
-    v8 = [v6 isEqual:v7];
+    assetID = [(JFXEffectAsset *)v5 assetID];
+    assetID2 = [(JFXEffectAsset *)self assetID];
+    v8 = [assetID isEqual:assetID2];
   }
 
   else
@@ -79,22 +79,22 @@
 
 - (unint64_t)hash
 {
-  v2 = [(JFXEffectAsset *)self assetID];
-  v3 = [v2 hash];
+  assetID = [(JFXEffectAsset *)self assetID];
+  v3 = [assetID hash];
 
   return v3;
 }
 
-+ (id)firstAssetInAssets:(id)a3 matchingFilterAttributes:(id)a4
++ (id)firstAssetInAssets:(id)assets matchingFilterAttributes:(id)attributes
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  assetsCopy = assets;
+  attributesCopy = attributes;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = assetsCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -109,8 +109,8 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 attributes];
-        v13 = [v12 isMatchingFilterAttributes:v6];
+        attributes = [v11 attributes];
+        v13 = [attributes isMatchingFilterAttributes:attributesCopy];
 
         if (v13)
         {

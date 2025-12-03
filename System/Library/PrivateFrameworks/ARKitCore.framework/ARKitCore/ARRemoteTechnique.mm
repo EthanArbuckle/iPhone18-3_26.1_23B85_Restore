@@ -1,46 +1,46 @@
 @interface ARRemoteTechnique
-- (ARRemoteTechnique)initWithListenerEndpoint:(id)a3;
-- (ARRemoteTechnique)initWithServerConnection:(id)a3;
-- (ARRemoteTechnique)initWithServiceName:(id)a3;
+- (ARRemoteTechnique)initWithListenerEndpoint:(id)endpoint;
+- (ARRemoteTechnique)initWithServerConnection:(id)connection;
+- (ARRemoteTechnique)initWithServiceName:(id)name;
 - (BOOL)isActive;
 - (double)requiredTimeInterval;
-- (id)processData:(id)a3;
+- (id)processData:(id)data;
 - (id)resultDataClasses;
 - (id)serviceProxy;
 - (int64_t)captureBehavior;
 - (int64_t)numberOfActiveConnections;
 - (unint64_t)requiredSensorDataTypes;
 - (void)dealloc;
-- (void)prepare:(BOOL)a3;
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4;
-- (void)serverConnectionInterrupted:(id)a3;
-- (void)serverConnectionInvalidated:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)techniqueDidFailWithError:(id)a3;
-- (void)techniqueDidOutputResultData:(id)a3 timestamp:(double)a4 context:(id)a5;
+- (void)prepare:(BOOL)prepare;
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context;
+- (void)serverConnectionInterrupted:(id)interrupted;
+- (void)serverConnectionInvalidated:(id)invalidated;
+- (void)setActive:(BOOL)active;
+- (void)techniqueDidFailWithError:(id)error;
+- (void)techniqueDidOutputResultData:(id)data timestamp:(double)timestamp context:(id)context;
 @end
 
 @implementation ARRemoteTechnique
 
-- (ARRemoteTechnique)initWithListenerEndpoint:(id)a3
+- (ARRemoteTechnique)initWithListenerEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [[ARServerConnection alloc] initWithListenerEndpoint:v4];
+  endpointCopy = endpoint;
+  v5 = [[ARServerConnection alloc] initWithListenerEndpoint:endpointCopy];
 
   v6 = [(ARRemoteTechnique *)self initWithServerConnection:v5];
   return v6;
 }
 
-- (ARRemoteTechnique)initWithServerConnection:(id)a3
+- (ARRemoteTechnique)initWithServerConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = ARRemoteTechnique;
   v6 = [(ARTechnique *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serverConnection, a3);
+    objc_storeStrong(&v6->_serverConnection, connection);
     [(ARServerConnection *)v7->_serverConnection setDelegate:v7];
     v8 = ARRemoteTechniqueClientInterfaceWithProtocol(&unk_1F42761E8);
     [(ARServerConnection *)v7->_serverConnection setExportedInterface:v8];
@@ -59,10 +59,10 @@
   return v7;
 }
 
-- (ARRemoteTechnique)initWithServiceName:(id)a3
+- (ARRemoteTechnique)initWithServiceName:(id)name
 {
-  v4 = a3;
-  v5 = [[ARServerConnection alloc] initWithServiceName:v4];
+  nameCopy = name;
+  v5 = [[ARServerConnection alloc] initWithServiceName:nameCopy];
 
   v6 = [(ARRemoteTechnique *)self initWithServerConnection:v5];
   return v6;
@@ -79,7 +79,7 @@
     *buf = 138543618;
     v8 = v5;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: dealloc", buf, 0x16u);
   }
 
@@ -137,24 +137,24 @@ void __33__ARRemoteTechnique_serviceProxy__block_invoke(uint64_t a1, void *a2)
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(ARRemoteTechnique *)self serviceProxy];
+  serviceProxy = [(ARRemoteTechnique *)self serviceProxy];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __29__ARRemoteTechnique_isActive__block_invoke;
   v4[3] = &unk_1E817E7C8;
   v4[4] = &v5;
-  [v2 isActiveWithReply:v4];
+  [serviceProxy isActiveWithReply:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(serviceProxy) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return serviceProxy;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
-  v4 = [(ARRemoteTechnique *)self serviceProxy];
-  [v4 setActive:v3];
+  activeCopy = active;
+  serviceProxy = [(ARRemoteTechnique *)self serviceProxy];
+  [serviceProxy setActive:activeCopy];
 }
 
 - (int64_t)captureBehavior
@@ -163,13 +163,13 @@ void __33__ARRemoteTechnique_serviceProxy__block_invoke(uint64_t a1, void *a2)
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(ARRemoteTechnique *)self serviceProxy];
+  serviceProxy = [(ARRemoteTechnique *)self serviceProxy];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __36__ARRemoteTechnique_captureBehavior__block_invoke;
   v5[3] = &unk_1E817E840;
   v5[4] = &v6;
-  [v2 captureBehaviorWithReply:v5];
+  [serviceProxy captureBehaviorWithReply:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -182,45 +182,45 @@ void __33__ARRemoteTechnique_serviceProxy__block_invoke(uint64_t a1, void *a2)
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(ARRemoteTechnique *)self serviceProxy];
+  serviceProxy = [(ARRemoteTechnique *)self serviceProxy];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __46__ARRemoteTechnique_numberOfActiveConnections__block_invoke;
   v5[3] = &unk_1E817E840;
   v5[4] = &v6;
-  [v2 numberOfActiveConnectionsWithReply:v5];
+  [serviceProxy numberOfActiveConnectionsWithReply:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (void)prepare:(BOOL)a3
+- (void)prepare:(BOOL)prepare
 {
-  v3 = a3;
-  v4 = [(ARRemoteTechnique *)self serviceProxy];
-  [v4 prepare:v3];
+  prepareCopy = prepare;
+  serviceProxy = [(ARRemoteTechnique *)self serviceProxy];
+  [serviceProxy prepare:prepareCopy];
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__7;
   v20 = __Block_byref_object_dispose__7;
   v21 = 0;
-  if ([v4 conformsToProtocol:&unk_1F426A800])
+  if ([dataCopy conformsToProtocol:&unk_1F426A800])
   {
-    v5 = [(ARRemoteTechnique *)self serviceProxy];
+    serviceProxy = [(ARRemoteTechnique *)self serviceProxy];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __33__ARRemoteTechnique_processData___block_invoke;
     v15[3] = &unk_1E817E868;
     v15[4] = &v16;
-    [v5 processData:v4 reply:v15];
+    [serviceProxy processData:dataCopy reply:v15];
   }
 
   else
@@ -234,7 +234,7 @@ void __33__ARRemoteTechnique_serviceProxy__block_invoke(uint64_t a1, void *a2)
       *buf = 138543874;
       v23 = v8;
       v24 = 2048;
-      v25 = self;
+      selfCopy = self;
       v26 = 2112;
       v27 = v9;
       v10 = v9;
@@ -242,8 +242,8 @@ void __33__ARRemoteTechnique_serviceProxy__block_invoke(uint64_t a1, void *a2)
     }
 
     v11 = v17;
-    v12 = v4;
-    v5 = v11[5];
+    v12 = dataCopy;
+    serviceProxy = v11[5];
     v11[5] = v12;
   }
 
@@ -253,14 +253,14 @@ void __33__ARRemoteTechnique_serviceProxy__block_invoke(uint64_t a1, void *a2)
   return v13;
 }
 
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_inflightContextsLock);
-  [(NSMutableArray *)self->_inflightContexts addObject:v6];
+  [(NSMutableArray *)self->_inflightContexts addObject:contextCopy];
   os_unfair_lock_unlock(&self->_inflightContextsLock);
-  v7 = [(ARRemoteTechnique *)self serviceProxy];
-  [v7 requestResultDataAtTimestamp:v6 context:a3];
+  serviceProxy = [(ARRemoteTechnique *)self serviceProxy];
+  [serviceProxy requestResultDataAtTimestamp:contextCopy context:timestamp];
 }
 
 - (unint64_t)requiredSensorDataTypes
@@ -269,13 +269,13 @@ void __33__ARRemoteTechnique_serviceProxy__block_invoke(uint64_t a1, void *a2)
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(ARRemoteTechnique *)self serviceProxy];
+  serviceProxy = [(ARRemoteTechnique *)self serviceProxy];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __44__ARRemoteTechnique_requiredSensorDataTypes__block_invoke;
   v5[3] = &unk_1E817E7F0;
   v5[4] = &v6;
-  [v2 requiredSensorDataTypesWithReply:v5];
+  [serviceProxy requiredSensorDataTypesWithReply:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -288,13 +288,13 @@ void __33__ARRemoteTechnique_serviceProxy__block_invoke(uint64_t a1, void *a2)
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(ARRemoteTechnique *)self serviceProxy];
+  serviceProxy = [(ARRemoteTechnique *)self serviceProxy];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __41__ARRemoteTechnique_requiredTimeInterval__block_invoke;
   v5[3] = &unk_1E817E7A0;
   v5[4] = &v6;
-  [v2 requiredTimeIntervalWithReply:v5];
+  [serviceProxy requiredTimeIntervalWithReply:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -309,13 +309,13 @@ void __33__ARRemoteTechnique_serviceProxy__block_invoke(uint64_t a1, void *a2)
   v9 = __Block_byref_object_copy__7;
   v10 = __Block_byref_object_dispose__7;
   v11 = 0;
-  v2 = [(ARRemoteTechnique *)self serviceProxy];
+  serviceProxy = [(ARRemoteTechnique *)self serviceProxy];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __38__ARRemoteTechnique_resultDataClasses__block_invoke;
   v5[3] = &unk_1E817E8B0;
   v5[4] = &v6;
-  [v2 resultDataClassesWithReply:v5];
+  [serviceProxy resultDataClassesWithReply:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -331,24 +331,24 @@ void __38__ARRemoteTechnique_resultDataClasses__block_invoke(uint64_t a1, void *
   *(v4 + 40) = v3;
 }
 
-- (void)techniqueDidFailWithError:(id)a3
+- (void)techniqueDidFailWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(ARTechnique *)self delegate];
+  errorCopy = error;
+  delegate = [(ARTechnique *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ARTechnique *)self delegate];
-    [v6 technique:self didFailWithError:v7];
+    delegate2 = [(ARTechnique *)self delegate];
+    [delegate2 technique:self didFailWithError:errorCopy];
   }
 }
 
-- (void)techniqueDidOutputResultData:(id)a3 timestamp:(double)a4 context:(id)a5
+- (void)techniqueDidOutputResultData:(id)data timestamp:(double)timestamp context:(id)context
 {
   v50 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v8 = a5;
+  dataCopy = data;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_inflightContextsLock);
   v41 = 0u;
   v42 = 0u;
@@ -370,10 +370,10 @@ LABEL_13:
 
     v26 = ARShouldUseLogTypeError_internalOSVersion_49;
     v27 = _ARLogTechnique_16();
-    v24 = v27;
+    delegate2 = v27;
     if (v26 == 1)
     {
-      v25 = v38;
+      v25 = dataCopy;
       if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_21;
@@ -381,22 +381,22 @@ LABEL_13:
 
       v28 = objc_opt_class();
       v29 = NSStringFromClass(v28);
-      v30 = [v8 imageData];
-      [v30 timestamp];
+      imageData = [contextCopy imageData];
+      [imageData timestamp];
       *buf = 138543874;
       v44 = v29;
       v45 = 2048;
-      v46 = self;
+      selfCopy2 = self;
       v47 = 2048;
       v48 = v31;
       v32 = "%{public}@ <%p>: No in flight context found for %f";
-      v33 = v24;
+      v33 = delegate2;
       v34 = OS_LOG_TYPE_ERROR;
     }
 
     else
     {
-      v25 = v38;
+      v25 = dataCopy;
       if (!os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         goto LABEL_21;
@@ -404,16 +404,16 @@ LABEL_13:
 
       v35 = objc_opt_class();
       v29 = NSStringFromClass(v35);
-      v30 = [v8 imageData];
-      [v30 timestamp];
+      imageData = [contextCopy imageData];
+      [imageData timestamp];
       *buf = 138543874;
       v44 = v29;
       v45 = 2048;
-      v46 = self;
+      selfCopy2 = self;
       v47 = 2048;
       v48 = v36;
       v32 = "Error: %{public}@ <%p>: No in flight context found for %f";
-      v33 = v24;
+      v33 = delegate2;
       v34 = OS_LOG_TYPE_INFO;
     }
 
@@ -438,11 +438,11 @@ LABEL_3:
     }
 
     v14 = *(*(&v39 + 1) + 8 * v13);
-    v15 = [v14 imageData];
-    [v15 timestamp];
+    imageData2 = [v14 imageData];
+    [imageData2 timestamp];
     v17 = v16;
-    v18 = [v8 imageData];
-    [v18 timestamp];
+    imageData3 = [contextCopy imageData];
+    [imageData3 timestamp];
     v20 = v19;
 
     if (v17 == v20)
@@ -471,22 +471,22 @@ LABEL_3:
 
   [*(&self->super.super.isa + v37) removeObject:v21];
   os_unfair_lock_unlock(&self->_inflightContextsLock);
-  v22 = [(ARTechnique *)self delegate];
+  delegate = [(ARTechnique *)self delegate];
   v23 = objc_opt_respondsToSelector();
 
   if (v23)
   {
-    v24 = [(ARTechnique *)self delegate];
-    v25 = v38;
-    [v24 technique:self didOutputResultData:v38 timestamp:v21 context:a4];
+    delegate2 = [(ARTechnique *)self delegate];
+    v25 = dataCopy;
+    [delegate2 technique:self didOutputResultData:dataCopy timestamp:v21 context:timestamp];
     goto LABEL_22;
   }
 
-  v25 = v38;
+  v25 = dataCopy;
 LABEL_23:
 }
 
-- (void)serverConnectionInterrupted:(id)a3
+- (void)serverConnectionInterrupted:(id)interrupted
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = _ARLogTechnique_16();
@@ -497,7 +497,7 @@ LABEL_23:
     v11 = 138543618;
     v12 = v6;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Server connection interrupted", &v11, 0x16u);
   }
 
@@ -518,7 +518,7 @@ LABEL_23:
   [(ARRemoteTechnique *)self techniqueDidFailWithError:v10];
 }
 
-- (void)serverConnectionInvalidated:(id)a3
+- (void)serverConnectionInvalidated:(id)invalidated
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = _ARLogTechnique_16();
@@ -529,7 +529,7 @@ LABEL_23:
     v7 = 138543618;
     v8 = v6;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Server connection invalidated", &v7, 0x16u);
   }
 

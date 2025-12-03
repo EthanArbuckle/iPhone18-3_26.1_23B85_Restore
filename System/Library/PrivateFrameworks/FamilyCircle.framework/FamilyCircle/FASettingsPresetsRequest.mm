@@ -1,58 +1,58 @@
 @interface FASettingsPresetsRequest
-- (FASettingsPresetsRequest)initWithChildAge:(id)a3 storeFront:(id)a4 version:(id)a5;
-- (FASettingsPresetsRequest)initWithFamilyMember:(id)a3 storeFront:(id)a4 version:(id)a5;
-- (FASettingsPresetsRequest)initWithFamilyMemberAltDSID:(id)a3 storeFront:(id)a4 version:(id)a5;
+- (FASettingsPresetsRequest)initWithChildAge:(id)age storeFront:(id)front version:(id)version;
+- (FASettingsPresetsRequest)initWithFamilyMember:(id)member storeFront:(id)front version:(id)version;
+- (FASettingsPresetsRequest)initWithFamilyMemberAltDSID:(id)d storeFront:(id)front version:(id)version;
 - (id)fetchCachedPresets;
 - (id)fetchPresets;
-- (void)fetchCachedPresetsWithCompletion:(id)a3;
-- (void)fetchPresetsWithCompletion:(id)a3;
+- (void)fetchCachedPresetsWithCompletion:(id)completion;
+- (void)fetchPresetsWithCompletion:(id)completion;
 @end
 
 @implementation FASettingsPresetsRequest
 
-- (FASettingsPresetsRequest)initWithFamilyMember:(id)a3 storeFront:(id)a4 version:(id)a5
+- (FASettingsPresetsRequest)initWithFamilyMember:(id)member storeFront:(id)front version:(id)version
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 altDSID];
-  v11 = [(FASettingsPresetsRequest *)self initWithFamilyMemberAltDSID:v10 storeFront:v9 version:v8];
+  versionCopy = version;
+  frontCopy = front;
+  altDSID = [member altDSID];
+  v11 = [(FASettingsPresetsRequest *)self initWithFamilyMemberAltDSID:altDSID storeFront:frontCopy version:versionCopy];
 
   return v11;
 }
 
-- (FASettingsPresetsRequest)initWithFamilyMemberAltDSID:(id)a3 storeFront:(id)a4 version:(id)a5
+- (FASettingsPresetsRequest)initWithFamilyMemberAltDSID:(id)d storeFront:(id)front version:(id)version
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  frontCopy = front;
+  versionCopy = version;
   v15.receiver = self;
   v15.super_class = FASettingsPresetsRequest;
   v12 = [(FAFamilyCircleRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_altDSID, a3);
-    objc_storeStrong(&v13->_storeFront, a4);
-    objc_storeStrong(&v13->_version, a5);
+    objc_storeStrong(&v12->_altDSID, d);
+    objc_storeStrong(&v13->_storeFront, front);
+    objc_storeStrong(&v13->_version, version);
   }
 
   return v13;
 }
 
-- (FASettingsPresetsRequest)initWithChildAge:(id)a3 storeFront:(id)a4 version:(id)a5
+- (FASettingsPresetsRequest)initWithChildAge:(id)age storeFront:(id)front version:(id)version
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  ageCopy = age;
+  frontCopy = front;
+  versionCopy = version;
   v15.receiver = self;
   v15.super_class = FASettingsPresetsRequest;
   v12 = [(FAFamilyCircleRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_childAge, a3);
-    objc_storeStrong(&v13->_storeFront, a4);
-    objc_storeStrong(&v13->_version, a5);
+    objc_storeStrong(&v12->_childAge, age);
+    objc_storeStrong(&v13->_storeFront, front);
+    objc_storeStrong(&v13->_version, version);
   }
 
   return v13;
@@ -118,11 +118,11 @@ void __40__FASettingsPresetsRequest_fetchPresets__block_invoke(uint64_t a1, void
   }
 }
 
-- (void)fetchPresetsWithCompletion:(id)a3
+- (void)fetchPresetsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FASettingsPresetsRequest *)self fetchPresets];
-  [v5 onComplete:v4];
+  completionCopy = completion;
+  fetchPresets = [(FASettingsPresetsRequest *)self fetchPresets];
+  [fetchPresets onComplete:completionCopy];
 }
 
 - (id)fetchCachedPresets
@@ -185,11 +185,11 @@ void __46__FASettingsPresetsRequest_fetchCachedPresets__block_invoke(uint64_t a1
   }
 }
 
-- (void)fetchCachedPresetsWithCompletion:(id)a3
+- (void)fetchCachedPresetsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FASettingsPresetsRequest *)self fetchCachedPresets];
-  [v5 onComplete:v4];
+  completionCopy = completion;
+  fetchCachedPresets = [(FASettingsPresetsRequest *)self fetchCachedPresets];
+  [fetchCachedPresets onComplete:completionCopy];
 }
 
 @end

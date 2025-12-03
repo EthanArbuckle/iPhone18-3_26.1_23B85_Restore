@@ -1,18 +1,18 @@
 @interface BKAppLaunchCoordinator
 - (BKAppLaunchCoordinator)init;
-- (BOOL)appLaunchCoordinatorIsConditionSatisfied:(unint64_t)a3;
+- (BOOL)appLaunchCoordinatorIsConditionSatisfied:(unint64_t)satisfied;
 - (NSString)description;
-- (id)_conditionSatisfied:(unint64_t)a3 invalidatingAssertion:(BOOL)a4;
-- (id)_onConditionMask:(unint64_t)a3 flags:(unint64_t)a4 blockID:(id)a5 performBlock:(id)a6;
-- (id)appLaunchCoordinatorHoldAtConditionAssertion:(unint64_t)a3;
-- (void)_appLaunchCoordinatorOnConditionMask:(unint64_t)a3 flags:(unint64_t)a4 blockID:(id)a5 performBlock:(id)a6;
-- (void)_appLaunchCoordinatorOnConditionMask:(unint64_t)a3 timeout:(double)a4 flags:(unint64_t)a5 blockID:(id)a6 performBlock:(id)a7;
-- (void)_dispatchBlocks:(id)a3;
-- (void)_launchBlockTimedout:(id)a3;
-- (void)appLaunchCoordinatorPerformWhenLaunched:(id)a3 block:(id)a4;
-- (void)signalConditionSatisfied:(unint64_t)a3;
-- (void)signalConditionSatisfied:(unint64_t)a3 blockID:(id)a4 notifyBlock:(id)a5;
-- (void)signalConditionSatisfied:(unint64_t)a3 notifyWithTimeout:(double)a4 blockID:(id)a5 block:(id)a6;
+- (id)_conditionSatisfied:(unint64_t)satisfied invalidatingAssertion:(BOOL)assertion;
+- (id)_onConditionMask:(unint64_t)mask flags:(unint64_t)flags blockID:(id)d performBlock:(id)block;
+- (id)appLaunchCoordinatorHoldAtConditionAssertion:(unint64_t)assertion;
+- (void)_appLaunchCoordinatorOnConditionMask:(unint64_t)mask flags:(unint64_t)flags blockID:(id)d performBlock:(id)block;
+- (void)_appLaunchCoordinatorOnConditionMask:(unint64_t)mask timeout:(double)timeout flags:(unint64_t)flags blockID:(id)d performBlock:(id)block;
+- (void)_dispatchBlocks:(id)blocks;
+- (void)_launchBlockTimedout:(id)timedout;
+- (void)appLaunchCoordinatorPerformWhenLaunched:(id)launched block:(id)block;
+- (void)signalConditionSatisfied:(unint64_t)satisfied;
+- (void)signalConditionSatisfied:(unint64_t)satisfied blockID:(id)d notifyBlock:(id)block;
+- (void)signalConditionSatisfied:(unint64_t)satisfied notifyWithTimeout:(double)timeout blockID:(id)d block:(id)block;
 @end
 
 @implementation BKAppLaunchCoordinator
@@ -53,7 +53,7 @@
   return v9;
 }
 
-- (id)appLaunchCoordinatorHoldAtConditionAssertion:(unint64_t)a3
+- (id)appLaunchCoordinatorHoldAtConditionAssertion:(unint64_t)assertion
 {
   kdebug_trace();
   v18 = 0;
@@ -66,7 +66,7 @@
   v15 = sub_100005080;
   v16 = sub_100027988;
   v17 = 0;
-  v5 = [(BKAppLaunchCoordinator *)self queue];
+  queue = [(BKAppLaunchCoordinator *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10019EDC0;
@@ -74,21 +74,21 @@
   block[4] = self;
   block[5] = &v18;
   block[6] = &v12;
-  block[7] = a3;
-  dispatch_sync(v5, block);
+  block[7] = assertion;
+  dispatch_sync(queue, block);
 
   if (*(v19 + 24) == 1 && v13[5])
   {
     v6 = [BKAppLaunchAssertion alloc];
-    v7 = [(BKAppLaunchCoordinator *)self queue];
+    queue2 = [(BKAppLaunchCoordinator *)self queue];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10019EEF0;
     v10[3] = &unk_100A07588;
     v10[4] = self;
     v10[5] = &v12;
-    v10[6] = a3;
-    v8 = [(BKAppLaunchAssertion *)v6 initWithQueue:v7 releaseBlock:v10];
+    v10[6] = assertion;
+    v8 = [(BKAppLaunchAssertion *)v6 initWithQueue:queue2 releaseBlock:v10];
   }
 
   else
@@ -104,36 +104,36 @@
   return v8;
 }
 
-- (BOOL)appLaunchCoordinatorIsConditionSatisfied:(unint64_t)a3
+- (BOOL)appLaunchCoordinatorIsConditionSatisfied:(unint64_t)satisfied
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(BKAppLaunchCoordinator *)self queue];
+  queue = [(BKAppLaunchCoordinator *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10019F15C;
   block[3] = &unk_100A07318;
   block[4] = self;
   block[5] = &v8;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = satisfied;
+  dispatch_sync(queue, block);
 
-  LOBYTE(a3) = *(v9 + 24);
+  LOBYTE(satisfied) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return a3;
+  return satisfied;
 }
 
-- (id)_conditionSatisfied:(unint64_t)a3 invalidatingAssertion:(BOOL)a4
+- (id)_conditionSatisfied:(unint64_t)satisfied invalidatingAssertion:(BOOL)assertion
 {
-  v4 = a4;
-  v7 = 1 << a3;
+  assertionCopy = assertion;
+  v7 = 1 << satisfied;
   coordinators = self->_coordinators;
   v9 = [NSNumber numberWithUnsignedInteger:?];
   v10 = [(NSMutableDictionary *)coordinators objectForKeyedSubscript:v9];
 
-  if (!v4)
+  if (!assertionCopy)
   {
     if (![v10 holdCount])
     {
@@ -164,10 +164,10 @@ LABEL_8:
     {
       if (v14)
       {
-        v15 = sub_100024BF8(a3);
+        v15 = sub_100024BF8(satisfied);
         v16 = v15;
         v17 = @"NO";
-        if (v4)
+        if (assertionCopy)
         {
           v17 = @"YES";
         }
@@ -188,14 +188,14 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    if (v4)
+    if (assertionCopy)
     {
       if (!v14)
       {
         goto LABEL_29;
       }
 
-      v16 = sub_100024BF8(a3);
+      v16 = sub_100024BF8(satisfied);
       *buf = 138412290;
       v33 = v16;
       v18 = "BKAppLaunchCoordinator: Assertion invalidated but waiting for explicit condition signal: %@";
@@ -208,7 +208,7 @@ LABEL_29:
         goto LABEL_29;
       }
 
-      v16 = sub_100024BF8(a3);
+      v16 = sub_100024BF8(satisfied);
       *buf = 138412290;
       v33 = v16;
       v18 = "BKAppLaunchCoordinator: Condition satisfied but waiting for assertion invalidation: %@";
@@ -225,10 +225,10 @@ LABEL_28:
   v21 = BCIMLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = sub_100024BF8(a3);
+    v22 = sub_100024BF8(satisfied);
     v23 = v22;
     v24 = @"NO";
-    if (v4)
+    if (assertionCopy)
     {
       v24 = @"YES";
     }
@@ -241,7 +241,7 @@ LABEL_28:
   }
 
   v25 = self->_coordinators;
-  v26 = [NSNumber numberWithUnsignedInteger:a3];
+  v26 = [NSNumber numberWithUnsignedInteger:satisfied];
   [(NSMutableDictionary *)v25 setObject:0 forKeyedSubscript:v26];
 
   self->_currentConditionMask |= v7;
@@ -269,38 +269,38 @@ LABEL_30:
   return v29;
 }
 
-- (void)_dispatchBlocks:(id)a3
+- (void)_dispatchBlocks:(id)blocks
 {
-  v4 = a3;
-  v5 = v4;
+  blocksCopy = blocks;
+  v5 = blocksCopy;
   if ((self->_currentConditionMask & 8) == 0)
   {
     v6 = 0;
 LABEL_5:
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    lastIndex = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_6;
   }
 
-  v7 = [v4 indexesOfObjectsPassingTest:&stru_100A0A108];
+  v7 = [blocksCopy indexesOfObjectsPassingTest:&stru_100A0A108];
   v6 = v7;
   if (!v7)
   {
     goto LABEL_5;
   }
 
-  v8 = [v7 lastIndex];
+  lastIndex = [v7 lastIndex];
 LABEL_6:
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10019F750;
   v10[3] = &unk_100A0A130;
   v11 = v6;
-  v12 = v8;
+  v12 = lastIndex;
   v9 = v6;
   [v5 enumerateObjectsUsingBlock:v10];
 }
 
-- (void)signalConditionSatisfied:(unint64_t)a3
+- (void)signalConditionSatisfied:(unint64_t)satisfied
 {
   if (!+[NSThread isMainThread])
   {
@@ -314,72 +314,72 @@ LABEL_6:
   v10 = sub_100005080;
   v11 = sub_100027988;
   v12 = 0;
-  v5 = [(BKAppLaunchCoordinator *)self queue];
+  queue = [(BKAppLaunchCoordinator *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10019F98C;
   block[3] = &unk_100A07318;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = satisfied;
+  dispatch_sync(queue, block);
 
   [(BKAppLaunchCoordinator *)self _dispatchBlocks:v8[5]];
   kdebug_trace();
   _Block_object_dispose(&v7, 8);
 }
 
-- (void)signalConditionSatisfied:(unint64_t)a3 blockID:(id)a4 notifyBlock:(id)a5
+- (void)signalConditionSatisfied:(unint64_t)satisfied blockID:(id)d notifyBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  [(BKAppLaunchCoordinator *)self signalConditionSatisfied:a3];
-  if (v9)
+  dCopy = d;
+  blockCopy = block;
+  [(BKAppLaunchCoordinator *)self signalConditionSatisfied:satisfied];
+  if (blockCopy)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10019FAB8;
     v10[3] = &unk_100A03CA0;
-    v11 = v9;
-    [(BKAppLaunchCoordinator *)self _appLaunchCoordinatorOnConditionMask:1 << a3 flags:1 blockID:v8 performBlock:v10];
+    v11 = blockCopy;
+    [(BKAppLaunchCoordinator *)self _appLaunchCoordinatorOnConditionMask:1 << satisfied flags:1 blockID:dCopy performBlock:v10];
   }
 }
 
-- (void)signalConditionSatisfied:(unint64_t)a3 notifyWithTimeout:(double)a4 blockID:(id)a5 block:(id)a6
+- (void)signalConditionSatisfied:(unint64_t)satisfied notifyWithTimeout:(double)timeout blockID:(id)d block:(id)block
 {
-  v10 = a5;
-  v11 = a6;
-  [(BKAppLaunchCoordinator *)self signalConditionSatisfied:a3];
-  if (v11)
+  dCopy = d;
+  blockCopy = block;
+  [(BKAppLaunchCoordinator *)self signalConditionSatisfied:satisfied];
+  if (blockCopy)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10019FBB0;
     v12[3] = &unk_100A0A158;
-    v13 = v11;
-    [(BKAppLaunchCoordinator *)self _appLaunchCoordinatorOnConditionMask:1 << a3 timeout:1 flags:v10 blockID:v12 performBlock:a4];
+    v13 = blockCopy;
+    [(BKAppLaunchCoordinator *)self _appLaunchCoordinatorOnConditionMask:1 << satisfied timeout:1 flags:dCopy blockID:v12 performBlock:timeout];
   }
 }
 
-- (void)appLaunchCoordinatorPerformWhenLaunched:(id)a3 block:(id)a4
+- (void)appLaunchCoordinatorPerformWhenLaunched:(id)launched block:(id)block
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  blockCopy = block;
+  v7 = blockCopy;
+  if (blockCopy)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10019FC70;
     v8[3] = &unk_100A03CA0;
-    v9 = v6;
-    [(BKAppLaunchCoordinator *)self appLaunchCoordinatorOnConditionMask:32 blockID:a3 performBlock:v8];
+    v9 = blockCopy;
+    [(BKAppLaunchCoordinator *)self appLaunchCoordinatorOnConditionMask:32 blockID:launched performBlock:v8];
   }
 }
 
-- (id)_onConditionMask:(unint64_t)a3 flags:(unint64_t)a4 blockID:(id)a5 performBlock:(id)a6
+- (id)_onConditionMask:(unint64_t)mask flags:(unint64_t)flags blockID:(id)d performBlock:(id)block
 {
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  blockCopy = block;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -390,7 +390,7 @@ LABEL_6:
   v28 = sub_100005080;
   v29 = sub_100027988;
   v30 = 0;
-  v12 = [(BKAppLaunchCoordinator *)self queue];
+  queue = [(BKAppLaunchCoordinator *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10019FEF8;
@@ -398,13 +398,13 @@ LABEL_6:
   v21 = &v31;
   v22 = &v25;
   block[4] = self;
-  v23 = a3;
-  v13 = v11;
+  maskCopy = mask;
+  v13 = blockCopy;
   v20 = v13;
-  v24 = a4;
-  v14 = v10;
+  flagsCopy = flags;
+  v14 = dCopy;
   v19 = v14;
-  dispatch_sync(v12, block);
+  dispatch_sync(queue, block);
 
   if (v13 && *(v32 + 24) == 1)
   {
@@ -427,9 +427,9 @@ LABEL_6:
   return v16;
 }
 
-- (void)_launchBlockTimedout:(id)a3
+- (void)_launchBlockTimedout:(id)timedout
 {
-  v4 = a3;
+  timedoutCopy = timedout;
   if (!+[NSThread isMainThread])
   {
     sub_100792EE4();
@@ -439,51 +439,51 @@ LABEL_6:
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(BKAppLaunchCoordinator *)self queue];
+  queue = [(BKAppLaunchCoordinator *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A01EC;
   block[3] = &unk_100A03760;
   block[4] = self;
-  v6 = v4;
+  v6 = timedoutCopy;
   v10 = v6;
   v11 = &v12;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   if (v6 && (v13[3] & 1) != 0)
   {
-    v7 = [v6 block];
-    v8 = v7;
-    if (v7)
+    block = [v6 block];
+    v8 = block;
+    if (block)
     {
-      (*(v7 + 16))(v7, 1, 1);
+      (*(block + 16))(block, 1, 1);
     }
   }
 
   _Block_object_dispose(&v12, 8);
 }
 
-- (void)_appLaunchCoordinatorOnConditionMask:(unint64_t)a3 flags:(unint64_t)a4 blockID:(id)a5 performBlock:(id)a6
+- (void)_appLaunchCoordinatorOnConditionMask:(unint64_t)mask flags:(unint64_t)flags blockID:(id)d performBlock:(id)block
 {
-  v10 = a6;
-  v11 = v10;
-  if (v10)
+  blockCopy = block;
+  v11 = blockCopy;
+  if (blockCopy)
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1001A0334;
     v13[3] = &unk_100A0A158;
-    v14 = v10;
-    v12 = [(BKAppLaunchCoordinator *)self _onConditionMask:a3 flags:a4 blockID:a5 performBlock:v13];
+    v14 = blockCopy;
+    v12 = [(BKAppLaunchCoordinator *)self _onConditionMask:mask flags:flags blockID:d performBlock:v13];
   }
 }
 
-- (void)_appLaunchCoordinatorOnConditionMask:(unint64_t)a3 timeout:(double)a4 flags:(unint64_t)a5 blockID:(id)a6 performBlock:(id)a7
+- (void)_appLaunchCoordinatorOnConditionMask:(unint64_t)mask timeout:(double)timeout flags:(unint64_t)flags blockID:(id)d performBlock:(id)block
 {
-  v9 = [(BKAppLaunchCoordinator *)self _onConditionMask:a3 flags:a5 blockID:a6 performBlock:a7];
+  v9 = [(BKAppLaunchCoordinator *)self _onConditionMask:mask flags:flags blockID:d performBlock:block];
   if (v9)
   {
-    v10 = dispatch_time(0, (a4 * 1000000000.0));
+    v10 = dispatch_time(0, (timeout * 1000000000.0));
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1001A042C;

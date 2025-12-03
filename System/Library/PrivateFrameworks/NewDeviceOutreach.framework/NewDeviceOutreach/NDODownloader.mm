@@ -1,62 +1,62 @@
 @interface NDODownloader
-- (NDODownloader)initWithURL:(id)a3 callingProcessBundleID:(id)a4 sessionID:(id)a5;
-- (NDODownloader)initWithURL:(id)a3 callingProcessBundleID:(id)a4 sessionID:(id)a5 requestProperties:(id)a6;
-- (void)downloadWithRetryCount:(int)a3 prepareBlock:(id)a4 completion:(id)a5;
+- (NDODownloader)initWithURL:(id)l callingProcessBundleID:(id)d sessionID:(id)iD;
+- (NDODownloader)initWithURL:(id)l callingProcessBundleID:(id)d sessionID:(id)iD requestProperties:(id)properties;
+- (void)downloadWithRetryCount:(int)count prepareBlock:(id)block completion:(id)completion;
 @end
 
 @implementation NDODownloader
 
-- (NDODownloader)initWithURL:(id)a3 callingProcessBundleID:(id)a4 sessionID:(id)a5
+- (NDODownloader)initWithURL:(id)l callingProcessBundleID:(id)d sessionID:(id)iD
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  iDCopy = iD;
+  dCopy = d;
+  lCopy = l;
   v11 = +[NDORequestProperties makePropertiesProvider];
-  v12 = [(NDODownloader *)self initWithURL:v10 callingProcessBundleID:v9 sessionID:v8 requestProperties:v11];
+  v12 = [(NDODownloader *)self initWithURL:lCopy callingProcessBundleID:dCopy sessionID:iDCopy requestProperties:v11];
 
   return v12;
 }
 
-- (NDODownloader)initWithURL:(id)a3 callingProcessBundleID:(id)a4 sessionID:(id)a5 requestProperties:(id)a6
+- (NDODownloader)initWithURL:(id)l callingProcessBundleID:(id)d sessionID:(id)iD requestProperties:(id)properties
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
+  lCopy = l;
+  propertiesCopy = properties;
+  iDCopy = iD;
+  dCopy = d;
   v14 = _NDOLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138477827;
-    v22 = v10;
+    v22 = lCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "initWithURL %{private}@", &v21, 0xCu);
   }
 
-  [(NDODownloader *)self setSessionID:v12];
-  [(NDODownloader *)self setCallingProcessBundleID:v13];
-  [(NDODownloader *)self setRequestProperties:v11];
+  [(NDODownloader *)self setSessionID:iDCopy];
+  [(NDODownloader *)self setCallingProcessBundleID:dCopy];
+  [(NDODownloader *)self setRequestProperties:propertiesCopy];
 
-  v15 = [NSMutableURLRequest requestWithURL:v10];
+  v15 = [NSMutableURLRequest requestWithURL:lCopy];
   [(NDODownloader *)self setRequest:v15];
 
-  v16 = [(NDODownloader *)self request];
-  [v16 setTimeoutInterval:30.0];
+  request = [(NDODownloader *)self request];
+  [request setTimeoutInterval:30.0];
 
-  v17 = [(NDODownloader *)self requestProperties];
-  v18 = [v17 basicHeadersWithBundleID:v13];
+  requestProperties = [(NDODownloader *)self requestProperties];
+  v18 = [requestProperties basicHeadersWithBundleID:dCopy];
 
-  v19 = [(NDODownloader *)self request];
-  [v19 addAllHeadersFrom:v18];
+  request2 = [(NDODownloader *)self request];
+  [request2 addAllHeadersFrom:v18];
 
   return self;
 }
 
-- (void)downloadWithRetryCount:(int)a3 prepareBlock:(id)a4 completion:(id)a5
+- (void)downloadWithRetryCount:(int)count prepareBlock:(id)block completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NDODownloader *)self requestProperties];
-  v11 = [(NDODownloader *)self request];
-  v12 = [v10 accountHeadersFor:v11 forceReprovisioning:a3 != 2 avoidUI:1];
+  blockCopy = block;
+  completionCopy = completion;
+  requestProperties = [(NDODownloader *)self requestProperties];
+  request = [(NDODownloader *)self request];
+  v12 = [requestProperties accountHeadersFor:request forceReprovisioning:count != 2 avoidUI:1];
 
   v13 = _NDOLogSystem();
   v14 = v13;
@@ -68,49 +68,49 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Retrying request:", buf, 2u);
     }
 
-    v15 = [(NDODownloader *)self request];
-    [v15 addAllHeadersFrom:v12];
+    request2 = [(NDODownloader *)self request];
+    [request2 addAllHeadersFrom:v12];
 
     v16 = +[NSURLSession sharedSession];
-    v17 = [(NDODownloader *)self callingProcessBundleID];
-    v18 = [v16 configuration];
-    [v18 set_sourceApplicationBundleIdentifier:v17];
+    callingProcessBundleID = [(NDODownloader *)self callingProcessBundleID];
+    configuration = [v16 configuration];
+    [configuration set_sourceApplicationBundleIdentifier:callingProcessBundleID];
 
-    v19 = [v16 configuration];
-    [v19 setTimeoutIntervalForRequest:30.0];
+    configuration2 = [v16 configuration];
+    [configuration2 setTimeoutIntervalForRequest:30.0];
 
-    v20 = [v16 configuration];
-    [v20 setTimeoutIntervalForResource:30.0];
+    configuration3 = [v16 configuration];
+    [configuration3 setTimeoutIntervalForResource:30.0];
 
-    v21 = [(NDODownloader *)self sessionID];
+    sessionID = [(NDODownloader *)self sessionID];
 
-    if (v21)
+    if (sessionID)
     {
-      v22 = [(NDODownloader *)self request];
-      v23 = [(NDODownloader *)self sessionID];
-      [v22 setValue:v23 forHTTPHeaderField:@"x-apple-session"];
+      request3 = [(NDODownloader *)self request];
+      sessionID2 = [(NDODownloader *)self sessionID];
+      [request3 setValue:sessionID2 forHTTPHeaderField:@"x-apple-session"];
     }
 
-    v24 = [(NDODownloader *)self request];
-    v8[2](v8, v24);
+    request4 = [(NDODownloader *)self request];
+    blockCopy[2](blockCopy, request4);
 
     v25 = _NDOLogSystem();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [(NDODownloader *)self request];
-      v27 = [v26 headerDescription];
+      request5 = [(NDODownloader *)self request];
+      headerDescription = [request5 headerDescription];
       *buf = 138412290;
-      v43 = v27;
+      v43 = headerDescription;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Headers: %@", buf, 0xCu);
     }
 
     v28 = _NDOLogSystem();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [(NDODownloader *)self request];
-      v30 = [v29 bodyDescription];
+      request6 = [(NDODownloader *)self request];
+      bodyDescription = [request6 bodyDescription];
       *buf = 138412290;
-      v43 = v30;
+      v43 = bodyDescription;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Body: %@", buf, 0xCu);
     }
 
@@ -121,16 +121,16 @@
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Starting request", buf, 2u);
     }
 
-    v32 = [(NDODownloader *)self request];
+    request7 = [(NDODownloader *)self request];
     v34 = _NSConcreteStackBlock;
     v35 = 3221225472;
     v36 = sub_100013A80;
     v37 = &unk_10009AC58;
-    v41 = a3;
-    v38 = self;
-    v39 = v9;
-    v40 = v8;
-    v33 = [v16 dataTaskWithRequest:v32 completionHandler:&v34];
+    countCopy = count;
+    selfCopy = self;
+    v39 = completionCopy;
+    v40 = blockCopy;
+    v33 = [v16 dataTaskWithRequest:request7 completionHandler:&v34];
 
     [v33 resume];
   }
@@ -142,7 +142,7 @@
       sub_100073BF8(v14);
     }
 
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

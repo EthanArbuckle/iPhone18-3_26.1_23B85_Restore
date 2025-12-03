@@ -1,54 +1,54 @@
 @interface NSFilePresenterXPCMessenger
-- (NSFilePresenterXPCMessenger)initWithFilePresenter:(id)a3 queue:(id)a4;
-- (NSFilePresenterXPCMessenger)initWithFilePresenterProxy:(id)a3;
+- (NSFilePresenterXPCMessenger)initWithFilePresenter:(id)presenter queue:(id)queue;
+- (NSFilePresenterXPCMessenger)initWithFilePresenterProxy:(id)proxy;
 - (id)_readRelinquishment;
 - (id)_writeRelinquishment;
-- (void)_makePresenter:(id)a3 accommodateDeletionWithSubitemURL:(id)a4 completionHandler:(id)a5;
-- (void)_makePresenter:(id)a3 accommodateDisconnectionWithCompletionHandler:(id)a4;
-- (void)_makePresenter:(id)a3 accommodateEvictionWithSubitemURL:(id)a4 completionHandler:(id)a5;
-- (void)_makePresenter:(id)a3 observeChangeOfUbiquityAttributes:(id)a4;
-- (void)_makePresenter:(id)a3 observeChangeWithSubitemURL:(id)a4;
-- (void)_makePresenter:(id)a3 observeMoveToURL:(id)a4 withSubitemURL:(id)a5;
-- (void)_makePresenter:(id)a3 observeSharingChangeWithSubitemURL:(id)a4;
-- (void)_makePresenter:(id)a3 observeUbiquityChangeWithSubitemURL:(id)a4;
-- (void)_makePresenter:(id)a3 observeVersionChangeOfKind:(id)a4 withClientID:(id)a5 name:(id)a6 subitemURL:(id)a7;
-- (void)_makePresenter:(id)a3 relinquishToAccessClaimWithID:(id)a4 purposeID:(id)a5 ifNecessaryUsingSelector:(SEL)a6 recordingRelinquishment:(id)a7 continuer:(id)a8;
-- (void)_makePresenter:(id)a3 relinquishToReadingClaimWithID:(id)a4 purposeID:(id)a5 options:(unint64_t)a6 completionHandler:(id)a7;
-- (void)_makePresenter:(id)a3 relinquishToWritingClaimWithID:(id)a4 options:(unint64_t)a5 purposeID:(id)a6 subitemURL:(id)a7 completionHandler:(id)a8;
-- (void)_makePresenter:(id)a3 reportUnsavedChangesWithCompletionHandler:(id)a4;
-- (void)_makePresenter:(id)a3 saveChangesWithCompletionHandler:(id)a4;
-- (void)_makePresenter:(id)a3 setLastPresentedItemEventIdentifier:(unint64_t)a4;
-- (void)_makePresenter:(id)a3 setProviderPurposeIdentifier:(id)a4;
-- (void)_makePresenter:(id)a3 validateRelinquishmentToSubitemAtURL:(id)a4 completionHandler:(id)a5;
-- (void)_makePresenter:(id)a3 validateRemoteDeletionRecordingRelinquishment:(id)a4 completionHandler:(id)a5;
-- (void)_makePresenterObserveDisconnection:(id)a3;
-- (void)_makePresenterObserveReconnection:(id)a3;
-- (void)accommodateDeletionOfSubitemAtURL:(id)a3 completionHandler:(id)a4;
-- (void)collectDebuggingInformationWithCompletionHandler:(id)a3;
+- (void)_makePresenter:(id)presenter accommodateDeletionWithSubitemURL:(id)l completionHandler:(id)handler;
+- (void)_makePresenter:(id)presenter accommodateDisconnectionWithCompletionHandler:(id)handler;
+- (void)_makePresenter:(id)presenter accommodateEvictionWithSubitemURL:(id)l completionHandler:(id)handler;
+- (void)_makePresenter:(id)presenter observeChangeOfUbiquityAttributes:(id)attributes;
+- (void)_makePresenter:(id)presenter observeChangeWithSubitemURL:(id)l;
+- (void)_makePresenter:(id)presenter observeMoveToURL:(id)l withSubitemURL:(id)rL;
+- (void)_makePresenter:(id)presenter observeSharingChangeWithSubitemURL:(id)l;
+- (void)_makePresenter:(id)presenter observeUbiquityChangeWithSubitemURL:(id)l;
+- (void)_makePresenter:(id)presenter observeVersionChangeOfKind:(id)kind withClientID:(id)d name:(id)name subitemURL:(id)l;
+- (void)_makePresenter:(id)presenter relinquishToAccessClaimWithID:(id)d purposeID:(id)iD ifNecessaryUsingSelector:(SEL)selector recordingRelinquishment:(id)relinquishment continuer:(id)continuer;
+- (void)_makePresenter:(id)presenter relinquishToReadingClaimWithID:(id)d purposeID:(id)iD options:(unint64_t)options completionHandler:(id)handler;
+- (void)_makePresenter:(id)presenter relinquishToWritingClaimWithID:(id)d options:(unint64_t)options purposeID:(id)iD subitemURL:(id)l completionHandler:(id)handler;
+- (void)_makePresenter:(id)presenter reportUnsavedChangesWithCompletionHandler:(id)handler;
+- (void)_makePresenter:(id)presenter saveChangesWithCompletionHandler:(id)handler;
+- (void)_makePresenter:(id)presenter setLastPresentedItemEventIdentifier:(unint64_t)identifier;
+- (void)_makePresenter:(id)presenter setProviderPurposeIdentifier:(id)identifier;
+- (void)_makePresenter:(id)presenter validateRelinquishmentToSubitemAtURL:(id)l completionHandler:(id)handler;
+- (void)_makePresenter:(id)presenter validateRemoteDeletionRecordingRelinquishment:(id)relinquishment completionHandler:(id)handler;
+- (void)_makePresenterObserveDisconnection:(id)disconnection;
+- (void)_makePresenterObserveReconnection:(id)reconnection;
+- (void)accommodateDeletionOfSubitemAtURL:(id)l completionHandler:(id)handler;
+- (void)collectDebuggingInformationWithCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 - (void)logSuspensionWarning;
-- (void)observeChangeOfUbiquityAttributes:(id)a3;
-- (void)observeChangeWithSubitemURL:(id)a3;
+- (void)observeChangeOfUbiquityAttributes:(id)attributes;
+- (void)observeChangeWithSubitemURL:(id)l;
 - (void)observeDisconnection;
-- (void)observeMoveToURL:(id)a3 withSubitemURL:(id)a4 byWriterWithPurposeID:(id)a5 withFSID:(fsid)a6 andFileID:(unint64_t)a7;
-- (void)observePresenterChange:(BOOL)a3 forSubitemAtURL:(id)a4;
+- (void)observeMoveToURL:(id)l withSubitemURL:(id)rL byWriterWithPurposeID:(id)d withFSID:(fsid)iD andFileID:(unint64_t)fileID;
+- (void)observePresenterChange:(BOOL)change forSubitemAtURL:(id)l;
 - (void)observeReconnection;
-- (void)observeSharingChangeWithSubitemURL:(id)a3;
-- (void)observeUbiquityChangeWithSubitemURL:(id)a3;
-- (void)observeVersionChangeOfKind:(id)a3 toItemAtURL:(id)a4 withClientID:(id)a5 name:(id)a6;
-- (void)reacquireFromReadingClaimForID:(id)a3;
-- (void)reacquireFromWritingClaimForID:(id)a3 completionHandler:(id)a4;
-- (void)relinquishToReadingClaimWithID:(id)a3 options:(unint64_t)a4 purposeID:(id)a5 completionHandler:(id)a6;
-- (void)relinquishToWritingClaimWithID:(id)a3 options:(unint64_t)a4 purposeID:(id)a5 subitemURL:(id)a6 completionHandler:(id)a7;
-- (void)saveChangesWithCompletionHandler:(id)a3;
-- (void)setProviderPurposeIdentifier:(id)a3;
-- (void)updateLastEventID:(unint64_t)a3;
+- (void)observeSharingChangeWithSubitemURL:(id)l;
+- (void)observeUbiquityChangeWithSubitemURL:(id)l;
+- (void)observeVersionChangeOfKind:(id)kind toItemAtURL:(id)l withClientID:(id)d name:(id)name;
+- (void)reacquireFromReadingClaimForID:(id)d;
+- (void)reacquireFromWritingClaimForID:(id)d completionHandler:(id)handler;
+- (void)relinquishToReadingClaimWithID:(id)d options:(unint64_t)options purposeID:(id)iD completionHandler:(id)handler;
+- (void)relinquishToWritingClaimWithID:(id)d options:(unint64_t)options purposeID:(id)iD subitemURL:(id)l completionHandler:(id)handler;
+- (void)saveChangesWithCompletionHandler:(id)handler;
+- (void)setProviderPurposeIdentifier:(id)identifier;
+- (void)updateLastEventID:(unint64_t)d;
 @end
 
 @implementation NSFilePresenterXPCMessenger
 
-- (NSFilePresenterXPCMessenger)initWithFilePresenter:(id)a3 queue:(id)a4
+- (NSFilePresenterXPCMessenger)initWithFilePresenter:(id)presenter queue:(id)queue
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -56,15 +56,15 @@
   v6 = [(NSFilePresenterXPCMessenger *)&v8 init];
   if (v6)
   {
-    v6->_filePresenter = a3;
-    v6->_queue = a4;
-    dispatch_retain(a4);
+    v6->_filePresenter = presenter;
+    v6->_queue = queue;
+    dispatch_retain(queue);
   }
 
   return v6;
 }
 
-- (NSFilePresenterXPCMessenger)initWithFilePresenterProxy:(id)a3
+- (NSFilePresenterXPCMessenger)initWithFilePresenterProxy:(id)proxy
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -72,7 +72,7 @@
   v4 = [(NSFilePresenterXPCMessenger *)&v6 init];
   if (v4)
   {
-    v4->_filePresenterProxy = a3;
+    v4->_filePresenterProxy = proxy;
   }
 
   return v4;
@@ -100,7 +100,7 @@
   self->_filePresenterProxy = 0;
 }
 
-- (void)relinquishToReadingClaimWithID:(id)a3 options:(unint64_t)a4 purposeID:(id)a5 completionHandler:(id)a6
+- (void)relinquishToReadingClaimWithID:(id)d options:(unint64_t)options purposeID:(id)iD completionHandler:(id)handler
 {
   v15[5] = *MEMORY[0x1E69E9840];
   filePresenter = self->_filePresenter;
@@ -110,31 +110,31 @@
     v15[1] = 3221225472;
     v15[2] = __98__NSFilePresenterXPCMessenger_relinquishToReadingClaimWithID_options_purposeID_completionHandler___block_invoke;
     v15[3] = &unk_1E69F3938;
-    v15[4] = a6;
-    [(NSFilePresenterXPCMessenger *)self _makePresenter:filePresenter relinquishToReadingClaimWithID:a3 purposeID:a5 options:a4 completionHandler:v15];
+    v15[4] = handler;
+    [(NSFilePresenterXPCMessenger *)self _makePresenter:filePresenter relinquishToReadingClaimWithID:d purposeID:iD options:options completionHandler:v15];
   }
 
   else if (self->_filePresenterProxy)
   {
-    v13 = [+[NSXPCConnection currentConnection](NSXPCConnection userInfo];
-    if (object_getClass(v13) != NSFileSubarbitrationClaim)
+    userInfo = [+[NSXPCConnection currentConnection](NSXPCConnection userInfo];
+    if (object_getClass(userInfo) != NSFileSubarbitrationClaim)
     {
       [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSFileAccessArbiter.m" description:3350, @"Wrong class in connection userInfo: %@", objc_opt_class()];
     }
 
-    if ([v13 isRevoked])
+    if ([userInfo isRevoked])
     {
       NSLog(@"NSFileCoordinator: A surprising subarbiter message was received after the subarbitration claim was revoked");
     }
 
-    [v13 forwardRelinquishmentForWritingClaim:0 withID:a3 options:a4 purposeID:a5 subitemURL:0 toPresenter:self->_filePresenterProxy usingReplySender:a6];
+    [userInfo forwardRelinquishmentForWritingClaim:0 withID:d options:options purposeID:iD subitemURL:0 toPresenter:self->_filePresenterProxy usingReplySender:handler];
   }
 
   else
   {
-    v14 = *(a6 + 2);
+    v14 = *(handler + 2);
 
-    v14(a6, 0);
+    v14(handler, 0);
   }
 }
 
@@ -151,47 +151,47 @@ uint64_t __98__NSFilePresenterXPCMessenger_relinquishToReadingClaimWithID_option
   return [NSFileCoordinator _performBarrierAsync:v4];
 }
 
-- (void)relinquishToWritingClaimWithID:(id)a3 options:(unint64_t)a4 purposeID:(id)a5 subitemURL:(id)a6 completionHandler:(id)a7
+- (void)relinquishToWritingClaimWithID:(id)d options:(unint64_t)options purposeID:(id)iD subitemURL:(id)l completionHandler:(id)handler
 {
   v18[10] = *MEMORY[0x1E69E9840];
   filePresenter = self->_filePresenter;
   if (filePresenter)
   {
-    v14 = [a6 URL];
+    v14 = [l URL];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __109__NSFilePresenterXPCMessenger_relinquishToWritingClaimWithID_options_purposeID_subitemURL_completionHandler___block_invoke;
     v18[3] = &unk_1E69F9238;
     v18[4] = self;
-    v18[5] = a3;
-    v18[6] = a5;
-    v18[7] = a6;
-    v18[8] = a7;
-    v18[9] = a4;
+    v18[5] = d;
+    v18[6] = iD;
+    v18[7] = l;
+    v18[8] = handler;
+    v18[9] = options;
     [(NSFilePresenterXPCMessenger *)self _makePresenter:filePresenter validateRelinquishmentToSubitemAtURL:v14 completionHandler:v18];
   }
 
   else if (self->_filePresenterProxy)
   {
-    v16 = [+[NSXPCConnection currentConnection](NSXPCConnection userInfo];
-    if (object_getClass(v16) != NSFileSubarbitrationClaim)
+    userInfo = [+[NSXPCConnection currentConnection](NSXPCConnection userInfo];
+    if (object_getClass(userInfo) != NSFileSubarbitrationClaim)
     {
       [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSFileAccessArbiter.m" description:3386, @"Wrong class in connection userInfo: %@", objc_opt_class()];
     }
 
-    if ([v16 isRevoked])
+    if ([userInfo isRevoked])
     {
       NSLog(@"NSFileCoordinator: A surprising subarbiter message was received after the subarbitration claim was revoked");
     }
 
-    [v16 forwardRelinquishmentForWritingClaim:1 withID:a3 options:a4 purposeID:a5 subitemURL:a6 toPresenter:self->_filePresenterProxy usingReplySender:a7];
+    [userInfo forwardRelinquishmentForWritingClaim:1 withID:d options:options purposeID:iD subitemURL:l toPresenter:self->_filePresenterProxy usingReplySender:handler];
   }
 
   else
   {
-    v17 = *(a7 + 2);
+    v17 = *(handler + 2);
 
-    v17(a7, 0);
+    v17(handler, 0);
   }
 }
 
@@ -235,70 +235,70 @@ uint64_t __109__NSFilePresenterXPCMessenger_relinquishToWritingClaimWithID_optio
   return [NSFileCoordinator _performBarrierAsync:v4];
 }
 
-- (void)reacquireFromReadingClaimForID:(id)a3
+- (void)reacquireFromReadingClaimForID:(id)d
 {
   if (self->_filePresenter)
   {
-    v5 = [(NSFilePresenterXPCMessenger *)self _readRelinquishment];
+    _readRelinquishment = [(NSFilePresenterXPCMessenger *)self _readRelinquishment];
 
-    [v5 removeBlockingAccessClaimID:a3];
+    [_readRelinquishment removeBlockingAccessClaimID:d];
   }
 
   else if (self->_filePresenterProxy)
   {
-    v7 = [+[NSXPCConnection currentConnection](NSXPCConnection userInfo];
-    if (object_getClass(v7) != NSFileSubarbitrationClaim)
+    userInfo = [+[NSXPCConnection currentConnection](NSXPCConnection userInfo];
+    if (object_getClass(userInfo) != NSFileSubarbitrationClaim)
     {
       [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSFileAccessArbiter.m" description:3413, @"Wrong class in connection userInfo: %@", objc_opt_class()];
     }
 
-    if ([v7 isRevoked])
+    if ([userInfo isRevoked])
     {
       NSLog(@"NSFileCoordinator: A surprising subarbiter message was received after the subarbitration claim was revoked");
     }
 
-    v8 = [(NSFileReactorProxy *)self->_filePresenterProxy reactorID];
+    reactorID = [(NSFileReactorProxy *)self->_filePresenterProxy reactorID];
 
-    [v7 forwardReacquisitionForWritingClaim:0 withID:a3 toPresenterForID:v8 usingReplySender:0];
+    [userInfo forwardReacquisitionForWritingClaim:0 withID:d toPresenterForID:reactorID usingReplySender:0];
   }
 }
 
-- (void)reacquireFromWritingClaimForID:(id)a3 completionHandler:(id)a4
+- (void)reacquireFromWritingClaimForID:(id)d completionHandler:(id)handler
 {
   if (self->_filePresenter)
   {
-    v7 = [(NSFilePresenterXPCMessenger *)self _writeRelinquishment];
+    _writeRelinquishment = [(NSFilePresenterXPCMessenger *)self _writeRelinquishment];
 
-    [v7 removeBlockingAccessClaimID:a3 thenContinue:a4];
+    [_writeRelinquishment removeBlockingAccessClaimID:d thenContinue:handler];
   }
 
   else if (self->_filePresenterProxy)
   {
-    v9 = [+[NSXPCConnection currentConnection](NSXPCConnection userInfo];
-    if (object_getClass(v9) != NSFileSubarbitrationClaim)
+    userInfo = [+[NSXPCConnection currentConnection](NSXPCConnection userInfo];
+    if (object_getClass(userInfo) != NSFileSubarbitrationClaim)
     {
       [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSFileAccessArbiter.m" description:3436, @"Wrong class in connection userInfo: %@", objc_opt_class()];
     }
 
-    if ([v9 isRevoked])
+    if ([userInfo isRevoked])
     {
       NSLog(@"NSFileCoordinator: A surprising subarbiter message was received after the subarbitration claim was revoked");
     }
 
-    v10 = [(NSFileReactorProxy *)self->_filePresenterProxy reactorID];
+    reactorID = [(NSFileReactorProxy *)self->_filePresenterProxy reactorID];
 
-    [v9 forwardReacquisitionForWritingClaim:1 withID:a3 toPresenterForID:v10 usingReplySender:a4];
+    [userInfo forwardReacquisitionForWritingClaim:1 withID:d toPresenterForID:reactorID usingReplySender:handler];
   }
 
   else
   {
-    v11 = *(a4 + 2);
+    v11 = *(handler + 2);
 
-    v11(a4);
+    v11(handler);
   }
 }
 
-- (void)saveChangesWithCompletionHandler:(id)a3
+- (void)saveChangesWithCompletionHandler:(id)handler
 {
   v8 = *MEMORY[0x1E69E9840];
   filePresenter = self->_filePresenter;
@@ -308,7 +308,7 @@ uint64_t __109__NSFilePresenterXPCMessenger_relinquishToWritingClaimWithID_optio
     v6[1] = 3221225472;
     v6[2] = __64__NSFilePresenterXPCMessenger_saveChangesWithCompletionHandler___block_invoke;
     v6[3] = &unk_1E69F3938;
-    v6[4] = a3;
+    v6[4] = handler;
     [(NSFilePresenterXPCMessenger *)self _makePresenter:filePresenter saveChangesWithCompletionHandler:v6];
   }
 
@@ -324,9 +324,9 @@ uint64_t __109__NSFilePresenterXPCMessenger_relinquishToWritingClaimWithID_optio
 
   else
   {
-    v5 = *(a3 + 2);
+    v5 = *(handler + 2);
 
-    v5(a3, 0);
+    v5(handler, 0);
   }
 }
 
@@ -343,18 +343,18 @@ uint64_t __64__NSFilePresenterXPCMessenger_saveChangesWithCompletionHandler___bl
   return [NSFileCoordinator _performBarrierAsync:v4];
 }
 
-- (void)accommodateDeletionOfSubitemAtURL:(id)a3 completionHandler:(id)a4
+- (void)accommodateDeletionOfSubitemAtURL:(id)l completionHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
   filePresenter = self->_filePresenter;
   if (filePresenter)
   {
-    v7 = [a3 URL];
+    v7 = [l URL];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __83__NSFilePresenterXPCMessenger_accommodateDeletionOfSubitemAtURL_completionHandler___block_invoke;
     v10[3] = &unk_1E69F3938;
-    v10[4] = a4;
+    v10[4] = handler;
     [(NSFilePresenterXPCMessenger *)self _makePresenter:filePresenter accommodateDeletionWithSubitemURL:v7 completionHandler:v10];
   }
 
@@ -370,9 +370,9 @@ uint64_t __64__NSFilePresenterXPCMessenger_saveChangesWithCompletionHandler___bl
 
   else
   {
-    v9 = *(a4 + 2);
+    v9 = *(handler + 2);
 
-    v9(a4, 0);
+    v9(handler, 0);
   }
 }
 
@@ -389,13 +389,13 @@ uint64_t __83__NSFilePresenterXPCMessenger_accommodateDeletionOfSubitemAtURL_com
   return [NSFileCoordinator _performBarrierAsync:v4];
 }
 
-- (void)observeChangeWithSubitemURL:(id)a3
+- (void)observeChangeWithSubitemURL:(id)l
 {
   v8 = *MEMORY[0x1E69E9840];
   filePresenter = self->_filePresenter;
   if (filePresenter)
   {
-    v5 = [a3 URL];
+    v5 = [l URL];
 
     [(NSFilePresenterXPCMessenger *)self _makePresenter:filePresenter observeChangeWithSubitemURL:v5];
   }
@@ -411,35 +411,35 @@ uint64_t __83__NSFilePresenterXPCMessenger_accommodateDeletionOfSubitemAtURL_com
   }
 }
 
-- (void)observeMoveToURL:(id)a3 withSubitemURL:(id)a4 byWriterWithPurposeID:(id)a5 withFSID:(fsid)a6 andFileID:(unint64_t)a7
+- (void)observeMoveToURL:(id)l withSubitemURL:(id)rL byWriterWithPurposeID:(id)d withFSID:(fsid)iD andFileID:(unint64_t)fileID
 {
   if (self->_filePresenter)
   {
-    [a3 logicalURL];
+    [l logicalURL];
     _CFURLNoteSecurityScopedResourceMoved();
     filePresenter = self->_filePresenter;
-    v13 = [a3 URL];
-    v14 = [a4 URL];
+    v13 = [l URL];
+    v14 = [rL URL];
 
     [(NSFilePresenterXPCMessenger *)self _makePresenter:filePresenter observeMoveToURL:v13 withSubitemURL:v14];
   }
 
   else if (self->_filePresenterProxy)
   {
-    v17 = [+[NSXPCConnection currentConnection](NSXPCConnection userInfo];
-    if (object_getClass(v17) != NSFileSubarbitrationClaim)
+    userInfo = [+[NSXPCConnection currentConnection](NSXPCConnection userInfo];
+    if (object_getClass(userInfo) != NSFileSubarbitrationClaim)
     {
       [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSFileAccessArbiter.m" description:3532, @"Wrong class in connection userInfo: %@", objc_opt_class()];
     }
 
-    if ([v17 isRevoked])
+    if ([userInfo isRevoked])
     {
       NSLog(@"NSFileCoordinator: A surprising subarbiter message was received after the subarbitration claim was revoked");
     }
 
     filePresenterProxy = self->_filePresenterProxy;
 
-    [(NSFilePresenterProxy *)filePresenterProxy observeMoveOfSubitemAtURL:a4 toURL:a3 byWriterWithPurposeID:a5 withFSID:a6 andFileID:a7];
+    [(NSFilePresenterProxy *)filePresenterProxy observeMoveOfSubitemAtURL:rL toURL:l byWriterWithPurposeID:d withFSID:iD andFileID:fileID];
   }
 }
 
@@ -483,13 +483,13 @@ uint64_t __83__NSFilePresenterXPCMessenger_accommodateDeletionOfSubitemAtURL_com
   }
 }
 
-- (void)observeUbiquityChangeWithSubitemURL:(id)a3
+- (void)observeUbiquityChangeWithSubitemURL:(id)l
 {
   v8 = *MEMORY[0x1E69E9840];
   filePresenter = self->_filePresenter;
   if (filePresenter)
   {
-    v5 = [a3 URL];
+    v5 = [l URL];
 
     [(NSFilePresenterXPCMessenger *)self _makePresenter:filePresenter observeUbiquityChangeWithSubitemURL:v5];
   }
@@ -505,13 +505,13 @@ uint64_t __83__NSFilePresenterXPCMessenger_accommodateDeletionOfSubitemAtURL_com
   }
 }
 
-- (void)observeSharingChangeWithSubitemURL:(id)a3
+- (void)observeSharingChangeWithSubitemURL:(id)l
 {
   v8 = *MEMORY[0x1E69E9840];
   filePresenter = self->_filePresenter;
   if (filePresenter)
   {
-    v5 = [a3 URL];
+    v5 = [l URL];
 
     [(NSFilePresenterXPCMessenger *)self _makePresenter:filePresenter observeSharingChangeWithSubitemURL:v5];
   }
@@ -527,7 +527,7 @@ uint64_t __83__NSFilePresenterXPCMessenger_accommodateDeletionOfSubitemAtURL_com
   }
 }
 
-- (void)observeChangeOfUbiquityAttributes:(id)a3
+- (void)observeChangeOfUbiquityAttributes:(id)attributes
 {
   v5 = *MEMORY[0x1E69E9840];
   if (self->_filePresenter)
@@ -547,15 +547,15 @@ uint64_t __83__NSFilePresenterXPCMessenger_accommodateDeletionOfSubitemAtURL_com
   }
 }
 
-- (void)observeVersionChangeOfKind:(id)a3 toItemAtURL:(id)a4 withClientID:(id)a5 name:(id)a6
+- (void)observeVersionChangeOfKind:(id)kind toItemAtURL:(id)l withClientID:(id)d name:(id)name
 {
   v14 = *MEMORY[0x1E69E9840];
   filePresenter = self->_filePresenter;
   if (filePresenter)
   {
-    v11 = [a4 URL];
+    v11 = [l URL];
 
-    [(NSFilePresenterXPCMessenger *)self _makePresenter:filePresenter observeVersionChangeOfKind:a3 withClientID:a5 name:a6 subitemURL:v11];
+    [(NSFilePresenterXPCMessenger *)self _makePresenter:filePresenter observeVersionChangeOfKind:kind withClientID:d name:name subitemURL:v11];
   }
 
   else if (self->_filePresenterProxy)
@@ -569,9 +569,9 @@ uint64_t __83__NSFilePresenterXPCMessenger_accommodateDeletionOfSubitemAtURL_com
   }
 }
 
-- (void)observePresenterChange:(BOOL)a3 forSubitemAtURL:(id)a4
+- (void)observePresenterChange:(BOOL)change forSubitemAtURL:(id)l
 {
-  v5 = a3;
+  changeCopy = change;
   v20 = *MEMORY[0x1E69E9840];
   if (objc_opt_respondsToSelector())
   {
@@ -582,23 +582,23 @@ uint64_t __83__NSFilePresenterXPCMessenger_accommodateDeletionOfSubitemAtURL_com
       *buf = 138543875;
       v15 = v7;
       v16 = 1024;
-      v17 = v5;
+      v17 = changeCopy;
       v18 = 2113;
-      v19 = a4;
+      lCopy = l;
       _os_log_impl(&dword_18075C000, v8, OS_LOG_TYPE_INFO, "Making presenter %{public}@ observe presenter change: %d at %{private}@", buf, 0x1Cu);
     }
 
     v9 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:self->_filePresenter withDescription:@"Observe Presenter Change"];
-    v10 = [(NSFilePresenter *)self->_filePresenter presentedItemOperationQueue];
+    presentedItemOperationQueue = [(NSFilePresenter *)self->_filePresenter presentedItemOperationQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __70__NSFilePresenterXPCMessenger_observePresenterChange_forSubitemAtURL___block_invoke;
     v12[3] = &unk_1E69F9260;
     v12[4] = v9;
     v12[5] = self;
-    v13 = v5;
-    v12[6] = a4;
-    [v10 _fc_addUncancellableOperationForReactorID:v7 block:v12];
+    v13 = changeCopy;
+    v12[6] = l;
+    [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v7 block:v12];
   }
 
   else if (self->_filePresenterProxy)
@@ -621,7 +621,7 @@ uint64_t __70__NSFilePresenterXPCMessenger_observePresenterChange_forSubitemAtUR
   return [v2 didEnd];
 }
 
-- (void)updateLastEventID:(unint64_t)a3
+- (void)updateLastEventID:(unint64_t)d
 {
   v5 = *MEMORY[0x1E69E9840];
   if (self->_filePresenter)
@@ -641,7 +641,7 @@ uint64_t __70__NSFilePresenterXPCMessenger_observePresenterChange_forSubitemAtUR
   }
 }
 
-- (void)setProviderPurposeIdentifier:(id)a3
+- (void)setProviderPurposeIdentifier:(id)identifier
 {
   v5 = *MEMORY[0x1E69E9840];
   if (self->_filePresenter)
@@ -661,12 +661,12 @@ uint64_t __70__NSFilePresenterXPCMessenger_observePresenterChange_forSubitemAtUR
   }
 }
 
-- (void)collectDebuggingInformationWithCompletionHandler:(id)a3
+- (void)collectDebuggingInformationWithCompletionHandler:(id)handler
 {
   v4 = +[NSFileAccessArbiterProxy _fileReactorDebuggingInformation];
-  v5 = *(a3 + 2);
+  v5 = *(handler + 2);
 
-  v5(a3, v4);
+  v5(handler, v4);
 }
 
 - (void)logSuspensionWarning
@@ -685,29 +685,29 @@ uint64_t __70__NSFilePresenterXPCMessenger_observePresenterChange_forSubitemAtUR
   NSLog(@"%@ was still registered at the time this application was suspended, and implements one or more NSFilePresenter messages requiring a response. For NSFilePresenters for file system locations that are accessible to other processes (e.g. iCloud or group containers), you should either call removeFilePresenter: when the process is backgrounded, or remove any implementations of NSFilePresenter methods requiring a response. Otherwise, the system will kill your process instead of risking deadlock.", v3);
 }
 
-- (void)_makePresenter:(id)a3 saveChangesWithCompletionHandler:(id)a4
+- (void)_makePresenter:(id)presenter saveChangesWithCompletionHandler:(id)handler
 {
   v9[8] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Save Changes"];
+    v7 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Save Changes"];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __79__NSFilePresenterXPCMessenger__makePresenter_saveChangesWithCompletionHandler___block_invoke;
     v9[3] = &unk_1E69F92B0;
-    v9[4] = a3;
+    v9[4] = presenter;
     v9[5] = v7;
     v9[6] = self;
-    v9[7] = a4;
-    [objc_msgSend(a3 "presentedItemOperationQueue")];
+    v9[7] = handler;
+    [objc_msgSend(presenter "presentedItemOperationQueue")];
   }
 
   else
   {
-    v8 = *(a4 + 2);
+    v8 = *(handler + 2);
 
-    v8(a4, 0);
+    v8(handler, 0);
   }
 }
 
@@ -772,32 +772,32 @@ uint64_t __79__NSFilePresenterXPCMessenger__makePresenter_saveChangesWithComplet
   return v2();
 }
 
-- (void)_makePresenter:(id)a3 reportUnsavedChangesWithCompletionHandler:(id)a4
+- (void)_makePresenter:(id)presenter reportUnsavedChangesWithCompletionHandler:(id)handler
 {
   v11[9] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [NSFileAccessArbiterProxy _idForReactor:a3];
-    v8 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Report Unsaved Changes"];
-    v9 = [a3 presentedItemOperationQueue];
+    v7 = [NSFileAccessArbiterProxy _idForReactor:presenter];
+    v8 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Report Unsaved Changes"];
+    presentedItemOperationQueue = [presenter presentedItemOperationQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __88__NSFilePresenterXPCMessenger__makePresenter_reportUnsavedChangesWithCompletionHandler___block_invoke;
     v11[3] = &unk_1E69F5B60;
     v11[4] = v7;
     v11[5] = v8;
-    v11[6] = a3;
+    v11[6] = presenter;
     v11[7] = self;
-    v11[8] = a4;
-    [v9 _fc_addUncancellableOperationForReactorID:v7 block:v11];
+    v11[8] = handler;
+    [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v7 block:v11];
   }
 
   else
   {
-    v10 = *(a4 + 2);
+    v10 = *(handler + 2);
 
-    v10(a4, 0);
+    v10(handler, 0);
   }
 }
 
@@ -868,7 +868,7 @@ uint64_t __88__NSFilePresenterXPCMessenger__makePresenter_reportUnsavedChangesWi
   return v4(v2, v3);
 }
 
-- (void)_makePresenter:(id)a3 validateRemoteDeletionRecordingRelinquishment:(id)a4 completionHandler:(id)a5
+- (void)_makePresenter:(id)presenter validateRemoteDeletionRecordingRelinquishment:(id)relinquishment completionHandler:(id)handler
 {
   v10[6] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -878,16 +878,16 @@ uint64_t __88__NSFilePresenterXPCMessenger__makePresenter_reportUnsavedChangesWi
     v10[1] = 3221225472;
     v10[2] = __110__NSFilePresenterXPCMessenger__makePresenter_validateRemoteDeletionRecordingRelinquishment_completionHandler___block_invoke;
     v10[3] = &unk_1E69F9300;
-    v10[4] = a3;
+    v10[4] = presenter;
     v10[5] = self;
-    [a4 performRemoteDeletePrerelinquishmentIfNecessaryUsingBlock:v10 withReply:a5];
+    [relinquishment performRemoteDeletePrerelinquishmentIfNecessaryUsingBlock:v10 withReply:handler];
   }
 
   else
   {
-    v9 = *(a5 + 2);
+    v9 = *(handler + 2);
 
-    v9(a5, 1);
+    v9(handler, 1);
   }
 }
 
@@ -973,54 +973,54 @@ uint64_t __110__NSFilePresenterXPCMessenger__makePresenter_validateRemoteDeletio
   return v2();
 }
 
-- (void)_makePresenter:(id)a3 accommodateDeletionWithSubitemURL:(id)a4 completionHandler:(id)a5
+- (void)_makePresenter:(id)presenter accommodateDeletionWithSubitemURL:(id)l completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  v9 = [NSFileAccessArbiterProxy _idForReactor:a3];
-  if (a4)
+  v9 = [NSFileAccessArbiterProxy _idForReactor:presenter];
+  if (l)
   {
     if (objc_opt_respondsToSelector())
     {
-      v10 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Accommodate Subitem Deletion"];
-      v11 = [a3 presentedItemOperationQueue];
+      v10 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Accommodate Subitem Deletion"];
+      presentedItemOperationQueue = [presenter presentedItemOperationQueue];
       v24 = MEMORY[0x1E69E9820];
       v25 = 3221225472;
       v26 = __98__NSFilePresenterXPCMessenger__makePresenter_accommodateDeletionWithSubitemURL_completionHandler___block_invoke;
       v27 = &unk_1E69F8328;
       v28 = v9;
-      v29 = a4;
+      lCopy = l;
       v30 = v10;
-      v31 = a3;
-      v32 = self;
-      v33 = a5;
+      presenterCopy = presenter;
+      selfCopy = self;
+      handlerCopy = handler;
       v12 = &v24;
 LABEL_6:
-      [v11 _fc_addUncancellableOperationForReactorID:v9 block:{v12, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33}];
+      [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v9 block:{v12, v15, v16, v17, v18, v19, v20, presenterCopy2, selfCopy2, handlerCopy2, v24, v25, v26, v27, v28, lCopy, v30, presenterCopy, selfCopy, handlerCopy}];
       return;
     }
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v13 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Accommodate Deletion"];
-    v11 = [a3 presentedItemOperationQueue];
+    v13 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Accommodate Deletion"];
+    presentedItemOperationQueue = [presenter presentedItemOperationQueue];
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __98__NSFilePresenterXPCMessenger__makePresenter_accommodateDeletionWithSubitemURL_completionHandler___block_invoke_2;
     v18 = &unk_1E69F5B60;
     v19 = v9;
     v20 = v13;
-    v21 = a3;
-    v22 = self;
-    v23 = a5;
+    presenterCopy2 = presenter;
+    selfCopy2 = self;
+    handlerCopy2 = handler;
     v12 = &v15;
     goto LABEL_6;
   }
 
-  v14 = *(a5 + 2);
+  v14 = *(handler + 2);
 
-  v14(a5, 0);
+  v14(handler, 0);
 }
 
 uint64_t __98__NSFilePresenterXPCMessenger__makePresenter_accommodateDeletionWithSubitemURL_completionHandler___block_invoke(uint64_t a1)
@@ -1144,54 +1144,54 @@ uint64_t __98__NSFilePresenterXPCMessenger__makePresenter_accommodateDeletionWit
   return v2();
 }
 
-- (void)_makePresenter:(id)a3 accommodateEvictionWithSubitemURL:(id)a4 completionHandler:(id)a5
+- (void)_makePresenter:(id)presenter accommodateEvictionWithSubitemURL:(id)l completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  v9 = [NSFileAccessArbiterProxy _idForReactor:a3];
-  if (a4)
+  v9 = [NSFileAccessArbiterProxy _idForReactor:presenter];
+  if (l)
   {
     if (objc_opt_respondsToSelector())
     {
-      v10 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Accommodate Subitem Eviction"];
-      v11 = [a3 presentedItemOperationQueue];
+      v10 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Accommodate Subitem Eviction"];
+      presentedItemOperationQueue = [presenter presentedItemOperationQueue];
       v24 = MEMORY[0x1E69E9820];
       v25 = 3221225472;
       v26 = __98__NSFilePresenterXPCMessenger__makePresenter_accommodateEvictionWithSubitemURL_completionHandler___block_invoke;
       v27 = &unk_1E69F8328;
       v28 = v9;
-      v29 = a4;
+      lCopy = l;
       v30 = v10;
-      v31 = a3;
-      v32 = self;
-      v33 = a5;
+      presenterCopy = presenter;
+      selfCopy = self;
+      handlerCopy = handler;
       v12 = &v24;
 LABEL_6:
-      [v11 _fc_addUncancellableOperationForReactorID:v9 block:{v12, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33}];
+      [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v9 block:{v12, v15, v16, v17, v18, v19, v20, presenterCopy2, selfCopy2, handlerCopy2, v24, v25, v26, v27, v28, lCopy, v30, presenterCopy, selfCopy, handlerCopy}];
       return;
     }
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v13 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Accommodate Eviction"];
-    v11 = [a3 presentedItemOperationQueue];
+    v13 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Accommodate Eviction"];
+    presentedItemOperationQueue = [presenter presentedItemOperationQueue];
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __98__NSFilePresenterXPCMessenger__makePresenter_accommodateEvictionWithSubitemURL_completionHandler___block_invoke_2;
     v18 = &unk_1E69F5B60;
     v19 = v9;
     v20 = v13;
-    v21 = a3;
-    v22 = self;
-    v23 = a5;
+    presenterCopy2 = presenter;
+    selfCopy2 = self;
+    handlerCopy2 = handler;
     v12 = &v15;
     goto LABEL_6;
   }
 
-  v14 = *(a5 + 2);
+  v14 = *(handler + 2);
 
-  v14(a5, 0);
+  v14(handler, 0);
 }
 
 uint64_t __98__NSFilePresenterXPCMessenger__makePresenter_accommodateEvictionWithSubitemURL_completionHandler___block_invoke(uint64_t a1)
@@ -1315,32 +1315,32 @@ uint64_t __98__NSFilePresenterXPCMessenger__makePresenter_accommodateEvictionWit
   return v2();
 }
 
-- (void)_makePresenter:(id)a3 accommodateDisconnectionWithCompletionHandler:(id)a4
+- (void)_makePresenter:(id)presenter accommodateDisconnectionWithCompletionHandler:(id)handler
 {
   v11[9] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [NSFileAccessArbiterProxy _idForReactor:a3];
-    v8 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Accommodate Disconnection"];
-    v9 = [a3 presentedItemOperationQueue];
+    v7 = [NSFileAccessArbiterProxy _idForReactor:presenter];
+    v8 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Accommodate Disconnection"];
+    presentedItemOperationQueue = [presenter presentedItemOperationQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __92__NSFilePresenterXPCMessenger__makePresenter_accommodateDisconnectionWithCompletionHandler___block_invoke;
     v11[3] = &unk_1E69F5B60;
     v11[4] = v7;
     v11[5] = v8;
-    v11[6] = a3;
+    v11[6] = presenter;
     v11[7] = self;
-    v11[8] = a4;
-    [v9 _fc_addUncancellableOperationForReactorID:v7 block:v11];
+    v11[8] = handler;
+    [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v7 block:v11];
   }
 
   else
   {
-    v10 = *(a4 + 2);
+    v10 = *(handler + 2);
 
-    v10(a4, 0);
+    v10(handler, 0);
   }
 }
 
@@ -1402,11 +1402,11 @@ uint64_t __92__NSFilePresenterXPCMessenger__makePresenter_accommodateDisconnecti
   return v2();
 }
 
-- (void)_makePresenter:(id)a3 observeChangeWithSubitemURL:(id)a4
+- (void)_makePresenter:(id)presenter observeChangeWithSubitemURL:(id)l
 {
   v16 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  v6 = [NSFileAccessArbiterProxy _idForReactor:a3];
+  v6 = [NSFileAccessArbiterProxy _idForReactor:presenter];
   v7 = _NSFCPresenterLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1415,17 +1415,17 @@ uint64_t __92__NSFilePresenterXPCMessenger__makePresenter_accommodateDisconnecti
     _os_log_impl(&dword_18075C000, v7, OS_LOG_TYPE_DEFAULT, "Making presenter %{public}@ observe change", buf, 0xCu);
   }
 
-  if (a4 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (l && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v8 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Subitem Did Change"];
-    v9 = [a3 presentedItemOperationQueue];
+    v8 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Subitem Did Change"];
+    presentedItemOperationQueue = [presenter presentedItemOperationQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __74__NSFilePresenterXPCMessenger__makePresenter_observeChangeWithSubitemURL___block_invoke;
     v13[3] = &unk_1E69F68D8;
     v13[4] = v8;
-    v13[5] = a3;
-    v13[6] = a4;
+    v13[5] = presenter;
+    v13[6] = l;
     v10 = v13;
   }
 
@@ -1436,18 +1436,18 @@ uint64_t __92__NSFilePresenterXPCMessenger__makePresenter_accommodateDisconnecti
       return;
     }
 
-    v11 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Did Change"];
-    v9 = [a3 presentedItemOperationQueue];
+    v11 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Did Change"];
+    presentedItemOperationQueue = [presenter presentedItemOperationQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __74__NSFilePresenterXPCMessenger__makePresenter_observeChangeWithSubitemURL___block_invoke_2;
     v12[3] = &unk_1E69F2080;
     v12[4] = v11;
-    v12[5] = a3;
+    v12[5] = presenter;
     v10 = v12;
   }
 
-  [v9 _fc_addUncancellableOperationForReactorID:v6 block:v10];
+  [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v6 block:v10];
 }
 
 uint64_t __74__NSFilePresenterXPCMessenger__makePresenter_observeChangeWithSubitemURL___block_invoke(uint64_t a1)
@@ -1468,35 +1468,35 @@ uint64_t __74__NSFilePresenterXPCMessenger__makePresenter_observeChangeWithSubit
   return [v2 didEnd];
 }
 
-- (void)_makePresenter:(id)a3 observeMoveToURL:(id)a4 withSubitemURL:(id)a5
+- (void)_makePresenter:(id)presenter observeMoveToURL:(id)l withSubitemURL:(id)rL
 {
   v22 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [NSFileAccessArbiterProxy _idForReactor:a3];
+  v8 = [NSFileAccessArbiterProxy _idForReactor:presenter];
   v9 = _NSFCPresenterLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543619;
     v19 = v8;
     v20 = 2113;
-    v21 = a4;
+    lCopy = l;
     _os_log_impl(&dword_18075C000, v9, OS_LOG_TYPE_DEFAULT, "Making presenter %{public}@ observe move to URL: %{private}@", buf, 0x16u);
   }
 
-  if (a5)
+  if (rL)
   {
     if (objc_opt_respondsToSelector())
     {
-      v10 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Subitem Did Move"];
-      v11 = [a3 presentedItemOperationQueue];
+      v10 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Subitem Did Move"];
+      presentedItemOperationQueue = [presenter presentedItemOperationQueue];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __78__NSFilePresenterXPCMessenger__makePresenter_observeMoveToURL_withSubitemURL___block_invoke;
       v17[3] = &unk_1E69F9148;
       v17[4] = v10;
-      v17[5] = a3;
-      v17[6] = a5;
-      v17[7] = a4;
+      v17[5] = presenter;
+      v17[6] = rL;
+      v17[7] = l;
       v12 = v17;
     }
 
@@ -1507,14 +1507,14 @@ uint64_t __74__NSFilePresenterXPCMessenger__makePresenter_observeChangeWithSubit
         return;
       }
 
-      v14 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Did Change"];
-      v11 = [a3 presentedItemOperationQueue];
+      v14 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Did Change"];
+      presentedItemOperationQueue = [presenter presentedItemOperationQueue];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __78__NSFilePresenterXPCMessenger__makePresenter_observeMoveToURL_withSubitemURL___block_invoke_2;
       v16[3] = &unk_1E69F2080;
       v16[4] = v14;
-      v16[5] = a3;
+      v16[5] = presenter;
       v12 = v16;
     }
   }
@@ -1526,19 +1526,19 @@ uint64_t __74__NSFilePresenterXPCMessenger__makePresenter_observeChangeWithSubit
       return;
     }
 
-    v13 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Did Move"];
-    v11 = [a3 presentedItemOperationQueue];
+    v13 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Did Move"];
+    presentedItemOperationQueue = [presenter presentedItemOperationQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __78__NSFilePresenterXPCMessenger__makePresenter_observeMoveToURL_withSubitemURL___block_invoke_3;
     v15[3] = &unk_1E69F68D8;
     v15[4] = v13;
-    v15[5] = a3;
-    v15[6] = a4;
+    v15[5] = presenter;
+    v15[6] = l;
     v12 = v15;
   }
 
-  [v11 _fc_addUncancellableOperationForReactorID:v8 block:v12];
+  [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v8 block:v12];
 }
 
 uint64_t __78__NSFilePresenterXPCMessenger__makePresenter_observeMoveToURL_withSubitemURL___block_invoke(uint64_t a1)
@@ -1568,11 +1568,11 @@ uint64_t __78__NSFilePresenterXPCMessenger__makePresenter_observeMoveToURL_withS
   return [v2 didEnd];
 }
 
-- (void)_makePresenterObserveDisconnection:(id)a3
+- (void)_makePresenterObserveDisconnection:(id)disconnection
 {
   v11 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [NSFileAccessArbiterProxy _idForReactor:a3];
+  v4 = [NSFileAccessArbiterProxy _idForReactor:disconnection];
   v5 = _NSFCPresenterLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1583,15 +1583,15 @@ uint64_t __78__NSFilePresenterXPCMessenger__makePresenter_observeMoveToURL_withS
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Observe Disconnection"];
-    v7 = [a3 presentedItemOperationQueue];
+    v6 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:disconnection withDescription:@"Observe Disconnection"];
+    presentedItemOperationQueue = [disconnection presentedItemOperationQueue];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __66__NSFilePresenterXPCMessenger__makePresenterObserveDisconnection___block_invoke;
     v8[3] = &unk_1E69F2080;
     v8[4] = v6;
-    v8[5] = a3;
-    [v7 _fc_addUncancellableOperationForReactorID:v4 block:v8];
+    v8[5] = disconnection;
+    [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v4 block:v8];
   }
 }
 
@@ -1604,11 +1604,11 @@ uint64_t __66__NSFilePresenterXPCMessenger__makePresenterObserveDisconnection___
   return [v2 didEnd];
 }
 
-- (void)_makePresenterObserveReconnection:(id)a3
+- (void)_makePresenterObserveReconnection:(id)reconnection
 {
   v11 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [NSFileAccessArbiterProxy _idForReactor:a3];
+  v4 = [NSFileAccessArbiterProxy _idForReactor:reconnection];
   v5 = _NSFCPresenterLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1619,15 +1619,15 @@ uint64_t __66__NSFilePresenterXPCMessenger__makePresenterObserveDisconnection___
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Observe Reconnection"];
-    v7 = [a3 presentedItemOperationQueue];
+    v6 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:reconnection withDescription:@"Observe Reconnection"];
+    presentedItemOperationQueue = [reconnection presentedItemOperationQueue];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __65__NSFilePresenterXPCMessenger__makePresenterObserveReconnection___block_invoke;
     v8[3] = &unk_1E69F2080;
     v8[4] = v6;
-    v8[5] = a3;
-    [v7 _fc_addUncancellableOperationForReactorID:v4 block:v8];
+    v8[5] = reconnection;
+    [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v4 block:v8];
   }
 }
 
@@ -1640,11 +1640,11 @@ uint64_t __65__NSFilePresenterXPCMessenger__makePresenterObserveReconnection___b
   return [v2 didEnd];
 }
 
-- (void)_makePresenter:(id)a3 observeUbiquityChangeWithSubitemURL:(id)a4
+- (void)_makePresenter:(id)presenter observeUbiquityChangeWithSubitemURL:(id)l
 {
   v16 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  v6 = [NSFileAccessArbiterProxy _idForReactor:a3];
+  v6 = [NSFileAccessArbiterProxy _idForReactor:presenter];
   v7 = _NSFCPresenterLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1653,22 +1653,22 @@ uint64_t __65__NSFilePresenterXPCMessenger__makePresenterObserveReconnection___b
     _os_log_impl(&dword_18075C000, v7, OS_LOG_TYPE_INFO, "Making presenter %{public}@ observe ubiquity change", buf, 0xCu);
   }
 
-  if (a4)
+  if (l)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       return;
     }
 
-    v8 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Observe Subitem Ubiquity Change"];
-    v9 = [a3 presentedItemOperationQueue];
+    v8 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Observe Subitem Ubiquity Change"];
+    presentedItemOperationQueue = [presenter presentedItemOperationQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __82__NSFilePresenterXPCMessenger__makePresenter_observeUbiquityChangeWithSubitemURL___block_invoke;
     v13[3] = &unk_1E69F68D8;
     v13[4] = v8;
-    v13[5] = a3;
-    v13[6] = a4;
+    v13[5] = presenter;
+    v13[6] = l;
     v10 = v13;
   }
 
@@ -1679,18 +1679,18 @@ uint64_t __65__NSFilePresenterXPCMessenger__makePresenterObserveReconnection___b
       return;
     }
 
-    v11 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Observe Ubiquity Change"];
-    v9 = [a3 presentedItemOperationQueue];
+    v11 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Observe Ubiquity Change"];
+    presentedItemOperationQueue = [presenter presentedItemOperationQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __82__NSFilePresenterXPCMessenger__makePresenter_observeUbiquityChangeWithSubitemURL___block_invoke_2;
     v12[3] = &unk_1E69F2080;
     v12[4] = v11;
-    v12[5] = a3;
+    v12[5] = presenter;
     v10 = v12;
   }
 
-  [v9 _fc_addUncancellableOperationForReactorID:v6 block:v10];
+  [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v6 block:v10];
 }
 
 uint64_t __82__NSFilePresenterXPCMessenger__makePresenter_observeUbiquityChangeWithSubitemURL___block_invoke(uint64_t a1)
@@ -1711,11 +1711,11 @@ uint64_t __82__NSFilePresenterXPCMessenger__makePresenter_observeUbiquityChangeW
   return [v2 didEnd];
 }
 
-- (void)_makePresenter:(id)a3 observeSharingChangeWithSubitemURL:(id)a4
+- (void)_makePresenter:(id)presenter observeSharingChangeWithSubitemURL:(id)l
 {
   v16 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  v6 = [NSFileAccessArbiterProxy _idForReactor:a3];
+  v6 = [NSFileAccessArbiterProxy _idForReactor:presenter];
   v7 = _NSFCPresenterLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1724,22 +1724,22 @@ uint64_t __82__NSFilePresenterXPCMessenger__makePresenter_observeUbiquityChangeW
     _os_log_impl(&dword_18075C000, v7, OS_LOG_TYPE_INFO, "Making presenter %{public}@ observe sharing change", buf, 0xCu);
   }
 
-  if (a4)
+  if (l)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       return;
     }
 
-    v8 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Observe Subitem Sharing Change"];
-    v9 = [a3 presentedItemOperationQueue];
+    v8 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Observe Subitem Sharing Change"];
+    presentedItemOperationQueue = [presenter presentedItemOperationQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __81__NSFilePresenterXPCMessenger__makePresenter_observeSharingChangeWithSubitemURL___block_invoke;
     v13[3] = &unk_1E69F68D8;
     v13[4] = v8;
-    v13[5] = a3;
-    v13[6] = a4;
+    v13[5] = presenter;
+    v13[6] = l;
     v10 = v13;
   }
 
@@ -1750,18 +1750,18 @@ uint64_t __82__NSFilePresenterXPCMessenger__makePresenter_observeUbiquityChangeW
       return;
     }
 
-    v11 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Observe Sharing Change"];
-    v9 = [a3 presentedItemOperationQueue];
+    v11 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Observe Sharing Change"];
+    presentedItemOperationQueue = [presenter presentedItemOperationQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __81__NSFilePresenterXPCMessenger__makePresenter_observeSharingChangeWithSubitemURL___block_invoke_2;
     v12[3] = &unk_1E69F2080;
     v12[4] = v11;
-    v12[5] = a3;
+    v12[5] = presenter;
     v10 = v12;
   }
 
-  [v9 _fc_addUncancellableOperationForReactorID:v6 block:v10];
+  [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v6 block:v10];
 }
 
 uint64_t __81__NSFilePresenterXPCMessenger__makePresenter_observeSharingChangeWithSubitemURL___block_invoke(uint64_t a1)
@@ -1782,38 +1782,38 @@ uint64_t __81__NSFilePresenterXPCMessenger__makePresenter_observeSharingChangeWi
   return [v2 didEnd];
 }
 
-- (void)_makePresenter:(id)a3 observeChangeOfUbiquityAttributes:(id)a4
+- (void)_makePresenter:(id)presenter observeChangeOfUbiquityAttributes:(id)attributes
 {
   v16 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [NSFileAccessArbiterProxy _idForReactor:a3];
+  v7 = [NSFileAccessArbiterProxy _idForReactor:presenter];
   v8 = _NSFCPresenterLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
     v13 = v7;
     v14 = 2114;
-    v15 = a4;
+    attributesCopy = attributes;
     _os_log_impl(&dword_18075C000, v8, OS_LOG_TYPE_INFO, "Making presenter %{public}@ observe ubiquity attributes change: %{public}@", buf, 0x16u);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Observe Ubiquity Attributes Change"];
-    v10 = [a3 presentedItemOperationQueue];
+    v9 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Observe Ubiquity Attributes Change"];
+    presentedItemOperationQueue = [presenter presentedItemOperationQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __80__NSFilePresenterXPCMessenger__makePresenter_observeChangeOfUbiquityAttributes___block_invoke;
     v11[3] = &unk_1E69F68D8;
     v11[4] = v9;
-    v11[5] = a3;
-    v11[6] = a4;
-    [v10 _fc_addUncancellableOperationForReactorID:v7 block:v11];
+    v11[5] = presenter;
+    v11[6] = attributes;
+    [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v7 block:v11];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [(NSFilePresenterXPCMessenger *)self _makePresenter:a3 observeUbiquityChangeWithSubitemURL:0];
+    [(NSFilePresenterXPCMessenger *)self _makePresenter:presenter observeUbiquityChangeWithSubitemURL:0];
   }
 }
 
@@ -1827,7 +1827,7 @@ uint64_t __80__NSFilePresenterXPCMessenger__makePresenter_observeChangeOfUbiquit
   return [v2 didEnd];
 }
 
-- (void)_makePresenter:(id)a3 observeVersionChangeOfKind:(id)a4 withClientID:(id)a5 name:(id)a6 subitemURL:(id)a7
+- (void)_makePresenter:(id)presenter observeVersionChangeOfKind:(id)kind withClientID:(id)d name:(id)name subitemURL:(id)l
 {
   v25 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -1835,11 +1835,11 @@ uint64_t __80__NSFilePresenterXPCMessenger__makePresenter_observeChangeOfUbiquit
   v22[1] = 3221225472;
   v22[2] = __102__NSFilePresenterXPCMessenger__makePresenter_observeVersionChangeOfKind_withClientID_name_subitemURL___block_invoke;
   v22[3] = &unk_1E69F9350;
-  v22[4] = a7;
-  v22[5] = a3;
-  v22[6] = a5;
-  v22[7] = a6;
-  v12 = [NSFileAccessArbiterProxy _idForReactor:a3];
+  v22[4] = l;
+  v22[5] = presenter;
+  v22[6] = d;
+  v22[7] = name;
+  v12 = [NSFileAccessArbiterProxy _idForReactor:presenter];
   v13 = _NSFCPresenterLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -1848,23 +1848,23 @@ uint64_t __80__NSFilePresenterXPCMessenger__makePresenter_observeChangeOfUbiquit
     _os_log_impl(&dword_18075C000, v13, OS_LOG_TYPE_INFO, "Making presenter %{public}@ observe version change", buf, 0xCu);
   }
 
-  if ([a4 isEqualToString:@"added"])
+  if ([kind isEqualToString:@"added"])
   {
-    if (a7)
+    if (l)
     {
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
         return;
       }
 
-      v14 = [a3 presentedItemOperationQueue];
+      presentedItemOperationQueue = [presenter presentedItemOperationQueue];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __102__NSFilePresenterXPCMessenger__makePresenter_observeVersionChangeOfKind_withClientID_name_subitemURL___block_invoke_592;
       v21[3] = &unk_1E69F3820;
-      v21[5] = a7;
+      v21[5] = l;
       v21[6] = v22;
-      v21[4] = a3;
+      v21[4] = presenter;
       v15 = v21;
     }
 
@@ -1875,34 +1875,34 @@ uint64_t __80__NSFilePresenterXPCMessenger__makePresenter_observeChangeOfUbiquit
         return;
       }
 
-      v14 = [a3 presentedItemOperationQueue];
+      presentedItemOperationQueue = [presenter presentedItemOperationQueue];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __102__NSFilePresenterXPCMessenger__makePresenter_observeVersionChangeOfKind_withClientID_name_subitemURL___block_invoke_2;
       v20[3] = &unk_1E69F3910;
-      v20[4] = a3;
+      v20[4] = presenter;
       v20[5] = v22;
       v15 = v20;
     }
   }
 
-  else if ([a4 isEqualToString:@"removed"])
+  else if ([kind isEqualToString:@"removed"])
   {
-    if (a7)
+    if (l)
     {
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
         return;
       }
 
-      v14 = [a3 presentedItemOperationQueue];
+      presentedItemOperationQueue = [presenter presentedItemOperationQueue];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __102__NSFilePresenterXPCMessenger__makePresenter_observeVersionChangeOfKind_withClientID_name_subitemURL___block_invoke_3;
       v19[3] = &unk_1E69F3820;
-      v19[5] = a7;
+      v19[5] = l;
       v19[6] = v22;
-      v19[4] = a3;
+      v19[4] = presenter;
       v15 = v19;
     }
 
@@ -1913,12 +1913,12 @@ uint64_t __80__NSFilePresenterXPCMessenger__makePresenter_observeChangeOfUbiquit
         return;
       }
 
-      v14 = [a3 presentedItemOperationQueue];
+      presentedItemOperationQueue = [presenter presentedItemOperationQueue];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __102__NSFilePresenterXPCMessenger__makePresenter_observeVersionChangeOfKind_withClientID_name_subitemURL___block_invoke_4;
       v18[3] = &unk_1E69F3910;
-      v18[4] = a3;
+      v18[4] = presenter;
       v18[5] = v22;
       v15 = v18;
     }
@@ -1926,26 +1926,26 @@ uint64_t __80__NSFilePresenterXPCMessenger__makePresenter_observeChangeOfUbiquit
 
   else
   {
-    if (![a4 isEqualToString:@"resolved"])
+    if (![kind isEqualToString:@"resolved"])
     {
       return;
     }
 
-    if (a7)
+    if (l)
     {
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
         return;
       }
 
-      v14 = [a3 presentedItemOperationQueue];
+      presentedItemOperationQueue = [presenter presentedItemOperationQueue];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __102__NSFilePresenterXPCMessenger__makePresenter_observeVersionChangeOfKind_withClientID_name_subitemURL___block_invoke_5;
       v17[3] = &unk_1E69F3820;
-      v17[5] = a7;
+      v17[5] = l;
       v17[6] = v22;
-      v17[4] = a3;
+      v17[4] = presenter;
       v15 = v17;
     }
 
@@ -1956,18 +1956,18 @@ uint64_t __80__NSFilePresenterXPCMessenger__makePresenter_observeChangeOfUbiquit
         return;
       }
 
-      v14 = [a3 presentedItemOperationQueue];
+      presentedItemOperationQueue = [presenter presentedItemOperationQueue];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __102__NSFilePresenterXPCMessenger__makePresenter_observeVersionChangeOfKind_withClientID_name_subitemURL___block_invoke_6;
       v16[3] = &unk_1E69F3910;
-      v16[4] = a3;
+      v16[4] = presenter;
       v16[5] = v22;
       v15 = v16;
     }
   }
 
-  [v14 _fc_addUncancellableOperationForReactorID:v12 block:v15];
+  [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v12 block:v15];
 }
 
 id __102__NSFilePresenterXPCMessenger__makePresenter_observeVersionChangeOfKind_withClientID_name_subitemURL___block_invoke(uint64_t a1)
@@ -2081,35 +2081,35 @@ uint64_t __102__NSFilePresenterXPCMessenger__makePresenter_observeVersionChangeO
   return result;
 }
 
-- (void)_makePresenter:(id)a3 setLastPresentedItemEventIdentifier:(unint64_t)a4
+- (void)_makePresenter:(id)presenter setLastPresentedItemEventIdentifier:(unint64_t)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  v6 = [NSFileAccessArbiterProxy _idForReactor:a3];
+  v6 = [NSFileAccessArbiterProxy _idForReactor:presenter];
   v7 = _NSFCPresenterLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
     v11 = v6;
     v12 = 2048;
-    v13 = a4;
+    identifierCopy = identifier;
     _os_log_impl(&dword_18075C000, v7, OS_LOG_TYPE_INFO, "Making presenter %{public}@ setLastPresentedItemIdentifier: %llu", buf, 0x16u);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [a3 presentedItemOperationQueue];
+    presentedItemOperationQueue = [presenter presentedItemOperationQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __82__NSFilePresenterXPCMessenger__makePresenter_setLastPresentedItemEventIdentifier___block_invoke;
     v9[3] = &unk_1E69F4618;
-    v9[4] = a3;
-    v9[5] = a4;
-    [v8 _fc_addUncancellableOperationForReactorID:v6 block:v9];
+    v9[4] = presenter;
+    v9[5] = identifier;
+    [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v6 block:v9];
   }
 }
 
-- (void)_makePresenter:(id)a3 setProviderPurposeIdentifier:(id)a4
+- (void)_makePresenter:(id)presenter setProviderPurposeIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
   v6 = [NSFileAccessArbiterProxy _idForReactor:?];
@@ -2119,20 +2119,20 @@ uint64_t __102__NSFilePresenterXPCMessenger__makePresenter_observeVersionChangeO
     *buf = 138543618;
     v11 = v6;
     v12 = 2114;
-    v13 = a4;
+    identifierCopy = identifier;
     _os_log_impl(&dword_18075C000, v7, OS_LOG_TYPE_INFO, "Making presenter %{public}@ setProviderPurposeIdentifier: %{public}@", buf, 0x16u);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [a3 presentedItemOperationQueue];
+    presentedItemOperationQueue = [presenter presentedItemOperationQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __75__NSFilePresenterXPCMessenger__makePresenter_setProviderPurposeIdentifier___block_invoke;
     v9[3] = &unk_1E69F2080;
-    v9[4] = a3;
-    v9[5] = a4;
-    [v8 _fc_addUncancellableOperationForReactorID:v6 block:v9];
+    v9[4] = presenter;
+    v9[5] = identifier;
+    [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v6 block:v9];
   }
 }
 
@@ -2166,7 +2166,7 @@ uint64_t __102__NSFilePresenterXPCMessenger__makePresenter_observeVersionChangeO
   return v4;
 }
 
-- (void)_makePresenter:(id)a3 relinquishToAccessClaimWithID:(id)a4 purposeID:(id)a5 ifNecessaryUsingSelector:(SEL)a6 recordingRelinquishment:(id)a7 continuer:(id)a8
+- (void)_makePresenter:(id)presenter relinquishToAccessClaimWithID:(id)d purposeID:(id)iD ifNecessaryUsingSelector:(SEL)selector recordingRelinquishment:(id)relinquishment continuer:(id)continuer
 {
   v16[10] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -2177,19 +2177,19 @@ uint64_t __102__NSFilePresenterXPCMessenger__makePresenter_observeVersionChangeO
     v16[2] = __145__NSFilePresenterXPCMessenger__makePresenter_relinquishToAccessClaimWithID_purposeID_ifNecessaryUsingSelector_recordingRelinquishment_continuer___block_invoke;
     v16[3] = &unk_1E69F9418;
     v16[4] = self;
-    v16[5] = a3;
-    v16[6] = a4;
-    v16[7] = a5;
-    v16[8] = a7;
-    v16[9] = a6;
-    [a7 performRelinquishmentToAccessClaimIfNecessary:a4 usingBlock:v16 withReply:a8];
+    v16[5] = presenter;
+    v16[6] = d;
+    v16[7] = iD;
+    v16[8] = relinquishment;
+    v16[9] = selector;
+    [relinquishment performRelinquishmentToAccessClaimIfNecessary:d usingBlock:v16 withReply:continuer];
   }
 
   else
   {
-    v15 = *(a8 + 2);
+    v15 = *(continuer + 2);
 
-    v15(a8);
+    v15(continuer);
   }
 }
 
@@ -2371,9 +2371,9 @@ uint64_t __145__NSFilePresenterXPCMessenger__makePresenter_relinquishToAccessCla
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)_makePresenter:(id)a3 relinquishToReadingClaimWithID:(id)a4 purposeID:(id)a5 options:(unint64_t)a6 completionHandler:(id)a7
+- (void)_makePresenter:(id)presenter relinquishToReadingClaimWithID:(id)d purposeID:(id)iD options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = a6;
+  optionsCopy = options;
   v18[5] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   v13 = v18;
@@ -2381,10 +2381,10 @@ uint64_t __145__NSFilePresenterXPCMessenger__makePresenter_relinquishToAccessCla
   v18[1] = 3221225472;
   v18[2] = __113__NSFilePresenterXPCMessenger__makePresenter_relinquishToReadingClaimWithID_purposeID_options_completionHandler___block_invoke;
   v18[3] = &unk_1E69F40C0;
-  v18[4] = a7;
-  if ((v8 & 1) == 0)
+  v18[4] = handler;
+  if ((optionsCopy & 1) == 0)
   {
-    if ((v8 & 0x10000) != 0)
+    if ((optionsCopy & 0x10000) != 0)
     {
       v13 = v17;
       v17[0] = MEMORY[0x1E69E9820];
@@ -2403,11 +2403,11 @@ uint64_t __145__NSFilePresenterXPCMessenger__makePresenter_relinquishToAccessCla
     v13[2] = v14;
     v13[3] = &unk_1E69F9198;
     v13[4] = self;
-    v13[5] = a3;
-    v13[6] = a7;
+    v13[5] = presenter;
+    v13[6] = handler;
   }
 
-  [(NSFilePresenterXPCMessenger *)self _makePresenter:a3 relinquishToAccessClaimWithID:a4 purposeID:a5 ifNecessaryUsingSelector:sel_relinquishPresentedItemToReader_ recordingRelinquishment:[(NSFilePresenterXPCMessenger *)self _readRelinquishment:v15] continuer:v13];
+  [(NSFilePresenterXPCMessenger *)self _makePresenter:presenter relinquishToAccessClaimWithID:d purposeID:iD ifNecessaryUsingSelector:sel_relinquishPresentedItemToReader_ recordingRelinquishment:[(NSFilePresenterXPCMessenger *)self _readRelinquishment:v15] continuer:v13];
 }
 
 uint64_t __113__NSFilePresenterXPCMessenger__makePresenter_relinquishToReadingClaimWithID_purposeID_options_completionHandler___block_invoke_2(uint64_t a1)
@@ -2455,7 +2455,7 @@ uint64_t __113__NSFilePresenterXPCMessenger__makePresenter_relinquishToReadingCl
   }
 }
 
-- (void)_makePresenter:(id)a3 relinquishToWritingClaimWithID:(id)a4 options:(unint64_t)a5 purposeID:(id)a6 subitemURL:(id)a7 completionHandler:(id)a8
+- (void)_makePresenter:(id)presenter relinquishToWritingClaimWithID:(id)d options:(unint64_t)options purposeID:(id)iD subitemURL:(id)l completionHandler:(id)handler
 {
   v34[5] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -2464,16 +2464,16 @@ uint64_t __113__NSFilePresenterXPCMessenger__makePresenter_relinquishToReadingCl
   v34[1] = 3221225472;
   v34[2] = __124__NSFilePresenterXPCMessenger__makePresenter_relinquishToWritingClaimWithID_options_purposeID_subitemURL_completionHandler___block_invoke;
   v34[3] = &unk_1E69F40C0;
-  v34[4] = a8;
-  if ((a5 & 4) != 0)
+  v34[4] = handler;
+  if ((options & 4) != 0)
   {
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __124__NSFilePresenterXPCMessenger__makePresenter_relinquishToWritingClaimWithID_options_purposeID_subitemURL_completionHandler___block_invoke_2;
     v33[3] = &unk_1E69F9198;
     v33[4] = self;
-    v33[5] = a3;
-    v33[6] = a8;
+    v33[5] = presenter;
+    v33[6] = handler;
     v15 = [v33 copy];
   }
 
@@ -2481,60 +2481,60 @@ uint64_t __113__NSFilePresenterXPCMessenger__makePresenter_relinquishToReadingCl
   v31[1] = v31;
   v31[2] = 0x2020000000;
   v32 = 1;
-  if ((a5 & 9) != 0)
+  if ((options & 9) != 0)
   {
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __124__NSFilePresenterXPCMessenger__makePresenter_relinquishToWritingClaimWithID_options_purposeID_subitemURL_completionHandler___block_invoke_3;
     v30[3] = &unk_1E69F9468;
-    v30[7] = a8;
+    v30[7] = handler;
     v30[8] = v31;
     v30[4] = self;
-    v30[5] = a3;
-    v30[6] = a7;
+    v30[5] = presenter;
+    v30[6] = l;
     v15 = [v30 copy];
   }
 
-  if ((a5 & 0x100000) != 0)
+  if ((options & 0x100000) != 0)
   {
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __124__NSFilePresenterXPCMessenger__makePresenter_relinquishToWritingClaimWithID_options_purposeID_subitemURL_completionHandler___block_invoke_4;
     v29[3] = &unk_1E69F5E10;
     v29[4] = self;
-    v29[5] = a3;
-    v29[6] = a7;
-    v29[7] = a8;
+    v29[5] = presenter;
+    v29[6] = l;
+    v29[7] = handler;
     v15 = [v29 copy];
   }
 
-  if ((a5 & 0x10000) != 0)
+  if ((options & 0x10000) != 0)
   {
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __124__NSFilePresenterXPCMessenger__makePresenter_relinquishToWritingClaimWithID_options_purposeID_subitemURL_completionHandler___block_invoke_5;
     v28[3] = &unk_1E69F94B8;
     v28[4] = self;
-    v28[5] = a3;
-    v28[6] = a8;
-    v28[7] = a5;
+    v28[5] = presenter;
+    v28[6] = handler;
+    v28[7] = options;
     v15 = [v28 copy];
   }
 
-  v16 = [(NSFilePresenterXPCMessenger *)self _writeRelinquishment];
+  _writeRelinquishment = [(NSFilePresenterXPCMessenger *)self _writeRelinquishment];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v20 = __124__NSFilePresenterXPCMessenger__makePresenter_relinquishToWritingClaimWithID_options_purposeID_subitemURL_completionHandler___block_invoke_7;
   v21 = &unk_1E69F8328;
-  v22 = self;
-  v23 = a3;
-  v24 = a4;
-  v25 = a6;
-  v26 = v16;
+  selfCopy = self;
+  presenterCopy = presenter;
+  dCopy = d;
+  iDCopy = iD;
+  v26 = _writeRelinquishment;
   v27 = v15;
-  if (a5)
+  if (options)
   {
-    if ([a6 isEqualToString:@"com.apple.icloud.drive"] & 1) != 0 || (objc_msgSend(a6, "isEqualToString:", @"com.apple.bird"))
+    if ([iD isEqualToString:@"com.apple.icloud.drive"] & 1) != 0 || (objc_msgSend(iD, "isEqualToString:", @"com.apple.bird"))
     {
       filePresenter = self->_filePresenter;
       v18[0] = MEMORY[0x1E69E9820];
@@ -2544,7 +2544,7 @@ uint64_t __113__NSFilePresenterXPCMessenger__makePresenter_relinquishToReadingCl
       v18[6] = v31;
       v18[4] = self;
       v18[5] = v19;
-      [(NSFilePresenterXPCMessenger *)self _makePresenter:filePresenter validateRemoteDeletionRecordingRelinquishment:v16 completionHandler:v18];
+      [(NSFilePresenterXPCMessenger *)self _makePresenter:filePresenter validateRemoteDeletionRecordingRelinquishment:_writeRelinquishment completionHandler:v18];
     }
 
     else
@@ -2631,33 +2631,33 @@ uint64_t __124__NSFilePresenterXPCMessenger__makePresenter_relinquishToWritingCl
   return [v2 _makePresenter:v3 relinquishToAccessClaimWithID:v4 purposeID:v5 ifNecessaryUsingSelector:sel_relinquishPresentedItemToWriter_ recordingRelinquishment:v6 continuer:v7];
 }
 
-- (void)_makePresenter:(id)a3 validateRelinquishmentToSubitemAtURL:(id)a4 completionHandler:(id)a5
+- (void)_makePresenter:(id)presenter validateRelinquishmentToSubitemAtURL:(id)l completionHandler:(id)handler
 {
   v13[10] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  if (a4 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (l && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v9 = [NSFileAccessArbiterProxy _idForReactor:a3];
-    v10 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Validate Subitem Relinquishment"];
-    v11 = [a3 presentedItemOperationQueue];
+    v9 = [NSFileAccessArbiterProxy _idForReactor:presenter];
+    v10 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:presenter withDescription:@"Validate Subitem Relinquishment"];
+    presentedItemOperationQueue = [presenter presentedItemOperationQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __101__NSFilePresenterXPCMessenger__makePresenter_validateRelinquishmentToSubitemAtURL_completionHandler___block_invoke;
     v13[3] = &unk_1E69F8328;
     v13[4] = v9;
-    v13[5] = a4;
+    v13[5] = l;
     v13[6] = v10;
-    v13[7] = a3;
+    v13[7] = presenter;
     v13[8] = self;
-    v13[9] = a5;
-    [v11 _fc_addUncancellableOperationForReactorID:v9 block:v13];
+    v13[9] = handler;
+    [presentedItemOperationQueue _fc_addUncancellableOperationForReactorID:v9 block:v13];
   }
 
   else
   {
-    v12 = *(a5 + 2);
+    v12 = *(handler + 2);
 
-    v12(a5, 1);
+    v12(handler, 1);
   }
 }
 

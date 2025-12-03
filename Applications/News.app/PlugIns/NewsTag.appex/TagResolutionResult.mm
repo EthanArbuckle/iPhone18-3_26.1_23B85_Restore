@@ -1,25 +1,25 @@
 @interface TagResolutionResult
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3;
-+ (id)confirmationRequiredWithTagToConfirm:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)disambiguationWithTagsToDisambiguate:(id)a3;
-+ (id)successWithResolvedObject:(id)a3;
-+ (id)successWithResolvedTag:(id)a3;
-- (TagResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4;
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm;
++ (id)confirmationRequiredWithTagToConfirm:(id)confirm;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithTagsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedObject:(id)object;
++ (id)successWithResolvedTag:(id)tag;
+- (TagResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent;
 @end
 
 @implementation TagResolutionResult
 
-+ (id)successWithResolvedTag:(id)a3
++ (id)successWithResolvedTag:(id)tag
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static TagResolutionResult.success(with:)(v4);
+  tagCopy = tag;
+  v5 = static TagResolutionResult.success(with:)(tagCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithTagsToDisambiguate:(id)a3
++ (id)disambiguationWithTagsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for Tag();
   v3 = sub_1000A2F10();
@@ -29,45 +29,45 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithTagToConfirm:(id)a3
++ (id)confirmationRequiredWithTagToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static TagResolutionResult.confirmationRequired(with:)(a3);
+  confirmCopy = confirm;
+  v5 = static TagResolutionResult.confirmationRequired(with:)(confirm);
 
   return v5;
 }
 
-+ (id)successWithResolvedObject:(id)a3
++ (id)successWithResolvedObject:(id)object
 {
   result = sub_1000A33B0();
   __break(1u);
   return result;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   result = sub_1000A33B0();
   __break(1u);
   return result;
 }
 
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm
 {
   result = sub_1000A33B0();
   __break(1u);
   return result;
 }
 
-- (TagResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4
+- (TagResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent
 {
   sub_1000A2C60();
-  v6 = a4;
+  intentCopy = intent;
   isa = sub_1000A2C50().super.isa;
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for TagResolutionResult();
-  v8 = [(TagResolutionResult *)&v10 initWithJSONDictionary:isa forIntent:v6];
+  v8 = [(TagResolutionResult *)&v10 initWithJSONDictionary:isa forIntent:intentCopy];
 
   if (v8)
   {

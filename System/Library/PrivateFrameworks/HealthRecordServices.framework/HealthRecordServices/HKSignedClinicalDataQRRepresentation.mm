@@ -1,19 +1,19 @@
 @interface HKSignedClinicalDataQRRepresentation
-+ (HKSignedClinicalDataQRRepresentation)representationWithQRSegment:(id)a3;
-+ (HKSignedClinicalDataQRRepresentation)representationWithSMARTHealthCardQRSegmentData:(id)a3;
-+ (id)representationForEUDCCPayloadData:(id)a3 error:(id *)a4;
-+ (id)representationForJWSPayload:(id)a3 error:(id *)a4;
-+ (id)representationForJWSPayloadData:(id)a3 error:(id *)a4;
-+ (id)representationForRawContent:(id)a3 sourceType:(int64_t)a4 error:(id *)a5;
++ (HKSignedClinicalDataQRRepresentation)representationWithQRSegment:(id)segment;
++ (HKSignedClinicalDataQRRepresentation)representationWithSMARTHealthCardQRSegmentData:(id)data;
++ (id)representationForEUDCCPayloadData:(id)data error:(id *)error;
++ (id)representationForJWSPayload:(id)payload error:(id *)error;
++ (id)representationForJWSPayloadData:(id)data error:(id *)error;
++ (id)representationForRawContent:(id)content sourceType:(int64_t)type error:(id *)error;
 - (BOOL)hasAllExpectedSegments;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKSignedClinicalDataQRRepresentation)init;
-- (HKSignedClinicalDataQRRepresentation)initWithCoder:(id)a3;
-- (HKSignedClinicalDataQRRepresentation)initWithSourceType:(int64_t)a3;
+- (HKSignedClinicalDataQRRepresentation)initWithCoder:(id)coder;
+- (HKSignedClinicalDataQRRepresentation)initWithSourceType:(int64_t)type;
 - (NSNumber)expectedNumberOfSegments;
-- (id)orderedSegmentsWithError:(id *)a3;
-- (id)representationByAddingQRSegment:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)orderedSegmentsWithError:(id *)error;
+- (id)representationByAddingQRSegment:(id)segment error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSignedClinicalDataQRRepresentation
@@ -28,30 +28,30 @@
   return 0;
 }
 
-- (HKSignedClinicalDataQRRepresentation)initWithSourceType:(int64_t)a3
+- (HKSignedClinicalDataQRRepresentation)initWithSourceType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = HKSignedClinicalDataQRRepresentation;
   result = [(HKSignedClinicalDataQRRepresentation *)&v5 init];
   if (result)
   {
-    result->_sourceType = a3;
+    result->_sourceType = type;
   }
 
   return result;
 }
 
-+ (HKSignedClinicalDataQRRepresentation)representationWithQRSegment:(id)a3
++ (HKSignedClinicalDataQRRepresentation)representationWithQRSegment:(id)segment
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  segmentCopy = segment;
+  if (!segmentCopy)
   {
-    [(HKSignedClinicalDataQRRepresentation *)a2 representationWithQRSegment:a1];
+    [(HKSignedClinicalDataQRRepresentation *)a2 representationWithQRSegment:self];
   }
 
-  v6 = [[a1 alloc] initWithSourceType:{objc_msgSend(v5, "sourceType")}];
-  v11[0] = v5;
+  v6 = [[self alloc] initWithSourceType:{objc_msgSend(segmentCopy, "sourceType")}];
+  v11[0] = segmentCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   v8 = v6[2];
   v6[2] = v7;
@@ -61,26 +61,26 @@
   return v6;
 }
 
-+ (HKSignedClinicalDataQRRepresentation)representationWithSMARTHealthCardQRSegmentData:(id)a3
++ (HKSignedClinicalDataQRRepresentation)representationWithSMARTHealthCardQRSegmentData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v4 count])
+  if ([dataCopy count])
   {
     v6 = 0;
     do
     {
       v7 = [HKSignedClinicalDataQRSegment alloc];
-      v8 = [v4 objectAtIndexedSubscript:v6];
-      v9 = -[HKSignedClinicalDataQRSegment initWithDataValue:sourceType:position:numberOfExpectedSiblings:](v7, "initWithDataValue:sourceType:position:numberOfExpectedSiblings:", v8, 1, ++v6, [v4 count]);
+      v8 = [dataCopy objectAtIndexedSubscript:v6];
+      v9 = -[HKSignedClinicalDataQRSegment initWithDataValue:sourceType:position:numberOfExpectedSiblings:](v7, "initWithDataValue:sourceType:position:numberOfExpectedSiblings:", v8, 1, ++v6, [dataCopy count]);
 
       [v5 addObject:v9];
     }
 
-    while (v6 < [v4 count]);
+    while (v6 < [dataCopy count]);
   }
 
-  v10 = [[a1 alloc] initWithSourceType:1];
+  v10 = [[self alloc] initWithSourceType:1];
   v11 = [v5 copy];
   v12 = v10[2];
   v10[2] = v11;
@@ -88,41 +88,41 @@
   return v10;
 }
 
-- (id)representationByAddingQRSegment:(id)a3 error:(id *)a4
+- (id)representationByAddingQRSegment:(id)segment error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  segmentCopy = segment;
+  if (!segmentCopy)
   {
     [HKSignedClinicalDataQRRepresentation representationByAddingQRSegment:a2 error:self];
   }
 
-  if ([v7 sourceType] != self->_sourceType)
+  if ([segmentCopy sourceType] != self->_sourceType)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"attempting to add a segment with a different source type"];
-    v12 = 0;
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"attempting to add a segment with a different source type"];
+    selfCopy = 0;
     goto LABEL_15;
   }
 
-  v8 = [(NSArray *)self->_alreadyScannedSegments firstObject];
-  v9 = v8;
-  if (!v8)
+  firstObject = [(NSArray *)self->_alreadyScannedSegments firstObject];
+  v9 = firstObject;
+  if (!firstObject)
   {
     goto LABEL_9;
   }
 
-  v10 = [v8 numberOfExpectedSiblings];
-  if (v10 != [v7 numberOfExpectedSiblings])
+  numberOfExpectedSiblings = [firstObject numberOfExpectedSiblings];
+  if (numberOfExpectedSiblings != [segmentCopy numberOfExpectedSiblings])
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 description:{@"attempting to add a segment with a different number of expected siblings, aborting"}];
-    v12 = 0;
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:{@"attempting to add a segment with a different number of expected siblings, aborting"}];
+    selfCopy = 0;
     goto LABEL_14;
   }
 
-  v11 = [v9 position];
-  if (v11 != [v7 position])
+  position = [v9 position];
+  if (position != [segmentCopy position])
   {
 LABEL_9:
-    v12 = [objc_alloc(objc_opt_class()) initWithSourceType:self->_sourceType];
+    selfCopy = [objc_alloc(objc_opt_class()) initWithSourceType:self->_sourceType];
     if (self->_alreadyScannedSegments)
     {
       alreadyScannedSegments = self->_alreadyScannedSegments;
@@ -133,28 +133,28 @@ LABEL_9:
       alreadyScannedSegments = MEMORY[0x277CBEBF8];
     }
 
-    v14 = [(NSArray *)alreadyScannedSegments arrayByAddingObject:v7];
-    v15 = v12->_alreadyScannedSegments;
-    v12->_alreadyScannedSegments = v14;
+    v14 = [(NSArray *)alreadyScannedSegments arrayByAddingObject:segmentCopy];
+    v15 = selfCopy->_alreadyScannedSegments;
+    selfCopy->_alreadyScannedSegments = v14;
 
     goto LABEL_14;
   }
 
-  v12 = self;
+  selfCopy = self;
 LABEL_14:
 
 LABEL_15:
 
-  return v12;
+  return selfCopy;
 }
 
 - (NSNumber)expectedNumberOfSegments
 {
-  v2 = [(NSArray *)self->_alreadyScannedSegments firstObject];
-  v3 = v2;
-  if (v2)
+  firstObject = [(NSArray *)self->_alreadyScannedSegments firstObject];
+  v3 = firstObject;
+  if (firstObject)
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v2, "numberOfExpectedSiblings")}];
+    v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(firstObject, "numberOfExpectedSiblings")}];
   }
 
   else
@@ -167,12 +167,12 @@ LABEL_15:
 
 - (BOOL)hasAllExpectedSegments
 {
-  v3 = [(HKSignedClinicalDataQRRepresentation *)self expectedNumberOfSegments];
-  v4 = v3;
-  if (v3 && [v3 intValue] >= 1)
+  expectedNumberOfSegments = [(HKSignedClinicalDataQRRepresentation *)self expectedNumberOfSegments];
+  v4 = expectedNumberOfSegments;
+  if (expectedNumberOfSegments && [expectedNumberOfSegments intValue] >= 1)
   {
-    v5 = [v4 intValue];
-    v6 = [(NSArray *)self->_alreadyScannedSegments count]== v5;
+    intValue = [v4 intValue];
+    v6 = [(NSArray *)self->_alreadyScannedSegments count]== intValue;
   }
 
   else
@@ -183,7 +183,7 @@ LABEL_15:
   return v6;
 }
 
-- (id)orderedSegmentsWithError:(id *)a3
+- (id)orderedSegmentsWithError:(id *)error
 {
   if ([(HKSignedClinicalDataQRRepresentation *)self hasAllExpectedSegments])
   {
@@ -192,7 +192,7 @@ LABEL_15:
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:118 description:@"not all segments have been scanned yet"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:118 description:@"not all segments have been scanned yet"];
     v5 = 0;
   }
 
@@ -218,36 +218,36 @@ uint64_t __65__HKSignedClinicalDataQRRepresentation_orderedSegmentsWithError___b
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       alreadyScannedSegments = self->_alreadyScannedSegments;
-      v8 = [(HKSignedClinicalDataQRRepresentation *)v6 alreadyScannedSegments];
-      if (alreadyScannedSegments == v8)
+      alreadyScannedSegments = [(HKSignedClinicalDataQRRepresentation *)v6 alreadyScannedSegments];
+      if (alreadyScannedSegments == alreadyScannedSegments)
       {
         v12 = 1;
       }
 
       else
       {
-        v9 = [(HKSignedClinicalDataQRRepresentation *)v6 alreadyScannedSegments];
-        if (v9)
+        alreadyScannedSegments2 = [(HKSignedClinicalDataQRRepresentation *)v6 alreadyScannedSegments];
+        if (alreadyScannedSegments2)
         {
           v10 = self->_alreadyScannedSegments;
-          v11 = [(HKSignedClinicalDataQRRepresentation *)v6 alreadyScannedSegments];
-          v12 = [(NSArray *)v10 isEqualToArray:v11];
+          alreadyScannedSegments3 = [(HKSignedClinicalDataQRRepresentation *)v6 alreadyScannedSegments];
+          v12 = [(NSArray *)v10 isEqualToArray:alreadyScannedSegments3];
         }
 
         else
@@ -266,58 +266,58 @@ uint64_t __65__HKSignedClinicalDataQRRepresentation_orderedSegmentsWithError___b
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   alreadyScannedSegments = self->_alreadyScannedSegments;
-  v5 = a3;
-  [v5 encodeObject:alreadyScannedSegments forKey:@"AlreadyScannedSegments"];
-  [v5 encodeInteger:self->_sourceType forKey:@"SourceType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:alreadyScannedSegments forKey:@"AlreadyScannedSegments"];
+  [coderCopy encodeInteger:self->_sourceType forKey:@"SourceType"];
 }
 
-- (HKSignedClinicalDataQRRepresentation)initWithCoder:(id)a3
+- (HKSignedClinicalDataQRRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"SourceType"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"SourceType"])
   {
-    v5 = -[HKSignedClinicalDataQRRepresentation initWithSourceType:](self, "initWithSourceType:", [v4 decodeIntegerForKey:@"SourceType"]);
+    v5 = -[HKSignedClinicalDataQRRepresentation initWithSourceType:](self, "initWithSourceType:", [coderCopy decodeIntegerForKey:@"SourceType"]);
     if (!v5)
     {
-      v10 = 0;
+      selfCopy = 0;
       goto LABEL_6;
     }
 
     v6 = v5;
     v7 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"AlreadyScannedSegments"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"AlreadyScannedSegments"];
     alreadyScannedSegments = v6->_alreadyScannedSegments;
     v6->_alreadyScannedSegments = v8;
 
     self = v6;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v10 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
 LABEL_6:
-  return v10;
+  return selfCopy;
 }
 
-+ (id)representationForRawContent:(id)a3 sourceType:(int64_t)a4 error:(id *)a5
++ (id)representationForRawContent:(id)content sourceType:(int64_t)type error:(id *)error
 {
-  v8 = a3;
-  if (a4 == 2)
+  contentCopy = content;
+  if (type == 2)
   {
-    v9 = [a1 representationForEUDCCPayloadData:v8 error:a5];
+    v9 = [self representationForEUDCCPayloadData:contentCopy error:error];
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    v9 = [a1 representationForJWSPayloadData:v8 error:a5];
+    v9 = [self representationForJWSPayloadData:contentCopy error:error];
 LABEL_5:
     v10 = v9;
     goto LABEL_7;
@@ -325,7 +325,7 @@ LABEL_5:
 
   v11 = MEMORY[0x277CCA9B8];
   v12 = NSStringForSignedClinicalDataSourceType();
-  [v11 hk_assignError:a5 code:3 format:{@"source type %@ (%lld) is not supported for QR representation generation", v12, a4}];
+  [v11 hk_assignError:error code:3 format:{@"source type %@ (%lld) is not supported for QR representation generation", v12, type}];
 
   v10 = 0;
 LABEL_7:
@@ -333,49 +333,49 @@ LABEL_7:
   return v10;
 }
 
-+ (id)representationForJWSPayloadData:(id)a3 error:(id *)a4
++ (id)representationForJWSPayloadData:(id)data error:(id *)error
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithData:v7 encoding:4];
+  dataCopy = data;
+  v8 = [[v6 alloc] initWithData:dataCopy encoding:4];
 
   if (v8)
   {
-    v9 = [a1 representationForJWSPayload:v8 error:a4];
+    v9 = [self representationForJWSPayload:v8 error:error];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 description:@"failed to convert JWS data to NSString"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"failed to convert JWS data to NSString"];
     v9 = 0;
   }
 
   return v9;
 }
 
-+ (id)representationForJWSPayload:(id)a3 error:(id *)a4
++ (id)representationForJWSPayload:(id)payload error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 length];
-  if ([v5 length] < 0x4AC)
+  payloadCopy = payload;
+  v6 = [payloadCopy length];
+  if ([payloadCopy length] < 0x4AC)
   {
     v7 = 2390;
   }
 
   else
   {
-    v7 = (2 * vcvtpd_s64_f64([v5 length] / vcvtpd_s64_f64(v6 / 1191.0)));
+    v7 = (2 * vcvtpd_s64_f64([payloadCopy length] / vcvtpd_s64_f64(v6 / 1191.0)));
   }
 
   v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  if ([v5 length])
+  if ([payloadCopy length])
   {
-    v23 = a4;
+    errorCopy = error;
     v9 = 0;
     while (1)
     {
-      v10 = [v5 rangeOfComposedCharacterSequenceAtIndex:v9];
+      v10 = [payloadCopy rangeOfComposedCharacterSequenceAtIndex:v9];
       v12 = v11;
       if (v11)
       {
@@ -384,7 +384,7 @@ LABEL_7:
 
 LABEL_13:
       v9 += v12;
-      if (v9 >= [v5 length])
+      if (v9 >= [payloadCopy length])
       {
         goto LABEL_14;
       }
@@ -394,10 +394,10 @@ LABEL_13:
     v14 = v11;
     while (1)
     {
-      v15 = [v5 characterAtIndex:v13];
+      v15 = [payloadCopy characterAtIndex:v13];
       if (v15 <= 0x2C)
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:v23 code:3 format:{@"JWS character at index %d cannot be represented an a SMART Health Card QR code because its ASCII value of %0d is below the offset", v9 + v12 + 0xFFFFFFFF, v15}];
+        [MEMORY[0x277CCA9B8] hk_assignError:errorCopy code:3 format:{@"JWS character at index %d cannot be represented an a SMART Health Card QR code because its ASCII value of %0d is below the offset", v9 + v12 + 0xFFFFFFFF, v15}];
         goto LABEL_19;
       }
 
@@ -424,7 +424,7 @@ LABEL_13:
       }
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:v23 code:3 format:{@"JWS character at index %d cannot be represented an a SMART Health Card QR code because its ASCII value of %0d is unexpectedly high", v9 + v12 + 0xFFFFFFFF, v15}];
+    [MEMORY[0x277CCA9B8] hk_assignError:errorCopy code:3 format:{@"JWS character at index %d cannot be represented an a SMART Health Card QR code because its ASCII value of %0d is unexpectedly high", v9 + v12 + 0xFFFFFFFF, v15}];
 LABEL_19:
     v21 = 0;
     v19 = v24;
@@ -446,20 +446,20 @@ LABEL_14:
   return v21;
 }
 
-+ (id)representationForEUDCCPayloadData:(id)a3 error:(id *)a4
++ (id)representationForEUDCCPayloadData:(id)data error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v17 = 0;
-  v6 = [a3 hk_zlibCompressedIncludingHeaderAndTrailer:1 errorOut:&v17];
+  v6 = [data hk_zlibCompressedIncludingHeaderAndTrailer:1 errorOut:&v17];
   v7 = v17;
   v8 = v7;
   if (v6)
   {
-    v9 = [v6 hk_base45Encoded];
-    if (v9)
+    hk_base45Encoded = [v6 hk_base45Encoded];
+    if (hk_base45Encoded)
     {
       v10 = [MEMORY[0x277CCAB68] stringWithString:@"HC1:"];
-      [v10 appendString:v9];
+      [v10 appendString:hk_base45Encoded];
       v18[0] = v10;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
       v12 = [HKSignedClinicalDataQRRepresentation representationWithSMARTHealthCardQRSegmentData:v11];
@@ -467,14 +467,14 @@ LABEL_14:
       goto LABEL_7;
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:{@"%@: error base45 encoding data", a1, v16}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"%@: error base45 encoding data", self, v16}];
   }
 
   else
   {
     v13 = MEMORY[0x277CCA9B8];
-    v9 = [v7 localizedDescription];
-    [v13 hk_assignError:a4 code:3 format:{@"%@: error zlib compressing data: %@", a1, v9}];
+    hk_base45Encoded = [v7 localizedDescription];
+    [v13 hk_assignError:error code:3 format:{@"%@: error zlib compressing data: %@", self, hk_base45Encoded}];
   }
 
   v12 = 0;

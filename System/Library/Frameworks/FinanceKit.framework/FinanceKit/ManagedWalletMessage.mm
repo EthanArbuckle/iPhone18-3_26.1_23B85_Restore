@@ -1,14 +1,14 @@
 @interface ManagedWalletMessage
-- (_TtC10FinanceKit20ManagedWalletMessage)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC10FinanceKit20ManagedWalletMessage)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedWalletMessage
 
-- (_TtC10FinanceKit20ManagedWalletMessage)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC10FinanceKit20ManagedWalletMessage)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(ManagedWalletMessage *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedWalletMessage *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

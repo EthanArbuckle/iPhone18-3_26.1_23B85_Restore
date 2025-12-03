@@ -1,11 +1,11 @@
 @interface MPSectionedIdentifierList
-+ (void)_performWithoutRequiringExclusivity:(id)a3;
-- (BOOL)hasItem:(id)a3 inSection:(id)a4;
-- (BOOL)hasSection:(id)a3;
-- (BOOL)isDeletedItem:(id)a3 inSection:(id)a4;
-- (BOOL)performWithExclusiveAccessAndReturnBOOL:(id)a3;
-- (MPSectionedIdentifierList)initWithCoder:(id)a3;
-- (MPSectionedIdentifierList)initWithIdentifier:(id)a3;
++ (void)_performWithoutRequiringExclusivity:(id)exclusivity;
+- (BOOL)hasItem:(id)item inSection:(id)section;
+- (BOOL)hasSection:(id)section;
+- (BOOL)isDeletedItem:(id)item inSection:(id)section;
+- (BOOL)performWithExclusiveAccessAndReturnBOOL:(id)l;
+- (MPSectionedIdentifierList)initWithCoder:(id)coder;
+- (MPSectionedIdentifierList)initWithIdentifier:(id)identifier;
 - (MPSectionedIdentifierListAnnotationDelegate)annotationDelegate;
 - (MPSectionedIdentifierListDelegate)delegate;
 - (NSArray)orderedSectionIdentifiers;
@@ -13,59 +13,59 @@
 - (NSSet)allSectionIdentifiers;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)_dataSourceInsertItems:(id)a3 fromSection:(id)a4 afterEntry:(id)a5 withExclusiveAccessToken:(id)a6;
-- (id)_dataSourceMoveItem:(id)a3 inSection:(id)a4 afterEntry:(id)a5 withExclusiveAccessToken:(id)a6;
-- (id)_debugDescriptionWithEnumerator:(id)a3 lengths:(id *)a4;
-- (id)_encodeEntry:(id)a3 withExclusiveAccessToken:(id)a4;
-- (id)_endEntryWithExclusiveAccessToken:(id)a3;
-- (id)_entryForPosition:(id)a3 withExclusiveAccessToken:(id)a4;
-- (id)_firstSectionIDBeforePosition:(id)a3 withExclusiveAccessToken:(id)a4;
-- (id)_itemEntry:(id)a3 sectionIdentifier:(id)a4 withExclusiveAccessToken:(id)a5;
-- (id)_sectionHeadEntryMapWithExclusiveAccessToken:(id)a3;
-- (id)_startEntriesWithExclusiveAccessToken:(id)a3;
-- (id)_tailEntryForSectionIdentifier:(id)a3 withExclusiveAccessToken:(id)a4;
-- (id)enumeratorWithOptions:(unint64_t)a3 startPosition:(id)a4 endPosition:(id)a5;
-- (id)enumeratorWithOptions:(unint64_t)a3 startPosition:(id)a4 endPosition:(id)a5 withExclusiveAccessToken:(id)a6;
-- (id)firstSectionMatching:(id)a3 containingItem:(id)a4 inSection:(id)a5;
-- (id)performWithExclusiveAccessAndReturnObject:(id)a3;
+- (id)_dataSourceInsertItems:(id)items fromSection:(id)section afterEntry:(id)entry withExclusiveAccessToken:(id)token;
+- (id)_dataSourceMoveItem:(id)item inSection:(id)section afterEntry:(id)entry withExclusiveAccessToken:(id)token;
+- (id)_debugDescriptionWithEnumerator:(id)enumerator lengths:(id *)lengths;
+- (id)_encodeEntry:(id)entry withExclusiveAccessToken:(id)token;
+- (id)_endEntryWithExclusiveAccessToken:(id)token;
+- (id)_entryForPosition:(id)position withExclusiveAccessToken:(id)token;
+- (id)_firstSectionIDBeforePosition:(id)position withExclusiveAccessToken:(id)token;
+- (id)_itemEntry:(id)entry sectionIdentifier:(id)identifier withExclusiveAccessToken:(id)token;
+- (id)_sectionHeadEntryMapWithExclusiveAccessToken:(id)token;
+- (id)_startEntriesWithExclusiveAccessToken:(id)token;
+- (id)_tailEntryForSectionIdentifier:(id)identifier withExclusiveAccessToken:(id)token;
+- (id)enumeratorWithOptions:(unint64_t)options startPosition:(id)position endPosition:(id)endPosition;
+- (id)enumeratorWithOptions:(unint64_t)options startPosition:(id)position endPosition:(id)endPosition withExclusiveAccessToken:(id)token;
+- (id)firstSectionMatching:(id)matching containingItem:(id)item inSection:(id)section;
+- (id)performWithExclusiveAccessAndReturnObject:(id)object;
 - (int64_t)itemCount;
-- (int64_t)performWithExclusiveAccessAndReturnInteger:(id)a3;
-- (void)_addBranchToEntry:(id)a3 entries:(id)a4 withExclusiveAccessToken:(id)a5;
-- (void)_insertDataSource:(id)a3 forSection:(id)a4 afterEntry:(id)a5 withExclusiveAccessToken:(id)a6;
-- (void)_insertDataSourceHead:(id)a3 afterEntry:(id)a4 withExclusiveAccessToken:(id)a5;
-- (void)_loadDataSource:(id)a3 forSection:(id)a4 completion:(id)a5;
-- (void)_performDelegateCalloutForSection:(id)a3 block:(id)a4;
-- (void)_stitchLastItemEntryToHeadEntry:(id)a3 branchList:(id)a4;
-- (void)_stitchPreviousEntry:(id)a3 toEntry:(id)a4 cloneIndex:(id)a5;
-- (void)_stitchWithPreviousEntry:(id)a3 list:(id)a4 cloneIndex:(id)a5;
-- (void)addDataSource:(id)a3 section:(id)a4 afterHeadOfSection:(id)a5 completion:(id)a6;
-- (void)addDataSource:(id)a3 section:(id)a4 afterItem:(id)a5 inSection:(id)a6 completion:(id)a7;
-- (void)addDataSource:(id)a3 section:(id)a4 afterTailOfSection:(id)a5 completion:(id)a6;
-- (void)addDataSource:(id)a3 section:(id)a4 beforeTailOfSection:(id)a5 completion:(id)a6;
-- (void)addDataSourceAtEnd:(id)a3 section:(id)a4 completion:(id)a5;
-- (void)addDataSourceAtStart:(id)a3 section:(id)a4 completion:(id)a5;
-- (void)dataSourceBeginTransactionForSection:(id)a3;
-- (void)dataSourceEndTransactionForSection:(id)a3;
-- (void)dataSourceInsertItems:(id)a3 afterItem:(id)a4 inSection:(id)a5;
-- (void)dataSourceInsertItemsAtHead:(id)a3 inSection:(id)a4;
-- (void)dataSourceInsertItemsAtTail:(id)a3 inSection:(id)a4;
-- (void)dataSourceMoveItem:(id)a3 afterItem:(id)a4 inSection:(id)a5;
-- (void)dataSourceMoveItemToHead:(id)a3 inSection:(id)a4;
-- (void)dataSourceMoveItemToTail:(id)a3 inSection:(id)a4;
-- (void)dataSourceReloadItems:(id)a3 inSection:(id)a4;
-- (void)dataSourceRemoveItems:(id)a3 fromSection:(id)a4;
-- (void)dataSourceUpdateSection:(id)a3;
+- (int64_t)performWithExclusiveAccessAndReturnInteger:(id)integer;
+- (void)_addBranchToEntry:(id)entry entries:(id)entries withExclusiveAccessToken:(id)token;
+- (void)_insertDataSource:(id)source forSection:(id)section afterEntry:(id)entry withExclusiveAccessToken:(id)token;
+- (void)_insertDataSourceHead:(id)head afterEntry:(id)entry withExclusiveAccessToken:(id)token;
+- (void)_loadDataSource:(id)source forSection:(id)section completion:(id)completion;
+- (void)_performDelegateCalloutForSection:(id)section block:(id)block;
+- (void)_stitchLastItemEntryToHeadEntry:(id)entry branchList:(id)list;
+- (void)_stitchPreviousEntry:(id)entry toEntry:(id)toEntry cloneIndex:(id)index;
+- (void)_stitchWithPreviousEntry:(id)entry list:(id)list cloneIndex:(id)index;
+- (void)addDataSource:(id)source section:(id)section afterHeadOfSection:(id)ofSection completion:(id)completion;
+- (void)addDataSource:(id)source section:(id)section afterItem:(id)item inSection:(id)inSection completion:(id)completion;
+- (void)addDataSource:(id)source section:(id)section afterTailOfSection:(id)ofSection completion:(id)completion;
+- (void)addDataSource:(id)source section:(id)section beforeTailOfSection:(id)ofSection completion:(id)completion;
+- (void)addDataSourceAtEnd:(id)end section:(id)section completion:(id)completion;
+- (void)addDataSourceAtStart:(id)start section:(id)section completion:(id)completion;
+- (void)dataSourceBeginTransactionForSection:(id)section;
+- (void)dataSourceEndTransactionForSection:(id)section;
+- (void)dataSourceInsertItems:(id)items afterItem:(id)item inSection:(id)section;
+- (void)dataSourceInsertItemsAtHead:(id)head inSection:(id)section;
+- (void)dataSourceInsertItemsAtTail:(id)tail inSection:(id)section;
+- (void)dataSourceMoveItem:(id)item afterItem:(id)afterItem inSection:(id)section;
+- (void)dataSourceMoveItemToHead:(id)head inSection:(id)section;
+- (void)dataSourceMoveItemToTail:(id)tail inSection:(id)section;
+- (void)dataSourceReloadItems:(id)items inSection:(id)section;
+- (void)dataSourceRemoveItems:(id)items fromSection:(id)section;
+- (void)dataSourceUpdateSection:(id)section;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3 withExclusiveAccessToken:(id)a4;
-- (void)moveItem:(id)a3 fromSection:(id)a4 afterHeadOfSection:(id)a5;
-- (void)moveItem:(id)a3 fromSection:(id)a4 afterItem:(id)a5 inSection:(id)a6;
-- (void)moveItem:(id)a3 fromSection:(id)a4 afterTailOfSection:(id)a5;
-- (void)moveItemToEnd:(id)a3 fromSection:(id)a4;
-- (void)moveItemToStart:(id)a3 fromSection:(id)a4;
-- (void)performWithExclusiveAccess:(id)a3;
-- (void)removeItem:(id)a3 fromSection:(id)a4;
-- (void)replaceDataSource:(id)a3 forSection:(id)a4 completion:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder withExclusiveAccessToken:(id)token;
+- (void)moveItem:(id)item fromSection:(id)section afterHeadOfSection:(id)ofSection;
+- (void)moveItem:(id)item fromSection:(id)section afterItem:(id)afterItem inSection:(id)inSection;
+- (void)moveItem:(id)item fromSection:(id)section afterTailOfSection:(id)ofSection;
+- (void)moveItemToEnd:(id)end fromSection:(id)section;
+- (void)moveItemToStart:(id)start fromSection:(id)section;
+- (void)performWithExclusiveAccess:(id)access;
+- (void)removeItem:(id)item fromSection:(id)section;
+- (void)replaceDataSource:(id)source forSection:(id)section completion:(id)completion;
 @end
 
 @implementation MPSectionedIdentifierList
@@ -150,19 +150,19 @@ id __50__MPSectionedIdentifierList_allSectionIdentifiers__block_invoke(uint64_t 
   return WeakRetained;
 }
 
-- (void)_performDelegateCalloutForSection:(id)a3 block:(id)a4
+- (void)_performDelegateCalloutForSection:(id)section block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  sectionCopy = section;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__MPSectionedIdentifierList__performDelegateCalloutForSection_block___block_invoke;
   v10[3] = &unk_1E7678320;
   v10[4] = self;
-  v11 = v6;
-  v8 = v7;
+  v11 = sectionCopy;
+  v8 = blockCopy;
   v12 = v8;
-  v9 = v6;
+  v9 = sectionCopy;
   if ([(MPSectionedIdentifierList *)self performWithExclusiveAccessAndReturnBOOL:v10])
   {
     v8[2](v8);
@@ -178,44 +178,44 @@ BOOL __69__MPSectionedIdentifierList__performDelegateCalloutForSection_block___b
   return v2 == 0;
 }
 
-- (id)_endEntryWithExclusiveAccessToken:(id)a3
+- (id)_endEntryWithExclusiveAccessToken:(id)token
 {
-  [a3 assertHasExclusiveAccessForOwner:self];
+  [token assertHasExclusiveAccessForOwner:self];
   endEntry = self->_endEntry;
 
   return endEntry;
 }
 
-- (id)_sectionHeadEntryMapWithExclusiveAccessToken:(id)a3
+- (id)_sectionHeadEntryMapWithExclusiveAccessToken:(id)token
 {
-  [a3 assertHasExclusiveAccessForOwner:self];
+  [token assertHasExclusiveAccessForOwner:self];
   sectionHeadEntryMap = self->_sectionHeadEntryMap;
 
   return sectionHeadEntryMap;
 }
 
-- (id)_tailEntryForSectionIdentifier:(id)a3 withExclusiveAccessToken:(id)a4
+- (id)_tailEntryForSectionIdentifier:(id)identifier withExclusiveAccessToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
-  [v8 assertHasExclusiveAccessForOwner:self];
-  v9 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:v8];
+  identifierCopy = identifier;
+  tokenCopy = token;
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  v9 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
 
-  v10 = [v9 objectForKeyedSubscript:v7];
-  v11 = [v10 tailEntry];
+  v10 = [v9 objectForKeyedSubscript:identifierCopy];
+  tailEntry = [v10 tailEntry];
 
-  if (!v11)
+  if (!tailEntry)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:1085 description:{@"No tail exists for %@", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:1085 description:{@"No tail exists for %@", identifierCopy}];
   }
 
-  return v11;
+  return tailEntry;
 }
 
-- (id)_startEntriesWithExclusiveAccessToken:(id)a3
+- (id)_startEntriesWithExclusiveAccessToken:(id)token
 {
-  [a3 assertHasExclusiveAccessForOwner:self];
+  [token assertHasExclusiveAccessForOwner:self];
   v4 = [(NSMutableArray *)self->_startEntries copy];
 
   return v4;
@@ -244,185 +244,185 @@ void __48__MPSectionedIdentifierList__sectionDataSources__block_invoke(uint64_t 
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (void)_loadDataSource:(id)a3 forSection:(id)a4 completion:(id)a5
+- (void)_loadDataSource:(id)source forSection:(id)section completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  sectionCopy = section;
+  sourceCopy = source;
   v11 = [_MPIdentifierListSectionProxy alloc];
-  v12 = [(_MPIdentifierListSectionProxy *)v11 initWithSection:v9 sectionedIdentifierList:self existingItemIdentifiers:MEMORY[0x1E695E0F0]];
+  v12 = [(_MPIdentifierListSectionProxy *)v11 initWithSection:sectionCopy sectionedIdentifierList:self existingItemIdentifiers:MEMORY[0x1E695E0F0]];
 
-  [v10 reloadSection:v12 completion:v8];
+  [sourceCopy reloadSection:v12 completion:completionCopy];
 }
 
-- (id)_itemEntry:(id)a3 sectionIdentifier:(id)a4 withExclusiveAccessToken:(id)a5
+- (id)_itemEntry:(id)entry sectionIdentifier:(id)identifier withExclusiveAccessToken:(id)token
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  [v11 assertHasExclusiveAccessForOwner:self];
-  v12 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:v11];
+  entryCopy = entry;
+  identifierCopy = identifier;
+  tokenCopy = token;
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  v12 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
 
-  v13 = [v12 objectForKeyedSubscript:v10];
-  v14 = [v13 identifiersItemEntryMap];
-  v15 = [v14 objectForKeyedSubscript:v9];
+  v13 = [v12 objectForKeyedSubscript:identifierCopy];
+  identifiersItemEntryMap = [v13 identifiersItemEntryMap];
+  v15 = [identifiersItemEntryMap objectForKeyedSubscript:entryCopy];
 
   if (!v15)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:1055 description:{@"No item exists at %@:%@", v10, v9}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:1055 description:{@"No item exists at %@:%@", identifierCopy, entryCopy}];
   }
 
   return v15;
 }
 
-- (void)_insertDataSource:(id)a3 forSection:(id)a4 afterEntry:(id)a5 withExclusiveAccessToken:(id)a6
+- (void)_insertDataSource:(id)source forSection:(id)section afterEntry:(id)entry withExclusiveAccessToken:(id)token
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [v10 assertHasExclusiveAccessForOwner:self];
-  v15 = [MPSectionedIdentifierListHeadEntry headEntryWithSectionIdentifier:v12];
-  [v15 setDataSource:v13];
+  tokenCopy = token;
+  entryCopy = entry;
+  sectionCopy = section;
+  sourceCopy = source;
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  v15 = [MPSectionedIdentifierListHeadEntry headEntryWithSectionIdentifier:sectionCopy];
+  [v15 setDataSource:sourceCopy];
 
-  v14 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:v10];
-  [v14 setObject:v15 forKeyedSubscript:v12];
+  v14 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
+  [v14 setObject:v15 forKeyedSubscript:sectionCopy];
 
-  [(MPSectionedIdentifierList *)self _insertDataSourceHead:v15 afterEntry:v11 withExclusiveAccessToken:v10];
+  [(MPSectionedIdentifierList *)self _insertDataSourceHead:v15 afterEntry:entryCopy withExclusiveAccessToken:tokenCopy];
 }
 
-- (void)_insertDataSourceHead:(id)a3 afterEntry:(id)a4 withExclusiveAccessToken:(id)a5
+- (void)_insertDataSourceHead:(id)head afterEntry:(id)entry withExclusiveAccessToken:(id)token
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v10 assertHasExclusiveAccessForOwner:self];
-  if (self->_endEntry == v9)
+  headCopy = head;
+  entryCopy = entry;
+  tokenCopy = token;
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  if (self->_endEntry == entryCopy)
   {
-    v11 = [v8 tailEntry];
+    tailEntry = [headCopy tailEntry];
     endEntry = self->_endEntry;
-    self->_endEntry = v11;
+    self->_endEntry = tailEntry;
   }
 
-  v14[0] = v8;
+  v14[0] = headCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [(MPSectionedIdentifierList *)self _addBranchToEntry:v9 entries:v13 withExclusiveAccessToken:v10];
+  [(MPSectionedIdentifierList *)self _addBranchToEntry:entryCopy entries:v13 withExclusiveAccessToken:tokenCopy];
 }
 
-- (id)_entryForPosition:(id)a3 withExclusiveAccessToken:(id)a4
+- (id)_entryForPosition:(id)position withExclusiveAccessToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
-  [v8 assertHasExclusiveAccessForOwner:self];
-  if (!v7)
+  positionCopy = position;
+  tokenCopy = token;
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  if (!positionCopy)
   {
-    v10 = 0;
+    latestUserClone = 0;
     goto LABEL_15;
   }
 
-  v9 = [v7 entryType];
-  v10 = 0;
-  if (v9 > 2)
+  entryType = [positionCopy entryType];
+  latestUserClone = 0;
+  if (entryType > 2)
   {
-    if (v9 == 3)
+    if (entryType == 3)
     {
-      v11 = [v7 itemIdentifier];
-      v13 = [v7 sectionIdentifier];
-      v14 = [(MPSectionedIdentifierList *)self _itemEntry:v11 sectionIdentifier:v13 withExclusiveAccessToken:v8];
-      v10 = [v14 latestUserClone];
+      itemIdentifier = [positionCopy itemIdentifier];
+      sectionIdentifier = [positionCopy sectionIdentifier];
+      v14 = [(MPSectionedIdentifierList *)self _itemEntry:itemIdentifier sectionIdentifier:sectionIdentifier withExclusiveAccessToken:tokenCopy];
+      latestUserClone = [v14 latestUserClone];
 
       goto LABEL_14;
     }
 
-    if (v9 == 4)
+    if (entryType == 4)
     {
-      v11 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:v8];
-      v12 = [v7 sectionIdentifier];
-      v15 = [v11 objectForKeyedSubscript:v12];
-      v10 = [v15 tailEntry];
+      itemIdentifier = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
+      sectionIdentifier2 = [positionCopy sectionIdentifier];
+      v15 = [itemIdentifier objectForKeyedSubscript:sectionIdentifier2];
+      latestUserClone = [v15 tailEntry];
 
 LABEL_13:
       goto LABEL_14;
     }
 
-    if (v9 != 5)
+    if (entryType != 5)
     {
       goto LABEL_15;
     }
   }
 
-  else if (v9 >= 2)
+  else if (entryType >= 2)
   {
-    if (v9 != 2)
+    if (entryType != 2)
     {
       goto LABEL_15;
     }
 
-    v11 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:v8];
-    v12 = [v7 sectionIdentifier];
-    v10 = [v11 objectForKeyedSubscript:v12];
+    itemIdentifier = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
+    sectionIdentifier2 = [positionCopy sectionIdentifier];
+    latestUserClone = [itemIdentifier objectForKeyedSubscript:sectionIdentifier2];
     goto LABEL_13;
   }
 
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:1030 description:@"Unsupported position type"];
-  v10 = 0;
+  itemIdentifier = [MEMORY[0x1E696AAA8] currentHandler];
+  [itemIdentifier handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:1030 description:@"Unsupported position type"];
+  latestUserClone = 0;
 LABEL_14:
 
 LABEL_15:
 
-  return v10;
+  return latestUserClone;
 }
 
-- (id)_dataSourceMoveItem:(id)a3 inSection:(id)a4 afterEntry:(id)a5 withExclusiveAccessToken:(id)a6
+- (id)_dataSourceMoveItem:(id)item inSection:(id)section afterEntry:(id)entry withExclusiveAccessToken:(id)token
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [v10 assertHasExclusiveAccessForOwner:self];
-  v14 = [(MPSectionedIdentifierList *)self _itemEntry:v13 sectionIdentifier:v12 withExclusiveAccessToken:v10];
-  v15 = [v14 newClonedEntry];
-  [v15 setDataSourceCloned];
-  v21[0] = v15;
+  tokenCopy = token;
+  entryCopy = entry;
+  sectionCopy = section;
+  itemCopy = item;
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  v14 = [(MPSectionedIdentifierList *)self _itemEntry:itemCopy sectionIdentifier:sectionCopy withExclusiveAccessToken:tokenCopy];
+  newClonedEntry = [v14 newClonedEntry];
+  [newClonedEntry setDataSourceCloned];
+  v21[0] = newClonedEntry;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-  [(MPSectionedIdentifierList *)self _addBranchToEntry:v11 entries:v16 withExclusiveAccessToken:v10];
+  [(MPSectionedIdentifierList *)self _addBranchToEntry:entryCopy entries:v16 withExclusiveAccessToken:tokenCopy];
 
   [v14 setDataSourceMoved];
-  v17 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:v10];
+  v17 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
 
-  v18 = [v17 objectForKeyedSubscript:v12];
+  v18 = [v17 objectForKeyedSubscript:sectionCopy];
 
-  v19 = [v18 identifiersItemEntryMap];
-  [v19 setObject:v15 forKeyedSubscript:v13];
+  identifiersItemEntryMap = [v18 identifiersItemEntryMap];
+  [identifiersItemEntryMap setObject:newClonedEntry forKeyedSubscript:itemCopy];
 
-  return v15;
+  return newClonedEntry;
 }
 
-- (id)_dataSourceInsertItems:(id)a3 fromSection:(id)a4 afterEntry:(id)a5 withExclusiveAccessToken:(id)a6
+- (id)_dataSourceInsertItems:(id)items fromSection:(id)section afterEntry:(id)entry withExclusiveAccessToken:(id)token
 {
   v46 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = self;
-  v32 = v12;
-  v14 = a6;
-  [v14 assertHasExclusiveAccessForOwner:v13];
-  v34 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
-  v31 = v14;
-  v15 = [(MPSectionedIdentifierList *)v13 _sectionHeadEntryMapWithExclusiveAccessToken:v14];
-  v16 = v11;
-  v17 = [v15 objectForKeyedSubscript:v11];
+  itemsCopy = items;
+  sectionCopy = section;
+  entryCopy = entry;
+  selfCopy = self;
+  v32 = entryCopy;
+  tokenCopy = token;
+  [tokenCopy assertHasExclusiveAccessForOwner:selfCopy];
+  v34 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
+  v31 = tokenCopy;
+  v15 = [(MPSectionedIdentifierList *)selfCopy _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
+  v16 = sectionCopy;
+  v17 = [v15 objectForKeyedSubscript:sectionCopy];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v10;
+  obj = itemsCopy;
   v18 = [obj countByEnumeratingWithState:&v35 objects:v45 count:16];
   if (v18)
   {
@@ -439,17 +439,17 @@ LABEL_15:
 
         v22 = *(*(&v35 + 1) + 8 * i);
         v23 = [MPSectionedIdentifierListItemEntry itemEntryWithSectionIdentifier:v16 itemIdentifier:v22];
-        v24 = v13;
-        if ([(MPSectionedIdentifierList *)v13 automaticallyReversesNonDestructiveDataSourceEdits])
+        v24 = selfCopy;
+        if ([(MPSectionedIdentifierList *)selfCopy automaticallyReversesNonDestructiveDataSourceEdits])
         {
           [v23 setUserRemoved];
         }
 
         [v34 addObject:v23];
-        v25 = [v17 identifiersItemEntryMap];
-        [v25 setObject:v23 forKeyedSubscript:v22];
+        identifiersItemEntryMap = [v17 identifiersItemEntryMap];
+        [identifiersItemEntryMap setObject:v23 forKeyedSubscript:v22];
 
-        v13 = v24;
+        selfCopy = v24;
       }
 
       v19 = [obj countByEnumeratingWithState:&v35 objects:v45 count:16];
@@ -458,62 +458,62 @@ LABEL_15:
     while (v19);
   }
 
-  [(MPSectionedIdentifierList *)v13 _addBranchToEntry:v32 entries:v34 withExclusiveAccessToken:v31];
-  if ([(MPSectionedIdentifierList *)v13 automaticallyReversesNonDestructiveDataSourceEdits])
+  [(MPSectionedIdentifierList *)selfCopy _addBranchToEntry:v32 entries:v34 withExclusiveAccessToken:v31];
+  if ([(MPSectionedIdentifierList *)selfCopy automaticallyReversesNonDestructiveDataSourceEdits])
   {
     v26 = os_log_create("com.apple.amp.mediaplayer", "SIL");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = v13;
+      v27 = selfCopy;
       v28 = [obj count];
-      v29 = [obj msv_compactDescription];
+      msv_compactDescription = [obj msv_compactDescription];
       *buf = 138543874;
       v40 = v16;
       v41 = 2048;
       v42 = v28;
-      v13 = v27;
+      selfCopy = v27;
       v43 = 2114;
-      v44 = v29;
+      v44 = msv_compactDescription;
       _os_log_impl(&dword_1A238D000, v26, OS_LOG_TYPE_DEFAULT, "[SPROX:%{public}@] _dataSourceInsertItems:fromSection:afterEntry: | setUserRemoved [auto reversing datasource edits] items=(:%lld)[%{public}@]", buf, 0x20u);
     }
   }
 
-  if (![(MPSectionedIdentifierList *)v13 automaticallyReversesNonDestructiveDataSourceEdits])
+  if (![(MPSectionedIdentifierList *)selfCopy automaticallyReversesNonDestructiveDataSourceEdits])
   {
-    v13->_itemCount += [v34 count];
+    selfCopy->_itemCount += [v34 count];
   }
 
   return v34;
 }
 
-- (void)_addBranchToEntry:(id)a3 entries:(id)a4 withExclusiveAccessToken:(id)a5
+- (void)_addBranchToEntry:(id)entry entries:(id)entries withExclusiveAccessToken:(id)token
 {
   v41 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  [v11 assertHasExclusiveAccessForOwner:self];
-  if ([v10 count])
+  entryCopy = entry;
+  entriesCopy = entries;
+  tokenCopy = token;
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  if ([entriesCopy count])
   {
-    if (v9)
+    if (entryCopy)
     {
 LABEL_3:
-      v12 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:v11];
-      v13 = [(MPSectionedIdentifierListEntry *)v9 sectionIdentifier];
-      v14 = [v12 objectForKeyedSubscript:v13];
-      v15 = [v14 tailEntry];
-      v16 = [v15 previousEntry];
-      if (v16 == v9)
+      v12 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
+      sectionIdentifier = [(MPSectionedIdentifierListEntry *)entryCopy sectionIdentifier];
+      v14 = [v12 objectForKeyedSubscript:sectionIdentifier];
+      tailEntry = [v14 tailEntry];
+      previousEntry = [tailEntry previousEntry];
+      if (previousEntry == entryCopy)
       {
-        v33 = [(MPSectionedIdentifierListEntry *)v9 sectionIdentifier];
-        [v10 firstObject];
-        v18 = v34 = v11;
+        sectionIdentifier2 = [(MPSectionedIdentifierListEntry *)entryCopy sectionIdentifier];
+        [entriesCopy firstObject];
+        v18 = v34 = tokenCopy;
         [v18 sectionIdentifier];
-        v19 = v35 = v10;
-        v17 = [v33 isEqualToString:v19] ^ 1;
+        v19 = v35 = entriesCopy;
+        v17 = [sectionIdentifier2 isEqualToString:v19] ^ 1;
 
-        v10 = v35;
-        v11 = v34;
+        entriesCopy = v35;
+        tokenCopy = v34;
       }
 
       else
@@ -521,31 +521,31 @@ LABEL_3:
         v17 = 0;
       }
 
-      [(MPSectionedIdentifierListEntry *)v9 addBranch:v10 forceBranchDepthIncrease:v17];
+      [(MPSectionedIdentifierListEntry *)entryCopy addBranch:entriesCopy forceBranchDepthIncrease:v17];
       goto LABEL_16;
     }
   }
 
   else
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:960 description:@"Cannot add empty branch"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:960 description:@"Cannot add empty branch"];
 
-    if (v9)
+    if (entryCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v21 = v11;
+  v21 = tokenCopy;
   v22 = self->_startEntries;
   v23 = [(NSMutableArray *)v22 count];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v24 = v10;
-  v25 = v10;
+  v24 = entriesCopy;
+  v25 = entriesCopy;
   v26 = [v25 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v26)
   {
@@ -571,30 +571,30 @@ LABEL_3:
     while (v27);
   }
 
-  v30 = [v25 firstObject];
-  [(NSMutableArray *)v22 addObject:v30];
+  firstObject = [v25 firstObject];
+  [(NSMutableArray *)v22 addObject:firstObject];
 
-  v10 = v24;
-  v11 = v21;
+  entriesCopy = v24;
+  tokenCopy = v21;
 LABEL_16:
-  if (self->_endEntry == v9)
+  if (self->_endEntry == entryCopy)
   {
-    v31 = [v10 lastObject];
+    lastObject = [entriesCopy lastObject];
     endEntry = self->_endEntry;
-    self->_endEntry = v31;
+    self->_endEntry = lastObject;
   }
 }
 
-- (void)dataSourceEndTransactionForSection:(id)a3
+- (void)dataSourceEndTransactionForSection:(id)section
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sectionCopy = section;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __64__MPSectionedIdentifierList_dataSourceEndTransactionForSection___block_invoke;
   v18[3] = &unk_1E76782D0;
   v18[4] = self;
-  v6 = v5;
+  v6 = sectionCopy;
   v19 = v6;
   v20 = a2;
   v7 = [(MPSectionedIdentifierList *)self performWithExclusiveAccessAndReturnObject:v18];
@@ -657,17 +657,17 @@ id __64__MPSectionedIdentifierList_dataSourceEndTransactionForSection___block_in
   return v3;
 }
 
-- (void)dataSourceBeginTransactionForSection:(id)a3
+- (void)dataSourceBeginTransactionForSection:(id)section
 {
-  v5 = a3;
+  sectionCopy = section;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__MPSectionedIdentifierList_dataSourceBeginTransactionForSection___block_invoke;
   v7[3] = &unk_1E76782A8;
   v7[4] = self;
-  v8 = v5;
+  v8 = sectionCopy;
   v9 = a2;
-  v6 = v5;
+  v6 = sectionCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v7];
 }
 
@@ -685,16 +685,16 @@ void __66__MPSectionedIdentifierList_dataSourceBeginTransactionForSection___bloc
   [*(a1[4] + 48) setObject:v4 forKeyedSubscript:a1[5]];
 }
 
-- (void)dataSourceUpdateSection:(id)a3
+- (void)dataSourceUpdateSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__MPSectionedIdentifierList_dataSourceUpdateSection___block_invoke;
   v6[3] = &unk_1E76823C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = sectionCopy;
+  v5 = sectionCopy;
   [(MPSectionedIdentifierList *)self _performDelegateCalloutForSection:v5 block:v6];
 }
 
@@ -707,19 +707,19 @@ void __53__MPSectionedIdentifierList_dataSourceUpdateSection___block_invoke(uint
   }
 }
 
-- (void)dataSourceReloadItems:(id)a3 inSection:(id)a4
+- (void)dataSourceReloadItems:(id)items inSection:(id)section
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  sectionCopy = section;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__MPSectionedIdentifierList_dataSourceReloadItems_inSection___block_invoke;
   v10[3] = &unk_1E76800A0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = itemsCopy;
+  v12 = sectionCopy;
+  v8 = sectionCopy;
+  v9 = itemsCopy;
   [(MPSectionedIdentifierList *)self _performDelegateCalloutForSection:v8 block:v10];
 }
 
@@ -737,18 +737,18 @@ void __61__MPSectionedIdentifierList_dataSourceReloadItems_inSection___block_inv
   }
 }
 
-- (void)dataSourceRemoveItems:(id)a3 fromSection:(id)a4
+- (void)dataSourceRemoveItems:(id)items fromSection:(id)section
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  sectionCopy = section;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __63__MPSectionedIdentifierList_dataSourceRemoveItems_fromSection___block_invoke;
   v15[3] = &unk_1E7678168;
-  v8 = v6;
+  v8 = itemsCopy;
   v16 = v8;
-  v17 = self;
-  v9 = v7;
+  selfCopy = self;
+  v9 = sectionCopy;
   v18 = v9;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v15];
   v12[0] = MEMORY[0x1E69E9820];
@@ -823,18 +823,18 @@ void __63__MPSectionedIdentifierList_dataSourceRemoveItems_fromSection___block_i
   }
 }
 
-- (void)dataSourceMoveItemToTail:(id)a3 inSection:(id)a4
+- (void)dataSourceMoveItemToTail:(id)tail inSection:(id)section
 {
-  v7 = a3;
-  v8 = a4;
+  tailCopy = tail;
+  sectionCopy = section;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __64__MPSectionedIdentifierList_dataSourceMoveItemToTail_inSection___block_invoke;
   v16[3] = &unk_1E7678258;
   v16[4] = self;
-  v9 = v7;
+  v9 = tailCopy;
   v17 = v9;
-  v10 = v8;
+  v10 = sectionCopy;
   v18 = v10;
   v19 = a2;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v16];
@@ -947,23 +947,23 @@ void __64__MPSectionedIdentifierList_dataSourceMoveItemToTail_inSection___block_
   }
 }
 
-- (void)dataSourceMoveItem:(id)a3 afterItem:(id)a4 inSection:(id)a5
+- (void)dataSourceMoveItem:(id)item afterItem:(id)afterItem inSection:(id)section
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  afterItemCopy = afterItem;
+  sectionCopy = section;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __68__MPSectionedIdentifierList_dataSourceMoveItem_afterItem_inSection___block_invoke;
   v20[3] = &unk_1E7678190;
   v20[4] = self;
-  v12 = v9;
+  v12 = itemCopy;
   v21 = v12;
-  v13 = v11;
+  v13 = sectionCopy;
   v22 = v13;
-  v23 = v10;
+  v23 = afterItemCopy;
   v24 = a2;
-  v14 = v10;
+  v14 = afterItemCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v20];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -1072,18 +1072,18 @@ void __68__MPSectionedIdentifierList_dataSourceMoveItem_afterItem_inSection___bl
   }
 }
 
-- (void)dataSourceMoveItemToHead:(id)a3 inSection:(id)a4
+- (void)dataSourceMoveItemToHead:(id)head inSection:(id)section
 {
-  v7 = a3;
-  v8 = a4;
+  headCopy = head;
+  sectionCopy = section;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __64__MPSectionedIdentifierList_dataSourceMoveItemToHead_inSection___block_invoke;
   v16[3] = &unk_1E7678258;
   v16[4] = self;
-  v9 = v7;
+  v9 = headCopy;
   v17 = v9;
-  v10 = v8;
+  v10 = sectionCopy;
   v18 = v10;
   v19 = a2;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v16];
@@ -1191,14 +1191,14 @@ void __64__MPSectionedIdentifierList_dataSourceMoveItemToHead_inSection___block_
   }
 }
 
-- (void)dataSourceInsertItemsAtTail:(id)a3 inSection:(id)a4
+- (void)dataSourceInsertItemsAtTail:(id)tail inSection:(id)section
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 count])
+  tailCopy = tail;
+  sectionCopy = section;
+  if (![tailCopy count])
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:765 description:{@"Invalid insertion (no item identifiers) in section: %@", v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:765 description:{@"Invalid insertion (no item identifiers) in section: %@", sectionCopy}];
   }
 
   v17[0] = MEMORY[0x1E69E9820];
@@ -1206,10 +1206,10 @@ void __64__MPSectionedIdentifierList_dataSourceMoveItemToHead_inSection___block_
   v17[2] = __67__MPSectionedIdentifierList_dataSourceInsertItemsAtTail_inSection___block_invoke;
   v17[3] = &unk_1E7678258;
   v17[4] = self;
-  v9 = v8;
+  v9 = sectionCopy;
   v18 = v9;
   v20 = a2;
-  v10 = v7;
+  v10 = tailCopy;
   v19 = v10;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v17];
   v14[0] = MEMORY[0x1E69E9820];
@@ -1264,15 +1264,15 @@ void __67__MPSectionedIdentifierList_dataSourceInsertItemsAtTail_inSection___blo
   }
 }
 
-- (void)dataSourceInsertItems:(id)a3 afterItem:(id)a4 inSection:(id)a5
+- (void)dataSourceInsertItems:(id)items afterItem:(id)item inSection:(id)section
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (![v9 count])
+  itemsCopy = items;
+  itemCopy = item;
+  sectionCopy = section;
+  if (![itemsCopy count])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:744 description:{@"Invalid insertion (no item identifiers) in section: %@", v11}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:744 description:{@"Invalid insertion (no item identifiers) in section: %@", sectionCopy}];
   }
 
   v21[0] = MEMORY[0x1E69E9820];
@@ -1280,12 +1280,12 @@ void __67__MPSectionedIdentifierList_dataSourceInsertItemsAtTail_inSection___blo
   v21[2] = __71__MPSectionedIdentifierList_dataSourceInsertItems_afterItem_inSection___block_invoke;
   v21[3] = &unk_1E7678280;
   v21[4] = self;
-  v22 = v10;
-  v12 = v11;
+  v22 = itemCopy;
+  v12 = sectionCopy;
   v23 = v12;
-  v13 = v9;
+  v13 = itemsCopy;
   v24 = v13;
-  v14 = v10;
+  v14 = itemCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v21];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -1331,14 +1331,14 @@ void __71__MPSectionedIdentifierList_dataSourceInsertItems_afterItem_inSection__
   }
 }
 
-- (void)dataSourceInsertItemsAtHead:(id)a3 inSection:(id)a4
+- (void)dataSourceInsertItemsAtHead:(id)head inSection:(id)section
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 count])
+  headCopy = head;
+  sectionCopy = section;
+  if (![headCopy count])
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:723 description:{@"Invalid insertion (no item identifiers) in section: %@", v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:723 description:{@"Invalid insertion (no item identifiers) in section: %@", sectionCopy}];
   }
 
   v17[0] = MEMORY[0x1E69E9820];
@@ -1346,10 +1346,10 @@ void __71__MPSectionedIdentifierList_dataSourceInsertItems_afterItem_inSection__
   v17[2] = __67__MPSectionedIdentifierList_dataSourceInsertItemsAtHead_inSection___block_invoke;
   v17[3] = &unk_1E7678258;
   v17[4] = self;
-  v9 = v8;
+  v9 = sectionCopy;
   v18 = v9;
   v20 = a2;
-  v10 = v7;
+  v10 = headCopy;
   v19 = v10;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v17];
   v14[0] = MEMORY[0x1E69E9820];
@@ -1404,19 +1404,19 @@ void __67__MPSectionedIdentifierList_dataSourceInsertItemsAtHead_inSection___blo
   }
 }
 
-- (void)removeItem:(id)a3 fromSection:(id)a4
+- (void)removeItem:(id)item fromSection:(id)section
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  sectionCopy = section;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __52__MPSectionedIdentifierList_removeItem_fromSection___block_invoke;
   v10[3] = &unk_1E7678168;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = itemCopy;
+  v12 = sectionCopy;
+  v8 = sectionCopy;
+  v9 = itemCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v10];
 }
 
@@ -1448,23 +1448,23 @@ void __52__MPSectionedIdentifierList_removeItem_fromSection___block_invoke(uint6
   }
 }
 
-- (void)moveItem:(id)a3 fromSection:(id)a4 afterTailOfSection:(id)a5
+- (void)moveItem:(id)item fromSection:(id)section afterTailOfSection:(id)ofSection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  sectionCopy = section;
+  ofSectionCopy = ofSection;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__MPSectionedIdentifierList_moveItem_fromSection_afterTailOfSection___block_invoke;
   v15[3] = &unk_1E7678190;
   v15[4] = self;
-  v16 = v11;
-  v18 = v10;
+  v16 = ofSectionCopy;
+  v18 = sectionCopy;
   v19 = a2;
-  v17 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v11;
+  v17 = itemCopy;
+  v12 = sectionCopy;
+  v13 = itemCopy;
+  v14 = ofSectionCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v15];
 }
 
@@ -1519,25 +1519,25 @@ void __69__MPSectionedIdentifierList_moveItem_fromSection_afterTailOfSection___b
   }
 }
 
-- (void)moveItem:(id)a3 fromSection:(id)a4 afterItem:(id)a5 inSection:(id)a6
+- (void)moveItem:(id)item fromSection:(id)section afterItem:(id)afterItem inSection:(id)inSection
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  sectionCopy = section;
+  afterItemCopy = afterItem;
+  inSectionCopy = inSection;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __70__MPSectionedIdentifierList_moveItem_fromSection_afterItem_inSection___block_invoke;
   v18[3] = &unk_1E7678230;
   v18[4] = self;
-  v19 = v12;
-  v20 = v13;
-  v21 = v10;
-  v22 = v11;
-  v14 = v11;
-  v15 = v10;
-  v16 = v13;
-  v17 = v12;
+  v19 = afterItemCopy;
+  v20 = inSectionCopy;
+  v21 = itemCopy;
+  v22 = sectionCopy;
+  v14 = sectionCopy;
+  v15 = itemCopy;
+  v16 = inSectionCopy;
+  v17 = afterItemCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v18];
 }
 
@@ -1584,23 +1584,23 @@ void __70__MPSectionedIdentifierList_moveItem_fromSection_afterItem_inSection___
   }
 }
 
-- (void)moveItem:(id)a3 fromSection:(id)a4 afterHeadOfSection:(id)a5
+- (void)moveItem:(id)item fromSection:(id)section afterHeadOfSection:(id)ofSection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  sectionCopy = section;
+  ofSectionCopy = ofSection;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__MPSectionedIdentifierList_moveItem_fromSection_afterHeadOfSection___block_invoke;
   v15[3] = &unk_1E7678190;
   v15[4] = self;
-  v16 = v11;
-  v18 = v10;
+  v16 = ofSectionCopy;
+  v18 = sectionCopy;
   v19 = a2;
-  v17 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v11;
+  v17 = itemCopy;
+  v12 = sectionCopy;
+  v13 = itemCopy;
+  v14 = ofSectionCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v15];
 }
 
@@ -1648,19 +1648,19 @@ void __69__MPSectionedIdentifierList_moveItem_fromSection_afterHeadOfSection___b
   }
 }
 
-- (void)moveItemToEnd:(id)a3 fromSection:(id)a4
+- (void)moveItemToEnd:(id)end fromSection:(id)section
 {
-  v6 = a3;
-  v7 = a4;
+  endCopy = end;
+  sectionCopy = section;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__MPSectionedIdentifierList_moveItemToEnd_fromSection___block_invoke;
   v10[3] = &unk_1E7678168;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = endCopy;
+  v12 = sectionCopy;
+  v8 = sectionCopy;
+  v9 = endCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v10];
 }
 
@@ -1699,19 +1699,19 @@ void __55__MPSectionedIdentifierList_moveItemToEnd_fromSection___block_invoke(vo
   }
 }
 
-- (void)moveItemToStart:(id)a3 fromSection:(id)a4
+- (void)moveItemToStart:(id)start fromSection:(id)section
 {
-  v6 = a3;
-  v7 = a4;
+  startCopy = start;
+  sectionCopy = section;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__MPSectionedIdentifierList_moveItemToStart_fromSection___block_invoke;
   v10[3] = &unk_1E7678168;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = startCopy;
+  v12 = sectionCopy;
+  v8 = sectionCopy;
+  v9 = startCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v10];
 }
 
@@ -1749,10 +1749,10 @@ void __57__MPSectionedIdentifierList_moveItemToStart_fromSection___block_invoke(
   }
 }
 
-- (BOOL)isDeletedItem:(id)a3 inSection:(id)a4
+- (BOOL)isDeletedItem:(id)item inSection:(id)section
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  sectionCopy = section;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1763,9 +1763,9 @@ void __57__MPSectionedIdentifierList_moveItemToStart_fromSection___block_invoke(
   v11[3] = &unk_1E7678208;
   v14 = &v15;
   v11[4] = self;
-  v8 = v7;
+  v8 = sectionCopy;
   v12 = v8;
-  v9 = v6;
+  v9 = itemCopy;
   v13 = v9;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v11];
   LOBYTE(self) = *(v16 + 24);
@@ -1784,9 +1784,9 @@ void __53__MPSectionedIdentifierList_isDeletedItem_inSection___block_invoke(uint
   *(*(*(a1 + 56) + 8) + 24) = [v6 isRemoved];
 }
 
-- (BOOL)hasSection:(id)a3
+- (BOOL)hasSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -1797,7 +1797,7 @@ void __53__MPSectionedIdentifierList_isDeletedItem_inSection___block_invoke(uint
   v7[3] = &unk_1E767BCC0;
   v9 = &v10;
   v7[4] = self;
-  v5 = v4;
+  v5 = sectionCopy;
   v8 = v5;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -1813,10 +1813,10 @@ void __40__MPSectionedIdentifierList_hasSection___block_invoke(uint64_t a1, uint
   *(*(*(a1 + 48) + 8) + 24) = v3 != 0;
 }
 
-- (BOOL)hasItem:(id)a3 inSection:(id)a4
+- (BOOL)hasItem:(id)item inSection:(id)section
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  sectionCopy = section;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1827,9 +1827,9 @@ void __40__MPSectionedIdentifierList_hasSection___block_invoke(uint64_t a1, uint
   v11[3] = &unk_1E7678208;
   v14 = &v15;
   v11[4] = self;
-  v8 = v7;
+  v8 = sectionCopy;
   v12 = v8;
-  v9 = v6;
+  v9 = itemCopy;
   v13 = v9;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v11];
   LOBYTE(self) = *(v16 + 24);
@@ -1847,23 +1847,23 @@ void __47__MPSectionedIdentifierList_hasItem_inSection___block_invoke(uint64_t a
   *(*(*(a1 + 56) + 8) + 24) = v5 != 0;
 }
 
-- (id)firstSectionMatching:(id)a3 containingItem:(id)a4 inSection:(id)a5
+- (id)firstSectionMatching:(id)matching containingItem:(id)item inSection:(id)section
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  matchingCopy = matching;
+  itemCopy = item;
+  sectionCopy = section;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __75__MPSectionedIdentifierList_firstSectionMatching_containingItem_inSection___block_invoke;
   v17[3] = &unk_1E76781E0;
   v17[4] = self;
-  v18 = v10;
-  v20 = v9;
+  v18 = itemCopy;
+  v20 = matchingCopy;
   v21 = a2;
-  v19 = v11;
-  v12 = v9;
-  v13 = v11;
-  v14 = v10;
+  v19 = sectionCopy;
+  v12 = matchingCopy;
+  v13 = sectionCopy;
+  v14 = itemCopy;
   v15 = [(MPSectionedIdentifierList *)self performWithExclusiveAccessAndReturnObject:v17];
 
   return v15;
@@ -1917,22 +1917,22 @@ LABEL_12:
   return v6;
 }
 
-- (void)addDataSourceAtEnd:(id)a3 section:(id)a4 completion:(id)a5
+- (void)addDataSourceAtEnd:(id)end section:(id)section completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  endCopy = end;
+  sectionCopy = section;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__MPSectionedIdentifierList_addDataSourceAtEnd_section_completion___block_invoke;
   v13[3] = &unk_1E7678168;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v10 = v9;
-  v11 = v8;
-  v12 = a5;
+  v14 = endCopy;
+  v15 = sectionCopy;
+  v10 = sectionCopy;
+  v11 = endCopy;
+  completionCopy = completion;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v13];
-  [(MPSectionedIdentifierList *)self _loadDataSource:v11 forSection:v10 completion:v12];
+  [(MPSectionedIdentifierList *)self _loadDataSource:v11 forSection:v10 completion:completionCopy];
 }
 
 uint64_t __67__MPSectionedIdentifierList_addDataSourceAtEnd_section_completion___block_invoke(void *a1, void *a2)
@@ -1950,26 +1950,26 @@ uint64_t __67__MPSectionedIdentifierList_addDataSourceAtEnd_section_completion__
   return [v8 addObject:v9];
 }
 
-- (void)addDataSource:(id)a3 section:(id)a4 beforeTailOfSection:(id)a5 completion:(id)a6
+- (void)addDataSource:(id)source section:(id)section beforeTailOfSection:(id)ofSection completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  sourceCopy = source;
+  sectionCopy = section;
+  ofSectionCopy = ofSection;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __82__MPSectionedIdentifierList_addDataSource_section_beforeTailOfSection_completion___block_invoke;
   v18[3] = &unk_1E7678190;
   v18[4] = self;
-  v19 = v13;
-  v21 = v11;
+  v19 = ofSectionCopy;
+  v21 = sourceCopy;
   v22 = a2;
-  v20 = v12;
-  v14 = v11;
-  v15 = v12;
-  v16 = v13;
-  v17 = a6;
+  v20 = sectionCopy;
+  v14 = sourceCopy;
+  v15 = sectionCopy;
+  v16 = ofSectionCopy;
+  completionCopy = completion;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v18];
-  [(MPSectionedIdentifierList *)self _loadDataSource:v14 forSection:v15 completion:v17];
+  [(MPSectionedIdentifierList *)self _loadDataSource:v14 forSection:v15 completion:completionCopy];
 }
 
 void __82__MPSectionedIdentifierList_addDataSource_section_beforeTailOfSection_completion___block_invoke(uint64_t a1, void *a2)
@@ -2005,26 +2005,26 @@ void __82__MPSectionedIdentifierList_addDataSource_section_beforeTailOfSection_c
   [*(a1 + 32) _insertDataSource:*(a1 + 56) forSection:*(a1 + 48) afterEntry:v8 withExclusiveAccessToken:v4];
 }
 
-- (void)addDataSource:(id)a3 section:(id)a4 afterTailOfSection:(id)a5 completion:(id)a6
+- (void)addDataSource:(id)source section:(id)section afterTailOfSection:(id)ofSection completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  sourceCopy = source;
+  sectionCopy = section;
+  ofSectionCopy = ofSection;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __81__MPSectionedIdentifierList_addDataSource_section_afterTailOfSection_completion___block_invoke;
   v18[3] = &unk_1E7678190;
   v18[4] = self;
-  v19 = v13;
-  v21 = v11;
+  v19 = ofSectionCopy;
+  v21 = sourceCopy;
   v22 = a2;
-  v20 = v12;
-  v14 = v11;
-  v15 = v12;
-  v16 = v13;
-  v17 = a6;
+  v20 = sectionCopy;
+  v14 = sourceCopy;
+  v15 = sectionCopy;
+  v16 = ofSectionCopy;
+  completionCopy = completion;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v18];
-  [(MPSectionedIdentifierList *)self _loadDataSource:v14 forSection:v15 completion:v17];
+  [(MPSectionedIdentifierList *)self _loadDataSource:v14 forSection:v15 completion:completionCopy];
 }
 
 void __81__MPSectionedIdentifierList_addDataSource_section_afterTailOfSection_completion___block_invoke(uint64_t a1, void *a2)
@@ -2054,29 +2054,29 @@ void __81__MPSectionedIdentifierList_addDataSource_section_afterTailOfSection_co
   [*(a1 + 32) _insertDataSource:*(a1 + 56) forSection:*(a1 + 48) afterEntry:v7 withExclusiveAccessToken:v4];
 }
 
-- (void)addDataSource:(id)a3 section:(id)a4 afterItem:(id)a5 inSection:(id)a6 completion:(id)a7
+- (void)addDataSource:(id)source section:(id)section afterItem:(id)item inSection:(id)inSection completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  sourceCopy = source;
+  sectionCopy = section;
+  itemCopy = item;
+  inSectionCopy = inSection;
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __82__MPSectionedIdentifierList_addDataSource_section_afterItem_inSection_completion___block_invoke;
   v25 = &unk_1E76781B8;
-  v26 = self;
-  v27 = v15;
-  v28 = v16;
-  v29 = v14;
-  v30 = v13;
+  selfCopy = self;
+  v27 = itemCopy;
+  v28 = inSectionCopy;
+  v29 = sectionCopy;
+  v30 = sourceCopy;
   v31 = a2;
-  v17 = v13;
-  v18 = v14;
-  v19 = v16;
-  v20 = v15;
-  v21 = a7;
+  v17 = sourceCopy;
+  v18 = sectionCopy;
+  v19 = inSectionCopy;
+  v20 = itemCopy;
+  completionCopy = completion;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:&v22];
-  [(MPSectionedIdentifierList *)self _loadDataSource:v17 forSection:v18 completion:v21, v22, v23, v24, v25, v26];
+  [(MPSectionedIdentifierList *)self _loadDataSource:v17 forSection:v18 completion:completionCopy, v22, v23, v24, v25, selfCopy];
 }
 
 void __82__MPSectionedIdentifierList_addDataSource_section_afterItem_inSection_completion___block_invoke(uint64_t a1, void *a2)
@@ -2102,38 +2102,38 @@ void __82__MPSectionedIdentifierList_addDataSource_section_afterItem_inSection_c
   [*(a1 + 32) _insertDataSource:*(a1 + 64) forSection:*(a1 + 56) afterEntry:v12 withExclusiveAccessToken:v6];
 }
 
-- (id)_firstSectionIDBeforePosition:(id)a3 withExclusiveAccessToken:(id)a4
+- (id)_firstSectionIDBeforePosition:(id)position withExclusiveAccessToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  positionCopy = position;
+  tokenCopy = token;
   context = objc_autoreleasePoolPush();
-  v9 = [(MPSectionedIdentifierList *)self enumeratorWithOptions:16777241 startPosition:v7 endPosition:0 withExclusiveAccessToken:v8];
-  v10 = [v9 nextObjectWithExclusiveAccessToken:v8];
+  v9 = [(MPSectionedIdentifierList *)self enumeratorWithOptions:16777241 startPosition:positionCopy endPosition:0 withExclusiveAccessToken:tokenCopy];
+  v10 = [v9 nextObjectWithExclusiveAccessToken:tokenCopy];
   if (v10)
   {
     v11 = v10;
     do
     {
-      v12 = [v11 entryType];
-      if (v12 <= 1)
+      entryType = [v11 entryType];
+      if (entryType <= 1)
       {
-        if (!v12)
+        if (!entryType)
         {
-          v13 = [MEMORY[0x1E696AAA8] currentHandler];
-          v14 = v13;
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          v14 = currentHandler;
           v15 = a2;
-          v16 = self;
+          selfCopy3 = self;
           v17 = 513;
           v18 = @"Unexpected encounter of Unknown entry";
           goto LABEL_14;
         }
 
-        if (v12 == 1)
+        if (entryType == 1)
         {
-          v13 = [MEMORY[0x1E696AAA8] currentHandler];
-          v14 = v13;
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          v14 = currentHandler;
           v15 = a2;
-          v16 = self;
+          selfCopy3 = self;
           v17 = 507;
           v18 = @"Unexpected encounter of Start entry";
           goto LABEL_14;
@@ -2142,12 +2142,12 @@ void __82__MPSectionedIdentifierList_addDataSource_section_afterItem_inSection_c
 
       else
       {
-        if (v12 == 2 || v12 == 4)
+        if (entryType == 2 || entryType == 4)
         {
-          v19 = [v11 trackingEntryResult];
-          v20 = [v19 sectionIdentifier];
+          trackingEntryResult = [v11 trackingEntryResult];
+          sectionIdentifier = [trackingEntryResult sectionIdentifier];
 
-          if (v20)
+          if (sectionIdentifier)
           {
             goto LABEL_17;
           }
@@ -2155,21 +2155,21 @@ void __82__MPSectionedIdentifierList_addDataSource_section_afterItem_inSection_c
           goto LABEL_15;
         }
 
-        if (v12 == 5)
+        if (entryType == 5)
         {
-          v13 = [MEMORY[0x1E696AAA8] currentHandler];
-          v14 = v13;
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          v14 = currentHandler;
           v15 = a2;
-          v16 = self;
+          selfCopy3 = self;
           v17 = 510;
           v18 = @"Unexpected encounter of End entry";
 LABEL_14:
-          [v13 handleFailureInMethod:v15 object:v16 file:@"MPSectionedIdentifierList.m" lineNumber:v17 description:v18];
+          [currentHandler handleFailureInMethod:v15 object:selfCopy3 file:@"MPSectionedIdentifierList.m" lineNumber:v17 description:v18];
         }
       }
 
 LABEL_15:
-      v21 = [v9 nextObjectWithExclusiveAccessToken:v8];
+      v21 = [v9 nextObjectWithExclusiveAccessToken:tokenCopy];
 
       v11 = v21;
     }
@@ -2177,38 +2177,38 @@ LABEL_15:
     while (v21);
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:520 description:@"Could not find section identifier to update orderedSections"];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList.m" lineNumber:520 description:@"Could not find section identifier to update orderedSections"];
 
   v11 = 0;
-  v20 = 0;
+  sectionIdentifier = 0;
 LABEL_17:
 
   objc_autoreleasePoolPop(context);
 
-  return v20;
+  return sectionIdentifier;
 }
 
-- (void)addDataSource:(id)a3 section:(id)a4 afterHeadOfSection:(id)a5 completion:(id)a6
+- (void)addDataSource:(id)source section:(id)section afterHeadOfSection:(id)ofSection completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  sourceCopy = source;
+  sectionCopy = section;
+  ofSectionCopy = ofSection;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __81__MPSectionedIdentifierList_addDataSource_section_afterHeadOfSection_completion___block_invoke;
   v18[3] = &unk_1E7678190;
   v18[4] = self;
-  v19 = v13;
-  v21 = v11;
+  v19 = ofSectionCopy;
+  v21 = sourceCopy;
   v22 = a2;
-  v20 = v12;
-  v14 = v11;
-  v15 = v12;
-  v16 = v13;
-  v17 = a6;
+  v20 = sectionCopy;
+  v14 = sourceCopy;
+  v15 = sectionCopy;
+  v16 = ofSectionCopy;
+  completionCopy = completion;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v18];
-  [(MPSectionedIdentifierList *)self _loadDataSource:v14 forSection:v15 completion:v17];
+  [(MPSectionedIdentifierList *)self _loadDataSource:v14 forSection:v15 completion:completionCopy];
 }
 
 void __81__MPSectionedIdentifierList_addDataSource_section_afterHeadOfSection_completion___block_invoke(uint64_t a1, void *a2)
@@ -2228,22 +2228,22 @@ void __81__MPSectionedIdentifierList_addDataSource_section_afterHeadOfSection_co
   [*(a1 + 32) _insertDataSource:*(a1 + 56) forSection:*(a1 + 48) afterEntry:v7 withExclusiveAccessToken:v4];
 }
 
-- (void)addDataSourceAtStart:(id)a3 section:(id)a4 completion:(id)a5
+- (void)addDataSourceAtStart:(id)start section:(id)section completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  startCopy = start;
+  sectionCopy = section;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __69__MPSectionedIdentifierList_addDataSourceAtStart_section_completion___block_invoke;
   v13[3] = &unk_1E7678168;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v10 = v8;
-  v11 = v9;
-  v12 = a5;
+  v14 = sectionCopy;
+  v15 = startCopy;
+  v10 = startCopy;
+  v11 = sectionCopy;
+  completionCopy = completion;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v13];
-  [(MPSectionedIdentifierList *)self _loadDataSource:v10 forSection:v11 completion:v12];
+  [(MPSectionedIdentifierList *)self _loadDataSource:v10 forSection:v11 completion:completionCopy];
 }
 
 void __69__MPSectionedIdentifierList_addDataSourceAtStart_section_completion___block_invoke(uint64_t a1, void *a2)
@@ -2255,46 +2255,46 @@ void __69__MPSectionedIdentifierList_addDataSourceAtStart_section_completion___b
   [*(a1 + 32) _insertDataSource:*(a1 + 48) forSection:*(a1 + 40) afterEntry:0 withExclusiveAccessToken:v5];
 }
 
-- (id)enumeratorWithOptions:(unint64_t)a3 startPosition:(id)a4 endPosition:(id)a5 withExclusiveAccessToken:(id)a6
+- (id)enumeratorWithOptions:(unint64_t)options startPosition:(id)position endPosition:(id)endPosition withExclusiveAccessToken:(id)token
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [(MPSectionedIdentifierList *)self _entryForPosition:a4 withExclusiveAccessToken:v10];
-  v13 = [(MPSectionedIdentifierList *)self _entryForPosition:v11 withExclusiveAccessToken:v10];
+  tokenCopy = token;
+  endPositionCopy = endPosition;
+  v12 = [(MPSectionedIdentifierList *)self _entryForPosition:position withExclusiveAccessToken:tokenCopy];
+  v13 = [(MPSectionedIdentifierList *)self _entryForPosition:endPositionCopy withExclusiveAccessToken:tokenCopy];
 
   v14 = off_1E7672A10;
-  if ((a3 & 8) != 0)
+  if ((options & 8) != 0)
   {
     v14 = off_1E7672A20;
   }
 
-  v15 = [objc_alloc(*v14) initWithSectionedIdentifierList:self options:a3 startEntry:v12 endEntry:v13 withExclusiveAccessToken:v10];
+  v15 = [objc_alloc(*v14) initWithSectionedIdentifierList:self options:options startEntry:v12 endEntry:v13 withExclusiveAccessToken:tokenCopy];
 
   return v15;
 }
 
-- (id)enumeratorWithOptions:(unint64_t)a3 startPosition:(id)a4 endPosition:(id)a5
+- (id)enumeratorWithOptions:(unint64_t)options startPosition:(id)position endPosition:(id)endPosition
 {
-  v8 = a4;
-  v9 = a5;
+  positionCopy = position;
+  endPositionCopy = endPosition;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__MPSectionedIdentifierList_enumeratorWithOptions_startPosition_endPosition___block_invoke;
   v14[3] = &unk_1E7678140;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a3;
-  v10 = v9;
-  v11 = v8;
+  v15 = positionCopy;
+  v16 = endPositionCopy;
+  optionsCopy = options;
+  v10 = endPositionCopy;
+  v11 = positionCopy;
   v12 = [(MPSectionedIdentifierList *)self performWithExclusiveAccessAndReturnObject:v14];
 
   return v12;
 }
 
-- (int64_t)performWithExclusiveAccessAndReturnInteger:(id)a3
+- (int64_t)performWithExclusiveAccessAndReturnInteger:(id)integer
 {
-  v4 = a3;
+  integerCopy = integer;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -2308,7 +2308,7 @@ void __69__MPSectionedIdentifierList_addDataSourceAtStart_section_completion___b
   if (pthread_getspecific(_MPSectionIdentifierListExclusivityDisabledPThreadKey_sThreadKey))
   {
     v6 = [MPPThreadKeyExclusiveAccessToken tokenWithKey:v5 owner:self];
-    v7 = v4[2](v4, v6);
+    v7 = integerCopy[2](integerCopy, v6);
     v15[3] = v7;
   }
 
@@ -2321,7 +2321,7 @@ void __69__MPSectionedIdentifierList_addDataSourceAtStart_section_completion___b
     block[3] = &unk_1E7681308;
     v13 = &v14;
     block[4] = self;
-    v12 = v4;
+    v12 = integerCopy;
     dispatch_sync(accessQueue, block);
     v6 = v12;
   }
@@ -2339,9 +2339,9 @@ void __72__MPSectionedIdentifierList_performWithExclusiveAccessAndReturnInteger_
   *(*(a1[6] + 8) + 24) = (*(v2 + 16))(v2, v3);
 }
 
-- (BOOL)performWithExclusiveAccessAndReturnBOOL:(id)a3
+- (BOOL)performWithExclusiveAccessAndReturnBOOL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -2355,7 +2355,7 @@ void __72__MPSectionedIdentifierList_performWithExclusiveAccessAndReturnInteger_
   if (pthread_getspecific(_MPSectionIdentifierListExclusivityDisabledPThreadKey_sThreadKey))
   {
     v6 = [MPPThreadKeyExclusiveAccessToken tokenWithKey:v5 owner:self];
-    v7 = v4[2](v4, v6);
+    v7 = lCopy[2](lCopy, v6);
     *(v15 + 24) = v7;
   }
 
@@ -2368,7 +2368,7 @@ void __72__MPSectionedIdentifierList_performWithExclusiveAccessAndReturnInteger_
     block[3] = &unk_1E7681308;
     v13 = &v14;
     block[4] = self;
-    v12 = v4;
+    v12 = lCopy;
     dispatch_sync(accessQueue, block);
     v6 = v12;
   }
@@ -2386,9 +2386,9 @@ void __69__MPSectionedIdentifierList_performWithExclusiveAccessAndReturnBOOL___b
   *(*(a1[6] + 8) + 24) = (*(v2 + 16))(v2, v3);
 }
 
-- (id)performWithExclusiveAccessAndReturnObject:(id)a3
+- (id)performWithExclusiveAccessAndReturnObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -2404,7 +2404,7 @@ void __69__MPSectionedIdentifierList_performWithExclusiveAccessAndReturnBOOL___b
   if (pthread_getspecific(_MPSectionIdentifierListExclusivityDisabledPThreadKey_sThreadKey))
   {
     v6 = [MPPThreadKeyExclusiveAccessToken tokenWithKey:v5 owner:self];
-    v7 = v4[2](v4, v6);
+    v7 = objectCopy[2](objectCopy, v6);
     v8 = v16[5];
     v16[5] = v7;
   }
@@ -2418,7 +2418,7 @@ void __69__MPSectionedIdentifierList_performWithExclusiveAccessAndReturnBOOL___b
     block[3] = &unk_1E7681308;
     v14 = &v15;
     block[4] = self;
-    v13 = v4;
+    v13 = objectCopy;
     dispatch_sync(accessQueue, block);
     v6 = v13;
   }
@@ -2439,9 +2439,9 @@ void __71__MPSectionedIdentifierList_performWithExclusiveAccessAndReturnObject__
   *(v4 + 40) = v3;
 }
 
-- (void)performWithExclusiveAccess:(id)a3
+- (void)performWithExclusiveAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   if (_MPSectionIdentifierListExclusivityDisabledPThreadKey_sOnceToken != -1)
   {
     dispatch_once(&_MPSectionIdentifierListExclusivityDisabledPThreadKey_sOnceToken, &__block_literal_global_12848);
@@ -2451,7 +2451,7 @@ void __71__MPSectionedIdentifierList_performWithExclusiveAccessAndReturnObject__
   if (pthread_getspecific(_MPSectionIdentifierListExclusivityDisabledPThreadKey_sThreadKey))
   {
     v6 = [MPPThreadKeyExclusiveAccessToken tokenWithKey:v5 owner:self];
-    v4[2](v4, v6);
+    accessCopy[2](accessCopy, v6);
   }
 
   else
@@ -2462,7 +2462,7 @@ void __71__MPSectionedIdentifierList_performWithExclusiveAccessAndReturnObject__
     v8[2] = __56__MPSectionedIdentifierList_performWithExclusiveAccess___block_invoke;
     v8[3] = &unk_1E76824C8;
     v8[4] = self;
-    v9 = v4;
+    v9 = accessCopy;
     dispatch_sync(accessQueue, v8);
   }
 }
@@ -2474,13 +2474,13 @@ void __56__MPSectionedIdentifierList_performWithExclusiveAccess___block_invoke(u
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)replaceDataSource:(id)a3 forSection:(id)a4 completion:(id)a5
+- (void)replaceDataSource:(id)source forSection:(id)section completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x1E695DF70] array];
+  sourceCopy = source;
+  sectionCopy = section;
+  completionCopy = completion;
+  array = [MEMORY[0x1E695DF70] array];
   v13 = os_log_create("com.apple.amp.mediaplayer", "Default");
   v14 = os_signpost_id_make_with_pointer(v13, self);
 
@@ -2489,7 +2489,7 @@ void __56__MPSectionedIdentifierList_performWithExclusiveAccess___block_invoke(u
   if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
   {
     *buf = 138543362;
-    v34 = v10;
+    v34 = sectionCopy;
     _os_signpost_emit_with_name_impl(&dword_1A238D000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "SIL-Replace", "section=%{public}@", buf, 0xCu);
   }
 
@@ -2498,14 +2498,14 @@ void __56__MPSectionedIdentifierList_performWithExclusiveAccess___block_invoke(u
   v27[2] = __69__MPSectionedIdentifierList_replaceDataSource_forSection_completion___block_invoke;
   v27[3] = &unk_1E76780F0;
   v27[4] = self;
-  v28 = v10;
+  v28 = sectionCopy;
   v31 = v14;
   v32 = a2;
-  v29 = v12;
-  v30 = v9;
-  v17 = v9;
-  v18 = v12;
-  v19 = v10;
+  v29 = array;
+  v30 = sourceCopy;
+  v17 = sourceCopy;
+  v18 = array;
+  v19 = sectionCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v27];
   v20 = os_log_create("com.apple.amp.mediaplayer", "Default");
   v21 = v20;
@@ -2520,9 +2520,9 @@ void __56__MPSectionedIdentifierList_performWithExclusiveAccess___block_invoke(u
   v24[1] = 3221225472;
   v24[2] = __69__MPSectionedIdentifierList_replaceDataSource_forSection_completion___block_invoke_55;
   v24[3] = &unk_1E7678118;
-  v25 = v11;
+  v25 = completionCopy;
   v26 = v14;
-  v23 = v11;
+  v23 = completionCopy;
   [v17 reloadSection:v22 completion:v24];
 }
 
@@ -2627,23 +2627,23 @@ void __69__MPSectionedIdentifierList_replaceDataSource_forSection_completion___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)_encodeEntry:(id)a3 withExclusiveAccessToken:(id)a4
+- (id)_encodeEntry:(id)entry withExclusiveAccessToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  entryCopy = entry;
+  tokenCopy = token;
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__12853;
   v28 = __Block_byref_object_dispose__12854;
-  v9 = v6;
+  v9 = entryCopy;
   v10 = v9;
   v11 = 0;
   v29 = v9;
   while (1)
   {
-    v12 = [v9 encodableNextEntriesWithExclusiveAccessToken:v7];
+    v12 = [v9 encodableNextEntriesWithExclusiveAccessToken:tokenCopy];
 
     if (!v12 || ![v12 count])
     {
@@ -2652,10 +2652,10 @@ void __69__MPSectionedIdentifierList_replaceDataSource_forSection_completion___b
 
     if ([v12 count] == 1)
     {
-      v13 = [v12 firstObject];
-      [v8 addObject:v13];
+      firstObject = [v12 firstObject];
+      [array addObject:firstObject];
       v14 = v25[5];
-      v25[5] = v13;
+      v25[5] = firstObject;
     }
 
     else
@@ -2673,11 +2673,11 @@ void __69__MPSectionedIdentifierList_replaceDataSource_forSection_completion___b
       v14 = v15;
       v23 = &v24;
       v20 = v14;
-      v21 = self;
-      v22 = v7;
+      selfCopy = self;
+      v22 = tokenCopy;
       [v12 enumerateObjectsUsingBlock:v19];
       v16 = [v14 copy];
-      [v8 addObject:v16];
+      [array addObject:v16];
     }
 
 LABEL_9:
@@ -2685,7 +2685,7 @@ LABEL_9:
     v11 = v12;
   }
 
-  v17 = [v8 copy];
+  v17 = [array copy];
   _Block_object_dispose(&v24, 8);
 
   return v17;
@@ -2716,105 +2716,105 @@ void __67__MPSectionedIdentifierList__encodeEntry_withExclusiveAccessToken___blo
   }
 }
 
-- (void)encodeWithCoder:(id)a3 withExclusiveAccessToken:(id)a4
+- (void)encodeWithCoder:(id)coder withExclusiveAccessToken:(id)token
 {
-  v6 = a4;
-  v8 = a3;
-  [v6 assertHasExclusiveAccessForOwner:self];
-  [v8 encodeObject:self->_identifier forKey:@"id"];
-  [v8 encodeInteger:self->_itemCount forKey:@"ic"];
-  [v8 encodeBool:self->_automaticallyReversesNonDestructiveDataSourceEdits forKey:@"arne"];
-  v7 = [(MPSectionedIdentifierList *)self _encodeEntry:self withExclusiveAccessToken:v6];
+  tokenCopy = token;
+  coderCopy = coder;
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  [coderCopy encodeObject:self->_identifier forKey:@"id"];
+  [coderCopy encodeInteger:self->_itemCount forKey:@"ic"];
+  [coderCopy encodeBool:self->_automaticallyReversesNonDestructiveDataSourceEdits forKey:@"arne"];
+  v7 = [(MPSectionedIdentifierList *)self _encodeEntry:self withExclusiveAccessToken:tokenCopy];
 
-  [v8 encodeObject:v7 forKey:@"el"];
-  [v8 encodeObject:self->_orderedSections forKey:@"os"];
+  [coderCopy encodeObject:v7 forKey:@"el"];
+  [coderCopy encodeObject:self->_orderedSections forKey:@"os"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__MPSectionedIdentifierList_encodeWithCoder___block_invoke;
   v6[3] = &unk_1E767BF10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = coderCopy;
+  v5 = coderCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v6];
 }
 
-- (void)_stitchPreviousEntry:(id)a3 toEntry:(id)a4 cloneIndex:(id)a5
+- (void)_stitchPreviousEntry:(id)entry toEntry:(id)toEntry cloneIndex:(id)index
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v9 setPreviousEntry:v8];
-  if ([v9 entryType] != 4)
+  entryCopy = entry;
+  toEntryCopy = toEntry;
+  indexCopy = index;
+  [toEntryCopy setPreviousEntry:entryCopy];
+  if ([toEntryCopy entryType] != 4)
   {
-    if (v8)
+    if (entryCopy)
     {
-      [v8 addNextEntry:v9];
+      [entryCopy addNextEntry:toEntryCopy];
     }
 
     else
     {
-      [(NSMutableArray *)self->_startEntries addObject:v9];
+      [(NSMutableArray *)self->_startEntries addObject:toEntryCopy];
     }
   }
 
-  v11 = [v9 entryType];
-  switch(v11)
+  entryType = [toEntryCopy entryType];
+  switch(entryType)
   {
     case 4:
-      [v8 setTailEntry:v9];
-      [v9 setSectionHeadEntry:v8];
+      [entryCopy setTailEntry:toEntryCopy];
+      [toEntryCopy setSectionHeadEntry:entryCopy];
       break;
     case 3:
-      v14 = v9;
+      v14 = toEntryCopy;
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __69__MPSectionedIdentifierList__stitchPreviousEntry_toEntry_cloneIndex___block_invoke;
       aBlock[3] = &unk_1E76780A0;
-      v30 = v10;
+      v30 = indexCopy;
       v15 = _Block_copy(aBlock);
-      v16 = [v14 positionKey];
-      v17 = [v16 generation];
-      v18 = [v17 isEqualToString:@"1"];
+      positionKey = [v14 positionKey];
+      generation = [positionKey generation];
+      v18 = [generation isEqualToString:@"1"];
 
       if (v18)
       {
         if ([v14 hasClones])
         {
-          v19 = [v14 sectionIdentifier];
-          v20 = [v14 itemIdentifier];
-          v21 = v15[2](v15, v19, v20);
+          sectionIdentifier = [v14 sectionIdentifier];
+          itemIdentifier = [v14 itemIdentifier];
+          v21 = v15[2](v15, sectionIdentifier, itemIdentifier);
 
           [v21 setRootEntry:v14];
         }
 
         sectionHeadEntryMap = self->_sectionHeadEntryMap;
-        v23 = [v14 sectionIdentifier];
-        v24 = [(NSMutableDictionary *)sectionHeadEntryMap objectForKeyedSubscript:v23];
-        v25 = [v24 identifiersItemEntryMap];
-        v26 = [v14 itemIdentifier];
-        [v25 setObject:v14 forKeyedSubscript:v26];
+        sectionIdentifier2 = [v14 sectionIdentifier];
+        clonedEntries = [(NSMutableDictionary *)sectionHeadEntryMap objectForKeyedSubscript:sectionIdentifier2];
+        identifiersItemEntryMap = [clonedEntries identifiersItemEntryMap];
+        itemIdentifier2 = [v14 itemIdentifier];
+        [identifiersItemEntryMap setObject:v14 forKeyedSubscript:itemIdentifier2];
       }
 
       else
       {
-        v27 = [v14 sectionIdentifier];
-        v28 = [v14 itemIdentifier];
-        v23 = v15[2](v15, v27, v28);
+        sectionIdentifier3 = [v14 sectionIdentifier];
+        itemIdentifier3 = [v14 itemIdentifier];
+        sectionIdentifier2 = v15[2](v15, sectionIdentifier3, itemIdentifier3);
 
-        v24 = [v23 clonedEntries];
-        [v24 addObject:v14];
+        clonedEntries = [sectionIdentifier2 clonedEntries];
+        [clonedEntries addObject:v14];
       }
 
       break;
     case 2:
       v12 = self->_sectionHeadEntryMap;
-      v13 = [v9 sectionIdentifier];
-      [(NSMutableDictionary *)v12 setObject:v9 forKeyedSubscript:v13];
+      sectionIdentifier4 = [toEntryCopy sectionIdentifier];
+      [(NSMutableDictionary *)v12 setObject:toEntryCopy forKeyedSubscript:sectionIdentifier4];
 
       break;
   }
@@ -2833,17 +2833,17 @@ _MPSectionedIdentifierListCloneIndexEntry *__69__MPSectionedIdentifierList__stit
   return v5;
 }
 
-- (void)_stitchLastItemEntryToHeadEntry:(id)a3 branchList:(id)a4
+- (void)_stitchLastItemEntryToHeadEntry:(id)entry branchList:(id)list
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count] >= 2)
+  entryCopy = entry;
+  listCopy = list;
+  if ([listCopy count] >= 2)
   {
-    v26 = v5;
-    v7 = [v5 sectionIdentifier];
-    v25 = v6;
-    v8 = [v6 objectAtIndexedSubscript:1];
+    v26 = entryCopy;
+    sectionIdentifier = [entryCopy sectionIdentifier];
+    v25 = listCopy;
+    v8 = [listCopy objectAtIndexedSubscript:1];
     v9 = v8;
     if ((_NSIsNSArray() & 1) == 0)
     {
@@ -2856,8 +2856,8 @@ _MPSectionedIdentifierListCloneIndexEntry *__69__MPSectionedIdentifierList__stit
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v10 = [v9 reverseObjectEnumerator];
-    v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    reverseObjectEnumerator = [v9 reverseObjectEnumerator];
+    v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v11)
     {
       v12 = v11;
@@ -2868,15 +2868,15 @@ _MPSectionedIdentifierListCloneIndexEntry *__69__MPSectionedIdentifierList__stit
         {
           if (*v28 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v15 = *(*(&v27 + 1) + 8 * i);
           if (_NSIsNSArray())
           {
-            v16 = [v15 firstObject];
+            firstObject = [v15 firstObject];
 
-            v15 = v16;
+            v15 = firstObject;
           }
 
           v17 = v15;
@@ -2885,11 +2885,11 @@ _MPSectionedIdentifierListCloneIndexEntry *__69__MPSectionedIdentifierList__stit
             v18 = v17;
             if (([v18 isUserCloned] & 1) == 0)
             {
-              v19 = [v18 sectionIdentifier];
-              v20 = [v19 isEqualToString:v7];
+              sectionIdentifier2 = [v18 sectionIdentifier];
+              v20 = [sectionIdentifier2 isEqualToString:sectionIdentifier];
 
-              v21 = [v18 hostedSectionIdentifier];
-              v22 = [v21 isEqualToString:v7];
+              hostedSectionIdentifier = [v18 hostedSectionIdentifier];
+              v22 = [hostedSectionIdentifier isEqualToString:sectionIdentifier];
 
               if (v20 & 1) != 0 || (v22)
               {
@@ -2901,7 +2901,7 @@ _MPSectionedIdentifierListCloneIndexEntry *__69__MPSectionedIdentifierList__stit
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v12)
         {
           continue;
@@ -2913,29 +2913,29 @@ _MPSectionedIdentifierListCloneIndexEntry *__69__MPSectionedIdentifierList__stit
 
 LABEL_20:
 
-    v6 = v25;
-    v5 = v26;
+    listCopy = v25;
+    entryCopy = v26;
   }
 }
 
-- (void)_stitchWithPreviousEntry:(id)a3 list:(id)a4 cloneIndex:(id)a5
+- (void)_stitchWithPreviousEntry:(id)entry list:(id)list cloneIndex:(id)index
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entryCopy = entry;
+  listCopy = list;
+  indexCopy = index;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__12853;
   v36 = __Block_byref_object_dispose__12854;
-  v22 = v8;
+  v22 = entryCopy;
   v37 = v22;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v11 = v9;
+  v11 = listCopy;
   v12 = [v11 countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (v12)
   {
@@ -2964,7 +2964,7 @@ LABEL_20:
           v23[4] = self;
           v20 = v19;
           v24 = v20;
-          v25 = v10;
+          v25 = indexCopy;
           v27 = &v32;
           v21 = v17;
           v26 = v21;
@@ -2973,7 +2973,7 @@ LABEL_20:
 
         else
         {
-          [(MPSectionedIdentifierList *)self _stitchPreviousEntry:v18 toEntry:v17 cloneIndex:v10, v22];
+          [(MPSectionedIdentifierList *)self _stitchPreviousEntry:v18 toEntry:v17 cloneIndex:indexCopy, v22];
           v21 = v33[5];
           v33[5] = v17;
         }
@@ -3014,24 +3014,24 @@ void __70__MPSectionedIdentifierList__stitchWithPreviousEntry_list_cloneIndex___
   }
 }
 
-- (MPSectionedIdentifierList)initWithCoder:(id)a3
+- (MPSectionedIdentifierList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MPSectionedIdentifierList *)self init];
   v6 = v5;
   if (v5)
   {
-    [(MPSectionedIdentifierList *)v5 _beforeInitWithCoder:v4];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+    [(MPSectionedIdentifierList *)v5 _beforeInitWithCoder:coderCopy];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
     identifier = v6->_identifier;
     v6->_identifier = v7;
 
-    v6->_itemCount = [v4 decodeIntegerForKey:@"ic"];
-    v6->_automaticallyReversesNonDestructiveDataSourceEdits = [v4 decodeBoolForKey:@"arne"];
+    v6->_itemCount = [coderCopy decodeIntegerForKey:@"ic"];
+    v6->_automaticallyReversesNonDestructiveDataSourceEdits = [coderCopy decodeBoolForKey:@"arne"];
     v9 = MEMORY[0x1E695DFD8];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"el"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"el"];
 
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [(MPSectionedIdentifierList *)v6 _stitchWithPreviousEntry:0 list:v12 cloneIndex:v13];
@@ -3042,19 +3042,19 @@ void __70__MPSectionedIdentifierList__stitchWithPreviousEntry_list_cloneIndex___
     v14 = v6;
     v33 = v14;
     [v13 enumerateKeysAndObjectsUsingBlock:v32];
-    v15 = [v12 lastObject];
+    lastObject = [v12 lastObject];
     if (_NSIsNSArray())
     {
-      v16 = [v15 firstObject];
+      firstObject = [lastObject firstObject];
 
-      v15 = v16;
+      lastObject = firstObject;
     }
 
-    objc_storeStrong(v14 + 4, v15);
+    objc_storeStrong(v14 + 4, lastObject);
     v17 = MEMORY[0x1E695DFD8];
     v18 = objc_opt_class();
     v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"os"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"os"];
 
     if (v20)
     {
@@ -3067,26 +3067,26 @@ void __70__MPSectionedIdentifierList__stitchWithPreviousEntry_list_cloneIndex___
       v31 = v12;
       context = objc_autoreleasePoolPush();
       v21 = [v14 enumeratorWithOptions:16777233];
-      v22 = [v21 nextObject];
-      if (v22)
+      nextObject = [v21 nextObject];
+      if (nextObject)
       {
-        v23 = v22;
+        v23 = nextObject;
         do
         {
           if ([v23 entryType] == 2)
           {
             v24 = v14[7];
-            v25 = [v23 trackingEntryResult];
-            v26 = [v25 sectionIdentifier];
-            [v24 addObject:v26];
+            trackingEntryResult = [v23 trackingEntryResult];
+            sectionIdentifier = [trackingEntryResult sectionIdentifier];
+            [v24 addObject:sectionIdentifier];
           }
 
-          v27 = [v21 nextObject];
+          nextObject2 = [v21 nextObject];
 
-          v23 = v27;
+          v23 = nextObject2;
         }
 
-        while (v27);
+        while (nextObject2);
       }
 
       objc_autoreleasePoolPop(context);
@@ -3162,8 +3162,8 @@ void __43__MPSectionedIdentifierList_initWithCoder___block_invoke(uint64_t a1, v
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   identifier = self->_identifier;
-  v6 = [(NSMutableArray *)self->_orderedSections msv_compactDescription];
-  v7 = [v3 stringWithFormat:@"<%@: %p id=%@ sections=[%@]>", v4, self, identifier, v6];
+  msv_compactDescription = [(NSMutableArray *)self->_orderedSections msv_compactDescription];
+  v7 = [v3 stringWithFormat:@"<%@: %p id=%@ sections=[%@]>", v4, self, identifier, msv_compactDescription];
 
   return v7;
 }
@@ -3172,10 +3172,10 @@ void __43__MPSectionedIdentifierList_initWithCoder___block_invoke(uint64_t a1, v
 {
   v3 = objc_autoreleasePoolPush();
   v4 = [(MPSectionedIdentifierList *)self enumeratorWithOptions:16777247];
-  v5 = [v4 nextObject];
-  if (v5)
+  nextObject = [v4 nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    v6 = nextObject;
     do
     {
       if (([v6 entryType] - 2) <= 2)
@@ -3183,12 +3183,12 @@ void __43__MPSectionedIdentifierList_initWithCoder___block_invoke(uint64_t a1, v
         [v6 prepareForDealloc];
       }
 
-      v7 = [v4 nextObject];
+      nextObject2 = [v4 nextObject];
 
-      v6 = v7;
+      v6 = nextObject2;
     }
 
-    while (v7);
+    while (nextObject2);
   }
 
   objc_autoreleasePoolPop(v3);
@@ -3197,9 +3197,9 @@ void __43__MPSectionedIdentifierList_initWithCoder___block_invoke(uint64_t a1, v
   [(MPSectionedIdentifierList *)&v8 dealloc];
 }
 
-- (MPSectionedIdentifierList)initWithIdentifier:(id)a3
+- (MPSectionedIdentifierList)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = MPSectionedIdentifierList;
   v5 = [(MPSectionedIdentifierList *)&v19 init];
@@ -3209,9 +3209,9 @@ void __43__MPSectionedIdentifierList_initWithCoder___block_invoke(uint64_t a1, v
     accessQueue = v5->_accessQueue;
     v5->_accessQueue = v6;
 
-    if (v4)
+    if (identifierCopy)
     {
-      v8 = v4;
+      v8 = identifierCopy;
     }
 
     else
@@ -3222,30 +3222,30 @@ void __43__MPSectionedIdentifierList_initWithCoder___block_invoke(uint64_t a1, v
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     sectionHeadEntryMap = v5->_sectionHeadEntryMap;
-    v5->_sectionHeadEntryMap = v10;
+    v5->_sectionHeadEntryMap = dictionary;
 
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     sectionTransactionCallouts = v5->_sectionTransactionCallouts;
-    v5->_sectionTransactionCallouts = v12;
+    v5->_sectionTransactionCallouts = dictionary2;
 
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     startEntries = v5->_startEntries;
-    v5->_startEntries = v14;
+    v5->_startEntries = array;
 
-    v16 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     orderedSections = v5->_orderedSections;
-    v5->_orderedSections = v16;
+    v5->_orderedSections = array2;
   }
 
   return v5;
 }
 
-+ (void)_performWithoutRequiringExclusivity:(id)a3
++ (void)_performWithoutRequiringExclusivity:(id)exclusivity
 {
   v3 = _MPSectionIdentifierListExclusivityDisabledPThreadKey_sOnceToken;
-  v4 = a3;
+  exclusivityCopy = exclusivity;
   if (v3 != -1)
   {
     dispatch_once(&_MPSectionIdentifierListExclusivityDisabledPThreadKey_sOnceToken, &__block_literal_global_12848);
@@ -3253,19 +3253,19 @@ void __43__MPSectionedIdentifierList_initWithCoder___block_invoke(uint64_t a1, v
 
   v5 = _MPSectionIdentifierListExclusivityDisabledPThreadKey_sThreadKey;
   pthread_setspecific(_MPSectionIdentifierListExclusivityDisabledPThreadKey_sThreadKey, 1);
-  v4[2](v4);
+  exclusivityCopy[2](exclusivityCopy);
 
   pthread_setspecific(v5, 0);
 }
 
-- (id)_debugDescriptionWithEnumerator:(id)a3 lengths:(id *)a4
+- (id)_debugDescriptionWithEnumerator:(id)enumerator lengths:(id *)lengths
 {
   v128[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v99 = v4;
-  v105 = [v4 nextObject];
-  v6 = [v105 branchDepth];
+  enumeratorCopy = enumerator;
+  array = [MEMORY[0x1E695DF70] array];
+  v99 = enumeratorCopy;
+  nextObject = [enumeratorCopy nextObject];
+  branchDepth = [nextObject branchDepth];
   LODWORD(v114) = 0;
   LODWORD(v115) = 0;
   LODWORD(v112) = 0;
@@ -3273,20 +3273,20 @@ void __43__MPSectionedIdentifierList_initWithCoder___block_invoke(uint64_t a1, v
   v7 = 0;
   v8 = 0;
   v100 = &stru_1F149ECA8;
-  v108 = v5;
+  v108 = array;
   do
   {
-    v9 = v6;
+    v9 = branchDepth;
     obj = objc_autoreleasePoolPush();
-    v10 = [v99 nextObject];
-    v11 = [v10 branchDepth];
+    nextObject2 = [v99 nextObject];
+    branchDepth2 = [nextObject2 branchDepth];
     v12 = v9 - v8;
     v116 = v9;
-    context = v11;
-    v110 = v10;
+    context = branchDepth2;
+    v110 = nextObject2;
     if (v9 == v8)
     {
-      v13 = v11;
+      v13 = branchDepth2;
     }
 
     else
@@ -3304,7 +3304,7 @@ void __43__MPSectionedIdentifierList_initWithCoder___block_invoke(uint64_t a1, v
           v128[3] = &stru_1F149ECA8;
           v128[4] = &stru_1F149ECA8;
           v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v128 count:5];
-          [v5 addObject:v17];
+          [array addObject:v17];
 
           v14 += 2;
           --v12;
@@ -3316,12 +3316,12 @@ void __43__MPSectionedIdentifierList_initWithCoder___block_invoke(uint64_t a1, v
       v18 = [&stru_1F149ECA8 stringByPaddingToLength:2 * v9 withString:@"┃ " startingAtIndex:0];
 
       v100 = v18;
-      v10 = v110;
+      nextObject2 = v110;
       v13 = context;
     }
 
-    v19 = [(MPSectionedIdentifierList *)self annotationDelegate];
-    if (v10)
+    annotationDelegate = [(MPSectionedIdentifierList *)self annotationDelegate];
+    if (nextObject2)
     {
       v20 = v13 < v9;
     }
@@ -3332,32 +3332,32 @@ void __43__MPSectionedIdentifierList_initWithCoder___block_invoke(uint64_t a1, v
     }
 
     v21 = v20;
-    v22 = [v105 entryType];
-    if (v22 <= 2)
+    entryType = [nextObject entryType];
+    if (entryType <= 2)
     {
-      if (v22)
+      if (entryType)
       {
         v23 = 0x1E695D000uLL;
-        if (v22 == 1)
+        if (entryType == 1)
         {
           v29 = v7;
           v24 = [(__CFString *)v100 stringByAppendingString:@"┏◨ START"];
           v30 = &stru_1F149ECA8;
           v31 = &stru_1F149ECA8;
           v32 = &stru_1F149ECA8;
-          v26 = &stru_1F149ECA8;
+          sectionIdentifier = &stru_1F149ECA8;
         }
 
-        else if (v22 == 2)
+        else if (entryType == 2)
         {
           v24 = [(__CFString *)v100 stringByAppendingString:@"┣◑ HEAD"];
-          v25 = [v105 trackingEntryResult];
-          v26 = [v25 sectionIdentifier];
+          trackingEntryResult = [nextObject trackingEntryResult];
+          sectionIdentifier = [trackingEntryResult sectionIdentifier];
 
           if (objc_opt_respondsToSelector())
           {
-            v101 = v26;
-            v27 = [v19 debugDescriptionForSection:v26];
+            v101 = sectionIdentifier;
+            v27 = [annotationDelegate debugDescriptionForSection:sectionIdentifier];
             v28 = v27;
             v29 = v7;
             if (v27)
@@ -3372,7 +3372,7 @@ void __43__MPSectionedIdentifierList_initWithCoder___block_invoke(uint64_t a1, v
 
             v31 = &stru_1F149ECA8;
             v32 = &stru_1F149ECA8;
-            v26 = v101;
+            sectionIdentifier = v101;
           }
 
           else
@@ -3390,7 +3390,7 @@ void __43__MPSectionedIdentifierList_initWithCoder___block_invoke(uint64_t a1, v
           v30 = &stru_1F149ECA8;
           v31 = &stru_1F149ECA8;
           v32 = &stru_1F149ECA8;
-          v26 = &stru_1F149ECA8;
+          sectionIdentifier = &stru_1F149ECA8;
           v24 = &stru_1F149ECA8;
         }
 
@@ -3401,20 +3401,20 @@ void __43__MPSectionedIdentifierList_initWithCoder___block_invoke(uint64_t a1, v
       v30 = &stru_1F149ECA8;
       v31 = &stru_1F149ECA8;
       v32 = &stru_1F149ECA8;
-      v26 = &stru_1F149ECA8;
+      sectionIdentifier = &stru_1F149ECA8;
       v24 = @"UNKNOWN";
 LABEL_54:
       v23 = 0x1E695D000;
       goto LABEL_74;
     }
 
-    if (v22 != 3)
+    if (entryType != 3)
     {
       v29 = v7;
-      if (v22 == 4)
+      if (entryType == 4)
       {
-        v50 = [v105 trackingEntryResult];
-        v51 = [v50 sectionIdentifier];
+        trackingEntryResult2 = [nextObject trackingEntryResult];
+        sectionIdentifier2 = [trackingEntryResult2 sectionIdentifier];
         if (v21)
         {
           v52 = @"┗◐ TAIL";
@@ -3427,7 +3427,7 @@ LABEL_54:
 
         v24 = [(__CFString *)v100 stringByAppendingString:v52];
 
-        v26 = v51;
+        sectionIdentifier = sectionIdentifier2;
         v30 = &stru_1F149ECA8;
         v31 = &stru_1F149ECA8;
         v32 = &stru_1F149ECA8;
@@ -3438,7 +3438,7 @@ LABEL_54:
         v30 = &stru_1F149ECA8;
         v31 = &stru_1F149ECA8;
         v32 = &stru_1F149ECA8;
-        if (v22 == 5)
+        if (entryType == 5)
         {
           v24 = @"┗◧ END";
         }
@@ -3448,19 +3448,19 @@ LABEL_54:
           v24 = &stru_1F149ECA8;
         }
 
-        v26 = &stru_1F149ECA8;
+        sectionIdentifier = &stru_1F149ECA8;
       }
 
       goto LABEL_54;
     }
 
     v102 = v7;
-    v33 = [v105 itemResult];
+    itemResult = [nextObject itemResult];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v79 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v79 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList+Debugging.m" lineNumber:81 description:{@"debugDescription is counting on itemResult being an instance of %@", objc_opt_class()}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierList+Debugging.m" lineNumber:81 description:{@"debugDescription is counting on itemResult being an instance of %@", objc_opt_class()}];
     }
 
     if (v21)
@@ -3474,22 +3474,22 @@ LABEL_54:
     }
 
     v96 = [(__CFString *)v100 stringByAppendingString:v34];
-    v26 = [v33 sectionIdentifier];
-    v35 = [v33 itemIdentifier];
-    v32 = [@"- " stringByAppendingString:v35];
+    sectionIdentifier = [itemResult sectionIdentifier];
+    itemIdentifier = [itemResult itemIdentifier];
+    v32 = [@"- " stringByAppendingString:itemIdentifier];
 
-    v36 = [v33 state];
+    state = [itemResult state];
     v38 = v37;
     v124[0] = MEMORY[0x1E69E9820];
     v124[1] = 3221225472;
     v124[2] = __80__MPSectionedIdentifierList_Debugging___debugDescriptionWithEnumerator_lengths___block_invoke;
     v124[3] = &unk_1E7678398;
     v124[4] = self;
-    v97 = v33;
+    v97 = itemResult;
     v125 = v97;
     v39 = [(MPSectionedIdentifierList *)self performWithExclusiveAccessAndReturnBOOL:v124];
     v40 = MEMORY[0x1E696AEC0];
-    if ((v36 & 0x100) != 0)
+    if ((state & 0x100) != 0)
     {
       v41 = @"⛔️";
     }
@@ -3499,7 +3499,7 @@ LABEL_54:
       v41 = @"▫️";
     }
 
-    if (v36)
+    if (state)
     {
       v42 = @"🔅";
     }
@@ -3509,7 +3509,7 @@ LABEL_54:
       v42 = @"▫️";
     }
 
-    if ((v36 & 0x1000000) != 0)
+    if ((state & 0x1000000) != 0)
     {
       v43 = @"🛑";
     }
@@ -3519,7 +3519,7 @@ LABEL_54:
       v43 = @"▫️";
     }
 
-    if ((v36 & 0x10000) != 0)
+    if ((state & 0x10000) != 0)
     {
       v44 = @"🔆";
     }
@@ -3529,13 +3529,13 @@ LABEL_54:
       v44 = @"▫️";
     }
 
-    v45 = (v36 >> 40) & 1;
-    if ((v36 & 0x100000000) != 0)
+    v45 = (state >> 40) & 1;
+    if ((state & 0x100000000) != 0)
     {
       v49 = @"🆔";
     }
 
-    else if (v36 & 0x10000000000) != 0 && (v95 = v38, v94 = MEMORY[0x1E696AEC0], v46 = v41, v47 = v42, v48 = [v97 isRemoved], v42 = v47, v41 = v46, v40 = v94, v45 = (v36 >> 40) & 1, v38 = v95, (v48))
+    else if (state & 0x10000000000) != 0 && (v95 = v38, v94 = MEMORY[0x1E696AEC0], v46 = v41, v47 = v42, v48 = [v97 isRemoved], v42 = v47, v41 = v46, v40 = v94, v45 = (state >> 40) & 1, v38 = v95, (v48))
     {
       LODWORD(v45) = 1;
       v49 = @"✴️";
@@ -3544,7 +3544,7 @@ LABEL_54:
     else
     {
       v49 = @"❇️";
-      if ((v36 & 0x1000000000000) == 0)
+      if ((state & 0x1000000000000) == 0)
       {
         v49 = @"▫️";
       }
@@ -3556,7 +3556,7 @@ LABEL_54:
       v53 = @"✳️";
     }
 
-    if ((v36 & 0x100000000000000) == 0)
+    if ((state & 0x100000000000000) == 0)
     {
       v53 = @"▫️";
     }
@@ -3574,9 +3574,9 @@ LABEL_54:
     v30 = &stru_1F149ECA8;
     if (objc_opt_respondsToSelector())
     {
-      v56 = [v97 itemIdentifier];
-      v57 = [v97 sectionIdentifier];
-      v58 = [v19 debugDescriptionForItem:v56 inSection:v57];
+      itemIdentifier2 = [v97 itemIdentifier];
+      sectionIdentifier3 = [v97 sectionIdentifier];
+      v58 = [annotationDelegate debugDescriptionForItem:itemIdentifier2 inSection:sectionIdentifier3];
 
       if (v58)
       {
@@ -3594,7 +3594,7 @@ LABEL_54:
     v23 = 0x1E695D000;
     v24 = v96;
 LABEL_74:
-    v103 = v19;
+    v103 = annotationDelegate;
     v59 = [(__CFString *)v24 length];
     if (v112 <= v59)
     {
@@ -3607,7 +3607,7 @@ LABEL_74:
     }
 
     v112 = v60;
-    v61 = [(__CFString *)v26 length];
+    v61 = [(__CFString *)sectionIdentifier length];
     if (v113 <= v61)
     {
       v62 = v61;
@@ -3645,9 +3645,9 @@ LABEL_74:
     v115 = v66;
     v67 = v24;
     v127[0] = v24;
-    v127[1] = v26;
+    v127[1] = sectionIdentifier;
     v68 = v32;
-    v69 = v26;
+    v69 = sectionIdentifier;
     v70 = v68;
     v127[2] = v68;
     v127[3] = v31;
@@ -3662,7 +3662,7 @@ LABEL_74:
       v75 = v110;
       v76 = v110;
 
-      v105 = v76;
+      nextObject = v76;
       v74 = obj;
     }
 
@@ -3677,8 +3677,8 @@ LABEL_74:
     v78 = v29 + 1;
 
     objc_autoreleasePoolPop(v74);
-    v5 = v108;
-    v6 = context;
+    array = v108;
+    branchDepth = context;
     if (v77 > 0xC7)
     {
       break;
@@ -3688,9 +3688,9 @@ LABEL_74:
     v8 = v116;
   }
 
-  while (v105);
+  while (nextObject);
   v104 = v78;
-  v80 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v120 = 0u;
   v121 = 0u;
   v122 = 0u;
@@ -3711,9 +3711,9 @@ LABEL_74:
 
         v82 = *(*(&v120 + 1) + 8 * i);
         contexta = objc_autoreleasePoolPush();
-        if ([v80 length] >= 2)
+        if ([string length] >= 2)
         {
-          [v80 appendString:@"\n"];
+          [string appendString:@"\n"];
         }
 
         v117 = [v82 objectAtIndexedSubscript:0];
@@ -3725,7 +3725,7 @@ LABEL_74:
         v88 = [v82 objectAtIndexedSubscript:3];
         v89 = [v88 stringByPaddingToLength:v115 withString:@" " startingAtIndex:0];
         v90 = [v82 objectAtIndexedSubscript:4];
-        [v80 appendFormat:@"%@ %@ %@ %@ %@", v83, v85, v87, v89, v90, 0];
+        [string appendFormat:@"%@ %@ %@ %@ %@", v83, v85, v87, v89, v90, 0];
 
         objc_autoreleasePoolPop(contexta);
       }
@@ -3738,18 +3738,18 @@ LABEL_74:
 
   if (v104 < [(MPSectionedIdentifierList *)self itemCount])
   {
-    [v80 appendFormat:@"... and %lld more", -[MPSectionedIdentifierList itemCount](self, "itemCount") - v104];
+    [string appendFormat:@"... and %lld more", -[MPSectionedIdentifierList itemCount](self, "itemCount") - v104];
   }
 
-  if (a4)
+  if (lengths)
   {
-    a4->var0 = v112;
-    a4->var1 = v113;
-    a4->var2 = v114;
-    a4->var3 = v115;
+    lengths->var0 = v112;
+    lengths->var1 = v113;
+    lengths->var2 = v114;
+    lengths->var3 = v115;
   }
 
-  return v80;
+  return string;
 }
 
 BOOL __80__MPSectionedIdentifierList_Debugging___debugDescriptionWithEnumerator_lengths___block_invoke(uint64_t a1, uint64_t a2)

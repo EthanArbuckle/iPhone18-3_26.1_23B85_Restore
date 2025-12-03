@@ -1,9 +1,9 @@
 @interface CarouselContentLayout
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (NSIndexSet)axSpriteIndexes;
 - (_TtC12PhotosUICore21CarouselContentLayout)init;
-- (_TtC12PhotosUICore21CarouselContentLayout)initWithComposition:(id)a3;
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4;
+- (_TtC12PhotosUICore21CarouselContentLayout)initWithComposition:(id)composition;
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index;
 - (void)update;
 - (void)updateContent;
 - (void)updateDisplayedPageRange;
@@ -15,13 +15,13 @@
 
 - (void)updateContent
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A3D9F9B0();
 }
 
 - (void)updateDisplayedPageRange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A3D9FF28();
 }
 
@@ -30,16 +30,16 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore21CarouselContentLayout_pageInfoFetcher);
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore21CarouselContentLayout_displayedPageRange);
   v4 = *(&self->super.super.super._updateFlags.needsUpdate + OBJC_IVAR____TtC12PhotosUICore21CarouselContentLayout_displayedPageRange);
-  v7 = self;
+  selfCopy = self;
   v5 = v2(v3, v4);
-  v6 = *(&v7->super.super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore21CarouselContentLayout_displayedPageInfos);
-  *(&v7->super.super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore21CarouselContentLayout_displayedPageInfos) = v5;
+  v6 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore21CarouselContentLayout_displayedPageInfos);
+  *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore21CarouselContentLayout_displayedPageInfos) = v5;
   sub_1A3D9F240(v6);
 }
 
 - (void)updatePageControl
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A3DA019C();
 }
 
@@ -48,9 +48,9 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore21CarouselContentLayout_updater);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     [v2 updateIfNeeded];
-    v4.receiver = v3;
+    v4.receiver = selfCopy;
     v4.super_class = type metadata accessor for CarouselContentLayout();
     [(PXGCompositeLayout *)&v4 update];
   }
@@ -61,16 +61,16 @@
   }
 }
 
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1A3DA0FBC(a4);
+  layoutCopy = layout;
+  selfCopy = self;
+  v8 = sub_1A3DA0FBC(index);
 
   return v8;
 }
 
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
   sub_1A3C52C70(0, &qword_1EB12BFD0);
 
@@ -90,7 +90,7 @@
   return v6;
 }
 
-- (_TtC12PhotosUICore21CarouselContentLayout)initWithComposition:(id)a3
+- (_TtC12PhotosUICore21CarouselContentLayout)initWithComposition:(id)composition
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

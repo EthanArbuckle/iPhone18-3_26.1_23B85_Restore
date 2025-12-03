@@ -1,7 +1,7 @@
 @interface CTNetworkReachability
-+ (BOOL)_isReachableWithFlags:(unsigned int)a3;
++ (BOOL)_isReachableWithFlags:(unsigned int)flags;
 + (BOOL)networkReachable;
-+ (BOOL)networkReachableWithTargetURL:(id)a3;
++ (BOOL)networkReachableWithTargetURL:(id)l;
 @end
 
 @implementation CTNetworkReachability
@@ -15,10 +15,10 @@
   return v2;
 }
 
-+ (BOOL)networkReachableWithTargetURL:(id)a3
++ (BOOL)networkReachableWithTargetURL:(id)l
 {
-  v3 = [a3 host];
-  v4 = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, [v3 UTF8String]);
+  host = [l host];
+  v4 = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, [host UTF8String]);
 
   flags = 0;
   if (SCNetworkReachabilityGetFlags(v4, &flags))
@@ -48,18 +48,18 @@ LABEL_3:
   return v5;
 }
 
-+ (BOOL)_isReachableWithFlags:(unsigned int)a3
++ (BOOL)_isReachableWithFlags:(unsigned int)flags
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v7[0] = 67109120;
-    v7[1] = a3;
+    v7[1] = flags;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "_isReachableWithFlags %d", v7, 8u);
   }
 
-  v4 = (a3 & 0x28) != 0 && (a3 & 0x10) == 0;
-  v5 = (a3 & 4) == 0 || v4;
-  return (a3 & 2) != 0 && v5;
+  v4 = (flags & 0x28) != 0 && (flags & 0x10) == 0;
+  v5 = (flags & 4) == 0 || v4;
+  return (flags & 2) != 0 && v5;
 }
 
 @end

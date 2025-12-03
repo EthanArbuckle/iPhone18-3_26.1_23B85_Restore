@@ -1,13 +1,13 @@
 @interface BWDataBufferPool
 - (BWDataBufferBackedFormat)format;
-- (BWDataBufferPool)initWithFormat:(id)a3 capacity:(unint64_t)a4 name:(id)a5 clientProvidesPool:(BOOL)a6;
+- (BWDataBufferPool)initWithFormat:(id)format capacity:(unint64_t)capacity name:(id)name clientProvidesPool:(BOOL)pool;
 - (uint64_t)_ensurePool;
 - (uint64_t)_newDataBuffer;
 - (void)dealloc;
-- (void)flushToMinimumCapacity:(unint64_t)a3;
-- (void)prefetchWithCompletionHandler:(id)a3;
-- (void)setCVDataBufferPool:(__CVDataBufferPool *)a3 attributes:(__CFDictionary *)a4;
-- (void)setCapacity:(unint64_t)a3;
+- (void)flushToMinimumCapacity:(unint64_t)capacity;
+- (void)prefetchWithCompletionHandler:(id)handler;
+- (void)setCVDataBufferPool:(__CVDataBufferPool *)pool attributes:(__CFDictionary *)attributes;
+- (void)setCapacity:(unint64_t)capacity;
 @end
 
 @implementation BWDataBufferPool
@@ -47,10 +47,10 @@
           [v2 setObject:v4 forKeyedSubscript:*MEMORY[0x1E6965CB0]];
         }
 
-        v5 = [*(v1 + 8) dataBufferAttributes];
+        dataBufferAttributes = [*(v1 + 8) dataBufferAttributes];
         if (*(v1 + 40))
         {
-          [MEMORY[0x1E695DF90] dictionaryWithDictionary:v5];
+          [MEMORY[0x1E695DF90] dictionaryWithDictionary:dataBufferAttributes];
           FigCFDictionaryAddEntriesToDictionaryWithRecursion();
         }
 
@@ -69,9 +69,9 @@
   return result;
 }
 
-- (BWDataBufferPool)initWithFormat:(id)a3 capacity:(unint64_t)a4 name:(id)a5 clientProvidesPool:(BOOL)a6
+- (BWDataBufferPool)initWithFormat:(id)format capacity:(unint64_t)capacity name:(id)name clientProvidesPool:(BOOL)pool
 {
-  if (!a3)
+  if (!format)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"no format provided" userInfo:0]);
@@ -79,14 +79,14 @@
 
   v11.receiver = self;
   v11.super_class = BWDataBufferPool;
-  v9 = [(BWDataBufferPool *)&v11 init:a3];
+  v9 = [(BWDataBufferPool *)&v11 init:format];
   if (v9)
   {
-    v9->_format = a3;
-    v9->_capacity = a4;
+    v9->_format = format;
+    v9->_capacity = capacity;
     v9->_name = 0;
     v9->_dataBufferPoolConfigurationLock._os_unfair_lock_opaque = 0;
-    v9->_clientProvidesPool = a6;
+    v9->_clientProvidesPool = pool;
   }
 
   return v9;
@@ -105,9 +105,9 @@
   [(BWDataBufferPool *)&v4 dealloc];
 }
 
-- (void)setCVDataBufferPool:(__CVDataBufferPool *)a3 attributes:(__CFDictionary *)a4
+- (void)setCVDataBufferPool:(__CVDataBufferPool *)pool attributes:(__CFDictionary *)attributes
 {
-  if (!a3)
+  if (!pool)
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
@@ -115,7 +115,7 @@
     goto LABEL_13;
   }
 
-  if (!a4)
+  if (!attributes)
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
@@ -135,8 +135,8 @@ LABEL_13:
   os_unfair_lock_lock(&self->_dataBufferPoolConfigurationLock);
   if (!self->_dataBufferPool)
   {
-    self->_dataBufferPool = CFRetain(a3);
-    v7 = CFRetain(a4);
+    self->_dataBufferPool = CFRetain(pool);
+    v7 = CFRetain(attributes);
     self->_dataBufferPoolAuxAttributes = v7;
     v8 = [(NSDictionary *)v7 objectForKeyedSubscript:*MEMORY[0x1E6965C98]];
     if (v8)
@@ -148,7 +148,7 @@ LABEL_13:
   os_unfair_lock_unlock(&self->_dataBufferPoolConfigurationLock);
 }
 
-- (void)prefetchWithCompletionHandler:(id)a3
+- (void)prefetchWithCompletionHandler:(id)handler
 {
   global_queue = dispatch_get_global_queue(0, 0);
   v6[0] = MEMORY[0x1E69E9820];
@@ -156,7 +156,7 @@ LABEL_13:
   v6[2] = __50__BWDataBufferPool_prefetchWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7990390;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = handler;
   dispatch_async(global_queue, v6);
 }
 
@@ -178,9 +178,9 @@ void __50__BWDataBufferPool_prefetchWithCompletionHandler___block_invoke(uint64_
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)flushToMinimumCapacity:(unint64_t)a3
+- (void)flushToMinimumCapacity:(unint64_t)capacity
 {
-  if (self->_dataBufferPool && self->_capacity > a3)
+  if (self->_dataBufferPool && self->_capacity > capacity)
   {
     CVDataBufferPoolSetMinBufferCount();
 
@@ -188,11 +188,11 @@ void __50__BWDataBufferPool_prefetchWithCompletionHandler___block_invoke(uint64_
   }
 }
 
-- (void)setCapacity:(unint64_t)a3
+- (void)setCapacity:(unint64_t)capacity
 {
   if (self->_clientProvidesPool || [BWDataBufferPool setCapacity:?])
   {
-    self->_capacity = a3;
+    self->_capacity = capacity;
   }
 }
 

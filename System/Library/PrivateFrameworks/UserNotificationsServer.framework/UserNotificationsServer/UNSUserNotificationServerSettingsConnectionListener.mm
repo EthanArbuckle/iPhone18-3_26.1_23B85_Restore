@@ -1,32 +1,32 @@
 @interface UNSUserNotificationServerSettingsConnectionListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (UNSUserNotificationServerSettingsConnectionListener)initWithNotificationSettingsService:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (UNSUserNotificationServerSettingsConnectionListener)initWithNotificationSettingsService:(id)service;
 - (id)_currentConnection;
-- (void)_handleClientConnectionInterrupted:(id)a3;
-- (void)_handleClientConnectionInvalidated:(id)a3;
-- (void)authorizationWithOptions:(unint64_t)a3 forNotificationSourceIdentifier:(id)a4 withCompletionHandler:(id)a5;
+- (void)_handleClientConnectionInterrupted:(id)interrupted;
+- (void)_handleClientConnectionInvalidated:(id)invalidated;
+- (void)authorizationWithOptions:(unint64_t)options forNotificationSourceIdentifier:(id)identifier withCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)getNotificationSettingsForSourceIdentifier:(id)a3 withCompletionHandler:(id)a4;
-- (void)getNotificationSource:(id)a3 withCompletionHandler:(id)a4;
-- (void)getNotificationSources:(id)a3 withCompletionHandler:(id)a4;
-- (void)getNotificationSourcesWithFilter:(id)a3 completionHandler:(id)a4;
-- (void)getNotificationSystemSettingsWithCompletionHandler:(id)a3;
-- (void)replaceNotificationSettings:(id)a3 forNotificationSourceIdentifier:(id)a4;
-- (void)replaceNotificationTopicSettings:(id)a3 forNotificationSourceIdentifier:(id)a4 topicIdentifier:(id)a5;
+- (void)getNotificationSettingsForSourceIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)getNotificationSource:(id)source withCompletionHandler:(id)handler;
+- (void)getNotificationSources:(id)sources withCompletionHandler:(id)handler;
+- (void)getNotificationSourcesWithFilter:(id)filter completionHandler:(id)handler;
+- (void)getNotificationSystemSettingsWithCompletionHandler:(id)handler;
+- (void)replaceNotificationSettings:(id)settings forNotificationSourceIdentifier:(id)identifier;
+- (void)replaceNotificationTopicSettings:(id)settings forNotificationSourceIdentifier:(id)identifier topicIdentifier:(id)topicIdentifier;
 - (void)resetScheduledDeliverySetting;
-- (void)revokeAuthorizationForNotificationSourceIdentifier:(id)a3 withCompletionHandler:(id)a4;
-- (void)setNotificationSystemSettings:(id)a3;
-- (void)setSourceSettings:(id)a3 completionHandler:(id)a4;
-- (void)settingsService:(id)a3 didUpdateNotificationSourcesForBundleIdentifiers:(id)a4;
-- (void)settingsService:(id)a3 didUpdateNotificationSystemSettings:(id)a4;
+- (void)revokeAuthorizationForNotificationSourceIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)setNotificationSystemSettings:(id)settings;
+- (void)setSourceSettings:(id)settings completionHandler:(id)handler;
+- (void)settingsService:(id)service didUpdateNotificationSourcesForBundleIdentifiers:(id)identifiers;
+- (void)settingsService:(id)service didUpdateNotificationSystemSettings:(id)settings;
 @end
 
 @implementation UNSUserNotificationServerSettingsConnectionListener
 
 - (id)_currentConnection
 {
-  v2 = [MEMORY[0x277CCAE80] currentConnection];
-  if (!v2)
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if (!currentConnection)
   {
     v3 = *MEMORY[0x277CE2078];
     if (os_log_type_enabled(*MEMORY[0x277CE2078], OS_LOG_TYPE_ERROR))
@@ -35,12 +35,12 @@
     }
   }
 
-  return v2;
+  return currentConnection;
 }
 
-- (UNSUserNotificationServerSettingsConnectionListener)initWithNotificationSettingsService:(id)a3
+- (UNSUserNotificationServerSettingsConnectionListener)initWithNotificationSettingsService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v13.receiver = self;
   v13.super_class = UNSUserNotificationServerSettingsConnectionListener;
   v6 = [(UNSUserNotificationServerSettingsConnectionListener *)&v13 init];
@@ -50,7 +50,7 @@
     connections = v6->_connections;
     v6->_connections = v7;
 
-    objc_storeStrong(&v6->_settingsService, a3);
+    objc_storeStrong(&v6->_settingsService, service);
     [(UNSNotificationSettingsService *)v6->_settingsService addObserver:v6];
     v9 = objc_alloc(MEMORY[0x277CCAE98]);
     v10 = [v9 initWithMachServiceName:*MEMORY[0x277D77FB8]];
@@ -72,36 +72,36 @@
   [(UNSUserNotificationServerSettingsConnectionListener *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D77FA0] clientInterface];
-  [v7 setRemoteObjectInterface:v8];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  clientInterface = [MEMORY[0x277D77FA0] clientInterface];
+  [connectionCopy setRemoteObjectInterface:clientInterface];
 
-  v9 = [MEMORY[0x277D77FA0] serverInterface];
-  [v7 setExportedInterface:v9];
+  serverInterface = [MEMORY[0x277D77FA0] serverInterface];
+  [connectionCopy setExportedInterface:serverInterface];
 
-  [v7 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __90__UNSUserNotificationServerSettingsConnectionListener_listener_shouldAcceptNewConnection___block_invoke;
   v14[3] = &unk_279E10D50;
   objc_copyWeak(v15, &location);
-  v15[1] = v7;
-  [v7 setInterruptionHandler:v14];
+  v15[1] = connectionCopy;
+  [connectionCopy setInterruptionHandler:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __90__UNSUserNotificationServerSettingsConnectionListener_listener_shouldAcceptNewConnection___block_invoke_2;
   v12[3] = &unk_279E10D50;
   objc_copyWeak(v13, &location);
-  v13[1] = v7;
-  [v7 setInvalidationHandler:v12];
-  [v7 resume];
+  v13[1] = connectionCopy;
+  [connectionCopy setInvalidationHandler:v12];
+  [connectionCopy resume];
   v10 = self->_connections;
   objc_sync_enter(v10);
-  [(NSMutableArray *)self->_connections addObject:v7];
+  [(NSMutableArray *)self->_connections addObject:connectionCopy];
   objc_sync_exit(v10);
 
   objc_destroyWeak(v13);
@@ -123,15 +123,15 @@ void __90__UNSUserNotificationServerSettingsConnectionListener_listener_shouldAc
   [WeakRetained _handleClientConnectionInvalidated:*(a1 + 40)];
 }
 
-- (void)getNotificationSource:(id)a3 withCompletionHandler:(id)a4
+- (void)getNotificationSource:(id)source withCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
-  if (![v7 uns_isAllowedToReadSettings])
+  sourceCopy = source;
+  handlerCopy = handler;
+  _currentConnection = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
+  if (![_currentConnection uns_isAllowedToReadSettings])
   {
     v8 = 0;
-    if (!v6)
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
@@ -139,25 +139,25 @@ void __90__UNSUserNotificationServerSettingsConnectionListener_listener_shouldAc
     goto LABEL_5;
   }
 
-  v8 = [(UNSNotificationSettingsService *)self->_settingsService notificationSourceForBundleIdentifier:v9];
-  if (v6)
+  v8 = [(UNSNotificationSettingsService *)self->_settingsService notificationSourceForBundleIdentifier:sourceCopy];
+  if (handlerCopy)
   {
 LABEL_5:
-    v6[2](v6, v8);
+    handlerCopy[2](handlerCopy, v8);
   }
 
 LABEL_6:
 }
 
-- (void)getNotificationSources:(id)a3 withCompletionHandler:(id)a4
+- (void)getNotificationSources:(id)sources withCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
-  if (![v7 uns_isAllowedToReadSettings])
+  sourcesCopy = sources;
+  handlerCopy = handler;
+  _currentConnection = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
+  if (![_currentConnection uns_isAllowedToReadSettings])
   {
     v8 = 0;
-    if (!v6)
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
@@ -165,25 +165,25 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  v8 = [(UNSNotificationSettingsService *)self->_settingsService notificationSourcesForBundleIdentifiers:v9];
-  if (v6)
+  v8 = [(UNSNotificationSettingsService *)self->_settingsService notificationSourcesForBundleIdentifiers:sourcesCopy];
+  if (handlerCopy)
   {
 LABEL_5:
-    v6[2](v6, v8);
+    handlerCopy[2](handlerCopy, v8);
   }
 
 LABEL_6:
 }
 
-- (void)getNotificationSourcesWithFilter:(id)a3 completionHandler:(id)a4
+- (void)getNotificationSourcesWithFilter:(id)filter completionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
-  if (![v7 uns_isAllowedToReadSettings])
+  filterCopy = filter;
+  handlerCopy = handler;
+  _currentConnection = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
+  if (![_currentConnection uns_isAllowedToReadSettings])
   {
     v8 = 0;
-    if (!v6)
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
@@ -191,81 +191,81 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  v8 = [(UNSNotificationSettingsService *)self->_settingsService notificationSourcesWithFilter:v9];
-  if (v6)
+  v8 = [(UNSNotificationSettingsService *)self->_settingsService notificationSourcesWithFilter:filterCopy];
+  if (handlerCopy)
   {
 LABEL_5:
-    v6[2](v6, v8);
+    handlerCopy[2](handlerCopy, v8);
   }
 
 LABEL_6:
 }
 
-- (void)authorizationWithOptions:(unint64_t)a3 forNotificationSourceIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)authorizationWithOptions:(unint64_t)options forNotificationSourceIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v11 = a4;
-  v8 = a5;
-  v9 = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
-  if ([v9 uns_isAllowedToWriteSettings])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  _currentConnection = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
+  if ([_currentConnection uns_isAllowedToWriteSettings])
   {
-    [(UNSNotificationSettingsService *)self->_settingsService authorizationWithOptions:a3 forNotificationSourceIdentifier:v11 withCompletionHandler:v8];
+    [(UNSNotificationSettingsService *)self->_settingsService authorizationWithOptions:options forNotificationSourceIdentifier:identifierCopy withCompletionHandler:handlerCopy];
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
     v10 = [MEMORY[0x277CCA9B8] un_errorWithUNErrorCode:1 userInfo:0];
-    v8[2](v8, 0, v10);
+    handlerCopy[2](handlerCopy, 0, v10);
   }
 }
 
-- (void)revokeAuthorizationForNotificationSourceIdentifier:(id)a3 withCompletionHandler:(id)a4
+- (void)revokeAuthorizationForNotificationSourceIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
-  if ([v7 uns_isAllowedToWriteSettings])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  _currentConnection = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
+  if ([_currentConnection uns_isAllowedToWriteSettings])
   {
-    [(UNSNotificationSettingsService *)self->_settingsService revokeAuthorizationForNotificationSourceIdentifier:v9 withCompletionHandler:v6];
+    [(UNSNotificationSettingsService *)self->_settingsService revokeAuthorizationForNotificationSourceIdentifier:identifierCopy withCompletionHandler:handlerCopy];
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
     v8 = [MEMORY[0x277CCA9B8] un_errorWithUNErrorCode:1 userInfo:0];
-    v6[2](v6, 0, v8);
+    handlerCopy[2](handlerCopy, 0, v8);
   }
 }
 
-- (void)replaceNotificationSettings:(id)a3 forNotificationSourceIdentifier:(id)a4
+- (void)replaceNotificationSettings:(id)settings forNotificationSourceIdentifier:(id)identifier
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
-  if ([v7 uns_isAllowedToWriteSettings])
+  settingsCopy = settings;
+  identifierCopy = identifier;
+  _currentConnection = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
+  if ([_currentConnection uns_isAllowedToWriteSettings])
   {
-    [(UNSNotificationSettingsService *)self->_settingsService replaceNotificationSettings:v8 forNotificationSourceIdentifier:v6];
+    [(UNSNotificationSettingsService *)self->_settingsService replaceNotificationSettings:settingsCopy forNotificationSourceIdentifier:identifierCopy];
   }
 }
 
-- (void)replaceNotificationTopicSettings:(id)a3 forNotificationSourceIdentifier:(id)a4 topicIdentifier:(id)a5
+- (void)replaceNotificationTopicSettings:(id)settings forNotificationSourceIdentifier:(id)identifier topicIdentifier:(id)topicIdentifier
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
-  if ([v10 uns_isAllowedToWriteSettings])
+  settingsCopy = settings;
+  identifierCopy = identifier;
+  topicIdentifierCopy = topicIdentifier;
+  _currentConnection = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
+  if ([_currentConnection uns_isAllowedToWriteSettings])
   {
-    [(UNSNotificationSettingsService *)self->_settingsService replaceNotificationTopicSettings:v11 forNotificationSourceIdentifier:v8 topicIdentifier:v9];
+    [(UNSNotificationSettingsService *)self->_settingsService replaceNotificationTopicSettings:settingsCopy forNotificationSourceIdentifier:identifierCopy topicIdentifier:topicIdentifierCopy];
   }
 }
 
-- (void)setSourceSettings:(id)a3 completionHandler:(id)a4
+- (void)setSourceSettings:(id)settings completionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
-  if ([v7 uns_isAllowedToWriteSettings])
+  settingsCopy = settings;
+  handlerCopy = handler;
+  _currentConnection = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
+  if ([_currentConnection uns_isAllowedToWriteSettings])
   {
-    [(UNSNotificationSettingsService *)self->_settingsService setSourceSettings:v9];
+    [(UNSNotificationSettingsService *)self->_settingsService setSourceSettings:settingsCopy];
   }
 
   else
@@ -273,21 +273,21 @@ LABEL_6:
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:1 userInfo:0];
   }
   v8 = ;
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, v8);
+    handlerCopy[2](handlerCopy, v8);
   }
 }
 
-- (void)getNotificationSettingsForSourceIdentifier:(id)a3 withCompletionHandler:(id)a4
+- (void)getNotificationSettingsForSourceIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
-  if (![v7 uns_isAllowedToReadSettings])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  _currentConnection = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
+  if (![_currentConnection uns_isAllowedToReadSettings])
   {
     v8 = 0;
-    if (!v6)
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
@@ -295,95 +295,95 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  v8 = [(UNSNotificationSettingsService *)self->_settingsService notificationSettingsForBundleIdentifier:v9 calculatedSettings:0];
-  if (v6)
+  v8 = [(UNSNotificationSettingsService *)self->_settingsService notificationSettingsForBundleIdentifier:identifierCopy calculatedSettings:0];
+  if (handlerCopy)
   {
 LABEL_5:
-    v6[2](v6, v8);
+    handlerCopy[2](handlerCopy, v8);
   }
 
 LABEL_6:
 }
 
-- (void)getNotificationSystemSettingsWithCompletionHandler:(id)a3
+- (void)getNotificationSystemSettingsWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
-  if ([v4 uns_isAllowedToReadSettings])
+  handlerCopy = handler;
+  _currentConnection = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
+  if ([_currentConnection uns_isAllowedToReadSettings])
   {
-    v5 = [(UNSNotificationSettingsService *)self->_settingsService notificationSystemSettings];
+    notificationSystemSettings = [(UNSNotificationSettingsService *)self->_settingsService notificationSystemSettings];
   }
 
   else
   {
-    v5 = 0;
+    notificationSystemSettings = 0;
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, v5);
+    handlerCopy[2](handlerCopy, notificationSystemSettings);
   }
 }
 
-- (void)setNotificationSystemSettings:(id)a3
+- (void)setNotificationSystemSettings:(id)settings
 {
-  v5 = a3;
-  v4 = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
-  if ([v4 uns_isAllowedToWriteSettings])
+  settingsCopy = settings;
+  _currentConnection = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
+  if ([_currentConnection uns_isAllowedToWriteSettings])
   {
-    [(UNSNotificationSettingsService *)self->_settingsService setNotificationSystemSettings:v5];
+    [(UNSNotificationSettingsService *)self->_settingsService setNotificationSystemSettings:settingsCopy];
   }
 }
 
 - (void)resetScheduledDeliverySetting
 {
-  v3 = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
-  if ([v3 uns_isAllowedToWriteSettings])
+  _currentConnection = [(UNSUserNotificationServerSettingsConnectionListener *)self _currentConnection];
+  if ([_currentConnection uns_isAllowedToWriteSettings])
   {
     [(UNSNotificationSettingsService *)self->_settingsService resetScheduledDeliverySetting];
   }
 }
 
-- (void)_handleClientConnectionInterrupted:(id)a3
+- (void)_handleClientConnectionInterrupted:(id)interrupted
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  interruptedCopy = interrupted;
   v4 = *MEMORY[0x277CE2078];
   if (os_log_type_enabled(*MEMORY[0x277CE2078], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v3;
+    v7 = interruptedCopy;
     _os_log_impl(&dword_270AA8000, v4, OS_LOG_TYPE_DEFAULT, "Client XPC connection was interrupted: connection=%{public}@", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleClientConnectionInvalidated:(id)a3
+- (void)_handleClientConnectionInvalidated:(id)invalidated
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invalidatedCopy = invalidated;
   v5 = *MEMORY[0x277CE2078];
   if (os_log_type_enabled(*MEMORY[0x277CE2078], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = invalidatedCopy;
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Client XPC connection was invalidated: connection=%{public}@", &v8, 0xCu);
   }
 
   v6 = self->_connections;
   objc_sync_enter(v6);
-  [(NSMutableArray *)self->_connections removeObject:v4];
+  [(NSMutableArray *)self->_connections removeObject:invalidatedCopy];
   objc_sync_exit(v6);
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)settingsService:(id)a3 didUpdateNotificationSourcesForBundleIdentifiers:(id)a4
+- (void)settingsService:(id)service didUpdateNotificationSourcesForBundleIdentifiers:(id)identifiers
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  identifiersCopy = identifiers;
   v8 = self->_connections;
   objc_sync_enter(v8);
   v15 = 0u;
@@ -405,8 +405,8 @@ LABEL_6:
           objc_enumerationMutation(v9);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) remoteObjectProxy];
-        [v13 updateNotificationSourcesWithBundleIdentifiers:v7];
+        remoteObjectProxy = [*(*(&v15 + 1) + 8 * v12) remoteObjectProxy];
+        [remoteObjectProxy updateNotificationSourcesWithBundleIdentifiers:identifiersCopy];
 
         ++v12;
       }
@@ -422,11 +422,11 @@ LABEL_6:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)settingsService:(id)a3 didUpdateNotificationSystemSettings:(id)a4
+- (void)settingsService:(id)service didUpdateNotificationSystemSettings:(id)settings
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  settingsCopy = settings;
   v8 = self->_connections;
   objc_sync_enter(v8);
   v15 = 0u;
@@ -448,8 +448,8 @@ LABEL_6:
           objc_enumerationMutation(v9);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) remoteObjectProxy];
-        [v13 updateNotificationSystemSettings:v7];
+        remoteObjectProxy = [*(*(&v15 + 1) + 8 * v12) remoteObjectProxy];
+        [remoteObjectProxy updateNotificationSystemSettings:settingsCopy];
 
         ++v12;
       }

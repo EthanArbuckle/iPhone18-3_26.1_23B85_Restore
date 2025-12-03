@@ -1,21 +1,21 @@
 @interface TransferMailboxPickerPalette
 - (CGRect)_contentRect;
 - (CGRect)messageThumbnailViewFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TransferMailboxPickerPalette)initWithFrame:(CGRect)a3;
-- (id)_senderStringForWidth:(double)a3;
-- (void)_drawThumbnailInContext:(CGContext *)a3 view:(id)a4 frame:(CGRect)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TransferMailboxPickerPalette)initWithFrame:(CGRect)frame;
+- (id)_senderStringForWidth:(double)width;
+- (void)_drawThumbnailInContext:(CGContext *)context view:(id)view frame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setMessageThumbnailWithView:(id)a3;
+- (void)setMessageThumbnailWithView:(id)view;
 @end
 
 @implementation TransferMailboxPickerPalette
 
-- (TransferMailboxPickerPalette)initWithFrame:(CGRect)a3
+- (TransferMailboxPickerPalette)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = TransferMailboxPickerPalette;
-  v3 = [(TransferMailboxPickerPalette *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransferMailboxPickerPalette *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -63,9 +63,9 @@
   return v4;
 }
 
-- (void)setMessageThumbnailWithView:(id)a3
+- (void)setMessageThumbnailWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   messageThumbnailView = self->_messageThumbnailView;
   if (messageThumbnailView)
   {
@@ -74,9 +74,9 @@
     self->_messageThumbnailView = 0;
   }
 
-  if (v4)
+  if (viewCopy)
   {
-    [v4 bounds];
+    [viewCopy bounds];
   }
 
   UIRoundToViewScale();
@@ -117,12 +117,12 @@ LABEL_12:
   v20 = sub_100256E6C;
   v21 = &unk_100656A10;
   v24 = v28;
-  v13 = v4;
+  v13 = viewCopy;
   v25 = v8 + (messageCount - 1) * 2.5;
   v26 = v8;
   v27 = 0x4041800000000000;
   v22 = v13;
-  v23 = self;
+  selfCopy = self;
   v14 = [v12 imageWithActions:&v18];
   v15 = [UIImageView alloc];
   v16 = [v15 initWithImage:{v14, v18, v19, v20, v21}];
@@ -135,14 +135,14 @@ LABEL_12:
   _Block_object_dispose(v28, 8);
 }
 
-- (void)_drawThumbnailInContext:(CGContext *)a3 view:(id)a4 frame:(CGRect)a5
+- (void)_drawThumbnailInContext:(CGContext *)context view:(id)view frame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v26 = a4;
-  if (v26)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  if (viewCopy)
   {
     v11 = +[UIColor mailAppBackgroundColor];
     [v11 set];
@@ -151,17 +151,17 @@ LABEL_12:
     v28.origin.y = y;
     v28.size.width = width;
     v28.size.height = height;
-    CGContextFillRect(a3, v28);
-    [v26 bounds];
+    CGContextFillRect(context, v28);
+    [viewCopy bounds];
     v13 = v12;
     v15 = v14;
-    CGContextSaveGState(a3);
-    CGContextTranslateCTM(a3, x, y);
-    CGContextScaleCTM(a3, width / v13, height / v15);
-    v16 = [v26 layer];
-    [v16 renderInContext:a3];
+    CGContextSaveGState(context);
+    CGContextTranslateCTM(context, x, y);
+    CGContextScaleCTM(context, width / v13, height / v15);
+    layer = [viewCopy layer];
+    [layer renderInContext:context];
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 
   else
@@ -173,7 +173,7 @@ LABEL_12:
     v29.origin.y = y;
     v29.size.width = width;
     v29.size.height = height;
-    CGContextFillRect(a3, v29);
+    CGContextFillRect(context, v29);
   }
 
   [(TransferMailboxPickerPalette *)self mui_currentScreenScale];
@@ -195,16 +195,16 @@ LABEL_12:
   v32.origin.y = v22;
   v32.size.width = v23;
   v32.size.height = v24;
-  CGContextStrokeRectWithWidth(a3, v32, v19);
+  CGContextStrokeRectWithWidth(context, v32, v19);
 }
 
-- (id)_senderStringForWidth:(double)a3
+- (id)_senderStringForWidth:(double)width
 {
   if ([(NSArray *)self->_senders count])
   {
-    v39 = [(UILabel *)self->_sendersLabel font];
+    font = [(UILabel *)self->_sendersLabel font];
     v36 = MFLocalizedAddressSeparator();
-    [v36 _legacy_sizeWithFont:v39];
+    [v36 _legacy_sizeWithFont:font];
     v6 = v5;
     v7 = [(NSArray *)self->_senders count];
     v35 = &v35;
@@ -222,7 +222,7 @@ LABEL_12:
     do
     {
       v13 = [(NSArray *)self->_senders objectAtIndex:v11];
-      [v13 _legacy_sizeWithFont:v39];
+      [v13 _legacy_sizeWithFont:font];
       v15 = v14;
       *&v10[8 * v11] = v14;
 
@@ -233,7 +233,7 @@ LABEL_12:
       }
 
       v16 = v12 + v15;
-      if (v12 + v15 <= a3)
+      if (v12 + v15 <= width)
       {
         ++v11;
         v12 = v12 + v15;
@@ -250,10 +250,10 @@ LABEL_12:
           v21 = [v20 localizedStringForKey:@"AND_N_MORE" value:&stru_100662A88 table:@"Main"];
 
           v22 = [NSString stringWithFormat:v21, v19];
-          [v22 _legacy_sizeWithFont:v39];
+          [v22 _legacy_sizeWithFont:font];
           v24 = v23;
 
-          if (!v17 || v12 + v24 <= a3)
+          if (!v17 || v12 + v24 <= width)
           {
             break;
           }
@@ -269,7 +269,7 @@ LABEL_12:
       }
     }
 
-    while (v11 < [(NSArray *)self->_senders count]&& v16 <= a3);
+    while (v11 < [(NSArray *)self->_senders count]&& v16 <= width);
     senders = self->_senders;
     if (v11)
     {
@@ -308,7 +308,7 @@ LABEL_12:
   v45.receiver = self;
   v45.super_class = TransferMailboxPickerPalette;
   [(TransferMailboxPickerPalette *)&v45 layoutSubviews];
-  v3 = [(TransferMailboxPickerPalette *)self mf_prefersRightToLeftInterfaceLayout];
+  mf_prefersRightToLeftInterfaceLayout = [(TransferMailboxPickerPalette *)self mf_prefersRightToLeftInterfaceLayout];
   [(TransferMailboxPickerPalette *)self _contentRect];
   v5 = v4;
   v7 = v6;
@@ -322,7 +322,7 @@ LABEL_12:
   v15 = v7;
   v16 = v9;
   v17 = v11;
-  if (v3)
+  if (mf_prefersRightToLeftInterfaceLayout)
   {
     v18 = CGRectGetMaxX(*&v14) - v12 + -67.0;
   }
@@ -337,8 +337,8 @@ LABEL_12:
   [(UILabel *)self->_sendersLabel setFrame:v18, 0.0, v12, v20];
   [(UILabel *)self->_subjectLabel sizeThatFits:CGSizeZero.width, height];
   [(UILabel *)self->_subjectLabel setFrame:v18, 0.0, v12, v21];
-  v22 = [(UILabel *)self->_subjectLabel font];
-  [v22 _bodyLeading];
+  font = [(UILabel *)self->_subjectLabel font];
+  [font _bodyLeading];
   UIRoundToViewScale();
   v24 = v23;
 
@@ -380,12 +380,12 @@ LABEL_12:
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(TransferMailboxPickerPalette *)self mf_prefersRightToLeftInterfaceLayout];
+  mf_prefersRightToLeftInterfaceLayout = [(TransferMailboxPickerPalette *)self mf_prefersRightToLeftInterfaceLayout];
   v20 = v12;
   v21 = v14;
   v22 = v16;
   v23 = v18;
-  if (v19)
+  if (mf_prefersRightToLeftInterfaceLayout)
   {
     CGRectGetMaxX(*&v20);
   }
@@ -434,9 +434,9 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   [objc_opt_class() defaultHeight];
   v5 = v4;
   v6 = width;

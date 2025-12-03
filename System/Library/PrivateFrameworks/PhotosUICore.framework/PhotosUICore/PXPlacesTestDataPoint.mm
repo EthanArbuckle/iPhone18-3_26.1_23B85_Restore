@@ -1,8 +1,8 @@
 @interface PXPlacesTestDataPoint
 - (CGImage)image;
 - (CLLocationCoordinate2D)coordinate;
-- (PXPlacesTestDataPoint)initWithName:(id)a3 location:(CLLocationCoordinate2D)a4;
-- (int64_t)compareTo:(id)a3;
+- (PXPlacesTestDataPoint)initWithName:(id)name location:(CLLocationCoordinate2D)location;
+- (int64_t)compareTo:(id)to;
 @end
 
 @implementation PXPlacesTestDataPoint
@@ -25,10 +25,10 @@
   v29.size.height = 32.0;
   CGPathAddRect(Mutable, 0, v29);
   v7 = CFAttributedStringCreateMutable(*MEMORY[0x1E695E480], 0);
-  v8 = [(PXPlacesTestDataPoint *)self name];
+  name = [(PXPlacesTestDataPoint *)self name];
   v26.location = 0;
   v26.length = 0;
-  CFAttributedStringReplaceString(v7, v26, v8);
+  CFAttributedStringReplaceString(v7, v26, name);
 
   v9 = CGColorSpaceCreateDeviceRGB();
   *&v24.a = xmmword_1A53837F0;
@@ -43,8 +43,8 @@
   }
 
   v13 = CTFontCreateWithName(@"Helvetica", v12, 0);
-  v14 = [(PXPlacesTestDataPoint *)self name];
-  v15 = [v14 length];
+  name2 = [(PXPlacesTestDataPoint *)self name];
+  v15 = [name2 length];
   v16 = *MEMORY[0x1E6965658];
   v22[0] = *MEMORY[0x1E69659D8];
   v22[1] = v16;
@@ -74,16 +74,16 @@
   return Image;
 }
 
-- (int64_t)compareTo:(id)a3
+- (int64_t)compareTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   [(PXPlacesTestDataPoint *)self coordinate];
   v6 = v5;
-  [v4 coordinate];
+  [toCopy coordinate];
   v8 = v7;
   [(PXPlacesTestDataPoint *)self coordinate];
   v10 = v9;
-  [v4 coordinate];
+  [toCopy coordinate];
   v12 = v11;
 
   if (v6 > v8)
@@ -127,18 +127,18 @@
   return result;
 }
 
-- (PXPlacesTestDataPoint)initWithName:(id)a3 location:(CLLocationCoordinate2D)a4
+- (PXPlacesTestDataPoint)initWithName:(id)name location:(CLLocationCoordinate2D)location
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v8 = a3;
+  longitude = location.longitude;
+  latitude = location.latitude;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = PXPlacesTestDataPoint;
   v9 = [(PXPlacesTestDataPoint *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
+    objc_storeStrong(&v9->_name, name);
     v10->_coordinate.latitude = latitude;
     v10->_coordinate.longitude = longitude;
   }

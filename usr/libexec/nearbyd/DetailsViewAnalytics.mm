@@ -1,27 +1,27 @@
 @interface DetailsViewAnalytics
-- (DetailsViewAnalytics)initWithCurrentTime:(double)a3;
+- (DetailsViewAnalytics)initWithCurrentTime:(double)time;
 - (void)resetAnalytics;
 - (void)submitAnalytics;
-- (void)updateDistanceAnalytics:(int)a3;
-- (void)updateTimeAnalytics:(int)a3 currentTime:(double)a4;
-- (void)updateWithMostRecentRawDistance:(double)a3;
+- (void)updateDistanceAnalytics:(int)analytics;
+- (void)updateTimeAnalytics:(int)analytics currentTime:(double)time;
+- (void)updateWithMostRecentRawDistance:(double)distance;
 @end
 
 @implementation DetailsViewAnalytics
 
-- (DetailsViewAnalytics)initWithCurrentTime:(double)a3
+- (DetailsViewAnalytics)initWithCurrentTime:(double)time
 {
   v6.receiver = self;
   v6.super_class = DetailsViewAnalytics;
   v4 = [(DetailsViewAnalytics *)&v6 init];
   [(DetailsViewAnalytics *)v4 resetAnalytics];
-  v4->_timeAtContainerCreation = a3;
+  v4->_timeAtContainerCreation = time;
   return v4;
 }
 
-- (void)updateDistanceAnalytics:(int)a3
+- (void)updateDistanceAnalytics:(int)analytics
 {
-  switch(a3)
+  switch(analytics)
   {
     case 3:
       distanceAtEndFinding = self->_distanceAtEndFinding;
@@ -53,25 +53,25 @@
   }
 }
 
-- (void)updateTimeAnalytics:(int)a3 currentTime:(double)a4
+- (void)updateTimeAnalytics:(int)analytics currentTime:(double)time
 {
-  if (a3 <= 3)
+  if (analytics <= 3)
   {
-    v4 = (self + (8 * a3));
+    v4 = (self + (8 * analytics));
     if (v4[2] != -1.0)
     {
-      a4 = v4[2];
+      time = v4[2];
     }
 
-    v4[2] = a4;
+    v4[2] = time;
   }
 }
 
-- (void)updateWithMostRecentRawDistance:(double)a3
+- (void)updateWithMostRecentRawDistance:(double)distance
 {
   if (self->_distanceAtDiscovery == -1.0)
   {
-    self->_distanceAtDiscovery = a3;
+    self->_distanceAtDiscovery = distance;
   }
 }
 

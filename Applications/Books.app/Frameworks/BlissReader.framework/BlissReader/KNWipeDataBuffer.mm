@@ -1,29 +1,29 @@
 @interface KNWipeDataBuffer
-+ (id)newWipeDataBufferWithVertexRect:(CGRect)a3 textureRect:(CGRect)a4 metalContext:(id)a5 colorAttachment:(id)a6;
-- ($94F468A8D4C62B317260615823C2B210)p_texCoordFromX:(double)a3 y:(double)a4;
++ (id)newWipeDataBufferWithVertexRect:(CGRect)rect textureRect:(CGRect)textureRect metalContext:(id)context colorAttachment:(id)attachment;
+- ($94F468A8D4C62B317260615823C2B210)p_texCoordFromX:(double)x y:(double)y;
 - (CATransform3D)MVPMatrix;
 - (CGRect)textureRect;
 - (CGRect)vertexRect;
-- (KNWipeDataBuffer)initWithVertexRect:(CGRect)a3 textureRect:(CGRect)a4 minimumDataSize:(int64_t)a5;
-- (__n128)setVertexInput:(__n128)a3;
-- (void)drawWipeWithPercent:(double)a3 opacity:(double)a4 renderEncoder:(id)a5;
-- (void)setMVPMatrix:(CATransform3D *)a3;
-- (void)setupMTLWipeDataBufferWithContext:(id)a3 colorAttachment:(id)a4;
-- (void)updateWipeWithPercent:(double)a3 solidVertexCount:(unint64_t *)a4 wipeVertexCount:(unint64_t *)a5 drawIntoMetalBuffer:(BOOL)a6;
+- (KNWipeDataBuffer)initWithVertexRect:(CGRect)rect textureRect:(CGRect)textureRect minimumDataSize:(int64_t)size;
+- (__n128)setVertexInput:(__n128)input;
+- (void)drawWipeWithPercent:(double)percent opacity:(double)opacity renderEncoder:(id)encoder;
+- (void)setMVPMatrix:(CATransform3D *)matrix;
+- (void)setupMTLWipeDataBufferWithContext:(id)context colorAttachment:(id)attachment;
+- (void)updateWipeWithPercent:(double)percent solidVertexCount:(unint64_t *)count wipeVertexCount:(unint64_t *)vertexCount drawIntoMetalBuffer:(BOOL)buffer;
 @end
 
 @implementation KNWipeDataBuffer
 
-- (KNWipeDataBuffer)initWithVertexRect:(CGRect)a3 textureRect:(CGRect)a4 minimumDataSize:(int64_t)a5
+- (KNWipeDataBuffer)initWithVertexRect:(CGRect)rect textureRect:(CGRect)textureRect minimumDataSize:(int64_t)size
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
+  height = textureRect.size.height;
+  width = textureRect.size.width;
+  y = textureRect.origin.y;
+  x = textureRect.origin.x;
+  v10 = rect.size.height;
+  v11 = rect.size.width;
+  v12 = rect.origin.y;
+  v13 = rect.origin.x;
   v28.receiver = self;
   v28.super_class = KNWipeDataBuffer;
   v14 = [(KNWipeDataBuffer *)&v28 init];
@@ -36,33 +36,33 @@
     v14->_vertexRect.size.height = v10;
     v14->_textureRect.origin.x = x;
     v14->_textureRect.origin.y = y;
-    if (a5 <= 2)
+    if (size <= 2)
     {
-      v16 = 2;
+      sizeCopy = 2;
     }
 
     else
     {
-      v16 = a5;
+      sizeCopy = size;
     }
 
     v14->_textureRect.size.width = width;
     v14->_textureRect.size.height = height;
-    if (a5 <= 3)
+    if (size <= 3)
     {
-      v17 = 3;
+      sizeCopy2 = 3;
     }
 
     else
     {
-      v17 = a5;
+      sizeCopy2 = size;
     }
 
     v18 = [[TSDGPUDataBufferAttribute alloc] initWithName:@"Position" bufferUsage:35040 dataType:5 normalized:0 componentCount:2];
-    v19 = [[TSDGPUDataBufferAttribute alloc] initWithName:@"TexCoord" bufferUsage:35040 dataType:v17 normalized:1 componentCount:2];
+    v19 = [[TSDGPUDataBufferAttribute alloc] initWithName:@"TexCoord" bufferUsage:35040 dataType:sizeCopy2 normalized:1 componentCount:2];
     v20 = [[TSDGPUDataBufferAttribute alloc] initWithName:@"Position" bufferUsage:35040 dataType:5 normalized:0 componentCount:2];
-    v21 = [[TSDGPUDataBufferAttribute alloc] initWithName:@"TexCoord" bufferUsage:35040 dataType:v17 normalized:1 componentCount:2];
-    v22 = [[TSDGPUDataBufferAttribute alloc] initWithName:@"Opacity" bufferUsage:35040 dataType:v16 normalized:1 componentCount:1];
+    v21 = [[TSDGPUDataBufferAttribute alloc] initWithName:@"TexCoord" bufferUsage:35040 dataType:sizeCopy2 normalized:1 componentCount:2];
+    v22 = [[TSDGPUDataBufferAttribute alloc] initWithName:@"Opacity" bufferUsage:35040 dataType:sizeCopy normalized:1 componentCount:1];
     v30[0] = v20;
     v30[1] = v21;
     v30[2] = v22;
@@ -86,48 +86,48 @@
   return v15;
 }
 
-- (void)setMVPMatrix:(CATransform3D *)a3
+- (void)setMVPMatrix:(CATransform3D *)matrix
 {
-  v3 = *&a3->m11;
-  v4 = *&a3->m13;
-  v5 = *&a3->m23;
-  *&self->mMVPMatrix.m21 = *&a3->m21;
+  v3 = *&matrix->m11;
+  v4 = *&matrix->m13;
+  v5 = *&matrix->m23;
+  *&self->mMVPMatrix.m21 = *&matrix->m21;
   *&self->mMVPMatrix.m23 = v5;
   *&self->mMVPMatrix.m11 = v3;
   *&self->mMVPMatrix.m13 = v4;
-  v6 = *&a3->m31;
-  v7 = *&a3->m33;
-  v8 = *&a3->m43;
-  *&self->mMVPMatrix.m41 = *&a3->m41;
+  v6 = *&matrix->m31;
+  v7 = *&matrix->m33;
+  v8 = *&matrix->m43;
+  *&self->mMVPMatrix.m41 = *&matrix->m41;
   *&self->mMVPMatrix.m43 = v8;
   *&self->mMVPMatrix.m31 = v6;
   *&self->mMVPMatrix.m33 = v7;
-  v9 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a3->m21), *&a3->m23);
-  v10 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a3->m31), *&a3->m33);
-  v11 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a3->m41), *&a3->m43);
-  *self->_anon_150 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a3->m11), *&a3->m13);
+  v9 = vcvt_hight_f32_f64(vcvt_f32_f64(*&matrix->m21), *&matrix->m23);
+  v10 = vcvt_hight_f32_f64(vcvt_f32_f64(*&matrix->m31), *&matrix->m33);
+  v11 = vcvt_hight_f32_f64(vcvt_f32_f64(*&matrix->m41), *&matrix->m43);
+  *self->_anon_150 = vcvt_hight_f32_f64(vcvt_f32_f64(*&matrix->m11), *&matrix->m13);
   *&self->_anon_150[16] = v9;
   *&self->_anon_150[32] = v10;
   *&self->_anon_150[48] = v11;
 }
 
-+ (id)newWipeDataBufferWithVertexRect:(CGRect)a3 textureRect:(CGRect)a4 metalContext:(id)a5 colorAttachment:(id)a6
++ (id)newWipeDataBufferWithVertexRect:(CGRect)rect textureRect:(CGRect)textureRect metalContext:(id)context colorAttachment:(id)attachment
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3.size.height;
-  v12 = a3.size.width;
-  v13 = a3.origin.y;
-  v14 = a3.origin.x;
-  v16 = a5;
-  v17 = a6;
-  v18 = [[a1 alloc] initWithVertexRect:5 textureRect:v14 minimumDataSize:{v13, v12, v11, x, y, width, height}];
+  height = textureRect.size.height;
+  width = textureRect.size.width;
+  y = textureRect.origin.y;
+  x = textureRect.origin.x;
+  v11 = rect.size.height;
+  v12 = rect.size.width;
+  v13 = rect.origin.y;
+  v14 = rect.origin.x;
+  contextCopy = context;
+  attachmentCopy = attachment;
+  v18 = [[self alloc] initWithVertexRect:5 textureRect:v14 minimumDataSize:{v13, v12, v11, x, y, width, height}];
   v19 = v18;
   if (v18)
   {
-    [v18 setupMTLWipeDataBufferWithContext:v16 colorAttachment:v17];
+    [v18 setupMTLWipeDataBufferWithContext:contextCopy colorAttachment:attachmentCopy];
   }
 
   else
@@ -141,32 +141,32 @@
   return v19;
 }
 
-- (void)setupMTLWipeDataBufferWithContext:(id)a3 colorAttachment:(id)a4
+- (void)setupMTLWipeDataBufferWithContext:(id)context colorAttachment:(id)attachment
 {
-  v6 = a4;
-  v17 = [a3 device];
-  v7 = [TSDGPUDataBuffer newDataBufferWithVertexAttributes:self->_wipeBufferAttributes vertexCount:6 indexElementCount:0 device:v17];
+  attachmentCopy = attachment;
+  device = [context device];
+  v7 = [TSDGPUDataBuffer newDataBufferWithVertexAttributes:self->_wipeBufferAttributes vertexCount:6 indexElementCount:0 device:device];
   wipeMTLDataBuffer = self->_wipeMTLDataBuffer;
   self->_wipeMTLDataBuffer = v7;
 
   [(TSDMTLDataBuffer *)self->_wipeMTLDataBuffer setMetalDrawMode:4];
-  v9 = [TSDGPUDataBuffer newDataBufferWithVertexAttributes:self->_solidBufferAttributes vertexCount:6 indexElementCount:0 device:v17];
+  v9 = [TSDGPUDataBuffer newDataBufferWithVertexAttributes:self->_solidBufferAttributes vertexCount:6 indexElementCount:0 device:device];
   solidMTLDataBuffer = self->_solidMTLDataBuffer;
   self->_solidMTLDataBuffer = v9;
 
   [(TSDMTLDataBuffer *)self->_solidMTLDataBuffer setMetalDrawMode:4];
   v11 = [TSDMetalShader alloc];
   v12 = MTLCreateSystemDefaultDevice();
-  v13 = [v11 initDefaultTextureAndOpacityShaderWithDevice:v12 colorAttachment:v6];
+  v13 = [v11 initDefaultTextureAndOpacityShaderWithDevice:v12 colorAttachment:attachmentCopy];
   solidMetalShader = self->_solidMetalShader;
   self->_solidMetalShader = v13;
 
-  v15 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"wipeDataBufferVertexShader" fragmentShader:@"wipeDataBufferFragmentShader" device:v17 library:@"KeynoteMetalLibrary" colorAttachment:v6];
+  v15 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"wipeDataBufferVertexShader" fragmentShader:@"wipeDataBufferFragmentShader" device:device library:@"KeynoteMetalLibrary" colorAttachment:attachmentCopy];
   wipeMetalShader = self->_wipeMetalShader;
   self->_wipeMetalShader = v15;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)p_texCoordFromX:(double)a3 y:(double)a4
+- ($94F468A8D4C62B317260615823C2B210)p_texCoordFromX:(double)x y:(double)y
 {
   TSDPointFromNormalizedRect();
   v6 = v5;
@@ -176,9 +176,9 @@
   return result;
 }
 
-- (void)updateWipeWithPercent:(double)a3 solidVertexCount:(unint64_t *)a4 wipeVertexCount:(unint64_t *)a5 drawIntoMetalBuffer:(BOOL)a6
+- (void)updateWipeWithPercent:(double)percent solidVertexCount:(unint64_t *)count wipeVertexCount:(unint64_t *)vertexCount drawIntoMetalBuffer:(BOOL)buffer
 {
-  v6 = a6;
+  bufferCopy = buffer;
   y = CGPointZero.y;
   v12 = [(KNWipeDataBuffer *)self direction]- 11;
   v67 = y;
@@ -238,7 +238,7 @@
   }
 
   v31 = self->_vertexRect.size.width;
-  v32 = -(v29 - (v29 + height) * a3);
+  v32 = -(v29 - (v29 + height) * percent);
   if (v30 == 0.0)
   {
     v33 = v26;
@@ -246,7 +246,7 @@
 
   else
   {
-    v33 = -(v26 - (v26 + v31) * a3);
+    v33 = -(v26 - (v26 + v31) * percent);
   }
 
   if (v13 == 0.0)
@@ -433,7 +433,7 @@
   v101 = v48;
   v102 = v49;
   v53 = objc_retainBlock(v89);
-  if (v6)
+  if (bufferCopy)
   {
     [(TSDMTLDataBuffer *)self->_solidMTLDataBuffer updateMetalDataBufferAttributes:self->_solidBufferAttributes withBlock:v53];
   }
@@ -467,31 +467,31 @@
   v86 = fmax(v61 + v68 + v59, 0.0);
   v87 = fmax(v62 + v47 + v60, 0.0);
   v55 = objc_retainBlock(v69);
-  if (v6)
+  if (bufferCopy)
   {
     [(TSDMTLDataBuffer *)self->_wipeMTLDataBuffer updateMetalDataBufferAttributes:self->_wipeBufferAttributes withBlock:v55];
   }
 
-  *a4 = v109[3];
-  *a5 = v105[3];
+  *count = v109[3];
+  *vertexCount = v105[3];
 
   _Block_object_dispose(&v104, 8);
   _Block_object_dispose(&v108, 8);
 }
 
-- (void)drawWipeWithPercent:(double)a3 opacity:(double)a4 renderEncoder:(id)a5
+- (void)drawWipeWithPercent:(double)percent opacity:(double)opacity renderEncoder:(id)encoder
 {
   v10 = 0;
   v11 = 0;
-  v8 = a5;
-  [(KNWipeDataBuffer *)self updateWipeWithPercent:&v11 solidVertexCount:&v10 wipeVertexCount:1 drawIntoMetalBuffer:a3];
-  v9 = a4;
-  self->_fragmentInput.Opacity = v9;
+  encoderCopy = encoder;
+  [(KNWipeDataBuffer *)self updateWipeWithPercent:&v11 solidVertexCount:&v10 wipeVertexCount:1 drawIntoMetalBuffer:percent];
+  opacityCopy = opacity;
+  self->_fragmentInput.Opacity = opacityCopy;
   self = (self + 152);
-  [*&self->MVPMatrix.m32 setPipelineStateWithEncoder:v8 vertexBytes:&self->_wipePositionAttributeIndex fragmentBytes:self];
-  [*&self->MVPMatrix.m33 drawWithEncoder:v8 atIndex:0 range:{0, v11}];
-  [*&self->MVPMatrix.m24 setPipelineStateWithEncoder:v8 vertexBytes:&self->_wipePositionAttributeIndex fragmentBytes:self];
-  [*&self->MVPMatrix.m31 drawWithEncoder:v8 atIndex:0 range:{0, v10}];
+  [*&self->MVPMatrix.m32 setPipelineStateWithEncoder:encoderCopy vertexBytes:&self->_wipePositionAttributeIndex fragmentBytes:self];
+  [*&self->MVPMatrix.m33 drawWithEncoder:encoderCopy atIndex:0 range:{0, v11}];
+  [*&self->MVPMatrix.m24 setPipelineStateWithEncoder:encoderCopy vertexBytes:&self->_wipePositionAttributeIndex fragmentBytes:self];
+  [*&self->MVPMatrix.m31 drawWithEncoder:encoderCopy atIndex:0 range:{0, v10}];
 }
 
 - (CATransform3D)MVPMatrix
@@ -537,10 +537,10 @@
   return result;
 }
 
-- (__n128)setVertexInput:(__n128)a3
+- (__n128)setVertexInput:(__n128)input
 {
   result[21] = a2;
-  result[22] = a3;
+  result[22] = input;
   result[23] = a4;
   result[24] = a5;
   return result;

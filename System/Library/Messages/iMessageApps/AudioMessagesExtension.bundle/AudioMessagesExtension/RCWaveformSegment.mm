@@ -1,60 +1,60 @@
 @interface RCWaveformSegment
-+ (id)_discontinuityRepairedSegmentsByGrowingToFillGapsInSegments:(id)a3;
-+ (id)_mergedSegmentByResamplingWithMergeableSegments:(id)a3 mergedLevelsDuration:(double)a4;
-+ (id)_segmentByMergingMergableSegments:(id)a3;
-+ (id)_segmentsByJoiningSegment:(id)a3 toSegmentIfNecessaryWithGreaterSegment:(id)a4 averagePowerLevelJoinLimit:(unint64_t)a5;
-+ (id)emptySegmentWithTimeRange:(id)a3;
-+ (id)segmentsByMergingSegments:(id)a3 preferredSegmentDuration:(double)a4;
-+ (id)segmentsByMergingSegments:(id)a3 preferredSegmentDuration:(double)a4 beforeTime:(double)a5 andThenUsePreferredSegmentDuration:(double)a6;
-+ (id)segmentsByReparingDiscontinuitiesInSegments:(id)a3;
-+ (id)segmentsByShiftingSegments:(id)a3 byTimeOffset:(double)a4;
++ (id)_discontinuityRepairedSegmentsByGrowingToFillGapsInSegments:(id)segments;
++ (id)_mergedSegmentByResamplingWithMergeableSegments:(id)segments mergedLevelsDuration:(double)duration;
++ (id)_segmentByMergingMergableSegments:(id)segments;
++ (id)_segmentsByJoiningSegment:(id)segment toSegmentIfNecessaryWithGreaterSegment:(id)greaterSegment averagePowerLevelJoinLimit:(unint64_t)limit;
++ (id)emptySegmentWithTimeRange:(id)range;
++ (id)segmentsByMergingSegments:(id)segments preferredSegmentDuration:(double)duration;
++ (id)segmentsByMergingSegments:(id)segments preferredSegmentDuration:(double)duration beforeTime:(double)time andThenUsePreferredSegmentDuration:(double)segmentDuration;
++ (id)segmentsByReparingDiscontinuitiesInSegments:(id)segments;
++ (id)segmentsByShiftingSegments:(id)segments byTimeOffset:(double)offset;
 + (void)initialize;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)timeRange;
-- (BOOL)hasUniformPowerLevel:(float)a3;
-- (BOOL)isWaveformDataAlmostEqualToDataInSegment:(id)a3;
-- (BOOL)isWaveformDataEqualToDataInSegment:(id)a3;
-- (RCWaveformSegment)initWithCoder:(id)a3;
-- (RCWaveformSegment)initWithTimeRange:(id)a3 averagePowerLevelVector:(void *)a4;
-- (id)_initWithTimeRange:(id)a3 averagePowerLevelData:(id)a4;
-- (id)_segmentWithValuesInContainedTimeRange:(id)a3;
-- (id)_segmentsByJoiningIfNecessaryGreaterSegment:(id)a3 averagePowerLevelJoinLimit:(unint64_t)a4;
-- (id)copyWithAdjustedTimeRange:(id)a3;
-- (id)copyWithTimeRangeOffsetByTimeOffset:(double)a3;
-- (id)segmentByClippingToTimeRange:(id)a3;
-- (id)segmentsByJoiningIfSmallSegment:(id)a3;
-- (id)segmentsByJoiningIfSmallSegment:(id)a3 averagePowerLevelJoinLimit:(unint64_t)a4;
+- (BOOL)hasUniformPowerLevel:(float)level;
+- (BOOL)isWaveformDataAlmostEqualToDataInSegment:(id)segment;
+- (BOOL)isWaveformDataEqualToDataInSegment:(id)segment;
+- (RCWaveformSegment)initWithCoder:(id)coder;
+- (RCWaveformSegment)initWithTimeRange:(id)range averagePowerLevelVector:(void *)vector;
+- (id)_initWithTimeRange:(id)range averagePowerLevelData:(id)data;
+- (id)_segmentWithValuesInContainedTimeRange:(id)range;
+- (id)_segmentsByJoiningIfNecessaryGreaterSegment:(id)segment averagePowerLevelJoinLimit:(unint64_t)limit;
+- (id)copyWithAdjustedTimeRange:(id)range;
+- (id)copyWithTimeRangeOffsetByTimeOffset:(double)offset;
+- (id)segmentByClippingToTimeRange:(id)range;
+- (id)segmentsByJoiningIfSmallSegment:(id)segment;
+- (id)segmentsByJoiningIfSmallSegment:(id)segment averagePowerLevelJoinLimit:(unint64_t)limit;
 - (id)simpleDescription;
 - (id)verboseDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RCWaveformSegment
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     [RCWaveformSegment setVersion:1];
   }
 }
 
-+ (id)emptySegmentWithTimeRange:(id)a3
++ (id)emptySegmentWithTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = [a1 alloc];
+  var1 = range.var1;
+  var0 = range.var0;
+  v5 = [self alloc];
   v6 = +[NSData data];
   v7 = [v5 _initWithTimeRange:v6 averagePowerLevelData:{var0, var1}];
 
   return v7;
 }
 
-- (id)_initWithTimeRange:(id)a3 averagePowerLevelData:(id)a4
+- (id)_initWithTimeRange:(id)range averagePowerLevelData:(id)data
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v8 = a4;
+  var1 = range.var1;
+  var0 = range.var0;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = RCWaveformSegment;
   v9 = [(RCWaveformSegment *)&v12 init];
@@ -63,34 +63,34 @@
   {
     v9->_timeRange.beginTime = var0;
     v9->_timeRange.endTime = var1;
-    objc_storeStrong(&v9->_averagePowerLevelData, a4);
+    objc_storeStrong(&v9->_averagePowerLevelData, data);
     v10->_isRendered = 0;
   }
 
   return v10;
 }
 
-- (RCWaveformSegment)initWithTimeRange:(id)a3 averagePowerLevelVector:(void *)a4
+- (RCWaveformSegment)initWithTimeRange:(id)range averagePowerLevelVector:(void *)vector
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  if (*(a4 + 1) == *a4)
+  var1 = range.var1;
+  var0 = range.var0;
+  if (*(vector + 1) == *vector)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [[NSMutableData alloc] initWithBytes:*a4 length:*(a4 + 1) - *a4];
-    memcpy([v8 mutableBytes], *a4, *(a4 + 1) - *a4);
+    v8 = [[NSMutableData alloc] initWithBytes:*vector length:*(vector + 1) - *vector];
+    memcpy([v8 mutableBytes], *vector, *(vector + 1) - *vector);
   }
 
-  v9 = [(RCWaveformSegment *)self initWithTimeRange:v8 averagePowerLevelData:var0, var1];
-  v10 = v9;
-  if (v9)
+  var1 = [(RCWaveformSegment *)self initWithTimeRange:v8 averagePowerLevelData:var0, var1];
+  v10 = var1;
+  if (var1)
   {
-    v9->_timeRange.beginTime = var0;
-    v9->_timeRange.endTime = var1;
+    var1->_timeRange.beginTime = var0;
+    var1->_timeRange.endTime = var1;
   }
 
   return v10;
@@ -98,12 +98,12 @@
 
 - (id)verboseDescription
 {
-  v3 = [(RCWaveformSegment *)self simpleDescription];
+  simpleDescription = [(RCWaveformSegment *)self simpleDescription];
   v4 = RCTimeRangeDeltaWithExactPrecision(self->_timeRange.beginTime, self->_timeRange.endTime);
-  v5 = [(RCWaveformSegment *)self averagePowerLevelsCount];
+  averagePowerLevelsCount = [(RCWaveformSegment *)self averagePowerLevelsCount];
   v6 = +[NSMutableArray array];
   v7 = 0;
-  v8 = v4 / v5;
+  v8 = v4 / averagePowerLevelsCount;
   while (v7 < [(RCWaveformSegment *)self averagePowerLevelsCount])
   {
     v9 = [NSString stringWithFormat:@"[%.3fs] %.2f", v8 * v7, *([(RCWaveformSegment *)self averagePowerLevels]+ v7)];
@@ -113,7 +113,7 @@
   }
 
   v10 = [v6 componentsJoinedByString:{@", "}];
-  v11 = [NSString stringWithFormat:@"%@ %@", v3, v10];
+  v11 = [NSString stringWithFormat:@"%@ %@", simpleDescription, v10];
 
   return v11;
 }
@@ -129,26 +129,26 @@
   return v5;
 }
 
-- (RCWaveformSegment)initWithCoder:(id)a3
+- (RCWaveformSegment)initWithCoder:(id)coder
 {
-  v4 = a3;
-  self->_timeRange.beginTime = RCTimeRangeDecodeWithKey(v4, @"RCTimeRange");
+  coderCopy = coder;
+  self->_timeRange.beginTime = RCTimeRangeDecodeWithKey(coderCopy, @"RCTimeRange");
   self->_timeRange.endTime = v5;
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RCAveragePowerLevelVectorData"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RCAveragePowerLevelVectorData"];
   averagePowerLevelData = self->_averagePowerLevelData;
   self->_averagePowerLevelData = v6;
 
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  RCTimeRangeEncodeWithKey(v4, @"RCTimeRange", self->_timeRange.beginTime, self->_timeRange.endTime);
-  [v4 encodeObject:self->_averagePowerLevelData forKey:@"RCAveragePowerLevelVectorData"];
+  coderCopy = coder;
+  RCTimeRangeEncodeWithKey(coderCopy, @"RCTimeRange", self->_timeRange.beginTime, self->_timeRange.endTime);
+  [coderCopy encodeObject:self->_averagePowerLevelData forKey:@"RCAveragePowerLevelVectorData"];
 }
 
-- (BOOL)hasUniformPowerLevel:(float)a3
+- (BOOL)hasUniformPowerLevel:(float)level
 {
   if (![(RCWaveformSegment *)self averagePowerLevelsCount])
   {
@@ -164,8 +164,8 @@
   do
   {
     v6 = *([(RCWaveformSegment *)self averagePowerLevels]+ v5);
-    v7 = v6 == a3;
-    if (v6 != a3)
+    v7 = v6 == level;
+    if (v6 != level)
     {
       break;
     }
@@ -177,37 +177,37 @@
   return v7;
 }
 
-- (BOOL)isWaveformDataEqualToDataInSegment:(id)a3
+- (BOOL)isWaveformDataEqualToDataInSegment:(id)segment
 {
-  if (a3 == self)
+  if (segment == self)
   {
     return 1;
   }
 
   else
   {
-    return [(NSData *)self->_averagePowerLevelData isEqual:*(a3 + 1)];
+    return [(NSData *)self->_averagePowerLevelData isEqual:*(segment + 1)];
   }
 }
 
-- (BOOL)isWaveformDataAlmostEqualToDataInSegment:(id)a3
+- (BOOL)isWaveformDataAlmostEqualToDataInSegment:(id)segment
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  segmentCopy = segment;
+  v5 = segmentCopy;
+  if (segmentCopy == self)
   {
     goto LABEL_10;
   }
 
-  v6 = [(RCWaveformSegment *)v4 averagePowerLevelsCount];
-  if (v6 != [(RCWaveformSegment *)self averagePowerLevelsCount])
+  averagePowerLevelsCount = [(RCWaveformSegment *)segmentCopy averagePowerLevelsCount];
+  if (averagePowerLevelsCount != [(RCWaveformSegment *)self averagePowerLevelsCount])
   {
     v11 = 0;
     goto LABEL_12;
   }
 
-  v7 = [(RCWaveformSegment *)self averagePowerLevelsCount];
-  if (!v7)
+  averagePowerLevelsCount2 = [(RCWaveformSegment *)self averagePowerLevelsCount];
+  if (!averagePowerLevelsCount2)
   {
 LABEL_10:
     v11 = 1;
@@ -216,7 +216,7 @@ LABEL_10:
   else
   {
     v8 = 0;
-    v9 = v7 - 1;
+    v9 = averagePowerLevelsCount2 - 1;
     do
     {
       v10 = RCEqualFloatsWithTolerance(*([(RCWaveformSegment *)self averagePowerLevels]+ v8), *([(RCWaveformSegment *)v5 averagePowerLevels]+ v8), 0.1);
@@ -231,44 +231,44 @@ LABEL_12:
   return v11;
 }
 
-- (id)copyWithTimeRangeOffsetByTimeOffset:(double)a3
+- (id)copyWithTimeRangeOffsetByTimeOffset:(double)offset
 {
-  v4 = self->_timeRange.beginTime + a3;
-  v5 = self->_timeRange.endTime + a3;
+  v4 = self->_timeRange.beginTime + offset;
+  v5 = self->_timeRange.endTime + offset;
   v6 = objc_alloc(objc_opt_class());
   averagePowerLevelData = self->_averagePowerLevelData;
 
   return [v6 initWithTimeRange:averagePowerLevelData averagePowerLevelData:{v4, v5}];
 }
 
-- (id)copyWithAdjustedTimeRange:(id)a3
+- (id)copyWithAdjustedTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v6 = objc_alloc(objc_opt_class());
   averagePowerLevelData = self->_averagePowerLevelData;
 
   return [v6 initWithTimeRange:averagePowerLevelData averagePowerLevelData:{var0, var1}];
 }
 
-+ (id)segmentsByReparingDiscontinuitiesInSegments:(id)a3
++ (id)segmentsByReparingDiscontinuitiesInSegments:(id)segments
 {
-  v3 = [a1 _discontinuityRepairedSegmentsByGrowingToFillGapsInSegments:a3];
+  v3 = [self _discontinuityRepairedSegmentsByGrowingToFillGapsInSegments:segments];
 
   return v3;
 }
 
-+ (id)segmentsByShiftingSegments:(id)a3 byTimeOffset:(double)a4
++ (id)segmentsByShiftingSegments:(id)segments byTimeOffset:(double)offset
 {
-  v5 = a3;
-  if ([v5 count])
+  segmentsCopy = segments;
+  if ([segmentsCopy count])
   {
-    v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+    v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [segmentsCopy count]);
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = v5;
+    v7 = segmentsCopy;
     v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
@@ -282,7 +282,7 @@ LABEL_12:
             objc_enumerationMutation(v7);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) copyWithTimeRangeOffsetByTimeOffset:{a4, v13}];
+          v11 = [*(*(&v13 + 1) + 8 * i) copyWithTimeRangeOffsetByTimeOffset:{offset, v13}];
           [v6 addObject:v11];
         }
 
@@ -295,23 +295,23 @@ LABEL_12:
 
   else
   {
-    v6 = [v5 mutableCopy];
+    v6 = [segmentsCopy mutableCopy];
   }
 
   return v6;
 }
 
-+ (id)segmentsByMergingSegments:(id)a3 preferredSegmentDuration:(double)a4 beforeTime:(double)a5 andThenUsePreferredSegmentDuration:(double)a6
++ (id)segmentsByMergingSegments:(id)segments preferredSegmentDuration:(double)duration beforeTime:(double)time andThenUsePreferredSegmentDuration:(double)segmentDuration
 {
-  v10 = a3;
-  if ([v10 count] <= 1)
+  segmentsCopy = segments;
+  if ([segmentsCopy count] <= 1)
   {
-    v11 = v10;
+    v11 = segmentsCopy;
     goto LABEL_42;
   }
 
-  v43 = v10;
-  v44 = [v10 mutableCopy];
+  v43 = segmentsCopy;
+  v44 = [segmentsCopy mutableCopy];
   if (v44)
   {
     v12 = +[NSMutableArray array];
@@ -328,7 +328,7 @@ LABEL_12:
     {
       v16 = *v50;
       v17 = 0.0;
-      v18 = a4;
+      segmentDurationCopy = duration;
       do
       {
         for (i = 0; i != v15; i = i + 1)
@@ -342,22 +342,22 @@ LABEL_12:
           [v20 timeRange];
           v22 = v21;
           v24 = v23;
-          if (v21 >= a5 && v18 == a4)
+          if (v21 >= time && segmentDurationCopy == duration)
           {
             v26 = +[NSMutableArray array];
             [v13 addObject:v26];
 
-            v18 = a6;
+            segmentDurationCopy = segmentDuration;
           }
 
-          v27 = [v13 lastObject];
-          if (![v27 count])
+          lastObject = [v13 lastObject];
+          if (![lastObject count])
           {
             v17 = v22;
           }
 
-          [v27 addObject:v20];
-          if (v24 - v17 >= v18)
+          [lastObject addObject:v20];
+          if (v24 - v17 >= segmentDurationCopy)
           {
             v28 = +[NSMutableArray array];
             [v13 addObject:v28];
@@ -391,8 +391,8 @@ LABEL_12:
           v33 = *(*(&v45 + 1) + 8 * j);
           if ([v33 count] == &dword_0 + 1)
           {
-            v34 = [v33 objectAtIndexedSubscript:0];
-            [v11 addObject:v34];
+            firstObject = [v33 objectAtIndexedSubscript:0];
+            [v11 addObject:firstObject];
           }
 
           else
@@ -402,25 +402,25 @@ LABEL_12:
               continue;
             }
 
-            v34 = [v33 firstObject];
-            v35 = [v33 lastObject];
-            [v34 timeRange];
+            firstObject = [v33 firstObject];
+            lastObject2 = [v33 lastObject];
+            [firstObject timeRange];
             v37 = v36;
-            [v35 timeRange];
+            [lastObject2 timeRange];
             v39 = v38 - v37;
-            if (v37 >= a5)
+            if (v37 >= time)
             {
-              v40 = a6;
+              durationCopy2 = segmentDuration;
             }
 
             else
             {
-              v40 = a4;
+              durationCopy2 = duration;
             }
 
-            if (v39 >= v40)
+            if (v39 >= durationCopy2)
             {
-              v41 = [a1 _segmentByMergingMergableSegments:v33];
+              v41 = [self _segmentByMergingMergableSegments:v33];
               [v11 addObject:v41];
             }
 
@@ -440,78 +440,78 @@ LABEL_12:
 
   else
   {
-    v11 = v10;
+    v11 = segmentsCopy;
   }
 
-  v10 = v43;
+  segmentsCopy = v43;
 LABEL_42:
 
   return v11;
 }
 
-+ (id)segmentsByMergingSegments:(id)a3 preferredSegmentDuration:(double)a4
++ (id)segmentsByMergingSegments:(id)segments preferredSegmentDuration:(double)duration
 {
-  v4 = [a1 segmentsByMergingSegments:a3 preferredSegmentDuration:a4 beforeTime:1.79769313e308 andThenUsePreferredSegmentDuration:1.0];
+  v4 = [self segmentsByMergingSegments:segments preferredSegmentDuration:duration beforeTime:1.79769313e308 andThenUsePreferredSegmentDuration:1.0];
 
   return v4;
 }
 
-- (id)segmentsByJoiningIfSmallSegment:(id)a3
+- (id)segmentsByJoiningIfSmallSegment:(id)segment
 {
-  v3 = [(RCWaveformSegment *)self _segmentsByJoiningIfNecessaryGreaterSegment:a3 averagePowerLevelJoinLimit:8];
+  v3 = [(RCWaveformSegment *)self _segmentsByJoiningIfNecessaryGreaterSegment:segment averagePowerLevelJoinLimit:8];
 
   return v3;
 }
 
-- (id)segmentsByJoiningIfSmallSegment:(id)a3 averagePowerLevelJoinLimit:(unint64_t)a4
+- (id)segmentsByJoiningIfSmallSegment:(id)segment averagePowerLevelJoinLimit:(unint64_t)limit
 {
-  v6 = a3;
-  if (!v6)
+  segmentCopy = segment;
+  if (!segmentCopy)
   {
-    v20 = self;
-    v11 = &v20;
+    selfCopy = self;
+    v11 = &selfCopy;
     v12 = 1;
 LABEL_5:
-    v10 = [NSArray arrayWithObjects:v11 count:v12, v18, v19, v20];
+    selfCopy = [NSArray arrayWithObjects:v11 count:v12, selfCopy2, v19, selfCopy];
     goto LABEL_8;
   }
 
   [(RCWaveformSegment *)self timeRange];
   v8 = v7;
-  [v6 timeRange];
+  [segmentCopy timeRange];
   if (v8 == v9)
   {
-    v10 = [(RCWaveformSegment *)self _segmentsByJoiningIfNecessaryGreaterSegment:v6 averagePowerLevelJoinLimit:a4];
+    selfCopy = [(RCWaveformSegment *)self _segmentsByJoiningIfNecessaryGreaterSegment:segmentCopy averagePowerLevelJoinLimit:limit];
     goto LABEL_8;
   }
 
-  [v6 timeRange];
+  [segmentCopy timeRange];
   v14 = v13;
   [(RCWaveformSegment *)self timeRange];
   if (v14 != v15)
   {
-    v18 = self;
-    v19 = v6;
-    v11 = &v18;
+    selfCopy2 = self;
+    v19 = segmentCopy;
+    v11 = &selfCopy2;
     v12 = 2;
     goto LABEL_5;
   }
 
-  v10 = [v6 _segmentsByJoiningIfNecessaryGreaterSegment:self averagePowerLevelJoinLimit:a4];
+  selfCopy = [segmentCopy _segmentsByJoiningIfNecessaryGreaterSegment:self averagePowerLevelJoinLimit:limit];
 LABEL_8:
-  v16 = v10;
+  v16 = selfCopy;
 
   return v16;
 }
 
-- (id)segmentByClippingToTimeRange:(id)a3
+- (id)segmentByClippingToTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   [(RCWaveformSegment *)self timeRange];
   if (RCTimeRangeEqualToTimeRange(var0, var1, v6, v7) || ([(RCWaveformSegment *)self timeRange], RCTimeRangeContainsRange(var0, var1, v8, v9)) || ([(RCWaveformSegment *)self timeRange], RCTimeRangeContainsRange(var0, var1, v10, v11)))
   {
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -541,30 +541,30 @@ LABEL_8:
     if (var0 >= v17)
     {
 LABEL_16:
-      v12 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v12 = [(RCWaveformSegment *)self _segmentWithValuesInContainedTimeRange:RCTimeRangeMake(var0, v17)];
+      selfCopy = [(RCWaveformSegment *)self _segmentWithValuesInContainedTimeRange:RCTimeRangeMake(var0, v17)];
     }
   }
 
-  return v12;
+  return selfCopy;
 }
 
-+ (id)_discontinuityRepairedSegmentsByGrowingToFillGapsInSegments:(id)a3
++ (id)_discontinuityRepairedSegmentsByGrowingToFillGapsInSegments:(id)segments
 {
-  v3 = a3;
-  if ([v3 count] > 1)
+  segmentsCopy = segments;
+  if ([segmentsCopy count] > 1)
   {
-    v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
-    for (i = 1; i < [v3 count]; i = v8 + 1)
+    v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [segmentsCopy count]);
+    for (i = 1; i < [segmentsCopy count]; i = v8 + 1)
     {
       v6 = i - 1;
-      v7 = [v3 objectAtIndexedSubscript:i - 1];
+      v7 = [segmentsCopy objectAtIndexedSubscript:i - 1];
       v8 = v6 + 1;
-      v9 = [v3 objectAtIndexedSubscript:v6 + 1];
+      v9 = [segmentsCopy objectAtIndexedSubscript:v6 + 1];
       [v9 timeRange];
       v11 = v10;
       [v7 timeRange];
@@ -579,26 +579,26 @@ LABEL_16:
       [v4 addObject:v7];
     }
 
-    v14 = [v3 lastObject];
-    [v4 addObject:v14];
+    lastObject = [segmentsCopy lastObject];
+    [v4 addObject:lastObject];
   }
 
   else
   {
-    v4 = v3;
+    v4 = segmentsCopy;
   }
 
   return v4;
 }
 
-- (id)_segmentWithValuesInContainedTimeRange:(id)a3
+- (id)_segmentWithValuesInContainedTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = [(RCWaveformSegment *)self averagePowerLevelsCount];
-  if (v6)
+  var1 = range.var1;
+  var0 = range.var0;
+  averagePowerLevelsCount = [(RCWaveformSegment *)self averagePowerLevelsCount];
+  if (averagePowerLevelsCount)
   {
-    v7 = v6;
+    v7 = averagePowerLevelsCount;
     v8 = RCTimeRangeDeltaWithExactPrecision(self->_timeRange.beginTime, self->_timeRange.endTime);
     v9 = v8 / [(RCWaveformSegment *)self averagePowerLevelsCount];
     [(RCWaveformSegment *)self timeRange];
@@ -653,45 +653,45 @@ LABEL_16:
   return v16;
 }
 
-- (id)_segmentsByJoiningIfNecessaryGreaterSegment:(id)a3 averagePowerLevelJoinLimit:(unint64_t)a4
+- (id)_segmentsByJoiningIfNecessaryGreaterSegment:(id)segment averagePowerLevelJoinLimit:(unint64_t)limit
 {
-  v6 = a3;
-  if (v6)
+  segmentCopy = segment;
+  if (segmentCopy)
   {
     v7 = objc_opt_class();
     v14[0] = self;
-    v14[1] = v6;
+    v14[1] = segmentCopy;
     v8 = [NSArray arrayWithObjects:v14 count:2];
     v9 = [v7 _discontinuityRepairedSegmentsByGrowingToFillGapsInSegments:v8];
 
     v10 = [v9 objectAtIndexedSubscript:0];
     v11 = [v9 objectAtIndexedSubscript:1];
-    v12 = [RCWaveformSegment _segmentsByJoiningSegment:v10 toSegmentIfNecessaryWithGreaterSegment:v11 averagePowerLevelJoinLimit:a4];
+    v12 = [RCWaveformSegment _segmentsByJoiningSegment:v10 toSegmentIfNecessaryWithGreaterSegment:v11 averagePowerLevelJoinLimit:limit];
   }
 
   else
   {
-    v15 = self;
-    v12 = [NSArray arrayWithObjects:&v15 count:1];
+    selfCopy = self;
+    v12 = [NSArray arrayWithObjects:&selfCopy count:1];
   }
 
   return v12;
 }
 
-+ (id)_segmentsByJoiningSegment:(id)a3 toSegmentIfNecessaryWithGreaterSegment:(id)a4 averagePowerLevelJoinLimit:(unint64_t)a5
++ (id)_segmentsByJoiningSegment:(id)segment toSegmentIfNecessaryWithGreaterSegment:(id)greaterSegment averagePowerLevelJoinLimit:(unint64_t)limit
 {
-  v7 = a3;
-  v8 = a4;
-  [v7 timeRange];
+  segmentCopy = segment;
+  greaterSegmentCopy = greaterSegment;
+  [segmentCopy timeRange];
   v11 = RCTimeRangeDeltaWithExactPrecision(v9, v10);
-  [v8 timeRange];
+  [greaterSegmentCopy timeRange];
   v14 = RCTimeRangeDeltaWithExactPrecision(v12, v13);
-  if ([v7 averagePowerLevelsCount] <= 1)
+  if ([segmentCopy averagePowerLevelsCount] <= 1)
   {
-    [v7 timeRange];
+    [segmentCopy timeRange];
     v16 = v15;
-    [v8 timeRange];
-    v18 = [v8 copyWithAdjustedTimeRange:{RCTimeRangeMake(v16, v17)}];
+    [greaterSegmentCopy timeRange];
+    v18 = [greaterSegmentCopy copyWithAdjustedTimeRange:{RCTimeRangeMake(v16, v17)}];
     v59 = v18;
     v19 = [NSArray arrayWithObjects:&v59 count:1];
 LABEL_5:
@@ -701,77 +701,77 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v8 averagePowerLevelsCount] <= 1)
+  if ([greaterSegmentCopy averagePowerLevelsCount] <= 1)
   {
-    [v7 timeRange];
+    [segmentCopy timeRange];
     v21 = v20;
-    [v8 timeRange];
-    v18 = [v7 copyWithAdjustedTimeRange:{RCTimeRangeMake(v21, v22)}];
+    [greaterSegmentCopy timeRange];
+    v18 = [segmentCopy copyWithAdjustedTimeRange:{RCTimeRangeMake(v21, v22)}];
     v58 = v18;
     v19 = [NSArray arrayWithObjects:&v58 count:1];
     goto LABEL_5;
   }
 
-  v25 = [v7 averagePowerLevelsCount];
-  if (&v25[[v8 averagePowerLevelsCount]] < a5)
+  averagePowerLevelsCount = [segmentCopy averagePowerLevelsCount];
+  if (&averagePowerLevelsCount[[greaterSegmentCopy averagePowerLevelsCount]] < limit)
   {
     v26 = v11;
     v27 = v14;
     if ((v26 + v27) > 0.0)
     {
-      [v7 timeRange];
+      [segmentCopy timeRange];
       v29 = v28;
-      [v8 timeRange];
+      [greaterSegmentCopy timeRange];
       v31 = RCTimeRangeMake(v29, v30);
       v33 = v32;
-      [v7 timeRange];
+      [segmentCopy timeRange];
       v36 = RCTimeRangeDeltaWithExactPrecision(v34, v35);
-      v37 = [v7 averagePowerLevelsCount];
-      [v8 timeRange];
+      averagePowerLevelsCount2 = [segmentCopy averagePowerLevelsCount];
+      [greaterSegmentCopy timeRange];
       v40 = RCTimeRangeDeltaWithExactPrecision(v38, v39);
-      v41 = [v8 averagePowerLevelsCount];
+      averagePowerLevelsCount3 = [greaterSegmentCopy averagePowerLevelsCount];
       v42 = v36;
-      v43 = v42 / v37;
+      v43 = v42 / averagePowerLevelsCount2;
       v44 = v40;
-      v45 = v44 / v41;
+      v45 = v44 / averagePowerLevelsCount3;
       if (v43 > 0.0)
       {
         if (v45 <= 0.0)
         {
-          v45 = v42 / v37;
+          v45 = v42 / averagePowerLevelsCount2;
         }
 
         else if (v43 < v45)
         {
-          v45 = v42 / v37;
+          v45 = v42 / averagePowerLevelsCount2;
         }
       }
 
       v46 = (RCTimeRangeDeltaWithExactPrecision(v31, v33) / v45);
       v18 = [NSMutableData dataWithLength:4 * v46];
-      v47 = [v18 mutableBytes];
+      mutableBytes = [v18 mutableBytes];
       if (v46)
       {
-        v48 = v47;
+        v48 = mutableBytes;
         for (i = 0; i != v46; ++i)
         {
-          [v7 timeRange];
+          [segmentCopy timeRange];
           v50 = v45 * i;
           if (v51 <= v50)
           {
-            v52 = [v8 averagePowerLevels];
+            averagePowerLevels = [greaterSegmentCopy averagePowerLevels];
             v53 = (v50 - v42);
             v54 = v44;
           }
 
           else
           {
-            v52 = [v7 averagePowerLevels];
+            averagePowerLevels = [segmentCopy averagePowerLevels];
             v53 = v50;
             v54 = v42;
           }
 
-          v48[i] = v52[(v53 / v54)];
+          v48[i] = averagePowerLevels[(v53 / v54)];
         }
       }
 
@@ -783,25 +783,25 @@ LABEL_6:
     }
   }
 
-  v56[0] = v7;
-  v56[1] = v8;
+  v56[0] = segmentCopy;
+  v56[1] = greaterSegmentCopy;
   v23 = [NSArray arrayWithObjects:v56 count:2];
 LABEL_7:
 
   return v23;
 }
 
-+ (id)_segmentByMergingMergableSegments:(id)a3
++ (id)_segmentByMergingMergableSegments:(id)segments
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  segmentsCopy = segments;
+  v5 = segmentsCopy;
+  if (!segmentsCopy)
   {
     v6 = [0 objectAtIndexedSubscript:0];
     goto LABEL_16;
   }
 
-  if ([v4 count] == &dword_0 + 1)
+  if ([segmentsCopy count] == &dword_0 + 1)
   {
     v6 = [v5 objectAtIndexedSubscript:0];
 LABEL_16:
@@ -846,10 +846,10 @@ LABEL_16:
   }
 
   v16 = v10 / [v7 count];
-  v17 = [a1 _mergedSegmentByFastMergingWithMergeableSegments:v7 mergedLevelsDuration:v16];
+  v17 = [self _mergedSegmentByFastMergingWithMergeableSegments:v7 mergedLevelsDuration:v16];
   if (!v17)
   {
-    v6 = [a1 _mergedSegmentByResamplingWithMergeableSegments:v7 mergedLevelsDuration:v16];
+    v6 = [self _mergedSegmentByResamplingWithMergeableSegments:v7 mergedLevelsDuration:v16];
     goto LABEL_16;
   }
 
@@ -858,78 +858,78 @@ LABEL_17:
   return v17;
 }
 
-+ (id)_mergedSegmentByResamplingWithMergeableSegments:(id)a3 mergedLevelsDuration:(double)a4
++ (id)_mergedSegmentByResamplingWithMergeableSegments:(id)segments mergedLevelsDuration:(double)duration
 {
-  v5 = a3;
-  v43 = [v5 firstObject];
-  v42 = [v5 lastObject];
-  [v43 timeRange];
+  segmentsCopy = segments;
+  firstObject = [segmentsCopy firstObject];
+  lastObject = [segmentsCopy lastObject];
+  [firstObject timeRange];
   v7 = v6;
-  [v42 timeRange];
+  [lastObject timeRange];
   v9 = RCTimeRangeMake(v7, v8);
   v11 = v10;
-  v12 = (RCTimeRangeDeltaWithExactPrecision(v9, v10) / a4);
+  v12 = (RCTimeRangeDeltaWithExactPrecision(v9, v10) / duration);
   v41 = [NSMutableData dataWithLength:4 * v12];
-  v13 = [v41 mutableBytes];
+  mutableBytes = [v41 mutableBytes];
   if (v12)
   {
-    v14 = v13;
+    v14 = mutableBytes;
     v15 = 0;
     for (i = 0; i != v12; ++i)
     {
-      [v43 timeRange];
-      v18 = v17 + i * a4;
+      [firstObject timeRange];
+      v18 = v17 + i * duration;
       v19 = v15;
       do
       {
         v15 = v19;
-        if (v19 >= [v5 count])
+        if (v19 >= [segmentsCopy count])
         {
           break;
         }
 
-        v20 = [v5 objectAtIndexedSubscript:v19];
+        v20 = [segmentsCopy objectAtIndexedSubscript:v19];
         [v20 timeRange];
         v23 = RCTimeRangeContainsTime(v21, v22, v18);
         ++v19;
       }
 
       while (!v23);
-      if ([v5 count] == v15)
+      if ([segmentsCopy count] == v15)
       {
         break;
       }
 
-      v24 = [v5 objectAtIndexedSubscript:v15];
+      v24 = [segmentsCopy objectAtIndexedSubscript:v15];
       [v24 timeRange];
       v27 = RCTimeRangeDeltaWithExactPrecision(v25, v26);
-      v28 = [v24 averagePowerLevelsCount];
+      averagePowerLevelsCount = [v24 averagePowerLevelsCount];
       [v24 timeRange];
       v30 = v29;
-      v31 = [v24 averagePowerLevelsCount];
-      v32 = (v18 - v30) / (v27 / v28);
-      if (v31 - 1 >= v32)
+      averagePowerLevelsCount2 = [v24 averagePowerLevelsCount];
+      v32 = (v18 - v30) / (v27 / averagePowerLevelsCount);
+      if (averagePowerLevelsCount2 - 1 >= v32)
       {
         v33 = v32;
       }
 
       else
       {
-        v33 = v31 - 1;
+        v33 = averagePowerLevelsCount2 - 1;
       }
 
-      v34 = [v5 objectAtIndexedSubscript:v15];
+      v34 = [segmentsCopy objectAtIndexedSubscript:v15];
       v35 = v33 + 1;
       if ((v33 + 1) >= [v24 averagePowerLevelsCount] - 1)
       {
-        if (v15 + 1 >= [v5 count])
+        if (v15 + 1 >= [segmentsCopy count])
         {
           v35 = v33;
         }
 
         else
         {
-          v36 = [v5 objectAtIndexedSubscript:?];
+          v36 = [segmentsCopy objectAtIndexedSubscript:?];
 
           v35 = 0;
           v34 = v36;

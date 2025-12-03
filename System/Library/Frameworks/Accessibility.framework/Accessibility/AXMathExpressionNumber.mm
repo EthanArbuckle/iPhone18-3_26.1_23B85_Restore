@@ -1,16 +1,16 @@
 @interface AXMathExpressionNumber
-- (AXMathExpressionNumber)initWithContent:(id)a3;
+- (AXMathExpressionNumber)initWithContent:(id)content;
 @end
 
 @implementation AXMathExpressionNumber
 
-- (AXMathExpressionNumber)initWithContent:(id)a3
+- (AXMathExpressionNumber)initWithContent:(id)content
 {
   v6.receiver = self;
   v6.super_class = AXMathExpressionNumber;
-  v3 = a3;
+  contentCopy = content;
   v4 = [(AXMathExpressionNumber *)&v6 init];
-  [(AXMathExpressionNumber *)v4 setContent:v3, v6.receiver, v6.super_class];
+  [(AXMathExpressionNumber *)v4 setContent:contentCopy, v6.receiver, v6.super_class];
 
   return v4;
 }

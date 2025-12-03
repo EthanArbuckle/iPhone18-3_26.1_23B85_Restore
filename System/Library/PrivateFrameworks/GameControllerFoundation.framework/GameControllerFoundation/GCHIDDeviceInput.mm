@@ -1,24 +1,24 @@
 @interface GCHIDDeviceInput
 - (GCHIDDeviceInput)init;
-- (GCHIDDeviceInput)initWithIOHIDDevice:(__IOHIDDevice *)a3;
+- (GCHIDDeviceInput)initWithIOHIDDevice:(__IOHIDDevice *)device;
 - (id)batchInputElementHandler;
 - (void)activate;
 - (void)dealloc;
-- (void)setBatchInputElementHandler:(id)a3;
-- (void)setCancelHandler:(id)a3;
-- (void)setInputElementMatching:(id)a3;
-- (void)setInputElements:(id)a3;
-- (void)setSuspended:(BOOL)a3;
+- (void)setBatchInputElementHandler:(id)handler;
+- (void)setCancelHandler:(id)handler;
+- (void)setInputElementMatching:(id)matching;
+- (void)setInputElements:(id)elements;
+- (void)setSuspended:(BOOL)suspended;
 @end
 
 @implementation GCHIDDeviceInput
 
-- (GCHIDDeviceInput)initWithIOHIDDevice:(__IOHIDDevice *)a3
+- (GCHIDDeviceInput)initWithIOHIDDevice:(__IOHIDDevice *)device
 {
   v13.receiver = self;
   v13.super_class = GCHIDDeviceInput;
   v4 = [(GCHIDDeviceInput *)&v13 init];
-  v5 = CFRetain(a3);
+  v5 = CFRetain(device);
   Service = IOHIDDeviceGetService(v5);
   if (Service)
   {
@@ -75,18 +75,18 @@
   [(GCHIDDeviceInput *)&v5 dealloc];
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  v3 = a3;
+  suspendedCopy = suspended;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_suspended != v3)
+  if (obj->_suspended != suspendedCopy)
   {
-    obj->_suspended = v3;
+    obj->_suspended = suspendedCopy;
     if (obj->_activated)
     {
       queue = obj->_queue;
-      if (v3)
+      if (suspendedCopy)
       {
         IOHIDQueueStop(queue);
       }
@@ -103,38 +103,38 @@
 
 - (void)activate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_activated)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_activated)
   {
     v3 = _os_activity_create(&dword_1D2C3B000, "[HID Input] Activate", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v3, &state);
-    queue = v2->_queue;
+    queue = selfCopy->_queue;
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __28__GCHIDDeviceInput_activate__block_invoke;
     handler[3] = &unk_1E8413DA0;
-    handler[4] = v2;
+    handler[4] = selfCopy;
     IOHIDQueueSetCancelHandler(queue, handler);
-    suspended = v2->_suspended;
+    suspended = selfCopy->_suspended;
     if (suspended)
     {
-      [(GCHIDDeviceInput *)v2 willChangeValueForKey:@"suspended"];
+      [(GCHIDDeviceInput *)selfCopy willChangeValueForKey:@"suspended"];
     }
 
-    *&v2->_activated = 1;
-    IOHIDQueueActivate(v2->_queue);
+    *&selfCopy->_activated = 1;
+    IOHIDQueueActivate(selfCopy->_queue);
     if (suspended)
     {
-      [(GCHIDDeviceInput *)v2 didChangeValueForKey:@"suspended"];
+      [(GCHIDDeviceInput *)selfCopy didChangeValueForKey:@"suspended"];
     }
 
     os_activity_scope_leave(&state);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __28__GCHIDDeviceInput_activate__block_invoke(uint64_t a1)
@@ -155,35 +155,35 @@ void __28__GCHIDDeviceInput_activate__block_invoke(uint64_t a1)
   os_activity_scope_leave(&v6);
 }
 
-- (void)setBatchInputElementHandler:(id)a3
+- (void)setBatchInputElementHandler:(id)handler
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   objc_setProperty(self, a2, 24, v5, 1, 1);
 }
 
-- (void)setCancelHandler:(id)a3
+- (void)setCancelHandler:(id)handler
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   objc_setProperty(self, a2, 16, v5, 1, 1);
 }
 
-- (void)setInputElements:(id)a3
+- (void)setInputElements:(id)elements
 {
   v75 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  elementsCopy = elements;
   v5 = _gc_log_hid_input();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(GCHIDDeviceInput *)self setInputElements:v4, v5];
+    [(GCHIDDeviceInput *)self setInputElements:elementsCopy, v5];
   }
 
   Device = IOHIDQueueGetDevice(self->_queue);
-  v7 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v7 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(elementsCopy, "count")}];
   v69 = 0u;
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v4;
+  obj = elementsCopy;
   v8 = [obj countByEnumeratingWithState:&v67 objects:v74 count:16];
   if (v8)
   {
@@ -198,11 +198,11 @@ void __28__GCHIDDeviceInput_activate__block_invoke(uint64_t a1)
           objc_enumerationMutation(obj);
         }
 
-        v11 = *(*(&v67 + 1) + 8 * v10);
+        element = *(*(&v67 + 1) + 8 * v10);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v11 element];
+          element = [element element];
         }
 
         else
@@ -210,25 +210,25 @@ void __28__GCHIDDeviceInput_activate__block_invoke(uint64_t a1)
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v12 = CFGetTypeID(v11);
+            v12 = CFGetTypeID(element);
             if (v12 != IOHIDElementGetTypeID())
             {
-              v13 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v13 handleFailureInMethod:a2 object:self file:@"GCHIDDeviceInput.m" lineNumber:213 description:{@"Invalid object: %@", v11}];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:self file:@"GCHIDDeviceInput.m" lineNumber:213 description:{@"Invalid object: %@", element}];
 
               goto LABEL_14;
             }
           }
         }
 
-        if (IOHIDElementGetDevice(v11) == Device)
+        if (IOHIDElementGetDevice(element) == Device)
         {
-          [v7 addObject:v11];
+          [v7 addObject:element];
         }
 
         else
         {
-          [(GCHIDDeviceInput *)a2 setInputElements:v11, Device];
+          [(GCHIDDeviceInput *)a2 setInputElements:element, Device];
         }
 
 LABEL_14:
@@ -249,8 +249,8 @@ LABEL_14:
     [GCHIDDeviceInput setInputElements:];
   }
 
-  v52 = self;
-  objc_sync_enter(v52);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   IOHIDQueueStop(self->_queue);
   while (1)
   {
@@ -263,8 +263,8 @@ LABEL_14:
     CFRelease(Value);
   }
 
-  v16 = [(GCHIDDeviceInput *)v52 elements];
-  v17 = [v16 mutableCopy];
+  elements = [(GCHIDDeviceInput *)selfCopy elements];
+  v17 = [elements mutableCopy];
   v18 = v17;
   if (v17)
   {
@@ -306,8 +306,8 @@ LABEL_14:
           v29 = [(__CFSet *)v20 member:v26];
           if (!v29 && IOHIDElementGetType(v26) != kIOHIDElementTypeInput_NULL)
           {
-            v50 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v50 handleFailureInMethod:a2 object:v52 file:v26 lineNumber:? description:?];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:v26 lineNumber:? description:?];
           }
 
           [(__CFSet *)v20 removeObject:v26];
@@ -364,15 +364,15 @@ LABEL_14:
 
   if (!v41)
   {
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v48 = self->_queue;
     v49 = _IOHIDQueueCopyElements();
-    [v47 handleFailureInMethod:a2 object:v52 file:objc_msgSend(v49 lineNumber:"count") description:{-[__CFSet count](v20, "count")}];
+    [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:objc_msgSend(v49 lineNumber:"count") description:{-[__CFSet count](v20, "count")}];
   }
 
-  [(GCHIDDeviceInput *)v52 willChangeValueForKey:@"elements"];
-  objc_setProperty(v52, a2, 56, v20, 1, 1);
-  [(GCHIDDeviceInput *)v52 didChangeValueForKey:@"elements"];
+  [(GCHIDDeviceInput *)selfCopy willChangeValueForKey:@"elements"];
+  objc_setProperty(selfCopy, a2, 56, v20, 1, 1);
+  [(GCHIDDeviceInput *)selfCopy didChangeValueForKey:@"elements"];
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
@@ -400,25 +400,25 @@ LABEL_14:
     while (v43);
   }
 
-  if (v52->_activated && !v52->_suspended)
+  if (selfCopy->_activated && !selfCopy->_suspended)
   {
     IOHIDQueueStart(self->_queue);
   }
 
-  objc_sync_exit(v52);
+  objc_sync_exit(selfCopy);
   v46 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setInputElementMatching:(id)a3
+- (void)setInputElementMatching:(id)matching
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  matchingCopy = matching;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v5)
+    if (matchingCopy)
     {
       if ((isKindOfClass & 1) == 0)
       {
@@ -430,9 +430,9 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v5 count])
+    if ([matchingCopy count])
     {
-      v29[0] = v5;
+      v29[0] = matchingCopy;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
       goto LABEL_11;
     }
@@ -443,12 +443,12 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v5 count])
+    if ([matchingCopy count])
     {
-      v7 = v5;
+      v7 = matchingCopy;
 LABEL_11:
       v8 = v7;
-      v9 = objc_opt_new();
+      currentHandler = objc_opt_new();
       if (v8)
       {
         v26 = 0u;
@@ -480,7 +480,7 @@ LABEL_11:
                 if (v17)
                 {
                   v18 = v17;
-                  [v9 addObjectsFromArray:v17];
+                  [currentHandler addObjectsFromArray:v17];
                   CFRelease(v18);
                 }
               }
@@ -502,7 +502,7 @@ LABEL_11:
         }
 
 LABEL_30:
-        [(GCHIDDeviceInput *)self setInputElements:v9];
+        [(GCHIDDeviceInput *)self setInputElements:currentHandler];
         goto LABEL_31;
       }
 
@@ -512,7 +512,7 @@ LABEL_28:
       if (v21)
       {
         v22 = v21;
-        [v9 addObjectsFromArray:v21];
+        [currentHandler addObjectsFromArray:v21];
         CFRelease(v22);
       }
 
@@ -520,17 +520,17 @@ LABEL_28:
     }
 
 LABEL_27:
-    v9 = objc_opt_new();
+    currentHandler = objc_opt_new();
     goto LABEL_28;
   }
 
-  if (!v5)
+  if (!matchingCopy)
   {
     goto LABEL_27;
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"GCHIDDeviceInput.m" lineNumber:300 description:{@"Invalid matching criteria: %@", v5}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"GCHIDDeviceInput.m" lineNumber:300 description:{@"Invalid matching criteria: %@", matchingCopy}];
 LABEL_31:
 
   v23 = *MEMORY[0x1E69E9840];
@@ -538,13 +538,13 @@ LABEL_31:
 
 - (id)batchInputElementHandler
 {
-  if (a1)
+  if (self)
   {
-    a1 = objc_getProperty(a1, sel_batchInputElementHandler, 24, 1);
+    self = objc_getProperty(self, sel_batchInputElementHandler, 24, 1);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)initWithIOHIDDevice:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

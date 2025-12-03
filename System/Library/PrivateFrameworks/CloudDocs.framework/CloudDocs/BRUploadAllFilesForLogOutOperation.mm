@@ -2,8 +2,8 @@
 - (BRUploadAllFilesForLogOutOperation)init;
 - (NSString)description;
 - (void)cancel;
-- (void)evictAllFilesInGroup:(id)a3;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)evictAllFilesInGroup:(id)group;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
@@ -43,32 +43,32 @@
   v4.receiver = self;
   v4.super_class = BRUploadAllFilesForLogOutOperation;
   [(BROperation *)&v4 cancel];
-  v3 = self;
-  objc_sync_enter(v3);
-  [(NSOperationQueue *)v3->_opQueue cancelAllOperations];
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSOperationQueue *)selfCopy->_opQueue cancelAllOperations];
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = MEMORY[0x1E696AEC0];
-  v8.receiver = v2;
+  v8.receiver = selfCopy;
   v8.super_class = BRUploadAllFilesForLogOutOperation;
   v4 = [(BROperation *)&v8 description];
-  v5 = [(NSOperationQueue *)v2->_opQueue operations];
-  v6 = [v3 stringWithFormat:@"%@ sub=%@", v4, v5];
+  operations = [(NSOperationQueue *)selfCopy->_opQueue operations];
+  v6 = [v3 stringWithFormat:@"%@ sub=%@", v4, operations];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)evictAllFilesInGroup:(id)a3
+- (void)evictAllFilesInGroup:(id)group
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupCopy = group;
   memset(v51, 0, sizeof(v51));
   __brc_create_section(0, "[BRUploadAllFilesForLogOutOperation evictAllFilesInGroup:]", 70, 0, v51);
   v5 = brc_bread_crumbs("[BRUploadAllFilesForLogOutOperation evictAllFilesInGroup:]", 70);
@@ -103,16 +103,16 @@
         v11 = brc_default_log(1, 0);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [v9 identifier];
+          identifier = [v9 identifier];
           *buf = 138412546;
-          v53 = v12;
+          v53 = identifier;
           v54 = 2112;
           v55 = v10;
           _os_log_impl(&dword_1AE2A9000, v11, OS_LOG_TYPE_DEFAULT, "[NOTICE] evicting files in %@%@", buf, 0x16u);
         }
 
-        v13 = [v9 documentsURL];
-        v59 = v13;
+        documentsURL = [v9 documentsURL];
+        v59 = documentsURL;
         v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v59 count:1];
         v15 = [v14 mutableCopy];
 
@@ -147,7 +147,7 @@
               }
 
               v20 = *(*(&v43 + 1) + 8 * v19);
-              dispatch_group_enter(v4);
+              dispatch_group_enter(groupCopy);
               v39 = 0uLL;
               v40 = 0;
               __brc_create_section(0, "[BRUploadAllFilesForLogOutOperation evictAllFilesInGroup:]", 82, 0, &v39);
@@ -155,22 +155,22 @@
               v22 = brc_default_log(1, 0);
               if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
               {
-                v24 = v4;
+                v24 = groupCopy;
                 v25 = v7;
-                v26 = self;
+                selfCopy = self;
                 v27 = v39;
-                v28 = [v20 path];
+                path = [v20 path];
                 *buf = 134218498;
                 v53 = v27;
                 v54 = 2112;
-                v55 = v28;
+                v55 = path;
                 v56 = 2112;
                 v57 = v21;
                 _os_log_debug_impl(&dword_1AE2A9000, v22, OS_LOG_TYPE_DEBUG, "[DEBUG] ┣%llx evicting %@%@", buf, 0x20u);
 
-                self = v26;
+                self = selfCopy;
                 v7 = v25;
-                v4 = v24;
+                groupCopy = v24;
                 v8 = v32;
               }
 
@@ -184,7 +184,7 @@
               v37 = v41;
               v38 = v42;
               v35[4] = v20;
-              v36 = v4;
+              v36 = groupCopy;
               [(BREvictItemOperation *)v23 setEvictionCompletionBlock:v35];
               [(NSOperationQueue *)self->_opQueue addOperation:v23];
 
@@ -250,7 +250,7 @@ void __59__BRUploadAllFilesForLogOutOperation_evictAllFilesInGroup___block_invok
 
 - (void)main
 {
-  OUTLINED_FUNCTION_8_0(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_8_0(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_6(&dword_1AE2A9000, v1, v2, "[DEBUG] ┣%llx waiting for the two operations to end%@");
   v3 = *MEMORY[0x1E69E9840];
@@ -440,19 +440,19 @@ LABEL_7:
   __brc_leave_section(&v7);
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  resultCopy = result;
   v8 = brc_bread_crumbs("[BRUploadAllFilesForLogOutOperation finishWithResult:error:]", 174);
   v9 = brc_default_log(1, 0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"success";
-    if (v6)
+    if (errorCopy)
     {
-      v10 = v6;
+      v10 = errorCopy;
     }
 
     *buf = 138412546;
@@ -470,11 +470,11 @@ LABEL_7:
     [BRUploadAllFilesForLogOutOperation finishWithResult:error:];
   }
 
-  v13 = [(BRUploadAllFilesForLogOutOperation *)self uploadAllFilesCompletionBlock];
-  v14 = v13;
-  if (v13)
+  uploadAllFilesCompletionBlock = [(BRUploadAllFilesForLogOutOperation *)self uploadAllFilesCompletionBlock];
+  v14 = uploadAllFilesCompletionBlock;
+  if (uploadAllFilesCompletionBlock)
   {
-    (*(v13 + 16))(v13, v6);
+    (*(uploadAllFilesCompletionBlock + 16))(uploadAllFilesCompletionBlock, errorCopy);
     [(BRUploadAllFilesForLogOutOperation *)self setUploadAllFilesCompletionBlock:0];
   }
 
@@ -487,7 +487,7 @@ LABEL_7:
 
   v18.receiver = self;
   v18.super_class = BRUploadAllFilesForLogOutOperation;
-  [(BROperation *)&v18 finishWithResult:v7 error:v6];
+  [(BROperation *)&v18 finishWithResult:resultCopy error:errorCopy];
 
   v17 = *MEMORY[0x1E69E9840];
 }

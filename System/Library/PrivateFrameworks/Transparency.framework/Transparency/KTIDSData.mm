@@ -1,63 +1,63 @@
 @interface KTIDSData
-- (BOOL)isEqual:(id)a3;
-- (KTIDSData)initWithCoder:(id)a3;
-- (KTIDSData)initWithIdentities:(id)a3 uri:(id)a4 application:(id)a5 ktAccountKey:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (KTIDSData)initWithCoder:(id)coder;
+- (KTIDSData)initWithIdentities:(id)identities uri:(id)uri application:(id)application ktAccountKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KTIDSData
 
-- (KTIDSData)initWithIdentities:(id)a3 uri:(id)a4 application:(id)a5 ktAccountKey:(id)a6
+- (KTIDSData)initWithIdentities:(id)identities uri:(id)uri application:(id)application ktAccountKey:(id)key
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identitiesCopy = identities;
+  uriCopy = uri;
+  applicationCopy = application;
+  keyCopy = key;
   v18.receiver = self;
   v18.super_class = KTIDSData;
   v14 = [(KTIDSData *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    [(KTIDSData *)v14 setUri:v11];
-    [(KTIDSData *)v15 setApplication:v12];
-    [(KTIDSData *)v15 setIdentities:v10];
-    [(KTIDSData *)v15 setKtAccountKey:v13];
+    [(KTIDSData *)v14 setUri:uriCopy];
+    [(KTIDSData *)v15 setApplication:applicationCopy];
+    [(KTIDSData *)v15 setIdentities:identitiesCopy];
+    [(KTIDSData *)v15 setKtAccountKey:keyCopy];
     v16 = v15;
   }
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(KTIDSData *)self uri];
-  [v4 encodeObject:v5 forKey:@"uri"];
+  [coderCopy encodeObject:v5 forKey:@"uri"];
 
-  v6 = [(KTIDSData *)self application];
-  [v4 encodeObject:v6 forKey:@"application"];
+  application = [(KTIDSData *)self application];
+  [coderCopy encodeObject:application forKey:@"application"];
 
-  v7 = [(KTIDSData *)self ktAccountKey];
-  [v4 encodeObject:v7 forKey:@"ktAccountKey"];
+  ktAccountKey = [(KTIDSData *)self ktAccountKey];
+  [coderCopy encodeObject:ktAccountKey forKey:@"ktAccountKey"];
 
-  v8 = [(KTIDSData *)self ktOptChangeReason];
-  [v4 encodeObject:v8 forKey:@"ktOptChangeReason"];
+  ktOptChangeReason = [(KTIDSData *)self ktOptChangeReason];
+  [coderCopy encodeObject:ktOptChangeReason forKey:@"ktOptChangeReason"];
 
-  v9 = [(KTIDSData *)self identities];
-  [v4 encodeObject:v9 forKey:@"identities"];
+  identities = [(KTIDSData *)self identities];
+  [coderCopy encodeObject:identities forKey:@"identities"];
 
-  v10 = [(KTIDSData *)self idsResponseTime];
-  [v4 encodeObject:v10 forKey:@"idsResponseTime"];
+  idsResponseTime = [(KTIDSData *)self idsResponseTime];
+  [coderCopy encodeObject:idsResponseTime forKey:@"idsResponseTime"];
 
-  v11 = [(KTIDSData *)self traceUUID];
-  [v4 encodeObject:v11 forKey:@"traceUUID"];
+  traceUUID = [(KTIDSData *)self traceUUID];
+  [coderCopy encodeObject:traceUUID forKey:@"traceUUID"];
 }
 
-- (KTIDSData)initWithCoder:(id)a3
+- (KTIDSData)initWithCoder:(id)coder
 {
   v32[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = KTIDSData;
   v5 = [(KTIDSData *)&v30 init];
@@ -66,37 +66,37 @@
     goto LABEL_16;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
   [(KTIDSData *)v5 setUri:v6];
 
-  v7 = [(KTIDSData *)v5 uri];
+  application = [(KTIDSData *)v5 uri];
 
-  if (!v7)
+  if (!application)
   {
     goto LABEL_17;
   }
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"application"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"application"];
   [(KTIDSData *)v5 setApplication:v8];
 
-  v7 = [(KTIDSData *)v5 application];
+  application = [(KTIDSData *)v5 application];
 
-  if (!v7)
+  if (!application)
   {
     goto LABEL_17;
   }
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ktAccountKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ktAccountKey"];
   [(KTIDSData *)v5 setKtAccountKey:v9];
 
-  v7 = [(KTIDSData *)v5 ktAccountKey];
+  application = [(KTIDSData *)v5 ktAccountKey];
 
-  if (!v7)
+  if (!application)
   {
     goto LABEL_17;
   }
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ktOptChangeReason"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ktOptChangeReason"];
   [(KTIDSData *)v5 setKtOptChangeReason:v10];
 
   v11 = MEMORY[0x1E695DFD8];
@@ -104,23 +104,23 @@
   v32[1] = objc_opt_class();
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:2];
   v13 = [v11 setWithArray:v12];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"identities"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"identities"];
   [(KTIDSData *)v5 setIdentities:v14];
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idsResponseTime"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idsResponseTime"];
   [(KTIDSData *)v5 setIdsResponseTime:v15];
 
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"traceUUID"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"traceUUID"];
   [(KTIDSData *)v5 setTraceUUID:v16];
 
-  v17 = [(KTIDSData *)v5 identities];
+  identities = [(KTIDSData *)v5 identities];
   objc_opt_class();
   LOBYTE(v12) = objc_opt_isKindOfClass();
 
   if ((v12 & 1) == 0)
   {
 LABEL_16:
-    v7 = 0;
+    application = 0;
     goto LABEL_17;
   }
 
@@ -128,8 +128,8 @@ LABEL_16:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v18 = [(KTIDSData *)v5 identities];
-  v19 = [v18 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  identities2 = [(KTIDSData *)v5 identities];
+  v19 = [identities2 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v19)
   {
     v20 = v19;
@@ -141,7 +141,7 @@ LABEL_16:
       {
         if (*v27 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(identities2);
         }
 
         v23 = *(*(&v26 + 1) + 8 * v22);
@@ -156,7 +156,7 @@ LABEL_16:
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v20 = [identities2 countByEnumeratingWithState:&v26 objects:v31 count:16];
       if (v20)
       {
         continue;
@@ -166,17 +166,17 @@ LABEL_16:
     }
   }
 
-  v7 = v5;
+  application = v5;
 LABEL_17:
 
   v24 = *MEMORY[0x1E69E9840];
-  return v7;
+  return application;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -186,7 +186,7 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(KTIDSData *)self uri];
       v7 = [(KTIDSData *)v5 uri];
       v8 = [v6 isEqual:v7];
@@ -196,27 +196,27 @@ LABEL_17:
         goto LABEL_22;
       }
 
-      v9 = [(KTIDSData *)self application];
-      v10 = [(KTIDSData *)v5 application];
-      v11 = [v9 isEqual:v10];
+      application = [(KTIDSData *)self application];
+      application2 = [(KTIDSData *)v5 application];
+      v11 = [application isEqual:application2];
 
       if (!v11)
       {
         goto LABEL_22;
       }
 
-      v12 = [(KTIDSData *)self ktAccountKey];
-      v13 = [(KTIDSData *)v5 ktAccountKey];
-      v14 = v13;
-      if (v12 == v13)
+      ktAccountKey = [(KTIDSData *)self ktAccountKey];
+      ktAccountKey2 = [(KTIDSData *)v5 ktAccountKey];
+      v14 = ktAccountKey2;
+      if (ktAccountKey == ktAccountKey2)
       {
       }
 
       else
       {
-        v15 = [(KTIDSData *)self ktAccountKey];
-        v16 = [(KTIDSData *)v5 ktAccountKey];
-        v17 = [v15 isEqual:v16];
+        ktAccountKey3 = [(KTIDSData *)self ktAccountKey];
+        ktAccountKey4 = [(KTIDSData *)v5 ktAccountKey];
+        v17 = [ktAccountKey3 isEqual:ktAccountKey4];
 
         if (!v17)
         {
@@ -224,18 +224,18 @@ LABEL_17:
         }
       }
 
-      v19 = [(KTIDSData *)self ktOptChangeReason];
-      v20 = [(KTIDSData *)v5 ktOptChangeReason];
-      v21 = v20;
-      if (v19 == v20)
+      ktOptChangeReason = [(KTIDSData *)self ktOptChangeReason];
+      ktOptChangeReason2 = [(KTIDSData *)v5 ktOptChangeReason];
+      v21 = ktOptChangeReason2;
+      if (ktOptChangeReason == ktOptChangeReason2)
       {
       }
 
       else
       {
-        v22 = [(KTIDSData *)self ktOptChangeReason];
-        v23 = [(KTIDSData *)v5 ktOptChangeReason];
-        v24 = [v22 isEqual:v23];
+        ktOptChangeReason3 = [(KTIDSData *)self ktOptChangeReason];
+        ktOptChangeReason4 = [(KTIDSData *)v5 ktOptChangeReason];
+        v24 = [ktOptChangeReason3 isEqual:ktOptChangeReason4];
 
         if (!v24)
         {
@@ -243,18 +243,18 @@ LABEL_17:
         }
       }
 
-      v25 = [(KTIDSData *)self traceUUID];
-      v26 = [(KTIDSData *)v5 traceUUID];
-      v27 = v26;
-      if (v25 == v26)
+      traceUUID = [(KTIDSData *)self traceUUID];
+      traceUUID2 = [(KTIDSData *)v5 traceUUID];
+      v27 = traceUUID2;
+      if (traceUUID == traceUUID2)
       {
       }
 
       else
       {
-        v28 = [(KTIDSData *)self traceUUID];
-        v29 = [(KTIDSData *)v5 traceUUID];
-        v30 = [v28 isEqual:v29];
+        traceUUID3 = [(KTIDSData *)self traceUUID];
+        traceUUID4 = [(KTIDSData *)v5 traceUUID];
+        v30 = [traceUUID3 isEqual:traceUUID4];
 
         if (!v30)
         {
@@ -262,24 +262,24 @@ LABEL_17:
         }
       }
 
-      v31 = [(KTIDSData *)self identities];
-      v32 = [(KTIDSData *)v5 identities];
-      v33 = [v31 isEqual:v32];
+      identities = [(KTIDSData *)self identities];
+      identities2 = [(KTIDSData *)v5 identities];
+      v33 = [identities isEqual:identities2];
 
       if (v33)
       {
-        v34 = [(KTIDSData *)self idsResponseTime];
-        v35 = [(KTIDSData *)v5 idsResponseTime];
-        if (v34 == v35)
+        idsResponseTime = [(KTIDSData *)self idsResponseTime];
+        idsResponseTime2 = [(KTIDSData *)v5 idsResponseTime];
+        if (idsResponseTime == idsResponseTime2)
         {
           v18 = 1;
         }
 
         else
         {
-          v36 = [(KTIDSData *)self idsResponseTime];
-          v37 = [(KTIDSData *)v5 idsResponseTime];
-          v18 = [v36 isEqual:v37];
+          idsResponseTime3 = [(KTIDSData *)self idsResponseTime];
+          idsResponseTime4 = [(KTIDSData *)v5 idsResponseTime];
+          v18 = [idsResponseTime3 isEqual:idsResponseTime4];
         }
 
         goto LABEL_23;

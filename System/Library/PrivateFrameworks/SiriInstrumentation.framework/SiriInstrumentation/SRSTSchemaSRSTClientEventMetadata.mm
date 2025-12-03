@@ -1,25 +1,25 @@
 @interface SRSTSchemaSRSTClientEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SRSTSchemaSRSTClientEventMetadata)initWithDictionary:(id)a3;
-- (SRSTSchemaSRSTClientEventMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SRSTSchemaSRSTClientEventMetadata)initWithDictionary:(id)dictionary;
+- (SRSTSchemaSRSTClientEventMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SRSTSchemaSRSTClientEventMetadata
 
-- (SRSTSchemaSRSTClientEventMetadata)initWithDictionary:(id)a3
+- (SRSTSchemaSRSTClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SRSTSchemaSRSTClientEventMetadata;
   v5 = [(SRSTSchemaSRSTClientEventMetadata *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sessionId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(SRSTSchemaSRSTClientEventMetadata *)v5 setSessionId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"srstId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"srstId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (SRSTSchemaSRSTClientEventMetadata)initWithJSON:(id)a3
+- (SRSTSchemaSRSTClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SRSTSchemaSRSTClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SRSTSchemaSRSTClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SRSTSchemaSRSTClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_sessionId)
   {
-    v4 = [(SRSTSchemaSRSTClientEventMetadata *)self sessionId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    sessionId = [(SRSTSchemaSRSTClientEventMetadata *)self sessionId];
+    dictionaryRepresentation = [sessionId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"sessionId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"sessionId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"sessionId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"sessionId"];
     }
   }
 
   if (self->_srstId)
   {
-    v7 = [(SRSTSchemaSRSTClientEventMetadata *)self srstId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    srstId = [(SRSTSchemaSRSTClientEventMetadata *)self srstId];
+    dictionaryRepresentation2 = [srstId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"srstId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"srstId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"srstId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"srstId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SRSTSchemaSRSTClientEventMetadata *)self sessionId];
-  v6 = [v4 sessionId];
-  if ((v5 != 0) == (v6 == 0))
+  sessionId = [(SRSTSchemaSRSTClientEventMetadata *)self sessionId];
+  sessionId2 = [equalCopy sessionId];
+  if ((sessionId != 0) == (sessionId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SRSTSchemaSRSTClientEventMetadata *)self sessionId];
-  if (v7)
+  sessionId3 = [(SRSTSchemaSRSTClientEventMetadata *)self sessionId];
+  if (sessionId3)
   {
-    v8 = v7;
-    v9 = [(SRSTSchemaSRSTClientEventMetadata *)self sessionId];
-    v10 = [v4 sessionId];
-    v11 = [v9 isEqual:v10];
+    v8 = sessionId3;
+    sessionId4 = [(SRSTSchemaSRSTClientEventMetadata *)self sessionId];
+    sessionId5 = [equalCopy sessionId];
+    v11 = [sessionId4 isEqual:sessionId5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(SRSTSchemaSRSTClientEventMetadata *)self srstId];
-  v6 = [v4 srstId];
-  if ((v5 != 0) != (v6 == 0))
+  sessionId = [(SRSTSchemaSRSTClientEventMetadata *)self srstId];
+  sessionId2 = [equalCopy srstId];
+  if ((sessionId != 0) != (sessionId2 == 0))
   {
-    v12 = [(SRSTSchemaSRSTClientEventMetadata *)self srstId];
-    if (!v12)
+    srstId = [(SRSTSchemaSRSTClientEventMetadata *)self srstId];
+    if (!srstId)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(SRSTSchemaSRSTClientEventMetadata *)self srstId];
-    v15 = [v4 srstId];
-    v16 = [v14 isEqual:v15];
+    v13 = srstId;
+    srstId2 = [(SRSTSchemaSRSTClientEventMetadata *)self srstId];
+    srstId3 = [equalCopy srstId];
+    v16 = [srstId2 isEqual:srstId3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SRSTSchemaSRSTClientEventMetadata *)self sessionId];
+  toCopy = to;
+  sessionId = [(SRSTSchemaSRSTClientEventMetadata *)self sessionId];
 
-  if (v4)
+  if (sessionId)
   {
-    v5 = [(SRSTSchemaSRSTClientEventMetadata *)self sessionId];
+    sessionId2 = [(SRSTSchemaSRSTClientEventMetadata *)self sessionId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SRSTSchemaSRSTClientEventMetadata *)self srstId];
+  srstId = [(SRSTSchemaSRSTClientEventMetadata *)self srstId];
 
-  if (v6)
+  if (srstId)
   {
-    v7 = [(SRSTSchemaSRSTClientEventMetadata *)self srstId];
+    srstId2 = [(SRSTSchemaSRSTClientEventMetadata *)self srstId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = SRSTSchemaSRSTClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(SRSTSchemaSRSTClientEventMetadata *)self sessionId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  sessionId = [(SRSTSchemaSRSTClientEventMetadata *)self sessionId];
+  v7 = [sessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SRSTSchemaSRSTClientEventMetadata *)self deleteSessionId];
   }
 
-  v9 = [(SRSTSchemaSRSTClientEventMetadata *)self srstId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  srstId = [(SRSTSchemaSRSTClientEventMetadata *)self srstId];
+  v10 = [srstId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SRSTSchemaSRSTClientEventMetadata *)self deleteSrstId];
   }

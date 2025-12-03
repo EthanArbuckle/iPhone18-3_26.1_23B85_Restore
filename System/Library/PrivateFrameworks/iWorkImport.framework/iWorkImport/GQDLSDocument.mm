@@ -1,9 +1,9 @@
 @interface GQDLSDocument
-- (__CFString)createUpgradedAppBundleResourcePath:(__CFString *)a3;
-- (__CFURL)createUrlToAppBundleResource:(__CFString *)a3 processorBundle:(__CFBundle *)a4 fileUrl:(__CFURL *)a5;
+- (__CFString)createUpgradedAppBundleResourcePath:(__CFString *)path;
+- (__CFURL)createUrlToAppBundleResource:(__CFString *)resource processorBundle:(__CFBundle *)bundle fileUrl:(__CFURL *)url;
 - (void)dealloc;
-- (void)initializeAppBundleResourcesUrl:(__CFURL *)a3;
-- (void)setStylesheet:(id)a3;
+- (void)initializeAppBundleResourcesUrl:(__CFURL *)url;
+- (void)setStylesheet:(id)stylesheet;
 @end
 
 @implementation GQDLSDocument
@@ -21,28 +21,28 @@
   [(GQDRoot *)&v4 dealloc];
 }
 
-- (void)setStylesheet:(id)a3
+- (void)setStylesheet:(id)stylesheet
 {
-  v5 = a3;
+  stylesheetCopy = stylesheet;
 
-  self->mStylesheet = a3;
+  self->mStylesheet = stylesheet;
 }
 
-- (__CFURL)createUrlToAppBundleResource:(__CFString *)a3 processorBundle:(__CFBundle *)a4 fileUrl:(__CFURL *)a5
+- (__CFURL)createUrlToAppBundleResource:(__CFString *)resource processorBundle:(__CFBundle *)bundle fileUrl:(__CFURL *)url
 {
-  v7 = [(GQDRoot *)self appBundleResourcesUrl:a5, a4];
-  if (!v7)
+  bundle = [(GQDRoot *)self appBundleResourcesUrl:url, bundle];
+  if (!bundle)
   {
     return 0;
   }
 
-  v8 = v7;
+  v8 = bundle;
   if (![(GQDRoot *)self appBundleCanProcessCurrentDocVersion])
   {
     return 0;
   }
 
-  v9 = [(GQDLSDocument *)self createUpgradedAppBundleResourcePath:a3];
+  v9 = [(GQDLSDocument *)self createUpgradedAppBundleResourcePath:resource];
   if (!v9)
   {
     return 0;
@@ -56,7 +56,7 @@
   return v12;
 }
 
-- (void)initializeAppBundleResourcesUrl:(__CFURL *)a3
+- (void)initializeAppBundleResourcesUrl:(__CFURL *)url
 {
   if (!self->super.mAppBundleResourcesUrlInitialized)
   {
@@ -66,7 +66,7 @@
   self->super.mAppBundleResourcesUrlInitialized = 1;
 }
 
-- (__CFString)createUpgradedAppBundleResourcePath:(__CFString *)a3
+- (__CFString)createUpgradedAppBundleResourcePath:(__CFString *)path
 {
   v5 = [(GQDRoot *)self appBundleResourcesUrl:0];
   if (!v5)
@@ -79,7 +79,7 @@
     return 0;
   }
 
-  MutableCopy = CFStringCreateMutableCopy(0, 0, a3);
+  MutableCopy = CFStringCreateMutableCopy(0, 0, path);
   v11.length = CFStringGetLength(MutableCopy);
   v11.location = 0;
   CFStringFindAndReplace(MutableCopy, @".tmplt/", @".nmbtemplate/", v11, 0);

@@ -1,12 +1,12 @@
 @interface CSEventDonationJournalItem
-- (BOOL)containsAnyInAttributes:(id)a3;
-- (BOOL)containsAttribute:(id)a3;
+- (BOOL)containsAnyInAttributes:(id)attributes;
+- (BOOL)containsAttribute:(id)attribute;
 - (BOOL)hasHTMLContent;
 - (BOOL)hasTextContent;
 - (BOOL)isUpdate;
 - (BOOL)isUserActivity;
-- (CSEventDonationJournalItem)initWithIdentifier:(id *)a3 itemObj:(id *)a4 attrDictObj:(id *)a5 customDictObj:(id *)a6 contentObj:(id *)a7 htmlObj:(id *)a8 embeddingsObj:(id *)a9 flags:(unsigned int)a10;
-- (id)attributesForKeys:(id)a3 bundleID:(id)a4;
+- (CSEventDonationJournalItem)initWithIdentifier:(id *)identifier itemObj:(id *)obj attrDictObj:(id *)dictObj customDictObj:(id *)customDictObj contentObj:(id *)contentObj htmlObj:(id *)htmlObj embeddingsObj:(id *)embeddingsObj flags:(unsigned int)self0;
+- (id)attributesForKeys:(id)keys bundleID:(id)d;
 - (uint64_t)attrDictObj;
 - (uint64_t)contentObj;
 - (uint64_t)customDictObj;
@@ -19,35 +19,35 @@
 
 @implementation CSEventDonationJournalItem
 
-- (CSEventDonationJournalItem)initWithIdentifier:(id *)a3 itemObj:(id *)a4 attrDictObj:(id *)a5 customDictObj:(id *)a6 contentObj:(id *)a7 htmlObj:(id *)a8 embeddingsObj:(id *)a9 flags:(unsigned int)a10
+- (CSEventDonationJournalItem)initWithIdentifier:(id *)identifier itemObj:(id *)obj attrDictObj:(id *)dictObj customDictObj:(id *)customDictObj contentObj:(id *)contentObj htmlObj:(id *)htmlObj embeddingsObj:(id *)embeddingsObj flags:(unsigned int)self0
 {
   v24.receiver = self;
   v24.super_class = CSEventDonationJournalItem;
   result = [(CSEventDonationJournalItem *)&v24 init];
   if (result)
   {
-    v17 = *&a3->var0;
-    result->_identifier.reference = a3->var2;
+    v17 = *&identifier->var0;
+    result->_identifier.reference = identifier->var2;
     *&result->_identifier.containerBytes = v17;
-    v18 = *&a4->var0;
-    result->_itemObj.reference = a4->var2;
+    v18 = *&obj->var0;
+    result->_itemObj.reference = obj->var2;
     *&result->_itemObj.containerBytes = v18;
-    v19 = *&a5->var0;
-    result->_attrDictObj.reference = a5->var2;
+    v19 = *&dictObj->var0;
+    result->_attrDictObj.reference = dictObj->var2;
     *&result->_attrDictObj.containerBytes = v19;
-    v20 = *&a6->var0;
-    result->_customDictObj.reference = a6->var2;
+    v20 = *&customDictObj->var0;
+    result->_customDictObj.reference = customDictObj->var2;
     *&result->_customDictObj.containerBytes = v20;
-    v21 = *&a7->var0;
-    result->_contentObj.reference = a7->var2;
+    v21 = *&contentObj->var0;
+    result->_contentObj.reference = contentObj->var2;
     *&result->_contentObj.containerBytes = v21;
-    v22 = *&a8->var0;
-    result->_htmlObj.reference = a8->var2;
+    v22 = *&htmlObj->var0;
+    result->_htmlObj.reference = htmlObj->var2;
     *&result->_htmlObj.containerBytes = v22;
-    v23 = *&a9->var0;
-    result->_embeddingsObj.reference = a9->var2;
+    v23 = *&embeddingsObj->var0;
+    result->_embeddingsObj.reference = embeddingsObj->var2;
     *&result->_embeddingsObj.containerBytes = v23;
-    result->_flags = a10;
+    result->_flags = flags;
   }
 
   return result;
@@ -149,7 +149,7 @@
   return result;
 }
 
-- (BOOL)containsAnyInAttributes:(id)a3
+- (BOOL)containsAnyInAttributes:(id)attributes
 {
   v27 = *MEMORY[0x277D85DE8];
   v23 = 0;
@@ -159,8 +159,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v26 count:16];
+  attributesCopy = attributes;
+  v5 = [attributesCopy countByEnumeratingWithState:&v19 objects:v26 count:16];
   if (v5)
   {
     v6 = *v20;
@@ -170,7 +170,7 @@
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attributesCopy);
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
@@ -202,7 +202,7 @@
         goto LABEL_16;
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v19 objects:v26 count:16];
+      v5 = [attributesCopy countByEnumeratingWithState:&v19 objects:v26 count:16];
       if (v5)
       {
         continue;
@@ -222,7 +222,7 @@
       v18 = 0;
       v14 = *&self->_customDictObj.containerBytes;
       v15 = self->_customDictObj.reference;
-      v13 = v4;
+      v13 = attributesCopy;
       _MDPlistDictionaryIterate();
       LOBYTE(self) = *(*(&v16 + 1) + 24);
 
@@ -271,18 +271,18 @@ void __54__CSEventDonationJournalItem_containsAnyInAttributes___block_invoke(uin
   }
 }
 
-- (BOOL)containsAttribute:(id)a3
+- (BOOL)containsAttribute:(id)attribute
 {
-  v4 = a3;
-  if (![v4 isEqualToString:@"kMDItemTextContent"])
+  attributeCopy = attribute;
+  if (![attributeCopy isEqualToString:@"kMDItemTextContent"])
   {
-    if ([v4 isEqualToString:@"kMDItemHTMLContentData"])
+    if ([attributeCopy isEqualToString:@"kMDItemHTMLContentData"])
     {
-      v5 = [(CSEventDonationJournalItem *)self hasHTMLContent];
+      hasHTMLContent = [(CSEventDonationJournalItem *)self hasHTMLContent];
       goto LABEL_5;
     }
 
-    if ([v4 isEqualToString:@"kMDItemExtraData"])
+    if ([attributeCopy isEqualToString:@"kMDItemExtraData"])
     {
       if (!self || !self->_customDictObj.containerLength)
       {
@@ -300,8 +300,8 @@ void __54__CSEventDonationJournalItem_containsAnyInAttributes___block_invoke(uin
         v9 = 0uLL;
         v10 = 0;
 LABEL_14:
-        [v4 UTF8String];
-        strlen([v4 UTF8String]);
+        [attributeCopy UTF8String];
+        strlen([attributeCopy UTF8String]);
         if (_MDPlistDictionaryGetPlistObjectForKey())
         {
           v6 = 1;
@@ -321,27 +321,27 @@ LABEL_16:
     goto LABEL_14;
   }
 
-  v5 = [(CSEventDonationJournalItem *)self hasTextContent];
+  hasHTMLContent = [(CSEventDonationJournalItem *)self hasTextContent];
 LABEL_5:
-  v6 = v5;
+  v6 = hasHTMLContent;
 LABEL_6:
 
   return v6;
 }
 
-- (id)attributesForKeys:(id)a3 bundleID:(id)a4
+- (id)attributesForKeys:(id)keys bundleID:(id)d
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v23 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count") + 1}];
+  keysCopy = keys;
+  dCopy = d;
+  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(keysCopy, "count") + 1}];
   v34 = 0uLL;
   v35 = 0;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = v6;
+  v8 = keysCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v9)
   {
@@ -435,13 +435,13 @@ LABEL_28:
     while (v19);
   }
 
-  if (v23)
+  if (dCopy)
   {
     v20 = [v7 objectForKey:@"_kMDItemBundleID"];
 
     if (!v20)
     {
-      [v7 setObject:v23 forKey:@"_kMDItemBundleID"];
+      [v7 setObject:dCopy forKey:@"_kMDItemBundleID"];
     }
   }
 

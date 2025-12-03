@@ -1,12 +1,12 @@
 @interface PRSRankingConfiguration
 - (PRSRankingConfiguration)init;
-- (double)queryDependentProbabilityForCategory:(id)a3;
-- (double)queryIndependentProbabilityForCategory:(id)a3;
-- (float)engagementProbabilityForCategory:(id)a3;
+- (double)queryDependentProbabilityForCategory:(id)category;
+- (double)queryIndependentProbabilityForCategory:(id)category;
+- (float)engagementProbabilityForCategory:(id)category;
 - (float)maxEngagementProbability;
-- (void)appendToExistingCEPBlocklist:(id)a3;
-- (void)mergeWith:(id)a3;
-- (void)updateQueryDependentProbabilityAndBlocklistSetWith:(id)a3;
+- (void)appendToExistingCEPBlocklist:(id)blocklist;
+- (void)mergeWith:(id)with;
+- (void)updateQueryDependentProbabilityAndBlocklistSetWith:(id)with;
 @end
 
 @implementation PRSRankingConfiguration
@@ -35,114 +35,114 @@
   return v2;
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v27 = a3;
-  v4 = [(PRSRankingConfiguration *)self rankingQueries];
-  v5 = v27;
-  if (v4)
+  withCopy = with;
+  rankingQueries = [(PRSRankingConfiguration *)self rankingQueries];
+  selfCopy = withCopy;
+  if (rankingQueries)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = [(PRSRankingConfiguration *)v5 rankingQueries];
-  [(PRSRankingConfiguration *)self setRankingQueries:v6];
+  rankingQueries2 = [(PRSRankingConfiguration *)selfCopy rankingQueries];
+  [(PRSRankingConfiguration *)self setRankingQueries:rankingQueries2];
 
-  v7 = [(PRSRankingConfiguration *)self parsecCategoryOrder];
-  v8 = v27;
-  if (v7)
+  parsecCategoryOrder = [(PRSRankingConfiguration *)self parsecCategoryOrder];
+  selfCopy2 = withCopy;
+  if (parsecCategoryOrder)
   {
-    v8 = self;
+    selfCopy2 = self;
   }
 
-  v9 = [(PRSRankingConfiguration *)v8 parsecCategoryOrder];
-  [(PRSRankingConfiguration *)self setParsecCategoryOrder:v9];
+  parsecCategoryOrder2 = [(PRSRankingConfiguration *)selfCopy2 parsecCategoryOrder];
+  [(PRSRankingConfiguration *)self setParsecCategoryOrder:parsecCategoryOrder2];
 
-  if ([(PRSRankingConfiguration *)v27 disableResultTruncation])
+  if ([(PRSRankingConfiguration *)withCopy disableResultTruncation])
   {
-    [(PRSRankingConfiguration *)self setDisableResultTruncation:[(PRSRankingConfiguration *)v27 disableResultTruncation]];
+    [(PRSRankingConfiguration *)self setDisableResultTruncation:[(PRSRankingConfiguration *)withCopy disableResultTruncation]];
   }
 
-  v10 = [(PRSRankingConfiguration *)v27 sqfData];
-  if (v10)
+  sqfData = [(PRSRankingConfiguration *)withCopy sqfData];
+  if (sqfData)
   {
-    [(PRSRankingConfiguration *)self updateWithSQFData:v10];
-    v11 = [v10 objectForKey:@"local_result_quality_threshold"];
+    [(PRSRankingConfiguration *)self updateWithSQFData:sqfData];
+    v11 = [sqfData objectForKey:@"local_result_quality_threshold"];
     localResultQualityThreshold = self->_localResultQualityThreshold;
     self->_localResultQualityThreshold = v11;
   }
 
-  v13 = [(PRSRankingConfiguration *)v27 serverFeatures];
+  serverFeatures = [(PRSRankingConfiguration *)withCopy serverFeatures];
 
-  if (v13)
+  if (serverFeatures)
   {
-    v14 = [(PRSRankingConfiguration *)v27 serverFeatures];
-    [(PRSRankingConfiguration *)self setServerFeatures:v14];
+    serverFeatures2 = [(PRSRankingConfiguration *)withCopy serverFeatures];
+    [(PRSRankingConfiguration *)self setServerFeatures:serverFeatures2];
   }
 
-  v15 = [(PRSRankingConfiguration *)v27 queryIndependentCategoryProbabilities];
-  if (v15)
+  queryIndependentCategoryProbabilities = [(PRSRankingConfiguration *)withCopy queryIndependentCategoryProbabilities];
+  if (queryIndependentCategoryProbabilities)
   {
-    v16 = v15;
-    v17 = [(PRSRankingConfiguration *)self queryIndependentCategoryProbabilities];
+    v16 = queryIndependentCategoryProbabilities;
+    queryIndependentCategoryProbabilities2 = [(PRSRankingConfiguration *)self queryIndependentCategoryProbabilities];
 
-    if (!v17)
+    if (!queryIndependentCategoryProbabilities2)
     {
-      v18 = [(PRSRankingConfiguration *)v27 queryIndependentCategoryProbabilities];
-      [(PRSRankingConfiguration *)self setQueryIndependentCategoryProbabilities:v18];
+      queryIndependentCategoryProbabilities3 = [(PRSRankingConfiguration *)withCopy queryIndependentCategoryProbabilities];
+      [(PRSRankingConfiguration *)self setQueryIndependentCategoryProbabilities:queryIndependentCategoryProbabilities3];
 
-      v19 = [(PRSRankingConfiguration *)self queryIndependentCategoryProbabilities];
-      v20 = [v19 blocklist];
-      [(PRSRankingConfiguration *)self appendToExistingCEPBlocklist:v20];
+      queryIndependentCategoryProbabilities4 = [(PRSRankingConfiguration *)self queryIndependentCategoryProbabilities];
+      blocklist = [queryIndependentCategoryProbabilities4 blocklist];
+      [(PRSRankingConfiguration *)self appendToExistingCEPBlocklist:blocklist];
     }
   }
 
   [(PRSRankingConfiguration *)self numAppsDeduped];
-  v21 = v27;
+  selfCopy3 = withCopy;
   if (v22 != -1.0)
   {
-    v21 = self;
+    selfCopy3 = self;
   }
 
-  [(PRSRankingConfiguration *)v21 numAppsDeduped];
+  [(PRSRankingConfiguration *)selfCopy3 numAppsDeduped];
   [(PRSRankingConfiguration *)self setNumAppsDeduped:?];
-  v23 = [(PRSRankingConfiguration *)v27 serverRelevanceScores];
+  serverRelevanceScores = [(PRSRankingConfiguration *)withCopy serverRelevanceScores];
 
-  if (v23)
+  if (serverRelevanceScores)
   {
-    v24 = [(PRSRankingConfiguration *)v27 serverRelevanceScores];
-    [(PRSRankingConfiguration *)self setServerRelevanceScores:v24];
+    serverRelevanceScores2 = [(PRSRankingConfiguration *)withCopy serverRelevanceScores];
+    [(PRSRankingConfiguration *)self setServerRelevanceScores:serverRelevanceScores2];
 
-    [(PRSRankingConfiguration *)v27 serverRelevanceScoreThreshold];
+    [(PRSRankingConfiguration *)withCopy serverRelevanceScoreThreshold];
     [(PRSRankingConfiguration *)self setServerRelevanceScoreThreshold:?];
   }
 
-  v25 = [(PRSRankingConfiguration *)v27 iFunScores];
+  iFunScores = [(PRSRankingConfiguration *)withCopy iFunScores];
 
-  if (v25)
+  if (iFunScores)
   {
-    v26 = [(PRSRankingConfiguration *)v27 iFunScores];
-    [(PRSRankingConfiguration *)self setIFunScores:v26];
+    iFunScores2 = [(PRSRankingConfiguration *)withCopy iFunScores];
+    [(PRSRankingConfiguration *)self setIFunScores:iFunScores2];
   }
 }
 
-- (void)appendToExistingCEPBlocklist:(id)a3
+- (void)appendToExistingCEPBlocklist:(id)blocklist
 {
-  v4 = a3;
+  blocklistCopy = blocklist;
   [(PRSRankingConfiguration *)self lock];
-  v5 = [(PRSRankingConfiguration *)self cepBlocklistSet];
-  [v5 addObjectsFromArray:v4];
+  cepBlocklistSet = [(PRSRankingConfiguration *)self cepBlocklistSet];
+  [cepBlocklistSet addObjectsFromArray:blocklistCopy];
 
   [(PRSRankingConfiguration *)self unlock];
 }
 
-- (void)updateQueryDependentProbabilityAndBlocklistSetWith:(id)a3
+- (void)updateQueryDependentProbabilityAndBlocklistSetWith:(id)with
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  withCopy = with;
   [(PRSRankingConfiguration *)self lock];
-  v24 = v4;
-  v5 = [v4 prs_dictionaryForKey:@"stats"];
+  v24 = withCopy;
+  v5 = [withCopy prs_dictionaryForKey:@"stats"];
   v6 = [v5 prs_arrayForKey:@"cep_long"];
 
   v29 = 0u;
@@ -165,14 +165,14 @@
 
         v9 = *(*(&v27 + 1) + 8 * i);
         v10 = [v9 objectForKey:@"cid"];
-        v11 = [v10 lowercaseString];
+        lowercaseString = [v10 lowercaseString];
 
-        v12 = [(PRSRankingConfiguration *)self queryDependentCategoryProbabilities];
+        queryDependentCategoryProbabilities = [(PRSRankingConfiguration *)self queryDependentCategoryProbabilities];
         v13 = [v9 objectForKey:@"e"];
-        [v12 setObject:v13 forKey:v11];
+        [queryDependentCategoryProbabilities setObject:v13 forKey:lowercaseString];
 
-        v14 = [v9 objectForKey:@"e"];
-        [v14 doubleValue];
+        cepBlocklistSet = [v9 objectForKey:@"e"];
+        [cepBlocklistSet doubleValue];
         if (v15 < 0.0)
         {
           v16 = [v9 objectForKey:@"cid"];
@@ -189,10 +189,10 @@
             goto LABEL_10;
           }
 
-          v14 = [(PRSRankingConfiguration *)self cepBlocklistSet];
+          cepBlocklistSet = [(PRSRankingConfiguration *)self cepBlocklistSet];
           v21 = [v9 objectForKey:@"cid"];
-          v22 = [v21 lowercaseString];
-          [v14 addObject:v22];
+          lowercaseString2 = [v21 lowercaseString];
+          [cepBlocklistSet addObject:lowercaseString2];
         }
 
 LABEL_10:
@@ -208,9 +208,9 @@ LABEL_10:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (float)engagementProbabilityForCategory:(id)a3
+- (float)engagementProbabilityForCategory:(id)category
 {
-  [(PRSRankingConfiguration *)self queryDependentProbabilityForCategory:a3];
+  [(PRSRankingConfiguration *)self queryDependentProbabilityForCategory:category];
   v4 = v3;
   v5 = v3 == -1.0;
   result = -1.0;
@@ -222,14 +222,14 @@ LABEL_10:
   return result;
 }
 
-- (double)queryDependentProbabilityForCategory:(id)a3
+- (double)queryDependentProbabilityForCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   [(PRSRankingConfiguration *)self lock];
   queryDependentCategoryProbabilities = self->_queryDependentCategoryProbabilities;
-  v6 = [v4 lowercaseString];
+  lowercaseString = [categoryCopy lowercaseString];
 
-  v7 = [(NSMutableDictionary *)queryDependentCategoryProbabilities objectForKey:v6];
+  v7 = [(NSMutableDictionary *)queryDependentCategoryProbabilities objectForKey:lowercaseString];
 
   if (v7)
   {
@@ -247,14 +247,14 @@ LABEL_10:
   return v9;
 }
 
-- (double)queryIndependentProbabilityForCategory:(id)a3
+- (double)queryIndependentProbabilityForCategory:(id)category
 {
-  v4 = a3;
-  [(SSPlistDataReader *)self->_queryIndependentCategoryProbabilities doubleValueForBundle:v4];
+  categoryCopy = category;
+  [(SSPlistDataReader *)self->_queryIndependentCategoryProbabilities doubleValueForBundle:categoryCopy];
   v6 = v5;
   if (v5 < 0.0)
   {
-    -[SSPlistDataReader doubleValueForKey:](self->_queryIndependentCategoryProbabilities, "doubleValueForKey:", [v4 UTF8String]);
+    -[SSPlistDataReader doubleValueForKey:](self->_queryIndependentCategoryProbabilities, "doubleValueForKey:", [categoryCopy UTF8String]);
     if (v7 >= 0.0)
     {
       v6 = v7;
@@ -277,8 +277,8 @@ LABEL_10:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(NSMutableDictionary *)self->_queryDependentCategoryProbabilities allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allKeys = [(NSMutableDictionary *)self->_queryDependentCategoryProbabilities allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -290,7 +290,7 @@ LABEL_10:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = [(NSMutableDictionary *)self->_queryDependentCategoryProbabilities objectForKey:*(*(&v16 + 1) + 8 * i)];
@@ -305,7 +305,7 @@ LABEL_10:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);

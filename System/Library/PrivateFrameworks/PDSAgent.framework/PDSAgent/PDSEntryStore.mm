@@ -1,28 +1,28 @@
 @interface PDSEntryStore
-- (BOOL)_permitTransitionFromState:(unsigned __int8)a3 toState:(unsigned __int8)a4;
-- (BOOL)deleteEntry:(id)a3 withError:(id *)a4;
+- (BOOL)_permitTransitionFromState:(unsigned __int8)state toState:(unsigned __int8)toState;
+- (BOOL)deleteEntry:(id)entry withError:(id *)error;
 - (BOOL)hasActiveEntries;
 - (BOOL)hasPendingEntries;
-- (BOOL)storeEntries:(id)a3 deleteEntries:(id)a4 withError:(id *)a5;
-- (BOOL)storeEntry:(id)a3 withError:(id *)a4;
-- (PDSEntryStore)initWithCache:(id)a3;
+- (BOOL)storeEntries:(id)entries deleteEntries:(id)deleteEntries withError:(id *)error;
+- (BOOL)storeEntry:(id)entry withError:(id *)error;
+- (PDSEntryStore)initWithCache:(id)cache;
 - (PDSEntryStoreDelegate)delegate;
 - (id)activeUsers;
-- (id)activeUsersWithClientID:(id)a3;
+- (id)activeUsersWithClientID:(id)d;
 - (id)entries;
-- (id)entriesForUser:(id)a3;
-- (id)entriesForUser:(id)a3 withClientID:(id)a4;
-- (id)entriesWithClientID:(id)a3;
+- (id)entriesForUser:(id)user;
+- (id)entriesForUser:(id)user withClientID:(id)d;
+- (id)entriesWithClientID:(id)d;
 - (id)users;
-- (id)usersWithClientID:(id)a3;
+- (id)usersWithClientID:(id)d;
 @end
 
 @implementation PDSEntryStore
 
-- (PDSEntryStore)initWithCache:(id)a3
+- (PDSEntryStore)initWithCache:(id)cache
 {
-  v6 = a3;
-  if (!v6)
+  cacheCopy = cache;
+  if (!cacheCopy)
   {
     [(PDSEntryStore *)a2 initWithCache:?];
   }
@@ -33,32 +33,32 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_cache, a3);
+    objc_storeStrong(&v7->_cache, cache);
   }
 
   return v8;
 }
 
-- (BOOL)storeEntry:(id)a3 withError:(id *)a4
+- (BOOL)storeEntry:(id)entry withError:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PDSEntryStore *)self cache];
+  entryCopy = entry;
+  cache = [(PDSEntryStore *)self cache];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __38__PDSEntryStore_storeEntry_withError___block_invoke;
   v15[3] = &unk_2799F8550;
   v15[4] = self;
-  v8 = [v7 storeEntry:v6 transitionBlock:v15 withError:a4];
+  v8 = [cache storeEntry:entryCopy transitionBlock:v15 withError:error];
 
   if (v8)
   {
-    v9 = [(PDSEntryStore *)self delegate];
-    v10 = [v6 registration];
-    v11 = [v10 topicString];
-    v16[0] = v11;
+    delegate = [(PDSEntryStore *)self delegate];
+    registration = [entryCopy registration];
+    topicString = [registration topicString];
+    v16[0] = topicString;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-    [v9 entryStore:self didUpdatePendingTopics:v12 forceImmediateUpdate:0];
+    [delegate entryStore:self didUpdatePendingTopics:v12 forceImmediateUpdate:0];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -81,27 +81,27 @@ id __61__PDSEntryStore_updateAllEntriesWithState_toState_withError___block_invok
   return v3;
 }
 
-- (BOOL)deleteEntry:(id)a3 withError:(id *)a4
+- (BOOL)deleteEntry:(id)entry withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(PDSEntryStore *)self cache];
-  LOBYTE(a4) = [v7 deleteEntry:v6 withError:a4];
+  entryCopy = entry;
+  cache = [(PDSEntryStore *)self cache];
+  LOBYTE(error) = [cache deleteEntry:entryCopy withError:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)storeEntries:(id)a3 deleteEntries:(id)a4 withError:(id *)a5
+- (BOOL)storeEntries:(id)entries deleteEntries:(id)deleteEntries withError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PDSEntryStore *)self cache];
+  entriesCopy = entries;
+  deleteEntriesCopy = deleteEntries;
+  cache = [(PDSEntryStore *)self cache];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __54__PDSEntryStore_storeEntries_deleteEntries_withError___block_invoke;
   v40[3] = &unk_2799F8550;
   v40[4] = self;
-  v11 = [v10 storeEntries:v8 transitionBlock:v40 deleteEntries:v9 withError:a5];
+  v11 = [cache storeEntries:entriesCopy transitionBlock:v40 deleteEntries:deleteEntriesCopy withError:error];
 
   if (v11)
   {
@@ -111,7 +111,7 @@ id __61__PDSEntryStore_updateAllEntriesWithState_toState_withError___block_invok
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v13 = v8;
+    v13 = entriesCopy;
     v14 = [v13 countByEnumeratingWithState:&v36 objects:v42 count:16];
     if (v14)
     {
@@ -126,9 +126,9 @@ id __61__PDSEntryStore_updateAllEntriesWithState_toState_withError___block_invok
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v36 + 1) + 8 * i) registration];
-          v19 = [v18 topicString];
-          [v12 addObject:v19];
+          registration = [*(*(&v36 + 1) + 8 * i) registration];
+          topicString = [registration topicString];
+          [v12 addObject:topicString];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v36 objects:v42 count:16];
@@ -141,7 +141,7 @@ id __61__PDSEntryStore_updateAllEntriesWithState_toState_withError___block_invok
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v20 = v9;
+    v20 = deleteEntriesCopy;
     v21 = [v20 countByEnumeratingWithState:&v32 objects:v41 count:16];
     if (v21)
     {
@@ -156,9 +156,9 @@ id __61__PDSEntryStore_updateAllEntriesWithState_toState_withError___block_invok
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v32 + 1) + 8 * j) registration];
-          v26 = [v25 topicString];
-          [v12 addObject:v26];
+          registration2 = [*(*(&v32 + 1) + 8 * j) registration];
+          topicString2 = [registration2 topicString];
+          [v12 addObject:topicString2];
         }
 
         v22 = [v20 countByEnumeratingWithState:&v32 objects:v41 count:16];
@@ -167,9 +167,9 @@ id __61__PDSEntryStore_updateAllEntriesWithState_toState_withError___block_invok
       while (v22);
     }
 
-    v27 = [(PDSEntryStore *)self delegate];
+    delegate = [(PDSEntryStore *)self delegate];
     v28 = [v12 copy];
-    [v27 entryStore:self didUpdatePendingTopics:v28 forceImmediateUpdate:0];
+    [delegate entryStore:self didUpdatePendingTopics:v28 forceImmediateUpdate:0];
 
     LOBYTE(v11) = v31;
   }
@@ -180,107 +180,107 @@ id __61__PDSEntryStore_updateAllEntriesWithState_toState_withError___block_invok
 
 - (BOOL)hasPendingEntries
 {
-  v2 = [(PDSEntryStore *)self cache];
-  v3 = [v2 hasPendingEntries];
+  cache = [(PDSEntryStore *)self cache];
+  hasPendingEntries = [cache hasPendingEntries];
 
-  return v3;
+  return hasPendingEntries;
 }
 
 - (BOOL)hasActiveEntries
 {
-  v2 = [(PDSEntryStore *)self cache];
-  v3 = [v2 hasActiveEntries];
+  cache = [(PDSEntryStore *)self cache];
+  hasActiveEntries = [cache hasActiveEntries];
 
-  return v3;
+  return hasActiveEntries;
 }
 
 - (id)entries
 {
-  v2 = [(PDSEntryStore *)self cache];
-  v3 = [v2 loadAllEntries];
+  cache = [(PDSEntryStore *)self cache];
+  loadAllEntries = [cache loadAllEntries];
 
-  return v3;
+  return loadAllEntries;
 }
 
-- (id)entriesForUser:(id)a3
+- (id)entriesForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(PDSEntryStore *)self cache];
-  v6 = [v5 loadAllEntriesUser:v4];
+  userCopy = user;
+  cache = [(PDSEntryStore *)self cache];
+  v6 = [cache loadAllEntriesUser:userCopy];
 
   return v6;
 }
 
-- (id)entriesForUser:(id)a3 withClientID:(id)a4
+- (id)entriesForUser:(id)user withClientID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PDSEntryStore *)self cache];
-  v9 = [v8 loadAllEntriesUser:v7 withClientID:v6];
+  dCopy = d;
+  userCopy = user;
+  cache = [(PDSEntryStore *)self cache];
+  v9 = [cache loadAllEntriesUser:userCopy withClientID:dCopy];
 
   return v9;
 }
 
-- (id)entriesWithClientID:(id)a3
+- (id)entriesWithClientID:(id)d
 {
-  v4 = a3;
-  v5 = [(PDSEntryStore *)self cache];
-  v6 = [v5 loadAllEntriesForClientID:v4];
+  dCopy = d;
+  cache = [(PDSEntryStore *)self cache];
+  v6 = [cache loadAllEntriesForClientID:dCopy];
 
   return v6;
 }
 
 - (id)users
 {
-  v2 = [(PDSEntryStore *)self cache];
-  v3 = [v2 loadAllUsers];
+  cache = [(PDSEntryStore *)self cache];
+  loadAllUsers = [cache loadAllUsers];
 
-  return v3;
+  return loadAllUsers;
 }
 
 - (id)activeUsers
 {
-  v2 = [(PDSEntryStore *)self cache];
-  v3 = [v2 loadAllActiveUsers];
+  cache = [(PDSEntryStore *)self cache];
+  loadAllActiveUsers = [cache loadAllActiveUsers];
 
-  return v3;
+  return loadAllActiveUsers;
 }
 
-- (id)usersWithClientID:(id)a3
+- (id)usersWithClientID:(id)d
 {
-  v4 = a3;
-  v5 = [(PDSEntryStore *)self cache];
-  v6 = [v5 loadAllUsersForClientID:v4];
+  dCopy = d;
+  cache = [(PDSEntryStore *)self cache];
+  v6 = [cache loadAllUsersForClientID:dCopy];
 
   return v6;
 }
 
-- (id)activeUsersWithClientID:(id)a3
+- (id)activeUsersWithClientID:(id)d
 {
-  v4 = a3;
-  v5 = [(PDSEntryStore *)self cache];
-  v6 = [v5 loadAllActiveUsersForClientID:v4];
+  dCopy = d;
+  cache = [(PDSEntryStore *)self cache];
+  v6 = [cache loadAllActiveUsersForClientID:dCopy];
 
   return v6;
 }
 
-- (BOOL)_permitTransitionFromState:(unsigned __int8)a3 toState:(unsigned __int8)a4
+- (BOOL)_permitTransitionFromState:(unsigned __int8)state toState:(unsigned __int8)toState
 {
-  if (a3 > 1)
+  if (state > 1)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
-      if (a4 < 4u)
+      if (toState < 4u)
       {
-        v4 = a4;
+        toStateCopy3 = toState;
         v5 = 6;
         goto LABEL_13;
       }
     }
 
-    else if (a3 == 3 && a4 < 4u)
+    else if (state == 3 && toState < 4u)
     {
-      v4 = a4;
+      toStateCopy3 = toState;
       v5 = 12;
       goto LABEL_13;
     }
@@ -290,14 +290,14 @@ LABEL_14:
     return v6 & 1;
   }
 
-  if (a3)
+  if (state)
   {
-    if (a3 == 1 && a4 < 4u)
+    if (state == 1 && toState < 4u)
     {
-      v4 = a4;
+      toStateCopy3 = toState;
       v5 = 14;
 LABEL_13:
-      v6 = v5 >> v4;
+      v6 = v5 >> toStateCopy3;
       return v6 & 1;
     }
 

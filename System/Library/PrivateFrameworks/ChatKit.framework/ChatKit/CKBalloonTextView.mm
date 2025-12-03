@@ -1,39 +1,39 @@
 @interface CKBalloonTextView
 + (BOOL)_textEffectsBalloonDebugHighlightingEnabled;
-+ (CGSize)sizeThatFits:(CGSize)a3 attributedText:(id)a4 maximumNumberOfLines:(unint64_t)a5 lineBreakMode:(int64_t)a6 textContainerInsets:(UIEdgeInsets)a7 outTextAlignmentInsets:(UIEdgeInsets *)a8 outIsSingleLine:(BOOL *)a9;
++ (CGSize)sizeThatFits:(CGSize)fits attributedText:(id)text maximumNumberOfLines:(unint64_t)lines lineBreakMode:(int64_t)mode textContainerInsets:(UIEdgeInsets)insets outTextAlignmentInsets:(UIEdgeInsets *)alignmentInsets outIsSingleLine:(BOOL *)line;
 + (id)makeTextView;
-+ (id)makeTextViewUsingConfiguration:(id)a3;
-+ (id)makeTextViewUsingTextKit2UsingConfiguration:(id)a3;
-+ (void)_commonTextViewContainerSetup:(id)a3;
++ (id)makeTextViewUsingConfiguration:(id)configuration;
++ (id)makeTextViewUsingTextKit2UsingConfiguration:(id)configuration;
++ (void)_commonTextViewContainerSetup:(id)setup;
 - (BOOL)_showsEditMenu;
 - (BOOL)becomeFirstResponder;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)resignFirstResponder;
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 isSingleLine:(BOOL *)a5;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets isSingleLine:(BOOL *)line;
 - (CKBalloonTextViewInteractionDelegate)interactionDelegate;
 - (NSString)description;
 - (_NSRange)_selectedRange;
 - (id)_fakeSelectionBackgroundColor;
-- (id)_textWithHyphenationAppliedForAttributedText:(id)a3;
-- (id)initReadonlyAndUnselectableWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (id)_textWithHyphenationAppliedForAttributedText:(id)text;
+- (id)initReadonlyAndUnselectableWithFrame:(CGRect)frame textContainer:(id)container;
 - (id)selectionBarColor;
 - (id)selectionHighlightColor;
 - (void)_cleanUpSelectionState;
-- (void)_displayAttributedTextIfPossible:(id)a3 applyHyphenation:(BOOL)a4;
-- (void)_interactionStartedFromPreviewItemController:(id)a3;
-- (void)_interactionStoppedFromPreviewItemController:(id)a3;
+- (void)_displayAttributedTextIfPossible:(id)possible applyHyphenation:(BOOL)hyphenation;
+- (void)_interactionStartedFromPreviewItemController:(id)controller;
+- (void)_interactionStoppedFromPreviewItemController:(id)controller;
 - (void)_removeFakeSelectionBackgroundColor;
 - (void)_setFakeSelectionBackgroundColor;
-- (void)_setFakeSelectionBackgroundColorForRange:(_NSRange)a3;
-- (void)_updateFakeSelectionBackgroundColor:(id)a3;
-- (void)copy:(id)a3;
+- (void)_setFakeSelectionBackgroundColorForRange:(_NSRange)range;
+- (void)_updateFakeSelectionBackgroundColor:(id)color;
+- (void)copy:(id)copy;
 - (void)didMoveToWindow;
-- (void)panGestureRecognized:(id)a3;
-- (void)setAllowsTextAnimations:(BOOL)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setBalloonTextSelectedRange:(_NSRange)a3;
-- (void)setFakeSelected:(BOOL)a3;
-- (void)startSelectionForColor:(char)a3;
+- (void)panGestureRecognized:(id)recognized;
+- (void)setAllowsTextAnimations:(BOOL)animations;
+- (void)setAttributedText:(id)text;
+- (void)setBalloonTextSelectedRange:(_NSRange)range;
+- (void)setFakeSelected:(BOOL)selected;
+- (void)startSelectionForColor:(char)color;
 - (void)stopSelection;
 - (void)viewDidMoveToSuperview;
 @end
@@ -43,22 +43,22 @@
 + (id)makeTextView
 {
   v3 = +[CKBalloonTextViewConfiguration defaultConfiguration];
-  v4 = [a1 makeTextViewUsingConfiguration:v3];
+  v4 = [self makeTextViewUsingConfiguration:v3];
 
   return v4;
 }
 
-+ (id)makeTextViewUsingConfiguration:(id)a3
++ (id)makeTextViewUsingConfiguration:(id)configuration
 {
-  v3 = [a1 makeTextViewUsingTextKit2UsingConfiguration:a3];
+  v3 = [self makeTextViewUsingTextKit2UsingConfiguration:configuration];
   [v3 setShowsVerticalScrollIndicator:0];
   [v3 setShowsHorizontalScrollIndicator:0];
   [v3 setBackgroundColor:0];
   [v3 setContentMode:11];
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 enableBalloonTextSelection];
+  enableBalloonTextSelection = [v4 enableBalloonTextSelection];
 
-  if (v5)
+  if (enableBalloonTextSelection)
   {
     [v3 setSelectable:1];
     [v3 setTextLoupeVisibility:1];
@@ -82,18 +82,18 @@
   return v3;
 }
 
-+ (void)_commonTextViewContainerSetup:(id)a3
++ (void)_commonTextViewContainerSetup:(id)setup
 {
-  v3 = a3;
-  [v3 setSize:{0.0, 1.79769313e308}];
-  [v3 setWidthTracksTextView:1];
-  [v3 setHeightTracksTextView:1];
+  setupCopy = setup;
+  [setupCopy setSize:{0.0, 1.79769313e308}];
+  [setupCopy setWidthTracksTextView:1];
+  [setupCopy setHeightTracksTextView:1];
 }
 
-+ (id)makeTextViewUsingTextKit2UsingConfiguration:(id)a3
++ (id)makeTextViewUsingTextKit2UsingConfiguration:(id)configuration
 {
   v4 = MEMORY[0x1E69DB808];
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = objc_alloc_init(v4);
   v7 = objc_alloc_init(CKTextStorage);
   [v6 setTextStorage:v7];
@@ -102,8 +102,8 @@
   v9 = objc_alloc_init(MEMORY[0x1E69DB800]);
   [v8 setTextContainer:v9];
   [v6 addTextLayoutManager:v8];
-  v10 = [a1 instancesRespondToSelector:sel_initReadonlyAndUnselectableWithFrame_textContainer_textLayoutManagerEnabled_];
-  v11 = [a1 alloc];
+  v10 = [self instancesRespondToSelector:sel_initReadonlyAndUnselectableWithFrame_textContainer_textLayoutManagerEnabled_];
+  v11 = [self alloc];
   v12 = *MEMORY[0x1E695F058];
   v13 = *(MEMORY[0x1E695F058] + 8);
   v14 = *(MEMORY[0x1E695F058] + 16);
@@ -119,21 +119,21 @@
   }
 
   v17 = v16;
-  v18 = [v5 expressiveTextEnabled];
+  expressiveTextEnabled = [configurationCopy expressiveTextEnabled];
 
-  if (v18)
+  if (expressiveTextEnabled)
   {
     if (([MEMORY[0x1E69DD168] ck_supportsDynamicallyTogglingAllowsTextAnimations] & 1) == 0)
     {
       [v17 setAllowsTextAnimations:1];
     }
 
-    v19 = [v17 textLayoutManager];
-    [v19 setRequiresCTLineRef:1];
+    textLayoutManager = [v17 textLayoutManager];
+    [textLayoutManager setRequiresCTLineRef:1];
   }
 
-  v20 = [v17 textContainer];
-  [a1 _commonTextViewContainerSetup:v20];
+  textContainer = [v17 textContainer];
+  [self _commonTextViewContainerSetup:textContainer];
 
   if ((v10 & 1) == 0)
   {
@@ -147,28 +147,28 @@
 
 - (id)selectionHighlightColor
 {
-  v3 = [(CKBalloonTextView *)self superview];
+  superview = [(CKBalloonTextView *)self superview];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v14 = self;
-    v5 = &v14;
+    selfCopy = self;
+    v5 = &selfCopy;
 LABEL_6:
     v5[1] = CKBalloonTextView;
-    v11 = objc_msgSendSuper2(v5, sel_selectionHighlightColor, v13);
+    v11 = objc_msgSendSuper2(v5, sel_selectionHighlightColor, selfCopy2);
     goto LABEL_7;
   }
 
-  v6 = [(CKBalloonTextView *)self superview];
+  superview2 = [(CKBalloonTextView *)self superview];
   objc_opt_class();
   v7 = objc_opt_isKindOfClass();
 
   if ((v7 & 1) == 0 || (-[CKBalloonTextView superview](self, "superview"), v8 = objc_claimAutoreleasedReturnValue(), +[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v9 = objc_claimAutoreleasedReturnValue(), [v9 theme], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "selectionHighlightColorOverrideForColorType:", objc_msgSend(v8, "color")), v11 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, !v11))
   {
-    v13 = self;
-    v5 = &v13;
+    selfCopy2 = self;
+    v5 = &selfCopy2;
     goto LABEL_6;
   }
 
@@ -179,38 +179,38 @@ LABEL_7:
 
 - (id)selectionBarColor
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isTextSelectionEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTextSelectionEnabled = [mEMORY[0x1E69A8070] isTextSelectionEnabled];
 
-  if (v4)
+  if (isTextSelectionEnabled)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 theme];
-    v7 = [v6 selectionBarColorOverrideForColorType:{-[CKBalloonTextView selectionColorType](self, "selectionColorType")}];
+    theme = [v5 theme];
+    v7 = [theme selectionBarColorOverrideForColorType:{-[CKBalloonTextView selectionColorType](self, "selectionColorType")}];
 
     if (v7)
     {
-      v8 = v7;
+      selectionBarColor = v7;
     }
 
     else
     {
       v12.receiver = self;
       v12.super_class = CKBalloonTextView;
-      v8 = [(CKBalloonTextView *)&v12 selectionBarColor];
+      selectionBarColor = [(CKBalloonTextView *)&v12 selectionBarColor];
     }
 
-    v9 = v8;
+    selectionBarColor2 = selectionBarColor;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = CKBalloonTextView;
-    v9 = [(CKBalloonTextView *)&v11 selectionBarColor];
+    selectionBarColor2 = [(CKBalloonTextView *)&v11 selectionBarColor];
   }
 
-  return v9;
+  return selectionBarColor2;
 }
 
 - (NSString)description
@@ -259,27 +259,27 @@ LABEL_7:
   return v12;
 }
 
-- (id)initReadonlyAndUnselectableWithFrame:(CGRect)a3 textContainer:(id)a4
+- (id)initReadonlyAndUnselectableWithFrame:(CGRect)frame textContainer:(id)container
 {
   v11.receiver = self;
   v11.super_class = CKBalloonTextView;
-  v4 = [(CKBalloonTextView *)&v11 initReadonlyAndUnselectableWithFrame:a4 textContainer:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(CKBalloonTextView *)&v11 initReadonlyAndUnselectableWithFrame:container textContainer:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
     [v5 balloonTextContainerInset];
     [v4 setTextContainerInset:?];
 
-    v6 = [v4 textContainer];
+    textContainer = [v4 textContainer];
     v7 = +[CKUIBehavior sharedBehaviors];
     [v7 balloonLineFragmentPadding];
-    [v6 setLineFragmentPadding:?];
+    [textContainer setLineFragmentPadding:?];
 
-    v8 = [v4 layoutManager];
-    [v8 setBackgroundLayoutEnabled:0];
+    layoutManager = [v4 layoutManager];
+    [layoutManager setBackgroundLayoutEnabled:0];
 
-    v9 = [v4 layoutManager];
-    [v9 setSynchronizesAlignmentToDirection:1];
+    layoutManager2 = [v4 layoutManager];
+    [layoutManager2 setSynchronizesAlignmentToDirection:1];
 
     [v4 setShouldPresentSheetsInAWindowLayeredAboveTheKeyboard:1];
     [v4 registerForEvents];
@@ -293,8 +293,8 @@ LABEL_7:
   v4.receiver = self;
   v4.super_class = CKBalloonTextView;
   [(CKBalloonTextView *)&v4 didMoveToWindow];
-  v3 = [(CKBalloonTextView *)self attributedText];
-  [(CKBalloonTextView *)self _displayAttributedTextIfPossible:v3 applyHyphenation:1];
+  attributedText = [(CKBalloonTextView *)self attributedText];
+  [(CKBalloonTextView *)self _displayAttributedTextIfPossible:attributedText applyHyphenation:1];
 }
 
 - (void)viewDidMoveToSuperview
@@ -302,22 +302,22 @@ LABEL_7:
   v4.receiver = self;
   v4.super_class = CKBalloonTextView;
   [(CKBalloonTextView *)&v4 viewDidMoveToSuperview];
-  v3 = [(CKBalloonTextView *)self attributedText];
-  [(CKBalloonTextView *)self _displayAttributedTextIfPossible:v3 applyHyphenation:1];
+  attributedText = [(CKBalloonTextView *)self attributedText];
+  [(CKBalloonTextView *)self _displayAttributedTextIfPossible:attributedText applyHyphenation:1];
 }
 
-- (void)_displayAttributedTextIfPossible:(id)a3 applyHyphenation:(BOOL)a4
+- (void)_displayAttributedTextIfPossible:(id)possible applyHyphenation:(BOOL)hyphenation
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CKBalloonTextView *)self superview];
+  hyphenationCopy = hyphenation;
+  possibleCopy = possible;
+  superview = [(CKBalloonTextView *)self superview];
   v8 = +[CKPrintController sharedInstance];
-  v9 = [v8 isPrinting];
+  isPrinting = [v8 isPrinting];
 
-  if ((v9 & 1) != 0 || v7)
+  if ((isPrinting & 1) != 0 || superview)
   {
-    v10 = v6;
-    if (v4)
+    v10 = possibleCopy;
+    if (hyphenationCopy)
     {
       v11 = [(CKBalloonTextView *)self _textWithHyphenationAppliedForAttributedText:v10];
 
@@ -330,9 +330,9 @@ LABEL_7:
   }
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  if (self->_attributedText != a3)
+  if (self->_attributedText != text)
   {
     v4 = [(CKBalloonTextView *)self _textWithHyphenationAppliedForAttributedText:?];
     attributedText = self->_attributedText;
@@ -344,36 +344,36 @@ LABEL_7:
   }
 }
 
-- (id)_textWithHyphenationAppliedForAttributedText:(id)a3
+- (id)_textWithHyphenationAppliedForAttributedText:(id)text
 {
-  v3 = [a3 mutableCopy];
+  v3 = [text mutableCopy];
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 balloonParagraphStyle];
+  balloonParagraphStyle = [v4 balloonParagraphStyle];
 
-  if (!v5)
+  if (!balloonParagraphStyle)
   {
-    v5 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    balloonParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
   }
 
-  [v3 addAttribute:*MEMORY[0x1E69DB688] value:v5 range:{0, objc_msgSend(v3, "length")}];
+  [v3 addAttribute:*MEMORY[0x1E69DB688] value:balloonParagraphStyle range:{0, objc_msgSend(v3, "length")}];
 
   return v3;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = [(CKBalloonTextView *)self interactionDelegate];
-  [v4 interactionTextViewShouldCopyToPasteboard:self];
+  interactionDelegate = [(CKBalloonTextView *)self interactionDelegate];
+  [interactionDelegate interactionTextViewShouldCopyToPasteboard:self];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 isSingleLine:(BOOL *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets isSingleLine:(BOOL *)line
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = [(CKBalloonTextView *)self attributedText];
-  v11 = [(CKBalloonTextView *)self textContainer];
+  height = fits.height;
+  width = fits.width;
+  attributedText = [(CKBalloonTextView *)self attributedText];
+  textContainer = [(CKBalloonTextView *)self textContainer];
   [(CKBalloonTextView *)self textContainerInset];
-  +[CKBalloonTextView sizeThatFits:attributedText:maximumNumberOfLines:lineBreakMode:textContainerInsets:outTextAlignmentInsets:outIsSingleLine:](CKBalloonTextView, "sizeThatFits:attributedText:maximumNumberOfLines:lineBreakMode:textContainerInsets:outTextAlignmentInsets:outIsSingleLine:", v10, [v11 maximumNumberOfLines], objc_msgSend(v11, "lineBreakMode"), a4, a5, width, height, v12, v13, v14, v15);
+  +[CKBalloonTextView sizeThatFits:attributedText:maximumNumberOfLines:lineBreakMode:textContainerInsets:outTextAlignmentInsets:outIsSingleLine:](CKBalloonTextView, "sizeThatFits:attributedText:maximumNumberOfLines:lineBreakMode:textContainerInsets:outTextAlignmentInsets:outIsSingleLine:", attributedText, [textContainer maximumNumberOfLines], objc_msgSend(textContainer, "lineBreakMode"), insets, line, width, height, v12, v13, v14, v15);
   v17 = v16;
   v19 = v18;
 
@@ -384,15 +384,15 @@ LABEL_7:
   return result;
 }
 
-+ (CGSize)sizeThatFits:(CGSize)a3 attributedText:(id)a4 maximumNumberOfLines:(unint64_t)a5 lineBreakMode:(int64_t)a6 textContainerInsets:(UIEdgeInsets)a7 outTextAlignmentInsets:(UIEdgeInsets *)a8 outIsSingleLine:(BOOL *)a9
++ (CGSize)sizeThatFits:(CGSize)fits attributedText:(id)text maximumNumberOfLines:(unint64_t)lines lineBreakMode:(int64_t)mode textContainerInsets:(UIEdgeInsets)insets outTextAlignmentInsets:(UIEdgeInsets *)alignmentInsets outIsSingleLine:(BOOL *)line
 {
-  right = a7.right;
-  bottom = a7.bottom;
-  left = a7.left;
-  top = a7.top;
-  height = a3.height;
-  width = a3.width;
-  v19 = a4;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = fits.height;
+  width = fits.width;
+  textCopy = text;
   if (!sizeThatFits_attributedText_maximumNumberOfLines_lineBreakMode_textContainerInsets_outTextAlignmentInsets_outIsSingleLine__metricsProvider)
   {
     v20 = objc_alloc_init(CKTextMetricsProvider);
@@ -401,9 +401,9 @@ LABEL_7:
   }
 
   v22 = +[CKUIBehavior sharedBehaviors];
-  if (!v19)
+  if (!textCopy)
   {
-    v19 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1F04268F8];
+    textCopy = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1F04268F8];
     v23 = IMLogHandleForCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -411,11 +411,11 @@ LABEL_7:
     }
   }
 
-  v24 = [[CKTextMetricsRequest alloc] initWithAttributedString:v19];
+  v24 = [[CKTextMetricsRequest alloc] initWithAttributedString:textCopy];
   [v22 balloonLineFragmentPadding];
   [(CKTextMetricsRequest *)v24 setLineFragmentPadding:?];
-  [(CKTextMetricsRequest *)v24 setLineBreakMode:a6];
-  [(CKTextMetricsRequest *)v24 setMaximumNumberOfLines:a5];
+  [(CKTextMetricsRequest *)v24 setLineBreakMode:mode];
+  [(CKTextMetricsRequest *)v24 setMaximumNumberOfLines:lines];
   [(CKTextMetricsRequest *)v24 setMaximumWidth:width];
   [(CKTextMetricsRequest *)v24 setMaximumHeight:height];
   [(CKTextMetricsRequest *)v24 setAlreadyPadded:0];
@@ -424,18 +424,18 @@ LABEL_7:
   [v25 size];
   v27 = v26;
   v29 = v28;
-  if (a8)
+  if (alignmentInsets)
   {
     [v25 alignmentInset];
-    a8->top = v30;
-    a8->left = v31;
-    a8->bottom = v32;
-    a8->right = v33;
+    alignmentInsets->top = v30;
+    alignmentInsets->left = v31;
+    alignmentInsets->bottom = v32;
+    alignmentInsets->right = v33;
   }
 
-  if (a9)
+  if (line)
   {
-    *a9 = [v25 isSingleLine];
+    *line = [v25 isSingleLine];
   }
 
   v34 = v27;
@@ -445,27 +445,27 @@ LABEL_7:
   return result;
 }
 
-- (void)_interactionStartedFromPreviewItemController:(id)a3
+- (void)_interactionStartedFromPreviewItemController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = CKBalloonTextView;
-  [(CKBalloonTextView *)&v5 _interactionStartedFromPreviewItemController:a3];
-  v4 = [(CKBalloonTextView *)self interactionDelegate];
-  [v4 interactionStartedFromPreviewItemControllerInTextView:self];
+  [(CKBalloonTextView *)&v5 _interactionStartedFromPreviewItemController:controller];
+  interactionDelegate = [(CKBalloonTextView *)self interactionDelegate];
+  [interactionDelegate interactionStartedFromPreviewItemControllerInTextView:self];
 }
 
-- (void)_interactionStoppedFromPreviewItemController:(id)a3
+- (void)_interactionStoppedFromPreviewItemController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = CKBalloonTextView;
-  [(CKBalloonTextView *)&v5 _interactionStoppedFromPreviewItemController:a3];
-  v4 = [(CKBalloonTextView *)self interactionDelegate];
-  [v4 interactionStoppedFromPreviewItemControllerInTextView:self];
+  [(CKBalloonTextView *)&v5 _interactionStoppedFromPreviewItemController:controller];
+  interactionDelegate = [(CKBalloonTextView *)self interactionDelegate];
+  [interactionDelegate interactionStoppedFromPreviewItemControllerInTextView:self];
 }
 
-- (void)panGestureRecognized:(id)a3
+- (void)panGestureRecognized:(id)recognized
 {
-  [a3 locationInView:self];
+  [recognized locationInView:self];
   v5 = v4;
   v7 = v6;
   [(CKBalloonTextView *)self bounds];
@@ -482,24 +482,24 @@ LABEL_7:
 
   else
   {
-    v8 = [(CKBalloonTextView *)self interactionDelegate];
-    [v8 interactionTextView:self userDidDragOutsideViewWithPoint:{v5, v7}];
+    interactionDelegate = [(CKBalloonTextView *)self interactionDelegate];
+    [interactionDelegate interactionTextView:self userDidDragOutsideViewWithPoint:{v5, v7}];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(CKBalloonTextView *)self dragGestureRecognizer];
+  beginCopy = begin;
+  dragGestureRecognizer = [(CKBalloonTextView *)self dragGestureRecognizer];
 
-  v6 = v5 != v4 || [v4 buttonMask] == 1;
+  v6 = dragGestureRecognizer != beginCopy || [beginCopy buttonMask] == 1;
   return v6;
 }
 
 - (void)_setFakeSelectionBackgroundColor
 {
-  v3 = [(CKBalloonTextView *)self attributedText];
-  v4 = [v3 length];
+  attributedText = [(CKBalloonTextView *)self attributedText];
+  v4 = [attributedText length];
 
   [(CKBalloonTextView *)self _setFakeSelectionBackgroundColorForRange:0, v4];
 }
@@ -507,26 +507,26 @@ LABEL_7:
 - (id)_fakeSelectionBackgroundColor
 {
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 enableBalloonTextSelection];
+  enableBalloonTextSelection = [v4 enableBalloonTextSelection];
 
-  if (v5)
+  if (enableBalloonTextSelection)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"CKBalloonTextView.m" lineNumber:436 description:@"Need to set colors for fakeSelectionBackgroundColor for iPad"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CKBalloonTextView.m" lineNumber:436 description:@"Need to set colors for fakeSelectionBackgroundColor for iPad"];
   }
 
   return 0;
 }
 
-- (void)_setFakeSelectionBackgroundColorForRange:(_NSRange)a3
+- (void)_setFakeSelectionBackgroundColorForRange:(_NSRange)range
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3.length)
+  if (range.length)
   {
-    length = a3.length;
-    location = a3.location;
-    v6 = [(CKBalloonTextView *)self attributedText];
-    v7 = [v6 mutableCopy];
+    length = range.length;
+    location = range.location;
+    attributedText = [(CKBalloonTextView *)self attributedText];
+    v7 = [attributedText mutableCopy];
 
     v8 = [v7 length];
     v22.location = location;
@@ -557,10 +557,10 @@ LABEL_7:
     }
 
     [(CKBalloonTextView *)self _removeFakeSelectionBackgroundColor];
-    v11 = [(CKBalloonTextView *)self _fakeSelectionBackgroundColor];
-    if (v11)
+    _fakeSelectionBackgroundColor = [(CKBalloonTextView *)self _fakeSelectionBackgroundColor];
+    if (_fakeSelectionBackgroundColor)
     {
-      [v7 addAttribute:*MEMORY[0x1E69DB600] value:v11 range:{v9.location, v9.length}];
+      [v7 addAttribute:*MEMORY[0x1E69DB600] value:_fakeSelectionBackgroundColor range:{v9.location, v9.length}];
     }
 
     [(CKBalloonTextView *)self setAttributedText:v7];
@@ -569,13 +569,13 @@ LABEL_7:
 
 - (void)_removeFakeSelectionBackgroundColor
 {
-  v3 = [(CKBalloonTextView *)self attributedText];
-  v4 = [v3 length];
+  attributedText = [(CKBalloonTextView *)self attributedText];
+  v4 = [attributedText length];
 
   if (v4)
   {
-    v5 = [(CKBalloonTextView *)self attributedText];
-    v7 = [v5 mutableCopy];
+    attributedText2 = [(CKBalloonTextView *)self attributedText];
+    v7 = [attributedText2 mutableCopy];
 
     v6 = [v7 length];
     [v7 removeAttribute:*MEMORY[0x1E69DB600] range:{0, v6}];
@@ -583,7 +583,7 @@ LABEL_7:
   }
 }
 
-- (void)_updateFakeSelectionBackgroundColor:(id)a3
+- (void)_updateFakeSelectionBackgroundColor:(id)color
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -606,12 +606,12 @@ uint64_t __57__CKBalloonTextView__updateFakeSelectionBackgroundColor___block_inv
   return result;
 }
 
-- (void)setFakeSelected:(BOOL)a3
+- (void)setFakeSelected:(BOOL)selected
 {
-  if (self->_fakeSelected != a3)
+  if (self->_fakeSelected != selected)
   {
-    self->_fakeSelected = a3;
-    if (a3)
+    self->_fakeSelected = selected;
+    if (selected)
     {
       [(CKBalloonTextView *)self _setFakeSelectionBackgroundColor];
     }
@@ -625,20 +625,20 @@ uint64_t __57__CKBalloonTextView__updateFakeSelectionBackgroundColor___block_inv
 
 - (BOOL)resignFirstResponder
 {
-  v3 = [(CKBalloonTextView *)self selectedRange];
-  [(CKBalloonTextView *)self set_selectedRange:v3, v4];
+  selectedRange = [(CKBalloonTextView *)self selectedRange];
+  [(CKBalloonTextView *)self set_selectedRange:selectedRange, v4];
   v12.receiver = self;
   v12.super_class = CKBalloonTextView;
-  v5 = [(CKBalloonTextView *)&v12 resignFirstResponder];
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v7 = [v6 isTextSelectionEnabled];
+  resignFirstResponder = [(CKBalloonTextView *)&v12 resignFirstResponder];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTextSelectionEnabled = [mEMORY[0x1E69A8070] isTextSelectionEnabled];
 
-  if (!v7)
+  if (!isTextSelectionEnabled)
   {
     goto LABEL_5;
   }
 
-  if (v5)
+  if (resignFirstResponder)
   {
     [(CKBalloonTextView *)self _cleanUpSelectionState];
   }
@@ -647,39 +647,39 @@ uint64_t __57__CKBalloonTextView__updateFakeSelectionBackgroundColor___block_inv
   if (v8)
   {
 LABEL_5:
-    v9 = [(CKBalloonTextView *)self _selectedRange];
-    [(CKBalloonTextView *)self _setFakeSelectionBackgroundColorForRange:v9, v10];
+    _selectedRange = [(CKBalloonTextView *)self _selectedRange];
+    [(CKBalloonTextView *)self _setFakeSelectionBackgroundColorForRange:_selectedRange, v10];
   }
 
-  return v5;
+  return resignFirstResponder;
 }
 
 - (BOOL)becomeFirstResponder
 {
   v8.receiver = self;
   v8.super_class = CKBalloonTextView;
-  v3 = [(CKBalloonTextView *)&v8 becomeFirstResponder];
+  becomeFirstResponder = [(CKBalloonTextView *)&v8 becomeFirstResponder];
   [(CKBalloonTextView *)self _selectedRange];
   if (v4)
   {
     [(CKBalloonTextView *)self setSelectable:1];
     [(CKBalloonTextView *)self _removeFakeSelectionBackgroundColor];
-    v5 = [(CKBalloonTextView *)self _selectedRange];
-    [(CKBalloonTextView *)self setSelectedRange:v5, v6];
+    _selectedRange = [(CKBalloonTextView *)self _selectedRange];
+    [(CKBalloonTextView *)self setSelectedRange:_selectedRange, v6];
   }
 
-  return v3;
+  return becomeFirstResponder;
 }
 
-- (void)startSelectionForColor:(char)a3
+- (void)startSelectionForColor:(char)color
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isTextSelectionEnabled];
+  colorCopy = color;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTextSelectionEnabled = [mEMORY[0x1E69A8070] isTextSelectionEnabled];
 
-  if (v6)
+  if (isTextSelectionEnabled)
   {
-    [(CKBalloonTextView *)self setSelectionColorType:v3];
+    [(CKBalloonTextView *)self setSelectionColorType:colorCopy];
     [(CKBalloonTextView *)self setSelectable:1];
     [(CKBalloonTextView *)self setUserInteractionEnabled:1];
 
@@ -699,10 +699,10 @@ LABEL_5:
     }
   }
 
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isTextSelectionEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTextSelectionEnabled = [mEMORY[0x1E69A8070] isTextSelectionEnabled];
 
-  if (v5)
+  if (isTextSelectionEnabled)
   {
     [(CKBalloonTextView *)self setSelectedRange:0, 0];
     if ([(CKBalloonTextView *)self isFirstResponder])
@@ -710,23 +710,23 @@ LABEL_5:
       [(CKBalloonTextView *)self resignFirstResponder];
     }
 
-    v6 = [(CKBalloonTextView *)self interactionDelegate];
+    interactionDelegate = [(CKBalloonTextView *)self interactionDelegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CKBalloonTextView *)self interactionDelegate];
-      [v8 interactionTextViewDidStopSelection:self];
+      interactionDelegate2 = [(CKBalloonTextView *)self interactionDelegate];
+      [interactionDelegate2 interactionTextViewDidStopSelection:self];
     }
   }
 }
 
 - (void)_cleanUpSelectionState
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isTextSelectionEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTextSelectionEnabled = [mEMORY[0x1E69A8070] isTextSelectionEnabled];
 
-  if (v4)
+  if (isTextSelectionEnabled)
   {
     [(CKBalloonTextView *)self setSelectable:0];
 
@@ -734,10 +734,10 @@ LABEL_5:
   }
 }
 
-- (void)setBalloonTextSelectedRange:(_NSRange)a3
+- (void)setBalloonTextSelectedRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if ([(CKBalloonTextView *)self isFirstResponder])
   {
 
@@ -756,9 +756,9 @@ LABEL_5:
     [(CKBalloonTextView *)self _selectedRange];
     if (v7)
     {
-      v9 = [(CKBalloonTextView *)self _selectedRange];
+      _selectedRange = [(CKBalloonTextView *)self _selectedRange];
 
-      [(CKBalloonTextView *)self _setFakeSelectionBackgroundColorForRange:v9, v8];
+      [(CKBalloonTextView *)self _setFakeSelectionBackgroundColorForRange:_selectedRange, v8];
     }
   }
 }
@@ -797,34 +797,34 @@ void __64__CKBalloonTextView__textEffectsBalloonDebugHighlightingEnabled__block_
   }
 }
 
-- (void)setAllowsTextAnimations:(BOOL)a3
+- (void)setAllowsTextAnimations:(BOOL)animations
 {
-  v3 = a3;
+  animationsCopy = animations;
   v11.receiver = self;
   v11.super_class = CKBalloonTextView;
-  v5 = [(CKBalloonTextView *)&v11 allowsTextAnimations];
+  allowsTextAnimations = [(CKBalloonTextView *)&v11 allowsTextAnimations];
   v10.receiver = self;
   v10.super_class = CKBalloonTextView;
-  [(CKBalloonTextView *)&v10 setAllowsTextAnimations:v3];
-  if (v5 != v3 && [objc_opt_class() _textEffectsBalloonDebugHighlightingEnabled])
+  [(CKBalloonTextView *)&v10 setAllowsTextAnimations:animationsCopy];
+  if (allowsTextAnimations != animationsCopy && [objc_opt_class() _textEffectsBalloonDebugHighlightingEnabled])
   {
-    if (v3)
+    if (animationsCopy)
     {
-      v6 = [MEMORY[0x1E69DC888] redColor];
-      v7 = [v6 colorWithAlphaComponent:0.5];
+      redColor = [MEMORY[0x1E69DC888] redColor];
+      clearColor = [redColor colorWithAlphaComponent:0.5];
 
       v8 = 1.5;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E69DC888] clearColor];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
       v8 = 0.0;
     }
 
-    v9 = [(CKBalloonTextView *)self layer];
-    [v9 setBorderColor:{objc_msgSend(v7, "CGColor")}];
-    [v9 setBorderWidth:v8];
+    layer = [(CKBalloonTextView *)self layer];
+    [layer setBorderColor:{objc_msgSend(clearColor, "CGColor")}];
+    [layer setBorderWidth:v8];
   }
 }
 

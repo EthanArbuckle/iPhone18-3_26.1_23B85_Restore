@@ -2,42 +2,42 @@
 - (BOOL)isARKitAccessoryTrackingDebugViewAvailable;
 - (BOOL)isClassKitAppInstalled;
 - (BOOL)isNCOSupported;
-- (BOOL)webViewController:(id)a3 handleDelegateAction:(id)a4 completion:(id)a5;
+- (BOOL)webViewController:(id)controller handleDelegateAction:(id)action completion:(id)completion;
 - (DTSettings)init;
-- (id)getDisplayRecentDonations:(id)a3;
-- (id)getEnableWorkoutSeriesAggregation:(id)a3;
-- (id)getNotifyAboutScoreSubmissions:(id)a3;
-- (id)getSWCDeveloperMode:(id)a3;
-- (id)getShowBTCarAudioOutput:(id)a3;
-- (id)getUseRouteSharingPolicyForAirPlayRouting:(id)a3;
-- (id)getWidgetKitDeveloperModeEnabled:(id)a3;
-- (id)hangDetectionEnablementStatus:(id)a3;
-- (id)nlcStatus:(id)a3;
-- (id)performanceTraceEnablementStatus:(id)a3;
-- (id)processorTraceEnablementStatus:(id)a3;
+- (id)getDisplayRecentDonations:(id)donations;
+- (id)getEnableWorkoutSeriesAggregation:(id)aggregation;
+- (id)getNotifyAboutScoreSubmissions:(id)submissions;
+- (id)getSWCDeveloperMode:(id)mode;
+- (id)getShowBTCarAudioOutput:(id)output;
+- (id)getUseRouteSharingPolicyForAirPlayRouting:(id)routing;
+- (id)getWidgetKitDeveloperModeEnabled:(id)enabled;
+- (id)hangDetectionEnablementStatus:(id)status;
+- (id)nlcStatus:(id)status;
+- (id)performanceTraceEnablementStatus:(id)status;
+- (id)processorTraceEnablementStatus:(id)status;
 - (id)specifiers;
-- (void)_manageSandboxAccount:(id)a3;
-- (void)_signIntoSandboxAccount:(id)a3;
-- (void)_updateSandboxSpecifier:(id)a3;
-- (void)clearAppClipsCaches:(id)a3;
-- (void)clearTrustedComputers:(id)a3;
+- (void)_manageSandboxAccount:(id)account;
+- (void)_signIntoSandboxAccount:(id)account;
+- (void)_updateSandboxSpecifier:(id)specifier;
+- (void)clearAppClipsCaches:(id)caches;
+- (void)clearTrustedComputers:(id)computers;
 - (void)dealloc;
-- (void)postNotification:(id)a3;
+- (void)postNotification:(id)notification;
 - (void)refreshAdAttributionKitDeveloperModeEnabled;
-- (void)setAdAttributionKitDeveloperMode:(id)a3 specifier:(id)a4;
-- (void)setDisplayRecentDonations:(id)a3 specifier:(id)a4;
-- (void)setEnableWorkoutSeriesAggregation:(id)a3 specifier:(id)a4;
-- (void)setNotifyAboutScoreSubmissions:(id)a3 specifier:(id)a4;
-- (void)setSWCDeveloperMode:(id)a3 specifier:(id)a4;
-- (void)setShowBTCarAudioOutput:(id)a3 specifier:(id)a4;
-- (void)setUseRouteSharingPolicyForAirPlayRouting:(id)a3 specifier:(id)a4;
-- (void)setWidgetKitDeveloperModeEnabled:(id)a3 specifier:(id)a4;
-- (void)showResetMediaServices:(id)a3;
-- (void)syncRecentDonations:(id)a3;
+- (void)setAdAttributionKitDeveloperMode:(id)mode specifier:(id)specifier;
+- (void)setDisplayRecentDonations:(id)donations specifier:(id)specifier;
+- (void)setEnableWorkoutSeriesAggregation:(id)aggregation specifier:(id)specifier;
+- (void)setNotifyAboutScoreSubmissions:(id)submissions specifier:(id)specifier;
+- (void)setSWCDeveloperMode:(id)mode specifier:(id)specifier;
+- (void)setShowBTCarAudioOutput:(id)output specifier:(id)specifier;
+- (void)setUseRouteSharingPolicyForAirPlayRouting:(id)routing specifier:(id)specifier;
+- (void)setWidgetKitDeveloperModeEnabled:(id)enabled specifier:(id)specifier;
+- (void)showResetMediaServices:(id)services;
+- (void)syncRecentDonations:(id)donations;
 - (void)updateAndReloadNCOStatusIfNeeded;
 - (void)viewDidLoad;
-- (void)webViewController:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5;
-- (void)webViewController:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
+- (void)webViewController:(id)controller handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)webViewController:(id)controller handleDialogRequest:(id)request completion:(id)completion;
 @end
 
 @implementation DTSettings
@@ -248,10 +248,10 @@ LABEL_35:
 
 - (BOOL)isNCOSupported
 {
-  v2 = [(DTSettings *)self ncoData];
-  v3 = [v2 isHighDataModeSupported];
+  ncoData = [(DTSettings *)self ncoData];
+  isHighDataModeSupported = [ncoData isHighDataModeSupported];
 
-  return v3;
+  return isHighDataModeSupported;
 }
 
 - (void)updateAndReloadNCOStatusIfNeeded
@@ -264,28 +264,28 @@ LABEL_35:
     v5[3] = sub_1D0EC;
     v5[4] = sub_1D0F8;
     objc_initWeak(&v6, self);
-    v3 = [(DTSettings *)self ncoData];
+    ncoData = [(DTSettings *)self ncoData];
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_1D100;
     v4[3] = &unk_3D7D8;
     v4[4] = v5;
-    [v3 fetchNCOStatusWithCompletion:v4];
+    [ncoData fetchNCOStatusWithCompletion:v4];
 
     _Block_object_dispose(v5, 8);
     objc_destroyWeak(&v6);
   }
 }
 
-- (void)setAdAttributionKitDeveloperMode:(id)a3 specifier:(id)a4
+- (void)setAdAttributionKitDeveloperMode:(id)mode specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
+  modeCopy = mode;
+  specifierCopy = specifier;
+  bOOLValue = [modeCopy BOOLValue];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = v8;
+    *&buf[4] = bOOLValue;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[AdAttributionKit] Setting developer mode enabled: %d", buf, 8u);
   }
 
@@ -300,7 +300,7 @@ LABEL_35:
   v9[2] = sub_1D448;
   v9[3] = &unk_3D298;
   v9[4] = buf;
-  [_TtC17DeveloperSettings22AdAttributionKitBridge setDeveloperModeEnabled:v8 completion:v9];
+  [_TtC17DeveloperSettings22AdAttributionKitBridge setDeveloperModeEnabled:bOOLValue completion:v9];
   _Block_object_dispose(buf, 8);
   objc_destroyWeak(v15);
 }
@@ -326,13 +326,13 @@ LABEL_35:
   }
 }
 
-- (id)nlcStatus:(id)a3
+- (id)nlcStatus:(id)status
 {
   CFPreferencesAppSynchronize(@"com.apple.network.prefPaneSimulate");
   if (CFPreferencesGetAppBooleanValue(@"SimulatorIsRunning", @"com.apple.network.prefPaneSimulate", 0) == 1)
   {
     v3 = CFPreferencesCopyAppValue(@"TimeAtLastRun", @"com.apple.network.prefPaneSimulate");
-    v4 = [v3 longValue];
+    longValue = [v3 longValue];
 
     v5 = +[NSProcessInfo processInfo];
     [v5 systemUptime];
@@ -340,7 +340,7 @@ LABEL_35:
 
     v8 = +[NSDate date];
     [v8 timeIntervalSince1970];
-    v10 = v9 - v4;
+    v10 = v9 - longValue;
 
     v11 = [NSBundle bundleForClass:objc_opt_class()];
     v12 = v11;
@@ -367,7 +367,7 @@ LABEL_35:
   return v14;
 }
 
-- (id)getUseRouteSharingPolicyForAirPlayRouting:(id)a3
+- (id)getUseRouteSharingPolicyForAirPlayRouting:(id)routing
 {
   CFPreferencesAppSynchronize(@"com.apple.coremedia");
   v3 = CFPreferencesGetAppBooleanValue(@"honorRouteSharingPolicyForAirPlayRouting", @"com.apple.coremedia", 0) != 0;
@@ -375,14 +375,14 @@ LABEL_35:
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setUseRouteSharingPolicyForAirPlayRouting:(id)a3 specifier:(id)a4
+- (void)setUseRouteSharingPolicyForAirPlayRouting:(id)routing specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"honorRouteSharingPolicyForAirPlayRouting", a3, @"com.apple.coremedia");
+  CFPreferencesSetAppValue(@"honorRouteSharingPolicyForAirPlayRouting", routing, @"com.apple.coremedia");
 
   CFPreferencesAppSynchronize(@"com.apple.coremedia");
 }
 
-- (void)showResetMediaServices:(id)a3
+- (void)showResetMediaServices:(id)services
 {
   v4 = [UIAlertController alertControllerWithTitle:0 message:0 preferredStyle:0];
   v16 = 0u;
@@ -407,14 +407,14 @@ LABEL_35:
         v10 = *(*(&v16 + 1) + 8 * i);
         if ([v10 cellType] == &dword_C + 1)
         {
-          v11 = [v10 name];
+          name = [v10 name];
           v15[0] = _NSConcreteStackBlock;
           v15[1] = 3221225472;
           v15[2] = sub_1DC60;
           v15[3] = &unk_3D600;
           v15[4] = self;
           v15[5] = v10;
-          v12 = [UIAlertAction actionWithTitle:v11 style:0 handler:v15];
+          v12 = [UIAlertAction actionWithTitle:name style:0 handler:v15];
           [v4 addAction:v12];
         }
       }
@@ -446,28 +446,28 @@ LABEL_35:
   return v4 != 0;
 }
 
-- (id)getSWCDeveloperMode:(id)a3
+- (id)getSWCDeveloperMode:(id)mode
 {
   v3 = +[_SWCServiceDetails isDeveloperModeEnabled];
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setSWCDeveloperMode:(id)a3 specifier:(id)a4
+- (void)setSWCDeveloperMode:(id)mode specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [mode BOOLValue];
 
-  [_SWCServiceDetails setDeveloperModeEnabled:v4 completionHandler:0];
+  [_SWCServiceDetails setDeveloperModeEnabled:bOOLValue completionHandler:0];
 }
 
-- (id)hangDetectionEnablementStatus:(id)a3
+- (id)hangDetectionEnablementStatus:(id)status
 {
   v3 = objc_opt_new();
-  v4 = [v3 isEnabled];
+  isEnabled = [v3 isEnabled];
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = v5;
-  if (v4)
+  if (isEnabled)
   {
     v7 = @"ON";
   }
@@ -482,7 +482,7 @@ LABEL_35:
   return v8;
 }
 
-- (id)performanceTraceEnablementStatus:(id)a3
+- (id)performanceTraceEnablementStatus:(id)status
 {
   v3 = +[PTTraceConfig isControlCenterModuleAvailable];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
@@ -502,14 +502,14 @@ LABEL_35:
   return v7;
 }
 
-- (id)processorTraceEnablementStatus:(id)a3
+- (id)processorTraceEnablementStatus:(id)status
 {
   v3 = +[DTProcessorTraceConfigurationState shared];
-  v4 = [v3 hardwareConfigured];
+  hardwareConfigured = [v3 hardwareConfigured];
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = v5;
-  if (v4)
+  if (hardwareConfigured)
   {
     v7 = @"ON";
   }
@@ -524,7 +524,7 @@ LABEL_35:
   return v8;
 }
 
-- (void)clearTrustedComputers:(id)a3
+- (void)clearTrustedComputers:(id)computers
 {
   v3 = lockdown_delete_pair_records();
   if (v3)
@@ -557,16 +557,16 @@ LABEL_35:
   return v2;
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
-  name = [a3 propertyForKey:PSValueChangedNotificationKey];
+  name = [notification propertyForKey:PSValueChangedNotificationKey];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, name, 0, 0, 1u);
 }
 
-- (void)setDisplayRecentDonations:(id)a3 specifier:(id)a4
+- (void)setDisplayRecentDonations:(id)donations specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"displayRecentDonations", a3, @"com.apple.duetexpertd");
+  CFPreferencesSetAppValue(@"displayRecentDonations", donations, @"com.apple.duetexpertd");
   CFPreferencesAppSynchronize(@"com.apple.duetexpertd");
   v4 = objc_opt_new();
   v7 = @"displayRecentDonations";
@@ -575,7 +575,7 @@ LABEL_35:
   [v4 synchronizeUserDefaultsDomain:@"com.apple.duetexpertd" keys:v6];
 }
 
-- (id)getDisplayRecentDonations:(id)a3
+- (id)getDisplayRecentDonations:(id)donations
 {
   CFPreferencesAppSynchronize(@"com.apple.duetexpertd");
   v3 = CFPreferencesGetAppBooleanValue(@"displayRecentDonations", @"com.apple.duetexpertd", 0) != 0;
@@ -583,9 +583,9 @@ LABEL_35:
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setWidgetKitDeveloperModeEnabled:(id)a3 specifier:(id)a4
+- (void)setWidgetKitDeveloperModeEnabled:(id)enabled specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"widgetKitDeveloperModeEnabled", a3, @"com.apple.duetexpertd");
+  CFPreferencesSetAppValue(@"widgetKitDeveloperModeEnabled", enabled, @"com.apple.duetexpertd");
   CFPreferencesAppSynchronize(@"com.apple.duetexpertd");
   v4 = objc_opt_new();
   v7 = @"widgetKitDeveloperModeEnabled";
@@ -594,7 +594,7 @@ LABEL_35:
   [v4 synchronizeUserDefaultsDomain:@"com.apple.duetexpertd" keys:v6];
 }
 
-- (id)getWidgetKitDeveloperModeEnabled:(id)a3
+- (id)getWidgetKitDeveloperModeEnabled:(id)enabled
 {
   CFPreferencesAppSynchronize(@"com.apple.duetexpertd");
   v3 = CFPreferencesGetAppBooleanValue(@"widgetKitDeveloperModeEnabled", @"com.apple.duetexpertd", 0) != 0;
@@ -602,7 +602,7 @@ LABEL_35:
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)syncRecentDonations:(id)a3
+- (void)syncRecentDonations:(id)donations
 {
   CFPreferencesSetAppValue(@"lastRequestedDeveloperDonationSyncDate", +[NSDate date], @"com.apple.duetexpertd");
   CFPreferencesAppSynchronize(@"com.apple.duetexpertd");
@@ -613,16 +613,16 @@ LABEL_35:
   [v3 synchronizeUserDefaultsDomain:@"com.apple.duetexpertd" keys:v5];
 }
 
-- (void)clearAppClipsCaches:(id)a3
+- (void)clearAppClipsCaches:(id)caches
 {
   v3 = objc_alloc_init(BCSBusinessQueryService);
   [v3 clearCachesForType:2 completion:&stru_3D840];
   SFKillProcessNamed();
 }
 
-- (void)setShowBTCarAudioOutput:(id)a3 specifier:(id)a4
+- (void)setShowBTCarAudioOutput:(id)output specifier:(id)specifier
 {
-  value = a3;
+  value = output;
   if ([value isEqualToNumber:&off_413C8])
   {
     CFPreferencesSetAppValue(@"preferredOutputRoute_v2", @"HFP", @"com.apple.siri.CarBluetooth");
@@ -632,7 +632,7 @@ LABEL_35:
   CFPreferencesAppSynchronize(@"com.apple.siri.CarBluetooth");
 }
 
-- (id)getShowBTCarAudioOutput:(id)a3
+- (id)getShowBTCarAudioOutput:(id)output
 {
   CFPreferencesAppSynchronize(@"com.apple.siri.CarBluetooth");
   v3 = CFPreferencesGetAppBooleanValue(@"showBTAudioRouteSetting", @"com.apple.siri.CarBluetooth", 0) != 0;
@@ -640,14 +640,14 @@ LABEL_35:
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setNotifyAboutScoreSubmissions:(id)a3 specifier:(id)a4
+- (void)setNotifyAboutScoreSubmissions:(id)submissions specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"GKNotifyScoreSubmit", a3, @"com.apple.gamecenter");
+  CFPreferencesSetAppValue(@"GKNotifyScoreSubmit", submissions, @"com.apple.gamecenter");
 
   CFPreferencesAppSynchronize(@"com.apple.gamecenter");
 }
 
-- (id)getNotifyAboutScoreSubmissions:(id)a3
+- (id)getNotifyAboutScoreSubmissions:(id)submissions
 {
   CFPreferencesAppSynchronize(@"com.apple.gamecenter");
   v3 = CFPreferencesGetAppBooleanValue(@"GKNotifyScoreSubmit", @"com.apple.gamecenter", 0) != 0;
@@ -655,14 +655,14 @@ LABEL_35:
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setEnableWorkoutSeriesAggregation:(id)a3 specifier:(id)a4
+- (void)setEnableWorkoutSeriesAggregation:(id)aggregation specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"HKEnableWorkoutSeriesAggregation", a3, @"com.apple.healthd");
+  CFPreferencesSetAppValue(@"HKEnableWorkoutSeriesAggregation", aggregation, @"com.apple.healthd");
 
   CFPreferencesAppSynchronize(@"com.apple.healthd");
 }
 
-- (id)getEnableWorkoutSeriesAggregation:(id)a3
+- (id)getEnableWorkoutSeriesAggregation:(id)aggregation
 {
   keyExistsAndHasValidFormat = 0;
   CFPreferencesAppSynchronize(@"com.apple.healthd");
@@ -681,15 +681,15 @@ LABEL_35:
   return v5;
 }
 
-- (void)_manageSandboxAccount:(id)a3
+- (void)_manageSandboxAccount:(id)account
 {
   v3 = [ACAccountStore ams_sharedAccountStoreForMediaType:AMSAccountMediaTypeAppStoreSandbox];
-  v19 = [v3 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v3 ams_activeiTunesAccount];
 
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"SANDBOX_APPLE_ACCOUNT" value:&stru_3E0D8 table:@"DTSettings"];
-  v6 = [v19 username];
-  v7 = [UIAlertController alertControllerWithTitle:v5 message:v6 preferredStyle:1];
+  username = [ams_activeiTunesAccount username];
+  v7 = [UIAlertController alertControllerWithTitle:v5 message:username preferredStyle:1];
 
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"MANAGE_ACCOUNT" value:&stru_3E0D8 table:@"DTSettings"];
@@ -716,26 +716,26 @@ LABEL_35:
   v16 = [UIAlertAction actionWithTitle:v15 style:0 handler:0];
 
   [v7 addAction:v16];
-  v17 = [v7 popoverPresentationController];
-  [v17 setPermittedArrowDirections:0];
-  [v17 setSourceView:0];
-  [v17 _setCentersPopoverIfSourceViewNotSet:1];
+  popoverPresentationController = [v7 popoverPresentationController];
+  [popoverPresentationController setPermittedArrowDirections:0];
+  [popoverPresentationController setSourceView:0];
+  [popoverPresentationController _setCentersPopoverIfSourceViewNotSet:1];
   [(DTSettings *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_signIntoSandboxAccount:(id)a3
+- (void)_signIntoSandboxAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(DTSettings *)self firstResponder];
-  [v5 resignFirstResponder];
+  accountCopy = account;
+  firstResponder = [(DTSettings *)self firstResponder];
+  [firstResponder resignFirstResponder];
 
   self->_isRunningSandboxAuthentication = 1;
   v6 = objc_alloc_init(AMSAuthenticateOptions);
-  v7 = [v6 clientInfo];
-  [v7 setAccountMediaType:AMSAccountMediaTypeAppStoreSandbox];
+  clientInfo = [v6 clientInfo];
+  [clientInfo setAccountMediaType:AMSAccountMediaTypeAppStoreSandbox];
 
   v8 = [[AMSUIAuthenticateTask alloc] initWithAccount:0 presentingViewController:self options:v6];
-  v9 = [v8 performAuthentication];
+  performAuthentication = [v8 performAuthentication];
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -743,30 +743,30 @@ LABEL_35:
   v10[3] = &unk_3D8B8;
   v10[4] = self;
   objc_copyWeak(&v11, &location);
-  [v9 addFinishBlock:v10];
+  [performAuthentication addFinishBlock:v10];
   [(DTSettings *)self _updateSandboxSpecifier:0];
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)_updateSandboxSpecifier:(id)a3
+- (void)_updateSandboxSpecifier:(id)specifier
 {
-  v20 = a3;
+  specifierCopy = specifier;
   v4 = [ACAccountStore ams_sharedAccountStoreForMediaType:AMSAccountMediaTypeAppStoreSandbox];
-  v5 = [v4 ams_activeiTunesAccount];
-  v6 = v20;
-  if (!v20)
+  ams_activeiTunesAccount = [v4 ams_activeiTunesAccount];
+  selfCopy = specifierCopy;
+  if (!specifierCopy)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  v7 = [(DTSettings *)v6 specifierForID:@"SANDBOX_ACCOUNT_BUTTON"];
-  if (v5)
+  v7 = [(DTSettings *)selfCopy specifierForID:@"SANDBOX_ACCOUNT_BUTTON"];
+  if (ams_activeiTunesAccount)
   {
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"APPLE_ACCOUNT_FORMAT" value:&stru_3E0D8 table:@"DTSettings"];
-    v10 = [v5 username];
-    v11 = [AKUsernameFormatter formattedUsernameFromUsername:v10];
+    username = [ams_activeiTunesAccount username];
+    v11 = [AKUsernameFormatter formattedUsernameFromUsername:username];
     v12 = [NSString stringWithFormat:v9, v11];
 
     [v7 setButtonAction:"_manageSandboxAccount:"];
@@ -794,24 +794,24 @@ LABEL_35:
 
   [v15 setProperty:v14 forKey:v13];
 
-  if (!v20)
+  if (!specifierCopy)
   {
     [(DTSettings *)self reloadSpecifierID:@"SANDBOX_ACCOUNT_BUTTON"];
   }
 }
 
-- (void)webViewController:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5
+- (void)webViewController:(id)controller handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  requestCopy = request;
   v10 = +[AMSLogConfig sharedAccountsConfig];
   if (!v10)
   {
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = AMSLogKey();
@@ -822,7 +822,7 @@ LABEL_35:
     v25 = v13;
     v26 = 2114;
     v27 = v14;
-    _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_0, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
   }
 
   v15 = [AMSUIAuthenticateTask alloc];
@@ -836,28 +836,28 @@ LABEL_35:
     sandboxNavController = self;
   }
 
-  v17 = [v15 initWithRequest:v9 presentingViewController:sandboxNavController];
+  v17 = [v15 initWithRequest:requestCopy presentingViewController:sandboxNavController];
 
-  v18 = [v17 performAuthentication];
+  performAuthentication = [v17 performAuthentication];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1F8E8;
   v20[3] = &unk_3D8E0;
-  v21 = v8;
-  v19 = v8;
-  [v18 addFinishBlock:v20];
+  v21 = completionCopy;
+  v19 = completionCopy;
+  [performAuthentication addFinishBlock:v20];
 }
 
-- (BOOL)webViewController:(id)a3 handleDelegateAction:(id)a4 completion:(id)a5
+- (BOOL)webViewController:(id)controller handleDelegateAction:(id)action completion:(id)completion
 {
-  v6 = [AMSLogConfig sharedAccountsConfig:a3];
+  v6 = [AMSLogConfig sharedAccountsConfig:controller];
   if (!v6)
   {
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
@@ -868,24 +868,24 @@ LABEL_35:
     v15 = v9;
     v16 = 2114;
     v17 = v10;
-    _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] %{public}@", &v12, 0x20u);
+    _os_log_impl(&dword_0, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] %{public}@", &v12, 0x20u);
   }
 
   return 0;
 }
 
-- (void)webViewController:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)webViewController:(id)controller handleDialogRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  requestCopy = request;
   v10 = +[AMSLogConfig sharedAccountsConfig];
   if (!v10)
   {
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = AMSLogKey();
@@ -896,18 +896,18 @@ LABEL_35:
     v23 = v13;
     v24 = 2114;
     v25 = v14;
-    _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_0, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
   }
 
-  v15 = [[AMSUIAlertDialogTask alloc] initWithRequest:v9 presentingViewController:self];
-  v16 = [v15 present];
+  v15 = [[AMSUIAlertDialogTask alloc] initWithRequest:requestCopy presentingViewController:self];
+  present = [v15 present];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1FC14;
   v18[3] = &unk_3D908;
-  v19 = v8;
-  v17 = v8;
-  [v16 addFinishBlock:v18];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [present addFinishBlock:v18];
 }
 
 @end

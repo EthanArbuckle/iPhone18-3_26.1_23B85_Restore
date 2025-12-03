@@ -1,7 +1,7 @@
 @interface VMAccountsViewController
 - (VMAccountsView)accountsView;
 - (VMAccountsViewControllerDelegate)delegate;
-- (id)accountAtIndex:(unint64_t)a3;
+- (id)accountAtIndex:(unint64_t)index;
 - (void)loadView;
 - (void)updateAccounts;
 - (void)updateAccountsView;
@@ -23,14 +23,14 @@
   v8.receiver = self;
   v8.super_class = VMAccountsViewController;
   [(VMAccountsViewController *)&v8 viewDidLoad];
-  v3 = [(VMAccountsViewController *)self accountsView];
-  v4 = [MEMORY[0x277D75348] dynamicBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  accountsView = [(VMAccountsViewController *)self accountsView];
+  dynamicBackgroundColor = [MEMORY[0x277D75348] dynamicBackgroundColor];
+  [accountsView setBackgroundColor:dynamicBackgroundColor];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v6 = *MEMORY[0x277D79788];
-  v7 = [(VMViewController *)self manager];
-  [v5 addObserver:self selector:sel_handleVMVoicemailManagerAccountsDidChangeNotification_ name:v6 object:v7];
+  manager = [(VMViewController *)self manager];
+  [defaultCenter addObserver:self selector:sel_handleVMVoicemailManagerAccountsDidChangeNotification_ name:v6 object:manager];
 }
 
 - (VMAccountsView)accountsView
@@ -38,9 +38,9 @@
   accountsView = self->_accountsView;
   if (!accountsView)
   {
-    v4 = [(VMAccountsViewController *)self view];
+    view = [(VMAccountsViewController *)self view];
     v5 = self->_accountsView;
-    self->_accountsView = v4;
+    self->_accountsView = view;
 
     accountsView = self->_accountsView;
   }
@@ -48,17 +48,17 @@
   return accountsView;
 }
 
-- (id)accountAtIndex:(unint64_t)a3
+- (id)accountAtIndex:(unint64_t)index
 {
-  v4 = [(VMAccountsViewController *)self accounts];
-  if ([v4 count] <= a3)
+  accounts = [(VMAccountsViewController *)self accounts];
+  if ([accounts count] <= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:a3];
+    v5 = [accounts objectAtIndexedSubscript:index];
   }
 
   return v5;
@@ -66,15 +66,15 @@
 
 - (void)updateAccounts
 {
-  v4 = [(VMViewController *)self manager];
-  v3 = [v4 accounts];
-  [(VMAccountsViewController *)self setAccounts:v3];
+  manager = [(VMViewController *)self manager];
+  accounts = [manager accounts];
+  [(VMAccountsViewController *)self setAccounts:accounts];
 }
 
 - (void)updateAccountsView
 {
-  v2 = [(VMAccountsViewController *)self accountsView];
-  [v2 reloadData];
+  accountsView = [(VMAccountsViewController *)self accountsView];
+  [accountsView reloadData];
 }
 
 uint64_t __67__VMAccountsViewController_handleVoicemailManagerAccountsDidChange__block_invoke(uint64_t a1)

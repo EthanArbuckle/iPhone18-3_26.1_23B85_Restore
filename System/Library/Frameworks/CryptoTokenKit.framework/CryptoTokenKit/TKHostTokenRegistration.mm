@@ -1,43 +1,43 @@
 @interface TKHostTokenRegistration
-- (TKHostTokenRegistration)initWithCoder:(id)a3;
-- (TKHostTokenRegistration)initWithPromptMessage:(id)a3 creatorBundleID:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (TKHostTokenRegistration)initWithCoder:(id)coder;
+- (TKHostTokenRegistration)initWithPromptMessage:(id)message creatorBundleID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TKHostTokenRegistration
 
-- (TKHostTokenRegistration)initWithPromptMessage:(id)a3 creatorBundleID:(id)a4
+- (TKHostTokenRegistration)initWithPromptMessage:(id)message creatorBundleID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = TKHostTokenRegistration;
   v9 = [(TKHostTokenRegistration *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_promptMessage, a3);
-    objc_storeStrong(&v10->_creatorBundleID, a4);
+    objc_storeStrong(&v9->_promptMessage, message);
+    objc_storeStrong(&v10->_creatorBundleID, d);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TKHostTokenRegistration *)self promptMessage];
-  [v4 encodeObject:v5 forKey:@"promptmessage"];
+  coderCopy = coder;
+  promptMessage = [(TKHostTokenRegistration *)self promptMessage];
+  [coderCopy encodeObject:promptMessage forKey:@"promptmessage"];
 
-  v6 = [(TKHostTokenRegistration *)self creatorBundleID];
-  [v4 encodeObject:v6 forKey:@"creatorbundleid"];
+  creatorBundleID = [(TKHostTokenRegistration *)self creatorBundleID];
+  [coderCopy encodeObject:creatorBundleID forKey:@"creatorbundleid"];
 }
 
-- (TKHostTokenRegistration)initWithCoder:(id)a3
+- (TKHostTokenRegistration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"promptmessage"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creatorbundleid"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"promptmessage"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creatorbundleid"];
 
   v7 = [(TKHostTokenRegistration *)self initWithPromptMessage:v5 creatorBundleID:v6];
   return v7;

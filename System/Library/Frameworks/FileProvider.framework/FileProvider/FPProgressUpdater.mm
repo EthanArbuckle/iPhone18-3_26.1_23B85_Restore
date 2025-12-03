@@ -1,25 +1,25 @@
 @interface FPProgressUpdater
 - (FPProgressProxy)progress;
-- (void)reportProgressUpdate:(int64_t)a3 totalUnitCount:(int64_t)a4 completedFileCount:(int64_t)a5 totalFileCount:(int64_t)a6;
+- (void)reportProgressUpdate:(int64_t)update totalUnitCount:(int64_t)count completedFileCount:(int64_t)fileCount totalFileCount:(int64_t)totalFileCount;
 @end
 
 @implementation FPProgressUpdater
 
-- (void)reportProgressUpdate:(int64_t)a3 totalUnitCount:(int64_t)a4 completedFileCount:(int64_t)a5 totalFileCount:(int64_t)a6
+- (void)reportProgressUpdate:(int64_t)update totalUnitCount:(int64_t)count completedFileCount:(int64_t)fileCount totalFileCount:(int64_t)totalFileCount
 {
   WeakRetained = objc_loadWeakRetained(&self->_progress);
 
   if (WeakRetained)
   {
     v12 = objc_alloc_init(MEMORY[0x1E696AE38]);
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:totalFileCount];
     [v12 setFileTotalCount:v13];
 
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:fileCount];
     [v12 setFileCompletedCount:v14];
 
-    [v12 setTotalUnitCount:a4];
-    [v12 setCompletedUnitCount:a3];
+    [v12 setTotalUnitCount:count];
+    [v12 setCompletedUnitCount:update];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __91__FPProgressUpdater_reportProgressUpdate_totalUnitCount_completedFileCount_totalFileCount___block_invoke;

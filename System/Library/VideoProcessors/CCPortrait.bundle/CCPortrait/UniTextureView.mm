@@ -1,12 +1,12 @@
 @interface UniTextureView
 - (CGRect)extentForImage;
 - (UniTextureView)init;
-- (UniTextureView)initWithDevice:(id)a3;
+- (UniTextureView)initWithDevice:(id)device;
 - (id)inputNameArray;
-- (id)outputImage:(id)a3;
+- (id)outputImage:(id)image;
 - (id)outputNameArray;
-- (id)run:(id)a3;
-- (id)sibling:(id)a3;
+- (id)run:(id)run;
+- (id)sibling:(id)sibling;
 @end
 
 @implementation UniTextureView
@@ -18,31 +18,31 @@
   return [(UniKernel *)&v3 init];
 }
 
-- (UniTextureView)initWithDevice:(id)a3
+- (UniTextureView)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = UniTextureView;
   v5 = [(UniKernel *)&v9 init];
   v7 = v5;
   if (v5)
   {
-    objc_msgSend_setDevice_(v5, v6, v4);
+    objc_msgSend_setDevice_(v5, v6, deviceCopy);
   }
 
   return v7;
 }
 
-- (id)sibling:(id)a3
+- (id)sibling:(id)sibling
 {
-  v4 = a3;
-  if (!v4)
+  siblingCopy = sibling;
+  if (!siblingCopy)
   {
     sub_2956CF448();
   }
 
-  v7 = v4;
-  if ((objc_msgSend_usage(v4, v5, v6) & 0x10) == 0)
+  v7 = siblingCopy;
+  if ((objc_msgSend_usage(siblingCopy, v5, v6) & 0x10) == 0)
   {
     sub_2956CF41C();
   }
@@ -121,9 +121,9 @@ LABEL_17:
   return v24;
 }
 
-- (id)run:(id)a3
+- (id)run:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   v7 = objc_msgSend_inputs(self, v5, v6);
   v9 = objc_msgSend_objectForKey_(v7, v8, *MEMORY[0x29EDB9258]);
 
@@ -134,9 +134,9 @@ LABEL_17:
 
   v12 = objc_msgSend_device(v9, v10, v11);
   v15 = v12;
-  if (v4)
+  if (runCopy)
   {
-    v16 = v4;
+    v16 = runCopy;
   }
 
   else
@@ -208,9 +208,9 @@ LABEL_17:
   return result;
 }
 
-- (id)outputImage:(id)a3
+- (id)outputImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v7 = objc_msgSend_copy(self, v5, v6);
   v10 = objc_msgSend_inputs(v7, v8, v9);
   v11 = *MEMORY[0x29EDB9238];
@@ -222,7 +222,7 @@ LABEL_17:
     sub_2956CF598();
   }
 
-  v79 = v4;
+  v79 = imageCopy;
   v16 = v15;
   v19 = objc_msgSend_inputs(v7, v17, v18);
   v21 = objc_msgSend_objectForKeyedSubscript_(v19, v20, @"desiredFormat");

@@ -8,18 +8,18 @@
 
 + (BOOL)hasNetworkConnection
 {
-  v2 = [a1 defaultPath];
-  v3 = nw_path_get_status(v2) == nw_path_status_satisfied;
+  defaultPath = [self defaultPath];
+  v3 = nw_path_get_status(defaultPath) == nw_path_status_satisfied;
 
   return v3;
 }
 
 + (BOOL)hasExpensiveCellOnlyNetworkConnection
 {
-  v2 = [a1 defaultPath];
-  if (nw_path_get_status(v2) == nw_path_status_satisfied && MEMORY[0x245CE6430](v2))
+  defaultPath = [self defaultPath];
+  if (nw_path_get_status(defaultPath) == nw_path_status_satisfied && MEMORY[0x245CE6430](defaultPath))
   {
-    v3 = MEMORY[0x245CE6440](v2, 2);
+    v3 = MEMORY[0x245CE6440](defaultPath, 2);
   }
 
   else

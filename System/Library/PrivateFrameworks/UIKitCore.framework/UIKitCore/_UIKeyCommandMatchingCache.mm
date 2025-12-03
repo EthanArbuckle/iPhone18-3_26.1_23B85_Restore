@@ -1,17 +1,17 @@
 @interface _UIKeyCommandMatchingCache
-+ (id)keyCommandMatchingCacheForLayout:(uint64_t)a1;
++ (id)keyCommandMatchingCacheForLayout:(uint64_t)layout;
 - (_UIKeyCommandMatchingCache)init;
-- (uint64_t)_cacheValueForDictionary:(void *)a3 input:(uint64_t)a4 modifiers:;
-- (void)_setCacheValue:(void *)a3 dictionary:(void *)a4 input:(uint64_t)a5 modifiers:;
-- (void)conflictStateForCommandKeyPlaneSwitchForInput:(uint64_t)a3 modifiers:;
-- (void)directReachabilityStateForInput:(uint64_t)a3 modifiers:;
-- (void)setCommandKeyPlaneHasSwitchingConflict:(void *)a3 input:(uint64_t)a4 modifiers:;
-- (void)setDirectlyReachable:(void *)a3 input:(uint64_t)a4 modifiers:;
+- (uint64_t)_cacheValueForDictionary:(void *)dictionary input:(uint64_t)input modifiers:;
+- (void)_setCacheValue:(void *)value dictionary:(void *)dictionary input:(uint64_t)input modifiers:;
+- (void)conflictStateForCommandKeyPlaneSwitchForInput:(uint64_t)input modifiers:;
+- (void)directReachabilityStateForInput:(uint64_t)input modifiers:;
+- (void)setCommandKeyPlaneHasSwitchingConflict:(void *)conflict input:(uint64_t)input modifiers:;
+- (void)setDirectlyReachable:(void *)reachable input:(uint64_t)input modifiers:;
 @end
 
 @implementation _UIKeyCommandMatchingCache
 
-+ (id)keyCommandMatchingCacheForLayout:(uint64_t)a1
++ (id)keyCommandMatchingCacheForLayout:(uint64_t)layout
 {
   v2 = a2;
   objc_opt_self();
@@ -46,46 +46,46 @@
   v2 = [(_UIKeyCommandMatchingCache *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     commandKeyPlaneConflictsByInput = v2->_commandKeyPlaneConflictsByInput;
-    v2->_commandKeyPlaneConflictsByInput = v3;
+    v2->_commandKeyPlaneConflictsByInput = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     reachabilityByInput = v2->_reachabilityByInput;
-    v2->_reachabilityByInput = v5;
+    v2->_reachabilityByInput = dictionary2;
   }
 
   return v2;
 }
 
-- (void)_setCacheValue:(void *)a3 dictionary:(void *)a4 input:(uint64_t)a5 modifiers:
+- (void)_setCacheValue:(void *)value dictionary:(void *)dictionary input:(uint64_t)input modifiers:
 {
-  v11 = a3;
-  v9 = a4;
-  if (a1)
+  valueCopy = value;
+  dictionaryCopy = dictionary;
+  if (self)
   {
-    v10 = [v11 objectForKey:v9];
+    v10 = [valueCopy objectForKey:dictionaryCopy];
     if (!v10)
     {
       v10 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:1282 valueOptions:1282];
-      [v11 setObject:v10 forKey:v9];
+      [valueCopy setObject:v10 forKey:dictionaryCopy];
     }
 
-    NSMapInsert(v10, (a5 + 1), a2);
+    NSMapInsert(v10, (input + 1), a2);
   }
 }
 
-- (uint64_t)_cacheValueForDictionary:(void *)a3 input:(uint64_t)a4 modifiers:
+- (uint64_t)_cacheValueForDictionary:(void *)dictionary input:(uint64_t)input modifiers:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  dictionaryCopy = dictionary;
+  if (self)
   {
-    v9 = [v7 objectForKey:v8];
+    v9 = [v7 objectForKey:dictionaryCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = NSMapGet(v9, (a4 + 1));
+      v11 = NSMapGet(v9, (input + 1));
     }
 
     else
@@ -102,14 +102,14 @@
   return v11;
 }
 
-- (void)conflictStateForCommandKeyPlaneSwitchForInput:(uint64_t)a3 modifiers:
+- (void)conflictStateForCommandKeyPlaneSwitchForInput:(uint64_t)input modifiers:
 {
   if (result)
   {
     v4 = result;
     v5 = a2;
-    v6 = [v4 commandKeyPlaneConflictsByInput];
-    v7 = [(_UIKeyCommandMatchingCache *)v4 _cacheValueForDictionary:v6 input:v5 modifiers:a3];
+    commandKeyPlaneConflictsByInput = [v4 commandKeyPlaneConflictsByInput];
+    v7 = [(_UIKeyCommandMatchingCache *)v4 _cacheValueForDictionary:commandKeyPlaneConflictsByInput input:v5 modifiers:input];
 
     return v7;
   }
@@ -117,13 +117,13 @@
   return result;
 }
 
-- (void)setCommandKeyPlaneHasSwitchingConflict:(void *)a3 input:(uint64_t)a4 modifiers:
+- (void)setCommandKeyPlaneHasSwitchingConflict:(void *)conflict input:(uint64_t)input modifiers:
 {
-  if (a1)
+  if (self)
   {
-    v7 = a3;
-    v8 = [a1 commandKeyPlaneConflictsByInput];
-    v10 = v8;
+    conflictCopy = conflict;
+    commandKeyPlaneConflictsByInput = [self commandKeyPlaneConflictsByInput];
+    v10 = commandKeyPlaneConflictsByInput;
     if (a2)
     {
       v9 = 1;
@@ -134,17 +134,17 @@
       v9 = 2;
     }
 
-    [(_UIKeyCommandMatchingCache *)a1 _setCacheValue:v9 dictionary:v8 input:v7 modifiers:a4];
+    [(_UIKeyCommandMatchingCache *)self _setCacheValue:v9 dictionary:commandKeyPlaneConflictsByInput input:conflictCopy modifiers:input];
   }
 }
 
-- (void)setDirectlyReachable:(void *)a3 input:(uint64_t)a4 modifiers:
+- (void)setDirectlyReachable:(void *)reachable input:(uint64_t)input modifiers:
 {
-  if (a1)
+  if (self)
   {
-    v7 = a3;
-    v8 = [a1 reachabilityByInput];
-    v10 = v8;
+    reachableCopy = reachable;
+    reachabilityByInput = [self reachabilityByInput];
+    v10 = reachabilityByInput;
     if (a2)
     {
       v9 = 1;
@@ -155,18 +155,18 @@
       v9 = 2;
     }
 
-    [(_UIKeyCommandMatchingCache *)a1 _setCacheValue:v9 dictionary:v8 input:v7 modifiers:a4];
+    [(_UIKeyCommandMatchingCache *)self _setCacheValue:v9 dictionary:reachabilityByInput input:reachableCopy modifiers:input];
   }
 }
 
-- (void)directReachabilityStateForInput:(uint64_t)a3 modifiers:
+- (void)directReachabilityStateForInput:(uint64_t)input modifiers:
 {
   if (result)
   {
     v4 = result;
     v5 = a2;
-    v6 = [v4 reachabilityByInput];
-    v7 = [(_UIKeyCommandMatchingCache *)v4 _cacheValueForDictionary:v6 input:v5 modifiers:a3];
+    reachabilityByInput = [v4 reachabilityByInput];
+    v7 = [(_UIKeyCommandMatchingCache *)v4 _cacheValueForDictionary:reachabilityByInput input:v5 modifiers:input];
 
     return v7;
   }

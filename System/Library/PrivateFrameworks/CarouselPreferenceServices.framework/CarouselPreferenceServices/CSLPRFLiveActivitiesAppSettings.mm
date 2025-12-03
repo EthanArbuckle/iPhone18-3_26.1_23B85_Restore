@@ -1,84 +1,84 @@
 @interface CSLPRFLiveActivitiesAppSettings
-+ (id)globalSettingsWithSerialization:(id)a3 delegate:(id)a4;
-+ (id)settingsForApplication:(id)a3 withSerialization:(id)a4 delegate:(id)a5;
++ (id)globalSettingsWithSerialization:(id)serialization delegate:(id)delegate;
++ (id)settingsForApplication:(id)application withSerialization:(id)serialization delegate:(id)delegate;
 + (id)sharedSettingsModel;
-+ (os_state_data_s)_stateDataWithHints:(os_state_hints_s *)a3;
-+ (unint64_t)categoryForApplication:(id)a3;
-+ (void)migrateLegacySettings:(id)a3;
++ (os_state_data_s)_stateDataWithHints:(os_state_hints_s *)hints;
++ (unint64_t)categoryForApplication:(id)application;
++ (void)migrateLegacySettings:(id)settings;
 - (BOOL)allowLiveActivitiesForApp;
 - (BOOL)globalAllowLiveActivities;
 - (BOOL)globalAutoLaunchLiveActivities;
 - (BOOL)hasCustomSetting;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)allowLiveActivitiesForAppWithIgnoredSpecifier:(id)a3;
-- (id)globalAllowLiveActivitiesWithIgnoredSpecifier:(id)a3;
-- (id)globalAutoLaunchLiveActivitiesWithIgnoredSpecifier:(id)a3;
-- (id)initForApplication:(id)a3 isGlobalDefault:(BOOL)a4 withSerialization:(id)a5 delegate:(id)a6;
-- (id)resolvedSettingWithGlobalSettings:(id)a3;
+- (id)allowLiveActivitiesForAppWithIgnoredSpecifier:(id)specifier;
+- (id)globalAllowLiveActivitiesWithIgnoredSpecifier:(id)specifier;
+- (id)globalAutoLaunchLiveActivitiesWithIgnoredSpecifier:(id)specifier;
+- (id)initForApplication:(id)application isGlobalDefault:(BOOL)default withSerialization:(id)serialization delegate:(id)delegate;
+- (id)resolvedSettingWithGlobalSettings:(id)settings;
 - (id)serialize;
 - (unint64_t)autoLaunchBehaviorForApp;
-- (unint64_t)autoLaunchBehaviorForAppWithIgnoredSpecifier:(id)a3;
+- (unint64_t)autoLaunchBehaviorForAppWithIgnoredSpecifier:(id)specifier;
 - (unint64_t)hash;
-- (void)setAllowLiveActivitiesForApp:(id)a3 withIgnoredSpecifier:(id)a4;
-- (void)setAutoLaunchBehaviorForApp:(unint64_t)a3 withIgnoredSpecifier:(id)a4;
-- (void)setDefaultAutoLaunchBehaviorWithBackgroundModes:(id)a3;
-- (void)setGlobalAllowLiveActivities:(id)a3 withIgnoredSpecifier:(id)a4;
-- (void)setGlobalAutoLaunchLiveActivities:(id)a3 withIgnoredSpecifier:(id)a4;
-- (void)updateSettingsWithBlock:(id)a3;
+- (void)setAllowLiveActivitiesForApp:(id)app withIgnoredSpecifier:(id)specifier;
+- (void)setAutoLaunchBehaviorForApp:(unint64_t)app withIgnoredSpecifier:(id)specifier;
+- (void)setDefaultAutoLaunchBehaviorWithBackgroundModes:(id)modes;
+- (void)setGlobalAllowLiveActivities:(id)activities withIgnoredSpecifier:(id)specifier;
+- (void)setGlobalAutoLaunchLiveActivities:(id)activities withIgnoredSpecifier:(id)specifier;
+- (void)updateSettingsWithBlock:(id)block;
 @end
 
 @implementation CSLPRFLiveActivitiesAppSettings
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendBool:{-[CSLPRFLiveActivitiesAppSettings globalAllowLiveActivities](self, "globalAllowLiveActivities")}];
-  v5 = [v3 appendBool:{-[CSLPRFLiveActivitiesAppSettings globalAutoLaunchLiveActivities](self, "globalAutoLaunchLiveActivities")}];
-  v6 = [v3 appendBool:{-[CSLPRFLiveActivitiesAppSettings allowLiveActivitiesForApp](self, "allowLiveActivitiesForApp")}];
-  v7 = [v3 appendUnsignedInteger:{-[CSLPRFLiveActivitiesAppSettings autoLaunchBehaviorForApp](self, "autoLaunchBehaviorForApp")}];
-  v8 = [v3 appendObject:self->_application];
-  v9 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendBool:{-[CSLPRFLiveActivitiesAppSettings globalAllowLiveActivities](self, "globalAllowLiveActivities")}];
+  v5 = [builder appendBool:{-[CSLPRFLiveActivitiesAppSettings globalAutoLaunchLiveActivities](self, "globalAutoLaunchLiveActivities")}];
+  v6 = [builder appendBool:{-[CSLPRFLiveActivitiesAppSettings allowLiveActivitiesForApp](self, "allowLiveActivitiesForApp")}];
+  v7 = [builder appendUnsignedInteger:{-[CSLPRFLiveActivitiesAppSettings autoLaunchBehaviorForApp](self, "autoLaunchBehaviorForApp")}];
+  v8 = [builder appendObject:self->_application];
+  v9 = [builder hash];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(CSLPRFLiveActivitiesAppSettings *)self globalAllowLiveActivities];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  globalAllowLiveActivities = [(CSLPRFLiveActivitiesAppSettings *)self globalAllowLiveActivities];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __43__CSLPRFLiveActivitiesAppSettings_isEqual___block_invoke;
   v30[3] = &unk_278745630;
-  v7 = v4;
+  v7 = equalCopy;
   v31 = v7;
-  v8 = [v5 appendBool:v6 counterpart:v30];
-  v9 = [(CSLPRFLiveActivitiesAppSettings *)self globalAutoLaunchLiveActivities];
+  v8 = [v5 appendBool:globalAllowLiveActivities counterpart:v30];
+  globalAutoLaunchLiveActivities = [(CSLPRFLiveActivitiesAppSettings *)self globalAutoLaunchLiveActivities];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __43__CSLPRFLiveActivitiesAppSettings_isEqual___block_invoke_2;
   v28[3] = &unk_278745630;
   v10 = v7;
   v29 = v10;
-  v11 = [v5 appendBool:v9 counterpart:v28];
-  v12 = [(CSLPRFLiveActivitiesAppSettings *)self allowLiveActivitiesForApp];
+  v11 = [v5 appendBool:globalAutoLaunchLiveActivities counterpart:v28];
+  allowLiveActivitiesForApp = [(CSLPRFLiveActivitiesAppSettings *)self allowLiveActivitiesForApp];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __43__CSLPRFLiveActivitiesAppSettings_isEqual___block_invoke_3;
   v26[3] = &unk_278745630;
   v13 = v10;
   v27 = v13;
-  v14 = [v5 appendBool:v12 counterpart:v26];
-  v15 = [(CSLPRFLiveActivitiesAppSettings *)self autoLaunchBehaviorForApp];
+  v14 = [v5 appendBool:allowLiveActivitiesForApp counterpart:v26];
+  autoLaunchBehaviorForApp = [(CSLPRFLiveActivitiesAppSettings *)self autoLaunchBehaviorForApp];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __43__CSLPRFLiveActivitiesAppSettings_isEqual___block_invoke_4;
   v24[3] = &unk_2787454D8;
   v16 = v13;
   v25 = v16;
-  v17 = [v5 appendUnsignedInteger:v15 counterpart:v24];
+  v17 = [v5 appendUnsignedInteger:autoLaunchBehaviorForApp counterpart:v24];
   application = self->_application;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -100,9 +100,9 @@
   v6 = [v3 appendBool:-[CSLPRFLiveActivitiesAppSettings allowLiveActivitiesForApp](self withName:{"allowLiveActivitiesForApp"), @"liveActivitiesForApp"}];
   v7 = [v3 appendUnsignedInteger:-[CSLPRFLiveActivitiesAppSettings autoLaunchBehaviorForApp](self withName:{"autoLaunchBehaviorForApp"), @"autoLaunchBehaviorForApp"}];
   v8 = [v3 appendObject:self->_application withName:@"application"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (id)serialize
@@ -133,29 +133,29 @@
   return v11;
 }
 
-- (id)resolvedSettingWithGlobalSettings:(id)a3
+- (id)resolvedSettingWithGlobalSettings:(id)settings
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  settingsCopy = settings;
+  if ([settingsCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [[CSLPRFLiveActivitiesAppResolvedSettings alloc] initWithSettings:self globalSettings:v4];
+    selfCopy = [[CSLPRFLiveActivitiesAppResolvedSettings alloc] initWithSettings:self globalSettings:settingsCopy];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }
 
-- (void)updateSettingsWithBlock:(id)a3
+- (void)updateSettingsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6 = [[CSLPRFLiveActivitiesAppMutableSettings alloc] initWithSettings:self];
-  v4[2](v4, v6);
+  blockCopy[2](blockCopy, v6);
 
   if (![(CSLPRFLiveActivitiesAppMutableSettings *)v6 isEqualToSettings:self])
   {
@@ -180,10 +180,10 @@
       v3 = cslprf_settings_log();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
       {
-        v4 = [(CSLPRFLiveActivitiesAppSettings *)self application];
-        v5 = [v4 bundleIdentifier];
+        application = [(CSLPRFLiveActivitiesAppSettings *)self application];
+        bundleIdentifier = [application bundleIdentifier];
         v17 = 138412290;
-        v18 = v5;
+        v18 = bundleIdentifier;
         _os_log_impl(&dword_22CE92000, v3, OS_LOG_TYPE_INFO, "App is not configured so using global settings for %@", &v17, 0xCu);
       }
 
@@ -214,12 +214,12 @@
           v12 = v11;
         }
 
-        v13 = [(CSLPRFLiveActivitiesAppSettings *)self application];
-        v14 = [v13 bundleIdentifier];
+        application2 = [(CSLPRFLiveActivitiesAppSettings *)self application];
+        bundleIdentifier2 = [application2 bundleIdentifier];
         v17 = 138412546;
         v18 = v12;
         v19 = 2112;
-        v20 = v14;
+        v20 = bundleIdentifier2;
         _os_log_impl(&dword_22CE92000, v10, OS_LOG_TYPE_INFO, "Returning live activities auto launch behavior = %@ for %@", &v17, 0x16u);
       }
     }
@@ -230,10 +230,10 @@
     v7 = cslprf_settings_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(CSLPRFLiveActivitiesAppSettings *)self application];
-      v9 = [v8 bundleIdentifier];
+      application3 = [(CSLPRFLiveActivitiesAppSettings *)self application];
+      bundleIdentifier3 = [application3 bundleIdentifier];
       v17 = 138412290;
-      v18 = v9;
+      v18 = bundleIdentifier3;
       _os_log_impl(&dword_22CE92000, v7, OS_LOG_TYPE_INFO, "Not allowing auto launch of live activity for %@ and global setting is off", &v17, 0xCu);
     }
 
@@ -252,18 +252,18 @@
     goto LABEL_2;
   }
 
-  v5 = [(CSLPRFLiveActivitiesAppSettings *)self application];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.NanoPhone"];
+  application = [(CSLPRFLiveActivitiesAppSettings *)self application];
+  bundleIdentifier = [application bundleIdentifier];
+  v7 = [bundleIdentifier isEqualToString:@"com.apple.NanoPhone"];
 
   if (!v7)
   {
     goto LABEL_7;
   }
 
-  v8 = [(CSLPRFLiveActivitiesAppSettings *)self application];
-  v9 = [v8 SDKVersion];
-  [v9 floatValue];
+  application2 = [(CSLPRFLiveActivitiesAppSettings *)self application];
+  sDKVersion = [application2 SDKVersion];
+  [sDKVersion floatValue];
   v11 = v10;
 
   if (v11 < 19.0)
@@ -293,12 +293,12 @@ LABEL_7:
         v14 = @"NO";
       }
 
-      v15 = [(CSLPRFLiveActivitiesAppSettings *)self application];
-      v16 = [v15 bundleIdentifier];
+      application3 = [(CSLPRFLiveActivitiesAppSettings *)self application];
+      bundleIdentifier2 = [application3 bundleIdentifier];
       v18 = 138412546;
       v19 = v14;
       v20 = 2112;
-      v21 = v16;
+      v21 = bundleIdentifier2;
       _os_log_impl(&dword_22CE92000, v13, OS_LOG_TYPE_INFO, "Returning allow live activities = %@ for %@", &v18, 0x16u);
     }
 
@@ -326,12 +326,12 @@ LABEL_7:
       v5 = @"NO";
     }
 
-    v6 = [(CSLPRFLiveActivitiesAppSettings *)self application];
-    v7 = [v6 bundleIdentifier];
+    application = [(CSLPRFLiveActivitiesAppSettings *)self application];
+    bundleIdentifier = [application bundleIdentifier];
     v10 = 138412546;
     v11 = v5;
     v12 = 2112;
-    v13 = v7;
+    v13 = bundleIdentifier;
     _os_log_impl(&dword_22CE92000, v4, OS_LOG_TYPE_INFO, "Returning global auto launch live activities = %@ for %@", &v10, 0x16u);
   }
 
@@ -342,9 +342,9 @@ LABEL_7:
 - (BOOL)globalAllowLiveActivities
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(CSLPRFLiveActivitiesAppSettings *)self application];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.SafetyMonitorApp"];
+  application = [(CSLPRFLiveActivitiesAppSettings *)self application];
+  bundleIdentifier = [application bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.SafetyMonitorApp"];
 
   if (v5)
   {
@@ -352,10 +352,10 @@ LABEL_7:
     LOBYTE(lock_globalAllowLiveActivities) = 1;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v8 = [(CSLPRFLiveActivitiesAppSettings *)self application];
-      v9 = [v8 bundleIdentifier];
+      application2 = [(CSLPRFLiveActivitiesAppSettings *)self application];
+      bundleIdentifier2 = [application2 bundleIdentifier];
       v25 = 138412290;
-      v26 = v9;
+      v26 = bundleIdentifier2;
       v10 = "Overriding global settings to allow check-in activity for (%@)";
       v11 = v6;
       v12 = 12;
@@ -366,18 +366,18 @@ LABEL_14:
 
   else
   {
-    v13 = [(CSLPRFLiveActivitiesAppSettings *)self application];
-    v14 = [v13 bundleIdentifier];
-    v15 = [v14 isEqualToString:@"com.apple.NanoPhone"];
+    application3 = [(CSLPRFLiveActivitiesAppSettings *)self application];
+    bundleIdentifier3 = [application3 bundleIdentifier];
+    v15 = [bundleIdentifier3 isEqualToString:@"com.apple.NanoPhone"];
 
     if (!v15)
     {
       goto LABEL_9;
     }
 
-    v16 = [(CSLPRFLiveActivitiesAppSettings *)self application];
-    v17 = [v16 SDKVersion];
-    [v17 floatValue];
+    application4 = [(CSLPRFLiveActivitiesAppSettings *)self application];
+    sDKVersion = [application4 SDKVersion];
+    [sDKVersion floatValue];
     v19 = v18;
 
     if (v19 < 19.0)
@@ -385,10 +385,10 @@ LABEL_14:
       v6 = cslprf_settings_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v20 = [(CSLPRFLiveActivitiesAppSettings *)self application];
-        v21 = [v20 bundleIdentifier];
+        application5 = [(CSLPRFLiveActivitiesAppSettings *)self application];
+        bundleIdentifier4 = [application5 bundleIdentifier];
         v25 = 138412290;
-        v26 = v21;
+        v26 = bundleIdentifier4;
         _os_log_impl(&dword_22CE92000, v6, OS_LOG_TYPE_INFO, "Overriding global settings to block NanoPhone activity for (%@)", &v25, 0xCu);
       }
 
@@ -414,12 +414,12 @@ LABEL_9:
           v22 = @"NO";
         }
 
-        v8 = [(CSLPRFLiveActivitiesAppSettings *)self application];
-        v9 = [v8 bundleIdentifier];
+        application2 = [(CSLPRFLiveActivitiesAppSettings *)self application];
+        bundleIdentifier2 = [application2 bundleIdentifier];
         v25 = 138412546;
         v26 = v22;
         v27 = 2112;
-        v28 = v9;
+        v28 = bundleIdentifier2;
         v10 = "Returning global allow live activities = %@ for %@";
         v11 = v6;
         v12 = 22;
@@ -444,35 +444,35 @@ LABEL_9:
   else
   {
     lock_allowLiveActivitiesForApp = self->_lock_allowLiveActivitiesForApp;
-    v5 = [(CSLPRFApplication *)self->_application supportsSmartStack];
+    supportsSmartStack = [(CSLPRFApplication *)self->_application supportsSmartStack];
     lock_autoLaunchBehaviorForApp = self->_lock_autoLaunchBehaviorForApp;
     defaultAutoLaunchBehaviorForApp = self->_defaultAutoLaunchBehaviorForApp;
     os_unfair_lock_unlock(&self->_lock);
-    return lock_allowLiveActivitiesForApp != v5 || lock_autoLaunchBehaviorForApp != defaultAutoLaunchBehaviorForApp;
+    return lock_allowLiveActivitiesForApp != supportsSmartStack || lock_autoLaunchBehaviorForApp != defaultAutoLaunchBehaviorForApp;
   }
 
   return v3;
 }
 
-- (void)setDefaultAutoLaunchBehaviorWithBackgroundModes:(id)a3
+- (void)setDefaultAutoLaunchBehaviorWithBackgroundModes:(id)modes
 {
   v11[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CSLPRFLiveActivitiesAppSettings *)self hasCustomSetting];
+  modesCopy = modes;
+  hasCustomSetting = [(CSLPRFLiveActivitiesAppSettings *)self hasCustomSetting];
   v11[0] = @"com.apple.SessionTrackerApp";
   v11[1] = @"com.apple.Mind";
   v11[2] = @"com.apple.Mandrake";
   v11[3] = @"com.apple.NanoCompass.watchkitapp";
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:4];
-  if ([v4 containsObject:@"physical-therapy"] & 1) != 0 || (objc_msgSend(v4, "containsObject:", @"workout-processing"))
+  if ([modesCopy containsObject:@"physical-therapy"] & 1) != 0 || (objc_msgSend(modesCopy, "containsObject:", @"workout-processing"))
   {
     v7 = 2;
   }
 
   else
   {
-    v8 = [(CSLPRFApplication *)self->_application bundleIdentifier];
-    v9 = [v6 containsObject:v8];
+    bundleIdentifier = [(CSLPRFApplication *)self->_application bundleIdentifier];
+    v9 = [v6 containsObject:bundleIdentifier];
 
     v7 = 1;
     if (v9)
@@ -482,7 +482,7 @@ LABEL_9:
   }
 
   self->_defaultAutoLaunchBehaviorForApp = v7;
-  if (!v5)
+  if (!hasCustomSetting)
   {
     self->_lock_autoLaunchBehaviorForApp = v7;
   }
@@ -490,12 +490,12 @@ LABEL_9:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initForApplication:(id)a3 isGlobalDefault:(BOOL)a4 withSerialization:(id)a5 delegate:(id)a6
+- (id)initForApplication:(id)application isGlobalDefault:(BOOL)default withSerialization:(id)serialization delegate:(id)delegate
 {
   v31 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  applicationCopy = application;
+  serializationCopy = serialization;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = CSLPRFLiveActivitiesAppSettings;
   v14 = [(CSLPRFLiveActivitiesAppSettings *)&v26 init];
@@ -503,22 +503,22 @@ LABEL_9:
   if (v14)
   {
     v14->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v14->_application, a3);
-    objc_storeWeak(&v15->_delegate, v13);
-    v15->_isGlobalDefault = a4;
+    objc_storeStrong(&v14->_application, application);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    v15->_isGlobalDefault = default;
     *&v15->_lock_globalAllowLiveActivities = 257;
     v15->_lock_allowLiveActivitiesForApp = 1;
-    v16 = [(CSLPRFApplication *)v15->_application unionedBackgroundModes];
-    [(CSLPRFLiveActivitiesAppSettings *)v15 setDefaultAutoLaunchBehaviorWithBackgroundModes:v16];
+    unionedBackgroundModes = [(CSLPRFApplication *)v15->_application unionedBackgroundModes];
+    [(CSLPRFLiveActivitiesAppSettings *)v15 setDefaultAutoLaunchBehaviorWithBackgroundModes:unionedBackgroundModes];
 
     v15->_lock_autoLaunchBehaviorForApp = v15->_defaultAutoLaunchBehaviorForApp;
-    v15->_category = [CSLPRFLiveActivitiesAppSettings categoryForApplication:v11];
-    if (v12)
+    v15->_category = [CSLPRFLiveActivitiesAppSettings categoryForApplication:applicationCopy];
+    if (serializationCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = v12;
+        v17 = serializationCopy;
         v15->_lock_globalAllowLiveActivities = [v17 cslprf_BOOLForKey:@"GlobalAllowLiveActivities" withDefaultValue:1];
         v15->_lock_globalAutoLaunchLiveActivities = [v17 cslprf_BOOLForKey:@"GlobalAutoLaunchLiveActivities" withDefaultValue:1];
         v15->_lock_allowLiveActivitiesForApp = [v17 cslprf_BOOLForKey:@"AllowLiveActivitiesForApp" withDefaultValue:1];
@@ -526,9 +526,9 @@ LABEL_9:
         if (v18)
         {
           v19 = v18;
-          v20 = [v11 bundleIdentifier];
+          bundleIdentifier = [applicationCopy bundleIdentifier];
           v21 = +[CSLPRFLiveActivitiesAppSettings globalDefaultIdentifer];
-          v22 = [v20 isEqualToString:v21];
+          v22 = [bundleIdentifier isEqualToString:v21];
 
           if ((v22 & 1) == 0)
           {
@@ -546,7 +546,7 @@ LABEL_9:
           *buf = 134218242;
           v28 = v15;
           v29 = 2112;
-          v30 = v12;
+          v30 = serializationCopy;
           _os_log_fault_impl(&dword_22CE92000, v17, OS_LOG_TYPE_FAULT, "%p CSLPRFLiveActivitiesAppSettings serialization was not a NSDictionary:%@", buf, 0x16u);
         }
       }
@@ -557,20 +557,20 @@ LABEL_9:
   return v15;
 }
 
-+ (os_state_data_s)_stateDataWithHints:(os_state_hints_s *)a3
++ (os_state_data_s)_stateDataWithHints:(os_state_hints_s *)hints
 {
   v3 = +[CSLPRFLiveActivitiesAppSettings sharedSettingsModel];
   v4 = [MEMORY[0x277CF0C00] builderWithObject:v3];
   [v4 appendString:@"Live Activities Settings" withName:@"Title"];
-  v5 = [v3 globalSettings];
+  globalSettings = [v3 globalSettings];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __55__CSLPRFLiveActivitiesAppSettings__stateDataWithHints___block_invoke;
   v19[3] = &unk_2787455E0;
   v6 = v4;
   v20 = v6;
-  v21 = v5;
-  v7 = v5;
+  v21 = globalSettings;
+  v7 = globalSettings;
   [v6 appendBodySectionWithName:@"Globals" multilinePrefix:0 block:v19];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
@@ -581,8 +581,8 @@ LABEL_9:
   v8 = v6;
   v9 = v3;
   [v8 appendBodySectionWithName:@"Apps" multilinePrefix:0 block:&v13];
-  v10 = [v8 build];
-  v11 = CSLPRFStateDataWithTitleDescriptionAndHints(@"CSLPRFLiveActivities", v10);
+  build = [v8 build];
+  v11 = CSLPRFStateDataWithTitleDescriptionAndHints(@"CSLPRFLiveActivities", build);
 
   return v11;
 }
@@ -653,11 +653,11 @@ id __55__CSLPRFLiveActivitiesAppSettings__stateDataWithHints___block_invoke_3(ui
   return [*(a1 + 32) appendBool:1 withName:@"Category"];
 }
 
-+ (void)migrateLegacySettings:(id)a3
++ (void)migrateLegacySettings:(id)settings
 {
-  v3 = a3;
+  settingsCopy = settings;
   v4 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.Carousel"];
-  v5 = [v4 synchronize];
+  synchronize = [v4 synchronize];
   v6 = [v4 objectForKey:@"mediaAutoLaunch"];
 
   if (v6)
@@ -683,12 +683,12 @@ id __55__CSLPRFLiveActivitiesAppSettings__stateDataWithHints___block_invoke_3(ui
       }
 
       v8 = [CSLPRFPerApplicationSettings fakeApplicationWithIdentifier:@"com.apple.NanoAllMusicApps"];
-      v11 = [v3 settingsForApplication:v8];
+      v11 = [settingsCopy settingsForApplication:v8];
       [v11 updateSettingsWithBlock:&__block_literal_global_79];
     }
 
     [v4 removeObjectForKey:@"mediaAutoLaunch"];
-    v12 = [v4 synchronize];
+    synchronize2 = [v4 synchronize];
   }
 
   else
@@ -708,7 +708,7 @@ id __55__CSLPRFLiveActivitiesAppSettings__stateDataWithHints___block_invoke_3(ui
   block[1] = 3221225472;
   block[2] = __54__CSLPRFLiveActivitiesAppSettings_sharedSettingsModel__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedSettingsModel_onceToken_4571 != -1)
   {
     dispatch_once(&sharedSettingsModel_onceToken_4571, block);
@@ -753,18 +753,18 @@ void __54__CSLPRFLiveActivitiesAppSettings_sharedSettingsModel__block_invoke_2(u
   [v2 setAutoLaunchBehaviorForApp:1];
 }
 
-+ (unint64_t)categoryForApplication:(id)a3
++ (unint64_t)categoryForApplication:(id)application
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 bundleIdentifier];
+  applicationCopy = application;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
   v5 = +[CSLPRFLiveActivitiesAppSettings globalDefaultIdentifer];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [bundleIdentifier isEqualToString:v5];
 
   if ((v6 & 1) == 0)
   {
-    v8 = [v3 bundleIdentifier];
-    if ([v8 isEqualToString:@"com.apple.NanoAllMusicApps"])
+    bundleIdentifier2 = [applicationCopy bundleIdentifier];
+    if ([bundleIdentifier2 isEqualToString:@"com.apple.NanoAllMusicApps"])
     {
 
 LABEL_6:
@@ -772,8 +772,8 @@ LABEL_6:
       goto LABEL_12;
     }
 
-    v9 = [v3 bundleIdentifier];
-    v10 = [v9 isEqualToString:@"com.apple.NanoAllWorkoutApps"];
+    bundleIdentifier3 = [applicationCopy bundleIdentifier];
+    v10 = [bundleIdentifier3 isEqualToString:@"com.apple.NanoAllWorkoutApps"];
 
     if (v10)
     {
@@ -781,9 +781,9 @@ LABEL_6:
     }
 
     v11 = MEMORY[0x277CC1E70];
-    v12 = [v3 bundleIdentifier];
+    bundleIdentifier4 = [applicationCopy bundleIdentifier];
     v28 = 0;
-    v13 = [v11 bundleRecordWithApplicationIdentifier:v12 error:&v28];
+    v13 = [v11 bundleRecordWithApplicationIdentifier:bundleIdentifier4 error:&v28];
     v14 = v28;
 
     if (v14)
@@ -791,9 +791,9 @@ LABEL_6:
       v15 = cslprf_app_library_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v26 = [v3 bundleIdentifier];
+        bundleIdentifier5 = [applicationCopy bundleIdentifier];
         *buf = 138412546;
-        v30 = v26;
+        v30 = bundleIdentifier5;
         v31 = 2112;
         v32 = v14;
         _os_log_error_impl(&dword_22CE92000, v15, OS_LOG_TYPE_ERROR, "Error reading category for application %@ - error: %@", buf, 0x16u);
@@ -826,12 +826,12 @@ LABEL_6:
 
       if (v15)
       {
-        v21 = [v3 bundleIdentifier];
+        bundleIdentifier6 = [applicationCopy bundleIdentifier];
 
-        if (v21 == @"com.apple.NanoPhone")
+        if (bundleIdentifier6 == @"com.apple.NanoPhone")
         {
-          v23 = [v3 SDKVersion];
-          [v23 floatValue];
+          sDKVersion = [applicationCopy SDKVersion];
+          [sDKVersion floatValue];
           v25 = v24;
 
           if (v25 >= 19.0)
@@ -861,9 +861,9 @@ LABEL_6:
       v22 = cslprf_app_library_log();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v27 = [v3 bundleIdentifier];
+        bundleIdentifier7 = [applicationCopy bundleIdentifier];
         *buf = 138412290;
-        v30 = v27;
+        v30 = bundleIdentifier7;
         _os_log_error_impl(&dword_22CE92000, v22, OS_LOG_TYPE_ERROR, "Error record from proxy for application %@", buf, 0xCu);
       }
 
@@ -883,29 +883,29 @@ LABEL_12:
   return v7;
 }
 
-+ (id)globalSettingsWithSerialization:(id)a3 delegate:(id)a4
++ (id)globalSettingsWithSerialization:(id)serialization delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
-  v9 = [a1 globalDefaultIdentifer];
-  v10 = [CSLPRFPerApplicationSettings fakeApplicationWithIdentifier:v9];
-  v11 = [v8 initForApplication:v10 isGlobalDefault:1 withSerialization:v7 delegate:v6];
+  delegateCopy = delegate;
+  serializationCopy = serialization;
+  v8 = [self alloc];
+  globalDefaultIdentifer = [self globalDefaultIdentifer];
+  v10 = [CSLPRFPerApplicationSettings fakeApplicationWithIdentifier:globalDefaultIdentifer];
+  v11 = [v8 initForApplication:v10 isGlobalDefault:1 withSerialization:serializationCopy delegate:delegateCopy];
 
   return v11;
 }
 
-+ (id)settingsForApplication:(id)a3 withSerialization:(id)a4 delegate:(id)a5
++ (id)settingsForApplication:(id)application withSerialization:(id)serialization delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initForApplication:v10 isGlobalDefault:0 withSerialization:v9 delegate:v8];
+  delegateCopy = delegate;
+  serializationCopy = serialization;
+  applicationCopy = application;
+  v11 = [[self alloc] initForApplication:applicationCopy isGlobalDefault:0 withSerialization:serializationCopy delegate:delegateCopy];
 
   return v11;
 }
 
-- (void)setAutoLaunchBehaviorForApp:(unint64_t)a3 withIgnoredSpecifier:(id)a4
+- (void)setAutoLaunchBehaviorForApp:(unint64_t)app withIgnoredSpecifier:(id)specifier
 {
   v19 = *MEMORY[0x277D85DE8];
   v7 = cslprf_settings_log();
@@ -913,13 +913,13 @@ LABEL_12:
   {
     v9 = NSStringFromSelector(a2);
     *buf = 134218754;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v9;
     v15 = 2048;
-    v16 = a3;
+    appCopy = app;
     v17 = 2112;
-    v18 = self;
+    selfCopy2 = self;
     _os_log_debug_impl(&dword_22CE92000, v7, OS_LOG_TYPE_DEBUG, "%p %@:%lu %@", buf, 0x2Au);
   }
 
@@ -927,12 +927,12 @@ LABEL_12:
   v10[1] = 3221225472;
   v10[2] = __97__CSLPRFLiveActivitiesAppSettings_PSSpecifier__setAutoLaunchBehaviorForApp_withIgnoredSpecifier___block_invoke;
   v10[3] = &__block_descriptor_40_e52_v16__0___CSLPRFLiveActivitiesAppMutableProperties__8l;
-  v10[4] = a3;
+  v10[4] = app;
   [(CSLPRFLiveActivitiesAppSettings *)self updateSettingsWithBlock:v10];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)autoLaunchBehaviorForAppWithIgnoredSpecifier:(id)a3
+- (unint64_t)autoLaunchBehaviorForAppWithIgnoredSpecifier:(id)specifier
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = cslprf_settings_log();
@@ -940,11 +940,11 @@ LABEL_12:
   {
     v8 = NSStringFromSelector(a2);
     v9 = 134218498;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v8;
     v13 = 2112;
-    v14 = self;
+    selfCopy2 = self;
     _os_log_debug_impl(&dword_22CE92000, v5, OS_LOG_TYPE_DEBUG, "%p %@ %@", &v9, 0x20u);
   }
 
@@ -953,22 +953,22 @@ LABEL_12:
   return result;
 }
 
-- (void)setAllowLiveActivitiesForApp:(id)a3 withIgnoredSpecifier:(id)a4
+- (void)setAllowLiveActivitiesForApp:(id)app withIgnoredSpecifier:(id)specifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  appCopy = app;
   v7 = cslprf_settings_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v10 = NSStringFromSelector(a2);
     *buf = 134218754;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v10;
     v17 = 2112;
-    v18 = v6;
+    v18 = appCopy;
     v19 = 2112;
-    v20 = self;
+    selfCopy2 = self;
     _os_log_debug_impl(&dword_22CE92000, v7, OS_LOG_TYPE_DEBUG, "%p %@:%@ %@", buf, 0x2Au);
   }
 
@@ -976,8 +976,8 @@ LABEL_12:
   v11[1] = 3221225472;
   v11[2] = __98__CSLPRFLiveActivitiesAppSettings_PSSpecifier__setAllowLiveActivitiesForApp_withIgnoredSpecifier___block_invoke;
   v11[3] = &unk_278745528;
-  v12 = v6;
-  v8 = v6;
+  v12 = appCopy;
+  v8 = appCopy;
   [(CSLPRFLiveActivitiesAppSettings *)self updateSettingsWithBlock:v11];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -990,7 +990,7 @@ void __98__CSLPRFLiveActivitiesAppSettings_PSSpecifier__setAllowLiveActivitiesFo
   [v3 setAllowLiveActivitiesForApp:{objc_msgSend(v2, "BOOLValue") ^ 1}];
 }
 
-- (id)allowLiveActivitiesForAppWithIgnoredSpecifier:(id)a3
+- (id)allowLiveActivitiesForAppWithIgnoredSpecifier:(id)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = cslprf_settings_log();
@@ -998,11 +998,11 @@ void __98__CSLPRFLiveActivitiesAppSettings_PSSpecifier__setAllowLiveActivitiesFo
   {
     v9 = NSStringFromSelector(a2);
     v10 = 134218498;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = self;
+    selfCopy2 = self;
     _os_log_debug_impl(&dword_22CE92000, v5, OS_LOG_TYPE_DEBUG, "%p %@ %@", &v10, 0x20u);
   }
 
@@ -1012,22 +1012,22 @@ void __98__CSLPRFLiveActivitiesAppSettings_PSSpecifier__setAllowLiveActivitiesFo
   return v6;
 }
 
-- (void)setGlobalAutoLaunchLiveActivities:(id)a3 withIgnoredSpecifier:(id)a4
+- (void)setGlobalAutoLaunchLiveActivities:(id)activities withIgnoredSpecifier:(id)specifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  activitiesCopy = activities;
   v7 = cslprf_settings_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v10 = NSStringFromSelector(a2);
     *buf = 134218754;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v10;
     v17 = 2112;
-    v18 = v6;
+    v18 = activitiesCopy;
     v19 = 2112;
-    v20 = self;
+    selfCopy2 = self;
     _os_log_debug_impl(&dword_22CE92000, v7, OS_LOG_TYPE_DEBUG, "%p %@:%@ %@", buf, 0x2Au);
   }
 
@@ -1035,8 +1035,8 @@ void __98__CSLPRFLiveActivitiesAppSettings_PSSpecifier__setAllowLiveActivitiesFo
   v11[1] = 3221225472;
   v11[2] = __103__CSLPRFLiveActivitiesAppSettings_PSSpecifier__setGlobalAutoLaunchLiveActivities_withIgnoredSpecifier___block_invoke;
   v11[3] = &unk_278745528;
-  v12 = v6;
-  v8 = v6;
+  v12 = activitiesCopy;
+  v8 = activitiesCopy;
   [(CSLPRFLiveActivitiesAppSettings *)self updateSettingsWithBlock:v11];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -1049,7 +1049,7 @@ void __103__CSLPRFLiveActivitiesAppSettings_PSSpecifier__setGlobalAutoLaunchLive
   [v3 setGlobalAutoLaunchLiveActivities:{objc_msgSend(v2, "BOOLValue") ^ 1}];
 }
 
-- (id)globalAutoLaunchLiveActivitiesWithIgnoredSpecifier:(id)a3
+- (id)globalAutoLaunchLiveActivitiesWithIgnoredSpecifier:(id)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = cslprf_settings_log();
@@ -1057,11 +1057,11 @@ void __103__CSLPRFLiveActivitiesAppSettings_PSSpecifier__setGlobalAutoLaunchLive
   {
     v9 = NSStringFromSelector(a2);
     v10 = 134218498;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = self;
+    selfCopy2 = self;
     _os_log_debug_impl(&dword_22CE92000, v5, OS_LOG_TYPE_DEBUG, "%p %@ %@", &v10, 0x20u);
   }
 
@@ -1071,22 +1071,22 @@ void __103__CSLPRFLiveActivitiesAppSettings_PSSpecifier__setGlobalAutoLaunchLive
   return v6;
 }
 
-- (void)setGlobalAllowLiveActivities:(id)a3 withIgnoredSpecifier:(id)a4
+- (void)setGlobalAllowLiveActivities:(id)activities withIgnoredSpecifier:(id)specifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  activitiesCopy = activities;
   v7 = cslprf_settings_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v10 = NSStringFromSelector(a2);
     *buf = 134218754;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v10;
     v17 = 2112;
-    v18 = v6;
+    v18 = activitiesCopy;
     v19 = 2112;
-    v20 = self;
+    selfCopy2 = self;
     _os_log_debug_impl(&dword_22CE92000, v7, OS_LOG_TYPE_DEBUG, "%p %@:%@ %@", buf, 0x2Au);
   }
 
@@ -1094,8 +1094,8 @@ void __103__CSLPRFLiveActivitiesAppSettings_PSSpecifier__setGlobalAutoLaunchLive
   v11[1] = 3221225472;
   v11[2] = __98__CSLPRFLiveActivitiesAppSettings_PSSpecifier__setGlobalAllowLiveActivities_withIgnoredSpecifier___block_invoke;
   v11[3] = &unk_278745528;
-  v12 = v6;
-  v8 = v6;
+  v12 = activitiesCopy;
+  v8 = activitiesCopy;
   [(CSLPRFLiveActivitiesAppSettings *)self updateSettingsWithBlock:v11];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -1108,7 +1108,7 @@ void __98__CSLPRFLiveActivitiesAppSettings_PSSpecifier__setGlobalAllowLiveActivi
   [v3 setGlobalAllowLiveActivities:{objc_msgSend(v2, "BOOLValue") ^ 1}];
 }
 
-- (id)globalAllowLiveActivitiesWithIgnoredSpecifier:(id)a3
+- (id)globalAllowLiveActivitiesWithIgnoredSpecifier:(id)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = cslprf_settings_log();
@@ -1116,11 +1116,11 @@ void __98__CSLPRFLiveActivitiesAppSettings_PSSpecifier__setGlobalAllowLiveActivi
   {
     v9 = NSStringFromSelector(a2);
     v10 = 134218498;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = self;
+    selfCopy2 = self;
     _os_log_debug_impl(&dword_22CE92000, v5, OS_LOG_TYPE_DEBUG, "%p %@ %@", &v10, 0x20u);
   }
 

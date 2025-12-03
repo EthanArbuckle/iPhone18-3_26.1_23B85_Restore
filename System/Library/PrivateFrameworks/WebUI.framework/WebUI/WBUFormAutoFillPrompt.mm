@@ -1,47 +1,47 @@
 @interface WBUFormAutoFillPrompt
-+ (void)showAutoFillPromptForAppleCashLowBalanceInWebView:(id)a3 title:(id)a4 message:(id)a5 chooseDifferentCardButtonTitle:(id)a6 addMoneyButtonTitle:(id)a7 completionHandler:(id)a8;
-+ (void)showAutoFillPromptInWebView:(id)a3 title:(id)a4 message:(id)a5 cancelButtonTitle:(id)a6 otherButtonTitles:(id)a7 cancelWhenAppEntersBackground:(BOOL)a8 makeFirstButtonSuggestedAction:(BOOL)a9 headerViewController:(id)a10 completionHandler:(id)a11;
-- (void)_alertTextFieldDidChange:(id)a3;
-- (void)showAutoFillPromptForUsernameInWebView:(id)a3 url:(id)a4 title:(id)a5 message:(id)a6 suggestedUsername:(id)a7 password:(id)a8 isGeneratedPassword:(BOOL)a9 completionHandler:(id)a10;
++ (void)showAutoFillPromptForAppleCashLowBalanceInWebView:(id)view title:(id)title message:(id)message chooseDifferentCardButtonTitle:(id)buttonTitle addMoneyButtonTitle:(id)moneyButtonTitle completionHandler:(id)handler;
++ (void)showAutoFillPromptInWebView:(id)view title:(id)title message:(id)message cancelButtonTitle:(id)buttonTitle otherButtonTitles:(id)titles cancelWhenAppEntersBackground:(BOOL)background makeFirstButtonSuggestedAction:(BOOL)action headerViewController:(id)self0 completionHandler:(id)self1;
+- (void)_alertTextFieldDidChange:(id)change;
+- (void)showAutoFillPromptForUsernameInWebView:(id)view url:(id)url title:(id)title message:(id)message suggestedUsername:(id)username password:(id)password isGeneratedPassword:(BOOL)generatedPassword completionHandler:(id)self0;
 @end
 
 @implementation WBUFormAutoFillPrompt
 
-+ (void)showAutoFillPromptInWebView:(id)a3 title:(id)a4 message:(id)a5 cancelButtonTitle:(id)a6 otherButtonTitles:(id)a7 cancelWhenAppEntersBackground:(BOOL)a8 makeFirstButtonSuggestedAction:(BOOL)a9 headerViewController:(id)a10 completionHandler:(id)a11
++ (void)showAutoFillPromptInWebView:(id)view title:(id)title message:(id)message cancelButtonTitle:(id)buttonTitle otherButtonTitles:(id)titles cancelWhenAppEntersBackground:(BOOL)background makeFirstButtonSuggestedAction:(BOOL)action headerViewController:(id)self0 completionHandler:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
-  v22 = a11;
-  v23 = v22;
+  viewCopy = view;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  titlesCopy = titles;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  v23 = handlerCopy;
   if (isShowingAlertController == 1)
   {
-    if (v22)
+    if (handlerCopy)
     {
-      (*(v22 + 2))(v22, -1);
+      (*(handlerCopy + 2))(handlerCopy, -1);
     }
   }
 
   else
   {
-    v38 = a8;
-    v40 = v18;
-    v24 = [v16 webui_preventNavigationDuringAutoFillPrompt];
-    v25 = [v16 webui_presentingViewController];
-    if ([v25 modalPresentationStyle] == 7)
+    backgroundCopy = background;
+    v40 = messageCopy;
+    webui_preventNavigationDuringAutoFillPrompt = [viewCopy webui_preventNavigationDuringAutoFillPrompt];
+    webui_presentingViewController = [viewCopy webui_presentingViewController];
+    if ([webui_presentingViewController modalPresentationStyle] == 7)
     {
-      [v25 dismissViewControllerAnimated:0 completion:0];
+      [webui_presentingViewController dismissViewControllerAnimated:0 completion:0];
     }
 
-    v39 = v17;
-    v26 = [WBUAlertController alertControllerWithTitle:v17 message:v18 preferredStyle:1];
+    v39 = titleCopy;
+    v26 = [WBUAlertController alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
     v27 = v26;
-    if (v21)
+    if (controllerCopy)
     {
-      [v26 setContentViewController:v21];
+      [v26 setContentViewController:controllerCopy];
     }
 
     v55[0] = MEMORY[0x277D85DD0];
@@ -49,8 +49,8 @@
     v55[2] = __203__WBUFormAutoFillPrompt_showAutoFillPromptInWebView_title_message_cancelButtonTitle_otherButtonTitles_cancelWhenAppEntersBackground_makeFirstButtonSuggestedAction_headerViewController_completionHandler___block_invoke;
     v55[3] = &unk_279EB1508;
     v56 = v23;
-    v57 = v24;
-    v37 = v24;
+    v57 = webui_preventNavigationDuringAutoFillPrompt;
+    v37 = webui_preventNavigationDuringAutoFillPrompt;
     v28 = MEMORY[0x2743DCFC0](v55);
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
@@ -60,9 +60,9 @@
     v53 = v29;
     v30 = v27;
     v50 = v30;
-    v54 = a9;
-    v51 = v21;
-    v52 = v20;
+    actionCopy = action;
+    v51 = controllerCopy;
+    v52 = titlesCopy;
     [v52 enumerateObjectsUsingBlock:v49];
     v31 = MEMORY[0x277D750F8];
     v47[0] = MEMORY[0x277D85DD0];
@@ -71,7 +71,7 @@
     v47[3] = &unk_279EB1580;
     v32 = v29;
     v48 = v32;
-    v33 = [v31 actionWithTitle:v19 style:1 handler:v47];
+    v33 = [v31 actionWithTitle:buttonTitleCopy style:1 handler:v47];
     [v30 addAction:v33];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
@@ -85,15 +85,15 @@
     v41[1] = 3221225472;
     v41[2] = __203__WBUFormAutoFillPrompt_showAutoFillPromptInWebView_title_message_cancelButtonTitle_otherButtonTitles_cancelWhenAppEntersBackground_makeFirstButtonSuggestedAction_headerViewController_completionHandler___block_invoke_6;
     v41[3] = &unk_279EB15F8;
-    v44 = v38;
+    v44 = backgroundCopy;
     v42 = v30;
     v43 = v33;
     v35 = v33;
     v36 = v30;
-    [v25 presentViewController:v36 animated:1 completion:v41];
+    [webui_presentingViewController presentViewController:v36 animated:1 completion:v41];
 
-    v17 = v39;
-    v18 = v40;
+    titleCopy = v39;
+    messageCopy = v40;
   }
 }
 
@@ -208,47 +208,47 @@ uint64_t __203__WBUFormAutoFillPrompt_showAutoFillPromptInWebView_title_message_
   return result;
 }
 
-+ (void)showAutoFillPromptForAppleCashLowBalanceInWebView:(id)a3 title:(id)a4 message:(id)a5 chooseDifferentCardButtonTitle:(id)a6 addMoneyButtonTitle:(id)a7 completionHandler:(id)a8
++ (void)showAutoFillPromptForAppleCashLowBalanceInWebView:(id)view title:(id)title message:(id)message chooseDifferentCardButtonTitle:(id)buttonTitle addMoneyButtonTitle:(id)moneyButtonTitle completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = v18;
+  viewCopy = view;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  moneyButtonTitleCopy = moneyButtonTitle;
+  handlerCopy = handler;
+  v19 = handlerCopy;
   if (isShowingAlertController == 1)
   {
-    if (v18)
+    if (handlerCopy)
     {
-      (*(v18 + 2))(v18, -1);
+      (*(handlerCopy + 2))(handlerCopy, -1);
     }
   }
 
   else
   {
-    v32 = v17;
-    v20 = [v13 webui_preventNavigationDuringAutoFillPrompt];
-    v33 = v13;
-    v21 = [v13 webui_presentingViewController];
-    if ([v21 modalPresentationStyle] == 7)
+    v32 = moneyButtonTitleCopy;
+    webui_preventNavigationDuringAutoFillPrompt = [viewCopy webui_preventNavigationDuringAutoFillPrompt];
+    v33 = viewCopy;
+    webui_presentingViewController = [viewCopy webui_presentingViewController];
+    if ([webui_presentingViewController modalPresentationStyle] == 7)
     {
-      [v21 dismissViewControllerAnimated:0 completion:0];
+      [webui_presentingViewController dismissViewControllerAnimated:0 completion:0];
     }
 
-    v22 = [MEMORY[0x277D75110] alertControllerWithTitle:v14 message:v15 preferredStyle:1];
+    v22 = [MEMORY[0x277D75110] alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
     v23 = MEMORY[0x277D750F8];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __158__WBUFormAutoFillPrompt_showAutoFillPromptForAppleCashLowBalanceInWebView_title_message_chooseDifferentCardButtonTitle_addMoneyButtonTitle_completionHandler___block_invoke;
     v38[3] = &unk_279EB1620;
-    v34 = v14;
+    v34 = titleCopy;
     v24 = v19;
     v39 = v24;
-    v25 = v15;
-    v26 = v20;
+    v25 = messageCopy;
+    v26 = webui_preventNavigationDuringAutoFillPrompt;
     v40 = v26;
-    v27 = [v23 actionWithTitle:v16 style:0 handler:v38];
+    v27 = [v23 actionWithTitle:buttonTitleCopy style:0 handler:v38];
     [v22 addAction:v27];
     [v22 setPreferredAction:v27];
     v28 = MEMORY[0x277D750F8];
@@ -259,16 +259,16 @@ uint64_t __203__WBUFormAutoFillPrompt_showAutoFillPromptInWebView_title_message_
     v36 = v24;
     v37 = v26;
     v29 = v26;
-    v15 = v25;
+    messageCopy = v25;
     v30 = v29;
-    v17 = v32;
+    moneyButtonTitleCopy = v32;
     v31 = [v28 actionWithTitle:v32 style:0 handler:v35];
     [v22 addAction:v31];
     isShowingAlertController = 1;
-    [v21 presentViewController:v22 animated:1 completion:0];
+    [webui_presentingViewController presentViewController:v22 animated:1 completion:0];
 
-    v14 = v34;
-    v13 = v33;
+    titleCopy = v34;
+    viewCopy = v33;
   }
 }
 
@@ -300,64 +300,64 @@ uint64_t __158__WBUFormAutoFillPrompt_showAutoFillPromptForAppleCashLowBalanceIn
   return v3();
 }
 
-- (void)showAutoFillPromptForUsernameInWebView:(id)a3 url:(id)a4 title:(id)a5 message:(id)a6 suggestedUsername:(id)a7 password:(id)a8 isGeneratedPassword:(BOOL)a9 completionHandler:(id)a10
+- (void)showAutoFillPromptForUsernameInWebView:(id)view url:(id)url title:(id)title message:(id)message suggestedUsername:(id)username password:(id)password isGeneratedPassword:(BOOL)generatedPassword completionHandler:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v46 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a10;
-  if ((isShowingAlertController & 1) != 0 || ![v20 length])
+  viewCopy = view;
+  urlCopy = url;
+  titleCopy = title;
+  messageCopy = message;
+  usernameCopy = username;
+  passwordCopy = password;
+  handlerCopy = handler;
+  if ((isShowingAlertController & 1) != 0 || ![passwordCopy length])
   {
-    if (v21)
+    if (handlerCopy)
     {
-      v21[2](v21, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   else
   {
-    v44 = v17;
-    v22 = [v16 webui_presentingViewController];
-    if ([v22 modalPresentationStyle] == 7)
+    v44 = urlCopy;
+    webui_presentingViewController = [viewCopy webui_presentingViewController];
+    if ([webui_presentingViewController modalPresentationStyle] == 7)
     {
-      [v22 dismissViewControllerAnimated:0 completion:0];
+      [webui_presentingViewController dismissViewControllerAnimated:0 completion:0];
     }
 
-    v41 = v22;
-    objc_storeStrong(&self->_url, a4);
-    v43 = v18;
-    v23 = [WBUAlertController alertControllerWithTitle:v46 message:v18 preferredStyle:1];
+    v41 = webui_presentingViewController;
+    objc_storeStrong(&self->_url, url);
+    v43 = messageCopy;
+    v23 = [WBUAlertController alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
     objc_storeWeak(&self->_alertController, v23);
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = __147__WBUFormAutoFillPrompt_showAutoFillPromptForUsernameInWebView_url_title_message_suggestedUsername_password_isGeneratedPassword_completionHandler___block_invoke;
     v59[3] = &unk_279EB1648;
-    v39 = v19;
+    v39 = usernameCopy;
     v60 = v39;
-    v61 = self;
+    selfCopy = self;
     [v23 addTextFieldWithConfigurationHandler:v59];
     v57[0] = MEMORY[0x277D85DD0];
     v57[1] = 3221225472;
     v57[2] = __147__WBUFormAutoFillPrompt_showAutoFillPromptForUsernameInWebView_url_title_message_suggestedUsername_password_isGeneratedPassword_completionHandler___block_invoke_2;
     v57[3] = &unk_279EB1670;
-    v58 = v20;
+    v58 = passwordCopy;
     [v23 addTextFieldWithConfigurationHandler:v57];
-    v45 = v16;
-    v24 = [v16 webui_preventNavigationDuringAutoFillPrompt];
+    v45 = viewCopy;
+    webui_preventNavigationDuringAutoFillPrompt = [viewCopy webui_preventNavigationDuringAutoFillPrompt];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __147__WBUFormAutoFillPrompt_showAutoFillPromptForUsernameInWebView_url_title_message_suggestedUsername_password_isGeneratedPassword_completionHandler___block_invoke_3;
     v54[3] = &unk_279EB1698;
-    v55 = v21;
-    v56 = v24;
-    v40 = v24;
+    v55 = handlerCopy;
+    v56 = webui_preventNavigationDuringAutoFillPrompt;
+    v40 = webui_preventNavigationDuringAutoFillPrompt;
     v25 = MEMORY[0x2743DCFC0](v54);
     v26 = _WBSLocalizedString();
-    v42 = v19;
-    if (a9)
+    v42 = usernameCopy;
+    if (generatedPassword)
     {
       v27 = _WBSLocalizedString();
 
@@ -404,16 +404,16 @@ uint64_t __158__WBUFormAutoFillPrompt_showAutoFillPromptForAppleCashLowBalanceIn
     v37 = v35;
     [v23 setDeallocationHandler:v47];
     isShowingAlertController = 1;
-    v38 = [MEMORY[0x277D499B8] sharedLogger];
-    [v38 didPresentUsernamePrompt];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8] didPresentUsernamePrompt];
 
     [v41 presentViewController:v23 animated:1 completion:0];
     [(WBUFormAutoFillPrompt *)self _alertTextFieldDidChange:0];
 
-    v17 = v44;
-    v16 = v45;
-    v19 = v42;
-    v18 = v43;
+    urlCopy = v44;
+    viewCopy = v45;
+    usernameCopy = v42;
+    messageCopy = v43;
   }
 }
 
@@ -509,31 +509,31 @@ void __147__WBUFormAutoFillPrompt_showAutoFillPromptForUsernameInWebView_url_tit
   objc_sync_exit(obj);
 }
 
-- (void)_alertTextFieldDidChange:(id)a3
+- (void)_alertTextFieldDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_alertController);
-  v5 = [WeakRetained textFields];
-  v6 = [v5 firstObject];
+  textFields = [WeakRetained textFields];
+  firstObject = [textFields firstObject];
 
-  v7 = [v6 text];
-  v8 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v9 = [v7 stringByTrimmingCharactersInSet:v8];
+  text = [firstObject text];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v9 = [text stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  v10 = [WeakRetained actions];
-  v11 = [v10 objectAtIndexedSubscript:1];
+  actions = [WeakRetained actions];
+  v11 = [actions objectAtIndexedSubscript:1];
 
   [v11 setEnabled:{objc_msgSend(v9, "length") != 0}];
-  v12 = [MEMORY[0x277D49E08] sharedProvider];
+  mEMORY[0x277D49E08] = [MEMORY[0x277D49E08] sharedProvider];
   url = self->_url;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __50__WBUFormAutoFillPrompt__alertTextFieldDidChange___block_invoke;
   v16[3] = &unk_279EB1710;
   v17 = v9;
-  v18 = v6;
-  v14 = v6;
+  v18 = firstObject;
+  v14 = firstObject;
   v15 = v9;
-  [v12 suggestedUsersPrioritizingExistingUsersForURL:url matchingText:v15 limitForUsersNotFromURL:3 completionHandler:v16];
+  [mEMORY[0x277D49E08] suggestedUsersPrioritizingExistingUsersForURL:url matchingText:v15 limitForUsersNotFromURL:3 completionHandler:v16];
 }
 
 void __50__WBUFormAutoFillPrompt__alertTextFieldDidChange___block_invoke(uint64_t a1, void *a2)

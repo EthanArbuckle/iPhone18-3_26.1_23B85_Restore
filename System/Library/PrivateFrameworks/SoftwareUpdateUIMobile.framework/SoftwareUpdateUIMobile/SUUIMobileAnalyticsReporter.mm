@@ -1,50 +1,50 @@
 @interface SUUIMobileAnalyticsReporter
-- (SUUIMobileAnalyticsReporter)initWithSUManagerClient:(id)a3;
-- (id)eventNameFor:(int64_t)a3;
-- (id)interactionTypeToSUInteractionType:(int64_t)a3;
-- (id)toSUAnalyticsEvent:(id)a3;
-- (void)assignValue:(id)a3 forKey:(id)a4 in:(id)a5;
-- (void)submitAnalyticsEvent:(id)a3;
+- (SUUIMobileAnalyticsReporter)initWithSUManagerClient:(id)client;
+- (id)eventNameFor:(int64_t)for;
+- (id)interactionTypeToSUInteractionType:(int64_t)type;
+- (id)toSUAnalyticsEvent:(id)event;
+- (void)assignValue:(id)value forKey:(id)key in:(id)in;
+- (void)submitAnalyticsEvent:(id)event;
 @end
 
 @implementation SUUIMobileAnalyticsReporter
 
-- (SUUIMobileAnalyticsReporter)initWithSUManagerClient:(id)a3
+- (SUUIMobileAnalyticsReporter)initWithSUManagerClient:(id)client
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, client);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = SUUIMobileAnalyticsReporter;
   v8 = [(SUUIMobileAnalyticsReporter *)&v9 init];
-  v11 = v8;
-  objc_storeStrong(&v11, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    objc_storeStrong(&v11->_managerClient, location[0]);
+    objc_storeStrong(&selfCopy->_managerClient, location[0]);
     v4 = dispatch_queue_create("com.apple.softwareupdateui.mobile.analyticsreporter", 0);
-    eventQueue = v11->_eventQueue;
-    v11->_eventQueue = v4;
+    eventQueue = selfCopy->_eventQueue;
+    selfCopy->_eventQueue = v4;
     MEMORY[0x277D82BD8](eventQueue);
   }
 
-  v7 = MEMORY[0x277D82BE0](v11);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (void)submitAnalyticsEvent:(id)a3
+- (void)submitAnalyticsEvent:(id)event
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  objc_initWeak(&v11, v14);
-  queue = v14->_eventQueue;
+  objc_storeStrong(&location, event);
+  objc_initWeak(&v11, selfCopy);
+  queue = selfCopy->_eventQueue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
@@ -117,39 +117,39 @@ void __52__SUUIMobileAnalyticsReporter_submitAnalyticsEvent___block_invoke(uint6
   *MEMORY[0x277D85DE8];
 }
 
-- (id)toSUAnalyticsEvent:(id)a3
+- (id)toSUAnalyticsEvent:(id)event
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   v6 = objc_alloc(MEMORY[0x277D64868]);
-  v7 = -[SUUIMobileAnalyticsReporter eventNameFor:](v20, "eventNameFor:", [location[0] eventType]);
+  v7 = -[SUUIMobileAnalyticsReporter eventNameFor:](selfCopy, "eventNameFor:", [location[0] eventType]);
   v18 = [v6 initWithEventName:?];
   MEMORY[0x277D82BD8](v7);
-  v17 = [location[0] payload];
-  v16 = [v17 objectForKey:*MEMORY[0x277D64C20]];
+  payload = [location[0] payload];
+  v16 = [payload objectForKey:*MEMORY[0x277D64C20]];
   if (v16)
   {
-    v15 = -[SUUIMobileAnalyticsReporter interactionTypeToSUInteractionType:](v20, "interactionTypeToSUInteractionType:", [v16 intValue]);
+    v15 = -[SUUIMobileAnalyticsReporter interactionTypeToSUInteractionType:](selfCopy, "interactionTypeToSUInteractionType:", [v16 intValue]);
     if (!v15)
     {
       _suui_precondition_failure_with_format();
     }
 
-    [(SUUIMobileAnalyticsReporter *)v20 assignValue:v15 forKey:*MEMORY[0x277D64960] in:v18];
+    [(SUUIMobileAnalyticsReporter *)selfCopy assignValue:v15 forKey:*MEMORY[0x277D64960] in:v18];
     objc_storeStrong(&v15, 0);
   }
 
   else
   {
-    v5 = v17;
+    v5 = payload;
     v8 = MEMORY[0x277D85DD0];
     v9 = -1073741824;
     v10 = 0;
     v11 = __50__SUUIMobileAnalyticsReporter_toSUAnalyticsEvent___block_invoke;
     v12 = &unk_279CCBD80;
-    v13 = MEMORY[0x277D82BE0](v20);
+    v13 = MEMORY[0x277D82BE0](selfCopy);
     v14 = MEMORY[0x277D82BE0](v18);
     [v5 enumerateKeysAndObjectsUsingBlock:&v8];
     objc_storeStrong(&v14, 0);
@@ -158,7 +158,7 @@ void __52__SUUIMobileAnalyticsReporter_submitAnalyticsEvent___block_invoke(uint6
 
   v4 = MEMORY[0x277D82BE0](v18);
   objc_storeStrong(&v16, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&payload, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(location, 0);
 
@@ -177,11 +177,11 @@ void __50__SUUIMobileAnalyticsReporter_toSUAnalyticsEvent___block_invoke(uint64_
   objc_storeStrong(location, 0);
 }
 
-- (id)eventNameFor:(int64_t)a3
+- (id)eventNameFor:(int64_t)for
 {
-  if (a3)
+  if (for)
   {
-    if (a3 == 1)
+    if (for == 1)
     {
       v4 = MEMORY[0x277D82BE0](*MEMORY[0x277D64950]);
     }
@@ -195,17 +195,17 @@ void __50__SUUIMobileAnalyticsReporter_toSUAnalyticsEvent___block_invoke(uint64_
   return v4;
 }
 
-- (void)assignValue:(id)a3 forKey:(id)a4 in:(id)a5
+- (void)assignValue:(id)value forKey:(id)key in:(id)in
 {
   v13 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, key);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
+  objc_storeStrong(&v9, in);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -230,16 +230,16 @@ void __50__SUUIMobileAnalyticsReporter_toSUAnalyticsEvent___block_invoke(uint64_
 
     else
     {
-      v5 = [MEMORY[0x277D64B58] analyticsLogger];
-      v8 = [v5 oslog];
-      MEMORY[0x277D82BD8](v5);
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      analyticsLogger = [MEMORY[0x277D64B58] analyticsLogger];
+      oslog = [analyticsLogger oslog];
+      MEMORY[0x277D82BD8](analyticsLogger);
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
         __os_log_helper_16_2_2_8_32_8_66(v12, "[SUUIMobileAnalyticsReporter assignValue:forKey:in:]", v10);
-        _os_log_error_impl(&dword_26B0B9000, v8, OS_LOG_TYPE_ERROR, "%s: Could not assign the SUAnalyticsEvent payload event for key %{public}@ - the given value type is not supported.", v12, 0x16u);
+        _os_log_error_impl(&dword_26B0B9000, oslog, OS_LOG_TYPE_ERROR, "%s: Could not assign the SUAnalyticsEvent payload event for key %{public}@ - the given value type is not supported.", v12, 0x16u);
       }
 
-      objc_storeStrong(&v8, 0);
+      objc_storeStrong(&oslog, 0);
     }
   }
 
@@ -249,9 +249,9 @@ void __50__SUUIMobileAnalyticsReporter_toSUAnalyticsEvent___block_invoke(uint64_
   *MEMORY[0x277D85DE8];
 }
 
-- (id)interactionTypeToSUInteractionType:(int64_t)a3
+- (id)interactionTypeToSUInteractionType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 0:
       v4 = MEMORY[0x277D82BE0](*MEMORY[0x277D649B0]);

@@ -1,6 +1,6 @@
 @interface KDeviceSet
 - (KDeviceSet)init;
-- (id)addDevice:(id)a3 registationData:(id)a4 app:(id)a5;
+- (id)addDevice:(id)device registationData:(id)data app:(id)app;
 @end
 
 @implementation KDeviceSet
@@ -21,25 +21,25 @@
   return v2;
 }
 
-- (id)addDevice:(id)a3 registationData:(id)a4 app:(id)a5
+- (id)addDevice:(id)device registationData:(id)data app:(id)app
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[KDevice alloc] initWithPushToken:v10 registrationData:v9];
+  appCopy = app;
+  dataCopy = data;
+  deviceCopy = device;
+  v11 = [[KDevice alloc] initWithPushToken:deviceCopy registrationData:dataCopy];
 
-  v12 = [(KDeviceSet *)self devices];
-  v13 = [v12 member:v11];
+  devices = [(KDeviceSet *)self devices];
+  v13 = [devices member:v11];
 
   if (!v13)
   {
-    v14 = [(KDeviceSet *)self devices];
-    [v14 addObject:v11];
+    devices2 = [(KDeviceSet *)self devices];
+    [devices2 addObject:v11];
 
     v13 = v11;
   }
 
-  [(KDevice *)v13 addApplication:v8];
+  [(KDevice *)v13 addApplication:appCopy];
 
   return v13;
 }

@@ -1,10 +1,10 @@
 @interface ASCLockupMediaView
-- (ASCLockupMediaView)initWithCoder:(id)a3;
-- (ASCLockupMediaView)initWithFrame:(CGRect)a3;
+- (ASCLockupMediaView)initWithCoder:(id)coder;
+- (ASCLockupMediaView)initWithFrame:(CGRect)frame;
 - (CGSize)estimatedMediaContentSize;
 - (CGSize)intrinsicContentSize;
 - (CGSize)preferredScreenshotSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)mediaViews;
 - (UIEdgeInsets)layoutMarginsForCurrentContext;
 - (id)accessibilityElements;
@@ -15,22 +15,22 @@
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setContext:(id)a3;
-- (void)setImage:(id)a3 atIndex:(int64_t)a4;
-- (void)setScreenshots:(id)a3 andTrailers:(id)a4;
-- (void)setVideoLoopingEnabled:(BOOL)a3;
-- (void)setVideoMuted:(BOOL)a3;
-- (void)setVideoView:(id)a3;
+- (void)setContext:(id)context;
+- (void)setImage:(id)image atIndex:(int64_t)index;
+- (void)setScreenshots:(id)screenshots andTrailers:(id)trailers;
+- (void)setVideoLoopingEnabled:(BOOL)enabled;
+- (void)setVideoMuted:(BOOL)muted;
+- (void)setVideoView:(id)view;
 - (void)updateImageViews;
 @end
 
 @implementation ASCLockupMediaView
 
-- (ASCLockupMediaView)initWithFrame:(CGRect)a3
+- (ASCLockupMediaView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = ASCLockupMediaView;
-  v3 = [(ASCLockupMediaView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ASCLockupMediaView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -64,7 +64,7 @@
   return v4;
 }
 
-- (ASCLockupMediaView)initWithCoder:(id)a3
+- (ASCLockupMediaView)initWithCoder:(id)coder
 {
   [(ASCLockupMediaView *)self doesNotRecognizeSelector:a2];
 
@@ -76,11 +76,11 @@
   [(ASCLockupMediaView *)self estimatedMediaContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(ASCLockupMediaView *)self context];
-  v8 = [(ASCLockupMediaView *)self screenshots];
-  v9 = [(ASCLockupMediaView *)self trailers];
-  v10 = [(UIView *)self asc_layoutTraitEnvironment];
-  [__ASCLayoutProxy lockupMediaPreferredMediaSizeWithFitting:v7 for:v8 with:v9 and:v10 in:v4, v6];
+  context = [(ASCLockupMediaView *)self context];
+  screenshots = [(ASCLockupMediaView *)self screenshots];
+  trailers = [(ASCLockupMediaView *)self trailers];
+  asc_layoutTraitEnvironment = [(UIView *)self asc_layoutTraitEnvironment];
+  [__ASCLayoutProxy lockupMediaPreferredMediaSizeWithFitting:context for:screenshots with:trailers and:asc_layoutTraitEnvironment in:v4, v6];
   v12 = v11;
   v14 = v13;
 
@@ -91,13 +91,13 @@
   return result;
 }
 
-- (void)setVideoView:(id)a3
+- (void)setVideoView:(id)view
 {
-  v9 = a3;
+  viewCopy = view;
   v5 = self->_videoView;
-  if (v9 && v5)
+  if (viewCopy && v5)
   {
-    v6 = [(ASCVideoView *)v5 isEqual:v9];
+    v6 = [(ASCVideoView *)v5 isEqual:viewCopy];
 
     if (v6)
     {
@@ -108,26 +108,26 @@
   else
   {
 
-    if (v5 == v9)
+    if (v5 == viewCopy)
     {
       goto LABEL_11;
     }
   }
 
-  v7 = [(ASCVideoView *)self->_videoView superview];
+  superview = [(ASCVideoView *)self->_videoView superview];
 
-  if (v7)
+  if (superview)
   {
     [(ASCVideoView *)self->_videoView removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_videoView, a3);
+  objc_storeStrong(&self->_videoView, view);
   if (self->_videoView)
   {
     [(ASCVideoView *)self->_videoView setLoopingEnabled:[(ASCLockupMediaView *)self isVideoLoopingEnabled]];
     [(ASCVideoView *)self->_videoView setMuted:[(ASCLockupMediaView *)self isVideoMuted]];
-    v8 = [(ASCLockupMediaView *)self containerView];
-    [v8 addSubview:self->_videoView];
+    containerView = [(ASCLockupMediaView *)self containerView];
+    [containerView addSubview:self->_videoView];
   }
 
   [(ASCLockupMediaView *)self updateImageViews];
@@ -138,48 +138,48 @@ LABEL_11:
 
 - (NSArray)mediaViews
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ASCLockupMediaView *)self videoView];
+  array = [MEMORY[0x277CBEB18] array];
+  videoView = [(ASCLockupMediaView *)self videoView];
 
-  if (v4)
+  if (videoView)
   {
-    v5 = [(ASCLockupMediaView *)self videoView];
-    [v3 addObject:v5];
+    videoView2 = [(ASCLockupMediaView *)self videoView];
+    [array addObject:videoView2];
   }
 
-  v6 = [(ASCLockupMediaView *)self imageViews];
-  [v3 addObjectsFromArray:v6];
+  imageViews = [(ASCLockupMediaView *)self imageViews];
+  [array addObjectsFromArray:imageViews];
 
-  return v3;
+  return array;
 }
 
-- (void)setVideoLoopingEnabled:(BOOL)a3
+- (void)setVideoLoopingEnabled:(BOOL)enabled
 {
-  if (self->_videoLoopingEnabled != a3)
+  if (self->_videoLoopingEnabled != enabled)
   {
-    v4 = a3;
-    self->_videoLoopingEnabled = a3;
-    v5 = [(ASCLockupMediaView *)self videoView];
-    [v5 setLoopingEnabled:v4];
-  }
-}
-
-- (void)setVideoMuted:(BOOL)a3
-{
-  if (self->_videoMuted != a3)
-  {
-    v4 = a3;
-    self->_videoMuted = a3;
-    v5 = [(ASCLockupMediaView *)self videoView];
-    [v5 setMuted:v4];
+    enabledCopy = enabled;
+    self->_videoLoopingEnabled = enabled;
+    videoView = [(ASCLockupMediaView *)self videoView];
+    [videoView setLoopingEnabled:enabledCopy];
   }
 }
 
-- (void)setContext:(id)a3
+- (void)setVideoMuted:(BOOL)muted
 {
-  v9 = a3;
-  objc_storeStrong(&self->_context, a3);
-  if (ASCLockupContextIsAdGridContext(v9))
+  if (self->_videoMuted != muted)
+  {
+    mutedCopy = muted;
+    self->_videoMuted = muted;
+    videoView = [(ASCLockupMediaView *)self videoView];
+    [videoView setMuted:mutedCopy];
+  }
+}
+
+- (void)setContext:(id)context
+{
+  contextCopy = context;
+  objc_storeStrong(&self->_context, context);
+  if (ASCLockupContextIsAdGridContext(contextCopy))
   {
     v5 = MEMORY[0x277D75348];
     v6 = [MEMORY[0x277D75348] colorWithRed:0.93333333 green:0.93333333 blue:0.93333333 alpha:1.0];
@@ -196,38 +196,38 @@ LABEL_11:
 
 - (id)makeLayout
 {
-  v3 = [(ASCLockupMediaView *)self context];
-  v4 = [(ASCLockupMediaView *)self screenshots];
-  v5 = [(ASCLockupMediaView *)self trailers];
-  v6 = [(ASCLockupMediaView *)self containerView];
-  v7 = [(ASCLockupMediaView *)self mediaViews];
-  v8 = [__ASCLayoutProxy lockupMediaLayoutFor:v3 screenshots:v4 trailers:v5 containerView:v6 mediaViews:v7];
+  context = [(ASCLockupMediaView *)self context];
+  screenshots = [(ASCLockupMediaView *)self screenshots];
+  trailers = [(ASCLockupMediaView *)self trailers];
+  containerView = [(ASCLockupMediaView *)self containerView];
+  mediaViews = [(ASCLockupMediaView *)self mediaViews];
+  v8 = [__ASCLayoutProxy lockupMediaLayoutFor:context screenshots:screenshots trailers:trailers containerView:containerView mediaViews:mediaViews];
 
   return v8;
 }
 
 - (id)makeSizingLayout
 {
-  v3 = [(ASCLockupMediaView *)self context];
-  v4 = [(ASCLockupMediaView *)self screenshots];
-  v5 = [(ASCLockupMediaView *)self trailers];
-  v6 = [(ASCLockupMediaView *)self containerView];
-  v7 = [(ASCLockupMediaView *)self mediaViews];
-  v8 = [__ASCLayoutProxy lockupMediaSizingLayoutFor:v3 screenshots:v4 trailers:v5 containerView:v6 mediaViews:v7];
+  context = [(ASCLockupMediaView *)self context];
+  screenshots = [(ASCLockupMediaView *)self screenshots];
+  trailers = [(ASCLockupMediaView *)self trailers];
+  containerView = [(ASCLockupMediaView *)self containerView];
+  mediaViews = [(ASCLockupMediaView *)self mediaViews];
+  v8 = [__ASCLayoutProxy lockupMediaSizingLayoutFor:context screenshots:screenshots trailers:trailers containerView:containerView mediaViews:mediaViews];
 
   return v8;
 }
 
 - (CGSize)estimatedMediaContentSize
 {
-  v3 = [(ASCLockupMediaView *)self context];
-  v4 = [(ASCLockupMediaView *)self screenshots];
-  v5 = [(ASCLockupMediaView *)self trailers];
+  context = [(ASCLockupMediaView *)self context];
+  screenshots = [(ASCLockupMediaView *)self screenshots];
+  trailers = [(ASCLockupMediaView *)self trailers];
   [(ASCLockupMediaView *)self bounds];
   v7 = v6;
   v9 = v8;
-  v10 = [(UIView *)self asc_layoutTraitEnvironment];
-  [__ASCLayoutProxy estimatedMediaContentSizeFor:v3 screenshots:v4 trailers:v5 fitting:v10 in:v7, v9];
+  asc_layoutTraitEnvironment = [(UIView *)self asc_layoutTraitEnvironment];
+  [__ASCLayoutProxy estimatedMediaContentSizeFor:context screenshots:screenshots trailers:trailers fitting:asc_layoutTraitEnvironment in:v7, v9];
   v12 = v11;
   v14 = v13;
 
@@ -245,8 +245,8 @@ LABEL_11:
   [(ASCLockupMediaView *)&v4 invalidateIntrinsicContentSize];
   if ([(ASCLockupMediaView *)self translatesAutoresizingMaskIntoConstraints])
   {
-    v3 = [(ASCLockupMediaView *)self superview];
-    [v3 invalidateIntrinsicContentSize];
+    superview = [(ASCLockupMediaView *)self superview];
+    [superview invalidateIntrinsicContentSize];
   }
 }
 
@@ -260,10 +260,10 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(ASCLockupMediaView *)self layoutMarginsForCurrentContext];
   v7 = v6;
   v9 = v8;
@@ -271,11 +271,11 @@ LABEL_11:
   v13 = v12;
   v14 = width - v8 - v12;
   v15 = height - v6 - v10;
-  v16 = [(ASCLockupMediaView *)self context];
-  v17 = [(ASCLockupMediaView *)self screenshots];
-  v18 = [(ASCLockupMediaView *)self trailers];
-  v19 = [(UIView *)self asc_layoutTraitEnvironment];
-  [__ASCLayoutProxy estimatedMediaContentSizeFor:v16 screenshots:v17 trailers:v18 fitting:v19 in:v14, v15];
+  context = [(ASCLockupMediaView *)self context];
+  screenshots = [(ASCLockupMediaView *)self screenshots];
+  trailers = [(ASCLockupMediaView *)self trailers];
+  asc_layoutTraitEnvironment = [(UIView *)self asc_layoutTraitEnvironment];
+  [__ASCLayoutProxy estimatedMediaContentSizeFor:context screenshots:screenshots trailers:trailers fitting:asc_layoutTraitEnvironment in:v14, v15];
   v21 = v20;
   v23 = v22;
 
@@ -291,12 +291,12 @@ LABEL_11:
   v31.receiver = self;
   v31.super_class = ASCLockupMediaView;
   [(ASCLockupMediaView *)&v31 layoutSubviews];
-  v3 = [(ASCLockupMediaView *)self containerView];
+  containerView = [(ASCLockupMediaView *)self containerView];
   v4 = *(MEMORY[0x277CBF2C0] + 16);
   *&v30.a = *MEMORY[0x277CBF2C0];
   *&v30.c = v4;
   *&v30.tx = *(MEMORY[0x277CBF2C0] + 32);
-  [v3 setTransform:&v30];
+  [containerView setTransform:&v30];
 
   [(ASCLockupMediaView *)self layoutMarginsForCurrentContext];
   v6 = v5;
@@ -308,22 +308,22 @@ LABEL_11:
   v16 = v6 + v15;
   v18 = v17 - (v8 + v12);
   v20 = v19 - (v6 + v10);
-  v21 = [(ASCLockupMediaView *)self makeLayout];
-  v22 = [(UIView *)self asc_layoutTraitEnvironment];
-  [v21 placeChildrenRelativeToRect:v22 inTraitEnvironment:{v14, v16, v18, v20}];
+  makeLayout = [(ASCLockupMediaView *)self makeLayout];
+  asc_layoutTraitEnvironment = [(UIView *)self asc_layoutTraitEnvironment];
+  [makeLayout placeChildrenRelativeToRect:asc_layoutTraitEnvironment inTraitEnvironment:{v14, v16, v18, v20}];
 
-  v23 = [(ASCLockupMediaView *)self context];
-  v24 = [(ASCLockupMediaView *)self screenshots];
-  v25 = [(ASCLockupMediaView *)self trailers];
-  [__ASCLayoutProxy containerViewRotationAngleFor:v23 screenshots:v24 trailers:v25];
+  context = [(ASCLockupMediaView *)self context];
+  screenshots = [(ASCLockupMediaView *)self screenshots];
+  trailers = [(ASCLockupMediaView *)self trailers];
+  [__ASCLayoutProxy containerViewRotationAngleFor:context screenshots:screenshots trailers:trailers];
   v27 = v26;
 
   if (v27 != 0.0)
   {
     CGAffineTransformMakeRotation(&v29, v27 * 3.14159265 / 180.0);
-    v28 = [(ASCLockupMediaView *)self containerView];
+    containerView2 = [(ASCLockupMediaView *)self containerView];
     v30 = v29;
-    [v28 setTransform:&v30];
+    [containerView2 setTransform:&v30];
   }
 }
 
@@ -334,8 +334,8 @@ LABEL_11:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(ASCLockupMediaView *)self context];
-  [__ASCLayoutProxy layoutMarginsFor:v11 existingLayoutMargins:v4, v6, v8, v10];
+  context = [(ASCLockupMediaView *)self context];
+  [__ASCLayoutProxy layoutMarginsFor:context existingLayoutMargins:v4, v6, v8, v10];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -354,10 +354,10 @@ LABEL_11:
 
 - (unint64_t)numberOfImageViews
 {
-  v3 = [(ASCLockupMediaView *)self videoView];
+  videoView = [(ASCLockupMediaView *)self videoView];
 
   result = [(ASCLockupMediaView *)self numberOfViews];
-  if (v3)
+  if (videoView)
   {
     if (result)
     {
@@ -371,16 +371,16 @@ LABEL_11:
 - (void)updateImageViews
 {
   v3 = [ASCScreenshotDisplayConfiguration alloc];
-  v4 = [(ASCLockupMediaView *)self screenshots];
-  v5 = [v4 mediaPlatform];
-  v6 = [v5 deviceCornerRadiusFactor];
-  v21 = [(ASCScreenshotDisplayConfiguration *)v3 initWithDeviceCornerRadiusFactor:v6];
+  screenshots = [(ASCLockupMediaView *)self screenshots];
+  mediaPlatform = [screenshots mediaPlatform];
+  deviceCornerRadiusFactor = [mediaPlatform deviceCornerRadiusFactor];
+  v21 = [(ASCScreenshotDisplayConfiguration *)v3 initWithDeviceCornerRadiusFactor:deviceCornerRadiusFactor];
 
-  v7 = [(ASCLockupMediaView *)self numberOfImageViews];
+  numberOfImageViews = [(ASCLockupMediaView *)self numberOfImageViews];
   v8 = [(NSMutableArray *)self->_imageViews count];
-  if (v8 >= v7)
+  if (v8 >= numberOfImageViews)
   {
-    v9 = v7;
+    v9 = numberOfImageViews;
   }
 
   else
@@ -393,13 +393,13 @@ LABEL_11:
     for (i = 0; i < v14; ++i)
     {
       v11 = [(NSMutableArray *)self->_imageViews objectAtIndexedSubscript:i];
-      v12 = [v11 artworkView];
-      [v12 setScreenshotDisplayConfiguration:v21];
+      artworkView = [v11 artworkView];
+      [artworkView setScreenshotDisplayConfiguration:v21];
 
       v13 = [(NSMutableArray *)self->_imageViews count];
-      if (v13 >= v7)
+      if (v13 >= numberOfImageViews)
       {
-        v14 = v7;
+        v14 = numberOfImageViews;
       }
 
       else
@@ -409,7 +409,7 @@ LABEL_11:
     }
   }
 
-  if ([(NSMutableArray *)self->_imageViews count]!= v7)
+  if ([(NSMutableArray *)self->_imageViews count]!= numberOfImageViews)
   {
     v15 = *MEMORY[0x277CBF3A0];
     v16 = *(MEMORY[0x277CBF3A0] + 8);
@@ -417,26 +417,26 @@ LABEL_11:
     v18 = *(MEMORY[0x277CBF3A0] + 24);
     do
     {
-      if ([(NSMutableArray *)self->_imageViews count]>= v7)
+      if ([(NSMutableArray *)self->_imageViews count]>= numberOfImageViews)
       {
-        v19 = [(NSMutableArray *)self->_imageViews lastObject];
-        if (v19)
+        lastObject = [(NSMutableArray *)self->_imageViews lastObject];
+        if (lastObject)
         {
           [(NSMutableArray *)self->_imageViews removeLastObject];
-          [(ASCBorderedScreenshotView *)v19 removeFromSuperview];
+          [(ASCBorderedScreenshotView *)lastObject removeFromSuperview];
         }
       }
 
       else
       {
-        v19 = [[ASCBorderedScreenshotView alloc] initWithFrame:v21 screenshotDisplayConfiguration:v15, v16, v17, v18];
-        [(NSMutableArray *)self->_imageViews addObject:v19];
-        v20 = [(ASCLockupMediaView *)self containerView];
-        [v20 addSubview:v19];
+        lastObject = [[ASCBorderedScreenshotView alloc] initWithFrame:v21 screenshotDisplayConfiguration:v15, v16, v17, v18];
+        [(NSMutableArray *)self->_imageViews addObject:lastObject];
+        containerView = [(ASCLockupMediaView *)self containerView];
+        [containerView addSubview:lastObject];
       }
     }
 
-    while ([(NSMutableArray *)self->_imageViews count]!= v7);
+    while ([(NSMutableArray *)self->_imageViews count]!= numberOfImageViews);
   }
 }
 
@@ -447,8 +447,8 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(ASCLockupMediaView *)self imageViews];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  imageViews = [(ASCLockupMediaView *)self imageViews];
+  v4 = [imageViews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -460,38 +460,38 @@ LABEL_11:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(imageViews);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) artworkView];
-        [v8 setImage:0];
+        artworkView = [*(*(&v10 + 1) + 8 * v7) artworkView];
+        [artworkView setImage:0];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [imageViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [(ASCLockupMediaView *)self imageViews];
-  [v9 removeAllObjects];
+  imageViews2 = [(ASCLockupMediaView *)self imageViews];
+  [imageViews2 removeAllObjects];
 
   [(ASCLockupMediaView *)self setVideoView:0];
 }
 
-- (void)setScreenshots:(id)a3 andTrailers:(id)a4
+- (void)setScreenshots:(id)screenshots andTrailers:(id)trailers
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = v20;
-  v8 = v6;
+  screenshotsCopy = screenshots;
+  trailersCopy = trailers;
+  v7 = screenshotsCopy;
+  v8 = trailersCopy;
   screenshots = self->_screenshots;
-  if (!v20 || !screenshots)
+  if (!screenshotsCopy || !screenshots)
   {
-    if (screenshots == v20)
+    if (screenshots == screenshotsCopy)
     {
       goto LABEL_4;
     }
@@ -505,8 +505,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [(ASCScreenshots *)screenshots isEqual:v20];
-  v7 = v20;
+  v10 = [(ASCScreenshots *)screenshots isEqual:screenshotsCopy];
+  v7 = screenshotsCopy;
   if (!v10)
   {
     goto LABEL_6;
@@ -540,10 +540,10 @@ LABEL_10:
   if (v11)
   {
 LABEL_14:
-    v17 = [(ASCLockupMediaView *)self context];
-    v18 = [(ASCLockupMediaView *)self screenshots];
-    v19 = [(ASCLockupMediaView *)self trailers];
-    [(ASCLockupMediaView *)self setNumberOfViews:[__ASCLayoutProxy numberOfViewsInLockupMediaLayoutFor:v17 with:v18 and:v19]];
+    context = [(ASCLockupMediaView *)self context];
+    screenshots = [(ASCLockupMediaView *)self screenshots];
+    trailers = [(ASCLockupMediaView *)self trailers];
+    [(ASCLockupMediaView *)self setNumberOfViews:[__ASCLayoutProxy numberOfViewsInLockupMediaLayoutFor:context with:screenshots and:trailers]];
 
     [(ASCLockupMediaView *)self updateImageViews];
     [(ASCLockupMediaView *)self setNeedsLayout];
@@ -551,24 +551,24 @@ LABEL_14:
   }
 }
 
-- (void)setImage:(id)a3 atIndex:(int64_t)a4
+- (void)setImage:(id)image atIndex:(int64_t)index
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ASCLockupMediaView *)self mediaViews];
-  if ([v7 count] > a4)
+  imageCopy = image;
+  mediaViews = [(ASCLockupMediaView *)self mediaViews];
+  if ([mediaViews count] > index)
   {
-    v8 = [(ASCLockupMediaView *)self screenshots];
-    v9 = [v8 artwork];
-    v10 = [v9 count];
+    screenshots = [(ASCLockupMediaView *)self screenshots];
+    artwork = [screenshots artwork];
+    v10 = [artwork count];
 
-    v11 = [(ASCLockupMediaView *)self trailers];
-    if (v11)
+    trailers = [(ASCLockupMediaView *)self trailers];
+    if (trailers)
     {
-      v12 = v11;
-      v13 = [(ASCLockupMediaView *)self trailers];
-      v14 = [v13 videos];
-      v15 = [v14 count];
+      v12 = trailers;
+      trailers2 = [(ASCLockupMediaView *)self trailers];
+      videos = [trailers2 videos];
+      v15 = [videos count];
 
       if (v15)
       {
@@ -576,9 +576,9 @@ LABEL_14:
       }
     }
 
-    for (i = objc_alloc_init(MEMORY[0x277CBEB18]); a4 < [v7 count]; a4 += v10)
+    for (i = objc_alloc_init(MEMORY[0x277CBEB18]); index < [mediaViews count]; index += v10)
     {
-      v17 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v17 = [MEMORY[0x277CCABB0] numberWithInteger:index];
       [i addObject:v17];
     }
 
@@ -601,9 +601,9 @@ LABEL_14:
             objc_enumerationMutation(obj);
           }
 
-          v22 = [*(*(&v32 + 1) + 8 * j) integerValue];
+          integerValue = [*(*(&v32 + 1) + 8 * j) integerValue];
           objc_opt_class();
-          v23 = [v7 objectAtIndexedSubscript:v22];
+          v23 = [mediaViews objectAtIndexedSubscript:integerValue];
           if (v23)
           {
             if (objc_opt_isKindOfClass())
@@ -626,15 +626,15 @@ LABEL_14:
 
           if (v25)
           {
-            [v25 setImage:v6];
-            v26 = [v25 previewFrameArtwork];
-            [v26 setNeedsDisplay];
+            [v25 setImage:imageCopy];
+            previewFrameArtwork = [v25 previewFrameArtwork];
+            [previewFrameArtwork setNeedsDisplay];
           }
 
           else
           {
             objc_opt_class();
-            v27 = [v7 objectAtIndexedSubscript:v22];
+            v27 = [mediaViews objectAtIndexedSubscript:integerValue];
             if (v27)
             {
               if (objc_opt_isKindOfClass())
@@ -653,17 +653,17 @@ LABEL_14:
               v28 = 0;
             }
 
-            v26 = v28;
+            previewFrameArtwork = v28;
 
-            if (v26)
+            if (previewFrameArtwork)
             {
-              v29 = [v26 artworkView];
-              [v29 setImage:v6];
+              artworkView = [previewFrameArtwork artworkView];
+              [artworkView setImage:imageCopy];
 
-              v30 = [v26 artworkView];
-              [v30 setNeedsDisplay];
+              artworkView2 = [previewFrameArtwork artworkView];
+              [artworkView2 setNeedsDisplay];
 
-              [v26 setUserInteractionEnabled:0];
+              [previewFrameArtwork setUserInteractionEnabled:0];
             }
           }
         }
@@ -680,31 +680,31 @@ LABEL_14:
 {
   v32 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(ASCLockupMediaView *)self videoView];
+  videoView = [(ASCLockupMediaView *)self videoView];
 
-  if (v4)
+  if (videoView)
   {
-    v5 = [(ASCLockupMediaView *)self videoView];
-    [v5 setIsAccessibilityElement:1];
+    videoView2 = [(ASCLockupMediaView *)self videoView];
+    [videoView2 setIsAccessibilityElement:1];
 
     v6 = *MEMORY[0x277D76588];
-    v7 = [(ASCLockupMediaView *)self videoView];
-    [v7 setAccessibilityTraits:v6];
+    videoView3 = [(ASCLockupMediaView *)self videoView];
+    [videoView3 setAccessibilityTraits:v6];
 
     v9 = ASCLocalizedString(@"AX_VIDEO", v8);
-    v10 = [(ASCLockupMediaView *)self videoView];
-    [v10 setAccessibilityLabel:v9];
+    videoView4 = [(ASCLockupMediaView *)self videoView];
+    [videoView4 setAccessibilityLabel:v9];
 
-    v11 = [(ASCLockupMediaView *)self videoView];
-    [v3 addObject:v11];
+    videoView5 = [(ASCLockupMediaView *)self videoView];
+    [v3 addObject:videoView5];
   }
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = [(ASCLockupMediaView *)self imageViews];
-  v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  imageViews = [(ASCLockupMediaView *)self imageViews];
+  v13 = [imageViews countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v13)
   {
     v14 = v13;
@@ -716,25 +716,25 @@ LABEL_14:
       {
         if (*v28 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(imageViews);
         }
 
         v18 = *(*(&v27 + 1) + 8 * i);
-        v19 = [v18 artworkView];
-        [v19 setIsAccessibilityElement:1];
+        artworkView = [v18 artworkView];
+        [artworkView setIsAccessibilityElement:1];
 
-        v20 = [v18 artworkView];
-        [v20 setAccessibilityTraits:v16];
+        artworkView2 = [v18 artworkView];
+        [artworkView2 setAccessibilityTraits:v16];
 
         v22 = ASCLocalizedString(@"AX_ARTWORK", v21);
-        v23 = [v18 artworkView];
-        [v23 setAccessibilityLabel:v22];
+        artworkView3 = [v18 artworkView];
+        [artworkView3 setAccessibilityLabel:v22];
 
-        v24 = [v18 artworkView];
-        [v3 addObject:v24];
+        artworkView4 = [v18 artworkView];
+        [v3 addObject:artworkView4];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v14 = [imageViews countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v14);

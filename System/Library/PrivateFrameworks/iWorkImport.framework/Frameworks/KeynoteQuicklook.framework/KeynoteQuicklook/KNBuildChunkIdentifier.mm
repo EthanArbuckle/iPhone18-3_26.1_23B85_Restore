@@ -1,13 +1,13 @@
 @interface KNBuildChunkIdentifier
 + (id)emptyIdentifier;
-- (BOOL)isEqual:(id)a3;
-- (KNBuildChunkIdentifier)initWithBuild:(id)a3 chunkID:(int)a4;
-- (KNBuildChunkIdentifier)initWithMessage:(const void *)a3;
+- (BOOL)isEqual:(id)equal;
+- (KNBuildChunkIdentifier)initWithBuild:(id)build chunkID:(int)d;
+- (KNBuildChunkIdentifier)initWithMessage:(const void *)message;
 - (id)description;
 - (id)initEmptyIdentifier;
-- (id)resolveToChunkOnSlide:(id)a3;
-- (id)resolveToChunkUsingContext:(id)a3;
-- (void)saveToMessage:(void *)a3;
+- (id)resolveToChunkOnSlide:(id)slide;
+- (id)resolveToChunkUsingContext:(id)context;
+- (void)saveToMessage:(void *)message;
 @end
 
 @implementation KNBuildChunkIdentifier
@@ -41,10 +41,10 @@
   return v3;
 }
 
-- (KNBuildChunkIdentifier)initWithBuild:(id)a3 chunkID:(int)a4
+- (KNBuildChunkIdentifier)initWithBuild:(id)build chunkID:(int)d
 {
-  v7 = a3;
-  if (!v7)
+  buildCopy = build;
+  if (!buildCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[KNBuildChunkIdentifier initWithBuild:chunkID:]");
@@ -54,7 +54,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
   }
 
-  if ((a4 - 1) >= 0x7FFFFFFE)
+  if ((d - 1) >= 0x7FFFFFFE)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[KNBuildChunkIdentifier initWithBuild:chunkID:]");
@@ -69,7 +69,7 @@
   v24 = [(KNBuildChunkIdentifier *)&v39 init];
   if (v24)
   {
-    v25 = objc_msgSend_objectUUID(v7, v22, v23);
+    v25 = objc_msgSend_objectUUID(buildCopy, v22, v23);
     v28 = objc_msgSend_copy(v25, v26, v27);
     buildUUID = v24->_buildUUID;
     v24->_buildUUID = v28;
@@ -84,16 +84,16 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v36, v37);
     }
 
-    v24->_chunkID = a4;
+    v24->_chunkID = d;
   }
 
   return v24;
 }
 
-- (id)resolveToChunkUsingContext:(id)a3
+- (id)resolveToChunkUsingContext:(id)context
 {
-  v6 = a3;
-  if (!v6)
+  contextCopy = context;
+  if (!contextCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[KNBuildChunkIdentifier resolveToChunkUsingContext:]");
@@ -111,7 +111,7 @@
   else
   {
     objc_opt_class();
-    v16 = objc_msgSend_objectWithUUID_(v6, v15, self->_buildUUID);
+    v16 = objc_msgSend_objectWithUUID_(contextCopy, v15, self->_buildUUID);
     v17 = TSUCheckedDynamicCast();
 
     v14 = objc_msgSend_chunkForIdentifier_(v17, v18, self);
@@ -120,11 +120,11 @@
   return v14;
 }
 
-- (id)resolveToChunkOnSlide:(id)a3
+- (id)resolveToChunkOnSlide:(id)slide
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  slideCopy = slide;
+  if (!slideCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[KNBuildChunkIdentifier resolveToChunkOnSlide:]");
@@ -142,7 +142,7 @@
   else
   {
     objc_opt_class();
-    v17 = objc_msgSend_context(v6, v15, v16);
+    v17 = objc_msgSend_context(slideCopy, v15, v16);
     v19 = objc_msgSend_objectWithUUID_(v17, v18, self->_buildUUID);
     v20 = TSUCheckedDynamicCast();
 
@@ -152,7 +152,7 @@
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v25 = objc_msgSend_builds(v6, v23, v24);
+      v25 = objc_msgSend_builds(slideCopy, v23, v24);
       v27 = objc_msgSend_countByEnumeratingWithState_objects_count_(v25, v26, &v39, v43, 16);
       if (v27)
       {
@@ -199,14 +199,14 @@ LABEL_16:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -255,20 +255,20 @@ LABEL_16:
   return v10;
 }
 
-- (KNBuildChunkIdentifier)initWithMessage:(const void *)a3
+- (KNBuildChunkIdentifier)initWithMessage:(const void *)message
 {
   v28.receiver = self;
   v28.super_class = KNBuildChunkIdentifier;
   v6 = [(KNBuildChunkIdentifier *)&v28 init];
   if (v6)
   {
-    v7 = *(a3 + 4);
+    v7 = *(message + 4);
     if (v7)
     {
       v8 = objc_alloc(MEMORY[0x277CCAD78]);
-      if (*(a3 + 3))
+      if (*(message + 3))
       {
-        v10 = objc_msgSend_tsp_initWithMessage_(v8, v9, *(a3 + 3));
+        v10 = objc_msgSend_tsp_initWithMessage_(v8, v9, *(message + 3));
       }
 
       else
@@ -279,12 +279,12 @@ LABEL_16:
       buildUUID = v6->_buildUUID;
       v6->_buildUUID = v10;
 
-      v7 = *(a3 + 4);
+      v7 = *(message + 4);
     }
 
     if ((v7 & 2) != 0)
     {
-      v6->_chunkID = *(a3 + 8);
+      v6->_chunkID = *(message + 8);
     }
 
     else
@@ -311,9 +311,9 @@ LABEL_16:
   return v6;
 }
 
-- (void)saveToMessage:(void *)a3
+- (void)saveToMessage:(void *)message
 {
-  if ((objc_msgSend_isEmpty(self, a2, a3) & 1) == 0 && !self->_buildUUID)
+  if ((objc_msgSend_isEmpty(self, a2, message) & 1) == 0 && !self->_buildUUID)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNBuildChunkIdentifier(PersistenceAdditions) saveToMessage:]");
@@ -326,26 +326,26 @@ LABEL_16:
   buildUUID = self->_buildUUID;
   if (buildUUID)
   {
-    *(a3 + 4) |= 1u;
-    v14 = *(a3 + 3);
+    *(message + 4) |= 1u;
+    v14 = *(message + 3);
     if (!v14)
     {
-      v15 = *(a3 + 1);
+      v15 = *(message + 1);
       if (v15)
       {
         v15 = *(v15 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v14 = MEMORY[0x277C8F000](v15);
-      *(a3 + 3) = v14;
+      *(message + 3) = v14;
     }
 
     objc_msgSend_tsp_saveToMessage_(buildUUID, v5, v14);
   }
 
   chunkID = self->_chunkID;
-  *(a3 + 4) |= 2u;
-  *(a3 + 8) = chunkID;
+  *(message + 4) |= 2u;
+  *(message + 8) = chunkID;
 }
 
 @end

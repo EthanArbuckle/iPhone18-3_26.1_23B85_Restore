@@ -1,16 +1,16 @@
 @interface MIDIUMPCIProfile
 - ($CAB4DCDF46D014B19132C003A101DDEC)profileID;
-- (BOOL)deserialize:(id)a3;
+- (BOOL)deserialize:(id)deserialize;
 - (BOOL)hasOwner;
 - (BOOL)isEnabled;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMine;
-- (BOOL)registerToDevice:(id)a3;
-- (BOOL)sendProfileSpecificData:(id)a3 error:(id *)a4;
-- (BOOL)setProfileState:(BOOL)a3 enabledChannelCount:(unsigned __int16)a4 error:(id *)a5;
+- (BOOL)registerToDevice:(id)device;
+- (BOOL)sendProfileSpecificData:(id)data error:(id *)error;
+- (BOOL)setProfileState:(BOOL)state enabledChannelCount:(unsigned __int16)count error:(id *)error;
 - (MIDICIDevice)ciDevice;
-- (MIDIUMPCIProfile)initWithDescription:(id)a3;
-- (MIDIUMPCIProfile)initWithProfileID:(id)a3 name:(id)a4 profileType:(unsigned __int8)a5 groupOffset:(unsigned __int8)a6 firstChannel:(unsigned __int8)a7 enabledChannelCount:(unsigned __int16)a8 totalChannelCount:(unsigned __int16)a9;
+- (MIDIUMPCIProfile)initWithDescription:(id)description;
+- (MIDIUMPCIProfile)initWithProfileID:(id)d name:(id)name profileType:(unsigned __int8)type groupOffset:(unsigned __int8)offset firstChannel:(unsigned __int8)channel enabledChannelCount:(unsigned __int16)count totalChannelCount:(unsigned __int16)channelCount;
 - (NSString)name;
 - (id)serializeDescription;
 - (unsigned)enabledChannelCount;
@@ -18,7 +18,7 @@
 - (unsigned)groupOffset;
 - (unsigned)profileType;
 - (unsigned)totalChannelCount;
-- (void)detailsInquiryWithTarget:(unsigned __int8)a3 completion:(id)a4;
+- (void)detailsInquiryWithTarget:(unsigned __int8)target completion:(id)completion;
 @end
 
 @implementation MIDIUMPCIProfile
@@ -97,27 +97,27 @@
   return ownerClientRef;
 }
 
-- (void)detailsInquiryWithTarget:(unsigned __int8)a3 completion:(id)a4
+- (void)detailsInquiryWithTarget:(unsigned __int8)target completion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
-  v6 = [(MIDIUMPCIProfile *)self ciDevice];
-  [v6 detailsInquiry:self target:v4 completion:v7];
+  targetCopy = target;
+  completionCopy = completion;
+  ciDevice = [(MIDIUMPCIProfile *)self ciDevice];
+  [ciDevice detailsInquiry:self target:targetCopy completion:completionCopy];
 }
 
-- (BOOL)sendProfileSpecificData:(id)a3 error:(id *)a4
+- (BOOL)sendProfileSpecificData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MIDIUMPCIProfile *)self ciDevice];
-  LOBYTE(a4) = [v7 sendProfileSpecificData:self profileData:v6 error:a4];
+  dataCopy = data;
+  ciDevice = [(MIDIUMPCIProfile *)self ciDevice];
+  LOBYTE(error) = [ciDevice sendProfileSpecificData:self profileData:dataCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)setProfileState:(BOOL)a3 enabledChannelCount:(unsigned __int16)a4 error:(id *)a5
+- (BOOL)setProfileState:(BOOL)state enabledChannelCount:(unsigned __int16)count error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  countCopy = count;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_ciDevice);
 
   if (!WeakRetained)
@@ -127,7 +127,7 @@
 
   os_unfair_recursive_lock_lock_with_options();
   v10 = objc_loadWeakRetained(&self->_ciDevice);
-  v11 = [v10 setProfile:self newState:v7 enabledChannelCount:v6 error:a5];
+  v11 = [v10 setProfile:self newState:stateCopy enabledChannelCount:countCopy error:error];
 
   os_unfair_recursive_lock_unlock();
   return v11;
@@ -138,9 +138,9 @@
   os_unfair_recursive_lock_lock_with_options();
   if ([(NSData *)self->_profileID length]== 5)
   {
-    v3 = [(NSData *)self->_profileID bytes];
-    v4 = *v3;
-    v5.i32[0] = *(v3 + 1);
+    bytes = [(NSData *)self->_profileID bytes];
+    v4 = *bytes;
+    v5.i32[0] = *(bytes + 1);
     v6 = vmovl_u16(*&vmovl_u8(v5));
     v7.i64[0] = v6.u32[2];
     v7.i64[1] = v6.u32[3];
@@ -177,51 +177,51 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   os_unfair_recursive_lock_lock_with_options();
-  v5 = v4;
-  v6 = [(MIDIUMPCIProfile *)self profileID];
-  v11 = v6;
-  v12 = BYTE4(v6);
-  v7 = [v5 profileID];
-  v9 = v11 == v7 && v12 == BYTE4(v7);
+  v5 = equalCopy;
+  profileID = [(MIDIUMPCIProfile *)self profileID];
+  v11 = profileID;
+  v12 = BYTE4(profileID);
+  profileID2 = [v5 profileID];
+  v9 = v11 == profileID2 && v12 == BYTE4(profileID2);
 
   os_unfair_recursive_lock_unlock();
   return v9;
 }
 
-- (MIDIUMPCIProfile)initWithDescription:(id)a3
+- (MIDIUMPCIProfile)initWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"name"];
-  v32 = [v4 objectForKey:v5];
+  v32 = [descriptionCopy objectForKey:v5];
 
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"midi_channel"];
-  v31 = [v4 objectForKey:v6];
+  v31 = [descriptionCopy objectForKey:v6];
 
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"profile_type"];
-  v8 = [v4 objectForKey:v7];
+  v8 = [descriptionCopy objectForKey:v7];
 
   v27 = v8;
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"group_offset"];
-  v30 = [v4 objectForKey:v9];
+  v30 = [descriptionCopy objectForKey:v9];
 
   v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"enabled"];
-  v28 = [v4 objectForKey:v10];
+  v28 = [descriptionCopy objectForKey:v10];
 
   v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"enabled_channel_count"];
-  v29 = [v4 objectForKey:v11];
+  v29 = [descriptionCopy objectForKey:v11];
 
   v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"total_channel_count"];
-  v13 = [v4 objectForKey:v12];
+  v13 = [descriptionCopy objectForKey:v12];
 
   v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"id"];
-  v15 = [v4 objectForKey:v14];
+  v15 = [descriptionCopy objectForKey:v14];
 
   v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"object"];
-  v17 = [v4 objectForKey:v16];
+  v17 = [descriptionCopy objectForKey:v16];
 
   v18 = NSNumberArrayToProfileID(v15);
   if (BYTE5(v18))
@@ -234,12 +234,12 @@
     v19 = 0;
   }
 
-  v20 = [v8 unsignedIntValue];
-  v21 = [v30 unsignedIntValue];
-  v22 = [v31 unsignedIntValue];
-  v23 = [v29 unsignedIntValue];
+  unsignedIntValue = [v8 unsignedIntValue];
+  unsignedIntValue2 = [v30 unsignedIntValue];
+  unsignedIntValue3 = [v31 unsignedIntValue];
+  unsignedIntValue4 = [v29 unsignedIntValue];
   LOWORD(v26) = [v13 unsignedIntValue];
-  v24 = [(MIDIUMPCIProfile *)self initWithProfileID:v19 name:v32 profileType:v20 groupOffset:v21 firstChannel:v22 enabledChannelCount:v23 totalChannelCount:v26];
+  v24 = [(MIDIUMPCIProfile *)self initWithProfileID:v19 name:v32 profileType:unsignedIntValue groupOffset:unsignedIntValue2 firstChannel:unsignedIntValue3 enabledChannelCount:unsignedIntValue4 totalChannelCount:v26];
   if (v24)
   {
     -[MIDIUMPCIProfile setObjectRef:](v24, "setObjectRef:", [v17 unsignedIntValue]);
@@ -250,22 +250,22 @@
   return v24;
 }
 
-- (MIDIUMPCIProfile)initWithProfileID:(id)a3 name:(id)a4 profileType:(unsigned __int8)a5 groupOffset:(unsigned __int8)a6 firstChannel:(unsigned __int8)a7 enabledChannelCount:(unsigned __int16)a8 totalChannelCount:(unsigned __int16)a9
+- (MIDIUMPCIProfile)initWithProfileID:(id)d name:(id)name profileType:(unsigned __int8)type groupOffset:(unsigned __int8)offset firstChannel:(unsigned __int8)channel enabledChannelCount:(unsigned __int16)count totalChannelCount:(unsigned __int16)channelCount
 {
-  v22 = a3;
-  v14 = a4;
+  dCopy = d;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = MIDIUMPCIProfile;
   v15 = [(MIDIUMPCIProfile *)&v21 init];
   if (v15)
   {
-    v16 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&v22 length:5];
+    v16 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&dCopy length:5];
     profileID = v15->_profileID;
     v15->_profileID = v16;
 
-    if (v14)
+    if (nameCopy)
     {
-      v18 = [MEMORY[0x277CCACA8] stringWithString:v14];
+      v18 = [MEMORY[0x277CCACA8] stringWithString:nameCopy];
     }
 
     else
@@ -276,55 +276,55 @@
     name = v15->_name;
     v15->_name = v18;
 
-    v15->_profileType = a5;
-    v15->_groupOffset = a6;
-    v15->_firstChannel = a7;
-    v15->_enabledChannelCount = a8;
-    v15->_totalChannelCount = a9;
+    v15->_profileType = type;
+    v15->_groupOffset = offset;
+    v15->_firstChannel = channel;
+    v15->_enabledChannelCount = count;
+    v15->_totalChannelCount = channelCount;
     v15->_isEnabled = 0;
   }
 
   return v15;
 }
 
-- (BOOL)deserialize:(id)a3
+- (BOOL)deserialize:(id)deserialize
 {
-  v4 = a3;
+  deserializeCopy = deserialize;
   os_unfair_recursive_lock_lock_with_options();
-  if (v4)
+  if (deserializeCopy)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"name"];
-    v30 = [v4 objectForKey:v5];
+    v30 = [deserializeCopy objectForKey:v5];
 
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"midi_channel"];
-    v29 = [v4 objectForKey:v6];
+    v29 = [deserializeCopy objectForKey:v6];
 
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"profile_type"];
-    v33 = [v4 objectForKey:v7];
+    v33 = [deserializeCopy objectForKey:v7];
 
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"group_offset"];
-    v32 = [v4 objectForKey:v8];
+    v32 = [deserializeCopy objectForKey:v8];
 
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"enabled"];
-    v31 = [v4 objectForKey:v9];
+    v31 = [deserializeCopy objectForKey:v9];
 
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"enabled_channel_count"];
-    v11 = [v4 objectForKey:v10];
+    v11 = [deserializeCopy objectForKey:v10];
 
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"total_channel_count"];
-    v13 = [v4 objectForKey:v12];
+    v13 = [deserializeCopy objectForKey:v12];
 
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"id"];
-    v15 = [v4 objectForKey:v14];
+    v15 = [deserializeCopy objectForKey:v14];
 
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"object"];
-    v17 = [v4 objectForKey:v16];
+    v17 = [deserializeCopy objectForKey:v16];
 
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"owner_client_ref"];
-    v19 = [v4 objectForKey:v18];
+    v19 = [deserializeCopy objectForKey:v18];
 
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"owner"];
-    v21 = [v4 objectForKey:v20];
+    v21 = [deserializeCopy objectForKey:v20];
 
     v22 = NSNumberArrayToProfileID(v15);
     v34 = v22;
@@ -354,7 +354,7 @@
 
   os_unfair_recursive_lock_unlock();
 
-  return v4 != 0;
+  return deserializeCopy != 0;
 }
 
 - (id)serializeDescription
@@ -383,10 +383,10 @@
     v37[4] = v36;
     v4 = self->_profileID;
     v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:5];
-    v6 = [(NSData *)v4 bytes];
+    bytes = [(NSData *)v4 bytes];
     for (i = 0; i != 5; ++i)
     {
-      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v6 + i)];
+      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + i)];
       [v5 addObject:v8];
     }
 
@@ -439,14 +439,14 @@
   return v16;
 }
 
-- (BOOL)registerToDevice:(id)a3
+- (BOOL)registerToDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   WeakRetained = objc_loadWeakRetained(&self->_ciDevice);
 
   if (!WeakRetained)
   {
-    objc_storeWeak(&self->_ciDevice, v4);
+    objc_storeWeak(&self->_ciDevice, deviceCopy);
   }
 
   return WeakRetained == 0;

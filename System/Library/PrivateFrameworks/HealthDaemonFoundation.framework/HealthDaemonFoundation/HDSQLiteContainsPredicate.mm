@@ -1,49 +1,49 @@
 @interface HDSQLiteContainsPredicate
-+ (HDSQLiteContainsPredicate)_containsPredicateWithProperty:(void *)a3 values:(uint64_t)a4 contains:;
-+ (id)_arrayFromValues:(uint64_t)a1;
-- (BOOL)isCompatibleWithPredicate:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HDSQLiteContainsPredicate)initWithProperty:(id)a3 values:(id)a4 contains:(BOOL)a5;
-- (id)SQLForEntityClass:(Class)a3;
++ (HDSQLiteContainsPredicate)_containsPredicateWithProperty:(void *)property values:(uint64_t)values contains:;
++ (id)_arrayFromValues:(uint64_t)values;
+- (BOOL)isCompatibleWithPredicate:(id)predicate;
+- (BOOL)isEqual:(id)equal;
+- (HDSQLiteContainsPredicate)initWithProperty:(id)property values:(id)values contains:(BOOL)contains;
+- (id)SQLForEntityClass:(Class)class;
 - (id)description;
-- (void)bindToStatement:(sqlite3_stmt *)a3 bindingIndex:(int *)a4;
+- (void)bindToStatement:(sqlite3_stmt *)statement bindingIndex:(int *)index;
 @end
 
 @implementation HDSQLiteContainsPredicate
 
-- (HDSQLiteContainsPredicate)initWithProperty:(id)a3 values:(id)a4 contains:(BOOL)a5
+- (HDSQLiteContainsPredicate)initWithProperty:(id)property values:(id)values contains:(BOOL)contains
 {
-  v8 = a3;
-  v9 = a4;
+  propertyCopy = property;
+  valuesCopy = values;
   v16.receiver = self;
   v16.super_class = HDSQLiteContainsPredicate;
   v10 = [(HDSQLiteContainsPredicate *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [propertyCopy copy];
     property = v10->super._property;
     v10->super._property = v11;
 
-    v13 = [v9 copy];
+    v13 = [valuesCopy copy];
     values = v10->_values;
     v10->_values = v13;
 
-    v10->_contains = a5;
+    v10->_contains = contains;
   }
 
   return v10;
 }
 
-+ (HDSQLiteContainsPredicate)_containsPredicateWithProperty:(void *)a3 values:(uint64_t)a4 contains:
++ (HDSQLiteContainsPredicate)_containsPredicateWithProperty:(void *)property values:(uint64_t)values contains:
 {
-  v6 = a3;
+  propertyCopy = property;
   v7 = a2;
   v8 = objc_opt_self();
-  v9 = [(HDSQLiteContainsPredicate *)v8 _arrayFromValues:v6];
+  v9 = [(HDSQLiteContainsPredicate *)v8 _arrayFromValues:propertyCopy];
 
   if ([v9 count] == 1)
   {
-    if (a4)
+    if (values)
     {
       v10 = 1;
     }
@@ -53,21 +53,21 @@
       v10 = 2;
     }
 
-    v11 = [v9 firstObject];
-    v12 = [HDSQLiteComparisonPredicate predicateWithProperty:v7 value:v11 comparisonType:v10];
+    firstObject = [v9 firstObject];
+    v12 = [HDSQLiteComparisonPredicate predicateWithProperty:v7 value:firstObject comparisonType:v10];
 
-    v7 = v11;
+    v7 = firstObject;
   }
 
   else
   {
-    v12 = [[HDSQLiteContainsPredicate alloc] initWithProperty:v7 values:v9 contains:a4];
+    v12 = [[HDSQLiteContainsPredicate alloc] initWithProperty:v7 values:v9 contains:values];
   }
 
   return v12;
 }
 
-+ (id)_arrayFromValues:(uint64_t)a1
++ (id)_arrayFromValues:(uint64_t)values
 {
   v17 = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -75,16 +75,16 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    allObjects = v2;
 LABEL_5:
-    v4 = v3;
+    v4 = allObjects;
     goto LABEL_14;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 allObjects];
+    allObjects = [v2 allObjects];
     goto LABEL_5;
   }
 
@@ -123,7 +123,7 @@ LABEL_14:
   return v4;
 }
 
-- (void)bindToStatement:(sqlite3_stmt *)a3 bindingIndex:(int *)a4
+- (void)bindToStatement:(sqlite3_stmt *)statement bindingIndex:(int *)index
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -146,8 +146,8 @@ LABEL_14:
           objc_enumerationMutation(v6);
         }
 
-        HDSQLiteBindFoundationValueToStatement(a3, *a4, *(*(&v12 + 1) + 8 * v10));
-        ++*a4;
+        HDSQLiteBindFoundationValueToStatement(statement, *index, *(*(&v12 + 1) + 8 * v10));
+        ++*index;
         ++v10;
       }
 
@@ -161,28 +161,28 @@ LABEL_14:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = HDSQLiteContainsPredicate;
-  if (-[HDSQLitePropertyPredicate isEqual:](&v13, sel_isEqual_, v4) && (v5 = -[HDSQLiteContainsPredicate contains](self, "contains"), v5 == [v4 contains]))
+  if (-[HDSQLitePropertyPredicate isEqual:](&v13, sel_isEqual_, equalCopy) && (v5 = -[HDSQLiteContainsPredicate contains](self, "contains"), v5 == [equalCopy contains]))
   {
-    v7 = [(HDSQLiteContainsPredicate *)self values];
-    v8 = [v4 values];
-    if (v7 == v8)
+    values = [(HDSQLiteContainsPredicate *)self values];
+    values2 = [equalCopy values];
+    if (values == values2)
     {
       v6 = 1;
     }
 
     else
     {
-      v9 = [v4 values];
-      if (v9)
+      values3 = [equalCopy values];
+      if (values3)
       {
-        v10 = [(HDSQLiteContainsPredicate *)self values];
-        v11 = [v4 values];
-        v6 = [v10 isEqual:v11];
+        values4 = [(HDSQLiteContainsPredicate *)self values];
+        values5 = [equalCopy values];
+        v6 = [values4 isEqual:values5];
       }
 
       else
@@ -200,11 +200,11 @@ LABEL_14:
   return v6;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
   v5 = objc_msgSend(MEMORY[0x277CCAB68], "stringWithString:", @"(");
-  v6 = [(HDSQLitePropertyPredicate *)self property];
-  v7 = [(objc_class *)a3 disambiguatedSQLForProperty:v6];
+  property = [(HDSQLitePropertyPredicate *)self property];
+  v7 = [(objc_class *)class disambiguatedSQLForProperty:property];
   [v5 appendString:v7];
 
   if (self->_contains)
@@ -242,14 +242,14 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)isCompatibleWithPredicate:(id)a3
+- (BOOL)isCompatibleWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v9.receiver = self;
   v9.super_class = HDSQLiteContainsPredicate;
-  if ([(HDSQLitePropertyPredicate *)&v9 isCompatibleWithPredicate:v4])
+  if ([(HDSQLitePropertyPredicate *)&v9 isCompatibleWithPredicate:predicateCopy])
   {
-    v5 = v4;
+    v5 = predicateCopy;
     if (self->_contains == *(v5 + 16))
     {
       v6 = [(NSArray *)self->_values count];
@@ -275,8 +275,8 @@ LABEL_14:
   v3 = [(NSArray *)self->_values hk_map:&__block_literal_global_6];
   v4 = [v3 componentsJoinedByString:{@", "}];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(HDSQLitePropertyPredicate *)self property];
-  v7 = v6;
+  property = [(HDSQLitePropertyPredicate *)self property];
+  v7 = property;
   if (self->_contains)
   {
     v8 = "";
@@ -287,7 +287,7 @@ LABEL_14:
     v8 = "NOT ";
   }
 
-  v9 = [v5 stringWithFormat:@"<%@ %sIN (%@)>", v6, v8, v4];
+  v9 = [v5 stringWithFormat:@"<%@ %sIN (%@)>", property, v8, v4];
 
   return v9;
 }

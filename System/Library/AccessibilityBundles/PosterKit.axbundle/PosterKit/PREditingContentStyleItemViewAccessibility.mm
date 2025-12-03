@@ -1,19 +1,19 @@
 @interface PREditingContentStyleItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation PREditingContentStyleItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PREditingContentStyleItemView" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PREditingContentStyleItemView" hasInstanceMethod:@"contentStyleCoordinator" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PREditingPosterContentStyleCoordinator" hasInstanceMethod:@"style" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRPosterContentDiscreteColorsStyle" hasInstanceMethod:@"colors" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRPosterContentVibrantMaterialStyle"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PREditingContentStyleItemView" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PREditingContentStyleItemView" hasInstanceMethod:@"contentStyleCoordinator" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PREditingPosterContentStyleCoordinator" hasInstanceMethod:@"style" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRPosterContentDiscreteColorsStyle" hasInstanceMethod:@"colors" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRPosterContentVibrantMaterialStyle"];
 }
 
 - (id)accessibilityValue
@@ -28,7 +28,7 @@
   v19 = 3221225472;
   v20 = __64__PREditingContentStyleItemViewAccessibility_accessibilityValue__block_invoke;
   v21 = &unk_29F2EBED0;
-  v22 = self;
+  selfCopy = self;
   v23 = &v24;
   AXPerformSafeBlock();
   v3 = v25[5];
@@ -40,7 +40,7 @@
   v6 = [v5 safeArrayForKey:@"colors"];
   LOBYTE(v24) = 0;
   objc_opt_class();
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
   v8 = __UIAccessibilityCastAsClass();
 
   if (v24 == 1)
@@ -54,7 +54,7 @@
     NSClassFromString(&cfstr_Prposterconten_0.isa);
     if (objc_opt_isKindOfClass())
     {
-      v10 = accessibilityLocalizedString(@"editing.item.view.vibrant.color");
+      accessibilityValue = accessibilityLocalizedString(@"editing.item.view.vibrant.color");
       goto LABEL_15;
     }
 
@@ -62,14 +62,14 @@
     {
       if (v9)
       {
-        v10 = v9;
+        accessibilityValue = v9;
       }
 
       else
       {
         v17.receiver = self;
         v17.super_class = PREditingContentStyleItemViewAccessibility;
-        v10 = [(PREditingContentStyleItemViewAccessibility *)&v17 accessibilityValue];
+        accessibilityValue = [(PREditingContentStyleItemViewAccessibility *)&v17 accessibilityValue];
       }
 
       goto LABEL_15;
@@ -77,7 +77,7 @@
 
     LOBYTE(v24) = 0;
     objc_opt_class();
-    v11 = [v6 lastObject];
+    lastObject = [v6 lastObject];
     v12 = __UIAccessibilityCastAsClass();
 
     if (v24 != 1)
@@ -102,9 +102,9 @@ LABEL_19:
     abort();
   }
 
-  v10 = v3;
+  accessibilityValue = v3;
 LABEL_15:
-  v15 = v10;
+  v15 = accessibilityValue;
 LABEL_16:
 
   return v15;

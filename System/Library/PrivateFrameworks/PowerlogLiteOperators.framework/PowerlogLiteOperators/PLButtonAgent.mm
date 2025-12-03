@@ -6,20 +6,20 @@
 + (id)entryEventPointDefinitions;
 + (void)load;
 - (PLButtonAgent)init;
-- (int64_t)interactionTypeStringToEnum:(id)a3;
+- (int64_t)interactionTypeStringToEnum:(id)enum;
 - (void)initOperatorDependancies;
-- (void)logEventBackwardCaptureButtonAction:(id)a3;
-- (void)logEventForwardActionButtonInteraction:(id)a3;
-- (void)logEventForwardActionButtonSelection:(id)a3;
-- (void)logEventForwardSmartCover:(__IOHIDEvent *)a3;
-- (void)logEventPointButton:(__IOHIDEvent *)a3;
+- (void)logEventBackwardCaptureButtonAction:(id)action;
+- (void)logEventForwardActionButtonInteraction:(id)interaction;
+- (void)logEventForwardActionButtonSelection:(id)selection;
+- (void)logEventForwardSmartCover:(__IOHIDEvent *)cover;
+- (void)logEventPointButton:(__IOHIDEvent *)button;
 @end
 
 @implementation PLButtonAgent
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLButtonAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -40,13 +40,13 @@
   v18[0] = v3;
   v17[1] = *MEMORY[0x277D3F540];
   v13[0] = @"ButtonType";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v13[1] = @"EventType";
-  v14[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v14[1] = v7;
+  v14[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v14[1] = commonTypeDict_IntegerFormat2;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
   v18[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -68,9 +68,9 @@
   v14[0] = v2;
   v13[1] = *MEMORY[0x277D3F540];
   v9 = @"type";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v10 = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v10 = commonTypeDict_IntegerFormat;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v14[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -90,13 +90,13 @@
   v16[0] = v2;
   v15[1] = *MEMORY[0x277D3F540];
   v11[0] = @"action";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
   v11[1] = @"sub-action";
-  v12[0] = v4;
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat];
-  v12[1] = v6;
+  v12[0] = commonTypeDict_StringFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v12[1] = commonTypeDict_StringFormat2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v16[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -122,23 +122,23 @@
   v21[0] = v15;
   v20[1] = *MEMORY[0x277D3F540];
   v16[0] = @"Side";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_BoolFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
   v16[1] = @"State";
-  v17[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_BoolFormat];
-  v17[1] = v7;
+  v17[0] = commonTypeDict_BoolFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_BoolFormat];
+  v17[1] = commonTypeDict_BoolFormat2;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
   v21[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v23[0] = v9;
   v22[1] = @"ActionButtonSelection";
-  v10 = [a1 entryEventForwardDefinitionActionButtonSelection];
-  v23[1] = v10;
+  entryEventForwardDefinitionActionButtonSelection = [self entryEventForwardDefinitionActionButtonSelection];
+  v23[1] = entryEventForwardDefinitionActionButtonSelection;
   v22[2] = @"ActionButtonInteraction";
-  v11 = [a1 entryEventForwardDefinitionActionButtonInteraction];
-  v23[2] = v11;
+  entryEventForwardDefinitionActionButtonInteraction = [self entryEventForwardDefinitionActionButtonInteraction];
+  v23[2] = entryEventForwardDefinitionActionButtonInteraction;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:3];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -159,13 +159,13 @@
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"ActiveDurationMs";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v12[1] = @"ReadyDurationMs";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v13[1] = commonTypeDict_IntegerFormat2;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -179,7 +179,7 @@
 {
   if ([MEMORY[0x277D3F208] isHomePod])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -187,10 +187,10 @@
     v5.receiver = self;
     v5.super_class = PLButtonAgent;
     self = [(PLAgent *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
@@ -325,7 +325,7 @@ uint64_t __41__PLButtonAgent_initOperatorDependancies__block_invoke_113(uint64_t
   return [v4 logEventForwardSmartCover:a2];
 }
 
-- (void)logEventPointButton:(__IOHIDEvent *)a3
+- (void)logEventPointButton:(__IOHIDEvent *)button
 {
   v21 = *MEMORY[0x277D85DE8];
   if (IOHIDEventGetType() == 3 && IOHIDEventGetIntegerValue() == 12)
@@ -335,11 +335,11 @@ uint64_t __41__PLButtonAgent_initOperatorDependancies__block_invoke_113(uint64_t
     v6 = IOHIDEventGetIntegerValue();
     TimeStamp = IOHIDEventGetTimeStamp();
     v8 = mach_absolute_time();
-    v9 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     [MEMORY[0x277D3F258] secondsFromMachTime:v8];
     v11 = v10;
     [MEMORY[0x277D3F258] secondsFromMachTime:TimeStamp];
-    v13 = [v9 dateByAddingTimeInterval:-(v11 - v12)];
+    v13 = [monotonicDate dateByAddingTimeInterval:-(v11 - v12)];
     v14 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v4 withDate:v13];
     v15 = PLLogButton();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -361,13 +361,13 @@ uint64_t __41__PLButtonAgent_initOperatorDependancies__block_invoke_113(uint64_t
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventForwardActionButtonInteraction:(id)a3
+- (void)logEventForwardActionButtonInteraction:(id)interaction
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  interactionCopy = interaction;
   v10 = [(PLOperator *)PLButtonAgent entryKeyForType:v4 andName:@"ActionButtonInteraction"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v10];
-  v7 = [v5 objectForKeyedSubscript:@"type"];
+  v7 = [interactionCopy objectForKeyedSubscript:@"type"];
 
   v8 = [(PLButtonAgent *)self interactionTypeStringToEnum:v7];
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:v8];
@@ -376,12 +376,12 @@ uint64_t __41__PLButtonAgent_initOperatorDependancies__block_invoke_113(uint64_t
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventForwardActionButtonSelection:(id)a3
+- (void)logEventForwardActionButtonSelection:(id)selection
 {
-  v11 = a3;
+  selectionCopy = selection;
   v4 = [(PLOperator *)PLButtonAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"ActionButtonSelection"];
-  v5 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v4 withRawData:v11];
-  v6 = [v11 objectForKeyedSubscript:@"action"];
+  v5 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v4 withRawData:selectionCopy];
+  v6 = [selectionCopy objectForKeyedSubscript:@"action"];
   if ([v6 containsString:@"Camera"])
   {
     v7 = 1;
@@ -389,22 +389,22 @@ uint64_t __41__PLButtonAgent_initOperatorDependancies__block_invoke_113(uint64_t
 
   else
   {
-    v8 = [v11 objectForKeyedSubscript:@"action"];
+    v8 = [selectionCopy objectForKeyedSubscript:@"action"];
     v7 = [v8 containsString:@"Focus"];
   }
 
-  v9 = [v11 objectForKeyedSubscript:@"param_value"];
+  v9 = [selectionCopy objectForKeyedSubscript:@"param_value"];
 
   if (v9 && v7)
   {
-    v10 = [v11 objectForKeyedSubscript:@"param_value"];
+    v10 = [selectionCopy objectForKeyedSubscript:@"param_value"];
     [v5 setObject:v10 forKeyedSubscript:@"sub-action"];
   }
 
   [(PLOperator *)self logEntry:v5];
 }
 
-- (void)logEventForwardSmartCover:(__IOHIDEvent *)a3
+- (void)logEventForwardSmartCover:(__IOHIDEvent *)cover
 {
   v21 = *MEMORY[0x277D85DE8];
   if (IOHIDEventGetType() == 3 && IOHIDEventGetIntegerValue() == 65289)
@@ -421,11 +421,11 @@ uint64_t __41__PLButtonAgent_initOperatorDependancies__block_invoke_113(uint64_t
 
     TimeStamp = IOHIDEventGetTimeStamp();
     v8 = mach_absolute_time();
-    v9 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     [MEMORY[0x277D3F258] secondsFromMachTime:v8];
     v11 = v10;
     [MEMORY[0x277D3F258] secondsFromMachTime:TimeStamp];
-    v13 = [v9 dateByAddingTimeInterval:-(v11 - v12)];
+    v13 = [monotonicDate dateByAddingTimeInterval:-(v11 - v12)];
     v14 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v4 withDate:v13];
     v15 = IOHIDEventGetIntegerValue();
     if (v15 == 1)
@@ -457,21 +457,21 @@ LABEL_11:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventBackwardCaptureButtonAction:(id)a3
+- (void)logEventBackwardCaptureButtonAction:(id)action
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = objc_opt_new();
-  v6 = [v4 objectForKeyedSubscript:&unk_282C11BE0];
+  v6 = [actionCopy objectForKeyedSubscript:&unk_282C11BE0];
   [v5 setObject:v6 forKeyedSubscript:@"FullPress"];
 
-  v7 = [v4 objectForKeyedSubscript:&unk_282C11C10];
+  v7 = [actionCopy objectForKeyedSubscript:&unk_282C11C10];
   [v5 setObject:v7 forKeyedSubscript:@"HalfPress"];
 
-  v8 = [v4 objectForKeyedSubscript:&unk_282C11C28];
+  v8 = [actionCopy objectForKeyedSubscript:&unk_282C11C28];
   [v5 setObject:v8 forKeyedSubscript:@"Touch"];
 
-  v9 = [v4 objectForKeyedSubscript:@"TouchTimeInterval"];
+  v9 = [actionCopy objectForKeyedSubscript:@"TouchTimeInterval"];
 
   [v9 doubleValue];
   v11 = v10;
@@ -492,20 +492,20 @@ LABEL_11:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)interactionTypeStringToEnum:(id)a3
+- (int64_t)interactionTypeStringToEnum:(id)enum
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Pressed"])
+  enumCopy = enum;
+  if ([enumCopy isEqualToString:@"Pressed"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LongPressed"])
+  else if ([enumCopy isEqualToString:@"LongPressed"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Suppressed"])
+  else if ([enumCopy isEqualToString:@"Suppressed"])
   {
     v4 = 3;
   }

@@ -1,38 +1,38 @@
 @interface CLMiLoPedestrianFenceClient
-- (id)initInUniverse:(id)a3 andIdentifier:(id)a4 andRadiusInMeters:(float)a5 andCallback:(id)a6 andStatusCallback:(id)a7 andErrorCallback:(id)a8;
+- (id)initInUniverse:(id)universe andIdentifier:(id)identifier andRadiusInMeters:(float)meters andCallback:(id)callback andStatusCallback:(id)statusCallback andErrorCallback:(id)errorCallback;
 - (void)clearFence;
 - (void)dealloc;
-- (void)didExitFence:(id)a3;
-- (void)didFailWithError:(int64_t)a3;
+- (void)didExitFence:(id)fence;
+- (void)didFailWithError:(int64_t)error;
 - (void)endSession;
-- (void)sessionStatusReport:(id)a3;
+- (void)sessionStatusReport:(id)report;
 - (void)setFence;
 - (void)startSession;
 @end
 
 @implementation CLMiLoPedestrianFenceClient
 
-- (id)initInUniverse:(id)a3 andIdentifier:(id)a4 andRadiusInMeters:(float)a5 andCallback:(id)a6 andStatusCallback:(id)a7 andErrorCallback:(id)a8
+- (id)initInUniverse:(id)universe andIdentifier:(id)identifier andRadiusInMeters:(float)meters andCallback:(id)callback andStatusCallback:(id)statusCallback andErrorCallback:(id)errorCallback
 {
   v17.receiver = self;
   v17.super_class = CLMiLoPedestrianFenceClient;
   v14 = [(CLMiLoPedestrianFenceClient *)&v17 init];
   if (v14)
   {
-    v14->_universe = a3;
-    v14->_delegateQueue = [objc_msgSend(a3 "silo")];
-    v14->_onMotionMeasurements = [a6 copy];
-    v14->_onStatusReport = [a7 copy];
-    v14->_onErrorIndication = [a8 copy];
+    v14->_universe = universe;
+    v14->_delegateQueue = [objc_msgSend(universe "silo")];
+    v14->_onMotionMeasurements = [callback copy];
+    v14->_onStatusReport = [statusCallback copy];
+    v14->_onErrorIndication = [errorCallback copy];
     v15 = [-[CLIntersiloUniverse vendor](v14->_universe "vendor")];
     v14->_pedestrianFenceManager = v15;
     [(CLPedestrianFenceServiceProtocol *)v15 registerDelegate:v14 inSilo:[(CLIntersiloUniverse *)v14->_universe silo]];
     [(CLPedestrianFenceServiceProtocol *)v14->_pedestrianFenceManager setDelegateEntityName:"CLMiLoPedestrianFenceClient"];
     v14->_sessionActive = 0;
     v14->_fenceActive = 0;
-    v14->_fenceIdStr = a4;
+    v14->_fenceIdStr = identifier;
     v14->_valid = 1;
-    v14->_radius = a5;
+    v14->_radius = meters;
   }
 
   return v14;
@@ -96,9 +96,9 @@
   dispatch_async(delegateQueue, block);
 }
 
-- (void)didExitFence:(id)a3
+- (void)didExitFence:(id)fence
 {
-  if ([a3 isEqualToString:self->_fenceIdStr])
+  if ([fence isEqualToString:self->_fenceIdStr])
   {
     self->_fenceActive = 0;
     delegateQueue = self->_delegateQueue;
@@ -125,7 +125,7 @@
       v12 = 2082;
       v13 = "";
       v14 = 2081;
-      v15 = [a3 UTF8String];
+      uTF8String = [fence UTF8String];
       _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:Got fence exit notification for an unknown fence, fenceId:%{private, location:escape_only}s}", buf, 0x1Cu);
       if (qword_1025D46D0 != -1)
       {
@@ -136,19 +136,19 @@
     v7 = qword_1025D46D8;
     if (os_signpost_enabled(qword_1025D46D8))
     {
-      v8 = [a3 UTF8String];
+      uTF8String2 = [fence UTF8String];
       *buf = 68289283;
       v11 = 0;
       v12 = 2082;
       v13 = "";
       v14 = 2081;
-      v15 = v8;
+      uTF8String = uTF8String2;
       _os_signpost_emit_with_name_impl(dword_100000000, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Got fence exit notification for an unknown fence", "{msg%{public}.0s:Got fence exit notification for an unknown fence, fenceId:%{private, location:escape_only}s}", buf, 0x1Cu);
     }
   }
 }
 
-- (void)didFailWithError:(int64_t)a3
+- (void)didFailWithError:(int64_t)error
 {
   if (qword_1025D46D0 != -1)
   {
@@ -163,7 +163,7 @@
     v11 = 2082;
     v12 = "";
     v13 = 2049;
-    v14 = a3;
+    errorCopy2 = error;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:Got Failure notification from Pedestrian Fence Manager with, Error Code:%{private}ld}", buf, 0x1Cu);
     if (qword_1025D46D0 != -1)
     {
@@ -179,7 +179,7 @@
     v11 = 2082;
     v12 = "";
     v13 = 2049;
-    v14 = a3;
+    errorCopy2 = error;
     _os_signpost_emit_with_name_impl(dword_100000000, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Got Failure notification from Pedestrian Fence Manager with", "{msg%{public}.0s:Got Failure notification from Pedestrian Fence Manager with, Error Code:%{private}ld}", buf, 0x1Cu);
   }
 
@@ -189,11 +189,11 @@
   v8[2] = sub_1003CDB4C;
   v8[3] = &unk_102449BC0;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = error;
   dispatch_async(delegateQueue, v8);
 }
 
-- (void)sessionStatusReport:(id)a3
+- (void)sessionStatusReport:(id)report
 {
   if (qword_1025D46D0 != -1)
   {
@@ -208,7 +208,7 @@
     v11 = 2082;
     v12 = "";
     v13 = 2113;
-    v14 = a3;
+    reportCopy = report;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLMiLoPedestrianFenceClient: Received status report, Status Report:%{private, location:escape_only}@}", buf, 0x1Cu);
   }
 
@@ -220,7 +220,7 @@
     v8[2] = sub_1003CDD18;
     v8[3] = &unk_1024473F0;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = report;
     dispatch_async(delegateQueue, v8);
   }
 

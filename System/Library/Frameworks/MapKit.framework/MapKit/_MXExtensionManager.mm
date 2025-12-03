@@ -1,14 +1,14 @@
 @interface _MXExtensionManager
-+ (id)_extensionsWithLookupPolicy:(id)a3;
++ (id)_extensionsWithLookupPolicy:(id)policy;
 + (id)_lookupPolicyForAllExtensions;
-+ (id)_lookupPolicyForExtensionWithContainingAppIdentifier:(id)a3 supportsIntentClassNames:(id)a4;
-+ (id)_lookupPolicyForExtensionWithContainingAppIdentifiers:(id)a3 supportsIntentClassNames:(id)a4;
-+ (id)_lookupPolicyForExtensionWithIdentifier:(id)a3;
++ (id)_lookupPolicyForExtensionWithContainingAppIdentifier:(id)identifier supportsIntentClassNames:(id)names;
++ (id)_lookupPolicyForExtensionWithContainingAppIdentifiers:(id)identifiers supportsIntentClassNames:(id)names;
++ (id)_lookupPolicyForExtensionWithIdentifier:(id)identifier;
 + (id)_lookupPolicyForIntentsExtensions;
 + (id)_lookupPolicyForNonUIExtension;
 + (id)_lookupPolicyForUIExtension;
-+ (id)_lookupPolicyWithBlock:(id)a3;
-+ (id)_lookupPolicyWithExtensionPointNames:(id)a3;
++ (id)_lookupPolicyWithBlock:(id)block;
++ (id)_lookupPolicyWithExtensionPointNames:(id)names;
 + (id)_maps_lookupPolicyForEnabledRidesharingNonUIExtensions;
 + (id)_maps_lookupPolicyForRidesharingNonUIExtensions;
 + (id)_maps_ridesharingAllIntentClassesForNonUIHandling;
@@ -16,20 +16,20 @@
 + (id)_maps_ridesharingOptionalIntentClassesForNonUIHandling;
 + (id)_maps_ridesharingRequiredIntentClassesForNonUIHandling;
 + (id)_queue;
-+ (id)lookupPolicyForExtensionWithCapabilities:(id)a3;
-+ (id)lookupPolicyForExtensionWithCapability:(id)a3;
-+ (id)lookupPolicyForRestaurantQueueingExtensionWithContainingAppIdentifier:(id)a3;
++ (id)lookupPolicyForExtensionWithCapabilities:(id)capabilities;
++ (id)lookupPolicyForExtensionWithCapability:(id)capability;
++ (id)lookupPolicyForRestaurantQueueingExtensionWithContainingAppIdentifier:(id)identifier;
 + (id)lookupPolicyForRestaurantQueueingExtensions;
-+ (id)lookupPolicyForRestaurantReservationExtensionWithContainingAppIdentifier:(id)a3;
-+ (id)lookupPolicyForRestaurantReservationExtensionWithContainingAppIdentifiers:(id)a3;
++ (id)lookupPolicyForRestaurantReservationExtensionWithContainingAppIdentifier:(id)identifier;
++ (id)lookupPolicyForRestaurantReservationExtensionWithContainingAppIdentifiers:(id)identifiers;
 + (id)lookupPolicyForRestaurantReservationExtensions;
-+ (id)managerWithExtensionLookupPolicy:(id)a3 updateHandler:(id)a4;
-+ (id)managerWithLookupPolicy:(id)a3 delegate:(id)a4;
-+ (void)_maps_updateRideBookingExtensions:(id)a3;
-+ (void)imageForKey:(id)a3 extension:(id)a4 completion:(id)a5;
-- (_MXExtensionManager)initWithLookupPolicy:(id)a3 delegate:(id)a4 extensionProvider:(id)a5;
++ (id)managerWithExtensionLookupPolicy:(id)policy updateHandler:(id)handler;
++ (id)managerWithLookupPolicy:(id)policy delegate:(id)delegate;
++ (void)_maps_updateRideBookingExtensions:(id)extensions;
++ (void)imageForKey:(id)key extension:(id)extension completion:(id)completion;
+- (_MXExtensionManager)initWithLookupPolicy:(id)policy delegate:(id)delegate extensionProvider:(id)provider;
 - (_MXExtensionManagerDelegate)delegate;
-- (id)_applyExtensionPredicateWithExtensionsIfNeeded:(id)a3;
+- (id)_applyExtensionPredicateWithExtensionsIfNeeded:(id)needed;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -55,10 +55,10 @@
   return WeakRetained;
 }
 
-+ (void)_maps_updateRideBookingExtensions:(id)a3
++ (void)_maps_updateRideBookingExtensions:(id)extensions
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  extensionsCopy = extensions;
   v4 = GEOConfigGetArray();
   v5 = v4;
   if (v4)
@@ -80,7 +80,7 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v3;
+  v10 = extensionsCopy;
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
@@ -96,11 +96,11 @@
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v15 _containingAppIdentifer];
-        if (v16)
+        _containingAppIdentifer = [v15 _containingAppIdentifer];
+        if (_containingAppIdentifer)
         {
-          [v9 addObject:v16];
-          v17 = [v8 containsObject:v16];
+          [v9 addObject:_containingAppIdentifer];
+          v17 = [v8 containsObject:_containingAppIdentifer];
           BOOL = GEOConfigGetBOOL();
           if ((v17 & 1) == 0)
           {
@@ -119,7 +119,7 @@
   }
 
   [v8 unionSet:v9];
-  v19 = [v8 allObjects];
+  allObjects = [v8 allObjects];
   GEOConfigSetArray();
 }
 
@@ -129,8 +129,8 @@
   v4[1] = 3221225472;
   v4[2] = __83___MXExtensionManager_Ridesharing___maps_lookupPolicyForRidesharingNonUIExtensions__block_invoke;
   v4[3] = &__block_descriptor_40_e22_B16__0___MXExtension_8l;
-  v4[4] = a1;
-  v2 = [a1 _lookupPolicyWithBlock:v4];
+  v4[4] = self;
+  v2 = [self _lookupPolicyWithBlock:v4];
 
   return v2;
 }
@@ -141,8 +141,8 @@
   v4[1] = 3221225472;
   v4[2] = __90___MXExtensionManager_Ridesharing___maps_lookupPolicyForEnabledRidesharingNonUIExtensions__block_invoke;
   v4[3] = &__block_descriptor_40_e22_B16__0___MXExtension_8l;
-  v4[4] = a1;
-  v2 = [a1 _lookupPolicyWithBlock:v4];
+  v4[4] = self;
+  v2 = [self _lookupPolicyWithBlock:v4];
 
   return v2;
 }
@@ -180,64 +180,64 @@
 
 + (id)_maps_ridesharingAllIntentClassesForNonUIHandling
 {
-  v2 = [objc_opt_class() _maps_ridesharingOptionalIntentClassesForNonUIHandling];
-  v3 = [objc_opt_class() _maps_ridesharingRequiredIntentClassesForNonUIHandling];
-  v4 = [v2 arrayByAddingObjectsFromArray:v3];
+  _maps_ridesharingOptionalIntentClassesForNonUIHandling = [objc_opt_class() _maps_ridesharingOptionalIntentClassesForNonUIHandling];
+  _maps_ridesharingRequiredIntentClassesForNonUIHandling = [objc_opt_class() _maps_ridesharingRequiredIntentClassesForNonUIHandling];
+  v4 = [_maps_ridesharingOptionalIntentClassesForNonUIHandling arrayByAddingObjectsFromArray:_maps_ridesharingRequiredIntentClassesForNonUIHandling];
 
   return v4;
 }
 
 + (id)lookupPolicyForRestaurantQueueingExtensions
 {
-  v2 = [a1 restaurantQueueingIntentClassNames];
-  v3 = [_MXExtensionManager _lookupPolicyForExtensionSupportsIntentClassNames:v2];
+  restaurantQueueingIntentClassNames = [self restaurantQueueingIntentClassNames];
+  v3 = [_MXExtensionManager _lookupPolicyForExtensionSupportsIntentClassNames:restaurantQueueingIntentClassNames];
 
   return v3;
 }
 
-+ (id)lookupPolicyForRestaurantQueueingExtensionWithContainingAppIdentifier:(id)a3
++ (id)lookupPolicyForRestaurantQueueingExtensionWithContainingAppIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 restaurantQueueingIntentClassNames];
-  v6 = [_MXExtensionManager _lookupPolicyForExtensionWithContainingAppIdentifier:v4 supportsIntentClassNames:v5];
+  identifierCopy = identifier;
+  restaurantQueueingIntentClassNames = [self restaurantQueueingIntentClassNames];
+  v6 = [_MXExtensionManager _lookupPolicyForExtensionWithContainingAppIdentifier:identifierCopy supportsIntentClassNames:restaurantQueueingIntentClassNames];
 
   return v6;
 }
 
 + (id)lookupPolicyForRestaurantReservationExtensions
 {
-  v2 = [a1 restaurantReservationIntentClassNames];
-  v3 = [_MXExtensionManager _lookupPolicyForExtensionSupportsIntentClassNames:v2];
+  restaurantReservationIntentClassNames = [self restaurantReservationIntentClassNames];
+  v3 = [_MXExtensionManager _lookupPolicyForExtensionSupportsIntentClassNames:restaurantReservationIntentClassNames];
 
   return v3;
 }
 
-+ (id)lookupPolicyForRestaurantReservationExtensionWithContainingAppIdentifiers:(id)a3
++ (id)lookupPolicyForRestaurantReservationExtensionWithContainingAppIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [a1 restaurantReservationIntentClassNames];
-  v6 = [_MXExtensionManager _lookupPolicyForExtensionWithContainingAppIdentifiers:v4 supportsIntentClassNames:v5];
+  identifiersCopy = identifiers;
+  restaurantReservationIntentClassNames = [self restaurantReservationIntentClassNames];
+  v6 = [_MXExtensionManager _lookupPolicyForExtensionWithContainingAppIdentifiers:identifiersCopy supportsIntentClassNames:restaurantReservationIntentClassNames];
 
   return v6;
 }
 
-+ (id)lookupPolicyForRestaurantReservationExtensionWithContainingAppIdentifier:(id)a3
++ (id)lookupPolicyForRestaurantReservationExtensionWithContainingAppIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 restaurantReservationIntentClassNames];
-  v6 = [_MXExtensionManager _lookupPolicyForExtensionWithContainingAppIdentifier:v4 supportsIntentClassNames:v5];
+  identifierCopy = identifier;
+  restaurantReservationIntentClassNames = [self restaurantReservationIntentClassNames];
+  v6 = [_MXExtensionManager _lookupPolicyForExtensionWithContainingAppIdentifier:identifierCopy supportsIntentClassNames:restaurantReservationIntentClassNames];
 
   return v6;
 }
 
-- (id)_applyExtensionPredicateWithExtensionsIfNeeded:(id)a3
+- (id)_applyExtensionPredicateWithExtensionsIfNeeded:(id)needed
 {
-  if (a3)
+  if (needed)
   {
     lookupPolicy = self->_lookupPolicy;
-    v4 = a3;
-    v5 = [(_MXExtensionLookupPolicy *)lookupPolicy extensionPredicate];
-    v6 = [v4 filteredArrayUsingPredicate:v5];
+    neededCopy = needed;
+    extensionPredicate = [(_MXExtensionLookupPolicy *)lookupPolicy extensionPredicate];
+    v6 = [neededCopy filteredArrayUsingPredicate:extensionPredicate];
   }
 
   else
@@ -268,14 +268,14 @@
   }
 }
 
-- (_MXExtensionManager)initWithLookupPolicy:(id)a3 delegate:(id)a4 extensionProvider:(id)a5
+- (_MXExtensionManager)initWithLookupPolicy:(id)policy delegate:(id)delegate extensionProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  policyCopy = policy;
+  delegateCopy = delegate;
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    v11 = +[_MXExtensionProvider sharedProvider];
+    providerCopy = +[_MXExtensionProvider sharedProvider];
   }
 
   v15.receiver = self;
@@ -284,47 +284,47 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_delegate, v10);
-    objc_storeStrong(&v13->_lookupPolicy, a3);
-    objc_storeStrong(&v13->_extensionProvider, v11);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_lookupPolicy, policy);
+    objc_storeStrong(&v13->_extensionProvider, providerCopy);
   }
 
   return v13;
 }
 
-+ (id)_lookupPolicyWithBlock:(id)a3
++ (id)_lookupPolicyWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = MEMORY[0x1E696AE18];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46___MXExtensionManager__lookupPolicyWithBlock___block_invoke;
   v9[3] = &unk_1E76CA5D0;
-  v10 = v3;
-  v5 = v3;
+  v10 = blockCopy;
+  v5 = blockCopy;
   v6 = [v4 predicateWithBlock:v9];
   v7 = [[_MXExtensionLookupPolicy alloc] initWithPredicate:v6];
 
   return v7;
 }
 
-+ (void)imageForKey:(id)a3 extension:(id)a4 completion:(id)a5
++ (void)imageForKey:(id)key extension:(id)extension completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  extensionCopy = extension;
+  keyCopy = key;
   v10 = +[_MXExtensionProvider sharedProvider];
-  [v10 imageForKey:v9 extension:v8 completion:v7];
+  [v10 imageForKey:keyCopy extension:extensionCopy completion:completionCopy];
 }
 
-+ (id)_lookupPolicyForExtensionWithContainingAppIdentifier:(id)a3 supportsIntentClassNames:(id)a4
++ (id)_lookupPolicyForExtensionWithContainingAppIdentifier:(id)identifier supportsIntentClassNames:(id)names
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  identifierCopy = identifier;
+  namesCopy = names;
+  if ([identifierCopy length])
   {
-    v11[0] = v6;
+    v11[0] = identifierCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   }
 
@@ -333,74 +333,74 @@
     v8 = MEMORY[0x1E695E0F0];
   }
 
-  v9 = [a1 _lookupPolicyForExtensionWithContainingAppIdentifiers:v8 supportsIntentClassNames:v7];
+  v9 = [self _lookupPolicyForExtensionWithContainingAppIdentifiers:v8 supportsIntentClassNames:namesCopy];
 
   return v9;
 }
 
-+ (id)_lookupPolicyForExtensionWithContainingAppIdentifiers:(id)a3 supportsIntentClassNames:(id)a4
++ (id)_lookupPolicyForExtensionWithContainingAppIdentifiers:(id)identifiers supportsIntentClassNames:(id)names
 {
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  namesCopy = names;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __102___MXExtensionManager__lookupPolicyForExtensionWithContainingAppIdentifiers_supportsIntentClassNames___block_invoke;
   v11[3] = &unk_1E76CA5A8;
-  v12 = v6;
-  v13 = v5;
-  v7 = v5;
-  v8 = v6;
+  v12 = namesCopy;
+  v13 = identifiersCopy;
+  v7 = identifiersCopy;
+  v8 = namesCopy;
   v9 = [_MXExtensionManager _lookupPolicyWithBlock:v11];
 
   return v9;
 }
 
-+ (id)_lookupPolicyForExtensionWithIdentifier:(id)a3
++ (id)_lookupPolicyForExtensionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63___MXExtensionManager__lookupPolicyForExtensionWithIdentifier___block_invoke;
   v8[3] = &unk_1E76CA558;
-  v9 = v4;
-  v5 = v4;
-  v6 = [a1 _lookupPolicyWithBlock:v8];
+  v9 = identifierCopy;
+  v5 = identifierCopy;
+  v6 = [self _lookupPolicyWithBlock:v8];
 
   return v6;
 }
 
-+ (id)lookupPolicyForExtensionWithCapabilities:(id)a3
++ (id)lookupPolicyForExtensionWithCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64___MXExtensionManager_lookupPolicyForExtensionWithCapabilities___block_invoke;
   v8[3] = &unk_1E76CA558;
-  v9 = v4;
-  v5 = v4;
-  v6 = [a1 _lookupPolicyWithBlock:v8];
+  v9 = capabilitiesCopy;
+  v5 = capabilitiesCopy;
+  v6 = [self _lookupPolicyWithBlock:v8];
 
   return v6;
 }
 
-+ (id)lookupPolicyForExtensionWithCapability:(id)a3
++ (id)lookupPolicyForExtensionWithCapability:(id)capability
 {
-  v4 = a3;
+  capabilityCopy = capability;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62___MXExtensionManager_lookupPolicyForExtensionWithCapability___block_invoke;
   v8[3] = &unk_1E76CA558;
-  v9 = v4;
-  v5 = v4;
-  v6 = [a1 _lookupPolicyWithBlock:v8];
+  v9 = capabilityCopy;
+  v5 = capabilityCopy;
+  v6 = [self _lookupPolicyWithBlock:v8];
 
   return v6;
 }
 
-+ (id)_lookupPolicyWithExtensionPointNames:(id)a3
++ (id)_lookupPolicyWithExtensionPointNames:(id)names
 {
-  v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"extensionPointIdentifier", a3];
-  v4 = [[_MXExtensionLookupPolicy alloc] initWithPredicate:v3];
+  names = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"extensionPointIdentifier", names];
+  v4 = [[_MXExtensionLookupPolicy alloc] initWithPredicate:names];
 
   return v4;
 }
@@ -412,7 +412,7 @@
   v7[0] = *MEMORY[0x1E696E580];
   v7[1] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
-  v5 = [a1 _lookupPolicyWithExtensionPointNames:v4];
+  v5 = [self _lookupPolicyWithExtensionPointNames:v4];
 
   return v5;
 }
@@ -426,7 +426,7 @@
   v7[2] = *MEMORY[0x1E696E580];
   v7[3] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:4];
-  v5 = [a1 _lookupPolicyWithExtensionPointNames:v4];
+  v5 = [self _lookupPolicyWithExtensionPointNames:v4];
 
   return v5;
 }
@@ -438,7 +438,7 @@
   v7[0] = @"com.apple.maps.services";
   v7[1] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
-  v5 = [a1 _lookupPolicyWithExtensionPointNames:v4];
+  v5 = [self _lookupPolicyWithExtensionPointNames:v4];
 
   return v5;
 }
@@ -450,21 +450,21 @@
   v7[0] = @"com.apple.maps.ui-services";
   v7[1] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
-  v5 = [a1 _lookupPolicyWithExtensionPointNames:v4];
+  v5 = [self _lookupPolicyWithExtensionPointNames:v4];
 
   return v5;
 }
 
-+ (id)_extensionsWithLookupPolicy:(id)a3
++ (id)_extensionsWithLookupPolicy:(id)policy
 {
-  v3 = a3;
+  policyCopy = policy;
   v4 = +[_MXExtensionProvider sharedProvider];
-  v5 = [v4 _currentExtensions];
+  _currentExtensions = [v4 _currentExtensions];
 
-  if (v5)
+  if (_currentExtensions)
   {
-    v6 = [v3 extensionPredicate];
-    v7 = [v5 filteredArrayUsingPredicate:v6];
+    extensionPredicate = [policyCopy extensionPredicate];
+    v7 = [_currentExtensions filteredArrayUsingPredicate:extensionPredicate];
   }
 
   else
@@ -475,22 +475,22 @@
   return v7;
 }
 
-+ (id)managerWithExtensionLookupPolicy:(id)a3 updateHandler:(id)a4
++ (id)managerWithExtensionLookupPolicy:(id)policy updateHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_MXExtensionManager alloc] initWithLookupPolicy:v7 delegate:0];
+  handlerCopy = handler;
+  policyCopy = policy;
+  v8 = [[_MXExtensionManager alloc] initWithLookupPolicy:policyCopy delegate:0];
 
-  v9 = [a1 _queue];
+  _queue = [self _queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __70___MXExtensionManager_managerWithExtensionLookupPolicy_updateHandler___block_invoke;
   v15[3] = &unk_1E76CDA20;
   v10 = v8;
   v16 = v10;
-  v17 = v6;
-  v11 = v6;
-  dispatch_async(v9, v15);
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  dispatch_async(_queue, v15);
 
   v12 = v17;
   v13 = v10;
@@ -498,20 +498,20 @@
   return v10;
 }
 
-+ (id)managerWithLookupPolicy:(id)a3 delegate:(id)a4
++ (id)managerWithLookupPolicy:(id)policy delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_MXExtensionManager alloc] initWithLookupPolicy:v7 delegate:v6];
+  delegateCopy = delegate;
+  policyCopy = policy;
+  v8 = [[_MXExtensionManager alloc] initWithLookupPolicy:policyCopy delegate:delegateCopy];
 
-  v9 = [a1 _queue];
+  _queue = [self _queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56___MXExtensionManager_managerWithLookupPolicy_delegate___block_invoke;
   block[3] = &unk_1E76CDB38;
   v10 = v8;
   v13 = v10;
-  dispatch_async(v9, block);
+  dispatch_async(_queue, block);
 
   return v10;
 }

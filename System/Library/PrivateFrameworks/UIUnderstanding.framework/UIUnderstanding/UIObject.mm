@@ -6,54 +6,54 @@
 - (NSString)elementDetectionText;
 - (NSString)iconDetectionLabel;
 - (NSUUID)uuid;
-- (UIObject)initWithCompat:(id)a3;
+- (UIObject)initWithCompat:(id)compat;
 - (float)clickabilityConfidence;
 - (float)elementDetectionConfidence;
 - (float)focusConfidence;
 - (float)iconDetectionConfidence;
-- (id)init:(int64_t)a3 confidence:(double)a4 text:(id)a5 boundingBox:(id)a6 children:(id)a7 clickable:(BOOL)a8 focused:(BOOL)a9;
+- (id)init:(int64_t)init confidence:(double)confidence text:(id)text boundingBox:(id)box children:(id)children clickable:(BOOL)clickable focused:(BOOL)focused;
 @end
 
 @implementation UIObject
 
-- (id)init:(int64_t)a3 confidence:(double)a4 text:(id)a5 boundingBox:(id)a6 children:(id)a7 clickable:(BOOL)a8 focused:(BOOL)a9
+- (id)init:(int64_t)init confidence:(double)confidence text:(id)text boundingBox:(id)box children:(id)children clickable:(BOOL)clickable focused:(BOOL)focused
 {
-  v9 = a9;
-  v10 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = [[UIObjectCompat alloc] initWithLabel:a3 confidence:v18 text:v17 boundingBox:v16 children:v10 clickable:v9 focused:a4];
+  focusedCopy = focused;
+  clickableCopy = clickable;
+  childrenCopy = children;
+  boxCopy = box;
+  textCopy = text;
+  v19 = [[UIObjectCompat alloc] initWithLabel:init confidence:textCopy text:boxCopy boundingBox:childrenCopy children:clickableCopy clickable:focusedCopy focused:confidence];
 
   v20 = [(UIObject *)self initWithCompat:v19];
   return v20;
 }
 
-- (UIObject)initWithCompat:(id)a3
+- (UIObject)initWithCompat:(id)compat
 {
-  v4 = a3;
+  compatCopy = compat;
   v8.receiver = self;
   v8.super_class = UIObject;
   v5 = [(UIObject *)&v8 init];
   underlyingObject = v5->_underlyingObject;
-  v5->_underlyingObject = v4;
+  v5->_underlyingObject = compatCopy;
 
   return v5;
 }
 
 - (NSUUID)uuid
 {
-  v2 = [(UIObject *)self underlyingObject];
-  v3 = [v2 id];
+  underlyingObject = [(UIObject *)self underlyingObject];
+  v3 = [underlyingObject id];
 
   return v3;
 }
 
 - (CGRect)boundingBox
 {
-  v2 = [(UIObject *)self underlyingObject];
-  v3 = [v2 boundingBox];
-  [v3 rect];
+  underlyingObject = [(UIObject *)self underlyingObject];
+  boundingBox = [underlyingObject boundingBox];
+  [boundingBox rect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -72,27 +72,27 @@
 
 - (NSString)elementDetectionLabel
 {
-  v2 = [(UIObject *)self underlyingObject];
-  v3 = [v2 detection];
-  v4 = [v3 labelString];
+  underlyingObject = [(UIObject *)self underlyingObject];
+  detection = [underlyingObject detection];
+  labelString = [detection labelString];
 
-  return v4;
+  return labelString;
 }
 
 - (NSString)elementDetectionText
 {
-  v2 = [(UIObject *)self underlyingObject];
-  v3 = [v2 detection];
-  v4 = [v3 text];
+  underlyingObject = [(UIObject *)self underlyingObject];
+  detection = [underlyingObject detection];
+  text = [detection text];
 
-  return v4;
+  return text;
 }
 
 - (float)elementDetectionConfidence
 {
-  v2 = [(UIObject *)self underlyingObject];
-  v3 = [v2 detection];
-  [v3 confidence];
+  underlyingObject = [(UIObject *)self underlyingObject];
+  detection = [underlyingObject detection];
+  [detection confidence];
   v5 = v4;
 
   return v5;
@@ -100,37 +100,37 @@
 
 - (NSString)iconDetectionLabel
 {
-  v3 = [(UIObject *)self underlyingObject];
-  v4 = [v3 iconDetection];
+  underlyingObject = [(UIObject *)self underlyingObject];
+  iconDetection = [underlyingObject iconDetection];
 
-  if (v4)
+  if (iconDetection)
   {
-    v5 = [(UIObject *)self underlyingObject];
-    v6 = [v5 iconDetection];
-    v7 = [v6 labelString];
+    underlyingObject2 = [(UIObject *)self underlyingObject];
+    iconDetection2 = [underlyingObject2 iconDetection];
+    labelString = [iconDetection2 labelString];
   }
 
   else
   {
-    v7 = 0;
+    labelString = 0;
   }
 
-  return v7;
+  return labelString;
 }
 
 - (float)iconDetectionConfidence
 {
-  v3 = [(UIObject *)self underlyingObject];
-  v4 = [v3 iconDetection];
+  underlyingObject = [(UIObject *)self underlyingObject];
+  iconDetection = [underlyingObject iconDetection];
 
-  if (!v4)
+  if (!iconDetection)
   {
     return 0.0;
   }
 
-  v5 = [(UIObject *)self underlyingObject];
-  v6 = [v5 iconDetection];
-  [v6 confidence];
+  underlyingObject2 = [(UIObject *)self underlyingObject];
+  iconDetection2 = [underlyingObject2 iconDetection];
+  [iconDetection2 confidence];
   v8 = v7;
 
   return v8;
@@ -138,34 +138,34 @@
 
 - (BOOL)clickabilityDetection
 {
-  v3 = [(UIObject *)self underlyingObject];
-  v4 = [v3 clickDetection];
+  underlyingObject = [(UIObject *)self underlyingObject];
+  clickDetection = [underlyingObject clickDetection];
 
-  if (!v4)
+  if (!clickDetection)
   {
     return 0;
   }
 
-  v5 = [(UIObject *)self underlyingObject];
-  v6 = [v5 clickDetection];
-  v7 = [v6 clickable];
+  underlyingObject2 = [(UIObject *)self underlyingObject];
+  clickDetection2 = [underlyingObject2 clickDetection];
+  clickable = [clickDetection2 clickable];
 
-  return v7;
+  return clickable;
 }
 
 - (float)clickabilityConfidence
 {
-  v3 = [(UIObject *)self underlyingObject];
-  v4 = [v3 clickDetection];
+  underlyingObject = [(UIObject *)self underlyingObject];
+  clickDetection = [underlyingObject clickDetection];
 
-  if (!v4)
+  if (!clickDetection)
   {
     return 0.0;
   }
 
-  v5 = [(UIObject *)self underlyingObject];
-  v6 = [v5 clickDetection];
-  [v6 confidence];
+  underlyingObject2 = [(UIObject *)self underlyingObject];
+  clickDetection2 = [underlyingObject2 clickDetection];
+  [clickDetection2 confidence];
   v8 = v7;
 
   return v8;
@@ -173,34 +173,34 @@
 
 - (BOOL)focusDetection
 {
-  v3 = [(UIObject *)self underlyingObject];
-  v4 = [v3 focusDetection];
+  underlyingObject = [(UIObject *)self underlyingObject];
+  focusDetection = [underlyingObject focusDetection];
 
-  if (!v4)
+  if (!focusDetection)
   {
     return 0;
   }
 
-  v5 = [(UIObject *)self underlyingObject];
-  v6 = [v5 focusDetection];
-  v7 = [v6 focused];
+  underlyingObject2 = [(UIObject *)self underlyingObject];
+  focusDetection2 = [underlyingObject2 focusDetection];
+  focused = [focusDetection2 focused];
 
-  return v7;
+  return focused;
 }
 
 - (float)focusConfidence
 {
-  v3 = [(UIObject *)self underlyingObject];
-  v4 = [v3 focusDetection];
+  underlyingObject = [(UIObject *)self underlyingObject];
+  focusDetection = [underlyingObject focusDetection];
 
-  if (!v4)
+  if (!focusDetection)
   {
     return 0.0;
   }
 
-  v5 = [(UIObject *)self underlyingObject];
-  v6 = [v5 focusDetection];
-  [v6 confidence];
+  underlyingObject2 = [(UIObject *)self underlyingObject];
+  focusDetection2 = [underlyingObject2 focusDetection];
+  [focusDetection2 confidence];
   v8 = v7;
 
   return v8;

@@ -1,54 +1,54 @@
 @interface WFRSSFeedExtractAction
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)addRSSFeedItemsFromHTML:(id)a3 baseURL:(id)a4 encoding:(id)a5;
-- (void)getContentDestinationWithCompletionHandler:(id)a3;
-- (void)getURLsFromInputWithCompletionHandler:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)addRSSFeedItemsFromHTML:(id)l baseURL:(id)rL encoding:(id)encoding;
+- (void)getContentDestinationWithCompletionHandler:(id)handler;
+- (void)getURLsFromInputWithCompletionHandler:(id)handler;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFRSSFeedExtractAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v7 = a3;
+  descriptionCopy = description;
   v8 = MEMORY[0x277CCACA8];
-  v9 = a5;
-  v10 = a4;
-  if (v7)
+  nameCopy = name;
+  destinationCopy = destination;
+  if (descriptionCopy)
   {
     v11 = WFLocalizedString(@"Allow “%1$@” to use %2$@ while finding RSS feeds on %3$@?");
-    [v8 localizedStringWithFormat:v11, v9, v7, v10];
+    [v8 localizedStringWithFormat:v11, nameCopy, descriptionCopy, destinationCopy];
   }
 
   else
   {
     v11 = WFLocalizedString(@"Allow “%1$@” to find RSS feed on %2$@?");
-    [v8 localizedStringWithFormat:v11, v9, v10, v14];
+    [v8 localizedStringWithFormat:v11, nameCopy, destinationCopy, v14];
   }
   v12 = ;
 
   return v12;
 }
 
-- (void)getContentDestinationWithCompletionHandler:(id)a3
+- (void)getContentDestinationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFRSSFeedExtractAction *)self input];
+  handlerCopy = handler;
+  input = [(WFRSSFeedExtractAction *)self input];
   WFGetContentLocationFromURLActionInput();
 }
 
-- (void)addRSSFeedItemsFromHTML:(id)a3 baseURL:(id)a4 encoding:(id)a5
+- (void)addRSSFeedItemsFromHTML:(id)l baseURL:(id)rL encoding:(id)encoding
 {
-  v34 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v34 length])
+  lCopy = l;
+  rLCopy = rL;
+  encodingCopy = encoding;
+  if ([lCopy length])
   {
-    v10 = v34;
-    v11 = [v34 bytes];
-    v12 = [v34 length];
-    v13 = [v8 absoluteString];
-    Memory = htmlReadMemory(v11, v12, [v13 UTF8String], objc_msgSend(v9, "UTF8String"), 2049);
+    v10 = lCopy;
+    bytes = [lCopy bytes];
+    v12 = [lCopy length];
+    absoluteString = [rLCopy absoluteString];
+    Memory = htmlReadMemory(bytes, v12, [absoluteString UTF8String], objc_msgSend(encodingCopy, "UTF8String"), 2049);
 
     v15 = xmlXPathNewContext(Memory);
     RootElement = xmlDocGetRootElement(Memory);
@@ -58,7 +58,7 @@
       v18 = v17;
       ctxt = v15;
       cur = Memory;
-      v33 = v8;
+      v33 = rLCopy;
       p_nodeNr = &v17->nodesetval->nodeNr;
       if (p_nodeNr)
       {
@@ -118,8 +118,8 @@ LABEL_12:
         }
 
 LABEL_11:
-        v30 = [(WFRSSFeedExtractAction *)self output];
-        [v30 addObject:v26 named:v29];
+        output = [(WFRSSFeedExtractAction *)self output];
+        [output addObject:v26 named:v29];
 
         goto LABEL_12;
       }
@@ -128,16 +128,16 @@ LABEL_16:
       xmlXPathFreeObject(v18);
       xmlXPathFreeContext(ctxt);
       xmlFreeDoc(cur);
-      v8 = v33;
+      rLCopy = v33;
     }
   }
 }
 
-- (void)getURLsFromInputWithCompletionHandler:(id)a3
+- (void)getURLsFromInputWithCompletionHandler:(id)handler
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFRSSFeedExtractAction *)self input];
+  handlerCopy = handler;
+  input = [(WFRSSFeedExtractAction *)self input];
   v11[0] = objc_opt_class();
   v11[1] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
@@ -145,9 +145,9 @@ LABEL_16:
   v9[1] = 3221225472;
   v9[2] = __64__WFRSSFeedExtractAction_getURLsFromInputWithCompletionHandler___block_invoke;
   v9[3] = &unk_278C1EE80;
-  v10 = v4;
-  v7 = v4;
-  [v5 generateCollectionByCoercingToItemClasses:v6 completionHandler:v9];
+  v10 = handlerCopy;
+  v7 = handlerCopy;
+  [input generateCollectionByCoercingToItemClasses:v6 completionHandler:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -163,7 +163,7 @@ void __64__WFRSSFeedExtractAction_getURLsFromInputWithCompletionHandler___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;

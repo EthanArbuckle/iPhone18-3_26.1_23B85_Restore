@@ -1,19 +1,19 @@
 @interface SBSystemActionCoachingHUDViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation SBSystemActionCoachingHUDViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBSystemActionCoachingHUDViewController" hasInstanceVariable:@"_coachingLabel" withType:"UILabel"];
-  [v3 validateClass:@"SBSystemActionCoachingHUDViewController" hasInstanceVariable:@"_contentView" withType:"UIView"];
-  [v3 validateClass:@"SBSystemActionCoachingHUDViewController" hasInstanceVariable:@"_dimmingView" withType:"UIView"];
-  [v3 validateClass:@"SBSystemActionCoachingHUDViewController" hasInstanceVariable:@"_coachingLabelWrapperView" withType:"UIView"];
-  [v3 validateClass:@"SBSystemActionCoachingHUDViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBSystemActionCoachingHUDViewController" hasInstanceVariable:@"_coachingLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SBSystemActionCoachingHUDViewController" hasInstanceVariable:@"_contentView" withType:"UIView"];
+  [validationsCopy validateClass:@"SBSystemActionCoachingHUDViewController" hasInstanceVariable:@"_dimmingView" withType:"UIView"];
+  [validationsCopy validateClass:@"SBSystemActionCoachingHUDViewController" hasInstanceVariable:@"_coachingLabelWrapperView" withType:"UIView"];
+  [validationsCopy validateClass:@"SBSystemActionCoachingHUDViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

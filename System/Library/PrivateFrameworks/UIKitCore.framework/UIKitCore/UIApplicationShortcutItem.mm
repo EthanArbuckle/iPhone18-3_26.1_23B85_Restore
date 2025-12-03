@@ -1,14 +1,14 @@
 @interface UIApplicationShortcutItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)userInfo;
 - (SBSApplicationShortcutItem)sbsShortcutItem;
 - (UIApplicationShortcutItem)init;
-- (UIApplicationShortcutItem)initWithSBSApplicationShortcutItem:(id)a3;
+- (UIApplicationShortcutItem)initWithSBSApplicationShortcutItem:(id)item;
 - (UIApplicationShortcutItem)initWithType:(NSString *)type localizedTitle:(NSString *)localizedTitle localizedSubtitle:(NSString *)localizedSubtitle icon:(UIApplicationShortcutIcon *)icon userInfo:(NSDictionary *)userInfo;
-- (UIApplicationShortcutItem)initWithXPCDictionary:(id)a3;
-- (id)_initWithType:(id)a3 localizedTitle:(id)a4 localizedSubtitle:(id)a5 icon:(id)a6 userInfoData:(id)a7 activationMode:(unint64_t)a8 targetContentIdentifier:(id)a9;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)setUserInfo:(id)a3;
+- (UIApplicationShortcutItem)initWithXPCDictionary:(id)dictionary;
+- (id)_initWithType:(id)type localizedTitle:(id)title localizedSubtitle:(id)subtitle icon:(id)icon userInfoData:(id)data activationMode:(unint64_t)mode targetContentIdentifier:(id)identifier;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation UIApplicationShortcutItem
@@ -34,25 +34,25 @@
   v4 = v3;
   _Block_object_dispose(&v15, 8);
   v5 = objc_alloc_init(v3);
-  v6 = [(UIApplicationShortcutItem *)self type];
-  [v5 setType:v6];
+  type = [(UIApplicationShortcutItem *)self type];
+  [v5 setType:type];
 
-  v7 = [(UIApplicationShortcutItem *)self localizedTitle];
-  [v5 setLocalizedTitle:v7];
+  localizedTitle = [(UIApplicationShortcutItem *)self localizedTitle];
+  [v5 setLocalizedTitle:localizedTitle];
 
-  v8 = [(UIApplicationShortcutItem *)self localizedSubtitle];
-  [v5 setLocalizedSubtitle:v8];
+  localizedSubtitle = [(UIApplicationShortcutItem *)self localizedSubtitle];
+  [v5 setLocalizedSubtitle:localizedSubtitle];
 
-  v9 = [(UIApplicationShortcutItem *)self icon];
-  v10 = [v9 sbsShortcutIcon];
-  [v5 setIcon:v10];
+  icon = [(UIApplicationShortcutItem *)self icon];
+  sbsShortcutIcon = [icon sbsShortcutIcon];
+  [v5 setIcon:sbsShortcutIcon];
 
-  v11 = [(UIApplicationShortcutItem *)self userInfo];
-  [v5 setUserInfo:v11];
+  userInfo = [(UIApplicationShortcutItem *)self userInfo];
+  [v5 setUserInfo:userInfo];
 
   [v5 setActivationMode:{objc_msgSend(objc_opt_class(), "_sbsActivationModeFromUIActivationMode:", -[UIApplicationShortcutItem activationMode](self, "activationMode"))}];
-  v12 = [(UIApplicationShortcutItem *)self targetContentIdentifier];
-  [v5 setTargetContentIdentifier:v12];
+  targetContentIdentifier = [(UIApplicationShortcutItem *)self targetContentIdentifier];
+  [v5 setTargetContentIdentifier:targetContentIdentifier];
 
   return v5;
 }
@@ -117,26 +117,26 @@ LABEL_5:
   return v17;
 }
 
-- (id)_initWithType:(id)a3 localizedTitle:(id)a4 localizedSubtitle:(id)a5 icon:(id)a6 userInfoData:(id)a7 activationMode:(unint64_t)a8 targetContentIdentifier:(id)a9
+- (id)_initWithType:(id)type localizedTitle:(id)title localizedSubtitle:(id)subtitle icon:(id)icon userInfoData:(id)data activationMode:(unint64_t)mode targetContentIdentifier:(id)identifier
 {
-  v16 = a7;
-  v17 = a9;
-  v18 = [(UIApplicationShortcutItem *)self initWithType:a3 localizedTitle:a4 localizedSubtitle:a5 icon:a6 userInfo:0];
+  dataCopy = data;
+  identifierCopy = identifier;
+  v18 = [(UIApplicationShortcutItem *)self initWithType:type localizedTitle:title localizedSubtitle:subtitle icon:icon userInfo:0];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_userInfoData, a7);
-    v19->_activationMode = a8;
-    objc_storeStrong(&v19->_targetContentIdentifier, a9);
+    objc_storeStrong(&v18->_userInfoData, data);
+    v19->_activationMode = mode;
+    objc_storeStrong(&v19->_targetContentIdentifier, identifier);
   }
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -146,54 +146,54 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UIApplicationShortcutItem *)v5 type];
-      if (v6 == self->_type)
+      v5 = equalCopy;
+      type = [(UIApplicationShortcutItem *)v5 type];
+      if (type == self->_type)
       {
         v8 = 1;
       }
 
       else
       {
-        v7 = [(UIApplicationShortcutItem *)v5 type];
-        v8 = [v7 isEqualToString:self->_type];
+        type2 = [(UIApplicationShortcutItem *)v5 type];
+        v8 = [type2 isEqualToString:self->_type];
       }
 
-      v10 = [(UIApplicationShortcutItem *)v5 localizedTitle];
-      if (v10 != self->_localizedTitle)
+      localizedTitle = [(UIApplicationShortcutItem *)v5 localizedTitle];
+      if (localizedTitle != self->_localizedTitle)
       {
-        v11 = [(UIApplicationShortcutItem *)v5 localizedTitle];
-        if (![v11 isEqualToString:self->_localizedTitle])
+        localizedTitle2 = [(UIApplicationShortcutItem *)v5 localizedTitle];
+        if (![localizedTitle2 isEqualToString:self->_localizedTitle])
         {
           v8 = 0;
         }
       }
 
-      v12 = [(UIApplicationShortcutItem *)v5 localizedSubtitle];
-      if (v12 != self->_localizedSubtitle)
+      localizedSubtitle = [(UIApplicationShortcutItem *)v5 localizedSubtitle];
+      if (localizedSubtitle != self->_localizedSubtitle)
       {
-        v13 = [(UIApplicationShortcutItem *)v5 localizedSubtitle];
-        if (![v13 isEqualToString:self->_localizedSubtitle])
+        localizedSubtitle2 = [(UIApplicationShortcutItem *)v5 localizedSubtitle];
+        if (![localizedSubtitle2 isEqualToString:self->_localizedSubtitle])
         {
           v8 = 0;
         }
       }
 
-      v14 = [(UIApplicationShortcutItem *)v5 icon];
-      if (v14 != self->_icon)
+      icon = [(UIApplicationShortcutItem *)v5 icon];
+      if (icon != self->_icon)
       {
-        v15 = [(UIApplicationShortcutItem *)v5 icon];
-        if (![v15 isEqual:self->_icon])
+        icon2 = [(UIApplicationShortcutItem *)v5 icon];
+        if (![icon2 isEqual:self->_icon])
         {
           v8 = 0;
         }
       }
 
-      v16 = [(UIApplicationShortcutItem *)v5 userInfoData];
-      if (v16 != self->_userInfoData)
+      userInfoData = [(UIApplicationShortcutItem *)v5 userInfoData];
+      if (userInfoData != self->_userInfoData)
       {
-        v17 = [(UIApplicationShortcutItem *)v5 userInfoData];
-        if (![v17 isEqual:self->_userInfoData])
+        userInfoData2 = [(UIApplicationShortcutItem *)v5 userInfoData];
+        if (![userInfoData2 isEqual:self->_userInfoData])
         {
           v8 = 0;
         }
@@ -211,10 +211,10 @@ LABEL_5:
   return v9;
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -227,7 +227,7 @@ LABEL_5:
     self->_userInfoData = 0;
 
     v16 = 0;
-    v6 = [MEMORY[0x1E696AE40] dataWithPropertyList:v4 format:200 options:0 error:&v16];
+    v6 = [MEMORY[0x1E696AE40] dataWithPropertyList:infoCopy format:200 options:0 error:&v16];
     v7 = v16;
     v8 = self->_userInfoData;
     self->_userInfoData = v6;
@@ -251,9 +251,9 @@ LABEL_5:
   }
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
+  xdict = dictionary;
   BSSerializeStringToXPCDictionaryWithKey();
   BSSerializeStringToXPCDictionaryWithKey();
   BSSerializeStringToXPCDictionaryWithKey();
@@ -263,9 +263,9 @@ LABEL_5:
   BSSerializeStringToXPCDictionaryWithKey();
 }
 
-- (UIApplicationShortcutItem)initWithXPCDictionary:(id)a3
+- (UIApplicationShortcutItem)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = BSDeserializeStringFromXPCDictionaryWithKey();
   v6 = BSDeserializeStringFromXPCDictionaryWithKey();
   v7 = BSDeserializeStringFromXPCDictionaryWithKey();
@@ -293,7 +293,7 @@ LABEL_5:
   v12 = v11;
 
   v13 = BSDeserializeDataFromXPCDictionaryWithKey();
-  uint64 = xpc_dictionary_get_uint64(v4, "activationMode");
+  uint64 = xpc_dictionary_get_uint64(dictionaryCopy, "activationMode");
   v15 = BSDeserializeStringFromXPCDictionaryWithKey();
   v16 = [(UIApplicationShortcutItem *)self _initWithType:v5 localizedTitle:v6 localizedSubtitle:v7 icon:v12 userInfoData:v13 activationMode:uint64 targetContentIdentifier:v15];
 
@@ -301,21 +301,21 @@ LABEL_5:
   return v17;
 }
 
-- (UIApplicationShortcutItem)initWithSBSApplicationShortcutItem:(id)a3
+- (UIApplicationShortcutItem)initWithSBSApplicationShortcutItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [UIApplicationShortcutIcon alloc];
-  v6 = [v4 icon];
-  v7 = [(UIApplicationShortcutIcon *)v5 initWithSBSApplicationShortcutIcon:v6];
+  icon = [itemCopy icon];
+  v7 = [(UIApplicationShortcutIcon *)v5 initWithSBSApplicationShortcutIcon:icon];
 
-  v8 = [objc_opt_class() _uiActivationModeFromSBSActivationMode:{objc_msgSend(v4, "activationMode")}];
-  v9 = [v4 type];
-  v10 = [v4 localizedTitle];
-  v11 = [v4 localizedSubtitle];
-  v12 = [v4 userInfoData];
-  v13 = [v4 targetContentIdentifier];
+  v8 = [objc_opt_class() _uiActivationModeFromSBSActivationMode:{objc_msgSend(itemCopy, "activationMode")}];
+  type = [itemCopy type];
+  localizedTitle = [itemCopy localizedTitle];
+  localizedSubtitle = [itemCopy localizedSubtitle];
+  userInfoData = [itemCopy userInfoData];
+  targetContentIdentifier = [itemCopy targetContentIdentifier];
 
-  v14 = [(UIApplicationShortcutItem *)self _initWithType:v9 localizedTitle:v10 localizedSubtitle:v11 icon:v7 userInfoData:v12 activationMode:v8 targetContentIdentifier:v13];
+  v14 = [(UIApplicationShortcutItem *)self _initWithType:type localizedTitle:localizedTitle localizedSubtitle:localizedSubtitle icon:v7 userInfoData:userInfoData activationMode:v8 targetContentIdentifier:targetContentIdentifier];
   return v14;
 }
 

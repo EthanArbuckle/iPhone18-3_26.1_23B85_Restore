@@ -1,7 +1,7 @@
 @interface AppleCardFeaturesAndBenefitsManager
-- (void)accountChanged:(id)a3;
+- (void)accountChanged:(id)changed;
 - (void)dealloc;
-- (void)scheduledPaymentsChangedForAccountIdentifier:(id)a3;
+- (void)scheduledPaymentsChangedForAccountIdentifier:(id)identifier;
 @end
 
 @implementation AppleCardFeaturesAndBenefitsManager
@@ -9,14 +9,14 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedInstance];
-  if (v5)
+  selfCopy = self;
+  sharedInstance = [v3 sharedInstance];
+  if (sharedInstance)
   {
-    v6 = v5;
-    [v5 unregisterObserver_];
+    v6 = sharedInstance;
+    [sharedInstance unregisterObserver_];
 
-    v7.receiver = v4;
+    v7.receiver = selfCopy;
     v7.super_class = type metadata accessor for AppleCardFeaturesAndBenefitsManager();
     [(AppleCardFeaturesAndBenefitsManager *)&v7 dealloc];
   }
@@ -27,16 +27,16 @@
   }
 }
 
-- (void)accountChanged:(id)a3
+- (void)accountChanged:(id)changed
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BD312BC8(a3);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_1BD312BC8(changed);
 }
 
-- (void)scheduledPaymentsChangedForAccountIdentifier:(id)a3
+- (void)scheduledPaymentsChangedForAccountIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1BE052434();
     v6 = v5;
@@ -48,7 +48,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1BD314240(v4, v6);
 }
 

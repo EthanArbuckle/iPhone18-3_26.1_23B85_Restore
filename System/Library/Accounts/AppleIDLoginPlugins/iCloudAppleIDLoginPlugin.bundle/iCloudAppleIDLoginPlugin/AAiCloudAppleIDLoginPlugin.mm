@@ -1,11 +1,11 @@
 @interface AAiCloudAppleIDLoginPlugin
 - (id)_accountStore;
-- (id)_descriptionFromEmailAddress:(id)a3;
+- (id)_descriptionFromEmailAddress:(id)address;
 - (id)parametersForIdentityEstablishmentRequest;
 - (id)parametersForLoginRequest;
-- (void)_addAccountWithServerResponse:(id)a3 password:(id)a4 emailAddress:(id)a5;
-- (void)_updateAccount:(id)a3 withProvisioningResponse:(id)a4 emailAddress:(id)a5;
-- (void)handleLoginResponse:(id)a3 completion:(id)a4;
+- (void)_addAccountWithServerResponse:(id)response password:(id)password emailAddress:(id)address;
+- (void)_updateAccount:(id)account withProvisioningResponse:(id)response emailAddress:(id)address;
+- (void)handleLoginResponse:(id)response completion:(id)completion;
 @end
 
 @implementation AAiCloudAppleIDLoginPlugin
@@ -29,34 +29,34 @@
 - (id)parametersForIdentityEstablishmentRequest
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(AAiCloudAppleIDLoginPlugin *)self _accountStore];
-  v5 = [v4 aa_primaryAppleAccount];
+  _accountStore = [(AAiCloudAppleIDLoginPlugin *)self _accountStore];
+  aa_primaryAppleAccount = [_accountStore aa_primaryAppleAccount];
 
-  if (v5)
+  if (aa_primaryAppleAccount)
   {
     [v3 setObject:&__kCFBooleanTrue forKeyedSubscript:@"account-exists"];
-    v6 = [v5 username];
+    username = [aa_primaryAppleAccount username];
 
-    if (v6)
+    if (username)
     {
-      v7 = [v5 username];
-      [v3 setObject:v7 forKeyedSubscript:@"appleId"];
+      username2 = [aa_primaryAppleAccount username];
+      [v3 setObject:username2 forKeyedSubscript:@"appleId"];
     }
 
-    v8 = [v5 aa_personID];
+    aa_personID = [aa_primaryAppleAccount aa_personID];
 
-    if (v8)
+    if (aa_personID)
     {
-      v9 = [v5 aa_personID];
-      [v3 setObject:v9 forKeyedSubscript:@"dsid"];
+      aa_personID2 = [aa_primaryAppleAccount aa_personID];
+      [v3 setObject:aa_personID2 forKeyedSubscript:@"dsid"];
     }
 
-    v10 = [v5 aa_password];
+    aa_password = [aa_primaryAppleAccount aa_password];
 
-    if (v10)
+    if (aa_password)
     {
-      v11 = [v5 aa_password];
-      [v3 setObject:v11 forKeyedSubscript:@"password"];
+      aa_password2 = [aa_primaryAppleAccount aa_password];
+      [v3 setObject:aa_password2 forKeyedSubscript:@"password"];
     }
   }
 
@@ -68,44 +68,44 @@
   return v3;
 }
 
-- (void)handleLoginResponse:(id)a3 completion:(id)a4
+- (void)handleLoginResponse:(id)response completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  responseCopy = response;
+  completionCopy = completion;
+  if (responseCopy && [responseCopy count])
   {
     kdebug_trace();
-    v8 = [v6 objectForKeyedSubscript:@"password"];
-    v36 = [v6 objectForKeyedSubscript:@"appleIDEnteredByUser"];
-    v9 = [v6 objectForKeyedSubscript:@"status"];
-    v10 = [v9 intValue];
+    v8 = [responseCopy objectForKeyedSubscript:@"password"];
+    v36 = [responseCopy objectForKeyedSubscript:@"appleIDEnteredByUser"];
+    v9 = [responseCopy objectForKeyedSubscript:@"status"];
+    intValue = [v9 intValue];
 
-    v34 = self;
-    if (v10)
+    selfCopy = self;
+    if (intValue)
     {
-      v11 = [v6 objectForKeyedSubscript:@"status-message"];
+      v11 = [responseCopy objectForKeyedSubscript:@"status-message"];
       v12 = 0;
       v35 = 0;
-      v13 = 0;
+      personID = 0;
       v14 = 0;
       v15 = 0;
     }
 
     else
     {
-      v18 = [[AAProvisioningResponse alloc] initWithDictionary:v6];
+      v18 = [[AAProvisioningResponse alloc] initWithDictionary:responseCopy];
       if (v18)
       {
         v35 = v18;
-        v13 = [v18 personID];
-        v19 = [(AAiCloudAppleIDLoginPlugin *)self _accountStore];
-        v20 = [v19 aa_appleAccounts];
+        personID = [v18 personID];
+        _accountStore = [(AAiCloudAppleIDLoginPlugin *)self _accountStore];
+        aa_appleAccounts = [_accountStore aa_appleAccounts];
 
         v41 = 0u;
         v42 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v21 = v20;
+        v21 = aa_appleAccounts;
         v11 = [v21 countByEnumeratingWithState:&v39 objects:v46 count:16];
         if (v11)
         {
@@ -121,15 +121,15 @@
               }
 
               v24 = *(*(&v39 + 1) + 8 * i);
-              v25 = [v24 aa_personID];
-              v26 = [v25 isEqualToString:v13];
+              aa_personID = [v24 aa_personID];
+              v26 = [aa_personID isEqualToString:personID];
 
               if (v26)
               {
-                v27 = [(AAiCloudAppleIDLoginPlugin *)v34 _accountStore];
-                v28 = [v27 aa_primaryAppleAccount];
+                _accountStore2 = [(AAiCloudAppleIDLoginPlugin *)selfCopy _accountStore];
+                aa_primaryAppleAccount = [_accountStore2 aa_primaryAppleAccount];
 
-                if (!v28)
+                if (!aa_primaryAppleAccount)
                 {
                   [v24 aa_setPrimaryAccount:1];
                 }
@@ -172,12 +172,12 @@ LABEL_26:
         v37[1] = 3221225472;
         v37[2] = sub_12C4;
         v37[3] = &unk_41A8;
-        v38 = v7;
+        v38 = completionCopy;
         v29 = objc_retainBlock(v37);
         if (v15)
         {
           v30 = v35;
-          [(AAiCloudAppleIDLoginPlugin *)v34 _addAccountWithServerResponse:v35 password:v8 emailAddress:v16];
+          [(AAiCloudAppleIDLoginPlugin *)selfCopy _addAccountWithServerResponse:v35 password:v8 emailAddress:v16];
         }
 
         else
@@ -196,7 +196,7 @@ LABEL_26:
 
           [v12 aa_setPassword:v8];
           v30 = v35;
-          [(AAiCloudAppleIDLoginPlugin *)v34 _updateAccount:v12 withProvisioningResponse:v35 emailAddress:v16];
+          [(AAiCloudAppleIDLoginPlugin *)selfCopy _updateAccount:v12 withProvisioningResponse:v35 emailAddress:v16];
         }
 
         (v29[2])(v29, 1, 0);
@@ -207,7 +207,7 @@ LABEL_32:
 
       v12 = 0;
       v35 = 0;
-      v13 = 0;
+      personID = 0;
       v14 = 0;
       v15 = 0;
       v11 = @"Communications error with setup server.";
@@ -224,15 +224,15 @@ LABEL_32:
     _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "ERROR: The server response parameters being passed in is empty - will not run iCloud account setup", buf, 2u);
   }
 
-  (*(v7 + 2))(v7, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 LABEL_33:
 }
 
-- (void)_addAccountWithServerResponse:(id)a3 password:(id)a4 emailAddress:(id)a5
+- (void)_addAccountWithServerResponse:(id)response password:(id)password emailAddress:(id)address
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 appleID];
+  responseCopy = response;
+  passwordCopy = password;
+  appleID = [responseCopy appleID];
   v10 = _AALogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -240,29 +240,29 @@ LABEL_33:
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Adding account with server response", buf, 2u);
   }
 
-  if (v9)
+  if (appleID)
   {
-    v11 = [(AAiCloudAppleIDLoginPlugin *)self _descriptionFromEmailAddress:v9];
+    v11 = [(AAiCloudAppleIDLoginPlugin *)self _descriptionFromEmailAddress:appleID];
     v12 = [ACAccount alloc];
-    v13 = [(AAiCloudAppleIDLoginPlugin *)self _accountStore];
-    v14 = [v13 aa_appleAccountType];
-    v15 = [v12 initWithAccountType:v14];
+    _accountStore = [(AAiCloudAppleIDLoginPlugin *)self _accountStore];
+    aa_appleAccountType = [_accountStore aa_appleAccountType];
+    v15 = [v12 initWithAccountType:aa_appleAccountType];
 
-    [v15 setUsername:v9];
-    [v15 aa_setPassword:v8];
+    [v15 setUsername:appleID];
+    [v15 aa_setPassword:passwordCopy];
     [v15 setAccountDescription:v11];
-    v16 = [v7 iCloudAuthToken];
-    [v15 aa_setAuthToken:v16];
+    iCloudAuthToken = [responseCopy iCloudAuthToken];
+    [v15 aa_setAuthToken:iCloudAuthToken];
 
-    v17 = [(AAiCloudAppleIDLoginPlugin *)self _accountStore];
-    v18 = [v17 aa_primaryAppleAccount];
+    _accountStore2 = [(AAiCloudAppleIDLoginPlugin *)self _accountStore];
+    aa_primaryAppleAccount = [_accountStore2 aa_primaryAppleAccount];
 
-    if (!v18)
+    if (!aa_primaryAppleAccount)
     {
       [v15 aa_setPrimaryAccount:1];
     }
 
-    [v15 aa_updateWithProvisioningResponse:v7];
+    [v15 aa_updateWithProvisioningResponse:responseCopy];
     v19 = dispatch_semaphore_create(0);
     v20 = _AALogSystem();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -272,23 +272,23 @@ LABEL_33:
       _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Saving account: %@", buf, 0xCu);
     }
 
-    v21 = [(AAiCloudAppleIDLoginPlugin *)self _accountStore];
+    _accountStore3 = [(AAiCloudAppleIDLoginPlugin *)self _accountStore];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_15F4;
     v23[3] = &unk_41D0;
     v24 = v19;
     v22 = v19;
-    [v21 saveAccount:v15 withCompletionHandler:v23];
+    [_accountStore3 saveAccount:v15 withCompletionHandler:v23];
 
     dispatch_semaphore_wait(v22, 0xFFFFFFFFFFFFFFFFLL);
   }
 }
 
-- (void)_updateAccount:(id)a3 withProvisioningResponse:(id)a4 emailAddress:(id)a5
+- (void)_updateAccount:(id)account withProvisioningResponse:(id)response emailAddress:(id)address
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  responseCopy = response;
   v9 = _AALogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -296,17 +296,17 @@ LABEL_33:
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Updating account with server response", buf, 2u);
   }
 
-  v10 = [v8 provisionedDataclasses];
-  v11 = [v7 provisionedDataclasses];
-  v12 = [NSMutableSet setWithArray:v10];
-  [v12 minusSet:v11];
-  v13 = [v8 fmipLostModeToken];
-  if (v13)
+  provisionedDataclasses = [responseCopy provisionedDataclasses];
+  provisionedDataclasses2 = [accountCopy provisionedDataclasses];
+  v12 = [NSMutableSet setWithArray:provisionedDataclasses];
+  [v12 minusSet:provisionedDataclasses2];
+  fmipLostModeToken = [responseCopy fmipLostModeToken];
+  if (fmipLostModeToken)
   {
     v14 = +[FMDFMIPManager sharedInstance];
-    v15 = [v14 needsLostModeExitAuth];
+    needsLostModeExitAuth = [v14 needsLostModeExitAuth];
 
-    if (v15)
+    if (needsLostModeExitAuth)
     {
       v16 = _AALogSystem();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -320,43 +320,43 @@ LABEL_33:
       block[1] = 3221225472;
       block[2] = sub_19C4;
       block[3] = &unk_41F8;
-      v25 = v13;
+      v25 = fmipLostModeToken;
       dispatch_async(v17, block);
     }
   }
 
-  [v7 aa_updateWithProvisioningResponse:v8];
+  [accountCopy aa_updateWithProvisioningResponse:responseCopy];
   v18 = dispatch_semaphore_create(0);
   v19 = _AALogSystem();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v7;
+    v27 = accountCopy;
     _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "Updating existing account: %@", buf, 0xCu);
   }
 
-  v20 = [(AAiCloudAppleIDLoginPlugin *)self _accountStore];
+  _accountStore = [(AAiCloudAppleIDLoginPlugin *)self _accountStore];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1A1C;
   v22[3] = &unk_41D0;
   v23 = v18;
   v21 = v18;
-  [v20 saveAccount:v7 withCompletionHandler:v22];
+  [_accountStore saveAccount:accountCopy withCompletionHandler:v22];
 
   dispatch_semaphore_wait(v21, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (id)_descriptionFromEmailAddress:(id)a3
+- (id)_descriptionFromEmailAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(AAiCloudAppleIDLoginPlugin *)self _accountStore];
+  addressCopy = address;
+  _accountStore = [(AAiCloudAppleIDLoginPlugin *)self _accountStore];
   v6 = @"iCloud";
-  v7 = [v5 hasAccountWithDescription:@"iCloud"];
+  v7 = [_accountStore hasAccountWithDescription:@"iCloud"];
 
   if (v7)
   {
-    v6 = v4;
+    v6 = addressCopy;
   }
 
   return v6;

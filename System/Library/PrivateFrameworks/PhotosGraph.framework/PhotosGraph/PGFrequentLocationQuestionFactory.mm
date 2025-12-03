@@ -1,29 +1,29 @@
 @interface PGFrequentLocationQuestionFactory
-- (BOOL)_addIfNeededFrequentLocationQuestionForAsset:(id)a3 withLocationTypeName:(id)a4 toQuestions:(id)a5;
+- (BOOL)_addIfNeededFrequentLocationQuestionForAsset:(id)asset withLocationTypeName:(id)name toQuestions:(id)questions;
 - (PHFetchResult)existingFrequentLocationQuestions;
-- (id)_selectedAssetFromMomentNodes:(id)a3 closeToCoordinate:(CLLocationCoordinate2D)a4;
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
+- (id)_selectedAssetFromMomentNodes:(id)nodes closeToCoordinate:(CLLocationCoordinate2D)coordinate;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
 @end
 
 @implementation PGFrequentLocationQuestionFactory
 
-- (id)_selectedAssetFromMomentNodes:(id)a3 closeToCoordinate:(CLLocationCoordinate2D)a4
+- (id)_selectedAssetFromMomentNodes:(id)nodes closeToCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v33[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(PGSurveyQuestionFactory *)self workingContext];
-  v9 = [v8 photoLibrary];
+  nodesCopy = nodes;
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+  photoLibrary = [workingContext photoLibrary];
 
-  v10 = [v9 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"locationData != nil"];
-  [v10 setInternalPredicate:v11];
+  [librarySpecificFetchOptions setInternalPredicate:v11];
 
   v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
   v33[0] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
-  [v10 setSortDescriptors:v13];
+  [librarySpecificFetchOptions setSortDescriptors:v13];
 
   v27 = 0;
   v28 = &v27;
@@ -39,15 +39,15 @@
   v19[1] = 3221225472;
   v19[2] = __85__PGFrequentLocationQuestionFactory__selectedAssetFromMomentNodes_closeToCoordinate___block_invoke;
   v19[3] = &unk_278885710;
-  v14 = v9;
+  v14 = photoLibrary;
   v20 = v14;
-  v15 = v10;
+  v15 = librarySpecificFetchOptions;
   v24 = latitude;
   v25 = longitude;
   v21 = v15;
   v22 = v26;
   v23 = &v27;
-  [v7 enumerateNodesUsingBlock:v19];
+  [nodesCopy enumerateNodesUsingBlock:v19];
   v16 = v28[5];
 
   _Block_object_dispose(v26, 8);
@@ -109,22 +109,22 @@ void __85__PGFrequentLocationQuestionFactory__selectedAssetFromMomentNodes_close
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_addIfNeededFrequentLocationQuestionForAsset:(id)a3 withLocationTypeName:(id)a4 toQuestions:(id)a5
+- (BOOL)_addIfNeededFrequentLocationQuestionForAsset:(id)asset withLocationTypeName:(id)name toQuestions:(id)questions
 {
   v78 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v67 = a4;
-  v8 = a5;
-  v63 = v7;
-  v62 = [v7 location];
-  [v62 coordinate];
+  assetCopy = asset;
+  nameCopy = name;
+  questionsCopy = questions;
+  v63 = assetCopy;
+  location = [assetCopy location];
+  [location coordinate];
   v10 = v9;
   v12 = v11;
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = v8;
+  obj = questionsCopy;
   v13 = [(PGFrequentLocationQuestion *)obj countByEnumeratingWithState:&v72 objects:v77 count:16];
   if (v13)
   {
@@ -143,19 +143,19 @@ void __85__PGFrequentLocationQuestionFactory__selectedAssetFromMomentNodes_close
         }
 
         v20 = *(*(&v72 + 1) + 8 * i);
-        v21 = [v20 additionalInfo];
-        v22 = [v21 objectForKeyedSubscript:v16];
-        v23 = [v22 isEqualToString:v67];
+        additionalInfo = [v20 additionalInfo];
+        v22 = [additionalInfo objectForKeyedSubscript:v16];
+        v23 = [v22 isEqualToString:nameCopy];
 
         if (v23)
         {
-          v24 = [v20 additionalInfo];
-          v25 = [v24 objectForKeyedSubscript:v17];
+          additionalInfo2 = [v20 additionalInfo];
+          v25 = [additionalInfo2 objectForKeyedSubscript:v17];
           [v25 doubleValue];
           v27 = v26;
 
-          v28 = [v20 additionalInfo];
-          v29 = [v28 objectForKeyedSubscript:v18];
+          additionalInfo3 = [v20 additionalInfo];
+          v29 = [additionalInfo3 objectForKeyedSubscript:v18];
           [v29 doubleValue];
           v31 = v30;
 
@@ -165,7 +165,7 @@ void __85__PGFrequentLocationQuestionFactory__selectedAssetFromMomentNodes_close
             v59 = 0;
             v58 = obj;
             v33 = obj;
-            v56 = v62;
+            v56 = location;
             v54 = v63;
             goto LABEL_23;
           }
@@ -205,19 +205,19 @@ void __85__PGFrequentLocationQuestionFactory__selectedAssetFromMomentNodes_close
         }
 
         v40 = *(*(&v68 + 1) + 8 * j);
-        v41 = [v40 additionalInfo];
-        v42 = [v41 objectForKeyedSubscript:v37];
-        v43 = [v42 isEqualToString:v67];
+        additionalInfo4 = [v40 additionalInfo];
+        v42 = [additionalInfo4 objectForKeyedSubscript:v37];
+        v43 = [v42 isEqualToString:nameCopy];
 
         if (v43)
         {
-          v44 = [v40 additionalInfo];
-          v45 = [v44 objectForKeyedSubscript:v64];
+          additionalInfo5 = [v40 additionalInfo];
+          v45 = [additionalInfo5 objectForKeyedSubscript:v64];
           [v45 doubleValue];
           v47 = v46;
 
-          v48 = [v40 additionalInfo];
-          v49 = [v48 objectForKeyedSubscript:v38];
+          additionalInfo6 = [v40 additionalInfo];
+          v49 = [additionalInfo6 objectForKeyedSubscript:v38];
           [v49 doubleValue];
           v51 = v50;
 
@@ -226,7 +226,7 @@ void __85__PGFrequentLocationQuestionFactory__selectedAssetFromMomentNodes_close
           {
             v59 = 0;
             v57 = v33;
-            v56 = v62;
+            v56 = location;
             v54 = v63;
             v58 = obj;
             goto LABEL_22;
@@ -246,9 +246,9 @@ void __85__PGFrequentLocationQuestionFactory__selectedAssetFromMomentNodes_close
 
   v53 = [PGFrequentLocationQuestion alloc];
   v54 = v63;
-  v55 = [v63 uuid];
-  v56 = v62;
-  v57 = [(PGFrequentLocationQuestion *)v53 initWithAssetUUID:v55 location:v62 locationTypeName:v67];
+  uuid = [v63 uuid];
+  v56 = location;
+  v57 = [(PGFrequentLocationQuestion *)v53 initWithAssetUUID:uuid location:location locationTypeName:nameCopy];
 
   v58 = obj;
   [(PGFrequentLocationQuestion *)obj addObject:v57];
@@ -260,26 +260,26 @@ LABEL_23:
   return v59;
 }
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [(PGSurveyQuestionFactory *)self workingContext];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __78__PGFrequentLocationQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke;
   v16 = &unk_27888A2F8;
-  v19 = v6;
-  v20 = a3;
+  v19 = blockCopy;
+  limitCopy = limit;
   v17 = v7;
-  v18 = self;
+  selfCopy = self;
   v9 = v7;
-  v10 = v6;
-  [v8 performSynchronousConcurrentGraphReadUsingBlock:&v13];
+  v10 = blockCopy;
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:&v13];
 
-  v11 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 void __78__PGFrequentLocationQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke(uint64_t a1, void *a2)
@@ -457,9 +457,9 @@ void __78__PGFrequentLocationQuestionFactory_generateQuestionsWithLimit_progress
   existingFrequentLocationQuestions = self->_existingFrequentLocationQuestions;
   if (!existingFrequentLocationQuestions)
   {
-    v4 = [(PGSurveyQuestionFactory *)self fetchExistingQuestions];
+    fetchExistingQuestions = [(PGSurveyQuestionFactory *)self fetchExistingQuestions];
     v5 = self->_existingFrequentLocationQuestions;
-    self->_existingFrequentLocationQuestions = v4;
+    self->_existingFrequentLocationQuestions = fetchExistingQuestions;
 
     existingFrequentLocationQuestions = self->_existingFrequentLocationQuestions;
   }

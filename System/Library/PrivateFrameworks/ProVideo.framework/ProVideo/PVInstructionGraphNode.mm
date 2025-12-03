@@ -1,14 +1,14 @@
 @interface PVInstructionGraphNode
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
-- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)a3 igContext:(id)a4;
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4;
-- (PVIGHGNodeCacheKey)contextHGNodeCacheKeyAtTime:(SEL)a3;
+- (HGRef<HGNode>)hgNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
+- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)effect igContext:(id)context;
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context;
+- (PVIGHGNodeCacheKey)contextHGNodeCacheKeyAtTime:(SEL)time;
 - (PVInstructionGraphNode)init;
 - (id)description;
-- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)a3;
+- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)label;
 - (id)instructionGraphNodeDescription;
-- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)a3;
+- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)node;
 @end
 
 @implementation PVInstructionGraphNode
@@ -26,9 +26,9 @@
   return result;
 }
 
-- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)a3
+- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)node
 {
-  v4 = *a3.m_Obj;
+  v4 = *node.m_Obj;
   v5 = v4;
   if (v4)
   {
@@ -42,13 +42,13 @@
   }
 }
 
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)hgNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v32 = v6;
   HGTraceGuard::HGTraceGuard(v43, "kPVInstructionGraphToHeliumGraphLogContext", 1, "[PVInstructionGraphNode hgNodeForTime:...]");
-  v41 = *a3;
+  v41 = *time;
   [(PVInstructionGraphNode *)self contextHGNodeCacheKeyAtTime:&v41];
-  v14 = PVInstructionGraphContext::HGNodeCache(*a6.m_Obj);
+  v14 = PVInstructionGraphContext::HGNodeCache(*context.m_Obj);
   *v32 = 0;
   v15 = atomic_load(HGLogger::_enabled);
   if (v15)
@@ -70,15 +70,15 @@
       HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Cache Miss\n", v18, v19);
     }
 
-    v41 = *a3;
-    v23 = *a6.m_Obj;
+    v41 = *time;
+    v23 = *context.m_Obj;
     v36 = v23;
     if (v23)
     {
       (*(*v23 + 16))(v23);
     }
 
-    [(PVInstructionGraphNode *)self internalHGNodeForTime:&v41 trackInputs:a4 renderer:a5 igContext:&v36];
+    [(PVInstructionGraphNode *)self internalHGNodeForTime:&v41 trackInputs:inputs renderer:renderer igContext:&v36];
     v24 = *v32;
     v25 = v37;
     if (*v32 == v37)
@@ -158,10 +158,10 @@
   }
 
   PerfTimer::End(&v40);
-  v27 = PVInstructionGraphContext::DotGraph(*a6.m_Obj);
+  v27 = PVInstructionGraphContext::DotGraph(*context.m_Obj);
   if (HGDotGraph::on(v27))
   {
-    v28 = *a6.m_Obj;
+    v28 = *context.m_Obj;
     v33 = v28;
     if (v28)
     {
@@ -174,7 +174,7 @@
       (*(*v33 + 24))(v33);
     }
 
-    if (PVInstructionGraphContext::DotTreeLogLevel(*a6.m_Obj) >= 2)
+    if (PVInstructionGraphContext::DotTreeLogLevel(*context.m_Obj) >= 2)
     {
       v30 = [v29 stringByAppendingFormat:@"\nBuildTime: %.3f", (v40._end - v40._start) * 1000.0];
 
@@ -192,13 +192,13 @@
   return v31;
 }
 
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v7 = v6;
   v8 = atomic_load(HGLogger::_enabled);
   if (v8)
   {
-    HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Base class returning empty HGNode.\n", a4, a5, a6.m_Obj);
+    HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Base class returning empty HGNode.\n", inputs, renderer, context.m_Obj);
   }
 
   v9 = HGObject::operator new(0x1A0uLL);
@@ -207,7 +207,7 @@
   return v10;
 }
 
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context
 {
   *v4 = 0;
   *(v4 + 8) = 0;
@@ -218,7 +218,7 @@
   return result;
 }
 
-- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)a3 igContext:(id)a4
+- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)effect igContext:(id)context
 {
   retstr->var0[3][3] = 1.0;
   retstr->var0[2][2] = 1.0;
@@ -233,7 +233,7 @@
   return self;
 }
 
-- (PVIGHGNodeCacheKey)contextHGNodeCacheKeyAtTime:(SEL)a3
+- (PVIGHGNodeCacheKey)contextHGNodeCacheKeyAtTime:(SEL)time
 {
   uuid = self->_uuid;
   v6 = *a4;
@@ -241,7 +241,7 @@
   return result;
 }
 
-- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)a3
+- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)label
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
@@ -253,8 +253,8 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(PVInstructionGraphNode *)self instructionGraphNodeDescription];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  instructionGraphNodeDescription = [(PVInstructionGraphNode *)self instructionGraphNodeDescription];
+  v4 = [v2 stringWithFormat:@"%@", instructionGraphNodeDescription];
 
   return v4;
 }

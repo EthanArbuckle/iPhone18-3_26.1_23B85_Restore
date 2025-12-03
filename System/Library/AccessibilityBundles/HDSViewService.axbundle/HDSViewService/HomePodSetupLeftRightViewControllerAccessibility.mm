@@ -1,5 +1,5 @@
 @interface HomePodSetupLeftRightViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityMarkupStereoButtons;
 - (void)viewDidLoad;
@@ -7,11 +7,11 @@
 
 @implementation HomePodSetupLeftRightViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HDSViewService.HomePodSetupLeftRightViewController" hasSwiftFieldOfAnyClass:@"leftButton"];
-  [v3 validateClass:@"HDSViewService.HomePodSetupLeftRightViewController" hasSwiftFieldOfAnyClass:@"rightButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HDSViewService.HomePodSetupLeftRightViewController" hasSwiftFieldOfAnyClass:@"leftButton"];
+  [validationsCopy validateClass:@"HDSViewService.HomePodSetupLeftRightViewController" hasSwiftFieldOfAnyClass:@"rightButton"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

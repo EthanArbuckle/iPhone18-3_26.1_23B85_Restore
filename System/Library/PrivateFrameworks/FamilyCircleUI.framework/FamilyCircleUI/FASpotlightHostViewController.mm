@@ -1,23 +1,23 @@
 @interface FASpotlightHostViewController
-+ (id)requestViewControllerWithContactID:(id)a3 completion:(id)a4;
++ (id)requestViewControllerWithContactID:(id)d completion:(id)completion;
 @end
 
 @implementation FASpotlightHostViewController
 
-+ (id)requestViewControllerWithContactID:(id)a3 completion:(id)a4
++ (id)requestViewControllerWithContactID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = *MEMORY[0x277D08120];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __79__FASpotlightHostViewController_requestViewControllerWithContactID_completion___block_invoke;
   v13[3] = &unk_2782F3E58;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [a1 requestViewController:@"FASpotlightServiceViewController" fromServiceWithBundleIdentifier:v8 connectionHandler:v13];
+  v14 = dCopy;
+  v15 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  v11 = [self requestViewController:@"FASpotlightServiceViewController" fromServiceWithBundleIdentifier:v8 connectionHandler:v13];
 
   return v11;
 }

@@ -1,9 +1,9 @@
 @interface _ICNANoteReportToAccount
 - (_ICNANoteReportToAccount)init;
-- (unint64_t)countOfNotesWithFactor:(int64_t)a3 andFactor:(int64_t)a4;
+- (unint64_t)countOfNotesWithFactor:(int64_t)factor andFactor:(int64_t)andFactor;
 - (void)completeTwoFactorMatrixReportingForCurrentNote;
-- (void)updateNoteCollaborationMatrixWithCollaborationStatus:(id)a3 collaborationType:(id)a4;
-- (void)updateNoteTwoFactorMatrixWithIndex:(int64_t)a3;
+- (void)updateNoteCollaborationMatrixWithCollaborationStatus:(id)status collaborationType:(id)type;
+- (void)updateNoteTwoFactorMatrixWithIndex:(int64_t)index;
 @end
 
 @implementation _ICNANoteReportToAccount
@@ -48,29 +48,29 @@
   return result;
 }
 
-- (void)updateNoteTwoFactorMatrixWithIndex:(int64_t)a3
+- (void)updateNoteTwoFactorMatrixWithIndex:(int64_t)index
 {
-  if (a3 < 1)
+  if (index < 1)
   {
     goto LABEL_5;
   }
 
-  v3 = &self->_noteTwoFactorMatrix[0][a3];
-  v4 = a3;
+  v3 = &self->_noteTwoFactorMatrix[0][index];
+  indexCopy = index;
   do
   {
     v5 = *v3 + 0.51;
     *v3 = v5;
     v3 += 10;
-    --v4;
+    --indexCopy;
   }
 
-  while (v4);
-  if (a3 <= 8)
+  while (indexCopy);
+  if (index <= 8)
   {
 LABEL_5:
-    v6 = a3 - 9;
-    v7 = &self->_noteTwoFactorMatrix[0][11 * a3 + 1];
+    v6 = index - 9;
+    v7 = &self->_noteTwoFactorMatrix[0][11 * index + 1];
     do
     {
       v8 = *v7 + 0.51;
@@ -81,24 +81,24 @@ LABEL_5:
   }
 }
 
-- (void)updateNoteCollaborationMatrixWithCollaborationStatus:(id)a3 collaborationType:(id)a4
+- (void)updateNoteCollaborationMatrixWithCollaborationStatus:(id)status collaborationType:(id)type
 {
-  v6 = a4;
-  v7 = [a3 collaborationStatus];
+  typeCopy = type;
+  collaborationStatus = [status collaborationStatus];
   v8 = 3;
-  if (v7 == 1)
+  if (collaborationStatus == 1)
   {
     v8 = 0;
   }
 
-  v9 = v7 != 2 && v7 != 1;
-  if (v7 == 2)
+  v9 = collaborationStatus != 2 && collaborationStatus != 1;
+  if (collaborationStatus == 2)
   {
     v8 = 1;
   }
 
-  v10 = v7 != 3 && v9;
-  if (v7 == 3)
+  v10 = collaborationStatus != 3 && v9;
+  if (collaborationStatus == 3)
   {
     v11 = 2;
   }
@@ -108,11 +108,11 @@ LABEL_5:
     v11 = v8;
   }
 
-  v12 = [v6 collaborationType];
+  collaborationType = [typeCopy collaborationType];
 
-  if ((v12 - 1) <= 2 && !v10)
+  if ((collaborationType - 1) <= 2 && !v10)
   {
-    v13 = self + 12 * v11 + 4 * v12 - 4;
+    v13 = self + 12 * v11 + 4 * collaborationType - 4;
     ++*(v13 + 102);
   }
 }
@@ -142,12 +142,12 @@ LABEL_5:
   while (v2 != 9);
 }
 
-- (unint64_t)countOfNotesWithFactor:(int64_t)a3 andFactor:(int64_t)a4
+- (unint64_t)countOfNotesWithFactor:(int64_t)factor andFactor:(int64_t)andFactor
 {
-  v4 = &self->_noteTwoFactorMatrix[a3][a4];
-  if (a3 > a4)
+  v4 = &self->_noteTwoFactorMatrix[factor][andFactor];
+  if (factor > andFactor)
   {
-    v4 = &self->_noteTwoFactorMatrix[a4][a3];
+    v4 = &self->_noteTwoFactorMatrix[andFactor][factor];
   }
 
   return *v4;

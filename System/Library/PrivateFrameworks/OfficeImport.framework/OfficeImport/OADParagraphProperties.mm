@@ -1,7 +1,7 @@
 @interface OADParagraphProperties
 + (id)defaultProperties;
 - (BOOL)isAnythingOverridden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHangingPunctuation;
 - (BOOL)isLatinLineBreak;
 - (OADParagraphProperties)init;
@@ -26,10 +26,10 @@
 - (unsigned)align;
 - (unsigned)fontAlign;
 - (unsigned)wrap;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
-- (void)overrideWithProperties:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
+- (void)overrideWithProperties:(id)properties;
 - (void)removeUnnecessaryOverrides;
-- (void)setIsHangingPunctuation:(BOOL)a3;
+- (void)setIsHangingPunctuation:(BOOL)punctuation;
 @end
 
 @implementation OADParagraphProperties
@@ -38,44 +38,44 @@
 {
   v15.receiver = self;
   v15.super_class = OADParagraphProperties;
-  v2 = [(OADCharacterProperties *)&v15 initWithDefaults];
-  if (v2)
+  initWithDefaults = [(OADCharacterProperties *)&v15 initWithDefaults];
+  if (initWithDefaults)
   {
     v3 = [OADPercentTextSpacing alloc];
     LODWORD(v4) = 1120403456;
     v5 = [(OADPercentTextSpacing *)v3 initWithPercent:v4];
-    [(OADParagraphProperties *)v2 setLineSpacing:v5];
+    [(OADParagraphProperties *)initWithDefaults setLineSpacing:v5];
     v6 = [[OADPointTextSpacing alloc] initWithPoints:0];
-    [(OADParagraphProperties *)v2 setBeforeSpacing:v6];
-    [(OADParagraphProperties *)v2 setAfterSpacing:v6];
-    v7 = [MEMORY[0x277CBEA60] array];
-    [(OADParagraphProperties *)v2 setTabStops:v7];
+    [(OADParagraphProperties *)initWithDefaults setBeforeSpacing:v6];
+    [(OADParagraphProperties *)initWithDefaults setAfterSpacing:v6];
+    array = [MEMORY[0x277CBEA60] array];
+    [(OADParagraphProperties *)initWithDefaults setTabStops:array];
 
-    [(OADParagraphProperties *)v2 setLeftMargin:0.0];
-    [(OADParagraphProperties *)v2 setRightMargin:0.0];
-    [(OADParagraphProperties *)v2 setLevel:0];
-    [(OADParagraphProperties *)v2 setIndent:0.0];
-    [(OADParagraphProperties *)v2 setAlign:0];
+    [(OADParagraphProperties *)initWithDefaults setLeftMargin:0.0];
+    [(OADParagraphProperties *)initWithDefaults setRightMargin:0.0];
+    [(OADParagraphProperties *)initWithDefaults setLevel:0];
+    [(OADParagraphProperties *)initWithDefaults setIndent:0.0];
+    [(OADParagraphProperties *)initWithDefaults setAlign:0];
     LODWORD(v8) = 1116733440;
-    [(OADParagraphProperties *)v2 setDefaultTab:v8];
-    [(OADCharacterProperties *)v2 setIsRightToLeft:0];
-    [(OADParagraphProperties *)v2 setWrap:1];
-    [(OADParagraphProperties *)v2 setFontAlign:0];
-    [(OADParagraphProperties *)v2 setIsLatinLineBreak:1];
-    [(OADParagraphProperties *)v2 setIsHangingPunctuation:0];
-    [(OADParagraphProperties *)v2 setBulletCharSet:1];
+    [(OADParagraphProperties *)initWithDefaults setDefaultTab:v8];
+    [(OADCharacterProperties *)initWithDefaults setIsRightToLeft:0];
+    [(OADParagraphProperties *)initWithDefaults setWrap:1];
+    [(OADParagraphProperties *)initWithDefaults setFontAlign:0];
+    [(OADParagraphProperties *)initWithDefaults setIsLatinLineBreak:1];
+    [(OADParagraphProperties *)initWithDefaults setIsHangingPunctuation:0];
+    [(OADParagraphProperties *)initWithDefaults setBulletCharSet:1];
     v9 = objc_alloc_init(OADBulletSizeFollowText);
-    [(OADParagraphProperties *)v2 setBulletSize:v9];
+    [(OADParagraphProperties *)initWithDefaults setBulletSize:v9];
     v10 = objc_alloc_init(OADBulletColorFollowText);
-    [(OADParagraphProperties *)v2 setBulletColor:v10];
+    [(OADParagraphProperties *)initWithDefaults setBulletColor:v10];
     v11 = objc_alloc_init(OADBulletFontFollowText);
-    [(OADParagraphProperties *)v2 setBulletFont:v11];
+    [(OADParagraphProperties *)initWithDefaults setBulletFont:v11];
     v12 = objc_alloc_init(OADNullBulletProperties);
-    [(OADParagraphProperties *)v2 setBulletProperties:v12];
-    v13 = v2;
+    [(OADParagraphProperties *)initWithDefaults setBulletProperties:v12];
+    v13 = initWithDefaults;
   }
 
-  return v2;
+  return initWithDefaults;
 }
 
 - (OADParagraphProperties)init
@@ -202,12 +202,12 @@
 
 - (void)removeUnnecessaryOverrides
 {
-  v3 = [(OADProperties *)self parent];
+  parent = [(OADProperties *)self parent];
 
-  if (v3)
+  if (parent)
   {
-    v4 = [(OADProperties *)self isMerged];
-    v5 = [(OADProperties *)self isMergedWithParent];
+    isMerged = [(OADProperties *)self isMerged];
+    isMergedWithParent = [(OADProperties *)self isMergedWithParent];
     [(OADProperties *)self setMerged:0];
     [(OADProperties *)self setMergedWithParent:0];
     if (![(OADParagraphProperties *)self hasLineSpacing])
@@ -215,30 +215,30 @@
       goto LABEL_10;
     }
 
-    v6 = [(OADProperties *)self parent];
-    v7 = [(OADParagraphProperties *)self lineSpacing];
-    v8 = [v6 lineSpacing];
+    parent2 = [(OADProperties *)self parent];
+    lineSpacing = [(OADParagraphProperties *)self lineSpacing];
+    lineSpacing2 = [parent2 lineSpacing];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(objc_object *)v7 removeUnnecessaryOverrides];
+      [(objc_object *)lineSpacing removeUnnecessaryOverrides];
       v9 = objc_opt_class();
       if (v9 != objc_opt_class())
       {
         goto LABEL_9;
       }
 
-      v10 = [(objc_object *)v7 isMergedWithParent];
-      [(objc_object *)v7 setMergedWithParent:0];
-      v11 = [(objc_object *)v7 isAnythingOverridden];
-      [(objc_object *)v7 setMergedWithParent:v10];
-      if (v11)
+      isMergedWithParent2 = [(objc_object *)lineSpacing isMergedWithParent];
+      [(objc_object *)lineSpacing setMergedWithParent:0];
+      isAnythingOverridden = [(objc_object *)lineSpacing isAnythingOverridden];
+      [(objc_object *)lineSpacing setMergedWithParent:isMergedWithParent2];
+      if (isAnythingOverridden)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!TCObjectEqual(v7, v8))
+    else if (!TCObjectEqual(lineSpacing, lineSpacing2))
     {
 LABEL_9:
 
@@ -248,30 +248,30 @@ LABEL_10:
         goto LABEL_18;
       }
 
-      v13 = [(OADProperties *)self parent];
-      v14 = [(OADParagraphProperties *)self beforeSpacing];
-      v15 = [v13 beforeSpacing];
+      parent3 = [(OADProperties *)self parent];
+      beforeSpacing = [(OADParagraphProperties *)self beforeSpacing];
+      beforeSpacing2 = [parent3 beforeSpacing];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(objc_object *)v14 removeUnnecessaryOverrides];
+        [(objc_object *)beforeSpacing removeUnnecessaryOverrides];
         v16 = objc_opt_class();
         if (v16 != objc_opt_class())
         {
           goto LABEL_17;
         }
 
-        v17 = [(objc_object *)v14 isMergedWithParent];
-        [(objc_object *)v14 setMergedWithParent:0];
-        v18 = [(objc_object *)v14 isAnythingOverridden];
-        [(objc_object *)v14 setMergedWithParent:v17];
-        if (v18)
+        isMergedWithParent3 = [(objc_object *)beforeSpacing isMergedWithParent];
+        [(objc_object *)beforeSpacing setMergedWithParent:0];
+        isAnythingOverridden2 = [(objc_object *)beforeSpacing isAnythingOverridden];
+        [(objc_object *)beforeSpacing setMergedWithParent:isMergedWithParent3];
+        if (isAnythingOverridden2)
         {
           goto LABEL_17;
         }
       }
 
-      else if (!TCObjectEqual(v14, v15))
+      else if (!TCObjectEqual(beforeSpacing, beforeSpacing2))
       {
 LABEL_17:
 
@@ -281,10 +281,10 @@ LABEL_18:
 LABEL_26:
           if ([(OADParagraphProperties *)self hasTabStops])
           {
-            v27 = [(OADParagraphProperties *)self tabStops];
-            v28 = [(OADProperties *)self parent];
-            v29 = [v28 tabStops];
-            v30 = [v27 isEqualToArray:v29];
+            tabStops = [(OADParagraphProperties *)self tabStops];
+            parent4 = [(OADProperties *)self parent];
+            tabStops2 = [parent4 tabStops];
+            v30 = [tabStops isEqualToArray:tabStops2];
 
             if (v30)
             {
@@ -295,10 +295,10 @@ LABEL_26:
 
           if ([(OADParagraphProperties *)self hasLeftMargin])
           {
-            v32 = [(OADProperties *)self parent];
+            parent5 = [(OADProperties *)self parent];
             [(OADParagraphProperties *)self leftMargin];
             v34 = v33;
-            [v32 leftMargin];
+            [parent5 leftMargin];
             if (v34 == v35)
             {
               [(OADParagraphProperties *)self setLeftMargin:0.0];
@@ -308,10 +308,10 @@ LABEL_26:
 
           if ([(OADParagraphProperties *)self hasRightMargin])
           {
-            v36 = [(OADProperties *)self parent];
+            parent6 = [(OADProperties *)self parent];
             [(OADParagraphProperties *)self rightMargin];
             v38 = v37;
-            [v36 rightMargin];
+            [parent6 rightMargin];
             if (v38 == v39)
             {
               [(OADParagraphProperties *)self setRightMargin:0.0];
@@ -321,10 +321,10 @@ LABEL_26:
 
           if ([(OADParagraphProperties *)self hasIndent])
           {
-            v40 = [(OADProperties *)self parent];
+            parent7 = [(OADProperties *)self parent];
             [(OADParagraphProperties *)self indent];
             v42 = v41;
-            [v40 indent];
+            [parent7 indent];
             if (v42 == v43)
             {
               [(OADParagraphProperties *)self setIndent:0.0];
@@ -334,9 +334,9 @@ LABEL_26:
 
           if ([(OADParagraphProperties *)self hasAlign])
           {
-            v44 = [(OADProperties *)self parent];
-            v45 = [(OADParagraphProperties *)self align];
-            if (v45 == [v44 align])
+            parent8 = [(OADProperties *)self parent];
+            align = [(OADParagraphProperties *)self align];
+            if (align == [parent8 align])
             {
               [(OADParagraphProperties *)self setAlign:0];
               *(self + 256) &= ~1u;
@@ -345,10 +345,10 @@ LABEL_26:
 
           if ([(OADParagraphProperties *)self hasDefaultTab])
           {
-            v46 = [(OADProperties *)self parent];
+            parent9 = [(OADProperties *)self parent];
             [(OADParagraphProperties *)self defaultTab];
             v48 = v47;
-            [v46 defaultTab];
+            [parent9 defaultTab];
             if (v48 == v49)
             {
               [(OADParagraphProperties *)self setDefaultTab:0.0];
@@ -358,9 +358,9 @@ LABEL_26:
 
           if ([(OADCharacterProperties *)self hasIsRightToLeft])
           {
-            v50 = [(OADProperties *)self parent];
-            v51 = [(OADCharacterProperties *)self isRightToLeft];
-            if (v51 == [v50 isRightToLeft])
+            parent10 = [(OADProperties *)self parent];
+            isRightToLeft = [(OADCharacterProperties *)self isRightToLeft];
+            if (isRightToLeft == [parent10 isRightToLeft])
             {
               [(OADCharacterProperties *)self setIsRightToLeft:0];
               *(&self->super + 158) &= ~2u;
@@ -369,9 +369,9 @@ LABEL_26:
 
           if ([(OADParagraphProperties *)self hasWrap])
           {
-            v52 = [(OADProperties *)self parent];
-            v53 = [(OADParagraphProperties *)self wrap];
-            if (v53 == [v52 wrap])
+            parent11 = [(OADProperties *)self parent];
+            wrap = [(OADParagraphProperties *)self wrap];
+            if (wrap == [parent11 wrap])
             {
               [(OADParagraphProperties *)self setWrap:0];
               *(self + 256) &= ~2u;
@@ -380,9 +380,9 @@ LABEL_26:
 
           if ([(OADParagraphProperties *)self hasFontAlign])
           {
-            v54 = [(OADProperties *)self parent];
-            v55 = [(OADParagraphProperties *)self fontAlign];
-            if (v55 == [v54 fontAlign])
+            parent12 = [(OADProperties *)self parent];
+            fontAlign = [(OADParagraphProperties *)self fontAlign];
+            if (fontAlign == [parent12 fontAlign])
             {
               [(OADParagraphProperties *)self setFontAlign:0];
               *(self + 256) &= ~4u;
@@ -391,9 +391,9 @@ LABEL_26:
 
           if ([(OADParagraphProperties *)self hasIsLatinLineBreak])
           {
-            v56 = [(OADProperties *)self parent];
-            v57 = [(OADParagraphProperties *)self isLatinLineBreak];
-            if (v57 == [v56 isLatinLineBreak])
+            parent13 = [(OADProperties *)self parent];
+            isLatinLineBreak = [(OADParagraphProperties *)self isLatinLineBreak];
+            if (isLatinLineBreak == [parent13 isLatinLineBreak])
             {
               [(OADParagraphProperties *)self setIsLatinLineBreak:0];
               *(self + 256) &= ~8u;
@@ -402,9 +402,9 @@ LABEL_26:
 
           if ([(OADParagraphProperties *)self hasIsHangingPunctuation])
           {
-            v58 = [(OADProperties *)self parent];
-            v59 = [(OADParagraphProperties *)self isHangingPunctuation];
-            if (v59 == [v58 isHangingPunctuation])
+            parent14 = [(OADProperties *)self parent];
+            isHangingPunctuation = [(OADParagraphProperties *)self isHangingPunctuation];
+            if (isHangingPunctuation == [parent14 isHangingPunctuation])
             {
               [(OADParagraphProperties *)self setIsHangingPunctuation:0];
               *(self + 256) &= ~0x10u;
@@ -413,9 +413,9 @@ LABEL_26:
 
           if ([(OADParagraphProperties *)self hasBulletCharSet])
           {
-            v60 = [(OADProperties *)self parent];
-            v61 = [(OADParagraphProperties *)self bulletCharSet];
-            if (v61 == [v60 bulletCharSet])
+            parent15 = [(OADProperties *)self parent];
+            bulletCharSet = [(OADParagraphProperties *)self bulletCharSet];
+            if (bulletCharSet == [parent15 bulletCharSet])
             {
               [(OADParagraphProperties *)self setBulletCharSet:0];
               *(self + 255) &= ~0x80u;
@@ -430,30 +430,30 @@ LABEL_81:
               goto LABEL_89;
             }
 
-            v69 = [(OADProperties *)self parent];
-            v70 = [(OADParagraphProperties *)self bulletColor];
-            v71 = [v69 bulletColor];
+            parent16 = [(OADProperties *)self parent];
+            bulletColor = [(OADParagraphProperties *)self bulletColor];
+            bulletColor2 = [parent16 bulletColor];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [(objc_object *)v70 removeUnnecessaryOverrides];
+              [(objc_object *)bulletColor removeUnnecessaryOverrides];
               v72 = objc_opt_class();
               if (v72 != objc_opt_class())
               {
                 goto LABEL_88;
               }
 
-              v73 = [(objc_object *)v70 isMergedWithParent];
-              [(objc_object *)v70 setMergedWithParent:0];
-              v74 = [(objc_object *)v70 isAnythingOverridden];
-              [(objc_object *)v70 setMergedWithParent:v73];
-              if (v74)
+              isMergedWithParent4 = [(objc_object *)bulletColor isMergedWithParent];
+              [(objc_object *)bulletColor setMergedWithParent:0];
+              isAnythingOverridden3 = [(objc_object *)bulletColor isAnythingOverridden];
+              [(objc_object *)bulletColor setMergedWithParent:isMergedWithParent4];
+              if (isAnythingOverridden3)
               {
                 goto LABEL_88;
               }
             }
 
-            else if (!TCObjectEqual(v70, v71))
+            else if (!TCObjectEqual(bulletColor, bulletColor2))
             {
 LABEL_88:
 
@@ -463,30 +463,30 @@ LABEL_89:
                 goto LABEL_97;
               }
 
-              v76 = [(OADProperties *)self parent];
-              v77 = [(OADParagraphProperties *)self bulletFont];
-              v78 = [v76 bulletFont];
+              parent17 = [(OADProperties *)self parent];
+              bulletFont = [(OADParagraphProperties *)self bulletFont];
+              bulletFont2 = [parent17 bulletFont];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [(objc_object *)v77 removeUnnecessaryOverrides];
+                [(objc_object *)bulletFont removeUnnecessaryOverrides];
                 v79 = objc_opt_class();
                 if (v79 != objc_opt_class())
                 {
                   goto LABEL_96;
                 }
 
-                v80 = [(objc_object *)v77 isMergedWithParent];
-                [(objc_object *)v77 setMergedWithParent:0];
-                v81 = [(objc_object *)v77 isAnythingOverridden];
-                [(objc_object *)v77 setMergedWithParent:v80];
-                if (v81)
+                isMergedWithParent5 = [(objc_object *)bulletFont isMergedWithParent];
+                [(objc_object *)bulletFont setMergedWithParent:0];
+                isAnythingOverridden4 = [(objc_object *)bulletFont isAnythingOverridden];
+                [(objc_object *)bulletFont setMergedWithParent:isMergedWithParent5];
+                if (isAnythingOverridden4)
                 {
                   goto LABEL_96;
                 }
               }
 
-              else if (!TCObjectEqual(v77, v78))
+              else if (!TCObjectEqual(bulletFont, bulletFont2))
               {
 LABEL_96:
 
@@ -494,38 +494,38 @@ LABEL_97:
                 if (![(OADParagraphProperties *)self hasBulletProperties])
                 {
 LABEL_105:
-                  [(OADProperties *)self setMerged:v4];
-                  [(OADProperties *)self setMergedWithParent:v5];
+                  [(OADProperties *)self setMerged:isMerged];
+                  [(OADProperties *)self setMergedWithParent:isMergedWithParent];
                   v90.receiver = self;
                   v90.super_class = OADParagraphProperties;
                   [(OADCharacterProperties *)&v90 removeUnnecessaryOverrides];
                   return;
                 }
 
-                v83 = [(OADProperties *)self parent];
-                v84 = [(OADParagraphProperties *)self bulletProperties];
-                v85 = [v83 bulletProperties];
+                parent18 = [(OADProperties *)self parent];
+                bulletProperties = [(OADParagraphProperties *)self bulletProperties];
+                bulletProperties2 = [parent18 bulletProperties];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  [(objc_object *)v84 removeUnnecessaryOverrides];
+                  [(objc_object *)bulletProperties removeUnnecessaryOverrides];
                   v86 = objc_opt_class();
                   if (v86 != objc_opt_class())
                   {
                     goto LABEL_104;
                   }
 
-                  v87 = [(objc_object *)v84 isMergedWithParent];
-                  [(objc_object *)v84 setMergedWithParent:0];
-                  v88 = [(objc_object *)v84 isAnythingOverridden];
-                  [(objc_object *)v84 setMergedWithParent:v87];
-                  if (v88)
+                  isMergedWithParent6 = [(objc_object *)bulletProperties isMergedWithParent];
+                  [(objc_object *)bulletProperties setMergedWithParent:0];
+                  isAnythingOverridden5 = [(objc_object *)bulletProperties isAnythingOverridden];
+                  [(objc_object *)bulletProperties setMergedWithParent:isMergedWithParent6];
+                  if (isAnythingOverridden5)
                   {
                     goto LABEL_104;
                   }
                 }
 
-                else if (!TCObjectEqual(v84, v85))
+                else if (!TCObjectEqual(bulletProperties, bulletProperties2))
                 {
 LABEL_104:
 
@@ -550,30 +550,30 @@ LABEL_104:
             goto LABEL_88;
           }
 
-          v62 = [(OADProperties *)self parent];
-          v63 = [(OADParagraphProperties *)self bulletSize];
-          v64 = [v62 bulletSize];
+          parent19 = [(OADProperties *)self parent];
+          bulletSize = [(OADParagraphProperties *)self bulletSize];
+          bulletSize2 = [parent19 bulletSize];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [(objc_object *)v63 removeUnnecessaryOverrides];
+            [(objc_object *)bulletSize removeUnnecessaryOverrides];
             v65 = objc_opt_class();
             if (v65 != objc_opt_class())
             {
               goto LABEL_80;
             }
 
-            v66 = [(objc_object *)v63 isMergedWithParent];
-            [(objc_object *)v63 setMergedWithParent:0];
-            v67 = [(objc_object *)v63 isAnythingOverridden];
-            [(objc_object *)v63 setMergedWithParent:v66];
-            if (v67)
+            isMergedWithParent7 = [(objc_object *)bulletSize isMergedWithParent];
+            [(objc_object *)bulletSize setMergedWithParent:0];
+            isAnythingOverridden6 = [(objc_object *)bulletSize isAnythingOverridden];
+            [(objc_object *)bulletSize setMergedWithParent:isMergedWithParent7];
+            if (isAnythingOverridden6)
             {
               goto LABEL_80;
             }
           }
 
-          else if (!TCObjectEqual(v63, v64))
+          else if (!TCObjectEqual(bulletSize, bulletSize2))
           {
 LABEL_80:
 
@@ -586,30 +586,30 @@ LABEL_80:
           goto LABEL_80;
         }
 
-        v20 = [(OADProperties *)self parent];
-        v21 = [(OADParagraphProperties *)self afterSpacing];
-        v22 = [v20 afterSpacing];
+        parent20 = [(OADProperties *)self parent];
+        afterSpacing = [(OADParagraphProperties *)self afterSpacing];
+        afterSpacing2 = [parent20 afterSpacing];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(objc_object *)v21 removeUnnecessaryOverrides];
+          [(objc_object *)afterSpacing removeUnnecessaryOverrides];
           v23 = objc_opt_class();
           if (v23 != objc_opt_class())
           {
             goto LABEL_25;
           }
 
-          v24 = [(objc_object *)v21 isMergedWithParent];
-          [(objc_object *)v21 setMergedWithParent:0];
-          v25 = [(objc_object *)v21 isAnythingOverridden];
-          [(objc_object *)v21 setMergedWithParent:v24];
-          if (v25)
+          isMergedWithParent8 = [(objc_object *)afterSpacing isMergedWithParent];
+          [(objc_object *)afterSpacing setMergedWithParent:0];
+          isAnythingOverridden7 = [(objc_object *)afterSpacing isAnythingOverridden];
+          [(objc_object *)afterSpacing setMergedWithParent:isMergedWithParent8];
+          if (isAnythingOverridden7)
           {
             goto LABEL_25;
           }
         }
 
-        else if (!TCObjectEqual(v21, v22))
+        else if (!TCObjectEqual(afterSpacing, afterSpacing2))
         {
 LABEL_25:
 
@@ -739,9 +739,9 @@ LABEL_25:
   return v3;
 }
 
-- (void)setIsHangingPunctuation:(BOOL)a3
+- (void)setIsHangingPunctuation:(BOOL)punctuation
 {
-  if (a3)
+  if (punctuation)
   {
     v3 = 2;
   }
@@ -762,125 +762,125 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
   +[OADParagraphProperties defaultProperties]::defaultProperties = v0;
 }
 
-- (void)overrideWithProperties:(id)a3
+- (void)overrideWithProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [v4 isMerged];
-  v6 = [v4 isMergedWithParent];
-  [v4 setMerged:0];
-  [v4 setMergedWithParent:0];
-  if ([v4 hasLineSpacing])
+  propertiesCopy = properties;
+  isMerged = [propertiesCopy isMerged];
+  isMergedWithParent = [propertiesCopy isMergedWithParent];
+  [propertiesCopy setMerged:0];
+  [propertiesCopy setMergedWithParent:0];
+  if ([propertiesCopy hasLineSpacing])
   {
-    v7 = [v4 lineSpacing];
-    [(OADParagraphProperties *)self setLineSpacing:v7];
+    lineSpacing = [propertiesCopy lineSpacing];
+    [(OADParagraphProperties *)self setLineSpacing:lineSpacing];
   }
 
-  if ([v4 hasBeforeSpacing])
+  if ([propertiesCopy hasBeforeSpacing])
   {
-    v8 = [v4 beforeSpacing];
-    [(OADParagraphProperties *)self setBeforeSpacing:v8];
+    beforeSpacing = [propertiesCopy beforeSpacing];
+    [(OADParagraphProperties *)self setBeforeSpacing:beforeSpacing];
   }
 
-  if ([v4 hasAfterSpacing])
+  if ([propertiesCopy hasAfterSpacing])
   {
-    v9 = [v4 afterSpacing];
-    [(OADParagraphProperties *)self setAfterSpacing:v9];
+    afterSpacing = [propertiesCopy afterSpacing];
+    [(OADParagraphProperties *)self setAfterSpacing:afterSpacing];
   }
 
-  if ([v4 hasTabStops])
+  if ([propertiesCopy hasTabStops])
   {
-    v10 = [v4 tabStops];
-    [(OADParagraphProperties *)self setTabStops:v10];
+    tabStops = [propertiesCopy tabStops];
+    [(OADParagraphProperties *)self setTabStops:tabStops];
   }
 
-  if ([v4 hasLeftMargin])
+  if ([propertiesCopy hasLeftMargin])
   {
-    [v4 leftMargin];
+    [propertiesCopy leftMargin];
     [(OADParagraphProperties *)self setLeftMargin:?];
   }
 
-  if ([v4 hasRightMargin])
+  if ([propertiesCopy hasRightMargin])
   {
-    [v4 rightMargin];
+    [propertiesCopy rightMargin];
     [(OADParagraphProperties *)self setRightMargin:?];
   }
 
-  if ([v4 hasIndent])
+  if ([propertiesCopy hasIndent])
   {
-    [v4 indent];
+    [propertiesCopy indent];
     [(OADParagraphProperties *)self setIndent:?];
   }
 
-  if ([v4 hasAlign])
+  if ([propertiesCopy hasAlign])
   {
-    -[OADParagraphProperties setAlign:](self, "setAlign:", [v4 align]);
+    -[OADParagraphProperties setAlign:](self, "setAlign:", [propertiesCopy align]);
   }
 
-  if ([v4 hasDefaultTab])
+  if ([propertiesCopy hasDefaultTab])
   {
-    [v4 defaultTab];
+    [propertiesCopy defaultTab];
     [(OADParagraphProperties *)self setDefaultTab:?];
   }
 
-  if ([v4 hasIsRightToLeft])
+  if ([propertiesCopy hasIsRightToLeft])
   {
-    -[OADCharacterProperties setIsRightToLeft:](self, "setIsRightToLeft:", [v4 isRightToLeft]);
+    -[OADCharacterProperties setIsRightToLeft:](self, "setIsRightToLeft:", [propertiesCopy isRightToLeft]);
   }
 
-  if ([v4 hasWrap])
+  if ([propertiesCopy hasWrap])
   {
-    -[OADParagraphProperties setWrap:](self, "setWrap:", [v4 wrap]);
+    -[OADParagraphProperties setWrap:](self, "setWrap:", [propertiesCopy wrap]);
   }
 
-  if ([v4 hasFontAlign])
+  if ([propertiesCopy hasFontAlign])
   {
-    -[OADParagraphProperties setFontAlign:](self, "setFontAlign:", [v4 fontAlign]);
+    -[OADParagraphProperties setFontAlign:](self, "setFontAlign:", [propertiesCopy fontAlign]);
   }
 
-  if ([v4 hasIsLatinLineBreak])
+  if ([propertiesCopy hasIsLatinLineBreak])
   {
-    -[OADParagraphProperties setIsLatinLineBreak:](self, "setIsLatinLineBreak:", [v4 isLatinLineBreak]);
+    -[OADParagraphProperties setIsLatinLineBreak:](self, "setIsLatinLineBreak:", [propertiesCopy isLatinLineBreak]);
   }
 
-  if ([v4 hasIsHangingPunctuation])
+  if ([propertiesCopy hasIsHangingPunctuation])
   {
-    -[OADParagraphProperties setIsHangingPunctuation:](self, "setIsHangingPunctuation:", [v4 isHangingPunctuation]);
+    -[OADParagraphProperties setIsHangingPunctuation:](self, "setIsHangingPunctuation:", [propertiesCopy isHangingPunctuation]);
   }
 
-  if ([v4 hasBulletSize])
+  if ([propertiesCopy hasBulletSize])
   {
-    v11 = [v4 bulletSize];
-    [(OADParagraphProperties *)self setBulletSize:v11];
+    bulletSize = [propertiesCopy bulletSize];
+    [(OADParagraphProperties *)self setBulletSize:bulletSize];
   }
 
-  if ([v4 hasBulletColor])
+  if ([propertiesCopy hasBulletColor])
   {
-    v12 = [v4 bulletColor];
-    [(OADParagraphProperties *)self setBulletColor:v12];
+    bulletColor = [propertiesCopy bulletColor];
+    [(OADParagraphProperties *)self setBulletColor:bulletColor];
   }
 
-  if ([v4 hasBulletFont])
+  if ([propertiesCopy hasBulletFont])
   {
-    v13 = [v4 bulletFont];
-    [(OADParagraphProperties *)self setBulletFont:v13];
+    bulletFont = [propertiesCopy bulletFont];
+    [(OADParagraphProperties *)self setBulletFont:bulletFont];
   }
 
-  if ([v4 hasBulletProperties])
+  if ([propertiesCopy hasBulletProperties])
   {
-    v14 = [v4 bulletProperties];
-    [(OADParagraphProperties *)self setBulletProperties:v14];
+    bulletProperties = [propertiesCopy bulletProperties];
+    [(OADParagraphProperties *)self setBulletProperties:bulletProperties];
   }
 
-  if ([v4 hasBulletCharSet])
+  if ([propertiesCopy hasBulletCharSet])
   {
-    -[OADParagraphProperties setBulletCharSet:](self, "setBulletCharSet:", [v4 bulletCharSet]);
+    -[OADParagraphProperties setBulletCharSet:](self, "setBulletCharSet:", [propertiesCopy bulletCharSet]);
   }
 
   v15.receiver = self;
   v15.super_class = OADParagraphProperties;
-  [(OADCharacterProperties *)&v15 overrideWithProperties:v4];
-  [v4 setMerged:v5];
-  [v4 setMergedWithParent:v6];
+  [(OADCharacterProperties *)&v15 overrideWithProperties:propertiesCopy];
+  [propertiesCopy setMerged:isMerged];
+  [propertiesCopy setMergedWithParent:isMergedWithParent];
 }
 
 - (BOOL)isAnythingOverridden
@@ -890,16 +890,16 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
   return [(OADCharacterProperties *)&v4 isAnythingOverridden]|| [(OADParagraphProperties *)self hasLineSpacing]|| [(OADParagraphProperties *)self hasBeforeSpacing]|| [(OADParagraphProperties *)self hasAfterSpacing]|| [(OADParagraphProperties *)self hasTabStops]|| [(OADParagraphProperties *)self hasLeftMargin]|| [(OADParagraphProperties *)self hasRightMargin]|| [(OADParagraphProperties *)self hasLevel]|| [(OADParagraphProperties *)self hasIndent]|| [(OADParagraphProperties *)self hasAlign]|| [(OADParagraphProperties *)self hasDefaultTab]|| [(OADParagraphProperties *)self hasWrap]|| [(OADParagraphProperties *)self hasFontAlign]|| [(OADParagraphProperties *)self hasIsLatinLineBreak]|| [(OADParagraphProperties *)self hasIsHangingPunctuation]|| [(OADParagraphProperties *)self hasBulletSize]|| [(OADParagraphProperties *)self hasBulletColor]|| [(OADParagraphProperties *)self hasBulletFont]|| [(OADParagraphProperties *)self hasBulletProperties]|| [(OADParagraphProperties *)self hasBulletCharSet];
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v93.receiver = self;
   v93.super_class = OADParagraphProperties;
-  [(OADCharacterProperties *)&v93 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if ((*(self + 255) & 4) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADCharacterProperties *)&v93 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if ((*(self + 255) & 4) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
-    v6 = [(OADParagraphProperties *)self level];
-    if (v6 == [v4 level])
+    level = [(OADParagraphProperties *)self level];
+    if (level == [valuesCopy level])
     {
       *(self + 255) &= ~4u;
     }
@@ -910,33 +910,33 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
     }
   }
 
-  if ([(OADParagraphProperties *)self hasBulletSize]|| ([(OADProperties *)self parent], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 != v4))
+  if ([(OADParagraphProperties *)self hasBulletSize]|| ([(OADProperties *)self parent], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 != valuesCopy))
   {
     v8 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasBulletSize];
 
     if (v8)
     {
-      v9 = [(OADParagraphProperties *)self bulletSize];
+      bulletSize = [(OADParagraphProperties *)self bulletSize];
     }
 
     else
     {
-      v9 = 0;
+      bulletSize = 0;
     }
 
-    v10 = [v4 possiblyInexistentOverrideForSelector:sel_hasBulletSize];
+    v10 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasBulletSize];
 
     if (v10)
     {
-      v11 = [v4 bulletSize];
+      bulletSize2 = [valuesCopy bulletSize];
     }
 
     else
     {
-      v11 = 0;
+      bulletSize2 = 0;
     }
 
-    v12 = TCObjectEqual(v9, v11);
+    v12 = TCObjectEqual(bulletSize, bulletSize2);
     mBulletSize = self->mBulletSize;
     if (v12)
     {
@@ -945,37 +945,37 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
 
     else if (!mBulletSize && v8)
     {
-      [(OADParagraphProperties *)self setBulletSize:v9];
+      [(OADParagraphProperties *)self setBulletSize:bulletSize];
     }
   }
 
-  if ([(OADParagraphProperties *)self hasBulletColor]|| ([(OADProperties *)self parent], v14 = objc_claimAutoreleasedReturnValue(), v14, v14 != v4))
+  if ([(OADParagraphProperties *)self hasBulletColor]|| ([(OADProperties *)self parent], v14 = objc_claimAutoreleasedReturnValue(), v14, v14 != valuesCopy))
   {
     v15 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasBulletColor];
 
     if (v15)
     {
-      v16 = [(OADParagraphProperties *)self bulletColor];
+      bulletColor = [(OADParagraphProperties *)self bulletColor];
     }
 
     else
     {
-      v16 = 0;
+      bulletColor = 0;
     }
 
-    v17 = [v4 possiblyInexistentOverrideForSelector:sel_hasBulletColor];
+    v17 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasBulletColor];
 
     if (v17)
     {
-      v18 = [v4 bulletColor];
+      bulletColor2 = [valuesCopy bulletColor];
     }
 
     else
     {
-      v18 = 0;
+      bulletColor2 = 0;
     }
 
-    v19 = TCObjectEqual(v16, v18);
+    v19 = TCObjectEqual(bulletColor, bulletColor2);
     mBulletColor = self->mBulletColor;
     if (v19)
     {
@@ -984,37 +984,37 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
 
     else if (!mBulletColor && v15)
     {
-      [(OADParagraphProperties *)self setBulletColor:v16];
+      [(OADParagraphProperties *)self setBulletColor:bulletColor];
     }
   }
 
-  if ([(OADParagraphProperties *)self hasBulletFont]|| ([(OADProperties *)self parent], v21 = objc_claimAutoreleasedReturnValue(), v21, v21 != v4))
+  if ([(OADParagraphProperties *)self hasBulletFont]|| ([(OADProperties *)self parent], v21 = objc_claimAutoreleasedReturnValue(), v21, v21 != valuesCopy))
   {
     v22 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasBulletFont];
 
     if (v22)
     {
-      v23 = [(OADParagraphProperties *)self bulletFont];
+      bulletFont = [(OADParagraphProperties *)self bulletFont];
     }
 
     else
     {
-      v23 = 0;
+      bulletFont = 0;
     }
 
-    v24 = [v4 possiblyInexistentOverrideForSelector:sel_hasBulletFont];
+    v24 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasBulletFont];
 
     if (v24)
     {
-      v25 = [v4 bulletFont];
+      bulletFont2 = [valuesCopy bulletFont];
     }
 
     else
     {
-      v25 = 0;
+      bulletFont2 = 0;
     }
 
-    v26 = TCObjectEqual(v23, v25);
+    v26 = TCObjectEqual(bulletFont, bulletFont2);
     mBulletFont = self->mBulletFont;
     if (v26)
     {
@@ -1023,37 +1023,37 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
 
     else if (!mBulletFont && v22)
     {
-      [(OADParagraphProperties *)self setBulletFont:v23];
+      [(OADParagraphProperties *)self setBulletFont:bulletFont];
     }
   }
 
-  if ([(OADParagraphProperties *)self hasBulletProperties]|| ([(OADProperties *)self parent], v28 = objc_claimAutoreleasedReturnValue(), v28, v28 != v4))
+  if ([(OADParagraphProperties *)self hasBulletProperties]|| ([(OADProperties *)self parent], v28 = objc_claimAutoreleasedReturnValue(), v28, v28 != valuesCopy))
   {
     v29 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasBulletProperties];
 
     if (v29)
     {
-      v30 = [(OADParagraphProperties *)self bulletProperties];
+      bulletProperties = [(OADParagraphProperties *)self bulletProperties];
     }
 
     else
     {
-      v30 = 0;
+      bulletProperties = 0;
     }
 
-    v31 = [v4 possiblyInexistentOverrideForSelector:sel_hasBulletProperties];
+    v31 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasBulletProperties];
 
     if (v31)
     {
-      v32 = [v4 bulletProperties];
+      bulletProperties2 = [valuesCopy bulletProperties];
     }
 
     else
     {
-      v32 = 0;
+      bulletProperties2 = 0;
     }
 
-    v33 = TCObjectEqual(v30, v32);
+    v33 = TCObjectEqual(bulletProperties, bulletProperties2);
     mBulletProperties = self->mBulletProperties;
     if (v33)
     {
@@ -1062,37 +1062,37 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
 
     else if (!mBulletProperties && v29)
     {
-      [(OADParagraphProperties *)self setBulletProperties:v30];
+      [(OADParagraphProperties *)self setBulletProperties:bulletProperties];
     }
   }
 
-  if ([(OADParagraphProperties *)self hasLineSpacing]|| ([(OADProperties *)self parent], v35 = objc_claimAutoreleasedReturnValue(), v35, v35 != v4))
+  if ([(OADParagraphProperties *)self hasLineSpacing]|| ([(OADProperties *)self parent], v35 = objc_claimAutoreleasedReturnValue(), v35, v35 != valuesCopy))
   {
     v36 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasLineSpacing];
 
     if (v36)
     {
-      v37 = [(OADParagraphProperties *)self lineSpacing];
+      lineSpacing = [(OADParagraphProperties *)self lineSpacing];
     }
 
     else
     {
-      v37 = 0;
+      lineSpacing = 0;
     }
 
-    v38 = [v4 possiblyInexistentOverrideForSelector:sel_hasLineSpacing];
+    v38 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasLineSpacing];
 
     if (v38)
     {
-      v39 = [v4 lineSpacing];
+      lineSpacing2 = [valuesCopy lineSpacing];
     }
 
     else
     {
-      v39 = 0;
+      lineSpacing2 = 0;
     }
 
-    v40 = TCObjectEqual(v37, v39);
+    v40 = TCObjectEqual(lineSpacing, lineSpacing2);
     mLineSpacing = self->mLineSpacing;
     if (v40)
     {
@@ -1101,37 +1101,37 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
 
     else if (!mLineSpacing && v36)
     {
-      [(OADParagraphProperties *)self setLineSpacing:v37];
+      [(OADParagraphProperties *)self setLineSpacing:lineSpacing];
     }
   }
 
-  if ([(OADParagraphProperties *)self hasBeforeSpacing]|| ([(OADProperties *)self parent], v42 = objc_claimAutoreleasedReturnValue(), v42, v42 != v4))
+  if ([(OADParagraphProperties *)self hasBeforeSpacing]|| ([(OADProperties *)self parent], v42 = objc_claimAutoreleasedReturnValue(), v42, v42 != valuesCopy))
   {
     v43 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasBeforeSpacing];
 
     if (v43)
     {
-      v44 = [(OADParagraphProperties *)self beforeSpacing];
+      beforeSpacing = [(OADParagraphProperties *)self beforeSpacing];
     }
 
     else
     {
-      v44 = 0;
+      beforeSpacing = 0;
     }
 
-    v45 = [v4 possiblyInexistentOverrideForSelector:sel_hasBeforeSpacing];
+    v45 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasBeforeSpacing];
 
     if (v45)
     {
-      v46 = [v4 beforeSpacing];
+      beforeSpacing2 = [valuesCopy beforeSpacing];
     }
 
     else
     {
-      v46 = 0;
+      beforeSpacing2 = 0;
     }
 
-    v47 = TCObjectEqual(v44, v46);
+    v47 = TCObjectEqual(beforeSpacing, beforeSpacing2);
     mBeforeSpacing = self->mBeforeSpacing;
     if (v47)
     {
@@ -1140,37 +1140,37 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
 
     else if (!mBeforeSpacing && v43)
     {
-      [(OADParagraphProperties *)self setBeforeSpacing:v44];
+      [(OADParagraphProperties *)self setBeforeSpacing:beforeSpacing];
     }
   }
 
-  if ([(OADParagraphProperties *)self hasAfterSpacing]|| ([(OADProperties *)self parent], v49 = objc_claimAutoreleasedReturnValue(), v49, v49 != v4))
+  if ([(OADParagraphProperties *)self hasAfterSpacing]|| ([(OADProperties *)self parent], v49 = objc_claimAutoreleasedReturnValue(), v49, v49 != valuesCopy))
   {
     v50 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasAfterSpacing];
 
     if (v50)
     {
-      v51 = [(OADParagraphProperties *)self afterSpacing];
+      afterSpacing = [(OADParagraphProperties *)self afterSpacing];
     }
 
     else
     {
-      v51 = 0;
+      afterSpacing = 0;
     }
 
-    v52 = [v4 possiblyInexistentOverrideForSelector:sel_hasAfterSpacing];
+    v52 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasAfterSpacing];
 
     if (v52)
     {
-      v53 = [v4 afterSpacing];
+      afterSpacing2 = [valuesCopy afterSpacing];
     }
 
     else
     {
-      v53 = 0;
+      afterSpacing2 = 0;
     }
 
-    v54 = TCObjectEqual(v51, v53);
+    v54 = TCObjectEqual(afterSpacing, afterSpacing2);
     mAfterSpacing = self->mAfterSpacing;
     if (v54)
     {
@@ -1179,37 +1179,37 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
 
     else if (!mAfterSpacing && v50)
     {
-      [(OADParagraphProperties *)self setAfterSpacing:v51];
+      [(OADParagraphProperties *)self setAfterSpacing:afterSpacing];
     }
   }
 
-  if ([(OADParagraphProperties *)self hasTabStops]|| ([(OADProperties *)self parent], v56 = objc_claimAutoreleasedReturnValue(), v56, v56 != v4))
+  if ([(OADParagraphProperties *)self hasTabStops]|| ([(OADProperties *)self parent], v56 = objc_claimAutoreleasedReturnValue(), v56, v56 != valuesCopy))
   {
     v57 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_hasTabStops];
 
     if (v57)
     {
-      v58 = [(OADParagraphProperties *)self tabStops];
+      tabStops = [(OADParagraphProperties *)self tabStops];
     }
 
     else
     {
-      v58 = 0;
+      tabStops = 0;
     }
 
-    v59 = [v4 possiblyInexistentOverrideForSelector:sel_hasTabStops];
+    v59 = [valuesCopy possiblyInexistentOverrideForSelector:sel_hasTabStops];
 
     if (v59)
     {
-      v60 = [v4 tabStops];
+      tabStops2 = [valuesCopy tabStops];
     }
 
     else
     {
-      v60 = 0;
+      tabStops2 = 0;
     }
 
-    v61 = TCObjectEqual(v58, v60);
+    v61 = TCObjectEqual(tabStops, tabStops2);
     mTabStops = self->mTabStops;
     if (v61)
     {
@@ -1218,15 +1218,15 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
 
     else if (!mTabStops && v57)
     {
-      [(OADParagraphProperties *)self setTabStops:v58];
+      [(OADParagraphProperties *)self setTabStops:tabStops];
     }
   }
 
-  if ((*(self + 255) & 8) != 0 || ([(OADProperties *)self parent], v63 = objc_claimAutoreleasedReturnValue(), v63, v63 != v4))
+  if ((*(self + 255) & 8) != 0 || ([(OADProperties *)self parent], v63 = objc_claimAutoreleasedReturnValue(), v63, v63 != valuesCopy))
   {
     [(OADParagraphProperties *)self leftMargin];
     v65 = v64;
-    [v4 leftMargin];
+    [valuesCopy leftMargin];
     if (v65 == v66)
     {
       *(self + 255) &= ~8u;
@@ -1239,11 +1239,11 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
     }
   }
 
-  if ((*(self + 255) & 0x10) != 0 || ([(OADProperties *)self parent], v67 = objc_claimAutoreleasedReturnValue(), v67, v67 != v4))
+  if ((*(self + 255) & 0x10) != 0 || ([(OADProperties *)self parent], v67 = objc_claimAutoreleasedReturnValue(), v67, v67 != valuesCopy))
   {
     [(OADParagraphProperties *)self rightMargin];
     v69 = v68;
-    [v4 rightMargin];
+    [valuesCopy rightMargin];
     if (v69 == v70)
     {
       *(self + 255) &= ~0x10u;
@@ -1256,11 +1256,11 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
     }
   }
 
-  if ((*(self + 255) & 0x20) != 0 || ([(OADProperties *)self parent], v71 = objc_claimAutoreleasedReturnValue(), v71, v71 != v4))
+  if ((*(self + 255) & 0x20) != 0 || ([(OADProperties *)self parent], v71 = objc_claimAutoreleasedReturnValue(), v71, v71 != valuesCopy))
   {
     [(OADParagraphProperties *)self indent];
     v73 = v72;
-    [v4 indent];
+    [valuesCopy indent];
     if (v73 == v74)
     {
       *(self + 255) &= ~0x20u;
@@ -1273,11 +1273,11 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
     }
   }
 
-  if ((*(self + 255) & 0x40) != 0 || ([(OADProperties *)self parent], v75 = objc_claimAutoreleasedReturnValue(), v75, v75 != v4))
+  if ((*(self + 255) & 0x40) != 0 || ([(OADProperties *)self parent], v75 = objc_claimAutoreleasedReturnValue(), v75, v75 != valuesCopy))
   {
     [(OADParagraphProperties *)self defaultTab];
     v77 = v76;
-    [v4 defaultTab];
+    [valuesCopy defaultTab];
     if (v77 == v78)
     {
       *(self + 255) &= ~0x40u;
@@ -1290,12 +1290,12 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
     }
   }
 
-  if (*(self + 255) < 0 || ([(OADProperties *)self parent], v79 = objc_claimAutoreleasedReturnValue(), v79, v79 != v4))
+  if (*(self + 255) < 0 || ([(OADProperties *)self parent], v79 = objc_claimAutoreleasedReturnValue(), v79, v79 != valuesCopy))
   {
-    v80 = [(OADParagraphProperties *)self bulletCharSet];
-    v81 = [v4 bulletCharSet];
+    bulletCharSet = [(OADParagraphProperties *)self bulletCharSet];
+    bulletCharSet2 = [valuesCopy bulletCharSet];
     v82 = *(self + 255);
-    if (v80 == v81)
+    if (bulletCharSet == bulletCharSet2)
     {
       *(self + 255) = v82 & 0x7F;
     }
@@ -1306,10 +1306,10 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
     }
   }
 
-  if ((*(self + 256) & 1) != 0 || ([(OADProperties *)self parent], v83 = objc_claimAutoreleasedReturnValue(), v83, v83 != v4))
+  if ((*(self + 256) & 1) != 0 || ([(OADProperties *)self parent], v83 = objc_claimAutoreleasedReturnValue(), v83, v83 != valuesCopy))
   {
-    v84 = [(OADParagraphProperties *)self align];
-    if (v84 == [v4 align])
+    align = [(OADParagraphProperties *)self align];
+    if (align == [valuesCopy align])
     {
       *(self + 256) &= ~1u;
     }
@@ -1320,10 +1320,10 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
     }
   }
 
-  if ((*(self + 256) & 2) != 0 || ([(OADProperties *)self parent], v85 = objc_claimAutoreleasedReturnValue(), v85, v85 != v4))
+  if ((*(self + 256) & 2) != 0 || ([(OADProperties *)self parent], v85 = objc_claimAutoreleasedReturnValue(), v85, v85 != valuesCopy))
   {
-    v86 = [(OADParagraphProperties *)self wrap];
-    if (v86 == [v4 wrap])
+    wrap = [(OADParagraphProperties *)self wrap];
+    if (wrap == [valuesCopy wrap])
     {
       *(self + 256) &= ~2u;
     }
@@ -1334,10 +1334,10 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
     }
   }
 
-  if ((*(self + 256) & 4) != 0 || ([(OADProperties *)self parent], v87 = objc_claimAutoreleasedReturnValue(), v87, v87 != v4))
+  if ((*(self + 256) & 4) != 0 || ([(OADProperties *)self parent], v87 = objc_claimAutoreleasedReturnValue(), v87, v87 != valuesCopy))
   {
-    v88 = [(OADParagraphProperties *)self fontAlign];
-    if (v88 == [v4 fontAlign])
+    fontAlign = [(OADParagraphProperties *)self fontAlign];
+    if (fontAlign == [valuesCopy fontAlign])
     {
       *(self + 256) &= ~4u;
     }
@@ -1348,10 +1348,10 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
     }
   }
 
-  if ((*(self + 256) & 8) != 0 || ([(OADProperties *)self parent], v89 = objc_claimAutoreleasedReturnValue(), v89, v89 != v4))
+  if ((*(self + 256) & 8) != 0 || ([(OADProperties *)self parent], v89 = objc_claimAutoreleasedReturnValue(), v89, v89 != valuesCopy))
   {
-    v90 = [(OADParagraphProperties *)self isLatinLineBreak];
-    if (v90 == [v4 isLatinLineBreak])
+    isLatinLineBreak = [(OADParagraphProperties *)self isLatinLineBreak];
+    if (isLatinLineBreak == [valuesCopy isLatinLineBreak])
     {
       *(self + 256) &= ~8u;
     }
@@ -1362,10 +1362,10 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
     }
   }
 
-  if ((*(self + 256) & 0x10) != 0 || ([(OADProperties *)self parent], v91 = objc_claimAutoreleasedReturnValue(), v91, v91 != v4))
+  if ((*(self + 256) & 0x10) != 0 || ([(OADProperties *)self parent], v91 = objc_claimAutoreleasedReturnValue(), v91, v91 != valuesCopy))
   {
-    v92 = [(OADParagraphProperties *)self isHangingPunctuation];
-    if (v92 == [v4 isHangingPunctuation])
+    isHangingPunctuation = [(OADParagraphProperties *)self isHangingPunctuation];
+    if (isHangingPunctuation == [valuesCopy isHangingPunctuation])
     {
       *(self + 256) &= ~0x10u;
     }
@@ -1377,17 +1377,17 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(OADProperties *)self isMerged];
-    v7 = [(OADProperties *)self isMergedWithParent];
-    v8 = [v5 isMerged];
-    v9 = [v5 isMergedWithParent];
+    v5 = equalCopy;
+    isMerged = [(OADProperties *)self isMerged];
+    isMergedWithParent = [(OADProperties *)self isMergedWithParent];
+    isMerged2 = [v5 isMerged];
+    isMergedWithParent2 = [v5 isMergedWithParent];
     [(OADProperties *)self setMerged:0];
     [(OADProperties *)self setMergedWithParent:0];
     [v5 setMerged:0];
@@ -1400,103 +1400,103 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
       v77.super_class = OADParagraphProperties;
       if ([(OADCharacterProperties *)&v77 isEqual:v5])
       {
-        v11 = [v5 hasLineSpacing];
-        if (v11 == [(OADParagraphProperties *)self hasLineSpacing])
+        hasLineSpacing = [v5 hasLineSpacing];
+        if (hasLineSpacing == [(OADParagraphProperties *)self hasLineSpacing])
         {
           if (![v5 hasLineSpacing] || (objc_msgSend(v5, "lineSpacing"), v12 = objc_claimAutoreleasedReturnValue(), -[OADParagraphProperties lineSpacing](self, "lineSpacing"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "isEqual:", v13), v13, v12, (v14 & 1) != 0))
           {
-            v15 = [v5 hasBeforeSpacing];
-            if (v15 == [(OADParagraphProperties *)self hasBeforeSpacing])
+            hasBeforeSpacing = [v5 hasBeforeSpacing];
+            if (hasBeforeSpacing == [(OADParagraphProperties *)self hasBeforeSpacing])
             {
               if (![v5 hasBeforeSpacing] || (objc_msgSend(v5, "beforeSpacing"), v16 = objc_claimAutoreleasedReturnValue(), -[OADParagraphProperties beforeSpacing](self, "beforeSpacing"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "isEqual:", v17), v17, v16, (v18 & 1) != 0))
               {
-                v19 = [v5 hasAfterSpacing];
-                if (v19 == [(OADParagraphProperties *)self hasAfterSpacing])
+                hasAfterSpacing = [v5 hasAfterSpacing];
+                if (hasAfterSpacing == [(OADParagraphProperties *)self hasAfterSpacing])
                 {
                   if (![v5 hasAfterSpacing] || (objc_msgSend(v5, "afterSpacing"), v20 = objc_claimAutoreleasedReturnValue(), -[OADParagraphProperties afterSpacing](self, "afterSpacing"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v20, "isEqual:", v21), v21, v20, (v22 & 1) != 0))
                   {
-                    v23 = [v5 hasTabStops];
-                    if (v23 == [(OADParagraphProperties *)self hasTabStops])
+                    hasTabStops = [v5 hasTabStops];
+                    if (hasTabStops == [(OADParagraphProperties *)self hasTabStops])
                     {
                       if (![v5 hasTabStops] || (objc_msgSend(v5, "tabStops"), v24 = objc_claimAutoreleasedReturnValue(), -[OADParagraphProperties tabStops](self, "tabStops"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v24, "isEqualToArray:", v25), v25, v24, (v26 & 1) != 0))
                       {
-                        v27 = [v5 hasLeftMargin];
-                        if (v27 == [(OADParagraphProperties *)self hasLeftMargin])
+                        hasLeftMargin = [v5 hasLeftMargin];
+                        if (hasLeftMargin == [(OADParagraphProperties *)self hasLeftMargin])
                         {
                           if (![v5 hasLeftMargin] || (objc_msgSend(v5, "leftMargin"), v29 = v28, -[OADParagraphProperties leftMargin](self, "leftMargin"), v29 == v30))
                           {
-                            v31 = [v5 hasRightMargin];
-                            if (v31 == [(OADParagraphProperties *)self hasRightMargin])
+                            hasRightMargin = [v5 hasRightMargin];
+                            if (hasRightMargin == [(OADParagraphProperties *)self hasRightMargin])
                             {
                               if (![v5 hasRightMargin] || (objc_msgSend(v5, "rightMargin"), v33 = v32, -[OADParagraphProperties rightMargin](self, "rightMargin"), v33 == v34))
                               {
-                                v35 = [v5 hasLevel];
-                                if (v35 == [(OADParagraphProperties *)self hasLevel])
+                                hasLevel = [v5 hasLevel];
+                                if (hasLevel == [(OADParagraphProperties *)self hasLevel])
                                 {
                                   if (![v5 hasLevel] || (v36 = objc_msgSend(v5, "level"), v36 == -[OADParagraphProperties level](self, "level")))
                                   {
-                                    v37 = [v5 hasIndent];
-                                    if (v37 == [(OADParagraphProperties *)self hasIndent])
+                                    hasIndent = [v5 hasIndent];
+                                    if (hasIndent == [(OADParagraphProperties *)self hasIndent])
                                     {
                                       if (![v5 hasIndent] || (objc_msgSend(v5, "indent"), v39 = v38, -[OADParagraphProperties indent](self, "indent"), v39 == v40))
                                       {
-                                        v41 = [v5 hasAlign];
-                                        if (v41 == [(OADParagraphProperties *)self hasAlign])
+                                        hasAlign = [v5 hasAlign];
+                                        if (hasAlign == [(OADParagraphProperties *)self hasAlign])
                                         {
                                           if (![v5 hasAlign] || (v42 = objc_msgSend(v5, "align"), v42 == -[OADParagraphProperties align](self, "align")))
                                           {
-                                            v43 = [v5 hasDefaultTab];
-                                            if (v43 == [(OADParagraphProperties *)self hasDefaultTab])
+                                            hasDefaultTab = [v5 hasDefaultTab];
+                                            if (hasDefaultTab == [(OADParagraphProperties *)self hasDefaultTab])
                                             {
                                               if (![v5 hasDefaultTab] || (objc_msgSend(v5, "defaultTab"), v45 = v44, -[OADParagraphProperties defaultTab](self, "defaultTab"), v45 == v46))
                                               {
-                                                v47 = [v5 hasIsRightToLeft];
-                                                if (v47 == [(OADCharacterProperties *)self hasIsRightToLeft])
+                                                hasIsRightToLeft = [v5 hasIsRightToLeft];
+                                                if (hasIsRightToLeft == [(OADCharacterProperties *)self hasIsRightToLeft])
                                                 {
                                                   if (![v5 hasIsRightToLeft] || (v48 = objc_msgSend(v5, "isRightToLeft"), v48 == -[OADCharacterProperties isRightToLeft](self, "isRightToLeft")))
                                                   {
-                                                    v49 = [v5 hasWrap];
-                                                    if (v49 == [(OADParagraphProperties *)self hasWrap])
+                                                    hasWrap = [v5 hasWrap];
+                                                    if (hasWrap == [(OADParagraphProperties *)self hasWrap])
                                                     {
                                                       if (![v5 hasWrap] || (v50 = objc_msgSend(v5, "wrap"), v50 == -[OADParagraphProperties wrap](self, "wrap")))
                                                       {
-                                                        v51 = [v5 hasFontAlign];
-                                                        if (v51 == [(OADParagraphProperties *)self hasFontAlign])
+                                                        hasFontAlign = [v5 hasFontAlign];
+                                                        if (hasFontAlign == [(OADParagraphProperties *)self hasFontAlign])
                                                         {
                                                           if (![v5 hasFontAlign] || (v52 = objc_msgSend(v5, "fontAlign"), v52 == -[OADParagraphProperties fontAlign](self, "fontAlign")))
                                                           {
-                                                            v53 = [v5 hasIsLatinLineBreak];
-                                                            if (v53 == [(OADParagraphProperties *)self hasIsLatinLineBreak])
+                                                            hasIsLatinLineBreak = [v5 hasIsLatinLineBreak];
+                                                            if (hasIsLatinLineBreak == [(OADParagraphProperties *)self hasIsLatinLineBreak])
                                                             {
                                                               if (![v5 hasIsLatinLineBreak] || (v54 = objc_msgSend(v5, "isLatinLineBreak"), v54 == -[OADParagraphProperties isLatinLineBreak](self, "isLatinLineBreak")))
                                                               {
-                                                                v55 = [v5 hasIsHangingPunctuation];
-                                                                if (v55 == [(OADParagraphProperties *)self hasIsHangingPunctuation])
+                                                                hasIsHangingPunctuation = [v5 hasIsHangingPunctuation];
+                                                                if (hasIsHangingPunctuation == [(OADParagraphProperties *)self hasIsHangingPunctuation])
                                                                 {
                                                                   if (![v5 hasIsHangingPunctuation] || (v56 = objc_msgSend(v5, "isHangingPunctuation"), v56 == -[OADParagraphProperties isHangingPunctuation](self, "isHangingPunctuation")))
                                                                   {
-                                                                    v57 = [v5 hasBulletSize];
-                                                                    if (v57 == [(OADParagraphProperties *)self hasBulletSize])
+                                                                    hasBulletSize = [v5 hasBulletSize];
+                                                                    if (hasBulletSize == [(OADParagraphProperties *)self hasBulletSize])
                                                                     {
                                                                       if (![v5 hasBulletSize] || (objc_msgSend(v5, "bulletSize"), v58 = objc_claimAutoreleasedReturnValue(), -[OADParagraphProperties bulletSize](self, "bulletSize"), v59 = objc_claimAutoreleasedReturnValue(), v60 = objc_msgSend(v58, "isEqual:", v59), v59, v58, (v60 & 1) != 0))
                                                                       {
-                                                                        v61 = [v5 hasBulletColor];
-                                                                        if (v61 == [(OADParagraphProperties *)self hasBulletColor])
+                                                                        hasBulletColor = [v5 hasBulletColor];
+                                                                        if (hasBulletColor == [(OADParagraphProperties *)self hasBulletColor])
                                                                         {
                                                                           if (![v5 hasBulletColor] || (objc_msgSend(v5, "bulletColor"), v62 = objc_claimAutoreleasedReturnValue(), -[OADParagraphProperties bulletColor](self, "bulletColor"), v63 = objc_claimAutoreleasedReturnValue(), v64 = objc_msgSend(v62, "isEqual:", v63), v63, v62, (v64 & 1) != 0))
                                                                           {
-                                                                            v65 = [v5 hasBulletFont];
-                                                                            if (v65 == [(OADParagraphProperties *)self hasBulletFont])
+                                                                            hasBulletFont = [v5 hasBulletFont];
+                                                                            if (hasBulletFont == [(OADParagraphProperties *)self hasBulletFont])
                                                                             {
                                                                               if (![v5 hasBulletFont] || (objc_msgSend(v5, "bulletFont"), v66 = objc_claimAutoreleasedReturnValue(), -[OADParagraphProperties bulletFont](self, "bulletFont"), v67 = objc_claimAutoreleasedReturnValue(), v68 = objc_msgSend(v66, "isEqual:", v67), v67, v66, (v68 & 1) != 0))
                                                                               {
-                                                                                v69 = [v5 hasBulletProperties];
-                                                                                if (v69 == [(OADParagraphProperties *)self hasBulletProperties])
+                                                                                hasBulletProperties = [v5 hasBulletProperties];
+                                                                                if (hasBulletProperties == [(OADParagraphProperties *)self hasBulletProperties])
                                                                                 {
                                                                                   if (![v5 hasBulletProperties] || (objc_msgSend(v5, "bulletProperties"), v70 = objc_claimAutoreleasedReturnValue(), -[OADParagraphProperties bulletProperties](self, "bulletProperties"), v71 = objc_claimAutoreleasedReturnValue(), v72 = objc_msgSend(v70, "isEqual:", v71), v71, v70, (v72 & 1) != 0))
                                                                                   {
-                                                                                    v73 = [v5 hasBulletCharSet];
-                                                                                    if (v73 == [(OADParagraphProperties *)self hasBulletCharSet])
+                                                                                    hasBulletCharSet = [v5 hasBulletCharSet];
+                                                                                    if (hasBulletCharSet == [(OADParagraphProperties *)self hasBulletCharSet])
                                                                                     {
                                                                                       if (![v5 hasBulletCharSet] || (v76 = objc_msgSend(v5, "bulletCharSet"), v76 == -[OADParagraphProperties bulletCharSet](self, "bulletCharSet")))
                                                                                       {
@@ -1544,10 +1544,10 @@ void __43__OADParagraphProperties_defaultProperties__block_invoke()
       }
     }
 
-    [(OADProperties *)self setMerged:v6];
-    [(OADProperties *)self setMergedWithParent:v7];
-    [v5 setMerged:v8];
-    [v5 setMergedWithParent:v9];
+    [(OADProperties *)self setMerged:isMerged];
+    [(OADProperties *)self setMergedWithParent:isMergedWithParent];
+    [v5 setMerged:isMerged2];
+    [v5 setMergedWithParent:isMergedWithParent2];
   }
 
   else

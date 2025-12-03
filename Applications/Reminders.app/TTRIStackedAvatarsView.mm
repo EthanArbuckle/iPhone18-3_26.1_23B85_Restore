@@ -1,18 +1,18 @@
 @interface TTRIStackedAvatarsView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC9Reminders22TTRIStackedAvatarsView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC9Reminders22TTRIStackedAvatarsView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation TTRIStackedAvatarsView
 
-- (_TtC9Reminders22TTRIStackedAvatarsView)initWithFrame:(CGRect)a3
+- (_TtC9Reminders22TTRIStackedAvatarsView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9Reminders22TTRIStackedAvatarsView_contacts) = _swiftEmptyArrayStorage;
   v9 = self + OBJC_IVAR____TtC9Reminders22TTRIStackedAvatarsView_unscaledAvatarSize;
@@ -24,15 +24,15 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9Reminders22TTRIStackedAvatarsView_avatarBorderViews) = _swiftEmptyArrayStorage;
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(TTRIStackedAvatarsView *)&v12 initWithFrame:x, y, width, height];
+  height = [(TTRIStackedAvatarsView *)&v12 initWithFrame:x, y, width, height];
   sub_10002A9FC();
 
-  return v10;
+  return height;
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005A6CF8();
   v4 = v3;
   v6 = v5;
@@ -57,9 +57,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_1005A6CF8();
   v5 = v4;
   v7 = v6;

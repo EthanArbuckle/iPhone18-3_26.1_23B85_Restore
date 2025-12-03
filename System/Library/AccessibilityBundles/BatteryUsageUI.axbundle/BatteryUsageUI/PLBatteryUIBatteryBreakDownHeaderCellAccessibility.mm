@@ -1,24 +1,24 @@
 @interface PLBatteryUIBatteryBreakDownHeaderCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)buttonAction:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)buttonAction:(id)action;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PLBatteryUIBatteryBreakDownHeaderCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PLBatteryUIBatteryBreakDownHeaderCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"PLBatteryUIBatteryBreakDownHeaderCell" hasInstanceMethod:@"breakdownTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLBatteryUIBatteryBreakDownHeaderCell" hasInstanceMethod:@"breakdownToggleButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLBatteryUIBatteryBreakDownHeaderCell" hasInstanceMethod:@"refreshCellContentsWithSpecifier:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PLBatteryUIBatteryBreakDownHeaderCell" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLBatteryUIBatteryBreakDownHeaderCell" hasInstanceMethod:@"buttonAction:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"BatteryUIController"];
-  [v3 validateClass:@"BatteryUIController" hasInstanceVariable:@"_iconDisplayType" withType:"i"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PLBatteryUIBatteryBreakDownHeaderCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"PLBatteryUIBatteryBreakDownHeaderCell" hasInstanceMethod:@"breakdownTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLBatteryUIBatteryBreakDownHeaderCell" hasInstanceMethod:@"breakdownToggleButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLBatteryUIBatteryBreakDownHeaderCell" hasInstanceMethod:@"refreshCellContentsWithSpecifier:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PLBatteryUIBatteryBreakDownHeaderCell" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLBatteryUIBatteryBreakDownHeaderCell" hasInstanceMethod:@"buttonAction:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"BatteryUIController"];
+  [validationsCopy validateClass:@"BatteryUIController" hasInstanceVariable:@"_iconDisplayType" withType:"i"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -41,33 +41,33 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 contentView];
-    v6 = [v5 subviews];
+    contentView = [v3 contentView];
+    subviews = [contentView subviews];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PLBatteryUIBatteryBreakDownHeaderCellAccessibility;
-    v6 = [(PLBatteryUIBatteryBreakDownHeaderCellAccessibility *)&v8 accessibilityElements];
+    subviews = [(PLBatteryUIBatteryBreakDownHeaderCellAccessibility *)&v8 accessibilityElements];
   }
 
-  return v6;
+  return subviews;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v4.receiver = self;
   v4.super_class = PLBatteryUIBatteryBreakDownHeaderCellAccessibility;
-  [(PLBatteryUIBatteryBreakDownHeaderCellAccessibility *)&v4 refreshCellContentsWithSpecifier:a3];
+  [(PLBatteryUIBatteryBreakDownHeaderCellAccessibility *)&v4 refreshCellContentsWithSpecifier:specifier];
   [(PLBatteryUIBatteryBreakDownHeaderCellAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)buttonAction:(id)a3
+- (void)buttonAction:(id)action
 {
   v8.receiver = self;
   v8.super_class = PLBatteryUIBatteryBreakDownHeaderCellAccessibility;
-  [(PLBatteryUIBatteryBreakDownHeaderCellAccessibility *)&v8 buttonAction:a3];
+  [(PLBatteryUIBatteryBreakDownHeaderCellAccessibility *)&v8 buttonAction:action];
   if (UIAccessibilityIsVoiceOverRunning())
   {
     v4 = [(PLBatteryUIBatteryBreakDownHeaderCellAccessibility *)self safeValueForKey:@"delegate"];

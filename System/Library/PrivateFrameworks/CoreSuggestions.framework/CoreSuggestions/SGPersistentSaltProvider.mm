@@ -1,12 +1,12 @@
 @interface SGPersistentSaltProvider
-+ (id)hexStringForData:(id)a3;
-+ (id)saltProviderFromKeyChainWithServiceIdentifier:(id)a3 accessGroup:(id)a4;
-+ (id)saltProviderWithString:(id)a3 serviceIdentifier:(id)a4 accessGroup:(id)a5;
-- (SGPersistentSaltProvider)initWithServiceIdentifier:(id)a3 accessGroup:(id)a4;
++ (id)hexStringForData:(id)data;
++ (id)saltProviderFromKeyChainWithServiceIdentifier:(id)identifier accessGroup:(id)group;
++ (id)saltProviderWithString:(id)string serviceIdentifier:(id)identifier accessGroup:(id)group;
+- (SGPersistentSaltProvider)initWithServiceIdentifier:(id)identifier accessGroup:(id)group;
 - (id)_createSalt;
-- (id)_findExistingSaltError:(id *)a3;
+- (id)_findExistingSaltError:(id *)error;
 - (id)_findOrCreateSalt;
-- (id)_queryKeychainError:(id *)a3;
+- (id)_queryKeychainError:(id *)error;
 - (id)salt;
 - (void)_deleteSalt;
 @end
@@ -119,7 +119,7 @@
   return v19;
 }
 
-- (id)_findExistingSaltError:(id *)a3
+- (id)_findExistingSaltError:(id *)error
 {
   v20[2] = *MEMORY[0x1E69E9840];
   v4 = [(SGPersistentSaltProvider *)self _queryKeychainError:?];
@@ -128,8 +128,8 @@
     v5 = v4;
     v6 = [v4 sortedArrayUsingComparator:&__block_literal_global_5937];
 
-    v7 = [v6 firstObject];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E697B3C0]];
+    firstObject = [v6 firstObject];
+    v8 = [firstObject objectForKeyedSubscript:*MEMORY[0x1E697B3C0]];
 
     v9 = objc_opt_new();
     if (v8)
@@ -171,17 +171,17 @@
       }
 
       v20[0] = v9;
-      v14 = [v6 firstObject];
-      v20[1] = v14;
+      firstObject2 = [v6 firstObject];
+      v20[1] = firstObject2;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     }
 
     else
     {
       v15 = 0;
-      if (a3)
+      if (error)
       {
-        *a3 = 0;
+        *error = 0;
       }
     }
   }
@@ -234,7 +234,7 @@ uint64_t __51__SGPersistentSaltProvider__findExistingSaltError___block_invoke(ui
   return v9;
 }
 
-- (id)_queryKeychainError:(id *)a3
+- (id)_queryKeychainError:(id *)error
 {
   v21[6] = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E697B008];
@@ -280,10 +280,10 @@ uint64_t __51__SGPersistentSaltProvider__findExistingSaltError___block_invoke(ui
         _os_log_error_impl(&dword_1BA729000, v14, OS_LOG_TYPE_ERROR, "Error finding existing salt: %d", buf, 8u);
       }
 
-      if (a3)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v11 userInfo:0];
-        *a3 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_13;
       }
     }
@@ -312,7 +312,7 @@ LABEL_13:
   if (!v3)
   {
 LABEL_9:
-    v10 = [(SGPersistentSaltProvider *)self _createSalt];
+    _createSalt = [(SGPersistentSaltProvider *)self _createSalt];
     goto LABEL_10;
   }
 
@@ -340,9 +340,9 @@ LABEL_9:
     _os_log_impl(&dword_1BA729000, v9, OS_LOG_TYPE_INFO, "Found existing salt", buf, 2u);
   }
 
-  v10 = [v3 objectAtIndexedSubscript:0];
+  _createSalt = [v3 objectAtIndexedSubscript:0];
 LABEL_10:
-  v11 = v10;
+  v11 = _createSalt;
 
   return v11;
 }
@@ -403,18 +403,18 @@ void __32__SGPersistentSaltProvider_salt__block_invoke(uint64_t a1, void *a2)
   objc_storeStrong((*(*(a1 + 40) + 8) + 40), v3);
 }
 
-- (SGPersistentSaltProvider)initWithServiceIdentifier:(id)a3 accessGroup:(id)a4
+- (SGPersistentSaltProvider)initWithServiceIdentifier:(id)identifier accessGroup:(id)group
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  groupCopy = group;
   v16.receiver = self;
   v16.super_class = SGPersistentSaltProvider;
   v9 = [(SGPersistentSaltProvider *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serviceIdentifier, a3);
-    objc_storeStrong(&v10->_accessGroup, a4);
+    objc_storeStrong(&v9->_serviceIdentifier, identifier);
+    objc_storeStrong(&v10->_accessGroup, group);
     v11 = objc_alloc(MEMORY[0x1E69C5D60]);
     v12 = objc_opt_new();
     v13 = [v11 initWithGuardedData:v12];
@@ -425,15 +425,15 @@ void __32__SGPersistentSaltProvider_salt__block_invoke(uint64_t a1, void *a2)
   return v10;
 }
 
-+ (id)hexStringForData:(id)a3
++ (id)hexStringForData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 length];
+  dataCopy = data;
+  v4 = [dataCopy length];
   v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:2 * v4];
-  v6 = [v3 bytes];
+  bytes = [dataCopy bytes];
   if (v4)
   {
-    v7 = v6;
+    v7 = bytes;
     do
     {
       v8 = *v7++;
@@ -447,29 +447,29 @@ void __32__SGPersistentSaltProvider_salt__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)saltProviderFromKeyChainWithServiceIdentifier:(id)a3 accessGroup:(id)a4
++ (id)saltProviderFromKeyChainWithServiceIdentifier:(id)identifier accessGroup:(id)group
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithServiceIdentifier:v7 accessGroup:v6];
+  groupCopy = group;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithServiceIdentifier:identifierCopy accessGroup:groupCopy];
 
   return v8;
 }
 
-+ (id)saltProviderWithString:(id)a3 serviceIdentifier:(id)a4 accessGroup:(id)a5
++ (id)saltProviderWithString:(id)string serviceIdentifier:(id)identifier accessGroup:(id)group
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [[a1 alloc] initWithServiceIdentifier:v10 accessGroup:v9];
+  stringCopy = string;
+  groupCopy = group;
+  identifierCopy = identifier;
+  v11 = [[self alloc] initWithServiceIdentifier:identifierCopy accessGroup:groupCopy];
 
   v12 = v11[1];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __81__SGPersistentSaltProvider_saltProviderWithString_serviceIdentifier_accessGroup___block_invoke;
   v15[3] = &unk_1E7EFCA50;
-  v16 = v8;
-  v13 = v8;
+  v16 = stringCopy;
+  v13 = stringCopy;
   [v12 runWithLockAcquired:v15];
 
   return v11;

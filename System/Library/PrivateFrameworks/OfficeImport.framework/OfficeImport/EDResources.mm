@@ -1,15 +1,15 @@
 @interface EDResources
-- (EDResources)initWithStringOptimization:(BOOL)a3;
+- (EDResources)initWithStringOptimization:(BOOL)optimization;
 - (id)description;
-- (void)setColors:(id)a3;
-- (void)setThemes:(id)a3;
+- (void)setColors:(id)colors;
+- (void)setThemes:(id)themes;
 @end
 
 @implementation EDResources
 
-- (EDResources)initWithStringOptimization:(BOOL)a3
+- (EDResources)initWithStringOptimization:(BOOL)optimization
 {
-  v3 = a3;
+  optimizationCopy = optimization;
   v35.receiver = self;
   v35.super_class = EDResources;
   v4 = [(EDResources *)&v35 init];
@@ -68,7 +68,7 @@
     v4->mTableStyles = v29;
 
     v31 = off_2799C56A8;
-    if (!v3)
+    if (!optimizationCopy)
     {
       v31 = off_2799C5698;
     }
@@ -90,29 +90,29 @@
   return v2;
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
-  v5 = a3;
+  colorsCopy = colors;
   mColors = self->mColors;
   p_mColors = &self->mColors;
-  if (mColors != v5)
+  if (mColors != colorsCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mColors, a3);
-    v5 = v8;
+    v8 = colorsCopy;
+    objc_storeStrong(p_mColors, colors);
+    colorsCopy = v8;
   }
 }
 
-- (void)setThemes:(id)a3
+- (void)setThemes:(id)themes
 {
-  v5 = a3;
+  themesCopy = themes;
   mThemes = self->mThemes;
   p_mThemes = &self->mThemes;
-  if (mThemes != v5)
+  if (mThemes != themesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mThemes, a3);
-    v5 = v8;
+    v8 = themesCopy;
+    objc_storeStrong(p_mThemes, themes);
+    themesCopy = v8;
   }
 }
 

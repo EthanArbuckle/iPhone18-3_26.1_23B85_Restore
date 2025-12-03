@@ -1,51 +1,51 @@
 @interface MadridInternalListController
 - (MadridInternalListController)init;
 - (id)autoSendLogValue;
-- (id)automationIntervalForSpecifier:(id)a3;
-- (id)automationRepetitionsForSpecifier:(id)a3;
-- (id)fmfdLogging:(id)a3;
-- (id)getTimeStampValueForSpecifier:(id)a3;
-- (id)madridBasicLogging:(id)a3;
+- (id)automationIntervalForSpecifier:(id)specifier;
+- (id)automationRepetitionsForSpecifier:(id)specifier;
+- (id)fmfdLogging:(id)logging;
+- (id)getTimeStampValueForSpecifier:(id)specifier;
+- (id)madridBasicLogging:(id)logging;
 - (id)madridBasicLoggingDefaults;
-- (id)madridDebugLogging:(id)a3;
-- (id)notifySMS:(id)a3;
-- (id)pendingAutomationRemoteForSpecifier:(id)a3;
-- (id)phishingMMSWhitelist:(id)a3;
-- (id)pushDebugBannersEnabled:(id)a3;
-- (id)pushLoggingEnabled:(id)a3;
-- (id)readReceiptSettingsConfirmed:(id)a3;
-- (id)readShowChatKitTesterAppSetting:(id)a3;
-- (id)registrationLoggingEnabled:(id)a3;
+- (id)madridDebugLogging:(id)logging;
+- (id)notifySMS:(id)s;
+- (id)pendingAutomationRemoteForSpecifier:(id)specifier;
+- (id)phishingMMSWhitelist:(id)whitelist;
+- (id)pushDebugBannersEnabled:(id)enabled;
+- (id)pushLoggingEnabled:(id)enabled;
+- (id)readReceiptSettingsConfirmed:(id)confirmed;
+- (id)readShowChatKitTesterAppSetting:(id)setting;
+- (id)registrationLoggingEnabled:(id)enabled;
 - (id)specifiers;
-- (id)stkLogging:(id)a3;
-- (id)technicalFailureUI:(id)a3;
-- (void)_handleReturnKeyTapped:(id)a3;
+- (id)stkLogging:(id)logging;
+- (id)technicalFailureUI:(id)i;
+- (void)_handleReturnKeyTapped:(id)tapped;
 - (void)_startListeningForReturnKey;
 - (void)_stopListeningForReturnKey;
-- (void)clearLogs:(id)a3;
+- (void)clearLogs:(id)logs;
 - (void)dealloc;
-- (void)hawkingTapped:(id)a3;
-- (void)resetSMSCounter:(id)a3;
-- (void)setAutoSendLogValue:(id)a3 specifier:(id)a4;
-- (void)setAutomationInterval:(id)a3 forSpecifier:(id)a4;
-- (void)setAutomationRemote:(id)a3 forSpecifier:(id)a4;
-- (void)setAutomationRepetitions:(id)a3 forSpecifier:(id)a4;
-- (void)setEnvironment:(id)a3 specifier:(id)a4;
-- (void)setFMFDLogging:(id)a3 specifier:(id)a4;
-- (void)setMadridBasicLogging:(id)a3 specifier:(id)a4;
-- (void)setMadridDebugLogging:(id)a3 specifier:(id)a4;
-- (void)setNotifySMS:(id)a3 specifier:(id)a4;
-- (void)setPhishingMMSWhitelist:(id)a3 specifier:(id)a4;
-- (void)setPushDebugBannersEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setPushLoggingEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setReadReceiptSettingsConfirmed:(id)a3 specifier:(id)a4;
-- (void)setRegistrationLoggingEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setSTKLogging:(id)a3 specifier:(id)a4;
-- (void)setShowChatKitTesterAppSetting:(id)a3 specifier:(id)a4;
-- (void)setTechnicalFailureUI:(id)a3 specifier:(id)a4;
-- (void)setTimeStampValue:(id)a3 forSpecifier:(id)a4;
-- (void)startAutomationTapped:(id)a3;
-- (void)viewAccountsTapped:(id)a3;
+- (void)hawkingTapped:(id)tapped;
+- (void)resetSMSCounter:(id)counter;
+- (void)setAutoSendLogValue:(id)value specifier:(id)specifier;
+- (void)setAutomationInterval:(id)interval forSpecifier:(id)specifier;
+- (void)setAutomationRemote:(id)remote forSpecifier:(id)specifier;
+- (void)setAutomationRepetitions:(id)repetitions forSpecifier:(id)specifier;
+- (void)setEnvironment:(id)environment specifier:(id)specifier;
+- (void)setFMFDLogging:(id)logging specifier:(id)specifier;
+- (void)setMadridBasicLogging:(id)logging specifier:(id)specifier;
+- (void)setMadridDebugLogging:(id)logging specifier:(id)specifier;
+- (void)setNotifySMS:(id)s specifier:(id)specifier;
+- (void)setPhishingMMSWhitelist:(id)whitelist specifier:(id)specifier;
+- (void)setPushDebugBannersEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setPushLoggingEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setReadReceiptSettingsConfirmed:(id)confirmed specifier:(id)specifier;
+- (void)setRegistrationLoggingEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setSTKLogging:(id)logging specifier:(id)specifier;
+- (void)setShowChatKitTesterAppSetting:(id)setting specifier:(id)specifier;
+- (void)setTechnicalFailureUI:(id)i specifier:(id)specifier;
+- (void)setTimeStampValue:(id)value forSpecifier:(id)specifier;
+- (void)startAutomationTapped:(id)tapped;
+- (void)viewAccountsTapped:(id)tapped;
 @end
 
 @implementation MadridInternalListController
@@ -104,8 +104,8 @@
         [v11 setProperty:&__kCFBooleanFalse forKey:PSSliderIsContinuous];
         [v11 setProperty:&__kCFBooleanFalse forKey:PSSliderShowValueKey];
         [v11 setProperty:&off_D0F0 forKey:PSControlMinimumKey];
-        v12 = [(MadridInternalListController *)self sliderValues];
-        v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 count] - 1);
+        sliderValues = [(MadridInternalListController *)self sliderValues];
+        v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [sliderValues count] - 1);
         [v11 setProperty:v13 forKey:PSControlMaximumKey];
 
         [v7 insertObject:v11 atIndex:v10 + 1];
@@ -115,8 +115,8 @@
     v14 = [v7 specifierForID:@"PUSH_TOKEN"];
     v15 = [APSConnection alloc];
     v16 = [v15 initWithEnvironmentName:APSEnvironmentProduction queue:&_dispatch_main_q];
-    v17 = [v16 publicToken];
-    v18 = [v17 description];
+    publicToken = [v16 publicToken];
+    v18 = [publicToken description];
     [v14 setProperty:v18 forKey:PSFooterTextGroupKey];
 
     v19 = *&self->PSListController_opaque[v3];
@@ -128,19 +128,19 @@
   return v4;
 }
 
-- (void)setTimeStampValue:(id)a3 forSpecifier:(id)a4
+- (void)setTimeStampValue:(id)value forSpecifier:(id)specifier
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_152C;
   v5[3] = &unk_C3B8;
   v5[4] = self;
-  v6 = a3;
-  v4 = v6;
+  valueCopy = value;
+  v4 = valueCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (id)getTimeStampValueForSpecifier:(id)a3
+- (id)getTimeStampValueForSpecifier:(id)specifier
 {
   keyExistsAndHasValidFormat = 0;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"TimestampInterval", @"com.apple.MobileSMS", &keyExistsAndHasValidFormat);
@@ -155,8 +155,8 @@
   }
 
   v7 = [NSNumber numberWithInteger:v6];
-  v8 = [(MadridInternalListController *)self sliderValues];
-  v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 indexOfObject:v7]);
+  sliderValues = [(MadridInternalListController *)self sliderValues];
+  v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [sliderValues indexOfObject:v7]);
 
   return v9;
 }
@@ -173,28 +173,28 @@
   [v3 removeObserver:self name:UIKeyboardReturnKeyPressed object:0];
 }
 
-- (void)_handleReturnKeyTapped:(id)a3
+- (void)_handleReturnKeyTapped:(id)tapped
 {
-  v3 = [(MadridInternalListController *)self firstResponder];
-  [v3 resignFirstResponder];
+  firstResponder = [(MadridInternalListController *)self firstResponder];
+  [firstResponder resignFirstResponder];
 }
 
-- (id)pushLoggingEnabled:(id)a3
+- (id)pushLoggingEnabled:(id)enabled
 {
   v3 = CNFIsPushLoggingEnabled();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setPushLoggingEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setPushLoggingEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [enabled BOOLValue];
   CNFSetPushLoggingEnabled();
 
   [(MadridInternalListController *)self reloadSpecifiers];
 }
 
-- (id)pushDebugBannersEnabled:(id)a3
+- (id)pushDebugBannersEnabled:(id)enabled
 {
   keyExistsAndHasValidFormat = 0;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"APSAlertsEnabled", @"com.apple.apsalerts", &keyExistsAndHasValidFormat);
@@ -214,9 +214,9 @@
   return v6;
 }
 
-- (void)setPushDebugBannersEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setPushDebugBannersEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([enabled BOOLValue])
   {
     v5 = [NSNumber numberWithBool:1];
   }
@@ -234,7 +234,7 @@
   [(MadridInternalListController *)self reloadSpecifiers];
 }
 
-- (id)fmfdLogging:(id)a3
+- (id)fmfdLogging:(id)logging
 {
   CFPreferencesAppSynchronize(@"com.apple.logging");
   v3 = CFPreferencesGetAppBooleanValue(@"FMFD", @"com.apple.logging", 0) != 0;
@@ -242,9 +242,9 @@
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setFMFDLogging:(id)a3 specifier:(id)a4
+- (void)setFMFDLogging:(id)logging specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([logging BOOLValue])
   {
     v4 = [NSNumber numberWithInt:8];
     CFPreferencesSetAppValue(@"LogLevel", v4, @"com.apple.AOSNotification");
@@ -281,7 +281,7 @@
   CFPreferencesAppSynchronize(@"com.apple.icloud.fmfd");
 }
 
-- (id)stkLogging:(id)a3
+- (id)stkLogging:(id)logging
 {
   CFPreferencesAppSynchronize(@"com.apple.logging");
   v3 = CFPreferencesGetAppBooleanValue(@"STK", @"com.apple.logging", 0) != 0;
@@ -289,9 +289,9 @@
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setSTKLogging:(id)a3 specifier:(id)a4
+- (void)setSTKLogging:(id)logging specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([logging BOOLValue])
   {
     v4 = [NSNumber numberWithBool:1];
   }
@@ -306,7 +306,7 @@
   CFPreferencesAppSynchronize(@"com.apple.logging");
 }
 
-- (id)phishingMMSWhitelist:(id)a3
+- (id)phishingMMSWhitelist:(id)whitelist
 {
   CFPreferencesAppSynchronize(@"com.apple.logging");
   v3 = CFPreferencesGetAppBooleanValue(@"WhitelistEmailInternalPhishing", @"com.apple.sms", 0) != 0;
@@ -314,9 +314,9 @@
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setPhishingMMSWhitelist:(id)a3 specifier:(id)a4
+- (void)setPhishingMMSWhitelist:(id)whitelist specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([whitelist BOOLValue])
   {
     v4 = [NSNumber numberWithBool:1];
   }
@@ -331,20 +331,20 @@
   CFPreferencesAppSynchronize(@"com.apple.sms");
 }
 
-- (id)madridDebugLogging:(id)a3
+- (id)madridDebugLogging:(id)logging
 {
   v3 = CNFiMessageLogLevel();
 
   return [NSNumber numberWithInteger:v3];
 }
 
-- (void)setMadridDebugLogging:(id)a3 specifier:(id)a4
+- (void)setMadridDebugLogging:(id)logging specifier:(id)specifier
 {
-  v5 = [a3 integerValue];
+  integerValue = [logging integerValue];
   CNFSetiMessageLogLevel();
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"kMarcoSyncLoggingPrefs", 0, 0, 1u);
-  if ((v5 & 0x8000000000000000) != 0)
+  if ((integerValue & 0x8000000000000000) != 0)
   {
     v11 = dispatch_get_global_queue(0, 0);
     dispatch_async(v11, &stru_C418);
@@ -404,16 +404,16 @@
   return v2;
 }
 
-- (id)madridBasicLogging:(id)a3
+- (id)madridBasicLogging:(id)logging
 {
-  v3 = [(MadridInternalListController *)self madridBasicLoggingDefaults];
-  if ([v3 count])
+  madridBasicLoggingDefaults = [(MadridInternalListController *)self madridBasicLoggingDefaults];
+  if ([madridBasicLoggingDefaults count])
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v4 = v3;
+    v4 = madridBasicLoggingDefaults;
     v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v5)
     {
@@ -487,22 +487,22 @@ LABEL_21:
   return v16;
 }
 
-- (void)setMadridBasicLogging:(id)a3 specifier:(id)a4
+- (void)setMadridBasicLogging:(id)logging specifier:(id)specifier
 {
-  v22 = [a3 BOOLValue];
-  v21 = self;
-  v5 = [(MadridInternalListController *)self madridBasicLoggingDefaults];
+  bOOLValue = [logging BOOLValue];
+  selfCopy = self;
+  madridBasicLoggingDefaults = [(MadridInternalListController *)self madridBasicLoggingDefaults];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = [v5 allKeys];
+  obj = [madridBasicLoggingDefaults allKeys];
   v6 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v29;
-    if (v22)
+    if (bOOLValue)
     {
       v9 = kCFBooleanTrue;
     }
@@ -527,7 +527,7 @@ LABEL_21:
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v12 = [v5 objectForKey:v11];
+        v12 = [madridBasicLoggingDefaults objectForKey:v11];
         v13 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v13)
         {
@@ -568,9 +568,9 @@ LABEL_21:
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"kMarcoSyncLoggingPrefs", 0, 0, 1u);
   v18 = CNFiMessageLogLevel();
-  if (!v22)
+  if (!bOOLValue)
   {
-    v20 = v21;
+    v20 = selfCopy;
 LABEL_21:
     CNFSetiMessageLogLevel();
     goto LABEL_22;
@@ -578,7 +578,7 @@ LABEL_21:
 
   v19 = v18;
   CNFSetPushLoggingEnabled();
-  v20 = v21;
+  v20 = selfCopy;
   if (v19 == -1)
   {
     goto LABEL_21;
@@ -589,16 +589,16 @@ LABEL_22:
   [(MadridInternalListController *)v20 reloadSpecifiers];
 }
 
-- (id)registrationLoggingEnabled:(id)a3
+- (id)registrationLoggingEnabled:(id)enabled
 {
   v3 = CNFRegistrationLogLevel() >= 0;
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setRegistrationLoggingEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setRegistrationLoggingEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v5 = [a3 BOOLValue] ^ 1;
+  v5 = [enabled BOOLValue] ^ 1;
   CNFSetRegistrationLogLevel();
   if ((v5 & 1) == 0)
   {
@@ -610,12 +610,12 @@ LABEL_22:
   [(MadridInternalListController *)self reloadSpecifiers];
 }
 
-- (void)setAutoSendLogValue:(id)a3 specifier:(id)a4
+- (void)setAutoSendLogValue:(id)value specifier:(id)specifier
 {
-  [a3 integerValue];
+  [value integerValue];
   CNFSetSharedIntegerForKey();
-  v6 = [(MadridInternalListController *)self navigationController];
-  v5 = [v6 popViewControllerAnimated:1];
+  navigationController = [(MadridInternalListController *)self navigationController];
+  v5 = [navigationController popViewControllerAnimated:1];
 }
 
 - (id)autoSendLogValue
@@ -625,21 +625,21 @@ LABEL_22:
   return [NSNumber numberWithInteger:v2];
 }
 
-- (void)hawkingTapped:(id)a3
+- (void)hawkingTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v6 = objc_alloc_init(MadridInternalHawkingListController);
-  [(MadridInternalHawkingListController *)v6 setSpecifier:v4];
+  [(MadridInternalHawkingListController *)v6 setSpecifier:tappedCopy];
 
-  v5 = [(MadridInternalListController *)self rootController];
-  [(MadridInternalHawkingListController *)v6 setRootController:v5];
+  rootController = [(MadridInternalListController *)self rootController];
+  [(MadridInternalHawkingListController *)v6 setRootController:rootController];
 
   [(MadridInternalListController *)self showController:v6 animate:1];
 }
 
-- (void)setTechnicalFailureUI:(id)a3 specifier:(id)a4
+- (void)setTechnicalFailureUI:(id)i specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([i BOOLValue])
   {
     v4 = [NSNumber numberWithBool:1];
   }
@@ -656,7 +656,7 @@ LABEL_22:
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"CKTechnicalFailureUIPrefChangedNotification", 0, 0, 0);
 }
 
-- (id)technicalFailureUI:(id)a3
+- (id)technicalFailureUI:(id)i
 {
   keyExistsAndHasValidFormat = 0;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"showInternalErrors", @"com.apple.MobileSMS", &keyExistsAndHasValidFormat);
@@ -676,23 +676,23 @@ LABEL_22:
   return v6;
 }
 
-- (void)clearLogs:(id)a3
+- (void)clearLogs:(id)logs
 {
   v4 = [IMUserNotification userNotificationWithIdentifier:@"Logs" title:@"iMessage Logging" message:@"Are you sure you want to delete all Messages logging?" defaultButton:@"Delete" alternateButton:@"Cancel" otherButton:0];
   v3 = +[IMUserNotificationCenter sharedInstance];
   [v3 addUserNotification:v4 listener:0 completionHandler:&stru_C458];
 }
 
-- (void)setEnvironment:(id)a3 specifier:(id)a4
+- (void)setEnvironment:(id)environment specifier:(id)specifier
 {
-  v6 = a4;
-  [CNFInternalSettingsUtilities setIDSEnvironment:a3];
-  v7 = [(MadridInternalListController *)self navigationController];
-  v8 = [v7 popViewControllerAnimated:1];
+  specifierCopy = specifier;
+  [CNFInternalSettingsUtilities setIDSEnvironment:environment];
+  navigationController = [(MadridInternalListController *)self navigationController];
+  v8 = [navigationController popViewControllerAnimated:1];
 
   +[CNFInternalSettingsUtilities signOutAllAccounts];
-  [v6 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
-  v11 = [v6 propertyForKey:PSTableCellKey];
+  [specifierCopy setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
+  v11 = [specifierCopy propertyForKey:PSTableCellKey];
 
   [v11 setCellEnabled:0];
   v9 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:2];
@@ -703,21 +703,21 @@ LABEL_22:
   dispatch_after(v10, &_dispatch_main_q, &stru_C478);
 }
 
-- (void)viewAccountsTapped:(id)a3
+- (void)viewAccountsTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v6 = [[CNFInternalAccountListViewController alloc] initWithServiceType:1];
-  [v6 setSpecifier:v4];
+  [v6 setSpecifier:tappedCopy];
 
-  v5 = [(MadridInternalListController *)self rootController];
-  [v6 setRootController:v5];
+  rootController = [(MadridInternalListController *)self rootController];
+  [v6 setRootController:rootController];
 
   [(MadridInternalListController *)self showController:v6 animate:1];
 }
 
-- (void)setNotifySMS:(id)a3 specifier:(id)a4
+- (void)setNotifySMS:(id)s specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([s BOOLValue])
   {
     v4 = [NSNumber numberWithInt:1];
   }
@@ -732,7 +732,7 @@ LABEL_22:
   CFPreferencesAppSynchronize(@"com.apple.conference");
 }
 
-- (id)notifySMS:(id)a3
+- (id)notifySMS:(id)s
 {
   keyExistsAndHasValidFormat = 0;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"NotifySMS", @"com.apple.conference", &keyExistsAndHasValidFormat);
@@ -752,7 +752,7 @@ LABEL_22:
   return v6;
 }
 
-- (void)resetSMSCounter:(id)a3
+- (void)resetSMSCounter:(id)counter
 {
   CFPreferencesAppSynchronize(@"com.apple.conference");
   CFPreferencesSetAppValue(@"TotalSMSAttempts", 0, @"com.apple.conference");
@@ -761,106 +761,106 @@ LABEL_22:
   [(MadridInternalListController *)self reloadSpecifiers];
 }
 
-- (id)pendingAutomationRemoteForSpecifier:(id)a3
+- (id)pendingAutomationRemoteForSpecifier:(id)specifier
 {
-  v3 = [(MadridInternalListController *)self automationOptions];
-  v4 = [v3 remote];
+  automationOptions = [(MadridInternalListController *)self automationOptions];
+  remote = [automationOptions remote];
 
-  return v4;
+  return remote;
 }
 
-- (void)setAutomationRemote:(id)a3 forSpecifier:(id)a4
+- (void)setAutomationRemote:(id)remote forSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(MadridInternalListController *)self automationOptions];
-  [v6 setRemote:v5];
+  remoteCopy = remote;
+  automationOptions = [(MadridInternalListController *)self automationOptions];
+  [automationOptions setRemote:remoteCopy];
 }
 
-- (id)automationIntervalForSpecifier:(id)a3
+- (id)automationIntervalForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(MadridInternalListController *)self automationOptions];
-  v6 = [v5 interval];
+  specifierCopy = specifier;
+  automationOptions = [(MadridInternalListController *)self automationOptions];
+  interval = [automationOptions interval];
 
-  if (!v6)
+  if (!interval)
   {
-    v7 = [v4 propertyForKey:PSDefaultValueKey];
-    v8 = [(MadridInternalListController *)self automationOptions];
-    [v8 setInterval:v7];
+    v7 = [specifierCopy propertyForKey:PSDefaultValueKey];
+    automationOptions2 = [(MadridInternalListController *)self automationOptions];
+    [automationOptions2 setInterval:v7];
   }
 
-  v9 = [(MadridInternalListController *)self automationOptions];
-  v10 = [v9 interval];
+  automationOptions3 = [(MadridInternalListController *)self automationOptions];
+  interval2 = [automationOptions3 interval];
 
-  return v10;
+  return interval2;
 }
 
-- (void)setAutomationInterval:(id)a3 forSpecifier:(id)a4
+- (void)setAutomationInterval:(id)interval forSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(MadridInternalListController *)self automationOptions];
-  [v6 setInterval:v5];
+  intervalCopy = interval;
+  automationOptions = [(MadridInternalListController *)self automationOptions];
+  [automationOptions setInterval:intervalCopy];
 }
 
-- (id)automationRepetitionsForSpecifier:(id)a3
+- (id)automationRepetitionsForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(MadridInternalListController *)self automationOptions];
-  v6 = [v5 repetitions];
+  specifierCopy = specifier;
+  automationOptions = [(MadridInternalListController *)self automationOptions];
+  repetitions = [automationOptions repetitions];
 
-  if (!v6)
+  if (!repetitions)
   {
-    v7 = [v4 propertyForKey:PSDefaultValueKey];
-    v8 = [(MadridInternalListController *)self automationOptions];
-    [v8 setRepetitions:v7];
+    v7 = [specifierCopy propertyForKey:PSDefaultValueKey];
+    automationOptions2 = [(MadridInternalListController *)self automationOptions];
+    [automationOptions2 setRepetitions:v7];
   }
 
-  v9 = [(MadridInternalListController *)self automationOptions];
-  v10 = [v9 repetitions];
+  automationOptions3 = [(MadridInternalListController *)self automationOptions];
+  repetitions2 = [automationOptions3 repetitions];
 
-  return v10;
+  return repetitions2;
 }
 
-- (void)setAutomationRepetitions:(id)a3 forSpecifier:(id)a4
+- (void)setAutomationRepetitions:(id)repetitions forSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(MadridInternalListController *)self automationOptions];
-  [v6 setRepetitions:v5];
+  repetitionsCopy = repetitions;
+  automationOptions = [(MadridInternalListController *)self automationOptions];
+  [automationOptions setRepetitions:repetitionsCopy];
 }
 
-- (void)startAutomationTapped:(id)a3
+- (void)startAutomationTapped:(id)tapped
 {
-  v4 = [(MadridInternalListController *)self firstResponder];
-  [v4 resignFirstResponder];
+  firstResponder = [(MadridInternalListController *)self firstResponder];
+  [firstResponder resignFirstResponder];
 
-  v5 = [(MadridInternalListController *)self automationOptions];
-  v6 = [v5 remote];
-  v7 = [v6 length];
+  automationOptions = [(MadridInternalListController *)self automationOptions];
+  remote = [automationOptions remote];
+  v7 = [remote length];
 
   if (v7 >= 5)
   {
-    v8 = [(MadridInternalListController *)self automationOptions];
-    v9 = [v8 interval];
-    v10 = [(MadridInternalListController *)self automationOptions];
-    v11 = [v10 repetitions];
-    v12 = [(MadridInternalListController *)self automationOptions];
-    v13 = [v12 remote];
-    v14 = [NSDictionary dictionaryWithObjectsAndKeys:v9, @"interval", v11, @"repetitions", v13, @"target", 0];
+    automationOptions2 = [(MadridInternalListController *)self automationOptions];
+    interval = [automationOptions2 interval];
+    automationOptions3 = [(MadridInternalListController *)self automationOptions];
+    repetitions = [automationOptions3 repetitions];
+    automationOptions4 = [(MadridInternalListController *)self automationOptions];
+    remote2 = [automationOptions4 remote];
+    v14 = [NSDictionary dictionaryWithObjectsAndKeys:interval, @"interval", repetitions, @"repetitions", remote2, @"target", 0];
 
     MarcoActionWithUserInfo();
   }
 }
 
-- (id)readReceiptSettingsConfirmed:(id)a3
+- (id)readReceiptSettingsConfirmed:(id)confirmed
 {
   v3 = CNFGetSharedBooleanValueForKey();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setReadReceiptSettingsConfirmed:(id)a3 specifier:(id)a4
+- (void)setReadReceiptSettingsConfirmed:(id)confirmed specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [confirmed BOOLValue];
   CNFSetSharedBooleanValueForKey();
   if (CNFSyncPreferences())
   {
@@ -870,16 +870,16 @@ LABEL_22:
   }
 }
 
-- (id)readShowChatKitTesterAppSetting:(id)a3
+- (id)readShowChatKitTesterAppSetting:(id)setting
 {
   v3 = CNFGetSharedBooleanValueForKey();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setShowChatKitTesterAppSetting:(id)a3 specifier:(id)a4
+- (void)setShowChatKitTesterAppSetting:(id)setting specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [setting BOOLValue];
   CNFSetSharedBooleanValueForKey();
   CNFSyncSharedPreferences();
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();

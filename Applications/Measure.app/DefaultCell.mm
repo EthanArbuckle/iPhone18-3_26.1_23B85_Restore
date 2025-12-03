@@ -1,12 +1,12 @@
 @interface DefaultCell
-- (_TtC7Measure11DefaultCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC7Measure11DefaultCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation DefaultCell
 
-- (_TtC7Measure11DefaultCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC7Measure11DefaultCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }

@@ -1,18 +1,18 @@
 @interface NENexusAgent
-+ (id)agentFromData:(id)a3;
-- (BOOL)assertAgentWithOptions:(id)a3;
-- (BOOL)requestNexusWithOptions:(id)a3;
-- (BOOL)startAgentWithOptions:(id)a3;
++ (id)agentFromData:(id)data;
+- (BOOL)assertAgentWithOptions:(id)options;
+- (BOOL)requestNexusWithOptions:(id)options;
+- (BOOL)startAgentWithOptions:(id)options;
 - (id)copyAgentData;
-- (void)closeNexusWithOptions:(id)a3;
-- (void)unassertAgentWithOptions:(id)a3;
+- (void)closeNexusWithOptions:(id)options;
+- (void)unassertAgentWithOptions:(id)options;
 @end
 
 @implementation NENexusAgent
 
-- (void)unassertAgentWithOptions:(id)a3
+- (void)unassertAgentWithOptions:(id)options
 {
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6977DF0]];
+  v4 = [options objectForKeyedSubscript:*MEMORY[0x1E6977DF0]];
   if (self)
   {
     self = objc_loadWeakRetained(&self->_delegate);
@@ -21,9 +21,9 @@
   [(NENexusAgent *)self handleUnassertFromClient:v4];
 }
 
-- (BOOL)assertAgentWithOptions:(id)a3
+- (BOOL)assertAgentWithOptions:(id)options
 {
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6977DF0]];
+  v4 = [options objectForKeyedSubscript:*MEMORY[0x1E6977DF0]];
   if (self)
   {
     self = objc_loadWeakRetained(&self->_delegate);
@@ -34,9 +34,9 @@
   return 1;
 }
 
-- (BOOL)startAgentWithOptions:(id)a3
+- (BOOL)startAgentWithOptions:(id)options
 {
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6977DF0]];
+  v4 = [options objectForKeyedSubscript:*MEMORY[0x1E6977DF0]];
   if (self)
   {
     self = objc_loadWeakRetained(&self->_delegate);
@@ -47,9 +47,9 @@
   return 1;
 }
 
-- (void)closeNexusWithOptions:(id)a3
+- (void)closeNexusWithOptions:(id)options
 {
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6977DF0]];
+  v4 = [options objectForKeyedSubscript:*MEMORY[0x1E6977DF0]];
   if (self)
   {
     self = objc_loadWeakRetained(&self->_delegate);
@@ -58,9 +58,9 @@
   [(NENexusAgent *)self closeFlowWithClientIdentifier:v4];
 }
 
-- (BOOL)requestNexusWithOptions:(id)a3
+- (BOOL)requestNexusWithOptions:(id)options
 {
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6977DF0]];
+  v4 = [options objectForKeyedSubscript:*MEMORY[0x1E6977DF0]];
   if (self)
   {
     self = objc_loadWeakRetained(&self->_delegate);
@@ -107,28 +107,28 @@ LABEL_6:
   return objc_claimAutoreleasedReturnValue();
 }
 
-+ (id)agentFromData:(id)a3
++ (id)agentFromData:(id)data
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_alloc_init(NENexusAgent);
-  if ([v3 length] < 0xCC)
+  if ([dataCopy length] < 0xCC)
   {
     v6 = ne_log_obj();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v9 = 134217984;
-      v10 = [v3 length];
+      v10 = [dataCopy length];
       _os_log_error_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_ERROR, "data.length is invalid (%lu)", &v9, 0xCu);
     }
   }
 
   else
   {
-    v5 = [v3 bytes];
-    if (v5 && v4)
+    bytes = [dataCopy bytes];
+    if (bytes && v4)
     {
-      v4->_frameType = *v5;
+      v4->_frameType = *bytes;
     }
   }
 

@@ -1,8 +1,8 @@
 @interface PKLabeledValue
-- (BOOL)isEqual:(id)a3;
-- (PKLabeledValue)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKLabeledValue)initWithCoder:(id)coder;
 - (PKLabeledValue)initWithLabel:(NSString *)label value:(NSString *)value;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKLabeledValue
@@ -28,20 +28,20 @@
   return v8;
 }
 
-- (PKLabeledValue)initWithCoder:(id)a3
+- (PKLabeledValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKLabeledValue;
   v5 = [(PKLabeledValue *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PKLVLabel"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PKLVLabel"];
     v7 = [v6 copy];
     label = v5->_label;
     v5->_label = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PKLVValue"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PKLVValue"];
     v10 = [v9 copy];
     value = v5->_value;
     v5->_value = v10;
@@ -50,21 +50,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   label = self->_label;
-  v5 = a3;
-  [v5 encodeObject:label forKey:@"PKLVLabel"];
-  [v5 encodeObject:self->_value forKey:@"PKLVValue"];
+  coderCopy = coder;
+  [coderCopy encodeObject:label forKey:@"PKLVLabel"];
+  [coderCopy encodeObject:self->_value forKey:@"PKLVValue"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else

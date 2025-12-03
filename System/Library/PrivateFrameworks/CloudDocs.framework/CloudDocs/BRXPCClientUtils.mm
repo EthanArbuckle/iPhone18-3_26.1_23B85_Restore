@@ -1,22 +1,22 @@
 @interface BRXPCClientUtils
-+ (BOOL)executeXPCWithMaxRetries:(unint64_t)a3 error:(id *)a4 block:(id)a5;
-+ (void)executeAsyncXPCWithMaxRetries:(unint64_t)a3 completion:(id)a4 xpcInvokeBlock:(id)a5;
++ (BOOL)executeXPCWithMaxRetries:(unint64_t)retries error:(id *)error block:(id)block;
++ (void)executeAsyncXPCWithMaxRetries:(unint64_t)retries completion:(id)completion xpcInvokeBlock:(id)block;
 @end
 
 @implementation BRXPCClientUtils
 
-+ (BOOL)executeXPCWithMaxRetries:(unint64_t)a3 error:(id *)a4 block:(id)a5
++ (BOOL)executeXPCWithMaxRetries:(unint64_t)retries error:(id *)error block:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a5;
+  blockCopy = block;
   v7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4097 userInfo:0];
-  if (a3)
+  if (retries)
   {
     do
     {
 
       v16 = 0;
-      v8 = v6[2](v6, &v16);
+      v8 = blockCopy[2](blockCopy, &v16);
       v9 = v16;
       v7 = v9;
       if ((v8 & 1) != 0 || ![v9 br_isNSXPCConnectionError])
@@ -33,10 +33,10 @@
         _os_log_impl(&dword_1AE2A9000, v11, OS_LOG_TYPE_DEFAULT, "[NOTICE] Block execution failed because of XPC - retrying%@", buf, 0xCu);
       }
 
-      --a3;
+      --retries;
     }
 
-    while (a3);
+    while (retries);
   }
 
   else
@@ -44,35 +44,35 @@
     v8 = 0;
   }
 
-  if (a4)
+  if (error)
   {
     v12 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
   v13 = *MEMORY[0x1E69E9840];
   return v8;
 }
 
-+ (void)executeAsyncXPCWithMaxRetries:(unint64_t)a3 completion:(id)a4 xpcInvokeBlock:(id)a5
++ (void)executeAsyncXPCWithMaxRetries:(unint64_t)retries completion:(id)completion xpcInvokeBlock:(id)block
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E69DF068] sharedManager];
-  v10 = [v9 currentPersona];
-  v11 = [v10 userPersonaUniqueString];
+  completionCopy = completion;
+  blockCopy = block;
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __76__BRXPCClientUtils_executeAsyncXPCWithMaxRetries_completion_xpcInvokeBlock___block_invoke;
   v16[3] = &unk_1E7A14990;
-  v17 = v11;
-  v18 = v7;
-  v19 = v8;
-  v20 = a3;
-  v12 = v8;
-  v13 = v11;
-  v14 = v7;
+  v17 = userPersonaUniqueString;
+  v18 = completionCopy;
+  v19 = blockCopy;
+  retriesCopy = retries;
+  v12 = blockCopy;
+  v13 = userPersonaUniqueString;
+  v14 = completionCopy;
   v15 = MEMORY[0x1B26FEA90](v16);
   v12[2](v12, v15);
 }

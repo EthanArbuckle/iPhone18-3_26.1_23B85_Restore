@@ -1,22 +1,22 @@
 @interface MKMapView
-- (int64_t)desiredStateForLoi:(id)a3 maximumWidth:(double)a4;
+- (int64_t)desiredStateForLoi:(id)loi maximumWidth:(double)width;
 @end
 
 @implementation MKMapView
 
-- (int64_t)desiredStateForLoi:(id)a3 maximumWidth:(double)a4
+- (int64_t)desiredStateForLoi:(id)loi maximumWidth:(double)width
 {
-  v6 = a3;
-  v7 = [v6 polygon];
-  [v7 coordinate];
+  loiCopy = loi;
+  polygon = [loiCopy polygon];
+  [polygon coordinate];
   v9 = v8;
   v11 = v10;
-  v12 = [v6 polygon];
-  [v12 radius];
+  polygon2 = [loiCopy polygon];
+  [polygon2 radius];
   v14 = v13;
-  v15 = [v6 polygon];
+  polygon3 = [loiCopy polygon];
 
-  [v15 radius];
+  [polygon3 radius];
   v17 = v16;
   v24.latitude = v9;
   v24.longitude = v11;
@@ -27,7 +27,7 @@
   longitudeDelta = v25.span.longitudeDelta;
 
   [(MKMapView *)self convertRegion:self toRectToView:latitude, longitude, latitudeDelta, longitudeDelta];
-  if (v22 <= a4)
+  if (v22 <= width)
   {
     return 1;
   }

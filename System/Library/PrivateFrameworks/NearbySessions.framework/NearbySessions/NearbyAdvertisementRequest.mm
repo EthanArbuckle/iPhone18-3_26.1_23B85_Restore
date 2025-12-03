@@ -3,8 +3,8 @@
 - (NSString)description;
 - (NSUUID)identifier;
 - (_TtC14NearbySessions26NearbyAdvertisementRequest)init;
-- (_TtC14NearbySessions26NearbyAdvertisementRequest)initWithIdentifier:(id)a3 invitation:(id)a4 route:(unsigned __int8)a5 activityType:(unsigned int)a6;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC14NearbySessions26NearbyAdvertisementRequest)initWithIdentifier:(id)identifier invitation:(id)invitation route:(unsigned __int8)route activityType:(unsigned int)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NearbyAdvertisementRequest
@@ -34,7 +34,7 @@
   return v4.super.isa;
 }
 
-- (_TtC14NearbySessions26NearbyAdvertisementRequest)initWithIdentifier:(id)a3 invitation:(id)a4 route:(unsigned __int8)a5 activityType:(unsigned int)a6
+- (_TtC14NearbySessions26NearbyAdvertisementRequest)initWithIdentifier:(id)identifier invitation:(id)invitation route:(unsigned __int8)route activityType:(unsigned int)type
 {
   v10 = type metadata accessor for UUID();
   v11 = *(v10 - 8);
@@ -42,7 +42,7 @@
   MEMORY[0x28223BE20](v10);
   v14 = &v23 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v15 = a4;
+  invitationCopy = invitation;
   v16 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v18 = v17;
 
@@ -50,8 +50,8 @@
   v19 = (self + OBJC_IVAR____TtC14NearbySessions26NearbyAdvertisementRequest_invitation);
   *v19 = v16;
   v19[1] = v18;
-  *(self + OBJC_IVAR____TtC14NearbySessions26NearbyAdvertisementRequest_route) = a5;
-  *(self + OBJC_IVAR____TtC14NearbySessions26NearbyAdvertisementRequest_activityType) = a6;
+  *(self + OBJC_IVAR____TtC14NearbySessions26NearbyAdvertisementRequest_route) = route;
+  *(self + OBJC_IVAR____TtC14NearbySessions26NearbyAdvertisementRequest_activityType) = type;
   v20 = type metadata accessor for NearbyAdvertisementRequest();
   v23.receiver = self;
   v23.super_class = v20;
@@ -60,16 +60,16 @@
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  NearbyAdvertisementRequest.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  NearbyAdvertisementRequest.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = NearbyAdvertisementRequest.description.getter();
   v5 = v4;
 

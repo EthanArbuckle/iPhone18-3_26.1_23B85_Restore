@@ -1,33 +1,33 @@
 @interface ENUIRegionCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation ENUIRegionCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ENUIRegionCell" hasInstanceMethod:@"sectionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ENUIRegionCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ENUIRegionCell" hasInstanceMethod:@"regionCapsuleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CapsuleLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ENUIRegionCell" hasInstanceMethod:@"sectionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ENUIRegionCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ENUIRegionCell" hasInstanceMethod:@"regionCapsuleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CapsuleLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(ENUIRegionCellAccessibility *)self safeUIViewForKey:@"sectionLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v3 = [(ENUIRegionCellAccessibility *)self safeValueForKey:@"regionCapsuleLabel"];
   v4 = [(ENUIRegionCellAccessibility *)self safeUIViewForKey:@"titleLabel"];
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
   v8 = [v3 safeStringForKey:@"text"];
   v6 = __UIAXStringForVariables();
 

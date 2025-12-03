@@ -1,30 +1,30 @@
 @interface TransitVehiclePositionAnnotation
 - (CLLocationCoordinate2D)coordinate;
-- (TransitVehiclePositionAnnotation)initWithVehiclePosition:(id)a3;
+- (TransitVehiclePositionAnnotation)initWithVehiclePosition:(id)position;
 - (UIColor)color;
-- (id)imageWithScale:(double)a3 nightMode:(BOOL)a4;
-- (void)updateVehiclePosition:(id)a3;
+- (id)imageWithScale:(double)scale nightMode:(BOOL)mode;
+- (void)updateVehiclePosition:(id)position;
 @end
 
 @implementation TransitVehiclePositionAnnotation
 
-- (id)imageWithScale:(double)a3 nightMode:(BOOL)a4
+- (id)imageWithScale:(double)scale nightMode:(BOOL)mode
 {
-  v4 = a4;
-  v6 = [(TransitVehiclePositionAnnotation *)self vehiclePosition];
-  v7 = [v6 artworkDataSource];
+  modeCopy = mode;
+  vehiclePosition = [(TransitVehiclePositionAnnotation *)self vehiclePosition];
+  artworkDataSource = [vehiclePosition artworkDataSource];
   v8 = +[MKTransitArtworkManager sharedInstance];
-  v9 = [v8 transitArtworkImageWithDataSource:v7 size:6 featureType:2 scale:v4 nightMode:a3];
+  v9 = [v8 transitArtworkImageWithDataSource:artworkDataSource size:6 featureType:2 scale:modeCopy nightMode:scale];
 
   return v9;
 }
 
 - (UIColor)color
 {
-  v2 = [(TransitVehiclePositionAnnotation *)self vehiclePosition];
-  v3 = [v2 colorHexString];
+  vehiclePosition = [(TransitVehiclePositionAnnotation *)self vehiclePosition];
+  colorHexString = [vehiclePosition colorHexString];
 
-  v4 = [UIColor _maps_colorFromHexString:v3];
+  v4 = [UIColor _maps_colorFromHexString:colorHexString];
 
   return v4;
 }
@@ -43,15 +43,15 @@
   return result;
 }
 
-- (void)updateVehiclePosition:(id)a3
+- (void)updateVehiclePosition:(id)position
 {
-  v4 = a3;
+  positionCopy = position;
   [(TransitVehiclePositionAnnotation *)self willChangeValueForKey:@"vehiclePosition"];
   [(TransitVehiclePositionAnnotation *)self willChangeValueForKey:@"coordinate"];
   [(TransitVehiclePositionAnnotation *)self willChangeValueForKey:@"heading"];
   [(TransitVehiclePositionAnnotation *)self willChangeValueForKey:@"title"];
   vehiclePosition = self->_vehiclePosition;
-  self->_vehiclePosition = v4;
+  self->_vehiclePosition = positionCopy;
 
   [(TransitVehiclePositionAnnotation *)self didChangeValueForKey:@"vehiclePosition"];
   [(TransitVehiclePositionAnnotation *)self didChangeValueForKey:@"coordinate"];
@@ -60,16 +60,16 @@
   [(TransitVehiclePositionAnnotation *)self didChangeValueForKey:@"title"];
 }
 
-- (TransitVehiclePositionAnnotation)initWithVehiclePosition:(id)a3
+- (TransitVehiclePositionAnnotation)initWithVehiclePosition:(id)position
 {
-  v5 = a3;
+  positionCopy = position;
   v9.receiver = self;
   v9.super_class = TransitVehiclePositionAnnotation;
   v6 = [(TransitVehiclePositionAnnotation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_vehiclePosition, a3);
+    objc_storeStrong(&v6->_vehiclePosition, position);
   }
 
   return v7;

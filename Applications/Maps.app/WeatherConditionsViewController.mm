@@ -1,7 +1,7 @@
 @interface WeatherConditionsViewController
 - (BOOL)_shouldShowWeatherConditions;
 - (BOOL)isVisible;
-- (WeatherConditionsViewController)initWithWeatherLocationDataProvider:(id)a3;
+- (WeatherConditionsViewController)initWithWeatherLocationDataProvider:(id)provider;
 - (WeatherConditionsViewControllerDelegate)delegate;
 - (id)_titleFont;
 - (void)_createSubviews;
@@ -10,8 +10,8 @@
 - (void)_updateSubviews;
 - (void)clearSavedLocation;
 - (void)loadView;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setWeatherConditions:(id)a3;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setWeatherConditions:(id)conditions;
 - (void)viewDidLoad;
 @end
 
@@ -22,8 +22,8 @@
   v3 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(WeatherConditionsViewController *)self setView:v3];
 
-  v4 = [(WeatherConditionsViewController *)self view];
-  [v4 setAccessibilityIdentifier:@"WeatherConditionsView"];
+  view = [(WeatherConditionsViewController *)self view];
+  [view setAccessibilityIdentifier:@"WeatherConditionsView"];
 }
 
 - (void)viewDidLoad
@@ -52,40 +52,40 @@
   v7 = [v3 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(WeatherConditionsViewController *)self setContentView:v7];
 
-  v8 = [(WeatherConditionsViewController *)self contentView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView = [(WeatherConditionsViewController *)self contentView];
+  [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(WeatherConditionsViewController *)self contentView];
-  [v9 setAccessibilityIdentifier:@"WeatherConditionsContent"];
+  contentView2 = [(WeatherConditionsViewController *)self contentView];
+  [contentView2 setAccessibilityIdentifier:@"WeatherConditionsContent"];
 
-  v10 = [(WeatherConditionsViewController *)self view];
-  v11 = [(WeatherConditionsViewController *)self contentView];
-  [v10 addSubview:v11];
+  view = [(WeatherConditionsViewController *)self view];
+  contentView3 = [(WeatherConditionsViewController *)self contentView];
+  [view addSubview:contentView3];
 
-  v12 = [[MapsThemeImageView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(WeatherConditionsViewController *)self setImageView:v12];
+  height = [[MapsThemeImageView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(WeatherConditionsViewController *)self setImageView:height];
 
-  v13 = [(WeatherConditionsViewController *)self imageView];
-  [v13 setContentMode:1];
+  imageView = [(WeatherConditionsViewController *)self imageView];
+  [imageView setContentMode:1];
 
-  v14 = [(WeatherConditionsViewController *)self imageView];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  imageView2 = [(WeatherConditionsViewController *)self imageView];
+  [imageView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(WeatherConditionsViewController *)self imageView];
-  [v15 setAccessibilityIdentifier:@"WeatherConditionsImageView"];
+  imageView3 = [(WeatherConditionsViewController *)self imageView];
+  [imageView3 setAccessibilityIdentifier:@"WeatherConditionsImageView"];
 
   if (sub_10000FA08(self) == 5 && (_UISolariumEnabled() & 1) == 0)
   {
     v16 = +[MapsTheme weatherWidgetTextColor];
-    v17 = [(WeatherConditionsViewController *)self imageView];
-    [v17 setTintColor:v16];
+    imageView4 = [(WeatherConditionsViewController *)self imageView];
+    [imageView4 setTintColor:v16];
   }
 
-  v18 = [[MapsThemeLabel alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(WeatherConditionsViewController *)self setTitleLabel:v18];
+  height2 = [[MapsThemeLabel alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(WeatherConditionsViewController *)self setTitleLabel:height2];
 
-  v19 = [(WeatherConditionsViewController *)self titleLabel];
-  [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(WeatherConditionsViewController *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   if (_UISolariumEnabled())
   {
@@ -97,28 +97,28 @@
     +[MapsTheme weatherWidgetTextColor];
   }
   v20 = ;
-  v21 = [(WeatherConditionsViewController *)self titleLabel];
-  [v21 setTextColor:v20];
+  titleLabel2 = [(WeatherConditionsViewController *)self titleLabel];
+  [titleLabel2 setTextColor:v20];
 
-  v22 = [(WeatherConditionsViewController *)self titleLabel];
-  [v22 setAccessibilityIdentifier:@"WeatherConditionsTitleLabel"];
+  titleLabel3 = [(WeatherConditionsViewController *)self titleLabel];
+  [titleLabel3 setAccessibilityIdentifier:@"WeatherConditionsTitleLabel"];
 
-  v23 = [(WeatherConditionsViewController *)self titleLabel];
+  titleLabel4 = [(WeatherConditionsViewController *)self titleLabel];
   LODWORD(v24) = 1148846080;
-  [v23 setContentHuggingPriority:1 forAxis:v24];
+  [titleLabel4 setContentHuggingPriority:1 forAxis:v24];
 
   objc_initWeak(&location, self);
   objc_copyWeak(&v31, &location);
   v25 = [(WeatherConditionsViewController *)self imageView:_NSConcreteStackBlock];
   [v25 setImageProvider:&v30];
 
-  v26 = [(WeatherConditionsViewController *)self contentView];
-  v27 = [(WeatherConditionsViewController *)self imageView];
-  [v26 addSubview:v27];
+  contentView4 = [(WeatherConditionsViewController *)self contentView];
+  imageView5 = [(WeatherConditionsViewController *)self imageView];
+  [contentView4 addSubview:imageView5];
 
-  v28 = [(WeatherConditionsViewController *)self contentView];
-  v29 = [(WeatherConditionsViewController *)self titleLabel];
-  [v28 addSubview:v29];
+  contentView5 = [(WeatherConditionsViewController *)self contentView];
+  titleLabel5 = [(WeatherConditionsViewController *)self titleLabel];
+  [contentView5 addSubview:titleLabel5];
 
   objc_destroyWeak(&v31);
   objc_destroyWeak(&location);
@@ -126,21 +126,21 @@
 
 - (void)_updateSubviews
 {
-  v3 = [(WeatherConditionsViewController *)self _titleFont];
-  v4 = [(WeatherConditionsViewController *)self titleLabel];
-  [v4 setFont:v3];
+  _titleFont = [(WeatherConditionsViewController *)self _titleFont];
+  titleLabel = [(WeatherConditionsViewController *)self titleLabel];
+  [titleLabel setFont:_titleFont];
 
-  v5 = [(WeatherConditionsViewController *)self imageView];
-  [v5 updateTheme];
+  imageView = [(WeatherConditionsViewController *)self imageView];
+  [imageView updateTheme];
 
   if ([(WeatherConditionsViewController *)self _shouldShowWeatherConditions])
   {
-    v10 = [(WeatherConditionsViewController *)self weatherConditions];
-    v6 = [v10 temperature];
-    v7 = v6;
-    if (v6)
+    weatherConditions = [(WeatherConditionsViewController *)self weatherConditions];
+    temperature = [weatherConditions temperature];
+    v7 = temperature;
+    if (temperature)
     {
-      v8 = v6;
+      v8 = temperature;
     }
 
     else
@@ -148,8 +148,8 @@
       v8 = &stru_1016631F0;
     }
 
-    v9 = [(WeatherConditionsViewController *)self titleLabel];
-    [v9 setText:v8];
+    titleLabel2 = [(WeatherConditionsViewController *)self titleLabel];
+    [titleLabel2 setText:v8];
   }
 }
 
@@ -192,11 +192,11 @@
 - (BOOL)_shouldShowWeatherConditions
 {
   v3 = +[WeatherSettingsManager sharedManager];
-  v4 = [v3 shouldShowWeatherConditions];
+  shouldShowWeatherConditions = [v3 shouldShowWeatherConditions];
 
   if (self->_weatherConditions)
   {
-    return v4;
+    return shouldShowWeatherConditions;
   }
 
   else
@@ -207,39 +207,39 @@
 
 - (void)_setupConstraints
 {
-  v52 = [(WeatherConditionsViewController *)self imageView];
-  v53 = [(WeatherConditionsViewController *)self titleLabel];
-  v54 = _NSDictionaryOfVariableBindings(@"imageView, titleLabel", v52, v53, 0);
+  imageView = [(WeatherConditionsViewController *)self imageView];
+  titleLabel = [(WeatherConditionsViewController *)self titleLabel];
+  v54 = _NSDictionaryOfVariableBindings(@"imageView, titleLabel", imageView, titleLabel, 0);
   v55 = +[NSMutableArray array];
-  v50 = [(WeatherConditionsViewController *)self contentView];
-  v46 = [v50 leadingAnchor];
-  v48 = [(WeatherConditionsViewController *)self view];
-  v44 = [v48 leadingAnchor];
-  v43 = [v46 constraintGreaterThanOrEqualToAnchor:v44];
+  contentView = [(WeatherConditionsViewController *)self contentView];
+  leadingAnchor = [contentView leadingAnchor];
+  view = [(WeatherConditionsViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v43 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   v58[0] = v43;
-  v42 = [(WeatherConditionsViewController *)self contentView];
-  v40 = [v42 trailingAnchor];
-  v41 = [(WeatherConditionsViewController *)self view];
-  v39 = [v41 trailingAnchor];
-  v38 = [v40 constraintLessThanOrEqualToAnchor:v39];
+  contentView2 = [(WeatherConditionsViewController *)self contentView];
+  trailingAnchor = [contentView2 trailingAnchor];
+  view2 = [(WeatherConditionsViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v38 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   v58[1] = v38;
-  v37 = [(WeatherConditionsViewController *)self contentView];
-  v35 = [v37 centerXAnchor];
-  v36 = [(WeatherConditionsViewController *)self view];
-  v34 = [v36 centerXAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  contentView3 = [(WeatherConditionsViewController *)self contentView];
+  centerXAnchor = [contentView3 centerXAnchor];
+  view3 = [(WeatherConditionsViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v33 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v58[2] = v33;
-  v32 = [(WeatherConditionsViewController *)self contentView];
-  v31 = [v32 topAnchor];
-  v3 = [(WeatherConditionsViewController *)self view];
-  v4 = [v3 topAnchor];
-  v5 = [v31 constraintEqualToAnchor:v4];
+  contentView4 = [(WeatherConditionsViewController *)self contentView];
+  topAnchor = [contentView4 topAnchor];
+  view4 = [(WeatherConditionsViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v5 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v58[3] = v5;
-  v6 = [(WeatherConditionsViewController *)self contentView];
-  v7 = [v6 bottomAnchor];
-  v8 = [(WeatherConditionsViewController *)self view];
-  v9 = [v8 bottomAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  contentView5 = [(WeatherConditionsViewController *)self contentView];
+  bottomAnchor = [contentView5 bottomAnchor];
+  view5 = [(WeatherConditionsViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v58[4] = v10;
   v11 = [NSArray arrayWithObjects:v58 count:5];
   [v55 addObjectsFromArray:v11];
@@ -257,32 +257,32 @@
   v13 = [NSLayoutConstraint constraintsWithVisualFormat:v12 options:0 metrics:0 views:v54];
   [v55 addObjectsFromArray:v13];
 
-  v49 = [v52 topAnchor];
-  v51 = [(WeatherConditionsViewController *)self contentView];
-  v47 = [v51 topAnchor];
-  v45 = [v49 constraintEqualToAnchor:v47];
+  topAnchor3 = [imageView topAnchor];
+  contentView6 = [(WeatherConditionsViewController *)self contentView];
+  topAnchor4 = [contentView6 topAnchor];
+  v45 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v57[0] = v45;
-  v14 = [v52 bottomAnchor];
-  v15 = [(WeatherConditionsViewController *)self contentView];
-  v16 = [v15 bottomAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  bottomAnchor3 = [imageView bottomAnchor];
+  contentView7 = [(WeatherConditionsViewController *)self contentView];
+  bottomAnchor4 = [contentView7 bottomAnchor];
+  v17 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v57[1] = v17;
-  v18 = [v52 widthAnchor];
-  v19 = [v52 heightAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 multiplier:1.0];
+  widthAnchor = [imageView widthAnchor];
+  heightAnchor = [imageView heightAnchor];
+  v20 = [widthAnchor constraintEqualToAnchor:heightAnchor multiplier:1.0];
   v57[2] = v20;
   v21 = [NSArray arrayWithObjects:v57 count:3];
   [v55 addObjectsFromArray:v21];
 
-  v22 = [v53 topAnchor];
-  v23 = [(WeatherConditionsViewController *)self contentView];
-  v24 = [v23 topAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  topAnchor5 = [titleLabel topAnchor];
+  contentView8 = [(WeatherConditionsViewController *)self contentView];
+  topAnchor6 = [contentView8 topAnchor];
+  v25 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v56[0] = v25;
-  v26 = [v53 bottomAnchor];
-  v27 = [(WeatherConditionsViewController *)self contentView];
-  v28 = [v27 bottomAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  bottomAnchor5 = [titleLabel bottomAnchor];
+  contentView9 = [(WeatherConditionsViewController *)self contentView];
+  bottomAnchor6 = [contentView9 bottomAnchor];
+  v29 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v56[1] = v29;
   v30 = [NSArray arrayWithObjects:v56 count:2];
   [v55 addObjectsFromArray:v30];
@@ -299,9 +299,9 @@
 
 - (void)_toggleWeatherConditionsVisibility
 {
-  v3 = [(WeatherConditionsViewController *)self _shouldShowWeatherConditions];
+  _shouldShowWeatherConditions = [(WeatherConditionsViewController *)self _shouldShowWeatherConditions];
 
-  [(WeatherConditionsViewController *)self setVisible:v3 animated:1];
+  [(WeatherConditionsViewController *)self setVisible:_shouldShowWeatherConditions animated:1];
 }
 
 - (void)clearSavedLocation
@@ -311,45 +311,45 @@
   [(WeatherConditionsViewController *)self setWeatherConditions:0];
 }
 
-- (void)setWeatherConditions:(id)a3
+- (void)setWeatherConditions:(id)conditions
 {
-  v5 = a3;
-  if (self->_weatherConditions != v5)
+  conditionsCopy = conditions;
+  if (self->_weatherConditions != conditionsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_weatherConditions, a3);
+    v6 = conditionsCopy;
+    objc_storeStrong(&self->_weatherConditions, conditions);
     [(WeatherConditionsViewController *)self _updateSubviews];
     [(WeatherConditionsViewController *)self setVisible:[(WeatherConditionsViewController *)self _shouldShowWeatherConditions] animated:1];
-    v5 = v6;
+    conditionsCopy = v6;
   }
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(WeatherConditionsViewController *)self delegate];
-  [v7 weatherConditionsViewController:self makeVisible:v5 animated:v4];
+  animatedCopy = animated;
+  visibleCopy = visible;
+  delegate = [(WeatherConditionsViewController *)self delegate];
+  [delegate weatherConditionsViewController:self makeVisible:visibleCopy animated:animatedCopy];
 }
 
 - (BOOL)isVisible
 {
-  v2 = [(WeatherConditionsViewController *)self view];
-  v3 = [v2 isHidden];
+  view = [(WeatherConditionsViewController *)self view];
+  isHidden = [view isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
-- (WeatherConditionsViewController)initWithWeatherLocationDataProvider:(id)a3
+- (WeatherConditionsViewController)initWithWeatherLocationDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = WeatherConditionsViewController;
   v6 = [(WeatherConditionsViewController *)&v11 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_weatherLocationDataProvider, a3);
+    objc_storeStrong(&v6->_weatherLocationDataProvider, provider);
     v8 = [[_TtC4Maps29WeatherConditionsDataProvider alloc] initWithTraitEnvironment:v7];
     weatherConditionsDataProvider = v7->_weatherConditionsDataProvider;
     v7->_weatherConditionsDataProvider = v8;

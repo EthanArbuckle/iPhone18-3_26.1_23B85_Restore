@@ -1,24 +1,24 @@
 @interface PKCloudRecordCounterpartImageData
-- (PKCloudRecordCounterpartImageData)initWithCoder:(id)a3;
-- (id)_descriptionWithIncludeItem:(BOOL)a3;
+- (PKCloudRecordCounterpartImageData)initWithCoder:(id)coder;
+- (id)_descriptionWithIncludeItem:(BOOL)item;
 - (id)description;
-- (id)descriptionWithItem:(BOOL)a3;
-- (int64_t)compare:(id)a3;
-- (void)applyCloudRecordObject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)descriptionWithItem:(BOOL)item;
+- (int64_t)compare:(id)compare;
+- (void)applyCloudRecordObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudRecordCounterpartImageData
 
-- (PKCloudRecordCounterpartImageData)initWithCoder:(id)a3
+- (PKCloudRecordCounterpartImageData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKCloudRecordCounterpartImageData;
-  v5 = [(PKCloudRecordObject *)&v9 initWithCoder:v4];
+  v5 = [(PKCloudRecordObject *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"counterpartImageData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"counterpartImageData"];
     counterpartImageData = v5->_counterpartImageData;
     v5->_counterpartImageData = v6;
   }
@@ -26,35 +26,35 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKCloudRecordCounterpartImageData;
-  v4 = a3;
-  [(PKCloudRecordObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_counterpartImageData forKey:{@"counterpartImageData", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKCloudRecordObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_counterpartImageData forKey:{@"counterpartImageData", v5.receiver, v5.super_class}];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   counterpartImageData = self->_counterpartImageData;
-  v4 = a3;
-  v5 = [(PKPeerPaymentCounterpartImageData *)counterpartImageData identifier];
-  v6 = [v4 counterpartImageData];
+  compareCopy = compare;
+  identifier = [(PKPeerPaymentCounterpartImageData *)counterpartImageData identifier];
+  counterpartImageData = [compareCopy counterpartImageData];
 
-  v7 = [v6 identifier];
-  v8 = [v5 compare:v7];
+  identifier2 = [counterpartImageData identifier];
+  v8 = [identifier compare:identifier2];
 
   return v8;
 }
 
-- (id)descriptionWithItem:(BOOL)a3
+- (id)descriptionWithItem:(BOOL)item
 {
-  v3 = a3;
+  itemCopy = item;
   v5 = [(PKCloudRecordCounterpartImageData *)self _descriptionWithIncludeItem:?];
   v8.receiver = self;
   v8.super_class = PKCloudRecordCounterpartImageData;
-  v6 = [(PKCloudRecordObject *)&v8 descriptionWithItem:v3];
+  v6 = [(PKCloudRecordObject *)&v8 descriptionWithItem:itemCopy];
   [v5 appendFormat:@"\n%@", v6];
 
   return v5;
@@ -71,47 +71,47 @@
   return v3;
 }
 
-- (id)_descriptionWithIncludeItem:(BOOL)a3
+- (id)_descriptionWithIncludeItem:(BOOL)item
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E696AD60] string];
-  v6 = v5;
+  itemCopy = item;
+  string = [MEMORY[0x1E696AD60] string];
+  v6 = string;
   if (self->_counterpartImageData)
   {
-    if (v3)
+    if (itemCopy)
     {
-      [v5 appendFormat:@"counterpartImageData: %@\n", self->_counterpartImageData];
+      [string appendFormat:@"counterpartImageData: %@\n", self->_counterpartImageData];
     }
   }
 
   else
   {
-    [v5 appendFormat:@"No associated counterpartImageData in database\n", v8];
+    [string appendFormat:@"No associated counterpartImageData in database\n", v8];
   }
 
   return v6;
 }
 
-- (void)applyCloudRecordObject:(id)a3
+- (void)applyCloudRecordObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10.receiver = self;
     v10.super_class = PKCloudRecordCounterpartImageData;
-    [(PKCloudRecordObject *)&v10 applyCloudRecordObject:v4];
-    v5 = v4;
+    [(PKCloudRecordObject *)&v10 applyCloudRecordObject:objectCopy];
+    v5 = objectCopy;
     v6 = v5;
     if (!self->_counterpartImageData)
     {
-      v7 = [v5 counterpartImageData];
+      counterpartImageData = [v5 counterpartImageData];
 
-      if (v7)
+      if (counterpartImageData)
       {
-        v8 = [v6 counterpartImageData];
+        counterpartImageData2 = [v6 counterpartImageData];
         counterpartImageData = self->_counterpartImageData;
-        self->_counterpartImageData = v8;
+        self->_counterpartImageData = counterpartImageData2;
       }
     }
   }

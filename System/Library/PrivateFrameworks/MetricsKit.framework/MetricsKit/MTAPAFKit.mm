@@ -1,14 +1,14 @@
 @interface MTAPAFKit
-- (id)trackerWithPlaylist:(id)a3;
+- (id)trackerWithPlaylist:(id)playlist;
 @end
 
 @implementation MTAPAFKit
 
-- (id)trackerWithPlaylist:(id)a3
+- (id)trackerWithPlaylist:(id)playlist
 {
-  v4 = a3;
+  playlistCopy = playlist;
   v5 = objc_alloc_init(MTPAFTracker);
-  [(MTPAFTracker *)v5 trackPlaylist:v4 using:self];
+  [(MTPAFTracker *)v5 trackPlaylist:playlistCopy using:self];
 
   return v5;
 }

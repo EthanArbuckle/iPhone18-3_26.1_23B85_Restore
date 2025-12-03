@@ -6,10 +6,10 @@
 
 - (uint64_t)hasAnnounceEntitlement
 {
-  v1 = [a1 valueForEntitlement:*MEMORY[0x277CEAC10]];
-  v2 = [v1 BOOLValue];
+  v1 = [self valueForEntitlement:*MEMORY[0x277CEAC10]];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface TSCH3DPrefilteredLineRenderer
 + (id)renderer;
-- (BOOL)beginWithPipeline:(id)a3;
-- (BOOL)p_shouldRenderWithSetting:(id)a3 returningCacheObject:(id *)a4;
+- (BOOL)beginWithPipeline:(id)pipeline;
+- (BOOL)p_shouldRenderWithSetting:(id)setting returningCacheObject:(id *)object;
 - (TSCH3DPrefilteredLineRenderer)init;
 - (box<glm::detail::tvec2<int>>)viewport;
 - (id).cxx_construct;
-- (id)p_renderCacheIDFromSetting:(id)a3;
+- (id)p_renderCacheIDFromSetting:(id)setting;
 - (id)p_renderCacheKey;
 - (tmat3x3<float>)normalMatrix;
 - (tmat4x4<float>)modelMatrix;
 - (tmat4x4<float>)normalizedProjection;
 - (tmat4x4<float>)projection;
 - (void)dealloc;
-- (void)endWithDidGenerateShaderEffectsBlock:(id)a3;
-- (void)p_setupShaderEffectsForSetting:(id)a3;
-- (void)renderLineBufferWithSetting:(id)a3 vertices:(id)a4 normals:(id)a5 diffuseTexcoords:(id)a6;
-- (void)renderWithSetting:(id)a3 fromVertex:(const void *)a4 toVertex:(const void *)a5;
+- (void)endWithDidGenerateShaderEffectsBlock:(id)block;
+- (void)p_setupShaderEffectsForSetting:(id)setting;
+- (void)renderLineBufferWithSetting:(id)setting vertices:(id)vertices normals:(id)normals diffuseTexcoords:(id)texcoords;
+- (void)renderWithSetting:(id)setting fromVertex:(const void *)vertex toVertex:(const void *)toVertex;
 @end
 
 @implementation TSCH3DPrefilteredLineRenderer
 
 + (id)renderer
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -68,21 +68,21 @@
   return MEMORY[0x2821F9670](v2, sel_renderCacheKey, v3, v4, v5);
 }
 
-- (id)p_renderCacheIDFromSetting:(id)a3
+- (id)p_renderCacheIDFromSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   v5 = MEMORY[0x277D812A8];
   v10 = objc_msgSend_valueWithPointer_(MEMORY[0x277CCAE60], v6, v7, v8, v9, self);
-  v15 = objc_msgSend_pairWithFirst_second_(v5, v11, v12, v13, v14, v10, v4);
+  v15 = objc_msgSend_pairWithFirst_second_(v5, v11, v12, v13, v14, v10, settingCopy);
 
   return v15;
 }
 
-- (BOOL)beginWithPipeline:(id)a3
+- (BOOL)beginWithPipeline:(id)pipeline
 {
   v121 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v10 = objc_msgSend_processor(v5, v6, v7, v8, v9);
+  pipelineCopy = pipeline;
+  v10 = objc_msgSend_processor(pipelineCopy, v6, v7, v8, v9);
   canRenderPrefilteredLines = objc_msgSend_canRenderPrefilteredLines(v10, v11, v12, v13, v14);
 
   if (canRenderPrefilteredLines)
@@ -111,7 +111,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v52, v53, v54, v55);
     }
 
-    objc_storeStrong(&self->_pipeline, a3);
+    objc_storeStrong(&self->_pipeline, pipeline);
     v60 = objc_msgSend_processor(self->_pipeline, v56, v57, v58, v59);
     objc_msgSend_pushState(v60, v61, v62, v63, v64);
     objc_msgSend_pushMatrix(v60, v65, v66, v67, v68);
@@ -206,13 +206,13 @@
   return canRenderPrefilteredLines;
 }
 
-- (void)p_setupShaderEffectsForSetting:(id)a3
+- (void)p_setupShaderEffectsForSetting:(id)setting
 {
-  v68 = a3;
+  settingCopy = setting;
   v8 = objc_msgSend_processor(self->_pipeline, v4, v5, v6, v7);
   v13 = objc_msgSend_effects(v8, v9, v10, v11, v12);
 
-  if ((objc_msgSend_disableColorOutput(v68, v14, v15, v16, v17) & 1) == 0)
+  if ((objc_msgSend_disableColorOutput(settingCopy, v14, v15, v16, v17) & 1) == 0)
   {
     objc_msgSend_reset(v13, v18, v19, v20, v21);
   }
@@ -220,13 +220,13 @@
   v22 = objc_msgSend_effect(TSCH3DNoLightingVertexShaderEffect, v18, v19, v20, v21);
   objc_msgSend_addEffectOnce_toSection_(v13, v23, v24, v25, v26, v22, 0);
 
-  if (objc_msgSend_useNormals(v68, v27, v28, v29, v30))
+  if (objc_msgSend_useNormals(settingCopy, v27, v28, v29, v30))
   {
     v35 = objc_msgSend_effect(TSCH3DNormalShaderEffect, v31, v32, v33, v34);
     objc_msgSend_addEffectOnce_toSection_(v13, v36, v37, v38, v39, v35, 0);
   }
 
-  if ((objc_msgSend_disableColorOutput(v68, v31, v32, v33, v34) & 1) == 0)
+  if ((objc_msgSend_disableColorOutput(settingCopy, v31, v32, v33, v34) & 1) == 0)
   {
     v44 = objc_msgSend_effect(TSCH3DPrefilteredLineShaderEffect, v40, v41, v42, v43);
     objc_msgSend_addEffectOnce_toSection_(v13, v45, v46, v47, v48, v44, 3);
@@ -235,7 +235,7 @@
     objc_msgSend_addEffect_(v13, v54, v55, v56, v57, v53);
   }
 
-  v58 = objc_msgSend_stroke(v68, v40, v41, v42, v43);
+  v58 = objc_msgSend_stroke(settingCopy, v40, v41, v42, v43);
 
   if (v58)
   {
@@ -244,10 +244,10 @@
   }
 }
 
-- (void)endWithDidGenerateShaderEffectsBlock:(id)a3
+- (void)endWithDidGenerateShaderEffectsBlock:(id)block
 {
   v205 = *MEMORY[0x277D85DE8];
-  v192 = a3;
+  blockCopy = block;
   pipeline = self->_pipeline;
   if (!pipeline)
   {
@@ -311,7 +311,7 @@
         v197[3] = &unk_27A6B6BA8;
         v197[4] = self;
         v197[5] = v76;
-        v198 = v192;
+        v198 = blockCopy;
         objc_msgSend_performBlockWithProcessor_block_(TSCH3DRenderProcessorStateSession, v78, v79, v80, v81, v77, v197);
       }
 
@@ -393,9 +393,9 @@
   self->_pipeline = 0;
 }
 
-- (BOOL)p_shouldRenderWithSetting:(id)a3 returningCacheObject:(id *)a4
+- (BOOL)p_shouldRenderWithSetting:(id)setting returningCacheObject:(id *)object
 {
-  v6 = a3;
+  settingCopy = setting;
   v11 = objc_msgSend_scene(self->_pipeline, v7, v8, v9, v10);
   v16 = objc_msgSend_renderCache(v11, v12, v13, v14, v15);
 
@@ -403,7 +403,7 @@
   v26 = objc_msgSend_cacheEnabledForKey_(v16, v22, v23, v24, v25, v21);
 
   v89 = 0;
-  v31 = objc_msgSend_objectForKey_(self->_cacheObjects, v27, v28, v29, v30, v6);
+  v31 = objc_msgSend_objectForKey_(self->_cacheObjects, v27, v28, v29, v30, settingCopy);
   v36 = v31;
   if (v31)
   {
@@ -413,7 +413,7 @@
   else
   {
     v41 = objc_msgSend_p_renderCacheKey(self, v32, v33, v34, v35);
-    v46 = objc_msgSend_p_renderCacheIDFromSetting_(self, v42, v43, v44, v45, v6);
+    v46 = objc_msgSend_p_renderCacheIDFromSetting_(self, v42, v43, v44, v45, settingCopy);
     v36 = objc_msgSend_cacheObjectForKey_cacheID_created_ifAbsent_(v16, v47, v48, v49, v50, v41, v46, &v89, &unk_28851D2C8);
 
     cacheObjects = self->_cacheObjects;
@@ -428,10 +428,10 @@
       cacheObjects = self->_cacheObjects;
     }
 
-    objc_msgSend_setObject_forKey_(cacheObjects, v51, v52, v53, v54, v36, v6);
+    objc_msgSend_setObject_forKey_(cacheObjects, v51, v52, v53, v54, v36, settingCopy);
   }
 
-  if (!a4)
+  if (!object)
   {
     v71 = MEMORY[0x277D81150];
     v72 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v37, v38, v39, v40, "[TSCH3DPrefilteredLineRenderer p_shouldRenderWithSetting:returningCacheObject:]");
@@ -442,17 +442,17 @@
   }
 
   v86 = v36;
-  *a4 = v36;
+  *object = v36;
   v87 = v89 | ~v26;
 
   return v87 & 1;
 }
 
-- (void)renderWithSetting:(id)a3 fromVertex:(const void *)a4 toVertex:(const void *)a5
+- (void)renderWithSetting:(id)setting fromVertex:(const void *)vertex toVertex:(const void *)toVertex
 {
-  v8 = a3;
+  settingCopy = setting;
   v35 = 0;
-  shouldRenderWithSetting_returningCacheObject = objc_msgSend_p_shouldRenderWithSetting_returningCacheObject_(self, v9, v10, v11, v12, v8, &v35);
+  shouldRenderWithSetting_returningCacheObject = objc_msgSend_p_shouldRenderWithSetting_returningCacheObject_(self, v9, v10, v11, v12, settingCopy, &v35);
   v14 = v35;
   v19 = v14;
   if (shouldRenderWithSetting_returningCacheObject)
@@ -467,25 +467,25 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v31, v32, v33, v34);
     }
 
-    objc_msgSend_renderWithLineRenderer_setting_fromVertex_toVertex_(v19, v15, v16, v17, v18, self, v8, a4, a5);
+    objc_msgSend_renderWithLineRenderer_setting_fromVertex_toVertex_(v19, v15, v16, v17, v18, self, settingCopy, vertex, toVertex);
   }
 }
 
-- (void)renderLineBufferWithSetting:(id)a3 vertices:(id)a4 normals:(id)a5 diffuseTexcoords:(id)a6
+- (void)renderLineBufferWithSetting:(id)setting vertices:(id)vertices normals:(id)normals diffuseTexcoords:(id)texcoords
 {
-  v10 = a3;
-  v126 = a4;
-  v125 = a5;
-  v124 = a6;
+  settingCopy = setting;
+  verticesCopy = vertices;
+  normalsCopy = normals;
+  texcoordsCopy = texcoords;
   v133[0] = 0;
-  LOBYTE(a6) = objc_msgSend_p_shouldRenderWithSetting_returningCacheObject_(self, v11, v12, v13, v14, v10, v133);
+  LOBYTE(texcoords) = objc_msgSend_p_shouldRenderWithSetting_returningCacheObject_(self, v11, v12, v13, v14, settingCopy, v133);
   v15 = v133[0];
-  if ((a6 & 1) == 0)
+  if ((texcoords & 1) == 0)
   {
     goto LABEL_32;
   }
 
-  v17 = sub_27616536C(v126);
+  v17 = sub_27616536C(verticesCopy);
   if (((v17[2] - *v17) & 4) != 0)
   {
     v21 = MEMORY[0x277D81150];
@@ -496,9 +496,9 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33, v34, v35);
   }
 
-  if (v125)
+  if (normalsCopy)
   {
-    v36 = sub_27616536C(v125);
+    v36 = sub_27616536C(normalsCopy);
     v37 = v36[1] - *v36;
     if ((v37 & 4) != 0)
     {
@@ -527,7 +527,7 @@
     v36 = 0;
   }
 
-  if (!v124)
+  if (!texcoordsCopy)
   {
     v68 = 0;
     if (v15)
@@ -538,7 +538,7 @@
     goto LABEL_18;
   }
 
-  v68 = sub_2761654D0(v124);
+  v68 = sub_2761654D0(texcoordsCopy);
   v69 = v68[1] - *v68;
   if ((v69 & 0x10) != 0)
   {
@@ -636,7 +636,7 @@ LABEL_31:
       v127[2] = v123;
       v128 = 0;
       v129 = v119;
-      objc_msgSend_renderWithLineRenderer_setting_fromVertex_toVertex_(v15, v16, *&v119, v19, v20, self, v10, v130, v127);
+      objc_msgSend_renderWithLineRenderer_setting_fromVertex_toVertex_(v15, v16, *&v119, v19, v20, self, settingCopy, v130, v127);
       v116 += 2;
       v115 = *v17;
       v117 += 32;

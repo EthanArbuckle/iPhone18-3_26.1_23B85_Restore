@@ -1,31 +1,31 @@
 @interface CDMCcqrServiceUtils
-+ (BOOL)isNLRouterAssetAvailable:(id)a3;
++ (BOOL)isNLRouterAssetAvailable:(id)available;
 + (id)buildQueryRewriteRequest;
-+ (id)leftShiftSiriResponse:(id)a3;
++ (id)leftShiftSiriResponse:(id)response;
 @end
 
 @implementation CDMCcqrServiceUtils
 
-+ (BOOL)isNLRouterAssetAvailable:(id)a3
++ (BOOL)isNLRouterAssetAvailable:(id)available
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  availableCopy = available;
   v4 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v24 = "+[CDMCcqrServiceUtils isNLRouterAssetAvailable:]";
     v25 = 2112;
-    v26 = v3;
+    v26 = availableCopy;
     _os_log_debug_impl(&dword_1DC287000, v4, OS_LOG_TYPE_DEBUG, "%s Checking NLRouter assets for locale: %@", buf, 0x16u);
   }
 
-  v5 = [CDMAssetsUtils getCDMAssetsInfoForNLRouterWithLocale:v3];
+  v5 = [CDMAssetsUtils getCDMAssetsInfoForNLRouterWithLocale:availableCopy];
   if (v5)
   {
     v6 = +[CDMAssetsManager getSingletonCDMAssetsManager];
-    v7 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v3];
-    if ([v6 shouldReSetupForLocale:v3 cdmAssetsInfo:v5])
+    v7 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:availableCopy];
+    if ([v6 shouldReSetupForLocale:availableCopy cdmAssetsInfo:v5])
     {
       v22 = 0;
       [v6 setupForLocale:v7 cdmAssetsInfo:v5 error:&v22];
@@ -51,11 +51,11 @@
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [v9 descriptionInStringsFileFormat];
+      descriptionInStringsFileFormat = [v9 descriptionInStringsFileFormat];
       *buf = 136315394;
       v24 = "+[CDMCcqrServiceUtils isNLRouterAssetAvailable:]";
       v25 = 2112;
-      v26 = v20;
+      v26 = descriptionInStringsFileFormat;
       _os_log_debug_impl(&dword_1DC287000, v11, OS_LOG_TYPE_DEBUG, "%s AssetPath Info for NLRouter.  %@", buf, 0x16u);
     }
 
@@ -203,32 +203,32 @@ LABEL_24:
   return v29;
 }
 
-+ (id)leftShiftSiriResponse:(id)a3
++ (id)leftShiftSiriResponse:(id)response
 {
-  v3 = a3;
-  v4 = [v3 copy];
-  v5 = [v3 originalInteractions];
-  v6 = [v5 count];
+  responseCopy = response;
+  v4 = [responseCopy copy];
+  originalInteractions = [responseCopy originalInteractions];
+  v6 = [originalInteractions count];
 
   v7 = v6 - 1;
   if (v6 > 1)
   {
     for (i = 1; i != v6; ++i)
     {
-      v9 = [v3 originalInteractions];
-      v10 = [v9 objectAtIndexedSubscript:i];
-      v11 = [v10 siriResponses];
-      v12 = [v4 originalInteractions];
-      v13 = [v12 objectAtIndexedSubscript:i - 1];
-      [v13 setSiriResponses:v11];
+      originalInteractions2 = [responseCopy originalInteractions];
+      v10 = [originalInteractions2 objectAtIndexedSubscript:i];
+      siriResponses = [v10 siriResponses];
+      originalInteractions3 = [v4 originalInteractions];
+      v13 = [originalInteractions3 objectAtIndexedSubscript:i - 1];
+      [v13 setSiriResponses:siriResponses];
     }
   }
 
   if (v6 >= 1)
   {
     v14 = objc_opt_new();
-    v15 = [v4 originalInteractions];
-    v16 = [v15 objectAtIndexedSubscript:v7];
+    originalInteractions4 = [v4 originalInteractions];
+    v16 = [originalInteractions4 objectAtIndexedSubscript:v7];
     [v16 setSiriResponses:v14];
   }
 

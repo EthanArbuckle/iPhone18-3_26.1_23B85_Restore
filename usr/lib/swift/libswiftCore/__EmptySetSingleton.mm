@@ -1,12 +1,12 @@
 @interface __EmptySetSingleton
-- (_TtCs19__EmptySetSingleton)initWithObjects:(const void *)a3 count:(int64_t)a4;
+- (_TtCs19__EmptySetSingleton)initWithObjects:(const void *)objects count:(int64_t)count;
 - (id)objectEnumerator;
-- (int64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(int64_t)a5;
+- (int64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(int64_t)count;
 @end
 
 @implementation __EmptySetSingleton
 
-- (_TtCs19__EmptySetSingleton)initWithObjects:(const void *)a3 count:(int64_t)a4
+- (_TtCs19__EmptySetSingleton)initWithObjects:(const void *)objects count:(int64_t)count
 {
   result = self;
   __break(1u);
@@ -21,15 +21,15 @@
   return v3;
 }
 
-- (int64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(int64_t)a5
+- (int64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(int64_t)count
 {
-  var0 = a3->var0;
-  var1 = a3->var1;
-  var2 = a3->var2;
-  if (!a3->var0)
+  var0 = state->var0;
+  var1 = state->var1;
+  var2 = state->var2;
+  if (!state->var0)
   {
     var2 = &_fastEnumerationStorageMutationsTarget;
-    var1 = a4;
+    var1 = objects;
   }
 
   if (var0 <= 1)
@@ -37,9 +37,9 @@
     var0 = 1;
   }
 
-  a3->var0 = var0;
-  a3->var1 = var1;
-  a3->var2 = var2;
+  state->var0 = var0;
+  state->var1 = var1;
+  state->var2 = var2;
   return 0;
 }
 

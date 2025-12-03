@@ -1,32 +1,32 @@
 @interface AKTwoPointLinePointOfInterestHelper
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5;
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6;
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller;
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment;
 @end
 
 @implementation AKTwoPointLinePointOfInterestHelper
 
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment
 {
   v9 = MEMORY[0x277CBEB18];
-  v10 = a6;
-  v11 = a5;
+  alignmentCopy = alignment;
+  annotationCopy = annotation;
   v37 = [v9 arrayWithCapacity:2];
   v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
-  [v11 startPoint];
+  [annotationCopy startPoint];
   v14 = v13;
   v16 = v15;
-  [v11 endPoint];
+  [annotationCopy endPoint];
   v18 = v17;
   v20 = v19;
 
-  v21 = [v10 geometryHelper];
-  [v21 screenPixelAlignedPointForPoint:{v14, v16}];
+  geometryHelper = [alignmentCopy geometryHelper];
+  [geometryHelper screenPixelAlignedPointForPoint:{v14, v16}];
   v23 = v22;
   v25 = v24;
 
-  v26 = [v10 geometryHelper];
+  geometryHelper2 = [alignmentCopy geometryHelper];
 
-  [v26 screenPixelAlignedPointForPoint:{v18, v20}];
+  [geometryHelper2 screenPixelAlignedPointForPoint:{v18, v20}];
   v28 = v27;
   v30 = v29;
 
@@ -43,20 +43,20 @@
   [v12 addObject:v34];
 
   v35 = v37;
-  *a3 = v37;
+  *interest = v37;
   v36 = v12;
-  *a4 = v12;
+  *style = v12;
 }
 
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller
 {
   v5 = 10;
-  if (a3 != 1)
+  if (index != 1)
   {
     v5 = 0;
   }
 
-  if (a3)
+  if (index)
   {
     return v5;
   }

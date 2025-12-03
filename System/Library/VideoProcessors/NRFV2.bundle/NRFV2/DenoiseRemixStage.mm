@@ -1,19 +1,19 @@
 @interface DenoiseRemixStage
-+ (int)prewarmShaders:(id)a3 tuningParameters:(id)a4 plistEntryName:(id)a5;
-+ (void)prewarmOneShader:(id)a3 entryToParse:(id)a4 denoisingOptions:(DenoiseRemixStageOptions *)a5;
-- (BOOL)dumpParamsToFile:(id)a3;
-- (BOOL)loadParamsFromFile:(id)a3;
-- (DenoiseRemixStage)initWithContext:(id)a3 options:(const DenoiseRemixStageOptions *)a4 numPyrLevels:(int)a5;
-- (int)runShader:(const void *)a3 shader:(id)a4 desc:(id)a5 uniforms:(id)a6 uniforms2:(id)a7 uniforms3:(id)a8;
-- (int)setResourcesWithOutputPyramid:(id)a3 noiseMapPyramid:(id)a4 sharpeningPyramid:(id)a5 localGainMapTex:(id)a6;
-- (int)setUniforms:(AmbnrConfiguration *)a3;
++ (int)prewarmShaders:(id)shaders tuningParameters:(id)parameters plistEntryName:(id)name;
++ (void)prewarmOneShader:(id)shader entryToParse:(id)parse denoisingOptions:(DenoiseRemixStageOptions *)options;
+- (BOOL)dumpParamsToFile:(id)file;
+- (BOOL)loadParamsFromFile:(id)file;
+- (DenoiseRemixStage)initWithContext:(id)context options:(const DenoiseRemixStageOptions *)options numPyrLevels:(int)levels;
+- (int)runShader:(const void *)shader shader:(id)a4 desc:(id)desc uniforms:(id)uniforms uniforms2:(id)uniforms2 uniforms3:(id)uniforms3;
+- (int)setResourcesWithOutputPyramid:(id)pyramid noiseMapPyramid:(id)mapPyramid sharpeningPyramid:(id)sharpeningPyramid localGainMapTex:(id)tex;
+- (int)setUniforms:(AmbnrConfiguration *)uniforms;
 @end
 
 @implementation DenoiseRemixStage
 
-- (BOOL)dumpParamsToFile:(id)a3
+- (BOOL)dumpParamsToFile:(id)file
 {
-  v191 = a3;
+  fileCopy = file;
   v4 = objc_alloc_init(MEMORY[0x29EDB8E00]);
   v7 = objc_msgSend_numberWithInt_(MEMORY[0x29EDBA070], v5, self->_pyr->levels, v6);
   objc_msgSend_setObject_forKeyedSubscript_(v4, v8, v7, @"number_bands");
@@ -137,7 +137,7 @@
       v180 = objc_msgSend_numberWithFloat_(MEMORY[0x29EDBA070], v177, v178, v179, v176);
       objc_msgSend_setObject_forKeyedSubscript_(v18, v181, v180, @"das.bluenessCr.margin");
 
-      v184 = objc_msgSend_objectForKeyedSubscript_(v4, v182, @"bands", v183, v191);
+      v184 = objc_msgSend_objectForKeyedSubscript_(v4, v182, @"bands", v183, fileCopy);
       objc_msgSend_addObject_(v184, v185, v18, v186);
 
       ++v12;
@@ -147,15 +147,15 @@
   }
 
   v193 = 0;
-  v187 = objc_msgSend_dataWithJSONObject_options_error_(MEMORY[0x29EDB9FF0], v11, v4, 1, &v193, v191);
+  v187 = objc_msgSend_dataWithJSONObject_options_error_(MEMORY[0x29EDB9FF0], v11, v4, 1, &v193, fileCopy);
   v189 = objc_msgSend_writeToFile_atomically_(v187, v188, v192, 1);
 
   return v189;
 }
 
-- (BOOL)loadParamsFromFile:(id)a3
+- (BOOL)loadParamsFromFile:(id)file
 {
-  v6 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x29EDB8DA0], a2, a3, v3);
+  v6 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x29EDB8DA0], a2, file, v3);
   if (v6)
   {
     v192 = v6;
@@ -306,15 +306,15 @@
   return v189;
 }
 
-- (DenoiseRemixStage)initWithContext:(id)a3 options:(const DenoiseRemixStageOptions *)a4 numPyrLevels:(int)a5
+- (DenoiseRemixStage)initWithContext:(id)context options:(const DenoiseRemixStageOptions *)options numPyrLevels:(int)levels
 {
-  v9 = a3;
-  if (a5 > 0)
+  contextCopy = context;
+  if (levels > 0)
   {
-    objc_storeStrong(&self->_metal, a3);
+    objc_storeStrong(&self->_metal, context);
     v13 = 0;
-    v14 = *&a4->lgaAlgorithm;
-    *&self->_options.enableNoiseMap = *&a4->enableNoiseMap;
+    v14 = *&options->lgaAlgorithm;
+    *&self->_options.enableNoiseMap = *&options->enableNoiseMap;
     *&self->_options.lgaAlgorithm = v14;
     v15 = 1;
     while (2)
@@ -326,7 +326,7 @@
       {
         v19 = v18;
         v20 = objc_msgSend_sharedInstance(DenoiseRemixStageShared, v10, v11, v12);
-        v22 = objc_msgSend_getShaders_lumaFP16_chromaFP16_options_(v20, v21, v9, v13 & 1, v16 & 1, a4);
+        v22 = objc_msgSend_getShaders_lumaFP16_chromaFP16_options_(v20, v21, contextCopy, v13 & 1, v16 & 1, options);
 
         if (!v22)
         {
@@ -356,7 +356,7 @@
       objc_msgSend_setStorageMode_(v23, v24, 0, v25);
       objc_msgSend_setHazardTrackingMode_(v26, v27, 2, v28);
       objc_msgSend_setSize_(v26, v29, 20480, v30);
-      v34 = objc_msgSend_device(v9, v31, v32, v33);
+      v34 = objc_msgSend_device(contextCopy, v31, v32, v33);
       v37 = objc_msgSend_newHeapWithDescriptor_(v34, v35, v26, v36);
       uniformsHeap = self->_uniformsHeap;
       self->_uniformsHeap = v37;
@@ -414,7 +414,7 @@ LABEL_20:
     }
 
 LABEL_17:
-    v55 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -426,23 +426,23 @@ LABEL_16:
   }
 
 LABEL_14:
-  v55 = self;
+  selfCopy = self;
 LABEL_18:
-  v56 = v55;
+  v56 = selfCopy;
 
   return v56;
 }
 
-+ (int)prewarmShaders:(id)a3 tuningParameters:(id)a4 plistEntryName:(id)a5
++ (int)prewarmShaders:(id)shaders tuningParameters:(id)parameters plistEntryName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v74 = a5;
+  shadersCopy = shaders;
+  parametersCopy = parameters;
+  nameCopy = name;
   v90 = 0;
   v89 = 0;
   v9 = objc_autoreleasePoolPush();
-  v75 = v8;
-  v12 = objc_msgSend_objectForKeyedSubscript_(v8, v10, @"DefaultSensorIDs", v11);
+  v75 = parametersCopy;
+  v12 = objc_msgSend_objectForKeyedSubscript_(parametersCopy, v10, @"DefaultSensorIDs", v11);
   v13 = v12;
   if (v12)
   {
@@ -471,7 +471,7 @@ LABEL_18:
           v20 = objc_msgSend_objectForKeyedSubscript_(v14, v16, v19, v17, v70, v71);
           v23 = objc_msgSend_objectForKeyedSubscript_(v75, v21, v19, v22);
           v26 = objc_msgSend_objectForKeyedSubscript_(v23, v24, v20, v25);
-          v29 = objc_msgSend_objectForKeyedSubscript_(v26, v27, v74, v28);
+          v29 = objc_msgSend_objectForKeyedSubscript_(v26, v27, nameCopy, v28);
           v32 = objc_msgSend_objectForKeyedSubscript_(v29, v30, @"NRFParameters", v31);
           v35 = objc_msgSend_objectForKeyedSubscript_(v32, v33, @"DenoiseAndSharpening", v34);
 
@@ -508,7 +508,7 @@ LABEL_18:
                     LODWORD(v89) = objc_msgSend_lgaAlgorithm(v52, v56, v57, v58);
                     BYTE4(v89) = objc_msgSend_enableBandZeroDenoising(v52, v59, v60, v61);
                     LOBYTE(v90) = objc_msgSend_enableNoiseMap(v52, v62, v63, v64);
-                    objc_msgSend_prewarmOneShader_entryToParse_denoisingOptions_(DenoiseRemixStage, v65, v7, v55, &v89);
+                    objc_msgSend_prewarmOneShader_entryToParse_denoisingOptions_(DenoiseRemixStage, v65, shadersCopy, v55, &v89);
                   }
                 }
 
@@ -530,7 +530,7 @@ LABEL_18:
       while (v76);
     }
 
-    objc_msgSend_prewarmRenderers_(DenoiseRemixStage, v66, v7, v67);
+    objc_msgSend_prewarmRenderers_(DenoiseRemixStage, v66, shadersCopy, v67);
     v68 = 0;
     v13 = v70;
     v9 = v71;
@@ -547,21 +547,21 @@ LABEL_18:
   return v68;
 }
 
-+ (void)prewarmOneShader:(id)a3 entryToParse:(id)a4 denoisingOptions:(DenoiseRemixStageOptions *)a5
++ (void)prewarmOneShader:(id)shader entryToParse:(id)parse denoisingOptions:(DenoiseRemixStageOptions *)options
 {
-  v37 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_objectForKeyedSubscript_(v7, v8, @"EnableBilateralRegression", v9);
-  a5->enableBilateralRegression = objc_msgSend_BOOLValue(v10, v11, v12, v13);
+  shaderCopy = shader;
+  parseCopy = parse;
+  v10 = objc_msgSend_objectForKeyedSubscript_(parseCopy, v8, @"EnableBilateralRegression", v9);
+  options->enableBilateralRegression = objc_msgSend_BOOLValue(v10, v11, v12, v13);
 
-  v16 = objc_msgSend_objectForKeyedSubscript_(v7, v14, @"EnableLoGOffset", v15);
-  a5->enableLoGOffset = objc_msgSend_BOOLValue(v16, v17, v18, v19);
+  v16 = objc_msgSend_objectForKeyedSubscript_(parseCopy, v14, @"EnableLoGOffset", v15);
+  options->enableLoGOffset = objc_msgSend_BOOLValue(v16, v17, v18, v19);
 
-  v22 = objc_msgSend_objectForKeyedSubscript_(v7, v20, @"EnableLowVarSharpening", v21);
-  a5->enableLowVarSharpening = objc_msgSend_BOOLValue(v22, v23, v24, v25);
+  v22 = objc_msgSend_objectForKeyedSubscript_(parseCopy, v20, @"EnableLowVarSharpening", v21);
+  options->enableLowVarSharpening = objc_msgSend_BOOLValue(v22, v23, v24, v25);
 
-  v28 = objc_msgSend_objectForKeyedSubscript_(v7, v26, @"EnableGdFlatness", v27);
-  a5->enableGdFlatness = objc_msgSend_BOOLValue(v28, v29, v30, v31);
+  v28 = objc_msgSend_objectForKeyedSubscript_(parseCopy, v26, @"EnableGdFlatness", v27);
+  options->enableGdFlatness = objc_msgSend_BOOLValue(v28, v29, v30, v31);
 
   for (i = 0; i != 4; ++i)
   {
@@ -578,29 +578,29 @@ LABEL_18:
 
     if (i >= 2)
     {
-      v36 = objc_msgSend_initWithMetal_vertName_pixelFormatLuma_pixelFormatChroma_options_(v33, v34, v37, @"RemixDenoise_vert", v35, 65, a5);
+      v36 = objc_msgSend_initWithMetal_vertName_pixelFormatLuma_pixelFormatChroma_options_(v33, v34, shaderCopy, @"RemixDenoise_vert", v35, 65, options);
     }
 
     else
     {
-      v36 = objc_msgSend_initWithMetal_vertName_pixelFormatLuma_pixelFormatChroma_options_(v33, v34, v37, @"RemixDenoise_vert", v35, 30, a5);
+      v36 = objc_msgSend_initWithMetal_vertName_pixelFormatLuma_pixelFormatChroma_options_(v33, v34, shaderCopy, @"RemixDenoise_vert", v35, 30, options);
     }
   }
 }
 
-- (int)setResourcesWithOutputPyramid:(id)a3 noiseMapPyramid:(id)a4 sharpeningPyramid:(id)a5 localGainMapTex:(id)a6
+- (int)setResourcesWithOutputPyramid:(id)pyramid noiseMapPyramid:(id)mapPyramid sharpeningPyramid:(id)sharpeningPyramid localGainMapTex:(id)tex
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v12 && self->_options.enableNoiseMap)
+  pyramidCopy = pyramid;
+  mapPyramidCopy = mapPyramid;
+  sharpeningPyramidCopy = sharpeningPyramid;
+  texCopy = tex;
+  if (!mapPyramidCopy && self->_options.enableNoiseMap)
   {
     sub_2958CE160(&v18);
     v15 = v18;
   }
 
-  else if (!v13 && self->_options.enableLowVarSharpening)
+  else if (!sharpeningPyramidCopy && self->_options.enableLowVarSharpening)
   {
     sub_2958CE0C4(&v17);
     v15 = v17;
@@ -608,17 +608,17 @@ LABEL_18:
 
   else
   {
-    objc_storeStrong(&self->_pyr, a3);
-    objc_storeStrong(&self->_noiseMapPyramid, a4);
-    objc_storeStrong(&self->_sharpeningPyramid, a5);
-    objc_storeStrong(&self->_localGainMapTex, a6);
+    objc_storeStrong(&self->_pyr, pyramid);
+    objc_storeStrong(&self->_noiseMapPyramid, mapPyramid);
+    objc_storeStrong(&self->_sharpeningPyramid, sharpeningPyramid);
+    objc_storeStrong(&self->_localGainMapTex, tex);
     v15 = 0;
   }
 
   return v15;
 }
 
-- (int)setUniforms:(AmbnrConfiguration *)a3
+- (int)setUniforms:(AmbnrConfiguration *)uniforms
 {
   pyr = self->_pyr;
   if (pyr)
@@ -631,9 +631,9 @@ LABEL_18:
       {
         v8 = uniforms[v6];
         v12 = objc_msgSend_contents(v8, v9, v10, v11);
-        memcpy(v12, a3, 0x160uLL);
+        memcpy(v12, uniforms, 0x160uLL);
         ++v6;
-        a3 = (a3 + 352);
+        uniforms = (uniforms + 352);
       }
 
       while (v6 < self->_pyr->levels);
@@ -649,19 +649,19 @@ LABEL_18:
   }
 }
 
-- (int)runShader:(const void *)a3 shader:(id)a4 desc:(id)a5 uniforms:(id)a6 uniforms2:(id)a7 uniforms3:(id)a8
+- (int)runShader:(const void *)shader shader:(id)a4 desc:(id)desc uniforms:(id)uniforms uniforms2:(id)uniforms2 uniforms3:(id)uniforms3
 {
   v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v22 = objc_msgSend_colorAttachments(v15, v19, v20, v21);
+  descCopy = desc;
+  uniformsCopy = uniforms;
+  uniforms2Copy = uniforms2;
+  uniforms3Copy = uniforms3;
+  v22 = objc_msgSend_colorAttachments(descCopy, v19, v20, v21);
   v25 = objc_msgSend_objectAtIndexedSubscript_(v22, v23, 0, v24);
   v29 = objc_msgSend_texture(v25, v26, v27, v28);
   objc_msgSend_width(v29, v30, v31, v32);
 
-  v36 = objc_msgSend_colorAttachments(v15, v33, v34, v35);
+  v36 = objc_msgSend_colorAttachments(descCopy, v33, v34, v35);
   v39 = objc_msgSend_objectAtIndexedSubscript_(v36, v37, 0, v38);
   v43 = objc_msgSend_texture(v39, v40, v41, v42);
   objc_msgSend_height(v43, v44, v45, v46);
@@ -671,23 +671,23 @@ LABEL_18:
 
   if (v54)
   {
-    v57 = objc_msgSend_renderCommandEncoderWithDescriptor_(v54, v55, v15, v56);
+    v57 = objc_msgSend_renderCommandEncoderWithDescriptor_(v54, v55, descCopy, v56);
     if (v57)
     {
       v61 = v57;
       v62 = objc_msgSend_fullRangeVertexBuf(self->_metal, v58, v59, v60);
       objc_msgSend_setVertexBuffer_offset_atIndex_(v61, v63, v62, 0, 0);
 
-      objc_msgSend_setFragmentTextures_withRange_(v61, v64, a3, 0, 15);
-      objc_msgSend_setFragmentBuffer_offset_atIndex_(v61, v65, v16, 0, 0);
-      if (v17)
+      objc_msgSend_setFragmentTextures_withRange_(v61, v64, shader, 0, 15);
+      objc_msgSend_setFragmentBuffer_offset_atIndex_(v61, v65, uniformsCopy, 0, 0);
+      if (uniforms2Copy)
       {
-        objc_msgSend_setFragmentBuffer_offset_atIndex_(v61, v66, v17, 0, 1);
+        objc_msgSend_setFragmentBuffer_offset_atIndex_(v61, v66, uniforms2Copy, 0, 1);
       }
 
-      if (v18)
+      if (uniforms3Copy)
       {
-        objc_msgSend_setFragmentBuffer_offset_atIndex_(v61, v66, v18, 0, 2);
+        objc_msgSend_setFragmentBuffer_offset_atIndex_(v61, v66, uniforms3Copy, 0, 2);
       }
 
       objc_msgSend_setRenderPipelineState_(v61, v66, v14[1], v67);

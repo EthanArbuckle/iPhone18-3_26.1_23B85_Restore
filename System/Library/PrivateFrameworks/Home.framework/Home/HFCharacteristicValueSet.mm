@@ -1,8 +1,8 @@
 @interface HFCharacteristicValueSet
 - (HFCharacteristicValueSet)init;
-- (id)valueForCharacteristic:(id)a3;
-- (void)removeValueForCharacteristic:(id)a3;
-- (void)setValue:(id)a3 forCharacteristic:(id)a4;
+- (id)valueForCharacteristic:(id)characteristic;
+- (void)removeValueForCharacteristic:(id)characteristic;
+- (void)setValue:(id)value forCharacteristic:(id)characteristic;
 @end
 
 @implementation HFCharacteristicValueSet
@@ -18,43 +18,43 @@
     allCharacteristics = v2->_allCharacteristics;
     v2->_allCharacteristics = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     valuesByCharacteristicUUID = v2->_valuesByCharacteristicUUID;
-    v2->_valuesByCharacteristicUUID = v5;
+    v2->_valuesByCharacteristicUUID = dictionary;
   }
 
   return v2;
 }
 
-- (id)valueForCharacteristic:(id)a3
+- (id)valueForCharacteristic:(id)characteristic
 {
   valuesByCharacteristicUUID = self->_valuesByCharacteristicUUID;
-  v4 = [a3 uniqueIdentifier];
-  v5 = [(NSMutableDictionary *)valuesByCharacteristicUUID objectForKeyedSubscript:v4];
+  uniqueIdentifier = [characteristic uniqueIdentifier];
+  v5 = [(NSMutableDictionary *)valuesByCharacteristicUUID objectForKeyedSubscript:uniqueIdentifier];
 
   return v5;
 }
 
-- (void)setValue:(id)a3 forCharacteristic:(id)a4
+- (void)setValue:(id)value forCharacteristic:(id)characteristic
 {
   allCharacteristics = self->_allCharacteristics;
-  v7 = a4;
-  v8 = a3;
-  [(NSMutableSet *)allCharacteristics addObject:v7];
+  characteristicCopy = characteristic;
+  valueCopy = value;
+  [(NSMutableSet *)allCharacteristics addObject:characteristicCopy];
   valuesByCharacteristicUUID = self->_valuesByCharacteristicUUID;
-  v10 = [v7 uniqueIdentifier];
+  uniqueIdentifier = [characteristicCopy uniqueIdentifier];
 
-  [(NSMutableDictionary *)valuesByCharacteristicUUID setObject:v8 forKeyedSubscript:v10];
+  [(NSMutableDictionary *)valuesByCharacteristicUUID setObject:valueCopy forKeyedSubscript:uniqueIdentifier];
 }
 
-- (void)removeValueForCharacteristic:(id)a3
+- (void)removeValueForCharacteristic:(id)characteristic
 {
   valuesByCharacteristicUUID = self->_valuesByCharacteristicUUID;
-  v6 = a3;
-  v5 = [v6 uniqueIdentifier];
-  [(NSMutableDictionary *)valuesByCharacteristicUUID removeObjectForKey:v5];
+  characteristicCopy = characteristic;
+  uniqueIdentifier = [characteristicCopy uniqueIdentifier];
+  [(NSMutableDictionary *)valuesByCharacteristicUUID removeObjectForKey:uniqueIdentifier];
 
-  [(NSMutableSet *)self->_allCharacteristics removeObject:v6];
+  [(NSMutableSet *)self->_allCharacteristics removeObject:characteristicCopy];
 }
 
 @end

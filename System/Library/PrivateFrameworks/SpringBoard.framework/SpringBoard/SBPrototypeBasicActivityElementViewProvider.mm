@@ -1,12 +1,12 @@
 @interface SBPrototypeBasicActivityElementViewProvider
-- (BOOL)handleElementViewEvent:(int64_t)a3;
+- (BOOL)handleElementViewEvent:(int64_t)event;
 - (SAUILayoutHosting)layoutHost;
 - (SBPrototypeBasicActivityElementViewProvider)init;
 - (UIView)leadingView;
 - (UIView)trailingView;
 - (void)_activateApplication;
 - (void)_updateLabel;
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4;
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason;
 @end
 
 @implementation SBPrototypeBasicActivityElementViewProvider
@@ -18,9 +18,9 @@
   v2 = [(SBPrototypeBasicActivityElementViewProvider *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     startTime = v2->_startTime;
-    v2->_startTime = v3;
+    v2->_startTime = date;
 
     v5 = objc_alloc_init(MEMORY[0x277CCA958]);
     formatter = v2->_formatter;
@@ -34,24 +34,24 @@
   return v2;
 }
 
-- (BOOL)handleElementViewEvent:(int64_t)a3
+- (BOOL)handleElementViewEvent:(int64_t)event
 {
-  if (a3 < 2)
+  if (event < 2)
   {
     goto LABEL_4;
   }
 
-  if (a3 == 2)
+  if (event == 2)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     startTime = self->_startTime;
-    self->_startTime = v4;
+    self->_startTime = date;
 
     [(SBPrototypeBasicActivityElementViewProvider *)self _updateLabel];
     return 1;
   }
 
-  if (a3 == 3)
+  if (event == 3)
   {
 LABEL_4:
     [(SBPrototypeBasicActivityElementViewProvider *)self _activateApplication];
@@ -69,8 +69,8 @@ LABEL_4:
     v4 = objc_alloc(MEMORY[0x277D755E8]);
     v5 = MEMORY[0x277D755B8];
     v6 = MEMORY[0x277D755D0];
-    v7 = [MEMORY[0x277D75348] systemOrangeColor];
-    v8 = [v6 configurationWithHierarchicalColor:v7];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    v8 = [v6 configurationWithHierarchicalColor:systemOrangeColor];
     v9 = [v5 systemImageNamed:@"timer" withConfiguration:v8];
     v10 = [v4 initWithImage:v9];
     v11 = self->_leadingView;
@@ -108,8 +108,8 @@ LABEL_4:
     v11 = [MEMORY[0x277D74300] fontWithDescriptor:v10 size:0.0];
     [(UIView *)v4 setFont:v11];
 
-    v12 = [MEMORY[0x277D75348] systemOrangeColor];
-    [(UIView *)v4 setTextColor:v12];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    [(UIView *)v4 setTextColor:systemOrangeColor];
 
     v13 = self->_trailingView;
     self->_trailingView = v4;
@@ -120,12 +120,12 @@ LABEL_4:
   return trailingView;
 }
 
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason
 {
-  if (self->_layoutMode != a3)
+  if (self->_layoutMode != mode)
   {
-    self->_layoutMode = a3;
-    if (a3 < 2)
+    self->_layoutMode = mode;
+    if (mode < 2)
     {
       [(NSTimer *)self->_timer invalidate];
       timer = self->_timer;
@@ -169,24 +169,24 @@ void __68__SBPrototypeBasicActivityElementViewProvider_setLayoutMode_reason___bl
 
 - (void)_activateApplication
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v2 = MEMORY[0x277CBEC38];
-  [v5 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D0AC58]];
-  [v5 setObject:v2 forKey:*MEMORY[0x277D0AC70]];
-  [v5 setObject:*MEMORY[0x277D67088] forKey:*MEMORY[0x277D0AC28]];
-  v3 = [MEMORY[0x277D0AD60] optionsWithDictionary:v5];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D0AC58]];
+  [dictionary setObject:v2 forKey:*MEMORY[0x277D0AC70]];
+  [dictionary setObject:*MEMORY[0x277D67088] forKey:*MEMORY[0x277D0AC28]];
+  v3 = [MEMORY[0x277D0AD60] optionsWithDictionary:dictionary];
   v4 = SBSCreateOpenApplicationService();
   [v4 openApplication:@"com.apple.mobiletimer" withOptions:v3 completion:0];
 }
 
 - (void)_updateLabel
 {
-  v7 = [(SBPrototypeBasicActivityElementViewProvider *)self trailingView];
+  trailingView = [(SBPrototypeBasicActivityElementViewProvider *)self trailingView];
   formatter = self->_formatter;
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [v4 timeIntervalSinceDate:self->_startTime];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_startTime];
   v5 = [(NSDateComponentsFormatter *)formatter stringFromTimeInterval:?];
-  [v7 setText:v5];
+  [trailingView setText:v5];
 
   if (self->_layoutMode != 1)
   {

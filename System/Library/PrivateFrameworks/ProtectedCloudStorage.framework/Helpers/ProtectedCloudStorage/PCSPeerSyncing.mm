@@ -1,28 +1,28 @@
 @interface PCSPeerSyncing
-- (BOOL)checkHashWithRateLimit:(id)a3;
-- (PCSPeerSyncing)initWithDevice:(id)a3 syncingManager:(id)a4;
-- (double)checkRatelimit:(double)a3;
+- (BOOL)checkHashWithRateLimit:(id)limit;
+- (PCSPeerSyncing)initWithDevice:(id)device syncingManager:(id)manager;
+- (double)checkRatelimit:(double)ratelimit;
 - (double)timeUntilSyncing;
 - (id)uuid;
-- (void)checkSyncing:(BOOL)a3;
-- (void)handleIncomingMessage:(id)a3;
-- (void)haveKeys:(id)a3;
-- (void)keyFailure:(id)a3;
-- (void)sendCurrentKeys:(id)a3;
-- (void)sendCurrents:(id)a3 dsid:(id)a4 handleReply:(id)a5;
+- (void)checkSyncing:(BOOL)syncing;
+- (void)handleIncomingMessage:(id)message;
+- (void)haveKeys:(id)keys;
+- (void)keyFailure:(id)failure;
+- (void)sendCurrentKeys:(id)keys;
+- (void)sendCurrents:(id)currents dsid:(id)dsid handleReply:(id)reply;
 - (void)sendKeys;
-- (void)sendKeys:(id)a3 dsid:(id)a4 handleReply:(id)a5;
+- (void)sendKeys:(id)keys dsid:(id)dsid handleReply:(id)reply;
 - (void)sendKeysOld;
-- (void)sendSomeKeys:(id)a3 dsid:(id)a4;
+- (void)sendSomeKeys:(id)keys dsid:(id)dsid;
 - (void)updateLastSeen;
 @end
 
 @implementation PCSPeerSyncing
 
-- (PCSPeerSyncing)initWithDevice:(id)a3 syncingManager:(id)a4
+- (PCSPeerSyncing)initWithDevice:(id)device syncingManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = PCSPeerSyncing;
   v9 = [(PCSPeerSyncing *)&v17 init];
@@ -32,11 +32,11 @@
     transport = v9->_transport;
     v9->_transport = v10;
 
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v9->_syncingManager, a4);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v9->_syncingManager, manager);
     v12 = +[PCSKeySyncing defaultSyncingManager];
-    v13 = [v7 idsDeviceIdentifier];
-    v14 = [v12 getClientWithIdentifier:v13];
+    idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+    v14 = [v12 getClientWithIdentifier:idsDeviceIdentifier];
     client = v9->_client;
     v9->_client = v14;
   }
@@ -46,87 +46,87 @@
 
 - (id)uuid
 {
-  v2 = [(PCSPeerSyncing *)self device];
-  v3 = [v2 idsDeviceIdentifier];
+  device = [(PCSPeerSyncing *)self device];
+  idsDeviceIdentifier = [device idsDeviceIdentifier];
 
-  return v3;
+  return idsDeviceIdentifier;
 }
 
 - (void)updateLastSeen
 {
   v3 = +[NSDate date];
-  v4 = [(PCSPeerSyncing *)self client];
-  [v4 setLastSeen:v3];
+  client = [(PCSPeerSyncing *)self client];
+  [client setLastSeen:v3];
 
   v6 = +[PCSKeySyncing defaultSyncingManager];
-  v5 = [(PCSPeerSyncing *)self client];
-  [v6 saveClient:v5];
+  client2 = [(PCSPeerSyncing *)self client];
+  [v6 saveClient:client2];
 }
 
-- (void)sendCurrents:(id)a3 dsid:(id)a4 handleReply:(id)a5
+- (void)sendCurrents:(id)currents dsid:(id)dsid handleReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  currentsCopy = currents;
+  dsidCopy = dsid;
+  replyCopy = reply;
   v11 = qword_1000407B8;
   if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [(PCSPeerSyncing *)self device];
-    v14 = [v13 idsDeviceIdentifier];
+    device = [(PCSPeerSyncing *)self device];
+    idsDeviceIdentifier = [device idsDeviceIdentifier];
     *buf = 138412290;
-    v20 = v14;
+    v20 = idsDeviceIdentifier;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "sending keys to peer: %@", buf, 0xCu);
   }
 
   v17[0] = @"c";
   v17[1] = @"S";
   v18[0] = &off_10003B2E8;
-  v18[1] = v8;
+  v18[1] = currentsCopy;
   v17[2] = @"i";
-  v18[2] = v9;
+  v18[2] = dsidCopy;
   v15 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:3];
-  v16 = [(PCSPeerSyncing *)self transport];
-  [v16 sendMessage:v15 toDevice:self->_device withPriority:200 timeout:@"Current" logDescription:v10 handleReply:300.0];
+  transport = [(PCSPeerSyncing *)self transport];
+  [transport sendMessage:v15 toDevice:self->_device withPriority:200 timeout:@"Current" logDescription:replyCopy handleReply:300.0];
 }
 
-- (void)sendKeys:(id)a3 dsid:(id)a4 handleReply:(id)a5
+- (void)sendKeys:(id)keys dsid:(id)dsid handleReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keysCopy = keys;
+  dsidCopy = dsid;
+  replyCopy = reply;
   v11 = qword_1000407B8;
   if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [(PCSPeerSyncing *)self device];
-    v14 = [v13 idsDeviceIdentifier];
+    device = [(PCSPeerSyncing *)self device];
+    idsDeviceIdentifier = [device idsDeviceIdentifier];
     *buf = 138412290;
-    v20 = v14;
+    v20 = idsDeviceIdentifier;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "sending keys to peer: %@", buf, 0xCu);
   }
 
   v17[0] = @"c";
   v17[1] = @"K";
   v18[0] = &off_10003B300;
-  v18[1] = v8;
+  v18[1] = keysCopy;
   v17[2] = @"i";
-  v18[2] = v9;
+  v18[2] = dsidCopy;
   v15 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:3];
-  v16 = [(PCSPeerSyncing *)self transport];
-  [v16 sendMessage:v15 toDevice:self->_device withPriority:200 timeout:@"Keys" logDescription:v10 handleReply:300.0];
+  transport = [(PCSPeerSyncing *)self transport];
+  [transport sendMessage:v15 toDevice:self->_device withPriority:200 timeout:@"Keys" logDescription:replyCopy handleReply:300.0];
 }
 
-- (double)checkRatelimit:(double)a3
+- (double)checkRatelimit:(double)ratelimit
 {
   v5 = +[NSDate date];
-  v6 = [(PCSPeerSyncing *)self client];
-  v7 = [v6 lastSent];
-  [v5 timeIntervalSinceDate:v7];
+  client = [(PCSPeerSyncing *)self client];
+  lastSent = [client lastSent];
+  [v5 timeIntervalSinceDate:lastSent];
   v9 = v8;
 
-  result = a3 - v9;
-  if (v9 > a3)
+  result = ratelimit - v9;
+  if (v9 > ratelimit)
   {
     return 0.0;
   }
@@ -137,9 +137,9 @@
 - (double)timeUntilSyncing
 {
   v3 = +[NSDate date];
-  v4 = [(PCSPeerSyncing *)self client];
-  v5 = [v4 lastSeen];
-  [v3 timeIntervalSinceDate:v5];
+  client = [(PCSPeerSyncing *)self client];
+  lastSeen = [client lastSeen];
+  [v3 timeIntervalSinceDate:lastSeen];
   v7 = v6;
 
   if (v7 > 604800.0)
@@ -147,8 +147,8 @@
     return 0.0;
   }
 
-  v9 = [(PCSPeerSyncing *)self client];
-  v10 = [v9 failures] == 0;
+  client2 = [(PCSPeerSyncing *)self client];
+  v10 = [client2 failures] == 0;
 
   v11 = dbl_100029AD0[v10];
 
@@ -156,12 +156,12 @@
   return result;
 }
 
-- (BOOL)checkHashWithRateLimit:(id)a3
+- (BOOL)checkHashWithRateLimit:(id)limit
 {
-  v4 = a3;
-  v5 = [(PCSPeerSyncing *)self client];
-  v6 = [v5 lastHash];
-  v7 = [v4 isEqualToData:v6];
+  limitCopy = limit;
+  client = [(PCSPeerSyncing *)self client];
+  lastHash = [client lastHash];
+  v7 = [limitCopy isEqualToData:lastHash];
 
   if (v7)
   {
@@ -177,26 +177,26 @@
   return v9;
 }
 
-- (void)checkSyncing:(BOOL)a3
+- (void)checkSyncing:(BOOL)syncing
 {
-  v3 = a3;
+  syncingCopy = syncing;
   v5 = qword_1000407B8;
   if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(PCSPeerSyncing *)self device];
-    v8 = [v7 idsDeviceIdentifier];
+    device = [(PCSPeerSyncing *)self device];
+    idsDeviceIdentifier = [device idsDeviceIdentifier];
     *buf = 138412290;
-    *&buf[4] = v8;
+    *&buf[4] = idsDeviceIdentifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Device %@ checking if syncing needed", buf, 0xCu);
   }
 
   syncingManager = self->_syncingManager;
-  v10 = [(PCSPeerSyncing *)self client];
-  [(PCSKeySyncing *)syncingManager updateClient:v10];
+  client = [(PCSPeerSyncing *)self client];
+  [(PCSKeySyncing *)syncingManager updateClient:client];
 
-  v11 = [(PCSPeerSyncing *)self client];
-  LODWORD(syncingManager) = [v11 protocolVersion] == 1;
+  client2 = [(PCSPeerSyncing *)self client];
+  LODWORD(syncingManager) = [client2 protocolVersion] == 1;
 
   if (syncingManager)
   {
@@ -232,19 +232,19 @@
       if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
-        v18 = [(PCSPeerSyncing *)self device];
-        v19 = [v18 idsDeviceIdentifier];
+        device2 = [(PCSPeerSyncing *)self device];
+        idsDeviceIdentifier2 = [device2 idsDeviceIdentifier];
         *buf = 138412290;
-        *&buf[4] = v19;
+        *&buf[4] = idsDeviceIdentifier2;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Client %@ already have uptodate keys", buf, 0xCu);
       }
     }
 
-    v20 = [(PCSPeerSyncing *)self client];
-    v21 = [v20 buildVersion];
-    v22 = [(PCSPeerSyncing *)self device];
-    v23 = [v22 buildVersion];
-    v24 = [v21 isEqualToString:v23];
+    client3 = [(PCSPeerSyncing *)self client];
+    buildVersion = [client3 buildVersion];
+    device3 = [(PCSPeerSyncing *)self device];
+    buildVersion2 = [device3 buildVersion];
+    v24 = [buildVersion isEqualToString:buildVersion2];
 
     if (!v24)
     {
@@ -255,32 +255,32 @@
     if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
     {
       v26 = v25;
-      v27 = [(PCSPeerSyncing *)self device];
-      v28 = [v27 idsDeviceIdentifier];
-      v29 = [(PCSPeerSyncing *)self client];
-      v30 = [v29 buildVersion];
+      device4 = [(PCSPeerSyncing *)self device];
+      idsDeviceIdentifier3 = [device4 idsDeviceIdentifier];
+      client4 = [(PCSPeerSyncing *)self client];
+      buildVersion3 = [client4 buildVersion];
       *buf = 138412546;
-      *&buf[4] = v28;
+      *&buf[4] = idsDeviceIdentifier3;
       *&buf[12] = 2112;
-      *&buf[14] = v30;
+      *&buf[14] = buildVersion3;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Client %@ have same os version: %@", buf, 0x16u);
     }
 
-    if (((v15 ^ 1 | v3) & 1) == 0 && [(PCSPeerSyncing *)self ratelimitClientSyncing])
+    if (((v15 ^ 1 | syncingCopy) & 1) == 0 && [(PCSPeerSyncing *)self ratelimitClientSyncing])
     {
       v31 = self->_syncingManager;
-      v32 = [(PCSPeerSyncing *)self client];
-      [(PCSKeySyncing *)v31 saveClient:v32];
+      client5 = [(PCSPeerSyncing *)self client];
+      [(PCSKeySyncing *)v31 saveClient:client5];
 
       v33 = qword_1000407B8;
       v14 = v53;
       if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
       {
         v34 = v33;
-        v35 = [(PCSPeerSyncing *)self device];
-        v36 = [v35 idsDeviceIdentifier];
+        device5 = [(PCSPeerSyncing *)self device];
+        idsDeviceIdentifier4 = [device5 idsDeviceIdentifier];
         *buf = 138412290;
-        *&buf[4] = v36;
+        *&buf[4] = idsDeviceIdentifier4;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Ratelimit sending to device %@", buf, 0xCu);
 
 LABEL_28:
@@ -295,16 +295,16 @@ LABEL_20:
       {
         [(PCSPeerSyncing *)self setKeys:v13];
         [(PCSPeerSyncing *)self setPendingRequest:1];
-        v43 = [(PCSPeerSyncing *)self client];
-        [v43 setNumberHandshakes:{objc_msgSend(v43, "numberHandshakes") + 1}];
+        client6 = [(PCSPeerSyncing *)self client];
+        [client6 setNumberHandshakes:{objc_msgSend(client6, "numberHandshakes") + 1}];
 
         v44 = +[NSDate date];
-        v45 = [(PCSPeerSyncing *)self client];
-        [v45 setLastSent:v44];
+        client7 = [(PCSPeerSyncing *)self client];
+        [client7 setLastSent:v44];
 
         v46 = +[PCSKeySyncing defaultSyncingManager];
-        v47 = [(PCSPeerSyncing *)self client];
-        [v46 saveClient:v47];
+        client8 = [(PCSPeerSyncing *)self client];
+        [v46 saveClient:client8];
 
         *buf = 0;
         *&buf[8] = buf;
@@ -315,22 +315,22 @@ LABEL_20:
         v48 = qword_1000407B8;
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
         {
-          v49 = [(PCSPeerSyncing *)self device];
-          v50 = [v49 idsDeviceIdentifier];
+          device6 = [(PCSPeerSyncing *)self device];
+          idsDeviceIdentifier5 = [device6 idsDeviceIdentifier];
           *v57 = 138412546;
-          v58 = v50;
+          v58 = idsDeviceIdentifier5;
           v59 = 2112;
           v60 = v53;
           _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "Sending inital check-in to device %@ hash: %@", v57, 0x16u);
         }
 
-        v51 = [(PCSKeySyncing *)self->_syncingManager dsid];
+        dsid = [(PCSKeySyncing *)self->_syncingManager dsid];
         v55[0] = _NSConcreteStackBlock;
         v55[1] = 3221225472;
         v55[2] = sub_100012660;
         v55[3] = &unk_1000392F0;
         v55[4] = buf;
-        [(PCSPeerSyncing *)self sendCommand:1 data:v53 dsid:v51 handleReply:v55];
+        [(PCSPeerSyncing *)self sendCommand:1 data:v53 dsid:dsid handleReply:v55];
 
         _Block_object_dispose(buf, 8);
         objc_destroyWeak(&v64);
@@ -342,10 +342,10 @@ LABEL_20:
       if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
       {
         v39 = v38;
-        v40 = [(PCSPeerSyncing *)self device];
-        v41 = [v40 idsDeviceIdentifier];
+        device7 = [(PCSPeerSyncing *)self device];
+        idsDeviceIdentifier6 = [device7 idsDeviceIdentifier];
         *buf = 138412290;
-        *&buf[4] = v41;
+        *&buf[4] = idsDeviceIdentifier6;
         _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "initial request to device %@ already pending", buf, 0xCu);
 
         goto LABEL_28;
@@ -371,8 +371,8 @@ LABEL_29:
   if (![(PCSPeerSyncing *)self pendingRequest])
   {
     v7 = +[PCSKeySyncing defaultSyncingManager];
-    v8 = [v7 dsid];
-    if (!v8)
+    dsid = [v7 dsid];
+    if (!dsid)
     {
       v20 = qword_1000407B8;
       if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
@@ -384,17 +384,17 @@ LABEL_29:
       goto LABEL_16;
     }
 
-    v9 = [(PCSPeerSyncing *)self keys];
+    keys = [(PCSPeerSyncing *)self keys];
 
-    if (!v9)
+    if (!keys)
     {
       v23 = 0;
       v10 = [v7 copyAllPCSKeys:&v23];
       v11 = v23;
       [(PCSPeerSyncing *)self setKeys:v10];
 
-      v12 = [(PCSPeerSyncing *)self keys];
-      LODWORD(v10) = v12 == 0;
+      keys2 = [(PCSPeerSyncing *)self keys];
+      LODWORD(v10) = keys2 == 0;
 
       if (v10)
       {
@@ -420,25 +420,25 @@ LABEL_29:
     v13 = qword_1000407B8;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(PCSPeerSyncing *)self device];
-      v15 = [v14 idsDeviceIdentifier];
+      device = [(PCSPeerSyncing *)self device];
+      idsDeviceIdentifier = [device idsDeviceIdentifier];
       v16 = +[PCSKeySyncing defaultSyncingManager];
-      v17 = [(PCSPeerSyncing *)self keys];
-      v18 = [v16 copySHA256Hash:v17];
+      keys3 = [(PCSPeerSyncing *)self keys];
+      v18 = [v16 copySHA256Hash:keys3];
       *v24 = 138412546;
-      v25 = v15;
+      v25 = idsDeviceIdentifier;
       v26 = 2112;
       v27 = v18;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Sending keys to device %@ hash:%@", v24, 0x16u);
     }
 
-    v19 = [(PCSPeerSyncing *)self keys];
+    keys4 = [(PCSPeerSyncing *)self keys];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100012EA8;
     v22[3] = &unk_1000392F0;
     v22[4] = &buf;
-    [(PCSPeerSyncing *)self sendCommand:2 data:v19 dsid:v8 handleReply:v22];
+    [(PCSPeerSyncing *)self sendCommand:2 data:keys4 dsid:dsid handleReply:v22];
 
     _Block_object_dispose(&buf, 8);
     objc_destroyWeak(v32);
@@ -451,21 +451,21 @@ LABEL_16:
   if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(PCSPeerSyncing *)self device];
-    v6 = [v5 idsDeviceIdentifier];
+    device2 = [(PCSPeerSyncing *)self device];
+    idsDeviceIdentifier2 = [device2 idsDeviceIdentifier];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = idsDeviceIdentifier2;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "sendKeys request to device %@ already pending", &buf, 0xCu);
   }
 }
 
-- (void)sendSomeKeys:(id)a3 dsid:(id)a4
+- (void)sendSomeKeys:(id)keys dsid:(id)dsid
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  dsidCopy = dsid;
   objc_initWeak(&location, self);
-  v8 = [v6 count];
-  if ([v6 count])
+  v8 = [keysCopy count];
+  if ([keysCopy count])
   {
     if (v8 < 0xB)
     {
@@ -474,10 +474,10 @@ LABEL_16:
 
     else
     {
-      v9 = [v6 subarrayWithRange:{10, v8 - 10}];
-      v10 = [v6 subarrayWithRange:{0, 10}];
+      v9 = [keysCopy subarrayWithRange:{10, v8 - 10}];
+      v10 = [keysCopy subarrayWithRange:{0, 10}];
 
-      v6 = v10;
+      keysCopy = v10;
     }
 
     v16 = +[NSMutableArray array];
@@ -491,7 +491,7 @@ LABEL_16:
     v31 = v18;
     v19 = v17;
     v32 = v19;
-    [v6 enumerateObjectsUsingBlock:v30];
+    [keysCopy enumerateObjectsUsingBlock:v30];
     v20 = qword_1000407B8;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -513,7 +513,7 @@ LABEL_16:
     v26 = v23;
     v24 = v9;
     v27 = v24;
-    v28 = v7;
+    v28 = dsidCopy;
     [(PCSPeerSyncing *)self sendKeys:v18 dsid:v28 handleReply:v25];
 
     objc_destroyWeak(&v29);
@@ -524,16 +524,16 @@ LABEL_16:
     v11 = qword_1000407B8;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(PCSPeerSyncing *)self device];
-      v13 = [v12 idsDeviceIdentifier];
+      device = [(PCSPeerSyncing *)self device];
+      idsDeviceIdentifier = [device idsDeviceIdentifier];
       *buf = 138412290;
-      v35 = v13;
+      v35 = idsDeviceIdentifier;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "No key to send [to device: %@", buf, 0xCu);
     }
 
-    v14 = [(PCSPeerSyncing *)self syncingManager];
-    v15 = [(PCSDevice *)self->_device idsDeviceIdentifier];
-    [v14 signalComplete:v15];
+    syncingManager = [(PCSPeerSyncing *)self syncingManager];
+    idsDeviceIdentifier2 = [(PCSDevice *)self->_device idsDeviceIdentifier];
+    [syncingManager signalComplete:idsDeviceIdentifier2];
 
     [(PCSPeerSyncing *)self setPendingRequest:0];
   }
@@ -541,20 +541,20 @@ LABEL_16:
   objc_destroyWeak(&location);
 }
 
-- (void)sendCurrentKeys:(id)a3
+- (void)sendCurrentKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(PCSPeerSyncing *)self syncingManager];
-  v7 = [v6 copyIdentitySet];
+  syncingManager = [(PCSPeerSyncing *)self syncingManager];
+  copyIdentitySet = [syncingManager copyIdentitySet];
 
-  if (v7)
+  if (copyIdentitySet)
   {
     location[1] = _NSConcreteStackBlock;
     location[2] = 3221225472;
     location[3] = sub_100013A0C;
     location[4] = &unk_100039368;
-    v15 = v7;
+    v15 = copyIdentitySet;
     v8 = v5;
     v14 = v8;
     PCSServiceItemsGetEachName();
@@ -564,8 +564,8 @@ LABEL_16:
     v11[2] = sub_100013A84;
     v11[3] = &unk_100039390;
     objc_copyWeak(v12, location);
-    v12[1] = v7;
-    [(PCSPeerSyncing *)self sendCurrents:v8 dsid:v4 handleReply:v11];
+    v12[1] = copyIdentitySet;
+    [(PCSPeerSyncing *)self sendCurrents:v8 dsid:keysCopy handleReply:v11];
     objc_destroyWeak(v12);
     objc_destroyWeak(location);
   }
@@ -573,9 +573,9 @@ LABEL_16:
   else
   {
     [(PCSPeerSyncing *)self setPendingRequest:0];
-    v9 = [(PCSPeerSyncing *)self syncingManager];
-    v10 = [(PCSDevice *)self->_device idsDeviceIdentifier];
-    [v9 signalComplete:v10];
+    syncingManager2 = [(PCSPeerSyncing *)self syncingManager];
+    idsDeviceIdentifier = [(PCSDevice *)self->_device idsDeviceIdentifier];
+    [syncingManager2 signalComplete:idsDeviceIdentifier];
   }
 }
 
@@ -583,27 +583,27 @@ LABEL_16:
 {
   if (![(PCSPeerSyncing *)self pendingRequest])
   {
-    v7 = [(PCSKeySyncing *)self->_syncingManager dsid];
-    if (v7)
+    dsid = [(PCSKeySyncing *)self->_syncingManager dsid];
+    if (dsid)
     {
       syncingManager = self->_syncingManager;
-      v9 = [(PCSPeerSyncing *)self device];
-      v10 = [v9 idsDeviceIdentifier];
-      v11 = [(PCSKeySyncing *)syncingManager outStandingPCSKeys:v10];
+      device = [(PCSPeerSyncing *)self device];
+      idsDeviceIdentifier = [device idsDeviceIdentifier];
+      v11 = [(PCSKeySyncing *)syncingManager outStandingPCSKeys:idsDeviceIdentifier];
 
       if (v11)
       {
-        v12 = [(PCSKeySyncing *)self->_syncingManager iCDPStatus];
-        v13 = [(PCSKeySyncing *)self->_syncingManager companionCircleMember];
+        iCDPStatus = [(PCSKeySyncing *)self->_syncingManager iCDPStatus];
+        companionCircleMember = [(PCSKeySyncing *)self->_syncingManager companionCircleMember];
         v14 = qword_1000407B8;
         if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
         {
           v15 = v14;
-          v16 = [(PCSPeerSyncing *)self client];
+          client = [(PCSPeerSyncing *)self client];
           *buf = 67109376;
-          LODWORD(v36[0]) = v12;
+          LODWORD(v36[0]) = iCDPStatus;
           WORD2(v36[0]) = 1024;
-          *(v36 + 6) = [v16 iCDP];
+          *(v36 + 6) = [client iCDP];
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "local iCDP: %d, cached peer iCDP status: %d", buf, 0xEu);
         }
 
@@ -611,18 +611,18 @@ LABEL_16:
         if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
         {
           v18 = v17;
-          v19 = [(PCSPeerSyncing *)self client];
-          v20 = [v19 circle];
+          client2 = [(PCSPeerSyncing *)self client];
+          circle = [client2 circle];
           *buf = 67109376;
-          LODWORD(v36[0]) = v13;
+          LODWORD(v36[0]) = companionCircleMember;
           WORD2(v36[0]) = 1024;
-          *(v36 + 6) = v20;
+          *(v36 + 6) = circle;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "local circle: %d, cached peer circle status: %d", buf, 0xEu);
         }
 
         [(PCSPeerSyncing *)self setPendingRequest:1];
-        v21 = [(PCSPeerSyncing *)self client];
-        if (v12 != [v21 iCDP])
+        client3 = [(PCSPeerSyncing *)self client];
+        if (iCDPStatus != [client3 iCDP])
         {
 
 LABEL_18:
@@ -631,9 +631,9 @@ LABEL_18:
           if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109376;
-            LODWORD(v36[0]) = v12;
+            LODWORD(v36[0]) = iCDPStatus;
             WORD2(v36[0]) = 1024;
-            *(v36 + 6) = v13;
+            *(v36 + 6) = companionCircleMember;
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Setting peer iCDP status to: %d and circle to: %d", buf, 0xEu);
           }
 
@@ -642,12 +642,12 @@ LABEL_18:
           v28[2] = sub_10001401C;
           v28[3] = &unk_1000393B8;
           objc_copyWeak(&v31, &location);
-          v32 = v12;
-          v33 = v13;
+          v32 = iCDPStatus;
+          v33 = companionCircleMember;
           v27 = v11;
           v29 = v27;
-          v30 = v7;
-          [(PCSPeerSyncing *)self sendiCDPStatus:v12 circleStatus:v13 handleReply:v28];
+          v30 = dsid;
+          [(PCSPeerSyncing *)self sendiCDPStatus:iCDPStatus circleStatus:companionCircleMember handleReply:v28];
 
           objc_destroyWeak(&v31);
           objc_destroyWeak(&location);
@@ -655,15 +655,15 @@ LABEL_18:
           goto LABEL_22;
         }
 
-        v24 = [(PCSPeerSyncing *)self client];
-        v25 = [v24 circle];
+        client4 = [(PCSPeerSyncing *)self client];
+        circle2 = [client4 circle];
 
-        if (v13 != v25)
+        if (companionCircleMember != circle2)
         {
           goto LABEL_18;
         }
 
-        [(PCSPeerSyncing *)self sendSomeKeys:v11 dsid:v7];
+        [(PCSPeerSyncing *)self sendSomeKeys:v11 dsid:dsid];
 
 LABEL_22:
         return;
@@ -699,110 +699,110 @@ LABEL_22:
   if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(PCSPeerSyncing *)self device];
-    v6 = [v5 idsDeviceIdentifier];
+    device2 = [(PCSPeerSyncing *)self device];
+    idsDeviceIdentifier2 = [device2 idsDeviceIdentifier];
     *buf = 138412290;
-    v36[0] = v6;
+    v36[0] = idsDeviceIdentifier2;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "sendKeys request to device %@ already pending", buf, 0xCu);
   }
 }
 
-- (void)haveKeys:(id)a3
+- (void)haveKeys:(id)keys
 {
-  v18 = a3;
+  keysCopy = keys;
   v4 = +[PCSKeySyncing defaultSyncingManager];
-  v5 = [(PCSPeerSyncing *)self client];
-  [v4 updateClient:v5];
+  client = [(PCSPeerSyncing *)self client];
+  [v4 updateClient:client];
 
-  v6 = [(PCSPeerSyncing *)self device];
-  v7 = [v6 buildVersion];
-  v8 = [(PCSPeerSyncing *)self client];
-  [v8 setBuildVersion:v7];
+  device = [(PCSPeerSyncing *)self device];
+  buildVersion = [device buildVersion];
+  client2 = [(PCSPeerSyncing *)self client];
+  [client2 setBuildVersion:buildVersion];
 
-  v9 = [(PCSPeerSyncing *)self client];
-  [v9 setFailures:0];
+  client3 = [(PCSPeerSyncing *)self client];
+  [client3 setFailures:0];
 
-  v10 = [(PCSPeerSyncing *)self client];
-  v11 = [v10 firstSync];
+  client4 = [(PCSPeerSyncing *)self client];
+  firstSync = [client4 firstSync];
 
-  if (!v11)
+  if (!firstSync)
   {
     v12 = +[NSDate date];
-    v13 = [(PCSPeerSyncing *)self client];
-    [v13 setFirstSync:v12];
+    client5 = [(PCSPeerSyncing *)self client];
+    [client5 setFirstSync:v12];
   }
 
-  v14 = v18;
-  if (!v18)
+  v14 = keysCopy;
+  if (!keysCopy)
   {
     v14 = +[NSData data];
   }
 
   v19 = v14;
-  v15 = [(PCSPeerSyncing *)self client];
-  [v15 setLastHash:v19];
+  client6 = [(PCSPeerSyncing *)self client];
+  [client6 setLastHash:v19];
 
   v16 = +[PCSKeySyncing defaultSyncingManager];
-  v17 = [(PCSPeerSyncing *)self client];
-  [v16 saveClient:v17];
+  client7 = [(PCSPeerSyncing *)self client];
+  [v16 saveClient:client7];
 }
 
-- (void)keyFailure:(id)a3
+- (void)keyFailure:(id)failure
 {
-  v10 = a3;
+  failureCopy = failure;
   v4 = +[PCSKeySyncing defaultSyncingManager];
-  v5 = [(PCSPeerSyncing *)self client];
-  [v4 updateClient:v5];
+  client = [(PCSPeerSyncing *)self client];
+  [v4 updateClient:client];
 
-  v6 = [(PCSPeerSyncing *)self client];
-  [v6 setFailures:{objc_msgSend(v6, "failures") + 1}];
+  client2 = [(PCSPeerSyncing *)self client];
+  [client2 setFailures:{objc_msgSend(client2, "failures") + 1}];
 
-  if (!v10)
+  if (!failureCopy)
   {
-    v10 = +[NSData data];
+    failureCopy = +[NSData data];
   }
 
-  v7 = [(PCSPeerSyncing *)self client];
-  [v7 setLastHash:v10];
+  client3 = [(PCSPeerSyncing *)self client];
+  [client3 setLastHash:failureCopy];
 
   v8 = +[PCSKeySyncing defaultSyncingManager];
-  v9 = [(PCSPeerSyncing *)self client];
-  [v8 saveClient:v9];
+  client4 = [(PCSPeerSyncing *)self client];
+  [v8 saveClient:client4];
 }
 
-- (void)handleIncomingMessage:(id)a3
+- (void)handleIncomingMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (!messageCopy)
   {
-    v13 = self;
+    selfCopy2 = self;
     v14 = 0;
 LABEL_8:
-    [(PCSPeerSyncing *)v13 checkSyncing:v14];
+    [(PCSPeerSyncing *)selfCopy2 checkSyncing:v14];
     goto LABEL_27;
   }
 
-  v6 = [v4 message];
-  v7 = [v6 objectForKeyedSubscript:@"c"];
-  v8 = [v7 intValue];
+  message = [messageCopy message];
+  v7 = [message objectForKeyedSubscript:@"c"];
+  intValue = [v7 intValue];
 
   v9 = qword_1000407B8;
   v10 = os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT);
-  if (v8 == 10)
+  if (intValue == 10)
   {
     if (v10)
     {
       v15 = v9;
-      v16 = [(PCSPeerSyncing *)self device];
+      device = [(PCSPeerSyncing *)self device];
       *buf = 138412290;
-      v39[0] = v16;
+      v39[0] = device;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "handleIncomingMessage sync with escrow proxy: %@", buf, 0xCu);
     }
 
     [(PCSPeerSyncing *)self checkSyncing:1];
-    v17 = [v5 message];
-    v18 = [v17 objectForKeyedSubscript:@"s"];
+    message2 = [v5 message];
+    v18 = [message2 objectForKeyedSubscript:@"s"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -816,8 +816,8 @@ LABEL_8:
       }
 
       v20 = +[PCSAccountsModel defaultAccountsModel];
-      v32 = [v20 dsid];
-      v33 = [v20 identifier];
+      dsid = [v20 dsid];
+      identifier = [v20 identifier];
       v37 = 0;
       v21 = [PCSAccountsModel settingsKeyForKey:@"nextRegistrySync" error:&v37];
       v22 = v37;
@@ -855,7 +855,7 @@ LABEL_8:
       v34[3] = &unk_1000393E0;
       v34[4] = self;
       v35 = v5;
-      [v29 triggerSyncingWithEscrowProxy:v18 dsid:v32 publicKeys:0 accountIdentifier:v33 settingsKeyExpirationDate:v21 settingsKeyIdentifier:v25 complete:v34];
+      [v29 triggerSyncingWithEscrowProxy:v18 dsid:dsid publicKeys:0 accountIdentifier:identifier settingsKeyExpirationDate:v21 settingsKeyIdentifier:v25 complete:v34];
     }
 
     else
@@ -866,18 +866,18 @@ LABEL_8:
 
   else
   {
-    if (v8 == 4)
+    if (intValue == 4)
     {
       if (v10)
       {
         v11 = v9;
-        v12 = [(PCSPeerSyncing *)self device];
+        device2 = [(PCSPeerSyncing *)self device];
         *buf = 138412290;
-        v39[0] = v12;
+        v39[0] = device2;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "handleIncomingMessage watch requested keys: %@", buf, 0xCu);
       }
 
-      v13 = self;
+      selfCopy2 = self;
       v14 = 1;
       goto LABEL_8;
     }
@@ -885,11 +885,11 @@ LABEL_8:
     if (v10)
     {
       v30 = v9;
-      v31 = [(PCSPeerSyncing *)self device];
+      device3 = [(PCSPeerSyncing *)self device];
       *buf = 67109378;
-      LODWORD(v39[0]) = v8;
+      LODWORD(v39[0]) = intValue;
       WORD2(v39[0]) = 2112;
-      *(v39 + 6) = v31;
+      *(v39 + 6) = device3;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "handleIncomingMessage unknown command %d from device: %@", buf, 0x12u);
     }
   }

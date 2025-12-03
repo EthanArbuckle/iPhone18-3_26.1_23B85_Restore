@@ -1,29 +1,29 @@
 @interface FRFeedPickerSection
-+ (id)feedPickerSectionWithTags:(id)a3 sorter:(id)a4 popularTagIDs:(id)a5 transformBlock:(id)a6;
-- (BOOL)containsTag:(id)a3;
++ (id)feedPickerSectionWithTags:(id)tags sorter:(id)sorter popularTagIDs:(id)ds transformBlock:(id)block;
+- (BOOL)containsTag:(id)tag;
 - (NSArray)tags;
-- (id)_tagsForSortOrder:(unint64_t)a3;
-- (id)feedDescriptorsForSort:(unint64_t)a3;
-- (int64_t)indexOfTag:(id)a3 withSortOrder:(unint64_t)a4;
+- (id)_tagsForSortOrder:(unint64_t)order;
+- (id)feedDescriptorsForSort:(unint64_t)sort;
+- (int64_t)indexOfTag:(id)tag withSortOrder:(unint64_t)order;
 - (int64_t)numberOfTags;
 - (void)_buildSortedArrays;
-- (void)addTag:(id)a3;
-- (void)addTags:(id)a3;
-- (void)removeTag:(id)a3;
+- (void)addTag:(id)tag;
+- (void)addTags:(id)tags;
+- (void)removeTag:(id)tag;
 @end
 
 @implementation FRFeedPickerSection
 
-+ (id)feedPickerSectionWithTags:(id)a3 sorter:(id)a4 popularTagIDs:(id)a5 transformBlock:(id)a6
++ (id)feedPickerSectionWithTags:(id)tags sorter:(id)sorter popularTagIDs:(id)ds transformBlock:(id)block
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  tagsCopy = tags;
+  blockCopy = block;
+  dsCopy = ds;
+  sorterCopy = sorter;
   v13 = objc_alloc_init(FRFeedPickerSection);
-  if (v9)
+  if (tagsCopy)
   {
-    [NSMutableSet setWithArray:v9];
+    [NSMutableSet setWithArray:tagsCopy];
   }
 
   else
@@ -33,10 +33,10 @@
   v14 = ;
   [(FRFeedPickerSection *)v13 setMutableTags:v14];
 
-  [(FRFeedPickerSection *)v13 setSorter:v12];
-  [(FRFeedPickerSection *)v13 setPopularTagIDs:v11];
+  [(FRFeedPickerSection *)v13 setSorter:sorterCopy];
+  [(FRFeedPickerSection *)v13 setPopularTagIDs:dsCopy];
 
-  [(FRFeedPickerSection *)v13 setTransformBlock:v10];
+  [(FRFeedPickerSection *)v13 setTransformBlock:blockCopy];
   [(FRFeedPickerSection *)v13 _buildSortedArrays];
 
   return v13;
@@ -44,45 +44,45 @@
 
 - (NSArray)tags
 {
-  v2 = [(FRFeedPickerSection *)self mutableTags];
-  v3 = [v2 copy];
-  v4 = [v3 allObjects];
+  mutableTags = [(FRFeedPickerSection *)self mutableTags];
+  v3 = [mutableTags copy];
+  allObjects = [v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-- (void)addTag:(id)a3
+- (void)addTag:(id)tag
 {
-  v4 = a3;
-  v5 = [(FRFeedPickerSection *)self mutableTags];
-  [v5 addObject:v4];
+  tagCopy = tag;
+  mutableTags = [(FRFeedPickerSection *)self mutableTags];
+  [mutableTags addObject:tagCopy];
 
   [(FRFeedPickerSection *)self _buildSortedArrays];
 }
 
-- (void)addTags:(id)a3
+- (void)addTags:(id)tags
 {
-  v4 = a3;
-  v5 = [(FRFeedPickerSection *)self mutableTags];
-  [v5 addObjectsFromArray:v4];
+  tagsCopy = tags;
+  mutableTags = [(FRFeedPickerSection *)self mutableTags];
+  [mutableTags addObjectsFromArray:tagsCopy];
 
   [(FRFeedPickerSection *)self _buildSortedArrays];
 }
 
-- (void)removeTag:(id)a3
+- (void)removeTag:(id)tag
 {
-  v4 = a3;
-  v5 = [(FRFeedPickerSection *)self mutableTags];
-  [v5 removeObject:v4];
+  tagCopy = tag;
+  mutableTags = [(FRFeedPickerSection *)self mutableTags];
+  [mutableTags removeObject:tagCopy];
 
   [(FRFeedPickerSection *)self _buildSortedArrays];
 }
 
-- (int64_t)indexOfTag:(id)a3 withSortOrder:(unint64_t)a4
+- (int64_t)indexOfTag:(id)tag withSortOrder:(unint64_t)order
 {
-  v6 = a3;
-  v7 = [(FRFeedPickerSection *)self _tagsForSortOrder:a4];
-  v8 = [v7 indexOfObject:v6];
+  tagCopy = tag;
+  v7 = [(FRFeedPickerSection *)self _tagsForSortOrder:order];
+  v8 = [v7 indexOfObject:tagCopy];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
@@ -92,30 +92,30 @@
   return v8;
 }
 
-- (BOOL)containsTag:(id)a3
+- (BOOL)containsTag:(id)tag
 {
-  v4 = a3;
-  v5 = [(FRFeedPickerSection *)self tags];
-  v6 = [v5 containsObject:v4];
+  tagCopy = tag;
+  tags = [(FRFeedPickerSection *)self tags];
+  v6 = [tags containsObject:tagCopy];
 
   return v6;
 }
 
 - (int64_t)numberOfTags
 {
-  v3 = [(FRFeedPickerSection *)self alphabeticalTags];
-  v4 = [v3 count];
+  alphabeticalTags = [(FRFeedPickerSection *)self alphabeticalTags];
+  v4 = [alphabeticalTags count];
 
-  v5 = [(FRFeedPickerSection *)self recentlyOpenedTags];
-  v6 = [v5 count];
+  recentlyOpenedTags = [(FRFeedPickerSection *)self recentlyOpenedTags];
+  v6 = [recentlyOpenedTags count];
 
   if (v4 != v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006E09C();
   }
 
-  v7 = [(FRFeedPickerSection *)self mostFrequentlyVisitedTags];
-  v8 = [v7 count];
+  mostFrequentlyVisitedTags = [(FRFeedPickerSection *)self mostFrequentlyVisitedTags];
+  v8 = [mostFrequentlyVisitedTags count];
 
   if (v4 != v8 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
@@ -125,57 +125,57 @@
   return v4;
 }
 
-- (id)feedDescriptorsForSort:(unint64_t)a3
+- (id)feedDescriptorsForSort:(unint64_t)sort
 {
-  v4 = [(FRFeedPickerSection *)self _tagsForSortOrder:a3];
-  v5 = [(FRFeedPickerSection *)self transformBlock];
-  v6 = [v4 fc_arrayByTransformingWithBlock:v5];
+  v4 = [(FRFeedPickerSection *)self _tagsForSortOrder:sort];
+  transformBlock = [(FRFeedPickerSection *)self transformBlock];
+  v6 = [v4 fc_arrayByTransformingWithBlock:transformBlock];
 
   return v6;
 }
 
-- (id)_tagsForSortOrder:(unint64_t)a3
+- (id)_tagsForSortOrder:(unint64_t)order
 {
-  if (a3 == 2)
+  if (order == 2)
   {
-    v3 = [(FRFeedPickerSection *)self mostFrequentlyVisitedTags];
+    mostFrequentlyVisitedTags = [(FRFeedPickerSection *)self mostFrequentlyVisitedTags];
   }
 
-  else if (a3 == 1)
+  else if (order == 1)
   {
-    v3 = [(FRFeedPickerSection *)self recentlyOpenedTags];
+    mostFrequentlyVisitedTags = [(FRFeedPickerSection *)self recentlyOpenedTags];
   }
 
-  else if (a3)
+  else if (order)
   {
-    v3 = 0;
+    mostFrequentlyVisitedTags = 0;
   }
 
   else
   {
-    v3 = [(FRFeedPickerSection *)self alphabeticalTags];
+    mostFrequentlyVisitedTags = [(FRFeedPickerSection *)self alphabeticalTags];
   }
 
-  return v3;
+  return mostFrequentlyVisitedTags;
 }
 
 - (void)_buildSortedArrays
 {
-  v3 = [(FRFeedPickerSection *)self sorter];
-  v4 = [(FRFeedPickerSection *)self tags];
-  v5 = [v3 sortSubscriptionsAlphabetically:v4];
+  sorter = [(FRFeedPickerSection *)self sorter];
+  tags = [(FRFeedPickerSection *)self tags];
+  v5 = [sorter sortSubscriptionsAlphabetically:tags];
   [(FRFeedPickerSection *)self setAlphabeticalTags:v5];
 
-  v6 = [(FRFeedPickerSection *)self sorter];
-  v7 = [(FRFeedPickerSection *)self tags];
-  v8 = [(FRFeedPickerSection *)self popularTagIDs];
-  v9 = [v6 sortSubscriptionsByRecency:v7 sortedPopularTagIDs:v8];
+  sorter2 = [(FRFeedPickerSection *)self sorter];
+  tags2 = [(FRFeedPickerSection *)self tags];
+  popularTagIDs = [(FRFeedPickerSection *)self popularTagIDs];
+  v9 = [sorter2 sortSubscriptionsByRecency:tags2 sortedPopularTagIDs:popularTagIDs];
   [(FRFeedPickerSection *)self setRecentlyOpenedTags:v9];
 
-  v13 = [(FRFeedPickerSection *)self tags];
-  v10 = [(FRFeedPickerSection *)self popularTagIDs];
-  v11 = [(FRFeedPickerSection *)self sorter];
-  v12 = tagsSortedByMostFrequentlyVisited(v13, v10, v11);
+  tags3 = [(FRFeedPickerSection *)self tags];
+  popularTagIDs2 = [(FRFeedPickerSection *)self popularTagIDs];
+  sorter3 = [(FRFeedPickerSection *)self sorter];
+  v12 = tagsSortedByMostFrequentlyVisited(tags3, popularTagIDs2, sorter3);
   [(FRFeedPickerSection *)self setMostFrequentlyVisitedTags:v12];
 }
 

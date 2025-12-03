@@ -1,5 +1,5 @@
 @interface _SFAddBookmarkActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (_SFSingleBookmarkNavigationController)bookmarkNavigationController;
 - (id)activityTitle;
 @end
@@ -14,20 +14,20 @@
   return v2;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = [MEMORY[0x1E69B1B18] sharedFeatureManager];
-  v4 = [v3 isBookmarksAvailable];
+  mEMORY[0x1E69B1B18] = [MEMORY[0x1E69B1B18] sharedFeatureManager];
+  isBookmarksAvailable = [mEMORY[0x1E69B1B18] isBookmarksAvailable];
 
-  if (!v4)
+  if (!isBookmarksAvailable)
   {
     return 0;
   }
 
-  v5 = [MEMORY[0x1E69E20E8] sharedWebFilterSettings];
-  v6 = [v5 usesAllowedSitesOnly];
+  mEMORY[0x1E69E20E8] = [MEMORY[0x1E69E20E8] sharedWebFilterSettings];
+  usesAllowedSitesOnly = [mEMORY[0x1E69E20E8] usesAllowedSitesOnly];
 
-  if (v6)
+  if (usesAllowedSitesOnly)
   {
     return 0;
   }
@@ -43,8 +43,8 @@
   if (!bookmarkNavigationController)
   {
     v4 = [_SFSingleBookmarkNavigationController alloc];
-    v5 = [MEMORY[0x1E69E20F8] safariBookmarkCollection];
-    v6 = [(_SFSingleBookmarkNavigationController *)v4 initWithCollection:v5];
+    safariBookmarkCollection = [MEMORY[0x1E69E20F8] safariBookmarkCollection];
+    v6 = [(_SFSingleBookmarkNavigationController *)v4 initWithCollection:safariBookmarkCollection];
     v7 = self->_bookmarkNavigationController;
     self->_bookmarkNavigationController = v6;
 

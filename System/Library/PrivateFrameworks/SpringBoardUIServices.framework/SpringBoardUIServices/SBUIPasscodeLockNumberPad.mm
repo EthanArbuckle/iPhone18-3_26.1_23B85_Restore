@@ -2,33 +2,33 @@
 + (BOOL)canUseGlass;
 + (CGSize)_inputButtonCircleSize;
 + (UIEdgeInsets)_inputButtonCircleSpacing;
-+ (id)_buttonForCharacter:(int64_t)a3 withLightStyle:(BOOL)a4;
++ (id)_buttonForCharacter:(int64_t)character withLightStyle:(BOOL)style;
 - (BOOL)_holdsAuxiliaryButtonsWithinPadBounds;
-- (SBUIPasscodeLockNumberPad)initWithDefaultSizeAndLightStyle:(BOOL)a3;
+- (SBUIPasscodeLockNumberPad)initWithDefaultSizeAndLightStyle:(BOOL)style;
 - (SBUIPasscodeLockNumberPadDelegate)delegate;
 - (double)_auxiliaryButtonCenteringOffset;
 - (id)_fontForAncillaryButton;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_animateFlyingOut:(BOOL)a3;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_animateFlyingOut:(BOOL)out;
 - (void)_backspaceButtonHit;
 - (void)_cancelButtonHit;
 - (void)_configureAdditionalButtons;
 - (void)_emergencyCallButtonHit;
-- (void)_numberPadTouchCancelledForEvent:(id)a3;
-- (void)_numberPadTouchDownForEvent:(id)a3;
-- (void)_numberPadTouchDragForEvent:(id)a3;
-- (void)_numberPadTouchUpForEvent:(id)a3;
-- (void)_setButtonsVisible:(BOOL)a3;
-- (void)_setSnapshotsDisabled:(BOOL)a3;
+- (void)_numberPadTouchCancelledForEvent:(id)event;
+- (void)_numberPadTouchDownForEvent:(id)event;
+- (void)_numberPadTouchDragForEvent:(id)event;
+- (void)_numberPadTouchUpForEvent:(id)event;
+- (void)_setButtonsVisible:(BOOL)visible;
+- (void)_setSnapshotsDisabled:(BOOL)disabled;
 - (void)_updateAuxiliaryButtonConstraints;
-- (void)didLongPress:(id)a3;
-- (void)setReduceTransparencyButtonColor:(id)a3;
-- (void)setShowsBackspaceButton:(BOOL)a3;
-- (void)setShowsCancelButton:(BOOL)a3;
-- (void)setShowsEmergencyCallButton:(BOOL)a3;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)didLongPress:(id)press;
+- (void)setReduceTransparencyButtonColor:(id)color;
+- (void)setShowsBackspaceButton:(BOOL)button;
+- (void)setShowsCancelButton:(BOOL)button;
+- (void)setShowsEmergencyCallButton:(BOOL)button;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SBUIPasscodeLockNumberPad
@@ -56,19 +56,19 @@
 - (BOOL)_holdsAuxiliaryButtonsWithinPadBounds
 {
   v2 = [*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 5;
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return (v4 & 0xFFFFFFFFFFFFFFFBLL) == 1 || v2 < 0xFFFFFFFFFFFFFFFELL;
+  return (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || v2 < 0xFFFFFFFFFFFFFFFELL;
 }
 
 - (double)_auxiliaryButtonCenteringOffset
 {
-  v3 = [(SBUIPasscodeLockNumberPad *)self _holdsAuxiliaryButtonsWithinPadBounds];
+  _holdsAuxiliaryButtonsWithinPadBounds = [(SBUIPasscodeLockNumberPad *)self _holdsAuxiliaryButtonsWithinPadBounds];
   [(SBNumberPadWithDelegate *)self->_numberPad frame];
   Width = CGRectGetWidth(v7);
   v5 = -24.0;
-  if (v3)
+  if (_holdsAuxiliaryButtonsWithinPadBounds)
   {
     v5 = -6.0;
   }
@@ -102,7 +102,7 @@
   v5 = -v4;
   [(NSLayoutConstraint *)self->_cancelButtonConstraintCenterX setConstant:v5];
   [(NSLayoutConstraint *)self->_backspaceButtonConstraintCenterX setConstant:v5];
-  v6 = [(SBUIPasscodeLockNumberPad *)self _holdsAuxiliaryButtonsWithinPadBounds];
+  _holdsAuxiliaryButtonsWithinPadBounds = [(SBUIPasscodeLockNumberPad *)self _holdsAuxiliaryButtonsWithinPadBounds];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -123,7 +123,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) setActive:{v6, v12}];
+        [*(*(&v12 + 1) + 8 * v11++) setActive:{_holdsAuxiliaryButtonsWithinPadBounds, v12}];
       }
 
       while (v9 != v11);
@@ -153,9 +153,9 @@
   return result;
 }
 
-+ (id)_buttonForCharacter:(int64_t)a3 withLightStyle:(BOOL)a4
++ (id)_buttonForCharacter:(int64_t)character withLightStyle:(BOOL)style
 {
-  if (a3 == 13)
+  if (character == 13)
   {
     v4 = [[SBEmptyButtonView alloc] initForCharacter:13];
     v5 = *MEMORY[0x1E695F058];
@@ -172,21 +172,21 @@
       v10 = objc_opt_class();
     }
 
-    v4 = [[v10 alloc] initForCharacter:a3];
+    v4 = [[v10 alloc] initForCharacter:character];
   }
 
   return v4;
 }
 
-- (SBUIPasscodeLockNumberPad)initWithDefaultSizeAndLightStyle:(BOOL)a3
+- (SBUIPasscodeLockNumberPad)initWithDefaultSizeAndLightStyle:(BOOL)style
 {
-  v3 = a3;
+  styleCopy = style;
   v141 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_autoreleasePoolPush();
   for (i = 0; i != 12; ++i)
   {
-    v8 = [objc_opt_class() _buttonForCharacter:SBNumberPadCharacters[i] withLightStyle:v3];
+    v8 = [objc_opt_class() _buttonForCharacter:SBNumberPadCharacters[i] withLightStyle:styleCopy];
     [v5 addObject:v8];
   }
 
@@ -204,7 +204,7 @@
   v18 = v17;
   if (v17)
   {
-    v17->_useLightStyle = v3;
+    v17->_useLightStyle = styleCopy;
     [(SBUIPasscodeLockNumberPad *)v17 bounds];
     v20 = SBUIFloatFloorForMainScreenScale((v19 - v11) * 0.5);
     objc_storeStrong(&v18->_numberPad, v9);
@@ -218,13 +218,13 @@
     v132 = 0u;
     v129 = 0u;
     v130 = 0u;
-    v21 = [(SBUIPasscodeLockNumberPad *)v18 layer];
-    v22 = v21;
+    layer = [(SBUIPasscodeLockNumberPad *)v18 layer];
+    v22 = layer;
     v116 = v5;
-    v120 = v3;
-    if (v21)
+    v120 = styleCopy;
+    if (layer)
     {
-      [v21 sublayerTransform];
+      [layer sublayerTransform];
     }
 
     else
@@ -240,7 +240,7 @@
     }
 
     *(&v134 + 1) = 0xBF29CA68A8A067E4;
-    v23 = [(SBUIPasscodeLockNumberPad *)v18 layer];
+    layer2 = [(SBUIPasscodeLockNumberPad *)v18 layer];
     v128[4] = v133;
     v128[5] = v134;
     v128[6] = v135;
@@ -249,10 +249,10 @@
     v128[1] = v130;
     v128[2] = v131;
     v128[3] = v132;
-    [v23 setSublayerTransform:v128];
+    [layer2 setSublayerTransform:v128];
 
-    v122 = [(SBUIPasscodeLockNumberPad *)v18 _fontForAncillaryButton];
-    [v122 pointSize];
+    _fontForAncillaryButton = [(SBUIPasscodeLockNumberPad *)v18 _fontForAncillaryButton];
+    [_fontForAncillaryButton pointSize];
     if (v24 <= 7.0)
     {
       v25 = 1.0;
@@ -320,8 +320,8 @@
           v45 = *(*(&v124 + 1) + 8 * j);
           [v45 setUserInteractionEnabled:1];
           [v45 setClipsToBounds:1];
-          v46 = [MEMORY[0x1E69DC888] clearColor];
-          [v45 setBackgroundColor:v46];
+          clearColor = [MEMORY[0x1E69DC888] clearColor];
+          [v45 setBackgroundColor:clearColor];
 
           if (v120)
           {
@@ -336,26 +336,26 @@
           [v45 setTitleColor:v47 forState:0];
 
           [v45 setPointerInteractionEnabled:1];
-          v48 = [v45 titleLabel];
-          [v48 setFont:v122];
-          [v48 setLineBreakMode:5];
-          [v48 setAdjustsFontSizeToFitWidth:1];
-          [v48 setMinimumScaleFactor:v25];
+          titleLabel = [v45 titleLabel];
+          [titleLabel setFont:_fontForAncillaryButton];
+          [titleLabel setLineBreakMode:5];
+          [titleLabel setAdjustsFontSizeToFitWidth:1];
+          [titleLabel setMinimumScaleFactor:v25];
           [(SBUIPasscodeLockNumberPad *)v123 addSubview:v45];
           [v45 setTranslatesAutoresizingMaskIntoConstraints:0];
           [v45 setContentHorizontalAlignment:0];
           LODWORD(v49) = 1144750080;
           [v45 setContentCompressionResistancePriority:0 forAxis:v49];
-          v50 = [v45 heightAnchor];
-          v51 = [(SBNumberPadWithDelegate *)v123->_numberPad heightAnchor];
-          v52 = [v50 constraintEqualToAnchor:v51 multiplier:0.25];
+          heightAnchor = [v45 heightAnchor];
+          heightAnchor2 = [(SBNumberPadWithDelegate *)v123->_numberPad heightAnchor];
+          v52 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.25];
 
           LODWORD(v53) = 1144750080;
           [v52 setPriority:v53];
           [v52 setActive:1];
-          v54 = [v45 widthAnchor];
-          v55 = [(SBNumberPadWithDelegate *)v123->_numberPad widthAnchor];
-          v43 = [v54 constraintEqualToAnchor:v55 multiplier:0.333333333];
+          widthAnchor = [v45 widthAnchor];
+          widthAnchor2 = [(SBNumberPadWithDelegate *)v123->_numberPad widthAnchor];
+          v43 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.333333333];
 
           LODWORD(v56) = 1144750080;
           [v43 setPriority:v56];
@@ -370,18 +370,18 @@
       v18 = v123;
     }
 
-    v121 = [(SBUIPasscodeLockNumberPad *)v18 _holdsAuxiliaryButtonsWithinPadBounds];
-    v119 = [(SBNumberPadWithDelegate *)v18->_numberPad rightAnchor];
-    v57 = [(SBUIButton *)v18->_cancelButton rightAnchor];
-    v58 = [v119 constraintGreaterThanOrEqualToAnchor:v57];
+    _holdsAuxiliaryButtonsWithinPadBounds = [(SBUIPasscodeLockNumberPad *)v18 _holdsAuxiliaryButtonsWithinPadBounds];
+    rightAnchor = [(SBNumberPadWithDelegate *)v18->_numberPad rightAnchor];
+    rightAnchor2 = [(SBUIButton *)v18->_cancelButton rightAnchor];
+    v58 = [rightAnchor constraintGreaterThanOrEqualToAnchor:rightAnchor2];
     v138[0] = v58;
-    v59 = [(SBNumberPadWithDelegate *)v18->_numberPad rightAnchor];
-    v60 = [(SBUIButton *)v18->_backspaceButton rightAnchor];
-    v61 = [v59 constraintGreaterThanOrEqualToAnchor:v60];
+    rightAnchor3 = [(SBNumberPadWithDelegate *)v18->_numberPad rightAnchor];
+    rightAnchor4 = [(SBUIButton *)v18->_backspaceButton rightAnchor];
+    v61 = [rightAnchor3 constraintGreaterThanOrEqualToAnchor:rightAnchor4];
     v138[1] = v61;
-    v62 = [(SBUIButton *)v123->_emergencyCallButton leftAnchor];
-    v63 = [(SBNumberPadWithDelegate *)v123->_numberPad leftAnchor];
-    v64 = [v62 constraintGreaterThanOrEqualToAnchor:v63];
+    leftAnchor = [(SBUIButton *)v123->_emergencyCallButton leftAnchor];
+    leftAnchor2 = [(SBNumberPadWithDelegate *)v123->_numberPad leftAnchor];
+    v64 = [leftAnchor constraintGreaterThanOrEqualToAnchor:leftAnchor2];
     v138[2] = v64;
     v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:v138 count:3];
     auxiliaryButtonConstrainingConstraints = v123->_auxiliaryButtonConstrainingConstraints;
@@ -389,7 +389,7 @@
 
     v18 = v123;
     v67 = v123->_auxiliaryButtonConstrainingConstraints;
-    if (v121)
+    if (_holdsAuxiliaryButtonsWithinPadBounds)
     {
       [MEMORY[0x1E696ACD8] activateConstraints:v67];
     }
@@ -410,55 +410,55 @@
     v73 = [v71 constraintsWithVisualFormat:@"[_emergencyCallButton]-(>=10)-[_backspaceButton]" options:0x10000 metrics:0 views:v72];
     [v71 activateConstraints:v73];
 
-    v74 = [(SBUIButton *)v123->_cancelButton firstBaselineAnchor];
-    v75 = [(SBUIButton *)v123->_emergencyCallButton firstBaselineAnchor];
-    v76 = [v74 constraintEqualToAnchor:v75];
+    firstBaselineAnchor = [(SBUIButton *)v123->_cancelButton firstBaselineAnchor];
+    firstBaselineAnchor2 = [(SBUIButton *)v123->_emergencyCallButton firstBaselineAnchor];
+    v76 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
     [v76 setActive:1];
 
-    v77 = [(SBUIButton *)v123->_backspaceButton firstBaselineAnchor];
-    v78 = [(SBUIButton *)v123->_emergencyCallButton firstBaselineAnchor];
-    v79 = [v77 constraintEqualToAnchor:v78];
+    firstBaselineAnchor3 = [(SBUIButton *)v123->_backspaceButton firstBaselineAnchor];
+    firstBaselineAnchor4 = [(SBUIButton *)v123->_emergencyCallButton firstBaselineAnchor];
+    v79 = [firstBaselineAnchor3 constraintEqualToAnchor:firstBaselineAnchor4];
     [v79 setActive:1];
 
     [(SBUIPasscodeLockNumberPad *)v123 _auxiliaryButtonCenteringOffset];
     v81 = v80;
-    v82 = [(SBUIButton *)v123->_emergencyCallButton centerXAnchor];
-    v83 = [(SBNumberPadWithDelegate *)v123->_numberPad leftAnchor];
-    v84 = [v82 constraintEqualToAnchor:v83 constant:v81];
+    centerXAnchor = [(SBUIButton *)v123->_emergencyCallButton centerXAnchor];
+    leftAnchor3 = [(SBNumberPadWithDelegate *)v123->_numberPad leftAnchor];
+    v84 = [centerXAnchor constraintEqualToAnchor:leftAnchor3 constant:v81];
     emergencyButtonConstraintCenterX = v123->_emergencyButtonConstraintCenterX;
     v123->_emergencyButtonConstraintCenterX = v84;
 
     LODWORD(v86) = 1144750080;
     [(NSLayoutConstraint *)v123->_emergencyButtonConstraintCenterX setPriority:v86];
     [(NSLayoutConstraint *)v123->_emergencyButtonConstraintCenterX setActive:1];
-    v87 = [(SBUIButton *)v123->_cancelButton centerXAnchor];
-    v88 = [(SBNumberPadWithDelegate *)v123->_numberPad rightAnchor];
+    centerXAnchor2 = [(SBUIButton *)v123->_cancelButton centerXAnchor];
+    rightAnchor5 = [(SBNumberPadWithDelegate *)v123->_numberPad rightAnchor];
     v89 = -v81;
-    v90 = [v87 constraintEqualToAnchor:v88 constant:v89];
+    v90 = [centerXAnchor2 constraintEqualToAnchor:rightAnchor5 constant:v89];
     cancelButtonConstraintCenterX = v123->_cancelButtonConstraintCenterX;
     v123->_cancelButtonConstraintCenterX = v90;
 
     LODWORD(v92) = 1144750080;
     [(NSLayoutConstraint *)v123->_cancelButtonConstraintCenterX setPriority:v92];
     [(NSLayoutConstraint *)v123->_cancelButtonConstraintCenterX setActive:1];
-    v93 = [(SBUIButton *)v123->_backspaceButton centerXAnchor];
-    v94 = [(SBNumberPadWithDelegate *)v123->_numberPad rightAnchor];
-    v95 = [v93 constraintEqualToAnchor:v94 constant:v89];
+    centerXAnchor3 = [(SBUIButton *)v123->_backspaceButton centerXAnchor];
+    rightAnchor6 = [(SBNumberPadWithDelegate *)v123->_numberPad rightAnchor];
+    v95 = [centerXAnchor3 constraintEqualToAnchor:rightAnchor6 constant:v89];
     backspaceButtonConstraintCenterX = v123->_backspaceButtonConstraintCenterX;
     v123->_backspaceButtonConstraintCenterX = v95;
 
     LODWORD(v97) = 1144750080;
     [(NSLayoutConstraint *)v123->_backspaceButtonConstraintCenterX setPriority:v97];
     [(NSLayoutConstraint *)v123->_backspaceButtonConstraintCenterX setActive:1];
-    v98 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v98 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     Height = CGRectGetHeight(v142);
-    v100 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v100 bounds];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 bounds];
     v101 = Height >= CGRectGetWidth(v143);
 
-    v102 = [(TPNumberPad *)v123->_numberPad buttons];
-    v103 = [v102 objectAtIndex:9];
+    buttons = [(TPNumberPad *)v123->_numberPad buttons];
+    v103 = [buttons objectAtIndex:9];
 
     numberPad = v123->_numberPad;
     [v103 frame];
@@ -467,9 +467,9 @@
     v106 = v105;
     [MEMORY[0x1E69D3FE8] pinNumberPadAncillaryButtonOffset:v101];
     v108 = v106 + v107;
-    v109 = [(SBUIButton *)v123->_cancelButton centerYAnchor];
-    v110 = [(SBNumberPadWithDelegate *)v123->_numberPad topAnchor];
-    v111 = [v109 constraintEqualToAnchor:v110 constant:v108];
+    centerYAnchor = [(SBUIButton *)v123->_cancelButton centerYAnchor];
+    topAnchor = [(SBNumberPadWithDelegate *)v123->_numberPad topAnchor];
+    v111 = [centerYAnchor constraintEqualToAnchor:topAnchor constant:v108];
     [v111 setActive:1];
 
     [(SBUIPasscodeLockNumberPad *)v123 setAncillaryButtonOffset:v108];
@@ -492,15 +492,15 @@
   return v18;
 }
 
-- (void)didLongPress:(id)a3
+- (void)didLongPress:(id)press
 {
-  v4 = a3;
-  v7 = [v4 _activeEventOfType:0];
-  v5 = [v4 state];
+  pressCopy = press;
+  v7 = [pressCopy _activeEventOfType:0];
+  state = [pressCopy state];
 
-  if (v5 > 2)
+  if (state > 2)
   {
-    if (v5 == 3)
+    if (state == 3)
     {
       [(SBUIPasscodeLockNumberPad *)self _numberPadTouchUpForEvent:v7];
     }
@@ -508,7 +508,7 @@
     else
     {
       v6 = v7;
-      if (v5 != 4)
+      if (state != 4)
       {
         goto LABEL_11;
       }
@@ -517,7 +517,7 @@
     }
   }
 
-  else if (v5 == 1)
+  else if (state == 1)
   {
     [(SBUIPasscodeLockNumberPad *)self _numberPadTouchDownForEvent:v7];
   }
@@ -525,7 +525,7 @@
   else
   {
     v6 = v7;
-    if (v5 != 2)
+    if (state != 2)
     {
       goto LABEL_11;
     }
@@ -537,46 +537,46 @@
 LABEL_11:
 }
 
-- (void)setShowsCancelButton:(BOOL)a3
+- (void)setShowsCancelButton:(BOOL)button
 {
-  if (self->_showsCancelButton != a3)
+  if (self->_showsCancelButton != button)
   {
-    self->_showsCancelButton = a3;
+    self->_showsCancelButton = button;
     [(SBUIPasscodeLockNumberPad *)self _configureAdditionalButtons];
   }
 }
 
-- (void)setShowsBackspaceButton:(BOOL)a3
+- (void)setShowsBackspaceButton:(BOOL)button
 {
-  if (self->_showsBackspaceButton != a3)
+  if (self->_showsBackspaceButton != button)
   {
-    self->_showsBackspaceButton = a3;
+    self->_showsBackspaceButton = button;
     [(SBUIPasscodeLockNumberPad *)self _configureAdditionalButtons];
   }
 }
 
-- (void)setShowsEmergencyCallButton:(BOOL)a3
+- (void)setShowsEmergencyCallButton:(BOOL)button
 {
-  if (self->_showsEmergencyCallButton != a3)
+  if (self->_showsEmergencyCallButton != button)
   {
-    self->_showsEmergencyCallButton = a3;
+    self->_showsEmergencyCallButton = button;
     [(SBUIPasscodeLockNumberPad *)self _configureAdditionalButtons];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v21.receiver = self;
   v21.super_class = SBUIPasscodeLockNumberPad;
-  [(SBUIPasscodeLockNumberPad *)&v21 traitCollectionDidChange:v4];
-  if (v4)
+  [(SBUIPasscodeLockNumberPad *)&v21 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(SBUIPasscodeLockNumberPad *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(SBUIPasscodeLockNumberPad *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -604,9 +604,9 @@ LABEL_11:
               objc_enumerationMutation(v10);
             }
 
-            v15 = [*(*(&v17 + 1) + 8 * v14) titleLabel];
-            v16 = [(SBUIPasscodeLockNumberPad *)self _fontForAncillaryButton];
-            [v15 setFont:v16];
+            titleLabel = [*(*(&v17 + 1) + 8 * v14) titleLabel];
+            _fontForAncillaryButton = [(SBUIPasscodeLockNumberPad *)self _fontForAncillaryButton];
+            [titleLabel setFont:_fontForAncillaryButton];
 
             ++v14;
           }
@@ -623,13 +623,13 @@ LABEL_11:
   }
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_visible != a3)
+  if (self->_visible != visible)
   {
-    v4 = a3;
-    self->_visible = a3;
-    if (a4 && !UIAccessibilityIsReduceMotionEnabled())
+    visibleCopy = visible;
+    self->_visible = visible;
+    if (animated && !UIAccessibilityIsReduceMotionEnabled())
     {
       v6 = !self->_visible;
 
@@ -639,17 +639,17 @@ LABEL_11:
     else
     {
 
-      [(SBUIPasscodeLockNumberPad *)self _setButtonsVisible:v4];
+      [(SBUIPasscodeLockNumberPad *)self _setButtonsVisible:visibleCopy];
     }
   }
 }
 
-- (void)_animateFlyingOut:(BOOL)a3
+- (void)_animateFlyingOut:(BOOL)out
 {
-  v43 = a3;
+  outCopy = out;
   v72 = *MEMORY[0x1E69E9840];
-  v4 = [(TPNumberPad *)self->_numberPad buttons];
-  v42 = self;
+  buttons = [(TPNumberPad *)self->_numberPad buttons];
+  selfCopy = self;
   [(SBNumberPadWithDelegate *)self->_numberPad center];
   v6 = v5;
   v8 = v7;
@@ -657,7 +657,7 @@ LABEL_11:
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v9 = v4;
+  v9 = buttons;
   v10 = [v9 countByEnumeratingWithState:&v65 objects:v71 count:16];
   if (v10)
   {
@@ -731,10 +731,10 @@ LABEL_11:
   v54[3] = &unk_1E789EDC0;
   v30 = v19;
   v55 = v30;
-  v58 = v43;
+  v58 = outCopy;
   v31 = v18;
   v56 = v31;
-  v57 = v42;
+  v57 = selfCopy;
   [v29 _performWithoutRetargetingAnimations:v54];
   v52 = 0u;
   v53 = 0u;
@@ -757,7 +757,7 @@ LABEL_11:
 
         v37 = *(*(&v50 + 1) + 8 * k);
         [v37 center];
-        [SBUIPasscodeLockNumberPad _flyOutResponseForPoint:v42 center:"_flyOutResponseForPoint:center:"];
+        [SBUIPasscodeLockNumberPad _flyOutResponseForPoint:selfCopy center:"_flyOutResponseForPoint:center:"];
         v60.a = 0.0;
         v59.a = 0.0;
         convertDampingRatioAndResponseToTensionAndFriction();
@@ -768,7 +768,7 @@ LABEL_11:
         v46[1] = 3221225472;
         v46[2] = __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_2;
         v46[3] = &unk_1E789DD20;
-        v49 = v43;
+        v49 = outCopy;
         v47 = v31;
         v48 = v37;
         [v38 _animateUsingSpringWithTension:0 friction:v46 interactive:0 animations:a completion:v40];
@@ -785,13 +785,13 @@ LABEL_11:
   v44[1] = 3221225472;
   v44[2] = __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3;
   v44[3] = &unk_1E789DA60;
-  if (!v43)
+  if (!outCopy)
   {
     v41 = 0.1;
   }
 
-  v44[4] = v42;
-  v45 = v43;
+  v44[4] = selfCopy;
+  v45 = outCopy;
   [MEMORY[0x1E69DD250] animateWithDuration:0x20000 delay:v44 options:0 animations:0.5 completion:v41];
 }
 
@@ -1011,12 +1011,12 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
   }
 }
 
-- (void)_setButtonsVisible:(BOOL)a3
+- (void)_setButtonsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v20 = *MEMORY[0x1E69E9840];
   memset(&v18, 0, sizeof(v18));
-  if (a3)
+  if (visible)
   {
     v5 = *(MEMORY[0x1E695EFD0] + 16);
     *&v18.a = *MEMORY[0x1E695EFD0];
@@ -1033,13 +1033,13 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(TPNumberPad *)self->_numberPad buttons];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  buttons = [(TPNumberPad *)self->_numberPad buttons];
+  v7 = [buttons countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v15;
-    if (v3)
+    if (visibleCopy)
     {
       v10 = 1.0;
     }
@@ -1055,7 +1055,7 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(buttons);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
@@ -1064,23 +1064,23 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
         [v12 setAlpha:v10];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v8 = [buttons countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_numberPadTouchDownForEvent:(id)a3
+- (void)_numberPadTouchDownForEvent:(id)event
 {
   gestureRecognizer = self->_gestureRecognizer;
-  v5 = a3;
-  v6 = [v5 touchesForGestureRecognizer:gestureRecognizer];
-  v10 = [v6 anyObject];
+  eventCopy = event;
+  v6 = [eventCopy touchesForGestureRecognizer:gestureRecognizer];
+  anyObject = [v6 anyObject];
 
   numberPad = self->_numberPad;
-  [v10 locationInView:numberPad];
-  v8 = [(SBNumberPadWithDelegate *)numberPad buttonForPoint:v5 forEvent:?];
+  [anyObject locationInView:numberPad];
+  v8 = [(SBNumberPadWithDelegate *)numberPad buttonForPoint:eventCopy forEvent:?];
 
   if (v8)
   {
@@ -1091,22 +1091,22 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
       [v8 setHighlighted:1];
     }
 
-    v9 = [(SBUIPasscodeLockNumberPad *)self delegate];
+    delegate = [(SBUIPasscodeLockNumberPad *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v9 passcodeLockNumberPad:self keyDown:v8];
+      [delegate passcodeLockNumberPad:self keyDown:v8];
     }
   }
 
   [(SBUIPasscodeLockNumberPad *)self _setSnapshotsDisabled:1];
 }
 
-- (void)_numberPadTouchUpForEvent:(id)a3
+- (void)_numberPadTouchUpForEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (self->_downButton)
   {
-    v10 = v4;
+    v10 = eventCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1114,32 +1114,32 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
     }
 
     v5 = [v10 touchesForGestureRecognizer:self->_gestureRecognizer];
-    v6 = [v5 anyObject];
+    anyObject = [v5 anyObject];
 
     numberPad = self->_numberPad;
-    [v6 locationInView:numberPad];
+    [anyObject locationInView:numberPad];
     v8 = [(SBNumberPadWithDelegate *)numberPad touchAtPoint:self->_downButton isCloseToButton:?];
-    v9 = [(SBUIPasscodeLockNumberPad *)self delegate];
+    delegate = [(SBUIPasscodeLockNumberPad *)self delegate];
     if (v8)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v9 passcodeLockNumberPad:self keyUp:self->_downButton];
+        [delegate passcodeLockNumberPad:self keyUp:self->_downButton];
       }
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      [v9 passcodeLockNumberPad:self keyCancelled:self->_downButton];
+      [delegate passcodeLockNumberPad:self keyCancelled:self->_downButton];
     }
 
     [(SBUIPasscodeLockNumberPad *)self setDownButton:0];
 
-    v4 = v10;
+    eventCopy = v10;
   }
 }
 
-- (void)_numberPadTouchCancelledForEvent:(id)a3
+- (void)_numberPadTouchCancelledForEvent:(id)event
 {
   if (self->_downButton)
   {
@@ -1149,25 +1149,25 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
       [(SBUIPasscodeNumberPadButton *)self->_downButton setHighlighted:0];
     }
 
-    v4 = [(SBUIPasscodeLockNumberPad *)self delegate];
+    delegate = [(SBUIPasscodeLockNumberPad *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v4 passcodeLockNumberPad:self keyCancelled:self->_downButton];
+      [delegate passcodeLockNumberPad:self keyCancelled:self->_downButton];
     }
 
     [(SBUIPasscodeLockNumberPad *)self setDownButton:0];
   }
 }
 
-- (void)_numberPadTouchDragForEvent:(id)a3
+- (void)_numberPadTouchDragForEvent:(id)event
 {
   if (self->_downButton)
   {
-    v4 = [a3 touchesForGestureRecognizer:self->_gestureRecognizer];
-    v7 = [v4 anyObject];
+    v4 = [event touchesForGestureRecognizer:self->_gestureRecognizer];
+    anyObject = [v4 anyObject];
 
     numberPad = self->_numberPad;
-    [v7 locationInView:numberPad];
+    [anyObject locationInView:numberPad];
     v6 = [(SBNumberPadWithDelegate *)numberPad touchAtPoint:self->_downButton isCloseToButton:?];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1177,10 +1177,10 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v7 = a5;
-  [a4 location];
+  regionCopy = region;
+  [request location];
   v8 = [(SBNumberPadWithDelegate *)self->_numberPad buttonForPoint:0 forEvent:?];
   v9 = v8;
   if (v8)
@@ -1192,7 +1192,7 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
 
   else
   {
-    v11 = v7;
+    v11 = regionCopy;
   }
 
   v12 = v11;
@@ -1200,9 +1200,9 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
   return v12;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v4 = [a4 identifier];
+  identifier = [region identifier];
   v5 = off_1E789CA30;
   v6 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -1213,7 +1213,7 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
   }
 
   v10 = objc_opt_class();
-  v11 = v4;
+  v11 = identifier;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -1242,32 +1242,32 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
     v16 = [MEMORY[0x1E69DCDC8] shapeWithPath:v15];
     v17 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v13];
     v18 = [MEMORY[0x1E69DCDB8] effectWithPreview:v17];
-    v14 = [MEMORY[0x1E69DCDD0] styleWithEffect:v18 shape:v16];
+    systemPointerStyle = [MEMORY[0x1E69DCDD0] styleWithEffect:v18 shape:v16];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E69DCDD0] systemPointerStyle];
+    systemPointerStyle = [MEMORY[0x1E69DCDD0] systemPointerStyle];
   }
 
-  [v14 set_suppressesMirroring:1];
+  [systemPointerStyle set_suppressesMirroring:1];
 
-  return v14;
+  return systemPointerStyle;
 }
 
-- (void)setReduceTransparencyButtonColor:(id)a3
+- (void)setReduceTransparencyButtonColor:(id)color
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_reduceTransparencyButtonColor != v5)
+  colorCopy = color;
+  if (self->_reduceTransparencyButtonColor != colorCopy)
   {
-    objc_storeStrong(&self->_reduceTransparencyButtonColor, a3);
+    objc_storeStrong(&self->_reduceTransparencyButtonColor, color);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(TPNumberPad *)self->_numberPad buttons];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    buttons = [(TPNumberPad *)self->_numberPad buttons];
+    v7 = [buttons countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1279,7 +1279,7 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(buttons);
           }
 
           v11 = *(*(&v12 + 1) + 8 * v10);
@@ -1292,7 +1292,7 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [buttons countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -1300,18 +1300,18 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
   }
 }
 
-- (void)_setSnapshotsDisabled:(BOOL)a3
+- (void)_setSnapshotsDisabled:(BOOL)disabled
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_snapshotsDisabled != a3)
+  if (self->_snapshotsDisabled != disabled)
   {
-    self->_snapshotsDisabled = a3;
+    self->_snapshotsDisabled = disabled;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [(TPNumberPad *)self->_numberPad buttons];
-    v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    buttons = [(TPNumberPad *)self->_numberPad buttons];
+    v5 = [buttons countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1322,14 +1322,14 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(buttons);
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
-          v10 = [v9 layer];
-          v11 = [v10 disableUpdateMask];
+          layer = [v9 layer];
+          disableUpdateMask = [layer disableUpdateMask];
 
-          v12 = v11 & 0xFFFFFFFD;
+          v12 = disableUpdateMask & 0xFFFFFFFD;
           if (self->_snapshotsDisabled)
           {
             v13 = 2;
@@ -1340,11 +1340,11 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
             v13 = 0;
           }
 
-          v14 = [v9 layer];
-          [v14 setDisableUpdateMask:v13 | v12];
+          layer2 = [v9 layer];
+          [layer2 setDisableUpdateMask:v13 | v12];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [buttons countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v6);
@@ -1354,28 +1354,28 @@ void __47__SBUIPasscodeLockNumberPad__animateFlyingOut___block_invoke_3(uint64_t
 
 - (void)_cancelButtonHit
 {
-  v3 = [(SBUIPasscodeLockNumberPad *)self delegate];
+  delegate = [(SBUIPasscodeLockNumberPad *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 passcodeLockNumberPadCancelButtonHit:self];
+    [delegate passcodeLockNumberPadCancelButtonHit:self];
   }
 }
 
 - (void)_backspaceButtonHit
 {
-  v3 = [(SBUIPasscodeLockNumberPad *)self delegate];
+  delegate = [(SBUIPasscodeLockNumberPad *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 passcodeLockNumberPadBackspaceButtonHit:self];
+    [delegate passcodeLockNumberPadBackspaceButtonHit:self];
   }
 }
 
 - (void)_emergencyCallButtonHit
 {
-  v3 = [(SBUIPasscodeLockNumberPad *)self delegate];
+  delegate = [(SBUIPasscodeLockNumberPad *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 passcodeLockNumberPadEmergencyCallButtonHit:self];
+    [delegate passcodeLockNumberPadEmergencyCallButtonHit:self];
   }
 }
 

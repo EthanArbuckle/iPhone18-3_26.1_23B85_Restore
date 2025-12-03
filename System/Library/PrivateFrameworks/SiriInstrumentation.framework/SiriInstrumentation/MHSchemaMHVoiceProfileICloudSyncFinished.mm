@@ -1,26 +1,26 @@
 @interface MHSchemaMHVoiceProfileICloudSyncFinished
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHVoiceProfileICloudSyncFinished)initWithDictionary:(id)a3;
-- (MHSchemaMHVoiceProfileICloudSyncFinished)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHVoiceProfileICloudSyncFinished)initWithDictionary:(id)dictionary;
+- (MHSchemaMHVoiceProfileICloudSyncFinished)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasLocale:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasLocale:(BOOL)locale;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHVoiceProfileICloudSyncFinished
 
-- (MHSchemaMHVoiceProfileICloudSyncFinished)initWithDictionary:(id)a3
+- (MHSchemaMHVoiceProfileICloudSyncFinished)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = MHSchemaMHVoiceProfileICloudSyncFinished;
   v5 = [(MHSchemaMHVoiceProfileICloudSyncFinished *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"enrollmentId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"enrollmentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,14 +28,14 @@
       [(MHSchemaMHVoiceProfileICloudSyncFinished *)v5 setEnrollmentId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isVoiceProfileSyncSuccess"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isVoiceProfileSyncSuccess"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceProfileICloudSyncFinished setIsVoiceProfileSyncSuccess:](v5, "setIsVoiceProfileSyncSuccess:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"voiceProfileSyncFailureReason"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"voiceProfileSyncFailureReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(MHSchemaMHVoiceProfileICloudSyncFinished *)v5 setVoiceProfileSyncFailureReason:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"locale"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"locale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (MHSchemaMHVoiceProfileICloudSyncFinished)initWithJSON:(id)a3
+- (MHSchemaMHVoiceProfileICloudSyncFinished)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,19 +92,19 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_enrollmentId)
   {
-    v4 = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self enrollmentId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"enrollmentId"];
+    enrollmentId = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self enrollmentId];
+    v5 = [enrollmentId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"enrollmentId"];
   }
 
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceProfileICloudSyncFinished isVoiceProfileSyncSuccess](self, "isVoiceProfileSyncSuccess")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isVoiceProfileSyncSuccess"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isVoiceProfileSyncSuccess"];
 
     has = self->_has;
   }
@@ -122,19 +122,19 @@
       v9 = off_1E78D9808[v8];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"locale"];
+    [dictionary setObject:v9 forKeyedSubscript:@"locale"];
   }
 
   if (self->_voiceProfileSyncFailureReason)
   {
-    v10 = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self voiceProfileSyncFailureReason];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"voiceProfileSyncFailureReason"];
+    voiceProfileSyncFailureReason = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self voiceProfileSyncFailureReason];
+    v11 = [voiceProfileSyncFailureReason copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"voiceProfileSyncFailureReason"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -164,28 +164,28 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self enrollmentId];
-  v6 = [v4 enrollmentId];
-  if ((v5 != 0) == (v6 == 0))
+  enrollmentId = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self enrollmentId];
+  enrollmentId2 = [equalCopy enrollmentId];
+  if ((enrollmentId != 0) == (enrollmentId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self enrollmentId];
-  if (v7)
+  enrollmentId3 = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self enrollmentId];
+  if (enrollmentId3)
   {
-    v8 = v7;
-    v9 = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self enrollmentId];
-    v10 = [v4 enrollmentId];
-    v11 = [v9 isEqual:v10];
+    v8 = enrollmentId3;
+    enrollmentId4 = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self enrollmentId];
+    enrollmentId5 = [equalCopy enrollmentId];
+    v11 = [enrollmentId4 isEqual:enrollmentId5];
 
     if (!v11)
     {
@@ -197,7 +197,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[36] & 1))
+  if ((*&self->_has & 1) != (equalCopy[36] & 1))
   {
     goto LABEL_15;
   }
@@ -205,28 +205,28 @@
   if (*&self->_has)
   {
     isVoiceProfileSyncSuccess = self->_isVoiceProfileSyncSuccess;
-    if (isVoiceProfileSyncSuccess != [v4 isVoiceProfileSyncSuccess])
+    if (isVoiceProfileSyncSuccess != [equalCopy isVoiceProfileSyncSuccess])
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self voiceProfileSyncFailureReason];
-  v6 = [v4 voiceProfileSyncFailureReason];
-  if ((v5 != 0) == (v6 == 0))
+  enrollmentId = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self voiceProfileSyncFailureReason];
+  enrollmentId2 = [equalCopy voiceProfileSyncFailureReason];
+  if ((enrollmentId != 0) == (enrollmentId2 == 0))
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v13 = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self voiceProfileSyncFailureReason];
-  if (v13)
+  voiceProfileSyncFailureReason = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self voiceProfileSyncFailureReason];
+  if (voiceProfileSyncFailureReason)
   {
-    v14 = v13;
-    v15 = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self voiceProfileSyncFailureReason];
-    v16 = [v4 voiceProfileSyncFailureReason];
-    v17 = [v15 isEqual:v16];
+    v14 = voiceProfileSyncFailureReason;
+    voiceProfileSyncFailureReason2 = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self voiceProfileSyncFailureReason];
+    voiceProfileSyncFailureReason3 = [equalCopy voiceProfileSyncFailureReason];
+    v17 = [voiceProfileSyncFailureReason2 isEqual:voiceProfileSyncFailureReason3];
 
     if (!v17)
     {
@@ -239,9 +239,9 @@ LABEL_14:
   }
 
   v20 = (*&self->_has >> 1) & 1;
-  if (v20 == ((v4[36] >> 1) & 1))
+  if (v20 == ((equalCopy[36] >> 1) & 1))
   {
-    if (!v20 || (locale = self->_locale, locale == [v4 locale]))
+    if (!v20 || (locale = self->_locale, locale == [equalCopy locale]))
     {
       v18 = 1;
       goto LABEL_16;
@@ -255,12 +255,12 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self enrollmentId];
+  toCopy = to;
+  enrollmentId = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self enrollmentId];
 
-  if (v4)
+  if (enrollmentId)
   {
     PBDataWriterWriteStringField();
   }
@@ -270,24 +270,24 @@ LABEL_16:
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self voiceProfileSyncFailureReason];
+  voiceProfileSyncFailureReason = [(MHSchemaMHVoiceProfileICloudSyncFinished *)self voiceProfileSyncFailureReason];
 
-  if (v5)
+  if (voiceProfileSyncFailureReason)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasLocale:(BOOL)a3
+- (void)setHasLocale:(BOOL)locale
 {
-  if (a3)
+  if (locale)
   {
     v3 = 2;
   }

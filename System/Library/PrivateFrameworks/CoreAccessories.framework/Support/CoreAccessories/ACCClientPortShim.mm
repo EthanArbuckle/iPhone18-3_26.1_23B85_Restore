@@ -1,29 +1,29 @@
 @interface ACCClientPortShim
-- (ACCClientPortShim)initWithUID:(id)a3 xpcConnection:(id)a4 delegate:(id)a5;
-- (void)receiveData:(char *)a3 length:(unint64_t)a4;
-- (void)sendData:(char *)a3 length:(unint64_t)a4;
-- (void)sendData:(id)a3;
+- (ACCClientPortShim)initWithUID:(id)d xpcConnection:(id)connection delegate:(id)delegate;
+- (void)receiveData:(char *)data length:(unint64_t)length;
+- (void)sendData:(char *)data length:(unint64_t)length;
+- (void)sendData:(id)data;
 - (void)shutdown;
 @end
 
 @implementation ACCClientPortShim
 
-- (ACCClientPortShim)initWithUID:(id)a3 xpcConnection:(id)a4 delegate:(id)a5
+- (ACCClientPortShim)initWithUID:(id)d xpcConnection:(id)connection delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  connectionCopy = connection;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = ACCClientPortShim;
   v12 = [(ACCClientPortShim *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_portUID, a3);
-    objc_storeStrong(&v13->_xpcConnection, a4);
-    objc_storeStrong(&v13->_delegate, a5);
+    objc_storeStrong(&v12->_portUID, d);
+    objc_storeStrong(&v13->_xpcConnection, connection);
+    objc_storeStrong(&v13->_delegate, delegate);
     v14 = +[ACCTransportClient sharedClient];
-    v15 = [v14 createConnectionWithType:5 andIdentifier:v9];
+    v15 = [v14 createConnectionWithType:5 andIdentifier:dCopy];
     transportClientConnectionID = v13->_transportClientConnectionID;
     v13->_transportClientConnectionID = v15;
 
@@ -33,7 +33,7 @@
     v21[3] = &unk_1002267F8;
     v17 = v13;
     v22 = v17;
-    v18 = [v14 createEndpointWithTransportType:4 andProtocol:4 andIdentifier:v9 andDataOutHandler:v21 forConnectionWithUUID:v13->_transportClientConnectionID publishConnection:1];
+    v18 = [v14 createEndpointWithTransportType:4 andProtocol:4 andIdentifier:dCopy andDataOutHandler:v21 forConnectionWithUUID:v13->_transportClientConnectionID publishConnection:1];
     transportClientEndpointID = v17->_transportClientEndpointID;
     v17->_transportClientEndpointID = v18;
   }
@@ -87,16 +87,16 @@
   self->_transportClientEndpointID = 0;
 }
 
-- (void)receiveData:(char *)a3 length:(unint64_t)a4
+- (void)receiveData:(char *)data length:(unint64_t)length
 {
   v8 = +[ACCTransportClient sharedClient];
-  v7 = [NSData dataWithBytes:a3 length:a4];
+  v7 = [NSData dataWithBytes:data length:length];
   [v8 processIncomingData:v7 forEndpointWithUUID:self->_transportClientEndpointID];
 }
 
-- (void)sendData:(char *)a3 length:(unint64_t)a4
+- (void)sendData:(char *)data length:(unint64_t)length
 {
-  if (a3 && a4)
+  if (data && length)
   {
     xpcConnection = self->_xpcConnection;
     portUID = self->_portUID;
@@ -143,16 +143,16 @@
   }
 }
 
-- (void)sendData:(id)a3
+- (void)sendData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v5 = a3;
-    v6 = a3;
-    v7 = [v6 bytes];
-    v8 = [v6 length];
+    dataCopy = data;
+    dataCopy2 = data;
+    bytes = [dataCopy2 bytes];
+    v8 = [dataCopy2 length];
 
-    [(ACCClientPortShim *)self sendData:v7 length:v8];
+    [(ACCClientPortShim *)self sendData:bytes length:v8];
   }
 }
 

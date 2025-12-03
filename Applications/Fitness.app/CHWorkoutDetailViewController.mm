@@ -1,71 +1,71 @@
 @interface CHWorkoutDetailViewController
-- (CHWorkoutDetailViewController)initWithWorkout:(id)a3 workoutActivity:(id)a4 healthStore:(id)a5 model:(id)a6 fitnessAppContext:(id)a7 workoutFormattingManager:(id)a8 workoutDataProvider:(id)a9 badgeImageFactory:(id)a10 friendListManager:(id)a11 achievementLocalizationProvider:(id)a12 pauseRingsCoordinator:(id)a13 achievementResourceProvider:(id)a14 formattingManager:(id)a15 awardsDataProvider:(id)a16 shouldExposeDeepLinkToTrainingLoadFromEffort:(BOOL)a17 isWorkoutSummaryFetchRequired:(BOOL)a18 supplementaryDataSource:(id)a19;
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
-- (void)_inferenceFeedbackButtonTapped:(id)a3;
+- (CHWorkoutDetailViewController)initWithWorkout:(id)workout workoutActivity:(id)activity healthStore:(id)store model:(id)model fitnessAppContext:(id)context workoutFormattingManager:(id)manager workoutDataProvider:(id)provider badgeImageFactory:(id)self0 friendListManager:(id)self1 achievementLocalizationProvider:(id)self2 pauseRingsCoordinator:(id)self3 achievementResourceProvider:(id)self4 formattingManager:(id)self5 awardsDataProvider:(id)self6 shouldExposeDeepLinkToTrainingLoadFromEffort:(BOOL)self7 isWorkoutSummaryFetchRequired:(BOOL)self8 supplementaryDataSource:(id)self9;
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
+- (void)_inferenceFeedbackButtonTapped:(id)tapped;
 - (void)_loadInferenceRecordsIfNecessary;
-- (void)_presentActivityViewControllerForItems:(id)a3;
-- (void)_presentConfigurationData:(id)a3;
-- (void)_presentShareSheetWithTitle:(id)a3 image:(id)a4 workoutData:(id)a5;
+- (void)_presentActivityViewControllerForItems:(id)items;
+- (void)_presentConfigurationData:(id)data;
+- (void)_presentShareSheetWithTitle:(id)title image:(id)image workoutData:(id)data;
 - (void)_shareSeymourWorkout;
 - (void)_shareWorkout;
-- (void)_workoutWasDeleted:(id)a3;
-- (void)completedFetchWithLocationReadings:(id)a3;
+- (void)_workoutWasDeleted:(id)deleted;
+- (void)completedFetchWithLocationReadings:(id)readings;
 - (void)configureInitialBarButtonItem;
 - (void)dealloc;
 - (void)loadView;
-- (void)navigateToSection:(int64_t)a3;
+- (void)navigateToSection:(int64_t)section;
 - (void)performCustomDismissHandler;
-- (void)presentAchievement:(id)a3 badgeRect:(CGRect)a4 cell:(id)a5;
-- (void)presentViewController:(id)a3 completion:(id)a4;
-- (void)pushViewController:(id)a3;
-- (void)pushWorkoutActivity:(id)a3;
-- (void)shareTapped:(id)a3;
+- (void)presentAchievement:(id)achievement badgeRect:(CGRect)rect cell:(id)cell;
+- (void)presentViewController:(id)controller completion:(id)completion;
+- (void)pushViewController:(id)controller;
+- (void)pushWorkoutActivity:(id)activity;
+- (void)shareTapped:(id)tapped;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation CHWorkoutDetailViewController
 
-- (CHWorkoutDetailViewController)initWithWorkout:(id)a3 workoutActivity:(id)a4 healthStore:(id)a5 model:(id)a6 fitnessAppContext:(id)a7 workoutFormattingManager:(id)a8 workoutDataProvider:(id)a9 badgeImageFactory:(id)a10 friendListManager:(id)a11 achievementLocalizationProvider:(id)a12 pauseRingsCoordinator:(id)a13 achievementResourceProvider:(id)a14 formattingManager:(id)a15 awardsDataProvider:(id)a16 shouldExposeDeepLinkToTrainingLoadFromEffort:(BOOL)a17 isWorkoutSummaryFetchRequired:(BOOL)a18 supplementaryDataSource:(id)a19
+- (CHWorkoutDetailViewController)initWithWorkout:(id)workout workoutActivity:(id)activity healthStore:(id)store model:(id)model fitnessAppContext:(id)context workoutFormattingManager:(id)manager workoutDataProvider:(id)provider badgeImageFactory:(id)self0 friendListManager:(id)self1 achievementLocalizationProvider:(id)self2 pauseRingsCoordinator:(id)self3 achievementResourceProvider:(id)self4 formattingManager:(id)self5 awardsDataProvider:(id)self6 shouldExposeDeepLinkToTrainingLoadFromEffort:(BOOL)self7 isWorkoutSummaryFetchRequired:(BOOL)self8 supplementaryDataSource:(id)self9
 {
-  v55 = a3;
-  v54 = a4;
-  v53 = a5;
-  v52 = a6;
-  v51 = a7;
-  v50 = a8;
-  v49 = a9;
-  v48 = a10;
-  v47 = a11;
-  v46 = a12;
-  v45 = a13;
-  v44 = a14;
-  v43 = a15;
-  v42 = a16;
-  v24 = a19;
+  workoutCopy = workout;
+  activityCopy = activity;
+  storeCopy = store;
+  modelCopy = model;
+  contextCopy = context;
+  managerCopy = manager;
+  providerCopy = provider;
+  factoryCopy = factory;
+  listManagerCopy = listManager;
+  localizationProviderCopy = localizationProvider;
+  coordinatorCopy = coordinator;
+  resourceProviderCopy = resourceProvider;
+  formattingManagerCopy = formattingManager;
+  dataProviderCopy = dataProvider;
+  sourceCopy = source;
   v56.receiver = self;
   v56.super_class = CHWorkoutDetailViewController;
   v25 = [(CHWorkoutDetailViewController *)&v56 init];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_healthStore, a5);
-    objc_storeStrong(&v26->_workout, a3);
-    objc_storeStrong(&v26->_workoutActivity, a4);
-    objc_storeStrong(&v26->_model, a6);
-    objc_storeStrong(&v26->_fitnessAppContext, a7);
-    objc_storeStrong(&v26->_workoutFormattingManager, a8);
-    objc_storeStrong(&v26->_workoutDataProvider, a9);
-    objc_storeStrong(&v26->_badgeImageFactory, a10);
-    objc_storeStrong(&v26->_friendListManager, a11);
-    objc_storeStrong(&v26->_achievementLocalizationProvider, a12);
-    objc_storeStrong(&v26->_pauseRingsCoordinator, a13);
-    objc_storeStrong(&v26->_achievementResourceProvider, a14);
-    objc_storeStrong(&v26->_formattingManager, a15);
-    objc_storeStrong(&v26->_awardsDataProvider, a16);
+    objc_storeStrong(&v25->_healthStore, store);
+    objc_storeStrong(&v26->_workout, workout);
+    objc_storeStrong(&v26->_workoutActivity, activity);
+    objc_storeStrong(&v26->_model, model);
+    objc_storeStrong(&v26->_fitnessAppContext, context);
+    objc_storeStrong(&v26->_workoutFormattingManager, manager);
+    objc_storeStrong(&v26->_workoutDataProvider, provider);
+    objc_storeStrong(&v26->_badgeImageFactory, factory);
+    objc_storeStrong(&v26->_friendListManager, listManager);
+    objc_storeStrong(&v26->_achievementLocalizationProvider, localizationProvider);
+    objc_storeStrong(&v26->_pauseRingsCoordinator, coordinator);
+    objc_storeStrong(&v26->_achievementResourceProvider, resourceProvider);
+    objc_storeStrong(&v26->_formattingManager, formattingManager);
+    objc_storeStrong(&v26->_awardsDataProvider, dataProvider);
     v27 = +[NSNotificationCenter defaultCenter];
     [v27 addObserver:v26 selector:"_workoutWasDeleted:" name:@"FitnessWorkoutWasDeletedNotification" object:0];
 
@@ -81,9 +81,9 @@
 
     [(UITableView *)v26->_tableView setAllowsSelection:0];
     [(UITableView *)v26->_tableView _setHeaderAndFooterViewsFloat:0];
-    v26->_shouldExposeDeepLinkToTrainingLoadFromEffort = a17;
-    LOWORD(v39) = __PAIR16__(a18, a17);
-    v32 = [[CHWorkoutDetailDataSource alloc] initWithTableView:v26->_tableView workout:v26->_workout workoutActivity:v26->_workoutActivity healthStore:v26->_healthStore model:v26->_model fitnessAppContext:v26->_fitnessAppContext formattingManager:v26->_workoutFormattingManager badgeImageFactory:v26->_badgeImageFactory achievementLocalizationProvider:v26->_achievementLocalizationProvider awardsDataProvider:v26->_awardsDataProvider fiuiFormattingManager:v26->_formattingManager showCurrentWorkloadButton:v39 isWorkoutSummaryFetchRequired:v24 supplementaryDataSource:?];
+    v26->_shouldExposeDeepLinkToTrainingLoadFromEffort = effort;
+    LOWORD(v39) = __PAIR16__(required, effort);
+    v32 = [[CHWorkoutDetailDataSource alloc] initWithTableView:v26->_tableView workout:v26->_workout workoutActivity:v26->_workoutActivity healthStore:v26->_healthStore model:v26->_model fitnessAppContext:v26->_fitnessAppContext formattingManager:v26->_workoutFormattingManager badgeImageFactory:v26->_badgeImageFactory achievementLocalizationProvider:v26->_achievementLocalizationProvider awardsDataProvider:v26->_awardsDataProvider fiuiFormattingManager:v26->_formattingManager showCurrentWorkloadButton:v39 isWorkoutSummaryFetchRequired:sourceCopy supplementaryDataSource:?];
     dataSource = v26->_dataSource;
     v26->_dataSource = v32;
 
@@ -100,7 +100,7 @@
       v26->_inferenceRecordController = v36;
     }
 
-    objc_storeStrong(&v26->_supplementaryDataSource, a19);
+    objc_storeStrong(&v26->_supplementaryDataSource, source);
     [(CHWorkoutDetailViewController *)v26 configureInitialBarButtonItem];
   }
 
@@ -109,9 +109,9 @@
 
 - (void)configureInitialBarButtonItem
 {
-  v3 = [(CHWorkoutSummaryDataSourceBridge *)self->_supplementaryDataSource customDismissHandler];
+  customDismissHandler = [(CHWorkoutSummaryDataSourceBridge *)self->_supplementaryDataSource customDismissHandler];
 
-  if (v3)
+  if (customDismissHandler)
   {
     v6 = [_TtC10FitnessApp18WorkoutBuddyStatus makeSummaryUIViewWithIsWorkoutConfiguredWithWorkoutBuddy:[(CHWorkoutSummaryDataSourceBridge *)self->_supplementaryDataSource isConfiguredWithWorkoutBuddy] isWorkoutBuddyMuted:[(CHWorkoutSummaryDataSourceBridge *)self->_supplementaryDataSource isMuted] isWorkoutBuddyHeadphonesOff:[(CHWorkoutSummaryDataSourceBridge *)self->_supplementaryDataSource areHeadphonesOff]];
     v4 = [[UIBarButtonItem alloc] initWithCustomView:v6];
@@ -130,12 +130,12 @@
 
 - (void)performCustomDismissHandler
 {
-  v3 = [(CHWorkoutSummaryDataSourceBridge *)self->_supplementaryDataSource customDismissHandler];
+  customDismissHandler = [(CHWorkoutSummaryDataSourceBridge *)self->_supplementaryDataSource customDismissHandler];
 
-  if (v3)
+  if (customDismissHandler)
   {
-    v4 = [(CHWorkoutSummaryDataSourceBridge *)self->_supplementaryDataSource customDismissHandler];
-    v4[2]();
+    customDismissHandler2 = [(CHWorkoutSummaryDataSourceBridge *)self->_supplementaryDataSource customDismissHandler];
+    customDismissHandler2[2]();
   }
 }
 
@@ -144,12 +144,12 @@
   v6.receiver = self;
   v6.super_class = CHWorkoutDetailViewController;
   [(CHWorkoutDetailViewController *)&v6 loadView];
-  v3 = [(CHWorkoutDetailViewController *)self view];
-  [v3 bounds];
+  view = [(CHWorkoutDetailViewController *)self view];
+  [view bounds];
   [(UITableView *)self->_tableView setFrame:?];
 
-  v4 = [(CHWorkoutDetailViewController *)self view];
-  [v4 addSubview:self->_tableView];
+  view2 = [(CHWorkoutDetailViewController *)self view];
+  [view2 addSubview:self->_tableView];
 
   v5 = +[CHWorkoutDetailAnalyticsTracker sharedInstance];
   [v5 startTrackingWorkout:self->_workout workoutActivity:self->_workoutActivity];
@@ -165,9 +165,9 @@
   [(CHWorkoutDetailViewController *)&v4 dealloc];
 }
 
-- (void)navigateToSection:(int64_t)a3
+- (void)navigateToSection:(int64_t)section
 {
-  v3 = [(CHWorkoutDetailDataSource *)self->_dataSource navigationActionForHeaderInSection:a3];
+  v3 = [(CHWorkoutDetailDataSource *)self->_dataSource navigationActionForHeaderInSection:section];
   if (v3)
   {
     v4 = v3;
@@ -176,88 +176,88 @@
   }
 }
 
-- (void)pushViewController:(id)a3
+- (void)pushViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CHWorkoutDetailViewController *)self navigationController];
-  [v5 pushViewController:v4 animated:1];
+  controllerCopy = controller;
+  navigationController = [(CHWorkoutDetailViewController *)self navigationController];
+  [navigationController pushViewController:controllerCopy animated:1];
 }
 
-- (void)presentViewController:(id)a3 completion:(id)a4
+- (void)presentViewController:(id)controller completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100104FC0;
   v7[3] = &unk_10083C528;
-  v8 = a4;
-  v6 = v8;
-  [(CHWorkoutDetailViewController *)self presentViewController:a3 animated:1 completion:v7];
+  completionCopy = completion;
+  v6 = completionCopy;
+  [(CHWorkoutDetailViewController *)self presentViewController:controller animated:1 completion:v7];
 }
 
-- (void)presentAchievement:(id)a3 badgeRect:(CGRect)a4 cell:(id)a5
+- (void)presentAchievement:(id)achievement badgeRect:(CGRect)rect cell:(id)cell
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a5;
-  v12 = a3;
-  v13 = [v12 unearned] ^ 1;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  cellCopy = cell;
+  achievementCopy = achievement;
+  v13 = [achievementCopy unearned] ^ 1;
   if (AAUIShouldUseNewTrophyCase())
   {
     BYTE3(v22) = 0;
     BYTE2(v22) = v13;
     LOWORD(v22) = 0;
-    v14 = [TrophyCaseAwardDetailViewController initWithAchievement:"initWithAchievement:healthStore:friendListManager:achievementDataProvider:badgeImageFactory:resourceProvider:formattingManager:localizationProvider:pauseRingsCoordinator:fitnessAppContext:workoutFormattingManager:workoutDataProvider:forModalPresentation:shouldShowCelebration:shouldShowEarned:shouldShowAssociatedWorkout:" healthStore:v12 friendListManager:self->_healthStore achievementDataProvider:self->_friendListManager badgeImageFactory:self->_awardsDataProvider resourceProvider:self->_badgeImageFactory formattingManager:self->_achievementResourceProvider localizationProvider:self->_formattingManager pauseRingsCoordinator:self->_achievementLocalizationProvider fitnessAppContext:self->_pauseRingsCoordinator workoutFormattingManager:self->_fitnessAppContext workoutDataProvider:self->_workoutFormattingManager forModalPresentation:self->_workoutDataProvider shouldShowCelebration:v22 shouldShowEarned:? shouldShowAssociatedWorkout:?];
+    v14 = [TrophyCaseAwardDetailViewController initWithAchievement:"initWithAchievement:healthStore:friendListManager:achievementDataProvider:badgeImageFactory:resourceProvider:formattingManager:localizationProvider:pauseRingsCoordinator:fitnessAppContext:workoutFormattingManager:workoutDataProvider:forModalPresentation:shouldShowCelebration:shouldShowEarned:shouldShowAssociatedWorkout:" healthStore:achievementCopy friendListManager:self->_healthStore achievementDataProvider:self->_friendListManager badgeImageFactory:self->_awardsDataProvider resourceProvider:self->_badgeImageFactory formattingManager:self->_achievementResourceProvider localizationProvider:self->_formattingManager pauseRingsCoordinator:self->_achievementLocalizationProvider fitnessAppContext:self->_pauseRingsCoordinator workoutFormattingManager:self->_fitnessAppContext workoutDataProvider:self->_workoutFormattingManager forModalPresentation:self->_workoutDataProvider shouldShowCelebration:v22 shouldShowEarned:? shouldShowAssociatedWorkout:?];
   }
 
   else
   {
-    v14 = [[CHAchievementDetailViewController alloc] initWithAchievement:v12 locProvider:self->_achievementLocalizationProvider formatsForFriend:0 forDayView:1 forModalPresentation:0 shouldShowCelebration:0];
+    v14 = [[CHAchievementDetailViewController alloc] initWithAchievement:achievementCopy locProvider:self->_achievementLocalizationProvider formatsForFriend:0 forDayView:1 forModalPresentation:0 shouldShowCelebration:0];
   }
 
   v15 = v14;
 
   v16 = [AAUIAchievementDetailTransitionAnimator alloc];
-  v17 = [v11 contentView];
+  contentView = [cellCopy contentView];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_10010527C;
   v25[3] = &unk_10083A8B0;
-  v26 = v11;
+  v26 = cellCopy;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100105288;
   v23[3] = &unk_10083A8B0;
   v24 = v26;
   v18 = v26;
-  v19 = [v16 initWithPresentingViewController:self detailViewController:v15 shouldPlayFlipInAnimation:v13 initialBadgeFrame:v17 conversionView:v25 didStartAnimationBlock:v23 didFinishAnimationBlock:{x, y, width, height}];
+  v19 = [v16 initWithPresentingViewController:self detailViewController:v15 shouldPlayFlipInAnimation:v13 initialBadgeFrame:contentView conversionView:v25 didStartAnimationBlock:v23 didFinishAnimationBlock:{x, y, width, height}];
   achievementTransitionAnimator = self->_achievementTransitionAnimator;
   self->_achievementTransitionAnimator = v19;
 
-  v21 = [(CHWorkoutDetailViewController *)self navigationController];
-  [v21 pushViewController:v15 animated:1];
+  navigationController = [(CHWorkoutDetailViewController *)self navigationController];
+  [navigationController pushViewController:v15 animated:1];
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (a4 != 2)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  toViewControllerCopy = toViewController;
+  v13 = toViewControllerCopy;
+  if (operation != 2)
   {
-    if (a4 != 1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (operation != 1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v14 = 0;
       goto LABEL_11;
     }
 
-    objc_storeStrong(&self->_transitionAnimatorFromViewController, a5);
+    objc_storeStrong(&self->_transitionAnimatorFromViewController, viewController);
     goto LABEL_9;
   }
 
-  if (self->_transitionAnimatorFromViewController == v12)
+  if (self->_transitionAnimatorFromViewController == toViewControllerCopy)
   {
 LABEL_9:
     achievementTransitionAnimator = self->_achievementTransitionAnimator;
@@ -272,15 +272,15 @@ LABEL_11:
   return v14;
 }
 
-- (void)pushWorkoutActivity:(id)a3
+- (void)pushWorkoutActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = [CHWorkoutDetailViewController alloc];
   LOBYTE(v7) = self->_shouldExposeDeepLinkToTrainingLoadFromEffort;
-  v8 = [(CHWorkoutDetailViewController *)v5 initWithWorkout:self->_workout workoutActivity:v4 healthStore:self->_healthStore model:self->_model fitnessAppContext:self->_fitnessAppContext workoutFormattingManager:self->_workoutFormattingManager workoutDataProvider:self->_workoutDataProvider badgeImageFactory:self->_badgeImageFactory friendListManager:self->_friendListManager achievementLocalizationProvider:self->_achievementLocalizationProvider pauseRingsCoordinator:self->_pauseRingsCoordinator achievementResourceProvider:self->_achievementResourceProvider formattingManager:self->_formattingManager awardsDataProvider:self->_awardsDataProvider shouldExposeDeepLinkToTrainingLoadFromEffort:v7 supplementaryDataSource:0];
+  v8 = [(CHWorkoutDetailViewController *)v5 initWithWorkout:self->_workout workoutActivity:activityCopy healthStore:self->_healthStore model:self->_model fitnessAppContext:self->_fitnessAppContext workoutFormattingManager:self->_workoutFormattingManager workoutDataProvider:self->_workoutDataProvider badgeImageFactory:self->_badgeImageFactory friendListManager:self->_friendListManager achievementLocalizationProvider:self->_achievementLocalizationProvider pauseRingsCoordinator:self->_pauseRingsCoordinator achievementResourceProvider:self->_achievementResourceProvider formattingManager:self->_formattingManager awardsDataProvider:self->_awardsDataProvider shouldExposeDeepLinkToTrainingLoadFromEffort:v7 supplementaryDataSource:0];
 
-  v6 = [(CHWorkoutDetailViewController *)self navigationController];
-  [v6 pushViewController:v8 animated:1];
+  navigationController = [(CHWorkoutDetailViewController *)self navigationController];
+  [navigationController pushViewController:v8 animated:1];
 }
 
 - (void)viewDidLoad
@@ -289,15 +289,15 @@ LABEL_11:
   v8.super_class = CHWorkoutDetailViewController;
   [(CHWorkoutDetailViewController *)&v8 viewDidLoad];
   v3 = [(CHWorkoutFormattingManager *)self->_workoutFormattingManager formattedDateForWorkout:self->_workout context:@"WorkoutDetailDisplayContext"];
-  v4 = [v3 string];
-  [(CHWorkoutDetailViewController *)self setTitle:v4];
+  string = [v3 string];
+  [(CHWorkoutDetailViewController *)self setTitle:string];
 
-  v5 = [(CHWorkoutDetailViewController *)self navigationItem];
-  [v5 setLargeTitleDisplayMode:2];
+  navigationItem = [(CHWorkoutDetailViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
   rightBarButtonItems = self->_rightBarButtonItems;
-  v7 = [(CHWorkoutDetailViewController *)self navigationItem];
-  [v7 setRightBarButtonItems:rightBarButtonItems];
+  navigationItem2 = [(CHWorkoutDetailViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItems:rightBarButtonItems];
 
   [(CHWorkoutDetailViewController *)self _loadInferenceRecordsIfNecessary];
   [(CHWorkoutSummaryDataSourceBridge *)self->_supplementaryDataSource addWithObserver:self];
@@ -308,37 +308,37 @@ LABEL_11:
   v4.receiver = self;
   v4.super_class = CHWorkoutDetailViewController;
   [(CHWorkoutDetailViewController *)&v4 viewWillLayoutSubviews];
-  v3 = [(CHWorkoutDetailViewController *)self view];
-  [v3 bounds];
+  view = [(CHWorkoutDetailViewController *)self view];
+  [view bounds];
   [(UITableView *)self->_tableView setFrame:?];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = CHWorkoutDetailViewController;
-  [(CHWorkoutDetailViewController *)&v9 viewWillAppear:a3];
-  v4 = [(CHWorkoutDetailViewController *)self navigationController];
-  v5 = [v4 conformsToProtocol:&OBJC_PROTOCOL___CHActivityHistoryPaletteNavigationController];
+  [(CHWorkoutDetailViewController *)&v9 viewWillAppear:appear];
+  navigationController = [(CHWorkoutDetailViewController *)self navigationController];
+  v5 = [navigationController conformsToProtocol:&OBJC_PROTOCOL___CHActivityHistoryPaletteNavigationController];
 
   if (v5)
   {
-    v6 = [(CHWorkoutDetailViewController *)self navigationController];
-    [v6 detachPalette];
+    navigationController2 = [(CHWorkoutDetailViewController *)self navigationController];
+    [navigationController2 detachPalette];
   }
 
   v7 = +[NSNotificationCenter defaultCenter];
   [v7 addObserver:self selector:"refreshWorkoutLocations" name:UIApplicationDidBecomeActiveNotification object:0];
 
-  v8 = [(CHWorkoutDetailViewController *)self navigationController];
-  [v8 setDelegate:self];
+  navigationController3 = [(CHWorkoutDetailViewController *)self navigationController];
+  [navigationController3 setDelegate:self];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CHWorkoutDetailViewController;
-  [(CHWorkoutDetailViewController *)&v5 viewWillDisappear:a3];
+  [(CHWorkoutDetailViewController *)&v5 viewWillDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:UIApplicationDidBecomeActiveNotification object:0];
 }
@@ -358,10 +358,10 @@ LABEL_11:
   }
 }
 
-- (void)shareTapped:(id)a3
+- (void)shareTapped:(id)tapped
 {
-  v4 = [(CHFitnessAppContext *)self->_fitnessAppContext seymourCatalogItemDataProvider];
-  v5 = [v4 isSeymourWorkout:self->_workout];
+  seymourCatalogItemDataProvider = [(CHFitnessAppContext *)self->_fitnessAppContext seymourCatalogItemDataProvider];
+  v5 = [seymourCatalogItemDataProvider isSeymourWorkout:self->_workout];
 
   if (v5)
   {
@@ -380,8 +380,8 @@ LABEL_11:
 {
   workoutFormattingManager = self->_workoutFormattingManager;
   workout = self->_workout;
-  v5 = [(CHWorkoutDetailDataSource *)self->_dataSource routeImageForSharing];
-  v6 = [(CHWorkoutFormattingManager *)workoutFormattingManager shareImageForWorkout:workout routeImage:v5];
+  routeImageForSharing = [(CHWorkoutDetailDataSource *)self->_dataSource routeImageForSharing];
+  v6 = [(CHWorkoutFormattingManager *)workoutFormattingManager shareImageForWorkout:workout routeImage:routeImageForSharing];
 
   if (v6)
   {
@@ -405,17 +405,17 @@ LABEL_11:
   [(CHFitnessAppContext *)fitnessAppContext shareSheetActivityItemsWithWorkout:workout completion:v4];
 }
 
-- (void)_presentActivityViewControllerForItems:(id)a3
+- (void)_presentActivityViewControllerForItems:(id)items
 {
-  v4 = a3;
-  v11 = [[UIActivityViewController alloc] initWithActivityItems:v4 applicationActivities:0];
+  itemsCopy = items;
+  v11 = [[UIActivityViewController alloc] initWithActivityItems:itemsCopy applicationActivities:0];
 
   v5 = sub_1000B882C();
   [v11 setExcludedActivityTypes:v5];
 
-  v6 = [(CHWorkoutDetailViewController *)self navigationController];
+  navigationController = [(CHWorkoutDetailViewController *)self navigationController];
 
-  if (v6)
+  if (navigationController)
   {
     [(CHWorkoutDetailViewController *)self presentViewController:v11 animated:1 completion:0];
   }
@@ -423,17 +423,17 @@ LABEL_11:
   else
   {
     v7 = +[UIApplication sharedApplication];
-    v8 = [v7 windows];
-    v9 = [v8 firstObject];
-    v10 = [v9 rootViewController];
+    windows = [v7 windows];
+    firstObject = [windows firstObject];
+    rootViewController = [firstObject rootViewController];
 
-    [v10 presentViewController:v11 animated:1 completion:0];
+    [rootViewController presentViewController:v11 animated:1 completion:0];
   }
 }
 
-- (void)_presentConfigurationData:(id)a3
+- (void)_presentConfigurationData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -442,27 +442,27 @@ LABEL_11:
   v5 = objc_opt_new();
   v7 = v5;
   objc_copyWeak(&v8, &location);
-  [v5 presentRemoteViewControllerOnHostController:self workoutPlanData:v4 dismissHandler:v6 completionHandler:&stru_10083C570];
+  [v5 presentRemoteViewControllerOnHostController:self workoutPlanData:dataCopy dismissHandler:v6 completionHandler:&stru_10083C570];
   objc_destroyWeak(&v8);
 
   objc_destroyWeak(&location);
 }
 
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata
 {
-  v4 = [(CHWorkoutDetailViewController *)self sharingImage];
+  sharingImage = [(CHWorkoutDetailViewController *)self sharingImage];
 
-  if (v4)
+  if (sharingImage)
   {
-    v5 = [(HKWorkout *)self->_workout metadata];
-    v6 = [v5 objectForKeyedSubscript:HKMetadataKeyWorkoutBrandName];
+    metadata = [(HKWorkout *)self->_workout metadata];
+    v6 = [metadata objectForKeyedSubscript:HKMetadataKeyWorkoutBrandName];
 
     if (![v6 length])
     {
       [(HKWorkout *)self->_workout workoutActivityType];
       [(HKWorkout *)self->_workout fi_swimmingLocationType];
-      v7 = [(HKWorkout *)self->_workout metadata];
-      v8 = [v7 objectForKeyedSubscript:HKMetadataKeyIndoorWorkout];
+      metadata2 = [(HKWorkout *)self->_workout metadata];
+      v8 = [metadata2 objectForKeyedSubscript:HKMetadataKeyIndoorWorkout];
       [v8 BOOLValue];
 
       v9 = FILocalizedNameForActivityType();
@@ -472,9 +472,9 @@ LABEL_11:
 
     v10 = objc_alloc_init(LPLinkMetadata);
     [v10 setTitle:v6];
-    v11 = [(CHWorkoutDetailDataSource *)self->_dataSource routeImageForSharing];
+    routeImageForSharing = [(CHWorkoutDetailDataSource *)self->_dataSource routeImageForSharing];
 
-    if (v11)
+    if (routeImageForSharing)
     {
       v12 = objc_alloc_init(LPAppStoreStoryMetadata);
       v13 = +[NSBundle mainBundle];
@@ -487,8 +487,8 @@ LABEL_11:
     else
     {
       v15 = [LPImage alloc];
-      v16 = [(CHWorkoutDetailViewController *)self sharingImage];
-      v12 = [v15 initWithPlatformImage:v16];
+      sharingImage2 = [(CHWorkoutDetailViewController *)self sharingImage];
+      v12 = [v15 initWithPlatformImage:sharingImage2];
 
       v17 = objc_alloc_init(LPFileMetadata);
       [v17 setName:v6];
@@ -497,8 +497,8 @@ LABEL_11:
     }
 
     v18 = [LPImage alloc];
-    v19 = [(CHWorkoutDetailViewController *)self sharingImage];
-    v20 = UIImagePNGRepresentation(v19);
+    sharingImage3 = [(CHWorkoutDetailViewController *)self sharingImage];
+    v20 = UIImagePNGRepresentation(sharingImage3);
     v21 = [v18 initWithData:v20 MIMEType:@"image/png"];
     [v10 setImage:v21];
   }
@@ -511,10 +511,10 @@ LABEL_11:
   return v10;
 }
 
-- (void)_workoutWasDeleted:(id)a3
+- (void)_workoutWasDeleted:(id)deleted
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"CHDeletedWorkoutKey"];
+  userInfo = [deleted userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"CHDeletedWorkoutKey"];
 
   v29 = 0u;
   v30 = 0u;
@@ -537,9 +537,9 @@ LABEL_11:
           objc_enumerationMutation(v6);
         }
 
-        v12 = [*(*(&v27 + 1) + 8 * i) UUID];
-        v13 = [(HKWorkout *)self->_workout UUID];
-        v14 = [v12 isEqual:v13];
+        uUID = [*(*(&v27 + 1) + 8 * i) UUID];
+        uUID2 = [(HKWorkout *)self->_workout UUID];
+        v14 = [uUID isEqual:uUID2];
 
         if (v14)
         {
@@ -549,19 +549,19 @@ LABEL_11:
           {
             workout = self->_workout;
             v17 = v15;
-            v18 = [(HKWorkout *)workout UUID];
+            uUID3 = [(HKWorkout *)workout UUID];
             *buf = v24;
-            v32 = v18;
+            v32 = uUID3;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Workout %{public}@ was deleted while in workout detail view.", buf, 0xCu);
           }
 
-          v19 = [(CHWorkoutDetailViewController *)self navigationController];
-          v20 = [v19 viewControllers];
+          navigationController = [(CHWorkoutDetailViewController *)self navigationController];
+          viewControllers = [navigationController viewControllers];
 
-          v21 = [v20 indexOfObjectPassingTest:&stru_10083C5B0];
+          v21 = [viewControllers indexOfObjectPassingTest:&stru_10083C5B0];
           if (v21 >= 1)
           {
-            v22 = [v20 objectAtIndex:v21 - 1];
+            v22 = [viewControllers objectAtIndex:v21 - 1];
             block[0] = _NSConcreteStackBlock;
             block[1] = 3221225472;
             block[2] = sub_1001064B8;
@@ -581,9 +581,9 @@ LABEL_11:
   }
 }
 
-- (void)completedFetchWithLocationReadings:(id)a3
+- (void)completedFetchWithLocationReadings:(id)readings
 {
-  v4 = a3;
+  readingsCopy = readings;
   if (+[_HKBehavior isAppleInternalInstall]&& _os_feature_enabled_impl())
   {
     v5 = objc_opt_new();
@@ -606,11 +606,11 @@ LABEL_11:
         if ([(HKWorkout *)self->_workout serializedConfigurationContainsRoute])
         {
           v9 = [(HKWorkout *)self->_workout serializedConfigurationDataIncludingRoute:1];
-          v10 = [(HKWorkout *)self->_workout serializedConfigurationRouteSnapshotData];
-          v11 = v10;
-          if (v9 && v10)
+          serializedConfigurationRouteSnapshotData = [(HKWorkout *)self->_workout serializedConfigurationRouteSnapshotData];
+          v11 = serializedConfigurationRouteSnapshotData;
+          if (v9 && serializedConfigurationRouteSnapshotData)
           {
-            v12 = [[UIImage alloc] initWithData:v10];
+            v12 = [[UIImage alloc] initWithData:serializedConfigurationRouteSnapshotData];
             if (v12)
             {
               v34 = v12;
@@ -648,13 +648,13 @@ LABEL_11:
           }
         }
 
-        v18 = [(CHWorkoutDetailDataSource *)self->_dataSource routeImageForSharing];
-        v19 = v18;
-        if (v18)
+        routeImageForSharing = [(CHWorkoutDetailDataSource *)self->_dataSource routeImageForSharing];
+        v19 = routeImageForSharing;
+        if (routeImageForSharing)
         {
           workout = self->_workout;
-          v21 = UIImagePNGRepresentation(v18);
-          v40 = [(HKWorkout *)workout serializedConfigurationWithEmbedding:v4 snapshot:v21];
+          v21 = UIImagePNGRepresentation(routeImageForSharing);
+          v40 = [(HKWorkout *)workout serializedConfigurationWithEmbedding:readingsCopy snapshot:v21];
 
           if (v40)
           {
@@ -713,7 +713,7 @@ LABEL_11:
   }
 }
 
-- (void)_inferenceFeedbackButtonTapped:(id)a3
+- (void)_inferenceFeedbackButtonTapped:(id)tapped
 {
   if ([(NSArray *)self->_cachedRecords count])
   {
@@ -723,29 +723,29 @@ LABEL_11:
   }
 }
 
-- (void)_presentShareSheetWithTitle:(id)a3 image:(id)a4 workoutData:(id)a5
+- (void)_presentShareSheetWithTitle:(id)title image:(id)image workoutData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  imageCopy = image;
+  dataCopy = data;
   v11 = NSTemporaryDirectory();
   v12 = [NSURL fileURLWithPath:v11 isDirectory:1];
 
   v13 = [v12 URLByAppendingPathComponent:@"Workout.workout"];
-  LODWORD(v11) = [v10 writeToURL:v13 atomically:1];
+  LODWORD(v11) = [dataCopy writeToURL:v13 atomically:1];
 
   if (v11)
   {
     v14 = [UIActivityViewController alloc];
-    v22[0] = v8;
-    v22[1] = v9;
+    v22[0] = titleCopy;
+    v22[1] = imageCopy;
     v22[2] = v13;
     v15 = [NSArray arrayWithObjects:v22 count:3];
     v16 = [v14 initWithActivityItems:v15 applicationActivities:0];
 
-    v17 = [(CHWorkoutDetailViewController *)self navigationController];
+    navigationController = [(CHWorkoutDetailViewController *)self navigationController];
 
-    if (v17)
+    if (navigationController)
     {
       [(CHWorkoutDetailViewController *)self presentViewController:v16 animated:1 completion:0];
     }
@@ -753,11 +753,11 @@ LABEL_11:
     else
     {
       v18 = +[UIApplication sharedApplication];
-      v19 = [v18 windows];
-      v20 = [v19 firstObject];
-      v21 = [v20 rootViewController];
+      windows = [v18 windows];
+      firstObject = [windows firstObject];
+      rootViewController = [firstObject rootViewController];
 
-      [v21 presentViewController:v16 animated:1 completion:0];
+      [rootViewController presentViewController:v16 animated:1 completion:0];
     }
   }
 }

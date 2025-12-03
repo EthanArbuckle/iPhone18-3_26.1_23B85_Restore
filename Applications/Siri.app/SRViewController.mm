@@ -31,17 +31,17 @@
   if (self->_siriVC)
   {
     siriVC = self->_siriVC;
-    v2 = [NSArray arrayWithObjects:&siriVC count:1];
+    preferredFocusEnvironments = [NSArray arrayWithObjects:&siriVC count:1];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = SRViewController;
-    v2 = [(SRViewController *)&v4 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(SRViewController *)&v4 preferredFocusEnvironments];
   }
 
-  return v2;
+  return preferredFocusEnvironments;
 }
 
 - (void)viewDidLoad
@@ -49,9 +49,9 @@
   v5.receiver = self;
   v5.super_class = SRViewController;
   [(SRViewController *)&v5 viewDidLoad];
-  v3 = [(SRViewController *)self view];
+  view = [(SRViewController *)self view];
   v4 = +[UIColor clearColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 }
 
 - (void)tearDownViews

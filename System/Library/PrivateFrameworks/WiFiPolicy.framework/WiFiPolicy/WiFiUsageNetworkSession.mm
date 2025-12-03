@@ -1,20 +1,20 @@
 @interface WiFiUsageNetworkSession
 - (BOOL)isSessionHarvestable;
-- (WiFiUsageNetworkSession)initWithInterfaceName:(id)a3 andCapabilities:(id)a4;
-- (void)displayStateDidChange:(BOOL)a3;
-- (void)joinStateDidChange:(id)a3 withReason:(unint64_t)a4 lastDisconnectReason:(int64_t)a5 lastJoinFailure:(int64_t)a6 andNetworkDetails:(id)a7;
-- (void)processForgetNetwork:(id)a3;
+- (WiFiUsageNetworkSession)initWithInterfaceName:(id)name andCapabilities:(id)capabilities;
+- (void)displayStateDidChange:(BOOL)change;
+- (void)joinStateDidChange:(id)change withReason:(unint64_t)reason lastDisconnectReason:(int64_t)disconnectReason lastJoinFailure:(int64_t)failure andNetworkDetails:(id)details;
+- (void)processForgetNetwork:(id)network;
 - (void)sessionDidEnd;
 - (void)sessionDidStart;
 @end
 
 @implementation WiFiUsageNetworkSession
 
-- (WiFiUsageNetworkSession)initWithInterfaceName:(id)a3 andCapabilities:(id)a4
+- (WiFiUsageNetworkSession)initWithInterfaceName:(id)name andCapabilities:(id)capabilities
 {
   v15.receiver = self;
   v15.super_class = WiFiUsageNetworkSession;
-  v4 = [(WiFiUsageSession *)&v15 initWithSessionType:3 andInterfaceName:a3 andCapabilities:a4];
+  v4 = [(WiFiUsageSession *)&v15 initWithSessionType:3 andInterfaceName:name andCapabilities:capabilities];
   lastNetworkDetails = v4->_lastNetworkDetails;
   v4->_lastNetworkDetails = 0;
 
@@ -49,12 +49,12 @@
   return v4;
 }
 
-- (void)displayStateDidChange:(BOOL)a3
+- (void)displayStateDidChange:(BOOL)change
 {
   v5.receiver = self;
   v5.super_class = WiFiUsageNetworkSession;
   [(WiFiUsageSession *)&v5 displayStateDidChange:?];
-  if (!a3 && ![(WiFiUsageSession *)self poweredOn])
+  if (!change && ![(WiFiUsageSession *)self poweredOn])
   {
     if ([(WiFiUsageSession *)self isSessionActive])
     {
@@ -64,15 +64,15 @@
   }
 }
 
-- (void)joinStateDidChange:(id)a3 withReason:(unint64_t)a4 lastDisconnectReason:(int64_t)a5 lastJoinFailure:(int64_t)a6 andNetworkDetails:(id)a7
+- (void)joinStateDidChange:(id)change withReason:(unint64_t)reason lastDisconnectReason:(int64_t)disconnectReason lastJoinFailure:(int64_t)failure andNetworkDetails:(id)details
 {
-  v12 = a3;
-  v13 = a7;
+  changeCopy = change;
+  detailsCopy = details;
   v24.receiver = self;
   v24.super_class = WiFiUsageNetworkSession;
-  [(WiFiUsageSession *)&v24 joinStateDidChange:v12 withReason:a4 lastDisconnectReason:a5 lastJoinFailure:a6 andNetworkDetails:v13];
+  [(WiFiUsageSession *)&v24 joinStateDidChange:changeCopy withReason:reason lastDisconnectReason:disconnectReason lastJoinFailure:failure andNetworkDetails:detailsCopy];
   lastNetworkDetails = self->_lastNetworkDetails;
-  if (v12)
+  if (changeCopy)
   {
     v15 = lastNetworkDetails == 0;
   }
@@ -85,11 +85,11 @@
   v16 = v15;
   if (v15)
   {
-    v17 = [(WiFiUsageSession *)self isSessionActive];
+    isSessionActive = [(WiFiUsageSession *)self isSessionActive];
     lastNetworkDetails = self->_lastNetworkDetails;
     if (!lastNetworkDetails)
     {
-      if (!v17)
+      if (!isSessionActive)
       {
         goto LABEL_25;
       }
@@ -98,13 +98,13 @@
     }
 
 LABEL_20:
-    v19 = [(WiFiUsageNetworkDetails *)lastNetworkDetails networkName];
-    v20 = [v19 isEqual:v12];
+    networkName = [(WiFiUsageNetworkDetails *)lastNetworkDetails networkName];
+    v20 = [networkName isEqual:changeCopy];
 
-    v21 = [(WiFiUsageSession *)self isSessionActive];
+    isSessionActive2 = [(WiFiUsageSession *)self isSessionActive];
     if (v20)
     {
-      if (((v16 | !v21) & 1) == 0)
+      if (((v16 | !isSessionActive2) & 1) == 0)
       {
         goto LABEL_26;
       }
@@ -115,7 +115,7 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    if (!v21 && !v17)
+    if (!isSessionActive2 && !isSessionActive)
     {
       goto LABEL_25;
     }
@@ -126,43 +126,43 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (v12 || !lastNetworkDetails)
+  if (changeCopy || !lastNetworkDetails)
   {
-    if (!v12 || !lastNetworkDetails)
+    if (!changeCopy || !lastNetworkDetails)
     {
       goto LABEL_26;
     }
 
-    v17 = 0;
+    isSessionActive = 0;
     goto LABEL_20;
   }
 
-  v18 = [(WiFiUsageSession *)self isSessionActive];
-  if (!a6 && v18)
+  isSessionActive3 = [(WiFiUsageSession *)self isSessionActive];
+  if (!failure && isSessionActive3)
   {
     NSLog(&cfstr_SNetworkSessio.isa, "[WiFiUsageNetworkSession joinStateDidChange:withReason:lastDisconnectReason:lastJoinFailure:andNetworkDetails:]");
     [(WiFiUsageNetworkSession *)self sessionDidEnd];
   }
 
 LABEL_26:
-  if (v13)
+  if (detailsCopy)
   {
-    v22 = [v13 copy];
+    v22 = [detailsCopy copy];
     v23 = self->_lastNetworkDetails;
     self->_lastNetworkDetails = v22;
   }
 }
 
-- (void)processForgetNetwork:(id)a3
+- (void)processForgetNetwork:(id)network
 {
-  v4 = a3;
+  networkCopy = network;
   if (_os_feature_enabled_impl())
   {
-    if (v4)
+    if (networkCopy)
     {
-      v5 = [v4 networkName];
+      networkName = [networkCopy networkName];
 
-      if (v5)
+      if (networkName)
       {
         WiFiLinkStateBiomeEventQueue = self->_WiFiLinkStateBiomeEventQueue;
         if (WiFiLinkStateBiomeEventQueue)
@@ -171,7 +171,7 @@ LABEL_26:
           block[1] = 3221225472;
           block[2] = __48__WiFiUsageNetworkSession_processForgetNetwork___block_invoke;
           block[3] = &unk_2789C6630;
-          v8 = v4;
+          v8 = networkCopy;
           dispatch_async(WiFiLinkStateBiomeEventQueue, block);
         }
 
@@ -392,53 +392,53 @@ void __116__WiFiUsageNetworkSession_linkStateDidChange_isInvoluntary_linkChangeR
 
 - (BOOL)isSessionHarvestable
 {
-  v3 = [(WiFiUsageSession *)self networkDetails];
+  networkDetails = [(WiFiUsageSession *)self networkDetails];
   if ([(WiFiUsageSession *)self privacyRestrictionDisabled])
   {
     goto LABEL_16;
   }
 
-  if (!self->_dnuEnabled || v3 == 0)
+  if (!self->_dnuEnabled || networkDetails == 0)
   {
     goto LABEL_22;
   }
 
-  if ([v3 isHidden])
+  if ([networkDetails isHidden])
   {
     NSLog(&cfstr_SHiddenNetwork.isa, "[WiFiUsageNetworkSession isSessionHarvestable]");
     goto LABEL_22;
   }
 
-  if ([v3 isHome])
+  if ([networkDetails isHome])
   {
     NSLog(&cfstr_SHomeNetworkNo.isa, "[WiFiUsageNetworkSession isSessionHarvestable]");
     goto LABEL_22;
   }
 
-  if ([v3 hasNoMap])
+  if ([networkDetails hasNoMap])
   {
     NSLog(&cfstr_SPrivateNetwor.isa, "[WiFiUsageNetworkSession isSessionHarvestable]");
     goto LABEL_22;
   }
 
-  if ([v3 isPersonalHotspot])
+  if ([networkDetails isPersonalHotspot])
   {
     NSLog(&cfstr_SPersonalHotsp.isa, "[WiFiUsageNetworkSession isSessionHarvestable]");
     goto LABEL_22;
   }
 
-  v5 = [v3 connectedBss];
-  if ([v5 networkAccessCode] != 2)
+  connectedBss = [networkDetails connectedBss];
+  if ([connectedBss networkAccessCode] != 2)
   {
-    v6 = [v3 connectedBss];
-    v7 = [v6 networkAccessCode];
+    connectedBss2 = [networkDetails connectedBss];
+    networkAccessCode = [connectedBss2 networkAccessCode];
 
-    if (v7 == 3)
+    if (networkAccessCode == 3)
     {
       goto LABEL_16;
     }
 
-    if ([v3 usageRank] <= 3)
+    if ([networkDetails usageRank] <= 3)
     {
       NSLog(&cfstr_STopNetworkNot.isa, "[WiFiUsageNetworkSession isSessionHarvestable]");
     }

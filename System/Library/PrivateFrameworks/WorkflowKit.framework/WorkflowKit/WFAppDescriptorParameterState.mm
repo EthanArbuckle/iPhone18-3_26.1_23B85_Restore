@@ -1,37 +1,37 @@
 @interface WFAppDescriptorParameterState
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 - (id)legacySerializedRepresentation;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFAppDescriptorParameterState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
   v11 = WFLocalizedString(@"Select an app");
-  v12 = [(WFVariableSubstitutableParameterState *)self value];
-  v13 = [v12 requiresUserConfirmation];
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  requiresUserConfirmation = [value requiresUserConfirmation];
 
-  if (v13)
+  if (requiresUserConfirmation)
   {
-    v9[2](v9, v11, 0);
+    handlerCopy[2](handlerCopy, v11, 0);
   }
 
   else
   {
-    v14 = [(WFVariableSubstitutableParameterState *)self variable];
+    variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-    if (v14)
+    if (variable)
     {
-      v15 = [(WFVariableSubstitutableParameterState *)self variable];
-      if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      variable2 = [(WFVariableSubstitutableParameterState *)self variable];
+      if (variable2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v16 = [v15 prompt];
-        v9[2](v9, v16, 0);
+        prompt = [variable2 prompt];
+        handlerCopy[2](handlerCopy, prompt, 0);
       }
 
       else
@@ -41,11 +41,11 @@
         aBlock[1] = 3221225472;
         aBlock[2] = __90__WFAppDescriptorParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
         aBlock[3] = &unk_1E837DE28;
-        v27 = v9;
+        v27 = handlerCopy;
         v26 = v11;
-        v28 = v10;
+        v28 = valueHandlerCopy;
         v17 = _Block_copy(aBlock);
-        v18 = [(WFVariableSubstitutableParameterState *)self variable];
+        variable3 = [(WFVariableSubstitutableParameterState *)self variable];
         v19 = objc_opt_class();
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
@@ -53,11 +53,11 @@
         v22[3] = &unk_1E837DE78;
         v24 = v17;
         v22[4] = self;
-        v23 = v8;
+        v23 = contextCopy;
         v20 = v17;
-        [v18 getObjectRepresentationForClass:v19 context:v23 completionHandler:v22];
+        [variable3 getObjectRepresentationForClass:v19 context:v23 completionHandler:v22];
 
-        v15 = v27;
+        variable2 = v27;
       }
     }
 
@@ -65,7 +65,7 @@
     {
       v21.receiver = self;
       v21.super_class = WFAppDescriptorParameterState;
-      [(WFVariableSubstitutableParameterState *)&v21 processWithContext:v8 userInputRequiredHandler:v9 valueHandler:v10];
+      [(WFVariableSubstitutableParameterState *)&v21 processWithContext:contextCopy userInputRequiredHandler:handlerCopy valueHandler:valueHandlerCopy];
     }
   }
 }
@@ -131,11 +131,11 @@ void __90__WFAppDescriptorParameterState_processWithContext_userInputRequiredHan
 
 - (id)legacySerializedRepresentation
 {
-  v3 = [(WFVariableSubstitutableParameterState *)self value];
-  v4 = v3;
-  if (v3)
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  v4 = value;
+  if (value)
   {
-    [v3 bundleIdentifier];
+    [value bundleIdentifier];
   }
 
   else
@@ -147,17 +147,17 @@ void __90__WFAppDescriptorParameterState_processWithContext_userInputRequiredHan
   return v5;
 }
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"WFAppDescriptorParameterState.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[INAppDescriptor class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFAppDescriptorParameterState.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[INAppDescriptor class]]"}];
   }
 
-  v6 = v5;
+  v6 = valueCopy;
   if (v6)
   {
     objc_opt_class();
@@ -179,18 +179,18 @@ void __90__WFAppDescriptorParameterState_processWithContext_userInputRequiredHan
 
   v8 = v7;
 
-  v9 = [v8 serializedRepresentation];
+  serializedRepresentation = [v8 serializedRepresentation];
 
-  return v9;
+  return serializedRepresentation;
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v7;
+  representationCopy = representation;
+  providerCopy = provider;
+  parameterCopy = parameter;
+  v10 = representationCopy;
   if (!v10)
   {
     v13 = 0;
@@ -260,8 +260,8 @@ LABEL_12:
     }
   }
 
-  v17 = [MEMORY[0x1E696E748] sharedResolver];
-  v18 = [v17 resolvedAppMatchingDescriptor:v16];
+  mEMORY[0x1E696E748] = [MEMORY[0x1E696E748] sharedResolver];
+  v18 = [mEMORY[0x1E696E748] resolvedAppMatchingDescriptor:v16];
 
   if (v18)
   {

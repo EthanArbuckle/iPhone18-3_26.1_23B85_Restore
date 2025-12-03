@@ -4,12 +4,12 @@
 - (VUIUserEngagementSheetLauncher)init;
 - (id)_init;
 - (void)_deleteKeysUsedForSheetPresentation;
-- (void)_handleTabBarChange:(id)a3;
-- (void)_handleUserNotificationAction:(int64_t)a3;
+- (void)_handleTabBarChange:(id)change;
+- (void)_handleUserNotificationAction:(int64_t)action;
 - (void)_showNotificationAuthorizationSheet;
 - (void)dealloc;
-- (void)handleAMSEngagementPresentationSheet:(BOOL)a3 isRepromptSupported:(BOOL)a4;
-- (void)handleEngagementRequest:(id)a3 completion:(id)a4;
+- (void)handleAMSEngagementPresentationSheet:(BOOL)sheet isRepromptSupported:(BOOL)supported;
+- (void)handleEngagementRequest:(id)request completion:(id)completion;
 @end
 
 @implementation VUIUserEngagementSheetLauncher
@@ -56,23 +56,23 @@ void __48__VUIUserEngagementSheetLauncher_sharedInstance__block_invoke()
     v2->_lastTabIdentifier = v3;
 
     v2->_hasAppLostConnectivity = 0;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v6 = +[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy networkReachabilityDidChangeNotificationName];
-    [v5 addObserver:v2 selector:sel__handleNetworkReachabilityDidChangeNotification_ name:v6 object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleNetworkReachabilityDidChangeNotification_ name:v6 object:0];
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v2 selector:sel__handleTabBarChange_ name:@"TVAppRootViewControllerCurrentNavigationControllerDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__handleTabBarChange_ name:@"TVAppRootViewControllerCurrentNavigationControllerDidChangeNotification" object:0];
 
-    v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v2->_firstPromptLaunchNumberAfterGDPR = [v8 integerForKey:@"KettleFirstPromptLaunchNumberAfterGDPR"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v2->_firstPromptLaunchNumberAfterGDPR = [standardUserDefaults integerForKey:@"KettleFirstPromptLaunchNumberAfterGDPR"];
 
     if (!v2->_firstPromptLaunchNumberAfterGDPR)
     {
       v2->_firstPromptLaunchNumberAfterGDPR = 1;
     }
 
-    v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v2->_lastPromptLaunchNumberAfterGDPR = [v9 integerForKey:@"KettleLastPromptLaunchNumberAfterGDPR"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v2->_lastPromptLaunchNumberAfterGDPR = [standardUserDefaults2 integerForKey:@"KettleLastPromptLaunchNumberAfterGDPR"];
 
     if (!v2->_lastPromptLaunchNumberAfterGDPR)
     {
@@ -103,17 +103,17 @@ void __48__VUIUserEngagementSheetLauncher_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIUserEngagementSheetLauncher;
   [(VUIUserEngagementSheetLauncher *)&v4 dealloc];
 }
 
-- (void)handleAMSEngagementPresentationSheet:(BOOL)a3 isRepromptSupported:(BOOL)a4
+- (void)handleAMSEngagementPresentationSheet:(BOOL)sheet isRepromptSupported:(BOOL)supported
 {
-  if (+[VUIGDPRPresentationManager shouldShowWelcomeScreen]|| a3)
+  if (+[VUIGDPRPresentationManager shouldShowWelcomeScreen]|| sheet)
   {
     v8 = VUIDefaultLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -131,7 +131,7 @@ void __48__VUIUserEngagementSheetLauncher_sharedInstance__block_invoke()
     aBlock[2] = __91__VUIUserEngagementSheetLauncher_handleAMSEngagementPresentationSheet_isRepromptSupported___block_invoke;
     aBlock[3] = &unk_1E872E508;
     objc_copyWeak(&v13, location);
-    v14 = a4;
+    supportedCopy = supported;
     aBlock[4] = self;
     v7 = _Block_copy(aBlock);
     if (_os_feature_enabled_impl())
@@ -141,13 +141,13 @@ void __48__VUIUserEngagementSheetLauncher_sharedInstance__block_invoke()
 
     else
     {
-      v9 = [MEMORY[0x1E6983308] vuiNotificationCenter];
+      vuiNotificationCenter = [MEMORY[0x1E6983308] vuiNotificationCenter];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __91__VUIUserEngagementSheetLauncher_handleAMSEngagementPresentationSheet_isRepromptSupported___block_invoke_42;
       v10[3] = &unk_1E872E530;
       v11 = v7;
-      [v9 getNotificationSettingsWithCompletionHandler:v10];
+      [vuiNotificationCenter getNotificationSettingsWithCompletionHandler:v10];
     }
 
     objc_destroyWeak(&v13);
@@ -273,10 +273,10 @@ uint64_t __91__VUIUserEngagementSheetLauncher_handleAMSEngagementPresentationShe
   return v4(v2, v3);
 }
 
-- (void)_handleTabBarChange:(id)a3
+- (void)_handleTabBarChange:(id)change
 {
-  v5 = [a3 userInfo];
-  v4 = [v5 objectForKey:@"VUIMetricsTabBarItemNotificationKey"];
+  userInfo = [change userInfo];
+  v4 = [userInfo objectForKey:@"VUIMetricsTabBarItemNotificationKey"];
   [(VUIUserEngagementSheetLauncher *)self setLastTabIdentifier:v4];
 }
 
@@ -287,12 +287,12 @@ uint64_t __91__VUIUserEngagementSheetLauncher_handleAMSEngagementPresentationShe
   [v3 setAuthorizationOptions:7];
   v4 = +[VUIAuthenticationManager DSID];
   v16[0] = @"pageContext";
-  v5 = [(VUIUserEngagementSheetLauncher *)self lastTabIdentifier];
-  v6 = v5;
+  lastTabIdentifier = [(VUIUserEngagementSheetLauncher *)self lastTabIdentifier];
+  v6 = lastTabIdentifier;
   v7 = &stru_1F5DB25C0;
-  if (v5)
+  if (lastTabIdentifier)
   {
-    v8 = v5;
+    v8 = lastTabIdentifier;
   }
 
   else
@@ -314,18 +314,18 @@ uint64_t __91__VUIUserEngagementSheetLauncher_handleAMSEngagementPresentationShe
 
   [v3 setMetricsOverlay:v9];
   v10 = objc_alloc(MEMORY[0x1E698CBD8]);
-  v11 = [MEMORY[0x1E696AAE8] mainBundle];
-  v12 = [v11 bundleIdentifier];
-  v13 = [v10 initWithBundleIdentifier:v12 options:v3];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v13 = [v10 initWithBundleIdentifier:bundleIdentifier options:v3];
 
   [v13 setDelegate:self];
-  v14 = [v13 requestAuthorization];
+  requestAuthorization = [v13 requestAuthorization];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__VUIUserEngagementSheetLauncher__showNotificationAuthorizationSheet__block_invoke;
   v15[3] = &unk_1E872E558;
   v15[4] = self;
-  [v14 addFinishBlock:v15];
+  [requestAuthorization addFinishBlock:v15];
 }
 
 void __69__VUIUserEngagementSheetLauncher__showNotificationAuthorizationSheet__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -368,25 +368,25 @@ void __69__VUIUserEngagementSheetLauncher__showNotificationAuthorizationSheet__b
 
 - (void)_deleteKeysUsedForSheetPresentation
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 removeObjectForKey:@"KettleNumberOfAppLaunch"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"KettleNumberOfAppLaunch"];
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v3 removeObjectForKey:@"KettleFirstPromptTimestamp"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults2 removeObjectForKey:@"KettleFirstPromptTimestamp"];
 }
 
-- (void)_handleUserNotificationAction:(int64_t)a3
+- (void)_handleUserNotificationAction:(int64_t)action
 {
   v8 = *MEMORY[0x1E69E9840];
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134217984;
-    v7 = a3;
+    actionCopy = action;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_INFO, "VUIUserEngagementSheetLauncher - User notification authorization status:%ld", &v6, 0xCu);
   }
 
-  if ((a3 - 1) <= 1)
+  if ((action - 1) <= 1)
   {
     [(VUIUserEngagementSheetLauncher *)self _deleteKeysUsedForSheetPresentation];
   }
@@ -395,11 +395,11 @@ void __69__VUIUserEngagementSheetLauncher__showNotificationAuthorizationSheet__b
 - (BOOL)isAnotherSheetShowingToUser
 {
   v2 = +[VUITVAppLauncher sharedInstance];
-  v3 = [v2 appController];
+  appController = [v2 appController];
 
   v4 = +[VUIApplicationRouter topPresentedViewController];
-  v5 = [v4 presentedViewController];
-  if (v5)
+  presentedViewController = [v4 presentedViewController];
+  if (presentedViewController)
   {
     v6 = 1;
   }
@@ -407,35 +407,35 @@ void __69__VUIUserEngagementSheetLauncher__showNotificationAuthorizationSheet__b
   else
   {
     v7 = +[VUIApplicationRouter currentNavigationController];
-    v8 = [v7 presentedViewController];
-    if (v8)
+    presentedViewController2 = [v7 presentedViewController];
+    if (presentedViewController2)
     {
       v6 = 1;
     }
 
     else
     {
-      v9 = [v3 navigationController];
-      v10 = [v9 presentedViewController];
-      v6 = v10 != 0;
+      navigationController = [appController navigationController];
+      presentedViewController3 = [navigationController presentedViewController];
+      v6 = presentedViewController3 != 0;
     }
   }
 
   return v6;
 }
 
-- (void)handleEngagementRequest:(id)a3 completion:(id)a4
+- (void)handleEngagementRequest:(id)request completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__VUIUserEngagementSheetLauncher_handleEngagementRequest_completion___block_invoke;
   v9[3] = &unk_1E872E580;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = requestCopy;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  v8 = requestCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v9);
 }
 

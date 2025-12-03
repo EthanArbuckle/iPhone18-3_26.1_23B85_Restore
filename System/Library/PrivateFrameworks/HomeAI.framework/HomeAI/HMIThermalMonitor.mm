@@ -1,7 +1,7 @@
 @interface HMIThermalMonitor
 + (id)sharedInstance;
-- (BOOL)readMaxValue:(double *)a3;
-- (BOOL)readValueFromSensor:(int)a3 value:(double *)a4;
+- (BOOL)readMaxValue:(double *)value;
+- (BOOL)readValueFromSensor:(int)sensor value:(double *)value;
 - (HMIThermalMonitor)init;
 - (void)_updateThermalLevel;
 - (void)dealloc;
@@ -39,16 +39,16 @@ uint64_t __35__HMIThermalMonitor_sharedInstance__block_invoke()
   {
     v2->_lock._os_unfair_lock_opaque = 0;
     v2->_client = 0;
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     services = v3->_services;
-    v3->_services = v4;
+    v3->_services = dictionary;
 
     v3->_thermalLevel = 0;
     v6 = HMIDispatchQueueNameString(v3, 0);
     v7 = v6;
-    v8 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v10 = dispatch_queue_create(v8, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
     notificationQueue = v3->_notificationQueue;
     v3->_notificationQueue = v10;
 
@@ -86,14 +86,14 @@ void __25__HMIThermalMonitor_init__block_invoke(uint64_t a1)
   [WeakRetained _updateThermalLevel];
 }
 
-- (BOOL)readValueFromSensor:(int)a3 value:(double *)a4
+- (BOOL)readValueFromSensor:(int)sensor value:(double *)value
 {
-  v5 = *&a3;
+  v5 = *&sensor;
   v27 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  v7 = [(HMIThermalMonitor *)self services];
+  services = [(HMIThermalMonitor *)self services];
   v8 = [MEMORY[0x277CCABB0] numberWithInt:v5];
-  client = [v7 objectForKey:v8];
+  client = [services objectForKey:v8];
 
   if (client)
   {
@@ -174,15 +174,15 @@ LABEL_24:
   }
 
   client = [[HMIThermalMonitorService alloc] initWithService:client];
-  v14 = [(HMIThermalMonitor *)self services];
+  services2 = [(HMIThermalMonitor *)self services];
   v15 = [MEMORY[0x277CCABB0] numberWithInt:v5];
-  [v14 setObject:client forKey:v15];
+  [services2 setObject:client forKey:v15];
 
 LABEL_19:
-  if (a4)
+  if (value)
   {
     [(__IOHIDEventSystemClient *)client readValue];
-    *a4 = v16;
+    *value = v16;
   }
 
   v17 = 1;
@@ -192,7 +192,7 @@ LABEL_22:
   return v17;
 }
 
-- (BOOL)readMaxValue:(double *)a3
+- (BOOL)readMaxValue:(double *)value
 {
   v5 = 0;
   v6 = 0.0;
@@ -209,9 +209,9 @@ LABEL_22:
   }
 
   while (v5 != 8);
-  if (a3)
+  if (value)
   {
-    *a3 = v6;
+    *value = v6;
   }
 
   return 1;
@@ -227,7 +227,7 @@ LABEL_22:
   notify_cancel(out_token);
   self->_thermalLevel = v9;
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -241,8 +241,8 @@ LABEL_22:
   }
 
   objc_autoreleasePoolPop(v3);
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 postNotificationName:@"HMIThermalLevelDidChangeNotification" object:v4];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"HMIThermalLevelDidChangeNotification" object:selfCopy];
 }
 
 - (void)dealloc

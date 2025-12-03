@@ -1,35 +1,35 @@
 @interface CCToolKitToolSystemTypeProtocol
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolSystemTypeProtocol)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolSystemTypeProtocol)initWithKind:(id)a3 kindType:(unsigned int)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolSystemTypeProtocol)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolSystemTypeProtocol)initWithKind:(id)kind kindType:(unsigned int)type error:(id *)error;
 - (CCToolKitToolSystemTypeProtocolAssistantSchema)assistantSchema;
 - (CCToolKitToolSystemTypeProtocolIntentUpdatableEntity)intentUpdatableEntity;
 - (CCToolKitToolSystemTypeProtocolPersistentFileIdentifiable)persistentFileIdentifiable;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolSystemTypeProtocol
 
-- (CCToolKitToolSystemTypeProtocol)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolSystemTypeProtocol)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v63[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"unk"];
-    v10 = [v6 objectForKeyedSubscript:@"mailAccount"];
-    v11 = [v6 objectForKeyedSubscript:@"mailAddressee"];
-    v12 = [v6 objectForKeyedSubscript:@"mailMessage"];
-    v60 = [v6 objectForKeyedSubscript:@"mailbox"];
-    v59 = [v6 objectForKeyedSubscript:@"intentMessage"];
-    v58 = [v6 objectForKeyedSubscript:@"messageGroup"];
-    v57 = [v6 objectForKeyedSubscript:@"messageParticipants"];
-    v56 = [v6 objectForKeyedSubscript:@"uniqueEntity"];
-    v13 = [v6 objectForKeyedSubscript:@"intentUpdatableEntity"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"unk"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"mailAccount"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"mailAddressee"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"mailMessage"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"mailbox"];
+    v59 = [dictionaryCopy objectForKeyedSubscript:@"intentMessage"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"messageGroup"];
+    v57 = [dictionaryCopy objectForKeyedSubscript:@"messageParticipants"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"uniqueEntity"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"intentUpdatableEntity"];
     if (v13)
     {
       v63[0] = 0;
@@ -56,10 +56,10 @@ LABEL_60:
     }
 
     v53 = v12;
-    v55 = [v6 objectForKeyedSubscript:@"urlRepresentable"];
-    v14 = [v6 objectForKeyedSubscript:@"visualSearch"];
-    v52 = [v6 objectForKeyedSubscript:@"visualSearchOcr"];
-    v17 = [v6 objectForKeyedSubscript:@"assistantSchema"];
+    v55 = [dictionaryCopy objectForKeyedSubscript:@"urlRepresentable"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"visualSearch"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"visualSearchOcr"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"assistantSchema"];
     if (v17)
     {
       v62 = 0;
@@ -79,7 +79,7 @@ LABEL_59:
 
       v47 = v8;
       v20 = v14;
-      v21 = a4;
+      errorCopy2 = error;
 
       v17 = v18;
     }
@@ -88,11 +88,11 @@ LABEL_59:
     {
       v47 = v8;
       v20 = v14;
-      v21 = a4;
+      errorCopy2 = error;
     }
 
-    v51 = [v6 objectForKeyedSubscript:@"updatableEntity"];
-    v18 = [v6 objectForKeyedSubscript:@"persistentFileIdentifiable"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"updatableEntity"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"persistentFileIdentifiable"];
     if (v18)
     {
       v61 = 0;
@@ -114,9 +114,9 @@ LABEL_58:
       v18 = v22;
     }
 
-    v46 = self;
-    v49 = [v6 objectForKeyedSubscript:@"transientEntity"];
-    v50 = [v6 objectForKeyedSubscript:@"indexedEntity"];
+    selfCopy = self;
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"transientEntity"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"indexedEntity"];
     v48 = v10;
     if (v9)
     {
@@ -130,7 +130,7 @@ LABEL_58:
     }
 
     v26 = v9;
-    v27 = v21;
+    v27 = errorCopy2;
     if (v48)
     {
       v26 = v48;
@@ -272,7 +272,7 @@ LABEL_58:
     v9 = v45;
     v16 = [[CCToolKitToolSystemTypeProtocol alloc] initWithKind:v26 kindType:v25 error:v27];
 
-    self = v46;
+    self = selfCopy;
     v10 = v48;
     goto LABEL_58;
   }
@@ -367,9 +367,9 @@ LABEL_61:
       goto LABEL_40;
     }
 
-    v14 = [(CCToolKitToolSystemTypeProtocol *)self intentUpdatableEntity];
-    v15 = [v14 jsonDictionary];
-    [v3 setObject:v15 forKeyedSubscript:@"intentUpdatableEntity"];
+    intentUpdatableEntity = [(CCToolKitToolSystemTypeProtocol *)self intentUpdatableEntity];
+    jsonDictionary = [intentUpdatableEntity jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"intentUpdatableEntity"];
 
     kindType = self->_kindType;
   }
@@ -405,9 +405,9 @@ LABEL_61:
       goto LABEL_40;
     }
 
-    v19 = [(CCToolKitToolSystemTypeProtocol *)self assistantSchema];
-    v20 = [v19 jsonDictionary];
-    [v3 setObject:v20 forKeyedSubscript:@"assistantSchema"];
+    assistantSchema = [(CCToolKitToolSystemTypeProtocol *)self assistantSchema];
+    jsonDictionary2 = [assistantSchema jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"assistantSchema"];
 
     kindType = self->_kindType;
   }
@@ -427,9 +427,9 @@ LABEL_61:
       goto LABEL_40;
     }
 
-    v22 = [(CCToolKitToolSystemTypeProtocol *)self persistentFileIdentifiable];
-    v23 = [v22 jsonDictionary];
-    [v3 setObject:v23 forKeyedSubscript:@"persistentFileIdentifiable"];
+    persistentFileIdentifiable = [(CCToolKitToolSystemTypeProtocol *)self persistentFileIdentifiable];
+    jsonDictionary3 = [persistentFileIdentifiable jsonDictionary];
+    [v3 setObject:jsonDictionary3 forKeyedSubscript:@"persistentFileIdentifiable"];
 
     kindType = self->_kindType;
   }
@@ -454,73 +454,73 @@ LABEL_40:
   return v26;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v25 = a3;
+  blockCopy = block;
   v5 = objc_alloc(MEMORY[0x1E69939F0]);
   v6 = *MEMORY[0x1E69939A8];
   v7 = [v5 initWithFieldType:v6 enumValue:self->_unk];
-  v25[2](v25, v7);
+  blockCopy[2](blockCopy, v7);
 
   v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_mailAccount];
-  v25[2](v25, v8);
+  blockCopy[2](blockCopy, v8);
 
   v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_mailAddressee];
-  v25[2](v25, v9);
+  blockCopy[2](blockCopy, v9);
 
   v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_mailMessage];
-  v25[2](v25, v10);
+  blockCopy[2](blockCopy, v10);
 
   v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_mailbox];
-  v25[2](v25, v11);
+  blockCopy[2](blockCopy, v11);
 
   v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_intentMessage];
-  v25[2](v25, v12);
+  blockCopy[2](blockCopy, v12);
 
   v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_messageGroup];
-  v25[2](v25, v13);
+  blockCopy[2](blockCopy, v13);
 
   v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_messageParticipants];
-  v25[2](v25, v14);
+  blockCopy[2](blockCopy, v14);
 
   v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_uniqueEntity];
-  v25[2](v25, v15);
+  blockCopy[2](blockCopy, v15);
 
   if (self->_intentUpdatableEntity)
   {
     v16 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_intentUpdatableEntity];
-    v25[2](v25, v16);
+    blockCopy[2](blockCopy, v16);
   }
 
   v17 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_urlRepresentable];
-  v25[2](v25, v17);
+  blockCopy[2](blockCopy, v17);
 
   v18 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_visualSearch];
-  v25[2](v25, v18);
+  blockCopy[2](blockCopy, v18);
 
   v19 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_visualSearchOcr];
-  v25[2](v25, v19);
+  blockCopy[2](blockCopy, v19);
 
   if (self->_assistantSchema)
   {
     v20 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_assistantSchema];
-    v25[2](v25, v20);
+    blockCopy[2](blockCopy, v20);
   }
 
   v21 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_updatableEntity];
-  v25[2](v25, v21);
+  blockCopy[2](blockCopy, v21);
 
   if (self->_persistentFileIdentifiable)
   {
     v22 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_persistentFileIdentifiable];
-    v25[2](v25, v22);
+    blockCopy[2](blockCopy, v22);
   }
 
   v23 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_transientEntity];
-  v25[2](v25, v23);
+  blockCopy[2](blockCopy, v23);
 
   v24 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_indexedEntity];
-  v25[2](v25, v24);
+  blockCopy[2](blockCopy, v24);
 }
 
 - (CCToolKitToolSystemTypeProtocolPersistentFileIdentifiable)persistentFileIdentifiable
@@ -544,10 +544,10 @@ LABEL_40:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -1633,18 +1633,18 @@ LABEL_220:
   return v166;
 }
 
-- (CCToolKitToolSystemTypeProtocol)initWithKind:(id)a3 kindType:(unsigned int)a4 error:(id *)a5
+- (CCToolKitToolSystemTypeProtocol)initWithKind:(id)kind kindType:(unsigned int)type error:(id *)error
 {
-  v8 = a3;
+  kindCopy = kind;
   v9 = objc_opt_new();
-  if (v8 && a4 == 1)
+  if (kindCopy && type == 1)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
     v11 = 0;
     if (IsInstanceOfExpectedClass)
     {
-      [v8 unsignedIntegerValue];
+      [kindCopy unsignedIntegerValue];
       v12 = CCValidateEnumField();
       v13 = v11;
 
@@ -1658,18 +1658,18 @@ LABEL_220:
 
 LABEL_89:
     CCSetError();
-    v31 = 0;
+    selfCopy = 0;
     goto LABEL_90;
   }
 
-  if (v8 && a4 == 2)
+  if (kindCopy && type == 2)
   {
     objc_opt_class();
     v14 = CCValidateIsInstanceOfExpectedClass();
     v11 = 0;
     if (v14)
     {
-      [v8 unsignedIntegerValue];
+      [kindCopy unsignedIntegerValue];
       v15 = CCValidateEnumField();
       v13 = v11;
 
@@ -1684,14 +1684,14 @@ LABEL_89:
     goto LABEL_89;
   }
 
-  if (v8 && a4 == 3)
+  if (kindCopy && type == 3)
   {
     objc_opt_class();
     v16 = CCValidateIsInstanceOfExpectedClass();
     v11 = 0;
     if (v16)
     {
-      [v8 unsignedIntegerValue];
+      [kindCopy unsignedIntegerValue];
       v17 = CCValidateEnumField();
       v13 = v11;
 
@@ -1706,14 +1706,14 @@ LABEL_89:
     goto LABEL_89;
   }
 
-  if (v8 && a4 == 4)
+  if (kindCopy && type == 4)
   {
     objc_opt_class();
     v18 = CCValidateIsInstanceOfExpectedClass();
     v11 = 0;
     if (v18)
     {
-      [v8 unsignedIntegerValue];
+      [kindCopy unsignedIntegerValue];
       v19 = CCValidateEnumField();
       v13 = v11;
 
@@ -1728,14 +1728,14 @@ LABEL_89:
     goto LABEL_89;
   }
 
-  if (v8 && a4 == 5)
+  if (kindCopy && type == 5)
   {
     objc_opt_class();
     v20 = CCValidateIsInstanceOfExpectedClass();
     v11 = 0;
     if (v20)
     {
-      [v8 unsignedIntegerValue];
+      [kindCopy unsignedIntegerValue];
       v21 = CCValidateEnumField();
       v13 = v11;
 
@@ -1750,14 +1750,14 @@ LABEL_89:
     goto LABEL_89;
   }
 
-  if (v8 && a4 == 6)
+  if (kindCopy && type == 6)
   {
     objc_opt_class();
     v22 = CCValidateIsInstanceOfExpectedClass();
     v11 = 0;
     if (v22)
     {
-      [v8 unsignedIntegerValue];
+      [kindCopy unsignedIntegerValue];
       v23 = CCValidateEnumField();
       v13 = v11;
 
@@ -1772,14 +1772,14 @@ LABEL_89:
     goto LABEL_89;
   }
 
-  if (v8 && a4 == 7)
+  if (kindCopy && type == 7)
   {
     objc_opt_class();
     v24 = CCValidateIsInstanceOfExpectedClass();
     v11 = 0;
     if (v24)
     {
-      [v8 unsignedIntegerValue];
+      [kindCopy unsignedIntegerValue];
       v25 = CCValidateEnumField();
       v13 = v11;
 
@@ -1794,14 +1794,14 @@ LABEL_89:
     goto LABEL_89;
   }
 
-  if (v8 && a4 == 8)
+  if (kindCopy && type == 8)
   {
     objc_opt_class();
     v26 = CCValidateIsInstanceOfExpectedClass();
     v11 = 0;
     if (v26)
     {
-      [v8 unsignedIntegerValue];
+      [kindCopy unsignedIntegerValue];
       v27 = CCValidateEnumField();
       v13 = v11;
 
@@ -1816,9 +1816,9 @@ LABEL_89:
     goto LABEL_89;
   }
 
-  if (!v8 || a4 != 9)
+  if (!kindCopy || type != 9)
   {
-    if (v8 && a4 == 10)
+    if (kindCopy && type == 10)
     {
       objc_opt_class();
       v32 = CCValidateIsInstanceOfExpectedClass();
@@ -1831,14 +1831,14 @@ LABEL_89:
 
     else
     {
-      if (v8 && a4 == 11)
+      if (kindCopy && type == 11)
       {
         objc_opt_class();
         v34 = CCValidateIsInstanceOfExpectedClass();
         v11 = 0;
         if (v34)
         {
-          [v8 unsignedIntegerValue];
+          [kindCopy unsignedIntegerValue];
           v35 = CCValidateEnumField();
           v13 = v11;
 
@@ -1853,14 +1853,14 @@ LABEL_89:
         goto LABEL_89;
       }
 
-      if (v8 && a4 == 12)
+      if (kindCopy && type == 12)
       {
         objc_opt_class();
         v36 = CCValidateIsInstanceOfExpectedClass();
         v11 = 0;
         if (v36)
         {
-          [v8 unsignedIntegerValue];
+          [kindCopy unsignedIntegerValue];
           v37 = CCValidateEnumField();
           v13 = v11;
 
@@ -1875,14 +1875,14 @@ LABEL_89:
         goto LABEL_89;
       }
 
-      if (v8 && a4 == 13)
+      if (kindCopy && type == 13)
       {
         objc_opt_class();
         v38 = CCValidateIsInstanceOfExpectedClass();
         v11 = 0;
         if (v38)
         {
-          [v8 unsignedIntegerValue];
+          [kindCopy unsignedIntegerValue];
           v39 = CCValidateEnumField();
           v13 = v11;
 
@@ -1897,7 +1897,7 @@ LABEL_89:
         goto LABEL_89;
       }
 
-      if (v8 && a4 == 14)
+      if (kindCopy && type == 14)
       {
         objc_opt_class();
         v40 = CCValidateIsInstanceOfExpectedClass();
@@ -1910,14 +1910,14 @@ LABEL_89:
 
       else
       {
-        if (v8 && a4 == 15)
+        if (kindCopy && type == 15)
         {
           objc_opt_class();
           v41 = CCValidateIsInstanceOfExpectedClass();
           v11 = 0;
           if (v41)
           {
-            [v8 unsignedIntegerValue];
+            [kindCopy unsignedIntegerValue];
             v42 = CCValidateEnumField();
             v13 = v11;
 
@@ -1932,16 +1932,16 @@ LABEL_89:
           goto LABEL_89;
         }
 
-        if (!v8 || a4 != 16)
+        if (!kindCopy || type != 16)
         {
-          if (v8 && a4 == 17)
+          if (kindCopy && type == 17)
           {
             objc_opt_class();
             v44 = CCValidateIsInstanceOfExpectedClass();
             v11 = 0;
             if (v44)
             {
-              [v8 unsignedIntegerValue];
+              [kindCopy unsignedIntegerValue];
               v45 = CCValidateEnumField();
               v13 = v11;
 
@@ -1957,7 +1957,7 @@ LABEL_89:
           else
           {
             v13 = 0;
-            if (!v8 || a4 != 18)
+            if (!kindCopy || type != 18)
             {
               goto LABEL_46;
             }
@@ -1967,7 +1967,7 @@ LABEL_89:
             v11 = 0;
             if (v46)
             {
-              [v8 unsignedIntegerValue];
+              [kindCopy unsignedIntegerValue];
               v47 = CCValidateEnumField();
               v13 = v11;
 
@@ -1989,7 +1989,7 @@ LABEL_89:
         if (v43)
         {
 LABEL_50:
-          v33 = [v8 data];
+          data = [kindCopy data];
           CCPBDataWriterWriteDataField();
 
           goto LABEL_46;
@@ -1998,7 +1998,7 @@ LABEL_50:
     }
 
     CCSetError();
-    v31 = 0;
+    selfCopy = 0;
     v11 = v13;
     goto LABEL_90;
   }
@@ -2011,7 +2011,7 @@ LABEL_50:
     goto LABEL_89;
   }
 
-  [v8 unsignedIntegerValue];
+  [kindCopy unsignedIntegerValue];
   v29 = CCValidateEnumField();
   v13 = v11;
 
@@ -2022,14 +2022,14 @@ LABEL_45:
   }
 
 LABEL_46:
-  v30 = [v9 immutableData];
-  self = [(CCItemMessage *)self initWithData:v30 error:a5];
+  immutableData = [v9 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
   v11 = v13;
-  v31 = self;
+  selfCopy = self;
 LABEL_90:
 
-  return v31;
+  return selfCopy;
 }
 
 @end

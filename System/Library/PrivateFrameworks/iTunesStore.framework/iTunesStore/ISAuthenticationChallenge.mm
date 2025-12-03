@@ -1,18 +1,18 @@
 @interface ISAuthenticationChallenge
-- (ISAuthenticationChallenge)initWithAuthenticationChallenge:(id)a3;
+- (ISAuthenticationChallenge)initWithAuthenticationChallenge:(id)challenge;
 - (void)cancelAuthentication;
 - (void)dealloc;
-- (void)useCredential:(id)a3;
+- (void)useCredential:(id)credential;
 @end
 
 @implementation ISAuthenticationChallenge
 
-- (ISAuthenticationChallenge)initWithAuthenticationChallenge:(id)a3
+- (ISAuthenticationChallenge)initWithAuthenticationChallenge:(id)challenge
 {
   v4 = [(ISAuthenticationChallenge *)self init];
   if (v4)
   {
-    v4->_challenge = a3;
+    v4->_challenge = challenge;
   }
 
   return v4;
@@ -31,18 +31,18 @@
 
 - (void)cancelAuthentication
 {
-  v3 = [(ISAuthenticationChallenge *)self sender];
+  sender = [(ISAuthenticationChallenge *)self sender];
   challenge = self->_challenge;
 
-  [(NSURLAuthenticationChallengeSender *)v3 cancelAuthenticationChallenge:challenge];
+  [(NSURLAuthenticationChallengeSender *)sender cancelAuthenticationChallenge:challenge];
 }
 
-- (void)useCredential:(id)a3
+- (void)useCredential:(id)credential
 {
-  v5 = [(ISAuthenticationChallenge *)self sender];
+  sender = [(ISAuthenticationChallenge *)self sender];
   challenge = self->_challenge;
 
-  [(NSURLAuthenticationChallengeSender *)v5 useCredential:a3 forAuthenticationChallenge:challenge];
+  [(NSURLAuthenticationChallengeSender *)sender useCredential:credential forAuthenticationChallenge:challenge];
 }
 
 @end

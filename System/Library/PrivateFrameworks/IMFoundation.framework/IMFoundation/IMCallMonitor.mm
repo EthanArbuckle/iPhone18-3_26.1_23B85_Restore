@@ -3,7 +3,7 @@
 - (BOOL)isOnCall;
 - (BOOL)isOnTelephonyCall;
 - (IMCallMonitor)init;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
+- (void)callObserver:(id)observer callChanged:(id)changed;
 @end
 
 @implementation IMCallMonitor
@@ -145,9 +145,9 @@ LABEL_12:
   return v7;
 }
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
-  v5 = objc_msgSend_isOnCall(self, a2, a3, a4);
+  v5 = objc_msgSend_isOnCall(self, a2, observer, changed);
   if (self->_wasOnCall != v5)
   {
     self->_wasOnCall = v5;

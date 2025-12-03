@@ -1,14 +1,14 @@
 @interface UIKBTextStyle
-+ (id)styleWithFontName:(id)a3 withFallbackFontName:(id)a4 withFontSize:(double)a5;
-+ (id)styleWithFontName:(id)a3 withFontSize:(double)a4;
-+ (id)styleWithTextColor:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)styleWithFontName:(id)name withFallbackFontName:(id)fontName withFontSize:(double)size;
++ (id)styleWithFontName:(id)name withFontSize:(double)size;
++ (id)styleWithTextColor:(id)color;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)etchOffset;
 - (CGPoint)textOffset;
 - (UIKBTextStyle)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)overlayWithStyle:(id)a3;
+- (void)overlayWithStyle:(id)style;
 @end
 
 @implementation UIKBTextStyle
@@ -37,15 +37,15 @@
   return result;
 }
 
-+ (id)styleWithFontName:(id)a3 withFontSize:(double)a4
++ (id)styleWithFontName:(id)name withFontSize:(double)size
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = objc_alloc_init(UIKBTextStyle);
   [(UIKBTextStyle *)v6 setTextOpacity:1.0];
   [(UIKBTextStyle *)v6 setImageScale:1.0];
-  [(UIKBTextStyle *)v6 setFontName:v5];
+  [(UIKBTextStyle *)v6 setFontName:nameCopy];
 
-  [(UIKBTextStyle *)v6 setFontSize:a4];
+  [(UIKBTextStyle *)v6 setFontSize:size];
   [(UIKBTextStyle *)v6 setFontWeight:0.0];
   [(UIKBTextStyle *)v6 setFontGrade:0];
   [(UIKBTextStyle *)v6 setFontWidth:*off_1E70ECD48];
@@ -57,17 +57,17 @@
   return v6;
 }
 
-+ (id)styleWithFontName:(id)a3 withFallbackFontName:(id)a4 withFontSize:(double)a5
++ (id)styleWithFontName:(id)name withFallbackFontName:(id)fontName withFontSize:(double)size
 {
-  v7 = a4;
-  v8 = a3;
+  fontNameCopy = fontName;
+  nameCopy = name;
   v9 = objc_alloc_init(UIKBTextStyle);
   [(UIKBTextStyle *)v9 setTextOpacity:1.0];
   [(UIKBTextStyle *)v9 setImageScale:1.0];
-  [(UIKBTextStyle *)v9 setFontName:v8];
+  [(UIKBTextStyle *)v9 setFontName:nameCopy];
 
-  [(UIKBTextStyle *)v9 setKeycapsFallback:v7];
-  [(UIKBTextStyle *)v9 setFontSize:a5];
+  [(UIKBTextStyle *)v9 setKeycapsFallback:fontNameCopy];
+  [(UIKBTextStyle *)v9 setFontSize:size];
   [(UIKBTextStyle *)v9 setFontWeight:0.0];
   [(UIKBTextStyle *)v9 setFontGrade:0];
   [(UIKBTextStyle *)v9 setFontWidth:*off_1E70ECD48];
@@ -79,16 +79,16 @@
   return v9;
 }
 
-+ (id)styleWithTextColor:(id)a3
++ (id)styleWithTextColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = objc_alloc_init(UIKBTextStyle);
   [(UIKBTextStyle *)v4 setFontWeight:0.0];
   [(UIKBTextStyle *)v4 setFontGrade:0];
   [(UIKBTextStyle *)v4 setFontWidth:*off_1E70ECD48];
   [(UIKBTextStyle *)v4 setTextOpacity:1.0];
   [(UIKBTextStyle *)v4 setImageScale:1.0];
-  [(UIKBTextStyle *)v4 setTextColor:v3];
+  [(UIKBTextStyle *)v4 setTextColor:colorCopy];
 
   [(UIKBTextStyle *)v4 setIgnoreTextMarginOnKey:0];
   [(UIKBTextStyle *)v4 setNeedsFontCase:0];
@@ -101,8 +101,8 @@
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(UIKBTextStyle *)self fontName];
-  [v3 appendFormat:@"; fontName = %@", v4];
+  fontName = [(UIKBTextStyle *)self fontName];
+  [v3 appendFormat:@"; fontName = %@", fontName];
 
   [(UIKBTextStyle *)self fontSize];
   [v3 appendFormat:@"; fontSize = %f", v5];
@@ -138,20 +138,20 @@
     [v3 appendFormat:@"; textOpacity = %f", v15];
   }
 
-  v16 = [(UIKBTextStyle *)self textColor];
+  textColor = [(UIKBTextStyle *)self textColor];
 
-  if (v16)
+  if (textColor)
   {
-    v17 = [(UIKBTextStyle *)self textColor];
-    [v3 appendFormat:@"; textColor = %@", v17];
+    textColor2 = [(UIKBTextStyle *)self textColor];
+    [v3 appendFormat:@"; textColor = %@", textColor2];
   }
 
-  v18 = [(UIKBTextStyle *)self etchColor];
+  etchColor = [(UIKBTextStyle *)self etchColor];
 
-  if (v18)
+  if (etchColor)
   {
-    v19 = [(UIKBTextStyle *)self etchColor];
-    [v3 appendFormat:@"; etchColor = %@", v19];
+    etchColor2 = [(UIKBTextStyle *)self etchColor];
+    [v3 appendFormat:@"; etchColor = %@", etchColor2];
   }
 
   if ([(UIKBTextStyle *)self alignment]!= 1)
@@ -202,10 +202,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
     goto LABEL_35;
@@ -218,62 +218,62 @@
   }
 
   fontName = self->_fontName;
-  if ((v4->_fontName != 0) == (fontName == 0) || fontName && ![(NSString *)fontName isEqualToString:?])
+  if ((equalCopy->_fontName != 0) == (fontName == 0) || fontName && ![(NSString *)fontName isEqualToString:?])
   {
     goto LABEL_33;
   }
 
-  if (self->_fontSize != v4->_fontSize)
+  if (self->_fontSize != equalCopy->_fontSize)
   {
     goto LABEL_33;
   }
 
-  if (self->_fontSizeForSymbolImage != v4->_fontSizeForSymbolImage)
+  if (self->_fontSizeForSymbolImage != equalCopy->_fontSizeForSymbolImage)
   {
     goto LABEL_33;
   }
 
-  if (self->_minFontSize != v4->_minFontSize)
+  if (self->_minFontSize != equalCopy->_minFontSize)
   {
     goto LABEL_33;
   }
 
-  if (self->_kerning != v4->_kerning)
+  if (self->_kerning != equalCopy->_kerning)
   {
     goto LABEL_33;
   }
 
-  if (self->_textOpacity != v4->_textOpacity)
+  if (self->_textOpacity != equalCopy->_textOpacity)
   {
     goto LABEL_33;
   }
 
   textColor = self->_textColor;
-  if ((textColor == 0) == (v4->_textColor != 0) || textColor && ![(NSString *)textColor isEqualToString:?])
+  if ((textColor == 0) == (equalCopy->_textColor != 0) || textColor && ![(NSString *)textColor isEqualToString:?])
   {
     goto LABEL_33;
   }
 
   etchColor = self->_etchColor;
-  if ((etchColor == 0) == (v4->_etchColor != 0) || etchColor && ![(NSString *)etchColor isEqualToString:?])
+  if ((etchColor == 0) == (equalCopy->_etchColor != 0) || etchColor && ![(NSString *)etchColor isEqualToString:?])
   {
     goto LABEL_33;
   }
 
-  if (self->_alignment != v4->_alignment)
+  if (self->_alignment != equalCopy->_alignment)
   {
     goto LABEL_33;
   }
 
   v8 = 0;
-  if (self->_textOffset.x == v4->_textOffset.x && self->_textOffset.y == v4->_textOffset.y)
+  if (self->_textOffset.x == equalCopy->_textOffset.x && self->_textOffset.y == equalCopy->_textOffset.y)
   {
     v8 = 0;
-    if (self->_etchOffset.x == v4->_etchOffset.x && self->_etchOffset.y == v4->_etchOffset.y)
+    if (self->_etchOffset.x == equalCopy->_etchOffset.x && self->_etchOffset.y == equalCopy->_etchOffset.y)
     {
-      if (self->_pathWeight == v4->_pathWeight && self->_fontWeight == v4->_fontWeight && self->_fontGrade == v4->_fontGrade && self->_fontWidth == v4->_fontWidth && self->_fontWeightForSymbolImage == v4->_fontWeightForSymbolImage && self->_anchorCorner == v4->_anchorCorner && self->_selector == v4->_selector && self->_ignoreTextMarginOnKey == v4->_ignoreTextMarginOnKey && self->_needsFontCase == v4->_needsFontCase && self->_isVertical == v4->_isVertical)
+      if (self->_pathWeight == equalCopy->_pathWeight && self->_fontWeight == equalCopy->_fontWeight && self->_fontGrade == equalCopy->_fontGrade && self->_fontWidth == equalCopy->_fontWidth && self->_fontWeightForSymbolImage == equalCopy->_fontWeightForSymbolImage && self->_anchorCorner == equalCopy->_anchorCorner && self->_selector == equalCopy->_selector && self->_ignoreTextMarginOnKey == equalCopy->_ignoreTextMarginOnKey && self->_needsFontCase == equalCopy->_needsFontCase && self->_isVertical == equalCopy->_isVertical)
       {
-        v8 = self->_symbolScale == v4->_symbolScale;
+        v8 = self->_symbolScale == equalCopy->_symbolScale;
         goto LABEL_35;
       }
 
@@ -287,74 +287,74 @@ LABEL_35:
   return v8;
 }
 
-- (void)overlayWithStyle:(id)a3
+- (void)overlayWithStyle:(id)style
 {
-  v24 = a3;
-  v4 = [v24 fontName];
+  styleCopy = style;
+  fontName = [styleCopy fontName];
 
-  if (v4)
+  if (fontName)
   {
-    v5 = [v24 fontName];
-    [(UIKBTextStyle *)self setFontName:v5];
+    fontName2 = [styleCopy fontName];
+    [(UIKBTextStyle *)self setFontName:fontName2];
   }
 
-  [v24 fontSize];
+  [styleCopy fontSize];
   if (v6 > 0.0)
   {
-    [v24 fontSize];
+    [styleCopy fontSize];
     [(UIKBTextStyle *)self setFontSize:?];
   }
 
-  [v24 fontSizeForSymbolImage];
+  [styleCopy fontSizeForSymbolImage];
   if (v7 > 0.0)
   {
-    [v24 fontSizeForSymbolImage];
+    [styleCopy fontSizeForSymbolImage];
     [(UIKBTextStyle *)self setFontSizeForSymbolImage:?];
   }
 
-  [v24 minFontSize];
+  [styleCopy minFontSize];
   if (v8 > 0.0)
   {
-    [v24 minFontSize];
+    [styleCopy minFontSize];
     [(UIKBTextStyle *)self setMinFontSize:?];
   }
 
-  [v24 kerning];
+  [styleCopy kerning];
   if (fabs(v9) >= 2.22044605e-16)
   {
-    [v24 kerning];
+    [styleCopy kerning];
     [(UIKBTextStyle *)self setKerning:?];
   }
 
-  [v24 textOpacity];
+  [styleCopy textOpacity];
   if (fabs(v10 + -1.0) >= 2.22044605e-16)
   {
-    [v24 textOpacity];
+    [styleCopy textOpacity];
     [(UIKBTextStyle *)self setTextOpacity:?];
   }
 
-  v11 = [v24 textColor];
+  textColor = [styleCopy textColor];
 
-  if (v11)
+  if (textColor)
   {
-    v12 = [v24 textColor];
-    [(UIKBTextStyle *)self setTextColor:v12];
+    textColor2 = [styleCopy textColor];
+    [(UIKBTextStyle *)self setTextColor:textColor2];
   }
 
-  v13 = [v24 etchColor];
+  etchColor = [styleCopy etchColor];
 
-  if (v13)
+  if (etchColor)
   {
-    v14 = [v24 etchColor];
-    [(UIKBTextStyle *)self setEtchColor:v14];
+    etchColor2 = [styleCopy etchColor];
+    [(UIKBTextStyle *)self setEtchColor:etchColor2];
   }
 
-  if ([v24 alignment] != 1)
+  if ([styleCopy alignment] != 1)
   {
-    -[UIKBTextStyle setAlignment:](self, "setAlignment:", [v24 alignment]);
+    -[UIKBTextStyle setAlignment:](self, "setAlignment:", [styleCopy alignment]);
   }
 
-  if ([v24 anchorCorner])
+  if ([styleCopy anchorCorner])
   {
     v16 = *MEMORY[0x1E695EFF8];
     v15 = *(MEMORY[0x1E695EFF8] + 8);
@@ -362,72 +362,72 @@ LABEL_35:
 
   else
   {
-    [v24 textOffset];
+    [styleCopy textOffset];
     v16 = *MEMORY[0x1E695EFF8];
     v15 = *(MEMORY[0x1E695EFF8] + 8);
     if (*MEMORY[0x1E695EFF8] != v18 || v15 != v17)
     {
-      [v24 textOffset];
+      [styleCopy textOffset];
       [(UIKBTextStyle *)self setTextOffset:?];
     }
   }
 
-  [v24 etchOffset];
+  [styleCopy etchOffset];
   if (v16 != v20 || v15 != v19)
   {
-    [v24 etchOffset];
+    [styleCopy etchOffset];
     [(UIKBTextStyle *)self setEtchOffset:?];
   }
 
-  [v24 pathWeight];
+  [styleCopy pathWeight];
   if (v21 != 0.0)
   {
-    [v24 pathWeight];
+    [styleCopy pathWeight];
     [(UIKBTextStyle *)self setPathWeight:?];
   }
 
-  [v24 fontWeight];
+  [styleCopy fontWeight];
   if (v22 != 0.0)
   {
-    [v24 fontWeight];
+    [styleCopy fontWeight];
     [(UIKBTextStyle *)self setFontWeight:?];
   }
 
-  if ([v24 fontGrade])
+  if ([styleCopy fontGrade])
   {
-    -[UIKBTextStyle setFontGrade:](self, "setFontGrade:", [v24 fontGrade]);
+    -[UIKBTextStyle setFontGrade:](self, "setFontGrade:", [styleCopy fontGrade]);
   }
 
-  [v24 fontWidth];
+  [styleCopy fontWidth];
   if (v23 != 0.0)
   {
-    [v24 fontWidth];
+    [styleCopy fontWidth];
     [(UIKBTextStyle *)self setFontWidth:?];
   }
 
-  if ([v24 selector])
+  if ([styleCopy selector])
   {
-    -[UIKBTextStyle setSelector:](self, "setSelector:", [v24 selector]);
+    -[UIKBTextStyle setSelector:](self, "setSelector:", [styleCopy selector]);
   }
 
-  if ([v24 isVertical])
+  if ([styleCopy isVertical])
   {
-    -[UIKBTextStyle setIsVertical:](self, "setIsVertical:", [v24 isVertical]);
+    -[UIKBTextStyle setIsVertical:](self, "setIsVertical:", [styleCopy isVertical]);
   }
 
-  -[UIKBTextStyle setIgnoreTextMarginOnKey:](self, "setIgnoreTextMarginOnKey:", [v24 ignoreTextMarginOnKey]);
-  if ([v24 needsFontCase])
+  -[UIKBTextStyle setIgnoreTextMarginOnKey:](self, "setIgnoreTextMarginOnKey:", [styleCopy ignoreTextMarginOnKey]);
+  if ([styleCopy needsFontCase])
   {
-    -[UIKBTextStyle setNeedsFontCase:](self, "setNeedsFontCase:", [v24 needsFontCase]);
+    -[UIKBTextStyle setNeedsFontCase:](self, "setNeedsFontCase:", [styleCopy needsFontCase]);
   }
 
-  if ([v24 symbolScale])
+  if ([styleCopy symbolScale])
   {
-    -[UIKBTextStyle setSymbolScale:](self, "setSymbolScale:", [v24 symbolScale]);
+    -[UIKBTextStyle setSymbolScale:](self, "setSymbolScale:", [styleCopy symbolScale]);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[UIKBTextStyle allocWithZone:?]];
   v5 = [(NSString *)self->_fontName copy];

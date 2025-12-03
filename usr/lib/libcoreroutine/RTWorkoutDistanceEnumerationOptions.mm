@@ -1,49 +1,49 @@
 @interface RTWorkoutDistanceEnumerationOptions
-- (RTWorkoutDistanceEnumerationOptions)initWithBatchSize:(unint64_t)a3 ascending:(BOOL)a4;
-- (RTWorkoutDistanceEnumerationOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTWorkoutDistanceEnumerationOptions)initWithBatchSize:(unint64_t)size ascending:(BOOL)ascending;
+- (RTWorkoutDistanceEnumerationOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTWorkoutDistanceEnumerationOptions
 
-- (RTWorkoutDistanceEnumerationOptions)initWithBatchSize:(unint64_t)a3 ascending:(BOOL)a4
+- (RTWorkoutDistanceEnumerationOptions)initWithBatchSize:(unint64_t)size ascending:(BOOL)ascending
 {
   v7.receiver = self;
   v7.super_class = RTWorkoutDistanceEnumerationOptions;
   result = [(RTWorkoutDistanceEnumerationOptions *)&v7 init];
   if (result)
   {
-    result->_ascending = a4;
-    result->_batchSize = a3;
+    result->_ascending = ascending;
+    result->_batchSize = size;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   batchSize = self->_batchSize;
   ascending = self->_ascending;
 
   return [v4 initWithBatchSize:batchSize ascending:ascending];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   ascending = self->_ascending;
-  v5 = a3;
-  [v5 encodeBool:ascending forKey:@"ascending"];
-  [v5 encodeInteger:self->_batchSize forKey:@"batchSize"];
+  coderCopy = coder;
+  [coderCopy encodeBool:ascending forKey:@"ascending"];
+  [coderCopy encodeInteger:self->_batchSize forKey:@"batchSize"];
 }
 
-- (RTWorkoutDistanceEnumerationOptions)initWithCoder:(id)a3
+- (RTWorkoutDistanceEnumerationOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"ascending"];
-  v6 = [v4 decodeIntegerForKey:@"batchSize"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"ascending"];
+  v6 = [coderCopy decodeIntegerForKey:@"batchSize"];
 
   return [(RTWorkoutDistanceEnumerationOptions *)self initWithBatchSize:v6 ascending:v5];
 }

@@ -4,16 +4,16 @@
 - (NSString)presentationType;
 - (NSString)sheetType;
 - (NSString)sourceElementIdentifier;
-- (SKUIDocumentStackItem)initWithDocument:(id)a3 presentationOptions:(id)a4;
-- (void)_setDocument:(id)a3;
+- (SKUIDocumentStackItem)initWithDocument:(id)document presentationOptions:(id)options;
+- (void)_setDocument:(id)document;
 @end
 
 @implementation SKUIDocumentStackItem
 
-- (SKUIDocumentStackItem)initWithDocument:(id)a3 presentationOptions:(id)a4
+- (SKUIDocumentStackItem)initWithDocument:(id)document presentationOptions:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  documentCopy = document;
+  optionsCopy = options;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIDocumentStackItem initWithDocument:presentationOptions:];
@@ -25,24 +25,24 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_document, a3);
-    objc_storeStrong(&v10->_presentationOptions, a4);
+    objc_storeStrong(&v9->_document, document);
+    objc_storeStrong(&v10->_presentationOptions, options);
     v10->_usesNavigationControllerForModalPresentation = 1;
   }
 
   return v10;
 }
 
-- (void)_setDocument:(id)a3
+- (void)_setDocument:(id)document
 {
-  v5 = a3;
+  documentCopy = document;
   document = self->_document;
   p_document = &self->_document;
-  if (document != v5)
+  if (document != documentCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_document, a3);
-    v5 = v8;
+    v8 = documentCopy;
+    objc_storeStrong(p_document, document);
+    documentCopy = v8;
   }
 }
 
@@ -53,21 +53,21 @@
   {
     if (objc_opt_respondsToSelector())
     {
-      v3 = [v2 BOOLValue];
+      bOOLValue = [v2 BOOLValue];
     }
 
     else
     {
-      v3 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)presentationType

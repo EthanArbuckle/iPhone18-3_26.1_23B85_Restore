@@ -1,7 +1,7 @@
 @interface WebBookmarkTitleWordTokenizer
 - (WebBookmarkTitleWordTokenizer)init;
 - (_NSRange)advanceToNextToken;
-- (void)setString:(id)a3;
+- (void)setString:(id)string;
 @end
 
 @implementation WebBookmarkTitleWordTokenizer
@@ -129,18 +129,18 @@ LABEL_25:
   return result;
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  v4 = a3;
-  v9 = v4;
-  if (self->_string == v4)
+  stringCopy = string;
+  v9 = stringCopy;
+  if (self->_string == stringCopy)
   {
     stringLength = self->_stringLength;
   }
 
   else
   {
-    v5 = [(NSString *)v4 copy];
+    v5 = [(NSString *)stringCopy copy];
     string = self->_string;
     self->_string = v5;
 

@@ -1,21 +1,21 @@
 @interface HDRBackwardDisplayManagement
-- (BOOL)inputIsSDRVideoFormat:(__IOSurface *)a3;
-- (BOOL)updateConfigFromMetadata:(id *)a3 uiScaleFactor:(float)a4 width:(int)a5 background:(id *)a6 hdrVideoOnly:(BOOL)a7 hdr10TV:(BOOL)a8 sdrOnly:(BOOL)a9;
-- (HDRBackwardDisplayManagement)initWithDevice:(id)a3;
-- (HDRBackwardDisplayManagement)initWithDevice:(id)a3 displayProperties:(id)a4;
-- (float)adjustUiScaleForDoViToHDR10Conversion:(float)a3;
-- (id)createRenderCommandEncoderWithCommandBuffer:(id)a3 texture:(id)a4 widthScale:(unsigned int)a5 loadAction:(unint64_t)a6;
-- (id)getRenderPipelineStateForShader:(id)a3;
-- (int)adjustMetaData:(id *)a3 HDRUIBlending:(BOOL)a4 hasLetterbox:(BOOL)a5;
-- (int)getTVIndex:(BOOL)a3;
-- (int)pixelNumPerThreadFullScreen:(BOOL)a3 videoInput:(__IOSurface *)a4 UI:(__IOSurface *)a5 Output:(__IOSurface *)a6 widthScaling:(BOOL)a7;
-- (int64_t)EncodeToCommandBuffer:(id)a3 inputSurface:(__IOSurface *)a4 uiSurface:(__IOSurface *)a5 outputSurface:(__IOSurface *)a6 frameProperties:(id)a7;
-- (int64_t)encodeToCommandBuffer:(id)a3 video:(__IOSurface *)a4 videoSrcRegion:(id)a5 videoDstRegion:(id)a6 ui:(__IOSurface *)a7 uiSrcRegion:(id)a8 uiDstRegion:(id)a9 backgroundColor:(id *)a10 output:(__IOSurface *)a11 frameProperties:(id)a12;
-- (int64_t)encodeToCommandBuffer:(id)a3 video:(__IOSurface *)a4 videoSrcRegion:(id)a5 videoDstRegion:(id)a6 ui:(__IOSurface *)buffer output:(__IOSurface *)a8 frameProperties:(id)a9;
-- (int64_t)setAccessibilityMatrix:(id *)a3;
-- (unint64_t)getPixelFormatFromSurface:(__IOSurface *)a3 DeGamma:(BOOL)a4 forceUseOnePlane:(BOOL)a5 default:(unint64_t)a6;
-- (unsigned)getPackagingColorFormatFromDictionary:(id)a3 withDefaultValue:(unsigned int)a4;
-- (void)attatchInfoFrame:(id *)a3 toOutputSurface:(__IOSurface *)a4;
+- (BOOL)inputIsSDRVideoFormat:(__IOSurface *)format;
+- (BOOL)updateConfigFromMetadata:(id *)metadata uiScaleFactor:(float)factor width:(int)width background:(id *)background hdrVideoOnly:(BOOL)only hdr10TV:(BOOL)v sdrOnly:(BOOL)sdrOnly;
+- (HDRBackwardDisplayManagement)initWithDevice:(id)device;
+- (HDRBackwardDisplayManagement)initWithDevice:(id)device displayProperties:(id)properties;
+- (float)adjustUiScaleForDoViToHDR10Conversion:(float)conversion;
+- (id)createRenderCommandEncoderWithCommandBuffer:(id)buffer texture:(id)texture widthScale:(unsigned int)scale loadAction:(unint64_t)action;
+- (id)getRenderPipelineStateForShader:(id)shader;
+- (int)adjustMetaData:(id *)data HDRUIBlending:(BOOL)blending hasLetterbox:(BOOL)letterbox;
+- (int)getTVIndex:(BOOL)index;
+- (int)pixelNumPerThreadFullScreen:(BOOL)screen videoInput:(__IOSurface *)input UI:(__IOSurface *)i Output:(__IOSurface *)output widthScaling:(BOOL)scaling;
+- (int64_t)EncodeToCommandBuffer:(id)buffer inputSurface:(__IOSurface *)surface uiSurface:(__IOSurface *)uiSurface outputSurface:(__IOSurface *)outputSurface frameProperties:(id)properties;
+- (int64_t)encodeToCommandBuffer:(id)buffer video:(__IOSurface *)video videoSrcRegion:(id)region videoDstRegion:(id)dstRegion ui:(__IOSurface *)buffer output:(__IOSurface *)output frameProperties:(id)properties;
+- (int64_t)encodeToCommandBuffer:(id)buffer video:(__IOSurface *)video videoSrcRegion:(id)region videoDstRegion:(id)dstRegion ui:(__IOSurface *)ui uiSrcRegion:(id)srcRegion uiDstRegion:(id)uiDstRegion backgroundColor:(id *)self0 output:(__IOSurface *)self1 frameProperties:(id)self2;
+- (int64_t)setAccessibilityMatrix:(id *)matrix;
+- (unint64_t)getPixelFormatFromSurface:(__IOSurface *)surface DeGamma:(BOOL)gamma forceUseOnePlane:(BOOL)plane default:(unint64_t)default;
+- (unsigned)getPackagingColorFormatFromDictionary:(id)dictionary withDefaultValue:(unsigned int)value;
+- (void)attatchInfoFrame:(id *)frame toOutputSurface:(__IOSurface *)surface;
 - (void)createBuffers;
 - (void)createInverseScalingFactorTable;
 - (void)createKernels;
@@ -26,34 +26,34 @@
 - (void)createSDRScalingFactorTable;
 - (void)createSamplers;
 - (void)createYUVScalingFactorTable;
-- (void)drawMetaWithEncoder:(id)a3 widthScale:(int)a4 dmPayLoadLength:(int)a5;
-- (void)fillInverseScalingFactorTableFromDMConfig:(id *)a3;
-- (void)fillScalingTable_SDR2HDR:(id *)a3 target_White:(float)a4 target_Black:(float)a5;
-- (void)fillScalingTable_YUVTM:(id *)a3 targetwhite:(float)a4 targetblack:(float)a5 satBoost:(float)a6 scalingFactor:(BOOL)a7 sdrOnly:(BOOL)a8;
-- (void)generateMetaAndConfig:(id)a3 inputSurface:(__IOSurface *)a4 outputSurface:(__IOSurface *)a5 payLoad:(id *)a6 dmCfg:(id *)a7;
-- (void)initDisplayAttributes:(id)a3;
-- (void)packetizeMetadata:(id *)a3 length:(int)a4 into:(int)a5 onSurface:(__IOSurface *)a6;
-- (void)setupMetadataTextureWithOutput:(__IOSurface *)a3;
+- (void)drawMetaWithEncoder:(id)encoder widthScale:(int)scale dmPayLoadLength:(int)length;
+- (void)fillInverseScalingFactorTableFromDMConfig:(id *)config;
+- (void)fillScalingTable_SDR2HDR:(id *)r target_White:(float)white target_Black:(float)black;
+- (void)fillScalingTable_YUVTM:(id *)m targetwhite:(float)targetwhite targetblack:(float)targetblack satBoost:(float)boost scalingFactor:(BOOL)factor sdrOnly:(BOOL)only;
+- (void)generateMetaAndConfig:(id)config inputSurface:(__IOSurface *)surface outputSurface:(__IOSurface *)outputSurface payLoad:(id *)load dmCfg:(id *)cfg;
+- (void)initDisplayAttributes:(id)attributes;
+- (void)packetizeMetadata:(id *)metadata length:(int)length into:(int)into onSurface:(__IOSurface *)surface;
+- (void)setupMetadataTextureWithOutput:(__IOSurface *)output;
 - (void)setupMetal;
-- (void)updateUniformUIScaleForVideo:(BOOL)a3 forTV:(BOOL)a4 videoPeakBrightnessInNits:(int)a5 uiHWDegamma:(BOOL)a6 dovi50toHDR10TVMode:(unsigned int)a7;
-- (void)updateVertices:(id)a3 videoInput:(__IOSurface *)a4 videoDstRegion:(id)a5 videoSrcRegion:(id)a6 uiInput:(__IOSurface *)a7 uiDstRegion:(id)a8 uiSrcRegion:(id)a9 dstWidth:(int)a10 dstHeight:(int)a11 videoSrcWidth:(int)a12 videoSrcHeight:(int)a13 index:(int)a14 scale:(int)a15;
+- (void)updateUniformUIScaleForVideo:(BOOL)video forTV:(BOOL)v videoPeakBrightnessInNits:(int)nits uiHWDegamma:(BOOL)degamma dovi50toHDR10TVMode:(unsigned int)mode;
+- (void)updateVertices:(id)vertices videoInput:(__IOSurface *)input videoDstRegion:(id)region videoSrcRegion:(id)srcRegion uiInput:(__IOSurface *)uiInput uiDstRegion:(id)dstRegion uiSrcRegion:(id)uiSrcRegion dstWidth:(int)self0 dstHeight:(int)self1 videoSrcWidth:(int)self2 videoSrcHeight:(int)self3 index:(int)self4 scale:(int)self5;
 @end
 
 @implementation HDRBackwardDisplayManagement
 
-- (HDRBackwardDisplayManagement)initWithDevice:(id)a3 displayProperties:(id)a4
+- (HDRBackwardDisplayManagement)initWithDevice:(id)device displayProperties:(id)properties
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  propertiesCopy = properties;
   v14.receiver = self;
   v14.super_class = HDRBackwardDisplayManagement;
   v8 = [(HDRBackwardDisplayManagement *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    [(HDRBackwardDisplayManagement *)v8 initDisplayAttributes:v7];
-    [(HDRBackwardDisplayManagement *)v9 initWithDevice:v6];
+    [(HDRBackwardDisplayManagement *)v8 initDisplayAttributes:propertiesCopy];
+    [(HDRBackwardDisplayManagement *)v9 initWithDevice:deviceCopy];
   }
 
   else if (enableLogInstance)
@@ -139,13 +139,13 @@ LABEL_21:
   return v9;
 }
 
-- (HDRBackwardDisplayManagement)initWithDevice:(id)a3
+- (HDRBackwardDisplayManagement)initWithDevice:(id)device
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5 && !self->_device)
+  deviceCopy = device;
+  if (deviceCopy && !self->_device)
   {
-    objc_storeStrong(&self->_device, a3);
+    objc_storeStrong(&self->_device, device);
     [(HDRBackwardDisplayManagement *)self setupMetal];
     [(HDRBackwardDisplayManagement *)self createKernels];
     [(HDRBackwardDisplayManagement *)self createSamplers];
@@ -179,9 +179,9 @@ LABEL_21:
       v13 = 2080;
       v14 = "[HDRBackwardDisplayManagement initWithDevice:]";
       v15 = 2048;
-      v16 = v5;
+      v16 = deviceCopy;
       v17 = 2048;
-      v18 = device;
+      deviceCopy2 = device;
       _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] #%04llx %s : error, device = %p, _device=%p\n", &v11, 0x2Au);
     }
 
@@ -194,7 +194,7 @@ LABEL_21:
     v11 = 136315650;
     v12 = "[HDRBackwardDisplayManagement initWithDevice:]";
     v13 = 2048;
-    v14 = v5;
+    v14 = deviceCopy;
     v15 = 2048;
     v16 = v8;
     _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] %s : error, device = %p, _device=%p\n", &v11, 0x20u);
@@ -204,25 +204,25 @@ LABEL_21:
   return result;
 }
 
-- (void)initDisplayAttributes:(id)a3
+- (void)initDisplayAttributes:(id)attributes
 {
-  v44 = a3;
-  v4 = [v44 valueForKey:@"ApiInterfaceVersionKey"];
+  attributesCopy = attributes;
+  v4 = [attributesCopy valueForKey:@"ApiInterfaceVersionKey"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v6 = 0;
+    intValue = 0;
   }
 
-  self->_callerApiVersion = v6;
-  v7 = [v44 valueForKey:@"HDRProcessingDestinationDisplayTypeKey"];
+  self->_callerApiVersion = intValue;
+  v7 = [attributesCopy valueForKey:@"HDRProcessingDestinationDisplayTypeKey"];
   v8 = v7;
-  if (v6 <= 0 && v7)
+  if (intValue <= 0 && v7)
   {
     if (([v7 isEqualToString:@"HDRProcessingDestinationDisplayTypeDolbyVisionTV"] & 1) == 0)
     {
@@ -269,7 +269,7 @@ LABEL_11:
   }
 
   v9 = 0;
-  if (v6 >= 1 && v7)
+  if (intValue >= 1 && v7)
   {
     if (([v7 isEqualToString:@"HDRProcessingDestinationDisplayTypeDolbyVisionTV"] & 1) == 0)
     {
@@ -328,20 +328,20 @@ LABEL_15:
 LABEL_22:
 
   self->_displayType = v9;
-  v10 = [v44 valueForKey:@"MaximumDisplayBrightnessKey"];
+  v10 = [attributesCopy valueForKey:@"MaximumDisplayBrightnessKey"];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 intValue];
-    self->_displayMaxBrightnessInNits = v12;
-    if (v12 >= 0xFA)
+    intValue2 = [v10 intValue];
+    self->_displayMaxBrightnessInNits = intValue2;
+    if (intValue2 >= 0xFA)
     {
       v13 = 250;
     }
 
     else
     {
-      v13 = v12;
+      v13 = intValue2;
     }
 
     v14 = 1;
@@ -356,7 +356,7 @@ LABEL_22:
 
   self->_displayMaxBrightnessInNitsForSDR = v13;
   self->_hasDisplayBrightnessFromEDID = v14;
-  v15 = [v44 valueForKey:@"MinimumDisplayBrightnessKey"];
+  v15 = [attributesCopy valueForKey:@"MinimumDisplayBrightnessKey"];
   v16 = v15;
   if (v15)
   {
@@ -379,13 +379,13 @@ LABEL_22:
     self->_displayMinBrightnessInNits = 0.05;
   }
 
-  v18 = [v44 valueForKey:@"DisplayChromaticityRx"];
+  v18 = [attributesCopy valueForKey:@"DisplayChromaticityRx"];
   v19 = v18;
   if (v18)
   {
     [v18 floatValue];
     v21 = v20;
-    v22 = [v44 valueForKey:@"DisplayChromaticityRy"];
+    v22 = [attributesCopy valueForKey:@"DisplayChromaticityRy"];
 
     if (v22)
     {
@@ -398,7 +398,7 @@ LABEL_22:
       v24 = 0.0;
     }
 
-    v25 = [v44 valueForKey:@"DisplayChromaticityGx"];
+    v25 = [attributesCopy valueForKey:@"DisplayChromaticityGx"];
 
     if (v25)
     {
@@ -411,7 +411,7 @@ LABEL_22:
       v27 = 0.0;
     }
 
-    v28 = [v44 valueForKey:@"DisplayChromaticityGy"];
+    v28 = [attributesCopy valueForKey:@"DisplayChromaticityGy"];
 
     if (v28)
     {
@@ -424,7 +424,7 @@ LABEL_22:
       v30 = 0.0;
     }
 
-    v31 = [v44 valueForKey:@"DisplayChromaticityBx"];
+    v31 = [attributesCopy valueForKey:@"DisplayChromaticityBx"];
 
     if (v31)
     {
@@ -437,7 +437,7 @@ LABEL_22:
       v33 = 0.0;
     }
 
-    v34 = [v44 valueForKey:@"DisplayChromaticityBy"];
+    v34 = [attributesCopy valueForKey:@"DisplayChromaticityBy"];
 
     if (v34)
     {
@@ -450,7 +450,7 @@ LABEL_22:
       v36 = 0.0;
     }
 
-    v37 = [v44 valueForKey:@"DisplayChromaticityWx"];
+    v37 = [attributesCopy valueForKey:@"DisplayChromaticityWx"];
 
     if (v37)
     {
@@ -463,7 +463,7 @@ LABEL_22:
       v39 = 0.0;
     }
 
-    v19 = [v44 valueForKey:@"DisplayChromaticityWy"];
+    v19 = [attributesCopy valueForKey:@"DisplayChromaticityWy"];
 
     if (v19)
     {
@@ -486,35 +486,35 @@ LABEL_22:
     self->_709toPanelPrimaryMatrix[8] = 0.9105;
   }
 
-  self->_outputPackingColorFormat = [(HDRBackwardDisplayManagement *)self getPackagingColorFormatFromDictionary:v44 withDefaultValue:0];
+  self->_outputPackingColorFormat = [(HDRBackwardDisplayManagement *)self getPackagingColorFormatFromDictionary:attributesCopy withDefaultValue:0];
   self->_inputScaleFactor = 600.0;
 }
 
-- (unsigned)getPackagingColorFormatFromDictionary:(id)a3 withDefaultValue:(unsigned int)a4
+- (unsigned)getPackagingColorFormatFromDictionary:(id)dictionary withDefaultValue:(unsigned int)value
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = [a3 valueForKey:@"HDRProcessingDisplayColorFormatKey"];
+  v5 = [dictionary valueForKey:@"HDRProcessingDisplayColorFormatKey"];
   v6 = v5;
   if (v5)
   {
     if ([v5 isEqualToString:@"HDRProcessingDisplayColorFormat_YUV422_12BITS_NATIVE"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"HDRProcessingDisplayColorFormat_YUV422_12BITS_DP"))
     {
-      a4 = 1;
+      value = 1;
     }
 
     else if ([v6 isEqualToString:@"HDRProcessingDisplayColorFormat_YUV422_12BITS_HDMI"])
     {
-      a4 = 2;
+      value = 2;
     }
 
     else if ([v6 isEqualToString:@"HDRProcessingDisplayColorFormat_YUV422_12BITS_DOLBYVISION"])
     {
-      a4 = 3;
+      value = 3;
     }
 
     else if ([v6 isEqualToString:@"HDRProcessingDisplayColorFormat_IPT422_12BITS"])
     {
-      a4 = 0;
+      value = 0;
     }
 
     else if (enableLogInstance)
@@ -547,7 +547,7 @@ LABEL_22:
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return a4;
+  return value;
 }
 
 - (void)setupMetal
@@ -557,21 +557,21 @@ LABEL_22:
   device = self->_device;
   if (v3)
   {
-    v5 = [(MTLDeviceSPI *)device newLibraryWithFile:v3 error:0];
+    newDefaultLibrary = [(MTLDeviceSPI *)device newLibraryWithFile:v3 error:0];
   }
 
   else
   {
-    v5 = [(MTLDeviceSPI *)device newDefaultLibrary];
+    newDefaultLibrary = [(MTLDeviceSPI *)device newDefaultLibrary];
   }
 
   defaultLibrary = self->_defaultLibrary;
-  self->_defaultLibrary = v5;
+  self->_defaultLibrary = newDefaultLibrary;
 }
 
-- (id)getRenderPipelineStateForShader:(id)a3
+- (id)getRenderPipelineStateForShader:(id)shader
 {
-  v3 = [a3 getRenderPipelineStateForDevice:self->_device Library:self->_defaultLibrary];
+  v3 = [shader getRenderPipelineStateForDevice:self->_device Library:self->_defaultLibrary];
 
   return v3;
 }
@@ -1667,19 +1667,19 @@ LABEL_22:
   while (v5 != 3);
 }
 
-- (void)fillInverseScalingFactorTableFromDMConfig:(id *)a3
+- (void)fillInverseScalingFactorTableFromDMConfig:(id *)config
 {
   v5 = [(NSMutableData *)self->_inverseScalingTable length];
-  v6 = [(NSMutableData *)self->_inverseScalingTable mutableBytes];
-  v7 = v6;
-  if (self->_prev_SlopeScaled != a3->var0 || self->_prev_c1 != a3->var1 || self->_prev_c2 != a3->var2 || self->_prev_c3 != a3->var3)
+  mutableBytes = [(NSMutableData *)self->_inverseScalingTable mutableBytes];
+  v7 = mutableBytes;
+  if (self->_prev_SlopeScaled != config->var0 || self->_prev_c1 != config->var1 || self->_prev_c2 != config->var2 || self->_prev_c3 != config->var3)
   {
-    setInverseScalingFactorTable(v6, 0x400uLL, &a3->var0);
+    setInverseScalingFactorTable(mutableBytes, 0x400uLL, &config->var0);
     ++self->_inverseScalingTableIndex;
-    self->_prev_SlopeScaled = a3->var0;
-    self->_prev_c1 = a3->var1;
-    self->_prev_c2 = a3->var2;
-    self->_prev_c3 = a3->var3;
+    self->_prev_SlopeScaled = config->var0;
+    self->_prev_c1 = config->var1;
+    self->_prev_c2 = config->var2;
+    self->_prev_c3 = config->var3;
   }
 
   inverseScalingFactorTableTexture = self->_inverseScalingFactorTableTexture;
@@ -1689,16 +1689,16 @@ LABEL_22:
   [(MTLTexture *)inverseScalingFactorTableTexture replaceRegion:v9 mipmapLevel:0 slice:0 withBytes:v7 bytesPerRow:v5 bytesPerImage:0];
 }
 
-- (void)fillScalingTable_SDR2HDR:(id *)a3 target_White:(float)a4 target_Black:(float)a5
+- (void)fillScalingTable_SDR2HDR:(id *)r target_White:(float)white target_Black:(float)black
 {
   v8 = [(NSMutableData *)self->_sdrScalingTable length];
-  v9 = [(NSMutableData *)self->_sdrScalingTable mutableBytes];
-  v10 = v9;
-  if (vabds_f32(self->_cached_target_white, a4) > 0.0000001 || vabds_f32(self->_cached_target_black, a5) > 0.0000001)
+  mutableBytes = [(NSMutableData *)self->_sdrScalingTable mutableBytes];
+  v10 = mutableBytes;
+  if (vabds_f32(self->_cached_target_white, white) > 0.0000001 || vabds_f32(self->_cached_target_black, black) > 0.0000001)
   {
-    self->_cached_target_white = a4;
-    self->_cached_target_black = a5;
-    GetToneMap_SDR_DOLBY(v9, 0x100uLL, a4, a5, 100.0, 0.005, 1.0);
+    self->_cached_target_white = white;
+    self->_cached_target_black = black;
+    GetToneMap_SDR_DOLBY(mutableBytes, 0x100uLL, white, black, 100.0, 0.005, 1.0);
     sdrScalingFactorTableTexture = self->_sdrScalingFactorTableTexture;
     memset(v12, 0, sizeof(v12));
     v13 = xmmword_2508CE610;
@@ -1707,20 +1707,20 @@ LABEL_22:
   }
 }
 
-- (void)fillScalingTable_YUVTM:(id *)a3 targetwhite:(float)a4 targetblack:(float)a5 satBoost:(float)a6 scalingFactor:(BOOL)a7 sdrOnly:(BOOL)a8
+- (void)fillScalingTable_YUVTM:(id *)m targetwhite:(float)targetwhite targetblack:(float)targetblack satBoost:(float)boost scalingFactor:(BOOL)factor sdrOnly:(BOOL)only
 {
-  v8 = a8;
-  v9 = a7;
+  onlyCopy = only;
+  factorCopy = factor;
   v14 = [(NSMutableData *)self->_yuvScalingTable length];
-  v15 = [(NSMutableData *)self->_yuvScalingTable mutableBytes];
-  v16 = v15;
-  v17 = a3->var20 != 1 && v9;
-  if (vabds_f32(self->_cached_target_white, a4) > 0.0000001 || vabds_f32(self->_cached_target_black, a5) > 0.0000001 || vabds_f32(self->_cached_source_white, a3->var16) > 0.0000001 || vabds_f32(self->_cached_source_black, a3->var17) > 0.0000001 || self->_cached_scaling_factor != v17)
+  mutableBytes = [(NSMutableData *)self->_yuvScalingTable mutableBytes];
+  v16 = mutableBytes;
+  v17 = m->var20 != 1 && factorCopy;
+  if (vabds_f32(self->_cached_target_white, targetwhite) > 0.0000001 || vabds_f32(self->_cached_target_black, targetblack) > 0.0000001 || vabds_f32(self->_cached_source_white, m->var16) > 0.0000001 || vabds_f32(self->_cached_source_black, m->var17) > 0.0000001 || self->_cached_scaling_factor != v17)
   {
-    self->_cached_target_white = a4;
-    self->_cached_target_black = a5;
+    self->_cached_target_white = targetwhite;
+    self->_cached_target_black = targetblack;
     self->_cached_scaling_factor = v17;
-    GetToneMap_YUV_TM(v15, 0x400uLL, v17, v8, a4, a5, a3->var16, a3->var17, 1.0);
+    GetToneMap_YUV_TM(mutableBytes, 0x400uLL, v17, onlyCopy, targetwhite, targetblack, m->var16, m->var17, 1.0);
     v18 = (self->_indexOfyuvScalingFactorTableTexture + 1) % 3;
     self->_indexOfyuvScalingFactorTableTexture = v18;
     objc_storeStrong(&self->_yuvScalingFactorTableTexture, self->_yuvScalingFactorTableTextures[v18]);
@@ -1729,8 +1729,8 @@ LABEL_22:
     v21 = xmmword_2508CE5F0;
     v22 = 1;
     [(MTLTexture *)yuvScalingFactorTableTexture replaceRegion:v20 mipmapLevel:0 slice:0 withBytes:v16 bytesPerRow:v14 bytesPerImage:0];
-    self->_cached_source_white = a3->var16;
-    self->_cached_source_black = a3->var17;
+    self->_cached_source_white = m->var16;
+    self->_cached_source_black = m->var17;
   }
 }
 
@@ -1906,7 +1906,7 @@ LABEL_22:
     }
   }
 
-  v7 = [(MTLBuffer *)self->_metadataVertexBuffer contents];
+  contents = [(MTLBuffer *)self->_metadataVertexBuffer contents];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -1928,67 +1928,67 @@ LABEL_22:
 
       v18 = (v10 + 0.5) / v14;
       v19 = (v11 + 0.5) * 0.0009765625;
-      v7[2] = v19;
-      v7[3] = v16;
+      contents[2] = v19;
+      contents[3] = v16;
       v10 += v17;
       v20 = (v9 + 0.5) / targetHeight;
-      *v7 = v18;
-      v7[1] = v20;
+      *contents = v18;
+      contents[1] = v20;
       v11 += v17;
       v21 = (v10 + 0.5) / v14;
       v22 = (v11 + 0.5) * 0.0009765625;
-      v23 = v7 + 8;
+      v23 = contents + 8;
       ++v12;
-      v7[4] = v21;
-      v7[5] = v20;
-      v7[6] = v22;
-      v7[7] = v16;
+      contents[4] = v21;
+      contents[5] = v20;
+      contents[6] = v22;
+      contents[7] = v16;
       if (v10 == targetWidth)
       {
         v10 = 0;
         ++v9;
       }
 
-      v7 += 8;
+      contents += 8;
     }
 
     while (v11 < 3072);
     self->_metadataSpanCount[v8++] = v12;
-    v7 = v23;
+    contents = v23;
   }
 
   while (v8 != 5);
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateVertices:(id)a3 videoInput:(__IOSurface *)a4 videoDstRegion:(id)a5 videoSrcRegion:(id)a6 uiInput:(__IOSurface *)a7 uiDstRegion:(id)a8 uiSrcRegion:(id)a9 dstWidth:(int)a10 dstHeight:(int)a11 videoSrcWidth:(int)a12 videoSrcHeight:(int)a13 index:(int)a14 scale:(int)a15
+- (void)updateVertices:(id)vertices videoInput:(__IOSurface *)input videoDstRegion:(id)region videoSrcRegion:(id)srcRegion uiInput:(__IOSurface *)uiInput uiDstRegion:(id)dstRegion uiSrcRegion:(id)uiSrcRegion dstWidth:(int)self0 dstHeight:(int)self1 videoSrcWidth:(int)self2 videoSrcHeight:(int)self3 index:(int)self4 scale:(int)self5
 {
-  var1 = a5.var1.var1;
-  v60.origin = a3.var0;
-  v60.size.height = a3.var1.var1;
-  DWORD1(v59) = a5.var0.var1;
-  HIDWORD(v59) = a5.var1.var1;
-  DWORD1(v58) = a6.var0.var1;
-  HIDWORD(v58) = a6.var1.var1;
-  DWORD1(v57) = a8.var0.var1;
-  HIDWORD(v57) = a8.var1.var1;
-  DWORD1(v56) = a9.var0.var1;
-  HIDWORD(v56) = a9.var1.var1;
-  v49 = a5.var0.var1;
-  v60.size.width = a3.var1.var0 / a15;
-  v17 = a5.var0.var0 / a15;
-  LODWORD(v59) = a5.var0.var0 / a15;
-  v51 = a5.var1.var0 / a15;
-  DWORD2(v59) = a5.var1.var0 / a15;
-  LODWORD(v58) = a6.var0.var0 / a15;
-  DWORD2(v58) = a6.var1.var0 / a15;
-  LODWORD(v57) = a8.var0.var0 / a15;
-  DWORD2(v57) = a8.var1.var0 / a15;
-  LODWORD(v56) = a9.var0.var0 / a15;
-  DWORD2(v56) = a9.var1.var0 / a15;
-  if (a4)
+  var1 = region.var1.var1;
+  v60.origin = vertices.var0;
+  v60.size.height = vertices.var1.var1;
+  DWORD1(v59) = region.var0.var1;
+  HIDWORD(v59) = region.var1.var1;
+  DWORD1(v58) = srcRegion.var0.var1;
+  HIDWORD(v58) = srcRegion.var1.var1;
+  DWORD1(v57) = dstRegion.var0.var1;
+  HIDWORD(v57) = dstRegion.var1.var1;
+  DWORD1(v56) = uiSrcRegion.var0.var1;
+  HIDWORD(v56) = uiSrcRegion.var1.var1;
+  v49 = region.var0.var1;
+  v60.size.width = vertices.var1.var0 / scale;
+  v17 = region.var0.var0 / scale;
+  LODWORD(v59) = region.var0.var0 / scale;
+  v51 = region.var1.var0 / scale;
+  DWORD2(v59) = region.var1.var0 / scale;
+  LODWORD(v58) = srcRegion.var0.var0 / scale;
+  DWORD2(v58) = srcRegion.var1.var0 / scale;
+  LODWORD(v57) = dstRegion.var0.var0 / scale;
+  DWORD2(v57) = dstRegion.var1.var0 / scale;
+  LODWORD(v56) = uiSrcRegion.var0.var0 / scale;
+  DWORD2(v56) = uiSrcRegion.var1.var0 / scale;
+  if (input)
   {
-    PixelFormat = IOSurfaceGetPixelFormat(a4);
+    PixelFormat = IOSurfaceGetPixelFormat(input);
   }
 
   else
@@ -1997,9 +1997,9 @@ LABEL_22:
   }
 
   v47 = PixelFormat;
-  if (a7)
+  if (uiInput)
   {
-    v46 = IOSurfaceGetPixelFormat(a7);
+    v46 = IOSurfaceGetPixelFormat(uiInput);
   }
 
   else
@@ -2009,13 +2009,13 @@ LABEL_22:
 
   if (*&v60.origin == *&self->_cachedFullRegion.origin && *&v60.size == *&self->_cachedFullRegion.size)
   {
-    v22 = self + 16 * a14;
-    v21 = a14;
+    v22 = self + 16 * index;
+    indexCopy2 = index;
     v23 = *(v22 + 359);
     v24 = *(v22 + 360);
     if (v59 == v23 && *(&v59 + 1) == v24)
     {
-      v26 = &self->super.isa + 2 * a14;
+      v26 = &self->super.isa + 2 * index;
       if (v58 == v26[365] && *(&v58 + 1) == v26[366] && v57 == v26[371] && *(&v57 + 1) == v26[372])
       {
         v29 = v26[377];
@@ -2031,13 +2031,13 @@ LABEL_22:
 
   else
   {
-    v21 = a14;
+    indexCopy2 = index;
   }
 
-  v18 = a6.var0.var0 / a15;
-  v50 = a10 / a15;
-  v32 = var1 / a6.var1.var1;
-  v48 = a12 / a15;
+  v18 = srcRegion.var0.var0 / scale;
+  v50 = width / scale;
+  v32 = var1 / srcRegion.var1.var1;
+  v48 = srcWidth / scale;
   shape_alloc_bounds();
   shape_alloc_bounds();
   shape_alloc_bounds();
@@ -2050,12 +2050,12 @@ LABEL_22:
   shape_free();
   shape_free();
   shape_free();
-  self->_num_Blend_Rects[v21] = 0;
-  self->_num_Video_Rects[v21] = 0;
-  self->_num_UI_Rects[v21] = 0;
-  self->_num_ColorFill_Rects[v21] = 0;
+  self->_num_Blend_Rects[indexCopy2] = 0;
+  self->_num_Video_Rects[indexCopy2] = 0;
+  self->_num_UI_Rects[indexCopy2] = 0;
+  self->_num_ColorFill_Rects[indexCopy2] = 0;
   self->_cachedFullRegion = v60;
-  v33 = self + 16 * v21;
+  v33 = self + 16 * indexCopy2;
   *(v33 + 2872) = v59;
   *(v33 + 2920) = v58;
   *(v33 + 2968) = v57;
@@ -2064,34 +2064,34 @@ LABEL_22:
   self->_cached_uiInputFormat = v46;
   v54 = 0;
   v55 = 0;
-  v34 = [(MTLBuffer *)self->_vertsBuf contents];
+  contents = [(MTLBuffer *)self->_vertsBuf contents];
   shape_enum_alloc();
-  for (; shape_enum_next(); v34 += 16)
+  for (; shape_enum_next(); contents += 16)
   {
     v53.i16[0] = WORD2(v55);
     v53.i16[1] = WORD2(v54);
     v53.i16[2] = v55;
     v53.i16[3] = v54;
     v52 = 0;
-    *&v35 = v51 / (a6.var1.var0 / a15);
-    deriveSrcRect(&v52, &v53, v17, v49, v18, a6.var0.var1, v35, v32, v36, v37, v38);
-    createVerticesFromRect(v34, &v53, v50, a11, &v52, v48, a13);
-    ++self->_num_Blend_Rects[v21];
+    *&v35 = v51 / (srcRegion.var1.var0 / scale);
+    deriveSrcRect(&v52, &v53, v17, v49, v18, srcRegion.var0.var1, v35, v32, v36, v37, v38);
+    createVerticesFromRect(contents, &v53, v50, height, &v52, v48, srcHeight);
+    ++self->_num_Blend_Rects[indexCopy2];
   }
 
   shape_enum_free();
   shape_enum_alloc();
-  for (; shape_enum_next(); v34 += 16)
+  for (; shape_enum_next(); contents += 16)
   {
     v53.i16[0] = WORD2(v55);
     v53.i16[1] = WORD2(v54);
     v53.i16[2] = v55;
     v53.i16[3] = v54;
     v52 = 0;
-    *&v39 = v51 / (a6.var1.var0 / a15);
-    deriveSrcRect(&v52, &v53, v17, v49, v18, a6.var0.var1, v39, v32, v40, v41, v42);
-    createVerticesFromRect(v34, &v53, v50, a11, &v52, v48, a13);
-    ++self->_num_Video_Rects[v21];
+    *&v39 = v51 / (srcRegion.var1.var0 / scale);
+    deriveSrcRect(&v52, &v53, v17, v49, v18, srcRegion.var0.var1, v39, v32, v40, v41, v42);
+    createVerticesFromRect(contents, &v53, v50, height, &v52, v48, srcHeight);
+    ++self->_num_Video_Rects[indexCopy2];
   }
 
   shape_enum_free();
@@ -2099,17 +2099,17 @@ LABEL_22:
   if (shape_enum_next())
   {
     num_ColorFill_Rects = self->_num_ColorFill_Rects;
-    v45 = a10 / a15;
-    v44 = a11;
+    v45 = width / scale;
+    heightCopy2 = height;
     do
     {
       v53.i16[0] = WORD2(v55);
       v53.i16[1] = WORD2(v54);
       v53.i16[2] = v55;
       v53.i16[3] = v54;
-      createVerticesFromRect(v34, &v53, v50, a11, &v53, v50, a11);
-      ++self->_num_UI_Rects[v21];
-      v34 += 16;
+      createVerticesFromRect(contents, &v53, v50, height, &v53, v50, height);
+      ++self->_num_UI_Rects[indexCopy2];
+      contents += 16;
     }
 
     while (shape_enum_next());
@@ -2118,8 +2118,8 @@ LABEL_22:
   else
   {
     num_ColorFill_Rects = self->_num_ColorFill_Rects;
-    v45 = a10 / a15;
-    v44 = a11;
+    v45 = width / scale;
+    heightCopy2 = height;
   }
 
   shape_enum_free();
@@ -2130,9 +2130,9 @@ LABEL_22:
     v53.i16[1] = WORD2(v54);
     v53.i16[2] = v55;
     v53.i16[3] = v54;
-    createVerticesFromRect(v34, &v53, v45, v44, &v53, v45, v44);
-    ++num_ColorFill_Rects[v21];
-    v34 += 16;
+    createVerticesFromRect(contents, &v53, v45, heightCopy2, &v53, v45, heightCopy2);
+    ++num_ColorFill_Rects[indexCopy2];
+    contents += 16;
   }
 
   shape_enum_free();
@@ -2142,7 +2142,7 @@ LABEL_22:
   shape_free();
 }
 
-- (float)adjustUiScaleForDoViToHDR10Conversion:(float)a3
+- (float)adjustUiScaleForDoViToHDR10Conversion:(float)conversion
 {
   uiEDRFactor = self->_uiEDRFactor;
   if (!GetConfig())
@@ -2157,26 +2157,26 @@ LABEL_22:
   {
 LABEL_5:
     v7 = v6 / 10000.0;
-    return v7 * a3;
+    return v7 * conversion;
   }
 
   v7 = flt_2508CE530[uiEDRFactor < 1.0];
-  return v7 * a3;
+  return v7 * conversion;
 }
 
-- (void)updateUniformUIScaleForVideo:(BOOL)a3 forTV:(BOOL)a4 videoPeakBrightnessInNits:(int)a5 uiHWDegamma:(BOOL)a6 dovi50toHDR10TVMode:(unsigned int)a7
+- (void)updateUniformUIScaleForVideo:(BOOL)video forTV:(BOOL)v videoPeakBrightnessInNits:(int)nits uiHWDegamma:(BOOL)degamma dovi50toHDR10TVMode:(unsigned int)mode
 {
-  v10 = a4;
-  v13 = [(MTLBuffer *)self->_uniformBuffer contents];
+  vCopy = v;
+  contents = [(MTLBuffer *)self->_uniformBuffer contents];
   v15 = 1.0;
-  if (a3)
+  if (video)
   {
     goto LABEL_9;
   }
 
-  if (a5 >= 151 && v10)
+  if (nits >= 151 && vCopy)
   {
-    v14 = a5 * -0.0001438 + 0.6709;
+    v14 = nits * -0.0001438 + 0.6709;
     *&v14 = v14;
     v16 = 0.4;
     if (*&v14 >= 0.4)
@@ -2195,7 +2195,7 @@ LABEL_5:
     }
 
 LABEL_9:
-    if (a6)
+    if (degamma)
     {
       goto LABEL_11;
     }
@@ -2203,7 +2203,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v10)
+  if (vCopy)
   {
     v15 = 0.65057;
   }
@@ -2213,7 +2213,7 @@ LABEL_9:
     v15 = 0.73379;
   }
 
-  if (a6)
+  if (degamma)
   {
     goto LABEL_11;
   }
@@ -2221,39 +2221,39 @@ LABEL_9:
 LABEL_10:
   v15 = v15 / powf(self->_uiEDRFactor, 0.45045);
 LABEL_11:
-  if (a7 == 1)
+  if (mode == 1)
   {
     *&v14 = v15;
     [(HDRBackwardDisplayManagement *)self adjustUiScaleForDoViToHDR10Conversion:v14];
     v15 = v17;
   }
 
-  *(v13 + 224) = v15;
+  *(contents + 224) = v15;
 }
 
-- (BOOL)updateConfigFromMetadata:(id *)a3 uiScaleFactor:(float)a4 width:(int)a5 background:(id *)a6 hdrVideoOnly:(BOOL)a7 hdr10TV:(BOOL)a8 sdrOnly:(BOOL)a9
+- (BOOL)updateConfigFromMetadata:(id *)metadata uiScaleFactor:(float)factor width:(int)width background:(id *)background hdrVideoOnly:(BOOL)only hdr10TV:(BOOL)v sdrOnly:(BOOL)sdrOnly
 {
-  v10 = a8;
-  v11 = a7;
+  vCopy = v;
+  onlyCopy = only;
   v120 = *MEMORY[0x277D85DE8];
-  self->_inputScaleFactor = a3->var11;
-  v17 = [(MTLBuffer *)self->_uniformBuffer contents];
-  v18 = v17;
-  v17[56] = a4;
-  var1 = a3->var1;
-  v17[59] = var1;
-  v17[58] = 1.0 / a3->var0;
-  var3 = a3->var3;
+  self->_inputScaleFactor = metadata->var11;
+  contents = [(MTLBuffer *)self->_uniformBuffer contents];
+  v18 = contents;
+  contents[56] = factor;
+  var1 = metadata->var1;
+  contents[59] = var1;
+  contents[58] = 1.0 / metadata->var0;
+  var3 = metadata->var3;
   if (var3 == 0.0)
   {
-    a3->var3 = 0.00001;
+    metadata->var3 = 0.00001;
     var3 = 0.00001;
   }
 
-  v17[60] = 1.0 / var3;
-  v21 = a3->var2 / var3;
-  v17[61] = v21;
-  v17[62] = (v21 - var1) / var3;
+  contents[60] = 1.0 / var3;
+  v21 = metadata->var2 / var3;
+  contents[61] = v21;
+  contents[62] = (v21 - var1) / var3;
   v22 = powf(v21, 0.33333);
   v23 = 0;
   v18[63] = fminf(v22, 1.0);
@@ -2262,7 +2262,7 @@ LABEL_11:
   v24 = *(v18 + 12);
   do
   {
-    v25 = a3->var9[v23];
+    v25 = metadata->var9[v23];
     v117 = v24;
     *(&v117 & 0xFFFFFFFFFFFFFFF3 | (4 * (v23 & 3))) = v25;
     v24 = v117;
@@ -2274,23 +2274,23 @@ LABEL_11:
   while (v23 != 3);
   v26 = 0;
   v102 = *(v18 + 12);
-  v18[57] = a3->var16;
+  v18[57] = metadata->var16;
   var4 = &[HDRBackwardDisplayManagement updateConfigFromMetadata:uiScaleFactor:width:background:hdrVideoOnly:hdr10TV:sdrOnly:]::bt2020_to_lms_host;
   v28 = *(v18 + 3);
-  if (v11)
+  if (onlyCopy)
   {
-    var4 = a3->var4;
+    var4 = metadata->var4;
   }
 
   v29 = &[HDRBackwardDisplayManagement updateConfigFromMetadata:uiScaleFactor:width:background:hdrVideoOnly:hdr10TV:sdrOnly:]::BT709toBT2020_host;
   v31 = *(v18 + 4);
   v30 = *(v18 + 5);
-  if (!v10)
+  if (!vCopy)
   {
     v29 = var4;
   }
 
-  var8 = a3->var8;
+  var8 = metadata->var8;
   v33 = *(v18 + 6);
   v34 = *(v18 + 7);
   v35 = *(v18 + 8);
@@ -2411,9 +2411,9 @@ LABEL_11:
     }
   }
 
-  v69 = powf(a3->var16 * 0.0001, 0.1593);
+  v69 = powf(metadata->var16 * 0.0001, 0.1593);
   v70 = powf(((v69 * 18.852) + 0.83594) / ((v69 * 18.688) + 1.0), 78.844);
-  if (!v10 || a9)
+  if (!vCopy || sdrOnly)
   {
     v71 = 1.0 / v70;
   }
@@ -2424,16 +2424,16 @@ LABEL_11:
   }
 
   v18[73] = v71;
-  v72 = 1.0 / a5;
+  v72 = 1.0 / width;
   v18[74] = v72;
-  if (a6)
+  if (background)
   {
     v73 = vdupq_n_s64(0x406F400000000000uLL);
-    v74 = vmulq_f64(*&a6->var0, v73);
+    v74 = vmulq_f64(*&background->var0, v73);
     v75 = vcgtq_f64(v73, v74);
     v76 = vcgtzq_f64(v74);
     v77 = vbsl_s8(vmovn_s64(vornq_s8(vmvnq_s8(v75), v76)), vand_s8(vdup_n_s32(0x437A0000u), vmovn_s64(vornq_s8(v76, v75))), vcvt_f32_f64(v74));
-    v78 = a6->var2 * 250.0;
+    v78 = background->var2 * 250.0;
     v79 = v78 >= 250.0;
     v80 = v78 > 0.0 || v78 >= 250.0;
     if (v78 <= 0.0)
@@ -2466,7 +2466,7 @@ LABEL_11:
   v84 = *(v18 + 13);
   do
   {
-    v85 = a3->var10[v83];
+    v85 = metadata->var10[v83];
     v103 = v84;
     *(&v103 & 0xFFFFFFFFFFFFFFF3 | (4 * (v83 & 3))) = v85;
     v84 = v103;
@@ -2518,12 +2518,12 @@ LABEL_11:
         }
       }
 
-      var14 = a3->var14;
+      var14 = metadata->var14;
       v95 = var14;
       v18[79] = var14;
-      if (a3->var20 == 2)
+      if (metadata->var20 == 2)
       {
-        var14 = a3->var16;
+        var14 = metadata->var16;
         v95 = var14;
       }
 
@@ -2570,21 +2570,21 @@ LABEL_11:
   return result;
 }
 
-- (void)generateMetaAndConfig:(id)a3 inputSurface:(__IOSurface *)a4 outputSurface:(__IOSurface *)a5 payLoad:(id *)a6 dmCfg:(id *)a7
+- (void)generateMetaAndConfig:(id)config inputSurface:(__IOSurface *)surface outputSurface:(__IOSurface *)outputSurface payLoad:(id *)load dmCfg:(id *)cfg
 {
   v55 = *MEMORY[0x277D85DE8];
-  v12 = [a3 valueForKey:@"BackwardDMHDRDictionary"];
+  v12 = [config valueForKey:@"BackwardDMHDRDictionary"];
   v13 = [v12 valueForKey:@"DolbyVisionBackwardDMParameter"];
-  v14 = [v13 bytes];
-  v47 = a7;
+  bytes = [v13 bytes];
+  cfgCopy = cfg;
   v15 = [v12 valueForKey:@"DolbyVisionHDMIData"];
-  v44 = a6;
-  v46 = a5;
-  v16 = [v15 bytes];
-  v17 = v16;
+  loadCopy = load;
+  outputSurfaceCopy = outputSurface;
+  bytes2 = [v15 bytes];
+  v17 = bytes2;
   if (v13)
   {
-    v18 = v14 == 0;
+    v18 = bytes == 0;
   }
 
   else
@@ -2595,7 +2595,7 @@ LABEL_11:
   v19 = v18;
   if (v15)
   {
-    v20 = v16 == 0;
+    v20 = bytes2 == 0;
   }
 
   else
@@ -2605,9 +2605,9 @@ LABEL_11:
 
   v21 = v20;
   v48 = v21;
-  PlaneCount = IOSurfaceGetPlaneCount(a4);
-  ID = IOSurfaceGetID(a4);
-  if (!a4 || PlaneCount != 3)
+  PlaneCount = IOSurfaceGetPlaneCount(surface);
+  ID = IOSurfaceGetID(surface);
+  if (!surface || PlaneCount != 3)
   {
     goto LABEL_20;
   }
@@ -2629,8 +2629,8 @@ LABEL_20:
     }
 
 LABEL_29:
-    memcpy(&dmMetaCfgData, v14, 0x120uLL);
-    v41 = v46;
+    memcpy(&dmMetaCfgData, bytes, 0x120uLL);
+    v41 = outputSurfaceCopy;
     goto LABEL_30;
   }
 
@@ -2720,7 +2720,7 @@ LABEL_21:
   v56 = __invert_f3(v36);
   v39 = -3;
   v40 = &dword_27F3DDE90;
-  v41 = v46;
+  v41 = outputSurfaceCopy;
   do
   {
     v51 = v56.columns[0];
@@ -2741,45 +2741,45 @@ LABEL_21:
   *&xmmword_27F3DDEC8 = 0x3BA3D70A00000064;
   byte_27F3DDEF0 &= ~1u;
 LABEL_30:
-  [(HDRBackwardDisplayManagement *)self attatchInfoFrame:&dmMetaCfgData toOutputSurface:v41, v44];
+  [(HDRBackwardDisplayManagement *)self attatchInfoFrame:&dmMetaCfgData toOutputSurface:v41, loadCopy];
   v42 = &SDRMetaData;
   if (!v48)
   {
     v42 = v17;
   }
 
-  *v47 = &dmMetaCfgData;
+  *cfgCopy = &dmMetaCfgData;
   *v45 = v42;
 
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)drawMetaWithEncoder:(id)a3 widthScale:(int)a4 dmPayLoadLength:(int)a5
+- (void)drawMetaWithEncoder:(id)encoder widthScale:(int)scale dmPayLoadLength:(int)length
 {
-  v15 = a3;
+  encoderCopy = encoder;
   v8 = 2560;
-  if (a4 == 1)
+  if (scale == 1)
   {
     v8 = 2552;
   }
 
   v9 = [(HDRBackwardDisplayManagement *)self getRenderPipelineStateForShader:*(&self->super.isa + v8)];
-  [v15 setRenderPipelineState:v9];
-  [v15 setFragmentTexture:self->_metadataTexture[0] atIndex:0];
-  [v15 setVertexBuffer:self->_metadataVertexBuffer offset:0 atIndex:0];
-  [v15 drawPrimitives:1 vertexStart:0 vertexCount:2 * self->_metadataSpanCount[0]];
-  if (a5 >= 120)
+  [encoderCopy setRenderPipelineState:v9];
+  [encoderCopy setFragmentTexture:self->_metadataTexture[0] atIndex:0];
+  [encoderCopy setVertexBuffer:self->_metadataVertexBuffer offset:0 atIndex:0];
+  [encoderCopy drawPrimitives:1 vertexStart:0 vertexCount:2 * self->_metadataSpanCount[0]];
+  if (length >= 120)
   {
     LODWORD(v10) = 0;
     v11 = &self->_metadataSpanCount[1];
     v12 = &self->_metadataTexture[1];
-    v13 = a5 + 2;
+    v13 = length + 2;
     do
     {
       v14 = *(v11 - 1);
-      [v15 setFragmentTexture:*v12 atIndex:0];
+      [encoderCopy setFragmentTexture:*v12 atIndex:0];
       v10 = (v10 + 2 * v14);
-      [v15 drawPrimitives:1 vertexStart:v10 vertexCount:2 * *v11++];
+      [encoderCopy drawPrimitives:1 vertexStart:v10 vertexCount:2 * *v11++];
       ++v12;
       v13 -= 121;
     }
@@ -2788,7 +2788,7 @@ LABEL_30:
   }
 }
 
-- (int)getTVIndex:(BOOL)a3
+- (int)getTVIndex:(BOOL)index
 {
   if (self->_outputPackingColorFormat == 1)
   {
@@ -2809,7 +2809,7 @@ LABEL_30:
     v5 = 0;
   }
 
-  if (a3)
+  if (index)
   {
     v5 += 6;
   }
@@ -2817,20 +2817,20 @@ LABEL_30:
   return v5 | self->_useAccessibilityMatrix;
 }
 
-- (int)adjustMetaData:(id *)a3 HDRUIBlending:(BOOL)a4 hasLetterbox:(BOOL)a5
+- (int)adjustMetaData:(id *)data HDRUIBlending:(BOOL)blending hasLetterbox:(BOOL)letterbox
 {
-  v5 = a5;
-  adjustL1MetaData(a3, a4);
+  letterboxCopy = letterbox;
+  adjustL1MetaData(data, blending);
 
-  return adjustL2MetaData(&a3->var0, v5);
+  return adjustL2MetaData(&data->var0, letterboxCopy);
 }
 
-- (void)packetizeMetadata:(id *)a3 length:(int)a4 into:(int)a5 onSurface:(__IOSurface *)a6
+- (void)packetizeMetadata:(id *)metadata length:(int)length into:(int)into onSurface:(__IOSurface *)surface
 {
   v9 = 0;
   v21 = *MEMORY[0x277D85DE8];
   metadataTexture = self->_metadataTexture;
-  v11 = self->_metadataTextures[a5];
+  v11 = self->_metadataTextures[into];
   do
   {
     objc_storeStrong(&metadataTexture[v9], v11[v9]);
@@ -2842,9 +2842,9 @@ LABEL_30:
   *bytes = v12;
   if (v12)
   {
-    PacketizeMetadata(a3, a4, metadataTexture, v12);
+    PacketizeMetadata(metadata, length, metadataTexture, v12);
     v13 = CFDataCreate(*MEMORY[0x277CBECE8], bytes, 8);
-    IOSurfaceSetValue(a6, @"HDMIMetaData", v13);
+    IOSurfaceSetValue(surface, @"HDMIMetaData", v13);
     CFRelease(v13);
     free(*bytes);
   }
@@ -2883,15 +2883,15 @@ LABEL_30:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)EncodeToCommandBuffer:(id)a3 inputSurface:(__IOSurface *)a4 uiSurface:(__IOSurface *)a5 outputSurface:(__IOSurface *)a6 frameProperties:(id)a7
+- (int64_t)EncodeToCommandBuffer:(id)buffer inputSurface:(__IOSurface *)surface uiSurface:(__IOSurface *)uiSurface outputSurface:(__IOSurface *)outputSurface frameProperties:(id)properties
 {
   v89 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v80 = a7;
+  bufferCopy = buffer;
+  propertiesCopy = properties;
   v81 = 0;
   v82 = 0;
-  v79 = v12;
-  if (!v12 || !a6 || !(a4 | a5))
+  v79 = bufferCopy;
+  if (!bufferCopy || !outputSurface || !(surface | uiSurface))
   {
     if (enableLogInstance)
     {
@@ -2910,13 +2910,13 @@ LABEL_30:
         *buf = 134219008;
         *v84 = WORD1(v13);
         *&v84[8] = 2048;
-        *v85 = v12;
+        *v85 = bufferCopy;
         *&v85[8] = 2048;
-        *&v85[10] = a6;
+        *&v85[10] = outputSurface;
         *v86 = 2048;
-        *&v86[2] = a4;
+        *&v86[2] = surface;
         v87 = 2048;
-        v88 = a5;
+        uiSurfaceCopy = uiSurface;
         _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] #%04llx commanBuffer=%p, output=%p, input=%p, ui=%p", buf, 0x34u);
       }
 
@@ -2930,13 +2930,13 @@ LABEL_30:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218752;
-        *v84 = v12;
+        *v84 = bufferCopy;
         *&v84[8] = 2048;
-        *v85 = a6;
+        *v85 = outputSurface;
         *&v85[8] = 2048;
-        *&v85[10] = a4;
+        *&v85[10] = surface;
         *v86 = 2048;
-        *&v86[2] = a5;
+        *&v86[2] = uiSurface;
         _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] commanBuffer=%p, output=%p, input=%p, ui=%p", buf, 0x2Au);
       }
 
@@ -2948,22 +2948,22 @@ LABEL_30:
     goto LABEL_153;
   }
 
-  if (a4)
+  if (surface)
   {
-    self->_width = IOSurfaceGetWidth(a4);
-    Height = IOSurfaceGetHeight(a4);
+    self->_width = IOSurfaceGetWidth(surface);
+    Height = IOSurfaceGetHeight(surface);
   }
 
   else
   {
-    self->_width = IOSurfaceGetWidth(a5);
-    Height = IOSurfaceGetHeight(a5);
+    self->_width = IOSurfaceGetWidth(uiSurface);
+    Height = IOSurfaceGetHeight(uiSurface);
   }
 
   self->_height = Height;
-  if (a5)
+  if (uiSurface)
   {
-    edrfactor = iosurface_get_edrfactor(a5);
+    edrfactor = iosurface_get_edrfactor(uiSurface);
   }
 
   else
@@ -2972,11 +2972,11 @@ LABEL_30:
   }
 
   self->_uiEDRFactor = edrfactor;
-  self->_targetWidth = IOSurfaceGetWidth(a6);
-  v19 = IOSurfaceGetHeight(a6);
+  self->_targetWidth = IOSurfaceGetWidth(outputSurface);
+  v19 = IOSurfaceGetHeight(outputSurface);
   v20 = v19;
   self->_targetHeight = v19;
-  if (!a4)
+  if (!surface)
   {
     width = self->_width;
     targetWidth = self->_targetWidth;
@@ -3044,7 +3044,7 @@ LABEL_30:
     [(HDRBackwardDisplayManagement *)self createMetadataVertexBuffer];
   }
 
-  [(HDRBackwardDisplayManagement *)self generateMetaAndConfig:v80 inputSurface:a4 outputSurface:a6 payLoad:&v82 dmCfg:&v81];
+  [(HDRBackwardDisplayManagement *)self generateMetaAndConfig:propertiesCopy inputSurface:surface outputSurface:outputSurface payLoad:&v82 dmCfg:&v81];
   if (v81)
   {
     v23 = *(v81 + 224);
@@ -3063,7 +3063,7 @@ LABEL_30:
   {
     v29 = __rev16(*(v82 + 76));
     v30 = v29 == 0xFFFF;
-    if (!a4 || v29 == 0xFFFF)
+    if (!surface || v29 == 0xFFFF)
     {
       goto LABEL_45;
     }
@@ -3071,10 +3071,10 @@ LABEL_30:
     goto LABEL_41;
   }
 
-  if (a4)
+  if (surface)
   {
 LABEL_41:
-    v30 = IOSurfaceGetPixelFormat(a4) == 1999843442 || IOSurfaceGetPixelFormat(a4) == 1647534392;
+    v30 = IOSurfaceGetPixelFormat(surface) == 1999843442 || IOSurfaceGetPixelFormat(surface) == 1647534392;
     goto LABEL_45;
   }
 
@@ -3085,18 +3085,18 @@ LABEL_45:
   v71 = *(v81 + 280);
   if (v30)
   {
-    a5 = a4;
-    v32 = 0;
+    uiSurface = surface;
+    surfaceCopy = 0;
   }
 
   else
   {
-    v32 = a4;
+    surfaceCopy = surface;
   }
 
-  if (a5)
+  if (uiSurface)
   {
-    v33 = v32 == 0;
+    v33 = surfaceCopy == 0;
   }
 
   else
@@ -3106,9 +3106,9 @@ LABEL_45:
 
   v34 = v33;
   v78 = v34;
-  if (v32 && !a5)
+  if (surfaceCopy && !uiSurface)
   {
-    v31 = IOSurfaceGetPlaneCount(v32) == 3;
+    v31 = IOSurfaceGetPlaneCount(surfaceCopy) == 3;
   }
 
   displayMaxBrightnessInNitsForSDR = self->_displayMaxBrightnessInNitsForSDR;
@@ -3150,7 +3150,7 @@ LABEL_64:
   setTargitBrightnessInMetaData(v82, v21, displayMinBrightnessInNits, v39, displayMinBrightnessInNits);
 LABEL_65:
   v74 = v31;
-  v76 = a5;
+  uiSurfaceCopy2 = uiSurface;
   objc_storeStrong(&self->_uniformBuffer, self->_uniformBuffers[self->_frameIndex % 3]);
   objc_storeStrong(&self->_inverseScalingFactorTableTexture, self->_inverseScalingFactorTableTextures[self->_frameIndex % 3]);
   if (v78)
@@ -3163,8 +3163,8 @@ LABEL_65:
     v40 = 1.0;
   }
 
-  v15 = [v80 valueForKey:@"UILayerScaleFactor"];
-  v41 = [v80 valueForKey:@"SDRMaxBrightnessInNits"];
+  v15 = [propertiesCopy valueForKey:@"UILayerScaleFactor"];
+  v41 = [propertiesCopy valueForKey:@"SDRMaxBrightnessInNits"];
   v14 = v41;
   if (v41)
   {
@@ -3233,9 +3233,9 @@ LABEL_97:
     goto LABEL_98;
   }
 
-  if (a5)
+  if (uiSurface)
   {
-    v47 = v32 == 0;
+    v47 = surfaceCopy == 0;
   }
 
   else
@@ -3245,17 +3245,17 @@ LABEL_97:
 
   v48 = !v47;
   v69 = [(HDRBackwardDisplayManagement *)self adjustMetaData:v82 HDRUIBlending:v48 hasLetterbox:0];
-  [(HDRBackwardDisplayManagement *)self packetizeMetadata:v82 length:v69 into:self->_frameIndex % 3 onSurface:a6];
+  [(HDRBackwardDisplayManagement *)self packetizeMetadata:v82 length:v69 into:self->_frameIndex % 3 onSurface:outputSurface];
 LABEL_98:
-  v75 = [(HDRBackwardDisplayManagement *)self pixelNumPerThreadFullScreen:1 videoInput:v32 UI:a5 Output:a6 widthScaling:0];
+  v75 = [(HDRBackwardDisplayManagement *)self pixelNumPerThreadFullScreen:1 videoInput:surfaceCopy UI:uiSurface Output:outputSurface widthScaling:0];
   LOBYTE(v68) = v71 & 1;
-  [(HDRBackwardDisplayManagement *)self setupTexturesWithInput:v32 VideoSRGB:v78 UI:a5 UISRGB:v78 Output:a6 PixelPerThread:v75 ptvMode:v68];
+  [(HDRBackwardDisplayManagement *)self setupTexturesWithInput:surfaceCopy VideoSRGB:v78 UI:uiSurface UISRGB:v78 Output:outputSurface PixelPerThread:v75 ptvMode:v68];
   v49 = [(HDRBackwardDisplayManagement *)self createRenderCommandEncoderWithCommandBuffer:v79 texture:self->_outputTexture widthScale:v75 loadAction:0];
   if (v49)
   {
     v50 = v49;
     v51 = [(HDRBackwardDisplayManagement *)self getTVIndex:v72];
-    if (v32)
+    if (surfaceCopy)
     {
       [v50 setFragmentTexture:self->_inputTexture[0] atIndex:0];
       v52 = 1;
@@ -3266,10 +3266,10 @@ LABEL_98:
       v52 = 0;
     }
 
-    PlaneCount = IOSurfaceGetPlaneCount(a4);
-    if (!v32 || PlaneCount != 3)
+    PlaneCount = IOSurfaceGetPlaneCount(surface);
+    if (!surfaceCopy || PlaneCount != 3)
     {
-      if (v32)
+      if (surfaceCopy)
       {
         if (v71)
         {
@@ -3322,7 +3322,7 @@ LABEL_98:
       goto LABEL_145;
     }
 
-    if (v76)
+    if (uiSurfaceCopy2)
     {
       p_BKDM_3Plane_2Pixel_Video_HDR10 = &self->_BKDM_3Plane_1Pixel_Gamma[v51];
     }
@@ -3386,7 +3386,7 @@ LABEL_145:
 
     [v50 setFragmentTexture:*(&self->super.isa + v65) atIndex:v52 + 1];
     [v50 setFragmentTexture:self->_l2PQTable atIndex:v52 + 2];
-    if (v76)
+    if (uiSurfaceCopy2)
     {
       [v50 setFragmentTexture:self->_uiTexture atIndex:v52 + 3];
     }
@@ -3444,14 +3444,14 @@ LABEL_153:
   return v16;
 }
 
-- (int64_t)encodeToCommandBuffer:(id)a3 video:(__IOSurface *)a4 videoSrcRegion:(id)a5 videoDstRegion:(id)a6 ui:(__IOSurface *)buffer output:(__IOSurface *)a8 frameProperties:(id)a9
+- (int64_t)encodeToCommandBuffer:(id)buffer video:(__IOSurface *)video videoSrcRegion:(id)region videoDstRegion:(id)dstRegion ui:(__IOSurface *)buffer output:(__IOSurface *)output frameProperties:(id)properties
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v13 = a3;
-  v14 = a9;
-  Width = IOSurfaceGetWidth(a8);
-  v16 = Width | (IOSurfaceGetHeight(a8) << 32);
+  var1 = region.var1;
+  var0 = region.var0;
+  bufferCopy = buffer;
+  propertiesCopy = properties;
+  Width = IOSurfaceGetWidth(output);
+  v16 = Width | (IOSurfaceGetHeight(output) << 32);
   v17 = v16;
   if (buffer)
   {
@@ -3459,19 +3459,19 @@ LABEL_153:
     v17 = v18 | (IOSurfaceGetHeight(buffer) << 32);
   }
 
-  v19 = [(HDRBackwardDisplayManagement *)self encodeToCommandBuffer:v13 video:a4 videoSrcRegion:var0 videoDstRegion:var1 ui:*&a6.var0 uiSrcRegion:*&a6.var1 uiDstRegion:buffer backgroundColor:0 output:v17 frameProperties:0, v16, 0, a8, v14];
+  propertiesCopy = [(HDRBackwardDisplayManagement *)self encodeToCommandBuffer:bufferCopy video:video videoSrcRegion:var0 videoDstRegion:var1 ui:*&dstRegion.var0 uiSrcRegion:*&dstRegion.var1 uiDstRegion:buffer backgroundColor:0 output:v17 frameProperties:0, v16, 0, output, propertiesCopy];
 
-  return v19;
+  return propertiesCopy;
 }
 
-- (int64_t)setAccessibilityMatrix:(id *)a3
+- (int64_t)setAccessibilityMatrix:(id *)matrix
 {
-  if (a3 && (fabsf(a3->var0[0][0] + -1.0) >= 0.0000001 || fabsf(a3->var0[1][1] + -1.0) >= 0.0000001 || fabsf(a3->var0[2][2] + -1.0) >= 0.0000001 || fabsf(a3->var0[0][1]) >= 0.0000001 || fabsf(a3->var0[0][2]) >= 0.0000001 || fabsf(a3->var0[1][0]) >= 0.0000001 || fabsf(a3->var0[1][2]) >= 0.0000001 || fabsf(a3->var0[2][0]) >= 0.0000001 || fabsf(a3->var0[2][1]) >= 0.0000001))
+  if (matrix && (fabsf(matrix->var0[0][0] + -1.0) >= 0.0000001 || fabsf(matrix->var0[1][1] + -1.0) >= 0.0000001 || fabsf(matrix->var0[2][2] + -1.0) >= 0.0000001 || fabsf(matrix->var0[0][1]) >= 0.0000001 || fabsf(matrix->var0[0][2]) >= 0.0000001 || fabsf(matrix->var0[1][0]) >= 0.0000001 || fabsf(matrix->var0[1][2]) >= 0.0000001 || fabsf(matrix->var0[2][0]) >= 0.0000001 || fabsf(matrix->var0[2][1]) >= 0.0000001))
   {
     self->_useAccessibilityMatrix = 1;
-    v3 = *&a3->var0[0][0];
-    v4 = *&a3->var0[1][1];
-    self->_cachedHDRMatrix.parameter[2][2] = a3->var0[2][2];
+    v3 = *&matrix->var0[0][0];
+    v4 = *&matrix->var0[1][1];
+    self->_cachedHDRMatrix.parameter[2][2] = matrix->var0[2][2];
     *&self->_cachedHDRMatrix.parameter[0][0] = v3;
     *&self->_cachedHDRMatrix.parameter[1][1] = v4;
   }
@@ -3484,27 +3484,27 @@ LABEL_153:
   return -17000;
 }
 
-- (int64_t)encodeToCommandBuffer:(id)a3 video:(__IOSurface *)a4 videoSrcRegion:(id)a5 videoDstRegion:(id)a6 ui:(__IOSurface *)a7 uiSrcRegion:(id)a8 uiDstRegion:(id)a9 backgroundColor:(id *)a10 output:(__IOSurface *)a11 frameProperties:(id)a12
+- (int64_t)encodeToCommandBuffer:(id)buffer video:(__IOSurface *)video videoSrcRegion:(id)region videoDstRegion:(id)dstRegion ui:(__IOSurface *)ui uiSrcRegion:(id)srcRegion uiDstRegion:(id)uiDstRegion backgroundColor:(id *)self0 output:(__IOSurface *)self1 frameProperties:(id)self2
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v14 = a5.var1;
-  v15 = a5.var0;
+  var1 = dstRegion.var1;
+  var0 = dstRegion.var0;
+  v14 = region.var1;
+  v15 = region.var0;
   v145 = *MEMORY[0x277D85DE8];
-  v138 = a6;
-  v18 = a3;
-  v19 = a12;
-  v20 = v19;
+  dstRegionCopy = dstRegion;
+  bufferCopy = buffer;
+  propertiesCopy = properties;
+  v20 = propertiesCopy;
   v137 = 0;
   v136 = 0;
-  v134 = v18;
-  if (v18 && a11 && a4 | a7)
+  v134 = bufferCopy;
+  if (bufferCopy && output && video | ui)
   {
-    v126 = v19;
-    Width = IOSurfaceGetWidth(a11);
-    Height = IOSurfaceGetHeight(a11);
+    v126 = propertiesCopy;
+    Width = IOSurfaceGetWidth(output);
+    Height = IOSurfaceGetHeight(output);
     v135 = __PAIR64__(Height, Width);
-    if (!a4)
+    if (!video)
     {
       v117 = 0;
       v124 = 0;
@@ -3512,8 +3512,8 @@ LABEL_153:
       goto LABEL_24;
     }
 
-    v129 = IOSurfaceGetWidth(a4);
-    v124 = IOSurfaceGetHeight(a4);
+    v129 = IOSurfaceGetWidth(video);
+    v124 = IOSurfaceGetHeight(video);
     v23 = HIDWORD(*&v15);
     if (v15.var0 >= v129 && v15.var1 >= v124)
     {
@@ -3716,13 +3716,13 @@ LABEL_273:
           {
             if ((var1.var0 & 1) == 0)
             {
-              v117 = [(HDRBackwardDisplayManagement *)self inputIsSDRVideoFormat:a4];
+              v117 = [(HDRBackwardDisplayManagement *)self inputIsSDRVideoFormat:video];
 LABEL_24:
-              if (a7)
+              if (ui)
               {
-                v28 = IOSurfaceGetWidth(a7);
-                v29 = IOSurfaceGetHeight(a7);
-                edrfactor = iosurface_get_edrfactor(a7);
+                v28 = IOSurfaceGetWidth(ui);
+                v29 = IOSurfaceGetHeight(ui);
+                edrfactor = iosurface_get_edrfactor(ui);
               }
 
               else
@@ -3735,9 +3735,9 @@ LABEL_24:
               self->_uiEDRFactor = edrfactor;
               self->_width = v129;
               self->_height = v124;
-              if (a4)
+              if (video)
               {
-                v116 = [(HDRBackwardDisplayManagement *)self inputIsSDRVideoFormat:a4];
+                v116 = [(HDRBackwardDisplayManagement *)self inputIsSDRVideoFormat:video];
               }
 
               else
@@ -3749,8 +3749,8 @@ LABEL_24:
 
               self->_targetWidth = Width;
               self->_targetHeight = Height;
-              PlaneCount = IOSurfaceGetPlaneCount(a4);
-              if (a4)
+              PlaneCount = IOSurfaceGetPlaneCount(video);
+              if (video)
               {
                 v36 = var1.var0 == v14.var0;
               }
@@ -3761,32 +3761,32 @@ LABEL_24:
               }
 
               v38 = !v36 && PlaneCount == 3;
-              v128 = [(HDRBackwardDisplayManagement *)self pixelNumPerThreadFullScreen:0 videoInput:a4 UI:a7 Output:a11 widthScaling:v38];
-              if (a4)
+              v128 = [(HDRBackwardDisplayManagement *)self pixelNumPerThreadFullScreen:0 videoInput:video UI:ui Output:output widthScaling:v38];
+              if (video)
               {
-                v39 = a7;
+                uiCopy = ui;
               }
 
               else
               {
-                v39 = 0;
+                uiCopy = 0;
               }
 
-              if (a4)
+              if (video)
               {
-                v40 = a4;
+                uiCopy2 = video;
               }
 
               else
               {
-                v40 = a7;
+                uiCopy2 = ui;
               }
 
-              v121 = v39;
-              v122 = v40;
-              if (v40)
+              v121 = uiCopy;
+              v122 = uiCopy2;
+              if (uiCopy2)
               {
-                v132 = IOSurfaceGetPlaneCount(v40) == 3;
+                v132 = IOSurfaceGetPlaneCount(uiCopy2) == 3;
               }
 
               else
@@ -3799,7 +3799,7 @@ LABEL_24:
                 [(HDRBackwardDisplayManagement *)self createMetadataVertexBuffer];
               }
 
-              [(HDRBackwardDisplayManagement *)self generateMetaAndConfig:v126 inputSurface:v122 outputSurface:a11 payLoad:&v137 dmCfg:&v136];
+              [(HDRBackwardDisplayManagement *)self generateMetaAndConfig:v126 inputSurface:v122 outputSurface:output payLoad:&v137 dmCfg:&v136];
               if (v136)
               {
                 v41 = *(v136 + 224);
@@ -3855,8 +3855,8 @@ LABEL_24:
 
               v118 = outputPackingColorFormat - 1;
               *&v47 = *&v47 / self->_uiEDRFactor;
-              [(HDRBackwardDisplayManagement *)self updateConfigFromMetadata:v136 uiScaleFactor:self->_targetWidth width:a10 background:v132 hdrVideoOnly:outputPackingColorFormat - 1 < 2 hdr10TV:!v132 sdrOnly:v47];
-              [(HDRBackwardDisplayManagement *)self updateVertices:0 videoInput:v135 videoDstRegion:v122 videoSrcRegion:var0 uiInput:var1 uiDstRegion:v15 uiSrcRegion:v14 dstWidth:v121 dstHeight:*&a9.var0 videoSrcWidth:*&a9.var1 videoSrcHeight:*&a8.var0 index:*&a8.var1 scale:*&self->_targetWidth, __PAIR64__(v124, v129), __PAIR64__(v128, v43)];
+              [(HDRBackwardDisplayManagement *)self updateConfigFromMetadata:v136 uiScaleFactor:self->_targetWidth width:color background:v132 hdrVideoOnly:outputPackingColorFormat - 1 < 2 hdr10TV:!v132 sdrOnly:v47];
+              [(HDRBackwardDisplayManagement *)self updateVertices:0 videoInput:v135 videoDstRegion:v122 videoSrcRegion:var0 uiInput:var1 uiDstRegion:v15 uiSrcRegion:v14 dstWidth:v121 dstHeight:*&uiDstRegion.var0 videoSrcWidth:*&uiDstRegion.var1 videoSrcHeight:*&srcRegion.var0 index:*&srcRegion.var1 scale:*&self->_targetWidth, __PAIR64__(v124, v129), __PAIR64__(v128, v43)];
               if (outputPackingColorFormat)
               {
                 v52 = 1;
@@ -3914,14 +3914,14 @@ LABEL_110:
                 {
                   if (v132)
                   {
-                    if (v138.var0)
+                    if (dstRegionCopy.var0)
                     {
                       v64 = 0;
                     }
 
                     else
                     {
-                      v64 = v135 == *&v138.var1;
+                      v64 = v135 == *&dstRegionCopy.var1;
                     }
 
                     v65 = !v64;
@@ -3933,7 +3933,7 @@ LABEL_110:
                   }
 
                   v66 = [(HDRBackwardDisplayManagement *)self adjustMetaData:v137 HDRUIBlending:v62 hasLetterbox:v65];
-                  [(HDRBackwardDisplayManagement *)self packetizeMetadata:v137 length:v66 into:self->_frameIndex % 3 onSurface:a11];
+                  [(HDRBackwardDisplayManagement *)self packetizeMetadata:v137 length:v66 into:self->_frameIndex % 3 onSurface:output];
                   v125 = v66;
                   v63 = 0;
                 }
@@ -3943,7 +3943,7 @@ LABEL_126:
                 if (v132)
                 {
                   LOBYTE(v115) = v119 & 1;
-                  [(HDRBackwardDisplayManagement *)self setupTexturesWithInput:v122 VideoSRGB:0 UI:v121 UISRGB:0 Output:a11 PixelPerThread:v128 ptvMode:v115];
+                  [(HDRBackwardDisplayManagement *)self setupTexturesWithInput:v122 VideoSRGB:0 UI:v121 UISRGB:0 Output:output PixelPerThread:v128 ptvMode:v115];
                   v67 = [(HDRBackwardDisplayManagement *)self createRenderCommandEncoderWithCommandBuffer:v134 texture:self->_outputTexture widthScale:v128 loadAction:0];
                   v68 = v67;
                   if (v67)
@@ -4183,7 +4183,7 @@ LABEL_131:
                       else
                       {
                         v103 = &self->super.isa + v76;
-                        if (a4 && a7)
+                        if (video && ui)
                         {
                           v102 = (v103 + 295);
                         }
@@ -4665,13 +4665,13 @@ LABEL_106:
       *buf = 134219008;
       *v140 = WORD1(v21);
       *&v140[8] = 2048;
-      *v141 = v18;
+      *v141 = bufferCopy;
       *&v141[8] = 2048;
-      *&v141[10] = a11;
+      *&v141[10] = output;
       *v142 = 2048;
-      *&v142[2] = a4;
+      *&v142[2] = video;
       v143 = 2048;
-      v144 = a7;
+      uiCopy3 = ui;
       _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] #%04llx   commanBuffer=%p, output=%p, input=%p ui=%p", buf, 0x34u);
     }
 
@@ -4681,13 +4681,13 @@ LABEL_106:
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218752;
-    *v140 = v18;
+    *v140 = bufferCopy;
     *&v140[8] = 2048;
-    *v141 = a11;
+    *v141 = output;
     *&v141[8] = 2048;
-    *&v141[10] = a4;
+    *&v141[10] = video;
     *v142 = 2048;
-    *&v142[2] = a7;
+    *&v142[2] = ui;
     _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54]   commanBuffer=%p, output=%p, input=%p ui=%p", buf, 0x2Au);
   }
 
@@ -4698,9 +4698,9 @@ LABEL_296:
   return v22;
 }
 
-- (int)pixelNumPerThreadFullScreen:(BOOL)a3 videoInput:(__IOSurface *)a4 UI:(__IOSurface *)a5 Output:(__IOSurface *)a6 widthScaling:(BOOL)a7
+- (int)pixelNumPerThreadFullScreen:(BOOL)screen videoInput:(__IOSurface *)input UI:(__IOSurface *)i Output:(__IOSurface *)output widthScaling:(BOOL)scaling
 {
-  if (!a3)
+  if (!screen)
   {
     return 1;
   }
@@ -4719,10 +4719,10 @@ LABEL_296:
     }
   }
 
-  PlaneCount = IOSurfaceGetPlaneCount(a4);
-  if (a4)
+  PlaneCount = IOSurfaceGetPlaneCount(input);
+  if (input)
   {
-    v11 = a5 == 0;
+    v11 = i == 0;
   }
 
   else
@@ -4741,19 +4741,19 @@ LABEL_296:
   }
 }
 
-- (BOOL)inputIsSDRVideoFormat:(__IOSurface *)a3
+- (BOOL)inputIsSDRVideoFormat:(__IOSurface *)format
 {
-  PixelFormat = IOSurfaceGetPixelFormat(a3);
+  PixelFormat = IOSurfaceGetPixelFormat(format);
   v4 = vmaxv_u16(vmovn_s32(vceqq_s32(vdupq_n_s32(PixelFormat), xmmword_2508CE640))) | ((PixelFormat & 0xFFFFFFFD) == 1882468912);
   v6 = (PixelFormat & 0xFFFFFFFD) == 0x70663230 || (PixelFormat & 0xFFFFFDEF) == 875704422;
   return (v4 | v6) & 1;
 }
 
-- (unint64_t)getPixelFormatFromSurface:(__IOSurface *)a3 DeGamma:(BOOL)a4 forceUseOnePlane:(BOOL)a5 default:(unint64_t)a6
+- (unint64_t)getPixelFormatFromSurface:(__IOSurface *)surface DeGamma:(BOOL)gamma forceUseOnePlane:(BOOL)plane default:(unint64_t)default
 {
-  v7 = a5;
-  PixelFormat = IOSurfaceGetPixelFormat(a3);
-  if (a4)
+  planeCopy = plane;
+  PixelFormat = IOSurfaceGetPixelFormat(surface);
+  if (gamma)
   {
     if (PixelFormat > 1882468913)
     {
@@ -4768,7 +4768,7 @@ LABEL_296:
               return 555;
             }
 
-            return a6;
+            return default;
           }
 
           return 509;
@@ -4789,7 +4789,7 @@ LABEL_32:
             return 506;
           }
 
-          return a6;
+          return default;
         }
       }
 
@@ -4813,7 +4813,7 @@ LABEL_32:
             return 81;
           }
 
-          return a6;
+          return default;
         }
 
         return 502;
@@ -4821,7 +4821,7 @@ LABEL_32:
 
       if (PixelFormat == 1647534392)
       {
-        v12 = !v7;
+        v12 = !planeCopy;
         v13 = 551;
         v14 = 555;
         goto LABEL_47;
@@ -4841,7 +4841,7 @@ LABEL_26:
       return 502;
     }
 
-    return a6;
+    return default;
   }
 
   if (PixelFormat > 1882468913)
@@ -4873,7 +4873,7 @@ LABEL_11:
       return 554;
     }
 
-    return a6;
+    return default;
   }
 
   if (PixelFormat <= 875704949)
@@ -4885,7 +4885,7 @@ LABEL_11:
   {
     if (PixelFormat == 1647534392)
     {
-      v12 = !v7;
+      v12 = !planeCopy;
       v13 = 550;
       v14 = 554;
 LABEL_47:
@@ -4908,7 +4908,7 @@ LABEL_40:
       return 508;
     }
 
-    return a6;
+    return default;
   }
 
   if (PixelFormat == 875704950)
@@ -4921,41 +4921,41 @@ LABEL_40:
     return 80;
   }
 
-  return a6;
+  return default;
 }
 
-- (void)setupMetadataTextureWithOutput:(__IOSurface *)a3
+- (void)setupMetadataTextureWithOutput:(__IOSurface *)output
 {
   v7 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:53 width:self->_targetWidth height:self->_targetHeight mipmapped:0];
   [v7 setUsage:4];
-  v5 = [(MTLDeviceSPI *)self->_device newTextureWithDescriptor:v7 iosurface:a3 plane:0];
+  v5 = [(MTLDeviceSPI *)self->_device newTextureWithDescriptor:v7 iosurface:output plane:0];
   outputTextureMetadata = self->_outputTextureMetadata;
   self->_outputTextureMetadata = v5;
 }
 
-- (id)createRenderCommandEncoderWithCommandBuffer:(id)a3 texture:(id)a4 widthScale:(unsigned int)a5 loadAction:(unint64_t)a6
+- (id)createRenderCommandEncoderWithCommandBuffer:(id)buffer texture:(id)texture widthScale:(unsigned int)scale loadAction:(unint64_t)action
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-  v13 = [v12 colorAttachments];
-  v14 = [v13 objectAtIndexedSubscript:0];
-  [v14 setTexture:v11];
+  bufferCopy = buffer;
+  textureCopy = texture;
+  renderPassDescriptor = [MEMORY[0x277CD6F50] renderPassDescriptor];
+  colorAttachments = [renderPassDescriptor colorAttachments];
+  v14 = [colorAttachments objectAtIndexedSubscript:0];
+  [v14 setTexture:textureCopy];
 
-  v15 = [v12 colorAttachments];
-  v16 = [v15 objectAtIndexedSubscript:0];
-  [v16 setLoadAction:a6];
+  colorAttachments2 = [renderPassDescriptor colorAttachments];
+  v16 = [colorAttachments2 objectAtIndexedSubscript:0];
+  [v16 setLoadAction:action];
 
-  v17 = [v12 colorAttachments];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  colorAttachments3 = [renderPassDescriptor colorAttachments];
+  v18 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v18 setStoreAction:1];
 
-  v19 = [v10 renderCommandEncoderWithDescriptor:v12];
+  v19 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor];
   v20 = v19;
   if (v19)
   {
     v23 = 0;
-    v21 = self->_targetWidth / a5;
+    v21 = self->_targetWidth / scale;
     targetHeight = self->_targetHeight;
     v25 = v21;
     v26 = -targetHeight;
@@ -4966,35 +4966,35 @@ LABEL_40:
   return v20;
 }
 
-- (void)attatchInfoFrame:(id *)a3 toOutputSurface:(__IOSurface *)a4
+- (void)attatchInfoFrame:(id *)frame toOutputSurface:(__IOSurface *)surface
 {
   v12 = *MEMORY[0x277D85DE8];
   v9.var8 = unk_2508CE738;
-  if (a3->var18.var2 && a3->var19.var0)
+  if (frame->var18.var2 && frame->var19.var0)
   {
-    v9 = a3->var18;
+    v9 = frame->var18;
 LABEL_7:
-    var19 = a3->var19;
+    var19 = frame->var19;
     goto LABEL_10;
   }
 
-  if (a3->var18.var9 && a3->var19.var0)
+  if (frame->var18.var9 && frame->var19.var0)
   {
-    *&v9.var8 = *&a3->var18.var8;
+    *&v9.var8 = *&frame->var18.var8;
     goto LABEL_7;
   }
 
-  var14 = a3->var14;
+  var14 = frame->var14;
   if (var14 >= 0x3E8)
   {
     v9.var8 = 10000 * var14;
-    v9.var9 = (a3->var15 * 10000.0);
+    v9.var9 = (frame->var15 * 10000.0);
   }
 
 LABEL_10:
-  if (a3->var20 && v9.var8 >= 10000 * a3->var14)
+  if (frame->var20 && v9.var8 >= 10000 * frame->var14)
   {
-    v6 = 10000 * a3->var14;
+    v6 = 10000 * frame->var14;
   }
 
   if (IOSurfaceSetBulkAttachments2())

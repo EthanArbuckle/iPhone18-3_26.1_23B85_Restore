@@ -1,10 +1,10 @@
 @interface CNUserActivitySerialization
-+ (id)allAvailableServerUUIDsForContact:(id)a3;
++ (id)allAvailableServerUUIDsForContact:(id)contact;
 + (id)descriptorForRequiredKeys;
-+ (id)distinctEmailAddressesForContact:(id)a3;
-+ (id)distinctPhoneNumbersForContact:(id)a3;
-+ (id)userActivityPayloadWithContacts:(id)a3 shouldUnify:(BOOL)a4;
-+ (id)userActivityTitleWithContacts:(id)a3;
++ (id)distinctEmailAddressesForContact:(id)contact;
++ (id)distinctPhoneNumbersForContact:(id)contact;
++ (id)userActivityPayloadWithContacts:(id)contacts shouldUnify:(BOOL)unify;
++ (id)userActivityTitleWithContacts:(id)contacts;
 @end
 
 @implementation CNUserActivitySerialization
@@ -16,58 +16,58 @@
   v8[8] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:9];
 
-  v5 = [a1 description];
+  v5 = [self description];
   v6 = [CNContact descriptorWithKeyDescriptors:v4 description:v5];
 
   return v6;
 }
 
-+ (id)userActivityPayloadWithContacts:(id)a3 shouldUnify:(BOOL)a4
++ (id)userActivityPayloadWithContacts:(id)contacts shouldUnify:(BOOL)unify
 {
-  v4 = a4;
+  unifyCopy = unify;
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 count] == 1)
+  contactsCopy = contacts;
+  if ([contactsCopy count] == 1)
   {
-    v7 = [v6 firstObject];
-    v8 = [a1 descriptorForRequiredKeys];
-    v27[0] = v8;
+    firstObject = [contactsCopy firstObject];
+    descriptorForRequiredKeys = [self descriptorForRequiredKeys];
+    v27[0] = descriptorForRequiredKeys;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-    v10 = [v7 areKeysAvailable:v9];
+    v10 = [firstObject areKeysAvailable:v9];
 
     if (v10)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
-      v12 = [a1 allAvailableServerUUIDsForContact:v7];
-      [v11 _cn_setNonNilObject:v12 forKey:@"carddav-uuids"];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      v12 = [self allAvailableServerUUIDsForContact:firstObject];
+      [dictionary _cn_setNonNilObject:v12 forKey:@"carddav-uuids"];
 
-      v13 = [a1 distinctEmailAddressesForContact:v7];
-      [v11 _cn_setNonNilObject:v13 forKey:@"email-addresses"];
+      v13 = [self distinctEmailAddressesForContact:firstObject];
+      [dictionary _cn_setNonNilObject:v13 forKey:@"email-addresses"];
 
-      v14 = [a1 distinctPhoneNumbersForContact:v7];
-      [v11 _cn_setNonNilObject:v14 forKey:@"phone-numbers"];
+      v14 = [self distinctPhoneNumbersForContact:firstObject];
+      [dictionary _cn_setNonNilObject:v14 forKey:@"phone-numbers"];
 
-      v15 = [a1 isContactACompany:v7];
+      v15 = [self isContactACompany:firstObject];
       v16 = sNilStringIfEmpty;
       if (v15)
       {
-        v17 = [v7 organizationName];
-        v18 = v16[2](v16, v17);
-        [v11 _cn_setNonNilObject:v18 forKey:@"organization-name"];
+        organizationName = [firstObject organizationName];
+        v18 = v16[2](v16, organizationName);
+        [dictionary _cn_setNonNilObject:v18 forKey:@"organization-name"];
 
-        [v11 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"is-organization"];
+        [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"is-organization"];
       }
 
       else
       {
-        v20 = [v7 givenName];
-        v21 = v16[2](v16, v20);
-        [v11 _cn_setNonNilObject:v21 forKey:@"first-name"];
+        givenName = [firstObject givenName];
+        v21 = v16[2](v16, givenName);
+        [dictionary _cn_setNonNilObject:v21 forKey:@"first-name"];
 
         v22 = sNilStringIfEmpty;
-        v23 = [v7 familyName];
-        v24 = v22[2](v22, v23);
-        [v11 _cn_setNonNilObject:v24 forKey:@"last-name"];
+        familyName = [firstObject familyName];
+        v24 = v22[2](v22, familyName);
+        [dictionary _cn_setNonNilObject:v24 forKey:@"last-name"];
       }
 
       if ((*(*MEMORY[0x1E6996548] + 16))())
@@ -77,16 +77,16 @@
 
       else
       {
-        [v11 setObject:&unk_1F09874E0 forKeyedSubscript:@"version"];
-        v25 = [a1 fullNameForContact:v7];
-        [v11 setObject:v25 forKeyedSubscript:@"contact-name"];
+        [dictionary setObject:&unk_1F09874E0 forKeyedSubscript:@"version"];
+        v25 = [self fullNameForContact:firstObject];
+        [dictionary setObject:v25 forKeyedSubscript:@"contact-name"];
 
-        if (v4)
+        if (unifyCopy)
         {
-          [v11 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"unified"];
+          [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"unified"];
         }
 
-        v19 = v11;
+        v19 = dictionary;
       }
     }
 
@@ -104,13 +104,13 @@
   return v19;
 }
 
-+ (id)userActivityTitleWithContacts:(id)a3
++ (id)userActivityTitleWithContacts:(id)contacts
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  contactsCopy = contacts;
+  if ([contactsCopy count] == 1)
   {
-    v5 = [v4 firstObject];
-    v6 = [a1 fullNameForContact:v5];
+    firstObject = [contactsCopy firstObject];
+    v6 = [self fullNameForContact:firstObject];
   }
 
   else
@@ -121,24 +121,24 @@
   return v6;
 }
 
-+ (id)allAvailableServerUUIDsForContact:(id)a3
++ (id)allAvailableServerUUIDsForContact:(id)contact
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contactCopy = contact;
   v4 = *MEMORY[0x1E6996530];
-  v5 = [v3 linkedContacts];
-  if ((*(v4 + 16))(v4, v5))
+  linkedContacts = [contactCopy linkedContacts];
+  if ((*(v4 + 16))(v4, linkedContacts))
   {
-    v13[0] = v3;
-    v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
+    v13[0] = contactCopy;
+    linkedContacts2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   }
 
   else
   {
-    v6 = [v3 linkedContacts];
+    linkedContacts2 = [contactCopy linkedContacts];
   }
 
-  v7 = v6;
+  v7 = linkedContacts2;
 
   v8 = [v7 _cn_map:sContactServerUUID];
   v9 = [v8 _cn_filter:*MEMORY[0x1E6996550]];
@@ -158,12 +158,12 @@
   return v10;
 }
 
-+ (id)distinctEmailAddressesForContact:(id)a3
++ (id)distinctEmailAddressesForContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = *MEMORY[0x1E6996530];
-  v5 = [v3 emailAddresses];
-  v6 = (*(v4 + 16))(v4, v5);
+  emailAddresses = [contactCopy emailAddresses];
+  v6 = (*(v4 + 16))(v4, emailAddresses);
 
   if (v6)
   {
@@ -172,14 +172,14 @@
 
   else
   {
-    v8 = [v3 emailAddresses];
+    emailAddresses2 = [contactCopy emailAddresses];
     v9 = +[CNLabeledValue Value];
-    v10 = [v8 _cn_map:v9];
+    v10 = [emailAddresses2 _cn_map:v9];
 
-    v11 = [v10 _cn_distinctObjects];
+    _cn_distinctObjects = [v10 _cn_distinctObjects];
 
-    v12 = [MEMORY[0x1E6996840] IsNotEmpty];
-    v13 = [v11 _cn_filter:v12];
+    isNotEmpty = [MEMORY[0x1E6996840] IsNotEmpty];
+    v13 = [_cn_distinctObjects _cn_filter:isNotEmpty];
 
     if ((*(v4 + 16))(v4, v13))
     {
@@ -197,12 +197,12 @@
   return v7;
 }
 
-+ (id)distinctPhoneNumbersForContact:(id)a3
++ (id)distinctPhoneNumbersForContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = *MEMORY[0x1E6996530];
-  v5 = [v3 phoneNumbers];
-  v6 = (*(v4 + 16))(v4, v5);
+  phoneNumbers = [contactCopy phoneNumbers];
+  v6 = (*(v4 + 16))(v4, phoneNumbers);
 
   if (v6)
   {
@@ -211,16 +211,16 @@
 
   else
   {
-    v8 = [v3 phoneNumbers];
+    phoneNumbers2 = [contactCopy phoneNumbers];
     v9 = +[CNLabeledValue Value];
-    v10 = [v8 _cn_map:v9];
+    v10 = [phoneNumbers2 _cn_map:v9];
     v11 = +[CNPhoneNumber StringValue];
     v12 = [v10 _cn_map:v11];
 
-    v13 = [v12 _cn_distinctObjects];
+    _cn_distinctObjects = [v12 _cn_distinctObjects];
 
-    v14 = [MEMORY[0x1E6996840] IsNotEmpty];
-    v15 = [v13 _cn_filter:v14];
+    isNotEmpty = [MEMORY[0x1E6996840] IsNotEmpty];
+    v15 = [_cn_distinctObjects _cn_filter:isNotEmpty];
 
     if ((*(v4 + 16))(v4, v15))
     {

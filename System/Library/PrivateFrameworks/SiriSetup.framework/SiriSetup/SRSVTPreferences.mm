@@ -1,5 +1,5 @@
 @interface SRSVTPreferences
-- (BOOL)compactVoiceTriggerEnabled:(id)a3;
+- (BOOL)compactVoiceTriggerEnabled:(id)enabled;
 - (SRSVTPreferences)init;
 @end
 
@@ -12,21 +12,21 @@
   v2 = [(SRSVTPreferences *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D7A8D0] sharedPreferences];
+    mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
     preferences = v2->_preferences;
-    v2->_preferences = v3;
+    v2->_preferences = mEMORY[0x277D7A8D0];
   }
 
   return v2;
 }
 
-- (BOOL)compactVoiceTriggerEnabled:(id)a3
+- (BOOL)compactVoiceTriggerEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   compactVoiceTriggerEnabledOverride = self->compactVoiceTriggerEnabledOverride;
   if (compactVoiceTriggerEnabledOverride)
   {
-    v6 = [(NSNumber *)compactVoiceTriggerEnabledOverride BOOLValue];
+    bOOLValue = [(NSNumber *)compactVoiceTriggerEnabledOverride BOOLValue];
   }
 
   else
@@ -35,16 +35,16 @@
     v12 = 0;
     v8 = [(VTPreferences *)preferences getUserPreferredVoiceTriggerPhraseTypeForDeviceType:0 endpointId:0 error:&v12];
     v9 = v12;
-    v10 = [(VTPreferences *)self->_preferences isCompactVoiceTriggerAvailableForLanguageCode:v4];
+    v10 = [(VTPreferences *)self->_preferences isCompactVoiceTriggerAvailableForLanguageCode:enabledCopy];
     if (v9)
     {
       NSLog(&cfstr_Getuserpreferr.isa, v9, v8);
     }
 
-    v6 = (v8 == 1) & v10;
+    bOOLValue = (v8 == 1) & v10;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 @end

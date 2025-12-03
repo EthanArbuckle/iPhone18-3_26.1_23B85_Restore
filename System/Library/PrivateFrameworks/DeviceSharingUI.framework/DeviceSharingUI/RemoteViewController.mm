@@ -1,13 +1,13 @@
 @interface RemoteViewController
-- (_TtC15DeviceSharingUI20RemoteViewController)initWithCoder:(id)a3;
-- (_TtC15DeviceSharingUI20RemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15DeviceSharingUI20RemoteViewController)initWithCoder:(id)coder;
+- (_TtC15DeviceSharingUI20RemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)clientIsReady;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 @end
 
 @implementation RemoteViewController
 
-- (_TtC15DeviceSharingUI20RemoteViewController)initWithCoder:(id)a3
+- (_TtC15DeviceSharingUI20RemoteViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC15DeviceSharingUI20RemoteViewController_hostingController) = 0;
   result = sub_248AA3C8C();
@@ -17,28 +17,28 @@
 
 - (void)clientIsReady
 {
-  v2 = self;
+  selfCopy = self;
   sub_248A9AB34();
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  [a3 preferredContentSize];
-  [(RemoteViewController *)v7 setPreferredContentSize:?];
-  v5 = [(RemoteViewController *)v7 _hostedWindowScene];
-  if (v5)
+  selfCopy = self;
+  [container preferredContentSize];
+  [(RemoteViewController *)selfCopy setPreferredContentSize:?];
+  _hostedWindowScene = [(RemoteViewController *)selfCopy _hostedWindowScene];
+  if (_hostedWindowScene)
   {
-    v6 = v5;
-    [a3 preferredContentSize];
+    v6 = _hostedWindowScene;
+    [container preferredContentSize];
     [v6 _setPreferredContentSize_];
   }
 
   swift_unknownObjectRelease();
 }
 
-- (_TtC15DeviceSharingUI20RemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15DeviceSharingUI20RemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

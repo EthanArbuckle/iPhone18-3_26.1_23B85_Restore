@@ -1,22 +1,22 @@
 @interface AMSUIPasswordSettingsPurchasesCell
-- (AMSUIPasswordSettingsPurchasesCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AMSUIPasswordSettingsPurchasesCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation AMSUIPasswordSettingsPurchasesCell
 
-- (AMSUIPasswordSettingsPurchasesCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AMSUIPasswordSettingsPurchasesCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = AMSUIPasswordSettingsPurchasesCell;
-  v4 = [(AMSUIPasswordSettingsPurchasesCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(AMSUIPasswordSettingsPurchasesCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E69DD250]);
     [(AMSUIPasswordSettingsPurchasesCell *)v4 bounds];
     v6 = [v5 initWithFrame:?];
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [v6 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v6 setBackgroundColor:clearColor];
 
     [(AMSUIPasswordSettingsPurchasesCell *)v4 setSelectedBackgroundView:v6];
   }
@@ -34,8 +34,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AMSUIPasswordSettingsPurchasesCell *)self selectedBackgroundView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  selectedBackgroundView = [(AMSUIPasswordSettingsPurchasesCell *)self selectedBackgroundView];
+  [selectedBackgroundView setFrame:{v4, v6, v8, v10}];
 }
 
 @end

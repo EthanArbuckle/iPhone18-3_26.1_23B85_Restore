@@ -1,21 +1,21 @@
 @interface UIKBTree
 + (id)key;
 + (id)keyboard;
-+ (id)mergeStringForKeyName:(id)a3;
-+ (id)shapesForControlKeyShapes:(id)a3 options:(int)a4;
-+ (id)stringForType:(int)a3;
-+ (id)treeOfType:(int)a3;
++ (id)mergeStringForKeyName:(id)name;
++ (id)shapesForControlKeyShapes:(id)shapes options:(int)options;
++ (id)stringForType:(int)type;
++ (id)treeOfType:(int)type;
 - ($5C396DA91E87D63640AC871340DC94CC)visualStyling;
-- ($5C396DA91E87D63640AC871340DC94CC)visualStylingForScreenTraits:(id)a3;
-- (BOOL)BOOLForProperty:(id)a3;
+- ($5C396DA91E87D63640AC871340DC94CC)visualStylingForScreenTraits:(id)traits;
+- (BOOL)BOOLForProperty:(id)property;
 - (BOOL)_gesturesEnabled;
-- (BOOL)_isShiftedButNotAutoShiftedWithLayoutInfo:(id)a3;
-- (BOOL)_keyIsStringType:(id)a3;
+- (BOOL)_isShiftedButNotAutoShiftedWithLayoutInfo:(id)info;
+- (BOOL)_keyIsStringType:(id)type;
 - (BOOL)_needsScaling;
 - (BOOL)_renderAsStringKey;
-- (BOOL)addMessagesWriteboardKeyOrRomanSwitch:(BOOL)a3;
-- (BOOL)addMessagesWriteboardKeyOrRomanSwitchIfDismissKey:(BOOL)a3;
-- (BOOL)addMessagesWriteboardKeyOrRomanSwitchIfNoDismissKey:(BOOL)a3;
+- (BOOL)addMessagesWriteboardKeyOrRomanSwitch:(BOOL)switch;
+- (BOOL)addMessagesWriteboardKeyOrRomanSwitchIfDismissKey:(BOOL)key;
+- (BOOL)addMessagesWriteboardKeyOrRomanSwitchIfNoDismissKey:(BOOL)key;
 - (BOOL)avoidsLanguageIndicator;
 - (BOOL)behavesAsShiftKey;
 - (BOOL)containsDividerVariant;
@@ -23,64 +23,64 @@
 - (BOOL)dynamicDisplayTypeHint;
 - (BOOL)dynamicLayout;
 - (BOOL)ghost;
-- (BOOL)hasLayoutTag:(id)a3;
+- (BOOL)hasLayoutTag:(id)tag;
 - (BOOL)isChineseKey;
-- (BOOL)isDuplicateOfTree:(id)a3;
-- (BOOL)isEqualToTree:(id)a3;
+- (BOOL)isDuplicateOfTree:(id)tree;
+- (BOOL)isEqualToTree:(id)tree;
 - (BOOL)isExemptFromInputManagerHitTesting;
 - (BOOL)isExemptFromInputManagerLayout;
 - (BOOL)isHashed;
 - (BOOL)isLetters;
 - (BOOL)isRightToLeftSensitive;
-- (BOOL)isSameAsTree:(id)a3;
+- (BOOL)isSameAsTree:(id)tree;
 - (BOOL)isSplit;
-- (BOOL)looksLike:(id)a3;
+- (BOOL)looksLike:(id)like;
 - (BOOL)looksLikeShiftAlternate;
 - (BOOL)mergeAsMoreKey;
 - (BOOL)preventPaddle;
-- (BOOL)renderKeyInKeyplane:(id)a3;
-- (BOOL)setObject:(id)a3 forProperty:(id)a4;
+- (BOOL)renderKeyInKeyplane:(id)keyplane;
+- (BOOL)setObject:(id)object forProperty:(id)property;
 - (BOOL)shouldCacheKey;
 - (BOOL)supportsSupplementalDisplayString;
-- (BOOL)supportsType:(int64_t)a3;
+- (BOOL)supportsType:(int64_t)type;
 - (BOOL)usesControlKeyAppearance;
 - (BOOL)visible;
 - (CGPoint)navigationPointOfKey;
 - (CGRect)_keyplaneFrame;
 - (CGRect)_originalKeyplaneFrame;
 - (CGRect)frame;
-- (CGRect)frameForKeylayoutName:(id)a3;
+- (CGRect)frameForKeylayoutName:(id)name;
 - (CGRect)keyUnionFrame;
-- (CGRect)keyUnionFramePadded:(BOOL)a3;
+- (CGRect)keyUnionFramePadded:(BOOL)padded;
 - (CGRect)keyUnionPaddedFrame;
 - (CGRect)originalFrame;
 - (CGRect)paddedFrame;
 - (NSMutableDictionary)properties;
 - (NSString)name;
-- (UIKBTree)initWithType:(int)a3;
-- (UIKBTree)initWithType:(int)a3 withName:(id)a4 withProperties:(id)a5 withSubtrees:(id)a6 withCache:(id)a7;
+- (UIKBTree)initWithType:(int)type;
+- (UIKBTree)initWithType:(int)type withName:(id)name withProperties:(id)properties withSubtrees:(id)subtrees withCache:(id)cache;
 - (double)primaryKeylayoutWidthRatio;
 - (double)resizingOffset;
-- (id)_cacheRootNameForKey:(id)a3;
-- (id)_horizontallyCoincidentKeysWithKey:(id)a3;
+- (id)_cacheRootNameForKey:(id)key;
+- (id)_horizontallyCoincidentKeysWithKey:(id)key;
 - (id)_keysForDynamicRow;
-- (id)_keysForDynamicRows:(id)a3;
+- (id)_keysForDynamicRows:(id)rows;
 - (id)_stringTypeKeysForDynamicRow;
 - (id)activeGeometriesList;
-- (id)activeShapesFromOutputShapes:(id)a3 inputShapes:(id)a4 inRTL:(BOOL)a5;
+- (id)activeShapesFromOutputShapes:(id)shapes inputShapes:(id)inputShapes inRTL:(BOOL)l;
 - (id)adaptiveKeys;
 - (id)alternateKeyplaneName;
-- (id)attributeSet:(BOOL)a3;
+- (id)attributeSet:(BOOL)set;
 - (id)autolocalizedKeyCacheIterator;
 - (id)cacheDisplayString;
 - (id)cacheSecondaryDisplayString;
-- (id)cachedKeysByKeyName:(id)a3;
+- (id)cachedKeysByKeyName:(id)name;
 - (id)componentName;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dynamicCacheName;
 - (id)findLeftMoreKey;
-- (id)firstCachedKeyWithName:(id)a3;
+- (id)firstCachedKeyWithName:(id)name;
 - (id)firstKeyplaneSwitchKey;
 - (id)flattenedSubtrees;
 - (id)fullRepresentedString;
@@ -88,59 +88,59 @@
 - (id)geometriesList;
 - (id)geometriesOrderedByPosition;
 - (id)geometry;
-- (id)geometrySet:(BOOL)a3;
+- (id)geometrySet:(BOOL)set;
 - (id)keyAttributes;
-- (id)keyByKeyName:(id)a3;
-- (id)keyForString:(id)a3;
+- (id)keyByKeyName:(id)name;
+- (id)keyForString:(id)string;
 - (id)keySet;
-- (id)keyplaneForKey:(id)a3;
+- (id)keyplaneForKey:(id)key;
 - (id)keyplaneSwitchKeys;
-- (id)keyplaneSwitchKeysWithoutCurrentKeyplane:(id)a3;
+- (id)keyplaneSwitchKeysWithoutCurrentKeyplane:(id)keyplane;
 - (id)keys;
-- (id)keysByKeyName:(id)a3;
+- (id)keysByKeyName:(id)name;
 - (id)keysExcludingEmptyKeys;
-- (id)keysForDisplayRowAtIndex:(unint64_t)a3;
+- (id)keysForDisplayRowAtIndex:(unint64_t)index;
 - (id)keysForMergeConditions;
-- (id)keysOrderedByPositionLinear:(BOOL)a3;
+- (id)keysOrderedByPositionLinear:(BOOL)linear;
 - (id)keysOrderedByPositionRTL;
 - (id)keysOrderedByPositionWithoutZip;
-- (id)keysWithInteractionTypes:(id)a3;
-- (id)keysWithRepresentedString:(id)a3;
-- (id)keysWithString:(id)a3;
+- (id)keysWithInteractionTypes:(id)types;
+- (id)keysWithRepresentedString:(id)string;
+- (id)keysWithString:(id)string;
 - (id)keysetCanContainWriteboardKey;
 - (id)layoutName;
 - (id)listShapes;
-- (id)mergeKeyNames:(id)a3 inRightToLeft:(BOOL)a4;
+- (id)mergeKeyNames:(id)names inRightToLeft:(BOOL)left;
 - (id)nameFromAttributes;
-- (id)objectForProperty:(id)a3;
-- (id)orderedRowsForType:(int64_t)a3;
+- (id)objectForProperty:(id)property;
+- (id)orderedRowsForType:(int64_t)type;
 - (id)overrideDisplayString;
 - (id)recursiveDescription;
 - (id)representedString;
 - (id)rightSpaceKey;
 - (id)rowSet;
-- (id)rowSetOfType:(int64_t)a3;
+- (id)rowSetOfType:(int64_t)type;
 - (id)scriptSwitchKey;
-- (id)shapeFromFrame:(CGRect)a3 leftPadding:(double)a4 rightPadding:(double)a5;
-- (id)shapesForKeys:(id)a3;
+- (id)shapeFromFrame:(CGRect)frame leftPadding:(double)padding rightPadding:(double)rightPadding;
+- (id)shapesForKeys:(id)keys;
 - (id)shiftAlternateKeyplaneName;
-- (id)subtreeWithName:(id)a3;
-- (id)subtreeWithName:(id)a3 rows:(id)a4;
-- (id)subtreeWithType:(int)a3;
-- (id)subtreesWithProperty:(id)a3 value:(id)a4;
+- (id)subtreeWithName:(id)name;
+- (id)subtreeWithName:(id)name rows:(id)rows;
+- (id)subtreeWithType:(int)type;
+- (id)subtreesWithProperty:(id)property value:(id)value;
 - (id)supplementaryKeyList;
-- (id)toggleKeysForKeyName:(id)a3;
+- (id)toggleKeysForKeyName:(id)name;
 - (id)unhashedName;
 - (id)variantDisplayString;
 - (int)displayRowHint;
-- (int)indexOfSubtree:(id)a3;
+- (int)indexOfSubtree:(id)subtree;
 - (int)type;
 - (int)variantType;
-- (int64_t)_keyCountOnNamedRow:(id)a3;
+- (int64_t)_keyCountOnNamedRow:(id)row;
 - (int64_t)currentKeyboardType;
 - (int64_t)flickDirection;
-- (int64_t)inheritedRowSetTypeForKeyboardType:(int64_t)a3;
-- (int64_t)intForProperty:(id)a3;
+- (int64_t)inheritedRowSetTypeForKeyboardType:(int64_t)type;
+- (int64_t)intForProperty:(id)property;
 - (int64_t)nativeIdiom;
 - (int64_t)popupDirection;
 - (int64_t)rowSetType;
@@ -149,82 +149,82 @@
 - (unint64_t)dynamicDisplayCorner;
 - (unint64_t)groupNeighbor;
 - (unint64_t)numberOfRows;
-- (void)_addKeylayoutKeys:(id)a3;
-- (void)_mutateKeys:(id)a3 scale:(double)a4 withShapeOperation:(id)a5;
-- (void)addRomanSwitchToCachedKeyListWithShape:(id)a3 rendering:(int)a4;
-- (void)addWriteboardKeyToCachedKeyListWithShape:(id)a3 rendering:(int)a4;
-- (void)addkeyToCachedKeyList:(id)a3;
-- (void)applyDynamicAttributes:(BOOL)a3 layoutInfo:(id)a4;
-- (void)cacheKey:(id)a3;
-- (void)cacheNativeIdiomIfNecessaryForScreenTraits:(id)a3;
-- (void)centerHorizontallyWhilePreservingLayoutWithKeys:(id)a3 inRect:(CGRect)a4 scale:(double)a5;
-- (void)centerKeyplaneInRect:(CGRect)a3 scale:(double)a4;
-- (void)centerKeys:(id)a3 inRect:(CGRect)a4 scale:(double)a5;
-- (void)centerVerticallyWhilePreservingLayoutWithKeys:(id)a3 inRect:(CGRect)a4 scale:(double)a5;
-- (void)centerWhilePreservingLayoutWithKeys:(id)a3 inRect:(CGRect)a4 scale:(double)a5;
+- (void)_addKeylayoutKeys:(id)keys;
+- (void)_mutateKeys:(id)keys scale:(double)scale withShapeOperation:(id)operation;
+- (void)addRomanSwitchToCachedKeyListWithShape:(id)shape rendering:(int)rendering;
+- (void)addWriteboardKeyToCachedKeyListWithShape:(id)shape rendering:(int)rendering;
+- (void)addkeyToCachedKeyList:(id)list;
+- (void)applyDynamicAttributes:(BOOL)attributes layoutInfo:(id)info;
+- (void)cacheKey:(id)key;
+- (void)cacheNativeIdiomIfNecessaryForScreenTraits:(id)traits;
+- (void)centerHorizontallyWhilePreservingLayoutWithKeys:(id)keys inRect:(CGRect)rect scale:(double)scale;
+- (void)centerKeyplaneInRect:(CGRect)rect scale:(double)scale;
+- (void)centerKeys:(id)keys inRect:(CGRect)rect scale:(double)scale;
+- (void)centerVerticallyWhilePreservingLayoutWithKeys:(id)keys inRect:(CGRect)rect scale:(double)scale;
+- (void)centerWhilePreservingLayoutWithKeys:(id)keys inRect:(CGRect)rect scale:(double)scale;
 - (void)clearManualAddedKey;
 - (void)clearTransientCaches;
-- (void)elaborateLayoutWithSize:(CGSize)a3 origin:(CGPoint)a4 layoutInfo:(id)a5;
-- (void)insertKey:(id)a3 withFrame:(CGRect)a4 andShiftKeys:(id)a5 scale:(double)a6;
-- (void)insetKeys:(id)a3 withInsets:(UIEdgeInsets)a4 scale:(double)a5;
-- (void)mergeReturnKey:(id)a3 withReturnKey:(id)a4;
-- (void)orderVariantKeys:(BOOL)a3;
-- (void)precacheLayoutName:(id)a3;
-- (void)removeKey:(id)a3;
-- (void)removeKey:(id)a3 andShiftKeys:(id)a4 scale:(double)a5;
-- (void)removeKeyFromAllCachedLists:(id)a3;
-- (void)removeKeyFromCachedKeyList:(id)a3;
-- (void)replaceKey:(id)a3 withKey:(id)a4;
-- (void)repositionKeys:(id)a3 withOffset:(CGPoint)a4 scale:(double)a5;
-- (void)resizeKeys:(id)a3 withOffset:(CGPoint)a4 scale:(double)a5;
-- (void)scaleKeys:(id)a3 withFactor:(CGSize)a4 scale:(double)a5;
-- (void)setAttributes:(id)a3;
-- (void)setClipCorners:(unint64_t)a3;
-- (void)setCurrentKeyboardType:(int64_t)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setDisplayRowHint:(int)a3;
-- (void)setDisplayType:(int)a3;
-- (void)setDisplayTypeHint:(int)a3;
-- (void)setDynamicDisplayCorner:(unint64_t)a3;
-- (void)setDynamicLayout:(BOOL)a3;
-- (void)setFlickDirection:(int64_t)a3;
-- (void)setForceMultitap:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGeometry:(id)a3;
-- (void)setGhost:(BOOL)a3;
-- (void)setGridLayout:(BOOL)a3;
-- (void)setGroupNeighbor:(unint64_t)a3;
-- (void)setInteractionType:(int)a3;
-- (void)setIsGenerated:(BOOL)a3;
-- (void)setLayoutTag:(id)a3 passingKeyTest:(id)a4;
-- (void)setMergeAsMoreKey:(BOOL)a3;
-- (void)setPaddedFrame:(CGRect)a3;
-- (void)setPopupDirection:(int64_t)a3;
-- (void)setPreventPaddle:(BOOL)a3;
-- (void)setRendering:(int)a3;
-- (void)setResizingOffset:(double)a3;
-- (void)setSelectedVariantIndex:(int64_t)a3;
-- (void)setSplitMode:(int)a3;
-- (void)setState:(int)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setToggleKeys:(id)a3 forKeyName:(id)a4;
-- (void)setVariantType:(int)a3;
-- (void)setVisible:(BOOL)a3;
-- (void)setVisualStyle:(int)a3;
-- (void)setVisualStyling:(id)a3;
-- (void)shiftRowAndResizeLeadingControlKey:(id)a3 toSize:(CGSize)a4 scale:(double)a5;
-- (void)subsumeDisappearingKeyName:(id)a3 intoKeyName:(id)a4 factors:(id)a5 inRightToLeft:(BOOL)a6;
-- (void)swapToggleKeys:(id)a3;
+- (void)elaborateLayoutWithSize:(CGSize)size origin:(CGPoint)origin layoutInfo:(id)info;
+- (void)insertKey:(id)key withFrame:(CGRect)frame andShiftKeys:(id)keys scale:(double)scale;
+- (void)insetKeys:(id)keys withInsets:(UIEdgeInsets)insets scale:(double)scale;
+- (void)mergeReturnKey:(id)key withReturnKey:(id)returnKey;
+- (void)orderVariantKeys:(BOOL)keys;
+- (void)precacheLayoutName:(id)name;
+- (void)removeKey:(id)key;
+- (void)removeKey:(id)key andShiftKeys:(id)keys scale:(double)scale;
+- (void)removeKeyFromAllCachedLists:(id)lists;
+- (void)removeKeyFromCachedKeyList:(id)list;
+- (void)replaceKey:(id)key withKey:(id)withKey;
+- (void)repositionKeys:(id)keys withOffset:(CGPoint)offset scale:(double)scale;
+- (void)resizeKeys:(id)keys withOffset:(CGPoint)offset scale:(double)scale;
+- (void)scaleKeys:(id)keys withFactor:(CGSize)factor scale:(double)scale;
+- (void)setAttributes:(id)attributes;
+- (void)setClipCorners:(unint64_t)corners;
+- (void)setCurrentKeyboardType:(int64_t)type;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setDisplayRowHint:(int)hint;
+- (void)setDisplayType:(int)type;
+- (void)setDisplayTypeHint:(int)hint;
+- (void)setDynamicDisplayCorner:(unint64_t)corner;
+- (void)setDynamicLayout:(BOOL)layout;
+- (void)setFlickDirection:(int64_t)direction;
+- (void)setForceMultitap:(BOOL)multitap;
+- (void)setFrame:(CGRect)frame;
+- (void)setGeometry:(id)geometry;
+- (void)setGhost:(BOOL)ghost;
+- (void)setGridLayout:(BOOL)layout;
+- (void)setGroupNeighbor:(unint64_t)neighbor;
+- (void)setInteractionType:(int)type;
+- (void)setIsGenerated:(BOOL)generated;
+- (void)setLayoutTag:(id)tag passingKeyTest:(id)test;
+- (void)setMergeAsMoreKey:(BOOL)key;
+- (void)setPaddedFrame:(CGRect)frame;
+- (void)setPopupDirection:(int64_t)direction;
+- (void)setPreventPaddle:(BOOL)paddle;
+- (void)setRendering:(int)rendering;
+- (void)setResizingOffset:(double)offset;
+- (void)setSelectedVariantIndex:(int64_t)index;
+- (void)setSplitMode:(int)mode;
+- (void)setState:(int)state;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setToggleKeys:(id)keys forKeyName:(id)name;
+- (void)setVariantType:(int)type;
+- (void)setVisible:(BOOL)visible;
+- (void)setVisualStyle:(int)style;
+- (void)setVisualStyling:(id)styling;
+- (void)shiftRowAndResizeLeadingControlKey:(id)key toSize:(CGSize)size scale:(double)scale;
+- (void)subsumeDisappearingKeyName:(id)name intoKeyName:(id)keyName factors:(id)factors inRightToLeft:(BOOL)left;
+- (void)swapToggleKeys:(id)keys;
 - (void)updateCachedKeyList;
-- (void)updateDictationKeyOnNumberPads:(BOOL)a3;
-- (void)updateDynamicFlickKeycapOnKeysWithLayoutInfo:(id)a3;
+- (void)updateDictationKeyOnNumberPads:(BOOL)pads;
+- (void)updateDynamicFlickKeycapOnKeysWithLayoutInfo:(id)info;
 - (void)updateFlickKeycapOnKeys;
-- (void)updateFlickKeycapOnKeysWithLayoutInfo:(id)a3;
-- (void)updateKeysForType:(int64_t)a3;
-- (void)updateMoreAndInternationalKeysWithOptions:(int)a3;
-- (void)updateVariantTypeForActions:(unsigned int)a3;
+- (void)updateFlickKeycapOnKeysWithLayoutInfo:(id)info;
+- (void)updateKeysForType:(int64_t)type;
+- (void)updateMoreAndInternationalKeysWithOptions:(int)options;
+- (void)updateVariantTypeForActions:(unsigned int)actions;
 - (void)zipAttributes;
-- (void)zipGeometries:(BOOL)a3 attributes:(BOOL)a4 layoutInfo:(id)a5;
+- (void)zipGeometries:(BOOL)geometries attributes:(BOOL)attributes layoutInfo:(id)info;
 - (void)zipGeometry;
 @end
 
@@ -240,34 +240,34 @@
 
 - (BOOL)isRightToLeftSensitive
 {
-  v3 = [(UIKBTree *)self displayType];
-  if (v3 == 20)
+  displayType = [(UIKBTree *)self displayType];
+  if (displayType == 20)
   {
-    v4 = [(UIKBTree *)self localizationKey];
-    v5 = v4 != 0;
+    localizationKey = [(UIKBTree *)self localizationKey];
+    v5 = localizationKey != 0;
   }
 
   else
   {
-    v6 = v3;
-    v7 = [(UIKBTree *)self interactionType];
-    if (v6 == 21 || v7 == 13)
+    v6 = displayType;
+    interactionType = [(UIKBTree *)self interactionType];
+    if (v6 == 21 || interactionType == 13)
     {
-      v12 = [(UIKBTree *)self displayTypeHint];
-      if (v12 >= 0xC)
+      displayTypeHint = [(UIKBTree *)self displayTypeHint];
+      if (displayTypeHint >= 0xC)
       {
         v5 = 0;
       }
 
       else
       {
-        v5 = 0x83Bu >> v12;
+        v5 = 0x83Bu >> displayTypeHint;
       }
     }
 
     else
     {
-      v5 = v6 == 3 || v7 == 4 || v7 == 37 || v6 == 26 || v6 == 7;
+      v5 = v6 == 3 || interactionType == 4 || interactionType == 37 || v6 == 26 || v6 == 7;
     }
   }
 
@@ -283,10 +283,10 @@
 
   else
   {
-    v4 = [(UIKBTree *)self interactionType];
-    if (v4 <= 0x11)
+    interactionType = [(UIKBTree *)self interactionType];
+    if (interactionType <= 0x11)
     {
-      v3 = 0x7A9u >> v4;
+      v3 = 0x7A9u >> interactionType;
     }
 
     else
@@ -301,9 +301,9 @@
 - (BOOL)preventPaddle
 {
   v2 = [(UIKBTree *)self numberForProperty:@"KBpreventPaddle"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (CGRect)_keyplaneFrame
@@ -317,8 +317,8 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [(UIKBTree *)self subtrees];
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v7 = [subtrees countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -330,7 +330,7 @@
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subtrees);
         }
 
         v11 = *(*(&v25 + 1) + 8 * v10);
@@ -370,7 +370,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v8 = [subtrees countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v8);
@@ -398,18 +398,18 @@
 
 - (int)variantType
 {
-  v3 = [(UIKBTree *)self overrideDisplayString];
-  if (v3)
+  overrideDisplayString = [(UIKBTree *)self overrideDisplayString];
+  if (overrideDisplayString)
   {
-    v4 = 0;
+    _variantType = 0;
   }
 
   else
   {
-    v4 = [(UIKBTree *)self _variantType];
+    _variantType = [(UIKBTree *)self _variantType];
   }
 
-  return v4;
+  return _variantType;
 }
 
 - (int64_t)currentKeyboardType
@@ -418,15 +418,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)usesControlKeyAppearance
@@ -440,19 +440,19 @@
 - (id)keys
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKBTree *)self cache];
-  v4 = [v3 objectForKey:@"keys"];
+  cache = [(UIKBTree *)self cache];
+  array = [cache objectForKey:@"keys"];
 
-  if (!v4)
+  if (!array)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    [(UIKBTree *)self _addKeylayoutKeys:v4];
+    array = [MEMORY[0x1E695DF70] array];
+    [(UIKBTree *)self _addKeylayoutKeys:array];
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(UIKBTree *)self subtrees];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subtrees = [(UIKBTree *)self subtrees];
+    v6 = [subtrees countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -463,23 +463,23 @@
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subtrees);
           }
 
-          [*(*(&v13 + 1) + 8 * i) _addKeylayoutKeys:v4];
+          [*(*(&v13 + 1) + 8 * i) _addKeylayoutKeys:array];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [subtrees countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
     }
 
-    v10 = [(UIKBTree *)self cache];
-    [v10 setObject:v4 forKey:@"keys"];
+    cache2 = [(UIKBTree *)self cache];
+    [cache2 setObject:array forKey:@"keys"];
   }
 
-  v11 = v4;
+  v11 = array;
 
   return v11;
 }
@@ -489,15 +489,15 @@
   if (self->effectiveLayoutTag && self->type == 12)
   {
     v2 = [(NSMutableDictionary *)self->properties objectForKey:?];
-    v3 = [v2 name];
+    name = [v2 name];
   }
 
   else
   {
-    v3 = self->name;
+    name = self->name;
   }
 
-  return v3;
+  return name;
 }
 
 - (id)overrideDisplayString
@@ -538,18 +538,18 @@
 
   else
   {
-    v5 = [(UIKBTree *)self fullRepresentedString];
-    if (-[UIKBTree interactionType](self, "interactionType") == 16 && [v5 length])
+    fullRepresentedString = [(UIKBTree *)self fullRepresentedString];
+    if (-[UIKBTree interactionType](self, "interactionType") == 16 && [fullRepresentedString length])
     {
-      v6 = [v5 _firstGrapheme];
+      _firstGrapheme = [fullRepresentedString _firstGrapheme];
     }
 
     else
     {
-      v6 = v5;
+      _firstGrapheme = fullRepresentedString;
     }
 
-    v7 = v6;
+    v7 = _firstGrapheme;
   }
 
   return v7;
@@ -557,8 +557,8 @@
 
 - (id)fullRepresentedString
 {
-  v2 = [(UIKBTree *)self properties];
-  v3 = [v2 objectForKey:@"KBrepresentedString"];
+  properties = [(UIKBTree *)self properties];
+  v3 = [properties objectForKey:@"KBrepresentedString"];
 
   return v3;
 }
@@ -566,27 +566,27 @@
 - (id)rowSet
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKBTree *)self dynamicLayout];
-  v4 = [(UIKBTree *)self type];
-  if (!v3)
+  dynamicLayout = [(UIKBTree *)self dynamicLayout];
+  type = [(UIKBTree *)self type];
+  if (!dynamicLayout)
   {
-    if (v4 == 3)
+    if (type == 3)
     {
-      v12 = [(UIKBTree *)self keySet];
+      selfCopy = [(UIKBTree *)self keySet];
 LABEL_18:
-      v5 = v12;
+      v5 = selfCopy;
       goto LABEL_22;
     }
 
     goto LABEL_19;
   }
 
-  if (v4 != 3)
+  if (type != 3)
   {
-    v13 = [(UIKBTree *)self type];
-    if (v13 == 15)
+    type2 = [(UIKBTree *)self type];
+    if (type2 == 15)
     {
-      v12 = self;
+      selfCopy = self;
       goto LABEL_18;
     }
 
@@ -602,8 +602,8 @@ LABEL_19:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(UIKBTree *)self subtrees];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    subtrees = [(UIKBTree *)self subtrees];
+    v7 = [subtrees countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -614,7 +614,7 @@ LABEL_19:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subtrees);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
@@ -627,7 +627,7 @@ LABEL_19:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [subtrees countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v8)
         {
           continue;
@@ -658,11 +658,11 @@ LABEL_22:
 
   else
   {
-    v11 = [(UIKBTree *)self shape];
+    shape = [(UIKBTree *)self shape];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v11 frame];
+      [shape frame];
       v4 = v12;
       v6 = v13;
       v8 = v14;
@@ -691,8 +691,8 @@ LABEL_22:
 
 - (BOOL)isSplit
 {
-  v2 = [(UIKBTree *)self name];
-  v3 = [v2 hasSuffix:@"-split"];
+  name = [(UIKBTree *)self name];
+  v3 = [name hasSuffix:@"-split"];
 
   return v3;
 }
@@ -703,15 +703,15 @@ LABEL_22:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v5 = [(UIKBTree *)self stylingFromVisualStyle];
+    intValue = [(UIKBTree *)self stylingFromVisualStyle];
   }
 
-  return v5;
+  return intValue;
 }
 
 - (int64_t)rowSetType
@@ -720,15 +720,15 @@ LABEL_22:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (NSMutableDictionary)properties
@@ -736,15 +736,15 @@ LABEL_22:
   if (self->effectiveLayoutTag && self->type == 12)
   {
     v2 = [(NSMutableDictionary *)self->properties objectForKey:?];
-    v3 = [v2 properties];
+    properties = [v2 properties];
   }
 
   else
   {
-    v3 = self->properties;
+    properties = self->properties;
   }
 
-  return v3;
+  return properties;
 }
 
 - (int)type
@@ -765,9 +765,9 @@ LABEL_22:
   }
 
   v4 = [(NSMutableDictionary *)self->properties objectForKey:?];
-  v5 = [v4 type];
+  type = [v4 type];
 
-  return v5;
+  return type;
 }
 
 - (BOOL)behavesAsShiftKey
@@ -787,38 +787,38 @@ LABEL_22:
 
 - (id)shiftAlternateKeyplaneName
 {
-  if (!+[UIKeyboardLayout _showSmallDisplayKeyplane]|| ([(UIKBTree *)self stringForProperty:@"shift-alternate-small-display"], (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!+[UIKeyboardLayout _showSmallDisplayKeyplane]|| ([(UIKBTree *)self stringForProperty:@"shift-alternate-small-display"], (name = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v3 = [(UIKBTree *)self stringForProperty:@"shift-alternate"];
-    if (!v3)
+    name = [(UIKBTree *)self stringForProperty:@"shift-alternate"];
+    if (!name)
     {
-      v3 = [(UIKBTree *)self name];
+      name = [(UIKBTree *)self name];
     }
   }
 
-  return v3;
+  return name;
 }
 
 - (BOOL)dynamicLayout
 {
   v2 = [(UIKBTree *)self numberForProperty:@"KBdynamic"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)layoutName
 {
-  v3 = [(UIKBTree *)self cache];
-  v4 = [v3 objectForKey:@"layoutName"];
+  cache = [(UIKBTree *)self cache];
+  v4 = [cache objectForKey:@"layoutName"];
 
   if (!v4)
   {
     v5 = UIKeyboardGetCurrentInputMode();
     v4 = KBStarLayoutString(v5);
 
-    v6 = [(UIKBTree *)self cache];
-    [v6 setObject:v4 forKey:@"layoutName"];
+    cache2 = [(UIKBTree *)self cache];
+    [cache2 setObject:v4 forKey:@"layoutName"];
   }
 
   return v4;
@@ -830,22 +830,22 @@ LABEL_22:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)_gesturesEnabled
 {
   v3 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v4 = [v3 preferencesActions];
-  if ([v4 BOOLForPreferenceKey:@"GesturesEnabled"] && !-[UIKBTree isSplit](self, "isSplit"))
+  preferencesActions = [v3 preferencesActions];
+  if ([preferencesActions BOOLForPreferenceKey:@"GesturesEnabled"] && !-[UIKBTree isSplit](self, "isSplit"))
   {
     v5 = ![(UIKBTree *)self isFloating];
   }
@@ -861,8 +861,8 @@ LABEL_22:
 - (id)_stringTypeKeysForDynamicRow
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if ([(UIKBTree *)self dynamicLayout])
   {
     v37 = 0u;
@@ -876,7 +876,7 @@ LABEL_22:
       v6 = v5;
       v7 = *v36;
       v23 = *v36;
-      v24 = self;
+      selfCopy = self;
       do
       {
         v8 = 0;
@@ -893,7 +893,7 @@ LABEL_22:
           {
             if ([(UIKBTree *)self _keyIsStringType:v9])
             {
-              [v3 addObject:v9];
+              [array addObject:v9];
             }
           }
 
@@ -903,8 +903,8 @@ LABEL_22:
             v34 = 0u;
             v31 = 0u;
             v32 = 0u;
-            v10 = [v9 subtrees];
-            v11 = [v10 countByEnumeratingWithState:&v31 objects:v40 count:16];
+            subtrees = [v9 subtrees];
+            v11 = [subtrees countByEnumeratingWithState:&v31 objects:v40 count:16];
             if (v11)
             {
               v12 = v11;
@@ -915,13 +915,13 @@ LABEL_22:
                 {
                   if (*v32 != v13)
                   {
-                    objc_enumerationMutation(v10);
+                    objc_enumerationMutation(subtrees);
                   }
 
                   v15 = *(*(&v31 + 1) + 8 * i);
                   if ([v15 type] == 8)
                   {
-                    [v3 addObject:v15];
+                    [array addObject:v15];
                   }
 
                   else if ([v15 type] == 4 || objc_msgSend(v15, "type") == 7)
@@ -930,8 +930,8 @@ LABEL_22:
                     v30 = 0u;
                     v27 = 0u;
                     v28 = 0u;
-                    v16 = [v15 subtrees];
-                    v17 = [v16 countByEnumeratingWithState:&v27 objects:v39 count:16];
+                    subtrees2 = [v15 subtrees];
+                    v17 = [subtrees2 countByEnumeratingWithState:&v27 objects:v39 count:16];
                     if (v17)
                     {
                       v18 = v17;
@@ -942,13 +942,13 @@ LABEL_22:
                         {
                           if (*v28 != v19)
                           {
-                            objc_enumerationMutation(v16);
+                            objc_enumerationMutation(subtrees2);
                           }
 
-                          [v3 addObject:*(*(&v27 + 1) + 8 * j)];
+                          [array addObject:*(*(&v27 + 1) + 8 * j)];
                         }
 
-                        v18 = [v16 countByEnumeratingWithState:&v27 objects:v39 count:16];
+                        v18 = [subtrees2 countByEnumeratingWithState:&v27 objects:v39 count:16];
                       }
 
                       while (v18);
@@ -956,14 +956,14 @@ LABEL_22:
                   }
                 }
 
-                v12 = [v10 countByEnumeratingWithState:&v31 objects:v40 count:16];
+                v12 = [subtrees countByEnumeratingWithState:&v31 objects:v40 count:16];
               }
 
               while (v12);
             }
 
             v7 = v23;
-            self = v24;
+            self = selfCopy;
             v6 = v25;
           }
 
@@ -977,9 +977,9 @@ LABEL_22:
       while (v6);
     }
 
-    if ([v3 count])
+    if ([array count])
     {
-      v4 = v3;
+      v4 = array;
     }
 
     else
@@ -995,11 +995,11 @@ LABEL_22:
 
 - (CGRect)paddedFrame
 {
-  v2 = [(UIKBTree *)self shape];
+  shape = [(UIKBTree *)self shape];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v2 paddedFrame];
+    [shape paddedFrame];
     v4 = v3;
     v6 = v5;
     v8 = v7;
@@ -1056,8 +1056,8 @@ LABEL_22:
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [v11 name];
-          v13 = [v12 hasSuffix:@"Roman-Switch-Key"];
+          name = [v11 name];
+          v13 = [name hasSuffix:@"Roman-Switch-Key"];
 
           if (v13)
           {
@@ -1086,8 +1086,8 @@ LABEL_17:
 - (id)autolocalizedKeyCacheIterator
 {
   v3 = [UIKBTreeLocalizedKeylistEnumerator alloc];
-  v4 = [(UIKBTree *)self cache];
-  v5 = [(UIKBTreeLocalizedKeylistEnumerator *)v3 initWithKeyplaneCache:v4];
+  cache = [(UIKBTree *)self cache];
+  v5 = [(UIKBTreeLocalizedKeylistEnumerator *)v3 initWithKeyplaneCache:cache];
 
   return v5;
 }
@@ -1099,8 +1099,8 @@ LABEL_17:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(UIKBTree *)self subtrees];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v3 = [subtrees countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -1110,7 +1110,7 @@ LABEL_17:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subtrees);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -1121,7 +1121,7 @@ LABEL_17:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [subtrees countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -1142,41 +1142,41 @@ LABEL_11:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = -1;
+    integerValue = -1;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (id)cacheDisplayString
 {
-  v3 = [(UIKBTree *)self overrideDisplayString];
-  v4 = v3;
-  if (v3)
+  overrideDisplayString = [(UIKBTree *)self overrideDisplayString];
+  v4 = overrideDisplayString;
+  if (overrideDisplayString)
   {
-    v5 = v3;
+    v5 = overrideDisplayString;
   }
 
   else
   {
-    v6 = [(UIKBTree *)self displayString];
-    v7 = v6;
-    if (v6)
+    displayString = [(UIKBTree *)self displayString];
+    v7 = displayString;
+    if (displayString)
     {
-      v8 = v6;
+      representedString = displayString;
     }
 
     else
     {
-      v8 = [(UIKBTree *)self representedString];
+      representedString = [(UIKBTree *)self representedString];
     }
 
-    v5 = v8;
+    v5 = representedString;
   }
 
   return v5;
@@ -1186,13 +1186,13 @@ LABEL_11:
 {
   if ([(UIKBTree *)self displayType]== 25)
   {
-    v3 = [(UIKBTree *)self secondaryDisplayStrings];
-    v4 = [v3 count];
+    secondaryDisplayStrings = [(UIKBTree *)self secondaryDisplayStrings];
+    v4 = [secondaryDisplayStrings count];
 
     if (v4)
     {
-      v5 = [(UIKBTree *)self secondaryDisplayStrings];
-      v6 = [v5 firstObject];
+      secondaryDisplayStrings2 = [(UIKBTree *)self secondaryDisplayStrings];
+      firstObject = [secondaryDisplayStrings2 firstObject];
 LABEL_11:
 
       goto LABEL_12;
@@ -1201,27 +1201,27 @@ LABEL_11:
 
   if ([(UIKBTree *)self displayType]== 7 || [(UIKBTree *)self displayType]== 20 || [(UIKBTree *)self displayTypeHint]== 10)
   {
-    v5 = [(UIKBTree *)self secondaryDisplayStrings];
-    v7 = [v5 objectAtIndex:0];
+    secondaryDisplayStrings2 = [(UIKBTree *)self secondaryDisplayStrings];
+    v7 = [secondaryDisplayStrings2 objectAtIndex:0];
     v8 = v7;
     if (v7)
     {
-      v6 = v7;
+      firstObject = v7;
     }
 
     else
     {
-      v9 = [(UIKBTree *)self secondaryRepresentedStrings];
-      v6 = [v9 objectAtIndex:0];
+      secondaryRepresentedStrings = [(UIKBTree *)self secondaryRepresentedStrings];
+      firstObject = [secondaryRepresentedStrings objectAtIndex:0];
     }
 
     goto LABEL_11;
   }
 
-  v6 = 0;
+  firstObject = 0;
 LABEL_12:
 
-  return v6;
+  return firstObject;
 }
 
 - (int)displayRowHint
@@ -1230,15 +1230,15 @@ LABEL_12:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 1;
+    intValue = 1;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (unint64_t)groupNeighbor
@@ -1247,21 +1247,21 @@ LABEL_12:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (id)componentName
 {
-  v2 = [(UIKBTree *)self name];
-  v3 = tailComponentOfName(v2);
+  name = [(UIKBTree *)self name];
+  v3 = tailComponentOfName(name);
 
   return v3;
 }
@@ -1273,8 +1273,8 @@ LABEL_12:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v2 = [(UIKBTree *)self properties];
-  v3 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  properties = [(UIKBTree *)self properties];
+  v3 = [properties countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1286,7 +1286,7 @@ LABEL_12:
       {
         if (*v18 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(properties);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
@@ -1304,15 +1304,15 @@ LABEL_12:
 
           v10 = MEMORY[0x1E696AEC0];
           v11 = [v8 substringToIndex:v9];
-          v12 = [(UIKBTree *)self properties];
-          v13 = [v12 objectForKey:v8];
+          properties2 = [(UIKBTree *)self properties];
+          v13 = [properties2 objectForKey:v8];
           v14 = [v10 stringWithFormat:@"%@_%@%@", v6, v11, v13];
 
           v6 = v14;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v4 = [properties countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v4);
@@ -1328,16 +1328,16 @@ LABEL_12:
 
 - (id)unhashedName
 {
-  v2 = [(UIKBTree *)self name];
-  v3 = nameByRemovingHash(v2);
+  name = [(UIKBTree *)self name];
+  v3 = nameByRemovingHash(name);
 
   return v3;
 }
 
 - (BOOL)isHashed
 {
-  v3 = [(UIKBTree *)self name];
-  v4 = [v3 length];
+  name = [(UIKBTree *)self name];
+  v4 = [name length];
 
   v5 = v4;
   if (!v4)
@@ -1348,8 +1348,8 @@ LABEL_12:
   v6 = 0;
   while (1)
   {
-    v7 = [(UIKBTree *)self name];
-    v8 = [v7 characterAtIndex:v6] - 48;
+    name2 = [(UIKBTree *)self name];
+    v8 = [name2 characterAtIndex:v6] - 48;
 
     if (v8 > 9)
     {
@@ -1362,33 +1362,33 @@ LABEL_12:
     }
   }
 
-  v10 = [(UIKBTree *)self name];
-  v9 = [v10 characterAtIndex:v6] == 95;
+  name3 = [(UIKBTree *)self name];
+  v9 = [name3 characterAtIndex:v6] == 95;
 
   return v9;
 }
 
-- (UIKBTree)initWithType:(int)a3
+- (UIKBTree)initWithType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v9.receiver = self;
   v9.super_class = UIKBTree;
   v4 = [(UIKBTree *)&v9 init];
   [(UIKBTree *)v4 setType:v3];
   [(UIKBTree *)v4 setName:0];
-  v5 = [(UIKBTree *)v4 isLeafType];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  [(UIKBTree *)v4 setProperties:v6];
+  isLeafType = [(UIKBTree *)v4 isLeafType];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [(UIKBTree *)v4 setProperties:dictionary];
 
-  if (v5)
+  if (isLeafType)
   {
     [(UIKBTree *)v4 setSubtrees:0];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DF70] array];
-    [(UIKBTree *)v4 setSubtrees:v7];
+    array = [MEMORY[0x1E695DF70] array];
+    [(UIKBTree *)v4 setSubtrees:array];
   }
 
   [(UIKBTree *)v4 setCache:0];
@@ -1400,45 +1400,45 @@ LABEL_12:
   return v4;
 }
 
-+ (id)treeOfType:(int)a3
++ (id)treeOfType:(int)type
 {
-  v3 = [[UIKBTree alloc] initWithType:*&a3];
+  v3 = [[UIKBTree alloc] initWithType:*&type];
 
   return v3;
 }
 
-- (UIKBTree)initWithType:(int)a3 withName:(id)a4 withProperties:(id)a5 withSubtrees:(id)a6 withCache:(id)a7
+- (UIKBTree)initWithType:(int)type withName:(id)name withProperties:(id)properties withSubtrees:(id)subtrees withCache:(id)cache
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  propertiesCopy = properties;
+  subtreesCopy = subtrees;
+  cacheCopy = cache;
   v25.receiver = self;
   v25.super_class = UIKBTree;
   v17 = [(UIKBTree *)&v25 init];
-  v17->type = a3;
-  objc_storeStrong(&v17->name, a4);
+  v17->type = type;
+  objc_storeStrong(&v17->name, name);
   properties = v17->properties;
-  v17->properties = v14;
-  v19 = v14;
+  v17->properties = propertiesCopy;
+  v19 = propertiesCopy;
 
   subtrees = v17->subtrees;
-  v17->subtrees = v15;
-  v21 = v15;
+  v17->subtrees = subtreesCopy;
+  v21 = subtreesCopy;
 
   cache = v17->cache;
-  v17->cache = v16;
+  v17->cache = cacheCopy;
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    if ([v13 containsString:@"Kana"])
+    if ([nameCopy containsString:@"Kana"])
     {
-      v23 = [(UIKBTree *)v17 properties];
-      [v23 setObject:&unk_1EFE31000 forKey:@"is-kana-keyboard"];
+      properties = [(UIKBTree *)v17 properties];
+      [properties setObject:&unk_1EFE31000 forKey:@"is-kana-keyboard"];
     }
   }
 
-  else if (a3 == 12)
+  else if (type == 12)
   {
     [(UIKBTree *)v17 setLayoutTag:@"Default"];
   }
@@ -1446,16 +1446,16 @@ LABEL_12:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[UIKBTree alloc] initWithType:[(UIKBTree *)self type]];
   v5 = objc_alloc(MEMORY[0x1E695DF90]);
-  v6 = [(UIKBTree *)self properties];
-  v7 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+  properties = [(UIKBTree *)self properties];
+  v7 = [v5 initWithCapacity:{objc_msgSend(properties, "count")}];
   [(UIKBTree *)v4 setProperties:v7];
 
-  v8 = [(UIKBTree *)self properties];
-  v9 = [v8 copy];
+  properties2 = [(UIKBTree *)self properties];
+  v9 = [properties2 copy];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -1464,25 +1464,25 @@ LABEL_12:
   v10 = v4;
   v23 = v10;
   [v9 enumerateKeysAndObjectsUsingBlock:v22];
-  v11 = [(UIKBTree *)self subtrees];
-  if (v11)
+  subtrees = [(UIKBTree *)self subtrees];
+  if (subtrees)
   {
-    v12 = v11;
-    v13 = [(UIKBTree *)self isLeafType];
+    v12 = subtrees;
+    isLeafType = [(UIKBTree *)self isLeafType];
 
-    if (!v13)
+    if (!isLeafType)
     {
       v14 = MEMORY[0x1E695DF70];
-      v15 = [(UIKBTree *)self subtrees];
-      v16 = [v14 arrayWithArray:v15];
+      subtrees2 = [(UIKBTree *)self subtrees];
+      v16 = [v14 arrayWithArray:subtrees2];
       [(UIKBTree *)v10 setSubtrees:v16];
     }
   }
 
   v17 = MEMORY[0x1E696AEC0];
   v18 = +[UIKBTree uniqueName];
-  v19 = [(UIKBTree *)self name];
-  v20 = [v17 stringWithFormat:@"%@_%@", v18, v19];
+  name = [(UIKBTree *)self name];
+  v20 = [v17 stringWithFormat:@"%@_%@", v18, name];
   [(UIKBTree *)v10 setName:v20];
 
   return v10;
@@ -1510,13 +1510,13 @@ void __25__UIKBTree_copyWithZone___block_invoke(uint64_t a1, void *a2, void *a3)
   }
 }
 
-- (BOOL)isSameAsTree:(id)a3
+- (BOOL)isSameAsTree:(id)tree
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 type] == self->type && (v5 = -[NSMutableDictionary count](self->properties, "count"), objc_msgSend(v4, "properties"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5 == v7) && (v8 = self->subtrees != 0, objc_msgSend(v4, "subtrees"), v9 = objc_claimAutoreleasedReturnValue(), v10 = v8 ^ (v9 != 0), v9, (v10 & 1) == 0) && ((subtrees = self->subtrees) == 0 || (v12 = -[NSMutableArray count](subtrees, "count"), objc_msgSend(v4, "subtrees"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v12 == v14)))
+  treeCopy = tree;
+  if ([treeCopy type] == self->type && (v5 = -[NSMutableDictionary count](self->properties, "count"), objc_msgSend(treeCopy, "properties"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5 == v7) && (v8 = self->subtrees != 0, objc_msgSend(treeCopy, "subtrees"), v9 = objc_claimAutoreleasedReturnValue(), v10 = v8 ^ (v9 != 0), v9, (v10 & 1) == 0) && ((subtrees = self->subtrees) == 0 || (v12 = -[NSMutableArray count](subtrees, "count"), objc_msgSend(treeCopy, "subtrees"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v12 == v14)))
   {
-    if (-[UIKBTree type](self, "type") != 7 || (-[UIKBTree componentName](self, "componentName"), v15 = objc_claimAutoreleasedReturnValue(), [v4 componentName], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "isEqualToString:", v16), v16, v15, v17))
+    if (-[UIKBTree type](self, "type") != 7 || (-[UIKBTree componentName](self, "componentName"), v15 = objc_claimAutoreleasedReturnValue(), [treeCopy componentName], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "isEqualToString:", v16), v16, v15, v17))
     {
       v52 = 0u;
       v53 = 0u;
@@ -1545,8 +1545,8 @@ void __25__UIKBTree_copyWithZone___block_invoke(uint64_t a1, void *a2, void *a3)
               isKindOfClass = objc_opt_isKindOfClass();
 
               v25 = [(NSMutableDictionary *)self->properties objectForKey:v22];
-              v26 = [v4 properties];
-              v27 = [v26 objectForKey:v22];
+              properties = [treeCopy properties];
+              v27 = [properties objectForKey:v22];
               if (isKindOfClass)
               {
                 v28 = [v25 isEqualToString:v27];
@@ -1595,8 +1595,8 @@ LABEL_22:
           }
 
           v34 = *(*(&v46 + 1) + 8 * v33);
-          v35 = [v4 subtrees];
-          v17 = [v35 containsObject:v34];
+          subtrees = [treeCopy subtrees];
+          v17 = [subtrees containsObject:v34];
 
           if (!v17)
           {
@@ -1624,7 +1624,7 @@ LABEL_28:
         v45 = 0u;
         v42 = 0u;
         v43 = 0u;
-        obj = [v4 subtrees];
+        obj = [treeCopy subtrees];
         v36 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v42 objects:v54 count:16];
         if (v36)
         {
@@ -1679,60 +1679,60 @@ LABEL_40:
   return v17;
 }
 
-- (BOOL)isEqualToTree:(id)a3
+- (BOOL)isEqualToTree:(id)tree
 {
-  v4 = a3;
-  v5 = [(UIKBTree *)self isSameAsTree:v4];
-  v6 = [(UIKBTree *)self name];
-  v7 = [v4 name];
+  treeCopy = tree;
+  v5 = [(UIKBTree *)self isSameAsTree:treeCopy];
+  name = [(UIKBTree *)self name];
+  name2 = [treeCopy name];
 
-  LOBYTE(v4) = [v6 isEqualToString:v7];
-  return v5 & v4;
+  LOBYTE(treeCopy) = [name isEqualToString:name2];
+  return v5 & treeCopy;
 }
 
-- (BOOL)isDuplicateOfTree:(id)a3
+- (BOOL)isDuplicateOfTree:(id)tree
 {
-  v4 = a3;
-  v5 = [(UIKBTree *)self isSameAsTree:v4];
-  v6 = [(UIKBTree *)self name];
-  v7 = [v4 name];
+  treeCopy = tree;
+  v5 = [(UIKBTree *)self isSameAsTree:treeCopy];
+  name = [(UIKBTree *)self name];
+  name2 = [treeCopy name];
 
-  LOBYTE(v4) = [v6 isEqualToString:v7] ^ 1;
-  return v5 & v4;
+  LOBYTE(treeCopy) = [name isEqualToString:name2] ^ 1;
+  return v5 & treeCopy;
 }
 
-- (BOOL)setObject:(id)a3 forProperty:(id)a4
+- (BOOL)setObject:(id)object forProperty:(id)property
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  objectCopy = object;
+  propertyCopy = property;
+  if (!propertyCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UIKBTree.m" lineNumber:268 description:@"property passed in is nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKBTree.m" lineNumber:268 description:@"property passed in is nil"];
   }
 
-  v9 = [(UIKBTree *)self properties];
-  v10 = v9;
-  if (v7)
+  properties = [(UIKBTree *)self properties];
+  v10 = properties;
+  if (objectCopy)
   {
-    [v9 setObject:v7 forKey:v8];
+    [properties setObject:objectCopy forKey:propertyCopy];
   }
 
   else
   {
-    [v9 removeObjectForKey:v8];
+    [properties removeObjectForKey:propertyCopy];
   }
 
   return 1;
 }
 
-- (id)objectForProperty:(id)a3
+- (id)objectForProperty:(id)property
 {
-  v4 = a3;
-  if (v4)
+  propertyCopy = property;
+  if (propertyCopy)
   {
-    v5 = [(UIKBTree *)self cache];
-    v6 = [v5 objectForKey:v4];
+    cache = [(UIKBTree *)self cache];
+    v6 = [cache objectForKey:propertyCopy];
     v7 = v6;
     if (v6)
     {
@@ -1741,8 +1741,8 @@ LABEL_40:
 
     else
     {
-      v9 = [(UIKBTree *)self properties];
-      v8 = [v9 objectForKey:v4];
+      properties = [(UIKBTree *)self properties];
+      v8 = [properties objectForKey:propertyCopy];
     }
   }
 
@@ -1754,9 +1754,9 @@ LABEL_40:
   return v8;
 }
 
-- (int64_t)intForProperty:(id)a3
+- (int64_t)intForProperty:(id)property
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
@@ -1765,24 +1765,24 @@ LABEL_40:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (BOOL)BOOLForProperty:(id)a3
+- (BOOL)BOOLForProperty:(id)property
 {
-  v4 = a3;
-  if (v4)
+  propertyCopy = property;
+  if (propertyCopy)
   {
-    v5 = [(UIKBTree *)self properties];
-    v6 = [v5 objectForKey:v4];
+    properties = [(UIKBTree *)self properties];
+    v6 = [properties objectForKey:propertyCopy];
     if ([v6 intValue] == 32)
     {
       v7 = 1;
@@ -1790,8 +1790,8 @@ LABEL_40:
 
     else
     {
-      v8 = [(UIKBTree *)self cache];
-      v9 = [v8 objectForKey:v4];
+      cache = [(UIKBTree *)self cache];
+      v9 = [cache objectForKey:propertyCopy];
       v7 = [v9 intValue] == 32;
     }
   }
@@ -1810,11 +1810,11 @@ LABEL_40:
   v11.super_class = UIKBTree;
   v3 = [(UIKBTree *)&v11 description];
   v4 = [UIKBTree stringForType:[(UIKBTree *)self type]];
-  v5 = [(UIKBTree *)self name];
-  v6 = [(UIKBTree *)self properties];
-  v7 = [v6 count];
-  v8 = [(UIKBTree *)self subtrees];
-  v9 = [v3 stringByAppendingFormat:@" - %@/%@: %ld properties + %ld subtrees", v5, v4, v7, objc_msgSend(v8, "count")];
+  name = [(UIKBTree *)self name];
+  properties = [(UIKBTree *)self properties];
+  v7 = [properties count];
+  subtrees = [(UIKBTree *)self subtrees];
+  v9 = [v3 stringByAppendingFormat:@" - %@/%@: %ld properties + %ld subtrees", name, v4, v7, objc_msgSend(subtrees, "count")];
 
   return v9;
 }
@@ -1827,8 +1827,8 @@ LABEL_40:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(UIKBTree *)self subtrees];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v5 = [subtrees countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1841,18 +1841,18 @@ LABEL_40:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subtrees);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v8) recursiveDescription];
-        v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: \n\t%@", v9, v10];
+        recursiveDescription = [*(*(&v12 + 1) + 8 * v8) recursiveDescription];
+        v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: \n\t%@", v9, recursiveDescription];
 
         ++v8;
         v9 = v3;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [subtrees countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1861,28 +1861,28 @@ LABEL_40:
   return v3;
 }
 
-+ (id)stringForType:(int)a3
++ (id)stringForType:(int)type
 {
-  if ((a3 - 1) > 0xE)
+  if ((type - 1) > 0xE)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7110028[a3 - 1];
+    return off_1E7110028[type - 1];
   }
 }
 
-- (id)subtreeWithType:(int)a3
+- (id)subtreeWithType:(int)type
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(UIKBTree *)self subtrees];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v5 = [subtrees countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1893,14 +1893,14 @@ LABEL_40:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subtrees);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 type] != a3)
+        if ([v9 type] != type)
         {
-          v10 = [v9 type];
-          if (a3 != 8 || v10 != 12)
+          type = [v9 type];
+          if (type != 8 || type != 12)
           {
             continue;
           }
@@ -1910,7 +1910,7 @@ LABEL_40:
         goto LABEL_14;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [subtrees countByEnumeratingWithState:&v13 objects:v17 count:16];
       v11 = 0;
       if (v6)
       {
@@ -1931,22 +1931,22 @@ LABEL_14:
   return v11;
 }
 
-- (id)subtreeWithName:(id)a3
+- (id)subtreeWithName:(id)name
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
-    v6 = [v4 lowercaseString];
-    v7 = tailComponentOfName(v6);
+    lowercaseString = [nameCopy lowercaseString];
+    v7 = tailComponentOfName(lowercaseString);
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [(UIKBTree *)self subtrees];
-    v5 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    subtrees = [(UIKBTree *)self subtrees];
+    v5 = [subtrees countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
       v9 = *v17;
@@ -1956,13 +1956,13 @@ LABEL_14:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subtrees);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 name];
-          v13 = [v12 lowercaseString];
-          v14 = tailComponentOfName(v13);
+          name = [v11 name];
+          lowercaseString2 = [name lowercaseString];
+          v14 = tailComponentOfName(lowercaseString2);
 
           if ([v14 isEqualToString:v7])
           {
@@ -1972,7 +1972,7 @@ LABEL_14:
           }
         }
 
-        v5 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v5 = [subtrees countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v5)
         {
           continue;
@@ -1988,31 +1988,31 @@ LABEL_12:
   return v5;
 }
 
-- (id)subtreeWithName:(id)a3 rows:(id)a4
+- (id)subtreeWithName:(id)name rows:(id)rows
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  nameCopy = name;
+  rowsCopy = rows;
+  v8 = rowsCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (nameCopy && rowsCopy)
   {
-    v10 = [v6 substringFromIndex:3];
-    v11 = [v10 intValue];
-    v12 = v11 - 1;
+    v10 = [nameCopy substringFromIndex:3];
+    intValue = [v10 intValue];
+    v12 = intValue - 1;
 
-    if (v11 >= 2)
+    if (intValue >= 2)
     {
       v13 = [v8 objectForKey:@"Row0"];
 
-      v14 = (v11 - 1);
+      v14 = (intValue - 1);
       if (v13)
       {
-        v15 = v11;
+        v15 = intValue;
       }
 
       else
       {
-        v15 = v11 - 1;
+        v15 = intValue - 1;
       }
 
       v16 = 1;
@@ -2033,22 +2033,22 @@ LABEL_12:
 
     if ((v12 & 0x80000000) == 0)
     {
-      v20 = [(UIKBTree *)self subtrees];
-      v21 = [v20 count];
+      subtrees = [(UIKBTree *)self subtrees];
+      v21 = [subtrees count];
 
       if (v21 > v12)
       {
         v22 = v12;
 LABEL_13:
-        v25 = [(UIKBTree *)self subtrees];
-        v9 = [v25 objectAtIndex:v22];
+        subtrees2 = [(UIKBTree *)self subtrees];
+        v9 = [subtrees2 objectAtIndex:v22];
 
         goto LABEL_15;
       }
     }
 
-    v23 = [(UIKBTree *)self subtrees];
-    v24 = [v23 count];
+    subtrees3 = [(UIKBTree *)self subtrees];
+    v24 = [subtrees3 count];
 
     v22 = 0;
     if (v24)
@@ -2064,22 +2064,22 @@ LABEL_15:
   return v9;
 }
 
-- (id)subtreesWithProperty:(id)a3 value:(id)a4
+- (id)subtreesWithProperty:(id)property value:(id)value
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v19 = 0;
-  if (v6 && v7)
+  propertyCopy = property;
+  valueCopy = value;
+  v8 = valueCopy;
+  array = 0;
+  if (propertyCopy && valueCopy)
   {
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = [(UIKBTree *)self subtrees];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    subtrees = [(UIKBTree *)self subtrees];
+    v10 = [subtrees countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2090,40 +2090,40 @@ LABEL_15:
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(subtrees);
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v14 properties];
-          v16 = [v15 objectForKey:v6];
+          properties = [v14 properties];
+          v16 = [properties objectForKey:propertyCopy];
           v17 = [v16 isEqual:v8];
 
           if (v17)
           {
-            [v19 addObject:v14];
+            [array addObject:v14];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v11 = [subtrees countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v11);
     }
   }
 
-  return v19;
+  return array;
 }
 
 - (id)flattenedSubtrees
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(UIKBTree *)self subtrees];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v5 = [subtrees countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2134,45 +2134,45 @@ LABEL_15:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subtrees);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
 
-        if (v9 != v10)
+        if (v9 != null)
         {
-          v11 = [v9 subtrees];
+          subtrees2 = [v9 subtrees];
 
-          if (v11)
+          if (subtrees2)
           {
-            v12 = [v9 flattenedSubtrees];
-            [v3 addObjectsFromArray:v12];
+            flattenedSubtrees = [v9 flattenedSubtrees];
+            [array addObjectsFromArray:flattenedSubtrees];
           }
 
           else
           {
-            [v3 addObject:v9];
+            [array addObject:v9];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [subtrees countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (int)indexOfSubtree:(id)a3
+- (int)indexOfSubtree:(id)subtree
 {
-  v4 = a3;
-  if (v4 && ([(UIKBTree *)self subtrees], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  subtreeCopy = subtree;
+  if (subtreeCopy && ([(UIKBTree *)self subtrees], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(UIKBTree *)self subtrees];
-    v7 = [v6 indexOfObject:v4];
+    subtrees = [(UIKBTree *)self subtrees];
+    v7 = [subtrees indexOfObject:subtreeCopy];
   }
 
   else
@@ -2185,51 +2185,51 @@ LABEL_15:
 
 - (BOOL)_needsScaling
 {
-  v3 = [(UIKBTree *)self isSplit];
-  if (v3)
+  isSplit = [(UIKBTree *)self isSplit];
+  if (isSplit)
   {
     if ([(UIKBTree *)self isGenerated])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isSplit) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(UIKBTree *)self BOOLForProperty:@"isScaled"];
+      LOBYTE(isSplit) = ![(UIKBTree *)self BOOLForProperty:@"isScaled"];
     }
   }
 
-  return v3;
+  return isSplit;
 }
 
-- (void)mergeReturnKey:(id)a3 withReturnKey:(id)a4
+- (void)mergeReturnKey:(id)key withReturnKey:(id)returnKey
 {
-  v70 = a3;
-  v5 = a4;
-  if ([v70 visible] && objc_msgSend(v5, "visible"))
+  keyCopy = key;
+  returnKeyCopy = returnKey;
+  if ([keyCopy visible] && objc_msgSend(returnKeyCopy, "visible"))
   {
-    [v70 frame];
+    [keyCopy frame];
     MaxY = CGRectGetMaxY(v72);
-    [v5 frame];
+    [returnKeyCopy frame];
     v7 = CGRectGetMaxY(v73);
     if (MaxY <= v7)
     {
-      v8 = v5;
+      v8 = returnKeyCopy;
     }
 
     else
     {
-      v8 = v70;
+      v8 = keyCopy;
     }
 
     if (MaxY <= v7)
     {
-      v9 = v70;
+      v9 = keyCopy;
     }
 
     else
     {
-      v9 = v5;
+      v9 = returnKeyCopy;
     }
 
     v10 = v8;
@@ -2352,18 +2352,18 @@ LABEL_15:
   [(UIKBTree *)self updateFlickKeycapOnKeysWithLayoutInfo:v5];
 }
 
-- (void)updateFlickKeycapOnKeysWithLayoutInfo:(id)a3
+- (void)updateFlickKeycapOnKeysWithLayoutInfo:(id)info
 {
   v105 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v5 = [(UIKBTree *)self subtreeWithType:3];
-  v6 = [v5 dynamicLayout];
+  dynamicLayout = [v5 dynamicLayout];
 
-  if (!v6)
+  if (!dynamicLayout)
   {
-    v75 = v4;
-    v7 = [(UIKBTree *)self _isShiftedButNotAutoShiftedWithLayoutInfo:v4];
-    v8 = [(UIKBTree *)self _gesturesEnabled];
+    v75 = infoCopy;
+    v7 = [(UIKBTree *)self _isShiftedButNotAutoShiftedWithLayoutInfo:infoCopy];
+    _gesturesEnabled = [(UIKBTree *)self _gesturesEnabled];
     v96 = 0u;
     v97 = 0u;
     v98 = 0u;
@@ -2387,7 +2387,7 @@ LABEL_15:
     }
 
     v82 = v9;
-    v84 = v8;
+    v84 = _gesturesEnabled;
     while (1)
     {
       v10 = 0;
@@ -2400,32 +2400,32 @@ LABEL_15:
 
         v79 = v10;
         v11 = *(*(&v96 + 1) + 8 * v10);
-        v12 = [v11 rowSet];
-        v13 = [v12 subtrees];
+        rowSet = [v11 rowSet];
+        subtrees = [rowSet subtrees];
 
         v14 = [v11 geometrySet:0];
-        v89 = [v14 subtrees];
+        subtrees2 = [v14 subtrees];
 
-        v15 = [v11 cachedGestureLayout];
-        v16 = [v15 keySet];
-        v17 = [v16 subtrees];
+        cachedGestureLayout = [v11 cachedGestureLayout];
+        keySet = [cachedGestureLayout keySet];
+        subtrees3 = [keySet subtrees];
 
-        v18 = [v11 cachedGestureLayout];
-        v19 = [v18 geometrySet:0];
-        v86 = [v19 subtrees];
+        cachedGestureLayout2 = [v11 cachedGestureLayout];
+        v19 = [cachedGestureLayout2 geometrySet:0];
+        subtrees4 = [v19 subtrees];
 
-        v20 = [v11 cachedGestureLayout];
-        v21 = [v20 attributeSet:0];
-        v85 = [v21 subtrees];
+        cachedGestureLayout3 = [v11 cachedGestureLayout];
+        v21 = [cachedGestureLayout3 attributeSet:0];
+        subtrees5 = [v21 subtrees];
 
-        v22 = v17;
-        if ([v13 count])
+        v22 = subtrees3;
+        if ([subtrees count])
         {
           v23 = 0;
           v24 = 0;
           v92 = 0;
-          v87 = v17;
-          v81 = v13;
+          v87 = subtrees3;
+          v81 = subtrees;
           while (1)
           {
             if (v22 && [v22 count] <= v23)
@@ -2433,7 +2433,7 @@ LABEL_15:
               goto LABEL_88;
             }
 
-            v25 = [v13 objectAtIndex:v24];
+            v25 = [subtrees objectAtIndex:v24];
             if ([v25 dynamicLayout])
             {
               [v25 _keysForDynamicRow];
@@ -2453,7 +2453,7 @@ LABEL_15:
 LABEL_87:
 
             ++v23;
-            v13 = v81;
+            subtrees = v81;
             v24 = ++v92;
             v22 = v87;
             if ([v81 count] <= v92)
@@ -2470,7 +2470,7 @@ LABEL_87:
           {
             v29 = [v26 objectAtIndex:v27];
             v30 = v29;
-            if (!v8)
+            if (!_gesturesEnabled)
             {
               goto LABEL_82;
             }
@@ -2479,14 +2479,14 @@ LABEL_87:
             {
               if (v22)
               {
-                if ([v89 count] <= v92)
+                if ([subtrees2 count] <= v92)
                 {
                   v31 = 0;
                 }
 
                 else
                 {
-                  v31 = [v89 objectAtIndex:v92];
+                  v31 = [subtrees2 objectAtIndex:v92];
                 }
 
                 if ([v22 count] <= v23)
@@ -2499,49 +2499,49 @@ LABEL_87:
                   v91 = [v22 objectAtIndex:v23];
                 }
 
-                if ([v86 count] <= v23)
+                if ([subtrees4 count] <= v23)
                 {
                   v39 = 0;
                 }
 
                 else
                 {
-                  v39 = [v86 objectAtIndex:v23];
+                  v39 = [subtrees4 objectAtIndex:v23];
                 }
 
                 v94 = v31;
-                if ([v85 count] <= v23)
+                if ([subtrees5 count] <= v23)
                 {
                   v93 = 0;
                 }
 
                 else
                 {
-                  v93 = [v85 objectAtIndex:v23];
+                  v93 = [subtrees5 objectAtIndex:v23];
                 }
 
-                v40 = [v39 subtrees];
-                if ([v40 count] <= v28)
+                subtrees6 = [v39 subtrees];
+                if ([subtrees6 count] <= v28)
                 {
                   v42 = 0;
                 }
 
                 else
                 {
-                  v41 = [v39 subtrees];
-                  v42 = [v41 objectAtIndex:v28];
+                  subtrees7 = [v39 subtrees];
+                  v42 = [subtrees7 objectAtIndex:v28];
                 }
 
-                v43 = [v31 subtrees];
-                if ([v43 count] <= v27)
+                subtrees8 = [v31 subtrees];
+                if ([subtrees8 count] <= v27)
                 {
                   v95 = 0;
                 }
 
                 else
                 {
-                  v44 = [v31 subtrees];
-                  v95 = [v44 objectAtIndex:v27];
+                  subtrees9 = [v31 subtrees];
+                  v95 = [subtrees9 objectAtIndex:v27];
                 }
 
                 if (v42)
@@ -2570,8 +2570,8 @@ LABEL_87:
                       break;
                     }
 
-                    v51 = [v39 subtrees];
-                    if ([v51 count] <= v48)
+                    subtrees10 = [v39 subtrees];
+                    if ([subtrees10 count] <= v48)
                     {
 
 LABEL_60:
@@ -2581,8 +2581,8 @@ LABEL_60:
                       goto LABEL_65;
                     }
 
-                    v52 = [v39 subtrees];
-                    v53 = [v52 objectAtIndex:v48];
+                    subtrees11 = [v39 subtrees];
+                    v53 = [subtrees11 objectAtIndex:v48];
 
                     v47 += 0x100000000;
                     v49 = v28 + 1;
@@ -2604,16 +2604,16 @@ LABEL_60:
                     goto LABEL_58;
                   }
 
-                  v56 = [v91 subtrees];
-                  if ([v56 count] <= (v47 >> 32))
+                  subtrees12 = [v91 subtrees];
+                  if ([subtrees12 count] <= (v47 >> 32))
                   {
                     v55 = 0;
                   }
 
                   else
                   {
-                    v57 = [v91 subtrees];
-                    v55 = [v57 objectAtIndex:v47 >> 32];
+                    subtrees13 = [v91 subtrees];
+                    v55 = [subtrees13 objectAtIndex:v47 >> 32];
                   }
                 }
 
@@ -2624,56 +2624,56 @@ LABEL_58:
                 }
 
 LABEL_65:
-                v58 = [v55 displayString];
-                if (v58 && ([v30 displayString], v59 = objc_claimAutoreleasedReturnValue(), v60 = objc_msgSend(v58, "isEqualToString:", v59), v59, (v60 & 1) == 0))
+                displayString = [v55 displayString];
+                if (displayString && ([v30 displayString], v59 = objc_claimAutoreleasedReturnValue(), v60 = objc_msgSend(displayString, "isEqualToString:", v59), v59, (v60 & 1) == 0))
                 {
-                  v103 = v58;
+                  v103 = displayString;
                   v68 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v103 count:1];
                   [v30 setSecondaryDisplayStrings:v68];
 
-                  v69 = [v55 representedString];
-                  v102 = v69;
+                  representedString = [v55 representedString];
+                  v102 = representedString;
                   v70 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v102 count:1];
                   [v30 setSecondaryRepresentedStrings:v70];
 
                   [v30 setDisplayTypeHint:10];
                   [v30 setGestureKey:v55];
-                  v71 = [v93 subtrees];
-                  if ([v71 count] <= v28)
+                  subtrees14 = [v93 subtrees];
+                  if ([subtrees14 count] <= v28)
                   {
                     [v55 setCache:0];
                   }
 
                   else
                   {
-                    v72 = [v93 subtrees];
-                    v73 = [v72 objectAtIndex:v28];
+                    subtrees15 = [v93 subtrees];
+                    v73 = [subtrees15 objectAtIndex:v28];
                     [v55 setCache:v73];
                   }
 
-                  v8 = v84;
+                  _gesturesEnabled = v84;
 
                   v46 = 9;
                 }
 
                 else
                 {
-                  v61 = [v30 displayString];
-                  if ([v58 isEqualToString:v61])
+                  displayString2 = [v30 displayString];
+                  if ([displayString isEqualToString:displayString2])
                   {
-                    v62 = [v55 displayType];
+                    displayType = [v55 displayType];
 
-                    if (v62 == 7)
+                    if (displayType == 7)
                     {
-                      v63 = [v55 secondaryDisplayStrings];
-                      v64 = [v63 firstObject];
-                      v101 = v64;
+                      secondaryDisplayStrings = [v55 secondaryDisplayStrings];
+                      firstObject = [secondaryDisplayStrings firstObject];
+                      v101 = firstObject;
                       v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v101 count:1];
                       [v30 setSecondaryDisplayStrings:v65];
 
-                      v80 = [v55 secondaryRepresentedStrings];
-                      v66 = [v80 firstObject];
-                      v100 = v66;
+                      secondaryRepresentedStrings = [v55 secondaryRepresentedStrings];
+                      firstObject2 = [secondaryRepresentedStrings firstObject];
+                      v100 = firstObject2;
                       v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v100 count:1];
                       [v30 setSecondaryRepresentedStrings:v67];
 
@@ -2689,7 +2689,7 @@ LABEL_65:
 
                   v46 = 0;
 LABEL_72:
-                  v8 = v84;
+                  _gesturesEnabled = v84;
                 }
 
                 ++v28;
@@ -2741,15 +2741,15 @@ LABEL_85:
             break;
           }
 
-          v32 = [v30 secondaryRepresentedStrings];
-          if ([v32 count] == 1)
+          secondaryRepresentedStrings2 = [v30 secondaryRepresentedStrings];
+          if ([secondaryRepresentedStrings2 count] == 1)
           {
-            v33 = [v30 representedString];
-            v34 = [v30 secondaryRepresentedStrings];
-            v35 = [v34 firstObject];
-            v36 = [v33 isEqualToString:v35];
+            representedString2 = [v30 representedString];
+            secondaryRepresentedStrings3 = [v30 secondaryRepresentedStrings];
+            firstObject3 = [secondaryRepresentedStrings3 firstObject];
+            v36 = [representedString2 isEqualToString:firstObject3];
 
-            v8 = v84;
+            _gesturesEnabled = v84;
             v23 = v88;
 
             if (v36)
@@ -2783,21 +2783,21 @@ LABEL_88:
       {
 LABEL_90:
 
-        v4 = v75;
+        infoCopy = v75;
         goto LABEL_91;
       }
     }
   }
 
-  [(UIKBTree *)self updateDynamicFlickKeycapOnKeysWithLayoutInfo:v4];
+  [(UIKBTree *)self updateDynamicFlickKeycapOnKeysWithLayoutInfo:infoCopy];
 LABEL_91:
 }
 
-- (void)updateDynamicFlickKeycapOnKeysWithLayoutInfo:(id)a3
+- (void)updateDynamicFlickKeycapOnKeysWithLayoutInfo:(id)info
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = [(UIKBTree *)self _isShiftedButNotAutoShiftedWithLayoutInfo:a3];
-  v5 = [(UIKBTree *)self _gesturesEnabled];
+  v4 = [(UIKBTree *)self _isShiftedButNotAutoShiftedWithLayoutInfo:info];
+  _gesturesEnabled = [(UIKBTree *)self _gesturesEnabled];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
@@ -2831,8 +2831,8 @@ LABEL_91:
         v45 = v7;
         v8 = *(*(&v50 + 1) + 8 * v7);
         v9 = [v8 orderedRowsForType:{objc_msgSend(v8, "currentKeyboardType")}];
-        v10 = [v8 cachedGestureLayout];
-        v11 = [v10 orderedRowsForType:{objc_msgSend(v8, "currentKeyboardType")}];
+        cachedGestureLayout = [v8 cachedGestureLayout];
+        v11 = [cachedGestureLayout orderedRowsForType:{objc_msgSend(v8, "currentKeyboardType")}];
 
         if ([v9 count])
         {
@@ -2842,21 +2842,21 @@ LABEL_91:
           while (1)
           {
             v13 = [v9 objectAtIndex:v12];
-            v14 = [v13 _stringTypeKeysForDynamicRow];
+            _stringTypeKeysForDynamicRow = [v13 _stringTypeKeysForDynamicRow];
 
             v49 = v12;
             if ([v11 count] <= v12)
             {
-              v16 = 0;
+              _stringTypeKeysForDynamicRow2 = 0;
             }
 
             else
             {
               v15 = [v11 objectAtIndex:v12];
-              v16 = [v15 _stringTypeKeysForDynamicRow];
+              _stringTypeKeysForDynamicRow2 = [v15 _stringTypeKeysForDynamicRow];
             }
 
-            if ([v14 count])
+            if ([_stringTypeKeysForDynamicRow count])
             {
               break;
             }
@@ -2875,39 +2875,39 @@ LABEL_42:
           v17 = 0;
           while (2)
           {
-            v18 = [v14 objectAtIndex:v17];
+            v18 = [_stringTypeKeysForDynamicRow objectAtIndex:v17];
             v19 = v18;
-            if (!v5)
+            if (!_gesturesEnabled)
             {
               goto LABEL_33;
             }
 
             if ([v18 displayType] != 7 || (objc_msgSend(v19, "supportsSupplementalDisplayString") & 1) != 0)
             {
-              if (!v16)
+              if (!_stringTypeKeysForDynamicRow2)
               {
                 goto LABEL_33;
               }
 
-              if ([v16 count] <= v17)
+              if ([_stringTypeKeysForDynamicRow2 count] <= v17)
               {
                 v20 = 0;
               }
 
               else
               {
-                v20 = [v16 objectAtIndex:v17];
+                v20 = [_stringTypeKeysForDynamicRow2 objectAtIndex:v17];
               }
 
-              v28 = [v20 displayString];
-              if (v28 && ([v19 displayString], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v28, "isEqualToString:", v29), v29, (v30 & 1) == 0))
+              displayString = [v20 displayString];
+              if (displayString && ([v19 displayString], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(displayString, "isEqualToString:", v29), v29, (v30 & 1) == 0))
               {
-                v57 = v28;
+                v57 = displayString;
                 v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v57 count:1];
                 [v19 setSecondaryDisplayStrings:v39];
 
-                v40 = [v20 representedString];
-                v56 = v40;
+                representedString = [v20 representedString];
+                v56 = representedString;
                 v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v56 count:1];
                 [v19 setSecondaryRepresentedStrings:v41];
 
@@ -2918,22 +2918,22 @@ LABEL_37:
 
               else
               {
-                v31 = [v19 displayString];
-                if ([v28 isEqualToString:v31])
+                displayString2 = [v19 displayString];
+                if ([displayString isEqualToString:displayString2])
                 {
-                  v32 = [v20 displayType];
+                  displayType = [v20 displayType];
 
-                  if (v32 == 7)
+                  if (displayType == 7)
                   {
-                    v33 = [v20 secondaryDisplayStrings];
-                    v34 = [v33 firstObject];
-                    v55 = v34;
+                    secondaryDisplayStrings = [v20 secondaryDisplayStrings];
+                    firstObject = [secondaryDisplayStrings firstObject];
+                    v55 = firstObject;
                     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v55 count:1];
                     [v19 setSecondaryDisplayStrings:v35];
 
-                    v36 = [v20 secondaryRepresentedStrings];
-                    v37 = [v36 firstObject];
-                    v54 = v37;
+                    secondaryRepresentedStrings = [v20 secondaryRepresentedStrings];
+                    firstObject2 = [secondaryRepresentedStrings firstObject];
+                    v54 = firstObject2;
                     v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
                     [v19 setSecondaryRepresentedStrings:v38];
 
@@ -2961,7 +2961,7 @@ LABEL_33:
 
 LABEL_41:
 
-              if ([v14 count] <= ++v17)
+              if ([_stringTypeKeysForDynamicRow count] <= ++v17)
               {
                 goto LABEL_42;
               }
@@ -2972,13 +2972,13 @@ LABEL_41:
             break;
           }
 
-          v21 = [v19 secondaryRepresentedStrings];
-          if ([v21 count] == 1)
+          secondaryRepresentedStrings2 = [v19 secondaryRepresentedStrings];
+          if ([secondaryRepresentedStrings2 count] == 1)
           {
-            v22 = [v19 representedString];
-            v23 = [v19 secondaryRepresentedStrings];
-            v24 = [v23 firstObject];
-            v25 = [v22 isEqualToString:v24];
+            representedString2 = [v19 representedString];
+            secondaryRepresentedStrings3 = [v19 secondaryRepresentedStrings];
+            firstObject3 = [secondaryRepresentedStrings3 firstObject];
+            v25 = [representedString2 isEqualToString:firstObject3];
 
             if (v25)
             {
@@ -3012,23 +3012,23 @@ LABEL_43:
   }
 }
 
-- (void)zipGeometries:(BOOL)a3 attributes:(BOOL)a4 layoutInfo:(id)a5
+- (void)zipGeometries:(BOOL)geometries attributes:(BOOL)attributes layoutInfo:(id)info
 {
-  v68 = a4;
-  v5 = a3;
+  attributesCopy = attributes;
+  geometriesCopy = geometries;
   v74 = *MEMORY[0x1E69E9840];
-  v57 = a5;
+  infoCopy = info;
   context = objc_autoreleasePoolPush();
   if ([(UIKBTree *)self type]== 2)
   {
-    v67 = [(UIKBTree *)self _needsScaling];
+    _needsScaling = [(UIKBTree *)self _needsScaling];
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v55 = self;
-    v7 = [(UIKBTree *)self subtrees];
-    v8 = [v7 countByEnumeratingWithState:&v69 objects:v73 count:16];
+    selfCopy = self;
+    subtrees = [(UIKBTree *)self subtrees];
+    v8 = [subtrees countByEnumeratingWithState:&v69 objects:v73 count:16];
     if (v8)
     {
       v9 = v8;
@@ -3038,7 +3038,7 @@ LABEL_43:
       height = *(MEMORY[0x1E695F058] + 24);
       v14 = *v70;
       v58 = *v70;
-      v59 = v7;
+      v59 = subtrees;
       do
       {
         v15 = 0;
@@ -3047,33 +3047,33 @@ LABEL_43:
         {
           if (*v70 != v14)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(subtrees);
           }
 
           v16 = *(*(&v69 + 1) + 8 * v15);
           if ([v16 type] == 3)
           {
-            v17 = [v16 rowSet];
-            v18 = [v17 subtrees];
+            rowSet = [v16 rowSet];
+            subtrees2 = [rowSet subtrees];
 
             v19 = [v16 geometrySet:0];
-            v65 = [v19 subtrees];
+            subtrees3 = [v19 subtrees];
 
             v20 = [v16 attributeSet:0];
-            v21 = [v20 subtrees];
+            subtrees4 = [v20 subtrees];
 
-            v22 = [v16 shape];
-            v23 = [v22 originalShape];
+            shape = [v16 shape];
+            originalShape = [shape originalShape];
 
-            if (v23)
+            if (originalShape)
             {
-              v24 = [v22 originalShape];
-              [v16 setShape:v24];
+              originalShape2 = [shape originalShape];
+              [v16 setShape:originalShape2];
             }
 
-            v64 = v22;
-            v25 = [v18 count];
-            if (v25 == [v65 count])
+            v64 = shape;
+            v25 = [subtrees2 count];
+            if (v25 == [subtrees3 count])
             {
               [v16 frame];
               v77.origin.x = x;
@@ -3085,9 +3085,9 @@ LABEL_43:
               y = v76.origin.y;
               width = v76.size.width;
               height = v76.size.height;
-              if (v67)
+              if (_needsScaling)
               {
-                v26 = [v16 shape];
+                shape2 = [v16 shape];
                 [v16 frame];
                 if (v27 <= width * 0.5)
                 {
@@ -3099,59 +3099,59 @@ LABEL_43:
                   v28 = width;
                 }
 
-                [v26 scaleIfNeeded:objc_msgSend(v18 onlyYAxis:{"count") != 0, v28}];
+                [shape2 scaleIfNeeded:objc_msgSend(subtrees2 onlyYAxis:{"count") != 0, v28}];
               }
 
-              v29 = [v18 count];
-              v30 = v22;
+              v29 = [subtrees2 count];
+              v30 = shape;
               if (v29)
               {
                 v61 = v15;
-                v62 = v21;
+                v62 = subtrees4;
                 v31 = 0;
-                v63 = v18;
+                v63 = subtrees2;
                 while (1)
                 {
-                  v32 = [v65 objectAtIndex:v31];
-                  v33 = [v18 objectAtIndex:v31];
-                  if ([v21 count] > v31)
+                  v32 = [subtrees3 objectAtIndex:v31];
+                  v33 = [subtrees2 objectAtIndex:v31];
+                  if ([subtrees4 count] > v31)
                   {
                     break;
                   }
 
                   v34 = 0;
-                  if (v5)
+                  if (geometriesCopy)
                   {
                     goto LABEL_22;
                   }
 
 LABEL_23:
                   v66 = v32;
-                  v36 = [v32 subtrees];
-                  v37 = [v33 subtrees];
-                  if ([v37 count])
+                  subtrees5 = [v32 subtrees];
+                  subtrees6 = [v33 subtrees];
+                  if ([subtrees6 count])
                   {
                     v38 = 0;
                     while (1)
                     {
-                      v39 = [v36 count];
+                      v39 = [subtrees5 count];
 
                       if (v39 <= v38)
                       {
                         break;
                       }
 
-                      v40 = [v33 subtrees];
-                      v41 = [v40 objectAtIndex:v38];
+                      subtrees7 = [v33 subtrees];
+                      v41 = [subtrees7 objectAtIndex:v38];
 
                       [v41 setState:0];
                       [v41 setVisible:1];
                       [v41 setClipCorners:0];
-                      if (v5)
+                      if (geometriesCopy)
                       {
-                        v42 = [v36 objectAtIndex:v38];
+                        v42 = [subtrees5 objectAtIndex:v38];
                         v43 = v42;
-                        if (v67)
+                        if (_needsScaling)
                         {
                           [v42 frame];
                           if (v44 <= width * 0.5)
@@ -3167,30 +3167,30 @@ LABEL_23:
                           [v43 scaleIfNeeded:0 onlyYAxis:v45];
                         }
 
-                        v46 = [v36 objectAtIndex:v38];
+                        v46 = [subtrees5 objectAtIndex:v38];
                         v47 = [v46 copy];
                         [v41 setShape:v47];
                       }
 
-                      if (v68)
+                      if (attributesCopy)
                       {
-                        v48 = [v34 subtrees];
-                        if ([v48 count] <= v38)
+                        subtrees8 = [v34 subtrees];
+                        if ([subtrees8 count] <= v38)
                         {
                           [v41 setCache:0];
                         }
 
                         else
                         {
-                          v49 = [v34 subtrees];
-                          v50 = [v49 objectAtIndex:v38];
+                          subtrees9 = [v34 subtrees];
+                          v50 = [subtrees9 objectAtIndex:v38];
                           [v41 setCache:v50];
                         }
                       }
 
                       ++v38;
-                      v37 = [v33 subtrees];
-                      if ([v37 count] <= v38)
+                      subtrees6 = [v33 subtrees];
+                      if ([subtrees6 count] <= v38)
                       {
                         goto LABEL_39;
                       }
@@ -3203,13 +3203,13 @@ LABEL_39:
                   }
 
                   ++v31;
-                  v18 = v63;
+                  subtrees2 = v63;
                   v51 = [v63 count];
-                  v21 = v62;
+                  subtrees4 = v62;
                   v30 = v64;
                   if (v51 <= v31)
                   {
-                    v7 = v59;
+                    subtrees = v59;
                     v9 = v60;
                     v14 = v58;
                     v15 = v61;
@@ -3217,15 +3217,15 @@ LABEL_39:
                   }
                 }
 
-                v34 = [v21 objectAtIndex:v31];
-                if (!v5)
+                v34 = [subtrees4 objectAtIndex:v31];
+                if (!geometriesCopy)
                 {
                   goto LABEL_23;
                 }
 
 LABEL_22:
-                v35 = [v32 properties];
-                [v33 setProperties:v35];
+                properties = [v32 properties];
+                [v33 setProperties:properties];
 
                 goto LABEL_23;
               }
@@ -3233,7 +3233,7 @@ LABEL_22:
 
             else
             {
-              v30 = v22;
+              v30 = shape;
             }
 
 LABEL_43:
@@ -3243,27 +3243,27 @@ LABEL_43:
         }
 
         while (v15 != v9);
-        v9 = [v7 countByEnumeratingWithState:&v69 objects:v73 count:16];
+        v9 = [subtrees countByEnumeratingWithState:&v69 objects:v73 count:16];
       }
 
       while (v9);
     }
 
-    [(UIKBTree *)v55 setObject:0 forProperty:@"KBunionFrame"];
-    [(UIKBTree *)v55 setObject:0 forProperty:@"KBunionPaddedFrame"];
-    [(UIKBTree *)v55 setResizingOffset:0.0];
-    if (v5)
+    [(UIKBTree *)selfCopy setObject:0 forProperty:@"KBunionFrame"];
+    [(UIKBTree *)selfCopy setObject:0 forProperty:@"KBunionPaddedFrame"];
+    [(UIKBTree *)selfCopy setResizingOffset:0.0];
+    if (geometriesCopy)
     {
-      if ((-[UIKBTree visualStyling](v55, "visualStyling") & 0x3F) == 0x17 || ([v57 textInputTraits], v52 = objc_claimAutoreleasedReturnValue(), v53 = objc_msgSend(v52, "keyboardType"), v52, v53 != 12))
+      if ((-[UIKBTree visualStyling](selfCopy, "visualStyling") & 0x3F) == 0x17 || ([infoCopy textInputTraits], v52 = objc_claimAutoreleasedReturnValue(), v53 = objc_msgSend(v52, "keyboardType"), v52, v53 != 12))
       {
-        [(UIKBTree *)v55 updateFlickKeycapOnKeysWithLayoutInfo:v57];
+        [(UIKBTree *)selfCopy updateFlickKeycapOnKeysWithLayoutInfo:infoCopy];
       }
     }
 
-    if (v67)
+    if (_needsScaling)
     {
-      v54 = [(UIKBTree *)v55 cache];
-      [v54 setObject:&unk_1EFE31000 forKey:@"isScaled"];
+      cache = [(UIKBTree *)selfCopy cache];
+      [cache setObject:&unk_1EFE31000 forKey:@"isScaled"];
     }
   }
 
@@ -3294,16 +3294,16 @@ LABEL_43:
   [(UIKBTree *)self zipAttributesWithLayoutInfo:v5];
 }
 
-- (int64_t)_keyCountOnNamedRow:(id)a3
+- (int64_t)_keyCountOnNamedRow:(id)row
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rowCopy = row;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(UIKBTree *)self subtrees];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v6 = [subtrees countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3315,17 +3315,17 @@ LABEL_43:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subtrees);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) keySet];
-        v12 = [v11 subtreeWithName:v4];
+        keySet = [*(*(&v15 + 1) + 8 * i) keySet];
+        v12 = [keySet subtreeWithName:rowCopy];
 
-        v13 = [v12 subtrees];
-        v8 += [v13 count];
+        subtrees2 = [v12 subtrees];
+        v8 += [subtrees2 count];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [subtrees countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -3339,14 +3339,14 @@ LABEL_43:
   return v8;
 }
 
-- (void)elaborateLayoutWithSize:(CGSize)a3 origin:(CGPoint)a4 layoutInfo:(id)a5
+- (void)elaborateLayoutWithSize:(CGSize)size origin:(CGPoint)origin layoutInfo:(id)info
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.height;
-  width = a3.width;
+  y = origin.y;
+  x = origin.x;
+  height = size.height;
+  width = size.width;
   v140 = *MEMORY[0x1E69E9840];
-  v10 = a5;
+  infoCopy = info;
   v11 = objc_autoreleasePoolPush();
   if ([(UIKBTree *)self type]== 2)
   {
@@ -3364,17 +3364,17 @@ LABEL_43:
     }
 
     v122 = v13;
-    v127 = self;
+    selfCopy = self;
     v105 = v11;
     v120 = x;
     v117 = height;
     v118 = width;
     if ([(UIKBTree *)self isSplit]&& ![(UIKBTree *)self isGenerated])
     {
-      v14 = v10;
+      v14 = infoCopy;
       v15 = +[UIKeyboardPreferencesController sharedPreferencesController];
-      v16 = [v15 preferencesActions];
-      [v16 rivenSizeFactor:1.0];
+      preferencesActions = [v15 preferencesActions];
+      [preferencesActions rivenSizeFactor:1.0];
       v18 = v17;
 
       if (v18 <= 1.0)
@@ -3387,19 +3387,19 @@ LABEL_43:
       else
       {
         v19 = +[UIKeyboardPreferencesController sharedPreferencesController];
-        v20 = [v19 preferencesActions];
-        [v20 rivenSizeFactor:1.0];
+        preferencesActions2 = [v19 preferencesActions];
+        [preferencesActions2 rivenSizeFactor:1.0];
         v115 = v21;
         v22 = +[UIKeyboardPreferencesController sharedPreferencesController];
-        v23 = [v22 preferencesActions];
-        [v23 rivenSizeFactor:1.0];
+        preferencesActions3 = [v22 preferencesActions];
+        [preferencesActions3 rivenSizeFactor:1.0];
         v114 = v24;
 
         v132 = 1;
       }
 
-      v10 = v14;
-      self = v127;
+      infoCopy = v14;
+      self = selfCopy;
     }
 
     else
@@ -3411,18 +3411,18 @@ LABEL_43:
 
     [(UIKBTree *)self originalFrame];
     v26 = v25;
-    v107 = v10;
-    v27 = [v10 screenTraits];
-    v28 = [v27 screen];
-    [v28 scale];
+    v107 = infoCopy;
+    screenTraits = [infoCopy screenTraits];
+    screen = [screenTraits screen];
+    [screen scale];
     v29 = [UIKBShapeOperator operatorWithScale:?];
 
     v135 = 0u;
     v136 = 0u;
     v133 = 0u;
     v134 = 0u;
-    v30 = [(UIKBTree *)self subtrees];
-    v31 = [v30 countByEnumeratingWithState:&v133 objects:v139 count:16];
+    subtrees = [(UIKBTree *)self subtrees];
+    v31 = [subtrees countByEnumeratingWithState:&v133 objects:v139 count:16];
     if (v31)
     {
       v32 = v31;
@@ -3435,7 +3435,7 @@ LABEL_43:
       v116 = v121 | v132;
       v131 = v29;
       v108 = *v134;
-      v109 = v30;
+      v109 = subtrees;
       do
       {
         v39 = 0;
@@ -3444,7 +3444,7 @@ LABEL_43:
         {
           if (*v134 != v38)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(subtrees);
           }
 
           v119 = v39;
@@ -3455,27 +3455,27 @@ LABEL_43:
             goto LABEL_68;
           }
 
-          v41 = [v40 keySet];
-          v42 = [v41 subtrees];
+          keySet = [v40 keySet];
+          subtrees2 = [keySet subtrees];
 
           v43 = [v40 geometrySet:0];
-          v44 = [v43 subtrees];
+          subtrees3 = [v43 subtrees];
 
           v45 = [v40 attributeSet:0];
-          v46 = [v45 subtrees];
+          subtrees4 = [v45 subtrees];
 
-          v47 = [v42 count];
-          v126 = v44;
-          if (v47 == [v44 count])
+          v47 = [subtrees2 count];
+          v126 = subtrees3;
+          if (v47 == [subtrees3 count])
           {
-            v48 = [v40 shape];
-            v49 = [v48 originalShape];
+            shape = [v40 shape];
+            originalShape = [shape originalShape];
 
-            if (v49)
+            if (originalShape)
             {
-              v50 = [v48 originalShape];
+              originalShape2 = [shape originalShape];
 
-              v48 = v50;
+              shape = originalShape2;
             }
 
             [v40 originalFrame];
@@ -3489,7 +3489,7 @@ LABEL_43:
             v37 = v142.size.width;
             v53 = v142.size.height;
             v54 = [v40 geometrySet:0];
-            v55 = [v54 listShapes];
+            listShapes = [v54 listShapes];
 
             v112 = v52;
             v113 = v51;
@@ -3498,9 +3498,9 @@ LABEL_43:
               goto LABEL_35;
             }
 
-            v56 = [v29 shapeByScalingShape:v48 factor:{v115, v114}];
+            v56 = [v29 shapeByScalingShape:shape factor:{v115, v114}];
 
-            v57 = [v29 shapesByScalingShapes:v55 factor:{v115, v114}];
+            v57 = [v29 shapesByScalingShapes:listShapes factor:{v115, v114}];
 
             if (v132)
             {
@@ -3528,112 +3528,112 @@ LABEL_43:
               if ((v37 <= 0.0 || v58 <= v37 * 0.5) && !v122)
               {
 LABEL_31:
-                v48 = v56;
-                v55 = v57;
+                shape = v56;
+                listShapes = v57;
 LABEL_35:
-                v111 = v48;
-                [v40 setShape:v48];
-                if ([v42 count])
+                v111 = shape;
+                [v40 setShape:shape];
+                if ([subtrees2 count])
                 {
                   v64 = 0;
-                  v124 = v46;
-                  v125 = v42;
-                  v123 = v55;
+                  v124 = subtrees4;
+                  v125 = subtrees2;
+                  v123 = listShapes;
                   do
                   {
                     v65 = [v126 objectAtIndex:v64];
-                    v130 = [v55 objectAtIndex:v64];
-                    v66 = [v42 objectAtIndex:v64];
+                    v130 = [listShapes objectAtIndex:v64];
+                    v66 = [subtrees2 objectAtIndex:v64];
                     v129 = v64;
-                    if ([v46 count] <= v64)
+                    if ([subtrees4 count] <= v64)
                     {
                       v67 = 0;
                     }
 
                     else
                     {
-                      v67 = [v46 objectAtIndex:v64];
+                      v67 = [subtrees4 objectAtIndex:v64];
                     }
 
-                    v68 = [v65 geometriesList];
+                    geometriesList = [v65 geometriesList];
 
-                    if (v68)
+                    if (geometriesList)
                     {
-                      v69 = [v66 componentName];
-                      v70 = [(UIKBTree *)self _keyCountOnNamedRow:v69];
+                      componentName = [v66 componentName];
+                      v70 = [(UIKBTree *)self _keyCountOnNamedRow:componentName];
 
-                      v71 = [v65 geometriesList];
-                      v72 = [v71 subtrees];
+                      geometriesList2 = [v65 geometriesList];
+                      subtrees5 = [geometriesList2 subtrees];
 
                       if (v121)
                       {
-                        v73 = [v29 shapesByScalingShapes:v72 factor:{v118, v117}];
+                        v73 = [v29 shapesByScalingShapes:subtrees5 factor:{v118, v117}];
 
-                        v72 = v73;
+                        subtrees5 = v73;
                       }
 
-                      v74 = [v29 shapesByElaboratingShapes:v72 insideShape:v130 count:v70];
-                      v75 = [v65 activeShapesFromOutputShapes:v74 inputShapes:v72 inRTL:0];
+                      v74 = [v29 shapesByElaboratingShapes:subtrees5 insideShape:v130 count:v70];
+                      subtrees7 = [v65 activeShapesFromOutputShapes:v74 inputShapes:subtrees5 inRTL:0];
                     }
 
                     else
                     {
-                      v76 = [v65 subtrees];
-                      if (!v76 || (v76, !v116))
+                      subtrees6 = [v65 subtrees];
+                      if (!subtrees6 || (subtrees6, !v116))
                       {
-                        v75 = [v65 subtrees];
+                        subtrees7 = [v65 subtrees];
                         goto LABEL_49;
                       }
 
-                      v72 = [v65 subtrees];
-                      v75 = [v29 shapesByScalingShapes:v72 factor:{v115, v114}];
+                      subtrees5 = [v65 subtrees];
+                      subtrees7 = [v29 shapesByScalingShapes:subtrees5 factor:{v115, v114}];
                     }
 
 LABEL_49:
                     if (v122)
                     {
-                      v77 = [v29 shapesByRepositioningShapes:v75 withOffset:{v120, y}];
+                      v77 = [v29 shapesByRepositioningShapes:subtrees7 withOffset:{v120, y}];
 
-                      v75 = v77;
+                      subtrees7 = v77;
                     }
 
-                    v78 = [v65 properties];
-                    [v66 setProperties:v78];
+                    properties = [v65 properties];
+                    [v66 setProperties:properties];
 
                     v128 = v66;
-                    v79 = [v66 subtrees];
-                    if ([v79 count])
+                    subtrees8 = [v66 subtrees];
+                    if ([subtrees8 count])
                     {
                       v80 = 0;
                       do
                       {
-                        if ([v75 count] <= v80)
+                        if ([subtrees7 count] <= v80)
                         {
                           break;
                         }
 
-                        v81 = [v79 objectAtIndex:v80];
+                        v81 = [subtrees8 objectAtIndex:v80];
                         [v81 setState:0];
                         [v81 setVisible:1];
                         [v81 setClipCorners:0];
-                        v82 = [v67 subtrees];
-                        if ([v82 count] <= v80)
+                        subtrees9 = [v67 subtrees];
+                        if ([subtrees9 count] <= v80)
                         {
                           [v81 setCache:0];
                         }
 
                         else
                         {
-                          v83 = [v67 subtrees];
-                          v84 = [v83 objectAtIndex:v80];
+                          subtrees10 = [v67 subtrees];
+                          v84 = [subtrees10 objectAtIndex:v80];
                           [v81 setCache:v84];
                         }
 
-                        v85 = [v65 subtrees];
-                        if (v85 && (v86 = v85, v87 = [v81 BOOLForProperty:@"ignore-hand-bias"], v86, v87))
+                        subtrees11 = [v65 subtrees];
+                        if (subtrees11 && (v86 = subtrees11, v87 = [v81 BOOLForProperty:@"ignore-hand-bias"], v86, v87))
                         {
-                          v88 = [v65 subtrees];
-                          v89 = [v88 objectAtIndex:v80];
+                          subtrees12 = [v65 subtrees];
+                          v89 = [subtrees12 objectAtIndex:v80];
 
                           [v89 frame];
                           v91 = v90;
@@ -3647,7 +3647,7 @@ LABEL_49:
 
                         else
                         {
-                          v98 = [v75 objectAtIndex:v80];
+                          v98 = [subtrees7 objectAtIndex:v80];
                           v89 = v98;
                           if (v132)
                           {
@@ -3657,10 +3657,10 @@ LABEL_49:
                               v137 = v89;
                               v100 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v137 count:1];
                               v101 = [v131 shapesByRepositioningShapes:v100 withOffset:{v33, 0.0}];
-                              v102 = [v101 firstObject];
+                              firstObject = [v101 firstObject];
 
-                              v89 = v102;
-                              self = v127;
+                              v89 = firstObject;
+                              self = selfCopy;
                             }
                           }
                         }
@@ -3670,20 +3670,20 @@ LABEL_49:
                         ++v80;
                       }
 
-                      while ([v79 count] > v80);
+                      while ([subtrees8 count] > v80);
                     }
 
                     v64 = v129 + 1;
-                    v42 = v125;
+                    subtrees2 = v125;
                     v29 = v131;
-                    v55 = v123;
-                    v46 = v124;
+                    listShapes = v123;
+                    subtrees4 = v124;
                   }
 
                   while ([v125 count] > v129 + 1);
                 }
 
-                v30 = v109;
+                subtrees = v109;
                 v32 = v110;
                 v35 = v112;
                 v34 = v113;
@@ -3706,10 +3706,10 @@ LABEL_49:
             v138 = v56;
             v62 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v138 count:1];
             v63 = [v29 shapesByRepositioningShapes:v62 withOffset:{v59, v60}];
-            v48 = [v63 firstObject];
+            shape = [v63 firstObject];
 
-            self = v127;
-            v55 = [v29 shapesByRepositioningShapes:v57 withOffset:{v59, v60}];
+            self = selfCopy;
+            listShapes = [v29 shapesByRepositioningShapes:v57 withOffset:{v59, v60}];
 
             goto LABEL_35;
           }
@@ -3722,7 +3722,7 @@ LABEL_68:
         }
 
         while (v39 != v32);
-        v32 = [v30 countByEnumeratingWithState:&v133 objects:v139 count:16];
+        v32 = [subtrees countByEnumeratingWithState:&v133 objects:v139 count:16];
       }
 
       while (v32);
@@ -3736,7 +3736,7 @@ LABEL_68:
       [(UIKBTree *)self setResizingOffset:0.0];
     }
 
-    v10 = v107;
+    infoCopy = v107;
     if ((-[UIKBTree visualStyling](self, "visualStyling") & 0x3F) == 0x17 || ([v107 textInputTraits], v103 = objc_claimAutoreleasedReturnValue(), v104 = objc_msgSend(v103, "keyboardType"), v103, v11 = v106, v104 != 12))
     {
       [(UIKBTree *)self updateFlickKeycapOnKeysWithLayoutInfo:v107];
@@ -3746,16 +3746,16 @@ LABEL_68:
   objc_autoreleasePoolPop(v11);
 }
 
-- (id)rowSetOfType:(int64_t)a3
+- (id)rowSetOfType:(int64_t)type
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(UIKBTree *)self inheritedRowSetTypeForKeyboardType:a3];
+  v4 = [(UIKBTree *)self inheritedRowSetTypeForKeyboardType:type];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(UIKBTree *)self subtrees];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v6 = [subtrees countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3766,7 +3766,7 @@ LABEL_68:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subtrees);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -3777,7 +3777,7 @@ LABEL_68:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [subtrees countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -3793,50 +3793,50 @@ LABEL_11:
   return v11;
 }
 
-- (void)updateKeysForType:(int64_t)a3
+- (void)updateKeysForType:(int64_t)type
 {
   v10 = [(UIKBTree *)self subtreeWithType:3];
-  [v10 setCurrentKeyboardType:a3];
-  v5 = [v10 orderedRowsForType:a3];
+  [v10 setCurrentKeyboardType:type];
+  v5 = [v10 orderedRowsForType:type];
   v6 = v5;
   if (v5 && [v5 count])
   {
-    v7 = [(UIKBTree *)self cache];
-    [v7 removeObjectForKey:@"keys"];
+    cache = [(UIKBTree *)self cache];
+    [cache removeObjectForKey:@"keys"];
 
     v8 = [(UIKBTree *)self _keysForDynamicRows:v6];
-    v9 = [(UIKBTree *)self cache];
-    [v9 setObject:v8 forKey:@"keys"];
+    cache2 = [(UIKBTree *)self cache];
+    [cache2 setObject:v8 forKey:@"keys"];
   }
 }
 
-- (id)orderedRowsForType:(int64_t)a3
+- (id)orderedRowsForType:(int64_t)type
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [(UIKBTree *)self rowSet];
-  v6 = v5;
-  if (a3)
+  rowSet = [(UIKBTree *)self rowSet];
+  v6 = rowSet;
+  if (type)
   {
-    v7 = 0;
+    subtrees4 = 0;
     if ([(UIKBTree *)self type]== 3 && v6)
     {
-      v8 = [v6 subtrees];
-      v7 = [v8 mutableCopy];
+      subtrees = [v6 subtrees];
+      subtrees4 = [subtrees mutableCopy];
 
-      v9 = [(UIKBTree *)self rowSetOfType:a3];
+      v9 = [(UIKBTree *)self rowSetOfType:type];
       if (v9)
       {
-        v10 = [v6 subtrees];
-        v11 = [v10 count];
+        subtrees2 = [v6 subtrees];
+        v11 = [subtrees2 count];
 
         v21 = 0u;
         v22 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v12 = [v9 subtrees];
-        v13 = [v12 reverseObjectEnumerator];
+        subtrees3 = [v9 subtrees];
+        reverseObjectEnumerator = [subtrees3 reverseObjectEnumerator];
 
-        v14 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v14)
         {
           v15 = v14;
@@ -3847,13 +3847,13 @@ LABEL_11:
             {
               if (*v20 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(reverseObjectEnumerator);
               }
 
-              [v7 replaceObjectAtIndex:--v11 withObject:*(*(&v19 + 1) + 8 * i)];
+              [subtrees4 replaceObjectAtIndex:--v11 withObject:*(*(&v19 + 1) + 8 * i)];
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
+            v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
           }
 
           while (v15);
@@ -3864,22 +3864,22 @@ LABEL_11:
 
   else
   {
-    v7 = [v5 subtrees];
+    subtrees4 = [rowSet subtrees];
   }
 
-  return v7;
+  return subtrees4;
 }
 
-- (id)_keysForDynamicRows:(id)a3
+- (id)_keysForDynamicRows:(id)rows
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  rowsCopy = rows;
+  array = [MEMORY[0x1E695DF70] array];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v3;
+  obj = rowsCopy;
   v30 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v30)
   {
@@ -3896,11 +3896,11 @@ LABEL_11:
 
         v31 = v5;
         v6 = *(*(&v39 + 1) + 8 * v5);
-        v7 = [v6 subtrees];
-        v8 = [v7 count];
+        subtrees = [v6 subtrees];
+        v8 = [subtrees count];
 
-        v9 = [v6 subtrees];
-        v10 = [v9 count];
+        subtrees2 = [v6 subtrees];
+        v10 = [subtrees2 count];
 
         if (v10)
         {
@@ -3909,8 +3909,8 @@ LABEL_11:
           v33 = v8 >> 1;
           do
           {
-            v12 = [v6 subtrees];
-            v13 = [v12 objectAtIndex:v11];
+            subtrees3 = [v6 subtrees];
+            v13 = [subtrees3 objectAtIndex:v11];
 
             if ([v13 type] == 8)
             {
@@ -3926,21 +3926,21 @@ LABEL_11:
               }
 
               [v13 setDynamicDisplayCorner:v14];
-              [v4 addObject:v13];
+              [array addObject:v13];
             }
 
             else if ([v13 type] == 4 || objc_msgSend(v13, "type") == 7)
             {
               v34 = v11;
-              v15 = [v13 subtrees];
-              v16 = [v15 count];
+              subtrees4 = [v13 subtrees];
+              v16 = [subtrees4 count];
 
               v37 = 0u;
               v38 = 0u;
               v35 = 0u;
               v36 = 0u;
-              v17 = [v13 subtrees];
-              v18 = [v17 countByEnumeratingWithState:&v35 objects:v43 count:16];
+              subtrees5 = [v13 subtrees];
+              v18 = [subtrees5 countByEnumeratingWithState:&v35 objects:v43 count:16];
               if (v18)
               {
                 v19 = v18;
@@ -3952,7 +3952,7 @@ LABEL_11:
                   {
                     if (*v36 != v21)
                     {
-                      objc_enumerationMutation(v17);
+                      objc_enumerationMutation(subtrees5);
                     }
 
                     v23 = *(*(&v35 + 1) + 8 * i);
@@ -3968,10 +3968,10 @@ LABEL_11:
                     }
 
                     [v23 setDynamicDisplayCorner:v24];
-                    [v4 addObject:v23];
+                    [array addObject:v23];
                   }
 
-                  v19 = [v17 countByEnumeratingWithState:&v35 objects:v43 count:16];
+                  v19 = [subtrees5 countByEnumeratingWithState:&v35 objects:v43 count:16];
                 }
 
                 while (v19);
@@ -3982,8 +3982,8 @@ LABEL_11:
             }
 
             ++v11;
-            v25 = [v6 subtrees];
-            v26 = [v25 count];
+            subtrees6 = [v6 subtrees];
+            v26 = [subtrees6 count];
           }
 
           while (v11 < v26);
@@ -3999,13 +3999,13 @@ LABEL_11:
     while (v30);
   }
 
-  return v4;
+  return array;
 }
 
 - (id)_keysForDynamicRow
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(UIKBTree *)self dynamicLayout])
   {
     v29 = 0u;
@@ -4028,20 +4028,20 @@ LABEL_11:
           }
 
           v7 = *(*(&v27 + 1) + 8 * i);
-          v8 = [v7 subtrees];
-          v9 = [v8 count];
+          subtrees = [v7 subtrees];
+          v9 = [subtrees count];
 
           if (v9)
           {
             v10 = 0;
             do
             {
-              v11 = [v7 subtrees];
-              v12 = [v11 objectAtIndex:v10];
+              subtrees2 = [v7 subtrees];
+              v12 = [subtrees2 objectAtIndex:v10];
 
               if ([v12 type] == 8)
               {
-                [v3 addObject:v12];
+                [array addObject:v12];
               }
 
               else if ([v12 type] == 4 || objc_msgSend(v12, "type") == 7)
@@ -4050,8 +4050,8 @@ LABEL_11:
                 v26 = 0u;
                 v23 = 0u;
                 v24 = 0u;
-                v13 = [v12 subtrees];
-                v14 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
+                subtrees3 = [v12 subtrees];
+                v14 = [subtrees3 countByEnumeratingWithState:&v23 objects:v31 count:16];
                 if (v14)
                 {
                   v15 = v14;
@@ -4062,13 +4062,13 @@ LABEL_11:
                     {
                       if (*v24 != v16)
                       {
-                        objc_enumerationMutation(v13);
+                        objc_enumerationMutation(subtrees3);
                       }
 
-                      [v3 addObject:*(*(&v23 + 1) + 8 * j)];
+                      [array addObject:*(*(&v23 + 1) + 8 * j)];
                     }
 
-                    v15 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
+                    v15 = [subtrees3 countByEnumeratingWithState:&v23 objects:v31 count:16];
                   }
 
                   while (v15);
@@ -4076,8 +4076,8 @@ LABEL_11:
               }
 
               ++v10;
-              v18 = [v7 subtrees];
-              v19 = [v18 count];
+              subtrees4 = [v7 subtrees];
+              v19 = [subtrees4 count];
             }
 
             while (v10 < v19);
@@ -4091,23 +4091,23 @@ LABEL_11:
     }
   }
 
-  return v3;
+  return array;
 }
 
-- (BOOL)_keyIsStringType:(id)a3
+- (BOOL)_keyIsStringType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 interactionType] == 1 || objc_msgSend(v3, "interactionType") == 2 || objc_msgSend(v3, "interactionType") == 16;
+  typeCopy = type;
+  v4 = [typeCopy interactionType] == 1 || objc_msgSend(typeCopy, "interactionType") == 2 || objc_msgSend(typeCopy, "interactionType") == 16;
 
   return v4;
 }
 
-- (BOOL)_isShiftedButNotAutoShiftedWithLayoutInfo:(id)a3
+- (BOOL)_isShiftedButNotAutoShiftedWithLayoutInfo:(id)info
 {
-  v4 = a3;
-  if (-[UIKBTree isShiftKeyplane](self, "isShiftKeyplane") && ([v4 isAutoShifted] & 1) == 0)
+  infoCopy = info;
+  if (-[UIKBTree isShiftKeyplane](self, "isShiftKeyplane") && ([infoCopy isAutoShifted] & 1) == 0)
   {
-    v5 = [v4 isShiftLocked] ^ 1;
+    v5 = [infoCopy isShiftLocked] ^ 1;
   }
 
   else
@@ -4118,32 +4118,32 @@ LABEL_11:
   return v5;
 }
 
-- (int64_t)inheritedRowSetTypeForKeyboardType:(int64_t)a3
+- (int64_t)inheritedRowSetTypeForKeyboardType:(int64_t)type
 {
-  result = a3;
-  if (a3 <= 119)
+  result = type;
+  if (type <= 119)
   {
-    if (a3 > 0xB)
+    if (type > 0xB)
     {
       goto LABEL_12;
     }
 
-    if (((1 << a3) & 0x3E8) != 0)
+    if (((1 << type) & 0x3E8) != 0)
     {
       return result;
     }
 
-    if (((1 << a3) & 0x810) == 0)
+    if (((1 << type) & 0x810) == 0)
     {
-      if (a3 == 10)
+      if (type == 10)
       {
         return 10;
       }
 
 LABEL_12:
-      if (a3 != 1)
+      if (type != 1)
       {
-        if (a3 == 2)
+        if (type == 2)
         {
           return 2;
         }
@@ -4157,14 +4157,14 @@ LABEL_12:
     return 4;
   }
 
-  if (a3 <= 125)
+  if (type <= 125)
   {
-    if (a3 == 120)
+    if (type == 120)
     {
       return 10;
     }
 
-    if (a3 == 123)
+    if (type == 123)
     {
       return 2;
     }
@@ -4172,9 +4172,9 @@ LABEL_12:
     return 0;
   }
 
-  if (a3 != 126)
+  if (type != 126)
   {
-    if (a3 != 127)
+    if (type != 127)
     {
       return 0;
     }
@@ -4185,17 +4185,17 @@ LABEL_12:
   return result;
 }
 
-- (void)setGridLayout:(BOOL)a3
+- (void)setGridLayout:(BOOL)layout
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:layout];
   [(UIKBTree *)self setObject:v4 forProperty:@"grid-layout"];
 }
 
-- (void)swapToggleKeys:(id)a3
+- (void)swapToggleKeys:(id)keys
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (-[UIKBTree type](self, "type") == 3 && [v4 count] >= 2)
+  keysCopy = keys;
+  if (-[UIKBTree type](self, "type") == 3 && [keysCopy count] >= 2)
   {
     v5 = [(UIKBTree *)self orderedRowsForType:[(UIKBTree *)self currentKeyboardType]];
     v29 = 0u;
@@ -4219,16 +4219,16 @@ LABEL_12:
           }
 
           v10 = *(*(&v29 + 1) + 8 * v9);
-          v11 = [v4 firstObject];
-          v12 = [v10 toggleKeysForKeyName:v11];
+          firstObject = [keysCopy firstObject];
+          v12 = [v10 toggleKeysForKeyName:firstObject];
 
           if (v12)
           {
-            v13 = [v12 firstObject];
-            v14 = [v10 subtreeWithName:v13];
+            firstObject2 = [v12 firstObject];
+            v14 = [v10 subtreeWithName:firstObject2];
 
-            v15 = [v12 lastObject];
-            v16 = [v10 subtreeWithName:v15];
+            lastObject = [v12 lastObject];
+            v16 = [v10 subtreeWithName:lastObject];
 
             if (v14)
             {
@@ -4247,20 +4247,20 @@ LABEL_12:
               if (v18 < v19)
               {
                 v20 = v5;
-                v21 = v4;
+                v21 = keysCopy;
                 v22 = v19;
                 v28 = v18;
                 [v10 subtrees];
                 v24 = v23 = v7;
                 v25 = v22;
-                v4 = v21;
+                keysCopy = v21;
                 v5 = v20;
                 v8 = v27;
                 [v24 replaceObjectAtIndex:v25 withObject:v14];
 
                 v7 = v23;
-                v26 = [v10 subtrees];
-                [v26 replaceObjectAtIndex:v28 withObject:v16];
+                subtrees = [v10 subtrees];
+                [subtrees replaceObjectAtIndex:v28 withObject:v16];
               }
             }
           }
@@ -4277,16 +4277,16 @@ LABEL_12:
   }
 }
 
-- (void)applyDynamicAttributes:(BOOL)a3 layoutInfo:(id)a4
+- (void)applyDynamicAttributes:(BOOL)attributes layoutInfo:(id)info
 {
   v69 = *MEMORY[0x1E69E9840];
-  v5 = [(UIKBTree *)self _isShiftedButNotAutoShiftedWithLayoutInfo:a4];
-  v6 = [(UIKBTree *)self _gesturesEnabled];
+  v5 = [(UIKBTree *)self _isShiftedButNotAutoShiftedWithLayoutInfo:info];
+  _gesturesEnabled = [(UIKBTree *)self _gesturesEnabled];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __46__UIKBTree_applyDynamicAttributes_layoutInfo___block_invoke;
   aBlock[3] = &__block_descriptor_34_e33_v32__0__UIKBTree_8__NSArray_16q24l;
-  v66 = v6;
+  v66 = _gesturesEnabled;
   v67 = v5;
   v7 = _Block_copy(aBlock);
   v61 = 0u;
@@ -4313,30 +4313,30 @@ LABEL_12:
         if ([v10 type] == 3)
         {
           v52 = v9;
-          if (a3)
+          if (attributes)
           {
-            v11 = [v10 cachedGestureLayout];
-            v12 = [v11 rowSet];
-            v13 = [v12 subtrees];
+            cachedGestureLayout = [v10 cachedGestureLayout];
+            rowSet = [cachedGestureLayout rowSet];
+            subtrees = [rowSet subtrees];
 
-            v14 = [v10 cachedGestureLayout];
-            v15 = [v14 attributeSet:0];
-            v16 = [v15 subtrees];
+            cachedGestureLayout2 = [v10 cachedGestureLayout];
+            v15 = [cachedGestureLayout2 attributeSet:0];
+            subtrees2 = [v15 subtrees];
           }
 
           else
           {
-            v17 = [v10 rowSet];
-            v13 = [v17 subtrees];
+            rowSet2 = [v10 rowSet];
+            subtrees = [rowSet2 subtrees];
 
-            v14 = [v10 attributeSet:0];
-            v16 = [v14 subtrees];
+            cachedGestureLayout2 = [v10 attributeSet:0];
+            subtrees2 = [cachedGestureLayout2 subtrees];
           }
 
-          if (![v16 count])
+          if (![subtrees2 count])
           {
-            v18 = [(UIKBTree *)self properties];
-            v19 = [v18 objectForKey:@"shouldclearcachedattributes"];
+            properties = [(UIKBTree *)self properties];
+            v19 = [properties objectForKey:@"shouldclearcachedattributes"];
 
             if (!v19)
             {
@@ -4345,53 +4345,53 @@ LABEL_12:
             }
           }
 
-          if ([v16 count] == 1)
+          if ([subtrees2 count] == 1)
           {
-            v20 = [v16 firstObject];
-            v21 = [v20 subtrees];
-            v22 = [v21 count];
+            firstObject = [subtrees2 firstObject];
+            subtrees3 = [firstObject subtrees];
+            v22 = [subtrees3 count];
 
             if (v22)
             {
-              v23 = [v20 subtrees];
+              subtrees4 = [firstObject subtrees];
 
-              v16 = v23;
+              subtrees2 = subtrees4;
             }
           }
 
-          if ([v13 count])
+          if ([subtrees count])
           {
             v24 = 0;
-            v55 = v16;
-            v56 = v13;
+            v55 = subtrees2;
+            v56 = subtrees;
             do
             {
-              v25 = [v13 objectAtIndex:v24];
+              v25 = [subtrees objectAtIndex:v24];
               v58 = v24;
-              if ([v16 count] <= v24)
+              if ([subtrees2 count] <= v24)
               {
                 v26 = 0;
               }
 
               else
               {
-                v26 = [v16 objectAtIndex:v24];
+                v26 = [subtrees2 objectAtIndex:v24];
               }
 
               v57 = v25;
-              v27 = [v25 subtrees];
-              if ([v27 count])
+              subtrees5 = [v25 subtrees];
+              if ([subtrees5 count])
               {
                 v28 = 0;
                 v59 = v26;
-                v60 = v27;
+                v60 = subtrees5;
                 do
                 {
-                  v29 = [v27 objectAtIndex:v28];
+                  v29 = [subtrees5 objectAtIndex:v28];
                   if ([v29 type] == 8)
                   {
-                    v30 = [v26 subtrees];
-                    v31 = [v30 count];
+                    subtrees6 = [v26 subtrees];
+                    v31 = [subtrees6 count];
 
                     if (v31 <= v28)
                     {
@@ -4400,32 +4400,32 @@ LABEL_12:
 
                     else
                     {
-                      v32 = [v26 subtrees];
-                      (v7)[2](v7, v29, v32, v28);
+                      subtrees7 = [v26 subtrees];
+                      (v7)[2](v7, v29, subtrees7, v28);
                     }
                   }
 
                   else
                   {
-                    v33 = [v29 subtrees];
-                    v34 = [v33 count];
+                    subtrees8 = [v29 subtrees];
+                    v34 = [subtrees8 count];
 
                     if (v34)
                     {
-                      v35 = [v26 subtrees];
-                      v36 = [v35 count];
+                      subtrees9 = [v26 subtrees];
+                      v36 = [subtrees9 count];
 
                       if (v36 <= v28)
                       {
-                        v45 = [v29 subtrees];
-                        if ([v45 count])
+                        subtrees10 = [v29 subtrees];
+                        if ([subtrees10 count])
                         {
                           v46 = 0;
                           do
                           {
-                            v47 = [v45 objectAtIndex:v46];
-                            v48 = [v47 cache];
-                            v49 = [v48 count];
+                            v47 = [subtrees10 objectAtIndex:v46];
+                            cache = [v47 cache];
+                            v49 = [cache count];
 
                             if (v49)
                             {
@@ -4435,26 +4435,26 @@ LABEL_12:
                             ++v46;
                           }
 
-                          while ([v45 count] > v46);
+                          while ([subtrees10 count] > v46);
                         }
 
-                        v27 = v60;
+                        subtrees5 = v60;
                       }
 
                       else
                       {
-                        v37 = [v26 subtrees];
-                        v38 = [v37 objectAtIndex:v28];
+                        subtrees11 = [v26 subtrees];
+                        v38 = [subtrees11 objectAtIndex:v28];
 
-                        v39 = [v29 subtrees];
-                        if ([v39 count])
+                        subtrees12 = [v29 subtrees];
+                        if ([subtrees12 count])
                         {
                           v40 = 0;
                           do
                           {
-                            v41 = [v39 objectAtIndex:v40];
-                            v42 = [v38 subtrees];
-                            v43 = [v42 count];
+                            v41 = [subtrees12 objectAtIndex:v40];
+                            subtrees13 = [v38 subtrees];
+                            v43 = [subtrees13 count];
 
                             if (v43 <= v40)
                             {
@@ -4463,18 +4463,18 @@ LABEL_12:
 
                             else
                             {
-                              v44 = [v38 subtrees];
-                              (v7)[2](v7, v41, v44, v40);
+                              subtrees14 = [v38 subtrees];
+                              (v7)[2](v7, v41, subtrees14, v40);
                             }
 
                             ++v40;
                           }
 
-                          while ([v39 count] > v40);
+                          while ([subtrees12 count] > v40);
                         }
 
                         v26 = v59;
-                        v27 = v60;
+                        subtrees5 = v60;
                       }
                     }
                   }
@@ -4482,12 +4482,12 @@ LABEL_12:
                   ++v28;
                 }
 
-                while ([v27 count] > v28);
+                while ([subtrees5 count] > v28);
               }
 
               v24 = v58 + 1;
-              v13 = v56;
-              v16 = v55;
+              subtrees = v56;
+              subtrees2 = v55;
             }
 
             while ([v56 count] > v58 + 1);
@@ -4583,29 +4583,29 @@ LABEL_17:
 
 - (id)geometry
 {
-  v2 = [(UIKBTree *)self shape];
+  shape = [(UIKBTree *)self shape];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 geometry];
+    geometry = [shape geometry];
   }
 
   else
   {
-    v3 = 0;
+    geometry = 0;
   }
 
-  return v3;
+  return geometry;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v5 = a3;
-  v4 = [(UIKBTree *)self shape];
+  geometryCopy = geometry;
+  shape = [(UIKBTree *)self shape];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 setGeometry:v5];
+    [shape setGeometry:geometryCopy];
   }
 }
 
@@ -4620,8 +4620,8 @@ LABEL_17:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [(UIKBTree *)self subtrees];
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v7 = [subtrees countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4633,7 +4633,7 @@ LABEL_17:
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subtrees);
         }
 
         v11 = *(*(&v25 + 1) + 8 * v10);
@@ -4673,7 +4673,7 @@ LABEL_17:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v8 = [subtrees countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v8);
@@ -4703,20 +4703,20 @@ LABEL_17:
 
   else
   {
-    v11 = [(UIKBTree *)self shape];
+    shape = [(UIKBTree *)self shape];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v11 originalShape];
+      originalShape = [shape originalShape];
 
-      if (v12)
+      if (originalShape)
       {
-        v13 = [v11 originalShape];
+        originalShape2 = [shape originalShape];
 
-        v11 = v13;
+        shape = originalShape2;
       }
 
-      [v11 frame];
+      [shape frame];
       v4 = v14;
       v6 = v15;
       v8 = v16;
@@ -4743,49 +4743,49 @@ LABEL_17:
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(UIKBTree *)self shape];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  shape = [(UIKBTree *)self shape];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 setFrame:{x, y, width, height}];
+    [shape setFrame:{x, y, width, height}];
   }
 }
 
-- (void)setPaddedFrame:(CGRect)a3
+- (void)setPaddedFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(UIKBTree *)self shape];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  shape = [(UIKBTree *)self shape];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 setPaddedFrame:{x, y, width, height}];
+    [shape setPaddedFrame:{x, y, width, height}];
   }
 }
 
 - (CGPoint)navigationPointOfKey
 {
-  v3 = [(UIKBTree *)self selectedVariantIndex];
-  v4 = [(UIKBTree *)self subtrees];
-  v5 = [v4 count];
+  selectedVariantIndex = [(UIKBTree *)self selectedVariantIndex];
+  subtrees = [(UIKBTree *)self subtrees];
+  v5 = [subtrees count];
 
   [(UIKBTree *)self frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  if (v5 >= 1 && v3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (v5 >= 1 && selectedVariantIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = [(UIKBTree *)self subtrees];
-    v15 = [v14 objectAtIndex:v3];
+    subtrees2 = [(UIKBTree *)self subtrees];
+    v15 = [subtrees2 objectAtIndex:selectedVariantIndex];
     [v15 frame];
     v7 = v16;
     v9 = v17;
@@ -4809,12 +4809,12 @@ LABEL_17:
   return result;
 }
 
-- (CGRect)keyUnionFramePadded:(BOOL)a3
+- (CGRect)keyUnionFramePadded:(BOOL)padded
 {
-  v3 = a3;
+  paddedCopy = padded;
   v40 = *MEMORY[0x1E69E9840];
   v5 = UIKBTreePropertyKeyUnionFrame;
-  if (a3)
+  if (padded)
   {
     v5 = UIKBTreePropertyKeyUnionPaddedFrame;
   }
@@ -4842,8 +4842,8 @@ LABEL_24:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v17 = [(UIKBTree *)self keys];
-  v18 = [v17 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  keys = [(UIKBTree *)self keys];
+  v18 = [keys countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v18)
   {
     v19 = v18;
@@ -4854,7 +4854,7 @@ LABEL_24:
       {
         if (*v36 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(keys);
         }
 
         v22 = *(*(&v35 + 1) + 8 * i);
@@ -4866,7 +4866,7 @@ LABEL_24:
           v41.size.height = v16;
           if (CGRectIsNull(v41))
           {
-            if (v3)
+            if (paddedCopy)
             {
               [v22 paddedFrame];
             }
@@ -4879,7 +4879,7 @@ LABEL_24:
 
           else
           {
-            if (v3)
+            if (paddedCopy)
             {
               [v22 paddedFrame];
             }
@@ -4907,7 +4907,7 @@ LABEL_24:
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v19 = [keys countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v19);
@@ -4957,20 +4957,20 @@ LABEL_25:
   return result;
 }
 
-- (void)setVisualStyle:(int)a3
+- (void)setVisualStyle:(int)style
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&style];
   [(UIKBTree *)self setObject:v4 forProperty:@"KBvisualStyle"];
 }
 
-- ($5C396DA91E87D63640AC871340DC94CC)visualStylingForScreenTraits:(id)a3
+- ($5C396DA91E87D63640AC871340DC94CC)visualStylingForScreenTraits:(id)traits
 {
-  v4 = a3;
-  v5 = [(UIKBTree *)self name];
-  v6 = ([v5 rangeOfString:@"Portrait"] == 0x7FFFFFFFFFFFFFFFLL) << 6;
+  traitsCopy = traits;
+  name = [(UIKBTree *)self name];
+  v6 = ([name rangeOfString:@"Portrait"] == 0x7FFFFFFFFFFFFFFFLL) << 6;
 
-  v7 = [(UIKBTree *)self name];
-  v8 = [v7 hasSuffix:@"-split"];
+  name2 = [(UIKBTree *)self name];
+  v8 = [name2 hasSuffix:@"-split"];
 
   if (v8)
   {
@@ -5002,35 +5002,35 @@ LABEL_25:
     v12 = 1;
   }
 
-  if (!v4)
+  if (!traitsCopy)
   {
-    v4 = +[UIKeyboard activeScreenTraits];
+    traitsCopy = +[UIKeyboard activeScreenTraits];
   }
 
-  v13 = UIKeyboardComputeKeyboardIdiomFromScreenTraits(v4, v12, v8);
-  v14 = [(UIKBTree *)self nativeIdiom];
-  if (v14 == -1)
+  v13 = UIKeyboardComputeKeyboardIdiomFromScreenTraits(traitsCopy, v12, v8);
+  nativeIdiom = [(UIKBTree *)self nativeIdiom];
+  if (nativeIdiom == -1)
   {
     v15 = v13;
   }
 
   else
   {
-    v15 = v14;
+    v15 = nativeIdiom;
   }
 
   v16 = v15 & 0x3F;
   v17 = v16 | v9;
-  v18 = [(UIKBTree *)self visualStyle];
-  if (v18 <= 102)
+  visualStyle = [(UIKBTree *)self visualStyle];
+  if (visualStyle <= 102)
   {
-    if (v18 > 3)
+    if (visualStyle > 3)
     {
-      if (v18 <= 100)
+      if (visualStyle <= 100)
       {
-        if (v18 != 4)
+        if (visualStyle != 4)
         {
-          if (v18 != 5)
+          if (visualStyle != 5)
           {
             goto LABEL_41;
           }
@@ -5045,7 +5045,7 @@ LABEL_32:
         goto LABEL_41;
       }
 
-      if (v18 == 101)
+      if (visualStyle == 101)
       {
         v17 = (v17 | 0x260200) - 1769472;
         goto LABEL_41;
@@ -5056,14 +5056,14 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    if (v18 == 1)
+    if (visualStyle == 1)
     {
       goto LABEL_40;
     }
 
-    if (v18 != 2)
+    if (visualStyle != 2)
     {
-      if (v18 != 3)
+      if (visualStyle != 3)
       {
         goto LABEL_41;
       }
@@ -5074,14 +5074,14 @@ LABEL_40:
     goto LABEL_35;
   }
 
-  if (v18 > 105)
+  if (visualStyle > 105)
   {
-    if ((v18 - 108) < 2)
+    if ((visualStyle - 108) < 2)
     {
       goto LABEL_32;
     }
 
-    if (v18 != 106)
+    if (visualStyle != 106)
     {
       goto LABEL_41;
     }
@@ -5089,14 +5089,14 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if (v18 == 103)
+  if (visualStyle == 103)
   {
 LABEL_35:
     v17 |= 0x270200u;
     goto LABEL_41;
   }
 
-  if (v18 == 104)
+  if (visualStyle == 104)
   {
     goto LABEL_40;
   }
@@ -5113,33 +5113,33 @@ LABEL_35:
 
   v17 |= v19;
 LABEL_41:
-  v20 = [(UIKBTree *)self name];
-  if ([v20 hasPrefix:@"Dynamic"])
+  name3 = [(UIKBTree *)self name];
+  if ([name3 hasPrefix:@"Dynamic"])
   {
-    v21 = [(UIKBTree *)self rendering];
+    rendering = [(UIKBTree *)self rendering];
 
-    if (v21)
+    if (rendering)
     {
       v17 = v17 | ([(UIKBTree *)self rendering]<< 16);
-      LOBYTE(v21) = 1;
+      LOBYTE(rendering) = 1;
     }
   }
 
   else
   {
 
-    LOBYTE(v21) = 0;
+    LOBYTE(rendering) = 0;
   }
 
-  v22 = [(UIKBTree *)self keys];
-  v23 = [v22 lastObject];
+  keys = [(UIKBTree *)self keys];
+  lastObject = [keys lastObject];
 
-  if ([v23 rendering])
+  if ([lastObject rendering])
   {
-    v17 = v17 | ([v23 rendering] << 16);
+    v17 = v17 | ([lastObject rendering] << 16);
   }
 
-  else if ((v21 & 1) == 0 && [v23 displayType] == 20)
+  else if ((rendering & 1) == 0 && [lastObject displayType] == 20)
   {
     v17 = v17 | 0x1B0000;
   }
@@ -5147,18 +5147,18 @@ LABEL_41:
   return v17;
 }
 
-- (void)setVisualStyling:(id)a3
+- (void)setVisualStyling:(id)styling
 {
   properties = self->properties;
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&styling];
   [(NSMutableDictionary *)properties setObject:v4 forKey:@"KBvisualStyling"];
 }
 
-- (id)cachedKeysByKeyName:(id)a3
+- (id)cachedKeysByKeyName:(id)name
 {
-  v4 = a3;
-  v5 = [(UIKBTree *)self cache];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  cache = [(UIKBTree *)self cache];
+  v6 = [cache objectForKey:nameCopy];
 
   return v6;
 }
@@ -5166,8 +5166,8 @@ LABEL_41:
 - (id)adaptiveKeys
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(UIKBTree *)self cache];
-  v3 = [v2 objectForKey:@"keys"];
+  cache = [(UIKBTree *)self cache];
+  v3 = [cache objectForKey:@"keys"];
 
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
@@ -5192,9 +5192,9 @@ LABEL_41:
         v10 = *(*(&v13 + 1) + 8 * i);
         if ([v10 type] != 12)
         {
-          v11 = [v10 layoutTag];
+          layoutTag = [v10 layoutTag];
 
-          if (!v11)
+          if (!layoutTag)
           {
             continue;
           }
@@ -5212,11 +5212,11 @@ LABEL_41:
   return v4;
 }
 
-- (id)firstCachedKeyWithName:(id)a3
+- (id)firstCachedKeyWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(UIKBTree *)self cache];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  cache = [(UIKBTree *)self cache];
+  v6 = [cache objectForKey:nameCopy];
 
   v7 = [v6 objectAtIndex:0];
 
@@ -5231,13 +5231,13 @@ LABEL_41:
   v9 = __Block_byref_object_copy__121;
   v10 = __Block_byref_object_dispose__121;
   v11 = 0;
-  v2 = [(UIKBTree *)self cache];
+  cache = [(UIKBTree *)self cache];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __34__UIKBTree_firstKeyplaneSwitchKey__block_invoke;
   v5[3] = &unk_1E710FE50;
   v5[4] = &v6;
-  [v2 enumerateKeysAndObjectsUsingBlock:v5];
+  [cache enumerateKeysAndObjectsUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -5264,15 +5264,15 @@ void __34__UIKBTree_firstKeyplaneSwitchKey__block_invoke(uint64_t a1, void *a2, 
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(UIKBTree *)self subtrees];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  subtrees = [(UIKBTree *)self subtrees];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(subtrees, "count")}];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(UIKBTree *)self subtrees];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subtrees2 = [(UIKBTree *)self subtrees];
+  v7 = [subtrees2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -5283,17 +5283,17 @@ void __34__UIKBTree_firstKeyplaneSwitchKey__block_invoke(uint64_t a1, void *a2, 
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subtrees2);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) firstKeyplaneSwitchKey];
-        if (v11)
+        firstKeyplaneSwitchKey = [*(*(&v13 + 1) + 8 * i) firstKeyplaneSwitchKey];
+        if (firstKeyplaneSwitchKey)
         {
-          [v5 addObject:v11];
+          [v5 addObject:firstKeyplaneSwitchKey];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [subtrees2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -5302,29 +5302,29 @@ void __34__UIKBTree_firstKeyplaneSwitchKey__block_invoke(uint64_t a1, void *a2, 
   return v5;
 }
 
-- (id)keyplaneSwitchKeysWithoutCurrentKeyplane:(id)a3
+- (id)keyplaneSwitchKeysWithoutCurrentKeyplane:(id)keyplane
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  keyplaneCopy = keyplane;
+  if (keyplaneCopy)
   {
-    v27 = [MEMORY[0x1E695DF70] array];
-    v5 = [v4 firstKeyplaneSwitchKey];
-    v6 = [v4 name];
-    v7 = [v5 representedString];
-    if ([v6 containsString:v7])
+    array = [MEMORY[0x1E695DF70] array];
+    firstKeyplaneSwitchKey = [keyplaneCopy firstKeyplaneSwitchKey];
+    name = [keyplaneCopy name];
+    representedString = [firstKeyplaneSwitchKey representedString];
+    if ([name containsString:representedString])
     {
 LABEL_18:
     }
 
     else
     {
-      v26 = self;
+      selfCopy = self;
       while (1)
       {
-        v8 = [v27 count];
-        v9 = [(UIKBTree *)self subtrees];
-        v10 = [v9 count];
+        v8 = [array count];
+        subtrees = [(UIKBTree *)self subtrees];
+        v10 = [subtrees count];
 
         if (v8 >= v10)
         {
@@ -5335,8 +5335,8 @@ LABEL_18:
         v31 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v11 = [(UIKBTree *)self subtrees];
-        v12 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        subtrees2 = [(UIKBTree *)self subtrees];
+        v12 = [subtrees2 countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v12)
         {
           v13 = v12;
@@ -5347,45 +5347,45 @@ LABEL_18:
             {
               if (*v29 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(subtrees2);
               }
 
               v16 = *(*(&v28 + 1) + 8 * i);
-              if (v16 != v4)
+              if (v16 != keyplaneCopy)
               {
-                v17 = [*(*(&v28 + 1) + 8 * i) name];
-                v18 = [v5 representedString];
-                v19 = [v17 containsString:v18];
+                name2 = [*(*(&v28 + 1) + 8 * i) name];
+                representedString2 = [firstKeyplaneSwitchKey representedString];
+                v19 = [name2 containsString:representedString2];
 
                 if (v19)
                 {
-                  v20 = [v4 name];
-                  v21 = [v5 representedString];
-                  v22 = [v20 containsString:v21];
+                  name3 = [keyplaneCopy name];
+                  representedString3 = [firstKeyplaneSwitchKey representedString];
+                  v22 = [name3 containsString:representedString3];
 
                   if ((v22 & 1) == 0)
                   {
-                    v23 = [v5 copy];
-                    [v27 addObject:v23];
+                    v23 = [firstKeyplaneSwitchKey copy];
+                    [array addObject:v23];
                   }
 
-                  v24 = [v16 firstKeyplaneSwitchKey];
+                  firstKeyplaneSwitchKey2 = [v16 firstKeyplaneSwitchKey];
 
-                  v5 = v24;
+                  firstKeyplaneSwitchKey = firstKeyplaneSwitchKey2;
                 }
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+            v13 = [subtrees2 countByEnumeratingWithState:&v28 objects:v32 count:16];
           }
 
           while (v13);
         }
 
-        v6 = [v4 name];
-        v7 = [v5 representedString];
-        self = v26;
-        if ([v6 containsString:v7])
+        name = [keyplaneCopy name];
+        representedString = [firstKeyplaneSwitchKey representedString];
+        self = selfCopy;
+        if ([name containsString:representedString])
         {
           goto LABEL_18;
         }
@@ -5395,10 +5395,10 @@ LABEL_18:
 
   else
   {
-    v27 = 0;
+    array = 0;
   }
 
-  return v27;
+  return array;
 }
 
 - (unint64_t)numberOfRows
@@ -5413,7 +5413,7 @@ LABEL_18:
   if (v2)
   {
     v3 = v2;
-    v4 = 0;
+    unsignedIntegerValue = 0;
     v5 = *v25;
     while (2)
     {
@@ -5428,8 +5428,8 @@ LABEL_18:
         if ([v7 dynamicLayout])
         {
           v16 = [v7 subtreeWithType:15];
-          v17 = [v16 subtrees];
-          v4 = [v17 count];
+          subtrees = [v16 subtrees];
+          unsignedIntegerValue = [subtrees count];
 
           goto LABEL_22;
         }
@@ -5439,9 +5439,9 @@ LABEL_18:
         v20 = 0u;
         v21 = 0u;
         v8 = [v7 geometrySet:0];
-        v9 = [v8 subtrees];
+        subtrees2 = [v8 subtrees];
 
-        v10 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v10 = [subtrees2 countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v10)
         {
           v11 = v10;
@@ -5452,18 +5452,18 @@ LABEL_18:
             {
               if (*v21 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(subtrees2);
               }
 
               v14 = [*(*(&v20 + 1) + 8 * j) numberForProperty:@"KBdisplayRowHint"];
               v15 = v14;
-              if (v14 && [v14 unsignedIntegerValue] > v4)
+              if (v14 && [v14 unsignedIntegerValue] > unsignedIntegerValue)
               {
-                v4 = [v15 unsignedIntegerValue];
+                unsignedIntegerValue = [v15 unsignedIntegerValue];
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v11 = [subtrees2 countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v11);
@@ -5482,79 +5482,79 @@ LABEL_18:
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
 LABEL_22:
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (id)_cacheRootNameForKey:(id)a3
+- (id)_cacheRootNameForKey:(id)key
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 type] == 12 || (objc_msgSend(v3, "layoutTag"), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  keyCopy = key;
+  if ([keyCopy type] == 12 || (objc_msgSend(keyCopy, "layoutTag"), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = @"Adaptive-Key";
+    unhashedName = @"Adaptive-Key";
     goto LABEL_4;
   }
 
-  v7 = [v3 cache];
-  v8 = [v7 objectForKey:@"merge-as-more-key"];
-  v9 = [v8 BOOLValue];
+  cache = [keyCopy cache];
+  v8 = [cache objectForKey:@"merge-as-more-key"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
-    v5 = @"More-Key";
+    unhashedName = @"More-Key";
     goto LABEL_4;
   }
 
-  v10 = [v3 cache];
-  v11 = [v10 objectForKey:@"modify-for-writeboard-key"];
-  v12 = [v11 BOOLValue];
+  cache2 = [keyCopy cache];
+  v11 = [cache2 objectForKey:@"modify-for-writeboard-key"];
+  bOOLValue2 = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue2)
   {
-    v5 = @"Modify-For-Writeboard-Key";
+    unhashedName = @"Modify-For-Writeboard-Key";
     goto LABEL_4;
   }
 
-  if ([v3 interactionType] == 15)
+  if ([keyCopy interactionType] == 15)
   {
-    v5 = @"Space-Key";
+    unhashedName = @"Space-Key";
     goto LABEL_4;
   }
 
-  if ([v3 displayType] == 7)
+  if ([keyCopy displayType] == 7)
   {
-    v13 = [v3 name];
-    v14 = [v13 rangeOfString:@"Alternate-Currency-Sign-"];
+    name = [keyCopy name];
+    v14 = [name rangeOfString:@"Alternate-Currency-Sign-"];
     v16 = v15;
 
     if (v14 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v19 = [v3 name];
-      v5 = [v19 substringWithRange:{v14, v16 + 1}];
+      name2 = [keyCopy name];
+      unhashedName = [name2 substringWithRange:{v14, v16 + 1}];
 
       goto LABEL_4;
     }
 
-    v17 = [v3 representedString];
-    v18 = [v17 _containsSubstring:@"¤"];
+    representedString = [keyCopy representedString];
+    v18 = [representedString _containsSubstring:@"¤"];
 
     if (v18)
     {
-      v5 = @"Primary-Currency-Sign";
+      unhashedName = @"Primary-Currency-Sign";
       goto LABEL_4;
     }
 
-    v20 = [v3 representedString];
-    v21 = [v20 _containsSubstring:@"⁒"];
+    representedString2 = [keyCopy representedString];
+    v21 = [representedString2 _containsSubstring:@"⁒"];
 
     if (v21)
     {
-      v5 = @"Localized-Percent-Sign";
+      unhashedName = @"Localized-Percent-Sign";
       goto LABEL_4;
     }
 
@@ -5562,20 +5562,20 @@ LABEL_22:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v22 = [v3 secondaryRepresentedStrings];
-    v23 = [v22 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    secondaryRepresentedStrings = [keyCopy secondaryRepresentedStrings];
+    v23 = [secondaryRepresentedStrings countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v23)
     {
       v24 = v23;
       v25 = *v29;
-      v5 = @"Primary-Currency-Sign";
+      unhashedName = @"Primary-Currency-Sign";
       while (2)
       {
         for (i = 0; i != v24; ++i)
         {
           if (*v29 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(secondaryRepresentedStrings);
           }
 
           v27 = *(*(&v28 + 1) + 8 * i);
@@ -5586,14 +5586,14 @@ LABEL_22:
 
           if ([v27 _containsSubstring:@"⁒"])
           {
-            v5 = @"Localized-Percent-Sign";
+            unhashedName = @"Localized-Percent-Sign";
 LABEL_32:
 
             goto LABEL_4;
           }
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v24 = [secondaryRepresentedStrings countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v24)
         {
           continue;
@@ -5604,46 +5604,46 @@ LABEL_32:
     }
   }
 
-  v5 = [v3 unhashedName];
+  unhashedName = [keyCopy unhashedName];
 LABEL_4:
 
-  return v5;
+  return unhashedName;
 }
 
-- (void)cacheKey:(id)a3
+- (void)cacheKey:(id)key
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIKBTree *)self cache];
+  keyCopy = key;
+  cache = [(UIKBTree *)self cache];
 
-  if (!v5)
+  if (!cache)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
-    [(UIKBTree *)self setCache:v6];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(UIKBTree *)self setCache:dictionary];
   }
 
-  v7 = [(UIKBTree *)self _cacheRootNameForKey:v4];
-  v8 = [(UIKBTree *)self cache];
-  v9 = [v8 objectForKey:v7];
+  v7 = [(UIKBTree *)self _cacheRootNameForKey:keyCopy];
+  cache2 = [(UIKBTree *)self cache];
+  v9 = [cache2 objectForKey:v7];
 
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v10 = [(UIKBTree *)self cache];
-    [v10 setObject:v9 forKey:v7];
+    cache3 = [(UIKBTree *)self cache];
+    [cache3 setObject:v9 forKey:v7];
   }
 
-  [v9 addObject:v4];
-  if ([v4 type] == 12 || (objc_msgSend(v4, "layoutTag"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  [v9 addObject:keyCopy];
+  if ([keyCopy type] == 12 || (objc_msgSend(keyCopy, "layoutTag"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [v4 properties];
-    v13 = [v12 objectEnumerator];
+    properties = [keyCopy properties];
+    objectEnumerator = [properties objectEnumerator];
 
-    v14 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v14 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v14)
     {
       v15 = v14;
@@ -5655,7 +5655,7 @@ LABEL_4:
         {
           if (*v20 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v18 = *(*(&v19 + 1) + 8 * v17);
@@ -5669,7 +5669,7 @@ LABEL_4:
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v15 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v15);
@@ -5677,23 +5677,23 @@ LABEL_4:
   }
 }
 
-- (void)precacheLayoutName:(id)a3
+- (void)precacheLayoutName:(id)name
 {
-  v4 = a3;
-  v5 = [(UIKBTree *)self cache];
-  [v5 setObject:v4 forKey:@"layoutName"];
+  nameCopy = name;
+  cache = [(UIKBTree *)self cache];
+  [cache setObject:nameCopy forKey:@"layoutName"];
 }
 
-- (id)keyForString:(id)a3
+- (id)keyForString:(id)string
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [(UIKBTree *)self subtrees];
-  v20 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v20 = [subtrees countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v20)
   {
     v6 = *v26;
@@ -5704,7 +5704,7 @@ LABEL_4:
       {
         if (*v26 != v6)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subtrees);
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
@@ -5712,8 +5712,8 @@ LABEL_4:
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v9 = [v8 keys];
-        v10 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        keys = [v8 keys];
+        v10 = [keys countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v10)
         {
           v11 = v10;
@@ -5724,12 +5724,12 @@ LABEL_4:
             {
               if (*v22 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(keys);
               }
 
               v14 = *(*(&v21 + 1) + 8 * j);
-              v15 = [v14 representedString];
-              v16 = [v15 isEqualToString:v4];
+              representedString = [v14 representedString];
+              v16 = [representedString isEqualToString:stringCopy];
 
               if (v16)
               {
@@ -5739,7 +5739,7 @@ LABEL_4:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v11 = [keys countByEnumeratingWithState:&v21 objects:v29 count:16];
             if (v11)
             {
               continue;
@@ -5752,35 +5752,35 @@ LABEL_4:
         v6 = v19;
       }
 
-      v20 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v20 = [subtrees countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v20);
   }
 
-  NSLog(&cfstr_DidNotFindKeyF.isa, v4);
+  NSLog(&cfstr_DidNotFindKeyF.isa, stringCopy);
   v17 = 0;
 LABEL_18:
 
   return v17;
 }
 
-- (id)keyplaneForKey:(id)a3
+- (id)keyplaneForKey:(id)key
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(UIKBTree *)self subtrees];
-  v20 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v20 = [subtrees countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (!v20)
   {
 
 LABEL_22:
-    v17 = [v4 representedString];
-    NSLog(&cfstr_DidNotFindKeyp.isa, v17);
+    representedString = [keyCopy representedString];
+    NSLog(&cfstr_DidNotFindKeyp.isa, representedString);
 
     v6 = 0;
     goto LABEL_23;
@@ -5788,7 +5788,7 @@ LABEL_22:
 
   v6 = 0;
   v7 = *v27;
-  v21 = v5;
+  v21 = subtrees;
   v19 = *v27;
   do
   {
@@ -5796,7 +5796,7 @@ LABEL_22:
     {
       if (*v27 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(subtrees);
       }
 
       v9 = *(*(&v26 + 1) + 8 * i);
@@ -5804,8 +5804,8 @@ LABEL_22:
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v10 = [v9 keys];
-      v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      keys = [v9 keys];
+      v11 = [keys countByEnumeratingWithState:&v22 objects:v30 count:16];
       if (v11)
       {
         v12 = v11;
@@ -5816,14 +5816,14 @@ LABEL_22:
           {
             if (*v23 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(keys);
             }
 
-            if (*(*(&v22 + 1) + 8 * j) == v4)
+            if (*(*(&v22 + 1) + 8 * j) == keyCopy)
             {
-              v15 = [v9 isShiftKeyplane];
+              isShiftKeyplane = [v9 isShiftKeyplane];
               v16 = v9;
-              if (!v15)
+              if (!isShiftKeyplane)
               {
 
                 goto LABEL_24;
@@ -5833,7 +5833,7 @@ LABEL_22:
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+          v12 = [keys countByEnumeratingWithState:&v22 objects:v30 count:16];
           if (v12)
           {
             continue;
@@ -5843,7 +5843,7 @@ LABEL_22:
         }
       }
 
-      v5 = v21;
+      subtrees = v21;
       v7 = v19;
     }
 
@@ -5865,16 +5865,16 @@ LABEL_24:
   return v16;
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributesCopy = attributes;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(UIKBTree *)self subtrees];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v6 = [subtrees countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -5884,7 +5884,7 @@ LABEL_24:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subtrees);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -5895,7 +5895,7 @@ LABEL_24:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [subtrees countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -5907,36 +5907,36 @@ LABEL_24:
 
 LABEL_11:
 
-  v10 = [(UIKBTree *)self subtrees];
-  [v10 removeObject:v6];
+  subtrees2 = [(UIKBTree *)self subtrees];
+  [subtrees2 removeObject:v6];
 
-  if (v4)
+  if (attributesCopy)
   {
-    v11 = [(UIKBTree *)self subtrees];
-    [v11 addObject:v4];
+    subtrees3 = [(UIKBTree *)self subtrees];
+    [subtrees3 addObject:attributesCopy];
   }
 }
 
-- (void)_addKeylayoutKeys:(id)a3
+- (void)_addKeylayoutKeys:(id)keys
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && [(UIKBTree *)self type]== 3)
+  keysCopy = keys;
+  if (keysCopy && [(UIKBTree *)self type]== 3)
   {
     if ([(UIKBTree *)self dynamicLayout])
     {
-      v5 = [(UIKBTree *)self rowSet];
-      v6 = [v5 subtrees];
+      rowSet = [(UIKBTree *)self rowSet];
+      subtrees = [rowSet subtrees];
 
       if ([(UIKBTree *)self currentKeyboardType])
       {
         v7 = [(UIKBTree *)self orderedRowsForType:[(UIKBTree *)self currentKeyboardType]];
 
-        v6 = v7;
+        subtrees = v7;
       }
 
-      v8 = [(UIKBTree *)self _keysForDynamicRows:v6];
-      [v4 addObjectsFromArray:v8];
+      v8 = [(UIKBTree *)self _keysForDynamicRows:subtrees];
+      [keysCopy addObjectsFromArray:v8];
     }
 
     else
@@ -5945,10 +5945,10 @@ LABEL_11:
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v9 = [(UIKBTree *)self keySet];
-      v10 = [v9 subtrees];
+      keySet = [(UIKBTree *)self keySet];
+      subtrees2 = [keySet subtrees];
 
-      v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [subtrees2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v11)
       {
         v12 = v11;
@@ -5960,17 +5960,17 @@ LABEL_11:
           {
             if (*v17 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(subtrees2);
             }
 
-            v15 = [*(*(&v16 + 1) + 8 * v14) subtrees];
-            [v4 addObjectsFromArray:v15];
+            subtrees3 = [*(*(&v16 + 1) + 8 * v14) subtrees];
+            [keysCopy addObjectsFromArray:subtrees3];
 
             ++v14;
           }
 
           while (v12 != v14);
-          v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v12 = [subtrees2 countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
         while (v12);
@@ -5979,44 +5979,44 @@ LABEL_11:
   }
 }
 
-- (void)addkeyToCachedKeyList:(id)a3
+- (void)addkeyToCachedKeyList:(id)list
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  listCopy = list;
+  if (listCopy)
   {
-    v5 = [(UIKBTree *)self cache];
-    v6 = [v5 objectForKey:@"keys"];
+    cache = [(UIKBTree *)self cache];
+    v6 = [cache objectForKey:@"keys"];
     v7 = [v6 mutableCopy];
 
-    [v7 addObject:v4];
+    [v7 addObject:listCopy];
     if (v7)
     {
-      v8 = [(UIKBTree *)self cache];
-      [v8 setObject:v7 forKey:@"keys"];
+      cache2 = [(UIKBTree *)self cache];
+      [cache2 setObject:v7 forKey:@"keys"];
     }
 
-    v9 = [(UIKBTree *)self _cacheRootNameForKey:v4];
-    v10 = [(UIKBTree *)self cache];
-    v11 = [v10 objectForKeyedSubscript:v9];
+    v9 = [(UIKBTree *)self _cacheRootNameForKey:listCopy];
+    cache3 = [(UIKBTree *)self cache];
+    v11 = [cache3 objectForKeyedSubscript:v9];
 
     if ([v11 count])
     {
-      if ([v11 containsObject:v4])
+      if ([v11 containsObject:listCopy])
       {
 LABEL_9:
-        v14 = [(UIKBTree *)self cache];
-        [v14 setObject:v11 forKey:v9];
+        cache4 = [(UIKBTree *)self cache];
+        [cache4 setObject:v11 forKey:v9];
 
         goto LABEL_10;
       }
 
-      v12 = [v11 arrayByAddingObject:v4];
+      v12 = [v11 arrayByAddingObject:listCopy];
     }
 
     else
     {
-      v15[0] = v4;
+      v15[0] = listCopy;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     }
 
@@ -6029,22 +6029,22 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)removeKeyFromCachedKeyList:(id)a3
+- (void)removeKeyFromCachedKeyList:(id)list
 {
-  v4 = a3;
-  if (v4)
+  listCopy = list;
+  if (listCopy)
   {
-    v5 = [(UIKBTree *)self cache];
-    v6 = [v5 objectForKey:@"keys"];
+    cache = [(UIKBTree *)self cache];
+    v6 = [cache objectForKey:@"keys"];
     v7 = [v6 mutableCopy];
 
-    [v7 removeObject:v4];
-    v8 = [(UIKBTree *)self cache];
-    [v8 setObject:v7 forKey:@"keys"];
+    [v7 removeObject:listCopy];
+    cache2 = [(UIKBTree *)self cache];
+    [cache2 setObject:v7 forKey:@"keys"];
 
-    v9 = [(UIKBTree *)self _cacheRootNameForKey:v4];
-    v10 = [(UIKBTree *)self cache];
-    v11 = [v10 objectForKeyedSubscript:v9];
+    v9 = [(UIKBTree *)self _cacheRootNameForKey:listCopy];
+    cache3 = [(UIKBTree *)self cache];
+    v11 = [cache3 objectForKeyedSubscript:v9];
 
     if ([v11 count])
     {
@@ -6053,7 +6053,7 @@ LABEL_10:
       v18[1] = 3221225472;
       v18[2] = __39__UIKBTree_removeKeyFromCachedKeyList___block_invoke;
       v18[3] = &unk_1E710FE78;
-      v19 = v4;
+      v19 = listCopy;
       v13 = [v12 predicateWithBlock:v18];
       v14 = [v11 filteredArrayUsingPredicate:v13];
 
@@ -6061,16 +6061,16 @@ LABEL_10:
     }
 
     v15 = [v11 count];
-    v16 = [(UIKBTree *)self cache];
-    v17 = v16;
+    cache4 = [(UIKBTree *)self cache];
+    v17 = cache4;
     if (v15)
     {
-      [v16 setObject:v11 forKey:v9];
+      [cache4 setObject:v11 forKey:v9];
     }
 
     else
     {
-      [v16 removeObjectForKey:v9];
+      [cache4 removeObjectForKey:v9];
     }
   }
 }
@@ -6084,21 +6084,21 @@ uint64_t __39__UIKBTree_removeKeyFromCachedKeyList___block_invoke(uint64_t a1, v
   return v5 ^ 1u;
 }
 
-- (void)removeKeyFromAllCachedLists:(id)a3
+- (void)removeKeyFromAllCachedLists:(id)lists
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  listsCopy = lists;
+  if (listsCopy)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v5 = [(UIKBTree *)self cache];
-    v6 = [v5 allKeys];
+    cache = [(UIKBTree *)self cache];
+    allKeys = [cache allKeys];
 
-    obj = v6;
-    v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    obj = allKeys;
+    v7 = [allKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v7)
     {
       v8 = v7;
@@ -6116,29 +6116,29 @@ uint64_t __39__UIKBTree_removeKeyFromCachedKeyList___block_invoke(uint64_t a1, v
           }
 
           v11 = *(*(&v24 + 1) + 8 * v10);
-          v12 = [(UIKBTree *)self cache];
-          v13 = [v12 objectForKey:v11];
+          cache2 = [(UIKBTree *)self cache];
+          v13 = [cache2 objectForKey:v11];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v14 = [v13 mutableCopy];
-            v15 = v4;
-            [v14 removeObject:v4];
+            v15 = listsCopy;
+            [v14 removeObject:listsCopy];
             v16 = [v14 count];
-            v17 = [(UIKBTree *)self cache];
-            v18 = v17;
+            cache3 = [(UIKBTree *)self cache];
+            v18 = cache3;
             if (v16)
             {
-              [v17 setObject:v14 forKey:v11];
+              [cache3 setObject:v14 forKey:v11];
             }
 
             else
             {
-              [v17 removeObjectForKey:v11];
+              [cache3 removeObjectForKey:v11];
             }
 
-            v4 = v15;
+            listsCopy = v15;
             v9 = v21;
             v8 = v22;
           }
@@ -6153,36 +6153,36 @@ uint64_t __39__UIKBTree_removeKeyFromCachedKeyList___block_invoke(uint64_t a1, v
       while (v8);
     }
 
-    v19 = [(UIKBTree *)self cache];
-    v20 = [v4 name];
-    [v19 removeObjectForKey:v20];
+    cache4 = [(UIKBTree *)self cache];
+    name = [listsCopy name];
+    [cache4 removeObjectForKey:name];
   }
 }
 
 - (void)updateCachedKeyList
 {
-  v3 = [(UIKBTree *)self cache];
-  [v3 removeObjectForKey:@"keys"];
+  cache = [(UIKBTree *)self cache];
+  [cache removeObjectForKey:@"keys"];
 
-  v4 = [(UIKBTree *)self keys];
+  keys = [(UIKBTree *)self keys];
 }
 
 - (id)geometries
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKBTree *)self cache];
-  v4 = [v3 objectForKey:@"geometries"];
+  cache = [(UIKBTree *)self cache];
+  array = [cache objectForKey:@"geometries"];
 
-  if (!v4)
+  if (!array)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v21 = self;
-    v5 = [(UIKBTree *)self subtrees];
-    v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    selfCopy = self;
+    subtrees = [(UIKBTree *)self subtrees];
+    v6 = [subtrees countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v6)
     {
       v7 = v6;
@@ -6193,7 +6193,7 @@ uint64_t __39__UIKBTree_removeKeyFromCachedKeyList___block_invoke(uint64_t a1, v
         {
           if (*v27 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subtrees);
           }
 
           v10 = *(*(&v26 + 1) + 8 * i);
@@ -6202,9 +6202,9 @@ uint64_t __39__UIKBTree_removeKeyFromCachedKeyList___block_invoke(uint64_t a1, v
           v24 = 0u;
           v25 = 0u;
           v11 = [v10 geometrySet:0];
-          v12 = [v11 subtrees];
+          subtrees2 = [v11 subtrees];
 
-          v13 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
+          v13 = [subtrees2 countByEnumeratingWithState:&v22 objects:v30 count:16];
           if (v13)
           {
             v14 = v13;
@@ -6215,31 +6215,31 @@ uint64_t __39__UIKBTree_removeKeyFromCachedKeyList___block_invoke(uint64_t a1, v
               {
                 if (*v23 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(subtrees2);
                 }
 
-                v17 = [*(*(&v22 + 1) + 8 * j) subtrees];
-                [v4 addObjectsFromArray:v17];
+                subtrees3 = [*(*(&v22 + 1) + 8 * j) subtrees];
+                [array addObjectsFromArray:subtrees3];
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
+              v14 = [subtrees2 countByEnumeratingWithState:&v22 objects:v30 count:16];
             }
 
             while (v14);
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v7 = [subtrees countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v7);
     }
 
-    v18 = [(UIKBTree *)v21 cache];
-    [v18 setObject:v4 forKey:@"geometries"];
+    cache2 = [(UIKBTree *)selfCopy cache];
+    [cache2 setObject:array forKey:@"geometries"];
   }
 
-  v19 = v4;
+  v19 = array;
 
   return v19;
 }
@@ -6247,19 +6247,19 @@ uint64_t __39__UIKBTree_removeKeyFromCachedKeyList___block_invoke(uint64_t a1, v
 - (id)keyAttributes
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKBTree *)self cache];
-  v4 = [v3 objectForKey:@"keyAttributes"];
+  cache = [(UIKBTree *)self cache];
+  array = [cache objectForKey:@"keyAttributes"];
 
-  if (!v4)
+  if (!array)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v21 = self;
-    v5 = [(UIKBTree *)self subtrees];
-    v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    selfCopy = self;
+    subtrees = [(UIKBTree *)self subtrees];
+    v6 = [subtrees countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v6)
     {
       v7 = v6;
@@ -6270,7 +6270,7 @@ uint64_t __39__UIKBTree_removeKeyFromCachedKeyList___block_invoke(uint64_t a1, v
         {
           if (*v27 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subtrees);
           }
 
           v10 = *(*(&v26 + 1) + 8 * i);
@@ -6279,9 +6279,9 @@ uint64_t __39__UIKBTree_removeKeyFromCachedKeyList___block_invoke(uint64_t a1, v
           v24 = 0u;
           v25 = 0u;
           v11 = [v10 attributeSet:0];
-          v12 = [v11 subtrees];
+          subtrees2 = [v11 subtrees];
 
-          v13 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
+          v13 = [subtrees2 countByEnumeratingWithState:&v22 objects:v30 count:16];
           if (v13)
           {
             v14 = v13;
@@ -6292,84 +6292,84 @@ uint64_t __39__UIKBTree_removeKeyFromCachedKeyList___block_invoke(uint64_t a1, v
               {
                 if (*v23 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(subtrees2);
                 }
 
-                v17 = [*(*(&v22 + 1) + 8 * j) subtrees];
-                [v4 addObjectsFromArray:v17];
+                subtrees3 = [*(*(&v22 + 1) + 8 * j) subtrees];
+                [array addObjectsFromArray:subtrees3];
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
+              v14 = [subtrees2 countByEnumeratingWithState:&v22 objects:v30 count:16];
             }
 
             while (v14);
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v7 = [subtrees countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v7);
     }
 
-    v18 = [(UIKBTree *)v21 cache];
-    [v18 setObject:v4 forKey:@"keyAttributes"];
+    cache2 = [(UIKBTree *)selfCopy cache];
+    [cache2 setObject:array forKey:@"keyAttributes"];
   }
 
-  v19 = v4;
+  v19 = array;
 
   return v19;
 }
 
 - (void)clearTransientCaches
 {
-  v3 = [(UIKBTree *)self cache];
-  [v3 removeObjectForKey:@"keys"];
+  cache = [(UIKBTree *)self cache];
+  [cache removeObjectForKey:@"keys"];
 
-  v4 = [(UIKBTree *)self cache];
-  [v4 removeObjectForKey:@"geometries"];
+  cache2 = [(UIKBTree *)self cache];
+  [cache2 removeObjectForKey:@"geometries"];
 
-  v5 = [(UIKBTree *)self cache];
-  [v5 removeObjectForKey:@"keyAttributes"];
+  cache3 = [(UIKBTree *)self cache];
+  [cache3 removeObjectForKey:@"keyAttributes"];
 
-  v6 = [(UIKBTree *)self cache];
-  [v6 removeObjectForKey:@"layoutName"];
+  cache4 = [(UIKBTree *)self cache];
+  [cache4 removeObjectForKey:@"layoutName"];
 
-  v7 = [(UIKBTree *)self cache];
-  [v7 removeObjectForKey:@"isLetters"];
+  cache5 = [(UIKBTree *)self cache];
+  [cache5 removeObjectForKey:@"isLetters"];
 
-  v8 = [(UIKBTree *)self cache];
-  [v8 removeObjectForKey:@"isScaled"];
+  cache6 = [(UIKBTree *)self cache];
+  [cache6 removeObjectForKey:@"isScaled"];
 
-  v9 = [(UIKBTree *)self cache];
-  [v9 removeObjectForKey:@"isGenerated"];
+  cache7 = [(UIKBTree *)self cache];
+  [cache7 removeObjectForKey:@"isGenerated"];
 
-  v10 = [(UIKBTree *)self cache];
-  [v10 removeObjectForKey:@"resizingOffset"];
+  cache8 = [(UIKBTree *)self cache];
+  [cache8 removeObjectForKey:@"resizingOffset"];
 }
 
 - (id)keysOrderedByPositionWithoutZip
 {
-  v2 = [(UIKBTree *)self keys];
-  v3 = [v2 sortedArrayUsingFunction:keyPositionSort context:0];
+  keys = [(UIKBTree *)self keys];
+  v3 = [keys sortedArrayUsingFunction:keyPositionSort context:0];
 
   return v3;
 }
 
 - (id)keysOrderedByPositionRTL
 {
-  v2 = [(UIKBTree *)self keys];
-  v3 = [v2 sortedArrayUsingFunction:keyPositionSort context:&unk_1EFE34388];
+  keys = [(UIKBTree *)self keys];
+  v3 = [keys sortedArrayUsingFunction:keyPositionSort context:&unk_1EFE34388];
 
   return v3;
 }
 
-- (id)keysOrderedByPositionLinear:(BOOL)a3
+- (id)keysOrderedByPositionLinear:(BOOL)linear
 {
-  v3 = a3;
-  v4 = [(UIKBTree *)self keys];
-  v5 = v4;
-  if (v3)
+  linearCopy = linear;
+  keys = [(UIKBTree *)self keys];
+  v5 = keys;
+  if (linearCopy)
   {
     v6 = &unk_1EFE343B0;
   }
@@ -6379,31 +6379,31 @@ uint64_t __39__UIKBTree_removeKeyFromCachedKeyList___block_invoke(uint64_t a1, v
     v6 = &unk_1EFE343D8;
   }
 
-  v7 = [v4 sortedArrayUsingFunction:keyPositionSort context:v6];
+  v7 = [keys sortedArrayUsingFunction:keyPositionSort context:v6];
 
   return v7;
 }
 
 - (id)geometriesOrderedByPosition
 {
-  v2 = [(UIKBTree *)self geometries];
-  v3 = [v2 sortedArrayUsingFunction:keyPositionSort context:0];
+  geometries = [(UIKBTree *)self geometries];
+  v3 = [geometries sortedArrayUsingFunction:keyPositionSort context:0];
 
   return v3;
 }
 
-- (id)keyByKeyName:(id)a3
+- (id)keyByKeyName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = nameByRemovingHash(a3);
+  v4 = nameByRemovingHash(name);
   if (v4)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(UIKBTree *)self keys];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    keys = [(UIKBTree *)self keys];
+    v6 = [keys countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = *v14;
@@ -6413,12 +6413,12 @@ uint64_t __39__UIKBTree_removeKeyFromCachedKeyList___block_invoke(uint64_t a1, v
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(keys);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 unhashedName];
-          v11 = [v10 isEqualToString:v4];
+          unhashedName = [v9 unhashedName];
+          v11 = [unhashedName isEqualToString:v4];
 
           if (v11)
           {
@@ -6427,7 +6427,7 @@ uint64_t __39__UIKBTree_removeKeyFromCachedKeyList___block_invoke(uint64_t a1, v
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [keys countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v6)
         {
           continue;
@@ -6448,19 +6448,19 @@ LABEL_12:
   return v6;
 }
 
-- (id)keysByKeyName:(id)a3
+- (id)keysByKeyName:(id)name
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = nameByRemovingHash(a3);
+  v4 = nameByRemovingHash(name);
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(UIKBTree *)self keys];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    keys = [(UIKBTree *)self keys];
+    v7 = [keys countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -6471,20 +6471,20 @@ LABEL_12:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(keys);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          v12 = [v11 unhashedName];
-          v13 = [v12 isEqualToString:v4];
+          unhashedName = [v11 unhashedName];
+          v13 = [unhashedName isEqualToString:v4];
 
           if (v13)
           {
-            [v5 addObject:v11];
+            [array addObject:v11];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [keys countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -6493,25 +6493,25 @@ LABEL_12:
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  return v5;
+  return array;
 }
 
-- (id)keysWithString:(id)a3
+- (id)keysWithString:(id)string
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(UIKBTree *)self keys];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    keys = [(UIKBTree *)self keys];
+    v7 = [keys countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -6522,20 +6522,20 @@ LABEL_12:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(keys);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          v12 = [v11 name];
-          v13 = [v12 rangeOfString:v4];
+          name = [v11 name];
+          v13 = [name rangeOfString:stringCopy];
 
           if (v13 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            [v5 addObject:v11];
+            [array addObject:v11];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [keys countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -6544,25 +6544,25 @@ LABEL_12:
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  return v5;
+  return array;
 }
 
-- (id)keysWithRepresentedString:(id)a3
+- (id)keysWithRepresentedString:(id)string
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(UIKBTree *)self keys];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    keys = [(UIKBTree *)self keys];
+    v7 = [keys countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -6573,20 +6573,20 @@ LABEL_12:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(keys);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          v12 = [v11 fullRepresentedString];
-          v13 = [v12 isEqualToString:v4];
+          fullRepresentedString = [v11 fullRepresentedString];
+          v13 = [fullRepresentedString isEqualToString:stringCopy];
 
           if (v13)
           {
-            [v5 addObject:v11];
+            [array addObject:v11];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [keys countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -6595,23 +6595,23 @@ LABEL_12:
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  return v5;
+  return array;
 }
 
-- (id)keysWithInteractionTypes:(id)a3
+- (id)keysWithInteractionTypes:(id)types
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  typesCopy = types;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(UIKBTree *)self keys];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  keys = [(UIKBTree *)self keys];
+  v7 = [keys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -6622,26 +6622,26 @@ LABEL_12:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keys);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v11, "interactionType")}];
-        v13 = [v4 containsObject:v12];
+        v13 = [typesCopy containsObject:v12];
 
         if (v13)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [keys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 - (id)keysExcludingEmptyKeys
@@ -6650,32 +6650,32 @@ LABEL_12:
   if ([v3 count])
   {
     v4 = MEMORY[0x1E695DF70];
-    v5 = [(UIKBTree *)self keys];
-    v6 = [v4 arrayWithArray:v5];
+    keys = [(UIKBTree *)self keys];
+    keys2 = [v4 arrayWithArray:keys];
 
-    [v6 removeObjectsInArray:v3];
+    [keys2 removeObjectsInArray:v3];
   }
 
   else
   {
-    v6 = [(UIKBTree *)self keys];
+    keys2 = [(UIKBTree *)self keys];
   }
 
-  return v6;
+  return keys2;
 }
 
 - (id)alternateKeyplaneName
 {
-  if (!+[UIKeyboardLayout _showSmallDisplayKeyplane]|| ([(UIKBTree *)self stringForProperty:@"more-alternate-small-display"], (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!+[UIKeyboardLayout _showSmallDisplayKeyplane]|| ([(UIKBTree *)self stringForProperty:@"more-alternate-small-display"], (name = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v3 = [(UIKBTree *)self stringForProperty:@"more-alternate"];
-    if (!v3)
+    name = [(UIKBTree *)self stringForProperty:@"more-alternate"];
+    if (!name)
     {
-      v3 = [(UIKBTree *)self name];
+      name = [(UIKBTree *)self name];
     }
   }
 
-  return v3;
+  return name;
 }
 
 - (BOOL)looksLikeShiftAlternate
@@ -6689,51 +6689,51 @@ LABEL_12:
 
 - (BOOL)isLetters
 {
-  v3 = [(UIKBTree *)self cache];
-  v4 = [v3 objectForKey:@"isLetters"];
+  cache = [(UIKBTree *)self cache];
+  v4 = [cache objectForKey:@"isLetters"];
 
   if (!v4)
   {
-    v5 = [(UIKBTree *)self name];
-    v6 = [v5 rangeOfString:@"Letters"] != 0x7FFFFFFFFFFFFFFFLL;
+    name = [(UIKBTree *)self name];
+    v6 = [name rangeOfString:@"Letters"] != 0x7FFFFFFFFFFFFFFFLL;
 
-    v7 = [(UIKBTree *)self cache];
+    cache2 = [(UIKBTree *)self cache];
     v8 = [MEMORY[0x1E696AD98] numberWithBool:v6];
-    [v7 setObject:v8 forKey:@"isLetters"];
+    [cache2 setObject:v8 forKey:@"isLetters"];
   }
 
-  v9 = [(UIKBTree *)self cache];
-  v10 = [v9 objectForKey:@"isLetters"];
-  v11 = [v10 BOOLValue];
+  cache3 = [(UIKBTree *)self cache];
+  v10 = [cache3 objectForKey:@"isLetters"];
+  bOOLValue = [v10 BOOLValue];
 
-  return v11;
+  return bOOLValue;
 }
 
-- (void)setIsGenerated:(BOOL)a3
+- (void)setIsGenerated:(BOOL)generated
 {
-  v4 = [(UIKBTree *)self cache];
-  v5 = v4;
-  if (a3)
+  cache = [(UIKBTree *)self cache];
+  v5 = cache;
+  if (generated)
   {
-    [v4 setObject:&unk_1EFE31000 forKey:@"isGenerated"];
+    [cache setObject:&unk_1EFE31000 forKey:@"isGenerated"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"isGenerated"];
+    [cache removeObjectForKey:@"isGenerated"];
   }
 }
 
-- (void)setResizingOffset:(double)a3
+- (void)setResizingOffset:(double)offset
 {
-  v5 = [(UIKBTree *)self cache];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setObject:v4 forKey:@"resizingOffset"];
+  cache = [(UIKBTree *)self cache];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:offset];
+  [cache setObject:v4 forKey:@"resizingOffset"];
 }
 
-- (void)cacheNativeIdiomIfNecessaryForScreenTraits:(id)a3
+- (void)cacheNativeIdiomIfNecessaryForScreenTraits:(id)traits
 {
-  v10 = a3;
+  traitsCopy = traits;
   v4 = [(UIKBTree *)self objectForProperty:@"nativeIdiom"];
   if (!v4)
   {
@@ -6741,7 +6741,7 @@ LABEL_12:
 
     if (v5)
     {
-      v6 = [(UIKBTree *)self visualStylingForScreenTraits:v10]<< 58 >> 58;
+      v6 = [(UIKBTree *)self visualStylingForScreenTraits:traitsCopy]<< 58 >> 58;
       v7 = [(NSMutableDictionary *)self->properties mutableCopy];
       properties = self->properties;
       self->properties = v7;
@@ -6768,15 +6768,15 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)supportsType:(int64_t)a3
+- (BOOL)supportsType:(int64_t)type
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(UIKBTree *)self subtrees];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v5 = [subtrees countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -6787,7 +6787,7 @@ LABEL_3:
     {
       if (*v18 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(subtrees);
       }
 
       v9 = *(*(&v17 + 1) + 8 * v8);
@@ -6798,7 +6798,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v6 = [subtrees countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -6815,13 +6815,13 @@ LABEL_3:
       return 1;
     }
 
-    if (a3 <= 7)
+    if (type <= 7)
     {
-      if (a3 > 3)
+      if (type > 3)
       {
-        if (a3 > 5)
+        if (type > 5)
         {
-          if (a3 == 6)
+          if (type == 6)
           {
             v12 = UIKBAttributeValueKeyboardTypeNamePhonePadStr;
           }
@@ -6834,13 +6834,13 @@ LABEL_3:
           goto LABEL_41;
         }
 
-        if (a3 != 4)
+        if (type != 4)
         {
           v12 = UIKBAttributeValueKeyboardTypePhonePadStr;
 LABEL_41:
           v13 = *v12;
-          v14 = [v11 properties];
-          v15 = [v14 objectForKey:v13];
+          properties = [v11 properties];
+          v15 = [properties objectForKey:v13];
           v10 = v15 != 0;
 
           goto LABEL_42;
@@ -6851,15 +6851,15 @@ LABEL_34:
         goto LABEL_41;
       }
 
-      if (a3 == 1)
+      if (type == 1)
       {
         v12 = UIKBAttributeValueKeyboardTypeASCIICapableStr;
         goto LABEL_41;
       }
 
-      if (a3 != 2)
+      if (type != 2)
       {
-        if (a3 == 3)
+        if (type == 3)
         {
           v12 = UIKBAttributeValueKeyboardTypeURLStr;
           goto LABEL_41;
@@ -6871,15 +6871,15 @@ LABEL_34:
       goto LABEL_33;
     }
 
-    if (a3 <= 10)
+    if (type <= 10)
     {
-      if (a3 == 8)
+      if (type == 8)
       {
         v12 = UIKBAttributeValueKeyboardTypeDecimalPadStr;
         goto LABEL_41;
       }
 
-      if (a3 == 9)
+      if (type == 9)
       {
         v12 = UIKBAttributeValueKeyboardTypeTwitterStr;
         goto LABEL_41;
@@ -6888,14 +6888,14 @@ LABEL_34:
 
     else
     {
-      if (a3 > 122)
+      if (type > 122)
       {
-        if (a3 == 127)
+        if (type == 127)
         {
           goto LABEL_34;
         }
 
-        if (a3 != 123)
+        if (type != 123)
         {
 LABEL_40:
           v12 = UIKBAttributeValueKeyboardTypeDefaultStr;
@@ -6907,13 +6907,13 @@ LABEL_33:
         goto LABEL_41;
       }
 
-      if (a3 == 11)
+      if (type == 11)
       {
         v12 = UIKBAttributeValueKeyboardTypeASCIICapableNumberPadStr;
         goto LABEL_41;
       }
 
-      if (a3 != 120)
+      if (type != 120)
       {
         goto LABEL_40;
       }
@@ -6925,18 +6925,18 @@ LABEL_33:
 
 LABEL_9:
   v10 = 1;
-  v11 = v4;
+  v11 = subtrees;
 LABEL_42:
 
   return v10;
 }
 
-- (BOOL)looksLike:(id)a3
+- (BOOL)looksLike:(id)like
 {
-  v4 = [a3 componentName];
-  v5 = [v4 lowercaseString];
-  v6 = [(UIKBTree *)self shiftAlternateKeyplaneName];
-  v7 = [v5 isEqualToString:v6];
+  componentName = [like componentName];
+  lowercaseString = [componentName lowercaseString];
+  shiftAlternateKeyplaneName = [(UIKBTree *)self shiftAlternateKeyplaneName];
+  v7 = [lowercaseString isEqualToString:shiftAlternateKeyplaneName];
 
   if (!v7)
   {
@@ -6946,9 +6946,9 @@ LABEL_42:
   return [(UIKBTree *)self looksExactlyLikeShiftAlternate];
 }
 
-- (CGRect)frameForKeylayoutName:(id)a3
+- (CGRect)frameForKeylayoutName:(id)name
 {
-  v3 = [(UIKBTree *)self subtreeWithName:a3];
+  v3 = [(UIKBTree *)self subtreeWithName:name];
   v4 = v3;
   if (v3)
   {
@@ -6981,8 +6981,8 @@ LABEL_42:
 - (id)findLeftMoreKey
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = [(UIKBTree *)self cache];
-  v3 = [v2 objectForKey:@"More-Key"];
+  cache = [(UIKBTree *)self cache];
+  v3 = [cache objectForKey:@"More-Key"];
 
   v4 = [v3 objectAtIndex:0];
   v16 = 0u;
@@ -7025,16 +7025,16 @@ LABEL_42:
   return v4;
 }
 
-- (void)updateDictationKeyOnNumberPads:(BOOL)a3
+- (void)updateDictationKeyOnNumberPads:(BOOL)pads
 {
-  v3 = a3;
+  padsCopy = pads;
   v29 = *MEMORY[0x1E69E9840];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [(UIKBTree *)self keys];
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  keys = [(UIKBTree *)self keys];
+  v5 = [keys countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -7046,7 +7046,7 @@ LABEL_3:
     {
       if (*v25 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(keys);
       }
 
       v10 = *(*(&v24 + 1) + 8 * v9);
@@ -7068,7 +7068,7 @@ LABEL_3:
 
       if (v6 == ++v9)
       {
-        v6 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v6 = [keys countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -7085,26 +7085,26 @@ LABEL_3:
       goto LABEL_29;
     }
 
-    v12 = [v11 name];
-    v13 = [v12 isEqualToString:@"NumberPad-Dot"];
+    name = [v11 name];
+    v13 = [name isEqualToString:@"NumberPad-Dot"];
 
     if (v13)
     {
-      if (!v3)
+      if (!padsCopy)
       {
-        v14 = [v11 shape];
-        v15 = [v7 shape];
-        v16 = [UIKBShape shapeByCombining:v14 withShape:v15];
+        shape = [v11 shape];
+        shape2 = [v7 shape];
+        v16 = [UIKBShape shapeByCombining:shape withShape:shape2];
         [v11 setShape:v16];
       }
 
       v17 = v7;
-      v18 = v3;
+      v18 = padsCopy;
     }
 
     else
     {
-      if (v3)
+      if (padsCopy)
       {
         v19 = v7;
       }
@@ -7114,7 +7114,7 @@ LABEL_3:
         v19 = v11;
       }
 
-      if (v3)
+      if (padsCopy)
       {
         v20 = v11;
       }
@@ -7124,13 +7124,13 @@ LABEL_3:
         v20 = v7;
       }
 
-      v21 = [v19 shape];
-      v22 = [v20 shape];
-      v23 = [UIKBShape shapeByCombining:v21 withShape:v22];
+      shape3 = [v19 shape];
+      shape4 = [v20 shape];
+      v23 = [UIKBShape shapeByCombining:shape3 withShape:shape4];
       [v19 setShape:v23];
 
-      [v7 setVisible:v3];
-      v18 = v3 ^ 1;
+      [v7 setVisible:padsCopy];
+      v18 = padsCopy ^ 1;
       v17 = v11;
     }
 
@@ -7141,7 +7141,7 @@ LABEL_3:
   {
     v7 = 0;
 LABEL_19:
-    v11 = v4;
+    v11 = keys;
   }
 
 LABEL_29:
@@ -7159,8 +7159,8 @@ LABEL_29:
     v28 = 0u;
     v29 = 0u;
     v19 = v3;
-    v5 = [v3 properties];
-    v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    properties = [v3 properties];
+    v6 = [properties countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v6)
     {
       v7 = v6;
@@ -7171,7 +7171,7 @@ LABEL_29:
         {
           if (*v27 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(properties);
           }
 
           v10 = *(*(&v26 + 1) + 8 * i);
@@ -7183,7 +7183,7 @@ LABEL_29:
           [v10 enumerateObjectsUsingBlock:v24];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v7 = [properties countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v7);
@@ -7242,35 +7242,35 @@ void __34__UIKBTree_keysForMergeConditions__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)subsumeDisappearingKeyName:(id)a3 intoKeyName:(id)a4 factors:(id)a5 inRightToLeft:(BOOL)a6
+- (void)subsumeDisappearingKeyName:(id)name intoKeyName:(id)keyName factors:(id)factors inRightToLeft:(BOOL)left
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a3;
-  v16 = [(UIKBTree *)self firstCachedKeyWithName:a4];
-  v12 = [(UIKBTree *)self firstCachedKeyWithName:v11];
+  leftCopy = left;
+  factorsCopy = factors;
+  nameCopy = name;
+  v16 = [(UIKBTree *)self firstCachedKeyWithName:keyName];
+  v12 = [(UIKBTree *)self firstCachedKeyWithName:nameCopy];
 
-  v13 = [v16 shape];
-  v14 = [v13 copy];
+  shape = [v16 shape];
+  v14 = [shape copy];
 
-  v15 = [v12 shape];
-  [v14 addRectFrom:v15 mergeActionFactors:v10 inRightToLeft:v6];
+  shape2 = [v12 shape];
+  [v14 addRectFrom:shape2 mergeActionFactors:factorsCopy inRightToLeft:leftCopy];
 
   [v16 setShape:v14];
 }
 
-- (id)mergeKeyNames:(id)a3 inRightToLeft:(BOOL)a4
+- (id)mergeKeyNames:(id)names inRightToLeft:(BOOL)left
 {
-  v40 = a4;
+  leftCopy = left;
   v66 = *MEMORY[0x1E69E9840];
-  v39 = a3;
+  namesCopy = names;
   v34 = [(UIKBTree *)self subtreeWithType:13];
   v5 = v34;
   if (v34)
   {
-    v38 = [v39 mutableCopy];
-    v6 = [v34 properties];
-    v7 = [v6 objectForKey:v39];
+    v38 = [namesCopy mutableCopy];
+    properties = [v34 properties];
+    v7 = [properties objectForKey:namesCopy];
 
     v61 = 0u;
     v62 = 0u;
@@ -7291,14 +7291,14 @@ void __34__UIKBTree_keysForMergeConditions__block_invoke(uint64_t a1, void *a2)
           }
 
           v11 = *(*(&v59 + 1) + 8 * i);
-          v12 = [v11 orderedKeyList];
+          orderedKeyList = [v11 orderedKeyList];
 
-          if (!v12)
+          if (!orderedKeyList)
           {
-            v13 = [v11 disappearingKeyName];
-            v14 = [v11 remainingKeyName];
-            v15 = [v11 factors];
-            [(UIKBTree *)self subsumeDisappearingKeyName:v13 intoKeyName:v14 factors:v15 inRightToLeft:v40];
+            disappearingKeyName = [v11 disappearingKeyName];
+            remainingKeyName = [v11 remainingKeyName];
+            factors = [v11 factors];
+            [(UIKBTree *)self subsumeDisappearingKeyName:disappearingKeyName intoKeyName:remainingKeyName factors:factors inRightToLeft:leftCopy];
           }
         }
 
@@ -7312,8 +7312,8 @@ void __34__UIKBTree_keysForMergeConditions__block_invoke(uint64_t a1, void *a2)
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v32 = [v34 properties];
-    v35 = [v32 countByEnumeratingWithState:&v55 objects:v64 count:16];
+    properties2 = [v34 properties];
+    v35 = [properties2 countByEnumeratingWithState:&v55 objects:v64 count:16];
     if (v35)
     {
       v33 = *v56;
@@ -7325,14 +7325,14 @@ void __34__UIKBTree_keysForMergeConditions__block_invoke(uint64_t a1, void *a2)
           if (*v56 != v33)
           {
             v17 = v16;
-            objc_enumerationMutation(v32);
+            objc_enumerationMutation(properties2);
             v16 = v17;
           }
 
           v36 = v16;
           v18 = *(*(&v55 + 1) + 8 * v16);
-          v19 = [v34 properties];
-          v20 = [v19 objectForKey:v39];
+          properties3 = [v34 properties];
+          v20 = [properties3 objectForKey:namesCopy];
 
           v53 = 0u;
           v54 = 0u;
@@ -7353,13 +7353,13 @@ void __34__UIKBTree_keysForMergeConditions__block_invoke(uint64_t a1, void *a2)
                 }
 
                 v25 = *(*(&v51 + 1) + 8 * j);
-                v26 = [v25 orderedKeyList];
-                v27 = v26 == 0;
+                orderedKeyList2 = [v25 orderedKeyList];
+                v27 = orderedKeyList2 == 0;
 
                 if (!v27)
                 {
-                  v28 = [v25 orderedKeyList];
-                  v29 = [v18 arrayByAddingObjectsFromArray:v28];
+                  orderedKeyList3 = [v25 orderedKeyList];
+                  v29 = [v18 arrayByAddingObjectsFromArray:orderedKeyList3];
 
                   v50[0] = 0;
                   v50[1] = v50;
@@ -7369,12 +7369,12 @@ void __34__UIKBTree_keysForMergeConditions__block_invoke(uint64_t a1, void *a2)
                   v41[1] = 3221225472;
                   v41[2] = __40__UIKBTree_mergeKeyNames_inRightToLeft___block_invoke;
                   v41[3] = &unk_1E710FEA0;
-                  v42 = v39;
-                  v43 = self;
+                  v42 = namesCopy;
+                  selfCopy = self;
                   v30 = v29;
                   v44 = v30;
                   v45 = v25;
-                  v49 = v40;
+                  v49 = leftCopy;
                   v48 = v50;
                   v46 = v18;
                   v47 = v38;
@@ -7394,7 +7394,7 @@ void __34__UIKBTree_keysForMergeConditions__block_invoke(uint64_t a1, void *a2)
         }
 
         while (v36 + 1 != v35);
-        v35 = [v32 countByEnumeratingWithState:&v55 objects:v64 count:16];
+        v35 = [properties2 countByEnumeratingWithState:&v55 objects:v64 count:16];
       }
 
       while (v35);
@@ -7471,12 +7471,12 @@ void __40__UIKBTree_mergeKeyNames_inRightToLeft___block_invoke(uint64_t a1, uint
   v4 = [(UIKBTree *)self firstCachedKeyWithName:@"Dynamic-Non-Roman-to-Roman-Switch-Key"];
 
   [(UIKBTree *)self removeKeyFromCachedKeyList:v4];
-  v5 = [(UIKBTree *)self keysetCanContainWriteboardKey];
-  v6 = v5;
-  if (v5 && [v5 count])
+  keysetCanContainWriteboardKey = [(UIKBTree *)self keysetCanContainWriteboardKey];
+  v6 = keysetCanContainWriteboardKey;
+  if (keysetCanContainWriteboardKey && [keysetCanContainWriteboardKey count])
   {
     v19 = v4;
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -7498,13 +7498,13 @@ void __40__UIKBTree_mergeKeyNames_inRightToLeft___block_invoke(uint64_t a1, uint
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
-          v14 = [v13 name];
-          v15 = [v14 isEqualToString:@"Writeboard-Key"];
+          name = [v13 name];
+          v15 = [name isEqualToString:@"Writeboard-Key"];
 
           if ((v15 & 1) == 0)
           {
-            v16 = [v13 name];
-            v17 = [v16 isEqualToString:@"Dynamic-Non-Roman-to-Roman-Switch-Key"];
+            name2 = [v13 name];
+            v17 = [name2 isEqualToString:@"Dynamic-Non-Roman-to-Roman-Switch-Key"];
 
             if (!v17)
             {
@@ -7512,7 +7512,7 @@ void __40__UIKBTree_mergeKeyNames_inRightToLeft___block_invoke(uint64_t a1, uint
             }
           }
 
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -7521,7 +7521,7 @@ void __40__UIKBTree_mergeKeyNames_inRightToLeft___block_invoke(uint64_t a1, uint
       while (v10);
     }
 
-    [v8 removeObjectsInArray:v7];
+    [v8 removeObjectsInArray:array];
     v6 = v18;
     v4 = v19;
   }
@@ -7534,17 +7534,17 @@ void __40__UIKBTree_mergeKeyNames_inRightToLeft___block_invoke(uint64_t a1, uint
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v4 = [(UIKBTree *)self subtrees];
-  v5 = [v4 countByEnumeratingWithState:&v44 objects:v53 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v5 = [subtrees countByEnumeratingWithState:&v44 objects:v53 count:16];
   if (!v5)
   {
-    v30 = 0;
+    subtrees3 = 0;
     goto LABEL_53;
   }
 
   v6 = v5;
   v7 = *v45;
-  v34 = v4;
+  v34 = subtrees;
   v32 = *v45;
   do
   {
@@ -7555,22 +7555,22 @@ void __40__UIKBTree_mergeKeyNames_inRightToLeft___block_invoke(uint64_t a1, uint
       if (*v45 != v7)
       {
         v9 = v8;
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(subtrees);
         v8 = v9;
       }
 
       v35 = v8;
       v10 = *(*(&v44 + 1) + 8 * v8);
-      v11 = [v10 name];
+      name = [v10 name];
       v37 = v10;
-      if ([v11 containsString:@"Control"])
+      if ([name containsString:@"Control"])
       {
       }
 
       else
       {
-        v12 = [v10 name];
-        v13 = [v12 containsString:@"split-right"];
+        name2 = [v10 name];
+        v13 = [name2 containsString:@"split-right"];
 
         v10 = v37;
         if (!v13)
@@ -7583,11 +7583,11 @@ void __40__UIKBTree_mergeKeyNames_inRightToLeft___block_invoke(uint64_t a1, uint
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v14 = [v10 keySet];
-      v15 = [v14 subtrees];
+      keySet = [v10 keySet];
+      subtrees2 = [keySet subtrees];
 
-      obj = v15;
-      v16 = [v15 countByEnumeratingWithState:&v40 objects:v52 count:16];
+      obj = subtrees2;
+      v16 = [subtrees2 countByEnumeratingWithState:&v40 objects:v52 count:16];
       if (!v16)
       {
         goto LABEL_46;
@@ -7615,14 +7615,14 @@ void __40__UIKBTree_mergeKeyNames_inRightToLeft___block_invoke(uint64_t a1, uint
 
           if (((-[UIKBTree visualStyling](self, "visualStyling") & 0x3F) == 1 || (-[UIKBTree visualStyling](self, "visualStyling") & 0x3F) == 0x18 || (-[UIKBTree visualStyling](self, "visualStyling") & 0x3F) == 0x19 || (-[UIKBTree visualStyling](self, "visualStyling") & 0x3F) == 0x1A || (-[UIKBTree visualStyling](self, "visualStyling") & 0x3F) == 0x17) && [v20 displayRowHint] == 2)
           {
-            v2 = [v10 name];
-            if ([v2 containsString:@"Handwriting"])
+            name3 = [v10 name];
+            if ([name3 containsString:@"Handwriting"])
             {
 
 LABEL_52:
-              v30 = [v20 subtrees];
+              subtrees3 = [v20 subtrees];
 
-              v4 = v34;
+              subtrees = v34;
               goto LABEL_53;
             }
 
@@ -7644,8 +7644,8 @@ LABEL_52:
             v21 = 0;
           }
 
-          v22 = [v20 subtrees];
-          if (![v22 count])
+          subtrees4 = [v20 subtrees];
+          if (![subtrees4 count])
           {
 
             v18 = v36;
@@ -7660,12 +7660,12 @@ LABEL_39:
             goto LABEL_44;
           }
 
-          v23 = [v20 subtrees];
+          subtrees5 = [v20 subtrees];
           v48 = 0u;
           v49 = 0u;
           v50 = 0u;
           v51 = 0u;
-          v24 = v23;
+          v24 = subtrees5;
           v25 = [v24 countByEnumeratingWithState:&v48 objects:v54 count:16];
           if (v25)
           {
@@ -7724,7 +7724,7 @@ LABEL_44:
 
         while (v19 != v17);
         v17 = [obj countByEnumeratingWithState:&v40 objects:v52 count:16];
-        v4 = v34;
+        subtrees = v34;
         v7 = v32;
         if (v17)
         {
@@ -7742,40 +7742,40 @@ LABEL_47:
     }
 
     while (v35 + 1 != v6);
-    v6 = [v4 countByEnumeratingWithState:&v44 objects:v53 count:16];
-    v30 = 0;
+    v6 = [subtrees countByEnumeratingWithState:&v44 objects:v53 count:16];
+    subtrees3 = 0;
   }
 
   while (v6);
 LABEL_53:
 
-  return v30;
+  return subtrees3;
 }
 
-- (id)shapeFromFrame:(CGRect)a3 leftPadding:(double)a4 rightPadding:(double)a5
+- (id)shapeFromFrame:(CGRect)frame leftPadding:(double)padding rightPadding:(double)rightPadding
 {
-  v5 = [[UIKBShape alloc] initWithGeometry:0 frame:a3.origin.x paddedFrame:a3.origin.y, a3.size.width, a3.size.height, a3.origin.x + a4, a3.origin.y + 0.0, a3.size.width - (a4 + a5), a3.size.height];
+  v5 = [[UIKBShape alloc] initWithGeometry:0 frame:frame.origin.x paddedFrame:frame.origin.y, frame.size.width, frame.size.height, frame.origin.x + padding, frame.origin.y + 0.0, frame.size.width - (padding + rightPadding), frame.size.height];
 
   return v5;
 }
 
-- (BOOL)addMessagesWriteboardKeyOrRomanSwitchIfDismissKey:(BOOL)a3
+- (BOOL)addMessagesWriteboardKeyOrRomanSwitchIfDismissKey:(BOOL)key
 {
-  v3 = a3;
+  keyCopy = key;
   v147 = *MEMORY[0x1E69E9840];
   v5 = [(UIKBTree *)self firstCachedKeyWithName:@"Dismiss-Key"];
-  v6 = [(UIKBTree *)self rightSpaceKey];
+  rightSpaceKey = [(UIKBTree *)self rightSpaceKey];
   v128 = [(UIKBTree *)self firstCachedKeyWithName:@"Return-Key"];
   v7 = [(UIKBTree *)self cachedKeysByKeyName:@"More-Key"];
   v8 = [(UIKBTree *)self firstCachedKeyWithName:@"Handwriting-Input"];
 
-  v9 = [(UIKBTree *)self firstKeyplaneSwitchKey];
+  firstKeyplaneSwitchKey = [(UIKBTree *)self firstKeyplaneSwitchKey];
 
-  v122 = v3;
-  if (v9)
+  v122 = keyCopy;
+  if (firstKeyplaneSwitchKey)
   {
-    v131 = [(UIKBTree *)self firstKeyplaneSwitchKey];
-    v130 = [v7 objectAtIndex:0];
+    firstKeyplaneSwitchKey2 = [(UIKBTree *)self firstKeyplaneSwitchKey];
+    firstObject = [v7 objectAtIndex:0];
     goto LABEL_8;
   }
 
@@ -7786,14 +7786,14 @@ LABEL_53:
     MinX = CGRectGetMinX(v148);
     v12 = [v7 objectAtIndex:1];
     [v12 paddedFrame];
-    v131 = [v7 objectAtIndex:MinX < CGRectGetMinX(v149)];
+    firstKeyplaneSwitchKey2 = [v7 objectAtIndex:MinX < CGRectGetMinX(v149)];
 
     v13 = [v7 objectAtIndex:0];
     [v13 paddedFrame];
     v14 = CGRectGetMinX(v150);
     v15 = [v7 objectAtIndex:1];
     [v15 paddedFrame];
-    v130 = [v7 objectAtIndex:v14 >= CGRectGetMinX(v151)];
+    firstObject = [v7 objectAtIndex:v14 >= CGRectGetMinX(v151)];
 
     goto LABEL_8;
   }
@@ -7801,38 +7801,38 @@ LABEL_53:
   v16 = 0;
   if ([v7 count] == 1 && v8)
   {
-    v130 = [v7 firstObject];
-    v131 = v128;
+    firstObject = [v7 firstObject];
+    firstKeyplaneSwitchKey2 = v128;
 LABEL_8:
     v17 = [(UIKBTree *)self firstCachedKeyWithName:@"Dictation-Key"];
     v18 = [(UIKBTree *)self firstCachedKeyWithName:@"International-Key"];
     v19 = [(UIKBTree *)self cachedKeysByKeyName:@"Modify-For-Writeboard-Key"];
     v20 = [v19 sortedArrayUsingComparator:&__block_literal_global_259_0];
 
-    v21 = [v20 firstObject];
-    LODWORD(v19) = [v21 displayRowHint];
+    firstObject2 = [v20 firstObject];
+    LODWORD(v19) = [firstObject2 displayRowHint];
     v129 = v18;
     if (v19 != [v18 displayRowHint])
     {
 
-      v21 = 0;
+      firstObject2 = 0;
       v20 = 0;
     }
 
     v16 = 0;
-    if (!v6 || !v131 || !v5)
+    if (!rightSpaceKey || !firstKeyplaneSwitchKey2 || !v5)
     {
       goto LABEL_58;
     }
 
     if ([(UIKBTree *)self isSplit])
     {
-      [v6 frame];
+      [rightSpaceKey frame];
       MidX = CGRectGetMidX(v152);
       [(UIKBTree *)self frame];
       if (MidX < CGRectGetMidX(v153))
       {
-        [v21 frame];
+        [firstObject2 frame];
         Width = CGRectGetWidth(v154);
         [v17 frame];
         if (Width <= CGRectGetWidth(v155))
@@ -7844,11 +7844,11 @@ LABEL_58:
           goto LABEL_59;
         }
 
-        v24 = v21;
+        v24 = firstObject2;
 
-        v21 = 0;
+        firstObject2 = 0;
         v20 = 0;
-        v6 = v24;
+        rightSpaceKey = v24;
       }
     }
 
@@ -7863,14 +7863,14 @@ LABEL_58:
     v27 = 0.0;
     if ([(UIKBTree *)self isSplit])
     {
-      v28 = v130;
-      [v130 frame];
+      v28 = firstObject;
+      [firstObject frame];
       v29 = CGRectGetMaxX(v160);
       [v18 frame];
       v30 = CGRectGetMaxX(v161);
       if (v29 <= v30)
       {
-        v31 = v130;
+        v31 = firstObject;
       }
 
       else
@@ -7899,20 +7899,20 @@ LABEL_58:
     v106 = MaxX;
     v108 = v25;
     v121 = v17;
-    [v6 frame];
+    [rightSpaceKey frame];
     v124 = v35;
     v125 = v34;
     v102 = v36;
     v123 = v37;
     v38 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-    [v131 frame];
+    [firstKeyplaneSwitchKey2 frame];
     v40 = v39;
     v42 = v41;
     v44 = v43;
     v46 = v45;
-    [v130 frame];
+    [firstObject frame];
     MinY = CGRectGetMinY(v165);
-    [v130 frame];
+    [firstObject frame];
     Height = CGRectGetHeight(v166);
     [v5 frame];
     v48 = v47;
@@ -7923,9 +7923,9 @@ LABEL_58:
     v54 = v42;
     v55 = v44;
     v56 = v46;
-    if (v21)
+    if (firstObject2)
     {
-      [v21 frame];
+      [firstObject2 frame];
     }
 
     v184.origin.x = v48;
@@ -7936,9 +7936,9 @@ LABEL_58:
     v100 = CGRectGetWidth(v167);
     if ([(UIKBTree *)self isSplit])
     {
-      if (v21)
+      if (firstObject2)
       {
-        [v130 frame];
+        [firstObject frame];
         v57 = CGRectGetWidth(v168);
         [v17 frame];
         v58 = (v57 + CGRectGetWidth(v169)) * 0.5;
@@ -7951,12 +7951,12 @@ LABEL_58:
         v172.size.width = v44;
         v172.size.height = v46;
         v64 = CGRectGetWidth(v172);
-        [v130 frame];
+        [firstObject frame];
         v65 = v64 <= CGRectGetWidth(v173);
         v58 = v44;
         if (!v65)
         {
-          [v130 frame];
+          [firstObject frame];
           v58 = CGRectGetWidth(v174);
         }
       }
@@ -8034,7 +8034,7 @@ LABEL_40:
         }
 
         v112 = v46;
-        v114 = v6;
+        v114 = rightSpaceKey;
         v107 = vabdd_f64(v106, v104);
         v109 = vabdd_f64(v116, v108);
 
@@ -8113,9 +8113,9 @@ LABEL_40:
         v183.size.width = rect;
         v183.size.height = Height;
         v103 = v27 + CGRectGetMaxX(v183);
-        v93 = [(UIKBTree *)self shapeFromFrame:v125 leftPadding:v124 rightPadding:v117, v123, v109, v107];
-        v6 = v114;
-        [v114 setShape:v93];
+        v107 = [(UIKBTree *)self shapeFromFrame:v125 leftPadding:v124 rightPadding:v117, v123, v109, v107];
+        rightSpaceKey = v114;
+        [v114 setShape:v107];
 
         v132[0] = MEMORY[0x1E69E9820];
         v132[1] = 3221225472;
@@ -8127,23 +8127,23 @@ LABEL_40:
         v135 = v107;
         v94 = v38;
         [v20 enumerateObjectsUsingBlock:v132];
-        v95 = [(UIKBTree *)self shapeFromFrame:v92 leftPadding:v111 rightPadding:v110, v112, v109, v107];
-        [v131 setShape:v95];
+        v1072 = [(UIKBTree *)self shapeFromFrame:v92 leftPadding:v111 rightPadding:v110, v112, v109, v107];
+        [firstKeyplaneSwitchKey2 setShape:v1072];
 
-        v96 = [(UIKBTree *)self shapeFromFrame:v103 leftPadding:v126 rightPadding:v101, v127, v109, v107];
+        v1073 = [(UIKBTree *)self shapeFromFrame:v103 leftPadding:v126 rightPadding:v101, v127, v109, v107];
         v5 = v115;
-        [v115 setShape:v96];
+        [v115 setShape:v1073];
 
-        v97 = [(UIKBTree *)self shapeFromFrame:x leftPadding:MinY rightPadding:rect, Height, v109, v107];
-        v98 = [v115 rendering];
+        v1074 = [(UIKBTree *)self shapeFromFrame:x leftPadding:MinY rightPadding:rect, Height, v109, v107];
+        rendering = [v115 rendering];
         if (v122)
         {
-          [(UIKBTree *)self addWriteboardKeyToCachedKeyListWithShape:v97 rendering:v98];
+          [(UIKBTree *)self addWriteboardKeyToCachedKeyListWithShape:v1074 rendering:rendering];
         }
 
         else
         {
-          [(UIKBTree *)self addRomanSwitchToCachedKeyListWithShape:v97 rendering:v98];
+          [(UIKBTree *)self addRomanSwitchToCachedKeyListWithShape:v1074 rendering:rendering];
         }
 
         v7 = v113;
@@ -8153,7 +8153,7 @@ LABEL_40:
         goto LABEL_58;
       }
 
-      v66 = v130;
+      v66 = firstObject;
     }
 
     [v66 frame];
@@ -8200,12 +8200,12 @@ void __62__UIKBTree_addMessagesWriteboardKeyOrRomanSwitchIfDismissKey___block_in
   [v6 setShape:v7];
 }
 
-- (BOOL)addMessagesWriteboardKeyOrRomanSwitchIfNoDismissKey:(BOOL)a3
+- (BOOL)addMessagesWriteboardKeyOrRomanSwitchIfNoDismissKey:(BOOL)key
 {
-  v3 = a3;
+  keyCopy = key;
   v5 = [(UIKBTree *)self firstCachedKeyWithName:@"Return-Key"];
   v6 = [(UIKBTree *)self firstCachedKeyWithName:@"Dictation-Key"];
-  v7 = [v5 rendering];
+  rendering = [v5 rendering];
   [v5 frame];
   v9 = v8;
   v11 = v10;
@@ -8228,7 +8228,7 @@ void __62__UIKBTree_addMessagesWriteboardKeyOrRomanSwitchIfDismissKey___block_in
   {
     v25 = vabdd_f64(MinX, v21);
     v26 = vabdd_f64(MaxX, v24);
-    if (v7 <= 0x22 && ((1 << v7) & 0x600000002) != 0 || v7 == 9 && ![v6 visible] || (-[UIKBTree visualStyling](self, "visualStyling") & 0xFF0000) == 0xB0000)
+    if (rendering <= 0x22 && ((1 << rendering) & 0x600000002) != 0 || rendering == 9 && ![v6 visible] || (-[UIKBTree visualStyling](self, "visualStyling") & 0xFF0000) == 0xB0000)
     {
       v55.origin.x = v9;
       v55.origin.y = v11;
@@ -8241,7 +8241,7 @@ void __62__UIKBTree_addMessagesWriteboardKeyOrRomanSwitchIfDismissKey___block_in
       v56.size.width = v13;
       v56.size.height = v15;
       v28 = ceil(Height - CGRectGetHeight(v56));
-      if (v7 == 9 || ([(UIKBTree *)self visualStyling]& 0xFF0000) == 0xB0000)
+      if (rendering == 9 || ([(UIKBTree *)self visualStyling]& 0xFF0000) == 0xB0000)
       {
         v57.origin.x = v9;
         v57.origin.y = v11;
@@ -8298,7 +8298,7 @@ void __62__UIKBTree_addMessagesWriteboardKeyOrRomanSwitchIfDismissKey___block_in
       v64.size.width = v13;
       v64.size.height = v15;
       v36 = CGRectGetMaxX(v64);
-      v7 = [v6 rendering];
+      rendering = [v6 rendering];
       v37 = [(UIKBTree *)self shapeFromFrame:v9 leftPadding:v11 rightPadding:v13, v15, v25, v26];
       [v5 setShape:v37];
 
@@ -8307,7 +8307,7 @@ void __62__UIKBTree_addMessagesWriteboardKeyOrRomanSwitchIfDismissKey___block_in
       v9 = v34;
     }
 
-    else if (v7 == 9 && [v6 visible])
+    else if (rendering == 9 && [v6 visible])
     {
       v66.size.width = v46;
       v9 = v47;
@@ -8327,7 +8327,7 @@ void __62__UIKBTree_addMessagesWriteboardKeyOrRomanSwitchIfDismissKey___block_in
       v68.size.height = v49;
       v38 = [(UIKBTree *)self shapeFromFrame:CGRectGetMaxX(v68) leftPadding:v50 rightPadding:v42, v49, v25, v26];
       [v6 setShape:v38];
-      v7 = 9;
+      rendering = 9;
       v11 = v50;
       v15 = v49;
     }
@@ -8356,14 +8356,14 @@ void __62__UIKBTree_addMessagesWriteboardKeyOrRomanSwitchIfDismissKey___block_in
     }
 
     v39 = [(UIKBTree *)self shapeFromFrame:v9 leftPadding:v11 rightPadding:v13, v15, v25, v26];
-    if (v3)
+    if (keyCopy)
     {
-      [(UIKBTree *)self addWriteboardKeyToCachedKeyListWithShape:v39 rendering:v7];
+      [(UIKBTree *)self addWriteboardKeyToCachedKeyListWithShape:v39 rendering:rendering];
     }
 
     else
     {
-      [(UIKBTree *)self addRomanSwitchToCachedKeyListWithShape:v39 rendering:v7];
+      [(UIKBTree *)self addRomanSwitchToCachedKeyListWithShape:v39 rendering:rendering];
     }
 
     v31 = 1;
@@ -8377,13 +8377,13 @@ void __62__UIKBTree_addMessagesWriteboardKeyOrRomanSwitchIfDismissKey___block_in
   return v31;
 }
 
-- (void)addWriteboardKeyToCachedKeyListWithShape:(id)a3 rendering:(int)a4
+- (void)addWriteboardKeyToCachedKeyListWithShape:(id)shape rendering:(int)rendering
 {
-  v4 = *&a4;
-  v10 = a3;
-  v6 = [(UIKBTree *)self keysetCanContainWriteboardKey];
-  v7 = v6;
-  if (v6 && [v6 count])
+  v4 = *&rendering;
+  shapeCopy = shape;
+  keysetCanContainWriteboardKey = [(UIKBTree *)self keysetCanContainWriteboardKey];
+  v7 = keysetCanContainWriteboardKey;
+  if (keysetCanContainWriteboardKey && [keysetCanContainWriteboardKey count])
   {
     v8 = [UIKBTree treeOfType:8];
     [v8 setName:@"Writeboard-Key"];
@@ -8391,7 +8391,7 @@ void __62__UIKBTree_addMessagesWriteboardKeyOrRomanSwitchIfDismissKey___block_in
     [v8 setRepresentedString:&stru_1EFB14550];
     [v8 setDisplayType:53];
     [v8 setInteractionType:40];
-    [v8 setShape:v10];
+    [v8 setShape:shapeCopy];
     [v8 setVisible:1];
     [v8 setDisplayRowHint:4];
     [v8 setDisplayTypeHint:3];
@@ -8414,13 +8414,13 @@ uint64_t __63__UIKBTree_addWriteboardKeyToCachedKeyListWithShape_rendering___blo
   return v3 ^ 1u;
 }
 
-- (void)addRomanSwitchToCachedKeyListWithShape:(id)a3 rendering:(int)a4
+- (void)addRomanSwitchToCachedKeyListWithShape:(id)shape rendering:(int)rendering
 {
-  v4 = *&a4;
-  v10 = a3;
-  v6 = [(UIKBTree *)self keysetCanContainWriteboardKey];
-  v7 = v6;
-  if (v6 && [v6 count])
+  v4 = *&rendering;
+  shapeCopy = shape;
+  keysetCanContainWriteboardKey = [(UIKBTree *)self keysetCanContainWriteboardKey];
+  v7 = keysetCanContainWriteboardKey;
+  if (keysetCanContainWriteboardKey && [keysetCanContainWriteboardKey count])
   {
     v8 = [UIKBTree treeOfType:8];
     [v8 setName:@"Dynamic-Non-Roman-to-Roman-Switch-Key"];
@@ -8429,7 +8429,7 @@ uint64_t __63__UIKBTree_addWriteboardKeyToCachedKeyListWithShape_rendering___blo
     [v8 setLocalizationKey:@"UI-abc"];
     [v8 setDisplayType:0];
     [v8 setInteractionType:9];
-    [v8 setShape:v10];
+    [v8 setShape:shapeCopy];
     [v8 setVisible:1];
     [v8 setDisplayRowHint:4];
     [v8 setDisplayTypeHint:3];
@@ -8452,19 +8452,19 @@ uint64_t __61__UIKBTree_addRomanSwitchToCachedKeyListWithShape_rendering___block
   return v3 ^ 1u;
 }
 
-- (BOOL)addMessagesWriteboardKeyOrRomanSwitch:(BOOL)a3
+- (BOOL)addMessagesWriteboardKeyOrRomanSwitch:(BOOL)switch
 {
-  v3 = a3;
+  switchCopy = switch;
   v5 = [(UIKBTree *)self firstCachedKeyWithName:@"Dismiss-Key"];
-  v6 = [(UIKBTree *)self visualStyle];
-  if (!v5 || v6 == 101)
+  visualStyle = [(UIKBTree *)self visualStyle];
+  if (!v5 || visualStyle == 101)
   {
-    v7 = [(UIKBTree *)self addMessagesWriteboardKeyOrRomanSwitchIfNoDismissKey:v3];
+    v7 = [(UIKBTree *)self addMessagesWriteboardKeyOrRomanSwitchIfNoDismissKey:switchCopy];
   }
 
   else
   {
-    v7 = [(UIKBTree *)self addMessagesWriteboardKeyOrRomanSwitchIfDismissKey:v3];
+    v7 = [(UIKBTree *)self addMessagesWriteboardKeyOrRomanSwitchIfDismissKey:switchCopy];
   }
 
   v8 = v7;
@@ -8472,20 +8472,20 @@ uint64_t __61__UIKBTree_addRomanSwitchToCachedKeyListWithShape_rendering___block
   return v8;
 }
 
-- (void)_mutateKeys:(id)a3 scale:(double)a4 withShapeOperation:(id)a5
+- (void)_mutateKeys:(id)keys scale:(double)scale withShapeOperation:(id)operation
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x1E695DF70] array];
+  keysCopy = keys;
+  operationCopy = operation;
+  array = [MEMORY[0x1E695DF70] array];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __49__UIKBTree__mutateKeys_scale_withShapeOperation___block_invoke;
   v18[3] = &unk_1E710FF30;
-  v10 = v9;
+  v10 = array;
   v19 = v10;
-  [v7 enumerateObjectsUsingBlock:v18];
-  v11 = [UIKBShapeOperator operatorWithScale:a4];
-  v12 = v8[2](v8, v11, v10);
+  [keysCopy enumerateObjectsUsingBlock:v18];
+  v11 = [UIKBShapeOperator operatorWithScale:scale];
+  v12 = operationCopy[2](operationCopy, v11, v10);
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x2020000000;
@@ -8497,7 +8497,7 @@ uint64_t __61__UIKBTree_addRomanSwitchToCachedKeyListWithShape_rendering___block
   v13 = v12;
   v15 = v13;
   v16 = v17;
-  [v7 enumerateObjectsUsingBlock:v14];
+  [keysCopy enumerateObjectsUsingBlock:v14];
 
   _Block_object_dispose(v17, 8);
 }
@@ -8525,23 +8525,23 @@ void __49__UIKBTree__mutateKeys_scale_withShapeOperation___block_invoke_2(uint64
   }
 }
 
-- (id)_horizontallyCoincidentKeysWithKey:(id)a3
+- (id)_horizontallyCoincidentKeysWithKey:(id)key
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy)
   {
-    [v4 paddedFrame];
+    [keyCopy paddedFrame];
     v7 = v6;
     v9 = v8;
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = [(UIKBTree *)self keys];
-    v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    keys = [(UIKBTree *)self keys];
+    v12 = [keys countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -8552,7 +8552,7 @@ void __49__UIKBTree__mutateKeys_scale_withShapeOperation___block_invoke_2(uint64
         {
           if (*v21 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(keys);
           }
 
           v16 = *(*(&v20 + 1) + 8 * i);
@@ -8564,13 +8564,13 @@ void __49__UIKBTree__mutateKeys_scale_withShapeOperation___block_invoke_2(uint64
               [v16 paddedFrame];
               if (vabdd_f64(v18, v9) < 0.00000011920929)
               {
-                [v10 addObject:v16];
+                [array addObject:v16];
               }
             }
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v13 = [keys countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v13);
@@ -8579,99 +8579,99 @@ void __49__UIKBTree__mutateKeys_scale_withShapeOperation___block_invoke_2(uint64
 
   else
   {
-    v10 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v10;
+  return array;
 }
 
-- (void)centerKeys:(id)a3 inRect:(CGRect)a4 scale:(double)a5
+- (void)centerKeys:(id)keys inRect:(CGRect)rect scale:(double)scale
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __36__UIKBTree_centerKeys_inRect_scale___block_invoke;
   v5[3] = &__block_descriptor_64_e48___NSArray_24__0__UIKBShapeOperator_8__NSArray_16l;
-  v6 = a4;
-  [(UIKBTree *)self _mutateKeys:a3 scale:v5 withShapeOperation:a5];
+  rectCopy = rect;
+  [(UIKBTree *)self _mutateKeys:keys scale:v5 withShapeOperation:scale];
 }
 
-- (void)centerWhilePreservingLayoutWithKeys:(id)a3 inRect:(CGRect)a4 scale:(double)a5
+- (void)centerWhilePreservingLayoutWithKeys:(id)keys inRect:(CGRect)rect scale:(double)scale
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __61__UIKBTree_centerWhilePreservingLayoutWithKeys_inRect_scale___block_invoke;
   v5[3] = &__block_descriptor_64_e48___NSArray_24__0__UIKBShapeOperator_8__NSArray_16l;
-  v6 = a4;
-  [(UIKBTree *)self _mutateKeys:a3 scale:v5 withShapeOperation:a5];
+  rectCopy = rect;
+  [(UIKBTree *)self _mutateKeys:keys scale:v5 withShapeOperation:scale];
 }
 
-- (void)centerHorizontallyWhilePreservingLayoutWithKeys:(id)a3 inRect:(CGRect)a4 scale:(double)a5
+- (void)centerHorizontallyWhilePreservingLayoutWithKeys:(id)keys inRect:(CGRect)rect scale:(double)scale
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __73__UIKBTree_centerHorizontallyWhilePreservingLayoutWithKeys_inRect_scale___block_invoke;
   v5[3] = &__block_descriptor_64_e48___NSArray_24__0__UIKBShapeOperator_8__NSArray_16l;
-  v6 = a4;
-  [(UIKBTree *)self _mutateKeys:a3 scale:v5 withShapeOperation:a5];
+  rectCopy = rect;
+  [(UIKBTree *)self _mutateKeys:keys scale:v5 withShapeOperation:scale];
 }
 
-- (void)centerVerticallyWhilePreservingLayoutWithKeys:(id)a3 inRect:(CGRect)a4 scale:(double)a5
+- (void)centerVerticallyWhilePreservingLayoutWithKeys:(id)keys inRect:(CGRect)rect scale:(double)scale
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __71__UIKBTree_centerVerticallyWhilePreservingLayoutWithKeys_inRect_scale___block_invoke;
   v5[3] = &__block_descriptor_64_e48___NSArray_24__0__UIKBShapeOperator_8__NSArray_16l;
-  v6 = a4;
-  [(UIKBTree *)self _mutateKeys:a3 scale:v5 withShapeOperation:a5];
+  rectCopy = rect;
+  [(UIKBTree *)self _mutateKeys:keys scale:v5 withShapeOperation:scale];
 }
 
-- (void)repositionKeys:(id)a3 withOffset:(CGPoint)a4 scale:(double)a5
+- (void)repositionKeys:(id)keys withOffset:(CGPoint)offset scale:(double)scale
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __44__UIKBTree_repositionKeys_withOffset_scale___block_invoke;
   v5[3] = &__block_descriptor_48_e48___NSArray_24__0__UIKBShapeOperator_8__NSArray_16l;
-  v6 = a4;
-  [(UIKBTree *)self _mutateKeys:a3 scale:v5 withShapeOperation:a5];
+  offsetCopy = offset;
+  [(UIKBTree *)self _mutateKeys:keys scale:v5 withShapeOperation:scale];
 }
 
-- (void)resizeKeys:(id)a3 withOffset:(CGPoint)a4 scale:(double)a5
+- (void)resizeKeys:(id)keys withOffset:(CGPoint)offset scale:(double)scale
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __40__UIKBTree_resizeKeys_withOffset_scale___block_invoke;
   v5[3] = &__block_descriptor_48_e48___NSArray_24__0__UIKBShapeOperator_8__NSArray_16l;
-  v6 = a4;
-  [(UIKBTree *)self _mutateKeys:a3 scale:v5 withShapeOperation:a5];
+  offsetCopy = offset;
+  [(UIKBTree *)self _mutateKeys:keys scale:v5 withShapeOperation:scale];
 }
 
-- (void)insetKeys:(id)a3 withInsets:(UIEdgeInsets)a4 scale:(double)a5
+- (void)insetKeys:(id)keys withInsets:(UIEdgeInsets)insets scale:(double)scale
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __39__UIKBTree_insetKeys_withInsets_scale___block_invoke;
   v5[3] = &__block_descriptor_64_e48___NSArray_24__0__UIKBShapeOperator_8__NSArray_16l;
-  v6 = a4;
-  [(UIKBTree *)self _mutateKeys:a3 scale:v5 withShapeOperation:a5];
+  insetsCopy = insets;
+  [(UIKBTree *)self _mutateKeys:keys scale:v5 withShapeOperation:scale];
 }
 
-- (void)scaleKeys:(id)a3 withFactor:(CGSize)a4 scale:(double)a5
+- (void)scaleKeys:(id)keys withFactor:(CGSize)factor scale:(double)scale
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __39__UIKBTree_scaleKeys_withFactor_scale___block_invoke;
   v5[3] = &__block_descriptor_48_e48___NSArray_24__0__UIKBShapeOperator_8__NSArray_16l;
-  v6 = a4;
-  [(UIKBTree *)self _mutateKeys:a3 scale:v5 withShapeOperation:a5];
+  factorCopy = factor;
+  [(UIKBTree *)self _mutateKeys:keys scale:v5 withShapeOperation:scale];
 }
 
-- (void)removeKey:(id)a3
+- (void)removeKey:(id)key
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    [(UIKBTree *)self removeKeyFromAllCachedLists:v4];
+    [(UIKBTree *)self removeKeyFromAllCachedLists:keyCopy];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
@@ -8702,10 +8702,10 @@ void __49__UIKBTree__mutateKeys_scale_withShapeOperation___block_invoke_2(uint64
             v27 = 0u;
             v24 = 0u;
             v25 = 0u;
-            v10 = [v9 keySet];
-            v11 = [v10 subtrees];
+            keySet = [v9 keySet];
+            subtrees = [keySet subtrees];
 
-            v12 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v12 = [subtrees countByEnumeratingWithState:&v24 objects:v32 count:16];
             if (v12)
             {
               v13 = v12;
@@ -8716,24 +8716,24 @@ void __49__UIKBTree__mutateKeys_scale_withShapeOperation___block_invoke_2(uint64
                 {
                   if (*v25 != v14)
                   {
-                    objc_enumerationMutation(v11);
+                    objc_enumerationMutation(subtrees);
                   }
 
                   v16 = *(*(&v24 + 1) + 8 * i);
-                  v17 = [v16 subtrees];
-                  v18 = [v17 containsObject:v4];
+                  subtrees2 = [v16 subtrees];
+                  v18 = [subtrees2 containsObject:keyCopy];
 
                   if (v18)
                   {
-                    v19 = [v16 subtrees];
-                    [v19 removeObject:v4];
+                    subtrees3 = [v16 subtrees];
+                    [subtrees3 removeObject:keyCopy];
 
                     [(UIKBTree *)self setObject:0 forProperty:@"KBunionFrame"];
                     [(UIKBTree *)self setObject:0 forProperty:@"KBunionPaddedFrame"];
                   }
                 }
 
-                v13 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+                v13 = [subtrees countByEnumeratingWithState:&v24 objects:v32 count:16];
               }
 
               while (v13);
@@ -8756,27 +8756,27 @@ void __49__UIKBTree__mutateKeys_scale_withShapeOperation___block_invoke_2(uint64
   }
 }
 
-- (void)insertKey:(id)a3 withFrame:(CGRect)a4 andShiftKeys:(id)a5 scale:(double)a6
+- (void)insertKey:(id)key withFrame:(CGRect)frame andShiftKeys:(id)keys scale:(double)scale
 {
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v52 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = [(UIKBTree *)self cache];
-  v15 = [v14 allValues];
-  v16 = [v15 containsObject:v12];
+  keyCopy = key;
+  keysCopy = keys;
+  cache = [(UIKBTree *)self cache];
+  allValues = [cache allValues];
+  v16 = [allValues containsObject:keyCopy];
 
   if ((v16 & 1) == 0)
   {
-    if (v12)
+    if (keyCopy)
     {
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v17 = v13;
+      v17 = keysCopy;
       v18 = [v17 countByEnumeratingWithState:&v46 objects:v51 count:16];
       if (v18)
       {
@@ -8809,10 +8809,10 @@ void __49__UIKBTree__mutateKeys_scale_withShapeOperation___block_invoke_2(uint64
 
 LABEL_15:
 
-      [v12 setState:2];
-      [v12 setVisible:1];
-      [v12 setDisplayRowHint:{objc_msgSend(v18, "displayRowHint")}];
-      v27 = [UIKBShapeOperator operatorWithScale:a6];
+      [keyCopy setState:2];
+      [keyCopy setVisible:1];
+      [keyCopy setDisplayRowHint:{objc_msgSend(v18, "displayRowHint")}];
+      v27 = [UIKBShapeOperator operatorWithScale:scale];
       if (v18)
       {
         v28 = v18;
@@ -8820,11 +8820,11 @@ LABEL_15:
 
       else
       {
-        v28 = v12;
+        v28 = keyCopy;
       }
 
-      v29 = [v28 shape];
-      [v29 frame];
+      shape = [v28 shape];
+      [shape frame];
       if (width == -1.0)
       {
         v32 = v30;
@@ -8832,44 +8832,44 @@ LABEL_15:
 
       else
       {
-        [v29 frame];
+        [shape frame];
         v32 = v31 - width;
       }
 
       v34 = 0.0;
-      v35 = [UIKBShape shapeByResizingShape:v29 byAmount:v32, 0.0];
-      [v12 setShape:v35];
+      v35 = [UIKBShape shapeByResizingShape:shape byAmount:v32, 0.0];
+      [keyCopy setShape:v35];
 
       v33 = 0.0;
       if (x != -1.0)
       {
-        [v12 frame];
+        [keyCopy frame];
         v33 = x - v36;
       }
 
       if (y != -1.0)
       {
-        [v12 frame];
+        [keyCopy frame];
         v34 = y - v37;
       }
 
-      v38 = [v12 shape];
-      v50 = v38;
+      shape2 = [keyCopy shape];
+      v50 = shape2;
       v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
       v40 = [v27 shapesByRepositioningShapes:v39 withOffset:{v33, v34}];
-      v41 = [v40 firstObject];
-      [v12 setShape:v41];
+      firstObject = [v40 firstObject];
+      [keyCopy setShape:firstObject];
 
-      [(UIKBTree *)self addkeyToCachedKeyList:v12];
-      v42 = [(UIKBTree *)self supplementaryKeyList];
-      v43 = [v42 subtrees];
-      LOBYTE(v40) = [v43 containsObject:v12];
+      [(UIKBTree *)self addkeyToCachedKeyList:keyCopy];
+      supplementaryKeyList = [(UIKBTree *)self supplementaryKeyList];
+      subtrees = [supplementaryKeyList subtrees];
+      LOBYTE(v40) = [subtrees containsObject:keyCopy];
 
       if ((v40 & 1) == 0)
       {
-        v44 = [(UIKBTree *)self supplementaryKeyList];
-        v45 = [v44 subtrees];
-        [v45 addObject:v12];
+        supplementaryKeyList2 = [(UIKBTree *)self supplementaryKeyList];
+        subtrees2 = [supplementaryKeyList2 subtrees];
+        [subtrees2 addObject:keyCopy];
       }
     }
 
@@ -8878,29 +8878,29 @@ LABEL_15:
       v33 = *MEMORY[0x1E695EFF8];
     }
 
-    [(UIKBTree *)self repositionKeys:v13 withOffset:width + v33 scale:0.0, a6];
+    [(UIKBTree *)self repositionKeys:keysCopy withOffset:width + v33 scale:0.0, scale];
   }
 }
 
-- (void)removeKey:(id)a3 andShiftKeys:(id)a4 scale:(double)a5
+- (void)removeKey:(id)key andShiftKeys:(id)keys scale:(double)scale
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  keyCopy = key;
+  keysCopy = keys;
+  if (keyCopy)
   {
-    [v8 frame];
+    [keyCopy frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    [(UIKBTree *)self removeKey:v8];
-    v18 = [MEMORY[0x1E695DF70] array];
+    [(UIKBTree *)self removeKey:keyCopy];
+    array = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v19 = v9;
+    v19 = keysCopy;
     v20 = [v19 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v20)
     {
@@ -8917,7 +8917,7 @@ LABEL_15:
           }
 
           v24 = *(*(&v26 + 1) + 8 * v23);
-          if (v24 != v8)
+          if (v24 != keyCopy)
           {
             [*(*(&v26 + 1) + 8 * v23) frame];
             MinX = CGRectGetMinX(v32);
@@ -8927,7 +8927,7 @@ LABEL_15:
             v33.size.height = v17;
             if (MinX >= CGRectGetMaxX(v33))
             {
-              [v18 addObject:v24];
+              [array addObject:v24];
             }
           }
 
@@ -8941,30 +8941,30 @@ LABEL_15:
       while (v21);
     }
 
-    [(UIKBTree *)self repositionKeys:v18 withOffset:-v15 scale:0.0, a5];
+    [(UIKBTree *)self repositionKeys:array withOffset:-v15 scale:0.0, scale];
   }
 }
 
-- (void)replaceKey:(id)a3 withKey:(id)a4
+- (void)replaceKey:(id)key withKey:(id)withKey
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && v6 && v7 != v6)
+  keyCopy = key;
+  withKeyCopy = withKey;
+  v8 = withKeyCopy;
+  if (withKeyCopy && keyCopy && withKeyCopy != keyCopy)
   {
-    v9 = [v6 shape];
-    v10 = [v9 copy];
+    shape = [keyCopy shape];
+    v10 = [shape copy];
     [v8 setShape:v10];
 
     [v8 setVisible:1];
-    [v8 setDisplayRowHint:{objc_msgSend(v6, "displayRowHint")}];
-    [(UIKBTree *)self removeKeyFromCachedKeyList:v6];
+    [v8 setDisplayRowHint:{objc_msgSend(keyCopy, "displayRowHint")}];
+    [(UIKBTree *)self removeKeyFromCachedKeyList:keyCopy];
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v27 = self;
+    selfCopy = self;
     obj = [(UIKBTree *)self subtrees];
     v11 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v11)
@@ -8990,10 +8990,10 @@ LABEL_15:
             v34 = 0u;
             v31 = 0u;
             v32 = 0u;
-            v16 = [v15 keySet];
-            v17 = [v16 subtrees];
+            keySet = [v15 keySet];
+            subtrees = [keySet subtrees];
 
-            v18 = [v17 countByEnumeratingWithState:&v31 objects:v39 count:16];
+            v18 = [subtrees countByEnumeratingWithState:&v31 objects:v39 count:16];
             if (v18)
             {
               v19 = v18;
@@ -9004,22 +9004,22 @@ LABEL_15:
                 {
                   if (*v32 != v20)
                   {
-                    objc_enumerationMutation(v17);
+                    objc_enumerationMutation(subtrees);
                   }
 
                   v22 = *(*(&v31 + 1) + 8 * i);
-                  v23 = [v22 subtrees];
-                  v24 = [v23 containsObject:v6];
+                  subtrees2 = [v22 subtrees];
+                  v24 = [subtrees2 containsObject:keyCopy];
 
                   if (v24)
                   {
-                    v25 = [v22 subtrees];
-                    v26 = [v22 subtrees];
-                    [v25 replaceObjectAtIndex:objc_msgSend(v26 withObject:{"indexOfObject:", v6), v8}];
+                    subtrees3 = [v22 subtrees];
+                    subtrees4 = [v22 subtrees];
+                    [subtrees3 replaceObjectAtIndex:objc_msgSend(subtrees4 withObject:{"indexOfObject:", keyCopy), v8}];
                   }
                 }
 
-                v19 = [v17 countByEnumeratingWithState:&v31 objects:v39 count:16];
+                v19 = [subtrees countByEnumeratingWithState:&v31 objects:v39 count:16];
               }
 
               while (v19);
@@ -9039,7 +9039,7 @@ LABEL_15:
       while (v12);
     }
 
-    self = v27;
+    self = selfCopy;
   }
 
   if (v8)
@@ -9048,43 +9048,43 @@ LABEL_15:
   }
 }
 
-- (void)shiftRowAndResizeLeadingControlKey:(id)a3 toSize:(CGSize)a4 scale:(double)a5
+- (void)shiftRowAndResizeLeadingControlKey:(id)key toSize:(CGSize)size scale:(double)scale
 {
-  width = a4.width;
-  v8 = a3;
-  v13 = v8;
-  if (v8)
+  width = size.width;
+  keyCopy = key;
+  v13 = keyCopy;
+  if (keyCopy)
   {
-    [v8 frame];
+    [keyCopy frame];
     width = v9 - width;
-    v10 = [v13 shape];
-    v11 = [UIKBShape shapeByResizingShape:v10 byAmount:width, 0.0];
+    shape = [v13 shape];
+    v11 = [UIKBShape shapeByResizingShape:shape byAmount:width, 0.0];
     [v13 setShape:v11];
   }
 
   v12 = [(UIKBTree *)self _horizontallyCoincidentKeysWithKey:v13];
-  [(UIKBTree *)self repositionKeys:v12 withOffset:-width scale:0.0, a5];
+  [(UIKBTree *)self repositionKeys:v12 withOffset:-width scale:0.0, scale];
 }
 
-+ (id)mergeStringForKeyName:(id)a3
++ (id)mergeStringForKeyName:(id)name
 {
-  v3 = a3;
-  if ([v3 hasSuffix:@"Space-Key"])
+  nameCopy = name;
+  if ([nameCopy hasSuffix:@"Space-Key"])
   {
     v4 = @"Space";
   }
 
-  else if ([v3 hasSuffix:@"Dictation-Key"])
+  else if ([nameCopy hasSuffix:@"Dictation-Key"])
   {
     v4 = @"Dict";
   }
 
-  else if ([v3 hasSuffix:@"International-Key"])
+  else if ([nameCopy hasSuffix:@"International-Key"])
   {
     v4 = @"Intl";
   }
 
-  else if ([v3 hasSuffix:@"Return-Key"])
+  else if ([nameCopy hasSuffix:@"Return-Key"])
   {
     v4 = @"Return";
   }
@@ -9097,30 +9097,30 @@ LABEL_15:
   return v4;
 }
 
-+ (id)shapesForControlKeyShapes:(id)a3 options:(int)a4
++ (id)shapesForControlKeyShapes:(id)shapes options:(int)options
 {
-  v5 = a3;
-  v6 = [v5 objectForKey:@"Dict"];
+  shapesCopy = shapes;
+  v6 = [shapesCopy objectForKey:@"Dict"];
 
-  if ([v5 count] <= 1)
+  if ([shapesCopy count] <= 1)
   {
-    v7 = v5;
+    v7 = shapesCopy;
     goto LABEL_18;
   }
 
-  v8 = (a4 & 2) == 0;
-  v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v5 copyItems:1];
+  v8 = (options & 2) == 0;
+  v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:shapesCopy copyItems:1];
   v7 = v9;
-  if ((a4 & 0x40) != 0)
+  if ((options & 0x40) != 0)
   {
-    if ((a4 & 2) == 0 && v6)
+    if ((options & 2) == 0 && v6)
     {
       v19 = [v9 objectForKey:@"Return"];
       v20 = [v7 objectForKey:@"Dict"];
       [v19 addRectFrom:v20];
     }
 
-    if (a4)
+    if (options)
     {
       goto LABEL_18;
     }
@@ -9128,15 +9128,15 @@ LABEL_15:
     goto LABEL_13;
   }
 
-  if ((a4 & 0x10) == 0)
+  if ((options & 0x10) == 0)
   {
     if (!v6)
     {
       goto LABEL_49;
     }
 
-    v10 = a4 & 0xC;
-    if ((a4 & 2) != 0)
+    v10 = options & 0xC;
+    if ((options & 2) != 0)
     {
       if (v10 != 12)
       {
@@ -9189,9 +9189,9 @@ LABEL_15:
 LABEL_48:
 
 LABEL_49:
-    if ((a4 & 1) == 0)
+    if ((options & 1) == 0)
     {
-      if ((a4 & 0xC) != 4 && (a4 & 2) != 0 && v6)
+      if ((options & 0xC) != 4 && (options & 2) != 0 && v6)
       {
         v38 = [v7 objectForKey:@"Space"];
         v39 = [v7 objectForKey:@"Dict"];
@@ -9208,13 +9208,13 @@ LABEL_49:
     goto LABEL_18;
   }
 
-  v25 = (a4 >> 1) & 1;
+  v25 = (options >> 1) & 1;
   if (!v6)
   {
     LOBYTE(v25) = 1;
   }
 
-  if ((a4 & 0x28) == 0x20)
+  if ((options & 0x28) == 0x20)
   {
     if ((v25 & 1) == 0)
     {
@@ -9223,10 +9223,10 @@ LABEL_49:
       [v26 addRectFrom:v27];
     }
 
-    if ((a4 & 1) == 0)
+    if ((options & 1) == 0)
     {
       v22 = [v7 objectForKey:@"More"];
-      if ((a4 & 2) != 0 && v6)
+      if ((options & 2) != 0 && v6)
       {
         v28 = [v7 objectForKey:@"Dict"];
         [v22 addRectFrom:v28];
@@ -9251,9 +9251,9 @@ LABEL_17:
 
   if (v25)
   {
-    v29 = (a4 & 2) == 0 || v6 == 0;
+    v29 = (options & 2) == 0 || v6 == 0;
     v8 = v29;
-    if (!v29 && (a4 & 1) == 0)
+    if (!v29 && (options & 1) == 0)
     {
       v21 = @"Dict";
       goto LABEL_14;
@@ -9267,7 +9267,7 @@ LABEL_17:
     [v36 addRectFrom:v37];
   }
 
-  if ((a4 & 1) == 0 && v8)
+  if ((options & 1) == 0 && v8)
   {
 LABEL_13:
     v21 = @"More";
@@ -9281,40 +9281,40 @@ LABEL_18:
   return v7;
 }
 
-- (void)updateMoreAndInternationalKeysWithOptions:(int)a3
+- (void)updateMoreAndInternationalKeysWithOptions:(int)options
 {
   if ([(UIKBTree *)self type]== 2)
   {
     v30 = [(UIKBTree *)self firstCachedKeyWithName:@"International-Key"];
-    v5 = [(UIKBTree *)self findLeftMoreKey];
-    v6 = [v5 interactionType] == 10 || objc_msgSend(v5, "displayType") == 14;
-    if (v5 && v30)
+    findLeftMoreKey = [(UIKBTree *)self findLeftMoreKey];
+    v6 = [findLeftMoreKey interactionType] == 10 || objc_msgSend(findLeftMoreKey, "displayType") == 14;
+    if (findLeftMoreKey && v30)
     {
       v28 = v6;
       v7 = [(UIKBTree *)self firstCachedKeyWithName:@"Dictation-Key"];
       v8 = [(UIKBTree *)self firstCachedKeyWithName:@"Space-Key"];
       v9 = [(UIKBTree *)self firstCachedKeyWithName:@"Return-Key"];
       v10 = MEMORY[0x1E695DF90];
-      v11 = [v5 shape];
-      v12 = [v30 shape];
-      v13 = [v10 dictionaryWithObjectsAndKeys:{v11, @"More", v12, @"Intl", 0}];
+      shape = [findLeftMoreKey shape];
+      shape2 = [v30 shape];
+      v13 = [v10 dictionaryWithObjectsAndKeys:{shape, @"More", shape2, @"Intl", 0}];
 
       if (v7)
       {
-        v14 = [v7 shape];
-        [v13 setObject:v14 forKey:@"Dict"];
+        shape3 = [v7 shape];
+        [v13 setObject:shape3 forKey:@"Dict"];
       }
 
       if (v8)
       {
-        v15 = [v8 shape];
-        [v13 setObject:v15 forKey:@"Space"];
+        shape4 = [v8 shape];
+        [v13 setObject:shape4 forKey:@"Space"];
       }
 
       if (v9)
       {
-        v16 = [v9 shape];
-        [v13 setObject:v16 forKey:@"Return"];
+        shape5 = [v9 shape];
+        [v13 setObject:shape5 forKey:@"Return"];
       }
 
       v17 = [(UIKBTree *)self firstCachedKeyWithName:@"Handwriting-Input"];
@@ -9355,52 +9355,52 @@ LABEL_18:
         v21 = 0;
       }
 
-      v22 = [UIKBTree shapesForControlKeyShapes:v13 options:v21 | v18 | v19 | (32 * ([(UIKBTree *)self visualStyle]== 101)) | a3];
-      v23 = [v22 objectForKey:@"More"];
-      [v5 setShape:v23];
+      options = [UIKBTree shapesForControlKeyShapes:v13 options:v21 | v18 | v19 | (32 * ([(UIKBTree *)self visualStyle]== 101)) | options];
+      v23 = [options objectForKey:@"More"];
+      [findLeftMoreKey setShape:v23];
 
-      v24 = [v22 objectForKey:@"Intl"];
+      v24 = [options objectForKey:@"Intl"];
       [v30 setShape:v24];
 
       if (v7)
       {
-        v25 = [v22 objectForKey:@"Dict"];
+        v25 = [options objectForKey:@"Dict"];
         [v7 setShape:v25];
       }
 
       if (v29)
       {
-        v26 = [v22 objectForKey:@"Space"];
+        v26 = [options objectForKey:@"Space"];
         [v29 setShape:v26];
       }
 
       if (v9)
       {
-        v27 = [v22 objectForKey:@"Return"];
+        v27 = [options objectForKey:@"Return"];
         [v9 setShape:v27];
       }
 
-      [v30 setVisible:a3 & 1];
-      [v7 setVisible:(a3 >> 1) & 1];
+      [v30 setVisible:options & 1];
+      [v7 setVisible:(options >> 1) & 1];
     }
 
     else
     {
-      [(UIKBTree *)self updateDictationKeyOnNumberPads:(a3 >> 1) & 1];
+      [(UIKBTree *)self updateDictationKeyOnNumberPads:(options >> 1) & 1];
     }
   }
 }
 
-- (id)geometrySet:(BOOL)a3
+- (id)geometrySet:(BOOL)set
 {
-  v3 = a3;
+  setCopy = set;
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(UIKBTree *)self subtrees];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v6 = [subtrees countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -9411,7 +9411,7 @@ LABEL_18:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subtrees);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -9422,7 +9422,7 @@ LABEL_18:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [subtrees countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -9432,16 +9432,16 @@ LABEL_18:
     }
   }
 
-  if (v3)
+  if (setCopy)
   {
     v11 = [[UIKBTree alloc] initWithType:5];
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(UIKBTree *)self name];
-    v14 = [v12 stringWithFormat:@"%@-GeometrySet", v13];
+    name = [(UIKBTree *)self name];
+    v14 = [v12 stringWithFormat:@"%@-GeometrySet", name];
     [(UIKBTree *)v11 setName:v14];
 
-    v5 = [(UIKBTree *)self subtrees];
-    [v5 addObject:v11];
+    subtrees = [(UIKBTree *)self subtrees];
+    [subtrees addObject:v11];
 LABEL_12:
   }
 
@@ -9453,16 +9453,16 @@ LABEL_12:
   return v11;
 }
 
-- (id)attributeSet:(BOOL)a3
+- (id)attributeSet:(BOOL)set
 {
-  v3 = a3;
+  setCopy = set;
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(UIKBTree *)self subtrees];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v6 = [subtrees countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -9473,7 +9473,7 @@ LABEL_12:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subtrees);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -9484,7 +9484,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [subtrees countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -9494,16 +9494,16 @@ LABEL_12:
     }
   }
 
-  if (v3)
+  if (setCopy)
   {
     v11 = [[UIKBTree alloc] initWithType:6];
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(UIKBTree *)self name];
-    v14 = [v12 stringWithFormat:@"%@-AttributeSet", v13];
+    name = [(UIKBTree *)self name];
+    v14 = [v12 stringWithFormat:@"%@-AttributeSet", name];
     [(UIKBTree *)v11 setName:v14];
 
-    v5 = [(UIKBTree *)self subtrees];
-    [v5 addObject:v11];
+    subtrees = [(UIKBTree *)self subtrees];
+    [subtrees addObject:v11];
 LABEL_12:
   }
 
@@ -9522,39 +9522,39 @@ LABEL_12:
   {
     v3 = [[UIKBTree alloc] initWithType:3];
     [(UIKBTree *)v3 setName:@"SupplementaryKeylayout"];
-    v4 = [(UIKBTree *)self subtrees];
-    [v4 addObject:v3];
+    subtrees = [(UIKBTree *)self subtrees];
+    [subtrees addObject:v3];
   }
 
-  v5 = [(UIKBTree *)v3 keySet];
-  if (!v5)
+  keySet = [(UIKBTree *)v3 keySet];
+  if (!keySet)
   {
-    v5 = [[UIKBTree alloc] initWithType:4];
-    [(UIKBTree *)v5 setName:@"Supplementary-KeySet"];
-    v6 = [(UIKBTree *)v3 subtrees];
-    [v6 addObject:v5];
+    keySet = [[UIKBTree alloc] initWithType:4];
+    [(UIKBTree *)keySet setName:@"Supplementary-KeySet"];
+    subtrees2 = [(UIKBTree *)v3 subtrees];
+    [subtrees2 addObject:keySet];
   }
 
-  v7 = [(UIKBTree *)v5 subtrees];
-  v8 = [v7 firstObject];
+  subtrees3 = [(UIKBTree *)keySet subtrees];
+  firstObject = [subtrees3 firstObject];
 
-  if (!v8)
+  if (!firstObject)
   {
-    v8 = [[UIKBTree alloc] initWithType:7];
-    [(UIKBTree *)v8 setName:@"Supplementary-KeySet_List"];
-    v9 = [(UIKBTree *)v5 subtrees];
-    [v9 addObject:v8];
+    firstObject = [[UIKBTree alloc] initWithType:7];
+    [(UIKBTree *)firstObject setName:@"Supplementary-KeySet_List"];
+    subtrees4 = [(UIKBTree *)keySet subtrees];
+    [subtrees4 addObject:firstObject];
   }
 
-  return v8;
+  return firstObject;
 }
 
-- (void)centerKeyplaneInRect:(CGRect)a3 scale:(double)a4
+- (void)centerKeyplaneInRect:(CGRect)rect scale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v49[1] = *MEMORY[0x1E69E9840];
   v10 = [(UIKBTree *)self firstCachedKeyWithName:@"Candidate-Selection"];
   v11 = v10;
@@ -9566,11 +9566,11 @@ LABEL_12:
     v15 = v14;
     v49[0] = v11;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:1];
-    [(UIKBTree *)self centerKeys:v16 inRect:x scale:v13, width, v15, a4];
+    [(UIKBTree *)self centerKeys:v16 inRect:x scale:v13, width, v15, scale];
   }
 
-  v17 = [(UIKBTree *)self keys];
-  v18 = [v17 mutableCopy];
+  keys = [(UIKBTree *)self keys];
+  v18 = [keys mutableCopy];
 
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
@@ -9581,12 +9581,12 @@ LABEL_12:
   v41 = [v18 indexesOfObjectsPassingTest:v46];
   [v18 removeObjectsAtIndexes:?];
   v20 = [(UIKBTree *)self shapesForKeys:v18];
-  v21 = [(UIKBTree *)self keys];
-  v22 = [v21 mutableCopy];
+  keys2 = [(UIKBTree *)self keys];
+  v22 = [keys2 mutableCopy];
 
   [v22 removeObject:v19];
   v23 = [(UIKBTree *)self shapesForKeys:v22];
-  v24 = [UIKBShapeOperator operatorWithScale:a4];
+  v24 = [UIKBShapeOperator operatorWithScale:scale];
   v40 = v20;
   [v24 offsetForCenteringShapes:v20 insideRect:{x, y, width, height}];
   v26 = v25;
@@ -9651,7 +9651,7 @@ LABEL_12:
   }
 
 LABEL_14:
-  [(UIKBTree *)self repositionKeys:v22 withOffset:v26 scale:v28, a4];
+  [(UIKBTree *)self repositionKeys:v22 withOffset:v26 scale:v28, scale];
 }
 
 uint64_t __39__UIKBTree_centerKeyplaneInRect_scale___block_invoke(uint64_t a1, void *a2)
@@ -9671,15 +9671,15 @@ uint64_t __39__UIKBTree_centerKeyplaneInRect_scale___block_invoke(uint64_t a1, v
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(UIKBTree *)self subtrees];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  subtrees = [(UIKBTree *)self subtrees];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(subtrees, "count")}];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(UIKBTree *)self subtrees];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subtrees2 = [(UIKBTree *)self subtrees];
+  v7 = [subtrees2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -9690,17 +9690,17 @@ uint64_t __39__UIKBTree_centerKeyplaneInRect_scale___block_invoke(uint64_t a1, v
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subtrees2);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) shape];
-        if (v11)
+        shape = [*(*(&v13 + 1) + 8 * i) shape];
+        if (shape)
         {
-          [v5 addObject:v11];
+          [v5 addObject:shape];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [subtrees2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -9709,18 +9709,18 @@ uint64_t __39__UIKBTree_centerKeyplaneInRect_scale___block_invoke(uint64_t a1, v
   return v5;
 }
 
-- (id)shapesForKeys:(id)a3
+- (id)shapesForKeys:(id)keys
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [v3 array];
+  keysCopy = keys;
+  array = [v3 array];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __26__UIKBTree_shapesForKeys___block_invoke;
   v8[3] = &unk_1E710FF30;
-  v6 = v5;
+  v6 = array;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [keysCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -9738,45 +9738,45 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
 
 - (id)geometriesList
 {
-  v2 = [(UIKBTree *)self properties];
-  v3 = [v2 objectForKey:@"KBgeometriesList"];
+  properties = [(UIKBTree *)self properties];
+  v3 = [properties objectForKey:@"KBgeometriesList"];
 
   return v3;
 }
 
 - (id)activeGeometriesList
 {
-  v2 = [(UIKBTree *)self properties];
-  v3 = [v2 objectForKey:@"KBactiveGeometriesList"];
+  properties = [(UIKBTree *)self properties];
+  v3 = [properties objectForKey:@"KBactiveGeometriesList"];
 
   return v3;
 }
 
-- (id)activeShapesFromOutputShapes:(id)a3 inputShapes:(id)a4 inRTL:(BOOL)a5
+- (id)activeShapesFromOutputShapes:(id)shapes inputShapes:(id)inputShapes inRTL:(BOOL)l
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(UIKBTree *)self activeGeometriesList];
-  if (v9)
+  shapesCopy = shapes;
+  inputShapesCopy = inputShapes;
+  activeGeometriesList = [(UIKBTree *)self activeGeometriesList];
+  if (activeGeometriesList)
   {
-    v36 = v7;
-    v10 = [(UIKBTree *)self geometriesList];
-    v11 = [v10 cache];
+    v36 = shapesCopy;
+    geometriesList = [(UIKBTree *)self geometriesList];
+    cache = [geometriesList cache];
 
-    v12 = [(UIKBTree *)self geometriesList];
-    v13 = [v12 subtrees];
+    geometriesList2 = [(UIKBTree *)self geometriesList];
+    subtrees = [geometriesList2 subtrees];
 
-    v35 = v8;
-    v33 = v13;
-    v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v13];
-    v15 = [MEMORY[0x1E695DF70] array];
+    v35 = inputShapesCopy;
+    v33 = subtrees;
+    v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:inputShapesCopy forKeys:subtrees];
+    array = [MEMORY[0x1E695DF70] array];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v34 = v9;
-    v16 = v9;
+    v34 = activeGeometriesList;
+    v16 = activeGeometriesList;
     v17 = [v16 countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v17)
     {
@@ -9791,11 +9791,11 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
             objc_enumerationMutation(v16);
           }
 
-          v21 = [v11 objectForKey:*(*(&v42 + 1) + 8 * i)];
+          v21 = [cache objectForKey:*(*(&v42 + 1) + 8 * i)];
           v22 = [v14 objectForKey:v21];
 
-          v23 = [v22 geometry];
-          [v15 addObject:v23];
+          geometry = [v22 geometry];
+          [array addObject:geometry];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v42 objects:v47 count:16];
@@ -9804,7 +9804,7 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
       while (v18);
     }
 
-    v37 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -9825,12 +9825,12 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
           }
 
           v29 = *(*(&v38 + 1) + 8 * j);
-          v30 = [v29 geometry];
-          v31 = [v15 containsObject:v30];
+          geometry2 = [v29 geometry];
+          v31 = [array containsObject:geometry2];
 
           if (v31)
           {
-            [v37 addObject:v29];
+            [array2 addObject:v29];
           }
         }
 
@@ -9840,22 +9840,22 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
       while (v26);
     }
 
-    v8 = v35;
-    v7 = v36;
-    v9 = v34;
+    inputShapesCopy = v35;
+    shapesCopy = v36;
+    activeGeometriesList = v34;
   }
 
   else
   {
-    v37 = v7;
+    array2 = shapesCopy;
   }
 
-  return v37;
+  return array2;
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  if (a3)
+  if (state)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
   }
@@ -9869,11 +9869,11 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
   [(UIKBTree *)self setObject:v4 forProperty:@"state"];
 }
 
-- (void)updateVariantTypeForActions:(unsigned int)a3
+- (void)updateVariantTypeForActions:(unsigned int)actions
 {
   if (![(UIKBTree *)self _variantType])
   {
-    if ((a3 & 0x80000) != 0)
+    if ((actions & 0x80000) != 0)
     {
       v5 = 8;
     }
@@ -9883,7 +9883,7 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
       v5 = 1;
     }
 
-    if ((a3 & 0x10000) != 0)
+    if ((actions & 0x10000) != 0)
     {
       v6 = 7;
     }
@@ -9893,7 +9893,7 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
       v6 = v5;
     }
 
-    if ((a3 & 0x40000) != 0)
+    if ((actions & 0x40000) != 0)
     {
       v7 = 3;
     }
@@ -9903,7 +9903,7 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
       v7 = v6;
     }
 
-    if ((a3 & 0x20000) != 0)
+    if ((actions & 0x20000) != 0)
     {
       v8 = 4;
     }
@@ -9917,27 +9917,27 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setDisplayType:(int)a3
+- (void)setDisplayType:(int)type
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&type];
   [(UIKBTree *)self setObject:v4 forProperty:@"KBdisplayType"];
 }
 
-- (void)setInteractionType:(int)a3
+- (void)setInteractionType:(int)type
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&type];
   [(UIKBTree *)self setObject:v4 forProperty:@"KBinteractionType"];
 }
 
-- (void)setVariantType:(int)a3
+- (void)setVariantType:(int)type
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&type];
   [(UIKBTree *)self setObject:v4 forProperty:@"variant-type"];
 }
 
-- (void)setDisplayTypeHint:(int)a3
+- (void)setDisplayTypeHint:(int)hint
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&hint];
   [(UIKBTree *)self setObject:v4 forProperty:@"KBdisplayTypeHint"];
 }
 
@@ -9947,20 +9947,20 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setSelectedVariantIndex:(int64_t)a3
+- (void)setSelectedVariantIndex:(int64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
@@ -9980,38 +9980,38 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 1;
+    intValue = 1;
   }
 
-  return v4;
+  return intValue;
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:alignment];
   [(UIKBTree *)self setObject:v4 forProperty:@"text-alignment"];
 }
 
-- (void)setDisplayRowHint:(int)a3
+- (void)setDisplayRowHint:(int)hint
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&hint];
   [(UIKBTree *)self setObject:v4 forProperty:@"KBdisplayRowHint"];
 }
 
-- (void)setRendering:(int)a3
+- (void)setRendering:(int)rendering
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&rendering];
   [(UIKBTree *)self setObject:v4 forProperty:@"rendering"];
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
 
     [(UIKBTree *)self setObject:0 forProperty:@"visible"];
@@ -10026,26 +10026,26 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)ghost
 {
-  v3 = [(UIKBTree *)self cache];
-  v4 = [v3 objectForKey:@"KBghost"];
+  cache = [(UIKBTree *)self cache];
+  v4 = [cache objectForKey:@"KBghost"];
   if ([v4 BOOLValue])
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v6 = [(UIKBTree *)self properties];
-    v7 = [v6 objectForKey:@"KBghost"];
-    v5 = [v7 BOOLValue];
+    properties = [(UIKBTree *)self properties];
+    v7 = [properties objectForKey:@"KBghost"];
+    bOOLValue = [v7 BOOLValue];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setGhost:(BOOL)a3
+- (void)setGhost:(BOOL)ghost
 {
-  if (a3)
+  if (ghost)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:1];
     [(UIKBTree *)self setObject:v4 forProperty:@"KBghost"];
@@ -10064,20 +10064,20 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = -3;
+    intValue = -3;
   }
 
-  return v4;
+  return intValue;
 }
 
-- (void)setFlickDirection:(int64_t)a3
+- (void)setFlickDirection:(int64_t)direction
 {
-  if (a3 == -3)
+  if (direction == -3)
   {
     v4 = 0;
   }
@@ -10097,20 +10097,20 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 1;
+    intValue = 1;
   }
 
-  return v4;
+  return intValue;
 }
 
-- (void)setPopupDirection:(int64_t)a3
+- (void)setPopupDirection:(int64_t)direction
 {
-  if (a3)
+  if (direction)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   }
@@ -10124,9 +10124,9 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
   [(UIKBTree *)self setObject:v4 forProperty:@"KBpopupDirection"];
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 1;
   }
@@ -10139,15 +10139,15 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
   [(UIKBTree *)self setState:v3];
 }
 
-- (void)setSplitMode:(int)a3
+- (void)setSplitMode:(int)mode
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&mode];
   [(UIKBTree *)self setObject:v4 forProperty:@"KBsplitMode"];
 }
 
-- (void)setClipCorners:(unint64_t)a3
+- (void)setClipCorners:(unint64_t)corners
 {
-  if (a3)
+  if (corners)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
   }
@@ -10161,9 +10161,9 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
   [(UIKBTree *)self setObject:v4 forProperty:@"KBclipCorners"];
 }
 
-- (void)setForceMultitap:(BOOL)a3
+- (void)setForceMultitap:(BOOL)multitap
 {
-  if (a3)
+  if (multitap)
   {
     v4 = 32;
   }
@@ -10179,26 +10179,26 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)mergeAsMoreKey
 {
-  v2 = [(UIKBTree *)self cache];
-  v3 = [v2 objectForKey:@"merge-as-more-key"];
-  v4 = [v3 BOOLValue];
+  cache = [(UIKBTree *)self cache];
+  v3 = [cache objectForKey:@"merge-as-more-key"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setMergeAsMoreKey:(BOOL)a3
+- (void)setMergeAsMoreKey:(BOOL)key
 {
-  v3 = a3;
-  v4 = [(UIKBTree *)self cache];
-  v5 = v4;
-  if (v3)
+  keyCopy = key;
+  cache = [(UIKBTree *)self cache];
+  v5 = cache;
+  if (keyCopy)
   {
-    [v4 setObject:&unk_1EFE31000 forKey:@"merge-as-more-key"];
+    [cache setObject:&unk_1EFE31000 forKey:@"merge-as-more-key"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"merge-as-more-key"];
+    [cache removeObjectForKey:@"merge-as-more-key"];
   }
 }
 
@@ -10211,10 +10211,10 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v5 = [(UIKBTree *)self interactionType];
-    if (v5 <= 0x10)
+    interactionType = [(UIKBTree *)self interactionType];
+    if (interactionType <= 0x10)
     {
-      v3 = 0x5FE9u >> v5;
+      v3 = 0x5FE9u >> interactionType;
     }
 
     else
@@ -10239,11 +10239,11 @@ void __26__UIKBTree_shapesForKeys___block_invoke(uint64_t a1, void *a2)
     return 1;
   }
 
-  v6 = [(UIKBTree *)self displayType];
-  if (v6 == 4)
+  displayType = [(UIKBTree *)self displayType];
+  if (displayType == 4)
   {
-    v2 = [(UIKBTree *)self layoutTag];
-    if (!v2)
+    layoutTag = [(UIKBTree *)self layoutTag];
+    if (!layoutTag)
     {
       v4 = 1;
 LABEL_18:
@@ -10253,7 +10253,7 @@ LABEL_18:
   }
 
   v4 = [(UIKBTree *)self displayType]== 13 || [(UIKBTree *)self interactionType]== 9 || [(UIKBTree *)self displayType]== 18 || [(UIKBTree *)self displayType]== 21 || [(UIKBTree *)self displayType]== 3 || [(UIKBTree *)self displayType]== 5 || [(UIKBTree *)self displayType]== 53 || [(UIKBTree *)self interactionType]== 17;
-  if (v6 == 4)
+  if (displayType == 4)
   {
     goto LABEL_18;
   }
@@ -10283,8 +10283,8 @@ LABEL_18:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(UIKBTree *)self subtrees];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  subtrees = [(UIKBTree *)self subtrees];
+  v3 = [subtrees countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -10294,7 +10294,7 @@ LABEL_18:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subtrees);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) displayType] == 50)
@@ -10304,7 +10304,7 @@ LABEL_18:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [subtrees countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -10319,9 +10319,9 @@ LABEL_11:
   return v3;
 }
 
-- (void)setGroupNeighbor:(unint64_t)a3
+- (void)setGroupNeighbor:(unint64_t)neighbor
 {
-  if (a3)
+  if (neighbor)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInteger:?];
     [(UIKBTree *)self setObject:v4 forProperty:@"group-neighbor"];
@@ -10334,15 +10334,15 @@ LABEL_11:
   }
 }
 
-- (void)setPreventPaddle:(BOOL)a3
+- (void)setPreventPaddle:(BOOL)paddle
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:paddle];
   [(UIKBTree *)self setObject:v4 forProperty:@"KBpreventPaddle"];
 }
 
-- (void)setDynamicLayout:(BOOL)a3
+- (void)setDynamicLayout:(BOOL)layout
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:layout];
   [(UIKBTree *)self setObject:v4 forProperty:@"KBdynamic"];
 }
 
@@ -10352,61 +10352,61 @@ LABEL_11:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = -1;
+    intValue = -1;
   }
 
-  return v4;
+  return intValue;
 }
 
-- (void)setDynamicDisplayCorner:(unint64_t)a3
+- (void)setDynamicDisplayCorner:(unint64_t)corner
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:corner];
   [(UIKBTree *)self setObject:v4 forProperty:@"display-corner"];
 }
 
-- (void)setCurrentKeyboardType:(int64_t)a3
+- (void)setCurrentKeyboardType:(int64_t)type
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [(UIKBTree *)self setObject:v4 forProperty:@"KBCachedKeyboardType"];
 }
 
-- (id)toggleKeysForKeyName:(id)a3
+- (id)toggleKeysForKeyName:(id)name
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"KBToggleKeys_%@", a3];
-  v5 = [(UIKBTree *)self properties];
-  v6 = [v5 objectForKey:v4];
+  name = [MEMORY[0x1E696AEC0] stringWithFormat:@"KBToggleKeys_%@", name];
+  properties = [(UIKBTree *)self properties];
+  v6 = [properties objectForKey:name];
 
   return v6;
 }
 
-- (void)setToggleKeys:(id)a3 forKeyName:(id)a4
+- (void)setToggleKeys:(id)keys forKeyName:(id)name
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a3;
-  v9 = [v6 stringWithFormat:@"KBToggleKeys_%@", a4];
-  v8 = [(UIKBTree *)self properties];
-  [v8 setObject:v7 forKey:v9];
+  keysCopy = keys;
+  name = [v6 stringWithFormat:@"KBToggleKeys_%@", name];
+  properties = [(UIKBTree *)self properties];
+  [properties setObject:keysCopy forKey:name];
 }
 
-- (void)orderVariantKeys:(BOOL)a3
+- (void)orderVariantKeys:(BOOL)keys
 {
-  v3 = a3;
+  keysCopy = keys;
   v33 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695DF70];
-  v6 = [(UIKBTree *)self subtrees];
-  v7 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  subtrees = [(UIKBTree *)self subtrees];
+  v7 = [v5 arrayWithCapacity:{objc_msgSend(subtrees, "count")}];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [(UIKBTree *)self subtrees];
-  v9 = [v8 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  subtrees2 = [(UIKBTree *)self subtrees];
+  v9 = [subtrees2 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v9)
   {
     v10 = v9;
@@ -10418,29 +10418,29 @@ LABEL_11:
       {
         if (*v28 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subtrees2);
         }
 
-        v13 = [*(*(&v27 + 1) + 8 * v12) shape];
-        [v7 addObject:v13];
+        shape = [*(*(&v27 + 1) + 8 * v12) shape];
+        [v7 addObject:shape];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v10 = [subtrees2 countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v10);
   }
 
-  [v7 sortUsingFunction:variantOrderSort context:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v3)}];
+  [v7 sortUsingFunction:variantOrderSort context:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", keysCopy)}];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [(UIKBTree *)self subtrees];
-  v15 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  subtrees3 = [(UIKBTree *)self subtrees];
+  v15 = [subtrees3 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v15)
   {
     v16 = v15;
@@ -10454,7 +10454,7 @@ LABEL_11:
       {
         if (*v24 != v18)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(subtrees3);
         }
 
         v21 = *(*(&v23 + 1) + 8 * v19);
@@ -10467,7 +10467,7 @@ LABEL_11:
       }
 
       while (v16 != v19);
-      v16 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v16 = [subtrees3 countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v16);
@@ -10477,18 +10477,18 @@ LABEL_11:
 - (id)variantDisplayString
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKBTree *)self subtrees];
-  v4 = [v3 count];
+  subtrees = [(UIKBTree *)self subtrees];
+  v4 = [subtrees count];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(UIKBTree *)self subtrees];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    subtrees2 = [(UIKBTree *)self subtrees];
+    v7 = [subtrees2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -10499,20 +10499,20 @@ LABEL_11:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subtrees2);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          if ([v5 length])
+          if ([string length])
           {
-            [v5 appendString:@";"];
+            [string appendString:@";"];
           }
 
-          v12 = [v11 displayString];
-          [v5 appendString:v12];
+          displayString = [v11 displayString];
+          [string appendString:displayString];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [subtrees2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -10521,15 +10521,15 @@ LABEL_11:
 
   else
   {
-    v5 = [(UIKBTree *)self displayString];
+    string = [(UIKBTree *)self displayString];
   }
 
-  return v5;
+  return string;
 }
 
-- (BOOL)hasLayoutTag:(id)a3
+- (BOOL)hasLayoutTag:(id)tag
 {
-  if (!a3)
+  if (!tag)
   {
     return 0;
   }
@@ -10545,15 +10545,15 @@ LABEL_11:
   if (self->type == 12)
   {
     v2 = [(NSMutableDictionary *)self->properties objectForKey:@"Default"];
-    v3 = [v2 name];
+    name = [v2 name];
   }
 
   else
   {
-    v3 = self->name;
+    name = self->name;
   }
 
-  return v3;
+  return name;
 }
 
 - (BOOL)containsKeyThatIgnoresHandBias
@@ -10563,8 +10563,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(UIKBTree *)self keys];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  keys = [(UIKBTree *)self keys];
+  v3 = [keys countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -10575,7 +10575,7 @@ LABEL_11:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(keys);
         }
 
         if ([*(*(&v9 + 1) + 8 * i) BOOLForProperty:@"ignore-hand-bias"])
@@ -10585,7 +10585,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [keys countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -10601,18 +10601,18 @@ LABEL_11:
   return v7;
 }
 
-- (void)setLayoutTag:(id)a3 passingKeyTest:(id)a4
+- (void)setLayoutTag:(id)tag passingKeyTest:(id)test
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (self->layoutTag != v7)
+  tagCopy = tag;
+  testCopy = test;
+  if (self->layoutTag != tagCopy)
   {
-    objc_storeStrong(&self->layoutTag, a3);
+    objc_storeStrong(&self->layoutTag, tag);
   }
 
-  v9 = [(NSMutableDictionary *)self->properties objectForKey:v7];
-  if (v8 && ((v8[2])(v8, v9) & 1) == 0)
+  v9 = [(NSMutableDictionary *)self->properties objectForKey:tagCopy];
+  if (testCopy && ((testCopy[2])(testCopy, v9) & 1) == 0)
   {
     v20 = 0u;
     v21 = 0u;
@@ -10634,16 +10634,16 @@ LABEL_11:
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
-          if (([v15 isEqualToString:v7] & 1) == 0)
+          if (([v15 isEqualToString:tagCopy] & 1) == 0)
           {
             v16 = [(NSMutableDictionary *)self->properties objectForKey:v15];
 
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) != 0 && v8[2](v8, v16))
+            if ((objc_opt_isKindOfClass() & 1) != 0 && testCopy[2](testCopy, v16))
             {
               v17 = v15;
 
-              v7 = v17;
+              tagCopy = v17;
               goto LABEL_18;
             }
 
@@ -10667,7 +10667,7 @@ LABEL_18:
     v9 = v16;
   }
 
-  [(UIKBTree *)self setEffectiveLayoutTag:v7];
+  [(UIKBTree *)self setEffectiveLayoutTag:tagCopy];
 }
 
 - (BOOL)shouldCacheKey
@@ -10678,50 +10678,50 @@ LABEL_18:
     return 1;
   }
 
-  v3 = [(UIKBTree *)self displayType];
-  v4 = [(UIKBTree *)self interactionType];
-  v5.i32[0] = v3;
+  displayType = [(UIKBTree *)self displayType];
+  interactionType = [(UIKBTree *)self interactionType];
+  v5.i32[0] = displayType;
   v6 = v5;
-  v6.i32[1] = v3 & 0xFFFFFFEF;
-  v7.i32[0] = v4;
+  v6.i32[1] = displayType & 0xFFFFFFEF;
+  v7.i32[0] = interactionType;
   v8 = vdupq_lane_s32(*v6.i8, 0);
-  v8.i32[1] = v3 & 0xFFFFFFEF;
+  v8.i32[1] = displayType & 0xFFFFFFEF;
   result = 1;
-  if ((vmaxv_u8(vmovn_s16(vuzp1q_s16(vceqq_s32(v8, xmmword_18A67E9D0), vceqq_s32(vextq_s8(vdupq_lane_s32(v7, 0), v6, 4uLL), xmmword_18A67E9C0)))) & 1) == 0 && v4 != 5 && v3 != 23)
+  if ((vmaxv_u8(vmovn_s16(vuzp1q_s16(vceqq_s32(v8, xmmword_18A67E9D0), vceqq_s32(vextq_s8(vdupq_lane_s32(v7, 0), v6, 4uLL), xmmword_18A67E9C0)))) & 1) == 0 && interactionType != 5 && displayType != 23)
   {
-    v10 = [(UIKBTree *)self name];
-    if (![v10 isEqualToString:@"Latin-Accents"])
+    name = [(UIKBTree *)self name];
+    if (![name isEqualToString:@"Latin-Accents"])
     {
-      v11 = [(UIKBTree *)self cache];
-      v12 = [v11 objectForKey:@"modify-for-writeboard-key"];
-      v13.i32[0] = v3;
-      v13.i32[1] = v4 & 0xFFFFFFF7;
-      v13.i32[2] = v4 & 0xFFFFFFFD;
-      v13.i32[3] = v4;
+      cache = [(UIKBTree *)self cache];
+      v12 = [cache objectForKey:@"modify-for-writeboard-key"];
+      v13.i32[0] = displayType;
+      v13.i32[1] = interactionType & 0xFFFFFFF7;
+      v13.i32[2] = interactionType & 0xFFFFFFFD;
+      v13.i32[3] = interactionType;
       if ((vmaxv_u8(vmovn_s16(vuzp1q_s16(vceqq_s32(vdupq_lane_s32(*v13.i8, 0), xmmword_18A67E9E0), vceqq_s32(v13, xmmword_18A67E9F0)))) & 1) == 0)
       {
-        v14 = v4 & 0xFFFFFFFE;
-        if ((v4 & 0xFFFFFFFE) != 0x14 && v14 != 34 && v4 != 42 && !v12 && v14 != 18)
+        v14 = interactionType & 0xFFFFFFFE;
+        if ((interactionType & 0xFFFFFFFE) != 0x14 && v14 != 34 && interactionType != 42 && !v12 && v14 != 18)
         {
-          v15 = [(UIKBTree *)self localizationKey];
+          localizationKey = [(UIKBTree *)self localizationKey];
 
-          if (v15)
+          if (localizationKey)
           {
             return 1;
           }
 
-          if (v3 == 7)
+          if (displayType == 7)
           {
-            v16 = [(UIKBTree *)self representedString];
-            if ([v16 _containsSubstring:@"¤"])
+            representedString = [(UIKBTree *)self representedString];
+            if ([representedString _containsSubstring:@"¤"])
             {
 LABEL_15:
 
               return 1;
             }
 
-            v17 = [(UIKBTree *)self representedString];
-            v18 = [v17 _containsSubstring:@"⁒"];
+            representedString2 = [(UIKBTree *)self representedString];
+            v18 = [representedString2 _containsSubstring:@"⁒"];
 
             if (v18)
             {
@@ -10732,8 +10732,8 @@ LABEL_15:
             v28 = 0u;
             v25 = 0u;
             v26 = 0u;
-            v16 = [(UIKBTree *)self secondaryRepresentedStrings];
-            v19 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
+            representedString = [(UIKBTree *)self secondaryRepresentedStrings];
+            v19 = [representedString countByEnumeratingWithState:&v25 objects:v29 count:16];
             if (v19)
             {
               v20 = v19;
@@ -10744,7 +10744,7 @@ LABEL_23:
               {
                 if (*v26 != v21)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(representedString);
                 }
 
                 if ([*(*(&v25 + 1) + 8 * v22) _containsSubstring:@"¤"])
@@ -10752,8 +10752,8 @@ LABEL_23:
                   goto LABEL_15;
                 }
 
-                v23 = [(UIKBTree *)self representedString];
-                v24 = [v23 _containsSubstring:@"⁒"];
+                representedString3 = [(UIKBTree *)self representedString];
+                v24 = [representedString3 _containsSubstring:@"⁒"];
 
                 if (v24)
                 {
@@ -10762,7 +10762,7 @@ LABEL_23:
 
                 if (v20 == ++v22)
                 {
-                  v20 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
+                  v20 = [representedString countByEnumeratingWithState:&v25 objects:v29 count:16];
                   if (v20)
                   {
                     goto LABEL_23;
@@ -10787,8 +10787,8 @@ LABEL_23:
 
 - (BOOL)_renderAsStringKey
 {
-  v3 = [(UIKBTree *)self localizationKey];
-  if (v3)
+  localizationKey = [(UIKBTree *)self localizationKey];
+  if (localizationKey)
   {
 
 LABEL_4:
@@ -10808,9 +10808,9 @@ LABEL_4:
 
   else
   {
-    v6 = [(UIKBTree *)self displayType];
-    v4 = 0xC604B8001uLL >> v6;
-    if (v6 > 0x23)
+    displayType = [(UIKBTree *)self displayType];
+    v4 = 0xC604B8001uLL >> displayType;
+    if (displayType > 0x23)
     {
       LOBYTE(v4) = 0;
     }
@@ -10819,10 +10819,10 @@ LABEL_4:
   return v4 & 1;
 }
 
-- (BOOL)renderKeyInKeyplane:(id)a3
+- (BOOL)renderKeyInKeyplane:(id)keyplane
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyplaneCopy = keyplane;
   if ([(UIKBTree *)self _renderAsStringKey])
   {
     [(UIKBTree *)self frame];
@@ -10837,13 +10837,13 @@ LABEL_4:
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v6 = [v4 subtrees];
-      v7 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      subtrees = [keyplaneCopy subtrees];
+      v7 = [subtrees countByEnumeratingWithState:&v30 objects:v35 count:16];
       if (v7)
       {
         v8 = v7;
         v9 = *v31;
-        v25 = v6;
+        v25 = subtrees;
         v23 = *v31;
 LABEL_7:
         v10 = 0;
@@ -10852,7 +10852,7 @@ LABEL_7:
         {
           if (*v31 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subtrees);
           }
 
           v11 = *(*(&v30 + 1) + 8 * v10);
@@ -10862,10 +10862,10 @@ LABEL_7:
             v29 = 0u;
             v26 = 0u;
             v27 = 0u;
-            v12 = [v11 keySet];
-            v13 = [v12 subtrees];
+            keySet = [v11 keySet];
+            subtrees2 = [keySet subtrees];
 
-            v14 = [v13 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v14 = [subtrees2 countByEnumeratingWithState:&v26 objects:v34 count:16];
             if (v14)
             {
               v15 = v14;
@@ -10876,22 +10876,22 @@ LABEL_7:
                 {
                   if (*v27 != v16)
                   {
-                    objc_enumerationMutation(v13);
+                    objc_enumerationMutation(subtrees2);
                   }
 
-                  v18 = [*(*(&v26 + 1) + 8 * i) subtrees];
-                  v19 = [v18 containsObject:self];
+                  subtrees3 = [*(*(&v26 + 1) + 8 * i) subtrees];
+                  v19 = [subtrees3 containsObject:self];
 
                   if (v19)
                   {
 
                     v5 = 1;
-                    v6 = v25;
+                    subtrees = v25;
                     goto LABEL_25;
                   }
                 }
 
-                v15 = [v13 countByEnumeratingWithState:&v26 objects:v34 count:16];
+                v15 = [subtrees2 countByEnumeratingWithState:&v26 objects:v34 count:16];
                 if (v15)
                 {
                   continue;
@@ -10901,11 +10901,11 @@ LABEL_7:
               }
             }
 
-            v20 = [v11 name];
-            v21 = [v20 hasPrefix:@"split-"];
+            name = [v11 name];
+            v21 = [name hasPrefix:@"split-"];
 
             v8 = v24;
-            v6 = v25;
+            subtrees = v25;
             v9 = v23;
             if (!v21)
             {
@@ -10915,7 +10915,7 @@ LABEL_7:
 
           if (++v10 == v8)
           {
-            v8 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
+            v8 = [subtrees countByEnumeratingWithState:&v30 objects:v35 count:16];
             v5 = 0;
             if (v8)
             {
@@ -10958,10 +10958,10 @@ LABEL_25:
   return v2;
 }
 
-- (id)keysForDisplayRowAtIndex:(unint64_t)a3
+- (id)keysForDisplayRowAtIndex:(unint64_t)index
 {
   v55 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
@@ -10990,10 +10990,10 @@ LABEL_25:
         v45 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v10 = [v9 keySet];
-        v30 = [v10 subtrees];
+        keySet = [v9 keySet];
+        subtrees = [keySet subtrees];
 
-        v32 = [v30 countByEnumeratingWithState:&v44 objects:v53 count:16];
+        v32 = [subtrees countByEnumeratingWithState:&v44 objects:v53 count:16];
         if (v32)
         {
           v31 = *v45;
@@ -11005,7 +11005,7 @@ LABEL_25:
               if (*v45 != v31)
               {
                 v12 = v11;
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(subtrees);
                 v11 = v12;
               }
 
@@ -11015,7 +11015,7 @@ LABEL_25:
               v34 = v14;
               if (v14)
               {
-                v15 = [v14 unsignedIntegerValue] == a3;
+                v15 = [v14 unsignedIntegerValue] == index;
                 v14 = v34;
                 if (v15)
                 {
@@ -11023,8 +11023,8 @@ LABEL_25:
                   v43 = 0u;
                   v40 = 0u;
                   v41 = 0u;
-                  v16 = [v13 subtrees];
-                  v17 = [v16 countByEnumeratingWithState:&v40 objects:v52 count:16];
+                  subtrees2 = [v13 subtrees];
+                  v17 = [subtrees2 countByEnumeratingWithState:&v40 objects:v52 count:16];
                   if (v17)
                   {
                     v18 = *v41;
@@ -11034,13 +11034,13 @@ LABEL_25:
                       {
                         if (*v41 != v18)
                         {
-                          objc_enumerationMutation(v16);
+                          objc_enumerationMutation(subtrees2);
                         }
 
                         v20 = *(*(&v40 + 1) + 8 * i);
-                        if ([v20 displayRowHint] == a3)
+                        if ([v20 displayRowHint] == index)
                         {
-                          if ([v5 count])
+                          if ([array count])
                           {
                             [v20 frame];
                             v36 = 0;
@@ -11056,19 +11056,19 @@ LABEL_25:
                             v35[7] = v23;
                             v35[8] = v24;
                             v35[4] = &v36;
-                            [v5 enumerateObjectsUsingBlock:v35];
-                            [v5 insertObject:v20 atIndex:v37[3]];
+                            [array enumerateObjectsUsingBlock:v35];
+                            [array insertObject:v20 atIndex:v37[3]];
                             _Block_object_dispose(&v36, 8);
                           }
 
                           else
                           {
-                            [v5 addObject:v20];
+                            [array addObject:v20];
                           }
                         }
                       }
 
-                      v17 = [v16 countByEnumeratingWithState:&v40 objects:v52 count:16];
+                      v17 = [subtrees2 countByEnumeratingWithState:&v40 objects:v52 count:16];
                     }
 
                     while (v17);
@@ -11082,7 +11082,7 @@ LABEL_25:
             }
 
             while (v33 + 1 != v32);
-            v32 = [v30 countByEnumeratingWithState:&v44 objects:v53 count:16];
+            v32 = [subtrees countByEnumeratingWithState:&v44 objects:v53 count:16];
           }
 
           while (v32);
@@ -11098,7 +11098,7 @@ LABEL_25:
     while (v28);
   }
 
-  return v5;
+  return array;
 }
 
 uint64_t __37__UIKBTree_keysForDisplayRowAtIndex___block_invoke(uint64_t a1, void *a2, uint64_t a3)

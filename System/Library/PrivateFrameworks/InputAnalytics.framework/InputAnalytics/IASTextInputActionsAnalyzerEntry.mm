@@ -1,29 +1,29 @@
 @interface IASTextInputActionsAnalyzerEntry
-+ (id)generateAnalyzerEntryFromAction:(id)a3;
-- (void)increaseWithEntry:(id)a3;
++ (id)generateAnalyzerEntryFromAction:(id)action;
+- (void)increaseWithEntry:(id)entry;
 @end
 
 @implementation IASTextInputActionsAnalyzerEntry
 
-+ (id)generateAnalyzerEntryFromAction:(id)a3
++ (id)generateAnalyzerEntryFromAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   v4 = objc_alloc_init(IASTextInputActionsAnalyzerEntry);
   objc_msgSend_setNetCharacters_(v4, v5, 0);
   objc_msgSend_setUserRemovedCharacters_(v4, v6, 0);
   objc_msgSend_setNetEmojiCharacters_(v4, v7, 0);
   objc_msgSend_setUserRemovedEmojiCharacters_(v4, v8, 0);
-  v11 = objc_msgSend_inputActionCount(v3, v9, v10);
+  v11 = objc_msgSend_inputActionCount(actionCopy, v9, v10);
   objc_msgSend_setInputActions_(v4, v12, v11);
-  v15 = objc_msgSend_asInsertion(v3, v13, v14);
-  v20 = objc_msgSend_asCommitText(v3, v16, v17);
+  v15 = objc_msgSend_asInsertion(actionCopy, v13, v14);
+  v20 = objc_msgSend_asCommitText(actionCopy, v16, v17);
   if (v15 | v20)
   {
-    v21 = objc_msgSend_insertedTextLength(v3, v18, v19);
-    v24 = objc_msgSend_insertedEmojiCount(v3, v22, v23);
+    v21 = objc_msgSend_insertedTextLength(actionCopy, v18, v19);
+    v24 = objc_msgSend_insertedEmojiCount(actionCopy, v22, v23);
     objc_msgSend_setNetCharacters_(v4, v25, v21 - v24);
     objc_msgSend_setUserRemovedCharacters_(v4, v26, 0);
-    v29 = objc_msgSend_insertedEmojiCount(v3, v27, v28);
+    v29 = objc_msgSend_insertedEmojiCount(actionCopy, v27, v28);
     objc_msgSend_setNetEmojiCharacters_(v4, v30, v29);
     objc_msgSend_setUserRemovedEmojiCharacters_(v4, v31, 0);
     v32 = v4;
@@ -31,7 +31,7 @@
 
   else
   {
-    v33 = objc_msgSend_asDeletion(v3, v18, v19);
+    v33 = objc_msgSend_asDeletion(actionCopy, v18, v19);
     v36 = v33;
     if (v33)
     {
@@ -48,7 +48,7 @@
 
     else
     {
-      v52 = objc_msgSend_asReplaceText(v3, v34, v35);
+      v52 = objc_msgSend_asReplaceText(actionCopy, v34, v35);
       v55 = v52;
       if (v52)
       {
@@ -57,7 +57,7 @@
         v62 = objc_msgSend_removedTextLength(v55, v60, v61);
         v65 = objc_msgSend_removedEmojiCount(v55, v63, v64);
         objc_msgSend_setNetCharacters_(v4, v66, v56 - (v59 + v62) + v65);
-        if (objc_msgSend_textInputActionsType(v3, v67, v68) == 18 && objc_msgSend_netCharacters(v4, v69, v70) < 0)
+        if (objc_msgSend_textInputActionsType(actionCopy, v67, v68) == 18 && objc_msgSend_netCharacters(v4, v69, v70) < 0)
         {
           v82 = -objc_msgSend_netCharacters(v4, v69, v71);
           objc_msgSend_setUserRemovedCharacters_(v4, v83, v82);
@@ -81,14 +81,14 @@
   return v4;
 }
 
-- (void)increaseWithEntry:(id)a3
+- (void)increaseWithEntry:(id)entry
 {
-  v4 = a3;
-  self->_netCharacters += objc_msgSend_netCharacters(v4, v5, v6);
-  self->_userRemovedCharacters += objc_msgSend_userRemovedCharacters(v4, v7, v8);
-  self->_netEmojiCharacters += objc_msgSend_netEmojiCharacters(v4, v9, v10);
-  self->_userRemovedEmojiCharacters += objc_msgSend_userRemovedEmojiCharacters(v4, v11, v12);
-  v15 = objc_msgSend_inputActions(v4, v13, v14);
+  entryCopy = entry;
+  self->_netCharacters += objc_msgSend_netCharacters(entryCopy, v5, v6);
+  self->_userRemovedCharacters += objc_msgSend_userRemovedCharacters(entryCopy, v7, v8);
+  self->_netEmojiCharacters += objc_msgSend_netEmojiCharacters(entryCopy, v9, v10);
+  self->_userRemovedEmojiCharacters += objc_msgSend_userRemovedEmojiCharacters(entryCopy, v11, v12);
+  v15 = objc_msgSend_inputActions(entryCopy, v13, v14);
 
   self->_inputActions += v15;
 }

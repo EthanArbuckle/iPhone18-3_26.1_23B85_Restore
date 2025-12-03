@@ -1,43 +1,43 @@
 @interface SearchRACViewControllerIOS
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (_TtC8VideosUI26SearchRACViewControllerIOS)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (_TtC8VideosUI26SearchRACViewControllerIOS)initWithNibName:(id)name bundle:(id)bundle;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (void)cancelButtonTapped;
-- (void)keyboardStateWillChange:(id)a3;
+- (void)keyboardStateWillChange:(id)change;
 - (void)submitButtonTapped;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidEndEditing:(id)editing;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SearchRACViewControllerIOS
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E390AA80();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1E390AD40(a3);
+  selfCopy = self;
+  sub_1E390AD40(appear);
 }
 
-- (void)keyboardStateWillChange:(id)a3
+- (void)keyboardStateWillChange:(id)change
 {
   sub_1E41FDF34();
   OUTLINED_FUNCTION_0_10();
   MEMORY[0x1EEE9AC00](v4);
   OUTLINED_FUNCTION_5();
   sub_1E41FDEE4();
-  v5 = self;
+  selfCopy = self;
   sub_1E390AE60();
 
   v6 = OUTLINED_FUNCTION_74();
@@ -46,53 +46,53 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E390BA04();
 }
 
 - (void)submitButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E390BB74();
 }
 
 - (void)cancelButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E390C32C();
 }
 
-- (_TtC8VideosUI26SearchRACViewControllerIOS)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI26SearchRACViewControllerIOS)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E390C55C();
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   sub_1E4205F14();
-  v9 = a3;
-  v10 = self;
-  LOBYTE(length) = sub_1E390C600(v9, location, length);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(length) = sub_1E390C600(viewCopy, location, length);
 
   return length & 1;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1E390C76C(v7, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_1E390C76C(selfCopy, section);
   v10 = v9;
 
   if (v10)
@@ -109,7 +109,7 @@
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   OUTLINED_FUNCTION_17_0();
   OUTLINED_FUNCTION_0_10();
@@ -127,7 +127,7 @@
   return v11;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   OUTLINED_FUNCTION_17_0();
   OUTLINED_FUNCTION_0_10();
@@ -146,7 +146,7 @@
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   OUTLINED_FUNCTION_17_0();
   OUTLINED_FUNCTION_0_10();
@@ -162,18 +162,18 @@
   v10(v9);
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_1E390DA48();
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E390DAC4(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_1E390DAC4(editingCopy);
 }
 
 @end

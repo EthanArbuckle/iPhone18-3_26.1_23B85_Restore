@@ -1,23 +1,23 @@
 @interface XBApplicationCaptureInformation
-- (XBApplicationCaptureInformation)initWithLaunchRequests:(id)a3 captureInfos:(id)a4 launchImagePaths:(id)a5;
-- (id)caarPathForLaunchRequest:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)launchImagePathForLaunchRequest:(id)a3;
+- (XBApplicationCaptureInformation)initWithLaunchRequests:(id)requests captureInfos:(id)infos launchImagePaths:(id)paths;
+- (id)caarPathForLaunchRequest:(id)request;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)launchImagePathForLaunchRequest:(id)request;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (unint64_t)estimatedMemoryImpactForLaunchRequest:(id)a3;
+- (unint64_t)estimatedMemoryImpactForLaunchRequest:(id)request;
 @end
 
 @implementation XBApplicationCaptureInformation
 
-- (XBApplicationCaptureInformation)initWithLaunchRequests:(id)a3 captureInfos:(id)a4 launchImagePaths:(id)a5
+- (XBApplicationCaptureInformation)initWithLaunchRequests:(id)requests captureInfos:(id)infos launchImagePaths:(id)paths
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 count];
-  if (v13 != [v11 count])
+  requestsCopy = requests;
+  infosCopy = infos;
+  pathsCopy = paths;
+  v13 = [requestsCopy count];
+  if (v13 != [infosCopy count])
   {
     [XBApplicationCaptureInformation initWithLaunchRequests:a2 captureInfos:self launchImagePaths:?];
   }
@@ -28,31 +28,31 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_launchRequests, a3);
-    objc_storeStrong(&v15->_captureInfos, a4);
-    objc_storeStrong(&v15->_launchImagePaths, a5);
+    objc_storeStrong(&v14->_launchRequests, requests);
+    objc_storeStrong(&v15->_captureInfos, infos);
+    objc_storeStrong(&v15->_launchImagePaths, paths);
   }
 
   return v15;
 }
 
-- (unint64_t)estimatedMemoryImpactForLaunchRequest:(id)a3
+- (unint64_t)estimatedMemoryImpactForLaunchRequest:(id)request
 {
-  v4 = [(NSOrderedSet *)self->_launchRequests indexOfObject:a3];
+  v4 = [(NSOrderedSet *)self->_launchRequests indexOfObject:request];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return -1;
   }
 
   v6 = [(NSArray *)self->_captureInfos objectAtIndexedSubscript:v4];
-  v7 = [v6 estimatedMemoryImpact];
+  estimatedMemoryImpact = [v6 estimatedMemoryImpact];
 
-  return v7;
+  return estimatedMemoryImpact;
 }
 
-- (id)launchImagePathForLaunchRequest:(id)a3
+- (id)launchImagePathForLaunchRequest:(id)request
 {
-  v4 = [(NSOrderedSet *)self->_launchRequests indexOfObject:a3];
+  v4 = [(NSOrderedSet *)self->_launchRequests indexOfObject:request];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -66,35 +66,35 @@
   return v5;
 }
 
-- (id)caarPathForLaunchRequest:(id)a3
+- (id)caarPathForLaunchRequest:(id)request
 {
-  v4 = [(NSOrderedSet *)self->_launchRequests indexOfObject:a3];
+  v4 = [(NSOrderedSet *)self->_launchRequests indexOfObject:request];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = 0;
+    caarFilePath = 0;
   }
 
   else
   {
     v6 = [(NSArray *)self->_captureInfos objectAtIndexedSubscript:v4];
-    v5 = [v6 caarFilePath];
+    caarFilePath = [v6 caarFilePath];
   }
 
-  return v5;
+  return caarFilePath;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(XBApplicationCaptureInformation *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(XBApplicationCaptureInformation *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [(XBApplicationCaptureInformation *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(XBApplicationCaptureInformation *)self succinctDescriptionBuilder];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -115,16 +115,16 @@
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 succinctDescription];
-        v11 = [v4 activeMultilinePrefix];
+        succinctDescription = [v9 succinctDescription];
+        activeMultilinePrefix = [succinctDescriptionBuilder activeMultilinePrefix];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __73__XBApplicationCaptureInformation_descriptionBuilderWithMultilinePrefix___block_invoke;
         v14[3] = &unk_279CF9108;
         v14[4] = self;
         v14[5] = v9;
-        v15 = v4;
-        [v15 appendBodySectionWithName:v10 multilinePrefix:v11 block:v14];
+        v15 = succinctDescriptionBuilder;
+        [v15 appendBodySectionWithName:succinctDescription multilinePrefix:activeMultilinePrefix block:v14];
       }
 
       v6 = [(NSOrderedSet *)obj countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -133,7 +133,7 @@
     while (v6);
   }
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 void __73__XBApplicationCaptureInformation_descriptionBuilderWithMultilinePrefix___block_invoke(uint64_t a1)
@@ -169,18 +169,18 @@ LABEL_7:
 
 - (id)succinctDescription
 {
-  v2 = [(XBApplicationCaptureInformation *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(XBApplicationCaptureInformation *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NSOrderedSet *)self->_launchRequests firstObject];
-  v5 = [v4 groupID];
-  [v3 appendString:v5 withName:@"groupID"];
+  firstObject = [(NSOrderedSet *)self->_launchRequests firstObject];
+  groupID = [firstObject groupID];
+  [v3 appendString:groupID withName:@"groupID"];
 
   v6 = [v3 appendUnsignedInteger:-[NSOrderedSet count](self->_launchRequests withName:{"count"), @"launchRequests"}];
 

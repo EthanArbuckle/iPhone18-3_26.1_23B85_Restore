@@ -1,27 +1,27 @@
 @interface ACCNowPlayingServerRemote
-- (ACCNowPlayingServerRemote)initWithXPCConnection:(id)a3;
-- (void)initConnection:(id)a3;
-- (void)mediaItemArtworkHasChanged:(id)a3 withReply:(id)a4;
-- (void)mediaItemAttributesHaveChanged:(id)a3 withReply:(id)a4;
-- (void)playbackAttributesHaveChanged:(id)a3 withReply:(id)a4;
+- (ACCNowPlayingServerRemote)initWithXPCConnection:(id)connection;
+- (void)initConnection:(id)connection;
+- (void)mediaItemArtworkHasChanged:(id)changed withReply:(id)reply;
+- (void)mediaItemAttributesHaveChanged:(id)changed withReply:(id)reply;
+- (void)playbackAttributesHaveChanged:(id)changed withReply:(id)reply;
 - (void)playbackQueueListChanged;
-- (void)playbackQueueListInfoResponse:(id)a3 requestID:(id)a4 info:(id)a5;
+- (void)playbackQueueListInfoResponse:(id)response requestID:(id)d info:(id)info;
 @end
 
 @implementation ACCNowPlayingServerRemote
 
-- (ACCNowPlayingServerRemote)initWithXPCConnection:(id)a3
+- (ACCNowPlayingServerRemote)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = ACCNowPlayingServerRemote;
   v6 = [(ACCNowPlayingServerRemote *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (connectionCopy)
     {
-      objc_storeStrong(&v6->_XPCConnection, a3);
+      objc_storeStrong(&v6->_XPCConnection, connection);
     }
 
     else
@@ -34,14 +34,14 @@
   return v7;
 }
 
-- (void)initConnection:(id)a3
+- (void)initConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[ACCNowPlayingServer sharedServer];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(ACCNowPlayingServerRemote *)self XPCConnection];
-    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:v6] != 0;
+    xPCConnection = [(ACCNowPlayingServerRemote *)self XPCConnection];
+    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:xPCConnection] != 0;
   }
 
   else
@@ -110,13 +110,13 @@
     [v13 sendUpdatedSubscriberList];
   }
 
-  v4[2](v4, v7);
+  connectionCopy[2](connectionCopy, v7);
 }
 
-- (void)mediaItemAttributesHaveChanged:(id)a3 withReply:(id)a4
+- (void)mediaItemAttributesHaveChanged:(id)changed withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  changedCopy = changed;
+  replyCopy = reply;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 5;
@@ -146,21 +146,21 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = changedCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[#Now Playing] Received mediaItemAttributes update: %@", &v11, 0xCu);
   }
 
-  v10 = platform_nowPlaying_mediaItemAttributesUpdate(v5);
-  if (v6)
+  v10 = platform_nowPlaying_mediaItemAttributesUpdate(changedCopy);
+  if (replyCopy)
   {
-    v6[2](v6, v10);
+    replyCopy[2](replyCopy, v10);
   }
 }
 
-- (void)mediaItemArtworkHasChanged:(id)a3 withReply:(id)a4
+- (void)mediaItemArtworkHasChanged:(id)changed withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  changedCopy = changed;
+  replyCopy = reply;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 5;
@@ -190,21 +190,21 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v11 = 134217984;
-    v12 = [v5 length];
+    v12 = [changedCopy length];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[#Now Playing] #Artwork Received mediaItemArtwork update: %lu bytes", &v11, 0xCu);
   }
 
-  v10 = platform_nowPlaying_mediaItemArtworkUpdate(v5);
-  if (v6)
+  v10 = platform_nowPlaying_mediaItemArtworkUpdate(changedCopy);
+  if (replyCopy)
   {
-    v6[2](v6, v10);
+    replyCopy[2](replyCopy, v10);
   }
 }
 
-- (void)playbackAttributesHaveChanged:(id)a3 withReply:(id)a4
+- (void)playbackAttributesHaveChanged:(id)changed withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  changedCopy = changed;
+  replyCopy = reply;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 5;
@@ -234,14 +234,14 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = changedCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[#Now Playing] Received playbackAttributes update: %@", &v11, 0xCu);
   }
 
-  v10 = platform_nowPlaying_playbackAttributesUpdate(v5);
-  if (v6)
+  v10 = platform_nowPlaying_playbackAttributesUpdate(changedCopy);
+  if (replyCopy)
   {
-    v6[2](v6, v10);
+    replyCopy[2](replyCopy, v10);
   }
 }
 
@@ -282,11 +282,11 @@
   platform_nowPlaying_playbackQueueListChanged(1u);
 }
 
-- (void)playbackQueueListInfoResponse:(id)a3 requestID:(id)a4 info:(id)a5
+- (void)playbackQueueListInfoResponse:(id)response requestID:(id)d info:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  responseCopy = response;
+  dCopy = d;
+  infoCopy = info;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 5;
@@ -316,15 +316,15 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = 138412802;
-    v14 = v7;
+    v14 = responseCopy;
     v15 = 2112;
-    v16 = v8;
+    v16 = dCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = infoCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[#Now Playing] Received playbackQueueListInfoResponse: %@ requestID: %@ info: %@", &v13, 0x20u);
   }
 
-  platform_nowPlaying_playbackQueueListInfoResponse(v7, v9);
+  platform_nowPlaying_playbackQueueListInfoResponse(responseCopy, infoCopy);
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface MRProtobufSerialization
-- (id)createDictionaryFromProtobuf:(id)a3;
-- (id)createProtobufFromDictionary:(id)a3;
-- (void)setDictionaryKeyToProtobufKeyMapping:(id)a3;
+- (id)createDictionaryFromProtobuf:(id)protobuf;
+- (id)createProtobufFromDictionary:(id)dictionary;
+- (void)setDictionaryKeyToProtobufKeyMapping:(id)mapping;
 @end
 
 @implementation MRProtobufSerialization
 
-- (void)setDictionaryKeyToProtobufKeyMapping:(id)a3
+- (void)setDictionaryKeyToProtobufKeyMapping:(id)mapping
 {
-  if (self->_dictionaryKeyToProtobufKeyMapping != a3)
+  if (self->_dictionaryKeyToProtobufKeyMapping != mapping)
   {
     v15 = v3;
     v16 = v4;
-    v6 = [a3 copy];
+    v6 = [mapping copy];
     dictionaryKeyToProtobufKeyMapping = self->_dictionaryKeyToProtobufKeyMapping;
     self->_dictionaryKeyToProtobufKeyMapping = v6;
 
@@ -31,18 +31,18 @@
   }
 }
 
-- (id)createDictionaryFromProtobuf:(id)a3
+- (id)createDictionaryFromProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSDictionary count](self->_dictionaryKeyToProtobufKeyMapping, "count")}];
   protobufKeyToDictionaryKeyMapping = self->_protobufKeyToDictionaryKeyMapping;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __56__MRProtobufSerialization_createDictionaryFromProtobuf___block_invoke;
   v13[3] = &unk_1E769CBD8;
-  v7 = v4;
+  v7 = protobufCopy;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   v8 = v5;
   v16 = v8;
   [(NSDictionary *)protobufKeyToDictionaryKeyMapping enumerateKeysAndObjectsUsingBlock:v13];
@@ -74,9 +74,9 @@ void __56__MRProtobufSerialization_createDictionaryFromProtobuf___block_invoke(u
   }
 }
 
-- (id)createProtobufFromDictionary:(id)a3
+- (id)createProtobufFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   protobufClass = self->_protobufClass;
   v6 = objc_opt_new();
   v13[0] = MEMORY[0x1E69E9820];
@@ -84,7 +84,7 @@ void __56__MRProtobufSerialization_createDictionaryFromProtobuf___block_invoke(u
   v13[2] = __56__MRProtobufSerialization_createProtobufFromDictionary___block_invoke;
   v13[3] = &unk_1E769CC00;
   v13[4] = self;
-  v7 = v4;
+  v7 = dictionaryCopy;
   v14 = v7;
   v8 = v6;
   v15 = v8;

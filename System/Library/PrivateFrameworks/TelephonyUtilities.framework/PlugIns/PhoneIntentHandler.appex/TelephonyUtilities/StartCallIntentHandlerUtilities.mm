@@ -1,17 +1,17 @@
 @interface StartCallIntentHandlerUtilities
-+ (BOOL)contactsShareHandleValue:(id)a3;
-+ (id)contactWithMostHandles:(id)a3;
-+ (id)inPersonFromContact:(id)a3 handleValue:(id)a4 handleType:(int64_t)a5 handleLabel:(id)a6;
-+ (id)sortContacts:(id)a3 withIdentifiers:(id)a4;
-+ (void)populatePersonsByTUHandleFrom:(id)a3 personsByTUHandle:(id)a4 tuHandleOrderedSet:(id)a5;
++ (BOOL)contactsShareHandleValue:(id)value;
++ (id)contactWithMostHandles:(id)handles;
++ (id)inPersonFromContact:(id)contact handleValue:(id)value handleType:(int64_t)type handleLabel:(id)label;
++ (id)sortContacts:(id)contacts withIdentifiers:(id)identifiers;
++ (void)populatePersonsByTUHandleFrom:(id)from personsByTUHandle:(id)handle tuHandleOrderedSet:(id)set;
 @end
 
 @implementation StartCallIntentHandlerUtilities
 
-+ (id)sortContacts:(id)a3 withIdentifiers:(id)a4
++ (id)sortContacts:(id)contacts withIdentifiers:(id)identifiers
 {
-  v42 = a3;
-  v5 = a4;
+  contactsCopy = contacts;
+  identifiersCopy = identifiers;
   v6 = IntentHandlerDefaultLog();
   v7 = os_signpost_id_generate(v6);
 
@@ -23,7 +23,7 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "sortMatchingContactsWithIdentifiers", "", buf, 2u);
   }
 
-  if (v42)
+  if (contactsCopy)
   {
     spid = v7;
     v37 = v7 - 1;
@@ -32,8 +32,8 @@
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v38 = v5;
-    obj = v5;
+    v38 = identifiersCopy;
+    obj = identifiersCopy;
     v10 = [obj countByEnumeratingWithState:&v51 objects:v58 count:16];
     if (v10)
     {
@@ -53,7 +53,7 @@
           v48 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v14 = v42;
+          v14 = contactsCopy;
           v15 = [v14 countByEnumeratingWithState:&v47 objects:v57 count:16];
           if (v15)
           {
@@ -69,8 +69,8 @@
                 }
 
                 v19 = *(*(&v47 + 1) + 8 * j);
-                v20 = [v19 identifier];
-                v21 = [v13 isEqualToString:v20];
+                identifier = [v19 identifier];
+                v21 = [v13 isEqualToString:identifier];
 
                 if (v21)
                 {
@@ -100,7 +100,7 @@ LABEL_20:
 
     v22 = v40;
     v23 = [v40 count];
-    if (v23 != [v42 count])
+    if (v23 != [contactsCopy count])
     {
       v24 = objc_alloc_init(NSMutableSet);
       [v24 addObjectsFromArray:v40];
@@ -108,7 +108,7 @@ LABEL_20:
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v25 = v42;
+      v25 = contactsCopy;
       v26 = [v25 countByEnumeratingWithState:&v43 objects:v56 count:16];
       if (v26)
       {
@@ -146,7 +146,7 @@ LABEL_20:
     }
 
     v33 = [v40 copy];
-    v5 = v38;
+    identifiersCopy = v38;
   }
 
   else
@@ -165,39 +165,39 @@ LABEL_20:
   return v33;
 }
 
-+ (id)inPersonFromContact:(id)a3 handleValue:(id)a4 handleType:(int64_t)a5 handleLabel:(id)a6
++ (id)inPersonFromContact:(id)contact handleValue:(id)value handleType:(int64_t)type handleLabel:(id)label
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[INPersonHandle alloc] initWithValue:v10 type:a5 label:v9];
+  labelCopy = label;
+  valueCopy = value;
+  contactCopy = contact;
+  v12 = [[INPersonHandle alloc] initWithValue:valueCopy type:type label:labelCopy];
 
-  v13 = [CNContactFormatter stringFromContact:v11 style:0];
-  v14 = [NSPersonNameComponents componentsForContact:v11];
+  v13 = [CNContactFormatter stringFromContact:contactCopy style:0];
+  v14 = [NSPersonNameComponents componentsForContact:contactCopy];
   v15 = [INPerson alloc];
-  v16 = [v11 identifier];
+  identifier = [contactCopy identifier];
   LOBYTE(v20) = 0;
-  v17 = [v15 initWithPersonHandle:v12 nameComponents:v14 displayName:v13 image:0 contactIdentifier:v16 customIdentifier:0 isMe:v20];
+  v17 = [v15 initWithPersonHandle:v12 nameComponents:v14 displayName:v13 image:0 contactIdentifier:identifier customIdentifier:0 isMe:v20];
 
-  v18 = [v11 phonemeData];
+  phonemeData = [contactCopy phonemeData];
 
-  [v17 setPhonemeData:v18];
+  [v17 setPhonemeData:phonemeData];
 
   return v17;
 }
 
-+ (BOOL)contactsShareHandleValue:(id)a3
++ (BOOL)contactsShareHandleValue:(id)value
 {
-  v3 = a3;
-  if ([v3 count])
+  valueCopy = value;
+  if ([valueCopy count])
   {
-    v38 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
+    v38 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(valueCopy, "count")}];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v35 = v3;
-    obj = v3;
+    v35 = valueCopy;
+    obj = valueCopy;
     v4 = [obj countByEnumeratingWithState:&v51 objects:v58 count:16];
     if (v4)
     {
@@ -218,8 +218,8 @@ LABEL_20:
           v48 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v9 = [v7 phoneNumbers];
-          v10 = [v9 countByEnumeratingWithState:&v47 objects:v57 count:16];
+          phoneNumbers = [v7 phoneNumbers];
+          v10 = [phoneNumbers countByEnumeratingWithState:&v47 objects:v57 count:16];
           if (v10)
           {
             v11 = v10;
@@ -230,16 +230,16 @@ LABEL_20:
               {
                 if (*v48 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(phoneNumbers);
                 }
 
-                v14 = [*(*(&v47 + 1) + 8 * j) value];
-                v15 = [v14 unformattedInternationalStringValue];
+                value = [*(*(&v47 + 1) + 8 * j) value];
+                unformattedInternationalStringValue = [value unformattedInternationalStringValue];
 
-                [v8 addObject:v15];
+                [v8 addObject:unformattedInternationalStringValue];
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v47 objects:v57 count:16];
+              v11 = [phoneNumbers countByEnumeratingWithState:&v47 objects:v57 count:16];
             }
 
             while (v11);
@@ -249,8 +249,8 @@ LABEL_20:
           v46 = 0u;
           v43 = 0u;
           v44 = 0u;
-          v16 = [v7 emailAddresses];
-          v17 = [v16 countByEnumeratingWithState:&v43 objects:v56 count:16];
+          emailAddresses = [v7 emailAddresses];
+          v17 = [emailAddresses countByEnumeratingWithState:&v43 objects:v56 count:16];
           if (v17)
           {
             v18 = v17;
@@ -261,15 +261,15 @@ LABEL_20:
               {
                 if (*v44 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(emailAddresses);
                 }
 
-                v21 = [*(*(&v43 + 1) + 8 * k) value];
-                v22 = [v21 lowercaseString];
-                [v8 addObject:v22];
+                value2 = [*(*(&v43 + 1) + 8 * k) value];
+                lowercaseString = [value2 lowercaseString];
+                [v8 addObject:lowercaseString];
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v43 objects:v56 count:16];
+              v18 = [emailAddresses countByEnumeratingWithState:&v43 objects:v56 count:16];
             }
 
             while (v18);
@@ -286,16 +286,16 @@ LABEL_20:
     }
 
     v24 = [NSMutableSet alloc];
-    v25 = [v38 allValues];
-    v26 = [v25 firstObject];
-    v27 = [v24 initWithSet:v26];
+    allValues = [v38 allValues];
+    firstObject = [allValues firstObject];
+    v27 = [v24 initWithSet:firstObject];
 
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v28 = [v38 allValues];
-    v29 = [v28 countByEnumeratingWithState:&v39 objects:v55 count:16];
+    allValues2 = [v38 allValues];
+    v29 = [allValues2 countByEnumeratingWithState:&v39 objects:v55 count:16];
     if (v29)
     {
       v30 = v29;
@@ -306,20 +306,20 @@ LABEL_20:
         {
           if (*v40 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(allValues2);
           }
 
           [v27 intersectSet:{*(*(&v39 + 1) + 8 * m), v35}];
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v39 objects:v55 count:16];
+        v30 = [allValues2 countByEnumeratingWithState:&v39 objects:v55 count:16];
       }
 
       while (v30);
     }
 
     v33 = [v27 count] != 0;
-    v3 = v35;
+    valueCopy = v35;
   }
 
   else
@@ -330,20 +330,20 @@ LABEL_20:
   return v33;
 }
 
-+ (id)contactWithMostHandles:(id)a3
++ (id)contactWithMostHandles:(id)handles
 {
-  v3 = a3;
-  v4 = [v3 firstObject];
-  v5 = [v4 emailAddresses];
-  v6 = [v5 count];
-  v7 = [v4 phoneNumbers];
-  v8 = [v7 count];
+  handlesCopy = handles;
+  firstObject = [handlesCopy firstObject];
+  emailAddresses = [firstObject emailAddresses];
+  v6 = [emailAddresses count];
+  phoneNumbers = [firstObject phoneNumbers];
+  v8 = [phoneNumbers count];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v3;
+  v9 = handlesCopy;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
@@ -360,17 +360,17 @@ LABEL_20:
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        v16 = [v15 emailAddresses];
-        v17 = [v16 count];
-        v18 = [v15 phoneNumbers];
-        v19 = &v17[[v18 count]];
+        emailAddresses2 = [v15 emailAddresses];
+        v17 = [emailAddresses2 count];
+        phoneNumbers2 = [v15 phoneNumbers];
+        v19 = &v17[[phoneNumbers2 count]];
 
         if (v19 > v12)
         {
           v20 = v15;
 
           v12 = v19;
-          v4 = v20;
+          firstObject = v20;
         }
       }
 
@@ -380,19 +380,19 @@ LABEL_20:
     while (v11);
   }
 
-  return v4;
+  return firstObject;
 }
 
-+ (void)populatePersonsByTUHandleFrom:(id)a3 personsByTUHandle:(id)a4 tuHandleOrderedSet:(id)a5
++ (void)populatePersonsByTUHandleFrom:(id)from personsByTUHandle:(id)handle tuHandleOrderedSet:(id)set
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  fromCopy = from;
+  handleCopy = handle;
+  setCopy = set;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [fromCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -403,26 +403,26 @@ LABEL_20:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(fromCopy);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
         v15 = [TUHandle handleWithPerson:v14];
         if (v15)
         {
-          [v9 addObject:v15];
-          v16 = [v8 objectForKeyedSubscript:v15];
+          [setCopy addObject:v15];
+          v16 = [handleCopy objectForKeyedSubscript:v15];
           if (!v16)
           {
             v16 = objc_alloc_init(NSMutableArray);
-            [v8 setObject:v16 forKeyedSubscript:v15];
+            [handleCopy setObject:v16 forKeyedSubscript:v15];
           }
 
           [v16 addObject:v14];
         }
       }
 
-      v11 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [fromCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);

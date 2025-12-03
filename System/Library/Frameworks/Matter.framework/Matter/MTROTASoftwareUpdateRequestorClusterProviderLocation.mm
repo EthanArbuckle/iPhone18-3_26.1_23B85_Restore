@@ -1,6 +1,6 @@
 @interface MTROTASoftwareUpdateRequestorClusterProviderLocation
 - (MTROTASoftwareUpdateRequestorClusterProviderLocation)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROTASoftwareUpdateRequestorClusterProviderLocation);
-  v5 = [(MTROTASoftwareUpdateRequestorClusterProviderLocation *)self providerNodeID];
-  [(MTROTASoftwareUpdateRequestorClusterProviderLocation *)v4 setProviderNodeID:v5];
+  providerNodeID = [(MTROTASoftwareUpdateRequestorClusterProviderLocation *)self providerNodeID];
+  [(MTROTASoftwareUpdateRequestorClusterProviderLocation *)v4 setProviderNodeID:providerNodeID];
 
-  v6 = [(MTROTASoftwareUpdateRequestorClusterProviderLocation *)self endpoint];
-  [(MTROTASoftwareUpdateRequestorClusterProviderLocation *)v4 setEndpoint:v6];
+  endpoint = [(MTROTASoftwareUpdateRequestorClusterProviderLocation *)self endpoint];
+  [(MTROTASoftwareUpdateRequestorClusterProviderLocation *)v4 setEndpoint:endpoint];
 
-  v7 = [(MTROTASoftwareUpdateRequestorClusterProviderLocation *)self fabricIndex];
-  [(MTROTASoftwareUpdateRequestorClusterProviderLocation *)v4 setFabricIndex:v7];
+  fabricIndex = [(MTROTASoftwareUpdateRequestorClusterProviderLocation *)self fabricIndex];
+  [(MTROTASoftwareUpdateRequestorClusterProviderLocation *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

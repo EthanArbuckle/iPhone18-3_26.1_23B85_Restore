@@ -1,26 +1,26 @@
 @interface SearchSuggestionsFetcher
-- (SearchSuggestionsFetcher)initWithSuggestionsURLTemplate:(id)a3;
-- (void)_handleErrorWithType:(int64_t)a3;
-- (void)_requestDidFailWithError:(id)a3;
-- (void)_requestDidFinishWithResponse:(id)a3 data:(id)a4;
+- (SearchSuggestionsFetcher)initWithSuggestionsURLTemplate:(id)template;
+- (void)_handleErrorWithType:(int64_t)type;
+- (void)_requestDidFailWithError:(id)error;
+- (void)_requestDidFinishWithResponse:(id)response data:(id)data;
 - (void)_resetFetchRequest;
 - (void)_stopLoading;
 - (void)cancelExistingSuggestionsRequest;
-- (void)updateSuggestionsRequestWithSearchTerms:(id)a3 userAgentString:(id)a4 completionHandler:(id)a5;
+- (void)updateSuggestionsRequestWithSearchTerms:(id)terms userAgentString:(id)string completionHandler:(id)handler;
 @end
 
 @implementation SearchSuggestionsFetcher
 
-- (SearchSuggestionsFetcher)initWithSuggestionsURLTemplate:(id)a3
+- (SearchSuggestionsFetcher)initWithSuggestionsURLTemplate:(id)template
 {
-  v5 = a3;
+  templateCopy = template;
   v13.receiver = self;
   v13.super_class = SearchSuggestionsFetcher;
   v6 = [(SearchSuggestionsFetcher *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_suggestionsURLTemplate, a3);
+    objc_storeStrong(&v6->_suggestionsURLTemplate, template);
     v8 = +[NSURLSessionConfiguration safari_ephemeralSessionConfiguration];
     [v8 setURLCache:0];
     [v8 set_timingDataOptions:2];
@@ -34,28 +34,28 @@
   return v7;
 }
 
-- (void)updateSuggestionsRequestWithSearchTerms:(id)a3 userAgentString:(id)a4 completionHandler:(id)a5
+- (void)updateSuggestionsRequestWithSearchTerms:(id)terms userAgentString:(id)string completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  termsCopy = terms;
+  stringCopy = string;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   [(SearchSuggestionsFetcher *)self _stopLoading];
   [(SearchSuggestionsFetcher *)self _handleErrorWithType:0];
-  v11 = [v8 copy];
+  v11 = [termsCopy copy];
   searchTerms = self->_searchTerms;
   self->_searchTerms = v11;
 
-  v13 = [v10 copy];
+  v13 = [handlerCopy copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v13;
 
   v15 = [(WBSOpenSearchURLTemplate *)self->_suggestionsURLTemplate URLWithSearchTerms:self->_searchTerms];
   v16 = [[NSMutableURLRequest alloc] initWithURL:v15 cachePolicy:1 timeoutInterval:2.0];
   [v16 setAttribution:1];
-  if ([v9 length])
+  if ([stringCopy length])
   {
-    [v16 setValue:v9 forHTTPHeaderField:@"User-Agent"];
+    [v16 setValue:stringCopy forHTTPHeaderField:@"User-Agent"];
   }
 
   [v16 setNetworkServiceType:6];
@@ -97,19 +97,19 @@
   [(SearchSuggestionsFetcher *)self _handleErrorWithType:0];
 }
 
-- (void)_requestDidFinishWithResponse:(id)a3 data:(id)a4
+- (void)_requestDidFinishWithResponse:(id)response data:(id)data
 {
-  v40 = a3;
-  v41 = a4;
-  v42 = self;
+  responseCopy = response;
+  dataCopy = data;
+  selfCopy = self;
   if ([(NSString *)self->_searchTerms length]&& self->_completionHandler)
   {
-    v37 = [(NSURLSessionDataTask *)self->_dataTask _timingData];
-    v36 = [(NSURLSessionDataTask *)self->_dataTask countOfBytesReceived];
+    _timingData = [(NSURLSessionDataTask *)self->_dataTask _timingData];
+    countOfBytesReceived = [(NSURLSessionDataTask *)self->_dataTask countOfBytesReceived];
     dataTask = self->_dataTask;
     self->_dataTask = 0;
 
-    v38 = [NSJSONSerialization JSONObjectWithData:v41 options:0 error:0];
+    v38 = [NSJSONSerialization JSONObjectWithData:dataCopy options:0 error:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -130,8 +130,8 @@
         sub_100003CDC(buf, [v39 count], v8);
       }
 
-      (*(v42->_completionHandler + 2))();
-      [(SearchSuggestionsFetcher *)v42 _resetFetchRequest];
+      (*(selfCopy->_completionHandler + 2))();
+      [(SearchSuggestionsFetcher *)selfCopy _resetFetchRequest];
       goto LABEL_44;
     }
 
@@ -144,7 +144,7 @@
       v11 = sub_100003A74();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = v42->_searchTerms;
+        v12 = selfCopy->_searchTerms;
         v13 = [v39 safari_stringAtIndex:0];
         sub_100003C58(v12, v13, buf, v11);
       }
@@ -200,9 +200,9 @@ LABEL_43:
       [v31 addObjectsFromArray:v45];
       v32 = [v31 mutableCopy];
 
-      v33 = [[WBSSearchSuggestionsFetcherResponse alloc] initWithSuggestions:v32 postFixSuggestions:v44 prefixNavigationalIntent:v35 sizeInBytes:v36 statusCode:objc_msgSend(v40 timingData:{"statusCode"), v37}];
-      (*(v42->_completionHandler + 2))();
-      [(SearchSuggestionsFetcher *)v42 _resetFetchRequest];
+      v33 = [[WBSSearchSuggestionsFetcherResponse alloc] initWithSuggestions:v32 postFixSuggestions:v44 prefixNavigationalIntent:v35 sizeInBytes:countOfBytesReceived statusCode:objc_msgSend(responseCopy timingData:{"statusCode"), _timingData}];
+      (*(selfCopy->_completionHandler + 2))();
+      [(SearchSuggestionsFetcher *)selfCopy _resetFetchRequest];
 
 LABEL_44:
       goto LABEL_45;
@@ -294,14 +294,14 @@ LABEL_41:
 LABEL_45:
 }
 
-- (void)_requestDidFailWithError:(id)a3
+- (void)_requestDidFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = sub_100003A74();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v6 = [v4 safari_privacyPreservingDescription];
-    sub_100003D24(v6, v7, v5);
+    safari_privacyPreservingDescription = [errorCopy safari_privacyPreservingDescription];
+    sub_100003D24(safari_privacyPreservingDescription, v7, v5);
   }
 
   [(SearchSuggestionsFetcher *)self _stopLoading];
@@ -324,12 +324,12 @@ LABEL_45:
   self->_dataTask = 0;
 }
 
-- (void)_handleErrorWithType:(int64_t)a3
+- (void)_handleErrorWithType:(int64_t)type
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    v5 = [NSError errorWithDomain:WBSSearchSuggestionsFetcherErrorDomain code:a3 userInfo:0];
+    v5 = [NSError errorWithDomain:WBSSearchSuggestionsFetcherErrorDomain code:type userInfo:0];
     completionHandler[2](completionHandler, 0, v5);
 
     [(SearchSuggestionsFetcher *)self _resetFetchRequest];

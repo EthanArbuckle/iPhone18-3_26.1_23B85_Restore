@@ -1,14 +1,14 @@
 @interface AKArrowAnnotationEventHandler
-- (CGPoint)_updatedMidPointForAnnotation:(id)a3 withNewStartPt:(CGPoint)a4 andNewEndPt:(CGPoint)a5;
-- (void)getInitialDraggedPoint:(CGPoint *)a3 otherPoint:(CGPoint *)a4 center:(CGPoint *)a5 forEvent:(id)a6 orRecognizer:(id)a7;
-- (void)updateModelWithCurrentPoint:(CGPoint)a3 options:(unint64_t)a4;
+- (CGPoint)_updatedMidPointForAnnotation:(id)annotation withNewStartPt:(CGPoint)pt andNewEndPt:(CGPoint)endPt;
+- (void)getInitialDraggedPoint:(CGPoint *)point otherPoint:(CGPoint *)otherPoint center:(CGPoint *)center forEvent:(id)event orRecognizer:(id)recognizer;
+- (void)updateModelWithCurrentPoint:(CGPoint)point options:(unint64_t)options;
 @end
 
 @implementation AKArrowAnnotationEventHandler
 
-- (void)getInitialDraggedPoint:(CGPoint *)a3 otherPoint:(CGPoint *)a4 center:(CGPoint *)a5 forEvent:(id)a6 orRecognizer:(id)a7
+- (void)getInitialDraggedPoint:(CGPoint *)point otherPoint:(CGPoint *)otherPoint center:(CGPoint *)center forEvent:(id)event orRecognizer:(id)recognizer
 {
-  v37 = [(AKAnnotationEventHandler *)self annotation:a3];
+  v37 = [(AKAnnotationEventHandler *)self annotation:point];
   if ([(AKAnnotationEventHandler *)self initiallyDraggedArea]== 9)
   {
     [v37 startPoint];
@@ -62,29 +62,29 @@ LABEL_9:
   [v37 endPoint];
   v35 = v34;
   [v37 startPoint];
-  a3->x = v12;
-  a3->y = v14;
-  a4->x = v16;
-  a4->y = v18;
-  a5->x = v31;
-  a5->y = v33 + (v35 - v36) * 0.5;
+  point->x = v12;
+  point->y = v14;
+  otherPoint->x = v16;
+  otherPoint->y = v18;
+  center->x = v31;
+  center->y = v33 + (v35 - v36) * 0.5;
 }
 
-- (void)updateModelWithCurrentPoint:(CGPoint)a3 options:(unint64_t)a4
+- (void)updateModelWithCurrentPoint:(CGPoint)point options:(unint64_t)options
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  optionsCopy = options;
+  y = point.y;
+  x = point.x;
   if ([(AKAnnotationEventHandler *)self initiallyDraggedArea]== 9 || [(AKAnnotationEventHandler *)self initiallyDraggedArea]== 10)
   {
-    if (v4)
+    if (optionsCopy)
     {
       [(AKAnnotationEventHandler *)self initialCenter];
       v15 = v14;
       v17 = v16;
       v18 = x - v14;
       v19 = y - v16;
-      if ((v4 & 2) != 0)
+      if ((optionsCopy & 2) != 0)
       {
         [AKGeometryHelper snapVectorTo45Degrees:v18, v19];
         x = v15 + v18;
@@ -100,7 +100,7 @@ LABEL_9:
       [(AKAnnotationEventHandler *)self initialOtherPoint];
       v10 = v8;
       v11 = v9;
-      if ((v4 & 2) != 0)
+      if ((optionsCopy & 2) != 0)
       {
         [AKGeometryHelper snapVectorTo45Degrees:x - v8, y - v9];
         x = v10 + v12;
@@ -108,14 +108,14 @@ LABEL_9:
       }
     }
 
-    v39 = [(AKAnnotationEventHandler *)self pageController];
-    v20 = [v39 geometryHelper];
-    [v20 contentAlignedPointForPoint:{x, y}];
+    pageController = [(AKAnnotationEventHandler *)self pageController];
+    geometryHelper = [pageController geometryHelper];
+    [geometryHelper contentAlignedPointForPoint:{x, y}];
     v22 = v21;
     v24 = v23;
 
-    v25 = [v39 geometryHelper];
-    [v25 contentAlignedPointForPoint:{v10, v11}];
+    geometryHelper2 = [pageController geometryHelper];
+    [geometryHelper2 contentAlignedPointForPoint:{v10, v11}];
     v27 = v26;
     v29 = v28;
 
@@ -124,18 +124,18 @@ LABEL_9:
       goto LABEL_31;
     }
 
-    v30 = [(AKAnnotationEventHandler *)self annotation];
+    annotation = [(AKAnnotationEventHandler *)self annotation];
     if ([(AKAnnotationEventHandler *)self initiallyDraggedArea]== 9)
     {
-      [(AKArrowAnnotationEventHandler *)self _updatedMidPointForAnnotation:v30 withNewStartPt:v22 andNewEndPt:v24, v27, v29];
-      [v30 setMidPoint:?];
-      [v30 startPoint];
+      [(AKArrowAnnotationEventHandler *)self _updatedMidPointForAnnotation:annotation withNewStartPt:v22 andNewEndPt:v24, v27, v29];
+      [annotation setMidPoint:?];
+      [annotation startPoint];
       if (v32 != v22 || v31 != v24)
       {
-        [v30 setStartPoint:{v22, v24}];
+        [annotation setStartPoint:{v22, v24}];
       }
 
-      [v30 endPoint];
+      [annotation endPoint];
       if (v34 == v27 && v33 == v29)
       {
         goto LABEL_30;
@@ -144,15 +144,15 @@ LABEL_9:
 
     else
     {
-      [(AKArrowAnnotationEventHandler *)self _updatedMidPointForAnnotation:v30 withNewStartPt:v27 andNewEndPt:v29, v22, v24];
-      [v30 setMidPoint:?];
-      [v30 startPoint];
+      [(AKArrowAnnotationEventHandler *)self _updatedMidPointForAnnotation:annotation withNewStartPt:v27 andNewEndPt:v29, v22, v24];
+      [annotation setMidPoint:?];
+      [annotation startPoint];
       if (v36 != v27 || v35 != v29)
       {
-        [v30 setStartPoint:{v27, v29}];
+        [annotation setStartPoint:{v27, v29}];
       }
 
-      [v30 endPoint];
+      [annotation endPoint];
       if (v38 == v22)
       {
         v27 = v22;
@@ -172,7 +172,7 @@ LABEL_30:
       }
     }
 
-    [v30 setEndPoint:{v27, v29}];
+    [annotation setEndPoint:{v27, v29}];
     goto LABEL_30;
   }
 
@@ -181,26 +181,26 @@ LABEL_30:
     return;
   }
 
-  v39 = [(AKAnnotationEventHandler *)self annotation];
+  pageController = [(AKAnnotationEventHandler *)self annotation];
   if ([(AKAnnotationEventHandler *)self initiallyDraggedArea]== 11)
   {
-    [v39 setMidPoint:{x, y}];
+    [pageController setMidPoint:{x, y}];
   }
 
 LABEL_31:
 }
 
-- (CGPoint)_updatedMidPointForAnnotation:(id)a3 withNewStartPt:(CGPoint)a4 andNewEndPt:(CGPoint)a5
+- (CGPoint)_updatedMidPointForAnnotation:(id)annotation withNewStartPt:(CGPoint)pt andNewEndPt:(CGPoint)endPt
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v9 = a3;
-  [v9 startPoint];
+  y = endPt.y;
+  x = endPt.x;
+  v7 = pt.y;
+  v8 = pt.x;
+  annotationCopy = annotation;
+  [annotationCopy startPoint];
   v11 = v10;
   v13 = v12;
-  [v9 endPoint];
+  [annotationCopy endPoint];
   v15 = v14 - v13;
   v17 = v16 - v11;
   v27 = atan2(v14 - v13, v16 - v11);
@@ -208,7 +208,7 @@ LABEL_31:
   v19 = x - v8;
   v20 = y - v7;
   v21 = hypot(v19, v20) / v18;
-  [v9 midPoint];
+  [annotationCopy midPoint];
   v28 = v23;
   v29 = v22;
 

@@ -5,7 +5,7 @@
 - (BOOL)isStillImageOnlyDepthData;
 - (float)fieldOfView;
 - (float)sensorOrientation;
-- (id)copyWithNewPixelFormat:(unsigned int)a3;
+- (id)copyWithNewPixelFormat:(unsigned int)format;
 - (id)highResStillImageDimensions;
 @end
 
@@ -47,21 +47,21 @@
 
 - (BOOL)isStillImageOnlyDepthData
 {
-  v3 = [(FigCaptureSourceFormat *)self dimensions];
-  var0 = v3.var0;
-  v5 = HIDWORD(*&v3);
+  dimensions = [(FigCaptureSourceFormat *)self dimensions];
+  var0 = dimensions.var0;
+  v5 = HIDWORD(*&dimensions);
   v6 = [-[FigCaptureSourceDepthDataFormat highResStillImageDimensions](self "highResStillImageDimensions")];
   return (var0 < 1 || v5 < 1) && v6 != 0;
 }
 
-- (id)copyWithNewPixelFormat:(unsigned int)a3
+- (id)copyWithNewPixelFormat:(unsigned int)format
 {
   if (!self->super._formatDictionary)
   {
     return 0;
   }
 
-  v3 = *&a3;
+  v3 = *&format;
   v5 = [FigCaptureSourceDepthDataFormat alloc];
   formatDictionary = self->super._formatDictionary;
 

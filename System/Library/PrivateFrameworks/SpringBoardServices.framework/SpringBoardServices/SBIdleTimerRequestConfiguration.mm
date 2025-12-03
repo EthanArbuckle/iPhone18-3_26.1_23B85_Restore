@@ -1,18 +1,18 @@
 @interface SBIdleTimerRequestConfiguration
-+ (id)configurationWithIdleEventHandler:(id)a3;
-+ (id)configurationWithMaximumExpirationTimeout:(double)a3;
-+ (id)configurationWithMinimumExpirationTimeout:(double)a3;
-+ (id)configurationWithMinimumExpirationTimeout:(double)a3 maximumExpirationTimeout:(double)a4;
++ (id)configurationWithIdleEventHandler:(id)handler;
++ (id)configurationWithMaximumExpirationTimeout:(double)timeout;
++ (id)configurationWithMinimumExpirationTimeout:(double)timeout;
++ (id)configurationWithMinimumExpirationTimeout:(double)timeout maximumExpirationTimeout:(double)expirationTimeout;
 - (SBIdleTimerRequestConfiguration)init;
-- (SBIdleTimerRequestConfiguration)initWithBSXPCCoder:(id)a3;
-- (SBIdleTimerRequestConfiguration)initWithConfiguration:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBIdleTimerRequestConfiguration)initWithBSXPCCoder:(id)coder;
+- (SBIdleTimerRequestConfiguration)initWithConfiguration:(id)configuration;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_setIdleEventHandler:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)setMaxExpirationTimeout:(double)a3;
-- (void)setMinExpirationTimeout:(double)a3;
+- (void)_setIdleEventHandler:(id)handler;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)setMaxExpirationTimeout:(double)timeout;
+- (void)setMinExpirationTimeout:(double)timeout;
 @end
 
 @implementation SBIdleTimerRequestConfiguration
@@ -30,89 +30,89 @@
   return result;
 }
 
-- (SBIdleTimerRequestConfiguration)initWithConfiguration:(id)a3
+- (SBIdleTimerRequestConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = SBIdleTimerRequestConfiguration;
-  v5 = [(ITIdleTimerConfiguration *)&v11 initWithConfiguration:v4];
+  v5 = [(ITIdleTimerConfiguration *)&v11 initWithConfiguration:configurationCopy];
   if (v5)
   {
-    v6 = [v4 _boxed_minExpirationTimeout];
+    _boxed_minExpirationTimeout = [configurationCopy _boxed_minExpirationTimeout];
     boxed_minExpirationTimeout = v5->_boxed_minExpirationTimeout;
-    v5->_boxed_minExpirationTimeout = v6;
+    v5->_boxed_minExpirationTimeout = _boxed_minExpirationTimeout;
 
-    v8 = [v4 _boxed_maxExpirationTimeout];
+    _boxed_maxExpirationTimeout = [configurationCopy _boxed_maxExpirationTimeout];
     boxed_maxExpirationTimeout = v5->_boxed_maxExpirationTimeout;
-    v5->_boxed_maxExpirationTimeout = v8;
+    v5->_boxed_maxExpirationTimeout = _boxed_maxExpirationTimeout;
 
-    v5->_precedence = [v4 precedence];
+    v5->_precedence = [configurationCopy precedence];
   }
 
   return v5;
 }
 
-+ (id)configurationWithMinimumExpirationTimeout:(double)a3
++ (id)configurationWithMinimumExpirationTimeout:(double)timeout
 {
   if ((BSFloatGreaterThanFloat() & 1) == 0)
   {
-    [(SBIdleTimerRequestConfiguration *)a2 configurationWithMinimumExpirationTimeout:a1, a3];
+    [(SBIdleTimerRequestConfiguration *)a2 configurationWithMinimumExpirationTimeout:self, timeout];
   }
 
-  v6 = objc_alloc_init(a1);
-  [v6 setMinExpirationTimeout:a3];
+  v6 = objc_alloc_init(self);
+  [v6 setMinExpirationTimeout:timeout];
 
   return v6;
 }
 
-+ (id)configurationWithMaximumExpirationTimeout:(double)a3
++ (id)configurationWithMaximumExpirationTimeout:(double)timeout
 {
   if ((BSFloatGreaterThanFloat() & 1) == 0)
   {
-    [(SBIdleTimerRequestConfiguration *)a2 configurationWithMaximumExpirationTimeout:a1, a3];
+    [(SBIdleTimerRequestConfiguration *)a2 configurationWithMaximumExpirationTimeout:self, timeout];
   }
 
-  v6 = objc_alloc_init(a1);
-  [v6 setMaxExpirationTimeout:a3];
+  v6 = objc_alloc_init(self);
+  [v6 setMaxExpirationTimeout:timeout];
 
   return v6;
 }
 
-+ (id)configurationWithMinimumExpirationTimeout:(double)a3 maximumExpirationTimeout:(double)a4
++ (id)configurationWithMinimumExpirationTimeout:(double)timeout maximumExpirationTimeout:(double)expirationTimeout
 {
   if ((BSFloatGreaterThanFloat() & 1) == 0 && (BSFloatGreaterThanFloat() & 1) == 0)
   {
-    [(SBIdleTimerRequestConfiguration *)a2 configurationWithMinimumExpirationTimeout:a1 maximumExpirationTimeout:a3, a4];
+    [(SBIdleTimerRequestConfiguration *)a2 configurationWithMinimumExpirationTimeout:self maximumExpirationTimeout:timeout, expirationTimeout];
   }
 
-  v8 = objc_alloc_init(a1);
+  v8 = objc_alloc_init(self);
   if (BSFloatGreaterThanFloat())
   {
-    [v8 setMinExpirationTimeout:a3];
+    [v8 setMinExpirationTimeout:timeout];
   }
 
   if (BSFloatGreaterThanFloat())
   {
-    [v8 setMaxExpirationTimeout:a4];
+    [v8 setMaxExpirationTimeout:expirationTimeout];
   }
 
   return v8;
 }
 
-+ (id)configurationWithIdleEventHandler:(id)a3
++ (id)configurationWithIdleEventHandler:(id)handler
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 _setIdleEventHandler:v4];
+  handlerCopy = handler;
+  v5 = objc_alloc_init(self);
+  [v5 _setIdleEventHandler:handlerCopy];
 
   return v5;
 }
 
-- (void)setMinExpirationTimeout:(double)a3
+- (void)setMinExpirationTimeout:(double)timeout
 {
   if (BSFloatGreaterThanFloat())
   {
-    self->_boxed_minExpirationTimeout = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    self->_boxed_minExpirationTimeout = [MEMORY[0x1E696AD98] numberWithDouble:timeout];
   }
 
   else if (BSFloatIsZero())
@@ -123,17 +123,17 @@
   else
   {
     [MEMORY[0x1E696AAA8] currentHandler];
-    [objc_claimAutoreleasedReturnValue() handleFailureInMethod:a2 object:self file:@"SBIdleTimerRequestConfiguration.m" lineNumber:100 description:{@"Min timeout: %g must be nonnegative", *&a3}];
+    [objc_claimAutoreleasedReturnValue() handleFailureInMethod:a2 object:self file:@"SBIdleTimerRequestConfiguration.m" lineNumber:100 description:{@"Min timeout: %g must be nonnegative", *&timeout}];
   }
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setMaxExpirationTimeout:(double)a3
+- (void)setMaxExpirationTimeout:(double)timeout
 {
   if (BSFloatGreaterThanFloat())
   {
-    self->_boxed_maxExpirationTimeout = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    self->_boxed_maxExpirationTimeout = [MEMORY[0x1E696AD98] numberWithDouble:timeout];
   }
 
   else if (BSFloatIsZero())
@@ -144,16 +144,16 @@
   else
   {
     [MEMORY[0x1E696AAA8] currentHandler];
-    [objc_claimAutoreleasedReturnValue() handleFailureInMethod:a2 object:self file:@"SBIdleTimerRequestConfiguration.m" lineNumber:118 description:{@"Max timeout: %g must be nonnegative", *&a3}];
+    [objc_claimAutoreleasedReturnValue() handleFailureInMethod:a2 object:self file:@"SBIdleTimerRequestConfiguration.m" lineNumber:118 description:{@"Max timeout: %g must be nonnegative", *&timeout}];
   }
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setIdleEventHandler:(id)a3
+- (void)_setIdleEventHandler:(id)handler
 {
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v6 = objc_opt_respondsToSelector();
     if (objc_opt_respondsToSelector())
@@ -175,9 +175,9 @@
     v9[1] = 3221225472;
     v9[2] = __56__SBIdleTimerRequestConfiguration__setIdleEventHandler___block_invoke;
     v9[3] = &unk_1E735F7C8;
-    v11 = self;
+    selfCopy = self;
     v12 = a2;
-    v10 = v5;
+    v10 = handlerCopy;
     v8 = MEMORY[0x193AFFB30](v9);
     [(ITIdleTimerConfiguration *)self _setIdleEventMask:v7];
     [(ITIdleTimerConfiguration *)self _setIdleEventHandlerBlock:v8];
@@ -216,18 +216,18 @@ uint64_t __56__SBIdleTimerRequestConfiguration__setIdleEventHandler___block_invo
 
 - (id)succinctDescription
 {
-  v2 = [(SBIdleTimerRequestConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIdleTimerRequestConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v11.receiver = self;
   v11.super_class = SBIdleTimerRequestConfiguration;
-  v3 = [(ITIdleTimerConfiguration *)&v11 succinctDescriptionBuilder];
-  v4 = v3;
+  succinctDescriptionBuilder = [(ITIdleTimerConfiguration *)&v11 succinctDescriptionBuilder];
+  v4 = succinctDescriptionBuilder;
   precedence = self->_precedence;
   v6 = @"Normal";
   if (precedence == 1)
@@ -245,7 +245,7 @@ uint64_t __56__SBIdleTimerRequestConfiguration__setIdleEventHandler___block_invo
     v7 = v6;
   }
 
-  [v3 appendString:v7 withName:@"precedence"];
+  [succinctDescriptionBuilder appendString:v7 withName:@"precedence"];
   if ([(SBIdleTimerRequestConfiguration *)self hasMinExpirationTimeout])
   {
     [(SBIdleTimerRequestConfiguration *)self minExpirationTimeout];
@@ -261,47 +261,47 @@ uint64_t __56__SBIdleTimerRequestConfiguration__setIdleEventHandler___block_invo
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIdleTimerRequestConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIdleTimerRequestConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (SBIdleTimerRequestConfiguration)initWithBSXPCCoder:(id)a3
+- (SBIdleTimerRequestConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SBIdleTimerRequestConfiguration;
-  v5 = [(ITIdleTimerConfiguration *)&v11 initWithBSXPCCoder:v4];
+  v5 = [(ITIdleTimerConfiguration *)&v11 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minExpirationTimeout"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minExpirationTimeout"];
     boxed_minExpirationTimeout = v5->_boxed_minExpirationTimeout;
     v5->_boxed_minExpirationTimeout = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxExpirationTimeout"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxExpirationTimeout"];
     boxed_maxExpirationTimeout = v5->_boxed_maxExpirationTimeout;
     v5->_boxed_maxExpirationTimeout = v8;
 
-    v5->_precedence = [v4 decodeUInt64ForKey:@"precedence"];
+    v5->_precedence = [coderCopy decodeUInt64ForKey:@"precedence"];
   }
 
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  if (a3)
+  if (coder)
   {
     v5.receiver = self;
     v5.super_class = SBIdleTimerRequestConfiguration;
-    v4 = a3;
-    [(ITIdleTimerConfiguration *)&v5 encodeWithBSXPCCoder:v4];
-    [v4 encodeObject:self->_boxed_minExpirationTimeout forKey:{@"minExpirationTimeout", v5.receiver, v5.super_class}];
-    [v4 encodeObject:self->_boxed_maxExpirationTimeout forKey:@"maxExpirationTimeout"];
-    [v4 encodeUInt64:self->_precedence forKey:@"precedence"];
+    coderCopy = coder;
+    [(ITIdleTimerConfiguration *)&v5 encodeWithBSXPCCoder:coderCopy];
+    [coderCopy encodeObject:self->_boxed_minExpirationTimeout forKey:{@"minExpirationTimeout", v5.receiver, v5.super_class}];
+    [coderCopy encodeObject:self->_boxed_maxExpirationTimeout forKey:@"maxExpirationTimeout"];
+    [coderCopy encodeUInt64:self->_precedence forKey:@"precedence"];
   }
 }
 

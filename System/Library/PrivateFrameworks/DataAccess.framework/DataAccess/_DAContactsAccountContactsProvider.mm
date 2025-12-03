@@ -1,38 +1,38 @@
 @interface _DAContactsAccountContactsProvider
-- (_DAContactsAccountContactsProvider)initWithContactStore:(id)a3;
-- (id)accountByCreatingAccountWithExternalIdentifier:(id)a3;
-- (id)accountForContainerWithIdentifier:(id)a3;
+- (_DAContactsAccountContactsProvider)initWithContactStore:(id)store;
+- (id)accountByCreatingAccountWithExternalIdentifier:(id)identifier;
+- (id)accountForContainerWithIdentifier:(id)identifier;
 - (id)allAccounts;
-- (id)fetchedAccountWithExternalIdentifier:(id)a3;
+- (id)fetchedAccountWithExternalIdentifier:(id)identifier;
 @end
 
 @implementation _DAContactsAccountContactsProvider
 
-- (_DAContactsAccountContactsProvider)initWithContactStore:(id)a3
+- (_DAContactsAccountContactsProvider)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = _DAContactsAccountContactsProvider;
   v6 = [(_DAContactsAccountContactsProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
   }
 
   return v7;
 }
 
-- (id)fetchedAccountWithExternalIdentifier:(id)a3
+- (id)fetchedAccountWithExternalIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x277CBDA28] predicateForAccountWithExternalIdentifier:a3];
-  v5 = [(_DAContactsAccountContactsProvider *)self contactStore];
-  v6 = [v5 accountsMatchingPredicate:v4 error:0];
-  v7 = [v6 firstObject];
+  v4 = [MEMORY[0x277CBDA28] predicateForAccountWithExternalIdentifier:identifier];
+  contactStore = [(_DAContactsAccountContactsProvider *)self contactStore];
+  v6 = [contactStore accountsMatchingPredicate:v4 error:0];
+  firstObject = [v6 firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [[DAContactsBasedAccount alloc] initWithAccount:v7];
+    v8 = [[DAContactsBasedAccount alloc] initWithAccount:firstObject];
   }
 
   else
@@ -43,11 +43,11 @@
   return v8;
 }
 
-- (id)accountByCreatingAccountWithExternalIdentifier:(id)a3
+- (id)accountByCreatingAccountWithExternalIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CBDA28];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithExternalIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[v3 alloc] initWithExternalIdentifier:identifierCopy];
 
   if (v5)
   {
@@ -65,12 +65,12 @@
 - (id)allAccounts
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [(_DAContactsAccountContactsProvider *)self contactStore];
+  contactStore = [(_DAContactsAccountContactsProvider *)self contactStore];
   v20 = 0;
-  v3 = [v2 accountsMatchingPredicate:0 error:&v20];
+  v3 = [contactStore accountsMatchingPredicate:0 error:&v20];
   v4 = v20;
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -93,7 +93,7 @@
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [DAContactsBasedAccount alloc];
         v13 = [(DAContactsBasedAccount *)v12 initWithAccount:v11, v16];
-        [v5 addObject:v13];
+        [array addObject:v13];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -104,20 +104,20 @@
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (id)accountForContainerWithIdentifier:(id)a3
+- (id)accountForContainerWithIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x277CBDA28] predicateForAccountForContainerWithIdentifier:a3];
-  v5 = [(_DAContactsAccountContactsProvider *)self contactStore];
+  v4 = [MEMORY[0x277CBDA28] predicateForAccountForContainerWithIdentifier:identifier];
+  contactStore = [(_DAContactsAccountContactsProvider *)self contactStore];
   v10 = 0;
-  v6 = [v5 accountsMatchingPredicate:v4 error:&v10];
-  v7 = [v6 firstObject];
+  v6 = [contactStore accountsMatchingPredicate:v4 error:&v10];
+  firstObject = [v6 firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [[DAContactsBasedAccount alloc] initWithAccount:v7];
+    v8 = [[DAContactsBasedAccount alloc] initWithAccount:firstObject];
   }
 
   else

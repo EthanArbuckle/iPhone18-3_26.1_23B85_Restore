@@ -1,39 +1,39 @@
 @interface THPageViewProvider
-- (BOOL)p_recursivelyFindPageInfos:(id)a3 callingBlock:(id)a4;
+- (BOOL)p_recursivelyFindPageInfos:(id)infos callingBlock:(id)block;
 - (CGRect)p_unclippedVisibleBounds;
 - (CGSize)pageSize;
-- (THPageViewProvider)initWithInteractiveCanvasController:(id)a3 pageSize:(CGSize)a4;
-- (id)layerAndSubviewHostForPageInfo:(id)a3;
-- (id)p_pageInfoForAbsolutePageIndex:(unint64_t)a3;
-- (id)pageHostForAbsolutePageIndex:(unint64_t)a3;
-- (int64_t)p_relativePageIndexForPageInfo:(id)a3;
+- (THPageViewProvider)initWithInteractiveCanvasController:(id)controller pageSize:(CGSize)size;
+- (id)layerAndSubviewHostForPageInfo:(id)info;
+- (id)p_pageInfoForAbsolutePageIndex:(unint64_t)index;
+- (id)pageHostForAbsolutePageIndex:(unint64_t)index;
+- (int64_t)p_relativePageIndexForPageInfo:(id)info;
 - (void)canvasDidLayout;
 - (void)canvasDidLayoutAndRenderOnBackgroundThread;
 - (void)canvasDidStopScrolling;
 - (void)dealloc;
-- (void)enumeratePageHostsUsingBlock:(id)a3;
+- (void)enumeratePageHostsUsingBlock:(id)block;
 - (void)p_recyclePageHosts;
-- (void)p_updatePageViewsWithInfos:(id)a3;
-- (void)p_updatePageViewsWithInfos:(id)a3 removeUnused:(BOOL)a4;
+- (void)p_updatePageViewsWithInfos:(id)infos;
+- (void)p_updatePageViewsWithInfos:(id)infos removeUnused:(BOOL)unused;
 - (void)p_updateRenderedPageHosts;
-- (void)pageLayerAndSubviewHostRecycle:(id)a3;
+- (void)pageLayerAndSubviewHostRecycle:(id)recycle;
 - (void)popDisabled;
-- (void)syncPerformBlock:(id)a3;
+- (void)syncPerformBlock:(id)block;
 - (void)teardown;
 @end
 
 @implementation THPageViewProvider
 
-- (THPageViewProvider)initWithInteractiveCanvasController:(id)a3 pageSize:(CGSize)a4
+- (THPageViewProvider)initWithInteractiveCanvasController:(id)controller pageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = THPageViewProvider;
   v7 = [(THPageViewProvider *)&v10 init];
   if (v7)
   {
-    v7->_icc = a3;
+    v7->_icc = controller;
     v7->_pageSize.width = width;
     v7->_pageSize.height = height;
     v7->_pageHostMutex = dispatch_queue_create("com.apple.iBooks.THPageViewProvider.mutex", 0);
@@ -82,14 +82,14 @@
   self->_delegate = 0;
 }
 
-- (BOOL)p_recursivelyFindPageInfos:(id)a3 callingBlock:(id)a4
+- (BOOL)p_recursivelyFindPageInfos:(id)infos callingBlock:(id)block
 {
   v19 = 0;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  v7 = [infos countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -100,14 +100,14 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(infos);
         }
 
         objc_opt_class();
         v11 = TSUDynamicCast();
         if (v11)
         {
-          (*(a4 + 2))(a4, v11, &v19);
+          (*(block + 2))(block, v11, &v19);
         }
 
         else
@@ -115,7 +115,7 @@
           v12 = TSUProtocolCast();
           if (v12)
           {
-            v19 = -[THPageViewProvider p_recursivelyFindPageInfos:callingBlock:](self, "p_recursivelyFindPageInfos:callingBlock:", [v12 childInfos], a4);
+            v19 = -[THPageViewProvider p_recursivelyFindPageInfos:callingBlock:](self, "p_recursivelyFindPageInfos:callingBlock:", [v12 childInfos], block);
           }
         }
 
@@ -126,7 +126,7 @@
         }
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v8 = [infos countByEnumeratingWithState:&v15 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -146,29 +146,29 @@
   return v13 & 1;
 }
 
-- (void)p_updatePageViewsWithInfos:(id)a3
+- (void)p_updatePageViewsWithInfos:(id)infos
 {
   v5 = [(TSDInteractiveCanvasController *)self->_icc currentlyWaitingOnThreadedLayoutAndRender]^ 1;
 
-  [(THPageViewProvider *)self p_updatePageViewsWithInfos:a3 removeUnused:v5];
+  [(THPageViewProvider *)self p_updatePageViewsWithInfos:infos removeUnused:v5];
 }
 
-- (int64_t)p_relativePageIndexForPageInfo:(id)a3
+- (int64_t)p_relativePageIndexForPageInfo:(id)info
 {
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(THPageViewProviderDelegate *)self->_delegate pageViewProvider:self absolutePageIndexForPageInfo:a3];
+    absolutePageIndex = [(THPageViewProviderDelegate *)self->_delegate pageViewProvider:self absolutePageIndexForPageInfo:info];
   }
 
   else
   {
-    v5 = [a3 absolutePageIndex];
+    absolutePageIndex = [info absolutePageIndex];
   }
 
-  return v5 - [(THPageViewProviderDelegate *)self->_delegate pageViewProviderStartAbsolutePageIndex:self];
+  return absolutePageIndex - [(THPageViewProviderDelegate *)self->_delegate pageViewProviderStartAbsolutePageIndex:self];
 }
 
-- (void)p_updatePageViewsWithInfos:(id)a3 removeUnused:(BOOL)a4
+- (void)p_updatePageViewsWithInfos:(id)infos removeUnused:(BOOL)unused
 {
   v7 = objc_alloc_init(NSMutableArray);
   v22[0] = _NSConcreteStackBlock;
@@ -176,7 +176,7 @@
   v22[2] = sub_71430;
   v22[3] = &unk_45C158;
   v22[4] = v7;
-  [(THPageViewProvider *)self p_recursivelyFindPageInfos:a3 callingBlock:v22];
+  [(THPageViewProvider *)self p_recursivelyFindPageInfos:infos callingBlock:v22];
   v8 = objc_alloc_init(NSMutableArray);
   pageSize = self->_pageSize;
   [(TSDInteractiveCanvasController *)self->_icc viewScale];
@@ -197,7 +197,7 @@
   v13 = v10;
   v11[6] = v8;
   v11[7] = &v15;
-  v14 = a4;
+  unusedCopy = unused;
   dispatch_sync(pageHostMutex, v11);
   if ([v8 count])
   {
@@ -295,7 +295,7 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TSDInteractiveCanvasController *)self->_icc currentlyScrolling];
+  currentlyScrolling = [(TSDInteractiveCanvasController *)self->_icc currentlyScrolling];
   pageHostMutex = self->_pageHostMutex;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -306,7 +306,7 @@
   v13[6] = v6;
   v13[7] = v8;
   v13[8] = v10;
-  v14 = v11;
+  v14 = currentlyScrolling;
   dispatch_sync(pageHostMutex, v13);
 }
 
@@ -360,7 +360,7 @@
   }
 }
 
-- (id)p_pageInfoForAbsolutePageIndex:(unint64_t)a3
+- (id)p_pageInfoForAbsolutePageIndex:(unint64_t)index
 {
   v9 = 0;
   v10 = &v9;
@@ -368,20 +368,20 @@
   v12 = sub_7143C;
   v13 = sub_7144C;
   v14 = 0;
-  v5 = [(TSDInteractiveCanvasController *)self->_icc infosToDisplay];
+  infosToDisplay = [(TSDInteractiveCanvasController *)self->_icc infosToDisplay];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_72110;
   v8[3] = &unk_45C1D0;
   v8[4] = &v9;
-  v8[5] = a3;
-  [(THPageViewProvider *)self p_recursivelyFindPageInfos:v5 callingBlock:v8];
+  v8[5] = index;
+  [(THPageViewProvider *)self p_recursivelyFindPageInfos:infosToDisplay callingBlock:v8];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
   return v6;
 }
 
-- (id)pageHostForAbsolutePageIndex:(unint64_t)a3
+- (id)pageHostForAbsolutePageIndex:(unint64_t)index
 {
   v5 = [(THPageViewProvider *)self p_pageInfoForAbsolutePageIndex:?];
   if (!v5 || (result = [(TSURetainedPointerKeyDictionary *)self->_pageInfoToPageHost objectForKey:v5]) == 0)
@@ -393,29 +393,29 @@
   return result;
 }
 
-- (void)enumeratePageHostsUsingBlock:(id)a3
+- (void)enumeratePageHostsUsingBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     pageInfoToPageHost = self->_pageInfoToPageHost;
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_7228C;
     v4[3] = &unk_45C1F8;
-    v4[4] = a3;
+    v4[4] = block;
     [(TSURetainedPointerKeyDictionary *)pageInfoToPageHost enumerateKeysAndObjectsUsingBlock:v4];
   }
 }
 
-- (void)syncPerformBlock:(id)a3
+- (void)syncPerformBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    dispatch_sync(self->_pageHostMutex, a3);
+    dispatch_sync(self->_pageHostMutex, block);
   }
 }
 
-- (id)layerAndSubviewHostForPageInfo:(id)a3
+- (id)layerAndSubviewHostForPageInfo:(id)info
 {
   v7 = 0;
   v8 = &v7;
@@ -423,14 +423,14 @@
   v10 = sub_7143C;
   v11 = sub_7144C;
   v12 = 0;
-  if (a3)
+  if (info)
   {
     pageHostMutex = self->_pageHostMutex;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_72394;
     block[3] = &unk_45C220;
-    block[5] = a3;
+    block[5] = info;
     block[6] = &v7;
     block[4] = self;
     dispatch_sync(pageHostMutex, block);
@@ -446,7 +446,7 @@
   return v4;
 }
 
-- (void)pageLayerAndSubviewHostRecycle:(id)a3
+- (void)pageLayerAndSubviewHostRecycle:(id)recycle
 {
   pageHostMutex = self->_pageHostMutex;
   if (pageHostMutex || ([+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")], (pageHostMutex = self->_pageHostMutex) != 0))
@@ -456,7 +456,7 @@
     block[2] = sub_725A4;
     block[3] = &unk_45AE58;
     block[4] = self;
-    block[5] = a3;
+    block[5] = recycle;
     dispatch_sync(pageHostMutex, block);
   }
 }

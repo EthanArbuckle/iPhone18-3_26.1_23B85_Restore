@@ -1,105 +1,105 @@
 @interface TUIImageResourceCacheKey
-- (BOOL)isEqual:(id)a3;
-- (TUIImageResourceCacheKey)cacheKeyWithColor:(id)a3;
-- (TUIImageResourceCacheKey)cacheKeyWithFilterInfo:(id)a3;
-- (TUIImageResourceCacheKey)cacheKeyWithSize:(CGSize)a3;
-- (TUIImageResourceCacheKey)initWithChildren:(id)a3;
-- (TUIImageResourceCacheKey)initWithID:(id)a3;
-- (TUIImageResourceCacheKey)initWithURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TUIImageResourceCacheKey)cacheKeyWithColor:(id)color;
+- (TUIImageResourceCacheKey)cacheKeyWithFilterInfo:(id)info;
+- (TUIImageResourceCacheKey)cacheKeyWithSize:(CGSize)size;
+- (TUIImageResourceCacheKey)initWithChildren:(id)children;
+- (TUIImageResourceCacheKey)initWithID:(id)d;
+- (TUIImageResourceCacheKey)initWithURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation TUIImageResourceCacheKey
 
-- (TUIImageResourceCacheKey)initWithID:(id)a3
+- (TUIImageResourceCacheKey)initWithID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = TUIImageResourceCacheKey;
   v6 = [(TUIImageResourceCacheKey *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_id, a3);
+    objc_storeStrong(&v6->_id, d);
   }
 
   return v7;
 }
 
-- (TUIImageResourceCacheKey)initWithURL:(id)a3
+- (TUIImageResourceCacheKey)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = TUIImageResourceCacheKey;
   v5 = [(TUIImageResourceCacheKey *)&v10 init];
   if (v5)
   {
-    v6 = [v4 standardizedURL];
-    v7 = [v6 absoluteString];
+    standardizedURL = [lCopy standardizedURL];
+    absoluteString = [standardizedURL absoluteString];
     id = v5->_id;
-    v5->_id = v7;
+    v5->_id = absoluteString;
   }
 
   return v5;
 }
 
-- (TUIImageResourceCacheKey)initWithChildren:(id)a3
+- (TUIImageResourceCacheKey)initWithChildren:(id)children
 {
-  v5 = a3;
+  childrenCopy = children;
   v9.receiver = self;
   v9.super_class = TUIImageResourceCacheKey;
   v6 = [(TUIImageResourceCacheKey *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_children, a3);
+    objc_storeStrong(&v6->_children, children);
   }
 
   return v7;
 }
 
-- (TUIImageResourceCacheKey)cacheKeyWithSize:(CGSize)a3
+- (TUIImageResourceCacheKey)cacheKeyWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = [(TUIImageResourceCacheKey *)self copy];
-  v6 = [NSValue valueWithSize:width, height];
-  [v5 setSize:v6];
+  height = [NSValue valueWithSize:width, height];
+  [v5 setSize:height];
 
   return v5;
 }
 
-- (TUIImageResourceCacheKey)cacheKeyWithColor:(id)a3
+- (TUIImageResourceCacheKey)cacheKeyWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = [(TUIImageResourceCacheKey *)self copy];
-  [v5 setColor:v4];
+  [v5 setColor:colorCopy];
 
   return v5;
 }
 
-- (TUIImageResourceCacheKey)cacheKeyWithFilterInfo:(id)a3
+- (TUIImageResourceCacheKey)cacheKeyWithFilterInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [(TUIImageResourceCacheKey *)self copy];
-  [v5 setFilterInfo:v4];
+  [v5 setFilterInfo:infoCopy];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = [(TUIImageResourceCacheKey *)self id];
-    v8 = [v6 id];
+    v8 = [equalCopy id];
     if (v7 != v8)
     {
       v9 = [(TUIImageResourceCacheKey *)self id];
-      v41 = [v6 id];
+      v41 = [equalCopy id];
       v42 = v9;
       if (![v9 isEqual:?])
       {
@@ -109,11 +109,11 @@
     }
 
     v11 = [(TUIImageResourceCacheKey *)self size];
-    v12 = [v6 size];
+    v12 = [equalCopy size];
     if (v11 != v12)
     {
       v3 = [(TUIImageResourceCacheKey *)self size];
-      v4 = [v6 size];
+      v4 = [equalCopy size];
       if (![v3 isEqual:v4])
       {
         v10 = 0;
@@ -133,17 +133,17 @@ LABEL_27:
       }
     }
 
-    v13 = [(TUIImageResourceCacheKey *)self color];
-    v14 = [v6 color];
-    v40 = v13;
-    v15 = v13 == v14;
-    v16 = v14;
+    color = [(TUIImageResourceCacheKey *)self color];
+    color2 = [equalCopy color];
+    v40 = color;
+    v15 = color == color2;
+    v16 = color2;
     if (!v15)
     {
-      v17 = [(TUIImageResourceCacheKey *)self color];
-      v35 = [v6 color];
-      v36 = v17;
-      if (![v17 isEqual:?])
+      color3 = [(TUIImageResourceCacheKey *)self color];
+      color4 = [equalCopy color];
+      v36 = color3;
+      if (![color3 isEqual:?])
       {
         v10 = 0;
         v18 = v40;
@@ -159,11 +159,11 @@ LABEL_24:
       }
     }
 
-    v19 = [(TUIImageResourceCacheKey *)self filterInfo];
-    v37 = [v6 filterInfo];
+    filterInfo = [(TUIImageResourceCacheKey *)self filterInfo];
+    filterInfo2 = [equalCopy filterInfo];
     v38 = v16;
     v39 = v4;
-    if (v19 == v37)
+    if (filterInfo == filterInfo2)
     {
       v34 = v3;
     }
@@ -171,13 +171,13 @@ LABEL_24:
     else
     {
       v20 = v3;
-      v21 = [(TUIImageResourceCacheKey *)self filterInfo];
-      v32 = [v6 filterInfo];
-      v33 = v21;
-      if (![v21 isEqual:?])
+      filterInfo3 = [(TUIImageResourceCacheKey *)self filterInfo];
+      filterInfo4 = [equalCopy filterInfo];
+      v33 = filterInfo3;
+      if (![filterInfo3 isEqual:?])
       {
         v10 = 0;
-        v29 = v37;
+        v29 = filterInfo2;
         v3 = v20;
         v4 = v39;
         goto LABEL_21;
@@ -186,10 +186,10 @@ LABEL_24:
       v34 = v20;
     }
 
-    v22 = [(TUIImageResourceCacheKey *)self children];
-    v23 = [v6 children];
-    v24 = v23;
-    if (v22 == v23)
+    children = [(TUIImageResourceCacheKey *)self children];
+    children2 = [equalCopy children];
+    v24 = children2;
+    if (children == children2)
     {
 
       v10 = 1;
@@ -197,22 +197,22 @@ LABEL_24:
 
     else
     {
-      v25 = [(TUIImageResourceCacheKey *)self children];
-      [v6 children];
+      children3 = [(TUIImageResourceCacheKey *)self children];
+      [equalCopy children];
       v31 = v12;
       v26 = v11;
-      v28 = v27 = v19;
-      v10 = [v25 isEqual:v28];
+      v28 = v27 = filterInfo;
+      v10 = [children3 isEqual:v28];
 
-      v19 = v27;
+      filterInfo = v27;
       v11 = v26;
       v12 = v31;
     }
 
-    v29 = v37;
+    v29 = filterInfo2;
     v3 = v34;
     v4 = v39;
-    if (v19 == v37)
+    if (filterInfo == filterInfo2)
     {
 LABEL_22:
 
@@ -277,7 +277,7 @@ LABEL_29:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TUIImageResourceCacheKey);
   v5 = [(TUIImageResourceCacheKey *)self id];
@@ -286,14 +286,14 @@ LABEL_29:
   v6 = [(TUIImageResourceCacheKey *)self size];
   [(TUIImageResourceCacheKey *)v4 setSize:v6];
 
-  v7 = [(TUIImageResourceCacheKey *)self color];
-  [(TUIImageResourceCacheKey *)v4 setColor:v7];
+  color = [(TUIImageResourceCacheKey *)self color];
+  [(TUIImageResourceCacheKey *)v4 setColor:color];
 
-  v8 = [(TUIImageResourceCacheKey *)self filterInfo];
-  [(TUIImageResourceCacheKey *)v4 setFilterInfo:v8];
+  filterInfo = [(TUIImageResourceCacheKey *)self filterInfo];
+  [(TUIImageResourceCacheKey *)v4 setFilterInfo:filterInfo];
 
-  v9 = [(TUIImageResourceCacheKey *)self children];
-  [(TUIImageResourceCacheKey *)v4 setChildren:v9];
+  children = [(TUIImageResourceCacheKey *)self children];
+  [(TUIImageResourceCacheKey *)v4 setChildren:children];
 
   return v4;
 }

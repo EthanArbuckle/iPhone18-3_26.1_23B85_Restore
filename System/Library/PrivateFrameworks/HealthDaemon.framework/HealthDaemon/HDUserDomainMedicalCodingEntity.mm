@@ -1,14 +1,14 @@
 @interface HDUserDomainMedicalCodingEntity
-+ (BOOL)_getPersistentIDForString:(void *)a3 transaction:(void *)a4 result:(uint64_t)a5 error:;
-+ (BOOL)addPropertyDataToCodable:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)enumerateMedicalCodingsWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
-+ (BOOL)insertDataForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)retrieveDataForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 mutableUserDomainConceptProperties:(id)a5 transaction:(id)a6 error:(id *)a7;
++ (BOOL)_getPersistentIDForString:(void *)string transaction:(void *)transaction result:(uint64_t)result error:;
++ (BOOL)addPropertyDataToCodable:(id)codable userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)enumerateMedicalCodingsWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)insertDataForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)retrieveDataForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d mutableUserDomainConceptProperties:(id)properties transaction:(id)transaction error:(id *)error;
 + (id)foreignKeys;
-+ (id)joinClausesForProperty:(id)a3;
++ (id)joinClausesForProperty:(id)property;
 + (id)privateSubEntities;
 + (id)triggers;
-+ (uint64_t)_enumerateMedicalCodingsWithUserDomainConceptID:(void *)a3 transaction:(uint64_t)a4 error:(void *)a5 enumerationHandler:;
++ (uint64_t)_enumerateMedicalCodingsWithUserDomainConceptID:(void *)d transaction:(uint64_t)transaction error:(void *)error enumerationHandler:;
 @end
 
 @implementation HDUserDomainMedicalCodingEntity
@@ -44,9 +44,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = +[HDUserDomainMedicalCodingStringEntity databaseTable];
   v5 = *MEMORY[0x277D10A40];
-  v6 = [a1 databaseTable];
+  databaseTable = [self databaseTable];
   v7 = +[HDUserDomainMedicalCodingStringEntity databaseTable];
-  v8 = [v3 stringWithFormat:@"DELETE FROM %@ WHERE (%@ IN (OLD.%@, OLD.%@, OLD.%@, OLD.%@) AND NOT EXISTS (SELECT 1 FROM %@ WHERE %@.%@ IN (%@, %@, %@, %@)))", v4, v5, @"system", @"code", @"version", @"display_string", v6, v7, v5, @"system", @"code", @"version", @"display_string"];
+  v8 = [v3 stringWithFormat:@"DELETE FROM %@ WHERE (%@ IN (OLD.%@, OLD.%@, OLD.%@, OLD.%@) AND NOT EXISTS (SELECT 1 FROM %@ WHERE %@.%@ IN (%@, %@, %@, %@)))", v4, v5, @"system", @"code", @"version", @"display_string", databaseTable, v7, v5, @"system", @"code", @"version", @"display_string"];
 
   v9 = [objc_alloc(MEMORY[0x277D10BA0]) initWithEntity:objc_opt_class() name:@"string_garbage_collection" triggerEvent:0 predicateString:0 triggerString:v8];
   v13[0] = v9;
@@ -57,34 +57,34 @@
   return v10;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v5 = a3;
-  v6 = [&unk_283CB46D0 objectForKeyedSubscript:v5];
+  propertyCopy = property;
+  v6 = [&unk_283CB46D0 objectForKeyedSubscript:propertyCopy];
   if (v6)
   {
-    v7 = [v5 componentsSeparatedByString:@"."];
+    v7 = [propertyCopy componentsSeparatedByString:@"."];
 
     if ([v7 count] != 2)
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
-      [v15 handleFailureInMethod:a2 object:a1 file:@"HDUserDomainMedicalCodingEntity.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"[components count] == 2"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDUserDomainMedicalCodingEntity.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"[components count] == 2"}];
     }
 
     v8 = MEMORY[0x277D10B50];
-    v9 = [a1 disambiguatedDatabaseTable];
+    disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
     v10 = objc_opt_class();
-    v11 = [v7 firstObject];
-    v12 = [v8 leftJoinClauseFromTable:v9 toTargetEntity:v10 as:v11 localReference:v6 targetKey:*MEMORY[0x277D10A40]];
+    firstObject = [v7 firstObject];
+    v12 = [v8 leftJoinClauseFromTable:disambiguatedDatabaseTable toTargetEntity:v10 as:firstObject localReference:v6 targetKey:*MEMORY[0x277D10A40]];
 
     v13 = [MEMORY[0x277CBEB98] setWithObject:v12];
   }
 
   else
   {
-    v16.receiver = a1;
+    v16.receiver = self;
     v16.super_class = &OBJC_METACLASS___HDUserDomainMedicalCodingEntity;
-    v13 = objc_msgSendSuper2(&v16, sel_joinClausesForProperty_, v5);
+    v13 = objc_msgSendSuper2(&v16, sel_joinClausesForProperty_, propertyCopy);
   }
 
   return v13;
@@ -100,29 +100,29 @@
   return v2;
 }
 
-+ (BOOL)insertDataForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)insertDataForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
   v66 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v47 = [v10 protectedDatabase];
+  conceptCopy = concept;
+  transactionCopy = transaction;
+  protectedDatabase = [transactionCopy protectedDatabase];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v11 = [v9 codingCollection];
-  v12 = [v11 codings];
+  codingCollection = [conceptCopy codingCollection];
+  codings = [codingCollection codings];
 
-  obj = v12;
-  v44 = [v12 countByEnumeratingWithState:&v61 objects:v65 count:16];
+  obj = codings;
+  v44 = [codings countByEnumeratingWithState:&v61 objects:v65 count:16];
   if (v44)
   {
     v46 = *v62;
-    v13 = v10;
-    v42 = a6;
-    v43 = v10;
-    v41 = a1;
-    v39 = v9;
+    v13 = transactionCopy;
+    errorCopy = error;
+    v43 = transactionCopy;
+    selfCopy = self;
+    v39 = conceptCopy;
     while (2)
     {
       v14 = 0;
@@ -135,42 +135,42 @@
         }
 
         v16 = *(*(&v61 + 1) + 8 * v14);
-        v17 = [v16 codingSystem];
-        v18 = [v17 identifier];
+        codingSystem = [v16 codingSystem];
+        identifier = [codingSystem identifier];
         v60 = 0;
-        v19 = [(HDUserDomainMedicalCodingEntity *)a1 _getPersistentIDForString:v18 transaction:v15 result:&v60 error:a6];
+        v19 = [(HDUserDomainMedicalCodingEntity *)self _getPersistentIDForString:identifier transaction:v15 result:&v60 error:error];
         v20 = v60;
         if (!v19)
         {
           v13 = v15;
-          v23 = v17;
-          v9 = v39;
+          v23 = codingSystem;
+          conceptCopy = v39;
           goto LABEL_21;
         }
 
         v48 = v14;
-        v21 = [v16 code];
+        code = [v16 code];
         v59 = 0;
-        v22 = [(HDUserDomainMedicalCodingEntity *)a1 _getPersistentIDForString:v21 transaction:v15 result:&v59 error:a6];
+        v22 = [(HDUserDomainMedicalCodingEntity *)self _getPersistentIDForString:code transaction:v15 result:&v59 error:error];
         v23 = v59;
         if (!v22)
         {
 
-          v9 = v39;
+          conceptCopy = v39;
           goto LABEL_20;
         }
 
         v50 = v20;
-        v24 = [v16 codingVersion];
+        codingVersion = [v16 codingVersion];
         v58 = 0;
-        v25 = a6;
-        v26 = [(HDUserDomainMedicalCodingEntity *)a1 _getPersistentIDForString:v24 transaction:v15 result:&v58 error:a6];
+        errorCopy2 = error;
+        v26 = [(HDUserDomainMedicalCodingEntity *)self _getPersistentIDForString:codingVersion transaction:v15 result:&v58 error:error];
         v49 = v58;
         if (v26)
         {
-          v27 = [v16 displayString];
+          displayString = [v16 displayString];
           v57 = 0;
-          v28 = [(HDUserDomainMedicalCodingEntity *)a1 _getPersistentIDForString:v27 transaction:v15 result:&v57 error:v25];
+          v28 = [(HDUserDomainMedicalCodingEntity *)self _getPersistentIDForString:displayString transaction:v15 result:&v57 error:errorCopy2];
           v29 = v57;
           v30 = !v28;
         }
@@ -185,14 +185,14 @@
 
         if (v30)
         {
-          v18 = v29;
-          v17 = v49;
-          v9 = v39;
+          identifier = v29;
+          codingSystem = v49;
+          conceptCopy = v39;
           v15 = v43;
 LABEL_20:
           v13 = v15;
 
-          v18 = v17;
+          identifier = codingSystem;
 LABEL_21:
 
           v36 = 0;
@@ -204,7 +204,7 @@ LABEL_21:
         v51[2] = __104__HDUserDomainMedicalCodingEntity_insertDataForUserDomainConcept_userDomainConceptID_transaction_error___block_invoke_2;
         v51[3] = &unk_2786238D0;
         v55 = v29;
-        v56 = a4;
+        dCopy = d;
         v52 = v50;
         v53 = v23;
         v54 = v49;
@@ -212,26 +212,26 @@ LABEL_21:
         v32 = v49;
         v33 = v23;
         v34 = v50;
-        a6 = v42;
-        v35 = [v47 executeCachedStatementForKey:&insertDataForUserDomainConcept_userDomainConceptID_transaction_error__statementKey_1 error:v42 SQLGenerator:&__block_literal_global_129 bindingHandler:v51 enumerationHandler:0];
+        error = errorCopy;
+        v35 = [protectedDatabase executeCachedStatementForKey:&insertDataForUserDomainConcept_userDomainConceptID_transaction_error__statementKey_1 error:errorCopy SQLGenerator:&__block_literal_global_129 bindingHandler:v51 enumerationHandler:0];
 
         if (!v35)
         {
           v36 = 0;
-          v9 = v39;
+          conceptCopy = v39;
           v13 = v43;
           goto LABEL_23;
         }
 
         v14 = v48 + 1;
         v15 = v43;
-        a1 = v41;
+        self = selfCopy;
       }
 
       while (v44 != v48 + 1);
       v13 = v43;
       v36 = 1;
-      v9 = v39;
+      conceptCopy = v39;
       v44 = [obj countByEnumeratingWithState:&v61 objects:v65 count:16];
       if (v44)
       {
@@ -244,7 +244,7 @@ LABEL_21:
 
   else
   {
-    v13 = v10;
+    v13 = transactionCopy;
     v36 = 1;
   }
 
@@ -254,10 +254,10 @@ LABEL_23:
   return v36;
 }
 
-+ (BOOL)_getPersistentIDForString:(void *)a3 transaction:(void *)a4 result:(uint64_t)a5 error:
++ (BOOL)_getPersistentIDForString:(void *)string transaction:(void *)transaction result:(uint64_t)result error:
 {
   v8 = a2;
-  v9 = a3;
+  stringCopy = string;
   objc_opt_self();
   if (v8)
   {
@@ -269,10 +269,10 @@ LABEL_23:
     v10 = @"(null)";
   }
 
-  v11 = [HDUserDomainMedicalCodingStringEntity persistentIDForString:v10 transaction:v9 error:a5];
+  v11 = [HDUserDomainMedicalCodingStringEntity persistentIDForString:v10 transaction:stringCopy error:result];
 
   v12 = v11;
-  *a4 = v11;
+  *transaction = v11;
 
   return v11 != 0;
 }
@@ -291,11 +291,11 @@ uint64_t __104__HDUserDomainMedicalCodingEntity_insertDataForUserDomainConcept_u
   return HDSQLiteBindFoundationValueToStatement();
 }
 
-+ (BOOL)retrieveDataForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 mutableUserDomainConceptProperties:(id)a5 transaction:(id)a6 error:(id *)a7
++ (BOOL)retrieveDataForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d mutableUserDomainConceptProperties:(id)properties transaction:(id)transaction error:(id *)error
 {
-  v11 = a3;
+  conceptCopy = concept;
   v12 = MEMORY[0x277CBEB18];
-  v13 = a6;
+  transactionCopy = transaction;
   v14 = objc_alloc_init(v12);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -303,7 +303,7 @@ uint64_t __104__HDUserDomainMedicalCodingEntity_insertDataForUserDomainConcept_u
   v21[3] = &unk_2786238F8;
   v15 = v14;
   v22 = v15;
-  v16 = [(HDUserDomainMedicalCodingEntity *)a1 _enumerateMedicalCodingsWithUserDomainConceptID:a4 transaction:v13 error:a7 enumerationHandler:v21];
+  v16 = [(HDUserDomainMedicalCodingEntity *)self _enumerateMedicalCodingsWithUserDomainConceptID:d transaction:transactionCopy error:error enumerationHandler:v21];
 
   if (v16)
   {
@@ -319,37 +319,37 @@ uint64_t __104__HDUserDomainMedicalCodingEntity_insertDataForUserDomainConcept_u
       v19 = 0;
     }
 
-    [v11 _setCodingCollection:v19];
+    [conceptCopy _setCodingCollection:v19];
   }
 
   return v16;
 }
 
-+ (uint64_t)_enumerateMedicalCodingsWithUserDomainConceptID:(void *)a3 transaction:(uint64_t)a4 error:(void *)a5 enumerationHandler:
++ (uint64_t)_enumerateMedicalCodingsWithUserDomainConceptID:(void *)d transaction:(uint64_t)transaction error:(void *)error enumerationHandler:
 {
-  v8 = a5;
-  v9 = a3;
+  errorCopy = error;
+  dCopy = d;
   v10 = objc_opt_self();
   v11 = MEMORY[0x277D10B18];
   v12 = [MEMORY[0x277CCABB0] numberWithLongLong:a2];
   v13 = [v11 predicateWithProperty:@"udc_id" equalToValue:v12];
 
-  v14 = [v10 enumerateMedicalCodingsWithPredicate:v13 transaction:v9 error:a4 enumerationHandler:v8];
+  v14 = [v10 enumerateMedicalCodingsWithPredicate:v13 transaction:dCopy error:transaction enumerationHandler:errorCopy];
   return v14;
 }
 
-+ (BOOL)addPropertyDataToCodable:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)addPropertyDataToCodable:(id)codable userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
+  codableCopy = codable;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __98__HDUserDomainMedicalCodingEntity_addPropertyDataToCodable_userDomainConceptID_transaction_error___block_invoke;
   v13[3] = &unk_2786238F8;
-  v14 = v10;
-  v11 = v10;
-  LOBYTE(a6) = [(HDUserDomainMedicalCodingEntity *)a1 _enumerateMedicalCodingsWithUserDomainConceptID:a4 transaction:a5 error:a6 enumerationHandler:v13];
+  v14 = codableCopy;
+  v11 = codableCopy;
+  LOBYTE(error) = [(HDUserDomainMedicalCodingEntity *)self _enumerateMedicalCodingsWithUserDomainConceptID:d transaction:transaction error:error enumerationHandler:v13];
 
-  return a6;
+  return error;
 }
 
 uint64_t __98__HDUserDomainMedicalCodingEntity_addPropertyDataToCodable_userDomainConceptID_transaction_error___block_invoke(uint64_t a1, void *a2)
@@ -361,22 +361,22 @@ uint64_t __98__HDUserDomainMedicalCodingEntity_addPropertyDataToCodable_userDoma
   return 1;
 }
 
-+ (BOOL)enumerateMedicalCodingsWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)enumerateMedicalCodingsWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [a4 databaseForEntityClass:a1];
-  v13 = [a1 queryWithDatabase:v12 predicate:v11];
+  handlerCopy = handler;
+  predicateCopy = predicate;
+  v12 = [transaction databaseForEntityClass:self];
+  v13 = [self queryWithDatabase:v12 predicate:predicateCopy];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __109__HDUserDomainMedicalCodingEntity_enumerateMedicalCodingsWithPredicate_transaction_error_enumerationHandler___block_invoke;
   v16[3] = &unk_278616A78;
-  v17 = v10;
-  v14 = v10;
-  LOBYTE(a5) = [v13 enumeratePersistentIDsAndProperties:&unk_283CAF760 error:a5 enumerationHandler:v16];
+  v17 = handlerCopy;
+  v14 = handlerCopy;
+  LOBYTE(error) = [v13 enumeratePersistentIDsAndProperties:&unk_283CAF760 error:error enumerationHandler:v16];
 
-  return a5;
+  return error;
 }
 
 uint64_t __109__HDUserDomainMedicalCodingEntity_enumerateMedicalCodingsWithPredicate_transaction_error_enumerationHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)

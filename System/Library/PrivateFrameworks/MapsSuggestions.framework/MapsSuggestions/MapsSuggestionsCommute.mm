@@ -1,8 +1,8 @@
 @interface MapsSuggestionsCommute
 - (BOOL)_authorizedForFamiliarRoutes;
 - (BOOL)_openConnectionIfNecessary;
-- (BOOL)isDeviceInCommuteWindow:(id)a3;
-- (MapsSuggestionsCommute)initWithResourceDepot:(id)a3 triggers:(id)a4 conditions:(id)a5 callbackQueue:(id)a6;
+- (BOOL)isDeviceInCommuteWindow:(id)window;
+- (MapsSuggestionsCommute)initWithResourceDepot:(id)depot triggers:(id)triggers conditions:(id)conditions callbackQueue:(id)queue;
 - (NSString)uniqueName;
 - (void)_closeConnection;
 - (void)_initCloseTimerIfNecessary;
@@ -13,14 +13,14 @@
 
 @implementation MapsSuggestionsCommute
 
-- (MapsSuggestionsCommute)initWithResourceDepot:(id)a3 triggers:(id)a4 conditions:(id)a5 callbackQueue:(id)a6
+- (MapsSuggestionsCommute)initWithResourceDepot:(id)depot triggers:(id)triggers conditions:(id)conditions callbackQueue:(id)queue
 {
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = [v10 oneRoutine];
+  depotCopy = depot;
+  queueCopy = queue;
+  oneRoutine = [depotCopy oneRoutine];
 
-  if (!v12)
+  if (!oneRoutine)
   {
     v19 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -42,9 +42,9 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v13 = [v10 oneNetworkRequester];
+  oneNetworkRequester = [depotCopy oneNetworkRequester];
 
-  if (!v13)
+  if (!oneNetworkRequester)
   {
     v19 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -64,7 +64,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!a4)
+  if (!triggers)
   {
     v19 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -84,7 +84,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!a5)
+  if (!conditions)
   {
     v19 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -104,7 +104,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!v11)
+  if (!queueCopy)
   {
     v19 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -137,7 +137,7 @@ LABEL_19:
     v17 = *(v14 + 1);
     *(v14 + 1) = v16;
 
-    objc_storeStrong(v14 + 2, a6);
+    objc_storeStrong(v14 + 2, queue);
     v18 = *(v14 + 5);
     *(v14 + 5) = 0;
 
@@ -183,13 +183,13 @@ LABEL_20:
   return v2;
 }
 
-- (BOOL)isDeviceInCommuteWindow:(id)a3
+- (BOOL)isDeviceInCommuteWindow:(id)window
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  windowCopy = window;
   v5 = GEOFindOrCreateLog();
   v6 = v5;
-  if (v4)
+  if (windowCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -204,7 +204,7 @@ LABEL_20:
     v9[2] = __50__MapsSuggestionsCommute_isDeviceInCommuteWindow___block_invoke;
     v9[3] = &unk_1E81F5CB0;
     objc_copyWeak(&v11, buf);
-    v10 = v4;
+    v10 = windowCopy;
     dispatch_async(queue, v9);
 
     objc_destroyWeak(&v11);
@@ -227,7 +227,7 @@ LABEL_20:
     }
   }
 
-  return v4 != 0;
+  return windowCopy != 0;
 }
 
 void __50__MapsSuggestionsCommute_isDeviceInCommuteWindow___block_invoke(uint64_t a1)
@@ -707,9 +707,9 @@ void __52__MapsSuggestionsCommute__openConnectionIfNecessary__block_invoke_644(u
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(MapsSuggestionsCommute *)self uniqueName];
+    uniqueName = [(MapsSuggestionsCommute *)self uniqueName];
     v11 = 138412546;
-    v12 = v4;
+    v12 = uniqueName;
     v13 = 2080;
     v14 = "_closeConnection";
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", &v11, 0x16u);
@@ -737,9 +737,9 @@ void __52__MapsSuggestionsCommute__openConnectionIfNecessary__block_invoke_644(u
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(MapsSuggestionsCommute *)self uniqueName];
+    uniqueName2 = [(MapsSuggestionsCommute *)self uniqueName];
     v11 = 138412546;
-    v12 = v9;
+    v12 = uniqueName2;
     v13 = 2080;
     v14 = "_closeConnection";
     _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", &v11, 0x16u);

@@ -1,7 +1,7 @@
 @interface ActionLoadingButton
 - (BOOL)isHighlighted;
 - (CGSize)intrinsicContentSize;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)tintColorDidChange;
 - (void)updateConfiguration;
 @end
@@ -15,19 +15,19 @@
   return [(ActionLoadingButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = type metadata accessor for ActionLoadingButton();
   v4 = v5.receiver;
-  [(ActionLoadingButton *)&v5 setHighlighted:v3];
+  [(ActionLoadingButton *)&v5 setHighlighted:highlightedCopy];
   sub_20BAC14B8();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20BABF064();
   v5 = v4;
 
@@ -40,13 +40,13 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BABF65C();
 }
 
 - (void)updateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BABF9FC();
 }
 

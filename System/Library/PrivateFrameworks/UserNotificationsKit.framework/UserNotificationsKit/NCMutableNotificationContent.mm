@@ -1,154 +1,154 @@
 @interface NCMutableNotificationContent
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAttributedMessage:(id)a3;
-- (void)setCarPlayIcons:(id)a3;
-- (void)setCategorySummaryFormat:(id)a3;
-- (void)setCommunicationContext:(id)a3;
-- (void)setContentType:(id)a3;
-- (void)setCustomHeader:(id)a3;
-- (void)setDefaultHeader:(id)a3;
-- (void)setFooter:(id)a3;
-- (void)setFullScreenIcons:(id)a3;
-- (void)setHiddenPreviewsBodyPlaceholder:(id)a3;
-- (void)setIcon:(id)a3;
-- (void)setIcons:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setSpotlightIdentifier:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setSummary:(id)a3;
-- (void)setSummaryArgument:(id)a3;
-- (void)setThreadSummary:(id)a3;
-- (void)setTitle:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAttributedMessage:(id)message;
+- (void)setCarPlayIcons:(id)icons;
+- (void)setCategorySummaryFormat:(id)format;
+- (void)setCommunicationContext:(id)context;
+- (void)setContentType:(id)type;
+- (void)setCustomHeader:(id)header;
+- (void)setDefaultHeader:(id)header;
+- (void)setFooter:(id)footer;
+- (void)setFullScreenIcons:(id)icons;
+- (void)setHiddenPreviewsBodyPlaceholder:(id)placeholder;
+- (void)setIcon:(id)icon;
+- (void)setIcons:(id)icons;
+- (void)setMessage:(id)message;
+- (void)setSpotlightIdentifier:(id)identifier;
+- (void)setSubtitle:(id)subtitle;
+- (void)setSummary:(id)summary;
+- (void)setSummaryArgument:(id)argument;
+- (void)setThreadSummary:(id)summary;
+- (void)setTitle:(id)title;
 @end
 
 @implementation NCMutableNotificationContent
 
-- (void)setContentType:(id)a3
+- (void)setContentType:(id)type
 {
-  self->super._contentType = [a3 copy];
+  self->super._contentType = [type copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setCustomHeader:(id)a3
+- (void)setCustomHeader:(id)header
 {
-  self->super._customHeader = [a3 copy];
+  self->super._customHeader = [header copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setDefaultHeader:(id)a3
+- (void)setDefaultHeader:(id)header
 {
-  self->super._defaultHeader = [a3 copy];
+  self->super._defaultHeader = [header copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  self->super._title = [a3 copy];
+  self->super._title = [title copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  self->super._subtitle = [a3 copy];
+  self->super._subtitle = [subtitle copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  self->super._attributedMessage = [MEMORY[0x277CCA898] nc_safeAttributedStringWithString:a3];
+  self->super._attributedMessage = [MEMORY[0x277CCA898] nc_safeAttributedStringWithString:message];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setAttributedMessage:(id)a3
+- (void)setAttributedMessage:(id)message
 {
-  self->super._attributedMessage = [a3 copy];
+  self->super._attributedMessage = [message copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSummary:(id)a3
+- (void)setSummary:(id)summary
 {
-  self->super._summary = [a3 copy];
+  self->super._summary = [summary copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setThreadSummary:(id)a3
+- (void)setThreadSummary:(id)summary
 {
-  self->super._threadSummary = [a3 copy];
+  self->super._threadSummary = [summary copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSpotlightIdentifier:(id)a3
+- (void)setSpotlightIdentifier:(id)identifier
 {
-  self->super._spotlightIdentifier = [a3 copy];
+  self->super._spotlightIdentifier = [identifier copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setFooter:(id)a3
+- (void)setFooter:(id)footer
 {
-  self->super._footer = [a3 copy];
+  self->super._footer = [footer copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setHiddenPreviewsBodyPlaceholder:(id)a3
+- (void)setHiddenPreviewsBodyPlaceholder:(id)placeholder
 {
-  self->super._hiddenPreviewsBodyPlaceholder = [a3 copy];
+  self->super._hiddenPreviewsBodyPlaceholder = [placeholder copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setCategorySummaryFormat:(id)a3
+- (void)setCategorySummaryFormat:(id)format
 {
-  self->super._categorySummaryFormat = [a3 copy];
+  self->super._categorySummaryFormat = [format copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setCommunicationContext:(id)a3
+- (void)setCommunicationContext:(id)context
 {
-  self->super._communicationContext = [a3 copy];
+  self->super._communicationContext = [context copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [NCNotificationContent alloc];
 
   return [(NCNotificationContent *)v4 initWithNotificationContent:self];
 }
 
-- (void)setSummaryArgument:(id)a3
+- (void)setSummaryArgument:(id)argument
 {
-  self->super._summaryArgument = [a3 copy];
+  self->super._summaryArgument = [argument copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setIcons:(id)a3
+- (void)setIcons:(id)icons
 {
-  v4 = a3;
+  iconsCopy = icons;
   if (os_log_type_enabled(NCUILogIcons, OS_LOG_TYPE_ERROR))
   {
     [NCMutableNotificationContent(Deprecated) setIcons:];
   }
 
-  v5 = [v4 copy];
+  v5 = [iconsCopy copy];
   icons = self->super._icons;
   self->super._icons = v5;
 }
 
-- (void)setFullScreenIcons:(id)a3
+- (void)setFullScreenIcons:(id)icons
 {
   if (os_log_type_enabled(NCUILogIcons, OS_LOG_TYPE_ERROR))
   {
@@ -156,7 +156,7 @@
   }
 }
 
-- (void)setCarPlayIcons:(id)a3
+- (void)setCarPlayIcons:(id)icons
 {
   if (os_log_type_enabled(NCUILogIcons, OS_LOG_TYPE_ERROR))
   {
@@ -164,14 +164,14 @@
   }
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  iconCopy = icon;
   if (os_log_type_enabled(NCUILogIcons, OS_LOG_TYPE_ERROR))
   {
     [NCMutableNotificationContent(Deprecated) setIcon:];
-    if (v4)
+    if (iconCopy)
     {
       goto LABEL_3;
     }
@@ -182,13 +182,13 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v4)
+  if (!iconCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v8[0] = v4;
+  v8[0] = iconCopy;
   icons = [MEMORY[0x277CBEB68] null];
   v8[1] = icons;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];

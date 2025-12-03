@@ -1,7 +1,7 @@
 @interface HMDPendingInvitedUserMessagePolicy
 - (HMDHomeManager)homeManager;
 - (HMDPendingInvitedUserMessagePolicy)init;
-- (HMDPendingInvitedUserMessagePolicy)initWithHomeManager:(id)a3;
+- (HMDPendingInvitedUserMessagePolicy)initWithHomeManager:(id)manager;
 @end
 
 @implementation HMDPendingInvitedUserMessagePolicy
@@ -13,16 +13,16 @@
   return WeakRetained;
 }
 
-- (HMDPendingInvitedUserMessagePolicy)initWithHomeManager:(id)a3
+- (HMDPendingInvitedUserMessagePolicy)initWithHomeManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v8.receiver = self;
   v8.super_class = HMDPendingInvitedUserMessagePolicy;
   v5 = [(HMDPendingInvitedUserMessagePolicy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_homeManager, v4);
+    objc_storeWeak(&v5->_homeManager, managerCopy);
   }
 
   return v6;

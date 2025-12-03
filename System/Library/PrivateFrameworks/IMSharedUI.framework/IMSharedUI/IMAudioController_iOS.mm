@@ -1,17 +1,17 @@
 @interface IMAudioController_iOS
-- (IMAudioController_iOS)initWithContentsOfURLs:(id)a3;
+- (IMAudioController_iOS)initWithContentsOfURLs:(id)ls;
 - (void)applicationWillResignActive;
-- (void)audioSessionInterruption:(id)a3;
+- (void)audioSessionInterruption:(id)interruption;
 - (void)dealloc;
 @end
 
 @implementation IMAudioController_iOS
 
-- (IMAudioController_iOS)initWithContentsOfURLs:(id)a3
+- (IMAudioController_iOS)initWithContentsOfURLs:(id)ls
 {
   v10.receiver = self;
   v10.super_class = IMAudioController_iOS;
-  v5 = [(IMAudioController *)&v10 initWithContentsOfURLs:a3];
+  v5 = [(IMAudioController *)&v10 initWithContentsOfURLs:ls];
   if (v5)
   {
     v6 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], v3, v4);
@@ -32,7 +32,7 @@
   [(IMAudioController *)&v6 dealloc];
 }
 
-- (void)audioSessionInterruption:(id)a3
+- (void)audioSessionInterruption:(id)interruption
 {
   objc_msgSend_setInterrupted_(self, a2, 1);
   v6 = objc_msgSend_audioPlayer(self, v4, v5);

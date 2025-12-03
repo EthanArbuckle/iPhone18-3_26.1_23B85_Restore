@@ -1,33 +1,33 @@
 @interface CESRAppEntityConfig
-+ (id)_appEntityMappingFromSupportedFirstPartyEntities:(id)a3 bundleIdToLimit:(id)a4 supportedLmeTemplates:(id)a5;
-+ (id)_assistantSchemaMappingFromSupportedAssistantSchemaTypes:(id)a3 supportedLmeTemplates:(id)a4;
-+ (id)_parseExtractionVocabLabels:(id)a3;
-+ (id)_parseThirdPartyBundleLimits:(id)a3;
-- (BOOL)_parseJsonObject:(id)a3;
-- (BOOL)isAssistantSchemaTypeSupported:(id)a3;
-- (BOOL)isBundleIdSupported:(id)a3;
-- (CESRAppEntityConfig)initWithJsonObject:(id)a3;
-- (id)appEntityMappingForAssistantSchemaType:(id)a3;
-- (id)appEntityMappingForBundleId:(id)a3 appEntityName:(id)a4;
-- (id)limitForBundleId:(id)a3;
++ (id)_appEntityMappingFromSupportedFirstPartyEntities:(id)entities bundleIdToLimit:(id)limit supportedLmeTemplates:(id)templates;
++ (id)_assistantSchemaMappingFromSupportedAssistantSchemaTypes:(id)types supportedLmeTemplates:(id)templates;
++ (id)_parseExtractionVocabLabels:(id)labels;
++ (id)_parseThirdPartyBundleLimits:(id)limits;
+- (BOOL)_parseJsonObject:(id)object;
+- (BOOL)isAssistantSchemaTypeSupported:(id)supported;
+- (BOOL)isBundleIdSupported:(id)supported;
+- (CESRAppEntityConfig)initWithJsonObject:(id)object;
+- (id)appEntityMappingForAssistantSchemaType:(id)type;
+- (id)appEntityMappingForBundleId:(id)id appEntityName:(id)name;
+- (id)limitForBundleId:(id)id;
 @end
 
 @implementation CESRAppEntityConfig
 
-- (BOOL)isAssistantSchemaTypeSupported:(id)a3
+- (BOOL)isAssistantSchemaTypeSupported:(id)supported
 {
-  v3 = [(CESRAppEntityConfig *)self appEntityMappingForAssistantSchemaType:a3];
+  v3 = [(CESRAppEntityConfig *)self appEntityMappingForAssistantSchemaType:supported];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)isBundleIdSupported:(id)a3
+- (BOOL)isBundleIdSupported:(id)supported
 {
-  v4 = a3;
-  if ([v4 length] && (!+[CESRUtilities isFirstPartyBundleId:](CESRUtilities, "isFirstPartyBundleId:", v4) || (-[NSDictionary objectForKeyedSubscript:](self->_appEntityMapping, "objectForKeyedSubscript:", v4), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6)))
+  supportedCopy = supported;
+  if ([supportedCopy length] && (!+[CESRUtilities isFirstPartyBundleId:](CESRUtilities, "isFirstPartyBundleId:", supportedCopy) || (-[NSDictionary objectForKeyedSubscript:](self->_appEntityMapping, "objectForKeyedSubscript:", supportedCopy), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6)))
   {
-    v7 = [(CESRAppEntityConfig *)self limitForBundleId:v4];
+    v7 = [(CESRAppEntityConfig *)self limitForBundleId:supportedCopy];
     v8 = v7;
     v9 = !v7 || [v7 intValue];
   }
@@ -40,12 +40,12 @@
   return v9;
 }
 
-- (id)limitForBundleId:(id)a3
+- (id)limitForBundleId:(id)id
 {
-  v4 = a3;
-  if ([v4 length])
+  idCopy = id;
+  if ([idCopy length])
   {
-    v5 = [(NSDictionary *)self->_bundleIdToLimit objectForKeyedSubscript:v4];
+    v5 = [(NSDictionary *)self->_bundleIdToLimit objectForKeyedSubscript:idCopy];
   }
 
   else
@@ -56,35 +56,35 @@
   return v5;
 }
 
-- (id)appEntityMappingForAssistantSchemaType:(id)a3
+- (id)appEntityMappingForAssistantSchemaType:(id)type
 {
-  v4 = a3;
-  if ([v4 length])
+  typeCopy = type;
+  if ([typeCopy length])
   {
-    v5 = [(NSDictionary *)self->_assistantSchemaMapping objectForKeyedSubscript:v4];
-    v6 = [v5 anyObject];
+    v5 = [(NSDictionary *)self->_assistantSchemaMapping objectForKeyedSubscript:typeCopy];
+    anyObject = [v5 anyObject];
   }
 
   else
   {
-    v6 = 0;
+    anyObject = 0;
   }
 
-  return v6;
+  return anyObject;
 }
 
-- (id)appEntityMappingForBundleId:(id)a3 appEntityName:(id)a4
+- (id)appEntityMappingForBundleId:(id)id appEntityName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && objc_msgSend(v7, "length"))
+  idCopy = id;
+  nameCopy = name;
+  if ([idCopy length] && objc_msgSend(nameCopy, "length"))
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(NSDictionary *)self->_appEntityMapping objectForKeyedSubscript:v6, 0];
+    v8 = [(NSDictionary *)self->_appEntityMapping objectForKeyedSubscript:idCopy, 0];
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -99,8 +99,8 @@
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 appEntityName];
-          v14 = [v7 isEqualToString:v13];
+          appEntityName = [v12 appEntityName];
+          v14 = [nameCopy isEqualToString:appEntityName];
 
           if (v14)
           {
@@ -132,13 +132,13 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)_parseJsonObject:(id)a3
+- (BOOL)_parseJsonObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 objectForKeyedSubscript:@"appEntities"];
+    v5 = [objectCopy objectForKeyedSubscript:@"appEntities"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -158,15 +158,15 @@ LABEL_14:
           v43 = v9;
           if (objc_opt_isKindOfClass())
           {
-            v10 = [v9 BOOLValue];
+            bOOLValue = [v9 BOOLValue];
           }
 
           else
           {
-            v10 = 0;
+            bOOLValue = 0;
           }
 
-          self->_enableEntityExtraction = v10;
+          self->_enableEntityExtraction = bOOLValue;
           v12 = [v6 objectForKeyedSubscript:@"interactionStoreRankingEnabled"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -339,10 +339,10 @@ LABEL_14:
   return isKindOfClass & 1;
 }
 
-- (CESRAppEntityConfig)initWithJsonObject:(id)a3
+- (CESRAppEntityConfig)initWithJsonObject:(id)object
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v17.receiver = self;
   v17.super_class = CESRAppEntityConfig;
   v5 = [(CESRAppEntityConfig *)&v17 init];
@@ -357,7 +357,7 @@ LABEL_9:
   supportedLmeTemplates = v5->_supportedLmeTemplates;
   v5->_supportedLmeTemplates = v6;
 
-  v8 = [(CESRAppEntityConfig *)v5 _parseJsonObject:v4];
+  v8 = [(CESRAppEntityConfig *)v5 _parseJsonObject:objectCopy];
   v9 = MEMORY[0x277CEF0E8];
   v10 = *MEMORY[0x277CEF0E8];
   if (v8)
@@ -411,18 +411,18 @@ LABEL_13:
   return v11;
 }
 
-+ (id)_appEntityMappingFromSupportedFirstPartyEntities:(id)a3 bundleIdToLimit:(id)a4 supportedLmeTemplates:(id)a5
++ (id)_appEntityMappingFromSupportedFirstPartyEntities:(id)entities bundleIdToLimit:(id)limit supportedLmeTemplates:(id)templates
 {
   v84 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v50 = a4;
-  v59 = a5;
-  v63 = [MEMORY[0x277CBEB38] dictionary];
+  entitiesCopy = entities;
+  limitCopy = limit;
+  templatesCopy = templates;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v8 = v7;
+  v8 = entitiesCopy;
   v9 = [v8 countByEnumeratingWithState:&v78 objects:v83 count:16];
   if (v9)
   {
@@ -466,7 +466,7 @@ LABEL_13:
                 v22 = v19;
                 if ([v18 length] && (objc_msgSend(v22, "intValue") & 0x80000000) == 0)
                 {
-                  [v50 setObject:v22 forKeyedSubscript:v18];
+                  [limitCopy setObject:v22 forKeyedSubscript:v18];
                 }
 
                 v16 = v21;
@@ -540,7 +540,7 @@ LABEL_13:
                               v68 = v44;
                               if (objc_opt_isKindOfClass())
                               {
-                                v70 = [a1 _parseExtractionVocabLabels:v44];
+                                v70 = [self _parseExtractionVocabLabels:v44];
                               }
 
                               else
@@ -553,20 +553,20 @@ LABEL_13:
                               {
                                 v64 = [[CESRVocabularyLabel alloc] initWithLmeTemplate:v72 lmeTag:v71];
                                 v62 = [[CESRAppEntityMapping alloc] initWithSourceBundleId:v67 assistantSchemaType:0 appEntityName:v35 primaryVocabLabel:v64 extractionVocabLabels:v70];
-                                [v59 addObject:v72];
-                                v46 = [v63 objectForKeyedSubscript:v67];
+                                [templatesCopy addObject:v72];
+                                v46 = [dictionary objectForKeyedSubscript:v67];
                                 v60 = v46;
                                 if (v46)
                                 {
-                                  v47 = v63;
-                                  [v63 setObject:v46 forKeyedSubscript:v67];
+                                  v47 = dictionary;
+                                  [dictionary setObject:v46 forKeyedSubscript:v67];
                                 }
 
                                 else
                                 {
                                   v58 = [MEMORY[0x277CBEB58] set];
-                                  v47 = v63;
-                                  [v63 setObject:v58 forKeyedSubscript:v67];
+                                  v47 = dictionary;
+                                  [dictionary setObject:v58 forKeyedSubscript:v67];
                                 }
 
                                 v61 = [v47 objectForKeyedSubscript:v67];
@@ -618,19 +618,19 @@ LABEL_13:
 
   v48 = *MEMORY[0x277D85DE8];
 
-  return v63;
+  return dictionary;
 }
 
-+ (id)_parseExtractionVocabLabels:(id)a3
++ (id)_parseExtractionVocabLabels:(id)labels
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v16 = [MEMORY[0x277CBEB38] dictionary];
+  labelsCopy = labels;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = [v3 allKeys];
+  obj = [labelsCopy allKeys];
   v4 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
@@ -646,16 +646,16 @@ LABEL_13:
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [v3 objectForKeyedSubscript:v8];
+        v9 = [labelsCopy objectForKeyedSubscript:v8];
         v10 = [v9 objectForKeyedSubscript:@"templateName"];
 
-        v11 = [v3 objectForKeyedSubscript:v8];
+        v11 = [labelsCopy objectForKeyedSubscript:v8];
         v12 = [v11 objectForKeyedSubscript:@"tagName"];
 
         if ([v10 length] && objc_msgSend(v12, "length"))
         {
           v13 = [[CESRVocabularyLabel alloc] initWithLmeTemplate:v10 lmeTag:v12];
-          [v16 setObject:v13 forKey:v8];
+          [dictionary setObject:v13 forKey:v8];
         }
       }
 
@@ -667,20 +667,20 @@ LABEL_13:
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return dictionary;
 }
 
-+ (id)_assistantSchemaMappingFromSupportedAssistantSchemaTypes:(id)a3 supportedLmeTemplates:(id)a4
++ (id)_assistantSchemaMappingFromSupportedAssistantSchemaTypes:(id)types supportedLmeTemplates:(id)templates
 {
   v48 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v29 = a4;
-  v35 = [MEMORY[0x277CBEB38] dictionary];
+  typesCopy = types;
+  templatesCopy = templates;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v6 = v5;
+  v6 = typesCopy;
   v7 = [v6 countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v7)
   {
@@ -733,7 +733,7 @@ LABEL_13:
                   v36 = v23;
                   if (objc_opt_isKindOfClass())
                   {
-                    v38 = [a1 _parseExtractionVocabLabels:v23];
+                    v38 = [self _parseExtractionVocabLabels:v23];
                   }
 
                   else
@@ -746,20 +746,20 @@ LABEL_13:
                   {
                     v33 = [[CESRVocabularyLabel alloc] initWithLmeTemplate:v42 lmeTag:v39];
                     v32 = [[CESRAppEntityMapping alloc] initWithSourceBundleId:0 assistantSchemaType:v16 appEntityName:0 primaryVocabLabel:v33 extractionVocabLabels:v38];
-                    [v29 addObject:v42];
-                    v26 = [v35 objectForKeyedSubscript:v16];
+                    [templatesCopy addObject:v42];
+                    v26 = [dictionary objectForKeyedSubscript:v16];
                     if (v26)
                     {
-                      [v35 setObject:v26 forKeyedSubscript:v16];
+                      [dictionary setObject:v26 forKeyedSubscript:v16];
                     }
 
                     else
                     {
                       v30 = [MEMORY[0x277CBEB58] set];
-                      [v35 setObject:v30 forKeyedSubscript:v16];
+                      [dictionary setObject:v30 forKeyedSubscript:v16];
                     }
 
-                    v31 = [v35 objectForKeyedSubscript:v16];
+                    v31 = [dictionary objectForKeyedSubscript:v16];
                     [v31 addObject:v32];
 
                     v25 = v39;
@@ -787,19 +787,19 @@ LABEL_13:
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v35;
+  return dictionary;
 }
 
-+ (id)_parseThirdPartyBundleLimits:(id)a3
++ (id)_parseThirdPartyBundleLimits:(id)limits
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v25 = [MEMORY[0x277CBEB38] dictionary];
+  limitsCopy = limits;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = v3;
+  v4 = limitsCopy;
   v5 = [v4 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v5)
   {
@@ -850,7 +850,7 @@ LABEL_13:
 
               if (!v22 && ([v21 intValue] & 0x80000000) == 0)
               {
-                [v25 setObject:v21 forKeyedSubscript:v18];
+                [dictionary setObject:v21 forKeyedSubscript:v18];
               }
 
               v9 = v20;
@@ -872,7 +872,7 @@ LABEL_13:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v25;
+  return dictionary;
 }
 
 @end

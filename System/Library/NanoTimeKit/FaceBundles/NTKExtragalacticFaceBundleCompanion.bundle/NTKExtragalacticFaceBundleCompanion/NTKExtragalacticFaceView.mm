@@ -1,30 +1,30 @@
 @interface NTKExtragalacticFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
-- (NTKExtragalacticFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
+- (NTKExtragalacticFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
 - (void)_applyBreathingAndRubberbanding;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyPalette:(id)a3;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyPalette:(id)palette;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_loadSnapshotContentViews;
 - (void)_prepareForSnapshotting;
-- (void)_prepareSwatchImagesForSelectedOptions:(id)a3;
+- (void)_prepareSwatchImagesForSelectedOptions:(id)options;
 - (void)_unloadSnapshotContentViews;
-- (void)setBackgroundAlpha:(double)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setTimeOffset:(double)a3;
+- (void)setBackgroundAlpha:(double)alpha;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setTimeOffset:(double)offset;
 @end
 
 @implementation NTKExtragalacticFaceView
 
-- (NTKExtragalacticFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKExtragalacticFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = NTKExtragalacticFaceView;
-  result = [(NTKExtragalacticFaceView *)&v6 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  result = [(NTKExtragalacticFaceView *)&v6 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   if (result)
   {
     result->_backgroundAlpha = 1.0;
@@ -44,15 +44,15 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(NTKExtragalacticFaceView *)self device];
-  v13 = [(NTKExtragalacticFaceView *)self extragalacticPalette];
-  v14 = [(NTKExtragalacticContentView *)v3 initWithFrame:v12 device:v13 palette:v5, v7, v9, v11];
+  device = [(NTKExtragalacticFaceView *)self device];
+  extragalacticPalette = [(NTKExtragalacticFaceView *)self extragalacticPalette];
+  v14 = [(NTKExtragalacticContentView *)v3 initWithFrame:device device:extragalacticPalette palette:v5, v7, v9, v11];
   extragalacticContentView = self->_extragalacticContentView;
   self->_extragalacticContentView = v14;
 
   [(NTKExtragalacticContentView *)self->_extragalacticContentView setBackgroundAlpha:self->_backgroundAlpha];
-  v16 = [(NTKExtragalacticFaceView *)self contentView];
-  [v16 addSubview:self->_extragalacticContentView];
+  contentView = [(NTKExtragalacticFaceView *)self contentView];
+  [contentView addSubview:self->_extragalacticContentView];
 }
 
 - (void)_unloadSnapshotContentViews
@@ -65,11 +65,11 @@
   self->_extragalacticContentView = 0;
 }
 
-- (void)setBackgroundAlpha:(double)a3
+- (void)setBackgroundAlpha:(double)alpha
 {
-  if (self->_backgroundAlpha != a3)
+  if (self->_backgroundAlpha != alpha)
   {
-    self->_backgroundAlpha = a3;
+    self->_backgroundAlpha = alpha;
     [(NTKExtragalacticContentView *)self->_extragalacticContentView setBackgroundAlpha:?];
   }
 }
@@ -81,21 +81,21 @@
   [(NTKExtragalacticFaceView *)&v2 _prepareForSnapshotting];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = NTKExtragalacticFaceView;
-  v6 = a3;
-  [(NTKExtragalacticFaceView *)&v7 setOverrideDate:v6 duration:a4];
-  [(NTKExtragalacticContentView *)self->_extragalacticContentView setOverrideDate:v6 duration:a4, v7.receiver, v7.super_class];
+  dateCopy = date;
+  [(NTKExtragalacticFaceView *)&v7 setOverrideDate:dateCopy duration:duration];
+  [(NTKExtragalacticContentView *)self->_extragalacticContentView setOverrideDate:dateCopy duration:duration, v7.receiver, v7.super_class];
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
   v5.receiver = self;
   v5.super_class = NTKExtragalacticFaceView;
   [(NTKExtragalacticFaceView *)&v5 setTimeOffset:?];
-  [(NTKExtragalacticContentView *)self->_extragalacticContentView setTimeOffset:a3];
+  [(NTKExtragalacticContentView *)self->_extragalacticContentView setTimeOffset:offset];
 }
 
 - (id)createFaceColorPalette
@@ -105,70 +105,70 @@
   return v2;
 }
 
-- (void)_applyPalette:(id)a3
+- (void)_applyPalette:(id)palette
 {
-  v4 = a3;
-  v5 = [(NTKExtragalacticFaceView *)self extragalacticContentView];
-  [v5 setPalette:v4];
+  paletteCopy = palette;
+  extragalacticContentView = [(NTKExtragalacticFaceView *)self extragalacticContentView];
+  [extragalacticContentView setPalette:paletteCopy];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a4;
-  v13 = a5;
+  optionCopy = option;
+  toOptionCopy = toOption;
   v15.receiver = self;
   v15.super_class = NTKExtragalacticFaceView;
-  [(NTKExtragalacticFaceView *)&v15 _applyTransitionFraction:v12 fromOption:v13 toOption:a6 forCustomEditMode:a7 slot:a3];
-  if (a6 == 10)
+  [(NTKExtragalacticFaceView *)&v15 _applyTransitionFraction:optionCopy fromOption:toOptionCopy toOption:mode forCustomEditMode:slot slot:fraction];
+  if (mode == 10)
   {
-    v14 = [(NTKExtragalacticFaceView *)self interpolatedColorPalette];
-    [(NTKExtragalacticFaceView *)self _applyPalette:v14];
+    interpolatedColorPalette = [(NTKExtragalacticFaceView *)self interpolatedColorPalette];
+    [(NTKExtragalacticFaceView *)self _applyPalette:interpolatedColorPalette];
   }
 
-  else if (a6 == 17)
+  else if (mode == 17)
   {
-    [objc_opt_class() _backgroundAlphaForOption:v12];
-    [objc_opt_class() _backgroundAlphaForOption:v13];
+    [objc_opt_class() _backgroundAlphaForOption:optionCopy];
+    [objc_opt_class() _backgroundAlphaForOption:toOptionCopy];
     CLKInterpolateBetweenFloatsClipped();
     [(NTKExtragalacticFaceView *)self setBackgroundAlpha:?];
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
+  optionCopy = option;
   v10.receiver = self;
   v10.super_class = NTKExtragalacticFaceView;
-  [(NTKExtragalacticFaceView *)&v10 _applyOption:v8 forCustomEditMode:a4 slot:a5];
-  if (a4 == 10)
+  [(NTKExtragalacticFaceView *)&v10 _applyOption:optionCopy forCustomEditMode:mode slot:slot];
+  if (mode == 10)
   {
-    v9 = [(NTKExtragalacticFaceView *)self extragalacticPalette];
-    [(NTKExtragalacticFaceView *)self _applyPalette:v9];
+    extragalacticPalette = [(NTKExtragalacticFaceView *)self extragalacticPalette];
+    [(NTKExtragalacticFaceView *)self _applyPalette:extragalacticPalette];
   }
 
-  else if (a4 == 17)
+  else if (mode == 17)
   {
-    -[NTKExtragalacticFaceView setBackgroundAlpha:](self, "setBackgroundAlpha:", [objc_opt_class() _backgroundAlphaForOption:v8]);
+    -[NTKExtragalacticFaceView setBackgroundAlpha:](self, "setBackgroundAlpha:", [objc_opt_class() _backgroundAlphaForOption:optionCopy]);
   }
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v7.receiver = self;
   v7.super_class = NTKExtragalacticFaceView;
-  [(NTKExtragalacticFaceView *)&v7 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  [(NTKExtragalacticFaceView *)self setBreathingFraction:a3];
+  [(NTKExtragalacticFaceView *)&v7 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  [(NTKExtragalacticFaceView *)self setBreathingFraction:fraction];
   [(NTKExtragalacticFaceView *)self _applyBreathingAndRubberbanding];
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v7.receiver = self;
   v7.super_class = NTKExtragalacticFaceView;
-  [(NTKExtragalacticFaceView *)&v7 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
+  [(NTKExtragalacticFaceView *)&v7 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
   NTKAlphaForRubberBandingFraction();
   [(NTKExtragalacticFaceView *)self setAlpha:?];
-  [(NTKExtragalacticFaceView *)self setRubberbandingFraction:a3];
+  [(NTKExtragalacticFaceView *)self setRubberbandingFraction:fraction];
   [(NTKExtragalacticFaceView *)self _applyBreathingAndRubberbanding];
 }
 
@@ -184,25 +184,25 @@
   [(NTKExtragalacticFaceView *)self setTransform:&v6];
 }
 
-- (void)_prepareSwatchImagesForSelectedOptions:(id)a3
+- (void)_prepareSwatchImagesForSelectedOptions:(id)options
 {
-  v10 = a3;
-  v4 = [(NTKExtragalacticFaceView *)self device];
-  v5 = [MEMORY[0x277D2C008] numberOfOptionsForDevice:v4];
+  optionsCopy = options;
+  device = [(NTKExtragalacticFaceView *)self device];
+  v5 = [MEMORY[0x277D2C008] numberOfOptionsForDevice:device];
   if (v5)
   {
     v6 = v5;
     for (i = 0; i != v6; ++i)
     {
-      v8 = [MEMORY[0x277D2C008] optionAtIndex:i forDevice:v4];
-      v9 = [(NTKExtragalacticFaceView *)self _swatchImageForEditOption:v8 mode:17 withSelectedOptions:v10];
+      v8 = [MEMORY[0x277D2C008] optionAtIndex:i forDevice:device];
+      v9 = [(NTKExtragalacticFaceView *)self _swatchImageForEditOption:v8 mode:17 withSelectedOptions:optionsCopy];
     }
   }
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if (a3 == 17)
+  if (options == 17)
   {
     return &unk_284E9BC48;
   }
@@ -213,11 +213,11 @@
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 17)
+  optionCopy = option;
+  optionsCopy = options;
+  if (mode == 17)
   {
     if (!qword_27E1DC2C8)
     {
@@ -226,12 +226,12 @@
       qword_27E1DC2C8 = v10;
     }
 
-    v12 = v8;
-    v13 = [v9 objectForKeyedSubscript:&unk_284E9BAE8];
+    v12 = optionCopy;
+    v13 = [optionsCopy objectForKeyedSubscript:&unk_284E9BAE8];
     v14 = MEMORY[0x277CCACA8];
-    v15 = [v13 identifier];
-    v16 = [v12 dailySnapshotKey];
-    v17 = [v14 stringWithFormat:@"%@-%@", v15, v16];
+    identifier = [v13 identifier];
+    dailySnapshotKey = [v12 dailySnapshotKey];
+    v17 = [v14 stringWithFormat:@"%@-%@", identifier, dailySnapshotKey];
 
     v18 = [qword_27E1DC2C8 objectForKey:v17];
     if (!v18)
@@ -242,8 +242,8 @@
       v24 = v23;
       v26 = v25;
       v27 = [NTKExtragalacticFaceView alloc];
-      v28 = [(NTKExtragalacticFaceView *)self device];
-      v29 = [(NTKExtragalacticFaceView *)v27 initWithFaceStyle:44 forDevice:v28 clientIdentifier:0];
+      device = [(NTKExtragalacticFaceView *)self device];
+      v29 = [(NTKExtragalacticFaceView *)v27 initWithFaceStyle:44 forDevice:device clientIdentifier:0];
 
       [(NTKExtragalacticFaceView *)v29 setFrame:v20, v22, v24, v26];
       [(NTKExtragalacticFaceView *)v29 _loadSnapshotContentViews];
@@ -266,7 +266,7 @@
   {
     v32.receiver = self;
     v32.super_class = NTKExtragalacticFaceView;
-    v18 = [(NTKExtragalacticFaceView *)&v32 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+    v18 = [(NTKExtragalacticFaceView *)&v32 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
   }
 
   return v18;

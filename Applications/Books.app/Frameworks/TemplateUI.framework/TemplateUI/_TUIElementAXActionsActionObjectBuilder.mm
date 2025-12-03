@@ -1,13 +1,13 @@
 @interface _TUIElementAXActionsActionObjectBuilder
-- (void)setActionData:(id)a3 forKey:(id)a4;
+- (void)setActionData:(id)data forKey:(id)key;
 @end
 
 @implementation _TUIElementAXActionsActionObjectBuilder
 
-- (void)setActionData:(id)a3 forKey:(id)a4
+- (void)setActionData:(id)data forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  dataCopy = data;
+  keyCopy = key;
   arguments = self->_arguments;
   if (!arguments)
   {
@@ -18,7 +18,7 @@
     arguments = self->_arguments;
   }
 
-  [(NSMutableDictionary *)arguments setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)arguments setObject:dataCopy forKeyedSubscript:keyCopy];
 }
 
 @end

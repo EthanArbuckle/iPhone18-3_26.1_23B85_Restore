@@ -1,9 +1,9 @@
 @interface BMUserActivityMetadataEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMUserActivityMetadataEvent)initWithAbsoluteTimestamp:(double)a3 userActivityData:(id)a4 title:(id)a5 activityType:(id)a6 associatedBundleId:(id)a7 associatedURLString:(id)a8 modeIdentifier:(id)a9 topics:(id)a10 hasAssociatedImageRepresentation:(BOOL)a11 uuid:(id)a12;
-- (BMUserActivityMetadataEvent)initWithProto:(id)a3;
-- (BMUserActivityMetadataEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMUserActivityMetadataEvent)initWithAbsoluteTimestamp:(double)timestamp userActivityData:(id)data title:(id)title activityType:(id)type associatedBundleId:(id)id associatedURLString:(id)string modeIdentifier:(id)identifier topics:(id)self0 hasAssociatedImageRepresentation:(BOOL)self1 uuid:(id)self2;
+- (BMUserActivityMetadataEvent)initWithProto:(id)proto;
+- (BMUserActivityMetadataEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
@@ -13,47 +13,47 @@
 
 @implementation BMUserActivityMetadataEvent
 
-- (BMUserActivityMetadataEvent)initWithAbsoluteTimestamp:(double)a3 userActivityData:(id)a4 title:(id)a5 activityType:(id)a6 associatedBundleId:(id)a7 associatedURLString:(id)a8 modeIdentifier:(id)a9 topics:(id)a10 hasAssociatedImageRepresentation:(BOOL)a11 uuid:(id)a12
+- (BMUserActivityMetadataEvent)initWithAbsoluteTimestamp:(double)timestamp userActivityData:(id)data title:(id)title activityType:(id)type associatedBundleId:(id)id associatedURLString:(id)string modeIdentifier:(id)identifier topics:(id)self0 hasAssociatedImageRepresentation:(BOOL)self1 uuid:(id)self2
 {
-  v42 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a12;
+  dataCopy = data;
+  titleCopy = title;
+  typeCopy = type;
+  idCopy = id;
+  stringCopy = string;
+  identifierCopy = identifier;
+  topicsCopy = topics;
+  uuidCopy = uuid;
   v43.receiver = self;
   v43.super_class = BMUserActivityMetadataEvent;
   v27 = [(BMUserActivityMetadataEvent *)&v43 init];
   v28 = v27;
   if (v27)
   {
-    v27->_absoluteTimestamp = a3;
-    objc_storeStrong(&v27->_userActivityData, a4);
-    v29 = [v20 copy];
+    v27->_absoluteTimestamp = timestamp;
+    objc_storeStrong(&v27->_userActivityData, data);
+    v29 = [titleCopy copy];
     title = v28->_title;
     v28->_title = v29;
 
-    v31 = [v21 copy];
+    v31 = [typeCopy copy];
     activityType = v28->_activityType;
     v28->_activityType = v31;
 
-    v33 = [v24 copy];
+    v33 = [identifierCopy copy];
     modeIdentifier = v28->_modeIdentifier;
     v28->_modeIdentifier = v33;
 
-    v35 = [v22 copy];
+    v35 = [idCopy copy];
     associatedBundleId = v28->_associatedBundleId;
     v28->_associatedBundleId = v35;
 
-    v37 = [v23 copy];
+    v37 = [stringCopy copy];
     associatedURLString = v28->_associatedURLString;
     v28->_associatedURLString = v37;
 
-    objc_storeStrong(&v28->_topics, a10);
-    v28->_hasAssociatedImageRepresentation = a11;
-    v39 = [v26 copy];
+    objc_storeStrong(&v28->_topics, topics);
+    v28->_hasAssociatedImageRepresentation = representation;
+    v39 = [uuidCopy copy];
     uuid = v28->_uuid;
     v28->_uuid = v39;
   }
@@ -61,12 +61,12 @@
   return v28;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -145,9 +145,9 @@
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMUserActivityMetadataEvent *)self jsonDict];
+  jsonDict = [(BMUserActivityMetadataEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -164,39 +164,39 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMUserActivityMetadataEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMUserActivityMetadataEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMUserActivityMetadataEvent)initWithProto:(id)a3
+- (BMUserActivityMetadataEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasAbsoluteTimestamp]&& [v5 hasUserActivityData]&& [v5 hasTitle]&& [v5 hasActivityType]&& [v5 hasAssociatedBundleId]&& ([v5 hasUuid]& 1) != 0)
       {
         [v5 absoluteTimestamp];
         v7 = v6;
-        v21 = [v5 userActivityData];
-        v19 = [v5 title];
-        v8 = [v5 activityType];
-        v18 = [v5 associatedBundleId];
-        v9 = [v5 associatedURLString];
-        v10 = [v5 modeIdentifier];
-        v20 = [v5 topics];
-        v11 = [v20 _pas_mappedArrayWithTransform:&__block_literal_global_154];
-        v12 = [v5 hasAssociatedImageRepresentation];
-        v13 = [v5 uuid];
-        LOBYTE(v17) = v12;
-        self = [(BMUserActivityMetadataEvent *)self initWithAbsoluteTimestamp:v21 userActivityData:v19 title:v8 activityType:v18 associatedBundleId:v9 associatedURLString:v10 modeIdentifier:v7 topics:v11 hasAssociatedImageRepresentation:v17 uuid:v13];
+        userActivityData = [v5 userActivityData];
+        title = [v5 title];
+        activityType = [v5 activityType];
+        associatedBundleId = [v5 associatedBundleId];
+        associatedURLString = [v5 associatedURLString];
+        modeIdentifier = [v5 modeIdentifier];
+        topics = [v5 topics];
+        v11 = [topics _pas_mappedArrayWithTransform:&__block_literal_global_154];
+        hasAssociatedImageRepresentation = [v5 hasAssociatedImageRepresentation];
+        uuid = [v5 uuid];
+        LOBYTE(v17) = hasAssociatedImageRepresentation;
+        self = [(BMUserActivityMetadataEvent *)self initWithAbsoluteTimestamp:userActivityData userActivityData:title title:activityType activityType:associatedBundleId associatedBundleId:associatedURLString associatedURLString:modeIdentifier modeIdentifier:v7 topics:v11 hasAssociatedImageRepresentation:v17 uuid:uuid];
 
-        v14 = self;
+        selfCopy = self;
 LABEL_17:
 
         goto LABEL_18;
@@ -218,14 +218,14 @@ LABEL_17:
       }
     }
 
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_18:
 
-  return v14;
+  return selfCopy;
 }
 
 BMUserActivityMetadataTopic *__45__BMUserActivityMetadataEvent_initWithProto___block_invoke(uint64_t a1, void *a2)
@@ -236,23 +236,23 @@ BMUserActivityMetadataTopic *__45__BMUserActivityMetadataEvent_initWithProto___b
   return v3;
 }
 
-- (BMUserActivityMetadataEvent)initWithProtoData:(id)a3
+- (BMUserActivityMetadataEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBUserActivityMetadataEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBUserActivityMetadataEvent alloc] initWithData:dataCopy];
 
     self = [(BMUserActivityMetadataEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -282,13 +282,13 @@ BMUserActivityMetadataTopic *__45__BMUserActivityMetadataEvent_initWithProto___b
   return v4 ^ [(NSString *)self->_associatedURLString hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = equalCopy;
     absoluteTimestamp = self->_absoluteTimestamp;
     [v7 absoluteTimestamp];
     if (absoluteTimestamp != v9)
@@ -303,20 +303,20 @@ LABEL_77:
     v11 = userActivityData;
     if (!userActivityData)
     {
-      v12 = [v7 userActivityData];
-      if (!v12)
+      userActivityData = [v7 userActivityData];
+      if (!userActivityData)
       {
         v60 = 0;
         v13 = 0;
         goto LABEL_12;
       }
 
-      v60 = v12;
+      v60 = userActivityData;
       v11 = self->_userActivityData;
     }
 
-    v3 = [v7 userActivityData];
-    if (![(NSData *)v11 isEqualToData:v3])
+    userActivityData2 = [v7 userActivityData];
+    if (![(NSData *)v11 isEqualToData:userActivityData2])
     {
 
       v14 = 0;
@@ -329,20 +329,20 @@ LABEL_12:
     v16 = title;
     if (!title)
     {
-      v17 = [v7 title];
-      if (!v17)
+      title = [v7 title];
+      if (!title)
       {
         v57 = 0;
         v59 = 0;
         goto LABEL_19;
       }
 
-      v57 = v17;
+      v57 = title;
       v16 = self->_title;
     }
 
-    v4 = [v7 title];
-    if (![(NSString *)v16 isEqualToString:v4])
+    title2 = [v7 title];
+    if (![(NSString *)v16 isEqualToString:title2])
     {
       v14 = 0;
       goto LABEL_71;
@@ -354,8 +354,8 @@ LABEL_19:
     v19 = activityType;
     if (!activityType)
     {
-      v20 = [v7 activityType];
-      if (!v20)
+      activityType = [v7 activityType];
+      if (!activityType)
       {
         v55 = 0;
         v56 = v13;
@@ -363,11 +363,11 @@ LABEL_19:
         goto LABEL_26;
       }
 
-      v53 = v20;
+      v53 = activityType;
       v19 = self->_activityType;
     }
 
-    v58 = [v7 activityType];
+    activityType2 = [v7 activityType];
     if (![(NSString *)v19 isEqualToString:?])
     {
       v14 = 0;
@@ -382,19 +382,19 @@ LABEL_26:
     v23 = associatedBundleId;
     if (!associatedBundleId)
     {
-      v24 = [v7 associatedBundleId];
-      if (!v24)
+      associatedBundleId = [v7 associatedBundleId];
+      if (!associatedBundleId)
       {
         v49 = 0;
         v52 = 0;
         goto LABEL_33;
       }
 
-      v49 = v24;
+      v49 = associatedBundleId;
       v23 = self->_associatedBundleId;
     }
 
-    v54 = [v7 associatedBundleId];
+    associatedBundleId2 = [v7 associatedBundleId];
     if (![(NSString *)v23 isEqualToString:?])
     {
       v14 = 0;
@@ -408,19 +408,19 @@ LABEL_33:
     v51 = associatedURLString;
     if (!associatedURLString)
     {
-      v26 = [v7 associatedURLString];
-      if (!v26)
+      associatedURLString = [v7 associatedURLString];
+      if (!associatedURLString)
       {
         v46 = 0;
         v47 = 0;
         goto LABEL_40;
       }
 
-      v46 = v26;
+      v46 = associatedURLString;
       associatedURLString = self->_associatedURLString;
     }
 
-    v50 = [v7 associatedURLString];
+    associatedURLString2 = [v7 associatedURLString];
     if (![(NSString *)associatedURLString isEqualToString:?])
     {
       v14 = 0;
@@ -434,22 +434,22 @@ LABEL_40:
     v48 = modeIdentifier;
     if (!modeIdentifier)
     {
-      v28 = [v7 modeIdentifier];
-      if (!v28)
+      modeIdentifier = [v7 modeIdentifier];
+      if (!modeIdentifier)
       {
         v44 = 0;
         v45 = 0;
         goto LABEL_47;
       }
 
-      v44 = v28;
+      v44 = modeIdentifier;
       modeIdentifier = self->_modeIdentifier;
     }
 
-    v29 = [v7 modeIdentifier];
+    modeIdentifier2 = [v7 modeIdentifier];
     v30 = modeIdentifier;
-    v31 = v29;
-    if (![(NSString *)v30 isEqualToString:v29])
+    v31 = modeIdentifier2;
+    if (![(NSString *)v30 isEqualToString:modeIdentifier2])
     {
 
       v14 = 0;
@@ -472,8 +472,8 @@ LABEL_47:
     v34 = uuid;
     if (!uuid)
     {
-      v35 = [v7 uuid];
-      if (!v35)
+      uuid = [v7 uuid];
+      if (!uuid)
       {
         v38 = 0;
         v14 = 1;
@@ -489,7 +489,7 @@ LABEL_58:
         goto LABEL_59;
       }
 
-      v40 = v35;
+      v40 = uuid;
       v34 = self->_uuid;
     }
 

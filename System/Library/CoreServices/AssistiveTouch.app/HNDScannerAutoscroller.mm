@@ -1,14 +1,14 @@
 @interface HNDScannerAutoscroller
 - (BOOL)isAutoscrolling;
 - (HNDScannerAutoscroller)init;
-- (void)accessibilityManager:(id)a3 didReceiveEvent:(int64_t)a4 data:(id)a5;
+- (void)accessibilityManager:(id)manager didReceiveEvent:(int64_t)event data:(id)data;
 - (void)dealloc;
 - (void)decreaseAutoscrollSpeed;
 - (void)increaseAutoscrollSpeed;
 - (void)pause;
 - (void)resume;
 - (void)scrollToTop;
-- (void)setScrollElement:(id)a3;
+- (void)setScrollElement:(id)element;
 - (void)stop;
 @end
 
@@ -42,68 +42,68 @@
   [(HNDScannerAutoscroller *)&v4 dealloc];
 }
 
-- (void)setScrollElement:(id)a3
+- (void)setScrollElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   scrollElement = self->_scrollElement;
   p_scrollElement = &self->_scrollElement;
-  v8 = v5;
-  if (([v5 isEqual:scrollElement] & 1) == 0)
+  v8 = elementCopy;
+  if (([elementCopy isEqual:scrollElement] & 1) == 0)
   {
-    objc_storeStrong(p_scrollElement, a3);
+    objc_storeStrong(p_scrollElement, element);
     [(SCATElementAutoscrolling *)*p_scrollElement setScatAutoscrollTarget:*p_scrollElement];
   }
 }
 
 - (BOOL)isAutoscrolling
 {
-  v2 = [(HNDScannerAutoscroller *)self scrollElement];
-  v3 = [v2 scatIsAutoscrolling];
+  scrollElement = [(HNDScannerAutoscroller *)self scrollElement];
+  scatIsAutoscrolling = [scrollElement scatIsAutoscrolling];
 
-  return v3;
+  return scatIsAutoscrolling;
 }
 
 - (void)resume
 {
-  v3 = [(HNDScannerAutoscroller *)self scrollElement];
-  [v3 scatAutoscrollInDirection:{-[HNDScannerAutoscroller scrollDirection](self, "scrollDirection")}];
+  scrollElement = [(HNDScannerAutoscroller *)self scrollElement];
+  [scrollElement scatAutoscrollInDirection:{-[HNDScannerAutoscroller scrollDirection](self, "scrollDirection")}];
 }
 
 - (void)pause
 {
-  v2 = [(HNDScannerAutoscroller *)self scrollElement];
-  [v2 scatPauseAutoscrolling];
+  scrollElement = [(HNDScannerAutoscroller *)self scrollElement];
+  [scrollElement scatPauseAutoscrolling];
 }
 
 - (void)stop
 {
-  v3 = [(HNDScannerAutoscroller *)self scrollElement];
-  [v3 scatPauseAutoscrolling];
+  scrollElement = [(HNDScannerAutoscroller *)self scrollElement];
+  [scrollElement scatPauseAutoscrolling];
 
   [(HNDScannerAutoscroller *)self setScrollElement:0];
 }
 
 - (void)increaseAutoscrollSpeed
 {
-  v2 = [(HNDScannerAutoscroller *)self scrollElement];
-  [v2 scatIncreaseAutoscrollSpeed];
+  scrollElement = [(HNDScannerAutoscroller *)self scrollElement];
+  [scrollElement scatIncreaseAutoscrollSpeed];
 }
 
 - (void)decreaseAutoscrollSpeed
 {
-  v2 = [(HNDScannerAutoscroller *)self scrollElement];
-  [v2 scatDecreaseAutoscrollSpeed];
+  scrollElement = [(HNDScannerAutoscroller *)self scrollElement];
+  [scrollElement scatDecreaseAutoscrollSpeed];
 }
 
 - (void)scrollToTop
 {
-  v2 = [(HNDScannerAutoscroller *)self scrollElement];
-  [v2 scatScrollToTop];
+  scrollElement = [(HNDScannerAutoscroller *)self scrollElement];
+  [scrollElement scatScrollToTop];
 }
 
-- (void)accessibilityManager:(id)a3 didReceiveEvent:(int64_t)a4 data:(id)a5
+- (void)accessibilityManager:(id)manager didReceiveEvent:(int64_t)event data:(id)data
 {
-  if (a4 <= 6 && ((1 << a4) & 0x54) != 0)
+  if (event <= 6 && ((1 << event) & 0x54) != 0)
   {
     [(HNDScannerAutoscroller *)self stop];
   }

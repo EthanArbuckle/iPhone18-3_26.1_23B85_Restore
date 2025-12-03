@@ -1,24 +1,24 @@
 @interface NCAudioPlayerControlsView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NCAudioPlayerControlsDelegate)delegate;
-- (NCAudioPlayerControlsView)initWithCoder:(id)a3;
-- (NCAudioPlayerControlsView)initWithFrame:(CGRect)a3;
+- (NCAudioPlayerControlsView)initWithCoder:(id)coder;
+- (NCAudioPlayerControlsView)initWithFrame:(CGRect)frame;
 - (void)loadContentView;
 - (void)loadContentViewLayoutConstraints;
-- (void)pauseButtonTapped:(id)a3 withEvent:(id)a4;
-- (void)playButtonTapped:(id)a3 withEvent:(id)a4;
-- (void)setState:(int64_t)a3 animated:(BOOL)a4;
-- (void)stopButtonTapped:(id)a3 withEvent:(id)a4;
-- (void)transitionToState:(int64_t)a3 animated:(BOOL)a4;
+- (void)pauseButtonTapped:(id)tapped withEvent:(id)event;
+- (void)playButtonTapped:(id)tapped withEvent:(id)event;
+- (void)setState:(int64_t)state animated:(BOOL)animated;
+- (void)stopButtonTapped:(id)tapped withEvent:(id)event;
+- (void)transitionToState:(int64_t)state animated:(BOOL)animated;
 @end
 
 @implementation NCAudioPlayerControlsView
 
-- (NCAudioPlayerControlsView)initWithFrame:(CGRect)a3
+- (NCAudioPlayerControlsView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NCAudioPlayerControlsView;
-  v3 = [(NCAudioPlayerControlsView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NCAudioPlayerControlsView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,17 +31,17 @@
   return v4;
 }
 
-- (NCAudioPlayerControlsView)initWithCoder:(id)a3
+- (NCAudioPlayerControlsView)initWithCoder:(id)coder
 {
   [(NCAudioPlayerControlsView *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UIButton *)self->_playButton sizeToFit:a3.width];
+  width = fits.width;
+  [(UIButton *)self->_playButton sizeToFit:fits.width];
   [(NCAudioPlayerTimelineSlider *)self->_timelineSlider sizeToFit];
   [(UIButton *)self->_playButton bounds];
   Height = CGRectGetHeight(v10);
@@ -63,11 +63,11 @@
   return result;
 }
 
-- (void)setState:(int64_t)a3 animated:(BOOL)a4
+- (void)setState:(int64_t)state animated:(BOOL)animated
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [NCAudioPlayerControlsView transitionToState:"transitionToState:animated:" animated:?];
   }
 }
@@ -130,9 +130,9 @@
     v26 = [UIImage _systemImageNamed:@"play.fill"];
     [(UIButton *)v25 setImage:v26 forState:0];
 
-    v27 = [[NCAudioPlayerTimelineSlider alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [[NCAudioPlayerTimelineSlider alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     timelineSlider = self->_timelineSlider;
-    self->_timelineSlider = v27;
+    self->_timelineSlider = height;
 
     [(NCAudioPlayerTimelineSlider *)self->_timelineSlider setAllowsDetailScrubbing:0];
     v29 = +[UIColor clearColor];
@@ -173,101 +173,101 @@
 {
   if (!self->_contentViewLayoutConstraintsLoaded)
   {
-    v3 = [(UIView *)self->_contentView bottomAnchor];
-    v4 = [(NCAudioPlayerControlsView *)self bottomAnchor];
-    v5 = [v3 constraintEqualToAnchor:v4];
+    bottomAnchor = [(UIView *)self->_contentView bottomAnchor];
+    bottomAnchor2 = [(NCAudioPlayerControlsView *)self bottomAnchor];
+    v5 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v5 setActive:1];
 
-    v6 = [(UIView *)self->_contentView leadingAnchor];
-    v7 = [(NCAudioPlayerControlsView *)self leadingAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    leadingAnchor = [(UIView *)self->_contentView leadingAnchor];
+    leadingAnchor2 = [(NCAudioPlayerControlsView *)self leadingAnchor];
+    v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v8 setActive:1];
 
-    v9 = [(UIView *)self->_contentView topAnchor];
-    v10 = [(NCAudioPlayerControlsView *)self topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [(UIView *)self->_contentView topAnchor];
+    topAnchor2 = [(NCAudioPlayerControlsView *)self topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v11 setActive:1];
 
-    v12 = [(UIView *)self->_contentView trailingAnchor];
-    v13 = [(NCAudioPlayerControlsView *)self trailingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    trailingAnchor = [(UIView *)self->_contentView trailingAnchor];
+    trailingAnchor2 = [(NCAudioPlayerControlsView *)self trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v14 setActive:1];
 
-    v15 = [(UIButton *)self->_pauseButton bottomAnchor];
-    v16 = [(UIView *)self->_contentView bottomAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    bottomAnchor3 = [(UIButton *)self->_pauseButton bottomAnchor];
+    bottomAnchor4 = [(UIView *)self->_contentView bottomAnchor];
+    v17 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     [v17 setActive:1];
 
-    v18 = [(UIButton *)self->_pauseButton leadingAnchor];
-    v19 = [(UIView *)self->_contentView leadingAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    leadingAnchor3 = [(UIButton *)self->_pauseButton leadingAnchor];
+    leadingAnchor4 = [(UIView *)self->_contentView leadingAnchor];
+    v20 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v20 setActive:1];
 
-    v21 = [(UIButton *)self->_pauseButton topAnchor];
-    v22 = [(UIView *)self->_contentView topAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    topAnchor3 = [(UIButton *)self->_pauseButton topAnchor];
+    topAnchor4 = [(UIView *)self->_contentView topAnchor];
+    v23 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [v23 setActive:1];
 
-    v24 = [(UIButton *)self->_pauseButton trailingAnchor];
-    v25 = [(NCAudioPlayerTimelineSlider *)self->_timelineSlider leadingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    trailingAnchor3 = [(UIButton *)self->_pauseButton trailingAnchor];
+    leadingAnchor5 = [(NCAudioPlayerTimelineSlider *)self->_timelineSlider leadingAnchor];
+    v26 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5];
     [v26 setActive:1];
 
-    v27 = [(UIButton *)self->_pauseButton heightAnchor];
-    v28 = [v27 constraintEqualToConstant:38.0];
+    heightAnchor = [(UIButton *)self->_pauseButton heightAnchor];
+    v28 = [heightAnchor constraintEqualToConstant:38.0];
     [v28 setActive:1];
 
-    v29 = [(UIButton *)self->_playButton bottomAnchor];
-    v30 = [(UIView *)self->_contentView bottomAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    bottomAnchor5 = [(UIButton *)self->_playButton bottomAnchor];
+    bottomAnchor6 = [(UIView *)self->_contentView bottomAnchor];
+    v31 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     [v31 setActive:1];
 
-    v32 = [(UIButton *)self->_playButton leadingAnchor];
-    v33 = [(UIView *)self->_contentView leadingAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    leadingAnchor6 = [(UIButton *)self->_playButton leadingAnchor];
+    leadingAnchor7 = [(UIView *)self->_contentView leadingAnchor];
+    v34 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     [v34 setActive:1];
 
-    v35 = [(UIButton *)self->_playButton topAnchor];
-    v36 = [(UIView *)self->_contentView topAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    topAnchor5 = [(UIButton *)self->_playButton topAnchor];
+    topAnchor6 = [(UIView *)self->_contentView topAnchor];
+    v37 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     [v37 setActive:1];
 
-    v38 = [(UIButton *)self->_playButton trailingAnchor];
-    v39 = [(NCAudioPlayerTimelineSlider *)self->_timelineSlider leadingAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    trailingAnchor4 = [(UIButton *)self->_playButton trailingAnchor];
+    leadingAnchor8 = [(NCAudioPlayerTimelineSlider *)self->_timelineSlider leadingAnchor];
+    v40 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor8];
     [v40 setActive:1];
 
-    v41 = [(UIButton *)self->_playButton heightAnchor];
-    v42 = [v41 constraintEqualToConstant:38.0];
+    heightAnchor2 = [(UIButton *)self->_playButton heightAnchor];
+    v42 = [heightAnchor2 constraintEqualToConstant:38.0];
     [v42 setActive:1];
 
-    v43 = [(NCAudioPlayerTimelineSlider *)self->_timelineSlider centerYAnchor];
-    v44 = [(UIView *)self->_contentView centerYAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44];
+    centerYAnchor = [(NCAudioPlayerTimelineSlider *)self->_timelineSlider centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->_contentView centerYAnchor];
+    v45 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v45 setActive:1];
 
-    v46 = [(NCAudioPlayerTimelineSlider *)self->_timelineSlider trailingAnchor];
-    v47 = [(UIView *)self->_contentView trailingAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47];
+    trailingAnchor5 = [(NCAudioPlayerTimelineSlider *)self->_timelineSlider trailingAnchor];
+    trailingAnchor6 = [(UIView *)self->_contentView trailingAnchor];
+    v48 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     [v48 setActive:1];
 
     self->_contentViewLayoutConstraintsLoaded = 1;
   }
 }
 
-- (void)pauseButtonTapped:(id)a3 withEvent:(id)a4
+- (void)pauseButtonTapped:(id)tapped withEvent:(id)event
 {
-  v5 = a3;
-  v8 = [(NCAudioPlayerControlsView *)self delegate];
-  v6 = [(NCAudioPlayerControlsView *)self pauseButton];
+  tappedCopy = tapped;
+  delegate = [(NCAudioPlayerControlsView *)self delegate];
+  pauseButton = [(NCAudioPlayerControlsView *)self pauseButton];
 
-  if (v6 == v5)
+  if (pauseButton == tappedCopy)
   {
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      [v8 playbackControls:self didRequestState:2];
+      [delegate playbackControls:self didRequestState:2];
     }
   }
 
@@ -276,19 +276,19 @@
   }
 }
 
-- (void)playButtonTapped:(id)a3 withEvent:(id)a4
+- (void)playButtonTapped:(id)tapped withEvent:(id)event
 {
-  v5 = a3;
-  v8 = [(NCAudioPlayerControlsView *)self delegate];
-  v6 = [(NCAudioPlayerControlsView *)self playButton];
+  tappedCopy = tapped;
+  delegate = [(NCAudioPlayerControlsView *)self delegate];
+  playButton = [(NCAudioPlayerControlsView *)self playButton];
 
-  if (v6 == v5)
+  if (playButton == tappedCopy)
   {
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      [v8 playbackControls:self didRequestState:1];
+      [delegate playbackControls:self didRequestState:1];
     }
   }
 
@@ -297,19 +297,19 @@
   }
 }
 
-- (void)stopButtonTapped:(id)a3 withEvent:(id)a4
+- (void)stopButtonTapped:(id)tapped withEvent:(id)event
 {
-  v5 = a3;
-  v8 = [(NCAudioPlayerControlsView *)self delegate];
-  v6 = [(NCAudioPlayerControlsView *)self playButton];
+  tappedCopy = tapped;
+  delegate = [(NCAudioPlayerControlsView *)self delegate];
+  playButton = [(NCAudioPlayerControlsView *)self playButton];
 
-  if (v6 == v5)
+  if (playButton == tappedCopy)
   {
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      [v8 playbackControls:self didRequestState:0];
+      [delegate playbackControls:self didRequestState:0];
     }
   }
 
@@ -318,11 +318,11 @@
   }
 }
 
-- (void)transitionToState:(int64_t)a3 animated:(BOOL)a4
+- (void)transitionToState:(int64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   objc_initWeak(&location, self);
-  if (!a3 || a3 == 2)
+  if (!state || state == 2)
   {
     v6 = v12;
     v7 = &v13;
@@ -340,11 +340,11 @@
 
   else
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       v11 = 0;
       v9 = 0;
-      if (v4)
+      if (animatedCopy)
       {
         goto LABEL_7;
       }
@@ -375,7 +375,7 @@ LABEL_9:
   v11 = objc_retainBlock(v6);
   objc_destroyWeak(v7);
   objc_destroyWeak(v8);
-  if (!v4)
+  if (!animatedCopy)
   {
     goto LABEL_9;
   }

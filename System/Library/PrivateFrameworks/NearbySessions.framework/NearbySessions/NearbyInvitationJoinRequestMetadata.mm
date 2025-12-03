@@ -1,15 +1,15 @@
 @interface NearbyInvitationJoinRequestMetadata
 - (_TtC14NearbySessions35NearbyInvitationJoinRequestMetadata)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NearbyInvitationJoinRequestMetadata
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  NearbyInvitationJoinRequestMetadata.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  NearbyInvitationJoinRequestMetadata.encode(with:)(coderCopy);
 }
 
 - (_TtC14NearbySessions35NearbyInvitationJoinRequestMetadata)init

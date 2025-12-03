@@ -2,11 +2,11 @@
 - (BOOL)accessibilityCollectionViewBehavesLikeUIViewAccessibility;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityValue;
-- (id)centerCellFromCollectionView:(id)a3;
+- (id)centerCellFromCollectionView:(id)view;
 - (unint64_t)accessibilityTraits;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)adjustCycleTimelineCollectionViewIncrement:(BOOL)a3;
+- (void)adjustCycleTimelineCollectionViewIncrement:(BOOL)increment;
 @end
 
 @implementation Health_UICollectionViewAccessibility
@@ -18,8 +18,8 @@
     return 0;
   }
 
-  v4 = [(Health_UICollectionViewAccessibility *)self accessibilityIdentification];
-  v5 = [v4 isEqualToString:@"AXCycleTimelineCollectionView"];
+  accessibilityIdentification = [(Health_UICollectionViewAccessibility *)self accessibilityIdentification];
+  v5 = [accessibilityIdentification isEqualToString:@"AXCycleTimelineCollectionView"];
 
   if (v5)
   {
@@ -33,31 +33,31 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(Health_UICollectionViewAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AXCycleTimelineCollectionView"];
+  accessibilityIdentification = [(Health_UICollectionViewAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AXCycleTimelineCollectionView"];
 
   if (v4 && ([(Health_UICollectionViewAccessibility *)self centerCellFromCollectionView:self], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [v5 accessibilityLabel];
-    v10 = [v6 accessibilityValue];
-    v8 = __UIAXStringForVariables();
+    accessibilityLabel = [v5 accessibilityLabel];
+    accessibilityValue = [v6 accessibilityValue];
+    accessibilityValue2 = __UIAXStringForVariables();
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = Health_UICollectionViewAccessibility;
-    v8 = [(Health_UICollectionViewAccessibility *)&v11 accessibilityValue];
+    accessibilityValue2 = [(Health_UICollectionViewAccessibility *)&v11 accessibilityValue];
   }
 
-  return v8;
+  return accessibilityValue2;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(Health_UICollectionViewAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AXCycleTimelineCollectionView"];
+  accessibilityIdentification = [(Health_UICollectionViewAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AXCycleTimelineCollectionView"];
 
   if (v4)
   {
@@ -71,8 +71,8 @@
 
 - (void)accessibilityIncrement
 {
-  v3 = [(Health_UICollectionViewAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AXCycleTimelineCollectionView"];
+  accessibilityIdentification = [(Health_UICollectionViewAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AXCycleTimelineCollectionView"];
 
   if (v4)
   {
@@ -86,8 +86,8 @@
 
 - (void)accessibilityDecrement
 {
-  v3 = [(Health_UICollectionViewAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AXCycleTimelineCollectionView"];
+  accessibilityIdentification = [(Health_UICollectionViewAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AXCycleTimelineCollectionView"];
 
   if (v4)
   {
@@ -101,15 +101,15 @@
 
 - (BOOL)accessibilityCollectionViewBehavesLikeUIViewAccessibility
 {
-  v3 = [(Health_UICollectionViewAccessibility *)self accessibilityIdentifier];
-  if ([v3 isEqualToString:@"AXLoggingCardCarouselViewCollectionView"])
+  accessibilityIdentifier = [(Health_UICollectionViewAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"AXLoggingCardCarouselViewCollectionView"])
   {
 
     return 1;
   }
 
-  v4 = [(Health_UICollectionViewAccessibility *)self accessibilityIdentification];
-  v5 = [v4 isEqualToString:@"AXCycleTimelineCollectionView"];
+  accessibilityIdentification = [(Health_UICollectionViewAccessibility *)self accessibilityIdentification];
+  v5 = [accessibilityIdentification isEqualToString:@"AXCycleTimelineCollectionView"];
 
   if (v5)
   {
@@ -121,47 +121,47 @@
   return [(Health_UICollectionViewAccessibility *)&v7 accessibilityCollectionViewBehavesLikeUIViewAccessibility];
 }
 
-- (void)adjustCycleTimelineCollectionViewIncrement:(BOOL)a3
+- (void)adjustCycleTimelineCollectionViewIncrement:(BOOL)increment
 {
-  v3 = a3;
-  v16 = self;
-  v4 = [(Health_UICollectionViewAccessibility *)v16 centerCellFromCollectionView:v16];
+  incrementCopy = increment;
+  selfCopy = self;
+  v4 = [(Health_UICollectionViewAccessibility *)selfCopy centerCellFromCollectionView:selfCopy];
   if (v4)
   {
-    v5 = [(Health_UICollectionViewAccessibility *)v16 indexPathForCell:v4];
+    v5 = [(Health_UICollectionViewAccessibility *)selfCopy indexPathForCell:v4];
     v6 = MEMORY[0x29EDB9FE0];
-    v7 = [v5 item];
-    v8 = [v5 section];
-    if (v3)
+    item = [v5 item];
+    section = [v5 section];
+    if (incrementCopy)
     {
-      v9 = v7 + 1;
+      v9 = item + 1;
     }
 
     else
     {
-      v9 = v7 - 1;
+      v9 = item - 1;
     }
 
-    v10 = [v6 indexPathForItem:v9 inSection:v8];
-    v11 = [(Health_UICollectionViewAccessibility *)v16 cellForItemAtIndexPath:v10];
+    v10 = [v6 indexPathForItem:v9 inSection:section];
+    v11 = [(Health_UICollectionViewAccessibility *)selfCopy cellForItemAtIndexPath:v10];
 
     if (v11)
     {
       [v11 center];
       v13 = v12;
-      [(Health_UICollectionViewAccessibility *)v16 bounds];
+      [(Health_UICollectionViewAccessibility *)selfCopy bounds];
       v15 = v13 + v14 * -0.5;
-      [(Health_UICollectionViewAccessibility *)v16 contentOffset];
-      [(Health_UICollectionViewAccessibility *)v16 setContentOffset:1 animated:v15];
+      [(Health_UICollectionViewAccessibility *)selfCopy contentOffset];
+      [(Health_UICollectionViewAccessibility *)selfCopy setContentOffset:1 animated:v15];
     }
   }
 }
 
-- (id)centerCellFromCollectionView:(id)a3
+- (id)centerCellFromCollectionView:(id)view
 {
   v21 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  [v3 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   AX_CGRectGetCenter();
   v5 = v4;
   v7 = v6;
@@ -169,8 +169,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v3 indexPathsForVisibleItems];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  indexPathsForVisibleItems = [viewCopy indexPathsForVisibleItems];
+  v9 = [indexPathsForVisibleItems countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -181,12 +181,12 @@ LABEL_3:
     {
       if (*v17 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(indexPathsForVisibleItems);
       }
 
-      v13 = [v3 cellForItemAtIndexPath:*(*(&v16 + 1) + 8 * v12)];
+      v13 = [viewCopy cellForItemAtIndexPath:*(*(&v16 + 1) + 8 * v12)];
       [v13 bounds];
-      [v3 convertRect:v13 fromView:?];
+      [viewCopy convertRect:v13 fromView:?];
       v23.x = v5;
       v23.y = v7;
       if (CGRectContainsPoint(v24, v23))
@@ -196,7 +196,7 @@ LABEL_3:
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [indexPathsForVisibleItems countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v10)
         {
           goto LABEL_3;

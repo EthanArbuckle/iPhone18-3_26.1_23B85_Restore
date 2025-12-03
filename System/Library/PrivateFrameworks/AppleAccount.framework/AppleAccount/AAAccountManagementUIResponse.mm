@@ -1,21 +1,21 @@
 @interface AAAccountManagementUIResponse
-- (AAAccountManagementUIResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (AAAccountManagementUIResponse)initWithHTTPResponse:(id)response data:(id)data;
 @end
 
 @implementation AAAccountManagementUIResponse
 
-- (AAAccountManagementUIResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (AAAccountManagementUIResponse)initWithHTTPResponse:(id)response data:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = AAAccountManagementUIResponse;
-  v7 = [(AAResponse *)&v13 initWithHTTPResponse:a3 data:v6 bodyIsPlist:1];
+  v7 = [(AAResponse *)&v13 initWithHTTPResponse:response data:dataCopy bodyIsPlist:1];
   v8 = v7;
   if (v7 && [(NSHTTPURLResponse *)v7->super._httpResponse statusCode]== 200)
   {
-    if (v6)
+    if (dataCopy)
     {
-      v9 = v6;
+      v9 = dataCopy;
       p_super = &v8->_responseData->super;
       v8->_responseData = v9;
     }

@@ -1,54 +1,54 @@
 @interface CKMediaObjectAssetActionManager
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)canPerformActionType:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)canPerformActionType:(id)type;
 - (BOOL)shouldHideInteractions;
-- (BOOL)supportsActionType:(id)a3;
+- (BOOL)supportsActionType:(id)type;
 - (CKMediaObjectAssetActionHelper)chatActionHelper;
-- (CKMediaObjectAssetActionManager)initWithChatItem:(id)a3 presentedFromInlineReply:(BOOL)a4 chatActionHelper:(id)a5 selectionManager:(id)a6;
-- (SEL)_barButtonSelectorByActionType:(id)a3;
+- (CKMediaObjectAssetActionManager)initWithChatItem:(id)item presentedFromInlineReply:(BOOL)reply chatActionHelper:(id)helper selectionManager:(id)manager;
+- (SEL)_barButtonSelectorByActionType:(id)type;
 - (UIMenu)actionContextMenu;
-- (id)_currentlySelectedChatItemsOutCursorItem:(id *)a3;
-- (id)_selectionSnapshotForPerformerClass:(Class)a3;
+- (id)_currentlySelectedChatItemsOutCursorItem:(id *)item;
+- (id)_selectionSnapshotForPerformerClass:(Class)class;
 - (id)actionKeyCommands;
-- (id)actionPerformerForActionType:(id)a3;
-- (id)barButtonItemForActionType:(id)a3;
+- (id)actionPerformerForActionType:(id)type;
+- (id)barButtonItemForActionType:(id)type;
 - (id)contextMenu;
-- (id)contextMenuForChatItems:(id)a3 cursorChatItem:(id)a4 isCMM:(BOOL)a5;
-- (id)menuBuilder:(id)a3 tapbackElementsForChatItem:(id)a4;
-- (id)previewActionForActionType:(id)a3;
-- (void)_keyCommandCopy:(id)a3;
-- (void)_keyCommandQuickLook:(id)a3;
-- (void)_keyCommandReply:(id)a3;
-- (void)_keyCommandSelectAll:(id)a3;
-- (void)_keyCommandTapback:(id)a3;
+- (id)contextMenuForChatItems:(id)items cursorChatItem:(id)item isCMM:(BOOL)m;
+- (id)menuBuilder:(id)builder tapbackElementsForChatItem:(id)item;
+- (id)previewActionForActionType:(id)type;
+- (void)_keyCommandCopy:(id)copy;
+- (void)_keyCommandQuickLook:(id)look;
+- (void)_keyCommandReply:(id)reply;
+- (void)_keyCommandSelectAll:(id)all;
+- (void)_keyCommandTapback:(id)tapback;
 - (void)_runDeleteActionPerformer;
-- (void)executeActionForActionType:(id)a3 withCompletionHandler:(id)a4;
-- (void)menuBuilder:(id)a3 copyChatItems:(id)a4;
-- (void)menuBuilder:(id)a3 forwardChatItems:(id)a4;
-- (void)menuBuilder:(id)a3 quickLookChatItem:(id)a4;
-- (void)menuBuilder:(id)a3 replyChatItem:(id)a4;
-- (void)menuBuilder:(id)a3 tapbackChatItem:(id)a4;
+- (void)executeActionForActionType:(id)type withCompletionHandler:(id)handler;
+- (void)menuBuilder:(id)builder copyChatItems:(id)items;
+- (void)menuBuilder:(id)builder forwardChatItems:(id)items;
+- (void)menuBuilder:(id)builder quickLookChatItem:(id)item;
+- (void)menuBuilder:(id)builder replyChatItem:(id)item;
+- (void)menuBuilder:(id)builder tapbackChatItem:(id)item;
 @end
 
 @implementation CKMediaObjectAssetActionManager
 
-- (CKMediaObjectAssetActionManager)initWithChatItem:(id)a3 presentedFromInlineReply:(BOOL)a4 chatActionHelper:(id)a5 selectionManager:(id)a6
+- (CKMediaObjectAssetActionManager)initWithChatItem:(id)item presentedFromInlineReply:(BOOL)reply chatActionHelper:(id)helper selectionManager:(id)manager
 {
-  v11 = a3;
-  v12 = a5;
+  itemCopy = item;
+  helperCopy = helper;
   v18.receiver = self;
   v18.super_class = CKMediaObjectAssetActionManager;
-  v13 = [(CKMediaObjectAssetActionManager *)&v18 initWithSelectionManager:a6];
+  v13 = [(CKMediaObjectAssetActionManager *)&v18 initWithSelectionManager:manager];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_chatItem, a3);
-    objc_storeWeak(&v14->_chatActionHelper, v12);
+    objc_storeStrong(&v13->_chatItem, item);
+    objc_storeWeak(&v14->_chatActionHelper, helperCopy);
     v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
     performerClassByType = v14->_performerClassByType;
     v14->_performerClassByType = v15;
 
-    if (!a4)
+    if (!reply)
     {
       [(NSMutableDictionary *)v14->_performerClassByType setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x1E69C47A0]];
       [(NSMutableDictionary *)v14->_performerClassByType setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x1E69C4630]];
@@ -90,31 +90,31 @@
 
 - (BOOL)shouldHideInteractions
 {
-  v2 = self;
-  v3 = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
-  LOBYTE(v2) = [v3 shouldHideInteractionsForActionManager:v2];
+  selfCopy = self;
+  chatActionHelper = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
+  LOBYTE(selfCopy) = [chatActionHelper shouldHideInteractionsForActionManager:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)supportsActionType:(id)a3
+- (BOOL)supportsActionType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(CKMediaObjectAssetActionManager *)self performerClassByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  performerClassByType = [(CKMediaObjectAssetActionManager *)self performerClassByType];
+  v6 = [performerClassByType objectForKeyedSubscript:typeCopy];
 
   return v6 != 0;
 }
 
-- (BOOL)canPerformActionType:(id)a3
+- (BOOL)canPerformActionType:(id)type
 {
-  v4 = a3;
-  if (v4 && -[PXActionManager isActionTypeAllowed:](self, "isActionTypeAllowed:", v4) && (-[CKMediaObjectAssetActionManager performerClassByType](self, "performerClassByType"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 objectForKeyedSubscript:v4], v5, v6))
+  typeCopy = type;
+  if (typeCopy && -[PXActionManager isActionTypeAllowed:](self, "isActionTypeAllowed:", typeCopy) && (-[CKMediaObjectAssetActionManager performerClassByType](self, "performerClassByType"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 objectForKeyedSubscript:typeCopy], v5, v6))
   {
     v7 = [v6 canPerformWithActionManager:self];
   }
@@ -127,26 +127,26 @@
   return v7;
 }
 
-- (id)actionPerformerForActionType:(id)a3
+- (id)actionPerformerForActionType:(id)type
 {
-  v4 = a3;
-  if (-[CKMediaObjectAssetActionManager canPerformActionType:](self, "canPerformActionType:", v4) && (-[CKMediaObjectAssetActionManager performerClassByType](self, "performerClassByType"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 objectForKeyedSubscript:v4], v5, v6))
+  typeCopy = type;
+  if (-[CKMediaObjectAssetActionManager canPerformActionType:](self, "canPerformActionType:", typeCopy) && (-[CKMediaObjectAssetActionManager performerClassByType](self, "performerClassByType"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 objectForKeyedSubscript:typeCopy], v5, v6))
   {
-    v7 = [[v6 alloc] initWithActionType:v4];
+    v7 = [[v6 alloc] initWithActionType:typeCopy];
     v8 = [(CKMediaObjectAssetActionManager *)self _selectionSnapshotForPerformerClass:v6];
     [v7 setSelectionSnapshot:v8];
 
-    v9 = [(CKMediaObjectAssetActionManager *)self selectionManager];
-    [v7 setSelectionManager:v9];
+    selectionManager = [(CKMediaObjectAssetActionManager *)self selectionManager];
+    [v7 setSelectionManager:selectionManager];
 
-    v10 = [(CKMediaObjectAssetActionManager *)self chatItem];
-    [v7 setChatItem:v10];
+    chatItem = [(CKMediaObjectAssetActionManager *)self chatItem];
+    [v7 setChatItem:chatItem];
 
-    v11 = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
-    [v7 setChatActionHelper:v11];
+    chatActionHelper = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
+    [v7 setChatActionHelper:chatActionHelper];
 
-    v12 = [(PXActionManager *)self performerDelegate];
-    [v7 setDelegate:v12];
+    performerDelegate = [(PXActionManager *)self performerDelegate];
+    [v7 setDelegate:performerDelegate];
   }
 
   else
@@ -157,28 +157,28 @@
   return v7;
 }
 
-- (id)barButtonItemForActionType:(id)a3
+- (id)barButtonItemForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(CKMediaObjectAssetActionManager *)self performerClassByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  performerClassByType = [(CKMediaObjectAssetActionManager *)self performerClassByType];
+  v6 = [performerClassByType objectForKeyedSubscript:typeCopy];
 
-  v7 = [(CKMediaObjectAssetActionManager *)self _barButtonSelectorByActionType:v4];
+  v7 = [(CKMediaObjectAssetActionManager *)self _barButtonSelectorByActionType:typeCopy];
 
   return [v6 createBarButtonItemWithTarget:self action:v7 actionManager:self];
 }
 
-- (id)previewActionForActionType:(id)a3
+- (id)previewActionForActionType:(id)type
 {
-  v4 = a3;
-  if (-[CKMediaObjectAssetActionManager canPerformActionType:](self, "canPerformActionType:", v4) && (-[CKMediaObjectAssetActionManager performerClassByType](self, "performerClassByType"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 objectForKeyedSubscript:v4], v5, v6))
+  typeCopy = type;
+  if (-[CKMediaObjectAssetActionManager canPerformActionType:](self, "canPerformActionType:", typeCopy) && (-[CKMediaObjectAssetActionManager performerClassByType](self, "performerClassByType"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 objectForKeyedSubscript:typeCopy], v5, v6))
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __62__CKMediaObjectAssetActionManager_previewActionForActionType___block_invoke;
     v9[3] = &unk_1E72EFBD8;
     v9[4] = self;
-    v10 = v4;
+    v10 = typeCopy;
     v7 = [v6 createPreviewActionWithActionManager:self handler:v9];
   }
 
@@ -228,20 +228,20 @@
   return v8;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = [(CKMediaObjectAssetActionManager *)self selectionManager:a3];
-  v7 = [v6 selectionSnapshot];
+  v6 = [(CKMediaObjectAssetActionManager *)self selectionManager:action];
+  selectionSnapshot = [v6 selectionSnapshot];
 
-  if (sel__keyCommandQuickLook_ == a3 || sel__keyCommandDelete_ == a3 || sel__keyCommandCopy_ == a3)
+  if (sel__keyCommandQuickLook_ == action || sel__keyCommandDelete_ == action || sel__keyCommandCopy_ == action)
   {
-    LOBYTE(v8) = [v7 isAnyItemSelected];
+    LOBYTE(v8) = [selectionSnapshot isAnyItemSelected];
   }
 
-  else if (sel__keyCommandReply_ == a3 || sel__keyCommandTapback_ == a3)
+  else if (sel__keyCommandReply_ == action || sel__keyCommandTapback_ == action)
   {
-    v10 = [v7 selectedIndexPaths];
-    if ([v10 count] == 1)
+    selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+    if ([selectedIndexPaths count] == 1)
     {
       v8 = ![(CKMediaObjectAssetActionManager *)self shouldHideInteractions];
     }
@@ -254,88 +254,88 @@
 
   else
   {
-    LOBYTE(v8) = sel__keyCommandSelectAll_ == a3;
+    LOBYTE(v8) = sel__keyCommandSelectAll_ == action;
   }
 
   return v8;
 }
 
-- (void)_keyCommandQuickLook:(id)a3
+- (void)_keyCommandQuickLook:(id)look
 {
   v7 = 0;
   v4 = [(CKMediaObjectAssetActionManager *)self _currentlySelectedChatItemsOutCursorItem:&v7];
   v5 = v7;
   if (v5)
   {
-    v6 = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
-    [v6 actionManager:self quickLookChatItem:v5];
+    chatActionHelper = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
+    [chatActionHelper actionManager:self quickLookChatItem:v5];
   }
 
   else
   {
-    v6 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    chatActionHelper = IMLogHandleForCategory();
+    if (os_log_type_enabled(chatActionHelper, OS_LOG_TYPE_ERROR))
     {
       [CKMediaObjectAssetActionManager _keyCommandQuickLook:];
     }
   }
 }
 
-- (void)_keyCommandReply:(id)a3
+- (void)_keyCommandReply:(id)reply
 {
   v7 = 0;
   v4 = [(CKMediaObjectAssetActionManager *)self _currentlySelectedChatItemsOutCursorItem:&v7];
   v5 = v7;
   if (v5)
   {
-    v6 = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
-    [v6 actionManager:self presentInlineReplyControllerForChatItem:v5];
+    chatActionHelper = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
+    [chatActionHelper actionManager:self presentInlineReplyControllerForChatItem:v5];
   }
 
   else
   {
-    v6 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    chatActionHelper = IMLogHandleForCategory();
+    if (os_log_type_enabled(chatActionHelper, OS_LOG_TYPE_ERROR))
     {
       [CKMediaObjectAssetActionManager _keyCommandReply:];
     }
   }
 }
 
-- (void)_keyCommandTapback:(id)a3
+- (void)_keyCommandTapback:(id)tapback
 {
   v7 = 0;
   v4 = [(CKMediaObjectAssetActionManager *)self _currentlySelectedChatItemsOutCursorItem:&v7];
   v5 = v7;
   if (v5)
   {
-    v6 = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
-    [v6 actionManager:self tapbackChatItem:v5];
+    chatActionHelper = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
+    [chatActionHelper actionManager:self tapbackChatItem:v5];
   }
 
   else
   {
-    v6 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    chatActionHelper = IMLogHandleForCategory();
+    if (os_log_type_enabled(chatActionHelper, OS_LOG_TYPE_ERROR))
     {
       [CKMediaObjectAssetActionManager _keyCommandTapback:];
     }
   }
 }
 
-- (void)_keyCommandSelectAll:(id)a3
+- (void)_keyCommandSelectAll:(id)all
 {
-  v4 = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
-  [v4 selectAllForActionManager:self];
+  chatActionHelper = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
+  [chatActionHelper selectAllForActionManager:self];
 }
 
-- (void)_keyCommandCopy:(id)a3
+- (void)_keyCommandCopy:(id)copy
 {
   v4 = [(CKMediaObjectAssetActionManager *)self _currentlySelectedChatItemsOutCursorItem:0];
   if ([v4 count])
   {
-    v5 = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
-    [v5 actionManager:self copyChatItems:v4];
+    chatActionHelper = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
+    [chatActionHelper actionManager:self copyChatItems:v4];
   }
 
   else
@@ -348,11 +348,11 @@
   }
 }
 
-- (id)contextMenuForChatItems:(id)a3 cursorChatItem:(id)a4 isCMM:(BOOL)a5
+- (id)contextMenuForChatItems:(id)items cursorChatItem:(id)item isCMM:(BOOL)m
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  mCopy = m;
+  itemsCopy = items;
+  itemCopy = item;
   menuBuilder = self->_menuBuilder;
   if (!menuBuilder)
   {
@@ -364,18 +364,18 @@
     menuBuilder = self->_menuBuilder;
   }
 
-  v13 = [(CKMediaObjectAssetMenuBuilder *)menuBuilder contextMenuForChatItems:v8 cursorChatItem:v9 isCMM:v5];
+  v13 = [(CKMediaObjectAssetMenuBuilder *)menuBuilder contextMenuForChatItems:itemsCopy cursorChatItem:itemCopy isCMM:mCopy];
 
   return v13;
 }
 
-- (void)menuBuilder:(id)a3 quickLookChatItem:(id)a4
+- (void)menuBuilder:(id)builder quickLookChatItem:(id)item
 {
-  v5 = a4;
-  if (v5)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v6 = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
-    [v6 actionManager:self quickLookChatItem:v5];
+    chatActionHelper = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
+    [chatActionHelper actionManager:self quickLookChatItem:itemCopy];
   }
 
   else
@@ -388,13 +388,13 @@
   }
 }
 
-- (void)menuBuilder:(id)a3 tapbackChatItem:(id)a4
+- (void)menuBuilder:(id)builder tapbackChatItem:(id)item
 {
-  v5 = a4;
-  if (v5)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v6 = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
-    [v6 actionManager:self tapbackChatItem:v5];
+    chatActionHelper = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
+    [chatActionHelper actionManager:self tapbackChatItem:itemCopy];
   }
 
   else
@@ -407,13 +407,13 @@
   }
 }
 
-- (id)menuBuilder:(id)a3 tapbackElementsForChatItem:(id)a4
+- (id)menuBuilder:(id)builder tapbackElementsForChatItem:(id)item
 {
-  v5 = a4;
-  if (v5)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v6 = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
-    v7 = [v6 actionManager:self tapbackElementsForChatItem:v5];
+    chatActionHelper = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
+    v7 = [chatActionHelper actionManager:self tapbackElementsForChatItem:itemCopy];
   }
 
   else
@@ -430,13 +430,13 @@
   return v7;
 }
 
-- (void)menuBuilder:(id)a3 replyChatItem:(id)a4
+- (void)menuBuilder:(id)builder replyChatItem:(id)item
 {
-  v5 = a4;
-  if (v5)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v6 = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
-    [v6 actionManager:self presentInlineReplyControllerForChatItem:v5];
+    chatActionHelper = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
+    [chatActionHelper actionManager:self presentInlineReplyControllerForChatItem:itemCopy];
   }
 
   else
@@ -449,13 +449,13 @@
   }
 }
 
-- (void)menuBuilder:(id)a3 copyChatItems:(id)a4
+- (void)menuBuilder:(id)builder copyChatItems:(id)items
 {
-  v5 = a4;
-  if ([v5 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v6 = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
-    [v6 actionManager:self copyChatItems:v5];
+    chatActionHelper = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
+    [chatActionHelper actionManager:self copyChatItems:itemsCopy];
   }
 
   else
@@ -468,13 +468,13 @@
   }
 }
 
-- (void)menuBuilder:(id)a3 forwardChatItems:(id)a4
+- (void)menuBuilder:(id)builder forwardChatItems:(id)items
 {
-  v5 = a4;
-  if ([v5 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v6 = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
-    [v6 actionManager:self forwardChatItems:v5];
+    chatActionHelper = [(CKMediaObjectAssetActionManager *)self chatActionHelper];
+    [chatActionHelper actionManager:self forwardChatItems:itemsCopy];
   }
 
   else
@@ -487,20 +487,20 @@
   }
 }
 
-- (SEL)_barButtonSelectorByActionType:(id)a3
+- (SEL)_barButtonSelectorByActionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69C4630]])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x1E69C4630]])
   {
     v4 = sel__handleAddToLibraryBarButtonItem_;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69C47A0]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E69C47A0]])
   {
     v4 = sel__handleReplyBarButtonItem_;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69C4838]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E69C4838]])
   {
     v4 = sel__handleDeleteBarButtonItem_;
   }
@@ -513,16 +513,16 @@
   return v4;
 }
 
-- (void)executeActionForActionType:(id)a3 withCompletionHandler:(id)a4
+- (void)executeActionForActionType:(id)type withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(CKMediaObjectAssetActionManager *)self actionPerformerForActionType:a3];
+  handlerCopy = handler;
+  v7 = [(CKMediaObjectAssetActionManager *)self actionPerformerForActionType:type];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __84__CKMediaObjectAssetActionManager_executeActionForActionType_withCompletionHandler___block_invoke;
   v9[3] = &unk_1E72F3C38;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [v7 performActionWithCompletionHandler:v9];
 }
 
@@ -537,33 +537,33 @@ uint64_t __84__CKMediaObjectAssetActionManager_executeActionForActionType_withCo
   return result;
 }
 
-- (id)_selectionSnapshotForPerformerClass:(Class)a3
+- (id)_selectionSnapshotForPerformerClass:(Class)class
 {
-  v5 = [(CKMediaObjectAssetActionManager *)self selectionManager];
-  v6 = [v5 selectionSnapshot];
+  selectionManager = [(CKMediaObjectAssetActionManager *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  if (([v6 isAnyItemSelected] & 1) != 0 || (-[CKMediaObjectAssetActionManager objectReference](self, "objectReference"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+  if (([selectionSnapshot isAnyItemSelected] & 1) != 0 || (-[CKMediaObjectAssetActionManager objectReference](self, "objectReference"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
-    if (-[objc_class canPerformOnImplicitSelection](a3, "canPerformOnImplicitSelection") && ([v6 isAnyItemSelected] & 1) == 0)
+    if (-[objc_class canPerformOnImplicitSelection](class, "canPerformOnImplicitSelection") && ([selectionSnapshot isAnyItemSelected] & 1) == 0)
     {
-      v13 = [v6 dataSource];
+      dataSource = [selectionSnapshot dataSource];
       v14 = objc_alloc(MEMORY[0x1E69C45D8]);
-      v15 = [v13 allItemIndexPaths];
-      v16 = [v14 initWithDataSource:v13 selectedIndexPaths:v15];
+      allItemIndexPaths = [dataSource allItemIndexPaths];
+      v16 = [v14 initWithDataSource:dataSource selectedIndexPaths:allItemIndexPaths];
 
-      v6 = v16;
+      selectionSnapshot = v16;
     }
   }
 
   else
   {
-    v8 = [v6 dataSource];
-    v9 = [v8 identifier];
-    v10 = [(CKMediaObjectAssetActionManager *)self objectReference];
-    v11 = v10;
-    if (v10)
+    dataSource2 = [selectionSnapshot dataSource];
+    identifier = [dataSource2 identifier];
+    objectReference = [(CKMediaObjectAssetActionManager *)self objectReference];
+    v11 = objectReference;
+    if (objectReference)
     {
-      [v10 indexPath];
+      [objectReference indexPath];
       v12 = v27;
     }
 
@@ -574,21 +574,21 @@ uint64_t __84__CKMediaObjectAssetActionManager_executeActionForActionType_withCo
       v28 = 0u;
     }
 
-    if (v9 != v12)
+    if (identifier != v12)
     {
-      v17 = [v6 dataSource];
-      v18 = [(CKMediaObjectAssetActionManager *)self objectReference];
-      v19 = [v17 objectReferenceForObjectReference:v18];
+      dataSource3 = [selectionSnapshot dataSource];
+      objectReference2 = [(CKMediaObjectAssetActionManager *)self objectReference];
+      v19 = [dataSource3 objectReferenceForObjectReference:objectReference2];
       [(CKMediaObjectAssetActionManager *)self setObjectReference:v19];
     }
 
     v20 = objc_alloc(MEMORY[0x1E69C45D8]);
-    v21 = [v6 dataSource];
-    v22 = [(CKMediaObjectAssetActionManager *)self objectReference];
-    v23 = v22;
-    if (v22)
+    dataSource4 = [selectionSnapshot dataSource];
+    objectReference3 = [(CKMediaObjectAssetActionManager *)self objectReference];
+    v23 = objectReference3;
+    if (objectReference3)
     {
-      [v22 indexPath];
+      [objectReference3 indexPath];
     }
 
     else
@@ -596,30 +596,30 @@ uint64_t __84__CKMediaObjectAssetActionManager_executeActionForActionType_withCo
       memset(v26, 0, sizeof(v26));
     }
 
-    v24 = [v20 initWithDataSource:v21 selectedIndexPath:v26];
+    v24 = [v20 initWithDataSource:dataSource4 selectedIndexPath:v26];
 
-    v6 = v24;
+    selectionSnapshot = v24;
   }
 
-  return v6;
+  return selectionSnapshot;
 }
 
-- (id)_currentlySelectedChatItemsOutCursorItem:(id *)a3
+- (id)_currentlySelectedChatItemsOutCursorItem:(id *)item
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = [(CKMediaObjectAssetActionManager *)self selectionManager];
-  v5 = [v4 selectionSnapshot];
+  selectionManager = [(CKMediaObjectAssetActionManager *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
   v6 = MEMORY[0x1E695DF70];
-  v7 = [v5 selectedIndexPaths];
-  v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  v8 = [v6 arrayWithCapacity:{objc_msgSend(selectedIndexPaths, "count")}];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [v5 allItemsEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  allItemsEnumerator = [selectionSnapshot allItemsEnumerator];
+  v10 = [allItemsEnumerator countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v10)
   {
     v11 = v10;
@@ -630,27 +630,27 @@ uint64_t __84__CKMediaObjectAssetActionManager_executeActionForActionType_withCo
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allItemsEnumerator);
         }
 
-        v14 = [*(*(&v25 + 1) + 8 * i) chatItem];
-        [v8 addObject:v14];
+        chatItem = [*(*(&v25 + 1) + 8 * i) chatItem];
+        [v8 addObject:chatItem];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v11 = [allItemsEnumerator countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v11);
   }
 
   v15 = [v8 count];
-  if (a3 && v15)
+  if (item && v15)
   {
     v23 = 0u;
     v24 = 0u;
-    if (v5)
+    if (selectionSnapshot)
     {
-      [v5 cursorIndexPath];
+      [selectionSnapshot cursorIndexPath];
       v16 = v23;
     }
 
@@ -667,18 +667,18 @@ uint64_t __84__CKMediaObjectAssetActionManager_executeActionForActionType_withCo
         [CKMediaObjectAssetActionManager _currentlySelectedChatItemsOutCursorItem:];
       }
 
-      *a3 = [v8 firstObject];
+      *item = [v8 firstObject];
     }
 
     else
     {
-      v18 = [v5 dataSource];
+      dataSource = [selectionSnapshot dataSource];
       v22[0] = v23;
       v22[1] = v24;
-      v19 = [v18 objectAtIndexPath:v22];
+      v19 = [dataSource objectAtIndexPath:v22];
 
-      v20 = [v19 chatItem];
-      *a3 = v20;
+      chatItem2 = [v19 chatItem];
+      *item = chatItem2;
     }
   }
 
@@ -688,13 +688,13 @@ uint64_t __84__CKMediaObjectAssetActionManager_executeActionForActionType_withCo
 - (void)_runDeleteActionPerformer
 {
   v2 = [(CKMediaObjectAssetActionManager *)self actionPerformerForActionType:*MEMORY[0x1E69C4680]];
-  v3 = [v2 selectionSnapshot];
+  selectionSnapshot = [v2 selectionSnapshot];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __60__CKMediaObjectAssetActionManager__runDeleteActionPerformer__block_invoke;
   v5[3] = &unk_1E72EC088;
-  v6 = v3;
-  v4 = v3;
+  v6 = selectionSnapshot;
+  v4 = selectionSnapshot;
   [v2 performActionWithCompletionHandler:v5];
 }
 

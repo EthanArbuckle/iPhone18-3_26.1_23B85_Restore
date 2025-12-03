@@ -1,54 +1,54 @@
 @interface ASVPreviewViewControllerInternal
-- (ASVPreviewViewControllerInternal)initWithNibName:(id)a3 bundle:(id)a4;
+- (ASVPreviewViewControllerInternal)initWithNibName:(id)name bundle:(id)bundle;
 - (NSArray)accessibilityEntityControllers;
 - (UIView)accessibilityARView;
 - (_TtC11AssetViewer16EntityController)accessibilityRootEntityController;
 - (_TtC11AssetViewer28ARQuickLookOverlayController)overlayController;
-- (float)accessibilityDistanceInMetersFromEntityController:(id)a3;
+- (float)accessibilityDistanceInMetersFromEntityController:(id)controller;
 - (uint64_t)currentlyDisallowsUnifiedGestureRecognizerAction;
 - (void)accessibilityShowControls;
 - (void)activateCoachingView;
 - (void)activateCoachingViewWithDelay;
-- (void)coachingOverlayViewDidDeactivate:(id)a3;
-- (void)createInlinePreviewWithUUID:(id)a3 initialBounds:(CGRect)a4 contextIdReply:(id)a5;
+- (void)coachingOverlayViewDidDeactivate:(id)deactivate;
+- (void)createInlinePreviewWithUUID:(id)d initialBounds:(CGRect)bounds contextIdReply:(id)reply;
 - (void)didBecomeActive;
 - (void)didDismissActivityViewController;
 - (void)dismissButtonPressed;
 - (void)dismissPreviewController;
-- (void)entityController:(id)a3 doubleTappedAt:(CGPoint)a4;
-- (void)handleTapAtPointWithPoint:(CGPoint)a3;
+- (void)entityController:(id)controller doubleTappedAt:(CGPoint)at;
+- (void)handleTapAtPointWithPoint:(CGPoint)point;
 - (void)hideLozengeAnimated;
-- (void)inlinePreview:(id)a3 setCameraYaw:(float)a4 pitch:(float)a5 scale:(float)a6 options:(id)a7;
-- (void)inlinePreview:(id)a3 setCurrentTime:(double)a4;
-- (void)inlinePreview:(id)a3 setEnableGradientBackground:(BOOL)a4;
-- (void)inlinePreview:(id)a3 setIsMuted:(BOOL)a4;
-- (void)inlinePreview:(id)a3 setRuntimeStateObserver:(id)a4;
-- (void)observeReturnedToInlineForUUID:(id)a3 fenceHandleCompletion:(id)a4;
-- (void)prepareFullscreenPreview:(id)a3 initialFrame:(CGRect)a4 previewOptions:(id)a5 fenceHandleCompletion:(id)a6;
-- (void)prepareInlinePreviewWithData:(id)a3 forUUID:(id)a4 completion:(id)a5;
-- (void)prepareInlinePreviewWithScopedURLWrapperAttributes:(id)a3 forUUID:(id)a4 completion:(id)a5;
-- (void)preparePreviewOfFileAtURL:(id)a3 completionHandler:(id)a4;
-- (void)presentationModeDidChange:(unint64_t)a3 animated:(BOOL)a4;
-- (void)previewDidAppear:(BOOL)a3;
-- (void)previewDidDisappear:(BOOL)a3;
-- (void)previewWillAppear:(BOOL)a3;
-- (void)previewWillDisappear:(BOOL)a3;
-- (void)sendARQLEvent:(id)a3 forUUID:(id)a4 completion:(id)a5;
-- (void)session:(id)a3 cameraDidChangeTrackingState:(id)a4;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)sessionInterruptionEnded:(id)a3;
-- (void)sessionWasInterrupted:(id)a3;
-- (void)setOverlayController:(id)a3;
+- (void)inlinePreview:(id)preview setCameraYaw:(float)yaw pitch:(float)pitch scale:(float)scale options:(id)options;
+- (void)inlinePreview:(id)preview setCurrentTime:(double)time;
+- (void)inlinePreview:(id)preview setEnableGradientBackground:(BOOL)background;
+- (void)inlinePreview:(id)preview setIsMuted:(BOOL)muted;
+- (void)inlinePreview:(id)preview setRuntimeStateObserver:(id)observer;
+- (void)observeReturnedToInlineForUUID:(id)d fenceHandleCompletion:(id)completion;
+- (void)prepareFullscreenPreview:(id)preview initialFrame:(CGRect)frame previewOptions:(id)options fenceHandleCompletion:(id)completion;
+- (void)prepareInlinePreviewWithData:(id)data forUUID:(id)d completion:(id)completion;
+- (void)prepareInlinePreviewWithScopedURLWrapperAttributes:(id)attributes forUUID:(id)d completion:(id)completion;
+- (void)preparePreviewOfFileAtURL:(id)l completionHandler:(id)handler;
+- (void)presentationModeDidChange:(unint64_t)change animated:(BOOL)animated;
+- (void)previewDidAppear:(BOOL)appear;
+- (void)previewDidDisappear:(BOOL)disappear;
+- (void)previewWillAppear:(BOOL)appear;
+- (void)previewWillDisappear:(BOOL)disappear;
+- (void)sendARQLEvent:(id)event forUUID:(id)d completion:(id)completion;
+- (void)session:(id)session cameraDidChangeTrackingState:(id)state;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)sessionInterruptionEnded:(id)ended;
+- (void)sessionWasInterrupted:(id)interrupted;
+- (void)setOverlayController:(id)controller;
 - (void)shareButtonPressed;
-- (void)teardownInlinePreviewWithUUID:(id)a3 completion:(id)a4;
-- (void)touchesCancelled:(id)a3 forUUID:(id)a4;
+- (void)teardownInlinePreviewWithUUID:(id)d completion:(id)completion;
+- (void)touchesCancelled:(id)cancelled forUUID:(id)d;
 - (void)triggerOnInteractionsAndReEnablePhysicsWithDelay;
 - (void)triggerTapToRadar;
 - (void)tryPlaceModelOrRescheduleTimer;
-- (void)updateBounds:(CGRect)a3 forUUID:(id)a4 fenceHandleCompletion:(id)a5;
+- (void)updateBounds:(CGRect)bounds forUUID:(id)d fenceHandleCompletion:(id)completion;
 - (void)updateInterfaceState;
-- (void)updateIsWindowFullscreenWithFuncString:(id)a3;
+- (void)updateIsWindowFullscreenWithFuncString:(id)string;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -57,7 +57,7 @@
 
 - (uint64_t)currentlyDisallowsUnifiedGestureRecognizerAction
 {
-  v1 = a1;
+  selfCopy = self;
   sub_2412979B0();
   v3 = v2;
 
@@ -66,76 +66,76 @@
 
 - (_TtC11AssetViewer28ARQuickLookOverlayController)overlayController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_241287420();
 
   return v3;
 }
 
-- (void)setOverlayController:(id)a3
+- (void)setOverlayController:(id)controller
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR___ASVPreviewViewControllerInternal____lazy_storage___overlayController);
-  *(&self->super.super.super.super.isa + OBJC_IVAR___ASVPreviewViewControllerInternal____lazy_storage___overlayController) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR___ASVPreviewViewControllerInternal____lazy_storage___overlayController) = controller;
+  controllerCopy = controller;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   PreviewViewController.viewDidLoad()();
 }
 
 - (void)didBecomeActive
 {
-  v2 = self;
+  selfCopy = self;
   sub_24128C2A8(0xD000000000000011, 0x8000000241360110);
 }
 
-- (void)updateIsWindowFullscreenWithFuncString:(id)a3
+- (void)updateIsWindowFullscreenWithFuncString:(id)string
 {
   v4 = sub_241353C0C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_24128C2A8(v4, v6);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   PreviewViewController.viewDidLayoutSubviews()();
 }
 
 - (void)hideLozengeAnimated
 {
-  v2 = self;
+  selfCopy = self;
   sub_24128F64C();
 }
 
 - (void)updateInterfaceState
 {
-  v2 = self;
+  selfCopy = self;
   sub_24128F70C();
 }
 
-- (void)presentationModeDidChange:(unint64_t)a3 animated:(BOOL)a4
+- (void)presentationModeDidChange:(unint64_t)change animated:(BOOL)animated
 {
-  v5 = self;
-  _s11AssetViewer21PreviewViewControllerC25presentationModeDidChange_8animatedySo014QLPresentationG0V_SbtF_0(a3);
+  selfCopy = self;
+  _s11AssetViewer21PreviewViewControllerC25presentationModeDidChange_8animatedySo014QLPresentationG0V_SbtF_0(change);
 }
 
 - (void)didDismissActivityViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_241287420();
   sub_2412F9D1C(1);
 
-  v4 = *(&v2->super.super.super.super.isa + OBJC_IVAR___ASVPreviewViewControllerInternal____lazy_storage___overlayController);
+  v4 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR___ASVPreviewViewControllerInternal____lazy_storage___overlayController);
   v4[OBJC_IVAR____TtC11AssetViewer28ARQuickLookOverlayController_operationMode] = 0;
 }
 
-- (ASVPreviewViewControllerInternal)initWithNibName:(id)a3 bundle:(id)a4
+- (ASVPreviewViewControllerInternal)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_241353C0C();
     v7 = v6;
@@ -147,28 +147,28 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return PreviewViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return PreviewViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (void)entityController:(id)a3 doubleTappedAt:(CGPoint)a4
+- (void)entityController:(id)controller doubleTappedAt:(CGPoint)at
 {
-  v5 = a3;
-  v6 = self;
-  sub_2412AF90C(v5);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_2412AF90C(controllerCopy);
 }
 
-- (void)preparePreviewOfFileAtURL:(id)a3 completionHandler:(id)a4
+- (void)preparePreviewOfFileAtURL:(id)l completionHandler:(id)handler
 {
   v6 = sub_24135152C();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   sub_2413514AC();
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
-  v12 = self;
+  selfCopy = self;
   PreviewViewController.preparePreviewOfFile(at:completionHandler:)(v9, sub_2412B34E0, v11);
 
   (*(v7 + 8))(v9, v6);
@@ -176,49 +176,49 @@
 
 - (void)triggerOnInteractionsAndReEnablePhysicsWithDelay
 {
-  v2 = self;
+  selfCopy = self;
   sub_24129A264();
 }
 
-- (void)previewWillAppear:(BOOL)a3
+- (void)previewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   _s11AssetViewer21PreviewViewControllerC17previewWillAppearyySbF_0();
 }
 
-- (void)previewDidAppear:(BOOL)a3
+- (void)previewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   _s11AssetViewer21PreviewViewControllerC16previewDidAppearyySbF_0();
 }
 
-- (void)previewWillDisappear:(BOOL)a3
+- (void)previewWillDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   _s11AssetViewer21PreviewViewControllerC20previewWillDisappearyySbF_0();
 }
 
-- (void)previewDidDisappear:(BOOL)a3
+- (void)previewDidDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   _s11AssetViewer21PreviewViewControllerC19previewDidDisappearyySbF_0();
 }
 
 - (void)dismissButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_24129EFAC();
 }
 
 - (void)shareButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_24129F8C0();
 }
 
-- (void)handleTapAtPointWithPoint:(CGPoint)a3
+- (void)handleTapAtPointWithPoint:(CGPoint)point
 {
-  v3 = self;
+  selfCopy = self;
   sub_2412B3440();
 }
 
@@ -247,7 +247,7 @@
   }
 }
 
-- (float)accessibilityDistanceInMetersFromEntityController:(id)a3
+- (float)accessibilityDistanceInMetersFromEntityController:(id)controller
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR___ASVPreviewViewControllerInternal_modelController);
   if (v3)
@@ -255,8 +255,8 @@
     v4 = *(v3 + OBJC_IVAR____TtC11AssetViewer15ModelController_arView);
     if (v4)
     {
-      v6 = a3;
-      v7 = self;
+      controllerCopy = controller;
+      selfCopy = self;
       v8 = v4;
       sub_2413528BC();
       v10 = v9;
@@ -304,16 +304,16 @@
 
 - (void)tryPlaceModelOrRescheduleTimer
 {
-  v2 = self;
+  selfCopy = self;
   sub_2412C70BC();
 }
 
-- (void)createInlinePreviewWithUUID:(id)a3 initialBounds:(CGRect)a4 contextIdReply:(id)a5
+- (void)createInlinePreviewWithUUID:(id)d initialBounds:(CGRect)bounds contextIdReply:(id)reply
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v10 = sub_24135164C();
   v11 = *(v10 - 8);
   v12 = *(v11 + 64);
@@ -321,7 +321,7 @@
   v13 = aBlock - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v14);
   v16 = aBlock - v15;
-  v17 = _Block_copy(a5);
+  v17 = _Block_copy(reply);
   sub_24135162C();
   v18 = swift_allocObject();
   *(v18 + 16) = v17;
@@ -350,7 +350,7 @@
   (*(v11 + 8))(v16, v10);
 }
 
-- (void)prepareInlinePreviewWithScopedURLWrapperAttributes:(id)a3 forUUID:(id)a4 completion:(id)a5
+- (void)prepareInlinePreviewWithScopedURLWrapperAttributes:(id)attributes forUUID:(id)d completion:(id)completion
 {
   v7 = sub_24135164C();
   v8 = *(v7 - 8);
@@ -359,7 +359,7 @@
   v10 = aBlock - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v11);
   v13 = aBlock - v12;
-  v14 = _Block_copy(a5);
+  v14 = _Block_copy(completion);
   sub_24135162C();
   v15 = swift_allocObject();
   *(v15 + 16) = v14;
@@ -371,7 +371,7 @@
   v19 = (v18 + v17);
   *v19 = sub_2412EB5C4;
   v19[1] = v15;
-  *(v18 + ((v17 + 23) & 0xFFFFFFFFFFFFFFF8)) = a3;
+  *(v18 + ((v17 + 23) & 0xFFFFFFFFFFFFFFF8)) = attributes;
   aBlock[4] = sub_2412EBDE8;
   aBlock[5] = v18;
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -379,7 +379,7 @@
   aBlock[2] = sub_2412D5698;
   aBlock[3] = &block_descriptor_207;
   v20 = _Block_copy(aBlock);
-  v21 = a3;
+  attributesCopy = attributes;
 
   QLRunInMainThread();
   _Block_release(v20);
@@ -387,13 +387,13 @@
   (*(v8 + 8))(v13, v7);
 }
 
-- (void)prepareInlinePreviewWithData:(id)a3 forUUID:(id)a4 completion:(id)a5
+- (void)prepareInlinePreviewWithData:(id)data forUUID:(id)d completion:(id)completion
 {
   v8 = sub_24135164C();
   MEMORY[0x28223BE20](v8 - 8);
-  _Block_copy(a5);
-  v9 = a3;
-  v10 = a4;
+  _Block_copy(completion);
+  dataCopy = data;
+  dCopy = d;
   sub_24135154C();
 
   sub_24135162C();
@@ -401,13 +401,13 @@
   __break(1u);
 }
 
-- (void)prepareFullscreenPreview:(id)a3 initialFrame:(CGRect)a4 previewOptions:(id)a5 fenceHandleCompletion:(id)a6
+- (void)prepareFullscreenPreview:(id)preview initialFrame:(CGRect)frame previewOptions:(id)options fenceHandleCompletion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v35 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   v11 = sub_24135164C();
   v12 = *(v11 - 8);
   v13 = *(v12 + 64);
@@ -415,7 +415,7 @@
   v14 = &v32 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v15);
   v17 = &v32 - v16;
-  v18 = _Block_copy(a6);
+  v18 = _Block_copy(completion);
   v34 = v17;
   sub_24135162C();
   v33 = sub_241353B5C();
@@ -439,8 +439,8 @@
   v28 = (v24 + v23);
   *v28 = sub_2412EBDF0;
   v28[1] = v19;
-  v29 = v35;
-  *(v24 + ((v23 + 23) & 0xFFFFFFFFFFFFFFF8)) = v35;
+  v29 = selfCopy;
+  *(v24 + ((v23 + 23) & 0xFFFFFFFFFFFFFFF8)) = selfCopy;
   aBlock[4] = sub_2412EBDE4;
   aBlock[5] = v24;
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -456,7 +456,7 @@
   (*(v12 + 8))(v34, v26);
 }
 
-- (void)observeReturnedToInlineForUUID:(id)a3 fenceHandleCompletion:(id)a4
+- (void)observeReturnedToInlineForUUID:(id)d fenceHandleCompletion:(id)completion
 {
   v5 = sub_24135164C();
   v6 = *(v5 - 8);
@@ -465,7 +465,7 @@
   v8 = aBlock - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v9);
   v11 = aBlock - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(completion);
   sub_24135162C();
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
@@ -492,11 +492,11 @@
 
 - (void)dismissPreviewController
 {
-  v2 = self;
+  selfCopy = self;
   PreviewViewController.dismissPreviewController()();
 }
 
-- (void)touchesCancelled:(id)a3 forUUID:(id)a4
+- (void)touchesCancelled:(id)cancelled forUUID:(id)d
 {
   v4 = sub_24135164C();
   v5 = *(v4 - 8);
@@ -528,12 +528,12 @@
   (*(v5 + 8))(v10, v4);
 }
 
-- (void)updateBounds:(CGRect)a3 forUUID:(id)a4 fenceHandleCompletion:(id)a5
+- (void)updateBounds:(CGRect)bounds forUUID:(id)d fenceHandleCompletion:(id)completion
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v10 = sub_24135164C();
   v11 = *(v10 - 8);
   v12 = *(v11 + 64);
@@ -541,7 +541,7 @@
   v13 = aBlock - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v14);
   v16 = aBlock - v15;
-  v17 = _Block_copy(a5);
+  v17 = _Block_copy(completion);
   sub_24135162C();
   v18 = swift_allocObject();
   *(v18 + 16) = v17;
@@ -570,7 +570,7 @@
   (*(v11 + 8))(v16, v10);
 }
 
-- (void)inlinePreview:(id)a3 setRuntimeStateObserver:(id)a4
+- (void)inlinePreview:(id)preview setRuntimeStateObserver:(id)observer
 {
   v5 = sub_24135164C();
   v6 = *(v5 - 8);
@@ -579,7 +579,7 @@
   v8 = aBlock - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v9);
   v11 = aBlock - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(observer);
   sub_24135162C();
   if (v12)
   {
@@ -616,7 +616,7 @@
   (*(v6 + 8))(v11, v5);
 }
 
-- (void)inlinePreview:(id)a3 setEnableGradientBackground:(BOOL)a4
+- (void)inlinePreview:(id)preview setEnableGradientBackground:(BOOL)background
 {
   v4 = sub_24135164C();
   v5 = *(v4 - 8);
@@ -627,7 +627,7 @@
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)inlinePreview:(id)a3 setCurrentTime:(double)a4
+- (void)inlinePreview:(id)preview setCurrentTime:(double)time
 {
   v5 = sub_24135164C();
   v6 = *(v5 - 8);
@@ -641,7 +641,7 @@
   v12 = (*(v6 + 80) + 16) & ~*(v6 + 80);
   v13 = swift_allocObject();
   (*(v6 + 32))(v13 + v12, v8, v5);
-  *(v13 + ((v7 + v12 + 7) & 0xFFFFFFFFFFFFFFF8)) = a4;
+  *(v13 + ((v7 + v12 + 7) & 0xFFFFFFFFFFFFFFF8)) = time;
   aBlock[4] = sub_2412EBDC4;
   aBlock[5] = v13;
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -655,7 +655,7 @@
   (*(v6 + 8))(v11, v5);
 }
 
-- (void)inlinePreview:(id)a3 setIsMuted:(BOOL)a4
+- (void)inlinePreview:(id)preview setIsMuted:(BOOL)muted
 {
   v5 = sub_24135164C();
   v6 = *(v5 - 8);
@@ -668,7 +668,7 @@
   (*(v6 + 16))(v8, v11, v5);
   v12 = (*(v6 + 80) + 17) & ~*(v6 + 80);
   v13 = swift_allocObject();
-  *(v13 + 16) = a4;
+  *(v13 + 16) = muted;
   (*(v6 + 32))(v13 + v12, v8, v5);
   aBlock[4] = sub_2412EBDC0;
   aBlock[5] = v13;
@@ -683,7 +683,7 @@
   (*(v6 + 8))(v11, v5);
 }
 
-- (void)inlinePreview:(id)a3 setCameraYaw:(float)a4 pitch:(float)a5 scale:(float)a6 options:(id)a7
+- (void)inlinePreview:(id)preview setCameraYaw:(float)yaw pitch:(float)pitch scale:(float)scale options:(id)options
 {
   v10 = sub_24135164C();
   v11 = *(v10 - 8);
@@ -701,9 +701,9 @@
   v20 = (v19 + 7) & 0xFFFFFFFFFFFFFFFCLL;
   v21 = swift_allocObject();
   (*(v11 + 32))(v21 + v17, v13, v10);
-  *(v21 + v18) = a4;
-  *(v21 + v19) = a5;
-  *(v21 + v20) = a6;
+  *(v21 + v18) = yaw;
+  *(v21 + v19) = pitch;
+  *(v21 + v20) = scale;
   *(v21 + ((v20 + 11) & 0xFFFFFFFFFFFFFFF8)) = v24;
   aBlock[4] = sub_2412EBDBC;
   aBlock[5] = v21;
@@ -718,7 +718,7 @@
   (*(v11 + 8))(v16, v10);
 }
 
-- (void)teardownInlinePreviewWithUUID:(id)a3 completion:(id)a4
+- (void)teardownInlinePreviewWithUUID:(id)d completion:(id)completion
 {
   v5 = sub_24135164C();
   v6 = *(v5 - 8);
@@ -727,7 +727,7 @@
   v8 = aBlock - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v9);
   v11 = aBlock - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(completion);
   sub_24135162C();
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
@@ -752,7 +752,7 @@
   (*(v6 + 8))(v11, v5);
 }
 
-- (void)sendARQLEvent:(id)a3 forUUID:(id)a4 completion:(id)a5
+- (void)sendARQLEvent:(id)event forUUID:(id)d completion:(id)completion
 {
   v6 = sub_24135164C();
   v7 = *(v6 - 8);
@@ -761,7 +761,7 @@
   v9 = aBlock - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v10);
   v12 = aBlock - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   v14 = sub_241353B5C();
   sub_24135162C();
   v15 = swift_allocObject();
@@ -791,65 +791,65 @@
 
 - (void)triggerTapToRadar
 {
-  v2 = self;
+  selfCopy = self;
   sub_2412F1140();
 }
 
-- (void)session:(id)a3 cameraDidChangeTrackingState:(id)a4
+- (void)session:(id)session cameraDidChangeTrackingState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2412F3FCC(v7);
+  sessionCopy = session;
+  stateCopy = state;
+  selfCopy = self;
+  sub_2412F3FCC(stateCopy);
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_2412F4660(v8);
+  sessionCopy = session;
+  errorCopy = error;
+  selfCopy = self;
+  sub_2412F4660(errorCopy);
 }
 
-- (void)sessionWasInterrupted:(id)a3
+- (void)sessionWasInterrupted:(id)interrupted
 {
-  v4 = a3;
-  v5 = self;
+  interruptedCopy = interrupted;
+  selfCopy = self;
   sub_2412F42E4(&unk_285303158, sub_2412F493C, &block_descriptor_36);
 }
 
-- (void)sessionInterruptionEnded:(id)a3
+- (void)sessionInterruptionEnded:(id)ended
 {
-  v4 = a3;
-  v5 = self;
+  endedCopy = ended;
+  selfCopy = self;
   sub_2412F42E4(&unk_285303108, sub_2412F4934, &block_descriptor_30);
 }
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  PreviewViewController.session(_:didUpdate:)(v6, v7);
+  sessionCopy = session;
+  frameCopy = frame;
+  selfCopy = self;
+  PreviewViewController.session(_:didUpdate:)(sessionCopy, frameCopy);
 }
 
 - (void)activateCoachingView
 {
-  v2 = self;
+  selfCopy = self;
   sub_24134FFA4();
 }
 
 - (void)activateCoachingViewWithDelay
 {
-  v2 = self;
+  selfCopy = self;
   sub_24134FB68();
 }
 
-- (void)coachingOverlayViewDidDeactivate:(id)a3
+- (void)coachingOverlayViewDidDeactivate:(id)deactivate
 {
   v3 = (self + OBJC_IVAR___ASVPreviewViewControllerInternal_coachingOverlayViewDidDeactivateCompletionBlock);
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR___ASVPreviewViewControllerInternal_coachingOverlayViewDidDeactivateCompletionBlock);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     v6 = sub_24124AD38(v4);

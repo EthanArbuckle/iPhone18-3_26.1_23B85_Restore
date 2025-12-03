@@ -1,37 +1,37 @@
 @interface TUIAnchorSet
-- (CGPoint)proposeAnchorOffsetWithScrollView:(id)a3 velocity:(CGPoint)a4 target:(CGPoint)a5;
-- (TUIAnchorSet)initWithAnchorSet:(id)a3;
-- (TUIAnchorSet)initWithAxis:(unint64_t)a3;
-- (double)offsetForTriggerWithName:(id)a3 inScrollView:(id)a4;
+- (CGPoint)proposeAnchorOffsetWithScrollView:(id)view velocity:(CGPoint)velocity target:(CGPoint)target;
+- (TUIAnchorSet)initWithAnchorSet:(id)set;
+- (TUIAnchorSet)initWithAxis:(unint64_t)axis;
+- (double)offsetForTriggerWithName:(id)name inScrollView:(id)view;
 - (id).cxx_construct;
-- (id)computeTriggerStatesInScrollView:(id)a3 axis:(unint64_t)a4;
-- (id)feedNotVisibleTriggerStatesForAxis:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)computeTriggerStatesInScrollView:(id)view axis:(unint64_t)axis;
+- (id)feedNotVisibleTriggerStatesForAxis:(unint64_t)axis;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)plainHorizontalTriggerAnchors;
 - (id)plainScrollAnchors;
 - (id)plainVerticalTriggerAnchors;
-- (id)scrollAnchorWithScrollView:(id)a3 offset:(CGPoint)a4;
-- (void)appendTriggerAnchorsToSet:(id)a3 forAxis:(unint64_t)a4;
+- (id)scrollAnchorWithScrollView:(id)view offset:(CGPoint)offset;
+- (void)appendTriggerAnchorsToSet:(id)set forAxis:(unint64_t)axis;
 @end
 
 @implementation TUIAnchorSet
 
-- (TUIAnchorSet)initWithAxis:(unint64_t)a3
+- (TUIAnchorSet)initWithAxis:(unint64_t)axis
 {
   v5.receiver = self;
   v5.super_class = TUIAnchorSet;
   result = [(TUIAnchorSet *)&v5 init];
   if (result)
   {
-    result->_axis = a3;
+    result->_axis = axis;
   }
 
   return result;
 }
 
-- (TUIAnchorSet)initWithAnchorSet:(id)a3
+- (TUIAnchorSet)initWithAnchorSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v8.receiver = self;
   v8.super_class = TUIAnchorSet;
   v5 = [(TUIAnchorSet *)&v8 init];
@@ -39,15 +39,15 @@
   if (v5)
   {
     v5->_axis = 0;
-    if (v4)
+    if (setCopy)
     {
-      v5->_axis = v4->_axis;
-      if (v5 != v4)
+      v5->_axis = setCopy->_axis;
+      if (v5 != setCopy)
       {
-        sub_966D4(&v5->_scrollAnchors.__begin_, v4->_scrollAnchors.__begin_, v4->_scrollAnchors.__end_, v4->_scrollAnchors.__end_ - v4->_scrollAnchors.__begin_);
-        sub_1412B0(&v6->_logicalScrollAnchors, v4->_logicalScrollAnchors.__begin_, v4->_logicalScrollAnchors.__end_, (v4->_logicalScrollAnchors.__end_ - v4->_logicalScrollAnchors.__begin_) >> 4);
-        sub_1412B0(&v6->_verticalTriggerAnchors, v4->_verticalTriggerAnchors.__begin_, v4->_verticalTriggerAnchors.__end_, (v4->_verticalTriggerAnchors.__end_ - v4->_verticalTriggerAnchors.__begin_) >> 4);
-        sub_1412B0(&v6->_horizontalTriggerAnchors, v4->_horizontalTriggerAnchors.__begin_, v4->_horizontalTriggerAnchors.__end_, (v4->_horizontalTriggerAnchors.__end_ - v4->_horizontalTriggerAnchors.__begin_) >> 4);
+        sub_966D4(&v5->_scrollAnchors.__begin_, setCopy->_scrollAnchors.__begin_, setCopy->_scrollAnchors.__end_, setCopy->_scrollAnchors.__end_ - setCopy->_scrollAnchors.__begin_);
+        sub_1412B0(&v6->_logicalScrollAnchors, setCopy->_logicalScrollAnchors.__begin_, setCopy->_logicalScrollAnchors.__end_, (setCopy->_logicalScrollAnchors.__end_ - setCopy->_logicalScrollAnchors.__begin_) >> 4);
+        sub_1412B0(&v6->_verticalTriggerAnchors, setCopy->_verticalTriggerAnchors.__begin_, setCopy->_verticalTriggerAnchors.__end_, (setCopy->_verticalTriggerAnchors.__end_ - setCopy->_verticalTriggerAnchors.__begin_) >> 4);
+        sub_1412B0(&v6->_horizontalTriggerAnchors, setCopy->_horizontalTriggerAnchors.__begin_, setCopy->_horizontalTriggerAnchors.__end_, (setCopy->_horizontalTriggerAnchors.__end_ - setCopy->_horizontalTriggerAnchors.__begin_) >> 4);
       }
     }
   }
@@ -55,19 +55,19 @@
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TUIMutableAnchorSet alloc];
 
   return [(TUIAnchorSet *)v4 initWithAnchorSet:self];
 }
 
-- (CGPoint)proposeAnchorOffsetWithScrollView:(id)a3 velocity:(CGPoint)a4 target:(CGPoint)a5
+- (CGPoint)proposeAnchorOffsetWithScrollView:(id)view velocity:(CGPoint)velocity target:(CGPoint)target
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a3;
-  [v8 contentInset];
+  y = target.y;
+  x = target.x;
+  viewCopy = view;
+  [viewCopy contentInset];
   v11 = v9;
   v12 = v10;
   v14 = v13;
@@ -84,22 +84,22 @@
     v17 = y + v9;
   }
 
-  [v8 contentSize];
+  [viewCopy contentSize];
   v62 = v18;
   v20 = v19;
-  [v8 bounds];
+  [viewCopy bounds];
   v23 = v22;
   axis = self->_axis;
   if (axis == 1)
   {
     v25 = v21;
-    v26 = [v8 effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [viewCopy effectiveUserInterfaceLayoutDirection];
     v27 = v25 - (v12 + v16);
     axis = self->_axis;
     v28 = axis == 1;
-    v29 = v26 == &dword_0 + 1;
+    v29 = effectiveUserInterfaceLayoutDirection == &dword_0 + 1;
     v30 = v62 - v17;
-    if (v26 == &dword_0 + 1)
+    if (effectiveUserInterfaceLayoutDirection == &dword_0 + 1)
     {
       v31 = v62 - v17;
     }
@@ -109,7 +109,7 @@
       v31 = v17;
     }
 
-    if (v26 != &dword_0 + 1 && axis == 1)
+    if (effectiveUserInterfaceLayoutDirection != &dword_0 + 1 && axis == 1)
     {
       if (v17 == 0.0 || v17 == v62 - v27)
       {
@@ -121,7 +121,7 @@
       goto LABEL_30;
     }
 
-    if (v26 == &dword_0 + 1 && axis == 1)
+    if (effectiveUserInterfaceLayoutDirection == &dword_0 + 1 && axis == 1)
     {
       if (v30 == v27 || v30 == v62)
       {
@@ -166,13 +166,13 @@ LABEL_30:
   v38 = v61;
   if (v28)
   {
-    v39 = a4.x;
+    v39 = velocity.x;
   }
 
   else
   {
     v38 = v60;
-    v39 = a4.y;
+    v39 = velocity.y;
   }
 
   if (v29)
@@ -241,24 +241,24 @@ LABEL_30:
   v17 = *v42;
   if (v28)
   {
-    [v8 contentSize];
+    [viewCopy contentSize];
     v49 = v48;
   }
 
   else
   {
-    [v8 contentSize];
+    [viewCopy contentSize];
     v49 = v50;
   }
 
   if (self->_axis == 1)
   {
-    [v8 contentOffset];
+    [viewCopy contentOffset];
   }
 
   else
   {
-    [v8 contentOffset];
+    [viewCopy contentOffset];
     v51 = v52;
   }
 
@@ -323,12 +323,12 @@ LABEL_79:
   return result;
 }
 
-- (id)scrollAnchorWithScrollView:(id)a3 offset:(CGPoint)a4
+- (id)scrollAnchorWithScrollView:(id)view offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = v7;
+  y = offset.y;
+  x = offset.x;
+  viewCopy = view;
+  v8 = viewCopy;
   if (self->_axis == 1)
   {
     v9 = x;
@@ -339,7 +339,7 @@ LABEL_79:
     v9 = y;
   }
 
-  [v7 contentSize];
+  [viewCopy contentSize];
   v11 = v10;
   v13 = v12;
   [v8 contentScaleFactor];
@@ -376,8 +376,8 @@ LABEL_79:
   v26 = 1.79769313e308;
   while (1)
   {
-    v27 = [begin[1] position];
-    if (v9 <= 0.0 && v27 == 0)
+    position = [begin[1] position];
+    if (v9 <= 0.0 && position == 0)
     {
       if (v9 <= *begin)
       {
@@ -387,12 +387,12 @@ LABEL_79:
       goto LABEL_27;
     }
 
-    if (v24 >= v17 && v27 == &dword_0 + 1)
+    if (v24 >= v17 && position == &dword_0 + 1)
     {
       break;
     }
 
-    if (v27 == &dword_0 + 2)
+    if (position == &dword_0 + 2)
     {
       v30 = *begin;
       v31 = vabdd_f64(*begin, v25);
@@ -452,11 +452,11 @@ LABEL_36:
   return v34;
 }
 
-- (id)feedNotVisibleTriggerStatesForAxis:(unint64_t)a3
+- (id)feedNotVisibleTriggerStatesForAxis:(unint64_t)axis
 {
   v5 = objc_alloc_init(TUIMutableTriggerStateUpdate);
   v6 = 32;
-  if (a3 == 1)
+  if (axis == 1)
   {
     v6 = 56;
   }
@@ -478,17 +478,17 @@ LABEL_36:
   return v9;
 }
 
-- (id)computeTriggerStatesInScrollView:(id)a3 axis:(unint64_t)a4
+- (id)computeTriggerStatesInScrollView:(id)view axis:(unint64_t)axis
 {
-  v6 = a3;
-  [v6 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  if ([v6 effectiveUserInterfaceLayoutDirection] == &dword_0 + 1)
+  if ([viewCopy effectiveUserInterfaceLayoutDirection] == &dword_0 + 1)
   {
-    [v6 contentSize];
+    [viewCopy contentSize];
     v16 = v15;
     v32.origin.x = v8;
     v32.origin.y = v10;
@@ -497,7 +497,7 @@ LABEL_36:
     v8 = v16 - CGRectGetMinX(v32) - v12;
   }
 
-  if (a4 == 1)
+  if (axis == 1)
   {
     v10 = v8;
   }
@@ -509,7 +509,7 @@ LABEL_36:
 
   v17 = objc_alloc_init(TUIMutableTriggerStateUpdate);
   v18 = 32;
-  if (a4 == 1)
+  if (axis == 1)
   {
     v18 = 56;
   }
@@ -557,16 +557,16 @@ LABEL_36:
   return v25;
 }
 
-- (double)offsetForTriggerWithName:(id)a3 inScrollView:(id)a4
+- (double)offsetForTriggerWithName:(id)name inScrollView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  viewCopy = view;
   for (i = self->_verticalTriggerAnchors.__begin_; i != self->_verticalTriggerAnchors.__end_; i += 2)
   {
     v9 = *i;
     v10 = i[1];
-    v11 = [v10 name];
-    v12 = [v11 isEqualToString:v6];
+    name = [v10 name];
+    v12 = [name isEqualToString:nameCopy];
 
     if (v12)
     {
@@ -580,11 +580,11 @@ LABEL_6:
   return v9;
 }
 
-- (void)appendTriggerAnchorsToSet:(id)a3 forAxis:(unint64_t)a4
+- (void)appendTriggerAnchorsToSet:(id)set forAxis:(unint64_t)axis
 {
-  v6 = a3;
+  setCopy = set;
   v7 = 32;
-  if (a4 == 1)
+  if (axis == 1)
   {
     v7 = 56;
   }
@@ -597,7 +597,7 @@ LABEL_6:
   {
     v9 = *i;
     v10 = *(i + 8);
-    [v6 appendTriggerAnchorWithOffset:v10 trigger:a4 axis:v9];
+    [setCopy appendTriggerAnchorWithOffset:v10 trigger:axis axis:v9];
   }
 
   v14 = &v11;

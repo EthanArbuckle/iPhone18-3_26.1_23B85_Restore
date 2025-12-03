@@ -1,28 +1,28 @@
 @interface VideosExtrasPresentationController
 - (CGRect)extrasMenuBarFrame;
-- (VideosExtrasPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4 extrasMenuBarView:(id)a5 extrasmenuBarFrame:(CGRect)a6;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (VideosExtrasPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController extrasMenuBarView:(id)view extrasmenuBarFrame:(CGRect)frame;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
 @end
 
 @implementation VideosExtrasPresentationController
 
-- (VideosExtrasPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4 extrasMenuBarView:(id)a5 extrasmenuBarFrame:(CGRect)a6
+- (VideosExtrasPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController extrasMenuBarView:(id)view extrasmenuBarFrame:(CGRect)frame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v14 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v18.receiver = self;
   v18.super_class = VideosExtrasPresentationController;
-  v15 = [(VideosExtrasPresentationController *)&v18 initWithPresentedViewController:a3 presentingViewController:a4];
+  v15 = [(VideosExtrasPresentationController *)&v18 initWithPresentedViewController:controller presentingViewController:viewController];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_extrasMenuBarView, a5);
+    objc_storeStrong(&v15->_extrasMenuBarView, view);
     v16->_extrasMenuBarFrame.origin.x = x;
     v16->_extrasMenuBarFrame.origin.y = y;
     v16->_extrasMenuBarFrame.size.width = width;
@@ -35,36 +35,36 @@
 - (void)presentationTransitionWillBegin
 {
   v33[4] = *MEMORY[0x1E69E9840];
-  v3 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
+  extrasMenuBarView = [(VideosExtrasPresentationController *)self extrasMenuBarView];
 
-  if (v3)
+  if (extrasMenuBarView)
   {
-    v4 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
-    [v4 setAlpha:0.0];
+    extrasMenuBarView2 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
+    [extrasMenuBarView2 setAlpha:0.0];
 
-    v5 = [(VideosExtrasPresentationController *)self containerView];
-    v6 = [(VideosExtrasPresentationController *)self presentedViewController];
-    v7 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
+    containerView = [(VideosExtrasPresentationController *)self containerView];
+    presentedViewController = [(VideosExtrasPresentationController *)self presentedViewController];
+    extrasMenuBarView3 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
     [(VideosExtrasPresentationController *)self extrasMenuBarFrame];
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [v7 setFrame:?];
-    [v5 addSubview:v7];
-    [v5 bringSubviewToFront:v7];
-    v14 = [v7 heightAnchor];
-    v15 = [v14 constraintEqualToConstant:v13];
+    [extrasMenuBarView3 setFrame:?];
+    [containerView addSubview:extrasMenuBarView3];
+    [containerView bringSubviewToFront:extrasMenuBarView3];
+    heightAnchor = [extrasMenuBarView3 heightAnchor];
+    v15 = [heightAnchor constraintEqualToConstant:v13];
 
-    v16 = [v7 bottomAnchor];
-    v17 = [v5 topAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17 constant:v9 + v13];
+    bottomAnchor = [extrasMenuBarView3 bottomAnchor];
+    topAnchor = [containerView topAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:v9 + v13];
 
-    v19 = [v7 centerXAnchor];
-    v20 = [v5 centerXAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    centerXAnchor = [extrasMenuBarView3 centerXAnchor];
+    centerXAnchor2 = [containerView centerXAnchor];
+    v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-    v22 = [v7 widthAnchor];
-    v23 = [v22 constraintEqualToConstant:v11];
+    widthAnchor = [extrasMenuBarView3 widthAnchor];
+    v23 = [widthAnchor constraintEqualToConstant:v11];
 
     v24 = MEMORY[0x1E696ACD8];
     v33[0] = v21;
@@ -74,19 +74,19 @@
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
     [v24 activateConstraints:v25];
 
-    v26 = [v6 transitionCoordinator];
+    transitionCoordinator = [presentedViewController transitionCoordinator];
 
-    if (v26)
+    if (transitionCoordinator)
     {
       objc_initWeak(&location, self);
-      v27 = [v6 transitionCoordinator];
+      transitionCoordinator2 = [presentedViewController transitionCoordinator];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __69__VideosExtrasPresentationController_presentationTransitionWillBegin__block_invoke;
       v29[3] = &unk_1E8736308;
       objc_copyWeak(&v31, &location);
-      v30 = v5;
-      [v27 animateAlongsideTransition:v29 completion:&__block_literal_global_143];
+      v30 = containerView;
+      [transitionCoordinator2 animateAlongsideTransition:v29 completion:&__block_literal_global_143];
 
       objc_destroyWeak(&v31);
       objc_destroyWeak(&location);
@@ -94,8 +94,8 @@
 
     else
     {
-      v28 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
-      [v28 setAlpha:1.0];
+      extrasMenuBarView4 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
+      [extrasMenuBarView4 setAlpha:1.0];
     }
   }
 }
@@ -109,50 +109,50 @@ void __69__VideosExtrasPresentationController_presentationTransitionWillBegin__b
   [*(a1 + 32) bringSubviewToFront:v3];
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v4 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
+  extrasMenuBarView = [(VideosExtrasPresentationController *)self extrasMenuBarView];
 
-  if (v4)
+  if (extrasMenuBarView)
   {
-    v5 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
-    [v5 removeFromSuperview];
+    extrasMenuBarView2 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
+    [extrasMenuBarView2 removeFromSuperview];
   }
 }
 
 - (void)dismissalTransitionWillBegin
 {
   v33[4] = *MEMORY[0x1E69E9840];
-  v3 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
+  extrasMenuBarView = [(VideosExtrasPresentationController *)self extrasMenuBarView];
 
-  if (v3)
+  if (extrasMenuBarView)
   {
-    v4 = [(VideosExtrasPresentationController *)self containerView];
-    v5 = [(VideosExtrasPresentationController *)self presentedViewController];
-    v6 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
+    containerView = [(VideosExtrasPresentationController *)self containerView];
+    presentedViewController = [(VideosExtrasPresentationController *)self presentedViewController];
+    extrasMenuBarView2 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
     [(VideosExtrasPresentationController *)self extrasMenuBarFrame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [v6 setFrame:?];
-    [v4 addSubview:v6];
-    [v4 bringSubviewToFront:v6];
-    v13 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
-    [v13 setAlpha:1.0];
+    [extrasMenuBarView2 setFrame:?];
+    [containerView addSubview:extrasMenuBarView2];
+    [containerView bringSubviewToFront:extrasMenuBarView2];
+    extrasMenuBarView3 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
+    [extrasMenuBarView3 setAlpha:1.0];
 
-    v14 = [v6 heightAnchor];
-    v15 = [v14 constraintEqualToConstant:v12];
+    heightAnchor = [extrasMenuBarView2 heightAnchor];
+    v15 = [heightAnchor constraintEqualToConstant:v12];
 
-    v16 = [v6 bottomAnchor];
-    v17 = [v4 topAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17 constant:v8 + v12];
+    bottomAnchor = [extrasMenuBarView2 bottomAnchor];
+    topAnchor = [containerView topAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:v8 + v12];
 
-    v19 = [v6 centerXAnchor];
-    v20 = [v4 centerXAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    centerXAnchor = [extrasMenuBarView2 centerXAnchor];
+    centerXAnchor2 = [containerView centerXAnchor];
+    v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-    v22 = [v6 widthAnchor];
-    v23 = [v22 constraintEqualToConstant:v10];
+    widthAnchor = [extrasMenuBarView2 widthAnchor];
+    v23 = [widthAnchor constraintEqualToConstant:v10];
 
     v24 = MEMORY[0x1E696ACD8];
     v33[0] = v21;
@@ -162,19 +162,19 @@ void __69__VideosExtrasPresentationController_presentationTransitionWillBegin__b
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
     [v24 activateConstraints:v25];
 
-    v26 = [v5 transitionCoordinator];
+    transitionCoordinator = [presentedViewController transitionCoordinator];
 
-    if (v26)
+    if (transitionCoordinator)
     {
       objc_initWeak(&location, self);
-      v27 = [v5 transitionCoordinator];
+      transitionCoordinator2 = [presentedViewController transitionCoordinator];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __66__VideosExtrasPresentationController_dismissalTransitionWillBegin__block_invoke;
       v29[3] = &unk_1E8736308;
       objc_copyWeak(&v31, &location);
-      v30 = v4;
-      [v27 animateAlongsideTransition:v29 completion:0];
+      v30 = containerView;
+      [transitionCoordinator2 animateAlongsideTransition:v29 completion:0];
 
       objc_destroyWeak(&v31);
       objc_destroyWeak(&location);
@@ -182,8 +182,8 @@ void __69__VideosExtrasPresentationController_presentationTransitionWillBegin__b
 
     else
     {
-      v28 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
-      [v28 setAlpha:0.0];
+      extrasMenuBarView4 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
+      [extrasMenuBarView4 setAlpha:0.0];
     }
   }
 }
@@ -197,14 +197,14 @@ void __66__VideosExtrasPresentationController_dismissalTransitionWillBegin__bloc
   [*(a1 + 32) bringSubviewToFront:v3];
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  v4 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
+  extrasMenuBarView = [(VideosExtrasPresentationController *)self extrasMenuBarView];
 
-  if (v4)
+  if (extrasMenuBarView)
   {
-    v5 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
-    [v5 removeFromSuperview];
+    extrasMenuBarView2 = [(VideosExtrasPresentationController *)self extrasMenuBarView];
+    [extrasMenuBarView2 removeFromSuperview];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface MFTrashCompactor
 - (MFTrashCompactor)init;
-- (void)emptyTrashForAccount:(id)a3;
+- (void)emptyTrashForAccount:(id)account;
 @end
 
 @implementation MFTrashCompactor
@@ -24,21 +24,21 @@
   return v2;
 }
 
-- (void)emptyTrashForAccount:(id)a3
+- (void)emptyTrashForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 uniqueID];
-  if (v5)
+  accountCopy = account;
+  uniqueID = [accountCopy uniqueID];
+  if (uniqueID)
   {
-    v6 = [(MFTrashCompactor *)self scheduler];
+    scheduler = [(MFTrashCompactor *)self scheduler];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100099B2C;
     v7[3] = &unk_1001573C0;
     v7[4] = self;
-    v8 = v5;
-    v9 = v4;
-    [v6 performBlock:v7];
+    v8 = uniqueID;
+    v9 = accountCopy;
+    [scheduler performBlock:v7];
   }
 }
 

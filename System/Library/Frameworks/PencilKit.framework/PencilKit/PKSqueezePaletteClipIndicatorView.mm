@@ -1,49 +1,49 @@
 @interface PKSqueezePaletteClipIndicatorView
-- (PKSqueezePaletteClipIndicatorView)initWithFrame:(CGRect)a3;
+- (PKSqueezePaletteClipIndicatorView)initWithFrame:(CGRect)frame;
 - (void)_updateUI;
 - (void)layoutSubviews;
 @end
 
 @implementation PKSqueezePaletteClipIndicatorView
 
-- (PKSqueezePaletteClipIndicatorView)initWithFrame:(CGRect)a3
+- (PKSqueezePaletteClipIndicatorView)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = PKSqueezePaletteClipIndicatorView;
-  v3 = [(PKSqueezePaletteClipIndicatorView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKSqueezePaletteClipIndicatorView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PKSqueezePaletteClipIndicatorView *)v3 setUserInteractionEnabled:0];
-    v5 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     indicator = v4->_indicator;
-    v4->_indicator = v5;
+    v4->_indicator = layer;
 
-    v7 = [(PKSqueezePaletteClipIndicatorView *)v4 layer];
-    [v7 addSublayer:v4->_indicator];
+    layer2 = [(PKSqueezePaletteClipIndicatorView *)v4 layer];
+    [layer2 addSublayer:v4->_indicator];
 
-    v8 = [MEMORY[0x1E6979398] layer];
+    layer3 = [MEMORY[0x1E6979398] layer];
     topMask = v4->_topMask;
-    v4->_topMask = v8;
+    v4->_topMask = layer3;
 
-    v10 = [MEMORY[0x1E69DC888] blackColor];
-    -[CALayer setBackgroundColor:](v4->_topMask, "setBackgroundColor:", [v10 CGColor]);
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    -[CALayer setBackgroundColor:](v4->_topMask, "setBackgroundColor:", [blackColor CGColor]);
 
     v11 = v4->_topMask;
-    v12 = [(PKSqueezePaletteClipIndicatorView *)v4 layer];
-    [v12 setMask:v11];
+    layer4 = [(PKSqueezePaletteClipIndicatorView *)v4 layer];
+    [layer4 setMask:v11];
 
-    v13 = [(PKSqueezePaletteClipIndicatorView *)v4 layer];
-    [v13 setGeometryFlipped:1];
+    layer5 = [(PKSqueezePaletteClipIndicatorView *)v4 layer];
+    [layer5 setGeometryFlipped:1];
 
-    v14 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __51__PKSqueezePaletteClipIndicatorView_initWithFrame___block_invoke;
     v18[3] = &unk_1E82D9908;
     v15 = v4;
     v19 = v15;
-    v16 = [(PKSqueezePaletteClipIndicatorView *)v15 registerForTraitChanges:v14 withHandler:v18];
+    v16 = [(PKSqueezePaletteClipIndicatorView *)v15 registerForTraitChanges:systemTraitsAffectingColorAppearance withHandler:v18];
 
     [(PKSqueezePaletteClipIndicatorView *)v15 _updateUI];
   }
@@ -53,11 +53,11 @@
 
 - (void)_updateUI
 {
-  if (a1)
+  if (self)
   {
     v3 = PKSqueezePaletteToolClipIndicatorColor();
     v2 = v3;
-    [*(a1 + 408) setBackgroundColor:{objc_msgSend(v3, "CGColor")}];
+    [*(self + 408) setBackgroundColor:{objc_msgSend(v3, "CGColor")}];
   }
 }
 
@@ -67,17 +67,17 @@
   v24.receiver = self;
   v24.super_class = PKSqueezePaletteClipIndicatorView;
   [(PKSqueezePaletteClipIndicatorView *)&v24 layoutSubviews];
-  v3 = [(PKSqueezePaletteClipIndicatorView *)self layer];
-  [v3 setAllowsEdgeAntialiasing:1];
+  layer = [(PKSqueezePaletteClipIndicatorView *)self layer];
+  [layer setAllowsEdgeAntialiasing:1];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(PKSqueezePaletteClipIndicatorView *)self layer];
-  v5 = [v4 sublayers];
+  layer2 = [(PKSqueezePaletteClipIndicatorView *)self layer];
+  sublayers = [layer2 sublayers];
 
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v6 = [sublayers countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -89,14 +89,14 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sublayers);
         }
 
         [*(*(&v20 + 1) + 8 * v9++) setAllowsEdgeAntialiasing:1];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v7 = [sublayers countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v7);

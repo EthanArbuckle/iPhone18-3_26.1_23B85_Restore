@@ -1,8 +1,8 @@
 @interface PXMemoriesFeedWidgetLayoutMetrics
 - (CGSize)interitemSpacing;
 - (PXMemoriesFeedWidgetLayoutMetrics)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setNumberOfRows:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setNumberOfRows:(unint64_t)rows;
 @end
 
 @implementation PXMemoriesFeedWidgetLayoutMetrics
@@ -16,25 +16,25 @@
   return result;
 }
 
-- (void)setNumberOfRows:(unint64_t)a3
+- (void)setNumberOfRows:(unint64_t)rows
 {
-  if (!a3)
+  if (!rows)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedWidgetLayoutMetrics.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"numberOfRows > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesFeedWidgetLayoutMetrics.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"numberOfRows > 0"}];
   }
 
-  if (self->_numberOfRows != a3)
+  if (self->_numberOfRows != rows)
   {
-    self->_numberOfRows = a3;
+    self->_numberOfRows = rows;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = PXMemoriesFeedWidgetLayoutMetrics;
-  result = [(PXMemoriesFeedLayoutMetrics *)&v5 copyWithZone:a3];
+  result = [(PXMemoriesFeedLayoutMetrics *)&v5 copyWithZone:zone];
   *(result + 8) = self->_numberOfColumns;
   *(result + 9) = self->_numberOfRows;
   *(result + 88) = self->_interitemSpacing;

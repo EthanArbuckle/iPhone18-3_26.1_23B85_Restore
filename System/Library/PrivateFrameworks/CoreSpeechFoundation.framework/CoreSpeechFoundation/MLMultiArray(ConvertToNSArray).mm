@@ -6,21 +6,21 @@
 
 - (id)convert1dMLMultiArrayToNSArray
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = [a1 shape];
-  v4 = [v3 lastObject];
-  v5 = [v4 unsignedIntegerValue];
+  array = [MEMORY[0x1E695DF70] array];
+  shape = [self shape];
+  lastObject = [shape lastObject];
+  unsignedIntegerValue = [lastObject unsignedIntegerValue];
 
-  if (v5)
+  if (unsignedIntegerValue)
   {
-    for (i = 0; i != v5; ++i)
+    for (i = 0; i != unsignedIntegerValue; ++i)
     {
-      v7 = [a1 objectAtIndexedSubscript:i];
-      [v2 addObject:v7];
+      v7 = [self objectAtIndexedSubscript:i];
+      [array addObject:v7];
     }
   }
 
-  return v2;
+  return array;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface ICNoteResultsImageBadgeView
-- (ICNoteResultsImageBadgeView)initWithCoder:(id)a3;
-- (ICNoteResultsImageBadgeView)initWithFrame:(CGRect)a3;
+- (ICNoteResultsImageBadgeView)initWithCoder:(id)coder;
+- (ICNoteResultsImageBadgeView)initWithFrame:(CGRect)frame;
 - (void)commonInit;
-- (void)setSystemImageName:(id)a3;
+- (void)setSystemImageName:(id)name;
 - (void)updateForTraitCollection;
 - (void)updateImage;
 @end
 
 @implementation ICNoteResultsImageBadgeView
 
-- (ICNoteResultsImageBadgeView)initWithCoder:(id)a3
+- (ICNoteResultsImageBadgeView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICNoteResultsImageBadgeView;
-  v3 = [(ICNoteResultsImageBadgeView *)&v6 initWithCoder:a3];
+  v3 = [(ICNoteResultsImageBadgeView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -23,11 +23,11 @@
   return v4;
 }
 
-- (ICNoteResultsImageBadgeView)initWithFrame:(CGRect)a3
+- (ICNoteResultsImageBadgeView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ICNoteResultsImageBadgeView;
-  v3 = [(ICNoteResultsImageBadgeView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICNoteResultsImageBadgeView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -61,27 +61,27 @@
   v6 = objc_alloc_init(UIImageView);
   [(ICNoteResultsImageBadgeView *)self setImageView:v6];
 
-  v7 = [(ICNoteResultsImageBadgeView *)self imageView];
-  [v7 setContentMode:4];
+  imageView = [(ICNoteResultsImageBadgeView *)self imageView];
+  [imageView setContentMode:4];
 
   v8 = +[UIColor secondaryLabelColor];
-  v9 = [(ICNoteResultsImageBadgeView *)self imageView];
-  [v9 setTintColor:v8];
+  imageView2 = [(ICNoteResultsImageBadgeView *)self imageView];
+  [imageView2 setTintColor:v8];
 
   v10 = +[UIColor clearColor];
-  v11 = [(ICNoteResultsImageBadgeView *)self imageView];
-  [v11 setBackgroundColor:v10];
+  imageView3 = [(ICNoteResultsImageBadgeView *)self imageView];
+  [imageView3 setBackgroundColor:v10];
 
-  v12 = [v5 contentView];
-  v13 = [(ICNoteResultsImageBadgeView *)self imageView];
-  [v12 addSubview:v13];
+  contentView = [v5 contentView];
+  imageView4 = [(ICNoteResultsImageBadgeView *)self imageView];
+  [contentView addSubview:imageView4];
 
-  v14 = [(ICNoteResultsImageBadgeView *)self imageView];
-  [v14 ic_addAnchorsToFillSuperview];
+  imageView5 = [(ICNoteResultsImageBadgeView *)self imageView];
+  [imageView5 ic_addAnchorsToFillSuperview];
 
   [(ICNoteResultsImageBadgeView *)self setSystemImageName:@"pin.fill"];
-  v15 = [(ICNoteResultsImageBadgeView *)self widthAnchor];
-  v16 = [v15 constraintEqualToConstant:24.0];
+  widthAnchor = [(ICNoteResultsImageBadgeView *)self widthAnchor];
+  v16 = [widthAnchor constraintEqualToConstant:24.0];
   widthConstraint = self->_widthConstraint;
   self->_widthConstraint = v16;
 
@@ -93,39 +93,39 @@
   v19 = [(ICNoteResultsImageBadgeView *)self registerForTraitChanges:v18 withAction:"updateForTraitCollection"];
 }
 
-- (void)setSystemImageName:(id)a3
+- (void)setSystemImageName:(id)name
 {
-  objc_storeStrong(&self->_systemImageName, a3);
+  objc_storeStrong(&self->_systemImageName, name);
 
   [(ICNoteResultsImageBadgeView *)self updateImage];
 }
 
 - (void)updateImage
 {
-  v3 = [(ICNoteResultsImageBadgeView *)self traitCollection];
-  v4 = [v3 ic_hasCompactSize];
+  traitCollection = [(ICNoteResultsImageBadgeView *)self traitCollection];
+  ic_hasCompactSize = [traitCollection ic_hasCompactSize];
 
   v5 = &UIFontTextStyleCaption1;
-  if (!v4)
+  if (!ic_hasCompactSize)
   {
     v5 = &UIFontTextStyleSubheadline;
   }
 
   v6 = *v5;
-  v9 = [(ICNoteResultsImageBadgeView *)self systemImageName];
-  v7 = [UIImage ic_systemImageNamed:v9 textStyle:v6];
+  systemImageName = [(ICNoteResultsImageBadgeView *)self systemImageName];
+  v7 = [UIImage ic_systemImageNamed:systemImageName textStyle:v6];
 
-  v8 = [(ICNoteResultsImageBadgeView *)self imageView];
-  [v8 setImage:v7];
+  imageView = [(ICNoteResultsImageBadgeView *)self imageView];
+  [imageView setImage:v7];
 }
 
 - (void)updateForTraitCollection
 {
-  v3 = [(ICNoteResultsImageBadgeView *)self traitCollection];
-  v4 = [v3 ic_hasCompactSize];
+  traitCollection = [(ICNoteResultsImageBadgeView *)self traitCollection];
+  ic_hasCompactSize = [traitCollection ic_hasCompactSize];
 
   v5 = 8.0;
-  if (v4)
+  if (ic_hasCompactSize)
   {
     v5 = 4.0;
     v6 = 24.0;
@@ -137,8 +137,8 @@
   }
 
   [(ICNoteResultsImageBadgeView *)self ic_applyRoundedCornersWithRadius:v5];
-  v7 = [(ICNoteResultsImageBadgeView *)self widthConstraint];
-  [v7 setConstant:v6];
+  widthConstraint = [(ICNoteResultsImageBadgeView *)self widthConstraint];
+  [widthConstraint setConstant:v6];
 
   [(ICNoteResultsImageBadgeView *)self updateImage];
 }

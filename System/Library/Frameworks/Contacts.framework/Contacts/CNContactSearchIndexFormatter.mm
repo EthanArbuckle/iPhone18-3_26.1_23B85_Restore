@@ -1,19 +1,19 @@
 @interface CNContactSearchIndexFormatter
-- (id)auxiliaryIndexStringForContact:(id)a3;
-- (id)nameExpansionsForContact:(id)a3;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringFromContact:(id)a3;
+- (id)auxiliaryIndexStringForContact:(id)contact;
+- (id)nameExpansionsForContact:(id)contact;
+- (id)stringForObjectValue:(id)value;
+- (id)stringFromContact:(id)contact;
 @end
 
 @implementation CNContactSearchIndexFormatter
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CNContactSearchIndexFormatter *)self stringFromContact:v4];
+    v5 = [(CNContactSearchIndexFormatter *)self stringFromContact:valueCopy];
   }
 
   else
@@ -24,11 +24,11 @@
   return v5;
 }
 
-- (id)stringFromContact:(id)a3
+- (id)stringFromContact:(id)contact
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD60] string];
+  contactCopy = contact;
+  string = [MEMORY[0x1E696AD60] string];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -48,11 +48,11 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) stringForIndexingForContact:v4];
+        v11 = [*(*(&v14 + 1) + 8 * i) stringForIndexingForContact:contactCopy];
         if (v11)
         {
-          [v5 appendString:v11];
-          [v5 appendString:@" "];
+          [string appendString:v11];
+          [string appendString:@" "];
         }
       }
 
@@ -62,18 +62,18 @@
     while (v8);
   }
 
-  v12 = [(CNContactSearchIndexFormatter *)self auxiliaryIndexStringForContact:v4];
+  v12 = [(CNContactSearchIndexFormatter *)self auxiliaryIndexStringForContact:contactCopy];
   if (v12)
   {
-    [v5 appendString:v12];
+    [string appendString:v12];
   }
 
-  return v5;
+  return string;
 }
 
-- (id)auxiliaryIndexStringForContact:(id)a3
+- (id)auxiliaryIndexStringForContact:(id)contact
 {
-  v3 = [(CNContactSearchIndexFormatter *)self nameExpansionsForContact:a3];
+  v3 = [(CNContactSearchIndexFormatter *)self nameExpansionsForContact:contact];
   if ([v3 length])
   {
     v4 = [MEMORY[0x1E696AD60] stringWithString:v3];
@@ -87,14 +87,14 @@
   return v4;
 }
 
-- (id)nameExpansionsForContact:(id)a3
+- (id)nameExpansionsForContact:(id)contact
 {
-  v7 = a3;
-  v8 = [v7 familyName];
+  contactCopy = contact;
+  familyName = [contactCopy familyName];
 
-  if (v8)
+  if (familyName)
   {
-    v9 = [v7 familyName];
+    familyName2 = [contactCopy familyName];
     v10 = CNStringContainsKoreanCharacters();
 
     if (v10)
@@ -103,11 +103,11 @@
     }
   }
 
-  v11 = [v7 givenName];
+  givenName = [contactCopy givenName];
 
-  if (v11)
+  if (givenName)
   {
-    v12 = [v7 givenName];
+    givenName2 = [contactCopy givenName];
     v13 = CNStringContainsKoreanCharacters();
 
     if (v13)
@@ -116,11 +116,11 @@
     }
   }
 
-  v14 = [v7 middleName];
+  middleName = [contactCopy middleName];
 
-  if (v14)
+  if (middleName)
   {
-    v15 = [v7 middleName];
+    middleName2 = [contactCopy middleName];
     v16 = CNStringContainsKoreanCharacters();
 
     if (v16)
@@ -129,11 +129,11 @@
     }
   }
 
-  v17 = [v7 nameSuffix];
+  nameSuffix = [contactCopy nameSuffix];
 
-  if (v17)
+  if (nameSuffix)
   {
-    v18 = [v7 nameSuffix];
+    nameSuffix2 = [contactCopy nameSuffix];
     v19 = CNStringContainsKoreanCharacters();
 
     if (v19)
@@ -142,17 +142,17 @@
     }
   }
 
-  v20 = [v7 namePrefix];
+  namePrefix = [contactCopy namePrefix];
 
-  if (v20)
+  if (namePrefix)
   {
-    v21 = [v7 namePrefix];
+    namePrefix2 = [contactCopy namePrefix];
     v22 = CNStringContainsKoreanCharacters();
 
     if (v22)
     {
 LABEL_11:
-      v20 = 0;
+      namePrefix = 0;
       v23 = 0;
       while (1)
       {
@@ -163,8 +163,8 @@ LABEL_11:
 
         if (v23)
         {
-          v6 = [v7 namePrefix];
-          if (!v6)
+          namePrefix3 = [contactCopy namePrefix];
+          if (!namePrefix3)
           {
 LABEL_31:
 
@@ -174,8 +174,8 @@ LABEL_31:
 
         if ((v23 & 2) != 0)
         {
-          v5 = [v7 givenName];
-          if (!v5)
+          givenName3 = [contactCopy givenName];
+          if (!givenName3)
           {
             if (v23)
             {
@@ -188,8 +188,8 @@ LABEL_31:
 
         if ((v23 & 4) != 0)
         {
-          v4 = [v7 middleName];
-          if (!v4)
+          middleName3 = [contactCopy middleName];
+          if (!middleName3)
           {
             v24 = 1;
 LABEL_35:
@@ -203,8 +203,8 @@ LABEL_35:
           break;
         }
 
-        v3 = [v7 familyName];
-        if (v3)
+        familyName3 = [contactCopy familyName];
+        if (familyName3)
         {
           if (v23 < 0x10)
           {
@@ -215,8 +215,8 @@ LABEL_29:
           }
 
 LABEL_28:
-          v25 = [v7 nameSuffix];
-          v24 = v25 == 0;
+          nameSuffix3 = [contactCopy nameSuffix];
+          v24 = nameSuffix3 == 0;
 
           if ((v23 & 8) == 0)
           {
@@ -257,7 +257,7 @@ LABEL_38:
         if (!v24)
         {
 LABEL_42:
-          if (v20)
+          if (namePrefix)
           {
             if ((v23 & 1) == 0)
             {
@@ -265,8 +265,8 @@ LABEL_42:
             }
 
 LABEL_52:
-            v28 = [v7 namePrefix];
-            [v20 appendString:v28];
+            namePrefix4 = [contactCopy namePrefix];
+            [namePrefix appendString:namePrefix4];
 
             if ((v23 & 8) != 0)
             {
@@ -280,8 +280,8 @@ LABEL_45:
             }
 
 LABEL_54:
-            v30 = [v7 middleName];
-            [v20 appendString:v30];
+            middleName4 = [contactCopy middleName];
+            [namePrefix appendString:middleName4];
 
             if ((v23 & 2) == 0)
             {
@@ -291,7 +291,7 @@ LABEL_54:
 
           else
           {
-            v20 = [MEMORY[0x1E696AD60] string];
+            namePrefix = [MEMORY[0x1E696AD60] string];
             if (v23)
             {
               goto LABEL_52;
@@ -304,8 +304,8 @@ LABEL_44:
             }
 
 LABEL_53:
-            v29 = [v7 familyName];
-            [v20 appendString:v29];
+            familyName4 = [contactCopy familyName];
+            [namePrefix appendString:familyName4];
 
             if ((v23 & 4) != 0)
             {
@@ -318,17 +318,17 @@ LABEL_46:
 LABEL_48:
               if (v23 >= 0x10)
               {
-                v27 = [v7 nameSuffix];
-                [v20 appendString:v27];
+                nameSuffix4 = [contactCopy nameSuffix];
+                [namePrefix appendString:nameSuffix4];
               }
 
-              [v20 appendString:@" "];
+              [namePrefix appendString:@" "];
               goto LABEL_14;
             }
           }
 
-          v26 = [v7 givenName];
-          [v20 appendString:v26];
+          givenName4 = [contactCopy givenName];
+          [namePrefix appendString:givenName4];
 
           goto LABEL_48;
         }
@@ -349,12 +349,12 @@ LABEL_14:
       goto LABEL_28;
     }
 
-    v20 = 0;
+    namePrefix = 0;
   }
 
 LABEL_57:
 
-  return v20;
+  return namePrefix;
 }
 
 @end

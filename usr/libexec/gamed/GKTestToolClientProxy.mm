@@ -6,26 +6,26 @@
 - (id)bundleVersion;
 - (id)externalVersion;
 - (id)protocolVersion;
-- (id)transportWithCredential:(id)a3;
-- (void)setTestGame:(id)a3 protocolVersion:(id)a4 reply:(id)a5;
+- (id)transportWithCredential:(id)credential;
+- (void)setTestGame:(id)game protocolVersion:(id)version reply:(id)reply;
 @end
 
 @implementation GKTestToolClientProxy
 
-- (void)setTestGame:(id)a3 protocolVersion:(id)a4 reply:(id)a5
+- (void)setTestGame:(id)game protocolVersion:(id)version reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 bundleIdentifier];
-  v13 = v12;
-  if (!v12 || ([v12 isEqualToString:GKGameKitTesterIdentifier] & 1) != 0 || (objc_msgSend(v13, "isEqualToString:", GKGKTester2Identifier) & 1) != 0 || (objc_msgSend(v13, "isEqualToString:", GKGKTester2OldIdentifier) & 1) != 0 || (objc_msgSend(v13, "containsString:", @"com.apple.sample") & 1) != 0 || (objc_msgSend(v13, "containsString:", @"com.apple.onword") & 1) != 0 || (objc_msgSend(v13, "containsString:", @"com.apple.Chess") & 1) != 0 || (objc_msgSend(v13, "containsString:", @"com.apple.LameGame") & 1) != 0 || (objc_msgSend(v13, "containsString:", @"com.apple.TheCoast") & 1) != 0 || (objc_msgSend(v13, "containsString:", @"com.apple.Boxes") & 1) != 0 || objc_msgSend(v13, "containsString:", @"com.apple.news"))
+  gameCopy = game;
+  versionCopy = version;
+  replyCopy = reply;
+  bundleIdentifier = [gameCopy bundleIdentifier];
+  v13 = bundleIdentifier;
+  if (!bundleIdentifier || ([bundleIdentifier isEqualToString:GKGameKitTesterIdentifier] & 1) != 0 || (objc_msgSend(v13, "isEqualToString:", GKGKTester2Identifier) & 1) != 0 || (objc_msgSend(v13, "isEqualToString:", GKGKTester2OldIdentifier) & 1) != 0 || (objc_msgSend(v13, "containsString:", @"com.apple.sample") & 1) != 0 || (objc_msgSend(v13, "containsString:", @"com.apple.onword") & 1) != 0 || (objc_msgSend(v13, "containsString:", @"com.apple.Chess") & 1) != 0 || (objc_msgSend(v13, "containsString:", @"com.apple.LameGame") & 1) != 0 || (objc_msgSend(v13, "containsString:", @"com.apple.TheCoast") & 1) != 0 || (objc_msgSend(v13, "containsString:", @"com.apple.Boxes") & 1) != 0 || objc_msgSend(v13, "containsString:", @"com.apple.news"))
   {
-    if (v9)
+    if (gameCopy)
     {
-      v14 = [v9 name];
-      v15 = [v9 bundleVersion];
-      v16 = [NSString stringWithFormat:@"%@ (%@, %@)", v14, v13, v15];
+      name = [gameCopy name];
+      bundleVersion = [gameCopy bundleVersion];
+      v16 = [NSString stringWithFormat:@"%@ (%@, %@)", name, v13, bundleVersion];
     }
 
     else
@@ -44,12 +44,12 @@
       *buf = 138412546;
       v27 = v16;
       v28 = 2112;
-      v29 = v10;
+      v29 = versionCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "setTestGame: %@ protocolVersion: %@", buf, 0x16u);
     }
 
-    [(GKTestToolClientProxy *)self setTestGame:v9];
-    [(GKTestToolClientProxy *)self setTestProtocolVersion:v10];
+    [(GKTestToolClientProxy *)self setTestGame:gameCopy];
+    [(GKTestToolClientProxy *)self setTestProtocolVersion:versionCopy];
     v19 = 0;
   }
 
@@ -70,23 +70,23 @@
     v19 = [NSError userErrorForCode:32 description:v16];
   }
 
-  if (v11)
+  if (replyCopy)
   {
-    v20 = [(GKClientProxy *)self replyQueue];
+    replyQueue = [(GKClientProxy *)self replyQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001537A8;
     block[3] = &unk_100360EB0;
-    v25 = v11;
+    v25 = replyCopy;
     v24 = v19;
-    dispatch_async(v20, block);
+    dispatch_async(replyQueue, block);
   }
 }
 
 - (BOOL)isPosingAsGameCenter
 {
-  v3 = [(GKTestToolClientProxy *)self testGame];
-  if (v3)
+  testGame = [(GKTestToolClientProxy *)self testGame];
+  if (testGame)
   {
     v4 = 0;
   }
@@ -95,27 +95,27 @@
   {
     v7.receiver = self;
     v7.super_class = GKTestToolClientProxy;
-    v5 = [(GKClientProxy *)&v7 bundleIdentifier];
-    v4 = [v5 isEqualToString:GKGameCenterToolIdentifier];
+    bundleIdentifier = [(GKClientProxy *)&v7 bundleIdentifier];
+    v4 = [bundleIdentifier isEqualToString:GKGameCenterToolIdentifier];
   }
 
   return v4;
 }
 
-- (id)transportWithCredential:(id)a3
+- (id)transportWithCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   if ([(GKTestToolClientProxy *)self isPosingAsGameCenter])
   {
     v5 = +[GKClientProxy gameCenterClient];
-    v6 = [v5 transportWithCredential:v4];
+    v6 = [v5 transportWithCredential:credentialCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = GKTestToolClientProxy;
-    v6 = [(GKClientProxy *)&v8 transportWithCredential:v4];
+    v6 = [(GKClientProxy *)&v8 transportWithCredential:credentialCopy];
   }
 
   return v6;
@@ -125,169 +125,169 @@
 {
   if ([(GKTestToolClientProxy *)self isPosingAsGameCenter])
   {
-    v3 = +[GKClientProxy gameCenterClient];
-    v4 = [v3 bundleIdentifier];
+    testGame = +[GKClientProxy gameCenterClient];
+    bundleIdentifier = [testGame bundleIdentifier];
   }
 
   else
   {
-    v3 = [(GKTestToolClientProxy *)self testGame];
-    if (v3)
+    testGame = [(GKTestToolClientProxy *)self testGame];
+    if (testGame)
     {
-      v5 = [(GKTestToolClientProxy *)self testGame];
-      v6 = [v5 bundleIdentifier];
+      testGame2 = [(GKTestToolClientProxy *)self testGame];
+      bundleIdentifier2 = [testGame2 bundleIdentifier];
 
       goto LABEL_7;
     }
 
     v8.receiver = self;
     v8.super_class = GKTestToolClientProxy;
-    v4 = [(GKClientProxy *)&v8 bundleIdentifier];
+    bundleIdentifier = [(GKClientProxy *)&v8 bundleIdentifier];
   }
 
-  v6 = v4;
+  bundleIdentifier2 = bundleIdentifier;
 LABEL_7:
 
-  return v6;
+  return bundleIdentifier2;
 }
 
 - (id)bundleVersion
 {
   if ([(GKTestToolClientProxy *)self isPosingAsGameCenter])
   {
-    v3 = +[GKClientProxy gameCenterClient];
-    v4 = [v3 bundleVersion];
+    testGame = +[GKClientProxy gameCenterClient];
+    bundleVersion = [testGame bundleVersion];
   }
 
   else
   {
-    v3 = [(GKTestToolClientProxy *)self testGame];
-    if (v3)
+    testGame = [(GKTestToolClientProxy *)self testGame];
+    if (testGame)
     {
-      v5 = [(GKTestToolClientProxy *)self testGame];
-      v6 = [v5 bundleVersion];
+      testGame2 = [(GKTestToolClientProxy *)self testGame];
+      bundleVersion2 = [testGame2 bundleVersion];
 
       goto LABEL_7;
     }
 
     v8.receiver = self;
     v8.super_class = GKTestToolClientProxy;
-    v4 = [(GKClientProxy *)&v8 bundleVersion];
+    bundleVersion = [(GKClientProxy *)&v8 bundleVersion];
   }
 
-  v6 = v4;
+  bundleVersion2 = bundleVersion;
 LABEL_7:
 
-  return v6;
+  return bundleVersion2;
 }
 
 - (id)bundleShortVersion
 {
   if ([(GKTestToolClientProxy *)self isPosingAsGameCenter])
   {
-    v3 = +[GKClientProxy gameCenterClient];
-    v4 = [v3 bundleShortVersion];
+    testGame = +[GKClientProxy gameCenterClient];
+    bundleShortVersion = [testGame bundleShortVersion];
   }
 
   else
   {
-    v3 = [(GKTestToolClientProxy *)self testGame];
-    if (v3)
+    testGame = [(GKTestToolClientProxy *)self testGame];
+    if (testGame)
     {
-      v5 = [(GKTestToolClientProxy *)self testGame];
-      v6 = [v5 shortBundleVersion];
+      testGame2 = [(GKTestToolClientProxy *)self testGame];
+      shortBundleVersion = [testGame2 shortBundleVersion];
 
       goto LABEL_7;
     }
 
     v8.receiver = self;
     v8.super_class = GKTestToolClientProxy;
-    v4 = [(GKClientProxy *)&v8 bundleShortVersion];
+    bundleShortVersion = [(GKClientProxy *)&v8 bundleShortVersion];
   }
 
-  v6 = v4;
+  shortBundleVersion = bundleShortVersion;
 LABEL_7:
 
-  return v6;
+  return shortBundleVersion;
 }
 
 - (id)adamID
 {
   if ([(GKTestToolClientProxy *)self isPosingAsGameCenter])
   {
-    v3 = +[GKClientProxy gameCenterClient];
-    v4 = [v3 adamID];
+    testGame = +[GKClientProxy gameCenterClient];
+    adamID = [testGame adamID];
   }
 
   else
   {
-    v3 = [(GKTestToolClientProxy *)self testGame];
-    if (v3)
+    testGame = [(GKTestToolClientProxy *)self testGame];
+    if (testGame)
     {
-      v5 = [(GKTestToolClientProxy *)self testGame];
-      v6 = [v5 adamID];
+      testGame2 = [(GKTestToolClientProxy *)self testGame];
+      adamID2 = [testGame2 adamID];
 
       goto LABEL_7;
     }
 
     v8.receiver = self;
     v8.super_class = GKTestToolClientProxy;
-    v4 = [(GKClientProxy *)&v8 adamID];
+    adamID = [(GKClientProxy *)&v8 adamID];
   }
 
-  v6 = v4;
+  adamID2 = adamID;
 LABEL_7:
 
-  return v6;
+  return adamID2;
 }
 
 - (id)externalVersion
 {
   if ([(GKTestToolClientProxy *)self isPosingAsGameCenter])
   {
-    v3 = +[GKClientProxy gameCenterClient];
-    v4 = [v3 externalVersion];
+    testGame = +[GKClientProxy gameCenterClient];
+    externalVersion = [testGame externalVersion];
   }
 
   else
   {
-    v3 = [(GKTestToolClientProxy *)self testGame];
-    if (v3)
+    testGame = [(GKTestToolClientProxy *)self testGame];
+    if (testGame)
     {
-      v5 = [(GKTestToolClientProxy *)self testGame];
-      v6 = [v5 externalVersion];
+      testGame2 = [(GKTestToolClientProxy *)self testGame];
+      externalVersion2 = [testGame2 externalVersion];
 
       goto LABEL_7;
     }
 
     v8.receiver = self;
     v8.super_class = GKTestToolClientProxy;
-    v4 = [(GKClientProxy *)&v8 externalVersion];
+    externalVersion = [(GKClientProxy *)&v8 externalVersion];
   }
 
-  v6 = v4;
+  externalVersion2 = externalVersion;
 LABEL_7:
 
-  return v6;
+  return externalVersion2;
 }
 
 - (id)protocolVersion
 {
-  v3 = [(GKTestToolClientProxy *)self testProtocolVersion];
-  v4 = v3;
-  if (v3)
+  testProtocolVersion = [(GKTestToolClientProxy *)self testProtocolVersion];
+  v4 = testProtocolVersion;
+  if (testProtocolVersion)
   {
-    v5 = v3;
+    protocolVersion = testProtocolVersion;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = GKTestToolClientProxy;
-    v5 = [(GKClientProxy *)&v8 protocolVersion];
+    protocolVersion = [(GKClientProxy *)&v8 protocolVersion];
   }
 
-  v6 = v5;
+  v6 = protocolVersion;
 
   return v6;
 }

@@ -7,14 +7,14 @@
 
 - (id)psg_ICCIDString
 {
-  v2 = [a1 mutableCopy];
-  if ([a1 length] >= 4 && objc_msgSend(a1, "length") >= 5)
+  v2 = [self mutableCopy];
+  if ([self length] >= 4 && objc_msgSend(self, "length") >= 5)
   {
     v3 = 0;
     v4 = 4;
     do
     {
-      if ([a1 length] > v4)
+      if ([self length] > v4)
       {
         [v2 insertString:@" " atIndex:v4 + v3++];
       }
@@ -22,7 +22,7 @@
       v4 += 4;
     }
 
-    while ([a1 length] > v4);
+    while ([self length] > v4);
   }
 
   return v2;
@@ -30,7 +30,7 @@
 
 - (id)psg_IMEIString
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   if ([v1 length] >= 3)
   {
     [v1 insertString:@" " atIndex:2];

@@ -1,6 +1,6 @@
 @interface DMDFetchManagedBooksOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -20,7 +20,7 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
   v4 = [DMDPowerAssertion assertionForOperation:@"DMDFetchManagedBooksOperation: run"];
   if (MCHasMDMMigrated())
@@ -30,7 +30,7 @@
     v6[1] = 3221225472;
     v6[2] = sub_100047110;
     v7 = v6[3] = &unk_1000CDC38;
-    v8 = self;
+    selfCopy = self;
     v5 = v7;
     [v5 cleanUpWithAssertion:v4 completionBlock:v6];
   }

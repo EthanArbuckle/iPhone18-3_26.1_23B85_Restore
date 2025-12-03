@@ -1,14 +1,14 @@
 @interface AXKeyboardsController
 - (AXKeyboardsController)init;
-- (id)fullKeyboardAccessEnabled:(id)a3;
-- (id)hoverTextTypingEnabled:(id)a3;
-- (id)keyRepeatEnabled:(id)a3;
-- (id)lowercaseString:(id)a3;
-- (id)slowKeysEnabled:(id)a3;
+- (id)fullKeyboardAccessEnabled:(id)enabled;
+- (id)hoverTextTypingEnabled:(id)enabled;
+- (id)keyRepeatEnabled:(id)enabled;
+- (id)lowercaseString:(id)string;
+- (id)slowKeysEnabled:(id)enabled;
 - (id)specifiers;
-- (id)stickyKeysEnabled:(id)a3;
-- (void)setLowerCase:(id)a3 specifier:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (id)stickyKeysEnabled:(id)enabled;
+- (void)setLowerCase:(id)case specifier:(id)specifier;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AXKeyboardsController
@@ -101,29 +101,29 @@ void __29__AXKeyboardsController_init__block_invoke(uint64_t a1)
   [WeakRetained _preferencesDidChange];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AXKeyboardsController;
-  [(AXKeyboardsController *)&v4 viewWillAppear:a3];
+  [(AXKeyboardsController *)&v4 viewWillAppear:appear];
   [(AXKeyboardsController *)self reloadSpecifiers];
 }
 
-- (void)setLowerCase:(id)a3 specifier:(id)a4
+- (void)setLowerCase:(id)case specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [case BOOLValue];
 
-  __AXSSetLowercaseKeyboardDisplayEnabled(v4);
+  __AXSSetLowercaseKeyboardDisplayEnabled(bOOLValue);
 }
 
-- (id)lowercaseString:(id)a3
+- (id)lowercaseString:(id)string
 {
   v3 = _AXSLowercaseKeyboardDisplayEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (id)keyRepeatEnabled:(id)a3
+- (id)keyRepeatEnabled:(id)enabled
 {
   if (_AXSKeyRepeatEnabled())
   {
@@ -138,7 +138,7 @@ void __29__AXKeyboardsController_init__block_invoke(uint64_t a1)
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (id)stickyKeysEnabled:(id)a3
+- (id)stickyKeysEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   if ([v3 stickyKeysEnabled])
@@ -156,7 +156,7 @@ void __29__AXKeyboardsController_init__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)slowKeysEnabled:(id)a3
+- (id)slowKeysEnabled:(id)enabled
 {
   if (_AXSSlowKeysEnabled())
   {
@@ -171,7 +171,7 @@ void __29__AXKeyboardsController_init__block_invoke(uint64_t a1)
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (id)fullKeyboardAccessEnabled:(id)a3
+- (id)fullKeyboardAccessEnabled:(id)enabled
 {
   if (_AXSFullKeyboardAccessEnabled())
   {
@@ -186,7 +186,7 @@ void __29__AXKeyboardsController_init__block_invoke(uint64_t a1)
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (id)hoverTextTypingEnabled:(id)a3
+- (id)hoverTextTypingEnabled:(id)enabled
 {
   if (_AXSHoverTextTypingEnabled())
   {

@@ -1,11 +1,11 @@
 @interface SearchResultQuickActionMenuPresenter
-- (BOOL)shouldBeginOrbGestureAtLocation:(CGPoint)a3 inView:(id)a4;
-- (SearchResultQuickActionMenuPresenter)initWithTableView:(id)a3;
+- (BOOL)shouldBeginOrbGestureAtLocation:(CGPoint)location inView:(id)view;
+- (SearchResultQuickActionMenuPresenter)initWithTableView:(id)view;
 - (UITableViewCell)tableViewCell;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)targetPreviewBackgroundWithColor:(id)a3;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)targetPreviewBackgroundWithColor:(id)color;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation SearchResultQuickActionMenuPresenter
@@ -17,11 +17,11 @@
   return WeakRetained;
 }
 
-- (BOOL)shouldBeginOrbGestureAtLocation:(CGPoint)a3 inView:(id)a4
+- (BOOL)shouldBeginOrbGestureAtLocation:(CGPoint)location inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
   [(SearchResultQuickActionMenuPresenter *)self setTableViewCell:0];
   [(SearchResultQuickActionMenuPresenter *)self setIndexPath:0];
   labelMarker = self->super._labelMarker;
@@ -33,9 +33,9 @@
   resolvedMapItem = self->super._resolvedMapItem;
   self->super._resolvedMapItem = 0;
 
-  if ([v7 isDescendantOfView:self->_tableView])
+  if ([viewCopy isDescendantOfView:self->_tableView])
   {
-    [(UITableView *)self->_tableView convertPoint:v7 fromView:x, y];
+    [(UITableView *)self->_tableView convertPoint:viewCopy fromView:x, y];
     v11 = [(UITableView *)self->_tableView indexPathForRowAtPoint:?];
     if (v11)
     {
@@ -47,13 +47,13 @@
         [(SearchResultQuickActionMenuPresenter *)self setIndexPath:v11];
         if ([v13 conformsToProtocol:&OBJC_PROTOCOL___SearchResultQuickActionMenuCell])
         {
-          v15 = [v13 personalizedItemForQuickActionMenu];
-          v16 = [(QuickActionMenuPresenter *)self delegate];
-          -[QuickActionMenuPresenter setUiTarget:](self, "setUiTarget:", [v16 uiTargetForQuickActionMenu]);
+          personalizedItemForQuickActionMenu = [v13 personalizedItemForQuickActionMenu];
+          delegate = [(QuickActionMenuPresenter *)self delegate];
+          -[QuickActionMenuPresenter setUiTarget:](self, "setUiTarget:", [delegate uiTargetForQuickActionMenu]);
 
-          if (v15)
+          if (personalizedItemForQuickActionMenu)
           {
-            [(QuickActionMenuPresenter *)self setPlace:v15];
+            [(QuickActionMenuPresenter *)self setPlace:personalizedItemForQuickActionMenu];
             objc_opt_class();
             v14 = 1;
             if (objc_opt_isKindOfClass())
@@ -71,7 +71,7 @@
         else
         {
           v14 = 0;
-          v15 = 0;
+          personalizedItemForQuickActionMenu = 0;
         }
       }
 
@@ -95,17 +95,17 @@
   return v14;
 }
 
-- (id)targetPreviewBackgroundWithColor:(id)a3
+- (id)targetPreviewBackgroundWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = self->_tableView;
   [(QuickActionMenuPresenter *)self location];
   v6 = [(UITableView *)v5 indexPathForRowAtPoint:?];
-  if (v6 && (-[UITableView cellForRowAtIndexPath:](v5, "cellForRowAtIndexPath:", v6), v7 = objc_claimAutoreleasedReturnValue(), [v7 contentView], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "setBackgroundColor:", v4), v8, v7))
+  if (v6 && (-[UITableView cellForRowAtIndexPath:](v5, "cellForRowAtIndexPath:", v6), v7 = objc_claimAutoreleasedReturnValue(), [v7 contentView], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "setBackgroundColor:", colorCopy), v8, v7))
   {
     v9 = [[UITargetedPreview alloc] initWithView:v7];
-    v10 = [v9 parameters];
-    [v10 setBackgroundColor:v4];
+    parameters = [v9 parameters];
+    [parameters setBackgroundColor:colorCopy];
   }
 
   else
@@ -116,11 +116,11 @@
   return v9;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   if (sub_10000FA08(self->_tableView) != 5)
   {
     objc_initWeak(&location, self);
@@ -129,13 +129,13 @@
     v11[2] = sub_100DA9860;
     v11[3] = &unk_101661B98;
     objc_copyWeak(&v12, &location);
-    [v10 addCompletion:v11];
+    [animatorCopy addCompletion:v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier
 {
   if (sub_10000FA08(self->_tableView) == 5)
   {
@@ -151,7 +151,7 @@
   return v6;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
   if (sub_10000FA08(self->_tableView) == 5)
   {
@@ -169,10 +169,10 @@
     }
 
     v9 = [(UITableView *)v7 cellForRowAtIndexPath:v8];
-    v10 = [v9 traitCollection];
-    v11 = [v10 userInterfaceStyle];
+    traitCollection = [v9 traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v11 == 2)
+    if (userInterfaceStyle == 2)
     {
       +[UIColor tertiarySystemGroupedBackgroundColor];
     }
@@ -182,8 +182,8 @@
       +[UIColor systemBackgroundColor];
     }
     v12 = ;
-    v13 = [v9 contentView];
-    [v13 setBackgroundColor:v12];
+    contentView = [v9 contentView];
+    [contentView setBackgroundColor:v12];
 
     if (v9)
     {
@@ -200,16 +200,16 @@ LABEL_9:
   return v6;
 }
 
-- (SearchResultQuickActionMenuPresenter)initWithTableView:(id)a3
+- (SearchResultQuickActionMenuPresenter)initWithTableView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = SearchResultQuickActionMenuPresenter;
-  v6 = [(QuickActionMenuPresenter *)&v9 initWithView:v5];
+  v6 = [(QuickActionMenuPresenter *)&v9 initWithView:viewCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tableView, a3);
+    objc_storeStrong(&v6->_tableView, view);
   }
 
   return v7;

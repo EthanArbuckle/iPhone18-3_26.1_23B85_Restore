@@ -1,15 +1,15 @@
 @interface XPCMobileDocumentProviderUnregisterRequest
 - (_TtC7CoreIDV42XPCMobileDocumentProviderUnregisterRequest)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation XPCMobileDocumentProviderUnregisterRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  _s7CoreIDV42XPCMobileDocumentProviderUnregisterRequestC6encode4withySo7NSCoderC_tF_0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  _s7CoreIDV42XPCMobileDocumentProviderUnregisterRequestC6encode4withySo7NSCoderC_tF_0(coderCopy);
 }
 
 - (_TtC7CoreIDV42XPCMobileDocumentProviderUnregisterRequest)init

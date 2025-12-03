@@ -1,31 +1,31 @@
 @interface SFUnifiedTabBarItemViewRegistration
-- (SFUnifiedTabBarItemViewRegistration)initWithViewProvider:(id)a3 configurationHandler:(id)a4;
-- (id)dequeueOrCreateViewForItem:(id)a3 isPreview:(BOOL)a4;
-- (void)configureView:(id)a3 forItem:(id)a4 inArrangement:(id)a5 isPreview:(BOOL)a6;
+- (SFUnifiedTabBarItemViewRegistration)initWithViewProvider:(id)provider configurationHandler:(id)handler;
+- (id)dequeueOrCreateViewForItem:(id)item isPreview:(BOOL)preview;
+- (void)configureView:(id)view forItem:(id)item inArrangement:(id)arrangement isPreview:(BOOL)preview;
 @end
 
 @implementation SFUnifiedTabBarItemViewRegistration
 
-- (SFUnifiedTabBarItemViewRegistration)initWithViewProvider:(id)a3 configurationHandler:(id)a4
+- (SFUnifiedTabBarItemViewRegistration)initWithViewProvider:(id)provider configurationHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = SFUnifiedTabBarItemViewRegistration;
   v8 = [(SFUnifiedTabBarItemViewRegistration *)&v17 init];
   if (v8)
   {
-    v9 = _Block_copy(v7);
+    v9 = _Block_copy(handlerCopy);
     configurationHandler = v8->_configurationHandler;
     v8->_configurationHandler = v9;
 
-    v11 = _Block_copy(v6);
+    v11 = _Block_copy(providerCopy);
     viewProvider = v8->_viewProvider;
     v8->_viewProvider = v11;
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     viewReuseStack = v8->_viewReuseStack;
-    v8->_viewReuseStack = v13;
+    v8->_viewReuseStack = array;
 
     v15 = v8;
   }
@@ -33,27 +33,27 @@
   return v8;
 }
 
-- (id)dequeueOrCreateViewForItem:(id)a3 isPreview:(BOOL)a4
+- (id)dequeueOrCreateViewForItem:(id)item isPreview:(BOOL)preview
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  previewCopy = preview;
+  itemCopy = item;
+  v7 = itemCopy;
+  if (previewCopy)
   {
-    [v6 reusablePreviewView];
+    [itemCopy reusablePreviewView];
   }
 
   else
   {
-    [v6 reusableView];
+    [itemCopy reusableView];
   }
   v8 = ;
   if (!v8)
   {
-    v9 = [(NSMutableArray *)self->_viewReuseStack lastObject];
-    if (v9)
+    lastObject = [(NSMutableArray *)self->_viewReuseStack lastObject];
+    if (lastObject)
     {
-      v8 = v9;
+      v8 = lastObject;
       [(NSMutableArray *)self->_viewReuseStack removeLastObject];
     }
 
@@ -62,7 +62,7 @@
       v8 = (*(self->_viewProvider + 2))();
     }
 
-    if (v4)
+    if (previewCopy)
     {
       [v7 setReusablePreviewView:v8];
     }
@@ -81,24 +81,24 @@
   return v10;
 }
 
-- (void)configureView:(id)a3 forItem:(id)a4 inArrangement:(id)a5 isPreview:(BOOL)a6
+- (void)configureView:(id)view forItem:(id)item inArrangement:(id)arrangement isPreview:(BOOL)preview
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  viewCopy = view;
+  itemCopy = item;
+  arrangementCopy = arrangement;
   v13 = MEMORY[0x1E69DD250];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __85__SFUnifiedTabBarItemViewRegistration_configureView_forItem_inArrangement_isPreview___block_invoke;
   v17[3] = &unk_1E721BC28;
   v17[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v21 = a6;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = viewCopy;
+  v19 = itemCopy;
+  v20 = arrangementCopy;
+  previewCopy = preview;
+  v14 = arrangementCopy;
+  v15 = itemCopy;
+  v16 = viewCopy;
   [v13 performWithoutAnimation:v17];
 }
 

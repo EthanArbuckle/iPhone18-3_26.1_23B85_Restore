@@ -1,6 +1,6 @@
 @interface ICMusicLibraryContentMetadataDescriptor
-- (BOOL)isEqual:(id)a3;
-- (ICMusicLibraryContentMetadataDescriptor)initWithTitle:(id)a3 andStoreAdamID:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (ICMusicLibraryContentMetadataDescriptor)initWithTitle:(id)title andStoreAdamID:(int64_t)d;
 - (id)debugDescription;
 @end
 
@@ -8,25 +8,25 @@
 
 - (id)debugDescription
 {
-  v3 = [(ICMusicLibraryContentMetadataDescriptor *)self title];
-  v4 = [NSString stringWithFormat:@"Title: %@, storeAdamID: %lld", v3, [(ICMusicLibraryContentMetadataDescriptor *)self storeAdamID]];
+  title = [(ICMusicLibraryContentMetadataDescriptor *)self title];
+  v4 = [NSString stringWithFormat:@"Title: %@, storeAdamID: %lld", title, [(ICMusicLibraryContentMetadataDescriptor *)self storeAdamID]];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ICMusicLibraryContentMetadataDescriptor *)self storeAdamID];
-    if (v6 == [v5 storeAdamID])
+    v5 = equalCopy;
+    storeAdamID = [(ICMusicLibraryContentMetadataDescriptor *)self storeAdamID];
+    if (storeAdamID == [v5 storeAdamID])
     {
-      v7 = [(ICMusicLibraryContentMetadataDescriptor *)self title];
-      v8 = [v5 title];
-      v9 = [v7 isEqualToString:v8];
+      title = [(ICMusicLibraryContentMetadataDescriptor *)self title];
+      title2 = [v5 title];
+      v9 = [title isEqualToString:title2];
     }
 
     else
@@ -43,17 +43,17 @@
   return v9;
 }
 
-- (ICMusicLibraryContentMetadataDescriptor)initWithTitle:(id)a3 andStoreAdamID:(int64_t)a4
+- (ICMusicLibraryContentMetadataDescriptor)initWithTitle:(id)title andStoreAdamID:(int64_t)d
 {
-  v6 = a3;
+  titleCopy = title;
   v10.receiver = self;
   v10.super_class = ICMusicLibraryContentMetadataDescriptor;
   v7 = [(ICMusicLibraryContentMetadataDescriptor *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(ICMusicLibraryContentMetadataDescriptor *)v7 setTitle:v6];
-    [(ICMusicLibraryContentMetadataDescriptor *)v8 setStoreAdamID:a4];
+    [(ICMusicLibraryContentMetadataDescriptor *)v7 setTitle:titleCopy];
+    [(ICMusicLibraryContentMetadataDescriptor *)v8 setStoreAdamID:d];
   }
 
   return v8;

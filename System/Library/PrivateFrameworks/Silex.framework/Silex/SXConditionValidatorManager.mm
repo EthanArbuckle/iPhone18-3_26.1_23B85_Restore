@@ -1,7 +1,7 @@
 @interface SXConditionValidatorManager
-- (BOOL)validateCondition:(id)a3 context:(id)a4;
+- (BOOL)validateCondition:(id)condition context:(id)context;
 - (SXConditionValidatorManager)init;
-- (void)addConditionValidator:(id)a3;
+- (void)addConditionValidator:(id)validator;
 @end
 
 @implementation SXConditionValidatorManager
@@ -13,35 +13,35 @@
   v2 = [(SXConditionValidatorManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     validators = v2->_validators;
-    v2->_validators = v3;
+    v2->_validators = array;
   }
 
   return v2;
 }
 
-- (void)addConditionValidator:(id)a3
+- (void)addConditionValidator:(id)validator
 {
-  if (a3)
+  if (validator)
   {
-    v4 = a3;
-    v5 = [(SXConditionValidatorManager *)self validators];
-    [v5 addObject:v4];
+    validatorCopy = validator;
+    validators = [(SXConditionValidatorManager *)self validators];
+    [validators addObject:validatorCopy];
   }
 }
 
-- (BOOL)validateCondition:(id)a3 context:(id)a4
+- (BOOL)validateCondition:(id)condition context:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  conditionCopy = condition;
+  contextCopy = context;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(SXConditionValidatorManager *)self validators];
-  v9 = [v8 copy];
+  validators = [(SXConditionValidatorManager *)self validators];
+  v9 = [validators copy];
 
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
@@ -57,7 +57,7 @@
           objc_enumerationMutation(v9);
         }
 
-        if (![*(*(&v16 + 1) + 8 * i) validateCondition:v6 context:v7])
+        if (![*(*(&v16 + 1) + 8 * i) validateCondition:conditionCopy context:contextCopy])
         {
           v14 = 0;
           goto LABEL_11;

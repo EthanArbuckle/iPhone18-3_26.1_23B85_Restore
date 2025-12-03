@@ -1,38 +1,38 @@
 @interface STHistoricalUsageViewController
-+ (id)historicalUsageViewControllerOfType:(unint64_t)a3 graphHeight:(double)a4;
-- (id)_dataSetFromUsageReport:(id)a3;
-- (id)_dayGraphViewControllerForDay:(unint64_t)a3 week:(unint64_t)a4 usageReport:(id)a5;
-- (id)_nextGraphViewControllerForPageViewController:(id)a3 currentGraphViewController:(id)a4 direction:(int64_t)a5;
-- (id)_weekGraphViewControllerForWeek:(unint64_t)a3 usageReport:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
-- (void)_selectedBarViewDidChangeFrom:(id)a3 to:(id)a4;
-- (void)_selectedDayUsageReportDidChangeFrom:(id)a3 to:(id)a4;
-- (void)_selectedWeekUsageReportDidChange:(id)a3;
++ (id)historicalUsageViewControllerOfType:(unint64_t)type graphHeight:(double)height;
+- (id)_dataSetFromUsageReport:(id)report;
+- (id)_dayGraphViewControllerForDay:(unint64_t)day week:(unint64_t)week usageReport:(id)report;
+- (id)_nextGraphViewControllerForPageViewController:(id)controller currentGraphViewController:(id)viewController direction:(int64_t)direction;
+- (id)_weekGraphViewControllerForWeek:(unint64_t)week usageReport:(id)report;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
+- (void)_selectedBarViewDidChangeFrom:(id)from to:(id)to;
+- (void)_selectedDayUsageReportDidChangeFrom:(id)from to:(id)to;
+- (void)_selectedWeekUsageReportDidChange:(id)change;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6;
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4;
-- (void)prepareForSegue:(id)a3 sender:(id)a4;
-- (void)setCoordinator:(id)a3;
-- (void)setMaximumYAxisLabelWidth:(double)a3;
-- (void)setSelectedWeekGraphViewController:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed;
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers;
+- (void)prepareForSegue:(id)segue sender:(id)sender;
+- (void)setCoordinator:(id)coordinator;
+- (void)setMaximumYAxisLabelWidth:(double)width;
+- (void)setSelectedWeekGraphViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation STHistoricalUsageViewController
 
-+ (id)historicalUsageViewControllerOfType:(unint64_t)a3 graphHeight:(double)a4
++ (id)historicalUsageViewControllerOfType:(unint64_t)type graphHeight:(double)height
 {
   v6 = MEMORY[0x277D75AC8];
   v7 = +[STScreenTimeSettingsUIBundle bundle];
   v8 = [v6 storyboardWithName:@"HistoricalUsage" bundle:v7];
 
-  v9 = [v8 instantiateInitialViewController];
-  *(v9 + 1016) = a3;
-  *(v9 + 1024) = a4;
+  instantiateInitialViewController = [v8 instantiateInitialViewController];
+  *(instantiateInitialViewController + 1016) = type;
+  *(instantiateInitialViewController + 1024) = height;
 
-  return v9;
+  return instantiateInitialViewController;
 }
 
 - (void)dealloc
@@ -51,20 +51,20 @@
   v10.receiver = self;
   v10.super_class = STHistoricalUsageViewController;
   [(STHistoricalUsageViewController *)&v10 viewDidLoad];
-  v3 = [(STHistoricalUsageViewController *)self type];
-  v4 = [(STHistoricalUsageViewController *)self titleView];
-  [v4 setUsageItemType:v3];
+  type = [(STHistoricalUsageViewController *)self type];
+  titleView = [(STHistoricalUsageViewController *)self titleView];
+  [titleView setUsageItemType:type];
 
-  v5 = [(STHistoricalUsageViewController *)self coordinator];
-  v6 = [v5 viewModel];
+  coordinator = [(STHistoricalUsageViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
 
-  if (v6)
+  if (viewModel)
   {
-    v7 = [v6 selectedWeekUsageReport];
-    [(STHistoricalUsageViewController *)self _selectedWeekUsageReportDidChange:v7];
+    selectedWeekUsageReport = [viewModel selectedWeekUsageReport];
+    [(STHistoricalUsageViewController *)self _selectedWeekUsageReportDidChange:selectedWeekUsageReport];
 
-    v8 = [v6 selectedDayUsageReport];
-    [(STHistoricalUsageViewController *)self _selectedDayUsageReportDidChangeFrom:0 to:v8];
+    selectedDayUsageReport = [viewModel selectedDayUsageReport];
+    [(STHistoricalUsageViewController *)self _selectedDayUsageReportDidChangeFrom:0 to:selectedDayUsageReport];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -74,112 +74,112 @@
   }
 }
 
-- (void)prepareForSegue:(id)a3 sender:(id)a4
+- (void)prepareForSegue:(id)segue sender:(id)sender
 {
-  v7 = a3;
-  v5 = [v7 identifier];
-  if ([v5 isEqualToString:@"WeekGraph"])
+  segueCopy = segue;
+  identifier = [segueCopy identifier];
+  if ([identifier isEqualToString:@"WeekGraph"])
   {
-    v6 = [v7 destinationViewController];
-    [v6 setDataSource:self];
-    [v6 setDelegate:self];
-    [(STHistoricalUsageViewController *)self setWeekGraphPageViewController:v6];
+    destinationViewController = [segueCopy destinationViewController];
+    [destinationViewController setDataSource:self];
+    [destinationViewController setDelegate:self];
+    [(STHistoricalUsageViewController *)self setWeekGraphPageViewController:destinationViewController];
   }
 
   else
   {
-    if (![v5 isEqualToString:@"DayGraph"])
+    if (![identifier isEqualToString:@"DayGraph"])
     {
       goto LABEL_6;
     }
 
-    v6 = [v7 destinationViewController];
-    [v6 setDataSource:self];
-    [v6 setDelegate:self];
-    [(STHistoricalUsageViewController *)self setDayGraphPageViewController:v6];
+    destinationViewController = [segueCopy destinationViewController];
+    [destinationViewController setDataSource:self];
+    [destinationViewController setDelegate:self];
+    [(STHistoricalUsageViewController *)self setDayGraphPageViewController:destinationViewController];
   }
 
 LABEL_6:
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   coordinator = self->_coordinator;
-  if (coordinator != v5)
+  if (coordinator != coordinatorCopy)
   {
-    v11 = v5;
-    coordinator = [(STUsageDetailsViewModelCoordinator *)coordinator isEqual:v5];
-    v5 = v11;
+    v11 = coordinatorCopy;
+    coordinator = [(STUsageDetailsViewModelCoordinator *)coordinator isEqual:coordinatorCopy];
+    coordinatorCopy = v11;
     if ((coordinator & 1) == 0)
     {
       [(STUsageDetailsViewModelCoordinator *)self->_coordinator removeObserver:self forKeyPath:@"viewModel.selectedWeekUsageReport" context:"KVOContextHistoricalUsageViewController"];
       [(STUsageDetailsViewModelCoordinator *)self->_coordinator removeObserver:self forKeyPath:@"viewModel.selectedDayUsageReport" context:"KVOContextHistoricalUsageViewController"];
       [(STUsageDetailsViewModelCoordinator *)self->_coordinator removeObserver:self forKeyPath:@"viewModel.selectedCoreDuetIdentifier" context:"KVOContextHistoricalUsageViewController"];
-      v7 = [(STUsageDetailsViewModelCoordinator *)self->_coordinator viewModel];
-      v8 = [v7 selectedDayUsageReport];
+      viewModel = [(STUsageDetailsViewModelCoordinator *)self->_coordinator viewModel];
+      selectedDayUsageReport = [viewModel selectedDayUsageReport];
 
-      objc_storeStrong(&self->_coordinator, a3);
-      v9 = [(STUsageDetailsViewModelCoordinator *)v11 viewModel];
-      v10 = [v9 selectedDayUsageReport];
+      objc_storeStrong(&self->_coordinator, coordinator);
+      viewModel2 = [(STUsageDetailsViewModelCoordinator *)v11 viewModel];
+      selectedDayUsageReport2 = [viewModel2 selectedDayUsageReport];
 
       [(STUsageDetailsViewModelCoordinator *)v11 addObserver:self forKeyPath:@"viewModel.selectedWeekUsageReport" options:5 context:"KVOContextHistoricalUsageViewController"];
-      [(STHistoricalUsageViewController *)self _selectedDayUsageReportDidChangeFrom:v8 to:v10];
+      [(STHistoricalUsageViewController *)self _selectedDayUsageReportDidChangeFrom:selectedDayUsageReport to:selectedDayUsageReport2];
       [(STUsageDetailsViewModelCoordinator *)v11 addObserver:self forKeyPath:@"viewModel.selectedDayUsageReport" options:3 context:"KVOContextHistoricalUsageViewController"];
       [(STUsageDetailsViewModelCoordinator *)v11 addObserver:self forKeyPath:@"viewModel.selectedCoreDuetIdentifier" options:3 context:"KVOContextHistoricalUsageViewController"];
 
-      v5 = v11;
+      coordinatorCopy = v11;
     }
   }
 
-  MEMORY[0x2821F96F8](coordinator, v5);
+  MEMORY[0x2821F96F8](coordinator, coordinatorCopy);
 }
 
-- (void)setSelectedWeekGraphViewController:(id)a3
+- (void)setSelectedWeekGraphViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(STUsageGraphViewController *)self->_selectedWeekGraphViewController removeObserver:self forKeyPath:@"selectedBarView" context:"KVOContextHistoricalUsageViewController"];
   selectedWeekGraphViewController = self->_selectedWeekGraphViewController;
-  self->_selectedWeekGraphViewController = v4;
-  v6 = v4;
+  self->_selectedWeekGraphViewController = controllerCopy;
+  v6 = controllerCopy;
 
   [(STUsageGraphViewController *)v6 addObserver:self forKeyPath:@"selectedBarView" options:3 context:"KVOContextHistoricalUsageViewController"];
 }
 
-- (void)setMaximumYAxisLabelWidth:(double)a3
+- (void)setMaximumYAxisLabelWidth:(double)width
 {
-  self->_maximumYAxisLabelWidth = a3;
-  v5 = [(STHistoricalUsageViewController *)self selectedWeekGraphViewController];
-  [v5 setYAxisLabelSectionWidth:a3];
+  self->_maximumYAxisLabelWidth = width;
+  selectedWeekGraphViewController = [(STHistoricalUsageViewController *)self selectedWeekGraphViewController];
+  [selectedWeekGraphViewController setYAxisLabelSectionWidth:width];
 
-  v6 = [(STHistoricalUsageViewController *)self selectedDayGraphViewController];
-  [v6 setYAxisLabelSectionWidth:a3];
+  selectedDayGraphViewController = [(STHistoricalUsageViewController *)self selectedDayGraphViewController];
+  [selectedDayGraphViewController setYAxisLabelSectionWidth:width];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  if (a6 == "KVOContextHistoricalUsageViewController")
+  pathCopy = path;
+  changeCopy = change;
+  if (context == "KVOContextHistoricalUsageViewController")
   {
     [(STHistoricalUsageViewController *)self coordinator];
 
-    if ([v10 isEqualToString:@"viewModel.selectedCoreDuetIdentifier"])
+    if ([pathCopy isEqualToString:@"viewModel.selectedCoreDuetIdentifier"])
     {
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v13 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v14 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v14)
+      if (v12 == null)
       {
 
         v12 = 0;
       }
 
-      v15 = [MEMORY[0x277CBEB68] null];
+      null2 = [MEMORY[0x277CBEB68] null];
 
-      if (v13 == v15)
+      if (v13 == null2)
       {
 
         v13 = 0;
@@ -204,12 +204,12 @@ LABEL_6:
     {
       [(STHistoricalUsageViewController *)self coordinator];
 
-      if ([v10 isEqualToString:@"viewModel.selectedWeekUsageReport"])
+      if ([pathCopy isEqualToString:@"viewModel.selectedWeekUsageReport"])
       {
-        v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-        v16 = [MEMORY[0x277CBEB68] null];
+        v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+        null3 = [MEMORY[0x277CBEB68] null];
 
-        if (v12 == v16)
+        if (v12 == null3)
         {
 
           v12 = 0;
@@ -221,21 +221,21 @@ LABEL_6:
 
       [(STHistoricalUsageViewController *)self coordinator];
 
-      if ([v10 isEqualToString:@"viewModel.selectedDayUsageReport"])
+      if ([pathCopy isEqualToString:@"viewModel.selectedDayUsageReport"])
       {
-        v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-        v17 = [MEMORY[0x277CBEB68] null];
+        v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+        null4 = [MEMORY[0x277CBEB68] null];
 
-        if (v12 == v17)
+        if (v12 == null4)
         {
 
           v12 = 0;
         }
 
-        v13 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-        v18 = [MEMORY[0x277CBEB68] null];
+        v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+        null5 = [MEMORY[0x277CBEB68] null];
 
-        if (v13 == v18)
+        if (v13 == null5)
         {
 
           v13 = 0;
@@ -246,24 +246,24 @@ LABEL_6:
 
       else
       {
-        if (![v10 isEqualToString:@"selectedBarView"])
+        if (![pathCopy isEqualToString:@"selectedBarView"])
         {
           goto LABEL_30;
         }
 
-        v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-        v19 = [MEMORY[0x277CBEB68] null];
+        v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+        null6 = [MEMORY[0x277CBEB68] null];
 
-        if (v12 == v19)
+        if (v12 == null6)
         {
 
           v12 = 0;
         }
 
-        v13 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-        v20 = [MEMORY[0x277CBEB68] null];
+        v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+        null7 = [MEMORY[0x277CBEB68] null];
 
-        if (v13 == v20)
+        if (v13 == null7)
         {
 
           v13 = 0;
@@ -279,111 +279,111 @@ LABEL_29:
 
   v21.receiver = self;
   v21.super_class = STHistoricalUsageViewController;
-  [(STHistoricalUsageViewController *)&v21 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+  [(STHistoricalUsageViewController *)&v21 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
 LABEL_30:
 }
 
-- (void)_selectedWeekUsageReportDidChange:(id)a3
+- (void)_selectedWeekUsageReportDidChange:(id)change
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(STHistoricalUsageViewController *)self isViewLoaded];
-  if (v4 && v5)
+  changeCopy = change;
+  isViewLoaded = [(STHistoricalUsageViewController *)self isViewLoaded];
+  if (changeCopy && isViewLoaded)
   {
-    v6 = [(STHistoricalUsageViewController *)self selectedWeekGraphViewController];
-    v7 = v6;
-    if (v6)
+    selectedWeekGraphViewController = [(STHistoricalUsageViewController *)self selectedWeekGraphViewController];
+    v7 = selectedWeekGraphViewController;
+    if (selectedWeekGraphViewController)
     {
-      v8 = [v6 week];
+      week = [selectedWeekGraphViewController week];
     }
 
     else
     {
-      v8 = 0x7FFFFFFFFFFFFFFFLL;
+      week = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v9 = [(STHistoricalUsageViewController *)self coordinator];
-    v10 = [v9 viewModel];
+    coordinator = [(STHistoricalUsageViewController *)self coordinator];
+    viewModel = [coordinator viewModel];
 
-    if ([v10 selectedDay] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([viewModel selectedDay] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [(STHistoricalUsageViewController *)self titleView];
-      [v11 setUsageReport:v4];
+      titleView = [(STHistoricalUsageViewController *)self titleView];
+      [titleView setUsageReport:changeCopy];
     }
 
-    v12 = [v10 selectedWeek];
-    if (v8 == 0x7FFFFFFFFFFFFFFFLL || v8 != v12)
+    selectedWeek = [viewModel selectedWeek];
+    if (week == 0x7FFFFFFFFFFFFFFFLL || week != selectedWeek)
     {
-      v15 = v12 > v8;
-      v14 = [(STHistoricalUsageViewController *)self _weekGraphViewControllerForWeek:v12 usageReport:v4];
+      v15 = selectedWeek > week;
+      v14 = [(STHistoricalUsageViewController *)self _weekGraphViewControllerForWeek:selectedWeek usageReport:changeCopy];
 
       [(STHistoricalUsageViewController *)self setSelectedWeekGraphViewController:v14];
-      v16 = [(STHistoricalUsageViewController *)self weekGraphPageViewController];
+      weekGraphPageViewController = [(STHistoricalUsageViewController *)self weekGraphPageViewController];
       v19[0] = v14;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-      [v16 setViewControllers:v17 direction:v15 animated:v8 != 0x7FFFFFFFFFFFFFFFLL completion:0];
+      [weekGraphPageViewController setViewControllers:v17 direction:v15 animated:week != 0x7FFFFFFFFFFFFFFFLL completion:0];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v18[0] = 67109120;
-        v18[1] = v8 == 0x7FFFFFFFFFFFFFFFLL;
+        v18[1] = week == 0x7FFFFFFFFFFFFFFFLL;
         _os_log_impl(&dword_264BA2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "STUI:: STHistoricalUsageViewController _selectedWeekUsageReportDidChange setViewControllers, isInitialLoad : %d", v18, 8u);
       }
     }
 
     else
     {
-      v13 = [(STHistoricalUsageViewController *)self _dataSetFromUsageReport:v4];
+      v13 = [(STHistoricalUsageViewController *)self _dataSetFromUsageReport:changeCopy];
       [v7 setDataSet:v13 animated:1];
 
       v14 = v7;
     }
 
-    [v14 setSelectedWeekday:{objc_msgSend(v10, "selectedDay")}];
+    [v14 setSelectedWeekday:{objc_msgSend(viewModel, "selectedDay")}];
   }
 }
 
-- (void)_selectedDayUsageReportDidChangeFrom:(id)a3 to:(id)a4
+- (void)_selectedDayUsageReportDidChangeFrom:(id)from to:(id)to
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (-[STHistoricalUsageViewController isViewLoaded](self, "isViewLoaded") && ([v6 isEqual:v7] & 1) == 0)
+  fromCopy = from;
+  toCopy = to;
+  if (-[STHistoricalUsageViewController isViewLoaded](self, "isViewLoaded") && ([fromCopy isEqual:toCopy] & 1) == 0)
   {
-    v8 = [(STHistoricalUsageViewController *)self selectedDayGraphViewController];
-    if (!v7)
+    selectedDayGraphViewController = [(STHistoricalUsageViewController *)self selectedDayGraphViewController];
+    if (!toCopy)
     {
 LABEL_14:
-      v27 = [(STHistoricalUsageViewController *)self dayGraphContainerView];
-      [v27 setHidden:v7 == 0];
+      dayGraphContainerView = [(STHistoricalUsageViewController *)self dayGraphContainerView];
+      [dayGraphContainerView setHidden:toCopy == 0];
 
-      [(STHistoricalUsageViewController *)self setCurrentViewMode:v7 != 0];
-      [(STHistoricalUsageViewController *)self setSelectedDayGraphViewController:v8];
+      [(STHistoricalUsageViewController *)self setCurrentViewMode:toCopy != 0];
+      [(STHistoricalUsageViewController *)self setSelectedDayGraphViewController:selectedDayGraphViewController];
 
       goto LABEL_15;
     }
 
-    v9 = [(STHistoricalUsageViewController *)self titleView];
-    [v9 setUsageReport:v7];
+    titleView = [(STHistoricalUsageViewController *)self titleView];
+    [titleView setUsageReport:toCopy];
 
-    v10 = [(STHistoricalUsageViewController *)self coordinator];
-    v11 = [v10 viewModel];
+    coordinator = [(STHistoricalUsageViewController *)self coordinator];
+    viewModel = [coordinator viewModel];
 
-    v12 = [v11 selectedDay];
-    v13 = [v11 selectedWeek];
-    if (v8)
+    selectedDay = [viewModel selectedDay];
+    selectedWeek = [viewModel selectedWeek];
+    if (selectedDayGraphViewController)
     {
-      v14 = [v8 day];
-      v15 = [v8 week];
-      if (v15 == v13)
+      v14 = [selectedDayGraphViewController day];
+      week = [selectedDayGraphViewController week];
+      if (week == selectedWeek)
       {
-        [v8 setWeek:v13];
-        [v8 setDay:v12];
-        v16 = [(STHistoricalUsageViewController *)self _dataSetFromUsageReport:v7];
-        [v8 setDataSet:v16 animated:1];
+        [selectedDayGraphViewController setWeek:selectedWeek];
+        [selectedDayGraphViewController setDay:selectedDay];
+        v16 = [(STHistoricalUsageViewController *)self _dataSetFromUsageReport:toCopy];
+        [selectedDayGraphViewController setDataSet:v16 animated:1];
         [(STHistoricalUsageViewController *)self maximumYAxisLabelWidth];
         v18 = v17;
-        [v8 maximumYAxisLabelWidth];
+        [selectedDayGraphViewController maximumYAxisLabelWidth];
         if (v18 >= v19)
         {
           v19 = v18;
@@ -391,41 +391,41 @@ LABEL_14:
 
         [(STHistoricalUsageViewController *)self setMaximumYAxisLabelWidth:v19];
 
-        if (v14 == v12)
+        if (v14 == selectedDay)
         {
           goto LABEL_13;
         }
 
         v20 = 0;
-        v21 = v13;
+        v21 = selectedWeek;
       }
 
       else
       {
-        v21 = v15;
-        v22 = [(STHistoricalUsageViewController *)self _dayGraphViewControllerForDay:v12 week:v13 usageReport:v7];
+        v21 = week;
+        v22 = [(STHistoricalUsageViewController *)self _dayGraphViewControllerForDay:selectedDay week:selectedWeek usageReport:toCopy];
 
         v20 = 1;
-        v8 = v22;
+        selectedDayGraphViewController = v22;
       }
     }
 
     else
     {
-      v8 = [(STHistoricalUsageViewController *)self _dayGraphViewControllerForDay:v12 week:v13 usageReport:v7];
+      selectedDayGraphViewController = [(STHistoricalUsageViewController *)self _dayGraphViewControllerForDay:selectedDay week:selectedWeek usageReport:toCopy];
       v20 = 1;
       v21 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v23 = v13 > v21;
-    v24 = [(STHistoricalUsageViewController *)self dayGraphPageViewController];
-    v28[0] = v8;
+    v23 = selectedWeek > v21;
+    dayGraphPageViewController = [(STHistoricalUsageViewController *)self dayGraphPageViewController];
+    v28[0] = selectedDayGraphViewController;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
-    [v24 setViewControllers:v25 direction:v23 animated:v20 completion:0];
+    [dayGraphPageViewController setViewControllers:v25 direction:v23 animated:v20 completion:0];
 
 LABEL_13:
-    v26 = [(STHistoricalUsageViewController *)self selectedWeekGraphViewController];
-    [v26 setSelectedWeekday:v12];
+    selectedWeekGraphViewController = [(STHistoricalUsageViewController *)self selectedWeekGraphViewController];
+    [selectedWeekGraphViewController setSelectedWeekday:selectedDay];
 
     goto LABEL_14;
   }
@@ -433,72 +433,72 @@ LABEL_13:
 LABEL_15:
 }
 
-- (void)_selectedBarViewDidChangeFrom:(id)a3 to:(id)a4
+- (void)_selectedBarViewDidChangeFrom:(id)from to:(id)to
 {
-  v14 = a3;
-  v6 = a4;
-  if (v14 != v6 && ([v14 isEqual:v6] & 1) == 0)
+  fromCopy = from;
+  toCopy = to;
+  if (fromCopy != toCopy && ([fromCopy isEqual:toCopy] & 1) == 0)
   {
-    v7 = [(STHistoricalUsageViewController *)self coordinator];
-    v8 = v7;
-    if (v6)
+    coordinator = [(STHistoricalUsageViewController *)self coordinator];
+    v8 = coordinator;
+    if (toCopy)
     {
-      v9 = [MEMORY[0x277CBEA80] currentCalendar];
-      v10 = [v6 dataPoint];
-      v11 = [v10 date];
-      v12 = [v9 component:512 fromDate:v11];
-      v13 = [v8 viewModel];
-      [v13 setSelectedDay:v12];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      dataPoint = [toCopy dataPoint];
+      date = [dataPoint date];
+      v12 = [currentCalendar component:512 fromDate:date];
+      viewModel = [v8 viewModel];
+      [viewModel setSelectedDay:v12];
     }
 
     else
     {
-      v9 = [v7 viewModel];
-      [v9 setSelectedDay:0x7FFFFFFFFFFFFFFFLL];
+      currentCalendar = [coordinator viewModel];
+      [currentCalendar setSelectedDay:0x7FFFFFFFFFFFFFFFLL];
     }
   }
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [STHistoricalUsageViewController pageViewController:viewControllerBeforeViewController:];
   }
 
-  v8 = [(STHistoricalUsageViewController *)self _nextGraphViewControllerForPageViewController:v6 currentGraphViewController:v7 direction:1];
+  v8 = [(STHistoricalUsageViewController *)self _nextGraphViewControllerForPageViewController:controllerCopy currentGraphViewController:viewControllerCopy direction:1];
 
   return v8;
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [STHistoricalUsageViewController pageViewController:viewControllerAfterViewController:];
   }
 
-  v8 = [(STHistoricalUsageViewController *)self _nextGraphViewControllerForPageViewController:v6 currentGraphViewController:v7 direction:0];
+  v8 = [(STHistoricalUsageViewController *)self _nextGraphViewControllerForPageViewController:controllerCopy currentGraphViewController:viewControllerCopy direction:0];
 
   return v8;
 }
 
-- (id)_nextGraphViewControllerForPageViewController:(id)a3 currentGraphViewController:(id)a4 direction:(int64_t)a5
+- (id)_nextGraphViewControllerForPageViewController:(id)controller currentGraphViewController:(id)viewController direction:(int64_t)direction
 {
-  v7 = a3;
-  v8 = [(STHistoricalUsageViewController *)self weekGraphPageViewController];
-  v9 = [v7 isEqual:v8];
+  controllerCopy = controller;
+  weekGraphPageViewController = [(STHistoricalUsageViewController *)self weekGraphPageViewController];
+  v9 = [controllerCopy isEqual:weekGraphPageViewController];
 
   if (!v9)
   {
-    v19 = [(STHistoricalUsageViewController *)self dayGraphPageViewController];
-    v20 = [v7 isEqual:v19];
+    dayGraphPageViewController = [(STHistoricalUsageViewController *)self dayGraphPageViewController];
+    v20 = [controllerCopy isEqual:dayGraphPageViewController];
 
     if (!v20)
     {
@@ -506,15 +506,15 @@ LABEL_15:
       goto LABEL_40;
     }
 
-    v16 = [(STHistoricalUsageViewController *)self selectedDayGraphViewController];
-    v21 = [v16 week];
-    v22 = [v16 day];
-    v17 = [MEMORY[0x277CBEA80] currentCalendar];
-    v23 = [v17 maximumRangeOfUnit:512];
+    selectedDayGraphViewController = [(STHistoricalUsageViewController *)self selectedDayGraphViewController];
+    week = [selectedDayGraphViewController week];
+    v22 = [selectedDayGraphViewController day];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v23 = [currentCalendar maximumRangeOfUnit:512];
     v25 = v24 + v23 - 1;
-    v26 = [v17 firstWeekday];
-    v27 = v26 - 1;
-    if (v26 == v23)
+    firstWeekday = [currentCalendar firstWeekday];
+    v27 = firstWeekday - 1;
+    if (firstWeekday == v23)
     {
       v27 = v25;
     }
@@ -529,30 +529,30 @@ LABEL_15:
       v28 = v22 + 1;
     }
 
-    v29 = v21 - (v22 == v27);
+    v29 = week - (v22 == v27);
     v30 = v22 - 1;
     if (v22 == v23)
     {
       v30 = v25;
     }
 
-    if (v22 == v26)
+    if (v22 == firstWeekday)
     {
-      v31 = v21 + 1;
+      v31 = week + 1;
     }
 
     else
     {
-      v31 = v21;
+      v31 = week;
     }
 
-    if (a5 != 1)
+    if (direction != 1)
     {
       v30 = 0;
       v31 = 0;
     }
 
-    if (a5)
+    if (direction)
     {
       v32 = v30;
     }
@@ -562,7 +562,7 @@ LABEL_15:
       v32 = v28;
     }
 
-    if (a5)
+    if (direction)
     {
       v33 = v31;
     }
@@ -572,11 +572,11 @@ LABEL_15:
       v33 = v29;
     }
 
-    v34 = [(STHistoricalUsageViewController *)self coordinator];
-    v35 = [v34 viewModel];
+    coordinator = [(STHistoricalUsageViewController *)self coordinator];
+    viewModel = [coordinator viewModel];
 
-    v36 = [v35 weekUsageReports];
-    v37 = [v36 count];
+    weekUsageReports = [viewModel weekUsageReports];
+    v37 = [weekUsageReports count];
 
     if (v33 >= v37)
     {
@@ -585,8 +585,8 @@ LABEL_15:
 
     else
     {
-      v42 = [v35 dayUsageReportByWeekdays];
-      v38 = [v42 objectAtIndexedSubscript:v33];
+      dayUsageReportByWeekdays = [viewModel dayUsageReportByWeekdays];
+      v38 = [dayUsageReportByWeekdays objectAtIndexedSubscript:v33];
       v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v32];
       v40 = [v38 objectForKeyedSubscript:v39];
 
@@ -604,12 +604,12 @@ LABEL_15:
     goto LABEL_38;
   }
 
-  v10 = [(STHistoricalUsageViewController *)self selectedWeekGraphViewController];
-  v11 = [v10 week];
+  selectedWeekGraphViewController = [(STHistoricalUsageViewController *)self selectedWeekGraphViewController];
+  week2 = [selectedWeekGraphViewController week];
 
-  if (a5 == 1)
+  if (direction == 1)
   {
-    v12 = v11 + 1;
+    v12 = week2 + 1;
   }
 
   else
@@ -617,24 +617,24 @@ LABEL_15:
     v12 = 0;
   }
 
-  if (a5)
+  if (direction)
   {
     v13 = v12;
   }
 
   else
   {
-    v13 = v11 - 1;
+    v13 = week2 - 1;
   }
 
-  v14 = [(STHistoricalUsageViewController *)self coordinator];
-  v15 = [v14 viewModel];
-  v16 = [v15 weekUsageReports];
+  coordinator2 = [(STHistoricalUsageViewController *)self coordinator];
+  viewModel2 = [coordinator2 viewModel];
+  selectedDayGraphViewController = [viewModel2 weekUsageReports];
 
-  if (v13 < [v16 count])
+  if (v13 < [selectedDayGraphViewController count])
   {
-    v17 = [v16 objectAtIndexedSubscript:v13];
-    v18 = [(STHistoricalUsageViewController *)self _weekGraphViewControllerForWeek:v13 usageReport:v17];
+    currentCalendar = [selectedDayGraphViewController objectAtIndexedSubscript:v13];
+    v18 = [(STHistoricalUsageViewController *)self _weekGraphViewControllerForWeek:v13 usageReport:currentCalendar];
 LABEL_38:
 
     goto LABEL_39;
@@ -648,20 +648,20 @@ LABEL_40:
   return v18;
 }
 
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v6 objectAtIndexedSubscript:0];
-  v8 = [v6 count];
+  controllerCopy = controller;
+  controllersCopy = controllers;
+  v7 = [controllersCopy objectAtIndexedSubscript:0];
+  v8 = [controllersCopy count];
 
   if (v8 != 1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [STHistoricalUsageViewController pageViewController:willTransitionToViewControllers:];
   }
 
-  v9 = [(STHistoricalUsageViewController *)self weekGraphPageViewController];
-  v10 = [v13 isEqual:v9];
+  weekGraphPageViewController = [(STHistoricalUsageViewController *)self weekGraphPageViewController];
+  v10 = [controllerCopy isEqual:weekGraphPageViewController];
 
   if (v10)
   {
@@ -670,8 +670,8 @@ LABEL_40:
 
   else
   {
-    v11 = [(STHistoricalUsageViewController *)self dayGraphPageViewController];
-    v12 = [v13 isEqual:v11];
+    dayGraphPageViewController = [(STHistoricalUsageViewController *)self dayGraphPageViewController];
+    v12 = [controllerCopy isEqual:dayGraphPageViewController];
 
     if (v12)
     {
@@ -680,92 +680,92 @@ LABEL_40:
   }
 }
 
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed
 {
-  v6 = a6;
-  v21 = a3;
-  v9 = a5;
-  v10 = [v9 firstObject];
-  v11 = [v9 count];
+  completedCopy = completed;
+  controllerCopy = controller;
+  controllersCopy = controllers;
+  firstObject = [controllersCopy firstObject];
+  v11 = [controllersCopy count];
 
   if (v11 != 1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [STHistoricalUsageViewController pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:];
   }
 
-  v12 = [(STHistoricalUsageViewController *)self weekGraphPageViewController];
-  v13 = [v21 isEqual:v12];
+  weekGraphPageViewController = [(STHistoricalUsageViewController *)self weekGraphPageViewController];
+  v13 = [controllerCopy isEqual:weekGraphPageViewController];
 
   if (v13)
   {
-    if (v6)
+    if (completedCopy)
     {
-      v14 = [(STHistoricalUsageViewController *)self selectedWeekGraphViewController];
-      v15 = [v14 week];
-      v16 = [(STHistoricalUsageViewController *)self coordinator];
-      v17 = [v16 viewModel];
-      [v17 setSelectedWeek:v15];
+      selectedWeekGraphViewController = [(STHistoricalUsageViewController *)self selectedWeekGraphViewController];
+      week = [selectedWeekGraphViewController week];
+      coordinator = [(STHistoricalUsageViewController *)self coordinator];
+      viewModel = [coordinator viewModel];
+      [viewModel setSelectedWeek:week];
 
 LABEL_9:
       goto LABEL_12;
     }
 
-    [(STHistoricalUsageViewController *)self setSelectedWeekGraphViewController:v10];
+    [(STHistoricalUsageViewController *)self setSelectedWeekGraphViewController:firstObject];
   }
 
   else
   {
-    v18 = [(STHistoricalUsageViewController *)self dayGraphPageViewController];
-    v19 = [v21 isEqual:v18];
+    dayGraphPageViewController = [(STHistoricalUsageViewController *)self dayGraphPageViewController];
+    v19 = [controllerCopy isEqual:dayGraphPageViewController];
 
     if (!v19)
     {
       goto LABEL_12;
     }
 
-    if (v6)
+    if (completedCopy)
     {
-      v14 = [(STHistoricalUsageViewController *)self selectedDayGraphViewController];
-      v16 = [(STHistoricalUsageViewController *)self coordinator];
-      v20 = [v16 viewModel];
-      [v20 setSelectedWeek:objc_msgSend(v14 selectedDay:{"week"), objc_msgSend(v14, "day")}];
+      selectedWeekGraphViewController = [(STHistoricalUsageViewController *)self selectedDayGraphViewController];
+      coordinator = [(STHistoricalUsageViewController *)self coordinator];
+      viewModel2 = [coordinator viewModel];
+      [viewModel2 setSelectedWeek:objc_msgSend(selectedWeekGraphViewController selectedDay:{"week"), objc_msgSend(selectedWeekGraphViewController, "day")}];
 
       goto LABEL_9;
     }
 
-    [(STHistoricalUsageViewController *)self setSelectedDayGraphViewController:v10];
+    [(STHistoricalUsageViewController *)self setSelectedDayGraphViewController:firstObject];
   }
 
 LABEL_12:
 }
 
-- (id)_weekGraphViewControllerForWeek:(unint64_t)a3 usageReport:(id)a4
+- (id)_weekGraphViewControllerForWeek:(unint64_t)week usageReport:(id)report
 {
-  v6 = a4;
+  reportCopy = report;
   v7 = [STUsageGraphViewController alloc];
   [(STHistoricalUsageViewController *)self graphHeight];
   v8 = [(STUsageGraphViewController *)v7 initWithTitleView:0 graphHeight:0 includePaddle:0 useVibrancy:?];
-  [(STUsageGraphViewController *)v8 setWeek:a3];
-  v9 = [(STHistoricalUsageViewController *)self _dataSetFromUsageReport:v6];
+  [(STUsageGraphViewController *)v8 setWeek:week];
+  v9 = [(STHistoricalUsageViewController *)self _dataSetFromUsageReport:reportCopy];
 
   [(STUsageGraphViewController *)v8 setDataSet:v9 animated:0];
-  v10 = [(STHistoricalUsageViewController *)self coordinator];
-  v11 = [v10 viewModel];
-  -[STUsageGraphViewController setSelectedWeekday:](v8, "setSelectedWeekday:", [v11 selectedDay]);
+  coordinator = [(STHistoricalUsageViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  -[STUsageGraphViewController setSelectedWeekday:](v8, "setSelectedWeekday:", [viewModel selectedDay]);
 
-  v12 = [(STHistoricalUsageViewController *)self weekGraphContainerHeightConstraint];
-  if (!v12)
+  weekGraphContainerHeightConstraint = [(STHistoricalUsageViewController *)self weekGraphContainerHeightConstraint];
+  if (!weekGraphContainerHeightConstraint)
   {
-    v13 = [(STUsageGraphViewController *)v8 view];
-    [v13 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+    view = [(STUsageGraphViewController *)v8 view];
+    [view systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
     v15 = v14;
 
-    v16 = [(STHistoricalUsageViewController *)self weekGraphContainerView];
-    v17 = [v16 heightAnchor];
-    v12 = [v17 constraintEqualToConstant:v15];
+    weekGraphContainerView = [(STHistoricalUsageViewController *)self weekGraphContainerView];
+    heightAnchor = [weekGraphContainerView heightAnchor];
+    weekGraphContainerHeightConstraint = [heightAnchor constraintEqualToConstant:v15];
 
-    [v12 setActive:1];
-    [(STHistoricalUsageViewController *)self setWeekGraphContainerHeightConstraint:v12];
+    [weekGraphContainerHeightConstraint setActive:1];
+    [(STHistoricalUsageViewController *)self setWeekGraphContainerHeightConstraint:weekGraphContainerHeightConstraint];
   }
 
   [(STHistoricalUsageViewController *)self maximumYAxisLabelWidth];
@@ -782,30 +782,30 @@ LABEL_12:
   return v8;
 }
 
-- (id)_dayGraphViewControllerForDay:(unint64_t)a3 week:(unint64_t)a4 usageReport:(id)a5
+- (id)_dayGraphViewControllerForDay:(unint64_t)day week:(unint64_t)week usageReport:(id)report
 {
-  v8 = a5;
+  reportCopy = report;
   v9 = [STUsageGraphViewController alloc];
   [(STHistoricalUsageViewController *)self graphHeight];
   v10 = [(STUsageGraphViewController *)v9 initWithTitleView:0 graphHeight:0 includePaddle:0 useVibrancy:?];
-  [(STUsageGraphViewController *)v10 setWeek:a4];
-  [(STUsageGraphViewController *)v10 setDay:a3];
-  v11 = [(STHistoricalUsageViewController *)self _dataSetFromUsageReport:v8];
+  [(STUsageGraphViewController *)v10 setWeek:week];
+  [(STUsageGraphViewController *)v10 setDay:day];
+  v11 = [(STHistoricalUsageViewController *)self _dataSetFromUsageReport:reportCopy];
 
   [(STUsageGraphViewController *)v10 setDataSet:v11 animated:0];
-  v12 = [(STHistoricalUsageViewController *)self dayGraphContainerHeightConstraint];
-  if (!v12)
+  dayGraphContainerHeightConstraint = [(STHistoricalUsageViewController *)self dayGraphContainerHeightConstraint];
+  if (!dayGraphContainerHeightConstraint)
   {
-    v13 = [(STUsageGraphViewController *)v10 view];
-    [v13 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+    view = [(STUsageGraphViewController *)v10 view];
+    [view systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
     v15 = v14;
 
-    v16 = [(STHistoricalUsageViewController *)self dayGraphContainerView];
-    v17 = [v16 heightAnchor];
-    v12 = [v17 constraintEqualToConstant:v15];
+    dayGraphContainerView = [(STHistoricalUsageViewController *)self dayGraphContainerView];
+    heightAnchor = [dayGraphContainerView heightAnchor];
+    dayGraphContainerHeightConstraint = [heightAnchor constraintEqualToConstant:v15];
 
-    [v12 setActive:1];
-    [(STHistoricalUsageViewController *)self setDayGraphContainerHeightConstraint:v12];
+    [dayGraphContainerHeightConstraint setActive:1];
+    [(STHistoricalUsageViewController *)self setDayGraphContainerHeightConstraint:dayGraphContainerHeightConstraint];
   }
 
   [(STHistoricalUsageViewController *)self maximumYAxisLabelWidth];
@@ -822,46 +822,46 @@ LABEL_12:
   return v10;
 }
 
-- (id)_dataSetFromUsageReport:(id)a3
+- (id)_dataSetFromUsageReport:(id)report
 {
-  v5 = a3;
-  v6 = [(STHistoricalUsageViewController *)self type];
-  v7 = v6;
+  reportCopy = report;
+  type = [(STHistoricalUsageViewController *)self type];
+  v7 = type;
   v8 = 0;
-  if (v6 > 4)
+  if (type > 4)
   {
-    if (v6 == 5)
+    if (type == 5)
     {
-      v10 = [v5 notificationsDataSet];
+      notificationsDataSet = [reportCopy notificationsDataSet];
     }
 
     else
     {
-      if (v6 != 6)
+      if (type != 6)
       {
         goto LABEL_11;
       }
 
-      v10 = [v5 pickupsDataSet];
+      notificationsDataSet = [reportCopy pickupsDataSet];
     }
 
     goto LABEL_10;
   }
 
-  if ((v6 - 2) < 3)
+  if ((type - 2) < 3)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"STHistoricalUsageViewController.m" lineNumber:468 description:{@"Unexpected type: %lu", v7}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"STHistoricalUsageViewController.m" lineNumber:468 description:{@"Unexpected type: %lu", v7}];
 
     v8 = 0;
     goto LABEL_11;
   }
 
-  if (v6 == 1)
+  if (type == 1)
   {
-    v10 = [v5 categoryUsageDataSet];
+    notificationsDataSet = [reportCopy categoryUsageDataSet];
 LABEL_10:
-    v8 = v10;
+    v8 = notificationsDataSet;
   }
 
 LABEL_11:

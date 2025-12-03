@@ -1,18 +1,18 @@
 @interface CLLocationCorrectiveCompensator
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLLocationCorrectiveCompensator)init;
-- (void)snapLocation:(id)a3 withReply:(id)a4;
+- (void)snapLocation:(id)location withReply:(id)reply;
 @end
 
 @implementation CLLocationCorrectiveCompensator
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -33,11 +33,11 @@
   return [(CLLocationCorrectiveCompensator *)&v3 initWithInboundProtocol:&OBJC_PROTOCOL___CLLocationCorrectiveCompensatorProtocol outboundProtocol:&OBJC_PROTOCOL___CLLocationCorrectiveCompensatorClientProtocol];
 }
 
-- (void)snapLocation:(id)a3 withReply:(id)a4
+- (void)snapLocation:(id)location withReply:(id)reply
 {
-  if (a3)
+  if (location)
   {
-    [a3 clientLocation];
+    [location clientLocation];
   }
 
   else
@@ -131,8 +131,8 @@
     v23 = *&v27[80];
     v18 = *v27;
     v19 = *&v27[16];
-    v17[4] = a3;
-    v17[5] = a4;
+    v17[4] = location;
+    v17[5] = reply;
     -[GEOCoarseLocationProvider fetchCoarseEquivalentForLocation:callbackQueue:callback:](coarseLocationProvider, "fetchCoarseEquivalentForLocation:callbackQueue:callback:", v11, [objc_msgSend(-[CLLocationCorrectiveCompensator universe](self "universe")], v17);
   }
 
@@ -148,7 +148,7 @@
     v34 = xmmword_101CE6D28;
     *buf = xmmword_101CE6CD8;
     *&buf[16] = xmmword_101CE6CE8;
-    (*(a4 + 2))(a4, [v16 initWithClientLocation:buf], 1, 0);
+    (*(reply + 2))(reply, [v16 initWithClientLocation:buf], 1, 0);
   }
 }
 

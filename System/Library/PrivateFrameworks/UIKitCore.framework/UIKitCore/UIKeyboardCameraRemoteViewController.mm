@@ -2,16 +2,16 @@
 - (UIKeyboardCameraRemoteViewControllerHost)delegate;
 - (void)keyboardCameraDidAccept;
 - (void)keyboardCameraDidCancel;
-- (void)keyboardCameraDidUpdateString:(id)a3;
+- (void)keyboardCameraDidUpdateString:(id)string;
 @end
 
 @implementation UIKeyboardCameraRemoteViewController
 
-- (void)keyboardCameraDidUpdateString:(id)a3
+- (void)keyboardCameraDidUpdateString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained keyboardCameraDidUpdateString:v4];
+  [WeakRetained keyboardCameraDidUpdateString:stringCopy];
 }
 
 - (void)keyboardCameraDidAccept

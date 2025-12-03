@@ -1,15 +1,15 @@
 @interface MTATimerRecentStartButton
-- (MTATimerRecentStartButton)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (MTATimerRecentStartButton)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation MTATimerRecentStartButton
 
-- (MTATimerRecentStartButton)initWithFrame:(CGRect)a3
+- (MTATimerRecentStartButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MTATimerRecentStartButton;
-  v3 = [(MTATimerRecentStartButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTATimerRecentStartButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor mtui_startResumeButtonTintColor];
@@ -22,13 +22,13 @@
   return v3;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = MTATimerRecentStartButton;
   [(MTATimerRecentStartButton *)&v6 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     +[UIColor mtui_disabledStartButtonTintColor];
   }

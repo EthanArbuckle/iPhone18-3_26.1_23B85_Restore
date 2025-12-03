@@ -1,7 +1,7 @@
 @interface PSDToolConnection
 - (id)services;
 - (void)cancelSyncSession;
-- (void)getOrderedActivityInfosWithCompletion:(id)a3;
+- (void)getOrderedActivityInfosWithCompletion:(id)completion;
 @end
 
 @implementation PSDToolConnection
@@ -14,13 +14,13 @@
   return v3;
 }
 
-- (void)getOrderedActivityInfosWithCompletion:(id)a3
+- (void)getOrderedActivityInfosWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v5 = a3;
-    v6 = [(PSDToolConnection *)self services];
-    (*(a3 + 2))(v5, v6);
+    completionCopy = completion;
+    services = [(PSDToolConnection *)self services];
+    (*(completion + 2))(completionCopy, services);
   }
 }
 

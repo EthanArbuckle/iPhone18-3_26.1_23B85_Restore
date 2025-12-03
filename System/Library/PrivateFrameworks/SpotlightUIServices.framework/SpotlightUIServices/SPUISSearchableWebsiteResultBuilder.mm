@@ -1,48 +1,48 @@
 @interface SPUISSearchableWebsiteResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-+ (id)cardSectionForSearchWebsiteCommand:(id)a3 searchString:(id)a4;
-+ (id)websiteNameForURL:(id)a3;
-- (SPUISSearchableWebsiteResultBuilder)initWithResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
++ (id)cardSectionForSearchWebsiteCommand:(id)command searchString:(id)string;
++ (id)websiteNameForURL:(id)l;
+- (SPUISSearchableWebsiteResultBuilder)initWithResult:(id)result;
 - (id)buildCommand;
 - (id)buildDescriptions;
 - (id)buildSecondaryCommand;
 - (id)buildThumbnail;
 - (id)buildTitle;
 - (id)bundleIdentifierForAppIconBadgeImage;
-- (void)setQueryContext:(id)a3;
+- (void)setQueryContext:(id)context;
 @end
 
 @implementation SPUISSearchableWebsiteResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v3 = [a3 contentType];
-  v4 = [v3 isEqualToString:@"com.apple.safari.quickWebsiteSearchProvider"];
+  contentType = [result contentType];
+  v4 = [contentType isEqualToString:@"com.apple.safari.quickWebsiteSearchProvider"];
 
   return v4;
 }
 
-- (SPUISSearchableWebsiteResultBuilder)initWithResult:(id)a3
+- (SPUISSearchableWebsiteResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v28.receiver = self;
   v28.super_class = SPUISSearchableWebsiteResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v28 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v28 initWithResult:resultCopy];
   v6 = v5;
   if (v5)
   {
     v7 = MEMORY[0x277CBEBC0];
-    v8 = [(SPUISResultBuilder *)v5 result];
-    v9 = [v8 valueForAttribute:*MEMORY[0x277CC3380] withType:objc_opt_class()];
+    result = [(SPUISResultBuilder *)v5 result];
+    v9 = [result valueForAttribute:*MEMORY[0x277CC3380] withType:objc_opt_class()];
     v10 = [v7 URLWithString:v9];
 
-    v11 = [(SPUISResultBuilder *)v6 result];
-    v12 = [v11 valueForAttribute:*MEMORY[0x277CC3388] withType:objc_opt_class()];
+    result2 = [(SPUISResultBuilder *)v6 result];
+    v12 = [result2 valueForAttribute:*MEMORY[0x277CC3388] withType:objc_opt_class()];
 
     v13 = objc_opt_new();
     [v13 setHost:v12];
-    v14 = [v10 scheme];
-    [v13 setScheme:v14];
+    scheme = [v10 scheme];
+    [v13 setScheme:scheme];
 
     v15 = [v13 URL];
     v16 = v15;
@@ -68,62 +68,62 @@
 
     else
     {
-      v21 = [v4 valueForAttribute:*MEMORY[0x277CC31F0] withType:objc_opt_class()];
+      v21 = [resultCopy valueForAttribute:*MEMORY[0x277CC31F0] withType:objc_opt_class()];
       [(SPUISSearchableWebsiteResultBuilder *)v6 setWebsiteName:v21];
     }
 
-    v22 = [(SPUISResultBuilder *)v6 result];
-    v23 = [v22 applicationBundleIdentifier];
-    [(SPUISSearchableWebsiteResultBuilder *)v6 setBundleIdentifier:v23];
+    result3 = [(SPUISResultBuilder *)v6 result];
+    applicationBundleIdentifier = [result3 applicationBundleIdentifier];
+    [(SPUISSearchableWebsiteResultBuilder *)v6 setBundleIdentifier:applicationBundleIdentifier];
 
-    v24 = [(SPUISResultBuilder *)v6 result];
-    v25 = [v24 valueForAttribute:*MEMORY[0x277CC2418] withType:objc_opt_class()];
+    result4 = [(SPUISResultBuilder *)v6 result];
+    v25 = [result4 valueForAttribute:*MEMORY[0x277CC2418] withType:objc_opt_class()];
     [(SPUISSearchableWebsiteResultBuilder *)v6 setEntityIdentifier:v25];
 
-    v26 = [v4 rankingItem];
-    -[SPUISSearchableWebsiteResultBuilder setPrimaryCommandExecutesSearch:](v6, "setPrimaryCommandExecutesSearch:", [v26 isMatchedAliasShortcut]);
+    rankingItem = [resultCopy rankingItem];
+    -[SPUISSearchableWebsiteResultBuilder setPrimaryCommandExecutesSearch:](v6, "setPrimaryCommandExecutesSearch:", [rankingItem isMatchedAliasShortcut]);
   }
 
   return v6;
 }
 
-+ (id)websiteNameForURL:(id)a3
++ (id)websiteNameForURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
     if (websiteNameForURL__onceToken != -1)
     {
       +[SPUISSearchableWebsiteResultBuilder websiteNameForURL:];
     }
 
-    v4 = [websiteNameForURL__websiteNameCache objectForKey:v3];
+    v4 = [websiteNameForURL__websiteNameCache objectForKey:lCopy];
     if (!v4)
     {
-      v5 = [v3 host];
-      if ([v5 hasPrefix:@"www."])
+      host = [lCopy host];
+      if ([host hasPrefix:@"www."])
       {
-        v6 = [v5 substringFromIndex:{objc_msgSend(@"www.", "length")}];
+        v6 = [host substringFromIndex:{objc_msgSend(@"www.", "length")}];
 
-        v5 = v6;
+        host = v6;
       }
 
-      if ([v5 length])
+      if ([host length])
       {
         ppDb = 0;
         v4 = 0;
         if (!sqlite3_open_v2([@"/System/Volumes/Preboot/Cryptexes/OS/System/Library/Frameworks/AuthenticationServices.framework/Versions/A/Resources/WebsiteNamesForPasswordManager.sqlite" UTF8String], &ppDb, 1, 0))
         {
-          v7 = [MEMORY[0x277CCACA8] defaultCStringEncoding];
+          defaultCStringEncoding = [MEMORY[0x277CCACA8] defaultCStringEncoding];
           pStmt = 0;
           v4 = 0;
           if (!sqlite3_prepare(ppDb, "SELECT name FROM websiteNames WHERE domain=?", -1, &pStmt, 0))
           {
-            sqlite3_bind_text(pStmt, 1, [v5 cStringUsingEncoding:v7], -1, 0);
+            sqlite3_bind_text(pStmt, 1, [host cStringUsingEncoding:defaultCStringEncoding], -1, 0);
             v4 = 0;
             if (sqlite3_step(pStmt) == 100)
             {
-              v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:sqlite3_column_text(pStmt encoding:{0), v7}];
+              v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:sqlite3_column_text(pStmt encoding:{0), defaultCStringEncoding}];
             }
 
             sqlite3_finalize(pStmt);
@@ -148,7 +148,7 @@
         v9 = &stru_287C50EE8;
       }
 
-      [websiteNameForURL__websiteNameCache setObject:v9 forKey:v3];
+      [websiteNameForURL__websiteNameCache setObject:v9 forKey:lCopy];
     }
 
     if ([(__CFString *)v4 length])
@@ -179,20 +179,20 @@ uint64_t __57__SPUISSearchableWebsiteResultBuilder_websiteNameForURL___block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setQueryContext:(id)a3
+- (void)setQueryContext:(id)context
 {
   v8.receiver = self;
   v8.super_class = SPUISSearchableWebsiteResultBuilder;
-  [(SPUISResultBuilder *)&v8 setQueryContext:a3];
+  [(SPUISResultBuilder *)&v8 setQueryContext:context];
   if ([(SPUISSearchableWebsiteResultBuilder *)self primaryCommandExecutesSearch])
   {
-    v4 = [(SPUISResultBuilder *)self queryContext];
-    v5 = [v4 searchString];
+    queryContext = [(SPUISResultBuilder *)self queryContext];
+    searchString = [queryContext searchString];
 
-    v6 = [v5 rangeOfString:@" "];
+    v6 = [searchString rangeOfString:@" "];
     if (v6 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = [v5 substringFromIndex:v6 + 1];
+      v7 = [searchString substringFromIndex:v6 + 1];
       [(SPUISSearchableWebsiteResultBuilder *)self setSearchString:v7];
     }
   }
@@ -200,42 +200,42 @@ uint64_t __57__SPUISSearchableWebsiteResultBuilder_websiteNameForURL___block_inv
 
 - (id)buildThumbnail
 {
-  v3 = [(SPUISSearchableWebsiteResultBuilder *)self thumbnail];
-  v4 = v3;
-  if (v3)
+  thumbnail = [(SPUISSearchableWebsiteResultBuilder *)self thumbnail];
+  v4 = thumbnail;
+  if (thumbnail)
   {
-    v5 = v3;
+    buildThumbnail = thumbnail;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SPUISSearchableWebsiteResultBuilder;
-    v5 = [(SPUISResultBuilder *)&v8 buildThumbnail];
+    buildThumbnail = [(SPUISResultBuilder *)&v8 buildThumbnail];
   }
 
-  v6 = v5;
+  v6 = buildThumbnail;
 
   return v6;
 }
 
 - (id)bundleIdentifierForAppIconBadgeImage
 {
-  v3 = [(SPUISSearchableWebsiteResultBuilder *)self bundleIdentifier];
-  v4 = v3;
-  if (v3)
+  bundleIdentifier = [(SPUISSearchableWebsiteResultBuilder *)self bundleIdentifier];
+  v4 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v5 = v3;
+    bundleIdentifierForAppIconBadgeImage = bundleIdentifier;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SPUISSearchableWebsiteResultBuilder;
-    v5 = [(SPUISResultBuilder *)&v8 bundleIdentifierForAppIconBadgeImage];
+    bundleIdentifierForAppIconBadgeImage = [(SPUISResultBuilder *)&v8 bundleIdentifierForAppIconBadgeImage];
   }
 
-  v6 = v5;
+  v6 = bundleIdentifierForAppIconBadgeImage;
 
   return v6;
 }
@@ -244,32 +244,32 @@ uint64_t __57__SPUISSearchableWebsiteResultBuilder_websiteNameForURL___block_inv
 {
   v16.receiver = self;
   v16.super_class = SPUISSearchableWebsiteResultBuilder;
-  v3 = [(SPUISResultBuilder *)&v16 buildTitle];
+  buildTitle = [(SPUISResultBuilder *)&v16 buildTitle];
   if ([(SPUISSearchableWebsiteResultBuilder *)self primaryCommandExecutesSearch])
   {
     v4 = MEMORY[0x277D4C598];
     v5 = MEMORY[0x277CCACA8];
-    v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v7 = [v6 localizedStringForKey:@"Search %@" value:0 table:0];
-    v8 = [(SPUISSearchableWebsiteResultBuilder *)self websiteName];
-    v9 = v8;
-    if (!v8)
+    websiteName3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v7 = [websiteName3 localizedStringForKey:@"Search %@" value:0 table:0];
+    websiteName = [(SPUISSearchableWebsiteResultBuilder *)self websiteName];
+    text = websiteName;
+    if (!websiteName)
     {
-      v9 = [v3 text];
+      text = [buildTitle text];
     }
 
-    v10 = [v5 stringWithFormat:v7, v9];
+    v10 = [v5 stringWithFormat:v7, text];
     v11 = [v4 textWithString:v10];
 
-    if (!v8)
+    if (!websiteName)
     {
     }
   }
 
   else
   {
-    v12 = [(SPUISSearchableWebsiteResultBuilder *)self websiteName];
-    v13 = [v12 length];
+    websiteName2 = [(SPUISSearchableWebsiteResultBuilder *)self websiteName];
+    v13 = [websiteName2 length];
 
     if (!v13)
     {
@@ -277,15 +277,15 @@ uint64_t __57__SPUISSearchableWebsiteResultBuilder_websiteNameForURL___block_inv
     }
 
     v14 = MEMORY[0x277D4C598];
-    v6 = [(SPUISSearchableWebsiteResultBuilder *)self websiteName];
-    v11 = [v14 textWithString:v6];
-    v7 = v3;
+    websiteName3 = [(SPUISSearchableWebsiteResultBuilder *)self websiteName];
+    v11 = [v14 textWithString:websiteName3];
+    v7 = buildTitle;
   }
 
-  v3 = v11;
+  buildTitle = v11;
 LABEL_10:
 
-  return v3;
+  return buildTitle;
 }
 
 - (id)buildDescriptions
@@ -293,14 +293,14 @@ LABEL_10:
   v9[1] = *MEMORY[0x277D85DE8];
   if ([(SPUISSearchableWebsiteResultBuilder *)self primaryCommandExecutesSearch])
   {
-    v3 = [(SPUISSearchableWebsiteResultBuilder *)self bundleIdentifier];
+    bundleIdentifier = [(SPUISSearchableWebsiteResultBuilder *)self bundleIdentifier];
     SSAppNameForBundleId();
   }
 
   else
   {
-    v3 = [(SPUISSearchableWebsiteResultBuilder *)self url];
-    [SPUISLocalWebResultBuilder stringWithUrl:v3];
+    bundleIdentifier = [(SPUISSearchableWebsiteResultBuilder *)self url];
+    [SPUISLocalWebResultBuilder stringWithUrl:bundleIdentifier];
   }
   v4 = ;
 
@@ -325,10 +325,10 @@ LABEL_10:
 {
   if ([(SPUISSearchableWebsiteResultBuilder *)self primaryCommandExecutesSearch])
   {
-    v3 = [(SPUISSearchableWebsiteResultBuilder *)self bundleIdentifier];
-    v4 = [(SPUISSearchableWebsiteResultBuilder *)self entityIdentifier];
-    v5 = [(SPUISSearchableWebsiteResultBuilder *)self searchString];
-    v6 = [_TtC19SpotlightUIServices32SPUISQuickWebsiteSearchUtilities quickWebsiteSearchCommandWithBundleIdentifier:v3 entityIdentifier:v4 searchQuery:v5];
+    bundleIdentifier = [(SPUISSearchableWebsiteResultBuilder *)self bundleIdentifier];
+    entityIdentifier = [(SPUISSearchableWebsiteResultBuilder *)self entityIdentifier];
+    searchString = [(SPUISSearchableWebsiteResultBuilder *)self searchString];
+    buildCommand = [_TtC19SpotlightUIServices32SPUISQuickWebsiteSearchUtilities quickWebsiteSearchCommandWithBundleIdentifier:bundleIdentifier entityIdentifier:entityIdentifier searchQuery:searchString];
   }
 
   else
@@ -337,22 +337,22 @@ LABEL_10:
 
     if (v7)
     {
-      v6 = objc_opt_new();
+      buildCommand = objc_opt_new();
       v8 = MEMORY[0x277D4C550];
       v9 = [(SPUISSearchableWebsiteResultBuilder *)self url];
       v10 = [v8 punchoutWithURL:v9];
-      [v6 setPunchout:v10];
+      [buildCommand setPunchout:v10];
     }
 
     else
     {
       v12.receiver = self;
       v12.super_class = SPUISSearchableWebsiteResultBuilder;
-      v6 = [(SPUISResultBuilder *)&v12 buildCommand];
+      buildCommand = [(SPUISResultBuilder *)&v12 buildCommand];
     }
   }
 
-  return v6;
+  return buildCommand;
 }
 
 - (id)buildSecondaryCommand
@@ -364,52 +364,52 @@ LABEL_10:
 
   else
   {
-    v4 = [(SPUISSearchableWebsiteResultBuilder *)self buildThumbnail];
-    if (!v4)
+    buildThumbnail = [(SPUISSearchableWebsiteResultBuilder *)self buildThumbnail];
+    if (!buildThumbnail)
     {
-      v4 = objc_opt_new();
-      v5 = [(SPUISSearchableWebsiteResultBuilder *)self bundleIdentifier];
-      [v4 setBundleIdentifier:v5];
+      buildThumbnail = objc_opt_new();
+      bundleIdentifier = [(SPUISSearchableWebsiteResultBuilder *)self bundleIdentifier];
+      [buildThumbnail setBundleIdentifier:bundleIdentifier];
     }
 
     v3 = objc_opt_new();
-    v6 = [(SPUISSearchableWebsiteResultBuilder *)self bundleIdentifier];
-    [v3 setBundleIdentifier:v6];
+    bundleIdentifier2 = [(SPUISSearchableWebsiteResultBuilder *)self bundleIdentifier];
+    [v3 setBundleIdentifier:bundleIdentifier2];
 
-    v7 = [(SPUISSearchableWebsiteResultBuilder *)self entityIdentifier];
-    [v3 setEntityIdentifier:v7];
+    entityIdentifier = [(SPUISSearchableWebsiteResultBuilder *)self entityIdentifier];
+    [v3 setEntityIdentifier:entityIdentifier];
 
-    [v3 setTokenImage:v4];
-    v8 = [(SPUISSearchableWebsiteResultBuilder *)self websiteName];
-    [v3 setTokenString:v8];
+    [v3 setTokenImage:buildThumbnail];
+    websiteName = [(SPUISSearchableWebsiteResultBuilder *)self websiteName];
+    [v3 setTokenString:websiteName];
   }
 
   return v3;
 }
 
-+ (id)cardSectionForSearchWebsiteCommand:(id)a3 searchString:(id)a4
++ (id)cardSectionForSearchWebsiteCommand:(id)command searchString:(id)string
 {
-  v5 = a4;
-  v6 = a3;
+  stringCopy = string;
+  commandCopy = command;
   v7 = objc_opt_new();
   [v7 setPrimaryCommandExecutesSearch:1];
-  [v7 setSearchString:v5];
+  [v7 setSearchString:stringCopy];
 
-  v8 = [v6 tokenString];
-  [v7 setWebsiteName:v8];
+  tokenString = [commandCopy tokenString];
+  [v7 setWebsiteName:tokenString];
 
-  v9 = [v6 bundleIdentifier];
-  [v7 setBundleIdentifier:v9];
+  bundleIdentifier = [commandCopy bundleIdentifier];
+  [v7 setBundleIdentifier:bundleIdentifier];
 
-  v10 = [v6 entityIdentifier];
-  [v7 setEntityIdentifier:v10];
+  entityIdentifier = [commandCopy entityIdentifier];
+  [v7 setEntityIdentifier:entityIdentifier];
 
-  v11 = [v6 tokenImage];
+  tokenImage = [commandCopy tokenImage];
 
-  [v7 setThumbnail:v11];
-  v12 = [v7 buildInlineCardSection];
+  [v7 setThumbnail:tokenImage];
+  buildInlineCardSection = [v7 buildInlineCardSection];
 
-  return v12;
+  return buildInlineCardSection;
 }
 
 @end

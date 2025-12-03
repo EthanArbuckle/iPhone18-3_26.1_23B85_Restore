@@ -1,9 +1,9 @@
 @interface ACDAuthenticationDialogManager
 - (ACDAuthenticationDialogManager)init;
-- (BOOL)_confirmUserWantsToOpenAuthenticationURLForAccount:(id)a3;
-- (void)_launchDialogContainerAppForAccount:(id)a3 shouldConfirm:(BOOL)a4 completion:(id)a5;
+- (BOOL)_confirmUserWantsToOpenAuthenticationURLForAccount:(id)account;
+- (void)_launchDialogContainerAppForAccount:(id)account shouldConfirm:(BOOL)confirm completion:(id)completion;
 - (void)authenticationDialogCrashed;
-- (void)contextForAuthenticationDialog:(id)a3;
+- (void)contextForAuthenticationDialog:(id)dialog;
 @end
 
 @implementation ACDAuthenticationDialogManager
@@ -61,25 +61,25 @@ void __130__ACDAuthenticationDialogManager_openAuthenticationURLForAccount_withD
   }
 }
 
-- (void)_launchDialogContainerAppForAccount:(id)a3 shouldConfirm:(BOOL)a4 completion:(id)a5
+- (void)_launchDialogContainerAppForAccount:(id)account shouldConfirm:(BOOL)confirm completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 identifier];
+  accountCopy = account;
+  completionCopy = completion;
+  identifier = [accountCopy identifier];
   activeAccountID = self->_activeAccountID;
-  self->_activeAccountID = v10;
+  self->_activeAccountID = identifier;
 
   v12 = dispatch_get_global_queue(2, 0);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __95__ACDAuthenticationDialogManager__launchDialogContainerAppForAccount_shouldConfirm_completion___block_invoke;
   v15[3] = &unk_27848CF88;
-  v18 = a4;
+  confirmCopy = confirm;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v13 = v9;
-  v14 = v8;
+  v16 = accountCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = accountCopy;
   dispatch_async(v12, v15);
 }
 
@@ -132,19 +132,19 @@ void __95__ACDAuthenticationDialogManager__launchDialogContainerAppForAccount_sh
   v6();
 }
 
-- (BOOL)_confirmUserWantsToOpenAuthenticationURLForAccount:(id)a3
+- (BOOL)_confirmUserWantsToOpenAuthenticationURLForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v4 = [v3 accountType];
-  v5 = [v4 accountTypeDescription];
+  accountType = [accountCopy accountType];
+  accountTypeDescription = [accountType accountTypeDescription];
 
-  if (v5)
+  if (accountTypeDescription)
   {
-    v6 = v5;
+    v6 = accountTypeDescription;
   }
 
   else
@@ -155,8 +155,8 @@ void __95__ACDAuthenticationDialogManager__launchDialogContainerAppForAccount_sh
   v7 = MEMORY[0x277CCACA8];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"VERIFICATION_REQUIRED_MESSAGE_FORMAT" value:&stru_2835374D8 table:@"Localizable"];
-  v10 = [v3 username];
-  v11 = [v7 stringWithFormat:v9, v6, v10];
+  username = [accountCopy username];
+  v11 = [v7 stringWithFormat:v9, v6, username];
 
   v12 = _ACDLogSystem();
   v22 = v6;
@@ -216,25 +216,25 @@ intptr_t __85__ACDAuthenticationDialogManager__confirmUserWantsToOpenAuthenticat
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)contextForAuthenticationDialog:(id)a3
+- (void)contextForAuthenticationDialog:(id)dialog
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(ACDQueueDictionary *)v5->_dialogRequestQueues firstObjectInQueueForKey:v5->_activeAccountID];
+  dialogCopy = dialog;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(ACDQueueDictionary *)selfCopy->_dialogRequestQueues firstObjectInQueueForKey:selfCopy->_activeAccountID];
   v7 = v6;
   if (v6)
   {
     v8 = [v6 url];
-    v9 = [v7 account];
-    v10 = [v9 accountDescription];
+    account = [v7 account];
+    accountDescription = [account accountDescription];
 
-    v11 = [v7 account];
-    v12 = [v11 username];
+    account2 = [v7 account];
+    username = [account2 username];
 
-    v13 = [v7 authDelegateClassName];
-    v14 = [v7 authDelegateClassBundlePath];
+    authDelegateClassName = [v7 authDelegateClassName];
+    authDelegateClassBundlePath = [v7 authDelegateClassBundlePath];
     v15 = _ACDLogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -242,17 +242,17 @@ intptr_t __85__ACDAuthenticationDialogManager__confirmUserWantsToOpenAuthenticat
       v19 = 138413314;
       v20 = v8;
       v21 = 2112;
-      v22 = v10;
+      v22 = accountDescription;
       v23 = 2112;
       v24 = v18;
       v25 = 2112;
-      v26 = v13;
+      v26 = authDelegateClassName;
       v27 = 2112;
-      v28 = v14;
+      v28 = authDelegateClassBundlePath;
       _os_log_debug_impl(&dword_221D2F000, v15, OS_LOG_TYPE_DEBUG, "ACDAuthenticationDialogManager: providing active dialog with URL: %@ title: %@ username: %@ authDelegateClassName %@ authDelegateClassBundlePath %@", &v19, 0x34u);
     }
 
-    v4[2](v4, v8, v10, v12, v13, v14);
+    dialogCopy[2](dialogCopy, v8, accountDescription, username, authDelegateClassName, authDelegateClassBundlePath);
   }
 
   else
@@ -263,10 +263,10 @@ intptr_t __85__ACDAuthenticationDialogManager__confirmUserWantsToOpenAuthenticat
       [ACDAuthenticationDialogManager contextForAuthenticationDialog:];
     }
 
-    v4[2](v4, 0, 0, 0, 0, 0);
+    dialogCopy[2](dialogCopy, 0, 0, 0, 0, 0);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v17 = *MEMORY[0x277D85DE8];
 }
 

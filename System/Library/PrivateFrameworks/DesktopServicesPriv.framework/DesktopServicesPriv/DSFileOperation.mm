@@ -1,9 +1,9 @@
 @interface DSFileOperation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (DSFileOperation)init;
-- (DSFileOperation)initWithCoder:(id)a3;
+- (DSFileOperation)initWithCoder:(id)coder;
 - (UTType)utType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DSFileOperation
@@ -23,25 +23,25 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
+  coderCopy = coder;
   operationID = self->_operationID;
   v5 = NSStringFromSelector(sel_operationID);
-  [v10 encodeObject:operationID forKey:v5];
+  [coderCopy encodeObject:operationID forKey:v5];
 
   dateStarted = self->_dateStarted;
   v7 = NSStringFromSelector(sel_dateStarted);
-  [v10 encodeObject:dateStarted forKey:v7];
+  [coderCopy encodeObject:dateStarted forKey:v7];
 
   utType = self->_utType;
   v9 = NSStringFromSelector(sel_utType);
-  [v10 encodeObject:utType forKey:v9];
+  [coderCopy encodeObject:utType forKey:v9];
 }
 
-- (DSFileOperation)initWithCoder:(id)a3
+- (DSFileOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = DSFileOperation;
   v5 = [(DSFileOperation *)&v19 init];
@@ -49,19 +49,19 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_operationID);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     operationID = v5->_operationID;
     v5->_operationID = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_dateStarted);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     dateStarted = v5->_dateStarted;
     v5->_dateStarted = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector(sel_utType);
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
     utType = v5->_utType;
     v5->_utType = v16;
   }
@@ -69,12 +69,12 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4[1] isEqual:self->_operationID];
+    v5 = [equalCopy[1] isEqual:self->_operationID];
   }
 
   else
@@ -94,9 +94,9 @@
     v4 = LogObj(5);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v5 = [(DSFileOperationID *)self->_operationID uuid];
+      uuid = [(DSFileOperationID *)self->_operationID uuid];
       v9 = 138543362;
-      v10 = v5;
+      v10 = uuid;
       _os_log_impl(&dword_1E5674000, v4, OS_LOG_TYPE_ERROR, "Operation %{public}@ missing UTType, using generic type instead", &v9, 0xCu);
     }
 

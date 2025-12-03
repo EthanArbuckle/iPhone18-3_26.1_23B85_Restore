@@ -1,5 +1,5 @@
 @interface PSPointerAccessory
-- (CGAffineTransform)_transformWithOffset:(SEL)a3;
+- (CGAffineTransform)_transformWithOffset:(SEL)offset;
 - (CGAffineTransform)finalTransform;
 - (NSString)positionRecordKey;
 @end
@@ -13,10 +13,10 @@
   return [(PSPointerAccessory *)self _transformWithOffset:?];
 }
 
-- (CGAffineTransform)_transformWithOffset:(SEL)a3
+- (CGAffineTransform)_transformWithOffset:(SEL)offset
 {
-  v7 = [(PSPointerAccessory *)self shape];
-  [v7 bounds];
+  shape = [(PSPointerAccessory *)self shape];
+  [shape bounds];
   v8 = CGRectGetHeight(v16) * 0.5 + a4;
 
   *&retstr->c = 0u;

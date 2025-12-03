@@ -1,7 +1,7 @@
 @interface PGDejunkerDeduperOptions
-- (PGDejunkerDeduperOptions)initWithDictionaryRepresentation:(id)a3;
+- (PGDejunkerDeduperOptions)initWithDictionaryRepresentation:(id)representation;
 - (id)description;
-- (id)dictionaryRepresentationRestrictingToGlobalOptions:(BOOL)a3;
+- (id)dictionaryRepresentationRestrictingToGlobalOptions:(BOOL)options;
 - (id)initForCuratedLibrary;
 - (id)initForMemories;
 @end
@@ -197,13 +197,13 @@
   [v4 appendFormat:@"\tTime interval: %.3f", *&self->_finalPassTimeInterval];
   [v4 appendFormat:@"\tMaximum time group extension: %.3f", *&self->_finalPassMaximumTimeGroupExtension];
   [v4 appendFormat:@"\tDeduping threshold: %.3f", *&self->_finalPassDedupingThreshold];
-  v21 = [(NSSet *)self->_identifiersOfRequiredItems allObjects];
-  v22 = [v21 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [(NSSet *)self->_identifiersOfRequiredItems allObjects];
+  v22 = [allObjects sortedArrayUsingSelector:sel_compare_];
   v23 = [v22 componentsJoinedByString:{@", "}];
   [v4 appendFormat:@"\tRequired Item Identifiers: %@", v23];
 
-  v24 = [(NSSet *)self->_identifiersOfEligibleItems allObjects];
-  v25 = [v24 sortedArrayUsingSelector:sel_compare_];
+  allObjects2 = [(NSSet *)self->_identifiersOfEligibleItems allObjects];
+  v25 = [allObjects2 sortedArrayUsingSelector:sel_compare_];
   v26 = [v25 componentsJoinedByString:{@", "}];
   [v4 appendFormat:@"\tEligible Item Identifiers: %@", v26];
 
@@ -212,7 +212,7 @@
   return v4;
 }
 
-- (id)dictionaryRepresentationRestrictingToGlobalOptions:(BOOL)a3
+- (id)dictionaryRepresentationRestrictingToGlobalOptions:(BOOL)options
 {
   v51[36] = *MEMORY[0x277D85DE8];
   baseFlavor = self->_baseFlavor;
@@ -330,7 +330,7 @@
   v51[35] = v13;
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:36];
 
-  if (a3)
+  if (options)
   {
     v14 = v26;
   }
@@ -338,12 +338,12 @@
   else
   {
     v15 = [v26 mutableCopy];
-    v16 = [(NSSet *)self->_identifiersOfRequiredItems allObjects];
-    v17 = [v16 sortedArrayUsingSelector:sel_compare_];
+    allObjects = [(NSSet *)self->_identifiersOfRequiredItems allObjects];
+    v17 = [allObjects sortedArrayUsingSelector:sel_compare_];
     [v15 setObject:v17 forKeyedSubscript:@"identifiersOfRequiredItems"];
 
-    v18 = [(NSSet *)self->_identifiersOfEligibleItems allObjects];
-    v19 = [v18 sortedArrayUsingSelector:sel_compare_];
+    allObjects2 = [(NSSet *)self->_identifiersOfEligibleItems allObjects];
+    v19 = [allObjects2 sortedArrayUsingSelector:sel_compare_];
     [v15 setObject:v19 forKeyedSubscript:@"identifiersOfEligibleItems"];
 
     v14 = v15;
@@ -354,325 +354,325 @@
   return v14;
 }
 
-- (PGDejunkerDeduperOptions)initWithDictionaryRepresentation:(id)a3
+- (PGDejunkerDeduperOptions)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"baseFlavor"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"baseFlavor"];
   if ([v5 isEqualToString:@"Memories"])
   {
-    v6 = [(PGDejunkerDeduperOptions *)self initForMemories];
+    initForMemories = [(PGDejunkerDeduperOptions *)self initForMemories];
   }
 
   else
   {
-    v6 = [(PGDejunkerDeduperOptions *)self initForCuratedLibrary];
+    initForMemories = [(PGDejunkerDeduperOptions *)self initForCuratedLibrary];
   }
 
-  v7 = v6;
+  v7 = initForMemories;
 
   if (!v7)
   {
     goto LABEL_122;
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"doIdenticalDeduping"];
+  v8 = [representationCopy objectForKeyedSubscript:@"doIdenticalDeduping"];
 
   if (v8)
   {
-    v9 = [v4 objectForKeyedSubscript:@"doIdenticalDeduping"];
+    v9 = [representationCopy objectForKeyedSubscript:@"doIdenticalDeduping"];
     *(v7 + 16) = [v9 BOOLValue];
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"identicalDedupingTimeInterval"];
+  v10 = [representationCopy objectForKeyedSubscript:@"identicalDedupingTimeInterval"];
 
   if (v10)
   {
-    v11 = [v4 objectForKeyedSubscript:@"identicalDedupingTimeInterval"];
+    v11 = [representationCopy objectForKeyedSubscript:@"identicalDedupingTimeInterval"];
     [v11 doubleValue];
     if (v12 > 0.0)
     {
-      v13 = [v4 objectForKeyedSubscript:@"identicalDedupingTimeInterval"];
+      v13 = [representationCopy objectForKeyedSubscript:@"identicalDedupingTimeInterval"];
       [v13 doubleValue];
       v7[4] = v14;
     }
   }
 
-  v15 = [v4 objectForKeyedSubscript:@"identicalDedupingTimeIntervalForPeople"];
+  v15 = [representationCopy objectForKeyedSubscript:@"identicalDedupingTimeIntervalForPeople"];
 
   if (v15)
   {
-    v16 = [v4 objectForKeyedSubscript:@"identicalDedupingTimeIntervalForPeople"];
+    v16 = [representationCopy objectForKeyedSubscript:@"identicalDedupingTimeIntervalForPeople"];
     [v16 doubleValue];
     if (v17 > 0.0)
     {
-      v18 = [v4 objectForKeyedSubscript:@"identicalDedupingTimeIntervalForPeople"];
+      v18 = [representationCopy objectForKeyedSubscript:@"identicalDedupingTimeIntervalForPeople"];
       [v18 doubleValue];
       v7[5] = v19;
     }
   }
 
-  v20 = [v4 objectForKeyedSubscript:@"identicalDedupingMaximumTimeGroupExtension"];
+  v20 = [representationCopy objectForKeyedSubscript:@"identicalDedupingMaximumTimeGroupExtension"];
 
   if (v20)
   {
-    v21 = [v4 objectForKeyedSubscript:@"identicalDedupingMaximumTimeGroupExtension"];
+    v21 = [representationCopy objectForKeyedSubscript:@"identicalDedupingMaximumTimeGroupExtension"];
     [v21 doubleValue];
     if (v22 > 0.0)
     {
-      v23 = [v4 objectForKeyedSubscript:@"identicalDedupingMaximumTimeGroupExtension"];
+      v23 = [representationCopy objectForKeyedSubscript:@"identicalDedupingMaximumTimeGroupExtension"];
       [v23 doubleValue];
       v7[6] = v24;
     }
   }
 
-  v25 = [v4 objectForKeyedSubscript:@"maximumNumberOfItemsPerIdenticalCluster"];
+  v25 = [representationCopy objectForKeyedSubscript:@"maximumNumberOfItemsPerIdenticalCluster"];
 
   if (v25)
   {
-    v26 = [v4 objectForKeyedSubscript:@"maximumNumberOfItemsPerIdenticalCluster"];
-    v27 = [v26 unsignedIntegerValue];
-    if (!v27)
+    v26 = [representationCopy objectForKeyedSubscript:@"maximumNumberOfItemsPerIdenticalCluster"];
+    unsignedIntegerValue = [v26 unsignedIntegerValue];
+    if (!unsignedIntegerValue)
     {
-      v27 = v7[7];
+      unsignedIntegerValue = v7[7];
     }
 
-    v7[7] = v27;
+    v7[7] = unsignedIntegerValue;
   }
 
-  v28 = [v4 objectForKeyedSubscript:@"identicalDedupingThreshold"];
+  v28 = [representationCopy objectForKeyedSubscript:@"identicalDedupingThreshold"];
 
   if (v28)
   {
-    v29 = [v4 objectForKeyedSubscript:@"identicalDedupingThreshold"];
+    v29 = [representationCopy objectForKeyedSubscript:@"identicalDedupingThreshold"];
     [v29 doubleValue];
     if (v30 > 0.0)
     {
-      v31 = [v4 objectForKeyedSubscript:@"identicalDedupingThreshold"];
+      v31 = [representationCopy objectForKeyedSubscript:@"identicalDedupingThreshold"];
       [v31 doubleValue];
       v7[8] = v32;
     }
   }
 
-  v33 = [v4 objectForKeyedSubscript:@"identicalDedupingThresholdForPeople"];
+  v33 = [representationCopy objectForKeyedSubscript:@"identicalDedupingThresholdForPeople"];
 
   if (v33)
   {
-    v34 = [v4 objectForKeyedSubscript:@"identicalDedupingThresholdForPeople"];
+    v34 = [representationCopy objectForKeyedSubscript:@"identicalDedupingThresholdForPeople"];
     [v34 doubleValue];
     if (v35 > 0.0)
     {
-      v36 = [v4 objectForKeyedSubscript:@"identicalDedupingThresholdForPeople"];
+      v36 = [representationCopy objectForKeyedSubscript:@"identicalDedupingThresholdForPeople"];
       [v36 doubleValue];
       v7[9] = v37;
     }
   }
 
-  v38 = [v4 objectForKeyedSubscript:@"identicalDedupingThresholdForBestItems"];
+  v38 = [representationCopy objectForKeyedSubscript:@"identicalDedupingThresholdForBestItems"];
 
   if (v38)
   {
-    v39 = [v4 objectForKeyedSubscript:@"identicalDedupingThresholdForBestItems"];
+    v39 = [representationCopy objectForKeyedSubscript:@"identicalDedupingThresholdForBestItems"];
     [v39 doubleValue];
     if (v40 > 0.0)
     {
-      v41 = [v4 objectForKeyedSubscript:@"identicalDedupingThresholdForBestItems"];
+      v41 = [representationCopy objectForKeyedSubscript:@"identicalDedupingThresholdForBestItems"];
       [v41 doubleValue];
       v7[10] = v42;
     }
   }
 
-  v43 = [v4 objectForKeyedSubscript:@"useFaceprintsForIdenticalDeduping"];
+  v43 = [representationCopy objectForKeyedSubscript:@"useFaceprintsForIdenticalDeduping"];
 
   if (v43)
   {
-    v44 = [v4 objectForKeyedSubscript:@"useFaceprintsForIdenticalDeduping"];
+    v44 = [representationCopy objectForKeyedSubscript:@"useFaceprintsForIdenticalDeduping"];
     *(v7 + 17) = [v44 BOOLValue];
   }
 
-  v45 = [v4 objectForKeyedSubscript:@"identicalDedupingFaceprintDistance"];
+  v45 = [representationCopy objectForKeyedSubscript:@"identicalDedupingFaceprintDistance"];
 
   if (v45)
   {
-    v46 = [v4 objectForKeyedSubscript:@"identicalDedupingFaceprintDistance"];
+    v46 = [representationCopy objectForKeyedSubscript:@"identicalDedupingFaceprintDistance"];
     [v46 doubleValue];
     if (v47 > 0.0)
     {
-      v48 = [v4 objectForKeyedSubscript:@"identicalDedupingFaceprintDistance"];
+      v48 = [representationCopy objectForKeyedSubscript:@"identicalDedupingFaceprintDistance"];
       [v48 doubleValue];
       v7[11] = v49;
     }
   }
 
-  v50 = [v4 objectForKeyedSubscript:@"doSemanticalDeduping"];
+  v50 = [representationCopy objectForKeyedSubscript:@"doSemanticalDeduping"];
 
   if (v50)
   {
-    v51 = [v4 objectForKeyedSubscript:@"doSemanticalDeduping"];
+    v51 = [representationCopy objectForKeyedSubscript:@"doSemanticalDeduping"];
     *(v7 + 18) = [v51 BOOLValue];
   }
 
-  v52 = [v4 objectForKeyedSubscript:@"semanticalDedupingTimeInterval"];
+  v52 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingTimeInterval"];
 
   if (v52)
   {
-    v53 = [v4 objectForKeyedSubscript:@"semanticalDedupingTimeInterval"];
+    v53 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingTimeInterval"];
     [v53 doubleValue];
     if (v54 > 0.0)
     {
-      v55 = [v4 objectForKeyedSubscript:@"semanticalDedupingTimeInterval"];
+      v55 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingTimeInterval"];
       [v55 doubleValue];
       v7[12] = v56;
     }
   }
 
-  v57 = [v4 objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPeople"];
+  v57 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPeople"];
 
   if (v57)
   {
-    v58 = [v4 objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPeople"];
+    v58 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPeople"];
     [v58 doubleValue];
     if (v59 > 0.0)
     {
-      v60 = [v4 objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPeople"];
+      v60 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPeople"];
       [v60 doubleValue];
       v7[13] = v61;
     }
   }
 
-  v62 = [v4 objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPersons"];
+  v62 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPersons"];
 
   if (v62)
   {
-    v63 = [v4 objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPersons"];
+    v63 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPersons"];
     [v63 doubleValue];
     if (v64 > 0.0)
     {
-      v65 = [v4 objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPersons"];
+      v65 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPersons"];
       [v65 doubleValue];
       v7[14] = v66;
     }
   }
 
-  v67 = [v4 objectForKeyedSubscript:@"semanticalDedupingMaximumTimeGroupExtension"];
+  v67 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingMaximumTimeGroupExtension"];
 
   if (v67)
   {
-    v68 = [v4 objectForKeyedSubscript:@"semanticalDedupingMaximumTimeGroupExtension"];
+    v68 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingMaximumTimeGroupExtension"];
     [v68 doubleValue];
     if (v69 > 0.0)
     {
-      v70 = [v4 objectForKeyedSubscript:@"semanticalDedupingMaximumTimeGroupExtension"];
+      v70 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingMaximumTimeGroupExtension"];
       [v70 doubleValue];
       v7[15] = v71;
     }
   }
 
-  v72 = [v4 objectForKeyedSubscript:@"maximumNumberOfItemsPerSemanticalCluster"];
+  v72 = [representationCopy objectForKeyedSubscript:@"maximumNumberOfItemsPerSemanticalCluster"];
 
   if (v72)
   {
-    v73 = [v4 objectForKeyedSubscript:@"maximumNumberOfItemsPerSemanticalCluster"];
-    v74 = [v73 unsignedIntegerValue];
-    if (!v74)
+    v73 = [representationCopy objectForKeyedSubscript:@"maximumNumberOfItemsPerSemanticalCluster"];
+    unsignedIntegerValue2 = [v73 unsignedIntegerValue];
+    if (!unsignedIntegerValue2)
     {
-      v74 = v7[16];
+      unsignedIntegerValue2 = v7[16];
     }
 
-    v7[16] = v74;
+    v7[16] = unsignedIntegerValue2;
   }
 
-  v75 = [v4 objectForKeyedSubscript:@"semanticalDedupingThreshold"];
+  v75 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingThreshold"];
 
   if (v75)
   {
-    v76 = [v4 objectForKeyedSubscript:@"semanticalDedupingThreshold"];
+    v76 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingThreshold"];
     [v76 doubleValue];
     if (v77 > 0.0)
     {
-      v78 = [v4 objectForKeyedSubscript:@"semanticalDedupingThreshold"];
+      v78 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingThreshold"];
       [v78 doubleValue];
       v7[17] = v79;
     }
   }
 
-  v80 = [v4 objectForKeyedSubscript:@"semanticalDedupingThresholdForPeople"];
+  v80 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingThresholdForPeople"];
 
   if (v80)
   {
-    v81 = [v4 objectForKeyedSubscript:@"semanticalDedupingThresholdForPeople"];
+    v81 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingThresholdForPeople"];
     [v81 doubleValue];
     if (v82 > 0.0)
     {
-      v83 = [v4 objectForKeyedSubscript:@"semanticalDedupingThresholdForPeople"];
+      v83 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingThresholdForPeople"];
       [v83 doubleValue];
       v7[18] = v84;
     }
   }
 
-  v85 = [v4 objectForKeyedSubscript:@"semanticalDedupingThresholdForPersons"];
+  v85 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingThresholdForPersons"];
 
   if (v85)
   {
-    v86 = [v4 objectForKeyedSubscript:@"semanticalDedupingThresholdForPersons"];
+    v86 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingThresholdForPersons"];
     [v86 doubleValue];
     if (v87 > 0.0)
     {
-      v88 = [v4 objectForKeyedSubscript:@"semanticalDedupingThresholdForPersons"];
+      v88 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingThresholdForPersons"];
       [v88 doubleValue];
       v7[19] = v89;
     }
   }
 
-  v90 = [v4 objectForKeyedSubscript:@"dontSemanticallyDedupePeople"];
+  v90 = [representationCopy objectForKeyedSubscript:@"dontSemanticallyDedupePeople"];
 
   if (v90)
   {
-    v91 = [v4 objectForKeyedSubscript:@"dontSemanticallyDedupePeople"];
+    v91 = [representationCopy objectForKeyedSubscript:@"dontSemanticallyDedupePeople"];
     *(v7 + 19) = [v91 BOOLValue];
   }
 
-  v92 = [v4 objectForKeyedSubscript:@"dontSemanticallyDedupePersons"];
+  v92 = [representationCopy objectForKeyedSubscript:@"dontSemanticallyDedupePersons"];
 
   if (v92)
   {
-    v93 = [v4 objectForKeyedSubscript:@"dontSemanticallyDedupePersons"];
+    v93 = [representationCopy objectForKeyedSubscript:@"dontSemanticallyDedupePersons"];
     *(v7 + 20) = [v93 BOOLValue];
   }
 
-  v94 = [v4 objectForKeyedSubscript:@"allowAdaptiveForSemanticalDeduping"];
+  v94 = [representationCopy objectForKeyedSubscript:@"allowAdaptiveForSemanticalDeduping"];
 
   if (v94)
   {
-    v95 = [v4 objectForKeyedSubscript:@"allowAdaptiveForSemanticalDeduping"];
+    v95 = [representationCopy objectForKeyedSubscript:@"allowAdaptiveForSemanticalDeduping"];
     *(v7 + 21) = [v95 BOOLValue];
   }
 
-  v96 = [v4 objectForKeyedSubscript:@"semanticalDedupingProtectSmallCluster"];
+  v96 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingProtectSmallCluster"];
 
   if (v96)
   {
-    v97 = [v4 objectForKeyedSubscript:@"semanticalDedupingProtectSmallCluster"];
+    v97 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingProtectSmallCluster"];
     *(v7 + 22) = [v97 BOOLValue];
   }
 
-  v98 = [v4 objectForKeyedSubscript:@"personDedupingType"];
+  v98 = [representationCopy objectForKeyedSubscript:@"personDedupingType"];
 
   if (!v98)
   {
-    v100 = [v4 objectForKeyedSubscript:@"useOnlyScenesForDeduping"];
-    v101 = [v100 BOOLValue];
+    v100 = [representationCopy objectForKeyedSubscript:@"useOnlyScenesForDeduping"];
+    bOOLValue = [v100 BOOLValue];
 
-    if (v101)
+    if (bOOLValue)
     {
       v102 = 1;
     }
 
     else
     {
-      v103 = [v4 objectForKeyedSubscript:@"useAllPersonsForDeduping"];
-      v104 = [v103 BOOLValue];
+      v103 = [representationCopy objectForKeyedSubscript:@"useAllPersonsForDeduping"];
+      bOOLValue2 = [v103 BOOLValue];
 
-      if (!v104)
+      if (!bOOLValue2)
       {
         goto LABEL_90;
       }
@@ -684,135 +684,135 @@
     goto LABEL_90;
   }
 
-  v99 = [v4 objectForKeyedSubscript:@"personDedupingType"];
+  v99 = [representationCopy objectForKeyedSubscript:@"personDedupingType"];
   v7[20] = [v99 unsignedIntegerValue];
 
 LABEL_90:
-  v105 = [v4 objectForKeyedSubscript:@"useFaceQualityForElection"];
+  v105 = [representationCopy objectForKeyedSubscript:@"useFaceQualityForElection"];
 
   if (v105)
   {
-    v106 = [v4 objectForKeyedSubscript:@"useFaceQualityForElection"];
+    v106 = [representationCopy objectForKeyedSubscript:@"useFaceQualityForElection"];
     *(v7 + 23) = [v106 BOOLValue];
   }
 
-  v107 = [v4 objectForKeyedSubscript:@"doNotDedupeVideos"];
+  v107 = [representationCopy objectForKeyedSubscript:@"doNotDedupeVideos"];
 
   if (v107)
   {
-    v108 = [v4 objectForKeyedSubscript:@"doNotDedupeVideos"];
+    v108 = [representationCopy objectForKeyedSubscript:@"doNotDedupeVideos"];
     *(v7 + 24) = [v108 BOOLValue];
   }
 
-  v109 = [v4 objectForKeyedSubscript:@"doNotDedupeInterestingPortraitsAndLivePictures"];
+  v109 = [representationCopy objectForKeyedSubscript:@"doNotDedupeInterestingPortraitsAndLivePictures"];
 
   if (v109)
   {
-    v110 = [v4 objectForKeyedSubscript:@"doNotDedupeInterestingPortraitsAndLivePictures"];
+    v110 = [representationCopy objectForKeyedSubscript:@"doNotDedupeInterestingPortraitsAndLivePictures"];
     *(v7 + 25) = [v110 BOOLValue];
   }
 
-  v111 = [v4 objectForKeyedSubscript:@"onlyDedupeContiguousItems"];
+  v111 = [representationCopy objectForKeyedSubscript:@"onlyDedupeContiguousItems"];
 
   if (v111)
   {
-    v112 = [v4 objectForKeyedSubscript:@"onlyDedupeContiguousItems"];
+    v112 = [representationCopy objectForKeyedSubscript:@"onlyDedupeContiguousItems"];
     *(v7 + 26) = [v112 BOOLValue];
   }
 
-  v113 = [v4 objectForKeyedSubscript:@"doDejunk"];
+  v113 = [representationCopy objectForKeyedSubscript:@"doDejunk"];
 
   if (v113)
   {
-    v114 = [v4 objectForKeyedSubscript:@"doDejunk"];
+    v114 = [representationCopy objectForKeyedSubscript:@"doDejunk"];
     *(v7 + 27) = [v114 BOOLValue];
   }
 
-  v115 = [v4 objectForKeyedSubscript:@"returnDedupedJunkIfOnlyJunk"];
+  v115 = [representationCopy objectForKeyedSubscript:@"returnDedupedJunkIfOnlyJunk"];
 
   if (v115)
   {
-    v116 = [v4 objectForKeyedSubscript:@"returnDedupedJunkIfOnlyJunk"];
+    v116 = [representationCopy objectForKeyedSubscript:@"returnDedupedJunkIfOnlyJunk"];
     *(v7 + 28) = [v116 BOOLValue];
   }
 
-  v117 = [v4 objectForKeyedSubscript:@"doFinalPass"];
+  v117 = [representationCopy objectForKeyedSubscript:@"doFinalPass"];
 
   if (v117)
   {
-    v118 = [v4 objectForKeyedSubscript:@"doFinalPass"];
+    v118 = [representationCopy objectForKeyedSubscript:@"doFinalPass"];
     *(v7 + 29) = [v118 BOOLValue];
   }
 
-  v119 = [v4 objectForKeyedSubscript:@"finalPassTimeInterval"];
+  v119 = [representationCopy objectForKeyedSubscript:@"finalPassTimeInterval"];
 
   if (v119)
   {
-    v120 = [v4 objectForKeyedSubscript:@"finalPassTimeInterval"];
+    v120 = [representationCopy objectForKeyedSubscript:@"finalPassTimeInterval"];
     [v120 doubleValue];
     if (v121 > 0.0)
     {
-      v122 = [v4 objectForKeyedSubscript:@"finalPassTimeInterval"];
+      v122 = [representationCopy objectForKeyedSubscript:@"finalPassTimeInterval"];
       [v122 doubleValue];
       v7[21] = v123;
     }
   }
 
-  v124 = [v4 objectForKeyedSubscript:@"finalPassMaximumTimeGroupExtension"];
+  v124 = [representationCopy objectForKeyedSubscript:@"finalPassMaximumTimeGroupExtension"];
 
   if (v124)
   {
-    v125 = [v4 objectForKeyedSubscript:@"finalPassMaximumTimeGroupExtension"];
+    v125 = [representationCopy objectForKeyedSubscript:@"finalPassMaximumTimeGroupExtension"];
     [v125 doubleValue];
     if (v126 > 0.0)
     {
-      v127 = [v4 objectForKeyedSubscript:@"finalPassMaximumTimeGroupExtension"];
+      v127 = [representationCopy objectForKeyedSubscript:@"finalPassMaximumTimeGroupExtension"];
       [v127 doubleValue];
       v7[22] = v128;
     }
   }
 
-  v129 = [v4 objectForKeyedSubscript:@"finalPassDedupingThreshold"];
+  v129 = [representationCopy objectForKeyedSubscript:@"finalPassDedupingThreshold"];
 
   if (v129)
   {
-    v130 = [v4 objectForKeyedSubscript:@"finalPassDedupingThreshold"];
+    v130 = [representationCopy objectForKeyedSubscript:@"finalPassDedupingThreshold"];
     [v130 doubleValue];
     if (v131 > 0.0)
     {
-      v132 = [v4 objectForKeyedSubscript:@"finalPassDedupingThreshold"];
+      v132 = [representationCopy objectForKeyedSubscript:@"finalPassDedupingThreshold"];
       [v132 doubleValue];
       v7[23] = v133;
     }
   }
 
-  v134 = [v4 objectForKeyedSubscript:@"identifiersOfRequiredItems"];
+  v134 = [representationCopy objectForKeyedSubscript:@"identifiersOfRequiredItems"];
 
   if (v134)
   {
     v135 = MEMORY[0x277CBEB98];
-    v136 = [v4 objectForKeyedSubscript:@"identifiersOfRequiredItems"];
+    v136 = [representationCopy objectForKeyedSubscript:@"identifiersOfRequiredItems"];
     v137 = [v135 setWithArray:v136];
     v138 = v7[24];
     v7[24] = v137;
   }
 
-  v139 = [v4 objectForKeyedSubscript:@"identifiersOfEligibleItems"];
+  v139 = [representationCopy objectForKeyedSubscript:@"identifiersOfEligibleItems"];
 
   if (v139)
   {
     v140 = MEMORY[0x277CBEB98];
-    v141 = [v4 objectForKeyedSubscript:@"identifiersOfEligibleItems"];
+    v141 = [representationCopy objectForKeyedSubscript:@"identifiersOfEligibleItems"];
     v142 = [v140 setWithArray:v141];
     v143 = v7[25];
     v7[25] = v142;
   }
 
-  v144 = [v4 objectForKeyedSubscript:@"duration"];
+  v144 = [representationCopy objectForKeyedSubscript:@"duration"];
 
   if (v144)
   {
-    v145 = [v4 objectForKeyedSubscript:@"duration"];
+    v145 = [representationCopy objectForKeyedSubscript:@"duration"];
     v7[26] = [v145 unsignedIntegerValue];
   }
 
@@ -887,8 +887,8 @@ LABEL_122:
     *&v3->_identicalDedupingThreshold = _Q0;
     *&v3->_identicalDedupingThresholdForBestItems = _Q0;
     v17 = _Q0;
-    v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v11 = [v10 objectForKey:@"PGDeduperIdenticalDedupingFaceprintDistance"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v11 = [standardUserDefaults objectForKey:@"PGDeduperIdenticalDedupingFaceprintDistance"];
 
     if (v11)
     {

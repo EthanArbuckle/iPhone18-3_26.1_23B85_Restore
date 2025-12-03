@@ -1,16 +1,16 @@
 @interface EDPopulateSendersTableMigrationStep
-+ (BOOL)_clearSendersAddressesTableWithConnection:(id)a3;
-+ (BOOL)_clearSendersTableWithConnection:(id)a3;
-+ (BOOL)_insertGroupedSendersWithoutContact:(id)a3 withConnection:(id)a4;
-+ (BOOL)_insertSenderWithAddresses:(id)a3 contact:(id)a4 connection:(id)a5 error:(id *)a6;
-+ (BOOL)_insertSendersGroupedByContact:(id)a3 withConnection:(id)a4;
-+ (BOOL)runWithConnection:(id)a3 sentMailboxURLs:(id)a4 contactStore:(id)a5;
-+ (id)_addressesForSenderIDs:(id)a3 withConnection:(id)a4;
-+ (id)_allSenderAddressIDsWithConnection:(id)a3 sentMailboxURLStrings:(id)a4;
-+ (id)_combineDictionary:(id)a3 withDictionary:(id)a4;
-+ (id)_senderIDsGroupedByContactsForEmailAddressesByContact:(id)a3 withConnection:(id)a4;
-+ (id)_senderIDsGroupedByContactsForSenderAddressesToIDs:(id)a3 withContactStore:(id)a4 unmatchedEmailAddresses:(id *)a5 otherEmailAddressesByContact:(id *)a6;
-+ (id)_senderIDsGroupedBySimpleAddressForEmailAddresses:(id)a3 senderIDsByEmailAddress:(id)a4;
++ (BOOL)_clearSendersAddressesTableWithConnection:(id)connection;
++ (BOOL)_clearSendersTableWithConnection:(id)connection;
++ (BOOL)_insertGroupedSendersWithoutContact:(id)contact withConnection:(id)connection;
++ (BOOL)_insertSenderWithAddresses:(id)addresses contact:(id)contact connection:(id)connection error:(id *)error;
++ (BOOL)_insertSendersGroupedByContact:(id)contact withConnection:(id)connection;
++ (BOOL)runWithConnection:(id)connection sentMailboxURLs:(id)ls contactStore:(id)store;
++ (id)_addressesForSenderIDs:(id)ds withConnection:(id)connection;
++ (id)_allSenderAddressIDsWithConnection:(id)connection sentMailboxURLStrings:(id)strings;
++ (id)_combineDictionary:(id)dictionary withDictionary:(id)withDictionary;
++ (id)_senderIDsGroupedByContactsForEmailAddressesByContact:(id)contact withConnection:(id)connection;
++ (id)_senderIDsGroupedByContactsForSenderAddressesToIDs:(id)ds withContactStore:(id)store unmatchedEmailAddresses:(id *)addresses otherEmailAddressesByContact:(id *)contact;
++ (id)_senderIDsGroupedBySimpleAddressForEmailAddresses:(id)addresses senderIDsByEmailAddress:(id)address;
 @end
 
 @implementation EDPopulateSendersTableMigrationStep
@@ -22,32 +22,32 @@ void ___ef_log_EDPopulateSendersTableMigrationStep_block_invoke()
   _ef_log_EDPopulateSendersTableMigrationStep_log = v0;
 }
 
-+ (BOOL)runWithConnection:(id)a3 sentMailboxURLs:(id)a4 contactStore:(id)a5
++ (BOOL)runWithConnection:(id)connection sentMailboxURLs:(id)ls contactStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([a1 _clearSendersAddressesTableWithConnection:v8] && objc_msgSend(a1, "_clearSendersTableWithConnection:", v8))
+  connectionCopy = connection;
+  lsCopy = ls;
+  storeCopy = store;
+  if ([self _clearSendersAddressesTableWithConnection:connectionCopy] && objc_msgSend(self, "_clearSendersTableWithConnection:", connectionCopy))
   {
-    v11 = [v9 ef_compactMapSelector:sel_absoluteString];
-    v12 = [a1 _allSenderAddressIDsWithConnection:v8 sentMailboxURLStrings:v11];
+    v11 = [lsCopy ef_compactMapSelector:sel_absoluteString];
+    v12 = [self _allSenderAddressIDsWithConnection:connectionCopy sentMailboxURLStrings:v11];
     if (v12)
     {
-      v13 = [a1 _addressesForSenderIDs:v12 withConnection:v8];
+      v13 = [self _addressesForSenderIDs:v12 withConnection:connectionCopy];
       if (v13)
       {
         v22 = 0;
         v23 = 0;
-        v14 = [a1 _senderIDsGroupedByContactsForSenderAddressesToIDs:v13 withContactStore:v10 unmatchedEmailAddresses:&v23 otherEmailAddressesByContact:&v22];
+        v14 = [self _senderIDsGroupedByContactsForSenderAddressesToIDs:v13 withContactStore:storeCopy unmatchedEmailAddresses:&v23 otherEmailAddressesByContact:&v22];
         v21 = v23;
         v20 = v22;
-        v15 = [a1 _senderIDsGroupedByContactsForEmailAddressesByContact:? withConnection:?];
-        v16 = [a1 _combineDictionary:v14 withDictionary:v15];
+        v15 = [self _senderIDsGroupedByContactsForEmailAddressesByContact:? withConnection:?];
+        v16 = [self _combineDictionary:v14 withDictionary:v15];
 
-        if ([a1 _insertSendersGroupedByContact:v16 withConnection:v8])
+        if ([self _insertSendersGroupedByContact:v16 withConnection:connectionCopy])
         {
-          v17 = [a1 _senderIDsGroupedBySimpleAddressForEmailAddresses:v21 senderIDsByEmailAddress:v13];
-          v18 = [a1 _insertGroupedSendersWithoutContact:v17 withConnection:v8];
+          v17 = [self _senderIDsGroupedBySimpleAddressForEmailAddresses:v21 senderIDsByEmailAddress:v13];
+          v18 = [self _insertGroupedSendersWithoutContact:v17 withConnection:connectionCopy];
         }
 
         else
@@ -76,18 +76,18 @@ void ___ef_log_EDPopulateSendersTableMigrationStep_block_invoke()
   return v18;
 }
 
-+ (id)_allSenderAddressIDsWithConnection:(id)a3 sentMailboxURLStrings:(id)a4
++ (id)_allSenderAddressIDsWithConnection:(id)connection sentMailboxURLStrings:(id)strings
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  stringsCopy = strings;
   v7 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"address" table:@"recipients"];
   v8 = *MEMORY[0x1E699B768];
   v9 = [v7 join:@"addresses" sourceColumn:@"address" targetColumn:*MEMORY[0x1E699B768]];
   v10 = [v7 join:@"messages" sourceColumn:@"message" targetColumn:v8];
   v11 = [v10 join:@"mailboxes" sourceColumn:@"mailbox" targetColumn:v8];
   v12 = [MEMORY[0x1E699B8C8] table:@"mailboxes" column:@"url"];
-  v13 = [v12 in:v6];
+  v13 = [v12 in:stringsCopy];
   [v7 setWhere:v13];
 
   v14 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -98,11 +98,11 @@ void ___ef_log_EDPopulateSendersTableMigrationStep_block_invoke()
   v15 = v14;
   v24 = v15;
   v22 = 0;
-  v16 = [v5 executeSelectStatement:v7 withBlock:v23 error:&v22];
+  v16 = [connectionCopy executeSelectStatement:v7 withBlock:v23 error:&v22];
   v17 = v22;
   if (v16)
   {
-    v18 = [v15 allObjects];
+    allObjects = [v15 allObjects];
   }
 
   else
@@ -115,12 +115,12 @@ void ___ef_log_EDPopulateSendersTableMigrationStep_block_invoke()
       +[EDPopulateSendersTableMigrationStep _allSenderAddressIDsWithConnection:sentMailboxURLStrings:];
     }
 
-    v18 = 0;
+    allObjects = 0;
   }
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v18;
+  return allObjects;
 }
 
 void __96__EDPopulateSendersTableMigrationStep__allSenderAddressIDsWithConnection_sentMailboxURLStrings___block_invoke(uint64_t a1, void *a2)
@@ -131,18 +131,18 @@ void __96__EDPopulateSendersTableMigrationStep__allSenderAddressIDsWithConnectio
   [v2 addObject:v3];
 }
 
-+ (id)_addressesForSenderIDs:(id)a3 withConnection:(id)a4
++ (id)_addressesForSenderIDs:(id)ds withConnection:(id)connection
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  connectionCopy = connection;
   v7 = objc_alloc(MEMORY[0x1E699B948]);
   v8 = *MEMORY[0x1E699B768];
   v9 = [v7 initWithResultColumn:*MEMORY[0x1E699B768] table:@"addresses"];
   [v9 addResultColumn:@"comment"];
   [v9 addResultColumn:@"address"];
   v10 = [MEMORY[0x1E699B8C8] column:v8];
-  v11 = [v10 in:v5];
+  v11 = [v10 in:dsCopy];
   [v9 setWhere:v11];
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -153,7 +153,7 @@ void __96__EDPopulateSendersTableMigrationStep__allSenderAddressIDsWithConnectio
   v13 = v12;
   v23 = v13;
   v21 = 0;
-  v14 = [v6 executeSelectStatement:v9 withBlock:v22 error:&v21];
+  v14 = [connectionCopy executeSelectStatement:v9 withBlock:v22 error:&v21];
   v15 = v21;
   v16 = v13;
   if ((v14 & 1) == 0)
@@ -196,10 +196,10 @@ void __77__EDPopulateSendersTableMigrationStep__addressesForSenderIDs_withConnec
   }
 }
 
-+ (id)_senderIDsGroupedByContactsForEmailAddressesByContact:(id)a3 withConnection:(id)a4
++ (id)_senderIDsGroupedByContactsForEmailAddressesByContact:(id)contact withConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  contactCopy = contact;
+  connectionCopy = connection;
   v7 = objc_alloc(MEMORY[0x1E699B948]);
   v8 = [v7 initWithResultColumn:*MEMORY[0x1E699B768] table:@"addresses"];
   v13[0] = MEMORY[0x1E69E9820];
@@ -207,10 +207,10 @@ void __77__EDPopulateSendersTableMigrationStep__addressesForSenderIDs_withConnec
   v13[2] = __108__EDPopulateSendersTableMigrationStep__senderIDsGroupedByContactsForEmailAddressesByContact_withConnection___block_invoke;
   v13[3] = &unk_1E8255DC0;
   v14 = v8;
-  v9 = v6;
+  v9 = connectionCopy;
   v15 = v9;
   v10 = v8;
-  v11 = [v5 ef_mapValues:v13];
+  v11 = [contactCopy ef_mapValues:v13];
 
   return v11;
 }
@@ -306,10 +306,10 @@ void __108__EDPopulateSendersTableMigrationStep__senderIDsGroupedByContactsForEm
   [v2 addObject:v3];
 }
 
-+ (BOOL)_insertSendersGroupedByContact:(id)a3 withConnection:(id)a4
++ (BOOL)_insertSendersGroupedByContact:(id)contact withConnection:(id)connection
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  connectionCopy = connection;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -325,11 +325,11 @@ void __108__EDPopulateSendersTableMigrationStep__senderIDsGroupedByContactsForEm
   v14 = __85__EDPopulateSendersTableMigrationStep__insertSendersGroupedByContact_withConnection___block_invoke;
   v15 = &unk_1E8255DE8;
   v17 = &v26;
-  v19 = a1;
-  v7 = v6;
+  selfCopy = self;
+  v7 = connectionCopy;
   v16 = v7;
   v18 = &v20;
-  [a3 enumerateKeysAndObjectsUsingBlock:&v12];
+  [contact enumerateKeysAndObjectsUsingBlock:&v12];
   if (v27[3])
   {
     v8 = 1;
@@ -372,16 +372,16 @@ void __85__EDPopulateSendersTableMigrationStep__insertSendersGroupedByContact_wi
   }
 }
 
-+ (BOOL)_insertGroupedSendersWithoutContact:(id)a3 withConnection:(id)a4
++ (BOOL)_insertGroupedSendersWithoutContact:(id)contact withConnection:(id)connection
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  connectionCopy = connection;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v6;
+  v8 = contactCopy;
   v9 = 0;
   v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
@@ -400,7 +400,7 @@ void __85__EDPopulateSendersTableMigrationStep__insertSendersGroupedByContact_wi
 
         v14 = *(*(&v21 + 1) + 8 * v12);
         v20 = v13;
-        v15 = [a1 _insertSenderWithAddresses:v14 contact:0 connection:v7 error:&v20];
+        v15 = [self _insertSenderWithAddresses:v14 contact:0 connection:connectionCopy error:&v20];
         v9 = v20;
 
         if ((v15 & 1) == 0)
@@ -441,13 +441,13 @@ LABEL_13:
   return v16;
 }
 
-+ (BOOL)_clearSendersTableWithConnection:(id)a3
++ (BOOL)_clearSendersTableWithConnection:(id)connection
 {
   v10[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  connectionCopy = connection;
   v4 = [objc_alloc(MEMORY[0x1E699B8E8]) initWithTable:@"senders"];
   v10[0] = 0;
-  v5 = [v3 executeDeleteStatement:v4 error:v10];
+  v5 = [connectionCopy executeDeleteStatement:v4 error:v10];
   v6 = v10[0];
   if (v6)
   {
@@ -464,13 +464,13 @@ LABEL_13:
   return v5;
 }
 
-+ (BOOL)_clearSendersAddressesTableWithConnection:(id)a3
++ (BOOL)_clearSendersAddressesTableWithConnection:(id)connection
 {
   v10[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  connectionCopy = connection;
   v4 = [objc_alloc(MEMORY[0x1E699B8E8]) initWithTable:@"sender_addresses"];
   v10[0] = 0;
-  v5 = [v3 executeDeleteStatement:v4 error:v10];
+  v5 = [connectionCopy executeDeleteStatement:v4 error:v10];
   v6 = v10[0];
   if (v6)
   {
@@ -487,31 +487,31 @@ LABEL_13:
   return v5;
 }
 
-+ (BOOL)_insertSenderWithAddresses:(id)a3 contact:(id)a4 connection:(id)a5 error:(id *)a6
++ (BOOL)_insertSenderWithAddresses:(id)addresses contact:(id)contact connection:(id)connection error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v25 = a4;
-  v8 = a5;
-  v24 = v8;
+  addressesCopy = addresses;
+  contactCopy = contact;
+  connectionCopy = connection;
+  v24 = connectionCopy;
   v26 = [objc_alloc(MEMORY[0x1E699B910]) initWithTable:@"senders"];
   [v26 setObject:&unk_1F45E68B0 forKeyedSubscript:@"bucket"];
   [v26 setObject:&unk_1F45E68C8 forKeyedSubscript:@"user_initiated"];
-  if (v25)
+  if (contactCopy)
   {
-    v9 = [v25 identifier];
-    [v26 setObject:v9 forKeyedSubscript:@"contact_identifier"];
+    identifier = [contactCopy identifier];
+    [v26 setObject:identifier forKeyedSubscript:@"contact_identifier"];
   }
 
-  if ([v8 executeInsertStatement:v26 error:{a6, a6}])
+  if ([connectionCopy executeInsertStatement:v26 error:{error, error}])
   {
     v10 = [objc_alloc(MEMORY[0x1E699B910]) initWithTable:@"sender_addresses" conflictResolution:4];
-    v11 = [v8 lastInsertedDatabaseID];
+    lastInsertedDatabaseID = [connectionCopy lastInsertedDatabaseID];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = v23;
+    obj = addressesCopy;
     v12 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v12)
     {
@@ -526,10 +526,10 @@ LABEL_13:
           }
 
           v15 = *(*(&v28 + 1) + 8 * i);
-          v16 = [v10 addValue];
-          [v16 setObject:v15 forKeyedSubscript:@"address"];
-          v17 = [MEMORY[0x1E696AD98] numberWithLongLong:v11];
-          [v16 setObject:v17 forKeyedSubscript:@"sender"];
+          addValue = [v10 addValue];
+          [addValue setObject:v15 forKeyedSubscript:@"address"];
+          v17 = [MEMORY[0x1E696AD98] numberWithLongLong:lastInsertedDatabaseID];
+          [addValue setObject:v17 forKeyedSubscript:@"sender"];
         }
 
         v12 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -550,18 +550,18 @@ LABEL_13:
   return v18;
 }
 
-+ (id)_senderIDsGroupedByContactsForSenderAddressesToIDs:(id)a3 withContactStore:(id)a4 unmatchedEmailAddresses:(id *)a5 otherEmailAddressesByContact:(id *)a6
++ (id)_senderIDsGroupedByContactsForSenderAddressesToIDs:(id)ds withContactStore:(id)store unmatchedEmailAddresses:(id *)addresses otherEmailAddressesByContact:(id *)contact
 {
   v46[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  dsCopy = ds;
+  storeCopy = store;
   v11 = *MEMORY[0x1E695C230];
   v46[0] = *MEMORY[0x1E695C240];
   v46[1] = v11;
   v46[2] = *MEMORY[0x1E695C208];
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:3];
-  v13 = [v9 allKeys];
-  v34 = [v13 ef_compactMapSelector:sel_simpleAddress];
+  allKeys = [dsCopy allKeys];
+  v34 = [allKeys ef_compactMapSelector:sel_simpleAddress];
 
   v31 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v34];
   v33 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -571,13 +571,13 @@ LABEL_13:
   v38[1] = 3221225472;
   v38[2] = __160__EDPopulateSendersTableMigrationStep__senderIDsGroupedByContactsForSenderAddressesToIDs_withContactStore_unmatchedEmailAddresses_otherEmailAddressesByContact___block_invoke;
   v38[3] = &unk_1E8255E10;
-  v15 = v10;
+  v15 = storeCopy;
   v39 = v15;
   v16 = v12;
   v40 = v16;
   v17 = v33;
   v41 = v17;
-  v18 = v9;
+  v18 = dsCopy;
   v42 = v18;
   v19 = v31;
   v43 = v19;
@@ -597,9 +597,9 @@ LABEL_13:
   v24 = v22;
   [v20 enumerateKeysAndObjectsUsingBlock:v35];
   v25 = v21;
-  *a5 = v21;
+  *addresses = v21;
   v26 = v24;
-  *a6 = v24;
+  *contact = v24;
   v27 = v37;
   v28 = v17;
 
@@ -734,18 +734,18 @@ void __160__EDPopulateSendersTableMigrationStep__senderIDsGroupedByContactsForSe
   }
 }
 
-+ (id)_senderIDsGroupedBySimpleAddressForEmailAddresses:(id)a3 senderIDsByEmailAddress:(id)a4
++ (id)_senderIDsGroupedBySimpleAddressForEmailAddresses:(id)addresses senderIDsByEmailAddress:(id)address
 {
-  v5 = a4;
-  v6 = [a3 ef_groupBy:&__block_literal_global_73_2];
-  v7 = [v6 allValues];
+  addressCopy = address;
+  v6 = [addresses ef_groupBy:&__block_literal_global_73_2];
+  allValues = [v6 allValues];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __113__EDPopulateSendersTableMigrationStep__senderIDsGroupedBySimpleAddressForEmailAddresses_senderIDsByEmailAddress___block_invoke_2;
   v11[3] = &unk_1E8255EA8;
-  v8 = v5;
+  v8 = addressCopy;
   v12 = v8;
-  v9 = [v7 ef_compactMap:v11];
+  v9 = [allValues ef_compactMap:v11];
 
   return v9;
 }
@@ -777,29 +777,29 @@ id __113__EDPopulateSendersTableMigrationStep__senderIDsGroupedBySimpleAddressFo
   return v2;
 }
 
-+ (id)_combineDictionary:(id)a3 withDictionary:(id)a4
++ (id)_combineDictionary:(id)dictionary withDictionary:(id)withDictionary
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  dictionaryCopy = dictionary;
+  withDictionaryCopy = withDictionary;
+  if ([dictionaryCopy count])
   {
-    if ([v6 count])
+    if ([withDictionaryCopy count])
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __73__EDPopulateSendersTableMigrationStep__combineDictionary_withDictionary___block_invoke;
       v18[3] = &unk_1E8255ED0;
-      v8 = v6;
+      v8 = withDictionaryCopy;
       v19 = v8;
       v9 = v7;
       v20 = v9;
-      [v5 enumerateKeysAndObjectsUsingBlock:v18];
+      [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v18];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __73__EDPopulateSendersTableMigrationStep__combineDictionary_withDictionary___block_invoke_2;
       v15[3] = &unk_1E8255ED0;
-      v16 = v5;
+      v16 = dictionaryCopy;
       v10 = v9;
       v17 = v10;
       [v8 enumerateKeysAndObjectsUsingBlock:v15];
@@ -809,12 +809,12 @@ id __113__EDPopulateSendersTableMigrationStep__senderIDsGroupedBySimpleAddressFo
       goto LABEL_7;
     }
 
-    v13 = v5;
+    v13 = dictionaryCopy;
   }
 
   else
   {
-    v13 = v6;
+    v13 = withDictionaryCopy;
   }
 
   v12 = v13;

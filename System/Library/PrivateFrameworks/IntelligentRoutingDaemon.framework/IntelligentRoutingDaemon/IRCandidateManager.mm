@@ -1,51 +1,51 @@
 @interface IRCandidateManager
-- (IRCandidateManager)initWithQueue:(id)a3 contextObserver:(id)a4 avOutputDeviceProvider:(id)a5 rapportDeviceProvider:(id)a6 store:(id)a7;
+- (IRCandidateManager)initWithQueue:(id)queue contextObserver:(id)observer avOutputDeviceProvider:(id)provider rapportDeviceProvider:(id)deviceProvider store:(id)store;
 - (IRPolicyManagerContextObserver)contextObserver;
-- (id)_lastUsedDateForCandidate:(id)a3 fromHistoryEventsContainer:(id)a4;
-- (id)_nodesForCandidate:(id)a3 fromExistingCandidate:(id)a4;
-- (id)_oldestCandidatesFrom:(id)a3 forKey:(id)a4 limit:(unint64_t)a5;
-- (void)_addCandidates:(id)a3;
-- (void)_deleteCandidates:(id)a3;
-- (void)_didUpdateContextWithReason:(id)a3;
+- (id)_lastUsedDateForCandidate:(id)candidate fromHistoryEventsContainer:(id)container;
+- (id)_nodesForCandidate:(id)candidate fromExistingCandidate:(id)existingCandidate;
+- (id)_oldestCandidatesFrom:(id)from forKey:(id)key limit:(unint64_t)limit;
+- (void)_addCandidates:(id)candidates;
+- (void)_deleteCandidates:(id)candidates;
+- (void)_didUpdateContextWithReason:(id)reason;
 - (void)_handleCandidatesCleanup;
-- (void)_updateCandidate:(id)a3;
+- (void)_updateCandidate:(id)candidate;
 - (void)dealloc;
 - (void)deallocSync;
 - (void)deleteBrokerCandidates;
-- (void)deleteCandidate:(id)a3;
-- (void)notifyAddEventForCandidateIdentifier:(id)a3;
-- (void)provider:(id)a3 didUpdateAVOutputDevices:(id)a4;
-- (void)provider:(id)a3 didUpdateRapportDevices:(id)a4;
+- (void)deleteCandidate:(id)candidate;
+- (void)notifyAddEventForCandidateIdentifier:(id)identifier;
+- (void)provider:(id)provider didUpdateAVOutputDevices:(id)devices;
+- (void)provider:(id)provider didUpdateRapportDevices:(id)devices;
 - (void)synchronizeAndFetchFromDBOnDisk;
-- (void)updateCandidates:(id)a3 withHistoryEventsContainer:(id)a4;
+- (void)updateCandidates:(id)candidates withHistoryEventsContainer:(id)container;
 @end
 
 @implementation IRCandidateManager
 
-- (IRCandidateManager)initWithQueue:(id)a3 contextObserver:(id)a4 avOutputDeviceProvider:(id)a5 rapportDeviceProvider:(id)a6 store:(id)a7
+- (IRCandidateManager)initWithQueue:(id)queue contextObserver:(id)observer avOutputDeviceProvider:(id)provider rapportDeviceProvider:(id)deviceProvider store:(id)store
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  queueCopy = queue;
+  observerCopy = observer;
+  providerCopy = provider;
+  deviceProviderCopy = deviceProvider;
+  storeCopy = store;
   v22.receiver = self;
   v22.super_class = IRCandidateManager;
   v17 = [(IRCandidateManager *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    [(IRCandidateManager *)v17 setQueue:v12];
-    [(IRCandidateManager *)v18 setContextObserver:v13];
-    [(IRCandidateManager *)v18 setAvOutputDeviceProvider:v14];
-    [(IRCandidateManager *)v18 setRapportDeviceProvider:v15];
-    [(IRCandidateManager *)v18 setStore:v16];
+    [(IRCandidateManager *)v17 setQueue:queueCopy];
+    [(IRCandidateManager *)v18 setContextObserver:observerCopy];
+    [(IRCandidateManager *)v18 setAvOutputDeviceProvider:providerCopy];
+    [(IRCandidateManager *)v18 setRapportDeviceProvider:deviceProviderCopy];
+    [(IRCandidateManager *)v18 setStore:storeCopy];
     [(IRCandidateManager *)v18 synchronizeAndFetchFromDBOnDisk];
-    v19 = [(IRCandidateManager *)v18 avOutputDeviceProvider];
-    [v19 addObserver:v18];
+    avOutputDeviceProvider = [(IRCandidateManager *)v18 avOutputDeviceProvider];
+    [avOutputDeviceProvider addObserver:v18];
 
-    v20 = [(IRCandidateManager *)v18 rapportDeviceProvider];
-    [v20 addObserver:v18];
+    rapportDeviceProvider = [(IRCandidateManager *)v18 rapportDeviceProvider];
+    [rapportDeviceProvider addObserver:v18];
   }
 
   return v18;
@@ -60,25 +60,25 @@
 
 - (void)deallocSync
 {
-  v3 = [(IRCandidateManager *)self avOutputDeviceProvider];
-  [v3 removeObserver:self];
+  avOutputDeviceProvider = [(IRCandidateManager *)self avOutputDeviceProvider];
+  [avOutputDeviceProvider removeObserver:self];
 
-  v4 = [(IRCandidateManager *)self rapportDeviceProvider];
-  [v4 removeObserver:self];
+  rapportDeviceProvider = [(IRCandidateManager *)self rapportDeviceProvider];
+  [rapportDeviceProvider removeObserver:self];
 }
 
-- (void)updateCandidates:(id)a3 withHistoryEventsContainer:(id)a4
+- (void)updateCandidates:(id)candidates withHistoryEventsContainer:(id)container
 {
   v73 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v53 = a4;
+  candidatesCopy = candidates;
+  containerCopy = container;
   v6 = [MEMORY[0x277CBEB58] set];
   v57 = [MEMORY[0x277CBEB58] set];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v7 = v5;
+  v7 = candidatesCopy;
   v59 = [v7 countByEnumeratingWithState:&v60 objects:v72 count:16];
   if (v59)
   {
@@ -89,7 +89,7 @@
     *&v8 = 136315906;
     v52 = v8;
     v55 = v7;
-    v11 = self;
+    selfCopy5 = self;
     do
     {
       for (i = 0; i != v59; ++i)
@@ -100,18 +100,18 @@
         }
 
         v13 = *(*(&v60 + 1) + 8 * i);
-        v14 = [(IRCandidateManager *)v11 candidatesContainer];
-        v15 = [v13 candidateIdentifier];
-        v16 = [v14 candidateForCandidateIdentifier:v15];
+        candidatesContainer = [(IRCandidateManager *)selfCopy5 candidatesContainer];
+        candidateIdentifier = [v13 candidateIdentifier];
+        v16 = [candidatesContainer candidateForCandidateIdentifier:candidateIdentifier];
 
-        v17 = [(IRCandidateManager *)v11 _nodesForCandidate:v13 fromExistingCandidate:v16];
+        v17 = [(IRCandidateManager *)selfCopy5 _nodesForCandidate:v13 fromExistingCandidate:v16];
         v18 = [v13 copyWithReplacementNodes:v17];
 
-        v19 = [v16 lastUsedDate];
-        v20 = [v18 copyWithReplacementLastUsedDate:v19];
+        lastUsedDate = [v16 lastUsedDate];
+        v20 = [v18 copyWithReplacementLastUsedDate:lastUsedDate];
 
-        v21 = [v16 firstSeenDate];
-        v22 = [v20 copyWithReplacementFirstSeenDate:v21];
+        firstSeenDate = [v16 firstSeenDate];
+        v22 = [v20 copyWithReplacementFirstSeenDate:firstSeenDate];
 
         LOBYTE(v20) = [v22 containsAirPlayOrUnknownAVODTarget];
         v23 = dispatch_get_specific(*v10);
@@ -136,12 +136,12 @@
             goto LABEL_17;
           }
 
-          v27 = [v22 lastSeenDate];
-          v28 = [v16 lastSeenDate];
+          lastSeenDate = [v22 lastSeenDate];
+          lastSeenDate2 = [v16 lastSeenDate];
           v29 = +[IRPreferences shared];
-          v30 = [v29 candidateUpdateTimeIntervalSeconds];
-          v31 = [v28 dateByAddingTimeInterval:{objc_msgSend(v30, "unsignedIntegerValue")}];
-          v32 = [v27 isEarlierThan:v31];
+          candidateUpdateTimeIntervalSeconds = [v29 candidateUpdateTimeIntervalSeconds];
+          v31 = [lastSeenDate2 dateByAddingTimeInterval:{objc_msgSend(candidateUpdateTimeIntervalSeconds, "unsignedIntegerValue")}];
+          v32 = [lastSeenDate isEarlierThan:v31];
 
           v7 = v55;
           v10 = MEMORY[0x277D21308];
@@ -153,22 +153,22 @@
             if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_DEBUG))
             {
               v35 = v34;
-              v36 = [v16 lastSeenDate];
-              v37 = [v22 lastSeenDate];
+              lastSeenDate3 = [v16 lastSeenDate];
+              lastSeenDate4 = [v22 lastSeenDate];
               *buf = v52;
               v65 = "#candidate-manager, ";
               v66 = 2112;
               v67 = v33;
               v68 = 2112;
-              v69 = v36;
+              v69 = lastSeenDate3;
               v70 = 2112;
-              v71 = v37;
+              v71 = lastSeenDate4;
               _os_log_impl(&dword_25543D000, v35, OS_LOG_TYPE_DEBUG, "%s[%@], Update candidate was requested but not needed, lastSeenDate: %@, currentDate: %@", buf, 0x2Au);
 
               v10 = MEMORY[0x277D21308];
             }
 
-            v11 = self;
+            selfCopy5 = self;
           }
 
           else
@@ -177,18 +177,18 @@ LABEL_17:
             if (v16)
             {
               [v54 addObject:v16];
-              v11 = self;
+              selfCopy5 = self;
             }
 
             else
             {
-              v41 = [(IRCandidateManager *)self _lastUsedDateForCandidate:v22 fromHistoryEventsContainer:v53];
+              v41 = [(IRCandidateManager *)self _lastUsedDateForCandidate:v22 fromHistoryEventsContainer:containerCopy];
               v42 = [v22 copyWithReplacementLastUsedDate:v41];
 
-              v43 = [v42 lastSeenDate];
-              v22 = [v42 copyWithReplacementFirstSeenDate:v43];
+              lastSeenDate5 = [v42 lastSeenDate];
+              v22 = [v42 copyWithReplacementFirstSeenDate:lastSeenDate5];
 
-              v11 = self;
+              selfCopy5 = self;
             }
 
             [v57 addObject:v22];
@@ -224,20 +224,20 @@ LABEL_17:
     {
       if ([v54 count])
       {
-        [(IRCandidateManager *)v11 _deleteCandidates:v54];
+        [(IRCandidateManager *)selfCopy5 _deleteCandidates:v54];
       }
 
-      [(IRCandidateManager *)v11 _addCandidates:v57];
-      [(IRCandidateManager *)v11 _handleCandidatesCleanup];
+      [(IRCandidateManager *)selfCopy5 _addCandidates:v57];
+      [(IRCandidateManager *)selfCopy5 _handleCandidatesCleanup];
       v44 = dispatch_get_specific(*MEMORY[0x277D21308]);
       v45 = *MEMORY[0x277D21260];
       if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_INFO))
       {
         v46 = MEMORY[0x277CCABB0];
         v47 = v45;
-        v48 = [(IRCandidateManager *)v11 candidatesContainer];
-        v49 = [v48 candidates];
-        v50 = [v46 numberWithUnsignedInteger:{objc_msgSend(v49, "count")}];
+        candidatesContainer2 = [(IRCandidateManager *)selfCopy5 candidatesContainer];
+        candidates = [candidatesContainer2 candidates];
+        v50 = [v46 numberWithUnsignedInteger:{objc_msgSend(candidates, "count")}];
         *buf = 136315650;
         v65 = "#candidate-manager, ";
         v66 = 2112;
@@ -247,10 +247,10 @@ LABEL_17:
         _os_log_impl(&dword_25543D000, v47, OS_LOG_TYPE_INFO, "%s[%@], Number of candidates: %@", buf, 0x20u);
 
         v7 = v55;
-        v11 = self;
+        selfCopy5 = self;
       }
 
-      [(IRCandidateManager *)v11 _didUpdateContextWithReason:@"Update candidate"];
+      [(IRCandidateManager *)selfCopy5 _didUpdateContextWithReason:@"Update candidate"];
     }
   }
 
@@ -264,9 +264,9 @@ LABEL_17:
 - (void)deleteBrokerCandidates
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(IRCandidateManager *)self candidatesContainer];
-  v4 = [v3 candidates];
-  v5 = [v4 allWhere:&__block_literal_global_16];
+  candidatesContainer = [(IRCandidateManager *)self candidatesContainer];
+  candidates = [candidatesContainer candidates];
+  v5 = [candidates allWhere:&__block_literal_global_16];
 
   if ([v5 count])
   {
@@ -278,9 +278,9 @@ LABEL_17:
     {
       v8 = MEMORY[0x277CCABB0];
       v9 = v7;
-      v10 = [(IRCandidateManager *)self candidatesContainer];
-      v11 = [v10 candidates];
-      v12 = [v8 numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
+      candidatesContainer2 = [(IRCandidateManager *)self candidatesContainer];
+      candidates2 = [candidatesContainer2 candidates];
+      v12 = [v8 numberWithUnsignedInteger:{objc_msgSend(candidates2, "count")}];
       v14 = 136315650;
       v15 = "#candidate-manager, ";
       v16 = 2112;
@@ -312,13 +312,13 @@ uint64_t __44__IRCandidateManager_deleteBrokerCandidates__block_invoke_2(uint64_
   return v3;
 }
 
-- (void)deleteCandidate:(id)a3
+- (void)deleteCandidate:(id)candidate
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IRCandidateManager *)self candidatesContainer];
-  v6 = [v4 candidateIdentifier];
-  v7 = [v5 candidateForCandidateIdentifier:v6];
+  candidateCopy = candidate;
+  candidatesContainer = [(IRCandidateManager *)self candidatesContainer];
+  candidateIdentifier = [candidateCopy candidateIdentifier];
+  v7 = [candidatesContainer candidateForCandidateIdentifier:candidateIdentifier];
 
   if (v7)
   {
@@ -327,7 +327,7 @@ uint64_t __44__IRCandidateManager_deleteBrokerCandidates__block_invoke_2(uint64_
 
   else
   {
-    v8 = v4;
+    v8 = candidateCopy;
   }
 
   v9 = v8;
@@ -367,24 +367,24 @@ uint64_t __44__IRCandidateManager_deleteBrokerCandidates__block_invoke_2(uint64_
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyAddEventForCandidateIdentifier:(id)a3
+- (void)notifyAddEventForCandidateIdentifier:(id)identifier
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IRCandidateManager *)self candidatesContainer];
-  v6 = [v5 candidateForCandidateIdentifier:v4];
+  identifierCopy = identifier;
+  candidatesContainer = [(IRCandidateManager *)self candidatesContainer];
+  v6 = [candidatesContainer candidateForCandidateIdentifier:identifierCopy];
 
   if (v6)
   {
-    v27 = v4;
+    v27 = identifierCopy;
     v7 = [MEMORY[0x277CBEB58] setWithObject:v6];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v26 = v6;
-    v8 = [v6 nodes];
-    v9 = [v8 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    nodes = [v6 nodes];
+    v9 = [nodes countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v9)
     {
       v10 = v9;
@@ -395,33 +395,33 @@ uint64_t __44__IRCandidateManager_deleteBrokerCandidates__block_invoke_2(uint64_
         {
           if (*v34 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(nodes);
           }
 
           v13 = *(*(&v33 + 1) + 8 * i);
-          v14 = [v13 avOutpuDeviceIdentifier];
+          avOutpuDeviceIdentifier = [v13 avOutpuDeviceIdentifier];
 
-          if (v14)
+          if (avOutpuDeviceIdentifier)
           {
-            v15 = [(IRCandidateManager *)self candidatesContainer];
-            v16 = [v15 candidates];
+            candidatesContainer2 = [(IRCandidateManager *)self candidatesContainer];
+            candidates = [candidatesContainer2 candidates];
             v32[0] = MEMORY[0x277D85DD0];
             v32[1] = 3221225472;
             v32[2] = __59__IRCandidateManager_notifyAddEventForCandidateIdentifier___block_invoke;
             v32[3] = &unk_2797E0CD0;
             v32[4] = v13;
-            v17 = [v16 allWhere:v32];
+            v17 = [candidates allWhere:v32];
             [v7 unionSet:v17];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v10 = [nodes countByEnumeratingWithState:&v33 objects:v38 count:16];
       }
 
       while (v10);
     }
 
-    v18 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -441,7 +441,7 @@ uint64_t __44__IRCandidateManager_deleteBrokerCandidates__block_invoke_2(uint64_
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v28 + 1) + 8 * j) copyWithReplacementLastUsedDate:v18];
+          v24 = [*(*(&v28 + 1) + 8 * j) copyWithReplacementLastUsedDate:date];
           [(IRCandidateManager *)self _updateCandidate:v24];
         }
 
@@ -453,7 +453,7 @@ uint64_t __44__IRCandidateManager_deleteBrokerCandidates__block_invoke_2(uint64_
 
     [(IRCandidateManager *)self _handleCandidatesCleanup];
     v6 = v26;
-    v4 = v27;
+    identifierCopy = v27;
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -480,17 +480,17 @@ uint64_t __59__IRCandidateManager_notifyAddEventForCandidateIdentifier___block_i
   return v9;
 }
 
-- (void)provider:(id)a3 didUpdateAVOutputDevices:(id)a4
+- (void)provider:(id)provider didUpdateAVOutputDevices:(id)devices
 {
-  v5 = a4;
-  v6 = [(IRCandidateManager *)self queue];
+  devicesCopy = devices;
+  queue = [(IRCandidateManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__IRCandidateManager_provider_didUpdateAVOutputDevices___block_invoke;
   v8[3] = &unk_2797E1E80;
-  v9 = v5;
-  v7 = v5;
-  IRDispatchAsyncWithStrongSelf(v6, self, v8);
+  v9 = devicesCopy;
+  v7 = devicesCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v8);
 }
 
 void __56__IRCandidateManager_provider_didUpdateAVOutputDevices___block_invoke(uint64_t a1, void *a2)
@@ -633,17 +633,17 @@ void *__56__IRCandidateManager_provider_didUpdateAVOutputDevices___block_invoke_
   return v7;
 }
 
-- (void)provider:(id)a3 didUpdateRapportDevices:(id)a4
+- (void)provider:(id)provider didUpdateRapportDevices:(id)devices
 {
-  v5 = a4;
-  v6 = [(IRCandidateManager *)self queue];
+  devicesCopy = devices;
+  queue = [(IRCandidateManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__IRCandidateManager_provider_didUpdateRapportDevices___block_invoke;
   v8[3] = &unk_2797E1E80;
-  v9 = v5;
-  v7 = v5;
-  IRDispatchAsyncWithStrongSelf(v6, self, v8);
+  v9 = devicesCopy;
+  v7 = devicesCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v8);
 }
 
 void __55__IRCandidateManager_provider_didUpdateRapportDevices___block_invoke(uint64_t a1, void *a2)
@@ -894,24 +894,24 @@ uint64_t __55__IRCandidateManager_provider_didUpdateRapportDevices___block_invok
 - (void)synchronizeAndFetchFromDBOnDisk
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(IRCandidateManager *)self store];
-  v4 = [v3 fetchCandidatesContainer];
-  [(IRCandidateManager *)self setCandidatesContainer:v4];
+  store = [(IRCandidateManager *)self store];
+  fetchCandidatesContainer = [store fetchCandidatesContainer];
+  [(IRCandidateManager *)self setCandidatesContainer:fetchCandidatesContainer];
 
-  v5 = [(IRCandidateManager *)self candidatesContainer];
+  candidatesContainer = [(IRCandidateManager *)self candidatesContainer];
 
   v6 = dispatch_get_specific(*MEMORY[0x277D21308]);
   v7 = *MEMORY[0x277D21260];
   v8 = *MEMORY[0x277D21260];
-  if (v5)
+  if (candidatesContainer)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = MEMORY[0x277CCABB0];
       v10 = v7;
-      v11 = [(IRCandidateManager *)self candidatesContainer];
-      v12 = [v11 candidates];
-      v13 = [v9 numberWithUnsignedInteger:{objc_msgSend(v12, "count")}];
+      candidatesContainer2 = [(IRCandidateManager *)self candidatesContainer];
+      candidates = [candidatesContainer2 candidates];
+      v13 = [v9 numberWithUnsignedInteger:{objc_msgSend(candidates, "count")}];
       v15 = 136315650;
       v16 = "#candidate-manager, ";
       v17 = 2112;
@@ -934,18 +934,18 @@ uint64_t __55__IRCandidateManager_provider_didUpdateRapportDevices___block_invok
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addCandidates:(id)a3
+- (void)_addCandidates:(id)candidates
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IRCandidateManager *)self candidatesContainer];
-  v6 = [v5 candidates];
-  v7 = [v6 setByAddingObjectsFromSet:v4];
+  candidatesCopy = candidates;
+  candidatesContainer = [(IRCandidateManager *)self candidatesContainer];
+  candidates = [candidatesContainer candidates];
+  v7 = [candidates setByAddingObjectsFromSet:candidatesCopy];
   v8 = [IRCandidatesContainerDO candidatesContainerDOWithCandidates:v7];
   [(IRCandidateManager *)self setCandidatesContainer:v8];
 
-  v9 = [(IRCandidateManager *)self store];
-  LOBYTE(v8) = [v9 addCandidates:v4];
+  store = [(IRCandidateManager *)self store];
+  LOBYTE(v8) = [store addCandidates:candidatesCopy];
 
   if ((v8 & 1) == 0)
   {
@@ -958,7 +958,7 @@ uint64_t __55__IRCandidateManager_provider_didUpdateRapportDevices___block_invok
       v15 = 2112;
       v16 = v10;
       v17 = 2112;
-      v18 = v4;
+      v18 = candidatesCopy;
       _os_log_impl(&dword_25543D000, v11, OS_LOG_TYPE_ERROR, "%s[%@], [ErrorId - Candidate Manager add error] Could not add a new candidates: %@", &v13, 0x20u);
     }
   }
@@ -966,26 +966,26 @@ uint64_t __55__IRCandidateManager_provider_didUpdateRapportDevices___block_invok
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCandidate:(id)a3
+- (void)_updateCandidate:(id)candidate
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IRCandidateManager *)self candidatesContainer];
-  v6 = [v5 candidates];
+  candidateCopy = candidate;
+  candidatesContainer = [(IRCandidateManager *)self candidatesContainer];
+  candidates = [candidatesContainer candidates];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __39__IRCandidateManager__updateCandidate___block_invoke;
   v14[3] = &unk_2797E1ED0;
-  v7 = v4;
+  v7 = candidateCopy;
   v15 = v7;
-  v8 = [v6 map:v14];
+  v8 = [candidates map:v14];
   v9 = [IRCandidatesContainerDO candidatesContainerDOWithCandidates:v8];
   [(IRCandidateManager *)self setCandidatesContainer:v9];
 
-  v10 = [(IRCandidateManager *)self store];
-  LOBYTE(v5) = [v10 updateCandidate:v7];
+  store = [(IRCandidateManager *)self store];
+  LOBYTE(candidatesContainer) = [store updateCandidate:v7];
 
-  if ((v5 & 1) == 0)
+  if ((candidatesContainer & 1) == 0)
   {
     v11 = dispatch_get_specific(*MEMORY[0x277D21308]);
     v12 = *MEMORY[0x277D21260];
@@ -1022,26 +1022,26 @@ void *__39__IRCandidateManager__updateCandidate___block_invoke(uint64_t a1, void
   return v7;
 }
 
-- (void)_deleteCandidates:(id)a3
+- (void)_deleteCandidates:(id)candidates
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IRCandidateManager *)self candidatesContainer];
-  v6 = [v5 candidates];
+  candidatesCopy = candidates;
+  candidatesContainer = [(IRCandidateManager *)self candidatesContainer];
+  candidates = [candidatesContainer candidates];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __40__IRCandidateManager__deleteCandidates___block_invoke;
   v14[3] = &unk_2797E0CD0;
-  v7 = v4;
+  v7 = candidatesCopy;
   v15 = v7;
-  v8 = [v6 allWhere:v14];
+  v8 = [candidates allWhere:v14];
   v9 = [IRCandidatesContainerDO candidatesContainerDOWithCandidates:v8];
   [(IRCandidateManager *)self setCandidatesContainer:v9];
 
-  v10 = [(IRCandidateManager *)self store];
-  LOBYTE(v5) = [v10 deleteCandidates:v7];
+  store = [(IRCandidateManager *)self store];
+  LOBYTE(candidatesContainer) = [store deleteCandidates:v7];
 
-  if ((v5 & 1) == 0)
+  if ((candidatesContainer & 1) == 0)
   {
     v11 = dispatch_get_specific(*MEMORY[0x277D21308]);
     v12 = *MEMORY[0x277D21260];
@@ -1068,11 +1068,11 @@ BOOL __40__IRCandidateManager__deleteCandidates___block_invoke(uint64_t a1, void
   return v4 == 0;
 }
 
-- (void)_didUpdateContextWithReason:(id)a3
+- (void)_didUpdateContextWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(IRCandidateManager *)self contextObserver];
-  [v5 didUpdateContextWithReason:v4 andOverrides:0];
+  reasonCopy = reason;
+  contextObserver = [(IRCandidateManager *)self contextObserver];
+  [contextObserver didUpdateContextWithReason:reasonCopy andOverrides:0];
 }
 
 - (void)_handleCandidatesCleanup
@@ -1080,8 +1080,8 @@ BOOL __40__IRCandidateManager__deleteCandidates___block_invoke(uint64_t a1, void
   v37 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB58] set];
   v4 = [MEMORY[0x277CBEB58] set];
-  v5 = [(IRCandidateManager *)self candidatesContainer];
-  v6 = [v5 candidates];
+  candidatesContainer = [(IRCandidateManager *)self candidatesContainer];
+  candidates = [candidatesContainer candidates];
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __46__IRCandidateManager__handleCandidatesCleanup__block_invoke;
@@ -1090,17 +1090,17 @@ BOOL __40__IRCandidateManager__deleteCandidates___block_invoke(uint64_t a1, void
   v27 = v7;
   v8 = v4;
   v28 = v8;
-  [v6 enumerateObjectsUsingBlock:&v23];
+  [candidates enumerateObjectsUsingBlock:&v23];
 
   v9 = [MEMORY[0x277CBEB58] set];
   v10 = +[IRPreferences shared];
-  v11 = [v10 numberOfUsedCandidates];
-  v12 = -[IRCandidateManager _oldestCandidatesFrom:forKey:limit:](self, "_oldestCandidatesFrom:forKey:limit:", v7, @"lastUsedDate", [v11 unsignedIntegerValue]);
+  numberOfUsedCandidates = [v10 numberOfUsedCandidates];
+  v12 = -[IRCandidateManager _oldestCandidatesFrom:forKey:limit:](self, "_oldestCandidatesFrom:forKey:limit:", v7, @"lastUsedDate", [numberOfUsedCandidates unsignedIntegerValue]);
   [v9 addObjectsFromArray:v12];
 
   v13 = +[IRPreferences shared];
-  v14 = [v13 numberOfSeenCandidates];
-  v15 = -[IRCandidateManager _oldestCandidatesFrom:forKey:limit:](self, "_oldestCandidatesFrom:forKey:limit:", v8, @"lastSeenDate", [v14 unsignedIntegerValue]);
+  numberOfSeenCandidates = [v13 numberOfSeenCandidates];
+  v15 = -[IRCandidateManager _oldestCandidatesFrom:forKey:limit:](self, "_oldestCandidatesFrom:forKey:limit:", v8, @"lastSeenDate", [numberOfSeenCandidates unsignedIntegerValue]);
   [v9 addObjectsFromArray:v15];
 
   if ([v9 count])
@@ -1144,25 +1144,25 @@ void __46__IRCandidateManager__handleCandidatesCleanup__block_invoke(uint64_t a1
   [*(a1 + v4) addObject:v5];
 }
 
-- (id)_lastUsedDateForCandidate:(id)a3 fromHistoryEventsContainer:(id)a4
+- (id)_lastUsedDateForCandidate:(id)candidate fromHistoryEventsContainer:(id)container
 {
-  v5 = a3;
-  v6 = a4;
+  candidateCopy = candidate;
+  containerCopy = container;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__11;
   v18 = __Block_byref_object_dispose__11;
   v19 = 0;
-  v7 = [v6 historyEvents];
+  historyEvents = [containerCopy historyEvents];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__IRCandidateManager__lastUsedDateForCandidate_fromHistoryEventsContainer___block_invoke;
   v11[3] = &unk_2797E18B0;
-  v8 = v5;
+  v8 = candidateCopy;
   v12 = v8;
   v13 = &v14;
-  [v7 enumerateObjectsWithOptions:2 usingBlock:v11];
+  [historyEvents enumerateObjectsWithOptions:2 usingBlock:v11];
 
   v9 = v15[5];
   _Block_object_dispose(&v14, 8);
@@ -1188,23 +1188,23 @@ void __75__IRCandidateManager__lastUsedDateForCandidate_fromHistoryEventsContain
   }
 }
 
-- (id)_nodesForCandidate:(id)a3 fromExistingCandidate:(id)a4
+- (id)_nodesForCandidate:(id)candidate fromExistingCandidate:(id)existingCandidate
 {
-  v6 = a4;
-  v7 = a3;
+  existingCandidateCopy = existingCandidate;
+  candidateCopy = candidate;
   v8 = objc_opt_new();
-  v9 = [v7 nodes];
+  nodes = [candidateCopy nodes];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __63__IRCandidateManager__nodesForCandidate_fromExistingCandidate___block_invoke;
   v14[3] = &unk_2797E1F48;
   v14[4] = self;
-  v15 = v6;
+  v15 = existingCandidateCopy;
   v16 = v8;
   v10 = v8;
-  v11 = v6;
-  [v9 enumerateObjectsUsingBlock:v14];
+  v11 = existingCandidateCopy;
+  [nodes enumerateObjectsUsingBlock:v14];
 
   v12 = [v10 copy];
 
@@ -1342,26 +1342,26 @@ uint64_t __63__IRCandidateManager__nodesForCandidate_fromExistingCandidate___blo
   return v5;
 }
 
-- (id)_oldestCandidatesFrom:(id)a3 forKey:(id)a4 limit:(unint64_t)a5
+- (id)_oldestCandidatesFrom:(id)from forKey:(id)key limit:(unint64_t)limit
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277CCAC98];
-  v8 = a3;
-  v9 = [v7 sortDescriptorWithKey:a4 ascending:1];
-  v10 = [v8 allObjects];
+  fromCopy = from;
+  v9 = [v7 sortDescriptorWithKey:key ascending:1];
+  allObjects = [fromCopy allObjects];
 
   v17[0] = v9;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  v12 = [v10 sortedArrayUsingDescriptors:v11];
+  v12 = [allObjects sortedArrayUsingDescriptors:v11];
 
-  if ([v12 count] <= a5)
+  if ([v12 count] <= limit)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = [v12 count] - a5;
+    v13 = [v12 count] - limit;
   }
 
   v14 = [v12 subarrayWithRange:{0, v13}];

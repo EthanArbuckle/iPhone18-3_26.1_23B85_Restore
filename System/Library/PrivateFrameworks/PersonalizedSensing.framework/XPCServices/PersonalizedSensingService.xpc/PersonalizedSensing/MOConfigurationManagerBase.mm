@@ -1,19 +1,19 @@
 @interface MOConfigurationManagerBase
-- (BOOL)getBoolDefaultsForKey:(id)a3 withFallback:(BOOL)a4;
-- (BOOL)getBoolTrialLevelForKey:(id)a3 withFallback:(BOOL)a4;
+- (BOOL)getBoolDefaultsForKey:(id)key withFallback:(BOOL)fallback;
+- (BOOL)getBoolTrialLevelForKey:(id)key withFallback:(BOOL)fallback;
 - (MOConfigurationManagerBase)init;
-- (MOConfigurationManagerBase)initWithDefaultsManager:(id)a3 enableTrialClient:(BOOL)a4;
-- (double)getDoubleDefaultsForKey:(id)a3 withFallback:(double)a4;
-- (double)getDoubleSettingForKey:(id)a3 withFallback:(double)a4;
-- (double)getDoubleTrialLevelForKey:(id)a3 withFallback:(double)a4;
-- (float)getFloatDefaultsForKey:(id)a3 withFallback:(float)a4;
-- (float)getFloatSettingForKey:(id)a3 withFallback:(float)a4;
-- (float)getFloatTrialLevelForKey:(id)a3 withFallback:(float)a4;
-- (id)getStringDefaultsForKey:(id)a3 withFallback:(id)a4;
-- (id)getStringSettingForKey:(id)a3 withFallback:(id)a4;
-- (id)getStringTrialLevelForKey:(id)a3 withFallback:(id)a4;
-- (int)getIntegerDefaultsForKey:(id)a3 withFallback:(int)a4;
-- (int)getIntegerTrialLevelForKey:(id)a3 withFallback:(int)a4;
+- (MOConfigurationManagerBase)initWithDefaultsManager:(id)manager enableTrialClient:(BOOL)client;
+- (double)getDoubleDefaultsForKey:(id)key withFallback:(double)fallback;
+- (double)getDoubleSettingForKey:(id)key withFallback:(double)fallback;
+- (double)getDoubleTrialLevelForKey:(id)key withFallback:(double)fallback;
+- (float)getFloatDefaultsForKey:(id)key withFallback:(float)fallback;
+- (float)getFloatSettingForKey:(id)key withFallback:(float)fallback;
+- (float)getFloatTrialLevelForKey:(id)key withFallback:(float)fallback;
+- (id)getStringDefaultsForKey:(id)key withFallback:(id)fallback;
+- (id)getStringSettingForKey:(id)key withFallback:(id)fallback;
+- (id)getStringTrialLevelForKey:(id)key withFallback:(id)fallback;
+- (int)getIntegerDefaultsForKey:(id)key withFallback:(int)fallback;
+- (int)getIntegerTrialLevelForKey:(id)key withFallback:(int)fallback;
 - (void)doTrialSetup;
 @end
 
@@ -27,18 +27,18 @@
   return v4;
 }
 
-- (MOConfigurationManagerBase)initWithDefaultsManager:(id)a3 enableTrialClient:(BOOL)a4
+- (MOConfigurationManagerBase)initWithDefaultsManager:(id)manager enableTrialClient:(BOOL)client
 {
-  v4 = a4;
-  v6 = a3;
+  clientCopy = client;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = MOConfigurationManagerBase;
   v7 = [(MOConfigurationManagerBase *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    [(MOConfigurationManagerBase *)v7 setFDefaultsManager:v6];
-    if (v4)
+    [(MOConfigurationManagerBase *)v7 setFDefaultsManager:managerCopy];
+    if (clientCopy)
     {
       trialClient = v8->_trialClient;
       v8->_trialClient = 0;
@@ -53,13 +53,13 @@
   return v8;
 }
 
-- (id)getStringDefaultsForKey:(id)a3 withFallback:(id)a4
+- (id)getStringDefaultsForKey:(id)key withFallback:(id)fallback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 copy];
+  keyCopy = key;
+  fallbackCopy = fallback;
+  v8 = [fallbackCopy copy];
   fDefaultsManager = self->_fDefaultsManager;
-  v10 = [v6 copy];
+  v10 = [keyCopy copy];
   v11 = [(MODefaultsManager *)fDefaultsManager objectForKey:v10];
 
   if (v11)
@@ -77,32 +77,32 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v15 = 138412802;
-    v16 = v6;
+    v16 = keyCopy;
     v17 = 2112;
     v18 = v8;
     v19 = 2112;
-    v20 = v7;
+    v20 = fallbackCopy;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Default setting [%@] with value [s:%@] and fallback [s:%@]", &v15, 0x20u);
   }
 
   return v8;
 }
 
-- (int)getIntegerDefaultsForKey:(id)a3 withFallback:(int)a4
+- (int)getIntegerDefaultsForKey:(id)key withFallback:(int)fallback
 {
-  v6 = a3;
+  keyCopy = key;
   fDefaultsManager = self->_fDefaultsManager;
-  v8 = [v6 copy];
+  v8 = [keyCopy copy];
   v9 = [(MODefaultsManager *)fDefaultsManager objectForKey:v8];
 
-  v10 = a4;
+  fallbackCopy2 = fallback;
   if (v9)
   {
     objc_opt_class();
-    v10 = a4;
+    fallbackCopy2 = fallback;
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 integerValue];
+      fallbackCopy2 = [v9 integerValue];
     }
   }
 
@@ -110,33 +110,33 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138412802;
-    v14 = v6;
+    v14 = keyCopy;
     v15 = 1024;
-    v16 = v10;
+    v16 = fallbackCopy2;
     v17 = 1024;
-    v18 = a4;
+    fallbackCopy3 = fallback;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Default setting [%@] with value [i:%i] and fallback [i:%i]", &v13, 0x18u);
   }
 
-  return v10;
+  return fallbackCopy2;
 }
 
-- (BOOL)getBoolDefaultsForKey:(id)a3 withFallback:(BOOL)a4
+- (BOOL)getBoolDefaultsForKey:(id)key withFallback:(BOOL)fallback
 {
-  v4 = a4;
-  v6 = a3;
+  fallbackCopy = fallback;
+  keyCopy = key;
   fDefaultsManager = self->_fDefaultsManager;
-  v8 = [v6 copy];
+  v8 = [keyCopy copy];
   v9 = [(MODefaultsManager *)fDefaultsManager objectForKey:v8];
 
-  v10 = v4;
+  bOOLValue = fallbackCopy;
   if (v9)
   {
     objc_opt_class();
-    v10 = v4;
+    bOOLValue = fallbackCopy;
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
     }
   }
 
@@ -144,33 +144,33 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138412802;
-    v14 = v6;
+    v14 = keyCopy;
     v15 = 1024;
-    v16 = v10;
+    v16 = bOOLValue;
     v17 = 1024;
-    v18 = v4;
+    v18 = fallbackCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Default setting [%@] with value [b:%i] and fallback [b:%i]", &v13, 0x18u);
   }
 
-  return v10;
+  return bOOLValue;
 }
 
-- (float)getFloatDefaultsForKey:(id)a3 withFallback:(float)a4
+- (float)getFloatDefaultsForKey:(id)key withFallback:(float)fallback
 {
-  v6 = a3;
+  keyCopy = key;
   fDefaultsManager = self->_fDefaultsManager;
-  v8 = [v6 copy];
+  v8 = [keyCopy copy];
   v9 = [(MODefaultsManager *)fDefaultsManager objectForKey:v8];
 
-  v10 = a4;
+  fallbackCopy2 = fallback;
   if (v9)
   {
     objc_opt_class();
-    v10 = a4;
+    fallbackCopy2 = fallback;
     if (objc_opt_isKindOfClass())
     {
       [v9 doubleValue];
-      v10 = v11;
+      fallbackCopy2 = v11;
     }
   }
 
@@ -178,33 +178,33 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v14 = 138412802;
-    v15 = v6;
+    v15 = keyCopy;
     v16 = 2048;
-    v17 = v10;
+    v17 = fallbackCopy2;
     v18 = 2048;
-    v19 = a4;
+    fallbackCopy3 = fallback;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Default setting [%@] with value [f:%f] and fallback [f:%f]", &v14, 0x20u);
   }
 
-  return v10;
+  return fallbackCopy2;
 }
 
-- (double)getDoubleDefaultsForKey:(id)a3 withFallback:(double)a4
+- (double)getDoubleDefaultsForKey:(id)key withFallback:(double)fallback
 {
-  v6 = a3;
+  keyCopy = key;
   fDefaultsManager = self->_fDefaultsManager;
-  v8 = [v6 copy];
+  v8 = [keyCopy copy];
   v9 = [(MODefaultsManager *)fDefaultsManager objectForKey:v8];
 
-  v10 = a4;
+  fallbackCopy2 = fallback;
   if (v9)
   {
     objc_opt_class();
-    v10 = a4;
+    fallbackCopy2 = fallback;
     if (objc_opt_isKindOfClass())
     {
       [v9 doubleValue];
-      v10 = v11;
+      fallbackCopy2 = v11;
     }
   }
 
@@ -212,41 +212,41 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v14 = 138412802;
-    v15 = v6;
+    v15 = keyCopy;
     v16 = 2048;
-    v17 = v10;
+    v17 = fallbackCopy2;
     v18 = 2048;
-    v19 = a4;
+    fallbackCopy3 = fallback;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Default setting [%@] with value [d:%f] and fallback [d:%f]", &v14, 0x20u);
   }
 
-  return v10;
+  return fallbackCopy2;
 }
 
 - (void)doTrialSetup
 {
-  v2 = *a1;
+  v2 = *self;
   v3 = 138412290;
   v4 = v2;
   _os_log_debug_impl(&_mh_execute_header, a2, OS_LOG_TYPE_DEBUG, "Cached factor names: %@", &v3, 0xCu);
 }
 
-- (id)getStringTrialLevelForKey:(id)a3 withFallback:(id)a4
+- (id)getStringTrialLevelForKey:(id)key withFallback:(id)fallback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 copy];
-  if ([(NSArray *)self->_trialFactorNames containsObject:v6])
+  keyCopy = key;
+  fallbackCopy = fallback;
+  v8 = [fallbackCopy copy];
+  if ([(NSArray *)self->_trialFactorNames containsObject:keyCopy])
   {
     trialClient = self->_trialClient;
-    v10 = [v6 copy];
+    v10 = [keyCopy copy];
     v11 = [(TRIClient *)trialClient levelForFactor:v10 withNamespaceName:@"MOMENTS_TRIAL"];
 
     if (v11)
     {
-      v12 = [v11 stringValue];
+      stringValue = [v11 stringValue];
 
-      v8 = v12;
+      v8 = stringValue;
     }
   }
 
@@ -254,34 +254,34 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v15 = 138412802;
-    v16 = v6;
+    v16 = keyCopy;
     v17 = 2112;
     v18 = v8;
     v19 = 2112;
-    v20 = v7;
+    v20 = fallbackCopy;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Trial setting [%@] with value [s:%@] and fallback [s:%@]", &v15, 0x20u);
   }
 
   return v8;
 }
 
-- (int)getIntegerTrialLevelForKey:(id)a3 withFallback:(int)a4
+- (int)getIntegerTrialLevelForKey:(id)key withFallback:(int)fallback
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(NSArray *)self->_trialFactorNames containsObject:v6])
+  keyCopy = key;
+  fallbackCopy3 = fallback;
+  if ([(NSArray *)self->_trialFactorNames containsObject:keyCopy])
   {
     trialClient = self->_trialClient;
-    v9 = [v6 copy];
+    v9 = [keyCopy copy];
     v10 = [(TRIClient *)trialClient levelForFactor:v9 withNamespaceName:@"MOMENTS_TRIAL"];
 
-    v7 = a4;
+    fallbackCopy3 = fallback;
     if (v10)
     {
-      v7 = a4;
+      fallbackCopy3 = fallback;
       if ([v10 levelOneOfCase] == 13)
       {
-        v7 = [v10 longValue];
+        fallbackCopy3 = [v10 longValue];
       }
     }
   }
@@ -290,43 +290,43 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138412802;
-    v14 = v6;
+    v14 = keyCopy;
     v15 = 1024;
-    v16 = v7;
+    v16 = fallbackCopy3;
     v17 = 1024;
-    v18 = a4;
+    fallbackCopy4 = fallback;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Trial setting [%@] with value [i:%i] and fallback [i:%i]", &v13, 0x18u);
   }
 
-  return v7;
+  return fallbackCopy3;
 }
 
-- (BOOL)getBoolTrialLevelForKey:(id)a3 withFallback:(BOOL)a4
+- (BOOL)getBoolTrialLevelForKey:(id)key withFallback:(BOOL)fallback
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v4;
-  if ([(NSArray *)self->_trialFactorNames containsObject:v6])
+  fallbackCopy = fallback;
+  keyCopy = key;
+  bOOLeanValue = fallbackCopy;
+  if ([(NSArray *)self->_trialFactorNames containsObject:keyCopy])
   {
     trialClient = self->_trialClient;
-    v9 = [v6 copy];
+    v9 = [keyCopy copy];
     v10 = [(TRIClient *)trialClient levelForFactor:v9 withNamespaceName:@"MOMENTS_TRIAL"];
 
-    v7 = v4;
+    bOOLeanValue = fallbackCopy;
     if (v10)
     {
-      v11 = [v10 levelOneOfCase];
-      if (v11 == 13)
+      levelOneOfCase = [v10 levelOneOfCase];
+      if (levelOneOfCase == 13)
       {
-        v7 = [v10 longValue] != 0;
+        bOOLeanValue = [v10 longValue] != 0;
       }
 
       else
       {
-        v7 = v4;
-        if (v11 == 10)
+        bOOLeanValue = fallbackCopy;
+        if (levelOneOfCase == 10)
         {
-          v7 = [v10 BOOLeanValue];
+          bOOLeanValue = [v10 BOOLeanValue];
         }
       }
     }
@@ -336,35 +336,35 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v14 = 138412802;
-    v15 = v6;
+    v15 = keyCopy;
     v16 = 1024;
-    v17 = v7;
+    v17 = bOOLeanValue;
     v18 = 1024;
-    v19 = v4;
+    v19 = fallbackCopy;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Trial setting [%@] with value [b:%i] and fallback [b:%i]", &v14, 0x18u);
   }
 
-  return v7;
+  return bOOLeanValue;
 }
 
-- (float)getFloatTrialLevelForKey:(id)a3 withFallback:(float)a4
+- (float)getFloatTrialLevelForKey:(id)key withFallback:(float)fallback
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(NSArray *)self->_trialFactorNames containsObject:v6])
+  keyCopy = key;
+  fallbackCopy3 = fallback;
+  if ([(NSArray *)self->_trialFactorNames containsObject:keyCopy])
   {
     trialClient = self->_trialClient;
-    v9 = [v6 copy];
+    v9 = [keyCopy copy];
     v10 = [(TRIClient *)trialClient levelForFactor:v9 withNamespaceName:@"MOMENTS_TRIAL"];
 
-    v7 = a4;
+    fallbackCopy3 = fallback;
     if (v10)
     {
-      v7 = a4;
+      fallbackCopy3 = fallback;
       if ([v10 levelOneOfCase] == 15)
       {
         [v10 doubleValue];
-        v7 = v11;
+        fallbackCopy3 = v11;
       }
     }
   }
@@ -373,35 +373,35 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v14 = 138412802;
-    v15 = v6;
+    v15 = keyCopy;
     v16 = 2048;
-    v17 = v7;
+    v17 = fallbackCopy3;
     v18 = 2048;
-    v19 = a4;
+    fallbackCopy4 = fallback;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Trial setting [%@] with value [f:%f] and fallback [f:%f]", &v14, 0x20u);
   }
 
-  return v7;
+  return fallbackCopy3;
 }
 
-- (double)getDoubleTrialLevelForKey:(id)a3 withFallback:(double)a4
+- (double)getDoubleTrialLevelForKey:(id)key withFallback:(double)fallback
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(NSArray *)self->_trialFactorNames containsObject:v6])
+  keyCopy = key;
+  fallbackCopy3 = fallback;
+  if ([(NSArray *)self->_trialFactorNames containsObject:keyCopy])
   {
     trialClient = self->_trialClient;
-    v9 = [v6 copy];
+    v9 = [keyCopy copy];
     v10 = [(TRIClient *)trialClient levelForFactor:v9 withNamespaceName:@"MOMENTS_TRIAL"];
 
-    v7 = a4;
+    fallbackCopy3 = fallback;
     if (v10)
     {
-      v7 = a4;
+      fallbackCopy3 = fallback;
       if ([v10 levelOneOfCase] == 15)
       {
         [v10 doubleValue];
-        v7 = v11;
+        fallbackCopy3 = v11;
       }
     }
   }
@@ -410,76 +410,76 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v14 = 138412802;
-    v15 = v6;
+    v15 = keyCopy;
     v16 = 2048;
-    v17 = v7;
+    v17 = fallbackCopy3;
     v18 = 2048;
-    v19 = a4;
+    fallbackCopy4 = fallback;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Trial setting [%@] with value [d:%f] and fallback [d:%f]", &v14, 0x20u);
   }
 
-  return v7;
+  return fallbackCopy3;
 }
 
-- (id)getStringSettingForKey:(id)a3 withFallback:(id)a4
+- (id)getStringSettingForKey:(id)key withFallback:(id)fallback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOConfigurationManagerBase *)self getStringTrialLevelForKey:v6 withFallback:v7];
-  v9 = [(MOConfigurationManagerBase *)self getStringDefaultsForKey:v6 withFallback:v8];
+  keyCopy = key;
+  fallbackCopy = fallback;
+  v8 = [(MOConfigurationManagerBase *)self getStringTrialLevelForKey:keyCopy withFallback:fallbackCopy];
+  v9 = [(MOConfigurationManagerBase *)self getStringDefaultsForKey:keyCopy withFallback:v8];
 
   v10 = _mo_log_facility_get_os_log(&MOLogFacilitySettings);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v12 = 138412802;
-    v13 = v6;
+    v13 = keyCopy;
     v14 = 2112;
     v15 = v9;
     v16 = 2112;
-    v17 = v7;
+    v17 = fallbackCopy;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Retrieved setting [%@] with value [s:%@] and fallback [s:%@]", &v12, 0x20u);
   }
 
   return v9;
 }
 
-- (float)getFloatSettingForKey:(id)a3 withFallback:(float)a4
+- (float)getFloatSettingForKey:(id)key withFallback:(float)fallback
 {
-  v6 = a3;
-  *&v7 = a4;
-  [(MOConfigurationManagerBase *)self getFloatTrialLevelForKey:v6 withFallback:v7];
-  [(MOConfigurationManagerBase *)self getFloatDefaultsForKey:v6 withFallback:?];
+  keyCopy = key;
+  *&v7 = fallback;
+  [(MOConfigurationManagerBase *)self getFloatTrialLevelForKey:keyCopy withFallback:v7];
+  [(MOConfigurationManagerBase *)self getFloatDefaultsForKey:keyCopy withFallback:?];
   v9 = v8;
   v10 = _mo_log_facility_get_os_log(&MOLogFacilitySettings);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v12 = 138412802;
-    v13 = v6;
+    v13 = keyCopy;
     v14 = 2048;
     v15 = v9;
     v16 = 2048;
-    v17 = a4;
+    fallbackCopy = fallback;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Retrieved setting [%@] with value [f:%f] and fallback [f:%f]", &v12, 0x20u);
   }
 
   return v9;
 }
 
-- (double)getDoubleSettingForKey:(id)a3 withFallback:(double)a4
+- (double)getDoubleSettingForKey:(id)key withFallback:(double)fallback
 {
-  v6 = a3;
-  [(MOConfigurationManagerBase *)self getDoubleTrialLevelForKey:v6 withFallback:a4];
-  [(MOConfigurationManagerBase *)self getDoubleDefaultsForKey:v6 withFallback:?];
+  keyCopy = key;
+  [(MOConfigurationManagerBase *)self getDoubleTrialLevelForKey:keyCopy withFallback:fallback];
+  [(MOConfigurationManagerBase *)self getDoubleDefaultsForKey:keyCopy withFallback:?];
   v8 = v7;
   v9 = _mo_log_facility_get_os_log(&MOLogFacilitySettings);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138412802;
-    v12 = v6;
+    v12 = keyCopy;
     v13 = 2048;
     v14 = v8;
     v15 = 2048;
-    v16 = a4;
+    fallbackCopy = fallback;
     _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Retrieved setting [%@] with value [d:%lf] and fallback [d:%lf]", &v11, 0x20u);
   }
 

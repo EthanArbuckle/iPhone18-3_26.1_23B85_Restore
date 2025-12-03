@@ -2,18 +2,18 @@
 + (id)sharedAgent;
 - (NSString)description;
 - (SDBroadwayAgent)init;
-- (void)_applePayCardDectected:(id)a3;
+- (void)_applePayCardDectected:(id)dectected;
 - (void)_invalidate;
-- (void)_preparePresentationWithBroadwayActivationCode:(id)a3 testInfo:(id)a4;
-- (void)_startUIWithPhysicalCard:(id)a3 activationCode:(id)a4 testInfo:(id)a5;
+- (void)_preparePresentationWithBroadwayActivationCode:(id)code testInfo:(id)info;
+- (void)_startUIWithPhysicalCard:(id)card activationCode:(id)code testInfo:(id)info;
 - (void)activate;
 - (void)invalidate;
-- (void)lookUpValidAccountWithBroadwayActivationCode:(id)a3 testInfo:(id)a4;
-- (void)lookupPhysicalCardWithBroadwayActivationCode:(id)a3 testInfo:(id)a4;
-- (void)preparePresentationWithBroadwayActivationCode:(id)a3 testInfo:(id)a4;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)lookUpValidAccountWithBroadwayActivationCode:(id)code testInfo:(id)info;
+- (void)lookupPhysicalCardWithBroadwayActivationCode:(id)code testInfo:(id)info;
+- (void)preparePresentationWithBroadwayActivationCode:(id)code testInfo:(id)info;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation SDBroadwayAgent
@@ -98,36 +98,36 @@
   [v3 removeObserver:self];
 }
 
-- (void)_applePayCardDectected:(id)a3
+- (void)_applePayCardDectected:(id)dectected
 {
-  v4 = a3;
-  v6 = [v4 object];
-  v5 = [v4 userInfo];
+  dectectedCopy = dectected;
+  object = [dectectedCopy object];
+  userInfo = [dectectedCopy userInfo];
 
-  [(SDBroadwayAgent *)self preparePresentationWithBroadwayActivationCode:v6 testInfo:v5];
+  [(SDBroadwayAgent *)self preparePresentationWithBroadwayActivationCode:object testInfo:userInfo];
 }
 
-- (void)preparePresentationWithBroadwayActivationCode:(id)a3 testInfo:(id)a4
+- (void)preparePresentationWithBroadwayActivationCode:(id)code testInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  infoCopy = info;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100163918;
   block[3] = &unk_1008CE900;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = codeCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = codeCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_preparePresentationWithBroadwayActivationCode:(id)a3 testInfo:(id)a4
+- (void)_preparePresentationWithBroadwayActivationCode:(id)code testInfo:(id)info
 {
-  v7 = a3;
-  v6 = a4;
+  codeCopy = code;
+  infoCopy = info;
   if (byte_1009A0614 == 1)
   {
     if (dword_100971838 <= 30 && (dword_100971838 != -1 || _LogCategory_Initialize()))
@@ -143,20 +143,20 @@
       sub_100164D04();
     }
 
-    [(SDBroadwayAgent *)self lookUpValidAccountWithBroadwayActivationCode:v7 testInfo:v6];
+    [(SDBroadwayAgent *)self lookUpValidAccountWithBroadwayActivationCode:codeCopy testInfo:infoCopy];
   }
 }
 
-- (void)lookUpValidAccountWithBroadwayActivationCode:(id)a3 testInfo:(id)a4
+- (void)lookUpValidAccountWithBroadwayActivationCode:(id)code testInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  infoCopy = info;
   if (dword_100971838 <= 30 && (dword_100971838 != -1 || _LogCategory_Initialize()))
   {
     sub_100164D60();
   }
 
-  v8 = [v7 objectForKeyedSubscript:@"testParams"];
+  v8 = [infoCopy objectForKeyedSubscript:@"testParams"];
   if (v8)
   {
     v9 = SFTestFlagsFromString() & 1;
@@ -167,7 +167,7 @@
     v9 = 0;
   }
 
-  v10 = [off_1009718A8[0]() sharedInstance];
+  sharedInstance = [off_1009718A8[0]() sharedInstance];
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -175,26 +175,26 @@
   v13[3] = &unk_1008D1AD8;
   v17 = v9;
   objc_copyWeak(&v16, &location);
-  v11 = v6;
+  v11 = codeCopy;
   v14 = v11;
-  v12 = v7;
+  v12 = infoCopy;
   v15 = v12;
-  [v10 defaultAccountForFeature:2 completion:v13];
+  [sharedInstance defaultAccountForFeature:2 completion:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (void)lookupPhysicalCardWithBroadwayActivationCode:(id)a3 testInfo:(id)a4
+- (void)lookupPhysicalCardWithBroadwayActivationCode:(id)code testInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  infoCopy = info;
   if (dword_100971838 <= 30 && (dword_100971838 != -1 || _LogCategory_Initialize()))
   {
     sub_100164E08();
   }
 
-  v8 = [v7 objectForKeyedSubscript:@"testParams"];
+  v8 = [infoCopy objectForKeyedSubscript:@"testParams"];
   if (v8)
   {
     v9 = SFTestFlagsFromString();
@@ -205,7 +205,7 @@
     v9 = 0;
   }
 
-  v10 = [off_1009718A8[0]() sharedInstance];
+  sharedInstance = [off_1009718A8[0]() sharedInstance];
   objc_initWeak(&location, self);
   v11 = v9 & 1;
   v12 = HIDWORD(v9) & 1;
@@ -221,10 +221,10 @@
     v23 = v12;
     v14 = &v21;
     objc_copyWeak(&v21, &location);
-    v15 = v6;
+    v15 = codeCopy;
     v20[5] = v15;
-    v20[6] = v7;
-    [v10 physicalCardForFeatureIdentifier:2 activationCode:v15 completion:v20];
+    v20[6] = infoCopy;
+    [sharedInstance physicalCardForFeatureIdentifier:2 activationCode:v15 completion:v20];
   }
 
   else
@@ -244,43 +244,43 @@
     v19 = v12;
     v14 = &v17;
     objc_copyWeak(&v17, &location);
-    v16[5] = v6;
-    v16[6] = v7;
-    [v10 inactivePhysicalCardForFeatureIdentifier:2 completion:v16];
+    v16[5] = codeCopy;
+    v16[6] = infoCopy;
+    [sharedInstance inactivePhysicalCardForFeatureIdentifier:2 completion:v16];
   }
 
   objc_destroyWeak(v14);
   objc_destroyWeak(&location);
 }
 
-- (void)_startUIWithPhysicalCard:(id)a3 activationCode:(id)a4 testInfo:(id)a5
+- (void)_startUIWithPhysicalCard:(id)card activationCode:(id)code testInfo:(id)info
 {
-  v26 = a3;
-  v8 = a4;
-  v9 = a5;
+  cardCopy = card;
+  codeCopy = code;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (!v8)
+  if (!codeCopy)
   {
     goto LABEL_33;
   }
 
-  if (v26)
+  if (cardCopy)
   {
-    v10 = [v9 objectForKeyedSubscript:@"physicalCard"];
+    v10 = [infoCopy objectForKeyedSubscript:@"physicalCard"];
     if (v10)
     {
-      v11 = [v9 objectForKeyedSubscript:@"physicalCard"];
-      v12 = [v11 unsignedIntegerValue];
+      v11 = [infoCopy objectForKeyedSubscript:@"physicalCard"];
+      unsignedIntegerValue = [v11 unsignedIntegerValue];
     }
 
     else
     {
-      v12 = [v26 state];
+      unsignedIntegerValue = [cardCopy state];
     }
 
-    if (v12 == 5 || !v12)
+    if (unsignedIntegerValue == 5 || !unsignedIntegerValue)
     {
-      v24 = off_1009718C0(v12);
+      v24 = off_1009718C0(unsignedIntegerValue);
       v13 = NSErrorWithOSStatusF();
 
       goto LABEL_9;
@@ -311,13 +311,13 @@ LABEL_10:
 
   if (dword_100971838 <= 30 && (dword_100971838 != -1 || _LogCategory_Initialize()))
   {
-    v23 = v26;
-    v25 = v8;
+    v23 = cardCopy;
+    v25 = codeCopy;
     LogPrintF();
   }
 
-  v15 = [[NSMutableDictionary alloc] initWithDictionary:v9];
-  [v15 setObject:v8 forKeyedSubscript:@"activationCode"];
+  v15 = [[NSMutableDictionary alloc] initWithDictionary:infoCopy];
+  [v15 setObject:codeCopy forKeyedSubscript:@"activationCode"];
   v16 = [[SBSRemoteAlertDefinition alloc] initWithServiceName:@"com.apple.SharingViewService" viewControllerClassName:@"BroadwayActivationMainController"];
   v14 = objc_opt_new();
   [v14 setUserInfo:v15];
@@ -355,48 +355,48 @@ LABEL_10:
 LABEL_27:
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100164700;
   v7[3] = &unk_1008CE028;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = activateCopy;
+  selfCopy = self;
+  v6 = activateCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100164858;
   v7[3] = &unk_1008CE028;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = deactivateCopy;
+  selfCopy = self;
+  v6 = deactivateCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001649DC;
   block[3] = &unk_1008CE900;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = handleCopy;
+  selfCopy = self;
+  v14 = errorCopy;
+  v9 = errorCopy;
+  v10 = handleCopy;
   dispatch_async(dispatchQueue, block);
 }
 

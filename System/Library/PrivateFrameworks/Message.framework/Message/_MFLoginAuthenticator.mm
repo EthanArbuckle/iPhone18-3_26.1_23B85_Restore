@@ -1,35 +1,35 @@
 @interface _MFLoginAuthenticator
-- (id)responseForServerData:(id)a3;
+- (id)responseForServerData:(id)data;
 @end
 
 @implementation _MFLoginAuthenticator
 
-- (id)responseForServerData:(id)a3
+- (id)responseForServerData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
+  dataCopy = data;
+  v5 = dataCopy;
   self->_justSentPassword = 0;
-  if (!v4)
+  if (!dataCopy)
   {
     goto LABEL_5;
   }
 
-  v6 = [v4 bytes];
+  bytes = [dataCopy bytes];
   if ([v5 length] < 4)
   {
     goto LABEL_5;
   }
 
-  if (!strncasecmp(v6, "user", 4uLL))
+  if (!strncasecmp(bytes, "user", 4uLL))
   {
-    v9 = [(ECSASLAuthenticator *)self account];
-    v10 = [v9 username];
-    v11 = [v10 dataUsingEncoding:4];
+    account = [(ECSASLAuthenticator *)self account];
+    username = [account username];
+    v11 = [username dataUsingEncoding:4];
   }
 
   else
   {
-    if (strncasecmp(v6, "pass", 4uLL))
+    if (strncasecmp(bytes, "pass", 4uLL))
     {
 LABEL_5:
       v7 = 0;
@@ -37,9 +37,9 @@ LABEL_5:
     }
 
     self->_justSentPassword = 1;
-    v9 = [(ECSASLAuthenticator *)self account];
-    v10 = [v9 password];
-    v11 = [v10 dataUsingEncoding:4];
+    account = [(ECSASLAuthenticator *)self account];
+    username = [account password];
+    v11 = [username dataUsingEncoding:4];
   }
 
   v7 = v11;

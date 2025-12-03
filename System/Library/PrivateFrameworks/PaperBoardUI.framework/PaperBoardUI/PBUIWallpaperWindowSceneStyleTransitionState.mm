@@ -1,17 +1,17 @@
 @interface PBUIWallpaperWindowSceneStyleTransitionState
 - ($1D129F7B4C980C50E70029647222EF17)highestPriorityStyleTransitionState;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PBUIWallpaperWindowSceneStyleTransitionState)init;
-- (PBUIWallpaperWindowSceneStyleTransitionState)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (PBUIWallpaperWindowSceneStyleTransitionState)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)diffFromWallpaperWindowSceneStyleTransitionState:(id)a3 updateHandler:(id)a4 removeHandler:(id)a5;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)removeWallpaperStyleTransitionStateForPriority:(int64_t)a3;
-- (void)setWallpaperStyleTransitionState:(id *)a3 forPriority:(int64_t)a4;
+- (void)diffFromWallpaperWindowSceneStyleTransitionState:(id)state updateHandler:(id)handler removeHandler:(id)removeHandler;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)removeWallpaperStyleTransitionStateForPriority:(int64_t)priority;
+- (void)setWallpaperStyleTransitionState:(id *)state forPriority:(int64_t)priority;
 @end
 
 @implementation PBUIWallpaperWindowSceneStyleTransitionState
@@ -33,55 +33,55 @@
   return result;
 }
 
-- (void)setWallpaperStyleTransitionState:(id *)a3 forPriority:(int64_t)a4
+- (void)setWallpaperStyleTransitionState:(id *)state forPriority:(int64_t)priority
 {
-  if (a4 <= 4)
+  if (priority <= 4)
   {
-    v4 = self + 32 * a4;
+    v4 = self + 32 * priority;
     v4[8] = 1;
-    v5 = *&a3->var0;
-    *(v4 + 4) = *&a3->var2;
+    v5 = *&state->var0;
+    *(v4 + 4) = *&state->var2;
     *(v4 + 1) = v5;
   }
 }
 
-- (void)removeWallpaperStyleTransitionStateForPriority:(int64_t)a3
+- (void)removeWallpaperStyleTransitionStateForPriority:(int64_t)priority
 {
-  if (a3 <= 4)
+  if (priority <= 4)
   {
-    self->_stateTable[a3].valid = 0;
+    self->_stateTable[priority].valid = 0;
   }
 }
 
-- (void)diffFromWallpaperWindowSceneStyleTransitionState:(id)a3 updateHandler:(id)a4 removeHandler:(id)a5
+- (void)diffFromWallpaperWindowSceneStyleTransitionState:(id)state updateHandler:(id)handler removeHandler:(id)removeHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  handlerCopy = handler;
+  removeHandlerCopy = removeHandler;
   v11 = 0;
   v12 = 0;
   do
   {
     v13 = (&self->super.isa + v11);
-    v14 = &v8[v11];
+    v14 = &stateCopy[v11];
     if (self->_stateTable[v11 / 0x20].valid)
     {
       v15 = v13[2];
       v16 = v13[3];
       v17 = v13[4];
-      if ((v8[v11 + 8] & 1) == 0 || (v15 == *(v14 + 2) ? (v18 = v16 == *(v14 + 3)) : (v18 = 0), !v18 || (BSFloatEqualToFloat() & 1) == 0))
+      if ((stateCopy[v11 + 8] & 1) == 0 || (v15 == *(v14 + 2) ? (v18 = v16 == *(v14 + 3)) : (v18 = 0), !v18 || (BSFloatEqualToFloat() & 1) == 0))
       {
-        v19 = v9[2];
+        v19 = handlerCopy[2];
         v20[0] = v15;
         v20[1] = v16;
         v20[2] = v17;
-        v19(v9, v12, v20);
+        v19(handlerCopy, v12, v20);
       }
     }
 
-    else if (v8[v11 + 8])
+    else if (stateCopy[v11 + 8])
     {
-      v10[2](v10, v12);
+      removeHandlerCopy[2](removeHandlerCopy, v12);
     }
 
     ++v12;
@@ -113,7 +113,7 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
+  builder = [MEMORY[0x277CF0C40] builder];
   v4 = 0;
   p_transitionFraction = &self->_stateTable[0].state.transitionFraction;
   do
@@ -123,10 +123,10 @@
       v6 = *p_transitionFraction;
       v8 = *(p_transitionFraction - 2);
       v7 = *(p_transitionFraction - 1);
-      v9 = [v3 appendUnsignedInteger:v4];
-      v10 = [v3 appendInteger:v8];
-      v11 = [v3 appendInteger:v7];
-      v12 = [v3 appendCGFloat:v6];
+      v9 = [builder appendUnsignedInteger:v4];
+      v10 = [builder appendInteger:v8];
+      v11 = [builder appendInteger:v7];
+      v12 = [builder appendCGFloat:v6];
     }
 
     ++v4;
@@ -134,17 +134,17 @@
   }
 
   while (v4 != 5);
-  v13 = [v3 hash];
+  v13 = [builder hash];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     valid = self->_stateTable[0].valid;
     if ((v5[8] ^ valid))
@@ -194,7 +194,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   v5 = *&self->_stateTable[0].state.endStyle;
@@ -217,14 +217,14 @@
   return result;
 }
 
-- (PBUIWallpaperWindowSceneStyleTransitionState)initWithXPCDictionary:(id)a3
+- (PBUIWallpaperWindowSceneStyleTransitionState)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(PBUIWallpaperWindowSceneStyleTransitionState *)self init];
   if (v5)
   {
-    v18 = v4;
-    v6 = xpc_dictionary_get_array(v4, "table");
+    v18 = dictionaryCopy;
+    v6 = xpc_dictionary_get_array(dictionaryCopy, "table");
     v7 = v6;
     if (v6)
     {
@@ -251,15 +251,15 @@
       }
     }
 
-    v4 = v18;
+    dictionaryCopy = v18;
   }
 
   return v5;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
+  xdict = dictionary;
   empty = xpc_array_create_empty();
   v5 = 0;
   p_transitionFraction = &self->_stateTable[0].state.transitionFraction;
@@ -288,25 +288,25 @@
 
 - (id)succinctDescription
 {
-  v2 = [(PBUIWallpaperWindowSceneStyleTransitionState *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBUIWallpaperWindowSceneStyleTransitionState *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBUIWallpaperWindowSceneStyleTransitionState *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBUIWallpaperWindowSceneStyleTransitionState *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PBUIWallpaperWindowSceneStyleTransitionState *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(PBUIWallpaperWindowSceneStyleTransitionState *)self succinctDescriptionBuilder];
   v6 = 0;
   v7 = &self->_stateTable[0].valid + 1;
   do
@@ -321,11 +321,11 @@
       v11[1] = 3221225472;
       v11[2] = __86__PBUIWallpaperWindowSceneStyleTransitionState_descriptionBuilderWithMultilinePrefix___block_invoke;
       v11[3] = &unk_2783620D0;
-      v12 = v5;
+      v12 = succinctDescriptionBuilder;
       v13 = v8;
       *v14 = v15[0];
       *&v14[15] = *(v15 + 15);
-      [v12 appendBodySectionWithName:v9 multilinePrefix:v4 block:v11];
+      [v12 appendBodySectionWithName:v9 multilinePrefix:prefixCopy block:v11];
     }
 
     ++v6;
@@ -334,7 +334,7 @@
 
   while (v6 != 5);
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
 id __86__PBUIWallpaperWindowSceneStyleTransitionState_descriptionBuilderWithMultilinePrefix___block_invoke(uint64_t a1)

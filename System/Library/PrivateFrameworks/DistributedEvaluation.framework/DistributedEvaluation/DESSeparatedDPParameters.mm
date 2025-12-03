@@ -1,20 +1,20 @@
 @interface DESSeparatedDPParameters
-- (DESSeparatedDPParameters)initWithRecipe:(id)a3;
+- (DESSeparatedDPParameters)initWithRecipe:(id)recipe;
 - (id)description;
 @end
 
 @implementation DESSeparatedDPParameters
 
-- (DESSeparatedDPParameters)initWithRecipe:(id)a3
+- (DESSeparatedDPParameters)initWithRecipe:(id)recipe
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  recipeCopy = recipe;
+  v5 = recipeCopy;
+  if (!recipeCopy)
   {
     goto LABEL_8;
   }
 
-  v6 = [v4 maxNorm];
+  maxNorm = [recipeCopy maxNorm];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -22,14 +22,14 @@
     goto LABEL_8;
   }
 
-  v7 = [v5 normBinCount];
+  normBinCount = [v5 normBinCount];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_8:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
@@ -38,19 +38,19 @@ LABEL_8:
   v9 = [(DESSeparatedDPParameters *)&v15 init];
   if (v9)
   {
-    v10 = [v5 maxNorm];
-    [v10 doubleValue];
+    maxNorm2 = [v5 maxNorm];
+    [maxNorm2 doubleValue];
     v9->_maxNorm = v11;
 
-    v12 = [v5 normBinCount];
-    v9->_normBinCount = [v12 integerValue];
+    normBinCount2 = [v5 normBinCount];
+    v9->_normBinCount = [normBinCount2 integerValue];
   }
 
   self = v9;
-  v13 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)description

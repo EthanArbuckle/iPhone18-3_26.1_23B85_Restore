@@ -6,17 +6,17 @@
 
 - (id)app
 {
-  v2 = [a1 cslprf_settings];
-  v3 = [v2 application];
+  cslprf_settings = [self cslprf_settings];
+  application = [cslprf_settings application];
 
-  if (v3)
+  if (application)
   {
-    v4 = v3;
+    v4 = application;
   }
 
   else
   {
-    v4 = [a1 propertyForKey:@"CSLPRFApp"];
+    v4 = [self propertyForKey:@"CSLPRFApp"];
   }
 
   v5 = v4;

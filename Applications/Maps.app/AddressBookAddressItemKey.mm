@@ -1,15 +1,15 @@
 @interface AddressBookAddressItemKey
-- (AddressBookAddressItemKey)initWithAddressBookAddress:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AddressBookAddressItemKey)initWithAddressBookAddress:(id)address;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation AddressBookAddressItemKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
     goto LABEL_12;
@@ -18,20 +18,20 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (![(AddressBookAddressItemKey *)v4 conformsToProtocol:&OBJC_PROTOCOL___PersonalizedItemKeyWithGEOMapItem])
+    if (![(AddressBookAddressItemKey *)equalCopy conformsToProtocol:&OBJC_PROTOCOL___PersonalizedItemKeyWithGEOMapItem])
     {
       v8 = 0;
       goto LABEL_12;
     }
 
-    v6 = [(AddressBookAddressItemKey *)v4 geoMapItem];
-    if (v6)
+    geoMapItem = [(AddressBookAddressItemKey *)equalCopy geoMapItem];
+    if (geoMapItem)
     {
-      v9 = [(AddressBookAddressItemKey *)self geoMapItem];
+      geoMapItem2 = [(AddressBookAddressItemKey *)self geoMapItem];
 
-      if (v9)
+      if (geoMapItem2)
       {
-        v10 = [(AddressBookAddressItemKey *)self geoMapItem];
+        geoMapItem3 = [(AddressBookAddressItemKey *)self geoMapItem];
         IsEqualToMapItemForPurposeWithinDistance = GEOMapItemIsEqualToMapItemForPurposeWithinDistance();
 
         if ((IsEqualToMapItemForPurposeWithinDistance & 1) == 0)
@@ -45,39 +45,39 @@ LABEL_20:
       }
     }
 
-    v13 = [(AddressBookAddressItemKey *)self contact];
+    contact = [(AddressBookAddressItemKey *)self contact];
 
     v8 = 0;
-    if (!v6 || !v13)
+    if (!geoMapItem || !contact)
     {
       goto LABEL_4;
     }
 
-    v14 = [(AddressBookAddressItemKey *)self contact];
-    v15 = [CNContactFormatter stringFromContact:v14 style:0];
+    contact2 = [(AddressBookAddressItemKey *)self contact];
+    v15 = [CNContactFormatter stringFromContact:contact2 style:0];
 
-    v16 = [v6 addressObject];
-    v17 = [v16 shortAddress];
+    addressObject = [geoMapItem addressObject];
+    shortAddress = [addressObject shortAddress];
 
-    v18 = [v6 name];
+    name = [geoMapItem name];
     v19 = v15;
-    v20 = v18;
+    v20 = name;
     if (v19 | v20 && (v21 = [v19 isEqual:v20], v20, v19, (v21 & 1) == 0))
     {
     }
 
     else
     {
-      v22 = [(AddressBookAddressItemKey *)self shortAddress];
-      v23 = v17;
-      if (!(v23 | v22))
+      shortAddress2 = [(AddressBookAddressItemKey *)self shortAddress];
+      v23 = shortAddress;
+      if (!(v23 | shortAddress2))
       {
 
         goto LABEL_20;
       }
 
       v24 = v23;
-      v25 = [v22 isEqual:v23];
+      v25 = [shortAddress2 isEqual:v23];
 
       if (v25)
       {
@@ -90,11 +90,11 @@ LABEL_22:
     goto LABEL_4;
   }
 
-  v5 = v4;
-  v6 = [(AddressBookAddressItemKey *)self keyString];
-  v7 = [(AddressBookAddressItemKey *)v5 keyString];
+  v5 = equalCopy;
+  geoMapItem = [(AddressBookAddressItemKey *)self keyString];
+  keyString = [(AddressBookAddressItemKey *)v5 keyString];
 
-  v8 = [v6 isEqualToString:v7];
+  v8 = [geoMapItem isEqualToString:keyString];
 LABEL_4:
 
 LABEL_12:
@@ -108,56 +108,56 @@ LABEL_12:
     return self->_geoMapItemHash;
   }
 
-  v3 = [(AddressBookAddressItemKey *)self keyString];
-  v4 = [v3 hash];
+  keyString = [(AddressBookAddressItemKey *)self keyString];
+  v4 = [keyString hash];
 
   return v4;
 }
 
-- (AddressBookAddressItemKey)initWithAddressBookAddress:(id)a3
+- (AddressBookAddressItemKey)initWithAddressBookAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v26.receiver = self;
   v26.super_class = AddressBookAddressItemKey;
   v5 = [(AddressBookAddressItemKey *)&v26 init];
   if (v5)
   {
-    v6 = [v4 addressValue];
-    v7 = [v6 label];
-    v8 = [v4 addressValue];
-    v9 = [v8 identifier];
-    v10 = [NSString stringWithFormat:@"%@ - %@", v7, v9];
+    addressValue = [addressCopy addressValue];
+    label = [addressValue label];
+    addressValue2 = [addressCopy addressValue];
+    identifier = [addressValue2 identifier];
+    v10 = [NSString stringWithFormat:@"%@ - %@", label, identifier];
     keyString = v5->_keyString;
     v5->_keyString = v10;
 
-    v12 = [v4 geocodedMapItem];
+    geocodedMapItem = [addressCopy geocodedMapItem];
 
-    if (v12)
+    if (geocodedMapItem)
     {
-      v13 = [v4 geocodedMapItem];
-      v14 = [v13 _geoMapItem];
+      geocodedMapItem2 = [addressCopy geocodedMapItem];
+      _geoMapItem = [geocodedMapItem2 _geoMapItem];
       geoMapItem = v5->_geoMapItem;
-      v5->_geoMapItem = v14;
+      v5->_geoMapItem = _geoMapItem;
 
       v5->_geoMapItemHash = GEOMapItemHashForPurpose();
     }
 
     else
     {
-      v16 = [(AddressBookAddressItemKey *)v5 contact];
-      v17 = [CNContactFormatter stringFromContact:v16 style:0];
+      contact = [(AddressBookAddressItemKey *)v5 contact];
+      v17 = [CNContactFormatter stringFromContact:contact style:0];
       v18 = v5->_keyString;
       v5->_keyString = v17;
 
-      v19 = [v4 contact];
-      v20 = [v19 copy];
+      contact2 = [addressCopy contact];
+      v20 = [contact2 copy];
       contact = v5->_contact;
       v5->_contact = v20;
 
       v22 = [[MKMapItem alloc] initWithContact:v5->_contact];
-      v23 = [v22 _addressFormattedAsShortenedAddress];
+      _addressFormattedAsShortenedAddress = [v22 _addressFormattedAsShortenedAddress];
       shortAddress = v5->_shortAddress;
-      v5->_shortAddress = v23;
+      v5->_shortAddress = _addressFormattedAsShortenedAddress;
     }
   }
 

@@ -1,42 +1,42 @@
 @interface TSCHChartPieBendedLineLabelPlacement
-- (BOOL)conflictBetweenWedgeLayoutInfo:(id)a3 nextWedgeLayoutInfo:(id)a4;
-- (BOOL)innermostWedgeLayoutInfoWillUsePerpendicularAngle:(id)a3;
-- (BOOL)wedgeLayoutInfoShouldShiftForCleanUp:(id)a3 withCleanUpOption:(unint64_t)a4;
-- (BOOL)wedgeLayoutInfoShouldShiftToPreventBendPointOnCircumference:(id)a3;
-- (BOOL)wedgeLayoutInfoShouldShiftToPreventTooShortCalloutLineFirstHalf:(id)a3;
-- (BOOL)wedgeLayoutInfoShouldUsePerpendicularAngle:(id)a3 defaultMidpoint:(CGPoint)a4;
-- (CGAffineTransform)transformToShiftWedgeLayoutInfoAwayFromAdjacentWedgeLayoutInfo:(SEL)a3 adjacentWedgeLayoutInfo:(id)a4 adjacentShouldBeAbove:(id)a5 totalHeightOverlap:(BOOL)a6;
-- (CGPoint)calloutLineEndpointForWedgeLayoutInfo:(id)a3;
-- (CGPoint)calloutLineMidPointForWedgeLayoutInfo:(id)a3 startPoint:(CGPoint)a4 endPoint:(CGPoint)a5;
-- (CGPoint)calloutLineStartpointForWedgeLayoutInfo:(id)a3;
-- (CGPoint)defaultCalloutLineMidPointForWedgeLayoutInfo:(id)a3 startPoint:(CGPoint)a4 endPoint:(CGPoint)a5;
-- (CGPoint)firstHalfOfBendedLineVectorNormalizedWithWedgeLayoutInfo:(id)a3 shouldBeUpwards:(BOOL)a4;
-- (double)amountLabelsInQuadrantNeedToShift:(id)a3 cleanUpOption:(unint64_t)a4;
-- (double)amountWedgeLayoutInfoShouldShiftForCleanUp:(id)a3 withCleanUpOption:(unint64_t)a4;
-- (double)amountWedgeLayoutInfoShouldShiftToPreventBendPointOnCircumference:(id)a3;
-- (double)amountWedgeLayoutInfoShouldShiftToPreventShortFirstHalf:(id)a3;
-- (double)shiftAmountForWedgeLayoutInfo:(id)a3 adjacentWedgeLayoutInfo:(id)a4 adjacentShouldBeAbove:(BOOL)a5;
-- (double)totalHeightOverlapWithArray:(id)a3;
-- (id)arrayOfConflictingLabelsWithWedgeLayoutInfosOnOneSide:(id)a3;
+- (BOOL)conflictBetweenWedgeLayoutInfo:(id)info nextWedgeLayoutInfo:(id)layoutInfo;
+- (BOOL)innermostWedgeLayoutInfoWillUsePerpendicularAngle:(id)angle;
+- (BOOL)wedgeLayoutInfoShouldShiftForCleanUp:(id)up withCleanUpOption:(unint64_t)option;
+- (BOOL)wedgeLayoutInfoShouldShiftToPreventBendPointOnCircumference:(id)circumference;
+- (BOOL)wedgeLayoutInfoShouldShiftToPreventTooShortCalloutLineFirstHalf:(id)half;
+- (BOOL)wedgeLayoutInfoShouldUsePerpendicularAngle:(id)angle defaultMidpoint:(CGPoint)midpoint;
+- (CGAffineTransform)transformToShiftWedgeLayoutInfoAwayFromAdjacentWedgeLayoutInfo:(SEL)info adjacentWedgeLayoutInfo:(id)layoutInfo adjacentShouldBeAbove:(id)above totalHeightOverlap:(BOOL)overlap;
+- (CGPoint)calloutLineEndpointForWedgeLayoutInfo:(id)info;
+- (CGPoint)calloutLineMidPointForWedgeLayoutInfo:(id)info startPoint:(CGPoint)point endPoint:(CGPoint)endPoint;
+- (CGPoint)calloutLineStartpointForWedgeLayoutInfo:(id)info;
+- (CGPoint)defaultCalloutLineMidPointForWedgeLayoutInfo:(id)info startPoint:(CGPoint)point endPoint:(CGPoint)endPoint;
+- (CGPoint)firstHalfOfBendedLineVectorNormalizedWithWedgeLayoutInfo:(id)info shouldBeUpwards:(BOOL)upwards;
+- (double)amountLabelsInQuadrantNeedToShift:(id)shift cleanUpOption:(unint64_t)option;
+- (double)amountWedgeLayoutInfoShouldShiftForCleanUp:(id)up withCleanUpOption:(unint64_t)option;
+- (double)amountWedgeLayoutInfoShouldShiftToPreventBendPointOnCircumference:(id)circumference;
+- (double)amountWedgeLayoutInfoShouldShiftToPreventShortFirstHalf:(id)half;
+- (double)shiftAmountForWedgeLayoutInfo:(id)info adjacentWedgeLayoutInfo:(id)layoutInfo adjacentShouldBeAbove:(BOOL)above;
+- (double)totalHeightOverlapWithArray:(id)array;
+- (id)arrayOfConflictingLabelsWithWedgeLayoutInfosOnOneSide:(id)side;
 - (id)bottomLeftQuadrant;
 - (id)bottomRightQuadrant;
-- (id)innermostWedgeLayoutInfo:(id)a3;
-- (id)newCalloutLinePaths:(id)a3 startLineEnd:(id)a4 outStartLineEndPath:(id *)a5 endLineEnd:(id)a6 outEndLineEndPath:(id *)a7 stroke:(id)a8 outStroke:(id *)a9 context:(CGContext *)a10 contextScale:(float)a11;
+- (id)innermostWedgeLayoutInfo:(id)info;
+- (id)newCalloutLinePaths:(id)paths startLineEnd:(id)end outStartLineEndPath:(id *)path endLineEnd:(id)lineEnd outEndLineEndPath:(id *)endPath stroke:(id)stroke outStroke:(id *)outStroke context:(CGContext *)self0 contextScale:(float)self1;
 - (id)topLeftQuadrant;
 - (id)topRightQuadrant;
 - (id)updateLabelTransformsToPreventOverlap;
-- (id)wedgeLayoutInfosInHorizontalHalfDiskWithWedgeLayoutInfos:(id)a3 horizontalHalfDisk:(unint64_t)a4;
-- (id)wedgeLayoutInfosInOneQuadrant:(id)a3 verticalHalfDisk:(unint64_t)a4 horizontalHalfDisk:(unint64_t)a5;
-- (id)wedgeLayoutInfosInVerticalHalfDiskWithWedgeLayoutInfos:(id)a3 verticalHalfDisk:(unint64_t)a4;
-- (id)wedgeLayoutInfosThatNeedShiftingToCleanUpQuadrant:(id)a3 cleanUpOption:(unint64_t)a4;
-- (void)fixConflictsInOneQuadrantOfPieChartWithArray:(id)a3 quadrantInHorizontalHalfDisk:(unint64_t)a4;
-- (void)fixOverlapsOnOneVerticalSideWithConflictingLabelsArray:(id)a3;
+- (id)wedgeLayoutInfosInHorizontalHalfDiskWithWedgeLayoutInfos:(id)infos horizontalHalfDisk:(unint64_t)disk;
+- (id)wedgeLayoutInfosInOneQuadrant:(id)quadrant verticalHalfDisk:(unint64_t)disk horizontalHalfDisk:(unint64_t)halfDisk;
+- (id)wedgeLayoutInfosInVerticalHalfDiskWithWedgeLayoutInfos:(id)infos verticalHalfDisk:(unint64_t)disk;
+- (id)wedgeLayoutInfosThatNeedShiftingToCleanUpQuadrant:(id)quadrant cleanUpOption:(unint64_t)option;
+- (void)fixConflictsInOneQuadrantOfPieChartWithArray:(id)array quadrantInHorizontalHalfDisk:(unint64_t)disk;
+- (void)fixOverlapsOnOneVerticalSideWithConflictingLabelsArray:(id)array;
 - (void)fixOverlapsOutsideWedges;
-- (void)fixOverlapsWithWedgeLayoutInfos:(id)a3 inVerticalHalfDisk:(unint64_t)a4;
+- (void)fixOverlapsWithWedgeLayoutInfos:(id)infos inVerticalHalfDisk:(unint64_t)disk;
 - (void)preventOverlapsWithinWedges;
-- (void)shiftLabelsVerticallyInOneQuadrantWithWedgeLayoutInfos:(id)a3 shiftAmount:(double)a4 quadrantInHorizontalHalfDisk:(unint64_t)a5;
-- (void)shiftLabelsVerticallyInQuadrantIfNecessary:(id)a3 withCleanUpOption:(unint64_t)a4;
-- (void)shiftLabelsVerticallyToCleanUpPlacementWithCleanUpOption:(unint64_t)a3;
+- (void)shiftLabelsVerticallyInOneQuadrantWithWedgeLayoutInfos:(id)infos shiftAmount:(double)amount quadrantInHorizontalHalfDisk:(unint64_t)disk;
+- (void)shiftLabelsVerticallyInQuadrantIfNecessary:(id)necessary withCleanUpOption:(unint64_t)option;
+- (void)shiftLabelsVerticallyToCleanUpPlacementWithCleanUpOption:(unint64_t)option;
 @end
 
 @implementation TSCHChartPieBendedLineLabelPlacement
@@ -171,10 +171,10 @@ LABEL_23:
   objc_msgSend_fixOverlapsWithWedgeLayoutInfos_inVerticalHalfDisk_(self, v15, v16, v17, v18, v19, 1);
 }
 
-- (void)fixOverlapsWithWedgeLayoutInfos:(id)a3 inVerticalHalfDisk:(unint64_t)a4
+- (void)fixOverlapsWithWedgeLayoutInfos:(id)infos inVerticalHalfDisk:(unint64_t)disk
 {
-  v50 = a3;
-  if (a4 >= 2)
+  infosCopy = infos;
+  if (disk >= 2)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v7, v8, v9, "[TSCHChartPieBendedLineLabelPlacement fixOverlapsWithWedgeLayoutInfos:inVerticalHalfDisk:]");
@@ -184,7 +184,7 @@ LABEL_23:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
   }
 
-  v25 = objc_msgSend_wedgeLayoutInfosInVerticalHalfDiskWithWedgeLayoutInfos_verticalHalfDisk_(self, v6, v7, v8, v9, v50, a4);
+  v25 = objc_msgSend_wedgeLayoutInfosInVerticalHalfDiskWithWedgeLayoutInfos_verticalHalfDisk_(self, v6, v7, v8, v9, infosCopy, disk);
   v30 = objc_msgSend_arrayOfConflictingLabelsWithWedgeLayoutInfosOnOneSide_(self, v26, v27, v28, v29, v25);
   if (objc_msgSend_count(v30, v31, v32, v33, v34))
   {
@@ -205,15 +205,15 @@ LABEL_23:
   }
 }
 
-- (void)fixOverlapsOnOneVerticalSideWithConflictingLabelsArray:(id)a3
+- (void)fixOverlapsOnOneVerticalSideWithConflictingLabelsArray:(id)array
 {
   v102 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
   v100 = 0u;
-  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, 0.0, v6, v7, &v97, v101, 16);
+  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v5, 0.0, v6, v7, &v97, v101, 16);
   if (v8)
   {
     v13 = v8;
@@ -226,7 +226,7 @@ LABEL_23:
       {
         if (*v98 != v14)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v16 = *(*(&v97 + 1) + 8 * v15);
@@ -284,17 +284,17 @@ LABEL_23:
       }
 
       while (v13 != v15);
-      v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v9, v10, v11, v12, &v97, v101, 16);
+      v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v9, v10, v11, v12, &v97, v101, 16);
     }
 
     while (v13);
   }
 }
 
-- (void)fixConflictsInOneQuadrantOfPieChartWithArray:(id)a3 quadrantInHorizontalHalfDisk:(unint64_t)a4
+- (void)fixConflictsInOneQuadrantOfPieChartWithArray:(id)array quadrantInHorizontalHalfDisk:(unint64_t)disk
 {
-  v7 = a3;
-  if (a4 >= 2)
+  arrayCopy = array;
+  if (disk >= 2)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "[TSCHChartPieBendedLineLabelPlacement fixConflictsInOneQuadrantOfPieChartWithArray:quadrantInHorizontalHalfDisk:]");
@@ -304,38 +304,38 @@ LABEL_23:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
   }
 
-  objc_msgSend_totalHeightOverlapWithArray_(self, v6, v8, v9, v10, v7);
+  objc_msgSend_totalHeightOverlapWithArray_(self, v6, v8, v9, v10, arrayCopy);
   v27 = v26;
   v28 = MEMORY[0x277CBF2C0];
   v29 = *(MEMORY[0x277CBF2C0] + 16);
   v77 = *MEMORY[0x277CBF2C0];
   v78 = v29;
   tx = *(MEMORY[0x277CBF2C0] + 32);
-  if (objc_msgSend_count(v7, v31, *&v77, *&v29, v32) != 1)
+  if (objc_msgSend_count(arrayCopy, v31, *&v77, *&v29, v32) != 1)
   {
     v37 = 0;
     ty = *(v28 + 40);
     v39 = -1;
     do
     {
-      if (a4)
+      if (disk)
       {
         v40 = 1;
         v41 = v37;
-        objc_msgSend_objectAtIndexedSubscript_(v7, v33, v34, v35, v36, v37);
+        objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v33, v34, v35, v36, v37);
       }
 
       else
       {
-        v41 = objc_msgSend_count(v7, v33, v34, v35, v36) + v39;
+        v41 = objc_msgSend_count(arrayCopy, v33, v34, v35, v36) + v39;
         v40 = -1;
-        objc_msgSend_objectAtIndexedSubscript_(v7, v42, v43, v44, v45, v41);
+        objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v42, v43, v44, v45, v41);
       }
       v46 = ;
-      v51 = objc_msgSend_objectAtIndexedSubscript_(v7, v47, v48, v49, v50, v41 + v40);
+      v51 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v47, v48, v49, v50, v41 + v40);
       if (objc_msgSend_enableCalloutLineSetting(v46, v52, v53, v54, v55))
       {
-        objc_msgSend_transformToShiftWedgeLayoutInfoAwayFromAdjacentWedgeLayoutInfo_adjacentWedgeLayoutInfo_adjacentShouldBeAbove_totalHeightOverlap_(self, v56, v27, c, v59, v46, v51, a4 != 0);
+        objc_msgSend_transformToShiftWedgeLayoutInfoAwayFromAdjacentWedgeLayoutInfo_adjacentWedgeLayoutInfo_adjacentShouldBeAbove_totalHeightOverlap_(self, v56, v27, c, v59, v46, v51, disk != 0);
         a = v76.a;
         c = v76.c;
         v77 = *&v76.a;
@@ -344,7 +344,7 @@ LABEL_23:
         ty = v76.ty;
       }
 
-      objc_msgSend_shiftAmountForWedgeLayoutInfo_adjacentWedgeLayoutInfo_adjacentShouldBeAbove_(self, v56, a, c, v59, v46, v51, a4 != 0);
+      objc_msgSend_shiftAmountForWedgeLayoutInfo_adjacentWedgeLayoutInfo_adjacentShouldBeAbove_(self, v56, a, c, v59, v46, v51, disk != 0);
       v27 = v27 - v60;
       *&v76.a = v77;
       *&v76.c = v78;
@@ -356,17 +356,17 @@ LABEL_23:
       --v39;
     }
 
-    while (v37 < objc_msgSend_count(v7, v63, v64, v65, v66) - 1);
+    while (v37 < objc_msgSend_count(arrayCopy, v63, v64, v65, v66) - 1);
   }
 
-  if (a4)
+  if (disk)
   {
-    objc_msgSend_lastObject(v7, v33, v34, v35, v36);
+    objc_msgSend_lastObject(arrayCopy, v33, v34, v35, v36);
   }
 
   else
   {
-    objc_msgSend_firstObject(v7, v33, v34, v35, v36);
+    objc_msgSend_firstObject(arrayCopy, v33, v34, v35, v36);
   }
   v67 = ;
   if (objc_msgSend_enableCalloutLineSetting(v67, v68, v69, v70, v71))
@@ -376,10 +376,10 @@ LABEL_23:
   }
 }
 
-- (CGAffineTransform)transformToShiftWedgeLayoutInfoAwayFromAdjacentWedgeLayoutInfo:(SEL)a3 adjacentWedgeLayoutInfo:(id)a4 adjacentShouldBeAbove:(id)a5 totalHeightOverlap:(BOOL)a6
+- (CGAffineTransform)transformToShiftWedgeLayoutInfoAwayFromAdjacentWedgeLayoutInfo:(SEL)info adjacentWedgeLayoutInfo:(id)layoutInfo adjacentShouldBeAbove:(id)above totalHeightOverlap:(BOOL)overlap
 {
   v7 = -a7;
-  if (a6)
+  if (overlap)
   {
     v7 = a7;
   }
@@ -387,40 +387,40 @@ LABEL_23:
   return CGAffineTransformMakeTranslation(retstr, 0.0, v7);
 }
 
-- (double)totalHeightOverlapWithArray:(id)a3
+- (double)totalHeightOverlapWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v13 = 0.0;
-  if (objc_msgSend_count(v4, v5, v6, v7, v8) >= 2)
+  if (objc_msgSend_count(arrayCopy, v5, v6, v7, v8) >= 2)
   {
     v14 = 1;
     do
     {
-      v15 = objc_msgSend_objectAtIndexedSubscript_(v4, v9, v10, v11, v12, v14);
-      v20 = objc_msgSend_objectAtIndexedSubscript_(v4, v16, v17, v18, v19, v14 - 1);
+      v15 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v9, v10, v11, v12, v14);
+      v20 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v16, v17, v18, v19, v14 - 1);
       objc_msgSend_shiftAmountForWedgeLayoutInfo_adjacentWedgeLayoutInfo_adjacentShouldBeAbove_(self, v21, v22, v23, v24, v15, v20, 0);
       v13 = v13 + v25;
 
       ++v14;
     }
 
-    while (v14 < objc_msgSend_count(v4, v26, v27, v28, v29));
+    while (v14 < objc_msgSend_count(arrayCopy, v26, v27, v28, v29));
   }
 
   return v13;
 }
 
-- (double)shiftAmountForWedgeLayoutInfo:(id)a3 adjacentWedgeLayoutInfo:(id)a4 adjacentShouldBeAbove:(BOOL)a5
+- (double)shiftAmountForWedgeLayoutInfo:(id)info adjacentWedgeLayoutInfo:(id)layoutInfo adjacentShouldBeAbove:(BOOL)above
 {
-  v5 = a5;
-  v8 = a4;
-  objc_msgSend_combinedLabelRectInChartCoordinateSpace(a3, v9, v10, v11, v12);
+  aboveCopy = above;
+  layoutInfoCopy = layoutInfo;
+  objc_msgSend_combinedLabelRectInChartCoordinateSpace(info, v9, v10, v11, v12);
   objc_msgSend_paddedLabelRectWithRect_(self, v13, v14, v15, v16);
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  objc_msgSend_combinedLabelRectInChartCoordinateSpace(v8, v25, v17, v19, v21);
+  objc_msgSend_combinedLabelRectInChartCoordinateSpace(layoutInfoCopy, v25, v17, v19, v21);
   v27 = v26;
   v29 = v28;
   v31 = v30;
@@ -462,7 +462,7 @@ LABEL_23:
     }
   }
 
-  else if (v5)
+  else if (aboveCopy)
   {
     MinY = CGRectGetMinY(*&v44);
     v58.origin.x = v36;
@@ -508,9 +508,9 @@ LABEL_23:
   return result;
 }
 
-- (void)shiftLabelsVerticallyToCleanUpPlacementWithCleanUpOption:(unint64_t)a3
+- (void)shiftLabelsVerticallyToCleanUpPlacementWithCleanUpOption:(unint64_t)option
 {
-  if (a3 >= 2)
+  if (option >= 2)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCHChartPieBendedLineLabelPlacement shiftLabelsVerticallyToCleanUpPlacementWithCleanUpOption:]");
@@ -521,35 +521,35 @@ LABEL_23:
   }
 
   v23 = objc_msgSend_topLeftQuadrant(self, a2, v3, v4, v5);
-  objc_msgSend_shiftLabelsVerticallyInQuadrantIfNecessary_withCleanUpOption_(self, v24, v25, v26, v27, v23, a3);
+  objc_msgSend_shiftLabelsVerticallyInQuadrantIfNecessary_withCleanUpOption_(self, v24, v25, v26, v27, v23, option);
 
   v32 = objc_msgSend_bottomLeftQuadrant(self, v28, v29, v30, v31);
-  objc_msgSend_shiftLabelsVerticallyInQuadrantIfNecessary_withCleanUpOption_(self, v33, v34, v35, v36, v32, a3);
+  objc_msgSend_shiftLabelsVerticallyInQuadrantIfNecessary_withCleanUpOption_(self, v33, v34, v35, v36, v32, option);
 
   v41 = objc_msgSend_topRightQuadrant(self, v37, v38, v39, v40);
-  objc_msgSend_shiftLabelsVerticallyInQuadrantIfNecessary_withCleanUpOption_(self, v42, v43, v44, v45, v41, a3);
+  objc_msgSend_shiftLabelsVerticallyInQuadrantIfNecessary_withCleanUpOption_(self, v42, v43, v44, v45, v41, option);
 
   v54 = objc_msgSend_bottomRightQuadrant(self, v46, v47, v48, v49);
-  objc_msgSend_shiftLabelsVerticallyInQuadrantIfNecessary_withCleanUpOption_(self, v50, v51, v52, v53, v54, a3);
+  objc_msgSend_shiftLabelsVerticallyInQuadrantIfNecessary_withCleanUpOption_(self, v50, v51, v52, v53, v54, option);
 }
 
-- (void)shiftLabelsVerticallyInQuadrantIfNecessary:(id)a3 withCleanUpOption:(unint64_t)a4
+- (void)shiftLabelsVerticallyInQuadrantIfNecessary:(id)necessary withCleanUpOption:(unint64_t)option
 {
-  v6 = a3;
-  v43 = v6;
-  if (a4 >= 2)
+  necessaryCopy = necessary;
+  v43 = necessaryCopy;
+  if (option >= 2)
   {
     v10 = MEMORY[0x277D81150];
-    v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v7, v8, v9, "[TSCHChartPieBendedLineLabelPlacement shiftLabelsVerticallyInQuadrantIfNecessary:withCleanUpOption:]");
+    v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], necessaryCopy, v7, v8, v9, "[TSCHChartPieBendedLineLabelPlacement shiftLabelsVerticallyInQuadrantIfNecessary:withCleanUpOption:]");
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v13, v14, v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartPieBendedLineLabelPlacement.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v17, v18, v19, v20, v11, v16, 328, 0, "Invalid TSCHChartPieCleanUpOption");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
-    v6 = v43;
+    necessaryCopy = v43;
   }
 
-  v25 = objc_msgSend_wedgeLayoutInfosThatNeedShiftingToCleanUpQuadrant_cleanUpOption_(self, v6, v7, v8, v9, v6, a4);
-  objc_msgSend_amountLabelsInQuadrantNeedToShift_cleanUpOption_(self, v26, v27, v28, v29, v43, a4);
+  v25 = objc_msgSend_wedgeLayoutInfosThatNeedShiftingToCleanUpQuadrant_cleanUpOption_(self, necessaryCopy, v7, v8, v9, necessaryCopy, option);
+  objc_msgSend_amountLabelsInQuadrantNeedToShift_cleanUpOption_(self, v26, v27, v28, v29, v43, option);
   v31 = v30;
   if (objc_msgSend_count(v25, v32, v30, v33, v34))
   {
@@ -558,10 +558,10 @@ LABEL_23:
   }
 }
 
-- (double)amountLabelsInQuadrantNeedToShift:(id)a3 cleanUpOption:(unint64_t)a4
+- (double)amountLabelsInQuadrantNeedToShift:(id)shift cleanUpOption:(unint64_t)option
 {
-  v7 = a3;
-  if (a4 >= 2)
+  shiftCopy = shift;
+  if (option >= 2)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "[TSCHChartPieBendedLineLabelPlacement amountLabelsInQuadrantNeedToShift:cleanUpOption:]");
@@ -571,8 +571,8 @@ LABEL_23:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
   }
 
-  v26 = objc_msgSend_horizontalHalfDisk(v7, v6, v8, v9, v10);
-  v31 = objc_msgSend_wedgeLayoutInfos(v7, v27, v28, v29, v30);
+  v26 = objc_msgSend_horizontalHalfDisk(shiftCopy, v6, v8, v9, v10);
+  v31 = objc_msgSend_wedgeLayoutInfos(shiftCopy, v27, v28, v29, v30);
   if (objc_msgSend_count(v31, v32, v33, v34, v35))
   {
     v40 = 0;
@@ -587,7 +587,7 @@ LABEL_23:
       }
 
       v44 = objc_msgSend_objectAtIndexedSubscript_(v31, v36, v37, v38, v39, v43);
-      objc_msgSend_amountWedgeLayoutInfoShouldShiftForCleanUp_withCleanUpOption_(self, v45, v46, v47, v48, v44, a4);
+      objc_msgSend_amountWedgeLayoutInfoShouldShiftForCleanUp_withCleanUpOption_(self, v45, v46, v47, v48, v44, option);
       if (fabs(v41) <= fabs(v49))
       {
         v41 = v49;
@@ -608,17 +608,17 @@ LABEL_23:
   return v41;
 }
 
-- (double)amountWedgeLayoutInfoShouldShiftForCleanUp:(id)a3 withCleanUpOption:(unint64_t)a4
+- (double)amountWedgeLayoutInfoShouldShiftForCleanUp:(id)up withCleanUpOption:(unint64_t)option
 {
-  v7 = a3;
-  if (a4 == 1)
+  upCopy = up;
+  if (option == 1)
   {
-    objc_msgSend_amountWedgeLayoutInfoShouldShiftToPreventBendPointOnCircumference_(self, v6, v8, v9, v10, v7);
+    objc_msgSend_amountWedgeLayoutInfoShouldShiftToPreventBendPointOnCircumference_(self, v6, v8, v9, v10, upCopy);
   }
 
   else
   {
-    if (a4)
+    if (option)
     {
       v13 = MEMORY[0x277D81150];
       v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "[TSCHChartPieBendedLineLabelPlacement amountWedgeLayoutInfoShouldShiftForCleanUp:withCleanUpOption:]");
@@ -630,7 +630,7 @@ LABEL_23:
       goto LABEL_7;
     }
 
-    objc_msgSend_amountWedgeLayoutInfoShouldShiftToPreventShortFirstHalf_(self, v6, v8, v9, v10, v7);
+    objc_msgSend_amountWedgeLayoutInfoShouldShiftToPreventShortFirstHalf_(self, v6, v8, v9, v10, upCopy);
   }
 
   v12 = v11;
@@ -639,48 +639,48 @@ LABEL_7:
   return v12;
 }
 
-- (double)amountWedgeLayoutInfoShouldShiftToPreventShortFirstHalf:(id)a3
+- (double)amountWedgeLayoutInfoShouldShiftToPreventShortFirstHalf:(id)half
 {
-  v4 = a3;
+  halfCopy = half;
   v13 = 0.0;
-  if (objc_msgSend_wedgeLayoutInfoShouldShiftToPreventTooShortCalloutLineFirstHalf_(self, v5, v6, v7, v8, v4))
+  if (objc_msgSend_wedgeLayoutInfoShouldShiftToPreventTooShortCalloutLineFirstHalf_(self, v5, v6, v7, v8, halfCopy))
   {
-    objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v9, v10, v11, v12, v4);
+    objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v9, v10, v11, v12, halfCopy);
     v15 = v14;
-    objc_msgSend_calloutLineEndpointForWedgeLayoutInfo_(self, v16, v17, v14, v18, v4);
+    objc_msgSend_calloutLineEndpointForWedgeLayoutInfo_(self, v16, v17, v14, v18, halfCopy);
     v13 = 7.0 - vabdd_f64(v19, v15);
   }
 
   return v13;
 }
 
-- (double)amountWedgeLayoutInfoShouldShiftToPreventBendPointOnCircumference:(id)a3
+- (double)amountWedgeLayoutInfoShouldShiftToPreventBendPointOnCircumference:(id)circumference
 {
-  v4 = a3;
+  circumferenceCopy = circumference;
   v13 = 0.0;
-  if (objc_msgSend_wedgeLayoutInfoShouldShiftToPreventBendPointOnCircumference_(self, v5, v6, v7, v8, v4))
+  if (objc_msgSend_wedgeLayoutInfoShouldShiftToPreventBendPointOnCircumference_(self, v5, v6, v7, v8, circumferenceCopy))
   {
-    objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v9, v10, v11, v12, v4);
+    objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v9, v10, v11, v12, circumferenceCopy);
     v15 = v14;
     v17 = v16;
-    objc_msgSend_calloutLineEndpointForWedgeLayoutInfo_(self, v18, v14, v16, v19, v4);
-    objc_msgSend_calloutLineMidPointForWedgeLayoutInfo_startPoint_endPoint_(self, v20, v15, v17, v21, v4, v22);
-    v27 = objc_msgSend_wedgeElement(v4, v23, v24, v25, v26);
+    objc_msgSend_calloutLineEndpointForWedgeLayoutInfo_(self, v18, v14, v16, v19, circumferenceCopy);
+    objc_msgSend_calloutLineMidPointForWedgeLayoutInfo_startPoint_endPoint_(self, v20, v15, v17, v21, circumferenceCopy, v22);
+    v27 = objc_msgSend_wedgeElement(circumferenceCopy, v23, v24, v25, v26);
     objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(v27, v28, v29, v30, v31);
     TSUDistance();
     v33 = v32;
 
-    v38 = objc_msgSend_wedgeElement(v4, v34, v35, v36, v37);
+    v38 = objc_msgSend_wedgeElement(circumferenceCopy, v34, v35, v36, v37);
     objc_msgSend_radius(v38, v39, v40, v41, v42);
     v44 = v43;
 
     v45 = v44 + 5.0 - v33;
-    v49 = objc_msgSend_wedgeElement(v4, v46, v44 + 5.0, v47, v48);
+    v49 = objc_msgSend_wedgeElement(circumferenceCopy, v46, v44 + 5.0, v47, v48);
     objc_msgSend_normalizedWedgeBisectionVector(v49, v50, v51, v52, v53);
     TSUAngleFromDelta();
     v55 = fabs(v54);
 
-    v60 = objc_msgSend_combinedLabelIsOnLeftSide(v4, v56, v57, v58, v59);
+    v60 = objc_msgSend_combinedLabelIsOnLeftSide(circumferenceCopy, v56, v57, v58, v59);
     v61 = 3.14159265 - v55;
     if (!v60)
     {
@@ -693,10 +693,10 @@ LABEL_7:
   return v13;
 }
 
-- (id)wedgeLayoutInfosThatNeedShiftingToCleanUpQuadrant:(id)a3 cleanUpOption:(unint64_t)a4
+- (id)wedgeLayoutInfosThatNeedShiftingToCleanUpQuadrant:(id)quadrant cleanUpOption:(unint64_t)option
 {
-  v7 = a3;
-  if (a4 >= 2)
+  quadrantCopy = quadrant;
+  if (option >= 2)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "[TSCHChartPieBendedLineLabelPlacement wedgeLayoutInfosThatNeedShiftingToCleanUpQuadrant:cleanUpOption:]");
@@ -706,9 +706,9 @@ LABEL_7:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
   }
 
-  v26 = objc_msgSend_horizontalHalfDisk(v7, v6, v8, v9, v10);
-  v75 = v7;
-  v31 = objc_msgSend_wedgeLayoutInfos(v7, v27, v28, v29, v30);
+  v26 = objc_msgSend_horizontalHalfDisk(quadrantCopy, v6, v8, v9, v10);
+  v75 = quadrantCopy;
+  v31 = objc_msgSend_wedgeLayoutInfos(quadrantCopy, v27, v28, v29, v30);
   v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (objc_msgSend_count(v31, v33, v34, v35, v36))
   {
@@ -726,7 +726,7 @@ LABEL_7:
       if (objc_msgSend_combinedLabelOutsideWedge(v44, v45, v46, v47, v48))
       {
         v53 = objc_msgSend_enableCalloutLineSetting(v44, v49, v50, v51, v52);
-        ShouldShiftForCleanUp_withCleanUpOption = objc_msgSend_wedgeLayoutInfoShouldShiftForCleanUp_withCleanUpOption_(self, v54, v55, v56, v57, v44, a4);
+        ShouldShiftForCleanUp_withCleanUpOption = objc_msgSend_wedgeLayoutInfoShouldShiftForCleanUp_withCleanUpOption_(self, v54, v55, v56, v57, v44, option);
         if (v53 && ShouldShiftForCleanUp_withCleanUpOption)
         {
 
@@ -763,7 +763,7 @@ LABEL_7:
 
       else
       {
-        objc_msgSend_wedgeLayoutInfoShouldShiftForCleanUp_withCleanUpOption_(self, v49, v50, v51, v52, v44, a4);
+        objc_msgSend_wedgeLayoutInfoShouldShiftForCleanUp_withCleanUpOption_(self, v49, v50, v51, v52, v44, option);
       }
 
       ++v41;
@@ -778,10 +778,10 @@ LABEL_7:
   return v73;
 }
 
-- (void)shiftLabelsVerticallyInOneQuadrantWithWedgeLayoutInfos:(id)a3 shiftAmount:(double)a4 quadrantInHorizontalHalfDisk:(unint64_t)a5
+- (void)shiftLabelsVerticallyInOneQuadrantWithWedgeLayoutInfos:(id)infos shiftAmount:(double)amount quadrantInHorizontalHalfDisk:(unint64_t)disk
 {
-  v8 = a3;
-  if (a5 >= 2)
+  infosCopy = infos;
+  if (disk >= 2)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCHChartPieBendedLineLabelPlacement shiftLabelsVerticallyInOneQuadrantWithWedgeLayoutInfos:shiftAmount:quadrantInHorizontalHalfDisk:]");
@@ -791,27 +791,27 @@ LABEL_7:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  if (objc_msgSend_count(v8, v7, v9, v10, v11))
+  if (objc_msgSend_count(infosCopy, v7, v9, v10, v11))
   {
     v30 = 0;
-    v31 = -a4;
-    if (!a5)
+    v31 = -amount;
+    if (!disk)
     {
-      a4 = -a4;
+      amount = -amount;
     }
 
     v32 = -1;
     do
     {
       v33 = v30;
-      if (a5)
+      if (disk)
       {
-        v33 = objc_msgSend_count(v8, v27, v31, v28, v29, v30) + v32;
+        v33 = objc_msgSend_count(infosCopy, v27, v31, v28, v29, v30) + v32;
       }
 
-      v34 = objc_msgSend_objectAtIndexedSubscript_(v8, v27, v31, v28, v29, v33);
+      v34 = objc_msgSend_objectAtIndexedSubscript_(infosCopy, v27, v31, v28, v29, v33);
       memset(&v46, 0, sizeof(v46));
-      CGAffineTransformMakeTranslation(&v46, 0.0, a4);
+      CGAffineTransformMakeTranslation(&v46, 0.0, amount);
       if (objc_msgSend_enableCalloutLineSetting(v34, v35, v36, v37, v38))
       {
         v45 = v46;
@@ -822,21 +822,21 @@ LABEL_7:
       --v32;
     }
 
-    while (v30 < objc_msgSend_count(v8, v41, v42, v43, v44));
+    while (v30 < objc_msgSend_count(infosCopy, v41, v42, v43, v44));
   }
 }
 
-- (BOOL)wedgeLayoutInfoShouldShiftForCleanUp:(id)a3 withCleanUpOption:(unint64_t)a4
+- (BOOL)wedgeLayoutInfoShouldShiftForCleanUp:(id)up withCleanUpOption:(unint64_t)option
 {
-  v7 = a3;
-  if (a4 == 1)
+  upCopy = up;
+  if (option == 1)
   {
-    ShouldShiftToPreventBendPointOnCircumference = objc_msgSend_wedgeLayoutInfoShouldShiftToPreventBendPointOnCircumference_(self, v6, v8, v9, v10, v7);
+    ShouldShiftToPreventBendPointOnCircumference = objc_msgSend_wedgeLayoutInfoShouldShiftToPreventBendPointOnCircumference_(self, v6, v8, v9, v10, upCopy);
   }
 
   else
   {
-    if (a4)
+    if (option)
     {
       v13 = MEMORY[0x277D81150];
       v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "[TSCHChartPieBendedLineLabelPlacement wedgeLayoutInfoShouldShiftForCleanUp:withCleanUpOption:]");
@@ -848,7 +848,7 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    ShouldShiftToPreventBendPointOnCircumference = objc_msgSend_wedgeLayoutInfoShouldShiftToPreventTooShortCalloutLineFirstHalf_(self, v6, v8, v9, v10, v7);
+    ShouldShiftToPreventBendPointOnCircumference = objc_msgSend_wedgeLayoutInfoShouldShiftToPreventTooShortCalloutLineFirstHalf_(self, v6, v8, v9, v10, upCopy);
   }
 
   v12 = ShouldShiftToPreventBendPointOnCircumference;
@@ -857,20 +857,20 @@ LABEL_7:
   return v12;
 }
 
-- (BOOL)wedgeLayoutInfoShouldShiftToPreventBendPointOnCircumference:(id)a3
+- (BOOL)wedgeLayoutInfoShouldShiftToPreventBendPointOnCircumference:(id)circumference
 {
-  v4 = a3;
-  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v5, v6, v7, v8, v4);
+  circumferenceCopy = circumference;
+  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v5, v6, v7, v8, circumferenceCopy);
   v10 = v9;
   v12 = v11;
-  objc_msgSend_calloutLineEndpointForWedgeLayoutInfo_(self, v13, v9, v11, v14, v4);
-  objc_msgSend_calloutLineMidPointForWedgeLayoutInfo_startPoint_endPoint_(self, v15, v10, v12, v16, v4, v17);
-  v22 = objc_msgSend_wedgeElement(v4, v18, v19, v20, v21);
+  objc_msgSend_calloutLineEndpointForWedgeLayoutInfo_(self, v13, v9, v11, v14, circumferenceCopy);
+  objc_msgSend_calloutLineMidPointForWedgeLayoutInfo_startPoint_endPoint_(self, v15, v10, v12, v16, circumferenceCopy, v17);
+  v22 = objc_msgSend_wedgeElement(circumferenceCopy, v18, v19, v20, v21);
   objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(v22, v23, v24, v25, v26);
   TSUDistance();
   v28 = v27;
 
-  v33 = objc_msgSend_wedgeElement(v4, v29, v30, v31, v32);
+  v33 = objc_msgSend_wedgeElement(circumferenceCopy, v29, v30, v31, v32);
 
   objc_msgSend_radius(v33, v34, v35, v36, v37);
   v39 = v38;
@@ -892,14 +892,14 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)wedgeLayoutInfoShouldShiftToPreventTooShortCalloutLineFirstHalf:(id)a3
+- (BOOL)wedgeLayoutInfoShouldShiftToPreventTooShortCalloutLineFirstHalf:(id)half
 {
-  v4 = a3;
-  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v5, v6, v7, v8, v4);
+  halfCopy = half;
+  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v5, v6, v7, v8, halfCopy);
   v10 = v9;
-  objc_msgSend_calloutLineEndpointForWedgeLayoutInfo_(self, v11, v12, v9, v13, v4);
+  objc_msgSend_calloutLineEndpointForWedgeLayoutInfo_(self, v11, v12, v9, v13, halfCopy);
   v15 = vabdd_f64(v14, v10);
-  v19 = objc_msgSend_wedgeElement(v4, v16, v17, v14, v18);
+  v19 = objc_msgSend_wedgeElement(halfCopy, v16, v17, v14, v18);
 
   objc_msgSend_radius(v19, v20, v21, v22, v23);
   v25 = v24 * 0.01;
@@ -907,25 +907,25 @@ LABEL_7:
   return v15 >= v25 * 0.5 && v15 <= 7.0;
 }
 
-- (id)arrayOfConflictingLabelsWithWedgeLayoutInfosOnOneSide:(id)a3
+- (id)arrayOfConflictingLabelsWithWedgeLayoutInfosOnOneSide:(id)side
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6, v7, v8) >= 2)
+  sideCopy = side;
+  if (objc_msgSend_count(sideCopy, v5, v6, v7, v8) >= 2)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if (objc_msgSend_count(v4, v11, v12, v13, v14) != 1)
+    if (objc_msgSend_count(sideCopy, v11, v12, v13, v14) != 1)
     {
       v19 = 0;
       do
       {
         v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v25 = objc_msgSend_objectAtIndexedSubscript_(v4, v21, v22, v23, v24, v19);
+        v25 = objc_msgSend_objectAtIndexedSubscript_(sideCopy, v21, v22, v23, v24, v19);
         v34 = ++v19;
-        if (v19 < objc_msgSend_count(v4, v26, v27, v28, v29))
+        if (v19 < objc_msgSend_count(sideCopy, v26, v27, v28, v29))
         {
           do
           {
-            v35 = objc_msgSend_objectAtIndexedSubscript_(v4, v30, v31, v32, v33, v34);
+            v35 = objc_msgSend_objectAtIndexedSubscript_(sideCopy, v30, v31, v32, v33, v34);
             if (objc_msgSend_conflictBetweenWedgeLayoutInfo_nextWedgeLayoutInfo_(self, v36, v37, v38, v39, v25, v35))
             {
               if ((objc_msgSend_containsObject_(v20, v40, v41, v42, v43, v25) & 1) == 0)
@@ -939,7 +939,7 @@ LABEL_7:
             ++v34;
           }
 
-          while (v34 < objc_msgSend_count(v4, v48, v49, v50, v51));
+          while (v34 < objc_msgSend_count(sideCopy, v48, v49, v50, v51));
         }
 
         if (objc_msgSend_count(v20, v30, v31, v32, v33))
@@ -948,7 +948,7 @@ LABEL_7:
         }
       }
 
-      while (v19 < objc_msgSend_count(v4, v56, v57, v58, v59) - 1);
+      while (v19 < objc_msgSend_count(sideCopy, v56, v57, v58, v59) - 1);
     }
 
     v9 = objc_msgSend_copy(v10, v15, v16, v17, v18);
@@ -962,11 +962,11 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)conflictBetweenWedgeLayoutInfo:(id)a3 nextWedgeLayoutInfo:(id)a4
+- (BOOL)conflictBetweenWedgeLayoutInfo:(id)info nextWedgeLayoutInfo:(id)layoutInfo
 {
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend_combinedLabelRectInChartCoordinateSpace(v6, v8, v9, v10, v11);
+  infoCopy = info;
+  layoutInfoCopy = layoutInfo;
+  objc_msgSend_combinedLabelRectInChartCoordinateSpace(infoCopy, v8, v9, v10, v11);
   objc_msgSend_paddedLabelRectWithRect_(self, v12, v13, v14, v15);
   v17 = v16;
   v19 = v18;
@@ -974,7 +974,7 @@ LABEL_7:
   v23 = v22;
   TSUCenterOfRect();
   v92 = v24;
-  objc_msgSend_combinedLabelRectInChartCoordinateSpace(v7, v25, v24, v26, v27);
+  objc_msgSend_combinedLabelRectInChartCoordinateSpace(layoutInfoCopy, v25, v24, v26, v27);
   objc_msgSend_paddedLabelRectWithRect_(self, v28, v29, v30, v31);
   v33 = v32;
   v35 = v34;
@@ -1014,9 +1014,9 @@ LABEL_7:
     v48 = MaxY < 0.00999999978 || v47;
   }
 
-  if (objc_msgSend_enableCalloutLineSetting(v6, v43, MaxY, v45, v46, v90) && !((objc_msgSend_enableCalloutLineSetting(v7, v49, v50, v51, v52) == 0) | v48 & 1) && objc_msgSend_combinedLabelOutsideWedge(v6, v49, v50, v51, v52))
+  if (objc_msgSend_enableCalloutLineSetting(infoCopy, v43, MaxY, v45, v46, v90) && !((objc_msgSend_enableCalloutLineSetting(layoutInfoCopy, v49, v50, v51, v52) == 0) | v48 & 1) && objc_msgSend_combinedLabelOutsideWedge(infoCopy, v49, v50, v51, v52))
   {
-    v53 = objc_msgSend_combinedLabelOutsideWedge(v7, v49, v50, v51, v52);
+    v53 = objc_msgSend_combinedLabelOutsideWedge(layoutInfoCopy, v49, v50, v51, v52);
   }
 
   else
@@ -1024,19 +1024,19 @@ LABEL_7:
     v53 = 0;
   }
 
-  objc_msgSend_combinedLabelRectInChartCoordinateSpace(v6, v49, v50, v51, v52);
+  objc_msgSend_combinedLabelRectInChartCoordinateSpace(infoCopy, v49, v50, v51, v52);
   v55 = v54;
-  objc_msgSend_combinedLabelRectInChartCoordinateSpace(v7, v56, v57, v58, v54);
+  objc_msgSend_combinedLabelRectInChartCoordinateSpace(layoutInfoCopy, v56, v57, v58, v54);
   v60 = v59;
-  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v61, v62, v63, v59, v6);
+  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v61, v62, v63, v59, infoCopy);
   v65 = v64;
-  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v66, v64, v67, v68, v7);
+  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v66, v64, v67, v68, layoutInfoCopy);
   v73 = v91 <= v92 && v65 <= v91;
   v74 = v92 <= v91 && v70 <= v92;
-  v75 = objc_msgSend_enableCalloutLineSetting(v6, v69, v70, v71, v72);
+  v75 = objc_msgSend_enableCalloutLineSetting(infoCopy, v69, v70, v71, v72);
   if (v75)
   {
-    if ((objc_msgSend_enableCalloutLineSetting(v7, v76, v77, v78, v79) == 0) | v48 & 1)
+    if ((objc_msgSend_enableCalloutLineSetting(layoutInfoCopy, v76, v77, v78, v79) == 0) | v48 & 1)
     {
       LOBYTE(v75) = 0;
       goto LABEL_26;
@@ -1044,7 +1044,7 @@ LABEL_7:
 
     v82 = vabdd_f64(v92, v91);
     v83 = v55 * 0.5 + v60 * 0.5;
-    if (objc_msgSend_combinedLabelOutsideWedge(v6, v80, v60 * 0.5, v55 * 0.5, v81))
+    if (objc_msgSend_combinedLabelOutsideWedge(infoCopy, v80, v60 * 0.5, v55 * 0.5, v81))
     {
       if (v82 <= v83)
       {
@@ -1055,7 +1055,7 @@ LABEL_7:
 
     else
     {
-      LODWORD(v75) = objc_msgSend_combinedLabelOutsideWedge(v7, v84, v85, v86, v87);
+      LODWORD(v75) = objc_msgSend_combinedLabelOutsideWedge(layoutInfoCopy, v84, v85, v86, v87);
       if (!v75 || v82 <= v83)
       {
         goto LABEL_26;
@@ -1111,10 +1111,10 @@ LABEL_26:
   return v11;
 }
 
-- (id)wedgeLayoutInfosInOneQuadrant:(id)a3 verticalHalfDisk:(unint64_t)a4 horizontalHalfDisk:(unint64_t)a5
+- (id)wedgeLayoutInfosInOneQuadrant:(id)quadrant verticalHalfDisk:(unint64_t)disk horizontalHalfDisk:(unint64_t)halfDisk
 {
-  v9 = a3;
-  if (a4 >= 2)
+  quadrantCopy = quadrant;
+  if (disk >= 2)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v10, v11, v12, "[TSCHChartPieBendedLineLabelPlacement wedgeLayoutInfosInOneQuadrant:verticalHalfDisk:horizontalHalfDisk:]");
@@ -1124,7 +1124,7 @@ LABEL_26:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25, v26, v27);
   }
 
-  if (a5 >= 2)
+  if (halfDisk >= 2)
   {
     v28 = MEMORY[0x277D81150];
     v29 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v10, v11, v12, "[TSCHChartPieBendedLineLabelPlacement wedgeLayoutInfosInOneQuadrant:verticalHalfDisk:horizontalHalfDisk:]");
@@ -1134,20 +1134,20 @@ LABEL_26:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v39, v40, v41, v42);
   }
 
-  v43 = objc_msgSend_wedgeLayoutInfosInVerticalHalfDiskWithWedgeLayoutInfos_verticalHalfDisk_(self, v8, v10, v11, v12, v9, a4);
-  v48 = objc_msgSend_wedgeLayoutInfosInHorizontalHalfDiskWithWedgeLayoutInfos_horizontalHalfDisk_(self, v44, v45, v46, v47, v43, a5);
+  v43 = objc_msgSend_wedgeLayoutInfosInVerticalHalfDiskWithWedgeLayoutInfos_verticalHalfDisk_(self, v8, v10, v11, v12, quadrantCopy, disk);
+  v48 = objc_msgSend_wedgeLayoutInfosInHorizontalHalfDiskWithWedgeLayoutInfos_horizontalHalfDisk_(self, v44, v45, v46, v47, v43, halfDisk);
 
   v49 = [TSCHChartPieQuadrant alloc];
-  v54 = objc_msgSend_initWithWedgeLayoutInfos_horizontalHalfDisk_verticalHalfDisk_(v49, v50, v51, v52, v53, v48, a5, a4);
+  v54 = objc_msgSend_initWithWedgeLayoutInfos_horizontalHalfDisk_verticalHalfDisk_(v49, v50, v51, v52, v53, v48, halfDisk, disk);
 
   return v54;
 }
 
-- (id)wedgeLayoutInfosInHorizontalHalfDiskWithWedgeLayoutInfos:(id)a3 horizontalHalfDisk:(unint64_t)a4
+- (id)wedgeLayoutInfosInHorizontalHalfDiskWithWedgeLayoutInfos:(id)infos horizontalHalfDisk:(unint64_t)disk
 {
   v67 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (a4 >= 2)
+  infosCopy = infos;
+  if (disk >= 2)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "[TSCHChartPieBendedLineLabelPlacement wedgeLayoutInfosInHorizontalHalfDiskWithWedgeLayoutInfos:horizontalHalfDisk:]");
@@ -1163,7 +1163,7 @@ LABEL_26:
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v28 = v7;
+  v28 = infosCopy;
   v33 = objc_msgSend_countByEnumeratingWithState_objects_count_(v28, v29, v30, v31, v32, &v62, v66, 16);
   if (v33)
   {
@@ -1198,7 +1198,7 @@ LABEL_26:
     while (v38);
   }
 
-  if (a4)
+  if (disk)
   {
     v59 = objc_msgSend_copy(v27, v55, v56, v57, v58, v62);
   }
@@ -1213,12 +1213,12 @@ LABEL_26:
   return v60;
 }
 
-- (id)wedgeLayoutInfosInVerticalHalfDiskWithWedgeLayoutInfos:(id)a3 verticalHalfDisk:(unint64_t)a4
+- (id)wedgeLayoutInfosInVerticalHalfDiskWithWedgeLayoutInfos:(id)infos verticalHalfDisk:(unint64_t)disk
 {
   v143 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v137 = a4;
-  if (a4 >= 2)
+  infosCopy = infos;
+  diskCopy = disk;
+  if (disk >= 2)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, v7, v8, v9, "[TSCHChartPieBendedLineLabelPlacement wedgeLayoutInfosInVerticalHalfDiskWithWedgeLayoutInfos:verticalHalfDisk:]");
@@ -1230,20 +1230,20 @@ LABEL_26:
 
   v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v136 = objc_msgSend_firstObject(v6, v27, v28, v29, v30);
+  v136 = objc_msgSend_firstObject(infosCopy, v27, v28, v29, v30);
   v35 = objc_msgSend_combinedLabelIsOnLeftSide(v136, v31, v32, v33, v34);
-  if (objc_msgSend_count(v6, v36, v37, v38, v39))
+  if (objc_msgSend_count(infosCopy, v36, v37, v38, v39))
   {
     v44 = 0;
     while (1)
     {
-      v45 = objc_msgSend_objectAtIndexedSubscript_(v6, v40, v41, v42, v43, v44);
+      v45 = objc_msgSend_objectAtIndexedSubscript_(infosCopy, v40, v41, v42, v43, v44);
       if (v35 != objc_msgSend_combinedLabelIsOnLeftSide(v45, v46, v47, v48, v49))
       {
         break;
       }
 
-      if (++v44 >= objc_msgSend_count(v6, v54, v55, v56, v57))
+      if (++v44 >= objc_msgSend_count(infosCopy, v54, v55, v56, v57))
       {
         goto LABEL_7;
       }
@@ -1260,7 +1260,7 @@ LABEL_7:
     v58 = 0;
   }
 
-  v69 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], v40, v41, v42, v43, v6);
+  v69 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], v40, v41, v42, v43, infosCopy);
   if (objc_msgSend_count(v69, v70, v71, v72, v73))
   {
     v78 = 0;
@@ -1324,7 +1324,7 @@ LABEL_15:
     while (v117);
   }
 
-  if (v137)
+  if (diskCopy)
   {
     v129 = objc_msgSend_reverseObjectEnumerator(v26, v125, v126, v127, v128);
     v134 = objc_msgSend_allObjects(v129, v130, v131, v132, v133);
@@ -1338,26 +1338,26 @@ LABEL_15:
   return v134;
 }
 
-- (id)newCalloutLinePaths:(id)a3 startLineEnd:(id)a4 outStartLineEndPath:(id *)a5 endLineEnd:(id)a6 outEndLineEndPath:(id *)a7 stroke:(id)a8 outStroke:(id *)a9 context:(CGContext *)a10 contextScale:(float)a11
+- (id)newCalloutLinePaths:(id)paths startLineEnd:(id)end outStartLineEndPath:(id *)path endLineEnd:(id)lineEnd outEndLineEndPath:(id *)endPath stroke:(id)stroke outStroke:(id *)outStroke context:(CGContext *)self0 contextScale:(float)self1
 {
-  v18 = a4;
-  v19 = a6;
-  v20 = a8;
-  v21 = a3;
-  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v22, v23, v24, v25, v21);
+  endCopy = end;
+  lineEndCopy = lineEnd;
+  strokeCopy = stroke;
+  pathsCopy = paths;
+  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v22, v23, v24, v25, pathsCopy);
   v27 = v26;
   v29 = v28;
-  objc_msgSend_calloutLineEndpointForWedgeLayoutInfo_(self, v30, v26, v28, v31, v21);
+  objc_msgSend_calloutLineEndpointForWedgeLayoutInfo_(self, v30, v26, v28, v31, pathsCopy);
   v33 = v32;
   v35 = v34;
-  objc_msgSend_calloutLineMidPointForWedgeLayoutInfo_startPoint_endPoint_(self, v36, v27, v29, v32, v21, v34);
+  objc_msgSend_calloutLineMidPointForWedgeLayoutInfo_startPoint_endPoint_(self, v36, v27, v29, v32, pathsCopy, v34);
   v38 = v37;
   v40 = v39;
 
   if (TSUPointsAlmostEqual())
   {
     v43 = objc_msgSend_bezierPathWithStart_end_(MEMORY[0x277D81160], v41, v27, v29, v33, v35);
-    if (!a10)
+    if (!context)
     {
       goto LABEL_10;
     }
@@ -1367,49 +1367,49 @@ LABEL_15:
   {
     v43 = objc_msgSend_bezierPathWithStart_end_(MEMORY[0x277D81160], v41, v27, v29, v38, v40);
     objc_msgSend_lineToPoint_(v43, v47, v33, v35, v48);
-    if (!a10)
+    if (!context)
     {
       goto LABEL_10;
     }
   }
 
-  v49 = objc_msgSend_mutableCopy(v20, v42, v44, v45, v46);
-  v50 = a11;
-  objc_msgSend_width(v20, v51, v52, v53, v54);
-  v58 = v57 * a11;
+  v49 = objc_msgSend_mutableCopy(strokeCopy, v42, v44, v45, v46);
+  scaleCopy = scale;
+  objc_msgSend_width(strokeCopy, v51, v52, v53, v54);
+  v58 = v57 * scale;
   v59 = 1.0;
   v60 = 1.0;
   if (v58 > 1.0)
   {
     TSURound();
     v62 = v61;
-    objc_msgSend_setWidth_(v49, v63, v61 / v50, v64, v65);
+    objc_msgSend_setWidth_(v49, v63, v61 / scaleCopy, v64, v65);
     v59 = v62;
   }
 
-  objc_msgSend_width(v20, v55, v58, v60, v56);
+  objc_msgSend_width(strokeCopy, v55, v58, v60, v56);
   objc_msgSend_setActualWidth_(v49, v66, v67, v68, v69);
   *&v70 = v59;
-  v74 = objc_msgSend_aliasedPathInContext_effectiveStrokeWidth_(v43, v71, v70, v72, v73, a10);
+  v74 = objc_msgSend_aliasedPathInContext_effectiveStrokeWidth_(v43, v71, v70, v72, v73, context);
 
-  if (*a9)
+  if (*outStroke)
   {
     v75 = v49;
-    *a9 = v49;
+    *outStroke = v49;
   }
 
   v43 = v74;
 LABEL_10:
-  v76 = v19;
-  v77 = v18;
+  v76 = lineEndCopy;
+  v77 = endCopy;
   v94 = 0;
   v92 = 0u;
   v93 = 0u;
-  objc_msgSend_lineEndPositioningOnPath_atHead_headPoint_tailPoint_headLineEnd_tailLineEnd_stroke_(MEMORY[0x277D81160], v78, v33, v35, v27, v43, 0, v76, v77, v20, v29);
+  objc_msgSend_lineEndPositioningOnPath_atHead_headPoint_tailPoint_headLineEnd_tailLineEnd_stroke_(MEMORY[0x277D81160], v78, v33, v35, v27, v43, 0, v76, v77, strokeCopy, v29);
   v91 = 0;
   v89 = 0u;
   v90 = 0u;
-  objc_msgSend_lineEndPositioningOnPath_atHead_headPoint_tailPoint_headLineEnd_tailLineEnd_stroke_(MEMORY[0x277D81160], v79, v33, v35, v27, v43, 1, v76, v77, v20, v29);
+  objc_msgSend_lineEndPositioningOnPath_atHead_headPoint_tailPoint_headLineEnd_tailLineEnd_stroke_(MEMORY[0x277D81160], v79, v33, v35, v27, v43, 1, v76, v77, strokeCopy, v29);
   *&v89 = qword_2764D7150[v27 < v33];
   v87[0] = v89;
   v87[1] = v90;
@@ -1417,23 +1417,23 @@ LABEL_10:
   v85[0] = v92;
   v85[1] = v93;
   v86 = v94;
-  v83 = objc_msgSend_createClippedPath_headPositioning_tailPositioning_stroke_(MEMORY[0x277D81160], v80, *&v92, *&v93, v81, v43, v87, v85, v20);
-  if (a5)
+  v83 = objc_msgSend_createClippedPath_headPositioning_tailPositioning_stroke_(MEMORY[0x277D81160], v80, *&v92, *&v93, v81, v43, v87, v85, strokeCopy);
+  if (path)
   {
-    *a5 = objc_msgSend_newPathForLineEnd_startPoint_angle_stroke_(self, v82, *(&v92 + 1), *&v93, *&v92, v77, v20);
+    *path = objc_msgSend_newPathForLineEnd_startPoint_angle_stroke_(self, v82, *(&v92 + 1), *&v93, *&v92, v77, strokeCopy);
   }
 
-  if (a7)
+  if (endPath)
   {
-    *a7 = objc_msgSend_newPathForLineEnd_startPoint_angle_stroke_(self, v82, *(&v89 + 1), *&v90, *&v89, v76, v20);
+    *endPath = objc_msgSend_newPathForLineEnd_startPoint_angle_stroke_(self, v82, *(&v89 + 1), *&v90, *&v89, v76, strokeCopy);
   }
 
   return v83;
 }
 
-- (CGPoint)calloutLineStartpointForWedgeLayoutInfo:(id)a3
+- (CGPoint)calloutLineStartpointForWedgeLayoutInfo:(id)info
 {
-  v6 = objc_msgSend_wedgeElement(a3, a2, v3, v4, v5);
+  v6 = objc_msgSend_wedgeElement(info, a2, v3, v4, v5);
   objc_msgSend_pointAlongWedgeBisectionInChartCoordinateSpaceWithPercentDistanceFromWedgeTip_(v6, v7, 1.05, v8, v9);
   v11 = v10;
   v13 = v12;
@@ -1445,25 +1445,25 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)calloutLineEndpointForWedgeLayoutInfo:(id)a3
+- (CGPoint)calloutLineEndpointForWedgeLayoutInfo:(id)info
 {
-  (MEMORY[0x2821F9670])(a3, sel_pointAtLabelInChartCoordinateSpaceOnCloseXSideMiddleY);
+  (MEMORY[0x2821F9670])(info, sel_pointAtLabelInChartCoordinateSpaceOnCloseXSideMiddleY);
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)calloutLineMidPointForWedgeLayoutInfo:(id)a3 startPoint:(CGPoint)a4 endPoint:(CGPoint)a5
+- (CGPoint)calloutLineMidPointForWedgeLayoutInfo:(id)info startPoint:(CGPoint)point endPoint:(CGPoint)endPoint
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v10 = a3;
-  objc_msgSend_defaultCalloutLineMidPointForWedgeLayoutInfo_startPoint_endPoint_(self, v11, v8, v7, x, v10, y);
+  y = endPoint.y;
+  x = endPoint.x;
+  v7 = point.y;
+  v8 = point.x;
+  infoCopy = info;
+  objc_msgSend_defaultCalloutLineMidPointForWedgeLayoutInfo_startPoint_endPoint_(self, v11, v8, v7, x, infoCopy, y);
   v13 = v12;
   v15 = v14;
-  ShouldUsePerpendicularAngle_defaultMidpoint = objc_msgSend_wedgeLayoutInfoShouldUsePerpendicularAngle_defaultMidpoint_(self, v16, v12, v14, v17, v10);
+  ShouldUsePerpendicularAngle_defaultMidpoint = objc_msgSend_wedgeLayoutInfoShouldUsePerpendicularAngle_defaultMidpoint_(self, v16, v12, v14, v17, infoCopy);
 
   if (ShouldUsePerpendicularAngle_defaultMidpoint)
   {
@@ -1490,21 +1490,21 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)defaultCalloutLineMidPointForWedgeLayoutInfo:(id)a3 startPoint:(CGPoint)a4 endPoint:(CGPoint)a5
+- (CGPoint)defaultCalloutLineMidPointForWedgeLayoutInfo:(id)info startPoint:(CGPoint)point endPoint:(CGPoint)endPoint
 {
-  y = a5.y;
-  v6 = a4.y;
-  v8 = vabdd_f64(a5.y, a4.y);
-  v9 = a3;
-  objc_msgSend_combinedLabelIsOnLeftSide(v9, v10, v11, v12, v13);
+  y = endPoint.y;
+  v6 = point.y;
+  v8 = vabdd_f64(endPoint.y, point.y);
+  infoCopy = info;
+  objc_msgSend_combinedLabelIsOnLeftSide(infoCopy, v10, v11, v12, v13);
   if (y >= v6 || v8 < 0.00999999978)
   {
-    objc_msgSend_firstHalfOfBendedLineVectorNormalizedWithWedgeLayoutInfo_shouldBeUpwards_(self, v14, 0.707106781, v15, v16, v9, 0);
+    objc_msgSend_firstHalfOfBendedLineVectorNormalizedWithWedgeLayoutInfo_shouldBeUpwards_(self, v14, 0.707106781, v15, v16, infoCopy, 0);
   }
 
   else
   {
-    objc_msgSend_firstHalfOfBendedLineVectorNormalizedWithWedgeLayoutInfo_shouldBeUpwards_(self, v14, 0.707106781, v15, v16, v9, 1);
+    objc_msgSend_firstHalfOfBendedLineVectorNormalizedWithWedgeLayoutInfo_shouldBeUpwards_(self, v14, 0.707106781, v15, v16, infoCopy, 1);
   }
 
   TSUMultiplyPointScalar();
@@ -1515,20 +1515,20 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)wedgeLayoutInfoShouldUsePerpendicularAngle:(id)a3 defaultMidpoint:(CGPoint)a4
+- (BOOL)wedgeLayoutInfoShouldUsePerpendicularAngle:(id)angle defaultMidpoint:(CGPoint)midpoint
 {
-  x = a4.x;
-  v6 = a3;
-  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v7, v8, v9, v10, v6);
+  x = midpoint.x;
+  angleCopy = angle;
+  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v7, v8, v9, v10, angleCopy);
   v12 = v11;
   v14 = v13;
-  objc_msgSend_calloutLineEndpointForWedgeLayoutInfo_(self, v15, v11, v13, v16, v6);
+  objc_msgSend_calloutLineEndpointForWedgeLayoutInfo_(self, v15, v11, v13, v16, angleCopy);
   v18 = v17;
-  v22 = objc_msgSend_wedgeElement(v6, v19, v17, v20, v21);
+  v22 = objc_msgSend_wedgeElement(angleCopy, v19, v17, v20, v21);
   shouldUsePerpendicularBendedLineWithStartPoint = objc_msgSend_shouldUsePerpendicularBendedLineWithStartPoint_(v22, v23, v12, v14, v24);
 
-  v30 = objc_msgSend_combinedLabelIsOnLeftSide(v6, v26, v27, v28, v29);
-  v35 = objc_msgSend_innermostWedgeLayoutInfoWillUsePerpendicularAngle_(self, v31, v32, v33, v34, v6);
+  v30 = objc_msgSend_combinedLabelIsOnLeftSide(angleCopy, v26, v27, v28, v29);
+  v35 = objc_msgSend_innermostWedgeLayoutInfoWillUsePerpendicularAngle_(self, v31, v32, v33, v34, angleCopy);
 
   v36 = 1;
   if ((shouldUsePerpendicularBendedLineWithStartPoint & 1) == 0 && vabdd_f64(x, v18) >= 5.0)
@@ -1545,9 +1545,9 @@ LABEL_10:
   return v36 & 1;
 }
 
-- (BOOL)innermostWedgeLayoutInfoWillUsePerpendicularAngle:(id)a3
+- (BOOL)innermostWedgeLayoutInfoWillUsePerpendicularAngle:(id)angle
 {
-  v8 = objc_msgSend_innermostWedgeLayoutInfo_(self, a2, v3, v4, v5, a3);
+  v8 = objc_msgSend_innermostWedgeLayoutInfo_(self, a2, v3, v4, v5, angle);
   if (v8)
   {
     objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v7, v9, v10, v11, v8);
@@ -1566,14 +1566,14 @@ LABEL_10:
   return ShouldUsePerpendicularAngle_defaultMidpoint;
 }
 
-- (id)innermostWedgeLayoutInfo:(id)a3
+- (id)innermostWedgeLayoutInfo:(id)info
 {
-  v4 = a3;
-  v9 = objc_msgSend_combinedLabelIsOnLeftSide(v4, v5, v6, v7, v8) ^ 1;
-  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v10, v11, v12, v13, v4);
+  infoCopy = info;
+  v9 = objc_msgSend_combinedLabelIsOnLeftSide(infoCopy, v5, v6, v7, v8) ^ 1;
+  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v10, v11, v12, v13, infoCopy);
   v15 = v14;
   v17 = v16;
-  v20 = objc_msgSend_wedgeElement(v4, v18, v14, v16, v19);
+  v20 = objc_msgSend_wedgeElement(infoCopy, v18, v14, v16, v19);
   started = objc_msgSend_isInUpperHalfOfChartWithStartPoint_(v20, v21, v15, v17, v22);
 
   v28 = objc_msgSend_allWedgeLayoutInfos(self, v24, v25, v26, v27);
@@ -1590,7 +1590,7 @@ LABEL_10:
       v49 = objc_msgSend_wedgeLayoutInfos(v33, v44, v45, v46, v47);
       v54 = objc_msgSend_objectAtIndexedSubscript_(v49, v50, v51, v52, v53, v48);
 
-      LOBYTE(v49) = objc_msgSend_isEqual_(v54, v55, v56, v57, v58, v4);
+      LOBYTE(v49) = objc_msgSend_isEqual_(v54, v55, v56, v57, v58, infoCopy);
       if (v49)
       {
         break;
@@ -1629,10 +1629,10 @@ LABEL_5:
   return v71;
 }
 
-- (CGPoint)firstHalfOfBendedLineVectorNormalizedWithWedgeLayoutInfo:(id)a3 shouldBeUpwards:(BOOL)a4
+- (CGPoint)firstHalfOfBendedLineVectorNormalizedWithWedgeLayoutInfo:(id)info shouldBeUpwards:(BOOL)upwards
 {
-  v7 = a4;
-  if (objc_msgSend_combinedLabelIsOnLeftSide(a3, a2, v4, v5, v6))
+  upwardsCopy = upwards;
+  if (objc_msgSend_combinedLabelIsOnLeftSide(info, a2, v4, v5, v6))
   {
     v10.n128_f64[0] = 2.35619449;
   }
@@ -1645,7 +1645,7 @@ LABEL_5:
   v8.n128_u64[0] = 1.0;
   v9.n128_u64[0] = 0;
 
-  MEMORY[0x2821EC448](!v7, v8, v9, v10);
+  MEMORY[0x2821EC448](!upwardsCopy, v8, v9, v10);
   result.y = v12;
   result.x = v11;
   return result;

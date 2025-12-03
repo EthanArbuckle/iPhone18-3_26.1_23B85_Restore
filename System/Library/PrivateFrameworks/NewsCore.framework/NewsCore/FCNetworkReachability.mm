@@ -4,15 +4,15 @@
 - (BOOL)isNetworkOnlyReachableViaCellular;
 - (FCNetworkReachability)init;
 - (int64_t)_cellularRadioAccessTechnology;
-- (int64_t)_cellularRadioAccessTechnologyFromString:(id)a3;
+- (int64_t)_cellularRadioAccessTechnologyFromString:(id)string;
 - (int64_t)offlineReason;
 - (int64_t)reachabilityStatus;
 - (void)_accessRestrictionsChanged;
-- (void)_reachabilityChanged:(id)a3;
+- (void)_reachabilityChanged:(id)changed;
 - (void)_updateReachability;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation FCNetworkReachability
@@ -29,8 +29,8 @@
     v2->_observers = v3;
 
     v2->_isCloudKitAccessAllowed = 1;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__reachabilityChanged_ name:*MEMORY[0x1E69B6940] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__reachabilityChanged_ name:*MEMORY[0x1E69B6940] object:0];
 
     [(FCNetworkReachability *)v2 _updateReachability];
   }
@@ -41,16 +41,16 @@
 - (void)_updateReachability
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69B6900] sharedInstance];
-  v4 = [v3 currentReachabilityStatus];
+  mEMORY[0x1E69B6900] = [MEMORY[0x1E69B6900] sharedInstance];
+  currentReachabilityStatus = [mEMORY[0x1E69B6900] currentReachabilityStatus];
 
-  [(FCNetworkReachability *)self setIsNetworkReachableViaWiFi:v4 & 1];
-  [(FCNetworkReachability *)self setIsNetworkReachableViaCellular:(v4 >> 1) & 1];
-  [(FCNetworkReachability *)self setIsNetworkReachableViaOther:(v4 >> 2) & 1];
-  v5 = [(FCNetworkReachability *)self isNetworkReachableViaWiFi]|| [(FCNetworkReachability *)self isNetworkReachableViaCellular]|| [(FCNetworkReachability *)self isNetworkReachableViaOther];
-  [(FCNetworkReachability *)self setIsNetworkReachable:v5];
-  [(FCNetworkReachability *)self setIsNetworkUsageExpensive:(v4 >> 3) & 1];
-  [(FCNetworkReachability *)self setIsLowDataModeEnabled:(v4 >> 4) & 1];
+  [(FCNetworkReachability *)self setIsNetworkReachableViaWiFi:currentReachabilityStatus & 1];
+  [(FCNetworkReachability *)self setIsNetworkReachableViaCellular:(currentReachabilityStatus >> 1) & 1];
+  [(FCNetworkReachability *)self setIsNetworkReachableViaOther:(currentReachabilityStatus >> 2) & 1];
+  isNetworkReachableViaOther = [(FCNetworkReachability *)self isNetworkReachableViaWiFi]|| [(FCNetworkReachability *)self isNetworkReachableViaCellular]|| [(FCNetworkReachability *)self isNetworkReachableViaOther];
+  [(FCNetworkReachability *)self setIsNetworkReachable:isNetworkReachableViaOther];
+  [(FCNetworkReachability *)self setIsNetworkUsageExpensive:(currentReachabilityStatus >> 3) & 1];
+  [(FCNetworkReachability *)self setIsLowDataModeEnabled:(currentReachabilityStatus >> 4) & 1];
   if ([(FCNetworkReachability *)self accessRestrictedBecauseOfAppVersion]|| [(FCNetworkReachability *)self accessRestrictedBecauseOfCountry]|| [(FCNetworkReachability *)self accessRestrictedBecauseOfOSVersion])
   {
     v6 = 0;
@@ -70,13 +70,13 @@
     v10[0] = 67110144;
     v10[1] = [(FCNetworkReachability *)self isNetworkReachable];
     v11 = 1024;
-    v12 = [(FCNetworkReachability *)self isNetworkReachableViaWiFi];
+    isNetworkReachableViaWiFi = [(FCNetworkReachability *)self isNetworkReachableViaWiFi];
     v13 = 1024;
-    v14 = [(FCNetworkReachability *)self isNetworkReachableViaCellular];
+    isNetworkReachableViaCellular = [(FCNetworkReachability *)self isNetworkReachableViaCellular];
     v15 = 1024;
-    v16 = [(FCNetworkReachability *)self isNetworkReachableViaOther];
+    isNetworkReachableViaOther2 = [(FCNetworkReachability *)self isNetworkReachableViaOther];
     v17 = 1024;
-    v18 = [(FCNetworkReachability *)self isCloudKitAccessAllowed];
+    isCloudKitAccessAllowed = [(FCNetworkReachability *)self isCloudKitAccessAllowed];
     _os_log_impl(&dword_1B63EF000, v8, OS_LOG_TYPE_DEFAULT, "Reachability Changed. Network Reachable: %d, via Wi-Fi: %d, via Cellular: %d, via Other: %d, CloudKit Access Allowed: %d", v10, 0x20u);
   }
 
@@ -170,7 +170,7 @@ uint64_t __55__FCNetworkReachability__cellularRadioAccessTechnology__block_invok
 - (void)_accessRestrictionsChanged
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(FCNetworkReachability *)self isCloudKitAccessAllowed];
+  isCloudKitAccessAllowed = [(FCNetworkReachability *)self isCloudKitAccessAllowed];
   if ([(FCNetworkReachability *)self accessRestrictedBecauseOfAppVersion]|| [(FCNetworkReachability *)self accessRestrictedBecauseOfCountry]|| [(FCNetworkReachability *)self accessRestrictedBecauseOfOSVersion])
   {
     v4 = 0;
@@ -182,19 +182,19 @@ uint64_t __55__FCNetworkReachability__cellularRadioAccessTechnology__block_invok
   }
 
   [(FCNetworkReachability *)self setIsCloudKitAccessAllowed:v4];
-  if (v3 != [(FCNetworkReachability *)self isCloudKitAccessAllowed])
+  if (isCloudKitAccessAllowed != [(FCNetworkReachability *)self isCloudKitAccessAllowed])
   {
     v5 = FCReachabilityLog;
     if (os_log_type_enabled(FCReachabilityLog, OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
       *buf = 67109120;
-      v22 = [(FCNetworkReachability *)self isCloudKitAccessAllowed];
+      isCloudKitAccessAllowed2 = [(FCNetworkReachability *)self isCloudKitAccessAllowed];
       _os_log_impl(&dword_1B63EF000, v6, OS_LOG_TYPE_DEFAULT, "Access restrictions changed. CloudKit access allowed: %d", buf, 8u);
     }
 
-    v7 = [(FCNetworkReachability *)self observers];
-    v8 = [v7 copy];
+    observers = [(FCNetworkReachability *)self observers];
+    v8 = [observers copy];
 
     v18 = 0u;
     v19 = 0u;
@@ -268,20 +268,20 @@ uint64_t __55__FCNetworkReachability__cellularRadioAccessTechnology__block_invok
 
 - (BOOL)isCloudKitReachable
 {
-  v3 = [(FCNetworkReachability *)self isNetworkReachable];
-  if (v3)
+  isNetworkReachable = [(FCNetworkReachability *)self isNetworkReachable];
+  if (isNetworkReachable)
   {
 
-    LOBYTE(v3) = [(FCNetworkReachability *)self isCloudKitAccessAllowed];
+    LOBYTE(isNetworkReachable) = [(FCNetworkReachability *)self isCloudKitAccessAllowed];
   }
 
-  return v3;
+  return isNetworkReachable;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69B6940] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69B6940] object:0];
 
   v4.receiver = self;
   v4.super_class = FCNetworkReachability;
@@ -290,30 +290,30 @@ uint64_t __55__FCNetworkReachability__cellularRadioAccessTechnology__block_invok
 
 - (BOOL)isNetworkOnlyReachableViaCellular
 {
-  v3 = [(FCNetworkReachability *)self isNetworkReachableViaCellular];
-  if (v3)
+  isNetworkReachableViaCellular = [(FCNetworkReachability *)self isNetworkReachableViaCellular];
+  if (isNetworkReachableViaCellular)
   {
-    LOBYTE(v3) = ![(FCNetworkReachability *)self isNetworkReachableViaWiFi];
+    LOBYTE(isNetworkReachableViaCellular) = ![(FCNetworkReachability *)self isNetworkReachableViaWiFi];
   }
 
-  return v3;
+  return isNetworkReachableViaCellular;
 }
 
-- (void)_reachabilityChanged:(id)a3
+- (void)_reachabilityChanged:(id)changed
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = [(FCNetworkReachability *)self isNetworkReachable];
-  v5 = [(FCNetworkReachability *)self isNetworkReachableViaWiFi];
-  v6 = [(FCNetworkReachability *)self isCloudKitAccessAllowed];
-  v7 = [(FCNetworkReachability *)self isNetworkUsageExpensive];
-  v8 = [(FCNetworkReachability *)self isLowDataModeEnabled];
+  isNetworkReachable = [(FCNetworkReachability *)self isNetworkReachable];
+  isNetworkReachableViaWiFi = [(FCNetworkReachability *)self isNetworkReachableViaWiFi];
+  isCloudKitAccessAllowed = [(FCNetworkReachability *)self isCloudKitAccessAllowed];
+  isNetworkUsageExpensive = [(FCNetworkReachability *)self isNetworkUsageExpensive];
+  isLowDataModeEnabled = [(FCNetworkReachability *)self isLowDataModeEnabled];
   [(FCNetworkReachability *)self _updateReachability];
-  v9 = [(FCNetworkReachability *)self observers];
-  v10 = [v9 copy];
+  observers = [(FCNetworkReachability *)self observers];
+  v10 = [observers copy];
 
-  if (v4 != [(FCNetworkReachability *)self isNetworkReachable]|| v6 != [(FCNetworkReachability *)self isCloudKitAccessAllowed]|| v7 != [(FCNetworkReachability *)self isNetworkUsageExpensive]|| v8 != [(FCNetworkReachability *)self isLowDataModeEnabled])
+  if (isNetworkReachable != [(FCNetworkReachability *)self isNetworkReachable]|| isCloudKitAccessAllowed != [(FCNetworkReachability *)self isCloudKitAccessAllowed]|| isNetworkUsageExpensive != [(FCNetworkReachability *)self isNetworkUsageExpensive]|| isLowDataModeEnabled != [(FCNetworkReachability *)self isLowDataModeEnabled])
   {
-    v30 = v5;
+    v30 = isNetworkReachableViaWiFi;
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
@@ -346,10 +346,10 @@ uint64_t __55__FCNetworkReachability__cellularRadioAccessTechnology__block_invok
       while (v13);
     }
 
-    v5 = v30;
+    isNetworkReachableViaWiFi = v30;
   }
 
-  if (v5 != [(FCNetworkReachability *)self isNetworkReachableViaWiFi])
+  if (isNetworkReachableViaWiFi != [(FCNetworkReachability *)self isNetworkReachableViaWiFi])
   {
     v37 = 0u;
     v38 = 0u;
@@ -384,7 +384,7 @@ uint64_t __55__FCNetworkReachability__cellularRadioAccessTechnology__block_invok
     }
   }
 
-  if (v4 != [(FCNetworkReachability *)self isNetworkReachable])
+  if (isNetworkReachable != [(FCNetworkReachability *)self isNetworkReachable])
   {
     v33 = 0u;
     v34 = 0u;
@@ -456,18 +456,18 @@ uint64_t __55__FCNetworkReachability__cellularRadioAccessTechnology__block_invok
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __37__FCNetworkReachability_addObserver___block_invoke_2;
     v6[3] = &unk_1E7C36C58;
     v6[4] = self;
-    v7 = v4;
+    v7 = observerCopy;
     FCPerformBlockOnMainThread(v6);
   }
 }
@@ -478,18 +478,18 @@ void __37__FCNetworkReachability_addObserver___block_invoke_2(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __40__FCNetworkReachability_removeObserver___block_invoke_2;
     v6[3] = &unk_1E7C36C58;
     v6[4] = self;
-    v7 = v4;
+    v7 = observerCopy;
     FCPerformBlockOnMainThread(v6);
   }
 }
@@ -536,17 +536,17 @@ uint64_t __55__FCNetworkReachability__cellularRadioAccessTechnology__block_invok
   return 0;
 }
 
-- (int64_t)_cellularRadioAccessTechnologyFromString:(id)a3
+- (int64_t)_cellularRadioAccessTechnologyFromString:(id)string
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (!stringCopy)
   {
     goto LABEL_30;
   }
 
-  if (([v3 isEqualToString:*MEMORY[0x1E6964F20]] & 1) == 0)
+  if (([stringCopy isEqualToString:*MEMORY[0x1E6964F20]] & 1) == 0)
   {
     if ([v4 isEqualToString:*MEMORY[0x1E6964F18]])
     {

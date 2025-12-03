@@ -1,58 +1,58 @@
 @interface PKApplePayUserEducationInstructionsViewController
-- (PKApplePayUserEducationInstructionsViewController)initWithContext:(int64_t)a3;
-- (void)applicationWillAddDeactivationReasonWithNotification:(id)a3;
-- (void)explanationViewControllerDidSelectCancel:(id)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
+- (PKApplePayUserEducationInstructionsViewController)initWithContext:(int64_t)context;
+- (void)applicationWillAddDeactivationReasonWithNotification:(id)notification;
+- (void)explanationViewControllerDidSelectCancel:(id)cancel;
+- (void)explanationViewDidSelectContinue:(id)continue;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PKApplePayUserEducationInstructionsViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD1EEF14();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1BD1EF4A0(a3);
+  selfCopy = self;
+  sub_1BD1EF4A0(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1BD1EFBDC(a3);
+  selfCopy = self;
+  sub_1BD1EFBDC(disappear);
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
-  v4 = a3;
-  v5 = self;
+  continueCopy = continue;
+  selfCopy = self;
   sub_1BD1F19B0();
 }
 
-- (void)applicationWillAddDeactivationReasonWithNotification:(id)a3
+- (void)applicationWillAddDeactivationReasonWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BD1F080C(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_1BD1F080C(notificationCopy);
 }
 
-- (PKApplePayUserEducationInstructionsViewController)initWithContext:(int64_t)a3
+- (PKApplePayUserEducationInstructionsViewController)initWithContext:(int64_t)context
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)explanationViewControllerDidSelectCancel:(id)a3
+- (void)explanationViewControllerDidSelectCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   _s9PassKitUI47ApplePayUserEducationInstructionsViewControllerC011explanationiJ15DidSelectCancelyySo013PKExplanationiJ0CF_0();
 }
 

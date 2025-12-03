@@ -1,37 +1,37 @@
 @interface SRPhoneUsageReport
-+ (SRPhoneUsageReport)usageReportWithInterval:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (SRPhoneUsageReport)usageReportWithInterval:(id)interval;
+- (BOOL)isEqual:(id)equal;
 - (NSInteger)totalUniqueContacts;
 - (NSString)description;
-- (SRPhoneUsageReport)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRPhoneUsageReport)initWithCoder:(id)a3;
+- (SRPhoneUsageReport)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRPhoneUsageReport)initWithCoder:(id)coder;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRPhoneUsageReport
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeDouble:@"startTime" forKey:self->_startTime];
-  [a3 encodeDouble:@"duration" forKey:self->_duration];
-  [a3 encodeInteger:self->_totalOutgoingCalls forKey:@"totalOutgoingCall"];
-  [a3 encodeInteger:self->_totalIncomingCalls forKey:@"totalIncomingCall"];
-  [a3 encodeInteger:-[SRPhoneUsageReport totalUniqueContacts](self forKey:{"totalUniqueContacts"), @"totalUniqueContacts"}];
+  [coder encodeDouble:@"startTime" forKey:self->_startTime];
+  [coder encodeDouble:@"duration" forKey:self->_duration];
+  [coder encodeInteger:self->_totalOutgoingCalls forKey:@"totalOutgoingCall"];
+  [coder encodeInteger:self->_totalIncomingCalls forKey:@"totalIncomingCall"];
+  [coder encodeInteger:-[SRPhoneUsageReport totalUniqueContacts](self forKey:{"totalUniqueContacts"), @"totalUniqueContacts"}];
   totalPhoneCallDuration = self->_totalPhoneCallDuration;
 
-  [a3 encodeDouble:@"totalCallDuration" forKey:totalPhoneCallDuration];
+  [coder encodeDouble:@"totalCallDuration" forKey:totalPhoneCallDuration];
 }
 
-- (SRPhoneUsageReport)initWithCoder:(id)a3
+- (SRPhoneUsageReport)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
@@ -41,14 +41,14 @@
   v6 = [(SRPhoneUsageReport *)&v11 init];
   if (v6)
   {
-    [a3 decodeDoubleForKey:@"startTime"];
+    [coder decodeDoubleForKey:@"startTime"];
     v6->_startTime = v7;
-    [a3 decodeDoubleForKey:@"duration"];
+    [coder decodeDoubleForKey:@"duration"];
     v6->_duration = v8;
-    v6->_totalOutgoingCalls = [a3 decodeIntegerForKey:@"totalOutgoingCall"];
-    v6->_totalIncomingCalls = [a3 decodeIntegerForKey:@"totalIncomingCall"];
-    v6->_totalUniqueContacts = [a3 decodeIntegerForKey:@"totalUniqueContacts"];
-    [a3 decodeDoubleForKey:@"totalCallDuration"];
+    v6->_totalOutgoingCalls = [coder decodeIntegerForKey:@"totalOutgoingCall"];
+    v6->_totalIncomingCalls = [coder decodeIntegerForKey:@"totalIncomingCall"];
+    v6->_totalUniqueContacts = [coder decodeIntegerForKey:@"totalUniqueContacts"];
+    [coder decodeDoubleForKey:@"totalCallDuration"];
     v6->_totalPhoneCallDuration = v9;
   }
 
@@ -63,16 +63,16 @@
   [(SRPhoneUsageReport *)&v3 dealloc];
 }
 
-- (SRPhoneUsageReport)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRPhoneUsageReport)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if ([a3 length])
+  if ([representation length])
   {
     v11.receiver = self;
     v11.super_class = SRPhoneUsageReport;
     v7 = [(SRPhoneUsageReport *)&v11 init];
     if (v7)
     {
-      v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:0];
+      v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representation error:0];
       if (v8)
       {
         v9 = v8;
@@ -91,12 +91,12 @@
   return v7;
 }
 
-+ (SRPhoneUsageReport)usageReportWithInterval:(id)a3
++ (SRPhoneUsageReport)usageReportWithInterval:(id)interval
 {
   v4 = objc_alloc_init(SRPhoneUsageReport);
-  [objc_msgSend(a3 "startDate")];
+  [objc_msgSend(interval "startDate")];
   [(SRPhoneUsageReport *)v4 setStartTime:?];
-  [a3 duration];
+  [interval duration];
   [(SRPhoneUsageReport *)v4 setDuration:?];
   -[SRPhoneUsageReport setUniqueContacts:](v4, "setUniqueContacts:", [MEMORY[0x1E695DFA8] set]);
 
@@ -130,9 +130,9 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -144,32 +144,32 @@
   }
 
   duration = self->_duration;
-  [a3 duration];
+  [equal duration];
   if (duration != v6)
   {
     return 0;
   }
 
   totalOutgoingCalls = self->_totalOutgoingCalls;
-  if (totalOutgoingCalls != [a3 totalOutgoingCalls])
+  if (totalOutgoingCalls != [equal totalOutgoingCalls])
   {
     return 0;
   }
 
   totalIncomingCalls = self->_totalIncomingCalls;
-  if (totalIncomingCalls != [a3 totalIncomingCalls])
+  if (totalIncomingCalls != [equal totalIncomingCalls])
   {
     return 0;
   }
 
-  v9 = [(SRPhoneUsageReport *)self totalUniqueContacts];
-  if (v9 != [a3 totalUniqueContacts])
+  totalUniqueContacts = [(SRPhoneUsageReport *)self totalUniqueContacts];
+  if (totalUniqueContacts != [equal totalUniqueContacts])
   {
     return 0;
   }
 
   totalPhoneCallDuration = self->_totalPhoneCallDuration;
-  [a3 totalPhoneCallDuration];
+  [equal totalPhoneCallDuration];
   return totalPhoneCallDuration == v11;
 }
 

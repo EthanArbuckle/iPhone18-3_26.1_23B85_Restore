@@ -1,5 +1,5 @@
 @interface SecureConfigXPCDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC13secureconfigd23SecureConfigXPCDelegate)init;
 @end
 
@@ -14,12 +14,12 @@
   return [(SecureConfigXPCDelegate *)&v4 init];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10000239C(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_10000239C(connectionCopy);
 
   return v9 & 1;
 }

@@ -1,30 +1,30 @@
 @interface CODiscoveryEnvelope
-+ (id)envelopeWithRecord:(id)a3;
-- (id)_initWithRecord:(id)a3;
++ (id)envelopeWithRecord:(id)record;
+- (id)_initWithRecord:(id)record;
 @end
 
 @implementation CODiscoveryEnvelope
 
-- (id)_initWithRecord:(id)a3
+- (id)_initWithRecord:(id)record
 {
-  v5 = a3;
+  recordCopy = record;
   v9.receiver = self;
   v9.super_class = CODiscoveryEnvelope;
   v6 = [(CODiscoveryEnvelope *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_record, a3);
+    objc_storeStrong(&v6->_record, record);
     v7->_received = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   }
 
   return v7;
 }
 
-+ (id)envelopeWithRecord:(id)a3
++ (id)envelopeWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithRecord:v4];
+  recordCopy = record;
+  v5 = [[self alloc] _initWithRecord:recordCopy];
 
   return v5;
 }

@@ -1,27 +1,27 @@
 @interface SuggestionSeparatorView
-- (_TtC9MomentsUI23SuggestionSeparatorView)initWithCoder:(id)a3;
-- (_TtC9MomentsUI23SuggestionSeparatorView)initWithFrame:(CGRect)a3;
+- (_TtC9MomentsUI23SuggestionSeparatorView)initWithCoder:(id)coder;
+- (_TtC9MomentsUI23SuggestionSeparatorView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SuggestionSeparatorView
 
-- (_TtC9MomentsUI23SuggestionSeparatorView)initWithFrame:(CGRect)a3
+- (_TtC9MomentsUI23SuggestionSeparatorView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for SuggestionSeparatorView();
-  v7 = [(SuggestionSeparatorView *)&v10 initWithFrame:x, y, width, height];
-  [(SuggestionSeparatorView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [objc_opt_self() separatorColor];
-  [(SuggestionSeparatorView *)v7 setBackgroundColor:v8];
+  height = [(SuggestionSeparatorView *)&v10 initWithFrame:x, y, width, height];
+  [(SuggestionSeparatorView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
+  separatorColor = [objc_opt_self() separatorColor];
+  [(SuggestionSeparatorView *)height setBackgroundColor:separatorColor];
 
-  return v7;
+  return height;
 }
 
-- (_TtC9MomentsUI23SuggestionSeparatorView)initWithCoder:(id)a3
+- (_TtC9MomentsUI23SuggestionSeparatorView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

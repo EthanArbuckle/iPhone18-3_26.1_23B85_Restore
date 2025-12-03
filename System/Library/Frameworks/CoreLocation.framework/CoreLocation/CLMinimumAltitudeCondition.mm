@@ -1,21 +1,21 @@
 @interface CLMinimumAltitudeCondition
-- (BOOL)isEqual:(id)a3;
-- (CLMinimumAltitudeCondition)initWithAltitude:(double)a3;
-- (CLMinimumAltitudeCondition)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLMinimumAltitudeCondition)initWithAltitude:(double)altitude;
+- (CLMinimumAltitudeCondition)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLMinimumAltitudeCondition
 
-- (CLMinimumAltitudeCondition)initWithAltitude:(double)a3
+- (CLMinimumAltitudeCondition)initWithAltitude:(double)altitude
 {
   v5.receiver = self;
   v5.super_class = CLMinimumAltitudeCondition;
   result = [(CLCondition *)&v5 initCondition];
   if (result)
   {
-    result->_altitude = a3;
+    result->_altitude = altitude;
   }
 
   return result;
@@ -28,9 +28,9 @@
   return [v2 stringWithFormat:@"CLMinimumAltitudeCondition(altitude: %+.2fm)", v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -49,23 +49,23 @@
 
   [(CLMinimumAltitudeCondition *)self altitude:v10];
   v14 = round(v13 * 1000.0);
-  [a3 altitude];
+  [equal altitude];
   return vabdd_f64(v14, round(v15 * 1000.0)) <= 2.22044605e-16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(CLMinimumAltitudeCondition *)self altitude];
 
-  [a3 encodeDouble:@"kCLMinimumAltitudeConditionAltitude" forKey:?];
+  [coder encodeDouble:@"kCLMinimumAltitudeConditionAltitude" forKey:?];
 }
 
-- (CLMinimumAltitudeCondition)initWithCoder:(id)a3
+- (CLMinimumAltitudeCondition)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CLMinimumAltitudeCondition;
   v4 = [(CLCondition *)&v7 initWithCoder:?];
-  [a3 decodeDoubleForKey:@"kCLMinimumAltitudeConditionAltitude"];
+  [coder decodeDoubleForKey:@"kCLMinimumAltitudeConditionAltitude"];
   v4->_altitude = v5;
   return v4;
 }

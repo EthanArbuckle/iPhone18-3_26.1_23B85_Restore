@@ -1,7 +1,7 @@
 @interface PKDExternalProviders
 - (PKDExternalProviders)init;
-- (PKDExternalProviders)initWithLaunchServicesProvider:(id)a3;
-- (PKDExternalProviders)initWithUserManagementProvider:(id)a3;
+- (PKDExternalProviders)initWithLaunchServicesProvider:(id)provider;
+- (PKDExternalProviders)initWithUserManagementProvider:(id)provider;
 @end
 
 @implementation PKDExternalProviders
@@ -29,11 +29,11 @@
   return v2;
 }
 
-- (PKDExternalProviders)initWithLaunchServicesProvider:(id)a3
+- (PKDExternalProviders)initWithLaunchServicesProvider:(id)provider
 {
   v11.receiver = self;
   v11.super_class = PKDExternalProviders;
-  v3 = [(PKDExternalProviders *)&v11 initWithLaunchServicesProvider:a3];
+  v3 = [(PKDExternalProviders *)&v11 initWithLaunchServicesProvider:provider];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -52,9 +52,9 @@
   return v3;
 }
 
-- (PKDExternalProviders)initWithUserManagementProvider:(id)a3
+- (PKDExternalProviders)initWithUserManagementProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = PKDExternalProviders;
   v6 = [(PKDExternalProviders *)&v12 init];
@@ -68,7 +68,7 @@
     container = v6->_container;
     v6->_container = v9;
 
-    objc_storeStrong(&v6->_um, a3);
+    objc_storeStrong(&v6->_um, provider);
   }
 
   return v6;

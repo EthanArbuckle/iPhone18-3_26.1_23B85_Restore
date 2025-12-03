@@ -1,52 +1,52 @@
 @interface BMPBContextualActionEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addContent:(id)a3;
-- (void)addParameter:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContent:(id)content;
+- (void)addParameter:(id)parameter;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBContextualActionEvent
 
-- (void)addContent:(id)a3
+- (void)addContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   contents = self->_contents;
-  v8 = v4;
+  v8 = contentCopy;
   if (!contents)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_contents;
     self->_contents = v6;
 
-    v4 = v8;
+    contentCopy = v8;
     contents = self->_contents;
   }
 
-  [(NSMutableArray *)contents addObject:v4];
+  [(NSMutableArray *)contents addObject:contentCopy];
 }
 
-- (void)addParameter:(id)a3
+- (void)addParameter:(id)parameter
 {
-  v4 = a3;
+  parameterCopy = parameter;
   parameters = self->_parameters;
-  v8 = v4;
+  v8 = parameterCopy;
   if (!parameters)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_parameters;
     self->_parameters = v6;
 
-    v4 = v8;
+    parameterCopy = v8;
     parameters = self->_parameters;
   }
 
-  [(NSMutableArray *)parameters addObject:v4];
+  [(NSMutableArray *)parameters addObject:parameterCopy];
 }
 
 - (id)description
@@ -55,20 +55,20 @@
   v8.receiver = self;
   v8.super_class = BMPBContextualActionEvent;
   v4 = [(BMPBContextualActionEvent *)&v8 description];
-  v5 = [(BMPBContextualActionEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBContextualActionEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   appName = self->_appName;
@@ -98,10 +98,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -184,68 +184,68 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
-    [v12 setIdentifier:?];
+    [toCopy setIdentifier:?];
   }
 
   if (self->_appName)
   {
-    [v12 setAppName:?];
+    [toCopy setAppName:?];
   }
 
   if (self->_actionName)
   {
-    [v12 setActionName:?];
+    [toCopy setActionName:?];
   }
 
   if ([(BMPBContextualActionEvent *)self contentsCount])
   {
-    [v12 clearContents];
-    v4 = [(BMPBContextualActionEvent *)self contentsCount];
-    if (v4)
+    [toCopy clearContents];
+    contentsCount = [(BMPBContextualActionEvent *)self contentsCount];
+    if (contentsCount)
     {
-      v5 = v4;
+      v5 = contentsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BMPBContextualActionEvent *)self contentAtIndex:i];
-        [v12 addContent:v7];
+        [toCopy addContent:v7];
       }
     }
   }
 
   if ([(BMPBContextualActionEvent *)self parametersCount])
   {
-    [v12 clearParameters];
-    v8 = [(BMPBContextualActionEvent *)self parametersCount];
-    if (v8)
+    [toCopy clearParameters];
+    parametersCount = [(BMPBContextualActionEvent *)self parametersCount];
+    if (parametersCount)
     {
-      v9 = v8;
+      v9 = parametersCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(BMPBContextualActionEvent *)self parameterAtIndex:j];
-        [v12 addParameter:v11];
+        [toCopy addParameter:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_appName copyWithZone:a3];
+  v8 = [(NSString *)self->_appName copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_actionName copyWithZone:a3];
+  v10 = [(NSString *)self->_actionName copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
@@ -269,7 +269,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v30 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v30 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addContent:v17];
 
         ++v16;
@@ -302,7 +302,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v26 + 1) + 8 * v22) copyWithZone:{a3, v26}];
+        v23 = [*(*(&v26 + 1) + 8 * v22) copyWithZone:{zone, v26}];
         [v5 addParameter:v23];
 
         ++v22;
@@ -319,13 +319,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | v4[4])) || -[NSString isEqual:](identifier, "isEqual:")) && ((appName = self->_appName, !(appName | v4[2])) || -[NSString isEqual:](appName, "isEqual:")) && ((actionName = self->_actionName, !(actionName | v4[1])) || -[NSString isEqual:](actionName, "isEqual:")) && ((contents = self->_contents, !(contents | v4[3])) || -[NSMutableArray isEqual:](contents, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | equalCopy[4])) || -[NSString isEqual:](identifier, "isEqual:")) && ((appName = self->_appName, !(appName | equalCopy[2])) || -[NSString isEqual:](appName, "isEqual:")) && ((actionName = self->_actionName, !(actionName | equalCopy[1])) || -[NSString isEqual:](actionName, "isEqual:")) && ((contents = self->_contents, !(contents | equalCopy[3])) || -[NSMutableArray isEqual:](contents, "isEqual:")))
   {
     parameters = self->_parameters;
-    if (parameters | v4[5])
+    if (parameters | equalCopy[5])
     {
       v10 = [(NSMutableArray *)parameters isEqual:?];
     }
@@ -353,21 +353,21 @@
   return v6 ^ [(NSMutableArray *)self->_parameters hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(BMPBContextualActionEvent *)self setIdentifier:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BMPBContextualActionEvent *)self setAppName:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(BMPBContextualActionEvent *)self setActionName:?];
   }
@@ -376,7 +376,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -404,7 +404,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(v4 + 5);
+  v10 = *(fromCopy + 5);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {

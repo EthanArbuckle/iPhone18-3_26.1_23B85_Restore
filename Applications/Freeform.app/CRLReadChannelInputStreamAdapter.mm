@@ -1,26 +1,26 @@
 @interface CRLReadChannelInputStreamAdapter
-- (CRLReadChannelInputStreamAdapter)initWithReadChannel:(id)a3 length:(unint64_t)a4 closeChannelOnClose:(BOOL)a5;
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4;
+- (CRLReadChannelInputStreamAdapter)initWithReadChannel:(id)channel length:(unint64_t)length closeChannelOnClose:(BOOL)close;
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size;
 - (void)close;
 - (void)dealloc;
-- (void)seekToOffset:(int64_t)a3;
+- (void)seekToOffset:(int64_t)offset;
 @end
 
 @implementation CRLReadChannelInputStreamAdapter
 
-- (CRLReadChannelInputStreamAdapter)initWithReadChannel:(id)a3 length:(unint64_t)a4 closeChannelOnClose:(BOOL)a5
+- (CRLReadChannelInputStreamAdapter)initWithReadChannel:(id)channel length:(unint64_t)length closeChannelOnClose:(BOOL)close
 {
-  v9 = a3;
+  channelCopy = channel;
   v13.receiver = self;
   v13.super_class = CRLReadChannelInputStreamAdapter;
   v10 = [(CRLReadChannelInputStreamAdapter *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_readChannel, a3);
+    objc_storeStrong(&v10->_readChannel, channel);
     objc_storeStrong(&v11->_leftoverData, &_dispatch_data_empty);
-    v11->_length = a4;
-    v11->_closeChannelOnClose = a5;
+    v11->_length = length;
+    v11->_closeChannelOnClose = close;
   }
 
   return v11;
@@ -34,7 +34,7 @@
   [(CRLReadChannelInputStreamAdapter *)&v3 dealloc];
 }
 
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size
 {
   offset = self->_offset;
   length = self->_length;
@@ -42,24 +42,24 @@
   v7 = length - offset;
   if (!((v7 < 0) ^ v6 | (v7 == 0)))
   {
-    if (v7 >= a4)
+    if (v7 >= size)
     {
-      v9 = a4;
+      sizeCopy = size;
     }
 
     else
     {
-      v9 = v7;
+      sizeCopy = v7;
     }
 
     v44 = 0;
     v45 = &v44;
     v46 = 0x2020000000;
-    v47 = v9;
+    v47 = sizeCopy;
     v43[0] = 0;
     v43[1] = v43;
     v43[2] = 0x2020000000;
-    v43[3] = a3;
+    v43[3] = buffer;
     leftoverData = self->_leftoverData;
     if (dispatch_data_get_size(leftoverData))
     {
@@ -81,7 +81,7 @@
       {
         v15 = self->_leftoverData;
         size = dispatch_data_get_size(v15);
-        subrange = dispatch_data_create_subrange(v15, v9, size - v9);
+        subrange = dispatch_data_create_subrange(v15, sizeCopy, size - sizeCopy);
       }
 
       v17 = self->_leftoverData;
@@ -96,8 +96,8 @@
 
     else
     {
-      v14 = v9;
-      if (!v9)
+      v14 = sizeCopy;
+      if (!sizeCopy)
       {
         goto LABEL_28;
       }
@@ -184,7 +184,7 @@ LABEL_29:
     }
 
 LABEL_28:
-    v13 = v9 - v14;
+    v13 = sizeCopy - v14;
     goto LABEL_29;
   }
 
@@ -202,32 +202,32 @@ LABEL_28:
   self->_readChannel = 0;
 }
 
-- (void)seekToOffset:(int64_t)a3
+- (void)seekToOffset:(int64_t)offset
 {
   if (self->_readChannel)
   {
     length = self->_length;
-    if (length >= a3)
+    if (length >= offset)
     {
-      v5 = a3;
+      offsetCopy = offset;
     }
 
     else
     {
-      v5 = self->_length;
+      offsetCopy = self->_length;
     }
 
     if (length >= 0)
     {
-      v6 = v5;
+      offsetCopy2 = offsetCopy;
     }
 
     else
     {
-      v6 = a3;
+      offsetCopy2 = offset;
     }
 
-    self->_offset = v6;
+    self->_offset = offsetCopy2;
     p_leftoverData = &self->_leftoverData;
 
     objc_storeStrong(p_leftoverData, &_dispatch_data_empty);

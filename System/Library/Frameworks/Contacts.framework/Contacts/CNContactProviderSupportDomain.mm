@@ -1,85 +1,85 @@
 @interface CNContactProviderSupportDomain
-- (BOOL)isEqual:(id)a3;
-- (CNContactProviderSupportDomain)initWithCoder:(id)a3;
-- (CNContactProviderSupportDomain)initWithDomainIdentifer:(id)a3 displayName:(id)a4 userInfo:(id)a5 bundleIdentifier:(id)a6 registered:(BOOL)a7 enabled:(BOOL)a8;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNContactProviderSupportDomain)initWithCoder:(id)coder;
+- (CNContactProviderSupportDomain)initWithDomainIdentifer:(id)identifer displayName:(id)name userInfo:(id)info bundleIdentifier:(id)identifier registered:(BOOL)registered enabled:(BOOL)enabled;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNContactProviderSupportDomain
 
-- (CNContactProviderSupportDomain)initWithDomainIdentifer:(id)a3 displayName:(id)a4 userInfo:(id)a5 bundleIdentifier:(id)a6 registered:(BOOL)a7 enabled:(BOOL)a8
+- (CNContactProviderSupportDomain)initWithDomainIdentifer:(id)identifer displayName:(id)name userInfo:(id)info bundleIdentifier:(id)identifier registered:(BOOL)registered enabled:(BOOL)enabled
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  identiferCopy = identifer;
+  nameCopy = name;
+  infoCopy = info;
+  identifierCopy = identifier;
   v23.receiver = self;
   v23.super_class = CNContactProviderSupportDomain;
   v18 = [(CNContactProviderSupportDomain *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_domainIdentifier, a3);
-    objc_storeStrong(&v19->_displayName, a4);
-    objc_storeStrong(&v19->_userInfo, a5);
-    objc_storeStrong(&v19->_bundleIdentifier, a6);
-    v19->_registered = a7;
-    v19->_enabled = a8;
+    objc_storeStrong(&v18->_domainIdentifier, identifer);
+    objc_storeStrong(&v19->_displayName, name);
+    objc_storeStrong(&v19->_userInfo, info);
+    objc_storeStrong(&v19->_bundleIdentifier, identifier);
+    v19->_registered = registered;
+    v19->_enabled = enabled;
     v20 = v19;
   }
 
   return v19;
 }
 
-- (CNContactProviderSupportDomain)initWithCoder:(id)a3
+- (CNContactProviderSupportDomain)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domainIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domainIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
   v7 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v8 setWithObjects:{v9, v10, v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeDictionaryWithKeysOfClasses:v7 objectsOfClasses:v12 forKey:@"userInfo"];
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  v15 = [v4 decodeBoolForKey:@"isRegistered"];
-  v16 = [v4 decodeBoolForKey:@"isEnabled"];
+  v13 = [coderCopy decodeDictionaryWithKeysOfClasses:v7 objectsOfClasses:v12 forKey:@"userInfo"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v15 = [coderCopy decodeBoolForKey:@"isRegistered"];
+  v16 = [coderCopy decodeBoolForKey:@"isEnabled"];
 
   v17 = [[CNContactProviderSupportDomain alloc] initWithDomainIdentifer:v5 displayName:v6 userInfo:v13 bundleIdentifier:v14 registered:v15 enabled:v16];
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   domainIdentifier = self->_domainIdentifier;
-  v5 = a3;
-  [v5 encodeObject:domainIdentifier forKey:@"domainIdentifier"];
-  [v5 encodeObject:self->_displayName forKey:@"displayName"];
-  [v5 encodeObject:self->_userInfo forKey:@"userInfo"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
-  [v5 encodeBool:self->_enabled forKey:@"isRegistered"];
-  [v5 encodeBool:self->_enabled forKey:@"isEnabled"];
+  coderCopy = coder;
+  [coderCopy encodeObject:domainIdentifier forKey:@"domainIdentifier"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"userInfo"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeBool:self->_enabled forKey:@"isRegistered"];
+  [coderCopy encodeBool:self->_enabled forKey:@"isEnabled"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CNContactProviderSupportDomain alloc];
-  v5 = [(CNContactProviderSupportDomain *)self domainIdentifier];
-  v6 = [(CNContactProviderSupportDomain *)self displayName];
-  v7 = [(CNContactProviderSupportDomain *)self userInfo];
-  v8 = [(CNContactProviderSupportDomain *)self bundleIdentifier];
-  v9 = [(CNContactProviderSupportDomain *)v4 initWithDomainIdentifer:v5 displayName:v6 userInfo:v7 bundleIdentifier:v8 registered:[(CNContactProviderSupportDomain *)self isRegistered] enabled:[(CNContactProviderSupportDomain *)self isEnabled]];
+  domainIdentifier = [(CNContactProviderSupportDomain *)self domainIdentifier];
+  displayName = [(CNContactProviderSupportDomain *)self displayName];
+  userInfo = [(CNContactProviderSupportDomain *)self userInfo];
+  bundleIdentifier = [(CNContactProviderSupportDomain *)self bundleIdentifier];
+  v9 = [(CNContactProviderSupportDomain *)v4 initWithDomainIdentifer:domainIdentifier displayName:displayName userInfo:userInfo bundleIdentifier:bundleIdentifier registered:[(CNContactProviderSupportDomain *)self isRegistered] enabled:[(CNContactProviderSupportDomain *)self isEnabled]];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v14) = 1;
   }
@@ -87,10 +87,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ((v5 = -[CNContactProviderSupportDomain domainIdentifier](self, "domainIdentifier"), v6 = -[CNContactProviderSupportDomain domainIdentifier](v4, "domainIdentifier"), !(v5 | v6)) || [v5 isEqual:v6]) && ((v7 = -[CNContactProviderSupportDomain displayName](self, "displayName"), v8 = -[CNContactProviderSupportDomain displayName](v4, "displayName"), !(v7 | v8)) || objc_msgSend(v7, "isEqual:", v8)) && ((v9 = -[CNContactProviderSupportDomain userInfo](self, "userInfo"), v10 = -[CNContactProviderSupportDomain userInfo](v4, "userInfo"), !(v9 | v10)) || objc_msgSend(v9, "isEqual:", v10)) && ((v11 = -[CNContactProviderSupportDomain bundleIdentifier](self, "bundleIdentifier"), v12 = -[CNContactProviderSupportDomain bundleIdentifier](v4, "bundleIdentifier"), !(v11 | v12)) || objc_msgSend(v11, "isEqual:", v12)) && (v13 = -[CNContactProviderSupportDomain isRegistered](self, "isRegistered"), v13 == -[CNContactProviderSupportDomain isRegistered](v4, "isRegistered")))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ((v5 = -[CNContactProviderSupportDomain domainIdentifier](self, "domainIdentifier"), v6 = -[CNContactProviderSupportDomain domainIdentifier](equalCopy, "domainIdentifier"), !(v5 | v6)) || [v5 isEqual:v6]) && ((v7 = -[CNContactProviderSupportDomain displayName](self, "displayName"), v8 = -[CNContactProviderSupportDomain displayName](equalCopy, "displayName"), !(v7 | v8)) || objc_msgSend(v7, "isEqual:", v8)) && ((v9 = -[CNContactProviderSupportDomain userInfo](self, "userInfo"), v10 = -[CNContactProviderSupportDomain userInfo](equalCopy, "userInfo"), !(v9 | v10)) || objc_msgSend(v9, "isEqual:", v10)) && ((v11 = -[CNContactProviderSupportDomain bundleIdentifier](self, "bundleIdentifier"), v12 = -[CNContactProviderSupportDomain bundleIdentifier](equalCopy, "bundleIdentifier"), !(v11 | v12)) || objc_msgSend(v11, "isEqual:", v12)) && (v13 = -[CNContactProviderSupportDomain isRegistered](self, "isRegistered"), v13 == -[CNContactProviderSupportDomain isRegistered](equalCopy, "isRegistered")))
     {
-      v16 = [(CNContactProviderSupportDomain *)self isEnabled];
-      v14 = v16 ^ [(CNContactProviderSupportDomain *)v4 isEnabled]^ 1;
+      isEnabled = [(CNContactProviderSupportDomain *)self isEnabled];
+      v14 = isEnabled ^ [(CNContactProviderSupportDomain *)equalCopy isEnabled]^ 1;
     }
 
     else

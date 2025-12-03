@@ -1,23 +1,23 @@
 @interface PKPeerPaymentReceiverRemoteAlertViewController
 - (void)_cleanup;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation PKPeerPaymentReceiverRemoteAlertViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __82__PKPeerPaymentReceiverRemoteAlertViewController_configureWithContext_completion___block_invoke;
   v11[3] = &unk_1E80111F8;
   objc_copyWeak(&v14, &location);
-  v8 = v6;
+  v8 = contextCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v13 = v9;
   v10.receiver = self;
   v10.super_class = PKPeerPaymentReceiverRemoteAlertViewController;
@@ -47,19 +47,19 @@ void __82__PKPeerPaymentReceiverRemoteAlertViewController_configureWithContext_c
   v6.receiver = self;
   v6.super_class = PKPeerPaymentReceiverRemoteAlertViewController;
   [(PKNearbyPeerPaymentRemoteAlertViewController *)&v6 _cleanup];
-  v3 = [(PKNearbyPeerPaymentRemoteAlertViewController *)self userInfo];
-  replyAction = [v3 objectForKeyedSubscript:@"uiHost"];
+  userInfo = [(PKNearbyPeerPaymentRemoteAlertViewController *)self userInfo];
+  replyAction = [userInfo objectForKeyedSubscript:@"uiHost"];
   if (!replyAction)
   {
-    v5 = [(BSAction *)self->_replyAction canSendResponse];
+    canSendResponse = [(BSAction *)self->_replyAction canSendResponse];
 
-    if (!v5)
+    if (!canSendResponse)
     {
       return;
     }
 
-    v3 = [MEMORY[0x1E698E600] responseWithInfo:0];
-    [(BSAction *)self->_replyAction sendResponse:v3];
+    userInfo = [MEMORY[0x1E698E600] responseWithInfo:0];
+    [(BSAction *)self->_replyAction sendResponse:userInfo];
     replyAction = self->_replyAction;
     self->_replyAction = 0;
   }

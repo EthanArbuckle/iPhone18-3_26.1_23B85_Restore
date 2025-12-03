@@ -1,29 +1,29 @@
 @interface ACCAuthContext
-+ (id)authContextWithRequest:(id)a3;
-- (ACCAuthContext)initWithRequest:(id)a3;
++ (id)authContextWithRequest:(id)request;
+- (ACCAuthContext)initWithRequest:(id)request;
 - (NSDate)expirationDate;
 - (NSMutableDictionary)parametersDictionary;
 - (NSString)xmlTokenSourceString;
-- (id)strippedPropertyListString:(id)a3;
+- (id)strippedPropertyListString:(id)string;
 - (void)dealloc;
-- (void)setExpirationDate:(id)a3;
+- (void)setExpirationDate:(id)date;
 @end
 
 @implementation ACCAuthContext
 
-+ (id)authContextWithRequest:(id)a3
++ (id)authContextWithRequest:(id)request
 {
   if (qword_2A1EB8F28 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
   {
     ACFLog(7, "+[ACCAuthContext authContextWithRequest:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Core/Sources/ACCAuthContext.m", 47, 0, "Creating initial token");
   }
 
-  v5 = [[a1 alloc] initWithRequest:a3];
+  v5 = [[self alloc] initWithRequest:request];
 
   return v5;
 }
 
-- (ACCAuthContext)initWithRequest:(id)a3
+- (ACCAuthContext)initWithRequest:(id)request
 {
   v7.receiver = self;
   v7.super_class = ACCAuthContext;
@@ -32,12 +32,12 @@
   if (v4)
   {
     [(ACCAuthContext *)v4 setDsKeyVersion:@"0.0"];
-    -[ACCAuthContext setPrincipal:](v5, "setPrincipal:", [a3 principal]);
-    -[ACCAuthContext setAppID:](v5, "setAppID:", [a3 appID]);
-    -[ACCAuthContext setAppIDKey:](v5, "setAppIDKey:", [a3 appIDKey]);
+    -[ACCAuthContext setPrincipal:](v5, "setPrincipal:", [request principal]);
+    -[ACCAuthContext setAppID:](v5, "setAppID:", [request appID]);
+    -[ACCAuthContext setAppIDKey:](v5, "setAppIDKey:", [request appIDKey]);
     -[ACCAuthContext setCreationDate:](v5, "setCreationDate:", [MEMORY[0x29EDB8DB0] date]);
-    -[ACCAuthContext setServiceName:](v5, "setServiceName:", [a3 serviceName]);
-    [(ACCAuthContext *)v5 setRequest:a3];
+    -[ACCAuthContext setServiceName:](v5, "setServiceName:", [request serviceName]);
+    [(ACCAuthContext *)v5 setRequest:request];
   }
 
   return v5;
@@ -79,139 +79,139 @@
     return self->_expirationDate;
   }
 
-  v5 = [(ACCAuthContext *)self creationDate];
+  creationDate = [(ACCAuthContext *)self creationDate];
 
-  return [(NSDate *)v5 dateByAddingTimeInterval:300.0];
+  return [(NSDate *)creationDate dateByAddingTimeInterval:300.0];
 }
 
-- (void)setExpirationDate:(id)a3
+- (void)setExpirationDate:(id)date
 {
   expirationDate = self->_expirationDate;
-  if (expirationDate != a3)
+  if (expirationDate != date)
   {
     v6 = expirationDate;
-    self->_expirationDate = a3;
+    self->_expirationDate = date;
   }
 }
 
 - (NSMutableDictionary)parametersDictionary
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ([(NSString *)[(ACFPrincipal *)[(ACCAuthContext *)self principal] realm] length])
   {
-    [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self tokenVersion] forKey:@"a"];
+    [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self tokenVersion] forKey:@"a"];
     if ([(NSString *)[(ACFPrincipal *)[(ACCAuthContext *)self principal] userName] length])
     {
-      [(NSMutableDictionary *)v3 setValue:[(ACFPrincipal *)[(ACCAuthContext *)self principal] userName] forKey:@"b"];
+      [(NSMutableDictionary *)dictionary setValue:[(ACFPrincipal *)[(ACCAuthContext *)self principal] userName] forKey:@"b"];
     }
 
-    [(NSMutableDictionary *)v3 setValue:[(ACFPrincipal *)[(ACCAuthContext *)self principal] realm] forKey:@"c"];
+    [(NSMutableDictionary *)dictionary setValue:[(ACFPrincipal *)[(ACCAuthContext *)self principal] realm] forKey:@"c"];
     v4 = MEMORY[0x29EDBA070];
     [(NSDate *)[(ACCAuthContext *)self creationDate] timeIntervalSince1970];
-    -[NSMutableDictionary setValue:forKey:](v3, "setValue:forKey:", [v4 numberWithUnsignedLongLong:(v5 * 1000.0)], @"d");
+    -[NSMutableDictionary setValue:forKey:](dictionary, "setValue:forKey:", [v4 numberWithUnsignedLongLong:(v5 * 1000.0)], @"d");
     v6 = MEMORY[0x29EDBA070];
     [(NSDate *)[(ACCAuthContext *)self expirationDate] timeIntervalSince1970];
-    -[NSMutableDictionary setValue:forKey:](v3, "setValue:forKey:", [v6 numberWithUnsignedLongLong:(v7 * 1000.0)], @"e");
+    -[NSMutableDictionary setValue:forKey:](dictionary, "setValue:forKey:", [v6 numberWithUnsignedLongLong:(v7 * 1000.0)], @"e");
     if ([(ACCAuthContext *)self appID])
     {
-      [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self appID] forKey:@"m"];
+      [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self appID] forKey:@"m"];
     }
 
     if ([(NSString *)[(ACCAuthContext *)self appIDKey] length])
     {
-      [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self appIDKey] forKey:@"n"];
+      [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self appIDKey] forKey:@"n"];
     }
 
-    [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self nonce] forKey:@"o"];
-    [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self dsKeyVersion] forKey:@"t"];
+    [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self nonce] forKey:@"o"];
+    [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self dsKeyVersion] forKey:@"t"];
     if ([(ACCAuthContext *)self encryptionHash])
     {
-      [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self encryptionHash] forKey:@"sh"];
+      [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self encryptionHash] forKey:@"sh"];
     }
 
-    [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self authenticationType] forKey:@"s"];
+    [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self authenticationType] forKey:@"s"];
     if ([(ACCAuthContext *)self sessionToken])
     {
-      [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self sessionToken] forKey:@"q"];
+      [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self sessionToken] forKey:@"q"];
     }
 
     if ([(ACCAuthContext *)self currentUserKey])
     {
-      [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self currentUserKey] forKey:@"nv"];
+      [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self currentUserKey] forKey:@"nv"];
     }
 
     if ([(ACCAuthContext *)self oldUserKey])
     {
-      [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self oldUserKey] forKey:@"ov"];
+      [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self oldUserKey] forKey:@"ov"];
     }
 
     if ([(ACCAuthContext *)self personID])
     {
-      [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self personID] forKey:@"pid"];
+      [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self personID] forKey:@"pid"];
     }
 
     if ([(ACCAuthContext *)self serviceName])
     {
-      [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self serviceName] forKey:@"sn"];
+      [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self serviceName] forKey:@"sn"];
     }
 
     if ([(ACCAuthContext *)self selectedDeviceId])
     {
-      [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self selectedDeviceId] forKey:@"di"];
+      [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self selectedDeviceId] forKey:@"di"];
     }
 
     if ([(ACCAuthContext *)self selectedDeviceType])
     {
-      [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self selectedDeviceType] forKey:@"dk"];
+      [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self selectedDeviceType] forKey:@"dk"];
     }
 
     if ([(ACCAuthContext *)self twoStepVerificationCode])
     {
-      [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self twoStepVerificationCode] forKey:@"sc"];
+      [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self twoStepVerificationCode] forKey:@"sc"];
     }
 
     if ([(ACCAuthContext *)self clientSecretTokenHmac])
     {
-      [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self clientSecretTokenHmac] forKey:@"ho"];
+      [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self clientSecretTokenHmac] forKey:@"ho"];
       if ([(ACCAuthContext *)self clientSecretCreateDate])
       {
-        [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self clientSecretCreateDate] forKey:@"ccd"];
+        [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self clientSecretCreateDate] forKey:@"ccd"];
       }
     }
 
     if ([(ACCAuthContext *)self recoveryKey])
     {
-      [(NSMutableDictionary *)v3 setValue:[(ACCAuthContext *)self recoveryKey] forKey:@"rk"];
+      [(NSMutableDictionary *)dictionary setValue:[(ACCAuthContext *)self recoveryKey] forKey:@"rk"];
     }
 
-    v8 = [MEMORY[0x29EDB8DE0] currentLocale];
-    v9 = [v8 objectForKey:*MEMORY[0x29EDB8CF8]];
-    v10 = [v8 objectForKey:*MEMORY[0x29EDB8CE0]];
+    currentLocale = [MEMORY[0x29EDB8DE0] currentLocale];
+    v9 = [currentLocale objectForKey:*MEMORY[0x29EDB8CF8]];
+    v10 = [currentLocale objectForKey:*MEMORY[0x29EDB8CE0]];
     v11 = [objc_msgSend(MEMORY[0x29EDB8E60] "systemTimeZone")];
     if (v9)
     {
-      [(NSMutableDictionary *)v3 setValue:v9 forKey:@"lc"];
+      [(NSMutableDictionary *)dictionary setValue:v9 forKey:@"lc"];
     }
 
     if (v10)
     {
-      [(NSMutableDictionary *)v3 setValue:v10 forKey:@"lr"];
+      [(NSMutableDictionary *)dictionary setValue:v10 forKey:@"lr"];
     }
 
     if (v11)
     {
-      [(NSMutableDictionary *)v3 setValue:v11 forKey:@"tz"];
+      [(NSMutableDictionary *)dictionary setValue:v11 forKey:@"tz"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSString)xmlTokenSourceString
 {
-  v3 = [(ACCAuthContext *)self parametersDictionary];
+  parametersDictionary = [(ACCAuthContext *)self parametersDictionary];
   v9 = 0;
-  v4 = [MEMORY[0x29EDBA0C0] dataWithPropertyList:v3 format:100 options:0 error:&v9];
+  v4 = [MEMORY[0x29EDBA0C0] dataWithPropertyList:parametersDictionary format:100 options:0 error:&v9];
   if (qword_2A1EB8F28 && v9 && (ACFLogSettingsGetLevelMask() & 8) != 0)
   {
     ACFLog(3, "[ACCAuthContext xmlTokenSourceString]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Core/Sources/ACCAuthContext.m", 230, 0, "Failed to create plist: %@", v9);
@@ -238,9 +238,9 @@
   return v7;
 }
 
-- (id)strippedPropertyListString:(id)a3
+- (id)strippedPropertyListString:(id)string
 {
-  v3 = [objc_msgSend(objc_msgSend(a3 componentsSeparatedByString:{@"\n", "componentsJoinedByString:", &stru_2A1EB91A0), "componentsSeparatedByString:", @"\t"}];
+  v3 = [objc_msgSend(objc_msgSend(string componentsSeparatedByString:{@"\n", "componentsJoinedByString:", &stru_2A1EB91A0), "componentsSeparatedByString:", @"\t"}];
 
   return [v3 componentsJoinedByString:&stru_2A1EB91A0];
 }

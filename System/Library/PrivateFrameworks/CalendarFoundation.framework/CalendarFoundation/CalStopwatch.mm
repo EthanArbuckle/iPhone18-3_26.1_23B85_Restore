@@ -1,11 +1,11 @@
 @interface CalStopwatch
 - (CalStopwatch)init;
-- (double)markEventEnd:(id)a3;
-- (double)markEventSplit:(id)a3;
+- (double)markEventEnd:(id)end;
+- (double)markEventSplit:(id)split;
 - (id)description;
-- (unint64_t)elapsedTimeAsNumber:(int)a3;
+- (unint64_t)elapsedTimeAsNumber:(int)number;
 - (unint64_t)elapsedTimeInNanoseconds;
-- (void)markEventStart:(id)a3;
+- (void)markEventStart:(id)start;
 - (void)reset;
 - (void)start;
 - (void)stop;
@@ -51,16 +51,16 @@
     return 0;
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_isRunning)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isRunning)
   {
-    v5 = (v3 - v4->_lastStartTime + v4->_elapsedTime) * elapsedTimeInNanoseconds_ratio;
+    v5 = (v3 - selfCopy->_lastStartTime + selfCopy->_elapsedTime) * elapsedTimeInNanoseconds_ratio;
   }
 
-  else if (v4->_hasValidElapsedTime)
+  else if (selfCopy->_hasValidElapsedTime)
   {
-    v5 = v4->_elapsedTime * elapsedTimeInNanoseconds_ratio;
+    v5 = selfCopy->_elapsedTime * elapsedTimeInNanoseconds_ratio;
   }
 
   else
@@ -68,7 +68,7 @@
     v5 = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -115,17 +115,17 @@ void __40__CalStopwatch_elapsedTimeInNanoseconds__block_invoke()
   v4 = [(CalStopwatch *)&v9 description];
   v5 = [(CalDescriptionBuilder *)v3 initWithSuperclassDescription:v4];
 
-  v6 = self;
-  objc_sync_enter(v6);
-  [(CalDescriptionBuilder *)v5 setKey:@"LastStartTime" withUnsignedLongLong:v6->_lastStartTime];
-  [(CalDescriptionBuilder *)v5 setKey:@"ElapsedTime" withUnsignedLongLong:v6->_elapsedTime];
-  [(CalDescriptionBuilder *)v5 setKey:@"IsRunning" withBoolean:v6->_isRunning];
-  [(CalDescriptionBuilder *)v5 setKey:@"HasValidElapsedTime" withBoolean:v6->_hasValidElapsedTime];
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(CalDescriptionBuilder *)v5 setKey:@"LastStartTime" withUnsignedLongLong:selfCopy->_lastStartTime];
+  [(CalDescriptionBuilder *)v5 setKey:@"ElapsedTime" withUnsignedLongLong:selfCopy->_elapsedTime];
+  [(CalDescriptionBuilder *)v5 setKey:@"IsRunning" withBoolean:selfCopy->_isRunning];
+  [(CalDescriptionBuilder *)v5 setKey:@"HasValidElapsedTime" withBoolean:selfCopy->_hasValidElapsedTime];
+  objc_sync_exit(selfCopy);
 
-  v7 = [(CalDescriptionBuilder *)v5 build];
+  build = [(CalDescriptionBuilder *)v5 build];
 
-  return v7;
+  return build;
 }
 
 - (void)stop
@@ -146,30 +146,30 @@ void __40__CalStopwatch_elapsedTimeInNanoseconds__block_invoke()
   objc_sync_exit(obj);
 }
 
-- (unint64_t)elapsedTimeAsNumber:(int)a3
+- (unint64_t)elapsedTimeAsNumber:(int)number
 {
-  v4 = [(CalStopwatch *)self elapsedTimeInNanoseconds];
-  if (a3 > 2)
+  elapsedTimeInNanoseconds = [(CalStopwatch *)self elapsedTimeInNanoseconds];
+  if (number > 2)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = qword_1B997D9E0[a3];
+    v5 = qword_1B997D9E0[number];
   }
 
-  return v4 / v5;
+  return elapsedTimeInNanoseconds / v5;
 }
 
-- (void)markEventStart:(id)a3
+- (void)markEventStart:(id)start
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF00] date];
+  startCopy = start;
+  date = [MEMORY[0x1E695DF00] date];
   v6 = +[CalFoundationLogSubsystem eventTimer];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(CalStopwatch *)v4 markEventStart:v6, v7, v8, v9, v10, v11, v12];
+    [(CalStopwatch *)startCopy markEventStart:v6, v7, v8, v9, v10, v11, v12];
   }
 
   if ([(CalStopwatch *)self usesSignalFlags])
@@ -178,29 +178,29 @@ void __40__CalStopwatch_elapsedTimeInNanoseconds__block_invoke()
     CalPerfLogStart(v13);
   }
 
-  v14 = [MEMORY[0x1E695DF70] arrayWithObject:v5];
-  [(NSMutableDictionary *)self->_events setObject:v14 forKeyedSubscript:v4];
+  v14 = [MEMORY[0x1E695DF70] arrayWithObject:date];
+  [(NSMutableDictionary *)self->_events setObject:v14 forKeyedSubscript:startCopy];
 }
 
-- (double)markEventSplit:(id)a3
+- (double)markEventSplit:(id)split
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [(NSMutableDictionary *)self->_events objectForKeyedSubscript:v4];
-  v7 = [v6 lastObject];
-  v8 = [v6 firstObject];
+  splitCopy = split;
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [(NSMutableDictionary *)self->_events objectForKeyedSubscript:splitCopy];
+  lastObject = [v6 lastObject];
+  firstObject = [v6 firstObject];
   v9 = 0;
   v10 = 0.0;
-  if (v7)
+  if (lastObject)
   {
-    [v5 timeIntervalSinceDate:v7];
+    [date timeIntervalSinceDate:lastObject];
     v10 = v11;
   }
 
-  if (v8)
+  if (firstObject)
   {
-    [v5 timeIntervalSinceDate:v8];
+    [date timeIntervalSinceDate:firstObject];
     v9 = v12;
   }
 
@@ -208,7 +208,7 @@ void __40__CalStopwatch_elapsedTimeInNanoseconds__block_invoke()
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v19 = v4;
+    v19 = splitCopy;
     v20 = 2048;
     v21 = v9;
     v22 = 2048;
@@ -218,36 +218,36 @@ void __40__CalStopwatch_elapsedTimeInNanoseconds__block_invoke()
 
   if ([(CalStopwatch *)self usesSignalFlags])
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Split %li", v4, objc_msgSend(v6, "count") + 1];
+    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Split %li", splitCopy, objc_msgSend(v6, "count") + 1];
     v15 = +[CalFoundationLogSubsystem eventTimer];
     CalPerfLogPoint(v15);
   }
 
-  [v6 addObject:v5];
+  [v6 addObject:date];
 
   v16 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (double)markEventEnd:(id)a3
+- (double)markEventEnd:(id)end
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [(NSMutableDictionary *)self->_events objectForKeyedSubscript:v4];
-  v7 = [v6 lastObject];
-  v8 = [v6 firstObject];
+  endCopy = end;
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [(NSMutableDictionary *)self->_events objectForKeyedSubscript:endCopy];
+  lastObject = [v6 lastObject];
+  firstObject = [v6 firstObject];
   v9 = 0.0;
   v10 = 0;
-  if (v7)
+  if (lastObject)
   {
-    [v5 timeIntervalSinceDate:v7];
+    [date timeIntervalSinceDate:lastObject];
     v10 = v11;
   }
 
-  if (v8)
+  if (firstObject)
   {
-    [v5 timeIntervalSinceDate:v8];
+    [date timeIntervalSinceDate:firstObject];
     v9 = v12;
   }
 
@@ -255,7 +255,7 @@ void __40__CalStopwatch_elapsedTimeInNanoseconds__block_invoke()
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v17 = 138412802;
-    v18 = v4;
+    v18 = endCopy;
     v19 = 2048;
     v20 = v9;
     v21 = 2048;
@@ -269,7 +269,7 @@ void __40__CalStopwatch_elapsedTimeInNanoseconds__block_invoke()
     CalPerfLogEnd(v14);
   }
 
-  [(NSMutableDictionary *)self->_events removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_events removeObjectForKey:endCopy];
 
   v15 = *MEMORY[0x1E69E9840];
   return v9;

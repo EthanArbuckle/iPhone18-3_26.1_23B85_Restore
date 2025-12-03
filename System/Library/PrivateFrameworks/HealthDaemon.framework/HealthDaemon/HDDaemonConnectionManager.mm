@@ -1,29 +1,29 @@
 @interface HDDaemonConnectionManager
-- (HDDaemonConnectionManager)initWithMachServiceName:(id)a3 daemon:(id)a4;
+- (HDDaemonConnectionManager)initWithMachServiceName:(id)name daemon:(id)daemon;
 - (NSArray)clientProcesses;
-- (id)clientForListener:(id)a3 connection:(id)a4 error:(id *)a5;
-- (id)createAnonymousListenerWithLabel:(id)a3;
-- (id)createListenerWithMachServiceName:(id)a3;
-- (id)exportObjectForListener:(id)a3 client:(id)a4 error:(id *)a5;
-- (void)_configureListener:(uint64_t)a1;
-- (void)endpointInvalidated:(id)a3;
+- (id)clientForListener:(id)listener connection:(id)connection error:(id *)error;
+- (id)createAnonymousListenerWithLabel:(id)label;
+- (id)createListenerWithMachServiceName:(id)name;
+- (id)exportObjectForListener:(id)listener client:(id)client error:(id *)error;
+- (void)_configureListener:(uint64_t)listener;
+- (void)endpointInvalidated:(id)invalidated;
 - (void)invalidate;
-- (void)invalidateAllServersForProfile:(id)a3;
+- (void)invalidateAllServersForProfile:(id)profile;
 @end
 
 @implementation HDDaemonConnectionManager
 
-- (HDDaemonConnectionManager)initWithMachServiceName:(id)a3 daemon:(id)a4
+- (HDDaemonConnectionManager)initWithMachServiceName:(id)name daemon:(id)daemon
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  daemonCopy = daemon;
   v20.receiver = self;
   v20.super_class = HDDaemonConnectionManager;
   v8 = [(HDDaemonConnectionManager *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_daemon, v7);
+    objc_storeWeak(&v8->_daemon, daemonCopy);
     v10 = HKCreateSerialDispatchQueue();
     listenerQueue = v9->_listenerQueue;
     v9->_listenerQueue = v10;
@@ -33,9 +33,9 @@
     endpoints = v9->_endpoints;
     v9->_endpoints = v12;
 
-    if (v6)
+    if (nameCopy)
     {
-      v14 = [(HDDaemonConnectionManager *)v9 createListenerWithMachServiceName:v6];
+      v14 = [(HDDaemonConnectionManager *)v9 createListenerWithMachServiceName:nameCopy];
       serviceListener = v9->_serviceListener;
       v9->_serviceListener = v14;
     }
@@ -79,9 +79,9 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) client];
-        v10 = [v9 process];
-        [v3 addObject:v10];
+        client = [*(*(&v14 + 1) + 8 * i) client];
+        process = [client process];
+        [v3 addObject:process];
       }
 
       v6 = [(NSMutableSet *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -141,46 +141,46 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createListenerWithMachServiceName:(id)a3
+- (id)createListenerWithMachServiceName:(id)name
 {
   v4 = MEMORY[0x277D10BF0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithMachServiceName:v5];
+  nameCopy = name;
+  v6 = [[v4 alloc] initWithMachServiceName:nameCopy];
 
   [(HDDaemonConnectionManager *)self _configureListener:v6];
 
   return v6;
 }
 
-- (void)_configureListener:(uint64_t)a1
+- (void)_configureListener:(uint64_t)listener
 {
-  if (a1)
+  if (listener)
   {
     v3 = a2;
-    [v3 setClientProvider:a1];
-    [v3 setQueue:*(a1 + 16)];
+    [v3 setClientProvider:listener];
+    [v3 setQueue:*(listener + 16)];
   }
 }
 
-- (id)createAnonymousListenerWithLabel:(id)a3
+- (id)createAnonymousListenerWithLabel:(id)label
 {
   v4 = MEMORY[0x277D10BF0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithLabel:v5];
+  labelCopy = label;
+  v6 = [[v4 alloc] initWithLabel:labelCopy];
 
   [(HDDaemonConnectionManager *)self _configureListener:v6];
 
   return v6;
 }
 
-- (void)invalidateAllServersForProfile:(id)a3
+- (void)invalidateAllServersForProfile:(id)profile
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSMutableSet *)self->_endpoints copy];
   os_unfair_lock_unlock(&self->_lock);
-  v6 = [v4 profileIdentifier];
+  profileIdentifier = [profileCopy profileIdentifier];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -201,8 +201,8 @@
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 profileIdentifier];
-        v14 = [v13 isEqual:v6];
+        profileIdentifier2 = [v12 profileIdentifier];
+        v14 = [profileIdentifier2 isEqual:profileIdentifier];
 
         if (v14)
         {
@@ -219,19 +219,19 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endpointInvalidated:(id)a3
+- (void)endpointInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_endpoints removeObject:v4];
+  [(NSMutableSet *)self->_endpoints removeObject:invalidatedCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)clientForListener:(id)a3 connection:(id)a4 error:(id *)a5
+- (id)clientForListener:(id)listener connection:(id)connection error:(id *)error
 {
-  v7 = a4;
-  v8 = v7;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   if (self)
   {
     v9 = objc_alloc(MEMORY[0x277CCDE78]);
@@ -251,9 +251,9 @@
     processesByAuditToken = self->_processesByAuditToken;
     if (!processesByAuditToken)
     {
-      v12 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+      strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
       v13 = self->_processesByAuditToken;
-      self->_processesByAuditToken = v12;
+      self->_processesByAuditToken = strongToWeakObjectsMapTable;
 
       processesByAuditToken = self->_processesByAuditToken;
     }
@@ -264,12 +264,12 @@
       processCreationHandler = self->_processCreationHandler;
       if (processCreationHandler)
       {
-        processCreationHandler[2](processCreationHandler, v8, a5);
+        processCreationHandler[2](processCreationHandler, v8, error);
       }
 
       else
       {
-        [MEMORY[0x277D10C00] processWithConnection:v8 error:a5];
+        [MEMORY[0x277D10C00] processWithConnection:v8 error:error];
       }
       v14 = ;
       if (v14)
@@ -300,14 +300,14 @@
   return self;
 }
 
-- (id)exportObjectForListener:(id)a3 client:(id)a4 error:(id *)a5
+- (id)exportObjectForListener:(id)listener client:(id)client error:(id *)error
 {
-  v7 = a4;
+  clientCopy = client;
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
   if (WeakRetained)
   {
     v9 = objc_loadWeakRetained(&self->_daemon);
-    v10 = [HDHealthStoreEndpoint endpointWithClient:v7 healthDaemon:v9];
+    v10 = [HDHealthStoreEndpoint endpointWithClient:clientCopy healthDaemon:v9];
 
     os_unfair_lock_lock(&self->_lock);
     [(NSMutableSet *)self->_endpoints addObject:v10];
@@ -316,7 +316,7 @@
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 description:@"Daemon became nil"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"Daemon became nil"];
     v10 = 0;
   }
 

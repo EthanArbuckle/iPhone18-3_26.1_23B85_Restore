@@ -1,55 +1,55 @@
 @interface SPBeaconShare
-- (BOOL)isEqual:(id)a3;
-- (SPBeaconShare)initWithCoder:(id)a3;
-- (SPBeaconShare)initWithIdentifier:(id)a3 beaconIdentifier:(id)a4 sharingCircleIdentifier:(id)a5 peerTrustIdentifier:(id)a6 owner:(id)a7 sharee:(id)a8 state:(int64_t)a9 creationDate:(id)a10 expirationDate:(id)a11 visitorCount:(int64_t)a12 delegationStatus:(BOOL)a13;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SPBeaconShare)initWithCoder:(id)coder;
+- (SPBeaconShare)initWithIdentifier:(id)identifier beaconIdentifier:(id)beaconIdentifier sharingCircleIdentifier:(id)circleIdentifier peerTrustIdentifier:(id)trustIdentifier owner:(id)owner sharee:(id)sharee state:(int64_t)state creationDate:(id)self0 expirationDate:(id)self1 visitorCount:(int64_t)self2 delegationStatus:(BOOL)self3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPBeaconShare
 
-- (SPBeaconShare)initWithIdentifier:(id)a3 beaconIdentifier:(id)a4 sharingCircleIdentifier:(id)a5 peerTrustIdentifier:(id)a6 owner:(id)a7 sharee:(id)a8 state:(int64_t)a9 creationDate:(id)a10 expirationDate:(id)a11 visitorCount:(int64_t)a12 delegationStatus:(BOOL)a13
+- (SPBeaconShare)initWithIdentifier:(id)identifier beaconIdentifier:(id)beaconIdentifier sharingCircleIdentifier:(id)circleIdentifier peerTrustIdentifier:(id)trustIdentifier owner:(id)owner sharee:(id)sharee state:(int64_t)state creationDate:(id)self0 expirationDate:(id)self1 visitorCount:(int64_t)self2 delegationStatus:(BOOL)self3
 {
-  v20 = a3;
-  obj = a4;
-  v21 = a4;
-  v30 = a5;
-  v22 = a5;
-  v31 = a6;
-  v34 = a6;
-  v32 = a7;
-  v23 = a7;
-  v24 = a8;
-  v25 = a10;
-  v33 = a11;
+  identifierCopy = identifier;
+  obj = beaconIdentifier;
+  beaconIdentifierCopy = beaconIdentifier;
+  circleIdentifierCopy = circleIdentifier;
+  circleIdentifierCopy2 = circleIdentifier;
+  trustIdentifierCopy = trustIdentifier;
+  trustIdentifierCopy2 = trustIdentifier;
+  ownerCopy = owner;
+  ownerCopy2 = owner;
+  shareeCopy = sharee;
+  dateCopy = date;
+  expirationDateCopy = expirationDate;
   v35.receiver = self;
   v35.super_class = SPBeaconShare;
   v26 = [(SPBeaconShare *)&v35 init];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_identifier, a3);
+    objc_storeStrong(&v26->_identifier, identifier);
     objc_storeStrong(&v27->_beaconIdentifier, obj);
-    objc_storeStrong(&v27->_sharingCircleIdentifier, v30);
-    objc_storeStrong(&v27->_peerTrustIdentifier, v31);
-    objc_storeStrong(&v27->_owner, v32);
-    objc_storeStrong(&v27->_sharee, a8);
-    v27->_state = a9;
-    objc_storeStrong(&v27->_creationDate, a10);
-    objc_storeStrong(&v27->_expirationDate, a11);
-    v27->_visitorCount = a12;
-    v27->_delegationStatus = a13;
+    objc_storeStrong(&v27->_sharingCircleIdentifier, circleIdentifierCopy);
+    objc_storeStrong(&v27->_peerTrustIdentifier, trustIdentifierCopy);
+    objc_storeStrong(&v27->_owner, ownerCopy);
+    objc_storeStrong(&v27->_sharee, sharee);
+    v27->_state = state;
+    objc_storeStrong(&v27->_creationDate, date);
+    objc_storeStrong(&v27->_expirationDate, expirationDate);
+    v27->_visitorCount = count;
+    v27->_delegationStatus = status;
   }
 
   return v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v19 = 1;
   }
@@ -59,47 +59,47 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SPBeaconShare *)self identifier];
-      v7 = [(SPBeaconShare *)v5 identifier];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      identifier = [(SPBeaconShare *)self identifier];
+      identifier2 = [(SPBeaconShare *)v5 identifier];
+      if ([identifier isEqual:identifier2])
       {
-        v8 = [(SPBeaconShare *)self beaconIdentifier];
-        v9 = [(SPBeaconShare *)v5 beaconIdentifier];
-        if ([v8 isEqual:v9])
+        beaconIdentifier = [(SPBeaconShare *)self beaconIdentifier];
+        beaconIdentifier2 = [(SPBeaconShare *)v5 beaconIdentifier];
+        if ([beaconIdentifier isEqual:beaconIdentifier2])
         {
-          v10 = [(SPBeaconShare *)self sharingCircleIdentifier];
-          v11 = [(SPBeaconShare *)v5 sharingCircleIdentifier];
-          if ([v10 isEqual:v11])
+          sharingCircleIdentifier = [(SPBeaconShare *)self sharingCircleIdentifier];
+          sharingCircleIdentifier2 = [(SPBeaconShare *)v5 sharingCircleIdentifier];
+          if ([sharingCircleIdentifier isEqual:sharingCircleIdentifier2])
           {
-            v12 = [(SPBeaconShare *)self peerTrustIdentifier];
-            v31 = [(SPBeaconShare *)v5 peerTrustIdentifier];
-            v32 = v12;
-            if ([v12 isEqual:v31])
+            peerTrustIdentifier = [(SPBeaconShare *)self peerTrustIdentifier];
+            peerTrustIdentifier2 = [(SPBeaconShare *)v5 peerTrustIdentifier];
+            v32 = peerTrustIdentifier;
+            if ([peerTrustIdentifier isEqual:peerTrustIdentifier2])
             {
-              v13 = [(SPBeaconShare *)self owner];
-              v29 = [(SPBeaconShare *)v5 owner];
-              v30 = v13;
-              if ([v13 isEqual:v29])
+              owner = [(SPBeaconShare *)self owner];
+              owner2 = [(SPBeaconShare *)v5 owner];
+              v30 = owner;
+              if ([owner isEqual:owner2])
               {
-                v14 = [(SPBeaconShare *)self sharee];
-                v27 = [(SPBeaconShare *)v5 sharee];
-                v28 = v14;
-                if ([v14 isEqual:v27])
+                sharee = [(SPBeaconShare *)self sharee];
+                sharee2 = [(SPBeaconShare *)v5 sharee];
+                v28 = sharee;
+                if ([sharee isEqual:sharee2])
                 {
-                  v15 = [(SPBeaconShare *)self creationDate];
-                  v16 = [(SPBeaconShare *)v5 creationDate];
-                  v26 = v15;
-                  v17 = v15;
-                  v18 = v16;
-                  if ([v17 isEqual:v16] && (v23 = -[SPBeaconShare visitorCount](self, "visitorCount"), v23 == -[SPBeaconShare visitorCount](v5, "visitorCount")) && (v24 = -[SPBeaconShare delegationStatus](self, "delegationStatus"), v24 == -[SPBeaconShare delegationStatus](v5, "delegationStatus")))
+                  creationDate = [(SPBeaconShare *)self creationDate];
+                  creationDate2 = [(SPBeaconShare *)v5 creationDate];
+                  v26 = creationDate;
+                  v17 = creationDate;
+                  v18 = creationDate2;
+                  if ([v17 isEqual:creationDate2] && (v23 = -[SPBeaconShare visitorCount](self, "visitorCount"), v23 == -[SPBeaconShare visitorCount](v5, "visitorCount")) && (v24 = -[SPBeaconShare delegationStatus](self, "delegationStatus"), v24 == -[SPBeaconShare delegationStatus](v5, "delegationStatus")))
                   {
-                    v25 = [(SPBeaconShare *)self expirationDate];
-                    v22 = [(SPBeaconShare *)v5 expirationDate];
-                    if ([v25 isEqual:?])
+                    expirationDate = [(SPBeaconShare *)self expirationDate];
+                    expirationDate2 = [(SPBeaconShare *)v5 expirationDate];
+                    if ([expirationDate isEqual:?])
                     {
-                      v21 = [(SPBeaconShare *)self state];
-                      v19 = v21 == [(SPBeaconShare *)v5 state];
+                      state = [(SPBeaconShare *)self state];
+                      v19 = state == [(SPBeaconShare *)v5 state];
                     }
 
                     else
@@ -161,103 +161,103 @@
 
 - (unint64_t)hash
 {
-  v22 = [(SPBeaconShare *)self identifier];
-  v3 = [v22 hash];
-  v4 = [(SPBeaconShare *)self beaconIdentifier];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(SPBeaconShare *)self sharingCircleIdentifier];
-  v7 = [v6 hash];
-  v8 = [(SPBeaconShare *)self peerTrustIdentifier];
-  v9 = v5 ^ v7 ^ [v8 hash];
-  v10 = [(SPBeaconShare *)self visitorCount];
-  v11 = v9 ^ v10 ^ [(SPBeaconShare *)self delegationStatus];
-  v12 = [(SPBeaconShare *)self owner];
-  v13 = [v12 hash];
-  v14 = [(SPBeaconShare *)self sharee];
-  v15 = v13 ^ [v14 hash];
-  v16 = [(SPBeaconShare *)self creationDate];
-  v17 = v15 ^ [v16 hash];
-  v18 = [(SPBeaconShare *)self expirationDate];
-  v19 = v11 ^ v17 ^ [v18 hash];
-  v20 = [(SPBeaconShare *)self state];
+  identifier = [(SPBeaconShare *)self identifier];
+  v3 = [identifier hash];
+  beaconIdentifier = [(SPBeaconShare *)self beaconIdentifier];
+  v5 = [beaconIdentifier hash] ^ v3;
+  sharingCircleIdentifier = [(SPBeaconShare *)self sharingCircleIdentifier];
+  v7 = [sharingCircleIdentifier hash];
+  peerTrustIdentifier = [(SPBeaconShare *)self peerTrustIdentifier];
+  v9 = v5 ^ v7 ^ [peerTrustIdentifier hash];
+  visitorCount = [(SPBeaconShare *)self visitorCount];
+  v11 = v9 ^ visitorCount ^ [(SPBeaconShare *)self delegationStatus];
+  owner = [(SPBeaconShare *)self owner];
+  v13 = [owner hash];
+  sharee = [(SPBeaconShare *)self sharee];
+  v15 = v13 ^ [sharee hash];
+  creationDate = [(SPBeaconShare *)self creationDate];
+  v17 = v15 ^ [creationDate hash];
+  expirationDate = [(SPBeaconShare *)self expirationDate];
+  v19 = v11 ^ v17 ^ [expirationDate hash];
+  state = [(SPBeaconShare *)self state];
 
-  return v19 ^ v20;
+  return v19 ^ state;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v17 = [SPBeaconShare alloc];
-  v16 = [(SPBeaconShare *)self identifier];
-  v4 = [(SPBeaconShare *)self beaconIdentifier];
-  v5 = [(SPBeaconShare *)self sharingCircleIdentifier];
-  v6 = [(SPBeaconShare *)self peerTrustIdentifier];
-  v7 = [(SPBeaconShare *)self owner];
-  v8 = [(SPBeaconShare *)self sharee];
-  v9 = [(SPBeaconShare *)self state];
-  v10 = [(SPBeaconShare *)self creationDate];
-  v11 = [(SPBeaconShare *)self expirationDate];
-  v12 = [(SPBeaconShare *)self visitorCount];
+  identifier = [(SPBeaconShare *)self identifier];
+  beaconIdentifier = [(SPBeaconShare *)self beaconIdentifier];
+  sharingCircleIdentifier = [(SPBeaconShare *)self sharingCircleIdentifier];
+  peerTrustIdentifier = [(SPBeaconShare *)self peerTrustIdentifier];
+  owner = [(SPBeaconShare *)self owner];
+  sharee = [(SPBeaconShare *)self sharee];
+  state = [(SPBeaconShare *)self state];
+  creationDate = [(SPBeaconShare *)self creationDate];
+  expirationDate = [(SPBeaconShare *)self expirationDate];
+  visitorCount = [(SPBeaconShare *)self visitorCount];
   LOBYTE(v15) = [(SPBeaconShare *)self delegationStatus];
-  v13 = [(SPBeaconShare *)v17 initWithIdentifier:v16 beaconIdentifier:v4 sharingCircleIdentifier:v5 peerTrustIdentifier:v6 owner:v7 sharee:v8 state:v9 creationDate:v10 expirationDate:v11 visitorCount:v12 delegationStatus:v15];
+  v13 = [(SPBeaconShare *)v17 initWithIdentifier:identifier beaconIdentifier:beaconIdentifier sharingCircleIdentifier:sharingCircleIdentifier peerTrustIdentifier:peerTrustIdentifier owner:owner sharee:sharee state:state creationDate:creationDate expirationDate:expirationDate visitorCount:visitorCount delegationStatus:v15];
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_beaconIdentifier forKey:@"beaconIdentifier"];
-  [v5 encodeObject:self->_sharingCircleIdentifier forKey:@"sharingCircleIdentifier"];
-  [v5 encodeObject:self->_peerTrustIdentifier forKey:@"peerTrustIdentifier"];
-  [v5 encodeObject:self->_owner forKey:@"owner"];
-  [v5 encodeObject:self->_sharee forKey:@"sharee"];
-  [v5 encodeInt64:self->_state forKey:@"state"];
-  [v5 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v5 encodeInteger:self->_visitorCount forKey:@"visitorCount"];
-  [v5 encodeBool:self->_delegationStatus forKey:@"delegationStatus"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_beaconIdentifier forKey:@"beaconIdentifier"];
+  [coderCopy encodeObject:self->_sharingCircleIdentifier forKey:@"sharingCircleIdentifier"];
+  [coderCopy encodeObject:self->_peerTrustIdentifier forKey:@"peerTrustIdentifier"];
+  [coderCopy encodeObject:self->_owner forKey:@"owner"];
+  [coderCopy encodeObject:self->_sharee forKey:@"sharee"];
+  [coderCopy encodeInt64:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeInteger:self->_visitorCount forKey:@"visitorCount"];
+  [coderCopy encodeBool:self->_delegationStatus forKey:@"delegationStatus"];
 }
 
-- (SPBeaconShare)initWithCoder:(id)a3
+- (SPBeaconShare)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   identifier = self->_identifier;
   self->_identifier = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"beaconIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"beaconIdentifier"];
   beaconIdentifier = self->_beaconIdentifier;
   self->_beaconIdentifier = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingCircleIdentifier"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingCircleIdentifier"];
   sharingCircleIdentifier = self->_sharingCircleIdentifier;
   self->_sharingCircleIdentifier = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerTrustIdentifier"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerTrustIdentifier"];
   peerTrustIdentifier = self->_peerTrustIdentifier;
   self->_peerTrustIdentifier = v11;
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"owner"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"owner"];
   owner = self->_owner;
   self->_owner = v13;
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharee"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharee"];
   sharee = self->_sharee;
   self->_sharee = v15;
 
-  self->_state = [v4 decodeIntegerForKey:@"state"];
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+  self->_state = [coderCopy decodeIntegerForKey:@"state"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
   creationDate = self->_creationDate;
   self->_creationDate = v17;
 
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
   expirationDate = self->_expirationDate;
   self->_expirationDate = v19;
 
-  self->_visitorCount = [v4 decodeIntegerForKey:@"visitorCount"];
-  v21 = [v4 decodeBoolForKey:@"delegationStatus"];
+  self->_visitorCount = [coderCopy decodeIntegerForKey:@"visitorCount"];
+  v21 = [coderCopy decodeBoolForKey:@"delegationStatus"];
 
   self->_delegationStatus = v21;
   return self;
@@ -267,9 +267,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SPBeaconShare *)self identifier];
-  v6 = [(SPBeaconShare *)self owner];
-  v7 = [v3 stringWithFormat:@"<%@: %p %@ %@>", v4, self, v5, v6];
+  identifier = [(SPBeaconShare *)self identifier];
+  owner = [(SPBeaconShare *)self owner];
+  v7 = [v3 stringWithFormat:@"<%@: %p %@ %@>", v4, self, identifier, owner];
 
   return v7;
 }

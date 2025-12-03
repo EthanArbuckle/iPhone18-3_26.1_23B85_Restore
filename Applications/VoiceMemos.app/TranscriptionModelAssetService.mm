@@ -1,9 +1,9 @@
 @interface TranscriptionModelAssetService
 + (_TtC10VoiceMemos30TranscriptionModelAssetService)sharedInstance;
 - (_TtC10VoiceMemos30TranscriptionModelAssetService)init;
-- (void)assetIsInstalledForCurrentLanguageWithCompletionHandler:(id)a3;
+- (void)assetIsInstalledForCurrentLanguageWithCompletionHandler:(id)handler;
 - (void)downloadAsset;
-- (void)isAvailableWithCompletionHandler:(id)a3;
+- (void)isAvailableWithCompletionHandler:(id)handler;
 @end
 
 @implementation TranscriptionModelAssetService
@@ -33,12 +33,12 @@
   return v3;
 }
 
-- (void)isAvailableWithCompletionHandler:(id)a3
+- (void)isAvailableWithCompletionHandler:(id)handler
 {
   v5 = sub_1000C773C(&unk_1002D1D90);
   __chkstk_darwin(v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -54,16 +54,16 @@
   v13[3] = 0;
   v13[4] = &unk_100243D40;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1001A8E50(0, 0, v8, &unk_100243540, v13);
 }
 
-- (void)assetIsInstalledForCurrentLanguageWithCompletionHandler:(id)a3
+- (void)assetIsInstalledForCurrentLanguageWithCompletionHandler:(id)handler
 {
   v5 = sub_1000C773C(&unk_1002D1D90);
   __chkstk_darwin(v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -79,7 +79,7 @@
   v13[3] = 0;
   v13[4] = &unk_10024CA00;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1001A8E50(0, 0, v8, &unk_10024CA08, v13);
 }
 
@@ -91,12 +91,12 @@
   v7 = type metadata accessor for TaskPriority();
   (*(*(v7 - 8) + 56))(v6, 1, 1, v7);
   type metadata accessor for MainActor();
-  v8 = self;
+  selfCopy = self;
   v9 = static MainActor.shared.getter();
   v10 = swift_allocObject();
   v10[2] = v9;
   v10[3] = &protocol witness table for MainActor;
-  v10[4] = v8;
+  v10[4] = selfCopy;
   sub_100179578(0, 0, v6, &unk_10024C9A0, v10);
 }
 

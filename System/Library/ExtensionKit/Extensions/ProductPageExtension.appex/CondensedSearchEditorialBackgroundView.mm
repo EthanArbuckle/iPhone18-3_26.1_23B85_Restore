@@ -1,11 +1,11 @@
 @interface CondensedSearchEditorialBackgroundView
-- (_TtC20ProductPageExtension38CondensedSearchEditorialBackgroundView)initWithCoder:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC20ProductPageExtension38CondensedSearchEditorialBackgroundView)initWithCoder:(id)coder;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CondensedSearchEditorialBackgroundView
 
-- (_TtC20ProductPageExtension38CondensedSearchEditorialBackgroundView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension38CondensedSearchEditorialBackgroundView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension38CondensedSearchEditorialBackgroundView_isBorderHidden) = 0;
   result = sub_10077156C();
@@ -13,11 +13,11 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1003EDF20(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1003EDF20(change);
 }
 
 @end

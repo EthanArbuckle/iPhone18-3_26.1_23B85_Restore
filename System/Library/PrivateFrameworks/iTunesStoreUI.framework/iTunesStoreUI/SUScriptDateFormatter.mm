@@ -1,20 +1,20 @@
 @interface SUScriptDateFormatter
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSString)dateFormat;
 - (NSString)localeIdentifier;
 - (SUScriptDateFormatter)init;
-- (double)dateFromString:(id)a3;
+- (double)dateFromString:(id)string;
 - (id)scriptAttributeKeys;
-- (id)stringFromDate:(id)a3;
+- (id)stringFromDate:(id)date;
 - (unint64_t)dateStyle;
 - (unint64_t)timeStyle;
 - (void)dealloc;
-- (void)setDateFormat:(id)a3;
-- (void)setDateStyle:(unint64_t)a3;
-- (void)setLocaleIdentifier:(id)a3;
-- (void)setTimeStyle:(unint64_t)a3;
+- (void)setDateFormat:(id)format;
+- (void)setDateStyle:(unint64_t)style;
+- (void)setLocaleIdentifier:(id)identifier;
+- (void)setTimeStyle:(unint64_t)style;
 @end
 
 @implementation SUScriptDateFormatter
@@ -39,23 +39,23 @@
   [(SUScriptObject *)&v3 dealloc];
 }
 
-- (double)dateFromString:(id)a3
+- (double)dateFromString:(id)string
 {
   [(SUScriptObject *)self lock];
-  [[(NSDateFormatter *)self->_dateFormatter dateFromString:a3] timeIntervalSinceReferenceDate];
+  [[(NSDateFormatter *)self->_dateFormatter dateFromString:string] timeIntervalSinceReferenceDate];
   v6 = v5;
   [(SUScriptObject *)self unlock];
   return v6;
 }
 
-- (id)stringFromDate:(id)a3
+- (id)stringFromDate:(id)date
 {
   if (objc_opt_respondsToSelector())
   {
     [(SUScriptObject *)self lock];
     dateFormatter = self->_dateFormatter;
     v6 = MEMORY[0x1E695DF00];
-    [a3 doubleValue];
+    [date doubleValue];
     v7 = -[NSDateFormatter stringFromDate:](dateFormatter, "stringFromDate:", [v6 dateWithTimeIntervalSinceReferenceDate:?]);
     [(SUScriptObject *)self unlock];
     return v7;
@@ -71,28 +71,28 @@
 - (NSString)dateFormat
 {
   [(SUScriptObject *)self lock];
-  v3 = [(NSDateFormatter *)self->_dateFormatter dateFormat];
+  dateFormat = [(NSDateFormatter *)self->_dateFormatter dateFormat];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return dateFormat;
 }
 
 - (unint64_t)dateStyle
 {
   [(SUScriptObject *)self lock];
-  v3 = [(NSDateFormatter *)self->_dateFormatter dateStyle];
+  dateStyle = [(NSDateFormatter *)self->_dateFormatter dateStyle];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return dateStyle;
 }
 
 - (NSString)localeIdentifier
 {
   [(SUScriptObject *)self lock];
-  v3 = [(NSLocale *)[(NSDateFormatter *)self->_dateFormatter locale] localeIdentifier];
+  localeIdentifier = [(NSLocale *)[(NSDateFormatter *)self->_dateFormatter locale] localeIdentifier];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return localeIdentifier;
 }
 
-- (void)setDateFormat:(id)a3
+- (void)setDateFormat:(id)format
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -104,7 +104,7 @@
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = a3, (objc_opt_isKindOfClass() & 1) != 0))
+  if (!format || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = format, (objc_opt_isKindOfClass() & 1) != 0))
   {
 LABEL_3:
     [(SUScriptObject *)self lock];
@@ -119,18 +119,18 @@ LABEL_3:
   [v7 throwException:@"Invalid argument"];
 }
 
-- (void)setDateStyle:(unint64_t)a3
+- (void)setDateStyle:(unint64_t)style
 {
   [(SUScriptObject *)self lock];
-  [(NSDateFormatter *)self->_dateFormatter setDateStyle:a3];
+  [(NSDateFormatter *)self->_dateFormatter setDateStyle:style];
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setLocaleIdentifier:(id)a3
+- (void)setLocaleIdentifier:(id)identifier
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:a3]) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:identifier]) != 0)
   {
     v7 = v5;
     [(SUScriptObject *)self lock];
@@ -146,10 +146,10 @@ LABEL_3:
   }
 }
 
-- (void)setTimeStyle:(unint64_t)a3
+- (void)setTimeStyle:(unint64_t)style
 {
   [(SUScriptObject *)self lock];
-  [(NSDateFormatter *)self->_dateFormatter setTimeStyle:a3];
+  [(NSDateFormatter *)self->_dateFormatter setTimeStyle:style];
 
   [(SUScriptObject *)self unlock];
 }
@@ -157,32 +157,32 @@ LABEL_3:
 - (unint64_t)timeStyle
 {
   [(SUScriptObject *)self lock];
-  v3 = [(NSDateFormatter *)self->_dateFormatter timeStyle];
+  timeStyle = [(NSDateFormatter *)self->_dateFormatter timeStyle];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return timeStyle;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_58 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptDateFormatter;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_43, 2);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_43, 2);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptDateFormatter;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -192,14 +192,14 @@ LABEL_3:
 {
   v4.receiver = self;
   v4.super_class = SUScriptDateFormatter;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_58 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_58 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_43 = sel_dateFromString_;
     unk_1EBF3B540 = @"dateFromString";

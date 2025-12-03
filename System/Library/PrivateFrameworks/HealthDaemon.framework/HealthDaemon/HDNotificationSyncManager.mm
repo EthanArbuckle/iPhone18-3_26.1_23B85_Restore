@@ -1,41 +1,41 @@
 @interface HDNotificationSyncManager
-- (BOOL)sendNotificationInstructionMessage:(id)a3 error:(id *)a4;
-- (HDNotificationSyncManager)initWithProfile:(id)a3;
-- (void)daemonReady:(id)a3;
-- (void)nanoSyncManagerDidReceiveNotificationInstructionRequest:(id)a3 receivedDate:(id)a4 sendingDeviceName:(id)a5 completion:(id)a6;
-- (void)notificationInstructionSyncService:(id)a3 didReceiveNotificationInstruction:(id)a4;
+- (BOOL)sendNotificationInstructionMessage:(id)message error:(id *)error;
+- (HDNotificationSyncManager)initWithProfile:(id)profile;
+- (void)daemonReady:(id)ready;
+- (void)nanoSyncManagerDidReceiveNotificationInstructionRequest:(id)request receivedDate:(id)date sendingDeviceName:(id)name completion:(id)completion;
+- (void)notificationInstructionSyncService:(id)service didReceiveNotificationInstruction:(id)instruction;
 @end
 
 @implementation HDNotificationSyncManager
 
-- (HDNotificationSyncManager)initWithProfile:(id)a3
+- (HDNotificationSyncManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HDNotificationSyncManager;
   v5 = [(HDNotificationSyncManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
-    v7 = [[HDNotificationInstructionManager alloc] initWithProfile:v4];
+    objc_storeWeak(&v5->_profile, profileCopy);
+    v7 = [[HDNotificationInstructionManager alloc] initWithProfile:profileCopy];
     notificationInstructionManager = v6->_notificationInstructionManager;
     v6->_notificationInstructionManager = v7;
 
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
-    v10 = [WeakRetained daemon];
-    [v10 registerDaemonReadyObserver:v6 queue:0];
+    daemon = [WeakRetained daemon];
+    [daemon registerDaemonReadyObserver:v6 queue:0];
   }
 
   return v6;
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained daemon];
-  v5 = [v4 notificationInstructionSyncService];
-  [v5 registerObserver:self queue:0];
+  daemon = [WeakRetained daemon];
+  notificationInstructionSyncService = [daemon notificationInstructionSyncService];
+  [notificationInstructionSyncService registerObserver:self queue:0];
 }
 
 void __91__HDNotificationSyncManager__sendNanoSyncNotificationInstructionMessage_requestIdentifier___block_invoke(uint64_t a1, int a2, void *a3)
@@ -75,25 +75,25 @@ LABEL_7:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)nanoSyncManagerDidReceiveNotificationInstructionRequest:(id)a3 receivedDate:(id)a4 sendingDeviceName:(id)a5 completion:(id)a6
+- (void)nanoSyncManagerDidReceiveNotificationInstructionRequest:(id)request receivedDate:(id)date sendingDeviceName:(id)name completion:(id)completion
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v34 = a6;
-  v12 = a4;
+  requestCopy = request;
+  nameCopy = name;
+  completionCopy = completion;
+  dateCopy = date;
   v13 = [HDNotificationInstructionMessage alloc];
-  v14 = [v10 notificationInstruction];
-  v15 = self;
+  notificationInstruction = [requestCopy notificationInstruction];
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v17 = [WeakRetained daemon];
-  v18 = [v17 pluginManager];
-  v19 = [v18 notificationInstructionCriteriaClasses];
-  v20 = [(HDNotificationInstructionMessage *)v13 initWithCodableNotificationInstructionMessage:v14 criteriaClasses:v19];
+  daemon = [WeakRetained daemon];
+  pluginManager = [daemon pluginManager];
+  notificationInstructionCriteriaClasses = [pluginManager notificationInstructionCriteriaClasses];
+  v20 = [(HDNotificationInstructionMessage *)v13 initWithCodableNotificationInstructionMessage:notificationInstruction criteriaClasses:notificationInstructionCriteriaClasses];
 
-  v21 = v11;
-  v22 = [v10 requestIdentifier];
-  v23 = [[HDNotificationInstruction alloc] initWithMessageIdentifier:v22 receivedDate:v12 sendingDeviceName:v11 message:v20];
+  v21 = nameCopy;
+  requestIdentifier = [requestCopy requestIdentifier];
+  v23 = [[HDNotificationInstruction alloc] initWithMessageIdentifier:requestIdentifier receivedDate:dateCopy sendingDeviceName:nameCopy message:v20];
 
   _HKInitializeLogging();
   v24 = *MEMORY[0x277CCC300];
@@ -106,20 +106,20 @@ LABEL_7:
       *buf = 138543618;
       v40 = objc_opt_class();
       v41 = 2114;
-      v42 = v22;
+      v42 = requestIdentifier;
       v27 = v40;
       _os_log_impl(&dword_228986000, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] Successfully received NanoSync instruction: %{public}@", buf, 0x16u);
     }
 
-    notificationInstructionManager = v15->_notificationInstructionManager;
+    notificationInstructionManager = selfCopy->_notificationInstructionManager;
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __127__HDNotificationSyncManager_nanoSyncManagerDidReceiveNotificationInstructionRequest_receivedDate_sendingDeviceName_completion___block_invoke;
     v36[3] = &unk_278613150;
-    v36[4] = v15;
-    v37 = v22;
-    v29 = v34;
-    v38 = v34;
+    v36[4] = selfCopy;
+    v37 = requestIdentifier;
+    v29 = completionCopy;
+    v38 = completionCopy;
     [(HDNotificationInstructionManager *)notificationInstructionManager insertNotificationInstruction:v23 completion:v36];
   }
 
@@ -131,16 +131,16 @@ LABEL_7:
       *buf = 138544130;
       v40 = objc_opt_class();
       v41 = 2114;
-      v42 = v10;
+      v42 = requestCopy;
       v43 = 2114;
-      v44 = v22;
+      v44 = requestIdentifier;
       v45 = 2114;
-      v46 = v11;
+      v46 = nameCopy;
       v33 = v40;
       _os_log_error_impl(&dword_228986000, v32, OS_LOG_TYPE_ERROR, "[%{public}@] Unable to instantiate HDNotificationInstructionMessage from NanoSync request: %{public}@ %{public}@, sendingDeviceName: %{public}@", buf, 0x2Au);
     }
 
-    v30 = [MEMORY[0x277CCA9B8] hk_error:129 description:{@"Unable to instantiate HDNotificationInstructionMessage from NanoSync request", v34}];
+    v30 = [MEMORY[0x277CCA9B8] hk_error:129 description:{@"Unable to instantiate HDNotificationInstructionMessage from NanoSync request", completionCopy}];
     v29 = v35;
     v35[2](v35, 0, v30);
   }
@@ -178,10 +178,10 @@ void __127__HDNotificationSyncManager_nanoSyncManagerDidReceiveNotificationInstr
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notificationInstructionSyncService:(id)a3 didReceiveNotificationInstruction:(id)a4
+- (void)notificationInstructionSyncService:(id)service didReceiveNotificationInstruction:(id)instruction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  instructionCopy = instruction;
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC300];
   if (os_log_type_enabled(*MEMORY[0x277CCC300], OS_LOG_TYPE_DEFAULT))
@@ -190,7 +190,7 @@ void __127__HDNotificationSyncManager_nanoSyncManagerDidReceiveNotificationInstr
     *buf = 138543618;
     v13 = objc_opt_class();
     v14 = 2114;
-    v15 = v5;
+    v15 = instructionCopy;
     v8 = v13;
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received new instruction: %{public}@", buf, 0x16u);
   }
@@ -201,7 +201,7 @@ void __127__HDNotificationSyncManager_nanoSyncManagerDidReceiveNotificationInstr
   v11[2] = __98__HDNotificationSyncManager_notificationInstructionSyncService_didReceiveNotificationInstruction___block_invoke;
   v11[3] = &unk_2786130B0;
   v11[4] = self;
-  [(HDNotificationInstructionManager *)notificationInstructionManager insertNotificationInstruction:v5 completion:v11];
+  [(HDNotificationInstructionManager *)notificationInstructionManager insertNotificationInstruction:instructionCopy completion:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -230,21 +230,21 @@ void __98__HDNotificationSyncManager_notificationInstructionSyncService_didRecei
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)sendNotificationInstructionMessage:(id)a3 error:(id *)a4
+- (BOOL)sendNotificationInstructionMessage:(id)message error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  messageCopy = message;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained daemon];
-  v9 = [v8 notificationInstructionSyncService];
+  daemon = [WeakRetained daemon];
+  notificationInstructionSyncService = [daemon notificationInstructionSyncService];
   v28 = 0;
-  v10 = [v9 sendNotificationInstructionMessage:v6 identifier:&v28 error:a4];
+  v10 = [notificationInstructionSyncService sendNotificationInstructionMessage:messageCopy identifier:&v28 error:error];
   v11 = v28;
 
   v12 = v11;
   if (self)
   {
-    v13 = v6;
+    v13 = messageCopy;
     v14 = objc_alloc_init(HDCodableNotificationInstructionRequest);
     v15 = v14;
     if (v12)
@@ -254,14 +254,14 @@ void __98__HDNotificationSyncManager_notificationInstructionSyncService_didRecei
 
     else
     {
-      v16 = [MEMORY[0x277CCAD78] UUID];
-      v17 = [v16 UUIDString];
-      [(HDCodableNotificationInstructionRequest *)v15 setRequestIdentifier:v17];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      [(HDCodableNotificationInstructionRequest *)v15 setRequestIdentifier:uUIDString];
     }
 
-    v18 = [v13 codableMessage];
+    codableMessage = [v13 codableMessage];
 
-    [(HDCodableNotificationInstructionRequest *)v15 setNotificationInstruction:v18];
+    [(HDCodableNotificationInstructionRequest *)v15 setNotificationInstruction:codableMessage];
     _HKInitializeLogging();
     v19 = *MEMORY[0x277CCC300];
     if (os_log_type_enabled(*MEMORY[0x277CCC300], OS_LOG_TYPE_DEFAULT))
@@ -269,22 +269,22 @@ void __98__HDNotificationSyncManager_notificationInstructionSyncService_didRecei
       v20 = v19;
       v21 = objc_opt_class();
       v22 = v21;
-      v23 = [(HDCodableNotificationInstructionRequest *)v15 requestIdentifier];
+      requestIdentifier = [(HDCodableNotificationInstructionRequest *)v15 requestIdentifier];
       *buf = 138543618;
       *&buf[4] = v21;
       *&buf[12] = 2114;
-      *&buf[14] = v23;
+      *&buf[14] = requestIdentifier;
       _os_log_impl(&dword_228986000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] Sending NanoSync message: %{public}@", buf, 0x16u);
     }
 
     v24 = objc_loadWeakRetained(&self->_profile);
-    v25 = [v24 nanoSyncManager];
+    nanoSyncManager = [v24 nanoSyncManager];
     *buf = MEMORY[0x277D85DD0];
     *&buf[8] = 3221225472;
     *&buf[16] = __91__HDNotificationSyncManager__sendNanoSyncNotificationInstructionMessage_requestIdentifier___block_invoke;
     v30 = &unk_2786130B0;
-    v31 = self;
-    [v25 sendNotificationInstructionMessageRequest:v15 completion:buf];
+    selfCopy = self;
+    [nanoSyncManager sendNotificationInstructionMessageRequest:v15 completion:buf];
   }
 
   v26 = *MEMORY[0x277D85DE8];

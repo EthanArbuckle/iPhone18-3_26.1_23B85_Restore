@@ -1,9 +1,9 @@
 @interface IDSCloudTelemetryMetricReporter
 - (IDSCloudTelemetryMetricReporter)init;
-- (void)reportIncomingSendMetricWithDictionary:(id)a3 samplingID:(id)a4;
-- (void)reportOutgoingSendMetric:(id)a3;
-- (void)reportUpToDateMetricWithStorageRequestReceivedTime:(double)a3 storageMessagesProcessedTime:(double)a4;
-- (void)wouldSampleOutgoingMetricWithSamplingID:(NSString *)a3 completionHandler:(id)a4;
+- (void)reportIncomingSendMetricWithDictionary:(id)dictionary samplingID:(id)d;
+- (void)reportOutgoingSendMetric:(id)metric;
+- (void)reportUpToDateMetricWithStorageRequestReceivedTime:(double)time storageMessagesProcessedTime:(double)processedTime;
+- (void)wouldSampleOutgoingMetricWithSamplingID:(NSString *)d completionHandler:(id)handler;
 @end
 
 @implementation IDSCloudTelemetryMetricReporter
@@ -30,14 +30,14 @@
   return v10;
 }
 
-- (void)wouldSampleOutgoingMetricWithSamplingID:(NSString *)a3 completionHandler:(id)a4
+- (void)wouldSampleOutgoingMetricWithSamplingID:(NSString *)d completionHandler:(id)handler
 {
   v7 = sub_100706B30(&qword_100CB3410);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = d;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_100936DB8();
@@ -52,27 +52,27 @@
   v14[3] = 0;
   v14[4] = &unk_1009B35D0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  dCopy = d;
+  selfCopy = self;
   sub_100724A14(0, 0, v9, &unk_1009B35E0, v14);
 }
 
-- (void)reportUpToDateMetricWithStorageRequestReceivedTime:(double)a3 storageMessagesProcessedTime:(double)a4
+- (void)reportUpToDateMetricWithStorageRequestReceivedTime:(double)time storageMessagesProcessedTime:(double)processedTime
 {
-  v6 = self;
-  sub_1007C2BB0(a3, a4);
+  selfCopy = self;
+  sub_1007C2BB0(time, processedTime);
 }
 
-- (void)reportOutgoingSendMetric:(id)a3
+- (void)reportOutgoingSendMetric:(id)metric
 {
-  v4 = a3;
-  v5 = self;
-  sub_1007C3284(v4);
+  metricCopy = metric;
+  selfCopy = self;
+  sub_1007C3284(metricCopy);
 }
 
-- (void)reportIncomingSendMetricWithDictionary:(id)a3 samplingID:(id)a4
+- (void)reportIncomingSendMetricWithDictionary:(id)dictionary samplingID:(id)d
 {
-  if (a4)
+  if (d)
   {
     v6 = sub_100936B38();
     v8 = v7;
@@ -84,9 +84,9 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
-  sub_1007C3AB8(a3, v6, v8);
+  dictionaryCopy = dictionary;
+  selfCopy = self;
+  sub_1007C3AB8(dictionary, v6, v8);
 }
 
 @end

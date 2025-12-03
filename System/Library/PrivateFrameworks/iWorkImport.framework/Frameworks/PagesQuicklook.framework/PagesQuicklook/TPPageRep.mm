@@ -1,15 +1,15 @@
 @interface TPPageRep
-- (BOOL)childRepIsMasterDrawable:(id)a3;
-- (BOOL)childRepIsOnDocSetupCanvas:(id)a3;
+- (BOOL)childRepIsMasterDrawable:(id)drawable;
+- (BOOL)childRepIsOnDocSetupCanvas:(id)canvas;
 - (BOOL)directlyManagesLayerContent;
 - (BOOL)isOpaque;
 - (BOOL)p_pageRequiresHorizontalSeparator;
 - (id)backgroundFill;
 - (id)bodyReps;
-- (id)colorBehindBodyTextLayer:(id)a3;
+- (id)colorBehindBodyTextLayer:(id)layer;
 - (id)parentRepForMagnification;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 - (void)willBeRemoved;
 @end
 
@@ -59,9 +59,9 @@
   return isOpaque;
 }
 
-- (id)colorBehindBodyTextLayer:(id)a3
+- (id)colorBehindBodyTextLayer:(id)layer
 {
-  v7 = objc_msgSend_layout(self, a2, v3, v4, v5, v6, a3);
+  v7 = objc_msgSend_layout(self, a2, v3, v4, v5, v6, layer);
   v13 = objc_msgSend_backgroundFill(v7, v8, v9, v10, v11, v12);
 
   if (v13)
@@ -101,19 +101,19 @@
   self->_verticalSeparatorLayer = 0;
 }
 
-- (BOOL)childRepIsOnDocSetupCanvas:(id)a3
+- (BOOL)childRepIsOnDocSetupCanvas:(id)canvas
 {
-  v7 = objc_msgSend_info(self, a2, v3, v4, v5, v6, a3);
+  v7 = objc_msgSend_info(self, a2, v3, v4, v5, v6, canvas);
   isDocumentSetupPage = objc_msgSend_isDocumentSetupPage(v7, v8, v9, v10, v11, v12);
 
   return isDocumentSetupPage;
 }
 
-- (BOOL)childRepIsMasterDrawable:(id)a3
+- (BOOL)childRepIsMasterDrawable:(id)drawable
 {
-  v4 = a3;
+  drawableCopy = drawable;
   v10 = objc_msgSend_layout(self, v5, v6, v7, v8, v9);
-  v16 = objc_msgSend_info(v4, v11, v12, v13, v14, v15);
+  v16 = objc_msgSend_info(drawableCopy, v11, v12, v13, v14, v15);
 
   objc_opt_class();
   v17 = TSDTopmostInfoFromInfo();
@@ -180,7 +180,7 @@
   return v6;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   v9 = objc_msgSend_backgroundFill(self, a2, v3, v4, v5, v6);
   if (v9)
@@ -189,7 +189,7 @@
     Mutable = CGPathCreateMutable();
     objc_msgSend_naturalBounds(self, v11, v12, v13, v14, v15);
     CGPathAddRectSafe();
-    objc_msgSend_paintPath_inContext_(v21, v16, v17, v18, v19, v20, Mutable, a3);
+    objc_msgSend_paintPath_inContext_(v21, v16, v17, v18, v19, v20, Mutable, context);
     CGPathRelease(Mutable);
     v9 = v21;
   }

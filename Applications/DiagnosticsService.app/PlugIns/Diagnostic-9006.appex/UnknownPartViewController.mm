@@ -1,16 +1,16 @@
 @interface UnknownPartViewController
 - (RepairSummaryNavigationCoordinator)coordinator;
-- (UnknownPartViewController)initWithSPC:(id)a3;
+- (UnknownPartViewController)initWithSPC:(id)c;
 - (void)_continueTapped;
 @end
 
 @implementation UnknownPartViewController
 
-- (UnknownPartViewController)initWithSPC:(id)a3
+- (UnknownPartViewController)initWithSPC:(id)c
 {
-  v4 = [CRLocalization localizedStringWithFormat:@"UNABLE_CONFIGURE_%@" component:[CRDeviceMap getComponentTypeWithSPC:a3]];
-  v5 = [(UnknownPartViewController *)self navigationItem];
-  [v5 setHidesBackButton:1];
+  v4 = [CRLocalization localizedStringWithFormat:@"UNABLE_CONFIGURE_%@" component:[CRDeviceMap getComponentTypeWithSPC:c]];
+  navigationItem = [(UnknownPartViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   [(UnknownPartViewController *)self setScrollingDisabled:0];
   v6 = +[UIColor systemYellowColor];
@@ -33,8 +33,8 @@
     [v13 setTitle:v15 forState:0];
 
     [v13 addTarget:v12 action:"_continueTapped" forControlEvents:64];
-    v16 = [(UnknownPartViewController *)v12 buttonTray];
-    [v16 addButton:v13];
+    buttonTray = [(UnknownPartViewController *)v12 buttonTray];
+    [buttonTray addButton:v13];
   }
 
   return v12;
@@ -49,8 +49,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Continue button tapped", v5, 2u);
   }
 
-  v4 = [(UnknownPartViewController *)self coordinator];
-  [v4 moveToNextViewController];
+  coordinator = [(UnknownPartViewController *)self coordinator];
+  [coordinator moveToNextViewController];
 }
 
 - (RepairSummaryNavigationCoordinator)coordinator

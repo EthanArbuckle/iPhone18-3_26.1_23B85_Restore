@@ -1,15 +1,15 @@
 @interface CRSUIVolumeNotificationService
-- (BOOL)hasConnectionForBundleIdentifier:(id)a3;
-- (BOOL)isNotificationBlockedForBundleIdentifier:(id)a3;
+- (BOOL)hasConnectionForBundleIdentifier:(id)identifier;
+- (BOOL)isNotificationBlockedForBundleIdentifier:(id)identifier;
 - (CRSUIVolumeNotificationService)init;
-- (void)_connectionQueue_addConnection:(id)a3;
-- (void)_connectionQueue_removeConnection:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_connectionQueue_addConnection:(id)connection;
+- (void)_connectionQueue_removeConnection:(id)connection;
+- (void)addObserver:(id)observer;
 - (void)clientCancelSuspension;
 - (void)clientSuspendNotifications;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)removeObserver:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CRSUIVolumeNotificationService
@@ -26,7 +26,7 @@
     observers = v2->_observers;
     v2->_observers = v3;
 
-    v5 = [MEMORY[0x277CF0C18] serial];
+    serial = [MEMORY[0x277CF0C18] serial];
     v6 = BSDispatchQueueCreate();
     connectionQueue = v2->_connectionQueue;
     v2->_connectionQueue = v6;
@@ -77,16 +77,16 @@ void __38__CRSUIVolumeNotificationService_init__block_invoke(uint64_t a1, void *
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (BOOL)isNotificationBlockedForBundleIdentifier:(id)a3
+- (BOOL)isNotificationBlockedForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(CRSUIVolumeNotificationService *)self connections];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  connections = [(CRSUIVolumeNotificationService *)self connections];
+  v6 = [connections objectForKeyedSubscript:identifierCopy];
 
-  v7 = [v6 instance];
-  v8 = v7;
-  if (v6 && v7)
+  instance = [v6 instance];
+  v8 = instance;
+  if (v6 && instance)
   {
     lock_assertions = self->_lock_assertions;
     v14[0] = MEMORY[0x277D85DD0];
@@ -98,13 +98,13 @@ void __38__CRSUIVolumeNotificationService_init__block_invoke(uint64_t a1, void *
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
       os_unfair_lock_unlock(&self->_lock);
-      v11 = 0;
+      blockNotification = 0;
     }
 
     else
     {
       v12 = [(NSMutableArray *)self->_lock_assertions objectAtIndex:v10];
-      v11 = [v12 blockNotification];
+      blockNotification = [v12 blockNotification];
       os_unfair_lock_unlock(&self->_lock);
     }
   }
@@ -112,10 +112,10 @@ void __38__CRSUIVolumeNotificationService_init__block_invoke(uint64_t a1, void *
   else
   {
     os_unfair_lock_unlock(&self->_lock);
-    v11 = 0;
+    blockNotification = 0;
   }
 
-  return v11;
+  return blockNotification;
 }
 
 uint64_t __75__CRSUIVolumeNotificationService_isNotificationBlockedForBundleIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -127,43 +127,43 @@ uint64_t __75__CRSUIVolumeNotificationService_isNotificationBlockedForBundleIden
   return v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRSUIVolumeNotificationService *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(CRSUIVolumeNotificationService *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRSUIVolumeNotificationService *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(CRSUIVolumeNotificationService *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
 - (void)invalidate
 {
-  v3 = [(CRSUIVolumeNotificationService *)self connections];
-  [v3 removeAllObjects];
+  connections = [(CRSUIVolumeNotificationService *)self connections];
+  [connections removeAllObjects];
 
-  v4 = [(CRSUIVolumeNotificationService *)self listener];
-  [v4 invalidate];
+  listener = [(CRSUIVolumeNotificationService *)self listener];
+  [listener invalidate];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = CRSUILogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = connectionCopy;
     _os_log_impl(&dword_243218000, v7, OS_LOG_TYPE_INFO, "Volume notification received connection! %@", buf, 0xCu);
   }
 
-  v8 = [v6 remoteProcess];
-  v9 = [v8 hasEntitlement:@"com.apple.private.CarPlayUIServices.volume-notification"];
+  remoteProcess = [connectionCopy remoteProcess];
+  v9 = [remoteProcess hasEntitlement:@"com.apple.private.CarPlayUIServices.volume-notification"];
 
   if (v9)
   {
@@ -172,24 +172,24 @@ uint64_t __75__CRSUIVolumeNotificationService_isNotificationBlockedForBundleIden
     v17[2] = __76__CRSUIVolumeNotificationService_listener_didReceiveConnection_withContext___block_invoke;
     v17[3] = &unk_278DA10F0;
     v17[4] = self;
-    [v6 configureConnection:v17];
+    [connectionCopy configureConnection:v17];
     v10 = CRSUILogForCategory(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v6;
+      v19 = connectionCopy;
       _os_log_impl(&dword_243218000, v10, OS_LOG_TYPE_DEFAULT, "Activating connection... %@", buf, 0xCu);
     }
 
-    v11 = [(CRSUIVolumeNotificationService *)self connectionQueue];
+    connectionQueue = [(CRSUIVolumeNotificationService *)self connectionQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __76__CRSUIVolumeNotificationService_listener_didReceiveConnection_withContext___block_invoke_99;
     block[3] = &unk_278DA0D18;
     block[4] = self;
-    v12 = v6;
+    v12 = connectionCopy;
     v16 = v12;
-    dispatch_async(v11, block);
+    dispatch_async(connectionQueue, block);
 
     [v12 activate];
   }
@@ -199,10 +199,10 @@ uint64_t __75__CRSUIVolumeNotificationService_isNotificationBlockedForBundleIden
     v13 = CRSUILogForCategory(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [CRSUIStatusBarStyleService listener:v6 didReceiveConnection:v13 withContext:?];
+      [CRSUIStatusBarStyleService listener:connectionCopy didReceiveConnection:v13 withContext:?];
     }
 
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -242,7 +242,7 @@ void __76__CRSUIVolumeNotificationService_listener_didReceiveConnection_withCont
 
 - (void)clientSuspendNotifications
 {
-  v3 = [(CRSUIVolumeNotificationService *)self connectionQueue];
+  connectionQueue = [(CRSUIVolumeNotificationService *)self connectionQueue];
   BSDispatchQueueAssert();
 
   os_unfair_lock_lock(&self->_lock);
@@ -253,17 +253,17 @@ void __76__CRSUIVolumeNotificationService_listener_didReceiveConnection_withCont
     _os_log_impl(&dword_243218000, v4, OS_LOG_TYPE_DEFAULT, "Volume notification received override request!", buf, 2u);
   }
 
-  v5 = [MEMORY[0x277CF3280] currentContext];
-  v6 = [v5 instance];
-  v7 = v6;
-  if (v6)
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  instance = [currentContext instance];
+  v7 = instance;
+  if (instance)
   {
     lock_assertions = self->_lock_assertions;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __60__CRSUIVolumeNotificationService_clientSuspendNotifications__block_invoke;
     v13[3] = &unk_278DA1168;
-    v9 = v6;
+    v9 = instance;
     v14 = v9;
     v10 = [(NSMutableArray *)lock_assertions indexOfObjectPassingTest:v13];
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
@@ -300,11 +300,11 @@ void __60__CRSUIVolumeNotificationService_clientSuspendNotifications__block_invo
   [v2 volumeNotificationServiceUpdated:*(a1 + 32)];
 }
 
-- (BOOL)hasConnectionForBundleIdentifier:(id)a3
+- (BOOL)hasConnectionForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CRSUIVolumeNotificationService *)self connections];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  connections = [(CRSUIVolumeNotificationService *)self connections];
+  v6 = [connections objectForKeyedSubscript:identifierCopy];
 
   return v6 != 0;
 }
@@ -318,21 +318,21 @@ void __60__CRSUIVolumeNotificationService_clientSuspendNotifications__block_invo
     _os_log_impl(&dword_243218000, v3, OS_LOG_TYPE_DEFAULT, "Volume notification client relinquish received", buf, 2u);
   }
 
-  v4 = [(CRSUIVolumeNotificationService *)self connectionQueue];
+  connectionQueue = [(CRSUIVolumeNotificationService *)self connectionQueue];
   BSDispatchQueueAssert();
 
   os_unfair_lock_lock(&self->_lock);
-  v5 = [MEMORY[0x277CF3280] currentContext];
-  v6 = [v5 instance];
-  v7 = v6;
-  if (v6)
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  instance = [currentContext instance];
+  v7 = instance;
+  if (instance)
   {
     lock_assertions = self->_lock_assertions;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __56__CRSUIVolumeNotificationService_clientCancelSuspension__block_invoke;
     v11[3] = &unk_278DA1168;
-    v12 = v6;
+    v12 = instance;
     v9 = [(NSMutableArray *)lock_assertions indexOfObjectPassingTest:v11];
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -363,34 +363,34 @@ void __56__CRSUIVolumeNotificationService_clientCancelSuspension__block_invoke_2
   [v2 volumeNotificationServiceUpdated:*(a1 + 32)];
 }
 
-- (void)_connectionQueue_addConnection:(id)a3
+- (void)_connectionQueue_addConnection:(id)connection
 {
-  v4 = a3;
-  v7 = [(CRSUIVolumeNotificationService *)self connections];
-  v5 = [v4 remoteProcess];
-  v6 = [v5 bundleIdentifier];
-  [v7 setObject:v4 forKeyedSubscript:v6];
+  connectionCopy = connection;
+  connections = [(CRSUIVolumeNotificationService *)self connections];
+  remoteProcess = [connectionCopy remoteProcess];
+  bundleIdentifier = [remoteProcess bundleIdentifier];
+  [connections setObject:connectionCopy forKeyedSubscript:bundleIdentifier];
 }
 
-- (void)_connectionQueue_removeConnection:(id)a3
+- (void)_connectionQueue_removeConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CRSUIVolumeNotificationService *)self connections];
-  v6 = [v4 remoteProcess];
-  v7 = [v6 bundleIdentifier];
-  [v5 removeObjectForKey:v7];
+  connectionCopy = connection;
+  connections = [(CRSUIVolumeNotificationService *)self connections];
+  remoteProcess = [connectionCopy remoteProcess];
+  bundleIdentifier = [remoteProcess bundleIdentifier];
+  [connections removeObjectForKey:bundleIdentifier];
 
   os_unfair_lock_lock(&self->_lock);
-  v8 = [v4 instance];
+  instance = [connectionCopy instance];
 
-  if (v8)
+  if (instance)
   {
     lock_assertions = self->_lock_assertions;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __68__CRSUIVolumeNotificationService__connectionQueue_removeConnection___block_invoke;
     v12[3] = &unk_278DA1168;
-    v13 = v8;
+    v13 = instance;
     v10 = [(NSMutableArray *)lock_assertions indexOfObjectPassingTest:v12];
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {

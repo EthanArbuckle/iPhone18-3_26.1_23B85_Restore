@@ -1,7 +1,7 @@
 @interface _CUIThemeTextureRendition
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
-- (id)_texturedImageWithKey:(id)a3;
-- (id)provideImageInfoAtLevel:(unint64_t)a3 element:(unint64_t)a4 face:(unint64_t)a5 withBufferAllocator:(id)a6;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
+- (id)_texturedImageWithKey:(id)key;
+- (id)provideImageInfoAtLevel:(unint64_t)level element:(unint64_t)element face:(unint64_t)face withBufferAllocator:(id)allocator;
 - (void)dealloc;
 @end
 
@@ -14,19 +14,19 @@
   [(CUIThemeRendition *)&v3 dealloc];
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
   v21.receiver = self;
   v21.super_class = _CUIThemeTextureRendition;
-  v6 = [(CUIThemeRendition *)&v21 _initWithCSIHeader:a3 version:*&a4];
-  var10 = a3->var10;
-  v8 = &a3->var0 + 4 * a3->var11.var0 + var10;
+  v6 = [(CUIThemeRendition *)&v21 _initWithCSIHeader:header version:*&version];
+  var10 = header->var10;
+  v8 = &header->var0 + 4 * header->var11.var0 + var10;
   v10 = *(v8 + 45);
   v9 = v8 + 180;
   if (v10 != 1415074898)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:v6 lineNumber:@"CUIThemeRendition.m" description:2659, @"CoreUI: Expecting a kCSITextureDataSignature but didn't find it"];
-    var10 = a3->var10;
+    var10 = header->var10;
   }
 
   if (var10)
@@ -51,7 +51,7 @@
   v14 = *(v9 + 2);
   v15 = objc_alloc_init(TXRTextureInfo);
   *(v6 + 30) = v15;
-  [v15 setDimensions:*&a3->var3];
+  [v15 setDimensions:*&header->var3];
   [*(v6 + 30) setCubemap:v13 == 5];
   [*(v6 + 30) setPixelFormat:v14];
   [*(v6 + 30) setArrayLength:*(v9 + 4)];
@@ -89,9 +89,9 @@
   return v6;
 }
 
-- (id)_texturedImageWithKey:(id)a3
+- (id)_texturedImageWithKey:(id)key
 {
-  v3 = [objc_loadWeak(&self->_sourceProvider) renditionWithKey:{objc_msgSend(a3, "keyList")}];
+  v3 = [objc_loadWeak(&self->_sourceProvider) renditionWithKey:{objc_msgSend(key, "keyList")}];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -104,13 +104,13 @@
   return v3;
 }
 
-- (id)provideImageInfoAtLevel:(unint64_t)a3 element:(unint64_t)a4 face:(unint64_t)a5 withBufferAllocator:(id)a6
+- (id)provideImageInfoAtLevel:(unint64_t)level element:(unint64_t)element face:(unint64_t)face withBufferAllocator:(id)allocator
 {
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = [(_CUIThemeTextureRendition *)self mipLevels:a3];
+  v10 = [(_CUIThemeTextureRendition *)self mipLevels:level];
   result = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (result)
   {
@@ -127,16 +127,16 @@
         }
 
         v15 = *(*(&v22 + 1) + 8 * v14);
-        if ([v15 themeDimension2] == a3)
+        if ([v15 themeDimension2] == level)
         {
           v16 = [(_CUIThemeTextureRendition *)self _texturedImageWithKey:v15];
           if (v16)
           {
-            v17 = [v16 textureImages];
-            if ([v17 count] >= a5)
+            textureImages = [v16 textureImages];
+            if ([textureImages count] >= face)
             {
-              v18 = [v17 objectAtIndex:a5];
-              v19 = [a6 newBufferWithLength:v18[3] * *(v18 + 9)];
+              v18 = [textureImages objectAtIndex:face];
+              v19 = [allocator newBufferWithLength:v18[3] * *(v18 + 9)];
               if (v19)
               {
                 v20 = v19;

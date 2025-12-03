@@ -1,6 +1,6 @@
 @interface TickerTestSuite
 - (_TtC8StocksUI15TickerTestSuite)init;
-- (void)setupTestWithContext:(id)a3 completion:(id)a4;
+- (void)setupTestWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation TickerTestSuite
@@ -12,14 +12,14 @@
   return [(SNTestSuite *)&v3 init];
 }
 
-- (void)setupTestWithContext:(id)a3 completion:(id)a4
+- (void)setupTestWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_2206FACA8(v8, sub_2204C9E0C, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_2206FACA8(contextCopy, sub_2204C9E0C, v7);
 }
 
 @end

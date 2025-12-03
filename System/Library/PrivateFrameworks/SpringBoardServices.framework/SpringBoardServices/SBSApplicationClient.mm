@@ -1,45 +1,45 @@
 @interface SBSApplicationClient
-- (id)applicationShortcutItemsOfTypes:(unint64_t)a3 forBundleIdentifier:(id)a4;
-- (void)deleteSnapshotsForApplicationIdentifier:(id)a3;
-- (void)fetchApplicationShortcutItemsOfTypes:(unint64_t)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
-- (void)fetchWhitePointAdaptivityStyleForDisplayId:(unsigned int)a3 withCompletionHandler:(id)a4;
-- (void)requestShelfPresentationForSceneWithIdentifier:(id)a3;
-- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)a3;
-- (void)updateDynamicApplicationShortcutItems:(id)a3 bundleIdentifier:(id)a4;
+- (id)applicationShortcutItemsOfTypes:(unint64_t)types forBundleIdentifier:(id)identifier;
+- (void)deleteSnapshotsForApplicationIdentifier:(id)identifier;
+- (void)fetchApplicationShortcutItemsOfTypes:(unint64_t)types forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)fetchWhitePointAdaptivityStyleForDisplayId:(unsigned int)id withCompletionHandler:(id)handler;
+- (void)requestShelfPresentationForSceneWithIdentifier:(id)identifier;
+- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)identifier;
+- (void)updateDynamicApplicationShortcutItems:(id)items bundleIdentifier:(id)identifier;
 @end
 
 @implementation SBSApplicationClient
 
-- (void)deleteSnapshotsForApplicationIdentifier:(id)a3
+- (void)deleteSnapshotsForApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x1E699FCF8];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__SBSApplicationClient_deleteSnapshotsForApplicationIdentifier___block_invoke;
   v8[3] = &unk_1E735FDF8;
-  v9 = v4;
-  v6 = v4;
+  v9 = identifierCopy;
+  v6 = identifierCopy;
   v7 = [v5 messageWithPacker:v8];
   [(FBSServiceFacilityClient *)self sendMessage:v7 withType:3];
 }
 
-- (void)fetchWhitePointAdaptivityStyleForDisplayId:(unsigned int)a3 withCompletionHandler:(id)a4
+- (void)fetchWhitePointAdaptivityStyleForDisplayId:(unsigned int)id withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __89__SBSApplicationClient_fetchWhitePointAdaptivityStyleForDisplayId_withCompletionHandler___block_invoke;
     v10[3] = &__block_descriptor_36_e33_v16__0__NSObject_OS_xpc_object__8l;
-    v11 = a3;
+    idCopy = id;
     v7 = [MEMORY[0x1E699FCF8] messageWithPacker:v10];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __89__SBSApplicationClient_fetchWhitePointAdaptivityStyleForDisplayId_withCompletionHandler___block_invoke_2;
     v8[3] = &unk_1E735FD90;
-    v9 = v6;
+    v9 = handlerCopy;
     [(FBSServiceFacilityClient *)self sendMessage:v7 withType:0 replyHandler:v8 waitForReply:0 timeout:0.0];
   }
 }
@@ -55,25 +55,25 @@ void __89__SBSApplicationClient_fetchWhitePointAdaptivityStyleForDisplayId_withC
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchApplicationShortcutItemsOfTypes:(unint64_t)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)fetchApplicationShortcutItemsOfTypes:(unint64_t)types forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v10 = MEMORY[0x1E699FCF8];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __103__SBSApplicationClient_fetchApplicationShortcutItemsOfTypes_forBundleIdentifier_withCompletionHandler___block_invoke;
     v14[3] = &unk_1E735FE20;
-    v15 = v8;
-    v16 = a3;
+    v15 = identifierCopy;
+    typesCopy = types;
     v11 = [v10 messageWithPacker:v14];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __103__SBSApplicationClient_fetchApplicationShortcutItemsOfTypes_forBundleIdentifier_withCompletionHandler___block_invoke_2;
     v12[3] = &unk_1E735FD90;
-    v13 = v9;
+    v13 = handlerCopy;
     [(FBSServiceFacilityClient *)self sendMessage:v11 withType:1 replyHandler:v12 waitForReply:0 timeout:0.0];
   }
 }
@@ -109,9 +109,9 @@ void __103__SBSApplicationClient_fetchApplicationShortcutItemsOfTypes_forBundleI
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)applicationShortcutItemsOfTypes:(unint64_t)a3 forBundleIdentifier:(id)a4
+- (id)applicationShortcutItemsOfTypes:(unint64_t)types forBundleIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -123,9 +123,9 @@ void __103__SBSApplicationClient_fetchApplicationShortcutItemsOfTypes_forBundleI
   v13[1] = 3221225472;
   v13[2] = __76__SBSApplicationClient_applicationShortcutItemsOfTypes_forBundleIdentifier___block_invoke;
   v13[3] = &unk_1E735FE20;
-  v8 = v6;
+  v8 = identifierCopy;
   v14 = v8;
-  v15 = a3;
+  typesCopy = types;
   v9 = [v7 messageWithPacker:v13];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -173,19 +173,19 @@ void __76__SBSApplicationClient_applicationShortcutItemsOfTypes_forBundleIdentif
   }
 }
 
-- (void)updateDynamicApplicationShortcutItems:(id)a3 bundleIdentifier:(id)a4
+- (void)updateDynamicApplicationShortcutItems:(id)items bundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  identifierCopy = identifier;
   v8 = MEMORY[0x1E699FCF8];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __79__SBSApplicationClient_updateDynamicApplicationShortcutItems_bundleIdentifier___block_invoke;
   v15 = &unk_1E7360440;
-  v16 = v7;
-  v17 = v6;
-  v9 = v6;
-  v10 = v7;
+  v16 = identifierCopy;
+  v17 = itemsCopy;
+  v9 = itemsCopy;
+  v10 = identifierCopy;
   v11 = [v8 messageWithPacker:&v12];
   [(FBSServiceFacilityClient *)self sendMessage:v11 withType:2, v12, v13, v14, v15];
 }
@@ -201,16 +201,16 @@ void __79__SBSApplicationClient_updateDynamicApplicationShortcutItems_bundleIden
   BSSerializeArrayOfBSXPCEncodableObjectsToXPCDictionaryWithKey();
 }
 
-- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)a3
+- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x1E699FCF8];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __76__SBSApplicationClient_triggerShowAllWindowsForApplicationBundleIdentifier___block_invoke;
   v8[3] = &unk_1E735FDF8;
-  v9 = v4;
-  v6 = v4;
+  v9 = identifierCopy;
+  v6 = identifierCopy;
   v7 = [v5 messageWithPacker:v8];
   [(FBSServiceFacilityClient *)self sendMessage:v7 withType:4];
 }
@@ -226,16 +226,16 @@ uint64_t __76__SBSApplicationClient_triggerShowAllWindowsForApplicationBundleIde
   return result;
 }
 
-- (void)requestShelfPresentationForSceneWithIdentifier:(id)a3
+- (void)requestShelfPresentationForSceneWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x1E699FCF8];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__SBSApplicationClient_requestShelfPresentationForSceneWithIdentifier___block_invoke;
   v8[3] = &unk_1E735FDF8;
-  v9 = v4;
-  v6 = v4;
+  v9 = identifierCopy;
+  v6 = identifierCopy;
   v7 = [v5 messageWithPacker:v8];
   [(FBSServiceFacilityClient *)self sendMessage:v7 withType:5];
 }

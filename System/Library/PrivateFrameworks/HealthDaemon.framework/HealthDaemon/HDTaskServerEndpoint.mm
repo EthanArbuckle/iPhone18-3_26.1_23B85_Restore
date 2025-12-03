@@ -2,73 +2,73 @@
 - (HDProfile)profile;
 - (HDTaskServer)taskServer;
 - (HDTaskServerDelegate)taskServerDelegate;
-- (HDTaskServerEndpoint)initWithTaskServerClass:(Class)a3 taskConfiguration:(id)a4 healthStoreConfiguration:(id)a5 taskUUID:(id)a6 instanceUUID:(id)a7 profile:(id)a8 databaseAccessibilityAssertions:(id)a9 connectionQueue:(id)a10;
+- (HDTaskServerEndpoint)initWithTaskServerClass:(Class)class taskConfiguration:(id)configuration healthStoreConfiguration:(id)storeConfiguration taskUUID:(id)d instanceUUID:(id)iD profile:(id)profile databaseAccessibilityAssertions:(id)assertions connectionQueue:(id)self0;
 - (HDTaskServerEndpointDelegate)delegate;
 - (_TtC12HealthDaemon29HDHealthStoreClientAssertions)databaseAccessibilityAssertions;
-- (id)exportObjectForListener:(id)a3 client:(id)a4 error:(id *)a5;
-- (void)connectionConfiguredForListener:(id)a3 client:(id)a4 exportedObject:(id)a5;
-- (void)connectionInvalidatedForListener:(id)a3 client:(id)a4 exportedObject:(id)a5;
+- (id)exportObjectForListener:(id)listener client:(id)client error:(id *)error;
+- (void)connectionConfiguredForListener:(id)listener client:(id)client exportedObject:(id)object;
+- (void)connectionInvalidatedForListener:(id)listener client:(id)client exportedObject:(id)object;
 - (void)dealloc;
 @end
 
 @implementation HDTaskServerEndpoint
 
-- (HDTaskServerEndpoint)initWithTaskServerClass:(Class)a3 taskConfiguration:(id)a4 healthStoreConfiguration:(id)a5 taskUUID:(id)a6 instanceUUID:(id)a7 profile:(id)a8 databaseAccessibilityAssertions:(id)a9 connectionQueue:(id)a10
+- (HDTaskServerEndpoint)initWithTaskServerClass:(Class)class taskConfiguration:(id)configuration healthStoreConfiguration:(id)storeConfiguration taskUUID:(id)d instanceUUID:(id)iD profile:(id)profile databaseAccessibilityAssertions:(id)assertions connectionQueue:(id)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  configurationCopy = configuration;
+  storeConfigurationCopy = storeConfiguration;
+  dCopy = d;
+  iDCopy = iD;
+  profileCopy = profile;
+  assertionsCopy = assertions;
+  queueCopy = queue;
   v46.receiver = self;
   v46.super_class = HDTaskServerEndpoint;
   v23 = [(HDTaskServerEndpoint *)&v46 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_taskServerClass, a3);
-    v25 = [v18 copy];
+    objc_storeStrong(&v23->_taskServerClass, class);
+    v25 = [dCopy copy];
     taskUUID = v24->_taskUUID;
     v24->_taskUUID = v25;
 
-    v27 = [v19 copy];
+    v27 = [iDCopy copy];
     instanceUUID = v24->_instanceUUID;
     v24->_instanceUUID = v27;
 
-    v29 = [v16 copy];
+    v29 = [configurationCopy copy];
     taskConfiguration = v24->_taskConfiguration;
     v24->_taskConfiguration = v29;
 
-    v31 = [v17 copy];
+    v31 = [storeConfigurationCopy copy];
     healthStoreConfiguration = v24->_healthStoreConfiguration;
     v24->_healthStoreConfiguration = v31;
 
-    objc_storeWeak(&v24->_profile, v20);
-    objc_storeWeak(&v24->_databaseAccessibilityAssertions, v21);
-    v44 = v18;
-    v45 = v20;
-    v33 = v16;
+    objc_storeWeak(&v24->_profile, profileCopy);
+    objc_storeWeak(&v24->_databaseAccessibilityAssertions, assertionsCopy);
+    v44 = dCopy;
+    v45 = profileCopy;
+    v33 = configurationCopy;
     WeakRetained = objc_loadWeakRetained(&v24->_profile);
     [WeakRetained daemon];
-    v36 = v35 = v22;
+    v36 = v35 = queueCopy;
     [v36 connectionManager];
-    v37 = v19;
-    v39 = v38 = v17;
-    v40 = NSStringFromClass(a3);
+    v37 = iDCopy;
+    v39 = v38 = storeConfigurationCopy;
+    v40 = NSStringFromClass(class);
     v41 = [v39 createAnonymousListenerWithLabel:v40];
     listener = v24->_listener;
     v24->_listener = v41;
 
-    v17 = v38;
-    v19 = v37;
+    storeConfigurationCopy = v38;
+    iDCopy = v37;
 
-    v22 = v35;
-    v16 = v33;
-    v18 = v44;
-    v20 = v45;
-    [(HDXPCListener *)v24->_listener setConnectionQueue:v22];
+    queueCopy = v35;
+    configurationCopy = v33;
+    dCopy = v44;
+    profileCopy = v45;
+    [(HDXPCListener *)v24->_listener setConnectionQueue:queueCopy];
     [(HDXPCListener *)v24->_listener setDelegate:v24];
   }
 
@@ -83,16 +83,16 @@
   [(HDTaskServerEndpoint *)&v3 dealloc];
 }
 
-- (id)exportObjectForListener:(id)a3 client:(id)a4 error:(id *)a5
+- (id)exportObjectForListener:(id)listener client:(id)client error:(id *)error
 {
-  v7 = a4;
-  v8 = [(HDTaskServerEndpoint *)self delegate];
-  v9 = [(HDTaskServerEndpoint *)self taskServerDelegate];
+  clientCopy = client;
+  delegate = [(HDTaskServerEndpoint *)self delegate];
+  taskServerDelegate = [(HDTaskServerEndpoint *)self taskServerDelegate];
   v10 = [HDHealthStoreClient alloc];
   healthStoreConfiguration = self->_healthStoreConfiguration;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v13 = objc_loadWeakRetained(&self->_databaseAccessibilityAssertions);
-  v14 = [(HDHealthStoreClient *)v10 initWithXPCClient:v7 configuration:healthStoreConfiguration profile:WeakRetained databaseAccessibilityAssertions:v13];
+  v14 = [(HDHealthStoreClient *)v10 initWithXPCClient:clientCopy configuration:healthStoreConfiguration profile:WeakRetained databaseAccessibilityAssertions:v13];
 
   taskServerClass = self->_taskServerClass;
   v16 = objc_opt_respondsToSelector();
@@ -104,7 +104,7 @@
       goto LABEL_10;
     }
 
-    v24 = [objc_alloc(self->_taskServerClass) initWithUUID:self->_taskUUID configuration:self->_taskConfiguration client:v14 delegate:v9];
+    v24 = [objc_alloc(self->_taskServerClass) initWithUUID:self->_taskUUID configuration:self->_taskConfiguration client:v14 delegate:taskServerDelegate];
     if (!v24)
     {
       goto LABEL_10;
@@ -120,7 +120,7 @@ LABEL_9:
   taskUUID = self->_taskUUID;
   taskConfiguration = self->_taskConfiguration;
   v32 = 0;
-  v20 = [(objc_class *)v17 createTaskServerWithUUID:taskUUID configuration:taskConfiguration client:v14 delegate:v9 error:&v32];
+  v20 = [(objc_class *)v17 createTaskServerWithUUID:taskUUID configuration:taskConfiguration client:v14 delegate:taskServerDelegate error:&v32];
   v21 = v32;
   v22 = v21;
   if (v20)
@@ -133,15 +133,15 @@ LABEL_9:
 LABEL_10:
     v25 = MEMORY[0x277CCA9B8];
     v26 = self->_taskServerClass;
-    v27 = [(NSUUID *)self->_taskUUID UUIDString];
-    v28 = [v25 hk_error:124 format:{@"Failed to create %@ task server (%@)", v26, v27}];
+    uUIDString = [(NSUUID *)self->_taskUUID UUIDString];
+    v28 = [v25 hk_error:124 format:{@"Failed to create %@ task server (%@)", v26, uUIDString}];
     if (v28)
     {
       v29 = v28;
-      if (a5)
+      if (error)
       {
         v30 = v28;
-        *a5 = v29;
+        *error = v29;
       }
 
       else
@@ -154,10 +154,10 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  if (a5)
+  if (error)
   {
     v23 = v21;
-    *a5 = v22;
+    *error = v22;
   }
 
   else
@@ -166,46 +166,46 @@ LABEL_10:
   }
 
 LABEL_16:
-  [v8 taskServerDidFailToInitializeForUUID:self->_taskUUID];
+  [delegate taskServerDidFailToInitializeForUUID:self->_taskUUID];
   v20 = 0;
 LABEL_17:
 
   return v20;
 }
 
-- (void)connectionConfiguredForListener:(id)a3 client:(id)a4 exportedObject:(id)a5
+- (void)connectionConfiguredForListener:(id)listener client:(id)client exportedObject:(id)object
 {
-  v6 = a5;
-  v7 = [(HDTaskServerEndpoint *)self profile];
-  v8 = [(HDTaskServerEndpoint *)self delegate];
-  v12 = v6;
-  v9 = [v7 daemon];
-  v10 = [v9 taskServerRegistry];
-  [v10 didCreateTaskServer:v12];
+  objectCopy = object;
+  profile = [(HDTaskServerEndpoint *)self profile];
+  delegate = [(HDTaskServerEndpoint *)self delegate];
+  v12 = objectCopy;
+  daemon = [profile daemon];
+  taskServerRegistry = [daemon taskServerRegistry];
+  [taskServerRegistry didCreateTaskServer:v12];
 
-  [v8 taskServerDidFinishInitialization:v12];
-  v11 = [v7 daemon];
-  [v11 unitTest_taskServerDidInit:v12];
+  [delegate taskServerDidFinishInitialization:v12];
+  daemon2 = [profile daemon];
+  [daemon2 unitTest_taskServerDidInit:v12];
 }
 
-- (void)connectionInvalidatedForListener:(id)a3 client:(id)a4 exportedObject:(id)a5
+- (void)connectionInvalidatedForListener:(id)listener client:(id)client exportedObject:(id)object
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  v7 = [(HDTaskServerEndpoint *)self profile];
-  v8 = [(HDTaskServerEndpoint *)self delegate];
-  v9 = v6;
-  [v8 taskServerDidInvalidate:v9];
-  v10 = [v7 daemon];
-  v11 = [v10 taskServerRegistry];
-  [v11 taskServerDidInvalidate:v9];
+  objectCopy = object;
+  profile = [(HDTaskServerEndpoint *)self profile];
+  delegate = [(HDTaskServerEndpoint *)self delegate];
+  v9 = objectCopy;
+  [delegate taskServerDidInvalidate:v9];
+  daemon = [profile daemon];
+  taskServerRegistry = [daemon taskServerRegistry];
+  [taskServerRegistry taskServerDidInvalidate:v9];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   taskUUID = self->_taskUUID;
   v16 = @"HDTaskServerUUIDKey";
   v17[0] = taskUUID;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  [v12 postNotificationName:@"HDTaskServerDidInvalidateNotification" object:0 userInfo:v14];
+  [defaultCenter postNotificationName:@"HDTaskServerDidInvalidateNotification" object:0 userInfo:v14];
 
   v15 = *MEMORY[0x277D85DE8];
 }

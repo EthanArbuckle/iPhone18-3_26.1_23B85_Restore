@@ -1,20 +1,20 @@
 @interface MFUserInteractionAssertion
 + (OS_os_log)signpostLog;
-+ (id)interactionAssertionWithReason:(id)a3;
-+ (id)interactionAssertionWithReason:(id)a3 timeout:(double)a4;
-- (MFUserInteractionAssertion)initWithReason:(id)a3 timeout:(double)a4;
-- (MFUserInteractionAssertion)initWithReason:(id)a3 timeout:(double)a4 application:(id)a5;
++ (id)interactionAssertionWithReason:(id)reason;
++ (id)interactionAssertionWithReason:(id)reason timeout:(double)timeout;
+- (MFUserInteractionAssertion)initWithReason:(id)reason timeout:(double)timeout;
+- (MFUserInteractionAssertion)initWithReason:(id)reason timeout:(double)timeout application:(id)application;
 - (NSString)description;
 - (unint64_t)signpostID;
-- (void)_invalidateWithState:(int64_t)a3;
+- (void)_invalidateWithState:(int64_t)state;
 @end
 
 @implementation MFUserInteractionAssertion
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = sub_10001E86C;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD778 != -1)
   {
     dispatch_once(&qword_1006DD778, block);
@@ -36,60 +36,60 @@
   return v2;
 }
 
-+ (id)interactionAssertionWithReason:(id)a3
++ (id)interactionAssertionWithReason:(id)reason
 {
-  v3 = [MFUserInteractionAssertion interactionAssertionWithReason:a3 timeout:-978307200.0];
+  v3 = [MFUserInteractionAssertion interactionAssertionWithReason:reason timeout:-978307200.0];
 
   return v3;
 }
 
-+ (id)interactionAssertionWithReason:(id)a3 timeout:(double)a4
++ (id)interactionAssertionWithReason:(id)reason timeout:(double)timeout
 {
-  v5 = a3;
-  v6 = [[MFUserInteractionAssertion alloc] initWithReason:v5 timeout:a4];
+  reasonCopy = reason;
+  v6 = [[MFUserInteractionAssertion alloc] initWithReason:reasonCopy timeout:timeout];
 
   return v6;
 }
 
-- (MFUserInteractionAssertion)initWithReason:(id)a3 timeout:(double)a4
+- (MFUserInteractionAssertion)initWithReason:(id)reason timeout:(double)timeout
 {
-  v6 = a3;
+  reasonCopy = reason;
   v7 = +[UIApplication sharedApplication];
-  v8 = [(MFUserInteractionAssertion *)self initWithReason:v6 timeout:v7 application:a4];
+  v8 = [(MFUserInteractionAssertion *)self initWithReason:reasonCopy timeout:v7 application:timeout];
 
   return v8;
 }
 
-- (MFUserInteractionAssertion)initWithReason:(id)a3 timeout:(double)a4 application:(id)a5
+- (MFUserInteractionAssertion)initWithReason:(id)reason timeout:(double)timeout application:(id)application
 {
-  v8 = a3;
-  v9 = a5;
+  reasonCopy = reason;
+  applicationCopy = application;
   v31.receiver = self;
   v31.super_class = MFUserInteractionAssertion;
   v10 = [(MFUserInteractionAssertion *)&v31 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [reasonCopy copy];
     reason = v10->_reason;
     v10->_reason = v11;
 
-    v10->_timeout = a4;
+    v10->_timeout = timeout;
     v13 = MFLogGeneral();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v33 = v8;
+      v33 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "MFUserInteractionAssertion beginIgnoringInteractionEvents with reason:%{public}@", buf, 0xCu);
     }
 
-    v14 = [(MFUserInteractionAssertion *)v10 signpostID];
+    signpostID = [(MFUserInteractionAssertion *)v10 signpostID];
     v15 = +[MFUserInteractionAssertion signpostLog];
     v16 = v15;
-    if ((v14 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
+    if ((signpostID - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
     {
       *buf = 138412290;
-      v33 = v8;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "MFUserInteractionAssertion", "Reason=%@", buf, 0xCu);
+      v33 = reasonCopy;
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "MFUserInteractionAssertion", "Reason=%@", buf, 0xCu);
     }
 
     v17 = [[EFDeallocInvocationToken alloc] initWithLabel:@"MFUserInteractionAssertion Invalidation Token"];
@@ -98,10 +98,10 @@
     v27[1] = 3221225472;
     v27[2] = sub_1002365C0;
     v27[3] = &unk_100656330;
-    v28 = v9;
+    v28 = applicationCopy;
     v19 = v17;
     v29 = v19;
-    v30 = v14;
+    v30 = signpostID;
     v20 = [v18 performCancelableBlock:v27];
 
     if (v20)
@@ -132,15 +132,15 @@
 
 - (NSString)description
 {
-  v3 = [(MFUserInteractionAssertion *)self state];
-  if (v3 > 2)
+  state = [(MFUserInteractionAssertion *)self state];
+  if (state > 2)
   {
     v4 = @"unknown";
   }
 
   else
   {
-    v4 = off_100656350[v3];
+    v4 = off_100656350[state];
   }
 
   [(MFUserInteractionAssertion *)self timeout];
@@ -156,21 +156,21 @@
   }
 
   v8 = objc_opt_class();
-  v9 = [(MFUserInteractionAssertion *)self reason];
-  v10 = [NSString stringWithFormat:@"<%@: %p> reason='%@' state=%@ timeout=%@", v8, self, v9, v4, v7];
+  reason = [(MFUserInteractionAssertion *)self reason];
+  v10 = [NSString stringWithFormat:@"<%@: %p> reason='%@' state=%@ timeout=%@", v8, self, reason, v4, v7];
 
   return v10;
 }
 
-- (void)_invalidateWithState:(int64_t)a3
+- (void)_invalidateWithState:(int64_t)state
 {
-  v5 = [(MFUserInteractionAssertion *)self invalidationToken];
-  if (([v5 isInvoked] & 1) == 0)
+  invalidationToken = [(MFUserInteractionAssertion *)self invalidationToken];
+  if (([invalidationToken isInvoked] & 1) == 0)
   {
     objc_initWeak(&location, self);
     objc_copyWeak(v9, &location);
-    v8 = v5;
-    v9[1] = a3;
+    v8 = invalidationToken;
+    v9[1] = state;
     v6 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
     [v6 performBlock:&v7];
 

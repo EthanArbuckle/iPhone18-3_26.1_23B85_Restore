@@ -6,17 +6,17 @@
 - (void)_updateTransitionContext;
 - (void)animate;
 - (void)animateInteractively;
-- (void)animateTransition:(id)a3;
-- (void)animationEnded:(BOOL)a3;
+- (void)animateTransition:(id)transition;
+- (void)animationEnded:(BOOL)ended;
 - (void)cancelInteractiveAnimation;
 - (void)dealloc;
 - (void)finishInteractiveAnimation;
-- (void)setContainerView:(id)a3;
-- (void)setDuration:(double)a3;
-- (void)setEndFrame:(CGRect)a3;
-- (void)setStartFrame:(CGRect)a3;
-- (void)setViewController:(id)a3;
-- (void)updateInteractiveProgress:(double)a3;
+- (void)setContainerView:(id)view;
+- (void)setDuration:(double)duration;
+- (void)setEndFrame:(CGRect)frame;
+- (void)setStartFrame:(CGRect)frame;
+- (void)setViewController:(id)controller;
+- (void)updateInteractiveProgress:(double)progress;
 @end
 
 @implementation _UIAnimationCoordinator
@@ -52,11 +52,11 @@
   [(_UIAnimationCoordinator *)&v5 dealloc];
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  if (self->_duration != a3)
+  if (self->_duration != duration)
   {
-    self->_duration = a3;
+    self->_duration = duration;
     [(_UIViewControllerTransitionContext *)self->_transitionContext _setDuration:?];
   }
 }
@@ -76,37 +76,37 @@
   return stash;
 }
 
-- (void)setContainerView:(id)a3
+- (void)setContainerView:(id)view
 {
-  v5 = a3;
-  if (self->_containerView != v5)
+  viewCopy = view;
+  if (self->_containerView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_containerView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_containerView, view);
     [(_UIViewControllerTransitionContext *)self->_transitionContext _setContainerView:self->_containerView];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_viewController != v5)
+  controllerCopy = controller;
+  if (self->_viewController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_viewController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_viewController, controller);
     [(_UIViewControllerOneToOneTransitionContext *)self->_transitionContext _setFromViewController:self->_viewController];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
-- (void)setStartFrame:(CGRect)a3
+- (void)setStartFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->_startFrame))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (!CGRectEqualToRect(frame, self->_startFrame))
   {
     self->_startFrame.origin.x = x;
     self->_startFrame.origin.y = y;
@@ -123,13 +123,13 @@
   }
 }
 
-- (void)setEndFrame:(CGRect)a3
+- (void)setEndFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->_endFrame))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (!CGRectEqualToRect(frame, self->_endFrame))
   {
     self->_endFrame.origin.x = x;
     self->_endFrame.origin.y = y;
@@ -148,10 +148,10 @@
 
 - (void)_updateTransitionContext
 {
-  v3 = [(_UIAnimationCoordinator *)self transitionContext];
+  transitionContext = [(_UIAnimationCoordinator *)self transitionContext];
   v4 = self->_duration > 0.0 && self->_animator != 0;
-  v5 = v3;
-  [v3 _setIsAnimated:v4];
+  v5 = transitionContext;
+  [transitionContext _setIsAnimated:v4];
   [v5 _setFromViewController:self->_viewController];
   [v5 _setToViewController:0];
   [v5 _setContainerView:self->_containerView];
@@ -200,28 +200,28 @@
   }
 }
 
-- (void)updateInteractiveProgress:(double)a3
+- (void)updateInteractiveProgress:(double)progress
 {
   interactiveTransition = self->_interactiveTransition;
   if (!interactiveTransition)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UIAnimationCoordinator.m" lineNumber:151 description:@"Trying to update an interactive transition that was not started interactively"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIAnimationCoordinator.m" lineNumber:151 description:@"Trying to update an interactive transition that was not started interactively"];
 
     interactiveTransition = self->_interactiveTransition;
   }
 
-  v5 = 0.0;
-  if (a3 >= 0.0)
+  progressCopy = 0.0;
+  if (progress >= 0.0)
   {
-    v5 = a3;
-    if (a3 >= 1.0)
+    progressCopy = progress;
+    if (progress >= 1.0)
     {
-      v5 = nextafter(1.0, -1.0);
+      progressCopy = nextafter(1.0, -1.0);
     }
   }
 
-  [(UIPercentDrivenInteractiveTransition *)interactiveTransition updateInteractiveTransition:v5];
+  [(UIPercentDrivenInteractiveTransition *)interactiveTransition updateInteractiveTransition:progressCopy];
 }
 
 - (void)cancelInteractiveAnimation
@@ -229,8 +229,8 @@
   interactiveTransition = self->_interactiveTransition;
   if (!interactiveTransition)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"_UIAnimationCoordinator.m" lineNumber:157 description:@"Trying to cancel an interactive transition that was not started interactively"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIAnimationCoordinator.m" lineNumber:157 description:@"Trying to cancel an interactive transition that was not started interactively"];
 
     interactiveTransition = self->_interactiveTransition;
   }
@@ -243,8 +243,8 @@
   interactiveTransition = self->_interactiveTransition;
   if (!interactiveTransition)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"_UIAnimationCoordinator.m" lineNumber:163 description:@"Trying to finish an interactive transition that was not started interactively"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIAnimationCoordinator.m" lineNumber:163 description:@"Trying to finish an interactive transition that was not started interactively"];
 
     interactiveTransition = self->_interactiveTransition;
   }
@@ -252,7 +252,7 @@
   [(UIPercentDrivenInteractiveTransition *)interactiveTransition finishInteractiveTransition];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -264,15 +264,15 @@
   {
     if (self->_interactiveTransition)
     {
-      v5 = [(UIView *)self->_containerView window];
+      window = [(UIView *)self->_containerView window];
     }
 
     else
     {
-      v5 = 0;
+      window = 0;
     }
 
-    [v5 beginDisablingInterfaceAutorotation];
+    [window beginDisablingInterfaceAutorotation];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __45___UIAnimationCoordinator_animateTransition___block_invoke_2;
@@ -283,7 +283,7 @@
     v12 = 3221225472;
     v13 = __45___UIAnimationCoordinator_animateTransition___block_invoke_3;
     v14 = &unk_1E70FE248;
-    v8 = v5;
+    v8 = window;
     v15 = v8;
     v16 = v4;
     v9 = _Block_copy(&v11);
@@ -312,7 +312,7 @@
   }
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
   completion = self->_completion;
   if (completion)

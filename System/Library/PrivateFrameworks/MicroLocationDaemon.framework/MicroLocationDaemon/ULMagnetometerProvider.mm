@@ -1,6 +1,6 @@
 @interface ULMagnetometerProvider
 + (id)sharedInstance;
-- ($1AB5FA073B851C12C2339EC22442E995)rotateMagField:(id *)a3 withMatrix:(id *)a4;
+- ($1AB5FA073B851C12C2339EC22442E995)rotateMagField:(id *)field withMatrix:(id *)matrix;
 - (optional<ULMagnetometerDO>)fetchMagnetometerData;
 - (void)startUpdates;
 - (void)stopUpdates;
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __40__ULMagnetometerProvider_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[ULMagnetometerProvider sharedInstance]::ul_once_token_787 != -1)
   {
     dispatch_once(&+[ULMagnetometerProvider sharedInstance]::ul_once_token_787, block);
@@ -107,8 +107,8 @@ void __40__ULMagnetometerProvider_sharedInstance__block_invoke(uint64_t a1)
     goto LABEL_9;
   }
 
-  v3 = self;
-  v4 = [_motionManager deviceMotion];
+  selfCopy = self;
+  deviceMotion = [_motionManager deviceMotion];
   if (onceToken_MicroLocation_Default != -1)
   {
     [ULMagnetometerProvider startUpdates];
@@ -122,16 +122,16 @@ void __40__ULMagnetometerProvider_sharedInstance__block_invoke(uint64_t a1)
     _os_log_impl(&dword_258FE9000, v5, OS_LOG_TYPE_DEFAULT, "#magnetometer fetchMagnetometerData", buf, 2u);
   }
 
-  if (v4)
+  if (deviceMotion)
   {
     v6 = [MEMORY[0x277CBEAA8] now];
     [v6 timeIntervalSinceReferenceDate];
     v8 = v7;
 
     v9 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-    [v4 timestamp];
+    [deviceMotion timestamp];
     v11 = v10;
-    [v4 magneticField];
+    [deviceMotion magneticField];
     v37 = *buf;
     v38 = v33;
     v36 = 0;
@@ -139,11 +139,11 @@ void __40__ULMagnetometerProvider_sharedInstance__block_invoke(uint64_t a1)
     v35 = 0u;
     *buf = 0u;
     v33 = 0u;
-    v12 = [v4 attitude];
-    v13 = v12;
-    if (v12)
+    attitude = [deviceMotion attitude];
+    v13 = attitude;
+    if (attitude)
     {
-      [v12 rotationMatrix];
+      [attitude rotationMatrix];
     }
 
     else
@@ -155,15 +155,15 @@ void __40__ULMagnetometerProvider_sharedInstance__block_invoke(uint64_t a1)
       v33 = 0u;
     }
 
-    unk_286A891B8(v3, "rotateMagField:withMatrix:", &v37, buf);
+    unk_286A891B8(selfCopy, "rotateMagField:withMatrix:", &v37, buf);
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    [v4 magnetometerBiasEstimateVariance];
+    [deviceMotion magnetometerBiasEstimateVariance];
     v21 = v20;
-    [v4 magnetometerBiasEstimateVariance];
+    [deviceMotion magnetometerBiasEstimateVariance];
     v23 = v22;
-    [v4 magnetometerBiasEstimateVariance];
+    [deviceMotion magnetometerBiasEstimateVariance];
     v25 = v24;
     if (onceToken_MicroLocation_Default != -1)
     {
@@ -174,8 +174,8 @@ void __40__ULMagnetometerProvider_sharedInstance__block_invoke(uint64_t a1)
     v27 = logObject_MicroLocation_Default;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v4 magneticFieldCalibrationLevel];
-      [v4 magneticField];
+      magneticFieldCalibrationLevel = [deviceMotion magneticFieldCalibrationLevel];
+      [deviceMotion magneticField];
       *v39 = 134219520;
       *&v39[4] = v26;
       *&v39[12] = 2048;
@@ -187,7 +187,7 @@ void __40__ULMagnetometerProvider_sharedInstance__block_invoke(uint64_t a1)
       v41 = 2048;
       v42 = v25;
       v43 = 1024;
-      v44 = v28;
+      v44 = magneticFieldCalibrationLevel;
       v45 = 1024;
       v46 = v31;
       _os_log_impl(&dword_258FE9000, v27, OS_LOG_TYPE_DEFAULT, "#magnetometer handlerCB: horizontal field %f, verticalField %f BiasEstimateVariance (%f, %f, %f),  calibLevel: %d accuracy: %d", v39, 0x40u);
@@ -212,24 +212,24 @@ LABEL_9:
   return self;
 }
 
-- ($1AB5FA073B851C12C2339EC22442E995)rotateMagField:(id *)a3 withMatrix:(id *)a4
+- ($1AB5FA073B851C12C2339EC22442E995)rotateMagField:(id *)field withMatrix:(id *)matrix
 {
   __C[3] = *MEMORY[0x277D85DE8];
-  var1 = a4->var1;
-  var2 = a4->var2;
-  var3 = a4->var3;
-  __A[0] = a4->var0;
+  var1 = matrix->var1;
+  var2 = matrix->var2;
+  var3 = matrix->var3;
+  __A[0] = matrix->var0;
   __A[1] = var3;
-  var7 = a4->var7;
-  __A[2] = a4->var6;
+  var7 = matrix->var7;
+  __A[2] = matrix->var6;
   __A[3] = var1;
-  var5 = a4->var5;
-  __A[4] = a4->var4;
+  var5 = matrix->var5;
+  __A[4] = matrix->var4;
   __A[5] = var7;
   __A[6] = var2;
   __A[7] = var5;
-  __A[8] = a4->var8;
-  __B = *a3;
+  __A[8] = matrix->var8;
+  __B = *field;
   vDSP_mmulD(__A, 1, &__B.var0, 1, __C, 1, 3uLL, 1uLL, 3uLL);
   v9 = __C[0];
   v10 = __C[1];

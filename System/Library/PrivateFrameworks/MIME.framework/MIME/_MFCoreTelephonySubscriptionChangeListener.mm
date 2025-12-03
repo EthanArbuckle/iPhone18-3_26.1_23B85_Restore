@@ -1,6 +1,6 @@
 @interface _MFCoreTelephonySubscriptionChangeListener
 - (_MFCoreTelephonySubscriptionChangeListener)init;
-- (void)carrierBundleChange:(id)a3;
+- (void)carrierBundleChange:(id)change;
 @end
 
 @implementation _MFCoreTelephonySubscriptionChangeListener
@@ -27,7 +27,7 @@
   return v2;
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
   v4 = MFLogGeneral();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))

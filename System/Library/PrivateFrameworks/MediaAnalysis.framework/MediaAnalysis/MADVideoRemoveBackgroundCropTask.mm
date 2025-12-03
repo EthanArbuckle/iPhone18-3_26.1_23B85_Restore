@@ -1,41 +1,41 @@
 @interface MADVideoRemoveBackgroundCropTask
-+ (id)taskWithAsset:(id)a3 previewRequest:(id)a4 generationRequest:(id)a5 cancelBlock:(id)a6 progressHandler:(id)a7 resultHandler:(id)a8 completionHandler:(id)a9;
-- (BOOL)exportFutureSamples:(id)a3 sequenceWriter:(id)a4 progress:(id)a5 error:(id *)a6;
-- (BOOL)exportPastSamples:(id)a3 sequenceWriter:(id)a4 progress:(id)a5 error:(id *)a6;
-- (BOOL)isAnimatedStickerPreferredWithPastSamples:(id)a3 futureSamples:(id)a4;
++ (id)taskWithAsset:(id)asset previewRequest:(id)request generationRequest:(id)generationRequest cancelBlock:(id)block progressHandler:(id)handler resultHandler:(id)resultHandler completionHandler:(id)completionHandler;
+- (BOOL)exportFutureSamples:(id)samples sequenceWriter:(id)writer progress:(id)progress error:(id *)error;
+- (BOOL)exportPastSamples:(id)samples sequenceWriter:(id)writer progress:(id)progress error:(id *)error;
+- (BOOL)isAnimatedStickerPreferredWithPastSamples:(id)samples futureSamples:(id)futureSamples;
 - (BOOL)isCanceled;
-- (BOOL)run:(id *)a3;
-- (BOOL)validateRequest:(id *)a3;
-- (CGRect)scaleNormalizedCropRect:(CGRect)a3 forPixelBuffer:(__CVBuffer *)a4;
-- (MADVideoRemoveBackgroundCropTask)initWithAsset:(id)a3 previewRequest:(id)a4 generationRequest:(id)a5 cancelBlock:(id)a6 progressHandler:(id)a7 resultHandler:(id)a8 completionHandler:(id)a9;
-- (__CVBuffer)generateMaskForSampleBuffer:(opaqueCMSampleBuffer *)a3 orientation:(unsigned int)a4 error:(id *)a5;
+- (BOOL)run:(id *)run;
+- (BOOL)validateRequest:(id *)request;
+- (CGRect)scaleNormalizedCropRect:(CGRect)rect forPixelBuffer:(__CVBuffer *)buffer;
+- (MADVideoRemoveBackgroundCropTask)initWithAsset:(id)asset previewRequest:(id)request generationRequest:(id)generationRequest cancelBlock:(id)block progressHandler:(id)handler resultHandler:(id)resultHandler completionHandler:(id)completionHandler;
+- (__CVBuffer)generateMaskForSampleBuffer:(opaqueCMSampleBuffer *)buffer orientation:(unsigned int)orientation error:(id *)error;
 - (id).cxx_construct;
-- (id)compressSequenceData:(id)a3 sequenceWriter:(id)a4 outputWidth:(unint64_t *)a5 outputHeight:(unint64_t *)a6;
-- (id)decodeSamplesUntilTime:(id *)a3 trackOutput:(id)a4 baseTime:(id *)a5 progress:(id)a6 error:(id *)a7;
-- (id)decodeSettingsForTrack:(id)a3;
-- (id)processFutureSamplesFromTrackOutput:(id)a3 baseTime:(id *)a4 orientation:(unsigned int)a5 maskSampleBuffer:(opaqueCMSampleBuffer *)a6 maskPixelBuffer:(__CVBuffer *)a7 cropUnion:(CGRect *)a8 endTime:(id *)a9 progress:(id)a10 error:(id *)a11;
-- (id)processPastSampleBuffers:(id)a3 orientation:(unsigned int)a4 maskPixelBuffer:(__CVBuffer *)a5 cropUnion:(CGRect *)a6 progress:(id)a7 error:(id *)a8;
+- (id)compressSequenceData:(id)data sequenceWriter:(id)writer outputWidth:(unint64_t *)width outputHeight:(unint64_t *)height;
+- (id)decodeSamplesUntilTime:(id *)time trackOutput:(id)output baseTime:(id *)baseTime progress:(id)progress error:(id *)error;
+- (id)decodeSettingsForTrack:(id)track;
+- (id)processFutureSamplesFromTrackOutput:(id)output baseTime:(id *)time orientation:(unsigned int)orientation maskSampleBuffer:(opaqueCMSampleBuffer *)buffer maskPixelBuffer:(__CVBuffer *)pixelBuffer cropUnion:(CGRect *)union endTime:(id *)endTime progress:(id)self0 error:(id *)self1;
+- (id)processPastSampleBuffers:(id)buffers orientation:(unsigned int)orientation maskPixelBuffer:(__CVBuffer *)buffer cropUnion:(CGRect *)union progress:(id)progress error:(id *)error;
 - (void)dealloc;
-- (void)publishPayloadWidth:(unint64_t)a3 height:(unint64_t)a4 data:(id)a5;
-- (void)publishPreviewResultsTimeRange:(id *)a3 pastSamples:(id)a4 futureSamples:(id)a5 cropRect:(CGRect)a6;
+- (void)publishPayloadWidth:(unint64_t)width height:(unint64_t)height data:(id)data;
+- (void)publishPreviewResultsTimeRange:(id *)range pastSamples:(id)samples futureSamples:(id)futureSamples cropRect:(CGRect)rect;
 @end
 
 @implementation MADVideoRemoveBackgroundCropTask
 
-- (MADVideoRemoveBackgroundCropTask)initWithAsset:(id)a3 previewRequest:(id)a4 generationRequest:(id)a5 cancelBlock:(id)a6 progressHandler:(id)a7 resultHandler:(id)a8 completionHandler:(id)a9
+- (MADVideoRemoveBackgroundCropTask)initWithAsset:(id)asset previewRequest:(id)request generationRequest:(id)generationRequest cancelBlock:(id)block progressHandler:(id)handler resultHandler:(id)resultHandler completionHandler:(id)completionHandler
 {
-  v33 = a3;
-  v32 = a4;
-  v31 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  assetCopy = asset;
+  requestCopy = request;
+  generationRequestCopy = generationRequest;
+  blockCopy = block;
+  handlerCopy = handler;
+  resultHandlerCopy = resultHandler;
+  completionHandlerCopy = completionHandler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __143__MADVideoRemoveBackgroundCropTask_initWithAsset_previewRequest_generationRequest_cancelBlock_progressHandler_resultHandler_completionHandler___block_invoke;
   aBlock[3] = &unk_1E834C7A0;
-  v20 = v19;
+  v20 = completionHandlerCopy;
   v36 = v20;
   v21 = _Block_copy(aBlock);
   v34.receiver = self;
@@ -44,14 +44,14 @@
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_previewRequest, a4);
-    objc_storeStrong(&v23->_request, a5);
-    objc_storeStrong(&v23->_asset, a3);
-    v24 = _Block_copy(v17);
+    objc_storeStrong(&v22->_previewRequest, request);
+    objc_storeStrong(&v23->_request, generationRequest);
+    objc_storeStrong(&v23->_asset, asset);
+    v24 = _Block_copy(handlerCopy);
     progressHandler = v23->_progressHandler;
     v23->_progressHandler = v24;
 
-    v26 = _Block_copy(v18);
+    v26 = _Block_copy(resultHandlerCopy);
     resultHandler = v23->_resultHandler;
     v23->_resultHandler = v26;
 
@@ -59,30 +59,30 @@
     completionHandler = v23->_completionHandler;
     v23->_completionHandler = v28;
 
-    [(VCPMABaseTask *)v23 setCancelBlock:v16, v31, v32, v33];
+    [(VCPMABaseTask *)v23 setCancelBlock:blockCopy, generationRequestCopy, requestCopy, assetCopy];
   }
 
   return v23;
 }
 
-+ (id)taskWithAsset:(id)a3 previewRequest:(id)a4 generationRequest:(id)a5 cancelBlock:(id)a6 progressHandler:(id)a7 resultHandler:(id)a8 completionHandler:(id)a9
++ (id)taskWithAsset:(id)asset previewRequest:(id)request generationRequest:(id)generationRequest cancelBlock:(id)block progressHandler:(id)handler resultHandler:(id)resultHandler completionHandler:(id)completionHandler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = [objc_alloc(objc_opt_class()) initWithAsset:v14 previewRequest:v15 generationRequest:v16 cancelBlock:v17 progressHandler:v18 resultHandler:v19 completionHandler:v20];
+  assetCopy = asset;
+  requestCopy = request;
+  generationRequestCopy = generationRequest;
+  blockCopy = block;
+  handlerCopy = handler;
+  resultHandlerCopy = resultHandler;
+  completionHandlerCopy = completionHandler;
+  v21 = [objc_alloc(objc_opt_class()) initWithAsset:assetCopy previewRequest:requestCopy generationRequest:generationRequestCopy cancelBlock:blockCopy progressHandler:handlerCopy resultHandler:resultHandlerCopy completionHandler:completionHandlerCopy];
 
   return v21;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E6984688] globalSession];
-  [v3 releaseCachedResources];
+  globalSession = [MEMORY[0x1E6984688] globalSession];
+  [globalSession releaseCachedResources];
 
   v4.receiver = self;
   v4.super_class = MADVideoRemoveBackgroundCropTask;
@@ -91,49 +91,49 @@
 
 - (BOOL)isCanceled
 {
-  v3 = [(MADVideoRemoveBackgroundRequest *)self->_request stickerIdentifiers];
-  if ([v3 count])
+  stickerIdentifiers = [(MADVideoRemoveBackgroundRequest *)self->_request stickerIdentifiers];
+  if ([stickerIdentifiers count])
   {
-    v4 = 0;
+    isCanceled = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = MADVideoRemoveBackgroundCropTask;
-    v4 = [(VCPMABaseTask *)&v6 isCanceled];
+    isCanceled = [(VCPMABaseTask *)&v6 isCanceled];
   }
 
-  return v4;
+  return isCanceled;
 }
 
-- (BOOL)validateRequest:(id *)a3
+- (BOOL)validateRequest:(id *)request
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v5 = [(MADVideoRemoveBackgroundRequest *)self->_request maxDimension];
-  if (v5)
+  maxDimension = [(MADVideoRemoveBackgroundRequest *)self->_request maxDimension];
+  if (maxDimension)
   {
-    v6 = [(MADVideoRemoveBackgroundRequest *)self->_request minDimension];
-    if (v6)
+    minDimension = [(MADVideoRemoveBackgroundRequest *)self->_request minDimension];
+    if (minDimension)
     {
-      v7 = [(MADVideoRemoveBackgroundRequest *)self->_request maxDimension];
-      v8 = [v7 integerValue];
-      v9 = [(MADVideoRemoveBackgroundRequest *)self->_request minDimension];
-      v10 = [v9 integerValue];
+      maxDimension2 = [(MADVideoRemoveBackgroundRequest *)self->_request maxDimension];
+      integerValue = [maxDimension2 integerValue];
+      minDimension2 = [(MADVideoRemoveBackgroundRequest *)self->_request minDimension];
+      integerValue2 = [minDimension2 integerValue];
 
-      if (v8 < v10)
+      if (integerValue < integerValue2)
       {
         v11 = MEMORY[0x1E696ABC0];
         v37 = *MEMORY[0x1E696A578];
         v12 = MEMORY[0x1E696AEC0];
-        v13 = [(MADVideoRemoveBackgroundRequest *)self->_request minDimension];
-        v14 = [(MADVideoRemoveBackgroundRequest *)self->_request maxDimension];
-        v15 = [v12 stringWithFormat:@"Invalid request - min dimension (%@) exceeds max dimension (%@)", v13, v14];
+        minDimension3 = [(MADVideoRemoveBackgroundRequest *)self->_request minDimension];
+        maxDimension3 = [(MADVideoRemoveBackgroundRequest *)self->_request maxDimension];
+        v15 = [v12 stringWithFormat:@"Invalid request - min dimension (%@) exceeds max dimension (%@)", minDimension3, maxDimension3];
         v38[0] = v15;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:&v37 count:1];
         v17 = [v11 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v16];
-        v18 = *a3;
-        *a3 = v17;
+        v18 = *request;
+        *request = v17;
 
         goto LABEL_14;
       }
@@ -144,29 +144,29 @@
     }
   }
 
-  v19 = [(MADVideoRemoveBackgroundRequest *)self->_request maxFileSize];
-  if (v19 && (-[MADVideoRemoveBackgroundRequest maxFileSize](self->_request, "maxFileSize"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 unsignedIntegerValue], v20, v19, !v21))
+  maxFileSize = [(MADVideoRemoveBackgroundRequest *)self->_request maxFileSize];
+  if (maxFileSize && (-[MADVideoRemoveBackgroundRequest maxFileSize](self->_request, "maxFileSize"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 unsignedIntegerValue], v20, maxFileSize, !v21))
   {
     v31 = MEMORY[0x1E696ABC0];
     v35 = *MEMORY[0x1E696A578];
     v32 = MEMORY[0x1E696AEC0];
-    v13 = [(MADVideoRemoveBackgroundRequest *)self->_request maxFileSize];
-    v14 = [v32 stringWithFormat:@"Invalid request - max file size (%@) must be greater than zero", v13];
-    v36 = v14;
+    minDimension3 = [(MADVideoRemoveBackgroundRequest *)self->_request maxFileSize];
+    maxDimension3 = [v32 stringWithFormat:@"Invalid request - max file size (%@) must be greater than zero", minDimension3];
+    v36 = maxDimension3;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
     v30 = [v31 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v15];
   }
 
   else
   {
-    v22 = [(MADVideoRemoveBackgroundRequest *)self->_request instancePoint];
-    if (!v22)
+    instancePoint = [(MADVideoRemoveBackgroundRequest *)self->_request instancePoint];
+    if (!instancePoint)
     {
       return 1;
     }
 
-    v23 = [(MADVideoRemoveBackgroundRequest *)self->_request instancePoint];
-    [v23 pointValue];
+    instancePoint2 = [(MADVideoRemoveBackgroundRequest *)self->_request instancePoint];
+    [instancePoint2 pointValue];
     v39.x = v24;
     v39.y = v25;
     v40.origin.x = 0.0;
@@ -183,35 +183,35 @@
     v28 = MEMORY[0x1E696ABC0];
     v33 = *MEMORY[0x1E696A578];
     v29 = MEMORY[0x1E696AEC0];
-    v13 = [(MADVideoRemoveBackgroundRequest *)self->_request instancePoint];
-    v14 = [v29 stringWithFormat:@"Invalid request - instance point (%@) outside of unit rect", v13];
-    v34 = v14;
+    minDimension3 = [(MADVideoRemoveBackgroundRequest *)self->_request instancePoint];
+    maxDimension3 = [v29 stringWithFormat:@"Invalid request - instance point (%@) outside of unit rect", minDimension3];
+    v34 = maxDimension3;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
     v30 = [v28 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v15];
   }
 
-  v16 = *a3;
-  *a3 = v30;
+  v16 = *request;
+  *request = v30;
 LABEL_14:
 
   return 0;
 }
 
-- (id)decodeSettingsForTrack:(id)a3
+- (id)decodeSettingsForTrack:(id)track
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [v5 setObject:&unk_1F49BBD88 forKeyedSubscript:*MEMORY[0x1E6966130]];
-  v6 = [(MADVideoRemoveBackgroundRequest *)self->_request maxDimension];
+  trackCopy = track;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:&unk_1F49BBD88 forKeyedSubscript:*MEMORY[0x1E6966130]];
+  maxDimension = [(MADVideoRemoveBackgroundRequest *)self->_request maxDimension];
 
-  if (v6)
+  if (maxDimension)
   {
-    v7 = [(MADVideoRemoveBackgroundRequest *)self->_request maxDimension];
-    [v7 doubleValue];
+    maxDimension2 = [(MADVideoRemoveBackgroundRequest *)self->_request maxDimension];
+    [maxDimension2 doubleValue];
     v9 = v8;
 
-    [v4 naturalSize];
+    [trackCopy naturalSize];
     v12 = v10 >= v11 ? v10 : v11;
     if (v9 < v12)
     {
@@ -227,25 +227,25 @@ LABEL_14:
       }
 
       v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v13];
-      [v5 setObject:v15 forKeyedSubscript:*MEMORY[0x1E6966208]];
+      [dictionary setObject:v15 forKeyedSubscript:*MEMORY[0x1E6966208]];
 
       v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v14];
-      [v5 setObject:v16 forKeyedSubscript:*MEMORY[0x1E69660B8]];
+      [dictionary setObject:v16 forKeyedSubscript:*MEMORY[0x1E69660B8]];
     }
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (id)decodeSamplesUntilTime:(id *)a3 trackOutput:(id)a4 baseTime:(id *)a5 progress:(id)a6 error:(id *)a7
+- (id)decodeSamplesUntilTime:(id *)time trackOutput:(id)output baseTime:(id *)baseTime progress:(id)progress error:(id *)error
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v43 = a6;
-  v44 = v11;
-  v12 = [v11 track];
-  buf.duration = *a3;
-  v41 = [v12 makeSampleCursorWithPresentationTimeStamp:&buf];
+  outputCopy = output;
+  progressCopy = progress;
+  v44 = outputCopy;
+  track = [outputCopy track];
+  buf.duration = *time;
+  v41 = [track makeSampleCursorWithPresentationTimeStamp:&buf];
 
   if (MediaAnalysisLogLevel() >= 6)
   {
@@ -269,8 +269,8 @@ LABEL_14:
         memset(&rhs, 0, sizeof(rhs));
       }
 
-      var0 = a3->var0;
-      var1 = a3->var1;
+      var0 = time->var0;
+      var1 = time->var1;
       LODWORD(buf.duration.value) = 134218752;
       *(&buf.duration.value + 4) = v15;
       LOWORD(buf.duration.flags) = 1024;
@@ -283,8 +283,8 @@ LABEL_14:
     }
   }
 
-  v39 = [MEMORY[0x1E695DF70] array];
-  v42 = a5->var0;
+  array = [MEMORY[0x1E695DF70] array];
+  v42 = baseTime->var0;
   v19 = *MEMORY[0x1E696A768];
   v20 = *MEMORY[0x1E696A578];
   do
@@ -298,19 +298,19 @@ LABEL_14:
       v55[0] = v23;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:&v54 count:1];
       v25 = [v22 errorWithDomain:v19 code:-128 userInfo:v24];
-      v26 = *a7;
-      *a7 = v25;
+      v26 = *error;
+      *error = v25;
 
       v27 = 1;
       goto LABEL_37;
     }
 
-    v28 = [v44 copyNextSampleBuffer];
-    originalSBuf = v28;
-    if (v28)
+    copyNextSampleBuffer = [v44 copyNextSampleBuffer];
+    originalSBuf = copyNextSampleBuffer;
+    if (copyNextSampleBuffer)
     {
       memset(&v45, 0, sizeof(v45));
-      CMSampleBufferGetPresentationTimeStamp(&v45, v28);
+      CMSampleBufferGetPresentationTimeStamp(&v45, copyNextSampleBuffer);
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         LODWORD(buf.duration.value) = 134218240;
@@ -327,7 +327,7 @@ LABEL_14:
         *&buf.duration.value = *MEMORY[0x1E6960C70];
         buf.duration.epoch = *(MEMORY[0x1E6960C70] + 16);
         *lhs = v45;
-        rhs = *a5;
+        rhs = *baseTime;
         CMTimeSubtract(&buf.presentationTimeStamp, lhs, &rhs);
         buf.decodeTimeStamp = *v29;
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -361,8 +361,8 @@ LABEL_14:
           v49 = v31;
           v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
           v33 = [v30 errorWithDomain:v19 code:-18 userInfo:v32];
-          v34 = *a7;
-          *a7 = v33;
+          v34 = *error;
+          *error = v33;
 
           CF<__CVBuffer *>::~CF(&rhs);
           v27 = 1;
@@ -388,8 +388,8 @@ LABEL_14:
         CF<__CVBuffer *>::~CF(&rhs);
       }
 
-      [v39 addObject:originalSBuf];
-      [v43 setCompletedUnitCount:{objc_msgSend(v43, "completedUnitCount") + 1}];
+      [array addObject:originalSBuf];
+      [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "completedUnitCount") + 1}];
       if (v41)
       {
         [v41 presentationTimeStamp];
@@ -427,22 +427,22 @@ LABEL_37:
   while (!v27);
   if (v27 == 5)
   {
-    v36 = v39;
-    v37 = v39;
+    v36 = array;
+    v37 = array;
   }
 
   else
   {
     v37 = 0;
-    v36 = v39;
+    v36 = array;
   }
 
   return v37;
 }
 
-- (__CVBuffer)generateMaskForSampleBuffer:(opaqueCMSampleBuffer *)a3 orientation:(unsigned int)a4 error:(id *)a5
+- (__CVBuffer)generateMaskForSampleBuffer:(opaqueCMSampleBuffer *)buffer orientation:(unsigned int)orientation error:(id *)error
 {
-  v6 = *&a4;
+  v6 = *&orientation;
   v118[1] = *MEMORY[0x1E69E9840];
   context = objc_autoreleasePoolPush();
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -460,13 +460,13 @@ LABEL_37:
   [v11 setRevision:1];
   if (DeviceHasANE())
   {
-    v12 = [MEMORY[0x1E6984608] defaultANEDevice];
-    [v11 setProcessingDevice:v12];
+    defaultANEDevice = [MEMORY[0x1E6984608] defaultANEDevice];
+    [v11 setProcessingDevice:defaultANEDevice];
   }
 
   v13 = objc_alloc(MEMORY[0x1E69845B8]);
-  v14 = [v9 session];
-  v15 = [v13 initWithCMSampleBuffer:a3 orientation:v6 options:MEMORY[0x1E695E0F8] session:v14];
+  session = [v9 session];
+  v15 = [v13 initWithCMSampleBuffer:buffer orientation:v6 options:MEMORY[0x1E695E0F8] session:session];
 
   v16 = VCPSignPostLog();
   v17 = os_signpost_id_generate(v16);
@@ -495,10 +495,10 @@ LABEL_37:
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v24, OS_SIGNPOST_INTERVAL_END, v17, "VNGenerateInstanceMaskRequest_PerformRequest", "", buf, 2u);
     }
 
-    v25 = [v11 results];
-    v26 = [v25 firstObject];
+    results = [v11 results];
+    firstObject = [results firstObject];
 
-    if (!v26)
+    if (!firstObject)
     {
       if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
@@ -508,18 +508,18 @@ LABEL_37:
 
       v42 = MEMORY[0x1E696ABC0];
       v116 = *MEMORY[0x1E696A578];
-      v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video frame failed to produce a mask"];
-      v117 = v43;
+      allInstances4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video frame failed to produce a mask"];
+      v117 = allInstances4;
       v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v117 forKeys:&v116 count:1];
       v45 = [v42 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v44];
-      v46 = *a5;
-      *a5 = v45;
+      v46 = *error;
+      *error = v45;
 
       goto LABEL_45;
     }
 
-    v27 = [v26 allInstances];
-    v28 = [v27 count] == 0;
+    allInstances = [firstObject allInstances];
+    v28 = [allInstances count] == 0;
 
     if (v28)
     {
@@ -531,38 +531,38 @@ LABEL_37:
 
       v47 = MEMORY[0x1E696ABC0];
       v114 = *MEMORY[0x1E696A578];
-      v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No instances detected in video frame"];
-      v115 = v43;
+      allInstances4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No instances detected in video frame"];
+      v115 = allInstances4;
       v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v115 forKeys:&v114 count:1];
       v49 = [v47 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v48];
-      v50 = *a5;
-      *a5 = v49;
+      v50 = *error;
+      *error = v49;
 
       goto LABEL_45;
     }
 
-    v29 = [v26 allInstances];
-    if ([v29 count] <= 1)
+    allInstances2 = [firstObject allInstances];
+    if ([allInstances2 count] <= 1)
     {
     }
 
     else
     {
-      v30 = [(MADVideoRemoveBackgroundRequest *)self->_request instancePoint];
-      v31 = v30 == 0;
+      instancePoint = [(MADVideoRemoveBackgroundRequest *)self->_request instancePoint];
+      v31 = instancePoint == 0;
 
       if (!v31)
       {
-        v32 = [(MADVideoRemoveBackgroundRequest *)self->_request instancePoint];
-        [v32 pointValue];
+        instancePoint2 = [(MADVideoRemoveBackgroundRequest *)self->_request instancePoint];
+        [instancePoint2 pointValue];
         v34 = v33;
         v36 = v35;
 
-        v37 = [v26 instanceMask];
-        v38 = v37;
-        *&v112[4] = v37;
+        instanceMask = [firstObject instanceMask];
+        v38 = instanceMask;
+        *&v112[4] = instanceMask;
         v113 = 1;
-        if (!v37)
+        if (!instanceMask)
         {
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -573,7 +573,7 @@ LABEL_37:
           goto LABEL_44;
         }
 
-        v39 = CVPixelBufferLockBaseAddress(v37, 1uLL);
+        v39 = CVPixelBufferLockBaseAddress(instanceMask, 1uLL);
         *buf = v39;
         if (v39)
         {
@@ -589,10 +589,10 @@ LABEL_44:
           v110 = v59;
           v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v110 forKeys:&v109 count:1];
           v61 = [v58 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v60];
-          v62 = *a5;
-          *a5 = v61;
+          v62 = *error;
+          *error = v61;
 
-          v43 = 0;
+          allInstances4 = 0;
 LABEL_45:
           v41 = 0;
 LABEL_46:
@@ -600,10 +600,10 @@ LABEL_46:
           goto LABEL_47;
         }
 
-        Width = CVPixelBufferGetWidth([v26 instanceMask]);
-        Height = CVPixelBufferGetHeight([v26 instanceMask]);
-        BytesPerRow = CVPixelBufferGetBytesPerRow([v26 instanceMask]);
-        BaseAddress = CVPixelBufferGetBaseAddress([v26 instanceMask]);
+        Width = CVPixelBufferGetWidth([firstObject instanceMask]);
+        Height = CVPixelBufferGetHeight([firstObject instanceMask]);
+        BytesPerRow = CVPixelBufferGetBytesPerRow([firstObject instanceMask]);
+        BaseAddress = CVPixelBufferGetBaseAddress([firstObject instanceMask]);
         v68 = (v34 * (Width - 1));
         v69 = Width;
         v70 = ((1.0 - v36) * (Height - 1));
@@ -726,10 +726,10 @@ LABEL_46:
             v92 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v105 forKeys:&v104 count:1];
             v88 = v38;
             v93 = [v91 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v92];
-            v94 = *a5;
-            *a5 = v93;
+            v94 = *error;
+            *error = v93;
 
-            v43 = 0;
+            allInstances4 = 0;
             v89 = 0;
 LABEL_80:
             v90 = CVPixelBufferUnlockBaseAddress(v88, 1uLL);
@@ -749,7 +749,7 @@ LABEL_80:
 
 LABEL_37:
             v102 = v22;
-            v41 = [v26 createMaskForInstances:v43 error:&v102];
+            v41 = [firstObject createMaskForInstances:allInstances4 error:&v102];
             v55 = v102;
 
             if (v41)
@@ -760,8 +760,8 @@ LABEL_37:
             else
             {
               v56 = [v55 copy];
-              v57 = *a5;
-              *a5 = v56;
+              v57 = *error;
+              *error = v56;
 
               v41 = 0;
             }
@@ -773,7 +773,7 @@ LABEL_37:
           if (MediaAnalysisLogLevel() < 5 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
           {
 LABEL_79:
-            v43 = [MEMORY[0x1E696AC90] indexSetWithIndex:v73];
+            allInstances4 = [MEMORY[0x1E696AC90] indexSetWithIndex:v73];
             v88 = v38;
             v89 = 1;
             goto LABEL_80;
@@ -794,8 +794,8 @@ LABEL_79:
       }
     }
 
-    v51 = [v26 allInstances];
-    v52 = [v51 count];
+    allInstances3 = [firstObject allInstances];
+    v52 = [allInstances3 count];
     v53 = @"only instance";
     if (v52 > 1)
     {
@@ -811,29 +811,29 @@ LABEL_79:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[RMBG] Selecting %@", buf, 0xCu);
     }
 
-    v43 = [v26 allInstances];
+    allInstances4 = [firstObject allInstances];
 
     goto LABEL_37;
   }
 
   v40 = [v22 copy];
   v41 = 0;
-  v26 = *a5;
-  *a5 = v40;
+  firstObject = *error;
+  *error = v40;
 LABEL_47:
 
   objc_autoreleasePoolPop(context);
   return v41;
 }
 
-- (CGRect)scaleNormalizedCropRect:(CGRect)a3 forPixelBuffer:(__CVBuffer *)a4
+- (CGRect)scaleNormalizedCropRect:(CGRect)rect forPixelBuffer:(__CVBuffer *)buffer
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = CVPixelBufferGetWidth(a4);
-  v10 = CVPixelBufferGetHeight(a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = CVPixelBufferGetWidth(buffer);
+  v10 = CVPixelBufferGetHeight(buffer);
   v11 = round(x * v9);
   v12 = round((1.0 - y - height) * v10);
   v13 = round(width * v9);
@@ -845,27 +845,27 @@ LABEL_47:
   return CGRectIntersection(*&v11, *&v15);
 }
 
-- (id)processPastSampleBuffers:(id)a3 orientation:(unsigned int)a4 maskPixelBuffer:(__CVBuffer *)a5 cropUnion:(CGRect *)a6 progress:(id)a7 error:(id *)a8
+- (id)processPastSampleBuffers:(id)buffers orientation:(unsigned int)orientation maskPixelBuffer:(__CVBuffer *)buffer cropUnion:(CGRect *)union progress:(id)progress error:(id *)error
 {
   v77[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v63 = a7;
+  buffersCopy = buffers;
+  progressCopy = progress;
   context = objc_autoreleasePoolPush();
   v12 = +[MADVideoRemoveBackgroundResource sharedResource];
-  v67 = [v12 session];
+  session = [v12 session];
 
   *&buf[16] = 0;
   *buf = kMaskUpdateInterval;
-  v68 = [objc_alloc(MEMORY[0x1E69846A8]) initWithFrameUpdateSpacing:buf mask:a5 completionHandler:0];
+  v68 = [objc_alloc(MEMORY[0x1E69846A8]) initWithFrameUpdateSpacing:buf mask:buffer completionHandler:0];
   [v68 setGenerateCropRect:1];
-  v61 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v60 = objc_alloc_init(MADConfidenceTracker);
   v13 = MEMORY[0x1E69E9C10];
   v65 = *MEMORY[0x1E696A768];
   v66 = *MEMORY[0x1E696A578];
   do
   {
-    if (![v11 count])
+    if (![buffersCopy count])
     {
       goto LABEL_35;
     }
@@ -879,18 +879,18 @@ LABEL_47:
       v77[0] = v16;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v77 forKeys:&v76 count:1];
       v18 = [v15 errorWithDomain:v65 code:-128 userInfo:v17];
-      v19 = *a8;
-      *a8 = v18;
+      v19 = *error;
+      *error = v18;
 
       v20 = 1;
     }
 
     else
     {
-      v21 = [v11 lastObject];
+      lastObject = [buffersCopy lastObject];
 
       memset(&v73, 0, sizeof(v73));
-      CMSampleBufferGetPresentationTimeStamp(&v73, v21);
+      CMSampleBufferGetPresentationTimeStamp(&v73, lastObject);
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 134218240;
@@ -901,7 +901,7 @@ LABEL_47:
       }
 
       v22 = objc_alloc(MEMORY[0x1E69845B8]);
-      v23 = [v22 initWithCMSampleBuffer:v21 orientation:a4 options:MEMORY[0x1E695E0F8] session:v67];
+      v23 = [v22 initWithCMSampleBuffer:lastObject orientation:orientation options:MEMORY[0x1E695E0F8] session:session];
       v24 = VCPSignPostLog();
       v25 = os_signpost_id_generate(v24);
 
@@ -929,12 +929,12 @@ LABEL_47:
           _os_signpost_emit_with_name_impl(&dword_1C9B70000, v32, OS_SIGNPOST_INTERVAL_END, v25, "VNTrackMaskRequest_PerformRequest", "", buf, 2u);
         }
 
-        v33 = [v68 results];
-        v34 = [v33 firstObject];
+        results = [v68 results];
+        firstObject = [results firstObject];
 
-        if (v34)
+        if (firstObject)
         {
-          if (+[MADVideoRemoveBackgroundSettings visionTrimEnabled](MADVideoRemoveBackgroundSettings, "visionTrimEnabled") && ([v34 confidence], -[MADConfidenceTracker updateConfidence:](v60, "updateConfidence:", v35), v37 = v36, +[MADVideoRemoveBackgroundSettings visionTrimThreshold](MADVideoRemoveBackgroundSettings, "visionTrimThreshold"), v37 < v38))
+          if (+[MADVideoRemoveBackgroundSettings visionTrimEnabled](MADVideoRemoveBackgroundSettings, "visionTrimEnabled") && ([firstObject confidence], -[MADConfidenceTracker updateConfidence:](v60, "updateConfidence:", v35), v37 = v36, +[MADVideoRemoveBackgroundSettings visionTrimThreshold](MADVideoRemoveBackgroundSettings, "visionTrimThreshold"), v37 < v38))
           {
             if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
             {
@@ -945,18 +945,18 @@ LABEL_47:
               _os_log_impl(&dword_1C9B70000, v13, OS_LOG_TYPE_DEFAULT, "[RMBG][BW] Confidence below threshold (%lld/%d), trimming", buf, 0x12u);
             }
 
-            [v11 removeAllObjects];
+            [buffersCopy removeAllObjects];
             v20 = 3;
           }
 
           else
           {
-            x = a6->origin.x;
-            y = a6->origin.y;
-            width = a6->size.width;
-            height = a6->size.height;
-            [v34 croppedBoundingBox];
-            -[MADVideoRemoveBackgroundCropTask scaleNormalizedCropRect:forPixelBuffer:](self, "scaleNormalizedCropRect:forPixelBuffer:", [v34 pixelBuffer], v43, v44, v45, v46);
+            x = union->origin.x;
+            y = union->origin.y;
+            width = union->size.width;
+            height = union->size.height;
+            [firstObject croppedBoundingBox];
+            -[MADVideoRemoveBackgroundCropTask scaleNormalizedCropRect:forPixelBuffer:](self, "scaleNormalizedCropRect:forPixelBuffer:", [firstObject pixelBuffer], v43, v44, v45, v46);
             v80.origin.x = v47;
             v80.origin.y = v48;
             v80.size.width = v49;
@@ -965,18 +965,18 @@ LABEL_47:
             v79.origin.y = y;
             v79.size.width = width;
             v79.size.height = height;
-            *a6 = CGRectUnion(v79, v80);
+            *union = CGRectUnion(v79, v80);
             v51 = [MADMattedFullFrame alloc];
-            v52 = [v34 pixelBuffer];
-            [v34 timeRange];
+            pixelBuffer = [firstObject pixelBuffer];
+            [firstObject timeRange];
             v70 = *buf;
             v71 = *&buf[16];
-            [v34 confidence];
-            v54 = [(MADMattedFullFrame *)v51 initWithPixelBuffer:v52 presentationTimestamp:&v70 confidence:v53];
-            [v61 addObject:v54];
+            [firstObject confidence];
+            v54 = [(MADMattedFullFrame *)v51 initWithPixelBuffer:pixelBuffer presentationTimestamp:&v70 confidence:v53];
+            [array addObject:v54];
 
-            [v11 removeLastObject];
-            [v63 setCompletedUnitCount:{objc_msgSend(v63, "completedUnitCount") + 1}];
+            [buffersCopy removeLastObject];
+            [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "completedUnitCount") + 1}];
             v20 = 0;
           }
         }
@@ -1007,8 +1007,8 @@ LABEL_47:
         }
 
         v56 = [v30 copy];
-        v34 = *a8;
-        *a8 = v56;
+        firstObject = *error;
+        *error = v56;
         v20 = 1;
       }
     }
@@ -1020,7 +1020,7 @@ LABEL_47:
   if (v20 == 3)
   {
 LABEL_35:
-    v57 = v61;
+    v57 = array;
     goto LABEL_37;
   }
 
@@ -1032,17 +1032,17 @@ LABEL_37:
   return v57;
 }
 
-- (BOOL)exportPastSamples:(id)a3 sequenceWriter:(id)a4 progress:(id)a5 error:(id *)a6
+- (BOOL)exportPastSamples:(id)samples sequenceWriter:(id)writer progress:(id)progress error:(id *)error
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v40 = a4;
-  v39 = a5;
+  samplesCopy = samples;
+  writerCopy = writer;
+  progressCopy = progress;
   v41 = *MEMORY[0x1E696A768];
   v42 = *MEMORY[0x1E696A578];
   do
   {
-    v11 = [v10 count];
+    v11 = [samplesCopy count];
     if (!v11)
     {
       break;
@@ -1053,28 +1053,28 @@ LABEL_37:
     {
       v13 = MEMORY[0x1E696ABC0];
       v53 = v42;
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Request canceled"];
-      v54[0] = v14;
+      lastObject = [MEMORY[0x1E696AEC0] stringWithFormat:@"Request canceled"];
+      v54[0] = lastObject;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:&v53 count:1];
       v16 = [v13 errorWithDomain:v41 code:-128 userInfo:v15];
-      v17 = *a6;
-      *a6 = v16;
+      v17 = *error;
+      *error = v16;
     }
 
     else
     {
-      v14 = [v10 lastObject];
+      lastObject = [samplesCopy lastObject];
       if (MediaAnalysisLogLevel() >= 6)
       {
         v18 = MEMORY[0x1E69E9C10];
         v19 = MEMORY[0x1E69E9C10];
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
-          if (v14)
+          if (lastObject)
           {
-            [v14 presentationTimestamp];
+            [lastObject presentationTimestamp];
             v20 = *v44;
-            [v14 presentationTimestamp];
+            [lastObject presentationTimestamp];
             v21 = v43;
           }
 
@@ -1108,10 +1108,10 @@ LABEL_37:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v25, OS_SIGNPOST_INTERVAL_BEGIN, v23, "MADVideoRemoveBackground_ExportFrame", "", v44, 2u);
       }
 
-      v26 = [v14 pixelBuffer];
-      if (v14)
+      pixelBuffer = [lastObject pixelBuffer];
+      if (lastObject)
       {
-        [v14 presentationTimestamp];
+        [lastObject presentationTimestamp];
       }
 
       else
@@ -1121,7 +1121,7 @@ LABEL_37:
         v46 = 0;
       }
 
-      if (![v40 addPixelBuffer:v26 withTime:v44])
+      if (![writerCopy addPixelBuffer:pixelBuffer withTime:v44])
       {
         v31 = VCPSignPostLog();
         v32 = v31;
@@ -1131,8 +1131,8 @@ LABEL_37:
           _os_signpost_emit_with_name_impl(&dword_1C9B70000, v32, OS_SIGNPOST_INTERVAL_END, v23, "MADVideoRemoveBackground_ExportFrame", "", v44, 2u);
         }
 
-        [v10 removeLastObject];
-        [v39 setCompletedUnitCount:{objc_msgSend(v39, "completedUnitCount") + 1}];
+        [samplesCopy removeLastObject];
+        [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "completedUnitCount") + 1}];
         v33 = 1;
         goto LABEL_28;
       }
@@ -1140,11 +1140,11 @@ LABEL_37:
       v27 = MEMORY[0x1E696ABC0];
       v47 = v42;
       v28 = MEMORY[0x1E696AEC0];
-      if (v14)
+      if (lastObject)
       {
-        [v14 presentationTimestamp];
+        [lastObject presentationTimestamp];
         v29 = *v44;
-        [v14 presentationTimestamp];
+        [lastObject presentationTimestamp];
         v30 = v43;
       }
 
@@ -1162,8 +1162,8 @@ LABEL_37:
       v48 = v34;
       v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
       v36 = [v27 errorWithDomain:v41 code:-18 userInfo:v35];
-      v37 = *a6;
-      *a6 = v36;
+      v37 = *error;
+      *error = v36;
     }
 
     v33 = 0;
@@ -1177,22 +1177,22 @@ LABEL_28:
   return v11 == 0;
 }
 
-- (id)processFutureSamplesFromTrackOutput:(id)a3 baseTime:(id *)a4 orientation:(unsigned int)a5 maskSampleBuffer:(opaqueCMSampleBuffer *)a6 maskPixelBuffer:(__CVBuffer *)a7 cropUnion:(CGRect *)a8 endTime:(id *)a9 progress:(id)a10 error:(id *)a11
+- (id)processFutureSamplesFromTrackOutput:(id)output baseTime:(id *)time orientation:(unsigned int)orientation maskSampleBuffer:(opaqueCMSampleBuffer *)buffer maskPixelBuffer:(__CVBuffer *)pixelBuffer cropUnion:(CGRect *)union endTime:(id *)endTime progress:(id)self0 error:(id *)self1
 {
   v108[1] = *MEMORY[0x1E69E9840];
-  v91 = a3;
-  v93 = a10;
+  outputCopy = output;
+  progressCopy = progress;
   context = objc_autoreleasePoolPush();
   v14 = +[MADVideoRemoveBackgroundResource sharedResource];
-  v89 = [v14 session];
+  session = [v14 session];
 
   buf.duration.epoch = 0;
   *&buf.duration.value = kMaskUpdateInterval;
-  v90 = [objc_alloc(MEMORY[0x1E69846A8]) initWithFrameUpdateSpacing:&buf mask:a7 completionHandler:0];
+  v90 = [objc_alloc(MEMORY[0x1E69846A8]) initWithFrameUpdateSpacing:&buf mask:pixelBuffer completionHandler:0];
   [v90 setGenerateCropRect:1];
   v15 = objc_autoreleasePoolPush();
   v16 = objc_alloc(MEMORY[0x1E69845B8]);
-  v17 = [v16 initWithCMSampleBuffer:a6 orientation:a5 options:MEMORY[0x1E695E0F8] session:v89];
+  v17 = [v16 initWithCMSampleBuffer:buffer orientation:orientation options:MEMORY[0x1E695E0F8] session:session];
   v18 = VCPSignPostLog();
   v19 = os_signpost_id_generate(v18);
 
@@ -1224,16 +1224,16 @@ LABEL_28:
   else
   {
     v27 = [v24 copy];
-    v26 = *a11;
-    *a11 = v27;
+    v26 = *error;
+    *error = v27;
   }
 
   objc_autoreleasePoolPop(v15);
   v28 = v90;
   if (v23)
   {
-    var0 = a4->var0;
-    v83 = [MEMORY[0x1E695DF70] array];
+    var0 = time->var0;
+    array = [MEMORY[0x1E695DF70] array];
     v82 = objc_alloc_init(MADConfidenceTracker);
     v29 = *MEMORY[0x1E696A768];
     v92 = *MEMORY[0x1E696A578];
@@ -1248,19 +1248,19 @@ LABEL_28:
         v107 = v32;
         v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v107 forKeys:&v106 count:1];
         v34 = [v31 errorWithDomain:v29 code:-128 userInfo:v33];
-        v35 = *a11;
-        *a11 = v34;
+        v35 = *error;
+        *error = v34;
 
         v36 = 1;
         goto LABEL_57;
       }
 
-      v37 = [v91 copyNextSampleBuffer];
-      originalSBuf = v37;
-      if (v37)
+      copyNextSampleBuffer = [outputCopy copyNextSampleBuffer];
+      originalSBuf = copyNextSampleBuffer;
+      if (copyNextSampleBuffer)
       {
         memset(&presentationTimeStamp, 0, sizeof(presentationTimeStamp));
-        CMSampleBufferGetPresentationTimeStamp(&presentationTimeStamp, v37);
+        CMSampleBufferGetPresentationTimeStamp(&presentationTimeStamp, copyNextSampleBuffer);
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
         {
           LODWORD(buf.duration.value) = 134218240;
@@ -1270,7 +1270,7 @@ LABEL_28:
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[RMBG][FW] Decoded %lld/%d", &buf, 0x12u);
         }
 
-        [v93 setCompletedUnitCount:{objc_msgSend(v93, "completedUnitCount") + 1}];
+        [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "completedUnitCount") + 1}];
         if (!var0)
         {
           goto LABEL_32;
@@ -1281,7 +1281,7 @@ LABEL_28:
         *&buf.duration.value = *MEMORY[0x1E6960C70];
         buf.duration.epoch = *(MEMORY[0x1E6960C70] + 16);
         *lhs = presentationTimeStamp;
-        rhs = *a4;
+        rhs = *time;
         CMTimeSubtract(&buf.presentationTimeStamp, lhs, &rhs);
         buf.decodeTimeStamp = *v38;
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -1329,7 +1329,7 @@ LABEL_32:
           }
 
           v45 = objc_alloc(MEMORY[0x1E69845B8]);
-          v46 = [v45 initWithCMSampleBuffer:originalSBuf orientation:a5 options:MEMORY[0x1E695E0F8] session:v89];
+          v46 = [v45 initWithCMSampleBuffer:originalSBuf orientation:orientation options:MEMORY[0x1E695E0F8] session:session];
           v47 = VCPSignPostLog();
           v48 = os_signpost_id_generate(v47);
 
@@ -1357,13 +1357,13 @@ LABEL_32:
               _os_signpost_emit_with_name_impl(&dword_1C9B70000, v55, OS_SIGNPOST_INTERVAL_END, v48, "VNTrackMaskRequest_PerformRequest", "", &buf, 2u);
             }
 
-            v56 = [v90 results];
-            v57 = [v56 firstObject];
+            results = [v90 results];
+            firstObject = [results firstObject];
 
-            if (v57)
+            if (firstObject)
             {
-              [v93 setCompletedUnitCount:{objc_msgSend(v93, "completedUnitCount") + 1}];
-              if (+[MADVideoRemoveBackgroundSettings visionTrimEnabled](MADVideoRemoveBackgroundSettings, "visionTrimEnabled") && ([v57 confidence], -[MADConfidenceTracker updateConfidence:](v82, "updateConfidence:", v58), v60 = v59, +[MADVideoRemoveBackgroundSettings visionTrimThreshold](MADVideoRemoveBackgroundSettings, "visionTrimThreshold"), v60 < v61))
+              [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "completedUnitCount") + 1}];
+              if (+[MADVideoRemoveBackgroundSettings visionTrimEnabled](MADVideoRemoveBackgroundSettings, "visionTrimEnabled") && ([firstObject confidence], -[MADConfidenceTracker updateConfidence:](v82, "updateConfidence:", v58), v60 = v59, +[MADVideoRemoveBackgroundSettings visionTrimThreshold](MADVideoRemoveBackgroundSettings, "visionTrimThreshold"), v60 < v61))
               {
                 if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                 {
@@ -1374,18 +1374,18 @@ LABEL_32:
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[RMBG][FW] Confidence below threshold (%lld/%d), trimming", &buf, 0x12u);
                 }
 
-                *a9 = presentationTimeStamp;
+                *endTime = presentationTimeStamp;
                 v36 = 5;
               }
 
               else
               {
-                x = a8->origin.x;
-                y = a8->origin.y;
-                width = a8->size.width;
-                height = a8->size.height;
-                [v57 croppedBoundingBox];
-                -[MADVideoRemoveBackgroundCropTask scaleNormalizedCropRect:forPixelBuffer:](self, "scaleNormalizedCropRect:forPixelBuffer:", [v57 pixelBuffer], v66, v67, v68, v69);
+                x = union->origin.x;
+                y = union->origin.y;
+                width = union->size.width;
+                height = union->size.height;
+                [firstObject croppedBoundingBox];
+                -[MADVideoRemoveBackgroundCropTask scaleNormalizedCropRect:forPixelBuffer:](self, "scaleNormalizedCropRect:forPixelBuffer:", [firstObject pixelBuffer], v66, v67, v68, v69);
                 v111.origin.x = v70;
                 v111.origin.y = v71;
                 v111.size.width = v72;
@@ -1394,13 +1394,13 @@ LABEL_32:
                 v110.origin.y = y;
                 v110.size.width = width;
                 v110.size.height = height;
-                *a8 = CGRectUnion(v110, v111);
+                *union = CGRectUnion(v110, v111);
                 v74 = [MADMattedFullFrame alloc];
-                v75 = [v57 pixelBuffer];
+                pixelBuffer = [firstObject pixelBuffer];
                 buf.duration = presentationTimeStamp;
-                [v57 confidence];
-                v77 = [(MADMattedFullFrame *)v74 initWithPixelBuffer:v75 presentationTimestamp:&buf confidence:v76];
-                [v83 addObject:v77];
+                [firstObject confidence];
+                v77 = [(MADMattedFullFrame *)v74 initWithPixelBuffer:pixelBuffer presentationTimestamp:&buf confidence:v76];
+                [array addObject:v77];
 
                 v36 = 0;
               }
@@ -1428,8 +1428,8 @@ LABEL_32:
           else
           {
             v78 = [v53 copy];
-            v57 = *a11;
-            *a11 = v78;
+            firstObject = *error;
+            *error = v78;
             v36 = 1;
           }
 
@@ -1451,8 +1451,8 @@ LABEL_32:
         v101 = v40;
         v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v101 forKeys:&v100 count:1];
         v42 = [v39 errorWithDomain:v29 code:-18 userInfo:v41];
-        v43 = *a11;
-        *a11 = v42;
+        v43 = *error;
+        *error = v42;
 
         CF<__CVBuffer *>::~CF(&rhs);
         v36 = 1;
@@ -1471,7 +1471,7 @@ LABEL_57:
       {
         if (v36 == 5)
         {
-          v80 = v83;
+          v80 = array;
         }
 
         else
@@ -1493,14 +1493,14 @@ LABEL_64:
   return v80;
 }
 
-- (BOOL)isAnimatedStickerPreferredWithPastSamples:(id)a3 futureSamples:(id)a4
+- (BOOL)isAnimatedStickerPreferredWithPastSamples:(id)samples futureSamples:(id)futureSamples
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  samplesCopy = samples;
+  futureSamplesCopy = futureSamples;
   v7 = +[MADVideoRemoveBackgroundSettings visionTrimWindow];
-  v8 = [v5 count];
-  if ([v6 count] + v8 <= 2 * v7)
+  v8 = [samplesCopy count];
+  if ([futureSamplesCopy count] + v8 <= 2 * v7)
   {
     LOBYTE(v21) = 0;
   }
@@ -1516,9 +1516,9 @@ LABEL_64:
     v15 = 0;
     v16 = 0;
     v17 = 1.0;
-    while (v7 + v15 < [v5 count])
+    while (v7 + v15 < [samplesCopy count])
     {
-      v18 = [v5 objectAtIndexedSubscript:v15];
+      v18 = [samplesCopy objectAtIndexedSubscript:v15];
       [v18 confidence];
       v20 = v19;
 
@@ -1535,9 +1535,9 @@ LABEL_64:
       ++v15;
     }
 
-    for (i = 0; v7 + i < [v6 count]; ++i)
+    for (i = 0; v7 + i < [futureSamplesCopy count]; ++i)
     {
-      v23 = [v6 objectAtIndexedSubscript:i];
+      v23 = [futureSamplesCopy objectAtIndexedSubscript:i];
       [v23 confidence];
       v25 = v24;
 
@@ -1552,8 +1552,8 @@ LABEL_64:
       }
     }
 
-    v26 = [v5 count];
-    v27 = v16 / ([v6 count] + v26);
+    v26 = [samplesCopy count];
+    v27 = v16 / ([futureSamplesCopy count] + v26);
     v21 = v27 <= v12 && v17 >= v14;
     if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -1576,17 +1576,17 @@ LABEL_64:
   return v21;
 }
 
-- (BOOL)exportFutureSamples:(id)a3 sequenceWriter:(id)a4 progress:(id)a5 error:(id *)a6
+- (BOOL)exportFutureSamples:(id)samples sequenceWriter:(id)writer progress:(id)progress error:(id *)error
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v40 = a4;
-  v39 = a5;
+  samplesCopy = samples;
+  writerCopy = writer;
+  progressCopy = progress;
   v41 = *MEMORY[0x1E696A768];
   v42 = *MEMORY[0x1E696A578];
   do
   {
-    v11 = [v10 count];
+    v11 = [samplesCopy count];
     if (!v11)
     {
       break;
@@ -1597,28 +1597,28 @@ LABEL_64:
     {
       v13 = MEMORY[0x1E696ABC0];
       v53 = v42;
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Request canceled"];
-      v54[0] = v14;
+      firstObject = [MEMORY[0x1E696AEC0] stringWithFormat:@"Request canceled"];
+      v54[0] = firstObject;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:&v53 count:1];
       v16 = [v13 errorWithDomain:v41 code:-128 userInfo:v15];
-      v17 = *a6;
-      *a6 = v16;
+      v17 = *error;
+      *error = v16;
     }
 
     else
     {
-      v14 = [v10 firstObject];
+      firstObject = [samplesCopy firstObject];
       if (MediaAnalysisLogLevel() >= 6)
       {
         v18 = MEMORY[0x1E69E9C10];
         v19 = MEMORY[0x1E69E9C10];
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
-          if (v14)
+          if (firstObject)
           {
-            [v14 presentationTimestamp];
+            [firstObject presentationTimestamp];
             v20 = *v44;
-            [v14 presentationTimestamp];
+            [firstObject presentationTimestamp];
             v21 = v43;
           }
 
@@ -1652,10 +1652,10 @@ LABEL_64:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v25, OS_SIGNPOST_INTERVAL_BEGIN, v23, "MADVideoRemoveBackground_ExportFrame", "", v44, 2u);
       }
 
-      v26 = [v14 pixelBuffer];
-      if (v14)
+      pixelBuffer = [firstObject pixelBuffer];
+      if (firstObject)
       {
-        [v14 presentationTimestamp];
+        [firstObject presentationTimestamp];
       }
 
       else
@@ -1665,7 +1665,7 @@ LABEL_64:
         v46 = 0;
       }
 
-      if (![v40 addPixelBuffer:v26 withTime:v44])
+      if (![writerCopy addPixelBuffer:pixelBuffer withTime:v44])
       {
         v31 = VCPSignPostLog();
         v32 = v31;
@@ -1675,8 +1675,8 @@ LABEL_64:
           _os_signpost_emit_with_name_impl(&dword_1C9B70000, v32, OS_SIGNPOST_INTERVAL_END, v23, "MADVideoRemoveBackground_ExportFrame", "", v44, 2u);
         }
 
-        [v10 removeObjectAtIndex:0];
-        [v39 setCompletedUnitCount:{objc_msgSend(v39, "completedUnitCount") + 1}];
+        [samplesCopy removeObjectAtIndex:0];
+        [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "completedUnitCount") + 1}];
         v33 = 1;
         goto LABEL_28;
       }
@@ -1684,11 +1684,11 @@ LABEL_64:
       v27 = MEMORY[0x1E696ABC0];
       v47 = v42;
       v28 = MEMORY[0x1E696AEC0];
-      if (v14)
+      if (firstObject)
       {
-        [v14 presentationTimestamp];
+        [firstObject presentationTimestamp];
         v29 = *v44;
-        [v14 presentationTimestamp];
+        [firstObject presentationTimestamp];
         v30 = v43;
       }
 
@@ -1706,8 +1706,8 @@ LABEL_64:
       v48 = v34;
       v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
       v36 = [v27 errorWithDomain:v41 code:-18 userInfo:v35];
-      v37 = *a6;
-      *a6 = v36;
+      v37 = *error;
+      *error = v36;
     }
 
     v33 = 0;
@@ -1721,46 +1721,46 @@ LABEL_28:
   return v11 == 0;
 }
 
-- (id)compressSequenceData:(id)a3 sequenceWriter:(id)a4 outputWidth:(unint64_t *)a5 outputHeight:(unint64_t *)a6
+- (id)compressSequenceData:(id)data sequenceWriter:(id)writer outputWidth:(unint64_t *)width outputHeight:(unint64_t *)height
 {
   v49 = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v36 = a4;
-  v8 = [(MADVideoRemoveBackgroundRequest *)self->_request maxFileSize];
-  v35 = [v8 unsignedIntegerValue];
+  dataCopy = data;
+  writerCopy = writer;
+  maxFileSize = [(MADVideoRemoveBackgroundRequest *)self->_request maxFileSize];
+  unsignedIntegerValue = [maxFileSize unsignedIntegerValue];
 
   if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    v46 = [v39 length];
+    v46 = [dataCopy length];
     v47 = 1024;
-    v48 = v35;
+    v48 = unsignedIntegerValue;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[RMBG] Output exceeds max file size (%d > %d); compressing...", buf, 0xEu);
   }
 
-  v9 = [(MADVideoRemoveBackgroundRequest *)self->_request minDimension];
-  if (v9)
+  minDimension = [(MADVideoRemoveBackgroundRequest *)self->_request minDimension];
+  if (minDimension)
   {
-    v10 = [(MADVideoRemoveBackgroundRequest *)self->_request minDimension];
-    v11 = [v10 unsignedIntegerValue];
+    minDimension2 = [(MADVideoRemoveBackgroundRequest *)self->_request minDimension];
+    unsignedIntegerValue2 = [minDimension2 unsignedIntegerValue];
   }
 
   else
   {
-    v11 = 300;
+    unsignedIntegerValue2 = 300;
   }
 
   v12 = MEMORY[0x1E695DF70];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue2];
   v33 = [v12 arrayWithObject:v13];
 
-  v14 = *a5;
-  if (*a5 <= *a6)
+  v14 = *width;
+  if (*width <= *height)
   {
-    v14 = *a6;
+    v14 = *height;
   }
 
-  if (v14 >= 0x259 && v11 <= 0x257)
+  if (v14 >= 0x259 && unsignedIntegerValue2 <= 0x257)
   {
     [v33 insertObject:&unk_1F49BBDA0 atIndex:0];
   }
@@ -1790,9 +1790,9 @@ LABEL_28:
       v19 = *(*(&v40 + 1) + 8 * i);
       if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v19 intValue];
+        intValue = [v19 intValue];
         *buf = 67109120;
-        v46 = v20;
+        v46 = intValue;
         _os_log_impl(&dword_1C9B70000, v17, OS_LOG_TYPE_DEFAULT, "[RMBG] Transcoding to max dimension %d", buf, 8u);
       }
 
@@ -1807,7 +1807,7 @@ LABEL_28:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v24, OS_SIGNPOST_INTERVAL_BEGIN, v22, "MADVideoRemoveBackground_ReEncode", "", buf, 2u);
       }
 
-      v25 = [objc_opt_class() transcodeSequenceData:v39 maxDimension:objc_msgSend(v19 outputWidth:"unsignedIntegerValue") outputHeight:{a5, a6}];
+      v25 = [objc_opt_class() transcodeSequenceData:dataCopy maxDimension:objc_msgSend(v19 outputWidth:"unsignedIntegerValue") outputHeight:{width, height}];
       v26 = VCPSignPostLog();
       v27 = v26;
       if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v26))
@@ -1818,7 +1818,7 @@ LABEL_28:
 
       if (v25)
       {
-        if ([v25 length] <= v35)
+        if ([v25 length] <= unsignedIntegerValue)
         {
           goto LABEL_38;
         }
@@ -1829,7 +1829,7 @@ LABEL_28:
           *buf = 67109376;
           v46 = v28;
           v47 = 1024;
-          v48 = v35;
+          v48 = unsignedIntegerValue;
           v29 = v17;
           v30 = "[RMBG] Transcoded output exceeds max file size (%d vs %d)";
           v31 = 14;
@@ -1859,24 +1859,24 @@ LABEL_38:
   return v25;
 }
 
-- (void)publishPreviewResultsTimeRange:(id *)a3 pastSamples:(id)a4 futureSamples:(id)a5 cropRect:(CGRect)a6
+- (void)publishPreviewResultsTimeRange:(id *)range pastSamples:(id)samples futureSamples:(id)futureSamples cropRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v44 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v62 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v46 = a5;
-  v47 = v11;
-  v12 = [MEMORY[0x1E695DF70] array];
+  samplesCopy = samples;
+  futureSamplesCopy = futureSamples;
+  v47 = samplesCopy;
+  array = [MEMORY[0x1E695DF70] array];
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v13 = [v11 reverseObjectEnumerator];
-  v14 = [v13 countByEnumeratingWithState:&v55 objects:v61 count:16];
+  reverseObjectEnumerator = [samplesCopy reverseObjectEnumerator];
+  v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v55 objects:v61 count:16];
   if (v14)
   {
     v15 = *v56;
@@ -1886,7 +1886,7 @@ LABEL_38:
       {
         if (*v56 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v17 = *(*(&v55 + 1) + 8 * i);
@@ -1904,13 +1904,13 @@ LABEL_38:
           *&v49 = 0;
         }
 
-        v21 = [v20 initWithPresentationTimeStamp:buf surface:{v19, v44}];
-        [v12 addObject:v21];
+        v21 = [v20 initWithPresentationTimeStamp:buf surface:{v19, selfCopy}];
+        [array addObject:v21];
 
         objc_autoreleasePoolPop(v18);
       }
 
-      v14 = [v13 countByEnumeratingWithState:&v55 objects:v61 count:16];
+      v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v55 objects:v61 count:16];
     }
 
     while (v14);
@@ -1920,7 +1920,7 @@ LABEL_38:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v22 = v46;
+  v22 = futureSamplesCopy;
   v23 = [v22 countByEnumeratingWithState:&v51 objects:v60 count:16];
   if (v23)
   {
@@ -1949,8 +1949,8 @@ LABEL_38:
           *&v49 = 0;
         }
 
-        v30 = [v29 initWithPresentationTimeStamp:buf surface:{v28, v44}];
-        [v12 addObject:v30];
+        v30 = [v29 initWithPresentationTimeStamp:buf surface:{v28, selfCopy}];
+        [array addObject:v30];
 
         objc_autoreleasePoolPop(v27);
       }
@@ -1971,12 +1971,12 @@ LABEL_38:
     [v22 firstObject];
   }
   v31 = ;
-  v32 = [v31 pixelBuffer];
+  pixelBuffer = [v31 pixelBuffer];
 
-  if (v32)
+  if (pixelBuffer)
   {
-    v33 = CVPixelBufferGetWidth(v32);
-    v34 = CVPixelBufferGetHeight(v32);
+    v33 = CVPixelBufferGetWidth(pixelBuffer);
+    v34 = CVPixelBufferGetHeight(pixelBuffer);
     v63.origin.x = x / v33;
     v63.origin.y = 1.0 - (y + height) / v34;
     v63.size.width = width / v33;
@@ -2008,26 +2008,26 @@ LABEL_38:
 
   v39 = objc_alloc_init(MEMORY[0x1E69AE4E8]);
   v40 = objc_alloc(MEMORY[0x1E69AE4D0]);
-  v41 = *&a3->var0.var3;
-  *buf = *&a3->var0.var0;
+  v41 = *&range->var0.var3;
+  *buf = *&range->var0.var0;
   v49 = v41;
-  v50 = *&a3->var1.var1;
-  v42 = [v40 initWithTimeRange:buf frames:v12 normalizedCropRect:{v35, v36, v37, v38}];
+  v50 = *&range->var1.var1;
+  v42 = [v40 initWithTimeRange:buf frames:array normalizedCropRect:{v35, v36, v37, v38}];
   v59 = v42;
   v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v59 count:1];
   [v39 setResults:v43];
 
-  (*(v44->_resultHandler + 2))();
+  (*(selfCopy->_resultHandler + 2))();
 }
 
-- (void)publishPayloadWidth:(unint64_t)a3 height:(unint64_t)a4 data:(id)a5
+- (void)publishPayloadWidth:(unint64_t)width height:(unint64_t)height data:(id)data
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  dataCopy = data;
   v9 = objc_alloc_init(MEMORY[0x1E69AE4E8]);
   v10 = objc_alloc(MEMORY[0x1E69AE4E0]);
-  v11 = [(MADVideoRemoveBackgroundRequest *)self->_request outputType];
-  v12 = [v10 initWithUniformTypeIdentifier:v11 width:a3 height:a4 data:v8];
+  outputType = [(MADVideoRemoveBackgroundRequest *)self->_request outputType];
+  v12 = [v10 initWithUniformTypeIdentifier:outputType width:width height:height data:dataCopy];
   v14[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   [v9 setResults:v13];
@@ -2035,7 +2035,7 @@ LABEL_38:
   (*(self->_resultHandler + 2))();
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   v262[1] = *MEMORY[0x1E69E9840];
   if ([(MADVideoRemoveBackgroundCropTask *)self validateRequest:?])
@@ -2060,7 +2060,7 @@ LABEL_38:
         v203 = v13;
         if (!v13)
         {
-          if (a3)
+          if (run)
           {
             v23 = MEMORY[0x1E696ABC0];
             v259 = *MEMORY[0x1E696A578];
@@ -2068,8 +2068,8 @@ LABEL_38:
             v260 = v24;
             v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v260 forKeys:&v259 count:1];
             v26 = [v23 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v25];
-            v27 = *a3;
-            *a3 = v26;
+            v27 = *run;
+            *run = v26;
           }
 
           goto LABEL_50;
@@ -2149,7 +2149,7 @@ LABEL_28:
                   if ([v11 startReading])
                   {
                     v201 = v29;
-                    v194 = [v203 vcp_imageOrientation];
+                    vcp_imageOrientation = [v203 vcp_imageOrientation];
                     range = buf[1];
                     v197 = [v203 vcp_sampleCountForTimeRange:&range];
                     if (MediaAnalysisLogLevel() >= 6)
@@ -2170,14 +2170,14 @@ LABEL_28:
                       progressHandler[2](0.0);
                     }
 
-                    v33 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:3 * v197];
+                    v197 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:3 * v197];
                     v229[0] = MEMORY[0x1E69E9820];
                     v229[1] = 3221225472;
                     v229[2] = __40__MADVideoRemoveBackgroundCropTask_run___block_invoke;
                     v229[3] = &unk_1E834D238;
-                    v200 = v33;
+                    v200 = v197;
                     v230 = v200;
-                    v231 = self;
+                    selfCopy = self;
                     v196 = [VCPTimer timerWithInterval:250 unit:2 oneShot:0 andBlock:v229];
                     if (MediaAnalysisLogLevel() >= 7)
                     {
@@ -2208,7 +2208,7 @@ LABEL_28:
                     range.start.epoch = v233;
                     *&buf[0].start.value = *&buf[1].start.value;
                     buf[0].start.epoch = buf[1].start.epoch;
-                    v199 = [(MADVideoRemoveBackgroundCropTask *)self decodeSamplesUntilTime:&range trackOutput:v201 baseTime:buf progress:v200 error:a3];
+                    v199 = [(MADVideoRemoveBackgroundCropTask *)self decodeSamplesUntilTime:&range trackOutput:v201 baseTime:buf progress:v200 error:run];
                     if (!v199)
                     {
                       goto LABEL_47;
@@ -2216,9 +2216,9 @@ LABEL_28:
 
                     if ([v11 status] == 3)
                     {
-                      v41 = [v11 error];
-                      v42 = *a3;
-                      *a3 = v41;
+                      error = [v11 error];
+                      v42 = *run;
+                      *run = error;
 
 LABEL_47:
                       v19 = 0;
@@ -2236,8 +2236,8 @@ LABEL_176:
                       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v61, OS_SIGNPOST_INTERVAL_END, v38, "MADVideoRemoveBackground_DecodePastFrames", "", &range, 2u);
                     }
 
-                    v62 = [v199 lastObject];
-                    v228 = CFRetain(v62);
+                    lastObject = [v199 lastObject];
+                    v228 = CFRetain(lastObject);
 
                     v63 = VCPSignPostLog();
                     v64 = os_signpost_id_generate(v63);
@@ -2250,7 +2250,7 @@ LABEL_176:
                       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v66, OS_SIGNPOST_INTERVAL_BEGIN, v64, "MADVideoRemoveBackground_GenerateMask", "", &range, 2u);
                     }
 
-                    cf = [(MADVideoRemoveBackgroundCropTask *)self generateMaskForSampleBuffer:v228 orientation:v194 error:a3];
+                    cf = [(MADVideoRemoveBackgroundCropTask *)self generateMaskForSampleBuffer:v228 orientation:vcp_imageOrientation error:run];
                     if (!cf)
                     {
                       v19 = 0;
@@ -2304,7 +2304,7 @@ LABEL_175:
                     block[3] = &unk_1F4968E50;
                     p_time2 = &time2;
                     block[4] = self;
-                    v226 = v194;
+                    v226 = vcp_imageOrientation;
                     v220 = v199;
                     v225 = cf;
                     CFRetain(cf);
@@ -2332,7 +2332,7 @@ LABEL_175:
 
                     *&v258.start.value = *&buf[1].start.value;
                     v258.start.epoch = buf[1].start.epoch;
-                    v195 = [(MADVideoRemoveBackgroundCropTask *)self processFutureSamplesFromTrackOutput:v201 baseTime:&v258 orientation:v194 maskSampleBuffer:v228 maskPixelBuffer:cf cropUnion:&v218 endTime:&v217 progress:v188 error:a3];
+                    v195 = [(MADVideoRemoveBackgroundCropTask *)self processFutureSamplesFromTrackOutput:v201 baseTime:&v258 orientation:vcp_imageOrientation maskSampleBuffer:v228 maskPixelBuffer:cf cropUnion:&v218 endTime:&v217 progress:v188 error:run];
                     v78 = VCPSignPostLog();
                     v79 = v78;
                     if (v75 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v78))
@@ -2368,11 +2368,11 @@ LABEL_174:
                       }
 
                       memset(&v216, 0, sizeof(v216));
-                      v81 = [*(*&time2.start.timescale + 40) lastObject];
-                      v82 = v81;
-                      if (v81)
+                      lastObject2 = [*(*&time2.start.timescale + 40) lastObject];
+                      v82 = lastObject2;
+                      if (lastObject2)
                       {
-                        [v81 presentationTimestamp];
+                        [lastObject2 presentationTimestamp];
                       }
 
                       else
@@ -2544,8 +2544,8 @@ LABEL_119:
                         }
 
                         v184 = [(MADVideoRemoveBackgroundCropTask *)self isAnimatedStickerPreferredWithPastSamples:*(*&time2.start.timescale + 40) futureSamples:v80];
-                        v108 = [(MADVideoRemoveBackgroundRequest *)self->_request outputType];
-                        v109 = [MADAlphaSequenceWriter writerWithUniformTypeIdentifier:v108 frameCount:v197 crop:lhs];
+                        outputType = [(MADVideoRemoveBackgroundRequest *)self->_request outputType];
+                        v109 = [MADAlphaSequenceWriter writerWithUniformTypeIdentifier:outputType frameCount:v197 crop:lhs];
 
                         if (v109)
                         {
@@ -2560,7 +2560,7 @@ LABEL_119:
                             _os_signpost_emit_with_name_impl(&dword_1C9B70000, v113, OS_SIGNPOST_INTERVAL_BEGIN, v111, "MADVideoRemoveBackground_EncodePastFrames", "", &v258, 2u);
                           }
 
-                          if (![(MADVideoRemoveBackgroundCropTask *)self exportPastSamples:*(*&time2.start.timescale + 40) sequenceWriter:v109 progress:v188 error:a3])
+                          if (![(MADVideoRemoveBackgroundCropTask *)self exportPastSamples:*(*&time2.start.timescale + 40) sequenceWriter:v109 progress:v188 error:run])
                           {
                             goto LABEL_159;
                           }
@@ -2584,7 +2584,7 @@ LABEL_119:
                             _os_signpost_emit_with_name_impl(&dword_1C9B70000, v119, OS_SIGNPOST_INTERVAL_BEGIN, v117, "MADVideoRemoveBackground_EncodeFutureFrames", "", &v258, 2u);
                           }
 
-                          if (![(MADVideoRemoveBackgroundCropTask *)self exportFutureSamples:v195 sequenceWriter:v109 progress:v188 error:a3])
+                          if (![(MADVideoRemoveBackgroundCropTask *)self exportFutureSamples:v195 sequenceWriter:v109 progress:v188 error:run])
                           {
 LABEL_159:
                             v19 = 0;
@@ -2614,13 +2614,13 @@ LABEL_172:
 
                           v258 = buf[1];
                           CMTimeRangeGetEnd(&rhs, &v258);
-                          v198 = [v109 finishWithEndTime:&rhs];
-                          if (v198)
+                          outputType4 = [v109 finishWithEndTime:&rhs];
+                          if (outputType4)
                           {
                             rhs.value = *&lhs[16];
                             v216.value = *&lhs[24];
-                            v124 = [(MADVideoRemoveBackgroundRequest *)self->_request maxFileSize];
-                            if (v124 && (v125 = [v198 length], -[MADVideoRemoveBackgroundRequest maxFileSize](self->_request, "maxFileSize"), v126 = objc_claimAutoreleasedReturnValue(), v127 = v125 > objc_msgSend(v126, "unsignedIntegerValue"), v126, v124, v127) && (-[MADVideoRemoveBackgroundCropTask compressSequenceData:sequenceWriter:outputWidth:outputHeight:](self, "compressSequenceData:sequenceWriter:outputWidth:outputHeight:", v198, v109, &rhs, &v216), v128 = objc_claimAutoreleasedReturnValue(), v198, (v198 = v128) == 0))
+                            maxFileSize = [(MADVideoRemoveBackgroundRequest *)self->_request maxFileSize];
+                            if (maxFileSize && (v125 = [outputType4 length], -[MADVideoRemoveBackgroundRequest maxFileSize](self->_request, "maxFileSize"), v126 = objc_claimAutoreleasedReturnValue(), v127 = v125 > objc_msgSend(v126, "unsignedIntegerValue"), v126, maxFileSize, v127) && (-[MADVideoRemoveBackgroundCropTask compressSequenceData:sequenceWriter:outputWidth:outputHeight:](self, "compressSequenceData:sequenceWriter:outputWidth:outputHeight:", outputType4, v109, &rhs, &v216), v128 = objc_claimAutoreleasedReturnValue(), outputType4, (outputType4 = v128) == 0))
                             {
                               if (MediaAnalysisLogLevel() >= 3)
                               {
@@ -2639,9 +2639,9 @@ LABEL_172:
                               v239 = v138;
                               v189 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v239 forKeys:&v238 count:1];
                               v182 = [v181 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v189];
-                              v198 = 0;
-                              v193 = *a3;
-                              *a3 = v182;
+                              outputType4 = 0;
+                              v193 = *run;
+                              *run = v182;
                             }
 
                             else
@@ -2654,7 +2654,7 @@ LABEL_172:
                                 {
                                   value = rhs.value;
                                   v132 = v216.value;
-                                  v133 = [v198 length];
+                                  v133 = [outputType4 length];
                                   LODWORD(v258.start.value) = 67109632;
                                   HIDWORD(v258.start.value) = value;
                                   LOWORD(v258.start.timescale) = 1024;
@@ -2672,19 +2672,19 @@ LABEL_172:
                                 v134[2](1.0);
                               }
 
-                              v135 = [(MADVideoRemoveBackgroundRequest *)self->_request stickerIdentifiers];
-                              v136 = [v135 count] == 0;
+                              stickerIdentifiers = [(MADVideoRemoveBackgroundRequest *)self->_request stickerIdentifiers];
+                              v136 = [stickerIdentifiers count] == 0;
 
                               if (v136)
                               {
                                 goto LABEL_197;
                               }
 
-                              v137 = [(MADServiceVideoAsset *)self->_asset animatedStickerScore];
-                              v138 = v137;
-                              if (v137)
+                              animatedStickerScore = [(MADServiceVideoAsset *)self->_asset animatedStickerScore];
+                              v138 = animatedStickerScore;
+                              if (animatedStickerScore)
                               {
-                                [v137 doubleValue];
+                                [animatedStickerScore doubleValue];
                                 v140 = v139;
                                 +[MADVideoRemoveBackgroundSettings photosPreferredThreshold];
                                 v142 = v141;
@@ -2727,17 +2727,17 @@ LABEL_172:
                               }
 
                               v170 = objc_alloc_init(_MADObjCStickerStoreFacade);
-                              v171 = [(MADVideoRemoveBackgroundRequest *)self->_request stickerIdentifiers];
-                              v172 = [(MADVideoRemoveBackgroundRequest *)self->_request outputType];
+                              stickerIdentifiers2 = [(MADVideoRemoveBackgroundRequest *)self->_request stickerIdentifiers];
+                              outputType2 = [(MADVideoRemoveBackgroundRequest *)self->_request outputType];
                               v205 = 0;
-                              v173 = [(_MADObjCStickerStoreFacade *)v170 addAnimatedRepresentationWithIdentifiers:v171 data:v198 uti:v172 size:v183 isPreferred:&v205 error:rhs.value, v216.value];
+                              v173 = [(_MADObjCStickerStoreFacade *)v170 addAnimatedRepresentationWithIdentifiers:stickerIdentifiers2 data:outputType4 uti:outputType2 size:v183 isPreferred:&v205 error:rhs.value, v216.value];
                               v193 = v205;
 
                               if (v173)
                               {
 
 LABEL_197:
-                                [(MADVideoRemoveBackgroundCropTask *)self publishPayloadWidth:rhs.value height:v216.value data:v198];
+                                [(MADVideoRemoveBackgroundCropTask *)self publishPayloadWidth:rhs.value height:v216.value data:outputType4];
                                 (*(self->_completionHandler + 2))();
                                 MADPLLogAnimatedStickerCreation(v185 + v186, v7);
                                 v19 = 1;
@@ -2758,8 +2758,8 @@ LABEL_197:
                               }
 
                               v177 = [v193 copy];
-                              v178 = *a3;
-                              *a3 = v177;
+                              v178 = *run;
+                              *run = v177;
                             }
                           }
 
@@ -2778,12 +2778,12 @@ LABEL_197:
 
                             v164 = MEMORY[0x1E696ABC0];
                             v240 = *MEMORY[0x1E696A578];
-                            v198 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to finalize output sequence"];
-                            v241 = v198;
+                            outputType4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to finalize output sequence"];
+                            v241 = outputType4;
                             v165 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v241 forKeys:&v240 count:1];
                             v166 = [v164 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v165];
-                            v167 = *a3;
-                            *a3 = v166;
+                            v167 = *run;
+                            *run = v166;
                           }
                         }
 
@@ -2795,9 +2795,9 @@ LABEL_197:
                             v153 = MEMORY[0x1E69E9C10];
                             if (os_log_type_enabled(v152, OS_LOG_TYPE_ERROR))
                             {
-                              v154 = [(MADVideoRemoveBackgroundRequest *)self->_request outputType];
+                              outputType3 = [(MADVideoRemoveBackgroundRequest *)self->_request outputType];
                               LODWORD(v258.start.value) = 138412290;
-                              *(&v258.start.value + 4) = v154;
+                              *(&v258.start.value + 4) = outputType3;
                               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[RMBG] Invalid output type specified (%@)", &v258, 0xCu);
                             }
                           }
@@ -2805,13 +2805,13 @@ LABEL_197:
                           v155 = MEMORY[0x1E696ABC0];
                           v242 = *MEMORY[0x1E696A578];
                           v156 = MEMORY[0x1E696AEC0];
-                          v198 = [(MADVideoRemoveBackgroundRequest *)self->_request outputType];
-                          v157 = [v156 stringWithFormat:@"Invalid output type specified (%@)", v198];
-                          v243 = v157;
+                          outputType4 = [(MADVideoRemoveBackgroundRequest *)self->_request outputType];
+                          v198 = [v156 stringWithFormat:@"Invalid output type specified (%@)", outputType4];
+                          v243 = v198;
                           v158 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v243 forKeys:&v242 count:1];
                           v159 = [v155 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v158];
-                          v160 = *a3;
-                          *a3 = v159;
+                          v160 = *run;
+                          *run = v159;
                         }
 
                         v19 = 0;
@@ -2835,15 +2835,15 @@ LABEL_171:
                       v248 = v148;
                       v149 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v248 forKeys:&v247 count:1];
                       v150 = [v147 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v149];
-                      v151 = *a3;
-                      *a3 = v150;
+                      v151 = *run;
+                      *run = v150;
                     }
 
                     else
                     {
                       v83 = [*(*&buf[0].start.timescale + 40) copy];
-                      v84 = *a3;
-                      *a3 = v83;
+                      v84 = *run;
+                      *run = v83;
                     }
 
                     v19 = 0;
@@ -2852,7 +2852,7 @@ LABEL_173:
                     goto LABEL_174;
                   }
 
-                  if (a3)
+                  if (run)
                   {
                     v53 = MEMORY[0x1E696ABC0];
                     v252 = *MEMORY[0x1E696A578];
@@ -2861,14 +2861,14 @@ LABEL_173:
                     v201 = v29;
                     v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v253 forKeys:&v252 count:1];
                     v54 = [v53 errorWithDomain:*MEMORY[0x1E696A768] code:-19 userInfo:v50];
-                    v55 = *a3;
-                    *a3 = v54;
+                    v55 = *run;
+                    *run = v54;
 
                     goto LABEL_55;
                   }
                 }
 
-                else if (a3)
+                else if (run)
                 {
                   v49 = MEMORY[0x1E696ABC0];
                   v254 = *MEMORY[0x1E696A578];
@@ -2877,8 +2877,8 @@ LABEL_173:
                   v201 = 0;
                   v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v255 forKeys:&v254 count:1];
                   v51 = [v49 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v50];
-                  v52 = *a3;
-                  *a3 = v51;
+                  v52 = *run;
+                  *run = v51;
 
 LABEL_55:
                   v19 = 0;
@@ -2894,7 +2894,7 @@ LABEL_179:
                 goto LABEL_180;
               }
 
-              if (a3)
+              if (run)
               {
                 v43 = MEMORY[0x1E696ABC0];
                 v256 = *MEMORY[0x1E696A578];
@@ -2912,8 +2912,8 @@ LABEL_179:
                 v201 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v257 forKeys:&v256 count:1];
                 v47 = [v43 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:?];
                 v19 = 0;
-                v48 = *a3;
-                *a3 = v47;
+                v48 = *run;
+                *run = v47;
 LABEL_178:
 
                 v29 = v201;
@@ -2954,7 +2954,7 @@ LABEL_27:
 
     else
     {
-      if (!a3)
+      if (!run)
       {
         v19 = 0;
 LABEL_182:
@@ -2971,8 +2971,8 @@ LABEL_182:
     }
 
     v19 = 0;
-    v22 = *a3;
-    *a3 = v21;
+    v22 = *run;
+    *run = v21;
 LABEL_181:
 
     goto LABEL_182;

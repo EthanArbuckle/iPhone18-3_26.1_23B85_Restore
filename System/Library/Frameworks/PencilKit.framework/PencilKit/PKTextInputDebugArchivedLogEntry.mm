@@ -1,19 +1,19 @@
 @interface PKTextInputDebugArchivedLogEntry
-- (BOOL)_loadInputDrawingFromDictionary:(id)a3 errorMessage:(id *)a4;
-- (BOOL)_loadRecognitionResultFromDictionary:(id)a3;
-- (BOOL)_loadTargetContentInfoFromDictionary:(id)a3 targets:(id)a4;
-- (BOOL)_loadTextInputTargetsFromDictionaries:(id)a3;
-- (PKTextInputDebugArchivedLogEntry)initWithDictionary:(id)a3 error:(id *)a4;
-- (PKTextInputDebugArchivedLogEntry)initWithRecordingLogEntry:(id)a3 error:(id *)a4;
-- (id)dictionaryRepresentationWithDetailLevel:(int64_t)a3 targetContentLevel:(int64_t)a4;
+- (BOOL)_loadInputDrawingFromDictionary:(id)dictionary errorMessage:(id *)message;
+- (BOOL)_loadRecognitionResultFromDictionary:(id)dictionary;
+- (BOOL)_loadTargetContentInfoFromDictionary:(id)dictionary targets:(id)targets;
+- (BOOL)_loadTextInputTargetsFromDictionaries:(id)dictionaries;
+- (PKTextInputDebugArchivedLogEntry)initWithDictionary:(id)dictionary error:(id *)error;
+- (PKTextInputDebugArchivedLogEntry)initWithRecordingLogEntry:(id)entry error:(id *)error;
+- (id)dictionaryRepresentationWithDetailLevel:(int64_t)level targetContentLevel:(int64_t)contentLevel;
 @end
 
 @implementation PKTextInputDebugArchivedLogEntry
 
-- (PKTextInputDebugArchivedLogEntry)initWithDictionary:(id)a3 error:(id *)a4
+- (PKTextInputDebugArchivedLogEntry)initWithDictionary:(id)dictionary error:(id *)error
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v48.receiver = self;
   v48.super_class = PKTextInputDebugArchivedLogEntry;
   v7 = [(PKTextInputDebugArchivedLogEntry *)&v48 init];
@@ -21,7 +21,7 @@
   {
     v33 = 0;
     v11 = &stru_1F476BD20;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_29;
     }
@@ -29,20 +29,20 @@
     goto LABEL_28;
   }
 
-  v8 = [v6 copy];
+  v8 = [dictionaryCopy copy];
   logDictionary = v7->_logDictionary;
   v7->_logDictionary = v8;
 
-  v10 = [v6 objectForKeyedSubscript:@"date"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"date"];
   if (!v10)
   {
     goto LABEL_21;
   }
 
   v11 = v10;
-  v12 = [v6 objectForKeyedSubscript:@"date"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"date"];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v6 objectForKeyedSubscript:@"inputDrawing"], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([dictionaryCopy objectForKeyedSubscript:@"inputDrawing"], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_25:
 
@@ -54,9 +54,9 @@ LABEL_26:
   }
 
   v14 = v13;
-  v15 = [v6 objectForKeyedSubscript:@"inputDrawing"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"inputDrawing"];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v6 objectForKeyedSubscript:@"inputTargets"], (v16 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([dictionaryCopy objectForKeyedSubscript:@"inputTargets"], (v16 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_24:
 
@@ -64,9 +64,9 @@ LABEL_24:
   }
 
   v46 = v16;
-  v17 = [v6 objectForKeyedSubscript:@"inputTargets"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"inputTargets"];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v6 objectForKeyedSubscript:@"inputTargetContentInfo"], (v18 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([dictionaryCopy objectForKeyedSubscript:@"inputTargetContentInfo"], (v18 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_23:
 
@@ -74,16 +74,16 @@ LABEL_23:
   }
 
   v44 = v18;
-  v45 = [v6 objectForKeyedSubscript:@"inputTargetContentInfo"];
+  v45 = [dictionaryCopy objectForKeyedSubscript:@"inputTargetContentInfo"];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v6 objectForKeyedSubscript:@"recognitionResult"], (v19 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([dictionaryCopy objectForKeyedSubscript:@"recognitionResult"], (v19 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
     goto LABEL_23;
   }
 
   v41 = v19;
-  v43 = [v6 objectForKeyedSubscript:@"recognitionResult"];
+  v43 = [dictionaryCopy objectForKeyedSubscript:@"recognitionResult"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -94,14 +94,14 @@ LABEL_21:
     goto LABEL_27;
   }
 
-  v20 = [v6 objectForKeyedSubscript:@"date"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"date"];
   v21 = +[PKTextInputDebugLogEntry loggedDateFormatter];
   v22 = [v21 dateFromString:v20];
   [(PKTextInputDebugLogEntry *)v7 setEntryDate:v22];
 
-  v23 = [(PKTextInputDebugLogEntry *)v7 entryDate];
+  entryDate = [(PKTextInputDebugLogEntry *)v7 entryDate];
 
-  if (v23)
+  if (entryDate)
   {
     v24 = [(NSDictionary *)v7->_logDictionary objectForKeyedSubscript:@"inputDrawing"];
     v47 = &stru_1F476BD20;
@@ -119,8 +119,8 @@ LABEL_21:
     if (v27)
     {
       v28 = [(NSDictionary *)v7->_logDictionary objectForKeyedSubscript:@"inputTargetContentInfo"];
-      v29 = [(PKTextInputDebugLogEntry *)v7 inputTargets];
-      v30 = [(PKTextInputDebugArchivedLogEntry *)v7 _loadTargetContentInfoFromDictionary:v28 targets:v29];
+      inputTargets = [(PKTextInputDebugLogEntry *)v7 inputTargets];
+      v30 = [(PKTextInputDebugArchivedLogEntry *)v7 _loadTargetContentInfoFromDictionary:v28 targets:inputTargets];
 
       if (v30)
       {
@@ -130,7 +130,7 @@ LABEL_21:
         if (v32)
         {
           v33 = 0;
-          if (!a4)
+          if (!error)
           {
             goto LABEL_29;
           }
@@ -166,11 +166,11 @@ LABEL_27:
   v33 = [v35 errorWithDomain:v36 code:1 userInfo:v37];
 
   v7 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_28:
     v38 = v33;
-    *a4 = v33;
+    *error = v33;
   }
 
 LABEL_29:
@@ -179,24 +179,24 @@ LABEL_29:
   return v39;
 }
 
-- (PKTextInputDebugArchivedLogEntry)initWithRecordingLogEntry:(id)a3 error:(id *)a4
+- (PKTextInputDebugArchivedLogEntry)initWithRecordingLogEntry:(id)entry error:(id *)error
 {
-  v6 = [a3 dictionaryRepresentationWithTargetContentLevel:2];
-  v7 = [(PKTextInputDebugArchivedLogEntry *)self initWithDictionary:v6 error:a4];
+  v6 = [entry dictionaryRepresentationWithTargetContentLevel:2];
+  v7 = [(PKTextInputDebugArchivedLogEntry *)self initWithDictionary:v6 error:error];
 
   return v7;
 }
 
-- (id)dictionaryRepresentationWithDetailLevel:(int64_t)a3 targetContentLevel:(int64_t)a4
+- (id)dictionaryRepresentationWithDetailLevel:(int64_t)level targetContentLevel:(int64_t)contentLevel
 {
   v7 = [(NSDictionary *)self->_logDictionary mutableCopy];
   v8 = v7;
-  if (!a3)
+  if (!level)
   {
     [v7 removeObjectForKey:@"inputTargets"];
     v9 = MEMORY[0x1E696AD98];
-    v10 = [(PKTextInputDebugLogEntry *)self inputTargets];
-    v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+    inputTargets = [(PKTextInputDebugLogEntry *)self inputTargets];
+    v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(inputTargets, "count")}];
     [v8 setObject:v11 forKeyedSubscript:@"inputTargetsCount"];
 
     v12 = [v8 objectForKeyedSubscript:@"recognitionResult"];
@@ -227,14 +227,14 @@ LABEL_29:
     }
   }
 
-  if (a4 != 2)
+  if (contentLevel != 2)
   {
     v18 = [v8 objectForKeyedSubscript:@"inputTargetContentInfo"];
     v19 = [v18 mutableCopy];
 
     if (v19)
     {
-      v20 = [(PKTextInputDebugLogEntry *)self referenceSubstringWithTargetContentLevel:a4];
+      v20 = [(PKTextInputDebugLogEntry *)self referenceSubstringWithTargetContentLevel:contentLevel];
       [v19 setObject:v20 forKeyedSubscript:@"referenceSubstring"];
       [v8 setObject:v19 forKeyedSubscript:@"inputTargetContentInfo"];
     }
@@ -243,16 +243,16 @@ LABEL_29:
   return v8;
 }
 
-- (BOOL)_loadInputDrawingFromDictionary:(id)a3 errorMessage:(id *)a4
+- (BOOL)_loadInputDrawingFromDictionary:(id)dictionary errorMessage:(id *)message
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"drawingData"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"drawingData"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v11 = 0;
-    v16 = @"Failed to load drawing data.";
-    if (!a4)
+    localizedDescription = @"Failed to load drawing data.";
+    if (!message)
     {
       goto LABEL_11;
     }
@@ -265,25 +265,25 @@ LABEL_29:
   v9 = v19;
   [(PKTextInputDebugLogEntry *)self setInputDrawing:v8];
 
-  v10 = [(PKTextInputDebugLogEntry *)self inputDrawing];
-  v11 = v10 != 0;
+  inputDrawing = [(PKTextInputDebugLogEntry *)self inputDrawing];
+  v11 = inputDrawing != 0;
 
-  if (v10)
+  if (inputDrawing)
   {
 
-    v12 = [v6 objectForKeyedSubscript:@"containsInProgressStroke"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"containsInProgressStroke"];
     if (v12)
     {
       v13 = v12;
-      v14 = [v6 objectForKeyedSubscript:@"containsInProgressStroke"];
+      v14 = [dictionaryCopy objectForKeyedSubscript:@"containsInProgressStroke"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
-        v16 = 0;
+        localizedDescription = 0;
         v11 = 1;
-        if (!a4)
+        if (!message)
         {
           goto LABEL_11;
         }
@@ -292,21 +292,21 @@ LABEL_29:
       }
     }
 
-    v9 = [v6 objectForKeyedSubscript:@"containsInProgressStroke"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"containsInProgressStroke"];
     -[PKTextInputDebugLogEntry setInputContainsInProgressStroke:](self, "setInputContainsInProgressStroke:", [v9 BOOLValue]);
-    v16 = 0;
+    localizedDescription = 0;
   }
 
   else
   {
-    v16 = [v9 localizedDescription];
+    localizedDescription = [v9 localizedDescription];
   }
 
-  if (a4)
+  if (message)
   {
 LABEL_10:
-    v17 = v16;
-    *a4 = v16;
+    v17 = localizedDescription;
+    *message = localizedDescription;
   }
 
 LABEL_11:
@@ -314,21 +314,21 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)_loadTextInputTargetsFromDictionaries:(id)a3
+- (BOOL)_loadTextInputTargetsFromDictionaries:(id)dictionaries
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  dictionariesCopy = dictionaries;
+  array = [MEMORY[0x1E695DF70] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = v4;
+  v6 = dictionariesCopy;
   v29 = [v6 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v29)
   {
     v30 = *v32;
-    v27 = self;
+    selfCopy = self;
     obj = v6;
     while (2)
     {
@@ -386,11 +386,11 @@ LABEL_15:
         v22 = [v8 objectForKeyedSubscript:@"identifier"];
         v23 = [v21 initWithIdentifier:v22 frame:{x, y, width, height}];
 
-        [v5 addObject:v23];
+        [array addObject:v23];
       }
 
       v6 = obj;
-      self = v27;
+      self = selfCopy;
       v29 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v29)
       {
@@ -401,7 +401,7 @@ LABEL_15:
     }
   }
 
-  v24 = [v5 copy];
+  v24 = [array copy];
   [(PKTextInputDebugLogEntry *)self setInputTargets:v24];
   v25 = 1;
 LABEL_16:
@@ -409,15 +409,15 @@ LABEL_16:
   return v25;
 }
 
-- (BOOL)_loadTargetContentInfoFromDictionary:(id)a3 targets:(id)a4
+- (BOOL)_loadTargetContentInfoFromDictionary:(id)dictionary targets:(id)targets
 {
   v152 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"targetIdentifier"];
+  dictionaryCopy = dictionary;
+  targetsCopy = targets;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"targetIdentifier"];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"targetIdentifier"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"targetIdentifier"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -429,13 +429,13 @@ LABEL_169:
     v138 = v9;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"textContentLength"];
-  if (!v10 || ([v6 objectForKeyedSubscript:@"textContentLength"], v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), count = v11, (objc_opt_isKindOfClass() & 1) != 0))
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"textContentLength"];
+  if (!v10 || ([dictionaryCopy objectForKeyedSubscript:@"textContentLength"], v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), count = v11, (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v13 = [v6 objectForKeyedSubscript:@"elementType"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"elementType"];
     if (v13)
     {
-      v14 = [v6 objectForKeyedSubscript:@"elementType"];
+      v14 = [dictionaryCopy objectForKeyedSubscript:@"elementType"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -454,12 +454,12 @@ LABEL_89:
       v134 = v14;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"referenceSubstring"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"referenceSubstring"];
     v16 = v15;
     if (v15)
     {
       v17 = v15;
-      v18 = [v6 objectForKeyedSubscript:@"referenceSubstring"];
+      v18 = [dictionaryCopy objectForKeyedSubscript:@"referenceSubstring"];
       objc_opt_class();
       v132 = v18;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -481,10 +481,10 @@ LABEL_87:
       v16 = v17;
     }
 
-    v136 = [v6 objectForKeyedSubscript:@"referenceSubstringRange"];
+    v136 = [dictionaryCopy objectForKeyedSubscript:@"referenceSubstringRange"];
     if (v136)
     {
-      v19 = [v6 objectForKeyedSubscript:@"referenceSubstringRange"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"referenceSubstringRange"];
       objc_opt_class();
       v128 = v19;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -502,10 +502,10 @@ LABEL_85:
       }
     }
 
-    v130 = [v6 objectForKeyedSubscript:@"strokeCoveredTextRange"];
+    v130 = [dictionaryCopy objectForKeyedSubscript:@"strokeCoveredTextRange"];
     if (v130)
     {
-      v20 = [v6 objectForKeyedSubscript:@"strokeCoveredTextRange"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"strokeCoveredTextRange"];
       objc_opt_class();
       v124 = v20;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -523,10 +523,10 @@ LABEL_83:
       }
     }
 
-    v126 = [v6 objectForKeyedSubscript:@"selectedTextRange"];
+    v126 = [dictionaryCopy objectForKeyedSubscript:@"selectedTextRange"];
     if (v126)
     {
-      v21 = [v6 objectForKeyedSubscript:@"selectedTextRange"];
+      v21 = [dictionaryCopy objectForKeyedSubscript:@"selectedTextRange"];
       objc_opt_class();
       v120 = v21;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -544,10 +544,10 @@ LABEL_81:
       }
     }
 
-    v122 = [v6 objectForKeyedSubscript:@"activePreviewRange"];
+    v122 = [dictionaryCopy objectForKeyedSubscript:@"activePreviewRange"];
     if (v122)
     {
-      v22 = [v6 objectForKeyedSubscript:@"activePreviewRange"];
+      v22 = [dictionaryCopy objectForKeyedSubscript:@"activePreviewRange"];
       objc_opt_class();
       v116 = v22;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -565,10 +565,10 @@ LABEL_79:
       }
     }
 
-    v118 = [v6 objectForKeyedSubscript:@"lastCharacterLevelPosition"];
+    v118 = [dictionaryCopy objectForKeyedSubscript:@"lastCharacterLevelPosition"];
     if (v118)
     {
-      v23 = [v6 objectForKeyedSubscript:@"lastCharacterLevelPosition"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"lastCharacterLevelPosition"];
       objc_opt_class();
       v113 = v23;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -586,10 +586,10 @@ LABEL_77:
       }
     }
 
-    v115 = [v6 objectForKeyedSubscript:@"contentType"];
+    v115 = [dictionaryCopy objectForKeyedSubscript:@"contentType"];
     if (v115)
     {
-      v24 = [v6 objectForKeyedSubscript:@"contentType"];
+      v24 = [dictionaryCopy objectForKeyedSubscript:@"contentType"];
       objc_opt_class();
       v110 = v24;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -607,10 +607,10 @@ LABEL_75:
       }
     }
 
-    v112 = [v6 objectForKeyedSubscript:@"autocapitalization"];
+    v112 = [dictionaryCopy objectForKeyedSubscript:@"autocapitalization"];
     if (v112)
     {
-      v25 = [v6 objectForKeyedSubscript:@"autocapitalization"];
+      v25 = [dictionaryCopy objectForKeyedSubscript:@"autocapitalization"];
       objc_opt_class();
       v107 = v25;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -628,10 +628,10 @@ LABEL_73:
       }
     }
 
-    v109 = [v6 objectForKeyedSubscript:@"autocorrection"];
+    v109 = [dictionaryCopy objectForKeyedSubscript:@"autocorrection"];
     if (v109)
     {
-      v26 = [v6 objectForKeyedSubscript:@"autocorrection"];
+      v26 = [dictionaryCopy objectForKeyedSubscript:@"autocorrection"];
       objc_opt_class();
       v103 = v26;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -649,10 +649,10 @@ LABEL_71:
       }
     }
 
-    v105 = [v6 objectForKeyedSubscript:@"characterRectsInReferenceSubstring"];
+    v105 = [dictionaryCopy objectForKeyedSubscript:@"characterRectsInReferenceSubstring"];
     if (v105)
     {
-      v27 = [v6 objectForKeyedSubscript:@"characterRectsInReferenceSubstring"];
+      v27 = [dictionaryCopy objectForKeyedSubscript:@"characterRectsInReferenceSubstring"];
       objc_opt_class();
       v99 = v27;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -670,10 +670,10 @@ LABEL_69:
       }
     }
 
-    v101 = [v6 objectForKeyedSubscript:@"referenceSubstringLogContentLevel"];
+    v101 = [dictionaryCopy objectForKeyedSubscript:@"referenceSubstringLogContentLevel"];
     if (v101)
     {
-      v28 = [v6 objectForKeyedSubscript:@"referenceSubstringLogContentLevel"];
+      v28 = [dictionaryCopy objectForKeyedSubscript:@"referenceSubstringLogContentLevel"];
       objc_opt_class();
       v98 = v28;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -691,12 +691,12 @@ LABEL_67:
       }
     }
 
-    v29 = [v6 objectForKeyedSubscript:@"isCursorStrong"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"isCursorStrong"];
     v30 = v29;
     if (v29)
     {
       v31 = v29;
-      v32 = [v6 objectForKeyedSubscript:@"isCursorStrong"];
+      v32 = [dictionaryCopy objectForKeyedSubscript:@"isCursorStrong"];
       objc_opt_class();
       v96 = v32;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -717,10 +717,10 @@ LABEL_65:
       v30 = v31;
     }
 
-    v97 = [v6 objectForKeyedSubscript:@"containsCommittedStrokes"];
+    v97 = [dictionaryCopy objectForKeyedSubscript:@"containsCommittedStrokes"];
     if (v97)
     {
-      v33 = [v6 objectForKeyedSubscript:@"containsCommittedStrokes"];
+      v33 = [dictionaryCopy objectForKeyedSubscript:@"containsCommittedStrokes"];
       objc_opt_class();
       v94 = v33;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -738,14 +738,14 @@ LABEL_63:
       }
     }
 
-    v95 = [v6 objectForKeyedSubscript:@"isSingleLine"];
-    if (!v95 || ([v6 objectForKeyedSubscript:@"isSingleLine"], v34 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v93 = v34, (objc_opt_isKindOfClass() & 1) != 0))
+    v95 = [dictionaryCopy objectForKeyedSubscript:@"isSingleLine"];
+    if (!v95 || ([dictionaryCopy objectForKeyedSubscript:@"isSingleLine"], v34 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v93 = v34, (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v36 = [v6 objectForKeyedSubscript:@"protectedCharacterIndexes"];
+      v36 = [dictionaryCopy objectForKeyedSubscript:@"protectedCharacterIndexes"];
       if (v36)
       {
         v37 = v36;
-        v92 = [v6 objectForKeyedSubscript:@"protectedCharacterIndexes"];
+        v92 = [dictionaryCopy objectForKeyedSubscript:@"protectedCharacterIndexes"];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
       }
@@ -787,20 +787,20 @@ LABEL_91:
 
   if (isKindOfClass)
   {
-    v8 = [v6 objectForKeyedSubscript:@"targetIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"targetIdentifier"];
     if (v8)
     {
       v148 = 0u;
       v149 = 0u;
       v146 = 0u;
       v147 = 0u;
-      v38 = v7;
+      v38 = targetsCopy;
       v39 = [v38 countByEnumeratingWithState:&v146 objects:v151 count:16];
       if (v39)
       {
         v40 = v39;
-        v137 = v7;
-        v139 = self;
+        v137 = targetsCopy;
+        selfCopy = self;
         v41 = *v147;
 LABEL_97:
         v42 = 0;
@@ -812,8 +812,8 @@ LABEL_97:
           }
 
           v43 = *(*(&v146 + 1) + 8 * v42);
-          v44 = [v43 inputTargetIdentifier];
-          v45 = [v44 isEqualToNumber:v8];
+          inputTargetIdentifier = [v43 inputTargetIdentifier];
+          v45 = [inputTargetIdentifier isEqualToNumber:v8];
 
           if (v45)
           {
@@ -828,16 +828,16 @@ LABEL_97:
               goto LABEL_97;
             }
 
-            v7 = v137;
-            self = v139;
+            targetsCopy = v137;
+            self = selfCopy;
             goto LABEL_168;
           }
         }
 
         v46 = v43;
 
-        v7 = v137;
-        self = v139;
+        targetsCopy = v137;
+        self = selfCopy;
         if (!v46)
         {
           goto LABEL_169;
@@ -845,7 +845,7 @@ LABEL_97:
 
         v47 = objc_alloc_init(MEMORY[0x1E6997B68]);
         [v47 setTextInputTarget:v46];
-        v48 = [v6 objectForKeyedSubscript:@"contentType"];
+        v48 = [dictionaryCopy objectForKeyedSubscript:@"contentType"];
         v133 = v46;
         if ([v48 isEqualToString:@"Default"])
         {
@@ -897,36 +897,36 @@ LABEL_97:
           v129 = v49;
         }
 
-        v50 = [v6 objectForKeyedSubscript:@"autocapitalization"];
+        v50 = [dictionaryCopy objectForKeyedSubscript:@"autocapitalization"];
         v51 = [&unk_1F47C2338 objectForKeyedSubscript:v50];
         v52 = v51;
         if (v51)
         {
-          v127 = [v51 integerValue];
+          integerValue = [v51 integerValue];
         }
 
         else
         {
-          v127 = 1;
+          integerValue = 1;
         }
 
-        v53 = [v6 objectForKeyedSubscript:@"autocorrection"];
+        v53 = [dictionaryCopy objectForKeyedSubscript:@"autocorrection"];
         v54 = [&unk_1F47C2360 objectForKeyedSubscript:v53];
         v55 = v54;
         if (v54)
         {
-          v125 = [v54 integerValue];
+          integerValue2 = [v54 integerValue];
         }
 
         else
         {
-          v125 = 0;
+          integerValue2 = 0;
         }
 
-        v56 = [v6 objectForKeyedSubscript:@"textContentLength"];
-        v121 = [v56 integerValue];
+        v56 = [dictionaryCopy objectForKeyedSubscript:@"textContentLength"];
+        integerValue3 = [v56 integerValue];
 
-        v57 = [v6 objectForKeyedSubscript:@"referenceSubstring"];
+        v57 = [dictionaryCopy objectForKeyedSubscript:@"referenceSubstring"];
         v58 = v57;
         v59 = &stru_1F476BD20;
         if (v57)
@@ -936,10 +936,10 @@ LABEL_97:
 
         v123 = v59;
 
-        v60 = [v6 objectForKeyedSubscript:@"referenceSubstringRange"];
+        v60 = [dictionaryCopy objectForKeyedSubscript:@"referenceSubstringRange"];
         if (v60)
         {
-          v61 = [v6 objectForKeyedSubscript:@"referenceSubstringRange"];
+          v61 = [dictionaryCopy objectForKeyedSubscript:@"referenceSubstringRange"];
           v62 = NSRangeFromString(v61);
           location = v62.location;
 
@@ -954,10 +954,10 @@ LABEL_97:
           location = 0x7FFFFFFFFFFFFFFFLL;
         }
 
-        v63 = [v6 objectForKeyedSubscript:@"selectedTextRange"];
+        v63 = [dictionaryCopy objectForKeyedSubscript:@"selectedTextRange"];
         if (v63)
         {
-          v64 = [v6 objectForKeyedSubscript:@"selectedTextRange"];
+          v64 = [dictionaryCopy objectForKeyedSubscript:@"selectedTextRange"];
           v114 = NSRangeFromString(v64);
         }
 
@@ -967,10 +967,10 @@ LABEL_97:
           v114.length = 0;
         }
 
-        v65 = [v6 objectForKeyedSubscript:@"strokeCoveredTextRange"];
+        v65 = [dictionaryCopy objectForKeyedSubscript:@"strokeCoveredTextRange"];
         if (v65)
         {
-          v66 = [v6 objectForKeyedSubscript:@"strokeCoveredTextRange"];
+          v66 = [dictionaryCopy objectForKeyedSubscript:@"strokeCoveredTextRange"];
           v111 = NSRangeFromString(v66);
         }
 
@@ -980,10 +980,10 @@ LABEL_97:
           v111.length = 0;
         }
 
-        v67 = [v6 objectForKeyedSubscript:@"activePreviewRange"];
+        v67 = [dictionaryCopy objectForKeyedSubscript:@"activePreviewRange"];
         if (v67)
         {
-          v68 = [v6 objectForKeyedSubscript:@"activePreviewRange"];
+          v68 = [dictionaryCopy objectForKeyedSubscript:@"activePreviewRange"];
           v108 = NSRangeFromString(v68);
         }
 
@@ -993,53 +993,53 @@ LABEL_97:
           v108.length = 0;
         }
 
-        v69 = [v6 objectForKeyedSubscript:@"lastCharacterLevelPosition"];
+        v69 = [dictionaryCopy objectForKeyedSubscript:@"lastCharacterLevelPosition"];
         if (v69)
         {
-          v70 = [v6 objectForKeyedSubscript:@"lastCharacterLevelPosition"];
-          v106 = [v70 integerValue];
+          v70 = [dictionaryCopy objectForKeyedSubscript:@"lastCharacterLevelPosition"];
+          integerValue4 = [v70 integerValue];
         }
 
         else
         {
-          v106 = 0x7FFFFFFFFFFFFFFFLL;
+          integerValue4 = 0x7FFFFFFFFFFFFFFFLL;
         }
 
-        v71 = [v6 objectForKeyedSubscript:@"isCursorStrong"];
+        v71 = [dictionaryCopy objectForKeyedSubscript:@"isCursorStrong"];
         if (v71)
         {
-          v72 = [v6 objectForKeyedSubscript:@"isCursorStrong"];
-          v104 = [v72 BOOLValue];
+          v72 = [dictionaryCopy objectForKeyedSubscript:@"isCursorStrong"];
+          bOOLValue = [v72 BOOLValue];
         }
 
         else
         {
-          v104 = 1;
+          bOOLValue = 1;
         }
 
-        v73 = [v6 objectForKeyedSubscript:@"containsCommittedStrokes"];
+        v73 = [dictionaryCopy objectForKeyedSubscript:@"containsCommittedStrokes"];
         if (v73)
         {
-          v74 = [v6 objectForKeyedSubscript:@"containsCommittedStrokes"];
-          v102 = [v74 BOOLValue];
+          v74 = [dictionaryCopy objectForKeyedSubscript:@"containsCommittedStrokes"];
+          bOOLValue2 = [v74 BOOLValue];
         }
 
         else
         {
-          v102 = 0;
+          bOOLValue2 = 0;
         }
 
-        v75 = [v6 objectForKeyedSubscript:@"isSingleLine"];
+        v75 = [dictionaryCopy objectForKeyedSubscript:@"isSingleLine"];
         v131 = v47;
         if (v75)
         {
-          v76 = [v6 objectForKeyedSubscript:@"isSingleLine"];
-          v100 = [v76 BOOLValue];
+          v76 = [dictionaryCopy objectForKeyedSubscript:@"isSingleLine"];
+          bOOLValue3 = [v76 BOOLValue];
         }
 
         else
         {
-          v100 = 1;
+          bOOLValue3 = 1;
         }
 
         v135 = malloc_type_calloc(counta, 0x20uLL, 0x1000040E0EAB150uLL);
@@ -1047,7 +1047,7 @@ LABEL_97:
         v143 = 0u;
         v144 = 0u;
         v145 = 0u;
-        v77 = [v6 objectForKeyedSubscript:@"characterRectsInReferenceSubstring"];
+        v77 = [dictionaryCopy objectForKeyedSubscript:@"characterRectsInReferenceSubstring"];
         v78 = [v77 countByEnumeratingWithState:&v142 objects:v150 count:16];
         if (v78)
         {
@@ -1088,7 +1088,7 @@ LABEL_157:
           }
         }
 
-        v85 = [v6 objectForKeyedSubscript:@"protectedCharacterIndexes"];
+        v85 = [dictionaryCopy objectForKeyedSubscript:@"protectedCharacterIndexes"];
         if (v85)
         {
           v86 = v131;
@@ -1097,29 +1097,29 @@ LABEL_157:
 
         else
         {
-          v87 = [MEMORY[0x1E696AC90] indexSet];
+          indexSet = [MEMORY[0x1E696AC90] indexSet];
           v86 = v131;
-          [v131 setProtectedCharacterIndexes:v87];
+          [v131 setProtectedCharacterIndexes:indexSet];
         }
 
-        v7 = v137;
-        self = v139;
+        targetsCopy = v137;
+        self = selfCopy;
 
         [v86 setReferenceSubstring:v123 range:location characterRects:{length, v135}];
-        [v86 setTextContentLength:v121];
+        [v86 setTextContentLength:integerValue3];
         [v86 setStrokeCoveredTextRange:{v111.location, v111.length}];
         [v86 setSelectedTextRange:{v114.location, v114.length}];
         [v86 setActivePreviewRange:{v108.location, v108.length}];
         [v86 setContentType:v129];
-        [v86 setAutoCapitalizationMode:v127];
-        [v86 setAutoCorrectionMode:v125];
-        [v86 setIsSingleLine:v100];
-        [v86 setIsCursorStrong:v104];
-        [v86 setLastCharacterLevelPosition:v106];
-        [v86 setContainsCommittedStrokes:v102];
+        [v86 setAutoCapitalizationMode:integerValue];
+        [v86 setAutoCorrectionMode:integerValue2];
+        [v86 setIsSingleLine:bOOLValue3];
+        [v86 setIsCursorStrong:bOOLValue];
+        [v86 setLastCharacterLevelPosition:integerValue4];
+        [v86 setContainsCommittedStrokes:bOOLValue2];
         free(v135);
         v88 = [v86 copy];
-        [(PKTextInputDebugLogEntry *)v139 setInputTargetContentInfo:v88];
+        [(PKTextInputDebugLogEntry *)selfCopy setInputTargetContentInfo:v88];
 
         v38 = v133;
       }
@@ -1131,26 +1131,26 @@ LABEL_168:
   }
 
 LABEL_170:
-  v89 = [(PKTextInputDebugLogEntry *)self inputTargetContentInfo];
-  v90 = v89 != 0;
+  inputTargetContentInfo = [(PKTextInputDebugLogEntry *)self inputTargetContentInfo];
+  v90 = inputTargetContentInfo != 0;
 
   return v90;
 }
 
-- (BOOL)_loadRecognitionResultFromDictionary:(id)a3
+- (BOOL)_loadRecognitionResultFromDictionary:(id)dictionary
 {
   v76 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"recognitionLocale"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"recognitionLocale"];
   if (!v5)
   {
     goto LABEL_11;
   }
 
   v6 = v5;
-  v7 = [v4 objectForKeyedSubscript:@"recognitionLocale"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"recognitionLocale"];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v4 objectForKeyedSubscript:@"recognitionLocales"], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([dictionaryCopy objectForKeyedSubscript:@"recognitionLocales"], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_9:
 
@@ -1159,7 +1159,7 @@ LABEL_10:
   }
 
   v9 = v8;
-  v10 = [v4 objectForKeyedSubscript:@"recognitionLocales"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"recognitionLocales"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1167,15 +1167,15 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"committedText"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"committedText"];
   if (!v11)
   {
 LABEL_13:
-    v15 = [v4 objectForKeyedSubscript:@"topTranscription"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"topTranscription"];
     v66 = v11;
     if (v15)
     {
-      v16 = [v4 objectForKeyedSubscript:@"topTranscription"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"topTranscription"];
       objc_opt_class();
       v64 = v16;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1195,10 +1195,10 @@ LABEL_49:
       }
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"committedTokenColumnCount"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"committedTokenColumnCount"];
     if (v18)
     {
-      v19 = [v4 objectForKeyedSubscript:@"committedTokenColumnCount"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"committedTokenColumnCount"];
       objc_opt_class();
       v61 = v19;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1217,11 +1217,11 @@ LABEL_47:
       }
     }
 
-    v62 = [v4 objectForKeyedSubscript:@"commitReason"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"commitReason"];
     v63 = v18;
     if (v62)
     {
-      v20 = [v4 objectForKeyedSubscript:@"commitReason"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"commitReason"];
       objc_opt_class();
       v57 = v20;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1241,10 +1241,10 @@ LABEL_45:
       }
     }
 
-    v60 = [v4 objectForKeyedSubscript:@"tokenizedTextResultData"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"tokenizedTextResultData"];
     if (v60)
     {
-      v22 = [v4 objectForKeyedSubscript:@"tokenizedTextResultData"];
+      v22 = [dictionaryCopy objectForKeyedSubscript:@"tokenizedTextResultData"];
       objc_opt_class();
       v56 = v22;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1265,11 +1265,11 @@ LABEL_43:
       }
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"affectedRange"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"affectedRange"];
     if (v24)
     {
       v54 = v15;
-      v25 = [v4 objectForKeyedSubscript:@"affectedRange"];
+      v25 = [dictionaryCopy objectForKeyedSubscript:@"affectedRange"];
       objc_opt_class();
       v53 = v25;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1292,15 +1292,15 @@ LABEL_41:
       v15 = v54;
     }
 
-    v59 = [v4 objectForKeyedSubscript:@"recognitionDuration"];
+    v59 = [dictionaryCopy objectForKeyedSubscript:@"recognitionDuration"];
     v55 = v24;
-    if (!v59 || ([v4 objectForKeyedSubscript:@"recognitionDuration"], v54 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (!v59 || ([dictionaryCopy objectForKeyedSubscript:@"recognitionDuration"], v54 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v28 = [v4 objectForKeyedSubscript:@"resultType"];
+      v28 = [dictionaryCopy objectForKeyedSubscript:@"resultType"];
       if (v28)
       {
         v29 = v28;
-        v52 = [v4 objectForKeyedSubscript:@"resultType"];
+        v52 = [dictionaryCopy objectForKeyedSubscript:@"resultType"];
         objc_opt_class();
         v30 = objc_opt_isKindOfClass() ^ 1;
 
@@ -1340,7 +1340,7 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"committedText"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"committedText"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1359,7 +1359,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  [v4 objectForKeyedSubscript:@"recognitionLocales"];
+  [dictionaryCopy objectForKeyedSubscript:@"recognitionLocales"];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
@@ -1399,7 +1399,7 @@ LABEL_11:
   [(PKTextInputDebugLogEntry *)self setRecognitionLocaleIdentifiers:v6];
   if (![v6 count])
   {
-    v35 = [v4 objectForKeyedSubscript:@"recognitionLocale"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"recognitionLocale"];
     v36 = v35;
     if (v35)
     {
@@ -1409,22 +1409,22 @@ LABEL_11:
     }
   }
 
-  v38 = [v4 objectForKeyedSubscript:@"committedText"];
+  v38 = [dictionaryCopy objectForKeyedSubscript:@"committedText"];
   [(PKTextInputDebugLogEntry *)self setResultCommittedText:v38];
 
-  v39 = [v4 objectForKeyedSubscript:@"topTranscription"];
+  v39 = [dictionaryCopy objectForKeyedSubscript:@"topTranscription"];
   [(PKTextInputDebugLogEntry *)self setResultTopTranscription:v39];
 
-  v40 = [v4 objectForKeyedSubscript:@"committedTokenColumnCount"];
+  v40 = [dictionaryCopy objectForKeyedSubscript:@"committedTokenColumnCount"];
   -[PKTextInputDebugLogEntry setResultCommittedTokenColumnCount:](self, "setResultCommittedTokenColumnCount:", [v40 integerValue]);
 
-  v41 = [v4 objectForKeyedSubscript:@"commitReason"];
+  v41 = [dictionaryCopy objectForKeyedSubscript:@"commitReason"];
   [(PKTextInputDebugLogEntry *)self setResultCommitReason:v41];
 
-  v42 = [v4 objectForKeyedSubscript:@"affectedRange"];
+  v42 = [dictionaryCopy objectForKeyedSubscript:@"affectedRange"];
   if (v42)
   {
-    v43 = [v4 objectForKeyedSubscript:@"affectedRange"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"affectedRange"];
     v44 = NSRangeFromString(v43);
     [(PKTextInputDebugLogEntry *)self setResultAffectedRange:v44.location, v44.length];
   }
@@ -1434,14 +1434,14 @@ LABEL_11:
     [(PKTextInputDebugLogEntry *)self setResultAffectedRange:0x7FFFFFFFFFFFFFFFLL, 0];
   }
 
-  v45 = [v4 objectForKeyedSubscript:@"resultType"];
+  v45 = [dictionaryCopy objectForKeyedSubscript:@"resultType"];
   [(PKTextInputDebugLogEntry *)self setResultTypeDescription:v45];
 
-  v46 = [v4 objectForKeyedSubscript:@"recognitionDuration"];
+  v46 = [dictionaryCopy objectForKeyedSubscript:@"recognitionDuration"];
   [v46 doubleValue];
   [(PKTextInputDebugLogEntry *)self setResultRecognitionDuration:?];
 
-  v47 = [v4 objectForKeyedSubscript:@"tokenizedTextResultData"];
+  v47 = [dictionaryCopy objectForKeyedSubscript:@"tokenizedTextResultData"];
   if (v47)
   {
     v67 = 0;
@@ -1449,9 +1449,9 @@ LABEL_11:
     v49 = v67;
     [(PKTextInputDebugLogEntry *)self setTokenizedTextResult:v48];
 
-    v50 = [(PKTextInputDebugLogEntry *)self tokenizedTextResult];
+    tokenizedTextResult = [(PKTextInputDebugLogEntry *)self tokenizedTextResult];
 
-    if (!v50)
+    if (!tokenizedTextResult)
     {
       v51 = os_log_create("com.apple.pencilkit", "PencilTextInput");
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))

@@ -1,6 +1,6 @@
 @interface _AFClockTimerMutation
 - (BOOL)getIsFiring;
-- (_AFClockTimerMutation)initWithBase:(id)a3;
+- (_AFClockTimerMutation)initWithBase:(id)base;
 - (double)getDuration;
 - (double)getFireTimeInterval;
 - (id)getDismissedDate;
@@ -20,30 +20,30 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_timerID;
+    timerID = self->_timerID;
   }
 
   else
   {
-    v2 = [(AFClockTimer *)self->_base timerID];
+    timerID = [(AFClockTimer *)self->_base timerID];
   }
 
-  return v2;
+  return timerID;
 }
 
 - (id)getTimerURL
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_timerURL;
+    timerURL = self->_timerURL;
   }
 
   else
   {
-    v2 = [(AFClockTimer *)self->_base timerURL];
+    timerURL = [(AFClockTimer *)self->_base timerURL];
   }
 
-  return v2;
+  return timerURL;
 }
 
 - (BOOL)getIsFiring
@@ -63,15 +63,15 @@
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_title;
+    title = self->_title;
   }
 
   else
   {
-    v2 = [(AFClockTimer *)self->_base title];
+    title = [(AFClockTimer *)self->_base title];
   }
 
-  return v2;
+  return title;
 }
 
 - (int64_t)getState
@@ -126,72 +126,72 @@
 {
   if ((*&self->_mutationFlags & 0x200) != 0)
   {
-    v2 = self->_fireDate;
+    fireDate = self->_fireDate;
   }
 
   else
   {
-    v2 = [(AFClockTimer *)self->_base fireDate];
+    fireDate = [(AFClockTimer *)self->_base fireDate];
   }
 
-  return v2;
+  return fireDate;
 }
 
 - (id)getFiredDate
 {
   if ((*&self->_mutationFlags & 0x400) != 0)
   {
-    v2 = self->_firedDate;
+    firedDate = self->_firedDate;
   }
 
   else
   {
-    v2 = [(AFClockTimer *)self->_base firedDate];
+    firedDate = [(AFClockTimer *)self->_base firedDate];
   }
 
-  return v2;
+  return firedDate;
 }
 
 - (id)getDismissedDate
 {
   if ((*&self->_mutationFlags & 0x800) != 0)
   {
-    v2 = self->_dismissedDate;
+    dismissedDate = self->_dismissedDate;
   }
 
   else
   {
-    v2 = [(AFClockTimer *)self->_base dismissedDate];
+    dismissedDate = [(AFClockTimer *)self->_base dismissedDate];
   }
 
-  return v2;
+  return dismissedDate;
 }
 
 - (id)getLastModifiedDate
 {
   if ((*&self->_mutationFlags & 0x1000) != 0)
   {
-    v2 = self->_lastModifiedDate;
+    lastModifiedDate = self->_lastModifiedDate;
   }
 
   else
   {
-    v2 = [(AFClockTimer *)self->_base lastModifiedDate];
+    lastModifiedDate = [(AFClockTimer *)self->_base lastModifiedDate];
   }
 
-  return v2;
+  return lastModifiedDate;
 }
 
-- (_AFClockTimerMutation)initWithBase:(id)a3
+- (_AFClockTimerMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFClockTimerMutation;
   v6 = [(_AFClockTimerMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

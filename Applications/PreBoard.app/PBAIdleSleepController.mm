@@ -3,16 +3,16 @@
 - (PBAIdleSleepController)init;
 - (void)_allowIdleSleep;
 - (void)_preventIdleSleep;
-- (void)_preventIdleSleepForNumberOfSeconds:(float)a3;
-- (void)_setHIDUILockedState:(BOOL)a3;
+- (void)_preventIdleSleepForNumberOfSeconds:(float)seconds;
+- (void)_setHIDUILockedState:(BOOL)state;
 - (void)_undimDisplayForce;
 - (void)dimDisplay;
-- (void)resetIdleTimerAndUndim:(BOOL)a3;
-- (void)systemSleepMonitor:(id)a3 prepareForSleepWithCompletion:(id)a4;
-- (void)systemSleepMonitor:(id)a3 sleepRequestedWithResult:(id)a4;
-- (void)systemSleepMonitorDidWakeFromSleep:(id)a3;
-- (void)systemSleepMonitorSleepRequestAborted:(id)a3;
-- (void)systemSleepMonitorWillWakeFromSleep:(id)a3;
+- (void)resetIdleTimerAndUndim:(BOOL)undim;
+- (void)systemSleepMonitor:(id)monitor prepareForSleepWithCompletion:(id)completion;
+- (void)systemSleepMonitor:(id)monitor sleepRequestedWithResult:(id)result;
+- (void)systemSleepMonitorDidWakeFromSleep:(id)sleep;
+- (void)systemSleepMonitorSleepRequestAborted:(id)aborted;
+- (void)systemSleepMonitorWillWakeFromSleep:(id)sleep;
 - (void)undimDisplay;
 @end
 
@@ -73,12 +73,12 @@
   return v2;
 }
 
-- (void)_setHIDUILockedState:(BOOL)a3
+- (void)_setHIDUILockedState:(BOOL)state
 {
-  if (byte_100025340 != a3)
+  if (byte_100025340 != state)
   {
     BKSHIDServicesSetHIDUILockedStateWithSource();
-    byte_100025340 = a3;
+    byte_100025340 = state;
   }
 }
 
@@ -181,20 +181,20 @@
   [(PBAIdleSleepController *)self setPreventIdleSleep:1 forReason:@"backlight"];
 }
 
-- (void)_preventIdleSleepForNumberOfSeconds:(float)a3
+- (void)_preventIdleSleepForNumberOfSeconds:(float)seconds
 {
   if (self->_displayDim)
   {
     [(PBAIdleSleepController *)self _preventIdleSleep];
     v6 = NSRunLoopCommonModes;
     v5 = [NSArray arrayWithObjects:&v6 count:1];
-    [(PBAIdleSleepController *)self performSelector:"_allowIdleSleep" withObject:0 afterDelay:v5 inModes:a3];
+    [(PBAIdleSleepController *)self performSelector:"_allowIdleSleep" withObject:0 afterDelay:v5 inModes:seconds];
   }
 }
 
-- (void)resetIdleTimerAndUndim:(BOOL)a3
+- (void)resetIdleTimerAndUndim:(BOOL)undim
 {
-  if (a3)
+  if (undim)
   {
     [(PBAIdleSleepController *)self undimDisplay];
   }
@@ -213,9 +213,9 @@
   }
 }
 
-- (void)systemSleepMonitor:(id)a3 sleepRequestedWithResult:(id)a4
+- (void)systemSleepMonitor:(id)monitor sleepRequestedWithResult:(id)result
 {
-  v4 = a4;
+  resultCopy = result;
   v5 = sub_10000A054();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -223,12 +223,12 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Got kIOMessageCanSystemSleep", v7, 2u);
   }
 
-  v6 = v4[2](v4, 1, 0);
+  v6 = resultCopy[2](resultCopy, 1, 0);
 }
 
-- (void)systemSleepMonitor:(id)a3 prepareForSleepWithCompletion:(id)a4
+- (void)systemSleepMonitor:(id)monitor prepareForSleepWithCompletion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = sub_10000A054();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -236,10 +236,10 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Got kIOMessageSystemWillSleep", v6, 2u);
   }
 
-  v4[2](v4);
+  completionCopy[2](completionCopy);
 }
 
-- (void)systemSleepMonitorSleepRequestAborted:(id)a3
+- (void)systemSleepMonitorSleepRequestAborted:(id)aborted
 {
   v3 = sub_10000A054();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -249,7 +249,7 @@
   }
 }
 
-- (void)systemSleepMonitorWillWakeFromSleep:(id)a3
+- (void)systemSleepMonitorWillWakeFromSleep:(id)sleep
 {
   v3 = sub_10000A054();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -259,7 +259,7 @@
   }
 }
 
-- (void)systemSleepMonitorDidWakeFromSleep:(id)a3
+- (void)systemSleepMonitorDidWakeFromSleep:(id)sleep
 {
   v3 = sub_10000A054();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))

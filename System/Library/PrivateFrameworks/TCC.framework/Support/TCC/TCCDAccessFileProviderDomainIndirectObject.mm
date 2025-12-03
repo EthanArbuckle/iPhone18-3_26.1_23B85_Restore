@@ -1,20 +1,20 @@
 @interface TCCDAccessFileProviderDomainIndirectObject
-- (TCCDAccessFileProviderDomainIndirectObject)initWithFileProviderDomainID:(id)a3;
+- (TCCDAccessFileProviderDomainIndirectObject)initWithFileProviderDomainID:(id)d;
 - (id)description;
 @end
 
 @implementation TCCDAccessFileProviderDomainIndirectObject
 
-- (TCCDAccessFileProviderDomainIndirectObject)initWithFileProviderDomainID:(id)a3
+- (TCCDAccessFileProviderDomainIndirectObject)initWithFileProviderDomainID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = TCCDAccessFileProviderDomainIndirectObject;
   v6 = [(TCCDAccessIndirectObject *)&v9 initWithType:2];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fileProviderDomainID, a3);
+    objc_storeStrong(&v6->_fileProviderDomainID, d);
   }
 
   return v7;

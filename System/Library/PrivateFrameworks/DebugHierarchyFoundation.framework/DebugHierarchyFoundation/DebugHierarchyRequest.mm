@@ -1,65 +1,65 @@
 @interface DebugHierarchyRequest
-+ (DebugHierarchyRequest)requestWithBase64Data:(id)a3 error:(id *)a4;
-+ (DebugHierarchyRequest)requestWithDictionary:(id)a3;
-+ (DebugHierarchyRequest)requestWithDiscoveryType:(int64_t)a3 actions:(id)a4 completion:(id)a5;
-+ (DebugHierarchyRequest)requestWithName:(id)a3 discoveryType:(int64_t)a4 actions:(id)a5 completion:(id)a6;
-+ (id)_compatibleRequestWithDictionary:(id)a3;
-+ (id)_requestWithV1RequestDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (DebugHierarchyRequest)requestWithBase64Data:(id)data error:(id *)error;
++ (DebugHierarchyRequest)requestWithDictionary:(id)dictionary;
++ (DebugHierarchyRequest)requestWithDiscoveryType:(int64_t)type actions:(id)actions completion:(id)completion;
++ (DebugHierarchyRequest)requestWithName:(id)name discoveryType:(int64_t)type actions:(id)actions completion:(id)completion;
++ (id)_compatibleRequestWithDictionary:(id)dictionary;
++ (id)_requestWithV1RequestDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (DebugHierarchyRequest)init;
-- (DebugHierarchyRequest)initWithDictionary:(id)a3;
-- (DebugHierarchyRequest)initWithWithDiscoveryType:(int64_t)a3 actions:(id)a4 completion:(id)a5;
+- (DebugHierarchyRequest)initWithDictionary:(id)dictionary;
+- (DebugHierarchyRequest)initWithWithDiscoveryType:(int64_t)type actions:(id)actions completion:(id)completion;
 - (NSString)base64Encoded;
 - (id)debugDescription;
 - (id)dictionaryRepresentation;
-- (id)formattedResponseDataForRawRequestResultData:(id)a3;
+- (id)formattedResponseDataForRawRequestResultData:(id)data;
 - (id)humanReadableStatusMessage;
-- (void)addLogEntry:(id)a3;
+- (void)addLogEntry:(id)entry;
 - (void)cancel;
 @end
 
 @implementation DebugHierarchyRequest
 
-+ (DebugHierarchyRequest)requestWithDictionary:(id)a3
++ (DebugHierarchyRequest)requestWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[self alloc] initWithDictionary:dictionaryCopy];
 
   return v5;
 }
 
-- (DebugHierarchyRequest)initWithDictionary:(id)a3
+- (DebugHierarchyRequest)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(DebugHierarchyRequest *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"DBGHierarchyRequestIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"DBGHierarchyRequestIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"DBGHierarchyRequestName"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"DBGHierarchyRequestName"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"DBGHierarchyRequestInitiatorVersionKey"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"DBGHierarchyRequestInitiatorVersionKey"];
     [v10 floatValue];
     v5->_initiatorVersion = v11;
 
-    v12 = [v4 objectForKeyedSubscript:@"DBGHierarchyRequestPriority"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"DBGHierarchyRequestPriority"];
     v5->_priority = [v12 integerValue];
 
-    v13 = [v4 objectForKeyedSubscript:@"DBGHierarchyRequestPayload"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"DBGHierarchyRequestPayload"];
     payload = v5->_payload;
     v5->_payload = v13;
 
-    v15 = [v4 objectForKeyedSubscript:@"DBGHierarchyObjectDiscovery"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"DBGHierarchyObjectDiscovery"];
     v5->_objectDiscovery = [v15 unsignedIntegerValue];
 
-    v16 = [v4 objectForKeyedSubscript:@"DBGHierarchyRequestTransportCompression"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"DBGHierarchyRequestTransportCompression"];
     v5->_compressDuringTransport = [v16 BOOLValue];
 
-    v17 = [v4 objectForKeyedSubscript:@"DBGHierarchyCrawlerOptions"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"DBGHierarchyCrawlerOptions"];
     if (v17)
     {
       v18 = [[DebugHierarchyCrawlerOptions alloc] initWithDictionary:v17];
@@ -67,7 +67,7 @@
       v5->_crawlerOptions = v18;
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"DBGHierarchyRequestActions"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"DBGHierarchyRequestActions"];
     if ([v20 count])
     {
       v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v20 count]);
@@ -111,7 +111,7 @@
       v20 = v22;
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"logs"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"logs"];
     if ([v31 count])
     {
       v42 = v17;
@@ -156,44 +156,44 @@
   return v5;
 }
 
-+ (DebugHierarchyRequest)requestWithDiscoveryType:(int64_t)a3 actions:(id)a4 completion:(id)a5
++ (DebugHierarchyRequest)requestWithDiscoveryType:(int64_t)type actions:(id)actions completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithWithDiscoveryType:a3 actions:v9 completion:v8];
+  completionCopy = completion;
+  actionsCopy = actions;
+  v10 = [[self alloc] initWithWithDiscoveryType:type actions:actionsCopy completion:completionCopy];
 
   return v10;
 }
 
-+ (DebugHierarchyRequest)requestWithName:(id)a3 discoveryType:(int64_t)a4 actions:(id)a5 completion:(id)a6
++ (DebugHierarchyRequest)requestWithName:(id)name discoveryType:(int64_t)type actions:(id)actions completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [[a1 alloc] initWithWithDiscoveryType:a4 actions:v11 completion:v10];
+  completionCopy = completion;
+  actionsCopy = actions;
+  nameCopy = name;
+  v13 = [[self alloc] initWithWithDiscoveryType:type actions:actionsCopy completion:completionCopy];
 
-  [v13 setName:v12];
+  [v13 setName:nameCopy];
 
   return v13;
 }
 
-- (DebugHierarchyRequest)initWithWithDiscoveryType:(int64_t)a3 actions:(id)a4 completion:(id)a5
+- (DebugHierarchyRequest)initWithWithDiscoveryType:(int64_t)type actions:(id)actions completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
+  actionsCopy = actions;
+  completionCopy = completion;
   v11 = [(DebugHierarchyRequest *)self init];
   if (v11)
   {
     v12 = +[NSUUID UUID];
-    v13 = [v12 UUIDString];
+    uUIDString = [v12 UUIDString];
     identifier = v11->_identifier;
-    v11->_identifier = v13;
+    v11->_identifier = uUIDString;
 
     +[DebugHierarchyTargetHub debugHierarchyVersion];
     v11->_initiatorVersion = v15;
-    objc_storeStrong(&v11->_actions, a4);
-    v11->_objectDiscovery = a3;
-    v16 = objc_retainBlock(v10);
+    objc_storeStrong(&v11->_actions, actions);
+    v11->_objectDiscovery = type;
+    v16 = objc_retainBlock(completionCopy);
     completion = v11->_completion;
     v11->_completion = v16;
 
@@ -216,15 +216,15 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(DebugHierarchyRequest *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqualToString:v6];
+    identifier = [(DebugHierarchyRequest *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -238,23 +238,23 @@
 - (void)cancel
 {
   [(DebugHierarchyRequest *)self setStatus:-1];
-  v3 = [(DebugHierarchyRequest *)self completion];
+  completion = [(DebugHierarchyRequest *)self completion];
 
-  if (v3)
+  if (completion)
   {
-    v4 = [(DebugHierarchyRequest *)self completion];
-    v4[2](v4, self);
+    completion2 = [(DebugHierarchyRequest *)self completion];
+    completion2[2](completion2, self);
   }
 }
 
 - (id)dictionaryRepresentation
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(DebugHierarchyRequest *)self identifier];
-  [v3 setObject:v4 forKeyedSubscript:@"DBGHierarchyRequestIdentifier"];
+  identifier = [(DebugHierarchyRequest *)self identifier];
+  [v3 setObject:identifier forKeyedSubscript:@"DBGHierarchyRequestIdentifier"];
 
-  v5 = [(DebugHierarchyRequest *)self name];
-  [v3 setObject:v5 forKeyedSubscript:@"DBGHierarchyRequestName"];
+  name = [(DebugHierarchyRequest *)self name];
+  [v3 setObject:name forKeyedSubscript:@"DBGHierarchyRequestName"];
 
   [(DebugHierarchyRequest *)self initiatorVersion];
   v6 = [NSNumber numberWithFloat:?];
@@ -269,37 +269,37 @@
   v9 = [NSNumber numberWithBool:[(DebugHierarchyRequest *)self compressDuringTransport]];
   [v3 setObject:v9 forKeyedSubscript:@"DBGHierarchyRequestTransportCompression"];
 
-  v10 = [(DebugHierarchyRequest *)self payload];
+  payload = [(DebugHierarchyRequest *)self payload];
 
-  if (v10)
+  if (payload)
   {
-    v11 = [(DebugHierarchyRequest *)self payload];
-    [v3 setObject:v11 forKey:@"DBGHierarchyRequestPayload"];
+    payload2 = [(DebugHierarchyRequest *)self payload];
+    [v3 setObject:payload2 forKey:@"DBGHierarchyRequestPayload"];
   }
 
-  v12 = [(DebugHierarchyRequest *)self crawlerOptions];
+  crawlerOptions = [(DebugHierarchyRequest *)self crawlerOptions];
 
-  if (v12)
+  if (crawlerOptions)
   {
-    v13 = [(DebugHierarchyRequest *)self crawlerOptions];
-    v14 = [v13 dictionaryRepresentation];
-    [v3 setObject:v14 forKeyedSubscript:@"DBGHierarchyCrawlerOptions"];
+    crawlerOptions2 = [(DebugHierarchyRequest *)self crawlerOptions];
+    dictionaryRepresentation = [crawlerOptions2 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"DBGHierarchyCrawlerOptions"];
   }
 
-  v15 = [(DebugHierarchyRequest *)self actions];
-  v16 = [v15 count];
+  actions = [(DebugHierarchyRequest *)self actions];
+  v16 = [actions count];
 
   if (v16)
   {
-    v17 = [(DebugHierarchyRequest *)self actions];
-    v18 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v17 count]);
+    actions2 = [(DebugHierarchyRequest *)self actions];
+    v18 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [actions2 count]);
 
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v19 = [(DebugHierarchyRequest *)self actions];
-    v20 = [v19 countByEnumeratingWithState:&v43 objects:v48 count:16];
+    actions3 = [(DebugHierarchyRequest *)self actions];
+    v20 = [actions3 countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (v20)
     {
       v21 = v20;
@@ -310,14 +310,14 @@
         {
           if (*v44 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(actions3);
           }
 
-          v24 = [*(*(&v43 + 1) + 8 * i) dictionaryRepresentation];
-          [v18 addObject:v24];
+          dictionaryRepresentation2 = [*(*(&v43 + 1) + 8 * i) dictionaryRepresentation];
+          [v18 addObject:dictionaryRepresentation2];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v43 objects:v48 count:16];
+        v21 = [actions3 countByEnumeratingWithState:&v43 objects:v48 count:16];
       }
 
       while (v21);
@@ -327,20 +327,20 @@
     [v3 setObject:v25 forKeyedSubscript:@"DBGHierarchyRequestActions"];
   }
 
-  v26 = [(DebugHierarchyRequest *)self logs];
-  v27 = [v26 count];
+  logs = [(DebugHierarchyRequest *)self logs];
+  v27 = [logs count];
 
   if (v27)
   {
-    v28 = [(DebugHierarchyRequest *)self logs];
-    v29 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v28 count]);
+    logs2 = [(DebugHierarchyRequest *)self logs];
+    v29 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [logs2 count]);
 
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v30 = [(DebugHierarchyRequest *)self logs];
-    v31 = [v30 countByEnumeratingWithState:&v39 objects:v47 count:16];
+    logs3 = [(DebugHierarchyRequest *)self logs];
+    v31 = [logs3 countByEnumeratingWithState:&v39 objects:v47 count:16];
     if (v31)
     {
       v32 = v31;
@@ -351,14 +351,14 @@
         {
           if (*v40 != v33)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(logs3);
           }
 
-          v35 = [*(*(&v39 + 1) + 8 * j) dictionaryRepresentation];
-          [v29 addObject:v35];
+          dictionaryRepresentation3 = [*(*(&v39 + 1) + 8 * j) dictionaryRepresentation];
+          [v29 addObject:dictionaryRepresentation3];
         }
 
-        v32 = [v30 countByEnumeratingWithState:&v39 objects:v47 count:16];
+        v32 = [logs3 countByEnumeratingWithState:&v39 objects:v47 count:16];
       }
 
       while (v32);
@@ -373,23 +373,23 @@
   return v37;
 }
 
-- (void)addLogEntry:(id)a3
+- (void)addLogEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(DebugHierarchyRequest *)self logs];
-  v6 = [v5 count];
+  entryCopy = entry;
+  logs = [(DebugHierarchyRequest *)self logs];
+  v6 = [logs count];
 
   if (v6)
   {
-    v9 = [(DebugHierarchyRequest *)self logs];
-    v7 = [v9 arrayByAddingObject:v4];
+    logs2 = [(DebugHierarchyRequest *)self logs];
+    v7 = [logs2 arrayByAddingObject:entryCopy];
 
     [(DebugHierarchyRequest *)self setLogs:v7];
   }
 
   else
   {
-    v10 = v4;
+    v10 = entryCopy;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
 
     [(DebugHierarchyRequest *)self setLogs:v8];
@@ -398,8 +398,8 @@
 
 - (NSString)base64Encoded
 {
-  v2 = [(DebugHierarchyRequest *)self dictionaryRepresentation];
-  v3 = [v2 generateJSONDataWithError:0];
+  dictionaryRepresentation = [(DebugHierarchyRequest *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation generateJSONDataWithError:0];
   v4 = [v3 base64EncodedStringWithOptions:0];
 
   return v4;
@@ -407,25 +407,25 @@
 
 - (id)humanReadableStatusMessage
 {
-  v3 = [(DebugHierarchyRequest *)self statusMessageActivityPhrase];
-  v4 = [v3 length];
+  statusMessageActivityPhrase = [(DebugHierarchyRequest *)self statusMessageActivityPhrase];
+  v4 = [statusMessageActivityPhrase length];
 
   if (v4)
   {
-    v5 = [(DebugHierarchyRequest *)self status];
-    v6 = [(DebugHierarchyRequest *)self statusMessageActivityPhrase];
-    v7 = v6;
-    if ((v5 + 2) > 5)
+    status = [(DebugHierarchyRequest *)self status];
+    statusMessageActivityPhrase2 = [(DebugHierarchyRequest *)self statusMessageActivityPhrase];
+    v7 = statusMessageActivityPhrase2;
+    if ((status + 2) > 5)
     {
       v8 = @"Waiting for %@ to be fetched";
     }
 
     else
     {
-      v8 = off_242D8[v5 + 2];
+      v8 = off_242D8[status + 2];
     }
 
-    v9 = [NSString stringWithFormat:v8, v6];
+    v9 = [NSString stringWithFormat:v8, statusMessageActivityPhrase2];
   }
 
   else
@@ -438,23 +438,23 @@
 
 - (id)debugDescription
 {
-  v3 = [(DebugHierarchyRequest *)self dictionaryRepresentation];
-  v4 = [NSString stringWithFormat:@"%@ - %@", self, v3];
+  dictionaryRepresentation = [(DebugHierarchyRequest *)self dictionaryRepresentation];
+  v4 = [NSString stringWithFormat:@"%@ - %@", self, dictionaryRepresentation];
 
   return v4;
 }
 
-- (id)formattedResponseDataForRawRequestResultData:(id)a3
+- (id)formattedResponseDataForRawRequestResultData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (!dataCopy)
   {
     v6 = 0;
     goto LABEL_8;
   }
 
-  v6 = v4;
+  v6 = dataCopy;
   [(DebugHierarchyRequest *)self initiatorVersion];
   if (v7 >= 3.0)
   {
@@ -463,15 +463,15 @@
       goto LABEL_8;
     }
 
-    v8 = [v6 dbg_gzipDeflate];
+    dbg_gzipDeflate = [v6 dbg_gzipDeflate];
   }
 
   else
   {
-    v8 = [v6 dbg_gzipDeflateRaw];
+    dbg_gzipDeflate = [v6 dbg_gzipDeflateRaw];
   }
 
-  v9 = v8;
+  v9 = dbg_gzipDeflate;
 
   v6 = v9;
 LABEL_8:
@@ -479,10 +479,10 @@ LABEL_8:
   return v6;
 }
 
-+ (DebugHierarchyRequest)requestWithBase64Data:(id)a3 error:(id *)a4
++ (DebugHierarchyRequest)requestWithBase64Data:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [[NSData alloc] initWithBase64EncodedString:v5 options:0];
+  dataCopy = data;
+  v6 = [[NSData alloc] initWithBase64EncodedString:dataCopy options:0];
   v13 = 0;
   v7 = [NSDictionary dictionaryWithJSONData:v6 error:&v13];
   v8 = v13;
@@ -497,36 +497,36 @@ LABEL_8:
 
   else
   {
-    v9 = [a1 _compatibleRequestWithDictionary:v7];
+    v9 = [self _compatibleRequestWithDictionary:v7];
   }
 
   return v9;
 }
 
-+ (id)_compatibleRequestWithDictionary:(id)a3
++ (id)_compatibleRequestWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"DBGHierarchyRequestPredicate"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"DBGHierarchyRequestPredicate"];
 
   if (v5)
   {
-    v6 = [a1 _requestWithV1RequestDictionary:v4];
+    v6 = [self _requestWithV1RequestDictionary:dictionaryCopy];
 
     [v6 setNeedsCompatibilityConversion:1];
   }
 
   else
   {
-    v6 = [DebugHierarchyRequest requestWithDictionary:v4];
+    v6 = [DebugHierarchyRequest requestWithDictionary:dictionaryCopy];
   }
 
   return v6;
 }
 
-+ (id)_requestWithV1RequestDictionary:(id)a3
++ (id)_requestWithV1RequestDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"DBGHierarchyRequestPredicate"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"DBGHierarchyRequestPredicate"];
   v5 = [v4 objectForKeyedSubscript:@"objectIdentifiers"];
   v6 = [v5 count];
   v7 = +[NSMutableArray array];
@@ -544,11 +544,11 @@ LABEL_8:
   else
   {
     v9 = [v4 objectForKeyedSubscript:@"includeLazyValues"];
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
 
     v8 = objc_alloc_init(DebugHierarchyPropertyAction);
     [(DebugHierarchyPropertyAction *)v8 setObjectIdentifiers:&__NSArray0__struct exlusive:1];
-    if ((v10 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       [(DebugHierarchyPropertyAction *)v8 setOptions:1 comparisonStyle:3];
     }
@@ -556,10 +556,10 @@ LABEL_8:
     [v7 addObject:v8];
   }
 
-  v11 = [v3 objectForKeyedSubscript:@"DBGHierarchyRequestSpinRunloop"];
-  v12 = [v11 BOOLValue];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"DBGHierarchyRequestSpinRunloop"];
+  bOOLValue2 = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue2)
   {
     v13 = objc_alloc_init(DebugHierarchyRunLoopAction);
     [v7 addObject:v13];
@@ -576,10 +576,10 @@ LABEL_8:
   }
 
   v15 = [DebugHierarchyRequest requestWithDiscoveryType:v14 actions:v7 completion:&__block_literal_global_0];
-  v16 = [v3 objectForKeyedSubscript:@"DBGHierarchyRequestIdentifier"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"DBGHierarchyRequestIdentifier"];
   [v15 setIdentifier:v16];
 
-  v17 = [v3 objectForKeyedSubscript:@"DBGHierarchyRequestName"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"DBGHierarchyRequestName"];
   [v15 setName:v17];
 
   return v15;

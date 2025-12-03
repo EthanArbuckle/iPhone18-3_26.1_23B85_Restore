@@ -1,50 +1,50 @@
 @interface FSGenericURLResource
-+ (id)resourceWithURL:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (FSGenericURLResource)initWithCoder:(id)a3;
-- (FSGenericURLResource)initWithURL:(id)a3;
++ (id)resourceWithURL:(id)l;
+- (BOOL)isEqual:(id)equal;
+- (FSGenericURLResource)initWithCoder:(id)coder;
+- (FSGenericURLResource)initWithURL:(id)l;
 - (id)getResourceID;
 - (id)makeProxy;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FSGenericURLResource
 
-- (FSGenericURLResource)initWithURL:(id)a3
+- (FSGenericURLResource)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = FSGenericURLResource;
-  v6 = [(FSResource *)&v9 initResource];
-  v7 = v6;
-  if (v6)
+  initResource = [(FSResource *)&v9 initResource];
+  v7 = initResource;
+  if (initResource)
   {
-    objc_storeStrong(v6 + 2, a3);
+    objc_storeStrong(initResource + 2, l);
   }
 
   return v7;
 }
 
-+ (id)resourceWithURL:(id)a3
++ (id)resourceWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [[self alloc] initWithURL:lCopy];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = FSGenericURLResource;
-  v4 = a3;
-  [(FSResource *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_url forKey:{@"FSResource.URL", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(FSResource *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_url forKey:{@"FSResource.URL", v5.receiver, v5.super_class}];
 }
 
-- (FSGenericURLResource)initWithCoder:(id)a3
+- (FSGenericURLResource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -54,10 +54,10 @@
 
   v10.receiver = self;
   v10.super_class = FSGenericURLResource;
-  v5 = [(FSResource *)&v10 initWithCoder:v4];
+  v5 = [(FSResource *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSResource.URL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSResource.URL"];
     url = v5->_url;
     v5->_url = v6;
   }
@@ -65,9 +65,9 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = [(FSResource *)FSGenericURLResource dynamicCast:a3];
+  v4 = [(FSResource *)FSGenericURLResource dynamicCast:equal];
   v5 = v4;
   if (v4)
   {
@@ -87,8 +87,8 @@
 - (id)getResourceID
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(NSURL *)self->_url absoluteString];
-  v4 = [v2 stringWithFormat:@"FSGenericURLResource:%@", v3];
+  absoluteString = [(NSURL *)self->_url absoluteString];
+  v4 = [v2 stringWithFormat:@"FSGenericURLResource:%@", absoluteString];
 
   return v4;
 }

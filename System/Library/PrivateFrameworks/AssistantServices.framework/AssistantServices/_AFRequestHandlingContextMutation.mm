@@ -1,5 +1,5 @@
 @interface _AFRequestHandlingContextMutation
-- (_AFRequestHandlingContextMutation)initWithBase:(id)a3;
+- (_AFRequestHandlingContextMutation)initWithBase:(id)base;
 - (id)getInputAssistantID;
 - (id)getInputDeviceID;
 - (id)getRequestID;
@@ -11,57 +11,57 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_inputDeviceID;
+    inputDeviceID = self->_inputDeviceID;
   }
 
   else
   {
-    v2 = [(AFRequestHandlingContext *)self->_base inputDeviceID];
+    inputDeviceID = [(AFRequestHandlingContext *)self->_base inputDeviceID];
   }
 
-  return v2;
+  return inputDeviceID;
 }
 
 - (id)getInputAssistantID
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_inputAssistantID;
+    inputAssistantID = self->_inputAssistantID;
   }
 
   else
   {
-    v2 = [(AFRequestHandlingContext *)self->_base inputAssistantID];
+    inputAssistantID = [(AFRequestHandlingContext *)self->_base inputAssistantID];
   }
 
-  return v2;
+  return inputAssistantID;
 }
 
 - (id)getRequestID
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_requestID;
+    requestID = self->_requestID;
   }
 
   else
   {
-    v2 = [(AFRequestHandlingContext *)self->_base requestID];
+    requestID = [(AFRequestHandlingContext *)self->_base requestID];
   }
 
-  return v2;
+  return requestID;
 }
 
-- (_AFRequestHandlingContextMutation)initWithBase:(id)a3
+- (_AFRequestHandlingContextMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFRequestHandlingContextMutation;
   v6 = [(_AFRequestHandlingContextMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

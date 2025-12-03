@@ -1,7 +1,7 @@
 @interface PXTaggedRect
 - (CGRect)rect;
 - (PXTaggedRect)init;
-- (PXTaggedRect)initWithRect:(CGRect)a3 tag:(unint64_t)a4;
+- (PXTaggedRect)initWithRect:(CGRect)rect tag:(unint64_t)tag;
 - (id)description;
 @end
 
@@ -35,18 +35,18 @@
 
 - (PXTaggedRect)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXTaggedRect.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXTaggedRect init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXTaggedRect.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXTaggedRect init]"}];
 
   abort();
 }
 
-- (PXTaggedRect)initWithRect:(CGRect)a3 tag:(unint64_t)a4
+- (PXTaggedRect)initWithRect:(CGRect)rect tag:(unint64_t)tag
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10.receiver = self;
   v10.super_class = PXTaggedRect;
   result = [(PXTaggedRect *)&v10 init];
@@ -56,7 +56,7 @@
     result->_rect.origin.y = y;
     result->_rect.size.width = width;
     result->_rect.size.height = height;
-    result->_tag = a4;
+    result->_tag = tag;
   }
 
   return result;

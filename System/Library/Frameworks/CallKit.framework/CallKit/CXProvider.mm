@@ -1,5 +1,5 @@
 @interface CXProvider
-+ (CXProvider)allocWithZone:(_NSZone *)a3;
++ (CXProvider)allocWithZone:(_NSZone *)zone;
 + (void)reportNewIncomingVoIPPushPayload:(NSDictionary *)dictionaryPayload completion:(void *)completion;
 - (CXAbstractProviderDelegate)delegate;
 - (CXFeatures)featureFlags;
@@ -10,31 +10,31 @@
 - (NSArray)pendingTransactions;
 - (OS_dispatch_queue)queue;
 - (id)callProviderHostDelegate;
-- (void)commitTransaction:(id)a3;
-- (void)handleActionTimeout:(id)a3;
-- (void)handleAudioSessionActivationStateChangedTo:(id)a3;
-- (void)handleMediaServicesWereResetNotification:(id)a3;
-- (void)handleMuteStatusChangedNotification:(id)a3;
+- (void)commitTransaction:(id)transaction;
+- (void)handleActionTimeout:(id)timeout;
+- (void)handleAudioSessionActivationStateChangedTo:(id)to;
+- (void)handleMediaServicesWereResetNotification:(id)notification;
+- (void)handleMuteStatusChangedNotification:(id)notification;
 - (void)invalidate;
-- (void)performAction:(id)a3;
-- (void)performCompletionBlock:(id)a3;
+- (void)performAction:(id)action;
+- (void)performCompletionBlock:(id)block;
 - (void)registerCurrentConfiguration;
-- (void)reportAudioFinishedForCallWithUUID:(id)a3;
+- (void)reportAudioFinishedForCallWithUUID:(id)d;
 - (void)reportCallWithUUID:(NSUUID *)UUID endedAtDate:(NSDate *)dateEnded reason:(CXCallEndedReason)endedReason;
 - (void)reportCallWithUUID:(NSUUID *)UUID updated:(CXCallUpdate *)update;
-- (void)reportCallWithUUID:(id)a3 changedFrequencyData:(id)a4 forDirection:(int64_t)a5;
-- (void)reportCallWithUUID:(id)a3 changedMeterLevel:(float)a4 forDirection:(int64_t)a5;
-- (void)reportCallWithUUID:(id)a3 crossDeviceIdentifier:(id)a4 changedBytesOfDataUsed:(int64_t)a5;
-- (void)reportCallWithUUID:(id)a3 endedAtDate:(id)a4 privateReason:(int64_t)a5;
-- (void)reportCallWithUUID:(id)a3 endedAtDate:(id)a4 privateReason:(int64_t)a5 failureContext:(id)a6;
-- (void)reportCallWithUUID:(id)a3 failedAtDate:(id)a4 withContext:(id)a5;
-- (void)reportCallWithUUID:(id)a3 receivedDTMFUpdate:(id)a4;
+- (void)reportCallWithUUID:(id)d changedFrequencyData:(id)data forDirection:(int64_t)direction;
+- (void)reportCallWithUUID:(id)d changedMeterLevel:(float)level forDirection:(int64_t)direction;
+- (void)reportCallWithUUID:(id)d crossDeviceIdentifier:(id)identifier changedBytesOfDataUsed:(int64_t)used;
+- (void)reportCallWithUUID:(id)d endedAtDate:(id)date privateReason:(int64_t)reason;
+- (void)reportCallWithUUID:(id)d endedAtDate:(id)date privateReason:(int64_t)reason failureContext:(id)context;
+- (void)reportCallWithUUID:(id)d failedAtDate:(id)date withContext:(id)context;
+- (void)reportCallWithUUID:(id)d receivedDTMFUpdate:(id)update;
 - (void)reportNewIncomingCallWithUUID:(NSUUID *)UUID update:(CXCallUpdate *)update completion:(void *)completion;
-- (void)reportNewOutgoingCallWithUUID:(id)a3 update:(id)a4;
+- (void)reportNewOutgoingCallWithUUID:(id)d update:(id)update;
 - (void)reportOutgoingCallWithUUID:(NSUUID *)UUID connectedAtDate:(NSDate *)dateConnected;
 - (void)reportOutgoingCallWithUUID:(NSUUID *)UUID startedConnectingAtDate:(NSDate *)dateStartedConnecting;
-- (void)reportOutgoingCallWithUUID:(id)a3 sentInvitationAtDate:(id)a4;
-- (void)requestTransaction:(id)a3 completion:(id)a4;
+- (void)reportOutgoingCallWithUUID:(id)d sentInvitationAtDate:(id)date;
+- (void)requestTransaction:(id)transaction completion:(id)completion;
 - (void)setConfiguration:(CXProviderConfiguration *)configuration;
 - (void)setDelegate:(id)delegate queue:(dispatch_queue_t)queue;
 @end
@@ -43,12 +43,12 @@
 
 - (CXAbstractProviderDelegate)delegate
 {
-  v2 = [(CXProvider *)self abstractProvider];
-  v3 = [v2 delegate];
+  abstractProvider = [(CXProvider *)self abstractProvider];
+  delegate = [abstractProvider delegate];
 
-  if ([v3 conformsToProtocol:&unk_1F2CB7240])
+  if ([delegate conformsToProtocol:&unk_1F2CB7240])
   {
-    v4 = v3;
+    v4 = delegate;
   }
 
   else
@@ -63,12 +63,12 @@
 
 - (CXProviderDelegatePrivate)privateDelegate
 {
-  v2 = [(CXProvider *)self abstractProvider];
-  v3 = [v2 delegate];
+  abstractProvider = [(CXProvider *)self abstractProvider];
+  delegate = [abstractProvider delegate];
 
-  if ([v3 conformsToProtocol:&unk_1F2CB9A40])
+  if ([delegate conformsToProtocol:&unk_1F2CB9A40])
   {
-    v4 = v3;
+    v4 = delegate;
   }
 
   else
@@ -81,19 +81,19 @@
   return v4;
 }
 
-+ (CXProvider)allocWithZone:(_NSZone *)a3
++ (CXProvider)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [(CXProvider *)CXXPCProvider allocWithZone:a3];
+    return [(CXProvider *)CXXPCProvider allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___CXProvider;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
@@ -127,8 +127,8 @@
 
     if ([(CXProvider *)v5 requiresProxyingAVAudioSessionState])
     {
-      v13 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v13 addObserver:v5 selector:sel_handleMediaServicesWereResetNotification_ name:*MEMORY[0x1E6958128] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v5 selector:sel_handleMediaServicesWereResetNotification_ name:*MEMORY[0x1E6958128] object:0];
     }
   }
 
@@ -161,10 +161,10 @@ void __36__CXProvider_initWithConfiguration___block_invoke()
 
 - (id)callProviderHostDelegate
 {
-  v2 = [(CXProvider *)self hostProtocolDelegate];
-  if ([v2 conformsToProtocol:&unk_1F2CA7158])
+  hostProtocolDelegate = [(CXProvider *)self hostProtocolDelegate];
+  if ([hostProtocolDelegate conformsToProtocol:&unk_1F2CA7158])
   {
-    v3 = v2;
+    v3 = hostProtocolDelegate;
   }
 
   else
@@ -185,14 +185,14 @@ void __36__CXProvider_initWithConfiguration___block_invoke()
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v3 = [(CXProvider *)self queue];
+  queue = [(CXProvider *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27__CXProvider_configuration__block_invoke;
   v6[3] = &unk_1E7C06E28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -219,7 +219,7 @@ uint64_t __27__CXProvider_configuration__block_invoke(uint64_t a1)
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXProvider setConfiguration:]", @"configuration"}];
   }
 
-  v6 = [(CXProvider *)self queue];
+  queue = [(CXProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __31__CXProvider_setConfiguration___block_invoke;
@@ -227,7 +227,7 @@ uint64_t __27__CXProvider_configuration__block_invoke(uint64_t a1)
   block[4] = self;
   v9 = v4;
   v7 = v4;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __31__CXProvider_setConfiguration___block_invoke(uint64_t a1)
@@ -259,7 +259,7 @@ uint64_t __31__CXProvider_setConfiguration___block_invoke(uint64_t a1)
 {
   v35 = *MEMORY[0x1E69E9840];
   v6 = callUUID;
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(objc_class *)callActionClass isSubclassOfClass:objc_opt_class()])
   {
     v31 = 0u;
@@ -287,8 +287,8 @@ uint64_t __31__CXProvider_setConfiguration___block_invoke(uint64_t a1)
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v10 = [v9 actions];
-          v11 = [v10 countByEnumeratingWithState:&v25 objects:v33 count:16];
+          actions = [v9 actions];
+          v11 = [actions countByEnumeratingWithState:&v25 objects:v33 count:16];
           if (v11)
           {
             v12 = v11;
@@ -299,23 +299,23 @@ uint64_t __31__CXProvider_setConfiguration___block_invoke(uint64_t a1)
               {
                 if (*v26 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(actions);
                 }
 
                 v15 = *(*(&v25 + 1) + 8 * i);
                 if (objc_opt_isKindOfClass())
                 {
-                  v16 = [v15 callUUID];
-                  v17 = [v16 isEqual:v6];
+                  callUUID = [v15 callUUID];
+                  v17 = [callUUID isEqual:v6];
 
                   if (v17)
                   {
-                    [v7 addObject:v15];
+                    [array addObject:v15];
                   }
                 }
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v25 objects:v33 count:16];
+              v12 = [actions countByEnumeratingWithState:&v25 objects:v33 count:16];
             }
 
             while (v12);
@@ -332,7 +332,7 @@ uint64_t __31__CXProvider_setConfiguration___block_invoke(uint64_t a1)
     }
   }
 
-  v18 = [v7 copy];
+  v18 = [array copy];
 
   v19 = *MEMORY[0x1E69E9840];
 
@@ -381,10 +381,10 @@ LABEL_8:
   }
 
 LABEL_5:
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 postNotificationName:*MEMORY[0x1E6979268] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E6979268] object:0];
 
-  v12 = [(CXProvider *)self queue];
+  queue = [(CXProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__CXProvider_reportNewIncomingCallWithUUID_update_completion___block_invoke;
@@ -396,7 +396,7 @@ LABEL_5:
   v13 = v10;
   v14 = v9;
   v15 = v8;
-  dispatch_async(v12, block);
+  dispatch_async(queue, block);
 }
 
 void __62__CXProvider_reportNewIncomingCallWithUUID_update_completion___block_invoke(uint64_t a1)
@@ -473,7 +473,7 @@ void __62__CXProvider_reportNewIncomingCallWithUUID_update_completion___block_in
   }
 
 LABEL_4:
-  v8 = [(CXProvider *)self queue];
+  queue = [(CXProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__CXProvider_reportCallWithUUID_updated___block_invoke;
@@ -483,7 +483,7 @@ LABEL_4:
   v13 = v7;
   v9 = v7;
   v10 = v6;
-  dispatch_async(v8, block);
+  dispatch_async(queue, block);
 }
 
 void __41__CXProvider_reportCallWithUUID_updated___block_invoke(uint64_t a1)
@@ -524,11 +524,11 @@ void __41__CXProvider_reportCallWithUUID_updated___block_invoke(uint64_t a1)
   v11 = CXDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(NSUUID *)v8 UUIDString];
+    uUIDString = [(NSUUID *)v8 UUIDString];
     *buf = 138413058;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v12;
+    v18 = uUIDString;
     v19 = 2112;
     v20 = v9;
     v21 = 2048;
@@ -551,13 +551,13 @@ void __41__CXProvider_reportCallWithUUID_updated___block_invoke(uint64_t a1)
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportCallWithUUID:(id)a3 endedAtDate:(id)a4 privateReason:(int64_t)a5
+- (void)reportCallWithUUID:(id)d endedAtDate:(id)date privateReason:(int64_t)reason
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  dateCopy = date;
   v10 = dyld_program_sdk_at_least();
-  if (!v8 && v10)
+  if (!dCopy && v10)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXProvider reportCallWithUUID:endedAtDate:privateReason:]", @"UUID"}];
   }
@@ -565,33 +565,33 @@ void __41__CXProvider_reportCallWithUUID_updated___block_invoke(uint64_t a1)
   v11 = CXDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138413058;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v12;
+    v17 = uUIDString;
     v18 = 2112;
-    v19 = v9;
+    v19 = dateCopy;
     v20 = 2048;
-    v21 = a5;
+    reasonCopy = reason;
     _os_log_impl(&dword_1B47F3000, v11, OS_LOG_TYPE_DEFAULT, "Provider %@ was notified that call with UUID %@ ended at date %@ with private reason %ld", buf, 0x2Au);
   }
 
-  [(CXProvider *)self reportCallWithUUID:v8 endedAtDate:v9 privateReason:a5 failureContext:0];
+  [(CXProvider *)self reportCallWithUUID:dCopy endedAtDate:dateCopy privateReason:reason failureContext:0];
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportCallWithUUID:(id)a3 failedAtDate:(id)a4 withContext:(id)a5
+- (void)reportCallWithUUID:(id)d failedAtDate:(id)date withContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  dateCopy = date;
+  contextCopy = context;
   if (dyld_program_sdk_at_least())
   {
-    if (v8)
+    if (dCopy)
     {
-      if (v10)
+      if (contextCopy)
       {
         goto LABEL_4;
       }
@@ -600,7 +600,7 @@ void __41__CXProvider_reportCallWithUUID_updated___block_invoke(uint64_t a1)
     else
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXProvider reportCallWithUUID:failedAtDate:withContext:]", @"UUID"}];
-      if (v10)
+      if (contextCopy)
       {
         goto LABEL_4;
       }
@@ -613,47 +613,47 @@ LABEL_4:
   v11 = CXDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138413058;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v12;
+    v17 = uUIDString;
     v18 = 2112;
-    v19 = v9;
+    v19 = dateCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = contextCopy;
     _os_log_impl(&dword_1B47F3000, v11, OS_LOG_TYPE_DEFAULT, "Provider %@ was notified that call with UUID %@ failed at date %@ with context %@", buf, 0x2Au);
   }
 
-  [(CXProvider *)self reportCallWithUUID:v8 endedAtDate:v9 privateReason:1 failureContext:v10];
+  [(CXProvider *)self reportCallWithUUID:dCopy endedAtDate:dateCopy privateReason:1 failureContext:contextCopy];
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportCallWithUUID:(id)a3 endedAtDate:(id)a4 privateReason:(int64_t)a5 failureContext:(id)a6
+- (void)reportCallWithUUID:(id)d endedAtDate:(id)date privateReason:(int64_t)reason failureContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  dateCopy = date;
+  contextCopy = context;
   v13 = dyld_program_sdk_at_least();
-  if (!v10 && v13)
+  if (!dCopy && v13)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXProvider reportCallWithUUID:endedAtDate:privateReason:failureContext:]", @"UUID"}];
   }
 
-  v14 = [(CXProvider *)self queue];
+  queue = [(CXProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__CXProvider_reportCallWithUUID_endedAtDate_privateReason_failureContext___block_invoke;
   block[3] = &unk_1E7C06FE8;
   block[4] = self;
-  v19 = v10;
-  v21 = v12;
-  v22 = a5;
-  v20 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  dispatch_async(v14, block);
+  v19 = dCopy;
+  v21 = contextCopy;
+  reasonCopy = reason;
+  v20 = dateCopy;
+  v15 = contextCopy;
+  v16 = dateCopy;
+  v17 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __74__CXProvider_reportCallWithUUID_endedAtDate_privateReason_failureContext___block_invoke(uint64_t a1)
@@ -686,24 +686,24 @@ void __74__CXProvider_reportCallWithUUID_endedAtDate_privateReason_failureContex
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportAudioFinishedForCallWithUUID:(id)a3
+- (void)reportAudioFinishedForCallWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = dyld_program_sdk_at_least();
-  if (!v4 && v5)
+  if (!dCopy && v5)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXProvider reportAudioFinishedForCallWithUUID:]", @"UUID"}];
   }
 
-  v6 = [(CXProvider *)self queue];
+  queue = [(CXProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__CXProvider_reportAudioFinishedForCallWithUUID___block_invoke;
   block[3] = &unk_1E7C06BE0;
   block[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, block);
+  v9 = dCopy;
+  v7 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __49__CXProvider_reportAudioFinishedForCallWithUUID___block_invoke(uint64_t a1)
@@ -727,27 +727,27 @@ void __49__CXProvider_reportAudioFinishedForCallWithUUID___block_invoke(uint64_t
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportOutgoingCallWithUUID:(id)a3 sentInvitationAtDate:(id)a4
+- (void)reportOutgoingCallWithUUID:(id)d sentInvitationAtDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dateCopy = date;
   v8 = dyld_program_sdk_at_least();
-  if (!v6 && v8)
+  if (!dCopy && v8)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXProvider reportOutgoingCallWithUUID:sentInvitationAtDate:]", @"UUID"}];
   }
 
-  v9 = [(CXProvider *)self queue];
+  queue = [(CXProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__CXProvider_reportOutgoingCallWithUUID_sentInvitationAtDate___block_invoke;
   block[3] = &unk_1E7C06C80;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = dCopy;
+  v14 = dateCopy;
+  v10 = dateCopy;
+  v11 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __62__CXProvider_reportOutgoingCallWithUUID_sentInvitationAtDate___block_invoke(uint64_t a1)
@@ -774,28 +774,28 @@ void __62__CXProvider_reportOutgoingCallWithUUID_sentInvitationAtDate___block_in
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportCallWithUUID:(id)a3 changedFrequencyData:(id)a4 forDirection:(int64_t)a5
+- (void)reportCallWithUUID:(id)d changedFrequencyData:(id)data forDirection:(int64_t)direction
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  dataCopy = data;
   v10 = dyld_program_sdk_at_least();
-  if (!v8 && v10)
+  if (!dCopy && v10)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXProvider reportCallWithUUID:changedFrequencyData:forDirection:]", @"UUID"}];
   }
 
-  v11 = [(CXProvider *)self queue];
+  queue = [(CXProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__CXProvider_reportCallWithUUID_changedFrequencyData_forDirection___block_invoke;
   block[3] = &unk_1E7C07488;
   block[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a5;
-  v12 = v9;
-  v13 = v8;
-  dispatch_async(v11, block);
+  v15 = dCopy;
+  v16 = dataCopy;
+  directionCopy = direction;
+  v12 = dataCopy;
+  v13 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __67__CXProvider_reportCallWithUUID_changedFrequencyData_forDirection___block_invoke(uint64_t a1)
@@ -804,26 +804,26 @@ void __67__CXProvider_reportCallWithUUID_changedFrequencyData_forDirection___blo
   [v2 reportCallWithUUID:*(a1 + 40) changedFrequencyData:*(a1 + 48) forDirection:*(a1 + 56)];
 }
 
-- (void)reportCallWithUUID:(id)a3 changedMeterLevel:(float)a4 forDirection:(int64_t)a5
+- (void)reportCallWithUUID:(id)d changedMeterLevel:(float)level forDirection:(int64_t)direction
 {
-  v8 = a3;
+  dCopy = d;
   v9 = dyld_program_sdk_at_least();
-  if (!v8 && v9)
+  if (!dCopy && v9)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXProvider reportCallWithUUID:changedMeterLevel:forDirection:]", @"UUID"}];
   }
 
-  v10 = [(CXProvider *)self queue];
+  queue = [(CXProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__CXProvider_reportCallWithUUID_changedMeterLevel_forDirection___block_invoke;
   block[3] = &unk_1E7C074B0;
   block[4] = self;
-  v13 = v8;
-  v15 = a4;
-  v14 = a5;
-  v11 = v8;
-  dispatch_async(v10, block);
+  v13 = dCopy;
+  levelCopy = level;
+  directionCopy = direction;
+  v11 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __64__CXProvider_reportCallWithUUID_changedMeterLevel_forDirection___block_invoke(uint64_t a1)
@@ -833,15 +833,15 @@ void __64__CXProvider_reportCallWithUUID_changedMeterLevel_forDirection___block_
   [v3 reportCallWithUUID:*(a1 + 40) changedMeterLevel:*(a1 + 48) forDirection:v2];
 }
 
-- (void)reportCallWithUUID:(id)a3 crossDeviceIdentifier:(id)a4 changedBytesOfDataUsed:(int64_t)a5
+- (void)reportCallWithUUID:(id)d crossDeviceIdentifier:(id)identifier changedBytesOfDataUsed:(int64_t)used
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   if (dyld_program_sdk_at_least())
   {
-    if (v8)
+    if (dCopy)
     {
-      if (v9)
+      if (identifierCopy)
       {
         goto LABEL_4;
       }
@@ -850,7 +850,7 @@ void __64__CXProvider_reportCallWithUUID_changedMeterLevel_forDirection___block_
     else
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXProvider reportCallWithUUID:crossDeviceIdentifier:changedBytesOfDataUsed:]", @"UUID"}];
-      if (v9)
+      if (identifierCopy)
       {
         goto LABEL_4;
       }
@@ -860,18 +860,18 @@ void __64__CXProvider_reportCallWithUUID_changedMeterLevel_forDirection___block_
   }
 
 LABEL_4:
-  v10 = [(CXProvider *)self queue];
+  queue = [(CXProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__CXProvider_reportCallWithUUID_crossDeviceIdentifier_changedBytesOfDataUsed___block_invoke;
   block[3] = &unk_1E7C07488;
   block[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, block);
+  v14 = dCopy;
+  v15 = identifierCopy;
+  usedCopy = used;
+  v11 = identifierCopy;
+  v12 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __78__CXProvider_reportCallWithUUID_crossDeviceIdentifier_changedBytesOfDataUsed___block_invoke(uint64_t a1)
@@ -911,7 +911,7 @@ void __78__CXProvider_reportCallWithUUID_crossDeviceIdentifier_changedBytesOfDat
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXProvider reportOutgoingCallWithUUID:startedConnectingAtDate:]", @"UUID"}];
   }
 
-  v9 = [(CXProvider *)self queue];
+  queue = [(CXProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__CXProvider_reportOutgoingCallWithUUID_startedConnectingAtDate___block_invoke;
@@ -921,7 +921,7 @@ void __78__CXProvider_reportCallWithUUID_crossDeviceIdentifier_changedBytesOfDat
   v14 = v7;
   v10 = v7;
   v11 = v6;
-  dispatch_async(v9, block);
+  dispatch_async(queue, block);
 }
 
 void __65__CXProvider_reportOutgoingCallWithUUID_startedConnectingAtDate___block_invoke(uint64_t a1)
@@ -958,7 +958,7 @@ void __65__CXProvider_reportOutgoingCallWithUUID_startedConnectingAtDate___block
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXProvider reportOutgoingCallWithUUID:connectedAtDate:]", @"UUID"}];
   }
 
-  v9 = [(CXProvider *)self queue];
+  queue = [(CXProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__CXProvider_reportOutgoingCallWithUUID_connectedAtDate___block_invoke;
@@ -968,7 +968,7 @@ void __65__CXProvider_reportOutgoingCallWithUUID_startedConnectingAtDate___block
   v14 = v7;
   v10 = v7;
   v11 = v6;
-  dispatch_async(v9, block);
+  dispatch_async(queue, block);
 }
 
 void __57__CXProvider_reportOutgoingCallWithUUID_connectedAtDate___block_invoke(uint64_t a1)
@@ -995,21 +995,21 @@ void __57__CXProvider_reportOutgoingCallWithUUID_connectedAtDate___block_invoke(
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportNewOutgoingCallWithUUID:(id)a3 update:(id)a4
+- (void)reportNewOutgoingCallWithUUID:(id)d update:(id)update
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXProvider *)self queue];
+  dCopy = d;
+  updateCopy = update;
+  queue = [(CXProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__CXProvider_reportNewOutgoingCallWithUUID_update___block_invoke;
   block[3] = &unk_1E7C06C80;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = updateCopy;
+  v9 = updateCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __51__CXProvider_reportNewOutgoingCallWithUUID_update___block_invoke(uint64_t a1)
@@ -1033,15 +1033,15 @@ void __51__CXProvider_reportNewOutgoingCallWithUUID_update___block_invoke(uint64
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestTransaction:(id)a3 completion:(id)a4
+- (void)requestTransaction:(id)transaction completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  completionCopy = completion;
   if (dyld_program_sdk_at_least())
   {
-    if (v6)
+    if (transactionCopy)
     {
-      if (v7)
+      if (completionCopy)
       {
         goto LABEL_4;
       }
@@ -1050,7 +1050,7 @@ void __51__CXProvider_reportNewOutgoingCallWithUUID_update___block_invoke(uint64
     else
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXProvider requestTransaction:completion:]", @"transaction"}];
-      if (v7)
+      if (completionCopy)
       {
         goto LABEL_4;
       }
@@ -1060,17 +1060,17 @@ void __51__CXProvider_reportNewOutgoingCallWithUUID_update___block_invoke(uint64
   }
 
 LABEL_4:
-  v8 = [(CXProvider *)self queue];
+  queue = [(CXProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__CXProvider_requestTransaction_completion___block_invoke;
   block[3] = &unk_1E7C06D20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = transactionCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = transactionCopy;
+  dispatch_async(queue, block);
 }
 
 void __44__CXProvider_requestTransaction_completion___block_invoke(uint64_t a1)
@@ -1094,12 +1094,12 @@ void __44__CXProvider_requestTransaction_completion___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportCallWithUUID:(id)a3 receivedDTMFUpdate:(id)a4
+- (void)reportCallWithUUID:(id)d receivedDTMFUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  dCopy = d;
+  updateCopy = update;
+  v8 = updateCopy;
+  if (!dCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXProvider reportCallWithUUID:receivedDTMFUpdate:]", @"UUID"}];
     if (v8)
@@ -1112,23 +1112,23 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!updateCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v9 = [(CXProvider *)self queue];
+  queue = [(CXProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__CXProvider_reportCallWithUUID_receivedDTMFUpdate___block_invoke;
   block[3] = &unk_1E7C06C80;
   block[4] = self;
   v13 = v8;
-  v14 = v6;
-  v10 = v6;
+  v14 = dCopy;
+  v10 = dCopy;
   v11 = v8;
-  dispatch_async(v9, block);
+  dispatch_async(queue, block);
 }
 
 void __52__CXProvider_reportCallWithUUID_receivedDTMFUpdate___block_invoke(uint64_t a1)
@@ -1172,21 +1172,21 @@ void __52__CXProvider_reportCallWithUUID_receivedDTMFUpdate___block_invoke(uint6
 
 - (OS_dispatch_queue)queue
 {
-  v2 = [(CXProvider *)self abstractProvider];
-  v3 = [v2 queue];
+  abstractProvider = [(CXProvider *)self abstractProvider];
+  queue = [abstractProvider queue];
 
-  return v3;
+  return queue;
 }
 
 - (void)registerCurrentConfiguration
 {
-  v3 = [(CXProvider *)self queue];
+  queue = [(CXProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__CXProvider_registerCurrentConfiguration__block_invoke;
   block[3] = &unk_1E7C06CA8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __42__CXProvider_registerCurrentConfiguration__block_invoke(uint64_t a1)
@@ -1226,33 +1226,33 @@ void __42__CXProvider_registerCurrentConfiguration__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleMuteStatusChangedNotification:(id)a3
+- (void)handleMuteStatusChangedNotification:(id)notification
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  notificationCopy = notification;
   v4 = CXDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = notificationCopy;
     _os_log_impl(&dword_1B47F3000, v4, OS_LOG_TYPE_DEFAULT, "Handling notification %@", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performCompletionBlock:(id)a3
+- (void)performCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CXProvider *)self queue];
+  blockCopy = block;
+  queue = [(CXProvider *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__CXProvider_performCompletionBlock___block_invoke;
   v7[3] = &unk_1E7C06CF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(queue, v7);
 }
 
 void __37__CXProvider_performCompletionBlock___block_invoke(uint64_t a1)
@@ -1275,26 +1275,26 @@ void __37__CXProvider_performCompletionBlock___block_invoke(uint64_t a1)
   dispatch_async(queue, *(a1 + 40));
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CXProvider *)self abstractProvider];
-  v6 = [v5 delegateQueue];
-  dispatch_assert_queue_V2(v6);
+  actionCopy = action;
+  abstractProvider = [(CXProvider *)self abstractProvider];
+  delegateQueue = [abstractProvider delegateQueue];
+  dispatch_assert_queue_V2(delegateQueue);
 
-  v7 = [(CXProvider *)self delegate];
-  v8 = [(CXProvider *)self privateDelegate];
+  delegate = [(CXProvider *)self delegate];
+  privateDelegate = [(CXProvider *)self privateDelegate];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v4;
+      v10 = actionCopy;
       if (objc_opt_respondsToSelector())
       {
-        [v7 provider:self performAnswerCallAction:v10];
+        [delegate provider:self performAnswerCallAction:v10];
         goto LABEL_39;
       }
 
@@ -1313,10 +1313,10 @@ void __37__CXProvider_performCompletionBlock___block_invoke(uint64_t a1)
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = v4;
+        v13 = actionCopy;
         if (objc_opt_respondsToSelector())
         {
-          [v7 provider:self performEndCallAction:v13];
+          [delegate provider:self performEndCallAction:v13];
           goto LABEL_39;
         }
 
@@ -1335,10 +1335,10 @@ void __37__CXProvider_performCompletionBlock___block_invoke(uint64_t a1)
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = v4;
+          v14 = actionCopy;
           if (objc_opt_respondsToSelector())
           {
-            [v7 provider:self performSetHeldCallAction:v14];
+            [delegate provider:self performSetHeldCallAction:v14];
             goto LABEL_39;
           }
 
@@ -1357,10 +1357,10 @@ void __37__CXProvider_performCompletionBlock___block_invoke(uint64_t a1)
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v15 = v4;
+            v15 = actionCopy;
             if (objc_opt_respondsToSelector())
             {
-              [v7 provider:self performSetMutedCallAction:v15];
+              [delegate provider:self performSetMutedCallAction:v15];
               goto LABEL_39;
             }
 
@@ -1379,10 +1379,10 @@ void __37__CXProvider_performCompletionBlock___block_invoke(uint64_t a1)
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v16 = v4;
+              v16 = actionCopy;
               if (objc_opt_respondsToSelector())
               {
-                [v7 provider:self performSetGroupCallAction:v16];
+                [delegate provider:self performSetGroupCallAction:v16];
                 goto LABEL_39;
               }
 
@@ -1405,10 +1405,10 @@ void __37__CXProvider_performCompletionBlock___block_invoke(uint64_t a1)
                 goto LABEL_40;
               }
 
-              v17 = v4;
+              v17 = actionCopy;
               if (objc_opt_respondsToSelector())
               {
-                [v7 provider:self performPlayDTMFCallAction:v17];
+                [delegate provider:self performPlayDTMFCallAction:v17];
                 goto LABEL_39;
               }
 
@@ -1431,7 +1431,7 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v9 = v4;
+  v9 = actionCopy;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v11 = CXDefaultLog();
@@ -1449,7 +1449,7 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  [v7 provider:self performStartCallAction:v9];
+  [delegate provider:self performStartCallAction:v9];
 LABEL_39:
 
   v18 = 1;
@@ -1469,7 +1469,7 @@ LABEL_40:
       _os_log_impl(&dword_1B47F3000, v19, OS_LOG_TYPE_DEFAULT, "fulfill CXSetTranslatingCallAction", &v24, 2u);
     }
 
-    [v4 fulfill];
+    [actionCopy fulfill];
 LABEL_45:
     if ((v18 & 1) == 0)
     {
@@ -1484,10 +1484,10 @@ LABEL_45:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = v4;
+      v20 = actionCopy;
       if (objc_opt_respondsToSelector())
       {
-        [v7 provider:self performSetTranslatingCallAction:v20];
+        [delegate provider:self performSetTranslatingCallAction:v20];
         goto LABEL_126;
       }
 
@@ -1507,10 +1507,10 @@ LABEL_46:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = v4;
+      v20 = actionCopy;
       if (objc_opt_respondsToSelector())
       {
-        [v8 provider:self performSendMMIOrUSSDCodeAction:v20];
+        [privateDelegate provider:self performSendMMIOrUSSDCodeAction:v20];
 LABEL_126:
 
         goto LABEL_127;
@@ -1532,10 +1532,10 @@ LABEL_124:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = v4;
+        v20 = actionCopy;
         if (objc_opt_respondsToSelector())
         {
-          [v8 provider:self performJoinCallAction:v20];
+          [privateDelegate provider:self performJoinCallAction:v20];
           goto LABEL_126;
         }
 
@@ -1554,10 +1554,10 @@ LABEL_124:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = v4;
+          v20 = actionCopy;
           if (objc_opt_respondsToSelector())
           {
-            [v8 provider:self performSetTTYTypeCallAction:v20];
+            [privateDelegate provider:self performSetTTYTypeCallAction:v20];
             goto LABEL_126;
           }
 
@@ -1576,10 +1576,10 @@ LABEL_124:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v20 = v4;
+            v20 = actionCopy;
             if (objc_opt_respondsToSelector())
             {
-              [v8 provider:self performSetSendingVideoCallAction:v20];
+              [privateDelegate provider:self performSetSendingVideoCallAction:v20];
               goto LABEL_126;
             }
 
@@ -1598,10 +1598,10 @@ LABEL_124:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v20 = v4;
+              v20 = actionCopy;
               if (objc_opt_respondsToSelector())
               {
-                [v8 provider:self performSetRelayingCallAction:v20];
+                [privateDelegate provider:self performSetRelayingCallAction:v20];
                 goto LABEL_126;
               }
 
@@ -1620,10 +1620,10 @@ LABEL_124:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v20 = v4;
+                v20 = actionCopy;
                 if (objc_opt_respondsToSelector())
                 {
-                  [v8 provider:self performSetScreeningCallAction:v20];
+                  [privateDelegate provider:self performSetScreeningCallAction:v20];
                   goto LABEL_126;
                 }
 
@@ -1642,10 +1642,10 @@ LABEL_124:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v20 = v4;
+                  v20 = actionCopy;
                   if (objc_opt_respondsToSelector())
                   {
-                    [v8 provider:self performSetAllowUplinkAudioInjectionAction:v20];
+                    [privateDelegate provider:self performSetAllowUplinkAudioInjectionAction:v20];
                     goto LABEL_126;
                   }
 
@@ -1664,10 +1664,10 @@ LABEL_124:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v20 = v4;
+                    v20 = actionCopy;
                     if (objc_opt_respondsToSelector())
                     {
-                      [v8 provider:self performPullCallAction:v20];
+                      [privateDelegate provider:self performPullCallAction:v20];
                       goto LABEL_126;
                     }
 
@@ -1686,10 +1686,10 @@ LABEL_124:
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v20 = v4;
+                      v20 = actionCopy;
                       if (objc_opt_respondsToSelector())
                       {
-                        [v8 provider:self performSetVideoPresentationSizeCallAction:v20];
+                        [privateDelegate provider:self performSetVideoPresentationSizeCallAction:v20];
                         goto LABEL_126;
                       }
 
@@ -1708,10 +1708,10 @@ LABEL_124:
                       objc_opt_class();
                       if (objc_opt_isKindOfClass())
                       {
-                        v20 = v4;
+                        v20 = actionCopy;
                         if (objc_opt_respondsToSelector())
                         {
-                          [v8 provider:self performSetVideoPresentationStateCallAction:v20];
+                          [privateDelegate provider:self performSetVideoPresentationStateCallAction:v20];
                           goto LABEL_126;
                         }
 
@@ -1730,10 +1730,10 @@ LABEL_124:
                         objc_opt_class();
                         if (objc_opt_isKindOfClass())
                         {
-                          v20 = v4;
+                          v20 = actionCopy;
                           if (objc_opt_respondsToSelector())
                           {
-                            [v8 provider:self performSetSharingScreenCallAction:v20];
+                            [privateDelegate provider:self performSetSharingScreenCallAction:v20];
                             goto LABEL_126;
                           }
 
@@ -1752,10 +1752,10 @@ LABEL_124:
                           objc_opt_class();
                           if (objc_opt_isKindOfClass())
                           {
-                            v20 = v4;
+                            v20 = actionCopy;
                             if (objc_opt_respondsToSelector())
                             {
-                              [v8 provider:self performSetScreenShareAttributesCallAction:v20];
+                              [privateDelegate provider:self performSetScreenShareAttributesCallAction:v20];
                               goto LABEL_126;
                             }
 
@@ -1774,10 +1774,10 @@ LABEL_124:
                             objc_opt_class();
                             if (objc_opt_isKindOfClass())
                             {
-                              v20 = v4;
+                              v20 = actionCopy;
                               if (objc_opt_respondsToSelector())
                               {
-                                [v8 provider:self performEnableVideoCallAction:v20];
+                                [privateDelegate provider:self performEnableVideoCallAction:v20];
                                 goto LABEL_126;
                               }
 
@@ -1799,16 +1799,16 @@ LABEL_124:
                                 v20 = CXDefaultLog();
                                 if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
                                 {
-                                  [(CXProvider *)v4 performAction:v20];
+                                  [(CXProvider *)actionCopy performAction:v20];
                                 }
 
                                 goto LABEL_126;
                               }
 
-                              v20 = v4;
+                              v20 = actionCopy;
                               if (objc_opt_respondsToSelector())
                               {
-                                [v8 provider:self performShareIdentityCallAction:v20];
+                                [privateDelegate provider:self performShareIdentityCallAction:v20];
                                 goto LABEL_126;
                               }
 
@@ -1848,50 +1848,50 @@ LABEL_127:
 {
   v6 = queue;
   v7 = delegate;
-  v8 = [(CXProvider *)self abstractProvider];
-  [v8 setDelegate:v7 queue:v6];
+  abstractProvider = [(CXProvider *)self abstractProvider];
+  [abstractProvider setDelegate:v7 queue:v6];
 }
 
 - (NSArray)pendingTransactions
 {
-  v2 = [(CXProvider *)self abstractProvider];
-  v3 = [v2 pendingTransactions];
+  abstractProvider = [(CXProvider *)self abstractProvider];
+  pendingTransactions = [abstractProvider pendingTransactions];
 
-  return v3;
+  return pendingTransactions;
 }
 
 - (void)invalidate
 {
-  v2 = [(CXProvider *)self abstractProvider];
-  [v2 invalidate];
+  abstractProvider = [(CXProvider *)self abstractProvider];
+  [abstractProvider invalidate];
 }
 
-- (void)commitTransaction:(id)a3
+- (void)commitTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(CXProvider *)self abstractProvider];
-  [v5 provider:self commitTransaction:v4];
+  transactionCopy = transaction;
+  abstractProvider = [(CXProvider *)self abstractProvider];
+  [abstractProvider provider:self commitTransaction:transactionCopy];
 }
 
-- (void)handleActionTimeout:(id)a3
+- (void)handleActionTimeout:(id)timeout
 {
-  v4 = a3;
-  v5 = [(CXProvider *)self abstractProvider];
-  [v5 provider:self handleTimeoutForAction:v4];
+  timeoutCopy = timeout;
+  abstractProvider = [(CXProvider *)self abstractProvider];
+  [abstractProvider provider:self handleTimeoutForAction:timeoutCopy];
 }
 
-- (void)handleAudioSessionActivationStateChangedTo:(id)a3
+- (void)handleAudioSessionActivationStateChangedTo:(id)to
 {
-  v4 = a3;
-  v5 = [(CXProvider *)self abstractProvider];
+  toCopy = to;
+  abstractProvider = [(CXProvider *)self abstractProvider];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__CXProvider_handleAudioSessionActivationStateChangedTo___block_invoke;
   v7[3] = &unk_1E7C06BE0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 performDelegateCallback:v7];
+  v8 = toCopy;
+  selfCopy = self;
+  v6 = toCopy;
+  [abstractProvider performDelegateCallback:v7];
 }
 
 void __57__CXProvider_handleAudioSessionActivationStateChangedTo___block_invoke(uint64_t a1)
@@ -1951,15 +1951,15 @@ LABEL_12:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleMediaServicesWereResetNotification:(id)a3
+- (void)handleMediaServicesWereResetNotification:(id)notification
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = notificationCopy;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "%@", &v7, 0xCu);
   }
 

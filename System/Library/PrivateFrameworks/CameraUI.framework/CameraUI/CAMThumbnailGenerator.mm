@@ -1,16 +1,16 @@
 @interface CAMThumbnailGenerator
 - (CAMThumbnailGenerator)init;
-- (CGImage)newBGRAImageInOrientation:(int64_t)a3 usingPixelBuffer:(__CVBuffer *)a4;
-- (CGImage)newBGRAImageInOrientation:(int64_t)a3 usingSurface:(void *)a4;
-- (CGImage)newBGRAImageOfFormat:(int64_t)a3 inOrientation:(int64_t)a4 usingPixelBuffer:(__CVBuffer *)a5;
-- (CGImage)newBGRAImageOfFormat:(int64_t)a3 inOrientation:(int64_t)a4 usingSurface:(void *)a5;
-- (__CVBuffer)_newRotatedPixelBuffer:(__CVBuffer *)a3 withOrientation:(int64_t)a4;
-- (__CVBuffer)_newThumbnailOfFormat:(int64_t)a3 inOrientation:(int64_t)a4 withPixelFormat:(unsigned int)a5 usingPixelBuffer:(__CVBuffer *)a6;
-- (__CVBuffer)_newThumbnailOfSize:(CGSize)a3 inOrientation:(int64_t)a4 withPixelFormat:(unsigned int)a5 usingPixelBuffer:(__CVBuffer *)a6;
-- (id)_neededColorspacePropertiesFromMetadata:(id)a3;
-- (id)newJPEGDataInOrientation:(int64_t)a3 usingPixelBuffer:(__CVBuffer *)a4;
-- (id)newJPEGDataInOrientation:(int64_t)a3 usingSurface:(void *)a4 withMetadata:(id)a5;
-- (id)newJPEGDataOfFormat:(int64_t)a3 inOrientation:(int64_t)a4 usingSurface:(void *)a5 withMetadata:(id)a6;
+- (CGImage)newBGRAImageInOrientation:(int64_t)orientation usingPixelBuffer:(__CVBuffer *)buffer;
+- (CGImage)newBGRAImageInOrientation:(int64_t)orientation usingSurface:(void *)surface;
+- (CGImage)newBGRAImageOfFormat:(int64_t)format inOrientation:(int64_t)orientation usingPixelBuffer:(__CVBuffer *)buffer;
+- (CGImage)newBGRAImageOfFormat:(int64_t)format inOrientation:(int64_t)orientation usingSurface:(void *)surface;
+- (__CVBuffer)_newRotatedPixelBuffer:(__CVBuffer *)buffer withOrientation:(int64_t)orientation;
+- (__CVBuffer)_newThumbnailOfFormat:(int64_t)format inOrientation:(int64_t)orientation withPixelFormat:(unsigned int)pixelFormat usingPixelBuffer:(__CVBuffer *)buffer;
+- (__CVBuffer)_newThumbnailOfSize:(CGSize)size inOrientation:(int64_t)orientation withPixelFormat:(unsigned int)format usingPixelBuffer:(__CVBuffer *)buffer;
+- (id)_neededColorspacePropertiesFromMetadata:(id)metadata;
+- (id)newJPEGDataInOrientation:(int64_t)orientation usingPixelBuffer:(__CVBuffer *)buffer;
+- (id)newJPEGDataInOrientation:(int64_t)orientation usingSurface:(void *)surface withMetadata:(id)metadata;
+- (id)newJPEGDataOfFormat:(int64_t)format inOrientation:(int64_t)orientation usingSurface:(void *)surface withMetadata:(id)metadata;
 - (void)dealloc;
 @end
 
@@ -149,12 +149,12 @@ void __32__CAMThumbnailGenerator_dealloc__block_invoke(uint64_t a1)
   *(v9 + 24) = 0;
 }
 
-- (__CVBuffer)_newThumbnailOfSize:(CGSize)a3 inOrientation:(int64_t)a4 withPixelFormat:(unsigned int)a5 usingPixelBuffer:(__CVBuffer *)a6
+- (__CVBuffer)_newThumbnailOfSize:(CGSize)size inOrientation:(int64_t)orientation withPixelFormat:(unsigned int)format usingPixelBuffer:(__CVBuffer *)buffer
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v40 = *MEMORY[0x1E69E9840];
-  if (!a6)
+  if (!buffer)
   {
     v22 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -166,13 +166,13 @@ void __32__CAMThumbnailGenerator_dealloc__block_invoke(uint64_t a1)
     goto LABEL_36;
   }
 
-  v11 = [(CAMThumbnailGenerator *)self _generationQueuePixelTransferSession];
-  v12 = [(CAMThumbnailGenerator *)self _generationQueueRotationSessionsMapTable];
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v14 = [v12 objectForKey:v13];
+  _generationQueuePixelTransferSession = [(CAMThumbnailGenerator *)self _generationQueuePixelTransferSession];
+  _generationQueueRotationSessionsMapTable = [(CAMThumbnailGenerator *)self _generationQueueRotationSessionsMapTable];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
+  v14 = [_generationQueueRotationSessionsMapTable objectForKey:v13];
 
-  CVPixelBufferGetPixelFormatType(a6);
-  v15 = CVPixelBufferGetWidth(a6);
+  CVPixelBufferGetPixelFormatType(buffer);
+  v15 = CVPixelBufferGetWidth(buffer);
   v16 = floor((width + 2.0 + -1.0) * 0.5);
   if (v15 / (v16 + v16) > 4.0)
   {
@@ -189,14 +189,14 @@ void __32__CAMThumbnailGenerator_dealloc__block_invoke(uint64_t a1)
       v19 = *destinationBuffer == 0;
     }
 
-    if (v19 || v11 == 0)
+    if (v19 || _generationQueuePixelTransferSession == 0)
     {
       v21 = IOSurfaceBackedCVPixelBuffer;
     }
 
     else
     {
-      v25 = VTPixelTransferSessionTransferImage(v11, a6, 0);
+      v25 = VTPixelTransferSessionTransferImage(_generationQueuePixelTransferSession, buffer, 0);
       v21 = v25;
       v18 = *destinationBuffer;
       if (!v25)
@@ -213,7 +213,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v24 = CVPixelBufferRetain(a6);
+  v24 = CVPixelBufferRetain(buffer);
   v21 = 0;
 LABEL_19:
   v23 = 0;
@@ -270,7 +270,7 @@ LABEL_32:
       v34 = 2114;
       v35 = v32;
       v36 = 2048;
-      v37 = a4;
+      orientationCopy = orientation;
       v38 = 2048;
       v39 = v21;
       _os_log_error_impl(&dword_1A3640000, v22, OS_LOG_TYPE_ERROR, "<%s> Failed to generate a thumbnail of size %{public}@ in orientation %ld using a pixel buffer (%ld)", destinationBuffer, 0x2Au);
@@ -282,34 +282,34 @@ LABEL_36:
   return v23;
 }
 
-- (__CVBuffer)_newThumbnailOfFormat:(int64_t)a3 inOrientation:(int64_t)a4 withPixelFormat:(unsigned int)a5 usingPixelBuffer:(__CVBuffer *)a6
+- (__CVBuffer)_newThumbnailOfFormat:(int64_t)format inOrientation:(int64_t)orientation withPixelFormat:(unsigned int)pixelFormat usingPixelBuffer:(__CVBuffer *)buffer
 {
-  v7 = *&a5;
-  Width = CVPixelBufferGetWidth(a6);
-  [MEMORY[0x1E69BF160] scaledSizeForSize:a3 format:1 capLength:{Width, CVPixelBufferGetHeight(a6)}];
+  v7 = *&pixelFormat;
+  Width = CVPixelBufferGetWidth(buffer);
+  [MEMORY[0x1E69BF160] scaledSizeForSize:format format:1 capLength:{Width, CVPixelBufferGetHeight(buffer)}];
 
-  return [(CAMThumbnailGenerator *)self _newThumbnailOfSize:a4 inOrientation:v7 withPixelFormat:a6 usingPixelBuffer:?];
+  return [(CAMThumbnailGenerator *)self _newThumbnailOfSize:orientation inOrientation:v7 withPixelFormat:buffer usingPixelBuffer:?];
 }
 
-- (__CVBuffer)_newRotatedPixelBuffer:(__CVBuffer *)a3 withOrientation:(int64_t)a4
+- (__CVBuffer)_newRotatedPixelBuffer:(__CVBuffer *)buffer withOrientation:(int64_t)orientation
 {
-  if (a3)
+  if (buffer)
   {
     texture = 0;
     v7 = PLDegreesForImageOrientation();
     IsMirrored = PLImageOrientationIsMirrored();
     if (!v7 && !IsMirrored)
     {
-      return CVPixelBufferRetain(a3);
+      return CVPixelBufferRetain(buffer);
     }
 
-    CVPixelBufferGetWidth(a3);
-    CVPixelBufferGetHeight(a3);
-    CVPixelBufferGetPixelFormatType(a3);
+    CVPixelBufferGetWidth(buffer);
+    CVPixelBufferGetHeight(buffer);
+    CVPixelBufferGetPixelFormatType(buffer);
     IOSurfaceBackedCVPixelBufferWithAttributes = FigCreateIOSurfaceBackedCVPixelBufferWithAttributes();
-    v12 = [(CAMThumbnailGenerator *)self _generationQueueRotationSessionsMapTable];
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    [v12 objectForKey:v13];
+    _generationQueueRotationSessionsMapTable = [(CAMThumbnailGenerator *)self _generationQueueRotationSessionsMapTable];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
+    [_generationQueueRotationSessionsMapTable objectForKey:v13];
 
     CVPixelBufferRelease(0);
     if (IOSurfaceBackedCVPixelBufferWithAttributes)
@@ -318,7 +318,7 @@ LABEL_36:
       v14 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [(CAMThumbnailGenerator *)IOSurfaceBackedCVPixelBufferWithAttributes _newRotatedPixelBuffer:a4 withOrientation:v14];
+        [(CAMThumbnailGenerator *)IOSurfaceBackedCVPixelBufferWithAttributes _newRotatedPixelBuffer:orientation withOrientation:v14];
       }
     }
 
@@ -337,10 +337,10 @@ LABEL_36:
   }
 }
 
-- (id)newJPEGDataOfFormat:(int64_t)a3 inOrientation:(int64_t)a4 usingSurface:(void *)a5 withMetadata:(id)a6
+- (id)newJPEGDataOfFormat:(int64_t)format inOrientation:(int64_t)orientation usingSurface:(void *)surface withMetadata:(id)metadata
 {
-  v10 = a6;
-  if (a5)
+  metadataCopy = metadata;
+  if (surface)
   {
     v21 = 0;
     v22 = &v21;
@@ -348,18 +348,18 @@ LABEL_36:
     v24 = __Block_byref_object_copy__25;
     v25 = __Block_byref_object_dispose__25;
     v26 = 0;
-    v11 = [(CAMThumbnailGenerator *)self _generationQueue];
+    _generationQueue = [(CAMThumbnailGenerator *)self _generationQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __85__CAMThumbnailGenerator_newJPEGDataOfFormat_inOrientation_usingSurface_withMetadata___block_invoke;
     v15[3] = &unk_1E76FCF90;
-    v18 = a5;
-    v19 = a3;
+    surfaceCopy = surface;
+    formatCopy = format;
     v15[4] = self;
-    v20 = a4;
-    v16 = v10;
+    orientationCopy = orientation;
+    v16 = metadataCopy;
     v17 = &v21;
-    dispatch_sync(v11, v15);
+    dispatch_sync(_generationQueue, v15);
 
     v12 = v22[5];
     _Block_object_dispose(&v21, 8);
@@ -455,10 +455,10 @@ LABEL_5:
   CVPixelBufferRelease(v7);
 }
 
-- (id)newJPEGDataInOrientation:(int64_t)a3 usingSurface:(void *)a4 withMetadata:(id)a5
+- (id)newJPEGDataInOrientation:(int64_t)orientation usingSurface:(void *)surface withMetadata:(id)metadata
 {
-  v8 = a5;
-  if (a4)
+  metadataCopy = metadata;
+  if (surface)
   {
     v18 = 0;
     v19 = &v18;
@@ -466,17 +466,17 @@ LABEL_5:
     v21 = __Block_byref_object_copy__25;
     v22 = __Block_byref_object_dispose__25;
     v23 = 0;
-    v9 = [(CAMThumbnailGenerator *)self _generationQueue];
+    _generationQueue = [(CAMThumbnailGenerator *)self _generationQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __76__CAMThumbnailGenerator_newJPEGDataInOrientation_usingSurface_withMetadata___block_invoke;
     block[3] = &unk_1E76FCFB8;
-    v16 = a4;
-    v17 = a3;
+    surfaceCopy = surface;
+    orientationCopy = orientation;
     block[4] = self;
-    v14 = v8;
+    v14 = metadataCopy;
     v15 = &v18;
-    dispatch_sync(v9, block);
+    dispatch_sync(_generationQueue, block);
 
     v10 = v19[5];
     _Block_object_dispose(&v18, 8);
@@ -568,16 +568,16 @@ LABEL_5:
   CVPixelBufferRelease(v3);
 }
 
-- (id)_neededColorspacePropertiesFromMetadata:(id)a3
+- (id)_neededColorspacePropertiesFromMetadata:(id)metadata
 {
   v25[2] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E696D9B0];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:v3];
+  metadataCopy = metadata;
+  v5 = [metadataCopy objectForKeyedSubscript:v3];
   v6 = *MEMORY[0x1E696D968];
   v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696D968]];
   v8 = *MEMORY[0x1E696D320];
-  v9 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696D320]];
+  v9 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E696D320]];
 
   if (v7)
   {
@@ -635,25 +635,25 @@ LABEL_12:
   return v15;
 }
 
-- (CGImage)newBGRAImageOfFormat:(int64_t)a3 inOrientation:(int64_t)a4 usingSurface:(void *)a5
+- (CGImage)newBGRAImageOfFormat:(int64_t)format inOrientation:(int64_t)orientation usingSurface:(void *)surface
 {
-  if (a5)
+  if (surface)
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0;
-    v9 = [(CAMThumbnailGenerator *)self _generationQueue];
+    _generationQueue = [(CAMThumbnailGenerator *)self _generationQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __73__CAMThumbnailGenerator_newBGRAImageOfFormat_inOrientation_usingSurface___block_invoke;
     block[3] = &unk_1E76FCFE0;
-    block[6] = a5;
-    block[7] = a3;
-    block[8] = a4;
+    block[6] = surface;
+    block[7] = format;
+    block[8] = orientation;
     block[4] = self;
     block[5] = &v14;
-    dispatch_sync(v9, block);
+    dispatch_sync(_generationQueue, block);
 
     v10 = v15[3];
     _Block_object_dispose(&v14, 8);
@@ -697,24 +697,24 @@ void __73__CAMThumbnailGenerator_newBGRAImageOfFormat_inOrientation_usingSurface
   CVPixelBufferRelease(v3);
 }
 
-- (CGImage)newBGRAImageInOrientation:(int64_t)a3 usingSurface:(void *)a4
+- (CGImage)newBGRAImageInOrientation:(int64_t)orientation usingSurface:(void *)surface
 {
-  if (a4)
+  if (surface)
   {
     v12 = 0;
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 0;
-    v7 = [(CAMThumbnailGenerator *)self _generationQueue];
+    _generationQueue = [(CAMThumbnailGenerator *)self _generationQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __64__CAMThumbnailGenerator_newBGRAImageInOrientation_usingSurface___block_invoke;
     v11[3] = &unk_1E76FD008;
-    v11[6] = a4;
-    v11[7] = a3;
+    v11[6] = surface;
+    v11[7] = orientation;
     v11[4] = self;
     v11[5] = &v12;
-    dispatch_sync(v7, v11);
+    dispatch_sync(_generationQueue, v11);
 
     v8 = v13[3];
     _Block_object_dispose(&v12, 8);
@@ -760,9 +760,9 @@ void __64__CAMThumbnailGenerator_newBGRAImageInOrientation_usingSurface___block_
   CVPixelBufferRelease(v5);
 }
 
-- (id)newJPEGDataInOrientation:(int64_t)a3 usingPixelBuffer:(__CVBuffer *)a4
+- (id)newJPEGDataInOrientation:(int64_t)orientation usingPixelBuffer:(__CVBuffer *)buffer
 {
-  if (a4)
+  if (buffer)
   {
     v12 = 0;
     v13 = &v12;
@@ -770,16 +770,16 @@ void __64__CAMThumbnailGenerator_newBGRAImageInOrientation_usingSurface___block_
     v15 = __Block_byref_object_copy__25;
     v16 = __Block_byref_object_dispose__25;
     v17 = 0;
-    v7 = [(CAMThumbnailGenerator *)self _generationQueue];
+    _generationQueue = [(CAMThumbnailGenerator *)self _generationQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __67__CAMThumbnailGenerator_newJPEGDataInOrientation_usingPixelBuffer___block_invoke;
     v11[3] = &unk_1E76FD008;
-    v11[6] = a4;
-    v11[7] = a3;
+    v11[6] = buffer;
+    v11[7] = orientation;
     v11[4] = self;
     v11[5] = &v12;
-    dispatch_sync(v7, v11);
+    dispatch_sync(_generationQueue, v11);
 
     v8 = v13[5];
     _Block_object_dispose(&v12, 8);
@@ -846,24 +846,24 @@ void __67__CAMThumbnailGenerator_newJPEGDataInOrientation_usingPixelBuffer___blo
   CVPixelBufferRelease(v2);
 }
 
-- (CGImage)newBGRAImageInOrientation:(int64_t)a3 usingPixelBuffer:(__CVBuffer *)a4
+- (CGImage)newBGRAImageInOrientation:(int64_t)orientation usingPixelBuffer:(__CVBuffer *)buffer
 {
-  if (a4)
+  if (buffer)
   {
     v12 = 0;
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 0;
-    v7 = [(CAMThumbnailGenerator *)self _generationQueue];
+    _generationQueue = [(CAMThumbnailGenerator *)self _generationQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __68__CAMThumbnailGenerator_newBGRAImageInOrientation_usingPixelBuffer___block_invoke;
     v11[3] = &unk_1E76FD008;
-    v11[6] = a4;
-    v11[7] = a3;
+    v11[6] = buffer;
+    v11[7] = orientation;
     v11[4] = self;
     v11[5] = &v12;
-    dispatch_sync(v7, v11);
+    dispatch_sync(_generationQueue, v11);
 
     v8 = v13[3];
     _Block_object_dispose(&v12, 8);
@@ -904,25 +904,25 @@ void __68__CAMThumbnailGenerator_newBGRAImageInOrientation_usingPixelBuffer___bl
   CVPixelBufferRelease(v3);
 }
 
-- (CGImage)newBGRAImageOfFormat:(int64_t)a3 inOrientation:(int64_t)a4 usingPixelBuffer:(__CVBuffer *)a5
+- (CGImage)newBGRAImageOfFormat:(int64_t)format inOrientation:(int64_t)orientation usingPixelBuffer:(__CVBuffer *)buffer
 {
-  if (a5)
+  if (buffer)
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0;
-    v9 = [(CAMThumbnailGenerator *)self _generationQueue];
+    _generationQueue = [(CAMThumbnailGenerator *)self _generationQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __77__CAMThumbnailGenerator_newBGRAImageOfFormat_inOrientation_usingPixelBuffer___block_invoke;
     block[3] = &unk_1E76FCFE0;
-    block[6] = a3;
-    block[7] = a4;
-    block[8] = a5;
+    block[6] = format;
+    block[7] = orientation;
+    block[8] = buffer;
     block[4] = self;
     block[5] = &v14;
-    dispatch_sync(v9, block);
+    dispatch_sync(_generationQueue, block);
 
     v10 = v15[3];
     _Block_object_dispose(&v14, 8);

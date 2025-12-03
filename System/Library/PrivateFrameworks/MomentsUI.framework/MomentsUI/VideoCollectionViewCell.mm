@@ -1,10 +1,10 @@
 @interface VideoCollectionViewCell
-- (_TtC9MomentsUI23VideoCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC9MomentsUI23VideoCollectionViewCell)initWithCoder:(id)coder;
 @end
 
 @implementation VideoCollectionViewCell
 
-- (_TtC9MomentsUI23VideoCollectionViewCell)initWithCoder:(id)a3
+- (_TtC9MomentsUI23VideoCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI23VideoCollectionViewCell_videoView;
   if (one-time initialization token for empty != -1)

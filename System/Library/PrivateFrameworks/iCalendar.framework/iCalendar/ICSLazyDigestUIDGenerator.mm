@@ -1,21 +1,21 @@
 @interface ICSLazyDigestUIDGenerator
-- (ICSLazyDigestUIDGenerator)initWithData:(id)a3;
+- (ICSLazyDigestUIDGenerator)initWithData:(id)data;
 - (id)_digest;
 - (id)generateUID;
 @end
 
 @implementation ICSLazyDigestUIDGenerator
 
-- (ICSLazyDigestUIDGenerator)initWithData:(id)a3
+- (ICSLazyDigestUIDGenerator)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = ICSLazyDigestUIDGenerator;
   v6 = [(ICSLazyDigestUIDGenerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
   }
 
   return v7;
@@ -31,13 +31,13 @@
     {
       digest = [(NSData *)data ical_digest];
       v5 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{2 * objc_msgSend(digest, "length")}];
-      v6 = [digest bytes];
+      bytes = [digest bytes];
       if ([digest length])
       {
         v7 = 0;
         do
         {
-          [v5 appendFormat:@"%02X", *(v6 + v7++)];
+          [v5 appendFormat:@"%02X", *(bytes + v7++)];
         }
 
         while (v7 != [digest length]);
@@ -61,13 +61,13 @@
 
 - (id)generateUID
 {
-  v3 = [(ICSLazyDigestUIDGenerator *)self _digest];
+  _digest = [(ICSLazyDigestUIDGenerator *)self _digest];
   v4 = MEMORY[0x277CCACA8];
   lastIndex = self->_lastIndex;
   self->_lastIndex = lastIndex + 1;
-  v6 = [v4 stringWithFormat:@"%@_%d", v3, lastIndex];
+  lastIndex = [v4 stringWithFormat:@"%@_%d", _digest, lastIndex];
 
-  return v6;
+  return lastIndex;
 }
 
 @end

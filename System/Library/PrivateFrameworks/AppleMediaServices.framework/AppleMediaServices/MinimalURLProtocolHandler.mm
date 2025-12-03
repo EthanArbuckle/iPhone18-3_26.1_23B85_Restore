@@ -1,16 +1,16 @@
 @interface MinimalURLProtocolHandler
 - (AMSURLSession)session;
-- (void)reportMetricsForContext:(id)a3;
-- (void)setSession:(id)a3;
+- (void)reportMetricsForContext:(id)context;
+- (void)setSession:(id)session;
 @end
 
 @implementation MinimalURLProtocolHandler
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v5 = a3;
-  v6 = self;
-  sub_1928F7CE4(a3);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_1928F7CE4(session);
 }
 
 - (AMSURLSession)session
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (void)reportMetricsForContext:(id)a3
+- (void)reportMetricsForContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_192C361CC(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_192C361CC(contextCopy);
 }
 
 @end

@@ -13,11 +13,11 @@
   if (v2)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v5 = [v4 firstObject];
-    v6 = [MEMORY[0x277CBEAF8] currentLocale];
-    v7 = [v6 objectForKey:*MEMORY[0x277CBE690]];
-    v8 = [v3 stringWithFormat:@"%@_%@", v5, v7];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    firstObject = [preferredLanguages firstObject];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v7 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
+    v8 = [v3 stringWithFormat:@"%@_%@", firstObject, v7];
     deviceLocale = v2->_deviceLocale;
     v2->_deviceLocale = v8;
   }
@@ -27,7 +27,7 @@
 
 + (id)cohortInstance
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }

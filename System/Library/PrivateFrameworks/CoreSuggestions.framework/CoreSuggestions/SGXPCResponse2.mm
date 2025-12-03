@@ -1,9 +1,9 @@
 @interface SGXPCResponse2
-+ (id)responseWith:(id)a3 also:(id)a4;
-+ (id)responseWithError:(id)a3;
-- (SGXPCResponse2)initWithCoder:(id)a3;
++ (id)responseWith:(id)with also:(id)also;
++ (id)responseWithError:(id)error;
+- (SGXPCResponse2)initWithCoder:(id)coder;
 - (id)response1;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGXPCResponse2
@@ -12,29 +12,29 @@
 {
   v4.receiver = self;
   v4.super_class = SGXPCResponse2;
-  v2 = [(SGXPCResponse1 *)&v4 response1];
+  response1 = [(SGXPCResponse1 *)&v4 response1];
 
-  return v2;
+  return response1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SGXPCResponse2;
-  v4 = a3;
-  [(SGXPCResponse1 *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_response2 forKey:{@"response2", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(SGXPCResponse1 *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_response2 forKey:{@"response2", v5.receiver, v5.super_class}];
 }
 
-- (SGXPCResponse2)initWithCoder:(id)a3
+- (SGXPCResponse2)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SGXPCResponse2;
-  v5 = [(SGXPCResponse1 *)&v9 initWithCoder:v4];
+  v5 = [(SGXPCResponse1 *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"response2"];
+    v6 = [coderCopy decodeObjectForKey:@"response2"];
     response2 = v5->_response2;
     v5->_response2 = v6;
   }
@@ -42,23 +42,23 @@
   return v5;
 }
 
-+ (id)responseWithError:(id)a3
++ (id)responseWithError:(id)error
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithError:v4];
+  errorCopy = error;
+  v5 = [[self alloc] initWithError:errorCopy];
 
   return v5;
 }
 
-+ (id)responseWith:(id)a3 also:(id)a4
++ (id)responseWith:(id)with also:(id)also
 {
-  v5 = a4;
-  v6 = a3;
+  alsoCopy = also;
+  withCopy = with;
   v7 = objc_opt_new();
-  [v7 setResponse1:v6];
+  [v7 setResponse1:withCopy];
 
   v8 = v7[3];
-  v7[3] = v5;
+  v7[3] = alsoCopy;
 
   return v7;
 }

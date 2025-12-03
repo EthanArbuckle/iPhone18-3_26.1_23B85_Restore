@@ -1,21 +1,21 @@
 @interface SKDisk
-+ (id)copySortedChildrenWithDADisk:(id)a3 ioMedia:(id)a4;
-+ (id)newSortedChildrenWithIOMedia:(id)a3;
++ (id)copySortedChildrenWithDADisk:(id)disk ioMedia:(id)media;
++ (id)newSortedChildrenWithIOMedia:(id)media;
 - (BOOL)_cacheInfo;
-- (BOOL)_cacheInfoForDADisk:(id)a3;
-- (BOOL)_cacheInfoWithDiskDescription:(id)a3;
-- (BOOL)_cacheInfoWithIOMedia:(id)a3;
-- (BOOL)_cacheSpacesWithPurgeable:(BOOL)a3;
+- (BOOL)_cacheInfoForDADisk:(id)disk;
+- (BOOL)_cacheInfoWithDiskDescription:(id)description;
+- (BOOL)_cacheInfoWithIOMedia:(id)media;
+- (BOOL)_cacheSpacesWithPurgeable:(BOOL)purgeable;
 - (BOOL)_supportsRecaching;
 - (BOOL)isRealEFIPartition;
-- (BOOL)reProbeWithError:(id *)a3;
+- (BOOL)reProbeWithError:(id *)error;
 - (SKDisk)init;
-- (SKDisk)initWithDADisk:(id)a3;
+- (SKDisk)initWithDADisk:(id)disk;
 - (id)_getFilesystem;
-- (id)filesystemWithType:(id)a3;
+- (id)filesystemWithType:(id)type;
 - (unsigned)_getOwnerUsingStat;
 - (void)_cacheFilesystem;
-- (void)_cacheIsWholeDiskWithDiskDescription:(id)a3;
+- (void)_cacheIsWholeDiskWithDiskDescription:(id)description;
 - (void)_cacheNoFilesystem;
 @end
 
@@ -36,11 +36,11 @@
     v6 = sub_10000BFD0();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(SKDisk *)v2 diskObjectID];
+      diskObjectID = [(SKDisk *)v2 diskObjectID];
       *buf = 136315394;
       v12 = "[SKDisk(DaemonAdditions) init]";
       v13 = 2114;
-      v14 = v7;
+      v14 = diskObjectID;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: Initializing new disk with ID %{public}@", buf, 0x16u);
     }
 
@@ -51,14 +51,14 @@
   return v2;
 }
 
-- (SKDisk)initWithDADisk:(id)a3
+- (SKDisk)initWithDADisk:(id)disk
 {
-  v4 = a3;
+  diskCopy = disk;
   v5 = [(SKDisk *)self init];
   v6 = v5;
   if (v5)
   {
-    if (!v4 || ([(SKDisk *)v5 setDaDisk:v4], ![(SKDisk *)v6 _cacheInfo]))
+    if (!diskCopy || ([(SKDisk *)v5 setDaDisk:diskCopy], ![(SKDisk *)v6 _cacheInfo]))
     {
       v7 = 0;
       goto LABEL_7;
@@ -75,19 +75,19 @@ LABEL_7:
 
 - (BOOL)_cacheInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SKDisk *)v2 daDisk];
-  v4 = [(SKDisk *)v2 _cacheInfoForDADisk:v3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  daDisk = [(SKDisk *)selfCopy daDisk];
+  v4 = [(SKDisk *)selfCopy _cacheInfoForDADisk:daDisk];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
-- (BOOL)_cacheInfoForDADisk:(id)a3
+- (BOOL)_cacheInfoForDADisk:(id)disk
 {
-  v4 = a3;
-  v5 = DADiskCopyDescription(v4);
+  diskCopy = disk;
+  v5 = DADiskCopyDescription(diskCopy);
   if (!v5)
   {
     p_super = sub_10000BFD0();
@@ -136,14 +136,14 @@ LABEL_16:
         {
           if ([(SKDisk *)self isWholeDisk])
           {
-            v20 = [(SKDisk *)self daDisk];
-            v21 = [SKDisk copySortedChildrenWithDADisk:v20 ioMedia:p_super];
-            v22 = [(SKDisk *)self privateCache];
-            [v22 setSortedChildren:v21];
+            daDisk = [(SKDisk *)self daDisk];
+            v21 = [SKDisk copySortedChildrenWithDADisk:daDisk ioMedia:p_super];
+            privateCache = [(SKDisk *)self privateCache];
+            [privateCache setSortedChildren:v21];
 
-            v23 = [(SKDisk *)self privateCache];
-            v24 = [v23 sortedChildren];
-            -[SKDisk setChildCount:](self, "setChildCount:", [v24 count]);
+            privateCache2 = [(SKDisk *)self privateCache];
+            sortedChildren = [privateCache2 sortedChildren];
+            -[SKDisk setChildCount:](self, "setChildCount:", [sortedChildren count]);
           }
 
           else
@@ -155,12 +155,12 @@ LABEL_16:
           [(SKDisk *)self setIsJournaled:0];
           [(SKDisk *)self setSupportsVerify:0];
           [(SKDisk *)self setSupportsRepair:0];
-          v25 = [(SKDisk *)self _getFilesystem];
-          [(SKDisk *)self setFilesystem:v25];
+          _getFilesystem = [(SKDisk *)self _getFilesystem];
+          [(SKDisk *)self setFilesystem:_getFilesystem];
 
-          v26 = [(SKDisk *)self filesystem];
+          filesystem = [(SKDisk *)self filesystem];
 
-          if (v26)
+          if (filesystem)
           {
             [(SKDisk *)self _cacheFilesystem];
           }
@@ -170,9 +170,9 @@ LABEL_16:
             [(SKDisk *)self _cacheNoFilesystem];
           }
 
-          v27 = [(SKDisk *)self privateCache];
-          v28 = [v27 wholeDADisk];
-          [(SKDisk *)self _cacheCanSupportRecoveryPartitionWithWholeDisk:v28];
+          privateCache3 = [(SKDisk *)self privateCache];
+          wholeDADisk = [privateCache3 wholeDADisk];
+          [(SKDisk *)self _cacheCanSupportRecoveryPartitionWithWholeDisk:wholeDADisk];
         }
 
         v15 = 1;
@@ -186,28 +186,28 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    v6 = [(SKDisk *)self isWholeDisk];
-    v7 = [(SKDisk *)self daDisk];
-    v8 = v7;
-    v9 = v7;
-    if ((v6 & 1) == 0)
+    isWholeDisk = [(SKDisk *)self isWholeDisk];
+    daDisk2 = [(SKDisk *)self daDisk];
+    v8 = daDisk2;
+    v9 = daDisk2;
+    if ((isWholeDisk & 1) == 0)
     {
-      v9 = DADiskCopyWholeDisk(v7);
+      v9 = DADiskCopyWholeDisk(daDisk2);
     }
 
-    v10 = [(SKDisk *)self privateCache];
-    [v10 setWholeDADisk:v9];
+    privateCache4 = [(SKDisk *)self privateCache];
+    [privateCache4 setWholeDADisk:v9];
 
-    if ((v6 & 1) == 0)
+    if ((isWholeDisk & 1) == 0)
     {
     }
 
-    v11 = [(SKDisk *)self privateCache];
-    v12 = [v11 wholeDADisk];
+    privateCache5 = [(SKDisk *)self privateCache];
+    wholeDADisk2 = [privateCache5 wholeDADisk];
 
-    if (v12)
+    if (wholeDADisk2)
     {
-      v13 = [[SKIOMedia alloc] initWithDADisk:v4];
+      v13 = [[SKIOMedia alloc] initWithDADisk:diskCopy];
       if (v13)
       {
         p_super = &v13->super.super;
@@ -222,11 +222,11 @@ LABEL_40:
       v17 = sub_10000BFD0();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [(SKDisk *)self diskIdentifier];
+        diskIdentifier = [(SKDisk *)self diskIdentifier];
         v30 = 136315394;
         v31 = "[SKDisk(DaemonAdditions) _cacheInfoForDADisk:]";
         v32 = 2114;
-        v33 = v18;
+        v33 = diskIdentifier;
         v19 = "%s: Failed to find IO media of %{public}@";
         goto LABEL_26;
       }
@@ -237,11 +237,11 @@ LABEL_40:
       v17 = sub_10000BFD0();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [(SKDisk *)self diskIdentifier];
+        diskIdentifier = [(SKDisk *)self diskIdentifier];
         v30 = 136315394;
         v31 = "[SKDisk(DaemonAdditions) _cacheInfoForDADisk:]";
         v32 = 2114;
-        v33 = v18;
+        v33 = diskIdentifier;
         v19 = "%s: Failed to find whole disk for %{public}@";
 LABEL_26:
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, v19, &v30, 0x16u);
@@ -258,51 +258,51 @@ LABEL_41:
   return v15;
 }
 
-- (void)_cacheIsWholeDiskWithDiskDescription:(id)a3
+- (void)_cacheIsWholeDiskWithDiskDescription:(id)description
 {
-  v4 = [a3 objectForKeyedSubscript:kDADiskDescriptionMediaWholeKey];
+  v4 = [description objectForKeyedSubscript:kDADiskDescriptionMediaWholeKey];
   [(SKDisk *)self setIsWholeDisk:sub_100010328(v4)];
 }
 
-- (BOOL)_cacheInfoWithDiskDescription:(id)a3
+- (BOOL)_cacheInfoWithDiskDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(SKDisk *)self liveDiskIdentifierWithDiskDescription:v4];
-  v6 = [(SKDisk *)self privateCache];
-  [v6 setLiveDiskIdentifier:v5];
+  descriptionCopy = description;
+  v5 = [(SKDisk *)self liveDiskIdentifierWithDiskDescription:descriptionCopy];
+  privateCache = [(SKDisk *)self privateCache];
+  [privateCache setLiveDiskIdentifier:v5];
 
-  v7 = [(SKDisk *)self diskIdentifier];
-  if (!v7 && ![(SKDisk *)self isValid]|| (v8 = [(SKDisk *)self canUpdateDiskIdentifierWithDiskInfo:v4], v7, v8))
+  diskIdentifier = [(SKDisk *)self diskIdentifier];
+  if (!diskIdentifier && ![(SKDisk *)self isValid]|| (v8 = [(SKDisk *)self canUpdateDiskIdentifierWithDiskInfo:descriptionCopy], diskIdentifier, v8))
   {
-    v9 = [(SKDisk *)self privateCache];
-    v10 = [v9 liveDiskIdentifier];
-    [(SKDisk *)self setDiskIdentifier:v10];
+    privateCache2 = [(SKDisk *)self privateCache];
+    liveDiskIdentifier = [privateCache2 liveDiskIdentifier];
+    [(SKDisk *)self setDiskIdentifier:liveDiskIdentifier];
   }
 
   v11 = sub_10000BFD0();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(SKDisk *)self diskIdentifier];
+    diskIdentifier2 = [(SKDisk *)self diskIdentifier];
     *buf = 136315650;
     v37 = "[SKDisk(DaemonAdditions) _cacheInfoWithDiskDescription:]";
     v38 = 2114;
-    v39 = v12;
+    v39 = diskIdentifier2;
     v40 = 1024;
-    v41 = [(SKDisk *)self isValid];
+    isValid = [(SKDisk *)self isValid];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s: Caching %{public}@, isValid=%d", buf, 0x1Cu);
   }
 
-  v13 = [(SKDisk *)self diskIdentifier];
+  diskIdentifier3 = [(SKDisk *)self diskIdentifier];
 
-  if (v13)
+  if (diskIdentifier3)
   {
-    [(SKDisk *)self _cacheIsWholeDiskWithDiskDescription:v4];
-    v14 = [v4 objectForKeyedSubscript:kDADiskDescriptionVolumePathKey];
+    [(SKDisk *)self _cacheIsWholeDiskWithDiskDescription:descriptionCopy];
+    v14 = [descriptionCopy objectForKeyedSubscript:kDADiskDescriptionVolumePathKey];
     v35 = v14;
     if (v14)
     {
-      v15 = [v14 path];
-      [(SKDisk *)self setMountPoint:v15];
+      path = [v14 path];
+      [(SKDisk *)self setMountPoint:path];
     }
 
     else
@@ -310,17 +310,17 @@ LABEL_41:
       [(SKDisk *)self setMountPoint:0];
     }
 
-    v16 = [(SKDisk *)self mountPoint];
+    mountPoint = [(SKDisk *)self mountPoint];
 
-    if (!v16)
+    if (!mountPoint)
     {
       [(SKDisk *)self setOwnerUID:[(SKDisk *)self _getOwnerUsingStat]];
     }
 
-    v17 = [(SKDisk *)self volumeNameWithDiskDescription:v4];
+    v17 = [(SKDisk *)self volumeNameWithDiskDescription:descriptionCopy];
     [(SKDisk *)self setVolumeName:v17];
 
-    v18 = [v4 objectForKeyedSubscript:kDADiskDescriptionVolumeUUIDKey];
+    v18 = [descriptionCopy objectForKeyedSubscript:kDADiskDescriptionVolumeUUIDKey];
 
     if (v18)
     {
@@ -333,13 +333,13 @@ LABEL_41:
       [(SKDisk *)self setVolumeUUID:0];
     }
 
-    v20 = [v4 objectForKeyedSubscript:kDADiskDescriptionMediaSizeKey];
+    v20 = [descriptionCopy objectForKeyedSubscript:kDADiskDescriptionMediaSizeKey];
     [(SKDisk *)self setUnformattedSize:sub_100010370(v20)];
-    v21 = [v4 objectForKeyedSubscript:kDADiskDescriptionDeviceInternalKey];
+    v21 = [descriptionCopy objectForKeyedSubscript:kDADiskDescriptionDeviceInternalKey];
     [(SKDisk *)self setIsInternal:sub_100010328(v21)];
-    v22 = [v4 objectForKeyedSubscript:kDADiskDescriptionMediaRemovableKey];
+    v22 = [descriptionCopy objectForKeyedSubscript:kDADiskDescriptionMediaRemovableKey];
     [(SKDisk *)self setIsRemovable:sub_100010328(v22)];
-    v23 = [v4 objectForKeyedSubscript:kDADiskDescriptionMediaWritableKey];
+    v23 = [descriptionCopy objectForKeyedSubscript:kDADiskDescriptionMediaWritableKey];
     v24 = v23;
     if (v23)
     {
@@ -352,7 +352,7 @@ LABEL_41:
     }
 
     [(SKDisk *)self setIsMediaWritable:v25];
-    v26 = [v4 objectForKeyedSubscript:kDADiskDescriptionDeviceProtocolKey];
+    v26 = [descriptionCopy objectForKeyedSubscript:kDADiskDescriptionDeviceProtocolKey];
     if (sub_1000101BC(v26))
     {
       v27 = [v26 isEqual:@"Virtual Interface"];
@@ -364,40 +364,40 @@ LABEL_41:
     }
 
     [(SKDisk *)self setIsDiskImage:v27];
-    v28 = [v4 objectForKeyedSubscript:kDADiskDescriptionVolumeKindKey];
-    v29 = [(SKDisk *)self privateCache];
-    [v29 setVolumeKind:v28];
+    v28 = [descriptionCopy objectForKeyedSubscript:kDADiskDescriptionVolumeKindKey];
+    privateCache3 = [(SKDisk *)self privateCache];
+    [privateCache3 setVolumeKind:v28];
 
-    v30 = [v4 objectForKeyedSubscript:kDADiskDescriptionVolumeTypeKey];
-    v31 = [(SKDisk *)self privateCache];
-    [v31 setVolumeType:v30];
+    v30 = [descriptionCopy objectForKeyedSubscript:kDADiskDescriptionVolumeTypeKey];
+    privateCache4 = [(SKDisk *)self privateCache];
+    [privateCache4 setVolumeType:v30];
 
-    v32 = [v4 objectForKeyedSubscript:kDADiskDescriptionMediaContentKey];
-    v33 = [(SKDisk *)self privateCache];
-    [v33 setRawIOContent:v32];
+    v32 = [descriptionCopy objectForKeyedSubscript:kDADiskDescriptionMediaContentKey];
+    privateCache5 = [(SKDisk *)self privateCache];
+    [privateCache5 setRawIOContent:v32];
   }
 
-  return v13 != 0;
+  return diskIdentifier3 != 0;
 }
 
 - (unsigned)_getOwnerUsingStat
 {
   memset(&v10, 0, sizeof(v10));
-  v3 = [(SKDisk *)self _getIdentifierForStat];
+  _getIdentifierForStat = [(SKDisk *)self _getIdentifierForStat];
   if (([(SKDisk *)self isIOMediaDisk]& 1) == 0)
   {
     v4 = sub_10000BFD0();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = v3;
+      v12 = _getIdentifierForStat;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@ is not an IO media disk, assuming owner is root", buf, 0xCu);
     }
 
     goto LABEL_8;
   }
 
-  v4 = [NSString stringWithFormat:@"/dev/%@", v3];
+  v4 = [NSString stringWithFormat:@"/dev/%@", _getIdentifierForStat];
   v5 = stat([v4 UTF8String], &v10);
   v6 = sub_10000BFD0();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -430,19 +430,19 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)_cacheInfoWithIOMedia:(id)a3
+- (BOOL)_cacheInfoWithIOMedia:(id)media
 {
-  v4 = a3;
-  v5 = [v4 copyProperties];
-  if (v5)
+  mediaCopy = media;
+  copyProperties = [mediaCopy copyProperties];
+  if (copyProperties)
   {
-    v6 = [(SKDisk *)self privateCache];
-    v7 = [v6 copyHumanIOContentWithMediaDict:v5 isWholeDisk:{-[SKDisk isWholeDisk](self, "isWholeDisk")}];
+    privateCache = [(SKDisk *)self privateCache];
+    v7 = [privateCache copyHumanIOContentWithMediaDict:copyProperties isWholeDisk:{-[SKDisk isWholeDisk](self, "isWholeDisk")}];
     [(SKDisk *)self setIoContent:v7];
 
     if (([(SKDisk *)self isValid]& 1) == 0)
     {
-      v8 = [v4 copyPropertyWithClass:objc_opt_class() key:@"UUID"];
+      v8 = [mediaCopy copyPropertyWithClass:objc_opt_class() key:@"UUID"];
       [(SKDisk *)self setMediaUUID:v8];
     }
 
@@ -455,14 +455,14 @@ LABEL_9:
 
     else
     {
-      v12 = sub_100005EDC(v5, v14);
+      v12 = sub_100005EDC(copyProperties, v14);
       -[SKDisk setStartLocation:](self, "setStartLocation:", [v12 unsignedLongLongValue]);
 
       v9 = v14[0];
     }
 
     [(SKDisk *)self setIsPartitionDisk:v9 & 1];
-    v10 = [v4 copyParentPropertyWithClass:objc_opt_class() key:@"OSInternal"];
+    v10 = [mediaCopy copyParentPropertyWithClass:objc_opt_class() key:@"OSInternal"];
     [(SKDisk *)self setIsOSInternal:sub_100010328(v10)];
   }
 
@@ -471,38 +471,38 @@ LABEL_9:
     v10 = sub_10000BFD0();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(SKDisk *)self diskIdentifier];
+      diskIdentifier = [(SKDisk *)self diskIdentifier];
       *v14 = 136315394;
       *&v14[4] = "[SKDisk(DaemonAdditions) _cacheInfoWithIOMedia:]";
       v15 = 2114;
-      v16 = v11;
+      v16 = diskIdentifier;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s: Failed to get IO media properties for %{public}@", v14, 0x16u);
     }
   }
 
-  return v5 != 0;
+  return copyProperties != 0;
 }
 
 - (void)_cacheFilesystem
 {
-  v3 = [(SKDisk *)self filesystem];
-  v29 = [v3 majorType];
+  filesystem = [(SKDisk *)self filesystem];
+  majorType = [filesystem majorType];
 
-  if ([v29 isEqualToString:@"hfs"])
+  if ([majorType isEqualToString:@"hfs"])
   {
     [(SKDisk *)self setSupportsVerify:1];
     [(SKDisk *)self setSupportsRepair:1];
-    v4 = [(SKDisk *)self filesystem];
-    -[SKDisk setSupportsJournaling:](self, "setSupportsJournaling:", [v4 supportsJournaling]);
+    filesystem2 = [(SKDisk *)self filesystem];
+    -[SKDisk setSupportsJournaling:](self, "setSupportsJournaling:", [filesystem2 supportsJournaling]);
 
-    v5 = [(SKDisk *)self privateCache];
-    -[SKDisk setIsJournaled:](self, "setIsJournaled:", ([v5 mountFlags] >> 23) & 1);
+    privateCache = [(SKDisk *)self privateCache];
+    -[SKDisk setIsJournaled:](self, "setIsJournaled:", ([privateCache mountFlags] >> 23) & 1);
 
-    v6 = [(SKDisk *)self filesystem];
-    -[SKDisk setIsCaseSensitive:](self, "setIsCaseSensitive:", [v6 isCaseSensitive]);
+    filesystem3 = [(SKDisk *)self filesystem];
+    -[SKDisk setIsCaseSensitive:](self, "setIsCaseSensitive:", [filesystem3 isCaseSensitive]);
 
-    v7 = [(SKDisk *)self ioContent];
-    v8 = [v7 isEqualToString:@"Apple_Boot"];
+    ioContent = [(SKDisk *)self ioContent];
+    v8 = [ioContent isEqualToString:@"Apple_Boot"];
 
     if (v8)
     {
@@ -512,13 +512,13 @@ LABEL_9:
 
     else
     {
-      v14 = [(SKDisk *)self mountPoint];
+      mountPoint = [(SKDisk *)self mountPoint];
 
-      if (v14)
+      if (mountPoint)
       {
         v15 = +[NSFileManager defaultManager];
-        v16 = [(SKDisk *)self mountPoint];
-        v17 = [v16 stringByAppendingPathComponent:@"/System/Library/CoreServices/Finder.app"];
+        mountPoint2 = [(SKDisk *)self mountPoint];
+        v17 = [mountPoint2 stringByAppendingPathComponent:@"/System/Library/CoreServices/Finder.app"];
         v18 = [v15 fileExistsAtPath:v17];
 
         v19 = &kSKDiskRoleLegacyMacSystem;
@@ -543,13 +543,13 @@ LABEL_9:
     goto LABEL_23;
   }
 
-  if ([v29 isEqualToString:@"msdos"])
+  if ([majorType isEqualToString:@"msdos"])
   {
     [(SKDisk *)self setSupportsVerify:1];
     [(SKDisk *)self setSupportsRepair:1];
-    v10 = [(SKDisk *)self isRealEFIPartition];
+    isRealEFIPartition = [(SKDisk *)self isRealEFIPartition];
     v11 = &kSKDiskRoleBooter;
-    if (v10)
+    if (isRealEFIPartition)
     {
       v12 = &kSKDiskTypeEFI;
     }
@@ -566,7 +566,7 @@ LABEL_9:
     goto LABEL_23;
   }
 
-  if ([v29 isEqualToString:@"exfat"])
+  if ([majorType isEqualToString:@"exfat"])
   {
     [(SKDisk *)self setSupportsVerify:1];
     [(SKDisk *)self setSupportsRepair:1];
@@ -578,15 +578,15 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ([v29 isEqualToString:@"ntfs"])
+  if ([majorType isEqualToString:@"ntfs"])
   {
-    v20 = [(SKDisk *)self mountPoint];
-    v21 = [v20 stringByAppendingPathComponent:@"/Windows/System32/ntdll.dll"];
+    mountPoint3 = [(SKDisk *)self mountPoint];
+    v21 = [mountPoint3 stringByAppendingPathComponent:@"/Windows/System32/ntdll.dll"];
 
-    v22 = [(SKDisk *)self mountPoint];
-    if (v22)
+    mountPoint4 = [(SKDisk *)self mountPoint];
+    if (mountPoint4)
     {
-      v23 = v22;
+      v23 = mountPoint4;
       v24 = +[NSFileManager defaultManager];
       v25 = [v24 fileExistsAtPath:v21];
 
@@ -605,12 +605,12 @@ LABEL_23:
     [(SKDisk *)self setRole:*v26];
     [(SKDisk *)self setType:kSKDiskTypeNTFS];
     v28 = kSKDiskFileSystemNTFS;
-    v27 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    if ([v29 isEqualToString:@"acfs"])
+    if ([majorType isEqualToString:@"acfs"])
     {
       [(SKDisk *)self setRole:kSKDiskRoleXSanData];
       [(SKDisk *)self setType:kSKDiskTypeXSanLV];
@@ -620,29 +620,29 @@ LABEL_23:
 
     [(SKDisk *)self setRole:kSKDiskRoleUnknown];
     [(SKDisk *)self setType:kSKDiskType3rdPartyFilesystem];
-    v21 = [NSString stringWithFormat:@"kSKDiskFileSystem_%@", v29];
-    v27 = self;
+    v21 = [NSString stringWithFormat:@"kSKDiskFileSystem_%@", majorType];
+    selfCopy2 = self;
     v28 = v21;
   }
 
-  [(SKDisk *)v27 setFilesystemType:v28];
+  [(SKDisk *)selfCopy2 setFilesystemType:v28];
 
 LABEL_24:
 }
 
 - (BOOL)isRealEFIPartition
 {
-  v3 = [(SKDisk *)self ioContent];
-  v4 = [v3 isEqualToString:@"EFI"];
+  ioContent = [(SKDisk *)self ioContent];
+  v4 = [ioContent isEqualToString:@"EFI"];
 
   if (v4)
   {
-    v5 = [(SKDisk *)self privateCache];
-    v6 = [v5 wholeDADisk];
-    v7 = [SKDisk copySortedChildrenWithDADisk:v6 ioMedia:0];
+    privateCache = [(SKDisk *)self privateCache];
+    wholeDADisk = [privateCache wholeDADisk];
+    v7 = [SKDisk copySortedChildrenWithDADisk:wholeDADisk ioMedia:0];
 
-    v8 = [(SKDisk *)self daDisk];
-    v9 = [v7 indexOfObject:v8];
+    daDisk = [(SKDisk *)self daDisk];
+    v9 = [v7 indexOfObject:daDisk];
 
     if (v9)
     {
@@ -660,11 +660,11 @@ LABEL_24:
       v11 = sub_10000BFD0();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(SKDisk *)self diskIdentifier];
+        diskIdentifier = [(SKDisk *)self diskIdentifier];
         v14 = 136315650;
         v15 = "[SKDisk(DaemonAdditions) isRealEFIPartition]";
         v16 = 2114;
-        v17 = v12;
+        v17 = diskIdentifier;
         v18 = 1024;
         v19 = v9;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s: %{public}@ is an EFI partition in the middle of the disk (child #%d), treating as a regular FAT", &v14, 0x1Cu);
@@ -677,26 +677,26 @@ LABEL_24:
 
 - (void)_cacheNoFilesystem
 {
-  v3 = [(SKDisk *)self isWholeDisk];
-  v4 = [(SKDisk *)self privateCache];
-  v5 = [v4 schemeID];
-  if (v3)
+  isWholeDisk = [(SKDisk *)self isWholeDisk];
+  privateCache = [(SKDisk *)self privateCache];
+  schemeID = [privateCache schemeID];
+  if (isWholeDisk)
   {
 
     v6 = &kSKDiskTypeAPMWholeDisk;
     v7 = &kSKDiskTypeMBRWholeDisk;
     v8 = &kSKDiskTypeUninitalized;
-    if (v5 == 16)
+    if (schemeID == 16)
     {
       v8 = &kSKDiskTypeGPTWholeDisk;
     }
 
-    if (v5 != 8)
+    if (schemeID != 8)
     {
       v7 = v8;
     }
 
-    if (v5 != 1)
+    if (schemeID != 1)
     {
       v6 = v7;
     }
@@ -706,14 +706,14 @@ LABEL_24:
     goto LABEL_9;
   }
 
-  if (v5 == 512 || ([(SKDisk *)self ioContent], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
+  if (schemeID == 512 || ([(SKDisk *)self ioContent], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
     v14 = &kSKDiskRoleNoRole;
     goto LABEL_15;
   }
 
-  v11 = [(SKDisk *)self ioContent];
-  v12 = [v11 isEqualToString:@"Apple_Boot"];
+  ioContent = [(SKDisk *)self ioContent];
+  v12 = [ioContent isEqualToString:@"Apple_Boot"];
 
   if (!v12)
   {
@@ -725,8 +725,8 @@ LABEL_24:
       goto LABEL_18;
     }
 
-    v18 = [(SKDisk *)self ioContent];
-    if ([v18 isEqualToString:@"Apple_HFS"])
+    ioContent2 = [(SKDisk *)self ioContent];
+    if ([ioContent2 isEqualToString:@"Apple_HFS"])
     {
 
 LABEL_26:
@@ -735,16 +735,16 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v19 = [(SKDisk *)self ioContent];
-    v20 = [v19 isEqualToString:@"Apple_RAID"];
+    ioContent3 = [(SKDisk *)self ioContent];
+    v20 = [ioContent3 isEqualToString:@"Apple_RAID"];
 
     if (v20)
     {
       goto LABEL_26;
     }
 
-    v21 = [(SKDisk *)self ioContent];
-    v22 = [v21 isEqualToString:@"Apple_APFS"];
+    ioContent4 = [(SKDisk *)self ioContent];
+    v22 = [ioContent4 isEqualToString:@"Apple_APFS"];
 
     if (v22)
     {
@@ -763,43 +763,43 @@ LABEL_26:
       goto LABEL_16;
     }
 
-    v24 = [(SKDisk *)self ioContent];
-    v25 = [v24 isEqualToString:@"Apple_RAID_Offline"];
+    ioContent5 = [(SKDisk *)self ioContent];
+    v25 = [ioContent5 isEqualToString:@"Apple_RAID_Offline"];
 
     if (!v25)
     {
-      v26 = [(SKDisk *)self ioContent];
-      if ([v26 isEqualToString:@"Apple_KernelCoreDump"])
+      ioContent6 = [(SKDisk *)self ioContent];
+      if ([ioContent6 isEqualToString:@"Apple_KernelCoreDump"])
       {
       }
 
       else
       {
-        v27 = [(SKDisk *)self ioContent];
-        v28 = [v27 isEqualToString:@"Apple_SadMac"];
+        ioContent7 = [(SKDisk *)self ioContent];
+        v28 = [ioContent7 isEqualToString:@"Apple_SadMac"];
 
         if (!v28)
         {
-          v29 = [(SKDisk *)self privateCache];
-          v30 = [v29 rawIOContent];
-          v31 = [(SKDisk *)self ioContent];
-          v32 = [v30 isEqualToString:v31];
+          privateCache2 = [(SKDisk *)self privateCache];
+          rawIOContent = [privateCache2 rawIOContent];
+          ioContent8 = [(SKDisk *)self ioContent];
+          v32 = [rawIOContent isEqualToString:ioContent8];
 
           if (v32)
           {
             v33 = kSKDiskTypeOtherUnrecognized;
-            v34 = [(SKDisk *)self privateCache];
-            v35 = [v34 rawIOContent];
-            v36 = [NSString stringWithFormat:@"%@%@", v33, v35];
+            privateCache3 = [(SKDisk *)self privateCache];
+            rawIOContent2 = [privateCache3 rawIOContent];
+            v36 = [NSString stringWithFormat:@"%@%@", v33, rawIOContent2];
             [(SKDisk *)self setType:v36];
           }
 
           else
           {
             v37 = kSKDiskTypeOtherRecognizable;
-            v34 = [(SKDisk *)self ioContent];
-            v35 = [NSString stringWithFormat:@"%@%@", v37, v34];
-            [(SKDisk *)self setType:v35];
+            privateCache3 = [(SKDisk *)self ioContent];
+            rawIOContent2 = [NSString stringWithFormat:@"%@%@", v37, privateCache3];
+            [(SKDisk *)self setType:rawIOContent2];
           }
 
           v9 = &kSKDiskRoleNoRole;
@@ -838,37 +838,37 @@ LABEL_18:
 
 - (id)_getFilesystem
 {
-  v3 = [(SKDisk *)self privateCache];
-  v4 = [v3 volumeKind];
+  privateCache = [(SKDisk *)self privateCache];
+  volumeKind = [privateCache volumeKind];
 
-  if (sub_1000101BC(v4))
+  if (sub_1000101BC(volumeKind))
   {
     goto LABEL_5;
   }
 
-  v5 = [(SKDisk *)self privateCache];
-  v6 = [v5 rawIOContent];
-  v7 = [v6 isEqualToString:@"41504653-0000-11AA-AA11-00306543ECAC"];
+  privateCache2 = [(SKDisk *)self privateCache];
+  rawIOContent = [privateCache2 rawIOContent];
+  v7 = [rawIOContent isEqualToString:@"41504653-0000-11AA-AA11-00306543ECAC"];
 
   if (v7)
   {
     v8 = @"apfs";
 LABEL_4:
 
-    v4 = v8;
+    volumeKind = v8;
     goto LABEL_5;
   }
 
-  v18 = [(SKDisk *)self ioContent];
-  v19 = [v18 isEqualToString:@"Apple_APFS"];
+  ioContent = [(SKDisk *)self ioContent];
+  v19 = [ioContent isEqualToString:@"Apple_APFS"];
 
   if (v19)
   {
     goto LABEL_12;
   }
 
-  v22 = [(SKDisk *)self ioContent];
-  v23 = [v22 isEqualToString:@"Apple_HFS"];
+  ioContent2 = [(SKDisk *)self ioContent];
+  v23 = [ioContent2 isEqualToString:@"Apple_HFS"];
 
   if (v23)
   {
@@ -876,8 +876,8 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v24 = [(SKDisk *)self ioContent];
-  v25 = [v24 isEqualToString:@"MS-DOS"];
+  ioContent3 = [(SKDisk *)self ioContent];
+  v25 = [ioContent3 isEqualToString:@"MS-DOS"];
 
   if (v25)
   {
@@ -886,9 +886,9 @@ LABEL_4:
   }
 
 LABEL_5:
-  if (sub_1000101BC(v4))
+  if (sub_1000101BC(volumeKind))
   {
-    v9 = [(SKDisk *)self filesystemWithType:v4];
+    v9 = [(SKDisk *)self filesystemWithType:volumeKind];
     if (v9)
     {
       v10 = v9;
@@ -896,16 +896,16 @@ LABEL_5:
     }
   }
 
-  v11 = [(SKDisk *)self ioContent];
-  v12 = sub_1000101BC(v11);
+  ioContent4 = [(SKDisk *)self ioContent];
+  v12 = sub_1000101BC(ioContent4);
 
   if (!v12)
   {
     goto LABEL_12;
   }
 
-  v13 = [(SKDisk *)self ioContent];
-  v14 = [v13 isEqualToString:@"EFI"];
+  ioContent5 = [(SKDisk *)self ioContent];
+  v14 = [ioContent5 isEqualToString:@"EFI"];
 
   v15 = +[SKDaemonManager sharedManager];
   v16 = v15;
@@ -918,8 +918,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v20 = [(SKDisk *)self ioContent];
-  v17 = [v16 _filesystemForIOContent:v20];
+  ioContent6 = [(SKDisk *)self ioContent];
+  v17 = [v16 _filesystemForIOContent:ioContent6];
 
   if (v17)
   {
@@ -928,10 +928,10 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v26 = [(SKDisk *)self ioContent];
-  v27 = [(SKDisk *)self privateCache];
-  v28 = [v27 rawIOContent];
-  v29 = [v26 isEqual:v28];
+  ioContent7 = [(SKDisk *)self ioContent];
+  privateCache3 = [(SKDisk *)self privateCache];
+  rawIOContent2 = [privateCache3 rawIOContent];
+  v29 = [ioContent7 isEqual:rawIOContent2];
 
   if (v29)
   {
@@ -941,9 +941,9 @@ LABEL_12:
   }
 
   v30 = +[SKDaemonManager sharedManager];
-  v31 = [(SKDisk *)self privateCache];
-  v32 = [v31 rawIOContent];
-  v10 = [v30 _filesystemForIOContent:v32];
+  privateCache4 = [(SKDisk *)self privateCache];
+  rawIOContent3 = [privateCache4 rawIOContent];
+  v10 = [v30 _filesystemForIOContent:rawIOContent3];
 
   if (v10)
   {
@@ -955,26 +955,26 @@ LABEL_16:
   return v10;
 }
 
-- (id)filesystemWithType:(id)a3
+- (id)filesystemWithType:(id)type
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"apfs"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"hfs") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"msdos") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"cd9660"))
+  typeCopy = type;
+  if (([typeCopy isEqualToString:@"apfs"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"hfs") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"msdos") & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"cd9660"))
   {
-    v5 = [(SKDisk *)self privateCache];
-    v6 = [v5 volumeType];
-    v7 = sub_1000101BC(v6);
+    privateCache = [(SKDisk *)self privateCache];
+    volumeType = [privateCache volumeType];
+    v7 = sub_1000101BC(volumeType);
 
     if (v7)
     {
-      v8 = [(SKDisk *)self privateCache];
-      v9 = [v8 volumeType];
+      privateCache2 = [(SKDisk *)self privateCache];
+      volumeType2 = [privateCache2 volumeType];
 
-      if (v9)
+      if (volumeType2)
       {
         v10 = 0;
 LABEL_8:
         v11 = +[SKDaemonManager sharedManager];
-        v12 = [v11 _filesystemForUnlocalizedName:v9 dmPersonality:v10];
+        v12 = [v11 _filesystemForUnlocalizedName:volumeType2 dmPersonality:v10];
 
         goto LABEL_11;
       }
@@ -982,66 +982,66 @@ LABEL_8:
 
     else
     {
-      v13 = [(SKDisk *)self mountPoint];
-      sub_1000101BC(v13);
+      mountPoint = [(SKDisk *)self mountPoint];
+      sub_1000101BC(mountPoint);
     }
   }
 
-  else if ([v4 isEqualToString:@"zfs"])
+  else if ([typeCopy isEqualToString:@"zfs"])
   {
-    v9 = 0;
+    volumeType2 = 0;
     v10 = @"ZFS";
     goto LABEL_8;
   }
 
-  v9 = +[SKDaemonManager sharedManager];
-  v12 = [v9 _firstFilesystemForMajorType:v4];
+  volumeType2 = +[SKDaemonManager sharedManager];
+  v12 = [volumeType2 _firstFilesystemForMajorType:typeCopy];
 LABEL_11:
 
   return v12;
 }
 
-- (BOOL)_cacheSpacesWithPurgeable:(BOOL)a3
+- (BOOL)_cacheSpacesWithPurgeable:(BOOL)purgeable
 {
-  v3 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  purgeableCopy = purgeable;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   bzero(&v20, 0x878uLL);
-  v5 = [(SKDisk *)v4 mountPoint];
-  if (v5 && (-[SKDisk mountPoint](v4, "mountPoint"), v6 = objc_claimAutoreleasedReturnValue(), v7 = statfs([v6 fileSystemRepresentation], &v20) == 0, v6, v5, v7))
+  mountPoint = [(SKDisk *)selfCopy mountPoint];
+  if (mountPoint && (-[SKDisk mountPoint](selfCopy, "mountPoint"), v6 = objc_claimAutoreleasedReturnValue(), v7 = statfs([v6 fileSystemRepresentation], &v20) == 0, v6, mountPoint, v7))
   {
-    [(SKDisk *)v4 setIsWritable:(v20.f_flags & 1) == 0];
-    [(SKDisk *)v4 setTotalSpace:v20.f_blocks * v20.f_bsize];
-    [(SKDisk *)v4 setFreeSpace:v20.f_bavail * v20.f_bsize];
+    [(SKDisk *)selfCopy setIsWritable:(v20.f_flags & 1) == 0];
+    [(SKDisk *)selfCopy setTotalSpace:v20.f_blocks * v20.f_bsize];
+    [(SKDisk *)selfCopy setFreeSpace:v20.f_bavail * v20.f_bsize];
     f_flags = v20.f_flags;
-    v16 = [(SKDisk *)v4 privateCache];
-    [v16 setMountFlags:f_flags];
+    privateCache = [(SKDisk *)selfCopy privateCache];
+    [privateCache setMountFlags:f_flags];
 
-    [(SKDisk *)v4 setOwnerUID:v20.f_owner];
-    if (([(SKDisk *)v4 isIOMediaDisk]& 1) == 0)
+    [(SKDisk *)selfCopy setOwnerUID:v20.f_owner];
+    if (([(SKDisk *)selfCopy isIOMediaDisk]& 1) == 0)
     {
-      [(SKDisk *)v4 setUnformattedSize:[(SKDisk *)v4 totalSpace]];
+      [(SKDisk *)selfCopy setUnformattedSize:[(SKDisk *)selfCopy totalSpace]];
     }
   }
 
   else
   {
-    [(SKDisk *)v4 setIsWritable:0];
-    [(SKDisk *)v4 setTotalSpace:[(SKDisk *)v4 unformattedSize]];
-    [(SKDisk *)v4 setFreeSpace:0];
-    v8 = [(SKDisk *)v4 privateCache];
-    [v8 setMountFlags:0];
+    [(SKDisk *)selfCopy setIsWritable:0];
+    [(SKDisk *)selfCopy setTotalSpace:[(SKDisk *)selfCopy unformattedSize]];
+    [(SKDisk *)selfCopy setFreeSpace:0];
+    privateCache2 = [(SKDisk *)selfCopy privateCache];
+    [privateCache2 setMountFlags:0];
   }
 
-  if (v3)
+  if (purgeableCopy)
   {
-    v9 = [(SKDisk *)v4 mountPoint];
+    mountPoint2 = [(SKDisk *)selfCopy mountPoint];
 
-    v10 = 0;
-    if (&_CacheDeleteCopyPurgeableSpaceWithInfo && v9)
+    unsignedLongLongValue = 0;
+    if (&_CacheDeleteCopyPurgeableSpaceWithInfo && mountPoint2)
     {
-      v11 = [(SKDisk *)v4 mountPoint];
-      v19 = v11;
+      mountPoint3 = [(SKDisk *)selfCopy mountPoint];
+      v19 = mountPoint3;
       [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
       v12 = CacheDeleteCopyPurgeableSpaceWithInfo();
 
@@ -1051,37 +1051,37 @@ LABEL_11:
         v14 = v13;
         if (v13)
         {
-          v10 = [v13 unsignedLongLongValue];
+          unsignedLongLongValue = [v13 unsignedLongLongValue];
         }
 
         else
         {
-          v10 = 0;
+          unsignedLongLongValue = 0;
         }
       }
 
       else
       {
-        v10 = 0;
+        unsignedLongLongValue = 0;
       }
     }
 
-    [(SKDisk *)v4 setPurgeableSpace:v10];
+    [(SKDisk *)selfCopy setPurgeableSpace:unsignedLongLongValue];
   }
 
-  [(SKDisk *)v4 setAvailableSpace:[(SKDisk *)v4 freeSpace]+ [(SKDisk *)v4 purgeableSpace]];
-  objc_sync_exit(v4);
+  [(SKDisk *)selfCopy setAvailableSpace:[(SKDisk *)selfCopy freeSpace]+ [(SKDisk *)selfCopy purgeableSpace]];
+  objc_sync_exit(selfCopy);
 
   return 1;
 }
 
-+ (id)copySortedChildrenWithDADisk:(id)a3 ioMedia:(id)a4
++ (id)copySortedChildrenWithDADisk:(id)disk ioMedia:(id)media
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  diskCopy = disk;
+  mediaCopy = media;
+  if (diskCopy)
   {
-    BSDName = DADiskGetBSDName(v6);
+    BSDName = DADiskGetBSDName(diskCopy);
     if (BSDName)
     {
       v9 = [NSString stringWithUTF8String:BSDName];
@@ -1095,12 +1095,12 @@ LABEL_11:
 
       else
       {
-        if (!v7)
+        if (!mediaCopy)
         {
-          v7 = [[SKIOMedia alloc] initWithDADisk:v6];
+          mediaCopy = [[SKIOMedia alloc] initWithDADisk:diskCopy];
         }
 
-        v13 = [a1 newSortedChildrenWithIOMedia:v7];
+        v13 = [self newSortedChildrenWithIOMedia:mediaCopy];
         v14 = +[SKDaemonManager sharedManager];
         v19 = v13;
         v20 = v9;
@@ -1120,7 +1120,7 @@ LABEL_11:
         *buf = 136315394;
         v23 = "+[SKDisk(DaemonAdditions) copySortedChildrenWithDADisk:ioMedia:]";
         v24 = 2112;
-        v25 = v6;
+        v25 = diskCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s: Invalid DADiskRef %@", buf, 0x16u);
       }
 
@@ -1136,19 +1136,19 @@ LABEL_11:
   return v13;
 }
 
-+ (id)newSortedChildrenWithIOMedia:(id)a3
++ (id)newSortedChildrenWithIOMedia:(id)media
 {
-  v3 = a3;
-  if (v3)
+  mediaCopy = media;
+  if (mediaCopy)
   {
     v4 = &CacheDeleteCopyPurgeableSpaceWithInfo_ptr;
-    v5 = [v3 copyPropertyWithClass:objc_opt_class() key:@"BSD Unit"];
+    v5 = [mediaCopy copyPropertyWithClass:objc_opt_class() key:@"BSD Unit"];
     v32 = +[NSMutableArray array];
     v6 = +[SKDaemonManager sharedManager];
-    v31 = [v6 diskArbSession];
+    diskArbSession = [v6 diskArbSession];
 
-    v30 = v3;
-    v7 = [v3 newIteratorWithOptions:1];
+    v30 = mediaCopy;
+    v7 = [mediaCopy newIteratorWithOptions:1];
     p_superclass = &OBJC_METACLASS___SKTaskExecuter.superclass;
     v9 = [(SKIOObject *)[SKIOMedia alloc] initWithIteratorNext:v7];
     if (v9)
@@ -1169,12 +1169,12 @@ LABEL_11:
           v13 = [(SKIOObject *)v11 copyPropertyWithClass:objc_opt_class() key:@"BSD Unit"];
           if ([v13 isEqual:v5])
           {
-            v14 = DADiskCreateFromIOMedia(kCFAllocatorDefault, v31, [(SKIOObject *)v11 ioObj]);
+            v14 = DADiskCreateFromIOMedia(kCFAllocatorDefault, diskArbSession, [(SKIOObject *)v11 ioObj]);
             if (v14)
             {
-              v15 = [(SKIOObject *)v11 copyProperties];
+              copyProperties = [(SKIOObject *)v11 copyProperties];
               v44[0] = v14;
-              v16 = sub_100005EDC(v15, 0);
+              v16 = sub_100005EDC(copyProperties, 0);
               v44[1] = v16;
               [NSArray arrayWithObjects:v44 count:2];
               v18 = v17 = v4;
@@ -1186,14 +1186,14 @@ LABEL_11:
 
             else
             {
-              v15 = sub_10000BFD0();
-              if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+              copyProperties = sub_10000BFD0();
+              if (os_log_type_enabled(copyProperties, OS_LOG_TYPE_ERROR))
               {
                 *buf = v29;
                 v39 = "+[SKDisk(DaemonAdditions) newSortedChildrenWithIOMedia:]";
                 v40 = 2114;
                 v41 = v13;
-                _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s: Failed to create DADisk for child disk %{public}@", buf, 0x16u);
+                _os_log_impl(&_mh_execute_header, copyProperties, OS_LOG_TYPE_ERROR, "%s: Failed to create DADisk for child disk %{public}@", buf, 0x16u);
               }
             }
           }
@@ -1255,7 +1255,7 @@ LABEL_11:
       while (v24);
     }
 
-    v3 = v30;
+    mediaCopy = v30;
   }
 
   else
@@ -1268,13 +1268,13 @@ LABEL_11:
 
 - (BOOL)_supportsRecaching
 {
-  v2 = [(SKDisk *)self diskIdentifier];
-  v3 = v2 != 0;
+  diskIdentifier = [(SKDisk *)self diskIdentifier];
+  v3 = diskIdentifier != 0;
 
   return v3;
 }
 
-- (BOOL)reProbeWithError:(id *)a3
+- (BOOL)reProbeWithError:(id *)error
 {
   v9[0] = kSKDiskMountOptionRecursive;
   v5 = &__kCFBooleanFalse;
@@ -1287,7 +1287,7 @@ LABEL_11:
   v10[0] = v5;
   v10[1] = &__NSArray0__struct;
   v6 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
-  v7 = [SKMountOperation mountWithDisk:self options:v6 error:a3];
+  v7 = [SKMountOperation mountWithDisk:self options:v6 error:error];
 
   return v7;
 }

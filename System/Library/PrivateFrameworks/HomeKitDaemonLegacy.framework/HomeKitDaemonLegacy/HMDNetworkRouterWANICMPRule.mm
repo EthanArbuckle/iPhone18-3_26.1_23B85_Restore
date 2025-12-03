@@ -1,50 +1,50 @@
 @interface HMDNetworkRouterWANICMPRule
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterWANICMPRule)init;
-- (HMDNetworkRouterWANICMPRule)initWithHostDNSName:(id)a3 hostIPStart:(id)a4 hostIPEnd:(id)a5 icmpTypes:(id)a6;
+- (HMDNetworkRouterWANICMPRule)initWithHostDNSName:(id)name hostIPStart:(id)start hostIPEnd:(id)end icmpTypes:(id)types;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
-- (void)addTo:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
+- (void)addTo:(id)to;
 @end
 
 @implementation HMDNetworkRouterWANICMPRule
 
-- (void)addTo:(id)a3
+- (void)addTo:(id)to
 {
-  v7 = a3;
-  v4 = [v7 icmpRules];
-  v5 = v4;
-  if (v4)
+  toCopy = to;
+  icmpRules = [toCopy icmpRules];
+  v5 = icmpRules;
+  if (icmpRules)
   {
-    [v4 addObject:self];
+    [icmpRules addObject:self];
   }
 
   else
   {
     v6 = [MEMORY[0x277CBEB18] arrayWithObject:self];
-    [v7 setIcmpRules:v6];
+    [toCopy setIcmpRules:v6];
   }
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDNetworkRouterWANICMPRule *)self hostDNSName];
-  v5 = [(HMDNetworkRouterWANICMPRule *)self hostIPStart];
-  v6 = [(HMDNetworkRouterWANICMPRule *)self hostIPEnd];
-  v7 = [(HMDNetworkRouterWANICMPRule *)self icmpTypes];
-  v8 = [v3 stringWithFormat:@"<HMDNetworkRouterWANICMPRule hostDNSName=%@, hostIPStart=%@, hostIPEnd=%@, icmpTypes=%@>", v4, v5, v6, v7];
+  hostDNSName = [(HMDNetworkRouterWANICMPRule *)self hostDNSName];
+  hostIPStart = [(HMDNetworkRouterWANICMPRule *)self hostIPStart];
+  hostIPEnd = [(HMDNetworkRouterWANICMPRule *)self hostIPEnd];
+  icmpTypes = [(HMDNetworkRouterWANICMPRule *)self icmpTypes];
+  v8 = [v3 stringWithFormat:@"<HMDNetworkRouterWANICMPRule hostDNSName=%@, hostIPStart=%@, hostIPEnd=%@, icmpTypes=%@>", hostDNSName, hostIPStart, hostIPEnd, icmpTypes];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -54,34 +54,34 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDNetworkRouterWANICMPRule *)self hostDNSName];
-      v8 = [(HMDNetworkRouterWANICMPRule *)v6 hostDNSName];
-      if (v7 != v8)
+      v6 = equalCopy;
+      hostDNSName = [(HMDNetworkRouterWANICMPRule *)self hostDNSName];
+      hostDNSName2 = [(HMDNetworkRouterWANICMPRule *)v6 hostDNSName];
+      if (hostDNSName != hostDNSName2)
       {
-        v9 = [(HMDNetworkRouterWANICMPRule *)self hostDNSName];
+        hostDNSName3 = [(HMDNetworkRouterWANICMPRule *)self hostDNSName];
         [(HMDNetworkRouterWANICMPRule *)v6 hostDNSName];
-        v33 = v32 = v9;
-        if (![v9 isEqual:?])
+        v33 = v32 = hostDNSName3;
+        if (![hostDNSName3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_24;
         }
       }
 
-      v11 = [(HMDNetworkRouterWANICMPRule *)self hostIPStart];
-      v12 = [(HMDNetworkRouterWANICMPRule *)v6 hostIPStart];
-      if (v11 != v12)
+      hostIPStart = [(HMDNetworkRouterWANICMPRule *)self hostIPStart];
+      hostIPStart2 = [(HMDNetworkRouterWANICMPRule *)v6 hostIPStart];
+      if (hostIPStart != hostIPStart2)
       {
-        v3 = [(HMDNetworkRouterWANICMPRule *)self hostIPStart];
-        v30 = [(HMDNetworkRouterWANICMPRule *)v6 hostIPStart];
-        if (![v3 isEqual:?])
+        hostIPStart3 = [(HMDNetworkRouterWANICMPRule *)self hostIPStart];
+        hostIPStart4 = [(HMDNetworkRouterWANICMPRule *)v6 hostIPStart];
+        if (![hostIPStart3 isEqual:?])
         {
           v10 = 0;
 LABEL_22:
 
 LABEL_23:
-          if (v7 == v8)
+          if (hostDNSName == hostDNSName2)
           {
 LABEL_25:
 
@@ -94,38 +94,38 @@ LABEL_24:
         }
       }
 
-      v13 = [(HMDNetworkRouterWANICMPRule *)self hostIPEnd];
-      v14 = [(HMDNetworkRouterWANICMPRule *)v6 hostIPEnd];
-      v31 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      hostIPEnd = [(HMDNetworkRouterWANICMPRule *)self hostIPEnd];
+      hostIPEnd2 = [(HMDNetworkRouterWANICMPRule *)v6 hostIPEnd];
+      v31 = hostIPEnd;
+      v15 = hostIPEnd == hostIPEnd2;
+      v16 = hostIPEnd2;
       if (v15)
       {
-        v28 = v3;
-        v29 = v12;
+        v28 = hostIPStart3;
+        v29 = hostIPStart2;
       }
 
       else
       {
-        v17 = [(HMDNetworkRouterWANICMPRule *)self hostIPEnd];
-        v25 = [(HMDNetworkRouterWANICMPRule *)v6 hostIPEnd];
-        v26 = v17;
-        if (![v17 isEqual:?])
+        hostIPEnd3 = [(HMDNetworkRouterWANICMPRule *)self hostIPEnd];
+        hostIPEnd4 = [(HMDNetworkRouterWANICMPRule *)v6 hostIPEnd];
+        v26 = hostIPEnd3;
+        if (![hostIPEnd3 isEqual:?])
         {
           v10 = 0;
           v23 = v31;
           goto LABEL_20;
         }
 
-        v28 = v3;
-        v29 = v12;
+        v28 = hostIPStart3;
+        v29 = hostIPStart2;
       }
 
       v27 = v16;
-      v18 = [(HMDNetworkRouterWANICMPRule *)self icmpTypes];
-      v19 = [(HMDNetworkRouterWANICMPRule *)v6 icmpTypes];
-      v20 = v19;
-      if (v18 == v19)
+      icmpTypes = [(HMDNetworkRouterWANICMPRule *)self icmpTypes];
+      icmpTypes2 = [(HMDNetworkRouterWANICMPRule *)v6 icmpTypes];
+      v20 = icmpTypes2;
+      if (icmpTypes == icmpTypes2)
       {
 
         v10 = 1;
@@ -133,20 +133,20 @@ LABEL_24:
 
       else
       {
-        v21 = [(HMDNetworkRouterWANICMPRule *)self icmpTypes];
-        v22 = [(HMDNetworkRouterWANICMPRule *)v6 icmpTypes];
-        v10 = [v21 isEqual:v22];
+        icmpTypes3 = [(HMDNetworkRouterWANICMPRule *)self icmpTypes];
+        icmpTypes4 = [(HMDNetworkRouterWANICMPRule *)v6 icmpTypes];
+        v10 = [icmpTypes3 isEqual:icmpTypes4];
       }
 
       v23 = v31;
       v16 = v27;
-      v3 = v28;
-      v12 = v29;
+      hostIPStart3 = v28;
+      hostIPStart2 = v29;
       if (v31 == v27)
       {
 LABEL_21:
 
-        if (v11 == v12)
+        if (hostIPStart == hostIPStart2)
         {
           goto LABEL_23;
         }
@@ -167,19 +167,19 @@ LABEL_26:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterWANICMPRule allocWithZone:a3];
-  v5 = [(HMDNetworkRouterWANICMPRule *)self hostDNSName];
-  v6 = [(HMDNetworkRouterWANICMPRule *)self hostIPStart];
-  v7 = [(HMDNetworkRouterWANICMPRule *)self hostIPEnd];
-  v8 = [(HMDNetworkRouterWANICMPRule *)self icmpTypes];
-  v9 = [(HMDNetworkRouterWANICMPRule *)v4 initWithHostDNSName:v5 hostIPStart:v6 hostIPEnd:v7 icmpTypes:v8];
+  v4 = [HMDNetworkRouterWANICMPRule allocWithZone:zone];
+  hostDNSName = [(HMDNetworkRouterWANICMPRule *)self hostDNSName];
+  hostIPStart = [(HMDNetworkRouterWANICMPRule *)self hostIPStart];
+  hostIPEnd = [(HMDNetworkRouterWANICMPRule *)self hostIPEnd];
+  icmpTypes = [(HMDNetworkRouterWANICMPRule *)self icmpTypes];
+  v9 = [(HMDNetworkRouterWANICMPRule *)v4 initWithHostDNSName:hostDNSName hostIPStart:hostIPStart hostIPEnd:hostIPEnd icmpTypes:icmpTypes];
 
   return v9;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
   v43 = 0u;
@@ -204,13 +204,13 @@ LABEL_26:
   v26 = 0u;
   v24 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDNetworkRouterWANICMPRule *)self hostDNSName];
+  hostDNSName = [(HMDNetworkRouterWANICMPRule *)self hostDNSName];
 
-  if (v5)
+  if (hostDNSName)
   {
-    v6 = [(HMDNetworkRouterWANICMPRule *)self hostDNSName];
+    hostDNSName2 = [(HMDNetworkRouterWANICMPRule *)self hostDNSName];
     v23 = 0;
-    v7 = [v6 serializeWithError:&v23];
+    v7 = [hostDNSName2 serializeWithError:&v23];
     v8 = v23;
 
     if (v8)
@@ -226,16 +226,16 @@ LABEL_26:
     }
   }
 
-  v9 = [(HMDNetworkRouterWANICMPRule *)self hostIPStart];
+  hostIPStart = [(HMDNetworkRouterWANICMPRule *)self hostIPStart];
 
-  if (!v9)
+  if (!hostIPStart)
   {
     goto LABEL_9;
   }
 
-  v10 = [(HMDNetworkRouterWANICMPRule *)self hostIPStart];
+  hostIPStart2 = [(HMDNetworkRouterWANICMPRule *)self hostIPStart];
   v22 = 0;
-  v7 = [v10 serializeWithError:&v22];
+  v7 = [hostIPStart2 serializeWithError:&v22];
   v8 = v22;
 
   if (v8)
@@ -250,11 +250,11 @@ LABEL_26:
 LABEL_12:
 
 LABEL_13:
-    if (a3)
+    if (error)
     {
       HMErrorFromOSStatus();
       v8 = 0;
-      *a3 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_22;
     }
 
@@ -265,13 +265,13 @@ LABEL_21:
   }
 
 LABEL_9:
-  v11 = [(HMDNetworkRouterWANICMPRule *)self hostIPEnd];
+  hostIPEnd = [(HMDNetworkRouterWANICMPRule *)self hostIPEnd];
 
-  if (v11)
+  if (hostIPEnd)
   {
-    v12 = [(HMDNetworkRouterWANICMPRule *)self hostIPEnd];
+    hostIPEnd2 = [(HMDNetworkRouterWANICMPRule *)self hostIPEnd];
     v21 = 0;
-    v7 = [v12 serializeWithError:&v21];
+    v7 = [hostIPEnd2 serializeWithError:&v21];
     v8 = v21;
 
     if (v8)
@@ -287,24 +287,24 @@ LABEL_9:
     }
   }
 
-  v14 = [(HMDNetworkRouterWANICMPRule *)self icmpTypes];
+  icmpTypes = [(HMDNetworkRouterWANICMPRule *)self icmpTypes];
 
-  if (v14)
+  if (icmpTypes)
   {
-    v15 = [(HMDNetworkRouterWANICMPRule *)self icmpTypes];
+    icmpTypes2 = [(HMDNetworkRouterWANICMPRule *)self icmpTypes];
     v20 = 0;
-    v7 = [v15 serializeWithError:&v20];
+    v7 = [icmpTypes2 serializeWithError:&v20];
     v8 = v20;
 
     if (v8)
     {
 LABEL_19:
 
-      if (a3)
+      if (error)
       {
         v16 = v8;
         v13 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_22;
       }
 
@@ -331,16 +331,16 @@ LABEL_22:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
   if (!v9)
   {
@@ -351,14 +351,14 @@ LABEL_22:
     goto LABEL_31;
   }
 
-  v25 = self;
-  v26 = a4;
+  selfCopy = self;
+  errorCopy = error;
   v10 = 0;
   v11 = 0;
   v12 = 0;
   v13 = 0;
   v14 = 0;
-  v15 = v8 + v9;
+  v15 = bytes + v9;
   while (1)
   {
     v35 = 0;
@@ -369,10 +369,10 @@ LABEL_22:
     if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
     {
       v20 = v14;
-      if (v26)
+      if (errorCopy)
       {
         HMErrorFromOSStatus();
-        *v26 = v21 = 0;
+        *errorCopy = v21 = 0;
         goto LABEL_32;
       }
 
@@ -453,18 +453,18 @@ LABEL_26:
   v20 = v14;
   if (v10)
   {
-    if (v26)
+    if (errorCopy)
     {
       v23 = v10;
       v21 = 0;
-      *v26 = v10;
+      *errorCopy = v10;
       goto LABEL_32;
     }
 
     goto LABEL_29;
   }
 
-  self = v25;
+  self = selfCopy;
 LABEL_31:
   [(HMDNetworkRouterWANICMPRule *)self setHostDNSName:v20];
   [(HMDNetworkRouterWANICMPRule *)self setHostIPStart:v13];
@@ -477,22 +477,22 @@ LABEL_32:
   return v21;
 }
 
-- (HMDNetworkRouterWANICMPRule)initWithHostDNSName:(id)a3 hostIPStart:(id)a4 hostIPEnd:(id)a5 icmpTypes:(id)a6
+- (HMDNetworkRouterWANICMPRule)initWithHostDNSName:(id)name hostIPStart:(id)start hostIPEnd:(id)end icmpTypes:(id)types
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  startCopy = start;
+  endCopy = end;
+  typesCopy = types;
   v18.receiver = self;
   v18.super_class = HMDNetworkRouterWANICMPRule;
   v15 = [(HMDNetworkRouterWANICMPRule *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_hostDNSName, a3);
-    objc_storeStrong(&v16->_hostIPStart, a4);
-    objc_storeStrong(&v16->_hostIPEnd, a5);
-    objc_storeStrong(&v16->_icmpTypes, a6);
+    objc_storeStrong(&v15->_hostDNSName, name);
+    objc_storeStrong(&v16->_hostIPStart, start);
+    objc_storeStrong(&v16->_hostIPEnd, end);
+    objc_storeStrong(&v16->_icmpTypes, types);
   }
 
   return v16;
@@ -505,24 +505,24 @@ LABEL_32:
   return [(HMDNetworkRouterWANICMPRule *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterWANICMPRule);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterWANICMPRule *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterWANICMPRule *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

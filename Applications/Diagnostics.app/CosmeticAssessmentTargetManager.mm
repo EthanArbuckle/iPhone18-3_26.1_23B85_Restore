@@ -1,6 +1,6 @@
 @interface CosmeticAssessmentTargetManager
 + (id)sharedInstance;
-- (void)receivedPresentCosmeticTargetFlowCommandWithAction:(id)a3;
+- (void)receivedPresentCosmeticTargetFlowCommandWithAction:(id)action;
 @end
 
 @implementation CosmeticAssessmentTargetManager
@@ -17,11 +17,11 @@
   return v3;
 }
 
-- (void)receivedPresentCosmeticTargetFlowCommandWithAction:(id)a3
+- (void)receivedPresentCosmeticTargetFlowCommandWithAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001387D4(v4);
+  actionCopy = action;
+  selfCopy = self;
+  sub_1001387D4(actionCopy);
 }
 
 @end

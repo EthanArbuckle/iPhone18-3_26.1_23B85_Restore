@@ -1,8 +1,8 @@
 @interface NSDistributedNotificationCenter
 + (NSDistributedNotificationCenter)notificationCenterForType:(NSDistributedNotificationCenterType)notificationCenterType;
-- (id)addObserverForName:(id)a3 object:(id)a4 suspensionBehavior:(unint64_t)a5 queue:(id)a6 usingBlock:(id)a7;
+- (id)addObserverForName:(id)name object:(id)object suspensionBehavior:(unint64_t)behavior queue:(id)queue usingBlock:(id)block;
 - (void)addObserver:(id)observer selector:(SEL)selector name:(NSNotificationName)name object:(NSString *)object suspensionBehavior:(NSNotificationSuspensionBehavior)suspensionBehavior;
-- (void)postNotification:(id)a3;
+- (void)postNotification:(id)notification;
 - (void)postNotificationName:(NSNotificationName)name object:(NSString *)object userInfo:(NSDictionary *)userInfo options:(NSDistributedNotificationOptions)options;
 - (void)removeObserver:(id)observer name:(NSNotificationName)aName object:(NSString *)anObject;
 @end
@@ -22,13 +22,13 @@
   Value = CFDictionaryGetValue(Mutable, notificationCenterType);
   if (!Value)
   {
-    v7 = NSClassFromString(notificationCenterType);
-    if (!v7)
+    selfCopy = NSClassFromString(notificationCenterType);
+    if (!selfCopy)
     {
-      v7 = a1;
+      selfCopy = self;
     }
 
-    Value = objc_alloc_init(v7);
+    Value = objc_alloc_init(selfCopy);
     if (Value)
     {
       CFDictionarySetValue(qword_1ED43F2E0, notificationCenterType, Value);
@@ -47,9 +47,9 @@
   _CFXNotificationRegisterObserver();
 }
 
-- (id)addObserverForName:(id)a3 object:(id)a4 suspensionBehavior:(unint64_t)a5 queue:(id)a6 usingBlock:(id)a7
+- (id)addObserverForName:(id)name object:(id)object suspensionBehavior:(unint64_t)behavior queue:(id)queue usingBlock:(id)block
 {
-  if (!a7)
+  if (!block)
   {
     v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: Block cannot be nil", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v9);
@@ -74,9 +74,9 @@
   _CFXNotificationPost();
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
-  if (!a3)
+  if (!notification)
   {
     v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: notification is nil", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v4);

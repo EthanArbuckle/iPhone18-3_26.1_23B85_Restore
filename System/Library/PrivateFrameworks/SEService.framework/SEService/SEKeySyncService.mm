@@ -1,23 +1,23 @@
 @interface SEKeySyncService
-+ (id)transcodeTLKShares:(id)a3 fromCurrentIdentifier:(id)a4 toIdentity:(id)a5 outError:(id *)a6;
-+ (void)recoveryDidComplete:(id)a3;
++ (id)transcodeTLKShares:(id)shares fromCurrentIdentifier:(id)identifier toIdentity:(id)identity outError:(id *)error;
++ (void)recoveryDidComplete:(id)complete;
 @end
 
 @implementation SEKeySyncService
 
-+ (id)transcodeTLKShares:(id)a3 fromCurrentIdentifier:(id)a4 toIdentity:(id)a5 outError:(id *)a6
++ (id)transcodeTLKShares:(id)shares fromCurrentIdentifier:(id)identifier toIdentity:(id)identity outError:(id *)error
 {
-  if (a6)
+  if (error)
   {
     v7 = SESDefaultLogObject();
     v8 = *MEMORY[0x1E69E5148];
-    *a6 = SESCreateAndLogError();
+    *error = SESCreateAndLogError();
   }
 
   return 0;
 }
 
-+ (void)recoveryDidComplete:(id)a3
++ (void)recoveryDidComplete:(id)complete
 {
   v3 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.seserviced.shared"];
   [v3 setBool:1 forKey:@"keysync.recovery.required"];

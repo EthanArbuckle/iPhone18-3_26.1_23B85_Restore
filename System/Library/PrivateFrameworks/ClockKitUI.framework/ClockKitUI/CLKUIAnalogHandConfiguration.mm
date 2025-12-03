@@ -1,28 +1,28 @@
 @interface CLKUIAnalogHandConfiguration
-+ (id)defaultHourConfigurationForDevice:(id)a3;
-+ (id)defaultMinuteConfigurationForDevice:(id)a3;
-+ (id)defaultSecondConfigurationForDevice:(id)a3;
-+ (id)defaultSubdialConfigurationForDevice:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConfiguration:(id)a3;
++ (id)defaultHourConfigurationForDevice:(id)device;
++ (id)defaultMinuteConfigurationForDevice:(id)device;
++ (id)defaultSecondConfigurationForDevice:(id)device;
++ (id)defaultSubdialConfigurationForDevice:(id)device;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConfiguration:(id)configuration;
 - (CGPoint)anchorPoint;
 - (CGRect)bounds;
 - (CGSize)directionalShadowOffset;
 - (UIEdgeInsets)inlayInsets;
-- (id)configurationByApplyingInset:(double)a3;
-- (id)configurationByApplyingScale:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)configurationByApplyingInset:(double)inset;
+- (id)configurationByApplyingScale:(double)scale;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)dropShadowCacheIdentifier;
 - (id)handCacheIdentifier;
 - (id)radialShadowCacheIdentifier;
 - (unint64_t)hash;
-- (void)copyToConfiguration:(id)a3;
+- (void)copyToConfiguration:(id)configuration;
 @end
 
 @implementation CLKUIAnalogHandConfiguration
 
-+ (id)defaultHourConfigurationForDevice:(id)a3
++ (id)defaultHourConfigurationForDevice:(id)device
 {
   v24 = 0;
   v22 = 0u;
@@ -44,7 +44,7 @@
   v6 = 0u;
   v7 = 0u;
   v5 = 0u;
-  ___LayoutConstants_block_invoke(a3, &v5);
+  ___LayoutConstants_block_invoke(device, &v5);
   v3 = objc_alloc_init(CLKUIAnalogHandConfiguration);
   [(CLKUIAnalogHandConfiguration *)v3 setType:0];
   [(CLKUIAnalogHandConfiguration *)v3 setInlayInsetRadius:*&v5];
@@ -65,7 +65,7 @@
   return v3;
 }
 
-+ (id)defaultMinuteConfigurationForDevice:(id)a3
++ (id)defaultMinuteConfigurationForDevice:(id)device
 {
   v19 = 0;
   v17 = 0u;
@@ -82,7 +82,7 @@
   v8 = 0u;
   v6 = 0u;
   memset(v5, 0, sizeof(v5));
-  ___LayoutConstants_block_invoke(a3, v5);
+  ___LayoutConstants_block_invoke(device, v5);
   v3 = objc_alloc_init(CLKUIAnalogHandConfiguration);
   [(CLKUIAnalogHandConfiguration *)v3 setType:0];
   [(CLKUIAnalogHandConfiguration *)v3 setInlayInsetRadius:*v5];
@@ -103,7 +103,7 @@
   return v3;
 }
 
-+ (id)defaultSecondConfigurationForDevice:(id)a3
++ (id)defaultSecondConfigurationForDevice:(id)device
 {
   v13 = 0;
   v11 = 0u;
@@ -114,7 +114,7 @@
   v8 = 0u;
   v6 = 0u;
   memset(v5, 0, sizeof(v5));
-  ___LayoutConstants_block_invoke(a3, v5);
+  ___LayoutConstants_block_invoke(device, v5);
   v3 = objc_alloc_init(CLKUIAnalogHandConfiguration);
   [(CLKUIAnalogHandConfiguration *)v3 setType:1];
   [(CLKUIAnalogHandConfiguration *)v3 setHandWidth:*(&v6 + 1)];
@@ -134,7 +134,7 @@
   return v3;
 }
 
-+ (id)defaultSubdialConfigurationForDevice:(id)a3
++ (id)defaultSubdialConfigurationForDevice:(id)device
 {
   v11 = 0.0;
   v9 = 0u;
@@ -143,7 +143,7 @@
   v8 = 0u;
   v6 = 0u;
   memset(v5, 0, sizeof(v5));
-  ___LayoutConstants_block_invoke(a3, v5);
+  ___LayoutConstants_block_invoke(device, v5);
   v3 = objc_alloc_init(CLKUIAnalogHandConfiguration);
   [(CLKUIAnalogHandConfiguration *)v3 setType:1];
   [(CLKUIAnalogHandConfiguration *)v3 setHandWidth:*&v10];
@@ -263,7 +263,7 @@ LABEL_5:
   return result;
 }
 
-- (id)configurationByApplyingInset:(double)a3
+- (id)configurationByApplyingInset:(double)inset
 {
   v5 = [(CLKUIAnalogHandConfiguration *)self copy];
   v6 = v5;
@@ -271,24 +271,24 @@ LABEL_5:
   if (type == 1)
   {
     [v5 handWidth];
-    [v6 setHandWidth:v16 + a3 * -2.0];
+    [v6 setHandWidth:v16 + inset * -2.0];
     [v6 handLength];
-    [v6 setHandLength:v17 - a3];
+    [v6 setHandLength:v17 - inset];
     [v6 tailLength];
-    [v6 setTailLength:v18 - a3];
+    [v6 setTailLength:v18 - inset];
     [v6 pegRadius];
     if (v19 <= 0.0)
     {
       [v6 pegStrokeWidth];
-      v22 = v30 - a3;
+      v22 = v30 - inset;
     }
 
     else
     {
       [v6 pegRadius];
-      [v6 setPegRadius:v20 + a3];
+      [v6 setPegRadius:v20 + inset];
       [v6 pegStrokeWidth];
-      v22 = v21 + a3 * -2.0;
+      v22 = v21 + inset * -2.0;
     }
 
     [v6 setPegStrokeWidth:v22];
@@ -296,7 +296,7 @@ LABEL_5:
     if (v31 > 0.0)
     {
       [v6 smoothingRadius];
-      [v6 setSmoothingRadius:v32 + a3];
+      [v6 setSmoothingRadius:v32 + inset];
     }
 
     [v6 handWidth];
@@ -315,26 +315,26 @@ LABEL_5:
     }
 
     [v5 handLength];
-    [v6 setHandLength:v8 + a3 * -2.0];
+    [v6 setHandLength:v8 + inset * -2.0];
     [v6 handWidth];
-    [v6 setHandWidth:v9 + a3 * -2.0];
+    [v6 setHandWidth:v9 + inset * -2.0];
     [v6 armWidth];
-    [v6 setArmWidth:v10 + a3 * -2.0];
+    [v6 setArmWidth:v10 + inset * -2.0];
     [v6 armLength];
-    [v6 setArmLength:v11 + a3 * 2.0];
+    [v6 setArmLength:v11 + inset * 2.0];
     [v6 pegRadius];
     if (v12 <= 0.0)
     {
       [v6 pegStrokeWidth];
-      v15 = v23 - a3;
+      v15 = v23 - inset;
     }
 
     else
     {
       [v6 pegRadius];
-      [v6 setPegRadius:v13 + a3];
+      [v6 setPegRadius:v13 + inset];
       [v6 pegStrokeWidth];
-      v15 = v14 + a3 * -2.0;
+      v15 = v14 + inset * -2.0;
     }
 
     [v6 setPegStrokeWidth:v15];
@@ -342,7 +342,7 @@ LABEL_5:
     if (v24 > 0.0)
     {
       [v6 smoothingRadius];
-      [v6 setSmoothingRadius:v25 + a3];
+      [v6 setSmoothingRadius:v25 + inset];
     }
 
     [v6 handLength];
@@ -364,70 +364,70 @@ LABEL_16:
   return v6;
 }
 
-- (id)configurationByApplyingScale:(double)a3
+- (id)configurationByApplyingScale:(double)scale
 {
   v4 = [(CLKUIAnalogHandConfiguration *)self copy];
   [v4 handLength];
-  [v4 setHandLength:v5 * a3];
+  [v4 setHandLength:v5 * scale];
   [v4 handWidth];
-  [v4 setHandWidth:v6 * a3];
+  [v4 setHandWidth:v6 * scale];
   [v4 armLength];
-  [v4 setArmLength:v7 * a3];
+  [v4 setArmLength:v7 * scale];
   [v4 armWidth];
-  [v4 setArmWidth:v8 * a3];
+  [v4 setArmWidth:v8 * scale];
   [v4 pegStrokeWidth];
-  [v4 setPegStrokeWidth:v9 * a3];
+  [v4 setPegStrokeWidth:v9 * scale];
   [v4 pegRadius];
-  [v4 setPegRadius:v10 * a3];
+  [v4 setPegRadius:v10 * scale];
   [v4 tailLength];
-  [v4 setTailLength:v11 * a3];
+  [v4 setTailLength:v11 * scale];
   [v4 smoothingRadius];
-  [v4 setSmoothingRadius:v12 * a3];
+  [v4 setSmoothingRadius:v12 * scale];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(CLKUIAnalogHandConfiguration *)self copyToConfiguration:v4];
   return v4;
 }
 
-- (void)copyToConfiguration:(id)a3
+- (void)copyToConfiguration:(id)configuration
 {
   type = self->_type;
-  v5 = a3;
-  [v5 setType:type];
-  [v5 setInlayInsetRadius:self->_inlayInsetRadius];
-  [v5 setHandWidth:self->_handWidth];
-  [v5 setHandLength:self->_handLength];
-  [v5 setPegRadius:self->_pegRadius];
-  [v5 setPegStrokeWidth:self->_pegStrokeWidth];
-  [v5 setArmLength:self->_armLength];
-  [v5 setArmWidth:self->_armWidth];
-  [v5 setTailLength:self->_tailLength];
-  [v5 setDropShadowOpacity:self->_dropShadowOpacity];
-  [v5 setDropShadowRadius:self->_dropShadowRadius];
-  [v5 setRadialShadowOpacity:self->_radialShadowOpacity];
-  [v5 setRadialShadowRadius:self->_radialShadowRadius];
-  [v5 setDirectionalShadowOffset:{self->_directionalShadowOffset.width, self->_directionalShadowOffset.height}];
-  [v5 setRoundedSecondHand:self->_roundedSecondHand];
-  [v5 setExcludePeg:self->_excludePeg];
-  [v5 setExcludeSecondTail:self->_excludeSecondTail];
-  [v5 setSmoothingRadius:self->_smoothingRadius];
-  [v5 setRemoveInlay:self->_removeInlay];
-  [v5 setOutlineOnly:self->_outlineOnly];
+  configurationCopy = configuration;
+  [configurationCopy setType:type];
+  [configurationCopy setInlayInsetRadius:self->_inlayInsetRadius];
+  [configurationCopy setHandWidth:self->_handWidth];
+  [configurationCopy setHandLength:self->_handLength];
+  [configurationCopy setPegRadius:self->_pegRadius];
+  [configurationCopy setPegStrokeWidth:self->_pegStrokeWidth];
+  [configurationCopy setArmLength:self->_armLength];
+  [configurationCopy setArmWidth:self->_armWidth];
+  [configurationCopy setTailLength:self->_tailLength];
+  [configurationCopy setDropShadowOpacity:self->_dropShadowOpacity];
+  [configurationCopy setDropShadowRadius:self->_dropShadowRadius];
+  [configurationCopy setRadialShadowOpacity:self->_radialShadowOpacity];
+  [configurationCopy setRadialShadowRadius:self->_radialShadowRadius];
+  [configurationCopy setDirectionalShadowOffset:{self->_directionalShadowOffset.width, self->_directionalShadowOffset.height}];
+  [configurationCopy setRoundedSecondHand:self->_roundedSecondHand];
+  [configurationCopy setExcludePeg:self->_excludePeg];
+  [configurationCopy setExcludeSecondTail:self->_excludeSecondTail];
+  [configurationCopy setSmoothingRadius:self->_smoothingRadius];
+  [configurationCopy setRemoveInlay:self->_removeInlay];
+  [configurationCopy setOutlineOnly:self->_outlineOnly];
 }
 
-- (BOOL)isEqualToConfiguration:(id)a3
+- (BOOL)isEqualToConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   type = self->_type;
-  if (type == [v4 type] && (inlayInsetRadius = self->_inlayInsetRadius, objc_msgSend(v4, "inlayInsetRadius"), inlayInsetRadius == v7) && (handWidth = self->_handWidth, objc_msgSend(v4, "handWidth"), handWidth == v9) && (handLength = self->_handLength, objc_msgSend(v4, "handLength"), handLength == v11) && (pegRadius = self->_pegRadius, objc_msgSend(v4, "pegRadius"), pegRadius == v13) && (pegStrokeWidth = self->_pegStrokeWidth, objc_msgSend(v4, "pegStrokeWidth"), pegStrokeWidth == v15) && (armLength = self->_armLength, objc_msgSend(v4, "armLength"), armLength == v17) && (armWidth = self->_armWidth, objc_msgSend(v4, "armWidth"), armWidth == v19) && (tailLength = self->_tailLength, objc_msgSend(v4, "tailLength"), tailLength == v21) && (roundedSecondHand = self->_roundedSecondHand, roundedSecondHand == objc_msgSend(v4, "roundedSecondHand")) && (excludePeg = self->_excludePeg, excludePeg == objc_msgSend(v4, "excludePeg")) && (excludeSecondTail = self->_excludeSecondTail, excludeSecondTail == objc_msgSend(v4, "excludeSecondTail")))
+  if (type == [configurationCopy type] && (inlayInsetRadius = self->_inlayInsetRadius, objc_msgSend(configurationCopy, "inlayInsetRadius"), inlayInsetRadius == v7) && (handWidth = self->_handWidth, objc_msgSend(configurationCopy, "handWidth"), handWidth == v9) && (handLength = self->_handLength, objc_msgSend(configurationCopy, "handLength"), handLength == v11) && (pegRadius = self->_pegRadius, objc_msgSend(configurationCopy, "pegRadius"), pegRadius == v13) && (pegStrokeWidth = self->_pegStrokeWidth, objc_msgSend(configurationCopy, "pegStrokeWidth"), pegStrokeWidth == v15) && (armLength = self->_armLength, objc_msgSend(configurationCopy, "armLength"), armLength == v17) && (armWidth = self->_armWidth, objc_msgSend(configurationCopy, "armWidth"), armWidth == v19) && (tailLength = self->_tailLength, objc_msgSend(configurationCopy, "tailLength"), tailLength == v21) && (roundedSecondHand = self->_roundedSecondHand, roundedSecondHand == objc_msgSend(configurationCopy, "roundedSecondHand")) && (excludePeg = self->_excludePeg, excludePeg == objc_msgSend(configurationCopy, "excludePeg")) && (excludeSecondTail = self->_excludeSecondTail, excludeSecondTail == objc_msgSend(configurationCopy, "excludeSecondTail")))
   {
     smoothingRadius = self->_smoothingRadius;
-    [v4 smoothingRadius];
+    [configurationCopy smoothingRadius];
     v27 = smoothingRadius == v26;
   }
 
@@ -439,18 +439,18 @@ LABEL_16:
   return v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CLKUIAnalogHandConfiguration *)self isEqualToConfiguration:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CLKUIAnalogHandConfiguration *)self isEqualToConfiguration:v5];
   }
 
   return v6;
@@ -458,9 +458,9 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [(CLKUIAnalogHandConfiguration *)self type];
+  type = [(CLKUIAnalogHandConfiguration *)self type];
   [(CLKUIAnalogHandConfiguration *)self inlayInsetRadius];
-  v5 = v3 ^ v4;
+  v5 = type ^ v4;
   [(CLKUIAnalogHandConfiguration *)self handWidth];
   v7 = v6;
   [(CLKUIAnalogHandConfiguration *)self handLength];
@@ -487,9 +487,9 @@ LABEL_16:
   v29 = v27 ^ v28;
   [(CLKUIAnalogHandConfiguration *)self directionalShadowOffset];
   v31 = v30;
-  v32 = [(CLKUIAnalogHandConfiguration *)self roundedSecondHand];
-  v33 = [(CLKUIAnalogHandConfiguration *)self excludePeg];
-  v34 = [(CLKUIAnalogHandConfiguration *)self excludeSecondTail];
+  roundedSecondHand = [(CLKUIAnalogHandConfiguration *)self roundedSecondHand];
+  excludePeg = [(CLKUIAnalogHandConfiguration *)self excludePeg];
+  excludeSecondTail = [(CLKUIAnalogHandConfiguration *)self excludeSecondTail];
   [(CLKUIAnalogHandConfiguration *)self smoothingRadius];
   v36 = v35;
   if ([(CLKUIAnalogHandConfiguration *)self removeInlay])
@@ -502,20 +502,20 @@ LABEL_16:
     v37 = 0;
   }
 
-  v38 = [(CLKUIAnalogHandConfiguration *)self outlineOnly];
+  outlineOnly = [(CLKUIAnalogHandConfiguration *)self outlineOnly];
   v39 = 0x20000000;
-  if (!v38)
+  if (!outlineOnly)
   {
     v39 = 0;
   }
 
-  return v23 ^ v29 ^ v32 ^ v31 ^ v33 ^ v34 ^ v36 ^ v37 ^ v39;
+  return v23 ^ v29 ^ roundedSecondHand ^ v31 ^ excludePeg ^ excludeSecondTail ^ v36 ^ v37 ^ v39;
 }
 
 - (id)debugDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CLKUIAnalogHandConfiguration *)self type];
+  type = [(CLKUIAnalogHandConfiguration *)self type];
   [(CLKUIAnalogHandConfiguration *)self inlayInsetRadius];
   v33 = v5;
   [(CLKUIAnalogHandConfiguration *)self handWidth];
@@ -536,9 +536,9 @@ LABEL_16:
   v19 = v18;
   [(CLKUIAnalogHandConfiguration *)self directionalShadowOffset];
   v21 = v20;
-  v22 = [(CLKUIAnalogHandConfiguration *)self roundedSecondHand];
-  v23 = [(CLKUIAnalogHandConfiguration *)self excludePeg];
-  v24 = [(CLKUIAnalogHandConfiguration *)self excludeSecondTail];
+  roundedSecondHand = [(CLKUIAnalogHandConfiguration *)self roundedSecondHand];
+  excludePeg = [(CLKUIAnalogHandConfiguration *)self excludePeg];
+  excludeSecondTail = [(CLKUIAnalogHandConfiguration *)self excludeSecondTail];
   [(CLKUIAnalogHandConfiguration *)self smoothingRadius];
   v26 = v25;
   if ([(CLKUIAnalogHandConfiguration *)self removeInlay])
@@ -551,20 +551,20 @@ LABEL_16:
     v27 = @"NO";
   }
 
-  v28 = [(CLKUIAnalogHandConfiguration *)self outlineOnly];
+  outlineOnly = [(CLKUIAnalogHandConfiguration *)self outlineOnly];
   v29 = @"NO:";
-  if (v28)
+  if (outlineOnly)
   {
     v29 = @"YES";
   }
 
-  return [v3 stringWithFormat:@"type:%lu-inlayInsetRadius:%f-handWidth:%f-handLength:%f-pegRadius:%f-pegStrokeWidth:%f-armLength:%f-armWidth:%f-tailLength:%f-directionalShadowOffset:%f/%f-roundedSecondHand:%i-excludePeg:%i-excludeSecondTail:%i-smoothingRadius:%f-removeInlay:%@-outlineOnly:%@", v4, v33, v32, v31, v9, v11, v13, v15, v17, v19, v21, v22, v23, v24, v26, v27, v29];
+  return [v3 stringWithFormat:@"type:%lu-inlayInsetRadius:%f-handWidth:%f-handLength:%f-pegRadius:%f-pegStrokeWidth:%f-armLength:%f-armWidth:%f-tailLength:%f-directionalShadowOffset:%f/%f-roundedSecondHand:%i-excludePeg:%i-excludeSecondTail:%i-smoothingRadius:%f-removeInlay:%@-outlineOnly:%@", type, v33, v32, v31, v9, v11, v13, v15, v17, v19, v21, roundedSecondHand, excludePeg, excludeSecondTail, v26, v27, v29];
 }
 
 - (id)handCacheIdentifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CLKUIAnalogHandConfiguration *)self type];
+  type = [(CLKUIAnalogHandConfiguration *)self type];
   [(CLKUIAnalogHandConfiguration *)self inlayInsetRadius];
   v29 = v5;
   [(CLKUIAnalogHandConfiguration *)self handWidth];
@@ -585,21 +585,21 @@ LABEL_16:
   v19 = v18;
   [(CLKUIAnalogHandConfiguration *)self directionalShadowOffset];
   v21 = v20;
-  v22 = [(CLKUIAnalogHandConfiguration *)self roundedSecondHand];
-  v23 = [(CLKUIAnalogHandConfiguration *)self excludePeg];
-  v24 = [(CLKUIAnalogHandConfiguration *)self excludeSecondTail];
+  roundedSecondHand = [(CLKUIAnalogHandConfiguration *)self roundedSecondHand];
+  excludePeg = [(CLKUIAnalogHandConfiguration *)self excludePeg];
+  excludeSecondTail = [(CLKUIAnalogHandConfiguration *)self excludeSecondTail];
   [(CLKUIAnalogHandConfiguration *)self smoothingRadius];
-  return [v3 stringWithFormat:@"%lu-%f-%f-%f-%f-%f-%f-%f-%f-%f-%f-%i-%i-%i-%f-%d-%d", v4, v29, v28, v27, v9, v11, v13, v15, v17, v19, v21, v22, v23, v24, v25, -[CLKUIAnalogHandConfiguration removeInlay](self, "removeInlay") ^ 1, -[CLKUIAnalogHandConfiguration outlineOnly](self, "outlineOnly") ^ 1];
+  return [v3 stringWithFormat:@"%lu-%f-%f-%f-%f-%f-%f-%f-%f-%f-%f-%i-%i-%i-%f-%d-%d", type, v29, v28, v27, v9, v11, v13, v15, v17, v19, v21, roundedSecondHand, excludePeg, excludeSecondTail, v25, -[CLKUIAnalogHandConfiguration removeInlay](self, "removeInlay") ^ 1, -[CLKUIAnalogHandConfiguration outlineOnly](self, "outlineOnly") ^ 1];
 }
 
 - (id)radialShadowCacheIdentifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CLKUIAnalogHandConfiguration *)self handCacheIdentifier];
+  handCacheIdentifier = [(CLKUIAnalogHandConfiguration *)self handCacheIdentifier];
   [(CLKUIAnalogHandConfiguration *)self radialShadowRadius];
   v6 = v5;
   [(CLKUIAnalogHandConfiguration *)self radialShadowOpacity];
-  v8 = [v3 stringWithFormat:@"%@-%f-%f", v4, v6, v7];
+  v8 = [v3 stringWithFormat:@"%@-%f-%f", handCacheIdentifier, v6, v7];
 
   return v8;
 }
@@ -607,11 +607,11 @@ LABEL_16:
 - (id)dropShadowCacheIdentifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CLKUIAnalogHandConfiguration *)self handCacheIdentifier];
+  handCacheIdentifier = [(CLKUIAnalogHandConfiguration *)self handCacheIdentifier];
   [(CLKUIAnalogHandConfiguration *)self dropShadowRadius];
   v6 = v5;
   [(CLKUIAnalogHandConfiguration *)self dropShadowOpacity];
-  v8 = [v3 stringWithFormat:@"%@-%f-%f", v4, v6, v7];
+  v8 = [v3 stringWithFormat:@"%@-%f-%f", handCacheIdentifier, v6, v7];
 
   return v8;
 }

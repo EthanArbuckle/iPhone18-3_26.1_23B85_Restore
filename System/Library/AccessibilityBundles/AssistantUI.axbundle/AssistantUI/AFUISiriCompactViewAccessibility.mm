@@ -1,38 +1,38 @@
 @interface AFUISiriCompactViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformMagicTap;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axSetLabelForSessionState:(int64_t)a3;
-- (void)_constructAndAddBugReportButtonWithImage:(id)a3;
+- (void)_axSetLabelForSessionState:(int64_t)state;
+- (void)_constructAndAddBugReportButtonWithImage:(id)image;
 - (void)_setupContentViews;
 - (void)accessibilityElementDidLoseFocus;
 - (void)dealloc;
-- (void)setSiriSessionState:(int64_t)a3;
+- (void)setSiriSessionState:(int64_t)state;
 @end
 
 @implementation AFUISiriCompactViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AFUISiriCompactView" hasInstanceVariable:@"_siriContentDelegate" withType:"<AFUISiriContentDelegate>"];
-  [v3 validateClass:@"AFUISiriCompactView" hasInstanceVariable:@"_orbView" withType:"SUICOrbView"];
-  [v3 validateClass:@"AFUISiriCompactView" hasInstanceVariable:@"_reportBugButton" withType:"SiriUIContentButton"];
-  [v3 validateClass:@"AFUISiriCompactView" hasInstanceMethod:@"setSiriSessionState:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"AFUISiriCompactView" hasInstanceMethod:@"_setupContentViews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AFUISiriCompactView" hasInstanceMethod:@"_constructAndAddBugReportButtonWithImage:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"AFUISiriViewController" hasInstanceMethod:@"siriContentDidReceiveOrbTappedAction:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"AFUISiriViewController" hasInstanceMethod:@"stopRequestWithOptions:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"AFUISiriViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AFUISiriViewController" hasInstanceMethod:@"_session" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AFUISiriSession" hasInstanceMethod:@"cancelRequest" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AFUISiriCompactView" hasInstanceVariable:@"_siriContentDelegate" withType:"<AFUISiriContentDelegate>"];
+  [validationsCopy validateClass:@"AFUISiriCompactView" hasInstanceVariable:@"_orbView" withType:"SUICOrbView"];
+  [validationsCopy validateClass:@"AFUISiriCompactView" hasInstanceVariable:@"_reportBugButton" withType:"SiriUIContentButton"];
+  [validationsCopy validateClass:@"AFUISiriCompactView" hasInstanceMethod:@"setSiriSessionState:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"AFUISiriCompactView" hasInstanceMethod:@"_setupContentViews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AFUISiriCompactView" hasInstanceMethod:@"_constructAndAddBugReportButtonWithImage:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"AFUISiriViewController" hasInstanceMethod:@"siriContentDidReceiveOrbTappedAction:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"AFUISiriViewController" hasInstanceMethod:@"stopRequestWithOptions:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"AFUISiriViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AFUISiriViewController" hasInstanceMethod:@"_session" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AFUISiriSession" hasInstanceMethod:@"cancelRequest" withFullSignature:{"v", 0}];
   if (AXProcessIsSpringBoard())
   {
-    [v3 validateClass:@"SiriPresentationViewController" hasInstanceMethod:@"dismissSiriViewController:withReason:" withFullSignature:{"v", "@", "q", 0}];
+    [validationsCopy validateClass:@"SiriPresentationViewController" hasInstanceMethod:@"dismissSiriViewController:withReason:" withFullSignature:{"v", "@", "q", 0}];
   }
 
-  [v3 validateClass:@"AFUISiriCompactView" hasInstanceVariable:@"_lockContainerView" withType:"AFUIPasscodeContainerView"];
-  [v3 validateClass:@"AFUISiriCompactView" hasInstanceVariable:@"_tamaleView" withType:"SiriSharedUITamaleView"];
+  [validationsCopy validateClass:@"AFUISiriCompactView" hasInstanceVariable:@"_lockContainerView" withType:"AFUIPasscodeContainerView"];
+  [validationsCopy validateClass:@"AFUISiriCompactView" hasInstanceVariable:@"_tamaleView" withType:"SiriSharedUITamaleView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -56,8 +56,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(AFUISiriCompactViewAccessibility *)self accessibilityElements];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    accessibilityElements = [(AFUISiriCompactViewAccessibility *)self accessibilityElements];
+    v8 = [accessibilityElements countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -69,7 +69,7 @@
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(accessibilityElements);
           }
 
           v12 = *(*(&v14 + 1) + 8 * v11);
@@ -82,7 +82,7 @@
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v9 = [accessibilityElements countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v9);
@@ -134,10 +134,10 @@ void __62__AFUISiriCompactViewAccessibility_accessibilityPerformEscape__block_in
   [v1 dismissSiriViewController:v2 withReason:23];
 }
 
-- (void)_axSetLabelForSessionState:(int64_t)a3
+- (void)_axSetLabelForSessionState:(int64_t)state
 {
   argument = [(AFUISiriCompactViewAccessibility *)self safeValueForKey:@"_orbView"];
-  if (a3 == 1)
+  if (state == 1)
   {
     _UIAccessibilityBlockPostingOfNotification();
     _UIAccessibilityBlockPostingOfNotification();
@@ -151,7 +151,7 @@ void __62__AFUISiriCompactViewAccessibility_accessibilityPerformEscape__block_in
   else
   {
     AssistantUIAccessibilityLocalizedString(@"listen.button.label");
-    if (a3 == 2)
+    if (state == 2)
       v4 = {;
       [argument setAccessibilityLabel:v4];
 
@@ -178,12 +178,12 @@ void __62__AFUISiriCompactViewAccessibility_accessibilityPerformEscape__block_in
   _AXIgnoreNextNotification();
 }
 
-- (void)setSiriSessionState:(int64_t)a3
+- (void)setSiriSessionState:(int64_t)state
 {
   v5.receiver = self;
   v5.super_class = AFUISiriCompactViewAccessibility;
   [(AFUISiriCompactViewAccessibility *)&v5 setSiriSessionState:?];
-  [(AFUISiriCompactViewAccessibility *)self _axSetLabelForSessionState:a3];
+  [(AFUISiriCompactViewAccessibility *)self _axSetLabelForSessionState:state];
 }
 
 - (void)_setupContentViews
@@ -194,11 +194,11 @@ void __62__AFUISiriCompactViewAccessibility_accessibilityPerformEscape__block_in
   [(AFUISiriCompactViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_constructAndAddBugReportButtonWithImage:(id)a3
+- (void)_constructAndAddBugReportButtonWithImage:(id)image
 {
   v4.receiver = self;
   v4.super_class = AFUISiriCompactViewAccessibility;
-  [(AFUISiriCompactViewAccessibility *)&v4 _constructAndAddBugReportButtonWithImage:a3];
+  [(AFUISiriCompactViewAccessibility *)&v4 _constructAndAddBugReportButtonWithImage:image];
   [(AFUISiriCompactViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

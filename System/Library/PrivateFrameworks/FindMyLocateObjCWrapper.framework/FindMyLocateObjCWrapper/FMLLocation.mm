@@ -13,17 +13,17 @@
   v5 = v4;
   [(FMLLocation *)self latitude];
   v7 = v6;
-  v8 = [(FMLLocation *)self locationTypeDescription];
-  v9 = [(FMLLocation *)self coarseAddressLabel];
-  if (v9)
+  locationTypeDescription = [(FMLLocation *)self locationTypeDescription];
+  coarseAddressLabel = [(FMLLocation *)self coarseAddressLabel];
+  if (coarseAddressLabel)
   {
-    v10 = [(FMLLocation *)self coarseAddressLabel];
-    v11 = [v3 stringWithFormat:@"longitude:%.2f latitude:%.2f type:%@ coarseAddressLabel:%@", v5, v7, v8, v10];
+    coarseAddressLabel2 = [(FMLLocation *)self coarseAddressLabel];
+    v11 = [v3 stringWithFormat:@"longitude:%.2f latitude:%.2f type:%@ coarseAddressLabel:%@", v5, v7, locationTypeDescription, coarseAddressLabel2];
   }
 
   else
   {
-    v11 = [v3 stringWithFormat:@"longitude:%.2f latitude:%.2f type:%@ coarseAddressLabel:%@", v5, v7, v8, &stru_285E3BA28];
+    v11 = [v3 stringWithFormat:@"longitude:%.2f latitude:%.2f type:%@ coarseAddressLabel:%@", v5, v7, locationTypeDescription, &stru_285E3BA28];
   }
 
   return v11;

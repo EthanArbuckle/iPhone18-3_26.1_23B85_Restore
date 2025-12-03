@@ -1,19 +1,19 @@
 @interface CHSControlInstanceIdentity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CHSControlInstanceIdentity)init;
-- (CHSControlInstanceIdentity)initWithControl:(id)a3 contentType:(unint64_t)a4 hostIdentifier:(id)a5 configurationIdentifier:(id)a6;
+- (CHSControlInstanceIdentity)initWithControl:(id)control contentType:(unint64_t)type hostIdentifier:(id)identifier configurationIdentifier:(id)configurationIdentifier;
 - (int64_t)hash;
 @end
 
 @implementation CHSControlInstanceIdentity
 
-- (CHSControlInstanceIdentity)initWithControl:(id)a3 contentType:(unint64_t)a4 hostIdentifier:(id)a5 configurationIdentifier:(id)a6
+- (CHSControlInstanceIdentity)initWithControl:(id)control contentType:(unint64_t)type hostIdentifier:(id)identifier configurationIdentifier:(id)configurationIdentifier
 {
-  if (!a5)
+  if (!identifier)
   {
     v10 = 0;
     v12 = 0;
-    if (a6)
+    if (configurationIdentifier)
     {
       goto LABEL_3;
     }
@@ -26,7 +26,7 @@ LABEL_5:
 
   v10 = sub_195FA08B8();
   v12 = v11;
-  if (!a6)
+  if (!configurationIdentifier)
   {
     goto LABEL_5;
   }
@@ -34,8 +34,8 @@ LABEL_5:
 LABEL_3:
   v13 = sub_195FA08B8();
 LABEL_6:
-  *(self + OBJC_IVAR___CHSControlInstanceIdentity_control) = a3;
-  *(self + OBJC_IVAR___CHSControlInstanceIdentity_contentType) = a4;
+  *(self + OBJC_IVAR___CHSControlInstanceIdentity_control) = control;
+  *(self + OBJC_IVAR___CHSControlInstanceIdentity_contentType) = type;
   v15 = (self + OBJC_IVAR___CHSControlInstanceIdentity_hostIdentifier);
   *v15 = v10;
   v15[1] = v12;
@@ -44,7 +44,7 @@ LABEL_6:
   v16[1] = v14;
   v19.receiver = self;
   v19.super_class = CHSControlInstanceIdentity;
-  v17 = a3;
+  controlCopy = control;
   return [(CHSControlInstanceIdentity *)&v19 init];
 }
 
@@ -57,17 +57,17 @@ LABEL_6:
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CHSControlInstanceIdentity.hash.getter();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_195FA0E08();
     swift_unknownObjectRelease();
@@ -76,7 +76,7 @@ LABEL_6:
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CHSControlInstanceIdentity.isEqual(_:)(v8);

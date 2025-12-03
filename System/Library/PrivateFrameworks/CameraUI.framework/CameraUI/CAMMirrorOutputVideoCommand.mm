@@ -1,15 +1,15 @@
 @interface CAMMirrorOutputVideoCommand
-- (CAMMirrorOutputVideoCommand)initWithOutputMirrored:(BOOL)a3;
-- (id)_debugStringForMirroringMethod:(int64_t)a3;
-- (id)_debugStringForSupportedMirroringMethods:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setVideoMirrored:(BOOL)a3 forOutput:(id)a4 requirePhysicalFlip:(BOOL)a5;
-- (void)executeWithContext:(id)a3;
+- (CAMMirrorOutputVideoCommand)initWithOutputMirrored:(BOOL)mirrored;
+- (id)_debugStringForMirroringMethod:(int64_t)method;
+- (id)_debugStringForSupportedMirroringMethods:(id)methods;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setVideoMirrored:(BOOL)mirrored forOutput:(id)output requirePhysicalFlip:(BOOL)flip;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMMirrorOutputVideoCommand
 
-- (CAMMirrorOutputVideoCommand)initWithOutputMirrored:(BOOL)a3
+- (CAMMirrorOutputVideoCommand)initWithOutputMirrored:(BOOL)mirrored
 {
   v8.receiver = self;
   v8.super_class = CAMMirrorOutputVideoCommand;
@@ -17,59 +17,59 @@
   v5 = v4;
   if (v4)
   {
-    v4->_outputMirrored = a3;
+    v4->_outputMirrored = mirrored;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMMirrorOutputVideoCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[24] = [(CAMMirrorOutputVideoCommand *)self isOutputMirrored];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CAMMirrorOutputVideoCommand *)self isOutputMirrored];
-  v8 = [v4 currentStillImageOutput];
-  v6 = [v4 currentMovieFileOutput];
+  contextCopy = context;
+  isOutputMirrored = [(CAMMirrorOutputVideoCommand *)self isOutputMirrored];
+  currentStillImageOutput = [contextCopy currentStillImageOutput];
+  currentMovieFileOutput = [contextCopy currentMovieFileOutput];
 
-  if (v5)
+  if (isOutputMirrored)
   {
-    v7 = [v8 isMovieRecordingEnabled];
+    isMovieRecordingEnabled = [currentStillImageOutput isMovieRecordingEnabled];
   }
 
   else
   {
-    v7 = 0;
+    isMovieRecordingEnabled = 0;
   }
 
-  [(CAMMirrorOutputVideoCommand *)self _setVideoMirrored:v5 forOutput:v8 requirePhysicalFlip:v7];
-  [(CAMMirrorOutputVideoCommand *)self _setVideoMirrored:v5 forOutput:v6 requirePhysicalFlip:v5];
+  [(CAMMirrorOutputVideoCommand *)self _setVideoMirrored:isOutputMirrored forOutput:currentStillImageOutput requirePhysicalFlip:isMovieRecordingEnabled];
+  [(CAMMirrorOutputVideoCommand *)self _setVideoMirrored:isOutputMirrored forOutput:currentMovieFileOutput requirePhysicalFlip:isOutputMirrored];
 }
 
-- (void)_setVideoMirrored:(BOOL)a3 forOutput:(id)a4 requirePhysicalFlip:(BOOL)a5
+- (void)_setVideoMirrored:(BOOL)mirrored forOutput:(id)output requirePhysicalFlip:(BOOL)flip
 {
-  v5 = a5;
-  v6 = a3;
+  flipCopy = flip;
+  mirroredCopy = mirrored;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  outputCopy = output;
+  v9 = outputCopy;
+  if (outputCopy)
   {
-    v10 = [v8 connectionWithMediaType:*MEMORY[0x1E6987608]];
+    v10 = [outputCopy connectionWithMediaType:*MEMORY[0x1E6987608]];
     v11 = v10;
     if (v10)
     {
       if ([v10 isVideoMirroringSupported])
       {
-        if (v5)
+        if (flipCopy)
         {
           v12 = 2;
         }
@@ -79,19 +79,19 @@
           v12 = 1;
         }
 
-        v13 = [v11 supportedVideoMirroringMethodsForMovieRecording];
+        supportedVideoMirroringMethodsForMovieRecording = [v11 supportedVideoMirroringMethodsForMovieRecording];
         v14 = [MEMORY[0x1E696AD98] numberWithInteger:v12];
-        v15 = [v13 containsObject:v14];
+        v15 = [supportedVideoMirroringMethodsForMovieRecording containsObject:v14];
 
         if (v15)
         {
           [v11 setVideoMirroringMethodForMovieRecording:v12];
         }
 
-        else if (v5)
+        else if (flipCopy)
         {
           v16 = [(CAMMirrorOutputVideoCommand *)self _debugStringForMirroringMethod:2];
-          v17 = [(CAMMirrorOutputVideoCommand *)self _debugStringForSupportedMirroringMethods:v13];
+          v17 = [(CAMMirrorOutputVideoCommand *)self _debugStringForSupportedMirroringMethods:supportedVideoMirroringMethodsForMovieRecording];
           v18 = os_log_create("com.apple.camera", "Camera");
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
@@ -106,32 +106,32 @@
         }
 
         [v11 setAutomaticallyAdjustsVideoMirroring:0];
-        [v11 setVideoMirrored:v6];
+        [v11 setVideoMirrored:mirroredCopy];
       }
 
       else
       {
-        if (!v6)
+        if (!mirroredCopy)
         {
 LABEL_20:
 
           goto LABEL_21;
         }
 
-        v13 = os_log_create("com.apple.camera", "Camera");
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        supportedVideoMirroringMethodsForMovieRecording = os_log_create("com.apple.camera", "Camera");
+        if (os_log_type_enabled(supportedVideoMirroringMethodsForMovieRecording, OS_LOG_TYPE_ERROR))
         {
-          [CAMMirrorOutputVideoCommand _setVideoMirrored:v9 forOutput:v13 requirePhysicalFlip:?];
+          [CAMMirrorOutputVideoCommand _setVideoMirrored:v9 forOutput:supportedVideoMirroringMethodsForMovieRecording requirePhysicalFlip:?];
         }
       }
     }
 
     else
     {
-      v13 = os_log_create("com.apple.camera", "Camera");
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      supportedVideoMirroringMethodsForMovieRecording = os_log_create("com.apple.camera", "Camera");
+      if (os_log_type_enabled(supportedVideoMirroringMethodsForMovieRecording, OS_LOG_TYPE_ERROR))
       {
-        [CAMMirrorOutputVideoCommand _setVideoMirrored:v9 forOutput:v13 requirePhysicalFlip:?];
+        [CAMMirrorOutputVideoCommand _setVideoMirrored:v9 forOutput:supportedVideoMirroringMethodsForMovieRecording requirePhysicalFlip:?];
       }
     }
 
@@ -141,23 +141,23 @@ LABEL_20:
 LABEL_21:
 }
 
-- (id)_debugStringForMirroringMethod:(int64_t)a3
+- (id)_debugStringForMirroringMethod:(int64_t)method
 {
-  if (a3 > 2)
+  if (method > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E76FA938 + a3);
+    return *(&off_1E76FA938 + method);
   }
 }
 
-- (id)_debugStringForSupportedMirroringMethods:(id)a3
+- (id)_debugStringForSupportedMirroringMethods:(id)methods
 {
   v4 = MEMORY[0x1E696AD60];
-  v5 = a3;
+  methodsCopy = methods;
   v6 = objc_alloc_init(v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -165,8 +165,8 @@ LABEL_21:
   v10[3] = &unk_1E76FA918;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v5 enumerateObjectsUsingBlock:v10];
+  selfCopy = self;
+  [methodsCopy enumerateObjectsUsingBlock:v10];
 
   v8 = v7;
   return v7;

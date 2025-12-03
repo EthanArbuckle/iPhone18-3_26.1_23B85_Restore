@@ -1,13 +1,13 @@
 @interface SVSHomePodIDViewController
-- (_TtC14HDSViewService26SVSHomePodIDViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC14HDSViewService26SVSHomePodIDViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)handler;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
 - (void)configureEngine;
-- (void)setHandler:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setHandler:(id)handler;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SVSHomePodIDViewController
@@ -34,9 +34,9 @@
   return v3;
 }
 
-- (void)setHandler:(id)a3
+- (void)setHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -55,26 +55,26 @@
   v9 = *(self + OBJC_IVAR____TtC14HDSViewService26SVSHomePodIDViewController_handler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_100061714(v8);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   SVSHomePodIDViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  SVSHomePodIDViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  SVSHomePodIDViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  SVSHomePodIDViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  SVSHomePodIDViewController.viewDidDisappear(_:)(disappear);
 }
 
 - (void)viewDidLayoutSubviews
@@ -83,18 +83,18 @@
   v14.super_class = type metadata accessor for SVSHomePodIDViewController();
   v2 = v14.receiver;
   [(SVSHomePodIDViewController *)&v14 viewDidLayoutSubviews];
-  v3 = [*&v2[OBJC_IVAR____TtC14HDSViewService26SVSHomePodIDViewController_preView] layer];
-  v4 = [v2 view];
-  if (v4)
+  layer = [*&v2[OBJC_IVAR____TtC14HDSViewService26SVSHomePodIDViewController_preView] layer];
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
 
-    [v3 setFrame:{v7, v9, v11, v13}];
+    [layer setFrame:{v7, v9, v11, v13}];
   }
 
   else
@@ -105,25 +105,25 @@
 
 - (void)configureEngine
 {
-  v2 = self;
+  selfCopy = self;
   SVSHomePodIDViewController.configureEngine()();
 }
 
-- (_TtC14HDSViewService26SVSHomePodIDViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14HDSViewService26SVSHomePodIDViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
   if (*(self + OBJC_IVAR____TtC14HDSViewService26SVSHomePodIDViewController_startIngesting) == 1)
   {
     v5 = *(self + OBJC_IVAR____TtC14HDSViewService26SVSHomePodIDViewController_engine);
     if (v5)
     {
-      [v5 ingestVideoFrame:a4];
+      [v5 ingestVideoFrame:buffer];
     }
   }
 }

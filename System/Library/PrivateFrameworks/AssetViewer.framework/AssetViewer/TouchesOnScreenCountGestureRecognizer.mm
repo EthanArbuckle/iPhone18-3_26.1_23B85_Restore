@@ -1,9 +1,9 @@
 @interface TouchesOnScreenCountGestureRecognizer
 - (_TtC11AssetViewer37TouchesOnScreenCountGestureRecognizer)init;
-- (_TtC11AssetViewer37TouchesOnScreenCountGestureRecognizer)initWithCoder:(id)a3;
-- (_TtC11AssetViewer37TouchesOnScreenCountGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (_TtC11AssetViewer37TouchesOnScreenCountGestureRecognizer)initWithCoder:(id)coder;
+- (_TtC11AssetViewer37TouchesOnScreenCountGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation TouchesOnScreenCountGestureRecognizer
@@ -22,7 +22,7 @@
   return v3;
 }
 
-- (_TtC11AssetViewer37TouchesOnScreenCountGestureRecognizer)initWithCoder:(id)a3
+- (_TtC11AssetViewer37TouchesOnScreenCountGestureRecognizer)initWithCoder:(id)coder
 {
   *(&self->super._gestureFlags + OBJC_IVAR____TtC11AssetViewer37TouchesOnScreenCountGestureRecognizer_asvDelegate) = 0;
   swift_unknownObjectWeakInit();
@@ -31,29 +31,29 @@
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v5 = self;
-    sub_2412FC764([(TouchesOnScreenCountGestureRecognizer *)v5 numberOfTouches]);
+    selfCopy = self;
+    sub_2412FC764([(TouchesOnScreenCountGestureRecognizer *)selfCopy numberOfTouches]);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   sub_24130C9E0();
   sub_2412FC7FC();
   v6 = sub_241353FFC();
-  v7 = a4;
-  v8 = self;
+  eventCopy = event;
+  selfCopy = self;
   sub_24130CA2C(v6);
 }
 
-- (_TtC11AssetViewer37TouchesOnScreenCountGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC11AssetViewer37TouchesOnScreenCountGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_2413543BC();

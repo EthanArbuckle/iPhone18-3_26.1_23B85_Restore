@@ -1,37 +1,37 @@
 @interface ScrollableStackViewContainer
-- (_TtC9SeymourUI28ScrollableStackViewContainer)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI28ScrollableStackViewContainer)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ScrollableStackViewContainer
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BC91410();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_20BC9156C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_20BC9156C(change);
 }
 
-- (_TtC9SeymourUI28ScrollableStackViewContainer)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI28ScrollableStackViewContainer)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_20BC91914(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_20BC91914(scrollCopy);
 }
 
 @end

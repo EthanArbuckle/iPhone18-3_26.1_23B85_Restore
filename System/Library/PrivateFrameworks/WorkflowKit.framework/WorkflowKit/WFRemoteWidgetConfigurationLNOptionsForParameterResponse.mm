@@ -1,20 +1,20 @@
 @interface WFRemoteWidgetConfigurationLNOptionsForParameterResponse
-- (WFRemoteWidgetConfigurationLNOptionsForParameterResponse)initWithCoder:(id)a3;
-- (WFRemoteWidgetConfigurationLNOptionsForParameterResponse)initWithResult:(id)a3 error:(id)a4;
+- (WFRemoteWidgetConfigurationLNOptionsForParameterResponse)initWithCoder:(id)coder;
+- (WFRemoteWidgetConfigurationLNOptionsForParameterResponse)initWithResult:(id)result error:(id)error;
 - (id)description;
 @end
 
 @implementation WFRemoteWidgetConfigurationLNOptionsForParameterResponse
 
-- (WFRemoteWidgetConfigurationLNOptionsForParameterResponse)initWithCoder:(id)a3
+- (WFRemoteWidgetConfigurationLNOptionsForParameterResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFRemoteWidgetConfigurationLNOptionsForParameterResponse;
-  v5 = [(WFRemoteWidgetConfigurationResponse *)&v10 initWithCoder:v4];
+  v5 = [(WFRemoteWidgetConfigurationResponse *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"result"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"result"];
     v7 = v5->_result;
     v5->_result = v6;
 
@@ -27,23 +27,23 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(WFRemoteWidgetConfigurationLNOptionsForParameterResponse *)self result];
-  v5 = [(WFRemoteWidgetConfigurationResponse *)self error];
-  v6 = [v3 stringWithFormat:@"result: %@, error: %@", v4, v5];
+  result = [(WFRemoteWidgetConfigurationLNOptionsForParameterResponse *)self result];
+  error = [(WFRemoteWidgetConfigurationResponse *)self error];
+  v6 = [v3 stringWithFormat:@"result: %@, error: %@", result, error];
 
   return v6;
 }
 
-- (WFRemoteWidgetConfigurationLNOptionsForParameterResponse)initWithResult:(id)a3 error:(id)a4
+- (WFRemoteWidgetConfigurationLNOptionsForParameterResponse)initWithResult:(id)result error:(id)error
 {
-  v7 = a3;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = WFRemoteWidgetConfigurationLNOptionsForParameterResponse;
-  v8 = [(WFRemoteWidgetConfigurationResponse *)&v12 initWithError:a4];
+  v8 = [(WFRemoteWidgetConfigurationResponse *)&v12 initWithError:error];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_result, a3);
+    objc_storeStrong(&v8->_result, result);
     v10 = v9;
   }
 

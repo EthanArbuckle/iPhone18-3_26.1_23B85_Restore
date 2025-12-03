@@ -1,27 +1,27 @@
 @interface PPInternalRequestHandler
-- (void)assetDefaultBundleOverridePathForAssetIdentifier:(id)a3 completion:(id)a4;
-- (void)assetMetadataRefreshIntervalSecondsWithCompletion:(id)a3;
-- (void)assetVersionsWithCompletion:(id)a3;
-- (void)clearAssetMetadataRefreshIntervalSecondsWithCompletion:(id)a3;
-- (void)setAssetDefaultBundleOverridePath:(id)a3 assetIdentifier:(id)a4 completion:(id)a5;
-- (void)setAssetMetadataRefreshIntervalSeconds:(double)a3 completion:(id)a4;
-- (void)sysdiagnoseInformationWithCompletion:(id)a3;
-- (void)trialOverridePath:(id)a3 namespaceName:(id)a4 factorName:(id)a5 completion:(id)a6;
+- (void)assetDefaultBundleOverridePathForAssetIdentifier:(id)identifier completion:(id)completion;
+- (void)assetMetadataRefreshIntervalSecondsWithCompletion:(id)completion;
+- (void)assetVersionsWithCompletion:(id)completion;
+- (void)clearAssetMetadataRefreshIntervalSecondsWithCompletion:(id)completion;
+- (void)setAssetDefaultBundleOverridePath:(id)path assetIdentifier:(id)identifier completion:(id)completion;
+- (void)setAssetMetadataRefreshIntervalSeconds:(double)seconds completion:(id)completion;
+- (void)sysdiagnoseInformationWithCompletion:(id)completion;
+- (void)trialOverridePath:(id)path namespaceName:(id)name factorName:(id)factorName completion:(id)completion;
 @end
 
 @implementation PPInternalRequestHandler
 
-- (void)sysdiagnoseInformationWithCompletion:(id)a3
+- (void)sysdiagnoseInformationWithCompletion:(id)completion
 {
   v36[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   v4 = 0x277CBE000uLL;
   v5 = objc_opt_new();
   v6 = +[PPSQLDatabase nonMigratingToolsInstance];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 stats];
+    stats = [v6 stats];
     v28 = 0;
     v9 = [v7 checkWithError:&v28];
     v10 = v28;
@@ -32,17 +32,17 @@
     }
 
     v12 = +[PPConfiguration sharedInstance];
-    v13 = [v12 portraitVariantName];
+    portraitVariantName = [v12 portraitVariantName];
 
     v35[0] = @"stats";
     v35[1] = @"check";
-    v36[0] = v8;
+    v36[0] = stats;
     v36[1] = v9;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
     [v5 setObject:v14 forKeyedSubscript:@"database"];
 
     v33 = @"variantName";
-    v34 = v13;
+    v34 = portraitVariantName;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
     [v5 setObject:v15 forKeyedSubscript:@"configuration"];
 
@@ -52,17 +52,17 @@
   else
   {
     v31[0] = @"stats";
-    v16 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     v31[1] = @"check";
-    v32[0] = v16;
-    v17 = [MEMORY[0x277CBEB68] null];
-    v32[1] = v17;
+    v32[0] = null;
+    null2 = [MEMORY[0x277CBEB68] null];
+    v32[1] = null2;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
     [v5 setObject:v18 forKeyedSubscript:@"database"];
 
     v29 = @"variantName";
-    v8 = [MEMORY[0x277CBEB68] null];
-    v30 = v8;
+    stats = [MEMORY[0x277CBEB68] null];
+    v30 = stats;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     [v5 setObject:v10 forKeyedSubscript:@"configuration"];
   }
@@ -83,121 +83,121 @@
   if (v23)
   {
     v25 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v23 encoding:4];
-    v3[2](v3, v25, v24);
+    completionCopy[2](completionCopy, v25, v24);
   }
 
   else
   {
-    v3[2](v3, 0, v24);
+    completionCopy[2](completionCopy, 0, v24);
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)trialOverridePath:(id)a3 namespaceName:(id)a4 factorName:(id)a5 completion:(id)a6
+- (void)trialOverridePath:(id)path namespaceName:(id)name factorName:(id)factorName completion:(id)completion
 {
-  v16 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  pathCopy = path;
+  nameCopy = name;
+  factorNameCopy = factorName;
+  completionCopy = completion;
   v12 = +[PPTrialWrapper sharedInstance];
   v13 = v12;
-  if (v16)
+  if (pathCopy)
   {
-    [v12 overrideFilepathForFileFactor:v10 namespaceName:v9 path:v16];
+    [v12 overrideFilepathForFileFactor:factorNameCopy namespaceName:nameCopy path:pathCopy];
   }
 
   else
   {
-    [v12 clearOverrideFilepathForFileFactor:v10 namespaceName:v9];
+    [v12 clearOverrideFilepathForFileFactor:factorNameCopy namespaceName:nameCopy];
   }
 
   v14 = +[PPSettings sharedInstance];
-  [v14 setTrialPathOverrideForNamespaceName:v9 factorName:v10 path:v16];
+  [v14 setTrialPathOverrideForNamespaceName:nameCopy factorName:factorNameCopy path:pathCopy];
 
   v15 = +[PPTrialWrapper sharedInstance];
-  [v15 callRegisteredUpdateHandlersForNamespaceName:v9];
+  [v15 callRegisteredUpdateHandlersForNamespaceName:nameCopy];
 
-  v11[2](v11, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (void)assetVersionsWithCompletion:(id)a3
+- (void)assetVersionsWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, &unk_284785F78, 0);
+    (*(completion + 2))(completion, &unk_284785F78, 0);
   }
 }
 
-- (void)assetDefaultBundleOverridePathForAssetIdentifier:(id)a3 completion:(id)a4
+- (void)assetDefaultBundleOverridePathForAssetIdentifier:(id)identifier completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v4 = a4;
+    completionCopy = completion;
   }
 
   else
   {
-    v4 = &__block_literal_global_151_19555;
+    completionCopy = &__block_literal_global_151_19555;
   }
 
-  v5 = a3;
-  v8 = _Block_copy(v4);
+  identifierCopy = identifier;
+  v8 = _Block_copy(completionCopy);
   v6 = +[PPSettings sharedInstance];
-  v7 = [v6 assetDefaultBundleOverridePathForAssetIdentifier:v5];
+  v7 = [v6 assetDefaultBundleOverridePathForAssetIdentifier:identifierCopy];
 
   v8[2](v8, v7, 0);
 }
 
-- (void)setAssetDefaultBundleOverridePath:(id)a3 assetIdentifier:(id)a4 completion:(id)a5
+- (void)setAssetDefaultBundleOverridePath:(id)path assetIdentifier:(id)identifier completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    v5 = a5;
+    completionCopy = completion;
   }
 
   else
   {
-    v5 = &__block_literal_global_148;
+    completionCopy = &__block_literal_global_148;
   }
 
-  v6 = _Block_copy(v5);
+  v6 = _Block_copy(completionCopy);
   v6[2](v6, 0);
 }
 
-- (void)assetMetadataRefreshIntervalSecondsWithCompletion:(id)a3
+- (void)assetMetadataRefreshIntervalSecondsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[PPSettings sharedInstance];
   [v5 assetMetadataRefreshIntervalSeconds];
-  (*(a3 + 2))(v4, 1, 0);
+  (*(completion + 2))(completionCopy, 1, 0);
 }
 
-- (void)clearAssetMetadataRefreshIntervalSecondsWithCompletion:(id)a3
+- (void)clearAssetMetadataRefreshIntervalSecondsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v3 = +[PPSettings sharedInstance];
   [v3 clearAssetMetadataRefreshIntervalSeconds];
 
-  v4 = v5;
-  if (v5)
+  v4 = completionCopy;
+  if (completionCopy)
   {
-    (*(v5 + 2))(v5, 0);
-    v4 = v5;
+    (*(completionCopy + 2))(completionCopy, 0);
+    v4 = completionCopy;
   }
 }
 
-- (void)setAssetMetadataRefreshIntervalSeconds:(double)a3 completion:(id)a4
+- (void)setAssetMetadataRefreshIntervalSeconds:(double)seconds completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v5 = +[PPSettings sharedInstance];
-  [v5 setAssetMetadataRefreshIntervalSeconds:a3];
+  [v5 setAssetMetadataRefreshIntervalSeconds:seconds];
 
-  v6 = v7;
-  if (v7)
+  v6 = completionCopy;
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
-    v6 = v7;
+    (*(completionCopy + 2))(completionCopy, 0);
+    v6 = completionCopy;
   }
 }
 

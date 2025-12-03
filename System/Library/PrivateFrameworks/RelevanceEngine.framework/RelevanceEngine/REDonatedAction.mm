@@ -1,37 +1,37 @@
 @interface REDonatedAction
-+ (BOOL)supportedActivityType:(id)a3 forBundleID:(id)a4;
-+ (id)bundleIdForExtensionId:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)supportedActivityType:(id)type forBundleID:(id)d;
++ (id)bundleIdForExtensionId:(id)id;
+- (BOOL)isEqual:(id)equal;
 - (NSString)localBundleIdentifier;
 - (NSString)remoteBundleIdentifier;
-- (REDonatedAction)initWithCoder:(id)a3;
-- (id)_initInteractionWithEvent:(id)a3 filtered:(BOOL)a4;
-- (id)_initRelevantShortcutWithEvent:(id)a3 filtered:(BOOL)a4;
-- (id)_initUserActivityWithEvent:(id)a3 filtered:(BOOL)a4;
+- (REDonatedAction)initWithCoder:(id)coder;
+- (id)_initInteractionWithEvent:(id)event filtered:(BOOL)filtered;
+- (id)_initRelevantShortcutWithEvent:(id)event filtered:(BOOL)filtered;
+- (id)_initUserActivityWithEvent:(id)event filtered:(BOOL)filtered;
 - (id)_shortcutFilter;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)generateMetrics;
-- (unint64_t)_hashRelevanceProviders:(id)a3;
+- (unint64_t)_hashRelevanceProviders:(id)providers;
 - (unint64_t)trainingActionIdentifier;
-- (void)_loadDuetEvent:(id)a3;
-- (void)_loadShortcutIdentifiersFromIntent:(id)a3;
-- (void)_loadShortcutIdentifiersFromUserActivity:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadIntent:(id)a3;
-- (void)loadRelevantShortcut:(id)a3;
-- (void)loadUserActivity:(id)a3;
+- (void)_loadDuetEvent:(id)event;
+- (void)_loadShortcutIdentifiersFromIntent:(id)intent;
+- (void)_loadShortcutIdentifiersFromUserActivity:(id)activity;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadIntent:(id)intent;
+- (void)loadRelevantShortcut:(id)shortcut;
+- (void)loadUserActivity:(id)activity;
 @end
 
 @implementation REDonatedAction
 
-+ (id)bundleIdForExtensionId:(id)a3
++ (id)bundleIdForExtensionId:(id)id
 {
-  v3 = a3;
-  v4 = v3;
+  idCopy = id;
+  v4 = idCopy;
   if (bundleIdForExtensionId__onceToken == -1)
   {
-    if (v3)
+    if (idCopy)
     {
 LABEL_3:
       v5 = [bundleIdForExtensionId__pluginIdToBundleId objectForKeyedSubscript:v4];
@@ -60,58 +60,58 @@ void __42__REDonatedAction_bundleIdForExtensionId___block_invoke()
   bundleIdForExtensionId__pluginIdToBundleId = &unk_283BBDB98;
 }
 
-+ (BOOL)supportedActivityType:(id)a3 forBundleID:(id)a4
++ (BOOL)supportedActivityType:(id)type forBundleID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  dCopy = d;
   v16 = 0;
-  v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v16];
+  v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v16];
   v8 = v16;
   if (!v7)
   {
-    v11 = RELogForDomain(14);
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    teamIdentifier = RELogForDomain(14);
+    if (os_log_type_enabled(teamIdentifier, OS_LOG_TYPE_ERROR))
     {
       +[REDonatedAction supportedActivityType:forBundleID:];
     }
 
-    LOBYTE(v10) = 0;
+    LOBYTE(isInstalled) = 0;
     goto LABEL_10;
   }
 
-  v9 = [v7 applicationState];
-  v10 = [v9 isInstalled];
+  applicationState = [v7 applicationState];
+  isInstalled = [applicationState isInstalled];
 
-  if (v10)
+  if (isInstalled)
   {
-    v11 = [v7 teamIdentifier];
+    teamIdentifier = [v7 teamIdentifier];
     v12 = *MEMORY[0x277CBECE8];
     v13 = _LSCopyAdvertisementStringForTeamIdentifierAndActivityType();
-    v14 = [v7 userActivityTypes];
-    if ([v14 containsObject:v13])
+    userActivityTypes = [v7 userActivityTypes];
+    if ([userActivityTypes containsObject:v13])
     {
-      LOBYTE(v10) = 1;
+      LOBYTE(isInstalled) = 1;
     }
 
     else
     {
-      LOBYTE(v10) = [v14 containsObject:v5];
+      LOBYTE(isInstalled) = [userActivityTypes containsObject:typeCopy];
     }
 
 LABEL_10:
   }
 
-  return v10;
+  return isInstalled;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 identifier];
-    v6 = [(REDonatedAction *)self identifier];
-    v7 = [v5 isEqualToString:v6];
+    identifier = [equalCopy identifier];
+    identifier2 = [(REDonatedAction *)self identifier];
+    v7 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -122,10 +122,10 @@ LABEL_10:
   return v7;
 }
 
-- (id)_initInteractionWithEvent:(id)a3 filtered:(BOOL)a4
+- (id)_initInteractionWithEvent:(id)event filtered:(BOOL)filtered
 {
-  v4 = a4;
-  v6 = a3;
+  filteredCopy = filtered;
+  eventCopy = event;
   v60 = 0;
   v61 = &v60;
   v62 = 0x2050000000;
@@ -144,27 +144,27 @@ LABEL_10:
 
   v8 = v7;
   _Block_object_dispose(&v60, 8);
-  v9 = [v7 serializedInteraction];
-  v10 = [v6 metadata];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  serializedInteraction = [v7 serializedInteraction];
+  metadata = [eventCopy metadata];
+  v11 = [metadata objectForKeyedSubscript:serializedInteraction];
 
   v58 = 0;
   v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v11 error:&v58];
   v13 = v58;
-  v14 = [v12 intent];
-  v15 = v14;
-  if (v14)
+  intent = [v12 intent];
+  v15 = intent;
+  if (intent)
   {
-    v52 = v4;
+    v52 = filteredCopy;
     v56 = v12;
-    v16 = REParametersForIntent(v14);
+    v16 = REParametersForIntent(intent);
     v17 = v16;
     if (v16)
     {
       v54 = v13;
-      v18 = v6;
+      v18 = eventCopy;
       v19 = v11;
-      v20 = v9;
+      v20 = serializedInteraction;
       v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v16, "re_actionIdentifierHashValue")}];
       v22 = v21;
       v23 = RESimplifiedParametersForIntent(v15);
@@ -181,9 +181,9 @@ LABEL_10:
         v26 = 0;
       }
 
-      v9 = v20;
+      serializedInteraction = v20;
       v11 = v19;
-      v6 = v18;
+      eventCopy = v18;
       v13 = v54;
     }
 
@@ -204,46 +204,46 @@ LABEL_10:
       v30 = [(REDonatedAction *)&v57 init];
       if (v30)
       {
-        v51 = v9;
-        v31 = [v15 extensionBundleId];
-        v32 = [REDonatedAction bundleIdForExtensionId:v31];
+        v51 = serializedInteraction;
+        extensionBundleId = [v15 extensionBundleId];
+        v32 = [REDonatedAction bundleIdForExtensionId:extensionBundleId];
         v33 = v32;
         if (v32)
         {
-          v50 = v32;
+          bundleID = v32;
         }
 
         else
         {
-          v34 = [v6 source];
-          v50 = [v34 bundleID];
+          source = [eventCopy source];
+          bundleID = [source bundleID];
         }
 
         v35 = [REIdentifier alloc];
-        v36 = [v6 UUID];
-        v37 = [v36 UUIDString];
-        v38 = [(REIdentifier *)v35 initWithDataSource:v50 section:&stru_283B97458 identifier:v37];
+        uUID = [eventCopy UUID];
+        uUIDString = [uUID UUIDString];
+        v38 = [(REIdentifier *)v35 initWithDataSource:bundleID section:&stru_283B97458 identifier:uUIDString];
         donationIdentifier = v30->_donationIdentifier;
         v30->_donationIdentifier = v38;
 
         v30->_type = 1;
-        v40 = [v6 startDate];
+        startDate = [eventCopy startDate];
         creationDate = v30->_creationDate;
-        v30->_creationDate = v40;
+        v30->_creationDate = startDate;
 
-        v42 = [v6 localCreationDate];
+        localCreationDate = [eventCopy localCreationDate];
         localSaveDate = v30->_localSaveDate;
-        v30->_localSaveDate = v42;
+        v30->_localSaveDate = localCreationDate;
 
         objc_storeStrong(&v30->_actionTypeIdentifier, v21);
         objc_storeStrong(&v30->_simplifiedActionTypeIdentifier, v26);
-        v44 = [v6 source];
-        v45 = [v44 deviceID];
-        v30->_localDonation = v45 == 0;
+        source2 = [eventCopy source];
+        deviceID = [source2 deviceID];
+        v30->_localDonation = deviceID == 0;
 
-        v46 = [v15 _className];
+        _className = [v15 _className];
         intentTypeName = v30->_intentTypeName;
-        v30->_intentTypeName = v46;
+        v30->_intentTypeName = _className;
 
         v30->_isIntentBacked = 1;
         relevanceProviders = v30->_relevanceProviders;
@@ -252,53 +252,53 @@ LABEL_10:
         v30->_filteredShortcutType = 0;
         [(REDonatedAction *)v30 _loadShortcutIdentifiersFromIntent:v15];
 
-        v9 = v51;
+        serializedInteraction = v51;
       }
 
       self = v30;
-      v28 = self;
+      selfCopy = self;
       v12 = v56;
       v29 = v53;
     }
 
     else
     {
-      v28 = 0;
+      selfCopy = 0;
       v12 = v56;
     }
   }
 
   else
   {
-    v28 = 0;
+    selfCopy = 0;
   }
 
-  return v28;
+  return selfCopy;
 }
 
-- (id)_initUserActivityWithEvent:(id)a3 filtered:(BOOL)a4
+- (id)_initUserActivityWithEvent:(id)event filtered:(BOOL)filtered
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [get_DKApplicationActivityMetadataKeyClass() isEligibleForPrediction];
-  v8 = [v6 metadata];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  filteredCopy = filtered;
+  eventCopy = event;
+  isEligibleForPrediction = [get_DKApplicationActivityMetadataKeyClass() isEligibleForPrediction];
+  metadata = [eventCopy metadata];
+  v9 = [metadata objectForKeyedSubscript:isEligibleForPrediction];
 
   if ([v9 BOOLValue])
   {
-    v10 = [get_DKApplicationActivityMetadataKeyClass() activityType];
-    v11 = [v6 metadata];
-    v12 = [v11 objectForKeyedSubscript:v10];
+    activityType = [get_DKApplicationActivityMetadataKeyClass() activityType];
+    metadata2 = [eventCopy metadata];
+    v12 = [metadata2 objectForKeyedSubscript:activityType];
 
-    v13 = [v6 value];
-    v14 = [v13 stringValue];
+    value = [eventCopy value];
+    stringValue = [value stringValue];
 
-    if ([REDonatedAction supportedActivityType:v12 forBundleID:v14]|| !v4)
+    if ([REDonatedAction supportedActivityType:v12 forBundleID:stringValue]|| !filteredCopy)
     {
-      v16 = [get_DKApplicationActivityMetadataKeyClass() userActivityRequiredString];
-      v17 = [v6 metadata];
-      v36 = v16;
-      v18 = [v17 objectForKeyedSubscript:v16];
+      userActivityRequiredString = [get_DKApplicationActivityMetadataKeyClass() userActivityRequiredString];
+      metadata3 = [eventCopy metadata];
+      v36 = userActivityRequiredString;
+      v18 = [metadata3 objectForKeyedSubscript:userActivityRequiredString];
 
       v35 = v18;
       if (v18)
@@ -307,7 +307,7 @@ LABEL_10:
       }
 
       v19 = REExtractUserActivity(v18);
-      if (v19 || !v4)
+      if (v19 || !filteredCopy)
       {
         v37.receiver = self;
         v37.super_class = REDonatedAction;
@@ -315,29 +315,29 @@ LABEL_10:
         if (v20)
         {
           v33 = [REIdentifier alloc];
-          [v6 UUID];
+          [eventCopy UUID];
           v21 = v34 = v18;
-          v22 = [v21 UUIDString];
-          v23 = [(REIdentifier *)v33 initWithDataSource:v14 section:&stru_283B97458 identifier:v22];
+          uUIDString = [v21 UUIDString];
+          v23 = [(REIdentifier *)v33 initWithDataSource:stringValue section:&stru_283B97458 identifier:uUIDString];
           donationIdentifier = v20->_donationIdentifier;
           v20->_donationIdentifier = v23;
 
           v18 = v34;
           v20->_type = 0;
-          v25 = [v6 startDate];
+          startDate = [eventCopy startDate];
           creationDate = v20->_creationDate;
-          v20->_creationDate = v25;
+          v20->_creationDate = startDate;
 
-          v27 = [v6 localCreationDate];
+          localCreationDate = [eventCopy localCreationDate];
           localSaveDate = v20->_localSaveDate;
-          v20->_localSaveDate = v27;
+          v20->_localSaveDate = localCreationDate;
 
           objc_storeStrong(&v20->_actionTypeIdentifier, v19);
           objc_storeStrong(&v20->_simplifiedActionTypeIdentifier, v19);
           objc_storeStrong(&v20->_activityType, v12);
-          v29 = [v6 source];
-          v30 = [v29 deviceID];
-          v20->_localDonation = v30 == 0;
+          source = [eventCopy source];
+          deviceID = [source deviceID];
+          v20->_localDonation = deviceID == 0;
 
           v20->_isIntentBacked = 0;
           relevanceProviders = v20->_relevanceProviders;
@@ -348,62 +348,62 @@ LABEL_10:
         }
 
         self = v20;
-        v15 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v15 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v15 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (id)_initRelevantShortcutWithEvent:(id)a3 filtered:(BOOL)a4
+- (id)_initRelevantShortcutWithEvent:(id)event filtered:(BOOL)filtered
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 relevantShortcut];
-  v8 = [v7 watchTemplate];
-  if (v8)
+  filteredCopy = filtered;
+  eventCopy = event;
+  relevantShortcut = [eventCopy relevantShortcut];
+  watchTemplate = [relevantShortcut watchTemplate];
+  if (watchTemplate)
   {
 
     goto LABEL_3;
   }
 
-  v25 = [v7 widgetKind];
+  widgetKind = [relevantShortcut widgetKind];
 
-  if (!v25)
+  if (!widgetKind)
   {
 LABEL_3:
-    v9 = [v6 stringValue];
-    v10 = [v7 shortcut];
-    v11 = [v10 intent];
+    stringValue = [eventCopy stringValue];
+    shortcut = [relevantShortcut shortcut];
+    intent = [shortcut intent];
 
-    v77 = v7;
-    if (v11)
+    v77 = relevantShortcut;
+    if (intent)
     {
-      v12 = v11;
+      v12 = intent;
       v13 = REParametersForIntent(v12);
       v14 = v13;
-      v15 = v4;
+      v15 = filteredCopy;
       if (v13)
       {
-        v74 = v6;
-        v16 = v11;
-        v17 = v9;
+        v74 = eventCopy;
+        v16 = intent;
+        v17 = stringValue;
         v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v13, "re_actionIdentifierHashValue")}];
         v19 = v18;
         v20 = RESimplifiedParametersForIntent(v12);
@@ -420,9 +420,9 @@ LABEL_3:
           v23 = 0;
         }
 
-        v9 = v17;
-        v11 = v16;
-        v6 = v74;
+        stringValue = v17;
+        intent = v16;
+        eventCopy = v74;
       }
 
       else
@@ -434,19 +434,19 @@ LABEL_3:
 
       v27 = v18;
       v28 = v23;
-      v4 = v15;
+      filteredCopy = v15;
       if (!v22 && v15)
       {
-        v26 = 0;
-        v7 = v77;
+        selfCopy = 0;
+        relevantShortcut = v77;
 LABEL_40:
 
         goto LABEL_41;
       }
 
       v29 = v27;
-      v30 = [v12 extensionBundleId];
-      v31 = [REDonatedAction bundleIdForExtensionId:v30];
+      extensionBundleId = [v12 extensionBundleId];
+      v31 = [REDonatedAction bundleIdForExtensionId:extensionBundleId];
       v32 = v31;
       if (v31)
       {
@@ -455,15 +455,15 @@ LABEL_40:
 
       else
       {
-        v33 = v9;
+        v33 = stringValue;
       }
 
       v34 = v33;
-      v35 = v9;
-      v9 = v34;
+      v35 = stringValue;
+      stringValue = v34;
 
       v27 = v29;
-      v7 = v77;
+      relevantShortcut = v77;
     }
 
     else
@@ -472,34 +472,34 @@ LABEL_40:
       v28 = 0;
     }
 
-    v36 = [v7 shortcut];
-    v37 = [v36 userActivity];
+    shortcut2 = [relevantShortcut shortcut];
+    userActivity = [shortcut2 userActivity];
 
-    if (v37)
+    if (userActivity)
     {
       v70 = v28;
-      v71 = v11;
-      v38 = [v37 activityType];
-      v72 = v9;
-      v39 = v9;
-      v40 = [v6 source];
-      v41 = [v40 deviceID];
+      v71 = intent;
+      activityType = [userActivity activityType];
+      v72 = stringValue;
+      v39 = stringValue;
+      source = [eventCopy source];
+      deviceID = [source deviceID];
 
-      v75 = v38;
-      if (v41)
+      v75 = activityType;
+      if (deviceID)
       {
-        v42 = [objc_alloc(MEMORY[0x277CD42D0]) initWithUserActivityType:v38 launchableAppBundleId:v39];
-        v43 = [MEMORY[0x277CD3BF0] defaultResolver];
-        [v43 resolveUserActivityExecutionInfo:v42];
-        v44 = v4;
-        v46 = v45 = v37;
+        v42 = [objc_alloc(MEMORY[0x277CD42D0]) initWithUserActivityType:activityType launchableAppBundleId:v39];
+        defaultResolver = [MEMORY[0x277CD3BF0] defaultResolver];
+        [defaultResolver resolveUserActivityExecutionInfo:v42];
+        v44 = filteredCopy;
+        v46 = v45 = userActivity;
         [v46 launchableAppBundleId];
         v47 = v27;
         v49 = v48 = self;
 
-        v37 = v45;
-        v4 = v44;
-        v38 = v75;
+        userActivity = v45;
+        filteredCopy = v44;
+        activityType = v75;
 
         v39 = v49;
         self = v48;
@@ -507,38 +507,38 @@ LABEL_40:
       }
 
       v28 = v70;
-      if (![REDonatedAction supportedActivityType:v38 forBundleID:v39]&& v4)
+      if (![REDonatedAction supportedActivityType:activityType forBundleID:v39]&& filteredCopy)
       {
-        v11 = v71;
-        v9 = v72;
-        v7 = v77;
+        intent = v71;
+        stringValue = v72;
+        relevantShortcut = v77;
 LABEL_31:
 
 LABEL_32:
-        v26 = 0;
+        selfCopy = 0;
 LABEL_39:
 
         goto LABEL_40;
       }
 
-      v50 = REExtractUserActivity(v37);
+      v50 = REExtractUserActivity(userActivity);
 
-      v11 = v71;
-      v7 = v77;
-      if (!v50 && v4)
+      intent = v71;
+      relevantShortcut = v77;
+      if (!v50 && filteredCopy)
       {
         v27 = 0;
-        v9 = v72;
+        stringValue = v72;
         goto LABEL_31;
       }
 
       v27 = v50;
 
       v28 = v27;
-      v9 = v72;
+      stringValue = v72;
     }
 
-    else if (!v11)
+    else if (!intent)
     {
       goto LABEL_32;
     }
@@ -548,66 +548,66 @@ LABEL_39:
     v51 = [(REDonatedAction *)&v78 init];
     if (v51)
     {
-      v52 = v9;
-      v73 = v37 == 0;
-      v76 = v37;
+      v52 = stringValue;
+      v73 = userActivity == 0;
+      v76 = userActivity;
       v53 = [REIdentifier alloc];
-      [v6 UUID];
+      [eventCopy UUID];
       v55 = v54 = v28;
-      v56 = [v55 UUIDString];
-      v57 = [(REIdentifier *)v53 initWithDataSource:v52 section:&stru_283B97458 identifier:v56];
+      uUIDString = [v55 UUIDString];
+      v57 = [(REIdentifier *)v53 initWithDataSource:v52 section:&stru_283B97458 identifier:uUIDString];
       donationIdentifier = v51->_donationIdentifier;
       v51->_donationIdentifier = v57;
 
       v28 = v54;
       v51->_type = 2;
-      v59 = [v6 startDate];
+      startDate = [eventCopy startDate];
       creationDate = v51->_creationDate;
-      v51->_creationDate = v59;
+      v51->_creationDate = startDate;
 
-      v61 = [v6 localCreationDate];
+      localCreationDate = [eventCopy localCreationDate];
       localSaveDate = v51->_localSaveDate;
-      v51->_localSaveDate = v61;
+      v51->_localSaveDate = localCreationDate;
 
       objc_storeStrong(&v51->_actionTypeIdentifier, v27);
       objc_storeStrong(&v51->_simplifiedActionTypeIdentifier, v54);
-      v63 = [v7 relevanceProviders];
-      v51->_relevanceProvidersHash = [(REDonatedAction *)v51 _hashRelevanceProviders:v63];
+      relevanceProviders = [relevantShortcut relevanceProviders];
+      v51->_relevanceProvidersHash = [(REDonatedAction *)v51 _hashRelevanceProviders:relevanceProviders];
 
-      v64 = [v6 source];
-      v65 = [v64 deviceID];
-      v51->_localDonation = v65 == 0;
+      source2 = [eventCopy source];
+      deviceID2 = [source2 deviceID];
+      v51->_localDonation = deviceID2 == 0;
 
       v51->_isIntentBacked = v73;
-      v9 = v52;
-      v66 = [v7 relevanceProviders];
-      v67 = RERelevanceProviderForRelevanceProviders(v66, v52);
+      stringValue = v52;
+      relevanceProviders2 = [relevantShortcut relevanceProviders];
+      v67 = RERelevanceProviderForRelevanceProviders(relevanceProviders2, v52);
       relevanceProviders = v51->_relevanceProviders;
       v51->_relevanceProviders = v67;
 
       v51->_filteredShortcutType = 0;
-      if (v11)
+      if (intent)
       {
-        [(REDonatedAction *)v51 _loadShortcutIdentifiersFromIntent:v11];
-        v37 = v76;
+        [(REDonatedAction *)v51 _loadShortcutIdentifiersFromIntent:intent];
+        userActivity = v76;
       }
 
       else
       {
-        v37 = v76;
+        userActivity = v76;
         [(REDonatedAction *)v51 _loadShortcutIdentifiersFromUserActivity:v76];
       }
     }
 
     self = v51;
-    v26 = self;
+    selfCopy = self;
     goto LABEL_39;
   }
 
-  v26 = 0;
+  selfCopy = 0;
 LABEL_41:
 
-  return v26;
+  return selfCopy;
 }
 
 - (id)_shortcutFilter
@@ -631,48 +631,48 @@ uint64_t __34__REDonatedAction__shortcutFilter__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)_loadShortcutIdentifiersFromIntent:(id)a3
+- (void)_loadShortcutIdentifiersFromIntent:(id)intent
 {
   self->_filteredShortcutType = 1;
-  v4 = a3;
-  v5 = [(REDonatedAction *)self _shortcutFilter];
-  v16 = [v5 intentByFilteringIntent:v4 withLevel:1];
+  intentCopy = intent;
+  _shortcutFilter = [(REDonatedAction *)self _shortcutFilter];
+  v16 = [_shortcutFilter intentByFilteringIntent:intentCopy withLevel:1];
 
-  v6 = [(REDonatedAction *)self _shortcutFilter];
-  v7 = [v6 intentByFilteringIntent:v4 withLevel:0];
+  _shortcutFilter2 = [(REDonatedAction *)self _shortcutFilter];
+  v7 = [_shortcutFilter2 intentByFilteringIntent:intentCopy withLevel:0];
 
-  v8 = [(REDonatedAction *)self _shortcutFilter];
-  v9 = [(REDonatedAction *)self bundleIdentifier];
-  v10 = [v8 identifierForIntent:v16 bundleIdentifier:v9];
+  _shortcutFilter3 = [(REDonatedAction *)self _shortcutFilter];
+  bundleIdentifier = [(REDonatedAction *)self bundleIdentifier];
+  v10 = [_shortcutFilter3 identifierForIntent:v16 bundleIdentifier:bundleIdentifier];
   appLevelIdentifier = self->_appLevelIdentifier;
   self->_appLevelIdentifier = v10;
 
-  v12 = [(REDonatedAction *)self _shortcutFilter];
-  v13 = [(REDonatedAction *)self bundleIdentifier];
-  v14 = [v12 identifierForIntent:v7 bundleIdentifier:v13];
+  _shortcutFilter4 = [(REDonatedAction *)self _shortcutFilter];
+  bundleIdentifier2 = [(REDonatedAction *)self bundleIdentifier];
+  v14 = [_shortcutFilter4 identifierForIntent:v7 bundleIdentifier:bundleIdentifier2];
   eventLevelIdentifier = self->_eventLevelIdentifier;
   self->_eventLevelIdentifier = v14;
 }
 
-- (void)_loadShortcutIdentifiersFromUserActivity:(id)a3
+- (void)_loadShortcutIdentifiersFromUserActivity:(id)activity
 {
   self->_filteredShortcutType = 1;
-  v4 = a3;
-  v5 = [(REDonatedAction *)self _shortcutFilter];
-  v16 = [v5 userActivityByFilteringUserActivity:v4 withLevel:1];
+  activityCopy = activity;
+  _shortcutFilter = [(REDonatedAction *)self _shortcutFilter];
+  v16 = [_shortcutFilter userActivityByFilteringUserActivity:activityCopy withLevel:1];
 
-  v6 = [(REDonatedAction *)self _shortcutFilter];
-  v7 = [v6 userActivityByFilteringUserActivity:v4 withLevel:0];
+  _shortcutFilter2 = [(REDonatedAction *)self _shortcutFilter];
+  v7 = [_shortcutFilter2 userActivityByFilteringUserActivity:activityCopy withLevel:0];
 
-  v8 = [(REDonatedAction *)self _shortcutFilter];
-  v9 = [(REDonatedAction *)self bundleIdentifier];
-  v10 = [v8 identifierForUserActivity:v16 bundleIdentifier:v9];
+  _shortcutFilter3 = [(REDonatedAction *)self _shortcutFilter];
+  bundleIdentifier = [(REDonatedAction *)self bundleIdentifier];
+  v10 = [_shortcutFilter3 identifierForUserActivity:v16 bundleIdentifier:bundleIdentifier];
   appLevelIdentifier = self->_appLevelIdentifier;
   self->_appLevelIdentifier = v10;
 
-  v12 = [(REDonatedAction *)self _shortcutFilter];
-  v13 = [(REDonatedAction *)self bundleIdentifier];
-  v14 = [v12 identifierForUserActivity:v7 bundleIdentifier:v13];
+  _shortcutFilter4 = [(REDonatedAction *)self _shortcutFilter];
+  bundleIdentifier2 = [(REDonatedAction *)self bundleIdentifier];
+  v14 = [_shortcutFilter4 identifierForUserActivity:v7 bundleIdentifier:bundleIdentifier2];
   eventLevelIdentifier = self->_eventLevelIdentifier;
   self->_eventLevelIdentifier = v14;
 }
@@ -681,33 +681,33 @@ uint64_t __34__REDonatedAction__shortcutFilter__block_invoke()
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(REDonatedAction *)self type];
-  if (v5 > 2)
+  type = [(REDonatedAction *)self type];
+  if (type > 2)
   {
     v6 = &stru_283B97458;
   }
 
   else
   {
-    v6 = *(&off_2785FD698 + v5);
+    v6 = *(&off_2785FD698 + type);
   }
 
-  v7 = [(REDonatedAction *)self bundleIdentifier];
-  v8 = [(REDonatedAction *)self identifier];
-  v9 = [v3 stringWithFormat:@"<%@: %p> %@ %@ %@", v4, self, v6, v7, v8];
+  bundleIdentifier = [(REDonatedAction *)self bundleIdentifier];
+  identifier = [(REDonatedAction *)self identifier];
+  v9 = [v3 stringWithFormat:@"<%@: %p> %@ %@ %@", v4, self, v6, bundleIdentifier, identifier];
 
   return v9;
 }
 
-- (unint64_t)_hashRelevanceProviders:(id)a3
+- (unint64_t)_hashRelevanceProviders:(id)providers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  providersCopy = providers;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [providersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -719,13 +719,13 @@ uint64_t __34__REDonatedAction__shortcutFilter__block_invoke()
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(providersCopy);
         }
 
         v6 ^= [*(*(&v11 + 1) + 8 * i) hash];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [providersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -742,12 +742,12 @@ uint64_t __34__REDonatedAction__shortcutFilter__block_invoke()
 
 - (NSString)remoteBundleIdentifier
 {
-  v3 = [(REDonatedAction *)self isLocalDonation];
-  v4 = [(REDonatedAction *)self bundleIdentifier];
-  v5 = v4;
-  if (v3)
+  isLocalDonation = [(REDonatedAction *)self isLocalDonation];
+  bundleIdentifier = [(REDonatedAction *)self bundleIdentifier];
+  v5 = bundleIdentifier;
+  if (isLocalDonation)
   {
-    v6 = RERemoteApplicationIdentifierForLocalApplication(v4);
+    v6 = RERemoteApplicationIdentifierForLocalApplication(bundleIdentifier);
 
     v5 = v6;
   }
@@ -757,12 +757,12 @@ uint64_t __34__REDonatedAction__shortcutFilter__block_invoke()
 
 - (NSString)localBundleIdentifier
 {
-  v3 = [(REDonatedAction *)self isLocalDonation];
-  v4 = [(REDonatedAction *)self bundleIdentifier];
-  v5 = v4;
-  if (!v3)
+  isLocalDonation = [(REDonatedAction *)self isLocalDonation];
+  bundleIdentifier = [(REDonatedAction *)self bundleIdentifier];
+  v5 = bundleIdentifier;
+  if (!isLocalDonation)
   {
-    v6 = RELocalApplicationIdentifierForRemoteApplication(v4);
+    v6 = RELocalApplicationIdentifierForRemoteApplication(bundleIdentifier);
 
     v5 = v6;
   }
@@ -782,9 +782,9 @@ uint64_t __34__REDonatedAction__shortcutFilter__block_invoke()
     [(REDonatedAction *)self actionTypeIdentifier];
   }
   v2 = ;
-  v3 = [v2 re_actionIdentifierHashValue];
+  re_actionIdentifierHashValue = [v2 re_actionIdentifierHashValue];
 
-  return v3;
+  return re_actionIdentifierHashValue;
 }
 
 - (id)generateMetrics
@@ -797,23 +797,23 @@ uint64_t __34__REDonatedAction__shortcutFilter__block_invoke()
   }
 
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:6];
-  v4 = [(REDonatedAction *)self event];
-  v5 = [v4 relevantShortcut];
+  event = [(REDonatedAction *)self event];
+  relevantShortcut = [event relevantShortcut];
 
-  v6 = [v5 shortcut];
-  v7 = [v6 intent];
+  shortcut = [relevantShortcut shortcut];
+  intent = [shortcut intent];
 
-  v8 = [v5 shortcut];
-  v9 = [v8 userActivity];
+  shortcut2 = [relevantShortcut shortcut];
+  userActivity = [shortcut2 userActivity];
 
   v10 = @"none";
   v11 = v10;
-  if (v7)
+  if (intent)
   {
-    v12 = [v5 watchTemplate];
+    watchTemplate = [relevantShortcut watchTemplate];
 
     v13 = REShortcutTypeIntent;
-    if (v12)
+    if (watchTemplate)
     {
       v13 = REShortcutTypeIntentWithTemplate;
     }
@@ -830,12 +830,12 @@ uint64_t __34__REDonatedAction__shortcutFilter__block_invoke()
   else
   {
     v18 = v10;
-    if (v9)
+    if (userActivity)
     {
-      v19 = [v5 watchTemplate];
+      watchTemplate2 = [relevantShortcut watchTemplate];
 
       v20 = REShortcutTypeActivity;
-      if (v19)
+      if (watchTemplate2)
       {
         v20 = REShortcutTypeActivityWithTemplate;
       }
@@ -848,16 +848,16 @@ uint64_t __34__REDonatedAction__shortcutFilter__block_invoke()
   }
 
   v21 = v11;
-  v22 = [v5 watchTemplate];
+  watchTemplate3 = [relevantShortcut watchTemplate];
 
-  v57 = v9;
-  if (v22)
+  v57 = userActivity;
+  if (watchTemplate3)
   {
-    v23 = [v5 watchTemplate];
-    v24 = [v23 image];
+    watchTemplate4 = [relevantShortcut watchTemplate];
+    image = [watchTemplate4 image];
 
     v25 = v21;
-    if (!v24)
+    if (!image)
     {
       goto LABEL_20;
     }
@@ -867,20 +867,20 @@ uint64_t __34__REDonatedAction__shortcutFilter__block_invoke()
 
   else
   {
-    v27 = [v7 keyImage];
+    keyImage = [intent keyImage];
 
-    if (v27)
+    if (keyImage)
     {
       v26 = RESourceIntent;
     }
 
     else
     {
-      v28 = [v5 shortcut];
-      v29 = [v28 activityImage];
+      shortcut3 = [relevantShortcut shortcut];
+      activityImage = [shortcut3 activityImage];
 
       v25 = v21;
-      if (!v29)
+      if (!activityImage)
       {
         goto LABEL_20;
       }
@@ -894,15 +894,15 @@ uint64_t __34__REDonatedAction__shortcutFilter__block_invoke()
 LABEL_20:
   [v3 setObject:v25 forKey:@"imageSource"];
   v30 = v21;
-  v31 = [v5 watchTemplate];
+  watchTemplate5 = [relevantShortcut watchTemplate];
 
-  v58 = v7;
-  if (v31)
+  v58 = intent;
+  if (watchTemplate5)
   {
-    v32 = [v5 watchTemplate];
-    v33 = [v32 subtitle];
+    watchTemplate6 = [relevantShortcut watchTemplate];
+    subtitle = [watchTemplate6 subtitle];
 
-    if (v33)
+    if (subtitle)
     {
       v34 = RESourceTemplate;
 LABEL_27:
@@ -914,18 +914,18 @@ LABEL_27:
 
   else
   {
-    v35 = [v7 _subtitle];
+    _subtitle = [intent _subtitle];
 
-    if (v35)
+    if (_subtitle)
     {
       v34 = RESourceIntent;
       goto LABEL_27;
     }
 
-    v36 = [v5 shortcut];
-    v37 = [v36 activitySubtitle];
+    shortcut4 = [relevantShortcut shortcut];
+    activitySubtitle = [shortcut4 activitySubtitle];
 
-    if (v37)
+    if (activitySubtitle)
     {
       v34 = RESourceActivity;
       goto LABEL_27;
@@ -934,13 +934,13 @@ LABEL_27:
 
   v59 = v3;
   [v3 setObject:v30 forKey:@"subtitleSource"];
-  v39 = [v5 relevanceProviders];
-  v40 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v39, "count")}];
+  relevanceProviders = [relevantShortcut relevanceProviders];
+  v40 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(relevanceProviders, "count")}];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v41 = v39;
+  v41 = relevanceProviders;
   v42 = [v41 countByEnumeratingWithState:&v60 objects:v64 count:16];
   if (!v42)
   {
@@ -977,19 +977,19 @@ LABEL_27:
             goto LABEL_37;
           }
 
-          v52 = [v46 situation];
-          if (v52 > 4)
+          situation = [v46 situation];
+          if (situation > 4)
           {
-            if (v52 <= 6)
+            if (situation <= 6)
             {
               v48 = @"routineGym";
-              if (v52 != 5)
+              if (situation != 5)
               {
                 v48 = @"routineCommute";
               }
             }
 
-            else if (v52 == 7)
+            else if (situation == 7)
             {
               v48 = @"routineHeadphones";
             }
@@ -997,10 +997,10 @@ LABEL_27:
             else
             {
               v48 = @"routineWorkout";
-              if (v52 != 8)
+              if (situation != 8)
               {
                 v48 = @"routineActivity";
-                if (v52 != 9)
+                if (situation != 9)
                 {
                   goto LABEL_37;
                 }
@@ -1008,13 +1008,13 @@ LABEL_27:
             }
           }
 
-          else if (v52 <= 1)
+          else if (situation <= 1)
           {
             v48 = @"routineMorning";
-            if (v52)
+            if (situation)
             {
               v48 = @"routineEvening";
-              if (v52 != 1)
+              if (situation != 1)
               {
                 goto LABEL_37;
               }
@@ -1024,10 +1024,10 @@ LABEL_27:
           else
           {
             v48 = @"routineHome";
-            if (v52 != 2)
+            if (situation != 2)
             {
               v48 = @"routineWork";
-              if (v52 != 3)
+              if (situation != 3)
               {
                 v48 = @"routineSchool";
               }
@@ -1064,84 +1064,84 @@ LABEL_58:
   return v17;
 }
 
-- (REDonatedAction)initWithCoder:(id)a3
+- (REDonatedAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = REDonatedAction;
   v5 = [(REDonatedAction *)&v29 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     v8 = [[REIdentifier alloc] initWithDataSource:v6 section:&stru_283B97458 identifier:v7];
     donationIdentifier = v5->_donationIdentifier;
     v5->_donationIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localSaveDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localSaveDate"];
     localSaveDate = v5->_localSaveDate;
     v5->_localSaveDate = v12;
 
-    v5->_localDonation = [v4 decodeBoolForKey:@"localDonation"];
+    v5->_localDonation = [coderCopy decodeBoolForKey:@"localDonation"];
     v14 = MEMORY[0x277CBEB98];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"actionTypeIdentifier"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"actionTypeIdentifier"];
     actionTypeIdentifier = v5->_actionTypeIdentifier;
     v5->_actionTypeIdentifier = v17;
 
     v19 = MEMORY[0x277CBEB98];
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"simplifiedActionTypeIdentifier"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"simplifiedActionTypeIdentifier"];
     simplifiedActionTypeIdentifier = v5->_simplifiedActionTypeIdentifier;
     v5->_simplifiedActionTypeIdentifier = v22;
 
-    v5->_isIntentBacked = [v4 decodeBoolForKey:@"isIntentBacked"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventLevelIdentifier"];
+    v5->_isIntentBacked = [coderCopy decodeBoolForKey:@"isIntentBacked"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventLevelIdentifier"];
     eventLevelIdentifier = v5->_eventLevelIdentifier;
     v5->_eventLevelIdentifier = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appLevelIdentifier"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appLevelIdentifier"];
     appLevelIdentifier = v5->_appLevelIdentifier;
     v5->_appLevelIdentifier = v26;
 
-    v5->_filteredShortcutType = [v4 decodeIntegerForKey:@"filteredShortcutType"];
+    v5->_filteredShortcutType = [coderCopy decodeIntegerForKey:@"filteredShortcutType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v7 = a3;
-  [v7 encodeInteger:type forKey:@"type"];
-  v5 = [(REDonatedAction *)self bundleIdentifier];
-  [v7 encodeObject:v5 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  bundleIdentifier = [(REDonatedAction *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  v6 = [(REDonatedAction *)self identifier];
-  [v7 encodeObject:v6 forKey:@"identifier"];
+  identifier = [(REDonatedAction *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  [v7 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v7 encodeObject:self->_localSaveDate forKey:@"localSaveDate"];
-  [v7 encodeBool:self->_localDonation forKey:@"localDonation"];
-  [v7 encodeObject:self->_actionTypeIdentifier forKey:@"actionTypeIdentifier"];
-  [v7 encodeObject:self->_simplifiedActionTypeIdentifier forKey:@"simplifiedActionTypeIdentifier"];
-  [v7 encodeBool:self->_isIntentBacked forKey:@"isIntentBacked"];
-  [v7 encodeObject:self->_eventLevelIdentifier forKey:@"eventLevelIdentifier"];
-  [v7 encodeObject:self->_appLevelIdentifier forKey:@"appLevelIdentifier"];
-  [v7 encodeInteger:self->_filteredShortcutType forKey:@"filteredShortcutType"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_localSaveDate forKey:@"localSaveDate"];
+  [coderCopy encodeBool:self->_localDonation forKey:@"localDonation"];
+  [coderCopy encodeObject:self->_actionTypeIdentifier forKey:@"actionTypeIdentifier"];
+  [coderCopy encodeObject:self->_simplifiedActionTypeIdentifier forKey:@"simplifiedActionTypeIdentifier"];
+  [coderCopy encodeBool:self->_isIntentBacked forKey:@"isIntentBacked"];
+  [coderCopy encodeObject:self->_eventLevelIdentifier forKey:@"eventLevelIdentifier"];
+  [coderCopy encodeObject:self->_appLevelIdentifier forKey:@"appLevelIdentifier"];
+  [coderCopy encodeInteger:self->_filteredShortcutType forKey:@"filteredShortcutType"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 16) = self->_type;
   objc_storeStrong((v4 + 40), self->_donationIdentifier);
   objc_storeStrong((v4 + 24), self->_creationDate);
@@ -1156,24 +1156,24 @@ LABEL_58:
   return v4;
 }
 
-- (void)_loadDuetEvent:(id)a3
+- (void)_loadDuetEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (_loadDuetEvent__onceToken != -1)
   {
     [REDonatedAction(LoadSiriAction) _loadDuetEvent:];
   }
 
-  v5 = [_loadDuetEvent__QueuePool nextAvailableQueue];
+  nextAvailableQueue = [_loadDuetEvent__QueuePool nextAvailableQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__REDonatedAction_LoadSiriAction___loadDuetEvent___block_invoke_2;
   block[3] = &unk_2785F99C8;
   block[4] = self;
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = nextAvailableQueue;
+  v10 = eventCopy;
+  v6 = eventCopy;
+  v7 = nextAvailableQueue;
   dispatch_async(v7, block);
 }
 
@@ -1231,10 +1231,10 @@ void __50__REDonatedAction_LoadSiriAction___loadDuetEvent___block_invoke_3(uint6
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)loadUserActivity:(id)a3
+- (void)loadUserActivity:(id)activity
 {
-  v4 = a3;
-  if (v4)
+  activityCopy = activity;
+  if (activityCopy)
   {
     if (REProcessIsRelevanced())
     {
@@ -1256,7 +1256,7 @@ void __50__REDonatedAction_LoadSiriAction___loadDuetEvent___block_invoke_3(uint6
     if ([(REDonatedAction *)self type])
     {
 LABEL_10:
-      (*(v4 + 2))(v4, 0, 0);
+      (*(activityCopy + 2))(activityCopy, 0, 0);
       goto LABEL_11;
     }
 
@@ -1265,7 +1265,7 @@ LABEL_10:
     v12[2] = __52__REDonatedAction_LoadSiriAction__loadUserActivity___block_invoke;
     v12[3] = &unk_2785FDF80;
     v12[4] = self;
-    v13 = v4;
+    v13 = activityCopy;
     [(REDonatedAction *)self _loadDuetEvent:v12];
   }
 
@@ -1312,10 +1312,10 @@ void __52__REDonatedAction_LoadSiriAction__loadUserActivity___block_invoke(uint6
   }
 }
 
-- (void)loadIntent:(id)a3
+- (void)loadIntent:(id)intent
 {
-  v4 = a3;
-  if (v4)
+  intentCopy = intent;
+  if (intentCopy)
   {
     if (REProcessIsRelevanced())
     {
@@ -1337,7 +1337,7 @@ void __52__REDonatedAction_LoadSiriAction__loadUserActivity___block_invoke(uint6
     if ([(REDonatedAction *)self type]!= 1)
     {
 LABEL_10:
-      (*(v4 + 2))(v4, 0, 0);
+      (*(intentCopy + 2))(intentCopy, 0, 0);
       goto LABEL_11;
     }
 
@@ -1346,7 +1346,7 @@ LABEL_10:
     v12[2] = __46__REDonatedAction_LoadSiriAction__loadIntent___block_invoke;
     v12[3] = &unk_2785FDF80;
     v12[4] = self;
-    v13 = v4;
+    v13 = intentCopy;
     [(REDonatedAction *)self _loadDuetEvent:v12];
   }
 
@@ -1443,16 +1443,16 @@ void __46__REDonatedAction_LoadSiriAction__loadIntent___block_invoke_2(uint64_t 
   (*(v5 + 16))(v5, v3, v6);
 }
 
-- (void)loadRelevantShortcut:(id)a3
+- (void)loadRelevantShortcut:(id)shortcut
 {
-  v4 = a3;
-  if (v4)
+  shortcutCopy = shortcut;
+  if (shortcutCopy)
   {
     if (REProcessIsRelevanced())
     {
       RERaiseInternalException(*MEMORY[0x277CBE648], @"%s is not allowed from relevanced!", v5, v6, v7, v8, v9, v10, "[REDonatedAction(LoadSiriAction) loadRelevantShortcut:]");
 LABEL_6:
-      (*(v4 + 2))(v4, 0, 0);
+      (*(shortcutCopy + 2))(shortcutCopy, 0, 0);
       goto LABEL_7;
     }
 
@@ -1466,7 +1466,7 @@ LABEL_6:
     v11[2] = __56__REDonatedAction_LoadSiriAction__loadRelevantShortcut___block_invoke;
     v11[3] = &unk_2785FDF80;
     v11[4] = self;
-    v12 = v4;
+    v12 = shortcutCopy;
     [(REDonatedAction *)self _loadDuetEvent:v11];
   }
 

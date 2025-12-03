@@ -1,9 +1,9 @@
 @interface OrgApacheLuceneUtilPriorityQueue
-- (BOOL)removeWithId:(id)a3;
-- (id)insertWithOverflowWithId:(id)a3;
+- (BOOL)removeWithId:(id)id;
+- (id)insertWithOverflowWithId:(id)id;
 - (id)pop;
 - (id)top;
-- (id)updateTopWithId:(id)a3;
+- (id)updateTopWithId:(id)id;
 - (uint64_t)updateTop;
 - (void)clear;
 - (void)dealloc;
@@ -11,9 +11,9 @@
 
 @implementation OrgApacheLuceneUtilPriorityQueue
 
-- (id)insertWithOverflowWithId:(id)a3
+- (id)insertWithOverflowWithId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   size = self->size_;
   if (size >= self->maxSize_)
   {
@@ -31,7 +31,7 @@
         IOSArray_throwOutOfBoundsWithMsg(v7, 1);
       }
 
-      if (([(OrgApacheLuceneUtilPriorityQueue *)self lessThanWithId:a3 withId:heap->buffer_[0]]& 1) == 0)
+      if (([(OrgApacheLuceneUtilPriorityQueue *)self lessThanWithId:id withId:heap->buffer_[0]]& 1) == 0)
       {
         v8 = self->heap_;
         if (v8->super.size_ <= 1)
@@ -41,7 +41,7 @@
         }
 
         v9 = v8->buffer_[0];
-        IOSObjectArray_Set(self->heap_, 1, v3);
+        IOSObjectArray_Set(self->heap_, 1, idCopy);
         [OrgApacheLuceneUtilPriorityQueue updateTop]_0(self);
         return v9;
       }
@@ -50,17 +50,17 @@
 
   else
   {
-    sub_10000A6EC(self, a3);
+    sub_10000A6EC(self, id);
     return 0;
   }
 
-  return v3;
+  return idCopy;
 }
 
 - (uint64_t)updateTop
 {
-  sub_10000AA4C(a1, 1);
-  v2 = *(a1 + 16);
+  sub_10000AA4C(self, 1);
+  v2 = *(self + 16);
   if (!v2)
   {
     JreThrowNullPointerException();
@@ -126,7 +126,7 @@
   return v7;
 }
 
-- (id)updateTopWithId:(id)a3
+- (id)updateTopWithId:(id)id
 {
   heap = self->heap_;
   if (!heap)
@@ -134,7 +134,7 @@
     JreThrowNullPointerException();
   }
 
-  IOSObjectArray_Set(heap, 1, a3);
+  IOSObjectArray_Set(heap, 1, id);
 
   return [OrgApacheLuceneUtilPriorityQueue updateTop]_0(self);
 }
@@ -161,7 +161,7 @@
   self->size_ = 0;
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
   if (self->size_ < 1)
   {
@@ -185,7 +185,7 @@
 
     v7 = (&heap->elementType_)[v4];
     v8 = self->size_;
-    if (v7 == a3)
+    if (v7 == id)
     {
       break;
     }

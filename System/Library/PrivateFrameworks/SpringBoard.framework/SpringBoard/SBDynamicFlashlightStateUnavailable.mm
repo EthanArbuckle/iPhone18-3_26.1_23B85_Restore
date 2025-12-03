@@ -1,17 +1,17 @@
 @interface SBDynamicFlashlightStateUnavailable
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation SBDynamicFlashlightStateUnavailable
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v3 = a3;
+  equalCopy = equal;
   v4 = objc_opt_class();
   v5 = objc_opt_class();
 

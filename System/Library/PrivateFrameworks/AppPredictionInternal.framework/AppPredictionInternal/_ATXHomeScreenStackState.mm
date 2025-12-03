@@ -1,20 +1,20 @@
 @interface _ATXHomeScreenStackState
-- (BOOL)containsSuggestedWidgetForApp:(id)a3;
-- (BOOL)containsWidgetForApp:(id)a3;
-- (BOOL)containsWidgetForIntent:(id)a3;
+- (BOOL)containsSuggestedWidgetForApp:(id)app;
+- (BOOL)containsWidgetForApp:(id)app;
+- (BOOL)containsWidgetForIntent:(id)intent;
 - (BOOL)isStale;
 - (BOOL)mostRecentRotationOfStackIsSystemInitiated;
-- (BOOL)previousSuggestedWidgetsContainIdenticalContentOfSuggestion:(id)a3;
-- (BOOL)previousTopWidgetWasShowingIdenticalContentOfSuggestion:(id)a3;
-- (BOOL)sizeIsCompatibleWithWidgetSuggestion:(id)a3;
-- (BOOL)topWidgetIsShowingIdenticalContentOfSuggestion:(id)a3 ignoreDuplicatesInSGWidget:(BOOL)a4 ignoreDuplicatesInPanels:(BOOL)a5;
+- (BOOL)previousSuggestedWidgetsContainIdenticalContentOfSuggestion:(id)suggestion;
+- (BOOL)previousTopWidgetWasShowingIdenticalContentOfSuggestion:(id)suggestion;
+- (BOOL)sizeIsCompatibleWithWidgetSuggestion:(id)suggestion;
+- (BOOL)topWidgetIsShowingIdenticalContentOfSuggestion:(id)suggestion ignoreDuplicatesInSGWidget:(BOOL)widget ignoreDuplicatesInPanels:(BOOL)panels;
 - (_ATXHomeScreenPageState)page;
-- (_ATXHomeScreenStackState)initWithPageState:(id)a3 stackConfig:(id)a4 stackStateTracker:(id)a5 suggestionDeduplicator:(id)a6 hyperParameters:(id)a7;
-- (id)_firstWidgetPassingTest:(id)a3 considerSuggestedWidgets:(BOOL)a4;
-- (id)_previousSuggestionForMemberWidget:(id)a3;
+- (_ATXHomeScreenStackState)initWithPageState:(id)state stackConfig:(id)config stackStateTracker:(id)tracker suggestionDeduplicator:(id)deduplicator hyperParameters:(id)parameters;
+- (id)_firstWidgetPassingTest:(id)test considerSuggestedWidgets:(BOOL)widgets;
+- (id)_previousSuggestionForMemberWidget:(id)widget;
 - (id)previousTopWidget;
 - (void)previousTopWidget;
-- (void)setTopOfStackSuggestion:(id)a3;
+- (void)setTopOfStackSuggestion:(id)suggestion;
 @end
 
 @implementation _ATXHomeScreenStackState
@@ -25,24 +25,24 @@
   p_config = &self->_config;
   if ([(ATXHomeScreenStackConfig *)self->_config isPinnedWidget])
   {
-    v4 = [(ATXHomeScreenStackConfig *)*p_config widgets];
-    v5 = [v4 firstObject];
+    widgets = [(ATXHomeScreenStackConfig *)*p_config widgets];
+    firstObject = [widgets firstObject];
   }
 
   else
   {
     stackStateTracker = self->_stackStateTracker;
-    v7 = [(ATXHomeScreenStackConfig *)self->_config identifier];
-    v4 = [(ATXStackStateTracker *)stackStateTracker topWidgetUniqueIdOfStack:v7];
+    identifier = [(ATXHomeScreenStackConfig *)self->_config identifier];
+    widgets = [(ATXStackStateTracker *)stackStateTracker topWidgetUniqueIdOfStack:identifier];
 
-    if (v4)
+    if (widgets)
     {
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v8 = [(ATXHomeScreenStackConfig *)*p_config widgets];
-      v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      widgets2 = [(ATXHomeScreenStackConfig *)*p_config widgets];
+      v9 = [widgets2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v9)
       {
         v10 = v9;
@@ -53,21 +53,21 @@
           {
             if (*v19 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(widgets2);
             }
 
             v13 = *(*(&v18 + 1) + 8 * i);
-            v14 = [v13 widgetUniqueId];
-            v15 = [v14 isEqualToString:v4];
+            widgetUniqueId = [v13 widgetUniqueId];
+            v15 = [widgetUniqueId isEqualToString:widgets];
 
             if (v15)
             {
-              v5 = v13;
+              firstObject = v13;
               goto LABEL_17;
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v10 = [widgets2 countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v10)
           {
             continue;
@@ -78,29 +78,29 @@
       }
     }
 
-    v8 = __atxlog_handle_blending();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    widgets2 = __atxlog_handle_blending();
+    if (os_log_type_enabled(widgets2, OS_LOG_TYPE_ERROR))
     {
       [(_ATXHomeScreenStackState *)p_config previousTopWidget];
     }
 
-    v5 = 0;
+    firstObject = 0;
 LABEL_17:
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return firstObject;
 }
 
-- (_ATXHomeScreenStackState)initWithPageState:(id)a3 stackConfig:(id)a4 stackStateTracker:(id)a5 suggestionDeduplicator:(id)a6 hyperParameters:(id)a7
+- (_ATXHomeScreenStackState)initWithPageState:(id)state stackConfig:(id)config stackStateTracker:(id)tracker suggestionDeduplicator:(id)deduplicator hyperParameters:(id)parameters
 {
   v67 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  stateCopy = state;
+  configCopy = config;
+  trackerCopy = tracker;
+  deduplicatorCopy = deduplicator;
+  parametersCopy = parameters;
   v64.receiver = self;
   v64.super_class = _ATXHomeScreenStackState;
   v17 = [(_ATXHomeScreenStackState *)&v64 init];
@@ -110,19 +110,19 @@ LABEL_17:
     goto LABEL_30;
   }
 
-  objc_storeWeak(&v17->_page, v12);
-  objc_storeStrong(&v18->_config, a4);
-  objc_storeStrong(&v18->_stackStateTracker, a5);
-  objc_storeStrong(&v18->_suggestionDeduplicator, a6);
-  objc_storeStrong(&v18->_hyperParameters, a7);
+  objc_storeWeak(&v17->_page, stateCopy);
+  objc_storeStrong(&v18->_config, config);
+  objc_storeStrong(&v18->_stackStateTracker, tracker);
+  objc_storeStrong(&v18->_suggestionDeduplicator, deduplicator);
+  objc_storeStrong(&v18->_hyperParameters, parameters);
   topOfStackSuggestion = v18->_topOfStackSuggestion;
   v18->_topOfStackSuggestion = 0;
 
   if (([(ATXHomeScreenStackConfig *)v18->_config isAppPredictionPanel]& 1) != 0 || [(ATXHomeScreenStackConfig *)v18->_config isPinnedSuggestionsWidget])
   {
-    v20 = [(ATXHomeScreenStackConfig *)v18->_config widgets];
-    v21 = [v20 firstObject];
-    v22 = [(_ATXHomeScreenStackState *)v18 _previousSuggestionForMemberWidget:v21];
+    widgets = [(ATXHomeScreenStackConfig *)v18->_config widgets];
+    firstObject = [widgets firstObject];
+    v22 = [(_ATXHomeScreenStackState *)v18 _previousSuggestionForMemberWidget:firstObject];
     previousTopOfStackSuggestion = v18->_previousTopOfStackSuggestion;
     v18->_previousTopOfStackSuggestion = v22;
   }
@@ -134,16 +134,16 @@ LABEL_17:
       goto LABEL_6;
     }
 
-    v20 = [(_ATXHomeScreenStackState *)v18 previousTopWidget];
-    v51 = [(_ATXHomeScreenStackState *)v18 _previousSuggestionForMemberWidget:v20];
-    v21 = v18->_previousTopOfStackSuggestion;
+    widgets = [(_ATXHomeScreenStackState *)v18 previousTopWidget];
+    v51 = [(_ATXHomeScreenStackState *)v18 _previousSuggestionForMemberWidget:widgets];
+    firstObject = v18->_previousTopOfStackSuggestion;
     v18->_previousTopOfStackSuggestion = v51;
   }
 
 LABEL_6:
-  v52 = v15;
-  v53 = v14;
-  v55 = v12;
+  v52 = deduplicatorCopy;
+  v53 = trackerCopy;
+  v55 = stateCopy;
   v24 = objc_opt_new();
   suggestedWidgets = v18->_suggestedWidgets;
   v18->_suggestedWidgets = v24;
@@ -158,8 +158,8 @@ LABEL_6:
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v28 = [(ATXHomeScreenStackConfig *)v18->_config widgets];
-    v29 = [v28 countByEnumeratingWithState:&v60 objects:v66 count:16];
+    widgets2 = [(ATXHomeScreenStackConfig *)v18->_config widgets];
+    v29 = [widgets2 countByEnumeratingWithState:&v60 objects:v66 count:16];
     if (v29)
     {
       v30 = v29;
@@ -170,7 +170,7 @@ LABEL_6:
         {
           if (*v61 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(widgets2);
           }
 
           v33 = *(*(&v60 + 1) + 8 * i);
@@ -184,14 +184,14 @@ LABEL_6:
           }
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v60 objects:v66 count:16];
+        v30 = [widgets2 countByEnumeratingWithState:&v60 objects:v66 count:16];
       }
 
       while (v30);
     }
   }
 
-  v54 = v13;
+  v54 = configCopy;
   v35 = objc_opt_new();
   suggestionsWidgetSuggestionsByWidgetUniqueId = v18->_suggestionsWidgetSuggestionsByWidgetUniqueId;
   v18->_suggestionsWidgetSuggestionsByWidgetUniqueId = v35;
@@ -200,8 +200,8 @@ LABEL_6:
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v37 = [(ATXHomeScreenStackConfig *)v18->_config widgets];
-  v38 = [v37 countByEnumeratingWithState:&v56 objects:v65 count:16];
+  widgets3 = [(ATXHomeScreenStackConfig *)v18->_config widgets];
+  v38 = [widgets3 countByEnumeratingWithState:&v56 objects:v65 count:16];
   if (v38)
   {
     v39 = v38;
@@ -213,52 +213,52 @@ LABEL_6:
       {
         if (*v57 != v40)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(widgets3);
         }
 
         v43 = *(*(&v56 + 1) + 8 * j);
         if (([v43 isSuggestedWidget] & 1) == 0)
         {
-          v44 = [v43 extensionBundleId];
-          v45 = [v44 isEqualToString:v41];
+          extensionBundleId = [v43 extensionBundleId];
+          v45 = [extensionBundleId isEqualToString:v41];
 
           if (v45)
           {
             v46 = [[_ATXSuggestionsWidgetSuggestion alloc] initWithSuggestionsWidget:v43 containingStack:v18 suggestionDeduplicator:v18->_suggestionDeduplicator hyperParameters:v18->_hyperParameters];
             v47 = v18->_suggestionsWidgetSuggestionsByWidgetUniqueId;
-            v48 = [v43 widgetUniqueId];
-            [(NSMutableDictionary *)v47 setObject:v46 forKeyedSubscript:v48];
+            widgetUniqueId = [v43 widgetUniqueId];
+            [(NSMutableDictionary *)v47 setObject:v46 forKeyedSubscript:widgetUniqueId];
           }
         }
       }
 
-      v39 = [v37 countByEnumeratingWithState:&v56 objects:v65 count:16];
+      v39 = [widgets3 countByEnumeratingWithState:&v56 objects:v65 count:16];
     }
 
     while (v39);
   }
 
-  v13 = v54;
-  v12 = v55;
-  v15 = v52;
-  v14 = v53;
+  configCopy = v54;
+  stateCopy = v55;
+  deduplicatorCopy = v52;
+  trackerCopy = v53;
 LABEL_30:
 
   v49 = *MEMORY[0x277D85DE8];
   return v18;
 }
 
-- (void)setTopOfStackSuggestion:(id)a3
+- (void)setTopOfStackSuggestion:(id)suggestion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  suggestionCopy = suggestion;
+  v6 = suggestionCopy;
+  if (suggestionCopy)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __52___ATXHomeScreenStackState_setTopOfStackSuggestion___block_invoke;
     v19[3] = &unk_2785990C0;
-    v7 = v5;
+    v7 = suggestionCopy;
     v20 = v7;
     v8 = [(_ATXHomeScreenStackState *)self _firstWidgetPassingTest:v19 considerSuggestedWidgets:1];
     if (!v8)
@@ -272,9 +272,9 @@ LABEL_30:
         if (objc_opt_isKindOfClass())
         {
           suggestionsWidgetSuggestionsByWidgetUniqueId = self->_suggestionsWidgetSuggestionsByWidgetUniqueId;
-          v13 = [v11 widget];
-          v14 = [v13 widgetUniqueId];
-          [(NSMutableDictionary *)suggestionsWidgetSuggestionsByWidgetUniqueId removeObjectForKey:v14];
+          widget = [v11 widget];
+          widgetUniqueId = [widget widgetUniqueId];
+          [(NSMutableDictionary *)suggestionsWidgetSuggestionsByWidgetUniqueId removeObjectForKey:widgetUniqueId];
         }
 
         [(NSMutableArray *)self->_suggestedWidgets replaceObjectAtIndex:0 withObject:v7];
@@ -290,12 +290,12 @@ LABEL_30:
     if (objc_opt_isKindOfClass())
     {
       v16 = self->_suggestionsWidgetSuggestionsByWidgetUniqueId;
-      v17 = [(_ATXWidgetSuggesting *)v7 widget];
-      v18 = [v17 widgetUniqueId];
-      [(NSMutableDictionary *)v16 setObject:v7 forKeyedSubscript:v18];
+      widget2 = [(_ATXWidgetSuggesting *)v7 widget];
+      widgetUniqueId2 = [widget2 widgetUniqueId];
+      [(NSMutableDictionary *)v16 setObject:v7 forKeyedSubscript:widgetUniqueId2];
     }
 
-    objc_storeStrong(&self->_topOfStackSuggestion, a3);
+    objc_storeStrong(&self->_topOfStackSuggestion, suggestion);
 
     topOfStackSuggestion = v20;
   }
@@ -310,8 +310,8 @@ LABEL_30:
 - (BOOL)isStale
 {
   stackStateTracker = self->_stackStateTracker;
-  v3 = [(ATXHomeScreenStackConfig *)self->_config identifier];
-  LOBYTE(stackStateTracker) = [(ATXStackStateTracker *)stackStateTracker stackIsStale:v3];
+  identifier = [(ATXHomeScreenStackConfig *)self->_config identifier];
+  LOBYTE(stackStateTracker) = [(ATXStackStateTracker *)stackStateTracker stackIsStale:identifier];
 
   return stackStateTracker;
 }
@@ -319,22 +319,22 @@ LABEL_30:
 - (BOOL)mostRecentRotationOfStackIsSystemInitiated
 {
   stackStateTracker = self->_stackStateTracker;
-  v3 = [(ATXHomeScreenStackConfig *)self->_config identifier];
-  LOBYTE(stackStateTracker) = [(ATXStackStateTracker *)stackStateTracker mostRecentRotationOfStackIsSystemInitiated:v3];
+  identifier = [(ATXHomeScreenStackConfig *)self->_config identifier];
+  LOBYTE(stackStateTracker) = [(ATXStackStateTracker *)stackStateTracker mostRecentRotationOfStackIsSystemInitiated:identifier];
 
   return stackStateTracker;
 }
 
-- (BOOL)containsWidgetForIntent:(id)a3
+- (BOOL)containsWidgetForIntent:(id)intent
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intentCopy = intent;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(ATXHomeScreenStackConfig *)self->_config widgets];
-  v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  widgets = [(ATXHomeScreenStackConfig *)self->_config widgets];
+  v6 = [(NSMutableArray *)widgets countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -345,18 +345,18 @@ LABEL_3:
     {
       if (*v27 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(widgets);
       }
 
       v10 = *(*(&v26 + 1) + 8 * v9);
       if (([v10 isSuggestedWidget] & 1) == 0)
       {
-        v11 = [v10 intent];
+        intent = [v10 intent];
 
-        if (v11)
+        if (intent)
         {
-          v12 = [v10 intent];
-          v13 = [ATXActionToWidgetConverter isWidgetIntent:v12 validConversionFromActionIntent:v4];
+          intent2 = [v10 intent];
+          v13 = [ATXActionToWidgetConverter isWidgetIntent:intent2 validConversionFromActionIntent:intentCopy];
 
           if (v13)
           {
@@ -367,7 +367,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v7 = [(NSMutableArray *)widgets countByEnumeratingWithState:&v26 objects:v31 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -382,8 +382,8 @@ LABEL_3:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = self->_suggestedWidgets;
-  v14 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  widgets = self->_suggestedWidgets;
+  v14 = [(NSMutableArray *)widgets countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v14)
   {
     v15 = *v23;
@@ -393,12 +393,12 @@ LABEL_13:
     {
       if (*v23 != v15)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(widgets);
       }
 
-      v17 = [*(*(&v22 + 1) + 8 * v16) widget];
-      v18 = [v17 intent];
-      v19 = [ATXActionToWidgetConverter isWidgetIntent:v18 validConversionFromActionIntent:v4];
+      widget = [*(*(&v22 + 1) + 8 * v16) widget];
+      intent3 = [widget intent];
+      v19 = [ATXActionToWidgetConverter isWidgetIntent:intent3 validConversionFromActionIntent:intentCopy];
 
       if (v19)
       {
@@ -407,7 +407,7 @@ LABEL_13:
 
       if (v14 == ++v16)
       {
-        v14 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v14 = [(NSMutableArray *)widgets countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v14)
         {
           goto LABEL_13;
@@ -427,16 +427,16 @@ LABEL_21:
   return v14;
 }
 
-- (BOOL)containsWidgetForApp:(id)a3
+- (BOOL)containsWidgetForApp:(id)app
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appCopy = app;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(ATXHomeScreenStackConfig *)self->_config widgets];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  widgets = [(ATXHomeScreenStackConfig *)self->_config widgets];
+  v6 = [widgets countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -447,14 +447,14 @@ LABEL_21:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(widgets);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         if (([v10 isSuggestedWidget] & 1) == 0)
         {
-          v11 = [v10 appBundleId];
-          v12 = [v11 isEqualToString:v4];
+          appBundleId = [v10 appBundleId];
+          v12 = [appBundleId isEqualToString:appCopy];
 
           if (v12)
           {
@@ -465,7 +465,7 @@ LABEL_21:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [widgets countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -475,17 +475,17 @@ LABEL_21:
     }
   }
 
-  v13 = [(_ATXHomeScreenStackState *)self containsSuggestedWidgetForApp:v4];
+  v13 = [(_ATXHomeScreenStackState *)self containsSuggestedWidgetForApp:appCopy];
 LABEL_12:
 
   v14 = *MEMORY[0x277D85DE8];
   return v13;
 }
 
-- (BOOL)containsSuggestedWidgetForApp:(id)a3
+- (BOOL)containsSuggestedWidgetForApp:(id)app
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appCopy = app;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -504,9 +504,9 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) widget];
-        v10 = [v9 appBundleId];
-        v11 = [v10 isEqualToString:v4];
+        widget = [*(*(&v14 + 1) + 8 * i) widget];
+        appBundleId = [widget appBundleId];
+        v11 = [appBundleId isEqualToString:appCopy];
 
         if (v11)
         {
@@ -531,22 +531,22 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)topWidgetIsShowingIdenticalContentOfSuggestion:(id)a3 ignoreDuplicatesInSGWidget:(BOOL)a4 ignoreDuplicatesInPanels:(BOOL)a5
+- (BOOL)topWidgetIsShowingIdenticalContentOfSuggestion:(id)suggestion ignoreDuplicatesInSGWidget:(BOOL)widget ignoreDuplicatesInPanels:(BOOL)panels
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  panelsCopy = panels;
+  widgetCopy = widget;
+  suggestionCopy = suggestion;
   if (([(ATXHomeScreenStackConfig *)self->_config allowsSmartRotate]& 1) == 0 && ([(ATXHomeScreenStackConfig *)self->_config allowsNewWidget]& 1) == 0 && ([(ATXHomeScreenStackConfig *)self->_config isPinnedSuggestionsWidget]& 1) == 0 && ![(ATXHomeScreenStackConfig *)self->_config isAppPredictionPanel])
   {
-    v11 = [(_ATXHomeScreenStackState *)self previousTopWidgetWasShowingIdenticalContentOfSuggestion:v8];
+    v11 = [(_ATXHomeScreenStackState *)self previousTopWidgetWasShowingIdenticalContentOfSuggestion:suggestionCopy];
     goto LABEL_11;
   }
 
-  if (!v5 || ([(ATXHomeScreenStackConfig *)self->_config isAppPredictionPanel]& 1) == 0)
+  if (!panelsCopy || ([(ATXHomeScreenStackConfig *)self->_config isAppPredictionPanel]& 1) == 0)
   {
-    if (!v6 || (topOfStackSuggestion = self->_topOfStackSuggestion, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (!widgetCopy || (topOfStackSuggestion = self->_topOfStackSuggestion, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v11 = [(_ATXWidgetSuggesting *)self->_topOfStackSuggestion containsIdenticalContentOfSuggestion:v8];
+      v11 = [(_ATXWidgetSuggesting *)self->_topOfStackSuggestion containsIdenticalContentOfSuggestion:suggestionCopy];
 LABEL_11:
       v10 = v11;
       goto LABEL_12;
@@ -559,31 +559,31 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)previousTopWidgetWasShowingIdenticalContentOfSuggestion:(id)a3
+- (BOOL)previousTopWidgetWasShowingIdenticalContentOfSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   if (([(ATXHomeScreenStackConfig *)self->_config isPinnedSuggestionsWidget]& 1) != 0 || [(ATXHomeScreenStackConfig *)self->_config isAppPredictionPanel])
   {
-    v5 = [(_ATXWidgetSuggesting *)self->_previousTopOfStackSuggestion containsIdenticalContentOfSuggestion:v4];
+    v5 = [(_ATXWidgetSuggesting *)self->_previousTopOfStackSuggestion containsIdenticalContentOfSuggestion:suggestionCopy];
   }
 
   else
   {
-    v6 = [(_ATXHomeScreenStackState *)self previousTopWidget];
-    v7 = v6;
-    if (v6)
+    previousTopWidget = [(_ATXHomeScreenStackState *)self previousTopWidget];
+    v7 = previousTopWidget;
+    if (previousTopWidget)
     {
-      v8 = [v6 extensionBundleId];
-      v9 = [v8 isEqualToString:*MEMORY[0x277CEBBA0]];
+      extensionBundleId = [previousTopWidget extensionBundleId];
+      v9 = [extensionBundleId isEqualToString:*MEMORY[0x277CEBBA0]];
 
       if (v9)
       {
-        v10 = [(_ATXWidgetSuggesting *)self->_previousTopOfStackSuggestion containsIdenticalContentOfSuggestion:v4];
+        v10 = [(_ATXWidgetSuggesting *)self->_previousTopOfStackSuggestion containsIdenticalContentOfSuggestion:suggestionCopy];
       }
 
       else
       {
-        v10 = [(ATXSuggestionDeduplicatorProtocol *)self->_suggestionDeduplicator isWidget:v7 showingIdenticalContentOfSuggestion:v4];
+        v10 = [(ATXSuggestionDeduplicatorProtocol *)self->_suggestionDeduplicator isWidget:v7 showingIdenticalContentOfSuggestion:suggestionCopy];
       }
 
       v5 = v10;
@@ -598,10 +598,10 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)previousSuggestedWidgetsContainIdenticalContentOfSuggestion:(id)a3
+- (BOOL)previousSuggestedWidgetsContainIdenticalContentOfSuggestion:(id)suggestion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionCopy = suggestion;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -620,7 +620,7 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) containsIdenticalContentOfSuggestion:{v4, v11}])
+        if ([*(*(&v11 + 1) + 8 * i) containsIdenticalContentOfSuggestion:{suggestionCopy, v11}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -643,42 +643,42 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)sizeIsCompatibleWithWidgetSuggestion:(id)a3
+- (BOOL)sizeIsCompatibleWithWidgetSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [(ATXHomeScreenStackConfig *)self->_config stackLayoutSize];
+  suggestionCopy = suggestion;
+  stackLayoutSize = [(ATXHomeScreenStackConfig *)self->_config stackLayoutSize];
   v6 = 0;
-  if (v5 <= 1)
+  if (stackLayoutSize <= 1)
   {
-    if (!v5)
+    if (!stackLayoutSize)
     {
       v7 = 3;
       goto LABEL_12;
     }
 
-    if (v5 == 1)
+    if (stackLayoutSize == 1)
     {
       v7 = 4;
       goto LABEL_12;
     }
 
 LABEL_13:
-    v9 = [v4 uiSpecification];
-    v10 = [v9 preferredLayoutConfigs];
-    v8 = [v10 containsObject:v6];
+    uiSpecification = [suggestionCopy uiSpecification];
+    preferredLayoutConfigs = [uiSpecification preferredLayoutConfigs];
+    v8 = [preferredLayoutConfigs containsObject:v6];
 
     goto LABEL_14;
   }
 
-  if (v5 == 2)
+  if (stackLayoutSize == 2)
   {
     v7 = 6;
     goto LABEL_12;
   }
 
-  if (v5 != 3)
+  if (stackLayoutSize != 3)
   {
-    if (v5 == 4)
+    if (stackLayoutSize == 4)
     {
       v7 = 7;
 LABEL_12:
@@ -695,23 +695,23 @@ LABEL_14:
   return v8;
 }
 
-- (id)_previousSuggestionForMemberWidget:(id)a3
+- (id)_previousSuggestionForMemberWidget:(id)widget
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  widgetCopy = widget;
+  v5 = widgetCopy;
+  if (!widgetCopy)
   {
     v12 = 0;
     goto LABEL_19;
   }
 
-  v6 = [v4 extensionBundleId];
-  v7 = [v6 isEqualToString:*MEMORY[0x277CEB1C0]];
+  extensionBundleId = [widgetCopy extensionBundleId];
+  v7 = [extensionBundleId isEqualToString:*MEMORY[0x277CEB1C0]];
 
   if (!v7)
   {
-    v13 = [v5 extensionBundleId];
-    v14 = [v13 isEqualToString:*MEMORY[0x277CEBBA0]];
+    extensionBundleId2 = [v5 extensionBundleId];
+    v14 = [extensionBundleId2 isEqualToString:*MEMORY[0x277CEBBA0]];
 
     if (!v14)
     {
@@ -719,9 +719,9 @@ LABEL_14:
       goto LABEL_19;
     }
 
-    v15 = [(ATXStackStateTracker *)self->_stackStateTracker currentSuggestionsWidgetLayouts];
-    v16 = [v5 widgetUniqueId];
-    v10 = [v15 objectForKeyedSubscript:v16];
+    currentSuggestionsWidgetLayouts = [(ATXStackStateTracker *)self->_stackStateTracker currentSuggestionsWidgetLayouts];
+    widgetUniqueId = [v5 widgetUniqueId];
+    v10 = [currentSuggestionsWidgetLayouts objectForKeyedSubscript:widgetUniqueId];
 
     if (v10)
     {
@@ -740,9 +740,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v8 = [(ATXStackStateTracker *)self->_stackStateTracker currentAppPredictionPanelLayouts];
-  v9 = [(ATXHomeScreenStackConfig *)self->_config identifier];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  currentAppPredictionPanelLayouts = [(ATXStackStateTracker *)self->_stackStateTracker currentAppPredictionPanelLayouts];
+  identifier = [(ATXHomeScreenStackConfig *)self->_config identifier];
+  v10 = [currentAppPredictionPanelLayouts objectForKeyedSubscript:identifier];
 
   if (!v10)
   {
@@ -765,17 +765,17 @@ LABEL_19:
   return v12;
 }
 
-- (id)_firstWidgetPassingTest:(id)a3 considerSuggestedWidgets:(BOOL)a4
+- (id)_firstWidgetPassingTest:(id)test considerSuggestedWidgets:(BOOL)widgets
 {
-  v4 = a4;
+  widgetsCopy = widgets;
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  testCopy = test;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [(ATXHomeScreenStackConfig *)self->_config widgets];
-  v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  widgets = [(ATXHomeScreenStackConfig *)self->_config widgets];
+  v8 = [(NSMutableArray *)widgets countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -786,20 +786,20 @@ LABEL_19:
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(widgets);
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        if ([v12 isSuggestedWidget] & 1) == 0 && (v6[2](v6, v12))
+        if ([v12 isSuggestedWidget] & 1) == 0 && (testCopy[2](testCopy, v12))
         {
-          v19 = v12;
+          widget2 = v12;
 LABEL_21:
-          v13 = v19;
+          v13 = widget2;
           goto LABEL_22;
         }
       }
 
-      v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v9 = [(NSMutableArray *)widgets countByEnumeratingWithState:&v26 objects:v31 count:16];
       if (v9)
       {
         continue;
@@ -809,14 +809,14 @@ LABEL_21:
     }
   }
 
-  if (v4)
+  if (widgetsCopy)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = self->_suggestedWidgets;
-    v13 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+    widgets = self->_suggestedWidgets;
+    v13 = [(NSMutableArray *)widgets countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v13)
     {
       v14 = *v23;
@@ -826,21 +826,21 @@ LABEL_21:
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(widgets);
           }
 
           v16 = *(*(&v22 + 1) + 8 * j);
-          v17 = [v16 widget];
-          v18 = v6[2](v6, v17);
+          widget = [v16 widget];
+          v18 = testCopy[2](testCopy, widget);
 
           if (v18)
           {
-            v19 = [v16 widget];
+            widget2 = [v16 widget];
             goto LABEL_21;
           }
         }
 
-        v13 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v13 = [(NSMutableArray *)widgets countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v13)
         {
           continue;
@@ -873,11 +873,11 @@ LABEL_22:
 - (void)previousTopWidget
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = [*a1 identifier];
+  identifier = [*self identifier];
   v7 = 136315650;
   v8 = "[_ATXHomeScreenStackState previousTopWidget]";
   v9 = 2112;
-  v10 = v5;
+  v10 = identifier;
   v11 = 2112;
   v12 = a2;
   _os_log_error_impl(&dword_2263AA000, a3, OS_LOG_TYPE_ERROR, "%s: Unable to find previous top widget for stack %@ (stackStateTracker returned topWidgetUniqueId %@)", &v7, 0x20u);

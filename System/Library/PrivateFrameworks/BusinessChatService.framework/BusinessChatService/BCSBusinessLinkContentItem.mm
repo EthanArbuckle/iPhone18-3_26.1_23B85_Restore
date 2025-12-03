@@ -4,27 +4,27 @@
 - (NSString)language;
 - (NSString)subtitle;
 - (NSString)title;
-- (id)initWithBusinessLinkContentItemModel:(id *)a1;
+- (id)initWithBusinessLinkContentItemModel:(id *)model;
 @end
 
 @implementation BCSBusinessLinkContentItem
 
-- (id)initWithBusinessLinkContentItemModel:(id *)a1
+- (id)initWithBusinessLinkContentItemModel:(id *)model
 {
   v4 = a2;
-  if (a1)
+  if (model)
   {
-    v7.receiver = a1;
+    v7.receiver = model;
     v7.super_class = BCSBusinessLinkContentItem;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    model = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return model;
 }
 
 - (NSString)description
@@ -42,9 +42,9 @@
   }
 
   v6 = [v3 appendObject:businessLinkContentItemModel withName:@"businessLinkContentItemModel"];
-  v7 = [v4 build];
+  build = [v4 build];
 
-  return v7;
+  return build;
 }
 
 - (BOOL)isDefault

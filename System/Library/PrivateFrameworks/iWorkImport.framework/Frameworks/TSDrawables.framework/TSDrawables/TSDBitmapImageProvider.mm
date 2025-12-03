@@ -1,25 +1,25 @@
 @interface TSDBitmapImageProvider
-+ (CGImage)CGImageForImageData:(id)a3 renderingConfiguration:(id)a4;
-+ (CGSize)naturalSizeForImageData:(id)a3;
-+ (id)TSUImageForImageData:(id)a3 renderingConfiguration:(id)a4;
++ (CGImage)CGImageForImageData:(id)data renderingConfiguration:(id)configuration;
++ (CGSize)naturalSizeForImageData:(id)data;
++ (id)TSUImageForImageData:(id)data renderingConfiguration:(id)configuration;
 - (BOOL)hasHDRGainMap;
 - (BOOL)i_hasFlushableContent;
 - (BOOL)isOpaque;
 - (BOOL)isValid;
 - (BOOL)p_shouldScaleRetinaImages;
 - (BOOL)prefersHDRRendering;
-- (CGImage)CGImageForNaturalSizeWithRenderingConfiguration:(id)a3;
-- (CGImage)CGImageForSize:(CGSize)a3 withRenderingConfiguration:(id)a4;
+- (CGImage)CGImageForNaturalSizeWithRenderingConfiguration:(id)configuration;
+- (CGImage)CGImageForSize:(CGSize)size withRenderingConfiguration:(id)configuration;
 - (CGImage)CGImageOfAnySizeAndConfiguration;
-- (CGImage)CGImageOfAnySizeWithRenderingConfiguration:(id)a3;
-- (CGImage)CGImageOfLargestSafeSizeWithRenderingConfiguration:(id)a3;
-- (CGImage)CGImageResampledToSize:(CGSize)a3 lowQuality:(BOOL)a4;
-- (CGImage)CGImageResampledToSize:(CGSize)a3 renderingConfiguration:(id)a4;
-- (CGImage)p_createResampledImageWithReciprocalScale:(unint64_t)a3 renderingConfiguration:(id)a4;
-- (CGImage)p_newImageFromSource:(CGImageSource *)a3 renderingConfiguration:(id)a4;
-- (CGImage)p_newImageOfSize:(CGSize)a3 fromSource:(CGImageSource *)a4 renderingConfiguration:(id)a5;
-- (CGImage)p_resampledImageOfReciprocalScale:(unint64_t)a3 renderingConfiguration:(id)a4;
-- (CGImage)p_smallestImagePossibleWithRenderingConfiguration:(id)a3;
+- (CGImage)CGImageOfAnySizeWithRenderingConfiguration:(id)configuration;
+- (CGImage)CGImageOfLargestSafeSizeWithRenderingConfiguration:(id)configuration;
+- (CGImage)CGImageResampledToSize:(CGSize)size lowQuality:(BOOL)quality;
+- (CGImage)CGImageResampledToSize:(CGSize)size renderingConfiguration:(id)configuration;
+- (CGImage)p_createResampledImageWithReciprocalScale:(unint64_t)scale renderingConfiguration:(id)configuration;
+- (CGImage)p_newImageFromSource:(CGImageSource *)source renderingConfiguration:(id)configuration;
+- (CGImage)p_newImageOfSize:(CGSize)size fromSource:(CGImageSource *)source renderingConfiguration:(id)configuration;
+- (CGImage)p_resampledImageOfReciprocalScale:(unint64_t)scale renderingConfiguration:(id)configuration;
+- (CGImage)p_smallestImagePossibleWithRenderingConfiguration:(id)configuration;
 - (CGImageSource)CGImageSource;
 - (CGImageSource)p_newCGImageSource;
 - (CGImageSource)p_newCGImageSourceForTemporaryUse;
@@ -27,41 +27,41 @@
 - (CGSize)dpiAdjustedNaturalSize;
 - (CGSize)naturalSize;
 - (int64_t)orientation;
-- (int64_t)p_reciprocalScaleForImageSize:(CGSize)a3;
+- (int64_t)p_reciprocalScaleForImageSize:(CGSize)size;
 - (unint64_t)imageDPI;
 - (unint64_t)imageGamut;
 - (void)dealloc;
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4;
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect;
 - (void)flush;
 - (void)i_commonInit;
-- (void)p_configureOrientationAndSizeFromImageSource:(CGImageSource *)a3 andImage:(CGImage *)a4;
-- (void)p_configureRawBehaviorFromImageSource:(CGImageSource *)a3;
+- (void)p_configureOrientationAndSizeFromImageSource:(CGImageSource *)source andImage:(CGImage *)image;
+- (void)p_configureRawBehaviorFromImageSource:(CGImageSource *)source;
 - (void)p_flush;
-- (void)p_loadFullSizedImageIfNecessaryWithRenderingConfiguration:(id)a3;
-- (void)p_loadLargestSafeImageIfNecessaryWithRenderingConfiguration:(id)a3;
+- (void)p_loadFullSizedImageIfNecessaryWithRenderingConfiguration:(id)configuration;
+- (void)p_loadLargestSafeImageIfNecessaryWithRenderingConfiguration:(id)configuration;
 - (void)p_loadSourceRefIfNecessary;
 - (void)p_updateEstimatedSize;
 @end
 
 @implementation TSDBitmapImageProvider
 
-+ (CGImage)CGImageForImageData:(id)a3 renderingConfiguration:(id)a4
++ (CGImage)CGImageForImageData:(id)data renderingConfiguration:(id)configuration
 {
-  v5 = a4;
-  v6 = a3;
+  configurationCopy = configuration;
+  dataCopy = data;
   objc_opt_class();
   v9 = objc_msgSend_sharedPool(TSDImageProviderPool, v7, v8);
-  v11 = objc_msgSend_temporaryProviderForData_shouldValidate_(v9, v10, v6, 1);
+  v11 = objc_msgSend_temporaryProviderForData_shouldValidate_(v9, v10, dataCopy, 1);
 
   v12 = TSUDynamicCast();
 
-  v14 = objc_msgSend_CGImageForNaturalSizeWithRenderingConfiguration_(v12, v13, v5);
+  v14 = objc_msgSend_CGImageForNaturalSizeWithRenderingConfiguration_(v12, v13, configurationCopy);
   return v14;
 }
 
-+ (id)TSUImageForImageData:(id)a3 renderingConfiguration:(id)a4
++ (id)TSUImageForImageData:(id)data renderingConfiguration:(id)configuration
 {
-  v4 = objc_msgSend_CGImageForImageData_renderingConfiguration_(a1, a2, a3, a4);
+  v4 = objc_msgSend_CGImageForImageData_renderingConfiguration_(self, a2, data, configuration);
   if (v4)
   {
     v4 = objc_msgSend_imageWithCGImage_(MEMORY[0x277D811F8], v5, v4);
@@ -70,12 +70,12 @@
   return v4;
 }
 
-+ (CGSize)naturalSizeForImageData:(id)a3
++ (CGSize)naturalSizeForImageData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
   v6 = objc_msgSend_sharedPool(TSDImageProviderPool, v4, v5);
-  v8 = objc_msgSend_temporaryProviderForData_shouldValidate_(v6, v7, v3, 1);
+  v8 = objc_msgSend_temporaryProviderForData_shouldValidate_(v6, v7, dataCopy, 1);
 
   v9 = TSUDynamicCast();
 
@@ -186,13 +186,13 @@
   return self->mIsValid;
 }
 
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if ((objc_msgSend_isValid(self, a2, a3) & 1) == 0)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if ((objc_msgSend_isValid(self, a2, context) & 1) == 0)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSDBitmapImageProvider drawImageInContext:rect:]");
@@ -205,12 +205,12 @@
   if (objc_msgSend_isValid(self, v10, v11))
   {
     v19 = [TSDImageRenderingConfiguration alloc];
-    v21 = objc_msgSend_initWithCGContext_(v19, v20, a3);
+    v21 = objc_msgSend_initWithCGContext_(v19, v20, context);
     v23 = objc_msgSend_CGImageForSize_withRenderingConfiguration_(self, v22, v21, width, height);
     if (v23)
     {
       v24 = v23;
-      CGContextSaveGState(a3);
+      CGContextSaveGState(context);
       v33.origin.x = x;
       v33.origin.y = y;
       v33.size.width = width;
@@ -221,26 +221,26 @@
       v34.size.width = width;
       v34.size.height = height;
       MaxY = CGRectGetMaxY(v34);
-      CGContextTranslateCTM(a3, 0.0, MinY + MaxY);
-      CGContextScaleCTM(a3, 1.0, -1.0);
-      v29 = TSDCGContextGetBitmapQualityInfo(a3);
+      CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+      CGContextScaleCTM(context, 1.0, -1.0);
+      v29 = TSDCGContextGetBitmapQualityInfo(context);
       if (!v29)
       {
         objc_msgSend_orientation(self, v27, v28);
         TSUImageOrientationTransform();
-        CGContextConcatCTM(a3, &v32);
+        CGContextConcatCTM(context, &v32);
       }
 
-      TSDCGContextDrawImageRecordingMaxHeadroom(a3, v24, x, y, width, height);
+      TSDCGContextDrawImageRecordingMaxHeadroom(context, v24, x, y, width, height);
       if (objc_msgSend_prefersHDRRendering(self, v30, v31))
       {
         if ((TSUCGImageWantsHDRRendering() & 1) == 0)
         {
-          TSDCGContextMarkTonemappedHDRContentToSDR(a3, 1);
+          TSDCGContextMarkTonemappedHDRContentToSDR(context, 1);
         }
       }
 
-      CGContextRestoreGState(a3);
+      CGContextRestoreGState(context);
     }
   }
 }
@@ -298,9 +298,9 @@
   return v7;
 }
 
-- (CGImage)CGImageOfAnySizeWithRenderingConfiguration:(id)a3
+- (CGImage)CGImageOfAnySizeWithRenderingConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if (objc_msgSend_isValid(self, v5, v6))
   {
     v33 = 0;
@@ -312,9 +312,9 @@
     block[1] = 3221225472;
     block[2] = sub_2767765B4;
     block[3] = &unk_27A6CC8A8;
-    v9 = v4;
+    v9 = configurationCopy;
     v30 = v9;
-    v31 = self;
+    selfCopy = self;
     v32 = &v33;
     dispatch_sync(mImageQueue, block);
     v11 = v34[3];
@@ -351,9 +351,9 @@
   return v12;
 }
 
-- (CGImage)CGImageOfLargestSafeSizeWithRenderingConfiguration:(id)a3
+- (CGImage)CGImageOfLargestSafeSizeWithRenderingConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if (objc_msgSend_isValid(self, v5, v6))
   {
     v8 = TSDPlatformRisksMemoryCrashFromLargeImages();
@@ -364,14 +364,14 @@
       v35 = &v34;
       v36 = 0x2020000000;
       v37 = 0;
-      objc_msgSend_p_loadLargestSafeImageIfNecessaryWithRenderingConfiguration_(self, v11, v4);
+      objc_msgSend_p_loadLargestSafeImageIfNecessaryWithRenderingConfiguration_(self, v11, configurationCopy);
       mImageQueue = self->mImageQueue;
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = sub_2767769B8;
       v30[3] = &unk_27A6CDB30;
       v15 = v31;
-      v16 = v4;
+      v16 = configurationCopy;
       v31[1] = self;
       v31[2] = &v34;
       v31[0] = v16;
@@ -389,14 +389,14 @@
       v35 = &v34;
       v36 = 0x2020000000;
       v37 = 0;
-      objc_msgSend_p_loadFullSizedImageIfNecessaryWithRenderingConfiguration_(self, v11, v4);
+      objc_msgSend_p_loadFullSizedImageIfNecessaryWithRenderingConfiguration_(self, v11, configurationCopy);
       v26 = self->mImageQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = sub_276776948;
       block[3] = &unk_27A6CDB30;
       v15 = v33;
-      v27 = v4;
+      v27 = configurationCopy;
       v33[1] = self;
       v33[2] = &v34;
       v33[0] = v27;
@@ -426,12 +426,12 @@
   return v25;
 }
 
-- (CGImage)CGImageForNaturalSizeWithRenderingConfiguration:(id)a3
+- (CGImage)CGImageForNaturalSizeWithRenderingConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if (objc_msgSend_isValid(self, v5, v6))
   {
-    objc_msgSend_p_loadFullSizedImageIfNecessaryWithRenderingConfiguration_(self, v7, v4);
+    objc_msgSend_p_loadFullSizedImageIfNecessaryWithRenderingConfiguration_(self, v7, configurationCopy);
     v23 = 0;
     v24 = &v23;
     v25 = 0x2020000000;
@@ -441,9 +441,9 @@
     block[1] = 3221225472;
     block[2] = sub_276776BC4;
     block[3] = &unk_27A6CDB30;
-    v21 = self;
+    selfCopy = self;
     v22 = &v23;
-    v20 = v4;
+    v20 = configurationCopy;
     dispatch_sync(mImageQueue, block);
     v9 = v24[3];
     if (v9)
@@ -474,22 +474,22 @@
   return v10;
 }
 
-- (CGImage)CGImageForSize:(CGSize)a3 withRenderingConfiguration:(id)a4
+- (CGImage)CGImageForSize:(CGSize)size withRenderingConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   if (objc_msgSend_isValid(self, v6, v7))
   {
     objc_msgSend_p_loadImageMetadata(self, v8, v9);
-    v12 = objc_msgSend_qualityInfo(v5, v10, v11);
-    if (((objc_msgSend_isForPrinting(v5, v13, v14) & 1) != 0 || objc_msgSend_isForPDF(v5, v15, v16)) && !v12)
+    v12 = objc_msgSend_qualityInfo(configurationCopy, v10, v11);
+    if (((objc_msgSend_isForPrinting(configurationCopy, v13, v14) & 1) != 0 || objc_msgSend_isForPDF(configurationCopy, v15, v16)) && !v12)
     {
-      v25 = objc_msgSend_CGImageOfLargestSafeSizeWithRenderingConfiguration_(self, v15, v5);
+      v25 = objc_msgSend_CGImageOfLargestSafeSizeWithRenderingConfiguration_(self, v15, configurationCopy);
       goto LABEL_10;
     }
 
-    objc_msgSend_contentsScale(v5, v15, v16);
+    objc_msgSend_contentsScale(configurationCopy, v15, v16);
     TSUMultiplySizeScalar();
-    objc_msgSend_additionalScale(v5, v17, v18);
+    objc_msgSend_additionalScale(configurationCopy, v17, v18);
     TSUMultiplySizeScalar();
     v22 = v21;
     v24 = v23;
@@ -531,15 +531,15 @@ LABEL_22:
     v49 = 0;
     if (v36 < 2)
     {
-      objc_msgSend_p_loadFullSizedImageIfNecessaryWithRenderingConfiguration_(self, v35, v5);
+      objc_msgSend_p_loadFullSizedImageIfNecessaryWithRenderingConfiguration_(self, v35, configurationCopy);
       mImageQueue = self->mImageQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = sub_276776F88;
       block[3] = &unk_27A6CDB30;
-      v44 = self;
+      selfCopy = self;
       v45 = &v46;
-      v43 = v5;
+      v43 = configurationCopy;
       dispatch_sync(mImageQueue, block);
       v39 = v47[3];
       if (v39)
@@ -550,7 +550,7 @@ LABEL_22:
 
     else
     {
-      v37 = objc_msgSend_p_resampledImageOfReciprocalScale_renderingConfiguration_(self, v35, v36, v5);
+      v37 = objc_msgSend_p_resampledImageOfReciprocalScale_renderingConfiguration_(self, v35, v36, configurationCopy);
       v47[3] = v37;
     }
 
@@ -576,10 +576,10 @@ LABEL_23:
   return v33;
 }
 
-- (int64_t)p_reciprocalScaleForImageSize:(CGSize)a3
+- (int64_t)p_reciprocalScaleForImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   objc_msgSend_naturalSize(self, a2, v3);
   v7 = v6;
   v9 = v8;
@@ -656,11 +656,11 @@ LABEL_23:
   return v17;
 }
 
-- (CGImage)CGImageResampledToSize:(CGSize)a3 lowQuality:(BOOL)a4
+- (CGImage)CGImageResampledToSize:(CGSize)size lowQuality:(BOOL)quality
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = !a4;
+  height = size.height;
+  width = size.width;
+  v7 = !quality;
   v8 = [TSDBitmapRenderingQualityInfo alloc];
   v10 = objc_msgSend_initWithQuality_canvasScale_(v8, v9, v7, 1.0);
   v11 = [TSDImageRenderingConfiguration alloc];
@@ -670,11 +670,11 @@ LABEL_23:
   return v15;
 }
 
-- (CGImage)CGImageResampledToSize:(CGSize)a3 renderingConfiguration:(id)a4
+- (CGImage)CGImageResampledToSize:(CGSize)size renderingConfiguration:(id)configuration
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  configurationCopy = configuration;
   objc_msgSend_naturalSize(self, v8, v9);
   v11 = v10;
   v13 = v12;
@@ -715,11 +715,11 @@ LABEL_23:
   v26 = ceilf(v25);
   v27 = objc_msgSend_imageData(self, v19, v20);
   v30 = objc_msgSend_context(v27, v28, v29);
-  v33 = objc_msgSend_qualityInfo(v7, v31, v32);
+  v33 = objc_msgSend_qualityInfo(configurationCopy, v31, v32);
   if (v33)
   {
     v36 = v33;
-    v37 = objc_msgSend_qualityInfo(v7, v34, v35);
+    v37 = objc_msgSend_qualityInfo(configurationCopy, v34, v35);
     v40 = objc_msgSend_quality(v37, v38, v39);
 
     if (v40)
@@ -753,9 +753,9 @@ LABEL_16:
   return v48;
 }
 
-- (CGImage)p_createResampledImageWithReciprocalScale:(unint64_t)a3 renderingConfiguration:(id)a4
+- (CGImage)p_createResampledImageWithReciprocalScale:(unint64_t)scale renderingConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   objc_msgSend_naturalSize(self, v6, v7);
   TSUMultiplySizeScalar();
   v11 = v10;
@@ -766,7 +766,7 @@ LABEL_16:
   }
 
   v14 = objc_msgSend_p_newCGImageSourceForTemporaryUse(self, v8, v9);
-  v16 = objc_msgSend_p_newImageOfSize_fromSource_renderingConfiguration_(self, v15, v14, v5, v11, v13);
+  v16 = objc_msgSend_p_newImageOfSize_fromSource_renderingConfiguration_(self, v15, v14, configurationCopy, v11, v13);
 
   CFRelease(v14);
   if (v16)
@@ -777,9 +777,9 @@ LABEL_16:
   return v16;
 }
 
-- (CGImage)p_resampledImageOfReciprocalScale:(unint64_t)a3 renderingConfiguration:(id)a4
+- (CGImage)p_resampledImageOfReciprocalScale:(unint64_t)scale renderingConfiguration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -792,18 +792,18 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = sub_2767778E4;
   block[3] = &unk_27A6CDBA8;
-  v12 = v6;
+  v12 = configurationCopy;
   v31 = v12;
-  v32 = self;
+  selfCopy = self;
   v33 = &v35;
-  v34 = a3;
+  scaleCopy = scale;
   dispatch_sync(mImageQueue, block);
   v14 = v36[3];
   if (!v14 || (CFAutorelease(v14), (v15 = v36[3]) == 0))
   {
-    ResampledImageWithReciprocalScale_renderingConfiguration = objc_msgSend_p_createResampledImageWithReciprocalScale_renderingConfiguration_(self, v13, a3, v12);
+    ResampledImageWithReciprocalScale_renderingConfiguration = objc_msgSend_p_createResampledImageWithReciprocalScale_renderingConfiguration_(self, v13, scale, v12);
     v36[3] = ResampledImageWithReciprocalScale_renderingConfiguration;
-    if (!ResampledImageWithReciprocalScale_renderingConfiguration || (objc_msgSend_imageWithCGImage_(MEMORY[0x277D811F8], v16, ResampledImageWithReciprocalScale_renderingConfiguration), v18 = objc_claimAutoreleasedReturnValue(), v19 = self->mImageQueue, v22 = MEMORY[0x277D85DD0], v23 = 3221225472, v24 = sub_2767779FC, v25 = &unk_27A6CDBD0, v26 = v12, v27 = self, v28 = v18, v29 = a3, v20 = v18, dispatch_async(v19, &v22), v28, v26, v20, (v15 = v36[3]) == 0))
+    if (!ResampledImageWithReciprocalScale_renderingConfiguration || (objc_msgSend_imageWithCGImage_(MEMORY[0x277D811F8], v16, ResampledImageWithReciprocalScale_renderingConfiguration), v18 = objc_claimAutoreleasedReturnValue(), v19 = self->mImageQueue, v22 = MEMORY[0x277D85DD0], v23 = 3221225472, v24 = sub_2767779FC, v25 = &unk_27A6CDBD0, v26 = v12, v27 = self, v28 = v18, v29 = scale, v20 = v18, dispatch_async(v19, &v22), v28, v26, v20, (v15 = v36[3]) == 0))
     {
       v15 = objc_msgSend_CGImageOfLargestSafeSizeWithRenderingConfiguration_(self, v16, v12, v22, v23, v24, v25);
       v36[3] = v15;
@@ -836,23 +836,23 @@ LABEL_16:
 
 - (BOOL)isOpaque
 {
-  v3 = self;
+  selfCopy = self;
   objc_msgSend_p_loadImageMetadata(self, a2, v2);
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  mImageQueue = v3->mImageQueue;
+  mImageQueue = selfCopy->mImageQueue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_276777CB8;
   v6[3] = &unk_27A6CCAC0;
-  v6[4] = v3;
+  v6[4] = selfCopy;
   v6[5] = &v7;
   dispatch_sync(mImageQueue, v6);
-  LOBYTE(v3) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return selfCopy;
 }
 
 - (unint64_t)imageGamut
@@ -1326,9 +1326,9 @@ LABEL_6:
   self->mEstimatedSize = v6;
 }
 
-- (CGImage)p_smallestImagePossibleWithRenderingConfiguration:(id)a3
+- (CGImage)p_smallestImagePossibleWithRenderingConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -1337,21 +1337,21 @@ LABEL_6:
   if (v10 > 100.0 || v9 > 100.0)
   {
     v12 = objc_msgSend_p_reciprocalScaleForImageSize_(self, v7, v8, 100.0, 100.0);
-    v14 = objc_msgSend_p_resampledImageOfReciprocalScale_renderingConfiguration_(self, v13, v12, v4);
+    v14 = objc_msgSend_p_resampledImageOfReciprocalScale_renderingConfiguration_(self, v13, v12, configurationCopy);
     v23[3] = v14;
   }
 
   else
   {
-    objc_msgSend_p_loadFullSizedImageIfNecessaryWithRenderingConfiguration_(self, v7, v4);
+    objc_msgSend_p_loadFullSizedImageIfNecessaryWithRenderingConfiguration_(self, v7, configurationCopy);
     mImageQueue = self->mImageQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_276778E6C;
     block[3] = &unk_27A6CDB30;
-    v20 = self;
+    selfCopy = self;
     v21 = &v22;
-    v19 = v4;
+    v19 = configurationCopy;
     dispatch_sync(mImageQueue, block);
     v16 = v23[3];
     if (v16)
@@ -1367,9 +1367,9 @@ LABEL_6:
   return v14;
 }
 
-- (void)p_loadFullSizedImageIfNecessaryWithRenderingConfiguration:(id)a3
+- (void)p_loadFullSizedImageIfNecessaryWithRenderingConfiguration:(id)configuration
 {
-  v6 = a3;
+  configurationCopy = configuration;
   if (qword_280A4CEF8 != -1)
   {
     sub_27680E518();
@@ -1384,14 +1384,14 @@ LABEL_6:
   v11[2] = sub_276779000;
   v11[3] = &unk_27A6CCBD8;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
+  v12 = configurationCopy;
+  v10 = configurationCopy;
   dispatch_async(mImageQueue, v11);
 }
 
-- (void)p_loadLargestSafeImageIfNecessaryWithRenderingConfiguration:(id)a3
+- (void)p_loadLargestSafeImageIfNecessaryWithRenderingConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   objc_msgSend_naturalSize(self, v5, v6);
   if (qword_280A4CEF8 != -1)
   {
@@ -1410,10 +1410,10 @@ LABEL_6:
   v15[2] = sub_276779370;
   v15[3] = &unk_27A6CDC20;
   v15[4] = self;
-  v16 = v4;
+  v16 = configurationCopy;
   v17 = v12;
   v18 = v13;
-  v14 = v4;
+  v14 = configurationCopy;
   dispatch_async(mImageQueue, v15);
 }
 
@@ -1436,16 +1436,16 @@ LABEL_6:
   return v6;
 }
 
-- (CGImage)p_newImageFromSource:(CGImageSource *)a3 renderingConfiguration:(id)a4
+- (CGImage)p_newImageFromSource:(CGImageSource *)source renderingConfiguration:(id)configuration
 {
-  v4 = a3;
+  sourceCopy = source;
   v30[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (source)
   {
     v6 = MEMORY[0x277CBEB38];
-    v7 = a4;
+    configurationCopy = configuration;
     v10 = objc_msgSend_dictionary(v6, v8, v9);
-    v13 = objc_msgSend_wantsHDR(v7, v11, v12);
+    v13 = objc_msgSend_wantsHDR(configurationCopy, v11, v12);
 
     v15 = *MEMORY[0x277CD3580];
     if (v13)
@@ -1463,13 +1463,13 @@ LABEL_6:
       objc_msgSend_setObject_forKeyedSubscript_(v10, v14, *MEMORY[0x277CD3598], v15);
     }
 
-    if (self->mIsRawImage && ((mImageSource = self->mImageSource, mImageSource != v4) ? (v22 = mImageSource == 0) : (v22 = 1), v22))
+    if (self->mIsRawImage && ((mImageSource = self->mImageSource, mImageSource != sourceCopy) ? (v22 = mImageSource == 0) : (v22 = 1), v22))
     {
       v23 = MEMORY[0x277CBEC28];
       objc_msgSend_setObject_forKeyedSubscript_(v10, v20, MEMORY[0x277CBEC28], *MEMORY[0x277CD3568]);
       objc_msgSend_setObject_forKeyedSubscript_(v10, v24, v23, *MEMORY[0x277CD3570]);
       objc_msgSend_setObject_forKeyedSubscript_(v10, v25, &unk_28859C610, *MEMORY[0x277CD3660]);
-      ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(v4, 0, v10);
+      ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(sourceCopy, 0, v10);
     }
 
     else
@@ -1480,22 +1480,22 @@ LABEL_6:
       }
 
       objc_msgSend_setObject_forKeyedSubscript_(v10, v27, MEMORY[0x277CBEC28], *MEMORY[0x277CD3618]);
-      ThumbnailAtIndex = CGImageSourceCreateImageAtIndex(v4, 0, v10);
+      ThumbnailAtIndex = CGImageSourceCreateImageAtIndex(sourceCopy, 0, v10);
     }
 
-    v4 = ThumbnailAtIndex;
+    sourceCopy = ThumbnailAtIndex;
   }
 
-  return v4;
+  return sourceCopy;
 }
 
-- (void)p_configureOrientationAndSizeFromImageSource:(CGImageSource *)a3 andImage:(CGImage *)a4
+- (void)p_configureOrientationAndSizeFromImageSource:(CGImageSource *)source andImage:(CGImage *)image
 {
   v44[1] = *MEMORY[0x277D85DE8];
   if (TSDPlatformRisksMemoryCrashFromLargeImages())
   {
     v9 = objc_msgSend_imageData(self, v7, v8);
-    v10 = sub_276647270(v9, a3);
+    v10 = sub_276647270(v9, source);
 
     if (!v10)
     {
@@ -1506,7 +1506,7 @@ LABEL_6:
   v43 = *MEMORY[0x277CD3648];
   v44[0] = MEMORY[0x277CBEC38];
   v11 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v7, v44, &v43, 1);
-  v12 = CGImageSourceCopyPropertiesAtIndex(a3, 0, v11);
+  v12 = CGImageSourceCopyPropertiesAtIndex(source, 0, v11);
   if (v12)
   {
     v14 = v12;
@@ -1553,17 +1553,17 @@ LABEL_6:
     v18 = 0;
   }
 
-  if (!a4)
+  if (!image)
   {
     v31 = [TSDImageRenderingConfiguration alloc];
     inited = objc_msgSend_initWantsHDR_(v31, v32, 0);
-    a4 = objc_msgSend_p_newImageFromSource_renderingConfiguration_(self, v34, a3, inited);
+    image = objc_msgSend_p_newImageFromSource_renderingConfiguration_(self, v34, source, inited);
 
-    if (TSDPlatformRisksMemoryCrashFromLargeImages() && (Width = CGImageGetWidth(a4), v36 = CGImageGetHeight(a4) * Width, v36 > TSDMaxPixelAreaForiOSImages()))
+    if (TSDPlatformRisksMemoryCrashFromLargeImages() && (Width = CGImageGetWidth(image), v36 = CGImageGetHeight(image) * Width, v36 > TSDMaxPixelAreaForiOSImages()))
     {
-      if (a4)
+      if (image)
       {
-        CFAutorelease(a4);
+        CFAutorelease(image);
       }
     }
 
@@ -1575,13 +1575,13 @@ LABEL_6:
       block[2] = sub_276779CFC;
       block[3] = &unk_27A6CCCA0;
       block[4] = self;
-      block[5] = a4;
+      block[5] = image;
       dispatch_async(mImageQueue, block);
     }
   }
 
-  v23 = CGImageGetWidth(a4);
-  Height = CGImageGetHeight(a4);
+  v23 = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
 LABEL_22:
   if ((v18 - 1) > 7)
   {
@@ -1619,11 +1619,11 @@ LABEL_22:
   self->mNaturalSize.height = v41;
 }
 
-- (void)p_configureRawBehaviorFromImageSource:(CGImageSource *)a3
+- (void)p_configureRawBehaviorFromImageSource:(CGImageSource *)source
 {
-  if (a3)
+  if (source)
   {
-    Type = CGImageSourceGetType(a3);
+    Type = CGImageSourceGetType(source);
     v8 = objc_msgSend_identifier(*MEMORY[0x277CE1E48], v5, v6);
     self->mIsRawImage = objc_msgSend_tsu_conformsToUTI_(Type, v7, v8);
   }
@@ -1654,13 +1654,13 @@ LABEL_22:
   return v6;
 }
 
-- (CGImage)p_newImageOfSize:(CGSize)a3 fromSource:(CGImageSource *)a4 renderingConfiguration:(id)a5
+- (CGImage)p_newImageOfSize:(CGSize)size fromSource:(CGImageSource *)source renderingConfiguration:(id)configuration
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v40[1] = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  if (a4)
+  configurationCopy = configuration;
+  if (source)
   {
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v12 = MEMORY[0x277CBEC28];
@@ -1682,7 +1682,7 @@ LABEL_22:
       objc_msgSend_setObject_forKeyedSubscript_(v11, v18, MEMORY[0x277CBEC38], *MEMORY[0x277CD3648]);
     }
 
-    v20 = objc_msgSend_wantsHDR(v10, v18, v19);
+    v20 = objc_msgSend_wantsHDR(configurationCopy, v18, v19);
     v22 = *MEMORY[0x277CD3580];
     if (v20)
     {
@@ -1711,7 +1711,7 @@ LABEL_22:
       objc_msgSend_setObject_forKeyedSubscript_(v11, v26, MEMORY[0x277CBEC38], v35);
     }
 
-    ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(a4, 0, v11);
+    ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(source, 0, v11);
   }
 
   else

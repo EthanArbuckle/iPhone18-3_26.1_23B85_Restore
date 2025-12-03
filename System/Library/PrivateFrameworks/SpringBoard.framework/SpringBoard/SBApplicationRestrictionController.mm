@@ -1,36 +1,36 @@
 @interface SBApplicationRestrictionController
 - (BOOL)isAllowlistActiveAndTransient;
-- (SBApplicationRestrictionController)initWithDataSource:(id)a3;
+- (SBApplicationRestrictionController)initWithDataSource:(id)source;
 - (id)allAllowedAppBundleIdentifiers;
 - (id)allRestrictedAppBundleIdentifiers;
 - (void)_postRestrictionState;
-- (void)_postRestrictionStateToObservers:(uint64_t)a1;
-- (void)_updateRestrictionsAndForcePost:(uint64_t)a1;
+- (void)_postRestrictionStateToObservers:(uint64_t)observers;
+- (void)_updateRestrictionsAndForcePost:(uint64_t)post;
 - (void)_updateVisibilityPreferences;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)beginPostingChanges;
-- (void)carrierBundleInfoDidChangeForStateProvider:(id)a3 slot:(int64_t)a4;
+- (void)carrierBundleInfoDidChangeForStateProvider:(id)provider slot:(int64_t)slot;
 - (void)dealloc;
-- (void)noteApplicationIdentifiersDidChangeWithAdded:(id)a3 replaced:(id)a4 removed:(id)a5;
+- (void)noteApplicationIdentifiersDidChangeWithAdded:(id)added replaced:(id)replaced removed:(id)removed;
 - (void)noteVisibilityOverridesDidChange;
 @end
 
 @implementation SBApplicationRestrictionController
 
-- (SBApplicationRestrictionController)initWithDataSource:(id)a3
+- (SBApplicationRestrictionController)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v29.receiver = self;
   v29.super_class = SBApplicationRestrictionController;
   v6 = [(SBApplicationRestrictionController *)&v29 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_dataSource, v5);
+    objc_storeWeak(&v6->_dataSource, sourceCopy);
     v8 = +[SBDefaults localDefaults];
-    v9 = [v8 applicationDefaults];
+    applicationDefaults = [v8 applicationDefaults];
     applicationDefaults = v7->_applicationDefaults;
-    v7->_applicationDefaults = v9;
+    v7->_applicationDefaults = applicationDefaults;
 
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     tagValidityMap = v7->_tagValidityMap;
@@ -49,13 +49,13 @@
     ratingRanksByIdentifier = v7->_ratingRanksByIdentifier;
     v7->_ratingRanksByIdentifier = v17;
 
-    v19 = [SBApp telephonyStateProvider];
-    if (!v19)
+    telephonyStateProvider = [SBApp telephonyStateProvider];
+    if (!telephonyStateProvider)
     {
       [(SBApplicationRestrictionController *)a2 initWithDataSource:v7];
     }
 
-    [v19 addObserver:v7];
+    [telephonyStateProvider addObserver:v7];
     if (os_variant_has_internal_content())
     {
       objc_initWeak(&location, v7);
@@ -86,8 +86,8 @@ void __57__SBApplicationRestrictionController_initWithDataSource___block_invoke(
 
 - (void)dealloc
 {
-  v3 = [SBApp telephonyStateProvider];
-  [v3 removeObserver:self];
+  telephonyStateProvider = [SBApp telephonyStateProvider];
+  [telephonyStateProvider removeObserver:self];
 
   if (self->_tagsNotificationToken != -1)
   {
@@ -99,17 +99,17 @@ void __57__SBApplicationRestrictionController_initWithDataSource___block_invoke(
   [(SBApplicationRestrictionController *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v10 = v5;
-  if (!v5)
+  observerCopy = observer;
+  v10 = observerCopy;
+  if (!observerCopy)
   {
     [(SBApplicationRestrictionController *)a2 addObserver:?];
-    v5 = 0;
+    observerCopy = 0;
   }
 
-  if (![(NSHashTable *)self->_observers containsObject:v5])
+  if (![(NSHashTable *)self->_observers containsObject:observerCopy])
   {
     observers = self->_observers;
     if (!observers)
@@ -132,12 +132,12 @@ void __57__SBApplicationRestrictionController_initWithDataSource___block_invoke(
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v4 = [(NSSet *)self->_restrictedIdentifiers copy];
   v5 = MEMORY[0x277CBEB58];
-  v6 = [WeakRetained allBundleIdentifiers];
-  v7 = [v5 setWithArray:v6];
+  allBundleIdentifiers = [WeakRetained allBundleIdentifiers];
+  v7 = [v5 setWithArray:allBundleIdentifiers];
 
   [v7 minusSet:v4];
-  v8 = [WeakRetained alwaysAvailableApplicationBundleIdentifiers];
-  [v7 minusSet:v8];
+  alwaysAvailableApplicationBundleIdentifiers = [WeakRetained alwaysAvailableApplicationBundleIdentifiers];
+  [v7 minusSet:alwaysAvailableApplicationBundleIdentifiers];
   v9 = [v7 copy];
 
   return v9;
@@ -152,11 +152,11 @@ void __57__SBApplicationRestrictionController_initWithDataSource___block_invoke(
 
 - (BOOL)isAllowlistActiveAndTransient
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveWhitelistedAppBundleIDs];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  effectiveWhitelistedAppBundleIDs = [mEMORY[0x277D262A0] effectiveWhitelistedAppBundleIDs];
 
-  v4 = [v2 BOOLRestrictionForFeature:@"SpringBoardShouldConsiderAppAllowlistAsTransient"];
-  if (v3)
+  v4 = [mEMORY[0x277D262A0] BOOLRestrictionForFeature:@"SpringBoardShouldConsiderAppAllowlistAsTransient"];
+  if (effectiveWhitelistedAppBundleIDs)
   {
     v5 = v4 == 1;
   }
@@ -171,20 +171,20 @@ void __57__SBApplicationRestrictionController_initWithDataSource___block_invoke(
   return v6;
 }
 
-- (void)noteApplicationIdentifiersDidChangeWithAdded:(id)a3 replaced:(id)a4 removed:(id)a5
+- (void)noteApplicationIdentifiersDidChangeWithAdded:(id)added replaced:(id)replaced removed:(id)removed
 {
   v97 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v56 = a4;
-  v8 = a5;
+  addedCopy = added;
+  replacedCopy = replaced;
+  removedCopy = removed;
   v55 = [MEMORY[0x277CBEB98] setWithSet:self->_enabledTags];
   v61 = [MEMORY[0x277CBEB58] set];
   v88 = 0u;
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v9 = [(NSMutableDictionary *)self->_validTagsByIdentifier allValues];
-  v10 = [v9 countByEnumeratingWithState:&v86 objects:v96 count:16];
+  allValues = [(NSMutableDictionary *)self->_validTagsByIdentifier allValues];
+  v10 = [allValues countByEnumeratingWithState:&v86 objects:v96 count:16];
   if (v10)
   {
     v11 = *v87;
@@ -194,13 +194,13 @@ void __57__SBApplicationRestrictionController_initWithDataSource___block_invoke(
       {
         if (*v87 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
         [v61 addObjectsFromArray:*(*(&v86 + 1) + 8 * i)];
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v86 objects:v96 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v86 objects:v96 count:16];
     }
 
     while (v10);
@@ -210,7 +210,7 @@ void __57__SBApplicationRestrictionController_initWithDataSource___block_invoke(
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  obj = v8;
+  obj = removedCopy;
   v13 = [obj countByEnumeratingWithState:&v82 objects:v95 count:16];
   if (v13)
   {
@@ -248,8 +248,8 @@ void __57__SBApplicationRestrictionController_initWithDataSource___block_invoke(
     v62 = 0;
   }
 
-  v19 = [MEMORY[0x277CBEB58] setWithSet:v57];
-  [v19 unionSet:v56];
+  v19 = [MEMORY[0x277CBEB58] setWithSet:addedCopy];
+  [v19 unionSet:replacedCopy];
   v80 = 0u;
   v81 = 0u;
   v78 = 0u;
@@ -272,26 +272,26 @@ void __57__SBApplicationRestrictionController_initWithDataSource___block_invoke(
         WeakRetained = objc_loadWeakRetained(&self->_dataSource);
         v24 = [WeakRetained applicationWithBundleIdentifier:v22];
 
-        v25 = [v24 info];
-        v26 = [v25 tags];
+        info = [v24 info];
+        tags = [info tags];
 
         v77[0] = MEMORY[0x277D85DD0];
         v77[1] = 3221225472;
         v77[2] = __100__SBApplicationRestrictionController_noteApplicationIdentifiersDidChangeWithAdded_replaced_removed___block_invoke;
         v77[3] = &unk_2783C3F60;
         v77[4] = self;
-        v27 = [v26 indexesOfObjectsPassingTest:v77];
+        v27 = [tags indexesOfObjectsPassingTest:v77];
         if ([v27 count])
         {
           v28 = [v27 count];
-          if (v28 != [v26 count])
+          if (v28 != [tags count])
           {
-            v29 = [v26 objectsAtIndexes:v27];
+            v29 = [tags objectsAtIndexes:v27];
 
-            v26 = v29;
+            tags = v29;
           }
 
-          [(NSMutableDictionary *)self->_validTagsByIdentifier setObject:v26 forKey:v22];
+          [(NSMutableDictionary *)self->_validTagsByIdentifier setObject:tags forKey:v22];
         }
 
         else
@@ -312,8 +312,8 @@ void __57__SBApplicationRestrictionController_initWithDataSource___block_invoke(
         else
         {
           v31 = MEMORY[0x277CCABB0];
-          v32 = [v24 info];
-          v33 = [v31 numberWithInteger:{objc_msgSend(v32, "ratingRank")}];
+          info2 = [v24 info];
+          v33 = [v31 numberWithInteger:{objc_msgSend(info2, "ratingRank")}];
 
           if (([v33 isEqual:v30] & 1) == 0)
           {
@@ -334,8 +334,8 @@ void __57__SBApplicationRestrictionController_initWithDataSource___block_invoke(
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v35 = [(NSMutableDictionary *)self->_validTagsByIdentifier allValues];
-  v36 = [v35 countByEnumeratingWithState:&v73 objects:v93 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_validTagsByIdentifier allValues];
+  v36 = [allValues2 countByEnumeratingWithState:&v73 objects:v93 count:16];
   if (v36)
   {
     v37 = *v74;
@@ -345,13 +345,13 @@ void __57__SBApplicationRestrictionController_initWithDataSource___block_invoke(
       {
         if (*v74 != v37)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(allValues2);
         }
 
         [v34 addObjectsFromArray:*(*(&v73 + 1) + 8 * m)];
       }
 
-      v36 = [v35 countByEnumeratingWithState:&v73 objects:v93 count:16];
+      v36 = [allValues2 countByEnumeratingWithState:&v73 objects:v93 count:16];
     }
 
     while (v36);
@@ -437,12 +437,12 @@ void __57__SBApplicationRestrictionController_initWithDataSource___block_invoke(
   }
 
 LABEL_64:
-  v49 = [MEMORY[0x277D262A0] sharedConnection];
-  v50 = [v49 effectiveWhitelistedAppBundleIDs];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  effectiveWhitelistedAppBundleIDs = [mEMORY[0x277D262A0] effectiveWhitelistedAppBundleIDs];
 
-  if (v50)
+  if (effectiveWhitelistedAppBundleIDs)
   {
-    if ([v57 count])
+    if ([addedCopy count])
     {
       v51 = 1;
     }
@@ -496,7 +496,7 @@ uint64_t __100__SBApplicationRestrictionController_noteApplicationIdentifiersDid
   return v5;
 }
 
-- (void)carrierBundleInfoDidChangeForStateProvider:(id)a3 slot:(int64_t)a4
+- (void)carrierBundleInfoDidChangeForStateProvider:(id)provider slot:(int64_t)slot
 {
   v5 = SBLogAppLibrary();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -515,16 +515,16 @@ uint64_t __100__SBApplicationRestrictionController_noteApplicationIdentifiersDid
 
 - (void)beginPostingChanges
 {
-  [(SBApplicationRestrictionController *)a1 _updateVisibilityPreferences];
-  if (!*(a1 + 64))
+  [(SBApplicationRestrictionController *)self _updateVisibilityPreferences];
+  if (!*(self + 64))
   {
-    [(SBApplicationRestrictionController *)a1 _updateRestrictionsAndForcePost:?];
+    [(SBApplicationRestrictionController *)self _updateRestrictionsAndForcePost:?];
   }
 
   *a2 = 1;
-  v4 = *(a1 + 16);
+  v4 = *(self + 16);
 
-  [(SBApplicationRestrictionController *)a1 _postRestrictionStateToObservers:v4];
+  [(SBApplicationRestrictionController *)self _postRestrictionStateToObservers:v4];
 }
 
 void __70__SBApplicationRestrictionController__updateRestrictionsAndForcePost___block_invoke(uint64_t a1)
@@ -572,27 +572,27 @@ void __70__SBApplicationRestrictionController__updateRestrictionsAndForcePost___
 
 - (void)_updateVisibilityPreferences
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 80);
-    v3 = [*(a1 + 72) shouldShowInternalApplications];
-    *(a1 + 80) = v3;
-    if (v2 != v3)
+    v2 = *(self + 80);
+    shouldShowInternalApplications = [*(self + 72) shouldShowInternalApplications];
+    *(self + 80) = shouldShowInternalApplications;
+    if (v2 != shouldShowInternalApplications)
     {
-      v4 = *(a1 + 16);
+      v4 = *(self + 16);
 
-      [(SBApplicationRestrictionController *)a1 _postRestrictionStateToObservers:v4];
+      [(SBApplicationRestrictionController *)self _postRestrictionStateToObservers:v4];
     }
   }
 }
 
-- (void)_postRestrictionStateToObservers:(uint64_t)a1
+- (void)_postRestrictionStateToObservers:(uint64_t)observers
 {
   v48 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1 && *(a1 + 82) == 1)
+  if (observers && *(observers + 82) == 1)
   {
-    *(a1 + 81) = [a1 isAllowlistActiveAndTransient];
+    *(observers + 81) = [observers isAllowlistActiveAndTransient];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
@@ -617,7 +617,7 @@ void __70__SBApplicationRestrictionController__updateRestrictionsAndForcePost___
           v10 = objc_opt_respondsToSelector();
           if (v10)
           {
-            v10 = [v9 applicationRestrictionControllerWillPostAppVisibilityUpdate:a1];
+            v10 = [v9 applicationRestrictionControllerWillPostAppVisibilityUpdate:observers];
           }
 
           ++v8;
@@ -632,17 +632,17 @@ void __70__SBApplicationRestrictionController__updateRestrictionsAndForcePost___
 
     v32 = v3;
 
-    v12 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:*(a1 + 48)];
-    v13 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:*(a1 + 64)];
+    v12 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:*(observers + 48)];
+    v13 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:*(observers + 64)];
     [v13 addObject:@"hidden"];
-    if (*(a1 + 80) == 1)
+    if (*(observers + 80) == 1)
     {
       [v12 addObject:@"SBInternalAppTag"];
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v15 = [WeakRetained bundleIdentifiersWithVisibilityOverrideHidden];
-    [v13 unionSet:v15];
+    WeakRetained = objc_loadWeakRetained((observers + 8));
+    bundleIdentifiersWithVisibilityOverrideHidden = [WeakRetained bundleIdentifiersWithVisibilityOverrideHidden];
+    [v13 unionSet:bundleIdentifiersWithVisibilityOverrideHidden];
 
     v39 = 0u;
     v40 = 0u;
@@ -664,7 +664,7 @@ void __70__SBApplicationRestrictionController__updateRestrictionsAndForcePost___
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v37 + 1) + 8 * v20++) applicationRestrictionController:a1 didUpdateVisibleTags:v12 hiddenTags:v13];
+          v21 = [*(*(&v37 + 1) + 8 * v20++) applicationRestrictionController:observers didUpdateVisibleTags:v12 hiddenTags:v13];
         }
 
         while (v18 != v20);
@@ -698,7 +698,7 @@ void __70__SBApplicationRestrictionController__updateRestrictionsAndForcePost___
           v29 = objc_opt_respondsToSelector();
           if (v29)
           {
-            v29 = [v28 applicationRestrictionControllerDidPostAppVisibilityUpdate:a1];
+            v29 = [v28 applicationRestrictionControllerDidPostAppVisibilityUpdate:observers];
           }
 
           ++v27;
@@ -762,57 +762,57 @@ LABEL_5:
 
 - (void)_postRestrictionState
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_57(a1);
+    OUTLINED_FUNCTION_0_57(self);
   }
 }
 
-- (void)_updateRestrictionsAndForcePost:(uint64_t)a1
+- (void)_updateRestrictionsAndForcePost:(uint64_t)post
 {
   v95 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (post)
   {
-    v3 = a1;
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    [v4 invalidateRestrictionCache];
+    postCopy = post;
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] invalidateRestrictionCache];
     v5 = [MEMORY[0x277CBEB58] set];
-    WeakRetained = objc_loadWeakRetained((v3 + 8));
+    WeakRetained = objc_loadWeakRetained((postCopy + 8));
     v73 = WeakRetained;
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
-      v7 = [v4 restrictedAppBundleIDs];
-      if (v7)
+      restrictedAppBundleIDs = [mEMORY[0x277D262A0] restrictedAppBundleIDs];
+      if (restrictedAppBundleIDs)
       {
-        [v5 unionSet:v7];
+        [v5 unionSet:restrictedAppBundleIDs];
       }
 
-      v8 = [v4 effectiveWhitelistedAppBundleIDs];
-      if (v8 && ([v4 isInSingleAppMode] & 1) == 0)
+      effectiveWhitelistedAppBundleIDs = [mEMORY[0x277D262A0] effectiveWhitelistedAppBundleIDs];
+      if (effectiveWhitelistedAppBundleIDs && ([mEMORY[0x277D262A0] isInSingleAppMode] & 1) == 0)
       {
-        v9 = [WeakRetained allBundleIdentifiers];
+        allBundleIdentifiers = [WeakRetained allBundleIdentifiers];
         v10 = a2;
-        v11 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v9];
-        [v11 minusSet:v8];
+        v11 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:allBundleIdentifiers];
+        [v11 minusSet:effectiveWhitelistedAppBundleIDs];
         [v5 unionSet:v11];
 
         a2 = v10;
       }
 
-      v12 = [v4 effectiveValueForSetting:*MEMORY[0x277D25F70]];
+      v12 = [mEMORY[0x277D262A0] effectiveValueForSetting:*MEMORY[0x277D25F70]];
       if (v12)
       {
-        v66 = v8;
-        v67 = v7;
+        v66 = effectiveWhitelistedAppBundleIDs;
+        v67 = restrictedAppBundleIDs;
         v68 = a2;
-        v70 = v4;
+        v70 = mEMORY[0x277D262A0];
         v13 = MEMORY[0x277CBEB98];
         v14 = v12;
-        v15 = [v4 appsRatingExemptedBundleIDs];
-        v16 = v15;
-        if (v15)
+        appsRatingExemptedBundleIDs = [mEMORY[0x277D262A0] appsRatingExemptedBundleIDs];
+        v16 = appsRatingExemptedBundleIDs;
+        if (appsRatingExemptedBundleIDs)
         {
-          v17 = v15;
+          v17 = appsRatingExemptedBundleIDs;
         }
 
         else
@@ -823,12 +823,12 @@ LABEL_5:
         v18 = [v13 setWithArray:v17];
 
         v65 = v14;
-        v74 = [v14 intValue];
+        intValue = [v14 intValue];
         v86 = 0u;
         v87 = 0u;
         v88 = 0u;
         v89 = 0u;
-        v19 = *(v3 + 56);
+        v19 = *(postCopy + 56);
         v20 = [v19 countByEnumeratingWithState:&v86 objects:v94 count:16];
         if (v20)
         {
@@ -847,10 +847,10 @@ LABEL_5:
               v25 = [v18 containsObject:v24];
               if ((v25 & 1) == 0)
               {
-                v27 = [*(v3 + 56) objectForKey:v24];
-                v28 = [v27 intValue];
+                v27 = [*(postCopy + 56) objectForKey:v24];
+                intValue2 = [v27 intValue];
 
-                if (v28 > v74)
+                if (intValue2 > intValue)
                 {
                   v25 = [v5 addObject:v24];
                 }
@@ -864,36 +864,36 @@ LABEL_5:
         }
 
         a2 = v68;
-        v4 = v70;
+        mEMORY[0x277D262A0] = v70;
         WeakRetained = v73;
-        v8 = v66;
-        v7 = v67;
+        effectiveWhitelistedAppBundleIDs = v66;
+        restrictedAppBundleIDs = v67;
         v12 = v65;
       }
     }
 
-    v29 = [WeakRetained alwaysAvailableApplicationBundleIdentifiers];
-    [v5 minusSet:v29];
+    alwaysAvailableApplicationBundleIdentifiers = [WeakRetained alwaysAvailableApplicationBundleIdentifiers];
+    [v5 minusSet:alwaysAvailableApplicationBundleIdentifiers];
     v30 = +[SBTelephonyManager sharedTelephonyManager];
-    v31 = [v30 carrierDisabledApplicationIDs];
+    carrierDisabledApplicationIDs = [v30 carrierDisabledApplicationIDs];
 
-    if (v31)
+    if (carrierDisabledApplicationIDs)
     {
-      [v5 unionSet:v31];
+      [v5 unionSet:carrierDisabledApplicationIDs];
     }
 
-    v72 = v3;
-    v75 = v29;
-    if (([v4 isAppClipsAllowed] & 1) == 0)
+    v72 = postCopy;
+    v75 = alwaysAvailableApplicationBundleIdentifiers;
+    if (([mEMORY[0x277D262A0] isAppClipsAllowed] & 1) == 0)
     {
       v69 = a2;
-      v32 = v4;
+      v32 = mEMORY[0x277D262A0];
       v84 = 0u;
       v85 = 0u;
       v82 = 0u;
       v83 = 0u;
-      v33 = [WeakRetained allApplications];
-      v34 = [v33 countByEnumeratingWithState:&v82 objects:v93 count:16];
+      allApplications = [WeakRetained allApplications];
+      v34 = [allApplications countByEnumeratingWithState:&v82 objects:v93 count:16];
       if (v34)
       {
         v35 = v34;
@@ -904,17 +904,17 @@ LABEL_5:
           {
             if (*v83 != v36)
             {
-              objc_enumerationMutation(v33);
+              objc_enumerationMutation(allApplications);
             }
 
             v38 = *(*(&v82 + 1) + 8 * j);
-            v39 = [v38 info];
-            v40 = [v39 isAppClip];
+            info = [v38 info];
+            isAppClip = [info isAppClip];
 
-            if (v40)
+            if (isAppClip)
             {
-              v43 = [v38 bundleIdentifier];
-              [v5 addObject:v43];
+              bundleIdentifier = [v38 bundleIdentifier];
+              [v5 addObject:bundleIdentifier];
             }
           }
 
@@ -924,16 +924,16 @@ LABEL_5:
         while (v35);
       }
 
-      v4 = v32;
-      v3 = v72;
+      mEMORY[0x277D262A0] = v32;
+      postCopy = v72;
       WeakRetained = v73;
       a2 = v69;
-      v29 = v75;
+      alwaysAvailableApplicationBundleIdentifiers = v75;
     }
 
-    if (([*(v3 + 64) isEqualToSet:v5] & 1) == 0)
+    if (([*(postCopy + 64) isEqualToSet:v5] & 1) == 0)
     {
-      v71 = v4;
+      v71 = mEMORY[0x277D262A0];
       v44 = SBLogCommon();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
       {
@@ -943,8 +943,8 @@ LABEL_5:
       }
 
       v45 = [v5 copy];
-      v46 = *(v3 + 64);
-      *(v3 + 64) = v45;
+      v46 = *(postCopy + 64);
+      *(postCopy + 64) = v45;
 
       v47 = +[SBApplicationController sharedInstanceIfExists];
       v48 = [MEMORY[0x277CBEB58] set];
@@ -952,8 +952,8 @@ LABEL_5:
       v79 = 0u;
       v80 = 0u;
       v81 = 0u;
-      v49 = [SBApp windowSceneManager];
-      v50 = [v49 connectedWindowScenes];
+      windowSceneManager = [SBApp windowSceneManager];
+      connectedWindowScenes = [windowSceneManager connectedWindowScenes];
 
       v53 = OUTLINED_FUNCTION_2_40(v51, v52, &v78, v90);
       if (v53)
@@ -966,11 +966,11 @@ LABEL_5:
           {
             if (*v79 != v55)
             {
-              objc_enumerationMutation(v50);
+              objc_enumerationMutation(connectedWindowScenes);
             }
 
-            v57 = [*(*(&v78 + 1) + 8 * k) sceneManager];
-            v58 = [v57 externalApplicationSceneHandlesForBundleIdentifiers:v5];
+            sceneManager = [*(*(&v78 + 1) + 8 * k) sceneManager];
+            v58 = [sceneManager externalApplicationSceneHandlesForBundleIdentifiers:v5];
             [v48 unionSet:v58];
           }
 
@@ -986,22 +986,22 @@ LABEL_5:
       v76[1] = 3221225472;
       v76[2] = __70__SBApplicationRestrictionController__updateRestrictionsAndForcePost___block_invoke;
       v76[3] = &unk_2783B27A0;
-      v3 = v72;
+      postCopy = v72;
       v76[4] = v72;
       v77 = v47;
       v62 = v47;
       SBWorkspaceDestroyApplicationSceneHandlesWithIntent(v48, v61, v76);
 
-      v4 = v71;
+      mEMORY[0x277D262A0] = v71;
       WeakRetained = v73;
-      v29 = v75;
+      alwaysAvailableApplicationBundleIdentifiers = v75;
     }
 
-    v63 = *(v3 + 81);
-    v64 = [v3 isAllowlistActiveAndTransient];
-    if ((a2 & 1) != 0 || v63 != v64)
+    v63 = *(postCopy + 81);
+    isAllowlistActiveAndTransient = [postCopy isAllowlistActiveAndTransient];
+    if ((a2 & 1) != 0 || v63 != isAllowlistActiveAndTransient)
     {
-      [(SBApplicationRestrictionController *)v3 _postRestrictionStateToObservers:?];
+      [(SBApplicationRestrictionController *)postCopy _postRestrictionStateToObservers:?];
     }
   }
 }

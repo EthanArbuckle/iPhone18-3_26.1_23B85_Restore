@@ -13,18 +13,18 @@
     v6 = objc_msgSend_UUIDString(objectUUID, a2, v2);
     v12.receiver = self;
     v12.super_class = TSPLazyReferenceInternal;
-    v7 = [(TSPLazyReference *)&v12 additionalDescription];
-    v9 = objc_msgSend_stringWithFormat_(v5, v8, @"uuid=%@ %@", v6, v7);
+    additionalDescription = [(TSPLazyReference *)&v12 additionalDescription];
+    additionalDescription2 = objc_msgSend_stringWithFormat_(v5, v8, @"uuid=%@ %@", v6, additionalDescription);
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = TSPLazyReferenceInternal;
-    v9 = [(TSPLazyReference *)&v11 additionalDescription];
+    additionalDescription2 = [(TSPLazyReference *)&v11 additionalDescription];
   }
 
-  return v9;
+  return additionalDescription2;
 }
 
 @end

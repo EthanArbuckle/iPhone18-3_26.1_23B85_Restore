@@ -2,30 +2,30 @@
 + (id)classesForSerialization;
 - (BADownload)copyAsNonEssential;
 - (BADownload)init;
-- (BADownload)initWithCoder:(id)a3;
+- (BADownload)initWithCoder:(id)coder;
 - (BADownloadAgentDelegate)delegate;
 - (BADownloadState)state;
 - (BADownloaderPriority)priority;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isEssential;
-- (BOOL)startDownloadWithDelegate:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)startDownloadWithDelegate:(id)delegate error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)initPrivatelyWithApplicationGroupIdentifier:(id)a3;
-- (int64_t)compare:(id)a3;
+- (id)initPrivatelyWithApplicationGroupIdentifier:(id)identifier;
+- (int64_t)compare:(id)compare;
 - (int64_t)necessity;
-- (void)_addActivityWithIdentifier:(id)a3 takePowerAssertion:(BOOL)a4;
+- (void)_addActivityWithIdentifier:(id)identifier takePowerAssertion:(BOOL)assertion;
 - (void)_removeActivityAndPowerAssertion;
 - (void)cancelDownload;
 - (void)cancelDownloadSilently;
 - (void)demoteToBackground;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)pauseDownload;
 - (void)promoteToForeground;
-- (void)setApplicationInformationForRestrictedDownload:(id)a3;
-- (void)setNecessity:(int64_t)a3;
-- (void)setPriority:(int64_t)a3;
+- (void)setApplicationInformationForRestrictedDownload:(id)download;
+- (void)setNecessity:(int64_t)necessity;
+- (void)setPriority:(int64_t)priority;
 @end
 
 @implementation BADownload
@@ -60,7 +60,7 @@
   [v2 raise];
 }
 
-- (BOOL)startDownloadWithDelegate:(id)a3 error:(id *)a4
+- (BOOL)startDownloadWithDelegate:(id)delegate error:(id *)error
 {
   v4 = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"startDownloadWithDelegate:error: is not implemented on BADownload as it is abstract." userInfo:0];
   [v4 raise];
@@ -68,18 +68,18 @@
   return 0;
 }
 
-- (void)setApplicationInformationForRestrictedDownload:(id)a3
+- (void)setApplicationInformationForRestrictedDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   os_unfair_lock_assert_owner([(BADownload *)self downloadLock]);
-  [(BADownload *)self setApplicationInfo:v4];
+  [(BADownload *)self setApplicationInfo:downloadCopy];
 }
 
-- (void)_addActivityWithIdentifier:(id)a3 takePowerAssertion:(BOOL)a4
+- (void)_addActivityWithIdentifier:(id)identifier takePowerAssertion:(BOOL)assertion
 {
-  v4 = a4;
+  assertionCopy = assertion;
   os_unfair_lock_assert_owner([(BADownload *)self downloadLock]);
-  if (!v4)
+  if (!assertionCopy)
   {
     if (![(BADownload *)self powerAssertionID])
     {
@@ -87,16 +87,16 @@
     }
 
     IOPMAssertionRelease([(BADownload *)self powerAssertionID]);
-    v9 = self;
+    selfCopy2 = self;
     v10 = 0;
 LABEL_11:
-    [(BADownload *)v9 setPowerAssertionID:v10];
+    [(BADownload *)selfCopy2 setPowerAssertionID:v10];
     goto LABEL_12;
   }
 
   AssertionID = 0;
-  v6 = [(BADownload *)self uniqueIdentifier];
-  v7 = IOPMAssertionCreateWithName(@"PreventUserIdleSystemSleep", 0xFFu, [NSString stringWithFormat:@"Downloading - %@", v6], &AssertionID);
+  uniqueIdentifier = [(BADownload *)self uniqueIdentifier];
+  v7 = IOPMAssertionCreateWithName(@"PreventUserIdleSystemSleep", 0xFFu, [NSString stringWithFormat:@"Downloading - %@", uniqueIdentifier], &AssertionID);
 
   if (!v7)
   {
@@ -106,7 +106,7 @@ LABEL_11:
     }
 
     v10 = AssertionID;
-    v9 = self;
+    selfCopy2 = self;
     goto LABEL_11;
   }
 
@@ -117,8 +117,8 @@ LABEL_11:
   }
 
 LABEL_12:
-  v11 = [(BADownload *)self uniqueIdentifier];
-  [v11 UTF8String];
+  uniqueIdentifier2 = [(BADownload *)self uniqueIdentifier];
+  [uniqueIdentifier2 UTF8String];
   v12 = os_transaction_create();
   [(BADownload *)self setTransaction:v12];
 }
@@ -147,31 +147,31 @@ LABEL_12:
   return v3;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = self;
-  v6 = v4;
-  if (-[BADownload necessity](v5, "necessity") == 1 && ![v6 necessity])
+  compareCopy = compare;
+  selfCopy = self;
+  v6 = compareCopy;
+  if (-[BADownload necessity](selfCopy, "necessity") == 1 && ![v6 necessity])
   {
     goto LABEL_9;
   }
 
-  if (!-[BADownload necessity](v5, "necessity") && [v6 necessity] == 1 || (v7 = -[BADownload priority](v5, "priority"), v7 < objc_msgSend(v6, "priority")))
+  if (!-[BADownload necessity](selfCopy, "necessity") && [v6 necessity] == 1 || (v7 = -[BADownload priority](selfCopy, "priority"), v7 < objc_msgSend(v6, "priority")))
   {
     v8 = -1;
     goto LABEL_10;
   }
 
-  v9 = [(BADownload *)v5 priority];
-  if (v9 > [v6 priority] || (v10 = sub_10004C1FC(v5), v10 < sub_10004C1FC(v6)))
+  priority = [(BADownload *)selfCopy priority];
+  if (priority > [v6 priority] || (v10 = sub_10004C1FC(selfCopy), v10 < sub_10004C1FC(v6)))
   {
 LABEL_9:
     v8 = 1;
     goto LABEL_10;
   }
 
-  v12 = sub_10004C1FC(v5);
+  v12 = sub_10004C1FC(selfCopy);
   if (v12 <= sub_10004C1FC(v6))
   {
     v8 = 0;
@@ -202,9 +202,9 @@ LABEL_10:
   return result;
 }
 
-- (BADownload)initWithCoder:(id)a3
+- (BADownload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = BADownload;
   v5 = [(BADownload *)&v32 init];
@@ -213,24 +213,24 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
   uniqueIdentifier = v5->_uniqueIdentifier;
   v5->_uniqueIdentifier = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationGroupIdentifier"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationGroupIdentifier"];
   applicationGroupIdentifier = v5->_applicationGroupIdentifier;
   v5->_applicationGroupIdentifier = v10;
 
   if (v5->_identifier && v5->_uniqueIdentifier && v5->_applicationGroupIdentifier)
   {
-    sub_10004C130(v5, [v4 decodeIntegerForKey:@"internalState"]);
-    if ([v4 containsValueForKey:@"necessity"])
+    sub_10004C130(v5, [coderCopy decodeIntegerForKey:@"internalState"]);
+    if ([coderCopy containsValueForKey:@"necessity"])
     {
-      v13 = [v4 decodeIntegerForKey:@"necessity"];
+      v13 = [coderCopy decodeIntegerForKey:@"necessity"];
       objc_opt_self();
       if (v13 >= 2)
       {
@@ -249,18 +249,18 @@ LABEL_10:
     }
 
     [(BADownload *)v5 setNecessity:v14];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"priority"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"priority"];
     -[BADownload setPriority:](v5, "setPriority:", [v15 integerValue]);
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagedDownloadedFileURL"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagedDownloadedFileURL"];
     objc_setProperty_atomic(v5, v17, v16, 80);
 
-    sub_10003173C(v5, [v4 decodeIntegerForKey:@"clientSpecifiedFileSize"]);
-    sub_10004C1A0(v5, [v4 decodeBoolForKey:@"isForManagedAssetPack"]);
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+    sub_10003173C(v5, [coderCopy decodeIntegerForKey:@"clientSpecifiedFileSize"]);
+    sub_10004C1A0(v5, [coderCopy decodeBoolForKey:@"isForManagedAssetPack"]);
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
     [(BADownload *)v5 setApplicationIdentifier:v18];
 
     [(BADownload *)v5 setPowerAssertionID:0];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadFailureError"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadFailureError"];
     [(BADownload *)v5 setDownloadError:v19];
 
     v20 = dispatch_queue_create("com.apple.BackgroundAssets.BADownload+Agent.ResponseQueue", 0);
@@ -270,16 +270,16 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resumeData"];
+      v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resumeData"];
       [(BADownload *)v5 setResumeData:v21];
 
-      v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadCachePath"];
+      v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadCachePath"];
       [(BADownload *)v5 setDownloadCachePath:v22];
 
-      v23 = [(BADownload *)v5 applicationIdentifier];
-      v24 = [(BADownload *)v5 applicationIdentifier];
-      v25 = [v24 _baassets_validUTI];
-      v26 = [v23 isEqualToString:v25];
+      applicationIdentifier = [(BADownload *)v5 applicationIdentifier];
+      applicationIdentifier2 = [(BADownload *)v5 applicationIdentifier];
+      _baassets_validUTI = [applicationIdentifier2 _baassets_validUTI];
+      v26 = [applicationIdentifier isEqualToString:_baassets_validUTI];
 
       if ((v26 & 1) == 0)
       {
@@ -292,15 +292,15 @@ LABEL_10:
         goto LABEL_5;
       }
 
-      if ([v4 decodeBoolForKey:@"isRestrictedDownload"])
+      if ([coderCopy decodeBoolForKey:@"isRestrictedDownload"])
       {
-        v27 = [v4 agentCore];
-        v28 = [(BADownload *)v5 applicationIdentifier];
-        v29 = [v27 applicationInfoForIdentifier:v28];
+        agentCore = [coderCopy agentCore];
+        applicationIdentifier3 = [(BADownload *)v5 applicationIdentifier];
+        v29 = [agentCore applicationInfoForIdentifier:applicationIdentifier3];
         [(BADownload *)v5 setApplicationInfo:v29];
       }
 
-      -[BADownload setPermitInitialCellularDownload:](v5, "setPermitInitialCellularDownload:", [v4 decodeBoolForKey:@"permitInitialCellularDownload"]);
+      -[BADownload setPermitInitialCellularDownload:](v5, "setPermitInitialCellularDownload:", [coderCopy decodeBoolForKey:@"permitInitialCellularDownload"]);
     }
 
     else
@@ -322,9 +322,9 @@ LABEL_19:
   return v12;
 }
 
-- (id)initPrivatelyWithApplicationGroupIdentifier:(id)a3
+- (id)initPrivatelyWithApplicationGroupIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = BADownload;
   v6 = [(BADownload *)&v18 init];
@@ -349,12 +349,12 @@ LABEL_19:
     v6->_clientSpecifiedFileSize = 0;
     v6->_priority = 0;
     v6->_internalState = 0;
-    objc_storeStrong(&v6->_applicationGroupIdentifier, a3);
+    objc_storeStrong(&v6->_applicationGroupIdentifier, identifier);
     v6->_necessity = 0;
-    v10 = [(BADownload *)v6 applicationGroupIdentifier];
+    applicationGroupIdentifier = [(BADownload *)v6 applicationGroupIdentifier];
     v11 = +[NSUUID UUID];
-    v12 = [v11 UUIDString];
-    v13 = [NSString stringWithFormat:@"%@.%@.%@", v9, v10, v12];
+    uUIDString = [v11 UUIDString];
+    v13 = [NSString stringWithFormat:@"%@.%@.%@", v9, applicationGroupIdentifier, uUIDString];
     uniqueIdentifier = v6->_uniqueIdentifier;
     v6->_uniqueIdentifier = v13;
 
@@ -367,153 +367,153 @@ LABEL_6:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [v15 encodeObject:v4->_identifier forKey:@"identifier"];
-  [v15 encodeInteger:v4->_internalState forKey:@"internalState"];
-  [v15 encodeInteger:v4->_necessity forKey:@"necessity"];
-  v5 = [NSNumber numberWithInteger:v4->_priority];
-  [v15 encodeObject:v5 forKey:@"priority"];
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [coderCopy encodeObject:selfCopy->_identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:selfCopy->_internalState forKey:@"internalState"];
+  [coderCopy encodeInteger:selfCopy->_necessity forKey:@"necessity"];
+  v5 = [NSNumber numberWithInteger:selfCopy->_priority];
+  [coderCopy encodeObject:v5 forKey:@"priority"];
 
-  [v15 encodeInteger:v4->_clientSpecifiedFileSize forKey:@"clientSpecifiedFileSize"];
-  [v15 encodeBool:v4->_isForManagedAssetPack forKey:@"isForManagedAssetPack"];
-  [v15 encodeObject:v4->_uniqueIdentifier forKey:@"uniqueIdentifier"];
-  [v15 encodeObject:v4->_applicationGroupIdentifier forKey:@"applicationGroupIdentifier"];
-  stagedDownloadedFileURL = v4->_stagedDownloadedFileURL;
+  [coderCopy encodeInteger:selfCopy->_clientSpecifiedFileSize forKey:@"clientSpecifiedFileSize"];
+  [coderCopy encodeBool:selfCopy->_isForManagedAssetPack forKey:@"isForManagedAssetPack"];
+  [coderCopy encodeObject:selfCopy->_uniqueIdentifier forKey:@"uniqueIdentifier"];
+  [coderCopy encodeObject:selfCopy->_applicationGroupIdentifier forKey:@"applicationGroupIdentifier"];
+  stagedDownloadedFileURL = selfCopy->_stagedDownloadedFileURL;
   if (stagedDownloadedFileURL)
   {
-    [v15 encodeObject:stagedDownloadedFileURL forKey:@"stagedDownloadedFileURL"];
+    [coderCopy encodeObject:stagedDownloadedFileURL forKey:@"stagedDownloadedFileURL"];
   }
 
-  v7 = [(BADownload *)v4 downloadError];
+  downloadError = [(BADownload *)selfCopy downloadError];
 
-  if (v7)
+  if (downloadError)
   {
-    v8 = [(BADownload *)v4 downloadError];
-    [v15 encodeObject:v8 forKey:@"downloadFailureError"];
+    downloadError2 = [(BADownload *)selfCopy downloadError];
+    [coderCopy encodeObject:downloadError2 forKey:@"downloadFailureError"];
   }
 
-  v9 = [(BADownload *)v4 applicationIdentifier];
-  [v15 encodeObject:v9 forKey:@"applicationIdentifier"];
+  applicationIdentifier = [(BADownload *)selfCopy applicationIdentifier];
+  [coderCopy encodeObject:applicationIdentifier forKey:@"applicationIdentifier"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(BADownload *)v4 resumeData];
+    resumeData = [(BADownload *)selfCopy resumeData];
 
-    if (v10)
+    if (resumeData)
     {
-      v11 = [(BADownload *)v4 resumeData];
-      [v15 encodeObject:v11 forKey:@"resumeData"];
+      resumeData2 = [(BADownload *)selfCopy resumeData];
+      [coderCopy encodeObject:resumeData2 forKey:@"resumeData"];
     }
 
-    v12 = [(BADownload *)v4 downloadCachePath];
+    downloadCachePath = [(BADownload *)selfCopy downloadCachePath];
 
-    if (v12)
+    if (downloadCachePath)
     {
-      v13 = [(BADownload *)v4 downloadCachePath];
-      [v15 encodeObject:v13 forKey:@"downloadCachePath"];
+      downloadCachePath2 = [(BADownload *)selfCopy downloadCachePath];
+      [coderCopy encodeObject:downloadCachePath2 forKey:@"downloadCachePath"];
     }
 
-    v14 = [(BADownload *)v4 applicationInfo];
+    applicationInfo = [(BADownload *)selfCopy applicationInfo];
 
-    if (v14)
+    if (applicationInfo)
     {
-      [v15 encodeBool:1 forKey:@"isRestrictedDownload"];
+      [coderCopy encodeBool:1 forKey:@"isRestrictedDownload"];
     }
 
-    [v15 encodeBool:-[BADownload permitInitialCellularDownload](v4 forKey:{"permitInitialCellularDownload"), @"permitInitialCellularDownload"}];
+    [coderCopy encodeBool:-[BADownload permitInitialCellularDownload](selfCopy forKey:{"permitInitialCellularDownload"), @"permitInitialCellularDownload"}];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [objc_msgSend(v5 allocWithZone:{a3), "initPrivatelyWithApplicationGroupIdentifier:", v6->_applicationGroupIdentifier}];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [objc_msgSend(v5 allocWithZone:{zone), "initPrivatelyWithApplicationGroupIdentifier:", selfCopy->_applicationGroupIdentifier}];
   if (v7)
   {
-    v9 = [(NSString *)v6->_identifier copyWithZone:a3];
+    v9 = [(NSString *)selfCopy->_identifier copyWithZone:zone];
     [v7 setIdentifier:v9];
 
-    v10 = [(NSString *)v6->_uniqueIdentifier copyWithZone:a3];
+    v10 = [(NSString *)selfCopy->_uniqueIdentifier copyWithZone:zone];
     [v7 setUniqueIdentifier:v10];
 
-    v11 = [(NSString *)v6->_applicationGroupIdentifier copyWithZone:a3];
+    v11 = [(NSString *)selfCopy->_applicationGroupIdentifier copyWithZone:zone];
     [v7 setApplicationGroupIdentifier:v11];
 
-    sub_10004C130(v7, v6->_internalState);
-    [v7 setPriority:v6->_priority];
-    [v7 setNecessity:v6->_necessity];
-    sub_10003173C(v7, v6->_clientSpecifiedFileSize);
-    v12 = [(NSURL *)v6->_stagedDownloadedFileURL copyWithZone:a3];
+    sub_10004C130(v7, selfCopy->_internalState);
+    [v7 setPriority:selfCopy->_priority];
+    [v7 setNecessity:selfCopy->_necessity];
+    sub_10003173C(v7, selfCopy->_clientSpecifiedFileSize);
+    v12 = [(NSURL *)selfCopy->_stagedDownloadedFileURL copyWithZone:zone];
     objc_setProperty_atomic(v7, v13, v12, 80);
 
-    sub_10004C1A0(v7, v6->_isForManagedAssetPack);
-    v14 = [(BADownload *)v6 downloadError];
-    v15 = [v14 copyWithZone:a3];
+    sub_10004C1A0(v7, selfCopy->_isForManagedAssetPack);
+    downloadError = [(BADownload *)selfCopy downloadError];
+    v15 = [downloadError copyWithZone:zone];
     [v7 setDownloadError:v15];
 
-    v16 = [(BADownload *)v6 applicationIdentifier];
-    v17 = [v16 copyWithZone:a3];
+    applicationIdentifier = [(BADownload *)selfCopy applicationIdentifier];
+    v17 = [applicationIdentifier copyWithZone:zone];
     [v7 setApplicationIdentifier:v17];
 
-    [v7 setPermitInitialCellularDownload:{-[BADownload permitInitialCellularDownload](v6, "permitInitialCellularDownload")}];
+    [v7 setPermitInitialCellularDownload:{-[BADownload permitInitialCellularDownload](selfCopy, "permitInitialCellularDownload")}];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (BADownloaderPriority)priority
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  priority = v2->_priority;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  priority = selfCopy->_priority;
+  objc_sync_exit(selfCopy);
 
   return priority;
 }
 
-- (void)setPriority:(int64_t)a3
+- (void)setPriority:(int64_t)priority
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_priority = a3;
+  obj->_priority = priority;
   objc_sync_exit(obj);
 }
 
 - (BOOL)isEssential
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_necessity == 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_necessity == 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (int64_t)necessity
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  necessity = v2->_necessity;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  necessity = selfCopy->_necessity;
+  objc_sync_exit(selfCopy);
 
   return necessity;
 }
 
-- (void)setNecessity:(int64_t)a3
+- (void)setNecessity:(int64_t)necessity
 {
   objc_opt_self();
-  if (a3 >= 2)
+  if (necessity >= 2)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -528,16 +528,16 @@ LABEL_6:
   {
     obj = self;
     objc_sync_enter(obj);
-    obj->_necessity = a3;
+    obj->_necessity = necessity;
     objc_sync_exit(obj);
   }
 }
 
 - (BADownloadState)state
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = sub_10004C244(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = sub_10004C244(selfCopy);
   if (v3 > 8)
   {
     v4 = BADownloadStateFailed;
@@ -548,7 +548,7 @@ LABEL_6:
     v4 = qword_100059560[v3];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -560,10 +560,10 @@ LABEL_6:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -573,16 +573,16 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = self;
-      objc_sync_enter(v6);
-      uniqueIdentifier = v6->_uniqueIdentifier;
-      v8 = [(BADownload *)v5 uniqueIdentifier];
-      if ([(NSString *)uniqueIdentifier isEqual:v8])
+      v5 = equalCopy;
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      uniqueIdentifier = selfCopy->_uniqueIdentifier;
+      uniqueIdentifier = [(BADownload *)v5 uniqueIdentifier];
+      if ([(NSString *)uniqueIdentifier isEqual:uniqueIdentifier])
       {
-        identifier = v6->_identifier;
-        v10 = [(BADownload *)v5 identifier];
-        v11 = [(NSString *)identifier isEqualToString:v10];
+        identifier = selfCopy->_identifier;
+        identifier = [(BADownload *)v5 identifier];
+        v11 = [(NSString *)identifier isEqualToString:identifier];
       }
 
       else
@@ -590,7 +590,7 @@ LABEL_6:
         v11 = 0;
       }
 
-      objc_sync_exit(v6);
+      objc_sync_exit(selfCopy);
     }
 
     else
@@ -606,10 +606,10 @@ LABEL_6:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BADownload *)self identifier];
-  v6 = [(BADownload *)self applicationIdentifier];
+  identifier = [(BADownload *)self identifier];
+  applicationIdentifier = [(BADownload *)self applicationIdentifier];
   v7 = sub_10002AFD8([(BADownload *)self necessity]);
-  v8 = [NSString stringWithFormat:@"%@ (%p): [ID:%@, AppID:%@, Necessity:%@]", v4, self, v5, v6, v7];
+  v8 = [NSString stringWithFormat:@"%@ (%p): [ID:%@, AppID:%@, Necessity:%@]", v4, self, identifier, applicationIdentifier, v7];
 
   return v8;
 }
@@ -626,8 +626,8 @@ LABEL_6:
   v3 = [NSMutableString alloc];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(BADownload *)self identifier];
-  v7 = [v3 initWithFormat:@"%@ (%p): %@\n", v5, self, v6];
+  identifier = [(BADownload *)self identifier];
+  v7 = [v3 initWithFormat:@"%@ (%p): %@\n", v5, self, identifier];
 
   v8 = sub_10004C244(self);
   if ((v8 + 2) > 0xA)
@@ -694,13 +694,13 @@ LABEL_6:
   sub_1000324B4();
   [v7 appendFormat:@"BAURLSession object: %@\n"];
 
-  v12 = [(BADownload *)self resumeData];
-  v13 = [v12 bytes];
-  v14 = [(BADownload *)self resumeData];
-  [v7 appendFormat:@"Resume data: %p, %lu\n", v13, objc_msgSend(v14, "length")];
+  resumeData = [(BADownload *)self resumeData];
+  bytes = [resumeData bytes];
+  resumeData2 = [(BADownload *)self resumeData];
+  [v7 appendFormat:@"Resume data: %p, %lu\n", bytes, objc_msgSend(resumeData2, "length")];
 
-  v15 = [(BADownload *)self applicationInfo];
-  if (v15)
+  applicationInfo = [(BADownload *)self applicationInfo];
+  if (applicationInfo)
   {
     v16 = @"YES";
   }

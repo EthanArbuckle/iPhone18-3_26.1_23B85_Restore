@@ -1,20 +1,20 @@
 @interface HKClinicalAccountEvent
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToClinicalAccountEvent:(id)a3;
-- (HKClinicalAccountEvent)eventWithAppendedEventDescription:(id)a3;
-- (HKClinicalAccountEvent)eventWithAppendedRefreshToken:(id)a3 description:(id)a4;
-- (HKClinicalAccountEvent)eventWithUpdatedCredentialStateAfter:(int64_t)a3;
-- (HKClinicalAccountEvent)eventWithUpdatedCredentialStateBefore:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToClinicalAccountEvent:(id)event;
+- (HKClinicalAccountEvent)eventWithAppendedEventDescription:(id)description;
+- (HKClinicalAccountEvent)eventWithAppendedRefreshToken:(id)token description:(id)description;
+- (HKClinicalAccountEvent)eventWithUpdatedCredentialStateAfter:(int64_t)after;
+- (HKClinicalAccountEvent)eventWithUpdatedCredentialStateBefore:(int64_t)before;
 - (HKClinicalAccountEvent)init;
-- (HKClinicalAccountEvent)initWithAccountIdentifier:(id)a3 type:(int64_t)a4 caller:(id)a5 timestamp:(id)a6 eventDescription:(id)a7 credentialStateBefore:(int64_t)a8 credentialStateAfter:(int64_t)a9;
-- (HKClinicalAccountEvent)initWithAccountIdentifier:(id)a3 type:(int64_t)a4 caller:(id)a5 timestamp:(id)a6 eventDescription:(id)a7 incomingToken:(id)a8 currentToken:(id)a9;
-- (HKClinicalAccountEvent)initWithCoder:(id)a3;
+- (HKClinicalAccountEvent)initWithAccountIdentifier:(id)identifier type:(int64_t)type caller:(id)caller timestamp:(id)timestamp eventDescription:(id)description credentialStateBefore:(int64_t)before credentialStateAfter:(int64_t)after;
+- (HKClinicalAccountEvent)initWithAccountIdentifier:(id)identifier type:(int64_t)type caller:(id)caller timestamp:(id)timestamp eventDescription:(id)description incomingToken:(id)token currentToken:(id)currentToken;
+- (HKClinicalAccountEvent)initWithCoder:(id)coder;
 - (NSString)credentialStateAfterDescription;
 - (NSString)credentialStateBeforeDescription;
 - (NSString)typeDescription;
-- (id)eventMarkedAsFailedWithError:(id)a3;
+- (id)eventMarkedAsFailedWithError:(id)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalAccountEvent
@@ -29,184 +29,184 @@
   return 0;
 }
 
-- (HKClinicalAccountEvent)initWithAccountIdentifier:(id)a3 type:(int64_t)a4 caller:(id)a5 timestamp:(id)a6 eventDescription:(id)a7 credentialStateBefore:(int64_t)a8 credentialStateAfter:(int64_t)a9
+- (HKClinicalAccountEvent)initWithAccountIdentifier:(id)identifier type:(int64_t)type caller:(id)caller timestamp:(id)timestamp eventDescription:(id)description credentialStateBefore:(int64_t)before credentialStateAfter:(int64_t)after
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  identifierCopy = identifier;
+  callerCopy = caller;
+  timestampCopy = timestamp;
+  descriptionCopy = description;
   v29.receiver = self;
   v29.super_class = HKClinicalAccountEvent;
   v19 = [(HKClinicalAccountEvent *)&v29 init];
   if (v19)
   {
-    v20 = [v15 copy];
+    v20 = [identifierCopy copy];
     accountIdentifier = v19->_accountIdentifier;
     v19->_accountIdentifier = v20;
 
-    v19->_type = a4;
-    v22 = [v16 copy];
+    v19->_type = type;
+    v22 = [callerCopy copy];
     caller = v19->_caller;
     v19->_caller = v22;
 
-    v24 = [v17 copy];
+    v24 = [timestampCopy copy];
     timestamp = v19->_timestamp;
     v19->_timestamp = v24;
 
-    v26 = [v18 copy];
+    v26 = [descriptionCopy copy];
     eventDescription = v19->_eventDescription;
     v19->_eventDescription = v26;
 
-    v19->_credentialStateBefore = a8;
-    v19->_credentialStateAfter = a9;
+    v19->_credentialStateBefore = before;
+    v19->_credentialStateAfter = after;
   }
 
   return v19;
 }
 
-- (HKClinicalAccountEvent)initWithAccountIdentifier:(id)a3 type:(int64_t)a4 caller:(id)a5 timestamp:(id)a6 eventDescription:(id)a7 incomingToken:(id)a8 currentToken:(id)a9
+- (HKClinicalAccountEvent)initWithAccountIdentifier:(id)identifier type:(int64_t)type caller:(id)caller timestamp:(id)timestamp eventDescription:(id)description incomingToken:(id)token currentToken:(id)currentToken
 {
   v16 = MEMORY[0x277CCACA8];
-  v17 = a9;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a3;
-  v22 = [a8 hk_SHA256Hash];
-  v23 = [v17 hk_SHA256Hash];
+  currentTokenCopy = currentToken;
+  descriptionCopy = description;
+  timestampCopy = timestamp;
+  callerCopy = caller;
+  identifierCopy = identifier;
+  hk_SHA256Hash = [token hk_SHA256Hash];
+  hk_SHA256Hash2 = [currentTokenCopy hk_SHA256Hash];
 
-  v24 = [v16 stringWithFormat:@"%@ - %@: %@ - %@: %@", v18, @"Incoming Token", v22, @"Current Token", v23];
+  v24 = [v16 stringWithFormat:@"%@ - %@: %@ - %@: %@", descriptionCopy, @"Incoming Token", hk_SHA256Hash, @"Current Token", hk_SHA256Hash2];
 
-  v25 = [(HKClinicalAccountEvent *)self initWithAccountIdentifier:v21 type:a4 caller:v20 timestamp:v19 eventDescription:v24 credentialStateBefore:0 credentialStateAfter:0];
+  v25 = [(HKClinicalAccountEvent *)self initWithAccountIdentifier:identifierCopy type:type caller:callerCopy timestamp:timestampCopy eventDescription:v24 credentialStateBefore:0 credentialStateAfter:0];
   return v25;
 }
 
-- (HKClinicalAccountEvent)eventWithAppendedEventDescription:(id)a3
+- (HKClinicalAccountEvent)eventWithAppendedEventDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HKClinicalAccountEvent *)self accountIdentifier];
-  v7 = [(HKClinicalAccountEvent *)self type];
-  v8 = [(HKClinicalAccountEvent *)self caller];
-  v9 = [(HKClinicalAccountEvent *)self timestamp];
+  accountIdentifier = [(HKClinicalAccountEvent *)self accountIdentifier];
+  type = [(HKClinicalAccountEvent *)self type];
+  caller = [(HKClinicalAccountEvent *)self caller];
+  timestamp = [(HKClinicalAccountEvent *)self timestamp];
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(HKClinicalAccountEvent *)self eventDescription];
-  v12 = [v10 stringWithFormat:@"%@ - %@", v11, v4];
+  eventDescription = [(HKClinicalAccountEvent *)self eventDescription];
+  descriptionCopy = [v10 stringWithFormat:@"%@ - %@", eventDescription, descriptionCopy];
 
-  v13 = [v5 initWithAccountIdentifier:v6 type:v7 caller:v8 timestamp:v9 eventDescription:v12 credentialStateBefore:-[HKClinicalAccountEvent credentialStateBefore](self credentialStateAfter:{"credentialStateBefore"), -[HKClinicalAccountEvent credentialStateAfter](self, "credentialStateAfter")}];
+  v13 = [v5 initWithAccountIdentifier:accountIdentifier type:type caller:caller timestamp:timestamp eventDescription:descriptionCopy credentialStateBefore:-[HKClinicalAccountEvent credentialStateBefore](self credentialStateAfter:{"credentialStateBefore"), -[HKClinicalAccountEvent credentialStateAfter](self, "credentialStateAfter")}];
 
   return v13;
 }
 
-- (HKClinicalAccountEvent)eventWithAppendedRefreshToken:(id)a3 description:(id)a4
+- (HKClinicalAccountEvent)eventWithAppendedRefreshToken:(id)token description:(id)description
 {
-  v6 = a4;
-  v7 = a3;
+  descriptionCopy = description;
+  tokenCopy = token;
   v18 = objc_alloc(objc_opt_class());
-  v8 = [(HKClinicalAccountEvent *)self accountIdentifier];
-  v9 = [(HKClinicalAccountEvent *)self type];
-  v10 = [(HKClinicalAccountEvent *)self caller];
-  v11 = [(HKClinicalAccountEvent *)self timestamp];
+  accountIdentifier = [(HKClinicalAccountEvent *)self accountIdentifier];
+  type = [(HKClinicalAccountEvent *)self type];
+  caller = [(HKClinicalAccountEvent *)self caller];
+  timestamp = [(HKClinicalAccountEvent *)self timestamp];
   v12 = MEMORY[0x277CCACA8];
-  v13 = [(HKClinicalAccountEvent *)self eventDescription];
-  v14 = [v7 hk_SHA256Hash];
+  eventDescription = [(HKClinicalAccountEvent *)self eventDescription];
+  hk_SHA256Hash = [tokenCopy hk_SHA256Hash];
 
-  v15 = [v12 stringWithFormat:@"%@ - %@: %@", v13, v6, v14];
+  v15 = [v12 stringWithFormat:@"%@ - %@: %@", eventDescription, descriptionCopy, hk_SHA256Hash];
 
-  v16 = [v18 initWithAccountIdentifier:v8 type:v9 caller:v10 timestamp:v11 eventDescription:v15 credentialStateBefore:-[HKClinicalAccountEvent credentialStateBefore](self credentialStateAfter:{"credentialStateBefore"), -[HKClinicalAccountEvent credentialStateAfter](self, "credentialStateAfter")}];
+  v16 = [v18 initWithAccountIdentifier:accountIdentifier type:type caller:caller timestamp:timestamp eventDescription:v15 credentialStateBefore:-[HKClinicalAccountEvent credentialStateBefore](self credentialStateAfter:{"credentialStateBefore"), -[HKClinicalAccountEvent credentialStateAfter](self, "credentialStateAfter")}];
 
   return v16;
 }
 
-- (HKClinicalAccountEvent)eventWithUpdatedCredentialStateBefore:(int64_t)a3
+- (HKClinicalAccountEvent)eventWithUpdatedCredentialStateBefore:(int64_t)before
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HKClinicalAccountEvent *)self accountIdentifier];
-  v7 = [(HKClinicalAccountEvent *)self type];
-  v8 = [(HKClinicalAccountEvent *)self caller];
-  v9 = [(HKClinicalAccountEvent *)self timestamp];
-  v10 = [(HKClinicalAccountEvent *)self eventDescription];
-  v11 = [v5 initWithAccountIdentifier:v6 type:v7 caller:v8 timestamp:v9 eventDescription:v10 credentialStateBefore:a3 credentialStateAfter:{-[HKClinicalAccountEvent credentialStateAfter](self, "credentialStateAfter")}];
+  accountIdentifier = [(HKClinicalAccountEvent *)self accountIdentifier];
+  type = [(HKClinicalAccountEvent *)self type];
+  caller = [(HKClinicalAccountEvent *)self caller];
+  timestamp = [(HKClinicalAccountEvent *)self timestamp];
+  eventDescription = [(HKClinicalAccountEvent *)self eventDescription];
+  v11 = [v5 initWithAccountIdentifier:accountIdentifier type:type caller:caller timestamp:timestamp eventDescription:eventDescription credentialStateBefore:before credentialStateAfter:{-[HKClinicalAccountEvent credentialStateAfter](self, "credentialStateAfter")}];
 
   return v11;
 }
 
-- (HKClinicalAccountEvent)eventWithUpdatedCredentialStateAfter:(int64_t)a3
+- (HKClinicalAccountEvent)eventWithUpdatedCredentialStateAfter:(int64_t)after
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HKClinicalAccountEvent *)self accountIdentifier];
-  v7 = [(HKClinicalAccountEvent *)self type];
-  v8 = [(HKClinicalAccountEvent *)self caller];
-  v9 = [(HKClinicalAccountEvent *)self timestamp];
-  v10 = [(HKClinicalAccountEvent *)self eventDescription];
-  v11 = [v5 initWithAccountIdentifier:v6 type:v7 caller:v8 timestamp:v9 eventDescription:v10 credentialStateBefore:-[HKClinicalAccountEvent credentialStateBefore](self credentialStateAfter:{"credentialStateBefore"), a3}];
+  accountIdentifier = [(HKClinicalAccountEvent *)self accountIdentifier];
+  type = [(HKClinicalAccountEvent *)self type];
+  caller = [(HKClinicalAccountEvent *)self caller];
+  timestamp = [(HKClinicalAccountEvent *)self timestamp];
+  eventDescription = [(HKClinicalAccountEvent *)self eventDescription];
+  v11 = [v5 initWithAccountIdentifier:accountIdentifier type:type caller:caller timestamp:timestamp eventDescription:eventDescription credentialStateBefore:-[HKClinicalAccountEvent credentialStateBefore](self credentialStateAfter:{"credentialStateBefore"), after}];
 
   return v11;
 }
 
-- (id)eventMarkedAsFailedWithError:(id)a3
+- (id)eventMarkedAsFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HKClinicalAccountEvent *)self accountIdentifier];
-  v7 = [(HKClinicalAccountEvent *)self type];
-  v8 = [(HKClinicalAccountEvent *)self caller];
-  v9 = [(HKClinicalAccountEvent *)self timestamp];
+  accountIdentifier = [(HKClinicalAccountEvent *)self accountIdentifier];
+  type = [(HKClinicalAccountEvent *)self type];
+  caller = [(HKClinicalAccountEvent *)self caller];
+  timestamp = [(HKClinicalAccountEvent *)self timestamp];
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(HKClinicalAccountEvent *)self eventDescription];
-  v12 = [v4 hrs_completeDescription];
+  eventDescription = [(HKClinicalAccountEvent *)self eventDescription];
+  hrs_completeDescription = [errorCopy hrs_completeDescription];
 
-  v13 = [v10 stringWithFormat:@"Action: (%@) failed: (%@)", v11, v12];
-  v14 = [v5 initWithAccountIdentifier:v6 type:v7 caller:v8 timestamp:v9 eventDescription:v13 credentialStateBefore:-[HKClinicalAccountEvent credentialStateBefore](self credentialStateAfter:{"credentialStateBefore"), -[HKClinicalAccountEvent credentialStateAfter](self, "credentialStateAfter")}];
+  v13 = [v10 stringWithFormat:@"Action: (%@) failed: (%@)", eventDescription, hrs_completeDescription];
+  v14 = [v5 initWithAccountIdentifier:accountIdentifier type:type caller:caller timestamp:timestamp eventDescription:v13 credentialStateBefore:-[HKClinicalAccountEvent credentialStateBefore](self credentialStateAfter:{"credentialStateBefore"), -[HKClinicalAccountEvent credentialStateAfter](self, "credentialStateAfter")}];
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(HKClinicalAccountEvent *)self isEqualToClinicalAccountEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(HKClinicalAccountEvent *)self isEqualToClinicalAccountEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToClinicalAccountEvent:(id)a3
+- (BOOL)isEqualToClinicalAccountEvent:(id)event
 {
-  v6 = a3;
-  v7 = v6;
-  if (self == v6)
+  eventCopy = event;
+  v7 = eventCopy;
+  if (self == eventCopy)
   {
     v13 = 1;
   }
 
   else
   {
-    if (v6)
+    if (eventCopy)
     {
-      v8 = [(HKClinicalAccountEvent *)self accountIdentifier];
-      v9 = [(HKClinicalAccountEvent *)v7 accountIdentifier];
-      if (v8 != v9)
+      accountIdentifier = [(HKClinicalAccountEvent *)self accountIdentifier];
+      accountIdentifier2 = [(HKClinicalAccountEvent *)v7 accountIdentifier];
+      if (accountIdentifier != accountIdentifier2)
       {
-        v10 = [(HKClinicalAccountEvent *)v7 accountIdentifier];
-        if (!v10)
+        accountIdentifier3 = [(HKClinicalAccountEvent *)v7 accountIdentifier];
+        if (!accountIdentifier3)
         {
           v13 = 0;
           goto LABEL_54;
         }
 
-        v3 = v10;
-        v11 = [(HKClinicalAccountEvent *)self accountIdentifier];
-        v12 = [(HKClinicalAccountEvent *)v7 accountIdentifier];
-        if (![v11 isEqual:v12])
+        v3 = accountIdentifier3;
+        accountIdentifier4 = [(HKClinicalAccountEvent *)self accountIdentifier];
+        accountIdentifier5 = [(HKClinicalAccountEvent *)v7 accountIdentifier];
+        if (![accountIdentifier4 isEqual:accountIdentifier5])
         {
           v13 = 0;
 LABEL_53:
@@ -214,22 +214,22 @@ LABEL_53:
           goto LABEL_54;
         }
 
-        v47 = v12;
-        v48 = v11;
+        v47 = accountIdentifier5;
+        v48 = accountIdentifier4;
       }
 
-      v14 = [(HKClinicalAccountEvent *)self type];
-      if (v14 != [(HKClinicalAccountEvent *)v7 type])
+      type = [(HKClinicalAccountEvent *)self type];
+      if (type != [(HKClinicalAccountEvent *)v7 type])
       {
         goto LABEL_35;
       }
 
-      v15 = [(HKClinicalAccountEvent *)self caller];
-      v16 = [(HKClinicalAccountEvent *)v7 caller];
-      if (v15 != v16)
+      caller = [(HKClinicalAccountEvent *)self caller];
+      caller2 = [(HKClinicalAccountEvent *)v7 caller];
+      if (caller != caller2)
       {
-        v17 = [(HKClinicalAccountEvent *)v7 caller];
-        if (!v17)
+        caller3 = [(HKClinicalAccountEvent *)v7 caller];
+        if (!caller3)
         {
 LABEL_34:
 
@@ -238,50 +238,50 @@ LABEL_35:
           goto LABEL_52;
         }
 
-        v45 = v17;
-        v4 = [(HKClinicalAccountEvent *)self caller];
-        v18 = [(HKClinicalAccountEvent *)v7 caller];
-        if (([v4 isEqualToString:v18] & 1) == 0)
+        v45 = caller3;
+        caller4 = [(HKClinicalAccountEvent *)self caller];
+        caller5 = [(HKClinicalAccountEvent *)v7 caller];
+        if (([caller4 isEqualToString:caller5] & 1) == 0)
         {
 
 LABEL_33:
           goto LABEL_34;
         }
 
-        v42 = v18;
+        v42 = caller5;
       }
 
-      v19 = [(HKClinicalAccountEvent *)self timestamp];
-      v20 = [(HKClinicalAccountEvent *)v7 timestamp];
-      v46 = v19;
-      v21 = v19 == v20;
-      v22 = v20;
+      timestamp = [(HKClinicalAccountEvent *)self timestamp];
+      timestamp2 = [(HKClinicalAccountEvent *)v7 timestamp];
+      v46 = timestamp;
+      v21 = timestamp == timestamp2;
+      v22 = timestamp2;
       if (v21)
       {
-        v43 = v4;
-        v44 = v15;
+        v43 = caller4;
+        v44 = caller;
 LABEL_21:
-        v26 = [(HKClinicalAccountEvent *)self eventDescription];
-        v27 = [(HKClinicalAccountEvent *)v7 eventDescription];
-        v40 = v15;
-        if (v26 == v27)
+        eventDescription = [(HKClinicalAccountEvent *)self eventDescription];
+        eventDescription2 = [(HKClinicalAccountEvent *)v7 eventDescription];
+        v40 = caller;
+        if (eventDescription == eventDescription2)
         {
-          v38 = v26;
+          v38 = eventDescription;
         }
 
         else
         {
-          v28 = [(HKClinicalAccountEvent *)v7 eventDescription];
-          if (!v28)
+          eventDescription3 = [(HKClinicalAccountEvent *)v7 eventDescription];
+          if (!eventDescription3)
           {
             goto LABEL_38;
           }
 
-          v35 = v28;
-          v29 = [(HKClinicalAccountEvent *)self eventDescription];
+          v35 = eventDescription3;
+          eventDescription4 = [(HKClinicalAccountEvent *)self eventDescription];
           [(HKClinicalAccountEvent *)v7 eventDescription];
-          v37 = v34 = v29;
-          if (![v29 isEqualToString:?])
+          v37 = v34 = eventDescription4;
+          if (![eventDescription4 isEqualToString:?])
           {
             v13 = 0;
 LABEL_40:
@@ -290,24 +290,24 @@ LABEL_40:
             {
 LABEL_48:
 
-              v4 = v43;
-              v15 = v44;
+              caller4 = v43;
+              caller = v44;
               goto LABEL_49;
             }
 
-            v4 = v43;
-            v15 = v44;
+            caller4 = v43;
+            caller = v44;
 LABEL_42:
 
 LABEL_49:
-            if (v15 != v16)
+            if (caller != caller2)
             {
             }
 
 LABEL_52:
-            v11 = v48;
-            v12 = v47;
-            if (v8 != v9)
+            accountIdentifier4 = v48;
+            accountIdentifier5 = v47;
+            if (accountIdentifier != accountIdentifier2)
             {
               goto LABEL_53;
             }
@@ -317,17 +317,17 @@ LABEL_54:
             goto LABEL_55;
           }
 
-          v38 = v26;
+          v38 = eventDescription;
         }
 
-        v30 = [(HKClinicalAccountEvent *)self credentialStateBefore];
-        if (v30 == [(HKClinicalAccountEvent *)v7 credentialStateBefore])
+        credentialStateBefore = [(HKClinicalAccountEvent *)self credentialStateBefore];
+        if (credentialStateBefore == [(HKClinicalAccountEvent *)v7 credentialStateBefore])
         {
-          v31 = [(HKClinicalAccountEvent *)self credentialStateAfter];
-          v13 = v31 == [(HKClinicalAccountEvent *)v7 credentialStateAfter];
+          credentialStateAfter = [(HKClinicalAccountEvent *)self credentialStateAfter];
+          v13 = credentialStateAfter == [(HKClinicalAccountEvent *)v7 credentialStateAfter];
           v32 = v13;
-          v26 = v38;
-          if (v38 == v27)
+          eventDescription = v38;
+          if (v38 == eventDescription2)
           {
             goto LABEL_45;
           }
@@ -335,11 +335,11 @@ LABEL_54:
           goto LABEL_40;
         }
 
-        if (v38 == v27)
+        if (v38 == eventDescription2)
         {
           v32 = 0;
           v13 = 0;
-          v26 = v38;
+          eventDescription = v38;
 LABEL_45:
 
 LABEL_46:
@@ -352,7 +352,7 @@ LABEL_46:
           goto LABEL_48;
         }
 
-        v26 = v38;
+        eventDescription = v38;
 LABEL_38:
 
         v32 = 0;
@@ -360,28 +360,28 @@ LABEL_38:
         goto LABEL_46;
       }
 
-      v23 = [(HKClinicalAccountEvent *)v7 timestamp];
-      if (!v23)
+      timestamp3 = [(HKClinicalAccountEvent *)v7 timestamp];
+      if (!timestamp3)
       {
         v13 = 0;
         goto LABEL_42;
       }
 
       v39 = v22;
-      v41 = v23;
-      v24 = [(HKClinicalAccountEvent *)self timestamp];
-      v25 = [(HKClinicalAccountEvent *)v7 timestamp];
-      if ([v24 isEqualToDate:v25])
+      v41 = timestamp3;
+      timestamp4 = [(HKClinicalAccountEvent *)self timestamp];
+      timestamp5 = [(HKClinicalAccountEvent *)v7 timestamp];
+      if ([timestamp4 isEqualToDate:timestamp5])
       {
-        v36 = v25;
-        v43 = v4;
-        v44 = v15;
+        v36 = timestamp5;
+        v43 = caller4;
+        v44 = caller;
         v22 = v39;
-        v15 = v24;
+        caller = timestamp4;
         goto LABEL_21;
       }
 
-      if (v15 == v16)
+      if (caller == caller2)
       {
         goto LABEL_34;
       }
@@ -405,67 +405,67 @@ LABEL_55:
   return v5 ^ [(NSString *)self->_eventDescription hash]^ self->_credentialStateBefore ^ self->_credentialStateAfter;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(HKClinicalAccountEvent *)self accountIdentifier];
-  [v8 encodeObject:v4 forKey:@"accountIdentifier"];
+  coderCopy = coder;
+  accountIdentifier = [(HKClinicalAccountEvent *)self accountIdentifier];
+  [coderCopy encodeObject:accountIdentifier forKey:@"accountIdentifier"];
 
-  [v8 encodeInteger:-[HKClinicalAccountEvent type](self forKey:{"type"), @"type"}];
-  v5 = [(HKClinicalAccountEvent *)self caller];
-  [v8 encodeObject:v5 forKey:@"caller"];
+  [coderCopy encodeInteger:-[HKClinicalAccountEvent type](self forKey:{"type"), @"type"}];
+  caller = [(HKClinicalAccountEvent *)self caller];
+  [coderCopy encodeObject:caller forKey:@"caller"];
 
-  v6 = [(HKClinicalAccountEvent *)self timestamp];
-  [v8 encodeObject:v6 forKey:@"timestamp"];
+  timestamp = [(HKClinicalAccountEvent *)self timestamp];
+  [coderCopy encodeObject:timestamp forKey:@"timestamp"];
 
-  v7 = [(HKClinicalAccountEvent *)self eventDescription];
-  [v8 encodeObject:v7 forKey:@"eventDescription"];
+  eventDescription = [(HKClinicalAccountEvent *)self eventDescription];
+  [coderCopy encodeObject:eventDescription forKey:@"eventDescription"];
 
-  [v8 encodeInteger:-[HKClinicalAccountEvent credentialStateBefore](self forKey:{"credentialStateBefore"), @"credentialStateBefore"}];
-  [v8 encodeInteger:-[HKClinicalAccountEvent credentialStateAfter](self forKey:{"credentialStateAfter"), @"credentialStateAfter"}];
+  [coderCopy encodeInteger:-[HKClinicalAccountEvent credentialStateBefore](self forKey:{"credentialStateBefore"), @"credentialStateBefore"}];
+  [coderCopy encodeInteger:-[HKClinicalAccountEvent credentialStateAfter](self forKey:{"credentialStateAfter"), @"credentialStateAfter"}];
 }
 
-- (HKClinicalAccountEvent)initWithCoder:(id)a3
+- (HKClinicalAccountEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
-  v6 = [v4 decodeIntegerForKey:@"type"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"caller"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventDescription"];
-  v10 = [v4 decodeIntegerForKey:@"credentialStateBefore"];
-  v11 = [v4 decodeIntegerForKey:@"credentialStateAfter"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"type"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"caller"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventDescription"];
+  v10 = [coderCopy decodeIntegerForKey:@"credentialStateBefore"];
+  v11 = [coderCopy decodeIntegerForKey:@"credentialStateAfter"];
   if (!v5 || !v7 || !v8 || !v9)
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
 LABEL_11:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
   if (v6 > 2 || v10 > 3 || v11 >= 4)
   {
-    [v4 hrs_failWithCocoaInvalidValueError];
+    [coderCopy hrs_failWithCocoaInvalidValueError];
     goto LABEL_11;
   }
 
   self = [(HKClinicalAccountEvent *)self initWithAccountIdentifier:v5 type:v6 caller:v7 timestamp:v8 eventDescription:v9 credentialStateBefore:v10 credentialStateAfter:v11];
-  v12 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v12;
+  return selfCopy;
 }
 
 - (NSString)typeDescription
 {
-  v2 = [(HKClinicalAccountEvent *)self type];
+  type = [(HKClinicalAccountEvent *)self type];
   v3 = @"unknown";
-  if (v2 == 1)
+  if (type == 1)
   {
     v3 = @"credential state change";
   }
 
-  if (v2 == 2)
+  if (type == 2)
   {
     v4 = @"ignore incoming credential from sync";
   }
@@ -480,29 +480,29 @@ LABEL_12:
 
 - (NSString)credentialStateBeforeDescription
 {
-  v2 = [(HKClinicalAccountEvent *)self credentialStateBefore];
-  if ((v2 - 1) > 2)
+  credentialStateBefore = [(HKClinicalAccountEvent *)self credentialStateBefore];
+  if ((credentialStateBefore - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return &off_2796DC900[v2 - 1]->isa;
+    return &off_2796DC900[credentialStateBefore - 1]->isa;
   }
 }
 
 - (NSString)credentialStateAfterDescription
 {
-  v2 = [(HKClinicalAccountEvent *)self credentialStateAfter];
-  if ((v2 - 1) > 2)
+  credentialStateAfter = [(HKClinicalAccountEvent *)self credentialStateAfter];
+  if ((credentialStateAfter - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return &off_2796DC900[v2 - 1]->isa;
+    return &off_2796DC900[credentialStateAfter - 1]->isa;
   }
 }
 

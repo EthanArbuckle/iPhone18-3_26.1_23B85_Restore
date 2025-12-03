@@ -1,13 +1,13 @@
 @interface SUUIURLResolverDataConsumer
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
 @end
 
 @implementation SUUIURLResolverDataConsumer
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  responseCopy = response;
   v8 = SSVProtocolRedirectURLForResponse();
   if (v8)
   {
@@ -16,7 +16,7 @@
 
   else
   {
-    v9 = [[SUUIURLResolverResponse alloc] initWithData:v6 URLResponse:v7];
+    v9 = [[SUUIURLResolverResponse alloc] initWithData:dataCopy URLResponse:responseCopy];
   }
 
   return v9;

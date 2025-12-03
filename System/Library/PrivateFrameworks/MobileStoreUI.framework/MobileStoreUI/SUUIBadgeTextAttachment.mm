@@ -1,46 +1,46 @@
 @interface SUUIBadgeTextAttachment
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)badgeSize;
-- (SUUIBadgeTextAttachment)initWithViewElement:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUUIBadgeTextAttachment)initWithViewElement:(id)element;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)_ensureImageIsLoaded;
-- (void)_loadImageWithResourceName:(id)a3 fallbackImage:(id)a4 styleColor:(id)a5;
+- (void)_loadImageWithResourceName:(id)name fallbackImage:(id)image styleColor:(id)color;
 @end
 
 @implementation SUUIBadgeTextAttachment
 
-- (SUUIBadgeTextAttachment)initWithViewElement:(id)a3
+- (SUUIBadgeTextAttachment)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v24.receiver = self;
   v24.super_class = SUUIBadgeTextAttachment;
   v5 = [(SUUIBadgeTextAttachment *)&v24 init];
   if (v5)
   {
-    if ([v4 badgeType])
+    if ([elementCopy badgeType])
     {
-      v6 = v5;
+      fallbackImage = v5;
       v5 = 0;
     }
 
     else
     {
-      v6 = [v4 fallbackImage];
-      v7 = [v4 resourceName];
-      v8 = [v4 style];
-      v9 = [v8 ikColor];
-      v10 = [v9 color];
+      fallbackImage = [elementCopy fallbackImage];
+      resourceName = [elementCopy resourceName];
+      style = [elementCopy style];
+      ikColor = [style ikColor];
+      color = [ikColor color];
 
-      v11 = [v4 URL];
+      v11 = [elementCopy URL];
       imageURL = v5->_imageURL;
       v5->_imageURL = v11;
 
       v13 = *MEMORY[0x277CBF3A0];
       v14 = *(MEMORY[0x277CBF3A0] + 8);
-      [v4 size];
+      [elementCopy size];
       [(SUUIBadgeTextAttachment *)v5 setBounds:v13, v14, v15, v16];
-      if (v7 && ![MEMORY[0x277CCACC8] isMainThread])
+      if (resourceName && ![MEMORY[0x277CCACC8] isMainThread])
       {
         v17 = dispatch_semaphore_create(0);
         [(SUUIBadgeTextAttachment *)v5 setImageLoadingSemaphore:v17];
@@ -49,15 +49,15 @@
         v19[2] = __47__SUUIBadgeTextAttachment_initWithViewElement___block_invoke;
         v19[3] = &unk_2798F70E0;
         v20 = v5;
-        v21 = v7;
-        v22 = v6;
-        v23 = v10;
+        v21 = resourceName;
+        v22 = fallbackImage;
+        v23 = color;
         dispatch_async(MEMORY[0x277D85CD0], v19);
       }
 
       else
       {
-        [(SUUIBadgeTextAttachment *)v5 _loadImageWithResourceName:v7 fallbackImage:v6 styleColor:v10];
+        [(SUUIBadgeTextAttachment *)v5 _loadImageWithResourceName:resourceName fallbackImage:fallbackImage styleColor:color];
       }
     }
   }
@@ -71,16 +71,16 @@
   v3 = [(NSURL *)self->_imageURL hash];
   [(SUUIBadgeTextAttachment *)self bounds];
   v8 = ((((v3 + v4 * 10.0) + v5 * 100.0) + v6 * 1000.0) + v7 * 10000.0);
-  v9 = [(SUUIBadgeTextAttachment *)self image];
-  v10 = v8 + 100000 * [v9 hash];
+  image = [(SUUIBadgeTextAttachment *)self image];
+  v10 = v8 + 100000 * [image hash];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v21 = 1;
   }
@@ -90,22 +90,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       imageURL = self->_imageURL;
       if ((imageURL == v5->_imageURL || [(NSURL *)imageURL isEqual:?]) && ([(SUUIBadgeTextAttachment *)self bounds], v8 = v7, v10 = v9, v12 = v11, v14 = v13, [(SUUIBadgeTextAttachment *)v5 bounds], v24.origin.x = v15, v24.origin.y = v16, v24.size.width = v17, v24.size.height = v18, v23.origin.x = v8, v23.origin.y = v10, v23.size.width = v12, v23.size.height = v14, CGRectEqualToRect(v23, v24)))
       {
         [(SUUIBadgeTextAttachment *)self _ensureImageIsLoaded];
         [(SUUIBadgeTextAttachment *)v5 _ensureImageIsLoaded];
-        v19 = [(SUUIBadgeTextAttachment *)self image];
-        v20 = [(SUUIBadgeTextAttachment *)v5 image];
-        if (v19 == v20)
+        image = [(SUUIBadgeTextAttachment *)self image];
+        image2 = [(SUUIBadgeTextAttachment *)v5 image];
+        if (image == image2)
         {
           v21 = 1;
         }
 
         else
         {
-          v21 = [v19 isEqual:v20];
+          v21 = [image isEqual:image2];
         }
       }
 
@@ -124,15 +124,15 @@
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   [(SUUIBadgeTextAttachment *)self _ensureImageIsLoaded];
   v4 = objc_alloc_init(SUUIBadgeTextAttachment);
   objc_storeStrong(&v4->_imageURL, self->_imageURL);
   [(SUUIBadgeTextAttachment *)self bounds];
   [(SUUIBadgeTextAttachment *)v4 setBounds:?];
-  v5 = [(SUUIBadgeTextAttachment *)self image];
-  [(SUUIBadgeTextAttachment *)v4 setImage:v5];
+  image = [(SUUIBadgeTextAttachment *)self image];
+  [(SUUIBadgeTextAttachment *)v4 setImage:image];
 
   return v4;
 }
@@ -144,11 +144,11 @@
   v6 = v3;
   if (v4 == *MEMORY[0x277CBF3A8] && v3 == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v8 = [(SUUIBadgeTextAttachment *)self image];
-    v9 = v8;
-    if (v8)
+    image = [(SUUIBadgeTextAttachment *)self image];
+    v9 = image;
+    if (image)
     {
-      [v8 size];
+      [image size];
       v5 = v10;
       v6 = v11;
     }
@@ -163,30 +163,30 @@
 
 - (void)_ensureImageIsLoaded
 {
-  v2 = [(SUUIBadgeTextAttachment *)self imageLoadingSemaphore];
-  if (v2)
+  imageLoadingSemaphore = [(SUUIBadgeTextAttachment *)self imageLoadingSemaphore];
+  if (imageLoadingSemaphore)
   {
-    v3 = v2;
-    dispatch_semaphore_wait(v2, 0xFFFFFFFFFFFFFFFFLL);
-    v2 = v3;
+    v3 = imageLoadingSemaphore;
+    dispatch_semaphore_wait(imageLoadingSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+    imageLoadingSemaphore = v3;
   }
 }
 
-- (void)_loadImageWithResourceName:(id)a3 fallbackImage:(id)a4 styleColor:(id)a5
+- (void)_loadImageWithResourceName:(id)name fallbackImage:(id)image styleColor:(id)color
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v15)
+  nameCopy = name;
+  imageCopy = image;
+  colorCopy = color;
+  if (!nameCopy)
   {
     goto LABEL_16;
   }
 
-  v10 = SUUIImageWithResourceName(v15);
+  v10 = SUUIImageWithResourceName(nameCopy);
   v11 = v10;
-  if (v9 && [v10 renderingMode] == 2)
+  if (colorCopy && [v10 renderingMode] == 2)
   {
-    v12 = [v11 _flatImageWithColor:v9];
+    v12 = [v11 _flatImageWithColor:colorCopy];
 
     v11 = v12;
   }
@@ -201,16 +201,16 @@ LABEL_16:
 
     else
     {
-      v11 = v8;
+      v11 = imageCopy;
     }
   }
 
   [(SUUIBadgeTextAttachment *)self setImage:v11];
-  v13 = [(SUUIBadgeTextAttachment *)self imageLoadingSemaphore];
-  v14 = v13;
-  if (v13)
+  imageLoadingSemaphore = [(SUUIBadgeTextAttachment *)self imageLoadingSemaphore];
+  v14 = imageLoadingSemaphore;
+  if (imageLoadingSemaphore)
   {
-    dispatch_semaphore_signal(v13);
+    dispatch_semaphore_signal(imageLoadingSemaphore);
     [(SUUIBadgeTextAttachment *)self setImageLoadingSemaphore:0];
   }
 }

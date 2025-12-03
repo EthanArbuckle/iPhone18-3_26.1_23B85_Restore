@@ -1,32 +1,32 @@
 @interface ATXWidgetMetadataDataSource
-- (ATXWidgetMetadataDataSource)initWithDevice:(id)a3;
-- (void)fetchWidgetMetadataForAppBundleIds:(id)a3 callback:(id)a4;
+- (ATXWidgetMetadataDataSource)initWithDevice:(id)device;
+- (void)fetchWidgetMetadataForAppBundleIds:(id)ids callback:(id)callback;
 @end
 
 @implementation ATXWidgetMetadataDataSource
 
-- (ATXWidgetMetadataDataSource)initWithDevice:(id)a3
+- (ATXWidgetMetadataDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ATXWidgetMetadataDataSource;
   v6 = [(ATXWidgetMetadataDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (void)fetchWidgetMetadataForAppBundleIds:(id)a3 callback:(id)a4
+- (void)fetchWidgetMetadataForAppBundleIds:(id)ids callback:(id)callback
 {
   v66 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  idsCopy = ids;
+  callbackCopy = callback;
   v7 = objc_autoreleasePoolPush();
-  if (v5)
+  if (idsCopy)
   {
     v8 = objc_alloc_init(MEMORY[0x277CEB568]);
     v58 = 0;
@@ -38,9 +38,9 @@
       v31 = v10;
       v33 = v8;
       v34 = v7;
-      v35 = v6;
-      v36 = v5;
-      v12 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v5];
+      v35 = callbackCopy;
+      v36 = idsCopy;
+      v12 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:idsCopy];
       v45 = objc_opt_new();
       v54 = 0u;
       v55 = 0u;
@@ -71,8 +71,8 @@
           v51 = 0u;
           v52 = 0u;
           v53 = 0u;
-          v41 = [v14 stacks];
-          v43 = [v41 countByEnumeratingWithState:&v50 objects:v64 count:16];
+          stacks = [v14 stacks];
+          v43 = [stacks countByEnumeratingWithState:&v50 objects:v64 count:16];
           if (v43)
           {
             v42 = *v51;
@@ -83,7 +83,7 @@
               {
                 if (*v51 != v42)
                 {
-                  objc_enumerationMutation(v41);
+                  objc_enumerationMutation(stacks);
                 }
 
                 v44 = v15;
@@ -92,8 +92,8 @@
                 v47 = 0u;
                 v48 = 0u;
                 v49 = 0u;
-                v17 = [v16 widgets];
-                v18 = [v17 countByEnumeratingWithState:&v46 objects:v63 count:16];
+                widgets = [v16 widgets];
+                v18 = [widgets countByEnumeratingWithState:&v46 objects:v63 count:16];
                 if (v18)
                 {
                   v19 = v18;
@@ -104,31 +104,31 @@
                     {
                       if (*v47 != v20)
                       {
-                        objc_enumerationMutation(v17);
+                        objc_enumerationMutation(widgets);
                       }
 
                       v22 = *(*(&v46 + 1) + 8 * i);
-                      v23 = [v22 appBundleId];
-                      if (v23)
+                      appBundleId = [v22 appBundleId];
+                      if (appBundleId)
                       {
-                        v24 = [v22 widgetKind];
-                        if (v24)
+                        widgetKind = [v22 widgetKind];
+                        if (widgetKind)
                         {
-                          v25 = [v22 extensionBundleId];
-                          if (v25)
+                          extensionBundleId = [v22 extensionBundleId];
+                          if (extensionBundleId)
                           {
-                            if ([v12 containsObject:v23])
+                            if ([v12 containsObject:appBundleId])
                             {
                               v59[0] = @"widgetBundleId";
                               v59[1] = @"widgetKind";
-                              v60[0] = v25;
-                              v60[1] = v24;
+                              v60[0] = extensionBundleId;
+                              v60[1] = widgetKind;
                               v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:2];
-                              v27 = [v45 objectForKeyedSubscript:v23];
+                              v27 = [v45 objectForKeyedSubscript:appBundleId];
                               if (!v27)
                               {
                                 v27 = objc_opt_new();
-                                [v45 setObject:v27 forKeyedSubscript:v23];
+                                [v45 setObject:v27 forKeyedSubscript:appBundleId];
                               }
 
                               if (([v27 containsObject:v26] & 1) == 0)
@@ -156,18 +156,18 @@ LABEL_31:
 
                         else
                         {
-                          v25 = __atxlog_handle_heuristic();
-                          if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+                          extensionBundleId = __atxlog_handle_heuristic();
+                          if (os_log_type_enabled(extensionBundleId, OS_LOG_TYPE_ERROR))
                           {
                             *buf = 138412290;
                             v62 = v22;
-                            _os_log_error_impl(&dword_23E3EA000, v25, OS_LOG_TYPE_ERROR, "ATXWidgetMetadataDataSource: no widget kind for widget: %@", buf, 0xCu);
+                            _os_log_error_impl(&dword_23E3EA000, extensionBundleId, OS_LOG_TYPE_ERROR, "ATXWidgetMetadataDataSource: no widget kind for widget: %@", buf, 0xCu);
                           }
                         }
                       }
                     }
 
-                    v19 = [v17 countByEnumeratingWithState:&v46 objects:v63 count:16];
+                    v19 = [widgets countByEnumeratingWithState:&v46 objects:v63 count:16];
                   }
 
                   while (v19);
@@ -177,7 +177,7 @@ LABEL_31:
               }
 
               while (v44 + 1 != v43);
-              v43 = [v41 countByEnumeratingWithState:&v50 objects:v64 count:16];
+              v43 = [stacks countByEnumeratingWithState:&v50 objects:v64 count:16];
             }
 
             while (v43);
@@ -192,10 +192,10 @@ LABEL_31:
         {
 LABEL_39:
 
-          v6 = v35;
+          callbackCopy = v35;
           (v35)[2](v35, v45, 0);
 
-          v5 = v36;
+          idsCopy = v36;
           v8 = v33;
           v7 = v34;
           v11 = v31;
@@ -211,7 +211,7 @@ LABEL_39:
       [ATXWidgetMetadataDataSource fetchWidgetMetadataForAppBundleIds:v11 callback:v29];
     }
 
-    v6[2](v6, 0, v11);
+    callbackCopy[2](callbackCopy, 0, v11);
 LABEL_46:
   }
 
@@ -224,7 +224,7 @@ LABEL_46:
     }
 
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-    v6[2](v6, 0, v8);
+    callbackCopy[2](callbackCopy, 0, v8);
   }
 
   objc_autoreleasePoolPop(v7);

@@ -1,5 +1,5 @@
 @interface SASActivationRequest
-+ (int64_t)requestSourceForButtonIdentifier:(int64_t)a3;
++ (int64_t)requestSourceForButtonIdentifier:(int64_t)identifier;
 - (BOOL)isBluetoothRequest;
 - (BOOL)isEyesFreeRequestSource;
 - (BOOL)isQuickTypeGestureEnabled;
@@ -8,21 +8,21 @@
 - (BOOL)isUIFreeRequestSource;
 - (BOOL)isVoiceRequest;
 - (SASActivationRequest)init;
-- (SASActivationRequest)initWithBluetoothKeyboardShortcutActivation:(int64_t)a3;
+- (SASActivationRequest)initWithBluetoothKeyboardShortcutActivation:(int64_t)activation;
 - (SASActivationRequest)initWithBreadcrumbRequest;
-- (SASActivationRequest)initWithButtonIdentifier:(int64_t)a3 context:(id)a4;
-- (SASActivationRequest)initWithContinuityContext:(id)a3;
-- (SASActivationRequest)initWithContinuousConversationContext:(id)a3;
-- (SASActivationRequest)initWithContinuousConversationHearstContext:(id)a3;
-- (SASActivationRequest)initWithContinuousConversationJarvisContext:(id)a3;
-- (SASActivationRequest)initWithDirectActionContext:(id)a3;
-- (SASActivationRequest)initWithRemotePresentationBringUpContext:(id)a3;
-- (SASActivationRequest)initWithSimpleActivation:(int64_t)a3;
-- (SASActivationRequest)initWithSpotlightContext:(id)a3;
-- (SASActivationRequest)initWithTestingContext:(id)a3;
-- (SASActivationRequest)initWithTostadaContext:(id)a3;
-- (SASActivationRequest)initWithVocalShortcutContext:(id)a3;
-- (SASActivationRequest)initWithVoiceTriggerContext:(id)a3;
+- (SASActivationRequest)initWithButtonIdentifier:(int64_t)identifier context:(id)context;
+- (SASActivationRequest)initWithContinuityContext:(id)context;
+- (SASActivationRequest)initWithContinuousConversationContext:(id)context;
+- (SASActivationRequest)initWithContinuousConversationHearstContext:(id)context;
+- (SASActivationRequest)initWithContinuousConversationJarvisContext:(id)context;
+- (SASActivationRequest)initWithDirectActionContext:(id)context;
+- (SASActivationRequest)initWithRemotePresentationBringUpContext:(id)context;
+- (SASActivationRequest)initWithSimpleActivation:(int64_t)activation;
+- (SASActivationRequest)initWithSpotlightContext:(id)context;
+- (SASActivationRequest)initWithTestingContext:(id)context;
+- (SASActivationRequest)initWithTostadaContext:(id)context;
+- (SASActivationRequest)initWithVocalShortcutContext:(id)context;
+- (SASActivationRequest)initWithVoiceTriggerContext:(id)context;
 - (SASActivationRequest)initWithVoiceTriggerRequest;
 - (double)buttonDownTimestamp;
 - (double)computedActivationTime;
@@ -58,9 +58,9 @@
   v3 = MEMORY[0x1E696AEC0];
   [(SASActivationRequest *)self activationEvent];
   v4 = AFActivationEventGetDescription();
-  v5 = [(SASActivationRequest *)self eventSource];
-  v6 = [(SASActivationRequest *)self context];
-  v7 = [v3 stringWithFormat:@"event = AFActivationEvent%@ source = %@; context: %@", v4, v5, v6];;
+  eventSource = [(SASActivationRequest *)self eventSource];
+  context = [(SASActivationRequest *)self context];
+  v7 = [v3 stringWithFormat:@"event = AFActivationEvent%@ source = %@; context: %@", v4, eventSource, context];;
 
   return v7;
 }
@@ -72,23 +72,23 @@
     return 0;
   }
 
-  v4 = [(SASActivationRequest *)self context];
-  v5 = [v4 requestInfo];
-  v6 = [v5 activationEvent];
+  context = [(SASActivationRequest *)self context];
+  requestInfo = [context requestInfo];
+  activationEvent = [requestInfo activationEvent];
 
-  if (v6 <= 0xA && ((1 << v6) & 0x640) != 0)
+  if (activationEvent <= 0xA && ((1 << activationEvent) & 0x640) != 0)
   {
     v7 = 1;
   }
 
   else
   {
-    v5 = [v4 requestInfo];
-    v2 = [v5 speechRequestOptions];
-    v7 = [v2 activationEvent] == 17;
+    requestInfo = [context requestInfo];
+    speechRequestOptions = [requestInfo speechRequestOptions];
+    v7 = [speechRequestOptions activationEvent] == 17;
   }
 
-  if (v6 > 0xA || ((1 << v6) & 0x640) == 0)
+  if (activationEvent > 0xA || ((1 << activationEvent) & 0x640) == 0)
   {
   }
 
@@ -97,19 +97,19 @@
 
 - (BOOL)isVoiceRequest
 {
-  v3 = [(SASActivationRequest *)self context];
+  context = [(SASActivationRequest *)self context];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(SASActivationRequest *)self context];
-    v6 = [v5 requestInfo];
-    v7 = [v6 speechRequestOptions];
+    context2 = [(SASActivationRequest *)self context];
+    requestInfo = [context2 requestInfo];
+    speechRequestOptions = [requestInfo speechRequestOptions];
 
-    if ([v7 isVoiceTrigger])
+    if ([speechRequestOptions isVoiceTrigger])
     {
-      v8 = [v7 activationEvent] == 8 || objc_msgSend(v7, "activationEvent") == 16;
+      v8 = [speechRequestOptions activationEvent] == 8 || objc_msgSend(speechRequestOptions, "activationEvent") == 16;
     }
 
     else
@@ -189,12 +189,12 @@ LABEL_15:
 
   v14 = v11;
   v17 = v33 + (v34 / 0xF4240uLL);
-  v18 = [MEMORY[0x1E695DF00] date];
-  [v18 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v20 = v19 - v17;
 
-  v21 = [MEMORY[0x1E696AE30] processInfo];
-  [v21 systemUptime];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  [processInfo systemUptime];
   v23 = v22;
 
   v24 = *v5;
@@ -257,7 +257,7 @@ LABEL_16:
 
 - (BOOL)isBluetoothRequest
 {
-  v2 = [(SASActivationRequest *)self context];
+  context = [(SASActivationRequest *)self context];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -266,9 +266,9 @@ LABEL_16:
 
 - (BOOL)isTestingRequest
 {
-  v2 = [(SASActivationRequest *)self requestSource];
+  requestSource = [(SASActivationRequest *)self requestSource];
 
-  return SASRequestSourceIsTesting(v2);
+  return SASRequestSourceIsTesting(requestSource);
 }
 
 - (SASActivationRequest)init
@@ -278,17 +278,17 @@ LABEL_16:
   v2 = [(SASActivationRequest *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    [v3 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v2 setActivationTime:?];
   }
 
   return v2;
 }
 
-- (SASActivationRequest)initWithButtonIdentifier:(int64_t)a3 context:(id)a4
+- (SASActivationRequest)initWithButtonIdentifier:(int64_t)identifier context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = objc_alloc_init(SASButtonActvationRequest);
 
   if (v7)
@@ -296,39 +296,39 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v6 buttonDownTimestamp];
+      [contextCopy buttonDownTimestamp];
       [(SASActivationRequest *)v7 setButtonDownTime:?];
     }
 
-    v8 = [MEMORY[0x1E696AE30] processInfo];
-    [v8 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v7 setActivationTime:?];
 
     [(SASActivationRequest *)v7 setActivationType:0];
-    [(SASButtonActvationRequest *)v7 setButtonIdentifier:a3];
-    [(SASActivationRequest *)v7 setRequestSource:[SASActivationRequest requestSourceForButtonIdentifier:a3]];
-    [(SASActivationRequest *)v7 setContext:v6];
+    [(SASButtonActvationRequest *)v7 setButtonIdentifier:identifier];
+    [(SASActivationRequest *)v7 setRequestSource:[SASActivationRequest requestSourceForButtonIdentifier:identifier]];
+    [(SASActivationRequest *)v7 setContext:contextCopy];
   }
 
   return &v7->super;
 }
 
-- (SASActivationRequest)initWithDirectActionContext:(id)a3
+- (SASActivationRequest)initWithDirectActionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = SASActivationRequest;
   v5 = [(SASActivationRequest *)&v11 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AE30] processInfo];
-    [v6 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v5 setActivationTime:?];
 
     [(SASActivationRequest *)v5 setActivationType:2];
     [(SASActivationRequest *)v5 setActivationEvent:2];
-    v7 = [v4 bulletin];
-    if (v7)
+    bulletin = [contextCopy bulletin];
+    if (bulletin)
     {
 
       v8 = 13;
@@ -336,9 +336,9 @@ LABEL_16:
 
     else
     {
-      v9 = [v4 notification];
+      notification = [contextCopy notification];
 
-      if (v9)
+      if (notification)
       {
         v8 = 13;
       }
@@ -350,15 +350,15 @@ LABEL_16:
     }
 
     [(SASActivationRequest *)v5 setRequestSource:v8];
-    [(SASActivationRequest *)v5 setContext:v4];
+    [(SASActivationRequest *)v5 setContext:contextCopy];
   }
 
   return v5;
 }
 
-- (SASActivationRequest)initWithContinuityContext:(id)a3
+- (SASActivationRequest)initWithContinuityContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v22.receiver = self;
   v22.super_class = SASActivationRequest;
   v5 = [(SASActivationRequest *)&v22 init];
@@ -366,17 +366,17 @@ LABEL_16:
   if (v5)
   {
     [(SASActivationRequest *)v5 setActivationType:3];
-    [(SASActivationRequest *)v6 setContext:v4];
-    v7 = [v4 requestInfo];
-    v8 = [v7 speechRequestOptions];
-    v9 = [v8 activationEvent];
+    [(SASActivationRequest *)v6 setContext:contextCopy];
+    requestInfo = [contextCopy requestInfo];
+    speechRequestOptions = [requestInfo speechRequestOptions];
+    activationEvent = [speechRequestOptions activationEvent];
 
-    v10 = [v4 requestInfo];
-    v11 = [v10 speechRequestOptions];
-    v12 = v11;
-    if (v9 == 17)
+    requestInfo2 = [contextCopy requestInfo];
+    speechRequestOptions2 = [requestInfo2 speechRequestOptions];
+    v12 = speechRequestOptions2;
+    if (activationEvent == 17)
     {
-      [v11 activationEventTime];
+      [speechRequestOptions2 activationEventTime];
       [(SASActivationRequest *)v6 setActivationTime:?];
 
       [(SASActivationRequest *)v6 setRequestSource:27];
@@ -385,14 +385,14 @@ LABEL_16:
 
     else
     {
-      v13 = [v11 activationEvent];
+      activationEvent2 = [speechRequestOptions2 activationEvent];
 
-      v14 = [v4 requestInfo];
-      v15 = [v14 speechRequestOptions];
-      v16 = v15;
-      if (v13 == 16)
+      requestInfo3 = [contextCopy requestInfo];
+      speechRequestOptions3 = [requestInfo3 speechRequestOptions];
+      v16 = speechRequestOptions3;
+      if (activationEvent2 == 16)
       {
-        [v15 activationEventTime];
+        [speechRequestOptions3 activationEventTime];
         [(SASActivationRequest *)v6 setActivationTime:?];
 
         v17 = v6;
@@ -401,14 +401,14 @@ LABEL_16:
 
       else
       {
-        v19 = [v15 activationEvent];
+        activationEvent3 = [speechRequestOptions3 activationEvent];
 
-        v20 = [MEMORY[0x1E696AE30] processInfo];
-        [v20 systemUptime];
+        processInfo = [MEMORY[0x1E696AE30] processInfo];
+        [processInfo systemUptime];
         [(SASActivationRequest *)v6 setActivationTime:?];
 
         v17 = v6;
-        if (v19 == 5)
+        if (activationEvent3 == 5)
         {
           v18 = 9;
         }
@@ -426,101 +426,101 @@ LABEL_16:
   return v6;
 }
 
-- (SASActivationRequest)initWithVoiceTriggerContext:(id)a3
+- (SASActivationRequest)initWithVoiceTriggerContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = SASActivationRequest;
   v5 = [(SASActivationRequest *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AE30] processInfo];
-    [v6 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v5 setActivationTime:?];
 
     [(SASActivationRequest *)v5 setActivationType:1];
     [(SASActivationRequest *)v5 setRequestSource:8];
-    [(SASActivationRequest *)v5 setContext:v4];
+    [(SASActivationRequest *)v5 setContext:contextCopy];
   }
 
   return v5;
 }
 
-- (SASActivationRequest)initWithContinuousConversationContext:(id)a3
+- (SASActivationRequest)initWithContinuousConversationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = SASActivationRequest;
   v5 = [(SASActivationRequest *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AE30] processInfo];
-    [v6 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v5 setActivationTime:?];
 
     [(SASActivationRequest *)v5 setActivationType:9];
     [(SASActivationRequest *)v5 setRequestSource:39];
-    [(SASActivationRequest *)v5 setContext:v4];
+    [(SASActivationRequest *)v5 setContext:contextCopy];
   }
 
   return v5;
 }
 
-- (SASActivationRequest)initWithContinuousConversationHearstContext:(id)a3
+- (SASActivationRequest)initWithContinuousConversationHearstContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = SASActivationRequest;
   v5 = [(SASActivationRequest *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AE30] processInfo];
-    [v6 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v5 setActivationTime:?];
 
     [(SASActivationRequest *)v5 setActivationType:9];
     [(SASActivationRequest *)v5 setRequestSource:46];
-    [(SASActivationRequest *)v5 setContext:v4];
+    [(SASActivationRequest *)v5 setContext:contextCopy];
   }
 
   return v5;
 }
 
-- (SASActivationRequest)initWithContinuousConversationJarvisContext:(id)a3
+- (SASActivationRequest)initWithContinuousConversationJarvisContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = SASActivationRequest;
   v5 = [(SASActivationRequest *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AE30] processInfo];
-    [v6 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v5 setActivationTime:?];
 
     [(SASActivationRequest *)v5 setActivationType:9];
     [(SASActivationRequest *)v5 setRequestSource:47];
-    [(SASActivationRequest *)v5 setContext:v4];
+    [(SASActivationRequest *)v5 setContext:contextCopy];
   }
 
   return v5;
 }
 
-- (SASActivationRequest)initWithRemotePresentationBringUpContext:(id)a3
+- (SASActivationRequest)initWithRemotePresentationBringUpContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = SASActivationRequest;
   v5 = [(SASActivationRequest *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AE30] processInfo];
-    [v6 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v5 setActivationTime:?];
 
     [(SASActivationRequest *)v5 setActivationType:10];
     [(SASActivationRequest *)v5 setRequestSource:40];
-    [(SASActivationRequest *)v5 setContext:v4];
+    [(SASActivationRequest *)v5 setContext:contextCopy];
   }
 
   return v5;
@@ -533,8 +533,8 @@ LABEL_16:
   v2 = [(SASActivationRequest *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    [v3 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v2 setActivationTime:?];
 
     [(SASActivationRequest *)v2 setActivationType:4];
@@ -544,62 +544,62 @@ LABEL_16:
   return v2;
 }
 
-- (SASActivationRequest)initWithSimpleActivation:(int64_t)a3
+- (SASActivationRequest)initWithSimpleActivation:(int64_t)activation
 {
   v7.receiver = self;
   v7.super_class = SASActivationRequest;
   v4 = [(SASActivationRequest *)&v7 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AE30] processInfo];
-    [v5 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v4 setActivationTime:?];
 
     [(SASActivationRequest *)v4 setActivationType:5];
-    [(SASActivationRequest *)v4 setRequestSource:a3];
+    [(SASActivationRequest *)v4 setRequestSource:activation];
   }
 
   return v4;
 }
 
-- (SASActivationRequest)initWithBluetoothKeyboardShortcutActivation:(int64_t)a3
+- (SASActivationRequest)initWithBluetoothKeyboardShortcutActivation:(int64_t)activation
 {
   v7.receiver = self;
   v7.super_class = SASActivationRequest;
   v4 = [(SASActivationRequest *)&v7 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AE30] processInfo];
-    [v5 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v4 setActivationTime:?];
 
     [(SASActivationRequest *)v4 setActivationType:8];
-    [(SASActivationRequest *)v4 setRequestSource:a3];
+    [(SASActivationRequest *)v4 setRequestSource:activation];
   }
 
   return v4;
 }
 
-- (SASActivationRequest)initWithSpotlightContext:(id)a3
+- (SASActivationRequest)initWithSpotlightContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = SASActivationRequest;
   v5 = [(SASActivationRequest *)&v10 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AE30] processInfo];
-    [v6 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v5 setActivationTime:?];
 
     [(SASActivationRequest *)v5 setActivationType:6];
-    v7 = [v4 source];
-    if (v7)
+    source = [contextCopy source];
+    if (source)
     {
-      if (v7 != 1)
+      if (source != 1)
       {
 LABEL_7:
-        [(SASActivationRequest *)v5 setContext:v4];
+        [(SASActivationRequest *)v5 setContext:contextCopy];
         goto LABEL_8;
       }
 
@@ -620,21 +620,21 @@ LABEL_8:
   return v5;
 }
 
-- (SASActivationRequest)initWithVocalShortcutContext:(id)a3
+- (SASActivationRequest)initWithVocalShortcutContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = SASActivationRequest;
   v5 = [(SASActivationRequest *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AE30] processInfo];
-    [v6 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v5 setActivationTime:?];
 
     [(SASActivationRequest *)v5 setActivationType:11];
     [(SASActivationRequest *)v5 setRequestSource:52];
-    [(SASActivationRequest *)v5 setContext:v4];
+    [(SASActivationRequest *)v5 setContext:contextCopy];
   }
 
   return v5;
@@ -647,8 +647,8 @@ LABEL_8:
   v2 = [(SASActivationRequest *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    [v3 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v2 setActivationTime:?];
 
     [(SASActivationRequest *)v2 setActivationType:1];
@@ -658,21 +658,21 @@ LABEL_8:
   return v2;
 }
 
-- (SASActivationRequest)initWithTestingContext:(id)a3
+- (SASActivationRequest)initWithTestingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = SASActivationRequest;
   v5 = [(SASActivationRequest *)&v11 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AE30] processInfo];
-    [v6 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v5 setActivationTime:?];
 
     [(SASActivationRequest *)v5 setActivationType:7];
-    v7 = [v4 testingContext];
-    v8 = [v7 objectForKey:@"testName"];
+    testingContext = [contextCopy testingContext];
+    v8 = [testingContext objectForKey:@"testName"];
 
     if ([v8 isEqualToString:@"SiriBringupToTyping"])
     {
@@ -685,27 +685,27 @@ LABEL_8:
     }
 
     [(SASActivationRequest *)v5 setRequestSource:v9];
-    [(SASActivationRequest *)v5 setContext:v4];
+    [(SASActivationRequest *)v5 setContext:contextCopy];
   }
 
   return v5;
 }
 
-- (SASActivationRequest)initWithTostadaContext:(id)a3
+- (SASActivationRequest)initWithTostadaContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = SASActivationRequest;
   v5 = [(SASActivationRequest *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AE30] processInfo];
-    [v6 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     [(SASActivationRequest *)v5 setActivationTime:?];
 
     [(SASActivationRequest *)v5 setActivationType:12];
     [(SASActivationRequest *)v5 setRequestSource:54];
-    [(SASActivationRequest *)v5 setContext:v4];
+    [(SASActivationRequest *)v5 setContext:contextCopy];
   }
 
   return v5;
@@ -714,15 +714,15 @@ LABEL_8:
 - (double)buttonDownTimestamp
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(SASActivationRequest *)self context];
+  context = [(SASActivationRequest *)self context];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   v5 = 0.0;
   if (isKindOfClass)
   {
-    v6 = [(SASActivationRequest *)self context];
-    [v6 buttonDownTimestamp];
+    context2 = [(SASActivationRequest *)self context];
+    [context2 buttonDownTimestamp];
     v8 = v7;
 
     v5 = SiriSystemUpTimeFromCFAbsoluteCurrentTime(v8);
@@ -736,8 +736,8 @@ LABEL_8:
         _os_log_impl(&dword_1C8137000, v9, OS_LOG_TYPE_DEFAULT, "%s button down timestamp sent in format where absolute time conversion is invalid", &v14, 0xCu);
       }
 
-      v10 = [(SASActivationRequest *)self context];
-      [v10 buttonDownTimestamp];
+      context3 = [(SASActivationRequest *)self context];
+      [context3 buttonDownTimestamp];
       v5 = v11;
     }
   }
@@ -748,7 +748,7 @@ LABEL_8:
 
 - (int64_t)longPressBehavior
 {
-  v3 = [(SASActivationRequest *)self context];
+  context = [(SASActivationRequest *)self context];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -757,20 +757,20 @@ LABEL_8:
     return -1;
   }
 
-  v5 = [(SASActivationRequest *)self context];
-  v6 = [v5 longPressBehavior];
+  context2 = [(SASActivationRequest *)self context];
+  longPressBehavior = [context2 longPressBehavior];
 
-  return v6;
+  return longPressBehavior;
 }
 
 - (BOOL)isRemoteDisplayVoiceRequest
 {
-  v2 = [(SASActivationRequest *)self context];
-  v3 = [v2 speechRequestOptions];
+  context = [(SASActivationRequest *)self context];
+  speechRequestOptions = [context speechRequestOptions];
 
-  if (v3)
+  if (speechRequestOptions)
   {
-    v4 = [v3 activationEvent] == 31;
+    v4 = [speechRequestOptions activationEvent] == 31;
   }
 
   else
@@ -783,7 +783,7 @@ LABEL_8:
 
 - (BOOL)isEyesFreeRequestSource
 {
-  v3 = [(SASActivationRequest *)self context];
+  context = [(SASActivationRequest *)self context];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -792,87 +792,87 @@ LABEL_8:
     return 0;
   }
 
-  v5 = [(SASActivationRequest *)self context];
-  v6 = [v5 isEyesFree];
+  context2 = [(SASActivationRequest *)self context];
+  isEyesFree = [context2 isEyesFree];
 
-  return v6;
+  return isEyesFree;
 }
 
 - (BOOL)isQuickTypeGestureEnabled
 {
-  v2 = [MEMORY[0x1E698D1C0] sharedPreferences];
-  v3 = [v2 quickTypeGestureEnabled];
+  mEMORY[0x1E698D1C0] = [MEMORY[0x1E698D1C0] sharedPreferences];
+  quickTypeGestureEnabled = [mEMORY[0x1E698D1C0] quickTypeGestureEnabled];
 
-  return v3;
+  return quickTypeGestureEnabled;
 }
 
-+ (int64_t)requestSourceForButtonIdentifier:(int64_t)a3
++ (int64_t)requestSourceForButtonIdentifier:(int64_t)identifier
 {
-  if (a3 <= 6)
+  if (identifier <= 6)
   {
     v3 = 10;
     v11 = 44;
-    if (a3 != 6)
+    if (identifier != 6)
     {
       v11 = 0;
     }
 
-    if (a3 != 5)
+    if (identifier != 5)
     {
       v3 = v11;
     }
 
-    if (a3 == 4)
+    if (identifier == 4)
     {
       v3 = 4;
     }
 
     v7 = 5;
-    if (a3 != 3)
+    if (identifier != 3)
     {
       v7 = 0;
     }
 
-    if (a3 == 2)
+    if (identifier == 2)
     {
       v7 = 2;
     }
 
-    if (a3 == 1)
+    if (identifier == 1)
     {
       v7 = 1;
     }
 
-    v10 = a3 <= 3;
+    v10 = identifier <= 3;
   }
 
   else
   {
     v3 = 15;
     v4 = 23;
-    if (a3 != 201)
+    if (identifier != 201)
     {
       v4 = 0;
     }
 
-    if (a3 != 200)
+    if (identifier != 200)
     {
       v3 = v4;
     }
 
     v5 = 1;
     v6 = 10;
-    if (a3 != 101)
+    if (identifier != 101)
     {
       v6 = 0;
     }
 
-    if (a3 != 100)
+    if (identifier != 100)
     {
       v5 = v6;
     }
 
-    if (a3 <= 199)
+    if (identifier <= 199)
     {
       v3 = v5;
     }
@@ -880,22 +880,22 @@ LABEL_8:
     v7 = 17;
     v8 = 37;
     v9 = 29;
-    if (a3 != 9)
+    if (identifier != 9)
     {
       v9 = 0;
     }
 
-    if (a3 != 8)
+    if (identifier != 8)
     {
       v8 = v9;
     }
 
-    if (a3 != 7)
+    if (identifier != 7)
     {
       v7 = v8;
     }
 
-    v10 = a3 <= 99;
+    v10 = identifier <= 99;
   }
 
   if (v10)
@@ -912,7 +912,7 @@ LABEL_8:
 - (void)computedActivationTime
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a1;
+  selfCopy = self;
   strerror(a2);
   OUTLINED_FUNCTION_0_2();
   OUTLINED_FUNCTION_1_1(&dword_1C8137000, v4, v5, "%s Failed looking up waketime %{public}s", v6, v7, v8, v9, 2u);

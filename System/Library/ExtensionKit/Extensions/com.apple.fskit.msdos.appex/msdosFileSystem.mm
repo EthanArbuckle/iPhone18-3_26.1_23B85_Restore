@@ -1,19 +1,19 @@
 @interface msdosFileSystem
-- (id)startCheckWithTask:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)startFormatWithTask:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)syncRead:(id)a3 into:(void *)a4 startingAt:(int64_t)a5 length:(unint64_t)a6;
-- (void)loadResource:(id)a3 options:(id)a4 replyHandler:(id)a5;
-- (void)probeResource:(id)a3 replyHandler:(id)a4;
-- (void)unloadResource:(id)a3 options:(id)a4 replyHandler:(id)a5;
+- (id)startCheckWithTask:(id)task options:(id)options error:(id *)error;
+- (id)startFormatWithTask:(id)task options:(id)options error:(id *)error;
+- (id)syncRead:(id)read into:(void *)into startingAt:(int64_t)at length:(unint64_t)length;
+- (void)loadResource:(id)resource options:(id)options replyHandler:(id)handler;
+- (void)probeResource:(id)resource replyHandler:(id)handler;
+- (void)unloadResource:(id)resource options:(id)options replyHandler:(id)handler;
 @end
 
 @implementation msdosFileSystem
 
-- (void)loadResource:(id)a3 options:(id)a4 replyHandler:(id)a5
+- (void)loadResource:(id)resource options:(id)options replyHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  resourceCopy = resource;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 136315138;
@@ -27,16 +27,16 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_resource, a3);
+    objc_storeStrong(&self->_resource, resource);
   }
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v13 = [v10 taskOptions];
+  taskOptions = [optionsCopy taskOptions];
   v14 = 0;
-  v15 = [v13 countByEnumeratingWithState:&v37 objects:v50 count:16];
+  v15 = [taskOptions countByEnumeratingWithState:&v37 objects:v50 count:16];
   if (v15)
   {
     v16 = *v38;
@@ -46,13 +46,13 @@
       {
         if (*v38 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(taskOptions);
         }
 
         v14 |= [*(*(&v37 + 1) + 8 * i) containsString:@"-f"];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v37 objects:v50 count:16];
+      v15 = [taskOptions countByEnumeratingWithState:&v37 objects:v50 count:16];
     }
 
     while (v15);
@@ -76,16 +76,16 @@
   v30[3] = &unk_100051490;
   v30[4] = &v31;
   v30[5] = &buf;
-  [(msdosFileSystem *)self probeResource:v9 replyHandler:v30];
+  [(msdosFileSystem *)self probeResource:resourceCopy replyHandler:v30];
   if (!v32[5])
   {
     if ([*(*(&buf + 1) + 40) result] == 3)
     {
       v20 = [msdosVolume alloc];
-      v21 = [*(*(&buf + 1) + 40) containerID];
-      v22 = [v21 volumeIdentifier];
-      v23 = [*(*(&buf + 1) + 40) name];
-      v24 = [(msdosVolume *)v20 initWithResource:v9 volumeID:v22 volumeName:v23];
+      containerID = [*(*(&buf + 1) + 40) containerID];
+      volumeIdentifier = [containerID volumeIdentifier];
+      name = [*(*(&buf + 1) + 40) name];
+      v24 = [(msdosVolume *)v20 initWithResource:resourceCopy volumeID:volumeIdentifier volumeName:name];
       volume = self->_volume;
       self->_volume = v24;
 
@@ -94,25 +94,25 @@
         v26 = &_os_log_default;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
         {
-          v27 = [*(*(&buf + 1) + 40) containerID];
+          containerID2 = [*(*(&buf + 1) + 40) containerID];
           *v41 = 136315394;
           v42 = "[msdosFileSystem loadResource:options:replyHandler:]";
           v43 = 2112;
-          v44 = v27;
+          v44 = containerID2;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s: loaded resource with volume ID (%@)", v41, 0x16u);
         }
 
         v28 = +[FSContainerStatus ready];
         [(msdosFileSystem *)self setContainerStatus:v28];
 
-        v18 = [(msdosFileSystem *)self volume];
-        v11[2](v11, v18, 0);
+        volume = [(msdosFileSystem *)self volume];
+        handlerCopy[2](handlerCopy, volume, 0);
       }
 
       else
       {
-        v18 = fs_errorForPOSIXError();
-        (v11)[2](v11, 0, v18);
+        volume = fs_errorForPOSIXError();
+        (handlerCopy)[2](handlerCopy, 0, volume);
       }
 
       goto LABEL_27;
@@ -122,26 +122,26 @@
     {
       if ([*(*(&buf + 1) + 40) result])
       {
-        v18 = [NSError errorWithDomain:FSKitErrorDomain code:4503 userInfo:0];
-        v29 = [FSContainerStatus notReadyWithStatus:v18];
+        volume = [NSError errorWithDomain:FSKitErrorDomain code:4503 userInfo:0];
+        v29 = [FSContainerStatus notReadyWithStatus:volume];
         [(msdosFileSystem *)self setContainerStatus:v29];
       }
 
       else
       {
-        v18 = fs_errorForPOSIXError();
+        volume = fs_errorForPOSIXError();
       }
 
-      (v11)[2](v11, 0, v18);
+      (handlerCopy)[2](handlerCopy, 0, volume);
       goto LABEL_27;
     }
 
 LABEL_14:
-    v18 = fs_errorForPOSIXError();
-    v19 = [FSContainerStatus notReadyWithStatus:v18];
+    volume = fs_errorForPOSIXError();
+    v19 = [FSContainerStatus notReadyWithStatus:volume];
     [(msdosFileSystem *)self setContainerStatus:v19];
 
-    (v11)[2](v11, 0, v18);
+    (handlerCopy)[2](handlerCopy, 0, volume);
 LABEL_27:
 
     goto LABEL_28;
@@ -152,16 +152,16 @@ LABEL_27:
     goto LABEL_14;
   }
 
-  (v11[2])(v11, 0);
+  (handlerCopy[2])(handlerCopy, 0);
 LABEL_28:
   _Block_object_dispose(&v31, 8);
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)unloadResource:(id)a3 options:(id)a4 replyHandler:(id)a5
+- (void)unloadResource:(id)resource options:(id)options replyHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   resource = self->_resource;
   if (resource)
   {
@@ -171,13 +171,13 @@ LABEL_28:
     self->_volume = 0;
   }
 
-  v8[2](v8, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (id)syncRead:(id)a3 into:(void *)a4 startingAt:(int64_t)a5 length:(unint64_t)a6
+- (id)syncRead:(id)read into:(void *)into startingAt:(int64_t)at length:(unint64_t)length
 {
   v11 = 0;
-  v7 = [a3 readInto:a4 startingAt:a5 length:a6 error:&v11];
+  v7 = [read readInto:into startingAt:at length:length error:&v11];
   v8 = v11;
   if (v8)
   {
@@ -188,7 +188,7 @@ LABEL_28:
     }
   }
 
-  else if (v7 == a6)
+  else if (v7 == length)
   {
     v9 = 0;
   }
@@ -197,7 +197,7 @@ LABEL_28:
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_1000338B0(a6, v7);
+      sub_1000338B0(length, v7);
     }
 
     v9 = fs_errorForPOSIXError();
@@ -206,13 +206,13 @@ LABEL_28:
   return v9;
 }
 
-- (void)probeResource:(id)a3 replyHandler:(id)a4
+- (void)probeResource:(id)resource replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  handlerCopy = handler;
   v8 = +[FSProbeResult notRecognizedProbeResult];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (v9 = v6) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (v9 = resourceCopy) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -228,20 +228,20 @@ LABEL_28:
   }
 
   v10 = v9;
-  v11 = [v9 blockSize];
-  v12 = [[NSMutableData alloc] initWithLength:v11];
-  v13 = -[msdosFileSystem syncRead:into:startingAt:length:](self, "syncRead:into:startingAt:length:", v10, [v12 mutableBytes], 0, v11);
+  blockSize = [v9 blockSize];
+  v12 = [[NSMutableData alloc] initWithLength:blockSize];
+  v13 = -[msdosFileSystem syncRead:into:startingAt:length:](self, "syncRead:into:startingAt:length:", v10, [v12 mutableBytes], 0, blockSize);
   if (!v13)
   {
-    v16 = [v12 bytes];
-    if ((*v16 | 2) != 0xEB)
+    bytes = [v12 bytes];
+    if ((*bytes | 2) != 0xEB)
     {
       goto LABEL_17;
     }
 
-    v17 = v16;
-    v18 = [v12 bytes];
-    if (*v18 == 0x54414658459076EBLL && *(v18 + 3) == 0x2020205441465845)
+    v17 = bytes;
+    bytes2 = [v12 bytes];
+    if (*bytes2 == 0x54414658459076EBLL && *(bytes2 + 3) == 0x2020205441465845)
     {
       goto LABEL_17;
     }
@@ -301,23 +301,23 @@ LABEL_17:
     }
 
 LABEL_9:
-    v7[2](v7, v8, 0);
+    handlerCopy[2](handlerCopy, v8, 0);
     goto LABEL_10;
   }
 
   v14 = v13;
   v15 = 0;
 LABEL_5:
-  (v7)[2](v7, 0, v14);
+  (handlerCopy)[2](handlerCopy, 0, v14);
 
 LABEL_10:
 }
 
-- (id)startCheckWithTask:(id)a3 options:(id)a4 error:(id *)a5
+- (id)startCheckWithTask:(id)task options:(id)options error:(id *)error
 {
-  v6 = a3;
-  v34 = a4;
-  v7 = [v34 taskOptions];
+  taskCopy = task;
+  optionsCopy = options;
+  taskOptions = [optionsCopy taskOptions];
   v8 = objc_alloc_init(NSProgress);
   v36 = [[msdosProgressHelper alloc] initWithProgress:v8];
   v54 = 0;
@@ -346,13 +346,13 @@ LABEL_10:
   v48 = 0;
   v49 = &v48;
   v50 = 0x2020000000;
-  v9 = v6;
+  v9 = taskCopy;
   v51 = v9;
   fsck_set_context_properties(sub_1000276F0, sub_1000277F8, v9);
   fsck_set_maxmem(20971520);
-  for (i = 0; i < [v7 count]; ++i)
+  for (i = 0; i < [taskOptions count]; ++i)
   {
-    v11 = [v7 objectAtIndexedSubscript:i];
+    v11 = [taskOptions objectAtIndexedSubscript:i];
     if ([v11 isEqualToString:@"-q"])
     {
       fsck_set_quick(1);
@@ -395,7 +395,7 @@ LABEL_11:
     v47 = 0;
     v46 = 0;
     bzero(buf, 0x400uLL);
-    if (++i == [v7 count])
+    if (++i == [taskOptions count])
     {
       __snprintf_chk(buf, 0x400uLL, 0, 0x400uLL, "Size argument missing\n");
       sub_1000276F0(v49[3], v30, buf, 0);
@@ -403,17 +403,17 @@ LABEL_11:
       goto LABEL_40;
     }
 
-    v12 = [v7 objectAtIndexedSubscript:i];
+    v12 = [taskOptions objectAtIndexedSubscript:i];
 
     v13 = v12;
-    v14 = [v12 UTF8String];
-    if (!sscanf(v14, "%zi%n", &v46, &v47))
+    uTF8String = [v12 UTF8String];
+    if (!sscanf(uTF8String, "%zi%n", &v46, &v47))
     {
-      __snprintf_chk(buf, 0x400uLL, 0, 0x400uLL, "Size argument '%s' not recognized\n", v14);
+      __snprintf_chk(buf, 0x400uLL, 0, 0x400uLL, "Size argument '%s' not recognized\n", uTF8String);
       goto LABEL_39;
     }
 
-    v15 = &v14[v47];
+    v15 = &uTF8String[v47];
     v16 = *v15;
     if (v16 > 0x4C)
     {
@@ -439,21 +439,21 @@ LABEL_25:
       if (v15[1])
       {
 LABEL_38:
-        __snprintf_chk(buf, 0x400uLL, 0, 0x400uLL, "Size multiplier '%s' not recognized\n", &v14[v47]);
+        __snprintf_chk(buf, 0x400uLL, 0, 0x400uLL, "Size multiplier '%s' not recognized\n", &uTF8String[v47]);
 LABEL_39:
         sub_1000276F0(v49[3], v31, buf, 0);
 LABEL_40:
         v11 = v12;
 LABEL_41:
 
-        if (a5)
+        if (error)
         {
-          *a5 = fs_errorForPOSIXError();
+          *error = fs_errorForPOSIXError();
         }
 
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = *a5;
+          v32 = *error;
           *buf = 136315394;
           v64 = "[msdosFileSystem startCheckWithTask:options:error:]";
           v65 = 2112;
@@ -485,9 +485,9 @@ LABEL_28:
 LABEL_12:
   }
 
-  v18 = [(FSBlockDeviceResource *)v38 BSDName];
-  v19 = v18;
-  fsck_set_dev([v18 UTF8String]);
+  bSDName = [(FSBlockDeviceResource *)v38 BSDName];
+  v19 = bSDName;
+  fsck_set_dev([bSDName UTF8String]);
 
   v20 = v36;
   v21 = v55;
@@ -532,11 +532,11 @@ LABEL_32:
   return v26;
 }
 
-- (id)startFormatWithTask:(id)a3 options:(id)a4 error:(id *)a5
+- (id)startFormatWithTask:(id)task options:(id)options error:(id *)error
 {
-  v74 = a3;
-  v72 = a4;
-  v8 = [v72 taskOptions];
+  taskCopy = task;
+  optionsCopy = options;
+  taskOptions = [optionsCopy taskOptions];
   v9 = objc_alloc_init(NSProgress);
   v76 = [[msdosProgressHelper alloc] initWithProgress:v9];
   v78 = self->_resource;
@@ -586,7 +586,7 @@ LABEL_32:
     goto LABEL_100;
   }
 
-  objc_storeStrong(v10, a3);
+  objc_storeStrong(v10, task);
   objc_storeStrong(location + 1, self->_resource);
   objc_storeStrong(location + 2, self);
   if (!newfs_get_print_function_callback())
@@ -618,11 +618,11 @@ LABEL_32:
   v12 = 0;
   for (i = 0; ; ++i)
   {
-    if (i >= [v8 count])
+    if (i >= [taskOptions count])
     {
-      v19 = [(FSBlockDeviceResource *)v78 BSDName];
-      v20 = v19;
-      v21 = [v19 UTF8String];
+      bSDName = [(FSBlockDeviceResource *)v78 BSDName];
+      v20 = bSDName;
+      uTF8String = [bSDName UTF8String];
 
       if (v11)
       {
@@ -636,8 +636,8 @@ LABEL_32:
             v23 = __error();
             v14 = [NSString stringWithFormat:@"%s", strerror(*v23)];
             v24 = v14;
-            v25 = [v14 UTF8String];
-            sub_1000289C0(location, v26, v25, 0);
+            uTF8String2 = [v14 UTF8String];
+            sub_1000289C0(location, v26, uTF8String2, 0);
             v27 = 0;
             goto LABEL_99;
           }
@@ -649,9 +649,9 @@ LABEL_32:
         v22 = 0;
       }
 
-      v36 = [(FSBlockDeviceResource *)v78 blockSize];
-      v37 = [(FSBlockDeviceResource *)v78 blockCount];
-      v38 = [(FSBlockDeviceResource *)v78 physicalBlockSize];
+      blockSize = [(FSBlockDeviceResource *)v78 blockSize];
+      blockCount = [(FSBlockDeviceResource *)v78 blockCount];
+      physicalBlockSize = [(FSBlockDeviceResource *)v78 physicalBlockSize];
       v39 = v76;
       v40 = v135;
       v135[4] = v39;
@@ -699,12 +699,12 @@ LABEL_32:
       v106 = v12;
       v107 = v71;
       v108 = HIDWORD(v63);
-      v112 = v21;
-      v113 = v38;
+      v112 = uTF8String;
+      v113 = physicalBlockSize;
       v115 = v155;
       v114 = v154;
-      v116 = v37;
-      v117 = v36;
+      v116 = blockCount;
+      v117 = blockSize;
       v119 = v22;
       v121 = v144;
       v120 = -1;
@@ -718,7 +718,7 @@ LABEL_32:
       v44 = v75;
       v81 = v44;
       v131 = location;
-      v82 = v74;
+      v82 = taskCopy;
       dispatch_async(v43, block);
 
       v45 = v44;
@@ -726,17 +726,17 @@ LABEL_32:
       goto LABEL_103;
     }
 
-    v14 = [v8 objectAtIndexedSubscript:i];
-    if (i + 1 >= [v8 count])
+    v14 = [taskOptions objectAtIndexedSubscript:i];
+    if (i + 1 >= [taskOptions count])
     {
-      v17 = 0;
+      uTF8String3 = 0;
     }
 
     else
     {
-      v15 = [v8 objectAtIndexedSubscript:?];
+      v15 = [taskOptions objectAtIndexedSubscript:?];
       v16 = v15;
-      v17 = [v15 UTF8String];
+      uTF8String3 = [v15 UTF8String];
     }
 
     if ([v14 isEqualToString:@"-N"])
@@ -747,21 +747,21 @@ LABEL_32:
 
     if ([v14 isEqualToString:@"-B"])
     {
-      v11 = v17;
+      v11 = uTF8String3;
       goto LABEL_35;
     }
 
     if ([v14 isEqualToString:@"-F"])
     {
-      if (!v17)
+      if (!uTF8String3)
       {
         goto LABEL_98;
       }
 
-      v18 = *v17;
+      v18 = *uTF8String3;
       if (v18 == 51)
       {
-        if (v17[1] != 50)
+        if (uTF8String3[1] != 50)
         {
           goto LABEL_97;
         }
@@ -774,26 +774,26 @@ LABEL_32:
           goto LABEL_97;
         }
 
-        if (v17[1] == 50 && !v17[2])
+        if (uTF8String3[1] == 50 && !uTF8String3[2])
         {
 LABEL_34:
-          v77 = atoi(v17);
+          v77 = atoi(uTF8String3);
           goto LABEL_35;
         }
 
-        if (v17[1] != 54)
+        if (uTF8String3[1] != 54)
         {
           goto LABEL_97;
         }
       }
 
-      if (v17[2])
+      if (uTF8String3[2])
       {
 LABEL_97:
-        v27 = [[NSString alloc] initWithFormat:@"Invalid FAT type (%s), must be 12/16 or 32", v17];
+        v27 = [[NSString alloc] initWithFormat:@"Invalid FAT type (%s), must be 12/16 or 32", uTF8String3];
         v46 = v27;
-        v47 = [v27 UTF8String];
-        sub_1000289C0(location, v48, v47, 0);
+        uTF8String4 = [v27 UTF8String];
+        sub_1000289C0(location, v48, uTF8String4, 0);
         goto LABEL_99;
       }
 
@@ -802,12 +802,12 @@ LABEL_97:
 
     if ([v14 isEqualToString:@"-I"])
     {
-      if (!v17)
+      if (!uTF8String3)
       {
         goto LABEL_98;
       }
 
-      HIDWORD(v71) = argtou(v17, 0, 0xFFFFFFFF);
+      HIDWORD(v71) = argtou(uTF8String3, 0, 0xFFFFFFFF);
       LODWORD(v71) = 1;
       goto LABEL_35;
     }
@@ -817,96 +817,96 @@ LABEL_97:
       break;
     }
 
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    if (strlen(v17) >= 9)
+    if (strlen(uTF8String3) >= 9)
     {
-      v27 = [[NSString alloc] initWithFormat:@"Bad OEM string (%s)", v17];
+      v27 = [[NSString alloc] initWithFormat:@"Bad OEM string (%s)", uTF8String3];
       v53 = v27;
-      v54 = [v27 UTF8String];
-      sub_1000289C0(location, v55, v54, 0);
+      uTF8String5 = [v27 UTF8String];
+      sub_1000289C0(location, v55, uTF8String5, 0);
       goto LABEL_99;
     }
 
-    v70 = v17;
+    v70 = uTF8String3;
 LABEL_35:
   }
 
   if ([v14 isEqualToString:@"-S"])
   {
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    HIDWORD(v69) = argtou(v17, 1u, 0xFFFFu);
+    HIDWORD(v69) = argtou(uTF8String3, 1u, 0xFFFFu);
     goto LABEL_35;
   }
 
   if ([v14 isEqualToString:@"-P"])
   {
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    LODWORD(v69) = argtou(v17, 1u, 0xFFFFu);
+    LODWORD(v69) = argtou(uTF8String3, 1u, 0xFFFFu);
     goto LABEL_35;
   }
 
   if ([v14 isEqualToString:@"-a"])
   {
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    HIDWORD(v68) = argtou(v17, 1u, 0xFFFFFFFF);
+    HIDWORD(v68) = argtou(uTF8String3, 1u, 0xFFFFFFFF);
     goto LABEL_35;
   }
 
   if ([v14 isEqualToString:@"-b"])
   {
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    LODWORD(v68) = argtou(v17, 1u, 0xFFFFFFFF);
+    LODWORD(v68) = argtou(uTF8String3, 1u, 0xFFFFFFFF);
     HIDWORD(v67) = 0;
     goto LABEL_35;
   }
 
   if ([v14 isEqualToString:@"-c"])
   {
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    HIDWORD(v67) = argtou(v17, 1u, 0xFFu);
+    HIDWORD(v67) = argtou(uTF8String3, 1u, 0xFFu);
     LODWORD(v68) = 0;
     goto LABEL_35;
   }
 
   if ([v14 isEqualToString:@"-e"])
   {
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    LODWORD(v67) = argtou(v17, 1u, 0xFFFFu);
+    LODWORD(v67) = argtou(uTF8String3, 1u, 0xFFFFu);
     goto LABEL_35;
   }
 
   if ([v14 isEqualToString:@"-f"])
   {
-    v66 = v17;
-    if (!v17)
+    v66 = uTF8String3;
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
@@ -916,102 +916,102 @@ LABEL_35:
 
   if ([v14 isEqualToString:@"-h"])
   {
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    HIDWORD(v65) = argtou(v17, 1u, 0xFFFFu);
+    HIDWORD(v65) = argtou(uTF8String3, 1u, 0xFFFFu);
     goto LABEL_35;
   }
 
   if ([v14 isEqualToString:@"-i"])
   {
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    LODWORD(v65) = argtou(v17, 1u, 0xFFFFu);
+    LODWORD(v65) = argtou(uTF8String3, 1u, 0xFFFFu);
     goto LABEL_35;
   }
 
   if ([v14 isEqualToString:@"-k"])
   {
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    HIDWORD(v64) = argtou(v17, 1u, 0xFFFFu);
+    HIDWORD(v64) = argtou(uTF8String3, 1u, 0xFFFFu);
     goto LABEL_35;
   }
 
   if ([v14 isEqualToString:@"-m"])
   {
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    LODWORD(v64) = argtou(v17, 0, 0xFFu);
+    LODWORD(v64) = argtou(uTF8String3, 0, 0xFFu);
     HIDWORD(v63) = 1;
     goto LABEL_35;
   }
 
   if ([v14 isEqualToString:@"-n"])
   {
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    LODWORD(v63) = argtou(v17, 1u, 0xFFu);
+    LODWORD(v63) = argtou(uTF8String3, 1u, 0xFFu);
     goto LABEL_35;
   }
 
   if ([v14 isEqualToString:@"-o"])
   {
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    LODWORD(v62) = argtou(v17, 0, 0xFFFFFFFF);
+    LODWORD(v62) = argtou(uTF8String3, 0, 0xFFFFFFFF);
     HIDWORD(v62) = 1;
     goto LABEL_35;
   }
 
   if ([v14 isEqualToString:@"-r"])
   {
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    HIDWORD(v61) = argtou(v17, 1u, 0xFFFFu);
+    HIDWORD(v61) = argtou(uTF8String3, 1u, 0xFFFFu);
     goto LABEL_35;
   }
 
   if ([v14 isEqualToString:@"-s"])
   {
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    LODWORD(v61) = argtou(v17, 1u, 0xFFFFFFFF);
+    LODWORD(v61) = argtou(uTF8String3, 1u, 0xFFFFFFFF);
     goto LABEL_35;
   }
 
   if ([v14 isEqualToString:@"-u"])
   {
-    if (!v17)
+    if (!uTF8String3)
     {
       goto LABEL_98;
     }
 
-    v60 = argtou(v17, 1u, 0xFFFFu);
+    v60 = argtou(uTF8String3, 1u, 0xFFFFu);
     goto LABEL_35;
   }
 
@@ -1020,34 +1020,34 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  if (!v17)
+  if (!uTF8String3)
   {
 LABEL_98:
     v27 = [[NSString alloc] initWithFormat:@"Option %@ requires a value", v14];
     v49 = v27;
-    v50 = [v27 UTF8String];
-    sub_1000289C0(location, v51, v50, 0);
+    uTF8String6 = [v27 UTF8String];
+    sub_1000289C0(location, v51, uTF8String6, 0);
     goto LABEL_99;
   }
 
-  if (oklabel(v17))
+  if (oklabel(uTF8String3))
   {
-    v59 = v17;
+    v59 = uTF8String3;
     goto LABEL_35;
   }
 
-  v27 = [[NSString alloc] initWithFormat:@"Given volume name (%s) is invalid for this file system", v17];
+  v27 = [[NSString alloc] initWithFormat:@"Given volume name (%s) is invalid for this file system", uTF8String3];
   v56 = v27;
-  v57 = [v27 UTF8String];
-  sub_1000289C0(location, v58, v57, 0);
+  uTF8String7 = [v27 UTF8String];
+  sub_1000289C0(location, v58, uTF8String7, 0);
 LABEL_99:
 
   free(location);
 LABEL_100:
-  if (a5)
+  if (error)
   {
     fs_errorForPOSIXError();
-    *a5 = v45 = 0;
+    *error = v45 = 0;
   }
 
   else

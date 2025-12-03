@@ -1,10 +1,10 @@
 @interface MRUHardwareVolumeDataSource
-- (MRUHardwareVolumeDataSource)initWithVolumeDataSource:(id)a3;
+- (MRUHardwareVolumeDataSource)initWithVolumeDataSource:(id)source;
 - (double)calculateButtonRepeatDelay;
 - (void)cancelVolumeEvent;
-- (void)changeVolumeBy:(double)a3;
-- (void)consumeSinglePressDownForButtonKind:(int64_t)a3;
-- (void)consumeSinglePressUpForButtonKind:(int64_t)a3;
+- (void)changeVolumeBy:(double)by;
+- (void)consumeSinglePressDownForButtonKind:(int64_t)kind;
+- (void)consumeSinglePressUpForButtonKind:(int64_t)kind;
 - (void)decreaseVolume;
 - (void)handleDecreaseDown;
 - (void)handleIncreaseDown;
@@ -13,16 +13,16 @@
 
 @implementation MRUHardwareVolumeDataSource
 
-- (MRUHardwareVolumeDataSource)initWithVolumeDataSource:(id)a3
+- (MRUHardwareVolumeDataSource)initWithVolumeDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = MRUHardwareVolumeDataSource;
   v6 = [(MRUHardwareVolumeDataSource *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_volumeDataSource, a3);
+    objc_storeStrong(&v6->_volumeDataSource, source);
     [(MPVolumeControllerDataSource *)v7->_volumeDataSource volume];
     v7->_pendingVolumeChange = v8;
   }
@@ -30,10 +30,10 @@
   return v7;
 }
 
-- (void)consumeSinglePressDownForButtonKind:(int64_t)a3
+- (void)consumeSinglePressDownForButtonKind:(int64_t)kind
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3 == 3)
+  if (kind == 3)
   {
     v5 = MCLogCategoryDefault();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -46,7 +46,7 @@
     [(MRUHardwareVolumeDataSource *)self handleIncreaseDown];
   }
 
-  else if (a3 == 4)
+  else if (kind == 4)
   {
     v4 = MCLogCategoryDefault();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -60,10 +60,10 @@
   }
 }
 
-- (void)consumeSinglePressUpForButtonKind:(int64_t)a3
+- (void)consumeSinglePressUpForButtonKind:(int64_t)kind
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a3 == 4)
+  if (kind == 4)
   {
     [(MRUHardwareVolumeDataSource *)self cancelVolumeEvent];
     v3 = MCLogCategoryDefault();
@@ -78,7 +78,7 @@
 
   else
   {
-    if (a3 != 3)
+    if (kind != 3)
     {
       return;
     }
@@ -172,18 +172,18 @@ LABEL_7:
   [v3 cancelPreviousPerformRequestsWithTarget:self selector:sel_decreaseVolume object:0];
 }
 
-- (void)changeVolumeBy:(double)a3
+- (void)changeVolumeBy:(double)by
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = -a3;
-  if (a3 >= 0.0)
+  byCopy = -by;
+  if (by >= 0.0)
   {
-    v3 = a3;
+    byCopy = by;
   }
 
-  if (v3 > 0.00000011920929)
+  if (byCopy > 0.00000011920929)
   {
-    v5 = self->_pendingVolumeChange + a3;
+    v5 = self->_pendingVolumeChange + by;
     if (v5 < 0.0)
     {
       v5 = 0.0;

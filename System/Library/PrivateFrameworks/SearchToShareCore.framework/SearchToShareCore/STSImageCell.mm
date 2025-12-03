@@ -1,27 +1,27 @@
 @interface STSImageCell
 - (CGRect)imageFrame;
-- (STSImageCell)initWithFrame:(CGRect)a3;
+- (STSImageCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)imageInsets;
-- (void)_updateBadgeAnimated:(BOOL)a3;
-- (void)_updatePlaceholderViewAnimated:(BOOL)a3;
+- (void)_updateBadgeAnimated:(BOOL)animated;
+- (void)_updatePlaceholderViewAnimated:(BOOL)animated;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBadge:(id)a3;
-- (void)setCategory:(id)a3;
-- (void)setDebugBadge:(id)a3;
-- (void)setDownloadProgress:(double)a3;
-- (void)setImage:(id)a3 animated:(BOOL)a4;
-- (void)setPlaceholderColor:(id)a3;
-- (void)setShowDownloadIndicator:(double)a3 animated:(BOOL)a4;
+- (void)setBadge:(id)badge;
+- (void)setCategory:(id)category;
+- (void)setDebugBadge:(id)badge;
+- (void)setDownloadProgress:(double)progress;
+- (void)setImage:(id)image animated:(BOOL)animated;
+- (void)setPlaceholderColor:(id)color;
+- (void)setShowDownloadIndicator:(double)indicator animated:(BOOL)animated;
 @end
 
 @implementation STSImageCell
 
-- (STSImageCell)initWithFrame:(CGRect)a3
+- (STSImageCell)initWithFrame:(CGRect)frame
 {
   v30.receiver = self;
   v30.super_class = STSImageCell;
-  v3 = [(STSImageCell *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STSImageCell *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D755E8]);
@@ -34,8 +34,8 @@
     v3->_imageView = v9;
 
     v11 = v3->_imageView;
-    v12 = [MEMORY[0x277D75348] whiteColor];
-    [(UIImageView *)v11 setBackgroundColor:v12];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIImageView *)v11 setBackgroundColor:whiteColor];
 
     [(UIImageView *)v3->_imageView setContentMode:2];
     [(UIImageView *)v3->_imageView setClipsToBounds:1];
@@ -50,8 +50,8 @@
     [(UILabel *)v15 setFont:v16];
 
     v17 = v3->_labelView;
-    v18 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v17 setTextColor:v18];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v17 setTextColor:whiteColor2];
 
     [(UILabel *)v3->_labelView setTextAlignment:0];
     v19 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v5, v6, v7, v8}];
@@ -67,17 +67,17 @@
     v3->_placeholderColorView = v23;
 
     [(UIView *)v3->_placeholderColorView setAlpha:0.0];
-    v25 = [(STSImageCell *)v3 contentView];
-    [v25 addSubview:v3->_imageView];
+    contentView = [(STSImageCell *)v3 contentView];
+    [contentView addSubview:v3->_imageView];
 
-    v26 = [(STSImageCell *)v3 contentView];
-    [v26 addSubview:v3->_placeholderColorView];
+    contentView2 = [(STSImageCell *)v3 contentView];
+    [contentView2 addSubview:v3->_placeholderColorView];
 
-    v27 = [(STSImageCell *)v3 contentView];
-    [v27 addSubview:v3->_labelBackgroundView];
+    contentView3 = [(STSImageCell *)v3 contentView];
+    [contentView3 addSubview:v3->_labelBackgroundView];
 
-    v28 = [(STSImageCell *)v3 contentView];
-    [v28 addSubview:v3->_labelView];
+    contentView4 = [(STSImageCell *)v3 contentView];
+    [contentView4 addSubview:v3->_labelView];
   }
 
   return v3;
@@ -96,8 +96,8 @@
   v24.receiver = self;
   v24.super_class = STSImageCell;
   [(STSImageCell *)&v24 layoutSubviews];
-  v3 = [(STSImageCell *)self contentView];
-  [v3 bounds];
+  contentView = [(STSImageCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -197,13 +197,13 @@
   return result;
 }
 
-- (void)setCategory:(id)a3
+- (void)setCategory:(id)category
 {
-  v4 = a3;
-  v13 = v4;
-  if (v4)
+  categoryCopy = category;
+  v13 = categoryCopy;
+  if (categoryCopy)
   {
-    v5 = [(NSString *)self->_category isEqualToString:v4];
+    v5 = [(NSString *)self->_category isEqualToString:categoryCopy];
     v6 = v13;
     if (v5)
     {
@@ -216,19 +216,19 @@
 
     [(UILabel *)self->_labelView setText:self->_category];
     labelView = self->_labelView;
-    v10 = [(STSImageCell *)self image];
-    [(UILabel *)labelView setHidden:v10 == 0];
+    image = [(STSImageCell *)self image];
+    [(UILabel *)labelView setHidden:image == 0];
 
     labelBackgroundView = self->_labelBackgroundView;
-    v12 = [(STSImageCell *)self image];
-    [(UIView *)labelBackgroundView setHidden:v12 == 0];
+    image2 = [(STSImageCell *)self image];
+    [(UIView *)labelBackgroundView setHidden:image2 == 0];
   }
 
   else
   {
     [(UILabel *)self->_labelView setHidden:1];
     [(UIView *)self->_labelBackgroundView setHidden:1];
-    v12 = self->_category;
+    image2 = self->_category;
     self->_category = 0;
   }
 
@@ -238,68 +238,68 @@ LABEL_6:
   MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (void)setImage:(id)a3 animated:(BOOL)a4
+- (void)setImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v14 = a3;
-  v6 = [(UIImageView *)self->_imageView image];
-  v7 = [v6 isEqual:v14];
+  animatedCopy = animated;
+  imageCopy = image;
+  image = [(UIImageView *)self->_imageView image];
+  v7 = [image isEqual:imageCopy];
 
-  v9 = v14;
+  v9 = imageCopy;
   if ((v7 & 1) == 0)
   {
-    [(UIImageView *)self->_imageView setImage:v14];
+    [(UIImageView *)self->_imageView setImage:imageCopy];
     v10 = 1.0;
-    if (!v14)
+    if (!imageCopy)
     {
       v10 = 0.0;
     }
 
     [(UIImageView *)self->_imageView setAlpha:v10];
-    v11 = [(STSImageCell *)self category];
-    if (v11)
+    category = [(STSImageCell *)self category];
+    if (category)
     {
-      v12 = v11;
-      v13 = [(UIImageView *)self->_imageView image];
+      v12 = category;
+      image2 = [(UIImageView *)self->_imageView image];
 
-      if (v13)
+      if (image2)
       {
         [(UILabel *)self->_labelView setHidden:0];
         [(UIView *)self->_labelBackgroundView setHidden:0];
       }
     }
 
-    [(STSImageCell *)self _updateBadgeAnimated:v4];
-    v8 = [(STSImageCell *)self _updatePlaceholderViewAnimated:v4];
-    v9 = v14;
+    [(STSImageCell *)self _updateBadgeAnimated:animatedCopy];
+    v8 = [(STSImageCell *)self _updatePlaceholderViewAnimated:animatedCopy];
+    v9 = imageCopy;
   }
 
   MEMORY[0x2821F96F8](v8, v9);
 }
 
-- (void)setPlaceholderColor:(id)a3
+- (void)setPlaceholderColor:(id)color
 {
-  v5 = a3;
-  if (self->_placeholderColor != v5)
+  colorCopy = color;
+  if (self->_placeholderColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeholderColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_placeholderColor, color);
     [(STSImageCell *)self _updatePlaceholderViewAnimated:0];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setBadge:(id)a3
+- (void)setBadge:(id)badge
 {
-  v13 = a3;
-  v4 = [(UIImageView *)self->_badgeView image];
-  v5 = [v13 isEqual:v4];
+  badgeCopy = badge;
+  image = [(UIImageView *)self->_badgeView image];
+  v5 = [badgeCopy isEqual:image];
 
-  v6 = v13;
+  v6 = badgeCopy;
   if ((v5 & 1) == 0)
   {
     badgeView = self->_badgeView;
-    if (v13)
+    if (badgeCopy)
     {
       if (!badgeView)
       {
@@ -309,10 +309,10 @@ LABEL_6:
         self->_badgeView = v9;
 
         [(UIImageView *)self->_badgeView setTranslatesAutoresizingMaskIntoConstraints:0];
-        v11 = [(STSImageCell *)self contentView];
-        [v11 insertSubview:self->_badgeView aboveSubview:self->_imageView];
+        contentView = [(STSImageCell *)self contentView];
+        [contentView insertSubview:self->_badgeView aboveSubview:self->_imageView];
 
-        v6 = v13;
+        v6 = badgeCopy;
         badgeView = self->_badgeView;
       }
 
@@ -333,19 +333,19 @@ LABEL_6:
   MEMORY[0x2821F9730]();
 }
 
-- (void)setDebugBadge:(id)a3
+- (void)setDebugBadge:(id)badge
 {
-  v13 = a3;
+  badgeCopy = badge;
   if (STSIsInternalInstall())
   {
-    v4 = [(UIImageView *)self->_debugBadgeView image];
-    v5 = [v13 isEqual:v4];
+    image = [(UIImageView *)self->_debugBadgeView image];
+    v5 = [badgeCopy isEqual:image];
 
     if ((v5 & 1) == 0)
     {
       debugBadgeView = self->_debugBadgeView;
-      v7 = v13;
-      if (v13)
+      v7 = badgeCopy;
+      if (badgeCopy)
       {
         if (!debugBadgeView)
         {
@@ -355,10 +355,10 @@ LABEL_6:
           self->_debugBadgeView = v9;
 
           [(UIImageView *)self->_debugBadgeView setTranslatesAutoresizingMaskIntoConstraints:0];
-          v11 = [(STSImageCell *)self contentView];
-          [v11 insertSubview:self->_debugBadgeView aboveSubview:self->_placeholderColorView];
+          contentView = [(STSImageCell *)self contentView];
+          [contentView insertSubview:self->_debugBadgeView aboveSubview:self->_placeholderColorView];
 
-          v7 = v13;
+          v7 = badgeCopy;
           debugBadgeView = self->_debugBadgeView;
         }
 
@@ -376,14 +376,14 @@ LABEL_6:
   }
 }
 
-- (void)setShowDownloadIndicator:(double)a3 animated:(BOOL)a4
+- (void)setShowDownloadIndicator:(double)indicator animated:(BOOL)animated
 {
   LOBYTE(v4) = self->_showDownloadIndicator;
-  if (v4 != a3)
+  if (v4 != indicator)
   {
-    v6 = a4;
-    self->_showDownloadIndicator = a3 != 0.0;
-    if (a3 == 0.0)
+    animatedCopy = animated;
+    self->_showDownloadIndicator = indicator != 0.0;
+    if (indicator == 0.0)
     {
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
@@ -398,7 +398,7 @@ LABEL_6:
       v16[4] = self;
       v13 = MEMORY[0x266751FB0](v16);
       v14 = 0.0;
-      if (v6)
+      if (animatedCopy)
       {
 LABEL_9:
         [MEMORY[0x277D75D18] animateWithDuration:4 delay:v12 options:v13 animations:0.2 completion:v14];
@@ -419,13 +419,13 @@ LABEL_15:
 
         [(STSCellDownloadOverlayView *)self->_downloadProgressView setTranslatesAutoresizingMaskIntoConstraints:0];
         [(STSCellDownloadOverlayView *)self->_downloadProgressView setAlpha:0.0];
-        v10 = [(STSImageCell *)self contentView];
-        [v10 addSubview:self->_downloadProgressView];
+        contentView = [(STSImageCell *)self contentView];
+        [contentView addSubview:self->_downloadProgressView];
       }
 
       [(STSImageCell *)self setNeedsLayout];
-      v11 = [(STSCellDownloadOverlayView *)self->_downloadProgressView progressView];
-      [v11 setProgress:self->_downloadProgress];
+      progressView = [(STSCellDownloadOverlayView *)self->_downloadProgressView progressView];
+      [progressView setProgress:self->_downloadProgress];
 
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
@@ -435,7 +435,7 @@ LABEL_15:
       v12 = MEMORY[0x266751FB0](v18);
       v13 = 0;
       v14 = 0.2;
-      if (v6)
+      if (animatedCopy)
       {
         goto LABEL_9;
       }
@@ -454,8 +454,8 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v15 = [(STSCellDownloadOverlayView *)self->_downloadProgressView progressView];
-  [v15 setProgress:self->_downloadProgress];
+  progressView2 = [(STSCellDownloadOverlayView *)self->_downloadProgressView progressView];
+  [progressView2 setProgress:self->_downloadProgress];
 }
 
 void __50__STSImageCell_setShowDownloadIndicator_animated___block_invoke_3(uint64_t a1)
@@ -470,21 +470,21 @@ void __50__STSImageCell_setShowDownloadIndicator_animated___block_invoke_3(uint6
   }
 }
 
-- (void)setDownloadProgress:(double)a3
+- (void)setDownloadProgress:(double)progress
 {
-  self->_downloadProgress = a3;
-  v4 = [(STSCellDownloadOverlayView *)self->_downloadProgressView progressView];
-  [v4 setProgress:a3];
+  self->_downloadProgress = progress;
+  progressView = [(STSCellDownloadOverlayView *)self->_downloadProgressView progressView];
+  [progressView setProgress:progress];
 }
 
-- (void)_updateBadgeAnimated:(BOOL)a3
+- (void)_updateBadgeAnimated:(BOOL)animated
 {
-  v4 = [(STSImageCell *)self image];
+  image = [(STSImageCell *)self image];
   v5 = 1.0;
-  if (!v4)
+  if (!image)
   {
-    v6 = [(STSImageCell *)self imageInfo];
-    if (v6)
+    imageInfo = [(STSImageCell *)self imageInfo];
+    if (imageInfo)
     {
       v5 = 1.0;
     }
@@ -500,13 +500,13 @@ void __50__STSImageCell_setShowDownloadIndicator_animated___block_invoke_3(uint6
   [(UIImageView *)badgeView setAlpha:v5];
 }
 
-- (void)_updatePlaceholderViewAnimated:(BOOL)a3
+- (void)_updatePlaceholderViewAnimated:(BOOL)animated
 {
   if (self->_placeholderColor)
   {
-    v4 = [(UIImageView *)self->_imageView image];
+    image = [(UIImageView *)self->_imageView image];
     v5 = 0.0;
-    if (!v4)
+    if (!image)
     {
       if (self->_imageInfo)
       {

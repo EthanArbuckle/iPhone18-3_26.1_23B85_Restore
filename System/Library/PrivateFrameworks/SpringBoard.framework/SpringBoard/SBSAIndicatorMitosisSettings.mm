@@ -7,16 +7,16 @@
 - (void)setDefaultReversedCompactValues;
 - (void)setDefaultReversedCustomValues;
 - (void)setDefaultValues;
-- (void)setPrefix:(id)a3;
+- (void)setPrefix:(id)prefix;
 @end
 
 @implementation SBSAIndicatorMitosisSettings
 
-- (void)setPrefix:(id)a3
+- (void)setPrefix:(id)prefix
 {
   v24 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  objc_storeStrong(&self->_prefix, a3);
+  prefixCopy = prefix;
+  objc_storeStrong(&self->_prefix, prefix);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
@@ -45,9 +45,9 @@
         v11 = *(*(&v18 + 1) + 8 * i);
         v12 = MEMORY[0x277CCACA8];
         prefix = self->_prefix;
-        v14 = [v11 phaseName];
-        v15 = [v12 stringWithFormat:@"%@ - %@", prefix, v14, v16];
-        [v11 setPhaseName:v15];
+        phaseName = [v11 phaseName];
+        prefixCopy = [v12 stringWithFormat:@"%@ - %@", prefix, phaseName, prefixCopy];
+        [v11 setPhaseName:prefixCopy];
       }
 
       v8 = [obj countByEnumeratingWithState:&v18 objects:v23 count:16];
@@ -82,137 +82,137 @@
   [(SBSAIndicatorMitosisSettings *)self setMicroIndicatorAppearanceTransitionBeginPhase:2];
   [(SBSAIndicatorMitosisSettings *)self setMicroIndicatorTranslationTransitionBeginPhase:1];
   [(SBSAIndicatorMitosisSettings *)self setInterSensorIndicatorAppearanceTransitionBeginPhase:2];
-  v3 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v4 = [v3 scale];
-  [v4 setWidth:1.08];
+  kickingPhaseSettings = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  scale = [kickingPhaseSettings scale];
+  [scale setWidth:1.08];
 
-  v5 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v6 = [v5 scale];
-  [v6 setHeight:1.08];
+  kickingPhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  scale2 = [kickingPhaseSettings2 scale];
+  [scale2 setHeight:1.08];
 
-  v7 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v8 = [v7 contentScale];
-  [v8 setWidth:1.05];
+  kickingPhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  contentScale = [kickingPhaseSettings3 contentScale];
+  [contentScale setWidth:1.05];
 
-  v9 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v10 = [v9 contentScale];
-  [v10 setHeight:1.05];
+  kickingPhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  contentScale2 = [kickingPhaseSettings4 contentScale];
+  [contentScale2 setHeight:1.05];
 
-  v11 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v12 = [v11 containerCenterOffset];
-  [v12 setX:0.0];
+  kickingPhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  containerCenterOffset = [kickingPhaseSettings5 containerCenterOffset];
+  [containerCenterOffset setX:0.0];
 
-  v13 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v14 = [v13 containerCenterOffset];
-  [v14 setY:0.0];
+  kickingPhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  containerCenterOffset2 = [kickingPhaseSettings6 containerCenterOffset];
+  [containerCenterOffset2 setY:0.0];
 
-  v15 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v15 setPhaseEndMilestone:0.6];
+  kickingPhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings7 setPhaseEndMilestone:0.6];
 
-  v16 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v16 setPhaseEndMilestoneTargetProperty:@"bounds"];
+  kickingPhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings8 setPhaseEndMilestoneTargetProperty:@"bounds"];
 
-  v17 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v17 setPhaseEndMilestoneTarget:0];
+  kickingPhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings9 setPhaseEndMilestoneTarget:0];
 
-  v18 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v18 setSensorShadowProgress:0.0];
+  kickingPhaseSettings10 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings10 setSensorShadowProgress:0.0];
 
-  v19 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v20 = [v19 scale];
-  [v20 setWidth:1.11];
+  kickedPhaseSettings = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  scale3 = [kickedPhaseSettings scale];
+  [scale3 setWidth:1.11];
 
-  v21 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v22 = [v21 scale];
-  [v22 setHeight:1.1];
+  kickedPhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  scale4 = [kickedPhaseSettings2 scale];
+  [scale4 setHeight:1.1];
 
-  v23 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v24 = [v23 contentScale];
-  [v24 setWidth:1.085];
+  kickedPhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  contentScale3 = [kickedPhaseSettings3 contentScale];
+  [contentScale3 setWidth:1.085];
 
-  v25 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v26 = [v25 contentScale];
-  [v26 setHeight:1.05];
+  kickedPhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  contentScale4 = [kickedPhaseSettings4 contentScale];
+  [contentScale4 setHeight:1.05];
 
-  v27 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v28 = [v27 containerCenterOffset];
-  [v28 setX:4.0];
+  kickedPhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  containerCenterOffset3 = [kickedPhaseSettings5 containerCenterOffset];
+  [containerCenterOffset3 setX:4.0];
 
-  v29 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v29 setPhaseEndMilestone:0.6];
+  kickedPhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings6 setPhaseEndMilestone:0.6];
 
-  v30 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v30 setPhaseEndMilestoneTargetProperty:@"center"];
+  kickedPhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings7 setPhaseEndMilestoneTargetProperty:@"center"];
 
-  v31 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v31 setPhaseEndMilestoneTarget:0];
+  kickedPhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings8 setPhaseEndMilestoneTarget:0];
 
-  v32 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v32 setSensorShadowProgress:1.0];
+  kickedPhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings9 setSensorShadowProgress:1.0];
 
-  v33 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v34 = [v33 scale];
-  [v34 setWidth:1.0];
+  preparingToSettlePhaseSettings = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  scale5 = [preparingToSettlePhaseSettings scale];
+  [scale5 setWidth:1.0];
 
-  v35 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v36 = [v35 scale];
-  [v36 setHeight:1.0];
+  preparingToSettlePhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  scale6 = [preparingToSettlePhaseSettings2 scale];
+  [scale6 setHeight:1.0];
 
-  v37 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v38 = [v37 contentScale];
-  [v38 setWidth:1.0];
+  preparingToSettlePhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  contentScale5 = [preparingToSettlePhaseSettings3 contentScale];
+  [contentScale5 setWidth:1.0];
 
-  v39 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v40 = [v39 contentScale];
-  [v40 setHeight:1.0];
+  preparingToSettlePhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  contentScale6 = [preparingToSettlePhaseSettings4 contentScale];
+  [contentScale6 setHeight:1.0];
 
-  v41 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v42 = [v41 containerCenterOffset];
-  [v42 setX:0.0];
+  preparingToSettlePhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  containerCenterOffset4 = [preparingToSettlePhaseSettings5 containerCenterOffset];
+  [containerCenterOffset4 setX:0.0];
 
-  v43 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v43 setPhaseEndMilestone:0.4];
+  preparingToSettlePhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings6 setPhaseEndMilestone:0.4];
 
-  v44 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v44 setPhaseEndMilestoneTargetProperty:@"bounds"];
+  preparingToSettlePhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings7 setPhaseEndMilestoneTargetProperty:@"bounds"];
 
-  v45 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v45 setPhaseEndMilestoneTarget:0];
+  preparingToSettlePhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings8 setPhaseEndMilestoneTarget:0];
 
-  v46 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v46 setSensorShadowProgress:0.6];
+  preparingToSettlePhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings9 setSensorShadowProgress:0.6];
 
-  v47 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v48 = [v47 scale];
-  [v48 setWidth:1.0];
+  settlingPhaseSettings = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  scale7 = [settlingPhaseSettings scale];
+  [scale7 setWidth:1.0];
 
-  v49 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v50 = [v49 scale];
-  [v50 setHeight:1.0];
+  settlingPhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  scale8 = [settlingPhaseSettings2 scale];
+  [scale8 setHeight:1.0];
 
-  v51 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v52 = [v51 contentScale];
-  [v52 setWidth:1.0];
+  settlingPhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  contentScale7 = [settlingPhaseSettings3 contentScale];
+  [contentScale7 setWidth:1.0];
 
-  v53 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v54 = [v53 contentScale];
-  [v54 setHeight:1.0];
+  settlingPhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  contentScale8 = [settlingPhaseSettings4 contentScale];
+  [contentScale8 setHeight:1.0];
 
-  v55 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v56 = [v55 containerCenterOffset];
-  [v56 setX:0.0];
+  settlingPhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  containerCenterOffset5 = [settlingPhaseSettings5 containerCenterOffset];
+  [containerCenterOffset5 setX:0.0];
 
-  v57 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  [v57 setPhaseEndMilestone:2.0];
+  settlingPhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  [settlingPhaseSettings6 setPhaseEndMilestone:2.0];
 
-  v58 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  [v58 setPhaseEndMilestoneTargetProperty:@"center"];
+  settlingPhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  [settlingPhaseSettings7 setPhaseEndMilestoneTargetProperty:@"center"];
 
-  v59 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  [v59 setPhaseEndMilestoneTarget:0];
+  settlingPhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  [settlingPhaseSettings8 setPhaseEndMilestoneTarget:0];
 
-  v60 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  [v60 setSensorShadowProgress:0.0];
+  settlingPhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  [settlingPhaseSettings9 setSensorShadowProgress:0.0];
 }
 
 - (void)setDefaultBabyJindoValues
@@ -222,134 +222,134 @@
   [(SBSAIndicatorMitosisSettings *)self setMicroIndicatorAppearanceTransitionBeginPhase:2];
   [(SBSAIndicatorMitosisSettings *)self setMicroIndicatorTranslationTransitionBeginPhase:1];
   [(SBSAIndicatorMitosisSettings *)self setInterSensorIndicatorAppearanceTransitionBeginPhase:2];
-  v3 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v4 = [v3 scale];
-  [v4 setWidth:1.16];
+  kickingPhaseSettings = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  scale = [kickingPhaseSettings scale];
+  [scale setWidth:1.16];
 
-  v5 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v6 = [v5 scale];
-  [v6 setHeight:1.0];
+  kickingPhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  scale2 = [kickingPhaseSettings2 scale];
+  [scale2 setHeight:1.0];
 
-  v7 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v8 = [v7 contentScale];
-  [v8 setWidth:1.16];
+  kickingPhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  contentScale = [kickingPhaseSettings3 contentScale];
+  [contentScale setWidth:1.16];
 
-  v9 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v10 = [v9 contentScale];
-  [v10 setHeight:1.0];
+  kickingPhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  contentScale2 = [kickingPhaseSettings4 contentScale];
+  [contentScale2 setHeight:1.0];
 
-  v11 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v12 = [v11 containerCenterOffset];
-  [v12 setX:2.33333333];
+  kickingPhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  containerCenterOffset = [kickingPhaseSettings5 containerCenterOffset];
+  [containerCenterOffset setX:2.33333333];
 
-  v13 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v13 setPhaseEndMilestone:0.6];
+  kickingPhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings6 setPhaseEndMilestone:0.6];
 
-  v14 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v14 setPhaseEndMilestoneTargetProperty:@"bounds"];
+  kickingPhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings7 setPhaseEndMilestoneTargetProperty:@"bounds"];
 
-  v15 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v15 setPhaseEndMilestoneTarget:0];
+  kickingPhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings8 setPhaseEndMilestoneTarget:0];
 
-  v16 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v17 = [v16 scale];
-  [v17 setWidth:1.12];
+  kickedPhaseSettings = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  scale3 = [kickedPhaseSettings scale];
+  [scale3 setWidth:1.12];
 
-  v18 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v19 = [v18 scale];
-  [v19 setHeight:1.08];
+  kickedPhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  scale4 = [kickedPhaseSettings2 scale];
+  [scale4 setHeight:1.08];
 
-  v20 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v21 = [v20 contentScale];
-  [v21 setWidth:1.12];
+  kickedPhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  contentScale3 = [kickedPhaseSettings3 contentScale];
+  [contentScale3 setWidth:1.12];
 
-  v22 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v23 = [v22 contentScale];
-  [v23 setHeight:1.08];
+  kickedPhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  contentScale4 = [kickedPhaseSettings4 contentScale];
+  [contentScale4 setHeight:1.08];
 
-  v24 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v25 = [v24 containerCenterOffset];
-  [v25 setX:1.66666667];
+  kickedPhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  containerCenterOffset2 = [kickedPhaseSettings5 containerCenterOffset];
+  [containerCenterOffset2 setX:1.66666667];
 
-  v26 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v27 = [v26 containerCenterOffset];
-  [v27 setY:0.0];
+  kickedPhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  containerCenterOffset3 = [kickedPhaseSettings6 containerCenterOffset];
+  [containerCenterOffset3 setY:0.0];
 
-  v28 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v28 setPhaseEndMilestone:0.4];
+  kickedPhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings7 setPhaseEndMilestone:0.4];
 
-  v29 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v29 setPhaseEndMilestoneTargetProperty:@"center"];
+  kickedPhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings8 setPhaseEndMilestoneTargetProperty:@"center"];
 
-  v30 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v30 setPhaseEndMilestoneTarget:0];
+  kickedPhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings9 setPhaseEndMilestoneTarget:0];
 
-  v31 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v31 setBlobRadius:3.33333333];
+  preparingToSettlePhaseSettings = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings setBlobRadius:3.33333333];
 
-  v32 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v33 = [v32 scale];
-  [v33 setWidth:1.0];
+  preparingToSettlePhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  scale5 = [preparingToSettlePhaseSettings2 scale];
+  [scale5 setWidth:1.0];
 
-  v34 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v35 = [v34 scale];
-  [v35 setHeight:1.0];
+  preparingToSettlePhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  scale6 = [preparingToSettlePhaseSettings3 scale];
+  [scale6 setHeight:1.0];
 
-  v36 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v37 = [v36 contentScale];
-  [v37 setWidth:1.0];
+  preparingToSettlePhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  contentScale5 = [preparingToSettlePhaseSettings4 contentScale];
+  [contentScale5 setWidth:1.0];
 
-  v38 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v39 = [v38 contentScale];
-  [v39 setHeight:1.0];
+  preparingToSettlePhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  contentScale6 = [preparingToSettlePhaseSettings5 contentScale];
+  [contentScale6 setHeight:1.0];
 
-  v40 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v41 = [v40 containerCenterOffset];
-  [v41 setX:0.333333333];
+  preparingToSettlePhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  containerCenterOffset4 = [preparingToSettlePhaseSettings6 containerCenterOffset];
+  [containerCenterOffset4 setX:0.333333333];
 
-  v42 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v42 setPhaseEndMilestone:0.5];
+  preparingToSettlePhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings7 setPhaseEndMilestone:0.5];
 
-  v43 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v43 setPhaseEndMilestoneTargetProperty:@"center"];
+  preparingToSettlePhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings8 setPhaseEndMilestoneTargetProperty:@"center"];
 
-  v44 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v44 setPhaseEndMilestoneTarget:0];
+  preparingToSettlePhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings9 setPhaseEndMilestoneTarget:0];
 
-  v45 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v45 setSensorShadowProgress:0.0];
+  preparingToSettlePhaseSettings10 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings10 setSensorShadowProgress:0.0];
 
-  v46 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v47 = [v46 scale];
-  [v47 setWidth:1.0];
+  settlingPhaseSettings = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  scale7 = [settlingPhaseSettings scale];
+  [scale7 setWidth:1.0];
 
-  v48 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v49 = [v48 scale];
-  [v49 setHeight:1.0];
+  settlingPhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  scale8 = [settlingPhaseSettings2 scale];
+  [scale8 setHeight:1.0];
 
-  v50 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v51 = [v50 contentScale];
-  [v51 setWidth:1.0];
+  settlingPhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  contentScale7 = [settlingPhaseSettings3 contentScale];
+  [contentScale7 setWidth:1.0];
 
-  v52 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v53 = [v52 contentScale];
-  [v53 setHeight:1.0];
+  settlingPhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  contentScale8 = [settlingPhaseSettings4 contentScale];
+  [contentScale8 setHeight:1.0];
 
-  v54 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v55 = [v54 containerCenterOffset];
-  [v55 setX:0.0];
+  settlingPhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  containerCenterOffset5 = [settlingPhaseSettings5 containerCenterOffset];
+  [containerCenterOffset5 setX:0.0];
 
-  v56 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  [v56 setPhaseEndMilestone:2.0];
+  settlingPhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  [settlingPhaseSettings6 setPhaseEndMilestone:2.0];
 
-  v57 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  [v57 setPhaseEndMilestoneTargetProperty:@"center"];
+  settlingPhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  [settlingPhaseSettings7 setPhaseEndMilestoneTargetProperty:@"center"];
 
-  v58 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  [v58 setPhaseEndMilestoneTarget:0];
+  settlingPhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  [settlingPhaseSettings8 setPhaseEndMilestoneTarget:0];
 
-  v59 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  [v59 setSensorShadowProgress:0.0];
+  settlingPhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  [settlingPhaseSettings9 setSensorShadowProgress:0.0];
 }
 
 - (void)setDefaultCustomValues
@@ -359,138 +359,138 @@
   [(SBSAIndicatorMitosisSettings *)self setMicroIndicatorAppearanceTransitionBeginPhase:2];
   [(SBSAIndicatorMitosisSettings *)self setMicroIndicatorTranslationTransitionBeginPhase:1];
   [(SBSAIndicatorMitosisSettings *)self setInterSensorIndicatorAppearanceTransitionBeginPhase:2];
-  v3 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v4 = [v3 scale];
-  [v4 setWidth:1.025];
+  kickingPhaseSettings = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  scale = [kickingPhaseSettings scale];
+  [scale setWidth:1.025];
 
-  v5 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v6 = [v5 scale];
-  [v6 setHeight:1.05];
+  kickingPhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  scale2 = [kickingPhaseSettings2 scale];
+  [scale2 setHeight:1.05];
 
-  v7 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v8 = [v7 contentScale];
-  [v8 setWidth:1.025];
+  kickingPhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  contentScale = [kickingPhaseSettings3 contentScale];
+  [contentScale setWidth:1.025];
 
-  v9 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v10 = [v9 contentScale];
-  [v10 setHeight:1.05];
+  kickingPhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  contentScale2 = [kickingPhaseSettings4 contentScale];
+  [contentScale2 setHeight:1.05];
 
-  v11 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v11 setPhaseEndMilestone:0.6];
+  kickingPhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings5 setPhaseEndMilestone:0.6];
 
-  v12 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v12 setPhaseEndMilestoneTargetProperty:@"bounds"];
+  kickingPhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings6 setPhaseEndMilestoneTargetProperty:@"bounds"];
 
-  v13 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v13 setPhaseEndMilestoneTarget:0];
+  kickingPhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings7 setPhaseEndMilestoneTarget:0];
 
-  v14 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v14 setSensorShadowProgress:0.5];
+  kickingPhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings8 setSensorShadowProgress:0.5];
 
-  v15 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v16 = [v15 scale];
-  [v16 setWidth:1.04];
+  kickedPhaseSettings = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  scale3 = [kickedPhaseSettings scale];
+  [scale3 setWidth:1.04];
 
-  v17 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v18 = [v17 scale];
-  [v18 setHeight:1.075];
+  kickedPhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  scale4 = [kickedPhaseSettings2 scale];
+  [scale4 setHeight:1.075];
 
-  v19 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v20 = [v19 contentScale];
-  [v20 setWidth:1.04];
+  kickedPhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  contentScale3 = [kickedPhaseSettings3 contentScale];
+  [contentScale3 setWidth:1.04];
 
-  v21 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v22 = [v21 contentScale];
-  [v22 setHeight:1.075];
+  kickedPhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  contentScale4 = [kickedPhaseSettings4 contentScale];
+  [contentScale4 setHeight:1.075];
 
-  v23 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v24 = [v23 containerCenterOffset];
-  [v24 setX:3.0];
+  kickedPhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  containerCenterOffset = [kickedPhaseSettings5 containerCenterOffset];
+  [containerCenterOffset setX:3.0];
 
-  v25 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v26 = [v25 containerCenterOffset];
-  [v26 setY:1.0];
+  kickedPhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  containerCenterOffset2 = [kickedPhaseSettings6 containerCenterOffset];
+  [containerCenterOffset2 setY:1.0];
 
-  v27 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v27 setPhaseEndMilestone:0.4];
+  kickedPhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings7 setPhaseEndMilestone:0.4];
 
-  v28 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v28 setPhaseEndMilestoneTargetProperty:@"center"];
+  kickedPhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings8 setPhaseEndMilestoneTargetProperty:@"center"];
 
-  v29 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v29 setPhaseEndMilestoneTarget:0];
+  kickedPhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings9 setPhaseEndMilestoneTarget:0];
 
-  v30 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v31 = [v30 scale];
-  [v31 setWidth:1.0];
+  preparingToSettlePhaseSettings = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  scale5 = [preparingToSettlePhaseSettings scale];
+  [scale5 setWidth:1.0];
 
-  v32 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v33 = [v32 scale];
-  [v33 setHeight:1.0];
+  preparingToSettlePhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  scale6 = [preparingToSettlePhaseSettings2 scale];
+  [scale6 setHeight:1.0];
 
-  v34 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v35 = [v34 contentScale];
-  [v35 setWidth:1.0];
+  preparingToSettlePhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  contentScale5 = [preparingToSettlePhaseSettings3 contentScale];
+  [contentScale5 setWidth:1.0];
 
-  v36 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v37 = [v36 contentScale];
-  [v37 setHeight:1.0];
+  preparingToSettlePhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  contentScale6 = [preparingToSettlePhaseSettings4 contentScale];
+  [contentScale6 setHeight:1.0];
 
-  v38 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v39 = [v38 containerCenterOffset];
-  [v39 setX:0.0];
+  preparingToSettlePhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  containerCenterOffset3 = [preparingToSettlePhaseSettings5 containerCenterOffset];
+  [containerCenterOffset3 setX:0.0];
 
-  v40 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v41 = [v40 containerCenterOffset];
-  [v41 setY:0.333333333];
+  preparingToSettlePhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  containerCenterOffset4 = [preparingToSettlePhaseSettings6 containerCenterOffset];
+  [containerCenterOffset4 setY:0.333333333];
 
-  v42 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v42 setSensorShadowProgress:0.4];
+  preparingToSettlePhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings7 setSensorShadowProgress:0.4];
 
-  v43 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v43 setPhaseEndMilestone:0.4];
+  preparingToSettlePhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings8 setPhaseEndMilestone:0.4];
 
-  v44 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v44 setPhaseEndMilestoneTargetProperty:@"center"];
+  preparingToSettlePhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings9 setPhaseEndMilestoneTargetProperty:@"center"];
 
-  v45 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v45 setPhaseEndMilestoneTarget:0];
+  preparingToSettlePhaseSettings10 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings10 setPhaseEndMilestoneTarget:0];
 
-  v46 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v47 = [v46 scale];
-  [v47 setWidth:1.0];
+  settlingPhaseSettings = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  scale7 = [settlingPhaseSettings scale];
+  [scale7 setWidth:1.0];
 
-  v48 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v49 = [v48 scale];
-  [v49 setHeight:1.0];
+  settlingPhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  scale8 = [settlingPhaseSettings2 scale];
+  [scale8 setHeight:1.0];
 
-  v50 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v51 = [v50 contentScale];
-  [v51 setWidth:1.0];
+  settlingPhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  contentScale7 = [settlingPhaseSettings3 contentScale];
+  [contentScale7 setWidth:1.0];
 
-  v52 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v53 = [v52 contentScale];
-  [v53 setHeight:1.0];
+  settlingPhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  contentScale8 = [settlingPhaseSettings4 contentScale];
+  [contentScale8 setHeight:1.0];
 
-  v54 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v55 = [v54 containerCenterOffset];
-  [v55 setX:0.0];
+  settlingPhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  containerCenterOffset5 = [settlingPhaseSettings5 containerCenterOffset];
+  [containerCenterOffset5 setX:0.0];
 
-  v56 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  v57 = [v56 containerCenterOffset];
-  [v57 setY:0.0];
+  settlingPhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  containerCenterOffset6 = [settlingPhaseSettings6 containerCenterOffset];
+  [containerCenterOffset6 setY:0.0];
 
-  v58 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  [v58 setPhaseEndMilestone:2.0];
+  settlingPhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  [settlingPhaseSettings7 setPhaseEndMilestone:2.0];
 
-  v59 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  [v59 setPhaseEndMilestoneTargetProperty:@"center"];
+  settlingPhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  [settlingPhaseSettings8 setPhaseEndMilestoneTargetProperty:@"center"];
 
-  v60 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  [v60 setPhaseEndMilestoneTarget:0];
+  settlingPhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  [settlingPhaseSettings9 setPhaseEndMilestoneTarget:0];
 
-  v61 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  [v61 setSensorShadowProgress:0.0];
+  settlingPhaseSettings10 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  [settlingPhaseSettings10 setSensorShadowProgress:0.0];
 }
 
 - (void)setDefaultReversedCompactValues
@@ -498,102 +498,102 @@
   [(SBSAIndicatorMitosisSettings *)self setDefaultValues];
   [(SBSAIndicatorMitosisSettings *)self setPrefix:@"ReversedCompact"];
   [(SBSAIndicatorMitosisSettings *)self setMicroIndicatorTranslationTransitionBeginPhase:2];
-  v3 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v3 setPhaseEndMilestone:0.6];
+  kickingPhaseSettings = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings setPhaseEndMilestone:0.6];
 
-  v4 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v4 setPhaseEndMilestoneTargetProperty:@"indicatorViewAlpha"];
+  kickingPhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings2 setPhaseEndMilestoneTargetProperty:@"indicatorViewAlpha"];
 
-  v5 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v5 setPhaseEndMilestoneTarget:3];
+  kickingPhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings3 setPhaseEndMilestoneTarget:3];
 
-  v6 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v7 = [v6 indicatorElementTransitionSettings];
-  v8 = [v7 indicatorElementViewAlphaBehaviorSettings];
-  [v8 setDefaultCriticallyDampedValues];
+  kickingPhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  indicatorElementTransitionSettings = [kickingPhaseSettings4 indicatorElementTransitionSettings];
+  indicatorElementViewAlphaBehaviorSettings = [indicatorElementTransitionSettings indicatorElementViewAlphaBehaviorSettings];
+  [indicatorElementViewAlphaBehaviorSettings setDefaultCriticallyDampedValues];
 
-  v9 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v10 = [v9 indicatorElementTransitionSettings];
-  v11 = [v10 indicatorElementViewBlurProgressBehaviorSettings];
-  [v11 setDefaultCriticallyDampedValues];
+  kickingPhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  indicatorElementTransitionSettings2 = [kickingPhaseSettings5 indicatorElementTransitionSettings];
+  indicatorElementViewBlurProgressBehaviorSettings = [indicatorElementTransitionSettings2 indicatorElementViewBlurProgressBehaviorSettings];
+  [indicatorElementViewBlurProgressBehaviorSettings setDefaultCriticallyDampedValues];
 
-  v12 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v13 = [v12 scale];
-  [v13 setWidth:1.08];
+  kickedPhaseSettings = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  scale = [kickedPhaseSettings scale];
+  [scale setWidth:1.08];
 
-  v14 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v15 = [v14 scale];
-  [v15 setHeight:1.07];
+  kickedPhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  scale2 = [kickedPhaseSettings2 scale];
+  [scale2 setHeight:1.07];
 
-  v16 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v17 = [v16 contentScale];
-  [v17 setWidth:1.05];
+  kickedPhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  contentScale = [kickedPhaseSettings3 contentScale];
+  [contentScale setWidth:1.05];
 
-  v18 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v19 = [v18 contentScale];
-  [v19 setHeight:1.03];
+  kickedPhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  contentScale2 = [kickedPhaseSettings4 contentScale];
+  [contentScale2 setHeight:1.03];
 
-  v20 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v21 = [v20 containerCenterOffset];
-  [v21 setX:3.0];
+  kickedPhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  containerCenterOffset = [kickedPhaseSettings5 containerCenterOffset];
+  [containerCenterOffset setX:3.0];
 
-  v22 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v22 setPhaseEndMilestone:0.7];
+  kickedPhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings6 setPhaseEndMilestone:0.7];
 
-  v23 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v23 setPhaseEndMilestoneTargetProperty:@"bounds"];
+  kickedPhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings7 setPhaseEndMilestoneTargetProperty:@"bounds"];
 
-  v24 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v24 setSensorShadowProgress:1.0];
+  kickedPhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings8 setSensorShadowProgress:1.0];
 
-  v25 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v26 = [v25 indicatorElementTransitionSettings];
-  v27 = [v26 indicatorElementViewAlphaBehaviorSettings];
-  [v27 setDefaultCriticallyDampedValues];
+  kickedPhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  indicatorElementTransitionSettings3 = [kickedPhaseSettings9 indicatorElementTransitionSettings];
+  indicatorElementViewAlphaBehaviorSettings2 = [indicatorElementTransitionSettings3 indicatorElementViewAlphaBehaviorSettings];
+  [indicatorElementViewAlphaBehaviorSettings2 setDefaultCriticallyDampedValues];
 
-  v28 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v29 = [v28 indicatorElementTransitionSettings];
-  v30 = [v29 indicatorElementViewBlurProgressBehaviorSettings];
-  [v30 setDefaultCriticallyDampedValues];
+  kickedPhaseSettings10 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  indicatorElementTransitionSettings4 = [kickedPhaseSettings10 indicatorElementTransitionSettings];
+  indicatorElementViewBlurProgressBehaviorSettings2 = [indicatorElementTransitionSettings4 indicatorElementViewBlurProgressBehaviorSettings];
+  [indicatorElementViewBlurProgressBehaviorSettings2 setDefaultCriticallyDampedValues];
 
-  v31 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v32 = [v31 scale];
-  [v32 setWidth:1.0];
+  preparingToSettlePhaseSettings = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  scale3 = [preparingToSettlePhaseSettings scale];
+  [scale3 setWidth:1.0];
 
-  v33 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v34 = [v33 scale];
-  [v34 setHeight:1.0];
+  preparingToSettlePhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  scale4 = [preparingToSettlePhaseSettings2 scale];
+  [scale4 setHeight:1.0];
 
-  v35 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v36 = [v35 contentScale];
-  [v36 setWidth:1.0];
+  preparingToSettlePhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  contentScale3 = [preparingToSettlePhaseSettings3 contentScale];
+  [contentScale3 setWidth:1.0];
 
-  v37 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v38 = [v37 contentScale];
-  [v38 setHeight:1.0];
+  preparingToSettlePhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  contentScale4 = [preparingToSettlePhaseSettings4 contentScale];
+  [contentScale4 setHeight:1.0];
 
-  v39 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v40 = [v39 containerCenterOffset];
-  [v40 setX:0.333333333];
+  preparingToSettlePhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  containerCenterOffset2 = [preparingToSettlePhaseSettings5 containerCenterOffset];
+  [containerCenterOffset2 setX:0.333333333];
 
-  v41 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v41 setPhaseEndMilestone:0.4];
+  preparingToSettlePhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings6 setPhaseEndMilestone:0.4];
 
-  v42 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v42 setPhaseEndMilestoneTargetProperty:@"center"];
+  preparingToSettlePhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings7 setPhaseEndMilestoneTargetProperty:@"center"];
 
-  v43 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  [v43 setPhaseEndMilestoneTargetProperty:@"bounds"];
+  settlingPhaseSettings = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  [settlingPhaseSettings setPhaseEndMilestoneTargetProperty:@"bounds"];
 
-  v44 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v45 = [v44 indicatorElementTransitionSettings];
-  v46 = [v45 indicatorElementViewAlphaBehaviorSettings];
-  [v46 setDefaultCriticallyDampedValues];
+  preparingToSettlePhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  indicatorElementTransitionSettings5 = [preparingToSettlePhaseSettings8 indicatorElementTransitionSettings];
+  indicatorElementViewAlphaBehaviorSettings3 = [indicatorElementTransitionSettings5 indicatorElementViewAlphaBehaviorSettings];
+  [indicatorElementViewAlphaBehaviorSettings3 setDefaultCriticallyDampedValues];
 
-  v49 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v47 = [v49 indicatorElementTransitionSettings];
-  v48 = [v47 indicatorElementViewBlurProgressBehaviorSettings];
-  [v48 setDefaultCriticallyDampedValues];
+  preparingToSettlePhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  indicatorElementTransitionSettings6 = [preparingToSettlePhaseSettings9 indicatorElementTransitionSettings];
+  indicatorElementViewBlurProgressBehaviorSettings3 = [indicatorElementTransitionSettings6 indicatorElementViewBlurProgressBehaviorSettings];
+  [indicatorElementViewBlurProgressBehaviorSettings3 setDefaultCriticallyDampedValues];
 }
 
 - (void)setDefaultReversedBabyJindoValues
@@ -601,102 +601,102 @@
   [(SBSAIndicatorMitosisSettings *)self setDefaultValues];
   [(SBSAIndicatorMitosisSettings *)self setPrefix:@"ReversedBabyJindo"];
   [(SBSAIndicatorMitosisSettings *)self setMicroIndicatorTranslationTransitionBeginPhase:1];
-  v3 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v3 setPhaseEndMilestone:0.6];
+  kickingPhaseSettings = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings setPhaseEndMilestone:0.6];
 
-  v4 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v4 setPhaseEndMilestoneTargetProperty:@"indicatorViewAlpha"];
+  kickingPhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings2 setPhaseEndMilestoneTargetProperty:@"indicatorViewAlpha"];
 
-  v5 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v5 setPhaseEndMilestoneTarget:3];
+  kickingPhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings3 setPhaseEndMilestoneTarget:3];
 
-  v6 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v7 = [v6 indicatorElementTransitionSettings];
-  v8 = [v7 indicatorElementViewAlphaBehaviorSettings];
-  [v8 setDefaultCriticallyDampedValues];
+  kickingPhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  indicatorElementTransitionSettings = [kickingPhaseSettings4 indicatorElementTransitionSettings];
+  indicatorElementViewAlphaBehaviorSettings = [indicatorElementTransitionSettings indicatorElementViewAlphaBehaviorSettings];
+  [indicatorElementViewAlphaBehaviorSettings setDefaultCriticallyDampedValues];
 
-  v9 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v10 = [v9 indicatorElementTransitionSettings];
-  v11 = [v10 indicatorElementViewBlurProgressBehaviorSettings];
-  [v11 setDefaultCriticallyDampedValues];
+  kickingPhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  indicatorElementTransitionSettings2 = [kickingPhaseSettings5 indicatorElementTransitionSettings];
+  indicatorElementViewBlurProgressBehaviorSettings = [indicatorElementTransitionSettings2 indicatorElementViewBlurProgressBehaviorSettings];
+  [indicatorElementViewBlurProgressBehaviorSettings setDefaultCriticallyDampedValues];
 
-  v12 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v13 = [v12 scale];
-  [v13 setWidth:1.16];
+  kickedPhaseSettings = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  scale = [kickedPhaseSettings scale];
+  [scale setWidth:1.16];
 
-  v14 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v15 = [v14 scale];
-  [v15 setHeight:1.05];
+  kickedPhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  scale2 = [kickedPhaseSettings2 scale];
+  [scale2 setHeight:1.05];
 
-  v16 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v17 = [v16 contentScale];
-  [v17 setWidth:1.16];
+  kickedPhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  contentScale = [kickedPhaseSettings3 contentScale];
+  [contentScale setWidth:1.16];
 
-  v18 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v19 = [v18 contentScale];
-  [v19 setHeight:1.05];
+  kickedPhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  contentScale2 = [kickedPhaseSettings4 contentScale];
+  [contentScale2 setHeight:1.05];
 
-  v20 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v21 = [v20 containerCenterOffset];
-  [v21 setX:2.33333333];
+  kickedPhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  containerCenterOffset = [kickedPhaseSettings5 containerCenterOffset];
+  [containerCenterOffset setX:2.33333333];
 
-  v22 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v22 setPhaseEndMilestone:0.8];
+  kickedPhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings6 setPhaseEndMilestone:0.8];
 
-  v23 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v23 setPhaseEndMilestoneTargetProperty:@"center"];
+  kickedPhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings7 setPhaseEndMilestoneTargetProperty:@"center"];
 
-  v24 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v24 setSensorShadowProgress:0.7];
+  kickedPhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings8 setSensorShadowProgress:0.7];
 
-  v25 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v26 = [v25 indicatorElementTransitionSettings];
-  v27 = [v26 indicatorElementViewAlphaBehaviorSettings];
-  [v27 setDefaultCriticallyDampedValues];
+  kickedPhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  indicatorElementTransitionSettings3 = [kickedPhaseSettings9 indicatorElementTransitionSettings];
+  indicatorElementViewAlphaBehaviorSettings2 = [indicatorElementTransitionSettings3 indicatorElementViewAlphaBehaviorSettings];
+  [indicatorElementViewAlphaBehaviorSettings2 setDefaultCriticallyDampedValues];
 
-  v28 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v29 = [v28 indicatorElementTransitionSettings];
-  v30 = [v29 indicatorElementViewBlurProgressBehaviorSettings];
-  [v30 setDefaultCriticallyDampedValues];
+  kickedPhaseSettings10 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  indicatorElementTransitionSettings4 = [kickedPhaseSettings10 indicatorElementTransitionSettings];
+  indicatorElementViewBlurProgressBehaviorSettings2 = [indicatorElementTransitionSettings4 indicatorElementViewBlurProgressBehaviorSettings];
+  [indicatorElementViewBlurProgressBehaviorSettings2 setDefaultCriticallyDampedValues];
 
-  v31 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v32 = [v31 scale];
-  [v32 setWidth:1.02];
+  preparingToSettlePhaseSettings = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  scale3 = [preparingToSettlePhaseSettings scale];
+  [scale3 setWidth:1.02];
 
-  v33 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v34 = [v33 scale];
-  [v34 setHeight:1.01];
+  preparingToSettlePhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  scale4 = [preparingToSettlePhaseSettings2 scale];
+  [scale4 setHeight:1.01];
 
-  v35 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v36 = [v35 contentScale];
-  [v36 setWidth:1.02];
+  preparingToSettlePhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  contentScale3 = [preparingToSettlePhaseSettings3 contentScale];
+  [contentScale3 setWidth:1.02];
 
-  v37 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v38 = [v37 contentScale];
-  [v38 setHeight:1.01];
+  preparingToSettlePhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  contentScale4 = [preparingToSettlePhaseSettings4 contentScale];
+  [contentScale4 setHeight:1.01];
 
-  v39 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v40 = [v39 containerCenterOffset];
-  [v40 setX:0.333333333];
+  preparingToSettlePhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  containerCenterOffset2 = [preparingToSettlePhaseSettings5 containerCenterOffset];
+  [containerCenterOffset2 setX:0.333333333];
 
-  v41 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v41 setPhaseEndMilestone:0.6];
+  preparingToSettlePhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings6 setPhaseEndMilestone:0.6];
 
-  v42 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v42 setPhaseEndMilestoneTargetProperty:@"center"];
+  preparingToSettlePhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings7 setPhaseEndMilestoneTargetProperty:@"center"];
 
-  v43 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v44 = [v43 indicatorElementTransitionSettings];
-  v45 = [v44 indicatorElementViewAlphaBehaviorSettings];
-  [v45 setDefaultCriticallyDampedValues];
+  preparingToSettlePhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  indicatorElementTransitionSettings5 = [preparingToSettlePhaseSettings8 indicatorElementTransitionSettings];
+  indicatorElementViewAlphaBehaviorSettings3 = [indicatorElementTransitionSettings5 indicatorElementViewAlphaBehaviorSettings];
+  [indicatorElementViewAlphaBehaviorSettings3 setDefaultCriticallyDampedValues];
 
-  v46 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v47 = [v46 indicatorElementTransitionSettings];
-  v48 = [v47 indicatorElementViewBlurProgressBehaviorSettings];
-  [v48 setDefaultCriticallyDampedValues];
+  preparingToSettlePhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  indicatorElementTransitionSettings6 = [preparingToSettlePhaseSettings9 indicatorElementTransitionSettings];
+  indicatorElementViewBlurProgressBehaviorSettings3 = [indicatorElementTransitionSettings6 indicatorElementViewBlurProgressBehaviorSettings];
+  [indicatorElementViewBlurProgressBehaviorSettings3 setDefaultCriticallyDampedValues];
 
-  v49 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  [v49 setPhaseEndMilestoneTargetProperty:@"center"];
+  settlingPhaseSettings = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  [settlingPhaseSettings setPhaseEndMilestoneTargetProperty:@"center"];
 }
 
 - (void)setDefaultReversedCustomValues
@@ -704,116 +704,116 @@
   [(SBSAIndicatorMitosisSettings *)self setDefaultValues];
   [(SBSAIndicatorMitosisSettings *)self setPrefix:@"ReversedCustom"];
   [(SBSAIndicatorMitosisSettings *)self setMicroIndicatorTranslationTransitionBeginPhase:2];
-  v3 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v3 setPhaseEndMilestone:0.6];
+  kickingPhaseSettings = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings setPhaseEndMilestone:0.6];
 
-  v4 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v4 setPhaseEndMilestoneTargetProperty:@"indicatorViewAlpha"];
+  kickingPhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings2 setPhaseEndMilestoneTargetProperty:@"indicatorViewAlpha"];
 
-  v5 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v5 setPhaseEndMilestoneTarget:3];
+  kickingPhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings3 setPhaseEndMilestoneTarget:3];
 
-  v6 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  [v6 setSensorShadowProgress:0.5];
+  kickingPhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  [kickingPhaseSettings4 setSensorShadowProgress:0.5];
 
-  v7 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v8 = [v7 indicatorElementTransitionSettings];
-  v9 = [v8 indicatorElementViewAlphaBehaviorSettings];
-  [v9 setDefaultCriticallyDampedValues];
+  kickingPhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  indicatorElementTransitionSettings = [kickingPhaseSettings5 indicatorElementTransitionSettings];
+  indicatorElementViewAlphaBehaviorSettings = [indicatorElementTransitionSettings indicatorElementViewAlphaBehaviorSettings];
+  [indicatorElementViewAlphaBehaviorSettings setDefaultCriticallyDampedValues];
 
-  v10 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
-  v11 = [v10 indicatorElementTransitionSettings];
-  v12 = [v11 indicatorElementViewBlurProgressBehaviorSettings];
-  [v12 setDefaultCriticallyDampedValues];
+  kickingPhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self kickingPhaseSettings];
+  indicatorElementTransitionSettings2 = [kickingPhaseSettings6 indicatorElementTransitionSettings];
+  indicatorElementViewBlurProgressBehaviorSettings = [indicatorElementTransitionSettings2 indicatorElementViewBlurProgressBehaviorSettings];
+  [indicatorElementViewBlurProgressBehaviorSettings setDefaultCriticallyDampedValues];
 
-  v13 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v14 = [v13 scale];
-  [v14 setWidth:1.04];
+  kickedPhaseSettings = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  scale = [kickedPhaseSettings scale];
+  [scale setWidth:1.04];
 
-  v15 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v16 = [v15 scale];
-  [v16 setHeight:1.075];
+  kickedPhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  scale2 = [kickedPhaseSettings2 scale];
+  [scale2 setHeight:1.075];
 
-  v17 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v18 = [v17 contentScale];
-  [v18 setWidth:1.04];
+  kickedPhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  contentScale = [kickedPhaseSettings3 contentScale];
+  [contentScale setWidth:1.04];
 
-  v19 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v20 = [v19 contentScale];
-  [v20 setHeight:1.075];
+  kickedPhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  contentScale2 = [kickedPhaseSettings4 contentScale];
+  [contentScale2 setHeight:1.075];
 
-  v21 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v22 = [v21 containerCenterOffset];
-  [v22 setX:3.0];
+  kickedPhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  containerCenterOffset = [kickedPhaseSettings5 containerCenterOffset];
+  [containerCenterOffset setX:3.0];
 
-  v23 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v24 = [v23 containerCenterOffset];
-  [v24 setY:1.0];
+  kickedPhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  containerCenterOffset2 = [kickedPhaseSettings6 containerCenterOffset];
+  [containerCenterOffset2 setY:1.0];
 
-  v25 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v25 setPhaseEndMilestone:0.4];
+  kickedPhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings7 setPhaseEndMilestone:0.4];
 
-  v26 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v26 setPhaseEndMilestoneTargetProperty:@"center"];
+  kickedPhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings8 setPhaseEndMilestoneTargetProperty:@"center"];
 
-  v27 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  [v27 setSensorShadowProgress:1.0];
+  kickedPhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  [kickedPhaseSettings9 setSensorShadowProgress:1.0];
 
-  v28 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v29 = [v28 indicatorElementTransitionSettings];
-  v30 = [v29 indicatorElementViewAlphaBehaviorSettings];
-  [v30 setDefaultCriticallyDampedValues];
+  kickedPhaseSettings10 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  indicatorElementTransitionSettings3 = [kickedPhaseSettings10 indicatorElementTransitionSettings];
+  indicatorElementViewAlphaBehaviorSettings2 = [indicatorElementTransitionSettings3 indicatorElementViewAlphaBehaviorSettings];
+  [indicatorElementViewAlphaBehaviorSettings2 setDefaultCriticallyDampedValues];
 
-  v31 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
-  v32 = [v31 indicatorElementTransitionSettings];
-  v33 = [v32 indicatorElementViewBlurProgressBehaviorSettings];
-  [v33 setDefaultCriticallyDampedValues];
+  kickedPhaseSettings11 = [(SBSAIndicatorMitosisSettings *)self kickedPhaseSettings];
+  indicatorElementTransitionSettings4 = [kickedPhaseSettings11 indicatorElementTransitionSettings];
+  indicatorElementViewBlurProgressBehaviorSettings2 = [indicatorElementTransitionSettings4 indicatorElementViewBlurProgressBehaviorSettings];
+  [indicatorElementViewBlurProgressBehaviorSettings2 setDefaultCriticallyDampedValues];
 
-  v34 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v35 = [v34 scale];
-  [v35 setWidth:1.0];
+  preparingToSettlePhaseSettings = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  scale3 = [preparingToSettlePhaseSettings scale];
+  [scale3 setWidth:1.0];
 
-  v36 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v37 = [v36 scale];
-  [v37 setHeight:1.0];
+  preparingToSettlePhaseSettings2 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  scale4 = [preparingToSettlePhaseSettings2 scale];
+  [scale4 setHeight:1.0];
 
-  v38 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v39 = [v38 contentScale];
-  [v39 setWidth:1.0];
+  preparingToSettlePhaseSettings3 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  contentScale3 = [preparingToSettlePhaseSettings3 contentScale];
+  [contentScale3 setWidth:1.0];
 
-  v40 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v41 = [v40 contentScale];
-  [v41 setHeight:1.0];
+  preparingToSettlePhaseSettings4 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  contentScale4 = [preparingToSettlePhaseSettings4 contentScale];
+  [contentScale4 setHeight:1.0];
 
-  v42 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v43 = [v42 containerCenterOffset];
-  [v43 setX:0.0];
+  preparingToSettlePhaseSettings5 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  containerCenterOffset3 = [preparingToSettlePhaseSettings5 containerCenterOffset];
+  [containerCenterOffset3 setX:0.0];
 
-  v44 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v45 = [v44 containerCenterOffset];
-  [v45 setY:0.333333333];
+  preparingToSettlePhaseSettings6 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  containerCenterOffset4 = [preparingToSettlePhaseSettings6 containerCenterOffset];
+  [containerCenterOffset4 setY:0.333333333];
 
-  v46 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v46 setSensorShadowProgress:0.4];
+  preparingToSettlePhaseSettings7 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings7 setSensorShadowProgress:0.4];
 
-  v47 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v47 setPhaseEndMilestone:0.4];
+  preparingToSettlePhaseSettings8 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings8 setPhaseEndMilestone:0.4];
 
-  v48 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  [v48 setPhaseEndMilestoneTargetProperty:@"center"];
+  preparingToSettlePhaseSettings9 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  [preparingToSettlePhaseSettings9 setPhaseEndMilestoneTargetProperty:@"center"];
 
-  v49 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v50 = [v49 indicatorElementTransitionSettings];
-  v51 = [v50 indicatorElementViewAlphaBehaviorSettings];
-  [v51 setDefaultCriticallyDampedValues];
+  preparingToSettlePhaseSettings10 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  indicatorElementTransitionSettings5 = [preparingToSettlePhaseSettings10 indicatorElementTransitionSettings];
+  indicatorElementViewAlphaBehaviorSettings3 = [indicatorElementTransitionSettings5 indicatorElementViewAlphaBehaviorSettings];
+  [indicatorElementViewAlphaBehaviorSettings3 setDefaultCriticallyDampedValues];
 
-  v52 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
-  v53 = [v52 indicatorElementTransitionSettings];
-  v54 = [v53 indicatorElementViewBlurProgressBehaviorSettings];
-  [v54 setDefaultCriticallyDampedValues];
+  preparingToSettlePhaseSettings11 = [(SBSAIndicatorMitosisSettings *)self preparingToSettlePhaseSettings];
+  indicatorElementTransitionSettings6 = [preparingToSettlePhaseSettings11 indicatorElementTransitionSettings];
+  indicatorElementViewBlurProgressBehaviorSettings3 = [indicatorElementTransitionSettings6 indicatorElementViewBlurProgressBehaviorSettings];
+  [indicatorElementViewBlurProgressBehaviorSettings3 setDefaultCriticallyDampedValues];
 
-  v55 = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
-  [v55 setPhaseEndMilestoneTargetProperty:@"bounds"];
+  settlingPhaseSettings = [(SBSAIndicatorMitosisSettings *)self settlingPhaseSettings];
+  [settlingPhaseSettings setPhaseEndMilestoneTargetProperty:@"bounds"];
 }
 
 + (id)settingsControllerModule

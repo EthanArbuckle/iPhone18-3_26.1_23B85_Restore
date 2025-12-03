@@ -1,22 +1,22 @@
 @interface CoreDAVValidatePrincipalsTaskGroup
-- (CoreDAVValidatePrincipalsTaskGroup)initWithAccountInfoProvider:(id)a3 urls:(id)a4 taskManager:(id)a5;
+- (CoreDAVValidatePrincipalsTaskGroup)initWithAccountInfoProvider:(id)provider urls:(id)urls taskManager:(id)manager;
 - (NSSet)resultPrincipalURLs;
 - (void)_fetchNextURL;
 - (void)cancelTaskGroup;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
+- (void)task:(id)task didFinishWithError:(id)error;
 @end
 
 @implementation CoreDAVValidatePrincipalsTaskGroup
 
-- (CoreDAVValidatePrincipalsTaskGroup)initWithAccountInfoProvider:(id)a3 urls:(id)a4 taskManager:(id)a5
+- (CoreDAVValidatePrincipalsTaskGroup)initWithAccountInfoProvider:(id)provider urls:(id)urls taskManager:(id)manager
 {
-  v8 = a4;
+  urlsCopy = urls;
   v15.receiver = self;
   v15.super_class = CoreDAVValidatePrincipalsTaskGroup;
-  v9 = [(CoreDAVTaskGroup *)&v15 initWithAccountInfoProvider:a3 taskManager:a5];
+  v9 = [(CoreDAVTaskGroup *)&v15 initWithAccountInfoProvider:provider taskManager:manager];
   if (v9)
   {
-    v10 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:v8];
+    v10 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:urlsCopy];
     urlsToExamine = v9->_urlsToExamine;
     v9->_urlsToExamine = v10;
 
@@ -31,44 +31,44 @@
 - (NSSet)resultPrincipalURLs
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(CoreDAVValidatePrincipalsTaskGroup *)self principalURLs];
-  v4 = [v2 setWithSet:v3];
+  principalURLs = [(CoreDAVValidatePrincipalsTaskGroup *)self principalURLs];
+  v4 = [v2 setWithSet:principalURLs];
 
   return v4;
 }
 
 - (void)_fetchNextURL
 {
-  v3 = [(CoreDAVValidatePrincipalsTaskGroup *)self urlsToExamine];
-  v4 = [v3 count];
+  urlsToExamine = [(CoreDAVValidatePrincipalsTaskGroup *)self urlsToExamine];
+  v4 = [urlsToExamine count];
 
   if (v4)
   {
     v16 = [[CoreDAVItemParserMapping alloc] initWithNameSpace:@"DAV:" name:@"principal-URL" parseClass:objc_opt_class()];
     v5 = [MEMORY[0x277CBEB98] setWithObject:?];
-    v6 = [(CoreDAVValidatePrincipalsTaskGroup *)self urlsToExamine];
-    v7 = [v6 anyObject];
-    [(CoreDAVValidatePrincipalsTaskGroup *)self setUrlBeingExamined:v7];
+    urlsToExamine2 = [(CoreDAVValidatePrincipalsTaskGroup *)self urlsToExamine];
+    anyObject = [urlsToExamine2 anyObject];
+    [(CoreDAVValidatePrincipalsTaskGroup *)self setUrlBeingExamined:anyObject];
 
-    v8 = [(CoreDAVValidatePrincipalsTaskGroup *)self urlBeingExamined];
+    urlBeingExamined = [(CoreDAVValidatePrincipalsTaskGroup *)self urlBeingExamined];
 
-    if (v8)
+    if (urlBeingExamined)
     {
-      v9 = [(CoreDAVValidatePrincipalsTaskGroup *)self urlsToExamine];
-      v10 = [(CoreDAVValidatePrincipalsTaskGroup *)self urlBeingExamined];
-      [v9 removeObject:v10];
+      urlsToExamine3 = [(CoreDAVValidatePrincipalsTaskGroup *)self urlsToExamine];
+      urlBeingExamined2 = [(CoreDAVValidatePrincipalsTaskGroup *)self urlBeingExamined];
+      [urlsToExamine3 removeObject:urlBeingExamined2];
     }
 
     v11 = [CoreDAVPropFindTask alloc];
-    v12 = [(CoreDAVValidatePrincipalsTaskGroup *)self urlBeingExamined];
-    v13 = [(CoreDAVPropFindTask *)v11 initWithPropertiesToFind:v5 atURL:v12 withDepth:2];
+    urlBeingExamined3 = [(CoreDAVValidatePrincipalsTaskGroup *)self urlBeingExamined];
+    v13 = [(CoreDAVPropFindTask *)v11 initWithPropertiesToFind:v5 atURL:urlBeingExamined3 withDepth:2];
 
-    v14 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-    [(CoreDAVTask *)v13 setAccountInfoProvider:v14];
+    accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+    [(CoreDAVTask *)v13 setAccountInfoProvider:accountInfoProvider];
 
     [(CoreDAVTask *)v13 setDelegate:self];
-    v15 = [(CoreDAVTaskGroup *)self taskManager];
-    [v15 submitQueuedCoreDAVTask:v13];
+    taskManager = [(CoreDAVTaskGroup *)self taskManager];
+    [taskManager submitQueuedCoreDAVTask:v13];
 
     [(NSMutableSet *)self->super._outstandingTasks addObject:v13];
   }
@@ -80,13 +80,13 @@
   }
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(NSMutableSet *)self->super._outstandingTasks removeObject:v6];
-  if (v7)
+  taskCopy = task;
+  errorCopy = error;
+  [(NSMutableSet *)self->super._outstandingTasks removeObject:taskCopy];
+  if (errorCopy)
   {
     v8 = +[CoreDAVLogging sharedLogging];
     WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
@@ -97,16 +97,16 @@
       v11 = v10;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(CoreDAVValidatePrincipalsTaskGroup *)self urlBeingExamined];
+        urlBeingExamined = [(CoreDAVValidatePrincipalsTaskGroup *)self urlBeingExamined];
         v22 = 138412546;
-        v23 = v12;
+        v23 = urlBeingExamined;
         v24 = 2112;
-        v25 = v7;
+        v25 = errorCopy;
         _os_log_impl(&dword_2452FB000, v11, OS_LOG_TYPE_DEFAULT, "Error accessing: %@, error: %@", &v22, 0x16u);
       }
     }
 
-    if ([v7 code] == 401)
+    if ([errorCopy code] == 401)
     {
       self->_authError = 1;
     }
@@ -114,30 +114,30 @@
 
   else
   {
-    v13 = [v6 successfulValueForNameSpace:@"DAV:" elementName:@"principal-URL"];
-    v14 = [v13 href];
-    v15 = [v14 payloadAsFullURL];
+    v13 = [taskCopy successfulValueForNameSpace:@"DAV:" elementName:@"principal-URL"];
+    href = [v13 href];
+    payloadAsFullURL = [href payloadAsFullURL];
 
-    if (v15)
+    if (payloadAsFullURL)
     {
-      v16 = [(CoreDAVValidatePrincipalsTaskGroup *)self principalURLs];
-      [v16 addObject:v15];
+      principalURLs = [(CoreDAVValidatePrincipalsTaskGroup *)self principalURLs];
+      [principalURLs addObject:payloadAsFullURL];
     }
 
     else
     {
-      v16 = +[CoreDAVLogging sharedLogging];
+      principalURLs = +[CoreDAVLogging sharedLogging];
       v17 = objc_loadWeakRetained(&self->super._accountInfoProvider);
-      v18 = [v16 logHandleForAccountInfoProvider:v17];
+      v18 = [principalURLs logHandleForAccountInfoProvider:v17];
 
       if (v18)
       {
         v19 = v18;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [(CoreDAVValidatePrincipalsTaskGroup *)self urlBeingExamined];
+          urlBeingExamined2 = [(CoreDAVValidatePrincipalsTaskGroup *)self urlBeingExamined];
           v22 = 138412290;
-          v23 = v20;
+          v23 = urlBeingExamined2;
           _os_log_impl(&dword_2452FB000, v19, OS_LOG_TYPE_DEFAULT, "Failed to find a principal-URL for: %@", &v22, 0xCu);
         }
       }

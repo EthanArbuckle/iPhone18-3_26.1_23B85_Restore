@@ -1,7 +1,7 @@
 @interface MonthWeekOccurrencesView
 + (double)maxNarrowOccurrenceHeight;
 + (double)minNarrowOccurrenceHeight;
-+ (id)xMoreStringAttributesCompact:(BOOL)a3 narrow:(BOOL)a4;
++ (id)xMoreStringAttributesCompact:(BOOL)compact narrow:(BOOL)narrow;
 + (void)clearMoreEventAttributes;
 - (BOOL)_isBackgroundScene;
 - (BOOL)_scheduleRenderIfNeeded;
@@ -9,66 +9,66 @@
 - (BOOL)hasOccurrences;
 - (BOOL)isNarrow;
 - (BOOL)layoutOccurrencesIfNeeded;
-- (BOOL)occurrence:(id)a3 hasSymbolAtPoint:(CGPoint)a4;
-- (CGRect)_frameForStartColumn:(unint64_t)a3 endColumn:(unint64_t)a4 dayRow:(unint64_t)a5 occurrenceRow:(double)a6 numRows:(double)a7;
-- (CGRect)frameForLastOccurrenceOnDay:(id)a3;
-- (CGRect)frameForOccurrence:(id)a3 onDay:(id)a4;
-- (CGRect)frameForOccurrenceAfterLastOnDay:(id)a3;
+- (BOOL)occurrence:(id)occurrence hasSymbolAtPoint:(CGPoint)point;
+- (CGRect)_frameForStartColumn:(unint64_t)column endColumn:(unint64_t)endColumn dayRow:(unint64_t)row occurrenceRow:(double)occurrenceRow numRows:(double)rows;
+- (CGRect)frameForLastOccurrenceOnDay:(id)day;
+- (CGRect)frameForOccurrence:(id)occurrence onDay:(id)day;
+- (CGRect)frameForOccurrenceAfterLastOnDay:(id)day;
 - (EKEvent)selectedOccurrence;
-- (MonthWeekOccurrencesView)initWithFrame:(CGRect)a3;
+- (MonthWeekOccurrencesView)initWithFrame:(CGRect)frame;
 - (MonthWeekViewOccurrencesViewDelegate)delegate;
 - (NSString)description;
-- (_NSRange)_dayRangeForOccurrence:(id)a3 useProposedTime:(BOOL)a4 isMultiDay:(BOOL *)a5;
+- (_NSRange)_dayRangeForOccurrence:(id)occurrence useProposedTime:(BOOL)time isMultiDay:(BOOL *)day;
 - (double)_occurrenceHeight;
-- (id)_calendarDateAtPoint:(CGPoint)a3;
-- (id)_monthOccurrenceAtPoint:(CGPoint)a3;
-- (id)_occurrenceViewForEventOccurrence:(id)a3;
-- (id)_searchForNextEventInForwardDirection:(BOOL)a3 shouldMoveNext:(BOOL *)a4;
+- (id)_calendarDateAtPoint:(CGPoint)point;
+- (id)_monthOccurrenceAtPoint:(CGPoint)point;
+- (id)_occurrenceViewForEventOccurrence:(id)occurrence;
+- (id)_searchForNextEventInForwardDirection:(BOOL)direction shouldMoveNext:(BOOL *)next;
 - (id)annotatedEntities;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (id)firstNonAllDayEvent;
 - (id)firstOccurrencesForEachDay;
-- (id)occurrenceAtPoint:(CGPoint)a3;
-- (id)occurrenceViewForOccurrence:(id)a3 onDay:(id)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)occurrenceAtPoint:(CGPoint)point;
+- (id)occurrenceViewForOccurrence:(id)occurrence onDay:(id)day;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (id)secondAndThirdOccurrencesForEachDay;
-- (int64_t)_compareEventsForLinearNavigation:(id)a3 event2:(id)a4;
-- (int64_t)_dayTypeForOccurrence:(id)a3;
-- (void)_layoutSingleOccurrence:(id)a3 index:(double)a4 numRows:(double)a5 drawTimeString:(BOOL)a6;
+- (int64_t)_compareEventsForLinearNavigation:(id)navigation event2:(id)event2;
+- (int64_t)_dayTypeForOccurrence:(id)occurrence;
+- (void)_layoutSingleOccurrence:(id)occurrence index:(double)index numRows:(double)rows drawTimeString:(BOOL)string;
 - (void)_populatedSortedArrayForLinearNavigation;
 - (void)_setUpInteractions;
 - (void)_updateOccurrencesBounds;
-- (void)deselectOccurrence:(id)a3;
-- (void)displayLayer:(id)a3;
-- (void)drawIntoContext:(CGContext *)a3 traitCollection:(id)a4;
+- (void)deselectOccurrence:(id)occurrence;
+- (void)displayLayer:(id)layer;
+- (void)drawIntoContext:(CGContext *)context traitCollection:(id)collection;
 - (void)layoutOccurrences;
 - (void)layoutSubviews;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
 - (void)renderLayer;
-- (void)selectOccurrence:(id)a3;
-- (void)setAnimating:(BOOL)a3;
-- (void)setDayFrames:(CGRect *)a3;
-- (void)setDrawWithViews:(BOOL)a3;
-- (void)setHasDrawnBefore:(BOOL)a3;
+- (void)selectOccurrence:(id)occurrence;
+- (void)setAnimating:(BOOL)animating;
+- (void)setDayFrames:(CGRect *)frames;
+- (void)setDrawWithViews:(BOOL)views;
+- (void)setHasDrawnBefore:(BOOL)before;
 - (void)setNeedsDisplay;
-- (void)setOccurrences:(id)a3;
-- (void)setSelectedOccurrence:(id)a3;
-- (void)setSelectedOccurrences:(id)a3;
-- (void)setStartDate:(id)a3 endDate:(id)a4 dayCount:(int64_t)a5;
+- (void)setOccurrences:(id)occurrences;
+- (void)setSelectedOccurrence:(id)occurrence;
+- (void)setSelectedOccurrences:(id)occurrences;
+- (void)setStartDate:(id)date endDate:(id)endDate dayCount:(int64_t)count;
 - (void)setupEntityProvider;
-- (void)show:(BOOL)a3 occurrenceView:(id)a4 atRow:(double)a5 numRows:(double)a6 drawTimeString:(BOOL)a7;
-- (void)willMoveToSuperview:(id)a3;
+- (void)show:(BOOL)show occurrenceView:(id)view atRow:(double)row numRows:(double)rows drawTimeString:(BOOL)string;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation MonthWeekOccurrencesView
 
-- (MonthWeekOccurrencesView)initWithFrame:(CGRect)a3
+- (MonthWeekOccurrencesView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = MonthWeekOccurrencesView;
-  v3 = [(MonthWeekOccurrencesView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MonthWeekOccurrencesView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -77,12 +77,12 @@
     v5 = +[UIColor clearColor];
     [(MonthWeekOccurrencesView *)v4 setBackgroundColor:v5];
 
-    v6 = [(MonthWeekOccurrencesView *)v4 layer];
-    [v6 setDelegate:v4];
+    layer = [(MonthWeekOccurrencesView *)v4 layer];
+    [layer setDelegate:v4];
 
-    v7 = [(MonthWeekOccurrencesView *)v4 layer];
-    [v7 setValue:&__kCFBooleanTrue forKeyPath:@"separatedOptions.enableContext"];
-    [v7 setNeedsDisplay];
+    layer2 = [(MonthWeekOccurrencesView *)v4 layer];
+    [layer2 setValue:&__kCFBooleanTrue forKeyPath:@"separatedOptions.enableContext"];
+    [layer2 setNeedsDisplay];
     for (i = 0; i != 7; ++i)
     {
       v9 = objc_opt_new();
@@ -102,26 +102,26 @@
   v8.receiver = self;
   v8.super_class = MonthWeekOccurrencesView;
   v3 = [(MonthWeekOccurrencesView *)&v8 description];
-  v4 = [(EKCalendarDate *)self->_startDate date];
+  date = [(EKCalendarDate *)self->_startDate date];
   v5 = CUIKStringForDate();
   v6 = [NSString stringWithFormat:@"%@ Month Represented: %@", v3, v5];;
 
   return v6;
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  if (self->_animating != a3)
+  if (self->_animating != animating)
   {
-    self->_animating = a3;
-    if (!a3 && !self->_drawsWithViews)
+    self->_animating = animating;
+    if (!animating && !self->_drawsWithViews)
     {
       v11 = 0u;
       v12 = 0u;
       v9 = 0u;
       v10 = 0u;
-      v4 = [(MonthWeekOccurrencesView *)self subviews];
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      subviews = [(MonthWeekOccurrencesView *)self subviews];
+      v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v5)
       {
         v6 = v5;
@@ -133,7 +133,7 @@
           {
             if (*v10 != v7)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(subviews);
             }
 
             [*(*(&v9 + 1) + 8 * v8) removeFromSuperview];
@@ -141,7 +141,7 @@
           }
 
           while (v6 != v8);
-          v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+          v6 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
         }
 
         while (v6);
@@ -158,18 +158,18 @@
   }
 }
 
-- (void)setDrawWithViews:(BOOL)a3
+- (void)setDrawWithViews:(BOOL)views
 {
-  if (self->_drawsWithViews != a3)
+  if (self->_drawsWithViews != views)
   {
-    self->_drawsWithViews = a3;
-    if (a3)
+    self->_drawsWithViews = views;
+    if (views)
     {
       v4 = +[_BackgroundViewRenderManager sharedManager];
       [v4 cancelAllRendering];
 
-      v5 = [(MonthWeekOccurrencesView *)self layer];
-      [v5 setContents:0];
+      layer = [(MonthWeekOccurrencesView *)self layer];
+      [layer setContents:0];
 
       v6 = [UIView alloc];
       [(MonthWeekOccurrencesView *)self bounds];
@@ -178,8 +178,8 @@
       v9 = [v6 initWithFrame:{0.0, 0.0, v8}];
       [(MonthWeekOccurrencesView *)self setOccurrenceContainer:v9];
 
-      v10 = [(MonthWeekOccurrencesView *)self occurrenceContainer];
-      [(MonthWeekOccurrencesView *)self addSubview:v10];
+      occurrenceContainer = [(MonthWeekOccurrencesView *)self occurrenceContainer];
+      [(MonthWeekOccurrencesView *)self addSubview:occurrenceContainer];
 
       v31 = 0u;
       v32 = 0u;
@@ -201,8 +201,8 @@
             }
 
             v16 = *(*(&v29 + 1) + 8 * i);
-            v17 = [(MonthWeekOccurrencesView *)self occurrenceContainer];
-            [v17 addSubview:v16];
+            occurrenceContainer2 = [(MonthWeekOccurrencesView *)self occurrenceContainer];
+            [occurrenceContainer2 addSubview:v16];
           }
 
           v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -228,8 +228,8 @@
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v20 = [(MonthWeekOccurrencesView *)self subviews];
-      v21 = [v20 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      subviews = [(MonthWeekOccurrencesView *)self subviews];
+      v21 = [subviews countByEnumeratingWithState:&v25 objects:v33 count:16];
       if (v21)
       {
         v22 = v21;
@@ -240,13 +240,13 @@
           {
             if (*v26 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(subviews);
             }
 
             [*(*(&v25 + 1) + 8 * j) removeFromSuperview];
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v25 objects:v33 count:16];
+          v22 = [subviews countByEnumeratingWithState:&v25 objects:v33 count:16];
         }
 
         while (v22);
@@ -259,15 +259,15 @@
   }
 }
 
-- (void)setStartDate:(id)a3 endDate:(id)a4 dayCount:(int64_t)a5
+- (void)setStartDate:(id)date endDate:(id)endDate dayCount:(int64_t)count
 {
-  v14 = a3;
-  v9 = a4;
-  if (![v14 isEqual:self->_startDate] || !objc_msgSend(v9, "isEqual:", self->_endDate) || self->_dayCount != a5)
+  dateCopy = date;
+  endDateCopy = endDate;
+  if (![dateCopy isEqual:self->_startDate] || !objc_msgSend(endDateCopy, "isEqual:", self->_endDate) || self->_dayCount != count)
   {
-    objc_storeStrong(&self->_startDate, a3);
-    objc_storeStrong(&self->_endDate, a4);
-    self->_dayCount = a5;
+    objc_storeStrong(&self->_startDate, date);
+    objc_storeStrong(&self->_endDate, endDate);
+    self->_dayCount = count;
     allOccurrences = self->_allOccurrences;
     self->_allOccurrences = &__NSArray0__struct;
 
@@ -287,9 +287,9 @@
   }
 }
 
-+ (id)xMoreStringAttributesCompact:(BOOL)a3 narrow:(BOOL)a4
++ (id)xMoreStringAttributesCompact:(BOOL)compact narrow:(BOOL)narrow
 {
-  if (a3 && a4)
+  if (compact && narrow)
   {
     v4 = qword_100251908;
     if (qword_100251908)
@@ -318,7 +318,7 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (a3)
+  if (compact)
   {
     v4 = qword_100251910;
     if (qword_100251910)
@@ -376,28 +376,28 @@ LABEL_12:
   qword_100251918 = 0;
 }
 
-- (id)occurrenceAtPoint:(CGPoint)a3
+- (id)occurrenceAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(MonthWeekOccurrencesView *)self isNarrow])
   {
-    v6 = 0;
+    occurrence = 0;
   }
 
   else
   {
     v7 = [(MonthWeekOccurrencesView *)self _monthOccurrenceAtPoint:x, y];
-    v6 = [v7 occurrence];
+    occurrence = [v7 occurrence];
   }
 
-  return v6;
+  return occurrence;
 }
 
-- (id)_monthOccurrenceAtPoint:(CGPoint)a3
+- (id)_monthOccurrenceAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -451,12 +451,12 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)occurrence:(id)a3 hasSymbolAtPoint:(CGPoint)a4
+- (BOOL)occurrence:(id)occurrence hasSymbolAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [v7 CUIK_symbolName:{objc_msgSend(v7, "isAllDay")}];
+  y = point.y;
+  x = point.x;
+  occurrenceCopy = occurrence;
+  v8 = [occurrenceCopy CUIK_symbolName:{objc_msgSend(occurrenceCopy, "isAllDay")}];
 
   if (v8)
   {
@@ -481,13 +481,13 @@ LABEL_11:
   return v11;
 }
 
-- (id)_calendarDateAtPoint:(CGPoint)a3
+- (id)_calendarDateAtPoint:(CGPoint)point
 {
   firstDayIndex = self->_firstDayIndex;
   if (firstDayIndex <= 6)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     v10 = firstDayIndex + 1;
     p_size = &self->_dayFrames[firstDayIndex].size;
     while (1)
@@ -532,16 +532,16 @@ LABEL_11:
 - (id)firstOccurrencesForEachDay
 {
   v3 = objc_opt_new();
-  v4 = [(NSMutableArray *)self->_layedOutRows firstObject];
-  v5 = v4;
-  if (v4)
+  firstObject = [(NSMutableArray *)self->_layedOutRows firstObject];
+  v5 = firstObject;
+  if (firstObject)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [v4 occurrenceBlocks];
-    v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    occurrenceBlocks = [firstObject occurrenceBlocks];
+    v7 = [occurrenceBlocks countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v7)
     {
       v8 = v7;
@@ -552,16 +552,16 @@ LABEL_11:
         {
           if (*v21 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(occurrenceBlocks);
           }
 
           v11 = *(*(&v20 + 1) + 8 * i);
-          v12 = [v11 occurrence];
-          v13 = [v12 eventOccurrenceID];
-          [v3 setObject:v11 forKeyedSubscript:v13];
+          occurrence = [v11 occurrence];
+          eventOccurrenceID = [occurrence eventOccurrenceID];
+          [v3 setObject:v11 forKeyedSubscript:eventOccurrenceID];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v8 = [occurrenceBlocks countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v8);
@@ -579,9 +579,9 @@ LABEL_11:
         if ([v15 count])
         {
           v16 = [v15 objectAtIndexedSubscript:0];
-          v17 = [v16 occurrence];
-          v18 = [v17 eventOccurrenceID];
-          [v3 setObject:v16 forKeyedSubscript:v18];
+          occurrence2 = [v16 occurrence];
+          eventOccurrenceID2 = [occurrence2 eventOccurrenceID];
+          [v3 setObject:v16 forKeyedSubscript:eventOccurrenceID2];
         }
       }
 
@@ -629,10 +629,10 @@ LABEL_11:
   return v3;
 }
 
-- (CGRect)frameForOccurrence:(id)a3 onDay:(id)a4
+- (CGRect)frameForOccurrence:(id)occurrence onDay:(id)day
 {
-  v6 = a3;
-  v7 = a4;
+  occurrenceCopy = occurrence;
+  dayCopy = day;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
@@ -640,15 +640,15 @@ LABEL_11:
   v12 = width;
   v13 = y;
   x = CGRectNull.origin.x;
-  if (v6)
+  if (occurrenceCopy)
   {
     v11 = CGRectNull.size.height;
     v12 = CGRectNull.size.width;
     v13 = CGRectNull.origin.y;
     x = CGRectNull.origin.x;
-    if (([v6 isNew] & 1) == 0)
+    if (([occurrenceCopy isNew] & 1) == 0)
     {
-      v15 = [(MonthWeekOccurrencesView *)self _occurrenceViewForEventOccurrence:v6];
+      v15 = [(MonthWeekOccurrencesView *)self _occurrenceViewForEventOccurrence:occurrenceCopy];
       [v15 frame];
       x = v16;
       v13 = v17;
@@ -657,8 +657,8 @@ LABEL_11:
     }
   }
 
-  v20 = [v7 differenceInDays:self->_startDate];
-  if ([v6 isNew])
+  v20 = [dayCopy differenceInDays:self->_startDate];
+  if ([occurrenceCopy isNew])
   {
     [(MonthWeekOccurrencesView *)self _frameForStartColumn:v20 endColumn:v20 dayRow:0 occurrenceRow:0.0 numRows:1.0];
 LABEL_12:
@@ -669,7 +669,7 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (!v6 || (v30.origin.x = x, v30.origin.y = v13, v30.size.width = v12, v30.size.height = v11, CGRectIsNull(v30)) || (v31.origin.x = x, v31.origin.y = v13, v31.size.width = v12, v31.size.height = v11, CGRectIsEmpty(v31)))
+  if (!occurrenceCopy || (v30.origin.x = x, v30.origin.y = v13, v30.size.width = v12, v30.size.height = v11, CGRectIsNull(v30)) || (v31.origin.x = x, v31.origin.y = v13, v31.size.width = v12, v31.size.height = v11, CGRectIsEmpty(v31)))
   {
     if (v20 > 6)
     {
@@ -705,10 +705,10 @@ LABEL_14:
   return result;
 }
 
-- (CGRect)frameForLastOccurrenceOnDay:(id)a3
+- (CGRect)frameForLastOccurrenceOnDay:(id)day
 {
-  v4 = a3;
-  v5 = [v4 differenceInDays:self->_startDate];
+  dayCopy = day;
+  v5 = [dayCopy differenceInDays:self->_startDate];
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -777,14 +777,14 @@ LABEL_14:
   return result;
 }
 
-- (CGRect)frameForOccurrenceAfterLastOnDay:(id)a3
+- (CGRect)frameForOccurrenceAfterLastOnDay:(id)day
 {
-  v4 = a3;
+  dayCopy = day;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v5 = [v4 differenceInDays:self->_startDate];
+  v5 = [dayCopy differenceInDays:self->_startDate];
   layedOutRows = self->_layedOutRows;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
@@ -815,20 +815,20 @@ LABEL_14:
   return result;
 }
 
-- (id)occurrenceViewForOccurrence:(id)a3 onDay:(id)a4
+- (id)occurrenceViewForOccurrence:(id)occurrence onDay:(id)day
 {
-  v6 = a3;
-  [(MonthWeekOccurrencesView *)self frameForOccurrence:v6 onDay:a4];
-  v11 = [[MonthViewOccurrence alloc] initWithFrame:v6 occurrence:0 forDayRange:1 isCompact:[(MonthWeekOccurrencesView *)self isCompact] isLargeCompact:[(MonthWeekOccurrencesView *)self isLargeCompact] isMultiDay:0, v7, v8, v9, v10];
+  occurrenceCopy = occurrence;
+  [(MonthWeekOccurrencesView *)self frameForOccurrence:occurrenceCopy onDay:day];
+  v11 = [[MonthViewOccurrence alloc] initWithFrame:occurrenceCopy occurrence:0 forDayRange:1 isCompact:[(MonthWeekOccurrencesView *)self isCompact] isLargeCompact:[(MonthWeekOccurrencesView *)self isLargeCompact] isMultiDay:0, v7, v8, v9, v10];
 
   return v11;
 }
 
-- (CGRect)_frameForStartColumn:(unint64_t)a3 endColumn:(unint64_t)a4 dayRow:(unint64_t)a5 occurrenceRow:(double)a6 numRows:(double)a7
+- (CGRect)_frameForStartColumn:(unint64_t)column endColumn:(unint64_t)endColumn dayRow:(unint64_t)row occurrenceRow:(double)occurrenceRow numRows:(double)rows
 {
   firstDayIndex = self->_firstDayIndex;
-  v9 = firstDayIndex + a3;
-  v10 = firstDayIndex + a4;
+  v9 = firstDayIndex + column;
+  v10 = firstDayIndex + endColumn;
   v11 = v9 > 6 || v10 >= 7;
   if (v11)
   {
@@ -870,10 +870,10 @@ LABEL_14:
   return result;
 }
 
-- (void)setDayFrames:(CGRect *)a3
+- (void)setDayFrames:(CGRect *)frames
 {
   p_size = &self->_dayFrames[0].size;
-  v5 = &a3->size;
+  v5 = &frames->size;
   v6 = 7;
   do
   {
@@ -909,20 +909,20 @@ LABEL_14:
   [(MonthWeekOccurrencesView *)self addInteraction:v5];
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a4;
-  [v6 location];
+  requestCopy = request;
+  [requestCopy location];
   v7 = [(MonthWeekOccurrencesView *)self _monthOccurrenceAtPoint:?];
-  v8 = [v7 occurrence];
-  [v6 location];
+  occurrence = [v7 occurrence];
+  [requestCopy location];
   v10 = v9;
   v12 = v11;
 
   v13 = [(MonthWeekOccurrencesView *)self _calendarDateAtPoint:v10, v12];
   v14 = v13;
   v15 = 0;
-  if (v7 && v8 && v13)
+  if (v7 && occurrence && v13)
   {
     if ([v7 selected])
     {
@@ -931,7 +931,7 @@ LABEL_14:
 
     else
     {
-      [(MonthWeekOccurrencesView *)self frameForOccurrence:v8 onDay:v14];
+      [(MonthWeekOccurrencesView *)self frameForOccurrence:occurrence onDay:v14];
       v17 = v16;
       v19 = v18;
       v21 = v20;
@@ -944,12 +944,12 @@ LABEL_14:
   return v15;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v6 = a4;
-  [v6 rect];
+  regionCopy = region;
+  [regionCopy rect];
   MidX = CGRectGetMidX(v18);
-  [v6 rect];
+  [regionCopy rect];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -964,13 +964,13 @@ LABEL_14:
   [(MonthWeekOccurrencesView *)self setNeedsDisplay];
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v7 = a5;
-  v8 = a4;
-  [v8 rect];
+  animatorCopy = animator;
+  regionCopy = region;
+  [regionCopy rect];
   MidX = CGRectGetMidX(v26);
-  [v8 rect];
+  [regionCopy rect];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -986,11 +986,11 @@ LABEL_14:
   v22 = sub_10005A74C;
   v18 = v23 = &unk_10020F7A8;
   v24 = v18;
-  v25 = self;
+  selfCopy = self;
   v19 = objc_retainBlock(&v20);
   if ([v18 selected])
   {
-    [v7 addCompletion:v19];
+    [animatorCopy addCompletion:v19];
   }
 
   else
@@ -999,50 +999,50 @@ LABEL_14:
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a4;
-  [v5 rect];
+  regionCopy = region;
+  [regionCopy rect];
   MidX = CGRectGetMidX(v36);
-  [v5 rect];
+  [regionCopy rect];
   MidY = CGRectGetMidY(v37);
-  v8 = [(MonthWeekOccurrencesView *)self occurrenceAtPoint:MidX, MidY];
-  v9 = [(MonthWeekOccurrencesView *)self _calendarDateAtPoint:MidX, MidY];
-  v10 = v9;
+  midY = [(MonthWeekOccurrencesView *)self occurrenceAtPoint:MidX, MidY];
+  midY2 = [(MonthWeekOccurrencesView *)self _calendarDateAtPoint:MidX, MidY];
+  v10 = midY2;
   v11 = 0;
-  if (v8 && v9)
+  if (midY && midY2)
   {
-    v12 = [(MonthWeekOccurrencesView *)self superview];
-    [v5 rect];
-    [v12 convertRect:self fromView:?];
+    superview = [(MonthWeekOccurrencesView *)self superview];
+    [regionCopy rect];
+    [superview convertRect:self fromView:?];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
 
-    v21 = [(MonthWeekOccurrencesView *)self superview];
+    superview2 = [(MonthWeekOccurrencesView *)self superview];
     v22 = createImageViewFromView();
 
     [v22 setFrame:{v14, v16, v18, v20}];
     v23 = objc_alloc_init(UIPreviewParameters);
-    v24 = [(MonthWeekOccurrencesView *)self delegate];
-    v25 = [v24 containerViewForOccurrencePreview];
+    delegate = [(MonthWeekOccurrencesView *)self delegate];
+    selfCopy = [delegate containerViewForOccurrencePreview];
 
-    if (!v25)
+    if (!selfCopy)
     {
-      v25 = self;
+      selfCopy = self;
     }
 
-    [(MonthWeekOccurrencesView *)v25 convertPoint:self fromView:MidX, MidY];
+    [(MonthWeekOccurrencesView *)selfCopy convertPoint:self fromView:MidX, MidY];
     v27 = v26;
     v29 = v28;
-    if ([v8 isAllDay])
+    if ([midY isAllDay])
     {
       v30 = +[UIColor clearColor];
       [v23 setBackgroundColor:v30];
     }
 
-    v31 = [[UIPreviewTarget alloc] initWithContainer:v25 center:{v27, v29}];
+    v31 = [[UIPreviewTarget alloc] initWithContainer:selfCopy center:{v27, v29}];
     v32 = [[UITargetedPreview alloc] initWithView:v22 parameters:v23 target:v31];
     v33 = [UIPointerHoverEffect effectWithPreview:v32];
     [v33 setPreferredTintMode:1];
@@ -1067,9 +1067,9 @@ LABEL_14:
   [(MonthWeekOccurrencesView *)self setNeedsDisplay];
 }
 
-- (void)drawIntoContext:(CGContext *)a3 traitCollection:(id)a4
+- (void)drawIntoContext:(CGContext *)context traitCollection:(id)collection
 {
-  v6 = a4;
+  collectionCopy = collection;
   if (![(MonthWeekOccurrencesView *)self animating])
   {
     os_unfair_lock_lock(&self->_drawLock);
@@ -1116,7 +1116,7 @@ LABEL_14:
               v33.size.height = v24;
               if (!CGRectEqualToRect(v32, v33))
               {
-                [v15 drawInFrame:a3 context:v6 traitCollection:{v18, v20, v22, v24}];
+                [v15 drawInFrame:context context:collectionCopy traitCollection:{v18, v20, v22, v24}];
               }
             }
           }
@@ -1146,26 +1146,26 @@ LABEL_14:
   }
 }
 
-- (void)_layoutSingleOccurrence:(id)a3 index:(double)a4 numRows:(double)a5 drawTimeString:(BOOL)a6
+- (void)_layoutSingleOccurrence:(id)occurrence index:(double)index numRows:(double)rows drawTimeString:(BOOL)string
 {
-  v44 = a6;
-  v45 = a3;
-  v9 = [v45 startRange];
-  v10 = [v45 endRange];
+  stringCopy = string;
+  occurrenceCopy = occurrence;
+  startRange = [occurrenceCopy startRange];
+  endRange = [occurrenceCopy endRange];
   dayCount = self->_dayCount;
-  v12 = v9 / dayCount;
-  v13 = v9 % dayCount;
-  v14 = v10 / dayCount;
-  v15 = v10 % dayCount;
-  v16 = [v45 isSingleDay];
-  [v45 resetSegments];
-  v17 = [v45 occurrence];
-  v18 = [v17 startDate];
-  [v18 timeIntervalSinceReferenceDate];
+  v12 = startRange / dayCount;
+  v13 = startRange % dayCount;
+  v14 = endRange / dayCount;
+  v15 = endRange % dayCount;
+  isSingleDay = [occurrenceCopy isSingleDay];
+  [occurrenceCopy resetSegments];
+  occurrence = [occurrenceCopy occurrence];
+  startDate = [occurrence startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v20 = v19;
 
-  v21 = [v17 endDate];
-  [v21 timeIntervalSinceReferenceDate];
+  endDate = [occurrence endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v23 = v22;
 
   [(EKCalendarDate *)self->_startDate absoluteTime];
@@ -1175,19 +1175,19 @@ LABEL_14:
   v28 = v14 - v12;
   if (v14 == v12)
   {
-    if (v16)
+    if (isSingleDay)
     {
-      v29 = a5;
+      rowsCopy = rows;
     }
 
     else
     {
-      v29 = 1.0;
+      rowsCopy = 1.0;
     }
 
-    [(MonthWeekOccurrencesView *)self _frameForStartColumn:v13 endColumn:v15 dayRow:v12 occurrenceRow:a4 numRows:v29];
-    [v45 setFrame:?];
-    [v45 setSplitLeftEdge:v20 < v25 splitRightEdge:v23 > v27];
+    [(MonthWeekOccurrencesView *)self _frameForStartColumn:v13 endColumn:v15 dayRow:v12 occurrenceRow:index numRows:rowsCopy];
+    [occurrenceCopy setFrame:?];
+    [occurrenceCopy setSplitLeftEdge:v20 < v25 splitRightEdge:v23 > v27];
     if (v20 >= v25)
     {
       v31 = 0;
@@ -1195,11 +1195,11 @@ LABEL_14:
 
     else
     {
-      [v45 frame];
+      [occurrenceCopy frame];
       v31 = v30 > self->_dayFrames[0].origin.x + 1.0;
     }
 
-    [v45 setFadeLeftEdge:v31];
+    [occurrenceCopy setFadeLeftEdge:v31];
     if (v23 <= v27)
     {
       v43 = 0;
@@ -1207,11 +1207,11 @@ LABEL_14:
 
     else
     {
-      [v45 frame];
+      [occurrenceCopy frame];
       v43 = v41 + v42 < self->_dayFrames[6].origin.x + self->_dayFrames[6].size.width + -1.0;
     }
 
-    [v45 setFadeRightEdge:v43];
+    [occurrenceCopy setFadeRightEdge:v43];
   }
 
   else if (v28 != -1)
@@ -1240,64 +1240,64 @@ LABEL_14:
         v35 = v13;
       }
 
-      [(MonthWeekOccurrencesView *)self _frameForStartColumn:v35 endColumn:v33 dayRow:v32 + v12 occurrenceRow:a4 numRows:1.0];
+      [(MonthWeekOccurrencesView *)self _frameForStartColumn:v35 endColumn:v33 dayRow:v32 + v12 occurrenceRow:index numRows:1.0];
       v38 = v20 < v25 || v32 != 0;
       v39 = v20 < v25 && v36 > self->_dayFrames[0].origin.x + 1.0;
       v40 = v23 > v27 && v36 + v37 < self->_dayFrames[6].origin.x + self->_dayFrames[6].size.width + -1.0;
-      [v45 addSegmentWithFrame:v38 splitLeftEdge:v34 splitRightEdge:v39 fadeLeftEdge:v40 fadeRightEdge:?];
+      [occurrenceCopy addSegmentWithFrame:v38 splitLeftEdge:v34 splitRightEdge:v39 fadeLeftEdge:v40 fadeRightEdge:?];
       ++v32;
     }
 
     while (v32 < v28 + 1);
   }
 
-  [v45 setDrawsTimeString:v44];
+  [occurrenceCopy setDrawsTimeString:stringCopy];
 }
 
-- (_NSRange)_dayRangeForOccurrence:(id)a3 useProposedTime:(BOOL)a4 isMultiDay:(BOOL *)a5
+- (_NSRange)_dayRangeForOccurrence:(id)occurrence useProposedTime:(BOOL)time isMultiDay:(BOOL *)day
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [v8 eventStore];
-  v10 = [v9 timeZone];
+  timeCopy = time;
+  occurrenceCopy = occurrence;
+  eventStore = [occurrenceCopy eventStore];
+  timeZone = [eventStore timeZone];
 
-  if (v6)
+  if (timeCopy)
   {
-    v11 = [v8 proposedStartDate];
+    proposedStartDate = [occurrenceCopy proposedStartDate];
 
-    if (!v11)
+    if (!proposedStartDate)
     {
       v35 = 0;
-      v33 = 0;
+      rangeValue = 0;
       goto LABEL_28;
     }
 
-    v40 = a5;
-    v12 = [v8 proposedStartDate];
-    v13 = [EKCalendarDate calendarDateWithDate:v12 timeZone:v10];
+    dayCopy2 = day;
+    proposedStartDate2 = [occurrenceCopy proposedStartDate];
+    v13 = [EKCalendarDate calendarDateWithDate:proposedStartDate2 timeZone:timeZone];
 
-    v14 = [v8 proposedStartDate];
-    [v8 duration];
-    v15 = [v14 dateByAddingTimeInterval:?];
+    proposedStartDate3 = [occurrenceCopy proposedStartDate];
+    [occurrenceCopy duration];
+    endDate = [proposedStartDate3 dateByAddingTimeInterval:?];
   }
 
   else
   {
-    v40 = a5;
-    v16 = [v8 startDate];
-    v13 = [EKCalendarDate calendarDateWithDate:v16 timeZone:v10];
+    dayCopy2 = day;
+    startDate = [occurrenceCopy startDate];
+    v13 = [EKCalendarDate calendarDateWithDate:startDate timeZone:timeZone];
 
-    v15 = [v8 endDate];
+    endDate = [occurrenceCopy endDate];
   }
 
-  v17 = [EKCalendarDate calendarDateWithDate:v15 timeZone:v10];
+  v17 = [EKCalendarDate calendarDateWithDate:endDate timeZone:timeZone];
 
-  if (([v8 isAllDay] & 1) == 0)
+  if (([occurrenceCopy isAllDay] & 1) == 0)
   {
     [v17 absoluteTime];
     v19 = v18 + -1.0;
-    v20 = [v17 timeZone];
-    v21 = [EKCalendarDate calendarDateWithAbsoluteTime:v20 timeZone:v19];
+    timeZone2 = [v17 timeZone];
+    v21 = [EKCalendarDate calendarDateWithAbsoluteTime:timeZone2 timeZone:v19];
 
     v17 = v21;
   }
@@ -1306,7 +1306,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = sub_10005B354;
   block[3] = &unk_10020EB00;
-  v22 = v10;
+  v22 = timeZone;
   v42 = v22;
   if (qword_100251930 != -1)
   {
@@ -1315,11 +1315,11 @@ LABEL_14:
 
   if (([qword_100251920 isEqualToTimeZone:v22] & 1) == 0)
   {
-    objc_storeStrong(&qword_100251920, v10);
+    objc_storeStrong(&qword_100251920, timeZone);
     [qword_100251928 removeAllObjects];
   }
 
-  v39 = v10;
+  v39 = timeZone;
   v23 = [[DayRangeCacheKey alloc] initWithOccurrenceStart:v13 occurrenceEnd:v17 rangeBoundStart:self->_startDate rangeBoundEnd:self->_endDate];
   v24 = [qword_100251928 objectForKey:v23];
   if (!v24)
@@ -1362,25 +1362,25 @@ LABEL_14:
     [qword_100251928 setObject:v24 forKey:v23];
   }
 
-  v32 = self;
-  v33 = [v24 rangeValue];
+  selfCopy = self;
+  rangeValue = [v24 rangeValue];
   v35 = v34;
-  v36 = v34 > 1 || [v13 compare:v32->_startDate] == -1 || objc_msgSend(v17, "compare:", v32->_endDate) == 1;
-  v10 = v39;
-  *v40 = v36;
+  v36 = v34 > 1 || [v13 compare:selfCopy->_startDate] == -1 || objc_msgSend(v17, "compare:", selfCopy->_endDate) == 1;
+  timeZone = v39;
+  *dayCopy2 = v36;
 
 LABEL_28:
-  v37 = v33;
+  v37 = rangeValue;
   v38 = v35;
   result.length = v38;
   result.location = v37;
   return result;
 }
 
-- (void)setOccurrences:(id)a3
+- (void)setOccurrences:(id)occurrences
 {
-  v6 = a3;
-  objc_storeStrong(&self->_allOccurrences, a3);
+  occurrencesCopy = occurrences;
+  objc_storeStrong(&self->_allOccurrences, occurrences);
   allOccurrencesSortedForLinearNavigation = self->_allOccurrencesSortedForLinearNavigation;
   self->_allOccurrencesSortedForLinearNavigation = 0;
 
@@ -1411,9 +1411,9 @@ LABEL_28:
   os_unfair_lock_lock(&self->_drawLock);
   self->_inLayoutOccurrences = 1;
   [(MonthWeekOccurrencesView *)self layoutIfNeeded];
-  v3 = [(MonthWeekOccurrencesView *)self dayCount];
+  dayCount = [(MonthWeekOccurrencesView *)self dayCount];
   layedOutRows = self->_layedOutRows;
-  v91 = v3;
+  v91 = dayCount;
   if (layedOutRows)
   {
     [(NSMutableArray *)layedOutRows removeAllObjects];
@@ -1482,10 +1482,10 @@ LABEL_28:
           if ([v19 participationStatus] != 3 || (objc_msgSend(v19, "eventStore"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "showDeclinedEvents"), v23, v24))
           {
             v25 = [MonthViewOccurrence alloc];
-            v26 = [(MonthWeekOccurrencesView *)self isCompact];
-            v27 = [(MonthWeekOccurrencesView *)self isLargeCompact];
+            isCompact = [(MonthWeekOccurrencesView *)self isCompact];
+            isLargeCompact = [(MonthWeekOccurrencesView *)self isLargeCompact];
             LOBYTE(v90) = buf[0];
-            v28 = [(MonthViewOccurrence *)v25 initWithFrame:v19 occurrence:v20 forDayRange:v22 isProposedTime:0 isCompact:v26 isLargeCompact:v27 isMultiDay:CGRectNull.origin.x, y, width, height, v90];
+            v28 = [(MonthViewOccurrence *)v25 initWithFrame:v19 occurrence:v20 forDayRange:v22 isProposedTime:0 isCompact:isCompact isLargeCompact:isLargeCompact isMultiDay:CGRectNull.origin.x, y, width, height, v90];
             [(MonthViewOccurrence *)v28 setSelected:[(NSMutableArray *)self->_selectedOccurrences containsObject:v19]];
             if ([(MonthViewOccurrence *)v28 isSingleDay])
             {
@@ -1518,16 +1518,16 @@ LABEL_28:
                 v35 = [NSNumber numberWithInteger:v34];
                 [(NSArray *)v102 replaceObjectAtIndex:v32 withObject:v35];
 
-                v36 = [v19 calendar];
-                v37 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [v36 CGColor]);
+                calendar = [v19 calendar];
+                v37 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [calendar CGColor]);
                 [(NSArray *)v10 replaceObjectAtIndex:v32 withObject:v37];
 
-                v38 = [v19 calendar];
-                v39 = [v38 locale];
-                v40 = v39;
-                if (v39)
+                calendar2 = [v19 calendar];
+                locale = [calendar2 locale];
+                v40 = locale;
+                if (locale)
                 {
-                  v41 = v39;
+                  v41 = locale;
                 }
 
                 else
@@ -1551,10 +1551,10 @@ LABEL_28:
           v44 = v42;
           v45 = v43;
           v46 = [MonthViewOccurrence alloc];
-          v47 = [(MonthWeekOccurrencesView *)self isCompact];
-          v48 = [(MonthWeekOccurrencesView *)self isLargeCompact];
+          isCompact2 = [(MonthWeekOccurrencesView *)self isCompact];
+          isLargeCompact2 = [(MonthWeekOccurrencesView *)self isLargeCompact];
           LOBYTE(v90) = buf[0];
-          v49 = [(MonthViewOccurrence *)v46 initWithFrame:v19 occurrence:v44 forDayRange:v45 isProposedTime:1 isCompact:v47 isLargeCompact:v48 isMultiDay:CGRectNull.origin.x, y, width, height, v90];
+          v49 = [(MonthViewOccurrence *)v46 initWithFrame:v19 occurrence:v44 forDayRange:v45 isProposedTime:1 isCompact:isCompact2 isLargeCompact:isLargeCompact2 isMultiDay:CGRectNull.origin.x, y, width, height, v90];
           if ([(MonthViewOccurrence *)v49 isSingleDay])
           {
             v50 = v97;
@@ -1617,25 +1617,25 @@ LABEL_28:
         }
 
         v60 = *(*(&v107 + 1) + 8 * v59);
-        v61 = [v60 startRange];
-        if (v61 >= [(NSMutableArray *)self->_singleDayEventBuckets count])
+        startRange = [v60 startRange];
+        if (startRange >= [(NSMutableArray *)self->_singleDayEventBuckets count])
         {
           v63 = kCalUILogHandle;
           if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_ERROR))
           {
             v64 = v63;
-            v65 = [v60 occurrence];
-            [v65 title];
+            occurrence = [v60 occurrence];
+            [occurrence title];
             v67 = v66 = v58;
-            v68 = [v60 occurrence];
-            v69 = [v68 startDate];
+            occurrence2 = [v60 occurrence];
+            startDate = [occurrence2 startDate];
             v70 = [(NSMutableArray *)self->_singleDayEventBuckets count];
             *buf = 138413058;
             v117 = v67;
             v118 = 2112;
-            v119 = v69;
+            v119 = startDate;
             v120 = 2048;
-            v121 = v61;
+            v121 = startRange;
             v122 = 2048;
             v123 = v70;
             _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_ERROR, "Occurrence %@ on %@ is out of bounds for the bucket. framePosition is %lu but the bucket is %lu large.", buf, 0x2Au);
@@ -1649,7 +1649,7 @@ LABEL_28:
 
         else
         {
-          v62 = [(NSMutableArray *)self->_singleDayEventBuckets objectAtIndex:v61];
+          v62 = [(NSMutableArray *)self->_singleDayEventBuckets objectAtIndex:startRange];
           [v62 addObject:v60];
         }
 
@@ -1770,11 +1770,11 @@ LABEL_65:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 occurrence];
-        if (([v10 isBirthday] & 1) == 0)
+        occurrence = [v9 occurrence];
+        if (([occurrence isBirthday] & 1) == 0)
         {
           [v9 occFrame];
-          v15 = [[CUIKViewEntityAnnotation alloc] initWithEvent:v10 rect:objc_msgSend(v9 state:{"selected"), v11, v12, v13, v14}];
+          v15 = [[CUIKViewEntityAnnotation alloc] initWithEvent:occurrence rect:objc_msgSend(v9 state:{"selected"), v11, v12, v13, v14}];
           [v3 addObject:v15];
         }
       }
@@ -1790,15 +1790,15 @@ LABEL_65:
   return v16;
 }
 
-- (int64_t)_dayTypeForOccurrence:(id)a3
+- (int64_t)_dayTypeForOccurrence:(id)occurrence
 {
-  v3 = a3;
+  occurrenceCopy = occurrence;
   if (_os_feature_enabled_impl())
   {
-    v4 = [v3 specialDayType];
-    if ((v4 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+    specialDayType = [occurrenceCopy specialDayType];
+    if ((specialDayType & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
-      v5 = v4;
+      v5 = specialDayType;
     }
 
     else
@@ -1831,8 +1831,8 @@ LABEL_65:
     while (1)
     {
       v4 = [(NSMutableArray *)self->_singleDayEventBuckets objectAtIndexedSubscript:v3];
-      v5 = [v4 firstObject];
-      if (v5)
+      firstObject = [v4 firstObject];
+      if (firstObject)
       {
         break;
       }
@@ -1843,22 +1843,22 @@ LABEL_65:
       }
     }
 
-    v7 = v5;
-    v6 = [v5 occurrence];
+    v7 = firstObject;
+    occurrence = [firstObject occurrence];
   }
 
   else
   {
 LABEL_5:
-    v6 = 0;
+    occurrence = 0;
   }
 
-  return v6;
+  return occurrence;
 }
 
-- (id)_occurrenceViewForEventOccurrence:(id)a3
+- (id)_occurrenceViewForEventOccurrence:(id)occurrence
 {
-  v4 = a3;
+  occurrenceCopy = occurrence;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1878,8 +1878,8 @@ LABEL_5:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 occurrence];
-        v11 = [v10 isEqual:v4];
+        occurrence = [v9 occurrence];
+        v11 = [occurrence isEqual:occurrenceCopy];
 
         if (v11)
         {
@@ -1907,24 +1907,24 @@ LABEL_11:
 {
   if ([(NSMutableArray *)self->_selectedOccurrences count]== 1)
   {
-    v3 = [(NSMutableArray *)self->_selectedOccurrences firstObject];
+    firstObject = [(NSMutableArray *)self->_selectedOccurrences firstObject];
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
-  return v3;
+  return firstObject;
 }
 
-- (void)setSelectedOccurrence:(id)a3
+- (void)setSelectedOccurrence:(id)occurrence
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  occurrenceCopy = occurrence;
+  v5 = occurrenceCopy;
+  if (occurrenceCopy)
   {
-    v7 = v4;
+    v7 = occurrenceCopy;
     v6 = [NSArray arrayWithObjects:&v7 count:1];
     [(MonthWeekOccurrencesView *)self setSelectedOccurrences:v6];
   }
@@ -1935,15 +1935,15 @@ LABEL_11:
   }
 }
 
-- (void)setSelectedOccurrences:(id)a3
+- (void)setSelectedOccurrences:(id)occurrences
 {
-  v4 = a3;
-  v5 = [(MonthWeekOccurrencesView *)self selectedOccurrences];
+  occurrencesCopy = occurrences;
+  selectedOccurrences = [(MonthWeekOccurrencesView *)self selectedOccurrences];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  v6 = [selectedOccurrences countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1955,7 +1955,7 @@ LABEL_11:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selectedOccurrences);
         }
 
         [(MonthWeekOccurrencesView *)self deselectOccurrence:*(*(&v19 + 1) + 8 * v9)];
@@ -1963,7 +1963,7 @@ LABEL_11:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v7 = [selectedOccurrences countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v7);
@@ -1973,7 +1973,7 @@ LABEL_11:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = v4;
+  v10 = occurrencesCopy;
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {
@@ -2001,9 +2001,9 @@ LABEL_11:
   }
 }
 
-- (void)selectOccurrence:(id)a3
+- (void)selectOccurrence:(id)occurrence
 {
-  v8 = a3;
+  occurrenceCopy = occurrence;
   if (([(NSMutableArray *)self->_selectedOccurrences containsObject:?]& 1) == 0)
   {
     selectedOccurrences = self->_selectedOccurrences;
@@ -2016,21 +2016,21 @@ LABEL_11:
       selectedOccurrences = self->_selectedOccurrences;
     }
 
-    [(NSMutableArray *)selectedOccurrences addObject:v8];
-    v7 = [(MonthWeekOccurrencesView *)self _occurrenceViewForEventOccurrence:v8];
+    [(NSMutableArray *)selectedOccurrences addObject:occurrenceCopy];
+    v7 = [(MonthWeekOccurrencesView *)self _occurrenceViewForEventOccurrence:occurrenceCopy];
     [v7 setSelected:1];
     [(MonthWeekOccurrencesView *)self setNeedsDisplay];
     [(UIPointerInteraction *)self->_interaction invalidate];
   }
 }
 
-- (void)deselectOccurrence:(id)a3
+- (void)deselectOccurrence:(id)occurrence
 {
-  v4 = a3;
-  if (v4)
+  occurrenceCopy = occurrence;
+  if (occurrenceCopy)
   {
-    v6 = v4;
-    if ([(NSMutableArray *)self->_selectedOccurrences containsObject:v4])
+    v6 = occurrenceCopy;
+    if ([(NSMutableArray *)self->_selectedOccurrences containsObject:occurrenceCopy])
     {
       v5 = [(MonthWeekOccurrencesView *)self _occurrenceViewForEventOccurrence:v6];
       [v5 setSelected:0];
@@ -2071,8 +2071,8 @@ LABEL_11:
 {
   if ([(MonthWeekOccurrencesView *)self isNarrow]&& [(MonthWeekOccurrencesView *)self isCompact])
   {
-    v3 = [(MonthWeekOccurrencesView *)self delegate];
-    [v3 monthWeekScale];
+    delegate = [(MonthWeekOccurrencesView *)self delegate];
+    [delegate monthWeekScale];
     v5 = v4;
 
     +[CompactMonthWeekView narrowScale];
@@ -2103,13 +2103,13 @@ LABEL_11:
   return result;
 }
 
-- (void)show:(BOOL)a3 occurrenceView:(id)a4 atRow:(double)a5 numRows:(double)a6 drawTimeString:(BOOL)a7
+- (void)show:(BOOL)show occurrenceView:(id)view atRow:(double)row numRows:(double)rows drawTimeString:(BOOL)string
 {
-  v7 = a7;
-  v10 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (v10)
+  stringCopy = string;
+  showCopy = show;
+  viewCopy = view;
+  v13 = viewCopy;
+  if (showCopy)
   {
     if ((-[MonthWeekOccurrencesView drawWithViews](self, "drawWithViews") || -[MonthWeekOccurrencesView animating](self, "animating")) && ([v13 frame], v14 != 0.0))
     {
@@ -2119,22 +2119,22 @@ LABEL_11:
       v30[3] = &unk_10020F810;
       v30[4] = self;
       v31 = v13;
-      v32 = a5;
-      v33 = a6;
-      v34 = v7;
+      rowCopy = row;
+      rowsCopy = rows;
+      v34 = stringCopy;
       [(MonthWeekOccurrencesView *)self animateBlock:v30];
     }
 
     else
     {
-      [(MonthWeekOccurrencesView *)self _layoutSingleOccurrence:v13 index:v7 numRows:a5 drawTimeString:a6];
+      [(MonthWeekOccurrencesView *)self _layoutSingleOccurrence:v13 index:stringCopy numRows:row drawTimeString:rows];
       [v13 setHidden:0];
     }
   }
 
   else
   {
-    if (([v12 hidden] & 1) == 0 && (objc_msgSend(v13, "alpha"), v15 > 0.0) && (-[MonthWeekOccurrencesView drawWithViews](self, "drawWithViews") || -[MonthWeekOccurrencesView animating](self, "animating")))
+    if (([viewCopy hidden] & 1) == 0 && (objc_msgSend(v13, "alpha"), v15 > 0.0) && (-[MonthWeekOccurrencesView drawWithViews](self, "drawWithViews") || -[MonthWeekOccurrencesView animating](self, "animating")))
     {
       if (![(MonthWeekOccurrencesView *)self animating])
       {
@@ -2145,11 +2145,11 @@ LABEL_11:
       v22 = 3221225472;
       v23 = sub_10005CBC8;
       v24 = &unk_10020F810;
-      v25 = self;
+      selfCopy = self;
       v26 = v13;
-      v27 = a5;
-      v28 = a6;
-      v29 = v7;
+      rowCopy2 = row;
+      rowsCopy2 = rows;
+      v29 = stringCopy;
       [(MonthWeekOccurrencesView *)self animateBlock:&v21];
     }
 
@@ -2158,12 +2158,12 @@ LABEL_11:
       [v13 setHidden:1];
     }
 
-    v16 = [v13 startRange];
+    startRange = [v13 startRange];
     v17 = [v13 length];
-    if (v16 < (v16 + v17))
+    if (startRange < (startRange + v17))
     {
       v18 = v17;
-      v19 = &self->_moreEventsViews[v16];
+      v19 = &self->_moreEventsViews[startRange];
       do
       {
         v20 = *v19++;
@@ -2181,21 +2181,21 @@ LABEL_11:
   [(MonthWeekOccurrencesView *)self frame];
   if (!CGRectIsEmpty(v212) && ![(MonthWeekOccurrencesView *)self layoutOccurrencesIfNeeded])
   {
-    v3 = [(MonthWeekOccurrencesView *)self dayCount];
-    v4 = [NSMutableArray arrayWithCapacity:v3];
+    dayCount = [(MonthWeekOccurrencesView *)self dayCount];
+    v4 = [NSMutableArray arrayWithCapacity:dayCount];
     p_secondOccurrencesForEachDay = &self->_secondOccurrencesForEachDay;
     secondOccurrencesForEachDay = self->_secondOccurrencesForEachDay;
     self->_secondOccurrencesForEachDay = v4;
 
-    v7 = [NSMutableArray arrayWithCapacity:v3];
-    v177 = self;
+    v7 = [NSMutableArray arrayWithCapacity:dayCount];
+    selfCopy = self;
     p_thirdOccurrencesForEachDay = &self->_thirdOccurrencesForEachDay;
     thirdOccurrencesForEachDay = self->_thirdOccurrencesForEachDay;
     self->_thirdOccurrencesForEachDay = v7;
 
-    if (v3)
+    if (dayCount)
     {
-      v10 = v3;
+      v10 = dayCount;
       do
       {
         v11 = *p_secondOccurrencesForEachDay;
@@ -2212,13 +2212,13 @@ LABEL_11:
       while (v10);
     }
 
-    v15 = ceil(CGRectGetHeight(v177->_dayFrames[0]));
+    v15 = ceil(CGRectGetHeight(selfCopy->_dayFrames[0]));
     +[MonthWeekOccurrencesView maxNarrowOccurrenceHeight];
     if (v15 >= v16)
     {
       +[MonthViewOccurrence verticalSpaceBetweenOccurrences];
       v19 = v18;
-      [(MonthWeekOccurrencesView *)v177 _occurrenceHeight];
+      [(MonthWeekOccurrencesView *)selfCopy _occurrenceHeight];
       v17 = vcvtmd_u64_f64(v15 / (v19 + v20));
       if (v17 <= 3)
       {
@@ -2231,9 +2231,9 @@ LABEL_11:
       v17 = 3;
     }
 
-    v21 = v177;
+    v21 = selfCopy;
     v22 = 0;
-    v177->_numberOfVisibleRows = v17;
+    selfCopy->_numberOfVisibleRows = v17;
     moreEventsViews = v21->_moreEventsViews;
     do
     {
@@ -2241,15 +2241,15 @@ LABEL_11:
     }
 
     while (v22 != 7);
-    v24 = v177;
-    if (v177->_numberOfVisibleRows)
+    v24 = selfCopy;
+    if (selfCopy->_numberOfVisibleRows)
     {
-      v25 = [(MonthWeekOccurrencesView *)v177 traitCollection];
-      v26 = [v25 preferredContentSizeCategory];
+      traitCollection = [(MonthWeekOccurrencesView *)selfCopy traitCollection];
+      preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
       v176 = 264;
       v156 = moreEventsViews;
       v174 = p_thirdOccurrencesForEachDay;
-      if (v26 >= UIContentSizeCategoryAccessibilityMedium)
+      if (preferredContentSizeCategory >= UIContentSizeCategoryAccessibilityMedium)
       {
         v173 = 0;
       }
@@ -2266,8 +2266,8 @@ LABEL_11:
       __chkstk_darwin();
       v175 = v155 - ((v30 + 15) & 0xFFFFFFFFFFFFFFF0);
       bzero(v175, v30);
-      v160 = v3;
-      if (v3)
+      v160 = dayCount;
+      if (dayCount)
       {
         v31 = 0;
         do
@@ -2303,8 +2303,8 @@ LABEL_11:
             while (v34);
           }
 
-          v24 = v177;
-          v37 = [(NSMutableArray *)v177->_singleDayEventBuckets objectAtIndexedSubscript:v31];
+          v24 = selfCopy;
+          v37 = [(NSMutableArray *)selfCopy->_singleDayEventBuckets objectAtIndexedSubscript:v31];
           v38 = [v37 count];
           *&v175[8 * v31] += v38;
 
@@ -2337,8 +2337,8 @@ LABEL_11:
           v201 = 0u;
           v202 = 0u;
           v169 = v48;
-          v170 = [v48 occurrenceBlocks];
-          v172 = [v170 countByEnumeratingWithState:&v199 objects:v210 count:16];
+          occurrenceBlocks = [v48 occurrenceBlocks];
+          v172 = [occurrenceBlocks countByEnumeratingWithState:&v199 objects:v210 count:16];
           if (v172)
           {
             v171 = *v200;
@@ -2348,16 +2348,16 @@ LABEL_11:
               {
                 if (*v200 != v171)
                 {
-                  objc_enumerationMutation(v170);
+                  objc_enumerationMutation(occurrenceBlocks);
                 }
 
                 v50 = *(*(&v199 + 1) + 8 * j);
                 v51 = v176;
                 v52 = v47;
                 v53 = v45 < *(&v47->super.super.super.isa + v176);
-                v54 = [v50 startRange];
+                startRange = [v50 startRange];
                 v55 = [v50 length];
-                if (v54 < (v54 + v55))
+                if (startRange < (startRange + v55))
                 {
                   v56 = v55;
                   v57 = *(&v52->super.super.super.isa + v51) - 1;
@@ -2365,27 +2365,27 @@ LABEL_11:
                   {
                     if (v53 && v45 == v57)
                     {
-                      v53 = *&v175[8 * v54] <= *(&v177->super.super.super.isa + v176);
+                      v53 = *&v175[8 * startRange] <= *(&selfCopy->super.super.super.isa + v176);
                     }
 
                     v58 = p_secondOccurrencesForEachDay;
                     if (v45 == 1 || v45 == 2 && (v58 = v174, v53))
                     {
-                      [*v58 setObject:v50 atIndexedSubscript:v54];
+                      [*v58 setObject:v50 atIndexedSubscript:startRange];
                     }
 
-                    v54 = v54 + 1;
+                    startRange = startRange + 1;
                     --v56;
                   }
 
                   while (v56);
                 }
 
-                v47 = v177;
-                [(MonthWeekOccurrencesView *)v177 show:v53 occurrenceView:v50 atRow:v173 numRows:v45 drawTimeString:1.0];
+                v47 = selfCopy;
+                [(MonthWeekOccurrencesView *)selfCopy show:v53 occurrenceView:v50 atRow:v173 numRows:v45 drawTimeString:1.0];
               }
 
-              v172 = [v170 countByEnumeratingWithState:&v199 objects:v210 count:16];
+              v172 = [occurrenceBlocks countByEnumeratingWithState:&v199 objects:v210 count:16];
             }
 
             while (v172);
@@ -2413,12 +2413,12 @@ LABEL_11:
           }
 
           ++v45;
-          v39 = v177;
+          v39 = selfCopy;
           v43 = v167;
           v46 = v59 + 1;
         }
 
-        while (v45 < [*(&v177->super.super.super.isa + v167) count]);
+        while (v45 < [*(&selfCopy->super.super.super.isa + v167) count]);
       }
 
       v62 = [CalPreferences alloc];
@@ -2480,10 +2480,10 @@ LABEL_11:
                 v76 = *(*(&v195 + 1) + 8 * k);
                 if ([v76 isSingleDay] && (objc_msgSend(v76, "isAllDay") & 1) == 0 && (objc_msgSend(v76, "isMultiDay") & 1) == 0)
                 {
-                  v77 = [v76 occurrence];
-                  v78 = ~[v77 isReminderIntegrationEvent];
+                  occurrence = [v76 occurrence];
+                  v78 = ~[occurrence isReminderIntegrationEvent];
 
-                  v39 = v177;
+                  v39 = selfCopy;
                   v73 += v78 & 1;
                 }
               }
@@ -2503,12 +2503,12 @@ LABEL_11:
           v80 = v73;
           if ((v159 & 1) != 0 || (v64 + -1.0) * v73 <= v171)
           {
-            LODWORD(v170) = [(MonthWeekOccurrencesView *)v39 isCompact];
+            LODWORD(occurrenceBlocks) = [(MonthWeekOccurrencesView *)v39 isCompact];
           }
 
           else
           {
-            LODWORD(v170) = 0;
+            LODWORD(occurrenceBlocks) = 0;
           }
 
           v81 = v171 - v73;
@@ -2573,12 +2573,12 @@ LABEL_11:
                 v91 = *(*(&v191 + 1) + 8 * v89);
                 if (v88 > 0x13)
                 {
-                  v92 = v177;
+                  v92 = selfCopy;
                 }
 
                 else
                 {
-                  v92 = v177;
+                  v92 = selfCopy;
                   do
                   {
                     if (v90[v88] != 1)
@@ -2592,7 +2592,7 @@ LABEL_11:
                   while (v88 != 20);
                 }
 
-                v93 = ((v88 <= v172) & v170) != 1 || v171 == 0;
+                v93 = ((v88 <= v172) & occurrenceBlocks) != 1 || v171 == 0;
                 if (v93)
                 {
                   v94 = 1;
@@ -2600,20 +2600,20 @@ LABEL_11:
 
                 else
                 {
-                  v95 = [(MonthWeekOccurrencesView *)v92 isNarrow];
-                  if (v95 & 1) != 0 || ![v91 isSingleDay] || (objc_msgSend(v91, "isAllDay") & 1) != 0 || (objc_msgSend(v91, "isMultiDay"))
+                  isNarrow = [(MonthWeekOccurrencesView *)v92 isNarrow];
+                  if (isNarrow & 1) != 0 || ![v91 isSingleDay] || (objc_msgSend(v91, "isAllDay") & 1) != 0 || (objc_msgSend(v91, "isMultiDay"))
                   {
                     goto LABEL_117;
                   }
 
-                  v96 = [v91 occurrence];
-                  if (([v96 isReminderIntegrationEvent] & 1) != 0 || v88 >= v172)
+                  occurrence2 = [v91 occurrence];
+                  if (([occurrence2 isReminderIntegrationEvent] & 1) != 0 || v88 >= v172)
                   {
 
 LABEL_117:
                     v94 = 1;
 LABEL_118:
-                    v92 = v177;
+                    v92 = selfCopy;
                     goto LABEL_119;
                   }
 
@@ -2632,7 +2632,7 @@ LABEL_118:
                     goto LABEL_118;
                   }
 
-                  v92 = v177;
+                  v92 = selfCopy;
                   if (v88 >= v161 || (v42[20 * v169 + 2 + v88] & 1) != 0)
                   {
                     v94 = 2;
@@ -2696,7 +2696,7 @@ LABEL_119:
           }
 
 LABEL_175:
-          v39 = v177;
+          v39 = selfCopy;
           v139 = v168;
 
           v66 = v169 + 1;
@@ -2724,7 +2724,7 @@ LABEL_134:
           v110 = ceil(v106);
           if (v80)
           {
-            v111 = v170;
+            v111 = occurrenceBlocks;
           }
 
           else
@@ -2732,7 +2732,7 @@ LABEL_134:
             v111 = 0;
           }
 
-          if (v111 != 1 || -[MonthWeekOccurrencesView isNarrow](v177, "isNarrow") || ![v109 isSingleDay] || (objc_msgSend(v109, "isAllDay") & 1) != 0 || (objc_msgSend(v109, "isMultiDay") & 1) != 0 || (objc_msgSend(v109, "occurrence"), v112 = objc_claimAutoreleasedReturnValue(), v113 = objc_msgSend(v112, "isReminderIntegrationEvent"), v112, (v113 & 1) != 0))
+          if (v111 != 1 || -[MonthWeekOccurrencesView isNarrow](selfCopy, "isNarrow") || ![v109 isSingleDay] || (objc_msgSend(v109, "isAllDay") & 1) != 0 || (objc_msgSend(v109, "isMultiDay") & 1) != 0 || (objc_msgSend(v109, "occurrence"), v112 = objc_claimAutoreleasedReturnValue(), v113 = objc_msgSend(v112, "isReminderIntegrationEvent"), v112, (v113 & 1) != 0))
           {
             v114 = 0;
             v115 = v110;
@@ -2792,7 +2792,7 @@ LABEL_134:
             if (v123)
             {
               --v80;
-              [(MonthWeekOccurrencesView *)v177 show:1 occurrenceView:v171 atRow:v173 numRows:v120 drawTimeString:v64];
+              [(MonthWeekOccurrencesView *)selfCopy show:1 occurrenceView:v171 atRow:v173 numRows:v120 drawTimeString:v64];
               v126 = v64;
               v127 = &_s19RemindersAppIntents0A40InCalendarReminderEditingModuleInterfaceP036requiresUserConfirmationForCancelingG0SbvgTj_ptr;
               if (v120 > 0.0)
@@ -2824,12 +2824,12 @@ LABEL_134:
 
             v124 = v172 >= v129;
             v120 = v106;
-            v128 = v177;
+            v128 = selfCopy;
           }
 
           else
           {
-            v128 = v177;
+            v128 = selfCopy;
             v127 = &_s19RemindersAppIntents0A40InCalendarReminderEditingModuleInterfaceP036requiresUserConfirmationForCancelingG0SbvgTj_ptr;
           }
 
@@ -2942,16 +2942,16 @@ LABEL_176:
 
 - (void)setNeedsDisplay
 {
-  v3 = [(MonthWeekOccurrencesView *)self layer];
-  [v3 setNeedsDisplay];
+  layer = [(MonthWeekOccurrencesView *)self layer];
+  [layer setNeedsDisplay];
 
-  v4 = [(MonthWeekOccurrencesView *)self window];
-  if (v4)
+  window = [(MonthWeekOccurrencesView *)self window];
+  if (window)
   {
-    v5 = v4;
-    v6 = [(MonthWeekOccurrencesView *)self _isBackgroundScene];
+    v5 = window;
+    _isBackgroundScene = [(MonthWeekOccurrencesView *)self _isBackgroundScene];
 
-    if ((v6 & 1) == 0)
+    if ((_isBackgroundScene & 1) == 0)
     {
       if ([(MonthWeekOccurrencesView *)self _scheduleRenderIfNeeded])
       {
@@ -2969,43 +2969,43 @@ LABEL_176:
 
 - (BOOL)hasDrawnBefore
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  hasDrawnBefore = v2->_hasDrawnBefore;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  hasDrawnBefore = selfCopy->_hasDrawnBefore;
+  objc_sync_exit(selfCopy);
 
   return hasDrawnBefore;
 }
 
-- (void)setHasDrawnBefore:(BOOL)a3
+- (void)setHasDrawnBefore:(BOOL)before
 {
-  v3 = a3;
+  beforeCopy = before;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_hasDrawnBefore != v3 && !v3)
+  if (obj->_hasDrawnBefore != beforeCopy && !beforeCopy)
   {
-    v4 = [(MonthWeekOccurrencesView *)obj layer];
-    [v4 setContents:0];
+    layer = [(MonthWeekOccurrencesView *)obj layer];
+    [layer setContents:0];
   }
 
-  obj->_hasDrawnBefore = v3;
+  obj->_hasDrawnBefore = beforeCopy;
   objc_sync_exit(obj);
 }
 
 - (void)renderLayer
 {
-  v3 = [(MonthWeekOccurrencesView *)self traitCollection];
+  traitCollection = [(MonthWeekOccurrencesView *)self traitCollection];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10005DF6C;
   v4[3] = &unk_10020EB00;
   v4[4] = self;
-  [v3 performAsCurrentTraitCollection:v4];
+  [traitCollection performAsCurrentTraitCollection:v4];
 }
 
 - (BOOL)_isBackgroundScene
 {
-  v3 = [(MonthWeekOccurrencesView *)self delegate];
+  delegate = [(MonthWeekOccurrencesView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -3013,10 +3013,10 @@ LABEL_176:
     return 0;
   }
 
-  v5 = [(MonthWeekOccurrencesView *)self delegate];
-  v6 = [v5 isBackgroundScene];
+  delegate2 = [(MonthWeekOccurrencesView *)self delegate];
+  isBackgroundScene = [delegate2 isBackgroundScene];
 
-  return v6;
+  return isBackgroundScene;
 }
 
 - (BOOL)_scheduleRenderIfNeeded
@@ -3032,18 +3032,18 @@ LABEL_176:
   return 1;
 }
 
-- (void)displayLayer:(id)a3
+- (void)displayLayer:(id)layer
 {
   if ([(MonthWeekOccurrencesView *)self _isBackgroundScene])
   {
     [(MonthWeekOccurrencesView *)self renderLayer];
-    v4 = [(MonthWeekOccurrencesView *)self delegate];
+    delegate = [(MonthWeekOccurrencesView *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(MonthWeekOccurrencesView *)self delegate];
-      [v6 didCompleteMonthWeekViewBackgroundRendering];
+      delegate2 = [(MonthWeekOccurrencesView *)self delegate];
+      [delegate2 didCompleteMonthWeekViewBackgroundRendering];
     }
   }
 
@@ -3054,33 +3054,33 @@ LABEL_176:
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v4 = +[_BackgroundViewRenderManager sharedManager];
   [v4 removeViewFromQueue:self];
 }
 
-- (int64_t)_compareEventsForLinearNavigation:(id)a3 event2:(id)a4
+- (int64_t)_compareEventsForLinearNavigation:(id)navigation event2:(id)event2
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 compareStartDateIncludingTravelWithEvent:v6];
+  navigationCopy = navigation;
+  event2Copy = event2;
+  v7 = [navigationCopy compareStartDateIncludingTravelWithEvent:event2Copy];
   if (v7)
   {
     v8 = v7;
   }
 
-  else if (![v5 isAllDay] || ((objc_msgSend(v5, "duration"), v10 = v9, objc_msgSend(v6, "duration"), v12 = v10 == v11, v10 > v11) ? (v8 = -1) : (v8 = 1), v12))
+  else if (![navigationCopy isAllDay] || ((objc_msgSend(navigationCopy, "duration"), v10 = v9, objc_msgSend(event2Copy, "duration"), v12 = v10 == v11, v10 > v11) ? (v8 = -1) : (v8 = 1), v12))
   {
-    v13 = [v5 calendar];
-    v14 = [v6 calendar];
+    calendar = [navigationCopy calendar];
+    calendar2 = [event2Copy calendar];
     v8 = CUIKCompareEKCalendars();
 
     if (!v8)
     {
-      v15 = [v5 title];
-      v16 = [v6 title];
-      v8 = [v15 compare:v16 options:129];
+      title = [navigationCopy title];
+      title2 = [event2Copy title];
+      v8 = [title compare:title2 options:129];
     }
   }
 
@@ -3097,12 +3097,12 @@ LABEL_176:
   v3 = objc_retainBlock(v27);
   v4 = [(NSArray *)self->_allOccurrences sortedArrayUsingComparator:v3];
   v5 = +[NSMutableArray array];
-  v6 = [(EKCalendarDate *)self->_startDate date];
-  [v6 timeIntervalSinceReferenceDate];
+  date = [(EKCalendarDate *)self->_startDate date];
+  [date timeIntervalSinceReferenceDate];
   v8 = v7;
 
-  v9 = [(EKCalendarDate *)self->_endDate date];
-  [v9 timeIntervalSinceReferenceDate];
+  date2 = [(EKCalendarDate *)self->_endDate date];
+  [date2 timeIntervalSinceReferenceDate];
   v11 = v10;
 
   v25 = 0u;
@@ -3125,8 +3125,8 @@ LABEL_176:
         }
 
         v17 = *(*(&v23 + 1) + 8 * i);
-        v18 = [v17 startDate];
-        [v18 timeIntervalSinceReferenceDate];
+        startDate = [v17 startDate];
+        [startDate timeIntervalSinceReferenceDate];
         v20 = v19;
 
         if (v8 <= v20 && v11 >= v20)
@@ -3145,10 +3145,10 @@ LABEL_176:
   self->_allOccurrencesSortedForLinearNavigation = v5;
 }
 
-- (id)_searchForNextEventInForwardDirection:(BOOL)a3 shouldMoveNext:(BOOL *)a4
+- (id)_searchForNextEventInForwardDirection:(BOOL)direction shouldMoveNext:(BOOL *)next
 {
-  v5 = a3;
-  *a4 = 0;
+  directionCopy = direction;
+  *next = 0;
   if ([(NSMutableArray *)self->_selectedOccurrences count]> 1)
   {
     v7 = 0;
@@ -3171,14 +3171,14 @@ LABEL_176:
   {
 LABEL_13:
     v7 = 0;
-    *a4 = 1;
+    *next = 1;
     goto LABEL_34;
   }
 
-  v9 = [(NSMutableArray *)self->_selectedOccurrences firstObject];
-  if (!v9)
+  firstObject = [(NSMutableArray *)self->_selectedOccurrences firstObject];
+  if (!firstObject)
   {
-    if (v5)
+    if (directionCopy)
     {
       v12 = 0;
       goto LABEL_20;
@@ -3188,9 +3188,9 @@ LABEL_13:
     goto LABEL_26;
   }
 
-  v10 = [(NSArray *)self->_allOccurrencesSortedForLinearNavigation indexOfObject:v9];
+  v10 = [(NSArray *)self->_allOccurrencesSortedForLinearNavigation indexOfObject:firstObject];
   v11 = v10;
-  if (!v5)
+  if (!directionCopy)
   {
     if (!v10)
     {
@@ -3212,7 +3212,7 @@ LABEL_26:
     v12 = v11 + 1;
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (v5)
+      if (directionCopy)
       {
 LABEL_20:
         while (v12 < [(NSArray *)self->_allOccurrencesSortedForLinearNavigation count])
@@ -3272,7 +3272,7 @@ LABEL_27:
 
 LABEL_24:
   v7 = 0;
-  *a4 = 1;
+  *next = 1;
 LABEL_33:
 
 LABEL_34:
@@ -3280,15 +3280,15 @@ LABEL_34:
   return v7;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  [v5 locationInView:self];
+  interactionCopy = interaction;
+  [interactionCopy locationInView:self];
   v6 = [(MonthWeekOccurrencesView *)self occurrenceAtPoint:?];
-  if (v6 && [v5 menuAppearance] != 1)
+  if (v6 && [interactionCopy menuAppearance] != 1)
   {
-    v8 = [(MonthWeekOccurrencesView *)self delegate];
-    [v8 monthWeekOccurrencesView:self selectedEvent:v6 source:2];
+    delegate = [(MonthWeekOccurrencesView *)self delegate];
+    [delegate monthWeekOccurrencesView:self selectedEvent:v6 source:2];
 
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -3317,7 +3317,7 @@ LABEL_34:
 {
   swift_unknownObjectWeakInit();
   sub_10016B740();
-  v3 = self;
+  selfCopy = self;
   UIView.setEntityProvider<A>(_:)();
 
   sub_10016B794(v4);

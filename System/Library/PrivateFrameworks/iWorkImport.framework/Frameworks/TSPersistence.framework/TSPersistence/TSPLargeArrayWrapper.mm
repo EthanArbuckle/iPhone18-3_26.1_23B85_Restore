@@ -1,19 +1,19 @@
 @interface TSPLargeArrayWrapper
-- (TSPLargeArrayWrapper)initWithLargeArray:(id)a3;
+- (TSPLargeArrayWrapper)initWithLargeArray:(id)array;
 @end
 
 @implementation TSPLargeArrayWrapper
 
-- (TSPLargeArrayWrapper)initWithLargeArray:(id)a3
+- (TSPLargeArrayWrapper)initWithLargeArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = TSPLargeArrayWrapper;
   v6 = [(TSPLargeArrayWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingStore, a3);
+    objc_storeStrong(&v6->_backingStore, array);
   }
 
   return v7;

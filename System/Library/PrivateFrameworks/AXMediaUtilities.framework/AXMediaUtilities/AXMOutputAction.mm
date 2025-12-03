@@ -1,20 +1,20 @@
 @interface AXMOutputAction
-- (id)_initWithHandle:(id)a3;
+- (id)_initWithHandle:(id)handle;
 @end
 
 @implementation AXMOutputAction
 
-- (id)_initWithHandle:(id)a3
+- (id)_initWithHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v9.receiver = self;
   v9.super_class = AXMOutputAction;
   v5 = [(AXMOutputAction *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (handleCopy)
     {
-      v6 = v4;
+      v6 = handleCopy;
     }
 
     else

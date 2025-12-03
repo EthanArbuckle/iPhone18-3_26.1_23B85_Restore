@@ -1,9 +1,9 @@
 @interface _GCFStaticLocalizedString
-- (_GCFStaticLocalizedString)initWithCoder:(id)a3;
+- (_GCFStaticLocalizedString)initWithCoder:(id)coder;
 - (id)_realizedString;
 - (id)bundle;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _GCFStaticLocalizedString
@@ -15,33 +15,33 @@
   [(_GCFStaticLocalizedString *)&v3 dealloc];
 }
 
-- (_GCFStaticLocalizedString)initWithCoder:(id)a3
+- (_GCFStaticLocalizedString)initWithCoder:(id)coder
 {
   [(_GCFStaticLocalizedString *)self doesNotRecognizeSelector:a2];
   v6.receiver = self;
   v6.super_class = _GCFStaticLocalizedString;
-  return [(GCFLocalizedString *)&v6 initWithCoder:a3];
+  return [(GCFLocalizedString *)&v6 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = [(_GCFStaticLocalizedString *)self key];
-  v6 = [(_GCFStaticLocalizedString *)self bundle];
-  v7 = [(_GCFStaticLocalizedString *)self table];
-  if ([a3 allowsKeyedCoding])
+  bundle = [(_GCFStaticLocalizedString *)self bundle];
+  table = [(_GCFStaticLocalizedString *)self table];
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeObject:v5 forKey:@"key"];
-    [a3 encodeObject:objc_msgSend(v6 forKey:{"bundleURL"), @"bundle"}];
+    [coder encodeObject:v5 forKey:@"key"];
+    [coder encodeObject:objc_msgSend(bundle forKey:{"bundleURL"), @"bundle"}];
 
-    [a3 encodeObject:v7 forKey:@"table"];
+    [coder encodeObject:table forKey:@"table"];
   }
 
   else
   {
-    [a3 encodeObject:v5];
-    [a3 encodeObject:{objc_msgSend(v6, "bundleURL")}];
+    [coder encodeObject:v5];
+    [coder encodeObject:{objc_msgSend(bundle, "bundleURL")}];
 
-    [a3 encodeObject:v7];
+    [coder encodeObject:table];
   }
 }
 
@@ -66,8 +66,8 @@
 
 - (id)bundle
 {
-  v3 = [MEMORY[0x1E696AAE8] GameControllerFoundationBundle];
-  if (!v3 || (v4 = v3, ![v3 bundleURL]))
+  gameControllerFoundationBundle = [MEMORY[0x1E696AAE8] GameControllerFoundationBundle];
+  if (!gameControllerFoundationBundle || (v4 = gameControllerFoundationBundle, ![gameControllerFoundationBundle bundleURL]))
   {
     [(_GCFStaticLocalizedString *)self bundle];
   }

@@ -1,32 +1,32 @@
 @interface WBSSavedAccountUnknownHistoryItem
-- (BOOL)isEqual:(id)a3;
-- (WBSSavedAccountUnknownHistoryItem)initWithDictionaryRepresentation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WBSSavedAccountUnknownHistoryItem)initWithDictionaryRepresentation:(id)representation;
 - (unint64_t)hash;
 @end
 
 @implementation WBSSavedAccountUnknownHistoryItem
 
-- (WBSSavedAccountUnknownHistoryItem)initWithDictionaryRepresentation:(id)a3
+- (WBSSavedAccountUnknownHistoryItem)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v16.receiver = self;
   v16.super_class = WBSSavedAccountUnknownHistoryItem;
   v5 = [(WBSSavedAccountUnknownHistoryItem *)&v16 init];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v4 objectForKeyedSubscript:@"d"];
+    v6 = [representationCopy objectForKeyedSubscript:@"d"];
     date = v5->_date;
     v5->_date = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"t"];
+    v8 = [representationCopy objectForKeyedSubscript:@"t"];
     type = v5->_type;
     v5->_type = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"id"];
+    v10 = [representationCopy objectForKeyedSubscript:@"id"];
     identifier = v5->_identifier;
     v5->_identifier = v10;
 
-    v12 = [v4 copy];
+    v12 = [representationCopy copy];
     dictionaryRepresentation = v5->_dictionaryRepresentation;
     v5->_dictionaryRepresentation = v12;
 
@@ -41,10 +41,10 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -55,8 +55,8 @@
     if (objc_opt_isKindOfClass())
     {
       date = self->_date;
-      v6 = [(WBSSavedAccountUnknownHistoryItem *)v4 date];
-      v7 = WBSIsEqual(date, v6);
+      date = [(WBSSavedAccountUnknownHistoryItem *)equalCopy date];
+      v7 = WBSIsEqual(date, date);
     }
 
     else

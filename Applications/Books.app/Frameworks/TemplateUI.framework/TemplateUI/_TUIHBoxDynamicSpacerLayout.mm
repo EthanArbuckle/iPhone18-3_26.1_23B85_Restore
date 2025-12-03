@@ -4,36 +4,36 @@
 - (_NSRange)range;
 - (_TUIHBoxItemLayoutSummary)summary;
 - (void)computeLayout;
-- (void)onChildTransformedSizeDidChange:(id)a3;
-- (void)setRange:(_NSRange)a3;
+- (void)onChildTransformedSizeDidChange:(id)change;
+- (void)setRange:(_NSRange)range;
 @end
 
 @implementation _TUIHBoxDynamicSpacerLayout
 
-- (void)onChildTransformedSizeDidChange:(id)a3
+- (void)onChildTransformedSizeDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = _TUIHBoxDynamicSpacerLayout;
-  [(TUILayout *)&v5 onChildTransformedSizeDidChange:v4];
+  [(TUILayout *)&v5 onChildTransformedSizeDidChange:changeCopy];
   [(TUILayout *)self setFlexedWidth:NAN];
 }
 
 - (void)computeLayout
 {
-  v6 = [(TUILayout *)self parent];
-  [v6 summaryForRange:{self->_range.location, self->_range.length}];
+  parent = [(TUILayout *)self parent];
+  [parent summaryForRange:{self->_range.location, self->_range.length}];
   self->_summary.width = v3;
   self->_summary.height = v4;
   self->_summary.heightAbovePivot = v5;
   [(TUILayout *)self setComputedNaturalSize:?];
 }
 
-- (void)setRange:(_NSRange)a3
+- (void)setRange:(_NSRange)range
 {
-  if (a3.location != self->_range.location || a3.length != self->_range.length)
+  if (range.location != self->_range.location || range.length != self->_range.length)
   {
-    self->_range = a3;
+    self->_range = range;
     [(TUILayout *)self invalidateLayout];
 
     [(TUILayout *)self invalidateIntrinsicSize];

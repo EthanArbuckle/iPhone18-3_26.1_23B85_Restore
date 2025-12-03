@@ -1,5 +1,5 @@
 @interface CKTranscriptLocationChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (CKLocationMediaObject)locationMediaObject;
 - (id)dragItemProvider;
 - (id)transferGUID;
@@ -9,10 +9,10 @@
 
 - (id)transferGUID
 {
-  v2 = [(CKTranscriptLocationChatItem *)self mediaObject];
-  v3 = [v2 transferGUID];
+  mediaObject = [(CKTranscriptLocationChatItem *)self mediaObject];
+  transferGUID = [mediaObject transferGUID];
 
-  return v3;
+  return transferGUID;
 }
 
 - (CKLocationMediaObject)locationMediaObject
@@ -20,32 +20,32 @@
   locationMediaObject = self->_locationMediaObject;
   if (!locationMediaObject)
   {
-    v4 = [(CKChatItem *)self IMChatItem];
+    iMChatItem = [(CKChatItem *)self IMChatItem];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 locationInfo];
-      v7 = [v6 location];
+      v5 = iMChatItem;
+      locationInfo = [v5 locationInfo];
+      location = [locationInfo location];
 
       v8 = off_1E72E5000;
-      if (v7)
+      if (location)
       {
-        v9 = [v5 locationInfo];
-        v10 = [v9 query];
-        v11 = v10;
+        locationInfo2 = [v5 locationInfo];
+        query = [locationInfo2 query];
+        v11 = query;
         v12 = @"Location";
-        if (v10)
+        if (query)
         {
-          v12 = v10;
+          v12 = query;
         }
 
         v13 = v12;
 
         v14 = +[CKMediaObjectManager sharedInstance];
-        v15 = [v5 locationInfo];
-        v16 = [v15 location];
-        v17 = [CKLocationMediaObject vcardDataFromCLLocation:v16];
+        locationInfo3 = [v5 locationInfo];
+        location2 = [locationInfo3 location];
+        v17 = [CKLocationMediaObject vcardDataFromCLLocation:location2];
         v18 = [v14 mediaObjectWithData:v17 UTIType:@"loc.vcf" filename:v13 transcoderUserInfo:MEMORY[0x1E695E0F8]];
 
         v8 = off_1E72E5000;
@@ -57,15 +57,15 @@
       }
 
       v19 = objc_alloc(v8[9]);
-      v20 = [v18 transfer];
-      v21 = [(CKMessagePartChatItem *)self message];
-      v22 = [v21 __ck_context];
-      v23 = [v19 initWithTransfer:v20 context:v22 forceInlinePreview:0];
+      transfer = [v18 transfer];
+      message = [(CKMessagePartChatItem *)self message];
+      __ck_context = [message __ck_context];
+      v23 = [v19 initWithTransfer:transfer context:__ck_context forceInlinePreview:0];
       v24 = self->_locationMediaObject;
       self->_locationMediaObject = v23;
 
-      v25 = [v5 locationInfo];
-      v26 = [v25 url];
+      locationInfo4 = [v5 locationInfo];
+      v26 = [locationInfo4 url];
       locationURL = self->_locationURL;
       self->_locationURL = v26;
     }
@@ -76,9 +76,9 @@
   return locationMediaObject;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  v4 = [CKUIBehavior sharedBehaviors:a4];
+  v4 = [CKUIBehavior sharedBehaviors:insets];
   v5 = +[CKUIBehavior sharedBehaviors];
   [v5 mapPreviewMaxWidth];
   [v4 mapThumbnailFillSizeForWidth:?];
@@ -95,8 +95,8 @@
 - (id)dragItemProvider
 {
   v3 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v4 = [(NSURL *)self->_locationURL absoluteString];
-  v5 = [v4 dataUsingEncoding:4];
+  absoluteString = [(NSURL *)self->_locationURL absoluteString];
+  v5 = [absoluteString dataUsingEncoding:4];
 
   v6 = *MEMORY[0x1E69638B8];
   v13[0] = MEMORY[0x1E69E9820];

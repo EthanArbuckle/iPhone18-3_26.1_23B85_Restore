@@ -1,77 +1,77 @@
 @interface CARDNDManager
-+ (void)setupSharedManagerWithVehicleStore:(id)a3 sessionStatus:(id)a4;
++ (void)setupSharedManagerWithVehicleStore:(id)store sessionStatus:(id)status;
 - (BOOL)_hasDrivingActivityMode;
 - (BOOL)isCurrentlyInGeofencedRegion;
 - (BOOL)isDNDValid;
 - (BOOL)showsInternalAlerts;
 - (CARDNDGeofencingObserver)geofencingObserver;
-- (CARDNDManager)initWithVehicleState:(id)a3 alertManager:(id)a4 preferences:(id)a5 carSessionStatus:(id)a6 geoFencingObserver:(id)a7 assertionTrap:(id)a8 vehicleStore:(id)a9 stateService:(id)a10 modeConfigurationService:(id)a11 drivingStream:(id)a12;
+- (CARDNDManager)initWithVehicleState:(id)state alertManager:(id)manager preferences:(id)preferences carSessionStatus:(id)status geoFencingObserver:(id)observer assertionTrap:(id)trap vehicleStore:(id)store stateService:(id)self0 modeConfigurationService:(id)self1 drivingStream:(id)self2;
 - (id)_internalText;
 - (void)_beginIdleExitTransaction;
 - (void)_cancelUserDisabledTimer;
 - (void)_checkVehicleState;
-- (void)_createDrivingActivityModeIfNeeded:(BOOL)a3;
+- (void)_createDrivingActivityModeIfNeeded:(BOOL)needed;
 - (void)_disableDNDUntilEndOfDrive;
-- (void)_drivingModeChanged:(id)a3;
+- (void)_drivingModeChanged:(id)changed;
 - (void)_drivingModeEnded;
 - (void)_endIdleExitTransaction;
 - (void)_migrateToDrivingActivityModeIfNeeded;
-- (void)_processVehicleState:(id)a3;
-- (void)_scheduleUserDisabledTimerWithInterval:(double)a3;
+- (void)_processVehicleState:(id)state;
+- (void)_scheduleUserDisabledTimerWithInterval:(double)interval;
 - (void)_scheduleVehicleQuery;
-- (void)_transitionToState:(unint64_t)a3 vehicularHints:(unint64_t)a4 operatorState:(unint64_t)a5;
-- (void)_userDisabledTimerFired:(id)a3;
-- (void)assertionTrap:(id)a3 didBecomeActive:(BOOL)a4;
+- (void)_transitionToState:(unint64_t)state vehicularHints:(unint64_t)hints operatorState:(unint64_t)operatorState;
+- (void)_userDisabledTimerFired:(id)fired;
+- (void)assertionTrap:(id)trap didBecomeActive:(BOOL)active;
 - (void)dealloc;
-- (void)geofencingObserver:(id)a3 didUpdateRegionState:(int64_t)a4;
-- (void)modeAssertionService:(id)a3 didReceiveModeAssertionInvalidation:(id)a4;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)stateMachine:(id)a3 receivedAirplaneMode:(BOOL)a4;
-- (void)stateMachine:(id)a3 receivedFMDMode:(BOOL)a4;
-- (void)stateMachine:(id)a3 receivedVehicleState:(id)a4;
+- (void)geofencingObserver:(id)observer didUpdateRegionState:(int64_t)state;
+- (void)modeAssertionService:(id)service didReceiveModeAssertionInvalidation:(id)invalidation;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)stateMachine:(id)machine receivedAirplaneMode:(BOOL)mode;
+- (void)stateMachine:(id)machine receivedFMDMode:(BOOL)mode;
+- (void)stateMachine:(id)machine receivedVehicleState:(id)state;
 @end
 
 @implementation CARDNDManager
 
-+ (void)setupSharedManagerWithVehicleStore:(id)a3 sessionStatus:(id)a4
++ (void)setupSharedManagerWithVehicleStore:(id)store sessionStatus:(id)status
 {
-  v22 = a4;
-  v21 = a3;
+  statusCopy = status;
+  storeCopy = store;
   v23 = objc_alloc_init(CARAutomaticDNDStatus);
   v6 = [CARDNDStateObserver alloc];
   v7 = objc_alloc_init(RadiosPreferences);
   v8 = [(CARDNDStateObserver *)v6 initWithRadiosPreferences:v7 vehicleStateClass:objc_opt_class()];
 
-  v9 = [a1 alloc];
+  v9 = [self alloc];
   v20 = objc_alloc_init(CARUserAlerts);
   v10 = [[CARDNDAssertionTrap alloc] initWithPreferences:v23];
   v11 = [DNDStateService serviceForClientIdentifier:@"com.apple.carkitd.assertion-service"];
   v12 = [DNDModeConfigurationService serviceForClientIdentifier:@"com.apple.carkitd.assertion-service"];
   v13 = BiomeLibrary();
-  v14 = [v13 UserFocus];
-  v15 = [v14 DoNotDisturbWhileDriving];
+  userFocus = [v13 UserFocus];
+  doNotDisturbWhileDriving = [userFocus DoNotDisturbWhileDriving];
   v16 = v9;
   v17 = v10;
-  v18 = [v16 initWithVehicleState:v8 alertManager:v20 preferences:v23 carSessionStatus:v22 geoFencingObserver:0 assertionTrap:v10 vehicleStore:v21 stateService:v11 modeConfigurationService:v12 drivingStream:v15];
+  v18 = [v16 initWithVehicleState:v8 alertManager:v20 preferences:v23 carSessionStatus:statusCopy geoFencingObserver:0 assertionTrap:v10 vehicleStore:storeCopy stateService:v11 modeConfigurationService:v12 drivingStream:doNotDisturbWhileDriving];
 
   v19 = qword_100107FD0;
   qword_100107FD0 = v18;
 }
 
-- (CARDNDManager)initWithVehicleState:(id)a3 alertManager:(id)a4 preferences:(id)a5 carSessionStatus:(id)a6 geoFencingObserver:(id)a7 assertionTrap:(id)a8 vehicleStore:(id)a9 stateService:(id)a10 modeConfigurationService:(id)a11 drivingStream:(id)a12
+- (CARDNDManager)initWithVehicleState:(id)state alertManager:(id)manager preferences:(id)preferences carSessionStatus:(id)status geoFencingObserver:(id)observer assertionTrap:(id)trap vehicleStore:(id)store stateService:(id)self0 modeConfigurationService:(id)self1 drivingStream:(id)self2
 {
-  obj = a3;
-  v53 = a3;
-  v52 = a4;
-  v54 = a5;
-  v51 = a6;
-  v50 = a7;
-  v49 = a8;
-  v48 = a9;
-  v47 = a10;
-  v46 = a11;
-  v45 = a12;
+  obj = state;
+  stateCopy = state;
+  managerCopy = manager;
+  preferencesCopy = preferences;
+  statusCopy = status;
+  observerCopy = observer;
+  trapCopy = trap;
+  storeCopy = store;
+  serviceCopy = service;
+  configurationServiceCopy = configurationService;
+  streamCopy = stream;
   v57.receiver = self;
   v57.super_class = CARDNDManager;
   v18 = [(CARDNDManager *)&v57 init];
@@ -81,32 +81,32 @@
     CARDNDQueue = v18->_CARDNDQueue;
     v18->_CARDNDQueue = v19;
 
-    objc_storeStrong(&v18->_dndStateService, a10);
-    objc_storeStrong(&v18->_dndModeService, a11);
-    objc_storeStrong(&v18->_drivingStream, a12);
+    objc_storeStrong(&v18->_dndStateService, service);
+    objc_storeStrong(&v18->_dndModeService, configurationService);
+    objc_storeStrong(&v18->_drivingStream, stream);
     objc_storeStrong(&v18->_stateMachine, obj);
     [(CARDNDStateObserver *)v18->_stateMachine setDelegate:v18];
-    objc_storeStrong(&v18->_preferences, a5);
-    objc_storeStrong(&v18->_alertManager, a4);
+    objc_storeStrong(&v18->_preferences, preferences);
+    objc_storeStrong(&v18->_alertManager, manager);
     v18->_lastKnownVehicularState = 0;
     v18->_lastKnownVehicularHints = 0;
-    objc_storeStrong(&v18->_sessionStatus, a6);
+    objc_storeStrong(&v18->_sessionStatus, status);
     [(CARSessionStatus *)v18->_sessionStatus addSessionObserver:v18];
-    objc_storeStrong(&v18->_geofencingObserver, a7);
+    objc_storeStrong(&v18->_geofencingObserver, observer);
     [(CARDNDGeofencingObserver *)v18->_geofencingObserver setDelegate:v18];
-    objc_storeStrong(&v18->_assertionTrap, a8);
+    objc_storeStrong(&v18->_assertionTrap, trap);
     [(CARDNDAssertionTrap *)v18->_assertionTrap setDelegate:v18];
-    objc_storeStrong(&v18->_vehicleStore, a9);
+    objc_storeStrong(&v18->_vehicleStore, store);
     v18->_expectedDNDTermination = 0;
     v18->_vehicleQueryInitiatedTimestamp = 0.0;
-    [v54 _detachObservers];
+    [preferencesCopy _detachObservers];
     v21 = [[BMBiomeScheduler alloc] initWithIdentifier:@"com.apple.focus.driving" targetQueue:v18->_CARDNDQueue];
     v22 = BiomeLibrary();
-    v23 = [v22 UserFocus];
-    v24 = [v23 ComputedMode];
+    userFocus = [v22 UserFocus];
+    computedMode = [userFocus ComputedMode];
 
-    v25 = [v24 DSLPublisher];
-    v26 = [v25 filterWithKeyPath:@"eventBody.semanticType" value:&off_1000E8128];
+    dSLPublisher = [computedMode DSLPublisher];
+    v26 = [dSLPublisher filterWithKeyPath:@"eventBody.semanticType" value:&off_1000E8128];
 
     v27 = [v26 subscribeOn:v21];
     v55[0] = _NSConcreteStackBlock;
@@ -119,52 +119,52 @@
     biomeDrivingSink = v28->_biomeDrivingSink;
     v28->_biomeDrivingSink = v29;
 
-    v31 = [(CARDNDManager *)v28 assertionTrap];
-    LODWORD(v23) = [v31 isActive];
+    assertionTrap = [(CARDNDManager *)v28 assertionTrap];
+    LODWORD(userFocus) = [assertionTrap isActive];
 
-    if (!v23)
+    if (!userFocus)
     {
       goto LABEL_15;
     }
 
-    v32 = [(CARDNDManager *)v28 assertionTrap];
-    if ([v32 hasAssertion:4])
+    assertionTrap2 = [(CARDNDManager *)v28 assertionTrap];
+    if ([assertionTrap2 hasAssertion:4])
     {
-      v33 = [(CARDNDStateObserver *)v18->_stateMachine isInAirplaneMode];
+      isInAirplaneMode = [(CARDNDStateObserver *)v18->_stateMachine isInAirplaneMode];
 
-      if (v33)
+      if (isInAirplaneMode)
       {
 LABEL_7:
-        v34 = [(CARDNDManager *)v28 assertionTrap];
-        v35 = [v34 hasAssertion:1];
+        assertionTrap3 = [(CARDNDManager *)v28 assertionTrap];
+        v35 = [assertionTrap3 hasAssertion:1];
 
         if (v35)
         {
-          v36 = [(CARDNDManager *)v28 assertionTrap];
-          [v36 releaseAssertion:1];
+          assertionTrap4 = [(CARDNDManager *)v28 assertionTrap];
+          [assertionTrap4 releaseAssertion:1];
         }
 
-        v37 = [(CARDNDManager *)v28 assertionTrap];
-        v38 = [v37 hasAssertion:16];
+        assertionTrap5 = [(CARDNDManager *)v28 assertionTrap];
+        v38 = [assertionTrap5 hasAssertion:16];
 
         if (v38)
         {
-          v39 = [(CARDNDManager *)v28 assertionTrap];
-          [v39 releaseAssertion:16];
+          assertionTrap6 = [(CARDNDManager *)v28 assertionTrap];
+          [assertionTrap6 releaseAssertion:16];
         }
 
-        v40 = [(CARDNDManager *)v28 assertionTrap];
-        if (![v40 hasAssertion:32])
+        assertionTrap7 = [(CARDNDManager *)v28 assertionTrap];
+        if (![assertionTrap7 hasAssertion:32])
         {
           goto LABEL_14;
         }
 
-        v41 = [(CARDNDStateObserver *)v18->_stateMachine isInLostMode];
+        isInLostMode = [(CARDNDStateObserver *)v18->_stateMachine isInLostMode];
 
-        if ((v41 & 1) == 0)
+        if ((isInLostMode & 1) == 0)
         {
-          v40 = [(CARDNDManager *)v28 assertionTrap];
-          [v40 releaseAssertion:32];
+          assertionTrap7 = [(CARDNDManager *)v28 assertionTrap];
+          [assertionTrap7 releaseAssertion:32];
 LABEL_14:
         }
 
@@ -176,8 +176,8 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v32 = [(CARDNDManager *)v28 assertionTrap];
-      [v32 releaseAssertion:4];
+      assertionTrap2 = [(CARDNDManager *)v28 assertionTrap];
+      [assertionTrap2 releaseAssertion:4];
     }
 
     goto LABEL_7;
@@ -201,10 +201,10 @@ LABEL_16:
   v3 = CRIsInternalInstall();
   if (v3)
   {
-    v4 = [(CARDNDManager *)self preferences];
-    v5 = [v4 isAutomaticDNDInternalShowUserAlertsEnabledPreference];
+    preferences = [(CARDNDManager *)self preferences];
+    isAutomaticDNDInternalShowUserAlertsEnabledPreference = [preferences isAutomaticDNDInternalShowUserAlertsEnabledPreference];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = isAutomaticDNDInternalShowUserAlertsEnabledPreference;
   }
 
   return v3;
@@ -227,29 +227,29 @@ LABEL_16:
   return geofencingObserver;
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = [(CARDNDManager *)self CARDNDQueue];
+  cARDNDQueue = [(CARDNDManager *)self CARDNDQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100063F6C;
   block[3] = &unk_1000DD480;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(cARDNDQueue, block);
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = [(CARDNDManager *)self preferences];
-  v5 = [v4 shouldActivateWithCarPlay];
+  preferences = [(CARDNDManager *)self preferences];
+  shouldActivateWithCarPlay = [preferences shouldActivateWithCarPlay];
 
-  v6 = [(CARDNDManager *)self preferences];
-  v7 = [v6 automaticDNDTriggeringMethod];
+  preferences2 = [(CARDNDManager *)self preferences];
+  automaticDNDTriggeringMethod = [preferences2 automaticDNDTriggeringMethod];
 
-  v8 = [(CARDNDManager *)self assertionTrap];
-  [v8 releaseAssertion:1];
+  assertionTrap = [(CARDNDManager *)self assertionTrap];
+  [assertionTrap releaseAssertion:1];
 
-  if (!v5 || v7 != 2)
+  if (!shouldActivateWithCarPlay || automaticDNDTriggeringMethod != 2)
   {
     v15 = CarDNDWDLogging();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -261,8 +261,8 @@ LABEL_16:
     v16 = +[CARAnalytics sharedInstance];
     [v16 DNDEndedWithTrigger:3 vehicleHints:-[CARDNDManager lastKnownVehicularHints](self context:{"lastKnownVehicularHints"), 0}];
 
-    v12 = [(CARDNDManager *)self CARDNDQueue];
-    v13 = v12;
+    cARDNDQueue = [(CARDNDManager *)self CARDNDQueue];
+    v13 = cARDNDQueue;
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1000643E4;
@@ -272,8 +272,8 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  v9 = [(CARDNDManager *)self lastKnownVehicularState];
-  if (v9 < 2)
+  lastKnownVehicularState = [(CARDNDManager *)self lastKnownVehicularState];
+  if (lastKnownVehicularState < 2)
   {
     v10 = CarDNDWDLogging();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -285,8 +285,8 @@ LABEL_16:
     v11 = +[CARAnalytics sharedInstance];
     [v11 DNDEndedWithTrigger:3 vehicleHints:-[CARDNDManager lastKnownVehicularHints](self context:{"lastKnownVehicularHints"), 0}];
 
-    v12 = [(CARDNDManager *)self CARDNDQueue];
-    v13 = v12;
+    cARDNDQueue = [(CARDNDManager *)self CARDNDQueue];
+    v13 = cARDNDQueue;
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000643D0;
@@ -294,12 +294,12 @@ LABEL_16:
     v19[4] = self;
     v14 = v19;
 LABEL_10:
-    dispatch_async(v12, v14);
+    dispatch_async(cARDNDQueue, v14);
 
     return;
   }
 
-  if (v9 == 2)
+  if (lastKnownVehicularState == 2)
   {
     v17 = CarDNDWDLogging();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -327,8 +327,8 @@ LABEL_10:
 
   if ([v3 isActive])
   {
-    v6 = [v3 activeModeIdentifier];
-    v7 = [v6 isEqualToString:@"com.apple.donotdisturb.mode.driving"];
+    activeModeIdentifier = [v3 activeModeIdentifier];
+    v7 = [activeModeIdentifier isEqualToString:@"com.apple.donotdisturb.mode.driving"];
   }
 
   else
@@ -341,115 +341,115 @@ LABEL_10:
 
 - (BOOL)isCurrentlyInGeofencedRegion
 {
-  v2 = [(CARDNDManager *)self geofencingObserver];
-  v3 = [v2 currentlyInRegion];
+  geofencingObserver = [(CARDNDManager *)self geofencingObserver];
+  currentlyInRegion = [geofencingObserver currentlyInRegion];
 
-  return v3;
+  return currentlyInRegion;
 }
 
-- (void)stateMachine:(id)a3 receivedVehicleState:(id)a4
+- (void)stateMachine:(id)machine receivedVehicleState:(id)state
 {
-  v5 = a4;
-  v6 = [(CARDNDManager *)self CARDNDQueue];
+  stateCopy = state;
+  cARDNDQueue = [(CARDNDManager *)self CARDNDQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000645A8;
   v8[3] = &unk_1000DD580;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = stateCopy;
+  v7 = stateCopy;
+  dispatch_async(cARDNDQueue, v8);
 }
 
-- (void)stateMachine:(id)a3 receivedAirplaneMode:(BOOL)a4
+- (void)stateMachine:(id)machine receivedAirplaneMode:(BOOL)mode
 {
-  v4 = a4;
-  v5 = [(CARDNDManager *)self assertionTrap];
-  v6 = v5;
-  if (v4)
+  modeCopy = mode;
+  assertionTrap = [(CARDNDManager *)self assertionTrap];
+  v6 = assertionTrap;
+  if (modeCopy)
   {
-    [v5 takeAssertion:4];
+    [assertionTrap takeAssertion:4];
   }
 
   else
   {
-    [v5 releaseAssertion:4];
+    [assertionTrap releaseAssertion:4];
   }
 }
 
-- (void)stateMachine:(id)a3 receivedFMDMode:(BOOL)a4
+- (void)stateMachine:(id)machine receivedFMDMode:(BOOL)mode
 {
-  v4 = a4;
-  v5 = [(CARDNDManager *)self assertionTrap];
-  v6 = v5;
-  if (v4)
+  modeCopy = mode;
+  assertionTrap = [(CARDNDManager *)self assertionTrap];
+  v6 = assertionTrap;
+  if (modeCopy)
   {
-    [v5 takeAssertion:32];
+    [assertionTrap takeAssertion:32];
   }
 
   else
   {
-    [v5 releaseAssertion:32];
+    [assertionTrap releaseAssertion:32];
   }
 }
 
-- (void)geofencingObserver:(id)a3 didUpdateRegionState:(int64_t)a4
+- (void)geofencingObserver:(id)observer didUpdateRegionState:(int64_t)state
 {
   if ([(CARDNDManager *)self showsInternalAlerts])
   {
-    v6 = [(CARDNDManager *)self preferences];
-    v7 = [v6 isAutomaticDNDInternalShowGeofencingAlertsEnabledPreference];
+    preferences = [(CARDNDManager *)self preferences];
+    isAutomaticDNDInternalShowGeofencingAlertsEnabledPreference = [preferences isAutomaticDNDInternalShowGeofencingAlertsEnabledPreference];
 
-    if (v7)
+    if (isAutomaticDNDInternalShowGeofencingAlertsEnabledPreference)
     {
-      if (a4 == 2)
+      if (state == 2)
       {
-        v8 = [(CARDNDManager *)self alertManager];
-        [v8 showDNDExitGeofenceWithCompletion:0];
+        alertManager = [(CARDNDManager *)self alertManager];
+        [alertManager showDNDExitGeofenceWithCompletion:0];
       }
 
       else
       {
-        if (a4 != 1)
+        if (state != 1)
         {
           return;
         }
 
-        v8 = [(CARDNDManager *)self alertManager];
-        [v8 showDNDEnterGeofenceWithCompletion:0];
+        alertManager = [(CARDNDManager *)self alertManager];
+        [alertManager showDNDEnterGeofenceWithCompletion:0];
       }
     }
   }
 }
 
-- (void)assertionTrap:(id)a3 didBecomeActive:(BOOL)a4
+- (void)assertionTrap:(id)trap didBecomeActive:(BOOL)active
 {
-  v6 = a3;
-  v7 = [(CARDNDManager *)self CARDNDQueue];
+  trapCopy = trap;
+  cARDNDQueue = [(CARDNDManager *)self CARDNDQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000647F0;
   block[3] = &unk_1000DFBD0;
-  v11 = a4;
+  activeCopy = active;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = trapCopy;
+  v8 = trapCopy;
+  dispatch_async(cARDNDQueue, block);
 }
 
 - (void)_checkVehicleState
 {
-  v2 = [(CARDNDManager *)self stateMachine];
-  [v2 _checkVehicleState];
+  stateMachine = [(CARDNDManager *)self stateMachine];
+  [stateMachine _checkVehicleState];
 }
 
-- (void)_transitionToState:(unint64_t)a3 vehicularHints:(unint64_t)a4 operatorState:(unint64_t)a5
+- (void)_transitionToState:(unint64_t)state vehicularHints:(unint64_t)hints operatorState:(unint64_t)operatorState
 {
-  v9 = [(CARDNDManager *)self preferences];
-  v10 = [v9 automaticDNDTriggeringMethod];
+  preferences = [(CARDNDManager *)self preferences];
+  automaticDNDTriggeringMethod = [preferences automaticDNDTriggeringMethod];
   v11 = CarDNDWDLogging();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (a3 == 2)
+  if (state == 2)
   {
     if (!v12)
     {
@@ -460,7 +460,7 @@ LABEL_10:
     v13 = "Evaluating transition to Vehicular state.";
   }
 
-  else if (a3 == 1)
+  else if (state == 1)
   {
     if (!v12)
     {
@@ -485,7 +485,7 @@ LABEL_10:
   _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v13, buf, 2u);
 LABEL_10:
 
-  if (v10 == 2)
+  if (automaticDNDTriggeringMethod == 2)
   {
     v14 = CarDNDWDLogging();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -496,7 +496,7 @@ LABEL_10:
     }
   }
 
-  else if (v10 == 1)
+  else if (automaticDNDTriggeringMethod == 1)
   {
     v14 = CarDNDWDLogging();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -509,7 +509,7 @@ LABEL_10:
 
   else
   {
-    if (v10)
+    if (automaticDNDTriggeringMethod)
     {
       goto LABEL_21;
     }
@@ -527,21 +527,21 @@ LABEL_19:
 LABEL_21:
   if (CRIsInternalInstall())
   {
-    v16 = [(CARDNDManager *)self preferences];
-    v17 = [v16 isAutomaticDNDInternalForceOverrideEnabledPreference];
+    preferences2 = [(CARDNDManager *)self preferences];
+    isAutomaticDNDInternalForceOverrideEnabledPreference = [preferences2 isAutomaticDNDInternalForceOverrideEnabledPreference];
   }
 
   else
   {
-    v17 = 0;
+    isAutomaticDNDInternalForceOverrideEnabledPreference = 0;
   }
 
-  v18 = [(CARDNDManager *)self preferences];
-  if ([v18 shouldActivateWithCarPlay])
+  preferences3 = [(CARDNDManager *)self preferences];
+  if ([preferences3 shouldActivateWithCarPlay])
   {
-    v19 = [(CARDNDManager *)self sessionStatus];
-    v20 = [v19 currentSession];
-    v21 = v20 != 0;
+    sessionStatus = [(CARDNDManager *)self sessionStatus];
+    currentSession = [sessionStatus currentSession];
+    v21 = currentSession != 0;
   }
 
   else
@@ -549,13 +549,13 @@ LABEL_21:
     v21 = 0;
   }
 
-  if (a5 == 1)
+  if (operatorState == 1)
   {
-    v22 = CarDNDWDLogging();
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    preferences4 = CarDNDWDLogging();
+    if (os_log_type_enabled(preferences4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "User is not operating.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, preferences4, OS_LOG_TYPE_DEFAULT, "User is not operating.", buf, 2u);
     }
 
     v23 = 1;
@@ -563,51 +563,51 @@ LABEL_21:
 
   else
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       v23 = 1;
       goto LABEL_44;
     }
 
-    v22 = [(CARDNDManager *)self preferences];
-    v25 = [v22 automaticDNDTriggeringMethod];
+    preferences4 = [(CARDNDManager *)self preferences];
+    automaticDNDTriggeringMethod2 = [preferences4 automaticDNDTriggeringMethod];
     v23 = 0;
-    if ((a4 & 0x10) == 0 && v25 == 1)
+    if ((hints & 0x10) == 0 && automaticDNDTriggeringMethod2 == 1)
     {
       v23 = (LOBYTE(self->_lastKnownVehicularHints) >> 4) & 1;
     }
   }
 
-  if (v17)
+  if (isAutomaticDNDInternalForceOverrideEnabledPreference)
   {
-    v17 = 1;
+    isAutomaticDNDInternalForceOverrideEnabledPreference = 1;
   }
 
-  else if (a3 == 2)
+  else if (state == 2)
   {
-    v24 = [(CARDNDManager *)self preferences];
-    if ([v24 automaticDNDTriggeringMethod] == 1)
+    preferences5 = [(CARDNDManager *)self preferences];
+    if ([preferences5 automaticDNDTriggeringMethod] == 1)
     {
-      v17 = (a4 >> 4) & 1;
+      isAutomaticDNDInternalForceOverrideEnabledPreference = (hints >> 4) & 1;
     }
 
     else
     {
-      v17 = 1;
+      isAutomaticDNDInternalForceOverrideEnabledPreference = 1;
     }
   }
 
   else
   {
-    v17 = 0;
+    isAutomaticDNDInternalForceOverrideEnabledPreference = 0;
   }
 
 LABEL_44:
-  v26 = [(CARDNDManager *)self assertionTrap];
-  v27 = [v26 isActive];
+  assertionTrap = [(CARDNDManager *)self assertionTrap];
+  isActive = [assertionTrap isActive];
 
-  self->_lastKnownVehicularState = a3;
-  self->_lastKnownVehicularHints = a4;
+  self->_lastKnownVehicularState = state;
+  self->_lastKnownVehicularHints = hints;
   self->_vehicleQueryInitiatedTimestamp = 0.0;
   if (v23)
   {
@@ -636,33 +636,33 @@ LABEL_48:
     objc_destroyWeak(buf);
   }
 
-  else if (v17)
+  else if (isAutomaticDNDInternalForceOverrideEnabledPreference)
   {
-    if (v27)
+    if (isActive)
     {
       v29 = CarDNDWDLogging();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [(CARDNDManager *)self assertionTrap];
-        v31 = [v30 activeAssertionsDebugString];
+        assertionTrap2 = [(CARDNDManager *)self assertionTrap];
+        activeAssertionsDebugString = [assertionTrap2 activeAssertionsDebugString];
         *buf = 138543362;
-        v38 = v31;
+        v38 = activeAssertionsDebugString;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Not engaging Driving due to active assertions: %{public}@", buf, 0xCu);
       }
     }
 
     else
     {
-      v32 = [(CARDNDManager *)self preferences];
-      if ([v32 automaticDNDTriggeringMethod])
+      preferences6 = [(CARDNDManager *)self preferences];
+      if ([preferences6 automaticDNDTriggeringMethod])
       {
       }
 
       else
       {
-        v33 = [(CARDNDManager *)self _hasDrivingActivityMode];
+        _hasDrivingActivityMode = [(CARDNDManager *)self _hasDrivingActivityMode];
 
-        if (v33)
+        if (_hasDrivingActivityMode)
         {
           v28 = CarDNDWDLogging();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -704,8 +704,8 @@ LABEL_48:
 
   if ([(CARDNDManager *)self isDNDValid])
   {
-    v7 = [(CARDNDManager *)self lastKnownVehicularHints];
-    if (!v7)
+    lastKnownVehicularHints = [(CARDNDManager *)self lastKnownVehicularHints];
+    if (!lastKnownVehicularHints)
     {
       v11 = @"None";
 LABEL_23:
@@ -715,7 +715,7 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v8 = v7;
+    v8 = lastKnownVehicularHints;
     v9 = +[NSMutableArray array];
     v10 = v9;
     if (v8)
@@ -795,8 +795,8 @@ LABEL_24:
 {
   +[NSDate timeIntervalSinceReferenceDate];
   self->_vehicleQueryInitiatedTimestamp = v3;
-  v4 = [(CARDNDManager *)self stateMachine];
-  [v4 scheduleVehicleStateCheckWithDelay:30.0];
+  stateMachine = [(CARDNDManager *)self stateMachine];
+  [stateMachine scheduleVehicleStateCheckWithDelay:30.0];
 }
 
 - (void)_drivingModeEnded
@@ -809,11 +809,11 @@ LABEL_24:
   }
 
   [(CARDNDManager *)self _endIdleExitTransaction];
-  v4 = [(CARDNDManager *)self geofencingObserver];
-  [v4 setDNDActive:0];
+  geofencingObserver = [(CARDNDManager *)self geofencingObserver];
+  [geofencingObserver setDNDActive:0];
 
-  v5 = [(CARDNDManager *)self geofencingObserver];
-  [v5 stopMonitoringLOIs];
+  geofencingObserver2 = [(CARDNDManager *)self geofencingObserver];
+  [geofencingObserver2 stopMonitoringLOIs];
 
   [(CARDNDManager *)self setLastKnownVehicularState:1];
   [(CARDNDManager *)self setLastKnownVehicularHints:0];
@@ -823,21 +823,21 @@ LABEL_24:
   CFNotificationCenterPostNotification(v7, CARAutomaticDNDDisabledNotification, 0, 0, 1u);
 }
 
-- (void)_drivingModeChanged:(id)a3
+- (void)_drivingModeChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 eventBody];
-  v6 = [v5 starting];
+  changedCopy = changed;
+  eventBody = [changedCopy eventBody];
+  starting = [eventBody starting];
 
-  v7 = [v4 eventBody];
-  v8 = [v7 updateSource];
+  eventBody2 = [changedCopy eventBody];
+  updateSource = [eventBody2 updateSource];
 
-  v9 = [v4 eventBody];
-  v10 = [v9 updateReason];
+  eventBody3 = [changedCopy eventBody];
+  updateReason = [eventBody3 updateReason];
 
   v11 = [NSMutableString stringWithString:@"Driving "];
   v12 = @"ended";
-  if (v6)
+  if (starting)
   {
     v12 = @"started";
   }
@@ -845,17 +845,17 @@ LABEL_24:
   v13 = [NSString stringWithFormat:@"%@ externally", v12];
   [v11 appendString:v13];
 
-  v14 = [v4 eventBody];
+  eventBody4 = [changedCopy eventBody];
 
-  v15 = [v14 updateSource];
-  if (v15 - 1 > 2)
+  updateSource2 = [eventBody4 updateSource];
+  if (updateSource2 - 1 > 2)
   {
     v16 = @" from an unknown source";
   }
 
   else
   {
-    v16 = *(&off_1000DFC78 + v15 - 1);
+    v16 = *(&off_1000DFC78 + updateSource2 - 1);
   }
 
   [v11 appendString:v16];
@@ -867,17 +867,17 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
-  if (v6)
+  if (starting)
   {
     v18 = +[CARAnalytics sharedInstance];
     [v18 DNDStartedWithTrigger:1 vehicleHints:{-[CARDNDManager lastKnownVehicularHints](self, "lastKnownVehicularHints")}];
 
-    v19 = [(CARDNDManager *)self assertionTrap];
-    [v19 releaseAllTemporaryAssertions];
+    assertionTrap = [(CARDNDManager *)self assertionTrap];
+    [assertionTrap releaseAllTemporaryAssertions];
 
     v20 = ([(CARDNDManager *)self lastKnownVehicularHints]>> 4) & 1;
-    self->_activatedByUserAction = v10 == 1;
-    if (v8 == 2)
+    self->_activatedByUserAction = updateReason == 1;
+    if (updateSource == 2)
     {
       v21 = 1;
     }
@@ -894,23 +894,23 @@ LABEL_24:
   {
     if ([(CARDNDManager *)self showsInternalAlerts])
     {
-      v22 = [(CARDNDManager *)self assertionTrap];
-      v23 = [v22 hasAssertion:2];
+      assertionTrap2 = [(CARDNDManager *)self assertionTrap];
+      v23 = [assertionTrap2 hasAssertion:2];
 
       if ((v23 & 1) == 0)
       {
-        v24 = [(CARDNDManager *)self alertManager];
-        v25 = [(CARDNDManager *)self _internalText];
-        [v24 showDNDEndNotificationWithText:v25 completion:0];
+        alertManager = [(CARDNDManager *)self alertManager];
+        _internalText = [(CARDNDManager *)self _internalText];
+        [alertManager showDNDEndNotificationWithText:_internalText completion:0];
       }
     }
 
-    if (v10 == 1)
+    if (updateReason == 1)
     {
-      if (v8 == 2)
+      if (updateSource == 2)
       {
-        v26 = [(CARDNDManager *)self assertionTrap];
-        [v26 takeAssertion:2];
+        assertionTrap3 = [(CARDNDManager *)self assertionTrap];
+        [assertionTrap3 takeAssertion:2];
       }
 
       else
@@ -919,7 +919,7 @@ LABEL_24:
       }
 
       v28 = +[CARAnalytics sharedInstance];
-      v29 = [(CARDNDManager *)self lastKnownVehicularHints];
+      lastKnownVehicularHints = [(CARDNDManager *)self lastKnownVehicularHints];
       v30 = v28;
       v31 = 5;
     }
@@ -934,7 +934,7 @@ LABEL_24:
       }
 
       v28 = +[CARAnalytics sharedInstance];
-      v29 = [(CARDNDManager *)self lastKnownVehicularHints];
+      lastKnownVehicularHints = [(CARDNDManager *)self lastKnownVehicularHints];
       v30 = v28;
       v31 = 4;
     }
@@ -942,12 +942,12 @@ LABEL_24:
     else
     {
       v28 = +[CARAnalytics sharedInstance];
-      v29 = [(CARDNDManager *)self lastKnownVehicularHints];
+      lastKnownVehicularHints = [(CARDNDManager *)self lastKnownVehicularHints];
       v30 = v28;
       v31 = 6;
     }
 
-    [v30 DNDEndedWithTrigger:v31 vehicleHints:v29 context:0];
+    [v30 DNDEndedWithTrigger:v31 vehicleHints:lastKnownVehicularHints context:0];
 
     [(CARDNDManager *)self _drivingModeEnded];
   }
@@ -957,14 +957,14 @@ LABEL_24:
 {
   if ([(CARDNDManager *)self showsInternalAlerts])
   {
-    v3 = [(CARDNDManager *)self alertManager];
-    [v3 showDNDNotDrivingAlertWithCompletion:&stru_1000DFC38];
+    alertManager = [(CARDNDManager *)self alertManager];
+    [alertManager showDNDNotDrivingAlertWithCompletion:&stru_1000DFC38];
   }
 
-  v4 = [(CARDNDManager *)self lastKnownVehicularState];
-  v5 = [(CARDNDManager *)self assertionTrap];
-  v7 = v5;
-  if (v4 >= 2)
+  lastKnownVehicularState = [(CARDNDManager *)self lastKnownVehicularState];
+  assertionTrap = [(CARDNDManager *)self assertionTrap];
+  v7 = assertionTrap;
+  if (lastKnownVehicularState >= 2)
   {
     v6 = 2;
   }
@@ -974,7 +974,7 @@ LABEL_24:
     v6 = 8;
   }
 
-  [v5 takeAssertion:v6];
+  [assertionTrap takeAssertion:v6];
 }
 
 - (BOOL)_hasDrivingActivityMode
@@ -1023,10 +1023,10 @@ LABEL_9:
 
 - (void)_migrateToDrivingActivityModeIfNeeded
 {
-  v3 = [(CARDNDManager *)self preferences];
-  v4 = [v3 automaticDNDTriggeringMethod];
+  preferences = [(CARDNDManager *)self preferences];
+  automaticDNDTriggeringMethod = [preferences automaticDNDTriggeringMethod];
 
-  if (v4)
+  if (automaticDNDTriggeringMethod)
   {
     v5 = CarDNDWDLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1042,12 +1042,12 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [(CARDNDManager *)self preferences];
-  v9 = [v8 hasAdjustedTriggerMethod];
+  preferences2 = [(CARDNDManager *)self preferences];
+  hasAdjustedTriggerMethod = [preferences2 hasAdjustedTriggerMethod];
 
   v5 = CarDNDWDLogging();
   v10 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (hasAdjustedTriggerMethod)
   {
     if (v10)
     {
@@ -1077,15 +1077,15 @@ LABEL_8:
   }
 }
 
-- (void)_createDrivingActivityModeIfNeeded:(BOOL)a3
+- (void)_createDrivingActivityModeIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v5 = [(CARDNDManager *)self preferences];
-  v6 = [v5 hasMigratedToDriving];
+  neededCopy = needed;
+  preferences = [(CARDNDManager *)self preferences];
+  hasMigratedToDriving = [preferences hasMigratedToDriving];
 
-  if (!v6 || v3)
+  if (!hasMigratedToDriving || neededCopy)
   {
-    if (v3)
+    if (neededCopy)
     {
       v9 = CarDNDWDLogging();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1103,7 +1103,7 @@ LABEL_8:
       v11 = v21;
       if (v11)
       {
-        v12 = v11;
+        preferences2 = v11;
         v13 = CarDNDWDLogging();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
         {
@@ -1135,13 +1135,13 @@ LABEL_8:
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Created driving activity mode.", buf, 2u);
         }
 
-        v12 = [(CARDNDManager *)self preferences];
+        preferences2 = [(CARDNDManager *)self preferences];
         v19[0] = _NSConcreteStackBlock;
         v19[1] = 3221225472;
         v19[2] = sub_1000663E8;
         v19[3] = &unk_1000DD480;
         v19[4] = self;
-        [v12 _performCARPreferencesBlock:v19 forReading:0];
+        [preferences2 _performCARPreferencesBlock:v19 forReading:0];
       }
 
       goto LABEL_23;
@@ -1171,28 +1171,28 @@ LABEL_12:
 LABEL_23:
 }
 
-- (void)_processVehicleState:(id)a3
+- (void)_processVehicleState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 vehicleState];
-  v6 = [v4 vehicularHints];
-  v7 = [v4 vehicleOperatorState];
-  v53 = [v4 deviceID];
+  stateCopy = state;
+  vehicleState = [stateCopy vehicleState];
+  vehicularHints = [stateCopy vehicularHints];
+  vehicleOperatorState = [stateCopy vehicleOperatorState];
+  deviceID = [stateCopy deviceID];
   if (CRIsInternalInstall())
   {
-    v8 = [(CARDNDManager *)self preferences];
-    v9 = [v8 isAutomaticDNDInternalForceOverrideEnabledPreference];
+    preferences = [(CARDNDManager *)self preferences];
+    isAutomaticDNDInternalForceOverrideEnabledPreference = [preferences isAutomaticDNDInternalForceOverrideEnabledPreference];
   }
 
   else
   {
-    v9 = 0;
+    isAutomaticDNDInternalForceOverrideEnabledPreference = 0;
   }
 
-  v10 = [(CARDNDManager *)self preferences];
-  v11 = [v10 shouldActivateWithCarPlay];
+  preferences2 = [(CARDNDManager *)self preferences];
+  shouldActivateWithCarPlay = [preferences2 shouldActivateWithCarPlay];
 
-  if (v9)
+  if (isAutomaticDNDInternalForceOverrideEnabledPreference)
   {
     v12 = CarDNDWDLogging();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1201,22 +1201,22 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Override is set; forcing vehicle state ON.", buf, 2u);
     }
 
-    v5 = 2;
+    vehicleState = 2;
   }
 
   if (CRIsInternalInstall())
   {
-    v13 = [(CARDNDManager *)self preferences];
-    v14 = [v13 isAutomaticDNDInternalExitConfirmationOverrideEnabledPreference];
-    v15 = [(CARDNDManager *)self geofencingObserver];
-    [v15 setExitConfirmationOverride:v14];
+    preferences3 = [(CARDNDManager *)self preferences];
+    isAutomaticDNDInternalExitConfirmationOverrideEnabledPreference = [preferences3 isAutomaticDNDInternalExitConfirmationOverrideEnabledPreference];
+    geofencingObserver = [(CARDNDManager *)self geofencingObserver];
+    [geofencingObserver setExitConfirmationOverride:isAutomaticDNDInternalExitConfirmationOverrideEnabledPreference];
   }
 
-  v16 = [(CARDNDManager *)self preferences];
-  if (![v16 automaticDNDTriggeringMethod] && self->_lastKnownVehicularState == 2 && v5 == 2 && (self->_lastKnownVehicularHints & 0x10) != 0)
+  preferences4 = [(CARDNDManager *)self preferences];
+  if (![preferences4 automaticDNDTriggeringMethod] && self->_lastKnownVehicularState == 2 && vehicleState == 2 && (self->_lastKnownVehicularHints & 0x10) != 0)
   {
 
-    if ((v6 & 0x10) == 0)
+    if ((vehicularHints & 0x10) == 0)
     {
       v24 = CarDNDWDLogging();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -1233,8 +1233,8 @@ LABEL_23:
   {
   }
 
-  v17 = [(CARDNDManager *)self preferences];
-  if (-[NSObject automaticDNDTriggeringMethod](v17, "automaticDNDTriggeringMethod") == 1 && (self->_lastKnownVehicularHints & 0x10) != 0 && ([v4 vehicularHints] & 0x10) == 0)
+  preferences5 = [(CARDNDManager *)self preferences];
+  if (-[NSObject automaticDNDTriggeringMethod](preferences5, "automaticDNDTriggeringMethod") == 1 && (self->_lastKnownVehicularHints & 0x10) != 0 && ([stateCopy vehicularHints] & 0x10) == 0)
   {
     v18 = self->_lastKnownVehicularState == 2;
 
@@ -1243,55 +1243,55 @@ LABEL_23:
       goto LABEL_20;
     }
 
-    v17 = CarDNDWDLogging();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    preferences5 = CarDNDWDLogging();
+    if (os_log_type_enabled(preferences5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Interpreted as BT disconnect.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, preferences5, OS_LOG_TYPE_DEFAULT, "Interpreted as BT disconnect.", buf, 2u);
     }
 
-    v5 = 1;
+    vehicleState = 1;
   }
 
 LABEL_20:
-  if (v9)
+  if (isAutomaticDNDInternalForceOverrideEnabledPreference)
   {
 LABEL_21:
-    [(CARDNDManager *)self _transitionToState:v5 vehicularHints:v6 operatorState:v7];
+    [(CARDNDManager *)self _transitionToState:vehicleState vehicularHints:vehicularHints operatorState:vehicleOperatorState];
     goto LABEL_95;
   }
 
-  if (self->_lastKnownVehicularState == v5 && self->_lastKnownVehicularHints == v6 && v5 != 1 && v7 != 1)
+  if (self->_lastKnownVehicularState == vehicleState && self->_lastKnownVehicularHints == vehicularHints && vehicleState != 1 && vehicleOperatorState != 1)
   {
     v19 = CarDNDWDLogging();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v20 = [NSNumber numberWithUnsignedInteger:self->_lastKnownVehicularState];
-      if (v6)
+      if (vehicularHints)
       {
         v21 = +[NSMutableArray array];
         v22 = v21;
-        if (v6)
+        if (vehicularHints)
         {
           [v21 addObject:@"Motion"];
         }
 
-        if ((v6 & 2) != 0)
+        if ((vehicularHints & 2) != 0)
         {
           [v22 addObject:@"GPS"];
         }
 
-        if ((v6 & 4) != 0)
+        if ((vehicularHints & 4) != 0)
         {
           [v22 addObject:@"Baseband"];
         }
 
-        if ((v6 & 8) != 0)
+        if ((vehicularHints & 8) != 0)
         {
           [v22 addObject:@"Wi-Fi"];
         }
 
-        if ((v6 & 0x10) != 0)
+        if ((vehicularHints & 0x10) != 0)
         {
           [v22 addObject:@"Bluetooth"];
         }
@@ -1322,11 +1322,11 @@ LABEL_21:
     goto LABEL_95;
   }
 
-  v25 = [(CARDNDManager *)self sessionStatus];
-  v26 = [v25 currentSession];
-  v27 = v26 == 0;
+  sessionStatus = [(CARDNDManager *)self sessionStatus];
+  currentSession = [sessionStatus currentSession];
+  v27 = currentSession == 0;
 
-  if ((v27 | v11))
+  if ((v27 | shouldActivateWithCarPlay))
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1368,10 +1368,10 @@ LABEL_52:
       v33 = v32 > 29;
     }
 
-    v36 = (v6 & 0x10) == 0 || v53 == 0 || v5 != 2;
-    if (((v36 | v33 | v11) & 1) == 0)
+    v36 = (vehicularHints & 0x10) == 0 || deviceID == 0 || vehicleState != 2;
+    if (((v36 | v33 | shouldActivateWithCarPlay) & 1) == 0)
     {
-      if ([v53 hasPrefix:@"CarKit"])
+      if ([deviceID hasPrefix:@"CarKit"])
       {
         v37 = CarDNDWDLogging();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -1393,14 +1393,14 @@ LABEL_52:
       v55[2] = sub_100066FCC;
       v55[3] = &unk_1000DDA88;
       v57 = v58;
-      v38 = v53;
+      v38 = deviceID;
       v56 = v38;
       dispatch_sync(&_dispatch_main_q, v55);
 
       if (v59[24] == 1)
       {
-        v39 = [(CARDNDManager *)self vehicleStore];
-        v40 = [v39 vehicleForBluetoothAddress:v38];
+        vehicleStore = [(CARDNDManager *)self vehicleStore];
+        v40 = [vehicleStore vehicleForBluetoothAddress:v38];
 
         if (!v40 || [v40 pairingStatus] != 1)
         {
@@ -1422,8 +1422,8 @@ LABEL_52:
 
     if ([(CARDNDManager *)self _hasDrivingActivityMode])
     {
-      v41 = [(CARDNDManager *)self assertionTrap];
-      v42 = [v41 hasAssertion:2];
+      assertionTrap = [(CARDNDManager *)self assertionTrap];
+      v42 = [assertionTrap hasAssertion:2];
 
       if (v42)
       {
@@ -1440,7 +1440,7 @@ LABEL_52:
         goto LABEL_52;
       }
 
-      if (v5 == 2)
+      if (vehicleState == 2)
       {
         [(CARDNDManager *)self lastKnownReportTime];
         if (v45 > 0.0)
@@ -1470,8 +1470,8 @@ LABEL_52:
           }
 
           [(CARDNDManager *)self _cancelUserDisabledTimer];
-          v50 = [(CARDNDManager *)self assertionTrap];
-          [v50 releaseAssertion:2];
+          assertionTrap2 = [(CARDNDManager *)self assertionTrap];
+          [assertionTrap2 releaseAssertion:2];
         }
       }
     }
@@ -1493,9 +1493,9 @@ LABEL_95:
 
 - (void)_beginIdleExitTransaction
 {
-  v3 = [(CARDNDManager *)self idleExitTransaction];
+  idleExitTransaction = [(CARDNDManager *)self idleExitTransaction];
 
-  if (!v3)
+  if (!idleExitTransaction)
   {
     v4 = CarDNDWDLogging();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1511,9 +1511,9 @@ LABEL_95:
 
 - (void)_endIdleExitTransaction
 {
-  v3 = [(CARDNDManager *)self idleExitTransaction];
+  idleExitTransaction = [(CARDNDManager *)self idleExitTransaction];
 
-  if (v3)
+  if (idleExitTransaction)
   {
     v4 = CarDNDWDLogging();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1528,34 +1528,34 @@ LABEL_95:
 
 - (void)_cancelUserDisabledTimer
 {
-  v3 = [(CARDNDManager *)self userDisableTimer];
-  [v3 invalidate];
+  userDisableTimer = [(CARDNDManager *)self userDisableTimer];
+  [userDisableTimer invalidate];
 
   [(CARDNDManager *)self setUserDisableTimer:0];
 }
 
-- (void)_scheduleUserDisabledTimerWithInterval:(double)a3
+- (void)_scheduleUserDisabledTimerWithInterval:(double)interval
 {
   [(CARDNDManager *)self _cancelUserDisabledTimer];
   v5 = CarDNDWDLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [NSNumber numberWithDouble:a3];
+    v6 = [NSNumber numberWithDouble:interval];
     v11 = 138412290;
     v12 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Scheduling user disabled timer after %@", &v11, 0xCu);
   }
 
-  v7 = [NSTimer timerWithTimeInterval:self target:"_userDisabledTimerFired:" selector:0 userInfo:0 repeats:a3];
+  v7 = [NSTimer timerWithTimeInterval:self target:"_userDisabledTimerFired:" selector:0 userInfo:0 repeats:interval];
   userDisableTimer = self->_userDisableTimer;
   self->_userDisableTimer = v7;
 
   v9 = +[NSRunLoop mainRunLoop];
-  v10 = [(CARDNDManager *)self userDisableTimer];
-  [v9 addTimer:v10 forMode:NSDefaultRunLoopMode];
+  userDisableTimer = [(CARDNDManager *)self userDisableTimer];
+  [v9 addTimer:userDisableTimer forMode:NSDefaultRunLoopMode];
 }
 
-- (void)_userDisabledTimerFired:(id)a3
+- (void)_userDisabledTimerFired:(id)fired
 {
   v4 = CarDNDWDLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1564,11 +1564,11 @@ LABEL_95:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "User disabled timer fired.", v6, 2u);
   }
 
-  v5 = [(CARDNDManager *)self assertionTrap];
-  [v5 releaseAssertion:2];
+  assertionTrap = [(CARDNDManager *)self assertionTrap];
+  [assertionTrap releaseAssertion:2];
 }
 
-- (void)modeAssertionService:(id)a3 didReceiveModeAssertionInvalidation:(id)a4
+- (void)modeAssertionService:(id)service didReceiveModeAssertionInvalidation:(id)invalidation
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

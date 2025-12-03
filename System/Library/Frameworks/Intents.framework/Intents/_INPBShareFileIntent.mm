@@ -1,17 +1,17 @@
 @interface _INPBShareFileIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBShareFileIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBShareFileIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsShareMode:(id)a3;
+- (int)StringAsShareMode:(id)mode;
 - (unint64_t)hash;
-- (void)addEntityName:(id)a3;
-- (void)addRecipients:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEntityNames:(id)a3;
-- (void)setRecipients:(id)a3;
-- (void)setShareMode:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addEntityName:(id)name;
+- (void)addRecipients:(id)recipients;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEntityNames:(id)names;
+- (void)setRecipients:(id)recipients;
+- (void)setShareMode:(int)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBShareFileIntent
@@ -19,10 +19,10 @@
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_entityNames count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -42,8 +42,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -52,16 +52,16 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"entityName"];
+    [dictionary setObject:array forKeyedSubscript:@"entityName"];
   }
 
-  v11 = [(_INPBShareFileIntent *)self intentMetadata];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBShareFileIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
   if ([(NSArray *)self->_recipients count])
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -81,8 +81,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation3 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation3];
         }
 
         v16 = [(NSArray *)v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -91,28 +91,28 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"recipients"];
+    [dictionary setObject:array2 forKeyedSubscript:@"recipients"];
   }
 
   if ([(_INPBShareFileIntent *)self hasShareMode])
   {
-    v20 = [(_INPBShareFileIntent *)self shareMode];
-    if (v20 >= 3)
+    shareMode = [(_INPBShareFileIntent *)self shareMode];
+    if (shareMode >= 3)
     {
-      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v20];
+      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", shareMode];
     }
 
     else
     {
-      v21 = *(&off_1E727DD98 + v20);
+      v21 = *(&off_1E727DD98 + shareMode);
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"shareMode"];
+    [dictionary setObject:v21 forKeyedSubscript:@"shareMode"];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -133,28 +133,28 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBShareFileIntent *)self entityNames];
-  v6 = [v4 entityNames];
-  if ((v5 != 0) == (v6 == 0))
+  entityNames = [(_INPBShareFileIntent *)self entityNames];
+  entityNames2 = [equalCopy entityNames];
+  if ((entityNames != 0) == (entityNames2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBShareFileIntent *)self entityNames];
-  if (v7)
+  entityNames3 = [(_INPBShareFileIntent *)self entityNames];
+  if (entityNames3)
   {
-    v8 = v7;
-    v9 = [(_INPBShareFileIntent *)self entityNames];
-    v10 = [v4 entityNames];
-    v11 = [v9 isEqual:v10];
+    v8 = entityNames3;
+    entityNames4 = [(_INPBShareFileIntent *)self entityNames];
+    entityNames5 = [equalCopy entityNames];
+    v11 = [entityNames4 isEqual:entityNames5];
 
     if (!v11)
     {
@@ -166,20 +166,20 @@
   {
   }
 
-  v5 = [(_INPBShareFileIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  entityNames = [(_INPBShareFileIntent *)self intentMetadata];
+  entityNames2 = [equalCopy intentMetadata];
+  if ((entityNames != 0) == (entityNames2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBShareFileIntent *)self intentMetadata];
-  if (v12)
+  intentMetadata = [(_INPBShareFileIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v13 = v12;
-    v14 = [(_INPBShareFileIntent *)self intentMetadata];
-    v15 = [v4 intentMetadata];
-    v16 = [v14 isEqual:v15];
+    v13 = intentMetadata;
+    intentMetadata2 = [(_INPBShareFileIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v16 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v16)
     {
@@ -191,22 +191,22 @@
   {
   }
 
-  v5 = [(_INPBShareFileIntent *)self recipients];
-  v6 = [v4 recipients];
-  if ((v5 != 0) == (v6 == 0))
+  entityNames = [(_INPBShareFileIntent *)self recipients];
+  entityNames2 = [equalCopy recipients];
+  if ((entityNames != 0) == (entityNames2 == 0))
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v17 = [(_INPBShareFileIntent *)self recipients];
-  if (v17)
+  recipients = [(_INPBShareFileIntent *)self recipients];
+  if (recipients)
   {
-    v18 = v17;
-    v19 = [(_INPBShareFileIntent *)self recipients];
-    v20 = [v4 recipients];
-    v21 = [v19 isEqual:v20];
+    v18 = recipients;
+    recipients2 = [(_INPBShareFileIntent *)self recipients];
+    recipients3 = [equalCopy recipients];
+    v21 = [recipients2 isEqual:recipients3];
 
     if (!v21)
     {
@@ -218,10 +218,10 @@ LABEL_16:
   {
   }
 
-  v24 = [(_INPBShareFileIntent *)self hasShareMode];
-  if (v24 == [v4 hasShareMode])
+  hasShareMode = [(_INPBShareFileIntent *)self hasShareMode];
+  if (hasShareMode == [equalCopy hasShareMode])
   {
-    if (!-[_INPBShareFileIntent hasShareMode](self, "hasShareMode") || ![v4 hasShareMode] || (shareMode = self->_shareMode, shareMode == objc_msgSend(v4, "shareMode")))
+    if (!-[_INPBShareFileIntent hasShareMode](self, "hasShareMode") || ![equalCopy hasShareMode] || (shareMode = self->_shareMode, shareMode == objc_msgSend(equalCopy, "shareMode")))
     {
       v22 = 1;
       goto LABEL_18;
@@ -235,16 +235,16 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBShareFileIntent allocWithZone:](_INPBShareFileIntent init];
-  v6 = [(NSArray *)self->_entityNames copyWithZone:a3];
+  v6 = [(NSArray *)self->_entityNames copyWithZone:zone];
   [(_INPBShareFileIntent *)v5 setEntityNames:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBShareFileIntent *)v5 setIntentMetadata:v7];
 
-  v8 = [(NSArray *)self->_recipients copyWithZone:a3];
+  v8 = [(NSArray *)self->_recipients copyWithZone:zone];
   [(_INPBShareFileIntent *)v5 setRecipients:v8];
 
   if ([(_INPBShareFileIntent *)self hasShareMode])
@@ -255,34 +255,34 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBShareFileIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBShareFileIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBShareFileIntent)initWithCoder:(id)a3
+- (_INPBShareFileIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBShareFileIntent *)self initWithData:v6];
+    self = [(_INPBShareFileIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -315,11 +315,11 @@ LABEL_18:
     while (v7);
   }
 
-  v11 = [(_INPBShareFileIntent *)self intentMetadata];
+  intentMetadata = [(_INPBShareFileIntent *)self intentMetadata];
 
-  if (v11)
+  if (intentMetadata)
   {
-    v12 = [(_INPBShareFileIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBShareFileIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -364,20 +364,20 @@ LABEL_18:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (int)StringAsShareMode:(id)a3
+- (int)StringAsShareMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AIRDROP"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"AIRDROP"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MESSAGE"])
+  else if ([modeCopy isEqualToString:@"MESSAGE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MAIL"])
+  else if ([modeCopy isEqualToString:@"MAIL"])
   {
     v4 = 2;
   }
@@ -390,10 +390,10 @@ LABEL_18:
   return v4;
 }
 
-- (void)setShareMode:(int)a3
+- (void)setShareMode:(int)mode
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (mode == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -401,58 +401,58 @@ LABEL_18:
   else
   {
     *&self->_has = has | 1;
-    self->_shareMode = a3;
+    self->_shareMode = mode;
   }
 }
 
-- (void)addRecipients:(id)a3
+- (void)addRecipients:(id)recipients
 {
-  v4 = a3;
+  recipientsCopy = recipients;
   recipients = self->_recipients;
-  v8 = v4;
+  v8 = recipientsCopy;
   if (!recipients)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_recipients;
-    self->_recipients = v6;
+    self->_recipients = array;
 
-    v4 = v8;
+    recipientsCopy = v8;
     recipients = self->_recipients;
   }
 
-  [(NSArray *)recipients addObject:v4];
+  [(NSArray *)recipients addObject:recipientsCopy];
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v4 = [a3 mutableCopy];
+  v4 = [recipients mutableCopy];
   recipients = self->_recipients;
   self->_recipients = v4;
 
   MEMORY[0x1EEE66BB8](v4, recipients);
 }
 
-- (void)addEntityName:(id)a3
+- (void)addEntityName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   entityNames = self->_entityNames;
-  v8 = v4;
+  v8 = nameCopy;
   if (!entityNames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_entityNames;
-    self->_entityNames = v6;
+    self->_entityNames = array;
 
-    v4 = v8;
+    nameCopy = v8;
     entityNames = self->_entityNames;
   }
 
-  [(NSArray *)entityNames addObject:v4];
+  [(NSArray *)entityNames addObject:nameCopy];
 }
 
-- (void)setEntityNames:(id)a3
+- (void)setEntityNames:(id)names
 {
-  v4 = [a3 mutableCopy];
+  v4 = [names mutableCopy];
   entityNames = self->_entityNames;
   self->_entityNames = v4;
 

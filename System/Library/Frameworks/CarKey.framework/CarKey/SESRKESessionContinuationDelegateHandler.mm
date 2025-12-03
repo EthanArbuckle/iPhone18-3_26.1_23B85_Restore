@@ -1,30 +1,30 @@
 @interface SESRKESessionContinuationDelegateHandler
 - (_TtC6CarKeyP33_86CE746C1DFB40AB47D6F76682ACEEE140SESRKESessionContinuationDelegateHandler)init;
-- (void)sesSession:(id)a3 didReceiveContinuationRequestFor:(id)a4 actionIdentifier:(id)a5 arbitraryData:(id)a6 fromVehicle:(id)a7;
+- (void)sesSession:(id)session didReceiveContinuationRequestFor:(id)for actionIdentifier:(id)identifier arbitraryData:(id)data fromVehicle:(id)vehicle;
 @end
 
 @implementation SESRKESessionContinuationDelegateHandler
 
-- (void)sesSession:(id)a3 didReceiveContinuationRequestFor:(id)a4 actionIdentifier:(id)a5 arbitraryData:(id)a6 fromVehicle:(id)a7
+- (void)sesSession:(id)session didReceiveContinuationRequestFor:(id)for actionIdentifier:(id)identifier arbitraryData:(id)data fromVehicle:(id)vehicle
 {
-  if (a6)
+  if (data)
   {
-    v12 = a3;
-    v13 = a4;
-    v14 = a5;
-    v15 = a7;
-    v16 = self;
-    v17 = a6;
+    sessionCopy = session;
+    forCopy = for;
+    identifierCopy = identifier;
+    vehicleCopy = vehicle;
+    selfCopy = self;
+    dataCopy = data;
     v18 = sub_236ECF684();
     v20 = v19;
   }
 
   else
   {
-    v21 = a3;
-    v22 = a4;
-    v23 = a5;
-    v24 = self;
+    sessionCopy2 = session;
+    forCopy2 = for;
+    identifierCopy2 = identifier;
+    selfCopy2 = self;
     v18 = 0;
     v20 = 0xF000000000000000;
   }

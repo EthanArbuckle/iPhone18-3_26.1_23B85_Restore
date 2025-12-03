@@ -1,16 +1,16 @@
 @interface ASFolderDeleteTask
-- (ASFolderDeleteTask)initWithFolder:(id)a3 previousSyncKey:(id)a4 completionBlock:(id)a5;
-- (int64_t)taskStatusForExchangeStatus:(int)a3;
-- (void)_appendRequestBodyFolderDataToWBXMLData:(id)a3;
+- (ASFolderDeleteTask)initWithFolder:(id)folder previousSyncKey:(id)key completionBlock:(id)block;
+- (int64_t)taskStatusForExchangeStatus:(int)status;
+- (void)_appendRequestBodyFolderDataToWBXMLData:(id)data;
 @end
 
 @implementation ASFolderDeleteTask
 
-- (ASFolderDeleteTask)initWithFolder:(id)a3 previousSyncKey:(id)a4 completionBlock:(id)a5
+- (ASFolderDeleteTask)initWithFolder:(id)folder previousSyncKey:(id)key completionBlock:(id)block
 {
   v6.receiver = self;
   v6.super_class = ASFolderDeleteTask;
-  result = [(ASFolderLocalUpdateTask *)&v6 initWithFolder:a3 previousSyncKey:a4 completionBlock:a5];
+  result = [(ASFolderLocalUpdateTask *)&v6 initWithFolder:folder previousSyncKey:key completionBlock:block];
   if (result)
   {
     result->super._requestType = 20;
@@ -20,20 +20,20 @@
   return result;
 }
 
-- (void)_appendRequestBodyFolderDataToWBXMLData:(id)a3
+- (void)_appendRequestBodyFolderDataToWBXMLData:(id)data
 {
   folder = self->super._folder;
-  v4 = a3;
-  v5 = [(ASFolder *)folder serverID];
-  [v4 appendTag:8 withStringContent:v5];
+  dataCopy = data;
+  serverID = [(ASFolder *)folder serverID];
+  [dataCopy appendTag:8 withStringContent:serverID];
 }
 
-- (int64_t)taskStatusForExchangeStatus:(int)a3
+- (int64_t)taskStatusForExchangeStatus:(int)status
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3 < 0xC && ((0xFDBu >> a3) & 1) != 0)
+  if (status < 0xC && ((0xFDBu >> status) & 1) != 0)
   {
-    result = qword_24A14DEC8[a3];
+    result = qword_24A14DEC8[status];
   }
 
   else
@@ -47,7 +47,7 @@
       v10 = 138412546;
       v11 = v8;
       v12 = 1024;
-      v13 = a3;
+      statusCopy = status;
       _os_log_impl(&dword_24A0AC000, v5, v6, "%@: Unknown status code (%d)", &v10, 0x12u);
     }
 

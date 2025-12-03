@@ -2,17 +2,17 @@
 - (BOOL)_primitiveConsiderStartingNextTask;
 - (BOOL)hasActiveTask;
 - (HDCloudSyncManagerTask)activeTask;
-- (HDCloudSyncManagerTaskQueue)initWithDelegate:(id)a3;
+- (HDCloudSyncManagerTaskQueue)initWithDelegate:(id)delegate;
 - (HDCloudSyncManagerTaskQueueDelegate)delegate;
 - (int64_t)pendingTaskCount;
-- (void)addTask:(id)a3;
+- (void)addTask:(id)task;
 @end
 
 @implementation HDCloudSyncManagerTaskQueue
 
-- (HDCloudSyncManagerTaskQueue)initWithDelegate:(id)a3
+- (HDCloudSyncManagerTaskQueue)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = HDCloudSyncManagerTaskQueue;
   v5 = [(HDCloudSyncManagerTaskQueue *)&v8 init];
@@ -20,7 +20,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -61,10 +61,10 @@
   return v3;
 }
 
-- (void)addTask:(id)a3
+- (void)addTask:(id)task
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  taskCopy = task;
   os_unfair_lock_lock(&self->_lock);
   v19 = 0u;
   v20 = 0u;
@@ -86,7 +86,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v17 + 1) + 8 * v9) combineWithTask:{v4, v17}])
+        if ([*(*(&v17 + 1) + 8 * v9) combineWithTask:{taskCopy, v17}])
         {
           os_unfair_lock_unlock(&self->_lock);
 
@@ -107,13 +107,13 @@
     }
   }
 
-  if ([v4 priority] >= 100)
+  if ([taskCopy priority] >= 100)
   {
     activeTask = self->_activeTask;
     if (activeTask)
     {
-      v11 = [(HDCloudSyncManagerTask *)activeTask priority];
-      if (v11 < [v4 priority])
+      priority = [(HDCloudSyncManagerTask *)activeTask priority];
+      if (priority < [taskCopy priority])
       {
         v12 = self->_activeTask;
         objc_opt_class();
@@ -135,7 +135,7 @@
     pendingTasks = self->_pendingTasks;
   }
 
-  [(NSMutableArray *)pendingTasks addObject:v4, v17];
+  [(NSMutableArray *)pendingTasks addObject:taskCopy, v17];
   os_unfair_lock_unlock(&self->_lock);
     ;
   }
@@ -147,28 +147,28 @@ LABEL_20:
 
 - (BOOL)_primitiveConsiderStartingNextTask
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  os_unfair_lock_lock((a1 + 8));
-  if (*(a1 + 40) || (*(a1 + 32) & 1) != 0 || *(a1 + 33) == 1)
+  os_unfair_lock_lock((self + 8));
+  if (*(self + 40) || (*(self + 32) & 1) != 0 || *(self + 33) == 1)
   {
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
     return 0;
   }
 
-  v4 = (a1 + 16);
-  v5 = *(a1 + 16);
+  v4 = (self + 16);
+  v5 = *(self + 16);
   v6 = v5;
-  v7 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  v7 = *(self + 16);
+  *(self + 16) = 0;
 
-  *(a1 + 24) = [v6 count];
-  *(a1 + 32) = 1;
-  os_unfair_lock_unlock((a1 + 8));
-  objc_copyWeak(&to, (a1 + 48));
+  *(self + 24) = [v6 count];
+  *(self + 32) = 1;
+  os_unfair_lock_unlock((self + 8));
+  objc_copyWeak(&to, (self + 48));
   v8 = objc_loadWeakRetained(&to);
 
   if (v8)
@@ -178,39 +178,39 @@ LABEL_20:
     v11[2] = __65__HDCloudSyncManagerTaskQueue__primitiveConsiderStartingNextTask__block_invoke;
     v11[3] = &unk_27862A0C0;
     objc_copyWeak(&v12, &to);
-    v11[4] = a1;
+    v11[4] = self;
     [v6 sortUsingComparator:v11];
     objc_destroyWeak(&v12);
   }
 
-  os_unfair_lock_lock((a1 + 8));
+  os_unfair_lock_lock((self + 8));
   if (*v4)
   {
     [v6 addObjectsFromArray:?];
   }
 
-  objc_storeStrong((a1 + 16), v5);
-  *(a1 + 24) = 0;
-  *(a1 + 32) = 0;
-  v9 = [*(a1 + 16) firstObject];
-  v2 = v9 != 0;
-  if (v9)
+  objc_storeStrong((self + 16), v5);
+  *(self + 24) = 0;
+  *(self + 32) = 0;
+  firstObject = [*(self + 16) firstObject];
+  v2 = firstObject != 0;
+  if (firstObject)
   {
     [*v4 removeObjectAtIndex:0];
-    objc_storeStrong((a1 + 40), v9);
-    *(a1 + 33) = 1;
-    os_unfair_lock_unlock((a1 + 8));
+    objc_storeStrong((self + 40), firstObject);
+    *(self + 33) = 1;
+    os_unfair_lock_unlock((self + 8));
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __65__HDCloudSyncManagerTaskQueue__primitiveConsiderStartingNextTask__block_invoke_2;
     v10[3] = &unk_278613968;
-    v10[4] = a1;
-    [v9 startWithCompletion:v10];
-    os_unfair_lock_lock((a1 + 8));
-    *(a1 + 33) = 0;
+    v10[4] = self;
+    [firstObject startWithCompletion:v10];
+    os_unfair_lock_lock((self + 8));
+    *(self + 33) = 0;
   }
 
-  os_unfair_lock_unlock((a1 + 8));
+  os_unfair_lock_unlock((self + 8));
 
   objc_destroyWeak(&to);
   return v2;

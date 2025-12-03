@@ -1,58 +1,58 @@
 @interface PLCloudMaster
-+ (PLCloudMaster)cloudMasterWithGUID:(id)a3 inShare:(id)a4 prefetchResources:(BOOL)a5 inManagedObjectContext:(id)a6;
-+ (PLCloudMaster)cloudMasterWithScopedIdentifier:(id)a3 prefetchResources:(BOOL)a4 inLibrary:(id)a5;
++ (PLCloudMaster)cloudMasterWithGUID:(id)d inShare:(id)share prefetchResources:(BOOL)resources inManagedObjectContext:(id)context;
++ (PLCloudMaster)cloudMasterWithScopedIdentifier:(id)identifier prefetchResources:(BOOL)resources inLibrary:(id)library;
 + (id)_originalTypes;
-+ (id)cloudMastersByScopedIdentifiers:(id)a3 relationshipKeyPathsForPrefetching:(id)a4 inLibrary:(id)a5;
-+ (id)cloudMastersWithScopedIdentifiers:(id)a3 relationshipKeyPathsForPrefetching:(id)a4 inLibrary:(id)a5;
-+ (id)insertIntoManagedObjectContext:(id)a3 withCloudMasterGUID:(id)a4 inShare:(id)a5;
-+ (id)insertIntoPhotoLibrary:(id)a3 withCloudMasterGUID:(id)a4 inShare:(id)a5;
++ (id)cloudMastersByScopedIdentifiers:(id)identifiers relationshipKeyPathsForPrefetching:(id)prefetching inLibrary:(id)library;
++ (id)cloudMastersWithScopedIdentifiers:(id)identifiers relationshipKeyPathsForPrefetching:(id)prefetching inLibrary:(id)library;
++ (id)insertIntoManagedObjectContext:(id)context withCloudMasterGUID:(id)d inShare:(id)share;
++ (id)insertIntoPhotoLibrary:(id)library withCloudMasterGUID:(id)d inShare:(id)share;
 + (id)listOfSyncedProperties;
-+ (unint64_t)fullSizeJPEGSourceForUTI:(id)a3 andImageDimensions:(CGSize)a4;
-+ (void)deleteAllCloudMastersInManagedObjectContext:(id)a3;
-+ (void)deleteMasterIfNecessary:(id)a3 inLibrary:(id)a4;
-+ (void)deleteOrphanedMastersWithManagedObjectContext:(id)a3;
-+ (void)resetCloudMastersStateInManagedObjectContext:(id)a3;
-- (BOOL)allOriginalsAreLocallyAvailableForAssetUuid:(id)a3 useOriginalAltInsteadOfOriginal:(BOOL)a4;
++ (unint64_t)fullSizeJPEGSourceForUTI:(id)i andImageDimensions:(CGSize)dimensions;
++ (void)deleteAllCloudMastersInManagedObjectContext:(id)context;
++ (void)deleteMasterIfNecessary:(id)necessary inLibrary:(id)library;
++ (void)deleteOrphanedMastersWithManagedObjectContext:(id)context;
++ (void)resetCloudMastersStateInManagedObjectContext:(id)context;
+- (BOOL)allOriginalsAreLocallyAvailableForAssetUuid:(id)uuid useOriginalAltInsteadOfOriginal:(BOOL)original;
 - (BOOL)allOriginalsAreUploaded;
-- (BOOL)hasResourcesOtherThanForAssetUuid:(id)a3;
+- (BOOL)hasResourcesOtherThanForAssetUuid:(id)uuid;
 - (BOOL)isSyncableChange;
 - (CPLScopedIdentifier)sourceMasterForDuplicationCPLScopedIdentifier;
 - (NSString)description;
 - (id)allAssetAttachedResources;
 - (id)cplFullRecord;
-- (id)cplMasterPropertyChangeForAsset:(id)a3;
+- (id)cplMasterPropertyChangeForAsset:(id)asset;
 - (id)cplPropertyRecord;
 - (id)fingerprintContext;
 - (id)fingerprintScheme;
-- (id)originalFilenameForResourceType:(unint64_t)a3 filePath:(id)a4;
+- (id)originalFilenameForResourceType:(unint64_t)type filePath:(id)path;
 - (id)payloadID;
-- (id)payloadsForChangedKeys:(id)a3;
-- (id)rm_applyResourcesFromCPLMasterChange:(id)a3 inPhotoLibrary:(id)a4;
-- (id)rm_assetAttachedResourceForResourceType:(unint64_t)a3 forAssetUuid:(id)a4;
-- (id)rm_assetAttachedResourcesForResourceType:(unint64_t)a3;
+- (id)payloadsForChangedKeys:(id)keys;
+- (id)rm_applyResourcesFromCPLMasterChange:(id)change inPhotoLibrary:(id)library;
+- (id)rm_assetAttachedResourceForResourceType:(unint64_t)type forAssetUuid:(id)uuid;
+- (id)rm_assetAttachedResourcesForResourceType:(unint64_t)type;
 - (id)rm_assetUUIDToAssetAttachedResources;
-- (id)rm_cloudResourcesForResourceType:(unint64_t)a3;
-- (id)rm_transientCloudResourceForResourceType:(unint64_t)a3;
+- (id)rm_cloudResourcesForResourceType:(unint64_t)type;
+- (id)rm_transientCloudResourceForResourceType:(unint64_t)type;
 - (id)scopeIdentifier;
 - (id)scopedIdentifier;
 - (id)shareRelationship;
-- (id)stableHashFromOriginalResourceError:(id *)a3;
+- (id)stableHashFromOriginalResourceError:(id *)error;
 - (unint64_t)sizeOfOriginal;
 - (void)_promptForNilScopeIdentifierRadar;
-- (void)applyPropertiesFromCPLMasterChange:(id)a3;
+- (void)applyPropertiesFromCPLMasterChange:(id)change;
 - (void)awakeFromInsert;
-- (void)rm_applyExpungeableResourceStatesFromCPLMasterChange:(id)a3 inPhotoLibrary:(id)a4;
-- (void)setSourceMasterForDuplicationCPLScopedIdentifier:(id)a3;
-- (void)updateImportedByBundleIdentifier:(id)a3;
-- (void)updateImportedByDisplayName:(id)a3;
+- (void)rm_applyExpungeableResourceStatesFromCPLMasterChange:(id)change inPhotoLibrary:(id)library;
+- (void)setSourceMasterForDuplicationCPLScopedIdentifier:(id)identifier;
+- (void)updateImportedByBundleIdentifier:(id)identifier;
+- (void)updateImportedByDisplayName:(id)name;
 @end
 
 @implementation PLCloudMaster
 
-- (void)rm_applyExpungeableResourceStatesFromCPLMasterChange:(id)a3 inPhotoLibrary:(id)a4
+- (void)rm_applyExpungeableResourceStatesFromCPLMasterChange:(id)change inPhotoLibrary:(id)library
 {
   v35 = *MEMORY[0x1E69E9840];
-  [a3 expungeableResourceStates];
+  [change expungeableResourceStates];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -108,8 +108,8 @@
               }
 
               v14 = +[PLInternalResource plTrashedStateForCPLExpungedState:](PLInternalResource, "plTrashedStateForCPLExpungedState:", [v6 expungedState]);
-              v15 = [v6 expungedDate];
-              [v12 applyTrashedState:v14 trashedDate:v15];
+              expungedDate = [v6 expungedDate];
+              [v12 applyTrashedState:v14 trashedDate:expungedDate];
             }
 
             v9 = [v7 countByEnumeratingWithState:&v21 objects:v33 count:16];
@@ -129,32 +129,32 @@
   }
 }
 
-- (id)rm_applyResourcesFromCPLMasterChange:(id)a3 inPhotoLibrary:(id)a4
+- (id)rm_applyResourcesFromCPLMasterChange:(id)change inPhotoLibrary:(id)library
 {
   v140 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  changeCopy = change;
+  libraryCopy = library;
   [MEMORY[0x1E696AC08] defaultManager];
-  v97 = v96 = v7;
-  v9 = v7;
-  v10 = v8;
-  v11 = [v9 resources];
+  v97 = v96 = changeCopy;
+  v9 = changeCopy;
+  v10 = libraryCopy;
+  resources = [v9 resources];
   v94 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v12 = [v10 pathManager];
+  pathManager = [v10 pathManager];
 
-  if (!v12)
+  if (!pathManager)
   {
-    v86 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v86 handleFailureInMethod:a2 object:self file:@"PLCloudMaster+RM.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary.pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudMaster+RM.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary.pathManager"}];
   }
 
   v125 = 0u;
   v126 = 0u;
   v123 = 0u;
   v124 = 0u;
-  obj = v11;
+  obj = resources;
   v13 = [obj countByEnumeratingWithState:&v123 objects:v139 count:16];
-  v101 = self;
+  selfCopy = self;
   v102 = v10;
   if (!v13)
   {
@@ -195,24 +195,24 @@
       }
 
       v92 = v16;
-      v19 = [v17 resourceType];
-      if (v19 == 22 && ([v17 identity], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "fileUTI"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E69C08F0], "supplementalResourceAAEType"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "identifier"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v21, "isEqualToString:", v23), v23, v22, v21, v20, !v24))
+      resourceType = [v17 resourceType];
+      if (resourceType == 22 && ([v17 identity], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "fileUTI"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E69C08F0], "supplementalResourceAAEType"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "identifier"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v21, "isEqualToString:", v23), v23, v22, v21, v20, !v24))
       {
         v54 = v92;
       }
 
       else
       {
-        v25 = v101;
-        v26 = [(PLCloudMaster *)v101 rm_assetAttachedResourcesForResourceType:v19];
+        v25 = selfCopy;
+        v26 = [(PLCloudMaster *)selfCopy rm_assetAttachedResourcesForResourceType:resourceType];
         if ([v26 count])
         {
           v117 = 0u;
           v118 = 0u;
           v115 = 0u;
           v116 = 0u;
-          v99 = v26;
-          v27 = [v99 countByEnumeratingWithState:&v115 objects:v137 count:16];
+          rm_assetUUIDToAssetAttachedResources = v26;
+          v27 = [rm_assetUUIDToAssetAttachedResources countByEnumeratingWithState:&v115 objects:v137 count:16];
           if (v27)
           {
             v28 = v27;
@@ -224,18 +224,18 @@
               {
                 if (*v116 != v104)
                 {
-                  objc_enumerationMutation(v99);
+                  objc_enumerationMutation(rm_assetUUIDToAssetAttachedResources);
                 }
 
                 v30 = *(*(&v115 + 1) + 8 * i);
-                v31 = [v17 identity];
-                v32 = [v30 fingerprint];
-                v33 = [v31 fingerPrint];
-                if ([v32 isEqualToString:v33])
+                identity = [v17 identity];
+                fingerprint = [v30 fingerprint];
+                fingerPrint = [identity fingerPrint];
+                if ([fingerprint isEqualToString:fingerPrint])
                 {
-                  v34 = [(PLCloudMaster *)v25 placeholderState];
+                  placeholderState = [(PLCloudMaster *)v25 placeholderState];
 
-                  if (v34 != 1)
+                  if (placeholderState != 1)
                   {
                     if ([v30 cloudLocalState] != 3)
                     {
@@ -251,7 +251,7 @@
                       }
 
                       [v30 setCloudLocalState:3];
-                      [v30 setRemoteAvailability:{objc_msgSend(v31, "isAvailable")}];
+                      [v30 setRemoteAvailability:{objc_msgSend(identity, "isAvailable")}];
                       if (![v30 remoteAvailability] && (*MEMORY[0x1E6994D48] & 1) == 0)
                       {
                         v36 = __CPLAssetsdOSLogDomain();
@@ -290,8 +290,8 @@
                   }
                 }
 
-                v38 = [v30 fingerprint];
-                if (v38 || ![v30 isDerivative])
+                fingerprint2 = [v30 fingerprint];
+                if (fingerprint2 || ![v30 isDerivative])
                 {
                   v103 = 1;
                 }
@@ -301,23 +301,23 @@
                   v103 |= [v30 localAvailability] < 1;
                 }
 
-                v39 = [v30 asset];
-                v40 = [v30 asset];
-                v41 = [v30 asset];
-                v42 = [v40 storedResourceForCPLResource:v17 asset:v41 adjusted:0];
+                asset = [v30 asset];
+                asset2 = [v30 asset];
+                asset3 = [v30 asset];
+                v42 = [asset2 storedResourceForCPLResource:v17 asset:asset3 adjusted:0];
 
                 [v42 setCloudLocalState:3];
-                v43 = [v42 fileURL];
-                v44 = [v43 path];
+                fileURL = [v42 fileURL];
+                path = [fileURL path];
 
-                if (v44)
+                if (path)
                 {
-                  if ([v39 isPlaceholderAsset])
+                  if ([asset isPlaceholderAsset])
                   {
-                    v45 = [v39 shareRelationship];
-                    if (v45)
+                    shareRelationship = [asset shareRelationship];
+                    if (shareRelationship)
                     {
-                      v46 = [v97 fileExistsAtPath:v44];
+                      v46 = [v97 fileExistsAtPath:path];
                     }
 
                     else
@@ -331,10 +331,10 @@
                     v46 = 0;
                   }
 
-                  v47 = [v102 pathManager];
-                  v48 = [v47 photoDirectoryWithType:4];
+                  pathManager2 = [v102 pathManager];
+                  v48 = [pathManager2 photoDirectoryWithType:4];
 
-                  if ([v44 hasPrefix:v48])
+                  if ([path hasPrefix:v48])
                   {
                     if ((*MEMORY[0x1E6994D48] & 1) == 0)
                     {
@@ -358,7 +358,7 @@ LABEL_64:
 
                   else if ((v46 & 1) == 0)
                   {
-                    if ([v97 fileExistsAtPath:v44])
+                    if ([v97 fileExistsAtPath:path])
                     {
                       if ((*MEMORY[0x1E6994D48] & 1) == 0)
                       {
@@ -371,7 +371,7 @@ LABEL_64:
                         }
                       }
 
-                      [v97 removeItemAtPath:v44 error:0];
+                      [v97 removeItemAtPath:path error:0];
                     }
 
                     goto LABEL_64;
@@ -379,10 +379,10 @@ LABEL_64:
 
 LABEL_65:
 
-                  v25 = v101;
+                  v25 = selfCopy;
                 }
 
-                v51 = [(PLCloudMaster *)v25 placeholderState];
+                placeholderState2 = [(PLCloudMaster *)v25 placeholderState];
                 v52 = v106;
                 if (v106)
                 {
@@ -394,7 +394,7 @@ LABEL_65:
                   v53 = 1;
                 }
 
-                if (v51 == 1)
+                if (placeholderState2 == 1)
                 {
                   v52 = v53;
                 }
@@ -404,7 +404,7 @@ LABEL_65:
 LABEL_72:
               }
 
-              v28 = [v99 countByEnumeratingWithState:&v115 objects:v137 count:16];
+              v28 = [rm_assetUUIDToAssetAttachedResources countByEnumeratingWithState:&v115 objects:v137 count:16];
               if (!v28)
               {
                 v15 = v87;
@@ -432,17 +432,17 @@ LABEL_72:
             }
           }
 
-          v99 = [(PLCloudMaster *)v101 rm_assetUUIDToAssetAttachedResources];
-          if ([v99 count])
+          rm_assetUUIDToAssetAttachedResources = [(PLCloudMaster *)selfCopy rm_assetUUIDToAssetAttachedResources];
+          if ([rm_assetUUIDToAssetAttachedResources count])
           {
             if ((*MEMORY[0x1E6994D48] & 1) == 0)
             {
               v56 = __CPLAssetsdOSLogDomain();
               if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
               {
-                v57 = [v99 allKeys];
+                allKeys = [rm_assetUUIDToAssetAttachedResources allKeys];
                 *buf = 138412290;
-                v128 = v57;
+                v128 = allKeys;
                 _os_log_impl(&dword_19BF1F000, v56, OS_LOG_TYPE_DEFAULT, "Found existing master resources for assets %@", buf, 0xCu);
               }
             }
@@ -451,8 +451,8 @@ LABEL_72:
             v122 = 0u;
             v119 = 0u;
             v120 = 0u;
-            v58 = [v99 allKeys];
-            v59 = [v58 countByEnumeratingWithState:&v119 objects:v138 count:16];
+            allKeys2 = [rm_assetUUIDToAssetAttachedResources allKeys];
+            v59 = [allKeys2 countByEnumeratingWithState:&v119 objects:v138 count:16];
             if (v59)
             {
               v60 = v59;
@@ -463,7 +463,7 @@ LABEL_72:
                 {
                   if (*v120 != v61)
                   {
-                    objc_enumerationMutation(v58);
+                    objc_enumerationMutation(allKeys2);
                   }
 
                   v63 = [PLManagedAsset assetWithUUID:*(*(&v119 + 1) + 8 * j) inLibrary:v102];
@@ -475,7 +475,7 @@ LABEL_72:
                   }
                 }
 
-                v60 = [v58 countByEnumeratingWithState:&v119 objects:v138 count:16];
+                v60 = [allKeys2 countByEnumeratingWithState:&v119 objects:v138 count:16];
               }
 
               while (v60);
@@ -486,17 +486,17 @@ LABEL_72:
 
           else
           {
-            v58 = [PLResourceInstaller generateExternalResourceFromCPLResource:v17 cloudMaster:v101 masterResources:obj];
-            v65 = [(PLCloudMaster *)v101 rm_transientCloudResourceForResourceType:v19];
+            allKeys2 = [PLResourceInstaller generateExternalResourceFromCPLResource:v17 cloudMaster:selfCopy masterResources:obj];
+            v65 = [(PLCloudMaster *)selfCopy rm_transientCloudResourceForResourceType:resourceType];
             v66 = v65;
             if (v65)
             {
-              [v65 updateResourceWithExternalCPLResource:v58];
+              [v65 updateResourceWithExternalCPLResource:allKeys2];
             }
 
             else
             {
-              v67 = [PLTransientInternalResource insertResourceForCloudMaster:v101 withExternalCloudResource:v58];
+              v67 = [PLTransientInternalResource insertResourceForCloudMaster:selfCopy withExternalCloudResource:allKeys2];
             }
 
             v54 = v92;
@@ -518,7 +518,7 @@ LABEL_103:
 
     while (v16 != v14);
     v14 = [obj countByEnumeratingWithState:&v123 objects:v139 count:16];
-    self = v101;
+    self = selfCopy;
   }
 
   while (v14);
@@ -528,8 +528,8 @@ LABEL_109:
   v114 = 0u;
   v111 = 0u;
   v112 = 0u;
-  v93 = [(PLCloudMaster *)self assets];
-  v98 = [v93 countByEnumeratingWithState:&v111 objects:v136 count:16];
+  assets = [(PLCloudMaster *)self assets];
+  v98 = [assets countByEnumeratingWithState:&v111 objects:v136 count:16];
   if (v98)
   {
     v95 = *v112;
@@ -540,7 +540,7 @@ LABEL_109:
       {
         if (*v112 != v95)
         {
-          objc_enumerationMutation(v93);
+          objc_enumerationMutation(assets);
         }
 
         v100 = v68;
@@ -562,8 +562,8 @@ LABEL_109:
         v110 = 0u;
         v107 = 0u;
         v108 = 0u;
-        v73 = [v69 allMasterCPLResources];
-        v74 = [v73 countByEnumeratingWithState:&v107 objects:v135 count:16];
+        allMasterCPLResources = [v69 allMasterCPLResources];
+        v74 = [allMasterCPLResources countByEnumeratingWithState:&v107 objects:v135 count:16];
         if (v74)
         {
           v75 = v74;
@@ -574,7 +574,7 @@ LABEL_109:
             {
               if (*v108 != v76)
               {
-                objc_enumerationMutation(v73);
+                objc_enumerationMutation(allMasterCPLResources);
               }
 
               v78 = *(*(&v107 + 1) + 8 * k);
@@ -586,19 +586,19 @@ LABEL_109:
                   if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
                   {
                     v80 = [MEMORY[0x1E6994B90] shortDescriptionForResourceType:{objc_msgSend(v78, "cplType")}];
-                    v81 = [v78 objectID];
-                    v82 = [v69 cloudAssetGUID];
+                    objectID = [v78 objectID];
+                    cloudAssetGUID = [v69 cloudAssetGUID];
                     *buf = 138544130;
                     v128 = v80;
                     v129 = 2112;
                     v130 = v96;
                     v131 = 2114;
-                    v132 = v81;
+                    v132 = objectID;
                     v133 = 2114;
-                    v134 = v82;
+                    v134 = cloudAssetGUID;
                     _os_log_impl(&dword_19BF1F000, v79, OS_LOG_TYPE_DEFAULT, "Detected master resource %{public}@ removed on master change %@. Expunging resource %{public}@ on asset %{public}@", buf, 0x2Au);
 
-                    self = v101;
+                    self = selfCopy;
                   }
                 }
 
@@ -606,7 +606,7 @@ LABEL_109:
               }
             }
 
-            v75 = [v73 countByEnumeratingWithState:&v107 objects:v135 count:16];
+            v75 = [allMasterCPLResources countByEnumeratingWithState:&v107 objects:v135 count:16];
           }
 
           while (v75);
@@ -616,7 +616,7 @@ LABEL_109:
       }
 
       while (v100 + 1 != v98);
-      v98 = [v93 countByEnumeratingWithState:&v111 objects:v136 count:16];
+      v98 = [assets countByEnumeratingWithState:&v111 objects:v136 count:16];
     }
 
     while (v98);
@@ -629,9 +629,9 @@ LABEL_109:
       v83 = __CPLAssetsdOSLogDomain();
       if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
       {
-        v84 = [(PLCloudMaster *)self scopedIdentifier];
+        scopedIdentifier = [(PLCloudMaster *)self scopedIdentifier];
         *buf = 138412290;
-        v128 = v84;
+        v128 = scopedIdentifier;
         _os_log_impl(&dword_19BF1F000, v83, OS_LOG_TYPE_DEFAULT, "Setting master %@ as non-placeholder", buf, 0xCu);
       }
     }
@@ -643,16 +643,16 @@ LABEL_109:
   return v94;
 }
 
-- (BOOL)hasResourcesOtherThanForAssetUuid:(id)a3
+- (BOOL)hasResourcesOtherThanForAssetUuid:(id)uuid
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  uuidCopy = uuid;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(PLCloudMaster *)self assets];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  assets = [(PLCloudMaster *)self assets];
+  v6 = [assets countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -662,11 +662,11 @@ LABEL_109:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(assets);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) uuid];
-        v10 = [v9 isEqualToString:v4];
+        uuid = [*(*(&v12 + 1) + 8 * i) uuid];
+        v10 = [uuid isEqualToString:uuidCopy];
 
         if (!v10)
         {
@@ -675,7 +675,7 @@ LABEL_109:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [assets countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -698,8 +698,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(PLCloudMaster *)self assets];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  assets = [(PLCloudMaster *)self assets];
+  v5 = [assets countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -710,14 +710,14 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assets);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) allMasterCPLResources];
-        [v3 unionSet:v9];
+        allMasterCPLResources = [*(*(&v11 + 1) + 8 * i) allMasterCPLResources];
+        [v3 unionSet:allMasterCPLResources];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [assets countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -729,7 +729,7 @@ LABEL_11:
 - (id)rm_assetUUIDToAssetAttachedResources
 {
   v29 = *MEMORY[0x1E69E9840];
-  v18 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -750,14 +750,14 @@ LABEL_11:
         }
 
         v7 = *(*(&v23 + 1) + 8 * i);
-        v8 = [v7 uuid];
+        uuid = [v7 uuid];
         v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v10 = [v7 modernResources];
-        v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        modernResources = [v7 modernResources];
+        v11 = [modernResources countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v11)
         {
           v12 = v11;
@@ -768,7 +768,7 @@ LABEL_11:
             {
               if (*v20 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(modernResources);
               }
 
               v15 = *(*(&v19 + 1) + 8 * j);
@@ -778,7 +778,7 @@ LABEL_11:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v12 = [modernResources countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v12);
@@ -786,7 +786,7 @@ LABEL_11:
 
         if ([v9 count])
         {
-          [v18 setObject:v9 forKeyedSubscript:v8];
+          [dictionary setObject:v9 forKeyedSubscript:uuid];
         }
       }
 
@@ -796,19 +796,19 @@ LABEL_11:
     while (v4);
   }
 
-  return v18;
+  return dictionary;
 }
 
-- (id)rm_assetAttachedResourceForResourceType:(unint64_t)a3 forAssetUuid:(id)a4
+- (id)rm_assetAttachedResourceForResourceType:(unint64_t)type forAssetUuid:(id)uuid
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  uuidCopy = uuid;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(PLCloudMaster *)self assets];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  assets = [(PLCloudMaster *)self assets];
+  v8 = [assets countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -819,21 +819,21 @@ LABEL_11:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(assets);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 uuid];
-        v14 = [v13 isEqualToString:v6];
+        uuid = [v12 uuid];
+        v14 = [uuid isEqualToString:uuidCopy];
 
         if (v14)
         {
-          v15 = [v12 masterResourceForCPLType:a3];
+          v15 = [v12 masterResourceForCPLType:type];
           goto LABEL_11;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [assets countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
         continue;
@@ -849,16 +849,16 @@ LABEL_11:
   return v15;
 }
 
-- (id)rm_assetAttachedResourcesForResourceType:(unint64_t)a3
+- (id)rm_assetAttachedResourcesForResourceType:(unint64_t)type
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(PLCloudMaster *)self assets];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  assets = [(PLCloudMaster *)self assets];
+  v7 = [assets countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -869,26 +869,26 @@ LABEL_11:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(assets);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) masterResourceForCPLType:a3];
+        v11 = [*(*(&v13 + 1) + 8 * i) masterResourceForCPLType:type];
         if (v11)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [assets countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)rm_cloudResourcesForResourceType:(unint64_t)a3
+- (id)rm_cloudResourcesForResourceType:(unint64_t)type
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v5 = [(PLCloudMaster *)self rm_transientCloudResourceForResourceType:?];
@@ -901,7 +901,7 @@ LABEL_11:
 
   else
   {
-    v7 = [(PLCloudMaster *)self rm_assetAttachedResourcesForResourceType:a3];
+    v7 = [(PLCloudMaster *)self rm_assetAttachedResourcesForResourceType:type];
   }
 
   v8 = v7;
@@ -909,15 +909,15 @@ LABEL_11:
   return v8;
 }
 
-- (id)rm_transientCloudResourceForResourceType:(unint64_t)a3
+- (id)rm_transientCloudResourceForResourceType:(unint64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PLCloudMaster *)self modernResources];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  modernResources = [(PLCloudMaster *)self modernResources];
+  v5 = [modernResources countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -928,18 +928,18 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(modernResources);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 cplType] == a3)
+        if ([v9 cplType] == type)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [modernResources countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -955,17 +955,17 @@ LABEL_11:
   return v10;
 }
 
-- (id)payloadsForChangedKeys:(id)a3
+- (id)payloadsForChangedKeys:(id)keys
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(PLCloudMaster *)self assets];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  assets = [(PLCloudMaster *)self assets];
+  v7 = [assets countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (!v7)
   {
     goto LABEL_15;
@@ -981,19 +981,19 @@ LABEL_11:
     {
       if (*v21 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(assets);
       }
 
       v12 = *(*(&v20 + 1) + 8 * i);
-      v13 = [v12 payloadID];
-      if (v13)
+      payloadID = [v12 payloadID];
+      if (payloadID)
       {
         if (![v12 isValidForJournalPersistence])
         {
           goto LABEL_13;
         }
 
-        v14 = [[PLAssetJournalEntryPayload alloc] initWithCloudMaster:self payloadID:v13 changedKeys:v4];
+        v14 = [[PLAssetJournalEntryPayload alloc] initWithCloudMaster:self payloadID:payloadID changedKeys:keysCopy];
         if (v14)
         {
           [v5 addObject:v14];
@@ -1005,9 +1005,9 @@ LABEL_11:
         v14 = PLMigrationGetLog();
         if (os_log_type_enabled(&v14->super.super, OS_LOG_TYPE_ERROR))
         {
-          v15 = [v12 objectID];
+          objectID = [v12 objectID];
           *buf = v19;
-          v25 = v15;
+          v25 = objectID;
           _os_log_impl(&dword_19BF1F000, &v14->super.super, OS_LOG_TYPE_ERROR, "Skipping payload for CloudMaster update with nil payloadID for existing object: %{public}@", buf, 0xCu);
         }
       }
@@ -1015,7 +1015,7 @@ LABEL_11:
 LABEL_13:
     }
 
-    v9 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+    v9 = [assets countByEnumeratingWithState:&v20 objects:v26 count:16];
   }
 
   while (v9);
@@ -1038,23 +1038,23 @@ LABEL_15:
 
 - (id)payloadID
 {
-  v2 = [(PLCloudMaster *)self cloudMasterGUID];
-  v3 = [PLJournalEntryPayloadIDFactory payloadIDWithString:v2];
+  cloudMasterGUID = [(PLCloudMaster *)self cloudMasterGUID];
+  v3 = [PLJournalEntryPayloadIDFactory payloadIDWithString:cloudMasterGUID];
 
   return v3;
 }
 
-- (void)setSourceMasterForDuplicationCPLScopedIdentifier:(id)a3
+- (void)setSourceMasterForDuplicationCPLScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (identifierCopy)
   {
-    v5 = [v4 identifier];
-    [(PLCloudMaster *)self setSourceMasterForDuplicationIdentifier:v5];
+    identifier = [identifierCopy identifier];
+    [(PLCloudMaster *)self setSourceMasterForDuplicationIdentifier:identifier];
 
-    v6 = [v7 scopeIdentifier];
-    [(PLCloudMaster *)self setSourceMasterForDuplicationScopeIdentifier:v6];
+    scopeIdentifier = [v7 scopeIdentifier];
+    [(PLCloudMaster *)self setSourceMasterForDuplicationScopeIdentifier:scopeIdentifier];
   }
 
   else
@@ -1066,11 +1066,11 @@ LABEL_15:
 
 - (CPLScopedIdentifier)sourceMasterForDuplicationCPLScopedIdentifier
 {
-  v3 = [(PLCloudMaster *)self sourceMasterForDuplicationIdentifier];
-  v4 = [(PLCloudMaster *)self sourceMasterForDuplicationScopeIdentifier];
-  if (v3)
+  sourceMasterForDuplicationIdentifier = [(PLCloudMaster *)self sourceMasterForDuplicationIdentifier];
+  sourceMasterForDuplicationScopeIdentifier = [(PLCloudMaster *)self sourceMasterForDuplicationScopeIdentifier];
+  if (sourceMasterForDuplicationIdentifier)
   {
-    v5 = [objc_alloc(MEMORY[0x1E6994BB8]) initWithScopeIdentifier:v4 identifier:v3];
+    v5 = [objc_alloc(MEMORY[0x1E6994BB8]) initWithScopeIdentifier:sourceMasterForDuplicationScopeIdentifier identifier:sourceMasterForDuplicationIdentifier];
   }
 
   else
@@ -1084,7 +1084,7 @@ LABEL_15:
 - (BOOL)isSyncableChange
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(PLCloudMaster *)self changedValues];
+  changedValues = [(PLCloudMaster *)self changedValues];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -1103,7 +1103,7 @@ LABEL_15:
           objc_enumerationMutation(v3);
         }
 
-        v7 = [v2 objectForKey:*(*(&v9 + 1) + 8 * i)];
+        v7 = [changedValues objectForKey:*(*(&v9 + 1) + 8 * i)];
 
         if (v7)
         {
@@ -1127,58 +1127,58 @@ LABEL_11:
   return v4;
 }
 
-- (id)originalFilenameForResourceType:(unint64_t)a3 filePath:(id)a4
+- (id)originalFilenameForResourceType:(unint64_t)type filePath:(id)path
 {
-  v6 = a4;
-  if (a3 - 17 < 2)
+  pathCopy = path;
+  if (type - 17 < 2)
   {
-    v7 = [(PLCloudMaster *)self originalFilename];
-    v8 = [v7 stringByDeletingPathExtension];
-    v9 = [v6 pathExtension];
-    v11 = [v8 stringByAppendingPathExtension:v9];
+    originalFilename = [(PLCloudMaster *)self originalFilename];
+    stringByDeletingPathExtension = [originalFilename stringByDeletingPathExtension];
+    pathExtension = [pathCopy pathExtension];
+    originalFilename2 = [stringByDeletingPathExtension stringByAppendingPathExtension:pathExtension];
     goto LABEL_5;
   }
 
-  if (a3 - 23 < 2)
+  if (type - 23 < 2)
   {
-    v7 = [(PLCloudMaster *)self originalFilename];
-    v8 = [v7 stringByDeletingPathExtension];
-    v9 = [v8 stringByAppendingString:*MEMORY[0x1E69BFFB0]];
-    v10 = [v6 pathExtension];
-    v11 = [v9 stringByAppendingPathExtension:v10];
+    originalFilename = [(PLCloudMaster *)self originalFilename];
+    stringByDeletingPathExtension = [originalFilename stringByDeletingPathExtension];
+    pathExtension = [stringByDeletingPathExtension stringByAppendingString:*MEMORY[0x1E69BFFB0]];
+    pathExtension2 = [pathCopy pathExtension];
+    originalFilename2 = [pathExtension stringByAppendingPathExtension:pathExtension2];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    v11 = [(PLCloudMaster *)self originalFilename];
+    originalFilename2 = [(PLCloudMaster *)self originalFilename];
   }
 
   else
   {
-    v11 = 0;
+    originalFilename2 = 0;
   }
 
 LABEL_6:
 
-  return v11;
+  return originalFilename2;
 }
 
 - (void)_promptForNilScopeIdentifierRadar
 {
   v11 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLCloudMaster *)self objectID];
-  v5 = [(PLCloudMaster *)self isDeleted];
+  objectID = [(PLCloudMaster *)self objectID];
+  isDeleted = [(PLCloudMaster *)self isDeleted];
   v6 = @"NO";
-  if (v5)
+  if (isDeleted)
   {
     v6 = @"YES";
   }
 
-  v7 = [v3 stringWithFormat:@"Found cloud master with nil scope identifier %@ (isDeleted=%@) %@.\n\nSee rdar://problem/41018298", v4, v6, self];
+  v7 = [v3 stringWithFormat:@"Found cloud master with nil scope identifier %@ (isDeleted=%@) %@.\n\nSee rdar://problem/41018298", objectID, v6, self];
 
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -1194,11 +1194,11 @@ LABEL_6:
   [PLDiagnostics fileRadarUserNotificationWithHeader:@"Unexpected Photo Library state" message:@"Please file a Radar against Photos" radarTitle:@"TTR: cloud master with nil scope identifier" radarDescription:v7];
 }
 
-- (id)stableHashFromOriginalResourceError:(id *)a3
+- (id)stableHashFromOriginalResourceError:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [(PLCloudMaster *)self scopedIdentifier];
-  v6 = [v5 identifier];
+  scopedIdentifier = [(PLCloudMaster *)self scopedIdentifier];
+  identifier = [scopedIdentifier identifier];
 
   [(PLCloudMaster *)self rm_cloudResourcesForResourceType:1];
   v23 = 0u;
@@ -1221,15 +1221,15 @@ LABEL_6:
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 fingerprint];
-        v15 = [v14 isEqualToString:v6];
+        fingerprint = [v13 fingerprint];
+        v15 = [fingerprint isEqualToString:identifier];
 
         if (v15)
         {
-          v16 = [v13 stableHash];
-          if (v16)
+          stableHash = [v13 stableHash];
+          if (stableHash)
           {
-            v17 = v16;
+            v17 = stableHash;
             v18 = v7;
             v19 = v17;
             goto LABEL_16;
@@ -1258,11 +1258,11 @@ LABEL_6:
   v28 = v11;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
   v18 = [v20 errorWithDomain:v21 code:45701 userInfo:v17];
-  if (a3)
+  if (error)
   {
     v18 = v18;
     v19 = 0;
-    *a3 = v18;
+    *error = v18;
   }
 
   else
@@ -1277,60 +1277,60 @@ LABEL_16:
 
 - (id)fingerprintScheme
 {
-  v3 = [(PLCloudMaster *)self cloudMasterGUID];
-  if (v3)
+  cloudMasterGUID = [(PLCloudMaster *)self cloudMasterGUID];
+  if (cloudMasterGUID)
   {
-    v4 = [(PLCloudMaster *)self fingerprintContext];
-    v5 = [v4 fingerprintSchemeForMasterIdentifier:v3];
+    fingerprintContext = [(PLCloudMaster *)self fingerprintContext];
+    v5 = [fingerprintContext fingerprintSchemeForMasterIdentifier:cloudMasterGUID];
     v6 = v5;
     if (v5)
     {
-      v7 = v5;
+      invalidFingerprintScheme = v5;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E6994AE0] invalidFingerprintScheme];
+      invalidFingerprintScheme = [MEMORY[0x1E6994AE0] invalidFingerprintScheme];
     }
 
-    v8 = v7;
+    invalidFingerprintScheme2 = invalidFingerprintScheme;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E6994AE0] invalidFingerprintScheme];
+    invalidFingerprintScheme2 = [MEMORY[0x1E6994AE0] invalidFingerprintScheme];
   }
 
-  return v8;
+  return invalidFingerprintScheme2;
 }
 
 - (id)fingerprintContext
 {
-  v2 = [(PLManagedObject *)self photoLibrary];
-  v3 = [v2 fingerprintContext];
-  v4 = v3;
-  if (v3)
+  photoLibrary = [(PLManagedObject *)self photoLibrary];
+  fingerprintContext = [photoLibrary fingerprintContext];
+  v4 = fingerprintContext;
+  if (fingerprintContext)
   {
-    v5 = v3;
+    mEMORY[0x1E6994AD8] = fingerprintContext;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E6994AD8] sharedContext];
+    mEMORY[0x1E6994AD8] = [MEMORY[0x1E6994AD8] sharedContext];
   }
 
-  v6 = v5;
+  v6 = mEMORY[0x1E6994AD8];
 
   return v6;
 }
 
 - (id)scopedIdentifier
 {
-  v3 = [(PLCloudMaster *)self scopeIdentifier];
-  v4 = [(PLCloudMaster *)self cloudMasterGUID];
-  if (v4)
+  scopeIdentifier = [(PLCloudMaster *)self scopeIdentifier];
+  cloudMasterGUID = [(PLCloudMaster *)self cloudMasterGUID];
+  if (cloudMasterGUID)
   {
-    v5 = [objc_alloc(MEMORY[0x1E6994BB8]) initWithScopeIdentifier:v3 identifier:v4];
+    v5 = [objc_alloc(MEMORY[0x1E6994BB8]) initWithScopeIdentifier:scopeIdentifier identifier:cloudMasterGUID];
   }
 
   else
@@ -1344,45 +1344,45 @@ LABEL_16:
 
 - (id)scopeIdentifier
 {
-  v3 = [(PLCloudMaster *)self momentShare];
+  momentShare = [(PLCloudMaster *)self momentShare];
 
-  if (v3)
+  if (momentShare)
   {
-    v4 = [(PLCloudMaster *)self momentShare];
+    momentShare2 = [(PLCloudMaster *)self momentShare];
   }
 
   else
   {
-    v5 = [(PLCloudMaster *)self collectionShare];
+    collectionShare = [(PLCloudMaster *)self collectionShare];
 
-    if (!v5)
+    if (!collectionShare)
     {
       goto LABEL_7;
     }
 
-    v4 = [(PLCloudMaster *)self collectionShare];
+    momentShare2 = [(PLCloudMaster *)self collectionShare];
   }
 
-  v6 = v4;
-  if (v4)
+  photoLibrary = momentShare2;
+  if (momentShare2)
   {
-    v7 = [v4 scopeIdentifier];
+    scopeIdentifier = [momentShare2 scopeIdentifier];
     goto LABEL_8;
   }
 
 LABEL_7:
-  v6 = [(PLManagedObject *)self photoLibrary];
-  v7 = [v6 mainScopeIdentifier];
+  photoLibrary = [(PLManagedObject *)self photoLibrary];
+  scopeIdentifier = [photoLibrary mainScopeIdentifier];
 LABEL_8:
-  v8 = v7;
+  v8 = scopeIdentifier;
 
   return v8;
 }
 
-- (id)cplMasterPropertyChangeForAsset:(id)a3
+- (id)cplMasterPropertyChangeForAsset:(id)asset
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   v5 = MEMORY[0x1E6994D48];
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -1390,36 +1390,36 @@ LABEL_8:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v38 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "PLCloudMaster %@", buf, 0xCu);
     }
   }
 
   v7 = objc_alloc_init(MEMORY[0x1E6994AF8]);
-  v8 = [(PLCloudMaster *)self scopedIdentifier];
-  [v7 setScopedIdentifier:v8];
+  scopedIdentifier = [(PLCloudMaster *)self scopedIdentifier];
+  [v7 setScopedIdentifier:scopedIdentifier];
 
-  v9 = [(PLCloudMaster *)self originalFilename];
+  originalFilename = [(PLCloudMaster *)self originalFilename];
 
-  if (v9)
+  if (originalFilename)
   {
-    v10 = [(PLCloudMaster *)self originalFilename];
-    [v7 setFilename:v10];
+    originalFilename2 = [(PLCloudMaster *)self originalFilename];
+    [v7 setFilename:originalFilename2];
   }
 
   [v7 setFullSizeJPEGSource:{-[PLCloudMaster fullSizeJPEGSource](self, "fullSizeJPEGSource")}];
-  v11 = [(PLCloudMaster *)self creationDate];
-  [v7 setCreationDate:v11];
+  creationDate = [(PLCloudMaster *)self creationDate];
+  [v7 setCreationDate:creationDate];
 
-  v12 = [(PLCloudMaster *)self importDate];
-  [v7 setImportDate:v12];
+  importDate = [(PLCloudMaster *)self importDate];
+  [v7 setImportDate:importDate];
 
-  v13 = [(PLCloudMaster *)self uniformTypeIdentifier];
-  [v7 setItemType:v13];
+  uniformTypeIdentifier = [(PLCloudMaster *)self uniformTypeIdentifier];
+  [v7 setItemType:uniformTypeIdentifier];
 
   [v7 setChangeType:0];
-  v14 = [(PLCloudMaster *)self mediaMetadata];
-  v15 = [v14 valueForKey:@"data"];
+  mediaMetadata = [(PLCloudMaster *)self mediaMetadata];
+  v15 = [mediaMetadata valueForKey:@"data"];
 
   v16 = [v15 length];
   if (v16 <= [MEMORY[0x1E6994B60] maxInlineDataSize])
@@ -1427,41 +1427,41 @@ LABEL_8:
     [v7 setMediaMetaData:v15];
   }
 
-  v17 = [(PLCloudMaster *)self mediaMetadataType];
-  [v7 setMediaMetaDataType:v17];
+  mediaMetadataType = [(PLCloudMaster *)self mediaMetadataType];
+  [v7 setMediaMetaDataType:mediaMetadataType];
 
-  v18 = [(PLCloudMaster *)self originatingAssetIdentifier];
-  [v7 setOriginatingFingerprint:v18];
+  originatingAssetIdentifier = [(PLCloudMaster *)self originatingAssetIdentifier];
+  [v7 setOriginatingFingerprint:originatingAssetIdentifier];
 
   [v7 setImportedBy:{-[PLCloudMaster importedBy](self, "importedBy")}];
-  v19 = [(PLCloudMaster *)self importedByBundleIdentifier];
-  [v7 setImportedByBundleIdentifier:v19];
+  importedByBundleIdentifier = [(PLCloudMaster *)self importedByBundleIdentifier];
+  [v7 setImportedByBundleIdentifier:importedByBundleIdentifier];
 
-  v20 = [(PLCloudMaster *)self importedByDisplayName];
-  [v7 setImportedByDisplayName:v20];
+  importedByDisplayName = [(PLCloudMaster *)self importedByDisplayName];
+  [v7 setImportedByDisplayName:importedByDisplayName];
 
   if ([(PLCloudMaster *)self placeholderState]== 1)
   {
-    v21 = [(PLCloudMaster *)self sourceMasterForDuplicationCPLScopedIdentifier];
-    [v7 setResourceCopyFromScopedIdentifier:v21];
+    sourceMasterForDuplicationCPLScopedIdentifier = [(PLCloudMaster *)self sourceMasterForDuplicationCPLScopedIdentifier];
+    [v7 setResourceCopyFromScopedIdentifier:sourceMasterForDuplicationCPLScopedIdentifier];
   }
 
-  if ([v4 kind] == 1)
+  if ([assetCopy kind] == 1)
   {
-    v22 = [(PLCloudMaster *)self mediaMetadata];
-    v23 = [v22 valueForKey:@"data"];
+    mediaMetadata2 = [(PLCloudMaster *)self mediaMetadata];
+    v23 = [mediaMetadata2 valueForKey:@"data"];
 
     if (v23)
     {
       v36 = 0;
-      v24 = [MEMORY[0x1E696AE40] propertyListWithData:v23 options:0 format:0 error:&v36];
+      scopedIdentifier3 = [MEMORY[0x1E696AE40] propertyListWithData:v23 options:0 format:0 error:&v36];
       v25 = v36;
-      if (v24)
+      if (scopedIdentifier3)
       {
-        v26 = [MEMORY[0x1E6987E28] assetProxyWithPropertyList:v24];
-        [v4 setVideoInfoOnMasterFromAVAsset:v26];
-        v27 = [(PLCloudMaster *)self codecName];
-        [v7 setCodec:v27];
+        v26 = [MEMORY[0x1E6987E28] assetProxyWithPropertyList:scopedIdentifier3];
+        [assetCopy setVideoInfoOnMasterFromAVAsset:v26];
+        codecName = [(PLCloudMaster *)self codecName];
+        [v7 setCodec:codecName];
 
         [v7 setVideoFrameRate:{-[PLCloudMaster videoFrameRate](self, "videoFrameRate")}];
 LABEL_21:
@@ -1474,9 +1474,9 @@ LABEL_21:
         v26 = __CPLAssetsdOSLogDomain();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
-          v28 = [(PLCloudMaster *)self scopedIdentifier];
+          scopedIdentifier2 = [(PLCloudMaster *)self scopedIdentifier];
           *buf = 138543618;
-          v38 = v28;
+          selfCopy = scopedIdentifier2;
           v39 = 2114;
           v40 = v25;
           _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_ERROR, "cplMasterPropertyChangeFromCloudMaster: unable to serialize videoProperties for %{public}@: %{public}@", buf, 0x16u);
@@ -1503,9 +1503,9 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v24 = [(PLCloudMaster *)self scopedIdentifier];
+      scopedIdentifier3 = [(PLCloudMaster *)self scopedIdentifier];
       *buf = 138543362;
-      v38 = v24;
+      selfCopy = scopedIdentifier3;
       _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_DEFAULT, "cplMasterPropertyChangeFromCloudMaster: unable to find mediaPropertiesData for %{public}@", buf, 0xCu);
     }
 
@@ -1515,12 +1515,12 @@ LABEL_22:
   }
 
 LABEL_25:
-  v29 = [v4 importSession];
-  v30 = v29;
-  if (v29)
+  importSession = [assetCopy importSession];
+  v30 = importSession;
+  if (importSession)
   {
-    v31 = [v29 importSessionID];
-    [v7 setImportGroupIdentifier:v31];
+    importSessionID = [importSession importSessionID];
+    [v7 setImportGroupIdentifier:importSessionID];
   }
 
   if ((*v5 & 1) == 0)
@@ -1528,18 +1528,18 @@ LABEL_25:
     v32 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
     {
-      v33 = [(PLCloudMaster *)self originalOrientation];
+      originalOrientation = [(PLCloudMaster *)self originalOrientation];
       *buf = 67109120;
-      LODWORD(v38) = v33;
+      LODWORD(selfCopy) = originalOrientation;
       _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_DEBUG, "Setting original orientation %d to masterChange", buf, 8u);
     }
   }
 
   [v7 setOriginalOrientation:{-[PLCloudMaster originalOrientation](self, "originalOrientation")}];
-  v34 = [v4 rm_cplExpungeableMasterResourceStates];
-  if ([v34 count])
+  rm_cplExpungeableMasterResourceStates = [assetCopy rm_cplExpungeableMasterResourceStates];
+  if ([rm_cplExpungeableMasterResourceStates count])
   {
-    [v7 setExpungeableResourceStates:v34];
+    [v7 setExpungeableResourceStates:rm_cplExpungeableMasterResourceStates];
   }
 
   return v7;
@@ -1548,11 +1548,11 @@ LABEL_25:
 - (id)cplPropertyRecord
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(PLCloudMaster *)self assets];
-  if ([v3 count])
+  assets = [(PLCloudMaster *)self assets];
+  if ([assets count])
   {
-    v4 = [v3 anyObject];
-    v5 = [(PLCloudMaster *)self cplMasterPropertyChangeForAsset:v4];
+    anyObject = [assets anyObject];
+    v5 = [(PLCloudMaster *)self cplMasterPropertyChangeForAsset:anyObject];
 
     [v5 setChangeType:2];
   }
@@ -1565,7 +1565,7 @@ LABEL_25:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         v8 = 138412290;
-        v9 = self;
+        selfCopy = self;
         _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_ERROR, "Can't find any asset for this master: %@", &v8, 0xCu);
       }
     }
@@ -1579,12 +1579,12 @@ LABEL_25:
 - (id)cplFullRecord
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(PLCloudMaster *)self assets];
-  if ([v3 count])
+  assets = [(PLCloudMaster *)self assets];
+  if ([assets count])
   {
-    v4 = [v3 anyObject];
-    v5 = [(PLManagedObject *)self photoLibrary];
-    v6 = [v4 cplMasterChangeInLibrary:v5 shouldGenerateDerivatives:{objc_msgSend(MEMORY[0x1E6994B90], "cplShouldGenerateDerivatives") ^ 1}];
+    anyObject = [assets anyObject];
+    photoLibrary = [(PLManagedObject *)self photoLibrary];
+    v6 = [anyObject cplMasterChangeInLibrary:photoLibrary shouldGenerateDerivatives:{objc_msgSend(MEMORY[0x1E6994B90], "cplShouldGenerateDerivatives") ^ 1}];
   }
 
   else
@@ -1595,7 +1595,7 @@ LABEL_25:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         v9 = 138412290;
-        v10 = self;
+        selfCopy = self;
         _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "Can't find any asset for this master: %@", &v9, 0xCu);
       }
     }
@@ -1606,11 +1606,11 @@ LABEL_25:
   return v6;
 }
 
-- (BOOL)allOriginalsAreLocallyAvailableForAssetUuid:(id)a3 useOriginalAltInsteadOfOriginal:(BOOL)a4
+- (BOOL)allOriginalsAreLocallyAvailableForAssetUuid:(id)uuid useOriginalAltInsteadOfOriginal:(BOOL)original
 {
-  v4 = a4;
+  originalCopy = original;
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  uuidCopy = uuid;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -1632,21 +1632,21 @@ LABEL_3:
 
       v12 = *(*(&v19 + 1) + 8 * v11);
       v13 = objc_autoreleasePoolPush();
-      v14 = [v12 integerValue];
-      if (v4)
+      integerValue = [v12 integerValue];
+      if (originalCopy)
       {
-        if (v14 != 1)
+        if (integerValue != 1)
         {
           goto LABEL_10;
         }
       }
 
-      else if (v14 != 17)
+      else if (integerValue != 17)
       {
 LABEL_10:
         if ([v12 integerValue] != 17)
         {
-          v15 = -[PLCloudMaster rm_assetAttachedResourceForResourceType:forAssetUuid:](self, "rm_assetAttachedResourceForResourceType:forAssetUuid:", [v12 unsignedIntegerValue], v6);
+          v15 = -[PLCloudMaster rm_assetAttachedResourceForResourceType:forAssetUuid:](self, "rm_assetAttachedResourceForResourceType:forAssetUuid:", [v12 unsignedIntegerValue], uuidCopy);
           v16 = v15;
           if (v15 && ([v15 isLocallyAvailable] & 1) == 0)
           {
@@ -1703,9 +1703,9 @@ LABEL_18:
         v8 = *(*(&v14 + 1) + 8 * i);
         v9 = objc_autoreleasePoolPush();
         v10 = -[PLCloudMaster rm_assetAttachedResourcesForResourceType:](self, "rm_assetAttachedResourcesForResourceType:", [v8 unsignedIntegerValue]);
-        v11 = [v10 firstObject];
+        firstObject = [v10 firstObject];
 
-        if (v11 && [v11 cloudLocalState] != 3)
+        if (firstObject && [firstObject cloudLocalState] != 3)
         {
 
           objc_autoreleasePoolPop(v9);
@@ -1816,29 +1816,29 @@ LABEL_16:
 
 - (NSString)description
 {
-  v3 = [(PLCloudMaster *)self allAssetAttachedResources];
-  v4 = [v3 count];
-  v5 = [(PLCloudMaster *)self modernResources];
-  v6 = [v5 count] + v4;
+  allAssetAttachedResources = [(PLCloudMaster *)self allAssetAttachedResources];
+  v4 = [allAssetAttachedResources count];
+  modernResources = [(PLCloudMaster *)self modernResources];
+  v6 = [modernResources count] + v4;
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(PLCloudMaster *)self cloudMasterGUID];
-  v9 = [v7 stringWithFormat:@"Cloud master GUID: %@ cloudLocalState: %d JPEGSource: %d %lu resources\n", v8, -[PLCloudMaster cloudLocalState](self, "cloudLocalState"), -[PLCloudMaster fullSizeJPEGSource](self, "fullSizeJPEGSource"), v6];
+  cloudMasterGUID = [(PLCloudMaster *)self cloudMasterGUID];
+  v9 = [v7 stringWithFormat:@"Cloud master GUID: %@ cloudLocalState: %d JPEGSource: %d %lu resources\n", cloudMasterGUID, -[PLCloudMaster cloudLocalState](self, "cloudLocalState"), -[PLCloudMaster fullSizeJPEGSource](self, "fullSizeJPEGSource"), v6];
 
   return v9;
 }
 
-- (void)updateImportedByDisplayName:(id)a3
+- (void)updateImportedByDisplayName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(PLCloudMaster *)self setImportedByDisplayName:v4];
+  nameCopy = name;
+  [(PLCloudMaster *)self setImportedByDisplayName:nameCopy];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(PLCloudMaster *)self assets];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  assets = [(PLCloudMaster *)self assets];
+  v6 = [assets countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1849,37 +1849,37 @@ LABEL_16:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(assets);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 importedByDisplayName];
+        importedByDisplayName = [v10 importedByDisplayName];
         IsEqual = PLObjectIsEqual();
 
         if ((IsEqual & 1) == 0)
         {
-          [v10 setImportedByDisplayName:v4];
+          [v10 setImportedByDisplayName:nameCopy];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [assets countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)updateImportedByBundleIdentifier:(id)a3
+- (void)updateImportedByBundleIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(PLCloudMaster *)self setImportedByBundleIdentifier:v4];
+  identifierCopy = identifier;
+  [(PLCloudMaster *)self setImportedByBundleIdentifier:identifierCopy];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(PLCloudMaster *)self assets];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  assets = [(PLCloudMaster *)self assets];
+  v6 = [assets countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1890,122 +1890,122 @@ LABEL_16:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(assets);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 importedByBundleIdentifier];
+        importedByBundleIdentifier = [v10 importedByBundleIdentifier];
         IsEqual = PLObjectIsEqual();
 
         if ((IsEqual & 1) == 0)
         {
-          [v10 setImportedByBundleIdentifier:v4];
+          [v10 setImportedByBundleIdentifier:identifierCopy];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [assets countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)applyPropertiesFromCPLMasterChange:(id)a3
+- (void)applyPropertiesFromCPLMasterChange:(id)change
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLCloudMaster *)self originalFilename];
-  v6 = [v4 filename];
-  v7 = [v5 isEqualToString:v6];
+  changeCopy = change;
+  originalFilename = [(PLCloudMaster *)self originalFilename];
+  filename = [changeCopy filename];
+  v7 = [originalFilename isEqualToString:filename];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [v4 filename];
-    [(PLCloudMaster *)self setOriginalFilename:v8];
+    filename2 = [changeCopy filename];
+    [(PLCloudMaster *)self setOriginalFilename:filename2];
   }
 
-  v9 = [(PLCloudMaster *)self fullSizeJPEGSource];
-  if ([v4 fullSizeJPEGSource] != v9)
+  fullSizeJPEGSource = [(PLCloudMaster *)self fullSizeJPEGSource];
+  if ([changeCopy fullSizeJPEGSource] != fullSizeJPEGSource)
   {
-    -[PLCloudMaster setFullSizeJPEGSource:](self, "setFullSizeJPEGSource:", [v4 fullSizeJPEGSource]);
+    -[PLCloudMaster setFullSizeJPEGSource:](self, "setFullSizeJPEGSource:", [changeCopy fullSizeJPEGSource]);
   }
 
-  v10 = [(PLCloudMaster *)self creationDate];
-  v11 = [v4 creationDate];
-  v12 = [v10 isEqualToDate:v11];
+  creationDate = [(PLCloudMaster *)self creationDate];
+  creationDate2 = [changeCopy creationDate];
+  v12 = [creationDate isEqualToDate:creationDate2];
 
   if ((v12 & 1) == 0)
   {
-    v13 = [v4 creationDate];
-    [(PLCloudMaster *)self setCreationDate:v13];
+    creationDate3 = [changeCopy creationDate];
+    [(PLCloudMaster *)self setCreationDate:creationDate3];
   }
 
-  v14 = [(PLCloudMaster *)self importDate];
-  v15 = [v4 importDate];
-  v16 = [v14 isEqualToDate:v15];
+  importDate = [(PLCloudMaster *)self importDate];
+  importDate2 = [changeCopy importDate];
+  v16 = [importDate isEqualToDate:importDate2];
 
   if ((v16 & 1) == 0)
   {
-    v17 = [v4 importDate];
-    [(PLCloudMaster *)self setImportDate:v17];
+    importDate3 = [changeCopy importDate];
+    [(PLCloudMaster *)self setImportDate:importDate3];
   }
 
-  v18 = [(PLCloudMaster *)self uniformTypeIdentifier];
-  v19 = [v4 itemType];
-  v20 = [v18 isEqualToString:v19];
+  uniformTypeIdentifier = [(PLCloudMaster *)self uniformTypeIdentifier];
+  itemType = [changeCopy itemType];
+  v20 = [uniformTypeIdentifier isEqualToString:itemType];
 
   if ((v20 & 1) == 0)
   {
-    v21 = [v4 itemType];
-    [(PLCloudMaster *)self setUniformTypeIdentifier:v21];
+    itemType2 = [changeCopy itemType];
+    [(PLCloudMaster *)self setUniformTypeIdentifier:itemType2];
   }
 
-  v22 = [(PLCloudMaster *)self originalOrientation];
-  if ([v4 originalOrientation] != v22)
+  originalOrientation = [(PLCloudMaster *)self originalOrientation];
+  if ([changeCopy originalOrientation] != originalOrientation)
   {
-    -[PLCloudMaster setOriginalOrientation:](self, "setOriginalOrientation:", [v4 originalOrientation]);
+    -[PLCloudMaster setOriginalOrientation:](self, "setOriginalOrientation:", [changeCopy originalOrientation]);
   }
 
-  v23 = [(PLCloudMaster *)self mediaMetadata];
-  v24 = [v23 valueForKey:@"data"];
-  v25 = [v4 mediaMetaData];
-  v26 = [v24 isEqualToData:v25];
+  mediaMetadata = [(PLCloudMaster *)self mediaMetadata];
+  v24 = [mediaMetadata valueForKey:@"data"];
+  mediaMetaData = [changeCopy mediaMetaData];
+  v26 = [v24 isEqualToData:mediaMetaData];
 
   if ((v26 & 1) == 0)
   {
-    v27 = [(PLCloudMaster *)self mediaMetadata];
-    v28 = [v4 mediaMetaData];
-    [v27 setValue:v28 forKey:@"data"];
+    mediaMetadata2 = [(PLCloudMaster *)self mediaMetadata];
+    mediaMetaData2 = [changeCopy mediaMetaData];
+    [mediaMetadata2 setValue:mediaMetaData2 forKey:@"data"];
   }
 
-  v29 = [(PLCloudMaster *)self mediaMetadataType];
-  v30 = [v4 mediaMetaDataType];
-  v31 = [v29 isEqualToString:v30];
+  mediaMetadataType = [(PLCloudMaster *)self mediaMetadataType];
+  mediaMetaDataType = [changeCopy mediaMetaDataType];
+  v31 = [mediaMetadataType isEqualToString:mediaMetaDataType];
 
   if ((v31 & 1) == 0)
   {
-    v32 = [v4 mediaMetaDataType];
-    [(PLCloudMaster *)self setMediaMetadataType:v32];
+    mediaMetaDataType2 = [changeCopy mediaMetaDataType];
+    [(PLCloudMaster *)self setMediaMetadataType:mediaMetaDataType2];
   }
 
-  v33 = [v4 importGroupIdentifier];
-  if (v33)
+  importGroupIdentifier = [changeCopy importGroupIdentifier];
+  if (importGroupIdentifier)
   {
-    v34 = v33;
-    v35 = [(PLCloudMaster *)self importSessionID];
-    v36 = [v4 importGroupIdentifier];
-    v37 = [v35 isEqualToString:v36];
+    v34 = importGroupIdentifier;
+    importSessionID = [(PLCloudMaster *)self importSessionID];
+    importGroupIdentifier2 = [changeCopy importGroupIdentifier];
+    v37 = [importSessionID isEqualToString:importGroupIdentifier2];
 
     if ((v37 & 1) == 0)
     {
-      v38 = [v4 importGroupIdentifier];
-      [(PLCloudMaster *)self setImportSessionID:v38];
+      importGroupIdentifier3 = [changeCopy importGroupIdentifier];
+      [(PLCloudMaster *)self setImportSessionID:importGroupIdentifier3];
       v55 = 0u;
       v56 = 0u;
       v53 = 0u;
       v54 = 0u;
-      v39 = [(PLCloudMaster *)self assets];
-      v40 = [v39 countByEnumeratingWithState:&v53 objects:v57 count:16];
+      assets = [(PLCloudMaster *)self assets];
+      v40 = [assets countByEnumeratingWithState:&v53 objects:v57 count:16];
       if (v40)
       {
         v41 = v40;
@@ -2017,14 +2017,14 @@ LABEL_16:
           {
             if (*v54 != v42)
             {
-              objc_enumerationMutation(v39);
+              objc_enumerationMutation(assets);
             }
 
-            [*(*(&v53 + 1) + 8 * v43++) setImportSessionAlbumWithImportSessionID:v38];
+            [*(*(&v53 + 1) + 8 * v43++) setImportSessionAlbumWithImportSessionID:importGroupIdentifier3];
           }
 
           while (v41 != v43);
-          v41 = [v39 countByEnumeratingWithState:&v53 objects:v57 count:16];
+          v41 = [assets countByEnumeratingWithState:&v53 objects:v57 count:16];
         }
 
         while (v41);
@@ -2032,36 +2032,36 @@ LABEL_16:
     }
   }
 
-  v44 = [(PLCloudMaster *)self originatingAssetIdentifier];
-  v45 = [v4 originatingFingerprint];
-  v46 = [v44 isEqualToString:v45];
+  originatingAssetIdentifier = [(PLCloudMaster *)self originatingAssetIdentifier];
+  originatingFingerprint = [changeCopy originatingFingerprint];
+  v46 = [originatingAssetIdentifier isEqualToString:originatingFingerprint];
 
   if ((v46 & 1) == 0)
   {
-    v47 = [v4 originatingFingerprint];
-    [(PLCloudMaster *)self setOriginatingAssetIdentifier:v47];
+    originatingFingerprint2 = [changeCopy originatingFingerprint];
+    [(PLCloudMaster *)self setOriginatingAssetIdentifier:originatingFingerprint2];
   }
 
-  v48 = [(PLCloudMaster *)self importedBy];
-  if (v48 != [v4 importedBy])
+  importedBy = [(PLCloudMaster *)self importedBy];
+  if (importedBy != [changeCopy importedBy])
   {
-    -[PLCloudMaster setImportedBy:](self, "setImportedBy:", [v4 importedBy]);
+    -[PLCloudMaster setImportedBy:](self, "setImportedBy:", [changeCopy importedBy]);
   }
 
-  v49 = [v4 importedByBundleIdentifier];
+  importedByBundleIdentifier = [changeCopy importedByBundleIdentifier];
 
-  if (v49)
+  if (importedByBundleIdentifier)
   {
-    v50 = [v4 importedByBundleIdentifier];
-    [(PLCloudMaster *)self updateImportedByBundleIdentifier:v50];
+    importedByBundleIdentifier2 = [changeCopy importedByBundleIdentifier];
+    [(PLCloudMaster *)self updateImportedByBundleIdentifier:importedByBundleIdentifier2];
   }
 
-  v51 = [v4 importedByDisplayName];
+  importedByDisplayName = [changeCopy importedByDisplayName];
 
-  if (v51)
+  if (importedByDisplayName)
   {
-    v52 = [v4 importedByDisplayName];
-    [(PLCloudMaster *)self updateImportedByDisplayName:v52];
+    importedByDisplayName2 = [changeCopy importedByDisplayName];
+    [(PLCloudMaster *)self updateImportedByDisplayName:importedByDisplayName2];
   }
 }
 
@@ -2070,43 +2070,43 @@ LABEL_16:
   v5.receiver = self;
   v5.super_class = PLCloudMaster;
   [(PLCloudMaster *)&v5 awakeFromInsert];
-  v3 = [(PLCloudMaster *)self managedObjectContext];
-  v4 = [(PLManagedObject *)PLCloudMasterMediaMetadata insertInManagedObjectContext:v3];
+  managedObjectContext = [(PLCloudMaster *)self managedObjectContext];
+  v4 = [(PLManagedObject *)PLCloudMasterMediaMetadata insertInManagedObjectContext:managedObjectContext];
   [(PLCloudMaster *)self setMediaMetadata:v4];
 }
 
 - (id)shareRelationship
 {
-  v3 = [(PLCloudMaster *)self momentShare];
+  momentShare = [(PLCloudMaster *)self momentShare];
 
-  if (v3)
+  if (momentShare)
   {
-    v4 = [(PLCloudMaster *)self momentShare];
+    momentShare2 = [(PLCloudMaster *)self momentShare];
   }
 
   else
   {
-    v5 = [(PLCloudMaster *)self collectionShare];
+    collectionShare = [(PLCloudMaster *)self collectionShare];
 
-    if (v5)
+    if (collectionShare)
     {
-      v4 = [(PLCloudMaster *)self collectionShare];
+      momentShare2 = [(PLCloudMaster *)self collectionShare];
     }
 
     else
     {
-      v4 = 0;
+      momentShare2 = 0;
     }
   }
 
-  return v4;
+  return momentShare2;
 }
 
-+ (unint64_t)fullSizeJPEGSourceForUTI:(id)a3 andImageDimensions:(CGSize)a4
++ (unint64_t)fullSizeJPEGSourceForUTI:(id)i andImageDimensions:(CGSize)dimensions
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = [MEMORY[0x1E69C08F0] typeWithIdentifier:a3];
+  height = dimensions.height;
+  width = dimensions.width;
+  v6 = [MEMORY[0x1E69C08F0] typeWithIdentifier:i];
   v7 = [v6 conformsToType:*MEMORY[0x1E6982F88]];
 
   return !v7 || [MEMORY[0x1E69C0708] rawSourceMaximumPixelCountForBackgroundProcessing] >= (width * height);
@@ -2146,15 +2146,15 @@ void __31__PLCloudMaster__originalTypes__block_invoke()
   _originalTypes_originalTypes = v0;
 }
 
-+ (void)deleteMasterIfNecessary:(id)a3 inLibrary:(id)a4
++ (void)deleteMasterIfNecessary:(id)necessary inLibrary:(id)library
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  necessaryCopy = necessary;
+  libraryCopy = library;
+  if (necessaryCopy)
   {
-    v7 = [v5 assets];
-    v8 = [v7 count];
+    assets = [necessaryCopy assets];
+    v8 = [assets count];
 
     if (!v8)
     {
@@ -2164,27 +2164,27 @@ void __31__PLCloudMaster__originalTypes__block_invoke()
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v12 = 138412290;
-          v13 = v5;
+          v13 = necessaryCopy;
           _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Deleting master %@", &v12, 0xCu);
         }
       }
 
-      v9 = [v6 managedObjectContext];
-      [v9 deleteObject:v5];
+      managedObjectContext = [libraryCopy managedObjectContext];
+      [managedObjectContext deleteObject:necessaryCopy];
       goto LABEL_11;
     }
 
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
-      v9 = __CPLAssetsdOSLogDomain();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      managedObjectContext = __CPLAssetsdOSLogDomain();
+      if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v5 assets];
+        assets2 = [necessaryCopy assets];
         v12 = 138412546;
-        v13 = v5;
+        v13 = necessaryCopy;
         v14 = 2048;
-        v15 = [v10 count];
-        _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "Ignored deleting a master record: %@, master still being referred by %lu assets", &v12, 0x16u);
+        v15 = [assets2 count];
+        _os_log_impl(&dword_19BF1F000, managedObjectContext, OS_LOG_TYPE_DEFAULT, "Ignored deleting a master record: %@, master still being referred by %lu assets", &v12, 0x16u);
       }
 
 LABEL_11:
@@ -2192,14 +2192,14 @@ LABEL_11:
   }
 }
 
-+ (void)deleteOrphanedMastersWithManagedObjectContext:(id)a3
++ (void)deleteOrphanedMastersWithManagedObjectContext:(id)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_autoreleasePoolPush();
   v6 = MEMORY[0x1E695D5E0];
-  v7 = [a1 entityName];
-  v8 = [v6 fetchRequestWithEntityName:v7];
+  entityName = [self entityName];
+  v8 = [v6 fetchRequestWithEntityName:entityName];
 
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(%K, $asset, $asset != nil).@count = 0", @"assets"];
   [v8 setPredicate:v9];
@@ -2207,7 +2207,7 @@ LABEL_11:
   v10 = [objc_alloc(MEMORY[0x1E695D538]) initWithFetchRequest:v8];
   [v10 setResultType:2];
   v15 = 0;
-  v11 = [v4 executeRequest:v10 error:&v15];
+  v11 = [contextCopy executeRequest:v10 error:&v15];
   v12 = v15;
   if (v11)
   {
@@ -2216,9 +2216,9 @@ LABEL_11:
       v13 = __CPLAssetsdOSLogDomain();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v11 result];
+        result = [v11 result];
         *buf = 138412290;
-        v17 = v14;
+        v17 = result;
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Deleted %@ orphaned cloud masters", buf, 0xCu);
       }
 
@@ -2242,10 +2242,10 @@ LABEL_8:
   objc_autoreleasePoolPop(v5);
 }
 
-+ (void)resetCloudMastersStateInManagedObjectContext:(id)a3
++ (void)resetCloudMastersStateInManagedObjectContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_autoreleasePoolPush();
   v6 = MEMORY[0x1E6994D48];
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
@@ -2259,15 +2259,15 @@ LABEL_8:
   }
 
   v8 = objc_alloc(MEMORY[0x1E695D560]);
-  v9 = [a1 entityName];
-  v10 = [v8 initWithEntityName:v9];
+  entityName = [self entityName];
+  v10 = [v8 initWithEntityName:entityName];
 
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"cloudLocalState != %d", 0];
   [v10 setPredicate:v11];
   [v10 setResultType:2];
   [v10 setPropertiesToUpdate:&unk_1F0FC07D0];
   v16 = 0;
-  v12 = [v4 executeRequest:v10 error:&v16];
+  v12 = [contextCopy executeRequest:v10 error:&v16];
   v13 = v16;
   if (v13)
   {
@@ -2290,9 +2290,9 @@ LABEL_12:
     v14 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v12 result];
+      result = [v12 result];
       *buf = 138412290;
-      v18 = v15;
+      v18 = result;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Batch updated %@ cloud masters", buf, 0xCu);
     }
 
@@ -2302,10 +2302,10 @@ LABEL_12:
   objc_autoreleasePoolPop(v5);
 }
 
-+ (void)deleteAllCloudMastersInManagedObjectContext:(id)a3
++ (void)deleteAllCloudMastersInManagedObjectContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_autoreleasePoolPush();
   v6 = MEMORY[0x1E6994D48];
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
@@ -2319,14 +2319,14 @@ LABEL_12:
   }
 
   v8 = MEMORY[0x1E695D5E0];
-  v9 = [a1 entityName];
-  v10 = [v8 fetchRequestWithEntityName:v9];
+  entityName = [self entityName];
+  v10 = [v8 fetchRequestWithEntityName:entityName];
 
   [v10 setFetchBatchSize:100];
   v11 = [objc_alloc(MEMORY[0x1E695D538]) initWithFetchRequest:v10];
   [v11 setResultType:2];
   v16 = 0;
-  v12 = [v4 executeRequest:v11 error:&v16];
+  v12 = [contextCopy executeRequest:v11 error:&v16];
   v13 = v16;
   if (v13)
   {
@@ -2349,9 +2349,9 @@ LABEL_12:
     v14 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v12 result];
+      result = [v12 result];
       *buf = 138412290;
-      v18 = v15;
+      v18 = result;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Batch deleted %@ cloud masters", buf, 0xCu);
     }
 
@@ -2361,63 +2361,63 @@ LABEL_12:
   objc_autoreleasePoolPop(v5);
 }
 
-+ (id)cloudMastersWithScopedIdentifiers:(id)a3 relationshipKeyPathsForPrefetching:(id)a4 inLibrary:(id)a5
++ (id)cloudMastersWithScopedIdentifiers:(id)identifiers relationshipKeyPathsForPrefetching:(id)prefetching inLibrary:(id)library
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  libraryCopy = library;
+  prefetchingCopy = prefetching;
+  identifiersCopy = identifiers;
   v10 = +[PLCloudMaster entityName];
-  v11 = [PLManagedAsset objectsWithScopedIdentifiers:v9 forEntityName:v10 prefetchResources:0 relationshipKeyPathsForPrefetching:v8 inLibrary:v7];
+  v11 = [PLManagedAsset objectsWithScopedIdentifiers:identifiersCopy forEntityName:v10 prefetchResources:0 relationshipKeyPathsForPrefetching:prefetchingCopy inLibrary:libraryCopy];
 
   return v11;
 }
 
-+ (PLCloudMaster)cloudMasterWithScopedIdentifier:(id)a3 prefetchResources:(BOOL)a4 inLibrary:(id)a5
++ (PLCloudMaster)cloudMasterWithScopedIdentifier:(id)identifier prefetchResources:(BOOL)resources inLibrary:(id)library
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  resourcesCopy = resources;
+  identifierCopy = identifier;
+  libraryCopy = library;
   v15 = 0;
-  v9 = [PLShare getShareIfNecessary:&v15 forCPLRecordWithClass:objc_opt_class() scopedIdentifier:v7 inLibrary:v8];
+  v9 = [PLShare getShareIfNecessary:&v15 forCPLRecordWithClass:objc_opt_class() scopedIdentifier:identifierCopy inLibrary:libraryCopy];
   v10 = v15;
   v11 = 0;
   if (v9)
   {
-    v12 = [v7 identifier];
-    v13 = [v8 managedObjectContext];
-    v11 = [PLCloudMaster cloudMasterWithGUID:v12 inShare:v10 prefetchResources:v6 inManagedObjectContext:v13];
+    identifier = [identifierCopy identifier];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v11 = [PLCloudMaster cloudMasterWithGUID:identifier inShare:v10 prefetchResources:resourcesCopy inManagedObjectContext:managedObjectContext];
   }
 
   return v11;
 }
 
-+ (id)cloudMastersByScopedIdentifiers:(id)a3 relationshipKeyPathsForPrefetching:(id)a4 inLibrary:(id)a5
++ (id)cloudMastersByScopedIdentifiers:(id)identifiers relationshipKeyPathsForPrefetching:(id)prefetching inLibrary:(id)library
 {
-  v5 = [a1 cloudMastersWithScopedIdentifiers:a3 relationshipKeyPathsForPrefetching:a4 inLibrary:a5];
+  v5 = [self cloudMastersWithScopedIdentifiers:identifiers relationshipKeyPathsForPrefetching:prefetching inLibrary:library];
   v6 = [v5 _pl_indexBy:&__block_literal_global_88236];
 
   return v6;
 }
 
-+ (PLCloudMaster)cloudMasterWithGUID:(id)a3 inShare:(id)a4 prefetchResources:(BOOL)a5 inManagedObjectContext:(id)a6
++ (PLCloudMaster)cloudMasterWithGUID:(id)d inShare:(id)share prefetchResources:(BOOL)resources inManagedObjectContext:(id)context
 {
-  v7 = a5;
+  resourcesCopy = resources;
   v29[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v10)
+  dCopy = d;
+  shareCopy = share;
+  contextCopy = context;
+  if (!dCopy)
   {
-    v20 = 0;
+    firstObject = 0;
     goto LABEL_15;
   }
 
   v13 = objc_autoreleasePoolPush();
   v14 = MEMORY[0x1E695D5E0];
-  v15 = [a1 entityName];
-  v16 = [v14 fetchRequestWithEntityName:v15];
+  entityName = [self entityName];
+  v16 = [v14 fetchRequestWithEntityName:entityName];
 
-  v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"cloudMasterGUID", v10];
+  dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"cloudMasterGUID", dCopy];
   if ([objc_opt_class() subclassKind] == 1)
   {
     v18 = MEMORY[0x1E696AE18];
@@ -2426,9 +2426,9 @@ LABEL_12:
 
   else
   {
-    v21 = [objc_opt_class() subclassKind];
+    subclassKind = [objc_opt_class() subclassKind];
     v18 = MEMORY[0x1E696AE18];
-    if (v21 != 3)
+    if (subclassKind != 3)
     {
       [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == nil AND %K == nil", @"momentShare", @"collectionShare"];
       goto LABEL_9;
@@ -2437,47 +2437,47 @@ LABEL_12:
     v19 = @"collectionShare";
   }
 
-  [v18 predicateWithFormat:@"%K == %@", v19, v11];
+  [v18 predicateWithFormat:@"%K == %@", v19, shareCopy];
   v22 = LABEL_9:;
   v23 = MEMORY[0x1E696AB28];
-  v29[0] = v17;
+  v29[0] = dCopy;
   v29[1] = v22;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
   v25 = [v23 andPredicateWithSubpredicates:v24];
   [v16 setPredicate:v25];
 
   [v16 setFetchLimit:1];
-  if (v7)
+  if (resourcesCopy)
   {
     [v16 setRelationshipKeyPathsForPrefetching:&unk_1F0FBFFD0];
   }
 
   v28 = 0;
-  v26 = [v12 executeFetchRequest:v16 error:&v28];
+  v26 = [contextCopy executeFetchRequest:v16 error:&v28];
   if ([v26 count])
   {
-    v20 = [v26 firstObject];
+    firstObject = [v26 firstObject];
   }
 
   else
   {
-    v20 = 0;
+    firstObject = 0;
   }
 
   objc_autoreleasePoolPop(v13);
 LABEL_15:
 
-  return v20;
+  return firstObject;
 }
 
-+ (id)insertIntoManagedObjectContext:(id)a3 withCloudMasterGUID:(id)a4 inShare:(id)a5
++ (id)insertIntoManagedObjectContext:(id)context withCloudMasterGUID:(id)d inShare:(id)share
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  contextCopy = context;
+  dCopy = d;
+  shareCopy = share;
+  if (contextCopy)
   {
-    if (v10)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -2485,42 +2485,42 @@ LABEL_15:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PLCloudMaster.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudMaster.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
 
-    if (v10)
+    if (dCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:a1 file:@"PLCloudMaster.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"cloudMasterGUID"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLCloudMaster.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"cloudMasterGUID"}];
 
 LABEL_3:
-  v12 = [a1 entityName];
-  v13 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v12, v9, 0);
+  entityName = [self entityName];
+  v13 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(entityName, contextCopy, 0);
 
-  [v13 setCloudMasterGUID:v10];
+  [v13 setCloudMasterGUID:dCopy];
   if ([objc_opt_class() subclassKind] == 1)
   {
-    [v13 setMomentShare:v11];
+    [v13 setMomentShare:shareCopy];
   }
 
   else if ([objc_opt_class() subclassKind] == 3)
   {
-    [v13 setCollectionShare:v11];
+    [v13 setCollectionShare:shareCopy];
   }
 
   return v13;
 }
 
-+ (id)insertIntoPhotoLibrary:(id)a3 withCloudMasterGUID:(id)a4 inShare:(id)a5
++ (id)insertIntoPhotoLibrary:(id)library withCloudMasterGUID:(id)d inShare:(id)share
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 managedObjectContext];
-  v11 = [a1 insertIntoManagedObjectContext:v10 withCloudMasterGUID:v9 inShare:v8];
+  shareCopy = share;
+  dCopy = d;
+  managedObjectContext = [library managedObjectContext];
+  v11 = [self insertIntoManagedObjectContext:managedObjectContext withCloudMasterGUID:dCopy inShare:shareCopy];
 
   return v11;
 }

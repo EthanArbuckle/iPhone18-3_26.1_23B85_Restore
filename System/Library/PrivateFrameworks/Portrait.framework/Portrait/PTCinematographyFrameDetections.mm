@@ -1,78 +1,78 @@
 @interface PTCinematographyFrameDetections
-+ (id)frameDetections:(id)a3 detectorDidRun:(id)a4 presentationTime:(id *)a5;
++ (id)frameDetections:(id)detections detectorDidRun:(id)run presentationTime:(id *)time;
 - (NSArray)allFocusIdentifiers;
 - (NSArray)allTrackIdentifiers;
 - (NSArray)allTrackIdentifiersForCinematicChoice;
 - (PTCinematographyDetection)autoFocusDetection;
 - (PTCinematographyDetection)customDetection;
-- (PTCinematographyFrameDetections)initWithDetections:(id)a3 detectorDidRun:(id)a4 presentationTime:(id *)a5;
+- (PTCinematographyFrameDetections)initWithDetections:(id)detections detectorDidRun:(id)run presentationTime:(id *)time;
 - (id)_detectionsByFocusIdentifier;
 - (id)_detectionsByTrackIdentifier;
-- (id)bestDetectionForGroupIdentifier:(int64_t)a3 options:(unint64_t)a4;
+- (id)bestDetectionForGroupIdentifier:(int64_t)identifier options:(unint64_t)options;
 - (id)debugDescription;
-- (id)detectionForFocusIdentifier:(id)a3;
-- (id)detectionForTrackIdentifier:(int64_t)a3;
-- (void)addDetection:(id)a3;
+- (id)detectionForFocusIdentifier:(id)identifier;
+- (id)detectionForTrackIdentifier:(int64_t)identifier;
+- (void)addDetection:(id)detection;
 - (void)flushCachedDetectionsDictionaries;
 @end
 
 @implementation PTCinematographyFrameDetections
 
-+ (id)frameDetections:(id)a3 detectorDidRun:(id)a4 presentationTime:(id *)a5
++ (id)frameDetections:(id)detections detectorDidRun:(id)run presentationTime:(id *)time
 {
-  v7 = a4;
-  v8 = a3;
+  runCopy = run;
+  detectionsCopy = detections;
   v9 = [PTCinematographyFrameDetections alloc];
-  v12 = *a5;
-  v10 = [(PTCinematographyFrameDetections *)v9 initWithDetections:v8 detectorDidRun:v7 presentationTime:&v12];
+  v12 = *time;
+  v10 = [(PTCinematographyFrameDetections *)v9 initWithDetections:detectionsCopy detectorDidRun:runCopy presentationTime:&v12];
 
   return v10;
 }
 
-- (PTCinematographyFrameDetections)initWithDetections:(id)a3 detectorDidRun:(id)a4 presentationTime:(id *)a5
+- (PTCinematographyFrameDetections)initWithDetections:(id)detections detectorDidRun:(id)run presentationTime:(id *)time
 {
-  v8 = a3;
-  v9 = a4;
+  detectionsCopy = detections;
+  runCopy = run;
   v17.receiver = self;
   v17.super_class = PTCinematographyFrameDetections;
   v10 = [(PTCinematographyFrameDetections *)&v17 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [detectionsCopy copy];
     v12 = *(v10 + 2);
     *(v10 + 2) = v11;
 
-    v13 = [v9 copy];
+    v13 = [runCopy copy];
     v14 = *(v10 + 3);
     *(v10 + 3) = v13;
 
-    v15 = *&a5->var0;
-    *(v10 + 11) = a5->var3;
+    v15 = *&time->var0;
+    *(v10 + 11) = time->var3;
     *(v10 + 72) = v15;
   }
 
   return v10;
 }
 
-- (id)detectionForTrackIdentifier:(int64_t)a3
+- (id)detectionForTrackIdentifier:(int64_t)identifier
 {
-  v4 = [(PTCinematographyFrameDetections *)self _detectionsByTrackIdentifier];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  _detectionsByTrackIdentifier = [(PTCinematographyFrameDetections *)self _detectionsByTrackIdentifier];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:identifier];
+  v6 = [_detectionsByTrackIdentifier objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-- (id)bestDetectionForGroupIdentifier:(int64_t)a3 options:(unint64_t)a4
+- (id)bestDetectionForGroupIdentifier:(int64_t)identifier options:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v27 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(PTCinematographyFrameDetections *)self detections];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  detections = [(PTCinematographyFrameDetections *)self detections];
+  v7 = [detections countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (!v7)
   {
     v10 = 0;
@@ -90,18 +90,18 @@
     {
       if (*v19 != v11)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(detections);
       }
 
       v13 = *(*(&v18 + 1) + 8 * i);
-      if ([v13 groupIdentifier] == a3)
+      if ([v13 groupIdentifier] == identifier)
       {
-        if ((v4 & 1) != 0 && [v13 _isExcludedAsCinematicChoice])
+        if ((optionsCopy & 1) != 0 && [v13 _isExcludedAsCinematicChoice])
         {
           v14 = _PTLogSystem();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
-            v15 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+            v15 = [MEMORY[0x277CCABB0] numberWithInteger:identifier];
             *buf = v17;
             v23 = v13;
             v24 = 2112;
@@ -123,7 +123,7 @@ LABEL_14:
       }
     }
 
-    v9 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    v9 = [detections countByEnumeratingWithState:&v18 objects:v26 count:16];
   }
 
   while (v9);
@@ -132,21 +132,21 @@ LABEL_19:
   return v10;
 }
 
-- (id)detectionForFocusIdentifier:(id)a3
+- (id)detectionForFocusIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PTCinematographyFrameDetections *)self _detectionsByFocusIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _detectionsByFocusIdentifier = [(PTCinematographyFrameDetections *)self _detectionsByFocusIdentifier];
+  v6 = [_detectionsByFocusIdentifier objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
 - (NSArray)allTrackIdentifiers
 {
-  v2 = [(PTCinematographyFrameDetections *)self _detectionsByTrackIdentifier];
-  v3 = [v2 allKeys];
+  _detectionsByTrackIdentifier = [(PTCinematographyFrameDetections *)self _detectionsByTrackIdentifier];
+  allKeys = [_detectionsByTrackIdentifier allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (NSArray)allTrackIdentifiersForCinematicChoice
@@ -157,8 +157,8 @@ LABEL_19:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(PTCinematographyFrameDetections *)self allTrackIdentifiers];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allTrackIdentifiers = [(PTCinematographyFrameDetections *)self allTrackIdentifiers];
+  v5 = [allTrackIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -169,7 +169,7 @@ LABEL_19:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allTrackIdentifiers);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -181,7 +181,7 @@ LABEL_19:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [allTrackIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -197,8 +197,8 @@ LABEL_19:
   cachedDetectionsByTrackIdentifier = self->_cachedDetectionsByTrackIdentifier;
   if (!cachedDetectionsByTrackIdentifier)
   {
-    v4 = [(PTCinematographyFrameDetections *)self detections];
-    v5 = [PTCinematographyDetection _detectionsByTrackIdentifierFromArray:v4];
+    detections = [(PTCinematographyFrameDetections *)self detections];
+    v5 = [PTCinematographyDetection _detectionsByTrackIdentifierFromArray:detections];
     v6 = self->_cachedDetectionsByTrackIdentifier;
     self->_cachedDetectionsByTrackIdentifier = v5;
 
@@ -210,10 +210,10 @@ LABEL_19:
 
 - (NSArray)allFocusIdentifiers
 {
-  v2 = [(PTCinematographyFrameDetections *)self _detectionsByFocusIdentifier];
-  v3 = [v2 allKeys];
+  _detectionsByFocusIdentifier = [(PTCinematographyFrameDetections *)self _detectionsByFocusIdentifier];
+  allKeys = [_detectionsByFocusIdentifier allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (id)_detectionsByFocusIdentifier
@@ -221,8 +221,8 @@ LABEL_19:
   cachedDetectionsByFocusIdentifier = self->_cachedDetectionsByFocusIdentifier;
   if (!cachedDetectionsByFocusIdentifier)
   {
-    v4 = [(PTCinematographyFrameDetections *)self detections];
-    v5 = [PTCinematographyDetection _detectionsByFocusIdentifierFromArray:v4];
+    detections = [(PTCinematographyFrameDetections *)self detections];
+    v5 = [PTCinematographyDetection _detectionsByFocusIdentifierFromArray:detections];
     v6 = self->_cachedDetectionsByFocusIdentifier;
     self->_cachedDetectionsByFocusIdentifier = v5;
 
@@ -241,8 +241,8 @@ LABEL_19:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(PTCinematographyFrameDetections *)self detections];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    detections = [(PTCinematographyFrameDetections *)self detections];
+    v4 = [detections countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -253,7 +253,7 @@ LABEL_19:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(detections);
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
@@ -265,7 +265,7 @@ LABEL_19:
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [detections countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           continue;
@@ -278,9 +278,9 @@ LABEL_19:
 LABEL_12:
   }
 
-  v9 = [(PTCinematographyFrameDetections *)self cachedAutoFocusDetection];
+  cachedAutoFocusDetection = [(PTCinematographyFrameDetections *)self cachedAutoFocusDetection];
 
-  return v9;
+  return cachedAutoFocusDetection;
 }
 
 - (PTCinematographyDetection)customDetection
@@ -292,8 +292,8 @@ LABEL_12:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(PTCinematographyFrameDetections *)self detections];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    detections = [(PTCinematographyFrameDetections *)self detections];
+    v4 = [detections countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -304,7 +304,7 @@ LABEL_12:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(detections);
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
@@ -316,7 +316,7 @@ LABEL_12:
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [detections countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           continue;
@@ -329,18 +329,18 @@ LABEL_12:
 LABEL_12:
   }
 
-  v9 = [(PTCinematographyFrameDetections *)self cachedCustomDetection];
+  cachedCustomDetection = [(PTCinematographyFrameDetections *)self cachedCustomDetection];
 
-  return v9;
+  return cachedCustomDetection;
 }
 
-- (void)addDetection:(id)a3
+- (void)addDetection:(id)detection
 {
-  v4 = a3;
-  v5 = [(PTCinematographyFrameDetections *)self detections];
-  v8 = [v5 mutableCopy];
+  detectionCopy = detection;
+  detections = [(PTCinematographyFrameDetections *)self detections];
+  v8 = [detections mutableCopy];
 
-  [v8 addObject:v4];
+  [v8 addObject:detectionCopy];
   v6 = [v8 copy];
   detections = self->_detections;
   self->_detections = v6;
@@ -365,8 +365,8 @@ LABEL_12:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(PTCinematographyFrameDetections *)self detections];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  detections = [(PTCinematographyFrameDetections *)self detections];
+  v5 = [detections countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -377,24 +377,24 @@ LABEL_12:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(detections);
         }
 
         v9 = [*(*(&v16 + 1) + 8 * i) debugDescription];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [detections countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(PTCinematographyFrameDetections *)self detectorDidRun];
+  detectorDidRun = [(PTCinematographyFrameDetections *)self detectorDidRun];
   [(PTCinematographyFrameDetections *)self presentationTime];
   v12 = NSStringFromCMTime(&v15);
-  v13 = [v10 stringWithFormat:@"%@ (DDR:%@, pts:%@)\n%@", self, v11, v12, v3];
+  v13 = [v10 stringWithFormat:@"%@ (DDR:%@, pts:%@)\n%@", self, detectorDidRun, v12, v3];
 
   return v13;
 }

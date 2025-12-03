@@ -12,7 +12,7 @@
 
 - (void)initWithGestureDispatcher:()TSDGestureDispatcher gestureKind:
 {
-  v6 = [a1 initWithTarget:a3 action:sel_handleGesture_];
+  v6 = [self initWithTarget:a3 action:sel_handleGesture_];
   v7 = v6;
   if (v6)
   {
@@ -25,7 +25,7 @@
 
 - (__CFString)gestureKind
 {
-  result = objc_getAssociatedObject(a1, &gestureKindKey);
+  result = objc_getAssociatedObject(self, &gestureKindKey);
   if (!result)
   {
     return @"TSWPUndefinedGestureKind";
@@ -36,28 +36,28 @@
 
 - (uint64_t)unscaledLocationForICC:()TSDGestureDispatcher
 {
-  [a1 locationInView:{objc_msgSend(a3, "canvasView")}];
+  [self locationInView:{objc_msgSend(a3, "canvasView")}];
 
   return [a3 convertBoundsToUnscaledPoint:?];
 }
 
 - (uint64_t)boundsLocationForICC:()TSDGestureDispatcher
 {
-  [a1 unscaledLocationForICC:?];
+  [self unscaledLocationForICC:?];
 
   return [a3 convertUnscaledToBoundsPoint:?];
 }
 
 - (uint64_t)naturalLocationForRep:()TSDGestureDispatcher
 {
-  [a1 unscaledLocationForICC:{objc_msgSend(a3, "interactiveCanvasController")}];
+  [self unscaledLocationForICC:{objc_msgSend(a3, "interactiveCanvasController")}];
 
   return [a3 convertNaturalPointFromUnscaledCanvas:?];
 }
 
 - (uint64_t)gestureDelegate
 {
-  [a1 delegate];
+  [self delegate];
 
   return TSUProtocolCast();
 }
@@ -67,12 +67,12 @@
   v2 = TSUProtocolCast();
   if (!v2)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[UIGestureRecognizer(TSDGestureDispatcher) setGestureDelegate:]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGestureDispatcher.m"), 136, @"invalid nil value for '%s'", "grDelegate"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGestureDispatcher.m"), 136, @"invalid nil value for '%s'", "grDelegate"}];
   }
 
-  return [a1 setDelegate:v2];
+  return [self setDelegate:v2];
 }
 
 @end

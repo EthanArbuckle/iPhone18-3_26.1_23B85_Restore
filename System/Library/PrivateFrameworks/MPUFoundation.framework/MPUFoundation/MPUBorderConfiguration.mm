@@ -1,8 +1,8 @@
 @interface MPUBorderConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFullyTransparent;
 - (MPUBorderConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -31,10 +31,10 @@
   return v5 + 1000000 * [(UIColor *)self->_dropShadowColor hash]+ 10000000 * self->_dropShadowEdges + 100000000 * llround(self->_dropShadowWidth * 6.0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -44,7 +44,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v9 = MPUFloatEqualToFloat(self->_borderAlpha, v5->_borderAlpha) && ((borderColor = self->_borderColor, borderColor == v5->_borderColor) || [(UIColor *)borderColor isEqual:?]) && MPUFloatEqualToFloat(self->_borderWidth * 6.0, v5->_borderWidth * 6.0) && MPUFloatEqualToFloat(self->_fillAlpha, v5->_fillAlpha) && ((fillColor = self->_fillColor, fillColor == v5->_fillColor) || [(UIColor *)fillColor isEqual:?]) && MPUFloatEqualToFloat(self->_dropShadowAlpha, v5->_dropShadowAlpha) && ((dropShadowColor = self->_dropShadowColor, dropShadowColor == v5->_dropShadowColor) || [(UIColor *)dropShadowColor isEqual:?]) && self->_dropShadowEdges == v5->_dropShadowEdges && MPUFloatEqualToFloat(self->_dropShadowWidth * 6.0, v5->_dropShadowWidth * 6.0);
     }
 
@@ -57,22 +57,22 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   v5[1] = *&self->_borderAlpha;
-  v6 = [(UIColor *)self->_borderColor copyWithZone:a3];
+  v6 = [(UIColor *)self->_borderColor copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
   v5[3] = *&self->_borderWidth;
   v5[4] = *&self->_fillAlpha;
-  v8 = [(UIColor *)self->_fillColor copyWithZone:a3];
+  v8 = [(UIColor *)self->_fillColor copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
   v5[6] = *&self->_dropShadowAlpha;
-  v10 = [(UIColor *)self->_dropShadowColor copyWithZone:a3];
+  v10 = [(UIColor *)self->_dropShadowColor copyWithZone:zone];
   v11 = v5[7];
   v5[7] = v10;
 

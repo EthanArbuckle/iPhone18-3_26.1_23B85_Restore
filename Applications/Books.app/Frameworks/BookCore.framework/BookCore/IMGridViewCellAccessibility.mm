@@ -32,13 +32,13 @@
   }
 
   v45 = v20;
-  v21 = [v51 window];
-  v22 = [v21 windowScene];
-  v23 = [v22 statusBarManager];
+  window = [v51 window];
+  windowScene = [window windowScene];
+  statusBarManager = [windowScene statusBarManager];
 
   [v51 contentInset];
   v44 = v24;
-  [v23 statusBarHeight];
+  [statusBarManager statusBarHeight];
   v43 = v25;
   [v51 contentOffset];
   v49 = v26;
@@ -165,17 +165,17 @@ LABEL_18:
 {
   v8.receiver = self;
   v8.super_class = IMGridViewCellAccessibility;
-  v3 = [(IMGridViewCellAccessibility *)&v8 accessibilityTraits];
+  accessibilityTraits = [(IMGridViewCellAccessibility *)&v8 accessibilityTraits];
   v4 = [(IMGridViewCellAccessibility *)self imaxValueForKey:@"isSelected"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = UIAccessibilityTraitSelected;
-  if (!v5)
+  if (!bOOLValue)
   {
     v6 = 0;
   }
 
-  return v6 | v3;
+  return v6 | accessibilityTraits;
 }
 
 @end

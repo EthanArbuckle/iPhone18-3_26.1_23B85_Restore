@@ -1,37 +1,37 @@
 @interface VUICollectionComparator
-+ (id)_identifiersWithObjects:(id)a3 identifierBlock:(id)a4;
-+ (id)_indexByIdentifierDictionaryWithIdentifiers:(id)a3;
-+ (id)_movedIdentifiersWithSourceIdentifiers:(id)a3 destinationIdentifiers:(id)a4;
-- (id)_changeSetWithSourceObjects:(id)a3 destinationObjects:(id)a4 identifierBlock:(id)a5 isEqualBlock:(id)a6 updateChangeSetBlock:(id)a7;
++ (id)_identifiersWithObjects:(id)objects identifierBlock:(id)block;
++ (id)_indexByIdentifierDictionaryWithIdentifiers:(id)identifiers;
++ (id)_movedIdentifiersWithSourceIdentifiers:(id)identifiers destinationIdentifiers:(id)destinationIdentifiers;
+- (id)_changeSetWithSourceObjects:(id)objects destinationObjects:(id)destinationObjects identifierBlock:(id)block isEqualBlock:(id)equalBlock updateChangeSetBlock:(id)setBlock;
 @end
 
 @implementation VUICollectionComparator
 
-- (id)_changeSetWithSourceObjects:(id)a3 destinationObjects:(id)a4 identifierBlock:(id)a5 isEqualBlock:(id)a6 updateChangeSetBlock:(id)a7
+- (id)_changeSetWithSourceObjects:(id)objects destinationObjects:(id)destinationObjects identifierBlock:(id)block isEqualBlock:(id)equalBlock updateChangeSetBlock:(id)setBlock
 {
   v70 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v37 = a4;
-  v12 = a5;
-  *&v36 = a6;
-  *(&v36 + 1) = a7;
+  objectsCopy = objects;
+  destinationObjectsCopy = destinationObjects;
+  blockCopy = block;
+  *&v36 = equalBlock;
+  *(&v36 + 1) = setBlock;
   v38 = objc_alloc_init(VUICollectionChangeSet);
-  v33 = v11;
-  v35 = v12;
-  v42 = [objc_opt_class() _identifiersWithObjects:v11 identifierBlock:v12];
-  v41 = [objc_opt_class() _identifiersWithObjects:v37 identifierBlock:v12];
+  v33 = objectsCopy;
+  v35 = blockCopy;
+  v42 = [objc_opt_class() _identifiersWithObjects:objectsCopy identifierBlock:blockCopy];
+  v41 = [objc_opt_class() _identifiersWithObjects:destinationObjectsCopy identifierBlock:blockCopy];
   [v41 count];
   v13 = [objc_opt_class() _indexByIdentifierDictionaryWithIdentifiers:v42];
   v14 = [objc_opt_class() _indexByIdentifierDictionaryWithIdentifiers:v41];
   v15 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v42, "count")}];
-  v16 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v65[0] = MEMORY[0x277D85DD0];
   v65[1] = 3221225472;
   v65[2] = __124__VUICollectionComparator__changeSetWithSourceObjects_destinationObjects_identifierBlock_isEqualBlock_updateChangeSetBlock___block_invoke;
   v65[3] = &unk_279E215C8;
   v44 = v14;
   v66 = v44;
-  v39 = v16;
+  v39 = indexSet;
   v67 = v39;
   v34 = v15;
   v68 = v34;
@@ -43,14 +43,14 @@
     [(VUICollectionChangeSet *)v38 setDeleteChange:v17];
   }
 
-  v18 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet2 = [MEMORY[0x277CCAB58] indexSet];
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = __124__VUICollectionComparator__changeSetWithSourceObjects_destinationObjects_identifierBlock_isEqualBlock_updateChangeSetBlock___block_invoke_2;
   v62[3] = &unk_279E215F0;
   v45 = v13;
   v63 = v45;
-  v40 = v18;
+  v40 = indexSet2;
   v64 = v40;
   [v41 enumerateObjectsUsingBlock:v62];
   v19 = [v41 objectsAtIndexes:v40];
@@ -115,7 +115,7 @@
     v46[2] = __124__VUICollectionComparator__changeSetWithSourceObjects_destinationObjects_identifierBlock_isEqualBlock_updateChangeSetBlock___block_invoke_37;
     v46[3] = &unk_279E21618;
     v47 = v33;
-    v48 = v37;
+    v48 = destinationObjectsCopy;
     v49 = *(&v36 + 1);
     v50 = v36;
     v51 = &v52;
@@ -198,24 +198,24 @@ LABEL_7:
 LABEL_8:
 }
 
-+ (id)_identifiersWithObjects:(id)a3 identifierBlock:(id)a4
++ (id)_identifiersWithObjects:(id)objects identifierBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = MEMORY[0x277CBEB38];
-  v7 = a3;
+  objectsCopy = objects;
   v8 = objc_alloc_init(v6);
-  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(objectsCopy, "count")}];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __67__VUICollectionComparator__identifiersWithObjects_identifierBlock___block_invoke;
   v16[3] = &unk_279E21640;
-  v19 = v5;
+  v19 = blockCopy;
   v17 = v8;
   v10 = v9;
   v18 = v10;
   v11 = v8;
-  v12 = v5;
-  [v7 enumerateObjectsUsingBlock:v16];
+  v12 = blockCopy;
+  [objectsCopy enumerateObjectsUsingBlock:v16];
 
   v13 = v18;
   v14 = v10;
@@ -237,18 +237,18 @@ void __67__VUICollectionComparator__identifiersWithObjects_identifierBlock___blo
   [*(a1 + 40) addObject:v6];
 }
 
-+ (id)_indexByIdentifierDictionaryWithIdentifiers:(id)a3
++ (id)_indexByIdentifierDictionaryWithIdentifiers:(id)identifiers
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  identifiersCopy = identifiers;
+  v5 = [v3 dictionaryWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__VUICollectionComparator__indexByIdentifierDictionaryWithIdentifiers___block_invoke;
   v9[3] = &unk_279E21668;
   v10 = v5;
   v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [identifiersCopy enumerateObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 
@@ -264,27 +264,27 @@ void __71__VUICollectionComparator__indexByIdentifierDictionaryWithIdentifiers__
   [v4 setObject:v7 forKey:v6];
 }
 
-+ (id)_movedIdentifiersWithSourceIdentifiers:(id)a3 destinationIdentifiers:(id)a4
++ (id)_movedIdentifiersWithSourceIdentifiers:(id)identifiers destinationIdentifiers:(id)destinationIdentifiers
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 count];
+  identifiersCopy = identifiers;
+  destinationIdentifiersCopy = destinationIdentifiers;
+  v7 = [destinationIdentifiersCopy count];
   v35 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v7];
   v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v7];
   if (v7)
   {
     for (i = 0; i != v7; ++i)
     {
-      v10 = [v5 objectAtIndex:i];
-      v11 = [v6 objectAtIndex:i];
+      v10 = [identifiersCopy objectAtIndex:i];
+      v11 = [destinationIdentifiersCopy objectAtIndex:i];
       if (([v10 isEqual:v11] & 1) == 0)
       {
         v12 = [v8 objectForKey:v10];
         v13 = v12;
         if (v12)
         {
-          v14 = [v12 integerValue];
-          v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:i - v14];
+          integerValue = [v12 integerValue];
+          v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:i - integerValue];
           v16 = v35;
         }
 
@@ -300,8 +300,8 @@ void __71__VUICollectionComparator__indexByIdentifierDictionaryWithIdentifiers__
 
         if (v17)
         {
-          v18 = [v17 integerValue];
-          v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:i - v18];
+          integerValue2 = [v17 integerValue];
+          v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:i - integerValue2];
           v20 = v35;
         }
 
@@ -325,22 +325,22 @@ void __71__VUICollectionComparator__indexByIdentifierDictionaryWithIdentifiers__
     v34 = v21;
     while (1)
     {
-      if (v23 >= [v5 count])
+      if (v23 >= [identifiersCopy count])
       {
         v25 = 0;
       }
 
       else
       {
-        v25 = [v5 objectAtIndex:v23];
+        v25 = [identifiersCopy objectAtIndex:v23];
       }
 
-      if (v24 >= [v6 count])
+      if (v24 >= [destinationIdentifiersCopy count])
       {
         break;
       }
 
-      v26 = [v6 objectAtIndex:v24];
+      v26 = [destinationIdentifiersCopy objectAtIndex:v24];
       v27 = v26;
       if (!v25 || !v26 || ([v25 isEqual:v26] & 1) != 0)
       {
@@ -355,12 +355,12 @@ void __71__VUICollectionComparator__indexByIdentifierDictionaryWithIdentifiers__
       if (![v22 containsObject:v27])
       {
         v28 = [v35 objectForKey:v25];
-        v33 = [v28 integerValue];
+        integerValue3 = [v28 integerValue];
 
         v29 = [v35 objectForKey:v27];
-        v30 = [v29 integerValue];
+        integerValue4 = [v29 integerValue];
 
-        if (v33 > v30)
+        if (integerValue3 > integerValue4)
         {
           v22 = v34;
           [v34 addObject:v25];

@@ -1,5 +1,5 @@
 @interface CSConnection
-- (CSConnection)initWithConnection:(shared_ptr<CLConnection>)a3 message:(shared_ptr<CLConnectionMessage>)a4 delegate:(id)a5;
+- (CSConnection)initWithConnection:(shared_ptr<CLConnection>)connection message:(shared_ptr<CLConnectionMessage>)message delegate:(id)delegate;
 - (CSConnectionDelegateProtocol)delegate;
 - (NSString)name;
 - (id).cxx_construct;
@@ -7,17 +7,17 @@
 - (int)remotePid;
 - (shared_ptr<CLConnection>)connection;
 - (void)dealloc;
-- (void)sendMessage:(id)a3 withName:(id)a4;
-- (void)sendMessage:(id)a3 withName:(id)a4 andReply:(id)a5;
+- (void)sendMessage:(id)message withName:(id)name;
+- (void)sendMessage:(id)message withName:(id)name andReply:(id)reply;
 - (void)start;
 @end
 
 @implementation CSConnection
 
-- (CSConnection)initWithConnection:(shared_ptr<CLConnection>)a3 message:(shared_ptr<CLConnectionMessage>)a4 delegate:(id)a5
+- (CSConnection)initWithConnection:(shared_ptr<CLConnection>)connection message:(shared_ptr<CLConnectionMessage>)message delegate:(id)delegate
 {
-  ptr = a3.__ptr_;
-  v8 = a4.__ptr_;
+  ptr = connection.__ptr_;
+  v8 = message.__ptr_;
   v25.receiver = self;
   v25.super_class = CSConnection;
   v9 = [(CSConnection *)&v25 init];
@@ -198,19 +198,19 @@
   return RemotePid;
 }
 
-- (void)sendMessage:(id)a3 withName:(id)a4
+- (void)sendMessage:(id)message withName:(id)name
 {
-  __p[5] = a3;
-  sub_10029F5A0(__p, [a4 UTF8String]);
+  __p[5] = message;
+  sub_10029F5A0(__p, [name UTF8String]);
   sub_10035745C();
 }
 
-- (void)sendMessage:(id)a3 withName:(id)a4 andReply:(id)a5
+- (void)sendMessage:(id)message withName:(id)name andReply:(id)reply
 {
-  __p[5] = a3;
-  v7 = a4;
-  v8 = a5;
-  sub_10029F5A0(__p, [v7 UTF8String]);
+  __p[5] = message;
+  nameCopy = name;
+  replyCopy = reply;
+  sub_10029F5A0(__p, [nameCopy UTF8String]);
   sub_10035745C();
 }
 
@@ -224,8 +224,8 @@
 
   if (v6)
   {
-    v3 = [(CSConnection *)self name];
-    v4 = [NSString stringWithFormat:@"Connection, name: %@, pid: %d", v3, [(CSConnection *)self remotePid]];
+    name = [(CSConnection *)self name];
+    v4 = [NSString stringWithFormat:@"Connection, name: %@, pid: %d", name, [(CSConnection *)self remotePid]];
   }
 
   else

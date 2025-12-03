@@ -9,12 +9,12 @@
 {
   v4 = a3;
   v5 = objc_opt_class();
-  v6 = [v4 bundleIdentifier];
-  v7 = [v5 localizedApplicationNameForBundleIdentifier:v6];
+  bundleIdentifier = [v4 bundleIdentifier];
+  v7 = [v5 localizedApplicationNameForBundleIdentifier:bundleIdentifier];
 
-  v8 = [v4 donationIdentifier];
+  donationIdentifier = [v4 donationIdentifier];
 
-  v9 = [objc_alloc(MEMORY[0x277CBDBC0]) initWithLocalizedApplicationName:v7 donationIdentifier:v8];
+  v9 = [objc_alloc(MEMORY[0x277CBDBC0]) initWithLocalizedApplicationName:v7 donationIdentifier:donationIdentifier];
   return v9;
 }
 

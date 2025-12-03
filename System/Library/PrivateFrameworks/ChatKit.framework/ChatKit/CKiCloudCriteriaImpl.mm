@@ -3,7 +3,7 @@
 + (id)createBackupManager;
 + (id)sharedInstance;
 + (int64_t)otherDevicesCount;
-- (void)fetchCloudStorageUsageInformationWithCompletion:(id)a3;
+- (void)fetchCloudStorageUsageInformationWithCompletion:(id)completion;
 @end
 
 @implementation CKiCloudCriteriaImpl
@@ -27,19 +27,19 @@ void __38__CKiCloudCriteriaImpl_sharedInstance__block_invoke()
   sharedInstance_sharedInstance = v0;
 }
 
-- (void)fetchCloudStorageUsageInformationWithCompletion:(id)a3
+- (void)fetchCloudStorageUsageInformationWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E6959A48] defaultStore];
-  v5 = [v4 aa_primaryAppleAccount];
+  completionCopy = completion;
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-  v6 = [objc_alloc(MEMORY[0x1E698B960]) initDetailedRequestWithAccount:v5];
+  v6 = [objc_alloc(MEMORY[0x1E698B960]) initDetailedRequestWithAccount:aa_primaryAppleAccount];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__CKiCloudCriteriaImpl_fetchCloudStorageUsageInformationWithCompletion___block_invoke;
   v8[3] = &unk_1E72EFFB0;
-  v9 = v3;
-  v7 = v3;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v6 performRequestWithHandler:v8];
 }
 
@@ -104,15 +104,15 @@ void __72__CKiCloudCriteriaImpl_fetchCloudStorageUsageInformationWithCompletion_
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 isBackupEnabled];
+    isBackupEnabled = [v2 isBackupEnabled];
   }
 
   else
   {
-    v4 = 0;
+    isBackupEnabled = 0;
   }
 
-  return v4;
+  return isBackupEnabled;
 }
 
 + (id)createBackupManager
@@ -161,8 +161,8 @@ void __43__CKiCloudCriteriaImpl_createBackupManager__block_invoke()
 {
   v2 = objc_alloc(MEMORY[0x1E69A48A8]);
   v3 = [v2 initWithService:*MEMORY[0x1E69A4818]];
-  v4 = [v3 devices];
-  v5 = [v4 count];
+  devices = [v3 devices];
+  v5 = [devices count];
 
   return v5;
 }

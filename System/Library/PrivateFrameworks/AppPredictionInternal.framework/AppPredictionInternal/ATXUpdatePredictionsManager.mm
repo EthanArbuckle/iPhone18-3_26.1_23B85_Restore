@@ -1,15 +1,15 @@
 @interface ATXUpdatePredictionsManager
-+ (BOOL)shouldOverrideRefreshRateForDisabledConsumerSubTypesForReason:(unint64_t)a3;
++ (BOOL)shouldOverrideRefreshRateForDisabledConsumerSubTypesForReason:(unint64_t)reason;
 + (id)homeScreenPageConfigs;
 + (id)sharedInstance;
 + (void)homeScreenPageConfigs;
 - (ATXUpdatePredictionsManager)init;
-- (ATXUpdatePredictionsManager)initWithATXServer:(id)a3 actionProducer:(id)a4 updateSources:(id)a5 updatePredictionsLogger:(id)a6;
-- (id)_stringArrayFromBoxedConsumerSubTypeArray:(id)a3;
+- (ATXUpdatePredictionsManager)initWithATXServer:(id)server actionProducer:(id)producer updateSources:(id)sources updatePredictionsLogger:(id)logger;
+- (id)_stringArrayFromBoxedConsumerSubTypeArray:(id)array;
 - (id)disabledConsumerSubTypes;
-- (id)disabledConsumerSubTypesWithHomeScreenPageConfigs:(id)a3;
-- (id)documentConsumerSubTypesToUpdateWithRefreshRate:(double)a3 disabledConsumerSubTypes:(id)a4 shouldOverrideRefreshRateForDisabledConsumerSubTypes:(BOOL)a5;
-- (void)logPredictionUpdatesForBoxedAppConsumerSubTypes:(id)a3 actionConsumerSubTypes:(id)a4 reason:(unint64_t)a5;
+- (id)disabledConsumerSubTypesWithHomeScreenPageConfigs:(id)configs;
+- (id)documentConsumerSubTypesToUpdateWithRefreshRate:(double)rate disabledConsumerSubTypes:(id)types shouldOverrideRefreshRateForDisabledConsumerSubTypes:(BOOL)subTypes;
+- (void)logPredictionUpdatesForBoxedAppConsumerSubTypes:(id)types actionConsumerSubTypes:(id)subTypes reason:(unint64_t)reason;
 - (void)processAppDirectoryFeedback;
 - (void)processAppDirectoryFeedbackNoSync;
 - (void)processHomeScreenFeedback;
@@ -20,9 +20,9 @@
 - (void)processSpotlightActionFeedbackNoSync;
 - (void)processSpotlightAppFeedback;
 - (void)processSpotlightAppFeedbackNoSync;
-- (void)refreshActionPredictionsWithConsumerSubTypes:(id)a3 featureCache:(id)a4;
-- (void)refreshAppPredictionsWithConsumerSubTypes:(id)a3 featureCache:(id)a4;
-- (void)updateBehavioralPredictionsIfOlderThan:(double)a3 reason:(unint64_t)a4;
+- (void)refreshActionPredictionsWithConsumerSubTypes:(id)types featureCache:(id)cache;
+- (void)refreshAppPredictionsWithConsumerSubTypes:(id)types featureCache:(id)cache;
+- (void)updateBehavioralPredictionsIfOlderThan:(double)than reason:(unint64_t)reason;
 @end
 
 @implementation ATXUpdatePredictionsManager
@@ -69,27 +69,27 @@ void __45__ATXUpdatePredictionsManager_sharedInstance__block_invoke()
   return v7;
 }
 
-- (ATXUpdatePredictionsManager)initWithATXServer:(id)a3 actionProducer:(id)a4 updateSources:(id)a5 updatePredictionsLogger:(id)a6
+- (ATXUpdatePredictionsManager)initWithATXServer:(id)server actionProducer:(id)producer updateSources:(id)sources updatePredictionsLogger:(id)logger
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  serverCopy = server;
+  producerCopy = producer;
+  sourcesCopy = sources;
+  loggerCopy = logger;
   v24.receiver = self;
   v24.super_class = ATXUpdatePredictionsManager;
   v15 = [(ATXUpdatePredictionsManager *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_atxServer, a3);
-    objc_storeStrong(&v16->_actionProducer, a4);
-    objc_storeStrong(&v16->_updateSources, a5);
-    objc_storeStrong(&v16->_updatePredictionsLogger, a6);
+    objc_storeStrong(&v15->_atxServer, server);
+    objc_storeStrong(&v16->_actionProducer, producer);
+    objc_storeStrong(&v16->_updateSources, sources);
+    objc_storeStrong(&v16->_updatePredictionsLogger, logger);
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    v19 = [v18 UTF8String];
+    uTF8String = [v18 UTF8String];
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v21 = dispatch_queue_create(v19, v20);
+    v21 = dispatch_queue_create(uTF8String, v20);
     queue = v16->_queue;
     v16->_queue = v21;
   }
@@ -97,7 +97,7 @@ void __45__ATXUpdatePredictionsManager_sharedInstance__block_invoke()
   return v16;
 }
 
-- (void)updateBehavioralPredictionsIfOlderThan:(double)a3 reason:(unint64_t)a4
+- (void)updateBehavioralPredictionsIfOlderThan:(double)than reason:(unint64_t)reason
 {
   sel_getName(a2);
   v7 = os_transaction_create();
@@ -107,8 +107,8 @@ void __45__ATXUpdatePredictionsManager_sharedInstance__block_invoke()
   v10[2] = __77__ATXUpdatePredictionsManager_updateBehavioralPredictionsIfOlderThan_reason___block_invoke;
   v10[3] = &unk_27859A060;
   v11 = v7;
-  v12 = a4;
-  v13 = a3;
+  reasonCopy = reason;
+  thanCopy = than;
   v10[4] = self;
   v9 = v7;
   dispatch_sync(queue, v10);
@@ -260,29 +260,29 @@ void __77__ATXUpdatePredictionsManager_updateBehavioralPredictionsIfOlderThan_re
   v42 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)shouldOverrideRefreshRateForDisabledConsumerSubTypesForReason:(unint64_t)a3
++ (BOOL)shouldOverrideRefreshRateForDisabledConsumerSubTypesForReason:(unint64_t)reason
 {
-  if (a3 >= 0x18)
+  if (reason >= 0x18)
   {
     v5 = __atxlog_handle_default();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(ATXUpdatePredictionsManager *)a3 shouldOverrideRefreshRateForDisabledConsumerSubTypesForReason:v5];
+      [(ATXUpdatePredictionsManager *)reason shouldOverrideRefreshRateForDisabledConsumerSubTypesForReason:v5];
     }
 
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"shouldOverrideRefreshRateForDisabledConsumerSubTypesForReason called with invalid ATXUpdatePredictionsReason value of %lu", a3}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"shouldOverrideRefreshRateForDisabledConsumerSubTypesForReason called with invalid ATXUpdatePredictionsReason value of %lu", reason}];
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = 0x8Fu >> a3;
+    v4 = 0x8Fu >> reason;
   }
 
   return v4 & 1;
 }
 
-- (id)documentConsumerSubTypesToUpdateWithRefreshRate:(double)a3 disabledConsumerSubTypes:(id)a4 shouldOverrideRefreshRateForDisabledConsumerSubTypes:(BOOL)a5
+- (id)documentConsumerSubTypesToUpdateWithRefreshRate:(double)rate disabledConsumerSubTypes:(id)types shouldOverrideRefreshRateForDisabledConsumerSubTypes:(BOOL)subTypes
 {
   v5 = objc_opt_new();
 
@@ -291,26 +291,26 @@ void __77__ATXUpdatePredictionsManager_updateBehavioralPredictionsIfOlderThan_re
 
 - (id)disabledConsumerSubTypes
 {
-  v3 = [objc_opt_class() homeScreenPageConfigs];
-  v4 = [(ATXUpdatePredictionsManager *)self disabledConsumerSubTypesWithHomeScreenPageConfigs:v3];
+  homeScreenPageConfigs = [objc_opt_class() homeScreenPageConfigs];
+  v4 = [(ATXUpdatePredictionsManager *)self disabledConsumerSubTypesWithHomeScreenPageConfigs:homeScreenPageConfigs];
 
   return v4;
 }
 
-- (id)disabledConsumerSubTypesWithHomeScreenPageConfigs:(id)a3
+- (id)disabledConsumerSubTypesWithHomeScreenPageConfigs:(id)configs
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  configsCopy = configs;
+  if (configsCopy)
   {
-    v30 = self;
+    selfCopy = self;
     v37 = [MEMORY[0x277CBEB58] setWithObjects:{&unk_283A57C98, &unk_283A57CB0, 0}];
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v31 = v4;
-    obj = v4;
+    v31 = configsCopy;
+    obj = configsCopy;
     v34 = [obj countByEnumeratingWithState:&v46 objects:v58 count:16];
     if (v34)
     {
@@ -332,8 +332,8 @@ LABEL_4:
         }
 
         v35 = v6;
-        v8 = [v7 panels];
-        v9 = [v8 count];
+        panels = [v7 panels];
+        v9 = [panels count];
 
         if (v9)
         {
@@ -344,8 +344,8 @@ LABEL_4:
         v45 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v36 = [v7 stacks];
-        v10 = [v36 countByEnumeratingWithState:&v42 objects:v57 count:16];
+        stacks = [v7 stacks];
+        v10 = [stacks countByEnumeratingWithState:&v42 objects:v57 count:16];
         if (v10)
         {
           v11 = v10;
@@ -356,7 +356,7 @@ LABEL_4:
             {
               if (*v43 != v12)
               {
-                objc_enumerationMutation(v36);
+                objc_enumerationMutation(stacks);
               }
 
               v14 = *(*(&v42 + 1) + 8 * i);
@@ -364,8 +364,8 @@ LABEL_4:
               v39 = 0u;
               v40 = 0u;
               v41 = 0u;
-              v15 = [v14 widgets];
-              v16 = [v15 countByEnumeratingWithState:&v38 objects:v56 count:16];
+              widgets = [v14 widgets];
+              v16 = [widgets countByEnumeratingWithState:&v38 objects:v56 count:16];
               if (v16)
               {
                 v17 = v16;
@@ -376,11 +376,11 @@ LABEL_4:
                   {
                     if (*v39 != v18)
                     {
-                      objc_enumerationMutation(v15);
+                      objc_enumerationMutation(widgets);
                     }
 
-                    v20 = [*(*(&v38 + 1) + 8 * j) extensionBundleId];
-                    v21 = [v20 isEqualToString:v5];
+                    extensionBundleId = [*(*(&v38 + 1) + 8 * j) extensionBundleId];
+                    v21 = [extensionBundleId isEqualToString:v5];
 
                     if (v21)
                     {
@@ -390,7 +390,7 @@ LABEL_4:
                     }
                   }
 
-                  v17 = [v15 countByEnumeratingWithState:&v38 objects:v56 count:16];
+                  v17 = [widgets countByEnumeratingWithState:&v38 objects:v56 count:16];
                   if (v17)
                   {
                     continue;
@@ -403,7 +403,7 @@ LABEL_4:
 LABEL_25:
             }
 
-            v11 = [v36 countByEnumeratingWithState:&v42 objects:v57 count:16];
+            v11 = [stacks countByEnumeratingWithState:&v42 objects:v57 count:16];
           }
 
           while (v11);
@@ -428,8 +428,8 @@ LABEL_25:
     {
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
-      v25 = [v37 allObjects];
-      v26 = [(ATXUpdatePredictionsManager *)v30 _stringArrayFromBoxedConsumerSubTypeArray:v25];
+      allObjects = [v37 allObjects];
+      v26 = [(ATXUpdatePredictionsManager *)selfCopy _stringArrayFromBoxedConsumerSubTypeArray:allObjects];
       *buf = 138412802;
       v51 = v24;
       v52 = 2080;
@@ -440,7 +440,7 @@ LABEL_25:
     }
 
     v27 = [v37 copy];
-    v4 = v31;
+    configsCopy = v31;
   }
 
   else
@@ -482,20 +482,20 @@ LABEL_25:
   return v3;
 }
 
-- (void)refreshAppPredictionsWithConsumerSubTypes:(id)a3 featureCache:(id)a4
+- (void)refreshAppPredictionsWithConsumerSubTypes:(id)types featureCache:(id)cache
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ATXUpdatePredictionsManager *)self atxServer];
-  [v8 updateAppPredictionsWithConsumerSubTypes:v7 featureCache:v6];
+  cacheCopy = cache;
+  typesCopy = types;
+  atxServer = [(ATXUpdatePredictionsManager *)self atxServer];
+  [atxServer updateAppPredictionsWithConsumerSubTypes:typesCopy featureCache:cacheCopy];
 }
 
-- (void)refreshActionPredictionsWithConsumerSubTypes:(id)a3 featureCache:(id)a4
+- (void)refreshActionPredictionsWithConsumerSubTypes:(id)types featureCache:(id)cache
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ATXUpdatePredictionsManager *)self actionProducer];
-  [v8 invalidateCacheForConsumerSubTypes:v7 featureCache:v6];
+  cacheCopy = cache;
+  typesCopy = types;
+  actionProducer = [(ATXUpdatePredictionsManager *)self actionProducer];
+  [actionProducer invalidateCacheForConsumerSubTypes:typesCopy featureCache:cacheCopy];
 }
 
 - (void)processLockscreenFeedback
@@ -559,13 +559,13 @@ LABEL_25:
   sel_getName(a2);
   v4 = os_transaction_create();
   v5 = objc_opt_new();
-  v6 = [v5 clientModelIdsWithFeedbackListeners];
+  clientModelIdsWithFeedbackListeners = [v5 clientModelIdsWithFeedbackListeners];
   v7 = objc_alloc(MEMORY[0x277CBEBC0]);
-  v8 = [MEMORY[0x277CEBCB0] feedbackRootDirectory];
-  v9 = [v8 stringByAppendingPathComponent:@"blendingFeedback-ATXConsumerSubTypeActionLockScreen"];
+  feedbackRootDirectory = [MEMORY[0x277CEBCB0] feedbackRootDirectory];
+  v9 = [feedbackRootDirectory stringByAppendingPathComponent:@"blendingFeedback-ATXConsumerSubTypeActionLockScreen"];
   v10 = [v7 initFileURLWithPath:v9];
 
-  v11 = [[ATXProactiveSuggestioniOSUIFeedbackQuery alloc] initWithClientModelIds:v6 consumerSubTypeToConsider:22 startDateForResults:0 bookmarkURLPath:v10];
+  v11 = [[ATXProactiveSuggestioniOSUIFeedbackQuery alloc] initWithClientModelIds:clientModelIdsWithFeedbackListeners consumerSubTypeToConsider:22 startDateForResults:0 bookmarkURLPath:v10];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __62__ATXUpdatePredictionsManager_processLockscreenFeedbackNoSync__block_invoke;
@@ -606,13 +606,13 @@ void __62__ATXUpdatePredictionsManager_processLockscreenFeedbackNoSync__block_in
   sel_getName(a2);
   v4 = os_transaction_create();
   v5 = objc_opt_new();
-  v6 = [v5 clientModelIdsWithFeedbackListeners];
+  clientModelIdsWithFeedbackListeners = [v5 clientModelIdsWithFeedbackListeners];
   v7 = objc_alloc(MEMORY[0x277CBEBC0]);
-  v8 = [MEMORY[0x277CEBCB0] feedbackRootDirectory];
-  v9 = [v8 stringByAppendingPathComponent:@"blendingFeedback-ATXConsumerSubTypeSuggestionHomeScreen"];
+  feedbackRootDirectory = [MEMORY[0x277CEBCB0] feedbackRootDirectory];
+  v9 = [feedbackRootDirectory stringByAppendingPathComponent:@"blendingFeedback-ATXConsumerSubTypeSuggestionHomeScreen"];
   v10 = [v7 initFileURLWithPath:v9];
 
-  v11 = [(ATXProactiveSuggestioniOSUIFeedbackQuery *)[ATXProactiveSuggestioniOSPartialIntentUIFeedbackQuery alloc] initWithClientModelIds:v6 consumerSubTypeToConsider:34 startDateForResults:0 bookmarkURLPath:v10];
+  v11 = [(ATXProactiveSuggestioniOSUIFeedbackQuery *)[ATXProactiveSuggestioniOSPartialIntentUIFeedbackQuery alloc] initWithClientModelIds:clientModelIdsWithFeedbackListeners consumerSubTypeToConsider:34 startDateForResults:0 bookmarkURLPath:v10];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __62__ATXUpdatePredictionsManager_processHomeScreenFeedbackNoSync__block_invoke;
@@ -653,13 +653,13 @@ void __62__ATXUpdatePredictionsManager_processHomeScreenFeedbackNoSync__block_in
   sel_getName(a2);
   v4 = os_transaction_create();
   v5 = objc_opt_new();
-  v6 = [v5 clientModelIdsWithFeedbackListeners];
+  clientModelIdsWithFeedbackListeners = [v5 clientModelIdsWithFeedbackListeners];
   v7 = objc_alloc(MEMORY[0x277CBEBC0]);
-  v8 = [MEMORY[0x277CEBCB0] feedbackRootDirectory];
-  v9 = [v8 stringByAppendingPathComponent:@"blendingFeedback-ATXConsumerSubTypeSpotlightUnknown"];
+  feedbackRootDirectory = [MEMORY[0x277CEBCB0] feedbackRootDirectory];
+  v9 = [feedbackRootDirectory stringByAppendingPathComponent:@"blendingFeedback-ATXConsumerSubTypeSpotlightUnknown"];
   v10 = [v7 initFileURLWithPath:v9];
 
-  v11 = [[ATXProactiveSuggestioniOSUIFeedbackQuery alloc] initWithClientModelIds:v6 consumerSubTypeToConsider:9 startDateForResults:0 bookmarkURLPath:v10];
+  v11 = [[ATXProactiveSuggestioniOSUIFeedbackQuery alloc] initWithClientModelIds:clientModelIdsWithFeedbackListeners consumerSubTypeToConsider:9 startDateForResults:0 bookmarkURLPath:v10];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__ATXUpdatePredictionsManager_processSpotlightAppFeedbackNoSync__block_invoke;
@@ -700,13 +700,13 @@ void __64__ATXUpdatePredictionsManager_processSpotlightAppFeedbackNoSync__block_
   sel_getName(a2);
   v4 = os_transaction_create();
   v5 = objc_opt_new();
-  v6 = [v5 clientModelIdsWithFeedbackListeners];
+  clientModelIdsWithFeedbackListeners = [v5 clientModelIdsWithFeedbackListeners];
   v7 = objc_alloc(MEMORY[0x277CBEBC0]);
-  v8 = [MEMORY[0x277CEBCB0] feedbackRootDirectory];
-  v9 = [v8 stringByAppendingPathComponent:@"blendingFeedback-ATXConsumerSubTypeActionSpotlightUnknown"];
+  feedbackRootDirectory = [MEMORY[0x277CEBCB0] feedbackRootDirectory];
+  v9 = [feedbackRootDirectory stringByAppendingPathComponent:@"blendingFeedback-ATXConsumerSubTypeActionSpotlightUnknown"];
   v10 = [v7 initFileURLWithPath:v9];
 
-  v11 = [(ATXProactiveSuggestioniOSUIFeedbackQuery *)[ATXProactiveSuggestioniOSPartialIntentUIFeedbackQuery alloc] initWithClientModelIds:v6 consumerSubTypeToConsider:21 startDateForResults:0 bookmarkURLPath:v10];
+  v11 = [(ATXProactiveSuggestioniOSUIFeedbackQuery *)[ATXProactiveSuggestioniOSPartialIntentUIFeedbackQuery alloc] initWithClientModelIds:clientModelIdsWithFeedbackListeners consumerSubTypeToConsider:21 startDateForResults:0 bookmarkURLPath:v10];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __67__ATXUpdatePredictionsManager_processSpotlightActionFeedbackNoSync__block_invoke;
@@ -747,13 +747,13 @@ void __67__ATXUpdatePredictionsManager_processSpotlightActionFeedbackNoSync__blo
   sel_getName(a2);
   v4 = os_transaction_create();
   v5 = objc_opt_new();
-  v6 = [v5 clientModelIdsWithFeedbackListeners];
+  clientModelIdsWithFeedbackListeners = [v5 clientModelIdsWithFeedbackListeners];
   v7 = objc_alloc(MEMORY[0x277CBEBC0]);
-  v8 = [MEMORY[0x277CEBCB0] feedbackRootDirectory];
-  v9 = [v8 stringByAppendingPathComponent:@"blendingFeedback-ATXConsumerSubTypeAppDirectory"];
+  feedbackRootDirectory = [MEMORY[0x277CEBCB0] feedbackRootDirectory];
+  v9 = [feedbackRootDirectory stringByAppendingPathComponent:@"blendingFeedback-ATXConsumerSubTypeAppDirectory"];
   v10 = [v7 initFileURLWithPath:v9];
 
-  v11 = [[ATXProactiveSuggestioniOSUIFeedbackQuery alloc] initWithClientModelIds:v6 consumerSubTypeToConsider:35 startDateForResults:0 bookmarkURLPath:v10];
+  v11 = [[ATXProactiveSuggestioniOSUIFeedbackQuery alloc] initWithClientModelIds:clientModelIdsWithFeedbackListeners consumerSubTypeToConsider:35 startDateForResults:0 bookmarkURLPath:v10];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__ATXUpdatePredictionsManager_processAppDirectoryFeedbackNoSync__block_invoke;
@@ -804,30 +804,30 @@ void __64__ATXUpdatePredictionsManager_processAppDirectoryFeedbackNoSync__block_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logPredictionUpdatesForBoxedAppConsumerSubTypes:(id)a3 actionConsumerSubTypes:(id)a4 reason:(unint64_t)a5
+- (void)logPredictionUpdatesForBoxedAppConsumerSubTypes:(id)types actionConsumerSubTypes:(id)subTypes reason:(unint64_t)reason
 {
-  v8 = a4;
-  if ([a3 containsObject:&unk_283A57CC8])
+  subTypesCopy = subTypes;
+  if ([types containsObject:&unk_283A57CC8])
   {
-    [(ATXUpdatePredictionsLogger *)self->_updatePredictionsLogger countPredictionUpdateWithReason:a5 client:0];
+    [(ATXUpdatePredictionsLogger *)self->_updatePredictionsLogger countPredictionUpdateWithReason:reason client:0];
   }
 
-  if ([v8 containsObject:&unk_283A57CE0])
+  if ([subTypesCopy containsObject:&unk_283A57CE0])
   {
-    [(ATXUpdatePredictionsLogger *)self->_updatePredictionsLogger countPredictionUpdateWithReason:a5 client:1];
+    [(ATXUpdatePredictionsLogger *)self->_updatePredictionsLogger countPredictionUpdateWithReason:reason client:1];
   }
 }
 
-- (id)_stringArrayFromBoxedConsumerSubTypeArray:(id)a3
+- (id)_stringArrayFromBoxedConsumerSubTypeArray:(id)array
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -842,8 +842,8 @@ void __64__ATXUpdatePredictionsManager_processAppDirectoryFeedbackNoSync__block_
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) unsignedIntegerValue];
-        v11 = [MEMORY[0x277CEBCF0] stringForConsumerSubtype:v10];
+        unsignedIntegerValue = [*(*(&v15 + 1) + 8 * i) unsignedIntegerValue];
+        v11 = [MEMORY[0x277CEBCF0] stringForConsumerSubtype:unsignedIntegerValue];
         [v4 addObject:v11];
       }
 
@@ -872,7 +872,7 @@ void __64__ATXUpdatePredictionsManager_processAppDirectoryFeedbackNoSync__block_
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_2263AA000, a2, OS_LOG_TYPE_FAULT, "Unable to fetch HomeScreen Page Configs with error: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

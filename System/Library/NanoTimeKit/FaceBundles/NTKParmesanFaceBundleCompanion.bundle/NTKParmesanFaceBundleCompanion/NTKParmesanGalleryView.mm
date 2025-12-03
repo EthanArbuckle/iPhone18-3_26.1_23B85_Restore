@@ -1,47 +1,47 @@
 @interface NTKParmesanGalleryView
 - (CGRect)normalizedKeylineRect;
 - (NTKParmesanGalleryTimeTransitionDelegate)transitionDelegate;
-- (NTKParmesanGalleryView)initWithFrame:(CGRect)a3;
-- (NTKParmesanGalleryView)initWithFrame:(CGRect)a3 device:(id)a4 typeface:(int64_t)a5 numerals:(unint64_t)a6 timeOption:(int64_t)a7 timeLayout:(id)a8 timePalette:(id)a9;
+- (NTKParmesanGalleryView)initWithFrame:(CGRect)frame;
+- (NTKParmesanGalleryView)initWithFrame:(CGRect)frame device:(id)device typeface:(int64_t)typeface numerals:(unint64_t)numerals timeOption:(int64_t)option timeLayout:(id)layout timePalette:(id)palette;
 - (NTKTimeView)face_timeView;
 - (_TtC30NTKParmesanFaceBundleCompanion22ParmesanTimeAppearance)timeAppearance;
 - (int64_t)timeTextAlignment;
 - (void)disableTimeChangeAnimations;
 - (void)enableTimeChangeAnimations;
-- (void)setComplicationVisibility:(unint64_t)a3;
-- (void)setComposition:(id)a3;
-- (void)setContentEffect:(id)a3;
-- (void)setCurrentItem:(id)a3;
-- (void)setLayout:(id)a3;
-- (void)setNumerals:(unint64_t)a3;
-- (void)setTypeface:(int64_t)a3;
-- (void)swatchSetTimeOption:(int64_t)a3 typeface:(int64_t)a4 numerals:(unint64_t)a5 style:(int64_t)a6;
+- (void)setComplicationVisibility:(unint64_t)visibility;
+- (void)setComposition:(id)composition;
+- (void)setContentEffect:(id)effect;
+- (void)setCurrentItem:(id)item;
+- (void)setLayout:(id)layout;
+- (void)setNumerals:(unint64_t)numerals;
+- (void)setTypeface:(int64_t)typeface;
+- (void)swatchSetTimeOption:(int64_t)option typeface:(int64_t)typeface numerals:(unint64_t)numerals style:(int64_t)style;
 @end
 
 @implementation NTKParmesanGalleryView
 
-- (void)setCurrentItem:(id)a3
+- (void)setCurrentItem:(id)item
 {
   v4 = *(self + OBJC_IVAR___NTKParmesanGalleryView_currentItem);
-  *(self + OBJC_IVAR___NTKParmesanGalleryView_currentItem) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NTKParmesanGalleryView_currentItem) = item;
+  itemCopy = item;
 }
 
-- (void)setComplicationVisibility:(unint64_t)a3
+- (void)setComplicationVisibility:(unint64_t)visibility
 {
-  *(self + OBJC_IVAR___NTKParmesanGalleryView_complicationVisibility) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR___NTKParmesanGalleryView_complicationVisibility) = visibility;
+  selfCopy = self;
   sub_23BF97F5C();
 }
 
-- (void)setContentEffect:(id)a3
+- (void)setContentEffect:(id)effect
 {
   v5 = *(self + OBJC_IVAR___NTKParmesanGalleryView_contentEffect);
-  *(self + OBJC_IVAR___NTKParmesanGalleryView_contentEffect) = a3;
-  v6 = a3;
-  v7 = self;
+  *(self + OBJC_IVAR___NTKParmesanGalleryView_contentEffect) = effect;
+  effectCopy = effect;
+  selfCopy = self;
 
-  sub_23BF98D38(a3);
+  sub_23BF98D38(effect);
 }
 
 - (NTKParmesanGalleryTimeTransitionDelegate)transitionDelegate
@@ -51,14 +51,14 @@
   return Strong;
 }
 
-- (void)setComposition:(id)a3
+- (void)setComposition:(id)composition
 {
-  v5 = a3;
-  v6 = self;
-  sub_23BF99A64(a3);
+  compositionCopy = composition;
+  selfCopy = self;
+  sub_23BF99A64(composition);
 }
 
-- (NTKParmesanGalleryView)initWithFrame:(CGRect)a3
+- (NTKParmesanGalleryView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -89,21 +89,21 @@
   return self;
 }
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
-  v4 = a3;
-  v5 = self;
-  sub_23BF9BF08(v4);
+  layoutCopy = layout;
+  selfCopy = self;
+  sub_23BF9BF08(layoutCopy);
 }
 
-- (void)setTypeface:(int64_t)a3
+- (void)setTypeface:(int64_t)typeface
 {
   v3 = *(self + OBJC_IVAR___NTKParmesanGalleryView_timeContainerView);
   if (v3)
   {
-    v6 = self;
+    selfCopy = self;
     v5 = v3;
-    sub_23BFBC664(0, a3, 0, 0, 1);
+    sub_23BFBC664(0, typeface, 0, 0, 1);
   }
 
   else
@@ -112,14 +112,14 @@
   }
 }
 
-- (void)setNumerals:(unint64_t)a3
+- (void)setNumerals:(unint64_t)numerals
 {
   v3 = *(self + OBJC_IVAR___NTKParmesanGalleryView_timeContainerView);
   if (v3)
   {
-    v6 = self;
+    selfCopy = self;
     v5 = v3;
-    sub_23BFBC664(0, 0, 1, a3, 0);
+    sub_23BFBC664(0, 0, 1, numerals, 0);
   }
 
   else
@@ -130,7 +130,7 @@
 
 - (int64_t)timeTextAlignment
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23BF9C180();
 
   return v3;
@@ -138,7 +138,7 @@
 
 - (CGRect)normalizedKeylineRect
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BF9C2B8();
   v4 = v3;
   v6 = v5;
@@ -158,31 +158,31 @@
 
 - (void)disableTimeChangeAnimations
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BF9C45C(0);
 }
 
 - (void)enableTimeChangeAnimations
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BF9C45C(1);
 }
 
-- (NTKParmesanGalleryView)initWithFrame:(CGRect)a3 device:(id)a4 typeface:(int64_t)a5 numerals:(unint64_t)a6 timeOption:(int64_t)a7 timeLayout:(id)a8 timePalette:(id)a9
+- (NTKParmesanGalleryView)initWithFrame:(CGRect)frame device:(id)device typeface:(int64_t)typeface numerals:(unint64_t)numerals timeOption:(int64_t)option timeLayout:(id)layout timePalette:(id)palette
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a4;
-  v19 = a8;
-  return sub_23BFEB674(v18, a5, a6, a7, a8, a9, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
+  layoutCopy = layout;
+  return sub_23BFEB674(deviceCopy, typeface, numerals, option, layout, palette, x, y, width, height);
 }
 
-- (void)swatchSetTimeOption:(int64_t)a3 typeface:(int64_t)a4 numerals:(unint64_t)a5 style:(int64_t)a6
+- (void)swatchSetTimeOption:(int64_t)option typeface:(int64_t)typeface numerals:(unint64_t)numerals style:(int64_t)style
 {
-  v10 = self;
-  sub_23BFEBE80(a3, a4, a5, a6);
+  selfCopy = self;
+  sub_23BFEBE80(option, typeface, numerals, style);
 }
 
 @end

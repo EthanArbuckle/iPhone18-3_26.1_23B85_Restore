@@ -1,35 +1,35 @@
 @interface TSCETrackedReferenceStore
-- (TSCETrackedReferenceStore)initWithContext:(id)a3;
+- (TSCETrackedReferenceStore)initWithContext:(id)context;
 - (TSKUIDStruct)ownerUID;
 - (id)allTrackedReferences;
-- (id)beginTrackingReferenceWithCellRef:(const TSCECellRef *)a3 calcEngine:(id)a4;
-- (id)beginTrackingReferenceWithSpanningRef:(const TSCESpanningRangeRef *)a3 calcEngine:(id)a4;
-- (id)trackedReferenceAtCoord:(TSUCellCoord)a3;
-- (void)beginTrackingReference:(id)a3 calcEngine:(id)a4;
-- (void)endTrackingReference:(id)a3 calcEngine:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setOwnerUID:(TSKUIDStruct)a3;
+- (id)beginTrackingReferenceWithCellRef:(const TSCECellRef *)ref calcEngine:(id)engine;
+- (id)beginTrackingReferenceWithSpanningRef:(const TSCESpanningRangeRef *)ref calcEngine:(id)engine;
+- (id)trackedReferenceAtCoord:(TSUCellCoord)coord;
+- (void)beginTrackingReference:(id)reference calcEngine:(id)engine;
+- (void)endTrackingReference:(id)reference calcEngine:(id)engine;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setOwnerUID:(TSKUIDStruct)d;
 - (void)willClose;
 @end
 
 @implementation TSCETrackedReferenceStore
 
-- (void)setOwnerUID:(TSKUIDStruct)a3
+- (void)setOwnerUID:(TSKUIDStruct)d
 {
-  upper = a3._upper;
-  lower = a3._lower;
-  objc_msgSend_willModify(self, a2, a3._lower, a3._upper, v3);
+  upper = d._upper;
+  lower = d._lower;
+  objc_msgSend_willModify(self, a2, d._lower, d._upper, v3);
   self->_ownerUID._lower = lower;
   self->_ownerUID._upper = upper;
 }
 
-- (TSCETrackedReferenceStore)initWithContext:(id)a3
+- (TSCETrackedReferenceStore)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = TSCETrackedReferenceStore;
-  v5 = [(TSCETrackedReferenceStore *)&v12 initWithContext:v4];
+  v5 = [(TSCETrackedReferenceStore *)&v12 initWithContext:contextCopy];
   if (v5)
   {
     v5->_ownerUID._lower = TSKMakeUIDStructRandom();
@@ -54,17 +54,17 @@
   self->_trackedReferences = 0;
 }
 
-- (void)beginTrackingReference:(id)a3 calcEngine:(id)a4
+- (void)beginTrackingReference:(id)reference calcEngine:(id)engine
 {
-  v6 = a3;
-  v7 = a4;
+  referenceCopy = reference;
+  engineCopy = engine;
   objc_msgSend_willModify(self, v8, v9, v10, v11);
   objc_msgSend_lock(self->_trackedRefsLock, v12, v13, v14, v15);
   nextEmptyTrackedReferencesIndex = self->_nextEmptyTrackedReferencesIndex;
   if (!(nextEmptyTrackedReferencesIndex >> 24))
   {
     v44 = objc_msgSend_coordFromIndex_(TSCETrackedReferenceStore, v16, nextEmptyTrackedReferencesIndex, v17, v18);
-    objc_msgSend_setFormulaCoord_(v6, v20, v44, v21, v22);
+    objc_msgSend_setFormulaCoord_(referenceCopy, v20, v44, v21, v22);
     v27 = objc_msgSend_maxKey(self->_trackedReferences, v23, v24, v25, v26);
     if (v27 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -80,13 +80,13 @@
     trackedReferences = self->_trackedReferences;
     if (v31 == v30)
     {
-      objc_msgSend_setObject_forKey_(trackedReferences, v28, v6, v30, v29);
+      objc_msgSend_setObject_forKey_(trackedReferences, v28, referenceCopy, v30, v29);
       v30 = self->_nextEmptyTrackedReferencesIndex + 1;
     }
 
     else
     {
-      objc_msgSend_setObject_forKey_(trackedReferences, v28, v6, self->_nextEmptyTrackedReferencesIndex, v29);
+      objc_msgSend_setObject_forKey_(trackedReferences, v28, referenceCopy, self->_nextEmptyTrackedReferencesIndex, v29);
       v37 = v31;
       while (++v37 < v30)
       {
@@ -128,9 +128,9 @@ LABEL_19:
 LABEL_21:
     objc_msgSend_unlock(self->_trackedRefsLock, v33, v34, v35, v36);
     TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v43, 0, 1);
-    v40 = objc_msgSend_precedentsWithCalcEngine_hostOwnerUID_(v6, v38, v7, &self->_ownerUID, v39);
+    v40 = objc_msgSend_precedentsWithCalcEngine_hostOwnerUID_(referenceCopy, v38, engineCopy, &self->_ownerUID, v39);
     TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v42, &v43);
-    objc_msgSend_replaceFormulaAt_inOwner_precedents_replaceOptions_(v7, v41, &v44, &self->_ownerUID, v40, &v42);
+    objc_msgSend_replaceFormulaAt_inOwner_precedents_replaceOptions_(engineCopy, v41, &v44, &self->_ownerUID, v40, &v42);
 
     goto LABEL_22;
   }
@@ -139,32 +139,32 @@ LABEL_21:
 LABEL_22:
 }
 
-- (id)beginTrackingReferenceWithCellRef:(const TSCECellRef *)a3 calcEngine:(id)a4
+- (id)beginTrackingReferenceWithCellRef:(const TSCECellRef *)ref calcEngine:(id)engine
 {
-  v6 = a4;
+  engineCopy = engine;
   v7 = [TSCETrackedReference alloc];
-  v11 = objc_msgSend_initWithCellRef_(v7, v8, a3, v9, v10);
-  objc_msgSend_beginTrackingReference_calcEngine_(self, v12, v11, v6, v13);
+  v11 = objc_msgSend_initWithCellRef_(v7, v8, ref, v9, v10);
+  objc_msgSend_beginTrackingReference_calcEngine_(self, v12, v11, engineCopy, v13);
 
   return v11;
 }
 
-- (id)beginTrackingReferenceWithSpanningRef:(const TSCESpanningRangeRef *)a3 calcEngine:(id)a4
+- (id)beginTrackingReferenceWithSpanningRef:(const TSCESpanningRangeRef *)ref calcEngine:(id)engine
 {
-  v6 = a4;
+  engineCopy = engine;
   v7 = [TSCETrackedReference alloc];
-  v11 = objc_msgSend_initWithSpanningRangeRef_(v7, v8, a3, v9, v10);
-  objc_msgSend_beginTrackingReference_calcEngine_(self, v12, v11, v6, v13);
+  v11 = objc_msgSend_initWithSpanningRangeRef_(v7, v8, ref, v9, v10);
+  objc_msgSend_beginTrackingReference_calcEngine_(self, v12, v11, engineCopy, v13);
 
   return v11;
 }
 
-- (void)endTrackingReference:(id)a3 calcEngine:(id)a4
+- (void)endTrackingReference:(id)reference calcEngine:(id)engine
 {
-  v6 = a3;
-  v7 = a4;
+  referenceCopy = reference;
+  engineCopy = engine;
   objc_msgSend_willModify(self, v8, v9, v10, v11);
-  v33 = objc_msgSend_formulaCoord(v6, v12, v13, v14, v15);
+  v33 = objc_msgSend_formulaCoord(referenceCopy, v12, v13, v14, v15);
   v19 = objc_msgSend_indexFromCoord_(TSCETrackedReferenceStore, v16, &v33, v17, v18);
   objc_msgSend_lock(self->_trackedRefsLock, v20, v21, v22, v23);
   objc_msgSend_removeObjectForKey_(self->_trackedReferences, v24, v19, v25, v26);
@@ -174,7 +174,7 @@ LABEL_22:
   }
 
   objc_msgSend_unlock(self->_trackedRefsLock, v27, v28, v29, v30);
-  objc_msgSend_removeFormulaAt_inOwner_(v7, v31, &v33, &self->_ownerUID, v32);
+  objc_msgSend_removeFormulaAt_inOwner_(engineCopy, v31, &v33, &self->_ownerUID, v32);
 }
 
 - (id)allTrackedReferences
@@ -196,20 +196,20 @@ LABEL_22:
   return v17;
 }
 
-- (id)trackedReferenceAtCoord:(TSUCellCoord)a3
+- (id)trackedReferenceAtCoord:(TSUCellCoord)coord
 {
-  v12 = a3;
-  v6 = objc_msgSend_indexFromCoord_(TSCETrackedReferenceStore, a2, &v12, v3, v4);
+  coordCopy = coord;
+  v6 = objc_msgSend_indexFromCoord_(TSCETrackedReferenceStore, a2, &coordCopy, v3, v4);
   v10 = objc_msgSend_objectForKey_(self->_trackedReferences, v7, v6, v8, v9);
 
   return v10;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_2212B8370, off_2812E2AC8[286], v6);
+  v7 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_2212B8370, off_2812E2AC8[286], v6);
 
   v12 = objc_msgSend_count(self->_trackedReferences, v8, v9, v10, v11);
   *(v7 + 16) |= 1u;
@@ -235,21 +235,21 @@ LABEL_22:
     v21[2] = sub_2212B7C9C;
     v21[3] = &unk_2784629B8;
     v23 = v7;
-    v22 = v4;
+    v22 = archiverCopy;
     objc_msgSend_foreach_(trackedReferences, v18, v21, v19, v20);
   }
 
   else
   {
-    objc_msgSend_requiresDocumentVersion_featureIdentifier_(v4, v15, 0xA000000000003, @"TSTExpandedTables", v16);
+    objc_msgSend_requiresDocumentVersion_featureIdentifier_(archiverCopy, v15, 0xA000000000003, @"TSTExpandedTables", v16);
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812E2AC8[286], v6, v7);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812E2AC8[286], v6, v7);
 
   v9 = TSKUIDStruct::loadFromMessage();
   self->_ownerUID._lower = v9;
@@ -326,7 +326,7 @@ LABEL_22:
     v42[2] = sub_2212B815C;
     v42[3] = &unk_278462A08;
     v43 = v19;
-    v38 = v4;
+    v38 = unarchiverCopy;
     v39 = objc_opt_class();
     objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v38, v40, v8 + 24, v39, 0, v42);
   }
@@ -336,7 +336,7 @@ LABEL_22:
   v41[2] = sub_2212B82B8;
   v41[3] = &unk_27845E3F8;
   v41[4] = self;
-  objc_msgSend_addFinalizeHandler_(v4, v20, v41, v21, v22);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v20, v41, v21, v22);
 }
 
 - (TSKUIDStruct)ownerUID

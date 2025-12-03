@@ -1,65 +1,65 @@
 @interface THWWebRep
-+ (void)enumerateSubdomainsOfHost:(id)a3 usingBlock:(id)a4;
++ (void)enumerateSubdomainsOfHost:(id)host usingBlock:(id)block;
 - (BOOL)autoplayAllowed;
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)expandedHasContentForPanel:(int)a3;
-- (BOOL)expandedHasRoomForPanelsWithHeight:(double)a3 inFrame:(CGRect)a4;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)expandedHasContentForPanel:(int)panel;
+- (BOOL)expandedHasRoomForPanelsWithHeight:(double)height inFrame:(CGRect)frame;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)isExpanded;
 - (BOOL)isFreeTransformInProgress;
 - (BOOL)meetsStageDimensionRequirementForExpanded;
-- (BOOL)p_pointIsInRedZone:(CGPoint)a3 onView:(id)a4;
+- (BOOL)p_pointIsInRedZone:(CGPoint)zone onView:(id)view;
 - (BOOL)p_stageAlmostCoversPage;
-- (BOOL)shouldAnimateTargetLayer:(id)a3;
-- (BOOL)shouldFadeOutAnimationLayer:(id)a3;
-- (BOOL)shouldRecognizePressOnRep:(id)a3;
+- (BOOL)shouldAnimateTargetLayer:(id)layer;
+- (BOOL)shouldFadeOutAnimationLayer:(id)layer;
+- (BOOL)shouldRecognizePressOnRep:(id)rep;
 - (BOOL)wantsPressAction;
 - (BOOL)wantsPressAnimation;
-- (BOOL)webView:(id)a3 handleURL:(id)a4;
-- (BOOL)webView:(id)a3 shouldAcceptHitAtPoint:(CGPoint)a4 onView:(id)a5 withEvent:(id)a6;
-- (BOOL)webView:(id)a3 shouldStartLoadWithURL:(id)a4 navigationType:(int)a5 deferredResponseHandler:(id)a6;
+- (BOOL)webView:(id)view handleURL:(id)l;
+- (BOOL)webView:(id)view shouldAcceptHitAtPoint:(CGPoint)point onView:(id)onView withEvent:(id)event;
+- (BOOL)webView:(id)view shouldStartLoadWithURL:(id)l navigationType:(int)type deferredResponseHandler:(id)handler;
 - (CALayer)canvasPosterLayer;
 - (CALayer)webViewPosterLayer;
 - (CGAffineTransform)freeTransform;
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4;
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize;
 - (CGRect)deferredStageViewFrame;
 - (CGRect)ftcTargetFrame;
 - (CGRect)rectForCompletion;
 - (PFDURLRequestScope)requestScope;
 - (THAnimationController)animationController;
 - (THWAutoplayConfig)autoplayConfig;
-- (THWWebRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (THWWebRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (TSWPassThroughView)stageView;
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4;
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize;
 - (id)animationLayer;
-- (id)expandedChildInfosForPanel:(int)a3;
-- (id)expandedPanel:(int)a3 primaryTargetForGesture:(id)a4;
+- (id)expandedChildInfosForPanel:(int)panel;
+- (id)expandedPanel:(int)panel primaryTargetForGesture:(id)gesture;
 - (id)p_cachedLoadExternalContentApproval;
 - (id)p_filteredOutURLSchemes;
 - (id)shadowAnimationLayer;
 - (id)targetLayer;
-- (id)webThreadWebView:(id)a3 resource:(id)a4 willSendRequest:(id)a5 redirectResponse:(id)a6 fromDataSource:(id)a7;
-- (unsigned)expandedMaxLineCountForTextLayout:(id)a3 inPanel:(int)a4 withDefault:(unsigned int)a5;
-- (void)addAdditionalChildLayersToArray:(id)a3;
-- (void)addChildViewsToArray:(id)a3;
+- (id)webThreadWebView:(id)view resource:(id)resource willSendRequest:(id)request redirectResponse:(id)response fromDataSource:(id)source;
+- (unsigned)expandedMaxLineCountForTextLayout:(id)layout inPanel:(int)panel withDefault:(unsigned int)default;
+- (void)addAdditionalChildLayersToArray:(id)array;
+- (void)addChildViewsToArray:(id)array;
 - (void)autoplayPause;
 - (void)autoplayStart;
 - (void)autoplayStop;
-- (void)buttonControl:(id)a3 didUpdateLayer:(id)a4;
-- (void)buttonControlWasPressed:(id)a3;
+- (void)buttonControl:(id)control didUpdateLayer:(id)layer;
+- (void)buttonControlWasPressed:(id)pressed;
 - (void)contentIsReady;
 - (void)dealloc;
-- (void)didAddChildView:(id)a3;
+- (void)didAddChildView:(id)view;
 - (void)didExitExpanded;
 - (void)didPresentExpanded;
 - (void)expandableExpandedPresentationDidEnd;
-- (void)expandedDidPresentWithController:(id)a3;
-- (void)expandedDidRotateTransitionToSize:(CGSize)a3;
-- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)a3 toFrame:(CGRect)a4;
-- (void)expandedWillPresentWithController:(id)a3;
-- (void)handleNotificationVantageDidChange:(id)a3;
+- (void)expandedDidPresentWithController:(id)controller;
+- (void)expandedDidRotateTransitionToSize:(CGSize)size;
+- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)frame toFrame:(CGRect)toFrame;
+- (void)expandedWillPresentWithController:(id)controller;
+- (void)handleNotificationVantageDidChange:(id)change;
 - (void)p_autoplayIfDesired;
-- (void)p_cacheLoadExternalContentApproval:(BOOL)a3;
+- (void)p_cacheLoadExternalContentApproval:(BOOL)approval;
 - (void)p_exposeWebView;
 - (void)p_loadSourceURL;
 - (void)p_pauseOnCanvas;
@@ -67,51 +67,51 @@
 - (void)p_startAutoplay;
 - (void)p_startAutoplayOnCanvas;
 - (void)p_togglePanelDescriptionExpanded;
-- (void)p_updateLayerContents:(id)a3 withImage:(id)a4;
-- (void)p_updateStageViewFrame:(CGRect)a3;
-- (void)p_webView:(id)a3 shouldStartLoadWithURL:(id)a4 navigationType:(int)a5 syncResponseHandler:(id)a6 asyncResponseHandler:(id)a7;
-- (void)reparentAnimationLayerIfBackedByView:(id)a3;
-- (void)reparentTargetLayerIfBackedByView:(id)a3;
-- (void)replaceContentsFromRep:(id)a3;
+- (void)p_updateLayerContents:(id)contents withImage:(id)image;
+- (void)p_updateStageViewFrame:(CGRect)frame;
+- (void)p_webView:(id)view shouldStartLoadWithURL:(id)l navigationType:(int)type syncResponseHandler:(id)handler asyncResponseHandler:(id)responseHandler;
+- (void)reparentAnimationLayerIfBackedByView:(id)view;
+- (void)reparentTargetLayerIfBackedByView:(id)view;
+- (void)replaceContentsFromRep:(id)rep;
 - (void)screenScaleDidChange;
 - (void)viewScaleDidChange;
-- (void)webViewDidFinishLoad:(id)a3;
+- (void)webViewDidFinishLoad:(id)load;
 - (void)willBeRemoved;
-- (void)willBeginHandlingGesture:(id)a3;
-- (void)willRemoveChildView:(id)a3;
-- (void)willReplaceContentsFromRep:(id)a3;
+- (void)willBeginHandlingGesture:(id)gesture;
+- (void)willRemoveChildView:(id)view;
+- (void)willReplaceContentsFromRep:(id)rep;
 @end
 
 @implementation THWWebRep
 
-- (THWWebRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWWebRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v20.receiver = self;
   v20.super_class = THWWebRep;
-  v4 = [(THWWebRep *)&v20 initWithLayout:a3 canvas:a4];
+  v4 = [(THWWebRep *)&v20 initWithLayout:layout canvas:canvas];
   v5 = v4;
   if (v4)
   {
     v4->_ownsWebView = 1;
     objc_opt_class();
-    v6 = [(THWWebRep *)v5 interactiveCanvasController];
+    interactiveCanvasController = [(THWWebRep *)v5 interactiveCanvasController];
     v7 = TSUDynamicCast();
 
-    v8 = [v7 pressHandlerForPressableReps];
-    if (v8)
+    pressHandlerForPressableReps = [v7 pressHandlerForPressableReps];
+    if (pressHandlerForPressableReps)
     {
-      v9 = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:v5 pressHandler:v8];
+      v9 = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:v5 pressHandler:pressHandlerForPressableReps];
       [(THWWebRep *)v5 setPressableHandler:v9];
 
-      v10 = [(THWWebRep *)v5 pressableHandler];
-      [v10 setEnabledOnlyIfWidgetInteractionDisabledOnPage:1];
+      pressableHandler = [(THWWebRep *)v5 pressableHandler];
+      [pressableHandler setEnabledOnlyIfWidgetInteractionDisabledOnPage:1];
     }
 
     v11 = [THWFreeTransformableRepGestureTargetHandler alloc];
-    v12 = [(THWWebRep *)v5 hostICC];
-    v13 = [v12 widgetHost];
-    v14 = [v13 freeTransformRepHandler];
-    v15 = [(THWFreeTransformableRepGestureTargetHandler *)v11 initWithFreeTransformableRep:v5 handler:v14];
+    hostICC = [(THWWebRep *)v5 hostICC];
+    widgetHost = [hostICC widgetHost];
+    freeTransformRepHandler = [widgetHost freeTransformRepHandler];
+    v15 = [(THWFreeTransformableRepGestureTargetHandler *)v11 initWithFreeTransformableRep:v5 handler:freeTransformRepHandler];
     freeTransformableHandler = v5->_freeTransformableHandler;
     v5->_freeTransformableHandler = v15;
 
@@ -165,18 +165,18 @@
   [(THWWebRep *)&v12 dealloc];
 }
 
-+ (void)enumerateSubdomainsOfHost:(id)a3 usingBlock:(id)a4
++ (void)enumerateSubdomainsOfHost:(id)host usingBlock:(id)block
 {
-  if (a4)
+  if (block)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [@"autoplay." stringByAppendingString:v7];
-    (*(a4 + 2))(v6, v8);
+    blockCopy = block;
+    hostCopy = host;
+    v8 = [@"autoplay." stringByAppendingString:hostCopy];
+    (*(block + 2))(blockCopy, v8);
 
-    v9 = [@"manual." stringByAppendingString:v7];
+    v9 = [@"manual." stringByAppendingString:hostCopy];
 
-    (*(a4 + 2))(v6, v9);
+    (*(block + 2))(blockCopy, v9);
   }
 }
 
@@ -184,33 +184,33 @@
 {
   if (!self->_requestScope)
   {
-    v3 = [(THWWebRep *)self info];
+    info = [(THWWebRep *)self info];
 
-    if (v3)
+    if (info)
     {
-      v4 = [(THWWebRep *)self info];
-      v5 = [v4 drmContext];
-      v6 = [v4 bookBundleURL];
+      info2 = [(THWWebRep *)self info];
+      drmContext = [info2 drmContext];
+      bookBundleURL = [info2 bookBundleURL];
       v16 = 0;
       v17 = &v16;
       v18 = 0x3032000000;
       v19 = sub_1AA740;
       v20 = sub_1AA750;
-      v7 = [v4 bookID];
-      v22 = v7;
+      bookID = [info2 bookID];
+      v22 = bookID;
       v8 = [NSArray arrayWithObjects:&v22 count:1];
       v21 = [v8 mutableCopy];
 
       v9 = objc_opt_class();
-      v10 = [v4 bookID];
+      bookID2 = [info2 bookID];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_1AA758;
       v15[3] = &unk_45E860;
       v15[4] = &v16;
-      [v9 enumerateSubdomainsOfHost:v10 usingBlock:v15];
+      [v9 enumerateSubdomainsOfHost:bookID2 usingBlock:v15];
 
-      v11 = [PFDURLRequestScope requestScopeWithHosts:v17[5] bookRootURL:v6 context:v5];
+      v11 = [PFDURLRequestScope requestScopeWithHosts:v17[5] bookRootURL:bookBundleURL context:drmContext];
       requestScope = self->_requestScope;
       self->_requestScope = v11;
 
@@ -238,9 +238,9 @@
   }
 }
 
-- (void)willReplaceContentsFromRep:(id)a3
+- (void)willReplaceContentsFromRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   objc_opt_class();
   v14 = TSUDynamicCast();
 
@@ -256,27 +256,27 @@
     }
 
     -[THWWebRep setIsWebContentLoaded:](self, "setIsWebContentLoaded:", [v14 isWebContentLoaded]);
-    v9 = [v14 bridgeController];
-    [(THWWebRep *)self setBridgeController:v9];
+    bridgeController = [v14 bridgeController];
+    [(THWWebRep *)self setBridgeController:bridgeController];
 
-    v10 = [(THWWebRep *)self bridgeController];
-    [v10 setJavascriptHandler:self];
+    bridgeController2 = [(THWWebRep *)self bridgeController];
+    [bridgeController2 setJavascriptHandler:self];
 
-    v11 = [v14 webView];
-    [(THWWebRep *)self setWebView:v11];
+    webView = [v14 webView];
+    [(THWWebRep *)self setWebView:webView];
 
-    v12 = [(TSWPassThroughView *)self->_stageView layer];
-    v13 = [(THWWebRep *)self webViewPosterLayer];
-    [v12 addSublayer:v13];
+    layer = [(TSWPassThroughView *)self->_stageView layer];
+    webViewPosterLayer = [(THWWebRep *)self webViewPosterLayer];
+    [layer addSublayer:webViewPosterLayer];
 
     [(THWWebRep *)self setOwnsWebView:0];
     v5 = v14;
   }
 }
 
-- (void)replaceContentsFromRep:(id)a3
+- (void)replaceContentsFromRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   objc_opt_class();
   v43 = TSUDynamicCast();
 
@@ -293,14 +293,14 @@
 
     [v43 setOwnsWebView:0];
     [(THWWebRep *)self setOwnsWebView:1];
-    v10 = [(THWWebRep *)self stageView];
-    v11 = [(THWWebRep *)self webView];
-    [v10 addSubview:v11];
+    stageView = [(THWWebRep *)self stageView];
+    webView = [(THWWebRep *)self webView];
+    [stageView addSubview:webView];
 
     v12 = OBJC_IVAR___TSDRep_mCanvas;
     v13 = *&self->super.TSDContainerRep_opaque[OBJC_IVAR___TSDRep_mCanvas];
-    v14 = [(THWWebRep *)self layout];
-    [v14 webFrameInRoot];
+    layout = [(THWWebRep *)self layout];
+    [layout webFrameInRoot];
     [v13 convertUnscaledToBoundsRect:?];
     [*&self->super.TSDContainerRep_opaque[v12] contentsScale];
     TSDRoundedRectForScale();
@@ -309,72 +309,72 @@
     [(THWPlatformWebViewProtocol *)self->_webView setWebViewDelegate:self];
     if (-[THWWebRep createdWebView](self, "createdWebView") && -[THWWebRep isExpanded](self, "isExpanded") || ![v43 isWebContentLoaded] || -[THWWebRep deferExposeWebView](self, "deferExposeWebView"))
     {
-      v15 = [(THWWebRep *)self webView];
-      [v15 setAlpha:0.0];
+      webView2 = [(THWWebRep *)self webView];
+      [webView2 setAlpha:0.0];
 
-      v16 = [(THWWebRep *)self webView];
-      v17 = [(THWWebRep *)self stageView];
-      [v17 bounds];
+      webView3 = [(THWWebRep *)self webView];
+      stageView2 = [(THWWebRep *)self stageView];
+      [stageView2 bounds];
       v19 = v18;
       v21 = v20;
       v23 = v22;
       v25 = v24;
-      v26 = [(THWWebRep *)self info];
-      [v26 idealWebSize];
-      [v16 setFrame:v19 naturalSize:{v21, v23, v25, v27, v28}];
+      info = [(THWWebRep *)self info];
+      [info idealWebSize];
+      [webView3 setFrame:v19 naturalSize:{v21, v23, v25, v27, v28}];
     }
 
     else
     {
-      v30 = [(THWWebRep *)self webView];
-      v31 = [(THWWebRep *)self stageView];
-      [v31 bounds];
+      webView4 = [(THWWebRep *)self webView];
+      stageView3 = [(THWWebRep *)self stageView];
+      [stageView3 bounds];
       v33 = v32;
       v35 = v34;
       v37 = v36;
       v39 = v38;
-      v40 = [(THWWebRep *)self info];
-      [v40 idealWebSize];
-      [v30 setFrame:v33 naturalSize:{v35, v37, v39, v41, v42}];
+      info2 = [(THWWebRep *)self info];
+      [info2 idealWebSize];
+      [webView4 setFrame:v33 naturalSize:{v35, v37, v39, v41, v42}];
 
       [(CALayer *)self->_webViewPosterLayer removeFromSuperlayer];
     }
 
-    v5 = [(THWWebRep *)self isExpanded];
+    isExpanded = [(THWWebRep *)self isExpanded];
     v6 = v43;
-    if (!v5)
+    if (!isExpanded)
     {
-      v29 = [(THWWebRep *)self interactiveCanvasController];
-      [v29 layoutInvalidated];
+      interactiveCanvasController = [(THWWebRep *)self interactiveCanvasController];
+      [interactiveCanvasController layoutInvalidated];
 
       v6 = v43;
     }
   }
 
-  _objc_release_x1(v5, v6);
+  _objc_release_x1(isExpanded, v6);
 }
 
 - (void)viewScaleDidChange
 {
-  v3 = [(THWWebRep *)self pressableHandler];
-  v4 = [v3 widgetInteractionDisabledOnPage];
+  pressableHandler = [(THWWebRep *)self pressableHandler];
+  widgetInteractionDisabledOnPage = [pressableHandler widgetInteractionDisabledOnPage];
 
-  if (v4)
+  if (widgetInteractionDisabledOnPage)
   {
 
     [(THWWebRep *)self p_pauseOnCanvas];
   }
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   if (!self->_stageView)
   {
-    v34 = v4;
-    v5 = [(THWWebRep *)self info];
-    v6 = [v5 autoplayConfig];
-    if (([v6 enabled] & 1) != 0 || -[THWWebRep isExpanded](self, "isExpanded"))
+    v34 = arrayCopy;
+    info = [(THWWebRep *)self info];
+    autoplayConfig = [info autoplayConfig];
+    if (([autoplayConfig enabled] & 1) != 0 || -[THWWebRep isExpanded](self, "isExpanded"))
     {
     }
 
@@ -386,8 +386,8 @@
       {
         v22 = OBJC_IVAR___TSDRep_mCanvas;
         v23 = *&self->super.TSDContainerRep_opaque[OBJC_IVAR___TSDRep_mCanvas];
-        v24 = [(THWWebRep *)self layout];
-        [v24 stageFrame];
+        layout = [(THWWebRep *)self layout];
+        [layout stageFrame];
         [v23 convertUnscaledToBoundsRect:?];
         [*&self->super.TSDContainerRep_opaque[v22] contentsScale];
         TSDRoundedRectForScale();
@@ -396,18 +396,18 @@
         v30 = v29;
         v32 = v31;
 
-        v33 = [(THWWebRep *)self canvasPosterLayer];
-        [v33 setFrame:{v26, v28, v30, v32}];
+        canvasPosterLayer = [(THWWebRep *)self canvasPosterLayer];
+        [canvasPosterLayer setFrame:{v26, v28, v30, v32}];
 
-        v19 = [(THWWebRep *)self canvasPosterLayer];
+        canvasPosterLayer2 = [(THWWebRep *)self canvasPosterLayer];
         goto LABEL_6;
       }
     }
 
     v7 = OBJC_IVAR___TSDRep_mCanvas;
     v8 = *&self->super.TSDContainerRep_opaque[OBJC_IVAR___TSDRep_mCanvas];
-    v9 = [(THWWebRep *)self layout];
-    [v9 webFrame];
+    layout2 = [(THWWebRep *)self layout];
+    [layout2 webFrame];
     [v8 convertUnscaledToBoundsRect:?];
     [*&self->super.TSDContainerRep_opaque[v7] contentsScale];
     TSDRoundedRectForScale();
@@ -416,15 +416,15 @@
     v15 = v14;
     v17 = v16;
 
-    v18 = [(THWWebRep *)self webViewPosterLayer];
-    [v18 setFrame:{v11, v13, v15, v17}];
+    webViewPosterLayer = [(THWWebRep *)self webViewPosterLayer];
+    [webViewPosterLayer setFrame:{v11, v13, v15, v17}];
 
-    v19 = [(THWWebRep *)self webViewPosterLayer];
+    canvasPosterLayer2 = [(THWWebRep *)self webViewPosterLayer];
 LABEL_6:
-    v20 = v19;
-    [v34 addObject:v19];
+    v20 = canvasPosterLayer2;
+    [v34 addObject:canvasPosterLayer2];
 
-    v4 = v34;
+    arrayCopy = v34;
   }
 }
 
@@ -437,15 +437,15 @@ LABEL_6:
     v5 = self->_webViewPosterLayer;
     self->_webViewPosterLayer = v4;
 
-    v6 = [(THWWebRep *)self interactiveCanvasController];
-    [(CALayer *)self->_webViewPosterLayer setDelegate:v6];
+    interactiveCanvasController = [(THWWebRep *)self interactiveCanvasController];
+    [(CALayer *)self->_webViewPosterLayer setDelegate:interactiveCanvasController];
 
     [(CALayer *)self->_webViewPosterLayer setContentsGravity:kCAGravityResize];
     webViewPosterLayer = self->_webViewPosterLayer;
   }
 
-  v7 = [(CALayer *)webViewPosterLayer contents];
-  if (!v7 && self->_ownsWebView)
+  contents = [(CALayer *)webViewPosterLayer contents];
+  if (!contents && self->_ownsWebView)
   {
     if (self->_suspendPosterRendering)
     {
@@ -453,9 +453,9 @@ LABEL_6:
     }
 
     v8 = self->_webViewPosterLayer;
-    v7 = [(THWWebRep *)self info];
-    v9 = [v7 defaultImage];
-    [(THWWebRep *)self p_updateLayerContents:v8 withImage:v9];
+    contents = [(THWWebRep *)self info];
+    defaultImage = [contents defaultImage];
+    [(THWWebRep *)self p_updateLayerContents:v8 withImage:defaultImage];
   }
 
 LABEL_8:
@@ -473,15 +473,15 @@ LABEL_8:
     v5 = self->_canvasPosterLayer;
     self->_canvasPosterLayer = v4;
 
-    v6 = [(THWWebRep *)self interactiveCanvasController];
-    [(CALayer *)self->_canvasPosterLayer setDelegate:v6];
+    interactiveCanvasController = [(THWWebRep *)self interactiveCanvasController];
+    [(CALayer *)self->_canvasPosterLayer setDelegate:interactiveCanvasController];
 
     [(CALayer *)self->_canvasPosterLayer setContentsGravity:kCAGravityResize];
     canvasPosterLayer = self->_canvasPosterLayer;
   }
 
-  v7 = [(CALayer *)canvasPosterLayer contents];
-  if (!v7 && self->_ownsWebView)
+  contents = [(CALayer *)canvasPosterLayer contents];
+  if (!contents && self->_ownsWebView)
   {
     if (self->_suspendPosterRendering)
     {
@@ -489,9 +489,9 @@ LABEL_8:
     }
 
     v8 = self->_canvasPosterLayer;
-    v7 = [(THWWebRep *)self info];
-    v9 = [v7 placeholderImage];
-    [(THWWebRep *)self p_updateLayerContents:v8 withImage:v9];
+    contents = [(THWWebRep *)self info];
+    placeholderImage = [contents placeholderImage];
+    [(THWWebRep *)self p_updateLayerContents:v8 withImage:placeholderImage];
   }
 
 LABEL_8:
@@ -500,19 +500,19 @@ LABEL_8:
   return v10;
 }
 
-- (void)p_updateLayerContents:(id)a3 withImage:(id)a4
+- (void)p_updateLayerContents:(id)contents withImage:(id)image
 {
-  if (a3)
+  if (contents)
   {
-    v6 = a4;
-    v11 = a3;
-    v7 = [(THWWebRep *)self canvas];
-    [v7 contentsScale];
+    imageCopy = image;
+    contentsCopy = contents;
+    canvas = [(THWWebRep *)self canvas];
+    [canvas contentsScale];
     v9 = v8;
 
-    v10 = [v6 CGImageForContentsScale:v9];
-    [v11 setContents:v10];
-    [v11 setContentsScale:v9];
+    v10 = [imageCopy CGImageForContentsScale:v9];
+    [contentsCopy setContents:v10];
+    [contentsCopy setContentsScale:v9];
   }
 }
 
@@ -522,35 +522,35 @@ LABEL_8:
   v9.super_class = THWWebRep;
   [(THWWebRep *)&v9 screenScaleDidChange];
   webViewPosterLayer = self->_webViewPosterLayer;
-  v4 = [(THWWebRep *)self info];
-  v5 = [v4 defaultImage];
-  [(THWWebRep *)self p_updateLayerContents:webViewPosterLayer withImage:v5];
+  info = [(THWWebRep *)self info];
+  defaultImage = [info defaultImage];
+  [(THWWebRep *)self p_updateLayerContents:webViewPosterLayer withImage:defaultImage];
 
   canvasPosterLayer = self->_canvasPosterLayer;
-  v7 = [(THWWebRep *)self info];
-  v8 = [v7 placeholderImage];
-  [(THWWebRep *)self p_updateLayerContents:canvasPosterLayer withImage:v8];
+  info2 = [(THWWebRep *)self info];
+  placeholderImage = [info2 placeholderImage];
+  [(THWWebRep *)self p_updateLayerContents:canvasPosterLayer withImage:placeholderImage];
 }
 
-- (void)p_updateStageViewFrame:(CGRect)a3
+- (void)p_updateStageViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (![(THWWebRep *)self isExpanding])
   {
-    v8 = [(THWWebRep *)self stageView];
-    [v8 setFrame:{x, y, width, height}];
+    stageView = [(THWWebRep *)self stageView];
+    [stageView setFrame:{x, y, width, height}];
 
-    v9 = [(THWWebRep *)self stageView];
-    [v9 bounds];
+    stageView2 = [(THWWebRep *)self stageView];
+    [stageView2 bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(THWWebRep *)self webViewPosterLayer];
-    [v18 setFrame:{v11, v13, v15, v17}];
+    webViewPosterLayer = [(THWWebRep *)self webViewPosterLayer];
+    [webViewPosterLayer setFrame:{v11, v13, v15, v17}];
 
     x = CGRectNull.origin.x;
     y = CGRectNull.origin.y;
@@ -561,22 +561,22 @@ LABEL_8:
   [(THWWebRep *)self setDeferredStageViewFrame:x, y, width, height];
 }
 
-- (void)addChildViewsToArray:(id)a3
+- (void)addChildViewsToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   if (![(THWWebRep *)self isExpanded])
   {
-    v5 = [(THWWebRep *)self info];
-    v6 = [v5 autoplayConfig];
-    if (([v6 enabled] & 1) != 0 || self->_playButtonPressed || self->_isWebContentLoaded)
+    info = [(THWWebRep *)self info];
+    autoplayConfig = [info autoplayConfig];
+    if (([autoplayConfig enabled] & 1) != 0 || self->_playButtonPressed || self->_isWebContentLoaded)
     {
     }
 
     else
     {
-      v24 = [(THWWebRep *)self deferExposeWebView];
+      deferExposeWebView = [(THWWebRep *)self deferExposeWebView];
 
-      if (!v24)
+      if (!deferExposeWebView)
       {
         goto LABEL_10;
       }
@@ -585,8 +585,8 @@ LABEL_8:
 
   v7 = OBJC_IVAR___TSDRep_mCanvas;
   v8 = *&self->super.TSDContainerRep_opaque[OBJC_IVAR___TSDRep_mCanvas];
-  v9 = [(THWWebRep *)self layout];
-  [v9 webFrameInRoot];
+  layout = [(THWWebRep *)self layout];
+  [layout webFrameInRoot];
   [v8 convertUnscaledToBoundsRect:?];
   [*&self->super.TSDContainerRep_opaque[v7] contentsScale];
   TSDRoundedRectForScale();
@@ -595,14 +595,14 @@ LABEL_8:
   if (self->_ownsWebView)
   {
     webView = self->_webView;
-    v11 = [(THWWebRep *)self stageView];
-    [v11 bounds];
+    stageView = [(THWWebRep *)self stageView];
+    [stageView bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [(THWWebRep *)self info];
-    [v20 idealWebSize];
+    info2 = [(THWWebRep *)self info];
+    [info2 idealWebSize];
     [(THWPlatformWebViewProtocol *)webView setFrame:v13 naturalSize:v15, v17, v19, v21, v22];
 
     if ([(THWWebRep *)self deferExposeWebView])
@@ -617,7 +617,7 @@ LABEL_8:
     }
   }
 
-  [v4 addObject:self->_stageView];
+  [arrayCopy addObject:self->_stageView];
 LABEL_10:
 }
 
@@ -630,17 +630,17 @@ LABEL_10:
     self->_stageView = v3;
 
     [(TSWPassThroughView *)self->_stageView setAcceptsHits:0];
-    v5 = [(TSWPassThroughView *)self->_stageView layer];
-    v6 = [(THWWebRep *)self webViewPosterLayer];
-    [v5 addSublayer:v6];
+    layer = [(TSWPassThroughView *)self->_stageView layer];
+    webViewPosterLayer = [(THWWebRep *)self webViewPosterLayer];
+    [layer addSublayer:webViewPosterLayer];
 
     if (!self->_webView)
     {
       [(THWWebRep *)self setCreatedWebView:1];
-      v7 = [(THWWebRep *)self requestScope];
+      requestScope = [(THWWebRep *)self requestScope];
       v8 = [THWWebView alloc];
-      v9 = [(THWWebRep *)self p_filteredOutURLSchemes];
-      v10 = [(THWWebView *)v8 initWithfilteredOutURLSchemes:v9 requestScope:v7];
+      p_filteredOutURLSchemes = [(THWWebRep *)self p_filteredOutURLSchemes];
+      v10 = [(THWWebView *)v8 initWithfilteredOutURLSchemes:p_filteredOutURLSchemes requestScope:requestScope];
       webView = self->_webView;
       self->_webView = v10;
 
@@ -664,36 +664,36 @@ LABEL_10:
   return v14;
 }
 
-- (void)didAddChildView:(id)a3
+- (void)didAddChildView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   if (self->_ownsWebView)
   {
     [(THWPlatformWebViewProtocol *)self->_webView setWebViewDelegate:self];
   }
 
-  if (self->_stageView == v7 && self->_playButtonPressed && self->_ownsWebView || ([(THWWebRep *)self webView], (v4 = objc_claimAutoreleasedReturnValue()) != 0) && (v5 = v4, v6 = [(THWWebRep *)self autoplayRequested], v5, v6))
+  if (self->_stageView == viewCopy && self->_playButtonPressed && self->_ownsWebView || ([(THWWebRep *)self webView], (v4 = objc_claimAutoreleasedReturnValue()) != 0) && (v5 = v4, v6 = [(THWWebRep *)self autoplayRequested], v5, v6))
   {
     [(THWWebRep *)self p_startAutoplay];
     [(THWWebRep *)self setAutoplayRequested:0];
   }
 }
 
-- (void)willRemoveChildView:(id)a3
+- (void)willRemoveChildView:(id)view
 {
   if (self->_ownsWebView)
   {
-    v4 = [(THWWebRep *)self webView];
-    [v4 setWebViewDelegate:0];
+    webView = [(THWWebRep *)self webView];
+    [webView setWebViewDelegate:0];
   }
 }
 
 - (BOOL)wantsPressAnimation
 {
-  v2 = [(THWWebRep *)self pressableHandler];
-  v3 = [v2 widgetInteractionDisabledOnPage];
+  pressableHandler = [(THWWebRep *)self pressableHandler];
+  widgetInteractionDisabledOnPage = [pressableHandler widgetInteractionDisabledOnPage];
 
-  return v3;
+  return widgetInteractionDisabledOnPage;
 }
 
 - (BOOL)wantsPressAction
@@ -703,8 +703,8 @@ LABEL_10:
     return [(THWWebRep *)self pressableAction]!= 0;
   }
 
-  v4 = [(THWWebRep *)self pressableHandler];
-  if ([v4 widgetInteractionDisabledOnPage])
+  pressableHandler = [(THWWebRep *)self pressableHandler];
+  if ([pressableHandler widgetInteractionDisabledOnPage])
   {
     v3 = [(THWWebRep *)self pressableAction]!= 0;
   }
@@ -717,20 +717,20 @@ LABEL_10:
   return v3;
 }
 
-- (BOOL)shouldRecognizePressOnRep:(id)a3
+- (BOOL)shouldRecognizePressOnRep:(id)rep
 {
-  v3 = [(THWWebRep *)self layout];
-  v4 = [v3 isExpanded];
+  layout = [(THWWebRep *)self layout];
+  isExpanded = [layout isExpanded];
 
-  return v4 ^ 1;
+  return isExpanded ^ 1;
 }
 
-- (void)webViewDidFinishLoad:(id)a3
+- (void)webViewDidFinishLoad:(id)load
 {
-  v4 = [(THWWebRep *)self info];
-  v5 = [v4 exposurePolicy];
+  info = [(THWWebRep *)self info];
+  exposurePolicy = [info exposurePolicy];
 
-  if (!v5)
+  if (!exposurePolicy)
   {
     v6 = dispatch_time(0, 100000000);
     block[0] = _NSConcreteStackBlock;
@@ -742,23 +742,23 @@ LABEL_10:
   }
 }
 
-- (id)webThreadWebView:(id)a3 resource:(id)a4 willSendRequest:(id)a5 redirectResponse:(id)a6 fromDataSource:(id)a7
+- (id)webThreadWebView:(id)view resource:(id)resource willSendRequest:(id)request redirectResponse:(id)response fromDataSource:(id)source
 {
-  v8 = a5;
-  v9 = [v8 URL];
-  v10 = [v9 scheme];
-  v11 = [v10 isEqualToString:@"x-ibooks-th"];
+  requestCopy = request;
+  v9 = [requestCopy URL];
+  scheme = [v9 scheme];
+  v11 = [scheme isEqualToString:@"x-ibooks-th"];
 
   if ((v11 & 1) == 0)
   {
-    v12 = [(THWWebRep *)self info];
-    v13 = [v12 autoplayConfig];
-    if ([v13 enabled])
+    info = [(THWWebRep *)self info];
+    autoplayConfig = [info autoplayConfig];
+    if ([autoplayConfig enabled])
     {
-      v14 = [(THWWebRep *)self info];
-      v15 = [v14 allowNetworkAccess];
+      info2 = [(THWWebRep *)self info];
+      allowNetworkAccess = [info2 allowNetworkAccess];
 
-      if (!v15)
+      if (!allowNetworkAccess)
       {
         v16 = 0;
         goto LABEL_7;
@@ -770,63 +770,63 @@ LABEL_10:
     }
   }
 
-  v16 = v8;
+  v16 = requestCopy;
 LABEL_7:
 
   return v16;
 }
 
-- (void)p_webView:(id)a3 shouldStartLoadWithURL:(id)a4 navigationType:(int)a5 syncResponseHandler:(id)a6 asyncResponseHandler:(id)a7
+- (void)p_webView:(id)view shouldStartLoadWithURL:(id)l navigationType:(int)type syncResponseHandler:(id)handler asyncResponseHandler:(id)responseHandler
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = v13;
-  if (v12)
+  lCopy = l;
+  handlerCopy = handler;
+  responseHandlerCopy = responseHandler;
+  v14 = responseHandlerCopy;
+  if (handlerCopy)
   {
-    v13 = v12;
+    responseHandlerCopy = handlerCopy;
   }
 
-  v15 = objc_retainBlock(v13);
-  v16 = [(THWWebRep *)self p_cachedLoadExternalContentApproval];
-  v17 = [v11 scheme];
-  v18 = [@"x-ibooks-th" isEqualToString:v17];
+  v15 = objc_retainBlock(responseHandlerCopy);
+  p_cachedLoadExternalContentApproval = [(THWWebRep *)self p_cachedLoadExternalContentApproval];
+  scheme = [lCopy scheme];
+  v18 = [@"x-ibooks-th" isEqualToString:scheme];
 
-  v19 = [v11 absoluteString];
-  v20 = [v19 isEqualToString:@"about:blank"];
+  absoluteString = [lCopy absoluteString];
+  v20 = [absoluteString isEqualToString:@"about:blank"];
 
   if (v20)
   {
     goto LABEL_4;
   }
 
-  v21 = [(THWWebRep *)self bridgeController];
-  v22 = [v21 handleURL:v11];
+  bridgeController = [(THWWebRep *)self bridgeController];
+  v22 = [bridgeController handleURL:lCopy];
 
   if (v22)
   {
     goto LABEL_20;
   }
 
-  v23 = [(THWWebRep *)self info];
-  v24 = [v23 autoplayConfig];
-  if ([v24 enabled])
+  info = [(THWWebRep *)self info];
+  autoplayConfig = [info autoplayConfig];
+  if ([autoplayConfig enabled])
   {
     if (v18)
     {
 
-      v25 = &dword_0 + 1;
+      bOOLValue2 = &dword_0 + 1;
 LABEL_17:
-      v15[2](v15, v25);
+      v15[2](v15, bOOLValue2);
       goto LABEL_21;
     }
 
-    v31 = [v16 BOOLValue];
+    bOOLValue = [p_cachedLoadExternalContentApproval BOOLValue];
 
-    if (v31)
+    if (bOOLValue)
     {
 LABEL_16:
-      v25 = [v16 BOOLValue];
+      bOOLValue2 = [p_cachedLoadExternalContentApproval BOOLValue];
       goto LABEL_17;
     }
   }
@@ -835,25 +835,25 @@ LABEL_16:
   {
   }
 
-  if ([v11 isFileURL])
+  if ([lCopy isFileURL])
   {
 LABEL_20:
     v15[2](v15, 0);
     goto LABEL_21;
   }
 
-  if (a5 != 5)
+  if (type != 5)
   {
-    if (a5)
+    if (type)
     {
       goto LABEL_21;
     }
 
     v26 = +[TSKApplicationDelegate sharedDelegate];
-    v27 = [v26 validURLSchemes];
-    v28 = [v11 scheme];
-    v29 = [v28 lowercaseString];
-    v30 = [v27 containsObject:v29];
+    validURLSchemes = [v26 validURLSchemes];
+    scheme2 = [lCopy scheme];
+    lowercaseString = [scheme2 lowercaseString];
+    v30 = [validURLSchemes containsObject:lowercaseString];
 
     if (!v30)
     {
@@ -862,14 +862,14 @@ LABEL_20:
 
 LABEL_19:
     v35 = +[TSKApplicationDelegate sharedDelegate];
-    [v35 openURL:v11];
+    [v35 openURL:lCopy];
 
     goto LABEL_20;
   }
 
-  v32 = [v11 scheme];
-  v33 = [v32 lowercaseString];
-  v34 = [@"mailto" isEqualToString:v33];
+  scheme3 = [lCopy scheme];
+  lowercaseString2 = [scheme3 lowercaseString];
+  v34 = [@"mailto" isEqualToString:lowercaseString2];
 
   if (v34)
   {
@@ -877,9 +877,9 @@ LABEL_19:
   }
 
   v36 = +[THApplicationDelegate sharedDelegate];
-  v37 = [v36 urlSchemesNotRequiringUserPrompt];
-  v38 = [v11 scheme];
-  v39 = [v37 containsObject:v38];
+  urlSchemesNotRequiringUserPrompt = [v36 urlSchemesNotRequiringUserPrompt];
+  scheme4 = [lCopy scheme];
+  v39 = [urlSchemesNotRequiringUserPrompt containsObject:scheme4];
 
   if (v39)
   {
@@ -888,17 +888,17 @@ LABEL_4:
     goto LABEL_21;
   }
 
-  if (v16)
+  if (p_cachedLoadExternalContentApproval)
   {
     goto LABEL_16;
   }
 
-  v48 = [(THWWebRep *)self layout];
-  v40 = [v48 layoutController];
-  v41 = [v40 canvas];
-  v42 = [v41 canvasController];
-  v43 = [v42 layerHost];
-  v47 = [v43 viewController];
+  layout = [(THWWebRep *)self layout];
+  layoutController = [layout layoutController];
+  canvas = [layoutController canvas];
+  canvasController = [canvas canvasController];
+  layerHost = [canvasController layerHost];
+  viewController = [layerHost viewController];
 
   v44 = +[THApplicationDelegate sharedDelegate];
   v49[0] = _NSConcreteStackBlock;
@@ -908,11 +908,11 @@ LABEL_4:
   v49[4] = self;
   v45 = v14;
   v50 = v45;
-  v46 = [v44 shouldAuthorizeURLToLoad:v11 loadContext:v47 completion:v49];
+  v46 = [v44 shouldAuthorizeURLToLoad:lCopy loadContext:viewController completion:v49];
 
-  if (v12)
+  if (handlerCopy)
   {
-    (*(v12 + 2))(v12, v46);
+    (*(handlerCopy + 2))(handlerCopy, v46);
   }
 
   else if (v46)
@@ -923,11 +923,11 @@ LABEL_4:
 LABEL_21:
 }
 
-- (BOOL)webView:(id)a3 shouldStartLoadWithURL:(id)a4 navigationType:(int)a5 deferredResponseHandler:(id)a6
+- (BOOL)webView:(id)view shouldStartLoadWithURL:(id)l navigationType:(int)type deferredResponseHandler:(id)handler
 {
-  v7 = *&a5;
-  v10 = a3;
-  v11 = a4;
+  v7 = *&type;
+  viewCopy = view;
+  lCopy = l;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -941,20 +941,20 @@ LABEL_21:
   v14[1] = 3221225472;
   v14[2] = sub_1AC1C0;
   v14[3] = &unk_45E8D8;
-  v12 = a6;
-  v15 = v12;
-  [(THWWebRep *)self p_webView:v10 shouldStartLoadWithURL:v11 navigationType:v7 syncResponseHandler:v16 asyncResponseHandler:v14];
+  handlerCopy = handler;
+  v15 = handlerCopy;
+  [(THWWebRep *)self p_webView:viewCopy shouldStartLoadWithURL:lCopy navigationType:v7 syncResponseHandler:v16 asyncResponseHandler:v14];
   LOBYTE(v7) = *(v18 + 24);
 
   _Block_object_dispose(&v17, 8);
   return v7;
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(THWWebRep *)self pressableHandler];
-  v6 = [v5 canHandleGesture:v4];
+  gestureCopy = gesture;
+  pressableHandler = [(THWWebRep *)self pressableHandler];
+  v6 = [pressableHandler canHandleGesture:gestureCopy];
 
   if (v6)
   {
@@ -963,8 +963,8 @@ LABEL_21:
 
   else if (self->_ownsWebView)
   {
-    v8 = [(THWWebRep *)self freeTransformableHandler];
-    v7 = [v8 canHandleGesture:v4];
+    freeTransformableHandler = [(THWWebRep *)self freeTransformableHandler];
+    v7 = [freeTransformableHandler canHandleGesture:gestureCopy];
   }
 
   else
@@ -975,9 +975,9 @@ LABEL_21:
   return v7;
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if (!self->_ownsWebView)
   {
     v5 = +[TSUAssertionHandler currentHandler];
@@ -986,8 +986,8 @@ LABEL_21:
     [v5 handleFailureInFunction:v6 file:v7 lineNumber:752 description:@"shouldn't be handling gestures when we don't own the webView"];
   }
 
-  v8 = [(THWWebRep *)self pressableHandler];
-  v9 = [v8 handleGesture:v4];
+  pressableHandler = [(THWWebRep *)self pressableHandler];
+  v9 = [pressableHandler handleGesture:gestureCopy];
 
   if (v9)
   {
@@ -996,41 +996,41 @@ LABEL_21:
 
   else
   {
-    v11 = [(THWWebRep *)self freeTransformableHandler];
-    v10 = [v11 handleGesture:v4];
+    freeTransformableHandler = [(THWWebRep *)self freeTransformableHandler];
+    v10 = [freeTransformableHandler handleGesture:gestureCopy];
   }
 
   return v10;
 }
 
-- (void)willBeginHandlingGesture:(id)a3
+- (void)willBeginHandlingGesture:(id)gesture
 {
-  v7 = a3;
-  v4 = [v7 gestureKind];
+  gestureCopy = gesture;
+  gestureKind = [gestureCopy gestureKind];
   v5 = TSDFreeTransform;
 
-  if (v4 == v5)
+  if (gestureKind == v5)
   {
-    v6 = [(THWWebRep *)self freeTransformableHandler];
-    [v6 willBeginHandlingGesture:v7];
+    freeTransformableHandler = [(THWWebRep *)self freeTransformableHandler];
+    [freeTransformableHandler willBeginHandlingGesture:gestureCopy];
   }
 }
 
-- (BOOL)webView:(id)a3 handleURL:(id)a4
+- (BOOL)webView:(id)view handleURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(THWWebRep *)self webView];
+  lCopy = l;
+  viewCopy = view;
+  webView = [(THWWebRep *)self webView];
 
-  if (v8 == v7)
+  if (webView == viewCopy)
   {
-    v10 = [v6 scheme];
-    v11 = [v10 lowercaseString];
+    scheme = [lCopy scheme];
+    lowercaseString = [scheme lowercaseString];
 
-    if (![v11 isEqualToString:@"ibooks"] || (objc_msgSend(v6, "host"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+    if (![lowercaseString isEqualToString:@"ibooks"] || (objc_msgSend(lCopy, "host"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
     {
       v13 = +[TSKApplicationDelegate sharedDelegate];
-      [v13 openURL:v6];
+      [v13 openURL:lCopy];
       v9 = 0;
 LABEL_6:
 
@@ -1039,8 +1039,8 @@ LABEL_6:
 
     if ([(THWWebRep *)self isExpanded])
     {
-      v15 = [(THWWebRep *)self interactiveCanvasController];
-      v16 = [v15 delegate];
+      interactiveCanvasController = [(THWWebRep *)self interactiveCanvasController];
+      delegate = [interactiveCanvasController delegate];
       v13 = TSUProtocolCast();
 
       v9 = v13 != 0;
@@ -1049,16 +1049,16 @@ LABEL_6:
         goto LABEL_6;
       }
 
-      [v13 handleHyperlinkWithURL:v6];
+      [v13 handleHyperlinkWithURL:lCopy];
     }
 
     else
     {
       objc_opt_class();
-      v17 = [(THWWebRep *)self interactiveCanvasController];
+      interactiveCanvasController2 = [(THWWebRep *)self interactiveCanvasController];
       v13 = TSUDynamicCast();
 
-      [v13 performSelectorOnMainThread:"handleHyperlinkWithURL:" withObject:v6 waitUntilDone:0];
+      [v13 performSelectorOnMainThread:"handleHyperlinkWithURL:" withObject:lCopy waitUntilDone:0];
     }
 
     v9 = 1;
@@ -1071,14 +1071,14 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)webView:(id)a3 shouldAcceptHitAtPoint:(CGPoint)a4 onView:(id)a5 withEvent:(id)a6
+- (BOOL)webView:(id)view shouldAcceptHitAtPoint:(CGPoint)point onView:(id)onView withEvent:(id)event
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
+  y = point.y;
+  x = point.x;
+  onViewCopy = onView;
   if ([(THWWebRep *)self stageAlmostCoversPage])
   {
-    v10 = ![(THWWebRep *)self p_pointIsInRedZone:v9 onView:x, y];
+    v10 = ![(THWWebRep *)self p_pointIsInRedZone:onViewCopy onView:x, y];
   }
 
   else
@@ -1086,27 +1086,27 @@ LABEL_7:
     v10 = 1;
   }
 
-  v11 = [(THWWebRep *)self pressableHandler];
-  v12 = [v11 widgetInteractionDisabledOnPage];
+  pressableHandler = [(THWWebRep *)self pressableHandler];
+  widgetInteractionDisabledOnPage = [pressableHandler widgetInteractionDisabledOnPage];
 
-  v13 = (v12 ^ 1) & v10;
+  v13 = (widgetInteractionDisabledOnPage ^ 1) & v10;
   if ([(THWWebRep *)self isExpanded])
   {
-    v13 &= ![(THWWebRep *)self p_pointIsInRedZone:v9 onView:x, y];
+    v13 &= ![(THWWebRep *)self p_pointIsInRedZone:onViewCopy onView:x, y];
   }
 
   return v13;
 }
 
-- (void)expandedWillPresentWithController:(id)a3
+- (void)expandedWillPresentWithController:(id)controller
 {
-  v4 = a3;
-  [(THWWebRep *)self setExpandedRepController:v4];
+  controllerCopy = controller;
+  [(THWWebRep *)self setExpandedRepController:controllerCopy];
   objc_opt_class();
-  v5 = [v4 expandedRepSourceRep];
+  expandedRepSourceRep = [controllerCopy expandedRepSourceRep];
   v8 = TSUDynamicCast();
 
-  v6 = [v4 expandedRepSourceRep];
+  expandedRepSourceRep2 = [controllerCopy expandedRepSourceRep];
 
   v7 = TSUProtocolCast();
 
@@ -1133,62 +1133,62 @@ LABEL_7:
   return animationController;
 }
 
-- (BOOL)expandedHasContentForPanel:(int)a3
+- (BOOL)expandedHasContentForPanel:(int)panel
 {
-  v3 = *&a3;
-  v4 = [(THWWebRep *)self info];
-  v5 = [v4 adornmentInfo];
-  LOBYTE(v3) = [v5 panelContentProviderHasContentForPanel:v3];
+  v3 = *&panel;
+  info = [(THWWebRep *)self info];
+  adornmentInfo = [info adornmentInfo];
+  LOBYTE(v3) = [adornmentInfo panelContentProviderHasContentForPanel:v3];
 
   return v3;
 }
 
-- (id)expandedChildInfosForPanel:(int)a3
+- (id)expandedChildInfosForPanel:(int)panel
 {
-  v3 = *&a3;
-  v4 = [(THWWebRep *)self info];
-  v5 = [v4 adornmentInfo];
-  v6 = [v5 panelContentProviderChildInfosForPanel:v3];
+  v3 = *&panel;
+  info = [(THWWebRep *)self info];
+  adornmentInfo = [info adornmentInfo];
+  v6 = [adornmentInfo panelContentProviderChildInfosForPanel:v3];
 
   return v6;
 }
 
-- (BOOL)expandedHasRoomForPanelsWithHeight:(double)a3 inFrame:(CGRect)a4
+- (BOOL)expandedHasRoomForPanelsWithHeight:(double)height inFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [(THWWebRep *)self layout];
-  [v9 webSizeInStageSize:{width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layout = [(THWWebRep *)self layout];
+  [layout webSizeInStageSize:{width, height}];
   v11 = v10;
 
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;
   v13.size.height = height;
-  return CGRectGetHeight(v13) - v11 >= a3;
+  return CGRectGetHeight(v13) - v11 >= height;
 }
 
-- (void)expandedDidPresentWithController:(id)a3
+- (void)expandedDidPresentWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    [v4 expandableRepContainsHTMLContent:self];
+    [controllerCopy expandableRepContainsHTMLContent:self];
   }
 }
 
-- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)a3 toFrame:(CGRect)a4
+- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)frame toFrame:(CGRect)toFrame
 {
-  v4 = [(THWWebRep *)self layout:a3.origin.x];
+  v4 = [(THWWebRep *)self layout:frame.origin.x];
   [v4 invalidateFrame];
 }
 
 - (void)didExitExpanded
 {
-  v2 = [(THWWebRep *)self bridgeController];
-  [v2 tellBrowserToPauseAudioVisual];
+  bridgeController = [(THWWebRep *)self bridgeController];
+  [bridgeController tellBrowserToPauseAudioVisual];
 }
 
 - (void)didPresentExpanded
@@ -1221,16 +1221,16 @@ LABEL_7:
   {
     self->_suspendPosterRendering = 0;
     webViewPosterLayer = self->_webViewPosterLayer;
-    v10 = [(THWWebRep *)self info];
-    v11 = [v10 defaultImage];
-    [(THWWebRep *)self p_updateLayerContents:webViewPosterLayer withImage:v11];
+    info = [(THWWebRep *)self info];
+    defaultImage = [info defaultImage];
+    [(THWWebRep *)self p_updateLayerContents:webViewPosterLayer withImage:defaultImage];
   }
 
-  v12 = [(THWWebRep *)self bridgeController];
-  [v12 tellBrowserWillEnterWidgetMode:3];
+  bridgeController = [(THWWebRep *)self bridgeController];
+  [bridgeController tellBrowserWillEnterWidgetMode:3];
 
-  v13 = [(THWWebRep *)self bridgeController];
-  [v13 tellBrowserDidEnterWidgetMode:3];
+  bridgeController2 = [(THWWebRep *)self bridgeController];
+  [bridgeController2 tellBrowserDidEnterWidgetMode:3];
 
   if (!self->_isWebContentLoaded)
   {
@@ -1239,19 +1239,19 @@ LABEL_7:
   }
 }
 
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
-  v9 = [(THWWebRep *)self layout];
-  [v9 webSizeInStageSize:{v7, v6}];
+  height = toSize.height;
+  width = toSize.width;
+  v6 = size.height;
+  v7 = size.width;
+  layout = [(THWWebRep *)self layout];
+  [layout webSizeInStageSize:{v7, v6}];
   v11 = v10;
   v13 = v12;
 
-  v14 = [(THWWebRep *)self layout];
-  [v14 webSizeInStageSize:{width, height}];
+  layout2 = [(THWWebRep *)self layout];
+  [layout2 webSizeInStageSize:{width, height}];
   v16 = v15;
   v18 = v17;
 
@@ -1260,7 +1260,7 @@ LABEL_7:
   return fminf(v19, v20);
 }
 
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -1269,18 +1269,18 @@ LABEL_7:
   return result;
 }
 
-- (void)expandedDidRotateTransitionToSize:(CGSize)a3
+- (void)expandedDidRotateTransitionToSize:(CGSize)size
 {
-  v3 = [(THWWebRep *)self layout:a3.width];
+  v3 = [(THWWebRep *)self layout:size.width];
   [v3 invalidateFrame];
 }
 
 - (void)expandableExpandedPresentationDidEnd
 {
-  v3 = [(THWWebRep *)self pressableHandler];
-  v4 = [v3 widgetInteractionDisabledOnPage];
+  pressableHandler = [(THWWebRep *)self pressableHandler];
+  widgetInteractionDisabledOnPage = [pressableHandler widgetInteractionDisabledOnPage];
 
-  if (v4)
+  if (widgetInteractionDisabledOnPage)
   {
 
     [(THWWebRep *)self p_pauseOnCanvas];
@@ -1296,9 +1296,9 @@ LABEL_7:
   [(THWExpandedRepController *)expandedRepController expandedRepControllerInvalidateChildrenInPanel:1 invalidateWPAuto:1];
 }
 
-- (id)expandedPanel:(int)a3 primaryTargetForGesture:(id)a4
+- (id)expandedPanel:(int)panel primaryTargetForGesture:(id)gesture
 {
-  if (a3 == 1)
+  if (panel == 1)
   {
     v8[7] = v4;
     v9 = v5;
@@ -1318,13 +1318,13 @@ LABEL_7:
   return v6;
 }
 
-- (unsigned)expandedMaxLineCountForTextLayout:(id)a3 inPanel:(int)a4 withDefault:(unsigned int)a5
+- (unsigned)expandedMaxLineCountForTextLayout:(id)layout inPanel:(int)panel withDefault:(unsigned int)default
 {
-  v8 = a3;
-  if (a4 == 1 && !self->_panelDescriptionExpanded)
+  layoutCopy = layout;
+  if (panel == 1 && !self->_panelDescriptionExpanded)
   {
-    v9 = [(THWWebRep *)self layout];
-    v10 = [v9 layoutController];
+    layout = [(THWWebRep *)self layout];
+    layoutController = [layout layoutController];
 
     v11 = "isCompactHeight";
     if (objc_opt_respondsToSelector())
@@ -1345,9 +1345,9 @@ LABEL_9:
       v12 = 5;
     }
 
-    if ([v10 performSelector:v11])
+    if ([layoutController performSelector:v11])
     {
-      a5 = v12;
+      default = v12;
     }
 
     goto LABEL_9;
@@ -1355,44 +1355,44 @@ LABEL_9:
 
 LABEL_10:
 
-  return a5;
+  return default;
 }
 
-- (BOOL)shouldAnimateTargetLayer:(id)a3
+- (BOOL)shouldAnimateTargetLayer:(id)layer
 {
   if (self->_stageView)
   {
     return 0;
   }
 
-  v4 = [(THWWebRep *)self freeTransformableHandler];
-  v5 = [v4 ftc];
-  v6 = [v5 passedThreshold];
+  freeTransformableHandler = [(THWWebRep *)self freeTransformableHandler];
+  v5 = [freeTransformableHandler ftc];
+  passedThreshold = [v5 passedThreshold];
 
-  return v6;
+  return passedThreshold;
 }
 
-- (BOOL)shouldFadeOutAnimationLayer:(id)a3
+- (BOOL)shouldFadeOutAnimationLayer:(id)layer
 {
   if (self->_stageView)
   {
     return 0;
   }
 
-  v4 = [(THWWebRep *)self freeTransformableHandler];
-  v5 = [v4 ftc];
-  v6 = [v5 passedThreshold];
+  freeTransformableHandler = [(THWWebRep *)self freeTransformableHandler];
+  v5 = [freeTransformableHandler ftc];
+  passedThreshold = [v5 passedThreshold];
 
-  return v6;
+  return passedThreshold;
 }
 
 - (id)animationLayer
 {
-  v3 = [(THWWebRep *)self freeTransformableHandler];
-  v4 = [v3 ftc];
-  v5 = [v4 isFreeTransformInProgress];
+  freeTransformableHandler = [(THWWebRep *)self freeTransformableHandler];
+  v4 = [freeTransformableHandler ftc];
+  isFreeTransformInProgress = [v4 isFreeTransformInProgress];
 
-  if (!v5 || (-[THWWebRep freeTransformableHandler](self, "freeTransformableHandler"), v6 = objc_claimAutoreleasedReturnValue(), [v6 ftc], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "freeTransformLayer"), v8 = objc_claimAutoreleasedReturnValue(), v7, v6, !v8))
+  if (!isFreeTransformInProgress || (-[THWWebRep freeTransformableHandler](self, "freeTransformableHandler"), v6 = objc_claimAutoreleasedReturnValue(), [v6 ftc], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "freeTransformLayer"), v8 = objc_claimAutoreleasedReturnValue(), v7, v6, !v8))
   {
     stageView = self->_stageView;
     if (!stageView || ([(TSWPassThroughView *)stageView layer], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
@@ -1402,8 +1402,8 @@ LABEL_10:
       {
         v12 = OBJC_IVAR___TSDRep_mCanvas;
         v13 = *&self->super.TSDContainerRep_opaque[OBJC_IVAR___TSDRep_mCanvas];
-        v14 = [(THWWebRep *)self layout];
-        [v14 stageFrame];
+        layout = [(THWWebRep *)self layout];
+        [layout stageFrame];
         [v13 convertUnscaledToBoundsRect:?];
         [*&self->super.TSDContainerRep_opaque[v12] contentsScale];
         TSDRoundedRectForScale();
@@ -1412,13 +1412,13 @@ LABEL_10:
         v20 = v19;
         v22 = v21;
 
-        v23 = [(THWWebRep *)self canvasPosterLayer];
-        [v23 setFrame:{v16, v18, v20, v22}];
+        canvasPosterLayer = [(THWWebRep *)self canvasPosterLayer];
+        [canvasPosterLayer setFrame:{v16, v18, v20, v22}];
 
-        v24 = [(THWWebRep *)self canvasPosterLayer];
-        v25 = [(THWWebRep *)self info];
-        v26 = [v25 placeholderImage];
-        [(THWWebRep *)self p_updateLayerContents:v24 withImage:v26];
+        canvasPosterLayer2 = [(THWWebRep *)self canvasPosterLayer];
+        info = [(THWWebRep *)self info];
+        placeholderImage = [info placeholderImage];
+        [(THWWebRep *)self p_updateLayerContents:canvasPosterLayer2 withImage:placeholderImage];
 
         canvasPosterLayer = self->_canvasPosterLayer;
       }
@@ -1434,23 +1434,23 @@ LABEL_10:
 
 - (id)shadowAnimationLayer
 {
-  v3 = [(THWWebRep *)self freeTransformableHandler];
-  v4 = [v3 ftc];
-  v5 = [v4 isFreeTransformInProgress];
+  freeTransformableHandler = [(THWWebRep *)self freeTransformableHandler];
+  v4 = [freeTransformableHandler ftc];
+  isFreeTransformInProgress = [v4 isFreeTransformInProgress];
 
-  if (v5)
+  if (isFreeTransformInProgress)
   {
-    v6 = [(THWWebRep *)self freeTransformableHandler];
-    v7 = [v6 ftc];
-    v8 = [v7 shadowLayer];
+    freeTransformableHandler2 = [(THWWebRep *)self freeTransformableHandler];
+    v7 = [freeTransformableHandler2 ftc];
+    shadowLayer = [v7 shadowLayer];
   }
 
   else
   {
-    v8 = 0;
+    shadowLayer = 0;
   }
 
-  return v8;
+  return shadowLayer;
 }
 
 - (CGAffineTransform)freeTransform
@@ -1459,14 +1459,14 @@ LABEL_10:
   *&retstr->a = *&CGAffineTransformIdentity.a;
   *&retstr->c = v5;
   *&retstr->tx = *&CGAffineTransformIdentity.tx;
-  v6 = [(THWWebRep *)self freeTransformableHandler];
-  v7 = [v6 ftc];
-  v8 = [v7 isFreeTransformInProgress];
+  freeTransformableHandler = [(THWWebRep *)self freeTransformableHandler];
+  v7 = [freeTransformableHandler ftc];
+  isFreeTransformInProgress = [v7 isFreeTransformInProgress];
 
-  if (v8)
+  if (isFreeTransformInProgress)
   {
-    v10 = [(THWWebRep *)self freeTransformableHandler];
-    v11 = [v10 ftc];
+    freeTransformableHandler2 = [(THWWebRep *)self freeTransformableHandler];
+    v11 = [freeTransformableHandler2 ftc];
     v12 = v11;
     if (v11)
     {
@@ -1488,50 +1488,50 @@ LABEL_10:
   return result;
 }
 
-- (void)reparentAnimationLayerIfBackedByView:(id)a3
+- (void)reparentAnimationLayerIfBackedByView:(id)view
 {
   if (self->_stageView)
   {
-    v4 = [(THWWebRep *)self subviewsController];
+    subviewsController = [(THWWebRep *)self subviewsController];
     stageView = self->_stageView;
     v5 = [NSArray arrayWithObjects:&stageView count:1];
-    [v4 addSubviews:v5];
+    [subviewsController addSubviews:v5];
   }
 }
 
 - (id)targetLayer
 {
-  v5 = [(THWWebRep *)self freeTransformableHandler];
-  v6 = [v5 ftc];
-  v7 = [v6 isFreeTransformInProgress];
-  if (v7)
+  freeTransformableHandler = [(THWWebRep *)self freeTransformableHandler];
+  v6 = [freeTransformableHandler ftc];
+  isFreeTransformInProgress = [v6 isFreeTransformInProgress];
+  if (isFreeTransformInProgress)
   {
-    v2 = [(THWWebRep *)self freeTransformableHandler];
-    v3 = [v2 ftc];
+    freeTransformableHandler2 = [(THWWebRep *)self freeTransformableHandler];
+    v3 = [freeTransformableHandler2 ftc];
     if (![v3 passedThreshold])
     {
-      v8 = 0;
+      animationLayer = 0;
       goto LABEL_6;
     }
   }
 
-  v8 = [(THWWebRep *)self animationLayer];
-  if (v7)
+  animationLayer = [(THWWebRep *)self animationLayer];
+  if (isFreeTransformInProgress)
   {
 LABEL_6:
   }
 
-  return v8;
+  return animationLayer;
 }
 
 - (CGRect)ftcTargetFrame
 {
-  v3 = [(THWWebRep *)self freeTransformableHandler];
-  v4 = [v3 ftc];
+  freeTransformableHandler = [(THWWebRep *)self freeTransformableHandler];
+  v4 = [freeTransformableHandler ftc];
   if ([v4 isFreeTransformInProgress])
   {
-    v5 = [(THWWebRep *)self freeTransformableHandler];
-    v6 = [v5 ftc];
+    freeTransformableHandler2 = [(THWWebRep *)self freeTransformableHandler];
+    v6 = [freeTransformableHandler2 ftc];
     [v6 completionTargetRect];
     x = v7;
     y = v9;
@@ -1558,29 +1558,29 @@ LABEL_6:
   return result;
 }
 
-- (void)reparentTargetLayerIfBackedByView:(id)a3
+- (void)reparentTargetLayerIfBackedByView:(id)view
 {
   if (self->_stageView)
   {
-    v4 = [(THWWebRep *)self subviewsController];
+    subviewsController = [(THWWebRep *)self subviewsController];
     stageView = self->_stageView;
     v5 = [NSArray arrayWithObjects:&stageView count:1];
-    [v4 addSubviews:v5];
+    [subviewsController addSubviews:v5];
   }
 }
 
 - (BOOL)isExpanded
 {
-  v2 = [(THWWebRep *)self layout];
-  v3 = [v2 isExpanded];
+  layout = [(THWWebRep *)self layout];
+  isExpanded = [layout isExpanded];
 
-  return v3;
+  return isExpanded;
 }
 
 - (BOOL)meetsStageDimensionRequirementForExpanded
 {
-  v2 = [(THWWebRep *)self layout];
-  [v2 stageFrame];
+  layout = [(THWWebRep *)self layout];
+  [layout stageFrame];
   v4 = v3;
   v6 = v5;
 
@@ -1589,17 +1589,17 @@ LABEL_6:
 
 - (BOOL)isFreeTransformInProgress
 {
-  v2 = [(THWWebRep *)self freeTransformableHandler];
-  v3 = [v2 ftc];
-  v4 = [v3 isFreeTransformInProgress];
+  freeTransformableHandler = [(THWWebRep *)self freeTransformableHandler];
+  v3 = [freeTransformableHandler ftc];
+  isFreeTransformInProgress = [v3 isFreeTransformInProgress];
 
-  return v4;
+  return isFreeTransformInProgress;
 }
 
 - (CGRect)rectForCompletion
 {
-  v2 = [(THWWebRep *)self layout];
-  [v2 frameInParent];
+  layout = [(THWWebRep *)self layout];
+  [layout frameInParent];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1618,10 +1618,10 @@ LABEL_6:
 
 - (void)contentIsReady
 {
-  v3 = [(THWWebRep *)self info];
-  v4 = [v3 exposurePolicy];
+  info = [(THWWebRep *)self info];
+  exposurePolicy = [info exposurePolicy];
 
-  if (v4 == 1)
+  if (exposurePolicy == 1)
   {
     v5 = dispatch_time(0, 100000000);
     block[0] = _NSConcreteStackBlock;
@@ -1635,18 +1635,18 @@ LABEL_6:
 
 - (THWAutoplayConfig)autoplayConfig
 {
-  v2 = [(THWWebRep *)self info];
-  v3 = [v2 autoplayConfig];
+  info = [(THWWebRep *)self info];
+  autoplayConfig = [info autoplayConfig];
 
-  return v3;
+  return autoplayConfig;
 }
 
 - (BOOL)autoplayAllowed
 {
-  v2 = [(THWWebRep *)self pressableHandler];
-  v3 = [v2 widgetInteractionAllowAutoplay];
+  pressableHandler = [(THWWebRep *)self pressableHandler];
+  widgetInteractionAllowAutoplay = [pressableHandler widgetInteractionAllowAutoplay];
 
-  return v3;
+  return widgetInteractionAllowAutoplay;
 }
 
 - (void)autoplayStart
@@ -1681,12 +1681,12 @@ LABEL_6:
 
 - (void)p_autoplayIfDesired
 {
-  v4 = [(THWWebRep *)self autoplayConfig];
-  if ([v4 enabled])
+  autoplayConfig = [(THWWebRep *)self autoplayConfig];
+  if ([autoplayConfig enabled])
   {
-    v3 = [(THWWebRep *)self p_becameVisibleOnCanvas];
+    p_becameVisibleOnCanvas = [(THWWebRep *)self p_becameVisibleOnCanvas];
 
-    if (v3)
+    if (p_becameVisibleOnCanvas)
     {
 
       [(THWWebRep *)self p_startAutoplay];
@@ -1700,9 +1700,9 @@ LABEL_6:
 
 - (void)p_startAutoplay
 {
-  v3 = [(THWWebRep *)self webView];
+  webView = [(THWWebRep *)self webView];
 
-  if (v3)
+  if (webView)
   {
 
     [(THWWebRep *)self p_startAutoplayOnCanvas];
@@ -1719,8 +1719,8 @@ LABEL_6:
 {
   if (self->_ownsWebView && self->_isWebContentLoaded)
   {
-    v3 = [(THWWebRep *)self bridgeController];
-    [v3 tellBrowserToPauseAudioVisual];
+    bridgeController = [(THWWebRep *)self bridgeController];
+    [bridgeController tellBrowserToPauseAudioVisual];
   }
 }
 
@@ -1728,9 +1728,9 @@ LABEL_6:
 {
   if (self->_ownsWebView)
   {
-    v3 = [(THWWebRep *)self webView];
+    webView = [(THWWebRep *)self webView];
 
-    if (!v3)
+    if (!webView)
     {
       v4 = +[TSUAssertionHandler currentHandler];
       v5 = [NSString stringWithUTF8String:"[THWWebRep p_startAutoplayOnCanvas]"];
@@ -1738,11 +1738,11 @@ LABEL_6:
       [v4 handleFailureInFunction:v5 file:v6 lineNumber:1406 description:{@"invalid nil value for '%s'", "self.webView"}];
     }
 
-    v7 = [(THWWebRep *)self bridgeController];
-    [v7 tellBrowserWillEnterWidgetMode:1];
+    bridgeController = [(THWWebRep *)self bridgeController];
+    [bridgeController tellBrowserWillEnterWidgetMode:1];
 
-    v8 = [(THWWebRep *)self bridgeController];
-    [v8 tellBrowserDidEnterWidgetMode:1];
+    bridgeController2 = [(THWWebRep *)self bridgeController];
+    [bridgeController2 tellBrowserDidEnterWidgetMode:1];
 
     if (!self->_isWebContentLoaded)
     {
@@ -1752,12 +1752,12 @@ LABEL_6:
   }
 }
 
-- (void)handleNotificationVantageDidChange:(id)a3
+- (void)handleNotificationVantageDidChange:(id)change
 {
   if (self->_ownsWebView)
   {
-    v5 = [a3 userInfo];
-    v6 = [v5 objectForKey:@"THVantageChangeReason"];
+    userInfo = [change userInfo];
+    v6 = [userInfo objectForKey:@"THVantageChangeReason"];
 
     if (([v6 isEqualToString:@"THVantageChangeReasonScrolling"] & 1) == 0 && !objc_msgSend(v6, "isEqualToString:", @"THVantageChangeReasonWindowResize") || (-[THWWebRep isVisibleOnCanvas](self, "isVisibleOnCanvas") & 1) == 0)
     {
@@ -1776,10 +1776,10 @@ LABEL_6:
     [v3 handleFailureInFunction:v4 file:v5 lineNumber:1438 description:@"shouldn't load URL before wigdet object has been injected"];
   }
 
-  v6 = [(THWWebRep *)self info];
-  v7 = [v6 sourceURL];
+  info = [(THWWebRep *)self info];
+  sourceURL = [info sourceURL];
 
-  if (([v7 isFileURL] & 1) == 0)
+  if (([sourceURL isFileURL] & 1) == 0)
   {
     v8 = +[TSUAssertionHandler currentHandler];
     v9 = [NSString stringWithUTF8String:"[THWWebRep p_loadSourceURL]"];
@@ -1787,28 +1787,28 @@ LABEL_6:
     [v8 handleFailureInFunction:v9 file:v10 lineNumber:1441 description:@"can't handle non-file URLs"];
   }
 
-  if ([v7 isFileURL])
+  if ([sourceURL isFileURL])
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1AE0CC;
     v11[3] = &unk_45ADB0;
     v11[4] = self;
-    v12 = v7;
+    v12 = sourceURL;
     _os_activity_initiate(&dword_0, "HTML Widget Load URL", OS_ACTIVITY_FLAG_DEFAULT, v11);
   }
 }
 
 - (id)p_filteredOutURLSchemes
 {
-  v3 = [(THWWebRep *)self info];
-  if ([v3 allowNetworkAccess])
+  info = [(THWWebRep *)self info];
+  if ([info allowNetworkAccess])
   {
-    v4 = [(THWWebRep *)self info];
-    v5 = [v4 autoplayConfig];
-    v6 = [v5 enabled];
+    info2 = [(THWWebRep *)self info];
+    autoplayConfig = [info2 autoplayConfig];
+    enabled = [autoplayConfig enabled];
 
-    if (!v6)
+    if (!enabled)
     {
       v7 = 0;
       goto LABEL_6;
@@ -1830,13 +1830,13 @@ LABEL_6:
   if ([(THWWebRep *)self ownsWebView])
   {
     [(THWWebRep *)self setDeferExposeWebView:0];
-    v3 = [(THWWebRep *)self webView];
+    webView = [(THWWebRep *)self webView];
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_1AE460;
     v4[3] = &unk_45AD60;
     v4[4] = self;
-    [v3 showAnimated:1 duration:v4 completion:0.150000006];
+    [webView showAnimated:1 duration:v4 completion:0.150000006];
   }
 
   else
@@ -1856,15 +1856,15 @@ LABEL_6:
   _os_activity_initiate(&dword_0, "Play", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)buttonControlWasPressed:(id)a3
+- (void)buttonControlWasPressed:(id)pressed
 {
-  v4 = [(THWWebRep *)self pressableHandler];
-  v5 = [v4 widgetInteractionDisabledOnPage];
+  pressableHandler = [(THWWebRep *)self pressableHandler];
+  widgetInteractionDisabledOnPage = [pressableHandler widgetInteractionDisabledOnPage];
 
-  if (v5)
+  if (widgetInteractionDisabledOnPage)
   {
-    v6 = [(THWWebRep *)self pressableHandler];
-    [v6 spoofGesture];
+    pressableHandler2 = [(THWWebRep *)self pressableHandler];
+    [pressableHandler2 spoofGesture];
   }
 
   else
@@ -1874,40 +1874,40 @@ LABEL_6:
   }
 }
 
-- (void)buttonControl:(id)a3 didUpdateLayer:(id)a4
+- (void)buttonControl:(id)control didUpdateLayer:(id)layer
 {
-  v5 = a4;
-  v6 = a3;
-  [v5 setContentsGravity:kCAGravityResizeAspectFill];
-  v7 = [v6 canvas];
+  layerCopy = layer;
+  controlCopy = control;
+  [layerCopy setContentsGravity:kCAGravityResizeAspectFill];
+  canvas = [controlCopy canvas];
 
-  [v7 viewScale];
+  [canvas viewScale];
   TSDMultiplySizeScalar();
 
-  [v5 bounds];
+  [layerCopy bounds];
   TSDShrinkSizeToFitInSize();
   v9 = v8;
   v11 = v10;
-  [v5 bounds];
+  [layerCopy bounds];
   v14 = THScaleNeededToFitSizeInSize(v12, v13, v9, v11);
   CATransform3DMakeScale(&v16, v14, v14, 1.0);
   v15 = v16;
-  [v5 setTransform:&v15];
+  [layerCopy setTransform:&v15];
 }
 
-- (BOOL)p_pointIsInRedZone:(CGPoint)a3 onView:(id)a4
+- (BOOL)p_pointIsInRedZone:(CGPoint)zone onView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = zone.y;
+  x = zone.x;
+  viewCopy = view;
   if ([(THWWebRep *)self isExpanded])
   {
-    v8 = [(THWWebRep *)self interactiveCanvasController];
-    v9 = [v8 delegate];
+    interactiveCanvasController = [(THWWebRep *)self interactiveCanvasController];
+    delegate = [interactiveCanvasController delegate];
     v10 = TSUProtocolCast();
 
-    v11 = [v10 view];
-    [v11 bounds];
+    view = [v10 view];
+    [view bounds];
     v13 = v12;
     v15 = v14;
     width = v16;
@@ -1916,9 +1916,9 @@ LABEL_6:
     expandedRepController = self->_expandedRepController;
     if (expandedRepController)
     {
-      v21 = [(THWExpandedRepController *)expandedRepController expandedRepControllerHasRoomForPanels];
+      expandedRepControllerHasRoomForPanels = [(THWExpandedRepController *)expandedRepController expandedRepControllerHasRoomForPanels];
       v22 = 75.0;
-      if (!v21)
+      if (!expandedRepControllerHasRoomForPanels)
       {
         v22 = 0.0;
       }
@@ -1929,8 +1929,8 @@ LABEL_6:
       v22 = 75.0;
     }
 
-    v30 = [v10 view];
-    [v7 convertPoint:v30 toView:{x, y}];
+    view2 = [v10 view];
+    [viewCopy convertPoint:view2 toView:{x, y}];
     x = v31;
     v23 = v32;
 
@@ -1939,8 +1939,8 @@ LABEL_6:
 
   v23 = y;
   objc_opt_class();
-  v24 = [(THWWebRep *)self interactiveCanvasController];
-  v25 = [v24 delegate];
+  interactiveCanvasController2 = [(THWWebRep *)self interactiveCanvasController];
+  delegate2 = [interactiveCanvasController2 delegate];
   v10 = TSUDynamicCast();
 
   if (!v10)
@@ -1994,8 +1994,8 @@ LABEL_12:
   }
 
   objc_opt_class();
-  v4 = [(THWWebRep *)self interactiveCanvasController];
-  v5 = [v4 delegate];
+  interactiveCanvasController = [(THWWebRep *)self interactiveCanvasController];
+  delegate = [interactiveCanvasController delegate];
   v6 = TSUDynamicCast();
 
   if (v6)
@@ -2003,8 +2003,8 @@ LABEL_12:
     [v6 paginatedPageSize];
     v8 = v7;
     v10 = v9;
-    v11 = [(THWWebRep *)self layout];
-    [v11 stageFrame];
+    layout = [(THWWebRep *)self layout];
+    [layout stageFrame];
     v13 = v12;
     v15 = v14;
 
@@ -2022,20 +2022,20 @@ LABEL_12:
 - (id)p_cachedLoadExternalContentApproval
 {
   v3 = +[BEDocumentExternalLoadApprovalCache sharedInstance];
-  v4 = [(THWWebRep *)self info];
-  v5 = [v4 bookID];
-  v6 = [v3 cachedApprovalForBookID:v5];
+  info = [(THWWebRep *)self info];
+  bookID = [info bookID];
+  v6 = [v3 cachedApprovalForBookID:bookID];
 
   return v6;
 }
 
-- (void)p_cacheLoadExternalContentApproval:(BOOL)a3
+- (void)p_cacheLoadExternalContentApproval:(BOOL)approval
 {
-  v3 = a3;
+  approvalCopy = approval;
   v7 = +[BEDocumentExternalLoadApprovalCache sharedInstance];
-  v5 = [(THWWebRep *)self info];
-  v6 = [v5 bookID];
-  [v7 cachedApproval:v3 forBookID:v6];
+  info = [(THWWebRep *)self info];
+  bookID = [info bookID];
+  [v7 cachedApproval:approvalCopy forBookID:bookID];
 }
 
 - (CGRect)deferredStageViewFrame

@@ -1,5 +1,5 @@
 @interface RUIWebContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
 - (float)_accessibilityActivationDelay;
@@ -10,14 +10,14 @@
 
 @implementation RUIWebContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"RUIWebContainerView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RUIWebContainerView" hasInstanceMethod:@"webView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RUITableViewRow" hasInstanceMethod:@"linkedPage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RUITableViewRow" hasInstanceMethod:@"tableCell" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RemoteUITableViewCell" hasInstanceMethod:@"remoteUIAccessoryType" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"RUIWebContainerView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RUIWebContainerView" hasInstanceMethod:@"webView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RUITableViewRow" hasInstanceMethod:@"linkedPage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RUITableViewRow" hasInstanceMethod:@"tableCell" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RemoteUITableViewCell" hasInstanceMethod:@"remoteUIAccessoryType" withFullSignature:{"q", 0}];
 }
 
 - (BOOL)isAccessibilityElement
@@ -26,26 +26,26 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 attributes];
-    v5 = [v4 objectForKey:@"class"];
-    v6 = [v5 isEqualToString:@"htmlLink"];
+    attributes = [v3 attributes];
+    v5 = [attributes objectForKey:@"class"];
+    isAccessibilityElement = [v5 isEqualToString:@"htmlLink"];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = RUIWebContainerViewAccessibility;
-    v6 = [(RUIWebContainerViewAccessibility *)&v8 isAccessibilityElement];
+    isAccessibilityElement = [(RUIWebContainerViewAccessibility *)&v8 isAccessibilityElement];
   }
 
-  return v6;
+  return isAccessibilityElement;
 }
 
 - (id)_axSubviewText
 {
   v2 = [(RUIWebContainerViewAccessibility *)self safeUIViewForKey:@"webView"];
-  v3 = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
-  v4 = [v2 _accessibilityLeafDescendantsWithOptions:v3];
+  defaultVoiceOverOptions = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
+  v4 = [v2 _accessibilityLeafDescendantsWithOptions:defaultVoiceOverOptions];
   v5 = MEMORY[0x29C2EAA00]();
 
   return v5;
@@ -55,7 +55,7 @@
 {
   v3 = [(RUIWebContainerViewAccessibility *)self safeValueForKey:@"delegate"];
   v4 = [(RUIWebContainerViewAccessibility *)self safeValueForKeyPath:@"delegate.tableCell.remoteUIAccessoryType"];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -70,7 +70,7 @@
     goto LABEL_6;
   }
 
-  if (v5 == 1 && (-[RUIWebContainerViewAccessibility accessibilityContainer](self, "accessibilityContainer"), v7 = objc_claimAutoreleasedReturnValue(), [v7 _accessibilityFindSubviewDescendant:&__block_literal_global_0], v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
+  if (intValue == 1 && (-[RUIWebContainerViewAccessibility accessibilityContainer](self, "accessibilityContainer"), v7 = objc_claimAutoreleasedReturnValue(), [v7 _accessibilityFindSubviewDescendant:&__block_literal_global_0], v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
   {
     [v8 accessibilityActivationPoint];
     v10 = v9;
@@ -107,17 +107,17 @@ uint64_t __64__RUIWebContainerViewAccessibility_accessibilityActivationPoint__bl
 {
   if ([(RUIWebContainerViewAccessibility *)self isAccessibilityElement])
   {
-    v3 = [(RUIWebContainerViewAccessibility *)self _axSubviewText];
+    _axSubviewText = [(RUIWebContainerViewAccessibility *)self _axSubviewText];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = RUIWebContainerViewAccessibility;
-    v3 = [(RUIWebContainerViewAccessibility *)&v5 accessibilityLabel];
+    _axSubviewText = [(RUIWebContainerViewAccessibility *)&v5 accessibilityLabel];
   }
 
-  return v3;
+  return _axSubviewText;
 }
 
 - (float)_accessibilityActivationDelay

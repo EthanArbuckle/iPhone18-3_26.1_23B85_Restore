@@ -1,15 +1,15 @@
 @interface CNContainerPermissions
-- (BOOL)isEqual:(id)a3;
-- (CNContainerPermissions)initWithCanCreateContacts:(BOOL)a3 canDeleteContacts:(BOOL)a4 canCreateGroups:(BOOL)a5;
-- (CNContainerPermissions)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNContainerPermissions)initWithCanCreateContacts:(BOOL)contacts canDeleteContacts:(BOOL)deleteContacts canCreateGroups:(BOOL)groups;
+- (CNContainerPermissions)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNContainerPermissions
 
-- (CNContainerPermissions)initWithCanCreateContacts:(BOOL)a3 canDeleteContacts:(BOOL)a4 canCreateGroups:(BOOL)a5
+- (CNContainerPermissions)initWithCanCreateContacts:(BOOL)contacts canDeleteContacts:(BOOL)deleteContacts canCreateGroups:(BOOL)groups
 {
   v12.receiver = self;
   v12.super_class = CNContainerPermissions;
@@ -17,42 +17,42 @@
   v9 = v8;
   if (v8)
   {
-    v8->_canCreateContacts = a3;
-    v8->_canDeleteContacts = a4;
-    v8->_canCreateGroups = a5;
+    v8->_canCreateContacts = contacts;
+    v8->_canDeleteContacts = deleteContacts;
+    v8->_canCreateGroups = groups;
     v10 = v8;
   }
 
   return v9;
 }
 
-- (CNContainerPermissions)initWithCoder:(id)a3
+- (CNContainerPermissions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CNContainerPermissions *)self init];
   if (v5)
   {
-    v5->_canCreateContacts = [v4 decodeIntegerForKey:@"canCreateContacts"] != 0;
-    v5->_canDeleteContacts = [v4 decodeIntegerForKey:@"canDeleteContacts"] != 0;
-    v5->_canCreateGroups = [v4 decodeIntegerForKey:@"canCreateGroups"] != 0;
+    v5->_canCreateContacts = [coderCopy decodeIntegerForKey:@"canCreateContacts"] != 0;
+    v5->_canDeleteContacts = [coderCopy decodeIntegerForKey:@"canDeleteContacts"] != 0;
+    v5->_canCreateGroups = [coderCopy decodeIntegerForKey:@"canCreateGroups"] != 0;
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   canCreateContacts = self->_canCreateContacts;
-  v5 = a3;
-  [v5 encodeBool:canCreateContacts forKey:@"canCreateContacts"];
-  [v5 encodeBool:self->_canDeleteContacts forKey:@"canDeleteContacts"];
-  [v5 encodeBool:self->_canCreateGroups forKey:@"canCreateGroups"];
+  coderCopy = coder;
+  [coderCopy encodeBool:canCreateContacts forKey:@"canCreateContacts"];
+  [coderCopy encodeBool:self->_canDeleteContacts forKey:@"canDeleteContacts"];
+  [coderCopy encodeBool:self->_canCreateGroups forKey:@"canCreateGroups"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v6 = objc_opt_class();
   v16[0] = MEMORY[0x1E69E9820];
@@ -60,7 +60,7 @@
   v16[2] = __34__CNContainerPermissions_isEqual___block_invoke;
   v16[3] = &unk_1E7412228;
   v16[4] = self;
-  v17 = v4;
+  v17 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __34__CNContainerPermissions_isEqual___block_invoke_2;
@@ -164,9 +164,9 @@ uint64_t __30__CNContainerPermissions_hash__block_invoke_3(uint64_t a1)
   v4 = [v3 appendName:@"canCreateContacts" BOOLValue:self->_canCreateContacts];
   v5 = [v3 appendName:@"canDeleteContacts" BOOLValue:self->_canDeleteContacts];
   v6 = [v3 appendName:@"canCreateGroups" BOOLValue:self->_canCreateGroups];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

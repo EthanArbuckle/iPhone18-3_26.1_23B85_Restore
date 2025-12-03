@@ -1,46 +1,46 @@
 @interface CUIPSDGradientEvaluator
 + (void)initialize;
-- (CUIPSDGradientEvaluator)initWithCoder:(id)a3;
-- (CUIPSDGradientEvaluator)initWithColorStops:(id)a3 colorMidpoints:(id)a4 opacityStops:(id)a5 opacityMidpoints:(id)a6 smoothingCoefficient:(double)a7 fillColor:(_psdGradientColor)a8 dither:(BOOL)a9;
-- (_psdGradientColor)_smoothedGradientColorAtLocation:(double)a3;
+- (CUIPSDGradientEvaluator)initWithCoder:(id)coder;
+- (CUIPSDGradientEvaluator)initWithColorStops:(id)stops colorMidpoints:(id)midpoints opacityStops:(id)opacityStops opacityMidpoints:(id)opacityMidpoints smoothingCoefficient:(double)coefficient fillColor:(_psdGradientColor)color dither:(BOOL)dither;
+- (_psdGradientColor)_smoothedGradientColorAtLocation:(double)location;
 - (_psdGradientColor)fillColor;
-- (double)_smoothedInterpolationOfLocation:(double)a3 betweenLower:(double)a4 upper:(double)a5 scaledMidpoint:(double)a6;
-- (id)_cleanedUpMidpointLocationsFromLocations:(id)a3;
+- (double)_smoothedInterpolationOfLocation:(double)location betweenLower:(double)lower upper:(double)upper scaledMidpoint:(double)midpoint;
+- (id)_cleanedUpMidpointLocationsFromLocations:(id)locations;
 - (id)colorMidpointLocations;
 - (id)colorStops;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)opacityMidpointLocations;
 - (id)opacityStops;
-- (void)_createOrderedStops:(id *)a3 midpoints:(id *)a4 fromStops:(id)a5 midpoints:(id)a6 edgePixel:(int64_t *)a7;
-- (void)customizeForDistance:(double)a3;
+- (void)_createOrderedStops:(id *)stops midpoints:(id *)midpoints fromStops:(id)fromStops midpoints:(id)a6 edgePixel:(int64_t *)pixel;
+- (void)customizeForDistance:(double)distance;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setColorStops:(id)a3 midpoints:(id)a4;
-- (void)setFillCoefficient:(double)a3;
-- (void)setOpacityStops:(id)a3 midpoints:(id)a4;
-- (void)setSmoothingCoefficient:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setColorStops:(id)stops midpoints:(id)midpoints;
+- (void)setFillCoefficient:(double)coefficient;
+- (void)setOpacityStops:(id)stops midpoints:(id)midpoints;
+- (void)setSmoothingCoefficient:(double)coefficient;
 @end
 
 @implementation CUIPSDGradientEvaluator
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:2];
+    [self setVersion:2];
   }
 }
 
-- (id)_cleanedUpMidpointLocationsFromLocations:(id)a3
+- (id)_cleanedUpMidpointLocationsFromLocations:(id)locations
 {
   v4 = +[NSMutableArray array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  v5 = [locations countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v5)
   {
     v6 = v5;
@@ -51,7 +51,7 @@
       {
         if (*v25 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(locations);
         }
 
         [*(*(&v24 + 1) + 8 * i) doubleValue];
@@ -63,19 +63,19 @@
         [v4 addObject:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v9)}];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v6 = [locations countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [v4 reverseObjectEnumerator];
+  reverseObjectEnumerator = [v4 reverseObjectEnumerator];
   v12 = [v4 count];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v13 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v13)
   {
     v14 = v13;
@@ -88,7 +88,7 @@
       {
         if (*v21 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         [*(*(&v20 + 1) + 8 * v16) doubleValue];
@@ -102,7 +102,7 @@
       }
 
       while (v14 != v16);
-      v14 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v28 count:16];
       v12 = v17;
       if (v14)
       {
@@ -121,16 +121,16 @@
   return [v4 subarrayWithRange:{0, v17}];
 }
 
-- (void)_createOrderedStops:(id *)a3 midpoints:(id *)a4 fromStops:(id)a5 midpoints:(id)a6 edgePixel:(int64_t *)a7
+- (void)_createOrderedStops:(id *)stops midpoints:(id *)midpoints fromStops:(id)fromStops midpoints:(id)a6 edgePixel:(int64_t *)pixel
 {
   v8 = [a6 count];
-  v74 = [a5 count];
+  v74 = [fromStops count];
   v9 = [[NSMutableArray alloc] initWithCapacity:v74];
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v10 = [a5 countByEnumeratingWithState:&v80 objects:v85 count:16];
+  v10 = [fromStops countByEnumeratingWithState:&v80 objects:v85 count:16];
   if (v10)
   {
     v11 = v10;
@@ -142,7 +142,7 @@
       {
         if (*v81 != v13)
         {
-          objc_enumerationMutation(a5);
+          objc_enumerationMutation(fromStops);
         }
 
         v15 = *(*(&v80 + 1) + 8 * i);
@@ -161,7 +161,7 @@
         [v9 addObject:v18];
       }
 
-      v11 = [a5 countByEnumeratingWithState:&v80 objects:v85 count:16];
+      v11 = [fromStops countByEnumeratingWithState:&v80 objects:v85 count:16];
     }
 
     while (v11);
@@ -289,19 +289,19 @@
       v57 = v61;
     }
 
-    v54 = a4;
-    v53 = a7;
-    v56 = self;
-    v55 = a3;
+    midpointsCopy2 = midpoints;
+    pixelCopy2 = pixel;
+    selfCopy2 = self;
+    stopsCopy2 = stops;
   }
 
   else
   {
     v52 = [v45 objectAtIndex:1];
-    v54 = a4;
-    v53 = a7;
-    v56 = self;
-    v55 = a3;
+    midpointsCopy2 = midpoints;
+    pixelCopy2 = pixel;
+    selfCopy2 = self;
+    stopsCopy2 = stops;
     if (([objc_msgSend(v45 "firstObject")] & 1) != 0 || objc_msgSend(v52, "isDoubleStop") && (objc_msgSend(v52, "location"), v63 = v62, objc_msgSend(objc_msgSend(v45, "objectAtIndex:", 0), "location"), v63 - v64 < 0.02))
     {
       v57 = 1;
@@ -321,31 +321,31 @@
     }
   }
 
-  v69 = [(CUIPSDGradientEvaluator *)v56 _cleanedUpMidpointLocationsFromLocations:v46];
+  v69 = [(CUIPSDGradientEvaluator *)selfCopy2 _cleanedUpMidpointLocationsFromLocations:v46];
 
-  *v53 = v57;
-  *v55 = v45;
-  *v54 = v69;
+  *pixelCopy2 = v57;
+  *stopsCopy2 = v45;
+  *midpointsCopy2 = v69;
 }
 
-- (CUIPSDGradientEvaluator)initWithColorStops:(id)a3 colorMidpoints:(id)a4 opacityStops:(id)a5 opacityMidpoints:(id)a6 smoothingCoefficient:(double)a7 fillColor:(_psdGradientColor)a8 dither:(BOOL)a9
+- (CUIPSDGradientEvaluator)initWithColorStops:(id)stops colorMidpoints:(id)midpoints opacityStops:(id)opacityStops opacityMidpoints:(id)opacityMidpoints smoothingCoefficient:(double)coefficient fillColor:(_psdGradientColor)color dither:(BOOL)dither
 {
-  v9 = a9;
-  alpha = a8.alpha;
-  blue = a8.blue;
-  green = a8.green;
-  red = a8.red;
+  ditherCopy = dither;
+  alpha = color.alpha;
+  blue = color.blue;
+  green = color.green;
+  red = color.red;
   v33.receiver = self;
   v33.super_class = CUIPSDGradientEvaluator;
   v16 = [(CUIPSDGradientEvaluator *)&v33 init];
   if (v16)
   {
-    if (![a3 count])
+    if (![stops count])
     {
       [CUIPSDGradientEvaluator initWithColorStops:a2 colorMidpoints:v16 opacityStops:? opacityMidpoints:? smoothingCoefficient:? fillColor:? dither:?];
     }
 
-    v17.f64[0] = a7;
+    v17.f64[0] = coefficient;
     v17.f64[1] = red;
     v18 = vcltzq_f64(v17);
     v19 = 0.0;
@@ -362,10 +362,10 @@
     *(v16 + 40) = vminnmq_f64(vbicq_s8(v17, v18), _Q1);
     *(v16 + 56) = vminnmq_f64(vbicq_s8(v25, vcltzq_f64(v25)), _Q1);
     v32 = 0;
-    [v16 _createOrderedStops:v16 + 8 midpoints:v16 + 16 fromStops:a3 midpoints:a4 edgePixel:&v32];
+    [v16 _createOrderedStops:v16 + 8 midpoints:v16 + 16 fromStops:stops midpoints:midpoints edgePixel:&v32];
     v16[88] = v16[88] & 0xFC | v32 & 3;
-    [v16 _createOrderedStops:v16 + 24 midpoints:v16 + 32 fromStops:a5 midpoints:a6 edgePixel:&v32];
-    if (v9)
+    [v16 _createOrderedStops:v16 + 24 midpoints:v16 + 32 fromStops:opacityStops midpoints:opacityMidpoints edgePixel:&v32];
+    if (ditherCopy)
     {
       v26 = 16;
     }
@@ -381,23 +381,23 @@
   return v16;
 }
 
-- (CUIPSDGradientEvaluator)initWithCoder:(id)a3
+- (CUIPSDGradientEvaluator)initWithCoder:(id)coder
 {
   v22.receiver = self;
   v22.super_class = CUIPSDGradientEvaluator;
   v4 = [(CUIPSDGradientEvaluator *)&v22 init];
   if (v4)
   {
-    if ([a3 allowsKeyedCoding])
+    if ([coder allowsKeyedCoding])
     {
-      v5 = [a3 decodeIntegerForKey:@"CUIPSDGradientEvaluatorVersion"];
-      v4->colorStops = [a3 decodeObjectForKey:@"CUIPSDGradientEvaluatorColorStops"];
-      v4->colorMidpointLocations = [a3 decodeObjectForKey:@"CUIPSDGradientEvaluatorColorMidpointLocations"];
-      v4->opacityStops = [a3 decodeObjectForKey:@"CUIPSDGradientEvaluatorOpacityStops"];
-      v4->opacityMidpointLocations = [a3 decodeObjectForKey:@"CUIPSDGradientEvaluatorOpacityMidpointLocations"];
-      [a3 decodeDoubleForKey:@"CUIPSDGradientEvaluatorSmoothingCoefficient"];
+      v5 = [coder decodeIntegerForKey:@"CUIPSDGradientEvaluatorVersion"];
+      v4->colorStops = [coder decodeObjectForKey:@"CUIPSDGradientEvaluatorColorStops"];
+      v4->colorMidpointLocations = [coder decodeObjectForKey:@"CUIPSDGradientEvaluatorColorMidpointLocations"];
+      v4->opacityStops = [coder decodeObjectForKey:@"CUIPSDGradientEvaluatorOpacityStops"];
+      v4->opacityMidpointLocations = [coder decodeObjectForKey:@"CUIPSDGradientEvaluatorOpacityMidpointLocations"];
+      [coder decodeDoubleForKey:@"CUIPSDGradientEvaluatorSmoothingCoefficient"];
       v4->smoothingCoefficient = v6;
-      [a3 decodeDoubleForKey:@"CUIPSDGradientEvaluatorFillCoefficient"];
+      [coder decodeDoubleForKey:@"CUIPSDGradientEvaluatorFillCoefficient"];
       v4->fillColor.alpha = v7;
       if (v5 <= 1)
       {
@@ -409,25 +409,25 @@
 
       else
       {
-        [a3 decodeDoubleForKey:@"CUIPSDGradientEvaluatorFillColorRed"];
+        [coder decodeDoubleForKey:@"CUIPSDGradientEvaluatorFillColorRed"];
         v4->fillColor.red = v8;
-        [a3 decodeDoubleForKey:@"CUIPSDGradientEvaluatorFillColorGreen"];
+        [coder decodeDoubleForKey:@"CUIPSDGradientEvaluatorFillColorGreen"];
         v4->fillColor.green = v9;
-        [a3 decodeDoubleForKey:@"CUIPSDGradientEvaluatorFillColorBlue"];
+        [coder decodeDoubleForKey:@"CUIPSDGradientEvaluatorFillColorBlue"];
       }
 
       v4->fillColor.blue = v10;
-      LOBYTE(v4[1].super.isa) = v4[1].super.isa & 0xFC | [a3 decodeIntegerForKey:@"CUIPSDGradientEvaluatorColorEdgePixel"] & 3;
-      LOBYTE(v4[1].super.isa) = (4 * ([a3 decodeIntegerForKey:@"CUIPSDGradientEvaluatorOpacityEdgePixel"] & 3)) | v4[1].super.isa & 0xF3;
+      LOBYTE(v4[1].super.isa) = v4[1].super.isa & 0xFC | [coder decodeIntegerForKey:@"CUIPSDGradientEvaluatorColorEdgePixel"] & 3;
+      LOBYTE(v4[1].super.isa) = (4 * ([coder decodeIntegerForKey:@"CUIPSDGradientEvaluatorOpacityEdgePixel"] & 3)) | v4[1].super.isa & 0xF3;
     }
 
     else
     {
-      v11 = [a3 versionForClassName:@"CUIPSDGradientEvaluator"];
+      v11 = [coder versionForClassName:@"CUIPSDGradientEvaluator"];
       v21 = 0.0;
       v20 = 0;
       v19 = 0;
-      [a3 decodeValuesOfObjCTypes:{"@@@@ddii", &v4->colorStops, &v4->colorMidpointLocations, &v4->opacityStops, &v4->opacityMidpointLocations, &v21, &v4->fillColor.alpha, &v20, &v19}];
+      [coder decodeValuesOfObjCTypes:{"@@@@ddii", &v4->colorStops, &v4->colorMidpointLocations, &v4->opacityStops, &v4->opacityMidpointLocations, &v21, &v4->fillColor.alpha, &v20, &v19}];
       v4->smoothingCoefficient = v21;
       LOBYTE(v4[1].super.isa) = v4[1].super.isa & 0xF0 | v20 & 3 | (4 * (v19 & 3));
       if (v11 < 2)
@@ -440,7 +440,7 @@
 
       else
       {
-        [a3 decodeValuesOfObjCTypes:{"ddd", &v4->fillColor, &v4->fillColor.green, &v4->fillColor.blue}];
+        [coder decodeValuesOfObjCTypes:{"ddd", &v4->fillColor, &v4->fillColor.green, &v4->fillColor.blue}];
       }
     }
   }
@@ -448,25 +448,25 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeInteger:+[CUIPSDGradientEvaluator version](CUIPSDGradientEvaluator forKey:{"version"), @"CUIPSDGradientEvaluatorVersion"}];
-    [a3 encodeObject:self->colorStops forKey:@"CUIPSDGradientEvaluatorColorStops"];
-    [a3 encodeObject:self->colorMidpointLocations forKey:@"CUIPSDGradientEvaluatorColorMidpointLocations"];
-    [a3 encodeObject:self->opacityStops forKey:@"CUIPSDGradientEvaluatorOpacityStops"];
-    [a3 encodeObject:self->opacityMidpointLocations forKey:@"CUIPSDGradientEvaluatorOpacityMidpointLocations"];
-    [a3 encodeDouble:@"CUIPSDGradientEvaluatorSmoothingCoefficient" forKey:self->smoothingCoefficient];
-    [a3 encodeDouble:@"CUIPSDGradientEvaluatorFillCoefficient" forKey:self->fillColor.alpha];
-    [a3 encodeDouble:@"CUIPSDGradientEvaluatorFillColorRed" forKey:self->fillColor.red];
-    [a3 encodeDouble:@"CUIPSDGradientEvaluatorFillColorGreen" forKey:self->fillColor.green];
-    [a3 encodeDouble:@"CUIPSDGradientEvaluatorFillColorBlue" forKey:self->fillColor.blue];
+    [coder encodeInteger:+[CUIPSDGradientEvaluator version](CUIPSDGradientEvaluator forKey:{"version"), @"CUIPSDGradientEvaluatorVersion"}];
+    [coder encodeObject:self->colorStops forKey:@"CUIPSDGradientEvaluatorColorStops"];
+    [coder encodeObject:self->colorMidpointLocations forKey:@"CUIPSDGradientEvaluatorColorMidpointLocations"];
+    [coder encodeObject:self->opacityStops forKey:@"CUIPSDGradientEvaluatorOpacityStops"];
+    [coder encodeObject:self->opacityMidpointLocations forKey:@"CUIPSDGradientEvaluatorOpacityMidpointLocations"];
+    [coder encodeDouble:@"CUIPSDGradientEvaluatorSmoothingCoefficient" forKey:self->smoothingCoefficient];
+    [coder encodeDouble:@"CUIPSDGradientEvaluatorFillCoefficient" forKey:self->fillColor.alpha];
+    [coder encodeDouble:@"CUIPSDGradientEvaluatorFillColorRed" forKey:self->fillColor.red];
+    [coder encodeDouble:@"CUIPSDGradientEvaluatorFillColorGreen" forKey:self->fillColor.green];
+    [coder encodeDouble:@"CUIPSDGradientEvaluatorFillColorBlue" forKey:self->fillColor.blue];
     isa_low = LOBYTE(self[1].super.isa);
     v6 = (isa_low >> 2) & 3;
-    [a3 encodeInteger:isa_low & 3 forKey:@"CUIPSDGradientEvaluatorColorEdgePixel"];
+    [coder encodeInteger:isa_low & 3 forKey:@"CUIPSDGradientEvaluatorColorEdgePixel"];
 
-    [a3 encodeInteger:v6 forKey:@"CUIPSDGradientEvaluatorOpacityEdgePixel"];
+    [coder encodeInteger:v6 forKey:@"CUIPSDGradientEvaluatorOpacityEdgePixel"];
   }
 
   else
@@ -475,13 +475,13 @@
     smoothingCoefficient = self->smoothingCoefficient;
     v8 = (v7 >> 2) & 3;
     v9 = v7 & 3;
-    [a3 encodeValuesOfObjCTypes:{"@@@@ddiiddd", &self->colorStops, &self->colorMidpointLocations, &self->opacityStops, &self->opacityMidpointLocations, &smoothingCoefficient, &self->fillColor.alpha, &v9, &v8, &self->fillColor, &self->fillColor.green, &self->fillColor.blue}];
+    [coder encodeValuesOfObjCTypes:{"@@@@ddiiddd", &self->colorStops, &self->colorMidpointLocations, &self->opacityStops, &self->opacityMidpointLocations, &smoothingCoefficient, &self->fillColor.alpha, &v9, &v8, &self->fillColor, &self->fillColor.green, &self->fillColor.blue}];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = [[NSArray allocWithZone:?]copyItems:"initWithArray:copyItems:", self->colorStops, 1];
   v5[2] = [[NSArray allocWithZone:?]copyItems:"initWithArray:copyItems:", self->colorMidpointLocations, 1];
   v5[3] = [[NSArray allocWithZone:?]copyItems:"initWithArray:copyItems:", self->opacityStops, 1];
@@ -501,22 +501,22 @@
   [(CUIPSDGradientEvaluator *)&v3 dealloc];
 }
 
-- (double)_smoothedInterpolationOfLocation:(double)a3 betweenLower:(double)a4 upper:(double)a5 scaledMidpoint:(double)a6
+- (double)_smoothedInterpolationOfLocation:(double)location betweenLower:(double)lower upper:(double)upper scaledMidpoint:(double)midpoint
 {
-  if (a3 <= a6)
+  if (location <= midpoint)
   {
-    v6 = a3 / (a6 + a6);
+    v6 = location / (midpoint + midpoint);
   }
 
   else
   {
-    v6 = 1.0 - (1.0 - a3) / (1.0 - a6 + 1.0 - a6);
+    v6 = 1.0 - (1.0 - location) / (1.0 - midpoint + 1.0 - midpoint);
   }
 
-  return a4 + (self->smoothingCoefficient * (v6 * (v6 * 1.5) + v6 * 0.5 + -(v6 * v6) * v6) + (1.0 - self->smoothingCoefficient) * v6) * (a5 - a4);
+  return lower + (self->smoothingCoefficient * (v6 * (v6 * 1.5) + v6 * 0.5 + -(v6 * v6) * v6) + (1.0 - self->smoothingCoefficient) * v6) * (upper - lower);
 }
 
-- (_psdGradientColor)_smoothedGradientColorAtLocation:(double)a3
+- (_psdGradientColor)_smoothedGradientColorAtLocation:(double)location
 {
   v104 = 0u;
   v105 = 0u;
@@ -545,7 +545,7 @@ LABEL_3:
 
       v7 = *(*(&v104 + 1) + 8 * v10);
       [v7 colorLocation];
-      if (v15 >= a3)
+      if (v15 >= location)
       {
         break;
       }
@@ -595,13 +595,13 @@ LABEL_16:
   [v7 colorLocation];
   v19 = v18;
   v20 = [(NSArray *)self->colorStops count];
-  v21 = [v14 isDoubleStop];
-  v22 = [v7 isDoubleStop];
-  v24 = v22;
-  v25 = a3 - v17;
-  if (v21)
+  isDoubleStop = [v14 isDoubleStop];
+  isDoubleStop2 = [v7 isDoubleStop];
+  v24 = isDoubleStop2;
+  v25 = location - v17;
+  if (isDoubleStop)
   {
-    v26 = v17 > a3 && v13 == 0;
+    v26 = v17 > location && v13 == 0;
     if (v26 || (v23 = 0.0101, v25 < 0.0101))
     {
       [v14 leadInColor];
@@ -614,15 +614,15 @@ LABEL_38:
       v99 = v46;
       v97 = v44;
       v33 = v43;
-      v34 = a3;
+      locationCopy = location;
       goto LABEL_39;
     }
   }
 
-  if (v22)
+  if (isDoubleStop2)
   {
-    v27 = v19 < a3 && v13 == v20 - 1;
-    if (v27 || (v23 = v19 - a3, v19 - a3 < 0.0101))
+    v27 = v19 < location && v13 == v20 - 1;
+    if (v27 || (v23 = v19 - location, v19 - location < 0.0101))
     {
       [v7 leadOutColor];
       goto LABEL_38;
@@ -630,7 +630,7 @@ LABEL_38:
   }
 
   v28 = v19 - v17;
-  if (v21)
+  if (isDoubleStop)
   {
     [v14 leadOutColor];
   }
@@ -644,7 +644,7 @@ LABEL_38:
   v97 = v30;
   v98 = v31;
   v99 = v32;
-  v34 = v25 / v28;
+  locationCopy = v25 / v28;
   if (v24)
   {
     [v7 leadInColor];
@@ -660,21 +660,21 @@ LABEL_38:
   v41 = v37;
   v42 = v38;
 LABEL_39:
-  v47 = [(CUIPSDGradientEvaluator *)self colorMidpointLocations];
+  colorMidpointLocations = [(CUIPSDGradientEvaluator *)self colorMidpointLocations];
   v48 = 0.5;
-  if ([v47 count] > v13)
+  if ([colorMidpointLocations count] > v13)
   {
-    [objc_msgSend(v47 objectAtIndex:{v13), "doubleValue"}];
+    [objc_msgSend(colorMidpointLocations objectAtIndex:{v13), "doubleValue"}];
     v48 = v49;
   }
 
-  [(CUIPSDGradientEvaluator *)self _smoothedInterpolationOfLocation:v34 betweenLower:v33 upper:v39 scaledMidpoint:v48];
+  [(CUIPSDGradientEvaluator *)self _smoothedInterpolationOfLocation:locationCopy betweenLower:v33 upper:v39 scaledMidpoint:v48];
   v51 = v50;
-  [(CUIPSDGradientEvaluator *)self _smoothedInterpolationOfLocation:v34 betweenLower:v97 upper:v40 scaledMidpoint:v48];
+  [(CUIPSDGradientEvaluator *)self _smoothedInterpolationOfLocation:locationCopy betweenLower:v97 upper:v40 scaledMidpoint:v48];
   v53 = v52;
-  [(CUIPSDGradientEvaluator *)self _smoothedInterpolationOfLocation:v34 betweenLower:v98 upper:v41 scaledMidpoint:v48];
+  [(CUIPSDGradientEvaluator *)self _smoothedInterpolationOfLocation:locationCopy betweenLower:v98 upper:v41 scaledMidpoint:v48];
   v55 = v54;
-  [(CUIPSDGradientEvaluator *)self _smoothedInterpolationOfLocation:v34 betweenLower:v99 upper:v42 scaledMidpoint:v48];
+  [(CUIPSDGradientEvaluator *)self _smoothedInterpolationOfLocation:locationCopy betweenLower:v99 upper:v42 scaledMidpoint:v48];
   v57 = v56;
   v100 = 0u;
   v101 = 0u;
@@ -703,7 +703,7 @@ LABEL_43:
 
       v60 = *(*(&v100 + 1) + 8 * v63);
       [v60 opacityLocation];
-      if (v68 >= a3)
+      if (v68 >= location)
       {
         break;
       }
@@ -753,13 +753,13 @@ LABEL_56:
   [v60 opacityLocation];
   v72 = v71;
   v73 = [(NSArray *)self->opacityStops count];
-  v74 = [v67 isDoubleStop];
-  v75 = [v60 isDoubleStop];
-  v77 = v75;
-  v78 = a3 - v70;
-  if (v74)
+  isDoubleStop3 = [v67 isDoubleStop];
+  isDoubleStop4 = [v60 isDoubleStop];
+  v77 = isDoubleStop4;
+  v78 = location - v70;
+  if (isDoubleStop3)
   {
-    v79 = v70 > a3 && v66 == 0;
+    v79 = v70 > location && v66 == 0;
     if (v79 || (v76 = 0.0101, v78 < 0.0101))
     {
       [v67 leadInOpacity];
@@ -769,10 +769,10 @@ LABEL_77:
     }
   }
 
-  if (v75)
+  if (isDoubleStop4)
   {
-    v80 = v72 < a3 && v66 == v73 - 1;
-    if (v80 || (v76 = v72 - a3, v72 - a3 < 0.0101))
+    v80 = v72 < location && v66 == v73 - 1;
+    if (v80 || (v76 = v72 - location, v72 - location < 0.0101))
     {
       [v60 leadOutOpacity];
       goto LABEL_77;
@@ -780,7 +780,7 @@ LABEL_77:
   }
 
   v81 = v72 - v70;
-  if (v74)
+  if (isDoubleStop3)
   {
     [v67 leadOutOpacity];
   }
@@ -791,7 +791,7 @@ LABEL_77:
   }
 
   v83 = v82;
-  a3 = v78 / v81;
+  location = v78 / v81;
   if (v77)
   {
     [v60 leadInOpacity];
@@ -804,16 +804,16 @@ LABEL_77:
 
 LABEL_78:
   v85 = v84;
-  v86 = [(CUIPSDGradientEvaluator *)self opacityMidpointLocations];
-  v87 = [v86 count];
+  opacityMidpointLocations = [(CUIPSDGradientEvaluator *)self opacityMidpointLocations];
+  v87 = [opacityMidpointLocations count];
   v88 = 0.5;
   if (v87 > v66)
   {
-    [objc_msgSend(v86 objectAtIndex:{v66), "doubleValue"}];
+    [objc_msgSend(opacityMidpointLocations objectAtIndex:{v66), "doubleValue"}];
     v88 = v89;
   }
 
-  [(CUIPSDGradientEvaluator *)self _smoothedInterpolationOfLocation:a3 betweenLower:v83 upper:v85 scaledMidpoint:v88];
+  [(CUIPSDGradientEvaluator *)self _smoothedInterpolationOfLocation:location betweenLower:v83 upper:v85 scaledMidpoint:v88];
   v91 = v57 * v90;
   v92 = self->fillColor.alpha * (1.0 - v57 * v90);
   v93 = self->fillColor.red * v92 + v51 * (v57 * v90);
@@ -882,12 +882,12 @@ LABEL_78:
   return [NSString stringWithFormat:@"%@ - color stops: %@, opacity stops: %@", [(CUIPSDGradientEvaluator *)&v3 description], self->colorStops, self->opacityStops];
 }
 
-- (void)setColorStops:(id)a3 midpoints:(id)a4
+- (void)setColorStops:(id)stops midpoints:(id)midpoints
 {
   v7 = 0;
   v8 = 0;
   v6 = 0;
-  [(CUIPSDGradientEvaluator *)self _createOrderedStops:&v8 midpoints:&v7 fromStops:a3 midpoints:a4 edgePixel:&v6];
+  [(CUIPSDGradientEvaluator *)self _createOrderedStops:&v8 midpoints:&v7 fromStops:stops midpoints:midpoints edgePixel:&v6];
   LOBYTE(self[1].super.isa) = self[1].super.isa & 0xFC | v6 & 3;
 
   v5 = v7;
@@ -895,12 +895,12 @@ LABEL_78:
   self->colorMidpointLocations = v5;
 }
 
-- (void)setOpacityStops:(id)a3 midpoints:(id)a4
+- (void)setOpacityStops:(id)stops midpoints:(id)midpoints
 {
   v7 = 0;
   v8 = 0;
   v6 = 0;
-  [(CUIPSDGradientEvaluator *)self _createOrderedStops:&v8 midpoints:&v7 fromStops:a3 midpoints:a4 edgePixel:&v6];
+  [(CUIPSDGradientEvaluator *)self _createOrderedStops:&v8 midpoints:&v7 fromStops:stops midpoints:midpoints edgePixel:&v6];
   LOBYTE(self[1].super.isa) = (4 * (v6 & 3)) | self[1].super.isa & 0xF3;
 
   v5 = v7;
@@ -908,27 +908,27 @@ LABEL_78:
   self->opacityMidpointLocations = v5;
 }
 
-- (void)setSmoothingCoefficient:(double)a3
+- (void)setSmoothingCoefficient:(double)coefficient
 {
-  if (a3 < 0.0)
+  if (coefficient < 0.0)
   {
-    a3 = 0.0;
+    coefficient = 0.0;
   }
 
-  self->smoothingCoefficient = fmin(a3, 1.0);
+  self->smoothingCoefficient = fmin(coefficient, 1.0);
 }
 
-- (void)setFillCoefficient:(double)a3
+- (void)setFillCoefficient:(double)coefficient
 {
-  if (a3 < 0.0)
+  if (coefficient < 0.0)
   {
-    a3 = 0.0;
+    coefficient = 0.0;
   }
 
-  self->fillColor.alpha = fmin(a3, 1.0);
+  self->fillColor.alpha = fmin(coefficient, 1.0);
 }
 
-- (void)customizeForDistance:(double)a3
+- (void)customizeForDistance:(double)distance
 {
   if ((self[1].super.isa & 0xF) == 0)
   {
@@ -936,7 +936,7 @@ LABEL_78:
     goto LABEL_5;
   }
 
-  if (a3 == 0.0)
+  if (distance == 0.0)
   {
     v10 = "WARNING: [CUIPSDGradientEvaluator customizeForDistance:] sent to evaluator with zero distance. The message is a no-op.";
 LABEL_5:
@@ -950,26 +950,26 @@ LABEL_5:
     isa = self[1].super.isa;
     if (isa)
     {
-      [-[NSArray objectAtIndex:](self->colorStops objectAtIndex:{1), "setLocation:", fmin(1.0 / a3, 0.15)}];
+      [-[NSArray objectAtIndex:](self->colorStops objectAtIndex:{1), "setLocation:", fmin(1.0 / distance, 0.15)}];
       isa = self[1].super.isa;
     }
 
     if ((isa & 2) != 0)
     {
-      [-[NSArray objectAtIndex:](self->colorStops objectAtIndex:{-[NSArray count](self->colorStops, "count") - 2), "setLocation:", 1.0 - fmin(1.0 / a3, 0.15)}];
+      [-[NSArray objectAtIndex:](self->colorStops objectAtIndex:{-[NSArray count](self->colorStops, "count") - 2), "setLocation:", 1.0 - fmin(1.0 / distance, 0.15)}];
       isa = self[1].super.isa;
     }
 
     if ((isa & 4) != 0)
     {
-      [-[NSArray objectAtIndex:](self->opacityStops objectAtIndex:{1), "setLocation:", fmin(1.0 / a3, 0.15)}];
+      [-[NSArray objectAtIndex:](self->opacityStops objectAtIndex:{1), "setLocation:", fmin(1.0 / distance, 0.15)}];
       isa = self[1].super.isa;
     }
 
     if ((isa & 8) != 0)
     {
       v13 = [(NSArray *)self->opacityStops objectAtIndex:[(NSArray *)self->opacityStops count]- 2];
-      v14 = 1.0 - fmin(1.0 / a3, 0.15);
+      v14 = 1.0 - fmin(1.0 / distance, 0.15);
 
       [v13 setLocation:v14];
     }

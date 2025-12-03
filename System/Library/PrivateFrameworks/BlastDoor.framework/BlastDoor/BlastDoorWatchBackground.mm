@@ -19,7 +19,7 @@
 
 - (BlastDoorImage)backgroundImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_214551F28();
 
   return v3;

@@ -1,10 +1,10 @@
 @interface TUICursorAccessoryAssertionController
 - (TUICursorAccessoryAssertionControllerSubject)subject;
-- (id)createAssertionWithType:(unint64_t)a3 accessory:(id)a4;
+- (id)createAssertionWithType:(unint64_t)type accessory:(id)accessory;
 - (id)debugDescription;
-- (void)beginTrackingAssertion:(id)a3;
+- (void)beginTrackingAssertion:(id)assertion;
 - (void)dealloc;
-- (void)endTrackingAssertion:(id)a3;
+- (void)endTrackingAssertion:(id)assertion;
 - (void)updateSubjectWithAssertionState;
 @end
 
@@ -22,9 +22,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TUICursorAccessoryAssertionController *)self assertions];
-  v7 = [v6 allObjects];
-  v8 = [v3 stringWithFormat:@"<%@:%p %@>", v5, self, v7];
+  assertions = [(TUICursorAccessoryAssertionController *)self assertions];
+  allObjects = [assertions allObjects];
+  v8 = [v3 stringWithFormat:@"<%@:%p %@>", v5, self, allObjects];
 
   return v8;
 }
@@ -44,8 +44,8 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = [(TUICursorAccessoryAssertionController *)self assertions];
-  v5 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  assertions = [(TUICursorAccessoryAssertionController *)self assertions];
+  v5 = [assertions countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (!v5)
   {
     v7 = 0;
@@ -67,64 +67,64 @@
     {
       if (*v28 != v11)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(assertions);
       }
 
       v13 = *(*(&v27 + 1) + 8 * i);
-      v14 = [v13 accessoryType];
-      if (v14 > 3)
+      accessoryType = [v13 accessoryType];
+      if (accessoryType > 3)
       {
-        if (v14 == 4)
+        if (accessoryType == 4)
         {
-          v19 = [v13 accessory];
+          accessory = [v13 accessory];
           v16 = v7;
-          v7 = v19;
+          v7 = accessory;
         }
 
         else
         {
-          if (v14 != 8)
+          if (accessoryType != 8)
           {
             continue;
           }
 
-          v17 = [v13 accessory];
+          accessory2 = [v13 accessory];
           v16 = v8;
-          v8 = v17;
+          v8 = accessory2;
         }
       }
 
-      else if (v14 == 1)
+      else if (accessoryType == 1)
       {
-        v18 = [v13 accessory];
+        accessory3 = [v13 accessory];
         v16 = v9;
-        v9 = v18;
+        v9 = accessory3;
       }
 
       else
       {
-        if (v14 != 2)
+        if (accessoryType != 2)
         {
           continue;
         }
 
-        v15 = [v13 accessory];
+        accessory4 = [v13 accessory];
         v16 = v10;
-        v10 = v15;
+        v10 = accessory4;
       }
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    v6 = [assertions countByEnumeratingWithState:&v27 objects:v31 count:16];
   }
 
   while (v6);
 LABEL_22:
 
-  v20 = [MEMORY[0x1E695DF70] array];
-  v21 = v20;
+  array = [MEMORY[0x1E695DF70] array];
+  v21 = array;
   if (v8)
   {
-    [v20 addObject:v8];
+    [array addObject:v8];
     if (!v7)
     {
       goto LABEL_32;
@@ -138,13 +138,13 @@ LABEL_27:
   {
     if (v7)
     {
-      [v20 addObject:v7];
+      [array addObject:v7];
       goto LABEL_27;
     }
 
     if (v10)
     {
-      [v20 addObject:v10];
+      [array addObject:v10];
     }
 
     if (v9)
@@ -156,27 +156,27 @@ LABEL_32:
     v22 = 0;
   }
 
-  v23 = [(TUICursorAccessoryAssertionController *)self subject];
-  [v23 setScrollAwayIndicatorEnabled:v22];
+  subject = [(TUICursorAccessoryAssertionController *)self subject];
+  [subject setScrollAwayIndicatorEnabled:v22];
 
-  v24 = [(TUICursorAccessoryAssertionController *)self subject];
-  [v24 setSelectedTextIndicatorEnabled:v22];
+  subject2 = [(TUICursorAccessoryAssertionController *)self subject];
+  [subject2 setSelectedTextIndicatorEnabled:v22];
 
-  v25 = [(TUICursorAccessoryAssertionController *)self subject];
-  [v25 setAutoHideEnabled:v8 == 0];
+  subject3 = [(TUICursorAccessoryAssertionController *)self subject];
+  [subject3 setAutoHideEnabled:v8 == 0];
 
-  v26 = [(TUICursorAccessoryAssertionController *)self subject];
-  [v26 setCursorAccessories:v21];
+  subject4 = [(TUICursorAccessoryAssertionController *)self subject];
+  [subject4 setCursorAccessories:v21];
 }
 
 - (void)dealloc
 {
-  v3 = [(TUICursorAccessoryAssertionController *)self subject];
+  subject = [(TUICursorAccessoryAssertionController *)self subject];
 
-  if (v3)
+  if (subject)
   {
-    v4 = [(TUICursorAccessoryAssertionController *)self assertions];
-    [v4 removeAllObjects];
+    assertions = [(TUICursorAccessoryAssertionController *)self assertions];
+    [assertions removeAllObjects];
 
     [(TUICursorAccessoryAssertionController *)self updateSubjectWithAssertionState];
     [(TUICursorAccessoryAssertionController *)self setSubject:0];
@@ -187,24 +187,24 @@ LABEL_32:
   [(TUICursorAccessoryAssertionController *)&v5 dealloc];
 }
 
-- (void)endTrackingAssertion:(id)a3
+- (void)endTrackingAssertion:(id)assertion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 accessoryType];
-  v6 = [(TUICursorAccessoryAssertionController *)self assertions];
-  [v6 removeObject:v4];
+  assertionCopy = assertion;
+  accessoryType = [assertionCopy accessoryType];
+  assertions = [(TUICursorAccessoryAssertionController *)self assertions];
+  [assertions removeObject:assertionCopy];
 
-  if (v5 == 4)
+  if (accessoryType == 4)
   {
-    v7 = [(TUICursorAccessoryAssertionController *)self assertions];
-    v8 = [v7 allObjects];
+    assertions2 = [(TUICursorAccessoryAssertionController *)self assertions];
+    allObjects = [assertions2 allObjects];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = v8;
+    v9 = allObjects;
     v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
@@ -222,8 +222,8 @@ LABEL_32:
           v14 = *(*(&v16 + 1) + 8 * i);
           if ([v14 accessoryType] == 4)
           {
-            v15 = [(TUICursorAccessoryAssertionController *)self assertions];
-            [v15 removeObject:v14];
+            assertions3 = [(TUICursorAccessoryAssertionController *)self assertions];
+            [assertions3 removeObject:v14];
           }
         }
 
@@ -237,27 +237,27 @@ LABEL_32:
   [(TUICursorAccessoryAssertionController *)self updateSubjectWithAssertionState];
 }
 
-- (void)beginTrackingAssertion:(id)a3
+- (void)beginTrackingAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = [(TUICursorAccessoryAssertionController *)self assertions];
+  assertionCopy = assertion;
+  assertions = [(TUICursorAccessoryAssertionController *)self assertions];
 
-  if (!v5)
+  if (!assertions)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    [(TUICursorAccessoryAssertionController *)self setAssertions:v6];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    [(TUICursorAccessoryAssertionController *)self setAssertions:weakObjectsHashTable];
   }
 
-  v7 = [(TUICursorAccessoryAssertionController *)self assertions];
-  [v7 addObject:v4];
+  assertions2 = [(TUICursorAccessoryAssertionController *)self assertions];
+  [assertions2 addObject:assertionCopy];
 
   [(TUICursorAccessoryAssertionController *)self updateSubjectWithAssertionState];
 }
 
-- (id)createAssertionWithType:(unint64_t)a3 accessory:(id)a4
+- (id)createAssertionWithType:(unint64_t)type accessory:(id)accessory
 {
-  v6 = a4;
-  v7 = [[TUICursorAccessoryAssertion alloc] initWithAccessoryType:a3 accessory:v6 controller:self];
+  accessoryCopy = accessory;
+  v7 = [[TUICursorAccessoryAssertion alloc] initWithAccessoryType:type accessory:accessoryCopy controller:self];
 
   [(TUICursorAccessoryAssertionController *)self beginTrackingAssertion:v7];
 

@@ -1,13 +1,13 @@
 @interface SpotlightEventValidator
-+ (BOOL)validate:(id)a3;
++ (BOOL)validate:(id)validate;
 @end
 
 @implementation SpotlightEventValidator
 
-+ (BOOL)validate:(id)a3
++ (BOOL)validate:(id)validate
 {
-  v3 = a3;
-  v4 = sub_249D1AC5C(v3);
+  validateCopy = validate;
+  v4 = sub_249D1AC5C(validateCopy);
 
   return v4 & 1;
 }

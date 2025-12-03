@@ -1,7 +1,7 @@
 @interface HKBridgeHealthController
 - (HKBridgeControllerDelegate)secondaryUserDelegate;
-- (HKBridgeHealthController)initWithHealthStore:(id)a3;
-- (HKBridgeHealthController)initWithHealthStore:(id)a3 activeTinkerDevice:(id)a4;
+- (HKBridgeHealthController)initWithHealthStore:(id)store;
+- (HKBridgeHealthController)initWithHealthStore:(id)store activeTinkerDevice:(id)device;
 - (id)_healthDataGroupSpecifier;
 - (id)_healthDataTinkerGroupSpecifier;
 - (id)_healthProfileSpecifier;
@@ -17,32 +17,32 @@
 - (id)_viewTinkerDataSpecifier;
 - (id)localizedPaneTitle;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_contactStoreDidChange:(id)a3;
-- (void)_dismissMedicalIDEditorWithCompletion:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_contactStoreDidChange:(id)change;
+- (void)_dismissMedicalIDEditorWithCompletion:(id)completion;
 - (void)_loadProfileData;
 - (void)_stopReceivingSharedHealthData;
-- (void)cloudSyncObserverStatusUpdated:(id)a3 status:(id)a4;
+- (void)cloudSyncObserverStatusUpdated:(id)updated status:(id)status;
 - (void)dealloc;
-- (void)medicalIDViewControllerDidDelete:(id)a3;
-- (void)openBrowseViewInHealthApp:(id)a3;
-- (void)setUpMedicalID:(id)a3;
-- (void)showHealthProfileController:(id)a3;
-- (void)showMedicalIDController:(id)a3;
-- (void)stopReceivingSharedHealthDataButton:(id)a3;
+- (void)medicalIDViewControllerDidDelete:(id)delete;
+- (void)openBrowseViewInHealthApp:(id)app;
+- (void)setUpMedicalID:(id)d;
+- (void)showHealthProfileController:(id)controller;
+- (void)showMedicalIDController:(id)controller;
+- (void)stopReceivingSharedHealthDataButton:(id)button;
 - (void)viewDidLoad;
 @end
 
 @implementation HKBridgeHealthController
 
-- (HKBridgeHealthController)initWithHealthStore:(id)a3 activeTinkerDevice:(id)a4
+- (HKBridgeHealthController)initWithHealthStore:(id)store activeTinkerDevice:(id)device
 {
-  v7 = a4;
-  v8 = [(HKBridgeHealthController *)self initWithHealthStore:a3];
+  deviceCopy = device;
+  v8 = [(HKBridgeHealthController *)self initWithHealthStore:store];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_activeTinkerDevice, a4);
+    objc_storeStrong(&v8->_activeTinkerDevice, device);
     v10 = [HKSecondaryDevicePairingAgent alloc];
     v11 = objc_alloc_init(HKHealthStore);
     v12 = [v10 initWithHealthStore:v11];
@@ -59,17 +59,17 @@
   return v9;
 }
 
-- (HKBridgeHealthController)initWithHealthStore:(id)a3
+- (HKBridgeHealthController)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = HKBridgeHealthController;
   v6 = [(HKBridgeHealthController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
-    v8 = [[HKMedicalIDStore alloc] initWithHealthStore:v5];
+    objc_storeStrong(&v6->_healthStore, store);
+    v8 = [[HKMedicalIDStore alloc] initWithHealthStore:storeCopy];
     medicalIDStore = v7->_medicalIDStore;
     v7->_medicalIDStore = v8;
   }
@@ -125,61 +125,61 @@
   v4 = *&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(HKBridgeHealthController *)self localizedPaneTitle];
-    [(HKBridgeHealthController *)self setTitle:v5];
+    localizedPaneTitle = [(HKBridgeHealthController *)self localizedPaneTitle];
+    [(HKBridgeHealthController *)self setTitle:localizedPaneTitle];
 
     v6 = +[NSMutableArray array];
     if (!self->_loadingProfileData)
     {
       if ([(HKBridgeHealthController *)self _isTinkerDevice])
       {
-        v7 = [(HKBridgeHealthController *)self _healthDataTinkerGroupSpecifier];
-        [v6 addObject:v7];
+        _healthDataTinkerGroupSpecifier = [(HKBridgeHealthController *)self _healthDataTinkerGroupSpecifier];
+        [v6 addObject:_healthDataTinkerGroupSpecifier];
 
-        v8 = [(HKBridgeHealthController *)self _healthProfileSpecifier];
-        [v6 addObject:v8];
+        _healthProfileSpecifier = [(HKBridgeHealthController *)self _healthProfileSpecifier];
+        [v6 addObject:_healthProfileSpecifier];
 
-        v9 = [(HKBridgeHealthController *)self _medicalIDSpecifier];
-        [v6 addObject:v9];
+        _medicalIDSpecifier = [(HKBridgeHealthController *)self _medicalIDSpecifier];
+        [v6 addObject:_medicalIDSpecifier];
 
-        v10 = [(HKBridgeHealthController *)self _viewTinkerDataGroupSpecifier];
-        [v6 addObject:v10];
+        _viewTinkerDataGroupSpecifier = [(HKBridgeHealthController *)self _viewTinkerDataGroupSpecifier];
+        [v6 addObject:_viewTinkerDataGroupSpecifier];
 
-        v11 = [(HKBridgeHealthController *)self _viewTinkerDataSpecifier];
-        [v6 addObject:v11];
+        _viewTinkerDataSpecifier = [(HKBridgeHealthController *)self _viewTinkerDataSpecifier];
+        [v6 addObject:_viewTinkerDataSpecifier];
 
-        v12 = [(HKBridgeHealthController *)self _stopReceivingSharedHealthDataGroupSpecifier];
-        [v6 addObject:v12];
+        _stopReceivingSharedHealthDataGroupSpecifier = [(HKBridgeHealthController *)self _stopReceivingSharedHealthDataGroupSpecifier];
+        [v6 addObject:_stopReceivingSharedHealthDataGroupSpecifier];
 
-        v13 = [(HKBridgeHealthController *)self _stoppedReceivingSharedHealthDataSpecifier];
-        [v6 addObject:v13];
+        _stoppedReceivingSharedHealthDataSpecifier = [(HKBridgeHealthController *)self _stoppedReceivingSharedHealthDataSpecifier];
+        [v6 addObject:_stoppedReceivingSharedHealthDataSpecifier];
       }
 
       else
       {
-        v14 = [(HKBridgeHealthController *)self _healthDataGroupSpecifier];
-        [v6 addObject:v14];
+        _healthDataGroupSpecifier = [(HKBridgeHealthController *)self _healthDataGroupSpecifier];
+        [v6 addObject:_healthDataGroupSpecifier];
 
-        v15 = [(HKBridgeHealthController *)self _healthProfileSpecifier];
-        [v6 addObject:v15];
+        _healthProfileSpecifier2 = [(HKBridgeHealthController *)self _healthProfileSpecifier];
+        [v6 addObject:_healthProfileSpecifier2];
 
-        v16 = [(HKBridgeHealthController *)self _medicalIDSpecifier];
-        [v6 addObject:v16];
+        _medicalIDSpecifier2 = [(HKBridgeHealthController *)self _medicalIDSpecifier];
+        [v6 addObject:_medicalIDSpecifier2];
 
-        v17 = [(HKBridgeHealthController *)self _viewPrimaryDataGroupSpecifier];
-        [v6 addObject:v17];
+        _viewPrimaryDataGroupSpecifier = [(HKBridgeHealthController *)self _viewPrimaryDataGroupSpecifier];
+        [v6 addObject:_viewPrimaryDataGroupSpecifier];
 
-        v18 = [(HKBridgeHealthController *)self _viewPrimaryDataSpecifier];
-        [v6 addObject:v18];
+        _viewPrimaryDataSpecifier = [(HKBridgeHealthController *)self _viewPrimaryDataSpecifier];
+        [v6 addObject:_viewPrimaryDataSpecifier];
 
         v28.receiver = self;
         v28.super_class = HKBridgeHealthController;
-        v19 = [(HKBridgeHealthController *)&v28 specifiers];
-        v20 = v19;
+        specifiers = [(HKBridgeHealthController *)&v28 specifiers];
+        v20 = specifiers;
         v21 = &__NSArray0__struct;
-        if (v19)
+        if (specifiers)
         {
-          v21 = v19;
+          v21 = specifiers;
         }
 
         v22 = v21;
@@ -272,12 +272,12 @@
 
 - (id)_medicalIDSpecifier
 {
-  v3 = [(HKCloudSyncObserver *)self->_cloudSyncObserver status];
-  v4 = [v3 lastPullDate];
+  status = [(HKCloudSyncObserver *)self->_cloudSyncObserver status];
+  lastPullDate = [status lastPullDate];
 
-  if (self->_shouldShowSetupMedicalID && v4 == 0)
+  if (self->_shouldShowSetupMedicalID && lastPullDate == 0)
   {
-    v6 = [(HKBridgeHealthController *)self _loadingMedicalIDSpecifier];
+    _loadingMedicalIDSpecifier = [(HKBridgeHealthController *)self _loadingMedicalIDSpecifier];
   }
 
   else
@@ -291,10 +291,10 @@
     {
       [(HKBridgeHealthController *)self _viewMedicalIDSpecifier];
     }
-    v6 = ;
+    _loadingMedicalIDSpecifier = ;
   }
 
-  return v6;
+  return _loadingMedicalIDSpecifier;
 }
 
 - (id)_viewTinkerDataGroupSpecifier
@@ -369,34 +369,34 @@
   return v5;
 }
 
-- (void)medicalIDViewControllerDidDelete:(id)a3
+- (void)medicalIDViewControllerDidDelete:(id)delete
 {
   medicalIDData = self->_medicalIDData;
   self->_medicalIDData = 0;
-  v5 = a3;
+  deleteCopy = delete;
 
   self->_shouldShowSetupMedicalID = 1;
-  v6 = [(HKBridgeHealthController *)self medicalIDStore];
+  medicalIDStore = [(HKBridgeHealthController *)self medicalIDStore];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_8188;
   v9[3] = &unk_18588;
   v9[4] = self;
-  [v6 deleteMedicalIDDataWithCompletion:v9];
+  [medicalIDStore deleteMedicalIDDataWithCompletion:v9];
 
   [(HKBridgeHealthController *)self reloadSpecifiers];
-  v7 = [v5 navigationController];
+  navigationController = [deleteCopy navigationController];
 
-  v8 = [v7 popViewControllerAnimated:1];
+  v8 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)showHealthProfileController:(id)a3
+- (void)showHealthProfileController:(id)controller
 {
   v4 = [[HKBridgeHealthProfileController alloc] initWithHealthStore:self->_healthStore activeTinkerDevice:self->_activeTinkerDevice];
   [(HKBridgeHealthController *)self showController:v4 animate:1];
 }
 
-- (void)showMedicalIDController:(id)a3
+- (void)showMedicalIDController:(id)controller
 {
   v5 = +[MIUIDisplayConfiguration standardConfiguration];
   [v5 setAccessPoint:8];
@@ -405,7 +405,7 @@
   [(HKBridgeHealthController *)self showController:v4 animate:1];
 }
 
-- (void)setUpMedicalID:(id)a3
+- (void)setUpMedicalID:(id)d
 {
   v9 = +[MIUIDisplayConfiguration standardConfiguration];
   [v9 setAccessPoint:8];
@@ -413,8 +413,8 @@
   [v9 setIsDeletionAvailable:!self->_shouldShowSetupMedicalID];
   v4 = [[MIUIMedicalIDViewController alloc] initWithHealthStore:self->_healthStore medicalIDData:self->_medicalIDData displayConfiguration:v9];
   v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_dismissMedicalID"];
-  v6 = [v4 navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem = [v4 navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 
   v7 = [[HKNavigationController alloc] initWithRootViewController:v4];
   [(HKBridgeHealthController *)self presentViewController:v7 animated:1 completion:0];
@@ -422,12 +422,12 @@
   self->_medicalIDEditor = v7;
 }
 
-- (void)openBrowseViewInHealthApp:(id)a3
+- (void)openBrowseViewInHealthApp:(id)app
 {
   v4 = +[_HKBehavior sharedBehavior];
-  v5 = [v4 healthAppHiddenOrNotInstalled];
+  healthAppHiddenOrNotInstalled = [v4 healthAppHiddenOrNotInstalled];
 
-  if (v5)
+  if (healthAppHiddenOrNotInstalled)
   {
     v6 = +[HAServicesDefines internalHealthSettingsURLString];
     v14 = [NSURL URLWithString:v6];
@@ -439,17 +439,17 @@ LABEL_7:
     return;
   }
 
-  v7 = [(HKHealthStore *)self->_healthStore profileIdentifier];
-  v8 = [v7 type];
+  profileIdentifier = [(HKHealthStore *)self->_healthStore profileIdentifier];
+  type = [profileIdentifier type];
 
-  if (v8 != &dword_0 + 3)
+  if (type != &dword_0 + 3)
   {
     v14 = [NSURL URLWithString:@"x-apple-health://browse"];
     goto LABEL_7;
   }
 
-  v9 = [(HKHealthStore *)self->_healthStore profileIdentifier];
-  v10 = [NSURL _hk_urlForHKProfileIdentifier:v9];
+  profileIdentifier2 = [(HKHealthStore *)self->_healthStore profileIdentifier];
+  v10 = [NSURL _hk_urlForHKProfileIdentifier:profileIdentifier2];
 
   if (v10)
   {
@@ -468,7 +468,7 @@ LABEL_7:
   }
 }
 
-- (void)stopReceivingSharedHealthDataButton:(id)a3
+- (void)stopReceivingSharedHealthDataButton:(id)button
 {
   v4 = objc_alloc_init(PSConfirmationSpecifier);
   v13 = PSConfirmationTitleKey;
@@ -496,33 +496,33 @@ LABEL_7:
 - (void)_stopReceivingSharedHealthData
 {
   self->_isTearingDownSharing = 1;
-  v3 = [(HKBridgeHealthController *)self table];
-  [v3 reloadData];
+  table = [(HKBridgeHealthController *)self table];
+  [table reloadData];
 
   secondaryDevicePairingAgent = self->_secondaryDevicePairingAgent;
-  v5 = [(NRDevice *)self->_activeTinkerDevice pairingID];
+  pairingID = [(NRDevice *)self->_activeTinkerDevice pairingID];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_89D4;
   v6[3] = &unk_18588;
   v6[4] = self;
-  [(HKSecondaryDevicePairingAgent *)secondaryDevicePairingAgent tearDownHealthSharingWithTinkerDeviceWithNRUUID:v5 completion:v6];
+  [(HKSecondaryDevicePairingAgent *)secondaryDevicePairingAgent tearDownHealthSharingWithTinkerDeviceWithNRUUID:pairingID completion:v6];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v15.receiver = self;
   v15.super_class = HKBridgeHealthController;
-  v5 = [(HKBridgeHealthController *)&v15 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 textLabel];
-  [v6 setNumberOfLines:0];
+  v5 = [(HKBridgeHealthController *)&v15 tableView:view cellForRowAtIndexPath:path];
+  textLabel = [v5 textLabel];
+  [textLabel setNumberOfLines:0];
 
-  LOBYTE(v6) = self->_isTearingDownSharing;
-  [v5 setUserInteractionEnabled:(v6 & 1) == 0];
-  [v5 setCellEnabled:(v6 & 1) == 0];
-  v7 = [v5 specifier];
-  v8 = [v7 identifier];
-  v9 = [v8 isEqualToString:@"LoadingMedicalIDIdentifier"];
+  LOBYTE(textLabel) = self->_isTearingDownSharing;
+  [v5 setUserInteractionEnabled:(textLabel & 1) == 0];
+  [v5 setCellEnabled:(textLabel & 1) == 0];
+  specifier = [v5 specifier];
+  identifier = [specifier identifier];
+  v9 = [identifier isEqualToString:@"LoadingMedicalIDIdentifier"];
 
   if (v9)
   {
@@ -537,9 +537,9 @@ LABEL_3:
     goto LABEL_7;
   }
 
-  v11 = [v5 specifier];
-  v12 = [v11 identifier];
-  v13 = [v12 isEqualToString:@"StopReceivingSharedDataIdentifier"];
+  specifier2 = [v5 specifier];
+  identifier2 = [specifier2 identifier];
+  v13 = [identifier2 isEqualToString:@"StopReceivingSharedDataIdentifier"];
 
   if (v13 && self->_isTearingDownSharing)
   {
@@ -552,7 +552,7 @@ LABEL_7:
   return v5;
 }
 
-- (void)cloudSyncObserverStatusUpdated:(id)a3 status:(id)a4
+- (void)cloudSyncObserverStatusUpdated:(id)updated status:(id)status
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -568,8 +568,8 @@ LABEL_7:
   {
     self->_loadingProfileData = 1;
     v3 = [HKProfileStore alloc];
-    v4 = [(HKBridgeHealthController *)self healthStore];
-    v5 = [v3 initWithHealthStore:v4];
+    healthStore = [(HKBridgeHealthController *)self healthStore];
+    v5 = [v3 initWithHealthStore:healthStore];
 
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
@@ -580,26 +580,26 @@ LABEL_7:
   }
 }
 
-- (void)_dismissMedicalIDEditorWithCompletion:(id)a3
+- (void)_dismissMedicalIDEditorWithCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(HKBridgeHealthController *)self presentedViewController];
-  if (v4)
+  completionCopy = completion;
+  presentedViewController = [(HKBridgeHealthController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v5 = v4;
-    v6 = [(HKBridgeHealthController *)self presentedViewController];
+    v5 = presentedViewController;
+    presentedViewController2 = [(HKBridgeHealthController *)self presentedViewController];
     medicalIDEditor = self->_medicalIDEditor;
 
-    if (v6 == medicalIDEditor)
+    if (presentedViewController2 == medicalIDEditor)
     {
-      [(HKBridgeHealthController *)self dismissViewControllerAnimated:1 completion:v9];
+      [(HKBridgeHealthController *)self dismissViewControllerAnimated:1 completion:completionCopy];
       v8 = self->_medicalIDEditor;
       self->_medicalIDEditor = 0;
     }
   }
 }
 
-- (void)_contactStoreDidChange:(id)a3
+- (void)_contactStoreDidChange:(id)change
 {
   if ([(_HKMedicalIDData *)self->_medicalIDData updateEmergencyContacts])
   {

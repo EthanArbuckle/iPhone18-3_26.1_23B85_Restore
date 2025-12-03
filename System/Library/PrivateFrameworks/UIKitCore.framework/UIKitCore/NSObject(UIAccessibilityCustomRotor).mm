@@ -6,7 +6,7 @@
 
 - (id)accessibilityCustomRotors
 {
-  v2 = [a1 _accessibilityGetBlockForAttribute:40];
+  v2 = [self _accessibilityGetBlockForAttribute:40];
   v3 = v2;
   if (v2)
   {
@@ -15,7 +15,7 @@
 
   else
   {
-    objc_getAssociatedObject(a1, &AXCustomRotors);
+    objc_getAssociatedObject(self, &AXCustomRotors);
   }
   v4 = ;
 

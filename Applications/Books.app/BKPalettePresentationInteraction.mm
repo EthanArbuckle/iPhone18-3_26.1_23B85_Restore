@@ -1,17 +1,17 @@
 @interface BKPalettePresentationInteraction
 - (BKPalettePresentationInteractionDelegate)delegate;
 - (BKPalettePresentationTransitioning)transitioningDelegate;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (UIView)view;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)didMoveToView:(id)a3;
-- (void)panGestureRecognized:(id)a3;
-- (void)setView:(id)a3;
-- (void)tapGestureRecognized:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)didMoveToView:(id)view;
+- (void)panGestureRecognized:(id)recognized;
+- (void)setView:(id)view;
+- (void)tapGestureRecognized:(id)recognized;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation BKPalettePresentationInteraction
@@ -37,95 +37,95 @@
   return *(self + v3);
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
   v5 = OBJC_IVAR___BKPalettePresentationInteraction_view;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = view;
+  viewCopy = view;
 }
 
-- (void)tapGestureRecognized:(id)a3
+- (void)tapGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  v6 = self;
-  if ([(BKPalettePresentationInteraction *)v4 state]== 3)
+  recognizedCopy = recognized;
+  selfCopy = self;
+  if ([(BKPalettePresentationInteraction *)recognizedCopy state]== 3)
   {
-    if (*(v6 + OBJC_IVAR___BKPalettePresentationInteraction_animationController))
+    if (*(selfCopy + OBJC_IVAR___BKPalettePresentationInteraction_animationController))
     {
-      v5 = v6;
-      v6 = v4;
+      v5 = selfCopy;
+      selfCopy = recognizedCopy;
       goto LABEL_6;
     }
 
     sub_1003446C0(0, 0);
   }
 
-  v5 = v4;
+  v5 = recognizedCopy;
 LABEL_6:
 }
 
-- (void)panGestureRecognized:(id)a3
+- (void)panGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  v6 = self;
-  if ([(BKPalettePresentationInteraction *)v4 state]== 1)
+  recognizedCopy = recognized;
+  selfCopy = self;
+  if ([(BKPalettePresentationInteraction *)recognizedCopy state]== 1)
   {
-    if (*(v6 + OBJC_IVAR___BKPalettePresentationInteraction_animationController))
+    if (*(selfCopy + OBJC_IVAR___BKPalettePresentationInteraction_animationController))
     {
-      v5 = v6;
-      v6 = v4;
+      v5 = selfCopy;
+      selfCopy = recognizedCopy;
       goto LABEL_6;
     }
 
     sub_1003446C0(0, 0);
   }
 
-  v5 = v4;
+  v5 = recognizedCopy;
 LABEL_6:
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.super.isa = a3;
+  viewCopy = view;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.super.isa = view;
   PalettePresentationInteraction.willMove(to:)(v9);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.super.isa = a3;
+  viewCopy = view;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.super.isa = view;
   PalettePresentationInteraction.didMove(to:)(v9);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
   v9 = _s5Books30PalettePresentationInteractionC17gestureRecognizer_33shouldRecognizeSimultaneouslyWithSbSo09UIGestureF0C_AGtF_0();
 
   return v9 & 1;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = PalettePresentationInteraction.gestureRecognizerShouldBegin(_:)(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = PalettePresentationInteraction.gestureRecognizerShouldBegin(_:)(beginCopy);
 
   return self & 1;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
   objc_opt_self();
   v6 = swift_dynamicCastObjCClass();
@@ -135,28 +135,28 @@ LABEL_6:
     v8 = type metadata accessor for AssetSheetPresentationController();
     v10.receiver = objc_allocWithZone(v8);
     v10.super_class = v8;
-    v6 = [(BKPalettePresentationInteraction *)&v10 initWithPresentedViewController:v7 presentingViewController:a4];
+    v6 = [(BKPalettePresentationInteraction *)&v10 initWithPresentedViewController:v7 presentingViewController:viewController];
   }
 
   return v6;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_10034565C(v9);
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
+  sourceControllerCopy = sourceController;
+  selfCopy = self;
+  v12 = sub_10034565C(presentingControllerCopy);
 
   return v12;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  v6 = PalettePresentationInteraction.animationController(forDismissed:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v6 = PalettePresentationInteraction.animationController(forDismissed:)(controllerCopy);
 
   return v6;
 }

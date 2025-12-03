@@ -1,44 +1,44 @@
 @interface UIDraggingSystemSession
-- (unint64_t)_indexOfDragItemInSession:(id)a3;
+- (unint64_t)_indexOfDragItemInSession:(id)session;
 - (void)cancel;
-- (void)loadURLForItem:(id)a3 completion:(id)a4;
-- (void)loadUserActivityForItem:(id)a3 completion:(id)a4;
-- (void)requestDragContinuationEndpointWithCompletion:(id)a3;
-- (void)setCommandeered:(BOOL)a3;
+- (void)loadURLForItem:(id)item completion:(id)completion;
+- (void)loadUserActivityForItem:(id)item completion:(id)completion;
+- (void)requestDragContinuationEndpointWithCompletion:(id)completion;
+- (void)setCommandeered:(BOOL)commandeered;
 @end
 
 @implementation UIDraggingSystemSession
 
-- (void)setCommandeered:(BOOL)a3
+- (void)setCommandeered:(BOOL)commandeered
 {
   commandeered = self->_commandeered;
-  if (commandeered != a3)
+  if (commandeered != commandeered)
   {
-    v6 = [(UIDraggingSystemSession *)self _serverSession];
-    v7 = v6;
+    _serverSession = [(UIDraggingSystemSession *)self _serverSession];
+    v7 = _serverSession;
     if (commandeered)
     {
-      [v6 surrenderDragSession];
+      [_serverSession surrenderDragSession];
     }
 
     else
     {
-      [v6 commandeerDragSession];
+      [_serverSession commandeerDragSession];
     }
 
-    self->_commandeered = a3;
+    self->_commandeered = commandeered;
   }
 }
 
-- (unint64_t)_indexOfDragItemInSession:(id)a3
+- (unint64_t)_indexOfDragItemInSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 _dragDropSession];
+  sessionCopy = session;
+  _dragDropSession = [sessionCopy _dragDropSession];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v5 sessionDestination], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "sessionIdentifier"), v6, -[UIDraggingSystemSession info](self, "info"), v8 = objc_claimAutoreleasedReturnValue(), LODWORD(v6) = objc_msgSend(v8, "sessionIdentifier"), v8, v7 == v6))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([_dragDropSession sessionDestination], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "sessionIdentifier"), v6, -[UIDraggingSystemSession info](self, "info"), v8 = objc_claimAutoreleasedReturnValue(), LODWORD(v6) = objc_msgSend(v8, "sessionIdentifier"), v8, v7 == v6))
   {
-    v9 = [v5 items];
-    v10 = [v9 indexOfObjectIdenticalTo:v4];
+    items = [_dragDropSession items];
+    v10 = [items indexOfObjectIdenticalTo:sessionCopy];
   }
 
   else
@@ -49,42 +49,42 @@
   return v10;
 }
 
-- (void)loadURLForItem:(id)a3 completion:(id)a4
+- (void)loadURLForItem:(id)item completion:(id)completion
 {
-  v9 = a4;
-  v6 = [(UIDraggingSystemSession *)self _indexOfDragItemInSession:a3];
+  completionCopy = completion;
+  v6 = [(UIDraggingSystemSession *)self _indexOfDragItemInSession:item];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
     v7 = v6;
-    v8 = [(UIDraggingSystemSession *)self _serverSession];
-    [v8 loadURLForItemAtIndex:v7 reply:v9];
+    _serverSession = [(UIDraggingSystemSession *)self _serverSession];
+    [_serverSession loadURLForItemAtIndex:v7 reply:completionCopy];
   }
 }
 
-- (void)loadUserActivityForItem:(id)a3 completion:(id)a4
+- (void)loadUserActivityForItem:(id)item completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(UIDraggingSystemSession *)self _indexOfDragItemInSession:a3];
+  completionCopy = completion;
+  v7 = [(UIDraggingSystemSession *)self _indexOfDragItemInSession:item];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
     v8 = v7;
-    v9 = [(UIDraggingSystemSession *)self _serverSession];
+    _serverSession = [(UIDraggingSystemSession *)self _serverSession];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __62__UIDraggingSystemSession_loadUserActivityForItem_completion___block_invoke;
     v10[3] = &unk_1E7127B18;
-    v11 = v6;
-    [v9 loadUserActivityDataForItemAtIndex:v8 reply:v10];
+    v11 = completionCopy;
+    [_serverSession loadUserActivityDataForItemAtIndex:v8 reply:v10];
   }
 }
 
@@ -105,17 +105,17 @@ void __62__UIDraggingSystemSession_loadUserActivityForItem_completion___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)requestDragContinuationEndpointWithCompletion:(id)a3
+- (void)requestDragContinuationEndpointWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(UIDraggingSystemSession *)self _serverSession];
-  [v5 requestDragContinuationEndpointWithReply:v4];
+  completionCopy = completion;
+  _serverSession = [(UIDraggingSystemSession *)self _serverSession];
+  [_serverSession requestDragContinuationEndpointWithReply:completionCopy];
 }
 
 - (void)cancel
 {
-  v2 = [(UIDraggingSystemSession *)self _serverSession];
-  [v2 cancelDragSession];
+  _serverSession = [(UIDraggingSystemSession *)self _serverSession];
+  [_serverSession cancelDragSession];
 }
 
 @end

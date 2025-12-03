@@ -1,106 +1,106 @@
 @interface PXStoryClipSeparatorEffectFactory
-+ ($AEFAD17AB1CC80BF212AA0D0E83A8824)parametersForPanTowardsEdge:(SEL)a3 distance:(unsigned int)a4;
-+ ($AEFAD17AB1CC80BF212AA0D0E83A8824)parametersForRotationWithAngle:(SEL)a3;
-+ (void)getParameters:(id *)a3 forOppositePansWithDistance:(double)a4 threeUpComposition:(id)a5;
-+ (void)getParameters:(id *)a3 forOppositeRotationsWithAngle:(double)a4 threeUpComposition:(id)a5;
-+ (void)getParameters:(id *)a3 forParallelPansWithDistance:(double)a4 threeUpComposition:(id)a5;
-+ (void)getParameters:(id *)a3 forParallelRotationsWithAngle:(double)a4 threeUpComposition:(id)a5;
++ ($AEFAD17AB1CC80BF212AA0D0E83A8824)parametersForPanTowardsEdge:(SEL)edge distance:(unsigned int)distance;
++ ($AEFAD17AB1CC80BF212AA0D0E83A8824)parametersForRotationWithAngle:(SEL)angle;
++ (void)getParameters:(id *)parameters forOppositePansWithDistance:(double)distance threeUpComposition:(id)composition;
++ (void)getParameters:(id *)parameters forOppositeRotationsWithAngle:(double)angle threeUpComposition:(id)composition;
++ (void)getParameters:(id *)parameters forParallelPansWithDistance:(double)distance threeUpComposition:(id)composition;
++ (void)getParameters:(id *)parameters forParallelRotationsWithAngle:(double)angle threeUpComposition:(id)composition;
 @end
 
 @implementation PXStoryClipSeparatorEffectFactory
 
-+ (void)getParameters:(id *)a3 forOppositeRotationsWithAngle:(double)a4 threeUpComposition:(id)a5
++ (void)getParameters:(id *)parameters forOppositeRotationsWithAngle:(double)angle threeUpComposition:(id)composition
 {
-  v9 = a5;
-  if ([v9 numberOfClips] != 3)
+  compositionCopy = composition;
+  if ([compositionCopy numberOfClips] != 3)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PXStoryClipSeparatorEffect.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"composition.numberOfClips == 3"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryClipSeparatorEffect.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"composition.numberOfClips == 3"}];
   }
 
-  v10 = *[v9 dividerAxes];
-  v11 = [v9 dividerAxes];
+  v10 = *[compositionCopy dividerAxes];
+  dividerAxes = [compositionCopy dividerAxes];
 
-  if (v10 != *(v11 + 8))
+  if (v10 != *(dividerAxes + 8))
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"PXStoryClipSeparatorEffect.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"composition.dividerAxes[0] == composition.dividerAxes[1]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStoryClipSeparatorEffect.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"composition.dividerAxes[0] == composition.dividerAxes[1]"}];
   }
 
-  [a1 parametersForRotationWithAngle:a4];
-  *&a3->var0 = v14;
-  a3->var2 = v15;
-  [a1 parametersForRotationWithAngle:-a4];
-  *&a3[1].var0 = v14;
-  a3[1].var2 = v15;
+  [self parametersForRotationWithAngle:angle];
+  *&parameters->var0 = v14;
+  parameters->var2 = v15;
+  [self parametersForRotationWithAngle:-angle];
+  *&parameters[1].var0 = v14;
+  parameters[1].var2 = v15;
 }
 
-+ (void)getParameters:(id *)a3 forParallelRotationsWithAngle:(double)a4 threeUpComposition:(id)a5
++ (void)getParameters:(id *)parameters forParallelRotationsWithAngle:(double)angle threeUpComposition:(id)composition
 {
-  v9 = a5;
-  if ([v9 numberOfClips] != 3)
+  compositionCopy = composition;
+  if ([compositionCopy numberOfClips] != 3)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PXStoryClipSeparatorEffect.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"composition.numberOfClips == 3"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryClipSeparatorEffect.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"composition.numberOfClips == 3"}];
   }
 
-  v10 = *[v9 dividerAxes];
-  v11 = [v9 dividerAxes];
+  v10 = *[compositionCopy dividerAxes];
+  dividerAxes = [compositionCopy dividerAxes];
 
-  if (v10 != *(v11 + 8))
+  if (v10 != *(dividerAxes + 8))
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"PXStoryClipSeparatorEffect.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"composition.dividerAxes[0] == composition.dividerAxes[1]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStoryClipSeparatorEffect.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"composition.dividerAxes[0] == composition.dividerAxes[1]"}];
   }
 
-  [a1 parametersForRotationWithAngle:a4];
-  *&a3[1].var0 = v14;
-  a3[1].var2 = v15;
-  *&a3->var0 = *&a3[1].var0;
-  a3->var2 = v15;
+  [self parametersForRotationWithAngle:angle];
+  *&parameters[1].var0 = v14;
+  parameters[1].var2 = v15;
+  *&parameters->var0 = *&parameters[1].var0;
+  parameters->var2 = v15;
 }
 
-+ (void)getParameters:(id *)a3 forOppositePansWithDistance:(double)a4 threeUpComposition:(id)a5
++ (void)getParameters:(id *)parameters forOppositePansWithDistance:(double)distance threeUpComposition:(id)composition
 {
-  v7 = a5;
-  if ([v7 numberOfClips] != 3)
+  compositionCopy = composition;
+  if ([compositionCopy numberOfClips] != 3)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PXStoryClipSeparatorEffect.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"composition.numberOfClips == 3"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryClipSeparatorEffect.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"composition.numberOfClips == 3"}];
   }
 
-  v8 = *[v7 dividerAxes];
-  if (v8 != *([v7 dividerAxes] + 8))
+  v8 = *[compositionCopy dividerAxes];
+  if (v8 != *([compositionCopy dividerAxes] + 8))
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXStoryClipSeparatorEffect.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"composition.dividerAxes[0] == composition.dividerAxes[1]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStoryClipSeparatorEffect.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"composition.dividerAxes[0] == composition.dividerAxes[1]"}];
   }
 
-  [v7 mainDividerAxis];
+  [compositionCopy mainDividerAxis];
   PXAxisTransposed();
 }
 
-+ (void)getParameters:(id *)a3 forParallelPansWithDistance:(double)a4 threeUpComposition:(id)a5
++ (void)getParameters:(id *)parameters forParallelPansWithDistance:(double)distance threeUpComposition:(id)composition
 {
-  v7 = a5;
-  if ([v7 numberOfClips] != 3)
+  compositionCopy = composition;
+  if ([compositionCopy numberOfClips] != 3)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PXStoryClipSeparatorEffect.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"composition.numberOfClips == 3"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryClipSeparatorEffect.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"composition.numberOfClips == 3"}];
   }
 
-  v8 = *[v7 dividerAxes];
-  if (v8 != *([v7 dividerAxes] + 8))
+  v8 = *[compositionCopy dividerAxes];
+  if (v8 != *([compositionCopy dividerAxes] + 8))
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXStoryClipSeparatorEffect.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"composition.dividerAxes[0] == composition.dividerAxes[1]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStoryClipSeparatorEffect.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"composition.dividerAxes[0] == composition.dividerAxes[1]"}];
   }
 
-  [v7 mainDividerAxis];
+  [compositionCopy mainDividerAxis];
   PXAxisTransposed();
 }
 
-+ ($AEFAD17AB1CC80BF212AA0D0E83A8824)parametersForRotationWithAngle:(SEL)a3
++ ($AEFAD17AB1CC80BF212AA0D0E83A8824)parametersForRotationWithAngle:(SEL)angle
 {
   retstr->var0 = 42;
   retstr->var1 = 0.0;
@@ -108,14 +108,14 @@
   return result;
 }
 
-+ ($AEFAD17AB1CC80BF212AA0D0E83A8824)parametersForPanTowardsEdge:(SEL)a3 distance:(unsigned int)a4
++ ($AEFAD17AB1CC80BF212AA0D0E83A8824)parametersForPanTowardsEdge:(SEL)edge distance:(unsigned int)distance
 {
   if (a5 < 0.0)
   {
     PXRectEdgeOpposite();
   }
 
-  retstr->var0 = a4;
+  retstr->var0 = distance;
   retstr->var1 = a5;
   retstr->var2 = 0.0;
   return result;

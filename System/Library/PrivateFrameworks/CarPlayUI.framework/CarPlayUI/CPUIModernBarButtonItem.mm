@@ -1,24 +1,24 @@
 @interface CPUIModernBarButtonItem
 - (CPUIButtonDelegate)cpui_delegate;
-- (CPUIModernBarButtonItem)initWithTitle:(id)a3 image:(id)a4 type:(unint64_t)a5;
+- (CPUIModernBarButtonItem)initWithTitle:(id)title image:(id)image type:(unint64_t)type;
 - (void)_addGestureRecognizers;
-- (void)_buttonPressed:(id)a3;
-- (void)_buttonTapped:(id)a3;
+- (void)_buttonPressed:(id)pressed;
+- (void)_buttonTapped:(id)tapped;
 - (void)_updatePrefersSeparatePlatter;
-- (void)setEnabled:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setImage:(id)image;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CPUIModernBarButtonItem
 
-- (CPUIModernBarButtonItem)initWithTitle:(id)a3 image:(id)a4 type:(unint64_t)a5
+- (CPUIModernBarButtonItem)initWithTitle:(id)title image:(id)image type:(unint64_t)type
 {
   v28[5] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  switch(a5)
+  titleCopy = title;
+  imageCopy = image;
+  v10 = imageCopy;
+  switch(type)
   {
     case 1uLL:
       v19 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76920] variant:1024];
@@ -37,8 +37,8 @@ LABEL_7:
 
       goto LABEL_9;
     case 3uLL:
-      v11 = [MEMORY[0x277D75C80] _currentTraitCollection];
-      v12 = CPUIMessageComposeGlyph(v11, 17.0);
+      _currentTraitCollection = [MEMORY[0x277D75C80] _currentTraitCollection];
+      v12 = CPUIMessageComposeGlyph(_currentTraitCollection, 17.0);
 
       v13 = CPUILocalizedStringForKey(@"COMPOSE");
       v28[0] = v13;
@@ -55,13 +55,13 @@ LABEL_7:
       goto LABEL_10;
   }
 
-  v12 = [v9 imageWithRenderingMode:2];
+  v12 = [imageCopy imageWithRenderingMode:2];
 LABEL_9:
   v18 = MEMORY[0x277CBEBF8];
 LABEL_10:
   v27.receiver = self;
   v27.super_class = CPUIModernBarButtonItem;
-  v24 = [(CPUIModernBarButtonItem *)&v27 initWithTitle:v8 image:v12 target:0 action:0 menu:0];
+  v24 = [(CPUIModernBarButtonItem *)&v27 initWithTitle:titleCopy image:v12 target:0 action:0 menu:0];
   v25 = v24;
   if (v24)
   {
@@ -72,29 +72,29 @@ LABEL_10:
   return v25;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4.receiver = self;
   v4.super_class = CPUIModernBarButtonItem;
-  [(CPUIModernBarButtonItem *)&v4 setTitle:a3];
+  [(CPUIModernBarButtonItem *)&v4 setTitle:title];
   [(CPUIModernBarButtonItem *)self _updatePrefersSeparatePlatter];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v4.receiver = self;
   v4.super_class = CPUIModernBarButtonItem;
-  [(CPUIModernBarButtonItem *)&v4 setImage:a3];
+  [(CPUIModernBarButtonItem *)&v4 setImage:image];
   [(CPUIModernBarButtonItem *)self _updatePrefersSeparatePlatter];
 }
 
 - (void)_updatePrefersSeparatePlatter
 {
-  v3 = [(CPUIModernBarButtonItem *)self title];
-  if ([v3 length])
+  title = [(CPUIModernBarButtonItem *)self title];
+  if ([title length])
   {
-    v4 = [(CPUIModernBarButtonItem *)self image];
-    v5 = v4 == 0;
+    image = [(CPUIModernBarButtonItem *)self image];
+    v5 = image == 0;
   }
 
   else
@@ -111,64 +111,64 @@ LABEL_10:
   v3 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__buttonPressed_];
   [(CPUIModernBarButtonItem *)self setPressTapRecognizer:v3];
 
-  v4 = [(CPUIModernBarButtonItem *)self pressTapRecognizer];
-  [v4 setAllowedPressTypes:&unk_2855D84D0];
+  pressTapRecognizer = [(CPUIModernBarButtonItem *)self pressTapRecognizer];
+  [pressTapRecognizer setAllowedPressTypes:&unk_2855D84D0];
 
-  v5 = [(CPUIModernBarButtonItem *)self pressTapRecognizer];
-  [v5 setEnabled:{-[CPUIModernBarButtonItem isEnabled](self, "isEnabled")}];
+  pressTapRecognizer2 = [(CPUIModernBarButtonItem *)self pressTapRecognizer];
+  [pressTapRecognizer2 setEnabled:{-[CPUIModernBarButtonItem isEnabled](self, "isEnabled")}];
 
   v6 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__buttonTapped_];
   [(CPUIModernBarButtonItem *)self setTouchTapRecognizer:v6];
 
-  v7 = [(CPUIModernBarButtonItem *)self touchTapRecognizer];
-  [v7 setAllowedTouchTypes:&unk_2855D84E8];
+  touchTapRecognizer = [(CPUIModernBarButtonItem *)self touchTapRecognizer];
+  [touchTapRecognizer setAllowedTouchTypes:&unk_2855D84E8];
 
-  v8 = [(CPUIModernBarButtonItem *)self touchTapRecognizer];
-  [v8 setEnabled:{-[CPUIModernBarButtonItem isEnabled](self, "isEnabled")}];
+  touchTapRecognizer2 = [(CPUIModernBarButtonItem *)self touchTapRecognizer];
+  [touchTapRecognizer2 setEnabled:{-[CPUIModernBarButtonItem isEnabled](self, "isEnabled")}];
 
-  v9 = [(CPUIModernBarButtonItem *)self pressTapRecognizer];
-  v12[0] = v9;
-  v10 = [(CPUIModernBarButtonItem *)self touchTapRecognizer];
-  v12[1] = v10;
+  pressTapRecognizer3 = [(CPUIModernBarButtonItem *)self pressTapRecognizer];
+  v12[0] = pressTapRecognizer3;
+  touchTapRecognizer3 = [(CPUIModernBarButtonItem *)self touchTapRecognizer];
+  v12[1] = touchTapRecognizer3;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
   [(CPUIModernBarButtonItem *)self _setGestureRecognizers:v11];
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
-  v4 = [(CPUIModernBarButtonItem *)self cpui_delegate];
+  cpui_delegate = [(CPUIModernBarButtonItem *)self cpui_delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CPUIModernBarButtonItem *)self cpui_delegate];
-    [v6 didSelectButton:self withInteractionModel:2];
+    cpui_delegate2 = [(CPUIModernBarButtonItem *)self cpui_delegate];
+    [cpui_delegate2 didSelectButton:self withInteractionModel:2];
   }
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
-  v4 = [(CPUIModernBarButtonItem *)self cpui_delegate];
+  cpui_delegate = [(CPUIModernBarButtonItem *)self cpui_delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CPUIModernBarButtonItem *)self cpui_delegate];
-    [v6 didSelectButton:self withInteractionModel:1];
+    cpui_delegate2 = [(CPUIModernBarButtonItem *)self cpui_delegate];
+    [cpui_delegate2 didSelectButton:self withInteractionModel:1];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = CPUIModernBarButtonItem;
   [(CPUIModernBarButtonItem *)&v7 setEnabled:?];
-  v5 = [(CPUIModernBarButtonItem *)self pressTapRecognizer];
-  [v5 setEnabled:v3];
+  pressTapRecognizer = [(CPUIModernBarButtonItem *)self pressTapRecognizer];
+  [pressTapRecognizer setEnabled:enabledCopy];
 
-  v6 = [(CPUIModernBarButtonItem *)self touchTapRecognizer];
-  [v6 setEnabled:v3];
+  touchTapRecognizer = [(CPUIModernBarButtonItem *)self touchTapRecognizer];
+  [touchTapRecognizer setEnabled:enabledCopy];
 }
 
 - (CPUIButtonDelegate)cpui_delegate

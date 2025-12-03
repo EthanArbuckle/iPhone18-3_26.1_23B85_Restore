@@ -22,21 +22,21 @@
 
     else
     {
-      v10 = [v7 invalidatesOnConditions];
-      if (!v10)
+      invalidatesOnConditions = [v7 invalidatesOnConditions];
+      if (!invalidatesOnConditions)
       {
-        v10 = [MEMORY[0x277CBEB38] dictionary];
-        [v7 setInvalidatesOnConditions:v10];
+        invalidatesOnConditions = [MEMORY[0x277CBEB38] dictionary];
+        [v7 setInvalidatesOnConditions:invalidatesOnConditions];
       }
 
-      v11 = [a1 condition];
-      v12 = [v10 objectForKey:v11];
+      condition = [self condition];
+      v12 = [invalidatesOnConditions objectForKey:condition];
 
-      if (!v12 || (v13 = [a1 minValue], v13 < objc_msgSend(v12, "integerValue")))
+      if (!v12 || (v13 = [self minValue], v13 < objc_msgSend(v12, "integerValue")))
       {
-        v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "minValue")}];
-        v15 = [a1 condition];
-        [v10 setValue:v14 forKey:v15];
+        v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "minValue")}];
+        condition2 = [self condition];
+        [invalidatesOnConditions setValue:v14 forKey:condition2];
       }
     }
   }
@@ -60,7 +60,7 @@
     v14 = *MEMORY[0x277D47048];
     v17[0] = v13;
     v17[1] = v14;
-    v15 = [a1 description];
+    v15 = [self description];
     v18[1] = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
     *a4 = [v11 errorWithDomain:v12 code:2 userInfo:v16];

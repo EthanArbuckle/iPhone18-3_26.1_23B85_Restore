@@ -1,82 +1,82 @@
 @interface SKProductRemoteViewTask
-+ (id)_unavailableErrorWithUserInfo:(id)a3;
-+ (id)_unknownErrorWithUserInfo:(id)a3;
-- (BOOL)_isProductUnavailableError:(id)a3;
-- (BOOL)_isViewControllerDescendant:(id)a3 ofViewController:(id)a4;
-- (SKProductRemoteViewTask)initWithStoreController:(id)a3;
++ (id)_unavailableErrorWithUserInfo:(id)info;
++ (id)_unknownErrorWithUserInfo:(id)info;
+- (BOOL)_isProductUnavailableError:(id)error;
+- (BOOL)_isViewControllerDescendant:(id)descendant ofViewController:(id)controller;
+- (SKProductRemoteViewTask)initWithStoreController:(id)controller;
 - (id)_hostApplicationIdentifier;
 - (id)_keyProfileForProductLookup;
-- (id)_productIDFromParameters:(id)a3;
+- (id)_productIDFromParameters:(id)parameters;
 - (int64_t)extensionControllerState;
-- (void)_addChildController:(id)a3 toController:(id)a4;
-- (void)_addConfigurationAction:(id)a3 needsEntitlement:(BOOL)a4;
-- (void)_didReceiveExtensionRemoteViewController:(id)a3;
-- (void)_dismissProductViewControllerWithResult:(int64_t)a3;
+- (void)_addChildController:(id)controller toController:(id)toController;
+- (void)_addConfigurationAction:(id)action needsEntitlement:(BOOL)entitlement;
+- (void)_didReceiveExtensionRemoteViewController:(id)controller;
+- (void)_dismissProductViewControllerWithResult:(int64_t)result;
 - (void)_displayItemIfNeeded;
-- (void)_executeConfigurationActionsForExtension:(id)a3;
-- (void)_executeConfigurationActionsForUIService:(id)a3;
-- (void)_finishWithResult:(int64_t)a3;
+- (void)_executeConfigurationActionsForExtension:(id)extension;
+- (void)_executeConfigurationActionsForUIService:(id)service;
+- (void)_finishWithResult:(int64_t)result;
 - (void)_killExtensionIfNecessary;
-- (void)_loadUIServiceIfNecessaryWithCompletion:(id)a3;
+- (void)_loadUIServiceIfNecessaryWithCompletion:(id)completion;
 - (void)_showErrorController;
 - (void)_showExtensionFromUIService;
-- (void)_showExtensionWithID:(id)a3;
+- (void)_showExtensionWithID:(id)d;
 - (void)cardControllerDidDismiss;
 - (void)dealloc;
-- (void)loadProductWithPageDictionary:(id)a3 completionBlock:(id)a4;
-- (void)loadProductWithRequest:(id)a3 completionBlock:(id)a4;
-- (void)loadProductWithURL:(id)a3 completionBlock:(id)a4;
-- (void)lookupProductWithParameters:(id)a3 completion:(id)a4;
-- (void)overridePresentationStyle:(id)a3;
-- (void)performLookupWithIdentifier:(NSString *)a3 parameters:(NSDictionary *)a4 logKey:(NSString *)a5 keyProfile:(NSString *)a6 completionHandler:(id)a7;
-- (void)performLookupWithURL:(NSURL *)a3 logKey:(NSString *)a4 keyProfile:(NSString *)a5 completionHandler:(id)a6;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)productPageRemoteViewController:(id)a3 didTerminateWithError:(id)a4;
-- (void)productPageRemoteViewController:(id)a3 finishWithResult:(unint64_t)a4 completion:(id)a5;
-- (void)productPageRemoteViewController:(id)a3 userDidInteractWithProduct:(unint64_t)a4;
-- (void)productPageRemoteViewControllerLoadDidFinish:(id)a3;
-- (void)setAdditionalBuyParameters:(id)a3;
-- (void)setAffiliateIdentifier:(id)a3;
-- (void)setAskToBuy:(BOOL)a3;
-- (void)setCancelButtonTitle:(id)a3;
-- (void)setClientIdentifier:(id)a3;
-- (void)setPresentationStyle:(id)a3;
-- (void)setPreview:(id)a3;
-- (void)setProductPageStyle:(id)a3;
-- (void)setPromptString:(id)a3;
-- (void)setRightBarButtonTitle:(id)a3;
-- (void)setScriptContextDictionary:(id)a3;
-- (void)setShowsRightBarButton:(BOOL)a3;
-- (void)setShowsStoreButton:(id)a3;
-- (void)setUsageContext:(id)a3;
-- (void)setVisibleInClientWindow:(id)a3;
+- (void)loadProductWithPageDictionary:(id)dictionary completionBlock:(id)block;
+- (void)loadProductWithRequest:(id)request completionBlock:(id)block;
+- (void)loadProductWithURL:(id)l completionBlock:(id)block;
+- (void)lookupProductWithParameters:(id)parameters completion:(id)completion;
+- (void)overridePresentationStyle:(id)style;
+- (void)performLookupWithIdentifier:(NSString *)identifier parameters:(NSDictionary *)parameters logKey:(NSString *)key keyProfile:(NSString *)profile completionHandler:(id)handler;
+- (void)performLookupWithURL:(NSURL *)l logKey:(NSString *)key keyProfile:(NSString *)profile completionHandler:(id)handler;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)productPageRemoteViewController:(id)controller didTerminateWithError:(id)error;
+- (void)productPageRemoteViewController:(id)controller finishWithResult:(unint64_t)result completion:(id)completion;
+- (void)productPageRemoteViewController:(id)controller userDidInteractWithProduct:(unint64_t)product;
+- (void)productPageRemoteViewControllerLoadDidFinish:(id)finish;
+- (void)setAdditionalBuyParameters:(id)parameters;
+- (void)setAffiliateIdentifier:(id)identifier;
+- (void)setAskToBuy:(BOOL)buy;
+- (void)setCancelButtonTitle:(id)title;
+- (void)setClientIdentifier:(id)identifier;
+- (void)setPresentationStyle:(id)style;
+- (void)setPreview:(id)preview;
+- (void)setProductPageStyle:(id)style;
+- (void)setPromptString:(id)string;
+- (void)setRightBarButtonTitle:(id)title;
+- (void)setScriptContextDictionary:(id)dictionary;
+- (void)setShowsRightBarButton:(BOOL)button;
+- (void)setShowsStoreButton:(id)button;
+- (void)setUsageContext:(id)context;
+- (void)setVisibleInClientWindow:(id)window;
 - (void)storeProductViewControllerWillDisappear;
 - (void)storeProductViewControllerWillDismiss;
 @end
 
 @implementation SKProductRemoteViewTask
 
-- (SKProductRemoteViewTask)initWithStoreController:(id)a3
+- (SKProductRemoteViewTask)initWithStoreController:(id)controller
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   v25.receiver = self;
   v25.super_class = SKProductRemoteViewTask;
   v5 = [(SKProductRemoteViewTask *)&v25 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_storeController, v4);
+    objc_storeWeak(&v5->_storeController, controllerCopy);
     v6->_isAskToBuy = 0;
     extensionID = v6->_extensionID;
     v6->_extensionID = 0;
 
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
-    v10 = [v9 componentsSeparatedByString:@"-"];
-    v11 = [v10 firstObject];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v10 = [uUIDString componentsSeparatedByString:@"-"];
+    firstObject = [v10 firstObject];
     logKey = v6->_logKey;
-    v6->_logKey = v11;
+    v6->_logKey = firstObject;
 
     cachedParameters = v6->_cachedParameters;
     v6->_cachedParameters = 0;
@@ -142,14 +142,14 @@
   [(SKProductRemoteViewTask *)&v7 dealloc];
 }
 
-- (void)_dismissProductViewControllerWithResult:(int64_t)a3
+- (void)_dismissProductViewControllerWithResult:(int64_t)result
 {
   v12 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     logKey = self->_logKey;
     *buf = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
     v11 = logKey;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Finishing controller.", buf, 0x16u);
@@ -161,7 +161,7 @@
   v7[2] = __67__SKProductRemoteViewTask__dismissProductViewControllerWithResult___block_invoke;
   v7[3] = &unk_1E7B28AF0;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = result;
   [WeakRetained dismissViewControllerAnimated:1 completion:v7];
 }
 
@@ -182,23 +182,23 @@ void __67__SKProductRemoteViewTask__dismissProductViewControllerWithResult___blo
   }
 }
 
-- (void)lookupProductWithParameters:(id)a3 completion:(id)a4
+- (void)lookupProductWithParameters:(id)parameters completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_storeController);
-  v9 = [WeakRetained _isInvalidSubclass];
+  _isInvalidSubclass = [WeakRetained _isInvalidSubclass];
 
-  if (!v9)
+  if (!_isInvalidSubclass)
   {
-    v10 = [(SKProductRemoteViewTask *)self _productIDFromParameters:v6];
+    v10 = [(SKProductRemoteViewTask *)self _productIDFromParameters:parametersCopy];
     if (v10)
     {
       self->_didLoad = 0;
       objc_initWeak(&location, self);
       v11 = [(NSString *)self->_logKey copy];
-      v12 = [(SKProductRemoteViewTask *)self _keyProfileForProductLookup];
-      v13 = [v6 copy];
+      _keyProfileForProductLookup = [(SKProductRemoteViewTask *)self _keyProfileForProductLookup];
+      v13 = [parametersCopy copy];
       cachedParameters = self->_cachedParameters;
       self->_cachedParameters = v13;
 
@@ -207,8 +207,8 @@ void __67__SKProductRemoteViewTask__dismissProductViewControllerWithResult___blo
       v16[2] = __66__SKProductRemoteViewTask_lookupProductWithParameters_completion___block_invoke;
       v16[3] = &unk_1E7B28B18;
       objc_copyWeak(&v18, &location);
-      v17 = v7;
-      [(SKProductRemoteViewTask *)self performLookupWithIdentifier:v10 parameters:v6 logKey:v11 keyProfile:v12 completionHandler:v16];
+      v17 = completionCopy;
+      [(SKProductRemoteViewTask *)self performLookupWithIdentifier:v10 parameters:parametersCopy logKey:v11 keyProfile:_keyProfileForProductLookup completionHandler:v16];
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(&location);
@@ -217,19 +217,19 @@ void __67__SKProductRemoteViewTask__dismissProductViewControllerWithResult___blo
     else
     {
       v15 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SKErrorDomain" code:5 userInfo:0];
-      if (v7)
+      if (completionCopy)
       {
-        (*(v7 + 2))(v7, 0, v15);
+        (*(completionCopy + 2))(completionCopy, 0, v15);
       }
     }
 
     goto LABEL_9;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v10 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SKErrorDomain" code:0 userInfo:0];
-    (*(v7 + 2))(v7, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
 LABEL_9:
   }
 }
@@ -348,9 +348,9 @@ LABEL_22:
 - (void)storeProductViewControllerWillDisappear
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [@"com.apple.Spotlight" isEqualToString:v4];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [@"com.apple.Spotlight" isEqualToString:bundleIdentifier];
 
   if (v5)
   {
@@ -385,9 +385,9 @@ LABEL_22:
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Will dismiss.", v9, 0x16u);
   }
 
-  v6 = [MEMORY[0x1E696AAE8] mainBundle];
-  v7 = [v6 bundleIdentifier];
-  v8 = [@"com.apple.Spotlight" isEqualToString:v7];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v8 = [@"com.apple.Spotlight" isEqualToString:bundleIdentifier];
 
   if (v8)
   {
@@ -404,10 +404,10 @@ void __64__SKProductRemoteViewTask_storeProductViewControllerWillDismiss__block_
   }
 }
 
-- (void)overridePresentationStyle:(id)a3
+- (void)overridePresentationStyle:(id)style
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  styleCopy = style;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
@@ -418,17 +418,17 @@ void __64__SKProductRemoteViewTask_storeProductViewControllerWillDismiss__block_
     v10 = 2114;
     v11 = logKey;
     v12 = 2048;
-    v13 = [v4 integerValue];
+    integerValue = [styleCopy integerValue];
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Received override presentation style: %ld", &v8, 0x20u);
   }
 
-  self->_modalPresentationStyle = [v4 integerValue];
+  self->_modalPresentationStyle = [styleCopy integerValue];
 }
 
-- (void)setPresentationStyle:(id)a3
+- (void)setPresentationStyle:(id)style
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  styleCopy = style;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
@@ -439,7 +439,7 @@ void __64__SKProductRemoteViewTask_storeProductViewControllerWillDismiss__block_
     v13 = 2114;
     v14 = logKey;
     v15 = 2048;
-    v16 = [v4 integerValue];
+    integerValue = [styleCopy integerValue];
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Received presentation style: %ld", buf, 0x20u);
   }
 
@@ -447,8 +447,8 @@ void __64__SKProductRemoteViewTask_storeProductViewControllerWillDismiss__block_
   v9[1] = 3221225472;
   v9[2] = __48__SKProductRemoteViewTask_setPresentationStyle___block_invoke;
   v9[3] = &unk_1E7B28B40;
-  v10 = v4;
-  v8 = v4;
+  v10 = styleCopy;
+  v8 = styleCopy;
   [(SKProductRemoteViewTask *)self _addConfigurationAction:v9 needsEntitlement:0];
 }
 
@@ -462,12 +462,12 @@ uint64_t __48__SKProductRemoteViewTask_setPresentationStyle___block_invoke(uint6
   return result;
 }
 
-- (void)setPreview:(id)a3
+- (void)setPreview:(id)preview
 {
-  v4 = a3;
+  previewCopy = preview;
   objc_initWeak(&location, self);
   v5 = [(NSString *)self->_logKey copy];
-  self->_isPreview = [v4 BOOLValue];
+  self->_isPreview = [previewCopy BOOLValue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__SKProductRemoteViewTask_setPreview___block_invoke;
@@ -475,7 +475,7 @@ uint64_t __48__SKProductRemoteViewTask_setPresentationStyle___block_invoke(uint6
   objc_copyWeak(&v11, &location);
   v6 = v5;
   v9 = v6;
-  v7 = v4;
+  v7 = previewCopy;
   v10 = v7;
   [(SKProductRemoteViewTask *)self _addConfigurationAction:v8 needsEntitlement:0];
 
@@ -509,16 +509,16 @@ LABEL_7:
   }
 }
 
-- (void)setVisibleInClientWindow:(id)a3
+- (void)setVisibleInClientWindow:(id)window
 {
-  v4 = a3;
-  self->_visibleInClientWindow = [v4 BOOLValue];
+  windowCopy = window;
+  self->_visibleInClientWindow = [windowCopy BOOLValue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__SKProductRemoteViewTask_setVisibleInClientWindow___block_invoke;
   v6[3] = &unk_1E7B28B40;
-  v7 = v4;
-  v5 = v4;
+  v7 = windowCopy;
+  v5 = windowCopy;
   [(SKProductRemoteViewTask *)self _addConfigurationAction:v6 needsEntitlement:0];
 }
 
@@ -533,15 +533,15 @@ void __52__SKProductRemoteViewTask_setVisibleInClientWindow___block_invoke(uint6
   }
 }
 
-- (void)_addConfigurationAction:(id)a3 needsEntitlement:(BOOL)a4
+- (void)_addConfigurationAction:(id)action needsEntitlement:(BOOL)entitlement
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  entitlementCopy = entitlement;
+  actionCopy = action;
+  v7 = actionCopy;
   extensionRemoteViewController = self->_extensionRemoteViewController;
   if (extensionRemoteViewController)
   {
-    if (v4 && !self->_isClientEntitled)
+    if (entitlementCopy && !self->_isClientEntitled)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -553,7 +553,7 @@ void __52__SKProductRemoteViewTask_setVisibleInClientWindow___block_invoke(uint6
 
     else
     {
-      (*(v6 + 2))(v6, extensionRemoteViewController, 0);
+      (*(actionCopy + 2))(actionCopy, extensionRemoteViewController, 0);
     }
 
     goto LABEL_16;
@@ -582,9 +582,9 @@ LABEL_15:
   }
 
   configurationActions = self->_configurationActions;
-  if (configurationActions && !v4 || (configurationActions = self->_entitledConfigurationActions) != 0 && v4)
+  if (configurationActions && !entitlementCopy || (configurationActions = self->_entitledConfigurationActions) != 0 && entitlementCopy)
   {
-    v11 = [v6 copy];
+    v11 = [actionCopy copy];
     v14 = _Block_copy(v11);
     [(NSMutableArray *)configurationActions addObject:v14];
 
@@ -609,10 +609,10 @@ void __68__SKProductRemoteViewTask__addConfigurationAction_needsEntitlement___bl
   }
 }
 
-- (void)_executeConfigurationActionsForUIService:(id)a3
+- (void)_executeConfigurationActionsForUIService:(id)service
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   v5 = self->_entitledConfigurationActions;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   entitledConfigurationActions = self->_entitledConfigurationActions;
@@ -685,10 +685,10 @@ void __68__SKProductRemoteViewTask__addConfigurationAction_needsEntitlement___bl
   }
 }
 
-- (void)_executeConfigurationActionsForExtension:(id)a3
+- (void)_executeConfigurationActionsForExtension:(id)extension
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  extensionCopy = extension;
   v5 = self->_entitledConfigurationActions;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   entitledConfigurationActions = self->_entitledConfigurationActions;
@@ -840,40 +840,40 @@ void __47__SKProductRemoteViewTask__displayItemIfNeeded__block_invoke_2(uint64_t
   [WeakRetained _finishWithResult:3];
 }
 
-- (BOOL)_isViewControllerDescendant:(id)a3 ofViewController:(id)a4
+- (BOOL)_isViewControllerDescendant:(id)descendant ofViewController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  descendantCopy = descendant;
+  controllerCopy = controller;
+  v7 = descendantCopy;
   v8 = v7;
-  v9 = v7;
+  parentViewController = v7;
   if (v7)
   {
-    v9 = v7;
-    if (v7 != v6)
+    parentViewController = v7;
+    if (v7 != controllerCopy)
     {
-      v9 = v7;
+      parentViewController = v7;
       do
       {
-        v10 = v9;
-        v9 = [v9 parentViewController];
+        v10 = parentViewController;
+        parentViewController = [parentViewController parentViewController];
       }
 
-      while (v9 && v9 != v6);
+      while (parentViewController && parentViewController != controllerCopy);
     }
   }
 
-  return v9 == v6;
+  return parentViewController == controllerCopy;
 }
 
-- (BOOL)_isProductUnavailableError:(id)a3
+- (BOOL)_isProductUnavailableError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
-    if ([v5 isEqualToString:@"ASDErrorDomain"])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:@"ASDErrorDomain"])
     {
       v6 = [v4 code] == 512;
     }
@@ -937,9 +937,9 @@ void __47__SKProductRemoteViewTask__showErrorController__block_invoke_2(uint64_t
   }
 }
 
-- (void)_loadUIServiceIfNecessaryWithCompletion:(id)a3
+- (void)_loadUIServiceIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = [(NSString *)self->_logKey copy];
   uiServiceRemoteViewController = self->_uiServiceRemoteViewController;
@@ -953,7 +953,7 @@ void __47__SKProductRemoteViewTask__showErrorController__block_invoke_2(uint64_t
     objc_copyWeak(&v13, &location);
     v12 = v5;
     v8 = [(_UIRemoteViewController *)uiServiceRemoteViewController serviceViewControllerProxyWithErrorHandler:v11];
-    v4[2](v4, v8);
+    completionCopy[2](completionCopy, v8);
     v9 = &v12;
   }
 
@@ -965,9 +965,9 @@ void __47__SKProductRemoteViewTask__showErrorController__block_invoke_2(uint64_t
     v14[3] = &unk_1E7B28C30;
     v7 = &v18;
     objc_copyWeak(&v18, &location);
-    v17 = v4;
+    v17 = completionCopy;
     v15 = v5;
-    v16 = self;
+    selfCopy = self;
     v10 = [SKRemoteProductViewController requestViewController:@"ServiceProductPageViewController" fromServiceWithBundleIdentifier:@"com.apple.ios.StoreKitUIService" connectionHandler:v14];
     v9 = &v17;
     v8 = v15;
@@ -1050,31 +1050,31 @@ void __67__SKProductRemoteViewTask__loadUIServiceIfNecessaryWithCompletion___blo
   }
 }
 
-- (void)_addChildController:(id)a3 toController:(id)a4
+- (void)_addChildController:(id)controller toController:(id)toController
 {
-  v5 = a4;
-  v6 = a3;
-  [v5 addChildViewController:v6];
-  v7 = [v5 view];
-  v8 = [v6 view];
-  [v7 addSubview:v8];
+  toControllerCopy = toController;
+  controllerCopy = controller;
+  [toControllerCopy addChildViewController:controllerCopy];
+  view = [toControllerCopy view];
+  view2 = [controllerCopy view];
+  [view addSubview:view2];
 
-  v9 = [v6 view];
-  v10 = [v5 view];
+  view3 = [controllerCopy view];
+  view4 = [toControllerCopy view];
 
-  [v10 bounds];
-  [v9 setFrame:?];
+  [view4 bounds];
+  [view3 setFrame:?];
 
-  v11 = [v6 view];
+  view5 = [controllerCopy view];
 
-  [v11 setAutoresizingMask:18];
+  [view5 setAutoresizingMask:18];
 }
 
-- (void)_showExtensionWithID:(id)a3
+- (void)_showExtensionWithID:(id)d
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     if (self->_didLoad)
     {
@@ -1087,7 +1087,7 @@ void __67__SKProductRemoteViewTask__loadUIServiceIfNecessaryWithCompletion___blo
             logKey = self->_logKey;
             modalPresentationStyle = self->_modalPresentationStyle;
             *buf = 138543874;
-            v22 = self;
+            selfCopy = self;
             v23 = 2114;
             v24 = logKey;
             v25 = 2048;
@@ -1109,7 +1109,7 @@ void __67__SKProductRemoteViewTask__loadUIServiceIfNecessaryWithCompletion___blo
       if (self->_extensionRemoteContainerViewController)
       {
         [(SKProductRemoteViewTask *)self _killExtensionIfNecessary];
-        v8 = [(_UIRemoteViewController *)self->_extensionRemoteViewController disconnect];
+        disconnect = [(_UIRemoteViewController *)self->_extensionRemoteViewController disconnect];
         extensionRemoteViewController = self->_extensionRemoteViewController;
         self->_extensionRemoteViewController = 0;
 
@@ -1122,7 +1122,7 @@ void __67__SKProductRemoteViewTask__loadUIServiceIfNecessaryWithCompletion___blo
       }
 
       v20 = 0;
-      v12 = [MEMORY[0x1E696ABD0] extensionWithIdentifier:v4 error:&v20];
+      v12 = [MEMORY[0x1E696ABD0] extensionWithIdentifier:dCopy error:&v20];
       v13 = v20;
       if (v12)
       {
@@ -1225,21 +1225,21 @@ void __48__SKProductRemoteViewTask__showExtensionWithID___block_invoke_2(uint64_
   }
 }
 
-- (void)_didReceiveExtensionRemoteViewController:(id)a3
+- (void)_didReceiveExtensionRemoteViewController:(id)controller
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_extensionRemoteViewController, a3);
+  controllerCopy = controller;
+  objc_storeStrong(&self->_extensionRemoteViewController, controller);
   v6 = objc_alloc_init(ServiceCardContainerViewController);
   extensionRemoteCardContainerViewController = self->_extensionRemoteCardContainerViewController;
   self->_extensionRemoteCardContainerViewController = v6;
 
   [(ServiceCardContainerViewController *)self->_extensionRemoteCardContainerViewController setDismissalDelegate:self];
-  v8 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v9 = [(ServiceCardContainerViewController *)self->_extensionRemoteCardContainerViewController view];
-  [v9 setTintColor:v8];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  view = [(ServiceCardContainerViewController *)self->_extensionRemoteCardContainerViewController view];
+  [view setTintColor:systemBlueColor];
 
-  [(ServiceCardContainerViewController *)self->_extensionRemoteCardContainerViewController setRemoteViewController:v5];
+  [(ServiceCardContainerViewController *)self->_extensionRemoteCardContainerViewController setRemoteViewController:controllerCopy];
   [(ServiceCardContainerViewController *)self->_extensionRemoteCardContainerViewController setChildViewController:self->_extensionRemoteContainerViewController];
   if (self->_hasPresentationEntitlement)
   {
@@ -1248,7 +1248,7 @@ void __48__SKProductRemoteViewTask__showExtensionWithID___block_invoke_2(uint64_
       logKey = self->_logKey;
       modalPresentationStyle = self->_modalPresentationStyle;
       *buf = 138543874;
-      v28 = self;
+      selfCopy = self;
       v29 = 2114;
       v30 = logKey;
       v31 = 2048;
@@ -1259,8 +1259,8 @@ void __48__SKProductRemoteViewTask__showExtensionWithID___block_invoke_2(uint64_
     [(ServiceCardContainerViewController *)self->_extensionRemoteCardContainerViewController setModalPresentationStyle:self->_modalPresentationStyle];
   }
 
-  v12 = [(ServiceCardContainerViewController *)self->_extensionRemoteCardContainerViewController presentationController];
-  [v12 setDelegate:self];
+  presentationController = [(ServiceCardContainerViewController *)self->_extensionRemoteCardContainerViewController presentationController];
+  [presentationController setDelegate:self];
 
   if (self->_isPreview)
   {
@@ -1275,7 +1275,7 @@ void __48__SKProductRemoteViewTask__showExtensionWithID___block_invoke_2(uint64_
     [WeakRetained presentViewController:self->_extensionRemoteCardContainerViewController animated:1 completion:&__block_literal_global_51];
   }
 
-  [v5 setDelegate:self];
+  [controllerCopy setDelegate:self];
   [(SKProductRemoteViewTask *)self _executeConfigurationActionsForExtension:self->_extensionRemoteViewController];
   v15 = [(NSString *)self->_logKey copy];
   objc_initWeak(buf, self);
@@ -1286,7 +1286,7 @@ void __48__SKProductRemoteViewTask__showExtensionWithID___block_invoke_2(uint64_
   objc_copyWeak(&v26, buf);
   v16 = v15;
   v25 = v16;
-  v17 = [v5 serviceViewControllerProxyWithErrorHandler:&v21];
+  v17 = [controllerCopy serviceViewControllerProxyWithErrorHandler:&v21];
   if (v17 && self->_lookupResult && self->_cachedParameters)
   {
     v18 = [(SKProductRemoteViewTask *)self _hostApplicationIdentifier:v21];
@@ -1394,7 +1394,7 @@ void __54__SKProductRemoteViewTask__showExtensionFromUIService__block_invoke_2(u
     {
       logKey = self->_logKey;
       v4 = 138543618;
-      v5 = self;
+      selfCopy = self;
       v6 = 2114;
       v7 = logKey;
       _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Killing extension.", &v4, 0x16u);
@@ -1422,9 +1422,9 @@ void __54__SKProductRemoteViewTask__showExtensionFromUIService__block_invoke_2(u
   }
 }
 
-- (id)_productIDFromParameters:(id)a3
+- (id)_productIDFromParameters:(id)parameters
 {
-  v3 = [a3 objectForKeyedSubscript:@"id"];
+  v3 = [parameters objectForKeyedSubscript:@"id"];
   if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ![v3 length] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && !objc_msgSend(v3, "integerValue"))
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1459,14 +1459,14 @@ LABEL_11:
   return v4;
 }
 
-- (void)_finishWithResult:(int64_t)a3
+- (void)_finishWithResult:(int64_t)result
 {
   v13 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     logKey = self->_logKey;
     *buf = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
     v12 = logKey;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Finishing.", buf, 0x16u);
@@ -1484,7 +1484,7 @@ LABEL_11:
   v7[2] = __45__SKProductRemoteViewTask__finishWithResult___block_invoke;
   v7[3] = &unk_1E7B28CD0;
   objc_copyWeak(v8, buf);
-  v8[1] = a3;
+  v8[1] = result;
   [(ServiceCardContainerViewController *)extensionRemoteCardContainerViewController dismissViewControllerAnimated:1 completion:v7];
   objc_destroyWeak(v8);
   objc_destroyWeak(buf);
@@ -1516,50 +1516,50 @@ void __45__SKProductRemoteViewTask__finishWithResult___block_invoke(uint64_t a1)
   }
 }
 
-- (void)productPageRemoteViewController:(id)a3 finishWithResult:(unint64_t)a4 completion:(id)a5
+- (void)productPageRemoteViewController:(id)controller finishWithResult:(unint64_t)result completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     logKey = self->_logKey;
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = logKey;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Product page finished.", &v12, 0x16u);
   }
 
-  if (a4 > 4)
+  if (result > 4)
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = qword_1B2576EB8[a4];
+    v11 = qword_1B2576EB8[result];
   }
 
   [(SKProductRemoteViewTask *)self _finishWithResult:v11];
 }
 
-- (void)productPageRemoteViewControllerLoadDidFinish:(id)a3
+- (void)productPageRemoteViewControllerLoadDidFinish:(id)finish
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  finishCopy = finish;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     logKey = self->_logKey;
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
     v10 = logKey;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[%{public}@][%{public}@]: Product page finished loading.", &v7, 0x16u);
   }
 
-  v6 = [(_UIResilientRemoteViewContainerViewController *)self->_extensionRemoteContainerViewController remoteViewController];
-  [(ServiceCardContainerViewController *)self->_extensionRemoteCardContainerViewController setRemoteViewController:v6];
+  remoteViewController = [(_UIResilientRemoteViewContainerViewController *)self->_extensionRemoteContainerViewController remoteViewController];
+  [(ServiceCardContainerViewController *)self->_extensionRemoteCardContainerViewController setRemoteViewController:remoteViewController];
 
   if (![(SKProductRemoteViewTask *)self _isViewControllerDescendant:self->_extensionRemoteContainerViewController ofViewController:self->_extensionRemoteCardContainerViewController])
   {
@@ -1567,21 +1567,21 @@ void __45__SKProductRemoteViewTask__finishWithResult___block_invoke(uint64_t a1)
   }
 }
 
-- (void)productPageRemoteViewController:(id)a3 userDidInteractWithProduct:(unint64_t)a4
+- (void)productPageRemoteViewController:(id)controller userDidInteractWithProduct:(unint64_t)product
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     logKey = self->_logKey;
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
     v12 = logKey;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Product page user did interact with product.", &v9, 0x16u);
   }
 
-  if (a4 >= 3)
+  if (product >= 3)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -1592,22 +1592,22 @@ void __45__SKProductRemoteViewTask__finishWithResult___block_invoke(uint64_t a1)
   else if (self->_isClientEntitled)
   {
     WeakRetained = objc_loadWeakRetained(&self->_storeController);
-    [WeakRetained _userDidInteractWithProduct:a4];
+    [WeakRetained _userDidInteractWithProduct:product];
   }
 }
 
-- (void)productPageRemoteViewController:(id)a3 didTerminateWithError:(id)a4
+- (void)productPageRemoteViewController:(id)controller didTerminateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     [SKProductRemoteViewTask productPageRemoteViewController:didTerminateWithError:];
   }
 
-  v8 = [(_UIResilientRemoteViewContainerViewController *)self->_extensionRemoteContainerViewController remoteViewController];
+  remoteViewController = [(_UIResilientRemoteViewContainerViewController *)self->_extensionRemoteContainerViewController remoteViewController];
 
-  if (v8 == v6)
+  if (remoteViewController == controllerCopy)
   {
     [(SKProductRemoteViewTask *)self _finishWithResult:1];
   }
@@ -1620,7 +1620,7 @@ void __45__SKProductRemoteViewTask__finishWithResult___block_invoke(uint64_t a1)
   {
     logKey = self->_logKey;
     v5 = 138543618;
-    v6 = self;
+    selfCopy = self;
     v7 = 2114;
     v8 = logKey;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Card dismissed.", &v5, 0x16u);
@@ -1630,14 +1630,14 @@ void __45__SKProductRemoteViewTask__finishWithResult___block_invoke(uint64_t a1)
   [WeakRetained dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   v9 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     logKey = self->_logKey;
     v5 = 138543618;
-    v6 = self;
+    selfCopy = self;
     v7 = 2114;
     v8 = logKey;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Presentation controller dismissed.", &v5, 0x16u);
@@ -1646,46 +1646,46 @@ void __45__SKProductRemoteViewTask__finishWithResult___block_invoke(uint64_t a1)
   [(SKProductRemoteViewTask *)self _finishWithResult:1];
 }
 
-- (void)loadProductWithPageDictionary:(id)a3 completionBlock:(id)a4
+- (void)loadProductWithPageDictionary:(id)dictionary completionBlock:(id)block
 {
-  v4 = a4;
+  blockCopy = block;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
   {
     [SKProductRemoteViewTask loadProductWithPageDictionary:completionBlock:];
   }
 
   v5 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SKErrorDomain" code:0 userInfo:0];
-  v4[2](v4, 0, v5);
+  blockCopy[2](blockCopy, 0, v5);
 }
 
-- (void)loadProductWithRequest:(id)a3 completionBlock:(id)a4
+- (void)loadProductWithRequest:(id)request completionBlock:(id)block
 {
-  v4 = a4;
+  blockCopy = block;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
   {
     [SKProductRemoteViewTask loadProductWithRequest:completionBlock:];
   }
 
   v5 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SKErrorDomain" code:0 userInfo:0];
-  v4[2](v4, 0, v5);
+  blockCopy[2](blockCopy, 0, v5);
 }
 
-- (void)loadProductWithURL:(id)a3 completionBlock:(id)a4
+- (void)loadProductWithURL:(id)l completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  lCopy = l;
+  blockCopy = block;
+  if (lCopy)
   {
     objc_initWeak(&location, self);
-    v8 = [(SKProductRemoteViewTask *)self _keyProfileForProductLookup];
+    _keyProfileForProductLookup = [(SKProductRemoteViewTask *)self _keyProfileForProductLookup];
     logKey = self->_logKey;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __62__SKProductRemoteViewTask_loadProductWithURL_completionBlock___block_invoke;
     v11[3] = &unk_1E7B28B18;
     objc_copyWeak(&v13, &location);
-    v12 = v7;
-    [(SKProductRemoteViewTask *)self performLookupWithURL:v6 logKey:logKey keyProfile:v8 completionHandler:v11];
+    v12 = blockCopy;
+    [(SKProductRemoteViewTask *)self performLookupWithURL:lCopy logKey:logKey keyProfile:_keyProfileForProductLookup completionHandler:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -1699,9 +1699,9 @@ void __45__SKProductRemoteViewTask__finishWithResult___block_invoke(uint64_t a1)
     }
 
     v10 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SKErrorDomain" code:5 userInfo:0];
-    if (v7)
+    if (blockCopy)
     {
-      (*(v7 + 2))(v7, 0, v10);
+      (*(blockCopy + 2))(blockCopy, 0, v10);
     }
   }
 }
@@ -1800,9 +1800,9 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)setAdditionalBuyParameters:(id)a3
+- (void)setAdditionalBuyParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   objc_initWeak(&location, self);
   v5 = [(NSString *)self->_logKey copy];
   v8[0] = MEMORY[0x1E69E9820];
@@ -1812,7 +1812,7 @@ LABEL_21:
   objc_copyWeak(&v11, &location);
   v6 = v5;
   v9 = v6;
-  v7 = v4;
+  v7 = parametersCopy;
   v10 = v7;
   [(SKProductRemoteViewTask *)self _addConfigurationAction:v8 needsEntitlement:1];
 
@@ -1845,9 +1845,9 @@ LABEL_7:
   }
 }
 
-- (void)setAffiliateIdentifier:(id)a3
+- (void)setAffiliateIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   v5 = [(NSString *)self->_logKey copy];
   v8[0] = MEMORY[0x1E69E9820];
@@ -1857,7 +1857,7 @@ LABEL_7:
   objc_copyWeak(&v11, &location);
   v6 = v5;
   v9 = v6;
-  v7 = v4;
+  v7 = identifierCopy;
   v10 = v7;
   [(SKProductRemoteViewTask *)self _addConfigurationAction:v8 needsEntitlement:1];
 
@@ -1890,9 +1890,9 @@ LABEL_7:
   }
 }
 
-- (void)setClientIdentifier:(id)a3
+- (void)setClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   v5 = [(NSString *)self->_logKey copy];
   v8[0] = MEMORY[0x1E69E9820];
@@ -1902,7 +1902,7 @@ LABEL_7:
   objc_copyWeak(&v11, &location);
   v6 = v5;
   v9 = v6;
-  v7 = v4;
+  v7 = identifierCopy;
   v10 = v7;
   [(SKProductRemoteViewTask *)self _addConfigurationAction:v8 needsEntitlement:1];
 
@@ -1939,21 +1939,21 @@ LABEL_7:
 {
   if (self->_isClientEntitled && (hostApplicationOverride = self->_hostApplicationOverride) != 0)
   {
-    v3 = hostApplicationOverride;
+    bundleIdentifier = hostApplicationOverride;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v3 = [v4 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (void)setCancelButtonTitle:(id)a3
+- (void)setCancelButtonTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   objc_initWeak(&location, self);
   v5 = [(NSString *)self->_logKey copy];
   v8[0] = MEMORY[0x1E69E9820];
@@ -1963,7 +1963,7 @@ LABEL_7:
   objc_copyWeak(&v11, &location);
   v6 = v5;
   v9 = v6;
-  v7 = v4;
+  v7 = titleCopy;
   v10 = v7;
   [(SKProductRemoteViewTask *)self _addConfigurationAction:v8 needsEntitlement:1];
 
@@ -1996,9 +1996,9 @@ LABEL_7:
   }
 }
 
-- (void)setRightBarButtonTitle:(id)a3
+- (void)setRightBarButtonTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   objc_initWeak(&location, self);
   v5 = [(NSString *)self->_logKey copy];
   v8[0] = MEMORY[0x1E69E9820];
@@ -2008,7 +2008,7 @@ LABEL_7:
   objc_copyWeak(&v11, &location);
   v6 = v5;
   v9 = v6;
-  v7 = v4;
+  v7 = titleCopy;
   v10 = v7;
   [(SKProductRemoteViewTask *)self _addConfigurationAction:v8 needsEntitlement:1];
 
@@ -2041,7 +2041,7 @@ LABEL_7:
   }
 }
 
-- (void)setShowsRightBarButton:(BOOL)a3
+- (void)setShowsRightBarButton:(BOOL)button
 {
   objc_initWeak(&location, self);
   v5 = [(NSString *)self->_logKey copy];
@@ -2052,7 +2052,7 @@ LABEL_7:
   objc_copyWeak(&v9, &location);
   v6 = v5;
   v8 = v6;
-  v10 = a3;
+  buttonCopy = button;
   [(SKProductRemoteViewTask *)self _addConfigurationAction:v7 needsEntitlement:1];
 
   objc_destroyWeak(&v9);
@@ -2081,9 +2081,9 @@ void __50__SKProductRemoteViewTask_setShowsRightBarButton___block_invoke(uint64_
   }
 }
 
-- (void)setPromptString:(id)a3
+- (void)setPromptString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   objc_initWeak(&location, self);
   v5 = [(NSString *)self->_logKey copy];
   v8[0] = MEMORY[0x1E69E9820];
@@ -2093,7 +2093,7 @@ void __50__SKProductRemoteViewTask_setShowsRightBarButton___block_invoke(uint64_
   objc_copyWeak(&v11, &location);
   v6 = v5;
   v9 = v6;
-  v7 = v4;
+  v7 = stringCopy;
   v10 = v7;
   [(SKProductRemoteViewTask *)self _addConfigurationAction:v8 needsEntitlement:1];
 
@@ -2126,9 +2126,9 @@ LABEL_7:
   }
 }
 
-- (void)setProductPageStyle:(id)a3
+- (void)setProductPageStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   objc_initWeak(&location, self);
   v5 = [(NSString *)self->_logKey copy];
   v8[0] = MEMORY[0x1E69E9820];
@@ -2138,7 +2138,7 @@ LABEL_7:
   objc_copyWeak(&v11, &location);
   v6 = v5;
   v9 = v6;
-  v7 = v4;
+  v7 = styleCopy;
   v10 = v7;
   [(SKProductRemoteViewTask *)self _addConfigurationAction:v8 needsEntitlement:1];
 
@@ -2171,9 +2171,9 @@ LABEL_7:
   }
 }
 
-- (void)setShowsStoreButton:(id)a3
+- (void)setShowsStoreButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   objc_initWeak(&location, self);
   v5 = [(NSString *)self->_logKey copy];
   v8[0] = MEMORY[0x1E69E9820];
@@ -2183,7 +2183,7 @@ LABEL_7:
   objc_copyWeak(&v11, &location);
   v6 = v5;
   v9 = v6;
-  v7 = v4;
+  v7 = buttonCopy;
   v10 = v7;
   [(SKProductRemoteViewTask *)self _addConfigurationAction:v8 needsEntitlement:1];
 
@@ -2212,9 +2212,9 @@ void __47__SKProductRemoteViewTask_setShowsStoreButton___block_invoke(uint64_t a
   }
 }
 
-- (void)setScriptContextDictionary:(id)a3
+- (void)setScriptContextDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_initWeak(&location, self);
   v5 = [(NSString *)self->_logKey copy];
   v8[0] = MEMORY[0x1E69E9820];
@@ -2224,7 +2224,7 @@ void __47__SKProductRemoteViewTask_setShowsStoreButton___block_invoke(uint64_t a
   objc_copyWeak(&v11, &location);
   v6 = v5;
   v9 = v6;
-  v7 = v4;
+  v7 = dictionaryCopy;
   v10 = v7;
   [(SKProductRemoteViewTask *)self _addConfigurationAction:v8 needsEntitlement:1];
 
@@ -2257,9 +2257,9 @@ LABEL_7:
   }
 }
 
-- (void)setUsageContext:(id)a3
+- (void)setUsageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   objc_initWeak(&location, self);
   v5 = [(NSString *)self->_logKey copy];
   v8[0] = MEMORY[0x1E69E9820];
@@ -2269,7 +2269,7 @@ LABEL_7:
   objc_copyWeak(&v11, &location);
   v6 = v5;
   v9 = v6;
-  v7 = v4;
+  v7 = contextCopy;
   v10 = v7;
   [(SKProductRemoteViewTask *)self _addConfigurationAction:v8 needsEntitlement:1];
 
@@ -2302,9 +2302,9 @@ LABEL_7:
   }
 }
 
-- (void)setAskToBuy:(BOOL)a3
+- (void)setAskToBuy:(BOOL)buy
 {
-  self->_isAskToBuy = a3;
+  self->_isAskToBuy = buy;
   objc_initWeak(&location, self);
   v5 = [(NSString *)self->_logKey copy];
   v7[0] = MEMORY[0x1E69E9820];
@@ -2314,7 +2314,7 @@ LABEL_7:
   objc_copyWeak(&v9, &location);
   v6 = v5;
   v8 = v6;
-  v10 = a3;
+  buyCopy = buy;
   [(SKProductRemoteViewTask *)self _addConfigurationAction:v7 needsEntitlement:1];
 
   objc_destroyWeak(&v9);
@@ -2354,56 +2354,56 @@ void __44__SKProductRemoteViewTask_finishImmediately__block_invoke(uint64_t a1, 
   }
 }
 
-+ (id)_unavailableErrorWithUserInfo:(id)a3
++ (id)_unavailableErrorWithUserInfo:(id)info
 {
   v3 = MEMORY[0x1E696ABC0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithDomain:@"SKErrorDomain" code:5 userInfo:v4];
+  infoCopy = info;
+  v5 = [[v3 alloc] initWithDomain:@"SKErrorDomain" code:5 userInfo:infoCopy];
 
   return v5;
 }
 
-+ (id)_unknownErrorWithUserInfo:(id)a3
++ (id)_unknownErrorWithUserInfo:(id)info
 {
   v3 = MEMORY[0x1E696ABC0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithDomain:@"SKErrorDomain" code:0 userInfo:v4];
+  infoCopy = info;
+  v5 = [[v3 alloc] initWithDomain:@"SKErrorDomain" code:0 userInfo:infoCopy];
 
   return v5;
 }
 
-- (void)performLookupWithIdentifier:(NSString *)a3 parameters:(NSDictionary *)a4 logKey:(NSString *)a5 keyProfile:(NSString *)a6 completionHandler:(id)a7
+- (void)performLookupWithIdentifier:(NSString *)identifier parameters:(NSDictionary *)parameters logKey:(NSString *)key keyProfile:(NSString *)profile completionHandler:(id)handler
 {
-  v12 = _Block_copy(a7);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
-  v13[4] = a5;
-  v13[5] = a6;
+  v13[2] = identifier;
+  v13[3] = parameters;
+  v13[4] = key;
+  v13[5] = profile;
   v13[6] = v12;
   v13[7] = self;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = self;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  keyCopy = key;
+  profileCopy = profile;
+  selfCopy = self;
 
   sub_1B251DDF8(&unk_1B2584E00, v13);
 }
 
-- (void)performLookupWithURL:(NSURL *)a3 logKey:(NSString *)a4 keyProfile:(NSString *)a5 completionHandler:(id)a6
+- (void)performLookupWithURL:(NSURL *)l logKey:(NSString *)key keyProfile:(NSString *)profile completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
-  v11[4] = a5;
+  v11[2] = l;
+  v11[3] = key;
+  v11[4] = profile;
   v11[5] = v10;
   v11[6] = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = self;
+  lCopy = l;
+  keyCopy = key;
+  profileCopy = profile;
+  selfCopy = self;
 
   sub_1B251DDF8(&unk_1B2584DA8, v11);
 }

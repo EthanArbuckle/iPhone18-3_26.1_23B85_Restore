@@ -1,31 +1,31 @@
 @interface PKAutoRefineTaskCoordinator
 - (BOOL)hasRefinableStrokes;
-- (BOOL)isRefinableStroke:(id)a3;
-- (id)initWithDelegate:(void *)a3 recognitionController:;
+- (BOOL)isRefinableStroke:(id)stroke;
+- (id)initWithDelegate:(void *)delegate recognitionController:;
 - (uint64_t)setUserInteractionDelay:(uint64_t)result;
-- (void)autoRefineTask:(id)a3 synthesizeRefinedDrawingForStrokes:(id)a4 transcription:(id)a5 drawingUUID:(id)a6 completionBlock:(id)a7;
+- (void)autoRefineTask:(id)task synthesizeRefinedDrawingForStrokes:(id)strokes transcription:(id)transcription drawingUUID:(id)d completionBlock:(id)block;
 - (void)clearRefinableStrokes;
-- (void)enumerateRefinableStrokesWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)indexRefinableStroke:(id *)a1;
+- (void)enumerateRefinableStrokesWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)indexRefinableStroke:(id *)stroke;
 @end
 
 @implementation PKAutoRefineTaskCoordinator
 
-- (id)initWithDelegate:(void *)a3 recognitionController:
+- (id)initWithDelegate:(void *)delegate recognitionController:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  delegateCopy = delegate;
+  if (self)
   {
-    v18.receiver = a1;
+    v18.receiver = self;
     v18.super_class = PKAutoRefineTaskCoordinator;
     v7 = objc_msgSendSuper2(&v18, sel_init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
       objc_storeWeak(v7 + 2, v5);
-      objc_storeWeak(a1 + 1, v6);
-      *(a1 + 24) = a1[3] & 0xFE | objc_opt_respondsToSelector() & 1;
+      objc_storeWeak(self + 1, delegateCopy);
+      *(self + 24) = self[3] & 0xFE | objc_opt_respondsToSelector() & 1;
       if (objc_opt_respondsToSelector())
       {
         v8 = 2;
@@ -36,7 +36,7 @@
         v8 = 0;
       }
 
-      *(a1 + 24) = a1[3] & 0xFD | v8;
+      *(self + 24) = self[3] & 0xFD | v8;
       if (objc_opt_respondsToSelector())
       {
         v9 = 4;
@@ -47,19 +47,19 @@
         v9 = 0;
       }
 
-      *(a1 + 24) = a1[3] & 0xFB | v9;
-      v10 = [MEMORY[0x1E696AAE8] mainBundle];
-      v11 = [v10 bundleIdentifier];
-      v12 = [v11 isEqualToString:@"com.apple.freeform"];
+      *(self + 24) = self[3] & 0xFB | v9;
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v12 = [bundleIdentifier isEqualToString:@"com.apple.freeform"];
 
       if (v12)
       {
-        a1[4] = 0x3FD0000000000000;
+        self[4] = 0x3FD0000000000000;
       }
 
-      if ((a1[3] & 1) == 0)
+      if ((self[3] & 1) == 0)
       {
-        WeakRetained = objc_loadWeakRetained(a1 + 1);
+        WeakRetained = objc_loadWeakRetained(self + 1);
         v14 = WeakRetained;
         if (WeakRetained)
         {
@@ -72,12 +72,12 @@
         }
 
         v16 = v15;
-        [(PKRecognitionSessionManager *)v16 setAutoRefineViewDelegate:a1];
+        [(PKRecognitionSessionManager *)v16 setAutoRefineViewDelegate:self];
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __111__PKAutoRefineTaskCoordinator_autoRefineTask_synthesizeRefinedDrawingForStrokes_transcription_completionBlock___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5, void *a6, double a7, double a8)
@@ -513,12 +513,12 @@ void __111__PKAutoRefineTaskCoordinator_autoRefineTask_synthesizeRefinedDrawingF
   }
 }
 
-- (void)indexRefinableStroke:(id *)a1
+- (void)indexRefinableStroke:(id *)stroke
 {
-  if (a1)
+  if (stroke)
   {
     v3 = a2;
-    WeakRetained = objc_loadWeakRetained(a1 + 1);
+    WeakRetained = objc_loadWeakRetained(stroke + 1);
     v5 = WeakRetained;
     if (WeakRetained)
     {
@@ -531,13 +531,13 @@ void __111__PKAutoRefineTaskCoordinator_autoRefineTask_synthesizeRefinedDrawingF
     }
 
     v7 = v6;
-    [(PKRecognitionSessionManager *)v7 setAutoRefineViewDelegate:a1];
+    [(PKRecognitionSessionManager *)v7 setAutoRefineViewDelegate:stroke];
 
-    v8 = objc_loadWeakRetained(a1 + 2);
-    v13 = [v8 autoRefineTaskCoordinatorAutoRefineController:a1];
+    v8 = objc_loadWeakRetained(stroke + 2);
+    v13 = [v8 autoRefineTaskCoordinatorAutoRefineController:stroke];
 
     [(PKAutoRefineController *)v13 indexRefinableStroke:v3];
-    v9 = objc_loadWeakRetained(a1 + 1);
+    v9 = objc_loadWeakRetained(stroke + 1);
     v10 = v9;
     if (v9)
     {
@@ -580,41 +580,41 @@ void __111__PKAutoRefineTaskCoordinator_autoRefineTask_synthesizeRefinedDrawingF
   return v5;
 }
 
-- (BOOL)isRefinableStroke:(id)a3
+- (BOOL)isRefinableStroke:(id)stroke
 {
-  v4 = a3;
+  strokeCopy = stroke;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = [WeakRetained autoRefineTaskCoordinatorAutoRefineController:self];
 
-  LOBYTE(WeakRetained) = [(PKAutoRefineController *)v6 isRefinableStroke:v4];
+  LOBYTE(WeakRetained) = [(PKAutoRefineController *)v6 isRefinableStroke:strokeCopy];
   return WeakRetained;
 }
 
-- (void)enumerateRefinableStrokesWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateRefinableStrokesWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = [WeakRetained autoRefineTaskCoordinatorAutoRefineController:self];
 
   if (v8)
   {
-    [v8[1] enumerateObjectsWithOptions:a3 usingBlock:v6];
+    [v8[1] enumerateObjectsWithOptions:options usingBlock:blockCopy];
   }
 }
 
-- (void)autoRefineTask:(id)a3 synthesizeRefinedDrawingForStrokes:(id)a4 transcription:(id)a5 drawingUUID:(id)a6 completionBlock:(id)a7
+- (void)autoRefineTask:(id)task synthesizeRefinedDrawingForStrokes:(id)strokes transcription:(id)transcription drawingUUID:(id)d completionBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  taskCopy = task;
+  strokesCopy = strokes;
+  transcriptionCopy = transcription;
+  blockCopy = block;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (WeakRetained)
     {
-      v37 = v11;
-      v35 = v13;
+      v37 = taskCopy;
+      v35 = transcriptionCopy;
       if (*&self->_delegateFlags)
       {
         v17 = objc_loadWeakRetained(&self->_delegate);
@@ -627,10 +627,10 @@ void __111__PKAutoRefineTaskCoordinator_autoRefineTask_synthesizeRefinedDrawingF
       }
 
       v18 = [WeakRetained autoRefineTaskCoordinatorAutoRefineController:self];
-      v36 = [v16 refineAnimationController];
+      refineAnimationController = [v16 refineAnimationController];
       v19 = objc_loadWeakRetained(&self->_recognitionController);
-      v20 = [v19 drawing];
-      v21 = [v20 copy];
+      drawing = [v19 drawing];
+      v21 = [drawing copy];
 
       v22 = objc_loadWeakRetained(&self->_recognitionController);
       v23 = v22;
@@ -646,7 +646,7 @@ void __111__PKAutoRefineTaskCoordinator_autoRefineTask_synthesizeRefinedDrawingF
 
       v25 = v24;
 
-      v26 = [(PKRecognitionSessionManager *)v25 session];
+      session = [(PKRecognitionSessionManager *)v25 session];
       if (v16)
       {
         [v16 inputScale];
@@ -672,36 +672,36 @@ void __111__PKAutoRefineTaskCoordinator_autoRefineTask_synthesizeRefinedDrawingF
       v43 = &unk_1E82DA4C0;
       objc_copyWeak(v52, location);
       v44 = WeakRetained;
-      v45 = self;
+      selfCopy = self;
       v30 = v37;
       v46 = v30;
       v31 = v21;
       v47 = v31;
       v32 = v18;
       v48 = v32;
-      v49 = v12;
+      v49 = strokesCopy;
       v52[1] = *&v28;
       v33 = v16;
       v50 = v33;
-      v34 = v36;
+      v34 = refineAnimationController;
       v51 = v34;
       v38[0] = MEMORY[0x1E69E9820];
       v38[1] = 3221225472;
       v38[2] = __111__PKAutoRefineTaskCoordinator_autoRefineTask_synthesizeRefinedDrawingForStrokes_transcription_completionBlock___block_invoke_2_19;
       v38[3] = &unk_1E82D6F70;
-      v39 = v14;
-      [(PKAutoRefineTask *)v30 executeSynthesisWithSession:v26 processingBlock:buf completionBlock:v38];
+      v39 = blockCopy;
+      [(PKAutoRefineTask *)v30 executeSynthesisWithSession:session processingBlock:buf completionBlock:v38];
 
       objc_destroyWeak(v52);
       objc_destroyWeak(location);
 
-      v11 = v37;
-      v13 = v35;
+      taskCopy = v37;
+      transcriptionCopy = v35;
     }
 
     else
     {
-      v14[2](v14);
+      blockCopy[2](blockCopy);
     }
   }
 }

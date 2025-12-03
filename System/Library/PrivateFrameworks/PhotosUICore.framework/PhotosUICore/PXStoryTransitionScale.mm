@@ -1,7 +1,7 @@
 @interface PXStoryTransitionScale
-- (PXStoryTransitionScale)initWithTransitionInfo:(id *)a3 event:(int64_t)a4 clipLayouts:(id)a5;
-- (double)clipAlphaForTime:(id *)a3;
-- (void)_configureWithTransitionInfo:(id *)a3;
+- (PXStoryTransitionScale)initWithTransitionInfo:(id *)info event:(int64_t)event clipLayouts:(id)layouts;
+- (double)clipAlphaForTime:(id *)time;
+- (void)_configureWithTransitionInfo:(id *)info;
 - (void)timeDidChange;
 - (void)wasStopped;
 @end
@@ -15,8 +15,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(PXStoryConcreteTransition *)self clipLayouts];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  clipLayouts = [(PXStoryConcreteTransition *)self clipLayouts];
+  v4 = [clipLayouts countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -31,7 +31,7 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(clipLayouts);
         }
 
         v8 = *(*(&v15 + 1) + 8 * v7);
@@ -45,7 +45,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [clipLayouts countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -71,19 +71,19 @@
     time.epoch = v18;
     v5 = CMTimeGetSeconds(&time);
     zoomingOut = self->_zoomingOut;
-    v7 = [(PXStoryConcreteTransition *)self event];
+    event = [(PXStoryConcreteTransition *)self event];
     if (zoomingOut)
     {
-      if (v7 != 1)
+      if (event != 1)
       {
-        if (v7 != 2)
+        if (event != 2)
         {
-          if (!v7)
+          if (!event)
           {
-            v8 = [MEMORY[0x1E696AAA8] currentHandler];
-            v9 = v8;
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            v9 = currentHandler;
             v10 = a2;
-            v11 = self;
+            selfCopy2 = self;
             v12 = 771;
             goto LABEL_18;
           }
@@ -99,24 +99,24 @@ LABEL_10:
 
     else
     {
-      if (v7 == 1)
+      if (event == 1)
       {
 LABEL_13:
         v14 = &OBJC_IVAR___PXStoryTransitionScale__orderedBelowAnimationCurve;
         goto LABEL_14;
       }
 
-      if (v7 != 2)
+      if (event != 2)
       {
-        if (!v7)
+        if (!event)
         {
-          v8 = [MEMORY[0x1E696AAA8] currentHandler];
-          v9 = v8;
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          v9 = currentHandler;
           v10 = a2;
-          v11 = self;
+          selfCopy2 = self;
           v12 = 787;
 LABEL_18:
-          [v8 handleFailureInMethod:v10 object:v11 file:@"PXStoryTransition.m" lineNumber:v12 description:@"Code which should be unreachable has been reached"];
+          [currentHandler handleFailureInMethod:v10 object:selfCopy2 file:@"PXStoryTransition.m" lineNumber:v12 description:@"Code which should be unreachable has been reached"];
 
           abort();
         }
@@ -140,29 +140,29 @@ LABEL_15:
   [(PXStoryConcreteTransition *)&v16 timeDidChange];
 }
 
-- (double)clipAlphaForTime:(id *)a3
+- (double)clipAlphaForTime:(id *)time
 {
   zoomingOut = self->_zoomingOut;
-  v6 = [(PXStoryConcreteTransition *)self event];
+  event = [(PXStoryConcreteTransition *)self event];
   if (zoomingOut)
   {
-    if (v6 != 1)
+    if (event != 1)
     {
-      if (v6 != 2)
+      if (event != 2)
       {
-        if (v6)
+        if (event)
         {
           v7 = 0;
           goto LABEL_14;
         }
 
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
-        v12 = v11;
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        v12 = currentHandler;
         v13 = a2;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 729;
 LABEL_17:
-        [v11 handleFailureInMethod:v13 object:v14 file:@"PXStoryTransition.m" lineNumber:v15 description:@"Code which should be unreachable has been reached"];
+        [currentHandler handleFailureInMethod:v13 object:selfCopy2 file:@"PXStoryTransition.m" lineNumber:v15 description:@"Code which should be unreachable has been reached"];
 
         abort();
       }
@@ -174,20 +174,20 @@ LABEL_17:
 
   else
   {
-    if (v6 == 1)
+    if (event == 1)
     {
       v8 = &OBJC_IVAR___PXStoryTransitionScale__orderedBelowAnimationCurve;
       goto LABEL_13;
     }
 
-    if (v6 != 2)
+    if (event != 2)
     {
-      if (!v6)
+      if (!event)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
-        v12 = v11;
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        v12 = currentHandler;
         v13 = a2;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 742;
         goto LABEL_17;
       }
@@ -212,17 +212,17 @@ LABEL_13:
   goto LABEL_14;
 }
 
-- (void)_configureWithTransitionInfo:(id *)a3
+- (void)_configureWithTransitionInfo:(id *)info
 {
-  if (!BYTE5(a3->var2.var3))
+  if (!BYTE5(info->var2.var3))
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:709 description:{@"Invalid parameter not satisfying: %@", @"transitionInfo.scaleDirection != PXStoryScaleDirectionUndefined"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:709 description:{@"Invalid parameter not satisfying: %@", @"transitionInfo.scaleDirection != PXStoryScaleDirectionUndefined"}];
   }
 
-  v7 = *&a3->var3;
+  v7 = *&info->var3;
   self->_scaleRelativeFactor = v7;
-  self->_zoomingOut = BYTE5(a3->var2.var3) == 2;
+  self->_zoomingOut = BYTE5(info->var2.var3) == 2;
   LODWORD(v3) = 1059648963;
   LODWORD(v4) = 1.0;
   LODWORD(v7) = 1051260355;
@@ -237,15 +237,15 @@ LABEL_13:
   self->_orderedBelowAnimationCurve = v12;
 }
 
-- (PXStoryTransitionScale)initWithTransitionInfo:(id *)a3 event:(int64_t)a4 clipLayouts:(id)a5
+- (PXStoryTransitionScale)initWithTransitionInfo:(id *)info event:(int64_t)event clipLayouts:(id)layouts
 {
-  v9 = *(&a3->var1 + 3);
-  *&v10 = *&a3->var2.var2;
-  v6 = [(PXStoryConcreteTransition *)self initWithKind:4 duration:&v9 event:a4 clipLayouts:a5];
-  v7 = *&a3->var2.var1;
-  v9 = *&a3->var0;
+  v9 = *(&info->var1 + 3);
+  *&v10 = *&info->var2.var2;
+  v6 = [(PXStoryConcreteTransition *)self initWithKind:4 duration:&v9 event:event clipLayouts:layouts];
+  v7 = *&info->var2.var1;
+  v9 = *&info->var0;
   v10 = v7;
-  v11 = *&a3->var3;
+  v11 = *&info->var3;
   [(PXStoryTransitionScale *)v6 _configureWithTransitionInfo:&v9];
   return v6;
 }

@@ -1,12 +1,12 @@
 @interface EDSearchableIndexExpressionGenerator
-+ (BOOL)_keyPathIsSuggestable:(id)a3;
++ (BOOL)_keyPathIsSuggestable:(id)suggestable;
 + (OS_os_log)log;
-+ (id)_comparisonOperationMatchingValue:(id)a3 operatorType:(unint64_t)a4;
-+ (id)_operandStringForCompoundPredicateType:(unint64_t)a3;
-+ (id)_queryWithAttributes:(id)a3 matchingValue:(id)a4 operatorType:(unint64_t)a5;
-+ (id)expressionForPredicate:(id)a3 suggestion:(id)a4 bundleID:(id)a5 nonSpotlightPredicates:(id *)a6;
-+ (id)queryStringByJoiningQueries:(id)a3 withPredicateType:(unint64_t)a4;
-+ (id)searchableIndexQueryStringForComparisionPredicate:(id)a3 hasSuggestion:(BOOL)a4;
++ (id)_comparisonOperationMatchingValue:(id)value operatorType:(unint64_t)type;
++ (id)_operandStringForCompoundPredicateType:(unint64_t)type;
++ (id)_queryWithAttributes:(id)attributes matchingValue:(id)value operatorType:(unint64_t)type;
++ (id)expressionForPredicate:(id)predicate suggestion:(id)suggestion bundleID:(id)d nonSpotlightPredicates:(id *)predicates;
++ (id)queryStringByJoiningQueries:(id)queries withPredicateType:(unint64_t)type;
++ (id)searchableIndexQueryStringForComparisionPredicate:(id)predicate hasSuggestion:(BOOL)suggestion;
 @end
 
 @implementation EDSearchableIndexExpressionGenerator
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __43__EDSearchableIndexExpressionGenerator_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_25 != -1)
   {
     dispatch_once(&log_onceToken_25, block);
@@ -36,14 +36,14 @@ void __43__EDSearchableIndexExpressionGenerator_log__block_invoke(uint64_t a1)
   log_log_24 = v1;
 }
 
-+ (id)expressionForPredicate:(id)a3 suggestion:(id)a4 bundleID:(id)a5 nonSpotlightPredicates:(id *)a6
++ (id)expressionForPredicate:(id)predicate suggestion:(id)suggestion bundleID:(id)d nonSpotlightPredicates:(id *)predicates
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v30 = a5;
+  predicateCopy = predicate;
+  suggestionCopy = suggestion;
+  dCopy = d;
   v31 = 0;
-  v11 = [v9 ed_searchableIndexQueryStringForQueryWithSuggestion:v10 != 0 originalSearchString:&v31 nonSpotlightPredicates:a6];
+  v11 = [predicateCopy ed_searchableIndexQueryStringForQueryWithSuggestion:suggestionCopy != 0 originalSearchString:&v31 nonSpotlightPredicates:predicates];
   v12 = *MEMORY[0x1E6963EA0];
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ = %@", *MEMORY[0x1E6963EA0], *MEMORY[0x1E6982DA8]];
   if (v31)
@@ -53,8 +53,8 @@ void __43__EDSearchableIndexExpressionGenerator_log__block_invoke(uint64_t a1)
     v16 = MEMORY[0x1E699AE78];
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ == 'com.apple.spotlight.events'", *MEMORY[0x1E6963D40]];
     v34[0] = v17;
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ == '%@'", *MEMORY[0x1E6964230], v30];
-    v34[1] = v18;
+    dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ == '%@'", *MEMORY[0x1E6964230], dCopy];
+    v34[1] = dCopy;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
     v20 = [v16 queryStringByJoiningQueries:v19 withOperand:1];
 
@@ -82,47 +82,47 @@ void __43__EDSearchableIndexExpressionGenerator_log__block_invoke(uint64_t a1)
     v26 = v13;
   }
 
-  v27 = [MEMORY[0x1E699AE80] expressionWithQueryString:v26 searchString:v31 updatedSuggestion:v10];
+  v27 = [MEMORY[0x1E699AE80] expressionWithQueryString:v26 searchString:v31 updatedSuggestion:suggestionCopy];
 
   v28 = *MEMORY[0x1E69E9840];
 
   return v27;
 }
 
-+ (id)searchableIndexQueryStringForComparisionPredicate:(id)a3 hasSuggestion:(BOOL)a4
++ (id)searchableIndexQueryStringForComparisionPredicate:(id)predicate hasSuggestion:(BOOL)suggestion
 {
-  v4 = a4;
+  suggestionCopy = suggestion;
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  predicateCopy = predicate;
   if (searchableIndexQueryStringForComparisionPredicate_hasSuggestion__onceToken != -1)
   {
     +[EDSearchableIndexExpressionGenerator searchableIndexQueryStringForComparisionPredicate:hasSuggestion:];
   }
 
-  v7 = [v6 leftExpression];
-  v8 = [v7 keyPath];
+  leftExpression = [predicateCopy leftExpression];
+  keyPath = [leftExpression keyPath];
 
-  if (v4 && ([a1 _keyPathIsSuggestable:v8] & 1) != 0)
+  if (suggestionCopy && ([self _keyPathIsSuggestable:keyPath] & 1) != 0)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [v6 predicateOperatorType];
-    v11 = [v6 rightExpression];
-    v12 = [v11 constantValue];
+    predicateOperatorType = [predicateCopy predicateOperatorType];
+    rightExpression = [predicateCopy rightExpression];
+    constantValue = [rightExpression constantValue];
 
-    if ([v8 isEqualToString:*MEMORY[0x1E699A880]])
+    if ([keyPath isEqualToString:*MEMORY[0x1E699A880]])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v12 timeIntervalSinceReferenceDate];
+        [constantValue timeIntervalSinceReferenceDate];
         v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"$time.absolute(%f)", v13];
         v19[0] = *MEMORY[0x1E6964D10];
         v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-        v9 = [a1 _queryWithAttributes:v15 matchingValue:v14 operatorType:v10];
+        v9 = [self _queryWithAttributes:v15 matchingValue:v14 operatorType:predicateOperatorType];
       }
 
       else
@@ -133,10 +133,10 @@ void __43__EDSearchableIndexExpressionGenerator_log__block_invoke(uint64_t a1)
 
     else
     {
-      v16 = [searchableIndexQueryStringForComparisionPredicate_hasSuggestion__spotlightAttributesForKeypath objectForKeyedSubscript:v8];
+      v16 = [searchableIndexQueryStringForComparisionPredicate_hasSuggestion__spotlightAttributesForKeypath objectForKeyedSubscript:keyPath];
       if (v16)
       {
-        v9 = [a1 _queryWithAttributes:v16 matchingValue:v12 operatorType:v10];
+        v9 = [self _queryWithAttributes:v16 matchingValue:constantValue operatorType:predicateOperatorType];
       }
 
       else
@@ -185,50 +185,50 @@ void __104__EDSearchableIndexExpressionGenerator_searchableIndexQueryStringForCo
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)queryStringByJoiningQueries:(id)a3 withPredicateType:(unint64_t)a4
++ (id)queryStringByJoiningQueries:(id)queries withPredicateType:(unint64_t)type
 {
-  v6 = a3;
-  if ([v6 count] > 1)
+  queriesCopy = queries;
+  if ([queriesCopy count] > 1)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [a1 _operandStringForCompoundPredicateType:a4];
+    v9 = [self _operandStringForCompoundPredicateType:type];
     v10 = [v8 stringWithFormat:@" %@ ", v9];
 
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [v6 componentsJoinedByString:v10];
-    v13 = [v11 stringWithFormat:@"(%@)", v12];
+    firstObject2 = [queriesCopy componentsJoinedByString:v10];
+    v13 = [v11 stringWithFormat:@"(%@)", firstObject2];
   }
 
   else
   {
-    if (a4)
+    if (type)
     {
-      v7 = [v6 firstObject];
+      firstObject = [queriesCopy firstObject];
       goto LABEL_7;
     }
 
-    v10 = [a1 _operandStringForCompoundPredicateType:0];
+    v10 = [self _operandStringForCompoundPredicateType:0];
     v14 = MEMORY[0x1E696AEC0];
-    v12 = [v6 firstObject];
-    v13 = [v14 stringWithFormat:@"%@(%@)", v10, v12];
+    firstObject2 = [queriesCopy firstObject];
+    v13 = [v14 stringWithFormat:@"%@(%@)", v10, firstObject2];
   }
 
-  v7 = v13;
+  firstObject = v13;
 
 LABEL_7:
 
-  return v7;
+  return firstObject;
 }
 
-+ (id)_operandStringForCompoundPredicateType:(unint64_t)a3
++ (id)_operandStringForCompoundPredicateType:(unint64_t)type
 {
   v3 = @"&&";
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"||";
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }
@@ -239,19 +239,19 @@ LABEL_7:
   }
 }
 
-+ (id)_queryWithAttributes:(id)a3 matchingValue:(id)a4 operatorType:(unint64_t)a5
++ (id)_queryWithAttributes:(id)attributes matchingValue:(id)value operatorType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 _comparisonOperationMatchingValue:v9 operatorType:a5];
+  attributesCopy = attributes;
+  valueCopy = value;
+  v10 = [self _comparisonOperationMatchingValue:valueCopy operatorType:type];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __88__EDSearchableIndexExpressionGenerator__queryWithAttributes_matchingValue_operatorType___block_invoke;
   v16[3] = &unk_1E8255B10;
   v11 = v10;
   v17 = v11;
-  v12 = [v8 ef_map:v16];
-  if (a5 == 5)
+  v12 = [attributesCopy ef_map:v16];
+  if (type == 5)
   {
     v13 = 1;
   }
@@ -273,9 +273,9 @@ id __88__EDSearchableIndexExpressionGenerator__queryWithAttributes_matchingValue
   return v2;
 }
 
-+ (id)_comparisonOperationMatchingValue:(id)a3 operatorType:(unint64_t)a4
++ (id)_comparisonOperationMatchingValue:(id)value operatorType:(unint64_t)type
 {
-  v7 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -290,19 +290,19 @@ id __88__EDSearchableIndexExpressionGenerator__queryWithAttributes_matchingValue
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 em_stringForQuotingWithCharacter:39];
+    [valueCopy em_stringForQuotingWithCharacter:39];
   }
 
   else
   {
-    [v7 stringValue];
+    [valueCopy stringValue];
   }
   v9 = ;
-  if (a4 <= 3)
+  if (type <= 3)
   {
-    if (a4 > 1)
+    if (type > 1)
     {
-      if (a4 == 2)
+      if (type == 2)
       {
         v8 = @"> %@";
       }
@@ -315,35 +315,35 @@ id __88__EDSearchableIndexExpressionGenerator__queryWithAttributes_matchingValue
       goto LABEL_25;
     }
 
-    if (!a4)
+    if (!type)
     {
       v8 = @"< %@";
       goto LABEL_25;
     }
 
-    if (a4 == 1)
+    if (type == 1)
     {
       v8 = @"<= %@";
       goto LABEL_25;
     }
 
 LABEL_30:
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"EDSearchableIndexExpressionGenerator.m" lineNumber:286 description:@"unexpected operator type"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDSearchableIndexExpressionGenerator.m" lineNumber:286 description:@"unexpected operator type"];
 
     v10 = 0;
     goto LABEL_26;
   }
 
-  if (a4 <= 7)
+  if (type <= 7)
   {
-    if (a4 == 4)
+    if (type == 4)
     {
       v8 = @"= '%@'cd";
       goto LABEL_25;
     }
 
-    if (a4 == 5)
+    if (type == 5)
     {
       v8 = @"!= '%@'cd";
       goto LABEL_25;
@@ -353,12 +353,12 @@ LABEL_30:
   }
 
   v8 = @"= '%@*'cdwt";
-  if (a4 == 8 || a4 == 99)
+  if (type == 8 || type == 99)
   {
     goto LABEL_25;
   }
 
-  if (a4 != 9)
+  if (type != 9)
   {
     goto LABEL_30;
   }
@@ -373,15 +373,15 @@ LABEL_27:
   return v10;
 }
 
-+ (BOOL)_keyPathIsSuggestable:(id)a3
++ (BOOL)_keyPathIsSuggestable:(id)suggestable
 {
-  v3 = a3;
+  suggestableCopy = suggestable;
   if (_keyPathIsSuggestable__onceToken != -1)
   {
     +[EDSearchableIndexExpressionGenerator _keyPathIsSuggestable:];
   }
 
-  v4 = [_keyPathIsSuggestable__suggestableKeyPaths containsObject:v3];
+  v4 = [_keyPathIsSuggestable__suggestableKeyPaths containsObject:suggestableCopy];
 
   return v4;
 }

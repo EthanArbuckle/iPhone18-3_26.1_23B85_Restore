@@ -1,21 +1,21 @@
 @interface CUINamedLayerVectorSVGImage
-- (BOOL)_updateFromCatalog:(id)a3 displayGamut:(int64_t)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6;
+- (BOOL)_updateFromCatalog:(id)catalog displayGamut:(int64_t)gamut deviceIdiom:(int64_t)idiom appearanceName:(id)name;
 - (CGColor)color;
 - (CGRect)frame;
 - (CUINamedGradient)gradient;
-- (CUINamedLayerVectorSVGImage)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5;
+- (CUINamedLayerVectorSVGImage)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme;
 - (id)mutableCopy;
-- (void)_setGradientOrColorName:(id)a3;
+- (void)_setGradientOrColorName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation CUINamedLayerVectorSVGImage
 
-- (CUINamedLayerVectorSVGImage)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5
+- (CUINamedLayerVectorSVGImage)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme
 {
   v6.receiver = self;
   v6.super_class = CUINamedLayerVectorSVGImage;
-  result = [(CUINamedLookup *)&v6 initWithName:a3 usingRenditionKey:a4 fromTheme:a5];
+  result = [(CUINamedLookup *)&v6 initWithName:name usingRenditionKey:key fromTheme:theme];
   if (result)
   {
     result->_opacity = 1.0;
@@ -25,7 +25,7 @@
   return result;
 }
 
-- (BOOL)_updateFromCatalog:(id)a3 displayGamut:(int64_t)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6
+- (BOOL)_updateFromCatalog:(id)catalog displayGamut:(int64_t)gamut deviceIdiom:(int64_t)idiom appearanceName:(id)name
 {
   v22.receiver = self;
   v22.super_class = CUINamedLayerVectorSVGImage;
@@ -39,24 +39,24 @@ LABEL_7:
       return v11;
     }
 
-    v12 = [a3 _appearancefallback_gradientWithName:-[CUINamedLayerVectorSVGImage gradientOrColorName](self displayGamut:"gradientOrColorName") deviceIdiom:a4 appearanceName:{a5, a6}];
-    if (v12)
+    cgColor = [catalog _appearancefallback_gradientWithName:-[CUINamedLayerVectorSVGImage gradientOrColorName](self displayGamut:"gradientOrColorName") deviceIdiom:gamut appearanceName:{idiom, name}];
+    if (cgColor)
     {
 LABEL_6:
-      [(CUINamedLayerVectorSVGImage *)self _setGradientOrColor:v12];
+      [(CUINamedLayerVectorSVGImage *)self _setGradientOrColor:cgColor];
       goto LABEL_7;
     }
 
-    v13 = [a3 _appearancefallback_colorWithName:-[CUINamedLayerVectorSVGImage gradientOrColorName](self displayGamut:"gradientOrColorName") deviceIdiom:a4 appearanceName:{a5, a6}];
+    v13 = [catalog _appearancefallback_colorWithName:-[CUINamedLayerVectorSVGImage gradientOrColorName](self displayGamut:"gradientOrColorName") deviceIdiom:gamut appearanceName:{idiom, name}];
     if (v13)
     {
-      v12 = [v13 cgColor];
+      cgColor = [v13 cgColor];
       goto LABEL_6;
     }
 
-    v14 = [(CUINamedLayerVectorSVGImage *)self gradientOrColorName];
+    gradientOrColorName = [(CUINamedLayerVectorSVGImage *)self gradientOrColorName];
     [(CUINamedLookup *)self name];
-    _CUILog(4, "CoreUI: Couldn't find gradient/colorname '%@' for icon layer stack %@", v15, v16, v17, v18, v19, v20, v14);
+    _CUILog(4, "CoreUI: Couldn't find gradient/colorname '%@' for icon layer stack %@", v15, v16, v17, v18, v19, v20, gradientOrColorName);
     LOBYTE(v11) = 0;
   }
 
@@ -70,19 +70,19 @@ LABEL_6:
   [(CUINamedLookup *)&v3 dealloc];
 }
 
-- (void)_setGradientOrColorName:(id)a3
+- (void)_setGradientOrColorName:(id)name
 {
   gradientOrColorName = self->_gradientOrColorName;
-  if (gradientOrColorName != a3)
+  if (gradientOrColorName != name)
   {
 
-    self->_gradientOrColorName = [a3 copy];
+    self->_gradientOrColorName = [name copy];
   }
 }
 
 - (CGColor)color
 {
-  v2 = [(CUINamedLayerVectorSVGImage *)self _gradientOrColor];
+  _gradientOrColor = [(CUINamedLayerVectorSVGImage *)self _gradientOrColor];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -91,17 +91,17 @@ LABEL_6:
 
   else
   {
-    return v2;
+    return _gradientOrColor;
   }
 }
 
 - (CUINamedGradient)gradient
 {
-  v2 = [(CUINamedLayerVectorSVGImage *)self _gradientOrColor];
+  _gradientOrColor = [(CUINamedLayerVectorSVGImage *)self _gradientOrColor];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return _gradientOrColor;
   }
 
   else

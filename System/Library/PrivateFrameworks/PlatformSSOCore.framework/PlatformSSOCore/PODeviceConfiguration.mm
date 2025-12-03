@@ -1,5 +1,5 @@
 @interface PODeviceConfiguration
-- (BOOL)encryptAndSaveTemporaryAccountCredential:(id)a3;
+- (BOOL)encryptAndSaveTemporaryAccountCredential:(id)credential;
 - (BOOL)hasTemporaryAccountCredential;
 - (BOOL)supportsAccessKey;
 - (BOOL)supportsAuthorization;
@@ -9,24 +9,24 @@
 - (BOOL)supportsTokenUnlock;
 - (NSNumber)loginFrequency;
 - (PODeviceConfiguration)init;
-- (PODeviceConfiguration)initWithCoder:(id)a3;
-- (PODeviceConfiguration)initWithData:(id)a3;
+- (PODeviceConfiguration)initWithCoder:(id)coder;
+- (PODeviceConfiguration)initWithData:(id)data;
 - (__SecIdentity)accessTokenTerminalIdentity;
 - (__SecIdentity)deviceEncryptionIdentity;
 - (__SecIdentity)deviceSigningIdentity;
 - (__SecKey)deviceEncryptionKey;
-- (__SecKey)deviceEncryptionKeyWithContext:(id)a3;
+- (__SecKey)deviceEncryptionKeyWithContext:(id)context;
 - (__SecKey)deviceEncryptionPublicKey;
 - (__SecKey)deviceSigningKey;
-- (__SecKey)deviceSigningKeyWithContext:(id)a3;
+- (__SecKey)deviceSigningKeyWithContext:(id)context;
 - (__SecKey)deviceSigningPublicKey;
-- (id)dataRepresentationForDisplay:(BOOL)a3;
+- (id)dataRepresentationForDisplay:(BOOL)display;
 - (id)decryptTemporaryAccountCredential;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccessTokenTerminalIdentity:(__SecIdentity *)a3;
-- (void)setDeviceEncryptionKey:(__SecKey *)a3;
-- (void)setDeviceSigningKey:(__SecKey *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccessTokenTerminalIdentity:(__SecIdentity *)identity;
+- (void)setDeviceEncryptionKey:(__SecKey *)key;
+- (void)setDeviceSigningKey:(__SecKey *)key;
 - (void)supportsAccessKey;
 - (void)supportsAuthorization;
 - (void)supportsCreateFirstUserDuringSetup;
@@ -71,13 +71,13 @@
     [PODeviceConfiguration supportsTokenUnlock];
   }
 
-  v4 = [(PODeviceConfiguration *)self sharedDeviceKeys];
-  if (v4)
+  sharedDeviceKeys = [(PODeviceConfiguration *)self sharedDeviceKeys];
+  if (sharedDeviceKeys)
   {
-    LOBYTE(v4) = [(PODeviceConfiguration *)self protocolVersion]== 1;
+    LOBYTE(sharedDeviceKeys) = [(PODeviceConfiguration *)self protocolVersion]== 1;
   }
 
-  return v4;
+  return sharedDeviceKeys;
 }
 
 - (BOOL)supportsAuthorization
@@ -88,13 +88,13 @@
     [PODeviceConfiguration supportsAuthorization];
   }
 
-  v4 = [(PODeviceConfiguration *)self sharedDeviceKeys];
-  if (v4)
+  sharedDeviceKeys = [(PODeviceConfiguration *)self sharedDeviceKeys];
+  if (sharedDeviceKeys)
   {
-    LOBYTE(v4) = [(PODeviceConfiguration *)self authorizationEnabled];
+    LOBYTE(sharedDeviceKeys) = [(PODeviceConfiguration *)self authorizationEnabled];
   }
 
-  return v4;
+  return sharedDeviceKeys;
 }
 
 - (BOOL)supportsCreateNewUsers
@@ -105,13 +105,13 @@
     [PODeviceConfiguration supportsCreateNewUsers];
   }
 
-  v4 = [(PODeviceConfiguration *)self sharedDeviceKeys];
-  if (v4)
+  sharedDeviceKeys = [(PODeviceConfiguration *)self sharedDeviceKeys];
+  if (sharedDeviceKeys)
   {
-    LOBYTE(v4) = [(PODeviceConfiguration *)self createUsersEnabled];
+    LOBYTE(sharedDeviceKeys) = [(PODeviceConfiguration *)self createUsersEnabled];
   }
 
-  return v4;
+  return sharedDeviceKeys;
 }
 
 - (BOOL)supportsCreateFirstUserDuringSetup
@@ -122,13 +122,13 @@
     [PODeviceConfiguration supportsCreateFirstUserDuringSetup];
   }
 
-  v4 = [(PODeviceConfiguration *)self sharedDeviceKeys];
-  if (v4)
+  sharedDeviceKeys = [(PODeviceConfiguration *)self sharedDeviceKeys];
+  if (sharedDeviceKeys)
   {
-    LOBYTE(v4) = [(PODeviceConfiguration *)self createFirstUserDuringSetupEnabled];
+    LOBYTE(sharedDeviceKeys) = [(PODeviceConfiguration *)self createFirstUserDuringSetupEnabled];
   }
 
-  return v4;
+  return sharedDeviceKeys;
 }
 
 - (BOOL)supportsCreateTemporaryUsers
@@ -139,17 +139,17 @@
     [(PODeviceConfiguration *)self supportsCreateTemporaryUsers];
   }
 
-  v4 = [(PODeviceConfiguration *)self sharedDeviceKeys];
-  if (v4)
+  sharedDeviceKeys = [(PODeviceConfiguration *)self sharedDeviceKeys];
+  if (sharedDeviceKeys)
   {
-    v4 = [(PODeviceConfiguration *)self createUsersEnabled];
-    if (v4)
+    sharedDeviceKeys = [(PODeviceConfiguration *)self createUsersEnabled];
+    if (sharedDeviceKeys)
     {
-      LOBYTE(v4) = [(PODeviceConfiguration *)self newUserAuthorizationMode]== 4;
+      LOBYTE(sharedDeviceKeys) = [(PODeviceConfiguration *)self newUserAuthorizationMode]== 4;
     }
   }
 
-  return v4;
+  return sharedDeviceKeys;
 }
 
 - (BOOL)supportsAccessKey
@@ -170,8 +170,8 @@
     return 0;
   }
 
-  v5 = [(PODeviceConfiguration *)self createUserLoginTypes];
-  v4 = [v5 containsObject:&unk_2870A90F0];
+  createUserLoginTypes = [(PODeviceConfiguration *)self createUserLoginTypes];
+  v4 = [createUserLoginTypes containsObject:&unk_2870A90F0];
 
   return v4;
 }
@@ -194,9 +194,9 @@
   result = self->_deviceSigningKey;
   if (!result)
   {
-    v4 = [(PODeviceConfiguration *)self sharedDeviceKeys];
+    sharedDeviceKeys = [(PODeviceConfiguration *)self sharedDeviceKeys];
     deviceSigningKeyData = self->__deviceSigningKeyData;
-    if (v4)
+    if (sharedDeviceKeys)
     {
       result = [POSecKeyHelper systemKeyForData:deviceSigningKeyData];
     }
@@ -212,19 +212,19 @@
   return result;
 }
 
-- (__SecKey)deviceSigningKeyWithContext:(id)a3
+- (__SecKey)deviceSigningKeyWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PODeviceConfiguration *)self sharedDeviceKeys];
+  contextCopy = context;
+  sharedDeviceKeys = [(PODeviceConfiguration *)self sharedDeviceKeys];
   deviceSigningKeyData = self->__deviceSigningKeyData;
-  if (v5)
+  if (sharedDeviceKeys)
   {
-    v7 = [POSecKeyHelper systemKeyForData:deviceSigningKeyData context:v4];
+    v7 = [POSecKeyHelper systemKeyForData:deviceSigningKeyData context:contextCopy];
   }
 
   else
   {
-    v7 = [POSecKeyHelper keyForData:deviceSigningKeyData context:v4];
+    v7 = [POSecKeyHelper keyForData:deviceSigningKeyData context:contextCopy];
   }
 
   v8 = v7;
@@ -232,10 +232,10 @@
   return v8;
 }
 
-- (void)setDeviceSigningKey:(__SecKey *)a3
+- (void)setDeviceSigningKey:(__SecKey *)key
 {
-  self->_deviceSigningKey = a3;
-  if (a3)
+  self->_deviceSigningKey = key;
+  if (key)
   {
     v4 = [POSecKeyHelper dataForKey:?];
     deviceSigningKeyData = self->__deviceSigningKeyData;
@@ -261,9 +261,9 @@
   result = self->_deviceEncryptionKey;
   if (!result)
   {
-    v4 = [(PODeviceConfiguration *)self sharedDeviceKeys];
+    sharedDeviceKeys = [(PODeviceConfiguration *)self sharedDeviceKeys];
     deviceEncryptionKeyData = self->__deviceEncryptionKeyData;
-    if (v4)
+    if (sharedDeviceKeys)
     {
       result = [POSecKeyHelper systemKeyForData:deviceEncryptionKeyData];
     }
@@ -279,19 +279,19 @@
   return result;
 }
 
-- (__SecKey)deviceEncryptionKeyWithContext:(id)a3
+- (__SecKey)deviceEncryptionKeyWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PODeviceConfiguration *)self sharedDeviceKeys];
+  contextCopy = context;
+  sharedDeviceKeys = [(PODeviceConfiguration *)self sharedDeviceKeys];
   deviceEncryptionKeyData = self->__deviceEncryptionKeyData;
-  if (v5)
+  if (sharedDeviceKeys)
   {
-    v7 = [POSecKeyHelper systemKeyForData:deviceEncryptionKeyData context:v4];
+    v7 = [POSecKeyHelper systemKeyForData:deviceEncryptionKeyData context:contextCopy];
   }
 
   else
   {
-    v7 = [POSecKeyHelper keyForData:deviceEncryptionKeyData context:v4];
+    v7 = [POSecKeyHelper keyForData:deviceEncryptionKeyData context:contextCopy];
   }
 
   v8 = v7;
@@ -299,40 +299,40 @@
   return v8;
 }
 
-- (void)setDeviceEncryptionKey:(__SecKey *)a3
+- (void)setDeviceEncryptionKey:(__SecKey *)key
 {
-  v4 = self;
+  selfCopy = self;
   if (self->_temporaryAccountCredential)
   {
     self = [(PODeviceConfiguration *)self decryptTemporaryAccountCredential];
-    v5 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy2 = 0;
   }
 
-  v4->_deviceEncryptionKey = a3;
-  if (a3)
+  selfCopy->_deviceEncryptionKey = key;
+  if (key)
   {
-    v9 = v5;
-    v6 = [POSecKeyHelper dataForKey:a3];
-    deviceEncryptionKeyData = v4->__deviceEncryptionKeyData;
-    v4->__deviceEncryptionKeyData = v6;
+    v9 = selfCopy2;
+    v6 = [POSecKeyHelper dataForKey:key];
+    deviceEncryptionKeyData = selfCopy->__deviceEncryptionKeyData;
+    selfCopy->__deviceEncryptionKeyData = v6;
 
     if (v9)
     {
-      if (![(PODeviceConfiguration *)v4 encryptAndSaveTemporaryAccountCredential:?])
+      if (![(PODeviceConfiguration *)selfCopy encryptAndSaveTemporaryAccountCredential:?])
       {
         v8 = __48__PODeviceConfiguration_setDeviceEncryptionKey___block_invoke();
       }
     }
 
-    v5 = 0;
+    selfCopy2 = 0;
   }
 
-  MEMORY[0x2821F96F8](self, v5);
+  MEMORY[0x2821F96F8](self, selfCopy2);
 }
 
 id __48__PODeviceConfiguration_setDeviceEncryptionKey___block_invoke()
@@ -352,9 +352,9 @@ id __48__PODeviceConfiguration_setDeviceEncryptionKey___block_invoke()
   result = [(PODeviceConfiguration *)self deviceEncryptionKey];
   if (result)
   {
-    v4 = [(PODeviceConfiguration *)self deviceEncryptionKey];
+    deviceEncryptionKey = [(PODeviceConfiguration *)self deviceEncryptionKey];
 
-    return SecKeyCopyPublicKey(v4);
+    return SecKeyCopyPublicKey(deviceEncryptionKey);
   }
 
   return result;
@@ -362,10 +362,10 @@ id __48__PODeviceConfiguration_setDeviceEncryptionKey___block_invoke()
 
 - (__SecIdentity)deviceSigningIdentity
 {
-  v3 = [(PODeviceConfiguration *)self deviceSigningKey];
+  deviceSigningKey = [(PODeviceConfiguration *)self deviceSigningKey];
   deviceSigningCertificate = self->_deviceSigningCertificate;
 
-  return [POSecKeyHelper identityForKey:v3 andCertificate:deviceSigningCertificate];
+  return [POSecKeyHelper identityForKey:deviceSigningKey andCertificate:deviceSigningCertificate];
 }
 
 - (__SecIdentity)deviceEncryptionIdentity
@@ -456,12 +456,12 @@ id __52__PODeviceConfiguration_accessTokenTerminalIdentity__block_invoke()
   return v0;
 }
 
-- (void)setAccessTokenTerminalIdentity:(__SecIdentity *)a3
+- (void)setAccessTokenTerminalIdentity:(__SecIdentity *)identity
 {
-  if (a3)
+  if (identity)
   {
     certificateRef = 0;
-    v5 = SecIdentityCopyCertificate(a3, &certificateRef);
+    v5 = SecIdentityCopyCertificate(identity, &certificateRef);
     if (v5)
     {
       v20[0] = MEMORY[0x277D85DD0];
@@ -479,7 +479,7 @@ id __52__PODeviceConfiguration_accessTokenTerminalIdentity__block_invoke()
       self->__accessTokenTerminalIdentityCertData = v9;
 
       privateKeyRef = 0;
-      v11 = SecIdentityCopyPrivateKey(a3, &privateKeyRef);
+      v11 = SecIdentityCopyPrivateKey(identity, &privateKeyRef);
       if (v11)
       {
         v12 = v11;
@@ -582,15 +582,15 @@ id __56__PODeviceConfiguration_setAccessTokenTerminalIdentity___block_invoke_33(
 
 - (BOOL)hasTemporaryAccountCredential
 {
-  v2 = [(PODeviceConfiguration *)self decryptTemporaryAccountCredential];
-  v3 = v2 != 0;
+  decryptTemporaryAccountCredential = [(PODeviceConfiguration *)self decryptTemporaryAccountCredential];
+  v3 = decryptTemporaryAccountCredential != 0;
 
   return v3;
 }
 
-- (BOOL)encryptAndSaveTemporaryAccountCredential:(id)a3
+- (BOOL)encryptAndSaveTemporaryAccountCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   v5 = PO_LOG_PODeviceConfiguration();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -604,7 +604,7 @@ id __56__PODeviceConfiguration_setAccessTokenTerminalIdentity___block_invoke_33(
     if (SecKeyIsAlgorithmSupported(v6, kSecKeyOperationTypeEncrypt, *MEMORY[0x277CDC328]))
     {
       error = 0;
-      v8 = SecKeyCreateEncryptedData(v7, *MEMORY[0x277CDC338], [v4 dataUsingEncoding:4], &error);
+      v8 = SecKeyCreateEncryptedData(v7, *MEMORY[0x277CDC338], [credentialCopy dataUsingEncoding:4], &error);
       CFRelease(v7);
       if (error)
       {
@@ -695,14 +695,14 @@ id __66__PODeviceConfiguration_encryptAndSaveTemporaryAccountCredential___block_
     [(PODeviceConfiguration *)v3 decryptTemporaryAccountCredential];
   }
 
-  v4 = [(PODeviceConfiguration *)self deviceEncryptionKey];
+  deviceEncryptionKey = [(PODeviceConfiguration *)self deviceEncryptionKey];
   v5 = 0;
   if (self->_temporaryAccountCredential)
   {
-    v6 = v4;
-    if (v4)
+    v6 = deviceEncryptionKey;
+    if (deviceEncryptionKey)
     {
-      if (SecKeyIsAlgorithmSupported(v4, kSecKeyOperationTypeDecrypt, *MEMORY[0x277CDC328]))
+      if (SecKeyIsAlgorithmSupported(deviceEncryptionKey, kSecKeyOperationTypeDecrypt, *MEMORY[0x277CDC328]))
       {
         error = 0;
         v7 = SecKeyCreateDecryptedData(v6, *MEMORY[0x277CDC338], self->_temporaryAccountCredential, &error);
@@ -762,9 +762,9 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   return v2;
 }
 
-- (id)dataRepresentationForDisplay:(BOOL)a3
+- (id)dataRepresentationForDisplay:(BOOL)display
 {
-  v3 = a3;
+  displayCopy = display;
   v5 = objc_alloc_init(MEMORY[0x277CCAA68]);
   [v5 setFormatOptions:1907];
   v6 = objc_alloc_init(MEMORY[0x277CCA958]);
@@ -776,7 +776,7 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   [v7 setObject:v8 forKeyedSubscript:v9];
 
   deviceSigningKeyData = self->__deviceSigningKeyData;
-  if (v3)
+  if (displayCopy)
   {
     [(NSData *)deviceSigningKeyData psso_sha256HashString];
   }
@@ -789,25 +789,25 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   v12 = NSStringFromSelector(sel__deviceSigningKeyData);
   [v7 setObject:v11 forKeyedSubscript:v12];
 
-  v13 = [POSecKeyHelper dataForCertificate:self->_deviceSigningCertificate];
-  v14 = [v13 psso_base64URLEncodedString];
+  pendingSigningAlgorithm = [POSecKeyHelper dataForCertificate:self->_deviceSigningCertificate];
+  psso_base64URLEncodedString = [pendingSigningAlgorithm psso_base64URLEncodedString];
   v15 = NSStringFromSelector(sel_deviceSigningCertificate);
-  [v7 setObject:v14 forKeyedSubscript:v15];
+  [v7 setObject:psso_base64URLEncodedString forKeyedSubscript:v15];
 
   [(PODeviceConfiguration *)self signingAlgorithm];
-  if (v3)
-    v13 = {;
-    [POConstantCoreUtil stringForSigningAlgorithm:v13];
+  if (displayCopy)
+    pendingSigningAlgorithm = {;
+    [POConstantCoreUtil stringForSigningAlgorithm:pendingSigningAlgorithm];
   }
   v16 = ;
   v17 = NSStringFromSelector(sel_signingAlgorithm);
   [v7 setObject:v16 forKeyedSubscript:v17];
 
-  if (v3)
+  if (displayCopy)
   {
 
-    v13 = [(PODeviceConfiguration *)self pendingSigningAlgorithm];
-    [POConstantCoreUtil stringForSigningAlgorithm:v13];
+    pendingSigningAlgorithm = [(PODeviceConfiguration *)self pendingSigningAlgorithm];
+    [POConstantCoreUtil stringForSigningAlgorithm:pendingSigningAlgorithm];
   }
 
   else
@@ -818,7 +818,7 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   v19 = NSStringFromSelector(sel_pendingSigningAlgorithm);
   [v7 setObject:v18 forKeyedSubscript:v19];
 
-  if (v3)
+  if (displayCopy)
   {
 
     [(NSData *)self->__deviceEncryptionKeyData psso_sha256HashString];
@@ -832,26 +832,26 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   v21 = NSStringFromSelector(sel__deviceEncryptionKeyData);
   [v7 setObject:v20 forKeyedSubscript:v21];
 
-  v22 = [POSecKeyHelper dataForCertificate:self->_deviceEncryptionCertificate];
-  v23 = [v22 psso_base64URLEncodedString];
+  pendingEncryptionAlgorithm = [POSecKeyHelper dataForCertificate:self->_deviceEncryptionCertificate];
+  psso_base64URLEncodedString2 = [pendingEncryptionAlgorithm psso_base64URLEncodedString];
   v24 = NSStringFromSelector(sel_deviceEncryptionCertificate);
-  [v7 setObject:v23 forKeyedSubscript:v24];
+  [v7 setObject:psso_base64URLEncodedString2 forKeyedSubscript:v24];
 
   [(PODeviceConfiguration *)self encryptionAlgorithm];
-  if (v3)
-    v22 = {;
-    [POConstantCoreUtil stringForEncryptionAlgorithm:v22];
+  if (displayCopy)
+    pendingEncryptionAlgorithm = {;
+    [POConstantCoreUtil stringForEncryptionAlgorithm:pendingEncryptionAlgorithm];
   }
   v25 = ;
   v26 = v6;
   v27 = NSStringFromSelector(sel_encryptionAlgorithm);
   [v7 setObject:v25 forKeyedSubscript:v27];
 
-  if (v3)
+  if (displayCopy)
   {
 
-    v22 = [(PODeviceConfiguration *)self pendingEncryptionAlgorithm];
-    [POConstantCoreUtil stringForEncryptionAlgorithm:v22];
+    pendingEncryptionAlgorithm = [(PODeviceConfiguration *)self pendingEncryptionAlgorithm];
+    [POConstantCoreUtil stringForEncryptionAlgorithm:pendingEncryptionAlgorithm];
   }
 
   else
@@ -862,18 +862,18 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   v29 = NSStringFromSelector(sel_pendingEncryptionAlgorithm);
   [v7 setObject:v28 forKeyedSubscript:v29];
 
-  if (v3)
+  if (displayCopy)
   {
 
-    v30 = [(PODeviceConfiguration *)self lastEncryptionKeyChange];
-    [v5 stringFromDate:v30];
+    lastEncryptionKeyChange = [(PODeviceConfiguration *)self lastEncryptionKeyChange];
+    [v5 stringFromDate:lastEncryptionKeyChange];
   }
 
   else
   {
     v31 = MEMORY[0x277CCABB0];
-    v30 = [(PODeviceConfiguration *)self lastEncryptionKeyChange];
-    [v30 timeIntervalSince1970];
+    lastEncryptionKeyChange = [(PODeviceConfiguration *)self lastEncryptionKeyChange];
+    [lastEncryptionKeyChange timeIntervalSince1970];
     [v31 numberWithDouble:?];
   }
   v32 = ;
@@ -896,12 +896,12 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   v41 = NSStringFromSelector(sel_protocolVersion);
   [v7 setObject:v40 forKeyedSubscript:v41];
 
-  v42 = [(PODeviceConfiguration *)self sdkVersionString];
+  sdkVersionString = [(PODeviceConfiguration *)self sdkVersionString];
   v43 = NSStringFromSelector(sel_sdkVersionString);
-  [v7 setObject:v42 forKeyedSubscript:v43];
+  [v7 setObject:sdkVersionString forKeyedSubscript:v43];
 
   loginType = self->_loginType;
-  if (v3)
+  if (displayCopy)
   {
     [POConstantCoreUtil stringForLoginType:loginType];
   }
@@ -922,19 +922,19 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   v50 = NSStringFromSelector(sel_createFirstUserDuringSetupEnabled);
   [v7 setObject:v49 forKeyedSubscript:v50];
 
-  v51 = [(PODeviceConfiguration *)self createUserLoginTypes];
+  createUserLoginTypes = [(PODeviceConfiguration *)self createUserLoginTypes];
   v52 = NSStringFromSelector(sel_createUserLoginTypes);
-  [v7 setObject:v51 forKeyedSubscript:v52];
+  [v7 setObject:createUserLoginTypes forKeyedSubscript:v52];
 
   v53 = [MEMORY[0x277CCABB0] numberWithBool:{-[PODeviceConfiguration authorizationEnabled](self, "authorizationEnabled")}];
   v54 = NSStringFromSelector(sel_authorizationEnabled);
   [v7 setObject:v53 forKeyedSubscript:v54];
 
-  v55 = [(PODeviceConfiguration *)self tokenToUserMapping];
+  tokenToUserMapping = [(PODeviceConfiguration *)self tokenToUserMapping];
   v56 = NSStringFromSelector(sel_tokenToUserMapping);
-  [v7 setObject:v55 forKeyedSubscript:v56];
+  [v7 setObject:tokenToUserMapping forKeyedSubscript:v56];
 
-  if (v3)
+  if (displayCopy)
   {
     [POConstantCoreUtil stringForUserAuthorizationMode:[(PODeviceConfiguration *)self newUserAuthorizationMode]];
   }
@@ -947,7 +947,7 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   v58 = NSStringFromSelector(sel_newUserAuthorizationMode);
   [v7 setObject:v57 forKeyedSubscript:v58];
 
-  if (v3)
+  if (displayCopy)
   {
     [POConstantCoreUtil stringForUserAuthorizationMode:[(PODeviceConfiguration *)self userAuthorizationMode]];
   }
@@ -960,31 +960,31 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   v60 = NSStringFromSelector(sel_userAuthorizationMode);
   [v7 setObject:v59 forKeyedSubscript:v60];
 
-  v61 = [(PODeviceConfiguration *)self administratorGroups];
+  administratorGroups = [(PODeviceConfiguration *)self administratorGroups];
   v62 = NSStringFromSelector(sel_administratorGroups);
-  [v7 setObject:v61 forKeyedSubscript:v62];
+  [v7 setObject:administratorGroups forKeyedSubscript:v62];
 
-  v63 = [(PODeviceConfiguration *)self authorizationGroups];
+  authorizationGroups = [(PODeviceConfiguration *)self authorizationGroups];
   v64 = NSStringFromSelector(sel_authorizationGroups);
-  [v7 setObject:v63 forKeyedSubscript:v64];
+  [v7 setObject:authorizationGroups forKeyedSubscript:v64];
 
-  v65 = [(PODeviceConfiguration *)self otherGroups];
+  otherGroups = [(PODeviceConfiguration *)self otherGroups];
   v66 = NSStringFromSelector(sel_otherGroups);
-  [v7 setObject:v65 forKeyedSubscript:v66];
+  [v7 setObject:otherGroups forKeyedSubscript:v66];
 
-  v67 = [(PODeviceConfiguration *)self defaultUserDomain];
+  defaultUserDomain = [(PODeviceConfiguration *)self defaultUserDomain];
   v68 = NSStringFromSelector(sel_defaultUserDomain);
-  [v7 setObject:v67 forKeyedSubscript:v68];
+  [v7 setObject:defaultUserDomain forKeyedSubscript:v68];
 
-  v69 = [(PODeviceConfiguration *)self accountDisplayName];
+  accountDisplayName = [(PODeviceConfiguration *)self accountDisplayName];
   v70 = NSStringFromSelector(sel_accountDisplayName);
-  [v7 setObject:v69 forKeyedSubscript:v70];
+  [v7 setObject:accountDisplayName forKeyedSubscript:v70];
 
-  v71 = [(PODeviceConfiguration *)self loginFrequency];
+  loginFrequency = [(PODeviceConfiguration *)self loginFrequency];
   v72 = NSStringFromSelector(sel_loginFrequency);
-  [v7 setObject:v71 forKeyedSubscript:v72];
+  [v7 setObject:loginFrequency forKeyedSubscript:v72];
 
-  if (v3)
+  if (displayCopy)
   {
     [POConstantCoreUtil stringForLoginPolicy:[(PODeviceConfiguration *)self fileVaultPolicy]];
   }
@@ -997,7 +997,7 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   v74 = NSStringFromSelector(sel_fileVaultPolicy);
   [v7 setObject:v73 forKeyedSubscript:v74];
 
-  if (v3)
+  if (displayCopy)
   {
     [POConstantCoreUtil stringForLoginPolicy:[(PODeviceConfiguration *)self loginPolicy]];
   }
@@ -1010,7 +1010,7 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   v76 = NSStringFromSelector(sel_loginPolicy);
   [v7 setObject:v75 forKeyedSubscript:v76];
 
-  if (v3)
+  if (displayCopy)
   {
     [POConstantCoreUtil stringForLoginPolicy:[(PODeviceConfiguration *)self unlockPolicy]];
   }
@@ -1023,7 +1023,7 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   v78 = NSStringFromSelector(sel_unlockPolicy);
   [v7 setObject:v77 forKeyedSubscript:v78];
 
-  if (v3)
+  if (displayCopy)
   {
     [v6 stringFromTimeInterval:{-[PODeviceConfiguration offlineGracePeriod](self, "offlineGracePeriod")}];
   }
@@ -1036,7 +1036,7 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   v80 = NSStringFromSelector(sel_offlineGracePeriod);
   [v7 setObject:v79 forKeyedSubscript:v80];
 
-  if (v3)
+  if (displayCopy)
   {
     [v6 stringFromTimeInterval:{-[PODeviceConfiguration requireAuthGracePeriod](self, "requireAuthGracePeriod")}];
   }
@@ -1046,14 +1046,14 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
     [MEMORY[0x277CCABB0] numberWithInteger:{-[PODeviceConfiguration requireAuthGracePeriod](self, "requireAuthGracePeriod")}];
   }
   v81 = ;
-  v82 = NSStringFromSelector(sel_requireAuthGracePeriod);
-  [v7 setObject:v81 forKeyedSubscript:v82];
+  authGracePeriodStart2 = NSStringFromSelector(sel_requireAuthGracePeriod);
+  [v7 setObject:v81 forKeyedSubscript:authGracePeriodStart2];
 
-  v83 = [(PODeviceConfiguration *)self authGracePeriodStart];
-  if (v83)
+  authGracePeriodStart = [(PODeviceConfiguration *)self authGracePeriodStart];
+  if (authGracePeriodStart)
   {
-    v82 = [(PODeviceConfiguration *)self authGracePeriodStart];
-    v84 = [v5 stringFromDate:v82];
+    authGracePeriodStart2 = [(PODeviceConfiguration *)self authGracePeriodStart];
+    v84 = [v5 stringFromDate:authGracePeriodStart2];
   }
 
   else
@@ -1064,16 +1064,16 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   v85 = NSStringFromSelector(sel_authGracePeriodStart);
   [v7 setObject:v84 forKeyedSubscript:v85];
 
-  if (v83)
+  if (authGracePeriodStart)
   {
   }
 
-  v86 = [(PODeviceConfiguration *)self nonPlatformSSOAccounts];
+  nonPlatformSSOAccounts = [(PODeviceConfiguration *)self nonPlatformSSOAccounts];
   v87 = NSStringFromSelector(sel_nonPlatformSSOAccounts);
-  [v7 setObject:v86 forKeyedSubscript:v87];
+  [v7 setObject:nonPlatformSSOAccounts forKeyedSubscript:v87];
 
   temporaryAccountCredential = self->_temporaryAccountCredential;
-  if (v3)
+  if (displayCopy)
   {
     [(NSData *)temporaryAccountCredential psso_sha256HashString];
   }
@@ -1103,7 +1103,7 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   [v7 setObject:v97 forKeyedSubscript:v98];
 
   accessTokenTerminalIdentityKeyData = self->__accessTokenTerminalIdentityKeyData;
-  if (v3)
+  if (displayCopy)
   {
     [(NSData *)accessTokenTerminalIdentityKeyData psso_sha256HashString];
   }
@@ -1117,13 +1117,13 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   [v7 setObject:v100 forKeyedSubscript:v101];
 
   [(NSData *)self->__accessTokenTerminalIdentityCertData psso_base64URLEncodedString];
-  if (v3)
+  if (displayCopy)
     v102 = {;
     v103 = NSStringFromSelector(sel__accessTokenTerminalIdentityCertData);
     [v7 setObject:v102 forKeyedSubscript:v103];
 
-    v104 = [(PODeviceConfiguration *)self accessTokenReaderGroupIdentifier];
-    [POTokenHelper dataToHex:v104];
+    accessTokenReaderGroupIdentifier = [(PODeviceConfiguration *)self accessTokenReaderGroupIdentifier];
+    [POTokenHelper dataToHex:accessTokenReaderGroupIdentifier];
   }
 
   else
@@ -1131,8 +1131,8 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
     v106 = NSStringFromSelector(sel__accessTokenTerminalIdentityCertData);
     [v7 setObject:v105 forKeyedSubscript:v106];
 
-    v104 = [(PODeviceConfiguration *)self accessTokenReaderGroupIdentifier];
-    [v104 psso_base64URLEncodedString];
+    accessTokenReaderGroupIdentifier = [(PODeviceConfiguration *)self accessTokenReaderGroupIdentifier];
+    [accessTokenReaderGroupIdentifier psso_base64URLEncodedString];
   }
   v107 = ;
   v108 = NSStringFromSelector(sel_accessTokenReaderGroupIdentifier);
@@ -1164,8 +1164,8 @@ id __58__PODeviceConfiguration_decryptTemporaryAccountCredential__block_invoke_6
   v115 = NSStringFromSelector(sel_temporarySessionQuickLogin);
   [v7 setObject:v114 forKeyedSubscript:v115];
 
-  v116 = [MEMORY[0x277CBEAA8] date];
-  v117 = [v5 stringFromDate:v116];
+  date = [MEMORY[0x277CBEAA8] date];
+  v117 = [v5 stringFromDate:date];
   [v7 setObject:v117 forKeyedSubscript:@"created"];
 
   v123 = 0;
@@ -1197,9 +1197,9 @@ id __54__PODeviceConfiguration_dataRepresentationForDisplay___block_invoke()
   return v0;
 }
 
-- (PODeviceConfiguration)initWithData:(id)a3
+- (PODeviceConfiguration)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(PODeviceConfiguration *)self init];
 
   if (!v5)
@@ -1212,7 +1212,7 @@ LABEL_97:
   v6 = objc_alloc_init(MEMORY[0x277CCAA68]);
   [v6 setFormatOptions:1907];
   v215 = 0;
-  v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:16 error:&v215];
+  v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:16 error:&v215];
   v8 = v215;
   if (!v8)
   {
@@ -1831,23 +1831,23 @@ void __38__PODeviceConfiguration_initWithData___block_invoke_180(uint64_t a1, vo
   return v5;
 }
 
-- (PODeviceConfiguration)initWithCoder:(id)a3
+- (PODeviceConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_dataRepresentation);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = [(PODeviceConfiguration *)self initWithData:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(PODeviceConfiguration *)self dataRepresentation];
+  coderCopy = coder;
+  dataRepresentation = [(PODeviceConfiguration *)self dataRepresentation];
   v5 = NSStringFromSelector(sel_dataRepresentation);
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:dataRepresentation forKey:v5];
 }
 
 - (void)supportsTokenUnlock
@@ -1909,10 +1909,10 @@ void __38__PODeviceConfiguration_initWithData___block_invoke_180(uint64_t a1, vo
 - (void)supportsCreateTemporaryUsers
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "sharedDeviceKeys")}];
-  [a1 createUsersEnabled];
+  v2 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "sharedDeviceKeys")}];
+  [self createUsersEnabled];
   v3 = [OUTLINED_FUNCTION_7() numberWithBool:?];
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "newUserAuthorizationMode")}];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "newUserAuthorizationMode")}];
   OUTLINED_FUNCTION_2();
   _os_log_debug_impl(v4, v5, v6, v7, v8, 0x34u);
 
@@ -1925,7 +1925,7 @@ void __38__PODeviceConfiguration_initWithData___block_invoke_180(uint64_t a1, vo
   v3 = 136315394;
   v4 = "[PODeviceConfiguration supportsAccessKey]";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_25E8B1000, a2, OS_LOG_TYPE_DEBUG, "%s  on %@", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }

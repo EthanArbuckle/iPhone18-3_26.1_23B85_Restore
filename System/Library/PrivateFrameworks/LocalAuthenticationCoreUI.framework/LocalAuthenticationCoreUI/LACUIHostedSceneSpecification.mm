@@ -1,20 +1,20 @@
 @interface LACUIHostedSceneSpecification
-- (LACUIHostedSceneSpecification)initWithConfiguration:(id)a3;
+- (LACUIHostedSceneSpecification)initWithConfiguration:(id)configuration;
 - (id)userActivity;
 @end
 
 @implementation LACUIHostedSceneSpecification
 
-- (LACUIHostedSceneSpecification)initWithConfiguration:(id)a3
+- (LACUIHostedSceneSpecification)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = LACUIHostedSceneSpecification;
   v6 = [(LACUIHostedSceneSpecification *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;
@@ -26,22 +26,22 @@
   v3 = objc_alloc(MEMORY[0x277CCAE58]);
   v4 = [v3 initWithActivityType:*MEMORY[0x277D23E30]];
   v13 = *MEMORY[0x277D23E20];
-  v5 = [(LACAngelHostedSceneConfiguration *)self->_configuration sceneIdentifier];
-  v14[0] = v5;
+  sceneIdentifier = [(LACAngelHostedSceneConfiguration *)self->_configuration sceneIdentifier];
+  v14[0] = sceneIdentifier;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v7 = [v6 mutableCopy];
 
-  v8 = [(LACAngelHostedSceneConfiguration *)self->_configuration evaluationRequestIdentifier];
+  evaluationRequestIdentifier = [(LACAngelHostedSceneConfiguration *)self->_configuration evaluationRequestIdentifier];
 
-  if (v8)
+  if (evaluationRequestIdentifier)
   {
-    v9 = [(LACAngelHostedSceneConfiguration *)self->_configuration evaluationRequestIdentifier];
-    [v7 setObject:v9 forKeyedSubscript:*MEMORY[0x277D23E18]];
+    evaluationRequestIdentifier2 = [(LACAngelHostedSceneConfiguration *)self->_configuration evaluationRequestIdentifier];
+    [v7 setObject:evaluationRequestIdentifier2 forKeyedSubscript:*MEMORY[0x277D23E18]];
   }
 
-  v10 = [(LACAngelHostedSceneConfiguration *)self->_configuration connectionEndpoint];
+  connectionEndpoint = [(LACAngelHostedSceneConfiguration *)self->_configuration connectionEndpoint];
 
-  if (v10)
+  if (connectionEndpoint)
   {
     [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D23E28]];
   }

@@ -1,9 +1,9 @@
 @interface SBKeyboardSuppressionManager
 + (SBKeyboardSuppressionManager)sharedInstance;
 - (SBKeyboardSuppressionManager)init;
-- (id)acquireKeyboardSuppressionAssertionWithReason:(id)a3 predicate:(id)a4 displayIdentity:(id)a5;
+- (id)acquireKeyboardSuppressionAssertionWithReason:(id)reason predicate:(id)predicate displayIdentity:(id)identity;
 - (id)description;
-- (void)_setKeyboardSuppressed:(BOOL)a3 forReason:(id)a4 withPredicate:(id)a5 displayIdentity:(id)a6;
+- (void)_setKeyboardSuppressed:(BOOL)suppressed forReason:(id)reason withPredicate:(id)predicate displayIdentity:(id)identity;
 @end
 
 @implementation SBKeyboardSuppressionManager
@@ -45,11 +45,11 @@ uint64_t __46__SBKeyboardSuppressionManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)acquireKeyboardSuppressionAssertionWithReason:(id)a3 predicate:(id)a4 displayIdentity:(id)a5
+- (id)acquireKeyboardSuppressionAssertionWithReason:(id)reason predicate:(id)predicate displayIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reasonCopy = reason;
+  predicateCopy = predicate;
+  identityCopy = identity;
   objc_initWeak(&location, self);
   v11 = objc_alloc(MEMORY[0x277CF0CE8]);
   v15[0] = MEMORY[0x277D85DD0];
@@ -57,10 +57,10 @@ uint64_t __46__SBKeyboardSuppressionManager_sharedInstance__block_invoke()
   v15[2] = __104__SBKeyboardSuppressionManager_acquireKeyboardSuppressionAssertionWithReason_predicate_displayIdentity___block_invoke;
   v15[3] = &unk_2783AEA48;
   objc_copyWeak(&v17, &location);
-  v12 = v8;
+  v12 = reasonCopy;
   v16 = v12;
   v13 = [v11 initWithIdentifier:@"SBKeyboardSuppressionManager" forReason:v12 invalidationBlock:v15];
-  [(SBKeyboardSuppressionManager *)self _setKeyboardSuppressed:1 forReason:v12 withPredicate:v9 displayIdentity:v10];
+  [(SBKeyboardSuppressionManager *)self _setKeyboardSuppressed:1 forReason:v12 withPredicate:predicateCopy displayIdentity:identityCopy];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -79,32 +79,32 @@ void __104__SBKeyboardSuppressionManager_acquireKeyboardSuppressionAssertionWith
   }
 }
 
-- (void)_setKeyboardSuppressed:(BOOL)a3 forReason:(id)a4 withPredicate:(id)a5 displayIdentity:(id)a6
+- (void)_setKeyboardSuppressed:(BOOL)suppressed forReason:(id)reason withPredicate:(id)predicate displayIdentity:(id)identity
 {
-  v8 = a3;
-  v19 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(NSMutableDictionary *)self->_keyboardSuppressionAssertions objectForKey:v19];
+  suppressedCopy = suppressed;
+  reasonCopy = reason;
+  predicateCopy = predicate;
+  identityCopy = identity;
+  v12 = [(NSMutableDictionary *)self->_keyboardSuppressionAssertions objectForKey:reasonCopy];
   v13 = v12;
-  if (v8)
+  if (suppressedCopy)
   {
     v14 = +[SBSceneManagerCoordinator sharedInstance];
-    v15 = [v14 sceneDeactivationManager];
-    v16 = [v15 newAssertionWithReason:8];
+    sceneDeactivationManager = [v14 sceneDeactivationManager];
+    v16 = [sceneDeactivationManager newAssertionWithReason:8];
 
-    v17 = [MEMORY[0x277D75188] transitionContext];
+    transitionContext = [MEMORY[0x277D75188] transitionContext];
     v18 = [MEMORY[0x277CF0B70] settingsWithDuration:0.25];
-    [v17 setAnimationSettings:v18];
-    [(NSMutableDictionary *)self->_keyboardSuppressionAssertions setObject:v16 forKeyedSubscript:v19];
-    if (v11)
+    [transitionContext setAnimationSettings:v18];
+    [(NSMutableDictionary *)self->_keyboardSuppressionAssertions setObject:v16 forKeyedSubscript:reasonCopy];
+    if (identityCopy)
     {
-      [v16 sb_acquireWithPredicate:v10 transitionContext:v17 displayIdentity:v11];
+      [v16 sb_acquireWithPredicate:predicateCopy transitionContext:transitionContext displayIdentity:identityCopy];
     }
 
     else
     {
-      [v16 acquireWithPredicate:v10 transitionContext:v17];
+      [v16 acquireWithPredicate:predicateCopy transitionContext:transitionContext];
     }
 
     [v13 relinquish];
@@ -118,9 +118,9 @@ void __104__SBKeyboardSuppressionManager_acquireKeyboardSuppressionAssertionWith
       goto LABEL_9;
     }
 
-    v13 = [(NSMutableDictionary *)self->_keyboardSuppressionAssertions objectForKeyedSubscript:v19];
+    v13 = [(NSMutableDictionary *)self->_keyboardSuppressionAssertions objectForKeyedSubscript:reasonCopy];
     [v13 relinquish];
-    [(NSMutableDictionary *)self->_keyboardSuppressionAssertions removeObjectForKey:v19];
+    [(NSMutableDictionary *)self->_keyboardSuppressionAssertions removeObjectForKey:reasonCopy];
   }
 
 LABEL_9:

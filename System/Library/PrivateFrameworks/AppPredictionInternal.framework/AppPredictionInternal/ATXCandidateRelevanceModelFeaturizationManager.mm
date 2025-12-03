@@ -1,30 +1,30 @@
 @interface ATXCandidateRelevanceModelFeaturizationManager
-+ (id)denseLabelVectorFromDataPoints:(id)a3;
-+ (id)labelsFromDataPoints:(id)a3;
-- (ATXCandidateRelevanceModelFeaturizationManager)initWithCoder:(id)a3;
-- (ATXCandidateRelevanceModelFeaturizationManager)initWithFeaturizers:(id)a3;
-- (ATXCandidateRelevanceModelFeaturizationManager)initWithImmutableFeaturizers:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXCandidateRelevanceModelFeaturizationManager:(id)a3;
++ (id)denseLabelVectorFromDataPoints:(id)points;
++ (id)labelsFromDataPoints:(id)points;
+- (ATXCandidateRelevanceModelFeaturizationManager)initWithCoder:(id)coder;
+- (ATXCandidateRelevanceModelFeaturizationManager)initWithFeaturizers:(id)featurizers;
+- (ATXCandidateRelevanceModelFeaturizationManager)initWithImmutableFeaturizers:(id)featurizers;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXCandidateRelevanceModelFeaturizationManager:(id)manager;
 - (id)featureNames;
-- (id)featuresForContext:(id)a3 candidate:(id)a4;
-- (id)sparseFeatureMatrixFromDataPoints:(id)a3;
-- (id)sparseFeatureVectorForContext:(id)a3 candidate:(id)a4;
+- (id)featuresForContext:(id)context candidate:(id)candidate;
+- (id)sparseFeatureMatrixFromDataPoints:(id)points;
+- (id)sparseFeatureVectorForContext:(id)context candidate:(id)candidate;
 - (unint64_t)numberOfInputDimensions;
 @end
 
 @implementation ATXCandidateRelevanceModelFeaturizationManager
 
-- (ATXCandidateRelevanceModelFeaturizationManager)initWithFeaturizers:(id)a3
+- (ATXCandidateRelevanceModelFeaturizationManager)initWithFeaturizers:(id)featurizers
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  featurizersCopy = featurizers;
   v5 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = featurizersCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -40,8 +40,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) immutableCopy];
-        [v5 addObject:v11];
+        immutableCopy = [*(*(&v15 + 1) + 8 * v10) immutableCopy];
+        [v5 addObject:immutableCopy];
 
         ++v10;
       }
@@ -58,16 +58,16 @@
   return v12;
 }
 
-- (ATXCandidateRelevanceModelFeaturizationManager)initWithImmutableFeaturizers:(id)a3
+- (ATXCandidateRelevanceModelFeaturizationManager)initWithImmutableFeaturizers:(id)featurizers
 {
-  v5 = a3;
+  featurizersCopy = featurizers;
   v9.receiver = self;
   v9.super_class = ATXCandidateRelevanceModelFeaturizationManager;
   v6 = [(ATXCandidateRelevanceModelFeaturizationManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_featurizers, a3);
+    objc_storeStrong(&v6->_featurizers, featurizers);
   }
 
   return v7;
@@ -102,8 +102,8 @@
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v6 = [v5 featureValueNames];
-        v7 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        featureValueNames = [v5 featureValueNames];
+        v7 = [featureValueNames countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v7)
         {
           v8 = v7;
@@ -114,7 +114,7 @@
             {
               if (*v23 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(featureValueNames);
               }
 
               v11 = *(*(&v22 + 1) + 8 * i);
@@ -126,7 +126,7 @@
               [v3 addObject:v15];
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v8 = [featureValueNames countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v8);
@@ -154,8 +154,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(ATXCandidateRelevanceModelFeaturizationManager *)self featurizers];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  featurizers = [(ATXCandidateRelevanceModelFeaturizationManager *)self featurizers];
+  v3 = [featurizers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -167,13 +167,13 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(featurizers);
         }
 
         v5 += [*(*(&v10 + 1) + 8 * i) dimensions];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [featurizers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -188,18 +188,18 @@
   return v5;
 }
 
-- (id)featuresForContext:(id)a3 candidate:(id)a4
+- (id)featuresForContext:(id)context candidate:(id)candidate
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  candidateCopy = candidate;
   v8 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(ATXCandidateRelevanceModelFeaturizationManager *)self featurizers];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  featurizers = [(ATXCandidateRelevanceModelFeaturizationManager *)self featurizers];
+  v10 = [featurizers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -210,14 +210,14 @@
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(featurizers);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * i) featureVectorForContext:v6 candidate:v7];
+        v14 = [*(*(&v17 + 1) + 8 * i) featureVectorForContext:contextCopy candidate:candidateCopy];
         [v8 addObjectsFromArray:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [featurizers countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
@@ -228,16 +228,16 @@
   return v8;
 }
 
-+ (id)labelsFromDataPoints:(id)a3
++ (id)labelsFromDataPoints:(id)points
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pointsCopy = points;
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = pointsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -267,28 +267,28 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXCandidateRelevanceModelFeaturizationManager *)self isEqualToATXCandidateRelevanceModelFeaturizationManager:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXCandidateRelevanceModelFeaturizationManager *)self isEqualToATXCandidateRelevanceModelFeaturizationManager:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXCandidateRelevanceModelFeaturizationManager:(id)a3
+- (BOOL)isEqualToATXCandidateRelevanceModelFeaturizationManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(ATXCandidateRelevanceModelFeaturizationManager *)self numberOfInputDimensions];
-  if (v5 == [v4 numberOfInputDimensions] && (v6 = -[NSArray count](self->_featurizers, "count"), v6 == objc_msgSend(v4[1], "count")))
+  managerCopy = manager;
+  numberOfInputDimensions = [(ATXCandidateRelevanceModelFeaturizationManager *)self numberOfInputDimensions];
+  if (numberOfInputDimensions == [managerCopy numberOfInputDimensions] && (v6 = -[NSArray count](self->_featurizers, "count"), v6 == objc_msgSend(managerCopy[1], "count")))
   {
     if ([(NSArray *)self->_featurizers count])
     {
@@ -296,7 +296,7 @@
       do
       {
         v8 = [(NSArray *)self->_featurizers objectAtIndexedSubscript:v7];
-        v9 = [v4[1] objectAtIndexedSubscript:v7];
+        v9 = [managerCopy[1] objectAtIndexedSubscript:v7];
         v10 = [v8 isEqual:v9];
 
         if ((v10 & 1) == 0)
@@ -324,68 +324,68 @@
   return v10;
 }
 
-- (ATXCandidateRelevanceModelFeaturizationManager)initWithCoder:(id)a3
+- (ATXCandidateRelevanceModelFeaturizationManager)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
   v8 = MEMORY[0x277D42620];
   v9 = __atxlog_handle_relevance_model();
-  v10 = [v8 robustDecodeObjectOfClasses:v7 forKey:@"featurizationManagerFeaturizers" withCoder:v5 expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXCandidateRelevanceModelFeaturizationManager" errorCode:-1 logHandle:v9];
+  v10 = [v8 robustDecodeObjectOfClasses:v7 forKey:@"featurizationManagerFeaturizers" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXCandidateRelevanceModelFeaturizationManager" errorCode:-1 logHandle:v9];
 
   if (v10)
   {
     self = [(ATXCandidateRelevanceModelFeaturizationManager *)self initWithImmutableFeaturizers:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-+ (id)denseLabelVectorFromDataPoints:(id)a3
++ (id)denseLabelVectorFromDataPoints:(id)points
 {
-  v3 = [a1 labelsFromDataPoints:a3];
+  v3 = [self labelsFromDataPoints:points];
   v4 = [objc_alloc(MEMORY[0x277D41F20]) initWithNumbers:v3];
 
   return v4;
 }
 
-- (id)sparseFeatureVectorForContext:(id)a3 candidate:(id)a4
+- (id)sparseFeatureVectorForContext:(id)context candidate:(id)candidate
 {
-  v4 = [(ATXCandidateRelevanceModelFeaturizationManager *)self featuresForContext:a3 candidate:a4];
+  v4 = [(ATXCandidateRelevanceModelFeaturizationManager *)self featuresForContext:context candidate:candidate];
   v5 = [objc_alloc(MEMORY[0x277D41F20]) initWithNumbers:v4];
   v6 = [MEMORY[0x277D41F78] sparseVectorFromDense:v5];
 
   return v6;
 }
 
-- (id)sparseFeatureMatrixFromDataPoints:(id)a3
+- (id)sparseFeatureMatrixFromDataPoints:(id)points
 {
-  v23 = a3;
-  v4 = [v23 count];
-  v22 = self;
-  v5 = [(ATXCandidateRelevanceModelFeaturizationManager *)self numberOfInputDimensions];
-  v6 = sparse_matrix_create_float(v4, v5);
+  pointsCopy = points;
+  v4 = [pointsCopy count];
+  selfCopy = self;
+  numberOfInputDimensions = [(ATXCandidateRelevanceModelFeaturizationManager *)self numberOfInputDimensions];
+  v6 = sparse_matrix_create_float(v4, numberOfInputDimensions);
   v21 = v4;
   if (v4)
   {
     for (i = 0; i != v21; ++i)
     {
       context = objc_autoreleasePoolPush();
-      v8 = [v23 objectAtIndexedSubscript:i];
-      v9 = [v8 context];
-      v10 = [v8 candidate];
-      v11 = [(ATXCandidateRelevanceModelFeaturizationManager *)v22 featuresForContext:v9 candidate:v10];
+      v8 = [pointsCopy objectAtIndexedSubscript:i];
+      context = [v8 context];
+      candidate = [v8 candidate];
+      v11 = [(ATXCandidateRelevanceModelFeaturizationManager *)selfCopy featuresForContext:context candidate:candidate];
 
-      if ([v11 count] == v5)
+      if ([v11 count] == numberOfInputDimensions)
       {
-        if (v5)
+        if (numberOfInputDimensions)
         {
           goto LABEL_5;
         }
@@ -393,14 +393,14 @@
 
       else
       {
-        v17 = [MEMORY[0x277CCA890] currentHandler];
-        [v17 handleFailureInMethod:a2 object:v22 file:@"ATXCandidateRelevanceModelFeaturizationManager.m" lineNumber:144 description:{@"Invalid shape, all rows must be the same length (row %lu length: %lu, first row length: %lu)", i, objc_msgSend(v11, "count"), v5}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"ATXCandidateRelevanceModelFeaturizationManager.m" lineNumber:144 description:{@"Invalid shape, all rows must be the same length (row %lu length: %lu, first row length: %lu)", i, objc_msgSend(v11, "count"), numberOfInputDimensions}];
 
-        if (v5)
+        if (numberOfInputDimensions)
         {
 LABEL_5:
           v12 = 0;
-          for (j = 0; j != v5; ++j)
+          for (j = 0; j != numberOfInputDimensions; ++j)
           {
             v14 = [v11 objectAtIndexedSubscript:j];
             [v14 floatValue];

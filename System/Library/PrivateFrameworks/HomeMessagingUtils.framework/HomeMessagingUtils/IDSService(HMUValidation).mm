@@ -9,8 +9,8 @@
 {
   v14 = a3;
   v15 = a6;
-  v16 = [a4 senderCorrelationIdentifier];
-  if (!v16)
+  senderCorrelationIdentifier = [a4 senderCorrelationIdentifier];
+  if (!senderCorrelationIdentifier)
   {
     if (a8)
     {
@@ -28,22 +28,22 @@
   {
     if (a5 || (a7 & 1) == 0 || ([v15 hmu_isRemoteAccessAllowedForCurrentUser] & 1) != 0)
     {
-      v22 = [a1 deviceForFromID:v14];
+      v22 = [self deviceForFromID:v14];
       if (v22)
       {
         if ([v15 hmu_isCurrentUserOwner])
         {
-          v23 = [v15 owner];
+          owner = [v15 owner];
 LABEL_16:
           if (a5)
           {
             goto LABEL_18;
           }
 
-          v24 = [v23 uniqueIdentifier];
-          v25 = [v15 owner];
-          v26 = [v25 uniqueIdentifier];
-          v27 = [v24 isEqual:v26];
+          uniqueIdentifier = [owner uniqueIdentifier];
+          owner2 = [v15 owner];
+          uniqueIdentifier2 = [owner2 uniqueIdentifier];
+          v27 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
           if (v27)
           {
@@ -72,7 +72,7 @@ LABEL_29:
           v30 = 5;
 LABEL_26:
           v31 = [v28 hmu_IDSValidationErrorWithCode:v30 description:v29];
-          v23 = 0;
+          owner = 0;
 LABEL_27:
           v21 = 0;
           *a8 = v31;
@@ -82,8 +82,8 @@ LABEL_27:
 
       else
       {
-        v23 = [v15 hmu_userWithSenderCorrelationIdentifier:v16];
-        if (v23)
+        owner = [v15 hmu_userWithSenderCorrelationIdentifier:senderCorrelationIdentifier];
+        if (owner)
         {
           goto LABEL_16;
         }
@@ -97,7 +97,7 @@ LABEL_27:
         }
       }
 
-      v23 = 0;
+      owner = 0;
       goto LABEL_29;
     }
 
@@ -136,7 +136,7 @@ LABEL_31:
   v13 = a5;
   v14 = a3;
   v15 = [v12 hmu_userWithDestination:v14];
-  v16 = [v12 hmu_accessoryWithDestination:v14 service:a1];
+  v16 = [v12 hmu_accessoryWithDestination:v14 service:self];
 
   if (v15 && v16)
   {
@@ -171,10 +171,10 @@ LABEL_29:
 
   if (v13)
   {
-    v21 = [v12 uniqueIdentifier];
-    v22 = [v13 home];
-    v23 = [v22 uniqueIdentifier];
-    v24 = [v21 isEqual:v23];
+    uniqueIdentifier = [v12 uniqueIdentifier];
+    home = [v13 home];
+    uniqueIdentifier2 = [home uniqueIdentifier];
+    v24 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
     if ((v24 & 1) == 0)
     {

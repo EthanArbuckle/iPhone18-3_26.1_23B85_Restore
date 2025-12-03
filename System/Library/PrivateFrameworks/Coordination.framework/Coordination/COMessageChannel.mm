@@ -1,123 +1,123 @@
 @interface COMessageChannel
-+ (COMessageChannel)messageChannelWithTopic:(id)a3 cluster:(id)a4 manualGrouping:(BOOL)a5;
-- (COMessageChannel)initWithConnectionProvider:(id)a3 roleMonitorConnectionProvider:(id)a4 topic:(id)a5 cluster:(id)a6;
-- (COMessageChannel)initWithTopic:(id)a3 cluster:(id)a4;
++ (COMessageChannel)messageChannelWithTopic:(id)topic cluster:(id)cluster manualGrouping:(BOOL)grouping;
+- (COMessageChannel)initWithConnectionProvider:(id)provider roleMonitorConnectionProvider:(id)connectionProvider topic:(id)topic cluster:(id)cluster;
+- (COMessageChannel)initWithTopic:(id)topic cluster:(id)cluster;
 - (NSXPCConnection)lastConnection;
-- (id)_payloadTypeFromClass:(Class)a3;
-- (id)_remoteInterfaceWithErrorHandler:(id)a3;
+- (id)_payloadTypeFromClass:(Class)class;
+- (id)_remoteInterfaceWithErrorHandler:(id)handler;
 - (unsigned)_generateRequestID;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_broadcastRequest:(id)a3 type:(id)a4 recipientsCallback:(id)a5 responseCompletionHandler:(id)a6;
-- (void)_callbackProducersAndConsumersAfterActivationWithError:(id)a3;
-- (void)_deliverDidEndDelegateForSession:(id)a3 notice:(id)a4 initiator:(id)a5 error:(id)a6;
-- (void)_deliverDidFailToStartSessionWithMember:(id)a3 producer:(id)a4 error:(id)a5;
-- (void)_deliverFailedToStartSessionWithMember:(id)a3 consumer:(id)a4 error:(id)a5;
-- (void)_deliverSuccessfullyStartedSession:(id)a3 withMember:(id)a4 consumer:(id)a5;
-- (void)_deliverSuccessfullyStartedSession:(id)a3 withResponse:(id)a4 withMember:(id)a5 producer:(id)a6;
-- (void)_handleAddedMembers:(id)a3;
-- (void)_handleCapableCommand:(id)a3 fromMember:(id)a4 callback:(id)a5;
-- (void)_handleRemovedMembers:(id)a3;
-- (void)_handleStartCommand:(id)a3 withMember:(id)a4 callback:(id)a5;
-- (void)_handleStopCommand:(id)a3 fromMember:(id)a4 callback:(id)a5;
-- (void)_invokeResponseCallbackForInfo:(id)a3 snapshot:(id)a4 response:(id)a5 error:(id)a6;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_broadcastRequest:(id)request type:(id)type recipientsCallback:(id)callback responseCompletionHandler:(id)handler;
+- (void)_callbackProducersAndConsumersAfterActivationWithError:(id)error;
+- (void)_deliverDidEndDelegateForSession:(id)session notice:(id)notice initiator:(id)initiator error:(id)error;
+- (void)_deliverDidFailToStartSessionWithMember:(id)member producer:(id)producer error:(id)error;
+- (void)_deliverFailedToStartSessionWithMember:(id)member consumer:(id)consumer error:(id)error;
+- (void)_deliverSuccessfullyStartedSession:(id)session withMember:(id)member consumer:(id)consumer;
+- (void)_deliverSuccessfullyStartedSession:(id)session withResponse:(id)response withMember:(id)member producer:(id)producer;
+- (void)_handleAddedMembers:(id)members;
+- (void)_handleCapableCommand:(id)command fromMember:(id)member callback:(id)callback;
+- (void)_handleRemovedMembers:(id)members;
+- (void)_handleStartCommand:(id)command withMember:(id)member callback:(id)callback;
+- (void)_handleStopCommand:(id)command fromMember:(id)member callback:(id)callback;
+- (void)_invokeResponseCallbackForInfo:(id)info snapshot:(id)snapshot response:(id)response error:(id)error;
 - (void)_lostConnectionToService;
-- (void)_sendRequest:(id)a3 type:(id)a4 members:(id)a5 withCompletionHandler:(id)a6;
+- (void)_sendRequest:(id)request type:(id)type members:(id)members withCompletionHandler:(id)handler;
 - (void)_setupClusterMonitor;
-- (void)_startSessionWithProducer:(id)a3 member:(id)a4;
-- (void)_startSessionWithProducer:(id)a3 member:(id)a4 request:(id)a5;
-- (void)_submitMetricsForActivationCompletionWithError:(id)a3;
-- (void)_submitMetricsForRequest:(id)a3 withRequestInfo:(id)a4 withError:(id)a5;
-- (void)_submitMetricsForResponse:(id)a3 size:(unint64_t)a4 withError:(id)a5;
-- (void)_submitMetricsForSession:(id)a3 withError:(id)a4;
-- (void)_withLock:(id)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)addSessionConsumerWithSubTopic:(id)a3 delegate:(id)a4 dispatchQueue:(id)a5;
-- (void)addSessionProducerWithSubTopic:(id)a3 delegate:(id)a4 dispatchQueue:(id)a5;
-- (void)broadcastRequest:(id)a3 recipientsCallback:(id)a4 responseCompletionHandler:(id)a5;
-- (void)broadcastRequest:(id)a3 type:(id)a4 recipientsCallback:(id)a5 responseCompletionHandler:(id)a6;
+- (void)_startSessionWithProducer:(id)producer member:(id)member;
+- (void)_startSessionWithProducer:(id)producer member:(id)member request:(id)request;
+- (void)_submitMetricsForActivationCompletionWithError:(id)error;
+- (void)_submitMetricsForRequest:(id)request withRequestInfo:(id)info withError:(id)error;
+- (void)_submitMetricsForResponse:(id)response size:(unint64_t)size withError:(id)error;
+- (void)_submitMetricsForSession:(id)session withError:(id)error;
+- (void)_withLock:(id)lock;
+- (void)activateWithCompletion:(id)completion;
+- (void)addSessionConsumerWithSubTopic:(id)topic delegate:(id)delegate dispatchQueue:(id)queue;
+- (void)addSessionProducerWithSubTopic:(id)topic delegate:(id)delegate dispatchQueue:(id)queue;
+- (void)broadcastRequest:(id)request recipientsCallback:(id)callback responseCompletionHandler:(id)handler;
+- (void)broadcastRequest:(id)request type:(id)type recipientsCallback:(id)callback responseCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)failedToSendRequestWithID:(unsigned int)a3 withError:(id)a4;
-- (void)receivedRecipientListForRequestID:(unsigned int)a3 recipients:(id)a4;
-- (void)receivedRequestWithPayload:(id)a3 payloadType:(id)a4 requestID:(unsigned int)a5 fromMember:(id)a6 withCallback:(id)a7;
-- (void)receivedResponseForRequestID:(unsigned int)a3 responsePayload:(id)a4 responseType:(id)a5 responseError:(id)a6 fromMember:(id)a7;
-- (void)registerHandler:(id)a3 forRequestClass:(Class)a4;
-- (void)registerHandler:(id)a3 forRequestClassType:(id)a4;
-- (void)sendRequest:(id)a3 members:(id)a4 withCompletionHandler:(id)a5;
-- (void)sendRequest:(id)a3 type:(id)a4 members:(id)a5 withCompletionHandler:(id)a6;
-- (void)sendRequest:(id)a3 type:(id)a4 withCompletionHandler:(id)a5;
-- (void)sendRequest:(id)a3 withCompletionHandler:(id)a4;
-- (void)startSessionWithProducer:(id)a3 members:(id)a4;
-- (void)stopMessageSession:(id)a3 withNotice:(id)a4;
-- (void)unregisterHandlerForRequestClass:(Class)a3;
-- (void)unregisterHandlerForRequestClassType:(id)a3;
+- (void)failedToSendRequestWithID:(unsigned int)d withError:(id)error;
+- (void)receivedRecipientListForRequestID:(unsigned int)d recipients:(id)recipients;
+- (void)receivedRequestWithPayload:(id)payload payloadType:(id)type requestID:(unsigned int)d fromMember:(id)member withCallback:(id)callback;
+- (void)receivedResponseForRequestID:(unsigned int)d responsePayload:(id)payload responseType:(id)type responseError:(id)error fromMember:(id)member;
+- (void)registerHandler:(id)handler forRequestClass:(Class)class;
+- (void)registerHandler:(id)handler forRequestClassType:(id)type;
+- (void)sendRequest:(id)request members:(id)members withCompletionHandler:(id)handler;
+- (void)sendRequest:(id)request type:(id)type members:(id)members withCompletionHandler:(id)handler;
+- (void)sendRequest:(id)request type:(id)type withCompletionHandler:(id)handler;
+- (void)sendRequest:(id)request withCompletionHandler:(id)handler;
+- (void)startSessionWithProducer:(id)producer members:(id)members;
+- (void)stopMessageSession:(id)session withNotice:(id)notice;
+- (void)unregisterHandlerForRequestClass:(Class)class;
+- (void)unregisterHandlerForRequestClassType:(id)type;
 @end
 
 @implementation COMessageChannel
 
-- (COMessageChannel)initWithConnectionProvider:(id)a3 roleMonitorConnectionProvider:(id)a4 topic:(id)a5 cluster:(id)a6
+- (COMessageChannel)initWithConnectionProvider:(id)provider roleMonitorConnectionProvider:(id)connectionProvider topic:(id)topic cluster:(id)cluster
 {
   v51 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  providerCopy = provider;
+  connectionProviderCopy = connectionProvider;
+  topicCopy = topic;
+  clusterCopy = cluster;
   v42.receiver = self;
   v42.super_class = COMessageChannel;
   v15 = [(COMessageChannel *)&v42 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_topic, a5);
-    objc_storeStrong(&v16->_cluster, a6);
+    objc_storeStrong(&v15->_topic, topic);
+    objc_storeStrong(&v16->_cluster, cluster);
     v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.coordination.messageChannel.%p", v16];
-    v18 = [v17 UTF8String];
+    uTF8String = [v17 UTF8String];
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v20 = dispatch_queue_create(v18, v19);
+    v20 = dispatch_queue_create(uTF8String, v19);
     workQueue = v16->_workQueue;
     v16->_workQueue = v20;
 
     v16->_lock._os_unfair_lock_opaque = 0;
     v16->_baseRequestID = arc4random();
-    v22 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     requestHandlers = v16->_requestHandlers;
-    v16->_requestHandlers = v22;
+    v16->_requestHandlers = dictionary;
 
-    v24 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     sessionConsumers = v16->_sessionConsumers;
-    v16->_sessionConsumers = v24;
+    v16->_sessionConsumers = dictionary2;
 
-    v26 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     sessionProducers = v16->_sessionProducers;
-    v16->_sessionProducers = v26;
+    v16->_sessionProducers = dictionary3;
 
-    v28 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     sessionsInflight = v16->_sessionsInflight;
-    v16->_sessionsInflight = v28;
+    v16->_sessionsInflight = dictionary4;
 
-    if (v11 | v12)
+    if (providerCopy | connectionProviderCopy)
     {
-      objc_storeStrong(&v16->_provider, a3);
-      objc_storeStrong(&v16->_roleMonitorConnectionProvider, a4);
+      objc_storeStrong(&v16->_provider, provider);
+      objc_storeStrong(&v16->_roleMonitorConnectionProvider, connectionProvider);
       if (+[COFeatureStatus isCOClusterEnabled])
       {
-        [v14 label];
+        [clusterCopy label];
       }
 
       else
       {
-        [COCluster inferClusterLabelFromCluster:v14];
+        [COCluster inferClusterLabelFromCluster:clusterCopy];
       }
       v30 = ;
       clusterLabel = v16->_clusterLabel;
       v16->_clusterLabel = v30;
 
-      v32 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary5 = [MEMORY[0x277CBEB38] dictionary];
       outstandingRequests = v16->_outstandingRequests;
-      v16->_outstandingRequests = v32;
+      v16->_outstandingRequests = dictionary5;
 
-      v34 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary6 = [MEMORY[0x277CBEB38] dictionary];
       roleSnapshotsCache = v16->_roleSnapshotsCache;
-      v16->_roleSnapshotsCache = v34;
+      v16->_roleSnapshotsCache = dictionary6;
 
       recorder = v16->_recorder;
       v16->_recorder = &__block_literal_global_5;
@@ -130,9 +130,9 @@
         *buf = 134218754;
         v44 = v16;
         v45 = 2112;
-        v46 = v13;
+        v46 = topicCopy;
         v47 = 2112;
-        v48 = v14;
+        v48 = clusterCopy;
         v49 = 2112;
         v50 = v39;
         _os_log_impl(&dword_244328000, v37, OS_LOG_TYPE_DEFAULT, "%p message channel created with topic %@, cluster %@ and %@ provider", buf, 0x2Au);
@@ -144,24 +144,24 @@
   return v16;
 }
 
-- (COMessageChannel)initWithTopic:(id)a3 cluster:(id)a4
+- (COMessageChannel)initWithTopic:(id)topic cluster:(id)cluster
 {
-  v6 = a3;
-  v7 = [COCluster _clusterForCluster:a4];
+  topicCopy = topic;
+  v7 = [COCluster _clusterForCluster:cluster];
   v8 = objc_alloc_init(_COMessageChannelConnectionProvider);
-  v9 = [(COMessageChannel *)self initWithConnectionProvider:v8 roleMonitorConnectionProvider:0 topic:v6 cluster:v7];
+  v9 = [(COMessageChannel *)self initWithConnectionProvider:v8 roleMonitorConnectionProvider:0 topic:topicCopy cluster:v7];
 
   return v9;
 }
 
-+ (COMessageChannel)messageChannelWithTopic:(id)a3 cluster:(id)a4 manualGrouping:(BOOL)a5
++ (COMessageChannel)messageChannelWithTopic:(id)topic cluster:(id)cluster manualGrouping:(BOOL)grouping
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  groupingCopy = grouping;
+  clusterCopy = cluster;
+  topicCopy = topic;
   if (+[COFeatureStatus isNoDaemonMessageChannelEnabled])
   {
-    v9 = !v5;
+    v9 = !groupingCopy;
   }
 
   else
@@ -171,12 +171,12 @@
 
   if (v9)
   {
-    v10 = [[COMessageChannel alloc] initWithTopic:v8 cluster:v7];
+    v10 = [[COMessageChannel alloc] initWithTopic:topicCopy cluster:clusterCopy];
   }
 
   else
   {
-    v10 = [[_COMessageChannel alloc] initWithTopic:v8 cluster:v7 manualGrouping:1];
+    v10 = [[_COMessageChannel alloc] initWithTopic:topicCopy cluster:clusterCopy manualGrouping:1];
   }
 
   v11 = v10;
@@ -209,9 +209,9 @@ void __27__COMessageChannel_dealloc__block_invoke(uint64_t a1)
   [v3 invalidate];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -219,8 +219,8 @@ void __27__COMessageChannel_dealloc__block_invoke(uint64_t a1)
   block[2] = __43__COMessageChannel_activateWithCompletion___block_invoke;
   block[3] = &unk_278E12DF8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v9);
@@ -238,119 +238,119 @@ void __43__COMessageChannel_activateWithCompletion___block_invoke(uint64_t a1)
   }
 }
 
-- (void)sendRequest:(id)a3 withCompletionHandler:(id)a4
+- (void)sendRequest:(id)request withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
   v8 = [(COMessageChannel *)self _payloadTypeFromClass:objc_opt_class()];
-  [(COMessageChannel *)self sendRequest:v7 type:v8 withCompletionHandler:v6];
+  [(COMessageChannel *)self sendRequest:requestCopy type:v8 withCompletionHandler:handlerCopy];
 }
 
-- (void)sendRequest:(id)a3 type:(id)a4 withCompletionHandler:(id)a5
+- (void)sendRequest:(id)request type:(id)type withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  typeCopy = type;
+  handlerCopy = handler;
   workQueue = self->_workQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __59__COMessageChannel_sendRequest_type_withCompletionHandler___block_invoke;
   v15[3] = &unk_278E12390;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = requestCopy;
+  v17 = typeCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = typeCopy;
+  v14 = requestCopy;
   dispatch_async(workQueue, v15);
 }
 
-- (void)sendRequest:(id)a3 members:(id)a4 withCompletionHandler:(id)a5
+- (void)sendRequest:(id)request members:(id)members withCompletionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  membersCopy = members;
+  requestCopy = request;
   v11 = [(COMessageChannel *)self _payloadTypeFromClass:objc_opt_class()];
-  [(COMessageChannel *)self sendRequest:v10 type:v11 members:v9 withCompletionHandler:v8];
+  [(COMessageChannel *)self sendRequest:requestCopy type:v11 members:membersCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)sendRequest:(id)a3 type:(id)a4 members:(id)a5 withCompletionHandler:(id)a6
+- (void)sendRequest:(id)request type:(id)type members:(id)members withCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  typeCopy = type;
+  membersCopy = members;
+  handlerCopy = handler;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__COMessageChannel_sendRequest_type_members_withCompletionHandler___block_invoke;
   block[3] = &unk_278E126C0;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = requestCopy;
+  v21 = typeCopy;
+  v22 = membersCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = membersCopy;
+  v17 = typeCopy;
+  v18 = requestCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)broadcastRequest:(id)a3 recipientsCallback:(id)a4 responseCompletionHandler:(id)a5
+- (void)broadcastRequest:(id)request recipientsCallback:(id)callback responseCompletionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  callbackCopy = callback;
+  requestCopy = request;
   v11 = [(COMessageChannel *)self _payloadTypeFromClass:objc_opt_class()];
-  [(COMessageChannel *)self broadcastRequest:v10 type:v11 recipientsCallback:v9 responseCompletionHandler:v8];
+  [(COMessageChannel *)self broadcastRequest:requestCopy type:v11 recipientsCallback:callbackCopy responseCompletionHandler:handlerCopy];
 }
 
-- (void)broadcastRequest:(id)a3 type:(id)a4 recipientsCallback:(id)a5 responseCompletionHandler:(id)a6
+- (void)broadcastRequest:(id)request type:(id)type recipientsCallback:(id)callback responseCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  typeCopy = type;
+  callbackCopy = callback;
+  handlerCopy = handler;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__COMessageChannel_broadcastRequest_type_recipientsCallback_responseCompletionHandler___block_invoke;
   block[3] = &unk_278E12E20;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = requestCopy;
+  v21 = typeCopy;
+  v22 = callbackCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = callbackCopy;
+  v17 = typeCopy;
+  v18 = requestCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)registerHandler:(id)a3 forRequestClass:(Class)a4
+- (void)registerHandler:(id)handler forRequestClass:(Class)class
 {
-  v6 = a3;
-  v7 = [(COMessageChannel *)self _payloadTypeFromClass:a4];
-  [(COMessageChannel *)self registerHandler:v6 forRequestClassType:v7];
+  handlerCopy = handler;
+  v7 = [(COMessageChannel *)self _payloadTypeFromClass:class];
+  [(COMessageChannel *)self registerHandler:handlerCopy forRequestClassType:v7];
 }
 
-- (void)registerHandler:(id)a3 forRequestClassType:(id)a4
+- (void)registerHandler:(id)handler forRequestClassType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  typeCopy = type;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__COMessageChannel_registerHandler_forRequestClassType___block_invoke;
   block[3] = &unk_278E12E48;
-  v12 = v7;
-  v13 = v6;
+  v12 = typeCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = typeCopy;
+  v10 = handlerCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -375,23 +375,23 @@ void __56__COMessageChannel_registerHandler_forRequestClassType___block_invoke(v
   }
 }
 
-- (void)unregisterHandlerForRequestClass:(Class)a3
+- (void)unregisterHandlerForRequestClass:(Class)class
 {
-  v4 = [(COMessageChannel *)self _payloadTypeFromClass:a3];
+  v4 = [(COMessageChannel *)self _payloadTypeFromClass:class];
   [(COMessageChannel *)self unregisterHandlerForRequestClassType:v4];
 }
 
-- (void)unregisterHandlerForRequestClassType:(id)a3
+- (void)unregisterHandlerForRequestClassType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__COMessageChannel_unregisterHandlerForRequestClassType___block_invoke;
   v7[3] = &unk_278E12368;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = typeCopy;
+  v6 = typeCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -415,23 +415,23 @@ void __57__COMessageChannel_unregisterHandlerForRequestClassType___block_invoke(
   }
 }
 
-- (void)addSessionProducerWithSubTopic:(id)a3 delegate:(id)a4 dispatchQueue:(id)a5
+- (void)addSessionProducerWithSubTopic:(id)topic delegate:(id)delegate dispatchQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  topicCopy = topic;
+  delegateCopy = delegate;
+  queueCopy = queue;
   workQueue = self->_workQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __74__COMessageChannel_addSessionProducerWithSubTopic_delegate_dispatchQueue___block_invoke;
   v15[3] = &unk_278E12E70;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = topicCopy;
+  v17 = delegateCopy;
+  v18 = queueCopy;
+  v12 = queueCopy;
+  v13 = delegateCopy;
+  v14 = topicCopy;
   dispatch_async(workQueue, v15);
 }
 
@@ -521,23 +521,23 @@ void __74__COMessageChannel_addSessionProducerWithSubTopic_delegate_dispatchQueu
   }
 }
 
-- (void)addSessionConsumerWithSubTopic:(id)a3 delegate:(id)a4 dispatchQueue:(id)a5
+- (void)addSessionConsumerWithSubTopic:(id)topic delegate:(id)delegate dispatchQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  topicCopy = topic;
+  delegateCopy = delegate;
+  queueCopy = queue;
   workQueue = self->_workQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __74__COMessageChannel_addSessionConsumerWithSubTopic_delegate_dispatchQueue___block_invoke;
   v15[3] = &unk_278E12E70;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = topicCopy;
+  v17 = delegateCopy;
+  v18 = queueCopy;
+  v12 = queueCopy;
+  v13 = delegateCopy;
+  v14 = topicCopy;
   dispatch_async(workQueue, v15);
 }
 
@@ -678,15 +678,15 @@ void __74__COMessageChannel_addSessionConsumerWithSubTopic_delegate_dispatchQueu
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startSessionWithProducer:(id)a3 members:(id)a4
+- (void)startSessionWithProducer:(id)producer members:(id)members
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  producerCopy = producer;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = a4;
+  obj = members;
   v7 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -709,7 +709,7 @@ void __74__COMessageChannel_addSessionConsumerWithSubTopic_delegate_dispatchQueu
         block[2] = __53__COMessageChannel_startSessionWithProducer_members___block_invoke;
         block[3] = &unk_278E12738;
         block[4] = self;
-        v16 = v6;
+        v16 = producerCopy;
         v17 = v11;
         dispatch_async(workQueue, block);
 
@@ -726,20 +726,20 @@ void __74__COMessageChannel_addSessionConsumerWithSubTopic_delegate_dispatchQueu
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopMessageSession:(id)a3 withNotice:(id)a4
+- (void)stopMessageSession:(id)session withNotice:(id)notice
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  noticeCopy = notice;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__COMessageChannel_stopMessageSession_withNotice___block_invoke;
   block[3] = &unk_278E12738;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  selfCopy = self;
+  v14 = noticeCopy;
+  v9 = noticeCopy;
+  v10 = sessionCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -900,18 +900,18 @@ void __50__COMessageChannel_stopMessageSession_withNotice___block_invoke_70(id *
   }
 }
 
-- (void)failedToSendRequestWithID:(unsigned int)a3 withError:(id)a4
+- (void)failedToSendRequestWithID:(unsigned int)d withError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__COMessageChannel_failedToSendRequestWithID_withError___block_invoke;
   block[3] = &unk_278E12F38;
-  v11 = a3;
+  dCopy = d;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -1000,27 +1000,27 @@ void __56__COMessageChannel_failedToSendRequestWithID_withError___block_invoke(u
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedRequestWithPayload:(id)a3 payloadType:(id)a4 requestID:(unsigned int)a5 fromMember:(id)a6 withCallback:(id)a7
+- (void)receivedRequestWithPayload:(id)payload payloadType:(id)type requestID:(unsigned int)d fromMember:(id)member withCallback:(id)callback
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  payloadCopy = payload;
+  typeCopy = type;
+  memberCopy = member;
+  callbackCopy = callback;
   workQueue = self->_workQueue;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __93__COMessageChannel_receivedRequestWithPayload_payloadType_requestID_fromMember_withCallback___block_invoke;
   v21[3] = &unk_278E12F88;
   v21[4] = self;
-  v22 = v13;
-  v26 = a5;
-  v23 = v12;
-  v24 = v14;
-  v25 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v12;
-  v20 = v13;
+  v22 = typeCopy;
+  dCopy = d;
+  v23 = payloadCopy;
+  v24 = memberCopy;
+  v25 = callbackCopy;
+  v17 = callbackCopy;
+  v18 = memberCopy;
+  v19 = payloadCopy;
+  v20 = typeCopy;
   dispatch_async(workQueue, v21);
 }
 
@@ -1242,27 +1242,27 @@ LABEL_15:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedResponseForRequestID:(unsigned int)a3 responsePayload:(id)a4 responseType:(id)a5 responseError:(id)a6 fromMember:(id)a7
+- (void)receivedResponseForRequestID:(unsigned int)d responsePayload:(id)payload responseType:(id)type responseError:(id)error fromMember:(id)member
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  payloadCopy = payload;
+  typeCopy = type;
+  errorCopy = error;
+  memberCopy = member;
   workQueue = self->_workQueue;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __103__COMessageChannel_receivedResponseForRequestID_responsePayload_responseType_responseError_fromMember___block_invoke;
   v21[3] = &unk_278E12FB0;
-  v26 = a3;
+  dCopy = d;
   v21[4] = self;
-  v22 = v14;
-  v23 = v15;
-  v24 = v12;
-  v25 = v13;
-  v17 = v13;
-  v18 = v12;
-  v19 = v15;
-  v20 = v14;
+  v22 = errorCopy;
+  v23 = memberCopy;
+  v24 = payloadCopy;
+  v25 = typeCopy;
+  v17 = typeCopy;
+  v18 = payloadCopy;
+  v19 = memberCopy;
+  v20 = errorCopy;
   dispatch_async(workQueue, v21);
 }
 
@@ -1358,18 +1358,18 @@ LABEL_15:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedRecipientListForRequestID:(unsigned int)a3 recipients:(id)a4
+- (void)receivedRecipientListForRequestID:(unsigned int)d recipients:(id)recipients
 {
-  v6 = a4;
+  recipientsCopy = recipients;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__COMessageChannel_receivedRecipientListForRequestID_recipients___block_invoke;
   block[3] = &unk_278E12F38;
-  v11 = a3;
+  dCopy = d;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = recipientsCopy;
+  v8 = recipientsCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -1421,11 +1421,11 @@ void __65__COMessageChannel_receivedRecipientListForRequestID_recipients___block
   return result;
 }
 
-- (id)_payloadTypeFromClass:(Class)a3
+- (id)_payloadTypeFromClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
-    v4 = NSStringFromClass(a3);
+    v4 = NSStringFromClass(class);
   }
 
   else
@@ -1436,26 +1436,26 @@ void __65__COMessageChannel_receivedRecipientListForRequestID_recipients___block
   return v4;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_sendRequest:(id)a3 type:(id)a4 members:(id)a5 withCompletionHandler:(id)a6
+- (void)_sendRequest:(id)request type:(id)type members:(id)members withCompletionHandler:(id)handler
 {
   v73[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  requestCopy = request;
+  typeCopy = type;
+  membersCopy = members;
+  handlerCopy = handler;
+  v14 = handlerCopy;
   if (self->_activated)
   {
-    if (!v13)
+    if (!handlerCopy)
     {
       v20 = [MEMORY[0x277CCA9B8] errorWithDomain:@"COMessageChannelErrorDomain" code:-1116 userInfo:0];
       v29 = COLogForCategory(5);
@@ -1467,12 +1467,12 @@ void __65__COMessageChannel_receivedRecipientListForRequestID_recipients___block
       goto LABEL_15;
     }
 
-    if (v12)
+    if (membersCopy)
     {
       goto LABEL_6;
     }
 
-    v15 = [(COMessageChannel *)self cluster];
+    cluster = [(COMessageChannel *)self cluster];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1480,7 +1480,7 @@ void __65__COMessageChannel_receivedRecipientListForRequestID_recipients___block
     {
 LABEL_6:
       v65 = 0;
-      v20 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v65];
+      v20 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:requestCopy requiringSecureCoding:1 error:&v65];
       v21 = v65;
       if (v21)
       {
@@ -1499,7 +1499,7 @@ LABEL_6:
 
 LABEL_20:
         (v14)[2](v14, 0, 0, v25);
-        [(COMessageChannel *)self _submitMetricsForRequest:v10 withRequestInfo:0 withError:v25];
+        [(COMessageChannel *)self _submitMetricsForRequest:requestCopy withRequestInfo:0 withError:v25];
 LABEL_21:
 
         goto LABEL_22;
@@ -1525,35 +1525,35 @@ LABEL_21:
       v33 = v14;
       v64 = v33;
       v62[4] = self;
-      v34 = v10;
+      v34 = requestCopy;
       v63 = v34;
       v58 = [(COMessageChannel *)self _remoteInterfaceWithErrorHandler:v62];
-      v35 = [(COMessageChannel *)self _generateRequestID];
-      v61 = v35;
+      _generateRequestID = [(COMessageChannel *)self _generateRequestID];
+      v61 = _generateRequestID;
       v59 = v34;
-      v36 = [[COMessageChannelRequestInfo alloc] initWithRequestID:v35 type:0 request:v34];
+      v36 = [[COMessageChannelRequestInfo alloc] initWithRequestID:_generateRequestID type:0 request:v34];
       -[COMessageChannelRequestInfo setMessageSize:](v36, "setMessageSize:", [v20 length]);
       [(COMessageChannelRequestInfo *)v36 setResponseCallback:v33];
       v60 = v36;
-      if (v12)
+      if (membersCopy)
       {
-        -[COMessageChannelRequestInfo setExpectedRecipients:](v36, "setExpectedRecipients:", [v12 count]);
-        if ([v12 count] != 1)
+        -[COMessageChannelRequestInfo setExpectedRecipients:](v36, "setExpectedRecipients:", [membersCopy count]);
+        if ([membersCopy count] != 1)
         {
           goto LABEL_31;
         }
 
-        v37 = [(COMessageChannel *)self roleSnapshotsCache];
-        v38 = [v12 allObjects];
-        v39 = [v38 firstObject];
-        v40 = [v37 objectForKey:v39];
+        roleSnapshotsCache = [(COMessageChannel *)self roleSnapshotsCache];
+        allObjects = [membersCopy allObjects];
+        firstObject = [allObjects firstObject];
+        v40 = [roleSnapshotsCache objectForKey:firstObject];
 
-        v41 = [v40 role];
+        role = [v40 role];
         v42 = +[COClusterRole roleForCoordinator];
-        LODWORD(v39) = [v41 satisfiesRole:v42];
+        LODWORD(firstObject) = [role satisfiesRole:v42];
 
         v43 = COMessagingTypeAdHocLeader;
-        if (!v39)
+        if (!firstObject)
         {
           v43 = COMessagingTypeAdHocSingle;
         }
@@ -1577,8 +1577,8 @@ LABEL_37:
         v54 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v61];
         [(NSMutableDictionary *)outstandingRequests setObject:v36 forKey:v54];
 
-        v55 = [v59 networkActivity];
-        if (v55)
+        networkActivity = [v59 networkActivity];
+        if (networkActivity)
         {
           v56 = nw_activity_copy_xpc_token();
         }
@@ -1592,7 +1592,7 @@ LABEL_37:
         if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218496;
-          v67 = self;
+          selfCopy = self;
           v68 = 2048;
           v69 = v59;
           v70 = 1024;
@@ -1600,28 +1600,28 @@ LABEL_37:
           _os_log_impl(&dword_244328000, v57, OS_LOG_TYPE_DEFAULT, "%p sending request %p with id '%u'", buf, 0x1Cu);
         }
 
-        [v58 sendRequestWithPayload:v20 payloadType:v11 requestType:0 requestID:v61 members:v12 activityToken:v56];
+        [v58 sendRequestWithPayload:v20 payloadType:typeCopy requestType:0 requestID:v61 members:membersCopy activityToken:v56];
         v25 = v64;
         goto LABEL_21;
       }
 
 LABEL_31:
       v45 = MEMORY[0x277CBEB58];
-      v46 = [(COMessageChannel *)self roleSnapshotsCache];
-      v47 = [v46 allKeys];
-      v48 = [v45 setWithArray:v47];
+      roleSnapshotsCache2 = [(COMessageChannel *)self roleSnapshotsCache];
+      allKeys = [roleSnapshotsCache2 allKeys];
+      v48 = [v45 setWithArray:allKeys];
 
       v49 = +[COClusterMember memberForCurrentDevice];
       [v48 addObject:v49];
 
-      v50 = [v12 count];
+      v50 = [membersCopy count];
       if (v50 <= [v48 count])
       {
-        v52 = [v12 count];
+        v52 = [membersCopy count];
         v51 = COMessagingTypeAdHocSubset;
         if (v52 == [v48 count])
         {
-          [v48 minusSet:v12];
+          [v48 minusSet:membersCopy];
           if (![v48 count])
           {
             v51 = COMessagingTypeAdHocEntireCluster;
@@ -1653,7 +1653,7 @@ LABEL_31:
   v20 = [v27 errorWithDomain:@"COMessageChannelErrorDomain" code:v28 userInfo:0];
   (v14)[2](v14, 0, 0, v20);
 LABEL_15:
-  [(COMessageChannel *)self _submitMetricsForRequest:v10 withRequestInfo:0 withError:v20];
+  [(COMessageChannel *)self _submitMetricsForRequest:requestCopy withRequestInfo:0 withError:v20];
 LABEL_22:
 
   v32 = *MEMORY[0x277D85DE8];
@@ -1668,26 +1668,26 @@ void __68__COMessageChannel__sendRequest_type_members_withCompletionHandler___bl
   [*(a1 + 32) _submitMetricsForRequest:*(a1 + 40) withRequestInfo:0 withError:v5];
 }
 
-- (void)_broadcastRequest:(id)a3 type:(id)a4 recipientsCallback:(id)a5 responseCompletionHandler:(id)a6
+- (void)_broadcastRequest:(id)request type:(id)type recipientsCallback:(id)callback responseCompletionHandler:(id)handler
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  requestCopy = request;
+  typeCopy = type;
+  callbackCopy = callback;
+  handlerCopy = handler;
+  v14 = handlerCopy;
   if (!self->_activated)
   {
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"COMessageChannelErrorDomain" code:-1110 userInfo:0];
 LABEL_8:
-    v12[2](v12, 0, v15);
+    callbackCopy[2](callbackCopy, 0, v15);
     goto LABEL_9;
   }
 
-  if (v13)
+  if (handlerCopy)
   {
     v40 = 0;
-    v15 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v40];
+    v15 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:requestCopy requiringSecureCoding:1 error:&v40];
     v16 = v40;
     if (v16)
     {
@@ -1714,25 +1714,25 @@ LABEL_8:
         v37[1] = 3221225472;
         v37[2] = __88__COMessageChannel__broadcastRequest_type_recipientsCallback_responseCompletionHandler___block_invoke;
         v37[3] = &unk_278E12FD8;
-        v26 = v12;
+        v26 = callbackCopy;
         v39 = v26;
         v37[4] = self;
-        v27 = v10;
+        v27 = requestCopy;
         v38 = v27;
         v35 = [(COMessageChannel *)self _remoteInterfaceWithErrorHandler:v37];
-        v28 = [(COMessageChannel *)self _generateRequestID];
-        v29 = [[COMessageChannelRequestInfo alloc] initWithRequestID:v28 type:1 request:v27];
+        _generateRequestID = [(COMessageChannel *)self _generateRequestID];
+        v29 = [[COMessageChannelRequestInfo alloc] initWithRequestID:_generateRequestID type:1 request:v27];
         -[COMessageChannelRequestInfo setMessageSize:](v29, "setMessageSize:", [v15 length]);
         [(COMessageChannelRequestInfo *)v29 setRecipientCallback:v26];
         [(COMessageChannelRequestInfo *)v29 setResponseCallback:v14];
         [(COMessageChannelRequestInfo *)v29 setDestinationInfo:0x2857AEFE0];
         outstandingRequests = self->_outstandingRequests;
-        v36 = v28;
-        v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v28];
+        v36 = _generateRequestID;
+        v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:_generateRequestID];
         [(NSMutableDictionary *)outstandingRequests setObject:v29 forKey:v31];
 
-        v32 = [v27 networkActivity];
-        if (v32)
+        networkActivity = [v27 networkActivity];
+        if (networkActivity)
         {
           v34 = nw_activity_copy_xpc_token();
         }
@@ -1746,7 +1746,7 @@ LABEL_8:
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218496;
-          v42 = self;
+          selfCopy = self;
           v43 = 2048;
           v44 = v27;
           v45 = 1024;
@@ -1754,7 +1754,7 @@ LABEL_8:
           _os_log_impl(&dword_244328000, v33, OS_LOG_TYPE_DEFAULT, "%p broadcasting request %p with id '%u'", buf, 0x1Cu);
         }
 
-        [v35 sendRequestWithPayload:v15 payloadType:v11 requestType:1 requestID:v36 members:0 activityToken:v34];
+        [v35 sendRequestWithPayload:v15 payloadType:typeCopy requestType:1 requestID:v36 members:0 activityToken:v34];
         v20 = v39;
         goto LABEL_19;
       }
@@ -1768,8 +1768,8 @@ LABEL_8:
       v20 = [MEMORY[0x277CCA9B8] errorWithDomain:@"COMessageChannelErrorDomain" code:-1102 userInfo:0];
     }
 
-    v12[2](v12, 0, v20);
-    [(COMessageChannel *)self _submitMetricsForRequest:v10 withRequestInfo:0 withError:v20];
+    callbackCopy[2](callbackCopy, 0, v20);
+    [(COMessageChannel *)self _submitMetricsForRequest:requestCopy withRequestInfo:0 withError:v20];
 LABEL_19:
 
     goto LABEL_20;
@@ -1782,13 +1782,13 @@ LABEL_19:
     [COMessageChannel _broadcastRequest:type:recipientsCallback:responseCompletionHandler:];
   }
 
-  if (v12)
+  if (callbackCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
-  [(COMessageChannel *)self _submitMetricsForRequest:v10 withRequestInfo:0 withError:v15];
+  [(COMessageChannel *)self _submitMetricsForRequest:requestCopy withRequestInfo:0 withError:v15];
 LABEL_20:
 
   v25 = *MEMORY[0x277D85DE8];
@@ -1803,17 +1803,17 @@ void __88__COMessageChannel__broadcastRequest_type_recipientsCallback_responseCo
   [*(a1 + 32) _submitMetricsForRequest:*(a1 + 40) withRequestInfo:0 withError:v5];
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __44__COMessageChannel__activateWithCompletion___block_invoke;
   v24[3] = &unk_278E12458;
   objc_copyWeak(&v26, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v25 = v5;
   v6 = [(COMessageChannel *)self _remoteInterfaceWithErrorHandler:v24];
   if (!self->_activated || (-[COMessageChannel lastConnection](self, "lastConnection"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 activated], v7, (v8 & 1) == 0))
@@ -1823,8 +1823,8 @@ void __88__COMessageChannel__broadcastRequest_type_recipientsCallback_responseCo
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [(COMessageChannel *)self requestHandlers];
-    v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    requestHandlers = [(COMessageChannel *)self requestHandlers];
+    v11 = [requestHandlers countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v11)
     {
       v12 = *v21;
@@ -1835,21 +1835,21 @@ void __88__COMessageChannel__broadcastRequest_type_recipientsCallback_responseCo
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(requestHandlers);
           }
 
           [v9 addObject:*(*(&v20 + 1) + 8 * v13++)];
         }
 
         while (v11 != v13);
-        v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v11 = [requestHandlers countByEnumeratingWithState:&v20 objects:v28 count:16];
       }
 
       while (v11);
     }
 
-    v14 = [(COMessageChannel *)self topic];
-    v15 = [(COMessageChannel *)self cluster];
+    topic = [(COMessageChannel *)self topic];
+    cluster = [(COMessageChannel *)self cluster];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __44__COMessageChannel__activateWithCompletion___block_invoke_81;
@@ -1857,7 +1857,7 @@ void __88__COMessageChannel__broadcastRequest_type_recipientsCallback_responseCo
     objc_copyWeak(&v19, &location);
     v17[4] = self;
     v18 = v5;
-    [v6 activateMessageChannelForTopic:v14 cluster:v15 handlers:v9 withCompletion:v17];
+    [v6 activateMessageChannelForTopic:topic cluster:cluster handlers:v9 withCompletion:v17];
 
     objc_destroyWeak(&v19);
   }
@@ -1994,9 +1994,9 @@ LABEL_15:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_remoteInterfaceWithErrorHandler:(id)a3
+- (id)_remoteInterfaceWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -2016,7 +2016,7 @@ LABEL_15:
   v10 = v12;
   v11 = &v14;
   v8[4] = self;
-  v5 = v4;
+  v5 = handlerCopy;
   v9 = v5;
   [(COMessageChannel *)self _withLock:v8];
   v6 = v15[5];
@@ -2196,18 +2196,18 @@ void __44__COMessageChannel__lostConnectionToService__block_invoke_2(uint64_t a1
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invokeResponseCallbackForInfo:(id)a3 snapshot:(id)a4 response:(id)a5 error:(id)a6
+- (void)_invokeResponseCallbackForInfo:(id)info snapshot:(id)snapshot response:(id)response error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 responseCallback];
+  infoCopy = info;
+  snapshotCopy = snapshot;
+  responseCopy = response;
+  errorCopy = error;
+  responseCallback = [infoCopy responseCallback];
 
-  if (v13)
+  if (responseCallback)
   {
-    v14 = [v9 responseCallback];
-    (v14)[2](v14, v10, v11, v12);
+    responseCallback2 = [infoCopy responseCallback];
+    (responseCallback2)[2](responseCallback2, snapshotCopy, responseCopy, errorCopy);
   }
 
   else
@@ -2220,29 +2220,29 @@ void __44__COMessageChannel__lostConnectionToService__block_invoke_2(uint64_t a1
   }
 }
 
-- (void)_handleStartCommand:(id)a3 withMember:(id)a4 callback:(id)a5
+- (void)_handleStartCommand:(id)command withMember:(id)member callback:(id)callback
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v35 = a4;
-  v9 = a5;
-  v34 = [v8 subTopic];
-  v10 = [(COMessageChannel *)self sessionConsumers];
-  v11 = [v10 objectForKey:v34];
+  commandCopy = command;
+  memberCopy = member;
+  callbackCopy = callback;
+  subTopic = [commandCopy subTopic];
+  sessionConsumers = [(COMessageChannel *)self sessionConsumers];
+  v11 = [sessionConsumers objectForKey:subTopic];
 
-  v12 = [v11 delegate];
+  delegate = [v11 delegate];
   queue = [v11 delegateQueue];
-  v13 = [v8 payload];
-  v14 = [v8 payloadType];
-  v15 = v14;
+  payload = [commandCopy payload];
+  payloadType = [commandCopy payloadType];
+  v15 = payloadType;
   v16 = 0;
-  if (v13 && v14)
+  if (payload && payloadType)
   {
-    v17 = [(COMessageChannel *)self _payloadClassFromType:v14];
+    v17 = [(COMessageChannel *)self _payloadClassFromType:payloadType];
     if (v17)
     {
       v46 = 0;
-      v16 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:v17 fromData:v13 error:&v46];
+      v16 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:v17 fromData:payload error:&v46];
       v18 = v46;
       if (v18)
       {
@@ -2256,18 +2256,18 @@ LABEL_5:
         v22 = COLogForCategory(6);
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v32 = [v35 member];
+          member = [memberCopy member];
           *buf = 138412802;
           v48 = v11;
           v49 = 2112;
           v50 = v15;
           v51 = 2112;
-          v52 = v32;
+          v52 = member;
           _os_log_error_impl(&dword_244328000, v22, OS_LOG_TYPE_ERROR, "%@ Consumer failed to unarchive request of type %@. Session start with member %@ failed", buf, 0x20u);
         }
 
         v23 = [[COMessageSessionManagementResponse alloc] initWithRemoteError:v21];
-        v9[2](v9, v23, 0);
+        callbackCopy[2](callbackCopy, v23, 0);
 
         goto LABEL_14;
       }
@@ -2290,8 +2290,8 @@ LABEL_5:
   }
 
   v26 = [COMessageConsumedSession alloc];
-  v27 = [v35 member];
-  v21 = [(COMessageConsumedSession *)v26 initWithMember:v27 consumer:v11];
+  member2 = [memberCopy member];
+  v21 = [(COMessageConsumedSession *)v26 initWithMember:member2 consumer:v11];
 
   if (objc_opt_respondsToSelector())
   {
@@ -2299,24 +2299,24 @@ LABEL_5:
     v28 = COLogForCategory(6);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
     {
-      v29 = [v8 subTopic];
-      [(COMessageChannel *)self _handleStartCommand:v29 withMember:buf callback:v28];
+      subTopic2 = [commandCopy subTopic];
+      [(COMessageChannel *)self _handleStartCommand:subTopic2 withMember:buf callback:v28];
     }
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __60__COMessageChannel__handleStartCommand_withMember_callback___block_invoke;
     block[3] = &unk_278E130F0;
-    v37 = v12;
+    v37 = delegate;
     v38 = v11;
-    v39 = v35;
+    v39 = memberCopy;
     v16 = v16;
     v40 = v16;
     objc_copyWeak(&v44, &location);
-    v41 = self;
+    selfCopy = self;
     v21 = v21;
     v42 = v21;
-    v43 = v9;
+    v43 = callbackCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(&v44);
@@ -2326,7 +2326,7 @@ LABEL_5:
   else
   {
     v30 = objc_alloc_init(COMessageSessionManagementResponse);
-    v9[2](v9, v30, 0);
+    callbackCopy[2](callbackCopy, v30, 0);
   }
 
 LABEL_14:
@@ -2437,55 +2437,55 @@ LABEL_10:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deliverSuccessfullyStartedSession:(id)a3 withResponse:(id)a4 withMember:(id)a5 producer:(id)a6
+- (void)_deliverSuccessfullyStartedSession:(id)session withResponse:(id)response withMember:(id)member producer:(id)producer
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 sessions];
-  v15 = [v12 member];
-  [v14 setObject:v10 forKey:v15];
+  sessionCopy = session;
+  responseCopy = response;
+  memberCopy = member;
+  producerCopy = producer;
+  sessions = [producerCopy sessions];
+  member = [memberCopy member];
+  [sessions setObject:sessionCopy forKey:member];
 
   v16 = COLogForCategory(6);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v35 = v13;
+    v35 = producerCopy;
     v36 = 2112;
-    v37 = v10;
+    v37 = sessionCopy;
     _os_log_impl(&dword_244328000, v16, OS_LOG_TYPE_DEFAULT, "%@ Producer successfully created a session %@", buf, 0x16u);
   }
 
-  v17 = [v13 delegate];
+  delegate = [producerCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    v18 = [v13 delegateQueue];
+    delegateQueue = [producerCopy delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __88__COMessageChannel__deliverSuccessfullyStartedSession_withResponse_withMember_producer___block_invoke;
     block[3] = &unk_278E12EE8;
-    v29 = v17;
-    v30 = v13;
-    v31 = v10;
-    v32 = v12;
-    v33 = v11;
-    dispatch_async(v18, block);
+    v29 = delegate;
+    v30 = producerCopy;
+    v31 = sessionCopy;
+    v32 = memberCopy;
+    v33 = responseCopy;
+    dispatch_async(delegateQueue, block);
   }
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __88__COMessageChannel__deliverSuccessfullyStartedSession_withResponse_withMember_producer___block_invoke_2;
   v25[3] = &unk_278E13118;
-  v26 = v13;
-  v27 = v10;
-  v19 = v10;
-  v20 = v13;
+  v26 = producerCopy;
+  v27 = sessionCopy;
+  v19 = sessionCopy;
+  v20 = producerCopy;
   v21 = [(COMessageChannel *)self _remoteInterfaceWithErrorHandler:v25];
-  v22 = [v20 subTopic];
-  v23 = [v12 member];
-  [v21 sessionStartedForSubTopic:v22 withMember:v23 produced:1];
+  subTopic = [v20 subTopic];
+  member2 = [memberCopy member];
+  [v21 sessionStartedForSubTopic:subTopic withMember:member2 produced:1];
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -2499,40 +2499,40 @@ void __88__COMessageChannel__deliverSuccessfullyStartedSession_withResponse_with
   }
 }
 
-- (void)_deliverSuccessfullyStartedSession:(id)a3 withMember:(id)a4 consumer:(id)a5
+- (void)_deliverSuccessfullyStartedSession:(id)session withMember:(id)member consumer:(id)consumer
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v9 sessions];
-  v12 = [v10 member];
-  [v11 setObject:v8 forKey:v12];
+  sessionCopy = session;
+  consumerCopy = consumer;
+  memberCopy = member;
+  sessions = [consumerCopy sessions];
+  member = [memberCopy member];
+  [sessions setObject:sessionCopy forKey:member];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __75__COMessageChannel__deliverSuccessfullyStartedSession_withMember_consumer___block_invoke;
   v24[3] = &unk_278E13118;
-  v13 = v9;
+  v13 = consumerCopy;
   v25 = v13;
-  v14 = v8;
+  v14 = sessionCopy;
   v26 = v14;
   v15 = [(COMessageChannel *)self _remoteInterfaceWithErrorHandler:v24];
-  v16 = [v13 subTopic];
-  v17 = [v10 member];
+  subTopic = [v13 subTopic];
+  member2 = [memberCopy member];
 
-  [v15 sessionStartedForSubTopic:v16 withMember:v17 produced:0];
-  v18 = [v13 delegate];
+  [v15 sessionStartedForSubTopic:subTopic withMember:member2 produced:0];
+  delegate = [v13 delegate];
   if (objc_opt_respondsToSelector())
   {
-    v19 = [v13 delegateQueue];
+    delegateQueue = [v13 delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __75__COMessageChannel__deliverSuccessfullyStartedSession_withMember_consumer___block_invoke_164;
     block[3] = &unk_278E12738;
-    v21 = v18;
+    v21 = delegate;
     v22 = v13;
     v23 = v14;
-    dispatch_async(v19, block);
+    dispatch_async(delegateQueue, block);
   }
 }
 
@@ -2545,155 +2545,155 @@ void __75__COMessageChannel__deliverSuccessfullyStartedSession_withMember_consum
   }
 }
 
-- (void)_deliverDidFailToStartSessionWithMember:(id)a3 producer:(id)a4 error:(id)a5
+- (void)_deliverDidFailToStartSessionWithMember:(id)member producer:(id)producer error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 delegate];
-  v12 = [v9 delegateQueue];
+  memberCopy = member;
+  producerCopy = producer;
+  errorCopy = error;
+  delegate = [producerCopy delegate];
+  delegateQueue = [producerCopy delegateQueue];
   if (objc_opt_respondsToSelector())
   {
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __75__COMessageChannel__deliverDidFailToStartSessionWithMember_producer_error___block_invoke;
     v16 = &unk_278E12E70;
-    v17 = v11;
-    v18 = v9;
-    v19 = v8;
-    v20 = v10;
-    dispatch_async(v12, &v13);
+    v17 = delegate;
+    v18 = producerCopy;
+    v19 = memberCopy;
+    v20 = errorCopy;
+    dispatch_async(delegateQueue, &v13);
   }
 
-  [(COMessageChannel *)self _submitMetricsForSession:0 withError:v10, v13, v14, v15, v16];
+  [(COMessageChannel *)self _submitMetricsForSession:0 withError:errorCopy, v13, v14, v15, v16];
 }
 
-- (void)_deliverFailedToStartSessionWithMember:(id)a3 consumer:(id)a4 error:(id)a5
+- (void)_deliverFailedToStartSessionWithMember:(id)member consumer:(id)consumer error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 delegate];
-  v11 = [v8 delegateQueue];
+  memberCopy = member;
+  consumerCopy = consumer;
+  errorCopy = error;
+  delegate = [consumerCopy delegate];
+  delegateQueue = [consumerCopy delegateQueue];
   if (objc_opt_respondsToSelector())
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __74__COMessageChannel__deliverFailedToStartSessionWithMember_consumer_error___block_invoke;
     v12[3] = &unk_278E12E70;
-    v13 = v10;
-    v14 = v8;
-    v15 = v7;
-    v16 = v9;
-    dispatch_async(v11, v12);
+    v13 = delegate;
+    v14 = consumerCopy;
+    v15 = memberCopy;
+    v16 = errorCopy;
+    dispatch_async(delegateQueue, v12);
   }
 }
 
-- (void)_handleStopCommand:(id)a3 fromMember:(id)a4 callback:(id)a5
+- (void)_handleStopCommand:(id)command fromMember:(id)member callback:(id)callback
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 subTopic];
-  v12 = [(COMessageChannel *)self sessionConsumers];
-  v13 = [v12 objectForKey:v11];
+  commandCopy = command;
+  memberCopy = member;
+  callbackCopy = callback;
+  subTopic = [commandCopy subTopic];
+  sessionConsumers = [(COMessageChannel *)self sessionConsumers];
+  v13 = [sessionConsumers objectForKey:subTopic];
 
-  v14 = [v13 sessions];
-  v15 = [v9 member];
-  v16 = [v14 objectForKey:v15];
+  sessions = [v13 sessions];
+  member = [memberCopy member];
+  v16 = [sessions objectForKey:member];
 
   if (v16)
   {
     goto LABEL_3;
   }
 
-  v17 = [(COMessageChannel *)self sessionProducers];
-  v18 = [v17 objectForKey:v11];
+  sessionProducers = [(COMessageChannel *)self sessionProducers];
+  v18 = [sessionProducers objectForKey:subTopic];
 
-  v19 = [v18 sessions];
-  v20 = [v9 member];
-  v16 = [v19 objectForKey:v20];
+  sessions2 = [v18 sessions];
+  member2 = [memberCopy member];
+  v16 = [sessions2 objectForKey:member2];
 
   if (v16)
   {
 LABEL_3:
     v30 = v13;
-    v21 = [v8 payload];
-    v22 = [v8 payloadType];
-    v23 = [v8 remoteError];
-    if (!v23)
+    payload = [commandCopy payload];
+    payloadType = [commandCopy payloadType];
+    remoteError = [commandCopy remoteError];
+    if (!remoteError)
     {
       v24 = 0;
-      if (!v21 || !v22)
+      if (!payload || !payloadType)
       {
         goto LABEL_5;
       }
 
-      v27 = [(COMessageChannel *)self _payloadClassFromType:v22];
+      v27 = [(COMessageChannel *)self _payloadClassFromType:payloadType];
       if (v27)
       {
         v31 = 0;
-        v24 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:v27 fromData:v21 error:&v31];
-        v23 = v31;
+        v24 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:v27 fromData:payload error:&v31];
+        remoteError = v31;
         goto LABEL_5;
       }
 
       v29 = MEMORY[0x277CCA9B8];
       v32 = @"COMessageSessionUnknownClassErrorKey";
-      v33[0] = v22;
+      v33[0] = payloadType;
       v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-      v23 = [v29 errorWithDomain:@"COMessageSessionErrorDomain" code:-1206 userInfo:v28];
+      remoteError = [v29 errorWithDomain:@"COMessageSessionErrorDomain" code:-1206 userInfo:v28];
     }
 
     v24 = 0;
 LABEL_5:
-    [(COMessageChannel *)self _deliverDidEndDelegateForSession:v16 notice:v24 initiator:v9 error:v23];
+    [(COMessageChannel *)self _deliverDidEndDelegateForSession:v16 notice:v24 initiator:memberCopy error:remoteError];
 
     v13 = v30;
   }
 
   v25 = objc_alloc_init(COMessageSessionManagementResponse);
-  v10[2](v10, v25, 0);
+  callbackCopy[2](callbackCopy, v25, 0);
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCapableCommand:(id)a3 fromMember:(id)a4 callback:(id)a5
+- (void)_handleCapableCommand:(id)command fromMember:(id)member callback:(id)callback
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  commandCopy = command;
+  memberCopy = member;
+  callbackCopy = callback;
   v11 = objc_alloc_init(COMessageSessionManagementResponse);
-  v10[2](v10, v11, 0);
+  callbackCopy[2](callbackCopy, v11, 0);
 
-  v12 = [(COMessageChannel *)self sessionsInflight];
-  v13 = [v9 member];
-  v14 = [v12 objectForKey:v13];
+  sessionsInflight = [(COMessageChannel *)self sessionsInflight];
+  member = [memberCopy member];
+  v14 = [sessionsInflight objectForKey:member];
 
   if (v14)
   {
     v15 = COLogForCategory(6);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v9 member];
-      v17 = [v8 subTopic];
+      member2 = [memberCopy member];
+      subTopic = [commandCopy subTopic];
       v28 = 134218498;
-      v29 = self;
+      selfCopy = self;
       v30 = 2112;
-      v31 = v16;
+      v31 = member2;
       v32 = 2112;
-      v33 = v17;
+      v33 = subTopic;
       _os_log_impl(&dword_244328000, v15, OS_LOG_TYPE_DEFAULT, "%p Received a command indicating inflight member %@ is now capable of consuming subTopic %@", &v28, 0x20u);
     }
 
-    v18 = [(COMessageChannel *)self sessionProducers];
-    v19 = [v8 subTopic];
-    v20 = [v18 objectForKey:v19];
+    sessionProducers = [(COMessageChannel *)self sessionProducers];
+    subTopic2 = [commandCopy subTopic];
+    v20 = [sessionProducers objectForKey:subTopic2];
 
-    v21 = [MEMORY[0x277CBEB68] null];
-    if ([v14 isEqual:v21])
+    null = [MEMORY[0x277CBEB68] null];
+    if ([v14 isEqual:null])
     {
       v22 = 0;
     }
@@ -2705,36 +2705,36 @@ LABEL_5:
 
     v23 = v22;
 
-    v24 = [(COMessageChannel *)self sessionsInflight];
-    v25 = [v9 member];
-    [v24 removeObjectForKey:v25];
+    sessionsInflight2 = [(COMessageChannel *)self sessionsInflight];
+    member3 = [memberCopy member];
+    [sessionsInflight2 removeObjectForKey:member3];
 
-    v26 = [v9 member];
-    [(COMessageChannel *)self _startSessionWithProducer:v20 member:v26 request:v23];
+    member4 = [memberCopy member];
+    [(COMessageChannel *)self _startSessionWithProducer:v20 member:member4 request:v23];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startSessionWithProducer:(id)a3 member:(id)a4
+- (void)_startSessionWithProducer:(id)producer member:(id)member
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sessions];
-  v9 = [v8 objectForKey:v7];
+  producerCopy = producer;
+  memberCopy = member;
+  sessions = [producerCopy sessions];
+  v9 = [sessions objectForKey:memberCopy];
 
-  v10 = COLogForCategory(6);
-  v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
+  delegateQueue = COLogForCategory(6);
+  v11 = os_log_type_enabled(delegateQueue, OS_LOG_TYPE_DEFAULT);
   if (v9)
   {
     if (v11)
     {
       *buf = 134218242;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2112;
-      v28 = v7;
-      _os_log_impl(&dword_244328000, v10, OS_LOG_TYPE_DEFAULT, "%p Session with member %@ is already active. Not starting again", buf, 0x16u);
+      v28 = memberCopy;
+      _os_log_impl(&dword_244328000, delegateQueue, OS_LOG_TYPE_DEFAULT, "%p Session with member %@ is already active. Not starting again", buf, 0x16u);
     }
   }
 
@@ -2743,19 +2743,19 @@ LABEL_5:
     if (v11)
     {
       *buf = 134218498;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2112;
-      v28 = v7;
+      v28 = memberCopy;
       v29 = 2112;
-      v30 = v6;
-      _os_log_impl(&dword_244328000, v10, OS_LOG_TYPE_DEFAULT, "%p Attempting to start a session with member %@ using producer %@", buf, 0x20u);
+      v30 = producerCopy;
+      _os_log_impl(&dword_244328000, delegateQueue, OS_LOG_TYPE_DEFAULT, "%p Attempting to start a session with member %@ using producer %@", buf, 0x20u);
     }
 
-    v10 = [v6 delegateQueue];
-    v12 = [v6 delegate];
+    delegateQueue = [producerCopy delegateQueue];
+    delegate = [producerCopy delegate];
     objc_initWeak(&location, self);
-    v13 = [(COMessageChannel *)self roleSnapshotsCache];
-    v14 = [v13 objectForKey:v7];
+    roleSnapshotsCache = [(COMessageChannel *)self roleSnapshotsCache];
+    v14 = [roleSnapshotsCache objectForKey:memberCopy];
 
     if (objc_opt_respondsToSelector())
     {
@@ -2769,12 +2769,12 @@ LABEL_5:
       v18[1] = 3221225472;
       v18[2] = __53__COMessageChannel__startSessionWithProducer_member___block_invoke;
       v18[3] = &unk_278E13168;
-      v19 = v12;
-      v20 = v6;
+      v19 = delegate;
+      v20 = producerCopy;
       v21 = v14;
       objc_copyWeak(&v23, &location);
-      v22 = v7;
-      dispatch_async(v10, v18);
+      v22 = memberCopy;
+      dispatch_async(delegateQueue, v18);
 
       objc_destroyWeak(&v23);
     }
@@ -2785,11 +2785,11 @@ LABEL_5:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v26 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_244328000, v16, OS_LOG_TYPE_DEFAULT, "%p Client does not implement producer:shouldStartSessionWithMember:completionHandler:", buf, 0xCu);
       }
 
-      [(COMessageChannel *)self _startSessionWithProducer:v6 member:v7 request:0];
+      [(COMessageChannel *)self _startSessionWithProducer:producerCopy member:memberCopy request:0];
     }
 
     objc_destroyWeak(&location);
@@ -2867,17 +2867,17 @@ void __53__COMessageChannel__startSessionWithProducer_member___block_invoke_2(id
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startSessionWithProducer:(id)a3 member:(id)a4 request:(id)a5
+- (void)_startSessionWithProducer:(id)producer member:(id)member request:(id)request
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COMessageChannel *)self roleSnapshotsCache];
-  v12 = [v11 objectForKey:v9];
+  producerCopy = producer;
+  memberCopy = member;
+  requestCopy = request;
+  roleSnapshotsCache = [(COMessageChannel *)self roleSnapshotsCache];
+  v12 = [roleSnapshotsCache objectForKey:memberCopy];
 
   v34 = 0;
-  v27 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v34];
+  v27 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:requestCopy requiringSecureCoding:1 error:&v34];
   v13 = v34;
   v14 = v13;
   if (v13)
@@ -2888,31 +2888,31 @@ void __53__COMessageChannel__startSessionWithProducer_member___block_invoke_2(id
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     v17 = [v15 errorWithDomain:@"COMessageSessionErrorDomain" code:-1205 userInfo:v16];
 
-    [(COMessageChannel *)self _deliverDidFailToStartSessionWithMember:v12 producer:v8 error:v17];
+    [(COMessageChannel *)self _deliverDidFailToStartSessionWithMember:v12 producer:producerCopy error:v17];
   }
 
   else
   {
     v18 = [COMessageSessionManagementRequest alloc];
     v19 = [(COMessageChannel *)self _payloadTypeFromClass:objc_opt_class()];
-    v20 = [(COMessageChannel *)self topic];
-    v21 = [v8 subTopic];
-    v17 = [(COMessageSessionManagementRequest *)v18 initWithCommandType:1 payload:v27 payloadType:v19 topic:v20 subTopic:v21];
+    topic = [(COMessageChannel *)self topic];
+    subTopic = [producerCopy subTopic];
+    v17 = [(COMessageSessionManagementRequest *)v18 initWithCommandType:1 payload:v27 payloadType:v19 topic:topic subTopic:subTopic];
 
     v22 = MEMORY[0x277CCACA8];
-    v23 = [v8 subTopic];
-    v24 = [v22 _commandTypeForConsumerWithSubTopic:v23];
+    subTopic2 = [producerCopy subTopic];
+    v24 = [v22 _commandTypeForConsumerWithSubTopic:subTopic2];
 
     objc_initWeak(&location, self);
-    v25 = [MEMORY[0x277CBEB98] setWithObject:v9];
+    v25 = [MEMORY[0x277CBEB98] setWithObject:memberCopy];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __61__COMessageChannel__startSessionWithProducer_member_request___block_invoke;
     v28[3] = &unk_278E12F10;
     objc_copyWeak(&v32, &location);
-    v29 = v10;
-    v30 = v8;
-    v31 = v9;
+    v29 = requestCopy;
+    v30 = producerCopy;
+    v31 = memberCopy;
     [(COMessageChannel *)self _sendRequest:v17 type:v24 members:v25 withCompletionHandler:v28];
 
     objc_destroyWeak(&v32);
@@ -3110,56 +3110,56 @@ LABEL_34:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deliverDidEndDelegateForSession:(id)a3 notice:(id)a4 initiator:(id)a5 error:(id)a6
+- (void)_deliverDidEndDelegateForSession:(id)session notice:(id)notice initiator:(id)initiator error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sessionCopy = session;
+  noticeCopy = notice;
+  initiatorCopy = initiator;
+  errorCopy = error;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v10 producer];
-    v15 = [v14 delegate];
+    producer = [sessionCopy producer];
+    delegate = [producer delegate];
     if (objc_opt_respondsToSelector())
     {
-      v16 = [v14 delegateQueue];
+      delegateQueue = [producer delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __76__COMessageChannel__deliverDidEndDelegateForSession_notice_initiator_error___block_invoke;
       block[3] = &unk_278E131B0;
-      v33 = v15;
-      v34 = v14;
-      v35 = v10;
-      v36 = v12;
-      v37 = v11;
-      v38 = v13;
-      dispatch_async(v16, block);
+      v33 = delegate;
+      v34 = producer;
+      v35 = sessionCopy;
+      v36 = initiatorCopy;
+      v37 = noticeCopy;
+      v38 = errorCopy;
+      dispatch_async(delegateQueue, block);
     }
 
-    [(COMessageChannel *)self _submitMetricsForSession:v10 withError:v13];
+    [(COMessageChannel *)self _submitMetricsForSession:sessionCopy withError:errorCopy];
   }
 
   else
   {
-    v14 = [v10 consumer];
-    v15 = [v14 delegate];
+    producer = [sessionCopy consumer];
+    delegate = [producer delegate];
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v14 delegateQueue];
+      delegateQueue2 = [producer delegateQueue];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __76__COMessageChannel__deliverDidEndDelegateForSession_notice_initiator_error___block_invoke_2;
       v25[3] = &unk_278E131B0;
-      v15 = v15;
-      v26 = v15;
-      v14 = v14;
-      v27 = v14;
-      v28 = v10;
-      v29 = v12;
-      v30 = v11;
-      v31 = v13;
-      dispatch_async(v17, v25);
+      delegate = delegate;
+      v26 = delegate;
+      producer = producer;
+      v27 = producer;
+      v28 = sessionCopy;
+      v29 = initiatorCopy;
+      v30 = noticeCopy;
+      v31 = errorCopy;
+      dispatch_async(delegateQueue2, v25);
     }
   }
 
@@ -3169,11 +3169,11 @@ LABEL_34:
   v21[2] = __76__COMessageChannel__deliverDidEndDelegateForSession_notice_initiator_error___block_invoke_3;
   v21[3] = &unk_278E131D8;
   objc_copyWeak(&v23, &location);
-  v18 = v10;
+  v18 = sessionCopy;
   v22 = v18;
   v19 = [(COMessageChannel *)self _remoteInterfaceWithErrorHandler:v21];
-  v20 = [v18 subTopic];
-  [v19 sessionEndedForSubTopic:v20];
+  subTopic = [v18 subTopic];
+  [v19 sessionEndedForSubTopic:subTopic];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&location);
@@ -3192,19 +3192,19 @@ void __76__COMessageChannel__deliverDidEndDelegateForSession_notice_initiator_er
   }
 }
 
-- (void)_callbackProducersAndConsumersAfterActivationWithError:(id)a3
+- (void)_callbackProducersAndConsumersAfterActivationWithError:(id)error
 {
   v108 = *MEMORY[0x277D85DE8];
-  v49 = a3;
-  v4 = [(COMessageChannel *)self sessionProducers];
-  if ([v4 count])
+  errorCopy = error;
+  sessionProducers = [(COMessageChannel *)self sessionProducers];
+  if ([sessionProducers count])
   {
   }
 
   else
   {
-    v5 = [(COMessageChannel *)self sessionConsumers];
-    v6 = [v5 count];
+    sessionConsumers = [(COMessageChannel *)self sessionConsumers];
+    v6 = [sessionConsumers count];
 
     if (!v6)
     {
@@ -3216,18 +3216,18 @@ void __76__COMessageChannel__deliverDidEndDelegateForSession_notice_initiator_er
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v105 = self;
+    selfCopy = self;
     v106 = 2112;
-    v107 = v49;
+    v107 = errorCopy;
     _os_log_impl(&dword_244328000, v7, OS_LOG_TYPE_DEFAULT, "%p Channel activation complete with error %@. Calling producer and consumer delegates", buf, 0x16u);
   }
 
-  if (v49)
+  if (errorCopy)
   {
-    if ([v49 code] == -1112)
+    if ([errorCopy code] == -1112)
     {
-      v8 = [v49 userInfo];
-      v9 = [v8 objectForKey:@"COMessageChannelDuplicateSessionProducerKey"];
+      userInfo = [errorCopy userInfo];
+      v9 = [userInfo objectForKey:@"COMessageChannelDuplicateSessionProducerKey"];
 
       if (v9)
       {
@@ -3244,10 +3244,10 @@ void __76__COMessageChannel__deliverDidEndDelegateForSession_notice_initiator_er
       obja = [MEMORY[0x277CCA9B8] errorWithDomain:@"COMessageSessionErrorDomain" code:-1209 userInfo:v10];
     }
 
-    else if ([v49 code] == -1113)
+    else if ([errorCopy code] == -1113)
     {
-      v29 = [v49 userInfo];
-      v9 = [v29 objectForKey:@"COMessageChannelDuplicateSessionConsumerKey"];
+      userInfo2 = [errorCopy userInfo];
+      v9 = [userInfo2 objectForKey:@"COMessageChannelDuplicateSessionConsumerKey"];
 
       if (v9)
       {
@@ -3268,7 +3268,7 @@ void __76__COMessageChannel__deliverDidEndDelegateForSession_notice_initiator_er
     {
       v31 = MEMORY[0x277CCA9B8];
       v96 = *MEMORY[0x277CCA7E8];
-      v97 = v49;
+      v97 = errorCopy;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v97 forKeys:&v96 count:1];
       obja = [v31 errorWithDomain:@"COMessageSessionErrorDomain" code:-1209 userInfo:v9];
     }
@@ -3277,8 +3277,8 @@ void __76__COMessageChannel__deliverDidEndDelegateForSession_notice_initiator_er
     v73 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v52 = [(COMessageChannel *)self sessionProducers];
-    v32 = [v52 countByEnumeratingWithState:&v70 objects:v95 count:16];
+    sessionProducers2 = [(COMessageChannel *)self sessionProducers];
+    v32 = [sessionProducers2 countByEnumeratingWithState:&v70 objects:v95 count:16];
     if (v32)
     {
       v33 = *v71;
@@ -3288,30 +3288,30 @@ void __76__COMessageChannel__deliverDidEndDelegateForSession_notice_initiator_er
         {
           if (*v71 != v33)
           {
-            objc_enumerationMutation(v52);
+            objc_enumerationMutation(sessionProducers2);
           }
 
           v35 = *(*(&v70 + 1) + 8 * i);
-          v36 = [(COMessageChannel *)self sessionProducers];
-          v37 = [v36 objectForKey:v35];
+          sessionProducers3 = [(COMessageChannel *)self sessionProducers];
+          v37 = [sessionProducers3 objectForKey:v35];
 
-          v38 = [v37 delegate];
-          v39 = [v37 delegateQueue];
+          delegate = [v37 delegate];
+          delegateQueue = [v37 delegateQueue];
           if (objc_opt_respondsToSelector())
           {
             v65[0] = MEMORY[0x277D85DD0];
             v65[1] = 3221225472;
             v65[2] = __75__COMessageChannel__callbackProducersAndConsumersAfterActivationWithError___block_invoke_188;
             v65[3] = &unk_278E12E70;
-            v66 = v38;
-            v67 = self;
+            v66 = delegate;
+            selfCopy2 = self;
             v68 = v35;
             v69 = obja;
-            dispatch_async(v39, v65);
+            dispatch_async(delegateQueue, v65);
           }
         }
 
-        v32 = [v52 countByEnumeratingWithState:&v70 objects:v95 count:16];
+        v32 = [sessionProducers2 countByEnumeratingWithState:&v70 objects:v95 count:16];
       }
 
       while (v32);
@@ -3321,8 +3321,8 @@ void __76__COMessageChannel__deliverDidEndDelegateForSession_notice_initiator_er
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v53 = [(COMessageChannel *)self sessionConsumers];
-    v40 = [v53 countByEnumeratingWithState:&v61 objects:v94 count:16];
+    sessionConsumers2 = [(COMessageChannel *)self sessionConsumers];
+    v40 = [sessionConsumers2 countByEnumeratingWithState:&v61 objects:v94 count:16];
     if (v40)
     {
       v41 = *v62;
@@ -3332,30 +3332,30 @@ void __76__COMessageChannel__deliverDidEndDelegateForSession_notice_initiator_er
         {
           if (*v62 != v41)
           {
-            objc_enumerationMutation(v53);
+            objc_enumerationMutation(sessionConsumers2);
           }
 
           v43 = *(*(&v61 + 1) + 8 * j);
-          v44 = [(COMessageChannel *)self sessionConsumers];
-          v45 = [v44 objectForKey:v43];
+          sessionConsumers3 = [(COMessageChannel *)self sessionConsumers];
+          v45 = [sessionConsumers3 objectForKey:v43];
 
-          v46 = [v45 delegate];
-          v47 = [v45 delegateQueue];
+          delegate2 = [v45 delegate];
+          delegateQueue2 = [v45 delegateQueue];
           if (objc_opt_respondsToSelector())
           {
             v56[0] = MEMORY[0x277D85DD0];
             v56[1] = 3221225472;
             v56[2] = __75__COMessageChannel__callbackProducersAndConsumersAfterActivationWithError___block_invoke_2_189;
             v56[3] = &unk_278E12E70;
-            v57 = v46;
-            v58 = self;
+            v57 = delegate2;
+            selfCopy3 = self;
             v59 = v43;
             v60 = obja;
-            dispatch_async(v47, v56);
+            dispatch_async(delegateQueue2, v56);
           }
         }
 
-        v40 = [v53 countByEnumeratingWithState:&v61 objects:v94 count:16];
+        v40 = [sessionConsumers2 countByEnumeratingWithState:&v61 objects:v94 count:16];
       }
 
       while (v40);
@@ -3383,21 +3383,21 @@ void __76__COMessageChannel__deliverDidEndDelegateForSession_notice_initiator_er
           }
 
           v14 = *(*(&v90 + 1) + 8 * k);
-          v15 = [(COMessageChannel *)self sessionProducers];
-          v16 = [v15 objectForKey:v14];
+          sessionProducers4 = [(COMessageChannel *)self sessionProducers];
+          v16 = [sessionProducers4 objectForKey:v14];
 
-          v17 = [v16 delegate];
-          v18 = [v16 delegateQueue];
+          delegate3 = [v16 delegate];
+          delegateQueue3 = [v16 delegateQueue];
           if (objc_opt_respondsToSelector())
           {
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __75__COMessageChannel__callbackProducersAndConsumersAfterActivationWithError___block_invoke;
             block[3] = &unk_278E12738;
-            v87 = v17;
-            v88 = self;
+            v87 = delegate3;
+            selfCopy4 = self;
             v89 = v16;
-            dispatch_async(v18, block);
+            dispatch_async(delegateQueue3, block);
           }
         }
 
@@ -3426,26 +3426,26 @@ void __76__COMessageChannel__deliverDidEndDelegateForSession_notice_initiator_er
           }
 
           v20 = *(*(&v82 + 1) + 8 * m);
-          v21 = [(COMessageChannel *)self sessionConsumers];
-          v22 = [v21 objectForKey:v20];
+          sessionConsumers4 = [(COMessageChannel *)self sessionConsumers];
+          v22 = [sessionConsumers4 objectForKey:v20];
 
-          v23 = [v22 delegate];
-          v24 = [v22 delegateQueue];
+          delegate4 = [v22 delegate];
+          delegateQueue4 = [v22 delegateQueue];
           if (objc_opt_respondsToSelector())
           {
             v78[0] = MEMORY[0x277D85DD0];
             v78[1] = 3221225472;
             v78[2] = __75__COMessageChannel__callbackProducersAndConsumersAfterActivationWithError___block_invoke_2;
             v78[3] = &unk_278E12738;
-            v79 = v23;
-            v80 = self;
+            v79 = delegate4;
+            selfCopy5 = self;
             v81 = v22;
-            dispatch_async(v24, v78);
+            dispatch_async(delegateQueue4, v78);
           }
 
           v25 = [COMessageSessionManagementRequest alloc];
-          v26 = [(COMessageChannel *)self topic];
-          v27 = [(COMessageSessionManagementRequest *)v25 initWithCommandType:0 payload:0 payloadType:0 topic:v26 subTopic:v20];
+          topic = [(COMessageChannel *)self topic];
+          v27 = [(COMessageSessionManagementRequest *)v25 initWithCommandType:0 payload:0 payloadType:0 topic:topic subTopic:v20];
 
           v28 = [MEMORY[0x277CCACA8] _commandTypeForProducerWithSubTopic:v20];
           objc_initWeak(buf, self);
@@ -3566,14 +3566,14 @@ void __75__COMessageChannel__callbackProducersAndConsumersAfterActivationWithErr
   if (roleMonitorConnectionProvider)
   {
     v5 = self->_roleMonitorConnectionProvider;
-    v6 = [(COMessageChannel *)self cluster];
-    v7 = [(COClusterRoleMonitor *)v4 initWithConnectionProvider:v5 cluster:v6];
+    cluster = [(COMessageChannel *)self cluster];
+    v7 = [(COClusterRoleMonitor *)v4 initWithConnectionProvider:v5 cluster:cluster];
   }
 
   else
   {
-    v6 = [(COMessageChannel *)self cluster];
-    v7 = [(COClusterRoleMonitor *)v4 initWithCluster:v6];
+    cluster = [(COMessageChannel *)self cluster];
+    v7 = [(COClusterRoleMonitor *)v4 initWithCluster:cluster];
   }
 
   clusterRoleMonitor = self->_clusterRoleMonitor;
@@ -3724,19 +3724,19 @@ void __40__COMessageChannel__setupClusterMonitor__block_invoke(uint64_t a1, void
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAddedMembers:(id)a3
+- (void)_handleAddedMembers:(id)members
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  membersCopy = members;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(COMessageChannel *)self sessionProducers];
-  v6 = [v5 allValues];
+  sessionProducers = [(COMessageChannel *)self sessionProducers];
+  allValues = [sessionProducers allValues];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  obj = allValues;
+  v7 = [allValues countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3756,7 +3756,7 @@ void __40__COMessageChannel__setupClusterMonitor__block_invoke(uint64_t a1, void
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v12 = v4;
+        v12 = membersCopy;
         v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v13)
         {
@@ -3795,16 +3795,16 @@ void __40__COMessageChannel__setupClusterMonitor__block_invoke(uint64_t a1, void
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRemovedMembers:(id)a3
+- (void)_handleRemovedMembers:(id)members
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  membersCopy = members;
   v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"COMessageSessionErrorDomain" code:-1212 userInfo:0];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v4;
+  obj = membersCopy;
   v33 = [obj countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v33)
   {
@@ -3821,16 +3821,16 @@ void __40__COMessageChannel__setupClusterMonitor__block_invoke(uint64_t a1, void
 
         v36 = v6;
         v7 = *(*(&v45 + 1) + 8 * v6);
-        v8 = [(COMessageChannel *)self sessionProducers];
-        v9 = [v8 copy];
+        sessionProducers = [(COMessageChannel *)self sessionProducers];
+        v9 = [sessionProducers copy];
 
         v43 = 0u;
         v44 = 0u;
         v41 = 0u;
         v42 = 0u;
         v35 = v9;
-        v10 = [v9 allValues];
-        v11 = [v10 countByEnumeratingWithState:&v41 objects:v50 count:16];
+        allValues = [v9 allValues];
+        v11 = [allValues countByEnumeratingWithState:&v41 objects:v50 count:16];
         if (v11)
         {
           v12 = v11;
@@ -3841,37 +3841,37 @@ void __40__COMessageChannel__setupClusterMonitor__block_invoke(uint64_t a1, void
             {
               if (*v42 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(allValues);
               }
 
               v15 = *(*(&v41 + 1) + 8 * i);
-              v16 = [v15 sessions];
-              v17 = [v16 objectForKey:v7];
+              sessions = [v15 sessions];
+              v17 = [sessions objectForKey:v7];
 
               if (v17)
               {
                 [(COMessageChannel *)self _deliverDidEndDelegateForSession:v17 notice:0 initiator:0 error:v5];
-                v18 = [v15 sessions];
-                [v18 removeObjectForKey:v7];
+                sessions2 = [v15 sessions];
+                [sessions2 removeObjectForKey:v7];
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v41 objects:v50 count:16];
+            v12 = [allValues countByEnumeratingWithState:&v41 objects:v50 count:16];
           }
 
           while (v12);
         }
 
-        v19 = [(COMessageChannel *)self sessionConsumers];
-        v20 = [v19 copy];
+        sessionConsumers = [(COMessageChannel *)self sessionConsumers];
+        v20 = [sessionConsumers copy];
 
         v39 = 0u;
         v40 = 0u;
         v37 = 0u;
         v38 = 0u;
         v34 = v20;
-        v21 = [v20 allValues];
-        v22 = [v21 countByEnumeratingWithState:&v37 objects:v49 count:16];
+        allValues2 = [v20 allValues];
+        v22 = [allValues2 countByEnumeratingWithState:&v37 objects:v49 count:16];
         if (v22)
         {
           v23 = v22;
@@ -3882,22 +3882,22 @@ void __40__COMessageChannel__setupClusterMonitor__block_invoke(uint64_t a1, void
             {
               if (*v38 != v24)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(allValues2);
               }
 
               v26 = *(*(&v37 + 1) + 8 * j);
-              v27 = [v26 sessions];
-              v28 = [v27 objectForKey:v7];
+              sessions3 = [v26 sessions];
+              v28 = [sessions3 objectForKey:v7];
 
               if (v28)
               {
                 [(COMessageChannel *)self _deliverDidEndDelegateForSession:v28 notice:0 initiator:0 error:v5];
-                v29 = [v26 sessions];
-                [v29 removeObjectForKey:v7];
+                sessions4 = [v26 sessions];
+                [sessions4 removeObjectForKey:v7];
               }
             }
 
-            v23 = [v21 countByEnumeratingWithState:&v37 objects:v49 count:16];
+            v23 = [allValues2 countByEnumeratingWithState:&v37 objects:v49 count:16];
           }
 
           while (v23);
@@ -3916,59 +3916,59 @@ void __40__COMessageChannel__setupClusterMonitor__block_invoke(uint64_t a1, void
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_submitMetricsForActivationCompletionWithError:(id)a3
+- (void)_submitMetricsForActivationCompletionWithError:(id)error
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [(COMessageChannel *)self clusterLabel];
-  [v5 setObject:v6 forKeyedSubscript:0x2857AEE80];
+  errorCopy = error;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  clusterLabel = [(COMessageChannel *)self clusterLabel];
+  [dictionary setObject:clusterLabel forKeyedSubscript:0x2857AEE80];
 
-  v7 = [(COMessageChannel *)self topic];
-  [v5 setObject:v7 forKeyedSubscript:0x2857AF0C0];
+  topic = [(COMessageChannel *)self topic];
+  [dictionary setObject:topic forKeyedSubscript:0x2857AF0C0];
 
-  if (v4)
+  if (errorCopy)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v4, "code")];
-    [v5 setObject:v8 forKeyedSubscript:0x2857AEF20];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(errorCopy, "code")];
+    [dictionary setObject:v8 forKeyedSubscript:0x2857AEF20];
 
-    v9 = [v4 domain];
-    [v5 setObject:v9 forKeyedSubscript:0x2857AEEE0];
+    domain = [errorCopy domain];
+    [dictionary setObject:domain forKeyedSubscript:0x2857AEEE0];
   }
 
-  v10 = [(COMessageChannel *)self recorder];
+  recorder = [(COMessageChannel *)self recorder];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __67__COMessageChannel__submitMetricsForActivationCompletionWithError___block_invoke;
   v13[3] = &unk_278E13278;
-  v14 = v5;
-  v11 = v10[2];
-  v12 = v5;
-  v11(v10, 0x2857AEE20, v13);
+  v14 = dictionary;
+  v11 = recorder[2];
+  v12 = dictionary;
+  v11(recorder, 0x2857AEE20, v13);
 }
 
-- (void)_submitMetricsForSession:(id)a3 withError:(id)a4
+- (void)_submitMetricsForSession:(id)session withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [(COMessageChannel *)self topic];
-  [v8 setObject:v9 forKeyedSubscript:0x2857AF0C0];
+  sessionCopy = session;
+  errorCopy = error;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  topic = [(COMessageChannel *)self topic];
+  [dictionary setObject:topic forKeyedSubscript:0x2857AF0C0];
 
-  v10 = [(COMessageChannel *)self clusterLabel];
-  [v8 setObject:v10 forKeyedSubscript:0x2857AEE80];
+  clusterLabel = [(COMessageChannel *)self clusterLabel];
+  [dictionary setObject:clusterLabel forKeyedSubscript:0x2857AEE80];
 
-  if (v6)
+  if (sessionCopy)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "didUseRequest")}];
-    [v8 setObject:v11 forKeyedSubscript:0x2857AF100];
+    v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(sessionCopy, "didUseRequest")}];
+    [dictionary setObject:v11 forKeyedSubscript:0x2857AF100];
 
-    v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "didUseResponse")}];
-    [v8 setObject:v12 forKeyedSubscript:0x2857AF120];
+    v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(sessionCopy, "didUseResponse")}];
+    [dictionary setObject:v12 forKeyedSubscript:0x2857AF120];
 
-    v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "didUseNotice")}];
-    [v8 setObject:v13 forKeyedSubscript:0x2857AF0E0];
+    v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(sessionCopy, "didUseNotice")}];
+    [dictionary setObject:v13 forKeyedSubscript:0x2857AF0E0];
 
-    v14 = fmax((clock_gettime_nsec_np(_CLOCK_UPTIME_RAW) - [v6 startTime]) / 1000000000.0, 0.0);
+    v14 = fmax((clock_gettime_nsec_np(_CLOCK_UPTIME_RAW) - [sessionCopy startTime]) / 1000000000.0, 0.0);
   }
 
   else
@@ -3977,147 +3977,147 @@ void __40__COMessageChannel__setupClusterMonitor__block_invoke(uint64_t a1, void
   }
 
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:v14];
-  [v8 setObject:v15 forKeyedSubscript:0x2857AE760];
+  [dictionary setObject:v15 forKeyedSubscript:0x2857AE760];
 
-  if (v7)
+  if (errorCopy)
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v7, "code")];
-    [v8 setObject:v16 forKeyedSubscript:0x2857AEF20];
+    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(errorCopy, "code")];
+    [dictionary setObject:v16 forKeyedSubscript:0x2857AEF20];
 
-    v17 = [v7 domain];
-    [v8 setObject:v17 forKeyedSubscript:0x2857AEEE0];
+    domain = [errorCopy domain];
+    [dictionary setObject:domain forKeyedSubscript:0x2857AEEE0];
   }
 
-  v18 = [(COMessageChannel *)self recorder];
+  recorder = [(COMessageChannel *)self recorder];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __55__COMessageChannel__submitMetricsForSession_withError___block_invoke;
   v21[3] = &unk_278E13278;
-  v22 = v8;
-  v19 = v18[2];
-  v20 = v8;
-  v19(v18, 0x2857AEE40, v21);
+  v22 = dictionary;
+  v19 = recorder[2];
+  v20 = dictionary;
+  v19(recorder, 0x2857AEE40, v21);
 }
 
-- (void)_submitMetricsForRequest:(id)a3 withRequestInfo:(id)a4 withError:(id)a5
+- (void)_submitMetricsForRequest:(id)request withRequestInfo:(id)info withError:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  errorCopy = error;
   v10 = MEMORY[0x277CBEB38];
-  v11 = a3;
-  v12 = [v10 dictionary];
-  v13 = [(COMessageChannel *)self clusterLabel];
-  [v12 setObject:v13 forKeyedSubscript:0x2857AEE80];
+  requestCopy = request;
+  dictionary = [v10 dictionary];
+  clusterLabel = [(COMessageChannel *)self clusterLabel];
+  [dictionary setObject:clusterLabel forKeyedSubscript:0x2857AEE80];
 
-  v14 = [(COMessageChannel *)self topic];
-  [v12 setObject:v14 forKeyedSubscript:0x2857AEE60];
+  topic = [(COMessageChannel *)self topic];
+  [dictionary setObject:topic forKeyedSubscript:0x2857AEE60];
 
   v15 = objc_opt_class();
   v16 = [(COMessageChannel *)self _payloadTypeFromClass:v15];
-  [v12 setObject:v16 forKeyedSubscript:0x2857AEEA0];
+  [dictionary setObject:v16 forKeyedSubscript:0x2857AEEA0];
 
-  if (v8)
+  if (infoCopy)
   {
-    v17 = [v8 destinationInfo];
-    [v12 setObject:v17 forKeyedSubscript:0x2857AEEC0];
+    destinationInfo = [infoCopy destinationInfo];
+    [dictionary setObject:destinationInfo forKeyedSubscript:0x2857AEEC0];
   }
 
   else
   {
-    [v12 setObject:0x2857AEFA0 forKeyedSubscript:0x2857AEEC0];
+    [dictionary setObject:0x2857AEFA0 forKeyedSubscript:0x2857AEEC0];
   }
 
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "messageSize")}];
-  [v12 setObject:v18 forKeyedSubscript:0x2857AEF60];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(infoCopy, "messageSize")}];
+  [dictionary setObject:v18 forKeyedSubscript:0x2857AEF60];
 
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "expectedRecipients") * objc_msgSend(v8, "messageSize")}];
-  [v12 setObject:v19 forKeyedSubscript:0x2857AEF80];
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(infoCopy, "expectedRecipients") * objc_msgSend(infoCopy, "messageSize")}];
+  [dictionary setObject:v19 forKeyedSubscript:0x2857AEF80];
 
-  if (v9)
+  if (errorCopy)
   {
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v9, "code")];
-    [v12 setObject:v20 forKeyedSubscript:0x2857AEF20];
+    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(errorCopy, "code")];
+    [dictionary setObject:v20 forKeyedSubscript:0x2857AEF20];
 
-    v21 = [v9 domain];
-    [v12 setObject:v21 forKeyedSubscript:0x2857AEEE0];
+    domain = [errorCopy domain];
+    [dictionary setObject:domain forKeyedSubscript:0x2857AEEE0];
 
-    v22 = [v9 userInfo];
-    v23 = [v22 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    userInfo = [errorCopy userInfo];
+    v23 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
     if (v23)
     {
       v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v23, "code")];
-      [v12 setObject:v24 forKeyedSubscript:0x2857AEF40];
+      [dictionary setObject:v24 forKeyedSubscript:0x2857AEF40];
 
-      v25 = [v23 domain];
-      [v12 setObject:v25 forKeyedSubscript:0x2857AEF00];
+      domain2 = [v23 domain];
+      [dictionary setObject:domain2 forKeyedSubscript:0x2857AEF00];
     }
   }
 
-  v26 = [(COMessageChannel *)self recorder];
+  recorder = [(COMessageChannel *)self recorder];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __71__COMessageChannel__submitMetricsForRequest_withRequestInfo_withError___block_invoke;
   v29[3] = &unk_278E13278;
-  v30 = v12;
-  v27 = v26[2];
-  v28 = v12;
-  v27(v26, 0x2857AEE00, v29);
+  v30 = dictionary;
+  v27 = recorder[2];
+  v28 = dictionary;
+  v27(recorder, 0x2857AEE00, v29);
 }
 
-- (void)_submitMetricsForResponse:(id)a3 size:(unint64_t)a4 withError:(id)a5
+- (void)_submitMetricsForResponse:(id)response size:(unint64_t)size withError:(id)error
 {
-  v8 = a5;
+  errorCopy = error;
   v9 = MEMORY[0x277CBEB38];
-  v10 = a3;
-  v11 = [v9 dictionary];
-  v12 = [(COMessageChannel *)self clusterLabel];
-  [v11 setObject:v12 forKeyedSubscript:0x2857AEE80];
+  responseCopy = response;
+  dictionary = [v9 dictionary];
+  clusterLabel = [(COMessageChannel *)self clusterLabel];
+  [dictionary setObject:clusterLabel forKeyedSubscript:0x2857AEE80];
 
-  v13 = [(COMessageChannel *)self topic];
-  [v11 setObject:v13 forKeyedSubscript:0x2857AEE60];
+  topic = [(COMessageChannel *)self topic];
+  [dictionary setObject:topic forKeyedSubscript:0x2857AEE60];
 
   v14 = objc_opt_class();
   v15 = [(COMessageChannel *)self _payloadTypeFromClass:v14];
-  [v11 setObject:v15 forKeyedSubscript:0x2857AEEA0];
+  [dictionary setObject:v15 forKeyedSubscript:0x2857AEEA0];
 
-  [v11 setObject:0x2857AEFC0 forKeyedSubscript:0x2857AEEC0];
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  [v11 setObject:v16 forKeyedSubscript:0x2857AEF60];
+  [dictionary setObject:0x2857AEFC0 forKeyedSubscript:0x2857AEEC0];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:size];
+  [dictionary setObject:v16 forKeyedSubscript:0x2857AEF60];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  [v11 setObject:v17 forKeyedSubscript:0x2857AEF80];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:size];
+  [dictionary setObject:v17 forKeyedSubscript:0x2857AEF80];
 
-  if (v8)
+  if (errorCopy)
   {
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v8, "code")];
-    [v11 setObject:v18 forKeyedSubscript:0x2857AEF20];
+    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(errorCopy, "code")];
+    [dictionary setObject:v18 forKeyedSubscript:0x2857AEF20];
 
-    v19 = [v8 domain];
-    [v11 setObject:v19 forKeyedSubscript:0x2857AEEE0];
+    domain = [errorCopy domain];
+    [dictionary setObject:domain forKeyedSubscript:0x2857AEEE0];
 
-    v20 = [v8 userInfo];
-    v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    userInfo = [errorCopy userInfo];
+    v21 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
     if (v21)
     {
       v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v21, "code")];
-      [v11 setObject:v22 forKeyedSubscript:0x2857AEF40];
+      [dictionary setObject:v22 forKeyedSubscript:0x2857AEF40];
 
-      v23 = [v21 domain];
-      [v11 setObject:v23 forKeyedSubscript:0x2857AEF00];
+      domain2 = [v21 domain];
+      [dictionary setObject:domain2 forKeyedSubscript:0x2857AEF00];
     }
   }
 
-  v24 = [(COMessageChannel *)self recorder];
+  recorder = [(COMessageChannel *)self recorder];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __61__COMessageChannel__submitMetricsForResponse_size_withError___block_invoke;
   v27[3] = &unk_278E13278;
-  v28 = v11;
-  v25 = v24[2];
-  v26 = v11;
-  v25(v24, 0x2857AEE00, v27);
+  v28 = dictionary;
+  v25 = recorder[2];
+  v26 = dictionary;
+  v25(recorder, 0x2857AEE00, v27);
 }
 
 - (NSXPCConnection)lastConnection

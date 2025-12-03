@@ -1,18 +1,18 @@
 @interface BYPowerLogAnalyticsManager
-+ (id)nameForPowerLogEventType:(unint64_t)a3;
-+ (id)persistenceKeyForPowerLogEventType:(unint64_t)a3;
-- (BOOL)_shouldCommitEvent:(unint64_t)a3;
-- (BYPowerLogAnalyticsManager)initWithPreferences:(id)a3;
-- (void)_persistIfApplicable:(unint64_t)a3;
-- (void)_submitPayload:(id)a3;
++ (id)nameForPowerLogEventType:(unint64_t)type;
++ (id)persistenceKeyForPowerLogEventType:(unint64_t)type;
+- (BOOL)_shouldCommitEvent:(unint64_t)event;
+- (BYPowerLogAnalyticsManager)initWithPreferences:(id)preferences;
+- (void)_persistIfApplicable:(unint64_t)applicable;
+- (void)_submitPayload:(id)payload;
 - (void)commit;
 @end
 
 @implementation BYPowerLogAnalyticsManager
 
-- (BYPowerLogAnalyticsManager)initWithPreferences:(id)a3
+- (BYPowerLogAnalyticsManager)initWithPreferences:(id)preferences
 {
-  v5 = a3;
+  preferencesCopy = preferences;
   v10.receiver = self;
   v10.super_class = BYPowerLogAnalyticsManager;
   v6 = [(BYPowerLogAnalyticsManager *)&v10 init];
@@ -22,7 +22,7 @@
     events = v6->_events;
     v6->_events = v7;
 
-    objc_storeStrong(&v6->_preferencesController, a3);
+    objc_storeStrong(&v6->_preferencesController, preferences);
   }
 
   return v6;
@@ -40,8 +40,8 @@
       if (-[BYPowerLogAnalyticsManager _shouldCommitEvent:](self, "_shouldCommitEvent:", [v3 type]))
       {
         v4 = [objc_opt_class() nameForPowerLogEventType:{objc_msgSend(v3, "type")}];
-        v5 = [v3 payload];
-        [v6 setObject:v5 forKeyedSubscript:v4];
+        payload = [v3 payload];
+        [v6 setObject:payload forKeyedSubscript:v4];
 
         -[BYPowerLogAnalyticsManager _persistIfApplicable:](self, "_persistIfApplicable:", [v3 type]);
       }
@@ -54,9 +54,9 @@
   }
 }
 
-- (void)_submitPayload:(id)a3
+- (void)_submitPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v4 = _BYLoggingFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -79,7 +79,7 @@ uint64_t __45__BYPowerLogAnalyticsManager__submitPayload___block_invoke()
   return result;
 }
 
-- (BOOL)_shouldCommitEvent:(unint64_t)a3
+- (BOOL)_shouldCommitEvent:(unint64_t)event
 {
   if (!self->_preferencesController)
   {
@@ -87,7 +87,7 @@ uint64_t __45__BYPowerLogAnalyticsManager__submitPayload___block_invoke()
     objc_exception_throw(v10);
   }
 
-  v4 = [objc_opt_class() persistenceKeyForPowerLogEventType:a3];
+  v4 = [objc_opt_class() persistenceKeyForPowerLogEventType:event];
   if (v4)
   {
     v5 = [(BYPreferencesController *)self->_preferencesController objectForKey:@"PowerLogSubmittedEvents"];
@@ -113,7 +113,7 @@ uint64_t __45__BYPowerLogAnalyticsManager__submitPayload___block_invoke()
   return v8;
 }
 
-- (void)_persistIfApplicable:(unint64_t)a3
+- (void)_persistIfApplicable:(unint64_t)applicable
 {
   if (!self->_preferencesController)
   {
@@ -121,7 +121,7 @@ uint64_t __45__BYPowerLogAnalyticsManager__submitPayload___block_invoke()
     objc_exception_throw(v9);
   }
 
-  v4 = [objc_opt_class() persistenceKeyForPowerLogEventType:a3];
+  v4 = [objc_opt_class() persistenceKeyForPowerLogEventType:applicable];
   if (v4)
   {
     v10 = v4;
@@ -142,15 +142,15 @@ uint64_t __45__BYPowerLogAnalyticsManager__submitPayload___block_invoke()
   }
 }
 
-+ (id)nameForPowerLogEventType:(unint64_t)a3
++ (id)nameForPowerLogEventType:(unint64_t)type
 {
   v3 = &stru_1F309EFF0;
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"TransferMethod";
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }
@@ -161,15 +161,15 @@ uint64_t __45__BYPowerLogAnalyticsManager__submitPayload___block_invoke()
   }
 }
 
-+ (id)persistenceKeyForPowerLogEventType:(unint64_t)a3
++ (id)persistenceKeyForPowerLogEventType:(unint64_t)type
 {
   v3 = @"TransferMethod";
-  if (a3 != 1)
+  if (type != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }

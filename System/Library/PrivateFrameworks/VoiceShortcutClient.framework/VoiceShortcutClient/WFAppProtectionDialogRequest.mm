@@ -1,20 +1,20 @@
 @interface WFAppProtectionDialogRequest
-- (WFAppProtectionDialogRequest)initWithAppBundleIdentifier:(id)a3;
-- (WFAppProtectionDialogRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFAppProtectionDialogRequest)initWithAppBundleIdentifier:(id)identifier;
+- (WFAppProtectionDialogRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAppProtectionDialogRequest
 
-- (WFAppProtectionDialogRequest)initWithCoder:(id)a3
+- (WFAppProtectionDialogRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFAppProtectionDialogRequest;
-  v5 = [(WFDialogRequest *)&v10 initWithCoder:v4];
+  v5 = [(WFDialogRequest *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
 
@@ -24,19 +24,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFAppProtectionDialogRequest;
-  v4 = a3;
-  [(WFDialogRequest *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFDialogRequest *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WFAppProtectionDialogRequest *)self bundleIdentifier:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:v5 forKey:@"bundleIdentifier"];
 }
 
-- (WFAppProtectionDialogRequest)initWithAppBundleIdentifier:(id)a3
+- (WFAppProtectionDialogRequest)initWithAppBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [[WFDialogAttribution alloc] initWithTitle:0 icon:0];
   v10.receiver = self;
   v10.super_class = WFAppProtectionDialogRequest;
@@ -44,7 +44,7 @@
 
   if (v7)
   {
-    objc_storeStrong(&v7->_bundleIdentifier, a3);
+    objc_storeStrong(&v7->_bundleIdentifier, identifier);
     v8 = v7;
   }
 

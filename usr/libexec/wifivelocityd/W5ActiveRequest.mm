@@ -1,10 +1,10 @@
 @interface W5ActiveRequest
-- (BOOL)conformsToProtocol:(id)a3;
-- (W5ActiveRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (W5ActiveRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation W5ActiveRequest
@@ -43,22 +43,22 @@
   return v6;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v5.receiver = self;
   v5.super_class = W5ActiveRequest;
-  if (-[W5ActiveRequest conformsToProtocol:](&v5, "conformsToProtocol:") || ([a3 isEqual:&OBJC_PROTOCOL___NSSecureCoding] & 1) != 0)
+  if (-[W5ActiveRequest conformsToProtocol:](&v5, "conformsToProtocol:") || ([protocol isEqual:&OBJC_PROTOCOL___NSSecureCoding] & 1) != 0)
   {
     return 1;
   }
 
   else
   {
-    return [a3 isEqual:&OBJC_PROTOCOL___NSCopying];
+    return [protocol isEqual:&OBJC_PROTOCOL___NSCopying];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5ActiveRequest allocWithZone:?]];
   [(W5ActiveRequest *)v4 setUuid:self->_uuid];
@@ -69,30 +69,30 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_uuid forKey:@"_uuid"];
-  [a3 encodeObject:self->_peerID forKey:@"_peerID"];
-  [a3 encodeInteger:self->_type forKey:@"_type"];
-  [a3 encodeDouble:@"_timestamp" forKey:self->_timestamp];
+  [coder encodeObject:self->_uuid forKey:@"_uuid"];
+  [coder encodeObject:self->_peerID forKey:@"_peerID"];
+  [coder encodeInteger:self->_type forKey:@"_type"];
+  [coder encodeDouble:@"_timestamp" forKey:self->_timestamp];
   wantsUpdates = self->_wantsUpdates;
 
-  [a3 encodeBool:wantsUpdates forKey:@"_wantsUpdates"];
+  [coder encodeBool:wantsUpdates forKey:@"_wantsUpdates"];
 }
 
-- (W5ActiveRequest)initWithCoder:(id)a3
+- (W5ActiveRequest)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = W5ActiveRequest;
   v4 = [(W5ActiveRequest *)&v7 init];
   if (v4)
   {
-    v4->_uuid = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_uuid", "copy"}];
-    v4->_peerID = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_peerID", "copy"}];
-    v4->_type = [a3 decodeIntegerForKey:@"_type"];
-    [a3 decodeDoubleForKey:@"_timestamp"];
+    v4->_uuid = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_uuid", "copy"}];
+    v4->_peerID = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_peerID", "copy"}];
+    v4->_type = [coder decodeIntegerForKey:@"_type"];
+    [coder decodeDoubleForKey:@"_timestamp"];
     v4->_timestamp = v5;
-    v4->_wantsUpdates = [a3 decodeBoolForKey:@"_wantsUpdates"];
+    v4->_wantsUpdates = [coder decodeBoolForKey:@"_wantsUpdates"];
   }
 
   return v4;

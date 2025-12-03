@@ -1,14 +1,14 @@
 @interface SyntheticReferencePlist
-- (int)_readDeepShadowRecoveryBandData:(id)a3;
-- (int)_readHighlightRecoveryBandData:(id)a3;
-- (int)readPlist:(id)a3;
+- (int)_readDeepShadowRecoveryBandData:(id)data;
+- (int)_readHighlightRecoveryBandData:(id)data;
+- (int)readPlist:(id)plist;
 @end
 
 @implementation SyntheticReferencePlist
 
-- (int)_readHighlightRecoveryBandData:(id)a3
+- (int)_readHighlightRecoveryBandData:(id)data
 {
-  v5 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"HighlightRecover", v3);
+  v5 = objc_msgSend_objectForKeyedSubscript_(data, a2, @"HighlightRecover", v3);
   v8 = v5;
   if (!v5)
   {
@@ -88,9 +88,9 @@ LABEL_12:
   return v33;
 }
 
-- (int)_readDeepShadowRecoveryBandData:(id)a3
+- (int)_readDeepShadowRecoveryBandData:(id)data
 {
-  v5 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"DeepShadowRecover", v3);
+  v5 = objc_msgSend_objectForKeyedSubscript_(data, a2, @"DeepShadowRecover", v3);
   v8 = v5;
   if (!v5)
   {
@@ -301,10 +301,10 @@ LABEL_38:
   return v144;
 }
 
-- (int)readPlist:(id)a3
+- (int)readPlist:(id)plist
 {
-  v4 = a3;
-  HighlightRecoveryBandData = objc_msgSend__readHighlightRecoveryBandData_(self, v5, v4, v6);
+  plistCopy = plist;
+  HighlightRecoveryBandData = objc_msgSend__readHighlightRecoveryBandData_(self, v5, plistCopy, v6);
   if (HighlightRecoveryBandData)
   {
     v37 = HighlightRecoveryBandData;
@@ -313,7 +313,7 @@ LABEL_38:
 
   else
   {
-    DeepShadowRecoveryBandData = objc_msgSend__readDeepShadowRecoveryBandData_(self, v8, v4, v9);
+    DeepShadowRecoveryBandData = objc_msgSend__readDeepShadowRecoveryBandData_(self, v8, plistCopy, v9);
     if (DeepShadowRecoveryBandData)
     {
       v37 = DeepShadowRecoveryBandData;
@@ -322,23 +322,23 @@ LABEL_38:
 
     else
     {
-      self->grayGhostingDetectionBand = objc_msgSend_cmi_intValueForKey_defaultValue_found_(v4, v11, @"GrayGhostingDetectionBand", 0, 0);
-      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v12, @"GrayGhostingCutoff", 0, 0.0);
+      self->grayGhostingDetectionBand = objc_msgSend_cmi_intValueForKey_defaultValue_found_(plistCopy, v11, @"GrayGhostingDetectionBand", 0, 0);
+      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v12, @"GrayGhostingCutoff", 0, 0.0);
       self->grayGhostingCutoff = v13;
-      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v14, @"GrayGhostingEV0EVMDifferenceThreshold", 0, 0.0);
+      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v14, @"GrayGhostingEV0EVMDifferenceThreshold", 0, 0.0);
       self->grayGhostingEV0EVMDifferenceThreshold = v15;
-      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v16, @"GrayGhostingEV0WeightThreshold", 0, 0.0);
+      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v16, @"GrayGhostingEV0WeightThreshold", 0, 0.0);
       self->grayGhostingEV0WeightThreshold = v17;
-      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v18, @"GrayGhostingClippingThreshold", 0, 0.0);
+      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v18, @"GrayGhostingClippingThreshold", 0, 0.0);
       self->grayGhostingClippingThreshold = v19;
-      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v20, @"MotionCutoff", 0, 0.0);
+      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v20, @"MotionCutoff", 0, 0.0);
       self->motionCutoff = v21;
-      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v22, @"MotionDetectionSifrEitCutoffHigh", 0, 0.0);
+      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v22, @"MotionDetectionSifrEitCutoffHigh", 0, 0.0);
       self->motionDetectionSifrEitCutoffHigh = v23;
-      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v24, @"MotionDetectionSifrEitCutoffLow", 0, 0.0);
+      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v24, @"MotionDetectionSifrEitCutoffLow", 0, 0.0);
       self->motionDetectionSifrEitCutoffLow = v25;
       v26 = [GainValueArray alloc];
-      v29 = objc_msgSend_objectForKeyedSubscript_(v4, v27, @"SyntheticReferencePedestal", v28);
+      v29 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v27, @"SyntheticReferencePedestal", v28);
       v32 = objc_msgSend_initWithArray_(v26, v30, v29, v31);
       syntheticReferencePedestal = self->syntheticReferencePedestal;
       self->syntheticReferencePedestal = v32;

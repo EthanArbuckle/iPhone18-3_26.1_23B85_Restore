@@ -1,26 +1,26 @@
 @interface PUPhotoPickerScaledFileSizeEstimator
-- (BOOL)wouldResizeAssetUsingResizeDescriptor:(id)a3;
-- (CGSize)_targetSizeForResizeDescriptor:(id)a3;
+- (BOOL)wouldResizeAssetUsingResizeDescriptor:(id)descriptor;
+- (CGSize)_targetSizeForResizeDescriptor:(id)descriptor;
 - (CMPhotoDecompressionContainer)_figContainer;
-- (PUPhotoPickerScaledFileSizeEstimator)initWithAsset:(id)a3;
+- (PUPhotoPickerScaledFileSizeEstimator)initWithAsset:(id)asset;
 - (id)_assetURL;
 - (id)_assetUTI;
 - (unint64_t)_assetOriginalSize;
-- (unint64_t)_estimatedSizeForResizeDescriptor:(id)a3;
-- (unint64_t)estimatedSizeForResizeDescriptor:(id)a3;
+- (unint64_t)_estimatedSizeForResizeDescriptor:(id)descriptor;
+- (unint64_t)estimatedSizeForResizeDescriptor:(id)descriptor;
 - (void)dealloc;
 @end
 
 @implementation PUPhotoPickerScaledFileSizeEstimator
 
-- (unint64_t)_estimatedSizeForResizeDescriptor:(id)a3
+- (unint64_t)_estimatedSizeForResizeDescriptor:(id)descriptor
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v15 = 0;
+  descriptorCopy = descriptor;
+  _assetOriginalSize = 0;
   if ([(PUPhotoPickerScaledFileSizeEstimator *)self _figContainer])
   {
-    [(PUPhotoPickerScaledFileSizeEstimator *)self _targetSizeForResizeDescriptor:v4];
+    [(PUPhotoPickerScaledFileSizeEstimator *)self _targetSizeForResizeDescriptor:descriptorCopy];
     if (v5 <= v6)
     {
       v5 = v6;
@@ -45,18 +45,18 @@
 
     if (CMPhotoDecompressionContainerPredictTranscodedSize())
     {
-      v15 = [(PUPhotoPickerScaledFileSizeEstimator *)self _assetOriginalSize];
+      _assetOriginalSize = [(PUPhotoPickerScaledFileSizeEstimator *)self _assetOriginalSize];
     }
 
-    v13 = v15;
+    _assetOriginalSize2 = _assetOriginalSize;
   }
 
   else
   {
-    v13 = [(PUPhotoPickerScaledFileSizeEstimator *)self _assetOriginalSize];
+    _assetOriginalSize2 = [(PUPhotoPickerScaledFileSizeEstimator *)self _assetOriginalSize];
   }
 
-  return v13;
+  return _assetOriginalSize2;
 }
 
 - (CMPhotoDecompressionContainer)_figContainer
@@ -81,18 +81,18 @@
   return result;
 }
 
-- (CGSize)_targetSizeForResizeDescriptor:(id)a3
+- (CGSize)_targetSizeForResizeDescriptor:(id)descriptor
 {
-  [a3 targetSize];
-  v6 = v5;
-  if (v5 == *MEMORY[0x1E6978E30] && v4 == *(MEMORY[0x1E6978E30] + 8))
+  [descriptor targetSize];
+  pixelWidth = v5;
+  if (v5 == *MEMORY[0x1E6978E30] && pixelHeight == *(MEMORY[0x1E6978E30] + 8))
   {
-    v6 = [(PHAsset *)self->_asset pixelWidth];
-    v4 = [(PHAsset *)self->_asset pixelHeight];
+    pixelWidth = [(PHAsset *)self->_asset pixelWidth];
+    pixelHeight = [(PHAsset *)self->_asset pixelHeight];
   }
 
-  v8 = v6;
-  result.height = v4;
+  v8 = pixelWidth;
+  result.height = pixelHeight;
   result.width = v8;
   return result;
 }
@@ -108,10 +108,10 @@
 - (unint64_t)_assetOriginalSize
 {
   [(PHAsset *)self->_asset fetchPropertySetsIfNeeded];
-  v3 = [(PHAsset *)self->_asset originalMetadataProperties];
-  v4 = [v3 originalFilesize];
+  originalMetadataProperties = [(PHAsset *)self->_asset originalMetadataProperties];
+  originalFilesize = [originalMetadataProperties originalFilesize];
 
-  return v4;
+  return originalFilesize;
 }
 
 - (id)_assetUTI
@@ -122,33 +122,33 @@
   return [(PHAsset *)asset uniformTypeIdentifier];
 }
 
-- (BOOL)wouldResizeAssetUsingResizeDescriptor:(id)a3
+- (BOOL)wouldResizeAssetUsingResizeDescriptor:(id)descriptor
 {
-  [(PUPhotoPickerScaledFileSizeEstimator *)self _targetSizeForResizeDescriptor:a3];
+  [(PUPhotoPickerScaledFileSizeEstimator *)self _targetSizeForResizeDescriptor:descriptor];
   v5 = v4;
   v7 = v6;
-  v8 = [(PHAsset *)self->_asset pixelWidth];
-  return v7 < [(PHAsset *)self->_asset pixelHeight]|| v5 < v8;
+  pixelWidth = [(PHAsset *)self->_asset pixelWidth];
+  return v7 < [(PHAsset *)self->_asset pixelHeight]|| v5 < pixelWidth;
 }
 
-- (unint64_t)estimatedSizeForResizeDescriptor:(id)a3
+- (unint64_t)estimatedSizeForResizeDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = MEMORY[0x1E69C08F0];
-  v6 = [(PUPhotoPickerScaledFileSizeEstimator *)self _assetUTI];
-  v7 = [v5 typeWithIdentifier:v6];
+  _assetUTI = [(PUPhotoPickerScaledFileSizeEstimator *)self _assetUTI];
+  v7 = [v5 typeWithIdentifier:_assetUTI];
 
-  if (([objc_opt_class() isAssetResizable:self->_asset] & 1) != 0 && ((objc_msgSend(v7, "conformsToType:", *MEMORY[0x1E6982E10]) & 1) != 0 || objc_msgSend(v7, "conformsToType:", *MEMORY[0x1E6982E00]) || -[PUPhotoPickerScaledFileSizeEstimator wouldResizeAssetUsingResizeDescriptor:](self, "wouldResizeAssetUsingResizeDescriptor:", v4)))
+  if (([objc_opt_class() isAssetResizable:self->_asset] & 1) != 0 && ((objc_msgSend(v7, "conformsToType:", *MEMORY[0x1E6982E10]) & 1) != 0 || objc_msgSend(v7, "conformsToType:", *MEMORY[0x1E6982E00]) || -[PUPhotoPickerScaledFileSizeEstimator wouldResizeAssetUsingResizeDescriptor:](self, "wouldResizeAssetUsingResizeDescriptor:", descriptorCopy)))
   {
-    v8 = [(PUPhotoPickerScaledFileSizeEstimator *)self _estimatedSizeForResizeDescriptor:v4];
+    _assetOriginalSize = [(PUPhotoPickerScaledFileSizeEstimator *)self _estimatedSizeForResizeDescriptor:descriptorCopy];
   }
 
   else
   {
-    v8 = [(PUPhotoPickerScaledFileSizeEstimator *)self _assetOriginalSize];
+    _assetOriginalSize = [(PUPhotoPickerScaledFileSizeEstimator *)self _assetOriginalSize];
   }
 
-  v9 = v8;
+  v9 = _assetOriginalSize;
 
   return v9;
 }
@@ -166,16 +166,16 @@
   [(PUPhotoPickerScaledFileSizeEstimator *)&v4 dealloc];
 }
 
-- (PUPhotoPickerScaledFileSizeEstimator)initWithAsset:(id)a3
+- (PUPhotoPickerScaledFileSizeEstimator)initWithAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v9.receiver = self;
   v9.super_class = PUPhotoPickerScaledFileSizeEstimator;
   v6 = [(PUPhotoPickerScaledFileSizeEstimator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_asset, a3);
+    objc_storeStrong(&v6->_asset, asset);
   }
 
   return v7;

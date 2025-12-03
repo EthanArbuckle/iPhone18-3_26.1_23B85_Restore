@@ -91,7 +91,7 @@
     v11 = [(CIImage *)v11 imageByApplyingTransform:&v28];
   }
 
-  v17 = [(CUIInnerGlowOrShadowFilter *)self _kernel];
+  _kernel = [(CUIInnerGlowOrShadowFilter *)self _kernel];
   [(CIImage *)v11 extent];
   v19 = v18;
   v21 = v20;
@@ -101,7 +101,7 @@
   v29[0] = v11;
   v29[1] = inputColor;
   v29[2] = [MEMORY[0x1E696AD98] numberWithDouble:v9];
-  return [v17 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v29, 3), v19, v21, v23, v25}];
+  return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v29, 3), v19, v21, v23, v25}];
 }
 
 @end

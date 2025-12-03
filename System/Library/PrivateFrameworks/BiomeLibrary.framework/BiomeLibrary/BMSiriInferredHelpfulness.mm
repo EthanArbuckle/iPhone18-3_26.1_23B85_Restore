@@ -1,39 +1,39 @@
 @interface BMSiriInferredHelpfulness
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriInferredHelpfulness)initWithAbsoluteTimestamp:(id)a3 inferredHelpfulnessScore:(id)a4 restatementScore:(id)a5 turnID:(id)a6 modelID:(id)a7;
-- (BMSiriInferredHelpfulness)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriInferredHelpfulness)initWithAbsoluteTimestamp:(id)timestamp inferredHelpfulnessScore:(id)score restatementScore:(id)restatementScore turnID:(id)d modelID:(id)iD;
+- (BMSiriInferredHelpfulness)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriInferredHelpfulness
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriInferredHelpfulness *)self absoluteTimestamp];
-    v7 = [v5 absoluteTimestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    absoluteTimestamp = [(BMSiriInferredHelpfulness *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v8 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriInferredHelpfulness *)self absoluteTimestamp];
-      v10 = [v5 absoluteTimestamp];
-      v11 = [v9 isEqual:v10];
+      absoluteTimestamp3 = [(BMSiriInferredHelpfulness *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v11 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v11)
       {
@@ -83,18 +83,18 @@
       }
     }
 
-    v19 = [(BMSiriInferredHelpfulness *)self turnID];
-    v20 = [v5 turnID];
-    v21 = v20;
-    if (v19 == v20)
+    turnID = [(BMSiriInferredHelpfulness *)self turnID];
+    turnID2 = [v5 turnID];
+    v21 = turnID2;
+    if (turnID == turnID2)
     {
     }
 
     else
     {
-      v22 = [(BMSiriInferredHelpfulness *)self turnID];
-      v23 = [v5 turnID];
-      v24 = [v22 isEqual:v23];
+      turnID3 = [(BMSiriInferredHelpfulness *)self turnID];
+      turnID4 = [v5 turnID];
+      v24 = [turnID3 isEqual:turnID4];
 
       if (!v24)
       {
@@ -106,18 +106,18 @@ LABEL_20:
       }
     }
 
-    v26 = [(BMSiriInferredHelpfulness *)self modelID];
-    v27 = [v5 modelID];
-    if (v26 == v27)
+    modelID = [(BMSiriInferredHelpfulness *)self modelID];
+    modelID2 = [v5 modelID];
+    if (modelID == modelID2)
     {
       v12 = 1;
     }
 
     else
     {
-      v28 = [(BMSiriInferredHelpfulness *)self modelID];
-      v29 = [v5 modelID];
-      v12 = [v28 isEqual:v29];
+      modelID3 = [(BMSiriInferredHelpfulness *)self modelID];
+      modelID4 = [v5 modelID];
+      v12 = [modelID3 isEqual:modelID4];
     }
 
     goto LABEL_20;
@@ -149,12 +149,12 @@ LABEL_21:
 - (id)jsonDictionary
 {
   v26[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriInferredHelpfulness *)self absoluteTimestamp];
-  if (v3)
+  absoluteTimestamp = [(BMSiriInferredHelpfulness *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMSiriInferredHelpfulness *)self absoluteTimestamp];
-    [v5 timeIntervalSinceReferenceDate];
+    absoluteTimestamp2 = [(BMSiriInferredHelpfulness *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSinceReferenceDate];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -189,53 +189,53 @@ LABEL_21:
     v12 = [v11 numberWithDouble:?];
   }
 
-  v13 = [(BMSiriInferredHelpfulness *)self turnID];
-  v14 = [(BMSiriInferredHelpfulness *)self modelID];
+  turnID = [(BMSiriInferredHelpfulness *)self turnID];
+  modelID = [(BMSiriInferredHelpfulness *)self modelID];
   v23 = v6;
   v25[0] = @"absoluteTimestamp";
-  v15 = v6;
+  null = v6;
   if (!v6)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[0] = v15;
+  v26[0] = null;
   v25[1] = @"inferredHelpfulnessScore";
-  v16 = v9;
+  null2 = v9;
   if (!v9)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[1] = v16;
+  v26[1] = null2;
   v25[2] = @"restatementScore";
-  v17 = v12;
+  null3 = v12;
   if (!v12)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[2] = v17;
+  v26[2] = null3;
   v25[3] = @"turnID";
-  v18 = v13;
-  if (!v13)
+  null4 = turnID;
+  if (!turnID)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[3] = v18;
+  v26[3] = null4;
   v25[4] = @"modelID";
-  v19 = v14;
-  if (!v14)
+  null5 = modelID;
+  if (!modelID)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v19;
+  v26[4] = null5;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:{5, v23}];
-  if (v14)
+  if (modelID)
   {
-    if (v13)
+    if (turnID)
     {
       goto LABEL_24;
     }
@@ -244,7 +244,7 @@ LABEL_21:
   else
   {
 
-    if (v13)
+    if (turnID)
     {
 LABEL_24:
       if (v12)
@@ -286,38 +286,38 @@ LABEL_26:
   return v20;
 }
 
-- (BMSiriInferredHelpfulness)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriInferredHelpfulness)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"absoluteTimestamp"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v47 = 0;
 LABEL_9:
-    v15 = [v6 objectForKeyedSubscript:@"inferredHelpfulnessScore"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"inferredHelpfulnessScore"];
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v22 = 0;
           goto LABEL_43;
         }
 
         v23 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v24 = a4;
+        errorCopy = error;
         v25 = *MEMORY[0x1E698F240];
         v54 = *MEMORY[0x1E696A578];
         v46 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"inferredHelpfulnessScore"];
         v55 = v46;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
         v26 = [v23 initWithDomain:v25 code:2 userInfo:v16];
-        a4 = 0;
+        error = 0;
         v22 = 0;
-        *v24 = v26;
+        *errorCopy = v26;
         goto LABEL_42;
       }
 
@@ -329,22 +329,22 @@ LABEL_9:
       v45 = 0;
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"restatementScore"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"restatementScore"];
     v44 = v7;
     if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v46 = 0;
           v22 = 0;
-          a4 = v45;
+          error = v45;
           goto LABEL_42;
         }
 
-        v17 = self;
+        selfCopy3 = self;
         v27 = objc_alloc(MEMORY[0x1E696ABC0]);
         v28 = *MEMORY[0x1E698F240];
         v52 = *MEMORY[0x1E696A578];
@@ -353,21 +353,21 @@ LABEL_9:
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
         v46 = 0;
         v22 = 0;
-        *a4 = [v27 initWithDomain:v28 code:2 userInfo:v18];
+        *error = [v27 initWithDomain:v28 code:2 userInfo:v18];
         goto LABEL_50;
       }
 
-      v17 = self;
+      selfCopy3 = self;
       v46 = v16;
     }
 
     else
     {
-      v17 = self;
+      selfCopy3 = self;
       v46 = 0;
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"turnID"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"turnID"];
     if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v19 = 0;
@@ -379,18 +379,18 @@ LABEL_9:
     {
       v19 = v18;
 LABEL_18:
-      v20 = [v6 objectForKeyedSubscript:@"modelID"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"modelID"];
       if (!v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v21 = 0;
 LABEL_21:
-        a4 = v45;
-        v22 = [(BMSiriInferredHelpfulness *)v17 initWithAbsoluteTimestamp:v47 inferredHelpfulnessScore:v45 restatementScore:v46 turnID:v19 modelID:v21];
-        v17 = v22;
+        error = v45;
+        v22 = [(BMSiriInferredHelpfulness *)selfCopy3 initWithAbsoluteTimestamp:v47 inferredHelpfulnessScore:v45 restatementScore:v46 turnID:v19 modelID:v21];
+        selfCopy3 = v22;
 LABEL_40:
 
 LABEL_41:
-        self = v17;
+        self = selfCopy3;
         v7 = v44;
 LABEL_42:
 
@@ -404,7 +404,7 @@ LABEL_42:
         goto LABEL_21;
       }
 
-      if (a4)
+      if (error)
       {
         v43 = objc_alloc(MEMORY[0x1E696ABC0]);
         v41 = *MEMORY[0x1E698F240];
@@ -412,20 +412,20 @@ LABEL_42:
         v32 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"modelID"];
         v49 = v32;
         v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-        *a4 = [v43 initWithDomain:v41 code:2 userInfo:v33];
+        *error = [v43 initWithDomain:v41 code:2 userInfo:v33];
       }
 
       v21 = 0;
       v22 = 0;
 LABEL_39:
-      a4 = v45;
+      error = v45;
       goto LABEL_40;
     }
 
-    if (a4)
+    if (error)
     {
       v29 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v42 = a4;
+      errorCopy2 = error;
       v30 = *MEMORY[0x1E698F240];
       v50 = *MEMORY[0x1E696A578];
       v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"turnID"];
@@ -434,14 +434,14 @@ LABEL_39:
       v31 = [v29 initWithDomain:v30 code:2 userInfo:v20];
       v19 = 0;
       v22 = 0;
-      *v42 = v31;
+      *errorCopy2 = v31;
       goto LABEL_39;
     }
 
     v19 = 0;
     v22 = 0;
 LABEL_50:
-    a4 = v45;
+    error = v45;
     goto LABEL_41;
   }
 
@@ -476,7 +476,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!error)
   {
     v47 = 0;
     v22 = 0;
@@ -484,17 +484,17 @@ LABEL_6:
   }
 
   v36 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v37 = a4;
+  errorCopy3 = error;
   v38 = *MEMORY[0x1E698F240];
   v56 = *MEMORY[0x1E696A578];
   v39 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (as time internal since 2001 (CFAbsoluteTime)), NSString (ISO8601 format), or NSDate", objc_opt_class(), @"absoluteTimestamp"];
   v57[0] = v39;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:&v56 count:1];
   v40 = v38;
-  a4 = v39;
+  error = v39;
   v47 = 0;
   v22 = 0;
-  *v37 = [v36 initWithDomain:v40 code:2 userInfo:v15];
+  *errorCopy3 = [v36 initWithDomain:v40 code:2 userInfo:v15];
 LABEL_43:
 
 LABEL_44:
@@ -506,52 +506,52 @@ LABEL_44:
 {
   v3 = objc_opt_new();
   [(BMSiriInferredHelpfulness *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_hasRaw_absoluteTimestamp)
   {
     raw_absoluteTimestamp = self->_raw_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasInferredHelpfulnessScore)
   {
     inferredHelpfulnessScore = self->_inferredHelpfulnessScore;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasRestatementScore)
   {
     restatementScore = self->_restatementScore;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_turnID)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_modelID)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v33.receiver = self;
   v33.super_class = BMSiriInferredHelpfulness;
   v5 = [(BMEventBase *)&v33 init];
@@ -560,12 +560,12 @@ LABEL_44:
     goto LABEL_48;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_46;
       }
@@ -576,18 +576,18 @@ LABEL_44:
       while (1)
       {
         LOBYTE(v34) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v34 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v34 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v34 & 0x7F) << v7;
@@ -604,9 +604,9 @@ LABEL_44:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_46;
       }
@@ -622,18 +622,18 @@ LABEL_16:
         case 3:
           v5->_hasRestatementScore = 1;
           v34 = 0;
-          v20 = [v4 position] + 8;
-          if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 8, v21 <= objc_msgSend(v4, "length")))
+          v20 = [fromCopy position] + 8;
+          if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 8, v21 <= objc_msgSend(fromCopy, "length")))
           {
-            v25 = [v4 data];
-            [v25 getBytes:&v34 range:{objc_msgSend(v4, "position"), 8}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v34 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v26 = v34;
@@ -657,8 +657,8 @@ LABEL_44:
       *(&v5->super.super.isa + v17) = v16;
 
 LABEL_45:
-      v30 = [v4 position];
-      if (v30 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_46;
       }
@@ -668,18 +668,18 @@ LABEL_45:
     {
       v5->_hasRaw_absoluteTimestamp = 1;
       v34 = 0;
-      v23 = [v4 position] + 8;
-      if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 8, v24 <= objc_msgSend(v4, "length")))
+      v23 = [fromCopy position] + 8;
+      if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 8, v24 <= objc_msgSend(fromCopy, "length")))
       {
-        v28 = [v4 data];
-        [v28 getBytes:&v34 range:{objc_msgSend(v4, "position"), 8}];
+        data3 = [fromCopy data];
+        [data3 getBytes:&v34 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v26 = v34;
@@ -701,18 +701,18 @@ LABEL_36:
 
       v5->_hasInferredHelpfulnessScore = 1;
       v34 = 0;
-      v18 = [v4 position] + 8;
-      if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 8, v19 <= objc_msgSend(v4, "length")))
+      v18 = [fromCopy position] + 8;
+      if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 8, v19 <= objc_msgSend(fromCopy, "length")))
       {
-        v29 = [v4 data];
-        [v29 getBytes:&v34 range:{objc_msgSend(v4, "position"), 8}];
+        data4 = [fromCopy data];
+        [data4 getBytes:&v34 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v26 = v34;
@@ -723,7 +723,7 @@ LABEL_36:
   }
 
 LABEL_46:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_47:
     v31 = 0;
@@ -741,37 +741,37 @@ LABEL_48:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriInferredHelpfulness *)self absoluteTimestamp];
+  absoluteTimestamp = [(BMSiriInferredHelpfulness *)self absoluteTimestamp];
   v5 = MEMORY[0x1E696AD98];
   [(BMSiriInferredHelpfulness *)self inferredHelpfulnessScore];
   v6 = [v5 numberWithDouble:?];
   v7 = MEMORY[0x1E696AD98];
   [(BMSiriInferredHelpfulness *)self restatementScore];
   v8 = [v7 numberWithDouble:?];
-  v9 = [(BMSiriInferredHelpfulness *)self turnID];
-  v10 = [(BMSiriInferredHelpfulness *)self modelID];
-  v11 = [v3 initWithFormat:@"BMSiriInferredHelpfulness with absoluteTimestamp: %@, inferredHelpfulnessScore: %@, restatementScore: %@, turnID: %@, modelID: %@", v4, v6, v8, v9, v10];
+  turnID = [(BMSiriInferredHelpfulness *)self turnID];
+  modelID = [(BMSiriInferredHelpfulness *)self modelID];
+  v11 = [v3 initWithFormat:@"BMSiriInferredHelpfulness with absoluteTimestamp: %@, inferredHelpfulnessScore: %@, restatementScore: %@, turnID: %@, modelID: %@", absoluteTimestamp, v6, v8, turnID, modelID];
 
   return v11;
 }
 
-- (BMSiriInferredHelpfulness)initWithAbsoluteTimestamp:(id)a3 inferredHelpfulnessScore:(id)a4 restatementScore:(id)a5 turnID:(id)a6 modelID:(id)a7
+- (BMSiriInferredHelpfulness)initWithAbsoluteTimestamp:(id)timestamp inferredHelpfulnessScore:(id)score restatementScore:(id)restatementScore turnID:(id)d modelID:(id)iD
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  timestampCopy = timestamp;
+  scoreCopy = score;
+  restatementScoreCopy = restatementScore;
+  dCopy = d;
+  iDCopy = iD;
   v22.receiver = self;
   v22.super_class = BMSiriInferredHelpfulness;
   v17 = [(BMEventBase *)&v22 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v12)
+    if (timestampCopy)
     {
       v17->_hasRaw_absoluteTimestamp = 1;
-      [v12 timeIntervalSinceReferenceDate];
+      [timestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -781,10 +781,10 @@ LABEL_48:
     }
 
     v17->_raw_absoluteTimestamp = v18;
-    if (v13)
+    if (scoreCopy)
     {
       v17->_hasInferredHelpfulnessScore = 1;
-      [v13 doubleValue];
+      [scoreCopy doubleValue];
     }
 
     else
@@ -794,10 +794,10 @@ LABEL_48:
     }
 
     v17->_inferredHelpfulnessScore = v19;
-    if (v14)
+    if (restatementScoreCopy)
     {
       v17->_hasRestatementScore = 1;
-      [v14 doubleValue];
+      [restatementScoreCopy doubleValue];
     }
 
     else
@@ -807,8 +807,8 @@ LABEL_48:
     }
 
     v17->_restatementScore = v20;
-    objc_storeStrong(&v17->_turnID, a6);
-    objc_storeStrong(&v17->_modelID, a7);
+    objc_storeStrong(&v17->_turnID, d);
+    objc_storeStrong(&v17->_modelID, iD);
   }
 
   return v17;
@@ -853,13 +853,13 @@ LABEL_48:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMSiriInferredHelpfulness alloc] initByReadFrom:v6];
     v8 = v7;

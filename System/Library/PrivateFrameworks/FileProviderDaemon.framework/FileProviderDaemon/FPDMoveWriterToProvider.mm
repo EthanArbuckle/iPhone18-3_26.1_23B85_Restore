@@ -1,34 +1,34 @@
 @interface FPDMoveWriterToProvider
-- (FPDMoveWriterToProvider)initWithWriter:(id)a3;
+- (FPDMoveWriterToProvider)initWithWriter:(id)writer;
 - (id)_remoteProxy;
 - (id)_targetSession;
-- (void)_createFolder:(id)a3 under:(id)a4 completion:(id)a5;
-- (void)_createTargetItemWithProxy:(id)a3 target:(id)a4 contents:(id)a5 targetName:(id)a6 lastUsedDate:(id)a7 completionHandler:(id)a8;
-- (void)_importURL:(id)a3 source:(id)a4 target:(id)a5 as:(id)a6 lastUsedDate:(id)a7 initialImportFinished:(id)a8 progressAvailable:(id)a9 completion:(id)a10;
-- (void)_postImportStepForItem:(id)a3 sourceURL:(id)a4 targetURL:(id)a5 tempFolder:(id)a6 wasCopyRequested:(BOOL)a7 error:(id)a8 completion:(id)a9;
+- (void)_createFolder:(id)folder under:(id)under completion:(id)completion;
+- (void)_createTargetItemWithProxy:(id)proxy target:(id)target contents:(id)contents targetName:(id)name lastUsedDate:(id)date completionHandler:(id)handler;
+- (void)_importURL:(id)l source:(id)source target:(id)target as:(id)as lastUsedDate:(id)date initialImportFinished:(id)finished progressAvailable:(id)available completion:(id)self0;
+- (void)_postImportStepForItem:(id)item sourceURL:(id)l targetURL:(id)rL tempFolder:(id)folder wasCopyRequested:(BOOL)requested error:(id)error completion:(id)completion;
 - (void)dealloc;
-- (void)performCopyOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 completion:(id)a8;
-- (void)performMoveOfFolder:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 atomically:(BOOL)a8 completion:(id)a9;
-- (void)performMoveOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 completion:(id)a8;
+- (void)performCopyOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption completion:(id)completion;
+- (void)performMoveOfFolder:(id)folder to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption atomically:(BOOL)atomically completion:(id)completion;
+- (void)performMoveOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption completion:(id)completion;
 @end
 
 @implementation FPDMoveWriterToProvider
 
-- (FPDMoveWriterToProvider)initWithWriter:(id)a3
+- (FPDMoveWriterToProvider)initWithWriter:(id)writer
 {
-  v4 = a3;
+  writerCopy = writer;
   v12.receiver = self;
   v12.super_class = FPDMoveWriterToProvider;
   v5 = [(FPDMoveWriterToProvider *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_writer, v4);
-    v7 = [v4 info];
-    v8 = [v7 targetFolder];
-    v9 = [v8 startAccessingLocator];
+    objc_storeWeak(&v5->_writer, writerCopy);
+    info = [writerCopy info];
+    targetFolder = [info targetFolder];
+    startAccessingLocator = [targetFolder startAccessingLocator];
     stopAccessingToken = v6->_stopAccessingToken;
-    v6->_stopAccessingToken = v9;
+    v6->_stopAccessingToken = startAccessingLocator;
   }
 
   return v6;
@@ -45,106 +45,106 @@
 - (id)_targetSession
 {
   WeakRetained = objc_loadWeakRetained(&self->_writer);
-  v4 = [WeakRetained info];
-  v5 = [v4 targetFolder];
-  v6 = [v5 asFPItem];
-  v7 = [v6 itemID];
+  info = [WeakRetained info];
+  targetFolder = [info targetFolder];
+  asFPItem = [targetFolder asFPItem];
+  itemID = [asFPItem itemID];
 
   v8 = objc_loadWeakRetained(&self->_writer);
-  v9 = [v8 operation];
-  v10 = [v9 manager];
+  operation = [v8 operation];
+  manager = [operation manager];
 
-  v11 = [v7 providerID];
-  v12 = [v10 providerWithIdentifier:v11 reason:0];
-  v13 = [v7 domainIdentifier];
-  v14 = [v12 domainForIdentifier:v13 reason:0];
+  providerID = [itemID providerID];
+  v12 = [manager providerWithIdentifier:providerID reason:0];
+  domainIdentifier = [itemID domainIdentifier];
+  v14 = [v12 domainForIdentifier:domainIdentifier reason:0];
 
-  v15 = [v14 session];
+  session = [v14 session];
 
-  return v15;
+  return session;
 }
 
 - (id)_remoteProxy
 {
-  v2 = [(FPDMoveWriterToProvider *)self _targetSession];
-  v3 = [v2 newFileProviderProxyWithTimeout:0 pid:180.0];
+  _targetSession = [(FPDMoveWriterToProvider *)self _targetSession];
+  v3 = [_targetSession newFileProviderProxyWithTimeout:0 pid:180.0];
 
   return v3;
 }
 
-- (void)_createTargetItemWithProxy:(id)a3 target:(id)a4 contents:(id)a5 targetName:(id)a6 lastUsedDate:(id)a7 completionHandler:(id)a8
+- (void)_createTargetItemWithProxy:(id)proxy target:(id)target contents:(id)contents targetName:(id)name lastUsedDate:(id)date completionHandler:(id)handler
 {
-  v41 = a3;
-  v40 = a5;
-  v39 = a8;
-  v37 = a7;
-  v14 = a6;
-  v15 = a4;
+  proxyCopy = proxy;
+  contentsCopy = contents;
+  handlerCopy = handler;
+  dateCopy = date;
+  nameCopy = name;
+  targetCopy = target;
   WeakRetained = objc_loadWeakRetained(&self->_writer);
-  v17 = [WeakRetained operation];
-  v18 = [v17 manager];
-  v19 = [v15 asFPItem];
-  v20 = [v19 itemID];
-  v36 = [v18 domainFromItemID:v20 reason:0];
+  operation = [WeakRetained operation];
+  manager = [operation manager];
+  asFPItem = [targetCopy asFPItem];
+  itemID = [asFPItem itemID];
+  v36 = [manager domainFromItemID:itemID reason:0];
 
   v21 = objc_alloc(MEMORY[0x1E6967388]);
-  v22 = [v15 asFPItem];
-  v23 = [v22 providerDomainID];
-  v24 = [v15 asFPItem];
+  asFPItem2 = [targetCopy asFPItem];
+  providerDomainID = [asFPItem2 providerDomainID];
+  asFPItem3 = [targetCopy asFPItem];
 
-  v25 = [v24 itemIdentifier];
-  v26 = [v21 initWithProviderDomainID:v23 itemIdentifier:@"__" parentItemIdentifier:v25 filename:v14 isDirectory:0];
+  itemIdentifier = [asFPItem3 itemIdentifier];
+  v26 = [v21 initWithProviderDomainID:providerDomainID itemIdentifier:@"__" parentItemIdentifier:itemIdentifier filename:nameCopy isDirectory:0];
 
-  [v26 setLastUsedDate:v37];
+  [v26 setLastUsedDate:dateCopy];
   v38 = objc_loadWeakRetained(&self->_writer);
-  v35 = [v38 operation];
-  v27 = [v35 request];
-  v28 = [v36 session];
-  v29 = [v27 nsfpRequestForSession:v28];
+  operation2 = [v38 operation];
+  request = [operation2 request];
+  session = [v36 session];
+  v29 = [request nsfpRequestForSession:session];
   v30 = objc_loadWeakRetained(&self->_writer);
-  v31 = [v30 info];
-  v32 = [v31 shouldBounce];
+  info = [v30 info];
+  shouldBounce = [info shouldBounce];
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __112__FPDMoveWriterToProvider__createTargetItemWithProxy_target_contents_targetName_lastUsedDate_completionHandler___block_invoke;
   v42[3] = &unk_1E83C1218;
-  v43 = v39;
-  v33 = v39;
-  v34 = [v41 createItemBasedOnTemplate:v26 fields:14 contents:v40 options:0x10000 request:v29 bounce:v32 completionHandler:v42];
+  v43 = handlerCopy;
+  v33 = handlerCopy;
+  v34 = [proxyCopy createItemBasedOnTemplate:v26 fields:14 contents:contentsCopy options:0x10000 request:v29 bounce:shouldBounce completionHandler:v42];
 }
 
-- (void)_importURL:(id)a3 source:(id)a4 target:(id)a5 as:(id)a6 lastUsedDate:(id)a7 initialImportFinished:(id)a8 progressAvailable:(id)a9 completion:(id)a10
+- (void)_importURL:(id)l source:(id)source target:(id)target as:(id)as lastUsedDate:(id)date initialImportFinished:(id)finished progressAvailable:(id)available completion:(id)self0
 {
   v115 = *MEMORY[0x1E69E9840];
-  v78 = a3;
-  v82 = a4;
-  v16 = a5;
-  v72 = a6;
-  v73 = a7;
-  v74 = a8;
-  v71 = a9;
-  v75 = a10;
-  v76 = [(FPDMoveWriterToProvider *)self _remoteProxy];
+  lCopy = l;
+  sourceCopy = source;
+  targetCopy = target;
+  asCopy = as;
+  dateCopy = date;
+  finishedCopy = finished;
+  availableCopy = available;
+  completionCopy = completion;
+  _remoteProxy = [(FPDMoveWriterToProvider *)self _remoteProxy];
   WeakRetained = objc_loadWeakRetained(&self->_writer);
-  v18 = [WeakRetained operation];
-  v81 = [v18 manager];
+  operation = [WeakRetained operation];
+  manager = [operation manager];
 
-  v77 = [v81 domainForActionOperationLocator:v82];
-  v19 = [v81 domainForActionOperationLocator:v16];
-  v20 = [v77 nsDomain];
-  v21 = [v20 personaIdentifier];
-  v22 = [v19 nsDomain];
-  v23 = [v22 personaIdentifier];
+  v77 = [manager domainForActionOperationLocator:sourceCopy];
+  v19 = [manager domainForActionOperationLocator:targetCopy];
+  nsDomain = [v77 nsDomain];
+  personaIdentifier = [nsDomain personaIdentifier];
+  nsDomain2 = [v19 nsDomain];
+  personaIdentifier2 = [nsDomain2 personaIdentifier];
 
-  v24 = [MEMORY[0x1E69DF068] sharedManager];
-  v79 = [v24 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v110 = 0;
-  v80 = [v79 userPersonaUniqueString];
-  v25 = [v19 nsDomain];
-  v26 = [v25 personaIdentifier];
-  v27 = v26;
-  if (v80 == v26)
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  nsDomain3 = [v19 nsDomain];
+  personaIdentifier3 = [nsDomain3 personaIdentifier];
+  v27 = personaIdentifier3;
+  if (userPersonaUniqueString == personaIdentifier3)
   {
 
 LABEL_13:
@@ -152,9 +152,9 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v28 = [v19 nsDomain];
-  v29 = [v28 personaIdentifier];
-  v30 = [v80 isEqualToString:v29];
+  nsDomain4 = [v19 nsDomain];
+  personaIdentifier4 = [nsDomain4 personaIdentifier];
+  v30 = [userPersonaUniqueString isEqualToString:personaIdentifier4];
 
   if ((v30 & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
   {
@@ -162,7 +162,7 @@ LABEL_13:
   }
 
   v109 = 0;
-  v31 = [v79 copyCurrentPersonaContextWithError:&v109];
+  v31 = [currentPersona copyCurrentPersonaContextWithError:&v109];
   v32 = v109;
   v33 = v110;
   v110 = v31;
@@ -176,9 +176,9 @@ LABEL_13:
     }
   }
 
-  v35 = [v19 nsDomain];
-  v36 = [v35 personaIdentifier];
-  v70 = [v79 generateAndRestorePersonaContextWithPersonaUniqueString:v36];
+  nsDomain5 = [v19 nsDomain];
+  personaIdentifier5 = [nsDomain5 personaIdentifier];
+  v70 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:personaIdentifier5];
 
   if (!v70)
   {
@@ -188,66 +188,66 @@ LABEL_13:
   v37 = fp_current_or_default_log();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
   {
-    v67 = [v19 nsDomain];
-    v68 = [v67 personaIdentifier];
+    nsDomain6 = [v19 nsDomain];
+    personaIdentifier6 = [nsDomain6 personaIdentifier];
     *buf = 138412546;
-    v112 = v68;
+    v112 = personaIdentifier6;
     v113 = 2112;
     v114 = v70;
     _os_log_error_impl(&dword_1CEFC7000, v37, OS_LOG_TYPE_ERROR, "[ERROR] Can't adopt persona %@: %@", buf, 0x16u);
   }
 
 LABEL_14:
-  if ([v16 requiresCrossDeviceCopy])
+  if ([targetCopy requiresCrossDeviceCopy])
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __119__FPDMoveWriterToProvider__importURL_source_target_as_lastUsedDate_initialImportFinished_progressAvailable_completion___block_invoke_3;
     aBlock[3] = &unk_1E83C1330;
     aBlock[4] = self;
-    v38 = v78;
+    v38 = lCopy;
     v94 = v38;
-    v95 = v82;
-    v39 = v76;
+    v95 = sourceCopy;
+    v39 = _remoteProxy;
     v96 = v39;
-    v40 = v75;
+    v40 = completionCopy;
     v97 = v40;
-    v98 = v71;
+    v98 = availableCopy;
     v41 = _Block_copy(aBlock);
     v83[0] = MEMORY[0x1E69E9820];
     v83[1] = 3221225472;
     v83[2] = __119__FPDMoveWriterToProvider__importURL_source_target_as_lastUsedDate_initialImportFinished_progressAvailable_completion___block_invoke_8;
     v83[3] = &unk_1E83C13D0;
-    v90 = v74;
+    v90 = finishedCopy;
     v42 = v38;
     v84 = v42;
-    v85 = self;
+    selfCopy = self;
     v91 = v40;
     v86 = v39;
-    v87 = v16;
-    v88 = v72;
-    v89 = v73;
+    v87 = targetCopy;
+    v88 = asCopy;
+    v89 = dateCopy;
     v43 = v41;
     v92 = v43;
     v44 = _Block_copy(v83);
-    v45 = [v42 fp_isPackage];
+    fp_isPackage = [v42 fp_isPackage];
     v46 = MEMORY[0x1E695DFF8];
-    if (v45)
+    if (fp_isPackage)
     {
-      v47 = [v42 lastPathComponent];
-      [v46 fp_createEmptyTempPackageWithName:v47 completion:v44];
+      lastPathComponent = [v42 lastPathComponent];
+      [v46 fp_createEmptyTempPackageWithName:lastPathComponent completion:v44];
     }
 
     else
     {
-      v47 = [v42 lastPathComponent];
-      [v46 fp_createEmptyTempFileWithName:v47 completion:v44];
+      lastPathComponent = [v42 lastPathComponent];
+      [v46 fp_createEmptyTempFileWithName:lastPathComponent completion:v44];
     }
   }
 
   else
   {
-    if ([v82 requiresCrossDeviceCopy])
+    if ([sourceCopy requiresCrossDeviceCopy])
     {
       v48 = 1;
     }
@@ -255,11 +255,11 @@ LABEL_14:
     else
     {
       v49 = objc_loadWeakRetained(&self->_writer);
-      v50 = [v49 info];
-      v51 = [v50 byCopy];
-      if (v21 == v23)
+      info = [v49 info];
+      byCopy = [info byCopy];
+      if (personaIdentifier == personaIdentifier2)
       {
-        v52 = v51;
+        v52 = byCopy;
       }
 
       else
@@ -275,11 +275,11 @@ LABEL_14:
       else
       {
         getpid();
-        v53 = [v78 path];
-        v54 = v53;
-        v55 = [v53 fileSystemRepresentation];
+        path = [lCopy path];
+        v54 = path;
+        fileSystemRepresentation = [path fileSystemRepresentation];
         v56 = (*MEMORY[0x1E69E9BD0] | *MEMORY[0x1E69E9BC8]);
-        v69 = v55;
+        v69 = fileSystemRepresentation;
         v48 = sandbox_check() == 1;
       }
     }
@@ -288,22 +288,22 @@ LABEL_14:
     v99[1] = 3221225472;
     v99[2] = __119__FPDMoveWriterToProvider__importURL_source_target_as_lastUsedDate_initialImportFinished_progressAvailable_completion___block_invoke;
     v99[3] = &unk_1E83C1268;
-    v106 = v74;
-    v57 = v78;
+    v106 = finishedCopy;
+    v57 = lCopy;
     v100 = v57;
-    v101 = self;
-    v107 = v75;
-    v102 = v76;
-    v103 = v16;
-    v58 = v72;
+    selfCopy2 = self;
+    v107 = completionCopy;
+    v102 = _remoteProxy;
+    v103 = targetCopy;
+    v58 = asCopy;
     v104 = v58;
-    v105 = v73;
+    v105 = dateCopy;
     v108 = v48;
     v59 = _Block_copy(v99);
-    v60 = [v82 requiresCrossDeviceCopy];
-    if (v21 == v23)
+    requiresCrossDeviceCopy = [sourceCopy requiresCrossDeviceCopy];
+    if (personaIdentifier == personaIdentifier2)
     {
-      v61 = v60;
+      v61 = requiresCrossDeviceCopy;
     }
 
     else
@@ -312,10 +312,10 @@ LABEL_14:
     }
 
     v62 = objc_loadWeakRetained(&self->_writer);
-    v63 = [v62 queue];
+    queue = [v62 queue];
     if (v61)
     {
-      v64 = [v82 size];
+      v64 = [sourceCopy size];
     }
 
     else
@@ -323,11 +323,11 @@ LABEL_14:
       v64 = 0;
     }
 
-    v65 = [v57 fp_copyToTempFolderWithFilename:v58 queue:v63 precomputedItemSize:v64 completion:{v59, v69, v70}];
+    v65 = [v57 fp_copyToTempFolderWithFilename:v58 queue:queue precomputedItemSize:v64 completion:{v59, v69, v70}];
 
     if (v61)
     {
-      (*(v71 + 2))(v71, v65);
+      (*(availableCopy + 2))(availableCopy, v65);
     }
   }
 
@@ -417,10 +417,6 @@ void __119__FPDMoveWriterToProvider__importURL_source_target_as_lastUsedDate_ini
 uint64_t __119__FPDMoveWriterToProvider__importURL_source_target_as_lastUsedDate_initialImportFinished_progressAvailable_completion___block_invoke_6(uint64_t a1)
 {
   return (*(*(a1 + 40) + 16))(*(a1 + 40), 0, *(a1 + 32));
-}
-
-{
-  return [*(a1 + 32) _postImportStepForItem:0 sourceURL:*(a1 + 40) targetURL:*(a1 + 48) tempFolder:*(a1 + 56) wasCopyRequested:1 error:*(a1 + 64) completion:*(a1 + 72)];
 }
 
 void __119__FPDMoveWriterToProvider__importURL_source_target_as_lastUsedDate_initialImportFinished_progressAvailable_completion___block_invoke_3(uint64_t a1, void *a2, void *a3, void *a4)
@@ -723,17 +719,17 @@ void __119__FPDMoveWriterToProvider__importURL_source_target_as_lastUsedDate_ini
   }
 }
 
-- (void)_postImportStepForItem:(id)a3 sourceURL:(id)a4 targetURL:(id)a5 tempFolder:(id)a6 wasCopyRequested:(BOOL)a7 error:(id)a8 completion:(id)a9
+- (void)_postImportStepForItem:(id)item sourceURL:(id)l targetURL:(id)rL tempFolder:(id)folder wasCopyRequested:(BOOL)requested error:(id)error completion:(id)completion
 {
   v40 = a2;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
+  itemCopy = item;
+  lCopy = l;
+  rLCopy = rL;
+  folderCopy = folder;
+  errorCopy = error;
+  completionCopy = completion;
   v21 = objc_opt_new();
-  if (v19)
+  if (errorCopy)
   {
     v22 = fp_current_or_default_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -742,39 +738,39 @@ void __119__FPDMoveWriterToProvider__importURL_source_target_as_lastUsedDate_ini
     }
   }
 
-  v43 = v17;
-  v44 = v16;
-  if (v18)
+  v43 = rLCopy;
+  v44 = lCopy;
+  if (folderCopy)
   {
-    [v21 removeItemAtURL:v18 error:{0, v40}];
+    [v21 removeItemAtURL:folderCopy error:{0, v40}];
   }
 
-  v41 = v18;
+  v41 = folderCopy;
   WeakRetained = objc_loadWeakRetained(&self->_writer);
-  v24 = [WeakRetained info];
-  v25 = [v24 byCopy];
+  info = [WeakRetained info];
+  byCopy = [info byCopy];
 
-  if (v25 && !a7)
+  if (byCopy && !requested)
   {
     [FPDMoveWriterToProvider _postImportStepForItem:v40 sourceURL:self targetURL:? tempFolder:? wasCopyRequested:? error:? completion:?];
   }
 
   v26 = v21;
-  v42 = v15;
-  if (!v15 || v19)
+  v42 = itemCopy;
+  if (!itemCopy || errorCopy)
   {
     v35 = objc_loadWeakRetained(&self->_writer);
-    v36 = [v35 queue];
+    queue = [v35 queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __115__FPDMoveWriterToProvider__postImportStepForItem_sourceURL_targetURL_tempFolder_wasCopyRequested_error_completion___block_invoke_2;
     block[3] = &unk_1E83BF450;
     v27 = &v47;
-    v47 = v20;
+    v47 = completionCopy;
     v29 = &v46;
-    v46 = v19;
-    v37 = v20;
-    dispatch_async(v36, block);
+    v46 = errorCopy;
+    v37 = completionCopy;
+    dispatch_async(queue, block);
 
     v34 = v43;
     v30 = v44;
@@ -787,16 +783,16 @@ void __119__FPDMoveWriterToProvider__importURL_source_target_as_lastUsedDate_ini
     aBlock[2] = __115__FPDMoveWriterToProvider__postImportStepForItem_sourceURL_targetURL_tempFolder_wasCopyRequested_error_completion___block_invoke;
     aBlock[3] = &unk_1E83C1420;
     v27 = &v49;
-    v28 = v15;
+    v28 = itemCopy;
     v49 = v28;
     v29 = &v50;
     v30 = v44;
     v50 = v44;
-    v54 = a7;
+    requestedCopy = requested;
     v51 = v26;
-    v52 = self;
-    v53 = v20;
-    v31 = v20;
+    selfCopy = self;
+    v53 = completionCopy;
+    v31 = completionCopy;
     v32 = _Block_copy(aBlock);
     v33 = v32;
     v34 = v43;
@@ -808,8 +804,8 @@ void __119__FPDMoveWriterToProvider__importURL_source_target_as_lastUsedDate_ini
     else
     {
       v38 = objc_loadWeakRetained(&self->_writer);
-      v39 = [v38 coordinator];
-      [v39 resolveItem:v28 completion:v33];
+      coordinator = [v38 coordinator];
+      [coordinator resolveItem:v28 completion:v33];
 
       v34 = 0;
       v30 = v44;
@@ -912,31 +908,31 @@ void __115__FPDMoveWriterToProvider__postImportStepForItem_sourceURL_targetURL_t
   (*(v2 + 16))(v2, v3, a1[5]);
 }
 
-- (void)performCopyOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 completion:(id)a8
+- (void)performCopyOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a8;
+  itemCopy = item;
+  toCopy = to;
+  asCopy = as;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_writer);
-  v17 = [WeakRetained coordinator];
+  coordinator = [WeakRetained coordinator];
   v18 = objc_loadWeakRetained(&self->_writer);
-  v19 = [v18 operation];
-  v20 = [v19 request];
+  operation = [v18 operation];
+  request = [operation request];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __110__FPDMoveWriterToProvider_performCopyOfItem_to_as_sourceMaterializeOption_targetMaterializeOption_completion___block_invoke;
   v25[3] = &unk_1E83C1470;
   v25[4] = self;
-  v26 = v12;
-  v28 = v14;
-  v29 = v15;
-  v27 = v13;
-  v21 = v14;
-  v22 = v13;
-  v23 = v15;
-  v24 = v12;
-  [v17 resolveItemOrURL:v24 recursively:1 coordinateIfExport:1 request:v20 handler:v25];
+  v26 = itemCopy;
+  v28 = asCopy;
+  v29 = completionCopy;
+  v27 = toCopy;
+  v21 = asCopy;
+  v22 = toCopy;
+  v23 = completionCopy;
+  v24 = itemCopy;
+  [coordinator resolveItemOrURL:v24 recursively:1 coordinateIfExport:1 request:request handler:v25];
 }
 
 void __110__FPDMoveWriterToProvider_performCopyOfItem_to_as_sourceMaterializeOption_targetMaterializeOption_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -1013,24 +1009,24 @@ void __110__FPDMoveWriterToProvider_performCopyOfItem_to_as_sourceMaterializeOpt
   [WeakRetained setProgress:v4 forRoot:*(a1 + 40)];
 }
 
-- (void)performMoveOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 completion:(id)a8
+- (void)performMoveOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  if ([v14 isProviderItem])
+  itemCopy = item;
+  toCopy = to;
+  asCopy = as;
+  completionCopy = completion;
+  if ([itemCopy isProviderItem])
   {
-    v18 = [v14 asFPItem];
-    v19 = [v18 strippedCopy];
+    asFPItem = [itemCopy asFPItem];
+    strippedCopy = [asFPItem strippedCopy];
 
-    v20 = [v15 asFPItem];
-    v21 = [v20 itemIdentifier];
-    [v19 setParentItemIdentifier:v21];
+    asFPItem2 = [toCopy asFPItem];
+    itemIdentifier = [asFPItem2 itemIdentifier];
+    [strippedCopy setParentItemIdentifier:itemIdentifier];
 
-    v22 = [v14 asFPItem];
-    v23 = [v22 filename];
-    v24 = [v23 isEqualToString:v16];
+    asFPItem3 = [itemCopy asFPItem];
+    filename = [asFPItem3 filename];
+    v24 = [filename isEqualToString:asCopy];
 
     if (v24)
     {
@@ -1039,62 +1035,62 @@ void __110__FPDMoveWriterToProvider_performCopyOfItem_to_as_sourceMaterializeOpt
 
     else
     {
-      [v19 setFilename:v16];
+      [strippedCopy setFilename:asCopy];
       v25 = 6;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_writer);
-    v34 = [WeakRetained info];
-    v35 = [v34 lastUsedDatePolicy];
+    info = [WeakRetained info];
+    lastUsedDatePolicy = [info lastUsedDatePolicy];
 
-    v43 = v19;
-    if (v35 == 2)
+    v43 = strippedCopy;
+    if (lastUsedDatePolicy == 2)
     {
-      v36 = [MEMORY[0x1E695DF00] date];
-      [v19 setLastUsedDate:v36];
+      date = [MEMORY[0x1E695DF00] date];
+      [strippedCopy setLastUsedDate:date];
 
       v25 |= 8uLL;
     }
 
-    v37 = [(FPDMoveWriterToProvider *)self _remoteProxy];
-    v38 = [v37 synchronousRemoteObjectProxy];
+    _remoteProxy = [(FPDMoveWriterToProvider *)self _remoteProxy];
+    synchronousRemoteObjectProxy = [_remoteProxy synchronousRemoteObjectProxy];
     v39 = objc_loadWeakRetained(&self->_writer);
-    v40 = [v39 info];
-    v41 = [v40 shouldBounce];
+    info2 = [v39 info];
+    shouldBounce = [info2 shouldBounce];
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __110__FPDMoveWriterToProvider_performMoveOfItem_to_as_sourceMaterializeOption_targetMaterializeOption_completion___block_invoke;
     v48[3] = &unk_1E83C12B8;
     v48[4] = self;
-    v49 = v14;
-    v50 = v15;
-    v51 = v16;
-    v52 = v17;
-    v32 = v17;
-    v29 = v15;
-    v30 = v14;
+    v49 = itemCopy;
+    v50 = toCopy;
+    v51 = asCopy;
+    v52 = completionCopy;
+    v32 = completionCopy;
+    v29 = toCopy;
+    v30 = itemCopy;
     v31 = v43;
-    [v38 singleItemChange:v43 changedFields:v42 bounce:v41 completionHandler:v48];
+    [synchronousRemoteObjectProxy singleItemChange:v43 changedFields:v42 bounce:shouldBounce completionHandler:v48];
   }
 
   else
   {
     v26 = objc_loadWeakRetained(&self->_writer);
-    v27 = [v26 coordinator];
-    v28 = [v14 asURL];
-    [v27 startAccessingURLForAtomDuration:v28];
+    coordinator = [v26 coordinator];
+    asURL = [itemCopy asURL];
+    [coordinator startAccessingURLForAtomDuration:asURL];
 
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __110__FPDMoveWriterToProvider_performMoveOfItem_to_as_sourceMaterializeOption_targetMaterializeOption_completion___block_invoke_2_43;
     v44[3] = &unk_1E83C14C0;
-    v45 = v14;
-    v46 = v15;
-    v47 = v17;
-    v29 = v17;
-    v30 = v15;
-    v31 = v14;
-    [(FPDMoveWriterToProvider *)self performCopyOfItem:v31 to:v30 as:v16 sourceMaterializeOption:a6 targetMaterializeOption:a7 completion:v44];
+    v45 = itemCopy;
+    v46 = toCopy;
+    v47 = completionCopy;
+    v29 = completionCopy;
+    v30 = toCopy;
+    v31 = itemCopy;
+    [(FPDMoveWriterToProvider *)self performCopyOfItem:v31 to:v30 as:asCopy sourceMaterializeOption:option targetMaterializeOption:materializeOption completion:v44];
 
     v32 = v45;
   }
@@ -1234,40 +1230,40 @@ void __110__FPDMoveWriterToProvider_performMoveOfItem_to_as_sourceMaterializeOpt
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_createFolder:(id)a3 under:(id)a4 completion:(id)a5
+- (void)_createFolder:(id)folder under:(id)under completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v28 = a5;
+  folderCopy = folder;
+  underCopy = under;
+  completionCopy = completion;
   v10 = objc_alloc(MEMORY[0x1E6967388]);
-  v11 = [v9 asFPItem];
-  v12 = [v11 providerDomainID];
-  v13 = [v9 asFPItem];
-  v14 = [v13 itemIdentifier];
-  v26 = [v10 initWithProviderDomainID:v12 itemIdentifier:@"__" parentItemIdentifier:v14 filename:v8 isDirectory:1];
+  asFPItem = [underCopy asFPItem];
+  providerDomainID = [asFPItem providerDomainID];
+  asFPItem2 = [underCopy asFPItem];
+  itemIdentifier = [asFPItem2 itemIdentifier];
+  v26 = [v10 initWithProviderDomainID:providerDomainID itemIdentifier:@"__" parentItemIdentifier:itemIdentifier filename:folderCopy isDirectory:1];
 
-  v30 = [(FPDMoveWriterToProvider *)self _remoteProxy];
-  v24 = [v30 synchronousRemoteObjectProxy];
+  _remoteProxy = [(FPDMoveWriterToProvider *)self _remoteProxy];
+  synchronousRemoteObjectProxy = [_remoteProxy synchronousRemoteObjectProxy];
   WeakRetained = objc_loadWeakRetained(&self->_writer);
-  v25 = [WeakRetained operation];
-  v15 = [v25 request];
-  v16 = [(FPDMoveWriterToProvider *)self _targetSession];
-  v17 = [v15 nsfpRequestForSession:v16];
+  operation = [WeakRetained operation];
+  request = [operation request];
+  _targetSession = [(FPDMoveWriterToProvider *)self _targetSession];
+  v17 = [request nsfpRequestForSession:_targetSession];
   v18 = objc_loadWeakRetained(&self->_writer);
-  v19 = [v18 info];
-  v20 = [v19 shouldBounce];
+  info = [v18 info];
+  shouldBounce = [info shouldBounce];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __58__FPDMoveWriterToProvider__createFolder_under_completion___block_invoke;
   v31[3] = &unk_1E83C1510;
   v31[4] = self;
-  v32 = v8;
-  v33 = v9;
-  v34 = v28;
-  v29 = v28;
-  v21 = v9;
-  v22 = v8;
-  v23 = [v24 createItemBasedOnTemplate:v26 fields:6 contents:0 options:0x10000 request:v17 bounce:v20 completionHandler:v31];
+  v32 = folderCopy;
+  v33 = underCopy;
+  v34 = completionCopy;
+  v29 = completionCopy;
+  v21 = underCopy;
+  v22 = folderCopy;
+  v23 = [synchronousRemoteObjectProxy createItemBasedOnTemplate:v26 fields:6 contents:0 options:0x10000 request:v17 bounce:shouldBounce completionHandler:v31];
 }
 
 void __58__FPDMoveWriterToProvider__createFolder_under_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4, uint64_t a5, void *a6)
@@ -1308,14 +1304,14 @@ void __58__FPDMoveWriterToProvider__createFolder_under_completion___block_invoke
   (*(v4 + 16))(v4, v5, a1[4]);
 }
 
-- (void)performMoveOfFolder:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 atomically:(BOOL)a8 completion:(id)a9
+- (void)performMoveOfFolder:(id)folder to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption atomically:(BOOL)atomically completion:(id)completion
 {
-  v9 = a8;
-  v20 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a9;
-  if (([v15 isProviderItem] & 1) == 0)
+  atomicallyCopy = atomically;
+  folderCopy = folder;
+  toCopy = to;
+  asCopy = as;
+  completionCopy = completion;
+  if (([toCopy isProviderItem] & 1) == 0)
   {
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[ASSERT] ‼️ unexpected url"];
     v19 = fp_current_or_default_log();
@@ -1327,14 +1323,14 @@ void __58__FPDMoveWriterToProvider__createFolder_under_completion___block_invoke
     __assert_rtn("-[FPDMoveWriterToProvider performMoveOfFolder:to:as:sourceMaterializeOption:targetMaterializeOption:atomically:completion:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/action operation engine/move/FPDMoveWriterToProvider.m", 486, [v18 UTF8String]);
   }
 
-  if (v9)
+  if (atomicallyCopy)
   {
-    [(FPDMoveWriterToProvider *)self performMoveOfItem:v20 to:v15 as:v16 sourceMaterializeOption:a6 targetMaterializeOption:a7 completion:v17];
+    [(FPDMoveWriterToProvider *)self performMoveOfItem:folderCopy to:toCopy as:asCopy sourceMaterializeOption:option targetMaterializeOption:materializeOption completion:completionCopy];
   }
 
   else
   {
-    [(FPDMoveWriterToProvider *)self _createFolder:v16 under:v15 completion:v17];
+    [(FPDMoveWriterToProvider *)self _createFolder:asCopy under:toCopy completion:completionCopy];
   }
 }
 

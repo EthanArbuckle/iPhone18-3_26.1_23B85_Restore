@@ -1,20 +1,20 @@
 @interface TPSFamilyCircleValidation
-- (void)getCurrentStateWithCompletion:(id)a3;
-- (void)validateWithCompletion:(id)a3;
+- (void)getCurrentStateWithCompletion:(id)completion;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSFamilyCircleValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__TPSFamilyCircleValidation_validateWithCompletion___block_invoke;
   v6[3] = &unk_2789AF8C8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(TPSFamilyCircleValidation *)self getCurrentStateWithCompletion:v6];
 }
 
@@ -44,9 +44,9 @@ void __52__TPSFamilyCircleValidation_validateWithCompletion___block_invoke(uint6
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getCurrentStateWithCompletion:(id)a3
+- (void)getCurrentStateWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -57,7 +57,7 @@ void __52__TPSFamilyCircleValidation_validateWithCompletion___block_invoke(uint6
   if (!v4)
   {
     v5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-    v3[2](v3, MEMORY[0x277CBEC28], v5);
+    completionCopy[2](completionCopy, MEMORY[0x277CBEC28], v5);
 
     v4 = v12[5];
   }
@@ -68,7 +68,7 @@ void __52__TPSFamilyCircleValidation_validateWithCompletion___block_invoke(uint6
   v8[1] = 3221225472;
   v8[2] = __59__TPSFamilyCircleValidation_getCurrentStateWithCompletion___block_invoke;
   v8[3] = &unk_2789AFA70;
-  v7 = v3;
+  v7 = completionCopy;
   v9 = v7;
   v10 = &v11;
   [v6 startRequestWithCompletionHandler:v8];

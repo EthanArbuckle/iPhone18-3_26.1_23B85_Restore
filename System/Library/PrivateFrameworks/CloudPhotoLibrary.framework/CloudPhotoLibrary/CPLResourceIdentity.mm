@@ -1,15 +1,15 @@
 @interface CPLResourceIdentity
-+ (id)extensionForFileUTI:(id)a3;
-+ (id)fileUTIForExtension:(id)a3;
-+ (id)fingerPrintForData:(id)a3 error:(id *)a4;
-+ (id)fingerPrintForFileAtURL:(id)a3 error:(id *)a4;
-+ (id)identityForStorageName:(id)a3;
-+ (id)identityFromStoredIdentity:(id)a3;
-+ (id)storageNameForFingerPrint:(id)a3 fileUTI:(id)a4 bucket:(id *)a5;
++ (id)extensionForFileUTI:(id)i;
++ (id)fileUTIForExtension:(id)extension;
++ (id)fingerPrintForData:(id)data error:(id *)error;
++ (id)fingerPrintForFileAtURL:(id)l error:(id *)error;
++ (id)identityForStorageName:(id)name;
++ (id)identityFromStoredIdentity:(id)identity;
++ (id)storageNameForFingerPrint:(id)print fileUTI:(id)i bucket:(id *)bucket;
 - (CGSize)imageDimensions;
-- (CPLResourceIdentity)initWithCoder:(id)a3;
-- (CPLResourceIdentity)initWithFileURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CPLResourceIdentity)initWithCoder:(id)coder;
+- (CPLResourceIdentity)initWithFileURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)identityForStorage;
 - (id)realStableHash;
@@ -18,23 +18,23 @@
 
 @implementation CPLResourceIdentity
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 cplCopyPropertiesFromObject:self withCopyBlock:0];
   return v4;
 }
 
-- (CPLResourceIdentity)initWithCoder:(id)a3
+- (CPLResourceIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CPLResourceIdentity;
   v5 = [(CPLResourceIdentity *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [v5 cplDecodePropertiesFromCoder:v4];
+    [v5 cplDecodePropertiesFromCoder:coderCopy];
   }
 
   return v6;
@@ -52,8 +52,8 @@
 - (id)identityForStorage
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [(CPLResourceIdentity *)self fingerPrint];
-  if (!v4)
+  fingerPrint = [(CPLResourceIdentity *)self fingerPrint];
+  if (!fingerPrint)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -61,24 +61,24 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v16 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_ERROR, "Can't create identity for storage for an identity without finger print: %@", buf, 0xCu);
       }
     }
 
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLResourceIdentity.m"];
-    [v13 handleFailureInMethod:a2 object:self file:v14 lineNumber:100 description:{@"Can't create identity for storage for an identity without finger print: %@", self}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v14 lineNumber:100 description:{@"Can't create identity for storage for an identity without finger print: %@", self}];
 
     abort();
   }
 
-  v5 = v4;
-  v6 = [(CPLResourceIdentity *)self fileUTI];
-  v7 = v6;
-  if (v6)
+  v5 = fingerPrint;
+  fileUTI = [(CPLResourceIdentity *)self fileUTI];
+  v7 = fileUTI;
+  if (fileUTI)
   {
-    v8 = [v6 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
+    v8 = [fileUTI stringByReplacingOccurrencesOfString:@"." withString:@"_"];
   }
 
   else
@@ -97,16 +97,16 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NSURL *)self->_fileURL path];
-  v6 = [v3 stringWithFormat:@"%@: filePath: %@ fingerPrint: %@  size: %.0fx%.0f fileUTI: %@", v4, v5, self->_fingerPrint, *&self->_imageDimensions.width, *&self->_imageDimensions.height, self->_fileUTI];
+  path = [(NSURL *)self->_fileURL path];
+  v6 = [v3 stringWithFormat:@"%@: filePath: %@ fingerPrint: %@  size: %.0fx%.0f fileUTI: %@", v4, path, self->_fingerPrint, *&self->_imageDimensions.width, *&self->_imageDimensions.height, self->_fileUTI];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(CPLResourceIdentity *)self fingerPrint];
-  v3 = [v2 hash];
+  fingerPrint = [(CPLResourceIdentity *)self fingerPrint];
+  v3 = [fingerPrint hash];
 
   return v3;
 }
@@ -132,15 +132,15 @@
   return v4;
 }
 
-- (CPLResourceIdentity)initWithFileURL:(id)a3
+- (CPLResourceIdentity)initWithFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = CPLResourceIdentity;
   v5 = [(CPLResourceIdentity *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     fileURL = v5->_fileURL;
     v5->_fileURL = v6;
   }
@@ -148,42 +148,42 @@
   return v5;
 }
 
-+ (id)identityForStorageName:(id)a3
++ (id)identityForStorageName:(id)name
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 hasPrefix:@"cpl"])
+  nameCopy = name;
+  if ([nameCopy hasPrefix:@"cpl"])
   {
-    v6 = [v5 substringFromIndex:3];
+    v6 = [nameCopy substringFromIndex:3];
 
-    v7 = [v6 pathExtension];
-    v8 = [v6 stringByDeletingPathExtension];
-    if ([v8 rangeOfString:@"_"] != 0x7FFFFFFFFFFFFFFFLL)
+    pathExtension = [v6 pathExtension];
+    stringByDeletingPathExtension = [v6 stringByDeletingPathExtension];
+    if ([stringByDeletingPathExtension rangeOfString:@"_"] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [v8 stringByReplacingOccurrencesOfString:@"_" withString:@"/"];
+      v9 = [stringByDeletingPathExtension stringByReplacingOccurrencesOfString:@"_" withString:@"/"];
 
-      v8 = v9;
+      stringByDeletingPathExtension = v9;
     }
 
-    if ([v7 length])
+    if ([pathExtension length])
     {
-      if ([v8 length])
+      if ([stringByDeletingPathExtension length])
       {
-        if ([v7 isEqual:@"cplunknown"])
+        if ([pathExtension isEqual:@"cplunknown"])
         {
           v10 = 0;
         }
 
         else
         {
-          v10 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:v7];
+          v10 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:pathExtension];
         }
 
-        v11 = objc_alloc_init(a1);
-        v12 = [v10 identifier];
-        [v11 setFileUTI:v12];
+        v11 = objc_alloc_init(self);
+        identifier = [v10 identifier];
+        [v11 setFileUTI:identifier];
 
-        [v11 setFingerPrint:v8];
+        [v11 setFingerPrint:stringByDeletingPathExtension];
         goto LABEL_11;
       }
 
@@ -198,9 +198,9 @@
         }
       }
 
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLResourceIdentity.m"];
-      [v16 handleFailureInMethod:a2 object:a1 file:v17 lineNumber:190 description:{@"Storage name should always have a finger print (%@)", v6}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v17 lineNumber:190 description:{@"Storage name should always have a finger print (%@)", v6}];
     }
 
     else
@@ -216,16 +216,16 @@
         }
       }
 
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLResourceIdentity.m"];
-      [v16 handleFailureInMethod:a2 object:a1 file:v17 lineNumber:189 description:{@"Storage name should always have an extension (%@)", v6}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v17 lineNumber:189 description:{@"Storage name should always have an extension (%@)", v6}];
     }
 
     abort();
   }
 
   v11 = 0;
-  v6 = v5;
+  v6 = nameCopy;
 LABEL_11:
 
   v13 = *MEMORY[0x1E69E9840];
@@ -233,12 +233,12 @@ LABEL_11:
   return v11;
 }
 
-+ (id)storageNameForFingerPrint:(id)a3 fileUTI:(id)a4 bucket:(id *)a5
++ (id)storageNameForFingerPrint:(id)print fileUTI:(id)i bucket:(id *)bucket
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if ([v9 hasPrefix:@"."])
+  printCopy = print;
+  iCopy = i;
+  if ([printCopy hasPrefix:@"."])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -246,42 +246,42 @@ LABEL_11:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v22 = v9;
+        v22 = printCopy;
         _os_log_impl(&dword_1DC05A000, v18, OS_LOG_TYPE_ERROR, "%@ is not a valid finger print", buf, 0xCu);
       }
     }
 
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLResourceIdentity.m"];
-    [v19 handleFailureInMethod:a2 object:a1 file:v20 lineNumber:158 description:{@"%@ is not a valid finger print", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v20 lineNumber:158 description:{@"%@ is not a valid finger print", printCopy}];
 
     abort();
   }
 
-  if ([v9 rangeOfString:@"/"] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([printCopy rangeOfString:@"/"] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [v9 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+    v11 = [printCopy stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
 
-    v9 = v11;
+    printCopy = v11;
   }
 
-  if (a5)
+  if (bucket)
   {
-    if ([v9 length] < 4)
+    if ([printCopy length] < 4)
     {
-      v12 = v9;
+      v12 = printCopy;
     }
 
     else
     {
-      v12 = [v9 substringToIndex:3];
+      v12 = [printCopy substringToIndex:3];
     }
 
-    *a5 = v12;
+    *bucket = v12;
   }
 
-  v13 = [a1 extensionForFileUTI:v10];
-  v14 = [@"cpl" stringByAppendingString:v9];
+  v13 = [self extensionForFileUTI:iCopy];
+  v14 = [@"cpl" stringByAppendingString:printCopy];
   v15 = [v14 cplStringByAppendingPathExtension:v13 fallbackExtension:@"cplunknown"];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -289,26 +289,26 @@ LABEL_11:
   return v15;
 }
 
-+ (id)extensionForFileUTI:(id)a3
++ (id)extensionForFileUTI:(id)i
 {
-  if (a3)
+  if (i)
   {
     v3 = [MEMORY[0x1E6982C40] typeWithIdentifier:?];
-    v4 = [v3 preferredFilenameExtension];
+    preferredFilenameExtension = [v3 preferredFilenameExtension];
   }
 
   else
   {
-    v4 = 0;
+    preferredFilenameExtension = 0;
   }
 
-  return v4;
+  return preferredFilenameExtension;
 }
 
-+ (id)fileUTIForExtension:(id)a3
++ (id)fileUTIForExtension:(id)extension
 {
-  v3 = a3;
-  if (![v3 length])
+  extensionCopy = extension;
+  if (![extensionCopy length])
   {
     v5 = 0;
 LABEL_6:
@@ -317,7 +317,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v4 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:v3];
+  v4 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:extensionCopy];
   v5 = v4;
   if (!v4)
   {
@@ -331,18 +331,18 @@ LABEL_6:
   }
 
 LABEL_7:
-  v7 = [v6 identifier];
+  identifier = [v6 identifier];
 
-  return v7;
+  return identifier;
 }
 
-+ (id)identityFromStoredIdentity:(id)a3
++ (id)identityFromStoredIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [v4 rangeOfString:@"."];
+  identityCopy = identity;
+  v5 = [identityCopy rangeOfString:@"."];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = v4;
+    v6 = identityCopy;
     v7 = 0;
 LABEL_6:
     v10 = 0;
@@ -350,8 +350,8 @@ LABEL_6:
   }
 
   v8 = v5;
-  v6 = [v4 substringToIndex:v5];
-  v9 = [v4 substringFromIndex:v8 + 1];
+  v6 = [identityCopy substringToIndex:v5];
+  v9 = [identityCopy substringFromIndex:v8 + 1];
   v7 = v9;
   if (!v9 || ![v9 length] || (objc_msgSend(v7, "isEqualToString:", @"CPLUNKNOWN") & 1) != 0)
   {
@@ -360,27 +360,27 @@ LABEL_6:
 
   v10 = [v7 stringByReplacingOccurrencesOfString:@"_" withString:@"."];
 LABEL_7:
-  v11 = objc_alloc_init(a1);
+  v11 = objc_alloc_init(self);
   [v11 setFingerPrint:v6];
   [v11 setFileUTI:v10];
 
   return v11;
 }
 
-+ (id)fingerPrintForData:(id)a3 error:(id *)a4
++ (id)fingerPrintForData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = +[CPLFingerprintScheme fingerprintSchemeForStableHash];
-  v7 = [v6 fingerPrintForData:v5 error:a4];
+  v7 = [v6 fingerPrintForData:dataCopy error:error];
 
   return v7;
 }
 
-+ (id)fingerPrintForFileAtURL:(id)a3 error:(id *)a4
++ (id)fingerPrintForFileAtURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v6 = +[CPLFingerprintScheme fingerprintSchemeForStableHash];
-  v7 = [v6 fingerPrintForFileAtURL:v5 error:a4];
+  v7 = [v6 fingerPrintForFileAtURL:lCopy error:error];
 
   return v7;
 }

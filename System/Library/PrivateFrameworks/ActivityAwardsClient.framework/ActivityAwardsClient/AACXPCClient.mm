@@ -1,17 +1,17 @@
 @interface AACXPCClient
 - (AACXPCClient)init;
-- (void)_discardEndpointConnection:(id)a3;
-- (void)_handleError:(id)a3;
-- (void)_remoteProxy:(id)a3 errorHandler:(id)a4;
-- (void)_remoteSynchronousProxy:(id)a3 errorHandler:(id)a4;
+- (void)_discardEndpointConnection:(id)connection;
+- (void)_handleError:(id)error;
+- (void)_remoteProxy:(id)proxy errorHandler:(id)handler;
+- (void)_remoteSynchronousProxy:(id)proxy errorHandler:(id)handler;
 - (void)_resetEndpointConnection;
 - (void)_serverQueue_initializeDaemonConnection;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sendRequest:(unint64_t)a3 completion:(id)a4;
-- (void)sendRequest:(unint64_t)a3 payload:(id)a4 completion:(id)a5;
-- (void)sendRequest:(unint64_t)a3 payloadData:(id)a4 completion:(id)a5;
-- (void)sendSynchronousRequest:(unint64_t)a3 payload:(id)a4 resultHandler:(id)a5;
+- (void)sendRequest:(unint64_t)request completion:(id)completion;
+- (void)sendRequest:(unint64_t)request payload:(id)payload completion:(id)completion;
+- (void)sendRequest:(unint64_t)request payloadData:(id)data completion:(id)completion;
+- (void)sendSynchronousRequest:(unint64_t)request payload:(id)payload resultHandler:(id)handler;
 @end
 
 @implementation AACXPCClient
@@ -119,16 +119,16 @@ void __55__AACXPCClient__serverQueue_initializeDaemonConnection__block_invoke_34
   }
 }
 
-- (void)sendRequest:(unint64_t)a3 completion:(id)a4
+- (void)sendRequest:(unint64_t)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39__AACXPCClient_sendRequest_completion___block_invoke;
   v10[3] = &unk_278C458F0;
-  v12 = a3;
+  requestCopy = request;
   v10[4] = self;
-  v11 = v6;
+  v11 = completionCopy;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __39__AACXPCClient_sendRequest_completion___block_invoke_4;
@@ -169,25 +169,25 @@ void __39__AACXPCClient_sendRequest_completion___block_invoke_2(uint64_t a1, voi
   dispatch_async(v7, block);
 }
 
-- (void)sendRequest:(unint64_t)a3 payloadData:(id)a4 completion:(id)a5
+- (void)sendRequest:(unint64_t)request payloadData:(id)data completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __51__AACXPCClient_sendRequest_payloadData_completion___block_invoke;
   v14[3] = &unk_278C45940;
-  v18 = a3;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
+  requestCopy = request;
+  v15 = dataCopy;
+  selfCopy = self;
+  v17 = completionCopy;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __51__AACXPCClient_sendRequest_payloadData_completion___block_invoke_4;
   v12[3] = &unk_278C45918;
   v13 = v17;
   v10 = v17;
-  v11 = v8;
+  v11 = dataCopy;
   [(AACXPCClient *)self _remoteProxy:v14 errorHandler:v12];
 }
 
@@ -223,25 +223,25 @@ void __51__AACXPCClient_sendRequest_payloadData_completion___block_invoke_2(uint
   dispatch_async(v7, block);
 }
 
-- (void)sendRequest:(unint64_t)a3 payload:(id)a4 completion:(id)a5
+- (void)sendRequest:(unint64_t)request payload:(id)payload completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  payloadCopy = payload;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __47__AACXPCClient_sendRequest_payload_completion___block_invoke;
   v14[3] = &unk_278C45940;
-  v18 = a3;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
+  requestCopy = request;
+  v15 = payloadCopy;
+  selfCopy = self;
+  v17 = completionCopy;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __47__AACXPCClient_sendRequest_payload_completion___block_invoke_4;
   v12[3] = &unk_278C45918;
   v13 = v17;
   v10 = v17;
-  v11 = v8;
+  v11 = payloadCopy;
   [(AACXPCClient *)self _remoteProxy:v14 errorHandler:v12];
 }
 
@@ -282,24 +282,24 @@ void __47__AACXPCClient_sendRequest_payload_completion___block_invoke_2(uint64_t
   dispatch_async(v7, block);
 }
 
-- (void)sendSynchronousRequest:(unint64_t)a3 payload:(id)a4 resultHandler:(id)a5
+- (void)sendSynchronousRequest:(unint64_t)request payload:(id)payload resultHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  payloadCopy = payload;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__AACXPCClient_sendSynchronousRequest_payload_resultHandler___block_invoke;
   v14[3] = &unk_278C458F0;
-  v15 = v8;
-  v17 = a3;
-  v16 = v9;
+  v15 = payloadCopy;
+  requestCopy = request;
+  v16 = handlerCopy;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __61__AACXPCClient_sendSynchronousRequest_payload_resultHandler___block_invoke_2;
   v12[3] = &unk_278C45918;
   v13 = v16;
   v10 = v16;
-  v11 = v8;
+  v11 = payloadCopy;
   [(AACXPCClient *)self _remoteSynchronousProxy:v14 errorHandler:v12];
 }
 
@@ -336,13 +336,13 @@ void __61__AACXPCClient_sendSynchronousRequest_payload_resultHandler___block_inv
   [v3 transportRequest:v8 data:v5 completion:v9];
 }
 
-- (void)_discardEndpointConnection:(id)a3
+- (void)_discardEndpointConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
   endpointConnection = self->_endpointConnection;
 
-  if (endpointConnection == v4)
+  if (endpointConnection == connectionCopy)
   {
     [(NSXPCConnection *)endpointConnection invalidate];
     v6 = self->_endpointConnection;
@@ -362,29 +362,29 @@ void __61__AACXPCClient_sendSynchronousRequest_payload_resultHandler___block_inv
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_handleError:(id)a3
+- (void)_handleError:(id)error
 {
-  if ([a3 hk_isXPCConnectionError])
+  if ([error hk_isXPCConnectionError])
   {
 
     [(AACXPCClient *)self _resetEndpointConnection];
   }
 }
 
-- (void)_remoteProxy:(id)a3 errorHandler:(id)a4
+- (void)_remoteProxy:(id)proxy errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  handlerCopy = handler;
   serverQueue = self->_serverQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__AACXPCClient__remoteProxy_errorHandler___block_invoke;
   block[3] = &unk_278C45A30;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = handlerCopy;
+  v13 = proxyCopy;
+  v9 = proxyCopy;
+  v10 = handlerCopy;
   dispatch_async(serverQueue, block);
 }
 
@@ -615,10 +615,10 @@ void __42__AACXPCClient__remoteProxy_errorHandler___block_invoke_366(uint64_t a1
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_remoteSynchronousProxy:(id)a3 errorHandler:(id)a4
+- (void)_remoteSynchronousProxy:(id)proxy errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   serverQueue = self->_serverQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -627,10 +627,10 @@ void __42__AACXPCClient__remoteProxy_errorHandler___block_invoke_366(uint64_t a1
   block[3] = &unk_278C45AA0;
   block[4] = self;
   objc_copyWeak(&v14, &location);
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = handlerCopy;
+  v13 = proxyCopy;
+  v9 = proxyCopy;
+  v10 = handlerCopy;
   dispatch_sync(serverQueue, block);
 
   objc_destroyWeak(&v14);

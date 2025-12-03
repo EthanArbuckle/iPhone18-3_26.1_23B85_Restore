@@ -1,30 +1,30 @@
 @interface _CPVisibleSectionHeaderFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPVisibleSectionHeaderFeedback)init;
-- (_CPVisibleSectionHeaderFeedback)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (_CPVisibleSectionHeaderFeedback)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPVisibleSectionHeaderFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     timestamp = self->_timestamp;
-    if (timestamp == [v4 timestamp])
+    if (timestamp == [equalCopy timestamp])
     {
       headerType = self->_headerType;
-      if (headerType == [v4 headerType])
+      if (headerType == [equalCopy headerType])
       {
-        v7 = [(_CPVisibleSectionHeaderFeedback *)self sectionId];
-        v8 = [v4 sectionId];
-        v9 = v8;
-        if ((v7 != 0) != (v8 == 0))
+        sectionId = [(_CPVisibleSectionHeaderFeedback *)self sectionId];
+        sectionId2 = [equalCopy sectionId];
+        v9 = sectionId2;
+        if ((sectionId != 0) != (sectionId2 == 0))
         {
-          v10 = [(_CPVisibleSectionHeaderFeedback *)self sectionId];
-          if (!v10)
+          sectionId3 = [(_CPVisibleSectionHeaderFeedback *)self sectionId];
+          if (!sectionId3)
           {
 
 LABEL_12:
@@ -32,10 +32,10 @@ LABEL_12:
             goto LABEL_10;
           }
 
-          v11 = v10;
-          v12 = [(_CPVisibleSectionHeaderFeedback *)self sectionId];
-          v13 = [v4 sectionId];
-          v14 = [v12 isEqual:v13];
+          v11 = sectionId3;
+          sectionId4 = [(_CPVisibleSectionHeaderFeedback *)self sectionId];
+          sectionId5 = [equalCopy sectionId];
+          v14 = [sectionId4 isEqual:sectionId5];
 
           if (v14)
           {
@@ -56,9 +56,9 @@ LABEL_10:
   return v15;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(_CPVisibleSectionHeaderFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
@@ -71,14 +71,14 @@ LABEL_10:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(_CPVisibleSectionHeaderFeedback *)self sectionId];
+  sectionId = [(_CPVisibleSectionHeaderFeedback *)self sectionId];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (sectionId)
   {
     sectionId = self->_sectionId;
     PBDataWriterWriteStringField();
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
@@ -96,20 +96,20 @@ LABEL_10:
   return v2;
 }
 
-- (_CPVisibleSectionHeaderFeedback)initWithFacade:(id)a3
+- (_CPVisibleSectionHeaderFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v10.receiver = self;
   v10.super_class = _CPVisibleSectionHeaderFeedback;
   v5 = [(_CPVisibleSectionHeaderFeedback *)&v10 init];
   if (v5)
   {
-    -[_CPVisibleSectionHeaderFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 section];
-    v7 = [v6 identifier];
-    [(_CPVisibleSectionHeaderFeedback *)v5 setSectionId:v7];
+    -[_CPVisibleSectionHeaderFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    section = [facadeCopy section];
+    identifier = [section identifier];
+    [(_CPVisibleSectionHeaderFeedback *)v5 setSectionId:identifier];
 
-    -[_CPVisibleSectionHeaderFeedback setHeaderType:](v5, "setHeaderType:", [v4 headerType]);
+    -[_CPVisibleSectionHeaderFeedback setHeaderType:](v5, "setHeaderType:", [facadeCopy headerType]);
     v8 = v5;
   }
 

@@ -1,18 +1,18 @@
 @interface SBStashedFloatingSwitcherModifier
-- (SBStashedFloatingSwitcherModifier)initWithFloatingConfiguration:(int64_t)a3 environmentMode:(int64_t)a4;
-- (id)handleTapSlideOverTongueEvent:(id)a3;
+- (SBStashedFloatingSwitcherModifier)initWithFloatingConfiguration:(int64_t)configuration environmentMode:(int64_t)mode;
+- (id)handleTapSlideOverTongueEvent:(id)event;
 @end
 
 @implementation SBStashedFloatingSwitcherModifier
 
-- (SBStashedFloatingSwitcherModifier)initWithFloatingConfiguration:(int64_t)a3 environmentMode:(int64_t)a4
+- (SBStashedFloatingSwitcherModifier)initWithFloatingConfiguration:(int64_t)configuration environmentMode:(int64_t)mode
 {
   v10.receiver = self;
   v10.super_class = SBStashedFloatingSwitcherModifier;
   v6 = [(SBSwitcherModifier *)&v10 init];
   if (v6)
   {
-    v7 = [[SBActiveAppLayoutFloatingSwitcherModifier alloc] initWithActiveAppLayout:0 fullScreenAppLayout:0 floatingConfiguration:a3 environmentMode:a4];
+    v7 = [[SBActiveAppLayoutFloatingSwitcherModifier alloc] initWithActiveAppLayout:0 fullScreenAppLayout:0 floatingConfiguration:configuration environmentMode:mode];
     activeModifier = v6->_activeModifier;
     v6->_activeModifier = v7;
 
@@ -22,19 +22,19 @@
   return v6;
 }
 
-- (id)handleTapSlideOverTongueEvent:(id)a3
+- (id)handleTapSlideOverTongueEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SBStashedFloatingSwitcherModifier *)self appLayouts];
-  v6 = [v5 firstObject];
-  v7 = [SBSwitcherTransitionRequest requestForActivatingAppLayout:v6];
+  eventCopy = event;
+  appLayouts = [(SBStashedFloatingSwitcherModifier *)self appLayouts];
+  firstObject = [appLayouts firstObject];
+  v7 = [SBSwitcherTransitionRequest requestForActivatingAppLayout:firstObject];
   v8 = [v7 mutableCopy];
 
   [v8 setSource:60];
   v9 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v8 gestureInitiated:0];
   v13.receiver = self;
   v13.super_class = SBStashedFloatingSwitcherModifier;
-  v10 = [(SBSwitcherModifier *)&v13 handleTapSlideOverTongueEvent:v4];
+  v10 = [(SBSwitcherModifier *)&v13 handleTapSlideOverTongueEvent:eventCopy];
 
   v11 = SBAppendSwitcherModifierResponse(v9, v10);
 

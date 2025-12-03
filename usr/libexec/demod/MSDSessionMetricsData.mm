@@ -1,14 +1,14 @@
 @interface MSDSessionMetricsData
-- (MSDSessionMetricsData)initWithData:(id)a3;
-- (void)saveToFile:(id)a3;
-- (void)writeFileHeaders:(id)a3;
+- (MSDSessionMetricsData)initWithData:(id)data;
+- (void)saveToFile:(id)file;
+- (void)writeFileHeaders:(id)headers;
 @end
 
 @implementation MSDSessionMetricsData
 
-- (MSDSessionMetricsData)initWithData:(id)a3
+- (MSDSessionMetricsData)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = NSStringFromSelector(a2);
   v6 = [NSString stringWithFormat:@"Override %@ in a subclass", v5];
 
@@ -16,18 +16,18 @@
   objc_exception_throw(v7);
 }
 
-- (void)saveToFile:(id)a3
+- (void)saveToFile:(id)file
 {
-  v4 = a3;
-  if (![v4 offsetInFile])
+  fileCopy = file;
+  if (![fileCopy offsetInFile])
   {
-    [(MSDSessionMetricsData *)self writeFileHeaders:v4];
+    [(MSDSessionMetricsData *)self writeFileHeaders:fileCopy];
   }
 }
 
-- (void)writeFileHeaders:(id)a3
+- (void)writeFileHeaders:(id)headers
 {
-  v3 = a3;
+  headersCopy = headers;
   v4 = [NSArray arrayWithObjects:@"DNSResolutionTime", @"ConectionEstablishmentTime", @"TCPConnectionTime", @"SecureConnectionTime", @"RequestTime", @"ResponseTime", @"RequestBytesSent", @"ResponseBytesReceived", 0];
   v5 = objc_alloc_init(NSMutableString);
   v12 = 0u;
@@ -63,7 +63,7 @@
 
   [v5 appendString:@"\n"];
   v11 = [v5 dataUsingEncoding:4];
-  [v3 writeData:v11];
+  [headersCopy writeData:v11];
 }
 
 @end

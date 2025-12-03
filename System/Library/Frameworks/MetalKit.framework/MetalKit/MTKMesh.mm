@@ -1,6 +1,6 @@
 @interface MTKMesh
 + (NSArray)newMeshesFromAsset:(MDLAsset *)asset device:(id)device sourceMeshes:(NSArray *)sourceMeshes error:(NSError *)error;
-+ (void)_createMeshesFromObject:(id)a3 newMeshes:(id)a4 sourceMeshes:(id)a5 device:(id)a6 error:(id *)a7;
++ (void)_createMeshesFromObject:(id)object newMeshes:(id)meshes sourceMeshes:(id)sourceMeshes device:(id)device error:(id *)error;
 - (MTKMesh)initWithMesh:(MDLMesh *)mesh device:(id)device error:(NSError *)error;
 @end
 
@@ -27,8 +27,8 @@
     v51 = 0u;
     v52 = 0u;
     v42 = v8;
-    v12 = [(MDLMesh *)v8 vertexBuffers];
-    v13 = [v12 countByEnumeratingWithState:&v49 objects:v55 count:16];
+    vertexBuffers = [(MDLMesh *)v8 vertexBuffers];
+    v13 = [vertexBuffers countByEnumeratingWithState:&v49 objects:v55 count:16];
     if (v13)
     {
       v14 = v13;
@@ -39,12 +39,12 @@
         {
           if (*v50 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(vertexBuffers);
           }
 
           v17 = *(*(&v49 + 1) + 8 * i);
-          v18 = [MEMORY[0x1E695DFB0] null];
-          v19 = [v17 isEqual:v18];
+          null = [MEMORY[0x1E695DFB0] null];
+          v19 = [v17 isEqual:null];
 
           if ((v19 & 1) == 0)
           {
@@ -67,7 +67,7 @@ LABEL_28:
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v49 objects:v55 count:16];
+        v14 = [vertexBuffers countByEnumeratingWithState:&v49 objects:v55 count:16];
         if (v14)
         {
           continue;
@@ -85,8 +85,8 @@ LABEL_28:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v12 = [(MDLMesh *)v42 submeshes];
-    v22 = [v12 countByEnumeratingWithState:&v45 objects:v54 count:16];
+    vertexBuffers = [(MDLMesh *)v42 submeshes];
+    v22 = [vertexBuffers countByEnumeratingWithState:&v45 objects:v54 count:16];
     if (v22)
     {
       v23 = v22;
@@ -97,17 +97,17 @@ LABEL_28:
         {
           if (*v46 != v24)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(vertexBuffers);
           }
 
           v26 = *(*(&v45 + 1) + 8 * j);
-          v27 = [v26 indexBuffer];
-          if (v27)
+          indexBuffer = [v26 indexBuffer];
+          if (indexBuffer)
           {
-            v28 = v27;
-            v29 = [v26 indexCount];
+            v28 = indexBuffer;
+            indexCount = [v26 indexCount];
 
-            if (v29)
+            if (indexCount)
             {
               v30 = [[MTKSubmesh alloc] initWithMesh:v9 submesh:v26 device:v43 error:v44];
               if (!v30)
@@ -121,24 +121,24 @@ LABEL_28:
           }
         }
 
-        v23 = [v12 countByEnumeratingWithState:&v45 objects:v54 count:16];
+        v23 = [vertexBuffers countByEnumeratingWithState:&v45 objects:v54 count:16];
       }
 
       while (v23);
     }
 
     v8 = v42;
-    v32 = [(MDLMesh *)v42 vertexDescriptor];
+    vertexDescriptor = [(MDLMesh *)v42 vertexDescriptor];
     vertexDescriptor = v9->_vertexDescriptor;
-    v9->_vertexDescriptor = v32;
+    v9->_vertexDescriptor = vertexDescriptor;
 
-    v34 = [(MDLMesh *)v42 name];
+    name = [(MDLMesh *)v42 name];
 
-    if (v34)
+    if (name)
     {
       v35 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v36 = [(MDLMesh *)v42 name];
-      v37 = [v35 initWithString:v36];
+      name2 = [(MDLMesh *)v42 name];
+      v37 = [v35 initWithString:name2];
       name = v9->_name;
       v9->_name = v37;
     }
@@ -151,34 +151,34 @@ LABEL_29:
   return v39;
 }
 
-+ (void)_createMeshesFromObject:(id)a3 newMeshes:(id)a4 sourceMeshes:(id)a5 device:(id)a6 error:(id *)a7
++ (void)_createMeshesFromObject:(id)object newMeshes:(id)meshes sourceMeshes:(id)sourceMeshes device:(id)device error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  objectCopy = object;
+  meshesCopy = meshes;
+  sourceMeshesCopy = sourceMeshes;
+  deviceCopy = device;
   getMDLMeshClass();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v12;
-    v17 = [[MTKMesh alloc] initWithMesh:v16 device:v15 error:a7];
-    if (!v17)
+    v16 = objectCopy;
+    null = [[MTKMesh alloc] initWithMesh:v16 device:deviceCopy error:error];
+    if (!null)
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    [v13 addObject:v17];
-    [v14 addObject:v16];
+    [meshesCopy addObject:null];
+    [sourceMeshesCopy addObject:v16];
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v18 = [v12 children];
-  v19 = [v18 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  children = [objectCopy children];
+  v19 = [children countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v19)
   {
     v20 = v19;
@@ -190,14 +190,14 @@ LABEL_29:
       {
         if (*v25 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(children);
         }
 
-        [a1 _createMeshesFromObject:*(*(&v24 + 1) + 8 * v22++) newMeshes:v13 sourceMeshes:v14 device:v15 error:a7];
+        [self _createMeshesFromObject:*(*(&v24 + 1) + 8 * v22++) newMeshes:meshesCopy sourceMeshes:sourceMeshesCopy device:deviceCopy error:error];
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v20 = [children countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v20);
@@ -265,7 +265,7 @@ LABEL_20:
           objc_enumerationMutation(v14);
         }
 
-        [a1 _createMeshesFromObject:*(*(&v24 + 1) + 8 * i) newMeshes:v13 sourceMeshes:sourceMeshes device:v12 error:error];
+        [self _createMeshesFromObject:*(*(&v24 + 1) + 8 * i) newMeshes:v13 sourceMeshes:sourceMeshes device:v12 error:error];
       }
 
       v16 = [(MDLAsset *)v14 countByEnumeratingWithState:&v24 objects:v28 count:16];

@@ -8,11 +8,11 @@
 
 - (unique_ptr<DiskImage,)createSinkDiskImage
 {
-  v3 = [(DiskImageParamsXPC *)self backendXPC];
-  v4 = v3;
-  if (v3)
+  backendXPC = [(DiskImageParamsXPC *)self backendXPC];
+  v4 = backendXPC;
+  if (backendXPC)
   {
-    [v3 backend];
+    [backendXPC backend];
   }
 
   else
@@ -36,10 +36,10 @@
   if (v13)
   {
     [(DiskImageParamsXPC *)self setBlockSize:*(v13[3] + 8)];
-    v5 = [(DiskImageParamsXPC *)self backendXPC];
-    if (v5)
+    backendXPC2 = [(DiskImageParamsXPC *)self backendXPC];
+    if (backendXPC2)
     {
-      [v5 backend];
+      [backendXPC2 backend];
     }
 
     else
@@ -57,11 +57,11 @@
     sub_10000367C(v14);
   }
 
-  v6 = [(DiskImageParamsXPC *)self backendXPC];
-  v7 = v6;
-  if (v6)
+  backendXPC3 = [(DiskImageParamsXPC *)self backendXPC];
+  v7 = backendXPC3;
+  if (backendXPC3)
   {
-    [v6 backend];
+    [backendXPC3 backend];
   }
 
   else
@@ -88,10 +88,10 @@
     sub_10000367C(v14);
   }
 
-  v8 = [(DiskImageParamsXPC *)self backendXPC];
-  if (v8)
+  backendXPC4 = [(DiskImageParamsXPC *)self backendXPC];
+  if (backendXPC4)
   {
-    [v8 backend];
+    [backendXPC4 backend];
   }
 
   else
@@ -106,11 +106,11 @@
 
 - (BOOL)isWritableFormat
 {
-  v2 = [(DiskImageParamsXPC *)self backendXPC];
-  v3 = v2;
-  if (v2)
+  backendXPC = [(DiskImageParamsXPC *)self backendXPC];
+  v3 = backendXPC;
+  if (backendXPC)
   {
-    [v2 backend];
+    [backendXPC backend];
   }
 
   else
@@ -142,12 +142,12 @@
 
 - (unint64_t)numBlocks
 {
-  v3 = [(DiskImageParamsXPC *)self backendXPC];
-  v4 = v3;
-  if (v3)
+  backendXPC = [(DiskImageParamsXPC *)self backendXPC];
+  v4 = backendXPC;
+  if (backendXPC)
   {
-    [v3 backend];
-    v3 = v8;
+    [backendXPC backend];
+    backendXPC = v8;
   }
 
   else
@@ -155,14 +155,14 @@
     v9 = 0;
   }
 
-  v5 = (*(*v3 + 40))(v3);
-  v6 = [(DiskImageParamsXPC *)self blockSize];
+  v5 = (*(*backendXPC + 40))(backendXPC);
+  blockSize = [(DiskImageParamsXPC *)self blockSize];
   if (v9)
   {
     sub_10000367C(v9);
   }
 
-  return v5 / v6;
+  return v5 / blockSize;
 }
 
 @end

@@ -1,66 +1,66 @@
 @interface CBPeripheral
-- (BOOL)sendMsg:(int)a3 args:(id)a4 withReply:(id)a5;
-- (CBPeripheral)initWithCentralManager:(id)a3 info:(id)a4;
+- (BOOL)sendMsg:(int)msg args:(id)args withReply:(id)reply;
+- (CBPeripheral)initWithCentralManager:(id)manager info:(id)info;
 - (NSUInteger)maximumWriteValueLengthForType:(CBCharacteristicWriteType)type;
 - (id)delegate;
 - (id)description;
 - (id)extendedDescription;
-- (id)l2capChannelForPeer:(id)a3 withCID:(unsigned __int16)a4;
-- (id)l2capChannelForPeer:(id)a3 withPsm:(unsigned __int16)a4;
-- (id)sendSyncMsg:(int)a3 args:(id)a4;
+- (id)l2capChannelForPeer:(id)peer withCID:(unsigned __int16)d;
+- (id)l2capChannelForPeer:(id)peer withPsm:(unsigned __int16)psm;
+- (id)sendSyncMsg:(int)msg args:(id)args;
 - (void)dealloc;
 - (void)discoverCharacteristics:(NSArray *)characteristicUUIDs forService:(CBService *)service;
 - (void)discoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic;
 - (void)discoverIncludedServices:(NSArray *)includedServiceUUIDs forService:(CBService *)service;
 - (void)discoverServices:(NSArray *)serviceUUIDs;
-- (void)getRangingTones:(id)a3;
-- (void)handleAttributeEvent:(id)a3 args:(id)a4 attributeSelector:(SEL)a5 delegateSelector:(SEL)a6 delegateFlag:(BOOL)a7;
-- (void)handleCSProcedureEventForDeviceMsg:(id)a3;
+- (void)getRangingTones:(id)tones;
+- (void)handleAttributeEvent:(id)event args:(id)args attributeSelector:(SEL)selector delegateSelector:(SEL)delegateSelector delegateFlag:(BOOL)flag;
+- (void)handleCSProcedureEventForDeviceMsg:(id)msg;
 - (void)handleDisconnection;
-- (void)handleL2CAPChannelClosed:(id)a3;
-- (void)handleL2CAPChannelDidReceiveData:(id)a3;
-- (void)handleL2CAPChannelOpened:(id)a3;
-- (void)handleLEAudioActivePresetUpdated:(id)a3;
-- (void)handleLEAudioConnected:(id)a3;
-- (void)handleLEAudioEvents:(id)a3;
-- (void)handleLEAudioHearingAidFeaturesUpdated:(id)a3;
-- (void)handleLEAudioMicrophoneGainUpdated:(id)a3;
-- (void)handleLEAudioMicrophoneMuteUpdated:(id)a3;
-- (void)handleLEAudioMsg:(int)a3 args:(id)a4;
-- (void)handleLEAudioPresetNameUpdated:(id)a3;
-- (void)handleLEAudioPresetUpdated:(id)a3;
-- (void)handleLEAudioVolumeGainUpdated:(id)a3;
-- (void)handleLEAudioVolumeMuteUpdated:(id)a3;
-- (void)handleLEAudioVolumeOffsetUpdated:(id)a3;
-- (void)handleLEAudioVolumeUpdated:(id)a3;
-- (void)handleNameUpdated:(id)a3;
-- (void)handleRSSIUpdated:(id)a3;
-- (void)handleServicesChanged:(id)a3;
-- (void)handleServicesDiscovered:(id)a3;
-- (void)handleSuccessfulConnection:(id)a3;
-- (void)handleTimeSyncResponse:(id)a3;
-- (void)handleVisibilityChanged:(id)a3;
+- (void)handleL2CAPChannelClosed:(id)closed;
+- (void)handleL2CAPChannelDidReceiveData:(id)data;
+- (void)handleL2CAPChannelOpened:(id)opened;
+- (void)handleLEAudioActivePresetUpdated:(id)updated;
+- (void)handleLEAudioConnected:(id)connected;
+- (void)handleLEAudioEvents:(id)events;
+- (void)handleLEAudioHearingAidFeaturesUpdated:(id)updated;
+- (void)handleLEAudioMicrophoneGainUpdated:(id)updated;
+- (void)handleLEAudioMicrophoneMuteUpdated:(id)updated;
+- (void)handleLEAudioMsg:(int)msg args:(id)args;
+- (void)handleLEAudioPresetNameUpdated:(id)updated;
+- (void)handleLEAudioPresetUpdated:(id)updated;
+- (void)handleLEAudioVolumeGainUpdated:(id)updated;
+- (void)handleLEAudioVolumeMuteUpdated:(id)updated;
+- (void)handleLEAudioVolumeOffsetUpdated:(id)updated;
+- (void)handleLEAudioVolumeUpdated:(id)updated;
+- (void)handleNameUpdated:(id)updated;
+- (void)handleRSSIUpdated:(id)updated;
+- (void)handleServicesChanged:(id)changed;
+- (void)handleServicesDiscovered:(id)discovered;
+- (void)handleSuccessfulConnection:(id)connection;
+- (void)handleTimeSyncResponse:(id)response;
+- (void)handleVisibilityChanged:(id)changed;
 - (void)invalidateAllAttributes;
 - (void)isReadyForUpdates;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)readPresets:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)readPresets:(id)presets;
 - (void)readRSSI;
 - (void)readValueForCharacteristic:(CBCharacteristic *)characteristic;
 - (void)readValueForDescriptor:(CBDescriptor *)descriptor;
-- (void)sendLEAudioMsg:(id)a3 args:(id)a4 completion:(id)a5;
-- (void)sendMsg:(int)a3 requiresConnected:(BOOL)a4 args:(id)a5;
-- (void)setActivePreset:(int64_t)a3 OptionalPresetIndex:(unsigned __int8)a4 withResponse:(id)a5;
-- (void)setMicrophoneMute:(int64_t)a3 withResponse:(id)a4;
-- (void)setPeripheralName:(id)a3;
-- (void)setVolume:(unsigned __int8)a3 withResponse:(id)a4;
-- (void)setVolumeMute:(int64_t)a3 withResponse:(id)a4;
-- (void)setVolumeOffSet:(unsigned int)a3 withOffSetValue:(signed __int16)a4 withResponse:(id)a5;
-- (void)updateFindMyInfo:(id)a3;
-- (void)writeMicrophoneAudioInput:(int64_t)a3 forAudioInputType:(unsigned __int8)a4 withOptionalGain:(char)a5 withResponse:(id)a6;
-- (void)writePresetName:(unsigned __int8)a3 withName:(id)a4 withResponse:(id)a5;
+- (void)sendLEAudioMsg:(id)msg args:(id)args completion:(id)completion;
+- (void)sendMsg:(int)msg requiresConnected:(BOOL)connected args:(id)args;
+- (void)setActivePreset:(int64_t)preset OptionalPresetIndex:(unsigned __int8)index withResponse:(id)response;
+- (void)setMicrophoneMute:(int64_t)mute withResponse:(id)response;
+- (void)setPeripheralName:(id)name;
+- (void)setVolume:(unsigned __int8)volume withResponse:(id)response;
+- (void)setVolumeMute:(int64_t)mute withResponse:(id)response;
+- (void)setVolumeOffSet:(unsigned int)set withOffSetValue:(signed __int16)value withResponse:(id)response;
+- (void)updateFindMyInfo:(id)info;
+- (void)writeMicrophoneAudioInput:(int64_t)input forAudioInputType:(unsigned __int8)type withOptionalGain:(char)gain withResponse:(id)response;
+- (void)writePresetName:(unsigned __int8)name withName:(id)withName withResponse:(id)response;
 - (void)writeValue:(NSData *)data forCharacteristic:(CBCharacteristic *)characteristic type:(CBCharacteristicWriteType)type;
 - (void)writeValue:(NSData *)data forDescriptor:(CBDescriptor *)descriptor;
-- (void)writeVolumeAudioInput:(int64_t)a3 forAudioInputType:(unsigned __int8)a4 withOptionalGain:(char)a5 withResponse:(id)a6;
+- (void)writeVolumeAudioInput:(int64_t)input forAudioInputType:(unsigned __int8)type withOptionalGain:(char)gain withResponse:(id)response;
 @end
 
 @implementation CBPeripheral
@@ -73,19 +73,19 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (CBPeripheral)initWithCentralManager:(id)a3 info:(id)a4
+- (CBPeripheral)initWithCentralManager:(id)manager info:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   v27.receiver = self;
   v27.super_class = CBPeripheral;
-  v7 = [(CBPeer *)&v27 initWithInfo:v6 manager:a3];
+  v7 = [(CBPeer *)&v27 initWithInfo:infoCopy manager:manager];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"kCBMsgArgName"];
+    v8 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgName"];
     name = v7->_name;
     v7->_name = v8;
 
-    v10 = [v6 objectForKeyedSubscript:@"kCBMsgArgAdvertisementData"];
+    v10 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgAdvertisementData"];
     v11 = [v10 objectForKeyedSubscript:@"kCBAdvDataAppearance"];
     v7->_appearance = [v11 unsignedShortValue];
 
@@ -100,21 +100,21 @@
     attributes = v7->_attributes;
     v7->_attributes = v14;
 
-    v16 = [v6 objectForKeyedSubscript:@"kCBMsgArgConnectionState"];
+    v16 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgConnectionState"];
     v7->_isConnectedToSystem = [v16 BOOLValue];
 
     v17 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:5 capacity:0];
     l2capChannels = v7->_l2capChannels;
     v7->_l2capChannels = v17;
 
-    v19 = [v6 objectForKeyedSubscript:@"kCBMsgArgAncsAuthorization"];
+    v19 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgAncsAuthorization"];
     v7->_ancsAuthorized = [v19 BOOLValue];
 
-    v20 = [v6 objectForKey:@"kCBMsgArgVisibleInSettings"];
+    v20 = [infoCopy objectForKey:@"kCBMsgArgVisibleInSettings"];
 
     if (v20)
     {
-      v21 = [v6 objectForKeyedSubscript:@"kCBMsgArgVisibleInSettings"];
+      v21 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgVisibleInSettings"];
       v7->_visibleInSettings = [v21 BOOLValue];
     }
 
@@ -123,43 +123,43 @@
       v7->_visibleInSettings = 1;
     }
 
-    v22 = [v6 objectForKeyedSubscript:@"kCBMsgArgWhbStableIdentifier"];
+    v22 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgWhbStableIdentifier"];
     stableIdentifier = v7->_stableIdentifier;
     v7->_stableIdentifier = v22;
 
-    v24 = [v6 objectForKeyedSubscript:@"kCBMsgArgWhbRemoteControllerId"];
+    v24 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgWhbRemoteControllerId"];
     remoteControllerId = v7->_remoteControllerId;
     v7->_remoteControllerId = v24;
 
     [(CBPeripheral *)v7 addObserver:v7 forKeyPath:@"delegate" options:0 context:0];
-    [(CBPeripheral *)v7 updateFindMyInfo:v6];
+    [(CBPeripheral *)v7 updateFindMyInfo:infoCopy];
   }
 
   return v7;
 }
 
-- (void)updateFindMyInfo:(id)a3
+- (void)updateFindMyInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kCBMsgArgFindMyGroupMembers"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgFindMyGroupMembers"];
   findMyGroupMembers = self->_findMyGroupMembers;
   self->_findMyGroupMembers = v5;
 
-  v7 = [v4 objectForKeyedSubscript:@"kCBMsgArgFindMySerialNumberString"];
+  v7 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgFindMySerialNumberString"];
   findMySerialNumberString = self->_findMySerialNumberString;
   self->_findMySerialNumberString = v7;
 
-  v9 = [v4 objectForKeyedSubscript:@"kCBMsgArgFindMyPartNumber"];
+  v9 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgFindMyPartNumber"];
   self->_findMyPartIdentifier = [v9 intValue];
 
-  v10 = [v4 objectForKeyedSubscript:@"kCBMsgArgFindMyManaged"];
+  v10 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgFindMyManaged"];
   self->_managedByFindMy = [v10 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"kCBMsgArgFindMyBeaconID"];
+  v11 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgFindMyBeaconID"];
   findMyBeaconIdentifier = self->_findMyBeaconIdentifier;
   self->_findMyBeaconIdentifier = v11;
 
-  v13 = [v4 objectForKeyedSubscript:@"kCBMsgArgFindMyUserID"];
+  v13 = [infoCopy objectForKeyedSubscript:@"kCBMsgArgFindMyUserID"];
 
   findMyUserIdentifier = self->_findMyUserIdentifier;
   self->_findMyUserIdentifier = v13;
@@ -180,9 +180,9 @@
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
-  v7 = [(CBPeer *)self identifier];
-  v8 = [v7 UUIDString];
-  v9 = [v5 stringWithFormat:@"<%@: %p, identifier = %@, name = %@, mtu = %lu, state = %@>", v6, self, v8, self->_name, -[CBPeer mtuLength](self, "mtuLength"), v4];
+  identifier = [(CBPeer *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v9 = [v5 stringWithFormat:@"<%@: %p, identifier = %@, name = %@, mtu = %lu, state = %@>", v6, self, uUIDString, self->_name, -[CBPeer mtuLength](self, "mtuLength"), v4];
 
   return v9;
 }
@@ -213,16 +213,16 @@
   return v8;
 }
 
-- (void)sendMsg:(int)a3 requiresConnected:(BOOL)a4 args:(id)a5
+- (void)sendMsg:(int)msg requiresConnected:(BOOL)connected args:(id)args
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(CBPeer *)self manager];
+  connectedCopy = connected;
+  msgCopy = msg;
+  argsCopy = args;
+  manager = [(CBPeer *)self manager];
 
-  if (v9)
+  if (manager)
   {
-    if (self->_state == 2 || !v5)
+    if (self->_state == 2 || !connectedCopy)
     {
       goto LABEL_9;
     }
@@ -235,7 +235,7 @@
     if (os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_ERROR))
     {
       [CBClassicPeer sendMsg:requiresConnected:args:];
-      if (v8)
+      if (argsCopy)
       {
         goto LABEL_11;
       }
@@ -244,21 +244,21 @@
     else
     {
 LABEL_9:
-      if (v8)
+      if (argsCopy)
       {
 LABEL_11:
-        v11 = [(CBPeer *)self identifier];
-        [v8 setObject:v11 forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+        identifier = [(CBPeer *)self identifier];
+        [argsCopy setObject:identifier forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
 
-        v12 = [(CBPeer *)self manager];
-        [v12 sendMsg:v6 args:v8];
+        manager2 = [(CBPeer *)self manager];
+        [manager2 sendMsg:msgCopy args:argsCopy];
 
 LABEL_12:
         return;
       }
     }
 
-    v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
+    argsCopy = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
     goto LABEL_11;
   }
 
@@ -275,39 +275,39 @@ LABEL_12:
   [CBPeripheral sendMsg:requiresConnected:args:];
 }
 
-- (id)sendSyncMsg:(int)a3 args:(id)a4
+- (id)sendSyncMsg:(int)msg args:(id)args
 {
-  v4 = a3;
-  v6 = a4;
-  if (!v6)
+  msgCopy = msg;
+  argsCopy = args;
+  if (!argsCopy)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
+    argsCopy = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
   }
 
-  v7 = [(CBPeer *)self identifier];
-  [v6 setObject:v7 forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+  identifier = [(CBPeer *)self identifier];
+  [argsCopy setObject:identifier forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
 
-  v8 = [(CBPeer *)self manager];
-  v9 = [v8 sendSyncMsg:v4 args:v6];
+  manager = [(CBPeer *)self manager];
+  v9 = [manager sendSyncMsg:msgCopy args:argsCopy];
 
   return v9;
 }
 
-- (BOOL)sendMsg:(int)a3 args:(id)a4 withReply:(id)a5
+- (BOOL)sendMsg:(int)msg args:(id)args withReply:(id)reply
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  msgCopy = msg;
+  argsCopy = args;
+  replyCopy = reply;
+  if (!argsCopy)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
+    argsCopy = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
   }
 
-  v10 = [(CBPeer *)self identifier];
-  [v8 setObject:v10 forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
+  identifier = [(CBPeer *)self identifier];
+  [argsCopy setObject:identifier forKeyedSubscript:@"kCBMsgArgDeviceUUID"];
 
-  v11 = [(CBPeer *)self manager];
-  v12 = [v11 sendMsg:v6 args:v8 withReply:v9];
+  manager = [(CBPeer *)self manager];
+  v12 = [manager sendMsg:msgCopy args:argsCopy withReply:replyCopy];
 
   return v12;
 }
@@ -349,13 +349,13 @@ LABEL_12:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleSuccessfulConnection:(id)a3
+- (void)handleSuccessfulConnection:(id)connection
 {
-  v4 = a3;
-  v8 = [v4 objectForKeyedSubscript:@"kCBMsgArgATTMTU"];
-  v5 = [v4 objectForKeyedSubscript:@"kCBMsgArgIsLinkEncrypted"];
-  v6 = [v4 objectForKeyedSubscript:@"kCBMsgArgConnectionTransport"];
-  v7 = [v4 objectForKeyedSubscript:@"kCBMsgArgConnectionRole"];
+  connectionCopy = connection;
+  v8 = [connectionCopy objectForKeyedSubscript:@"kCBMsgArgATTMTU"];
+  v5 = [connectionCopy objectForKeyedSubscript:@"kCBMsgArgIsLinkEncrypted"];
+  v6 = [connectionCopy objectForKeyedSubscript:@"kCBMsgArgConnectionTransport"];
+  v7 = [connectionCopy objectForKeyedSubscript:@"kCBMsgArgConnectionRole"];
 
   [(CBPeer *)self setHostState:0];
   -[CBPeer setMtuLength:](self, "setMtuLength:", [v8 unsignedIntegerValue]);
@@ -384,9 +384,9 @@ LABEL_12:
   [(CBPeripheral *)self setRemoteControllerId:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"delegate", a4, a5, a6}])
+  if ([path isEqualToString:{@"delegate", object, change, context}])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     self->_delegateFlags = (*&self->_delegateFlags & 0xFFFFFFFE | objc_opt_respondsToSelector() & 1);
@@ -671,9 +671,9 @@ LABEL_12:
   }
 
 LABEL_6:
-  v8 = [(CBService *)v7 peripheral];
+  peripheral = [(CBService *)v7 peripheral];
 
-  if (v8 == self)
+  if (peripheral == self)
   {
     v9 = MEMORY[0x1E695DF90];
     if (v6)
@@ -686,9 +686,9 @@ LABEL_6:
       v10 = MEMORY[0x1E695E0F0];
     }
 
-    v11 = [(CBService *)v7 startHandle];
-    v12 = [(CBService *)v7 endHandle];
-    v13 = [v9 dictionaryWithObjectsAndKeys:{v10, @"kCBMsgArgUUIDs", v11, @"kCBMsgArgServiceStartHandle", v12, @"kCBMsgArgServiceEndHandle", 0}];
+    startHandle = [(CBService *)v7 startHandle];
+    endHandle = [(CBService *)v7 endHandle];
+    v13 = [v9 dictionaryWithObjectsAndKeys:{v10, @"kCBMsgArgUUIDs", startHandle, @"kCBMsgArgServiceStartHandle", endHandle, @"kCBMsgArgServiceEndHandle", 0}];
     [(CBPeripheral *)self sendMsg:199 args:v13];
   }
 
@@ -747,9 +747,9 @@ LABEL_14:
   }
 
 LABEL_6:
-  v8 = [(CBService *)v7 peripheral];
+  peripheral = [(CBService *)v7 peripheral];
 
-  if (v8 == self)
+  if (peripheral == self)
   {
     v9 = MEMORY[0x1E695DF90];
     if (v6)
@@ -762,9 +762,9 @@ LABEL_6:
       v10 = MEMORY[0x1E695E0F0];
     }
 
-    v11 = [(CBService *)v7 startHandle];
-    v12 = [(CBService *)v7 endHandle];
-    v13 = [v9 dictionaryWithObjectsAndKeys:{v10, @"kCBMsgArgUUIDs", v11, @"kCBMsgArgServiceStartHandle", v12, @"kCBMsgArgServiceEndHandle", 0}];
+    startHandle = [(CBService *)v7 startHandle];
+    endHandle = [(CBService *)v7 endHandle];
+    v13 = [v9 dictionaryWithObjectsAndKeys:{v10, @"kCBMsgArgUUIDs", startHandle, @"kCBMsgArgServiceStartHandle", endHandle, @"kCBMsgArgServiceEndHandle", 0}];
     [(CBPeripheral *)self sendMsg:200 args:v13];
   }
 
@@ -822,14 +822,14 @@ LABEL_14:
   }
 
 LABEL_6:
-  v5 = [(CBCharacteristic *)v4 peripheral];
+  peripheral = [(CBCharacteristic *)v4 peripheral];
 
-  if (v5 == self)
+  if (peripheral == self)
   {
     v6 = MEMORY[0x1E695DF90];
-    v7 = [(CBCharacteristic *)v4 handle];
-    v8 = [(CBCharacteristic *)v4 valueHandle];
-    v9 = [v6 dictionaryWithObjectsAndKeys:{v7, @"kCBMsgArgCharacteristicHandle", v8, @"kCBMsgArgCharacteristicValueHandle", 0}];
+    handle = [(CBCharacteristic *)v4 handle];
+    valueHandle = [(CBCharacteristic *)v4 valueHandle];
+    v9 = [v6 dictionaryWithObjectsAndKeys:{handle, @"kCBMsgArgCharacteristicHandle", valueHandle, @"kCBMsgArgCharacteristicValueHandle", 0}];
     [(CBPeripheral *)self sendMsg:203 args:v9];
 
     goto LABEL_11;
@@ -881,10 +881,10 @@ LABEL_11:
 
 - (void)isReadyForUpdates
 {
-  v3 = [(CBPeripheral *)self writesPending];
+  writesPending = [(CBPeripheral *)self writesPending];
   [(CBPeripheral *)self setWritesPending:0];
   [(CBPeripheral *)self setCanSendWriteWithoutResponse:1];
-  if (v3)
+  if (writesPending)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (WeakRetained)
@@ -926,9 +926,9 @@ LABEL_11:
 
   [CBPeripheral writeValue:forCharacteristic:type:];
 LABEL_3:
-  v11 = [(CBCharacteristic *)v10 peripheral];
+  peripheral = [(CBCharacteristic *)v10 peripheral];
 
-  if (v11 == self)
+  if (peripheral == self)
   {
     if (type == CBCharacteristicWriteWithoutResponse && ([(CBCharacteristic *)v10 properties]& 4) == 0)
     {
@@ -944,10 +944,10 @@ LABEL_3:
     }
 
     v12 = MEMORY[0x1E695DF90];
-    v13 = [(CBCharacteristic *)v10 handle];
-    v14 = [(CBCharacteristic *)v10 valueHandle];
+    handle = [(CBCharacteristic *)v10 handle];
+    valueHandle = [(CBCharacteristic *)v10 valueHandle];
     v15 = [MEMORY[0x1E696AD98] numberWithInteger:type];
-    v16 = [v12 dictionaryWithObjectsAndKeys:{v13, @"kCBMsgArgCharacteristicHandle", v14, @"kCBMsgArgCharacteristicValueHandle", v8, @"kCBMsgArgData", v15, @"kCBMsgArgType", 0}];
+    v16 = [v12 dictionaryWithObjectsAndKeys:{handle, @"kCBMsgArgCharacteristicHandle", valueHandle, @"kCBMsgArgCharacteristicValueHandle", v8, @"kCBMsgArgData", v15, @"kCBMsgArgType", 0}];
     [(CBPeripheral *)self sendMsg:204 args:v16];
   }
 
@@ -1002,14 +1002,14 @@ LABEL_3:
   }
 
 LABEL_6:
-  v5 = [(CBCharacteristic *)v4 peripheral];
+  peripheral = [(CBCharacteristic *)v4 peripheral];
 
-  if (v5 == self)
+  if (peripheral == self)
   {
     v6 = MEMORY[0x1E695DF90];
-    v7 = [(CBCharacteristic *)v4 handle];
-    v8 = [(CBCharacteristic *)v4 valueHandle];
-    v9 = [v6 dictionaryWithObjectsAndKeys:{v7, @"kCBMsgArgCharacteristicHandle", v8, @"kCBMsgArgCharacteristicValueHandle", 0}];
+    handle = [(CBCharacteristic *)v4 handle];
+    valueHandle = [(CBCharacteristic *)v4 valueHandle];
+    v9 = [v6 dictionaryWithObjectsAndKeys:{handle, @"kCBMsgArgCharacteristicHandle", valueHandle, @"kCBMsgArgCharacteristicValueHandle", 0}];
     [(CBPeripheral *)self sendMsg:207 args:v9];
 
     goto LABEL_11;
@@ -1066,13 +1066,13 @@ LABEL_11:
   }
 
 LABEL_6:
-  v5 = [(CBDescriptor *)v4 peripheral];
+  peripheral = [(CBDescriptor *)v4 peripheral];
 
-  if (v5 == self)
+  if (peripheral == self)
   {
     v6 = MEMORY[0x1E695DF90];
-    v7 = [(CBDescriptor *)v4 handle];
-    v8 = [v6 dictionaryWithObjectsAndKeys:{v7, @"kCBMsgArgDescriptorHandle", 0}];
+    handle = [(CBDescriptor *)v4 handle];
+    v8 = [v6 dictionaryWithObjectsAndKeys:{handle, @"kCBMsgArgDescriptorHandle", 0}];
     [(CBPeripheral *)self sendMsg:213 args:v8];
 
     goto LABEL_11;
@@ -1122,22 +1122,22 @@ LABEL_11:
 
   [CBPeripheral writeValue:forDescriptor:];
 LABEL_3:
-  v9 = [(CBAttribute *)v8 UUID];
+  uUID = [(CBAttribute *)v8 UUID];
   v10 = [CBUUID UUIDWithString:@"2902"];
-  v11 = [v9 isEqual:v10];
+  v11 = [uUID isEqual:v10];
 
   if (v11)
   {
     [CBPeripheral writeValue:forDescriptor:];
   }
 
-  v12 = [(CBDescriptor *)v8 peripheral];
+  peripheral = [(CBDescriptor *)v8 peripheral];
 
-  if (v12 == self)
+  if (peripheral == self)
   {
     v13 = MEMORY[0x1E695DF90];
-    v14 = [(CBDescriptor *)v8 handle];
-    v15 = [v13 dictionaryWithObjectsAndKeys:{v14, @"kCBMsgArgDescriptorHandle", v6, @"kCBMsgArgData", 0}];
+    handle = [(CBDescriptor *)v8 handle];
+    v15 = [v13 dictionaryWithObjectsAndKeys:{handle, @"kCBMsgArgDescriptorHandle", v6, @"kCBMsgArgData", 0}];
     [(CBPeripheral *)self sendMsg:214 args:v15];
   }
 
@@ -1155,44 +1155,44 @@ LABEL_3:
   }
 }
 
-- (void)getRangingTones:(id)a3
+- (void)getRangingTones:(id)tones
 {
-  v4 = a3;
-  v8 = v4;
-  if (!v4)
+  tonesCopy = tones;
+  v8 = tonesCopy;
+  if (!tonesCopy)
   {
     [CBPeripheral getRangingTones:];
-    v4 = MEMORY[0x1E695E0F8];
+    tonesCopy = MEMORY[0x1E695E0F8];
   }
 
   v5 = MEMORY[0x1E695DF90];
-  v6 = [(CBPeer *)self identifier];
-  v7 = [v5 dictionaryWithObjectsAndKeys:{v6, @"kCBMsgArgDeviceUUID", v4, @"kCBMsgArgOptions", 0}];
+  identifier = [(CBPeer *)self identifier];
+  v7 = [v5 dictionaryWithObjectsAndKeys:{identifier, @"kCBMsgArgDeviceUUID", tonesCopy, @"kCBMsgArgOptions", 0}];
   [(CBPeripheral *)self sendMsg:198 args:v7];
 }
 
-- (void)setPeripheralName:(id)a3
+- (void)setPeripheralName:(id)name
 {
-  v4 = a3;
-  v8 = v4;
-  if (!v4)
+  nameCopy = name;
+  v8 = nameCopy;
+  if (!nameCopy)
   {
     [CBPeripheral setPeripheralName:];
-    v4 = 0;
+    nameCopy = 0;
   }
 
-  [(CBPeripheral *)self setName:v4];
+  [(CBPeripheral *)self setName:nameCopy];
   v5 = MEMORY[0x1E695DF90];
-  v6 = [(CBPeer *)self identifier];
-  v7 = [v5 dictionaryWithObjectsAndKeys:{v6, @"kCBMsgArgDeviceUUID", v8, @"kCBMsgArgName", 0}];
+  identifier = [(CBPeer *)self identifier];
+  v7 = [v5 dictionaryWithObjectsAndKeys:{identifier, @"kCBMsgArgDeviceUUID", v8, @"kCBMsgArgName", 0}];
   [(CBPeripheral *)self sendMsg:194 args:v7];
 }
 
-- (id)l2capChannelForPeer:(id)a3 withPsm:(unsigned __int16)a4
+- (id)l2capChannelForPeer:(id)peer withPsm:(unsigned __int16)psm
 {
-  v4 = a4;
+  psmCopy = psm;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  peerCopy = peer;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -1213,12 +1213,12 @@ LABEL_4:
       }
 
       v12 = *(*(&v18 + 1) + 8 * v11);
-      v13 = [v12 peer];
-      if ([v13 isEqual:v6])
+      peer = [v12 peer];
+      if ([peer isEqual:peerCopy])
       {
         v14 = [v12 PSM];
 
-        if (v14 == v4)
+        if (v14 == psmCopy)
         {
           v15 = v12;
 
@@ -1261,11 +1261,11 @@ LABEL_17:
   return v15;
 }
 
-- (id)l2capChannelForPeer:(id)a3 withCID:(unsigned __int16)a4
+- (id)l2capChannelForPeer:(id)peer withCID:(unsigned __int16)d
 {
-  v4 = a4;
+  dCopy = d;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  peerCopy = peer;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -1286,12 +1286,12 @@ LABEL_4:
       }
 
       v12 = *(*(&v18 + 1) + 8 * v11);
-      v13 = [v12 peer];
-      if ([v13 isEqual:v6])
+      peer = [v12 peer];
+      if ([peer isEqual:peerCopy])
       {
         v14 = [v12 cid];
 
-        if (v14 == v4)
+        if (v14 == dCopy)
         {
           v15 = v12;
 
@@ -1352,9 +1352,9 @@ void __59__CBPeripheral_enableFastLeConnection_withInfo_completion___block_invok
   }
 }
 
-- (void)handleNameUpdated:(id)a3
+- (void)handleNameUpdated:(id)updated
 {
-  v5 = [a3 objectForKeyedSubscript:@"kCBMsgArgName"];
+  v5 = [updated objectForKeyedSubscript:@"kCBMsgArgName"];
   [(CBPeripheral *)self setName:?];
   if (*&self->_delegateFlags)
   {
@@ -1363,19 +1363,19 @@ void __59__CBPeripheral_enableFastLeConnection_withInfo_completion___block_invok
   }
 }
 
-- (void)handleServicesChanged:(id)a3
+- (void)handleServicesChanged:(id)changed
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kCBMsgArgServiceStartHandle"];
-  v22 = v4;
-  v24 = [v4 objectForKeyedSubscript:@"kCBMsgArgServiceEndHandle"];
-  v23 = [MEMORY[0x1E695DF70] array];
+  changedCopy = changed;
+  v5 = [changedCopy objectForKeyedSubscript:@"kCBMsgArgServiceStartHandle"];
+  v22 = changedCopy;
+  v24 = [changedCopy objectForKeyedSubscript:@"kCBMsgArgServiceEndHandle"];
+  array = [MEMORY[0x1E695DF70] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v21 = self;
+  selfCopy = self;
   v6 = self->_services;
   v7 = [(NSArray *)v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
@@ -1392,22 +1392,22 @@ void __59__CBPeripheral_enableFastLeConnection_withInfo_completion___block_invok
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
-        v12 = [v11 endHandle];
-        v13 = [v12 unsignedShortValue];
-        if (v13 < [v5 unsignedShortValue])
+        endHandle = [v11 endHandle];
+        unsignedShortValue = [endHandle unsignedShortValue];
+        if (unsignedShortValue < [v5 unsignedShortValue])
         {
         }
 
         else
         {
-          v14 = [v11 startHandle];
-          v15 = [v14 unsignedShortValue];
-          v16 = [v24 unsignedShortValue];
+          startHandle = [v11 startHandle];
+          unsignedShortValue2 = [startHandle unsignedShortValue];
+          unsignedShortValue3 = [v24 unsignedShortValue];
 
-          if (v15 <= v16)
+          if (unsignedShortValue2 <= unsignedShortValue3)
           {
             [v11 invalidate];
-            [v23 addObject:v11];
+            [array addObject:v11];
           }
         }
       }
@@ -1418,17 +1418,17 @@ void __59__CBPeripheral_enableFastLeConnection_withInfo_completion___block_invok
     while (v8);
   }
 
-  if ([v23 count])
+  if ([array count])
   {
-    v17 = [(NSArray *)v21->_services mutableCopy];
-    [v17 removeObjectsInArray:v23];
-    [(CBPeripheral *)v21 setServices:v17];
+    v17 = [(NSArray *)selfCopy->_services mutableCopy];
+    [v17 removeObjectsInArray:array];
+    [(CBPeripheral *)selfCopy setServices:v17];
   }
 
-  if ((*&v21->_delegateFlags & 2) != 0)
+  if ((*&selfCopy->_delegateFlags & 2) != 0)
   {
-    WeakRetained = objc_loadWeakRetained(&v21->_delegate);
-    [WeakRetained peripheral:v21 didModifyServices:v23];
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    [WeakRetained peripheral:selfCopy didModifyServices:array];
 
     v18 = v22;
   }
@@ -1450,11 +1450,11 @@ void __59__CBPeripheral_enableFastLeConnection_withInfo_completion___block_invok
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleRSSIUpdated:(id)a3
+- (void)handleRSSIUpdated:(id)updated
 {
-  v4 = a3;
-  v8 = [v4 objectForKeyedSubscript:@"kCBMsgArgData"];
-  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:v4];
+  updatedCopy = updated;
+  v8 = [updatedCopy objectForKeyedSubscript:@"kCBMsgArgData"];
+  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:updatedCopy];
 
   delegateFlags = self->_delegateFlags;
   if ((*&delegateFlags & 4) != 0)
@@ -1488,48 +1488,48 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)handleVisibilityChanged:(id)a3
+- (void)handleVisibilityChanged:(id)changed
 {
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgVisibleInSettings"];
+  v4 = [changed objectForKeyedSubscript:@"kCBMsgArgVisibleInSettings"];
   self->_visibleInSettings = [v4 BOOLValue];
 }
 
-- (void)handleTimeSyncResponse:(id)a3
+- (void)handleTimeSyncResponse:(id)response
 {
-  v11 = a3;
+  responseCopy = response;
   v4 = [MEMORY[0x1E696ABC0] errorWithInfo:?];
   if ((*(&self->_delegateFlags + 1) & 0x20) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v6 = [v11 objectForKeyedSubscript:@"kCBMsgArgTimeOfDay"];
-    v7 = [v11 objectForKeyedSubscript:@"kCBMsgArgLocalRefTime"];
-    v8 = [v11 objectForKeyedSubscript:@"kCBMsgArgRemoteRefTime"];
-    v9 = [v11 objectForKeyedSubscript:@"kCBMsgArgTimeToSend"];
-    v10 = [v11 objectForKeyedSubscript:@"kCBMsgArgGMTDelta"];
+    v6 = [responseCopy objectForKeyedSubscript:@"kCBMsgArgTimeOfDay"];
+    v7 = [responseCopy objectForKeyedSubscript:@"kCBMsgArgLocalRefTime"];
+    v8 = [responseCopy objectForKeyedSubscript:@"kCBMsgArgRemoteRefTime"];
+    v9 = [responseCopy objectForKeyedSubscript:@"kCBMsgArgTimeToSend"];
+    v10 = [responseCopy objectForKeyedSubscript:@"kCBMsgArgGMTDelta"];
     [WeakRetained peripheral:self didReceiveTimeSyncWithReferenceTime:v6 localAbsolute:v7 remoteAbsolute:v8 receiveTime:v9 GMTDelta:v10 error:v4];
   }
 }
 
-- (void)handleCSProcedureEventForDeviceMsg:(id)a3
+- (void)handleCSProcedureEventForDeviceMsg:(id)msg
 {
-  v6 = a3;
+  msgCopy = msg;
   v4 = [MEMORY[0x1E696ABC0] errorWithInfo:?];
   if ((*(&self->_delegateFlags + 1) & 0x40) != 0)
   {
-    v5 = [(CBPeripheral *)self delegate];
-    [v5 peripheral:self didCompleteChannelSoundingProcedure:v6 error:v4];
+    delegate = [(CBPeripheral *)self delegate];
+    [delegate peripheral:self didCompleteChannelSoundingProcedure:msgCopy error:v4];
   }
 }
 
-- (void)handleServicesDiscovered:(id)a3
+- (void)handleServicesDiscovered:(id)discovered
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:v4];
+  discoveredCopy = discovered;
+  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:discoveredCopy];
   if (!v5)
   {
-    v23 = v4;
-    v8 = [v4 objectForKeyedSubscript:@"kCBMsgArgServices"];
+    v23 = discoveredCopy;
+    v8 = [discoveredCopy objectForKeyedSubscript:@"kCBMsgArgServices"];
     v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:self->_services];
     v24 = 0u;
     v25 = 0u;
@@ -1545,7 +1545,7 @@ LABEL_29:
       [(CBPeripheral *)self setServices:v22];
 
       v5 = 0;
-      v4 = v23;
+      discoveredCopy = v23;
       if ((*&self->_delegateFlags & 0x10) == 0)
       {
         goto LABEL_4;
@@ -1591,9 +1591,9 @@ LABEL_8:
           if (os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
-            v29 = self;
+            selfCopy = self;
             v30 = 2112;
-            v31 = v17;
+            selfCopy2 = v17;
             _os_log_debug_impl(&dword_1C0AC1000, v21, OS_LOG_TYPE_DEBUG, "Data in %@ does not contain a valid UUID for service handle = %@", buf, 0x16u);
           }
 
@@ -1602,8 +1602,8 @@ LABEL_8:
         }
 
         v15 = [[CBService alloc] initWithPeripheral:self dictionary:v16];
-        v20 = [(CBService *)v15 startHandle];
-        [(CBPeripheral *)self setAttribute:v15 forHandle:v20];
+        startHandle = [(CBService *)v15 startHandle];
+        [(CBPeripheral *)self setAttribute:v15 forHandle:startHandle];
 
         if (([v9 containsObject:v15] & 1) == 0)
         {
@@ -1618,9 +1618,9 @@ LABEL_15:
           if (os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
-            v29 = v15;
+            selfCopy = v15;
             v30 = 2112;
-            v31 = self;
+            selfCopy2 = self;
             _os_log_debug_impl(&dword_1C0AC1000, v18, OS_LOG_TYPE_DEBUG, "Added %@ to %@", buf, 0x16u);
           }
         }
@@ -1653,9 +1653,9 @@ LABEL_4:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleL2CAPChannelOpened:(id)a3
+- (void)handleL2CAPChannelOpened:(id)opened
 {
-  v4 = a3;
+  openedCopy = opened;
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -1667,7 +1667,7 @@ LABEL_4:
     [CBPeripheral handleL2CAPChannelOpened:v5];
   }
 
-  v6 = [MEMORY[0x1E696ABC0] errorWithInfo:v4];
+  v6 = [MEMORY[0x1E696ABC0] errorWithInfo:openedCopy];
   if (v6)
   {
     if (CBLogInitOnce == -1)
@@ -1704,15 +1704,15 @@ LABEL_8:
     }
 
 LABEL_11:
-    v11 = [(CBPeripheral *)self delegate];
-    [v11 peripheral:self didOpenL2CAPChannel:v8 error:v6];
+    delegate = [(CBPeripheral *)self delegate];
+    [delegate peripheral:self didOpenL2CAPChannel:v8 error:v6];
 
     goto LABEL_12;
   }
 
   v9 = [CBL2CAPChannel alloc];
-  v10 = [(CBPeer *)self manager];
-  v8 = [(CBL2CAPChannel *)v9 initWithPeer:self manager:v10 info:v4];
+  manager = [(CBPeer *)self manager];
+  v8 = [(CBL2CAPChannel *)v9 initWithPeer:self manager:manager info:openedCopy];
 
   [(NSHashTable *)self->_l2capChannels addObject:v8];
   if ((*(&self->_delegateFlags + 1) & 0x80) != 0)
@@ -1723,26 +1723,26 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)handleL2CAPChannelClosed:(id)a3
+- (void)handleL2CAPChannelClosed:(id)closed
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:v4];
-  v6 = [v4 objectForKey:@"kCBMsgArgPSM"];
-  v7 = [v6 intValue];
+  closedCopy = closed;
+  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:closedCopy];
+  v6 = [closedCopy objectForKey:@"kCBMsgArgPSM"];
+  intValue = [v6 intValue];
 
-  v8 = [v4 objectForKey:@"kCBMsgArgCID"];
-  v9 = [v8 intValue];
+  v8 = [closedCopy objectForKey:@"kCBMsgArgCID"];
+  intValue2 = [v8 intValue];
 
-  v10 = [(CBPeripheral *)self l2capChannelForPeer:self withCID:v9];
-  if (v10 || ([(CBPeripheral *)self l2capChannelForPeer:self withPsm:v7], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  v10 = [(CBPeripheral *)self l2capChannelForPeer:self withCID:intValue2];
+  if (v10 || ([(CBPeripheral *)self l2capChannelForPeer:self withPsm:intValue], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v11 = v10;
-    [v10 handleChannelClosed:v4];
+    [v10 handleChannelClosed:closedCopy];
     if (*(&self->_delegateFlags + 2))
     {
-      v12 = [(CBPeripheral *)self delegate];
-      [v12 peripheral:self didCloseL2CAPChannel:v11];
+      delegate = [(CBPeripheral *)self delegate];
+      [delegate peripheral:self didCloseL2CAPChannel:v11];
     }
 
     [(NSHashTable *)self->_l2capChannels removeObject:v11];
@@ -1759,9 +1759,9 @@ LABEL_12:
     if (os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_ERROR))
     {
       v15[0] = 67109634;
-      v15[1] = v7;
+      v15[1] = intValue;
       v16 = 1024;
-      v17 = v9;
+      v17 = intValue2;
       v18 = 2112;
       v19 = v5;
       _os_log_error_impl(&dword_1C0AC1000, v14, OS_LOG_TYPE_ERROR, "Cannot find l2CAP channel closed with psm:%u cid:%u and result:%@", v15, 0x18u);
@@ -1771,22 +1771,22 @@ LABEL_12:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleL2CAPChannelDidReceiveData:(id)a3
+- (void)handleL2CAPChannelDidReceiveData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:v4];
-  v6 = [v4 objectForKey:@"kCBMsgArgPSM"];
-  v7 = [v6 intValue];
+  dataCopy = data;
+  v5 = [MEMORY[0x1E696ABC0] errorWithInfo:dataCopy];
+  v6 = [dataCopy objectForKey:@"kCBMsgArgPSM"];
+  intValue = [v6 intValue];
 
-  v8 = [v4 objectForKey:@"kCBMsgArgCID"];
-  v9 = [v8 intValue];
+  v8 = [dataCopy objectForKey:@"kCBMsgArgCID"];
+  intValue2 = [v8 intValue];
 
-  v10 = [(CBPeripheral *)self l2capChannelForPeer:self withCID:v9];
-  if (v10 || ([(CBPeripheral *)self l2capChannelForPeer:self withPsm:v7], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  v10 = [(CBPeripheral *)self l2capChannelForPeer:self withCID:intValue2];
+  if (v10 || ([(CBPeripheral *)self l2capChannelForPeer:self withPsm:intValue], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v11 = v10;
-    [v10 handleDataReceived:v4];
+    [v10 handleDataReceived:dataCopy];
   }
 
   else
@@ -1800,9 +1800,9 @@ LABEL_12:
     if (os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_ERROR))
     {
       v14[0] = 67109634;
-      v14[1] = v7;
+      v14[1] = intValue;
       v15 = 1024;
-      v16 = v9;
+      v16 = intValue2;
       v17 = 2112;
       v18 = v5;
       _os_log_error_impl(&dword_1C0AC1000, v13, OS_LOG_TYPE_ERROR, "Cannot find l2CAP channel received Data with psm:%u cid:%u and result:%@", v14, 0x18u);
@@ -1812,200 +1812,200 @@ LABEL_12:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendLEAudioMsg:(id)a3 args:(id)a4 completion:(id)a5
+- (void)sendLEAudioMsg:(id)msg args:(id)args completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CBPeer *)self manager];
-  [v11 sendLEAudioMsg:v10 args:v9 completion:v8];
+  completionCopy = completion;
+  argsCopy = args;
+  msgCopy = msg;
+  manager = [(CBPeer *)self manager];
+  [manager sendLEAudioMsg:msgCopy args:argsCopy completion:completionCopy];
 }
 
-- (void)setVolume:(unsigned __int8)a3 withResponse:(id)a4
+- (void)setVolume:(unsigned __int8)volume withResponse:(id)response
 {
-  v4 = a3;
+  volumeCopy = volume;
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  responseCopy = response;
   *uuid = 0;
   v14 = 0;
-  v7 = [(CBPeer *)self identifier];
-  [v7 getUUIDBytes:uuid];
+  identifier = [(CBPeer *)self identifier];
+  [identifier getUUIDBytes:uuid];
   *keys = xmmword_1E811E6C8;
   v10 = xpc_uuid_create(uuid);
-  v11 = xpc_int64_create(v4);
+  v11 = xpc_int64_create(volumeCopy);
   v8 = xpc_dictionary_create(keys, &v10, 2uLL);
-  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgSetVolume" args:v8 completion:v6];
+  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgSetVolume" args:v8 completion:responseCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setVolumeOffSet:(unsigned int)a3 withOffSetValue:(signed __int16)a4 withResponse:(id)a5
+- (void)setVolumeOffSet:(unsigned int)set withOffSetValue:(signed __int16)value withResponse:(id)response
 {
-  v5 = a4;
+  valueCopy = value;
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  responseCopy = response;
   *uuid = 0;
   v18 = 0;
-  v9 = [(CBPeer *)self identifier];
-  [v9 getUUIDBytes:uuid];
+  identifier = [(CBPeer *)self identifier];
+  [identifier getUUIDBytes:uuid];
   *keys = xmmword_1E811E6D8;
   v16 = "kCBMsgArgLEAudioVolumeOffset";
   values = xpc_uuid_create(uuid);
-  v13 = xpc_uint64_create(a3);
-  v14 = xpc_int64_create(v5);
+  v13 = xpc_uint64_create(set);
+  v14 = xpc_int64_create(valueCopy);
   v10 = xpc_dictionary_create(keys, &values, 3uLL);
-  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgSetVolumeOffSet" args:v10 completion:v8];
+  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgSetVolumeOffSet" args:v10 completion:responseCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setVolumeMute:(int64_t)a3 withResponse:(id)a4
+- (void)setVolumeMute:(int64_t)mute withResponse:(id)response
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  responseCopy = response;
   *uuid = 0;
   v14 = 0;
-  v7 = [(CBPeer *)self identifier];
-  [v7 getUUIDBytes:uuid];
+  identifier = [(CBPeer *)self identifier];
+  [identifier getUUIDBytes:uuid];
   *keys = xmmword_1E811E6F0;
   v10 = xpc_uuid_create(uuid);
-  v11 = xpc_uint64_create(a3);
+  v11 = xpc_uint64_create(mute);
   v8 = xpc_dictionary_create(keys, &v10, 2uLL);
-  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgSetVolumeMute" args:v8 completion:v6];
+  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgSetVolumeMute" args:v8 completion:responseCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)writeVolumeAudioInput:(int64_t)a3 forAudioInputType:(unsigned __int8)a4 withOptionalGain:(char)a5 withResponse:(id)a6
+- (void)writeVolumeAudioInput:(int64_t)input forAudioInputType:(unsigned __int8)type withOptionalGain:(char)gain withResponse:(id)response
 {
-  v6 = a5;
-  v7 = a4;
+  gainCopy = gain;
+  typeCopy = type;
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  responseCopy = response;
   *uuid = 0;
   v21 = 0;
-  v11 = [(CBPeer *)self identifier];
-  [v11 getUUIDBytes:uuid];
+  identifier = [(CBPeer *)self identifier];
+  [identifier getUUIDBytes:uuid];
   *keys = xmmword_1E811E700;
   v19 = *&off_1E811E710;
   v14 = xpc_uuid_create(uuid);
-  v15 = xpc_uint64_create(a3);
-  v16 = xpc_uint64_create(v7);
-  v17 = xpc_int64_create(v6);
+  v15 = xpc_uint64_create(input);
+  v16 = xpc_uint64_create(typeCopy);
+  v17 = xpc_int64_create(gainCopy);
   v12 = xpc_dictionary_create(keys, &v14, 4uLL);
-  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgWriteVolumeAudioInput" args:v12 completion:v10];
+  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgWriteVolumeAudioInput" args:v12 completion:responseCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setMicrophoneMute:(int64_t)a3 withResponse:(id)a4
+- (void)setMicrophoneMute:(int64_t)mute withResponse:(id)response
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  responseCopy = response;
   *uuid = 0;
   v14 = 0;
-  v7 = [(CBPeer *)self identifier];
-  [v7 getUUIDBytes:uuid];
+  identifier = [(CBPeer *)self identifier];
+  [identifier getUUIDBytes:uuid];
   *keys = xmmword_1E811E720;
   v10 = xpc_uuid_create(uuid);
-  v11 = xpc_uint64_create(a3);
+  v11 = xpc_uint64_create(mute);
   v8 = xpc_dictionary_create(keys, &v10, 2uLL);
-  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgSetMicrophoneMute" args:v8 completion:v6];
+  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgSetMicrophoneMute" args:v8 completion:responseCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)writeMicrophoneAudioInput:(int64_t)a3 forAudioInputType:(unsigned __int8)a4 withOptionalGain:(char)a5 withResponse:(id)a6
+- (void)writeMicrophoneAudioInput:(int64_t)input forAudioInputType:(unsigned __int8)type withOptionalGain:(char)gain withResponse:(id)response
 {
-  v6 = a5;
-  v7 = a4;
+  gainCopy = gain;
+  typeCopy = type;
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  responseCopy = response;
   *uuid = 0;
   v21 = 0;
-  v11 = [(CBPeer *)self identifier];
-  [v11 getUUIDBytes:uuid];
+  identifier = [(CBPeer *)self identifier];
+  [identifier getUUIDBytes:uuid];
   *keys = xmmword_1E811E730;
   v19 = *&off_1E811E740;
   v14 = xpc_uuid_create(uuid);
-  v15 = xpc_uint64_create(a3);
-  v16 = xpc_uint64_create(v7);
-  v17 = xpc_int64_create(v6);
+  v15 = xpc_uint64_create(input);
+  v16 = xpc_uint64_create(typeCopy);
+  v17 = xpc_int64_create(gainCopy);
   v12 = xpc_dictionary_create(keys, &v14, 4uLL);
-  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgWriteMicrophoneAudioInput" args:v12 completion:v10];
+  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgWriteMicrophoneAudioInput" args:v12 completion:responseCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)readPresets:(id)a3
+- (void)readPresets:(id)presets
 {
   v12 = *MEMORY[0x1E69E9840];
   *uuid = 0;
   v11 = 0;
-  v4 = a3;
-  v5 = [(CBPeer *)self identifier];
-  [v5 getUUIDBytes:uuid];
+  presetsCopy = presets;
+  identifier = [(CBPeer *)self identifier];
+  [identifier getUUIDBytes:uuid];
 
   keys = "kCBMsgArgLEAudioDeviceUUID";
   values = xpc_uuid_create(uuid);
   v6 = xpc_dictionary_create(&keys, &values, 1uLL);
-  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgReadPresets" args:v6 completion:v4];
+  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgReadPresets" args:v6 completion:presetsCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setActivePreset:(int64_t)a3 OptionalPresetIndex:(unsigned __int8)a4 withResponse:(id)a5
+- (void)setActivePreset:(int64_t)preset OptionalPresetIndex:(unsigned __int8)index withResponse:(id)response
 {
-  v5 = a4;
+  indexCopy = index;
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  responseCopy = response;
   *uuid = 0;
   v18 = 0;
-  v9 = [(CBPeer *)self identifier];
-  [v9 getUUIDBytes:uuid];
+  identifier = [(CBPeer *)self identifier];
+  [identifier getUUIDBytes:uuid];
   *keys = xmmword_1E811E750;
   v16 = "kCBMsgArgLEAudioPresetIndex";
   values = xpc_uuid_create(uuid);
-  v13 = xpc_uint64_create(a3);
-  v14 = xpc_uint64_create(v5);
+  v13 = xpc_uint64_create(preset);
+  v14 = xpc_uint64_create(indexCopy);
   v10 = xpc_dictionary_create(keys, &values, 3uLL);
-  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgSetActivePreset" args:v10 completion:v8];
+  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgSetActivePreset" args:v10 completion:responseCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)writePresetName:(unsigned __int8)a3 withName:(id)a4 withResponse:(id)a5
+- (void)writePresetName:(unsigned __int8)name withName:(id)withName withResponse:(id)response
 {
-  v6 = a3;
+  nameCopy = name;
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  withNameCopy = withName;
+  responseCopy = response;
   *uuid = 0;
   v20 = 0;
-  v10 = [(CBPeer *)self identifier];
-  [v10 getUUIDBytes:uuid];
+  identifier = [(CBPeer *)self identifier];
+  [identifier getUUIDBytes:uuid];
   *keys = xmmword_1E811E768;
   v18 = "kCBMsgArgLEAudioPresetName";
   v16 = 0;
   values = xpc_uuid_create(uuid);
-  v15 = xpc_uint64_create(v6);
-  v11 = v8;
-  v16 = xpc_string_create([v8 UTF8String]);
+  v15 = xpc_uint64_create(nameCopy);
+  v11 = withNameCopy;
+  v16 = xpc_string_create([withNameCopy UTF8String]);
   v12 = xpc_dictionary_create(keys, &values, 3uLL);
-  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgWritePresetName" args:v12 completion:v9];
+  [(CBPeripheral *)self sendLEAudioMsg:@"kCBMsgWritePresetName" args:v12 completion:responseCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLEAudioMsg:(int)a3 args:(id)a4
+- (void)handleLEAudioMsg:(int)msg args:(id)args
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3 - 236) < 0x14 && ((0xFFC01u >> (a3 + 20)))
+  argsCopy = args;
+  if (msg - 236) < 0x14 && ((0xFFC01u >> (msg + 20)))
   {
     if (self->_state == 2)
     {
-      [self *off_1E811E7A0[a3 - 236]];
+      [self *off_1E811E7A0[msg - 236]];
       goto LABEL_10;
     }
 
@@ -2018,9 +2018,9 @@ LABEL_12:
     if (os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = self;
+      selfCopy = self;
       v15 = 1024;
-      v16 = a3;
+      msgCopy = msg;
       v8 = "%@ is not connected, ignoring message: %u";
       v9 = v12;
       v10 = 18;
@@ -2039,7 +2039,7 @@ LABEL_12:
     if (os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 67109120;
-      LODWORD(v14) = a3;
+      LODWORD(selfCopy) = msg;
       v8 = "Unhandled message: %d";
       v9 = v7;
       v10 = 8;
@@ -2053,10 +2053,10 @@ LABEL_10:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLEAudioConnected:(id)a3
+- (void)handleLEAudioConnected:(id)connected
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgLEAudioServiceID"];
+  v4 = [connected objectForKeyedSubscript:@"kCBMsgArgLEAudioServiceID"];
   if ([v4 unsignedIntValue] == 4)
   {
     if (CBLogInitOnce != -1)
@@ -2078,10 +2078,10 @@ LABEL_10:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLEAudioVolumeUpdated:(id)a3
+- (void)handleLEAudioVolumeUpdated:(id)updated
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgLEAudioVolume"];
+  v4 = [updated objectForKeyedSubscript:@"kCBMsgArgLEAudioVolume"];
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -2101,14 +2101,14 @@ LABEL_10:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLEAudioPresetUpdated:(id)a3
+- (void)handleLEAudioPresetUpdated:(id)updated
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"kCBMsgArgLEAudioDevicePresetIndexes"];
-  v5 = [v3 objectForKeyedSubscript:@"kCBMsgArgLEAudioDevicePresetProperties"];
-  v21 = v3;
-  v6 = [v3 objectForKeyedSubscript:@"kCBMsgArgLEAudioDevicePresetNames"];
+  updatedCopy = updated;
+  v4 = [updatedCopy objectForKeyedSubscript:@"kCBMsgArgLEAudioDevicePresetIndexes"];
+  v5 = [updatedCopy objectForKeyedSubscript:@"kCBMsgArgLEAudioDevicePresetProperties"];
+  v21 = updatedCopy;
+  v6 = [updatedCopy objectForKeyedSubscript:@"kCBMsgArgLEAudioDevicePresetNames"];
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -2139,13 +2139,13 @@ LABEL_10:
     do
     {
       v12 = [v4 objectAtIndexedSubscript:v10];
-      v13 = [v12 unsignedCharValue];
+      unsignedCharValue = [v12 unsignedCharValue];
 
       v14 = [v5 objectAtIndexedSubscript:v10];
-      v15 = [v14 unsignedCharValue];
+      unsignedCharValue2 = [v14 unsignedCharValue];
 
       v16 = [v6 objectAtIndexedSubscript:v10];
-      v17 = [[CBLEAudioHearingAidPreset alloc] initWithValues:v13 withProperty:v15 withName:v16];
+      v17 = [[CBLEAudioHearingAidPreset alloc] initWithValues:unsignedCharValue withProperty:unsignedCharValue2 withName:v16];
       [v9 addObject:v17];
 
       v10 = ++v11;
@@ -2160,10 +2160,10 @@ LABEL_10:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLEAudioVolumeOffsetUpdated:(id)a3
+- (void)handleLEAudioVolumeOffsetUpdated:(id)updated
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgLEAudioVolumeOffset"];
+  v4 = [updated objectForKeyedSubscript:@"kCBMsgArgLEAudioVolumeOffset"];
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -2183,10 +2183,10 @@ LABEL_10:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLEAudioVolumeMuteUpdated:(id)a3
+- (void)handleLEAudioVolumeMuteUpdated:(id)updated
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgLEAudioVolumeMuteState"];
+  v4 = [updated objectForKeyedSubscript:@"kCBMsgArgLEAudioVolumeMuteState"];
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -2206,10 +2206,10 @@ LABEL_10:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLEAudioVolumeGainUpdated:(id)a3
+- (void)handleLEAudioVolumeGainUpdated:(id)updated
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgLEAudioVolumeGain"];
+  v4 = [updated objectForKeyedSubscript:@"kCBMsgArgLEAudioVolumeGain"];
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -2229,10 +2229,10 @@ LABEL_10:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLEAudioMicrophoneMuteUpdated:(id)a3
+- (void)handleLEAudioMicrophoneMuteUpdated:(id)updated
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgLEAudioMicrophoneMuteState"];
+  v4 = [updated objectForKeyedSubscript:@"kCBMsgArgLEAudioMicrophoneMuteState"];
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -2252,10 +2252,10 @@ LABEL_10:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLEAudioMicrophoneGainUpdated:(id)a3
+- (void)handleLEAudioMicrophoneGainUpdated:(id)updated
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgLEAudioMicrophoneGain"];
+  v4 = [updated objectForKeyedSubscript:@"kCBMsgArgLEAudioMicrophoneGain"];
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -2275,10 +2275,10 @@ LABEL_10:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLEAudioActivePresetUpdated:(id)a3
+- (void)handleLEAudioActivePresetUpdated:(id)updated
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgLEAudioPresetIndex"];
+  v4 = [updated objectForKeyedSubscript:@"kCBMsgArgLEAudioPresetIndex"];
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -2298,10 +2298,10 @@ LABEL_10:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLEAudioPresetNameUpdated:(id)a3
+- (void)handleLEAudioPresetNameUpdated:(id)updated
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgLEAudioPresetIndex"];
+  v4 = [updated objectForKeyedSubscript:@"kCBMsgArgLEAudioPresetIndex"];
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -2321,15 +2321,15 @@ LABEL_10:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLEAudioHearingAidFeaturesUpdated:(id)a3
+- (void)handleLEAudioHearingAidFeaturesUpdated:(id)updated
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kCBMsgArgLEAudioHearingAidType"];
-  v6 = [v4 objectForKeyedSubscript:@"kCBMsgArgLEAudioHearingAidSyncSupported"];
-  v7 = [v4 objectForKeyedSubscript:@"kCBMsgArgLEAudioHearingAidIndependent"];
-  v8 = [v4 objectForKeyedSubscript:@"kCBMsgArgLEAudioHearingAidDynamic"];
-  v9 = [v4 objectForKeyedSubscript:@"kCBMsgArgLEAudioHearingAidWritable"];
+  updatedCopy = updated;
+  v5 = [updatedCopy objectForKeyedSubscript:@"kCBMsgArgLEAudioHearingAidType"];
+  v6 = [updatedCopy objectForKeyedSubscript:@"kCBMsgArgLEAudioHearingAidSyncSupported"];
+  v7 = [updatedCopy objectForKeyedSubscript:@"kCBMsgArgLEAudioHearingAidIndependent"];
+  v8 = [updatedCopy objectForKeyedSubscript:@"kCBMsgArgLEAudioHearingAidDynamic"];
+  v9 = [updatedCopy objectForKeyedSubscript:@"kCBMsgArgLEAudioHearingAidWritable"];
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer dealloc];
@@ -2339,7 +2339,7 @@ LABEL_10:
   if (os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = updatedCopy;
     _os_log_impl(&dword_1C0AC1000, v10, OS_LOG_TYPE_DEFAULT, "handleLEAudioHearingAidFeaturesUpdated, %@", &v13, 0xCu);
   }
 
@@ -2354,12 +2354,12 @@ LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLEAudioEvents:(id)a3
+- (void)handleLEAudioEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(CBPeripheral *)self updateHandler];
+  eventsCopy = events;
+  updateHandler = [(CBPeripheral *)self updateHandler];
 
-  if (v5)
+  if (updateHandler)
   {
     if (CBLogInitOnce != -1)
     {
@@ -2373,8 +2373,8 @@ LABEL_10:
       _os_log_impl(&dword_1C0AC1000, v6, OS_LOG_TYPE_DEFAULT, "Calling LE audio event handler", v8, 2u);
     }
 
-    v7 = [(CBPeripheral *)self updateHandler];
-    (v7)[2](v7, self, v4);
+    updateHandler2 = [(CBPeripheral *)self updateHandler];
+    (updateHandler2)[2](updateHandler2, self, eventsCopy);
 
 LABEL_7:
     return;
@@ -2393,26 +2393,26 @@ LABEL_7:
   [CBPeripheral handleLEAudioEvents:];
 }
 
-- (void)handleAttributeEvent:(id)a3 args:(id)a4 attributeSelector:(SEL)a5 delegateSelector:(SEL)a6 delegateFlag:(BOOL)a7
+- (void)handleAttributeEvent:(id)event args:(id)args attributeSelector:(SEL)selector delegateSelector:(SEL)delegateSelector delegateFlag:(BOOL)flag
 {
-  v7 = a7;
-  v17 = a4;
-  v12 = [(CBPeripheral *)self attributeForHandle:a3];
+  flagCopy = flag;
+  argsCopy = args;
+  v12 = [(CBPeripheral *)self attributeForHandle:event];
   if (v12)
   {
     v13 = v12;
-    v14 = [MEMORY[0x1E696ABC0] errorWithInfo:v17];
+    v14 = [MEMORY[0x1E696ABC0] errorWithInfo:argsCopy];
     if (!v14)
     {
-      v15 = [v13 a5];
+      selector = [v13 selector];
 
-      v13 = v15;
+      v13 = selector;
     }
 
-    if (v13 && v7)
+    if (v13 && flagCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained a6];
+      [WeakRetained delegateSelector];
     }
   }
 

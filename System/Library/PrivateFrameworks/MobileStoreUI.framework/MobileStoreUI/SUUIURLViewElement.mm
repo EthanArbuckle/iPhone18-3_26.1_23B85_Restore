@@ -1,28 +1,28 @@
 @interface SUUIURLViewElement
-- (SUUIURLViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIURLViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SUUIURLViewElement
 
-- (SUUIURLViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIURLViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v16.receiver = self;
   v16.super_class = SUUIURLViewElement;
-  v9 = [(SUUIViewElement *)&v16 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v16 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 textContent];
-    if ([v10 length])
+    textContent = [elementCopy textContent];
+    if ([textContent length])
     {
-      v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v12 = [v10 stringByTrimmingCharactersInSet:v11];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v12 = [textContent stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
       v13 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v12];
       url = v9->_url;
       v9->_url = v13;
 
-      v10 = v12;
+      textContent = v12;
     }
   }
 

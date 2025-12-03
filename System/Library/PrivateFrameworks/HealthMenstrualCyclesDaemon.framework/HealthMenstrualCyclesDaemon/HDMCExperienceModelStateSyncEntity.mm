@@ -1,7 +1,7 @@
 @interface HDMCExperienceModelStateSyncEntity
-+ (BOOL)updateDataWithStateStorage:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6;
++ (BOOL)updateDataWithStateStorage:(id)storage profile:(id)profile transaction:(id)transaction error:(id *)error;
 + (HDStateSyncEntitySchema)stateEntitySchema;
-+ (void)syncDidFinishWithResult:(int64_t)a3 stateStore:(id)a4 profile:(id)a5;
++ (void)syncDidFinishWithResult:(int64_t)result stateStore:(id)store profile:(id)profile;
 - (HDMCExperienceModelStateSyncEntity)init;
 @end
 
@@ -26,23 +26,23 @@
   return [(HDMCExperienceModelStateSyncEntity *)&v3 init];
 }
 
-+ (BOOL)updateDataWithStateStorage:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)updateDataWithStateStorage:(id)storage profile:(id)profile transaction:(id)transaction error:(id *)error
 {
   swift_unknownObjectRetain();
-  v9 = a4;
-  v10 = a5;
-  sub_2294429F4(a3, v9, v10);
+  profileCopy = profile;
+  transactionCopy = transaction;
+  sub_2294429F4(storage, profileCopy, transactionCopy);
 
   swift_unknownObjectRelease();
   return 1;
 }
 
-+ (void)syncDidFinishWithResult:(int64_t)a3 stateStore:(id)a4 profile:(id)a5
++ (void)syncDidFinishWithResult:(int64_t)result stateStore:(id)store profile:(id)profile
 {
   swift_getObjCClassMetadata();
   swift_unknownObjectRetain();
-  v7 = a5;
-  sub_229442D04(a3, v7);
+  profileCopy = profile;
+  sub_229442D04(result, profileCopy);
   swift_unknownObjectRelease();
 }
 

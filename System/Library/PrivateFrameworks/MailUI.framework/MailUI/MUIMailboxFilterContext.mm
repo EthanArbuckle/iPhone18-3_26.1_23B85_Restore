@@ -1,7 +1,7 @@
 @interface MUIMailboxFilterContext
-+ (id)contextWithMailboxes:(id)a3 focus:(id)a4 isFilteringAvailable:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
-- (MUIMailboxFilterContext)initWithMailboxes:(id)a3 focus:(id)a4 isFilteringAvailable:(BOOL)a5;
++ (id)contextWithMailboxes:(id)mailboxes focus:(id)focus isFilteringAvailable:(BOOL)available;
+- (BOOL)isEqual:(id)equal;
+- (MUIMailboxFilterContext)initWithMailboxes:(id)mailboxes focus:(id)focus isFilteringAvailable:(BOOL)available;
 - (unint64_t)hash;
 @end
 
@@ -14,8 +14,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(MUIMailboxFilterContext *)self mailboxes];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  mailboxes = [(MUIMailboxFilterContext *)self mailboxes];
+  v3 = [mailboxes countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -27,13 +27,13 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(mailboxes);
         }
 
         v5 ^= [*(*(&v9 + 1) + 8 * i) hash];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [mailboxes countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -47,11 +47,11 @@
   return v5;
 }
 
-- (MUIMailboxFilterContext)initWithMailboxes:(id)a3 focus:(id)a4 isFilteringAvailable:(BOOL)a5
+- (MUIMailboxFilterContext)initWithMailboxes:(id)mailboxes focus:(id)focus isFilteringAvailable:(BOOL)available
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  mailboxesCopy = mailboxes;
+  focusCopy = focus;
+  if (!mailboxesCopy)
   {
     [MUIMailboxFilterContext initWithMailboxes:a2 focus:self isFilteringAvailable:?];
   }
@@ -61,36 +61,36 @@
   v11 = [(MUIMailboxFilterContext *)&v15 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [mailboxesCopy copy];
     mailboxes = v11->_mailboxes;
     v11->_mailboxes = v12;
 
-    objc_storeStrong(&v11->_focus, a4);
-    v11->_isFilteringAvailable = a5;
+    objc_storeStrong(&v11->_focus, focus);
+    v11->_isFilteringAvailable = available;
   }
 
   return v11;
 }
 
-+ (id)contextWithMailboxes:(id)a3 focus:(id)a4 isFilteringAvailable:(BOOL)a5
++ (id)contextWithMailboxes:(id)mailboxes focus:(id)focus isFilteringAvailable:(BOOL)available
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithMailboxes:v9 focus:v8 isFilteringAvailable:v5];
+  availableCopy = available;
+  focusCopy = focus;
+  mailboxesCopy = mailboxes;
+  v10 = [[self alloc] initWithMailboxes:mailboxesCopy focus:focusCopy isFilteringAvailable:availableCopy];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(MUIMailboxFilterContext *)self mailboxes];
-    v7 = [v5 mailboxes];
+    v5 = equalCopy;
+    mailboxes = [(MUIMailboxFilterContext *)self mailboxes];
+    mailboxes2 = [v5 mailboxes];
 
     v8 = EFArraysAreEqual();
   }

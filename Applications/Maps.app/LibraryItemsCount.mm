@@ -7,7 +7,7 @@
 
 - (id)createCopy
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1004A5B20();
 
   return v3;

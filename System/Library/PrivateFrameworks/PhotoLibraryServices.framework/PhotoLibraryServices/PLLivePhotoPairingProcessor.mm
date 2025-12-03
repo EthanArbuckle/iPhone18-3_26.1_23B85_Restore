@@ -1,24 +1,24 @@
 @interface PLLivePhotoPairingProcessor
-- (id)combinePair:(id)a3 error:(id *)a4;
+- (id)combinePair:(id)pair error:(id *)error;
 - (id)fetchRequestForLibrary;
-- (id)fetchRequestForSortedGroupIDs:(id)a3;
-- (id)firstGroupFromAssets:(id)a3;
-- (id)livePhotoFetchRequestWithPredicate:(id)a3;
+- (id)fetchRequestForSortedGroupIDs:(id)ds;
+- (id)firstGroupFromAssets:(id)assets;
+- (id)livePhotoFetchRequestWithPredicate:(id)predicate;
 @end
 
 @implementation PLLivePhotoPairingProcessor
 
-- (id)livePhotoFetchRequestWithPredicate:(id)a3
+- (id)livePhotoFetchRequestWithPredicate:(id)predicate
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  predicateCopy = predicate;
+  v5 = predicateCopy;
+  if (predicateCopy)
   {
     v6 = MEMORY[0x1E696AB28];
-    v15[0] = v4;
-    v7 = [(PLPairingProcessor *)self locatedInUsersPhotoLibrary];
-    v15[1] = v7;
+    v15[0] = predicateCopy;
+    locatedInUsersPhotoLibrary = [(PLPairingProcessor *)self locatedInUsersPhotoLibrary];
+    v15[1] = locatedInUsersPhotoLibrary;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
     v9 = [v6 andPredicateWithSubpredicates:v8];
 
@@ -43,13 +43,13 @@
   return v5;
 }
 
-- (id)fetchRequestForSortedGroupIDs:(id)a3
+- (id)fetchRequestForSortedGroupIDs:(id)ds
 {
   v4 = MEMORY[0x1E696AE18];
-  v5 = a3;
-  v6 = [v4 predicateWithFormat:@"%K in %@ and noindex:(%K) == %d and SUBQUERY(modernResources, $r, $r.resourceType == %d).@count == 0", @"mediaGroupUUID", v5, @"trashedState", 0, 3];
+  dsCopy = ds;
+  v6 = [v4 predicateWithFormat:@"%K in %@ and noindex:(%K) == %d and SUBQUERY(modernResources, $r, $r.resourceType == %d).@count == 0", @"mediaGroupUUID", dsCopy, @"trashedState", 0, 3];
   v7 = [(PLLivePhotoPairingProcessor *)self livePhotoFetchRequestWithPredicate:v6];
-  v8 = [v5 count];
+  v8 = [dsCopy count];
 
   if (v8 >= 0x65)
   {
@@ -68,22 +68,22 @@
   return v4;
 }
 
-- (id)combinePair:(id)a3 error:(id *)a4
+- (id)combinePair:(id)pair error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:&unk_1F0FBD1C8];
-  v8 = [v6 objectForKeyedSubscript:&unk_1F0FBD1E0];
+  pairCopy = pair;
+  v7 = [pairCopy objectForKeyedSubscript:&unk_1F0FBD1C8];
+  v8 = [pairCopy objectForKeyedSubscript:&unk_1F0FBD1E0];
 
   [MEMORY[0x1E69BF328] maskForReferencedAsset];
   [v7 savedAssetType];
   v9 = PLValidatedSavedAssetTypeApplies();
-  v10 = [v8 mainFileURL];
-  v11 = [v10 path];
+  mainFileURL = [v8 mainFileURL];
+  path = [mainFileURL path];
   v12 = PFVideoComplementMetadataForVideoAtPath();
 
-  v13 = [v7 mediaGroupUUID];
-  v14 = [v8 mainFileURL];
+  mediaGroupUUID = [v7 mediaGroupUUID];
+  mainFileURL2 = [v8 mainFileURL];
   if (v12)
   {
     [v12 videoDuration];
@@ -107,21 +107,21 @@
     v15 = 0;
   }
 
-  v16 = [v7 becomePhotoIrisWithMediaGroupUUID:v13 mainFileMetadata:0 videoURL:v14 videoDuration:&buf stillDisplayTime:v32 options:v15];
+  v16 = [v7 becomePhotoIrisWithMediaGroupUUID:mediaGroupUUID mainFileMetadata:0 videoURL:mainFileURL2 videoDuration:&buf stillDisplayTime:v32 options:v15];
 
   if (v16)
   {
     goto LABEL_13;
   }
 
-  v31 = self;
+  selfCopy = self;
   v17 = MEMORY[0x1E696ABC0];
   v18 = *MEMORY[0x1E69BFF48];
   v33 = *MEMORY[0x1E696A278];
   v19 = MEMORY[0x1E696AEC0];
-  v20 = [v7 uuid];
-  v21 = [v8 uuid];
-  v22 = [v19 stringWithFormat:@"Failed to combine asset '%@' (prim_img) and asset '%@' (vidcomp) as a LivePhoto", v20, v21];
+  uuid = [v7 uuid];
+  uuid2 = [v8 uuid];
+  v22 = [v19 stringWithFormat:@"Failed to combine asset '%@' (prim_img) and asset '%@' (vidcomp) as a LivePhoto", uuid, uuid2];
   v34 = v22;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
   v24 = [v17 errorWithDomain:v18 code:41003 userInfo:v23];
@@ -134,14 +134,14 @@
     _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_ERROR, "%{public}@", &buf, 0xCu);
   }
 
-  self = v31;
+  self = selfCopy;
   if (!v24)
   {
 LABEL_13:
     [(PLPairingProcessor *)self updatePrimaryAsset:v7 andRemoveAssetIfPossible:v8];
     v24 = 0;
     v26 = 1;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -150,11 +150,11 @@ LABEL_13:
   }
 
   v26 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_14:
     v27 = v24;
-    *a4 = v24;
+    *error = v24;
   }
 
 LABEL_15:
@@ -173,15 +173,15 @@ LABEL_15:
   return v28;
 }
 
-- (id)firstGroupFromAssets:(id)a3
+- (id)firstGroupFromAssets:(id)assets
 {
   v33 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v32 count:16];
+  assetsCopy = assets;
+  v4 = [assetsCopy countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (!v4)
   {
     v6 = 0;
@@ -199,7 +199,7 @@ LABEL_15:
     {
       if (*v23 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(assetsCopy);
       }
 
       v9 = *(*(&v22 + 1) + 8 * v8);
@@ -213,10 +213,10 @@ LABEL_15:
             if (v5)
             {
               v14 = v9;
-              v15 = [v5 savedAssetType];
-              v16 = [v14 savedAssetType];
+              savedAssetType = [v5 savedAssetType];
+              savedAssetType2 = [v14 savedAssetType];
 
-              if (v15 != v16)
+              if (savedAssetType != savedAssetType2)
               {
                 v6 = 0;
                 goto LABEL_23;
@@ -238,12 +238,12 @@ LABEL_17:
           v17 = PLBackendGetLog();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
-            v18 = [v9 kind];
-            v19 = [v9 uuid];
+            kind = [v9 kind];
+            uuid = [v9 uuid];
             *buf = 67240450;
-            v29 = v18;
+            v29 = kind;
             v30 = 2114;
-            v31 = v19;
+            v31 = uuid;
             _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "Unexpected asset kind (%{public}d) for asset %{public}@", buf, 0x12u);
           }
 
@@ -276,10 +276,10 @@ LABEL_22:
       if (v6)
       {
         v11 = v9;
-        v12 = [v6 savedAssetType];
-        v13 = [v11 savedAssetType];
+        savedAssetType3 = [v6 savedAssetType];
+        savedAssetType4 = [v11 savedAssetType];
 
-        if (v12 != v13)
+        if (savedAssetType3 != savedAssetType4)
         {
           v5 = 0;
           goto LABEL_23;
@@ -298,7 +298,7 @@ LABEL_23:
     }
 
     while (v4 != v8);
-    v20 = [v3 countByEnumeratingWithState:&v22 objects:v32 count:16];
+    v20 = [assetsCopy countByEnumeratingWithState:&v22 objects:v32 count:16];
     v4 = v20;
   }
 

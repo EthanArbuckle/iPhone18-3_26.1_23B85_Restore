@@ -22,23 +22,23 @@
   block[1] = 3221225472;
   block[2] = __63__NSError_EFPubliclyDescribableAdditions__ef_publicDescription__block_invoke;
   block[3] = &unk_1E82486C0;
-  block[4] = a1;
+  block[4] = self;
   block[5] = &v25;
   dispatch_sync(sErrorDecodeQueue, block);
   v2 = v26[5];
   if (v2)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"Code=%@(%ld)", v2, objc_msgSend(a1, "code")];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"Code=%@(%ld)", v2, objc_msgSend(self, "code")];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"Code=%ld", objc_msgSend(a1, "code")];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"Code=%ld", objc_msgSend(self, "code")];
   }
   v3 = ;
-  v4 = [a1 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"EFPublicErrorInfoKey"];
-  v6 = [MEMORY[0x1E696AD60] string];
+  userInfo = [self userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"EFPublicErrorInfoKey"];
+  string = [MEMORY[0x1E696AD60] string];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -46,38 +46,38 @@
     v31[1] = 3221225472;
     v31[2] = __stringForPublicInfo_block_invoke;
     v31[3] = &unk_1E82490C8;
-    v32 = v6;
+    v32 = string;
     [v5 enumerateKeysAndObjectsUsingBlock:v31];
   }
 
   v7 = +[EFDevice currentDevice];
-  v8 = [v7 isInternal];
+  isInternal = [v7 isInternal];
 
-  if (v8)
+  if (isInternal)
   {
-    v9 = [a1 description];
+    v9 = [self description];
     if (v26[5])
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Code=%ld", objc_msgSend(a1, "code")];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Code=%ld", objc_msgSend(self, "code")];
       v11 = [v9 stringByReplacingOccurrencesOfString:v10 withString:v3];
 
       v9 = v11;
     }
 
-    v12 = truncatedDescriptionToMaxAllowableSize(v6, 0x96uLL);
+    v12 = truncatedDescriptionToMaxAllowableSize(string, 0x96uLL);
     v13 = [v9 stringByAppendingString:v12];
   }
 
   else
   {
-    v14 = [a1 userInfo];
-    v9 = [v14 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    userInfo2 = [self userInfo];
+    v9 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
     if (v9)
     {
       v15 = MEMORY[0x1E696AEC0];
-      v16 = [v9 ef_publicDescription];
-      v12 = [v15 stringWithFormat:@" UnderlyingError=%@", v16];
+      ef_publicDescription = [v9 ef_publicDescription];
+      v12 = [v15 stringWithFormat:@" UnderlyingError=%@", ef_publicDescription];
     }
 
     else
@@ -85,7 +85,7 @@
       v12 = &stru_1F459BF68;
     }
 
-    if ([v6 length])
+    if ([string length])
     {
       if ([(__CFString *)v12 length])
       {
@@ -105,10 +105,10 @@
 
     v18 = MEMORY[0x1E696AEC0];
     v19 = objc_opt_class();
-    v20 = [a1 domain];
-    v21 = truncatedDescriptionToMaxAllowableSize(v6, v17);
+    domain = [self domain];
+    v21 = truncatedDescriptionToMaxAllowableSize(string, v17);
     v22 = truncatedDescriptionToMaxAllowableSize(v12, v17);
-    v13 = [v18 stringWithFormat:@"%@ Domain=%@ %@%@%@", v19, v20, v3, v21, v22];
+    v13 = [v18 stringWithFormat:@"%@ Domain=%@ %@%@%@", v19, domain, v3, v21, v22];
   }
 
   _Block_object_dispose(&v25, 8);

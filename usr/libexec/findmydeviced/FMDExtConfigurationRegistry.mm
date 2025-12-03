@@ -1,17 +1,17 @@
 @interface FMDExtConfigurationRegistry
 + (FMDExtConfigurationRegistry)sharedInstance;
-- (BOOL)supportsAccessoryType:(id)a3;
+- (BOOL)supportsAccessoryType:(id)type;
 - (FMDExtConfigurationRegistry)init;
 - (FMDExtConfigurationUpdatedListner)listner;
-- (id)configForAccessoryType:(id)a3;
+- (id)configForAccessoryType:(id)type;
 - (void)_initializeFromDisk;
 - (void)_updateDisk;
-- (void)fetchConfigForAccessoryTypes:(id)a3;
+- (void)fetchConfigForAccessoryTypes:(id)types;
 - (void)fetchSupportedAccessoryTypes;
-- (void)prepareForAccessoryType:(id)a3;
+- (void)prepareForAccessoryType:(id)type;
 - (void)readDefaultConfigurations;
-- (void)updateConfigurations:(id)a3;
-- (void)updateSupportedAccessoryTypes:(id)a3;
+- (void)updateConfigurations:(id)configurations;
+- (void)updateSupportedAccessoryTypes:(id)types;
 @end
 
 @implementation FMDExtConfigurationRegistry
@@ -62,23 +62,23 @@
     v11 = [[FMDataArchiver alloc] initWithFileURL:v9];
     [(FMDExtConfigurationRegistry *)v2 setDataArchiver:v11];
 
-    v12 = [(FMDExtConfigurationRegistry *)v2 dataArchiver];
-    [v12 setDataProtectionClass:4];
+    dataArchiver = [(FMDExtConfigurationRegistry *)v2 dataArchiver];
+    [dataArchiver setDataProtectionClass:4];
 
-    v13 = [(FMDExtConfigurationRegistry *)v2 dataArchiver];
-    [v13 setBackedUp:0];
+    dataArchiver2 = [(FMDExtConfigurationRegistry *)v2 dataArchiver];
+    [dataArchiver2 setBackedUp:0];
 
-    v14 = [(FMDExtConfigurationRegistry *)v2 dataArchiver];
-    [v14 setCreateDirectories:1];
+    dataArchiver3 = [(FMDExtConfigurationRegistry *)v2 dataArchiver];
+    [dataArchiver3 setCreateDirectories:1];
 
     [(FMDExtConfigurationRegistry *)v2 setVersion:@"0"];
-    v15 = [(FMDExtConfigurationRegistry *)v2 serialQueue];
+    serialQueue = [(FMDExtConfigurationRegistry *)v2 serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10013F8C0;
     block[3] = &unk_1002CD4C8;
     v18 = v2;
-    dispatch_async(v15, block);
+    dispatch_async(serialQueue, block);
   }
 
   return v2;
@@ -86,18 +86,18 @@
 
 - (void)_updateDisk
 {
-  v3 = [(FMDExtConfigurationRegistry *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(FMDExtConfigurationRegistry *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v20[0] = @"version";
-  v4 = [(FMDExtConfigurationRegistry *)self version];
-  v21[0] = v4;
+  version = [(FMDExtConfigurationRegistry *)self version];
+  v21[0] = version;
   v20[1] = @"supportedAccessories";
-  v5 = [(FMDExtConfigurationRegistry *)self supportedAccessories];
-  v21[1] = v5;
+  supportedAccessories = [(FMDExtConfigurationRegistry *)self supportedAccessories];
+  v21[1] = supportedAccessories;
   v20[2] = @"configurations";
-  v6 = [(FMDExtConfigurationRegistry *)self configurations];
-  v21[2] = v6;
+  configurations = [(FMDExtConfigurationRegistry *)self configurations];
+  v21[2] = configurations;
   v7 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:3];
 
   v8 = sub_10000BE38();
@@ -108,8 +108,8 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "saving configurations to disk %@", &v18, 0xCu);
   }
 
-  v9 = [(FMDExtConfigurationRegistry *)self dataArchiver];
-  v10 = [v9 saveDictionary:v7];
+  dataArchiver = [(FMDExtConfigurationRegistry *)self dataArchiver];
+  v10 = [dataArchiver saveDictionary:v7];
 
   if (v10)
   {
@@ -123,8 +123,8 @@
 
 - (void)_initializeFromDisk
 {
-  v3 = [(FMDExtConfigurationRegistry *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(FMDExtConfigurationRegistry *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v4 = objc_initWeak(&location, self);
   v5 = sub_10000BE38();
@@ -134,10 +134,10 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "reading configurations from disk", buf, 2u);
   }
 
-  v6 = [(FMDExtConfigurationRegistry *)self dataArchiver];
+  dataArchiver = [(FMDExtConfigurationRegistry *)self dataArchiver];
   v7 = [NSSet setWithObjects:objc_opt_class(), 0];
   v22 = 0;
-  v8 = [v6 readDictionaryAndClasses:v7 error:&v22];
+  v8 = [dataArchiver readDictionaryAndClasses:v7 error:&v22];
   v9 = v22;
 
   if (([FMPreferencesUtil BOOLForKey:@"doNotUseDefaultConfigs" inDomain:kFMDNotBackedUpPrefDomain]& 1) != 0)
@@ -228,7 +228,7 @@
   }
 
   v6 = [NSData dataWithContentsOfFile:v4];
-  v21 = self;
+  selfCopy = self;
   v20 = v6;
   if (v6)
   {
@@ -281,18 +281,18 @@
         v17 = v16;
         if (v16)
         {
-          v18 = [(FMDExtAccessoryConfiguration *)v16 accessoryType];
-          [v9 setObject:v17 forKeyedSubscript:v18];
+          accessoryType = [(FMDExtAccessoryConfiguration *)v16 accessoryType];
+          [v9 setObject:v17 forKeyedSubscript:accessoryType];
         }
 
         else
         {
-          v18 = sub_10000BE38();
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+          accessoryType = sub_10000BE38();
+          if (os_log_type_enabled(accessoryType, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v28 = v15;
-            _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Invalid configuration received %@", buf, 0xCu);
+            _os_log_error_impl(&_mh_execute_header, accessoryType, OS_LOG_TYPE_ERROR, "Invalid configuration received %@", buf, 0xCu);
           }
         }
       }
@@ -303,7 +303,7 @@
     while (v12);
   }
 
-  [(FMDExtConfigurationRegistry *)v21 setDefaultConfigurations:v9];
+  [(FMDExtConfigurationRegistry *)selfCopy setDefaultConfigurations:v9];
 }
 
 - (void)fetchSupportedAccessoryTypes
@@ -317,118 +317,118 @@
 
   v4 = +[FMDServiceProvider activeServiceProvider];
   v5 = [FMDSupportedAccessoryTypesAction alloc];
-  v6 = [v4 account];
-  v7 = [v4 serverInteractionController];
-  v8 = [(FMDSupportedAccessoryTypesAction *)v5 initWithAccount:v6 registry:self serverInteractionController:v7];
+  account = [v4 account];
+  serverInteractionController = [v4 serverInteractionController];
+  v8 = [(FMDSupportedAccessoryTypesAction *)v5 initWithAccount:account registry:self serverInteractionController:serverInteractionController];
 
   v9 = +[ActionManager sharedManager];
   v10 = [v9 enqueueAction:v8];
 }
 
-- (void)fetchConfigForAccessoryTypes:(id)a3
+- (void)fetchConfigForAccessoryTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = sub_10000BE38();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = typesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "fetching config from server for %@", &v13, 0xCu);
   }
 
   v6 = +[FMDServiceProvider activeServiceProvider];
   v7 = [FMDAccessoryInfoAction alloc];
-  v8 = [v6 account];
-  v9 = [v6 serverInteractionController];
-  v10 = [(FMDAccessoryInfoAction *)v7 initWithAccount:v8 registry:self accessoryTypes:v4 serverInteractionController:v9];
+  account = [v6 account];
+  serverInteractionController = [v6 serverInteractionController];
+  v10 = [(FMDAccessoryInfoAction *)v7 initWithAccount:account registry:self accessoryTypes:typesCopy serverInteractionController:serverInteractionController];
 
   v11 = +[ActionManager sharedManager];
   v12 = [v11 enqueueAction:v10];
 }
 
-- (void)updateSupportedAccessoryTypes:(id)a3
+- (void)updateSupportedAccessoryTypes:(id)types
 {
-  v4 = a3;
-  v5 = [(FMDExtConfigurationRegistry *)self serialQueue];
+  typesCopy = types;
+  serialQueue = [(FMDExtConfigurationRegistry *)self serialQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100140554;
   v7[3] = &unk_1002CD478;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = typesCopy;
+  selfCopy = self;
+  v6 = typesCopy;
+  dispatch_async(serialQueue, v7);
 }
 
-- (void)updateConfigurations:(id)a3
+- (void)updateConfigurations:(id)configurations
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"configurations"];
+  configurationsCopy = configurations;
+  v5 = [configurationsCopy objectForKeyedSubscript:@"configurations"];
   v6 = sub_10000BE38();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = configurationsCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "received configuration %@", buf, 0xCu);
   }
 
   v7 = objc_alloc_init(NSMutableArray);
   if (v5)
   {
-    v8 = [(FMDExtConfigurationRegistry *)self serialQueue];
+    serialQueue = [(FMDExtConfigurationRegistry *)self serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100140A58;
     block[3] = &unk_1002CDD98;
     v10 = v5;
-    v11 = self;
+    selfCopy = self;
     v12 = v7;
-    dispatch_async(v8, block);
+    dispatch_async(serialQueue, block);
   }
 }
 
-- (BOOL)supportsAccessoryType:(id)a3
+- (BOOL)supportsAccessoryType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(FMDExtConfigurationRegistry *)self serialQueue];
+  serialQueue = [(FMDExtConfigurationRegistry *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100140FAC;
   block[3] = &unk_1002CDA70;
-  v9 = v4;
+  v9 = typeCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = typeCopy;
+  dispatch_sync(serialQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(typeCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return typeCopy;
 }
 
-- (id)configForAccessoryType:(id)a3
+- (id)configForAccessoryType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_10000A9C4;
   v16 = sub_100002AAC;
   v17 = 0;
-  v5 = [(FMDExtConfigurationRegistry *)self serialQueue];
+  serialQueue = [(FMDExtConfigurationRegistry *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100141194;
   block[3] = &unk_1002CD450;
   block[4] = self;
-  v10 = v4;
+  v10 = typeCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = typeCopy;
+  dispatch_sync(serialQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -436,16 +436,16 @@
   return v7;
 }
 
-- (void)prepareForAccessoryType:(id)a3
+- (void)prepareForAccessoryType:(id)type
 {
-  v4 = a3;
-  if ([(FMDExtConfigurationRegistry *)self supportsAccessoryType:v4])
+  typeCopy = type;
+  if ([(FMDExtConfigurationRegistry *)self supportsAccessoryType:typeCopy])
   {
-    v5 = [(FMDExtConfigurationRegistry *)self configForAccessoryType:v4];
+    v5 = [(FMDExtConfigurationRegistry *)self configForAccessoryType:typeCopy];
 
     if (!v5)
     {
-      v7 = v4;
+      v7 = typeCopy;
       v6 = [NSArray arrayWithObjects:&v7 count:1];
       [(FMDExtConfigurationRegistry *)self fetchConfigForAccessoryTypes:v6];
     }

@@ -1,20 +1,20 @@
 @interface KGGraphManager
 - (BOOL)checkValidState;
-- (BOOL)replaceFromGraph:(id)a3 error:(id *)a4;
-- (KGGraphManager)initWithURL:(id)a3 entityFactory:(id)a4;
-- (id)obtainReadOnlyStore:(id *)a3;
-- (id)obtainReadWriteStore:(id *)a3;
-- (void)asyncClose:(id)a3;
-- (void)checkinReadOnlyStore:(id)a3;
+- (BOOL)replaceFromGraph:(id)graph error:(id *)error;
+- (KGGraphManager)initWithURL:(id)l entityFactory:(id)factory;
+- (id)obtainReadOnlyStore:(id *)store;
+- (id)obtainReadWriteStore:(id *)store;
+- (void)asyncClose:(id)close;
+- (void)checkinReadOnlyStore:(id)store;
 - (void)close;
 - (void)dealloc;
 - (void)decrementReadCount;
 - (void)doClose;
 - (void)incrementReadCount;
-- (void)setEntityFactory:(id)a3;
-- (void)submitExclusiveBlock:(id)a3 async:(BOOL)a4;
-- (void)submitReadBlock:(id)a3 async:(BOOL)a4;
-- (void)submitWriteBlock:(id)a3 async:(BOOL)a4;
+- (void)setEntityFactory:(id)factory;
+- (void)submitExclusiveBlock:(id)block async:(BOOL)async;
+- (void)submitReadBlock:(id)block async:(BOOL)async;
+- (void)submitWriteBlock:(id)block async:(BOOL)async;
 @end
 
 @implementation KGGraphManager
@@ -32,12 +32,12 @@
   return readRunningCount < 5;
 }
 
-- (void)submitReadBlock:(id)a3 async:(BOOL)a4
+- (void)submitReadBlock:(id)block async:(BOOL)async
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  entityFactory = v7->_entityFactory;
+  asyncCopy = async;
+  blockCopy = block;
+  selfCopy = self;
+  entityFactory = selfCopy->_entityFactory;
   if (entityFactory)
   {
     v9 = entityFactory;
@@ -53,14 +53,14 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __40__KGGraphManager_submitReadBlock_async___block_invoke;
   aBlock[3] = &unk_2797FEF10;
-  v11 = v7;
+  v11 = selfCopy;
   v25 = v11;
-  v12 = v6;
+  v12 = blockCopy;
   v27 = v12;
   v13 = v10;
   v26 = v13;
   v14 = _Block_copy(aBlock);
-  if (v4)
+  if (asyncCopy)
   {
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -171,12 +171,12 @@ void __40__KGGraphManager_submitReadBlock_async___block_invoke_13(uint64_t a1)
   dispatch_async(v3, v2);
 }
 
-- (void)submitWriteBlock:(id)a3 async:(BOOL)a4
+- (void)submitWriteBlock:(id)block async:(BOOL)async
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  entityFactory = v7->_entityFactory;
+  asyncCopy = async;
+  blockCopy = block;
+  selfCopy = self;
+  entityFactory = selfCopy->_entityFactory;
   if (entityFactory)
   {
     v9 = entityFactory;
@@ -192,9 +192,9 @@ void __40__KGGraphManager_submitReadBlock_async___block_invoke_13(uint64_t a1)
   aBlock[1] = 3221225472;
   aBlock[2] = __41__KGGraphManager_submitWriteBlock_async___block_invoke;
   aBlock[3] = &unk_2797FEF10;
-  v11 = v7;
+  v11 = selfCopy;
   v23 = v11;
-  v12 = v6;
+  v12 = blockCopy;
   v25 = v12;
   v13 = v10;
   v24 = v13;
@@ -209,7 +209,7 @@ void __40__KGGraphManager_submitReadBlock_async___block_invoke_13(uint64_t a1)
   v21 = v16;
   v17 = _Block_copy(v19);
   writeFeederQueue = v15->_writeFeederQueue;
-  if (v4)
+  if (asyncCopy)
   {
     dispatch_async(writeFeederQueue, v17);
   }
@@ -293,12 +293,12 @@ LABEL_12:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitExclusiveBlock:(id)a3 async:(BOOL)a4
+- (void)submitExclusiveBlock:(id)block async:(BOOL)async
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  entityFactory = v7->_entityFactory;
+  asyncCopy = async;
+  blockCopy = block;
+  selfCopy = self;
+  entityFactory = selfCopy->_entityFactory;
   if (entityFactory)
   {
     v9 = entityFactory;
@@ -314,15 +314,15 @@ LABEL_12:
   aBlock[1] = 3221225472;
   aBlock[2] = __45__KGGraphManager_submitExclusiveBlock_async___block_invoke;
   aBlock[3] = &unk_2797FEF10;
-  v11 = v7;
+  v11 = selfCopy;
   v17 = v11;
-  v12 = v6;
+  v12 = blockCopy;
   v19 = v12;
   v13 = v10;
   v18 = v13;
   v14 = _Block_copy(aBlock);
   executionQueue = v11->_executionQueue;
-  if (v4)
+  if (asyncCopy)
   {
     dispatch_barrier_async(executionQueue, v14);
   }
@@ -439,9 +439,9 @@ LABEL_12:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)replaceFromGraph:(id)a3 error:(id *)a4
+- (BOOL)replaceFromGraph:(id)graph error:(id *)error
 {
-  v6 = a3;
+  graphCopy = graph;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -459,7 +459,7 @@ LABEL_12:
   block[3] = &unk_2797FEEE8;
   block[4] = self;
   v17 = &v25;
-  v8 = v6;
+  v8 = graphCopy;
   v15 = v8;
   v9 = v7;
   v16 = v9;
@@ -470,12 +470,12 @@ LABEL_12:
   if ((v11 & 1) == 0)
   {
     v11 = 0;
-    if (a4)
+    if (error)
     {
       v12 = v20[5];
       if (v12)
       {
-        *a4 = v12;
+        *error = v12;
         v11 = *(v26 + 24);
       }
     }
@@ -504,28 +504,28 @@ void __41__KGGraphManager_replaceFromGraph_error___block_invoke(uint64_t a1)
   }
 }
 
-- (void)asyncClose:(id)a3
+- (void)asyncClose:(id)close
 {
-  v3 = self;
+  selfCopy = self;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__KGGraphManager_asyncClose___block_invoke;
   block[3] = &unk_2797FEEC0;
-  v7 = v3;
-  v4 = v3;
+  v7 = selfCopy;
+  v4 = selfCopy;
   v5 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_barrier_async(v4[6], v5);
 }
 
 - (void)close
 {
-  v2 = self;
+  selfCopy = self;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __23__KGGraphManager_close__block_invoke;
   block[3] = &unk_2797FEEC0;
-  v6 = v2;
-  v3 = v2;
+  v6 = selfCopy;
+  v3 = selfCopy;
   v4 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_barrier_sync(v3[6], v4);
 }
@@ -579,7 +579,7 @@ void __41__KGGraphManager_replaceFromGraph_error___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)obtainReadWriteStore:(id *)a3
+- (id)obtainReadWriteStore:(id *)store
 {
   os_unfair_lock_lock(&self->_lock);
   p_readWriteStore = &self->_readWriteStore;
@@ -595,10 +595,10 @@ void __41__KGGraphManager_replaceFromGraph_error___block_invoke(uint64_t a1)
       objc_storeStrong(&self->_readWriteStore, v6);
     }
 
-    else if (a3)
+    else if (store)
     {
       v10 = v8;
-      *a3 = v9;
+      *store = v9;
     }
   }
 
@@ -613,16 +613,16 @@ void __41__KGGraphManager_replaceFromGraph_error___block_invoke(uint64_t a1)
   return v11;
 }
 
-- (void)checkinReadOnlyStore:(id)a3
+- (void)checkinReadOnlyStore:(id)store
 {
-  v6 = a3;
+  storeCopy = store;
   os_unfair_lock_lock(&self->_lock);
   v4 = 0;
   while ([(NSMutableArray *)self->_readOnlyStores count]>= v4)
   {
     v5 = [(NSMutableArray *)self->_readOnlyStores objectAtIndexedSubscript:v4];
 
-    if (v5 == v6)
+    if (v5 == storeCopy)
     {
       self->_readStoreBooking[v4] = 0;
       break;
@@ -637,7 +637,7 @@ void __41__KGGraphManager_replaceFromGraph_error___block_invoke(uint64_t a1)
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)obtainReadOnlyStore:(id *)a3
+- (id)obtainReadOnlyStore:(id *)store
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_closed)
@@ -679,10 +679,10 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (a3)
+  if (store)
   {
     v12 = v11;
-    *a3 = v11;
+    *store = v11;
   }
 
 LABEL_15:
@@ -707,30 +707,30 @@ LABEL_16:
   [(KGGraphManager *)&v3 dealloc];
 }
 
-- (void)setEntityFactory:(id)a3
+- (void)setEntityFactory:(id)factory
 {
-  v5 = a3;
+  factoryCopy = factory;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_entityFactory)
   {
-    objc_storeStrong(&self->_entityFactory, a3);
+    objc_storeStrong(&self->_entityFactory, factory);
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (KGGraphManager)initWithURL:(id)a3 entityFactory:(id)a4
+- (KGGraphManager)initWithURL:(id)l entityFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  factoryCopy = factory;
   v27.receiver = self;
   v27.super_class = KGGraphManager;
   v9 = [(KGGraphManager *)&v27 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
-    objc_storeStrong(&v10->_entityFactory, a4);
+    objc_storeStrong(&v9->_url, l);
+    objc_storeStrong(&v10->_entityFactory, factory);
     v10->_readRunningCount = 0;
     v10->_readFeeding = 1;
     v10->_closed = 0;

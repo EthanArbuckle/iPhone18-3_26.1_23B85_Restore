@@ -1,16 +1,16 @@
 @interface GKMultiCircleImageBrush
-- (CGSize)sizeForInput:(id)a3;
-- (void)drawInRect:(CGRect)a3 withContext:(CGContext *)a4 input:(id)a5;
+- (CGSize)sizeForInput:(id)input;
+- (void)drawInRect:(CGRect)rect withContext:(CGContext *)context input:(id)input;
 @end
 
 @implementation GKMultiCircleImageBrush
 
-- (CGSize)sizeForInput:(id)a3
+- (CGSize)sizeForInput:(id)input
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 != 1 || (v5 = 57.0, *MEMORY[0x277D0C258] == 1) && (_GKIsRemoteUIUsingPadIdiom & 1) == 0)
+  if (userInterfaceIdiom != 1 || (v5 = 57.0, *MEMORY[0x277D0C258] == 1) && (_GKIsRemoteUIUsingPadIdiom & 1) == 0)
   {
     v5 = 42.0;
   }
@@ -21,48 +21,48 @@
   return result;
 }
 
-- (void)drawInRect:(CGRect)a3 withContext:(CGContext *)a4 input:(id)a5
+- (void)drawInRect:(CGRect)rect withContext:(CGContext *)context input:(id)input
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a5;
-  if ([v18 count] < 2)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  inputCopy = input;
+  if ([inputCopy count] < 2)
   {
-    v15 = [v18 firstObject];
-    [v15 drawInRect:{x, y, width, height}];
+    firstObject = [inputCopy firstObject];
+    [firstObject drawInRect:{x, y, width, height}];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D75418] currentDevice];
-    v11 = [v10 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v11 != 1 || (v12 = 40.0, *MEMORY[0x277D0C258] == 1) && (_GKIsRemoteUIUsingPadIdiom & 1) == 0)
+    if (userInterfaceIdiom != 1 || (v12 = 40.0, *MEMORY[0x277D0C258] == 1) && (_GKIsRemoteUIUsingPadIdiom & 1) == 0)
     {
       v12 = 26.0;
     }
 
-    v13 = [v18 objectAtIndex:0];
+    v13 = [inputCopy objectAtIndex:0];
     [v13 drawInRect:{x, y, v12, v12}];
 
-    CGContextSaveGState(a4);
+    CGContextSaveGState(context);
     v14 = MEMORY[0x277D75208];
     v20.origin.x = x + 16.0;
     v20.origin.y = y + 16.0;
     v20.size.width = v12;
     v20.size.height = v12;
     v21 = CGRectInset(v20, -2.0, -2.0);
-    v15 = [v14 bezierPathWithOvalInRect:{v21.origin.x, v21.origin.y, v21.size.width, v21.size.height}];
-    [v15 setLineWidth:2.0];
-    v16 = [MEMORY[0x277D75348] blackColor];
-    [v16 set];
+    firstObject = [v14 bezierPathWithOvalInRect:{v21.origin.x, v21.origin.y, v21.size.width, v21.size.height}];
+    [firstObject setLineWidth:2.0];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [blackColor set];
 
-    CGContextSetBlendMode(a4, kCGBlendModeClear);
-    [v15 fill];
-    CGContextRestoreGState(a4);
-    v17 = [v18 objectAtIndex:1];
+    CGContextSetBlendMode(context, kCGBlendModeClear);
+    [firstObject fill];
+    CGContextRestoreGState(context);
+    v17 = [inputCopy objectAtIndex:1];
     [v17 drawInRect:{x + 16.0, y + 16.0, v12, v12}];
   }
 }

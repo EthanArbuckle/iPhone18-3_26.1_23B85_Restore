@@ -1,7 +1,7 @@
 @interface TTSSiriVoiceResource
 - (id).cxx_construct;
 - (shared_ptr<SiriTTS::VoiceResource>)siriVoiceResource;
-- (void)setSiriVoiceResource:(shared_ptr<SiriTTS::VoiceResource>)a3;
+- (void)setSiriVoiceResource:(shared_ptr<SiriTTS::VoiceResource>)resource;
 @end
 
 @implementation TTSSiriVoiceResource
@@ -21,10 +21,10 @@
   return result;
 }
 
-- (void)setSiriVoiceResource:(shared_ptr<SiriTTS::VoiceResource>)a3
+- (void)setSiriVoiceResource:(shared_ptr<SiriTTS::VoiceResource>)resource
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *resource.__ptr_;
+  v3 = *(resource.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

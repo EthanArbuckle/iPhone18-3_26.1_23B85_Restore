@@ -1,97 +1,97 @@
 @interface ATStoreInfo
 - (ATStoreInfo)init;
-- (ATStoreInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAdamID:(id)a3;
-- (void)setAppleID:(id)a3;
-- (void)setCloudDSID:(id)a3;
-- (void)setCollectionID:(id)a3;
-- (void)setDSID:(id)a3;
-- (void)setDimensions:(id)a3;
-- (void)setDrmFree:(id)a3;
-- (void)setEndpointType:(id)a3;
-- (void)setFlavor:(id)a3;
-- (void)setMatchStatus:(id)a3;
-- (void)setPodcastEpisodeGUID:(id)a3;
-- (void)setRedownloadParams:(id)a3;
-- (void)setRedownloadStatus:(id)a3;
-- (void)setSagaID:(id)a3;
-- (void)setStorefrontID:(id)a3;
-- (void)setSubscriptionID:(id)a3;
-- (void)setSyncID:(id)a3;
-- (void)setVersionID:(id)a3;
-- (void)setXID:(id)a3;
+- (ATStoreInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAdamID:(id)d;
+- (void)setAppleID:(id)d;
+- (void)setCloudDSID:(id)d;
+- (void)setCollectionID:(id)d;
+- (void)setDSID:(id)d;
+- (void)setDimensions:(id)dimensions;
+- (void)setDrmFree:(id)free;
+- (void)setEndpointType:(id)type;
+- (void)setFlavor:(id)flavor;
+- (void)setMatchStatus:(id)status;
+- (void)setPodcastEpisodeGUID:(id)d;
+- (void)setRedownloadParams:(id)params;
+- (void)setRedownloadStatus:(id)status;
+- (void)setSagaID:(id)d;
+- (void)setStorefrontID:(id)d;
+- (void)setSubscriptionID:(id)d;
+- (void)setSyncID:(id)d;
+- (void)setVersionID:(id)d;
+- (void)setXID:(id)d;
 @end
 
 @implementation ATStoreInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(ATStoreInfo *)self adamID];
-  [v4 setAdamID:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  adamID = [(ATStoreInfo *)self adamID];
+  [v4 setAdamID:adamID];
 
-  v6 = [(ATStoreInfo *)self DSID];
-  [v4 setDSID:v6];
+  dSID = [(ATStoreInfo *)self DSID];
+  [v4 setDSID:dSID];
 
-  v7 = [(ATStoreInfo *)self cloudDSID];
-  [v4 setCloudDSID:v7];
+  cloudDSID = [(ATStoreInfo *)self cloudDSID];
+  [v4 setCloudDSID:cloudDSID];
 
-  v8 = [(ATStoreInfo *)self collectionID];
-  [v4 setCollectionID:v8];
+  collectionID = [(ATStoreInfo *)self collectionID];
+  [v4 setCollectionID:collectionID];
 
-  v9 = [(ATStoreInfo *)self versionID];
-  [v4 setVersionID:v9];
+  versionID = [(ATStoreInfo *)self versionID];
+  [v4 setVersionID:versionID];
 
-  v10 = [(ATStoreInfo *)self drmFree];
-  [v4 setDrmFree:v10];
+  drmFree = [(ATStoreInfo *)self drmFree];
+  [v4 setDrmFree:drmFree];
 
-  v11 = [(ATStoreInfo *)self sagaID];
-  [v4 setSagaID:v11];
+  sagaID = [(ATStoreInfo *)self sagaID];
+  [v4 setSagaID:sagaID];
 
-  v12 = [(ATStoreInfo *)self subscriptionID];
-  [v4 setSubscriptionID:v12];
+  subscriptionID = [(ATStoreInfo *)self subscriptionID];
+  [v4 setSubscriptionID:subscriptionID];
 
-  v13 = [(ATStoreInfo *)self matchStatus];
-  [v4 setMatchStatus:v13];
+  matchStatus = [(ATStoreInfo *)self matchStatus];
+  [v4 setMatchStatus:matchStatus];
 
-  v14 = [(ATStoreInfo *)self redownloadStatus];
-  [v4 setRedownloadStatus:v14];
+  redownloadStatus = [(ATStoreInfo *)self redownloadStatus];
+  [v4 setRedownloadStatus:redownloadStatus];
 
-  v15 = [(ATStoreInfo *)self endpointType];
-  [v4 setEndpointType:v15];
+  endpointType = [(ATStoreInfo *)self endpointType];
+  [v4 setEndpointType:endpointType];
 
-  v16 = [(ATStoreInfo *)self appleID];
-  [v4 setAppleID:v16];
+  appleID = [(ATStoreInfo *)self appleID];
+  [v4 setAppleID:appleID];
 
-  v17 = [(ATStoreInfo *)self syncID];
-  [v4 setSyncID:v17];
+  syncID = [(ATStoreInfo *)self syncID];
+  [v4 setSyncID:syncID];
 
-  v18 = [(ATStoreInfo *)self storefrontID];
-  [v4 setStorefrontID:v18];
+  storefrontID = [(ATStoreInfo *)self storefrontID];
+  [v4 setStorefrontID:storefrontID];
 
   v19 = [(ATStoreInfo *)self XID];
   [v4 setXID:v19];
 
-  v20 = [(ATStoreInfo *)self flavor];
-  [v4 setFlavor:v20];
+  flavor = [(ATStoreInfo *)self flavor];
+  [v4 setFlavor:flavor];
 
-  v21 = [(ATStoreInfo *)self dimensions];
-  [v4 setDimensions:v21];
+  dimensions = [(ATStoreInfo *)self dimensions];
+  [v4 setDimensions:dimensions];
 
-  v22 = [(ATStoreInfo *)self podcastEpisodeGUID];
-  [v4 setPodcastEpisodeGUID:v22];
+  podcastEpisodeGUID = [(ATStoreInfo *)self podcastEpisodeGUID];
+  [v4 setPodcastEpisodeGUID:podcastEpisodeGUID];
 
-  v23 = [(ATStoreInfo *)self redownloadParams];
-  [v4 setRedownloadParams:v23];
+  redownloadParams = [(ATStoreInfo *)self redownloadParams];
+  [v4 setRedownloadParams:redownloadParams];
 
   return v4;
 }
 
-- (ATStoreInfo)initWithCoder:(id)a3
+- (ATStoreInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = ATStoreInfo;
   v5 = [(ATStoreInfo *)&v21 init];
@@ -102,7 +102,7 @@
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"downloadDictionary"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"downloadDictionary"];
     downloadDictionary = v5->_downloadDictionary;
     v5->_downloadDictionary = v11;
 
@@ -111,7 +111,7 @@
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v13 setWithObjects:{v14, v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"assetDictionary"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"assetDictionary"];
     assetDictionary = v5->_assetDictionary;
     v5->_assetDictionary = v18;
   }
@@ -119,12 +119,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   downloadDictionary = self->_downloadDictionary;
-  v5 = a3;
-  [v5 encodeObject:downloadDictionary forKey:@"downloadDictionary"];
-  [v5 encodeObject:self->_assetDictionary forKey:@"assetDictionary"];
+  coderCopy = coder;
+  [coderCopy encodeObject:downloadDictionary forKey:@"downloadDictionary"];
+  [coderCopy encodeObject:self->_assetDictionary forKey:@"assetDictionary"];
 }
 
 - (ATStoreInfo)init
@@ -149,12 +149,12 @@
   return v2;
 }
 
-- (void)setDrmFree:(id)a3
+- (void)setDrmFree:(id)free
 {
   assetDictionary = self->_assetDictionary;
-  if (a3)
+  if (free)
   {
-    [(NSMutableDictionary *)assetDictionary setObject:a3 forKey:*MEMORY[0x277D69E50]];
+    [(NSMutableDictionary *)assetDictionary setObject:free forKey:*MEMORY[0x277D69E50]];
   }
 
   else
@@ -163,12 +163,12 @@
   }
 }
 
-- (void)setDimensions:(id)a3
+- (void)setDimensions:(id)dimensions
 {
   assetDictionary = self->_assetDictionary;
-  if (a3)
+  if (dimensions)
   {
-    [(NSMutableDictionary *)assetDictionary setObject:a3 forKey:*MEMORY[0x277D69E60]];
+    [(NSMutableDictionary *)assetDictionary setObject:dimensions forKey:*MEMORY[0x277D69E60]];
   }
 
   else
@@ -177,12 +177,12 @@
   }
 }
 
-- (void)setFlavor:(id)a3
+- (void)setFlavor:(id)flavor
 {
   assetDictionary = self->_assetDictionary;
-  if (a3)
+  if (flavor)
   {
-    [(NSMutableDictionary *)assetDictionary setObject:a3 forKey:*MEMORY[0x277D69E58]];
+    [(NSMutableDictionary *)assetDictionary setObject:flavor forKey:*MEMORY[0x277D69E58]];
   }
 
   else
@@ -191,12 +191,12 @@
   }
 }
 
-- (void)setEndpointType:(id)a3
+- (void)setEndpointType:(id)type
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (type)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:@"ATAssetStoreInfoEndpointType"];
+    [(NSMutableDictionary *)downloadDictionary setObject:type forKey:@"ATAssetStoreInfoEndpointType"];
   }
 
   else
@@ -205,12 +205,12 @@
   }
 }
 
-- (void)setRedownloadParams:(id)a3
+- (void)setRedownloadParams:(id)params
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (params)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:*MEMORY[0x277D6A098]];
+    [(NSMutableDictionary *)downloadDictionary setObject:params forKey:*MEMORY[0x277D6A098]];
   }
 
   else
@@ -219,12 +219,12 @@
   }
 }
 
-- (void)setPodcastEpisodeGUID:(id)a3
+- (void)setPodcastEpisodeGUID:(id)d
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (d)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:*MEMORY[0x277D6A028]];
+    [(NSMutableDictionary *)downloadDictionary setObject:d forKey:*MEMORY[0x277D6A028]];
   }
 
   else
@@ -233,12 +233,12 @@
   }
 }
 
-- (void)setRedownloadStatus:(id)a3
+- (void)setRedownloadStatus:(id)status
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (status)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:*MEMORY[0x277D6A0A0]];
+    [(NSMutableDictionary *)downloadDictionary setObject:status forKey:*MEMORY[0x277D6A0A0]];
   }
 
   else
@@ -247,12 +247,12 @@
   }
 }
 
-- (void)setMatchStatus:(id)a3
+- (void)setMatchStatus:(id)status
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (status)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:*MEMORY[0x277D6A088]];
+    [(NSMutableDictionary *)downloadDictionary setObject:status forKey:*MEMORY[0x277D6A088]];
   }
 
   else
@@ -261,12 +261,12 @@
   }
 }
 
-- (void)setSagaID:(id)a3
+- (void)setSagaID:(id)d
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (d)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:*MEMORY[0x277D6A0A8]];
+    [(NSMutableDictionary *)downloadDictionary setObject:d forKey:*MEMORY[0x277D6A0A8]];
   }
 
   else
@@ -275,12 +275,12 @@
   }
 }
 
-- (void)setAppleID:(id)a3
+- (void)setAppleID:(id)d
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (d)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:*MEMORY[0x277D6A058]];
+    [(NSMutableDictionary *)downloadDictionary setObject:d forKey:*MEMORY[0x277D6A058]];
   }
 
   else
@@ -289,12 +289,12 @@
   }
 }
 
-- (void)setXID:(id)a3
+- (void)setXID:(id)d
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (d)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:*MEMORY[0x277D6A0C0]];
+    [(NSMutableDictionary *)downloadDictionary setObject:d forKey:*MEMORY[0x277D6A0C0]];
   }
 
   else
@@ -303,12 +303,12 @@
   }
 }
 
-- (void)setStorefrontID:(id)a3
+- (void)setStorefrontID:(id)d
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (d)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:*MEMORY[0x277D6A078]];
+    [(NSMutableDictionary *)downloadDictionary setObject:d forKey:*MEMORY[0x277D6A078]];
   }
 
   else
@@ -317,12 +317,12 @@
   }
 }
 
-- (void)setVersionID:(id)a3
+- (void)setVersionID:(id)d
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (d)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:*MEMORY[0x277D6A0B0]];
+    [(NSMutableDictionary *)downloadDictionary setObject:d forKey:*MEMORY[0x277D6A0B0]];
   }
 
   else
@@ -331,12 +331,12 @@
   }
 }
 
-- (void)setCloudDSID:(id)a3
+- (void)setCloudDSID:(id)d
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (d)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:@"ATAssetStoreInfoCloudDSID"];
+    [(NSMutableDictionary *)downloadDictionary setObject:d forKey:@"ATAssetStoreInfoCloudDSID"];
   }
 
   else
@@ -345,12 +345,12 @@
   }
 }
 
-- (void)setSubscriptionID:(id)a3
+- (void)setSubscriptionID:(id)d
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (d)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:@"ATAssetStoreInfoSubscriptionItemID"];
+    [(NSMutableDictionary *)downloadDictionary setObject:d forKey:@"ATAssetStoreInfoSubscriptionItemID"];
   }
 
   else
@@ -359,12 +359,12 @@
   }
 }
 
-- (void)setSyncID:(id)a3
+- (void)setSyncID:(id)d
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (d)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:@"ATLegacyAssetSyncID"];
+    [(NSMutableDictionary *)downloadDictionary setObject:d forKey:@"ATLegacyAssetSyncID"];
   }
 
   else
@@ -373,12 +373,12 @@
   }
 }
 
-- (void)setCollectionID:(id)a3
+- (void)setCollectionID:(id)d
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (d)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:*MEMORY[0x277D6A070]];
+    [(NSMutableDictionary *)downloadDictionary setObject:d forKey:*MEMORY[0x277D6A070]];
   }
 
   else
@@ -387,12 +387,12 @@
   }
 }
 
-- (void)setDSID:(id)a3
+- (void)setDSID:(id)d
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (d)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:*MEMORY[0x277D6A060]];
+    [(NSMutableDictionary *)downloadDictionary setObject:d forKey:*MEMORY[0x277D6A060]];
   }
 
   else
@@ -401,12 +401,12 @@
   }
 }
 
-- (void)setAdamID:(id)a3
+- (void)setAdamID:(id)d
 {
   downloadDictionary = self->_downloadDictionary;
-  if (a3)
+  if (d)
   {
-    [(NSMutableDictionary *)downloadDictionary setObject:a3 forKey:*MEMORY[0x277D6A080]];
+    [(NSMutableDictionary *)downloadDictionary setObject:d forKey:*MEMORY[0x277D6A080]];
   }
 
   else

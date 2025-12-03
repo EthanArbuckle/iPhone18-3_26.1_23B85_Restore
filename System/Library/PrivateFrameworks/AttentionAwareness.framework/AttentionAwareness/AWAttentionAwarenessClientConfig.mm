@@ -1,15 +1,15 @@
 @interface AWAttentionAwarenessClientConfig
 + (id)sharedClientConfig;
 - (AWAttentionAwarenessClientConfig)init;
-- (AWNotification_s)notifySupportedEventsChangedWithQueue:(id)a3 block:(id)a4;
-- (id)tagForIndex:(unint64_t)a3;
-- (unint64_t)addTag:(id)a3;
+- (AWNotification_s)notifySupportedEventsChangedWithQueue:(id)queue block:(id)block;
+- (id)tagForIndex:(unint64_t)index;
+- (unint64_t)addTag:(id)tag;
 - (unint64_t)supportedEvents;
-- (void)cancelNotification:(AWNotification_s *)a3;
+- (void)cancelNotification:(AWNotification_s *)notification;
 - (void)dealloc;
-- (void)decrementTagIndexRefCount:(unint64_t)a3;
-- (void)incrementTagIndexRefCount:(unint64_t)a3;
-- (void)updateState:(BOOL)a3;
+- (void)decrementTagIndexRefCount:(unint64_t)count;
+- (void)incrementTagIndexRefCount:(unint64_t)count;
+- (void)updateState:(BOOL)state;
 @end
 
 @implementation AWAttentionAwarenessClientConfig
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (void)decrementTagIndexRefCount:(unint64_t)a3
+- (void)decrementTagIndexRefCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
     queue = self->_queue;
     v4[0] = MEMORY[0x1E69E9820];
@@ -36,7 +36,7 @@
     v4[2] = __62__AWAttentionAwarenessClientConfig_decrementTagIndexRefCount___block_invoke;
     v4[3] = &unk_1E7F37F50;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = count;
     dispatch_sync(queue, v4);
   }
 }
@@ -203,9 +203,9 @@ LABEL_33:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)incrementTagIndexRefCount:(unint64_t)a3
+- (void)incrementTagIndexRefCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
     queue = self->_queue;
     v4[0] = MEMORY[0x1E69E9820];
@@ -213,7 +213,7 @@ LABEL_33:
     v4[2] = __62__AWAttentionAwarenessClientConfig_incrementTagIndexRefCount___block_invoke;
     v4[3] = &unk_1E7F37F50;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = count;
     dispatch_sync(queue, v4);
   }
 }
@@ -315,9 +315,9 @@ LABEL_18:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (id)tagForIndex:(unint64_t)a3
+- (id)tagForIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
     v7 = 0;
     v8 = &v7;
@@ -332,7 +332,7 @@ LABEL_18:
     block[3] = &unk_1E7F37CD8;
     block[4] = self;
     block[5] = &v7;
-    block[6] = a3;
+    block[6] = index;
     dispatch_sync(queue, block);
     v4 = v8[5];
     _Block_object_dispose(&v7, 8);
@@ -356,9 +356,9 @@ void __48__AWAttentionAwarenessClientConfig_tagForIndex___block_invoke(void *a1)
   *(v4 + 40) = v3;
 }
 
-- (unint64_t)addTag:(id)a3
+- (unint64_t)addTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -368,10 +368,10 @@ void __48__AWAttentionAwarenessClientConfig_tagForIndex___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __43__AWAttentionAwarenessClientConfig_addTag___block_invoke;
   block[3] = &unk_1E7F37CB0;
-  v10 = v4;
+  v10 = tagCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = tagCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -446,7 +446,7 @@ LABEL_14:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelNotification:(AWNotification_s *)a3
+- (void)cancelNotification:(AWNotification_s *)notification
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -454,7 +454,7 @@ LABEL_14:
   v4[2] = __55__AWAttentionAwarenessClientConfig_cancelNotification___block_invoke;
   v4[3] = &unk_1E7F37F50;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = notification;
   dispatch_sync(queue, v4);
 }
 
@@ -470,10 +470,10 @@ void __55__AWAttentionAwarenessClientConfig_cancelNotification___block_invoke(ui
   [v5 removeObjectForKey:v6];
 }
 
-- (AWNotification_s)notifySupportedEventsChangedWithQueue:(id)a3 block:(id)a4
+- (AWNotification_s)notifySupportedEventsChangedWithQueue:(id)queue block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -484,11 +484,11 @@ void __55__AWAttentionAwarenessClientConfig_cancelNotification___block_invoke(ui
   v13[2] = __80__AWAttentionAwarenessClientConfig_notifySupportedEventsChangedWithQueue_block___block_invoke;
   v13[3] = &unk_1E7F37C88;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = queueCopy;
+  v15 = blockCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = blockCopy;
+  v10 = queueCopy;
   dispatch_sync(queue, v13);
   v11 = v18[3];
 
@@ -512,7 +512,7 @@ void __80__AWAttentionAwarenessClientConfig_notifySupportedEventsChangedWithQueu
   *(*(a1[7] + 8) + 24) = v2;
 }
 
-- (void)updateState:(BOOL)a3
+- (void)updateState:(BOOL)state
 {
   v29 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -521,7 +521,7 @@ void __80__AWAttentionAwarenessClientConfig_notifySupportedEventsChangedWithQueu
   v22[1] = 3221225472;
   v22[2] = __48__AWAttentionAwarenessClientConfig_updateState___block_invoke;
   v22[3] = &unk_1E7F37ED8;
-  v23 = a3;
+  stateCopy = state;
   v22[4] = self;
   v5 = [AWServiceManager invokeWithService:v22];
   if (v5)

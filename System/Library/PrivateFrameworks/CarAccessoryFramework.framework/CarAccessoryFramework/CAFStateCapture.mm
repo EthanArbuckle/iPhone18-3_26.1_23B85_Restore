@@ -1,5 +1,5 @@
 @interface CAFStateCapture
-- (CAFStateCapture)initWithIdentifier:(id)a3 capture:(id)a4;
+- (CAFStateCapture)initWithIdentifier:(id)identifier capture:(id)capture;
 - (id)description;
 - (os_state_data_s)stateCapture;
 - (void)dealloc;
@@ -8,11 +8,11 @@
 
 @implementation CAFStateCapture
 
-- (CAFStateCapture)initWithIdentifier:(id)a3 capture:(id)a4
+- (CAFStateCapture)initWithIdentifier:(id)identifier capture:(id)capture
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  captureCopy = capture;
   v8 = CAFGeneralLogging();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
 
@@ -22,7 +22,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v28 = self;
+      selfCopy = self;
       v29 = 2080;
       v30 = "[CAFStateCapture initWithIdentifier:capture:]";
       _os_log_impl(&dword_231618000, v10, OS_LOG_TYPE_DEFAULT, "%@ %s disabled", buf, 0x16u);
@@ -34,11 +34,11 @@
   v11 = [(CAFStateCapture *)&v26 init];
   if (v11)
   {
-    v12 = [v6 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = MEMORY[0x231933C60](v7);
+    v14 = MEMORY[0x231933C60](captureCopy);
     capture = v11->_capture;
     v11->_capture = v14;
 
@@ -49,9 +49,9 @@
     }
 
     v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.caraccessoryframework.StateCapture-%@-%p", v11->_identifier, v11];
-    v18 = [v17 UTF8String];
+    uTF8String = [v17 UTF8String];
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v20 = dispatch_queue_create(v18, v19);
+    v20 = dispatch_queue_create(uTF8String, v19);
     queue = v11->_queue;
     v11->_queue = v20;
 
@@ -103,16 +103,16 @@ uint64_t __46__CAFStateCapture_initWithIdentifier_capture___block_invoke(uint64_
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CAFStateCapture *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p identifier=%@>", v4, self, v5];
+  identifier = [(CAFStateCapture *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p identifier=%@>", v4, self, identifier];
 
   return v6;
 }
 
 - (os_state_data_s)stateCapture
 {
-  v3 = [(CAFStateCapture *)self capture];
-  v4 = v3[2]();
+  capture = [(CAFStateCapture *)self capture];
+  v4 = capture[2]();
 
   v15 = 0;
   v5 = MEMORY[0x231933890](v4, 0, &v15);
@@ -162,8 +162,8 @@ LABEL_12:
   class_getName(v12);
   __strlcpy_chk();
   v11->var1.var1 = v8;
-  v13 = [(CAFStateCapture *)self identifier];
-  [v13 UTF8String];
+  identifier = [(CAFStateCapture *)self identifier];
+  [identifier UTF8String];
   __strlcpy_chk();
 
   memcpy(v11->var4, [v6 bytes], v9);

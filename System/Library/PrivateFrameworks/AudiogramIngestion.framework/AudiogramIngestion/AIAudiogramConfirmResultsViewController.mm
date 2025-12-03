@@ -1,16 +1,16 @@
 @interface AIAudiogramConfirmResultsViewController
-- (AIAudiogramConfirmResultsViewController)initWithDelegate:(id)a3 audiogram:(id)a4;
+- (AIAudiogramConfirmResultsViewController)initWithDelegate:(id)delegate audiogram:(id)audiogram;
 - (AIAudiogramConfirmResultsViewControllerDelegate)delegate;
-- (void)_saveToHealth:(id)a3;
+- (void)_saveToHealth:(id)health;
 - (void)viewDidLoad;
 @end
 
 @implementation AIAudiogramConfirmResultsViewController
 
-- (AIAudiogramConfirmResultsViewController)initWithDelegate:(id)a3 audiogram:(id)a4
+- (AIAudiogramConfirmResultsViewController)initWithDelegate:(id)delegate audiogram:(id)audiogram
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  audiogramCopy = audiogram;
   v8 = aiLocString(@"AudiogramIngestionResultsTitle");
   v9 = aiLocString(@"AudiogramIngestionConfirmResultsDetailTitle");
   v12.receiver = self;
@@ -19,8 +19,8 @@
 
   if (v10)
   {
-    [(AIAudiogramConfirmResultsViewController *)v10 setAudiogram:v7];
-    [(AIAudiogramConfirmResultsViewController *)v10 setDelegate:v6];
+    [(AIAudiogramConfirmResultsViewController *)v10 setAudiogram:audiogramCopy];
+    [(AIAudiogramConfirmResultsViewController *)v10 setDelegate:delegateCopy];
   }
 
   return v10;
@@ -32,8 +32,8 @@
   v60.receiver = self;
   v60.super_class = AIAudiogramConfirmResultsViewController;
   [(OBBaseWelcomeController *)&v60 viewDidLoad];
-  v2 = [(AIAudiogramConfirmResultsViewController *)self healthStore];
-  v3 = v2 == 0;
+  healthStore = [(AIAudiogramConfirmResultsViewController *)self healthStore];
+  v3 = healthStore == 0;
 
   if (v3)
   {
@@ -59,8 +59,8 @@
     [(AIAudiogramConfirmResultsViewController *)self setHealthStore:v6];
   }
 
-  v7 = [(AIAudiogramConfirmResultsViewController *)self unitPreferenceController];
-  v8 = v7 == 0;
+  unitPreferenceController = [(AIAudiogramConfirmResultsViewController *)self unitPreferenceController];
+  v8 = unitPreferenceController == 0;
 
   if (v8)
   {
@@ -83,8 +83,8 @@
     v10 = v9;
     _Block_object_dispose(&v66, 8);
     v11 = [v9 alloc];
-    v12 = [(AIAudiogramConfirmResultsViewController *)self healthStore];
-    v13 = [v11 initWithHealthStore:v12];
+    healthStore2 = [(AIAudiogramConfirmResultsViewController *)self healthStore];
+    v13 = [v11 initWithHealthStore:healthStore2];
     [(AIAudiogramConfirmResultsViewController *)self setUnitPreferenceController:v13];
   }
 
@@ -107,8 +107,8 @@
   v15 = v14;
   _Block_object_dispose(&v66, 8);
   v16 = [v14 alloc];
-  v17 = [(AIAudiogramConfirmResultsViewController *)self healthStore];
-  v58 = [v16 initWithHealthStore:v17];
+  healthStore3 = [(AIAudiogramConfirmResultsViewController *)self healthStore];
+  v58 = [v16 initWithHealthStore:healthStore3];
 
   v66 = 0;
   v67 = &v66;
@@ -129,81 +129,81 @@
   v19 = v18;
   _Block_object_dispose(&v66, 8);
   v20 = [v18 alloc];
-  v21 = [(AIAudiogramConfirmResultsViewController *)self unitPreferenceController];
-  v22 = [v20 initWithUnitController:v21 sampleTypeUpdateController:v58 minimumAudiogramHeight:400.0];
+  unitPreferenceController2 = [(AIAudiogramConfirmResultsViewController *)self unitPreferenceController];
+  v22 = [v20 initWithUnitController:unitPreferenceController2 sampleTypeUpdateController:v58 minimumAudiogramHeight:400.0];
 
-  v23 = [v22 view];
-  [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [v22 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v24 = [(AIAudiogramConfirmResultsViewController *)self audiogram];
-  v71[0] = v24;
+  audiogram = [(AIAudiogramConfirmResultsViewController *)self audiogram];
+  v71[0] = audiogram;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:1];
   [v22 setAudiograms:v25];
 
   [v22 setIsAccessibilityElement:1];
-  v26 = [(AIAudiogramConfirmResultsViewController *)self contentView];
-  v27 = [v22 view];
-  [v26 addSubview:v27];
+  contentView = [(AIAudiogramConfirmResultsViewController *)self contentView];
+  view2 = [v22 view];
+  [contentView addSubview:view2];
 
   [(AIAudiogramConfirmResultsViewController *)self addChildViewController:v22];
   v42 = MEMORY[0x277CCAAD0];
-  v57 = [v22 view];
-  v55 = [v57 topAnchor];
-  v56 = [(AIAudiogramConfirmResultsViewController *)self contentView];
-  v54 = [v56 topAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  view3 = [v22 view];
+  topAnchor = [view3 topAnchor];
+  contentView2 = [(AIAudiogramConfirmResultsViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v53 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v70[0] = v53;
-  v52 = [v22 view];
-  v50 = [v52 leadingAnchor];
-  v51 = [(AIAudiogramConfirmResultsViewController *)self contentView];
-  v49 = [v51 leadingAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49 constant:16.0];
+  view4 = [v22 view];
+  leadingAnchor = [view4 leadingAnchor];
+  contentView3 = [(AIAudiogramConfirmResultsViewController *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v70[1] = v48;
-  v47 = [v22 view];
-  v45 = [v47 trailingAnchor];
-  v46 = [(AIAudiogramConfirmResultsViewController *)self contentView];
-  v44 = [v46 trailingAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44 constant:-16.0];
+  view5 = [v22 view];
+  trailingAnchor = [view5 trailingAnchor];
+  contentView4 = [(AIAudiogramConfirmResultsViewController *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v43 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v70[2] = v43;
-  v28 = [v22 view];
-  v29 = [v28 bottomAnchor];
-  v30 = [(AIAudiogramConfirmResultsViewController *)self contentView];
-  v31 = [v30 bottomAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31 constant:-16.0];
+  view6 = [v22 view];
+  bottomAnchor = [view6 bottomAnchor];
+  contentView5 = [(AIAudiogramConfirmResultsViewController *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
   v70[3] = v32;
-  v33 = [v22 view];
-  v34 = [v33 heightAnchor];
-  v35 = [v34 constraintEqualToConstant:400.0];
+  view7 = [v22 view];
+  heightAnchor = [view7 heightAnchor];
+  v35 = [heightAnchor constraintEqualToConstant:400.0];
   v70[4] = v35;
   v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:5];
   [v42 activateConstraints:v36];
 
-  v37 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v38 = aiLocString(@"AudiogramIngestionConfirmResultsSaveButton");
-  [v37 setTitle:v38 forState:0];
+  [boldButton setTitle:v38 forState:0];
 
-  [v37 addTarget:self action:sel__saveToHealth_ forControlEvents:64];
-  v39 = [(AIAudiogramConfirmResultsViewController *)self buttonTray];
-  [v39 addButton:v37];
+  [boldButton addTarget:self action:sel__saveToHealth_ forControlEvents:64];
+  buttonTray = [(AIAudiogramConfirmResultsViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v40 = [(AIAudiogramConfirmResultsViewController *)self buttonTray];
-  v41 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v40 setBackgroundColor:v41];
+  buttonTray2 = [(AIAudiogramConfirmResultsViewController *)self buttonTray];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [buttonTray2 setBackgroundColor:systemBackgroundColor];
 }
 
-- (void)_saveToHealth:(id)a3
+- (void)_saveToHealth:(id)health
 {
-  v4 = a3;
+  healthCopy = health;
   objc_initWeak(&location, self);
-  v5 = [(AIAudiogramConfirmResultsViewController *)self healthStore];
-  v6 = [(AIAudiogramConfirmResultsViewController *)self audiogram];
+  healthStore = [(AIAudiogramConfirmResultsViewController *)self healthStore];
+  audiogram = [(AIAudiogramConfirmResultsViewController *)self audiogram];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__AIAudiogramConfirmResultsViewController__saveToHealth___block_invoke;
   v7[3] = &unk_278CECAF8;
   v7[4] = self;
   objc_copyWeak(&v8, &location);
-  [v5 saveObject:v6 withCompletion:v7];
+  [healthStore saveObject:audiogram withCompletion:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);

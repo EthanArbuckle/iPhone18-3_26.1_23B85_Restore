@@ -1,12 +1,12 @@
 @interface SFSystemService
 - (SFSystemService)init;
 - (id)description;
-- (void)_handleGetSystemInfoRequest:(id)a3 responseHandler:(id)a4;
-- (void)_handleProfileInstallForSession:(id)a3 request:(id)a4 responseHandler:(id)a5;
-- (void)_handleProfileRemoveForSession:(id)a3 request:(id)a4 responseHandler:(id)a5;
-- (void)_handleProfilesGetForSession:(id)a3 request:(id)a4 responseHandler:(id)a5;
-- (void)_handleRebootSystemForSession:(id)a3 request:(id)a4 responseHandler:(id)a5;
-- (void)_handleSessionStarted:(id)a3;
+- (void)_handleGetSystemInfoRequest:(id)request responseHandler:(id)handler;
+- (void)_handleProfileInstallForSession:(id)session request:(id)request responseHandler:(id)handler;
+- (void)_handleProfileRemoveForSession:(id)session request:(id)request responseHandler:(id)handler;
+- (void)_handleProfilesGetForSession:(id)session request:(id)request responseHandler:(id)handler;
+- (void)_handleRebootSystemForSession:(id)session request:(id)request responseHandler:(id)handler;
+- (void)_handleSessionStarted:(id)started;
 - (void)_sfServiceStart;
 - (void)activate;
 - (void)invalidate;
@@ -147,21 +147,21 @@ LABEL_13:
   }
 }
 
-- (void)_handleSessionStarted:(id)a3
+- (void)_handleSessionStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __41__SFSystemService__handleSessionStarted___block_invoke;
   v17[3] = &unk_1E788B4F8;
   v17[4] = self;
-  [v4 registerRequestID:@"_getSysInfo" options:&unk_1F1D7D790 handler:v17];
+  [startedCopy registerRequestID:@"_getSysInfo" options:&unk_1F1D7D790 handler:v17];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __41__SFSystemService__handleSessionStarted___block_invoke_2;
   v15[3] = &unk_1E7891338;
   v15[4] = self;
-  v5 = v4;
+  v5 = startedCopy;
   v16 = v5;
   [v5 registerRequestID:@"_rebootSystem" options:&unk_1F1D7D7B8 handler:v15];
   v13[0] = MEMORY[0x1E69E9820];
@@ -192,10 +192,10 @@ LABEL_13:
   [v8 registerRequestID:@"_profileRemove" options:&unk_1F1D7D7B8 handler:v9];
 }
 
-- (void)_handleGetSystemInfoRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleGetSystemInfoRequest:(id)request responseHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFSystemService <= 30 && (gLogCategory_SFSystemService != -1 || _LogCategory_Initialize()))
   {
     [SFSystemService _handleGetSystemInfoRequest:responseHandler:];
@@ -238,20 +238,20 @@ LABEL_13:
     [SFSystemService _handleGetSystemInfoRequest:? responseHandler:?];
   }
 
-  (*(v6 + 2))(v6, 0, 0, v7);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v7);
 }
 
-- (void)_handleRebootSystemForSession:(id)a3 request:(id)a4 responseHandler:(id)a5
+- (void)_handleRebootSystemForSession:(id)session request:(id)request responseHandler:(id)handler
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFSystemService <= 30 && (gLogCategory_SFSystemService != -1 || _LogCategory_Initialize()))
   {
     [SFSystemService _handleRebootSystemForSession:request:responseHandler:];
   }
 
-  if (([v12 sessionFlags] & 0x40) == 0 && (objc_msgSend(v12, "pairingContainsACL:", @"com.apple.admin") & 1) == 0)
+  if (([sessionCopy sessionFlags] & 0x40) == 0 && (objc_msgSend(sessionCopy, "pairingContainsACL:", @"com.apple.admin") & 1) == 0)
   {
     v10 = NSErrorWithOSStatusF();
     if (gLogCategory_SFSystemService > 60 || gLogCategory_SFSystemService == -1 && !_LogCategory_Initialize())
@@ -264,7 +264,7 @@ LABEL_13:
 
   if (!reboot3())
   {
-    (*(v9 + 2))(v9, 0, 0, MEMORY[0x1E695E0F8]);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, MEMORY[0x1E695E0F8]);
     v11 = dispatch_time(0, 2000000000);
     dispatch_after(v11, self->_dispatchQueue, &__block_literal_global_193);
     goto LABEL_16;
@@ -278,7 +278,7 @@ LABEL_10:
   }
 
 LABEL_15:
-  (*(v9 + 2))(v9, v10, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, v10, 0, 0);
 
 LABEL_16:
 }
@@ -303,25 +303,25 @@ uint64_t __73__SFSystemService__handleRebootSystemForSession_request_responseHan
   return result;
 }
 
-- (void)_handleProfilesGetForSession:(id)a3 request:(id)a4 responseHandler:(id)a5
+- (void)_handleProfilesGetForSession:(id)session request:(id)request responseHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFSystemService <= 30 && (gLogCategory_SFSystemService != -1 || _LogCategory_Initialize()))
   {
     [SFSystemService _handleProfilesGetForSession:request:responseHandler:];
   }
 
-  if (([v7 sessionFlags] & 0x40) != 0 || objc_msgSend(v7, "pairingContainsACL:", @"com.apple.admin"))
+  if (([sessionCopy sessionFlags] & 0x40) != 0 || objc_msgSend(sessionCopy, "pairingContainsACL:", @"com.apple.admin"))
   {
-    v26 = v9;
-    v27 = v8;
-    v28 = v7;
+    v26 = handlerCopy;
+    v27 = requestCopy;
+    v28 = sessionCopy;
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v11 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v12 = [v11 installedProfilesWithFilterFlags:3];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    v12 = [mEMORY[0x1E69ADFB8] installedProfilesWithFilterFlags:3];
 
     v31 = 0u;
     v32 = 0u;
@@ -347,26 +347,26 @@ uint64_t __73__SFSystemService__handleRebootSystemForSession_request_responseHan
         }
 
         v18 = *(*(&v29 + 1) + 8 * v17);
-        v19 = [v18 identifier];
-        if (!v19 && gLogCategory_SFSystemService <= 60 && (gLogCategory_SFSystemService != -1 || _LogCategory_Initialize()))
+        identifier = [v18 identifier];
+        if (!identifier && gLogCategory_SFSystemService <= 60 && (gLogCategory_SFSystemService != -1 || _LogCategory_Initialize()))
         {
           [SFSystemService _handleProfilesGetForSession:request:responseHandler:];
         }
 
-        v20 = [v18 friendlyName];
-        if (v20 || ([v18 displayName], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+        friendlyName = [v18 friendlyName];
+        if (friendlyName || ([v18 displayName], (friendlyName = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v21 = v20;
+          v21 = friendlyName;
           v22 = objc_alloc_init(MEMORY[0x1E695DF90]);
           [v22 setObject:v21 forKeyedSubscript:@"name"];
 
-          if (!v19)
+          if (!identifier)
           {
             goto LABEL_19;
           }
 
 LABEL_18:
-          [v22 setObject:v19 forKeyedSubscript:@"id"];
+          [v22 setObject:identifier forKeyedSubscript:@"id"];
           goto LABEL_19;
         }
 
@@ -376,7 +376,7 @@ LABEL_18:
         }
 
         v22 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        if (v19)
+        if (identifier)
         {
           goto LABEL_18;
         }
@@ -396,23 +396,23 @@ LABEL_29:
 
         v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
         [v24 setObject:v10 forKeyedSubscript:@"profiles"];
-        v8 = v27;
-        v7 = v28;
-        v9 = v26;
+        requestCopy = v27;
+        sessionCopy = v28;
+        handlerCopy = v26;
 LABEL_30:
         if (gLogCategory_SFSystemService <= 30 && (gLogCategory_SFSystemService != -1 || _LogCategory_Initialize()))
         {
           [SFSystemService _handleProfilesGetForSession:request:responseHandler:];
         }
 
-        (*(v9 + 2))(v9, 0, 0, v24);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, v24);
 
         goto LABEL_34;
       }
     }
   }
 
-  if (([SFSystemService _handleProfilesGetForSession:v9 request:&v33 responseHandler:?]& 1) != 0)
+  if (([SFSystemService _handleProfilesGetForSession:handlerCopy request:&v33 responseHandler:?]& 1) != 0)
   {
     v10 = 0;
     v24 = 0;
@@ -426,18 +426,18 @@ LABEL_34:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleProfileInstallForSession:(id)a3 request:(id)a4 responseHandler:(id)a5
+- (void)_handleProfileInstallForSession:(id)session request:(id)request responseHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFSystemService <= 30 && (gLogCategory_SFSystemService != -1 || _LogCategory_Initialize()))
   {
     [SFSystemService _handleProfileInstallForSession:request:responseHandler:];
   }
 
   v18 = 0;
-  if (([v7 sessionFlags] & 0x40) == 0 && (objc_msgSend(v7, "pairingContainsACL:", @"com.apple.admin") & 1) == 0)
+  if (([sessionCopy sessionFlags] & 0x40) == 0 && (objc_msgSend(sessionCopy, "pairingContainsACL:", @"com.apple.admin") & 1) == 0)
   {
     v12 = NSErrorWithOSStatusF();
     v10 = 0;
@@ -462,9 +462,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v13 = [MEMORY[0x1E69ADFB8] sharedConnection];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
   v17[0] = v12;
-  v14 = [v13 installProfileData:v11 options:0 outError:v17];
+  v14 = [mEMORY[0x1E69ADFB8] installProfileData:v11 options:0 outError:v17];
   v15 = v17[0];
 
   if (!v14)
@@ -479,7 +479,7 @@ LABEL_11:
         [SFSystemService _handleProfileInstallForSession:request:responseHandler:];
       }
 
-      (*(v9 + 2))(v9, v15, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, v15, 0, 0);
 
       goto LABEL_27;
     }
@@ -512,29 +512,29 @@ LABEL_23:
     [SFSystemService _handleProfileInstallForSession:request:responseHandler:];
   }
 
-  (*(v9 + 2))(v9, 0, 0, v16);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v16);
 LABEL_27:
 }
 
-- (void)_handleProfileRemoveForSession:(id)a3 request:(id)a4 responseHandler:(id)a5
+- (void)_handleProfileRemoveForSession:(id)session request:(id)request responseHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFSystemService <= 30 && (gLogCategory_SFSystemService != -1 || _LogCategory_Initialize()))
   {
     [SFSystemService _handleProfileRemoveForSession:request:responseHandler:];
   }
 
-  if ([v7 sessionFlags] & 0x40) != 0 || (objc_msgSend(v7, "pairingContainsACL:", @"com.apple.admin"))
+  if ([sessionCopy sessionFlags] & 0x40) != 0 || (objc_msgSend(sessionCopy, "pairingContainsACL:", @"com.apple.admin"))
   {
     CFStringGetTypeID();
     v10 = CFDictionaryGetTypedValue();
     if (v10)
     {
       v11 = v10;
-      v12 = [MEMORY[0x1E69ADFB8] sharedConnection];
-      [v12 removeProfileWithIdentifier:v11];
+      mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+      [mEMORY[0x1E69ADFB8] removeProfileWithIdentifier:v11];
 
       goto LABEL_8;
     }
@@ -549,7 +549,7 @@ LABEL_8:
       [SFSystemService _handleProfileRemoveForSession:request:responseHandler:];
     }
 
-    (*(v9 + 2))(v9, 0, 0, MEMORY[0x1E695E0F8]);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, MEMORY[0x1E695E0F8]);
     goto LABEL_12;
   }
 
@@ -558,7 +558,7 @@ LABEL_8:
     [SFSystemService _handleProfileRemoveForSession:request:responseHandler:];
   }
 
-  (*(v9 + 2))(v9, v11, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, v11, 0, 0);
 LABEL_12:
 }
 

@@ -1,13 +1,13 @@
 @interface INTicketedEvent
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
 - (INTicketedEvent)initWithCategory:(INTicketedEventCategory)category name:(NSString *)name eventDuration:(INDateComponentsRange *)eventDuration location:(CLPlacemark *)location;
-- (INTicketedEvent)initWithCoder:(id)a3;
+- (INTicketedEvent)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INTicketedEvent
@@ -20,31 +20,31 @@
   v14[0] = v3;
   v13[1] = @"name";
   name = self->_name;
-  v5 = name;
+  null = name;
   if (!name)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[1] = v5;
+  v14[1] = null;
   v13[2] = @"eventDuration";
   eventDuration = self->_eventDuration;
-  v7 = eventDuration;
+  null2 = eventDuration;
   if (!eventDuration)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[2] = v7;
+  v14[2] = null2;
   v13[3] = @"location";
   location = self->_location;
-  v9 = location;
+  null3 = location;
   if (!location)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[3] = v9;
+  v14[3] = null3;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:4];
   if (location)
   {
@@ -82,24 +82,24 @@ LABEL_10:
   return v10;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INTicketedEvent;
   v6 = [(INTicketedEvent *)&v11 description];
-  v7 = [(INTicketedEvent *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INTicketedEvent *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
   if (self->_category == 1)
   {
     v8 = @"movie";
@@ -111,51 +111,51 @@ LABEL_10:
   }
 
   v9 = v8;
-  [v7 if_setObjectIfNonNil:v9 forKey:@"category"];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"category"];
 
-  v10 = [v6 encodeObject:self->_name];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"name"];
+  v10 = [encoderCopy encodeObject:self->_name];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"name"];
 
-  v11 = [v6 encodeObject:self->_eventDuration];
-  [v7 if_setObjectIfNonNil:v11 forKey:@"eventDuration"];
+  v11 = [encoderCopy encodeObject:self->_eventDuration];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"eventDuration"];
 
-  v12 = [v6 encodeObject:self->_location];
+  v12 = [encoderCopy encodeObject:self->_location];
 
-  [v7 if_setObjectIfNonNil:v12 forKey:@"location"];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"location"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   category = self->_category;
-  v5 = a3;
-  [v5 encodeInteger:category forKey:@"category"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_eventDuration forKey:@"eventDuration"];
-  [v5 encodeObject:self->_location forKey:@"location"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:category forKey:@"category"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_eventDuration forKey:@"eventDuration"];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
 }
 
-- (INTicketedEvent)initWithCoder:(id)a3
+- (INTicketedEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"category"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"category"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"name"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"name"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventDuration"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventDuration"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
 
   v12 = [(INTicketedEvent *)self initWithCategory:v5 name:v9 eventDuration:v10 location:v11];
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -165,7 +165,7 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v9 = 0;
       if (self->_category == v5->_category)
       {
@@ -233,26 +233,26 @@ LABEL_10:
   return v14;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 objectForKeyedSubscript:@"category"];
+    v9 = [fromCopy objectForKeyedSubscript:@"category"];
     v10 = [v9 isEqualToString:@"movie"];
 
-    v11 = [v8 objectForKeyedSubscript:@"name"];
+    v11 = [fromCopy objectForKeyedSubscript:@"name"];
     v12 = objc_opt_class();
-    v13 = [v8 objectForKeyedSubscript:@"eventDuration"];
-    v14 = [v7 decodeObjectOfClass:v12 from:v13];
+    v13 = [fromCopy objectForKeyedSubscript:@"eventDuration"];
+    v14 = [decoderCopy decodeObjectOfClass:v12 from:v13];
 
     v15 = objc_opt_class();
-    v16 = [v8 objectForKeyedSubscript:@"location"];
-    v17 = [v7 decodeObjectOfClass:v15 from:v16];
+    v16 = [fromCopy objectForKeyedSubscript:@"location"];
+    v17 = [decoderCopy decodeObjectOfClass:v15 from:v16];
 
-    v18 = [[a1 alloc] initWithCategory:v10 name:v11 eventDuration:v14 location:v17];
+    v18 = [[self alloc] initWithCategory:v10 name:v11 eventDuration:v14 location:v17];
   }
 
   else

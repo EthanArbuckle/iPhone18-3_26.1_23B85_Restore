@@ -1,37 +1,37 @@
 @interface GKSectionMetrics
-+ (id)metricsForIdiom:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)metricsForIdiom:(int64_t)idiom;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)sectionHeadersShouldPin;
-- (CGSize)itemSizeForCollectionView:(id)a3;
+- (CGSize)itemSizeForCollectionView:(id)view;
 - (GKSectionMetrics)init;
-- (GKSectionMetrics)initWithIdiom:(int64_t)a3;
+- (GKSectionMetrics)initWithIdiom:(int64_t)idiom;
 - (UIEdgeInsets)padding;
 - (double)calculatedItemHeight;
 - (double)sectionHeaderHeight;
 - (double)showMoreHeight;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)localDescription;
-- (unint64_t)flowMaxColumnCountForViewWidth:(double)a3;
-- (void)setItemHeightList:(id)a3;
-- (void)setSectionHeaderHeight:(double)a3;
-- (void)setSectionHeadersShouldPin:(BOOL)a3;
-- (void)setShowMoreHeight:(double)a3;
+- (unint64_t)flowMaxColumnCountForViewWidth:(double)width;
+- (void)setItemHeightList:(id)list;
+- (void)setSectionHeaderHeight:(double)height;
+- (void)setSectionHeadersShouldPin:(BOOL)pin;
+- (void)setShowMoreHeight:(double)height;
 @end
 
 @implementation GKSectionMetrics
 
-+ (id)metricsForIdiom:(int64_t)a3
++ (id)metricsForIdiom:(int64_t)idiom
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithIdiom:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithIdiom:idiom];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = GKSectionMetrics;
-  v4 = [(GKGridLayoutMetrics *)&v7 copyWithZone:a3];
+  v4 = [(GKGridLayoutMetrics *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -59,8 +59,8 @@
 
 - (GKSectionMetrics)init
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   if (*MEMORY[0x277D0C258])
   {
@@ -72,7 +72,7 @@
     v5 = 1;
   }
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v6 = v5;
   }
@@ -85,7 +85,7 @@
   return [(GKSectionMetrics *)self initWithIdiom:v6];
 }
 
-- (GKSectionMetrics)initWithIdiom:(int64_t)a3
+- (GKSectionMetrics)initWithIdiom:(int64_t)idiom
 {
   v15.receiver = self;
   v15.super_class = GKSectionMetrics;
@@ -104,13 +104,13 @@
     v6 = +[GKSupplementaryViewMetrics supplementaryMetrics];
     [v6 setKind:@"SectionHeader"];
     [v6 setShouldPin:1];
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v9 = v8;
 
     p_top = &v5->_padding.top;
-    *&v5->_desiredItemHeight = qword_24E367610[a3 == 1];
-    if (a3 == 1)
+    *&v5->_desiredItemHeight = qword_24E367610[idiom == 1];
+    if (idiom == 1)
     {
       *p_top = 22.0;
       v5->_padding.left = 0.0;
@@ -145,13 +145,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     v11 = (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_padding.top, v5[9]), vceqq_f64(*&self->_padding.bottom, v5[10])))) & 1) != 0 && self->_alignment == *&v5[2].f64[1] && self->_lineSpacing == v5[3].f64[0] && self->_interitemSpacing == v5[3].f64[1] && ([(GKSectionMetrics *)self calculatedItemHeight], v8 = v7, [(float64x2_t *)v6 calculatedItemHeight], v8 == v9) && self->_desiredItemWidth == v6[4].f64[1] && self->_flowColumnWidth == v6[5].f64[0] && self->_flowMaxColumnCount == *&v6[5].f64[1] && self->_useViewSizeForFlowMaxColumnCount == LOBYTE(v6[2].f64[0]) && (itemHeightList = self->_itemHeightList, itemHeightList == *&v6[6].f64[1]) && ([(NSDictionary *)itemHeightList isEqual:?]& 1) == 0 && self->_lastLineItemAlignment == *&v6[7].f64[0] && self->_maximumVisibleItemCount == *&v6[7].f64[1] && self->_incrementalRevealItemCount == *&v6[8].f64[0] && self->_incrementalRevealConsumesPadding == BYTE1(v6[2].f64[0]) && self->_shouldAlwaysIncludeShowMore == BYTE2(v6[2].f64[0]) && self->_shouldShowSectionHeadersWhenNoItems == BYTE3(v6[2].f64[0]);
   }
@@ -306,7 +306,7 @@
   return v5;
 }
 
-- (void)setSectionHeaderHeight:(double)a3
+- (void)setSectionHeaderHeight:(double)height
 {
   v4 = [(GKGridLayoutMetrics *)self supplementaryMetricsForKey:@"HeaderMetricKey"];
   v10 = v4;
@@ -315,14 +315,14 @@
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKGridLayoutMetrics.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = [v5 stringWithFormat:@"%@ (metrics != ((void*)0))\n[%s (%s:%d)]", v6, "-[GKSectionMetrics setSectionHeaderHeight:]", objc_msgSend(v8, "UTF8String"), 515];
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = [v5 stringWithFormat:@"%@ (metrics != ((void*)0))\n[%s (%s:%d)]", v6, "-[GKSectionMetrics setSectionHeaderHeight:]", objc_msgSend(lastPathComponent, "UTF8String"), 515];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v9}];
     v4 = 0;
   }
 
-  [v4 setDesiredHeight:a3];
+  [v4 setDesiredHeight:height];
 }
 
 - (double)showMoreHeight
@@ -343,7 +343,7 @@
   return v5;
 }
 
-- (void)setShowMoreHeight:(double)a3
+- (void)setShowMoreHeight:(double)height
 {
   v4 = [(GKGridLayoutMetrics *)self supplementaryMetricsForKey:@"ShowMoreMetricKey"];
   v10 = v4;
@@ -352,14 +352,14 @@
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKGridLayoutMetrics.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = [v5 stringWithFormat:@"%@ (metrics != ((void*)0))\n[%s (%s:%d)]", v6, "-[GKSectionMetrics setShowMoreHeight:]", objc_msgSend(v8, "UTF8String"), 528];
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = [v5 stringWithFormat:@"%@ (metrics != ((void*)0))\n[%s (%s:%d)]", v6, "-[GKSectionMetrics setShowMoreHeight:]", objc_msgSend(lastPathComponent, "UTF8String"), 528];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v9}];
     v4 = 0;
   }
 
-  [v4 setDesiredHeight:a3];
+  [v4 setDesiredHeight:height];
 }
 
 - (BOOL)sectionHeadersShouldPin
@@ -368,20 +368,20 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 shouldPin];
+    shouldPin = [v2 shouldPin];
   }
 
   else
   {
-    v4 = 0;
+    shouldPin = 0;
   }
 
-  return v4;
+  return shouldPin;
 }
 
-- (void)setSectionHeadersShouldPin:(BOOL)a3
+- (void)setSectionHeadersShouldPin:(BOOL)pin
 {
-  v3 = a3;
+  pinCopy = pin;
   v4 = [(GKGridLayoutMetrics *)self supplementaryMetricsForKey:@"HeaderMetricKey"];
   v10 = v4;
   if (!v4)
@@ -389,24 +389,24 @@
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKGridLayoutMetrics.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = [v5 stringWithFormat:@"%@ (metrics != ((void*)0))\n[%s (%s:%d)]", v6, "-[GKSectionMetrics setSectionHeadersShouldPin:]", objc_msgSend(v8, "UTF8String"), 541];
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = [v5 stringWithFormat:@"%@ (metrics != ((void*)0))\n[%s (%s:%d)]", v6, "-[GKSectionMetrics setSectionHeadersShouldPin:]", objc_msgSend(lastPathComponent, "UTF8String"), 541];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v9}];
     v4 = 0;
   }
 
-  [v4 setShouldPin:v3];
+  [v4 setShouldPin:pinCopy];
 }
 
-- (void)setItemHeightList:(id)a3
+- (void)setItemHeightList:(id)list
 {
-  v5 = a3;
-  if (self->_itemHeightList != v5)
+  listCopy = list;
+  if (self->_itemHeightList != listCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_itemHeightList, a3);
-    v5 = v6;
+    v6 = listCopy;
+    objc_storeStrong(&self->_itemHeightList, list);
+    listCopy = v6;
     self->_calculatedItemHeightCache = 0.0;
   }
 }
@@ -468,15 +468,15 @@ void __40__GKSectionMetrics_calculatedItemHeight__block_invoke(uint64_t a1, void
   *(*(*(a1 + 32) + 8) + 24) = v7 + *(*(*(a1 + 32) + 8) + 24);
 }
 
-- (unint64_t)flowMaxColumnCountForViewWidth:(double)a3
+- (unint64_t)flowMaxColumnCountForViewWidth:(double)width
 {
   v3 = 2;
-  if (a3 <= 507.0)
+  if (width <= 507.0)
   {
     v3 = 1;
   }
 
-  if (a3 <= 990.5)
+  if (width <= 990.5)
   {
     return v3;
   }
@@ -487,13 +487,13 @@ void __40__GKSectionMetrics_calculatedItemHeight__block_invoke(uint64_t a1, void
   }
 }
 
-- (CGSize)itemSizeForCollectionView:(id)a3
+- (CGSize)itemSizeForCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(GKSectionMetrics *)self calculatedItemHeight];
   v6 = v5;
   desiredItemWidth = self->_desiredItemWidth;
-  [v4 bounds];
+  [viewCopy bounds];
   v9 = v8;
   v11 = v10;
 

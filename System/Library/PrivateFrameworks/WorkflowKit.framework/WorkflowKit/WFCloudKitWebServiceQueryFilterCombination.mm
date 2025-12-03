@@ -1,29 +1,29 @@
 @interface WFCloudKitWebServiceQueryFilterCombination
-- (id)stringRepresentationWithRecordType:(id)a3;
+- (id)stringRepresentationWithRecordType:(id)type;
 @end
 
 @implementation WFCloudKitWebServiceQueryFilterCombination
 
-- (id)stringRepresentationWithRecordType:(id)a3
+- (id)stringRepresentationWithRecordType:(id)type
 {
-  v4 = a3;
-  v5 = [(WFCloudKitWebServiceQueryFilterCombination *)self filters];
+  typeCopy = type;
+  filters = [(WFCloudKitWebServiceQueryFilterCombination *)self filters];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __81__WFCloudKitWebServiceQueryFilterCombination_stringRepresentationWithRecordType___block_invoke;
   v18 = &unk_1E837A6B8;
-  v19 = v4;
-  v6 = v4;
-  v7 = [v5 if_map:&v15];
+  v19 = typeCopy;
+  v6 = typeCopy;
+  v7 = [filters if_map:&v15];
 
-  v8 = [(WFCloudKitWebServiceQueryFilterCombination *)self type];
+  type = [(WFCloudKitWebServiceQueryFilterCombination *)self type];
   v9 = @" OR ";
-  if (v8 != 1)
+  if (type != 1)
   {
     v9 = 0;
   }
 
-  if (v8)
+  if (type)
   {
     v10 = v9;
   }

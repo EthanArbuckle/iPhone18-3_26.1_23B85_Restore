@@ -1,32 +1,32 @@
 @interface GQHXML
-- (GQHXML)initWithFilename:(__CFString *)a3 documentSize:(CGSize *)a4 outputBundle:(id)a5 useExternalCss:(BOOL)a6;
-- (__CFData)createProgressiveeCSSwithStyleTags:(unsigned __int8)a3;
-- (id)initEmptyWithFilename:(__CFString *)a3 useExternalCss:(BOOL)a4;
-- (void)addContent:(__CFString *)a3;
-- (void)addMetaTagWithTextFormat:(__CFString *)a3;
-- (void)addStyleClassLast:(__CFString *)a3;
-- (void)addViewportMetaTagForDocumentSize:(CGSize)a3;
-- (void)addViewportMetaTagForDocumentSize:(CGSize)a3 maximumScale:(float)a4;
+- (GQHXML)initWithFilename:(__CFString *)filename documentSize:(CGSize *)size outputBundle:(id)bundle useExternalCss:(BOOL)css;
+- (__CFData)createProgressiveeCSSwithStyleTags:(unsigned __int8)tags;
+- (id)initEmptyWithFilename:(__CFString *)filename useExternalCss:(BOOL)css;
+- (void)addContent:(__CFString *)content;
+- (void)addMetaTagWithTextFormat:(__CFString *)format;
+- (void)addStyleClassLast:(__CFString *)last;
+- (void)addViewportMetaTagForDocumentSize:(CGSize)size;
+- (void)addViewportMetaTagForDocumentSize:(CGSize)size maximumScale:(float)scale;
 - (void)dealloc;
-- (void)setAttribute:(const char *)a3 cfStringValue:(__CFString *)a4;
+- (void)setAttribute:(const char *)attribute cfStringValue:(__CFString *)value;
 @end
 
 @implementation GQHXML
 
-- (id)initEmptyWithFilename:(__CFString *)a3 useExternalCss:(BOOL)a4
+- (id)initEmptyWithFilename:(__CFString *)filename useExternalCss:(BOOL)css
 {
-  v4 = a4;
+  cssCopy = css;
   v10.receiver = self;
   v10.super_class = GQHXML;
   v6 = [(GQHXML *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    v6->mFilename = a3;
-    CFRetain(a3);
+    v6->mFilename = filename;
+    CFRetain(filename);
     v8 = off_80030;
-    v7->mUseExternalCss = v4;
-    if (!v4)
+    v7->mUseExternalCss = cssCopy;
+    if (!cssCopy)
     {
       v8 = off_80010;
     }
@@ -38,9 +38,9 @@
   return v7;
 }
 
-- (GQHXML)initWithFilename:(__CFString *)a3 documentSize:(CGSize *)a4 outputBundle:(id)a5 useExternalCss:(BOOL)a6
+- (GQHXML)initWithFilename:(__CFString *)filename documentSize:(CGSize *)size outputBundle:(id)bundle useExternalCss:(BOOL)css
 {
-  v6 = a6;
+  cssCopy = css;
   v17.receiver = self;
   v17.super_class = GQHXML;
   v10 = [(GQHXML *)&v17 init];
@@ -48,11 +48,11 @@
   {
     objc_opt_class();
     v10->isProgressive = objc_opt_isKindOfClass() & 1;
-    v10->mFilename = a3;
-    CFRetain(a3);
+    v10->mFilename = filename;
+    CFRetain(filename);
     v11 = off_80030;
-    v10->mUseExternalCss = v6;
-    if (!v6)
+    v10->mUseExternalCss = cssCopy;
+    if (!cssCopy)
     {
       v11 = off_80010;
     }
@@ -76,7 +76,7 @@
       v10->mCssFilename = mCssFilename;
     }
 
-    v14 = [a5 createUriForResource:mCssFilename];
+    v14 = [bundle createUriForResource:mCssFilename];
     [(GQHXML *)v10 startElement:"link"];
     [(GQHXML *)v10 setAttribute:"rel" value:"stylesheet"];
     [(GQHXML *)v10 setAttribute:"type" value:"text/css"];
@@ -85,9 +85,9 @@
     CFRelease(v14);
     v10->mCss = CFStringCreateMutable(0, 0);
     v10->mLastCss = CFStringCreateMutable(0, 0);
-    if (a4)
+    if (size)
     {
-      [(GQHXML *)v10 addViewportMetaTagForDocumentSize:a4->width, a4->height];
+      [(GQHXML *)v10 addViewportMetaTagForDocumentSize:size->width, size->height];
     }
   }
 
@@ -130,18 +130,18 @@
   [(GQHXML *)&v7 dealloc];
 }
 
-- (void)setAttribute:(const char *)a3 cfStringValue:(__CFString *)a4
+- (void)setAttribute:(const char *)attribute cfStringValue:(__CFString *)value
 {
-  if (a4)
+  if (value)
   {
-    CStringPtr = CFStringGetCStringPtr(a4, 0x8000100u);
+    CStringPtr = CFStringGetCStringPtr(value, 0x8000100u);
     if (!CStringPtr)
     {
-      Length = CFStringGetLength(a4);
+      Length = CFStringGetLength(value);
       MaximumSizeForEncoding = CFStringGetMaximumSizeForEncoding(Length, 0x8000100u);
       v10 = malloc_type_malloc(MaximumSizeForEncoding + 1, 0x100004077774924uLL);
-      CFStringGetCString(a4, v10, MaximumSizeForEncoding + 1, 0x8000100u);
-      [(GQHXMLOutput *)self->mOutput setAttribute:a3 value:v10];
+      CFStringGetCString(value, v10, MaximumSizeForEncoding + 1, 0x8000100u);
+      [(GQHXMLOutput *)self->mOutput setAttribute:attribute value:v10];
 
       free(v10);
       return;
@@ -155,12 +155,12 @@
 
   mOutput = self->mOutput;
 
-  [(GQHXMLOutput *)mOutput setAttribute:a3 value:CStringPtr];
+  [(GQHXMLOutput *)mOutput setAttribute:attribute value:CStringPtr];
 }
 
-- (void)addContent:(__CFString *)a3
+- (void)addContent:(__CFString *)content
 {
-  CStringPtr = CFStringGetCStringPtr(a3, 0x8000100u);
+  CStringPtr = CFStringGetCStringPtr(content, 0x8000100u);
   if (CStringPtr)
   {
     v6 = CStringPtr;
@@ -169,42 +169,42 @@
     [(GQHXMLOutput *)mOutput addXmlCharContent:v6];
   }
 
-  else if (a3)
+  else if (content)
   {
-    Length = CFStringGetLength(a3);
+    Length = CFStringGetLength(content);
     MaximumSizeForEncoding = CFStringGetMaximumSizeForEncoding(Length, 0x8000100u);
     v10 = malloc_type_malloc(MaximumSizeForEncoding + 1, 0x100004077774924uLL);
-    CFStringGetCString(a3, v10, MaximumSizeForEncoding + 1, 0x8000100u);
+    CFStringGetCString(content, v10, MaximumSizeForEncoding + 1, 0x8000100u);
     [(GQHXMLOutput *)self->mOutput addXmlCharContent:v10];
 
     free(v10);
   }
 }
 
-- (void)addStyleClassLast:(__CFString *)a3
+- (void)addStyleClassLast:(__CFString *)last
 {
   mLastCss = self->mLastCss;
   if (mLastCss)
   {
-    CFStringAppend(mLastCss, a3);
+    CFStringAppend(mLastCss, last);
   }
 }
 
-- (void)addMetaTagWithTextFormat:(__CFString *)a3
+- (void)addMetaTagWithTextFormat:(__CFString *)format
 {
   [(GQHXML *)self startElement:"meta"];
   [(GQHXML *)self setAttribute:"http-equiv" value:"Content-type"];
-  v5 = CFStringCreateWithFormat(0, 0, @"text/html; charset=%@", a3);
+  v5 = CFStringCreateWithFormat(0, 0, @"text/html; charset=%@", format);
   [(GQHXML *)self setAttribute:"content" cfStringValue:v5];
   CFRelease(v5);
 
   [(GQHXML *)self endElementWithExpectedName:"meta"];
 }
 
-- (void)addViewportMetaTagForDocumentSize:(CGSize)a3
+- (void)addViewportMetaTagForDocumentSize:(CGSize)size
 {
-  width = a3.width;
-  [(GQHXML *)self startElement:"meta", a3.width, a3.height];
+  width = size.width;
+  [(GQHXML *)self startElement:"meta", size.width, size.height];
   [(GQHXML *)self setAttribute:"name" value:"viewport"];
   v5 = CFStringCreateWithFormat(0, 0, @"width=%f", *&width);
   [(GQHXML *)self setAttribute:"content" cfStringValue:v5];
@@ -213,24 +213,24 @@
   [(GQHXML *)self endElement];
 }
 
-- (void)addViewportMetaTagForDocumentSize:(CGSize)a3 maximumScale:(float)a4
+- (void)addViewportMetaTagForDocumentSize:(CGSize)size maximumScale:(float)scale
 {
-  width = a3.width;
-  [(GQHXML *)self startElement:"meta", a3.width, a3.height];
+  width = size.width;
+  [(GQHXML *)self startElement:"meta", size.width, size.height];
   [(GQHXML *)self setAttribute:"name" value:"viewport"];
-  v7 = CFStringCreateWithFormat(0, 0, @"width=%f, maximum-scale=%f", *&width, a4);
+  v7 = CFStringCreateWithFormat(0, 0, @"width=%f, maximum-scale=%f", *&width, scale);
   [(GQHXML *)self setAttribute:"content" cfStringValue:v7];
   CFRelease(v7);
 
   [(GQHXML *)self endElement];
 }
 
-- (__CFData)createProgressiveeCSSwithStyleTags:(unsigned __int8)a3
+- (__CFData)createProgressiveeCSSwithStyleTags:(unsigned __int8)tags
 {
-  v3 = a3;
+  tagsCopy = tags;
   CFStringAppend(self->mCss, self->mLastCss);
   CFRelease(self->mLastCss);
-  if (v3)
+  if (tagsCopy)
   {
     Mutable = CFStringCreateMutable(0, 0);
     CFStringAppend(Mutable, @"<style type=text/css>");
@@ -247,7 +247,7 @@
   CFRelease(self->mCss);
   self->mCss = CFStringCreateMutable(0, 0);
   self->mLastCss = CFStringCreateMutable(0, 0);
-  if (v3)
+  if (tagsCopy)
   {
     CFRelease(Mutable);
   }

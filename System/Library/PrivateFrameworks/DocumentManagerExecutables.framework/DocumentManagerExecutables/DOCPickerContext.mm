@@ -2,15 +2,15 @@
 - (BOOL)canRename;
 - (BOOL)canSetTags;
 - (DOCPickerContext)init;
-- (DOCPickerContext)initWithFPURLs:(id)a3;
-- (DOCPickerContext)initWithNodes:(id)a3;
-- (DOCPickerContext)initWithURLs:(id)a3;
+- (DOCPickerContext)initWithFPURLs:(id)ls;
+- (DOCPickerContext)initWithNodes:(id)nodes;
+- (DOCPickerContext)initWithURLs:(id)ls;
 - (NSArray)nodesToMove;
 - (NSArray)urlsToSave;
 - (NSArray)utisToSave;
 - (NSString)firstDisplayName;
 - (int64_t)numberOfItems;
-- (void)setUtisToSave:(id)a3;
+- (void)setUtisToSave:(id)save;
 @end
 
 @implementation DOCPickerContext
@@ -41,7 +41,7 @@
   return v2.super.isa;
 }
 
-- (void)setUtisToSave:(id)a3
+- (void)setUtisToSave:(id)save
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR___DOCPickerContext_utisToSave;
@@ -68,11 +68,11 @@
 
 - (BOOL)canRename
 {
-  v2 = self;
-  v3 = [(DOCPickerContext *)v2 urlsToSave];
-  if (v3)
+  selfCopy = self;
+  urlsToSave = [(DOCPickerContext *)selfCopy urlsToSave];
+  if (urlsToSave)
   {
-    v4 = v3;
+    v4 = urlsToSave;
     type metadata accessor for URL();
     v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -90,10 +90,10 @@
 
 - (BOOL)canSetTags
 {
-  v2 = self;
-  v3 = [(DOCPickerContext *)v2 urlsToSave];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  urlsToSave = [(DOCPickerContext *)selfCopy urlsToSave];
+  v4 = urlsToSave;
+  if (urlsToSave)
   {
   }
 
@@ -102,7 +102,7 @@
 
 - (int64_t)numberOfItems
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCPickerContext.numberOfItems.getter();
 
   return v3;
@@ -110,7 +110,7 @@
 
 - (NSString)firstDisplayName
 {
-  v2 = self;
+  selfCopy = self;
   DOCPickerContext.firstDisplayName.getter();
   v4 = v3;
   v6 = v5;
@@ -136,21 +136,21 @@
   return result;
 }
 
-- (DOCPickerContext)initWithFPURLs:(id)a3
+- (DOCPickerContext)initWithFPURLs:(id)ls
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for FPSandboxingURLWrapper);
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   return DOCPickerContext.init(fpurls:)(v3);
 }
 
-- (DOCPickerContext)initWithURLs:(id)a3
+- (DOCPickerContext)initWithURLs:(id)ls
 {
   type metadata accessor for URL();
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   return DOCPickerContext.init(urls:)(v3);
 }
 
-- (DOCPickerContext)initWithNodes:(id)a3
+- (DOCPickerContext)initWithNodes:(id)nodes
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo7DOCNode_pMd);
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();

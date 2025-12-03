@@ -1,30 +1,30 @@
 @interface _CRLPKStrokeIDWrapper
-- (BOOL)isEqual:(id)a3;
-- (_CRLPKStrokeIDWrapper)initWithStrokeID:(_CRLPKStrokeID *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setStrokeID:(_CRLPKStrokeID *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CRLPKStrokeIDWrapper)initWithStrokeID:(_CRLPKStrokeID *)d;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setStrokeID:(_CRLPKStrokeID *)d;
 @end
 
 @implementation _CRLPKStrokeIDWrapper
 
-- (_CRLPKStrokeIDWrapper)initWithStrokeID:(_CRLPKStrokeID *)a3
+- (_CRLPKStrokeIDWrapper)initWithStrokeID:(_CRLPKStrokeID *)d
 {
   v6.receiver = self;
   v6.super_class = _CRLPKStrokeIDWrapper;
   result = [(_CRLPKStrokeIDWrapper *)&v6 init];
-  v5 = *&a3->replicaUUID[12];
-  *&result->_strokeID.clock = *&a3->clock;
+  v5 = *&d->replicaUUID[12];
+  *&result->_strokeID.clock = *&d->clock;
   *&result->_strokeID.replicaUUID[12] = v5;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   [(_CRLPKStrokeIDWrapper *)self strokeID];
-  if (v4)
+  if (equalCopy)
   {
-    [v4 strokeID];
+    [equalCopy strokeID];
     v5 = v8;
   }
 
@@ -41,17 +41,17 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_CRLPKStrokeIDWrapper allocWithZone:a3];
+  v4 = [_CRLPKStrokeIDWrapper allocWithZone:zone];
   [(_CRLPKStrokeIDWrapper *)self strokeID];
   return [(_CRLPKStrokeIDWrapper *)v4 initWithStrokeID:&v6];
 }
 
-- (void)setStrokeID:(_CRLPKStrokeID *)a3
+- (void)setStrokeID:(_CRLPKStrokeID *)d
 {
-  v3 = *&a3->clock;
-  *&self->_strokeID.replicaUUID[12] = *&a3->replicaUUID[12];
+  v3 = *&d->clock;
+  *&self->_strokeID.replicaUUID[12] = *&d->replicaUUID[12];
   *&self->_strokeID.clock = v3;
 }
 

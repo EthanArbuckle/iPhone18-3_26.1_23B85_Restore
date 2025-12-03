@@ -1,40 +1,40 @@
 @interface TRIRolloutTargetingOperation
-- (BOOL)_targetRolloutDeployment:(id)a3 appendingTelemetryToSupport:(id)a4 reportTelemetryToServer:(BOOL *)a5 factorPackSetIdToActivate:(id *)a6 shouldDisenroll:(BOOL *)a7 error:(id *)a8;
-- (BOOL)targetRolloutDeployment:(id)a3 appendingTelemetryToSupport:(id)a4 reportTelemetryToServer:(BOOL *)a5 factorPackSetIdToActivate:(id *)a6 shouldDisenroll:(BOOL *)a7 error:(id *)a8;
-- (TRIRolloutTargetingOperation)initWithRolloutTargeter:(id)a3 rolloutDatabase:(id)a4 context:(id)a5;
+- (BOOL)_targetRolloutDeployment:(id)deployment appendingTelemetryToSupport:(id)support reportTelemetryToServer:(BOOL *)server factorPackSetIdToActivate:(id *)activate shouldDisenroll:(BOOL *)disenroll error:(id *)error;
+- (BOOL)targetRolloutDeployment:(id)deployment appendingTelemetryToSupport:(id)support reportTelemetryToServer:(BOOL *)server factorPackSetIdToActivate:(id *)activate shouldDisenroll:(BOOL *)disenroll error:(id *)error;
+- (TRIRolloutTargetingOperation)initWithRolloutTargeter:(id)targeter rolloutDatabase:(id)database context:(id)context;
 @end
 
 @implementation TRIRolloutTargetingOperation
 
-- (TRIRolloutTargetingOperation)initWithRolloutTargeter:(id)a3 rolloutDatabase:(id)a4 context:(id)a5
+- (TRIRolloutTargetingOperation)initWithRolloutTargeter:(id)targeter rolloutDatabase:(id)database context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  targeterCopy = targeter;
+  databaseCopy = database;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = TRIRolloutTargetingOperation;
   v12 = [(TRIRolloutTargetingOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_targeter, a3);
-    objc_storeStrong(&v13->_rolloutDatabase, a4);
-    objc_storeStrong(&v13->_context, a5);
+    objc_storeStrong(&v12->_targeter, targeter);
+    objc_storeStrong(&v13->_rolloutDatabase, database);
+    objc_storeStrong(&v13->_context, context);
   }
 
   return v13;
 }
 
-- (BOOL)targetRolloutDeployment:(id)a3 appendingTelemetryToSupport:(id)a4 reportTelemetryToServer:(BOOL *)a5 factorPackSetIdToActivate:(id *)a6 shouldDisenroll:(BOOL *)a7 error:(id *)a8
+- (BOOL)targetRolloutDeployment:(id)deployment appendingTelemetryToSupport:(id)support reportTelemetryToServer:(BOOL *)server factorPackSetIdToActivate:(id *)activate shouldDisenroll:(BOOL *)disenroll error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
+  deploymentCopy = deployment;
+  supportCopy = support;
   v16 = objc_autoreleasePoolPush();
-  v17 = [(TRIRolloutTargetingOperation *)self _targetRolloutDeployment:v14 appendingTelemetryToSupport:v15 reportTelemetryToServer:a5 factorPackSetIdToActivate:a6 shouldDisenroll:a7 error:a8];
-  if (*a8)
+  v17 = [(TRIRolloutTargetingOperation *)self _targetRolloutDeployment:deploymentCopy appendingTelemetryToSupport:supportCopy reportTelemetryToServer:server factorPackSetIdToActivate:activate shouldDisenroll:disenroll error:error];
+  if (*error)
   {
-    v18 = [*a8 userInfo];
-    v19 = [v18 objectForKeyedSubscript:@"logMessage"];
+    userInfo = [*error userInfo];
+    v19 = [userInfo objectForKeyedSubscript:@"logMessage"];
     v20 = v19;
     v21 = @"unknown";
     if (v19)
@@ -46,7 +46,7 @@
 
     v23 = [MEMORY[0x277D73B40] metricWithName:@"targeting_error" categoricalValue:v22];
 
-    [v15 addMetric:v23];
+    [supportCopy addMetric:v23];
   }
 
   objc_autoreleasePoolPop(v16);
@@ -54,24 +54,24 @@
   return v17;
 }
 
-- (BOOL)_targetRolloutDeployment:(id)a3 appendingTelemetryToSupport:(id)a4 reportTelemetryToServer:(BOOL *)a5 factorPackSetIdToActivate:(id *)a6 shouldDisenroll:(BOOL *)a7 error:(id *)a8
+- (BOOL)_targetRolloutDeployment:(id)deployment appendingTelemetryToSupport:(id)support reportTelemetryToServer:(BOOL *)server factorPackSetIdToActivate:(id *)activate shouldDisenroll:(BOOL *)disenroll error:(id *)error
 {
   v91 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = v16;
-  if (v15)
+  deploymentCopy = deployment;
+  supportCopy = support;
+  v17 = supportCopy;
+  if (deploymentCopy)
   {
-    if (v16)
+    if (supportCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_64:
-    v74 = [MEMORY[0x277CCA890] currentHandler];
-    [v74 handleFailureInMethod:a2 object:self file:@"TRIRolloutTargetingOperation.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"support != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutTargetingOperation.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"support != nil"}];
 
-    if (a5)
+    if (server)
     {
       goto LABEL_4;
     }
@@ -79,8 +79,8 @@ LABEL_64:
     goto LABEL_65;
   }
 
-  v73 = [MEMORY[0x277CCA890] currentHandler];
-  [v73 handleFailureInMethod:a2 object:self file:@"TRIRolloutTargetingOperation.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"deployment != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIRolloutTargetingOperation.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"deployment != nil"}];
 
   if (!v17)
   {
@@ -88,52 +88,52 @@ LABEL_64:
   }
 
 LABEL_3:
-  if (a5)
+  if (server)
   {
     goto LABEL_4;
   }
 
 LABEL_65:
-  v75 = [MEMORY[0x277CCA890] currentHandler];
-  [v75 handleFailureInMethod:a2 object:self file:@"TRIRolloutTargetingOperation.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"reportTelemetryToServer != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIRolloutTargetingOperation.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"reportTelemetryToServer != nil"}];
 
 LABEL_4:
-  *a5 = 1;
-  if (!a6)
+  *server = 1;
+  if (!activate)
   {
-    v76 = [MEMORY[0x277CCA890] currentHandler];
-    [v76 handleFailureInMethod:a2 object:self file:@"TRIRolloutTargetingOperation.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetIdToActivate != nil"}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRIRolloutTargetingOperation.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetIdToActivate != nil"}];
   }
 
-  v18 = *a6;
-  *a6 = 0;
+  v18 = *activate;
+  *activate = 0;
 
-  if (!a7)
+  if (!disenroll)
   {
-    v77 = [MEMORY[0x277CCA890] currentHandler];
-    [v77 handleFailureInMethod:a2 object:self file:@"TRIRolloutTargetingOperation.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"shouldDisenroll != NULL"}];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"TRIRolloutTargetingOperation.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"shouldDisenroll != NULL"}];
   }
 
   v82 = v17;
-  *a7 = 0;
-  if (!a8)
+  *disenroll = 0;
+  if (!error)
   {
-    v78 = [MEMORY[0x277CCA890] currentHandler];
-    [v78 handleFailureInMethod:a2 object:self file:@"TRIRolloutTargetingOperation.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"error != nil"}];
+    currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler6 handleFailureInMethod:a2 object:self file:@"TRIRolloutTargetingOperation.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"error != nil"}];
   }
 
-  v19 = [(TRIRolloutTargetingOperation *)self rolloutDatabase];
-  v20 = [v19 recordWithDeployment:v15 usingTransaction:0];
+  rolloutDatabase = [(TRIRolloutTargetingOperation *)self rolloutDatabase];
+  v20 = [rolloutDatabase recordWithDeployment:deploymentCopy usingTransaction:0];
 
   if (v20)
   {
-    v21 = [v20 artifact];
-    v22 = [v21 rollout];
+    artifact = [v20 artifact];
+    rollout = [artifact rollout];
 
     v84 = 0;
-    v23 = [(TRIRolloutTargetingOperation *)self targeter];
-    v81 = v22;
-    v24 = [v23 targetRollout:v22 factorPackSetId:&v84 relatedRampDeployment:0 error:a8];
+    targeter = [(TRIRolloutTargetingOperation *)self targeter];
+    v81 = rollout;
+    v24 = [targeter targetRollout:rollout factorPackSetId:&v84 relatedRampDeployment:0 error:error];
 
     if (v24 <= 1u)
     {
@@ -151,24 +151,24 @@ LABEL_61:
       {
         if (!v84)
         {
-          v79 = [MEMORY[0x277CCA890] currentHandler];
-          [v79 handleFailureInMethod:a2 object:self file:@"TRIRolloutTargetingOperation.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"assignedFactorPackSetId"}];
+          currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler7 handleFailureInMethod:a2 object:self file:@"TRIRolloutTargetingOperation.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"assignedFactorPackSetId"}];
         }
 
         v26 = objc_opt_new();
-        v31 = [(__CFString *)v84 ident];
-        v32 = loggableFactorPackSetIdFromFactorPackSetId(v31);
-        v33 = [v26 ensureRolloutFields];
-        [v33 setClientFactorPackSetId:v32];
+        ident = [(__CFString *)v84 ident];
+        v32 = loggableFactorPackSetIdFromFactorPackSetId(ident);
+        ensureRolloutFields = [v26 ensureRolloutFields];
+        [ensureRolloutFields setClientFactorPackSetId:v32];
 
         if (([(__CFString *)v84 targetingRuleIndex]& 0x80000000) != 0)
         {
           goto LABEL_22;
         }
 
-        v34 = [(__CFString *)v84 targetingRuleIndex];
-        v27 = [v26 ensureRolloutFields];
-        [v27 setClientTargetingRuleGroupOrdinal:v34];
+        targetingRuleIndex = [(__CFString *)v84 targetingRuleIndex];
+        ensureRolloutFields2 = [v26 ensureRolloutFields];
+        [ensureRolloutFields2 setClientTargetingRuleGroupOrdinal:targetingRuleIndex];
 LABEL_21:
 
 LABEL_22:
@@ -184,18 +184,18 @@ LABEL_22:
         v84 = 0;
 
         v26 = objc_opt_new();
-        v27 = [v26 ensureRolloutFields];
-        [v27 setClientFactorPackSetId:@"no-op"];
+        ensureRolloutFields2 = [v26 ensureRolloutFields];
+        [ensureRolloutFields2 setClientFactorPackSetId:@"no-op"];
         goto LABEL_21;
       }
 
       if (v24 == 4)
       {
         v30 = 1;
-        *a7 = 1;
+        *disenroll = 1;
         v38 = objc_opt_new();
-        v53 = [(__CFString *)v38 ensureRolloutFields];
-        [v53 setClientFactorPackSetId:@"disenroll"];
+        ensureRolloutFields3 = [(__CFString *)v38 ensureRolloutFields];
+        [ensureRolloutFields3 setClientFactorPackSetId:@"disenroll"];
 
         v17 = v82;
         [v82 mergeTelemetry:v38];
@@ -204,12 +204,12 @@ LABEL_22:
       }
     }
 
-    v35 = [v20 activeFactorPackSetId];
+    activeFactorPackSetId = [v20 activeFactorPackSetId];
     v36 = @"(Retargeting) ";
-    if (!v35)
+    if (!activeFactorPackSetId)
     {
-      v37 = [v20 targetedFactorPackSetId];
-      if (!v37)
+      targetedFactorPackSetId = [v20 targetedFactorPackSetId];
+      if (!targetedFactorPackSetId)
       {
         v36 = &stru_287FA0430;
       }
@@ -222,13 +222,13 @@ LABEL_22:
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
         v40 = v84;
-        v41 = [v15 shortDesc];
+        shortDesc = [deploymentCopy shortDesc];
         *buf = 138543874;
         v86 = v38;
         v87 = 2114;
         v88 = v40;
         v89 = 2114;
-        v90 = v41;
+        v90 = shortDesc;
         v42 = "%{public}@Enrolling in factor pack set id %{public}@ for rollout %{public}@";
         v43 = v39;
         v44 = 32;
@@ -239,15 +239,15 @@ LABEL_32:
 
     else
     {
-      *a5 = 0;
+      *server = 0;
       v39 = TRILogCategory_Server();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
-        v41 = [v15 shortDesc];
+        shortDesc = [deploymentCopy shortDesc];
         *buf = 138543618;
         v86 = v38;
         v87 = 2114;
-        v88 = v41;
+        v88 = shortDesc;
         v42 = "%{public}@Targeting resulted in the default treatment (non-enrollment) for rollout %{public}@";
         v43 = v39;
         v44 = 22;
@@ -257,14 +257,14 @@ LABEL_32:
 
     if (v84)
     {
-      v45 = [v20 targetedFactorPackSetId];
+      targetedFactorPackSetId2 = [v20 targetedFactorPackSetId];
 
       v80 = v38;
-      if (v45)
+      if (targetedFactorPackSetId2)
       {
-        v46 = [(__CFString *)v84 ident];
-        v47 = [v20 targetedFactorPackSetId];
-        v48 = [v46 isEqualToString:v47];
+        ident2 = [(__CFString *)v84 ident];
+        targetedFactorPackSetId3 = [v20 targetedFactorPackSetId];
+        v48 = [ident2 isEqualToString:targetedFactorPackSetId3];
 
         v49 = TRILogCategory_Server();
         v50 = os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT);
@@ -284,9 +284,9 @@ LABEL_46:
 
         if (v50)
         {
-          v59 = [v20 targetedFactorPackSetId];
+          targetedFactorPackSetId4 = [v20 targetedFactorPackSetId];
           *buf = 138543618;
-          v86 = v59;
+          v86 = targetedFactorPackSetId4;
           v87 = 2114;
           v88 = v84;
           v60 = "Retargeting resulted in targetedFactorPackSetId change: %{public}@ --> %{public}@";
@@ -297,16 +297,16 @@ LABEL_52:
 
       else
       {
-        v54 = [v20 activeFactorPackSetId];
+        activeFactorPackSetId2 = [v20 activeFactorPackSetId];
 
-        if (!v54)
+        if (!activeFactorPackSetId2)
         {
           goto LABEL_54;
         }
 
-        v55 = [(__CFString *)v84 ident];
-        v56 = [v20 activeFactorPackSetId];
-        v57 = [v55 isEqualToString:v56];
+        ident3 = [(__CFString *)v84 ident];
+        activeFactorPackSetId3 = [v20 activeFactorPackSetId];
+        v57 = [ident3 isEqualToString:activeFactorPackSetId3];
 
         v49 = TRILogCategory_Server();
         v58 = os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT);
@@ -321,18 +321,18 @@ LABEL_52:
 
 LABEL_47:
 
-          *a5 = 0;
+          *server = 0;
           goto LABEL_54;
         }
 
         if (v58)
         {
           v61 = v84;
-          v59 = [v20 activeFactorPackSetId];
+          targetedFactorPackSetId4 = [v20 activeFactorPackSetId];
           *buf = 138543618;
           v86 = v61;
           v87 = 2114;
-          v88 = v59;
+          v88 = targetedFactorPackSetId4;
           v60 = "Retargeting result: targeted %{public}@, previously active: %{public}@";
           goto LABEL_52;
         }
@@ -340,11 +340,11 @@ LABEL_47:
 
 LABEL_54:
       v62 = objc_opt_new();
-      v63 = [(TRIRolloutTargetingOperation *)self rolloutDatabase];
-      v64 = [(__CFString *)v84 ident];
+      rolloutDatabase2 = [(TRIRolloutTargetingOperation *)self rolloutDatabase];
+      ident4 = [(__CFString *)v84 ident];
       if (([(__CFString *)v84 targetingRuleIndex]& 0x80000000) != 0)
       {
-        v69 = [v63 targetDeployment:v15 toFactorPackSetId:v64 targetingRuleIndex:0 deallocatedDeployments:v62 usingTransaction:0];
+        v69 = [rolloutDatabase2 targetDeployment:deploymentCopy toFactorPackSetId:ident4 targetingRuleIndex:0 deallocatedDeployments:v62 usingTransaction:0];
 
         if (v69)
         {
@@ -355,7 +355,7 @@ LABEL_54:
       else
       {
         v65 = [MEMORY[0x277CCABB0] numberWithInt:{-[__CFString targetingRuleIndex](v84, "targetingRuleIndex")}];
-        v66 = [v63 targetDeployment:v15 toFactorPackSetId:v64 targetingRuleIndex:v65 deallocatedDeployments:v62 usingTransaction:0];
+        v66 = [rolloutDatabase2 targetDeployment:deploymentCopy toFactorPackSetId:ident4 targetingRuleIndex:v65 deallocatedDeployments:v62 usingTransaction:0];
 
         if (v66)
         {
@@ -367,8 +367,8 @@ LABEL_56:
           v83[4] = self;
           [v62 enumerateObjectsUsingBlock:v83];
           v67 = v84;
-          v68 = *a6;
-          *a6 = v67;
+          v68 = *activate;
+          *activate = v67;
           v30 = 1;
 LABEL_59:
           v52 = v81;
@@ -379,10 +379,10 @@ LABEL_59:
         }
       }
 
-      v70 = [TRIRolloutTargeter targetingErrorWithDeployment:v15 errorType:@"failed update database"];
+      v70 = [TRIRolloutTargeter targetingErrorWithDeployment:deploymentCopy errorType:@"failed update database"];
       v30 = 0;
-      v68 = *a8;
-      *a8 = v70;
+      v68 = *error;
+      *error = v70;
       goto LABEL_59;
     }
 
@@ -394,9 +394,9 @@ LABEL_60:
     goto LABEL_61;
   }
 
-  v28 = [TRIRolloutTargeter targetingErrorWithDeployment:v15 errorType:@"rollout artifact not found"];
-  v29 = *a8;
-  *a8 = v28;
+  v28 = [TRIRolloutTargeter targetingErrorWithDeployment:deploymentCopy errorType:@"rollout artifact not found"];
+  v29 = *error;
+  *error = v28;
 
   v30 = 0;
 LABEL_62:

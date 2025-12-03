@@ -1,6 +1,6 @@
 @interface TPSSIMPasscodeBundleController
 - (BOOL)isHidden;
-- (TPSSIMPasscodeBundleController)initWithParentListController:(id)a3;
+- (TPSSIMPasscodeBundleController)initWithParentListController:(id)controller;
 - (TPSSubscriberTelephonyController)subscriberController;
 - (id)specifiers;
 - (id)supportedSubscriptions;
@@ -8,18 +8,18 @@
 
 @implementation TPSSIMPasscodeBundleController
 
-- (TPSSIMPasscodeBundleController)initWithParentListController:(id)a3
+- (TPSSIMPasscodeBundleController)initWithParentListController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = TPSSIMPasscodeBundleController;
-  v3 = [(TPSSIMPasscodeBundleController *)&v9 initWithParentListController:a3];
+  v3 = [(TPSSIMPasscodeBundleController *)&v9 initWithParentListController:controller];
   v4 = v3;
   if (v3)
   {
-    v5 = [(TPSSIMPasscodeBundleController *)v3 subscriptionContext];
-    if (v5)
+    subscriptionContext = [(TPSSIMPasscodeBundleController *)v3 subscriptionContext];
+    if (subscriptionContext)
     {
-      v6 = [[TPSSubscriberTelephonyController alloc] initWithSubscriptionContext:v5];
+      v6 = [[TPSSubscriberTelephonyController alloc] initWithSubscriptionContext:subscriptionContext];
       subscriberController = v4->_subscriberController;
       v4->_subscriberController = v6;
     }
@@ -32,13 +32,13 @@
 {
   if (!self->_subscriberController)
   {
-    v3 = [(TPSSIMPasscodeBundleController *)self subscriptionContext];
+    subscriptionContext = [(TPSSIMPasscodeBundleController *)self subscriptionContext];
 
-    if (v3)
+    if (subscriptionContext)
     {
       v4 = [TPSSubscriberTelephonyController alloc];
-      v5 = [(TPSSIMPasscodeBundleController *)self subscriptionContext];
-      v6 = [v4 initWithSubscriptionContext:v5];
+      subscriptionContext2 = [(TPSSIMPasscodeBundleController *)self subscriptionContext];
+      v6 = [v4 initWithSubscriptionContext:subscriptionContext2];
       subscriberController = self->_subscriberController;
       self->_subscriberController = v6;
     }
@@ -91,13 +91,13 @@
   {
     v23.receiver = self;
     v23.super_class = TPSSIMPasscodeBundleController;
-    v4 = [(TPSSIMPasscodeBundleController *)&v23 subscriptions];
-    v5 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [v4 count]);
+    subscriptions = [(TPSSIMPasscodeBundleController *)&v23 subscriptions];
+    v5 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [subscriptions count]);
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = v4;
+    v6 = subscriptions;
     v7 = [v6 countByEnumeratingWithState:&v19 objects:v28 count:16];
     if (v7)
     {
@@ -115,9 +115,9 @@
           v11 = *(*(&v19 + 1) + 8 * i);
           if (([v11 isSimHidden] & 1) == 0)
           {
-            v12 = [(TPSSIMPasscodeBundleController *)self telephonyController];
-            v13 = [v12 telephonyClient];
-            v14 = [v13 shouldAllowSimLockFor:v11];
+            telephonyController = [(TPSSIMPasscodeBundleController *)self telephonyController];
+            telephonyClient = [telephonyController telephonyClient];
+            v14 = [telephonyClient shouldAllowSimLockFor:v11];
 
             if ([v14 BOOLValue])
             {

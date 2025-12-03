@@ -1,14 +1,14 @@
 @interface PKPaymentPrepareToProvisionRequest
-- (PKPaymentPrepareToProvisionRequest)initWithCredentials:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
+- (PKPaymentPrepareToProvisionRequest)initWithCredentials:(id)credentials;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
 @end
 
 @implementation PKPaymentPrepareToProvisionRequest
 
-- (PKPaymentPrepareToProvisionRequest)initWithCredentials:(id)a3
+- (PKPaymentPrepareToProvisionRequest)initWithCredentials:(id)credentials
 {
-  v5 = a3;
-  if (v5)
+  credentialsCopy = credentials;
+  if (credentialsCopy)
   {
     v10.receiver = self;
     v10.super_class = PKPaymentPrepareToProvisionRequest;
@@ -16,33 +16,33 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_credentials, a3);
+      objc_storeStrong(&v6->_credentials, credentials);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  identifierCopy = identifier;
   v19 = @"devices";
-  v20 = v8;
+  v20 = identifierCopy;
   v21 = @"prepareForProvisionings";
   v9 = MEMORY[0x1E695DEC8];
-  v10 = a5;
-  v11 = a3;
+  informationCopy = information;
+  lCopy = l;
   v12 = [v9 arrayWithObjects:&v19 count:3];
-  v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v11 endpointComponents:v12 queryParameters:0 appleAccountInformation:v10, v19, v20, v21, v22];
+  v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v12 queryParameters:0 appleAccountInformation:informationCopy, v19, v20, v21, v22];
 
   [v13 setHTTPMethod:@"POST"];
   [v13 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];

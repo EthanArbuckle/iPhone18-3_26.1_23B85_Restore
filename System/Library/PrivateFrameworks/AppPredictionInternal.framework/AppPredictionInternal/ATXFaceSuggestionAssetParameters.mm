@@ -1,6 +1,6 @@
 @interface ATXFaceSuggestionAssetParameters
-+ (id)loadAssetParametersDictionaryFromPath:(id)a3;
-+ (id)posterDescriptorFromKey:(id)a3 withDescriptorCache:(id)a4;
++ (id)loadAssetParametersDictionaryFromPath:(id)path;
++ (id)posterDescriptorFromKey:(id)key withDescriptorCache:(id)cache;
 - (ATXFaceSuggestionAssetParameters)init;
 - (NSArray)collectionsSectionDescriptors;
 - (NSArray)colorSectionDescriptors;
@@ -21,9 +21,9 @@
 - (NSDictionary)uprankedDateIntervals;
 - (NSSet)extensionBundleIdsEligibleForComplicationsInFaceGallery;
 - (id)_currentCountryCode;
-- (id)arrayForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)dictionaryStringToSetFromObject:(id)a3;
+- (id)arrayForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)dictionaryStringToSetFromObject:(id)object;
 - (void)topLevelDictionary;
 @end
 
@@ -44,9 +44,9 @@
     path = v2->_path;
     v2->_path = v5;
 
-    v7 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
     locale = v2->_locale;
-    v2->_locale = v7;
+    v2->_locale = autoupdatingCurrentLocale;
   }
 
   return v2;
@@ -364,20 +364,20 @@ id __70__ATXFaceSuggestionAssetParameters_descriptorsToRemoveFromCollections__bl
 
 - (NSArray)dayZeroFeaturedDescriptors
 {
-  v3 = [(ATXFaceSuggestionAssetParameters *)self _currentCountryCode];
-  v4 = [(ATXFaceSuggestionAssetParameters *)self unpromotableRegions];
-  v5 = [(ATXFaceSuggestionAssetParameters *)self hiddenRegions];
+  _currentCountryCode = [(ATXFaceSuggestionAssetParameters *)self _currentCountryCode];
+  unpromotableRegions = [(ATXFaceSuggestionAssetParameters *)self unpromotableRegions];
+  hiddenRegions = [(ATXFaceSuggestionAssetParameters *)self hiddenRegions];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__ATXFaceSuggestionAssetParameters_dayZeroFeaturedDescriptors__block_invoke;
   v11[3] = &unk_2785A05F0;
-  v12 = v3;
-  v13 = v4;
-  v14 = v5;
-  v15 = self;
-  v6 = v5;
-  v7 = v4;
-  v8 = v3;
+  v12 = _currentCountryCode;
+  v13 = unpromotableRegions;
+  v14 = hiddenRegions;
+  selfCopy = self;
+  v6 = hiddenRegions;
+  v7 = unpromotableRegions;
+  v8 = _currentCountryCode;
   v9 = [&unk_283A58B08 _pas_mappedArrayWithTransform:v11];
 
   return v9;
@@ -558,11 +558,11 @@ id __91__ATXFaceSuggestionAssetParameters_extensionBundleIdsEligibleForComplicat
           if (isKindOfClass)
           {
             v15 = [v5 objectForKeyedSubscript:v11];
-            v16 = [(ATXFaceSuggestionAssetParameters *)self _currentCountryCode];
-            v17 = v16;
-            if (v16)
+            _currentCountryCode = [(ATXFaceSuggestionAssetParameters *)self _currentCountryCode];
+            v17 = _currentCountryCode;
+            if (_currentCountryCode)
             {
-              v18 = v16;
+              v18 = _currentCountryCode;
             }
 
             else
@@ -1144,15 +1144,15 @@ LABEL_20:
   return v14;
 }
 
-- (id)dictionaryStringToSetFromObject:(id)a3
+- (id)dictionaryStringToSetFromObject:(id)object
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = v3;
-    v4 = v3;
+    v23 = objectCopy;
+    v4 = objectCopy;
     v5 = objc_opt_new();
     v24 = 0u;
     v25 = 0u;
@@ -1236,7 +1236,7 @@ LABEL_13:
 LABEL_18:
 
         v20 = [v5 copy];
-        v3 = v23;
+        objectCopy = v23;
         goto LABEL_22;
       }
     }
@@ -1245,7 +1245,7 @@ LABEL_18:
   v6 = __atxlog_handle_lock_screen();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
   {
-    [(ATXFaceSuggestionAssetParameters *)v3 dictionaryStringToSetFromObject:v6];
+    [(ATXFaceSuggestionAssetParameters *)objectCopy dictionaryStringToSetFromObject:v6];
   }
 
   v20 = 0;
@@ -1256,11 +1256,11 @@ LABEL_22:
   return v20;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ATXFaceSuggestionAssetParameters *)self topLevelDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  topLevelDictionary = [(ATXFaceSuggestionAssetParameters *)self topLevelDictionary];
+  v6 = [topLevelDictionary objectForKeyedSubscript:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1273,7 +1273,7 @@ LABEL_22:
     v8 = __atxlog_handle_lock_screen();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(ATXFaceSuggestionAssetParameters *)v4 dictionaryForKey:v8];
+      [(ATXFaceSuggestionAssetParameters *)keyCopy dictionaryForKey:v8];
     }
 
     v7 = 0;
@@ -1282,11 +1282,11 @@ LABEL_22:
   return v7;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ATXFaceSuggestionAssetParameters *)self topLevelDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  topLevelDictionary = [(ATXFaceSuggestionAssetParameters *)self topLevelDictionary];
+  v6 = [topLevelDictionary objectForKeyedSubscript:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1299,7 +1299,7 @@ LABEL_22:
     v8 = __atxlog_handle_lock_screen();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(ATXFaceSuggestionAssetParameters *)v4 arrayForKey:v8];
+      [(ATXFaceSuggestionAssetParameters *)keyCopy arrayForKey:v8];
     }
 
     v7 = 0;
@@ -1310,9 +1310,9 @@ LABEL_22:
 
 - (NSDictionary)topLevelDictionary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  topLevelDictionary = v2->_topLevelDictionary;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  topLevelDictionary = selfCopy->_topLevelDictionary;
   if (topLevelDictionary)
   {
     v4 = [(NSDictionary *)topLevelDictionary copy];
@@ -1321,13 +1321,13 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v2->_path)
+  if (selfCopy->_path)
   {
     v5 = [ATXFaceSuggestionAssetParameters loadAssetParametersDictionaryFromPath:?];
-    v6 = v2->_topLevelDictionary;
-    v2->_topLevelDictionary = v5;
+    v6 = selfCopy->_topLevelDictionary;
+    selfCopy->_topLevelDictionary = v5;
 
-    v4 = [(NSDictionary *)v2->_topLevelDictionary copy];
+    v4 = [(NSDictionary *)selfCopy->_topLevelDictionary copy];
     goto LABEL_5;
   }
 
@@ -1339,16 +1339,16 @@ LABEL_5:
 
   v7 = 0;
 LABEL_6:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-+ (id)loadAssetParametersDictionaryFromPath:(id)a3
++ (id)loadAssetParametersDictionaryFromPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v12 = 0;
-  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v3 options:0 error:&v12];
+  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:pathCopy options:0 error:&v12];
   v5 = v12;
   if (v4)
   {
@@ -1402,26 +1402,26 @@ LABEL_13:
   return v8;
 }
 
-+ (id)posterDescriptorFromKey:(id)a3 withDescriptorCache:(id)a4
++ (id)posterDescriptorFromKey:(id)key withDescriptorCache:(id)cache
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"com.apple.WallpaperKit.CollectionsPoster"])
+  keyCopy = key;
+  cacheCopy = cache;
+  if ([keyCopy isEqualToString:@"com.apple.WallpaperKit.CollectionsPoster"])
   {
-    v7 = [v6 descriptors];
-    v8 = [v7 objectForKeyedSubscript:@"com.apple.WallpaperKit.CollectionsPoster"];
-    v9 = [v8 firstObject];
+    descriptors = [cacheCopy descriptors];
+    v8 = [descriptors objectForKeyedSubscript:@"com.apple.WallpaperKit.CollectionsPoster"];
+    firstObject = [v8 firstObject];
   }
 
   else
   {
-    v7 = [v5 componentsSeparatedByString:@":"];
-    if ([v7 count] > 1)
+    descriptors = [keyCopy componentsSeparatedByString:@":"];
+    if ([descriptors count] > 1)
     {
-      v8 = [v7 objectAtIndexedSubscript:0];
-      v10 = [v7 objectAtIndexedSubscript:1];
-      v11 = [v6 descriptors];
-      v12 = [v11 objectForKeyedSubscript:v8];
+      v8 = [descriptors objectAtIndexedSubscript:0];
+      v10 = [descriptors objectAtIndexedSubscript:1];
+      descriptors2 = [cacheCopy descriptors];
+      v12 = [descriptors2 objectForKeyedSubscript:v8];
 
       if (v12)
       {
@@ -1435,7 +1435,7 @@ LABEL_13:
         v15 = v14;
         if (v14)
         {
-          v9 = v14;
+          firstObject = v14;
         }
 
         else
@@ -1445,7 +1445,7 @@ LABEL_13:
           v18[2] = __80__ATXFaceSuggestionAssetParameters_posterDescriptorFromKey_withDescriptorCache___block_invoke_2;
           v18[3] = &unk_2785A0618;
           v19 = v13;
-          v9 = [v12 bs_firstObjectPassingTest:v18];
+          firstObject = [v12 bs_firstObjectPassingTest:v18];
         }
 
         v16 = v21;
@@ -1459,7 +1459,7 @@ LABEL_13:
           +[ATXFaceSuggestionAssetParameters posterDescriptorFromKey:withDescriptorCache:];
         }
 
-        v9 = 0;
+        firstObject = 0;
       }
     }
 
@@ -1471,11 +1471,11 @@ LABEL_13:
         +[ATXFaceSuggestionAssetParameters posterDescriptorFromKey:withDescriptorCache:];
       }
 
-      v9 = 0;
+      firstObject = 0;
     }
   }
 
-  return v9;
+  return firstObject;
 }
 
 uint64_t __80__ATXFaceSuggestionAssetParameters_posterDescriptorFromKey_withDescriptorCache___block_invoke(uint64_t a1, void *a2)
@@ -1497,20 +1497,20 @@ uint64_t __80__ATXFaceSuggestionAssetParameters_posterDescriptorFromKey_withDesc
 - (id)_currentCountryCode
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(NSLocale *)self->_locale countryCode];
+  countryCode = [(NSLocale *)self->_locale countryCode];
   v3 = __atxlog_handle_lock_screen();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[ATXFaceSuggestionAssetParameters _currentCountryCode]";
     v8 = 2112;
-    v9 = v2;
+    v9 = countryCode;
     _os_log_impl(&dword_2263AA000, v3, OS_LOG_TYPE_DEFAULT, "%s: using country code: %@", &v6, 0x16u);
   }
 
   v4 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return countryCode;
 }
 
 void __48__ATXFaceSuggestionAssetParameters_sectionOrder__block_invoke_cold_1()

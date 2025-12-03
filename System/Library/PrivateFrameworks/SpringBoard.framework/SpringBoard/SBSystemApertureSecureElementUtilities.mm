@@ -1,65 +1,65 @@
 @interface SBSystemApertureSecureElementUtilities
-+ (id)_flipBookNameAndFallbacksForElement:(id)a3 configurationName:(id)a4 componentIndex:(int64_t)a5 layoutDirection:(int64_t)a6 orientation:(int64_t)a7 layoutMode:(int64_t)a8 deviceMaxFPS:(int64_t)a9 artworkSubtype:(int64_t)a10 includeSubtypeFallbacks:(BOOL)a11;
-+ (id)flipBookNameAndFallbacksForElement:(id)a3 configurationName:(id)a4 componentIndex:(int64_t)a5 layoutDirection:(int64_t)a6 orientation:(int64_t)a7 layoutMode:(int64_t)a8 deviceMaxFPS:(int64_t)a9 artworkSubtype:(int64_t)a10;
-+ (id)flipBookNameForElement:(id)a3 configurationName:(id)a4 componentIndex:(int64_t)a5 layoutDirection:(int64_t)a6 orientation:(int64_t)a7 layoutMode:(int64_t)a8 deviceMaxFPS:(int64_t)a9 artworkSubtype:(int64_t)a10;
++ (id)_flipBookNameAndFallbacksForElement:(id)element configurationName:(id)name componentIndex:(int64_t)index layoutDirection:(int64_t)direction orientation:(int64_t)orientation layoutMode:(int64_t)mode deviceMaxFPS:(int64_t)s artworkSubtype:(int64_t)self0 includeSubtypeFallbacks:(BOOL)self1;
++ (id)flipBookNameAndFallbacksForElement:(id)element configurationName:(id)name componentIndex:(int64_t)index layoutDirection:(int64_t)direction orientation:(int64_t)orientation layoutMode:(int64_t)mode deviceMaxFPS:(int64_t)s artworkSubtype:(int64_t)self0;
++ (id)flipBookNameForElement:(id)element configurationName:(id)name componentIndex:(int64_t)index layoutDirection:(int64_t)direction orientation:(int64_t)orientation layoutMode:(int64_t)mode deviceMaxFPS:(int64_t)s artworkSubtype:(int64_t)self0;
 @end
 
 @implementation SBSystemApertureSecureElementUtilities
 
-+ (id)flipBookNameForElement:(id)a3 configurationName:(id)a4 componentIndex:(int64_t)a5 layoutDirection:(int64_t)a6 orientation:(int64_t)a7 layoutMode:(int64_t)a8 deviceMaxFPS:(int64_t)a9 artworkSubtype:(int64_t)a10
++ (id)flipBookNameForElement:(id)element configurationName:(id)name componentIndex:(int64_t)index layoutDirection:(int64_t)direction orientation:(int64_t)orientation layoutMode:(int64_t)mode deviceMaxFPS:(int64_t)s artworkSubtype:(int64_t)self0
 {
   v21 = MEMORY[0x277CCACA8];
-  v15 = a4;
-  v16 = a3;
-  v17 = [v16 clientIdentifier];
-  v18 = [v16 elementIdentifier];
+  nameCopy = name;
+  elementCopy = element;
+  clientIdentifier = [elementCopy clientIdentifier];
+  elementIdentifier = [elementCopy elementIdentifier];
 
-  v19 = [v21 stringWithFormat:@"%@-%@-%@-%ld-%ld-%ld-%ld-%ld-%ld", v17, v18, v15, a5, a6, a7, a8, a9, a10];
+  subtype = [v21 stringWithFormat:@"%@-%@-%@-%ld-%ld-%ld-%ld-%ld-%ld", clientIdentifier, elementIdentifier, nameCopy, index, direction, orientation, mode, s, subtype];
 
-  return v19;
+  return subtype;
 }
 
-+ (id)flipBookNameAndFallbacksForElement:(id)a3 configurationName:(id)a4 componentIndex:(int64_t)a5 layoutDirection:(int64_t)a6 orientation:(int64_t)a7 layoutMode:(int64_t)a8 deviceMaxFPS:(int64_t)a9 artworkSubtype:(int64_t)a10
++ (id)flipBookNameAndFallbacksForElement:(id)element configurationName:(id)name componentIndex:(int64_t)index layoutDirection:(int64_t)direction orientation:(int64_t)orientation layoutMode:(int64_t)mode deviceMaxFPS:(int64_t)s artworkSubtype:(int64_t)self0
 {
-  v16 = a4;
-  v17 = a3;
+  nameCopy = name;
+  elementCopy = element;
   LOBYTE(v20) = os_variant_has_internal_content();
-  v18 = [a1 _flipBookNameAndFallbacksForElement:v17 configurationName:v16 componentIndex:a5 layoutDirection:a6 orientation:a7 layoutMode:a8 deviceMaxFPS:a9 artworkSubtype:a10 includeSubtypeFallbacks:v20];
+  v18 = [self _flipBookNameAndFallbacksForElement:elementCopy configurationName:nameCopy componentIndex:index layoutDirection:direction orientation:orientation layoutMode:mode deviceMaxFPS:s artworkSubtype:subtype includeSubtypeFallbacks:v20];
 
   return v18;
 }
 
-+ (id)_flipBookNameAndFallbacksForElement:(id)a3 configurationName:(id)a4 componentIndex:(int64_t)a5 layoutDirection:(int64_t)a6 orientation:(int64_t)a7 layoutMode:(int64_t)a8 deviceMaxFPS:(int64_t)a9 artworkSubtype:(int64_t)a10 includeSubtypeFallbacks:(BOOL)a11
++ (id)_flipBookNameAndFallbacksForElement:(id)element configurationName:(id)name componentIndex:(int64_t)index layoutDirection:(int64_t)direction orientation:(int64_t)orientation layoutMode:(int64_t)mode deviceMaxFPS:(int64_t)s artworkSubtype:(int64_t)self0 includeSubtypeFallbacks:(BOOL)self1
 {
   v47 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = [MEMORY[0x277CBEB18] array];
-  v20 = a7;
-  v21 = a8;
-  v22 = [a1 flipBookNameForElement:v17 configurationName:v18 componentIndex:a5 layoutDirection:a6 orientation:v20 layoutMode:a8 deviceMaxFPS:a9 artworkSubtype:a10];
-  [v19 addObject:v22];
+  elementCopy = element;
+  nameCopy = name;
+  array = [MEMORY[0x277CBEB18] array];
+  orientationCopy = orientation;
+  modeCopy = mode;
+  v22 = [self flipBookNameForElement:elementCopy configurationName:nameCopy componentIndex:index layoutDirection:direction orientation:orientationCopy layoutMode:mode deviceMaxFPS:s artworkSubtype:subtype];
+  [array addObject:v22];
 
-  v39 = a6;
-  v23 = [a1 flipBookNameForElement:v17 configurationName:v18 componentIndex:a5 layoutDirection:a6 orientation:1 layoutMode:v21 deviceMaxFPS:a9 artworkSubtype:a10];
-  [v19 addObject:v23];
+  directionCopy = direction;
+  v23 = [self flipBookNameForElement:elementCopy configurationName:nameCopy componentIndex:index layoutDirection:direction orientation:1 layoutMode:modeCopy deviceMaxFPS:s artworkSubtype:subtype];
+  [array addObject:v23];
 
-  v24 = [a1 flipBookNameForElement:v17 configurationName:v18 componentIndex:a5 layoutDirection:0 orientation:a7 layoutMode:v21 deviceMaxFPS:a9 artworkSubtype:a10];
-  [v19 addObject:v24];
+  v24 = [self flipBookNameForElement:elementCopy configurationName:nameCopy componentIndex:index layoutDirection:0 orientation:orientation layoutMode:modeCopy deviceMaxFPS:s artworkSubtype:subtype];
+  [array addObject:v24];
 
-  v37 = a1;
-  v38 = a5;
-  v25 = [a1 flipBookNameForElement:v17 configurationName:v18 componentIndex:a5 layoutDirection:0 orientation:1 layoutMode:v21 deviceMaxFPS:a9 artworkSubtype:a10];
-  [v19 addObject:v25];
+  selfCopy = self;
+  indexCopy = index;
+  v25 = [self flipBookNameForElement:elementCopy configurationName:nameCopy componentIndex:index layoutDirection:0 orientation:1 layoutMode:modeCopy deviceMaxFPS:s artworkSubtype:subtype];
+  [array addObject:v25];
 
-  if (a11)
+  if (fallbacks)
   {
-    v26 = [MEMORY[0x277CCABB0] numberWithInteger:a10];
+    v26 = [MEMORY[0x277CCABB0] numberWithInteger:subtype];
     v27 = [&unk_28336DB60 containsObject:v26];
 
     if ((v27 & 1) == 0)
     {
-      v40 = v21;
+      v40 = modeCopy;
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
@@ -79,10 +79,10 @@
               objc_enumerationMutation(&unk_28336DB60);
             }
 
-            v33 = [*(*(&v42 + 1) + 8 * i) integerValue];
-            if (v33 < a10)
+            integerValue = [*(*(&v42 + 1) + 8 * i) integerValue];
+            if (integerValue < subtype)
             {
-              v31 = v33;
+              v31 = integerValue;
             }
           }
 
@@ -98,12 +98,12 @@
       }
 
       LOBYTE(v36) = 0;
-      v34 = [v37 _flipBookNameAndFallbacksForElement:v17 configurationName:v18 componentIndex:v38 layoutDirection:v39 orientation:a7 layoutMode:v40 deviceMaxFPS:a9 artworkSubtype:v31 includeSubtypeFallbacks:v36];
-      [v19 addObjectsFromArray:v34];
+      v34 = [selfCopy _flipBookNameAndFallbacksForElement:elementCopy configurationName:nameCopy componentIndex:indexCopy layoutDirection:directionCopy orientation:orientation layoutMode:v40 deviceMaxFPS:s artworkSubtype:v31 includeSubtypeFallbacks:v36];
+      [array addObjectsFromArray:v34];
     }
   }
 
-  return v19;
+  return array;
 }
 
 @end

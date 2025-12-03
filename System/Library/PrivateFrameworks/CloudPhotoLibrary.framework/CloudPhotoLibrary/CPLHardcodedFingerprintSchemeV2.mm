@@ -17,14 +17,14 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v11 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DC05A000, v6, OS_LOG_TYPE_ERROR, "Trying to use %@ fingerprinting", buf, 0xCu);
       }
     }
 
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLFingerprintScheme.m"];
-    [v7 handleFailureInMethod:a2 object:self file:v8 lineNumber:496 description:{@"Trying to use %@ fingerprinting", self}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v8 lineNumber:496 description:{@"Trying to use %@ fingerprinting", self}];
 
     abort();
   }
@@ -39,8 +39,8 @@
 - (CPLHardcodedFingerprintSchemeV2)init
 {
   v3 = [@"_HARDCODED_INVALID_BOUNDARY_KEY_" dataUsingEncoding:4];
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  self->_shouldAssertOnFingerprinting = [v4 BOOLForKey:@"CPLShouldAssertOnHardcodedMMCSv2BoundaryKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  self->_shouldAssertOnFingerprinting = [standardUserDefaults BOOLForKey:@"CPLShouldAssertOnHardcodedMMCSv2BoundaryKey"];
 
   v7.receiver = self;
   v7.super_class = CPLHardcodedFingerprintSchemeV2;

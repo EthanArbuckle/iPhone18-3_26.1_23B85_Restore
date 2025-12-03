@@ -1,21 +1,21 @@
 @interface QLImageAnalysisManager
-- (BOOL)actionInfoItemExistsAtPoint:(CGPoint)a3;
+- (BOOL)actionInfoItemExistsAtPoint:(CGPoint)point;
 - (BOOL)addInteractionIfNeeded;
-- (BOOL)dataDetectorExistsAtPoint:(CGPoint)a3;
+- (BOOL)dataDetectorExistsAtPoint:(CGPoint)point;
 - (BOOL)hasActiveTextSelection;
 - (BOOL)hasAnalysis;
 - (BOOL)hasResultsForVisualSearch;
-- (BOOL)imageAnalysisInteraction:(id)a3 shouldBeginAtPoint:(CGPoint)a4 forAnalysisType:(unint64_t)a5;
-- (BOOL)imageSubjectExistsAtPoint:(CGPoint)a3;
+- (BOOL)imageAnalysisInteraction:(id)interaction shouldBeginAtPoint:(CGPoint)point forAnalysisType:(unint64_t)type;
+- (BOOL)imageSubjectExistsAtPoint:(CGPoint)point;
 - (BOOL)isImageSubjectHighlightingEnabled;
 - (BOOL)isInteractionActive;
 - (BOOL)isTextSelectionEnabled;
 - (BOOL)isVisualIntelligenceV2Active;
 - (BOOL)isVisualSearchEnabled;
 - (BOOL)shouldDisplayInfoButton;
-- (BOOL)textExistsAtPoint:(CGPoint)a3;
-- (BOOL)visualSearchExistsAtPoint:(CGPoint)a3;
-- (QLImageAnalysisManager)initWithDelegate:(id)a3 presentingView:(id)a4;
+- (BOOL)textExistsAtPoint:(CGPoint)point;
+- (BOOL)visualSearchExistsAtPoint:(CGPoint)point;
+- (QLImageAnalysisManager)initWithDelegate:(id)delegate presentingView:(id)view;
 - (QLImageAnalysisManagerDelegate)delegate;
 - (QLToolbarButton)imageAnalysisToolbarButton;
 - (UIView)visualIntelligenceBarContainerView;
@@ -23,18 +23,18 @@
 - (id)image;
 - (id)imageAnalysisQueue;
 - (id)infoButtonGlyphName;
-- (id)presentingViewControllerForImageAnalysisInteraction:(id)a3;
-- (void)_activateInteractionTypes:(unint64_t)a3;
-- (void)_handleImageAnalysis:(id)a3 error:(id)a4;
+- (id)presentingViewControllerForImageAnalysisInteraction:(id)interaction;
+- (void)_activateInteractionTypes:(unint64_t)types;
+- (void)_handleImageAnalysis:(id)analysis error:(id)error;
 - (void)_setupImageAnalysis;
 - (void)_setupNotificationsObservation;
-- (void)_startImageAnalysisWithRequest:(id)a3;
+- (void)_startImageAnalysisWithRequest:(id)request;
 - (void)activateVisualSearchInteraction;
-- (void)adjustImageInteractionForScrollView:(id)a3;
+- (void)adjustImageInteractionForScrollView:(id)view;
 - (void)cancelAllRequests;
 - (void)dealloc;
-- (void)enableMarkupMode:(BOOL)a3;
-- (void)imageAnalysisInteraction:(id)a3 prepareForCalloutAction:(SEL)a4 competion:(id)a5;
+- (void)enableMarkupMode:(BOOL)mode;
+- (void)imageAnalysisInteraction:(id)interaction prepareForCalloutAction:(SEL)action competion:(id)competion;
 - (void)imageAnalysisPopoverDidDisappear;
 - (void)imageAnalysisPopoverWillAppear;
 - (void)infoButtonTapped;
@@ -44,24 +44,24 @@
 
 @implementation QLImageAnalysisManager
 
-- (QLImageAnalysisManager)initWithDelegate:(id)a3 presentingView:(id)a4
+- (QLImageAnalysisManager)initWithDelegate:(id)delegate presentingView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = QLImageAnalysisManager;
   v8 = [(QLImageAnalysisManager *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    [(QLImageAnalysisManager *)v8 setDelegate:v6];
-    objc_storeWeak(&v9->_presentingView, v7);
+    [(QLImageAnalysisManager *)v8 setDelegate:delegateCopy];
+    objc_storeWeak(&v9->_presentingView, viewCopy);
   }
 
-  v10 = [MEMORY[0x277D75418] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v11)
+  if (userInterfaceIdiom)
   {
     v12 = 0;
   }
@@ -85,20 +85,20 @@
   v3 = objc_alloc_init(MEMORY[0x277D78510]);
   [(QLImageAnalysisManager *)self setImageInteraction:v3];
 
-  v4 = [(QLImageAnalysisManager *)self _defaultInteractionTypes];
-  v5 = [(QLImageAnalysisManager *)self imageInteraction];
-  [v5 setActiveInteractionTypes:v4];
+  _defaultInteractionTypes = [(QLImageAnalysisManager *)self _defaultInteractionTypes];
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  [imageInteraction setActiveInteractionTypes:_defaultInteractionTypes];
 
-  v6 = [(QLImageAnalysisManager *)self imageInteraction];
-  [v6 setDelegate:self];
+  imageInteraction2 = [(QLImageAnalysisManager *)self imageInteraction];
+  [imageInteraction2 setDelegate:self];
 
-  v7 = [(QLImageAnalysisManager *)self imageInteraction];
-  [v7 setAutomaticallyShowVisualSearchResults:1];
+  imageInteraction3 = [(QLImageAnalysisManager *)self imageInteraction];
+  [imageInteraction3 setAutomaticallyShowVisualSearchResults:1];
 
-  v8 = [(QLImageAnalysisManager *)self delegate];
-  v9 = [v8 imageAnalysisView];
-  v10 = [(QLImageAnalysisManager *)self imageInteraction];
-  [v9 addInteraction:v10];
+  delegate = [(QLImageAnalysisManager *)self delegate];
+  imageAnalysisView = [delegate imageAnalysisView];
+  imageInteraction4 = [(QLImageAnalysisManager *)self imageInteraction];
+  [imageAnalysisView addInteraction:imageInteraction4];
 
   [(QLImageAnalysisManager *)self _updateAnalysisButtonWithAnimation:1];
 }
@@ -109,23 +109,23 @@
   v11 = **(v4 + 792);
   if (v11)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:self selector:sel_dataDetectorDetectionControllerWillPresentAction_ name:v11 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_dataDetectorDetectionControllerWillPresentAction_ name:v11 object:0];
   }
 
   Helper_x8__DDDetectionControllerDidDismissActionNotification = gotLoadHelper_x8__DDDetectionControllerDidDismissActionNotification(v5);
   v9 = **(v8 + 784);
   if (v9)
   {
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:self selector:sel_dataDetectorDetectionControllerDidDismissAction_ name:v9 object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_dataDetectorDetectionControllerDidDismissAction_ name:v9 object:0];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = QLImageAnalysisManager;
@@ -134,10 +134,10 @@
 
 - (id)image
 {
-  v2 = [(QLImageAnalysisManager *)self delegate];
-  v3 = [v2 imageForAnalysis];
+  delegate = [(QLImageAnalysisManager *)self delegate];
+  imageForAnalysis = [delegate imageForAnalysis];
 
-  return v3;
+  return imageForAnalysis;
 }
 
 - (VKCImageAnalyzer)imageAnalyzer
@@ -148,9 +148,9 @@
     v4 = objc_alloc_init(MEMORY[0x277D78518]);
     [(QLImageAnalysisManager *)self setImageAnalyzer:v4];
 
-    v5 = [(QLImageAnalysisManager *)self imageAnalysisQueue];
-    v6 = [(QLImageAnalysisManager *)self imageAnalyzer];
-    [v6 setCallbackQueue:v5];
+    imageAnalysisQueue = [(QLImageAnalysisManager *)self imageAnalysisQueue];
+    imageAnalyzer = [(QLImageAnalysisManager *)self imageAnalyzer];
+    [imageAnalyzer setCallbackQueue:imageAnalysisQueue];
 
     imageAnalyzer = self->_imageAnalyzer;
   }
@@ -158,10 +158,10 @@
   return imageAnalyzer;
 }
 
-- (void)_activateInteractionTypes:(unint64_t)a3
+- (void)_activateInteractionTypes:(unint64_t)types
 {
-  v5 = [(QLImageAnalysisManager *)self imageInteraction];
-  [v5 setActiveInteractionTypes:a3];
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  [imageInteraction setActiveInteractionTypes:types];
 
   [(QLImageAnalysisManager *)self _updateAnalysisButtonWithAnimation:1];
 
@@ -193,10 +193,10 @@ void __44__QLImageAnalysisManager_imageAnalysisQueue__block_invoke()
 - (void)startImageAnalysis
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(QLImageAnalysisManager *)self image];
+  image = [(QLImageAnalysisManager *)self image];
   v4 = MEMORY[0x277D43EF8];
   v5 = *MEMORY[0x277D43EF8];
-  if (v3)
+  if (image)
   {
     if (!v5)
     {
@@ -207,14 +207,14 @@ void __44__QLImageAnalysisManager_imageAnalysisQueue__block_invoke()
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v17 = 138412290;
-      v18 = v3;
+      v18 = image;
       _os_log_impl(&dword_23A714000, v5, OS_LOG_TYPE_INFO, "Creating image analysis request for image: %@ #ImageAnalysis", &v17, 0xCu);
     }
 
-    v6 = [(QLImageAnalysisManager *)self delegate];
-    v7 = [v6 shouldDetectMachineReadableCode];
+    delegate = [(QLImageAnalysisManager *)self delegate];
+    shouldDetectMachineReadableCode = [delegate shouldDetectMachineReadableCode];
 
-    if (v7)
+    if (shouldDetectMachineReadableCode)
     {
       v8 = -65;
     }
@@ -229,19 +229,19 @@ void __44__QLImageAnalysisManager_imageAnalysisQueue__block_invoke()
       v8 |= 0x40uLL;
     }
 
-    v9 = [objc_alloc(MEMORY[0x277D78520]) initWithImage:v3 requestType:v8];
-    v10 = [(QLImageAnalysisManager *)self delegate];
+    v9 = [objc_alloc(MEMORY[0x277D78520]) initWithImage:image requestType:v8];
+    delegate2 = [(QLImageAnalysisManager *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(QLImageAnalysisManager *)self delegate];
-      v13 = [v12 clientPreviewOptions];
+      delegate3 = [(QLImageAnalysisManager *)self delegate];
+      clientPreviewOptions = [delegate3 clientPreviewOptions];
 
-      v14 = [v13 objectForKeyedSubscript:@"imageURL"];
+      v14 = [clientPreviewOptions objectForKeyedSubscript:@"imageURL"];
       [v9 setImageURL:v14];
 
-      v15 = [v13 objectForKeyedSubscript:@"pageURL"];
+      v15 = [clientPreviewOptions objectForKeyedSubscript:@"pageURL"];
       [v9 setPageURL:v15];
     }
 
@@ -266,23 +266,23 @@ void __44__QLImageAnalysisManager_imageAnalysisQueue__block_invoke()
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startImageAnalysisWithRequest:(id)a3
+- (void)_startImageAnalysisWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(QLImageAnalysisManager *)self cancelAllRequests];
-  v5 = [(QLImageAnalysisManager *)self imageInteraction];
-  [v5 setAnalysis:0];
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  [imageInteraction setAnalysis:0];
 
   objc_initWeak(&location, self);
-  v6 = [(QLImageAnalysisManager *)self imageAnalysisQueue];
+  imageAnalysisQueue = [(QLImageAnalysisManager *)self imageAnalysisQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__QLImageAnalysisManager__startImageAnalysisWithRequest___block_invoke;
   block[3] = &unk_278B578F0;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = requestCopy;
   v9 = v7;
-  dispatch_async(v6, block);
+  dispatch_async(imageAnalysisQueue, block);
 
   [(QLImageAnalysisManager *)self _updateInfoButtonWithAnimation:1];
   objc_destroyWeak(&v10);
@@ -402,23 +402,23 @@ void __57__QLImageAnalysisManager__startImageAnalysisWithRequest___block_invoke_
   [WeakRetained _handleImageAnalysis:*(a1 + 32) error:*(a1 + 40)];
 }
 
-- (void)_handleImageAnalysis:(id)a3 error:(id)a4
+- (void)_handleImageAnalysis:(id)analysis error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(QLImageAnalysisManager *)self imageInteraction];
-  v9 = v8;
-  if (!v6 || v7)
+  analysisCopy = analysis;
+  errorCopy = error;
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  v9 = imageInteraction;
+  if (!analysisCopy || errorCopy)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v6;
+    v10 = analysisCopy;
   }
 
-  [v8 setAnalysis:v10];
+  [imageInteraction setAnalysis:v10];
 
   [(QLImageAnalysisManager *)self _updateAnalysisButtonWithAnimation:1];
   [(QLImageAnalysisManager *)self _updateInfoButtonWithAnimation:1];
@@ -443,8 +443,8 @@ void __57__QLImageAnalysisManager__startImageAnalysisWithRequest___block_invoke_
   else if (self->_shouldUpliftSubjectAfterNextAnalysis)
   {
     self->_shouldUpliftSubjectAfterNextAnalysis = 0;
-    v12 = [(QLImageAnalysisManager *)self imageInteraction];
-    [v12 setSubjectHighlightActive:1];
+    imageInteraction2 = [(QLImageAnalysisManager *)self imageInteraction];
+    [imageInteraction2 setSubjectHighlightActive:1];
   }
 }
 
@@ -458,10 +458,10 @@ void __53__QLImageAnalysisManager__handleImageAnalysis_error___block_invoke(uint
 {
   [(QLImageAnalysisManager *)self _updateInfoButtonWithAnimation:1];
   [(QLImageAnalysisManager *)self cancelAllRequests];
-  v5 = [(QLImageAnalysisManager *)self delegate];
-  v3 = [v5 imageAnalysisView];
-  v4 = [(QLImageAnalysisManager *)self imageInteraction];
-  [v3 removeInteraction:v4];
+  delegate = [(QLImageAnalysisManager *)self delegate];
+  imageAnalysisView = [delegate imageAnalysisView];
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  [imageAnalysisView removeInteraction:imageInteraction];
 }
 
 - (void)cancelAllRequests
@@ -480,8 +480,8 @@ void __53__QLImageAnalysisManager__handleImageAnalysis_error___block_invoke(uint
     _os_log_impl(&dword_23A714000, v4, OS_LOG_TYPE_INFO, "Cancel all image analysis requests #ImageAnalysis", v6, 2u);
   }
 
-  v5 = [(QLImageAnalysisManager *)self imageAnalyzer];
-  [v5 cancelAllRequests];
+  imageAnalyzer = [(QLImageAnalysisManager *)self imageAnalyzer];
+  [imageAnalyzer cancelAllRequests];
 }
 
 - (QLToolbarButton)imageAnalysisToolbarButton
@@ -502,8 +502,8 @@ void __53__QLImageAnalysisManager__handleImageAnalysis_error___block_invoke(uint
 
   [(QLToolbarButton *)self->_imageAnalysisToolbarButton setPlacement:v5];
   [(QLToolbarButton *)self->_imageAnalysisToolbarButton setAccessibilityIdentifier:@"QLOverlayImageAnalysisButtonAccessibilityIdentifier"];
-  v6 = [(QLImageAnalysisManager *)self infoButtonGlyphName];
-  [(QLToolbarButton *)self->_imageAnalysisToolbarButton setSymbolImageName:v6];
+  infoButtonGlyphName = [(QLImageAnalysisManager *)self infoButtonGlyphName];
+  [(QLToolbarButton *)self->_imageAnalysisToolbarButton setSymbolImageName:infoButtonGlyphName];
 
   [(QLToolbarButton *)self->_imageAnalysisToolbarButton setUseInternalSymbolImage:1];
   v7 = self->_imageAnalysisToolbarButton;
@@ -513,24 +513,24 @@ void __53__QLImageAnalysisManager__handleImageAnalysis_error___block_invoke(uint
 
 - (BOOL)hasAnalysis
 {
-  v2 = [(QLImageAnalysisManager *)self imageInteraction];
-  v3 = [v2 analysis];
-  v4 = v3 != 0;
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  analysis = [imageInteraction analysis];
+  v4 = analysis != 0;
 
   return v4;
 }
 
 - (BOOL)addInteractionIfNeeded
 {
-  v3 = [(QLImageAnalysisManager *)self delegate];
-  v4 = [v3 imageAnalysisView];
+  delegate = [(QLImageAnalysisManager *)self delegate];
+  imageAnalysisView = [delegate imageAnalysisView];
 
-  if (v4)
+  if (imageAnalysisView)
   {
-    v5 = [(QLImageAnalysisManager *)self imageInteraction];
-    if (v5 && ([v4 interactions], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "containsObject:", v5), v6, (v7 & 1) == 0))
+    imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+    if (imageInteraction && ([imageAnalysisView interactions], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "containsObject:", imageInteraction), v6, (v7 & 1) == 0))
     {
-      [v4 addInteraction:v5];
+      [imageAnalysisView addInteraction:imageInteraction];
       v8 = 1;
     }
 
@@ -548,22 +548,22 @@ void __53__QLImageAnalysisManager__handleImageAnalysis_error___block_invoke(uint
   return v8;
 }
 
-- (void)enableMarkupMode:(BOOL)a3
+- (void)enableMarkupMode:(BOOL)mode
 {
-  v3 = a3;
-  v5 = [(QLImageAnalysisManager *)self delegate];
-  v10 = [v5 imageAnalysisView];
+  modeCopy = mode;
+  delegate = [(QLImageAnalysisManager *)self delegate];
+  imageAnalysisView = [delegate imageAnalysisView];
 
-  if (v10)
+  if (imageAnalysisView)
   {
-    v6 = [(QLImageAnalysisManager *)self imageInteraction];
-    v7 = v6;
-    if (v3 || !v6)
+    imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+    v7 = imageInteraction;
+    if (modeCopy || !imageInteraction)
     {
-      if (v3)
+      if (modeCopy)
       {
-        v8 = [v10 interactions];
-        v9 = [v8 containsObject:v7];
+        interactions = [imageAnalysisView interactions];
+        v9 = [interactions containsObject:v7];
 
         if (v9)
         {
@@ -574,30 +574,30 @@ void __53__QLImageAnalysisManager__handleImageAnalysis_error___block_invoke(uint
 
           [(QLImageAnalysisManager *)self cancelAllRequests];
           [v7 setAnalysis:0];
-          [v10 removeInteraction:v7];
+          [imageAnalysisView removeInteraction:v7];
         }
       }
     }
 
     else
     {
-      [v10 addInteraction:v6];
+      [imageAnalysisView addInteraction:imageInteraction];
     }
   }
 }
 
 - (BOOL)isInteractionActive
 {
-  v3 = [(QLImageAnalysisManager *)self delegate];
-  v4 = [v3 imageAnalysisView];
+  delegate = [(QLImageAnalysisManager *)self delegate];
+  imageAnalysisView = [delegate imageAnalysisView];
 
-  if (v4)
+  if (imageAnalysisView)
   {
-    v5 = [(QLImageAnalysisManager *)self imageInteraction];
-    if (v5)
+    imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+    if (imageInteraction)
     {
-      v6 = [v4 interactions];
-      v7 = [v6 containsObject:v5];
+      interactions = [imageAnalysisView interactions];
+      v7 = [interactions containsObject:imageInteraction];
     }
 
     else
@@ -618,45 +618,45 @@ void __53__QLImageAnalysisManager__handleImageAnalysis_error___block_invoke(uint
 {
   if ([(QLImageAnalysisManager *)self isVisualIntelligenceV2Enabled])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isInteractionActive) = 1;
   }
 
   else
   {
-    v3 = [(QLImageAnalysisManager *)self isInteractionActive];
-    if (v3)
+    isInteractionActive = [(QLImageAnalysisManager *)self isInteractionActive];
+    if (isInteractionActive)
     {
 
-      LOBYTE(v3) = [(QLImageAnalysisManager *)self hasResultsForVisualSearch];
+      LOBYTE(isInteractionActive) = [(QLImageAnalysisManager *)self hasResultsForVisualSearch];
     }
   }
 
-  return v3;
+  return isInteractionActive;
 }
 
 - (BOOL)hasResultsForVisualSearch
 {
   if ([(QLImageAnalysisManager *)self isVisualIntelligenceV2Enabled]&& ([(QLImageAnalysisManager *)self imageInteraction], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_opt_respondsToSelector(), v3, (v4 & 1) != 0))
   {
-    v5 = [(QLImageAnalysisManager *)self imageInteraction];
-    v6 = [v5 isVisualIntelligenceSheetVisible];
+    imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+    isVisualIntelligenceSheetVisible = [imageInteraction isVisualIntelligenceSheetVisible];
   }
 
   else
   {
-    v7 = [(QLImageAnalysisManager *)self imageInteraction];
-    v5 = [v7 analysis];
+    imageInteraction2 = [(QLImageAnalysisManager *)self imageInteraction];
+    imageInteraction = [imageInteraction2 analysis];
 
-    if (!v5)
+    if (!imageInteraction)
     {
       v8 = 0;
       goto LABEL_8;
     }
 
-    v6 = [v5 hasResultsForAnalysisTypes:16];
+    isVisualIntelligenceSheetVisible = [imageInteraction hasResultsForAnalysisTypes:16];
   }
 
-  v8 = v6;
+  v8 = isVisualIntelligenceSheetVisible;
 LABEL_8:
 
   return v8;
@@ -664,71 +664,71 @@ LABEL_8:
 
 - (BOOL)isVisualSearchEnabled
 {
-  v3 = [(QLImageAnalysisManager *)self isVisualIntelligenceV2Enabled];
-  v4 = [(QLImageAnalysisManager *)self imageInteraction];
-  v5 = [v4 activeInteractionTypes];
+  isVisualIntelligenceV2Enabled = [(QLImageAnalysisManager *)self isVisualIntelligenceV2Enabled];
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  activeInteractionTypes = [imageInteraction activeInteractionTypes];
 
   v6 = 4;
-  if (v3)
+  if (isVisualIntelligenceV2Enabled)
   {
     v6 = 16;
   }
 
-  return (v5 & v6) != 0;
+  return (activeInteractionTypes & v6) != 0;
 }
 
 - (id)infoButtonGlyphName
 {
-  v3 = [(QLImageAnalysisManager *)self isVisualIntelligenceV2Enabled];
-  v4 = [(QLImageAnalysisManager *)self imageInteraction];
-  v5 = v4;
-  if (!v3)
+  isVisualIntelligenceV2Enabled = [(QLImageAnalysisManager *)self isVisualIntelligenceV2Enabled];
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  v5 = imageInteraction;
+  if (!isVisualIntelligenceV2Enabled)
   {
-    v10 = [v4 visualSearchResultItems];
-    v11 = [v10 count];
+    visualSearchResultItems = [imageInteraction visualSearchResultItems];
+    v11 = [visualSearchResultItems count];
 
     if (!v11)
     {
-      v7 = @"info.circle.and.sparkles";
-      v8 = @"info.circle.and.sparkles.fill";
+      infoButtonGlyphName2 = @"info.circle.and.sparkles";
+      filledInfoButtonGlyphName2 = @"info.circle.and.sparkles.fill";
 LABEL_16:
       if ([(QLImageAnalysisManager *)self isVisualSearchEnabled])
       {
-        v18 = v8;
+        v18 = filledInfoButtonGlyphName2;
       }
 
       else
       {
-        v18 = v7;
+        v18 = infoButtonGlyphName2;
       }
 
-      v9 = v18;
+      infoButtonGlyphName3 = v18;
       goto LABEL_20;
     }
 
-    v12 = [(QLImageAnalysisManager *)self imageInteraction];
-    v13 = [v12 visualSearchResultItems];
-    v14 = [v13 firstObject];
+    imageInteraction2 = [(QLImageAnalysisManager *)self imageInteraction];
+    visualSearchResultItems2 = [imageInteraction2 visualSearchResultItems];
+    firstObject = [visualSearchResultItems2 firstObject];
 
-    if (v14)
+    if (firstObject)
     {
-      v15 = [v14 infoButtonGlyphName];
+      infoButtonGlyphName = [firstObject infoButtonGlyphName];
 
-      if (v15)
+      if (infoButtonGlyphName)
       {
-        v7 = [v14 infoButtonGlyphName];
+        infoButtonGlyphName2 = [firstObject infoButtonGlyphName];
       }
 
       else
       {
-        v7 = @"info.circle.and.sparkles";
+        infoButtonGlyphName2 = @"info.circle.and.sparkles";
       }
 
-      v17 = [v14 filledInfoButtonGlyphName];
+      filledInfoButtonGlyphName = [firstObject filledInfoButtonGlyphName];
 
-      if (v17)
+      if (filledInfoButtonGlyphName)
       {
-        v8 = [v14 filledInfoButtonGlyphName];
+        filledInfoButtonGlyphName2 = [firstObject filledInfoButtonGlyphName];
 LABEL_15:
 
         goto LABEL_16;
@@ -737,10 +737,10 @@ LABEL_15:
 
     else
     {
-      v7 = @"info.circle.and.sparkles";
+      infoButtonGlyphName2 = @"info.circle.and.sparkles";
     }
 
-    v8 = @"info.circle.and.sparkles.fill";
+    filledInfoButtonGlyphName2 = @"info.circle.and.sparkles.fill";
     goto LABEL_15;
   }
 
@@ -752,11 +752,11 @@ LABEL_15:
     goto LABEL_21;
   }
 
-  v7 = [(QLImageAnalysisManager *)self imageInteraction];
-  v8 = [(__CFString *)v7 visualIntelligenceResultItem];
-  v9 = [(__CFString *)v8 infoButtonGlyphName];
+  infoButtonGlyphName2 = [(QLImageAnalysisManager *)self imageInteraction];
+  filledInfoButtonGlyphName2 = [(__CFString *)infoButtonGlyphName2 visualIntelligenceResultItem];
+  infoButtonGlyphName3 = [(__CFString *)filledInfoButtonGlyphName2 infoButtonGlyphName];
 LABEL_20:
-  v16 = v9;
+  v16 = infoButtonGlyphName3;
 
 LABEL_21:
 
@@ -765,28 +765,28 @@ LABEL_21:
 
 - (BOOL)isTextSelectionEnabled
 {
-  v2 = [(QLImageAnalysisManager *)self imageInteraction];
-  v3 = v2;
-  if (v2 && ([v2 activeInteractionTypes] & 1) != 0)
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  v3 = imageInteraction;
+  if (imageInteraction && ([imageInteraction activeInteractionTypes] & 1) != 0)
   {
-    v4 = [v3 highlightSelectableItems];
+    highlightSelectableItems = [v3 highlightSelectableItems];
   }
 
   else
   {
-    v4 = 0;
+    highlightSelectableItems = 0;
   }
 
-  return v4;
+  return highlightSelectableItems;
 }
 
 - (BOOL)isImageSubjectHighlightingEnabled
 {
-  v2 = [(QLImageAnalysisManager *)self imageInteraction];
-  v3 = v2;
-  if (v2)
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  v3 = imageInteraction;
+  if (imageInteraction)
   {
-    v4 = ([v2 activeInteractionTypes] >> 3) & 1;
+    v4 = ([imageInteraction activeInteractionTypes] >> 3) & 1;
   }
 
   else
@@ -807,9 +807,9 @@ LABEL_21:
 
   else
   {
-    v3 = [(QLImageAnalysisManager *)self _defaultInteractionTypes];
+    _defaultInteractionTypes = [(QLImageAnalysisManager *)self _defaultInteractionTypes];
 
-    [(QLImageAnalysisManager *)self _activateInteractionTypes:v3];
+    [(QLImageAnalysisManager *)self _activateInteractionTypes:_defaultInteractionTypes];
   }
 }
 
@@ -817,23 +817,23 @@ LABEL_21:
 {
   if ([(QLImageAnalysisManager *)self isVisualIntelligenceV2Enabled])
   {
-    v6 = [(QLImageAnalysisManager *)self imageInteraction];
+    imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
     if (objc_opt_respondsToSelector())
     {
-      if ([v6 isVisualIntelligenceSheetVisible])
+      if ([imageInteraction isVisualIntelligenceSheetVisible])
       {
-        v3 = [(QLImageAnalysisManager *)self imageInteraction];
-        [v3 dismissVisualIntelligenceSheetIfNecessary];
+        imageInteraction2 = [(QLImageAnalysisManager *)self imageInteraction];
+        [imageInteraction2 dismissVisualIntelligenceSheetIfNecessary];
 
-        v4 = [(QLImageAnalysisManager *)self _defaultInteractionTypes];
-        v5 = [(QLImageAnalysisManager *)self imageInteraction];
-        [v5 setActiveInteractionTypes:v4];
+        _defaultInteractionTypes = [(QLImageAnalysisManager *)self _defaultInteractionTypes];
+        imageInteraction3 = [(QLImageAnalysisManager *)self imageInteraction];
+        [imageInteraction3 setActiveInteractionTypes:_defaultInteractionTypes];
       }
 
       else
       {
-        [v6 setActiveInteractionTypes:16];
-        [v6 presentVisualIntelligenceSheet];
+        [imageInteraction setActiveInteractionTypes:16];
+        [imageInteraction presentVisualIntelligenceSheet];
       }
     }
   }
@@ -847,8 +847,8 @@ LABEL_21:
 
 - (BOOL)isVisualIntelligenceV2Active
 {
-  v2 = [(QLImageAnalysisManager *)self imageInteraction];
-  v3 = ([v2 activeInteractionTypes] >> 4) & 1;
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  v3 = ([imageInteraction activeInteractionTypes] >> 4) & 1;
 
   return v3;
 }
@@ -857,168 +857,168 @@ LABEL_21:
 {
   if (self->_isVisualIntelligenceV2Enabled && ([(QLImageAnalysisManager *)self imageInteraction], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_opt_respondsToSelector(), v3, (v4 & 1) != 0))
   {
-    v5 = [(QLImageAnalysisManager *)self imageInteraction];
-    v6 = [v5 omnibarContainerView];
+    imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+    omnibarContainerView = [imageInteraction omnibarContainerView];
   }
 
   else
   {
-    v6 = 0;
+    omnibarContainerView = 0;
   }
 
-  return v6;
+  return omnibarContainerView;
 }
 
-- (BOOL)dataDetectorExistsAtPoint:(CGPoint)a3
+- (BOOL)dataDetectorExistsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(QLImageAnalysisManager *)self imageInteraction];
-  v6 = [v5 dataDetectorExistsAtPoint:{x, y}];
-
-  return v6;
-}
-
-- (BOOL)textExistsAtPoint:(CGPoint)a3
-{
-  y = a3.y;
-  x = a3.x;
-  v5 = [(QLImageAnalysisManager *)self imageInteraction];
-  v6 = [v5 textExistsAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  v6 = [imageInteraction dataDetectorExistsAtPoint:{x, y}];
 
   return v6;
 }
 
-- (BOOL)imageSubjectExistsAtPoint:(CGPoint)a3
+- (BOOL)textExistsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(QLImageAnalysisManager *)self imageInteraction];
-  v6 = [v5 imageSubjectExistsAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  v6 = [imageInteraction textExistsAtPoint:{x, y}];
 
   return v6;
 }
 
-- (BOOL)visualSearchExistsAtPoint:(CGPoint)a3
+- (BOOL)imageSubjectExistsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(QLImageAnalysisManager *)self imageInteraction];
-  v6 = [v5 visualSearchExistsAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  v6 = [imageInteraction imageSubjectExistsAtPoint:{x, y}];
 
   return v6;
 }
 
-- (BOOL)actionInfoItemExistsAtPoint:(CGPoint)a3
+- (BOOL)visualSearchExistsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(QLImageAnalysisManager *)self imageInteraction];
-  v6 = [v5 actionInfoItemExistsAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  v6 = [imageInteraction visualSearchExistsAtPoint:{x, y}];
+
+  return v6;
+}
+
+- (BOOL)actionInfoItemExistsAtPoint:(CGPoint)point
+{
+  y = point.y;
+  x = point.x;
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  v6 = [imageInteraction actionInfoItemExistsAtPoint:{x, y}];
 
   return v6;
 }
 
 - (BOOL)hasActiveTextSelection
 {
-  v2 = [(QLImageAnalysisManager *)self imageInteraction];
-  v3 = [v2 hasActiveTextSelection];
+  imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+  hasActiveTextSelection = [imageInteraction hasActiveTextSelection];
 
-  return v3;
+  return hasActiveTextSelection;
 }
 
-- (void)adjustImageInteractionForScrollView:(id)a3
+- (void)adjustImageInteractionForScrollView:(id)view
 {
-  v23 = a3;
+  viewCopy = view;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v4 = [(QLImageAnalysisManager *)self delegate];
-    v5 = [v4 imageAnalysisView];
+    delegate = [(QLImageAnalysisManager *)self delegate];
+    imageAnalysisView = [delegate imageAnalysisView];
 
-    if (v23 && v5)
+    if (viewCopy && imageAnalysisView)
     {
-      [v23 bounds];
-      [v23 convertRect:v5 toView:?];
+      [viewCopy bounds];
+      [viewCopy convertRect:imageAnalysisView toView:?];
       v7 = v6;
       v9 = v8;
       v11 = v10;
       v13 = v12;
-      [v5 bounds];
+      [imageAnalysisView bounds];
       v15 = v7 / v14;
-      [v5 bounds];
+      [imageAnalysisView bounds];
       v17 = v9 / v16;
-      [v5 bounds];
+      [imageAnalysisView bounds];
       v19 = v11 / v18;
-      [v5 bounds];
+      [imageAnalysisView bounds];
       v21 = v13 / v20;
-      v22 = [(QLImageAnalysisManager *)self imageInteraction];
-      [v22 scrollViewDidZoomToUnitRect:{v15, v17, v19, v21}];
+      imageInteraction = [(QLImageAnalysisManager *)self imageInteraction];
+      [imageInteraction scrollViewDidZoomToUnitRect:{v15, v17, v19, v21}];
     }
   }
 }
 
-- (BOOL)imageAnalysisInteraction:(id)a3 shouldBeginAtPoint:(CGPoint)a4 forAnalysisType:(unint64_t)a5
+- (BOOL)imageAnalysisInteraction:(id)interaction shouldBeginAtPoint:(CGPoint)point forAnalysisType:(unint64_t)type
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [v7 textExistsAtPoint:{x, y}];
-  v9 = [v7 imageSubjectExistsAtPoint:{x, y}];
-  v10 = [v7 dataDetectorExistsAtPoint:{x, y}];
-  v11 = [v7 visualSearchExistsAtPoint:{x, y}];
-  v12 = 1;
+  y = point.y;
+  x = point.x;
+  interactionCopy = interaction;
+  v8 = [interactionCopy textExistsAtPoint:{x, y}];
+  v9 = [interactionCopy imageSubjectExistsAtPoint:{x, y}];
+  v10 = [interactionCopy dataDetectorExistsAtPoint:{x, y}];
+  v11 = [interactionCopy visualSearchExistsAtPoint:{x, y}];
+  hasActiveTextSelection = 1;
   if ((v8 & 1) == 0 && (v9 & 1) == 0 && (v10 & 1) == 0 && (v11 & 1) == 0)
   {
-    v12 = [v7 hasActiveTextSelection];
+    hasActiveTextSelection = [interactionCopy hasActiveTextSelection];
   }
 
-  return v12;
+  return hasActiveTextSelection;
 }
 
 - (void)imageAnalysisPopoverWillAppear
 {
   self->_isImageAnalysisPopoverPresented = 1;
-  v3 = [(QLImageAnalysisManager *)self delegate];
+  delegate = [(QLImageAnalysisManager *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(QLImageAnalysisManager *)self delegate];
-    [v5 imageAnalysisInteractionWillPresentVisualSearchController];
+    delegate2 = [(QLImageAnalysisManager *)self delegate];
+    [delegate2 imageAnalysisInteractionWillPresentVisualSearchController];
   }
 }
 
 - (void)imageAnalysisPopoverDidDisappear
 {
   self->_isImageAnalysisPopoverPresented = 0;
-  v3 = [(QLImageAnalysisManager *)self delegate];
+  delegate = [(QLImageAnalysisManager *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(QLImageAnalysisManager *)self delegate];
-    [v5 imageAnalysisInteractionDidDismissVisualSearchController];
+    delegate2 = [(QLImageAnalysisManager *)self delegate];
+    [delegate2 imageAnalysisInteractionDidDismissVisualSearchController];
   }
 }
 
-- (void)imageAnalysisInteraction:(id)a3 prepareForCalloutAction:(SEL)a4 competion:(id)a5
+- (void)imageAnalysisInteraction:(id)interaction prepareForCalloutAction:(SEL)action competion:(id)competion
 {
-  v9 = a5;
-  v7 = NSStringFromSelector(a4);
+  competionCopy = competion;
+  v7 = NSStringFromSelector(action);
   v8 = [MEMORY[0x277CBEB98] setWithObjects:{@"_define:", @"_translate:", @"_share:", @"_addShortcut:", 0}];
   if ([v8 containsObject:v7])
   {
     [(QLImageAnalysisManager *)self imageAnalysisPopoverWillAppear];
   }
 
-  v9[2]();
+  competionCopy[2]();
 }
 
-- (id)presentingViewControllerForImageAnalysisInteraction:(id)a3
+- (id)presentingViewControllerForImageAnalysisInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(QLImageAnalysisManager *)self delegate];
-  v6 = [v5 presentingViewControllerForImageAnalysisInteraction:v4];
+  interactionCopy = interaction;
+  delegate = [(QLImageAnalysisManager *)self delegate];
+  v6 = [delegate presentingViewControllerForImageAnalysisInteraction:interactionCopy];
 
   return v6;
 }

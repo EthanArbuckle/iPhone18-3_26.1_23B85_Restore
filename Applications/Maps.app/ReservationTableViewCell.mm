@@ -1,13 +1,13 @@
 @interface ReservationTableViewCell
-- (ReservationTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (ReservationTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIColor)detailTextColor;
 - (UIColor)titleTextColor;
 - (void)_setupConstraints;
 - (void)loadDetailView;
-- (void)setDetailText:(id)a3;
-- (void)setDetailTextColor:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)setTitleTextColor:(id)a3;
+- (void)setDetailText:(id)text;
+- (void)setDetailTextColor:(id)color;
+- (void)setTitleText:(id)text;
+- (void)setTitleTextColor:(id)color;
 - (void)setupTextVerticalConstraints;
 - (void)updateLabels;
 @end
@@ -16,51 +16,51 @@
 
 - (UIColor)titleTextColor
 {
-  v2 = [(ReservationTableViewCell *)self titleLabel];
-  v3 = [v2 textColor];
+  titleLabel = [(ReservationTableViewCell *)self titleLabel];
+  textColor = [titleLabel textColor];
 
-  return v3;
+  return textColor;
 }
 
-- (void)setTitleTextColor:(id)a3
+- (void)setTitleTextColor:(id)color
 {
-  v4 = a3;
-  v5 = [(ReservationTableViewCell *)self titleLabel];
-  [v5 setTextColor:v4];
+  colorCopy = color;
+  titleLabel = [(ReservationTableViewCell *)self titleLabel];
+  [titleLabel setTextColor:colorCopy];
 }
 
 - (UIColor)detailTextColor
 {
-  v2 = [(ReservationTableViewCell *)self detailLabel];
-  v3 = [v2 textColor];
+  detailLabel = [(ReservationTableViewCell *)self detailLabel];
+  textColor = [detailLabel textColor];
 
-  return v3;
+  return textColor;
 }
 
-- (void)setDetailTextColor:(id)a3
+- (void)setDetailTextColor:(id)color
 {
-  v4 = a3;
-  v5 = [(ReservationTableViewCell *)self detailLabel];
-  [v5 setTextColor:v4];
+  colorCopy = color;
+  detailLabel = [(ReservationTableViewCell *)self detailLabel];
+  [detailLabel setTextColor:colorCopy];
 }
 
 - (void)updateLabels
 {
-  v3 = [(ReservationTableViewCell *)self titleText];
-  v4 = [(ReservationTableViewCell *)self titleLabel];
-  [v4 setText:v3];
+  titleText = [(ReservationTableViewCell *)self titleText];
+  titleLabel = [(ReservationTableViewCell *)self titleLabel];
+  [titleLabel setText:titleText];
 
-  v6 = [(ReservationTableViewCell *)self detailText];
-  v5 = [(ReservationTableViewCell *)self detailLabel];
-  [v5 setText:v6];
+  detailText = [(ReservationTableViewCell *)self detailText];
+  detailLabel = [(ReservationTableViewCell *)self detailLabel];
+  [detailLabel setText:detailText];
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_detailText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToString:self->_detailText] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     detailText = self->_detailText;
     self->_detailText = v4;
 
@@ -68,12 +68,12 @@
   }
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_titleText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToString:self->_titleText] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     titleText = self->_titleText;
     self->_titleText = v4;
 
@@ -83,25 +83,25 @@
 
 - (void)setupTextVerticalConstraints
 {
-  v3 = [(ReservationTableViewCell *)self contentView];
-  v4 = [v3 layoutMarginsGuide];
-  v5 = [v4 topAnchor];
-  v6 = [(ReservationTableViewCell *)self titleLabel];
-  v7 = [v6 topAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  contentView = [(ReservationTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  topAnchor = [layoutMarginsGuide topAnchor];
+  titleLabel = [(ReservationTableViewCell *)self titleLabel];
+  topAnchor2 = [titleLabel topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v9 = [(ReservationTableViewCell *)self contentView];
-  v10 = [v9 layoutMarginsGuide];
-  v11 = [v10 bottomAnchor];
-  v12 = [(ReservationTableViewCell *)self titleLabel];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  contentView2 = [(ReservationTableViewCell *)self contentView];
+  layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+  bottomAnchor = [layoutMarginsGuide2 bottomAnchor];
+  titleLabel2 = [(ReservationTableViewCell *)self titleLabel];
+  bottomAnchor2 = [titleLabel2 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
-  v15 = [(ReservationTableViewCell *)self titleLabel];
-  v16 = [v15 firstBaselineAnchor];
-  v17 = [(ReservationTableViewCell *)self detailView];
-  v18 = [v17 firstBaselineAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  titleLabel3 = [(ReservationTableViewCell *)self titleLabel];
+  firstBaselineAnchor = [titleLabel3 firstBaselineAnchor];
+  detailView = [(ReservationTableViewCell *)self detailView];
+  firstBaselineAnchor2 = [detailView firstBaselineAnchor];
+  v19 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
 
   v21[0] = v8;
   v21[1] = v14;
@@ -112,31 +112,31 @@
 
 - (void)_setupConstraints
 {
-  v3 = [(ReservationTableViewCell *)self titleLabel];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(ReservationTableViewCell *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(ReservationTableViewCell *)self detailView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  detailView = [(ReservationTableViewCell *)self detailView];
+  [detailView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(ReservationTableViewCell *)self titleLabel];
-  v6 = [v5 leadingAnchor];
-  v7 = [(ReservationTableViewCell *)self contentView];
-  v8 = [v7 layoutMarginsGuide];
-  v9 = [v8 leadingAnchor];
-  v10 = [v6 constraintEqualToAnchor:v9];
+  titleLabel2 = [(ReservationTableViewCell *)self titleLabel];
+  leadingAnchor = [titleLabel2 leadingAnchor];
+  contentView = [(ReservationTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v11 = [(ReservationTableViewCell *)self detailView];
-  v12 = [v11 trailingAnchor];
-  v13 = [(ReservationTableViewCell *)self contentView];
-  v14 = [v13 layoutMarginsGuide];
-  v15 = [v14 trailingAnchor];
-  v16 = [v12 constraintEqualToAnchor:v15];
+  detailView2 = [(ReservationTableViewCell *)self detailView];
+  trailingAnchor = [detailView2 trailingAnchor];
+  contentView2 = [(ReservationTableViewCell *)self contentView];
+  layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-  v17 = [(ReservationTableViewCell *)self detailView];
-  v18 = [v17 leadingAnchor];
-  v19 = [(ReservationTableViewCell *)self titleLabel];
-  v20 = [v19 trailingAnchor];
-  v21 = [v18 constraintLessThanOrEqualToAnchor:v20 constant:20.0];
+  detailView3 = [(ReservationTableViewCell *)self detailView];
+  leadingAnchor3 = [detailView3 leadingAnchor];
+  titleLabel3 = [(ReservationTableViewCell *)self titleLabel];
+  trailingAnchor3 = [titleLabel3 trailingAnchor];
+  v21 = [leadingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor3 constant:20.0];
 
   v23[0] = v10;
   v23[1] = v16;
@@ -153,43 +153,43 @@
   [(ReservationTableViewCell *)self setDetailLabel:v3];
 
   v4 = +[UIColor labelColor];
-  v5 = [(ReservationTableViewCell *)self detailLabel];
-  [v5 setTextColor:v4];
+  detailLabel = [(ReservationTableViewCell *)self detailLabel];
+  [detailLabel setTextColor:v4];
 
   v6 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:UIFontTextStyleBody addingSymbolicTraits:0];
-  v7 = [(ReservationTableViewCell *)self titleLabel];
-  [v7 setFont:v6];
+  titleLabel = [(ReservationTableViewCell *)self titleLabel];
+  [titleLabel setFont:v6];
 
-  v8 = [(ReservationTableViewCell *)self detailLabel];
-  [(ReservationTableViewCell *)self setDetailView:v8];
+  detailLabel2 = [(ReservationTableViewCell *)self detailLabel];
+  [(ReservationTableViewCell *)self setDetailView:detailLabel2];
 }
 
-- (ReservationTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ReservationTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v15.receiver = self;
   v15.super_class = ReservationTableViewCell;
-  v4 = [(ReservationTableViewCell *)&v15 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(ReservationTableViewCell *)&v15 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_new();
     [(ReservationTableViewCell *)v4 setTitleLabel:v5];
 
     v6 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:UIFontTextStyleBody addingSymbolicTraits:0];
-    v7 = [(ReservationTableViewCell *)v4 titleLabel];
-    [v7 setFont:v6];
+    titleLabel = [(ReservationTableViewCell *)v4 titleLabel];
+    [titleLabel setFont:v6];
 
     v8 = +[UIColor secondaryLabelColor];
-    v9 = [(ReservationTableViewCell *)v4 titleLabel];
-    [v9 setTextColor:v8];
+    titleLabel2 = [(ReservationTableViewCell *)v4 titleLabel];
+    [titleLabel2 setTextColor:v8];
 
     [(ReservationTableViewCell *)v4 loadDetailView];
-    v10 = [(ReservationTableViewCell *)v4 contentView];
-    v11 = [(ReservationTableViewCell *)v4 titleLabel];
-    [v10 addSubview:v11];
+    contentView = [(ReservationTableViewCell *)v4 contentView];
+    titleLabel3 = [(ReservationTableViewCell *)v4 titleLabel];
+    [contentView addSubview:titleLabel3];
 
-    v12 = [(ReservationTableViewCell *)v4 contentView];
-    v13 = [(ReservationTableViewCell *)v4 detailView];
-    [v12 addSubview:v13];
+    contentView2 = [(ReservationTableViewCell *)v4 contentView];
+    detailView = [(ReservationTableViewCell *)v4 detailView];
+    [contentView2 addSubview:detailView];
 
     [(ReservationTableViewCell *)v4 _setupConstraints];
   }

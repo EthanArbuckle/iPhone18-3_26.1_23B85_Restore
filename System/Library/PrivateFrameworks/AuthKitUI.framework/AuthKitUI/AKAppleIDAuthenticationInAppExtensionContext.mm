@@ -1,27 +1,27 @@
 @interface AKAppleIDAuthenticationInAppExtensionContext
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5;
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request;
 @end
 
 @implementation AKAppleIDAuthenticationInAppExtensionContext
 
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, error);
   v23 = 0;
-  objc_storeStrong(&v23, a5);
+  objc_storeStrong(&v23, request);
   v21 = 0;
   v19 = 0;
   v10 = 0;
   if (v24)
   {
-    v22 = [v24 userInfo];
+    userInfo = [v24 userInfo];
     v21 = 1;
-    v20 = [v22 objectForKeyedSubscript:@"statusCode"];
+    v20 = [userInfo objectForKeyedSubscript:@"statusCode"];
     v19 = 1;
     v10 = [v20 isEqual:&unk_2835AAEB8];
   }
@@ -33,7 +33,7 @@
 
   if (v21)
   {
-    MEMORY[0x277D82BD8](v22);
+    MEMORY[0x277D82BD8](userInfo);
   }
 
   if (v10)
@@ -46,7 +46,7 @@
     v14 = 0;
     v15 = __101__AKAppleIDAuthenticationInAppExtensionContext_remoteUIController_didFinishLoadWithError_forRequest___block_invoke;
     v16 = &unk_2784A6420;
-    v17 = MEMORY[0x277D82BE0](v26);
+    v17 = MEMORY[0x277D82BE0](selfCopy);
     v18 = MEMORY[0x277D82BE0](v24);
     dispatch_async(queue, &v12);
     MEMORY[0x277D82BD8](queue);
@@ -56,7 +56,7 @@
 
   else
   {
-    v11.receiver = v26;
+    v11.receiver = selfCopy;
     v11.super_class = AKAppleIDAuthenticationInAppExtensionContext;
     [(AKAppleIDAuthenticationInAppContext *)&v11 remoteUIController:location[0] didFinishLoadWithError:v24 forRequest:v23];
   }

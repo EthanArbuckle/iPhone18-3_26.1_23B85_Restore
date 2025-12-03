@@ -8,8 +8,8 @@
 - (id)protoBuffer
 {
   v3 = objc_alloc_init(APPBMescalSignSAPSetupRequest);
-  v4 = [(APMescalSignSetupRequester *)self data];
-  [(APPBMescalSignSAPSetupRequest *)v3 setBuffer:v4];
+  data = [(APMescalSignSetupRequester *)self data];
+  [(APPBMescalSignSAPSetupRequest *)v3 setBuffer:data];
 
   return v3;
 }
@@ -18,8 +18,8 @@
 {
   v6.receiver = self;
   v6.super_class = APMescalSignSetupRequester;
-  v2 = [(APServerRequester *)&v6 headers];
-  v3 = [v2 mutableCopy];
+  headers = [(APServerRequester *)&v6 headers];
+  v3 = [headers mutableCopy];
 
   [v3 setObject:@"application/octet-stream" forKey:@"Content-Type"];
   v4 = [v3 copy];

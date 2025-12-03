@@ -1,46 +1,46 @@
 @interface HDMedicationExposableDoseEventEngine
-+ (BOOL)_dosesEqualExceptStatusForDoseEvent:(void *)a3 doseEvent2:;
-+ (BOOL)writeDoseEvents:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)_allExposableDoseEventsForTransaction:(void *)a3 dateInterval:(void *)a4 medicationIdentifier:(void *)a5 profile:(uint64_t)a6 error:;
-+ (id)_createDoseEventsForScheduleItem:(void *)a3 medicationIdentifier:(void *)a4 existingDoseEvents:;
-+ (id)_createDoseEventsFromExposableEvents:(void *)a3 profile:(uint64_t)a4 error:;
-+ (id)_createExposableDoseEventsFromDoseEvents:(uint64_t)a1;
-+ (id)_createPredicateForDateInterval:(void *)a3 medicationIdentifier:;
-+ (id)_doseEventForScheduleDose:(void *)a3 scheduleItem:;
-+ (id)_generateMetadataForScheduleItemIdentifier:(void *)a3 semanticId:(uint64_t)a4 status:(uint64_t)a5 isLastScheduledDose:;
-+ (id)_getDoseEventsForProfile:(void *)a3 predicate:(uint64_t)a4 error:;
-+ (id)_populateSemanticIdentifierForExposableEvent:(void *)a3 activeMedications:(uint64_t)a4 error:;
-+ (id)_scheuduleItemsPredicateForDateInterval:(uint64_t)a1;
-+ (id)doseEventsForDateInterval:(id)a3 medicationIdentifier:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (void)_getActiveListMedicationsForProfile:(uint64_t)a3 error:;
-+ (void)_getMatchingScheduleItemDoseEventsForExistingDoseEvents:(void *)a3 dateInterval:(void *)a4 medicationIdentifier:(void *)a5 transaction:(uint64_t)a6 profile:(uint64_t)a7 error:;
++ (BOOL)_dosesEqualExceptStatusForDoseEvent:(void *)event doseEvent2:;
++ (BOOL)writeDoseEvents:(id)events profile:(id)profile error:(id *)error;
++ (id)_allExposableDoseEventsForTransaction:(void *)transaction dateInterval:(void *)interval medicationIdentifier:(void *)identifier profile:(uint64_t)profile error:;
++ (id)_createDoseEventsForScheduleItem:(void *)item medicationIdentifier:(void *)identifier existingDoseEvents:;
++ (id)_createDoseEventsFromExposableEvents:(void *)events profile:(uint64_t)profile error:;
++ (id)_createExposableDoseEventsFromDoseEvents:(uint64_t)events;
++ (id)_createPredicateForDateInterval:(void *)interval medicationIdentifier:;
++ (id)_doseEventForScheduleDose:(void *)dose scheduleItem:;
++ (id)_generateMetadataForScheduleItemIdentifier:(void *)identifier semanticId:(uint64_t)id status:(uint64_t)status isLastScheduledDose:;
++ (id)_getDoseEventsForProfile:(void *)profile predicate:(uint64_t)predicate error:;
++ (id)_populateSemanticIdentifierForExposableEvent:(void *)event activeMedications:(uint64_t)medications error:;
++ (id)_scheuduleItemsPredicateForDateInterval:(uint64_t)interval;
++ (id)doseEventsForDateInterval:(id)interval medicationIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (void)_getActiveListMedicationsForProfile:(uint64_t)profile error:;
++ (void)_getMatchingScheduleItemDoseEventsForExistingDoseEvents:(void *)events dateInterval:(void *)interval medicationIdentifier:(void *)identifier transaction:(uint64_t)transaction profile:(uint64_t)profile error:;
 @end
 
 @implementation HDMedicationExposableDoseEventEngine
 
-+ (id)doseEventsForDateInterval:(id)a3 medicationIdentifier:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)doseEventsForDateInterval:(id)interval medicationIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  intervalCopy = interval;
+  identifierCopy = identifier;
+  profileCopy = profile;
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v14 = [v12 database];
+  database = [profileCopy database];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __101__HDMedicationExposableDoseEventEngine_doseEventsForDateInterval_medicationIdentifier_profile_error___block_invoke;
   v22[3] = &unk_2796CD4C0;
   v26 = v13;
-  v27 = a1;
-  v23 = v10;
-  v24 = v11;
-  v25 = v12;
+  selfCopy = self;
+  v23 = intervalCopy;
+  v24 = identifierCopy;
+  v25 = profileCopy;
   v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  LODWORD(a6) = [(HDHealthEntity *)HDMedicationScheduleItemEntity performReadTransactionWithHealthDatabase:v14 error:a6 block:v22];
+  v16 = profileCopy;
+  v17 = identifierCopy;
+  v18 = intervalCopy;
+  LODWORD(error) = [(HDHealthEntity *)HDMedicationScheduleItemEntity performReadTransactionWithHealthDatabase:database error:error block:v22];
 
-  if (a6)
+  if (error)
   {
     v19 = v15;
   }
@@ -66,22 +66,22 @@ BOOL __101__HDMedicationExposableDoseEventEngine_doseEventsForDateInterval_medic
   return v4 != 0;
 }
 
-+ (id)_allExposableDoseEventsForTransaction:(void *)a3 dateInterval:(void *)a4 medicationIdentifier:(void *)a5 profile:(uint64_t)a6 error:
++ (id)_allExposableDoseEventsForTransaction:(void *)transaction dateInterval:(void *)interval medicationIdentifier:(void *)identifier profile:(uint64_t)profile error:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  transactionCopy = transaction;
+  intervalCopy = interval;
+  identifierCopy = identifier;
   v14 = objc_opt_self();
-  v15 = [(HDMedicationExposableDoseEventEngine *)v14 _createPredicateForDateInterval:v11 medicationIdentifier:v12];
-  v16 = [(HDMedicationExposableDoseEventEngine *)v14 _getDoseEventsForProfile:v13 predicate:v15 error:a6];
+  v15 = [(HDMedicationExposableDoseEventEngine *)v14 _createPredicateForDateInterval:transactionCopy medicationIdentifier:intervalCopy];
+  v16 = [(HDMedicationExposableDoseEventEngine *)v14 _getDoseEventsForProfile:identifierCopy predicate:v15 error:profile];
   if (v16)
   {
     v17 = objc_alloc(MEMORY[0x277CBEB18]);
     v18 = [(HDMedicationExposableDoseEventEngine *)v14 _createExposableDoseEventsFromDoseEvents:v16];
     v19 = [v17 initWithArray:v18];
 
-    v21 = [(HDMedicationExposableDoseEventEngine *)v14 _getMatchingScheduleItemDoseEventsForExistingDoseEvents:v16 dateInterval:v11 medicationIdentifier:v12 transaction:v10 profile:v20 error:a6];
+    v21 = [(HDMedicationExposableDoseEventEngine *)v14 _getMatchingScheduleItemDoseEventsForExistingDoseEvents:v16 dateInterval:transactionCopy medicationIdentifier:intervalCopy transaction:v10 profile:v20 error:profile];
     if (v21)
     {
       [v19 addObjectsFromArray:v21];
@@ -102,17 +102,17 @@ BOOL __101__HDMedicationExposableDoseEventEngine_doseEventsForDateInterval_medic
   return v22;
 }
 
-+ (BOOL)writeDoseEvents:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)writeDoseEvents:(id)events profile:(id)profile error:(id *)error
 {
-  v8 = a4;
-  v9 = [(HDMedicationExposableDoseEventEngine *)a1 _createDoseEventsFromExposableEvents:a3 profile:v8 error:a5];
+  profileCopy = profile;
+  v9 = [(HDMedicationExposableDoseEventEngine *)self _createDoseEventsFromExposableEvents:events profile:profileCopy error:error];
   if (v9)
   {
-    v10 = [HDMedicationsAppSourceSupport medicationsAppSourceEntityForProfile:v8 error:a5];
+    v10 = [HDMedicationsAppSourceSupport medicationsAppSourceEntityForProfile:profileCopy error:error];
     if (v10)
     {
-      v11 = [v8 dataManager];
-      v12 = [v11 insertDataObjects:v9 sourceEntity:v10 deviceEntity:0 sourceVersion:0 creationDate:a5 error:CFAbsoluteTimeGetCurrent()];
+      dataManager = [profileCopy dataManager];
+      v12 = [dataManager insertDataObjects:v9 sourceEntity:v10 deviceEntity:0 sourceVersion:0 creationDate:error error:CFAbsoluteTimeGetCurrent()];
     }
 
     else
@@ -129,10 +129,10 @@ BOOL __101__HDMedicationExposableDoseEventEngine_doseEventsForDateInterval_medic
   return v12;
 }
 
-+ (id)_createDoseEventsFromExposableEvents:(void *)a3 profile:(uint64_t)a4 error:
++ (id)_createDoseEventsFromExposableEvents:(void *)events profile:(uint64_t)profile error:
 {
   v6 = a2;
-  v7 = a3;
+  eventsCopy = events;
   v8 = objc_opt_self();
   v25[0] = 0;
   v25[1] = v25;
@@ -150,8 +150,8 @@ BOOL __101__HDMedicationExposableDoseEventEngine_doseEventsForDateInterval_medic
   v15[3] = &unk_2796CD558;
   v17 = v25;
   v19 = v8;
-  v9 = v7;
-  v20 = a4;
+  v9 = eventsCopy;
+  profileCopy = profile;
   v16 = v9;
   v18 = &v21;
   v10 = [v6 hk_map:v15];
@@ -177,16 +177,16 @@ BOOL __101__HDMedicationExposableDoseEventEngine_doseEventsForDateInterval_medic
   return v12;
 }
 
-+ (id)_createPredicateForDateInterval:(void *)a3 medicationIdentifier:
++ (id)_createPredicateForDateInterval:(void *)interval medicationIdentifier:
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intervalCopy = interval;
   v5 = a2;
   objc_opt_self();
-  v6 = [v5 startDate];
+  startDate = [v5 startDate];
   v7 = HDSampleEntityPredicateForStartDate();
 
-  v8 = [v5 endDate];
+  endDate = [v5 endDate];
 
   v9 = HDSampleEntityPredicateForEndDate();
 
@@ -196,7 +196,7 @@ BOOL __101__HDMedicationExposableDoseEventEngine_doseEventsForDateInterval_medic
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
   v12 = [v10 initWithArray:v11];
 
-  if (v4)
+  if (intervalCopy)
   {
     v13 = HDMedicationDoseEventEntityPredicateForHashedMedicationIdentifier();
     [v12 addObject:v13];
@@ -209,19 +209,19 @@ BOOL __101__HDMedicationExposableDoseEventEngine_doseEventsForDateInterval_medic
   return v14;
 }
 
-+ (id)_getDoseEventsForProfile:(void *)a3 predicate:(uint64_t)a4 error:
++ (id)_getDoseEventsForProfile:(void *)profile predicate:(uint64_t)predicate error:
 {
-  v6 = a3;
+  profileCopy = profile;
   v7 = a2;
   objc_opt_self();
   v8 = MEMORY[0x277D10768];
-  v9 = [MEMORY[0x277CCD658] medicationDoseEventType];
-  v10 = [v8 samplesWithType:v9 profile:v7 encodingOptions:0 predicate:v6 limit:0 anchor:0 error:a4];
+  medicationDoseEventType = [MEMORY[0x277CCD658] medicationDoseEventType];
+  v10 = [v8 samplesWithType:medicationDoseEventType profile:v7 encodingOptions:0 predicate:profileCopy limit:0 anchor:0 error:predicate];
 
   return v10;
 }
 
-+ (id)_createExposableDoseEventsFromDoseEvents:(uint64_t)a1
++ (id)_createExposableDoseEventsFromDoseEvents:(uint64_t)events
 {
   v2 = a2;
   objc_opt_self();
@@ -230,30 +230,30 @@ BOOL __101__HDMedicationExposableDoseEventEngine_doseEventsForDateInterval_medic
   return v3;
 }
 
-+ (void)_getMatchingScheduleItemDoseEventsForExistingDoseEvents:(void *)a3 dateInterval:(void *)a4 medicationIdentifier:(void *)a5 transaction:(uint64_t)a6 profile:(uint64_t)a7 error:
++ (void)_getMatchingScheduleItemDoseEventsForExistingDoseEvents:(void *)events dateInterval:(void *)interval medicationIdentifier:(void *)identifier transaction:(uint64_t)transaction profile:(uint64_t)profile error:
 {
   v11 = a2;
-  v12 = a4;
-  v13 = a5;
-  v14 = a3;
+  intervalCopy = interval;
+  identifierCopy = identifier;
+  eventsCopy = events;
   v15 = objc_opt_self();
   v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v17 = [(HDMedicationExposableDoseEventEngine *)v15 _scheuduleItemsPredicateForDateInterval:v14];
+  v17 = [(HDMedicationExposableDoseEventEngine *)v15 _scheuduleItemsPredicateForDateInterval:eventsCopy];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __156__HDMedicationExposableDoseEventEngine__getMatchingScheduleItemDoseEventsForExistingDoseEvents_dateInterval_medicationIdentifier_transaction_profile_error___block_invoke;
   v24[3] = &unk_2796CD4E8;
-  v25 = v12;
+  v25 = intervalCopy;
   v26 = v11;
   v27 = v16;
   v28 = v15;
   v18 = v16;
   v19 = v11;
-  v20 = v12;
-  LODWORD(a7) = [HDMedicationScheduleItemEntity enumerateItemsWithPredicate:v17 orderingTerms:0 transaction:v13 error:a7 enumerationHandler:v24];
+  v20 = intervalCopy;
+  LODWORD(profile) = [HDMedicationScheduleItemEntity enumerateItemsWithPredicate:v17 orderingTerms:0 transaction:identifierCopy error:profile enumerationHandler:v24];
 
-  if (a7)
+  if (profile)
   {
     v21 = v18;
   }
@@ -268,15 +268,15 @@ BOOL __101__HDMedicationExposableDoseEventEngine_doseEventsForDateInterval_medic
   return v21;
 }
 
-+ (id)_scheuduleItemsPredicateForDateInterval:(uint64_t)a1
++ (id)_scheuduleItemsPredicateForDateInterval:(uint64_t)interval
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 startDate];
+  startDate = [v2 startDate];
   v4 = HDMedicationScheduleItemPredicateForScheduledDateTime(5);
 
-  v5 = [v2 endDate];
+  endDate = [v2 endDate];
 
   v6 = HDMedicationScheduleItemPredicateForScheduledDateTime(3);
 
@@ -301,25 +301,25 @@ uint64_t __156__HDMedicationExposableDoseEventEngine__getMatchingScheduleItemDos
   return 1;
 }
 
-+ (id)_createDoseEventsForScheduleItem:(void *)a3 medicationIdentifier:(void *)a4 existingDoseEvents:
++ (id)_createDoseEventsForScheduleItem:(void *)item medicationIdentifier:(void *)identifier existingDoseEvents:
 {
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  identifierCopy = identifier;
   v9 = objc_opt_self();
-  v10 = [v6 doses];
+  doses = [v6 doses];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __113__HDMedicationExposableDoseEventEngine__createDoseEventsForScheduleItem_medicationIdentifier_existingDoseEvents___block_invoke;
   v16[3] = &unk_2796CD510;
-  v17 = v7;
+  v17 = itemCopy;
   v18 = v6;
-  v19 = v8;
+  v19 = identifierCopy;
   v20 = v9;
-  v11 = v8;
+  v11 = identifierCopy;
   v12 = v6;
-  v13 = v7;
-  v14 = [v10 hk_map:v16];
+  v13 = itemCopy;
+  v14 = [doses hk_map:v16];
 
   return v14;
 }
@@ -387,48 +387,48 @@ LABEL_14:
   return v14;
 }
 
-+ (id)_doseEventForScheduleDose:(void *)a3 scheduleItem:
++ (id)_doseEventForScheduleDose:(void *)dose scheduleItem:
 {
-  v4 = a3;
+  doseCopy = dose;
   v5 = a2;
   v6 = objc_opt_self();
-  v7 = [v4 identifier];
-  v8 = [v5 medicationIdentifier];
-  v9 = +[HDMedicationExposableDoseEventEngine _generateMetadataForScheduleItemIdentifier:semanticId:status:isLastScheduledDose:](v6, v7, v8, 1, [v5 isLastScheduledDose]);
+  identifier = [doseCopy identifier];
+  medicationIdentifier = [v5 medicationIdentifier];
+  v9 = +[HDMedicationExposableDoseEventEngine _generateMetadataForScheduleItemIdentifier:semanticId:status:isLastScheduledDose:](v6, identifier, medicationIdentifier, 1, [v5 isLastScheduledDose]);
 
   v10 = MEMORY[0x277CCD650];
-  v11 = [v4 identifier];
-  v12 = [v5 medicationIdentifier];
-  v13 = [v5 dose];
+  identifier2 = [doseCopy identifier];
+  medicationIdentifier2 = [v5 medicationIdentifier];
+  dose = [v5 dose];
 
-  v14 = [v4 scheduledDateTime];
-  v15 = [v4 scheduledDateTime];
+  scheduledDateTime = [doseCopy scheduledDateTime];
+  scheduledDateTime2 = [doseCopy scheduledDateTime];
 
-  v16 = [v10 medicationDoseEventWithLogOrigin:2 scheduleItemIdentifier:v11 medicationIdentifier:v12 scheduledDoseQuantity:v13 doseQuantity:0 scheduledDate:v14 startDate:v15 logStatus:2 doseUnitString:0 metadata:v9];
+  v16 = [v10 medicationDoseEventWithLogOrigin:2 scheduleItemIdentifier:identifier2 medicationIdentifier:medicationIdentifier2 scheduledDoseQuantity:dose doseQuantity:0 scheduledDate:scheduledDateTime startDate:scheduledDateTime2 logStatus:2 doseUnitString:0 metadata:v9];
 
   return v16;
 }
 
-+ (BOOL)_dosesEqualExceptStatusForDoseEvent:(void *)a3 doseEvent2:
++ (BOOL)_dosesEqualExceptStatusForDoseEvent:(void *)event doseEvent2:
 {
   v6 = a2;
-  v7 = a3;
+  eventCopy = event;
   objc_opt_self();
-  v8 = [v6 medicationIdentifier];
-  v9 = [v7 medicationIdentifier];
-  if (v8 != v9)
+  medicationIdentifier = [v6 medicationIdentifier];
+  medicationIdentifier2 = [eventCopy medicationIdentifier];
+  if (medicationIdentifier != medicationIdentifier2)
   {
-    v10 = [v7 medicationIdentifier];
-    if (!v10)
+    medicationIdentifier3 = [eventCopy medicationIdentifier];
+    if (!medicationIdentifier3)
     {
       v19 = 0;
       goto LABEL_37;
     }
 
-    v3 = v10;
-    v4 = [v6 medicationIdentifier];
-    v11 = [v7 medicationIdentifier];
-    if (![v4 isEqual:v11])
+    v3 = medicationIdentifier3;
+    medicationIdentifier4 = [v6 medicationIdentifier];
+    medicationIdentifier5 = [eventCopy medicationIdentifier];
+    if (![medicationIdentifier4 isEqual:medicationIdentifier5])
     {
       v19 = 0;
 LABEL_36:
@@ -436,33 +436,33 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    v41 = v11;
+    v41 = medicationIdentifier5;
   }
 
-  v12 = [v6 scheduleItemIdentifier];
-  v13 = [v7 scheduleItemIdentifier];
-  if (v12 != v13)
+  scheduleItemIdentifier = [v6 scheduleItemIdentifier];
+  scheduleItemIdentifier2 = [eventCopy scheduleItemIdentifier];
+  if (scheduleItemIdentifier != scheduleItemIdentifier2)
   {
-    v14 = [v7 scheduleItemIdentifier];
-    if (!v14)
+    scheduleItemIdentifier3 = [eventCopy scheduleItemIdentifier];
+    if (!scheduleItemIdentifier3)
     {
       v19 = 0;
       goto LABEL_35;
     }
 
-    v15 = v14;
+    v15 = scheduleItemIdentifier3;
     v43 = v3;
-    v16 = v4;
-    v17 = [v6 scheduleItemIdentifier];
-    v18 = [v7 scheduleItemIdentifier];
-    if (([v17 isEqual:v18] & 1) == 0)
+    v16 = medicationIdentifier4;
+    scheduleItemIdentifier4 = [v6 scheduleItemIdentifier];
+    scheduleItemIdentifier5 = [eventCopy scheduleItemIdentifier];
+    if (([scheduleItemIdentifier4 isEqual:scheduleItemIdentifier5] & 1) == 0)
     {
 
       v19 = 0;
-      v11 = v41;
-      v4 = v16;
+      medicationIdentifier5 = v41;
+      medicationIdentifier4 = v16;
       v3 = v43;
-      if (v8 == v9)
+      if (medicationIdentifier == medicationIdentifier2)
       {
         goto LABEL_37;
       }
@@ -470,30 +470,30 @@ LABEL_36:
       goto LABEL_36;
     }
 
-    v37 = v18;
-    v38 = v17;
+    v37 = scheduleItemIdentifier5;
+    v38 = scheduleItemIdentifier4;
     v39 = v15;
-    v4 = v16;
+    medicationIdentifier4 = v16;
     v3 = v43;
   }
 
-  v20 = [v6 scheduledDate];
-  v42 = [v7 scheduledDate];
-  if (v20 == v42)
+  scheduledDate = [v6 scheduledDate];
+  scheduledDate2 = [eventCopy scheduledDate];
+  if (scheduledDate == scheduledDate2)
   {
-    v40 = v4;
+    v40 = medicationIdentifier4;
     v44 = v3;
     goto LABEL_17;
   }
 
-  v21 = [v7 scheduledDate];
-  if (v21)
+  scheduledDate3 = [eventCopy scheduledDate];
+  if (scheduledDate3)
   {
-    v36 = v21;
-    v22 = [v6 scheduledDate];
-    v34 = [v7 scheduledDate];
-    v35 = v22;
-    if (![v22 isEqual:?])
+    v36 = scheduledDate3;
+    scheduledDate4 = [v6 scheduledDate];
+    scheduledDate5 = [eventCopy scheduledDate];
+    v35 = scheduledDate4;
+    if (![scheduledDate4 isEqual:?])
     {
       v19 = 0;
 LABEL_31:
@@ -501,28 +501,28 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v40 = v4;
+    v40 = medicationIdentifier4;
     v44 = v3;
 LABEL_17:
-    v23 = [v6 scheduledDoseQuantity];
-    v24 = [v7 scheduledDoseQuantity];
-    if (v23 == v24)
+    scheduledDoseQuantity = [v6 scheduledDoseQuantity];
+    scheduledDoseQuantity2 = [eventCopy scheduledDoseQuantity];
+    if (scheduledDoseQuantity == scheduledDoseQuantity2)
     {
-      v33 = v20;
+      v33 = scheduledDate;
     }
 
     else
     {
-      v25 = [v7 scheduledDoseQuantity];
-      if (!v25)
+      scheduledDoseQuantity3 = [eventCopy scheduledDoseQuantity];
+      if (!scheduledDoseQuantity3)
       {
 
         v19 = 0;
 LABEL_30:
-        v28 = v42;
+        v28 = scheduledDate2;
         v3 = v44;
-        v4 = v40;
-        if (v20 == v42)
+        medicationIdentifier4 = v40;
+        if (scheduledDate == scheduledDate2)
         {
           goto LABEL_33;
         }
@@ -530,25 +530,25 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v32 = v25;
-      v26 = [v6 scheduledDoseQuantity];
-      v30 = [v7 scheduledDoseQuantity];
-      v31 = v26;
-      v33 = v20;
-      if (![v26 isEqual:?])
+      v32 = scheduledDoseQuantity3;
+      scheduledDoseQuantity4 = [v6 scheduledDoseQuantity];
+      scheduledDoseQuantity5 = [eventCopy scheduledDoseQuantity];
+      v31 = scheduledDoseQuantity4;
+      v33 = scheduledDate;
+      if (![scheduledDoseQuantity4 isEqual:?])
       {
         v19 = 0;
         goto LABEL_26;
       }
     }
 
-    v27 = [v6 logOrigin];
-    v19 = v27 == [v7 logOrigin];
-    if (v23 == v24)
+    logOrigin = [v6 logOrigin];
+    v19 = logOrigin == [eventCopy logOrigin];
+    if (scheduledDoseQuantity == scheduledDoseQuantity2)
     {
 LABEL_27:
 
-      v20 = v33;
+      scheduledDate = v33;
       goto LABEL_30;
     }
 
@@ -559,17 +559,17 @@ LABEL_26:
 
   v19 = 0;
 LABEL_32:
-  v28 = v42;
+  v28 = scheduledDate2;
 LABEL_33:
 
-  if (v12 != v13)
+  if (scheduleItemIdentifier != scheduleItemIdentifier2)
   {
   }
 
 LABEL_35:
 
-  v11 = v41;
-  if (v8 != v9)
+  medicationIdentifier5 = v41;
+  if (medicationIdentifier != medicationIdentifier2)
   {
     goto LABEL_36;
   }
@@ -579,15 +579,15 @@ LABEL_37:
   return v19;
 }
 
-+ (id)_generateMetadataForScheduleItemIdentifier:(void *)a3 semanticId:(uint64_t)a4 status:(uint64_t)a5 isLastScheduledDose:
++ (id)_generateMetadataForScheduleItemIdentifier:(void *)identifier semanticId:(uint64_t)id status:(uint64_t)status isLastScheduledDose:
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = a2;
   objc_opt_self();
-  v10 = [MEMORY[0x277CCD650] syncIdentifierForScheduleItemIdentifier:v9 medicationIdentifier:v8];
+  v10 = [MEMORY[0x277CCD650] syncIdentifierForScheduleItemIdentifier:v9 medicationIdentifier:identifierCopy];
 
-  v11 = [MEMORY[0x277CCD650] syncVersionForStatus:a4];
-  v12 = [MEMORY[0x277CCD650] _metadataWithSyncIdentifier:v10 syncVersion:v11 isLastScheduledDose:a5];
+  v11 = [MEMORY[0x277CCD650] syncVersionForStatus:id];
+  v12 = [MEMORY[0x277CCD650] _metadataWithSyncIdentifier:v10 syncVersion:v11 isLastScheduledDose:status];
 
   return v12;
 }
@@ -661,13 +661,13 @@ LABEL_11:
   return v5;
 }
 
-+ (void)_getActiveListMedicationsForProfile:(uint64_t)a3 error:
++ (void)_getActiveListMedicationsForProfile:(uint64_t)profile error:
 {
   v4 = a2;
   objc_opt_self();
   v5 = [MEMORY[0x277D10938] predicateForElementsOfListType:2];
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v7 = [v4 userDomainConceptManager];
+  userDomainConceptManager = [v4 userDomainConceptManager];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -675,9 +675,9 @@ LABEL_11:
   v12[3] = &unk_2796CD5A0;
   v13 = v6;
   v8 = v6;
-  LODWORD(a3) = [v7 enumerateUserDomainConceptsWithPredicate:v5 error:a3 enumerationHandler:v12];
+  LODWORD(profile) = [userDomainConceptManager enumerateUserDomainConceptsWithPredicate:v5 error:profile enumerationHandler:v12];
 
-  if (a3)
+  if (profile)
   {
     v9 = v8;
   }
@@ -692,22 +692,22 @@ LABEL_11:
   return v9;
 }
 
-+ (id)_populateSemanticIdentifierForExposableEvent:(void *)a3 activeMedications:(uint64_t)a4 error:
++ (id)_populateSemanticIdentifierForExposableEvent:(void *)event activeMedications:(uint64_t)medications error:
 {
   v45 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
+  eventCopy = event;
   objc_opt_self();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v8 = v7;
+  v8 = eventCopy;
   v38 = [v8 countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v38)
   {
     v37 = *v41;
-    v33 = a4;
+    medicationsCopy = medications;
     obj = v8;
     v35 = v6;
     while (2)
@@ -721,23 +721,23 @@ LABEL_11:
 
         v10 = *(*(&v40 + 1) + 8 * i);
         v11 = objc_alloc(MEMORY[0x277CCD660]);
-        v12 = [v10 semanticIdentifier];
-        v13 = [v12 stringValue];
-        v14 = [v11 initWithSemanticIdentifierString:v13];
+        semanticIdentifier = [v10 semanticIdentifier];
+        stringValue = [semanticIdentifier stringValue];
+        v14 = [v11 initWithSemanticIdentifierString:stringValue];
 
-        v15 = [v14 underlyingIdentifier];
-        v16 = [v6 medicationIdentifier];
-        v17 = [v16 underlyingIdentifier];
-        v18 = v17;
-        if (v15 == v17)
+        underlyingIdentifier = [v14 underlyingIdentifier];
+        medicationIdentifier = [v6 medicationIdentifier];
+        underlyingIdentifier2 = [medicationIdentifier underlyingIdentifier];
+        v18 = underlyingIdentifier2;
+        if (underlyingIdentifier == underlyingIdentifier2)
         {
           v36 = v10;
 
 LABEL_15:
           [v36 semanticIdentifier];
-          v29 = v27 = v14;
-          v30 = [v29 stringValue];
-          v28 = [v6 updateForSemanticIdentifier:v30];
+          v29 = underlyingIdentifier6 = v14;
+          stringValue2 = [v29 stringValue];
+          v28 = [v6 updateForSemanticIdentifier:stringValue2];
 
           v25 = v6;
           v8 = obj;
@@ -745,15 +745,15 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v19 = [v6 medicationIdentifier];
-        v20 = [v19 underlyingIdentifier];
-        if (v20)
+        medicationIdentifier2 = [v6 medicationIdentifier];
+        underlyingIdentifier3 = [medicationIdentifier2 underlyingIdentifier];
+        if (underlyingIdentifier3)
         {
           v36 = v10;
-          v21 = [v14 underlyingIdentifier];
-          v22 = [v6 medicationIdentifier];
-          v23 = [v22 underlyingIdentifier];
-          v39 = [v21 isEqualToString:v23];
+          underlyingIdentifier4 = [v14 underlyingIdentifier];
+          medicationIdentifier3 = [v6 medicationIdentifier];
+          underlyingIdentifier5 = [medicationIdentifier3 underlyingIdentifier];
+          v39 = [underlyingIdentifier4 isEqualToString:underlyingIdentifier5];
 
           v6 = v35;
           if (v39)
@@ -768,7 +768,7 @@ LABEL_15:
       }
 
       v8 = obj;
-      a4 = v33;
+      medications = medicationsCopy;
       v38 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
       if (v38)
       {
@@ -782,8 +782,8 @@ LABEL_15:
   v24 = MEMORY[0x277CCA9B8];
   [v6 medicationIdentifier];
   v26 = v25 = v6;
-  v27 = [v26 underlyingIdentifier];
-  [v24 hk_assignError:a4 code:118 format:{@"Unable to find a HKMedicationUserDomainConcept with a semantic identifier that matches the HKMedicationExposableDoseEvent's hashed identifier: %@. Cancelling saving dose events.", v27}];
+  underlyingIdentifier6 = [v26 underlyingIdentifier];
+  [v24 hk_assignError:medications code:118 format:{@"Unable to find a HKMedicationUserDomainConcept with a semantic identifier that matches the HKMedicationExposableDoseEvent's hashed identifier: %@. Cancelling saving dose events.", underlyingIdentifier6}];
   v28 = 0;
 LABEL_16:
 

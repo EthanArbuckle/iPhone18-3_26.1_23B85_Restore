@@ -10,7 +10,7 @@
 - (NSUUID)posterUUID;
 - (NSUUID)snapshotBundleUUID;
 - (PUIPosterContentOcclusionRectSet)contentOcclusionRectangles;
-- (_PUIPosterSnapshotBundleContextProvider)initWithDictionary:(id)a3;
+- (_PUIPosterSnapshotBundleContextProvider)initWithDictionary:(id)dictionary;
 - (double)persistenceScale;
 - (double)snapshotScale;
 - (int64_t)accessibilityContrast;
@@ -24,16 +24,16 @@
 
 @implementation _PUIPosterSnapshotBundleContextProvider
 
-- (_PUIPosterSnapshotBundleContextProvider)initWithDictionary:(id)a3
+- (_PUIPosterSnapshotBundleContextProvider)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = _PUIPosterSnapshotBundleContextProvider;
   v6 = [(_PUIPosterSnapshotBundleContextProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionary, a3);
+    objc_storeStrong(&v6->_dictionary, dictionary);
   }
 
   return v7;
@@ -64,9 +64,9 @@
   dictionary = self->_dictionary;
   v3 = objc_opt_self();
   v4 = [(NSDictionary *)dictionary bs_safeObjectForKey:@"PUIPosterSnapshotBundleInfoKeySnapshotEpoch" ofType:v3];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (NSString)bootSessionIdentifier
@@ -83,9 +83,9 @@
   dictionary = self->_dictionary;
   v3 = objc_opt_self();
   v4 = [(NSDictionary *)dictionary bs_safeObjectForKey:@"PUIPosterSnapshotBundleInfoKeySnapshotBundleVersion" ofType:v3];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)posterVersion
@@ -93,9 +93,9 @@
   dictionary = self->_dictionary;
   v3 = objc_opt_self();
   v4 = [(NSDictionary *)dictionary bs_safeObjectForKey:@"PUIPosterSnapshotBundleInfoKeyPosterVersion" ofType:v3];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (int64_t)interfaceOrientation
@@ -103,9 +103,9 @@
   dictionary = self->_dictionary;
   v3 = objc_opt_self();
   v4 = [(NSDictionary *)dictionary bs_safeObjectForKey:@"PUIPosterSnapshotBundleInfoKeyInterfaceOrientation" ofType:v3];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (int64_t)deviceOrientation
@@ -113,9 +113,9 @@
   dictionary = self->_dictionary;
   v3 = objc_opt_self();
   v4 = [(NSDictionary *)dictionary bs_safeObjectForKey:@"PUIPosterSnapshotBundleInfoKeyDeviceInterfaceOrientation" ofType:v3];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (NSArray)snapshotLevelSets
@@ -213,9 +213,9 @@
   dictionary = self->_dictionary;
   v3 = objc_opt_self();
   v4 = [(NSDictionary *)dictionary bs_safeObjectForKey:@"PUIPosterSnapshotBundleInfoKeyContainsColorStatistics" ofType:v3];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (int64_t)userInterfaceStyle
@@ -223,9 +223,9 @@
   dictionary = self->_dictionary;
   v3 = objc_opt_self();
   v4 = [(NSDictionary *)dictionary bs_safeObjectForKey:@"PUIPosterSnapshotBundleInfoKeyUserInterfaceStyle" ofType:v3];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (NSUUID)posterUUID
@@ -289,9 +289,9 @@
   dictionary = self->_dictionary;
   v3 = objc_opt_self();
   v4 = [(NSDictionary *)dictionary bs_safeObjectForKey:@"PUIPosterSnapshotBundleInfoKeySnapshotAccessibilityContrast" ofType:v3];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (PUIPosterContentOcclusionRectSet)contentOcclusionRectangles

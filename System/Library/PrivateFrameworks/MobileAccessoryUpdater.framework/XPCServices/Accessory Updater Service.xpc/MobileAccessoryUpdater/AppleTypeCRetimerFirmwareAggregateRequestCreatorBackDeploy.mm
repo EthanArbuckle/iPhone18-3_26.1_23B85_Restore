@@ -1,20 +1,20 @@
 @interface AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy
-- (AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5;
+- (AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context;
 - (BOOL)generateRequestDictionary;
-- (BOOL)parseOptions:(id)a3;
-- (id)generateHashForData:(id)a3;
+- (BOOL)parseOptions:(id)options;
+- (id)generateHashForData:(id)data;
 @end
 
 @implementation AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy
 
-- (AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5
+- (AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context
 {
-  v8 = a3;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy;
-  v9 = [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)&v13 initWithOptions:v8 logFunction:a4 logContext:a5];
+  v9 = [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)&v13 initWithOptions:optionsCopy logFunction:function logContext:context];
   v10 = v9;
-  if (!v9 || [(AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy *)v9 parseOptions:v8]&& [(AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy *)v10 generateRequestDictionary])
+  if (!v9 || [(AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy *)v9 parseOptions:optionsCopy]&& [(AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy *)v10 generateRequestDictionary])
   {
     v11 = v10;
   }
@@ -27,10 +27,10 @@
   return v11;
 }
 
-- (BOOL)parseOptions:(id)a3
+- (BOOL)parseOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"FirmwareData"];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:@"FirmwareData"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -42,25 +42,25 @@
       if (v8)
       {
         v9 = v8;
-        v10 = [(UARPSuperBinaryBackDeploy *)v8 data];
+        data = [(UARPSuperBinaryBackDeploy *)v8 data];
         v11 = *(&self->_rkosData + 1);
-        *(&self->_rkosData + 1) = v10;
+        *(&self->_rkosData + 1) = data;
 
         v12 = [(FTABFileBackDeploy *)v7 subfileWithTag:@"rkos"];
         if (v12)
         {
           v13 = v12;
-          v14 = [v12 data];
+          data2 = [v12 data];
           v15 = *(&self->super._verbose + 1);
-          *(&self->super._verbose + 1) = v14;
+          *(&self->super._verbose + 1) = data2;
 
           v16 = [(FTABFileBackDeploy *)v7 subfileWithTag:@"cphy"];
           v17 = v16;
           if (v16)
           {
-            v18 = [v16 data];
+            data3 = [v16 data];
             v19 = *(&self->_rrkoData + 1);
-            *(&self->_rrkoData + 1) = v18;
+            *(&self->_rrkoData + 1) = data3;
           }
 
           else
@@ -89,9 +89,9 @@
         if (v23)
         {
           v24 = v23;
-          v25 = [v23 payloadData];
+          payloadData = [v23 payloadData];
           v26 = *(&self->_rkosData + 1);
-          *(&self->_rkosData + 1) = v25;
+          *(&self->_rkosData + 1) = payloadData;
 
           v27 = [[UARPAssetTagBackDeploy alloc] initWithString:@"FIRM"];
           v28 = [(UARPSuperBinaryBackDeploy *)v9 payloadWith4ccTag:v27];
@@ -100,8 +100,8 @@
             v29 = v28;
             v51 = v27;
             v30 = [FTABFileBackDeploy alloc];
-            v31 = [v29 payloadData];
-            v32 = [(FTABFileBackDeploy *)v30 initWithData:v31];
+            payloadData2 = [v29 payloadData];
+            v32 = [(FTABFileBackDeploy *)v30 initWithData:payloadData2];
 
             if (v32)
             {
@@ -109,16 +109,16 @@
               v34 = v33;
               if (v33)
               {
-                v35 = [v33 data];
+                data4 = [v33 data];
                 v36 = *(&self->super._verbose + 1);
-                *(&self->super._verbose + 1) = v35;
+                *(&self->super._verbose + 1) = data4;
 
                 v37 = [(FTABFileBackDeploy *)v32 subfileWithTag:@"cphy"];
                 if (v37)
                 {
-                  v38 = [v37 data];
+                  data5 = [v37 data];
                   v39 = *(&self->_rrkoData + 1);
-                  *(&self->_rrkoData + 1) = v38;
+                  *(&self->_rrkoData + 1) = data5;
                 }
 
                 else
@@ -135,7 +135,7 @@
               if (v34)
               {
 LABEL_21:
-                v41 = [v4 objectForKeyedSubscript:@"DeviceInfo"];
+                v41 = [optionsCopy objectForKeyedSubscript:@"DeviceInfo"];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
@@ -211,16 +211,16 @@ LABEL_36:
   return v20;
 }
 
-- (id)generateHashForData:(id)a3
+- (id)generateHashForData:(id)data
 {
   memset(&v9, 0, sizeof(v9));
-  v3 = a3;
+  dataCopy = data;
   CC_SHA384_Init(&v9);
-  v4 = v3;
-  v5 = [v4 bytes];
-  v6 = [v3 length];
+  v4 = dataCopy;
+  bytes = [v4 bytes];
+  v6 = [dataCopy length];
 
-  CC_SHA384_Update(&v9, v5, v6);
+  CC_SHA384_Update(&v9, bytes, v6);
   CC_SHA384_Final(md, &v9);
   v7 = [NSData dataWithBytes:md length:48];
 
@@ -229,12 +229,12 @@ LABEL_36:
 
 - (BOOL)generateRequestDictionary
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy *)self generateHashForData:*(&self->super._verbose + 1)];
-  v4 = [(AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy *)v2 generateHashForData:*(&v2->_rkosData + 1)];
-  if (*(&v2->_rrkoData + 1))
+  v4 = [(AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy *)selfCopy generateHashForData:*(&selfCopy->_rkosData + 1)];
+  if (*(&selfCopy->_rrkoData + 1))
   {
-    v5 = [(AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy *)v2 generateHashForData:?];
+    v5 = [(AppleTypeCRetimerFirmwareAggregateRequestCreatorBackDeploy *)selfCopy generateHashForData:?];
   }
 
   else
@@ -247,7 +247,7 @@ LABEL_36:
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
-  obj = *(&v2->_cphyData + 1);
+  obj = *(&selfCopy->_cphyData + 1);
   v73 = [obj countByEnumeratingWithState:&v88 objects:v104 count:16];
   if (v73)
   {
@@ -255,7 +255,7 @@ LABEL_36:
     v70 = v4;
     v71 = v3;
     v69 = v5;
-    v76 = v2;
+    v76 = selfCopy;
 LABEL_6:
     v6 = 0;
     while (1)
@@ -273,7 +273,7 @@ LABEL_6:
         break;
       }
 
-      v9 = [v8 unsignedCharValue];
+      unsignedCharValue = [v8 unsignedCharValue];
       v10 = [v7 objectForKeyedSubscript:@"HardwareID"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -283,37 +283,37 @@ LABEL_6:
       }
 
       v81 = v6;
-      v11 = [NSString stringWithValidatedFormat:@"@Timer%u validFormatSpecifiers:Ticket" error:@"%u", 0, v9];
+      v11 = [NSString stringWithValidatedFormat:@"@Timer%u validFormatSpecifiers:Ticket" error:@"%u", 0, unsignedCharValue];
       [v86 setObject:&__kCFBooleanTrue forKeyedSubscript:v11];
       v12 = [v10 objectForKeyedSubscript:@"BoardID"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Unable to locate board ID for tag %u", v9];
+        [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Unable to locate board ID for tag %u", unsignedCharValue];
         v59 = v12;
         goto LABEL_89;
       }
 
       v84 = v12;
-      v85 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:BoardID error:%u", @"%u", 0, v9];
+      v85 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:BoardID error:%u", @"%u", 0, unsignedCharValue];
       [v86 setObject:v12 forKeyedSubscript:v85];
       v13 = [v10 objectForKeyedSubscript:@"ChipID"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Unable to locate board ID for tag %u", v9];
+        [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Unable to locate board ID for tag %u", unsignedCharValue];
         v60 = v13;
         goto LABEL_88;
       }
 
       v82 = v13;
-      v83 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:ChipID error:%u", @"%u", 0, v9];
+      v83 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:ChipID error:%u", @"%u", 0, unsignedCharValue];
       [v86 setObject:v13 forKeyedSubscript:v83];
       v14 = [v10 objectForKeyedSubscript:@"ECID"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Unable to locate ECID for tag %u", v9];
+        [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Unable to locate ECID for tag %u", unsignedCharValue];
 
         v60 = v13;
 LABEL_88:
@@ -334,27 +334,27 @@ LABEL_92:
       }
 
       v80 = v8;
-      v79 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:ECID error:%u", @"%u", 0, v9];
+      v79 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:ECID error:%u", @"%u", 0, unsignedCharValue];
       [v86 setObject:v14 forKeyedSubscript:?];
       v15 = [v10 objectForKeyedSubscript:@"Nonce"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Unable to locate nonce for tag %u", v9];
+        [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Unable to locate nonce for tag %u", unsignedCharValue];
 
         v8 = v80;
         goto LABEL_91;
       }
 
       v77 = v11;
-      v78 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:Nonce error:%u", @"%u", 0, v9];
+      v78 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:Nonce error:%u", @"%u", 0, unsignedCharValue];
       [v86 setObject:v15 forKeyedSubscript:?];
       v16 = [v10 objectForKeyedSubscript:@"ProductionStatus"];
       objc_opt_class();
       v87 = v16;
       if (objc_opt_isKindOfClass())
       {
-        v17 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:ProductionMode error:%u", @"%u", 0, v9];
+        v17 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:ProductionMode error:%u", @"%u", 0, unsignedCharValue];
         v18 = v16;
         v19 = v17;
         if ([v18 unsignedCharValue])
@@ -373,14 +373,14 @@ LABEL_92:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v67 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:SecurityDomain error:%u", @"%u", 0, v9];
+          v67 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:SecurityDomain error:%u", @"%u", 0, unsignedCharValue];
           v68 = v21;
           [v86 setObject:v21 forKeyedSubscript:?];
           v22 = [v10 objectForKeyedSubscript:@"SecurityMode"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v23 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:SecurityMode error:%u", @"%u", 0, v9];
+            v23 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:SecurityMode error:%u", @"%u", 0, unsignedCharValue];
             if ([v22 unsignedCharValue])
             {
               v24 = &__kCFBooleanTrue;
@@ -398,7 +398,7 @@ LABEL_92:
             {
               v50 = v25;
               v34 = v22;
-              [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Invalid demote setting for tag %u", v9];
+              [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Invalid demote setting for tag %u", unsignedCharValue];
               v31 = 0;
               v32 = v11;
               v27 = v84;
@@ -416,7 +416,7 @@ LABEL_92:
               }
 
               v62 = v26;
-              v65 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:RTKitOS error:%u", @"%u", 0, v9];
+              v65 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:RTKitOS error:%u", @"%u", 0, unsignedCharValue];
               if ([v25 BOOLValue] && objc_msgSend(v87, "unsignedCharValue"))
               {
                 v100[0] = @"Digest";
@@ -482,7 +482,7 @@ LABEL_92:
               v38 = [NSDictionary dictionaryWithObjects:v28 forKeys:v29 count:v30];
               [v86 setObject:v38 forKeyedSubscript:v65];
 
-              v64 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:RestoreRTKitOS error:%u", @"%u", 0, v9];
+              v64 = [NSString stringWithValidatedFormat:@"Timer validFormatSpecifiers:RestoreRTKitOS error:%u", @"%u", 0, unsignedCharValue];
               if ([v25 BOOLValue] && objc_msgSend(v87, "unsignedCharValue"))
               {
                 v96[0] = @"Digest";
@@ -550,7 +550,7 @@ LABEL_92:
 
               if (*(&v76->_rrkoData + 1))
               {
-                v46 = [NSString stringWithFormat:@"Timer, AppleTypeCPhyFirmware, %u", v9];
+                v46 = [NSString stringWithFormat:@"Timer, AppleTypeCPhyFirmware, %u", unsignedCharValue];
                 if ([v25 BOOLValue] && objc_msgSend(v87, "unsignedCharValue"))
                 {
                   v92[0] = @"Digest";
@@ -628,7 +628,7 @@ LABEL_92:
           else
           {
             v34 = v22;
-            [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Unable to locate security mode for tag %u", v9];
+            [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Unable to locate security mode for tag %u", unsignedCharValue];
             v31 = 0;
             v32 = v11;
             v27 = v84;
@@ -640,7 +640,7 @@ LABEL_92:
 
         else
         {
-          [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Unable to locate security domain for tag %u", v9];
+          [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Unable to locate security domain for tag %u", unsignedCharValue];
           v31 = 0;
           v32 = v11;
           v27 = v84;
@@ -650,7 +650,7 @@ LABEL_92:
 
       else
       {
-        [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Unable to locate production status for tag %u", v9];
+        [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v76 log:@"Unable to locate production status for tag %u", unsignedCharValue];
         v31 = 0;
         v32 = v11;
         v27 = v84;
@@ -668,7 +668,7 @@ LABEL_92:
         v4 = v70;
         v3 = v71;
         v5 = v69;
-        v2 = v76;
+        selfCopy = v76;
         v73 = [obj countByEnumeratingWithState:&v88 objects:v104 count:16];
         if (v73)
         {
@@ -686,16 +686,16 @@ LABEL_92:
 LABEL_80:
 
   v55 = v86;
-  if (*(&v2->_deviceInfoArray + 1))
+  if (*(&selfCopy->_deviceInfoArray + 1))
   {
     [v86 addEntriesFromDictionary:?];
   }
 
   v56 = [NSDictionary dictionaryWithDictionary:v86];
-  v57 = *(&v2->_apParameters + 1);
-  *(&v2->_apParameters + 1) = v56;
+  v57 = *(&selfCopy->_apParameters + 1);
+  *(&selfCopy->_apParameters + 1) = v56;
 
-  [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v2 verboseLog:@"ATCRT request dictionary = %@", *(&v2->_apParameters + 1)];
+  [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)selfCopy verboseLog:@"ATCRT request dictionary = %@", *(&selfCopy->_apParameters + 1)];
   v58 = 1;
 LABEL_93:
 

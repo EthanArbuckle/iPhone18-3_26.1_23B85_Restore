@@ -6,7 +6,7 @@
 
 - (uint64_t)formatFlowedOptions
 {
-  v2 = [a1 bodyParameterForKey:@"format"];
+  v2 = [self bodyParameterForKey:@"format"];
   v3 = [v2 isEqualToString:@"flowed"];
 
   if (!v3)
@@ -14,7 +14,7 @@
     return 0;
   }
 
-  v4 = [a1 bodyParameterForKey:@"delsp"];
+  v4 = [self bodyParameterForKey:@"delsp"];
   v5 = v4;
   if (!v4 || [v4 caseInsensitiveCompare:@"yes"] && objc_msgSend(v5, "caseInsensitiveCompare:", @"y"))
   {

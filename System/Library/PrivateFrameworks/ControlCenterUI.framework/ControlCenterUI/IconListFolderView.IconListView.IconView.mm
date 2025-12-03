@@ -1,6 +1,6 @@
 @interface IconListFolderView.IconListView.IconView
 + (NSString)defaultGridSizeClass;
-- (_TtCCC15ControlCenterUI18IconListFolderViewP33_DD187FCCAF2994A2EE3FBE03915C670412IconListView8IconView)initWithConfigurationOptions:(unint64_t)a3 listLayoutProvider:(id)a4;
+- (_TtCCC15ControlCenterUI18IconListFolderViewP33_DD187FCCAF2994A2EE3FBE03915C670412IconListView8IconView)initWithConfigurationOptions:(unint64_t)options listLayoutProvider:(id)provider;
 @end
 
 @implementation IconListFolderView.IconListView.IconView
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (_TtCCC15ControlCenterUI18IconListFolderViewP33_DD187FCCAF2994A2EE3FBE03915C670412IconListView8IconView)initWithConfigurationOptions:(unint64_t)a3 listLayoutProvider:(id)a4
+- (_TtCCC15ControlCenterUI18IconListFolderViewP33_DD187FCCAF2994A2EE3FBE03915C670412IconListView8IconView)initWithConfigurationOptions:(unint64_t)options listLayoutProvider:(id)provider
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for IconListFolderView.IconListView.IconView();
-  return [(IconListFolderView.IconListView.IconView *)&v7 initWithConfigurationOptions:a3 listLayoutProvider:a4];
+  return [(IconListFolderView.IconListView.IconView *)&v7 initWithConfigurationOptions:options listLayoutProvider:provider];
 }
 
 @end

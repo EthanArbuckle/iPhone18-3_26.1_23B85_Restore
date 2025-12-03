@@ -1,6 +1,6 @@
 @interface PKPassRelevancyModel
-- (PKPassRelevancyModel)initWithCoder:(id)a3;
-- (PKPassRelevancyModel)initWithRelevancyActive:(BOOL)a3;
+- (PKPassRelevancyModel)initWithCoder:(id)coder;
+- (PKPassRelevancyModel)initWithRelevancyActive:(BOOL)active;
 - (id)_init;
 - (id)description;
 @end
@@ -14,12 +14,12 @@
   return [(PKPassRelevancyModel *)&v3 init];
 }
 
-- (PKPassRelevancyModel)initWithRelevancyActive:(BOOL)a3
+- (PKPassRelevancyModel)initWithRelevancyActive:(BOOL)active
 {
   result = [(PKPassRelevancyModel *)self _init];
   if (result)
   {
-    result->_relevancyActive = a3;
+    result->_relevancyActive = active;
   }
 
   return result;
@@ -45,16 +45,16 @@
   return v4;
 }
 
-- (PKPassRelevancyModel)initWithCoder:(id)a3
+- (PKPassRelevancyModel)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PKPassRelevancyModel *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(PKPassRelevancyModel *)self _init];
+  if (_init)
   {
-    v5->_relevancyActive = [v4 decodeBoolForKey:@"relevancyActive"];
+    _init->_relevancyActive = [coderCopy decodeBoolForKey:@"relevancyActive"];
   }
 
-  return v5;
+  return _init;
 }
 
 @end

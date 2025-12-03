@@ -8,23 +8,23 @@
 {
   v13[6] = *MEMORY[0x277D85DE8];
   v12[0] = @"ANE::modelCompilation::modelURL";
-  v3 = [a1 modelURLRecipe];
-  v13[0] = v3;
+  modelURLRecipe = [self modelURLRecipe];
+  v13[0] = modelURLRecipe;
   v12[1] = @"ANE::modelLoad::modelURL";
-  v4 = [a1 modelURLRecipe];
-  v13[1] = v4;
+  modelURLRecipe2 = [self modelURLRecipe];
+  v13[1] = modelURLRecipe2;
   v12[2] = @"ANE::modelUnload::modelURL";
-  v5 = [a1 modelURLRecipe];
-  v13[2] = v5;
+  modelURLRecipe3 = [self modelURLRecipe];
+  v13[2] = modelURLRecipe3;
   v12[3] = @"ANE::modelInference::modelURL";
-  v6 = [a1 modelURLRecipe];
-  v13[3] = v6;
+  modelURLRecipe4 = [self modelURLRecipe];
+  v13[3] = modelURLRecipe4;
   v12[4] = @"ANE::newInstanceModelLoad::modelURL";
-  v7 = [a1 modelURLRecipe];
-  v13[4] = v7;
+  modelURLRecipe5 = [self modelURLRecipe];
+  v13[4] = modelURLRecipe5;
   v12[5] = @"ANE::newInstanceModelUnload::modelURL";
-  v8 = [a1 modelURLRecipe];
-  v13[5] = v8;
+  modelURLRecipe6 = [self modelURLRecipe];
+  v13[5] = modelURLRecipe6;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:6];
 
   v10 = *MEMORY[0x277D85DE8];

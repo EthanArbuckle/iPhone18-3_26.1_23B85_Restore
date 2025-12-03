@@ -1,28 +1,28 @@
 @interface NPKSharedPeerPaymentWebServiceArchiver
-- (NPKSharedPeerPaymentWebServiceArchiver)initWithCompanionAgentConnection:(id)a3;
-- (void)archiveContext:(id)a3;
+- (NPKSharedPeerPaymentWebServiceArchiver)initWithCompanionAgentConnection:(id)connection;
+- (void)archiveContext:(id)context;
 @end
 
 @implementation NPKSharedPeerPaymentWebServiceArchiver
 
-- (NPKSharedPeerPaymentWebServiceArchiver)initWithCompanionAgentConnection:(id)a3
+- (NPKSharedPeerPaymentWebServiceArchiver)initWithCompanionAgentConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = NPKSharedPeerPaymentWebServiceArchiver;
   v6 = [(NPKSharedPeerPaymentWebServiceArchiver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (void)archiveContext:(id)a3
+- (void)archiveContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -36,9 +36,9 @@
     }
   }
 
-  v8 = [(NPKSharedPeerPaymentWebServiceArchiver *)self connection];
+  connection = [(NPKSharedPeerPaymentWebServiceArchiver *)self connection];
   v9 = NPKPairedOrPairingDevice();
-  [v8 setSharedPeerPaymentWebServiceContext:v4 forDevice:v9];
+  [connection setSharedPeerPaymentWebServiceContext:contextCopy forDevice:v9];
 }
 
 @end

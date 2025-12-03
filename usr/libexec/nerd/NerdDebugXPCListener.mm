@@ -1,43 +1,43 @@
 @interface NerdDebugXPCListener
-+ (BOOL)isConnectionEntitled:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (NerdDebugXPCListener)initWithNerdController:(id)a3;
++ (BOOL)isConnectionEntitled:(id)entitled;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (NerdDebugXPCListener)initWithNerdController:(id)controller;
 - (void)dealloc;
-- (void)drawImageFromPath:(id)a3 withCallback:(id)a4;
-- (void)getLastNeRDControllerState:(id)a3;
-- (void)isInTapToRecover:(id)a3;
-- (void)ping:(id)a3 withPong:(id)a4;
-- (void)postSetupKitEvent:(int64_t)a3 withParameters:(id)a4 withCallback:(id)a5;
+- (void)drawImageFromPath:(id)path withCallback:(id)callback;
+- (void)getLastNeRDControllerState:(id)state;
+- (void)isInTapToRecover:(id)recover;
+- (void)ping:(id)ping withPong:(id)pong;
+- (void)postSetupKitEvent:(int64_t)event withParameters:(id)parameters withCallback:(id)callback;
 - (void)stopTTR;
 - (void)triggerAutoFlow;
 @end
 
 @implementation NerdDebugXPCListener
 
-- (NerdDebugXPCListener)initWithNerdController:(id)a3
+- (NerdDebugXPCListener)initWithNerdController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = NerdDebugXPCListener;
   v5 = [(NerdDebugXPCListener *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(NerdDebugXPCListener *)v5 setController:v4];
+    [(NerdDebugXPCListener *)v5 setController:controllerCopy];
   }
 
   return v6;
 }
 
-+ (BOOL)isConnectionEntitled:(id)a3
++ (BOOL)isConnectionEntitled:(id)entitled
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.nerd.DebugClient"];
+  v3 = [entitled valueForEntitlement:@"com.apple.nerd.DebugClient"];
   if (!v3)
   {
     v5 = +[SUCoreLog sharedLogger];
-    v6 = [v5 oslog];
+    oslog = [v5 oslog];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v7 = [NSString stringWithFormat:@"Client process does not have the '%@' entitlement", @"com.apple.nerd.DebugClient"];
       *buf = 136315394;
@@ -45,12 +45,12 @@
       v12 = 2112;
       v13 = v7;
 LABEL_8:
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
     }
 
 LABEL_9:
 
-    v4 = 0;
+    bOOLValue = 0;
     goto LABEL_10;
   }
 
@@ -58,9 +58,9 @@ LABEL_9:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v8 = +[SUCoreLog sharedLogger];
-    v6 = [v8 oslog];
+    oslog = [v8 oslog];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v7 = [NSString stringWithFormat:@"Entitlement '%@' is not a BOOLean", @"com.apple.nerd.DebugClient"];
       *buf = 136315394;
@@ -73,77 +73,77 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 LABEL_10:
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = +[SUCoreLog sharedLogger];
-  v9 = [v8 oslog];
+  oslog = [v8 oslog];
 
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [NSString stringWithFormat:@"Received should accept new connection from listener: %@ and connection: %@", v6, v7];
+    connectionCopy = [NSString stringWithFormat:@"Received should accept new connection from listener: %@ and connection: %@", listenerCopy, connectionCopy];
     *buf = 136315394;
     v25 = "[NerdDebugXPCListener listener:shouldAcceptNewConnection:]";
     v26 = 2112;
-    v27 = v10;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
+    v27 = connectionCopy;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
   }
 
-  v11 = [objc_opt_class() isConnectionEntitled:v7];
+  v11 = [objc_opt_class() isConnectionEntitled:connectionCopy];
   v12 = +[SUCoreLog sharedLogger];
-  v13 = [v12 oslog];
+  oslog2 = [v12 oslog];
 
-  v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
+  v14 = os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT);
   if (v11)
   {
     if (v14)
     {
-      v15 = [NSString stringWithFormat:@"Connection %@ is entitled for NeRD Debugging", v7];
+      connectionCopy2 = [NSString stringWithFormat:@"Connection %@ is entitled for NeRD Debugging", connectionCopy];
       *buf = 136315394;
       v25 = "[NerdDebugXPCListener listener:shouldAcceptNewConnection:]";
       v26 = 2112;
-      v27 = v15;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
+      v27 = connectionCopy2;
+      _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
     }
 
-    [(NerdDebugXPCListener *)self setConnection:v7];
-    v13 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NerdDebugXPCServerProtocol];
-    [v7 setExportedInterface:v13];
-    [v7 setExportedObject:self];
+    [(NerdDebugXPCListener *)self setConnection:connectionCopy];
+    oslog2 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NerdDebugXPCServerProtocol];
+    [connectionCopy setExportedInterface:oslog2];
+    [connectionCopy setExportedObject:self];
     v16 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NerdDebugXPCClientProtocol];
-    [v7 setRemoteObjectInterface:v16];
+    [connectionCopy setRemoteObjectInterface:v16];
     v17 = +[SUCoreLog sharedLogger];
-    v18 = [v17 oslog];
+    oslog3 = [v17 oslog];
 
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [NSString stringWithFormat:@"Resuming XPC connection on server. Listener: %@ and connection: %@", v6, v7];
+      connectionCopy3 = [NSString stringWithFormat:@"Resuming XPC connection on server. Listener: %@ and connection: %@", listenerCopy, connectionCopy];
       *buf = 136315394;
       v25 = "[NerdDebugXPCListener listener:shouldAcceptNewConnection:]";
       v26 = 2112;
-      v27 = v19;
-      _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
+      v27 = connectionCopy3;
+      _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
     }
 
-    [v7 resume];
+    [connectionCopy resume];
     v20 = +[SUCoreLog sharedLogger];
-    v21 = [v20 oslog];
+    oslog4 = [v20 oslog];
 
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
     {
       v22 = [NSString stringWithFormat:@"Returning shouldAcceptNewConnection: YES"];
       *buf = 136315394;
       v25 = "[NerdDebugXPCListener listener:shouldAcceptNewConnection:]";
       v26 = 2112;
       v27 = v22;
-      _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oslog4, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
     }
 
     goto LABEL_13;
@@ -156,48 +156,48 @@ LABEL_10:
     v25 = "[NerdDebugXPCListener listener:shouldAcceptNewConnection:]";
     v26 = 2112;
     v27 = v16;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
 LABEL_13:
   }
 
   return v11;
 }
 
-- (void)ping:(id)a3 withPong:(id)a4
+- (void)ping:(id)ping withPong:(id)pong
 {
-  v4 = a4;
+  pongCopy = pong;
   v5 = +[NSDate date];
   v6 = [v5 description];
 
   v7 = +[SUCoreLog sharedLogger];
-  v8 = [v7 oslog];
+  oslog = [v7 oslog];
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = [NSString stringWithFormat:@"%@: Got ping from client. Replying with pong", v6];
     *buf = 136315394;
     v11 = "[NerdDebugXPCListener ping:withPong:]";
     v12 = 2112;
     v13 = v9;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
   }
 
-  v4[2](v4, v6);
+  pongCopy[2](pongCopy, v6);
 }
 
 - (void)dealloc
 {
   v3 = +[SUCoreLog sharedLogger];
-  v4 = [v3 oslog];
+  oslog = [v3 oslog];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v5 = [NSString stringWithFormat:@"%@: dealloc XPC listener delegate!", self];
     *buf = 136315394;
     v8 = "[NerdDebugXPCListener dealloc]";
     v9 = 2112;
     v10 = v5;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
   }
 
   v6.receiver = self;
@@ -208,61 +208,61 @@ LABEL_13:
 - (void)triggerAutoFlow
 {
   v3 = +[SUCoreLog sharedLogger];
-  v4 = [v3 oslog];
+  oslog = [v3 oslog];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v5 = [NSString stringWithFormat:@"Trigerring an auto flow NeRD recovery attempt. Resetting download attempts"];
     v11 = 136315394;
     v12 = "[NerdDebugXPCListener triggerAutoFlow]";
     v13 = 2112;
     v14 = v5;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", &v11, 0x16u);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", &v11, 0x16u);
   }
 
   [(NerdDebugXPCListener *)self stopTTR];
   v6 = +[SUCoreLog sharedLogger];
-  v7 = [v6 oslog];
+  oslog2 = [v6 oslog];
 
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
   {
     v8 = [NSString stringWithFormat:@"Asking the FSM to continue to next step"];
     v11 = 136315394;
     v12 = "[NerdDebugXPCListener triggerAutoFlow]";
     v13 = 2112;
     v14 = v8;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", &v11, 0x16u);
+    _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", &v11, 0x16u);
   }
 
-  v9 = [(NerdDebugXPCListener *)self controller];
-  v10 = [v9 nerdFSM];
-  [v10 postEvent:@"ProceedToNextUpdateStep"];
+  controller = [(NerdDebugXPCListener *)self controller];
+  nerdFSM = [controller nerdFSM];
+  [nerdFSM postEvent:@"ProceedToNextUpdateStep"];
 }
 
 - (void)stopTTR
 {
   v3 = +[SUCoreLog sharedLogger];
-  v4 = [v3 oslog];
+  oslog = [v3 oslog];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v5 = [NSString stringWithFormat:@"Stopping TTR"];
     v13 = 136315394;
     v14 = "[NerdDebugXPCListener stopTTR]";
     v15 = 2112;
     v16 = v5;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", &v13, 0x16u);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", &v13, 0x16u);
   }
 
-  v6 = [(NerdDebugXPCListener *)self controller];
-  v7 = [v6 tapToManager];
-  v8 = [v7 suspendTTR];
+  controller = [(NerdDebugXPCListener *)self controller];
+  tapToManager = [controller tapToManager];
+  suspendTTR = [tapToManager suspendTTR];
 
   v9 = +[SUCoreLog sharedLogger];
-  v10 = [v9 oslog];
+  oslog2 = [v9 oslog];
 
-  v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  v11 = os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT);
+  if (suspendTTR)
   {
     if (v11)
     {
@@ -272,7 +272,7 @@ LABEL_13:
       v15 = 2112;
       v16 = v12;
 LABEL_8:
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", &v13, 0x16u);
+      _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", &v13, 0x16u);
     }
   }
 
@@ -287,31 +287,31 @@ LABEL_8:
   }
 }
 
-- (void)drawImageFromPath:(id)a3 withCallback:(id)a4
+- (void)drawImageFromPath:(id)path withCallback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  callbackCopy = callback;
   v8 = +[SUCoreLog sharedLogger];
-  v9 = [v8 oslog];
+  oslog = [v8 oslog];
 
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [NSString stringWithFormat:@"Drawing image from path: %@", v6];
+    pathCopy = [NSString stringWithFormat:@"Drawing image from path: %@", pathCopy];
     *buf = 136315394;
     v19 = "[NerdDebugXPCListener drawImageFromPath:withCallback:]";
     v20 = 2112;
-    v21 = v10;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
+    v21 = pathCopy;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
   }
 
-  v11 = [(NerdDebugXPCListener *)self controller];
-  v12 = [v11 tapToManager];
-  v13 = [v12 draw:v6 withDrawType:1];
+  controller = [(NerdDebugXPCListener *)self controller];
+  tapToManager = [controller tapToManager];
+  v13 = [tapToManager draw:pathCopy withDrawType:1];
 
   v14 = +[SUCoreLog sharedLogger];
-  v15 = [v14 oslog];
+  oslog2 = [v14 oslog];
 
-  v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
+  v16 = os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT);
   if (v13)
   {
     if (v16)
@@ -322,7 +322,7 @@ LABEL_8:
       v20 = 2112;
       v21 = v17;
 LABEL_8:
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
     }
   }
 
@@ -336,69 +336,69 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v7[2](v7, v13);
+  callbackCopy[2](callbackCopy, v13);
 }
 
-- (void)isInTapToRecover:(id)a3
+- (void)isInTapToRecover:(id)recover
 {
-  v4 = a3;
-  v5 = [(NerdDebugXPCListener *)self controller];
-  v6 = [v5 tapToManager];
-  v7 = [v6 managerIsActive];
+  recoverCopy = recover;
+  controller = [(NerdDebugXPCListener *)self controller];
+  tapToManager = [controller tapToManager];
+  managerIsActive = [tapToManager managerIsActive];
 
   v8 = +[SUCoreLog sharedLogger];
-  v9 = [v8 oslog];
+  oslog = [v8 oslog];
 
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [NSString stringWithFormat:@"NeRD is isInTTR answer: %d", v7];
+    v10 = [NSString stringWithFormat:@"NeRD is isInTTR answer: %d", managerIsActive];
     *buf = 136315394;
     v12 = "[NerdDebugXPCListener isInTapToRecover:]";
     v13 = 2112;
     v14 = v10;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
   }
 
-  v4[2](v4, v7);
+  recoverCopy[2](recoverCopy, managerIsActive);
 }
 
-- (void)getLastNeRDControllerState:(id)a3
+- (void)getLastNeRDControllerState:(id)state
 {
-  v4 = a3;
-  v5 = [(NerdDebugXPCListener *)self controller];
-  v6 = [v5 lastRecordedState];
+  stateCopy = state;
+  controller = [(NerdDebugXPCListener *)self controller];
+  lastRecordedState = [controller lastRecordedState];
 
   v7 = +[SUCoreLog sharedLogger];
-  v8 = [v7 oslog];
+  oslog = [v7 oslog];
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [NSString stringWithFormat:@"NeRD last recorded state was: %@", v6];
+    v9 = [NSString stringWithFormat:@"NeRD last recorded state was: %@", lastRecordedState];
     *buf = 136315394;
     v11 = "[NerdDebugXPCListener getLastNeRDControllerState:]";
     v12 = 2112;
     v13 = v9;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
   }
 
-  v4[2](v4, v6);
+  stateCopy[2](stateCopy, lastRecordedState);
 }
 
-- (void)postSetupKitEvent:(int64_t)a3 withParameters:(id)a4 withCallback:(id)a5
+- (void)postSetupKitEvent:(int64_t)event withParameters:(id)parameters withCallback:(id)callback
 {
-  v8 = a4;
-  v9 = a5;
+  parametersCopy = parameters;
+  callbackCopy = callback;
   v10 = +[SUCoreLog sharedLogger];
-  v11 = [v10 oslog];
+  oslog = [v10 oslog];
 
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 == 1)
+    if (event == 1)
     {
       v12 = @"SETUP_EVENT_TYPE_PRESENT_AUTH";
     }
 
-    else if (a3 == 2)
+    else if (event == 2)
     {
       v12 = @"SETUP_EVENT_TYPE_AUTH_COMPLETED";
     }
@@ -406,21 +406,21 @@ LABEL_8:
     else
     {
       v12 = @"SETUP_EVENT_TYPE_UNKNOWN";
-      if (a3 == 3)
+      if (event == 3)
       {
         v12 = @"SETUP_EVENT_TYPE_SETUP_COMPLETED";
       }
     }
 
-    v13 = [NSString stringWithFormat:@"Posting event: %@ with parameters: %@", v12, v8];
+    parametersCopy = [NSString stringWithFormat:@"Posting event: %@ with parameters: %@", v12, parametersCopy];
     *buf = 136315394;
     v32 = "[NerdDebugXPCListener postSetupKitEvent:withParameters:withCallback:]";
     v33 = 2112;
-    v34 = v13;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
+    v34 = parametersCopy;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
   }
 
-  if (a3 == 3)
+  if (event == 3)
   {
     v21 = [SKEvent alloc];
     v22 = 20;
@@ -429,33 +429,33 @@ LABEL_18:
     if (!v20)
     {
 LABEL_28:
-      v9[2](v9, 0, @"Couldn't create SKEvent to send to tapToManager");
+      callbackCopy[2](callbackCopy, 0, @"Couldn't create SKEvent to send to tapToManager");
       goto LABEL_29;
     }
 
     goto LABEL_19;
   }
 
-  if (a3 == 2)
+  if (event == 2)
   {
     v21 = [SKEvent alloc];
     v22 = 140;
     goto LABEL_18;
   }
 
-  if (a3 != 1)
+  if (event != 1)
   {
-    v9[2](v9, 0, @"Unknown event type");
+    callbackCopy[2](callbackCopy, 0, @"Unknown event type");
     goto LABEL_29;
   }
 
-  v14 = [v8 objectForKeyedSubscript:@"password"];
+  v14 = [parametersCopy objectForKeyedSubscript:@"password"];
   v15 = v14;
   if (!v14)
   {
     v30 = @"Missing password key in provided parameters";
 LABEL_25:
-    v9[2](v9, 0, v30);
+    callbackCopy[2](callbackCopy, 0, v30);
 
     goto LABEL_29;
   }
@@ -472,7 +472,7 @@ LABEL_25:
   if (v17)
   {
     v18 = [SKAuthenticationPresentEvent alloc];
-    v19 = [v8 objectForKeyedSubscript:@"password"];
+    v19 = [parametersCopy objectForKeyedSubscript:@"password"];
     v20 = [v18 initWithPasswordType:2 password:v19];
   }
 
@@ -487,26 +487,26 @@ LABEL_25:
   }
 
 LABEL_19:
-  v23 = [(NerdDebugXPCListener *)self controller];
-  v24 = [v23 tapToManager];
-  v25 = [v24 server];
-  v26 = [v25 eventHandler];
-  (v26)[2](v26, v20);
+  controller = [(NerdDebugXPCListener *)self controller];
+  tapToManager = [controller tapToManager];
+  server = [tapToManager server];
+  eventHandler = [server eventHandler];
+  (eventHandler)[2](eventHandler, v20);
 
   v27 = +[SUCoreLog sharedLogger];
-  v28 = [v27 oslog];
+  oslog2 = [v27 oslog];
 
-  if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
   {
     v29 = [NSString stringWithFormat:@"Event posted to tapToManager successfully"];
     *buf = 136315394;
     v32 = "[NerdDebugXPCListener postSetupKitEvent:withParameters:withCallback:]";
     v33 = 2112;
     v34 = v29;
-    _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "[NeRD] %s: %@", buf, 0x16u);
   }
 
-  v9[2](v9, 1, 0);
+  callbackCopy[2](callbackCopy, 1, 0);
 LABEL_29:
 }
 

@@ -1,11 +1,11 @@
 @interface NSSQLColumn
-- (NSSQLColumn)initWithColumnName:(id)a3 sqlType:(unsigned __int8)a4;
-- (NSSQLColumn)initWithEntity:(id)a3 propertyDescription:(id)a4;
+- (NSSQLColumn)initWithColumnName:(id)name sqlType:(unsigned __int8)type;
+- (NSSQLColumn)initWithEntity:(id)entity propertyDescription:(id)description;
 - (id)description;
 - (id)initForReadOnlyFetching;
 - (uint64_t)_setColumnName:(uint64_t)result;
 - (uint64_t)roughSizeEstimate;
-- (void)copyValuesForReadOnlyFetch:(id)a3;
+- (void)copyValuesForReadOnlyFetch:(id)fetch;
 - (void)dealloc;
 @end
 
@@ -50,18 +50,18 @@
   return result;
 }
 
-- (NSSQLColumn)initWithEntity:(id)a3 propertyDescription:(id)a4
+- (NSSQLColumn)initWithEntity:(id)entity propertyDescription:(id)description
 {
   v9.receiver = self;
   v9.super_class = NSSQLColumn;
   v6 = [NSSQLProperty initWithEntity:sel_initWithEntity_propertyDescription_ propertyDescription:?];
   if (v6)
   {
-    if (a4)
+    if (description)
     {
-      if (a3)
+      if (entity)
       {
-        v7 = *(a3 + 22);
+        v7 = *(entity + 22);
       }
 
       else
@@ -69,7 +69,7 @@
         v7 = 0;
       }
 
-      v6->_columnName = [(NSSQLStoreMappingGenerator *)v7 newGeneratedPropertyName:a4];
+      v6->_columnName = [(NSSQLStoreMappingGenerator *)v7 newGeneratedPropertyName:description];
     }
 
     v6->super._slot = -1;
@@ -79,20 +79,20 @@
   return v6;
 }
 
-- (NSSQLColumn)initWithColumnName:(id)a3 sqlType:(unsigned __int8)a4
+- (NSSQLColumn)initWithColumnName:(id)name sqlType:(unsigned __int8)type
 {
   v6 = [(NSSQLColumn *)self initWithEntity:0 propertyDescription:0];
   v7 = v6;
   if (v6)
   {
     columnName = v6->_columnName;
-    if (columnName != a3)
+    if (columnName != name)
     {
 
-      v7->_columnName = [a3 copy];
+      v7->_columnName = [name copy];
     }
 
-    v7->super._sqlType = a4;
+    v7->super._sqlType = type;
   }
 
   return v7;
@@ -124,16 +124,16 @@
   return v4;
 }
 
-- (void)copyValuesForReadOnlyFetch:(id)a3
+- (void)copyValuesForReadOnlyFetch:(id)fetch
 {
   v6.receiver = self;
   v6.super_class = NSSQLColumn;
   [(NSSQLProperty *)&v6 copyValuesForReadOnlyFetch:?];
-  self->_columnName = [objc_msgSend(a3 "columnName")];
-  self->super._sqlType = [a3 sqlType];
-  if (a3)
+  self->_columnName = [objc_msgSend(fetch "columnName")];
+  self->super._sqlType = [fetch sqlType];
+  if (fetch)
   {
-    v5 = *(a3 + 16) & 1;
+    v5 = *(fetch + 16) & 1;
   }
 
   else

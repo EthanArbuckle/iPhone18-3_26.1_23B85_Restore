@@ -1,15 +1,15 @@
 @interface _CNGeminiLogger
 - (_CNGeminiLogger)init;
-- (void)fetchSortedResultsForInteraction:(id)a3 error:(id)a4;
-- (void)fetchedSortedResults:(id)a3 forInteraction:(id)a4;
-- (void)fetchingBestResultForDestinationHandle:(id)a3;
-- (void)recordInteractionError:(id)a3;
-- (void)recordedInteraction:(id)a3 forContext:(id)a4;
-- (void)registeredForContextUpdatesWithToken:(id)a3;
-- (void)unregisteredForContextUpdatesWithToken:(id)a3;
-- (void)updateSubscriptionInfoError:(id)a3;
-- (void)updatedSubscriptionInfo:(id)a3;
-- (void)updatingSubscriptionInfo:(id)a3;
+- (void)fetchSortedResultsForInteraction:(id)interaction error:(id)error;
+- (void)fetchedSortedResults:(id)results forInteraction:(id)interaction;
+- (void)fetchingBestResultForDestinationHandle:(id)handle;
+- (void)recordInteractionError:(id)error;
+- (void)recordedInteraction:(id)interaction forContext:(id)context;
+- (void)registeredForContextUpdatesWithToken:(id)token;
+- (void)unregisteredForContextUpdatesWithToken:(id)token;
+- (void)updateSubscriptionInfoError:(id)error;
+- (void)updatedSubscriptionInfo:(id)info;
+- (void)updatingSubscriptionInfo:(id)info;
 @end
 
 @implementation _CNGeminiLogger
@@ -31,9 +31,9 @@
   return v2;
 }
 
-- (void)updatingSubscriptionInfo:(id)a3
+- (void)updatingSubscriptionInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = _os_activity_create(&dword_1954A0000, "UpdatingSubscriptionInfo", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -46,16 +46,16 @@
   block[1] = 3221225472;
   block[2] = __44___CNGeminiLogger_updatingSubscriptionInfo___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = infoCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = infoCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)fetchingBestResultForDestinationHandle:(id)a3
+- (void)fetchingBestResultForDestinationHandle:(id)handle
 {
-  v3 = a3;
+  handleCopy = handle;
   v4 = _os_activity_create(&dword_1954A0000, "FetchingBestResultForDestinationHandle", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -68,41 +68,41 @@
   block[1] = 3221225472;
   block[2] = __58___CNGeminiLogger_fetchingBestResultForDestinationHandle___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = handleCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = handleCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)recordedInteraction:(id)a3 forContext:(id)a4
+- (void)recordedInteraction:(id)interaction forContext:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 contactIdentifier];
+  interactionCopy = interaction;
+  contextCopy = context;
+  contactIdentifier = [interactionCopy contactIdentifier];
 
   v9 = [(_CNGeminiLogger *)self log];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-  if (v8)
+  if (contactIdentifier)
   {
     if (v10)
     {
-      v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "transport")}];
-      v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "directionality")}];
-      v13 = [v6 handle];
-      v14 = [v6 contactIdentifier];
-      v15 = [v7 uuid];
+      v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(interactionCopy, "transport")}];
+      v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(interactionCopy, "directionality")}];
+      handle = [interactionCopy handle];
+      contactIdentifier2 = [interactionCopy contactIdentifier];
+      uuid = [contextCopy uuid];
       v16 = 138413314;
       v17 = v11;
       v18 = 2112;
       v19 = v12;
       v20 = 2112;
-      v21 = v13;
+      v21 = handle;
       v22 = 2112;
-      v23 = v14;
+      v23 = contactIdentifier2;
       v24 = 2112;
-      v25 = v15;
+      v25 = uuid;
       _os_log_impl(&dword_1954A0000, v9, OS_LOG_TYPE_INFO, "Recorded interaction with transport:%@ directionality:%@ handle:%@ contactIdentifier:%@ contextUUID:%@", &v16, 0x34u);
 
 LABEL_6:
@@ -111,101 +111,101 @@ LABEL_6:
 
   else if (v10)
   {
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "transport")}];
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "directionality")}];
-    v13 = [v6 handle];
-    v14 = [v7 uuid];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(interactionCopy, "transport")}];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(interactionCopy, "directionality")}];
+    handle = [interactionCopy handle];
+    contactIdentifier2 = [contextCopy uuid];
     v16 = 138413058;
     v17 = v11;
     v18 = 2112;
     v19 = v12;
     v20 = 2112;
-    v21 = v13;
+    v21 = handle;
     v22 = 2112;
-    v23 = v14;
+    v23 = contactIdentifier2;
     _os_log_impl(&dword_1954A0000, v9, OS_LOG_TYPE_INFO, "Recorded interaction with transport:%@ directionality:%@ handle:%@ contextUUID:%@", &v16, 0x2Au);
     goto LABEL_6;
   }
 }
 
-- (void)recordInteractionError:(id)a3
+- (void)recordInteractionError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = [(_CNGeminiLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(_CNGeminiLogger *)v4 recordInteractionError:v5];
+    [(_CNGeminiLogger *)errorCopy recordInteractionError:v5];
   }
 }
 
-- (void)registeredForContextUpdatesWithToken:(id)a3
+- (void)registeredForContextUpdatesWithToken:(id)token
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   v5 = [(_CNGeminiLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = tokenCopy;
     _os_log_impl(&dword_1954A0000, v5, OS_LOG_TYPE_INFO, "Registered for context updates with token %@", &v6, 0xCu);
   }
 }
 
-- (void)unregisteredForContextUpdatesWithToken:(id)a3
+- (void)unregisteredForContextUpdatesWithToken:(id)token
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   v5 = [(_CNGeminiLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = tokenCopy;
     _os_log_impl(&dword_1954A0000, v5, OS_LOG_TYPE_INFO, "Unregistered for context updates with token %@", &v6, 0xCu);
   }
 }
 
-- (void)updatedSubscriptionInfo:(id)a3
+- (void)updatedSubscriptionInfo:(id)info
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v5 = [(_CNGeminiLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = infoCopy;
     _os_log_impl(&dword_1954A0000, v5, OS_LOG_TYPE_INFO, "Updated subscription info: %@", &v6, 0xCu);
   }
 }
 
-- (void)updateSubscriptionInfoError:(id)a3
+- (void)updateSubscriptionInfoError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = [(_CNGeminiLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(_CNGeminiLogger *)v4 updateSubscriptionInfoError:v5];
+    [(_CNGeminiLogger *)errorCopy updateSubscriptionInfoError:v5];
   }
 }
 
-- (void)fetchedSortedResults:(id)a3 forInteraction:(id)a4
+- (void)fetchedSortedResults:(id)results forInteraction:(id)interaction
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 contactIdentifier];
+  interactionCopy = interaction;
+  contactIdentifier = [interactionCopy contactIdentifier];
 
   v7 = [(_CNGeminiLogger *)self log];
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (contactIdentifier)
   {
     if (v8)
     {
-      v9 = [v5 handle];
-      v10 = [v5 contactIdentifier];
-      v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "transport")}];
+      handle = [interactionCopy handle];
+      contactIdentifier2 = [interactionCopy contactIdentifier];
+      v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(interactionCopy, "transport")}];
       v12 = 138412802;
-      v13 = v9;
+      v13 = handle;
       v14 = 2112;
-      v15 = v10;
+      v15 = contactIdentifier2;
       v16 = 2112;
       v17 = v11;
       _os_log_impl(&dword_1954A0000, v7, OS_LOG_TYPE_INFO, "Fetched sorted results for handle:%@ contactIdentifier:%@ transport:%@", &v12, 0x20u);
@@ -216,36 +216,36 @@ LABEL_6:
 
   else if (v8)
   {
-    v9 = [v5 handle];
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "transport")}];
+    handle = [interactionCopy handle];
+    contactIdentifier2 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(interactionCopy, "transport")}];
     v12 = 138412546;
-    v13 = v9;
+    v13 = handle;
     v14 = 2112;
-    v15 = v10;
+    v15 = contactIdentifier2;
     _os_log_impl(&dword_1954A0000, v7, OS_LOG_TYPE_INFO, "Fetched sorted results for handle:%@ transport:%@", &v12, 0x16u);
     goto LABEL_6;
   }
 }
 
-- (void)fetchSortedResultsForInteraction:(id)a3 error:(id)a4
+- (void)fetchSortedResultsForInteraction:(id)interaction error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 contactIdentifier];
+  interactionCopy = interaction;
+  errorCopy = error;
+  contactIdentifier = [interactionCopy contactIdentifier];
 
   v9 = [(_CNGeminiLogger *)self log];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
-  if (v8)
+  if (contactIdentifier)
   {
     if (v10)
     {
-      [(_CNGeminiLogger *)v6 fetchSortedResultsForInteraction:v7 error:v9];
+      [(_CNGeminiLogger *)interactionCopy fetchSortedResultsForInteraction:errorCopy error:v9];
     }
   }
 
   else if (v10)
   {
-    [(_CNGeminiLogger *)v6 fetchSortedResultsForInteraction:v7 error:v9];
+    [(_CNGeminiLogger *)interactionCopy fetchSortedResultsForInteraction:errorCopy error:v9];
   }
 }
 

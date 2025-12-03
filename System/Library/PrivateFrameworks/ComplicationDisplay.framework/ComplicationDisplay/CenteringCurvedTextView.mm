@@ -1,17 +1,17 @@
 @interface CenteringCurvedTextView
-- (_TtC19ComplicationDisplay23CenteringCurvedTextView)initWithCoder:(id)a3;
-- (_TtC19ComplicationDisplay23CenteringCurvedTextView)initWithFrame:(CGRect)a3;
+- (_TtC19ComplicationDisplay23CenteringCurvedTextView)initWithCoder:(id)coder;
+- (_TtC19ComplicationDisplay23CenteringCurvedTextView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CenteringCurvedTextView
 
-- (_TtC19ComplicationDisplay23CenteringCurvedTextView)initWithFrame:(CGRect)a3
+- (_TtC19ComplicationDisplay23CenteringCurvedTextView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = (&self->super.super.super.isa + OBJC_IVAR____TtC19ComplicationDisplay23CenteringCurvedTextView_circleCenter);
   *v8 = 0;
   v8[1] = 0;
@@ -19,12 +19,12 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC19ComplicationDisplay23CenteringCurvedTextView_curvedLabelView) = v9;
   v12.receiver = self;
   v12.super_class = type metadata accessor for CenteringCurvedTextView();
-  v10 = [(CenteringCurvedTextView *)&v12 initWithFrame:x, y, width, height];
-  [(CenteringCurvedTextView *)v10 addSubview:*(&v10->super.super.super.isa + OBJC_IVAR____TtC19ComplicationDisplay23CenteringCurvedTextView_curvedLabelView)];
-  return v10;
+  height = [(CenteringCurvedTextView *)&v12 initWithFrame:x, y, width, height];
+  [(CenteringCurvedTextView *)height addSubview:*(&height->super.super.super.isa + OBJC_IVAR____TtC19ComplicationDisplay23CenteringCurvedTextView_curvedLabelView)];
+  return height;
 }
 
-- (_TtC19ComplicationDisplay23CenteringCurvedTextView)initWithCoder:(id)a3
+- (_TtC19ComplicationDisplay23CenteringCurvedTextView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC19ComplicationDisplay23CenteringCurvedTextView_circleCenter);
   type metadata accessor for CenteringCurvedTextView();
@@ -49,7 +49,7 @@
   v8[2] = sub_243DA5F3C;
   v8[3] = &block_descriptor_33;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   [v3 performWithoutAnimation_];
   _Block_release(v6);

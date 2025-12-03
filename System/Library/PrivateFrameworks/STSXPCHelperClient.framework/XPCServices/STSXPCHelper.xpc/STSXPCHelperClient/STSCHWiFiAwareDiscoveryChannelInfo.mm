@@ -1,39 +1,39 @@
 @interface STSCHWiFiAwareDiscoveryChannelInfo
-- (BOOL)isEqual:(id)a3;
-- (STSCHWiFiAwareDiscoveryChannelInfo)initWithCoder:(id)a3;
-- (STSCHWiFiAwareDiscoveryChannelInfo)initWithSupportedBands:(id)a3 operatingClass:(id)a4 channelNumber:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (STSCHWiFiAwareDiscoveryChannelInfo)initWithCoder:(id)coder;
+- (STSCHWiFiAwareDiscoveryChannelInfo)initWithSupportedBands:(id)bands operatingClass:(id)class channelNumber:(id)number;
 - (id)asData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSCHWiFiAwareDiscoveryChannelInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   supportedBands = self->_supportedBands;
-  v5 = a3;
-  [v5 encodeObject:supportedBands forKey:@"supportedBands"];
-  [v5 encodeObject:self->_operatingClass forKey:@"operatingClass"];
-  [v5 encodeObject:self->_channelNumber forKey:@"channelNumber"];
+  coderCopy = coder;
+  [coderCopy encodeObject:supportedBands forKey:@"supportedBands"];
+  [coderCopy encodeObject:self->_operatingClass forKey:@"operatingClass"];
+  [coderCopy encodeObject:self->_channelNumber forKey:@"channelNumber"];
 }
 
-- (STSCHWiFiAwareDiscoveryChannelInfo)initWithCoder:(id)a3
+- (STSCHWiFiAwareDiscoveryChannelInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = STSCHWiFiAwareDiscoveryChannelInfo;
   v5 = [(STSCHWiFiAwareDiscoveryChannelInfo *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"supportedBands"];
+    v6 = [coderCopy decodeObjectForKey:@"supportedBands"];
     supportedBands = v5->_supportedBands;
     v5->_supportedBands = v6;
 
-    v8 = [v4 decodeObjectForKey:@"operatingClass"];
+    v8 = [coderCopy decodeObjectForKey:@"operatingClass"];
     operatingClass = v5->_operatingClass;
     v5->_operatingClass = v8;
 
-    v10 = [v4 decodeObjectForKey:@"channelNumber"];
+    v10 = [coderCopy decodeObjectForKey:@"channelNumber"];
     channelNumber = v5->_channelNumber;
     v5->_channelNumber = v10;
   }
@@ -41,18 +41,18 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -61,13 +61,13 @@
         v7 = v6;
         if (self->_supportedBands)
         {
-          v8 = [(STSCHWiFiAwareDiscoveryChannelInfo *)v6 supportedBands];
+          supportedBands = [(STSCHWiFiAwareDiscoveryChannelInfo *)v6 supportedBands];
 
           supportedBands = self->_supportedBands;
-          if (v8)
+          if (supportedBands)
           {
-            v10 = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 supportedBands];
-            v11 = [(NSNumber *)supportedBands isEqual:v10];
+            supportedBands2 = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 supportedBands];
+            v11 = [(NSNumber *)supportedBands isEqual:supportedBands2];
 
             if ((v11 & 1) == 0)
             {
@@ -83,9 +83,9 @@
           }
         }
 
-        v13 = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 supportedBands];
+        supportedBands3 = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 supportedBands];
 
-        if (v13)
+        if (supportedBands3)
         {
           goto LABEL_24;
         }
@@ -93,13 +93,13 @@
 LABEL_12:
         if (self->_operatingClass)
         {
-          v14 = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 operatingClass];
+          operatingClass = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 operatingClass];
 
           operatingClass = self->_operatingClass;
-          if (v14)
+          if (operatingClass)
           {
-            v16 = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 operatingClass];
-            v17 = [(NSNumber *)operatingClass isEqual:v16];
+            operatingClass2 = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 operatingClass];
+            v17 = [(NSNumber *)operatingClass isEqual:operatingClass2];
 
             if ((v17 & 1) == 0)
             {
@@ -115,9 +115,9 @@ LABEL_12:
           }
         }
 
-        v18 = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 operatingClass];
+        operatingClass3 = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 operatingClass];
 
-        if (v18)
+        if (operatingClass3)
         {
           goto LABEL_24;
         }
@@ -125,13 +125,13 @@ LABEL_12:
 LABEL_18:
         if (self->_channelNumber)
         {
-          v19 = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 channelNumber];
+          channelNumber = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 channelNumber];
 
           channelNumber = self->_channelNumber;
-          if (v19)
+          if (channelNumber)
           {
-            v21 = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 channelNumber];
-            v22 = [(NSNumber *)channelNumber isEqual:v21];
+            channelNumber2 = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 channelNumber];
+            v22 = [(NSNumber *)channelNumber isEqual:channelNumber2];
 
             if (v22)
             {
@@ -147,9 +147,9 @@ LABEL_18:
           }
         }
 
-        v23 = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 channelNumber];
+        channelNumber3 = [(STSCHWiFiAwareDiscoveryChannelInfo *)v7 channelNumber];
 
-        if (!v23)
+        if (!channelNumber3)
         {
 LABEL_27:
           v12 = 1;
@@ -172,20 +172,20 @@ LABEL_26:
   return v12;
 }
 
-- (STSCHWiFiAwareDiscoveryChannelInfo)initWithSupportedBands:(id)a3 operatingClass:(id)a4 channelNumber:(id)a5
+- (STSCHWiFiAwareDiscoveryChannelInfo)initWithSupportedBands:(id)bands operatingClass:(id)class channelNumber:(id)number
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  bandsCopy = bands;
+  classCopy = class;
+  numberCopy = number;
   v15.receiver = self;
   v15.super_class = STSCHWiFiAwareDiscoveryChannelInfo;
   v12 = [(STSCHWiFiAwareDiscoveryChannelInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_supportedBands, a3);
-    objc_storeStrong(&v13->_operatingClass, a4);
-    objc_storeStrong(&v13->_channelNumber, a5);
+    objc_storeStrong(&v12->_supportedBands, bands);
+    objc_storeStrong(&v13->_operatingClass, class);
+    objc_storeStrong(&v13->_channelNumber, number);
   }
 
   return v13;
@@ -198,7 +198,7 @@ LABEL_26:
   if (supportedBands)
   {
     v10 = 1026;
-    v11 = [(NSNumber *)supportedBands intValue];
+    intValue = [(NSNumber *)supportedBands intValue];
     [v3 appendBytes:&v10 length:3];
   }
 
@@ -206,8 +206,8 @@ LABEL_26:
   if (operatingClass && self->_channelNumber)
   {
     v7 = 1283;
-    v8 = [(NSNumber *)operatingClass intValue];
-    v9 = [(NSNumber *)self->_channelNumber intValue];
+    intValue2 = [(NSNumber *)operatingClass intValue];
+    intValue3 = [(NSNumber *)self->_channelNumber intValue];
     [v3 appendBytes:&v7 length:4];
   }
 

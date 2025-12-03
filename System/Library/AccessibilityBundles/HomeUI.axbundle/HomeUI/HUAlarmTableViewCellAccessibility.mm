@@ -1,25 +1,25 @@
 @interface HUAlarmTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityValue;
 @end
 
 @implementation HUAlarmTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUAlarmTableViewCell" hasInstanceMethod:@"enabledSwitch" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUAlarmTableViewCell" hasInstanceMethod:@"timeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUAlarmTableViewCell" hasInstanceMethod:@"nameAndDescriptionLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUAlarmTableViewCell" hasInstanceMethod:@"enabledSwitch" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUAlarmTableViewCell" hasInstanceMethod:@"timeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUAlarmTableViewCell" hasInstanceMethod:@"nameAndDescriptionLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityValue
 {
   v2 = [(HUAlarmTableViewCellAccessibility *)self safeUIViewForKey:@"enabledSwitch"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (CGPoint)accessibilityActivationPoint

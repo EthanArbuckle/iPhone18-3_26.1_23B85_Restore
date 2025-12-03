@@ -1,22 +1,22 @@
 @interface PLPhotoLibraryPathManagerDCIM
 + (id)allPhotosPathsOnThisDevice;
-- (PLPhotoLibraryPathManagerDCIM)initWithLibraryURL:(id)a3 bundleScope:(unsigned __int16)a4;
-- (id)_externalDirectoryWithBundleIdentifier:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)addToPath:(id)a3 leafType:(unsigned __int8)a4 additionalPathComponents:(id)a5;
-- (id)assetAbbreviatedMetadataDirectoryForDirectory:(id)a3 type:(unsigned __int8)a4 bundleScope:(unsigned __int16)a5;
-- (id)assetBaseFilenameForAdjustmentFilePath:(id)a3;
-- (id)assetMainFilePathWithDirectory:(id)a3 filename:(id)a4 bundleScope:(unsigned __int16)a5;
+- (PLPhotoLibraryPathManagerDCIM)initWithLibraryURL:(id)l bundleScope:(unsigned __int16)scope;
+- (id)_externalDirectoryWithBundleIdentifier:(id)identifier createIfNeeded:(BOOL)needed;
+- (id)addToPath:(id)path leafType:(unsigned __int8)type additionalPathComponents:(id)components;
+- (id)assetAbbreviatedMetadataDirectoryForDirectory:(id)directory type:(unsigned __int8)type bundleScope:(unsigned __int16)scope;
+- (id)assetBaseFilenameForAdjustmentFilePath:(id)path;
+- (id)assetMainFilePathWithDirectory:(id)directory filename:(id)filename bundleScope:(unsigned __int16)scope;
 - (id)basePrivateDirectoryPath;
-- (id)captureSessionPathsWithClientAuthorization:(id)a3;
-- (id)clientOwnedDirectoryPathsForClientAccess:(id)a3;
+- (id)captureSessionPathsWithClientAuthorization:(id)authorization;
+- (id)clientOwnedDirectoryPathsForClientAccess:(id)access;
 - (id)cloudRestoreBackgroundCompletePath;
 - (id)cloudRestoreBackgroundPhaseInProgressTokenPath;
 - (id)cloudRestoreCompleteTokenPath;
 - (id)cloudRestoreContextPath;
 - (id)cloudRestoreForegroundPhaseCompleteTokenPath;
-- (id)convertPhotoLibraryPathType:(unsigned __int8)a3;
+- (id)convertPhotoLibraryPathType:(unsigned __int8)type;
 - (id)createPathsForNewLibraries;
-- (id)externalDirectoryWithSubType:(unsigned __int8)a3 leafType:(unsigned __int8)a4 additionalPathComponents:(id)a5;
+- (id)externalDirectoryWithSubType:(unsigned __int8)type leafType:(unsigned __int8)leafType additionalPathComponents:(id)components;
 - (id)getImportFileManager;
 - (id)iTunesPhotosLastSyncMetadataFilePath;
 - (id)iTunesPhotosSyncCurrentLibraryUUIDPath;
@@ -26,28 +26,28 @@
 - (id)iTunesSyncedAssetSmallThumbnailsDirectory;
 - (id)iTunesSyncedFaceAlbumThumbnailsDirectory;
 - (id)iTunesSyncedFaceDataDirectory;
-- (id)internalDirectoryWithSubType:(unsigned __int8)a3 additionalPathComponents:(id)a4;
+- (id)internalDirectoryWithSubType:(unsigned __int8)type additionalPathComponents:(id)components;
 - (id)modelRestorePostProcessingCompleteTokenPath;
 - (id)pathToAssetAlbumOrderStructure;
-- (id)pathsForClientAccess:(id)a3;
+- (id)pathsForClientAccess:(id)access;
 - (id)pathsForExternalWriters;
 - (id)pathsForFinderSyncFilesystemSizeCalculation;
 - (id)pathsForLibraryFilesystemSizeCalculation;
 - (id)pathsForPermissionCheck;
-- (id)pathsGroupedByAssetBasePathFromFilePaths:(id)a3 populateInvalidAdjustmentPaths:(id)a4;
-- (id)persistedAlbumDataDirectoryCreateIfNeeded:(BOOL)a3 error:(id *)a4;
-- (id)photoDirectoryWithType:(unsigned __int8)a3 leafType:(unsigned __int8)a4 additionalPathComponents:(id)a5;
-- (id)photoMetadataDirectoryForMediaInMainDirectory:(id)a3;
-- (id)privateCacheDirectoryWithSubType:(unsigned __int8)a3 leafType:(unsigned __int8)a4 additionalPathComponents:(id)a5;
-- (id)privateDirectoryWithSubType:(unsigned __int8)a3 leafType:(unsigned __int8)a4 additionalPathComponents:(id)a5;
-- (id)readOnlyUrlWithIdentifier:(id)a3;
+- (id)pathsGroupedByAssetBasePathFromFilePaths:(id)paths populateInvalidAdjustmentPaths:(id)adjustmentPaths;
+- (id)persistedAlbumDataDirectoryCreateIfNeeded:(BOOL)needed error:(id *)error;
+- (id)photoDirectoryWithType:(unsigned __int8)type leafType:(unsigned __int8)leafType additionalPathComponents:(id)components;
+- (id)photoMetadataDirectoryForMediaInMainDirectory:(id)directory;
+- (id)privateCacheDirectoryWithSubType:(unsigned __int8)type leafType:(unsigned __int8)leafType additionalPathComponents:(id)components;
+- (id)privateDirectoryWithSubType:(unsigned __int8)type leafType:(unsigned __int8)leafType additionalPathComponents:(id)components;
+- (id)readOnlyUrlWithIdentifier:(id)identifier;
 - (id)simpleDCIMDirectory;
 - (id)unlockedCaptureSessionPaths;
-- (unsigned)photoLibraryPathTypeForBundleScope:(unsigned __int16)a3;
-- (void)enumerateBundleScopesWithBlock:(id)a3;
-- (void)obtainAccessAndWaitWithFileWithIdentifier:(id)a3 mode:(unsigned __int8)a4 toURLWithHandler:(id)a5;
-- (void)setExtendedAttributesWithIdentifier:(id)a3;
-- (void)setExtendedAttributesWithIdentifier:(id)a3 andURL:(id)a4;
+- (unsigned)photoLibraryPathTypeForBundleScope:(unsigned __int16)scope;
+- (void)enumerateBundleScopesWithBlock:(id)block;
+- (void)obtainAccessAndWaitWithFileWithIdentifier:(id)identifier mode:(unsigned __int8)mode toURLWithHandler:(id)handler;
+- (void)setExtendedAttributesWithIdentifier:(id)identifier;
+- (void)setExtendedAttributesWithIdentifier:(id)identifier andURL:(id)l;
 @end
 
 @implementation PLPhotoLibraryPathManagerDCIM
@@ -64,17 +64,17 @@
   return v4;
 }
 
-- (id)pathsGroupedByAssetBasePathFromFilePaths:(id)a3 populateInvalidAdjustmentPaths:(id)a4
+- (id)pathsGroupedByAssetBasePathFromFilePaths:(id)paths populateInvalidAdjustmentPaths:(id)adjustmentPaths
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v25 = a4;
+  pathsCopy = paths;
+  adjustmentPathsCopy = adjustmentPaths;
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v5;
+  obj = pathsCopy;
   v7 = [obj countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v7)
   {
@@ -135,7 +135,7 @@
 
           if (v13 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            [v25 addObject:v12];
+            [adjustmentPathsCopy addObject:v12];
           }
         }
       }
@@ -194,20 +194,20 @@ void __105__PLPhotoLibraryPathManagerDCIM_pathsGroupedByAssetBasePathFromFilePat
   }
 }
 
-- (id)assetBaseFilenameForAdjustmentFilePath:(id)a3
+- (id)assetBaseFilenameForAdjustmentFilePath:(id)path
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_autoreleasePoolPush();
   v6 = [(PLPhotoLibraryPathManagerCore *)self photoDirectoryWithType:9];
-  v7 = [v4 rangeOfString:v6];
-  if (v7 == 0x7FFFFFFFFFFFFFFFLL || (v9 = v7, v10 = v8, [v4 length] <= (v7 + v8 + 14)))
+  v7 = [pathCopy rangeOfString:v6];
+  if (v7 == 0x7FFFFFFFFFFFFFFFLL || (v9 = v7, v10 = v8, [pathCopy length] <= (v7 + v8 + 14)))
   {
     v15 = 0;
     goto LABEL_12;
   }
 
-  v11 = [v4 substringFromIndex:v9 + v10 + 1];
+  v11 = [pathCopy substringFromIndex:v9 + v10 + 1];
   v12 = [v11 rangeOfString:@"Adjustments"];
   if (!v12)
   {
@@ -215,7 +215,7 @@ void __105__PLPhotoLibraryPathManagerDCIM_pathsGroupedByAssetBasePathFromFilePat
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = pathCopy;
       _os_log_impl(&dword_1AA9BD000, v16, OS_LOG_TYPE_ERROR, "Found invalid adjustment path %@", &v18, 0xCu);
     }
 
@@ -241,13 +241,13 @@ LABEL_12:
   return v15;
 }
 
-- (id)persistedAlbumDataDirectoryCreateIfNeeded:(BOOL)a3 error:(id *)a4
+- (id)persistedAlbumDataDirectoryCreateIfNeeded:(BOOL)needed error:(id *)error
 {
-  v5 = a3;
+  neededCopy = needed;
   v7 = [(NSString *)self->_photoDataDirectory stringByAppendingPathComponent:@"AlbumsMetadata"];
-  if (v5)
+  if (neededCopy)
   {
-    [(PLPhotoLibraryPathManagerCore *)self createDirectoryOnceWithPath:v7 mask:7 pathType:0 error:a4];
+    [(PLPhotoLibraryPathManagerCore *)self createDirectoryOnceWithPath:v7 mask:7 pathType:0 error:error];
   }
 
   return v7;
@@ -255,24 +255,24 @@ LABEL_12:
 
 - (id)iTunesPhotosSyncCurrentLibraryUUIDPath
 {
-  v2 = [(PLPhotoLibraryPathManagerDCIM *)self iTunesPhotosSyncDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"CurrentLibraryUUID.plist"];
+  iTunesPhotosSyncDirectory = [(PLPhotoLibraryPathManagerDCIM *)self iTunesPhotosSyncDirectory];
+  v3 = [iTunesPhotosSyncDirectory stringByAppendingPathComponent:@"CurrentLibraryUUID.plist"];
 
   return v3;
 }
 
 - (id)iTunesPhotosSyncMetadataFilePath
 {
-  v2 = [(PLPhotoLibraryPathManagerDCIM *)self iTunesPhotosSyncDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"PhotoLibrary.plist"];
+  iTunesPhotosSyncDirectory = [(PLPhotoLibraryPathManagerDCIM *)self iTunesPhotosSyncDirectory];
+  v3 = [iTunesPhotosSyncDirectory stringByAppendingPathComponent:@"PhotoLibrary.plist"];
 
   return v3;
 }
 
 - (id)iTunesPhotosLastSyncMetadataFilePath
 {
-  v2 = [(PLPhotoLibraryPathManagerDCIM *)self iTunesPhotosSyncDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"PhotoLibrary.plist.lastsynced"];
+  iTunesPhotosSyncDirectory = [(PLPhotoLibraryPathManagerDCIM *)self iTunesPhotosSyncDirectory];
+  v3 = [iTunesPhotosSyncDirectory stringByAppendingPathComponent:@"PhotoLibrary.plist.lastsynced"];
 
   return v3;
 }
@@ -294,8 +294,8 @@ LABEL_12:
 {
   v7[3] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(PLPhotoLibraryPathManagerDCIM *)self photoMetadataDirectory];
-  v7[0] = v3;
+  photoMetadataDirectory = [(PLPhotoLibraryPathManagerDCIM *)self photoMetadataDirectory];
+  v7[0] = photoMetadataDirectory;
   v7[1] = @"PhotoData";
   v7[2] = @"Sync";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:3];
@@ -306,110 +306,110 @@ LABEL_12:
 
 - (id)iTunesSyncedFaceAlbumThumbnailsDirectory
 {
-  v2 = [(PLPhotoLibraryPathManagerDCIM *)self iTunesSyncedAssetsDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"FaceAlbumThumbnails"];
+  iTunesSyncedAssetsDirectory = [(PLPhotoLibraryPathManagerDCIM *)self iTunesSyncedAssetsDirectory];
+  v3 = [iTunesSyncedAssetsDirectory stringByAppendingPathComponent:@"FaceAlbumThumbnails"];
 
   return v3;
 }
 
 - (id)iTunesSyncedFaceDataDirectory
 {
-  v2 = [(PLPhotoLibraryPathManagerDCIM *)self iTunesSyncedAssetsDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"FaceData"];
+  iTunesSyncedAssetsDirectory = [(PLPhotoLibraryPathManagerDCIM *)self iTunesSyncedAssetsDirectory];
+  v3 = [iTunesSyncedAssetsDirectory stringByAppendingPathComponent:@"FaceData"];
 
   return v3;
 }
 
 - (id)iTunesPhotosSyncDirectory
 {
-  v2 = [(PLPhotoLibraryPathManagerCore *)self iTunesPhotosDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"Sync"];
+  iTunesPhotosDirectory = [(PLPhotoLibraryPathManagerCore *)self iTunesPhotosDirectory];
+  v3 = [iTunesPhotosDirectory stringByAppendingPathComponent:@"Sync"];
 
   return v3;
 }
 
 - (id)modelRestorePostProcessingCompleteTokenPath
 {
-  v2 = [(PLPhotoLibraryPathManagerDCIM *)self cloudRestoreInfoDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"ModelRestorePostProcessingComplete"];
+  cloudRestoreInfoDirectoryPath = [(PLPhotoLibraryPathManagerDCIM *)self cloudRestoreInfoDirectoryPath];
+  v3 = [cloudRestoreInfoDirectoryPath stringByAppendingPathComponent:@"ModelRestorePostProcessingComplete"];
 
   return v3;
 }
 
 - (id)cloudRestoreContextPath
 {
-  v2 = [(PLPhotoLibraryPathManagerDCIM *)self cloudRestoreInfoDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"CloudRestoreContext.plist"];
+  cloudRestoreInfoDirectoryPath = [(PLPhotoLibraryPathManagerDCIM *)self cloudRestoreInfoDirectoryPath];
+  v3 = [cloudRestoreInfoDirectoryPath stringByAppendingPathComponent:@"CloudRestoreContext.plist"];
 
   return v3;
 }
 
 - (id)cloudRestoreCompleteTokenPath
 {
-  v2 = [(PLPhotoLibraryPathManagerDCIM *)self cloudRestoreInfoDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"CloudRestoreComplete"];
+  cloudRestoreInfoDirectoryPath = [(PLPhotoLibraryPathManagerDCIM *)self cloudRestoreInfoDirectoryPath];
+  v3 = [cloudRestoreInfoDirectoryPath stringByAppendingPathComponent:@"CloudRestoreComplete"];
 
   return v3;
 }
 
 - (id)cloudRestoreBackgroundCompletePath
 {
-  v2 = [(PLPhotoLibraryPathManagerDCIM *)self cloudRestoreInfoDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"CloudRestoreBackgroundComplete"];
+  cloudRestoreInfoDirectoryPath = [(PLPhotoLibraryPathManagerDCIM *)self cloudRestoreInfoDirectoryPath];
+  v3 = [cloudRestoreInfoDirectoryPath stringByAppendingPathComponent:@"CloudRestoreBackgroundComplete"];
 
   return v3;
 }
 
 - (id)cloudRestoreBackgroundPhaseInProgressTokenPath
 {
-  v2 = [(PLPhotoLibraryPathManagerDCIM *)self cloudRestoreInfoDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"CloudRestoreBackgroundInProgress"];
+  cloudRestoreInfoDirectoryPath = [(PLPhotoLibraryPathManagerDCIM *)self cloudRestoreInfoDirectoryPath];
+  v3 = [cloudRestoreInfoDirectoryPath stringByAppendingPathComponent:@"CloudRestoreBackgroundInProgress"];
 
   return v3;
 }
 
 - (id)cloudRestoreForegroundPhaseCompleteTokenPath
 {
-  v2 = [(PLPhotoLibraryPathManagerDCIM *)self cloudRestoreInfoDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"CloudRestoreForegroundComplete"];
+  cloudRestoreInfoDirectoryPath = [(PLPhotoLibraryPathManagerDCIM *)self cloudRestoreInfoDirectoryPath];
+  v3 = [cloudRestoreInfoDirectoryPath stringByAppendingPathComponent:@"CloudRestoreForegroundComplete"];
 
   return v3;
 }
 
-- (id)assetMainFilePathWithDirectory:(id)a3 filename:(id)a4 bundleScope:(unsigned __int16)a5
+- (id)assetMainFilePathWithDirectory:(id)directory filename:(id)filename bundleScope:(unsigned __int16)scope
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  scopeCopy = scope;
+  directoryCopy = directory;
+  filenameCopy = filename;
+  if (!directoryCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryPathManagerDCIM.m" lineNumber:751 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryPathManagerDCIM.m" lineNumber:751 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
   }
 
   if ([(PLPhotoLibraryPathManagerCore *)self bundleScope])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryPathManagerDCIM.m" lineNumber:752 description:@"can only access asset main file path on main bundle scoped path manager"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryPathManagerDCIM.m" lineNumber:752 description:@"can only access asset main file path on main bundle scoped path manager"];
   }
 
-  if ([(PLPhotoLibraryPathManagerDCIM *)self shouldUseFileIdentifierForBundleScope:v5])
+  if ([(PLPhotoLibraryPathManagerDCIM *)self shouldUseFileIdentifierForBundleScope:scopeCopy])
   {
-    v11 = [(PLLazyObject *)self->_lazyPathManagerForUBFOnDCIM objectValue];
-    v12 = [v11 assetMainFilePathWithDirectory:v9 filename:v10 bundleScope:v5];
+    objectValue = [(PLLazyObject *)self->_lazyPathManagerForUBFOnDCIM objectValue];
+    v12 = [objectValue assetMainFilePathWithDirectory:directoryCopy filename:filenameCopy bundleScope:scopeCopy];
   }
 
   else
   {
-    if (([v9 hasPrefix:@"/"] & 1) == 0)
+    if (([directoryCopy hasPrefix:@"/"] & 1) == 0)
     {
       v13 = [(PLPhotoLibraryPathManagerCore *)self photoDirectoryWithType:1];
-      v14 = [v13 stringByAppendingPathComponent:v9];
+      v14 = [v13 stringByAppendingPathComponent:directoryCopy];
 
-      v9 = v14;
+      directoryCopy = v14;
     }
 
-    v12 = [v9 stringByAppendingPathComponent:v10];
+    v12 = [directoryCopy stringByAppendingPathComponent:filenameCopy];
   }
 
   return v12;
@@ -447,86 +447,86 @@ void __63__PLPhotoLibraryPathManagerDCIM_pathToAssetAlbumOrderStructure__block_i
   pathToAssetAlbumOrderStructure_path = v4;
 }
 
-- (id)assetAbbreviatedMetadataDirectoryForDirectory:(id)a3 type:(unsigned __int8)a4 bundleScope:(unsigned __int16)a5
+- (id)assetAbbreviatedMetadataDirectoryForDirectory:(id)directory type:(unsigned __int8)type bundleScope:(unsigned __int16)scope
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if ([(PLPhotoLibraryPathManagerDCIM *)self shouldUseFileIdentifierForBundleScope:v5])
+  scopeCopy = scope;
+  typeCopy = type;
+  directoryCopy = directory;
+  if ([(PLPhotoLibraryPathManagerDCIM *)self shouldUseFileIdentifierForBundleScope:scopeCopy])
   {
     v9 = [PLPhotoLibraryPathManager alloc];
-    v10 = [(PLLazyObject *)self->_lazyPathManagerForUBFOnDCIM objectValue];
-    v11 = [v10 libraryURL];
-    v12 = [(PLPhotoLibraryPathManager *)v9 initWithLibraryURL:v11 bundleScope:v5 libraryFormat:2];
+    objectValue = [(PLLazyObject *)self->_lazyPathManagerForUBFOnDCIM objectValue];
+    libraryURL = [objectValue libraryURL];
+    v12 = [(PLPhotoLibraryPathManager *)v9 initWithLibraryURL:libraryURL bundleScope:scopeCopy libraryFormat:2];
 
-    [(PLPhotoLibraryPathManager *)v12 assetAbbreviatedMetadataDirectoryForDirectory:v8 type:v6 bundleScope:v5];
+    [(PLPhotoLibraryPathManager *)v12 assetAbbreviatedMetadataDirectoryForDirectory:directoryCopy type:typeCopy bundleScope:scopeCopy];
   }
 
   else
   {
-    v12 = [(PLPhotoLibraryPathManagerCore *)self photoDirectoryWithType:v6];
-    [(PLPhotoLibraryPathManagerCore *)self assetAbbreviatedMetadataDirectoryForDirectory:v8 rootPath:v12];
+    v12 = [(PLPhotoLibraryPathManagerCore *)self photoDirectoryWithType:typeCopy];
+    [(PLPhotoLibraryPathManagerCore *)self assetAbbreviatedMetadataDirectoryForDirectory:directoryCopy rootPath:v12];
   }
   v13 = ;
 
   return v13;
 }
 
-- (id)photoMetadataDirectoryForMediaInMainDirectory:(id)a3
+- (id)photoMetadataDirectoryForMediaInMainDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(PLPhotoLibraryPathManagerDCIM *)self photoMetadataDirectory];
-  v6 = [(PLPhotoLibraryPathManagerDCIM *)self assetAbbreviatedMetadataDirectoryForDirectory:v4 type:32 bundleScope:0];
+  directoryCopy = directory;
+  photoMetadataDirectory = [(PLPhotoLibraryPathManagerDCIM *)self photoMetadataDirectory];
+  v6 = [(PLPhotoLibraryPathManagerDCIM *)self assetAbbreviatedMetadataDirectoryForDirectory:directoryCopy type:32 bundleScope:0];
 
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  v7 = [photoMetadataDirectory stringByAppendingPathComponent:v6];
 
   return v7;
 }
 
-- (void)obtainAccessAndWaitWithFileWithIdentifier:(id)a3 mode:(unsigned __int8)a4 toURLWithHandler:(id)a5
+- (void)obtainAccessAndWaitWithFileWithIdentifier:(id)identifier mode:(unsigned __int8)mode toURLWithHandler:(id)handler
 {
-  v5 = a4;
+  modeCopy = mode;
   lazyPathManagerForUBFOnDCIM = self->_lazyPathManagerForUBFOnDCIM;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PLLazyObject *)lazyPathManagerForUBFOnDCIM objectValue];
-  [v10 obtainAccessAndWaitWithFileWithIdentifier:v9 mode:v5 toURLWithHandler:v8];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  objectValue = [(PLLazyObject *)lazyPathManagerForUBFOnDCIM objectValue];
+  [objectValue obtainAccessAndWaitWithFileWithIdentifier:identifierCopy mode:modeCopy toURLWithHandler:handlerCopy];
 }
 
-- (void)setExtendedAttributesWithIdentifier:(id)a3 andURL:(id)a4
+- (void)setExtendedAttributesWithIdentifier:(id)identifier andURL:(id)l
 {
   lazyPathManagerForUBFOnDCIM = self->_lazyPathManagerForUBFOnDCIM;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLLazyObject *)lazyPathManagerForUBFOnDCIM objectValue];
-  [v8 setExtendedAttributesWithIdentifier:v7 andURL:v6];
+  lCopy = l;
+  identifierCopy = identifier;
+  objectValue = [(PLLazyObject *)lazyPathManagerForUBFOnDCIM objectValue];
+  [objectValue setExtendedAttributesWithIdentifier:identifierCopy andURL:lCopy];
 }
 
-- (void)setExtendedAttributesWithIdentifier:(id)a3
+- (void)setExtendedAttributesWithIdentifier:(id)identifier
 {
   lazyPathManagerForUBFOnDCIM = self->_lazyPathManagerForUBFOnDCIM;
-  v4 = a3;
-  v5 = [(PLLazyObject *)lazyPathManagerForUBFOnDCIM objectValue];
-  [v5 setExtendedAttributesWithIdentifier:v4];
+  identifierCopy = identifier;
+  objectValue = [(PLLazyObject *)lazyPathManagerForUBFOnDCIM objectValue];
+  [objectValue setExtendedAttributesWithIdentifier:identifierCopy];
 }
 
-- (id)readOnlyUrlWithIdentifier:(id)a3
+- (id)readOnlyUrlWithIdentifier:(id)identifier
 {
   lazyPathManagerForUBFOnDCIM = self->_lazyPathManagerForUBFOnDCIM;
-  v4 = a3;
-  v5 = [(PLLazyObject *)lazyPathManagerForUBFOnDCIM objectValue];
-  v6 = [v5 readOnlyUrlWithIdentifier:v4];
+  identifierCopy = identifier;
+  objectValue = [(PLLazyObject *)lazyPathManagerForUBFOnDCIM objectValue];
+  v6 = [objectValue readOnlyUrlWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (void)enumerateBundleScopesWithBlock:(id)a3
+- (void)enumerateBundleScopesWithBlock:(id)block
 {
-  v13 = a3;
+  blockCopy = block;
   if ([(PLPhotoLibraryPathManagerCore *)self bundleScope])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryPathManagerDCIM.m" lineNumber:666 description:@"can only enumerate bundle scopes on main bundle scoped path manager"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryPathManagerDCIM.m" lineNumber:666 description:@"can only enumerate bundle scopes on main bundle scoped path manager"];
   }
 
   v5 = 0;
@@ -537,11 +537,11 @@ void __63__PLPhotoLibraryPathManagerDCIM_pathToAssetAlbumOrderStructure__block_i
     if ([(PLPhotoLibraryPathManagerDCIM *)self shouldUseFileIdentifierForBundleScope:v5])
     {
       v8 = [PLPhotoLibraryPathManager alloc];
-      v9 = [(PLLazyObject *)self->_lazyPathManagerForUBFOnDCIM objectValue];
-      v10 = [v9 libraryURL];
-      v11 = [(PLPhotoLibraryPathManager *)v8 initWithLibraryURL:v10 bundleScope:v5 libraryFormat:2];
+      objectValue = [(PLLazyObject *)self->_lazyPathManagerForUBFOnDCIM objectValue];
+      libraryURL = [objectValue libraryURL];
+      v11 = [(PLPhotoLibraryPathManager *)v8 initWithLibraryURL:libraryURL bundleScope:v5 libraryFormat:2];
 
-      (*(v13 + 2))(v13, v5, [(PLPhotoLibraryPathManagerDCIM *)self photoLibraryPathTypeForBundleScope:v5], v11);
+      (*(blockCopy + 2))(blockCopy, v5, [(PLPhotoLibraryPathManagerDCIM *)self photoLibraryPathTypeForBundleScope:v5], v11);
     }
 
     objc_autoreleasePoolPop(v6);
@@ -551,10 +551,10 @@ void __63__PLPhotoLibraryPathManagerDCIM_pathToAssetAlbumOrderStructure__block_i
   while (v7 < 5);
 }
 
-- (unsigned)photoLibraryPathTypeForBundleScope:(unsigned __int16)a3
+- (unsigned)photoLibraryPathTypeForBundleScope:(unsigned __int16)scope
 {
-  v3 = 0x1B001C000001uLL >> (8 * a3);
-  if (a3 >= 7u)
+  v3 = 0x1B001C000001uLL >> (8 * scope);
+  if (scope >= 7u)
   {
     LOBYTE(v3) = 0;
   }
@@ -562,23 +562,23 @@ void __63__PLPhotoLibraryPathManagerDCIM_pathToAssetAlbumOrderStructure__block_i
   return v3 & 0x1F;
 }
 
-- (id)internalDirectoryWithSubType:(unsigned __int8)a3 additionalPathComponents:(id)a4
+- (id)internalDirectoryWithSubType:(unsigned __int8)type additionalPathComponents:(id)components
 {
-  v4 = a3;
-  v6 = a4;
+  typeCopy = type;
+  componentsCopy = components;
   v7 = 0;
-  if (v4 > 2)
+  if (typeCopy > 2)
   {
-    if (v4 < 6)
+    if (typeCopy < 6)
     {
       goto LABEL_11;
     }
 
-    if (v4 != 6)
+    if (typeCopy != 6)
     {
-      if (v4 != 7)
+      if (typeCopy != 7)
       {
-        if (v4 != 8)
+        if (typeCopy != 8)
         {
           goto LABEL_17;
         }
@@ -588,11 +588,11 @@ void __63__PLPhotoLibraryPathManagerDCIM_pathToAssetAlbumOrderStructure__block_i
 
 LABEL_11:
       internalDirectory = self->_internalDirectory;
-      v11 = off_1E79322D8[v4];
+      v11 = off_1E79322D8[typeCopy];
       v12 = -[__CFString substringFromIndex:](v11, "substringFromIndex:", [@"PLPhotoLibraryInternalPathType" length]);
-      v13 = [v12 lowercaseString];
+      lowercaseString = [v12 lowercaseString];
 
-      v7 = [(NSString *)internalDirectory stringByAppendingPathComponent:v13];
+      v7 = [(NSString *)internalDirectory stringByAppendingPathComponent:lowercaseString];
 
       goto LABEL_17;
     }
@@ -604,14 +604,14 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v4)
+  if (typeCopy)
   {
-    if (v4 == 1)
+    if (typeCopy == 1)
     {
       goto LABEL_11;
     }
 
-    if (v4 != 2)
+    if (typeCopy != 2)
     {
       goto LABEL_17;
     }
@@ -631,54 +631,54 @@ LABEL_12:
 
   v7 = 0;
 LABEL_17:
-  v15 = [(PLPhotoLibraryPathManagerDCIM *)self addToPath:v7 leafType:1 additionalPathComponents:v6];
+  v15 = [(PLPhotoLibraryPathManagerDCIM *)self addToPath:v7 leafType:1 additionalPathComponents:componentsCopy];
 
   return v15;
 }
 
-- (id)externalDirectoryWithSubType:(unsigned __int8)a3 leafType:(unsigned __int8)a4 additionalPathComponents:(id)a5
+- (id)externalDirectoryWithSubType:(unsigned __int8)type leafType:(unsigned __int8)leafType additionalPathComponents:(id)components
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  if ((v6 - 2) < 2)
+  leafTypeCopy = leafType;
+  typeCopy = type;
+  componentsCopy = components;
+  if ((typeCopy - 2) < 2)
   {
     externalDirectory = self->_externalDirectory;
-    v10 = off_1E79322B8[v6];
+    v10 = off_1E79322B8[typeCopy];
     v11 = -[__CFString substringFromIndex:](v10, "substringFromIndex:", [@"PLPhotoLibraryExternalPathType" length]);
-    v12 = [v11 lowercaseString];
+    lowercaseString = [v11 lowercaseString];
 
-    v13 = [(NSString *)externalDirectory stringByAppendingPathComponent:v12];
+    path = [(NSString *)externalDirectory stringByAppendingPathComponent:lowercaseString];
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  if (v6 == 1)
+  if (typeCopy == 1)
   {
-    v12 = [(PLPhotoLibraryPathManagerDCIM *)self getImportFileManager];
-    v14 = [v12 urlForNewDCIMFolderWithFolderNumber:0];
-    v13 = [v14 path];
+    lowercaseString = [(PLPhotoLibraryPathManagerDCIM *)self getImportFileManager];
+    v14 = [lowercaseString urlForNewDCIMFolderWithFolderNumber:0];
+    path = [v14 path];
 
     goto LABEL_5;
   }
 
-  v13 = 0;
+  path = 0;
 LABEL_7:
-  v15 = [(PLPhotoLibraryPathManagerDCIM *)self addToPath:v13 leafType:v5 additionalPathComponents:v8];
+  v15 = [(PLPhotoLibraryPathManagerDCIM *)self addToPath:path leafType:leafTypeCopy additionalPathComponents:componentsCopy];
 
   return v15;
 }
 
-- (id)privateCacheDirectoryWithSubType:(unsigned __int8)a3 leafType:(unsigned __int8)a4 additionalPathComponents:(id)a5
+- (id)privateCacheDirectoryWithSubType:(unsigned __int8)type leafType:(unsigned __int8)leafType additionalPathComponents:(id)components
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  leafTypeCopy = leafType;
+  typeCopy = type;
+  componentsCopy = components;
   p_photoDataCachesDirectory = &self->_photoDataCachesDirectory;
   v10 = self->_photoDataCachesDirectory;
   v11 = @"changes";
-  switch(v6)
+  switch(typeCopy)
   {
     case 1:
       goto LABEL_17;
@@ -737,24 +737,24 @@ LABEL_17:
       break;
   }
 
-  v13 = [(PLPhotoLibraryPathManagerDCIM *)self addToPath:v10 leafType:v5 additionalPathComponents:v8];
+  v13 = [(PLPhotoLibraryPathManagerDCIM *)self addToPath:v10 leafType:leafTypeCopy additionalPathComponents:componentsCopy];
 
   return v13;
 }
 
-- (id)privateDirectoryWithSubType:(unsigned __int8)a3 leafType:(unsigned __int8)a4 additionalPathComponents:(id)a5
+- (id)privateDirectoryWithSubType:(unsigned __int8)type leafType:(unsigned __int8)leafType additionalPathComponents:(id)components
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  leafTypeCopy = leafType;
+  typeCopy = type;
+  componentsCopy = components;
   v9 = 0;
-  if (v6 <= 5)
+  if (typeCopy <= 5)
   {
-    if (v6 <= 2)
+    if (typeCopy <= 2)
     {
-      if (v6)
+      if (typeCopy)
       {
-        if (v6 == 1)
+        if (typeCopy == 1)
         {
           photoDataDirectory = self->_photoDataDirectory;
           v11 = @"imagewriter";
@@ -762,7 +762,7 @@ LABEL_17:
 
         else
         {
-          if (v6 != 2)
+          if (typeCopy != 2)
           {
             goto LABEL_28;
           }
@@ -777,14 +777,14 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    if (v6 == 3)
+    if (typeCopy == 3)
     {
       v12 = 264;
       goto LABEL_23;
     }
 
     photoDataDirectory = self->_photoDataDirectory;
-    if (v6 == 4)
+    if (typeCopy == 4)
     {
       v11 = @"AlbumsMetadata";
     }
@@ -799,9 +799,9 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (v6 <= 8)
+  if (typeCopy <= 8)
   {
-    if (v6 == 6)
+    if (typeCopy == 6)
     {
       photoDataDirectory = self->_dcimDirectory;
       v11 = @"ASSETS";
@@ -809,7 +809,7 @@ LABEL_26:
 
     else
     {
-      if (v6 == 7)
+      if (typeCopy == 7)
       {
         v12 = 208;
         goto LABEL_23;
@@ -822,21 +822,21 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (v6 == 9)
+  if (typeCopy == 9)
   {
     photoDataDirectory = self->_photoDataDirectory;
     v11 = @"CameraMetadata";
     goto LABEL_26;
   }
 
-  if (v6 == 10)
+  if (typeCopy == 10)
   {
     photoDataDirectory = self->_privateDirectory;
     v11 = @"computecache";
     goto LABEL_26;
   }
 
-  if (v6 != 11)
+  if (typeCopy != 11)
   {
     goto LABEL_28;
   }
@@ -848,7 +848,7 @@ LABEL_23:
 LABEL_27:
   v9 = v13;
 LABEL_28:
-  v14 = [(PLPhotoLibraryPathManagerDCIM *)self addToPath:v9 leafType:v5 additionalPathComponents:v8];
+  v14 = [(PLPhotoLibraryPathManagerDCIM *)self addToPath:v9 leafType:leafTypeCopy additionalPathComponents:componentsCopy];
 
   return v14;
 }
@@ -857,15 +857,15 @@ LABEL_28:
 {
   v12[4] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [(PLPhotoLibraryPathManagerCore *)self iTunesPhotosDirectory];
-  v12[0] = v4;
-  v5 = [(PLPhotoLibraryPathManagerCore *)self iTunesPhotosDirectory];
-  v6 = [(PLPhotoLibraryPathManagerDCIM *)self photoMetadataDirectoryForMediaInMainDirectory:v5];
+  iTunesPhotosDirectory = [(PLPhotoLibraryPathManagerCore *)self iTunesPhotosDirectory];
+  v12[0] = iTunesPhotosDirectory;
+  iTunesPhotosDirectory2 = [(PLPhotoLibraryPathManagerCore *)self iTunesPhotosDirectory];
+  v6 = [(PLPhotoLibraryPathManagerDCIM *)self photoMetadataDirectoryForMediaInMainDirectory:iTunesPhotosDirectory2];
   v12[1] = v6;
-  v7 = [(PLPhotoLibraryPathManagerDCIM *)self iTunesSyncedAssetsDirectory];
-  v12[2] = v7;
-  v8 = [(PLPhotoLibraryPathManagerDCIM *)self iTunesSyncedAssetMetadataThumbnailsDirectory];
-  v12[3] = v8;
+  iTunesSyncedAssetsDirectory = [(PLPhotoLibraryPathManagerDCIM *)self iTunesSyncedAssetsDirectory];
+  v12[2] = iTunesSyncedAssetsDirectory;
+  iTunesSyncedAssetMetadataThumbnailsDirectory = [(PLPhotoLibraryPathManagerDCIM *)self iTunesSyncedAssetMetadataThumbnailsDirectory];
+  v12[3] = iTunesSyncedAssetMetadataThumbnailsDirectory;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:4];
   v10 = [v3 setWithArray:v9];
 
@@ -907,11 +907,11 @@ LABEL_28:
   return v2;
 }
 
-- (id)pathsForClientAccess:(id)a3
+- (id)pathsForClientAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ([v4 directDatabaseWriteAuthorized])
+  if ([accessCopy directDatabaseWriteAuthorized])
   {
     if (!self->_photoDataDirectory)
     {
@@ -922,7 +922,7 @@ LABEL_28:
     goto LABEL_7;
   }
 
-  if ([v4 directDatabaseAccessAuthorized] && self->_photoDataDirectory)
+  if ([accessCopy directDatabaseAccessAuthorized] && self->_photoDataDirectory)
   {
     v6 = MEMORY[0x1E695E110];
 LABEL_7:
@@ -930,13 +930,13 @@ LABEL_7:
   }
 
 LABEL_8:
-  v7 = [(PLPhotoLibraryPathManagerDCIM *)self captureSessionPathsWithClientAuthorization:v4];
+  v7 = [(PLPhotoLibraryPathManagerDCIM *)self captureSessionPathsWithClientAuthorization:accessCopy];
   [v5 addEntriesFromDictionary:v7];
 
-  v8 = [(PLPhotoLibraryPathManagerDCIM *)self clientOwnedDirectoryPathsForClientAccess:v4];
+  v8 = [(PLPhotoLibraryPathManagerDCIM *)self clientOwnedDirectoryPathsForClientAccess:accessCopy];
   [v5 addEntriesFromDictionary:v8];
   v9 = [(PLPhotoLibraryPathManagerCore *)self photoDirectoryWithType:18 createIfNeeded:1 error:0];
-  if ([v4 analyticsCacheWriteEntitled])
+  if ([accessCopy analyticsCacheWriteEntitled])
   {
     if (v9)
     {
@@ -946,16 +946,16 @@ LABEL_14:
     }
   }
 
-  else if ([v4 analyticsCacheReadEntitled] && v9)
+  else if ([accessCopy analyticsCacheReadEntitled] && v9)
   {
     v10 = MEMORY[0x1E695E110];
     goto LABEL_14;
   }
 
-  if (([v4 smartSharingCacheWriteEntitled] & 1) != 0 || objc_msgSend(v4, "smartSharingCacheReadEntitled"))
+  if (([accessCopy smartSharingCacheWriteEntitled] & 1) != 0 || objc_msgSend(accessCopy, "smartSharingCacheReadEntitled"))
   {
     v11 = [(PLPhotoLibraryPathManagerCore *)self photoDirectoryWithType:21 createIfNeeded:1 error:0];
-    v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "smartSharingCacheWriteEntitled")}];
+    v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(accessCopy, "smartSharingCacheWriteEntitled")}];
     v13 = v12;
     if (v11 && v12)
     {
@@ -963,7 +963,7 @@ LABEL_14:
     }
   }
 
-  if ([v4 internalDataReadWriteAuthorized])
+  if ([accessCopy internalDataReadWriteAuthorized])
   {
     v14 = [(PLPhotoLibraryPathManagerCore *)self internalDirectoryWithSubType:1 additionalPathComponents:0 createIfNeeded:1 error:0];
     if (v14)
@@ -990,7 +990,7 @@ LABEL_14:
     }
   }
 
-  if ([v4 photosMessagesEntitled])
+  if ([accessCopy photosMessagesEntitled])
   {
     v18 = [(PLPhotoLibraryPathManagerCore *)self internalDirectoryWithSubType:7 additionalPathComponents:0 createIfNeeded:1 error:0];
     if (v18)
@@ -999,16 +999,16 @@ LABEL_14:
     }
   }
 
-  v19 = [(PLPhotoLibraryPathManagerCore *)self pathForCPLStatus];
-  if (v19)
+  pathForCPLStatus = [(PLPhotoLibraryPathManagerCore *)self pathForCPLStatus];
+  if (pathForCPLStatus)
   {
-    [v5 setObject:MEMORY[0x1E695E110] forKey:v19];
+    [v5 setObject:MEMORY[0x1E695E110] forKey:pathForCPLStatus];
   }
 
-  if (([v4 coreSceneUnderstandingTaxonomyReadAuthorized] & 1) != 0 || objc_msgSend(v4, "coreSceneUnderstandingTaxonomyWriteAuthorized"))
+  if (([accessCopy coreSceneUnderstandingTaxonomyReadAuthorized] & 1) != 0 || objc_msgSend(accessCopy, "coreSceneUnderstandingTaxonomyWriteAuthorized"))
   {
     v20 = [(PLPhotoLibraryPathManagerCore *)self internalDirectoryWithSubType:6 additionalPathComponents:0 createIfNeeded:1 error:0];
-    v21 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "coreSceneUnderstandingTaxonomyWriteAuthorized")}];
+    v21 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(accessCopy, "coreSceneUnderstandingTaxonomyWriteAuthorized")}];
     v22 = v21;
     if (v20 && v21)
     {
@@ -1026,20 +1026,20 @@ LABEL_14:
   v17[0] = v3;
   v4 = [(PLPhotoLibraryPathManagerCore *)self photoDirectoryWithType:14 createIfNeeded:1 error:0];
   v17[1] = v4;
-  v5 = [(PLPhotoLibraryPathManagerDCIM *)self photoMetadataDirectory];
-  v17[2] = v5;
+  photoMetadataDirectory = [(PLPhotoLibraryPathManagerDCIM *)self photoMetadataDirectory];
+  v17[2] = photoMetadataDirectory;
   v6 = [(PLPhotoLibraryPathManagerCore *)self photoDirectoryWithType:9 createIfNeeded:1 error:0];
   v17[3] = v6;
   v7 = [(PLPhotoLibraryPathManagerCore *)self photoDirectoryWithType:23 createIfNeeded:1 error:0];
   v17[4] = v7;
-  v8 = [(PLPhotoLibraryPathManagerDCIM *)self iTunesPhotosSyncDirectory];
-  v17[5] = v8;
+  iTunesPhotosSyncDirectory = [(PLPhotoLibraryPathManagerDCIM *)self iTunesPhotosSyncDirectory];
+  v17[5] = iTunesPhotosSyncDirectory;
   v9 = [(PLPhotoLibraryPathManagerCore *)self photoDirectoryWithType:11 createIfNeeded:1 error:0];
   v17[6] = v9;
   v10 = [(PLPhotoLibraryPathManagerCore *)self photoDirectoryWithType:15 createIfNeeded:1 error:0];
   v17[7] = v10;
-  v11 = [(PLPhotoLibraryPathManagerDCIM *)self syncInfoPath];
-  v17[8] = v11;
+  syncInfoPath = [(PLPhotoLibraryPathManagerDCIM *)self syncInfoPath];
+  v17[8] = syncInfoPath;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:9];
 
   v13 = PLBackendGetLog();
@@ -1053,25 +1053,25 @@ LABEL_14:
   return v12;
 }
 
-- (id)captureSessionPathsWithClientAuthorization:(id)a3
+- (id)captureSessionPathsWithClientAuthorization:(id)authorization
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 captureSessionState];
-  if (([v4 limitedLibraryMode] & 1) != 0 || objc_msgSend(v5, "type") != 3)
+  authorizationCopy = authorization;
+  captureSessionState = [authorizationCopy captureSessionState];
+  if (([authorizationCopy limitedLibraryMode] & 1) != 0 || objc_msgSend(captureSessionState, "type") != 3)
   {
     v14 = MEMORY[0x1E695E0F8];
   }
 
   else
   {
-    v6 = [(PLPhotoLibraryPathManagerDCIM *)self unlockedCaptureSessionPaths];
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    unlockedCaptureSessionPaths = [(PLPhotoLibraryPathManagerDCIM *)self unlockedCaptureSessionPaths];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = v6;
+    v8 = unlockedCaptureSessionPaths;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
@@ -1087,7 +1087,7 @@ LABEL_14:
             objc_enumerationMutation(v8);
           }
 
-          [v7 setObject:v12 forKeyedSubscript:{*(*(&v16 + 1) + 8 * i), v16}];
+          [dictionary setObject:v12 forKeyedSubscript:{*(*(&v16 + 1) + 8 * i), v16}];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1096,26 +1096,26 @@ LABEL_14:
       while (v10);
     }
 
-    v14 = [v7 copy];
+    v14 = [dictionary copy];
   }
 
   return v14;
 }
 
-- (id)clientOwnedDirectoryPathsForClientAccess:(id)a3
+- (id)clientOwnedDirectoryPathsForClientAccess:(id)access
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  accessCopy = access;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 trustedCallerBundleID];
+  trustedCallerBundleID = [accessCopy trustedCallerBundleID];
 
-  v8 = [(PLPhotoLibraryPathManagerDCIM *)self _externalDirectoryWithBundleIdentifier:v7 createIfNeeded:1];
+  v8 = [(PLPhotoLibraryPathManagerDCIM *)self _externalDirectoryWithBundleIdentifier:trustedCallerBundleID createIfNeeded:1];
   if (v8)
   {
     [v6 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v8];
   }
 
-  v9 = [(PLPhotoLibraryPathManagerCore *)self privateDirectoryWithBundleIdentifier:v7 createIfNeeded:1];
+  v9 = [(PLPhotoLibraryPathManagerCore *)self privateDirectoryWithBundleIdentifier:trustedCallerBundleID createIfNeeded:1];
   if (v9)
   {
     [v6 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v9];
@@ -1124,31 +1124,31 @@ LABEL_14:
   return v6;
 }
 
-- (id)photoDirectoryWithType:(unsigned __int8)a3 leafType:(unsigned __int8)a4 additionalPathComponents:(id)a5
+- (id)photoDirectoryWithType:(unsigned __int8)type leafType:(unsigned __int8)leafType additionalPathComponents:(id)components
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(PLPhotoLibraryPathManagerDCIM *)self convertPhotoLibraryPathType:v6];
-  v10 = [(PLPhotoLibraryPathManagerDCIM *)self addToPath:v9 leafType:v5 additionalPathComponents:v8];
+  leafTypeCopy = leafType;
+  typeCopy = type;
+  componentsCopy = components;
+  v9 = [(PLPhotoLibraryPathManagerDCIM *)self convertPhotoLibraryPathType:typeCopy];
+  v10 = [(PLPhotoLibraryPathManagerDCIM *)self addToPath:v9 leafType:leafTypeCopy additionalPathComponents:componentsCopy];
 
   return v10;
 }
 
-- (id)_externalDirectoryWithBundleIdentifier:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_externalDirectoryWithBundleIdentifier:(id)identifier createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v14[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = MEMORY[0x1E696AEC0];
   v14[0] = self->_photoDataDirectory;
   v14[1] = @"external";
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
   v9 = [v7 pathWithComponents:v8];
 
-  if (v6)
+  if (identifierCopy)
   {
-    v10 = [v9 stringByAppendingPathComponent:v6];
+    v10 = [v9 stringByAppendingPathComponent:identifierCopy];
   }
 
   else
@@ -1157,29 +1157,29 @@ LABEL_14:
   }
 
   v11 = v10;
-  if (v4)
+  if (neededCopy)
   {
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
-    [v12 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   return v11;
 }
 
-- (id)addToPath:(id)a3 leafType:(unsigned __int8)a4 additionalPathComponents:(id)a5
+- (id)addToPath:(id)path leafType:(unsigned __int8)type additionalPathComponents:(id)components
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  typeCopy = type;
+  pathCopy = path;
+  componentsCopy = components;
   v9 = 0;
-  if (v6 <= 1)
+  if (typeCopy <= 1)
   {
-    if (!v6)
+    if (!typeCopy)
     {
       goto LABEL_9;
     }
 
-    if (v6 != 1)
+    if (typeCopy != 1)
     {
       goto LABEL_12;
     }
@@ -1187,27 +1187,27 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  switch(v6)
+  switch(typeCopy)
   {
     case 2:
-      v10 = [v7 stringByAppendingPathComponent:@"derivatives"];
+      v10 = [pathCopy stringByAppendingPathComponent:@"derivatives"];
       goto LABEL_11;
     case 3:
 LABEL_8:
-      v10 = v7;
+      v10 = pathCopy;
 LABEL_11:
       v9 = v10;
       break;
     case 4:
 LABEL_9:
-      v9 = v7;
+      v9 = pathCopy;
       goto LABEL_14;
   }
 
 LABEL_12:
-  if ([v8 length])
+  if ([componentsCopy length])
   {
-    v11 = [v9 stringByAppendingPathComponent:v8];
+    v11 = [v9 stringByAppendingPathComponent:componentsCopy];
 
     v9 = v11;
   }
@@ -1217,10 +1217,10 @@ LABEL_14:
   return v9;
 }
 
-- (id)convertPhotoLibraryPathType:(unsigned __int8)a3
+- (id)convertPhotoLibraryPathType:(unsigned __int8)type
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(type)
   {
     case 0u:
     case 0x24u:
@@ -1228,7 +1228,7 @@ LABEL_14:
       goto LABEL_39;
     case 1u:
     case 0x20u:
-      v4 = [(PLPhotoLibraryPathManagerCore *)self baseDirectory];
+      baseDirectory = [(PLPhotoLibraryPathManagerCore *)self baseDirectory];
       goto LABEL_4;
     case 2u:
     case 0x1Du:
@@ -1256,10 +1256,10 @@ LABEL_14:
       v3 = 216;
       goto LABEL_3;
     case 9u:
-      v4 = [(PLPhotoLibraryPathManagerDCIM *)self photoMutationsDirectory];
+      baseDirectory = [(PLPhotoLibraryPathManagerDCIM *)self photoMutationsDirectory];
       goto LABEL_4;
     case 0xAu:
-      v4 = [(PLPhotoLibraryPathManagerDCIM *)self photoMetadataDirectory];
+      baseDirectory = [(PLPhotoLibraryPathManagerDCIM *)self photoMetadataDirectory];
       goto LABEL_4;
     case 0xBu:
       v3 = 272;
@@ -1268,8 +1268,8 @@ LABEL_14:
       v3 = 280;
       goto LABEL_3;
     case 0xDu:
-      v9 = [(PLLazyObject *)self->_lazyPathManagerForUBFOnDCIM objectValue];
-      v10 = v9;
+      objectValue = [(PLLazyObject *)self->_lazyPathManagerForUBFOnDCIM objectValue];
+      baseDirectory2 = objectValue;
       v11 = 13;
       goto LABEL_19;
     case 0xEu:
@@ -1277,8 +1277,8 @@ LABEL_14:
       v19 = @"CPL";
       goto LABEL_44;
     case 0xFu:
-      v10 = [(PLPhotoLibraryPathManagerCore *)self baseDirectory];
-      v12 = [v10 stringByAppendingPathComponent:@"PhotoStreamsData"];
+      baseDirectory2 = [(PLPhotoLibraryPathManagerCore *)self baseDirectory];
+      v12 = [baseDirectory2 stringByAppendingPathComponent:@"PhotoStreamsData"];
       goto LABEL_35;
     case 0x10u:
       v3 = 224;
@@ -1309,12 +1309,12 @@ LABEL_14:
       photoDataDirectory = self->_photoDataDirectory;
       v19 = @"PhotoCloudSharingData";
 LABEL_44:
-      v4 = [(NSString *)photoDataDirectory stringByAppendingPathComponent:v19];
+      baseDirectory = [(NSString *)photoDataDirectory stringByAppendingPathComponent:v19];
       goto LABEL_4;
     case 0x18u:
       v13 = MEMORY[0x1E696AEC0];
-      v10 = [(PLPhotoLibraryPathManagerDCIM *)self photoMetadataDirectory];
-      v23[0] = v10;
+      baseDirectory2 = [(PLPhotoLibraryPathManagerDCIM *)self photoMetadataDirectory];
+      v23[0] = baseDirectory2;
       v23[1] = @"PhotoData";
       v23[2] = @"PhotoCloudSharingData";
       v14 = MEMORY[0x1E695DEC8];
@@ -1323,8 +1323,8 @@ LABEL_44:
       goto LABEL_31;
     case 0x19u:
       v13 = MEMORY[0x1E696AEC0];
-      v10 = [(PLPhotoLibraryPathManagerCore *)self photoDirectoryWithType:23];
-      v22[0] = v10;
+      baseDirectory2 = [(PLPhotoLibraryPathManagerCore *)self photoDirectoryWithType:23];
+      v22[0] = baseDirectory2;
       v22[1] = @"Caches";
       v14 = MEMORY[0x1E695DEC8];
       v15 = v22;
@@ -1342,16 +1342,16 @@ LABEL_38:
       [v6 raise:v7 format:{v8, v21}];
       goto LABEL_39;
     case 0x1Bu:
-      v9 = [(PLLazyObject *)self->_lazyPathManagerForUBFOnDCIM objectValue];
-      v10 = v9;
+      objectValue = [(PLLazyObject *)self->_lazyPathManagerForUBFOnDCIM objectValue];
+      baseDirectory2 = objectValue;
       v11 = 27;
       goto LABEL_19;
     case 0x1Cu:
-      v9 = [(PLLazyObject *)self->_lazyPathManagerForUBFOnDCIM objectValue];
-      v10 = v9;
+      objectValue = [(PLLazyObject *)self->_lazyPathManagerForUBFOnDCIM objectValue];
+      baseDirectory2 = objectValue;
       v11 = 28;
 LABEL_19:
-      v12 = [v9 photoDirectoryWithType:v11];
+      v12 = [objectValue photoDirectoryWithType:v11];
 LABEL_35:
       v5 = v12;
 LABEL_36:
@@ -1363,9 +1363,9 @@ LABEL_36:
     case 0x1Fu:
       v3 = 288;
 LABEL_3:
-      v4 = *(&self->super.super.isa + v3);
+      baseDirectory = *(&self->super.super.isa + v3);
 LABEL_4:
-      v5 = v4;
+      v5 = baseDirectory;
       break;
     default:
 LABEL_39:
@@ -1378,18 +1378,18 @@ LABEL_39:
 
 - (id)getImportFileManager
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_importFileManager)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_importFileManager)
   {
     v3 = objc_alloc_init(PLImportFileManager);
-    importFileManager = v2->_importFileManager;
-    v2->_importFileManager = v3;
+    importFileManager = selfCopy->_importFileManager;
+    selfCopy->_importFileManager = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_importFileManager;
+  v5 = selfCopy->_importFileManager;
 
   return v5;
 }
@@ -1397,25 +1397,25 @@ LABEL_39:
 - (id)simpleDCIMDirectory
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_simpleDCIMDirectory)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_simpleDCIMDirectory)
   {
     v3 = MEMORY[0x1E695DFF8];
-    v4 = [(PLPhotoLibraryPathManagerCore *)v2 photoDirectoryWithType:4];
+    v4 = [(PLPhotoLibraryPathManagerCore *)selfCopy photoDirectoryWithType:4];
     v5 = [v3 fileURLWithPath:v4 isDirectory:1];
 
-    v6 = [(PLPhotoLibraryPathManagerCore *)v2 privateCacheDirectoryWithSubType:13 createIfNeeded:1 error:0];
+    v6 = [(PLPhotoLibraryPathManagerCore *)selfCopy privateCacheDirectoryWithSubType:13 createIfNeeded:1 error:0];
     v7 = +[PLSimpleDCIMDirectory cameraRollPlistName];
     v8 = [v6 stringByAppendingPathComponent:v7];
 
     if (v5 && v8)
     {
       v9 = [[PLSimpleDCIMDirectory alloc] initWithDirectoryURL:v5 subDirectorySuffix:0 perDirectoryLimit:999 userInfoPath:v8];
-      simpleDCIMDirectory = v2->_simpleDCIMDirectory;
-      v2->_simpleDCIMDirectory = v9;
+      simpleDCIMDirectory = selfCopy->_simpleDCIMDirectory;
+      selfCopy->_simpleDCIMDirectory = v9;
 
-      [(PLSimpleDCIMDirectory *)v2->_simpleDCIMDirectory setRepresentsCameraRoll:1];
+      [(PLSimpleDCIMDirectory *)selfCopy->_simpleDCIMDirectory setRepresentsCameraRoll:1];
     }
 
     else
@@ -1432,25 +1432,25 @@ LABEL_39:
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v12 = v2->_simpleDCIMDirectory;
+  v12 = selfCopy->_simpleDCIMDirectory;
 
   return v12;
 }
 
-- (PLPhotoLibraryPathManagerDCIM)initWithLibraryURL:(id)a3 bundleScope:(unsigned __int16)a4
+- (PLPhotoLibraryPathManagerDCIM)initWithLibraryURL:(id)l bundleScope:(unsigned __int16)scope
 {
-  v4 = a4;
-  v6 = a3;
+  scopeCopy = scope;
+  lCopy = l;
   v70.receiver = self;
   v70.super_class = PLPhotoLibraryPathManagerDCIM;
-  v7 = [(PLPhotoLibraryPathManagerCore *)&v70 initWithLibraryURL:v6 bundleScope:v4];
+  v7 = [(PLPhotoLibraryPathManagerCore *)&v70 initWithLibraryURL:lCopy bundleScope:scopeCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [(PLPhotoLibraryPathManagerCore *)v7 baseDirectory];
-    v10 = [v9 stringByAppendingPathComponent:@"PhotoData"];
+    baseDirectory = [(PLPhotoLibraryPathManagerCore *)v7 baseDirectory];
+    v10 = [baseDirectory stringByAppendingPathComponent:@"PhotoData"];
     photoDataDirectory = v8->_photoDataDirectory;
     v8->_photoDataDirectory = v10;
 
@@ -1478,8 +1478,8 @@ LABEL_39:
     photoDataComputeDirectory = v8->_photoDataComputeDirectory;
     v8->_photoDataComputeDirectory = v22;
 
-    v24 = [(PLPhotoLibraryPathManagerCore *)v8 baseDirectory];
-    v25 = [v24 stringByAppendingPathComponent:@"DCIM"];
+    baseDirectory2 = [(PLPhotoLibraryPathManagerCore *)v8 baseDirectory];
+    v25 = [baseDirectory2 stringByAppendingPathComponent:@"DCIM"];
     dcimDirectory = v8->_dcimDirectory;
     v8->_dcimDirectory = v25;
 
@@ -1533,8 +1533,8 @@ LABEL_39:
     thumbnailsVideoKeyFramesDirectory = v8->_thumbnailsVideoKeyFramesDirectory;
     v8->_thumbnailsVideoKeyFramesDirectory = v51;
 
-    v53 = [(PLPhotoLibraryPathManagerCore *)v8 baseDirectory];
-    v54 = [v53 stringByAppendingPathComponent:@"Photos"];
+    baseDirectory3 = [(PLPhotoLibraryPathManagerCore *)v8 baseDirectory];
+    v54 = [baseDirectory3 stringByAppendingPathComponent:@"Photos"];
     [(PLPhotoLibraryPathManagerCore *)v8 setITunesPhotosDirectory:v54];
 
     v55 = [(NSString *)v8->_photoDataDirectory stringByAppendingPathComponent:@"ModelInterest.sqlite"];
@@ -1591,7 +1591,7 @@ PLPhotoLibraryPathManagerUBF *__64__PLPhotoLibraryPathManagerDCIM_initWithLibrar
   block[1] = 3221225472;
   block[2] = __59__PLPhotoLibraryPathManagerDCIM_allPhotosPathsOnThisDevice__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (allPhotosPathsOnThisDevice_onceToken_2407 != -1)
   {
     dispatch_once(&allPhotosPathsOnThisDevice_onceToken_2407, block);

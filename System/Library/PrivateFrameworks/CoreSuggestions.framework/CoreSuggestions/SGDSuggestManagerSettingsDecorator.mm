@@ -1,17 +1,17 @@
 @interface SGDSuggestManagerSettingsDecorator
 + (void)initialize;
-- (SGDSuggestManagerSettingsDecorator)initWithManager:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (SGDSuggestManagerSettingsDecorator)initWithManager:(id)manager;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation SGDSuggestManagerSettingsDecorator
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   manager = self->_manager;
-  [v4 selector];
+  [invocationCopy selector];
   if (objc_opt_respondsToSelector())
   {
     v6 = objc_autoreleasePoolPush();
@@ -19,8 +19,8 @@
     v8[1] = 3221225472;
     v8[2] = sub_100001D5C;
     v8[3] = &unk_10000C460;
-    v9 = v4;
-    v10 = self;
+    v9 = invocationCopy;
+    selfCopy = self;
     [_PASXPCUtilities runWithExceptionBarrier:v8];
 
     objc_autoreleasePoolPop(v6);
@@ -30,26 +30,26 @@
   {
     v7.receiver = self;
     v7.super_class = SGDSuggestManagerSettingsDecorator;
-    [(SGDSuggestManagerSettingsDecorator *)&v7 forwardInvocation:v4];
+    [(SGDSuggestManagerSettingsDecorator *)&v7 forwardInvocation:invocationCopy];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = SGDSuggestManagerSettingsDecorator;
   v5 = [(SGDSuggestManagerSettingsDecorator *)&v7 methodSignatureForSelector:?];
   if (!v5)
   {
-    v5 = [(SGDSuggestManager *)self->_manager methodSignatureForSelector:a3];
+    v5 = [(SGDSuggestManager *)self->_manager methodSignatureForSelector:selector];
   }
 
   return v5;
 }
 
-- (SGDSuggestManagerSettingsDecorator)initWithManager:(id)a3
+- (SGDSuggestManagerSettingsDecorator)initWithManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = SGDSuggestManagerSettingsDecorator;
   v6 = [(SGDSuggestManagerSettingsDecorator *)&v12 init];
@@ -59,9 +59,9 @@
     goto LABEL_4;
   }
 
-  if (v5)
+  if (managerCopy)
   {
-    objc_storeStrong(&v6->_manager, a3);
+    objc_storeStrong(&v6->_manager, manager);
 LABEL_4:
     v8 = v7;
     goto LABEL_8;
@@ -82,7 +82,7 @@ LABEL_8:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     +[SGAggregateLogging assetVersion];

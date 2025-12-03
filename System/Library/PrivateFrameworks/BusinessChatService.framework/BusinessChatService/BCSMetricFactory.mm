@@ -1,29 +1,29 @@
 @interface BCSMetricFactory
-- (BCSMetricFactory)initWithMeasurementFactory:(id)a3;
-- (id)businessCallerFetchMetricForItemIdentifier:(id)a3;
-- (id)businessLinkFetchMetricForItemIdentifier:(id)a3;
-- (id)businessLinkHashFetchMetricForItemIdentifier:(id)a3;
-- (id)businessLinkRegisteredMetricForItemIdentifier:(id)a3;
-- (id)chatSuggestFetchMetricForItemIdentifier:(id)a3;
-- (id)chatSuggestRegisteredMetricForItemIdentifier:(id)a3;
-- (id)configResolutionMetricForConfigType:(int64_t)a3;
-- (id)itemResolutionMetricForItemIdentifier:(id)a3;
-- (id)megashardFetchMetricForType:(int64_t)a3;
-- (id)shardResolutionMetricForShardIdentifier:(id)a3;
+- (BCSMetricFactory)initWithMeasurementFactory:(id)factory;
+- (id)businessCallerFetchMetricForItemIdentifier:(id)identifier;
+- (id)businessLinkFetchMetricForItemIdentifier:(id)identifier;
+- (id)businessLinkHashFetchMetricForItemIdentifier:(id)identifier;
+- (id)businessLinkRegisteredMetricForItemIdentifier:(id)identifier;
+- (id)chatSuggestFetchMetricForItemIdentifier:(id)identifier;
+- (id)chatSuggestRegisteredMetricForItemIdentifier:(id)identifier;
+- (id)configResolutionMetricForConfigType:(int64_t)type;
+- (id)itemResolutionMetricForItemIdentifier:(id)identifier;
+- (id)megashardFetchMetricForType:(int64_t)type;
+- (id)shardResolutionMetricForShardIdentifier:(id)identifier;
 @end
 
 @implementation BCSMetricFactory
 
-- (BCSMetricFactory)initWithMeasurementFactory:(id)a3
+- (BCSMetricFactory)initWithMeasurementFactory:(id)factory
 {
-  v5 = a3;
+  factoryCopy = factory;
   v13.receiver = self;
   v13.super_class = BCSMetricFactory;
   v6 = [(BCSMetricFactory *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_measurementFactory, a3);
+    objc_storeStrong(&v6->_measurementFactory, factory);
     v8 = MEMORY[0x277CBEA60];
     v9 = objc_alloc_init(BCSCoreAnalyticsMetricHandler);
     v10 = [v8 arrayWithObject:v9];
@@ -34,7 +34,7 @@
   return v7;
 }
 
-- (id)configResolutionMetricForConfigType:(int64_t)a3
+- (id)configResolutionMetricForConfigType:(int64_t)type
 {
   if (self)
   {
@@ -46,10 +46,10 @@
     postProcessingMetricHandlers = 0;
   }
 
-  return [BCSConfigResolutionMetric metricForConfigType:a3 postProcessingMetricHandlers:postProcessingMetricHandlers];
+  return [BCSConfigResolutionMetric metricForConfigType:type postProcessingMetricHandlers:postProcessingMetricHandlers];
 }
 
-- (id)shardResolutionMetricForShardIdentifier:(id)a3
+- (id)shardResolutionMetricForShardIdentifier:(id)identifier
 {
   if (self)
   {
@@ -61,10 +61,10 @@
     postProcessingMetricHandlers = 0;
   }
 
-  return [BCSShardResolutionMetric metricForShardIdentifier:a3 postProcessingMetricHandlers:postProcessingMetricHandlers];
+  return [BCSShardResolutionMetric metricForShardIdentifier:identifier postProcessingMetricHandlers:postProcessingMetricHandlers];
 }
 
-- (id)itemResolutionMetricForItemIdentifier:(id)a3
+- (id)itemResolutionMetricForItemIdentifier:(id)identifier
 {
   if (self)
   {
@@ -76,10 +76,10 @@
     postProcessingMetricHandlers = 0;
   }
 
-  return [BCSItemResolutionMetric metricForItemIdentifier:a3 postProcessingMetricHandlers:postProcessingMetricHandlers];
+  return [BCSItemResolutionMetric metricForItemIdentifier:identifier postProcessingMetricHandlers:postProcessingMetricHandlers];
 }
 
-- (id)businessLinkRegisteredMetricForItemIdentifier:(id)a3
+- (id)businessLinkRegisteredMetricForItemIdentifier:(id)identifier
 {
   if (self)
   {
@@ -94,7 +94,7 @@
   return [BCSBusinessLinkRegisteredMetric metricWithPostProcessingMetricHandlers:postProcessingMetricHandlers];
 }
 
-- (id)businessLinkFetchMetricForItemIdentifier:(id)a3
+- (id)businessLinkFetchMetricForItemIdentifier:(id)identifier
 {
   if (self)
   {
@@ -109,7 +109,7 @@
   return [BCSBusinessLinkFetchMetric metricWithPostProcessingMetricHandlers:postProcessingMetricHandlers];
 }
 
-- (id)businessLinkHashFetchMetricForItemIdentifier:(id)a3
+- (id)businessLinkHashFetchMetricForItemIdentifier:(id)identifier
 {
   if (self)
   {
@@ -124,7 +124,7 @@
   return [BCSBusinessLinkHashFetchMetric metricWithPostProcessingMetricHandlers:postProcessingMetricHandlers];
 }
 
-- (id)chatSuggestRegisteredMetricForItemIdentifier:(id)a3
+- (id)chatSuggestRegisteredMetricForItemIdentifier:(id)identifier
 {
   if (self)
   {
@@ -139,7 +139,7 @@
   return [BCSChatSuggestRegisteredMetric metricWithPostProcessingMetricHandlers:postProcessingMetricHandlers];
 }
 
-- (id)chatSuggestFetchMetricForItemIdentifier:(id)a3
+- (id)chatSuggestFetchMetricForItemIdentifier:(id)identifier
 {
   if (self)
   {
@@ -154,7 +154,7 @@
   return [BCSChatSuggestFetchMetric metricWithPostProcessingMetricHandlers:postProcessingMetricHandlers];
 }
 
-- (id)businessCallerFetchMetricForItemIdentifier:(id)a3
+- (id)businessCallerFetchMetricForItemIdentifier:(id)identifier
 {
   if (self)
   {
@@ -169,7 +169,7 @@
   return [BCSBusinessCallerFetchMetric metricWithPostProcessingMetricHandlers:postProcessingMetricHandlers];
 }
 
-- (id)megashardFetchMetricForType:(int64_t)a3
+- (id)megashardFetchMetricForType:(int64_t)type
 {
   if (self)
   {
@@ -181,7 +181,7 @@
     postProcessingMetricHandlers = 0;
   }
 
-  return [BCSMegashardFetchMetric metricForMegashardType:a3 postProcessingMetricHandlers:postProcessingMetricHandlers];
+  return [BCSMegashardFetchMetric metricForMegashardType:type postProcessingMetricHandlers:postProcessingMetricHandlers];
 }
 
 @end

@@ -2,7 +2,7 @@
 - (BOOL)goodMorningAlertEnabled;
 - (BOOL)isAppleWatch;
 - (BOOL)isOnCharger;
-- (HDSPGoodMorningAlertStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7;
+- (HDSPGoodMorningAlertStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider;
 - (HKSPSleepScheduleModel)sleepScheduleModel;
 - (NSDate)currentDate;
 - (id)allStates;
@@ -13,15 +13,15 @@
 
 @implementation HDSPGoodMorningAlertStateMachine
 
-- (HDSPGoodMorningAlertStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7
+- (HDSPGoodMorningAlertStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider
 {
   v33[3] = *MEMORY[0x277D85DE8];
   v12 = MEMORY[0x277CBEB98];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  dateProviderCopy = dateProvider;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  persistenceCopy = persistence;
+  identifierCopy = identifier;
   v33[0] = objc_opt_class();
   v33[1] = objc_opt_class();
   v33[2] = objc_opt_class();
@@ -30,7 +30,7 @@
 
   v32.receiver = self;
   v32.super_class = HDSPGoodMorningAlertStateMachine;
-  v20 = [(HKSPPersistentStateMachine *)&v32 initWithIdentifier:v17 allowedStates:v19 persistence:v16 delegate:v15 infoProvider:v14 currentDateProvider:v13];
+  v20 = [(HKSPPersistentStateMachine *)&v32 initWithIdentifier:identifierCopy allowedStates:v19 persistence:persistenceCopy delegate:delegateCopy infoProvider:providerCopy currentDateProvider:dateProviderCopy];
 
   if (v20)
   {
@@ -46,9 +46,9 @@
     presentingState = v20->_presentingState;
     v20->_presentingState = v25;
 
-    v27 = [(HKSPPersistentStateMachine *)v20 persistedState];
-    v28 = v27;
-    if (!v27)
+    persistedState = [(HKSPPersistentStateMachine *)v20 persistedState];
+    v28 = persistedState;
+    if (!persistedState)
     {
       v28 = v20->_disabledState;
     }
@@ -77,62 +77,62 @@
 
 - (void)sleepScheduleStateChangedToBedtime
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 sleepScheduleStateChangedToBedtime];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState sleepScheduleStateChangedToBedtime];
 }
 
 - (void)sleepScheduleStateChangedToWakeUp
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 sleepScheduleStateChangedToWakeUp];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState sleepScheduleStateChangedToWakeUp];
 }
 
 - (NSDate)currentDate
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 currentDate];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  currentDate = [infoProvider currentDate];
 
-  return v3;
+  return currentDate;
 }
 
 - (BOOL)goodMorningAlertEnabled
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 goodMorningAlertEnabled];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  goodMorningAlertEnabled = [infoProvider goodMorningAlertEnabled];
 
-  return v3;
+  return goodMorningAlertEnabled;
 }
 
 - (HKSPSleepScheduleModel)sleepScheduleModel
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepScheduleModel];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
 
-  return v3;
+  return sleepScheduleModel;
 }
 
 - (unint64_t)sleepScheduleState
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepScheduleState];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepScheduleState = [infoProvider sleepScheduleState];
 
-  return v3;
+  return sleepScheduleState;
 }
 
 - (BOOL)isAppleWatch
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 isAppleWatch];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  isAppleWatch = [infoProvider isAppleWatch];
 
-  return v3;
+  return isAppleWatch;
 }
 
 - (BOOL)isOnCharger
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 isOnCharger];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  isOnCharger = [infoProvider isOnCharger];
 
-  return v3;
+  return isOnCharger;
 }
 
 @end

@@ -1,77 +1,77 @@
 @interface PKVirtualCard
-+ (id)cardsForPaymentPass:(id)a3;
-+ (id)cardsForPaymentPass:(id)a3 accordingToWebService:(id)a4;
++ (id)cardsForPaymentPass:(id)pass;
++ (id)cardsForPaymentPass:(id)pass accordingToWebService:(id)service;
 + (id)demoVPANVirtualCards;
 + (int64_t)countOfVirtualCards;
-+ (void)queryKeychainForVirtualCards:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSafariEntryWithPrimaryAccountNumber:(id)a3 expirationDate:(id)a4;
++ (void)queryKeychainForVirtualCards:(id)cards;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSafariEntryWithPrimaryAccountNumber:(id)number expirationDate:(id)date;
 - (BOOL)requiresAuthentication;
 - (NSString)displayablePANSuffix;
-- (PKVirtualCard)initWithCoder:(id)a3;
-- (PKVirtualCard)initWithDictionary:(id)a3;
-- (PKVirtualCard)initWithKeychainData:(id)a3;
-- (id)_wrapperWithType:(unint64_t)a3 identifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKVirtualCard)initWithCoder:(id)coder;
+- (PKVirtualCard)initWithDictionary:(id)dictionary;
+- (PKVirtualCard)initWithKeychainData:(id)data;
+- (id)_wrapperWithType:(unint64_t)type identifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)generateHashWithPrimaryAccountNumber:(id)a3 expirationDate:(id)a4;
+- (id)generateHashWithPrimaryAccountNumber:(id)number expirationDate:(id)date;
 - (id)keychainVirtualCard;
-- (id)mergeVirtualCardWith:(id)a3;
+- (id)mergeVirtualCardWith:(id)with;
 - (unint64_t)hash;
 - (void)deleteKeychainVirtualCard;
 - (void)deleteLocalKeychainVirtualCard;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContactNameEnteredInSafari:(id)a3 completion:(id)a4;
-- (void)setLastAutoFilledBySafariWithCompletion:(id)a3;
-- (void)setNameFromSafari:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContactNameEnteredInSafari:(id)safari completion:(id)completion;
+- (void)setLastAutoFilledBySafariWithCompletion:(id)completion;
+- (void)setNameFromSafari:(id)safari;
 - (void)writeKeychainVirtualCardToKeychain;
 @end
 
 @implementation PKVirtualCard
 
-+ (id)cardsForPaymentPass:(id)a3
++ (id)cardsForPaymentPass:(id)pass
 {
-  v4 = a3;
+  passCopy = pass;
   v5 = +[PKPaymentWebService sharedService];
-  v6 = [a1 cardsForPaymentPass:v4 accordingToWebService:v5];
+  v6 = [self cardsForPaymentPass:passCopy accordingToWebService:v5];
 
   return v6;
 }
 
-+ (id)cardsForPaymentPass:(id)a3 accordingToWebService:(id)a4
++ (id)cardsForPaymentPass:(id)pass accordingToWebService:(id)service
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 supportsVirtualCardNumberAccordingToWebService:v6])
+  passCopy = pass;
+  serviceCopy = service;
+  if ([passCopy supportsVirtualCardNumberAccordingToWebService:serviceCopy])
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v8 = [v5 devicePrimaryPaymentApplication];
-    v9 = [v8 virtualCardIdentifier];
-    if (v9)
+    devicePrimaryPaymentApplication = [passCopy devicePrimaryPaymentApplication];
+    virtualCardIdentifier = [devicePrimaryPaymentApplication virtualCardIdentifier];
+    if (virtualCardIdentifier)
     {
       v10 = objc_alloc_init(PKVirtualCard);
-      [(PKVirtualCard *)v10 setIdentifier:v9];
+      [(PKVirtualCard *)v10 setIdentifier:virtualCardIdentifier];
       [(PKVirtualCard *)v10 setType:2];
-      v11 = [v5 primaryAccountNumberSuffix];
-      [(PKVirtualCard *)v10 setFPANSuffix:v11];
+      primaryAccountNumberSuffix = [passCopy primaryAccountNumberSuffix];
+      [(PKVirtualCard *)v10 setFPANSuffix:primaryAccountNumberSuffix];
 
-      v12 = [v8 dpanSuffix];
-      [(PKVirtualCard *)v10 setDPANSuffix:v12];
+      dpanSuffix = [devicePrimaryPaymentApplication dpanSuffix];
+      [(PKVirtualCard *)v10 setDPANSuffix:dpanSuffix];
 
-      v13 = [v5 localizedDescription];
-      [(PKVirtualCard *)v10 setDisplayName:v13];
+      localizedDescription = [passCopy localizedDescription];
+      [(PKVirtualCard *)v10 setDisplayName:localizedDescription];
 
       [(PKVirtualCard *)v10 setHasDynamicSecurityCode:1];
       [(PKVirtualCard *)v10 setState:1];
       v14 = +[PKPaymentOptionsDefaults defaults];
-      v15 = [v5 paymentPass];
-      v16 = [v14 defaultBillingAddressForPaymentPass:v15];
+      paymentPass = [passCopy paymentPass];
+      v16 = [v14 defaultBillingAddressForPaymentPass:paymentPass];
       [(PKVirtualCard *)v10 setBillingAddress:v16];
 
-      -[PKVirtualCard setCredentialType:](v10, "setCredentialType:", [v8 paymentNetworkIdentifier]);
-      -[PKVirtualCard setRefreshType:](v10, "setRefreshType:", [v8 vpanRefreshTypeAccordingToService:v6]);
-      if ([v5 isPeerPaymentPass])
+      -[PKVirtualCard setCredentialType:](v10, "setCredentialType:", [devicePrimaryPaymentApplication paymentNetworkIdentifier]);
+      -[PKVirtualCard setRefreshType:](v10, "setRefreshType:", [devicePrimaryPaymentApplication vpanRefreshTypeAccordingToService:serviceCopy]);
+      if ([passCopy isPeerPaymentPass])
       {
         [(PKVirtualCard *)v10 setBalanceSource:1];
       }
@@ -188,48 +188,48 @@ LABEL_11:
   return v16;
 }
 
-- (PKVirtualCard)initWithDictionary:(id)a3
+- (PKVirtualCard)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = PKVirtualCard;
   v5 = [(PKVirtualCard *)&v37 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKStringForKey:@"cardholderName"];
+    v8 = [dictionaryCopy PKStringForKey:@"cardholderName"];
     cardholderName = v5->_cardholderName;
     v5->_cardholderName = v8;
 
-    v10 = [v4 PKStringForKey:@"state"];
+    v10 = [dictionaryCopy PKStringForKey:@"state"];
     v5->_state = PKAccountVirtualCardStateFromString(v10);
 
-    v11 = [v4 PKStringForKey:@"type"];
+    v11 = [dictionaryCopy PKStringForKey:@"type"];
     v5->_type = PKAccountVirtualCardTypeFromString(v11);
 
-    v12 = [v4 PKStringForKey:@"FPANSuffix"];
+    v12 = [dictionaryCopy PKStringForKey:@"FPANSuffix"];
     FPANSuffix = v5->_FPANSuffix;
     v5->_FPANSuffix = v12;
 
-    v14 = [v4 PKStringForKey:@"dpanSuffix"];
+    v14 = [dictionaryCopy PKStringForKey:@"dpanSuffix"];
     dpanSuffix = v5->_dpanSuffix;
     v5->_dpanSuffix = v14;
 
-    v16 = [v4 PKStringForKey:@"expiration"];
+    v16 = [dictionaryCopy PKStringForKey:@"expiration"];
     expiration = v5->_expiration;
     v5->_expiration = v16;
 
-    v18 = [v4 PKDateForKey:@"lastUpdatedDate"];
+    v18 = [dictionaryCopy PKDateForKey:@"lastUpdatedDate"];
     lastUpdatedDate = v5->_lastUpdatedDate;
     v5->_lastUpdatedDate = v18;
 
-    v20 = [v4 objectForKeyedSubscript:@"supportsLocalStorage"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"supportsLocalStorage"];
     if (v20)
     {
-      v21 = [v4 PKBoolForKey:@"supportsLocalStorage"];
+      v21 = [dictionaryCopy PKBoolForKey:@"supportsLocalStorage"];
     }
 
     else
@@ -239,24 +239,24 @@ LABEL_11:
 
     v5->_supportsLocalStorage = v21;
 
-    v22 = [v4 PKStringForKey:@"securityCodeIdentifier"];
+    v22 = [dictionaryCopy PKStringForKey:@"securityCodeIdentifier"];
     securityCodeIdentifier = v5->_securityCodeIdentifier;
     v5->_securityCodeIdentifier = v22;
 
-    v24 = [v4 PKDateForKey:@"securityCodeExpiration"];
+    v24 = [dictionaryCopy PKDateForKey:@"securityCodeExpiration"];
     securityCodeExpiration = v5->_securityCodeExpiration;
     v5->_securityCodeExpiration = v24;
 
-    v26 = [v4 objectForKeyedSubscript:@"hasDynamicSecurityCode"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"hasDynamicSecurityCode"];
     v27 = v26;
     if (v26)
     {
-      LOBYTE(v26) = [v4 PKBoolForKey:@"hasDynamicSecurityCode"];
+      LOBYTE(v26) = [dictionaryCopy PKBoolForKey:@"hasDynamicSecurityCode"];
     }
 
     v5->_hasDynamicSecurityCode = v26;
 
-    v28 = [v4 PKDictionaryForKey:@"credentials"];
+    v28 = [dictionaryCopy PKDictionaryForKey:@"credentials"];
     v29 = v28;
     if (v28)
     {
@@ -275,19 +275,19 @@ LABEL_11:
   return v5;
 }
 
-- (id)mergeVirtualCardWith:(id)a3
+- (id)mergeVirtualCardWith:(id)with
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  withCopy = with;
+  v5 = withCopy;
+  if (withCopy)
   {
     if (self->_encryptedData && self->_ephemeralPublicKey)
     {
-      v6 = [v4 encryptedData];
-      [v5 setEncryptedData:v6];
+      encryptedData = [withCopy encryptedData];
+      [v5 setEncryptedData:encryptedData];
 
-      v7 = [v5 ephemeralPublicKey];
-      [v5 setEphemeralPublicKey:v7];
+      ephemeralPublicKey = [v5 ephemeralPublicKey];
+      [v5 setEphemeralPublicKey:ephemeralPublicKey];
     }
 
     v8 = v5;
@@ -310,28 +310,28 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isEqualToSafariEntryWithPrimaryAccountNumber:(id)a3 expirationDate:(id)a4
+- (BOOL)isEqualToSafariEntryWithPrimaryAccountNumber:(id)number expirationDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] >= 0x10)
+  numberCopy = number;
+  dateCopy = date;
+  if ([numberCopy length] >= 0x10)
   {
-    v9 = [v6 pk_zString];
-    if ([v7 length])
+    pk_zString = [numberCopy pk_zString];
+    if ([dateCopy length])
     {
-      v10 = [v7 pk_zString];
+      pk_zString2 = [dateCopy pk_zString];
     }
 
     else
     {
-      v10 = 0;
+      pk_zString2 = 0;
     }
 
-    v11 = [(PKVirtualCardCredentials *)self->_keychainCardCredentials primaryAccountNumber];
-    v12 = [v11 pk_zString];
+    primaryAccountNumber = [(PKVirtualCardCredentials *)self->_keychainCardCredentials primaryAccountNumber];
+    pk_zString3 = [primaryAccountNumber pk_zString];
 
-    v13 = [(PKVirtualCard *)self generateHashWithPrimaryAccountNumber:v9 expirationDate:v10];
-    if (v10)
+    v13 = [(PKVirtualCard *)self generateHashWithPrimaryAccountNumber:pk_zString expirationDate:pk_zString2];
+    if (pk_zString2)
     {
       expiration = self->_expiration;
     }
@@ -341,7 +341,7 @@ LABEL_11:
       expiration = 0;
     }
 
-    v15 = [(PKVirtualCard *)self generateHashWithPrimaryAccountNumber:v12 expirationDate:expiration];
+    v15 = [(PKVirtualCard *)self generateHashWithPrimaryAccountNumber:pk_zString3 expirationDate:expiration];
     v8 = [v13 isEqualToData:v15];
   }
 
@@ -353,32 +353,32 @@ LABEL_11:
   return v8;
 }
 
-- (id)generateHashWithPrimaryAccountNumber:(id)a3 expirationDate:(id)a4
+- (id)generateHashWithPrimaryAccountNumber:(id)number expirationDate:(id)date
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", a3, a4];
-  v5 = [v4 dataUsingEncoding:4];
-  v6 = [v5 SHA256Hash];
+  date = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", number, date];
+  v5 = [date dataUsingEncoding:4];
+  sHA256Hash = [v5 SHA256Hash];
 
-  return v6;
+  return sHA256Hash;
 }
 
-- (void)setLastAutoFilledBySafariWithCompletion:(id)a3
+- (void)setLastAutoFilledBySafariWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   type = self->_type;
   if (type == 2)
   {
-    v8 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     lastAutoFilledBySafari = self->_lastAutoFilledBySafari;
-    self->_lastAutoFilledBySafari = v8;
-    v10 = v8;
+    self->_lastAutoFilledBySafari = date;
+    v10 = date;
 
     v11 = +[PKPaymentService paymentService];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __57__PKVirtualCard_setLastAutoFilledBySafariWithCompletion___block_invoke_2;
     v16[3] = &unk_1E79C4450;
-    v17 = v4;
+    v17 = completionCopy;
     [v11 updateDateLastUsedBySafari:v10 forVirtualCard:self completion:v16];
   }
 
@@ -388,12 +388,12 @@ LABEL_11:
     {
       if (self->_keychainCardCredentials)
       {
-        v12 = [MEMORY[0x1E695DF00] date];
+        date2 = [MEMORY[0x1E695DF00] date];
         v13 = self->_lastAutoFilledBySafari;
-        self->_lastAutoFilledBySafari = v12;
+        self->_lastAutoFilledBySafari = date2;
 
         [(PKVirtualCard *)self writeKeychainVirtualCardToKeychain];
-        if (!v4)
+        if (!completionCopy)
         {
           goto LABEL_9;
         }
@@ -401,18 +401,18 @@ LABEL_11:
 
       else
       {
-        v14 = [(PKVirtualCard *)self keychainVirtualCard];
-        v15 = [MEMORY[0x1E695DF00] date];
-        [v14 setLastAutoFilledBySafari:v15];
+        keychainVirtualCard = [(PKVirtualCard *)self keychainVirtualCard];
+        date3 = [MEMORY[0x1E695DF00] date];
+        [keychainVirtualCard setLastAutoFilledBySafari:date3];
 
-        [v14 writeKeychainVirtualCardToKeychain];
-        if (!v4)
+        [keychainVirtualCard writeKeychainVirtualCardToKeychain];
+        if (!completionCopy)
         {
           goto LABEL_9;
         }
       }
 
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
       goto LABEL_9;
     }
 
@@ -422,7 +422,7 @@ LABEL_11:
     v18[1] = 3221225472;
     v18[2] = __57__PKVirtualCard_setLastAutoFilledBySafariWithCompletion___block_invoke;
     v18[3] = &unk_1E79C4450;
-    v19 = v4;
+    v19 = completionCopy;
     [v6 noteVirtualCardAutoFilledBySafari:identifier completion:v18];
   }
 
@@ -451,30 +451,30 @@ uint64_t __57__PKVirtualCard_setLastAutoFilledBySafariWithCompletion___block_inv
   return result;
 }
 
-- (void)setContactNameEnteredInSafari:(id)a3 completion:(id)a4
+- (void)setContactNameEnteredInSafari:(id)safari completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  safariCopy = safari;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = safariCopy;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Safari called setContactNameEnteredInSafari: with name %@", buf, 0xCu);
   }
 
   nameFromSafari = self->_nameFromSafari;
-  self->_nameFromSafari = v6;
-  v10 = v6;
+  self->_nameFromSafari = safariCopy;
+  v10 = safariCopy;
 
   v11 = +[PKPaymentService paymentService];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__PKVirtualCard_setContactNameEnteredInSafari_completion___block_invoke;
   v13[3] = &unk_1E79C4450;
-  v14 = v7;
-  v12 = v7;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [v11 updateCardholderNameFromSafari:v10 forVirtualCard:self completion:v13];
 }
 
@@ -489,11 +489,11 @@ uint64_t __58__PKVirtualCard_setContactNameEnteredInSafari_completion___block_in
   return result;
 }
 
-- (void)setNameFromSafari:(id)a3
+- (void)setNameFromSafari:(id)safari
 {
-  v4 = a3;
-  v5 = v4;
-  if (!self->_billingAddress && [(NSString *)v4 length])
+  safariCopy = safari;
+  v5 = safariCopy;
+  if (!self->_billingAddress && [(NSString *)safariCopy length])
   {
     v6 = objc_alloc_init(MEMORY[0x1E695CF18]);
     [(CNContact *)v6 setFamilyName:v5];
@@ -516,13 +516,13 @@ uint64_t __58__PKVirtualCard_setContactNameEnteredInSafari_completion___block_in
   return requiresAuthentication;
 }
 
-- (PKVirtualCard)initWithKeychainData:(id)a3
+- (PKVirtualCard)initWithKeychainData:(id)data
 {
   v4 = MEMORY[0x1E696ACD0];
-  v5 = a3;
-  v6 = [[v4 alloc] initForReadingFromData:v5 error:0];
+  dataCopy = data;
+  v6 = [[v4 alloc] initForReadingFromData:dataCopy error:0];
 
-  if (v5 && !v6)
+  if (dataCopy && !v6)
   {
     v7 = PKLogFacilityTypeGetObject(0xFuLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -548,10 +548,10 @@ LABEL_9:
   return v8;
 }
 
-+ (void)queryKeychainForVirtualCards:(id)a3
++ (void)queryKeychainForVirtualCards:(id)cards
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  cardsCopy = cards;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v4 setObject:*MEMORY[0x1E697B008] forKey:*MEMORY[0x1E697AFF8]];
   [v4 setObject:@"com.apple.passd.virtual.card" forKey:*MEMORY[0x1E697AE88]];
@@ -567,7 +567,7 @@ LABEL_9:
   if (!v7 && result)
   {
     v20 = v6;
-    v21 = v3;
+    v21 = cardsCopy;
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v22 = 0u;
     v23 = 0u;
@@ -609,7 +609,7 @@ LABEL_9:
       CFRelease(result);
     }
 
-    v3 = v21;
+    cardsCopy = v21;
     if (v21)
     {
       v17 = [v8 copy];
@@ -628,11 +628,11 @@ LABEL_9:
     _os_log_impl(&dword_1AD337000, v18, OS_LOG_TYPE_DEFAULT, "Error fetching virtual cards from Keychain: %d", buf, 8u);
   }
 
-  if (v3)
+  if (cardsCopy)
   {
     v19 = objc_alloc(MEMORY[0x1E696ABC0]);
     v8 = [v19 initWithDomain:*MEMORY[0x1E696A768] code:v7 userInfo:0];
-    v3[2](v3, 0, v8);
+    cardsCopy[2](cardsCopy, 0, v8);
 LABEL_21:
   }
 }
@@ -804,10 +804,10 @@ LABEL_11:
   [v4 resetLocalKeychainItem];
 }
 
-- (id)_wrapperWithType:(unint64_t)a3 identifier:(id)a4
+- (id)_wrapperWithType:(unint64_t)type identifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [[PKKeychainItemWrapper alloc] initWithIdentifier:v5 accessGroup:@"com.apple.passd" serviceName:@"com.apple.passd.virtual.card" type:a3 invisible:0];
+  identifierCopy = identifier;
+  v6 = [[PKKeychainItemWrapper alloc] initWithIdentifier:identifierCopy accessGroup:@"com.apple.passd" serviceName:@"com.apple.passd.virtual.card" type:type invisible:0];
 
   [(PKKeychainItemWrapper *)v6 setLabel:@"com.apple.passd.virtual.card"];
 
@@ -816,12 +816,12 @@ LABEL_11:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKeyedSubscript:@"identifier"];
+    [dictionary setObject:identifier forKeyedSubscript:@"identifier"];
   }
 
   cardholderName = self->_cardholderName;
@@ -919,8 +919,8 @@ LABEL_11:
   balance = self->_balance;
   if (balance)
   {
-    v24 = [(PKCurrencyAmount *)balance minimalFormattedStringValue];
-    [v4 setObject:v24 forKeyedSubscript:@"balance"];
+    minimalFormattedStringValue = [(PKCurrencyAmount *)balance minimalFormattedStringValue];
+    [v4 setObject:minimalFormattedStringValue forKeyedSubscript:@"balance"];
   }
 
   v25 = [MEMORY[0x1E696AD98] numberWithInteger:self->_balanceSource];
@@ -931,9 +931,9 @@ LABEL_11:
   return v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -941,7 +941,7 @@ LABEL_11:
   }
 
   identifier = self->_identifier;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (identifier && v6)
   {
     if (([(NSString *)identifier isEqual:?]& 1) == 0)
@@ -956,7 +956,7 @@ LABEL_11:
   }
 
   cardholderName = self->_cardholderName;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (cardholderName && v8)
   {
     if (([(NSString *)cardholderName isEqual:?]& 1) == 0)
@@ -971,7 +971,7 @@ LABEL_11:
   }
 
   FPANSuffix = self->_FPANSuffix;
-  v10 = v4[6];
+  v10 = equalCopy[6];
   if (FPANSuffix && v10)
   {
     if (([(NSString *)FPANSuffix isEqual:?]& 1) == 0)
@@ -986,7 +986,7 @@ LABEL_11:
   }
 
   dpanSuffix = self->_dpanSuffix;
-  v12 = v4[7];
+  v12 = equalCopy[7];
   if (dpanSuffix && v12)
   {
     if (([(NSString *)dpanSuffix isEqual:?]& 1) == 0)
@@ -1001,7 +1001,7 @@ LABEL_11:
   }
 
   expiration = self->_expiration;
-  v14 = v4[8];
+  v14 = equalCopy[8];
   if (expiration && v14)
   {
     if (([(NSString *)expiration isEqual:?]& 1) == 0)
@@ -1016,7 +1016,7 @@ LABEL_11:
   }
 
   lastUpdatedDate = self->_lastUpdatedDate;
-  v16 = v4[9];
+  v16 = equalCopy[9];
   if (lastUpdatedDate && v16)
   {
     if (([(NSDate *)lastUpdatedDate isEqual:?]& 1) == 0)
@@ -1031,7 +1031,7 @@ LABEL_11:
   }
 
   encryptedData = self->_encryptedData;
-  v18 = v4[10];
+  v18 = equalCopy[10];
   if (encryptedData && v18)
   {
     if (([(NSData *)encryptedData isEqual:?]& 1) == 0)
@@ -1046,7 +1046,7 @@ LABEL_11:
   }
 
   ephemeralPublicKey = self->_ephemeralPublicKey;
-  v20 = v4[11];
+  v20 = equalCopy[11];
   if (ephemeralPublicKey && v20)
   {
     if (([(NSData *)ephemeralPublicKey isEqual:?]& 1) == 0)
@@ -1061,7 +1061,7 @@ LABEL_11:
   }
 
   displayName = self->_displayName;
-  v22 = v4[12];
+  v22 = equalCopy[12];
   if (displayName && v22)
   {
     if (([(NSString *)displayName isEqual:?]& 1) == 0)
@@ -1076,7 +1076,7 @@ LABEL_11:
   }
 
   lastAutoFilledBySafari = self->_lastAutoFilledBySafari;
-  v24 = v4[13];
+  v24 = equalCopy[13];
   if (lastAutoFilledBySafari && v24)
   {
     if (([(NSDate *)lastAutoFilledBySafari isEqual:?]& 1) == 0)
@@ -1090,13 +1090,13 @@ LABEL_11:
     goto LABEL_84;
   }
 
-  if (self->_state != v4[4] || self->_type != v4[5] || self->_supportsLocalStorage != *(v4 + 10))
+  if (self->_state != equalCopy[4] || self->_type != equalCopy[5] || self->_supportsLocalStorage != *(equalCopy + 10))
   {
     goto LABEL_84;
   }
 
   securityCodeIdentifier = self->_securityCodeIdentifier;
-  v26 = v4[14];
+  v26 = equalCopy[14];
   if (securityCodeIdentifier && v26)
   {
     if (([(NSString *)securityCodeIdentifier isEqual:?]& 1) == 0)
@@ -1111,7 +1111,7 @@ LABEL_11:
   }
 
   securityCodeExpiration = self->_securityCodeExpiration;
-  v28 = v4[15];
+  v28 = equalCopy[15];
   if (securityCodeExpiration && v28)
   {
     if (([(NSDate *)securityCodeExpiration isEqual:?]& 1) == 0)
@@ -1126,7 +1126,7 @@ LABEL_11:
   }
 
   billingAddress = self->_billingAddress;
-  v30 = v4[16];
+  v30 = equalCopy[16];
   if (billingAddress && v30)
   {
     if (([(CNContact *)billingAddress isEqual:?]& 1) == 0)
@@ -1140,13 +1140,13 @@ LABEL_11:
     goto LABEL_84;
   }
 
-  if (self->_credentialType != v4[17])
+  if (self->_credentialType != equalCopy[17])
   {
     goto LABEL_84;
   }
 
   nameFromSafari = self->_nameFromSafari;
-  v32 = v4[20];
+  v32 = equalCopy[20];
   if (nameFromSafari && v32)
   {
     if (([(NSString *)nameFromSafari isEqual:?]& 1) == 0)
@@ -1160,13 +1160,13 @@ LABEL_11:
     goto LABEL_84;
   }
 
-  if (self->_refreshType != v4[21])
+  if (self->_refreshType != equalCopy[21])
   {
     goto LABEL_84;
   }
 
   balance = self->_balance;
-  v34 = v4[18];
+  v34 = equalCopy[18];
   if (!balance || !v34)
   {
     if (balance == v34)
@@ -1185,12 +1185,12 @@ LABEL_84:
   }
 
 LABEL_82:
-  if (self->_balanceSource != v4[19])
+  if (self->_balanceSource != equalCopy[19])
   {
     goto LABEL_84;
   }
 
-  v35 = self->_hasDynamicSecurityCode == *(v4 + 9);
+  v35 = self->_hasDynamicSecurityCode == *(equalCopy + 9);
 LABEL_85:
 
   return v35;
@@ -1198,24 +1198,24 @@ LABEL_85:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_cardholderName];
-  [v3 safelyAddObject:self->_FPANSuffix];
-  [v3 safelyAddObject:self->_dpanSuffix];
-  [v3 safelyAddObject:self->_expiration];
-  [v3 safelyAddObject:self->_lastUpdatedDate];
-  [v3 safelyAddObject:self->_encryptedData];
-  [v3 safelyAddObject:self->_ephemeralPublicKey];
-  [v3 safelyAddObject:self->_displayName];
-  [v3 safelyAddObject:self->_lastAutoFilledBySafari];
-  [v3 safelyAddObject:self->_keychainCardCredentials];
-  [v3 safelyAddObject:self->_securityCodeIdentifier];
-  [v3 safelyAddObject:self->_securityCodeExpiration];
-  [v3 safelyAddObject:self->_billingAddress];
-  [v3 safelyAddObject:self->_nameFromSafari];
-  [v3 safelyAddObject:self->_balance];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_cardholderName];
+  [array safelyAddObject:self->_FPANSuffix];
+  [array safelyAddObject:self->_dpanSuffix];
+  [array safelyAddObject:self->_expiration];
+  [array safelyAddObject:self->_lastUpdatedDate];
+  [array safelyAddObject:self->_encryptedData];
+  [array safelyAddObject:self->_ephemeralPublicKey];
+  [array safelyAddObject:self->_displayName];
+  [array safelyAddObject:self->_lastAutoFilledBySafari];
+  [array safelyAddObject:self->_keychainCardCredentials];
+  [array safelyAddObject:self->_securityCodeIdentifier];
+  [array safelyAddObject:self->_securityCodeExpiration];
+  [array safelyAddObject:self->_billingAddress];
+  [array safelyAddObject:self->_nameFromSafari];
+  [array safelyAddObject:self->_balance];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_state - v4 + 32 * v4;
   v6 = self->_type - v5 + 32 * v5;
   v7 = self->_supportsLocalStorage - v6 + 32 * v6;
@@ -1314,8 +1314,8 @@ LABEL_85:
 
   [v3 appendFormat:@"nameFromSafari: '%@'; ", self->_nameFromSafari];
   [v3 appendFormat:@"refreshType: '%lu'; ", self->_refreshType];
-  v13 = [(PKCurrencyAmount *)self->_balance minimalFormattedStringValue];
-  [v3 appendFormat:@"balance: %@", v13];
+  minimalFormattedStringValue = [(PKCurrencyAmount *)self->_balance minimalFormattedStringValue];
+  [v3 appendFormat:@"balance: %@", minimalFormattedStringValue];
 
   [v3 appendFormat:@"balanceSource: '%ld'; ", self->_balanceSource];
   [v3 appendFormat:@">"];
@@ -1323,76 +1323,76 @@ LABEL_85:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKVirtualCard allocWithZone:](PKVirtualCard init];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [(NSString *)self->_cardholderName copyWithZone:a3];
+  v8 = [(NSString *)self->_cardholderName copyWithZone:zone];
   cardholderName = v5->_cardholderName;
   v5->_cardholderName = v8;
 
   v5->_state = self->_state;
   v5->_type = self->_type;
-  v10 = [(NSString *)self->_FPANSuffix copyWithZone:a3];
+  v10 = [(NSString *)self->_FPANSuffix copyWithZone:zone];
   FPANSuffix = v5->_FPANSuffix;
   v5->_FPANSuffix = v10;
 
-  v12 = [(NSString *)self->_dpanSuffix copyWithZone:a3];
+  v12 = [(NSString *)self->_dpanSuffix copyWithZone:zone];
   dpanSuffix = v5->_dpanSuffix;
   v5->_dpanSuffix = v12;
 
-  v14 = [(NSString *)self->_expiration copyWithZone:a3];
+  v14 = [(NSString *)self->_expiration copyWithZone:zone];
   expiration = v5->_expiration;
   v5->_expiration = v14;
 
-  v16 = [(NSDate *)self->_lastUpdatedDate copyWithZone:a3];
+  v16 = [(NSDate *)self->_lastUpdatedDate copyWithZone:zone];
   lastUpdatedDate = v5->_lastUpdatedDate;
   v5->_lastUpdatedDate = v16;
 
   v5->_supportsLocalStorage = self->_supportsLocalStorage;
-  v18 = [(NSData *)self->_encryptedData copyWithZone:a3];
+  v18 = [(NSData *)self->_encryptedData copyWithZone:zone];
   encryptedData = v5->_encryptedData;
   v5->_encryptedData = v18;
 
-  v20 = [(NSData *)self->_ephemeralPublicKey copyWithZone:a3];
+  v20 = [(NSData *)self->_ephemeralPublicKey copyWithZone:zone];
   ephemeralPublicKey = v5->_ephemeralPublicKey;
   v5->_ephemeralPublicKey = v20;
 
-  v22 = [(NSString *)self->_displayName copyWithZone:a3];
+  v22 = [(NSString *)self->_displayName copyWithZone:zone];
   displayName = v5->_displayName;
   v5->_displayName = v22;
 
-  v24 = [(NSDate *)self->_lastAutoFilledBySafari copyWithZone:a3];
+  v24 = [(NSDate *)self->_lastAutoFilledBySafari copyWithZone:zone];
   lastAutoFilledBySafari = v5->_lastAutoFilledBySafari;
   v5->_lastAutoFilledBySafari = v24;
 
-  v26 = [(PKVirtualCardCredentials *)self->_keychainCardCredentials copyWithZone:a3];
+  v26 = [(PKVirtualCardCredentials *)self->_keychainCardCredentials copyWithZone:zone];
   keychainCardCredentials = v5->_keychainCardCredentials;
   v5->_keychainCardCredentials = v26;
 
-  v28 = [(NSString *)self->_securityCodeIdentifier copyWithZone:a3];
+  v28 = [(NSString *)self->_securityCodeIdentifier copyWithZone:zone];
   securityCodeIdentifier = v5->_securityCodeIdentifier;
   v5->_securityCodeIdentifier = v28;
 
-  v30 = [(NSDate *)self->_securityCodeExpiration copyWithZone:a3];
+  v30 = [(NSDate *)self->_securityCodeExpiration copyWithZone:zone];
   securityCodeExpiration = v5->_securityCodeExpiration;
   v5->_securityCodeExpiration = v30;
 
   v5->_hasDynamicSecurityCode = self->_hasDynamicSecurityCode;
-  v32 = [(CNContact *)self->_billingAddress copyWithZone:a3];
+  v32 = [(CNContact *)self->_billingAddress copyWithZone:zone];
   billingAddress = v5->_billingAddress;
   v5->_billingAddress = v32;
 
   v5->_credentialType = self->_credentialType;
-  v34 = [(NSString *)self->_nameFromSafari copyWithZone:a3];
+  v34 = [(NSString *)self->_nameFromSafari copyWithZone:zone];
   nameFromSafari = v5->_nameFromSafari;
   v5->_nameFromSafari = v34;
 
   v5->_refreshType = self->_refreshType;
-  v36 = [(PKCurrencyAmount *)self->_balance copyWithZone:a3];
+  v36 = [(PKCurrencyAmount *)self->_balance copyWithZone:zone];
   balance = v5->_balance;
   v5->_balance = v36;
 
@@ -1400,117 +1400,117 @@ LABEL_85:
   return v5;
 }
 
-- (PKVirtualCard)initWithCoder:(id)a3
+- (PKVirtualCard)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = PKVirtualCard;
   v5 = [(PKVirtualCard *)&v39 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardholderName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardholderName"];
     cardholderName = v5->_cardholderName;
     v5->_cardholderName = v8;
 
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FPANSuffix"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FPANSuffix"];
     FPANSuffix = v5->_FPANSuffix;
     v5->_FPANSuffix = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dpanSuffix"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dpanSuffix"];
     dpanSuffix = v5->_dpanSuffix;
     v5->_dpanSuffix = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expiration"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expiration"];
     expiration = v5->_expiration;
     v5->_expiration = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
     lastUpdatedDate = v5->_lastUpdatedDate;
     v5->_lastUpdatedDate = v16;
 
-    v5->_supportsLocalStorage = [v4 decodeBoolForKey:@"supportsLocalStorage"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encryptedData"];
+    v5->_supportsLocalStorage = [coderCopy decodeBoolForKey:@"supportsLocalStorage"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encryptedData"];
     encryptedData = v5->_encryptedData;
     v5->_encryptedData = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ephemeralPublicKey"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ephemeralPublicKey"];
     ephemeralPublicKey = v5->_ephemeralPublicKey;
     v5->_ephemeralPublicKey = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastAutoFilledBySafari"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastAutoFilledBySafari"];
     lastAutoFilledBySafari = v5->_lastAutoFilledBySafari;
     v5->_lastAutoFilledBySafari = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keychainCredentials"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keychainCredentials"];
     keychainCardCredentials = v5->_keychainCardCredentials;
     v5->_keychainCardCredentials = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"securityCodeIdentifier"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"securityCodeIdentifier"];
     securityCodeIdentifier = v5->_securityCodeIdentifier;
     v5->_securityCodeIdentifier = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"securityCodeExpiration"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"securityCodeExpiration"];
     securityCodeExpiration = v5->_securityCodeExpiration;
     v5->_securityCodeExpiration = v30;
 
-    v5->_hasDynamicSecurityCode = [v4 decodeBoolForKey:@"hasDynamicSecurityCode"];
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"billingAddress"];
+    v5->_hasDynamicSecurityCode = [coderCopy decodeBoolForKey:@"hasDynamicSecurityCode"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"billingAddress"];
     billingAddress = v5->_billingAddress;
     v5->_billingAddress = v32;
 
-    v5->_credentialType = [v4 decodeIntegerForKey:@"credentialType"];
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nameFromSafari"];
+    v5->_credentialType = [coderCopy decodeIntegerForKey:@"credentialType"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nameFromSafari"];
     nameFromSafari = v5->_nameFromSafari;
     v5->_nameFromSafari = v34;
 
-    v5->_refreshType = [v4 decodeIntegerForKey:@"refreshType"];
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"balance"];
+    v5->_refreshType = [coderCopy decodeIntegerForKey:@"refreshType"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"balance"];
     balance = v5->_balance;
     v5->_balance = v36;
 
-    v5->_balanceSource = [v4 decodeIntegerForKey:@"balanceSource"];
+    v5->_balanceSource = [coderCopy decodeIntegerForKey:@"balanceSource"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_cardholderName forKey:@"cardholderName"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeObject:self->_FPANSuffix forKey:@"FPANSuffix"];
-  [v5 encodeObject:self->_dpanSuffix forKey:@"dpanSuffix"];
-  [v5 encodeObject:self->_expiration forKey:@"expiration"];
-  [v5 encodeObject:self->_lastUpdatedDate forKey:@"lastUpdatedDate"];
-  [v5 encodeBool:self->_supportsLocalStorage forKey:@"supportsLocalStorage"];
-  [v5 encodeObject:self->_encryptedData forKey:@"encryptedData"];
-  [v5 encodeObject:self->_ephemeralPublicKey forKey:@"ephemeralPublicKey"];
-  [v5 encodeObject:self->_displayName forKey:@"displayName"];
-  [v5 encodeObject:self->_lastAutoFilledBySafari forKey:@"lastAutoFilledBySafari"];
-  [v5 encodeObject:self->_keychainCardCredentials forKey:@"keychainCredentials"];
-  [v5 encodeObject:self->_securityCodeIdentifier forKey:@"securityCodeIdentifier"];
-  [v5 encodeObject:self->_securityCodeExpiration forKey:@"securityCodeExpiration"];
-  [v5 encodeBool:self->_hasDynamicSecurityCode forKey:@"hasDynamicSecurityCode"];
-  [v5 encodeObject:self->_billingAddress forKey:@"billingAddress"];
-  [v5 encodeInteger:self->_credentialType forKey:@"credentialType"];
-  [v5 encodeObject:self->_nameFromSafari forKey:@"nameFromSafari"];
-  [v5 encodeInteger:self->_refreshType forKey:@"refreshType"];
-  [v5 encodeObject:self->_balance forKey:@"balance"];
-  [v5 encodeInteger:self->_balanceSource forKey:@"balanceSource"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_cardholderName forKey:@"cardholderName"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_FPANSuffix forKey:@"FPANSuffix"];
+  [coderCopy encodeObject:self->_dpanSuffix forKey:@"dpanSuffix"];
+  [coderCopy encodeObject:self->_expiration forKey:@"expiration"];
+  [coderCopy encodeObject:self->_lastUpdatedDate forKey:@"lastUpdatedDate"];
+  [coderCopy encodeBool:self->_supportsLocalStorage forKey:@"supportsLocalStorage"];
+  [coderCopy encodeObject:self->_encryptedData forKey:@"encryptedData"];
+  [coderCopy encodeObject:self->_ephemeralPublicKey forKey:@"ephemeralPublicKey"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_lastAutoFilledBySafari forKey:@"lastAutoFilledBySafari"];
+  [coderCopy encodeObject:self->_keychainCardCredentials forKey:@"keychainCredentials"];
+  [coderCopy encodeObject:self->_securityCodeIdentifier forKey:@"securityCodeIdentifier"];
+  [coderCopy encodeObject:self->_securityCodeExpiration forKey:@"securityCodeExpiration"];
+  [coderCopy encodeBool:self->_hasDynamicSecurityCode forKey:@"hasDynamicSecurityCode"];
+  [coderCopy encodeObject:self->_billingAddress forKey:@"billingAddress"];
+  [coderCopy encodeInteger:self->_credentialType forKey:@"credentialType"];
+  [coderCopy encodeObject:self->_nameFromSafari forKey:@"nameFromSafari"];
+  [coderCopy encodeInteger:self->_refreshType forKey:@"refreshType"];
+  [coderCopy encodeObject:self->_balance forKey:@"balance"];
+  [coderCopy encodeInteger:self->_balanceSource forKey:@"balanceSource"];
 }
 
 @end

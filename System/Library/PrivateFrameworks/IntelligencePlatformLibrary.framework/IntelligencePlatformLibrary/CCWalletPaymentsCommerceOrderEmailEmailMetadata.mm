@@ -1,7 +1,7 @@
 @interface CCWalletPaymentsCommerceOrderEmailEmailMetadata
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCWalletPaymentsCommerceOrderEmailEmailMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCWalletPaymentsCommerceOrderEmailEmailMetadata)initWithMessageID:(id)a3 dateSent:(id)a4 subject:(id)a5 senderDomain:(id)a6 fromEmailAddress:(id)a7 fromDisplayName:(id)a8 toEmailAddress:(id)a9 toDisplayName:(id)a10 replyToEmailAddress:(id)a11 replyToDisplayName:(id)a12 error:(id *)a13;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCWalletPaymentsCommerceOrderEmailEmailMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCWalletPaymentsCommerceOrderEmailEmailMetadata)initWithMessageID:(id)d dateSent:(id)sent subject:(id)subject senderDomain:(id)domain fromEmailAddress:(id)address fromDisplayName:(id)name toEmailAddress:(id)emailAddress toDisplayName:(id)self0 replyToEmailAddress:(id)self1 replyToDisplayName:(id)self2 error:(id *)self3;
 - (NSDate)dateSent;
 - (NSString)fromDisplayName;
 - (NSString)fromEmailAddress;
@@ -13,21 +13,21 @@
 - (NSString)toDisplayName;
 - (NSString)toEmailAddress;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCWalletPaymentsCommerceOrderEmailEmailMetadata
 
-- (CCWalletPaymentsCommerceOrderEmailEmailMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCWalletPaymentsCommerceOrderEmailEmailMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"messageID"];
-    v10 = [v6 objectForKeyedSubscript:@"dateSent"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"messageID"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"dateSent"];
     if (v10)
     {
       v11 = v10;
@@ -43,7 +43,7 @@
       }
 
       v26 = v13;
-      v27 = self;
+      selfCopy2 = self;
       v14 = objc_alloc(MEMORY[0x1E695DF00]);
       [v11 doubleValue];
       v15 = [v14 initWithTimeIntervalSinceReferenceDate:?];
@@ -52,23 +52,23 @@
     else
     {
       v26 = v8;
-      v27 = self;
+      selfCopy2 = self;
       v15 = 0;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"subject"];
-    v25 = [v6 objectForKeyedSubscript:@"senderDomain"];
-    v24 = [v6 objectForKeyedSubscript:@"fromEmailAddress"];
-    v18 = [v6 objectForKeyedSubscript:@"fromDisplayName"];
-    v23 = [v6 objectForKeyedSubscript:@"toEmailAddress"];
-    v19 = [v6 objectForKeyedSubscript:@"toDisplayName"];
-    v20 = [v6 objectForKeyedSubscript:@"replyToEmailAddress"];
-    v21 = [v6 objectForKeyedSubscript:@"replyToDisplayName"];
-    v16 = [[CCWalletPaymentsCommerceOrderEmailEmailMetadata alloc] initWithMessageID:v9 dateSent:v15 subject:v17 senderDomain:v25 fromEmailAddress:v24 fromDisplayName:v18 toEmailAddress:v23 toDisplayName:v19 replyToEmailAddress:v20 replyToDisplayName:v21 error:a4];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"subject"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"senderDomain"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"fromEmailAddress"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"fromDisplayName"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"toEmailAddress"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"toDisplayName"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"replyToEmailAddress"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"replyToDisplayName"];
+    v16 = [[CCWalletPaymentsCommerceOrderEmailEmailMetadata alloc] initWithMessageID:v9 dateSent:v15 subject:v17 senderDomain:v25 fromEmailAddress:v24 fromDisplayName:v18 toEmailAddress:v23 toDisplayName:v19 replyToEmailAddress:v20 replyToDisplayName:v21 error:error];
 
     v11 = v15;
     v13 = v26;
-    self = v27;
+    self = selfCopy2;
 LABEL_9:
 
     v8 = v13;
@@ -87,8 +87,8 @@ LABEL_10:
   v3 = objc_opt_new();
   if (self->_messageID)
   {
-    v4 = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self messageID];
-    [v3 setObject:v4 forKeyedSubscript:@"messageID"];
+    messageID = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self messageID];
+    [v3 setObject:messageID forKeyedSubscript:@"messageID"];
   }
 
   if (self->_hasRaw_dateSent)
@@ -99,50 +99,50 @@ LABEL_10:
 
   if (self->_subject)
   {
-    v6 = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self subject];
-    [v3 setObject:v6 forKeyedSubscript:@"subject"];
+    subject = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self subject];
+    [v3 setObject:subject forKeyedSubscript:@"subject"];
   }
 
   if (self->_senderDomain)
   {
-    v7 = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self senderDomain];
-    [v3 setObject:v7 forKeyedSubscript:@"senderDomain"];
+    senderDomain = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self senderDomain];
+    [v3 setObject:senderDomain forKeyedSubscript:@"senderDomain"];
   }
 
   if (self->_fromEmailAddress)
   {
-    v8 = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self fromEmailAddress];
-    [v3 setObject:v8 forKeyedSubscript:@"fromEmailAddress"];
+    fromEmailAddress = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self fromEmailAddress];
+    [v3 setObject:fromEmailAddress forKeyedSubscript:@"fromEmailAddress"];
   }
 
   if (self->_fromDisplayName)
   {
-    v9 = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self fromDisplayName];
-    [v3 setObject:v9 forKeyedSubscript:@"fromDisplayName"];
+    fromDisplayName = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self fromDisplayName];
+    [v3 setObject:fromDisplayName forKeyedSubscript:@"fromDisplayName"];
   }
 
   if (self->_toEmailAddress)
   {
-    v10 = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self toEmailAddress];
-    [v3 setObject:v10 forKeyedSubscript:@"toEmailAddress"];
+    toEmailAddress = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self toEmailAddress];
+    [v3 setObject:toEmailAddress forKeyedSubscript:@"toEmailAddress"];
   }
 
   if (self->_toDisplayName)
   {
-    v11 = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self toDisplayName];
-    [v3 setObject:v11 forKeyedSubscript:@"toDisplayName"];
+    toDisplayName = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self toDisplayName];
+    [v3 setObject:toDisplayName forKeyedSubscript:@"toDisplayName"];
   }
 
   if (self->_replyToEmailAddress)
   {
-    v12 = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self replyToEmailAddress];
-    [v3 setObject:v12 forKeyedSubscript:@"replyToEmailAddress"];
+    replyToEmailAddress = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self replyToEmailAddress];
+    [v3 setObject:replyToEmailAddress forKeyedSubscript:@"replyToEmailAddress"];
   }
 
   if (self->_replyToDisplayName)
   {
-    v13 = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self replyToDisplayName];
-    [v3 setObject:v13 forKeyedSubscript:@"replyToDisplayName"];
+    replyToDisplayName = [(CCWalletPaymentsCommerceOrderEmailEmailMetadata *)self replyToDisplayName];
+    [v3 setObject:replyToDisplayName forKeyedSubscript:@"replyToDisplayName"];
   }
 
   v14 = [v3 copy];
@@ -150,70 +150,70 @@ LABEL_10:
   return v14;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v16 = a3;
+  blockCopy = block;
   if (self->_messageID)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7958 stringValue:self->_messageID];
-    v16[2](v16, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_hasRaw_dateSent)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7959 doubleValue:self->_raw_dateSent];
-    v16[2](v16, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_subject)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7960 stringValue:self->_subject];
-    v16[2](v16, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_senderDomain)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7961 stringValue:self->_senderDomain];
-    v16[2](v16, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_fromEmailAddress)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7962 stringValue:self->_fromEmailAddress];
-    v16[2](v16, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_fromDisplayName)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7963 stringValue:self->_fromDisplayName];
-    v16[2](v16, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_toEmailAddress)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7964 stringValue:self->_toEmailAddress];
-    v16[2](v16, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_toDisplayName)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7965 stringValue:self->_toDisplayName];
-    v16[2](v16, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_replyToEmailAddress)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7966 stringValue:self->_replyToEmailAddress];
-    v16[2](v16, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
-  v14 = v16;
+  v14 = blockCopy;
   if (self->_replyToDisplayName)
   {
     v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7967 stringValue:self->_replyToDisplayName];
-    v16[2](v16, v15);
+    blockCopy[2](blockCopy, v15);
 
-    v14 = v16;
+    v14 = blockCopy;
   }
 }
 
@@ -295,10 +295,10 @@ LABEL_10:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -482,13 +482,13 @@ LABEL_47:
 
       v32 = objc_opt_class();
       NSStringFromClass(v32);
-      v41 = v6;
-      v34 = v33 = a4;
+      v41 = dataCopy;
+      v34 = v33 = error;
       v35 = *&v7[*v10];
       v11 = CCSkipFieldErrorForMessage();
 
-      a4 = v33;
-      v6 = v41;
+      error = v33;
+      dataCopy = v41;
 LABEL_48:
       if (*&v7[*v8] < *&v7[*v9])
       {
@@ -526,21 +526,21 @@ LABEL_60:
   return v39;
 }
 
-- (CCWalletPaymentsCommerceOrderEmailEmailMetadata)initWithMessageID:(id)a3 dateSent:(id)a4 subject:(id)a5 senderDomain:(id)a6 fromEmailAddress:(id)a7 fromDisplayName:(id)a8 toEmailAddress:(id)a9 toDisplayName:(id)a10 replyToEmailAddress:(id)a11 replyToDisplayName:(id)a12 error:(id *)a13
+- (CCWalletPaymentsCommerceOrderEmailEmailMetadata)initWithMessageID:(id)d dateSent:(id)sent subject:(id)subject senderDomain:(id)domain fromEmailAddress:(id)address fromDisplayName:(id)name toEmailAddress:(id)emailAddress toDisplayName:(id)self0 replyToEmailAddress:(id)self1 replyToDisplayName:(id)self2 error:(id *)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v51 = a8;
-  v23 = a9;
-  v52 = a10;
-  v50 = a11;
-  v49 = a12;
+  dCopy = d;
+  sentCopy = sent;
+  subjectCopy = subject;
+  domainCopy = domain;
+  addressCopy = address;
+  nameCopy = name;
+  emailAddressCopy = emailAddress;
+  displayNameCopy = displayName;
+  toEmailAddressCopy = toEmailAddress;
+  toDisplayNameCopy = toDisplayName;
   v24 = objc_opt_new();
-  v47 = v20;
-  if (v18)
+  v47 = subjectCopy;
+  if (dCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -548,24 +548,24 @@ LABEL_60:
     if (!IsInstanceOfExpectedClass)
     {
 LABEL_8:
-      v29 = v23;
-      v30 = v21;
+      v29 = emailAddressCopy;
+      v30 = domainCopy;
       goto LABEL_9;
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v19)
+    if (!sentCopy)
     {
 LABEL_4:
       v27 = v26;
-      if (v20)
+      if (subjectCopy)
       {
         goto LABEL_5;
       }
 
 LABEL_14:
       v26 = v27;
-      if (!v21)
+      if (!domainCopy)
       {
         goto LABEL_7;
       }
@@ -577,7 +577,7 @@ LABEL_14:
   else
   {
     v26 = 0;
-    if (!v19)
+    if (!sentCopy)
     {
       goto LABEL_4;
     }
@@ -592,9 +592,9 @@ LABEL_14:
     goto LABEL_20;
   }
 
-  [v19 timeIntervalSinceReferenceDate];
+  [sentCopy timeIntervalSinceReferenceDate];
   CCPBDataWriterWriteDoubleField();
-  if (!v20)
+  if (!subjectCopy)
   {
     goto LABEL_14;
   }
@@ -610,7 +610,7 @@ LABEL_5:
   }
 
   CCPBDataWriterWriteStringField();
-  if (v21)
+  if (domainCopy)
   {
 LABEL_15:
     objc_opt_class();
@@ -624,9 +624,9 @@ LABEL_15:
     }
 
 LABEL_20:
-    v29 = v23;
-    v30 = v21;
-    v31 = v22;
+    v29 = emailAddressCopy;
+    v30 = domainCopy;
+    v31 = addressCopy;
 LABEL_21:
     CCSetError();
     v32 = 0;
@@ -637,14 +637,14 @@ LABEL_21:
 LABEL_7:
   v27 = v26;
 LABEL_17:
-  v30 = v21;
-  if (!v22)
+  v30 = domainCopy;
+  if (!addressCopy)
   {
     v31 = 0;
     v26 = v27;
 LABEL_26:
-    v37 = v51;
-    if (v51)
+    v37 = nameCopy;
+    if (nameCopy)
     {
       objc_opt_class();
       v39 = CCValidateIsInstanceOfExpectedClass();
@@ -652,11 +652,11 @@ LABEL_26:
 
       if (!v39)
       {
-        v29 = v23;
+        v29 = emailAddressCopy;
         CCSetError();
         v32 = 0;
         v26 = v40;
-        v36 = self;
+        selfCopy2 = self;
         goto LABEL_24;
       }
 
@@ -668,7 +668,7 @@ LABEL_26:
       v40 = v26;
     }
 
-    if (v23)
+    if (emailAddressCopy)
     {
       objc_opt_class();
       v41 = CCValidateIsInstanceOfExpectedClass();
@@ -677,12 +677,12 @@ LABEL_26:
       if (!v41)
       {
 LABEL_42:
-        v29 = v23;
+        v29 = emailAddressCopy;
         goto LABEL_10;
       }
 
       CCPBDataWriterWriteStringField();
-      if (!v52)
+      if (!displayNameCopy)
       {
         goto LABEL_34;
       }
@@ -691,12 +691,12 @@ LABEL_42:
     else
     {
       v26 = v40;
-      if (!v52)
+      if (!displayNameCopy)
       {
 LABEL_34:
         v27 = v26;
 LABEL_39:
-        if (!v50)
+        if (!toEmailAddressCopy)
         {
           v26 = v27;
           goto LABEL_44;
@@ -710,9 +710,9 @@ LABEL_39:
         {
           CCPBDataWriterWriteStringField();
 LABEL_44:
-          if (!v49)
+          if (!toDisplayNameCopy)
           {
-            v29 = v23;
+            v29 = emailAddressCopy;
             goto LABEL_49;
           }
 
@@ -722,14 +722,14 @@ LABEL_44:
 
           if (v44)
           {
-            v29 = v23;
+            v29 = emailAddressCopy;
             CCPBDataWriterWriteStringField();
             v26 = v27;
 LABEL_49:
-            v45 = [v24 immutableData];
-            v36 = [(CCItemMessage *)self initWithData:v45 error:v46];
+            immutableData = [v24 immutableData];
+            selfCopy2 = [(CCItemMessage *)self initWithData:immutableData error:v46];
 
-            v32 = v36;
+            v32 = selfCopy2;
             goto LABEL_23;
           }
 
@@ -747,7 +747,7 @@ LABEL_49:
     if (!v42)
     {
 LABEL_47:
-      v29 = v23;
+      v29 = emailAddressCopy;
       goto LABEL_21;
     }
 
@@ -761,21 +761,21 @@ LABEL_47:
 
   if (v35)
   {
-    v31 = v22;
+    v31 = addressCopy;
     CCPBDataWriterWriteStringField();
     goto LABEL_26;
   }
 
-  v29 = v23;
+  v29 = emailAddressCopy;
 LABEL_9:
-  v31 = v22;
+  v31 = addressCopy;
 LABEL_10:
   CCSetError();
   v32 = 0;
 LABEL_22:
-  v36 = self;
+  selfCopy2 = self;
 LABEL_23:
-  v37 = v51;
+  v37 = nameCopy;
 LABEL_24:
 
   return v32;

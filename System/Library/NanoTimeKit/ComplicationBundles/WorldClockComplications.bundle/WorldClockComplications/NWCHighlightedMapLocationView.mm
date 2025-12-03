@@ -1,38 +1,38 @@
 @interface NWCHighlightedMapLocationView
-- (NWCHighlightedMapLocationView)initWithFrame:(CGRect)a3 fillColor:(id)a4 andStrokeWidth:(double)a5;
-- (void)drawRect:(CGRect)a3;
-- (void)setFillColor:(id)a3;
+- (NWCHighlightedMapLocationView)initWithFrame:(CGRect)frame fillColor:(id)color andStrokeWidth:(double)width;
+- (void)drawRect:(CGRect)rect;
+- (void)setFillColor:(id)color;
 @end
 
 @implementation NWCHighlightedMapLocationView
 
-- (NWCHighlightedMapLocationView)initWithFrame:(CGRect)a3 fillColor:(id)a4 andStrokeWidth:(double)a5
+- (NWCHighlightedMapLocationView)initWithFrame:(CGRect)frame fillColor:(id)color andStrokeWidth:(double)width
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
   v16.receiver = self;
   v16.super_class = NWCHighlightedMapLocationView;
-  v13 = [(NWCMapLocationView *)&v16 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(NWCMapLocationView *)&v16 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeStrong(&v13->_fillColor, a4);
-    v14->_strokeWidth = a5;
+    objc_storeStrong(&height->_fillColor, color);
+    v14->_strokeWidth = width;
     [(NWCHighlightedMapLocationView *)v14 setOpaque:0];
   }
 
   return v14;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(NWCHighlightedMapLocationView *)self strokeWidth];
   v9 = v8 * 0.5;
   [(NWCHighlightedMapLocationView *)self strokeWidth];
@@ -47,8 +47,8 @@
   v14 = v21.size.width;
   v15 = v21.size.height;
   CurrentContext = UIGraphicsGetCurrentContext();
-  v17 = [(NWCHighlightedMapLocationView *)self fillColor];
-  CGContextSetFillColorWithColor(CurrentContext, [v17 CGColor]);
+  fillColor = [(NWCHighlightedMapLocationView *)self fillColor];
+  CGContextSetFillColorWithColor(CurrentContext, [fillColor CGColor]);
 
   CGContextSetRGBStrokeColor(CurrentContext, 1.0, 1.0, 1.0, 1.0);
   [(NWCHighlightedMapLocationView *)self strokeWidth];
@@ -67,12 +67,12 @@
   CGContextFillPath(CurrentContext);
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_fillColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_fillColor, a3);
+    objc_storeStrong(&self->_fillColor, color);
     [(NWCHighlightedMapLocationView *)self setNeedsDisplay];
   }
 }

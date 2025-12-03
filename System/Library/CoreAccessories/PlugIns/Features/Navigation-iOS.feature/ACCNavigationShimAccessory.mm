@@ -79,16 +79,16 @@
     [ACCNavigationShimAccessory create_xpc_representation];
   }
 
-  v6 = [(ACCiAP2ShimAccessory *)self->_iap2ShimAccessory connectionID];
+  connectionID = [(ACCiAP2ShimAccessory *)self->_iap2ShimAccessory connectionID];
   xdict = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_uint64(xdict, "identifier", v6);
+  xpc_dictionary_set_uint64(xdict, "identifier", connectionID);
   v7 = xpc_array_create(0, 0);
-  v8 = [(ACCNavigationAccessory *)self->_navigationAccessory componentList];
+  componentList = [(ACCNavigationAccessory *)self->_navigationAccessory componentList];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = [v8 allKeys];
+  obj = [componentList allKeys];
   v9 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -103,12 +103,12 @@
           objc_enumerationMutation(obj);
         }
 
-        v13 = [v8 objectForKey:{*(*(&v20 + 1) + 8 * i), xdict}];
+        v13 = [componentList objectForKey:{*(*(&v20 + 1) + 8 * i), xdict}];
         v14 = xpc_dictionary_create(0, 0, 0);
         xpc_dictionary_set_BOOL(v14, "isEnabled", [v13 isEnabled]);
         xpc_dictionary_set_uint64(v14, "identifier", [v13 identifier]);
-        v15 = [v13 name];
-        xpc_dictionary_set_string(v14, "name", [v15 cStringUsingEncoding:4]);
+        name = [v13 name];
+        xpc_dictionary_set_string(v14, "name", [name cStringUsingEncoding:4]);
 
         xpc_dictionary_set_uint64(v14, "maxLength_CurrentRoadName", [v13 maxLength_CurrentRoadName]);
         xpc_dictionary_set_uint64(v14, "maxLength_DestinationRoadName", [v13 maxLength_DestinationRoadName]);

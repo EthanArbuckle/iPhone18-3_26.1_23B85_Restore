@@ -1,12 +1,12 @@
 @interface JFXImageIOSurfaceView
-- (JFXImageIOSurfaceView)initWithCoder:(id)a3;
-- (JFXImageIOSurfaceView)initWithFrame:(CGRect)a3;
+- (JFXImageIOSurfaceView)initWithCoder:(id)coder;
+- (JFXImageIOSurfaceView)initWithFrame:(CGRect)frame;
 - (void)JFXImageIOSurfaceView_commonInit;
-- (void)setEnableDebugDrawing:(BOOL)a3;
-- (void)setFlipX:(BOOL)a3;
-- (void)setFlipY:(BOOL)a3;
-- (void)setJtImage:(id)a3;
-- (void)setRenderingType:(int64_t)a3;
+- (void)setEnableDebugDrawing:(BOOL)drawing;
+- (void)setFlipX:(BOOL)x;
+- (void)setFlipY:(BOOL)y;
+- (void)setJtImage:(id)image;
+- (void)setRenderingType:(int64_t)type;
 - (void)updateDebugDrawing;
 @end
 
@@ -37,11 +37,11 @@ void __57__JFXImageIOSurfaceView_JFXImageIOSurfaceView_commonInit__block_invoke(
   }
 }
 
-- (JFXImageIOSurfaceView)initWithFrame:(CGRect)a3
+- (JFXImageIOSurfaceView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = JFXImageIOSurfaceView;
-  v3 = [(JFXImageIOSurfaceView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(JFXImageIOSurfaceView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -51,11 +51,11 @@ void __57__JFXImageIOSurfaceView_JFXImageIOSurfaceView_commonInit__block_invoke(
   return v4;
 }
 
-- (JFXImageIOSurfaceView)initWithCoder:(id)a3
+- (JFXImageIOSurfaceView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = JFXImageIOSurfaceView;
-  v3 = [(JFXImageIOSurfaceView *)&v6 initWithCoder:a3];
+  v3 = [(JFXImageIOSurfaceView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -65,32 +65,32 @@ void __57__JFXImageIOSurfaceView_JFXImageIOSurfaceView_commonInit__block_invoke(
   return v4;
 }
 
-- (void)setJtImage:(id)a3
+- (void)setJtImage:(id)image
 {
-  v5 = a3;
-  if (self->_jtImage != v5)
+  imageCopy = image;
+  if (self->_jtImage != imageCopy)
   {
-    v18 = v5;
-    objc_storeStrong(&self->_jtImage, a3);
+    v18 = imageCopy;
+    objc_storeStrong(&self->_jtImage, image);
     jtImage = self->_jtImage;
     if (jtImage)
     {
-      v7 = [(JTImage *)jtImage pvImageBuffer];
-      [v7 canCreateCVPixelBuffer];
+      pvImageBuffer = [(JTImage *)jtImage pvImageBuffer];
+      [pvImageBuffer canCreateCVPixelBuffer];
 
       jtImage = self->_jtImage;
     }
 
-    v8 = [(JTImage *)jtImage pvImageBuffer];
-    v9 = [v8 cvPixelBuffer];
+    pvImageBuffer2 = [(JTImage *)jtImage pvImageBuffer];
+    cvPixelBuffer = [pvImageBuffer2 cvPixelBuffer];
 
-    if (v9)
+    if (cvPixelBuffer)
     {
-      IOSurface = CVPixelBufferGetIOSurface(v9);
-      v11 = [(JFXImageIOSurfaceView *)self layer];
-      [v11 setContents:IOSurface];
+      IOSurface = CVPixelBufferGetIOSurface(cvPixelBuffer);
+      layer = [(JFXImageIOSurfaceView *)self layer];
+      [layer setContents:IOSurface];
 
-      v12 = CVBufferCopyAttachment(v9, *MEMORY[0x277CC4D10], 0);
+      v12 = CVBufferCopyAttachment(cvPixelBuffer, *MEMORY[0x277CC4D10], 0);
       if (v12)
       {
         v13 = v12;
@@ -109,43 +109,43 @@ void __57__JFXImageIOSurfaceView_JFXImageIOSurfaceView_commonInit__block_invoke(
         goto LABEL_13;
       }
 
-      v16 = self;
+      selfCopy2 = self;
       v17 = 0;
     }
 
     else
     {
-      v15 = [(JFXImageIOSurfaceView *)self layer];
-      [v15 setContents:0];
+      layer2 = [(JFXImageIOSurfaceView *)self layer];
+      [layer2 setContents:0];
 
-      v16 = self;
+      selfCopy2 = self;
       v17 = -1;
     }
 
-    [(JFXImageIOSurfaceView *)v16 setRenderingType:v17];
+    [(JFXImageIOSurfaceView *)selfCopy2 setRenderingType:v17];
 LABEL_13:
-    v5 = v18;
+    imageCopy = v18;
   }
 }
 
-- (void)setRenderingType:(int64_t)a3
+- (void)setRenderingType:(int64_t)type
 {
-  if (self->_renderingType != a3)
+  if (self->_renderingType != type)
   {
-    self->_renderingType = a3;
+    self->_renderingType = type;
     [(JFXImageIOSurfaceView *)self updateDebugDrawing];
   }
 }
 
-- (void)setFlipX:(BOOL)a3
+- (void)setFlipX:(BOOL)x
 {
-  if (self->_flipX != a3)
+  if (self->_flipX != x)
   {
     v11 = v3;
     v12 = v4;
-    self->_flipX = a3;
+    self->_flipX = x;
     v6 = 1.0;
-    if (a3)
+    if (x)
     {
       v7 = -1.0;
     }
@@ -161,21 +161,21 @@ LABEL_13:
     }
 
     CGAffineTransformMakeScale(&v10, v7, v6);
-    v8 = [(JFXImageIOSurfaceView *)self layer];
+    layer = [(JFXImageIOSurfaceView *)self layer];
     v9 = v10;
-    [v8 setAffineTransform:&v9];
+    [layer setAffineTransform:&v9];
 
     [(JFXImageIOSurfaceView *)self setNeedsDisplay];
   }
 }
 
-- (void)setFlipY:(BOOL)a3
+- (void)setFlipY:(BOOL)y
 {
-  if (self->_flipY != a3)
+  if (self->_flipY != y)
   {
     v11 = v3;
     v12 = v4;
-    self->_flipY = a3;
+    self->_flipY = y;
     v6 = 1.0;
     if (self->_flipX)
     {
@@ -187,25 +187,25 @@ LABEL_13:
       v7 = 1.0;
     }
 
-    if (a3)
+    if (y)
     {
       v6 = -1.0;
     }
 
     CGAffineTransformMakeScale(&v10, v7, v6);
-    v8 = [(JFXImageIOSurfaceView *)self layer];
+    layer = [(JFXImageIOSurfaceView *)self layer];
     v9 = v10;
-    [v8 setAffineTransform:&v9];
+    [layer setAffineTransform:&v9];
 
     [(JFXImageIOSurfaceView *)self setNeedsDisplay];
   }
 }
 
-- (void)setEnableDebugDrawing:(BOOL)a3
+- (void)setEnableDebugDrawing:(BOOL)drawing
 {
-  if (self->_enableDebugDrawing != a3)
+  if (self->_enableDebugDrawing != drawing)
   {
-    self->_enableDebugDrawing = a3;
+    self->_enableDebugDrawing = drawing;
     [(JFXImageIOSurfaceView *)self updateDebugDrawing];
   }
 }
@@ -216,15 +216,15 @@ LABEL_13:
   if (self->_enableDebugDrawing)
   {
     v4 = [JFXImageView colorFromRenderingType:self->_renderingType];
-    v5 = [v4 CGColor];
-    v6 = [(JFXImageIOSurfaceView *)self layer];
-    [v6 setBorderColor:v5];
+    cGColor = [v4 CGColor];
+    layer = [(JFXImageIOSurfaceView *)self layer];
+    [layer setBorderColor:cGColor];
 
     v3 = 4.0;
   }
 
-  v7 = [(JFXImageIOSurfaceView *)self layer];
-  [v7 setBorderWidth:v3];
+  layer2 = [(JFXImageIOSurfaceView *)self layer];
+  [layer2 setBorderWidth:v3];
 }
 
 @end

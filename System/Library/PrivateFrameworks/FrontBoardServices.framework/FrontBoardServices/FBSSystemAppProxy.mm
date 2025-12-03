@@ -1,20 +1,20 @@
 @interface FBSSystemAppProxy
-+ (id)checkoutProxyWithEndpoint:(id)a3;
++ (id)checkoutProxyWithEndpoint:(id)endpoint;
 - (BOOL)isPasscodeLockedOrBlocked;
-- (id)processHandleForBundleID:(id)a3;
+- (id)processHandleForBundleID:(id)d;
 - (id)systemApplicationBundleIdentifier;
-- (void)_handleConnect:(id)a3;
-- (void)_handleTerminationReply:(id)a3 targetDescription:(id)a4 withCompletion:(id)a5;
-- (void)_sendMessageType:(int64_t)a3 withMessage:(id)a4 withReplyHandler:(id)a5 waitForReply:(BOOL)a6;
+- (void)_handleConnect:(id)connect;
+- (void)_handleTerminationReply:(id)reply targetDescription:(id)description withCompletion:(id)completion;
+- (void)_sendMessageType:(int64_t)type withMessage:(id)message withReplyHandler:(id)handler waitForReply:(BOOL)reply;
 - (void)checkin;
-- (void)fireCompletion:(id)a3 error:(id)a4;
-- (void)fireCompletion:(id)a3 openAppErrorCode:(int64_t)a4;
-- (void)handleMessage:(id)a3 withType:(int64_t)a4;
-- (void)sendActions:(id)a3 withResult:(id)a4;
-- (void)setKeyboardFocusApplication:(int)a3 deferringToken:(id)a4 completion:(id)a5;
-- (void)shutdownWithOptions:(id)a3;
-- (void)terminateApplication:(id)a3 forReason:(int64_t)a4 andReport:(BOOL)a5 withDescription:(id)a6 completion:(id)a7;
-- (void)terminateApplicationGroup:(int64_t)a3 forReason:(int64_t)a4 andReport:(BOOL)a5 withDescription:(id)a6 completion:(id)a7;
+- (void)fireCompletion:(id)completion error:(id)error;
+- (void)fireCompletion:(id)completion openAppErrorCode:(int64_t)code;
+- (void)handleMessage:(id)message withType:(int64_t)type;
+- (void)sendActions:(id)actions withResult:(id)result;
+- (void)setKeyboardFocusApplication:(int)application deferringToken:(id)token completion:(id)completion;
+- (void)shutdownWithOptions:(id)options;
+- (void)terminateApplication:(id)application forReason:(int64_t)reason andReport:(BOOL)report withDescription:(id)description completion:(id)completion;
+- (void)terminateApplicationGroup:(int64_t)group forReason:(int64_t)reason andReport:(BOOL)report withDescription:(id)description completion:(id)completion;
 @end
 
 @implementation FBSSystemAppProxy
@@ -46,15 +46,15 @@ void __28__FBSSystemAppProxy_checkin__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-+ (id)checkoutProxyWithEndpoint:(id)a3
++ (id)checkoutProxyWithEndpoint:(id)endpoint
 {
-  v5 = a3;
-  if (!v5)
+  endpointCopy = endpoint;
+  if (!endpointCopy)
   {
-    v5 = +[(FBSServiceFacilityClient *)FBSSystemAppProxy];
-    if (!v5)
+    endpointCopy = +[(FBSServiceFacilityClient *)FBSSystemAppProxy];
+    if (!endpointCopy)
     {
-      [(FBSSystemAppProxy *)a2 checkoutProxyWithEndpoint:a1];
+      [(FBSSystemAppProxy *)a2 checkoutProxyWithEndpoint:self];
     }
   }
 
@@ -69,7 +69,7 @@ void __28__FBSSystemAppProxy_checkin__block_invoke(uint64_t a1, void *a2)
   v9[2] = __47__FBSSystemAppProxy_checkoutProxyWithEndpoint___block_invoke;
   v9[3] = &unk_1E76BF538;
   v11 = &v12;
-  v6 = v5;
+  v6 = endpointCopy;
   v10 = v6;
   __accessProxiesWithBlock(v9);
   v7 = v13[5];
@@ -201,9 +201,9 @@ void __46__FBSSystemAppProxy_isPasscodeLockedOrBlocked__block_invoke(uint64_t a1
 LABEL_9:
 }
 
-- (id)processHandleForBundleID:(id)a3
+- (id)processHandleForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -214,7 +214,7 @@ LABEL_9:
   v9[1] = 3221225472;
   v9[2] = __46__FBSSystemAppProxy_processHandleForBundleID___block_invoke;
   v9[3] = &unk_1E76BD578;
-  v5 = v4;
+  v5 = dCopy;
   v10 = v5;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -229,23 +229,23 @@ LABEL_9:
   return v6;
 }
 
-- (void)sendActions:(id)a3 withResult:(id)a4
+- (void)sendActions:(id)actions withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  actionsCopy = actions;
+  resultCopy = result;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __44__FBSSystemAppProxy_sendActions_withResult___block_invoke;
   v12[3] = &unk_1E76BD578;
-  v13 = v6;
+  v13 = actionsCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __44__FBSSystemAppProxy_sendActions_withResult___block_invoke_2;
   v10[3] = &unk_1E76BD5C8;
   v10[4] = self;
-  v11 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = resultCopy;
+  v8 = resultCopy;
+  v9 = actionsCopy;
   [(FBSSystemAppProxy *)self _sendMessageType:3 withMessage:v12 withReplyHandler:v10 waitForReply:0];
 }
 
@@ -277,19 +277,19 @@ void __44__FBSSystemAppProxy_sendActions_withResult___block_invoke_2(uint64_t a1
   [*(a1 + 32) fireCompletion:*(a1 + 40) openAppErrorCode:int64];
 }
 
-- (void)terminateApplication:(id)a3 forReason:(int64_t)a4 andReport:(BOOL)a5 withDescription:(id)a6 completion:(id)a7
+- (void)terminateApplication:(id)application forReason:(int64_t)reason andReport:(BOOL)report withDescription:(id)description completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  applicationCopy = application;
+  descriptionCopy = description;
+  completionCopy = completion;
   v15 = FBLogCommon();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v29 = objc_opt_class();
     v30 = 2114;
-    v31 = v12;
+    v31 = applicationCopy;
     v16 = v29;
     _os_log_impl(&dword_1A2DBB000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Sending request to terminate application %{public}@", buf, 0x16u);
   }
@@ -298,20 +298,20 @@ void __44__FBSSystemAppProxy_sendActions_withResult___block_invoke_2(uint64_t a1
   v23[1] = 3221225472;
   v23[2] = __89__FBSSystemAppProxy_terminateApplication_forReason_andReport_withDescription_completion___block_invoke;
   v23[3] = &unk_1E76BF5B0;
-  v25 = v13;
-  v26 = a4;
-  v27 = a5;
-  v24 = v12;
+  v25 = descriptionCopy;
+  reasonCopy = reason;
+  reportCopy = report;
+  v24 = applicationCopy;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __89__FBSSystemAppProxy_terminateApplication_forReason_andReport_withDescription_completion___block_invoke_2;
   v20[3] = &unk_1E76BF5D8;
   v20[4] = self;
   v21 = v24;
-  v22 = v14;
-  v17 = v14;
+  v22 = completionCopy;
+  v17 = completionCopy;
   v18 = v24;
-  v19 = v13;
+  v19 = descriptionCopy;
   [(FBSSystemAppProxy *)self _sendMessageType:4 withMessage:v23 withReplyHandler:v20 waitForReply:0];
 }
 
@@ -328,17 +328,17 @@ void __89__FBSSystemAppProxy_terminateApplication_forReason_andReport_withDescri
   }
 }
 
-- (void)terminateApplicationGroup:(int64_t)a3 forReason:(int64_t)a4 andReport:(BOOL)a5 withDescription:(id)a6 completion:(id)a7
+- (void)terminateApplicationGroup:(int64_t)group forReason:(int64_t)reason andReport:(BOOL)report withDescription:(id)description completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v12 = a6;
-  v13 = a7;
+  descriptionCopy = description;
+  completionCopy = completion;
   v14 = FBLogCommon();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = objc_opt_class();
     v16 = v15;
-    v17 = FBSApplicationTerminationGroupDescription(a3);
+    v17 = FBSApplicationTerminationGroupDescription(group);
     *buf = 138543618;
     v29 = v15;
     v30 = 2114;
@@ -350,19 +350,19 @@ void __89__FBSSystemAppProxy_terminateApplication_forReason_andReport_withDescri
   v23[1] = 3221225472;
   v23[2] = __94__FBSSystemAppProxy_terminateApplicationGroup_forReason_andReport_withDescription_completion___block_invoke;
   v23[3] = &unk_1E76BF600;
-  v25 = a3;
-  v26 = a4;
-  v27 = a5;
-  v24 = v12;
+  groupCopy = group;
+  reasonCopy = reason;
+  reportCopy = report;
+  v24 = descriptionCopy;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __94__FBSSystemAppProxy_terminateApplicationGroup_forReason_andReport_withDescription_completion___block_invoke_2;
   v20[3] = &unk_1E76BF628;
-  v21 = v13;
-  v22 = a3;
+  v21 = completionCopy;
+  groupCopy2 = group;
   v20[4] = self;
-  v18 = v13;
-  v19 = v12;
+  v18 = completionCopy;
+  v19 = descriptionCopy;
   [(FBSSystemAppProxy *)self _sendMessageType:5 withMessage:v23 withReplyHandler:v20 waitForReply:0];
 }
 
@@ -388,54 +388,54 @@ void __94__FBSSystemAppProxy_terminateApplicationGroup_forReason_andReport_withD
   [v3 _handleTerminationReply:v5 targetDescription:v6 withCompletion:a1[5]];
 }
 
-- (void)shutdownWithOptions:(id)a3
+- (void)shutdownWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__FBSSystemAppProxy_shutdownWithOptions___block_invoke;
   v6[3] = &unk_1E76BD578;
-  v7 = v4;
-  v5 = v4;
+  v7 = optionsCopy;
+  v5 = optionsCopy;
   [(FBSSystemAppProxy *)self _sendMessageType:6 withMessage:v6 withReplyHandler:0 waitForReply:0];
 }
 
-- (void)setKeyboardFocusApplication:(int)a3 deferringToken:(id)a4 completion:(id)a5
+- (void)setKeyboardFocusApplication:(int)application deferringToken:(id)token completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   v7 = FBLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     [FBSSystemAppProxy setKeyboardFocusApplication:deferringToken:completion:];
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v8 = [(FBSSystemAppProxy *)self clientCallbackQueue];
+    clientCallbackQueue = [(FBSSystemAppProxy *)self clientCallbackQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __75__FBSSystemAppProxy_setKeyboardFocusApplication_deferringToken_completion___block_invoke;
     block[3] = &unk_1E76BD318;
-    v10 = v6;
-    dispatch_async(v8, block);
+    v10 = completionCopy;
+    dispatch_async(clientCallbackQueue, block);
   }
 }
 
-- (void)_handleConnect:(id)a3
+- (void)_handleConnect:(id)connect
 {
-  [a3 payload];
+  [connect payload];
   objc_claimAutoreleasedReturnValue();
   BSDeserializeBSXPCEncodableObjectFromXPCDictionaryWithKey();
 }
 
-- (void)_handleTerminationReply:(id)a3 targetDescription:(id)a4 withCompletion:(id)a5
+- (void)_handleTerminationReply:(id)reply targetDescription:(id)description withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  replyCopy = reply;
+  descriptionCopy = description;
+  completionCopy = completion;
+  if (replyCopy)
   {
-    v11 = xpc_dictionary_get_value(v8, "result-int");
+    v11 = xpc_dictionary_get_value(replyCopy, "result-int");
     v12 = v11;
     if (v11)
     {
@@ -458,8 +458,8 @@ void __94__FBSSystemAppProxy_terminateApplicationGroup_forReason_andReport_withD
     v27[1] = 3221225472;
     v27[2] = __78__FBSSystemAppProxy__handleTerminationReply_targetDescription_withCompletion___block_invoke;
     v27[3] = &unk_1E76BF650;
-    v28 = v9;
-    v29 = v8;
+    v28 = descriptionCopy;
+    v29 = replyCopy;
     v30 = value;
     v14 = [v17 bs_errorWithDomain:v18 code:value configuration:v27];
   }
@@ -472,8 +472,8 @@ void __94__FBSSystemAppProxy_terminateApplicationGroup_forReason_andReport_withD
     v24[1] = 3221225472;
     v24[2] = __78__FBSSystemAppProxy__handleTerminationReply_targetDescription_withCompletion___block_invoke_2;
     v24[3] = &unk_1E76BE2F8;
-    v25 = v9;
-    v26 = self;
+    v25 = descriptionCopy;
+    selfCopy = self;
     v14 = [v15 bs_errorWithDomain:v16 code:64 configuration:v24];
     v12 = v25;
   }
@@ -489,16 +489,16 @@ LABEL_8:
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v20 = [(FBSSystemAppProxy *)self clientCallbackQueue];
+    clientCallbackQueue = [(FBSSystemAppProxy *)self clientCallbackQueue];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __78__FBSSystemAppProxy__handleTerminationReply_targetDescription_withCompletion___block_invoke_26;
     v21[3] = &unk_1E76BD750;
-    v23 = v10;
+    v23 = completionCopy;
     v22 = v14;
-    dispatch_async(v20, v21);
+    dispatch_async(clientCallbackQueue, v21);
   }
 }
 
@@ -532,41 +532,41 @@ void __78__FBSSystemAppProxy__handleTerminationReply_targetDescription_withCompl
   [v6 setCodeDescription:@"host down"];
 }
 
-- (void)handleMessage:(id)a3 withType:(int64_t)a4
+- (void)handleMessage:(id)message withType:(int64_t)type
 {
-  if (!a4)
+  if (!type)
   {
-    [(FBSSystemAppProxy *)self _handleConnect:a3];
+    [(FBSSystemAppProxy *)self _handleConnect:message];
   }
 }
 
-- (void)_sendMessageType:(int64_t)a3 withMessage:(id)a4 withReplyHandler:(id)a5 waitForReply:(BOOL)a6
+- (void)_sendMessageType:(int64_t)type withMessage:(id)message withReplyHandler:(id)handler waitForReply:(BOOL)reply
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = a5;
+  replyCopy = reply;
+  messageCopy = message;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __80__FBSSystemAppProxy__sendMessageType_withMessage_withReplyHandler_waitForReply___block_invoke;
   v16[3] = &unk_1E76BD700;
-  v12 = v10;
+  v12 = messageCopy;
   v17 = v12;
   v13 = [FBSXPCMessage messageWithPacker:v16];
-  if (v11)
+  if (handlerCopy)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __80__FBSSystemAppProxy__sendMessageType_withMessage_withReplyHandler_waitForReply___block_invoke_2;
     v14[3] = &unk_1E76BD728;
-    v15 = v11;
-    [(FBSServiceFacilityClient *)self sendMessage:v13 withType:a3 replyHandler:v14 waitForReply:v6 timeout:0.0];
+    v15 = handlerCopy;
+    [(FBSServiceFacilityClient *)self sendMessage:v13 withType:type replyHandler:v14 waitForReply:replyCopy timeout:0.0];
 
     v13 = v15;
   }
 
   else
   {
-    [(FBSServiceFacilityClient *)self sendMessage:v13 withType:a3 replyHandler:0 waitForReply:v6 timeout:0.0];
+    [(FBSServiceFacilityClient *)self sendMessage:v13 withType:type replyHandler:0 waitForReply:replyCopy timeout:0.0];
   }
 }
 
@@ -588,32 +588,32 @@ void __80__FBSSystemAppProxy__sendMessageType_withMessage_withReplyHandler_waitF
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)fireCompletion:(id)a3 error:(id)a4
+- (void)fireCompletion:(id)completion error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  completionCopy = completion;
+  errorCopy = error;
+  if (completionCopy)
   {
-    v8 = [(FBSSystemAppProxy *)self clientCallbackQueue];
+    clientCallbackQueue = [(FBSSystemAppProxy *)self clientCallbackQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __42__FBSSystemAppProxy_fireCompletion_error___block_invoke;
     v9[3] = &unk_1E76BD750;
-    v11 = v6;
-    v10 = v7;
-    dispatch_async(v8, v9);
+    v11 = completionCopy;
+    v10 = errorCopy;
+    dispatch_async(clientCallbackQueue, v9);
   }
 }
 
-- (void)fireCompletion:(id)a3 openAppErrorCode:(int64_t)a4
+- (void)fireCompletion:(id)completion openAppErrorCode:(int64_t)code
 {
-  v13 = a3;
-  if (a4)
+  completionCopy = completion;
+  if (code)
   {
-    a4 = FBSOpenApplicationErrorCreate(a4, 0, v6, v7, v8, v9, v10, v11, v12);
+    code = FBSOpenApplicationErrorCreate(code, 0, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  [(FBSSystemAppProxy *)self fireCompletion:v13 error:a4];
+  [(FBSSystemAppProxy *)self fireCompletion:completionCopy error:code];
 }
 
 + (void)checkoutProxyWithEndpoint:(const char *)a1 .cold.1(const char *a1, uint64_t a2)

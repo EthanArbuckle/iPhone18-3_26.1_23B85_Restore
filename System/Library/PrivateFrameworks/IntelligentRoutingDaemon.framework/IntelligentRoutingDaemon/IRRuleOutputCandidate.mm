@@ -1,20 +1,20 @@
 @interface IRRuleOutputCandidate
-- (id)evaluateRuleOutputWithCandidateIdentifier:(id)a3;
+- (id)evaluateRuleOutputWithCandidateIdentifier:(id)identifier;
 @end
 
 @implementation IRRuleOutputCandidate
 
-- (id)evaluateRuleOutputWithCandidateIdentifier:(id)a3
+- (id)evaluateRuleOutputWithCandidateIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(IRRuleOutputEvaluation);
-  v6 = [(IRRuleOutputCandidate *)self values];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  values = [(IRRuleOutputCandidate *)self values];
+  v7 = [values objectForKeyedSubscript:identifierCopy];
 
   if (v7)
   {
-    v8 = [(IRRuleOutputCandidate *)self values];
-    v9 = [v8 objectForKeyedSubscript:v4];
+    values2 = [(IRRuleOutputCandidate *)self values];
+    v9 = [values2 objectForKeyedSubscript:identifierCopy];
   }
 
   else

@@ -1,15 +1,15 @@
 @interface CKSendMenuViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 @end
 
 @implementation CKSendMenuViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKSendMenuViewController" hasInstanceMethod:@"sendMenuViewControllerDelegate" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"CKSendMenuViewControllerDelegate" hasRequiredInstanceMethod:@"sendMenuViewControllerRequestDismiss:"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKSendMenuViewController" hasInstanceMethod:@"sendMenuViewControllerDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"CKSendMenuViewControllerDelegate" hasRequiredInstanceMethod:@"sendMenuViewControllerRequestDismiss:"];
 }
 
 - (BOOL)accessibilityPerformEscape

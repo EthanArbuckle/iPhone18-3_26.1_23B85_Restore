@@ -1,22 +1,22 @@
 @interface WQAOverlayCoordinator
 - (BOOL)_astFocusRingIsVisible;
 - (BOOL)_astHasDoubleTapActivationGesture;
-- (BOOL)_shouldShowHintsForQuickActions:(id)a3;
-- (WQAOverlayCoordinator)initWithDataSource:(id)a3;
+- (BOOL)_shouldShowHintsForQuickActions:(id)actions;
+- (WQAOverlayCoordinator)initWithDataSource:(id)source;
 - (WQAOverlayDataSource)dataSource;
-- (id)_createNonAnimatingShapeLayerFromPath:(id)a3;
+- (id)_createNonAnimatingShapeLayerFromPath:(id)path;
 - (id)_localizedBannerInstructionText;
-- (void)_mainQueue_addAnimatedShapeLayerForQuickAction:(id)a3;
+- (void)_mainQueue_addAnimatedShapeLayerForQuickAction:(id)action;
 - (void)_mainQueue_backlightDidTurnOff;
 - (void)_mainQueue_backlightDidTurnOn;
 - (void)_mainQueue_cleanupHintViews;
 - (void)_mainQueue_cleanupShapeLayers;
-- (void)_mainQueue_removeShapeLayer:(id)a3;
-- (void)_mainQueue_showHintsWithPrimaryQuickActions:(id)a3 completion:(id)a4;
-- (void)_mainQueue_showUIForQuickActions:(id)a3;
+- (void)_mainQueue_removeShapeLayer:(id)layer;
+- (void)_mainQueue_showHintsWithPrimaryQuickActions:(id)actions completion:(id)completion;
+- (void)_mainQueue_showUIForQuickActions:(id)actions;
 - (void)_updateGestureSettings;
-- (void)animateConfirmationForQuickAction:(id)a3 completion:(id)a4;
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5;
+- (void)animateConfirmationForQuickAction:(id)action completion:(id)completion;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event;
 - (void)dealloc;
 - (void)refreshOverlaysIfNecessary;
 - (void)stopCurrentOverlays;
@@ -24,24 +24,24 @@
 
 @implementation WQAOverlayCoordinator
 
-- (WQAOverlayCoordinator)initWithDataSource:(id)a3
+- (WQAOverlayCoordinator)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v26.receiver = self;
   v26.super_class = WQAOverlayCoordinator;
   v5 = [(WQAOverlayCoordinator *)&v26 init];
   v6 = v5;
   if (v5)
   {
-    [(WQAOverlayCoordinator *)v5 setDataSource:v4];
-    v7 = [MEMORY[0x277CBEB18] array];
-    [(WQAOverlayCoordinator *)v6 setQuickActionShapeLayers:v7];
+    [(WQAOverlayCoordinator *)v5 setDataSource:sourceCopy];
+    array = [MEMORY[0x277CBEB18] array];
+    [(WQAOverlayCoordinator *)v6 setQuickActionShapeLayers:array];
 
-    v8 = [MEMORY[0x277CF0880] sharedBacklight];
-    [v8 addObserver:v6];
+    mEMORY[0x277CF0880] = [MEMORY[0x277CF0880] sharedBacklight];
+    [mEMORY[0x277CF0880] addObserver:v6];
 
-    v9 = [MEMORY[0x277CF0880] sharedBacklight];
-    v10 = [v9 backlightState] & 0xFFFFFFFFFFFFFFFELL;
+    mEMORY[0x277CF0880]2 = [MEMORY[0x277CF0880] sharedBacklight];
+    v10 = [mEMORY[0x277CF0880]2 backlightState] & 0xFFFFFFFFFFFFFFFELL;
 
     if (v10 == 2)
     {
@@ -51,8 +51,8 @@
     [(WQAOverlayCoordinator *)v6 _updateGestureSettings];
     if (WatchControlSettingsLibraryCore())
     {
-      v11 = [getWatchControlSettingsClass() sharedInstance];
-      [v11 addSettingsObserver:v6];
+      sharedInstance = [getWatchControlSettingsClass() sharedInstance];
+      [sharedInstance addSettingsObserver:v6];
 
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
       v32 = 0;
@@ -130,27 +130,27 @@ LABEL_12:
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v4 = [MEMORY[0x277CF0880] sharedBacklight];
-  [v4 removeObserver:self];
+  mEMORY[0x277CF0880] = [MEMORY[0x277CF0880] sharedBacklight];
+  [mEMORY[0x277CF0880] removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = WQAOverlayCoordinator;
   [(WQAOverlayCoordinator *)&v5 dealloc];
 }
 
-- (void)animateConfirmationForQuickAction:(id)a3 completion:(id)a4
+- (void)animateConfirmationForQuickAction:(id)action completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__WQAOverlayCoordinator_animateConfirmationForQuickAction_completion___block_invoke;
   block[3] = &unk_279E65A70;
-  v11 = v6;
-  v12 = v7;
+  v11 = actionCopy;
+  v12 = completionCopy;
   block[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = actionCopy;
+  v9 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -385,10 +385,10 @@ uint64_t __70__WQAOverlayCoordinator_animateConfirmationForQuickAction_completio
 {
   if (WatchControlSettingsLibraryCore())
   {
-    v3 = [getWatchControlSettingsClass() sharedInstance];
-    -[WQAOverlayCoordinator setReceivedActivationGesture:](self, "setReceivedActivationGesture:", [v3 receivedActivationGesture]);
-    -[WQAOverlayCoordinator setInputSourcesRequireFocusRing:](self, "setInputSourcesRequireFocusRing:", [v3 inputSourcesRequireFocusRing]);
-    v4 = [v3 greyActivationGesture];
+    sharedInstance = [getWatchControlSettingsClass() sharedInstance];
+    -[WQAOverlayCoordinator setReceivedActivationGesture:](self, "setReceivedActivationGesture:", [sharedInstance receivedActivationGesture]);
+    -[WQAOverlayCoordinator setInputSourcesRequireFocusRing:](self, "setInputSourcesRequireFocusRing:", [sharedInstance inputSourcesRequireFocusRing]);
+    greyActivationGesture = [sharedInstance greyActivationGesture];
     v8 = 0;
     v9 = &v8;
     v10 = 0x2020000000;
@@ -410,7 +410,7 @@ uint64_t __70__WQAOverlayCoordinator_animateConfirmationForQuickAction_completio
       _Unwind_Resume(v7);
     }
 
-    [(WQAOverlayCoordinator *)self setHasNoActivationGesture:v4 == *v5];
+    [(WQAOverlayCoordinator *)self setHasNoActivationGesture:greyActivationGesture == *v5];
   }
 }
 
@@ -432,8 +432,8 @@ uint64_t __70__WQAOverlayCoordinator_animateConfirmationForQuickAction_completio
     return 0;
   }
 
-  v2 = [getWatchControlSettingsClass() sharedInstance];
-  v3 = [v2 greyActivationGesture] == 3;
+  sharedInstance = [getWatchControlSettingsClass() sharedInstance];
+  v3 = [sharedInstance greyActivationGesture] == 3;
 
   return v3;
 }
@@ -441,10 +441,10 @@ uint64_t __70__WQAOverlayCoordinator_animateConfirmationForQuickAction_completio
 - (void)refreshOverlaysIfNecessary
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CF0880] sharedBacklight];
-  v4 = [v3 backlightState];
+  mEMORY[0x277CF0880] = [MEMORY[0x277CF0880] sharedBacklight];
+  backlightState = [mEMORY[0x277CF0880] backlightState];
 
-  if (v4 <= 1)
+  if (backlightState <= 1)
   {
     v5 = wqa_overlay_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -516,12 +516,12 @@ LABEL_12:
     }
   }
 
-  v9 = [(WQAOverlayCoordinator *)self dataSource];
-  v10 = [v9 quickActionsForOverlayCoordinator:self];
+  dataSource = [(WQAOverlayCoordinator *)self dataSource];
+  v10 = [dataSource quickActionsForOverlayCoordinator:self];
 
   if ([v10 count])
   {
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -542,8 +542,8 @@ LABEL_12:
           }
 
           v17 = *(*(&v21 + 1) + 8 * i);
-          v18 = [v17 identifier];
-          [v11 setObject:v17 forKeyedSubscript:v18];
+          identifier = [v17 identifier];
+          [dictionary setObject:v17 forKeyedSubscript:identifier];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
@@ -552,7 +552,7 @@ LABEL_12:
       while (v14);
     }
 
-    v19 = v11;
+    v19 = dictionary;
     AXPerformBlockOnMainThread();
   }
 
@@ -643,56 +643,56 @@ void __51__WQAOverlayCoordinator_refreshOverlaysIfNecessary__block_invoke(uint64
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_mainQueue_removeShapeLayer:(id)a3
+- (void)_mainQueue_removeShapeLayer:(id)layer
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  layerCopy = layer;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v4 = wqa_overlay_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = layerCopy;
     _os_log_impl(&dword_272AAE000, v4, OS_LOG_TYPE_INFO, "removing shape layer: %@", &v6, 0xCu);
   }
 
-  [v3 removeFromSuperlayer];
+  [layerCopy removeFromSuperlayer];
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_mainQueue_addAnimatedShapeLayerForQuickAction:(id)a3
+- (void)_mainQueue_addAnimatedShapeLayerForQuickAction:(id)action
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [v4 animationHandler];
-  if (v5)
+  animationHandler = [actionCopy animationHandler];
+  if (animationHandler)
   {
     v6 = wqa_overlay_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v23 = 138412546;
-      v24 = v5;
+      v24 = animationHandler;
       v25 = 2112;
-      v26 = v4;
+      v26 = actionCopy;
       _os_log_impl(&dword_272AAE000, v6, OS_LOG_TYPE_INFO, "animation handler: %@ will handle pulse for quick action: %@", &v23, 0x16u);
     }
 
-    [v5 quickActionWillPulse:v4];
+    [animationHandler quickActionWillPulse:actionCopy];
   }
 
   else
   {
-    v7 = [v4 quickActionHostingView];
-    v8 = [v4 quickActionPath];
-    v9 = v8;
-    if (v7 && v8)
+    quickActionHostingView = [actionCopy quickActionHostingView];
+    quickActionPath = [actionCopy quickActionPath];
+    v9 = quickActionPath;
+    if (quickActionHostingView && quickActionPath)
     {
       v10 = wqa_overlay_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v23 = 138412290;
-        v24 = v4;
+        v24 = actionCopy;
         _os_log_impl(&dword_272AAE000, v10, OS_LOG_TYPE_INFO, "adding shape layer for quick action: %@", &v23, 0xCu);
       }
 
@@ -709,10 +709,10 @@ void __51__WQAOverlayCoordinator_refreshOverlaysIfNecessary__block_invoke(uint64
       LODWORD(v14) = 2139095040;
       [v11 setRepeatCount:v14];
       v15 = +[WQAShapeLayer layer];
-      v16 = [v4 identifier];
-      [v15 setQuickActionIdentifier:v16];
+      identifier = [actionCopy identifier];
+      [v15 setQuickActionIdentifier:identifier];
 
-      [v15 setQuickActionVisualsToken:{objc_msgSend(v4, "currentVisualsToken")}];
+      [v15 setQuickActionVisualsToken:{objc_msgSend(actionCopy, "currentVisualsToken")}];
       [v15 setOpacity:0.0];
       [v15 setPath:{objc_msgSend(v9, "CGPath")}];
       [v9 bounds];
@@ -725,32 +725,32 @@ void __51__WQAOverlayCoordinator_refreshOverlaysIfNecessary__block_invoke(uint64
       [v15 setStrokeColor:{objc_msgSend(v18, "CGColor")}];
 
       [v15 setLineWidth:WQADefaultShapeLineWidth()];
-      v19 = [MEMORY[0x277D75348] clearColor];
-      [v15 setFillColor:{objc_msgSend(v19, "CGColor")}];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [v15 setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
-      v20 = [v7 layer];
-      [v20 addSublayer:v15];
+      layer = [quickActionHostingView layer];
+      [layer addSublayer:v15];
 
       [v15 addAnimation:v11 forKey:@"animations"];
-      v21 = [(WQAOverlayCoordinator *)self quickActionShapeLayers];
-      [v21 addObject:v15];
+      quickActionShapeLayers = [(WQAOverlayCoordinator *)self quickActionShapeLayers];
+      [quickActionShapeLayers addObject:v15];
     }
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createNonAnimatingShapeLayerFromPath:(id)a3
+- (id)_createNonAnimatingShapeLayerFromPath:(id)path
 {
   v3 = MEMORY[0x277CD9F90];
-  v4 = a3;
-  v5 = [v3 layer];
-  [v5 setPath:{objc_msgSend(v4, "CGPath")}];
-  [v4 bounds];
-  [v5 setBounds:?];
-  [v4 bounds];
+  pathCopy = path;
+  layer = [v3 layer];
+  [layer setPath:{objc_msgSend(pathCopy, "CGPath")}];
+  [pathCopy bounds];
+  [layer setBounds:?];
+  [pathCopy bounds];
   MidX = CGRectGetMidX(v19);
-  [v4 bounds];
+  [pathCopy bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -760,25 +760,25 @@ void __51__WQAOverlayCoordinator_refreshOverlaysIfNecessary__block_invoke(uint64
   v20.origin.y = v10;
   v20.size.width = v12;
   v20.size.height = v14;
-  [v5 setPosition:{MidX, CGRectGetMidY(v20)}];
+  [layer setPosition:{MidX, CGRectGetMidY(v20)}];
   v15 = WQADefaultTintColor();
-  [v5 setStrokeColor:{objc_msgSend(v15, "CGColor")}];
+  [layer setStrokeColor:{objc_msgSend(v15, "CGColor")}];
 
-  [v5 setLineWidth:WQADefaultShapeLineWidth()];
-  v16 = [MEMORY[0x277D75348] clearColor];
-  [v5 setFillColor:{objc_msgSend(v16, "CGColor")}];
+  [layer setLineWidth:WQADefaultShapeLineWidth()];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [layer setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
-  return v5;
+  return layer;
 }
 
-- (BOOL)_shouldShowHintsForQuickActions:(id)a3
+- (BOOL)_shouldShowHintsForQuickActions:(id)actions
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  v6 = [v5 applicationState];
+  actionsCopy = actions;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  applicationState = [mEMORY[0x277D75128] applicationState];
 
-  if (v6)
+  if (applicationState)
   {
     v7 = wqa_overlay_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -796,7 +796,7 @@ void __51__WQAOverlayCoordinator_refreshOverlaysIfNecessary__block_invoke(uint64
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = v4;
+    v9 = actionsCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v10)
     {
@@ -817,9 +817,9 @@ LABEL_7:
           break;
         }
 
-        v15 = [v14 animationHandler];
+        animationHandler = [v14 animationHandler];
 
-        if (v15)
+        if (animationHandler)
         {
           break;
         }
@@ -857,15 +857,15 @@ LABEL_16:
   return v8;
 }
 
-- (void)_mainQueue_showUIForQuickActions:(id)a3
+- (void)_mainQueue_showUIForQuickActions:(id)actions
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 ax_filteredArrayUsingBlock:&__block_literal_global_0];
+  v4 = [actions ax_filteredArrayUsingBlock:&__block_literal_global_0];
   if ([v4 count])
   {
-    v5 = [(WQAOverlayCoordinator *)self currentShapeLayersForHint];
+    currentShapeLayersForHint = [(WQAOverlayCoordinator *)self currentShapeLayersForHint];
 
-    if (!v5)
+    if (!currentShapeLayersForHint)
     {
       v6 = wqa_overlay_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -978,24 +978,24 @@ uint64_t __56__WQAOverlayCoordinator__localizedBannerInstructionText__block_invo
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_mainQueue_showHintsWithPrimaryQuickActions:(id)a3 completion:(id)a4
+- (void)_mainQueue_showHintsWithPrimaryQuickActions:(id)actions completion:(id)completion
 {
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v48 = self;
-  v8 = [(WQAOverlayCoordinator *)self _localizedBannerInstructionText];
+  actionsCopy = actions;
+  completionCopy = completion;
+  selfCopy = self;
+  _localizedBannerInstructionText = [(WQAOverlayCoordinator *)self _localizedBannerInstructionText];
   _AXSReduceMotionEnabled();
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v9 = v6;
+  v9 = actionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v58 objects:v64 count:16];
   if (v10)
   {
     v11 = v10;
-    v12 = 0;
+    localizedTitle = 0;
     v13 = *v59;
     do
     {
@@ -1007,9 +1007,9 @@ uint64_t __56__WQAOverlayCoordinator__localizedBannerInstructionText__block_invo
         }
 
         v15 = *(*(&v58 + 1) + 8 * i);
-        if (!v12)
+        if (!localizedTitle)
         {
-          v12 = [*(*(&v58 + 1) + 8 * i) localizedTitle];
+          localizedTitle = [*(*(&v58 + 1) + 8 * i) localizedTitle];
         }
 
         if (([v15 canShowOverlays] & 1) == 0)
@@ -1023,15 +1023,15 @@ uint64_t __56__WQAOverlayCoordinator__localizedBannerInstructionText__block_invo
 
     while (v11);
 
-    if (v12)
+    if (localizedTitle)
     {
       v44 = objc_opt_new();
       v43 = objc_opt_new();
       v47 = objc_opt_new();
-      if (![(WQAOverlayCoordinator *)v48 _astFocusRingIsVisible])
+      if (![(WQAOverlayCoordinator *)selfCopy _astFocusRingIsVisible])
       {
-        v41 = v8;
-        v42 = v7;
+        v41 = _localizedBannerInstructionText;
+        v42 = completionCopy;
         v56 = 0u;
         v57 = 0u;
         v54 = 0u;
@@ -1057,29 +1057,29 @@ uint64_t __56__WQAOverlayCoordinator__localizedBannerInstructionText__block_invo
               }
 
               v21 = *(*(&v54 + 1) + 8 * v20);
-              v22 = [v21 animationHandler];
-              if (v22)
+              animationHandler = [v21 animationHandler];
+              if (animationHandler)
               {
-                v23 = wqa_overlay_log();
-                if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
+                quickActionHostingView = wqa_overlay_log();
+                if (os_log_type_enabled(quickActionHostingView, OS_LOG_TYPE_INFO))
                 {
                   LODWORD(buf.a) = 138412546;
-                  *(&buf.a + 4) = v22;
+                  *(&buf.a + 4) = animationHandler;
                   WORD2(buf.b) = 2112;
                   *(&buf.b + 6) = v21;
-                  _os_log_impl(&dword_272AAE000, v23, OS_LOG_TYPE_INFO, "animation handler: %@ will handle hint for quick action: %@", &buf, 0x16u);
+                  _os_log_impl(&dword_272AAE000, quickActionHostingView, OS_LOG_TYPE_INFO, "animation handler: %@ will handle hint for quick action: %@", &buf, 0x16u);
                 }
               }
 
               else
               {
-                v23 = [v21 quickActionHostingView];
-                v24 = [v21 quickActionPrimaryView];
-                v25 = [v21 quickActionPath];
-                v26 = v25;
-                if (v23)
+                quickActionHostingView = [v21 quickActionHostingView];
+                quickActionPrimaryView = [v21 quickActionPrimaryView];
+                quickActionPath = [v21 quickActionPath];
+                v26 = quickActionPath;
+                if (quickActionHostingView)
                 {
-                  v27 = v24 == 0;
+                  v27 = quickActionPrimaryView == 0;
                 }
 
                 else
@@ -1087,17 +1087,17 @@ uint64_t __56__WQAOverlayCoordinator__localizedBannerInstructionText__block_invo
                   v27 = 1;
                 }
 
-                if (!v27 && v25 != 0)
+                if (!v27 && quickActionPath != 0)
                 {
-                  v29 = [(WQAOverlayCoordinator *)v48 _createNonAnimatingShapeLayerFromPath:v25];
-                  v30 = [v23 layer];
-                  [v30 addSublayer:v29];
+                  v29 = [(WQAOverlayCoordinator *)selfCopy _createNonAnimatingShapeLayerFromPath:quickActionPath];
+                  layer = [quickActionHostingView layer];
+                  [layer addSublayer:v29];
 
                   [v47 addObject:v29];
                   if ([v21 allowsResizingAnimations])
                   {
-                    [v44 addObject:v24];
-                    if (v23 != v24)
+                    [v44 addObject:quickActionPrimaryView];
+                    if (quickActionHostingView != quickActionPrimaryView)
                     {
                       [v43 addObject:v29];
                     }
@@ -1120,12 +1120,12 @@ uint64_t __56__WQAOverlayCoordinator__localizedBannerInstructionText__block_invo
           while (v18);
         }
 
-        v8 = v41;
-        v7 = v42;
+        _localizedBannerInstructionText = v41;
+        completionCopy = v42;
         v9 = v40;
       }
 
-      [(WQAOverlayCoordinator *)v48 setCurrentShapeLayersForHint:v47];
+      [(WQAOverlayCoordinator *)selfCopy setCurrentShapeLayersForHint:v47];
       v31 = _AXSReduceMotionEnabled();
       v32 = 0.93;
       memset(&buf.c, 0, 32);
@@ -1146,10 +1146,10 @@ uint64_t __56__WQAOverlayCoordinator__localizedBannerInstructionText__block_invo
       }
 
       v34 = +[WatchQuickActionsServices sharedInstance];
-      [v34 showInstructionalBannerWithTitle:v12 subtitle:v8];
+      [v34 showInstructionalBannerWithTitle:localizedTitle subtitle:_localizedBannerInstructionText];
 
       v50 = v9;
-      v51 = v7;
+      v51 = completionCopy;
       v35 = v47;
       v36 = v43;
       v37 = v44;
@@ -1170,8 +1170,8 @@ uint64_t __56__WQAOverlayCoordinator__localizedBannerInstructionText__block_invo
     _os_log_impl(&dword_272AAE000, v38, OS_LOG_TYPE_INFO, "no title to present banner with", &buf, 2u);
   }
 
-  (*(v7 + 2))(v7, 1);
-  v12 = 0;
+  (*(completionCopy + 2))(completionCopy, 1);
+  localizedTitle = 0;
 LABEL_46:
 
   v39 = *MEMORY[0x277D85DE8];
@@ -1739,16 +1739,16 @@ uint64_t __80__WQAOverlayCoordinator__mainQueue_showHintsWithPrimaryQuickActions
 {
   v16 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(WQAOverlayCoordinator *)self currentShapeLayersForHint];
+  currentShapeLayersForHint = [(WQAOverlayCoordinator *)self currentShapeLayersForHint];
 
-  if (v3)
+  if (currentShapeLayersForHint)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(WQAOverlayCoordinator *)self currentShapeLayersForHint];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    currentShapeLayersForHint2 = [(WQAOverlayCoordinator *)self currentShapeLayersForHint];
+    v5 = [currentShapeLayersForHint2 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1760,14 +1760,14 @@ uint64_t __80__WQAOverlayCoordinator__mainQueue_showHintsWithPrimaryQuickActions
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(currentShapeLayersForHint2);
           }
 
           [*(*(&v11 + 1) + 8 * v8++) removeFromSuperlayer];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [currentShapeLayersForHint2 countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -1794,18 +1794,18 @@ uint64_t __80__WQAOverlayCoordinator__mainQueue_showHintsWithPrimaryQuickActions
 
   if (_AXSWatchControlEnabled() && [(WQAOverlayCoordinator *)self inputSourcesRequireFocusRing]&& [(WQAOverlayCoordinator *)self hasNoActivationGesture])
   {
-    v4 = wqa_overlay_log();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    dataSource = wqa_overlay_log();
+    if (os_log_type_enabled(dataSource, OS_LOG_TYPE_INFO))
     {
       *v6 = 0;
-      _os_log_impl(&dword_272AAE000, v4, OS_LOG_TYPE_INFO, "activation gesture set to none, do not show overlays", v6, 2u);
+      _os_log_impl(&dword_272AAE000, dataSource, OS_LOG_TYPE_INFO, "activation gesture set to none, do not show overlays", v6, 2u);
     }
   }
 
   else
   {
-    v4 = [(WQAOverlayCoordinator *)self dataSource];
-    v5 = [v4 quickActionsForOverlayCoordinator:self];
+    dataSource = [(WQAOverlayCoordinator *)self dataSource];
+    v5 = [dataSource quickActionsForOverlayCoordinator:self];
     [(WQAOverlayCoordinator *)self _mainQueue_showUIForQuickActions:v5];
   }
 }
@@ -1827,17 +1827,17 @@ uint64_t __80__WQAOverlayCoordinator__mainQueue_showHintsWithPrimaryQuickActions
 {
   v35 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(WQAOverlayCoordinator *)self quickActionShapeLayers];
-  v4 = [v3 count];
+  quickActionShapeLayers = [(WQAOverlayCoordinator *)self quickActionShapeLayers];
+  v4 = [quickActionShapeLayers count];
 
   if (v4)
   {
     v5 = wqa_overlay_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(WQAOverlayCoordinator *)self quickActionShapeLayers];
+      quickActionShapeLayers2 = [(WQAOverlayCoordinator *)self quickActionShapeLayers];
       *buf = 138412290;
-      v34 = v6;
+      v34 = quickActionShapeLayers2;
       _os_log_impl(&dword_272AAE000, v5, OS_LOG_TYPE_INFO, "removing shape layers: %@", buf, 0xCu);
     }
 
@@ -1845,8 +1845,8 @@ uint64_t __80__WQAOverlayCoordinator__mainQueue_showHintsWithPrimaryQuickActions
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v7 = [(WQAOverlayCoordinator *)self quickActionShapeLayers];
-    v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    quickActionShapeLayers3 = [(WQAOverlayCoordinator *)self quickActionShapeLayers];
+    v8 = [quickActionShapeLayers3 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1857,28 +1857,28 @@ uint64_t __80__WQAOverlayCoordinator__mainQueue_showHintsWithPrimaryQuickActions
         {
           if (*v28 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(quickActionShapeLayers3);
           }
 
           [(WQAOverlayCoordinator *)self _mainQueue_removeShapeLayer:*(*(&v27 + 1) + 8 * i)];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v9 = [quickActionShapeLayers3 countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v9);
     }
 
-    v12 = [(WQAOverlayCoordinator *)self quickActionShapeLayers];
-    [v12 removeAllObjects];
+    quickActionShapeLayers4 = [(WQAOverlayCoordinator *)self quickActionShapeLayers];
+    [quickActionShapeLayers4 removeAllObjects];
   }
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [(WQAOverlayCoordinator *)self dataSource];
-  v14 = [v13 quickActionsForOverlayCoordinator:self];
+  dataSource = [(WQAOverlayCoordinator *)self dataSource];
+  v14 = [dataSource quickActionsForOverlayCoordinator:self];
 
   v15 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v15)
@@ -1895,11 +1895,11 @@ uint64_t __80__WQAOverlayCoordinator__mainQueue_showHintsWithPrimaryQuickActions
         }
 
         v19 = *(*(&v23 + 1) + 8 * j);
-        v20 = [v19 animationHandler];
-        v21 = v20;
-        if (v20)
+        animationHandler = [v19 animationHandler];
+        v21 = animationHandler;
+        if (animationHandler)
         {
-          [v20 quickActionDidBecomeInactive:v19];
+          [animationHandler quickActionDidBecomeInactive:v19];
         }
       }
 
@@ -1913,19 +1913,19 @@ uint64_t __80__WQAOverlayCoordinator__mainQueue_showHintsWithPrimaryQuickActions
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event
 {
-  v7 = a3;
-  v8 = a5;
-  if (v8)
+  backlightCopy = backlight;
+  eventCopy = event;
+  if (eventCopy)
   {
     v9 = wqa_overlay_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [WQAOverlayCoordinator backlight:v8 didCompleteUpdateToState:v9 forEvent:?];
+      [WQAOverlayCoordinator backlight:eventCopy didCompleteUpdateToState:v9 forEvent:?];
     }
 
-    v10 = v8;
+    v10 = eventCopy;
     if ([v10 previousState] >= 2)
     {
     }
@@ -1956,9 +1956,9 @@ LABEL_11:
       goto LABEL_13;
     }
 
-    v15 = [v14 state];
+    state = [v14 state];
 
-    if (v15 <= 1)
+    if (state <= 1)
     {
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;

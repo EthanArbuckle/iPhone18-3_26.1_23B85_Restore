@@ -1,37 +1,37 @@
 @interface GKTurnBasedParticipant
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
-+ (BOOL)matchOutcomeIsValidForDoneState:(int64_t)a3;
-+ (id)instanceMethodSignatureForSelector:(SEL)a3;
-+ (id)stringForMatchOutcome:(int64_t)a3 totalParticipant:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
++ (BOOL)matchOutcomeIsValidForDoneState:(int64_t)state;
++ (id)instanceMethodSignatureForSelector:(SEL)selector;
++ (id)stringForMatchOutcome:(int64_t)outcome totalParticipant:(int64_t)participant;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLocalPlayer;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (GKPlayer)invitedBy;
 - (GKPlayer)player;
-- (GKTurnBasedParticipant)initWithInternalRepresentation:(id)a3;
+- (GKTurnBasedParticipant)initWithInternalRepresentation:(id)representation;
 - (GKTurnBasedParticipantStatus)status;
 - (NSDate)lastTurnDate;
 - (NSString)matchStatusString;
 - (NSString)playerID;
-- (id)basicMatchOutcomeString:(int64_t)a3;
+- (id)basicMatchOutcomeString:(int64_t)string;
 - (id)description;
-- (id)matchOutcomeString:(int64_t)a3;
-- (id)matchOutcomeStringForLocalPlayer:(int64_t)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)matchOutcomeString:(int64_t)string;
+- (id)matchOutcomeStringForLocalPlayer:(int64_t)player;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
-- (void)setStatus:(int64_t)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setStatus:(int64_t)status;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation GKTurnBasedParticipant
 
-- (GKTurnBasedParticipant)initWithInternalRepresentation:(id)a3
+- (GKTurnBasedParticipant)initWithInternalRepresentation:(id)representation
 {
-  v4 = a3;
-  if (!v4)
+  representationCopy = representation;
+  if (!representationCopy)
   {
-    v4 = +[(GKInternalRepresentation *)GKTurnBasedParticipantInternal];
+    representationCopy = +[(GKInternalRepresentation *)GKTurnBasedParticipantInternal];
   }
 
   v8.receiver = self;
@@ -40,7 +40,7 @@
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_internal, v4);
+    objc_storeStrong(&v5->_internal, representationCopy);
   }
 
   return v6;
@@ -48,21 +48,21 @@
 
 - (unint64_t)hash
 {
-  v2 = [(GKTurnBasedParticipant *)self internal];
-  v3 = [v2 hash];
+  internal = [(GKTurnBasedParticipant *)self internal];
+  v3 = [internal hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(GKTurnBasedParticipant *)self internal];
-    v6 = [v4 internal];
-    v7 = [v5 isEqual:v6];
+    internal = [(GKTurnBasedParticipant *)self internal];
+    internal2 = [equalCopy internal];
+    v7 = [internal isEqual:internal2];
   }
 
   else
@@ -101,16 +101,16 @@
     }
   }
 
-  v9 = [(GKTurnBasedParticipant *)self internal];
-  v10 = [v9 player];
+  internal = [(GKTurnBasedParticipant *)self internal];
+  player = [internal player];
 
-  v11 = [v10 playerID];
+  playerID = [player playerID];
   v23 = v8;
-  if (v10 && [v10 isLocalPlayer])
+  if (player && [player isLocalPlayer])
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ (local player)", v11];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ (local player)", playerID];
 
-    v11 = v12;
+    playerID = v12;
   }
 
   if (v5)
@@ -138,7 +138,7 @@
 
   if ([MEMORY[0x277CCA8D8] _gkMainBundleIsGameCenterSystemProcess])
   {
-    v17 = v11;
+    v17 = playerID;
   }
 
   else
@@ -146,9 +146,9 @@
     v17 = &stru_283AFD1E0;
   }
 
-  v18 = [(GKTurnBasedParticipant *)self lastTurnDate];
-  v19 = [(GKTurnBasedParticipant *)self timeoutDate];
-  v20 = [v22 stringWithFormat:@"<%@ %p -%@%@ status:%@ matchOutcome:%@ lastTurnDate:%@ timeoutDate:%@>", v15, self, v16, v17, v13, v23, v18, v19];
+  lastTurnDate = [(GKTurnBasedParticipant *)self lastTurnDate];
+  timeoutDate = [(GKTurnBasedParticipant *)self timeoutDate];
+  v20 = [v22 stringWithFormat:@"<%@ %p -%@%@ status:%@ matchOutcome:%@ lastTurnDate:%@ timeoutDate:%@>", v15, self, v16, v17, v13, v23, lastTurnDate, timeoutDate];
 
   return v20;
 }
@@ -185,30 +185,30 @@ void __37__GKTurnBasedParticipant_description__block_invoke()
 
 - (GKTurnBasedParticipantStatus)status
 {
-  v2 = [(GKTurnBasedParticipant *)self internal];
-  v3 = [v2 status];
+  internal = [(GKTurnBasedParticipant *)self internal];
+  status = [internal status];
 
-  if ([v3 isEqualToString:@"Invited"])
+  if ([status isEqualToString:@"Invited"])
   {
     v4 = GKTurnBasedParticipantStatusInvited;
   }
 
-  else if ([v3 isEqualToString:@"Active"])
+  else if ([status isEqualToString:@"Active"])
   {
     v4 = GKTurnBasedParticipantStatusActive;
   }
 
-  else if ([v3 isEqualToString:@"Declined"])
+  else if ([status isEqualToString:@"Declined"])
   {
     v4 = GKTurnBasedParticipantStatusDeclined;
   }
 
-  else if ([v3 isEqualToString:@"Inactive"])
+  else if ([status isEqualToString:@"Inactive"])
   {
     v4 = GKTurnBasedParticipantStatusDone;
   }
 
-  else if ([v3 isEqualToString:@"Matching"])
+  else if ([status isEqualToString:@"Matching"])
   {
     v4 = GKTurnBasedParticipantStatusMatching;
   }
@@ -221,29 +221,29 @@ void __37__GKTurnBasedParticipant_description__block_invoke()
   return v4;
 }
 
-- (void)setStatus:(int64_t)a3
+- (void)setStatus:(int64_t)status
 {
-  v4 = [(GKTurnBasedParticipant *)self internal];
-  if (a3 > 4)
+  internal = [(GKTurnBasedParticipant *)self internal];
+  if (status > 4)
   {
     v5 = @"Inactive";
   }
 
   else
   {
-    v5 = off_2785E0288[a3];
+    v5 = off_2785E0288[status];
   }
 
-  v6 = v4;
-  [v4 setStatus:v5];
+  v6 = internal;
+  [internal setStatus:v5];
 }
 
-+ (id)stringForMatchOutcome:(int64_t)a3 totalParticipant:(int64_t)a4
++ (id)stringForMatchOutcome:(int64_t)outcome totalParticipant:(int64_t)participant
 {
-  v5 = a3;
+  outcomeCopy = outcome;
   v6 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings TURN_BASED_OUTCOME_NONE];
-  v7 = v5 & 0xFF00FFFF;
-  if ((v5 & 0xFF00FFFF) > 4)
+  v7 = outcomeCopy & 0xFF00FFFF;
+  if ((outcomeCopy & 0xFF00FFFF) > 4)
   {
     if (v7 <= 6)
     {
@@ -279,7 +279,7 @@ void __37__GKTurnBasedParticipant_description__block_invoke()
     }
 
     v12 = v10;
-    v11 = [v9 stringWithFormat:v10, a4];
+    participant = [v9 stringWithFormat:v10, participant];
 
     goto LABEL_25;
   }
@@ -318,10 +318,10 @@ void __37__GKTurnBasedParticipant_description__block_invoke()
   {
     v8 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings TURN_BASED_OUTCOME_QUIT];
 LABEL_22:
-    v11 = v8;
+    participant = v8;
 
 LABEL_25:
-    v6 = v11;
+    v6 = participant;
     goto LABEL_26;
   }
 
@@ -345,11 +345,11 @@ LABEL_26:
 
 - (NSString)matchStatusString
 {
-  v2 = [(GKTurnBasedParticipant *)self status];
+  status = [(GKTurnBasedParticipant *)self status];
   v3 = @"invalid status";
-  if (v2 > GKTurnBasedParticipantStatusDeclined)
+  if (status > GKTurnBasedParticipantStatusDeclined)
   {
-    switch(v2)
+    switch(status)
     {
       case GKTurnBasedParticipantStatusMatching:
         v3 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings TURN_BASED_PARTICIPANT_STATUS_MATCHING];
@@ -363,14 +363,14 @@ LABEL_26:
     }
   }
 
-  else if (v2)
+  else if (status)
   {
-    if (v2 == GKTurnBasedParticipantStatusInvited)
+    if (status == GKTurnBasedParticipantStatusInvited)
     {
       v3 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings TURN_BASED_PARTICIPANT_STATUS_INVITED];
     }
 
-    else if (v2 == GKTurnBasedParticipantStatusDeclined)
+    else if (status == GKTurnBasedParticipantStatusDeclined)
     {
       v3 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings TURN_BASED_PARTICIPANT_STATUS_DECLINED];
     }
@@ -384,14 +384,14 @@ LABEL_26:
   return v3;
 }
 
-- (id)basicMatchOutcomeString:(int64_t)a3
+- (id)basicMatchOutcomeString:(int64_t)string
 {
-  v4 = [(GKTurnBasedParticipant *)self matchOutcome];
+  matchOutcome = [(GKTurnBasedParticipant *)self matchOutcome];
 
-  return [GKTurnBasedParticipant stringForMatchOutcome:v4 totalParticipant:a3];
+  return [GKTurnBasedParticipant stringForMatchOutcome:matchOutcome totalParticipant:string];
 }
 
-- (id)matchOutcomeStringForLocalPlayer:(int64_t)a3
+- (id)matchOutcomeStringForLocalPlayer:(int64_t)player
 {
   v5 = [(GKTurnBasedParticipant *)self matchOutcome]& 0xFF00FFFFLL;
   if (v5 > 2)
@@ -421,7 +421,7 @@ LABEL_26:
       }
 
 LABEL_8:
-      v6 = [(GKTurnBasedParticipant *)self matchOutcomeString:a3];
+      v6 = [(GKTurnBasedParticipant *)self matchOutcomeString:player];
       goto LABEL_11;
     }
 
@@ -433,12 +433,12 @@ LABEL_11:
   return v6;
 }
 
-- (id)matchOutcomeString:(int64_t)a3
+- (id)matchOutcomeString:(int64_t)string
 {
   v5 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings TURN_BASED_OUTCOME_NONE];
   if ([(GKTurnBasedParticipant *)self status]== GKTurnBasedParticipantStatusDone)
   {
-    v6 = [(GKTurnBasedParticipant *)self basicMatchOutcomeString:a3];
+    v6 = [(GKTurnBasedParticipant *)self basicMatchOutcomeString:string];
 LABEL_5:
     v7 = v6;
 
@@ -463,14 +463,14 @@ LABEL_5:
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [(GKTurnBasedParticipant *)v9 matchOutcomeString:a3];
+      [(GKTurnBasedParticipant *)v9 matchOutcomeString:string];
     }
 
     v11 = MEMORY[0x277CCACA8];
     v12 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings TURN_BASED_PARTICIPANT_STATUS_OUTCOME_FORMAT];
-    v13 = [(GKTurnBasedParticipant *)self matchStatusString];
-    v14 = [(GKTurnBasedParticipant *)self basicMatchOutcomeString:a3];
-    v15 = [v11 stringWithFormat:v12, v13, v14];
+    matchStatusString = [(GKTurnBasedParticipant *)self matchStatusString];
+    v14 = [(GKTurnBasedParticipant *)self basicMatchOutcomeString:string];
+    v15 = [v11 stringWithFormat:v12, matchStatusString, v14];
 
     v5 = v15;
   }
@@ -482,10 +482,10 @@ LABEL_6:
 
 - (NSDate)lastTurnDate
 {
-  v2 = [(GKTurnBasedParticipant *)self internal];
-  v3 = [v2 lastTurnDate];
+  internal = [(GKTurnBasedParticipant *)self internal];
+  lastTurnDate = [internal lastTurnDate];
 
-  [v3 timeIntervalSince1970];
+  [lastTurnDate timeIntervalSince1970];
   if (v4 == 0.0)
   {
     v5 = 0;
@@ -493,15 +493,15 @@ LABEL_6:
 
   else
   {
-    v5 = v3;
+    v5 = lastTurnDate;
   }
 
   return v5;
 }
 
-+ (BOOL)matchOutcomeIsValidForDoneState:(int64_t)a3
++ (BOOL)matchOutcomeIsValidForDoneState:(int64_t)state
 {
-  v4 = (a3 & 0xFF00FFFF) - 1;
+  v4 = (state & 0xFF00FFFF) - 1;
   if (v4 >= 9)
   {
     v5 = os_log_GKGeneral;
@@ -513,7 +513,7 @@ LABEL_6:
 
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(GKTurnBasedParticipant *)v5 matchOutcomeIsValidForDoneState:a3];
+      [(GKTurnBasedParticipant *)v5 matchOutcomeIsValidForDoneState:state];
     }
   }
 
@@ -522,12 +522,12 @@ LABEL_6:
 
 - (GKPlayer)invitedBy
 {
-  v2 = [(GKTurnBasedParticipant *)self internal];
-  v3 = [v2 invitedBy];
+  internal = [(GKTurnBasedParticipant *)self internal];
+  invitedBy = [internal invitedBy];
 
-  if (v3)
+  if (invitedBy)
   {
-    v4 = [GKPlayer canonicalizedPlayerForInternal:v3];
+    v4 = [GKPlayer canonicalizedPlayerForInternal:invitedBy];
   }
 
   else
@@ -540,12 +540,12 @@ LABEL_6:
 
 - (GKPlayer)player
 {
-  v2 = [(GKTurnBasedParticipant *)self internal];
-  v3 = [v2 player];
+  internal = [(GKTurnBasedParticipant *)self internal];
+  player = [internal player];
 
-  if (v3)
+  if (player)
   {
-    v4 = [GKPlayer canonicalizedPlayerForInternal:v3];
+    v4 = [GKPlayer canonicalizedPlayerForInternal:player];
   }
 
   else
@@ -558,25 +558,25 @@ LABEL_6:
 
 - (NSString)playerID
 {
-  v2 = [(GKTurnBasedParticipant *)self player];
-  v3 = [v2 internal];
-  v4 = [v3 playerID];
+  player = [(GKTurnBasedParticipant *)self player];
+  internal = [player internal];
+  playerID = [internal playerID];
 
-  return v4;
+  return playerID;
 }
 
 - (BOOL)isLocalPlayer
 {
-  v2 = [(GKTurnBasedParticipant *)self internal];
-  v3 = [v2 player];
-  v4 = [v3 isLocalPlayer];
+  internal = [(GKTurnBasedParticipant *)self internal];
+  player = [internal player];
+  isLocalPlayer = [player isLocalPlayer];
 
-  return v4;
+  return isLocalPlayer;
 }
 
-+ (id)instanceMethodSignatureForSelector:(SEL)a3
++ (id)instanceMethodSignatureForSelector:(SEL)selector
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___GKTurnBasedParticipant;
   v4 = objc_msgSendSuper2(&v9, sel_instanceMethodSignatureForSelector_);
   v5 = v4;
@@ -587,7 +587,7 @@ LABEL_6:
 
   else
   {
-    v6 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v6 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -595,7 +595,7 @@ LABEL_6:
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = GKTurnBasedParticipant;
@@ -608,14 +608,14 @@ LABEL_6:
 
   else
   {
-    v8 = [(GKTurnBasedParticipant *)self forwardingTargetForSelector:a3];
-    v7 = [v8 methodSignatureForSelector:a3];
+    v8 = [(GKTurnBasedParticipant *)self forwardingTargetForSelector:selector];
+    v7 = [v8 methodSignatureForSelector:selector];
   }
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = GKTurnBasedParticipant;
@@ -626,18 +626,18 @@ LABEL_6:
 
   else
   {
-    v6 = [(GKTurnBasedParticipant *)self forwardingTargetForSelector:a3];
+    v6 = [(GKTurnBasedParticipant *)self forwardingTargetForSelector:selector];
     v5 = objc_opt_respondsToSelector();
   }
 
   return v5 & 1;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    if (class_respondsToSelector(a1, a3))
+    if (class_respondsToSelector(self, selector))
     {
       LOBYTE(v4) = 1;
     }
@@ -648,7 +648,7 @@ LABEL_6:
       if (v4)
       {
 
-        LOBYTE(v4) = [GKTurnBasedParticipantInternal instancesRespondToSelector:a3];
+        LOBYTE(v4) = [GKTurnBasedParticipantInternal instancesRespondToSelector:selector];
       }
     }
   }
@@ -661,21 +661,21 @@ LABEL_6:
   return v4;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKTurnBasedParticipant *)self internal];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  internal = [(GKTurnBasedParticipant *)self internal];
+  v6 = [internal valueForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKTurnBasedParticipant *)self internal];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  internal = [(GKTurnBasedParticipant *)self internal];
+  [internal setValue:valueCopy forKey:keyCopy];
 }
 
 + (void)stringForMatchOutcome:totalParticipant:.cold.1()

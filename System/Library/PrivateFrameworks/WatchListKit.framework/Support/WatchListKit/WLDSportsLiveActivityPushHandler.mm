@@ -1,19 +1,19 @@
 @interface WLDSportsLiveActivityPushHandler
-+ (BOOL)shouldSuppressNotification:(id)a3;
-- (BOOL)shouldHandleNotification:(id)a3;
++ (BOOL)shouldSuppressNotification:(id)notification;
+- (BOOL)shouldHandleNotification:(id)notification;
 - (id)connection;
-- (void)createLiveActivityForCanonicalId:(id)a3 supplementaryData:(id)a4 completion:(id)a5;
-- (void)handleGameStartNotification:(id)a3 completion:(id)a4;
-- (void)handleNotification:(id)a3 completion:(id)a4;
-- (void)handleSentimentNotification:(id)a3 completion:(id)a4;
-- (void)shouldSuppressNotificationForCanonicalId:(id)a3 comletion:(id)a4;
+- (void)createLiveActivityForCanonicalId:(id)id supplementaryData:(id)data completion:(id)completion;
+- (void)handleGameStartNotification:(id)notification completion:(id)completion;
+- (void)handleNotification:(id)notification completion:(id)completion;
+- (void)handleSentimentNotification:(id)notification completion:(id)completion;
+- (void)shouldSuppressNotificationForCanonicalId:(id)id comletion:(id)comletion;
 @end
 
 @implementation WLDSportsLiveActivityPushHandler
 
-- (BOOL)shouldHandleNotification:(id)a3
+- (BOOL)shouldHandleNotification:(id)notification
 {
-  v3 = [a3 wlk_dictionaryForKey:@"payload"];
+  v3 = [notification wlk_dictionaryForKey:@"payload"];
   if (!IsSentiment(v3))
   {
     if (!IsSession(v3))
@@ -46,9 +46,9 @@ LABEL_13:
     else
     {
       v14 = +[WLKSystemPreferencesStore sharedPreferences];
-      v15 = [v14 sportsScoreSpoilersAllowed];
+      sportsScoreSpoilersAllowed = [v14 sportsScoreSpoilersAllowed];
 
-      if (!v15)
+      if (!sportsScoreSpoilersAllowed)
       {
         goto LABEL_13;
       }
@@ -84,19 +84,19 @@ LABEL_14:
   return v7;
 }
 
-- (void)handleNotification:(id)a3 completion:(id)a4
+- (void)handleNotification:(id)notification completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 wlk_dictionaryForKey:@"payload"];
+  notificationCopy = notification;
+  completionCopy = completion;
+  v8 = [notificationCopy wlk_dictionaryForKey:@"payload"];
   if (IsSession(v8))
   {
-    [(WLDSportsLiveActivityPushHandler *)self handleGameStartNotification:v6 completion:v7];
+    [(WLDSportsLiveActivityPushHandler *)self handleGameStartNotification:notificationCopy completion:completionCopy];
   }
 
   else if (IsSentiment(v8))
   {
-    [(WLDSportsLiveActivityPushHandler *)self handleSentimentNotification:v6 completion:v7];
+    [(WLDSportsLiveActivityPushHandler *)self handleSentimentNotification:notificationCopy completion:completionCopy];
   }
 
   else
@@ -108,22 +108,22 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "WLDSportsLiveActivityPushHandler - Sport cannot handle unsupported notification type", v10, 2u);
     }
 
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)handleSentimentNotification:(id)a3 completion:(id)a4
+- (void)handleSentimentNotification:(id)notification completion:(id)completion
 {
-  v6 = a4;
-  v8 = [a3 wlk_dictionaryForKey:@"payload"];
+  completionCopy = completion;
+  v8 = [notification wlk_dictionaryForKey:@"payload"];
   v7 = [v8 wlk_stringForKey:@"entityId"];
-  [(WLDSportsLiveActivityPushHandler *)self shouldSuppressNotificationForCanonicalId:v7 comletion:v6];
+  [(WLDSportsLiveActivityPushHandler *)self shouldSuppressNotificationForCanonicalId:v7 comletion:completionCopy];
 }
 
-- (void)handleGameStartNotification:(id)a3 completion:(id)a4
+- (void)handleGameStartNotification:(id)notification completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 wlk_dictionaryForKey:@"payload"];
+  completionCopy = completion;
+  v7 = [notification wlk_dictionaryForKey:@"payload"];
   v8 = [v7 wlk_stringForKey:@"entityId"];
   v9 = objc_opt_new();
   v10 = [v7 wlk_dictionaryForKey:@"liveActivityAutostart"];
@@ -151,9 +151,9 @@ LABEL_14:
       if (v16)
       {
         v17 = v16;
-        v25 = v6;
+        v25 = completionCopy;
         v26 = v10;
-        v27 = self;
+        selfCopy = self;
         v18 = *v34;
         while (2)
         {
@@ -189,8 +189,8 @@ LABEL_14:
 
         v22 = 0;
 LABEL_19:
-        self = v27;
-        v6 = v25;
+        self = selfCopy;
+        completionCopy = v25;
         v10 = v26;
       }
 
@@ -224,8 +224,8 @@ LABEL_19:
   v30[2] = __75__WLDSportsLiveActivityPushHandler_handleGameStartNotification_completion___block_invoke;
   v30[3] = &unk_100045CF0;
   v31 = v8;
-  v32 = v6;
-  v23 = v6;
+  v32 = completionCopy;
+  v23 = completionCopy;
   v24 = v8;
   [(WLDSportsLiveActivityPushHandler *)self createLiveActivityForCanonicalId:v24 supplementaryData:v9 completion:v30];
 }
@@ -251,30 +251,30 @@ void __75__WLDSportsLiveActivityPushHandler_handleGameStartNotification_completi
   (*(*(a1 + 40) + 16))();
 }
 
-+ (BOOL)shouldSuppressNotification:(id)a3
++ (BOOL)shouldSuppressNotification:(id)notification
 {
-  v3 = [a3 wlk_stringForKey:@"entityId"];
+  v3 = [notification wlk_stringForKey:@"entityId"];
   v4 = +[WLKSettingsStore sharedSettings];
-  v5 = [v4 suppressedSportsEventIDs];
-  v6 = [v5 containsObject:v3];
+  suppressedSportsEventIDs = [v4 suppressedSportsEventIDs];
+  v6 = [suppressedSportsEventIDs containsObject:v3];
 
   return v6;
 }
 
-- (void)shouldSuppressNotificationForCanonicalId:(id)a3 comletion:(id)a4
+- (void)shouldSuppressNotificationForCanonicalId:(id)id comletion:(id)comletion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WLDSportsLiveActivityPushHandler *)self connection];
+  comletionCopy = comletion;
+  idCopy = id;
+  connection = [(WLDSportsLiveActivityPushHandler *)self connection];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __87__WLDSportsLiveActivityPushHandler_shouldSuppressNotificationForCanonicalId_comletion___block_invoke;
   v11[3] = &unk_100045D18;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
+  v12 = comletionCopy;
+  v9 = comletionCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:v11];
 
-  [v10 shouldSuppressNotification:v7 completion:v9];
+  [v10 shouldSuppressNotification:idCopy completion:v9];
 }
 
 void __87__WLDSportsLiveActivityPushHandler_shouldSuppressNotificationForCanonicalId_comletion___block_invoke(uint64_t a1, void *a2)
@@ -296,29 +296,29 @@ void __87__WLDSportsLiveActivityPushHandler_shouldSuppressNotificationForCanonic
   }
 }
 
-- (void)createLiveActivityForCanonicalId:(id)a3 supplementaryData:(id)a4 completion:(id)a5
+- (void)createLiveActivityForCanonicalId:(id)id supplementaryData:(id)data completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(WLDSportsLiveActivityPushHandler *)self connection];
+  idCopy = id;
+  completionCopy = completion;
+  dataCopy = data;
+  connection = [(WLDSportsLiveActivityPushHandler *)self connection];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = __98__WLDSportsLiveActivityPushHandler_createLiveActivityForCanonicalId_supplementaryData_completion___block_invoke;
   v19[3] = &unk_100045D18;
-  v12 = v9;
+  v12 = completionCopy;
   v20 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v19];
+  v13 = [connection remoteObjectProxyWithErrorHandler:v19];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __98__WLDSportsLiveActivityPushHandler_createLiveActivityForCanonicalId_supplementaryData_completion___block_invoke_10;
   v16[3] = &unk_100045CF0;
-  v17 = v8;
+  v17 = idCopy;
   v18 = v12;
   v14 = v12;
-  v15 = v8;
-  [v13 createActivityWithCanonicalId:v15 supplementaryData:v10 completion:v16];
+  v15 = idCopy;
+  [v13 createActivityWithCanonicalId:v15 supplementaryData:dataCopy completion:v16];
 }
 
 void __98__WLDSportsLiveActivityPushHandler_createLiveActivityForCanonicalId_supplementaryData_completion___block_invoke(uint64_t a1, void *a2)

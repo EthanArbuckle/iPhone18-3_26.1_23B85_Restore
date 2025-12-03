@@ -8,10 +8,10 @@
 - (ASCodableCloudKitDateComponents)as_codableDateComponents
 {
   v2 = objc_alloc_init(ASCodableCloudKitDateComponents);
-  -[ASCodableCloudKitDateComponents setYear:](v2, "setYear:", [a1 year]);
-  -[ASCodableCloudKitDateComponents setMonth:](v2, "setMonth:", [a1 month]);
-  -[ASCodableCloudKitDateComponents setDay:](v2, "setDay:", [a1 day]);
-  -[ASCodableCloudKitDateComponents setEra:](v2, "setEra:", [a1 era]);
+  -[ASCodableCloudKitDateComponents setYear:](v2, "setYear:", [self year]);
+  -[ASCodableCloudKitDateComponents setMonth:](v2, "setMonth:", [self month]);
+  -[ASCodableCloudKitDateComponents setDay:](v2, "setDay:", [self day]);
+  -[ASCodableCloudKitDateComponents setEra:](v2, "setEra:", [self era]);
 
   return v2;
 }

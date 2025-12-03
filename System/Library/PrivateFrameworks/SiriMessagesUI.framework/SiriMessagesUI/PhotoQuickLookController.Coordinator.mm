@@ -1,15 +1,15 @@
 @interface PhotoQuickLookController.Coordinator
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
 - (void)dismiss;
 @end
 
 @implementation PhotoQuickLookController.Coordinator
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
-  v5 = a3;
+  controllerCopy = controller;
 
-  v7 = sub_26803923C(v6, a4);
+  v7 = sub_26803923C(v6, index);
 
   return v7;
 }

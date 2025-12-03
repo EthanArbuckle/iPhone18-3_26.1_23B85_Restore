@@ -1,24 +1,24 @@
 @interface UITextReplacementGeneratorForMultilingualDictation
-- (UITextReplacementGeneratorForMultilingualDictation)initWithMultilingualAlternatives:(id)a3 stringToReplace:(id)a4 replacementRange:(id)a5;
+- (UITextReplacementGeneratorForMultilingualDictation)initWithMultilingualAlternatives:(id)alternatives stringToReplace:(id)replace replacementRange:(id)range;
 - (id)replacements;
 @end
 
 @implementation UITextReplacementGeneratorForMultilingualDictation
 
-- (UITextReplacementGeneratorForMultilingualDictation)initWithMultilingualAlternatives:(id)a3 stringToReplace:(id)a4 replacementRange:(id)a5
+- (UITextReplacementGeneratorForMultilingualDictation)initWithMultilingualAlternatives:(id)alternatives stringToReplace:(id)replace replacementRange:(id)range
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  alternativesCopy = alternatives;
+  replaceCopy = replace;
+  rangeCopy = range;
   v15.receiver = self;
   v15.super_class = UITextReplacementGeneratorForMultilingualDictation;
   v12 = [(UITextReplacementGeneratorForMultilingualDictation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    [(UITextReplacementGenerator *)v12 setStringToReplace:v10];
-    [(UITextReplacementGenerator *)v13 setReplacementRange:v11];
-    objc_storeStrong(&v13->_multilingualAlternatives, a3);
+    [(UITextReplacementGenerator *)v12 setStringToReplace:replaceCopy];
+    [(UITextReplacementGenerator *)v13 setReplacementRange:rangeCopy];
+    objc_storeStrong(&v13->_multilingualAlternatives, alternatives);
   }
 
   return v13;
@@ -27,13 +27,13 @@
 - (id)replacements
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(UITextReplacementGeneratorForMultilingualDictation *)self multilingualAlternatives];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  multilingualAlternatives = [(UITextReplacementGeneratorForMultilingualDictation *)self multilingualAlternatives];
+  v5 = [multilingualAlternatives countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -44,29 +44,29 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(multilingualAlternatives);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 text];
-        v11 = [(UITextReplacementGenerator *)self shouldAllowString:v10 intoReplacements:v3];
+        text = [v9 text];
+        v11 = [(UITextReplacementGenerator *)self shouldAllowString:text intoReplacements:array];
 
         if (v11)
         {
-          v12 = [(UITextReplacementGenerator *)self replacementRange];
-          v13 = [(UITextReplacementGenerator *)self stringToReplace];
-          v14 = [UIDictationMultilingualUtilities textReplacementFromMultilingualString:v9 replacementRange:v12 stringToReplace:v13];
-          [v3 addObject:v14];
+          replacementRange = [(UITextReplacementGenerator *)self replacementRange];
+          stringToReplace = [(UITextReplacementGenerator *)self stringToReplace];
+          v14 = [UIDictationMultilingualUtilities textReplacementFromMultilingualString:v9 replacementRange:replacementRange stringToReplace:stringToReplace];
+          [array addObject:v14];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [multilingualAlternatives countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
   }
 
-  v15 = [v3 copy];
+  v15 = [array copy];
 
   return v15;
 }

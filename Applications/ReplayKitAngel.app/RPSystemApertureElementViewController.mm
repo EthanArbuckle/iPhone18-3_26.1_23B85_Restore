@@ -3,7 +3,7 @@
 - (NSString)elementIdentifier;
 - (NSURL)launchURL;
 - (UIColor)keyColor;
-- (_TtC14ReplayKitAngel37RPSystemApertureElementViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC14ReplayKitAngel37RPSystemApertureElementViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)preferredHeightForBottomSafeArea;
 - (int64_t)activeLayoutMode;
 - (int64_t)contentRole;
@@ -17,20 +17,20 @@
 - (void)handleCompletionTimeout;
 - (void)handleCustomViewLongPressEvent;
 - (void)openSaveToDestination;
-- (void)setActiveLayoutMode:(int64_t)a3;
-- (void)setAssociatedAppBundleIdentifier:(id)a3;
-- (void)setContentRole:(int64_t)a3;
-- (void)setLaunchURL:(id)a3;
-- (void)setMaximumLayoutMode:(int64_t)a3;
-- (void)setPreferredHeightForBottomSafeArea:(double)a3;
-- (void)setPreferredLayoutMode:(int64_t)a3;
-- (void)setPresentationBehaviors:(unint64_t)a3;
-- (void)setStatusBarStyleOverridesToSuppress:(unint64_t)a3;
-- (void)showBannerWithURL:(id)a3 identifier:(id)a4 sessionID:(id)a5;
+- (void)setActiveLayoutMode:(int64_t)mode;
+- (void)setAssociatedAppBundleIdentifier:(id)identifier;
+- (void)setContentRole:(int64_t)role;
+- (void)setLaunchURL:(id)l;
+- (void)setMaximumLayoutMode:(int64_t)mode;
+- (void)setPreferredHeightForBottomSafeArea:(double)area;
+- (void)setPreferredLayoutMode:(int64_t)mode;
+- (void)setPresentationBehaviors:(unint64_t)behaviors;
+- (void)setStatusBarStyleOverridesToSuppress:(unint64_t)suppress;
+- (void)showBannerWithURL:(id)l identifier:(id)identifier sessionID:(id)d;
 - (void)startRecording;
 - (void)stopButtonTapped;
 - (void)viewDidLoad;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation RPSystemApertureElementViewController
@@ -42,11 +42,11 @@
   return *(self + v3);
 }
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
   v5 = OBJC_IVAR____TtC14ReplayKitAngel37RPSystemApertureElementViewController_activeLayoutMode;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = mode;
 }
 
 - (int64_t)contentRole
@@ -56,11 +56,11 @@
   return *(self + v3);
 }
 
-- (void)setContentRole:(int64_t)a3
+- (void)setContentRole:(int64_t)role
 {
   v5 = OBJC_IVAR____TtC14ReplayKitAngel37RPSystemApertureElementViewController_contentRole;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = role;
 }
 
 - (int64_t)preferredLayoutMode
@@ -70,11 +70,11 @@
   return *(self + v3);
 }
 
-- (void)setPreferredLayoutMode:(int64_t)a3
+- (void)setPreferredLayoutMode:(int64_t)mode
 {
   v5 = OBJC_IVAR____TtC14ReplayKitAngel37RPSystemApertureElementViewController_preferredLayoutMode;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = mode;
 }
 
 - (int64_t)maximumLayoutMode
@@ -84,11 +84,11 @@
   return *(self + v3);
 }
 
-- (void)setMaximumLayoutMode:(int64_t)a3
+- (void)setMaximumLayoutMode:(int64_t)mode
 {
   v5 = OBJC_IVAR____TtC14ReplayKitAngel37RPSystemApertureElementViewController_maximumLayoutMode;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = mode;
 }
 
 - (unint64_t)statusBarStyleOverridesToSuppress
@@ -98,11 +98,11 @@
   return *(self + v3);
 }
 
-- (void)setStatusBarStyleOverridesToSuppress:(unint64_t)a3
+- (void)setStatusBarStyleOverridesToSuppress:(unint64_t)suppress
 {
   v5 = OBJC_IVAR____TtC14ReplayKitAngel37RPSystemApertureElementViewController_statusBarStyleOverridesToSuppress;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = suppress;
 }
 
 - (double)preferredHeightForBottomSafeArea
@@ -112,11 +112,11 @@
   return *(self + v3);
 }
 
-- (void)setPreferredHeightForBottomSafeArea:(double)a3
+- (void)setPreferredHeightForBottomSafeArea:(double)area
 {
   v5 = OBJC_IVAR____TtC14ReplayKitAngel37RPSystemApertureElementViewController_preferredHeightForBottomSafeArea;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = area;
 }
 
 - (unint64_t)presentationBehaviors
@@ -126,11 +126,11 @@
   return *(self + v3);
 }
 
-- (void)setPresentationBehaviors:(unint64_t)a3
+- (void)setPresentationBehaviors:(unint64_t)behaviors
 {
   v5 = OBJC_IVAR____TtC14ReplayKitAngel37RPSystemApertureElementViewController_presentationBehaviors;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = behaviors;
 }
 
 - (NSString)elementIdentifier
@@ -166,9 +166,9 @@
   return v4;
 }
 
-- (void)setAssociatedAppBundleIdentifier:(id)a3
+- (void)setAssociatedAppBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -210,12 +210,12 @@
   return v10;
 }
 
-- (void)setLaunchURL:(id)a3
+- (void)setLaunchURL:(id)l
 {
   v5 = (*(*(sub_10000B62C(&qword_100068DF0, qword_100047E90) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v7 = &v12 - v6;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for URL();
@@ -230,44 +230,44 @@
 
   v10 = OBJC_IVAR____TtC14ReplayKitAngel37RPSystemApertureElementViewController_launchURL;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_1000298BC(v7, self + v10);
   swift_endAccess();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100017204();
 }
 
 - (void)handleCustomViewLongPressEvent
 {
-  v2 = self;
+  selfCopy = self;
   sub_100019E00();
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10001AA74(a3);
+  selfCopy = self;
+  sub_10001AA74(coordinator);
   swift_unknownObjectRelease();
 }
 
 - (void)stopButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001F814();
 }
 
 - (void)didEnterBackgroud
 {
-  v2 = self;
+  selfCopy = self;
   sub_100021DBC();
 }
 
-- (void)showBannerWithURL:(id)a3 identifier:(id)a4 sessionID:(id)a5
+- (void)showBannerWithURL:(id)l identifier:(id)identifier sessionID:(id)d
 {
   v7 = type metadata accessor for URL();
   v8 = *(v7 - 8);
@@ -275,10 +275,10 @@
   __chkstk_darwin(v7);
   v11 = &v18 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (identifier)
   {
     v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a4 = v13;
+    identifier = v13;
   }
 
   else
@@ -288,43 +288,43 @@
 
   v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
-  v17 = self;
-  sub_100022D48(v11, v12, a4, v14, v16);
+  selfCopy = self;
+  sub_100022D48(v11, v12, identifier, v14, v16);
 
   (*(v8 + 8))(v11, v7);
 }
 
 - (void)startRecording
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000243D4();
 }
 
 - (void)didTapStopButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_100024D6C();
 }
 
 - (void)handleCompletionTimeout
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000255AC();
 }
 
 - (void)openSaveToDestination
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002746C();
 }
 
 - (void)deleteRecording
 {
-  v2 = self;
+  selfCopy = self;
   sub_100027D3C();
 }
 
-- (_TtC14ReplayKitAngel37RPSystemApertureElementViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14ReplayKitAngel37RPSystemApertureElementViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

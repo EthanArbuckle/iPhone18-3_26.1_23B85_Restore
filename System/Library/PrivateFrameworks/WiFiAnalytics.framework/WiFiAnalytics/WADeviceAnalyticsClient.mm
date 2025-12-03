@@ -1,99 +1,99 @@
 @interface WADeviceAnalyticsClient
-+ (BOOL)isMigrationError:(id)a3;
-+ (id)bandAsString:(signed __int16)a3;
-+ (id)channelWidthAsString:(signed __int16)a3;
-+ (id)ouiFromBssid:(id)a3;
++ (BOOL)isMigrationError:(id)error;
++ (id)bandAsString:(signed __int16)string;
++ (id)channelWidthAsString:(signed __int16)string;
++ (id)ouiFromBssid:(id)bssid;
 + (id)sharedDeviceAnalyticsClient;
-+ (id)subBandAsString:(signed __int16)a3;
-+ (id)timeSpanSelectorToString:(unint64_t)a3;
-+ (id)timeSpanToString:(unint64_t)a3;
-+ (signed)bandFromChannelFlags:(unsigned int)a3;
-+ (signed)bandFromNSChannelFlags:(id)a3;
-+ (signed)channelWidthFromChannelFlags:(unsigned int)a3;
-+ (signed)convert32to16:(int)a3;
-+ (signed)subBandFromBand:(signed __int16)a3 channel:(unint64_t)a4;
-+ (void)addPersistentStoreRemoteChangeNotificationObserver:(id)a3 selector:(SEL)a4 coordinator:(id)a5;
-+ (void)removePersistentStoreRemoteChangeNotificationObserver:(id)a3 coordinator:(id)a4;
++ (id)subBandAsString:(signed __int16)string;
++ (id)timeSpanSelectorToString:(unint64_t)string;
++ (id)timeSpanToString:(unint64_t)string;
++ (signed)bandFromChannelFlags:(unsigned int)flags;
++ (signed)bandFromNSChannelFlags:(id)flags;
++ (signed)channelWidthFromChannelFlags:(unsigned int)flags;
++ (signed)convert32to16:(int)convert32to16;
++ (signed)subBandFromBand:(signed __int16)band channel:(unint64_t)channel;
++ (void)addPersistentStoreRemoteChangeNotificationObserver:(id)observer selector:(SEL)selector coordinator:(id)coordinator;
++ (void)removePersistentStoreRemoteChangeNotificationObserver:(id)observer coordinator:(id)coordinator;
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)getPolicyHandlersConfig;
-- (BOOL)deleteStoreAndStartFreshWithError:(id *)a3;
-- (BOOL)dhcpEventOnBssid:(id)a3 ssid:(id)a4 serverInfo:(id)a5 at:(id)a6 with:(id)a7 andDeferReclaimMem:(BOOL)a8;
-- (BOOL)diagnosticEventAt:(id)a3 with:(id)a4 andDeferReclaimMem:(BOOL)a5;
-- (BOOL)dumpDeploymentGraphJSONFileWithCompletion:(id)a3;
-- (BOOL)dumpDeviceAnalyticsCSVsUsingBatchSizeToFileWithCompletion:(id)a3 batchSize:(unint64_t)a4 maxAge:(unint64_t)a5;
-- (BOOL)dumpDeviceAnalyticsToFileWithCompletion:(id)a3;
-- (BOOL)dumpDeviceAnalyticsToFileWithCompletion:(id)a3 fetchLimit:(unint64_t)a4 maxAge:(unint64_t)a5;
-- (BOOL)dumpDeviceAnalyticsUsingBatchSizeToFileWithCompletion:(id)a3 batchSize:(unint64_t)a4 maxAge:(unint64_t)a5;
-- (BOOL)faultEventOn:(id)a3 at:(id)a4 type:(id)a5 interface:(id)a6 andDeferReclaimMem:(BOOL)a7;
-- (BOOL)geoTagEventOnBssid:(id)a3 ssid:(id)a4 lat:(double)a5 lon:(double)a6 at:(id)a7 andDeferReclaimMem:(BOOL)a8 andRunPostProcessing:(BOOL)a9;
-- (BOOL)immediateProcessCachedFaultsAndDeferReclaimMem:(BOOL)a3;
-- (BOOL)joinEventOnBssid:(id)a3 ssid:(id)a4 at:(id)a5 with:(id)a6 andDeferReclaimMem:(BOOL)a7 andRunPostProcessing:(BOOL)a8;
-- (BOOL)leaveEventOnBssid:(id)a3 ssid:(id)a4 at:(id)a5 with:(id)a6 andDeferReclaimMem:(BOOL)a7;
-- (BOOL)linkTestEventOn:(id)a3 at:(id)a4 with:(id)a5 andDeferReclaimMem:(BOOL)a6;
+- (BOOL)deleteStoreAndStartFreshWithError:(id *)error;
+- (BOOL)dhcpEventOnBssid:(id)bssid ssid:(id)ssid serverInfo:(id)info at:(id)at with:(id)with andDeferReclaimMem:(BOOL)mem;
+- (BOOL)diagnosticEventAt:(id)at with:(id)with andDeferReclaimMem:(BOOL)mem;
+- (BOOL)dumpDeploymentGraphJSONFileWithCompletion:(id)completion;
+- (BOOL)dumpDeviceAnalyticsCSVsUsingBatchSizeToFileWithCompletion:(id)completion batchSize:(unint64_t)size maxAge:(unint64_t)age;
+- (BOOL)dumpDeviceAnalyticsToFileWithCompletion:(id)completion;
+- (BOOL)dumpDeviceAnalyticsToFileWithCompletion:(id)completion fetchLimit:(unint64_t)limit maxAge:(unint64_t)age;
+- (BOOL)dumpDeviceAnalyticsUsingBatchSizeToFileWithCompletion:(id)completion batchSize:(unint64_t)size maxAge:(unint64_t)age;
+- (BOOL)faultEventOn:(id)on at:(id)at type:(id)type interface:(id)interface andDeferReclaimMem:(BOOL)mem;
+- (BOOL)geoTagEventOnBssid:(id)bssid ssid:(id)ssid lat:(double)lat lon:(double)lon at:(id)at andDeferReclaimMem:(BOOL)mem andRunPostProcessing:(BOOL)processing;
+- (BOOL)immediateProcessCachedFaultsAndDeferReclaimMem:(BOOL)mem;
+- (BOOL)joinEventOnBssid:(id)bssid ssid:(id)ssid at:(id)at with:(id)with andDeferReclaimMem:(BOOL)mem andRunPostProcessing:(BOOL)processing;
+- (BOOL)leaveEventOnBssid:(id)bssid ssid:(id)ssid at:(id)at with:(id)with andDeferReclaimMem:(BOOL)mem;
+- (BOOL)linkTestEventOn:(id)on at:(id)at with:(id)with andDeferReclaimMem:(BOOL)mem;
 - (BOOL)loadStoreIfNeeded;
-- (BOOL)lqmEvent:(id)a3 on:(id)a4 at:(id)a5 andDeferReclaimMem:(BOOL)a6;
-- (BOOL)parsedBeaconInfoIsStored:(id)a3 ssid:(id)a4;
-- (BOOL)performPrunePoliciesWithReasons:(id)a3 withError:(id *)a4;
-- (BOOL)performPruneTestBSSes:(id)a3 networks:(id)a4 lans:(id)a5 withError:(id *)a6;
-- (BOOL)processDeferredPoliciesWithReason:(id)a3;
-- (BOOL)processDeferredPriorityPoliciesWithReason:(id)a3;
+- (BOOL)lqmEvent:(id)event on:(id)on at:(id)at andDeferReclaimMem:(BOOL)mem;
+- (BOOL)parsedBeaconInfoIsStored:(id)stored ssid:(id)ssid;
+- (BOOL)performPrunePoliciesWithReasons:(id)reasons withError:(id *)error;
+- (BOOL)performPruneTestBSSes:(id)ses networks:(id)networks lans:(id)lans withError:(id *)error;
+- (BOOL)processDeferredPoliciesWithReason:(id)reason;
+- (BOOL)processDeferredPriorityPoliciesWithReason:(id)reason;
 - (BOOL)rawAccessCanWrite;
-- (BOOL)recoveryEventOnBssid:(id)a3 at:(id)a4 with:(id)a5 andDeferReclaimMem:(BOOL)a6;
-- (BOOL)removeKnownNetworkEvent:(id)a3 at:(id)a4 andDeferReclaimMem:(BOOL)a5;
-- (BOOL)roamEvent:(id)a3 at:(id)a4 andDeferReclaimMem:(BOOL)a5 andRunPostProcessing:(BOOL)a6 withError:(id *)a7;
-- (BOOL)scanResultEventWith:(id)a3 ssid:(id)a4 whileOn:(id)a5 at:(id)a6 with:(id)a7 andDeferReclaimMem:(BOOL)a8;
-- (BOOL)updateBSS:(id)a3 withParsedBeacon:(id)a4 andDeferReclaimMem:(BOOL)a5;
-- (BOOL)updateNetwork:(id)a3 switchedFrom:(id)a4 at:(id)a5 andDeferReclaimMem:(BOOL)a6;
-- (BOOL)updateRoamPoliciesForSourceBssid:(id)a3 andUpdateRoamCache:(BOOL)a4;
+- (BOOL)recoveryEventOnBssid:(id)bssid at:(id)at with:(id)with andDeferReclaimMem:(BOOL)mem;
+- (BOOL)removeKnownNetworkEvent:(id)event at:(id)at andDeferReclaimMem:(BOOL)mem;
+- (BOOL)roamEvent:(id)event at:(id)at andDeferReclaimMem:(BOOL)mem andRunPostProcessing:(BOOL)processing withError:(id *)error;
+- (BOOL)scanResultEventWith:(id)with ssid:(id)ssid whileOn:(id)on at:(id)at with:(id)a7 andDeferReclaimMem:(BOOL)mem;
+- (BOOL)updateBSS:(id)s withParsedBeacon:(id)beacon andDeferReclaimMem:(BOOL)mem;
+- (BOOL)updateNetwork:(id)network switchedFrom:(id)from at:(id)at andDeferReclaimMem:(BOOL)mem;
+- (BOOL)updateRoamPoliciesForSourceBssid:(id)bssid andUpdateRoamCache:(BOOL)cache;
 - (WADeviceAnalyticsClient)init;
-- (id)adaptiveRoamingParamsForBSS:(id)a3;
+- (id)adaptiveRoamingParamsForBSS:(id)s;
 - (id)analyticsFileWriter;
 - (id)analyticsProcessor;
 - (id)analyticsRawAccess;
 - (id)analyticsReader;
-- (id)apProfileForBssid:(id)a3;
-- (id)bandsInNetwork:(id)a3 withError:(id *)a4;
-- (id)bssidCountByBandInLAN:(id)a3 withError:(id *)a4;
+- (id)apProfileForBssid:(id)bssid;
+- (id)bandsInNetwork:(id)network withError:(id *)error;
+- (id)bssidCountByBandInLAN:(id)n withError:(id *)error;
 - (id)copyAllStoredNetworkSsids;
-- (id)copyGeoTagsForNetwork:(id)a3 location:(id)a4;
-- (id)copyLocationsForNetwork:(id)a3;
+- (id)copyGeoTagsForNetwork:(id)network location:(id)location;
+- (id)copyLocationsForNetwork:(id)network;
 - (id)dumpDeploymentGraphJSONFile;
-- (id)dumpDeviceAnalyticsCSVsToFileWithBatchSize:(unint64_t)a3 maxAge:(unint64_t)a4;
+- (id)dumpDeviceAnalyticsCSVsToFileWithBatchSize:(unint64_t)size maxAge:(unint64_t)age;
 - (id)dumpDeviceAnalyticsToFile;
-- (id)dumpDeviceAnalyticsToFileWithFetchLimit:(unint64_t)a3 maxAge:(unint64_t)a4;
-- (id)dumpDeviceAnalyticsUsingBatchSizeToFileWithBatchSize:(unint64_t)a3 maxAge:(unint64_t)a4;
-- (id)edgeParamsForBSS:(id)a3;
+- (id)dumpDeviceAnalyticsToFileWithFetchLimit:(unint64_t)limit maxAge:(unint64_t)age;
+- (id)dumpDeviceAnalyticsUsingBatchSizeToFileWithBatchSize:(unint64_t)size maxAge:(unint64_t)age;
+- (id)edgeParamsForBSS:(id)s;
 - (id)entities;
-- (id)lanForBssid:(id)a3 withError:(id *)a4;
-- (id)lanForSsid:(id)a3 withError:(id *)a4;
-- (id)lansForSsid:(id)a3 withError:(id *)a4;
-- (id)networkSsidsByTraits:(id)a3 withError:(id *)a4;
-- (id)networksAvailableAtLocation:(id)a3 withinDistance:(double)a4 inBand:(unsigned int)a5;
-- (id)networksInLan:(id)a3 withError:(id *)a4;
-- (id)networksInSameLanAs:(id)a3 withError:(id *)a4;
-- (id)networksInSameLanAsBssid:(id)a3 withError:(id *)a4;
-- (id)performFetch:(id)a3 error:(id *)a4;
-- (id)updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)a3 maxAgeInDays:(unint64_t)a4;
-- (id)usageForLAN:(id)a3 withError:(id *)a4;
-- (id)usageForNetwork:(id)a3 withError:(id *)a4;
-- (id)usageOf:(id)a3 during:(unint64_t)a4 timeSpan:(unint64_t)a5 withError:(id *)a6;
-- (id)usageOf:(id)a3 timeSpan:(unint64_t)a4 around:(id)a5 withError:(id *)a6;
-- (signed)deploymentCongestionForSSID:(id)a3 withError:(id *)a4;
-- (signed)deploymentCoverageForSSID:(id)a3 withError:(id *)a4;
-- (unint64_t)countForFetchRequest:(id)a3 error:(id *)a4;
-- (unint64_t)countNetworksHavingBand:(signed __int16)a3 inLan:(id)a4 withError:(id *)a5;
-- (unint64_t)countNetworksInSameLanAs:(id)a3 withError:(id *)a4;
-- (unint64_t)countNetworksInSameLanAsBssid:(id)a3 withError:(id *)a4;
-- (unint64_t)isNetworkWithinRangeOfLocation:(id)a3 range:(double)a4 location:(id)a5;
-- (unint64_t)networkCountForLAN:(id)a3 withError:(id *)a4;
-- (unint64_t)performPruneTestEntity:(id)a3 since:(id)a4 withPredicate:(id)a5 withError:(id *)a6;
-- (void)addPersistentStoreRemoteChangeNotificationObserver:(id)a3 selector:(SEL)a4;
+- (id)lanForBssid:(id)bssid withError:(id *)error;
+- (id)lanForSsid:(id)ssid withError:(id *)error;
+- (id)lansForSsid:(id)ssid withError:(id *)error;
+- (id)networkSsidsByTraits:(id)traits withError:(id *)error;
+- (id)networksAvailableAtLocation:(id)location withinDistance:(double)distance inBand:(unsigned int)band;
+- (id)networksInLan:(id)lan withError:(id *)error;
+- (id)networksInSameLanAs:(id)as withError:(id *)error;
+- (id)networksInSameLanAsBssid:(id)bssid withError:(id *)error;
+- (id)performFetch:(id)fetch error:(id *)error;
+- (id)updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)network maxAgeInDays:(unint64_t)days;
+- (id)usageForLAN:(id)n withError:(id *)error;
+- (id)usageForNetwork:(id)network withError:(id *)error;
+- (id)usageOf:(id)of during:(unint64_t)during timeSpan:(unint64_t)span withError:(id *)error;
+- (id)usageOf:(id)of timeSpan:(unint64_t)span around:(id)around withError:(id *)error;
+- (signed)deploymentCongestionForSSID:(id)d withError:(id *)error;
+- (signed)deploymentCoverageForSSID:(id)d withError:(id *)error;
+- (unint64_t)countForFetchRequest:(id)request error:(id *)error;
+- (unint64_t)countNetworksHavingBand:(signed __int16)band inLan:(id)lan withError:(id *)error;
+- (unint64_t)countNetworksInSameLanAs:(id)as withError:(id *)error;
+- (unint64_t)countNetworksInSameLanAsBssid:(id)bssid withError:(id *)error;
+- (unint64_t)isNetworkWithinRangeOfLocation:(id)location range:(double)range location:(id)a5;
+- (unint64_t)networkCountForLAN:(id)n withError:(id *)error;
+- (unint64_t)performPruneTestEntity:(id)entity since:(id)since withPredicate:(id)predicate withError:(id *)error;
+- (void)addPersistentStoreRemoteChangeNotificationObserver:(id)observer selector:(SEL)selector;
 - (void)dealloc;
-- (void)performPruneBasedOnStoreSizeAndSaveWithReason:(id)a3;
-- (void)processDatapathMetricStream:(id)a3 withDate:(id)a4;
-- (void)processWiFiStats:(id)a3;
-- (void)removePersistentStoreRemoteChangeNotificationObserver:(id)a3;
+- (void)performPruneBasedOnStoreSizeAndSaveWithReason:(id)reason;
+- (void)processDatapathMetricStream:(id)stream withDate:(id)date;
+- (void)processWiFiStats:(id)stats;
+- (void)removePersistentStoreRemoteChangeNotificationObserver:(id)observer;
 - (void)resetPolicyHandlersConfig;
-- (void)setPolicyHandlersConfig:(id *)a3;
+- (void)setPolicyHandlersConfig:(id *)config;
 @end
 
 @implementation WADeviceAnalyticsClient
@@ -234,7 +234,7 @@ LABEL_10:
       v9 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [(WADeviceAnalyticsClient *)v5 dispatchQueue];
+        dispatchQueue = [(WADeviceAnalyticsClient *)v5 dispatchQueue];
         *buf = 136446978;
         v21 = "[WADeviceAnalyticsClient init]";
         v22 = 1024;
@@ -242,18 +242,18 @@ LABEL_10:
         v24 = 2048;
         v25 = v5;
         v26 = 2112;
-        v27 = v10;
+        v27 = dispatchQueue;
         _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_DEBUG, "%{public}s::%d:WADeviceAnalyticsClient %p %@", buf, 0x26u);
       }
 
-      v11 = [(WADeviceAnalyticsClient *)v5 dispatchQueue];
+      dispatchQueue2 = [(WADeviceAnalyticsClient *)v5 dispatchQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __31__WADeviceAnalyticsClient_init__block_invoke;
       block[3] = &unk_1E830D880;
       v12 = v5;
       v18 = v12;
-      dispatch_sync(v11, block);
+      dispatch_sync(dispatchQueue2, block);
 
       v5 = v18;
     }
@@ -433,25 +433,25 @@ void __31__WADeviceAnalyticsClient_init__block_invoke(uint64_t a1)
   [(WADeviceAnalyticsClient *)&v6 dealloc];
 }
 
-+ (BOOL)isMigrationError:(id)a3
++ (BOOL)isMigrationError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = v4 == *MEMORY[0x1E696A250] && ([v3 code] == 134100 || objc_msgSend(v3, "code") == 134110 || objc_msgSend(v3, "code") == 134111 || objc_msgSend(v3, "code") == 134150 || objc_msgSend(v3, "code") == 134160 || objc_msgSend(v3, "code") == 134140);
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = domain == *MEMORY[0x1E696A250] && ([errorCopy code] == 134100 || objc_msgSend(errorCopy, "code") == 134110 || objc_msgSend(errorCopy, "code") == 134111 || objc_msgSend(errorCopy, "code") == 134150 || objc_msgSend(errorCopy, "code") == 134160 || objc_msgSend(errorCopy, "code") == 134140);
 
   return v5;
 }
 
-- (BOOL)deleteStoreAndStartFreshWithError:(id *)a3
+- (BOOL)deleteStoreAndStartFreshWithError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = [(WADeviceAnalyticsClient *)self persistentContainer];
-  v6 = [v5 persistentStoreDescriptions];
-  v7 = [v6 firstObject];
+  persistentContainer = [(WADeviceAnalyticsClient *)self persistentContainer];
+  persistentStoreDescriptions = [persistentContainer persistentStoreDescriptions];
+  firstObject = [persistentStoreDescriptions firstObject];
 
-  v8 = [(WADeviceAnalyticsClient *)self persistentContainer];
-  v9 = [v8 persistentStoreCoordinator];
-  v10 = [v9 persistentStores];
+  persistentContainer2 = [(WADeviceAnalyticsClient *)self persistentContainer];
+  persistentStoreCoordinator = [persistentContainer2 persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
 
   v11 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -461,13 +461,13 @@ void __31__WADeviceAnalyticsClient_init__block_invoke(uint64_t a1)
     v32 = 1024;
     v33 = 167;
     v34 = 2048;
-    v35 = [v10 count];
+    v35 = [persistentStores count];
     v36 = 2112;
-    v37 = v10;
+    v37 = persistentStores;
     _os_log_impl(&dword_1C8460000, v11, OS_LOG_TYPE_DEBUG, "%{public}s::%d:%ld stores: %@", &v30, 0x26u);
   }
 
-  if (!a3)
+  if (!error)
   {
     v21 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
@@ -485,14 +485,14 @@ void __31__WADeviceAnalyticsClient_init__block_invoke(uint64_t a1)
     goto LABEL_10;
   }
 
-  if ([v10 count])
+  if ([persistentStores count])
   {
-    v12 = [(WADeviceAnalyticsClient *)self persistentContainer];
-    v13 = [v12 persistentStoreCoordinator];
-    v14 = [v10 firstObject];
-    [v13 removePersistentStore:v14 error:a3];
+    persistentContainer3 = [(WADeviceAnalyticsClient *)self persistentContainer];
+    persistentStoreCoordinator2 = [persistentContainer3 persistentStoreCoordinator];
+    firstObject2 = [persistentStores firstObject];
+    [persistentStoreCoordinator2 removePersistentStore:firstObject2 error:error];
 
-    if (*a3)
+    if (*error)
     {
       v21 = WALogCategoryDeviceStoreHandle();
       if (!os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
@@ -500,7 +500,7 @@ void __31__WADeviceAnalyticsClient_init__block_invoke(uint64_t a1)
         goto LABEL_11;
       }
 
-      v29 = *a3;
+      v29 = *error;
       v30 = 136446722;
       v31 = "[WADeviceAnalyticsClient deleteStoreAndStartFreshWithError:]";
       v32 = 1024;
@@ -517,13 +517,13 @@ LABEL_10:
     }
   }
 
-  v15 = [(WADeviceAnalyticsClient *)self persistentContainer];
-  v16 = [v15 persistentStoreCoordinator];
-  v17 = [v7 URL];
-  v18 = [v7 type];
-  [v16 destroyPersistentStoreAtURL:v17 withType:v18 options:0 error:a3];
+  persistentContainer4 = [(WADeviceAnalyticsClient *)self persistentContainer];
+  persistentStoreCoordinator3 = [persistentContainer4 persistentStoreCoordinator];
+  v17 = [firstObject URL];
+  type = [firstObject type];
+  [persistentStoreCoordinator3 destroyPersistentStoreAtURL:v17 withType:type options:0 error:error];
 
-  v19 = *a3;
+  v19 = *error;
   v20 = WALogCategoryDeviceStoreHandle();
   v21 = v20;
   if (v19)
@@ -535,7 +535,7 @@ LABEL_11:
       goto LABEL_15;
     }
 
-    v22 = *a3;
+    v22 = *error;
     v30 = 136446722;
     v31 = "[WADeviceAnalyticsClient deleteStoreAndStartFreshWithError:]";
     v32 = 1024;
@@ -571,8 +571,8 @@ LABEL_15:
   v15[4] = self;
   v3 = MEMORY[0x1CCA780B0](v15, a2);
   label = dispatch_queue_get_label(0);
-  v5 = [(WADeviceAnalyticsClient *)self dispatchQueue];
-  v6 = dispatch_queue_get_label(v5);
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  v6 = dispatch_queue_get_label(dispatchQueue);
 
   if (label && v6 && !strcmp(label, v6))
   {
@@ -584,13 +584,13 @@ LABEL_15:
 
   else
   {
-    v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue2 = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __44__WADeviceAnalyticsClient_loadStoreIfNeeded__block_invoke_86;
     v13 = &unk_1E830F000;
     v14 = v3;
-    dispatch_sync(v7, &v10);
+    dispatch_sync(dispatchQueue2, &v10);
   }
 
   v8 = [(WADeviceAnalyticsClient *)self storeLoaded:v10];
@@ -1083,27 +1083,27 @@ LABEL_5:
   return analyticsRawAccessObj;
 }
 
-- (id)adaptiveRoamingParamsForBSS:(id)a3
+- (id)adaptiveRoamingParamsForBSS:(id)s
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sCopy = s;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__7;
   v17 = __Block_byref_object_dispose__7;
   v18 = 0;
-  if (v4)
+  if (sCopy)
   {
-    v5 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __55__WADeviceAnalyticsClient_adaptiveRoamingParamsForBSS___block_invoke;
     block[3] = &unk_1E830E5F0;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
-    dispatch_sync(v5, block);
+    v11 = sCopy;
+    dispatch_sync(dispatchQueue, block);
   }
 
   else
@@ -1139,27 +1139,27 @@ void __55__WADeviceAnalyticsClient_adaptiveRoamingParamsForBSS___block_invoke(ui
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)edgeParamsForBSS:(id)a3
+- (id)edgeParamsForBSS:(id)s
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sCopy = s;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__7;
   v18 = __Block_byref_object_dispose__7;
   v19 = 0;
-  if (v4)
+  if (sCopy)
   {
-    v5 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __44__WADeviceAnalyticsClient_edgeParamsForBSS___block_invoke;
     block[3] = &unk_1E830DAF8;
-    v11 = v4;
-    v12 = self;
+    v11 = sCopy;
+    selfCopy = self;
     v13 = &v14;
-    dispatch_sync(v5, block);
+    dispatch_sync(dispatchQueue, block);
 
     v6 = v11;
   }
@@ -1288,17 +1288,17 @@ LABEL_19:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)parsedBeaconInfoIsStored:(id)a3 ssid:(id)a4
+- (BOOL)parsedBeaconInfoIsStored:(id)stored ssid:(id)ssid
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  storedCopy = stored;
+  ssidCopy = ssid;
+  v8 = ssidCopy;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  if (!v6)
+  if (!storedCopy)
   {
     v13 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1313,7 +1313,7 @@ LABEL_19:
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!ssidCopy)
   {
     v13 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1330,16 +1330,16 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  v9 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __57__WADeviceAnalyticsClient_parsedBeaconInfoIsStored_ssid___block_invoke;
   v14[3] = &unk_1E830E8C0;
   v17 = &v18;
   v14[4] = self;
-  v15 = v6;
+  v15 = storedCopy;
   v16 = v8;
-  dispatch_sync(v9, v14);
+  dispatch_sync(dispatchQueue, v14);
 
 LABEL_4:
   v10 = *(v19 + 24);
@@ -1358,27 +1358,27 @@ void __57__WADeviceAnalyticsClient_parsedBeaconInfoIsStored_ssid___block_invoke(
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)apProfileForBssid:(id)a3
+- (id)apProfileForBssid:(id)bssid
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bssidCopy = bssid;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__7;
   v17 = __Block_byref_object_dispose__7;
   v18 = 0;
-  if (v4)
+  if (bssidCopy)
   {
-    v5 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __45__WADeviceAnalyticsClient_apProfileForBssid___block_invoke;
     block[3] = &unk_1E830E5F0;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
-    dispatch_sync(v5, block);
+    v11 = bssidCopy;
+    dispatch_sync(dispatchQueue, block);
   }
 
   else
@@ -1414,10 +1414,10 @@ void __45__WADeviceAnalyticsClient_apProfileForBssid___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)lanForBssid:(id)a3 withError:(id *)a4
+- (id)lanForBssid:(id)bssid withError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bssidCopy = bssid;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1430,18 +1430,18 @@ void __45__WADeviceAnalyticsClient_apProfileForBssid___block_invoke(uint64_t a1)
   v23 = __Block_byref_object_copy__7;
   v24 = __Block_byref_object_dispose__7;
   v25 = 0;
-  if (v6)
+  if (bssidCopy)
   {
-    v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __49__WADeviceAnalyticsClient_lanForBssid_withError___block_invoke;
     v16[3] = &unk_1E830DB20;
     v18 = &v26;
     v16[4] = self;
-    v17 = v6;
+    v17 = bssidCopy;
     v19 = &v20;
-    dispatch_sync(v7, v16);
+    dispatch_sync(dispatchQueue, v16);
   }
 
   else
@@ -1465,9 +1465,9 @@ void __45__WADeviceAnalyticsClient_apProfileForBssid___block_invoke(uint64_t a1)
     v21[5] = v14;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v8 = v27[5];
@@ -1495,10 +1495,10 @@ void __49__WADeviceAnalyticsClient_lanForBssid_withError___block_invoke(uint64_t
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)bandsInNetwork:(id)a3 withError:(id *)a4
+- (id)bandsInNetwork:(id)network withError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  networkCopy = network;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1511,18 +1511,18 @@ void __49__WADeviceAnalyticsClient_lanForBssid_withError___block_invoke(uint64_t
   v23 = __Block_byref_object_copy__7;
   v24 = __Block_byref_object_dispose__7;
   v25 = 0;
-  if (v6)
+  if (networkCopy)
   {
-    v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __52__WADeviceAnalyticsClient_bandsInNetwork_withError___block_invoke;
     v16[3] = &unk_1E830DB20;
     v18 = &v26;
     v16[4] = self;
-    v17 = v6;
+    v17 = networkCopy;
     v19 = &v20;
-    dispatch_sync(v7, v16);
+    dispatch_sync(dispatchQueue, v16);
   }
 
   else
@@ -1546,9 +1546,9 @@ void __49__WADeviceAnalyticsClient_lanForBssid_withError___block_invoke(uint64_t
     v21[5] = v14;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v8 = v27[5];
@@ -1576,17 +1576,17 @@ void __52__WADeviceAnalyticsClient_bandsInNetwork_withError___block_invoke(uint6
   objc_autoreleasePoolPop(v2);
 }
 
-- (unint64_t)isNetworkWithinRangeOfLocation:(id)a3 range:(double)a4 location:(id)a5
+- (unint64_t)isNetworkWithinRangeOfLocation:(id)location range:(double)range location:(id)a5
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  locationCopy = location;
   v9 = a5;
   v10 = v9;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  if (!v8)
+  if (!locationCopy)
   {
     v15 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1618,17 +1618,17 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  v11 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__WADeviceAnalyticsClient_isNetworkWithinRangeOfLocation_range_location___block_invoke;
   block[3] = &unk_1E830F028;
   block[4] = self;
-  v17 = v8;
-  v20 = a4;
+  v17 = locationCopy;
+  rangeCopy = range;
   v18 = v10;
   v19 = &v21;
-  dispatch_sync(v11, block);
+  dispatch_sync(dispatchQueue, block);
 
 LABEL_4:
   v12 = v22[3];
@@ -1665,19 +1665,19 @@ void __73__WADeviceAnalyticsClient_isNetworkWithinRangeOfLocation_range_location
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)copyGeoTagsForNetwork:(id)a3 location:(id)a4
+- (id)copyGeoTagsForNetwork:(id)network location:(id)location
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  networkCopy = network;
+  locationCopy = location;
+  v8 = locationCopy;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__7;
   v22 = __Block_byref_object_dispose__7;
   v23 = 0;
-  if (!v6)
+  if (!networkCopy)
   {
     v13 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1692,7 +1692,7 @@ void __73__WADeviceAnalyticsClient_isNetworkWithinRangeOfLocation_range_location
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!locationCopy)
   {
     v13 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1709,16 +1709,16 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  v9 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__WADeviceAnalyticsClient_copyGeoTagsForNetwork_location___block_invoke;
   v14[3] = &unk_1E830F050;
   v14[4] = self;
   v15 = v8;
-  v16 = v6;
+  v16 = networkCopy;
   v17 = &v18;
-  dispatch_sync(v9, v14);
+  dispatch_sync(dispatchQueue, v14);
 
 LABEL_4:
   v10 = v19[5];
@@ -1822,10 +1822,10 @@ LABEL_13:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (id)usageForNetwork:(id)a3 withError:(id *)a4
+- (id)usageForNetwork:(id)network withError:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  networkCopy = network;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1838,20 +1838,20 @@ LABEL_13:
   v21 = __Block_byref_object_copy__7;
   v22 = __Block_byref_object_dispose__7;
   v23 = 0;
-  if (v6)
+  if (networkCopy)
   {
-    v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __53__WADeviceAnalyticsClient_usageForNetwork_withError___block_invoke;
     v14[3] = &unk_1E830DB20;
     v16 = &v24;
     v14[4] = self;
-    v15 = v6;
+    v15 = networkCopy;
     v17 = &v18;
-    dispatch_sync(v7, v14);
+    dispatch_sync(dispatchQueue, v14);
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -1869,16 +1869,16 @@ LABEL_13:
     _os_log_impl(&dword_1C8460000, v11, OS_LOG_TYPE_ERROR, "%{public}s::%d:ssid nil", buf, 0x12u);
   }
 
-  if (a4)
+  if (error)
   {
     v12 = MEMORY[0x1E696ABC0];
     v30 = *MEMORY[0x1E696A588];
     v31 = @"WAErrorCodeInvalidInput";
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-    *a4 = [v12 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v13];
+    *error = [v12 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v13];
 
 LABEL_3:
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
 LABEL_4:
@@ -1907,27 +1907,27 @@ void __53__WADeviceAnalyticsClient_usageForNetwork_withError___block_invoke(uint
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)copyLocationsForNetwork:(id)a3
+- (id)copyLocationsForNetwork:(id)network
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  networkCopy = network;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__7;
   v17 = __Block_byref_object_dispose__7;
   v18 = 0;
-  if (v4)
+  if (networkCopy)
   {
-    v5 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__WADeviceAnalyticsClient_copyLocationsForNetwork___block_invoke;
     block[3] = &unk_1E830E5F0;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
-    dispatch_sync(v5, block);
+    v11 = networkCopy;
+    dispatch_sync(dispatchQueue, block);
   }
 
   else
@@ -1962,13 +1962,13 @@ void __51__WADeviceAnalyticsClient_copyLocationsForNetwork___block_invoke(uint64
   objc_autoreleasePoolPop(v2);
 }
 
-- (unint64_t)countNetworksInSameLanAs:(id)a3 withError:(id *)a4
+- (unint64_t)countNetworksInSameLanAs:(id)as withError:(id *)error
 {
-  v4 = a4;
+  errorCopy = error;
   v17 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (as)
   {
-    v4 = [(WADeviceAnalyticsClient *)self networksInSameLanAs:a3 withError:a4];
+    errorCopy = [(WADeviceAnalyticsClient *)self networksInSameLanAs:as withError:error];
   }
 
   else
@@ -1983,28 +1983,28 @@ void __51__WADeviceAnalyticsClient_copyLocationsForNetwork___block_invoke(uint64
       _os_log_impl(&dword_1C8460000, v8, OS_LOG_TYPE_ERROR, "%{public}s::%d:ssid nil", buf, 0x12u);
     }
 
-    if (v4)
+    if (errorCopy)
     {
       v9 = MEMORY[0x1E696ABC0];
       v11 = *MEMORY[0x1E696A588];
       v12 = @"WAErrorCodeInvalidInput";
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-      *v4 = [v9 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v10];
+      *errorCopy = [v9 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v10];
 
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
-  v5 = [v4 count];
+  v5 = [errorCopy count];
 
   v6 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (unint64_t)countNetworksInSameLanAsBssid:(id)a3 withError:(id *)a4
+- (unint64_t)countNetworksInSameLanAsBssid:(id)bssid withError:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bssidCopy = bssid;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -2015,18 +2015,18 @@ void __51__WADeviceAnalyticsClient_copyLocationsForNetwork___block_invoke(uint64
   v23 = __Block_byref_object_copy__7;
   v24 = __Block_byref_object_dispose__7;
   v25 = 0;
-  if (v6)
+  if (bssidCopy)
   {
-    v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __67__WADeviceAnalyticsClient_countNetworksInSameLanAsBssid_withError___block_invoke;
     v16[3] = &unk_1E830DB20;
     v18 = &v26;
     v16[4] = self;
-    v17 = v6;
+    v17 = bssidCopy;
     v19 = &v20;
-    dispatch_sync(v7, v16);
+    dispatch_sync(dispatchQueue, v16);
   }
 
   else
@@ -2050,9 +2050,9 @@ void __51__WADeviceAnalyticsClient_copyLocationsForNetwork___block_invoke(uint64
     v21[5] = v14;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v8 = v27[3];
@@ -2077,10 +2077,10 @@ void __67__WADeviceAnalyticsClient_countNetworksInSameLanAsBssid_withError___blo
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)networksInSameLanAs:(id)a3 withError:(id *)a4
+- (id)networksInSameLanAs:(id)as withError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  asCopy = as;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -2093,18 +2093,18 @@ void __67__WADeviceAnalyticsClient_countNetworksInSameLanAsBssid_withError___blo
   v23 = __Block_byref_object_copy__7;
   v24 = __Block_byref_object_dispose__7;
   v25 = 0;
-  if (v6)
+  if (asCopy)
   {
-    v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __57__WADeviceAnalyticsClient_networksInSameLanAs_withError___block_invoke;
     v16[3] = &unk_1E830F078;
     v16[4] = self;
-    v17 = v6;
+    v17 = asCopy;
     v18 = &v26;
     v19 = &v20;
-    dispatch_sync(v7, v16);
+    dispatch_sync(dispatchQueue, v16);
   }
 
   else
@@ -2128,9 +2128,9 @@ void __67__WADeviceAnalyticsClient_countNetworksInSameLanAsBssid_withError___blo
     v21[5] = v14;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v8 = v27[5];
@@ -2227,10 +2227,10 @@ LABEL_13:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)networksInSameLanAsBssid:(id)a3 withError:(id *)a4
+- (id)networksInSameLanAsBssid:(id)bssid withError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bssidCopy = bssid;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -2243,18 +2243,18 @@ LABEL_13:
   v23 = __Block_byref_object_copy__7;
   v24 = __Block_byref_object_dispose__7;
   v25 = 0;
-  if (v6)
+  if (bssidCopy)
   {
-    v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __62__WADeviceAnalyticsClient_networksInSameLanAsBssid_withError___block_invoke;
     v16[3] = &unk_1E830DB20;
     v18 = &v26;
     v16[4] = self;
-    v17 = v6;
+    v17 = bssidCopy;
     v19 = &v20;
-    dispatch_sync(v7, v16);
+    dispatch_sync(dispatchQueue, v16);
   }
 
   else
@@ -2278,9 +2278,9 @@ LABEL_13:
     v21[5] = v14;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v8 = v27[5];
@@ -2308,10 +2308,10 @@ void __62__WADeviceAnalyticsClient_networksInSameLanAsBssid_withError___block_in
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)lanForSsid:(id)a3 withError:(id *)a4
+- (id)lanForSsid:(id)ssid withError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  ssidCopy = ssid;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -2324,18 +2324,18 @@ void __62__WADeviceAnalyticsClient_networksInSameLanAsBssid_withError___block_in
   v23 = __Block_byref_object_copy__7;
   v24 = __Block_byref_object_dispose__7;
   v25 = 0;
-  if (v6)
+  if (ssidCopy)
   {
-    v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __48__WADeviceAnalyticsClient_lanForSsid_withError___block_invoke;
     v16[3] = &unk_1E830F078;
     v16[4] = self;
-    v17 = v6;
+    v17 = ssidCopy;
     v18 = &v20;
     v19 = &v26;
-    dispatch_sync(v7, v16);
+    dispatch_sync(dispatchQueue, v16);
   }
 
   else
@@ -2359,9 +2359,9 @@ void __62__WADeviceAnalyticsClient_networksInSameLanAsBssid_withError___block_in
     v21[5] = v14;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v8 = v27[5];
@@ -2421,10 +2421,10 @@ void __48__WADeviceAnalyticsClient_lanForSsid_withError___block_invoke(uint64_t 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)lansForSsid:(id)a3 withError:(id *)a4
+- (id)lansForSsid:(id)ssid withError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  ssidCopy = ssid;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -2437,18 +2437,18 @@ void __48__WADeviceAnalyticsClient_lanForSsid_withError___block_invoke(uint64_t 
   v23 = __Block_byref_object_copy__7;
   v24 = __Block_byref_object_dispose__7;
   v25 = 0;
-  if (v6)
+  if (ssidCopy)
   {
-    v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __49__WADeviceAnalyticsClient_lansForSsid_withError___block_invoke;
     v16[3] = &unk_1E830DB20;
     v18 = &v26;
     v16[4] = self;
-    v17 = v6;
+    v17 = ssidCopy;
     v19 = &v20;
-    dispatch_sync(v7, v16);
+    dispatch_sync(dispatchQueue, v16);
   }
 
   else
@@ -2472,9 +2472,9 @@ void __48__WADeviceAnalyticsClient_lanForSsid_withError___block_invoke(uint64_t 
     v21[5] = v14;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v8 = v27[5];
@@ -2502,10 +2502,10 @@ void __49__WADeviceAnalyticsClient_lansForSsid_withError___block_invoke(uint64_t
   objc_autoreleasePoolPop(v2);
 }
 
-- (signed)deploymentCoverageForSSID:(id)a3 withError:(id *)a4
+- (signed)deploymentCoverageForSSID:(id)d withError:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -2516,18 +2516,18 @@ void __49__WADeviceAnalyticsClient_lansForSsid_withError___block_invoke(uint64_t
   v23 = __Block_byref_object_copy__7;
   v24 = __Block_byref_object_dispose__7;
   v25 = 0;
-  if (v6)
+  if (dCopy)
   {
-    v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __63__WADeviceAnalyticsClient_deploymentCoverageForSSID_withError___block_invoke;
     v16[3] = &unk_1E830DB20;
     v18 = &v26;
     v16[4] = self;
-    v17 = v6;
+    v17 = dCopy;
     v19 = &v20;
-    dispatch_sync(v7, v16);
+    dispatch_sync(dispatchQueue, v16);
   }
 
   else
@@ -2551,9 +2551,9 @@ void __49__WADeviceAnalyticsClient_lansForSsid_withError___block_invoke(uint64_t
     v21[5] = v14;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v8 = *(v27 + 12);
@@ -2578,10 +2578,10 @@ void __63__WADeviceAnalyticsClient_deploymentCoverageForSSID_withError___block_i
   objc_autoreleasePoolPop(v2);
 }
 
-- (signed)deploymentCongestionForSSID:(id)a3 withError:(id *)a4
+- (signed)deploymentCongestionForSSID:(id)d withError:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -2592,18 +2592,18 @@ void __63__WADeviceAnalyticsClient_deploymentCoverageForSSID_withError___block_i
   v23 = __Block_byref_object_copy__7;
   v24 = __Block_byref_object_dispose__7;
   v25 = 0;
-  if (v6)
+  if (dCopy)
   {
-    v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __65__WADeviceAnalyticsClient_deploymentCongestionForSSID_withError___block_invoke;
     v16[3] = &unk_1E830DB20;
     v18 = &v26;
     v16[4] = self;
-    v17 = v6;
+    v17 = dCopy;
     v19 = &v20;
-    dispatch_sync(v7, v16);
+    dispatch_sync(dispatchQueue, v16);
   }
 
   else
@@ -2627,9 +2627,9 @@ void __63__WADeviceAnalyticsClient_deploymentCoverageForSSID_withError___block_i
     v21[5] = v14;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v8 = *(v27 + 12);
@@ -2654,22 +2654,22 @@ void __65__WADeviceAnalyticsClient_deploymentCongestionForSSID_withError___block
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)networksAvailableAtLocation:(id)a3 withinDistance:(double)a4 inBand:(unsigned int)a5
+- (id)networksAvailableAtLocation:(id)location withinDistance:(double)distance inBand:(unsigned int)band
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (v8)
+  locationCopy = location;
+  if (locationCopy)
   {
-    v9 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
     v16 = __77__WADeviceAnalyticsClient_networksAvailableAtLocation_withinDistance_inBand___block_invoke;
     v17 = &unk_1E830F0A0;
-    v18 = self;
-    v19 = v8;
-    v20 = a4;
-    v21 = a5;
-    dispatch_sync(v9, &v14);
+    selfCopy = self;
+    v19 = locationCopy;
+    distanceCopy = distance;
+    bandCopy = band;
+    dispatch_sync(dispatchQueue, &v14);
   }
 
   else
@@ -2741,10 +2741,10 @@ LABEL_7:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)networkSsidsByTraits:(id)a3 withError:(id *)a4
+- (id)networkSsidsByTraits:(id)traits withError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  traitsCopy = traits;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -2757,18 +2757,18 @@ LABEL_7:
   v23 = __Block_byref_object_copy__7;
   v24 = __Block_byref_object_dispose__7;
   v25 = 0;
-  if ([v6 count])
+  if ([traitsCopy count])
   {
-    v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __58__WADeviceAnalyticsClient_networkSsidsByTraits_withError___block_invoke;
     v16[3] = &unk_1E830DB20;
     v18 = &v26;
     v16[4] = self;
-    v17 = v6;
+    v17 = traitsCopy;
     v19 = &v20;
-    dispatch_sync(v7, v16);
+    dispatch_sync(dispatchQueue, v16);
   }
 
   else
@@ -2792,9 +2792,9 @@ LABEL_7:
     v21[5] = v14;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v8 = v27[5];
@@ -2830,14 +2830,14 @@ void __58__WADeviceAnalyticsClient_networkSsidsByTraits_withError___block_invoke
   v10 = __Block_byref_object_copy__7;
   v11 = __Block_byref_object_dispose__7;
   v12 = 0;
-  v3 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__WADeviceAnalyticsClient_copyAllStoredNetworkSsids__block_invoke;
   v6[3] = &unk_1E830EE78;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(dispatchQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -2857,9 +2857,9 @@ void __52__WADeviceAnalyticsClient_copyAllStoredNetworkSsids__block_invoke(uint6
   objc_autoreleasePoolPop(v2);
 }
 
-- (unint64_t)networkCountForLAN:(id)a3 withError:(id *)a4
+- (unint64_t)networkCountForLAN:(id)n withError:(id *)error
 {
-  v6 = a3;
+  nCopy = n;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -2870,21 +2870,21 @@ void __52__WADeviceAnalyticsClient_copyAllStoredNetworkSsids__block_invoke(uint6
   v18 = __Block_byref_object_copy__7;
   v19 = __Block_byref_object_dispose__7;
   v20 = 0;
-  v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __56__WADeviceAnalyticsClient_networkCountForLAN_withError___block_invoke;
   v11[3] = &unk_1E830DB20;
   v13 = &v21;
   v11[4] = self;
-  v8 = v6;
+  v8 = nCopy;
   v12 = v8;
   v14 = &v15;
-  dispatch_sync(v7, v11);
+  dispatch_sync(dispatchQueue, v11);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v9 = v22[3];
@@ -2908,10 +2908,10 @@ void __56__WADeviceAnalyticsClient_networkCountForLAN_withError___block_invoke(u
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)networksInLan:(id)a3 withError:(id *)a4
+- (id)networksInLan:(id)lan withError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lanCopy = lan;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -2924,18 +2924,18 @@ void __56__WADeviceAnalyticsClient_networkCountForLAN_withError___block_invoke(u
   v23 = __Block_byref_object_copy__7;
   v24 = __Block_byref_object_dispose__7;
   v25 = 0;
-  if (v6)
+  if (lanCopy)
   {
-    v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __51__WADeviceAnalyticsClient_networksInLan_withError___block_invoke;
     v16[3] = &unk_1E830DB20;
     v18 = &v26;
     v16[4] = self;
-    v17 = v6;
+    v17 = lanCopy;
     v19 = &v20;
-    dispatch_sync(v7, v16);
+    dispatch_sync(dispatchQueue, v16);
   }
 
   else
@@ -2959,9 +2959,9 @@ void __56__WADeviceAnalyticsClient_networkCountForLAN_withError___block_invoke(u
     v21[5] = v14;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v8 = v27[5];
@@ -2989,10 +2989,10 @@ void __51__WADeviceAnalyticsClient_networksInLan_withError___block_invoke(uint64
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)bssidCountByBandInLAN:(id)a3 withError:(id *)a4
+- (id)bssidCountByBandInLAN:(id)n withError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nCopy = n;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -3005,18 +3005,18 @@ void __51__WADeviceAnalyticsClient_networksInLan_withError___block_invoke(uint64
   v23 = __Block_byref_object_copy__7;
   v24 = __Block_byref_object_dispose__7;
   v25 = 0;
-  if (v6)
+  if (nCopy)
   {
-    v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __59__WADeviceAnalyticsClient_bssidCountByBandInLAN_withError___block_invoke;
     v16[3] = &unk_1E830DB20;
     v18 = &v26;
     v16[4] = self;
-    v17 = v6;
+    v17 = nCopy;
     v19 = &v20;
-    dispatch_sync(v7, v16);
+    dispatch_sync(dispatchQueue, v16);
   }
 
   else
@@ -3040,9 +3040,9 @@ void __51__WADeviceAnalyticsClient_networksInLan_withError___block_invoke(uint64
     v21[5] = v14;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v8 = v27[5];
@@ -3070,11 +3070,11 @@ void __59__WADeviceAnalyticsClient_bssidCountByBandInLAN_withError___block_invok
   objc_autoreleasePoolPop(v2);
 }
 
-- (unint64_t)countNetworksHavingBand:(signed __int16)a3 inLan:(id)a4 withError:(id *)a5
+- (unint64_t)countNetworksHavingBand:(signed __int16)band inLan:(id)lan withError:(id *)error
 {
-  v6 = a3;
+  bandCopy = band;
   v47[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  lanCopy = lan;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -3085,9 +3085,9 @@ void __59__WADeviceAnalyticsClient_bssidCountByBandInLAN_withError___block_invok
   v31 = __Block_byref_object_copy__7;
   v32 = __Block_byref_object_dispose__7;
   v33 = 0;
-  if (v8)
+  if (lanCopy)
   {
-    if (v6 >= 3)
+    if (bandCopy >= 3)
     {
       v18 = WALogCategoryDeviceStoreHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -3097,7 +3097,7 @@ void __59__WADeviceAnalyticsClient_bssidCountByBandInLAN_withError___block_invok
         v42 = 1024;
         v43 = 728;
         v44 = 1024;
-        v45 = v6;
+        v45 = bandCopy;
         _os_log_impl(&dword_1C8460000, v18, OS_LOG_TYPE_ERROR, "%{public}s::%d:invalid band (%d)", buf, 0x18u);
       }
 
@@ -3112,17 +3112,17 @@ void __59__WADeviceAnalyticsClient_bssidCountByBandInLAN_withError___block_invok
 
     else
     {
-      v9 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+      dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __67__WADeviceAnalyticsClient_countNetworksHavingBand_inLan_withError___block_invoke;
       block[3] = &unk_1E830F0C8;
       v25 = &v34;
       block[4] = self;
-      v27 = v6;
-      v24 = v8;
+      v27 = bandCopy;
+      v24 = lanCopy;
       v26 = &v28;
-      dispatch_sync(v9, block);
+      dispatch_sync(dispatchQueue, block);
     }
   }
 
@@ -3147,9 +3147,9 @@ void __59__WADeviceAnalyticsClient_bssidCountByBandInLAN_withError___block_invok
     v29[5] = v16;
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v29[5];
+    *error = v29[5];
   }
 
   v10 = v35[3];
@@ -3175,10 +3175,10 @@ void __67__WADeviceAnalyticsClient_countNetworksHavingBand_inLan_withError___blo
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)usageForLAN:(id)a3 withError:(id *)a4
+- (id)usageForLAN:(id)n withError:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nCopy = n;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -3191,20 +3191,20 @@ void __67__WADeviceAnalyticsClient_countNetworksHavingBand_inLan_withError___blo
   v21 = __Block_byref_object_copy__7;
   v22 = __Block_byref_object_dispose__7;
   v23 = 0;
-  if (v6)
+  if (nCopy)
   {
-    v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __49__WADeviceAnalyticsClient_usageForLAN_withError___block_invoke;
     v14[3] = &unk_1E830DB20;
     v16 = &v24;
     v14[4] = self;
-    v15 = v6;
+    v15 = nCopy;
     v17 = &v18;
-    dispatch_sync(v7, v14);
+    dispatch_sync(dispatchQueue, v14);
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -3222,16 +3222,16 @@ void __67__WADeviceAnalyticsClient_countNetworksHavingBand_inLan_withError___blo
     _os_log_impl(&dword_1C8460000, v11, OS_LOG_TYPE_ERROR, "%{public}s::%d:dhcpServerInfo nil", buf, 0x12u);
   }
 
-  if (a4)
+  if (error)
   {
     v12 = MEMORY[0x1E696ABC0];
     v30 = *MEMORY[0x1E696A588];
     v31 = @"WAErrorCodeInvalidInput";
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-    *a4 = [v12 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v13];
+    *error = [v12 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v13];
 
 LABEL_3:
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
 LABEL_4:
@@ -3260,10 +3260,10 @@ void __49__WADeviceAnalyticsClient_usageForLAN_withError___block_invoke(uint64_t
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)usageOf:(id)a3 during:(unint64_t)a4 timeSpan:(unint64_t)a5 withError:(id *)a6
+- (id)usageOf:(id)of during:(unint64_t)during timeSpan:(unint64_t)span withError:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  ofCopy = of;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -3276,20 +3276,20 @@ void __49__WADeviceAnalyticsClient_usageForLAN_withError___block_invoke(uint64_t
   v29 = __Block_byref_object_copy__7;
   v30 = __Block_byref_object_dispose__7;
   v31 = 0;
-  if (v10)
+  if (ofCopy)
   {
-    v11 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __61__WADeviceAnalyticsClient_usageOf_during_timeSpan_withError___block_invoke;
     v20[3] = &unk_1E830F0F0;
     v22 = &v32;
     v20[4] = self;
-    v24 = a4;
-    v25 = a5;
-    v21 = v10;
+    duringCopy = during;
+    spanCopy = span;
+    v21 = ofCopy;
     v23 = &v26;
-    dispatch_sync(v11, v20);
+    dispatch_sync(dispatchQueue, v20);
   }
 
   else
@@ -3313,9 +3313,9 @@ void __49__WADeviceAnalyticsClient_usageForLAN_withError___block_invoke(uint64_t
     v27[5] = v18;
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = v27[5];
+    *error = v27[5];
   }
 
   v12 = v33[5];
@@ -3345,11 +3345,11 @@ void __61__WADeviceAnalyticsClient_usageOf_during_timeSpan_withError___block_inv
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)usageOf:(id)a3 timeSpan:(unint64_t)a4 around:(id)a5 withError:(id *)a6
+- (id)usageOf:(id)of timeSpan:(unint64_t)span around:(id)around withError:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  ofCopy = of;
+  aroundCopy = around;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -3362,20 +3362,20 @@ void __61__WADeviceAnalyticsClient_usageOf_during_timeSpan_withError___block_inv
   v30 = __Block_byref_object_copy__7;
   v31 = __Block_byref_object_dispose__7;
   v32 = 0;
-  if (v10)
+  if (ofCopy)
   {
-    v12 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __61__WADeviceAnalyticsClient_usageOf_timeSpan_around_withError___block_invoke;
     v21[3] = &unk_1E830F118;
     v24 = &v33;
     v21[4] = self;
-    v22 = v10;
-    v26 = a4;
-    v23 = v11;
+    v22 = ofCopy;
+    spanCopy = span;
+    v23 = aroundCopy;
     v25 = &v27;
-    dispatch_sync(v12, v21);
+    dispatch_sync(dispatchQueue, v21);
   }
 
   else
@@ -3399,9 +3399,9 @@ void __61__WADeviceAnalyticsClient_usageOf_during_timeSpan_withError___block_inv
     v28[5] = v19;
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = v28[5];
+    *error = v28[5];
   }
 
   v13 = v34[5];
@@ -3431,34 +3431,34 @@ void __61__WADeviceAnalyticsClient_usageOf_timeSpan_around_withError___block_inv
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)joinEventOnBssid:(id)a3 ssid:(id)a4 at:(id)a5 with:(id)a6 andDeferReclaimMem:(BOOL)a7 andRunPostProcessing:(BOOL)a8
+- (BOOL)joinEventOnBssid:(id)bssid ssid:(id)ssid at:(id)at with:(id)with andDeferReclaimMem:(BOOL)mem andRunPostProcessing:(BOOL)processing
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  bssidCopy = bssid;
+  ssidCopy = ssid;
+  atCopy = at;
+  withCopy = with;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = 0;
-  v18 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __97__WADeviceAnalyticsClient_joinEventOnBssid_ssid_at_with_andDeferReclaimMem_andRunPostProcessing___block_invoke;
   block[3] = &unk_1E830F140;
   block[4] = self;
-  v25 = v14;
-  v26 = v15;
-  v27 = v16;
-  v28 = v17;
+  v25 = bssidCopy;
+  v26 = ssidCopy;
+  v27 = atCopy;
+  v28 = withCopy;
   v29 = &v32;
-  v30 = a7;
-  v31 = a8;
-  v19 = v17;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
-  dispatch_sync(v18, block);
+  memCopy = mem;
+  processingCopy = processing;
+  v19 = withCopy;
+  v20 = atCopy;
+  v21 = ssidCopy;
+  v22 = bssidCopy;
+  dispatch_sync(dispatchQueue, block);
 
   LOBYTE(self) = *(v33 + 24);
   _Block_object_dispose(&v32, 8);
@@ -3530,37 +3530,37 @@ void __97__WADeviceAnalyticsClient_joinEventOnBssid_ssid_at_with_andDeferReclaim
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)leaveEventOnBssid:(id)a3 ssid:(id)a4 at:(id)a5 with:(id)a6 andDeferReclaimMem:(BOOL)a7
+- (BOOL)leaveEventOnBssid:(id)bssid ssid:(id)ssid at:(id)at with:(id)with andDeferReclaimMem:(BOOL)mem
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  bssidCopy = bssid;
+  ssidCopy = ssid;
+  atCopy = at;
+  withCopy = with;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  v16 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__WADeviceAnalyticsClient_leaveEventOnBssid_ssid_at_with_andDeferReclaimMem___block_invoke;
   block[3] = &unk_1E830F168;
   block[4] = self;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
+  v23 = bssidCopy;
+  v24 = ssidCopy;
+  v25 = atCopy;
+  v26 = withCopy;
   v27 = &v29;
-  v28 = a7;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  dispatch_sync(v16, block);
+  memCopy = mem;
+  v17 = withCopy;
+  v18 = atCopy;
+  v19 = ssidCopy;
+  v20 = bssidCopy;
+  dispatch_sync(dispatchQueue, block);
 
-  LOBYTE(v14) = *(v30 + 24);
+  LOBYTE(atCopy) = *(v30 + 24);
   _Block_object_dispose(&v29, 8);
-  return v14;
+  return atCopy;
 }
 
 void __77__WADeviceAnalyticsClient_leaveEventOnBssid_ssid_at_with_andDeferReclaimMem___block_invoke(uint64_t a1)
@@ -3586,40 +3586,40 @@ void __77__WADeviceAnalyticsClient_leaveEventOnBssid_ssid_at_with_andDeferReclai
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)dhcpEventOnBssid:(id)a3 ssid:(id)a4 serverInfo:(id)a5 at:(id)a6 with:(id)a7 andDeferReclaimMem:(BOOL)a8
+- (BOOL)dhcpEventOnBssid:(id)bssid ssid:(id)ssid serverInfo:(id)info at:(id)at with:(id)with andDeferReclaimMem:(BOOL)mem
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  bssidCopy = bssid;
+  ssidCopy = ssid;
+  infoCopy = info;
+  atCopy = at;
+  withCopy = with;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
   v37 = 0;
-  v19 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __87__WADeviceAnalyticsClient_dhcpEventOnBssid_ssid_serverInfo_at_with_andDeferReclaimMem___block_invoke;
   v26[3] = &unk_1E830F190;
-  v31 = v18;
+  v31 = withCopy;
   v32 = &v34;
   v26[4] = self;
-  v27 = v14;
-  v28 = v15;
-  v29 = v16;
-  v30 = v17;
-  v33 = a8;
-  v20 = v18;
-  v21 = v17;
-  v22 = v16;
-  v23 = v15;
-  v24 = v14;
-  dispatch_sync(v19, v26);
+  v27 = bssidCopy;
+  v28 = ssidCopy;
+  v29 = infoCopy;
+  v30 = atCopy;
+  memCopy = mem;
+  v20 = withCopy;
+  v21 = atCopy;
+  v22 = infoCopy;
+  v23 = ssidCopy;
+  v24 = bssidCopy;
+  dispatch_sync(dispatchQueue, v26);
 
-  LOBYTE(v19) = *(v35 + 24);
+  LOBYTE(dispatchQueue) = *(v35 + 24);
   _Block_object_dispose(&v34, 8);
-  return v19;
+  return dispatchQueue;
 }
 
 void __87__WADeviceAnalyticsClient_dhcpEventOnBssid_ssid_serverInfo_at_with_andDeferReclaimMem___block_invoke(uint64_t a1)
@@ -3648,30 +3648,30 @@ void __87__WADeviceAnalyticsClient_dhcpEventOnBssid_ssid_serverInfo_at_with_andD
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)recoveryEventOnBssid:(id)a3 at:(id)a4 with:(id)a5 andDeferReclaimMem:(BOOL)a6
+- (BOOL)recoveryEventOnBssid:(id)bssid at:(id)at with:(id)with andDeferReclaimMem:(BOOL)mem
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  bssidCopy = bssid;
+  atCopy = at;
+  withCopy = with;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v13 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __75__WADeviceAnalyticsClient_recoveryEventOnBssid_at_with_andDeferReclaimMem___block_invoke;
   v18[3] = &unk_1E830F1B8;
-  v21 = v12;
+  v21 = withCopy;
   v22 = &v24;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v23 = a6;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_sync(v13, v18);
+  v19 = bssidCopy;
+  v20 = atCopy;
+  memCopy = mem;
+  v14 = withCopy;
+  v15 = atCopy;
+  v16 = bssidCopy;
+  dispatch_sync(dispatchQueue, v18);
 
   LOBYTE(self) = *(v25 + 24);
   _Block_object_dispose(&v24, 8);
@@ -3687,27 +3687,27 @@ void __75__WADeviceAnalyticsClient_recoveryEventOnBssid_at_with_andDeferReclaimM
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)removeKnownNetworkEvent:(id)a3 at:(id)a4 andDeferReclaimMem:(BOOL)a5
+- (BOOL)removeKnownNetworkEvent:(id)event at:(id)at andDeferReclaimMem:(BOOL)mem
 {
-  v8 = a3;
-  v9 = a4;
+  eventCopy = event;
+  atCopy = at;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v10 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__WADeviceAnalyticsClient_removeKnownNetworkEvent_at_andDeferReclaimMem___block_invoke;
   block[3] = &unk_1E830F1E0;
   block[4] = self;
-  v15 = v8;
-  v16 = v9;
+  v15 = eventCopy;
+  v16 = atCopy;
   v17 = &v19;
-  v18 = a5;
-  v11 = v9;
-  v12 = v8;
-  dispatch_sync(v10, block);
+  memCopy = mem;
+  v11 = atCopy;
+  v12 = eventCopy;
+  dispatch_sync(dispatchQueue, block);
 
   LOBYTE(self) = *(v20 + 24);
   _Block_object_dispose(&v19, 8);
@@ -3723,30 +3723,30 @@ void __73__WADeviceAnalyticsClient_removeKnownNetworkEvent_at_andDeferReclaimMem
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)updateNetwork:(id)a3 switchedFrom:(id)a4 at:(id)a5 andDeferReclaimMem:(BOOL)a6
+- (BOOL)updateNetwork:(id)network switchedFrom:(id)from at:(id)at andDeferReclaimMem:(BOOL)mem
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  networkCopy = network;
+  fromCopy = from;
+  atCopy = at;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v13 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __76__WADeviceAnalyticsClient_updateNetwork_switchedFrom_at_andDeferReclaimMem___block_invoke;
   v18[3] = &unk_1E830DA38;
-  v21 = v12;
+  v21 = atCopy;
   v22 = &v24;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v23 = a6;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_sync(v13, v18);
+  v19 = networkCopy;
+  v20 = fromCopy;
+  memCopy = mem;
+  v14 = atCopy;
+  v15 = fromCopy;
+  v16 = networkCopy;
+  dispatch_sync(dispatchQueue, v18);
 
   LOBYTE(self) = *(v25 + 24);
   _Block_object_dispose(&v24, 8);
@@ -3762,11 +3762,11 @@ void __76__WADeviceAnalyticsClient_updateNetwork_switchedFrom_at_andDeferReclaim
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)roamEvent:(id)a3 at:(id)a4 andDeferReclaimMem:(BOOL)a5 andRunPostProcessing:(BOOL)a6 withError:(id *)a7
+- (BOOL)roamEvent:(id)event at:(id)at andDeferReclaimMem:(BOOL)mem andRunPostProcessing:(BOOL)processing withError:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  eventCopy = event;
+  atCopy = at;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -3777,21 +3777,21 @@ void __76__WADeviceAnalyticsClient_updateNetwork_switchedFrom_at_andDeferReclaim
   v29 = __Block_byref_object_copy__7;
   v30 = __Block_byref_object_dispose__7;
   v31 = 0;
-  if (v12)
+  if (eventCopy)
   {
-    v14 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __90__WADeviceAnalyticsClient_roamEvent_at_andDeferReclaimMem_andRunPostProcessing_withError___block_invoke;
     v19[3] = &unk_1E830F208;
     v22 = &v32;
     v19[4] = self;
-    v20 = v12;
-    v24 = a5;
-    v25 = a6;
-    v21 = v13;
+    v20 = eventCopy;
+    memCopy = mem;
+    processingCopy = processing;
+    v21 = atCopy;
     v23 = &v26;
-    dispatch_sync(v14, v19);
+    dispatch_sync(dispatchQueue, v19);
   }
 
   else
@@ -3807,9 +3807,9 @@ void __76__WADeviceAnalyticsClient_updateNetwork_switchedFrom_at_andDeferReclaim
     }
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v27[5];
+    *error = v27[5];
   }
 
   v15 = *(v33 + 24);
@@ -3842,37 +3842,37 @@ void __90__WADeviceAnalyticsClient_roamEvent_at_andDeferReclaimMem_andRunPostPro
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)geoTagEventOnBssid:(id)a3 ssid:(id)a4 lat:(double)a5 lon:(double)a6 at:(id)a7 andDeferReclaimMem:(BOOL)a8 andRunPostProcessing:(BOOL)a9
+- (BOOL)geoTagEventOnBssid:(id)bssid ssid:(id)ssid lat:(double)lat lon:(double)lon at:(id)at andDeferReclaimMem:(BOOL)mem andRunPostProcessing:(BOOL)processing
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
+  bssidCopy = bssid;
+  ssidCopy = ssid;
+  atCopy = at;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  v19 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __102__WADeviceAnalyticsClient_geoTagEventOnBssid_ssid_lat_lon_at_andDeferReclaimMem_andRunPostProcessing___block_invoke;
   v24[3] = &unk_1E830F230;
-  v27 = v18;
+  v27 = atCopy;
   v28 = &v33;
   v24[4] = self;
-  v25 = v16;
-  v29 = a5;
-  v30 = a6;
-  v26 = v17;
-  v31 = a8;
-  v32 = a9;
-  v20 = v18;
-  v21 = v17;
-  v22 = v16;
-  dispatch_sync(v19, v24);
+  v25 = bssidCopy;
+  latCopy = lat;
+  lonCopy = lon;
+  v26 = ssidCopy;
+  memCopy = mem;
+  processingCopy = processing;
+  v20 = atCopy;
+  v21 = ssidCopy;
+  v22 = bssidCopy;
+  dispatch_sync(dispatchQueue, v24);
 
-  LOBYTE(v17) = *(v34 + 24);
+  LOBYTE(ssidCopy) = *(v34 + 24);
   _Block_object_dispose(&v33, 8);
-  return v17;
+  return ssidCopy;
 }
 
 void __102__WADeviceAnalyticsClient_geoTagEventOnBssid_ssid_lat_lon_at_andDeferReclaimMem_andRunPostProcessing___block_invoke(uint64_t a1)
@@ -3908,27 +3908,27 @@ void __102__WADeviceAnalyticsClient_geoTagEventOnBssid_ssid_lat_lon_at_andDeferR
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updateBSS:(id)a3 withParsedBeacon:(id)a4 andDeferReclaimMem:(BOOL)a5
+- (BOOL)updateBSS:(id)s withParsedBeacon:(id)beacon andDeferReclaimMem:(BOOL)mem
 {
-  v8 = a3;
-  v9 = a4;
+  sCopy = s;
+  beaconCopy = beacon;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v10 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__WADeviceAnalyticsClient_updateBSS_withParsedBeacon_andDeferReclaimMem___block_invoke;
   block[3] = &unk_1E830F1E0;
   block[4] = self;
-  v15 = v8;
-  v16 = v9;
+  v15 = sCopy;
+  v16 = beaconCopy;
   v17 = &v19;
-  v18 = a5;
-  v11 = v9;
-  v12 = v8;
-  dispatch_sync(v10, block);
+  memCopy = mem;
+  v11 = beaconCopy;
+  v12 = sCopy;
+  dispatch_sync(dispatchQueue, block);
 
   LOBYTE(self) = *(v20 + 24);
   _Block_object_dispose(&v19, 8);
@@ -3944,39 +3944,39 @@ void __73__WADeviceAnalyticsClient_updateBSS_withParsedBeacon_andDeferReclaimMem
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)scanResultEventWith:(id)a3 ssid:(id)a4 whileOn:(id)a5 at:(id)a6 with:(id)a7 andDeferReclaimMem:(BOOL)a8
+- (BOOL)scanResultEventWith:(id)with ssid:(id)ssid whileOn:(id)on at:(id)at with:(id)a7 andDeferReclaimMem:(BOOL)mem
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  withCopy = with;
+  ssidCopy = ssid;
+  onCopy = on;
+  atCopy = at;
   v18 = a7;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = 0;
-  v19 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__WADeviceAnalyticsClient_scanResultEventWith_ssid_whileOn_at_with_andDeferReclaimMem___block_invoke;
   block[3] = &unk_1E830F168;
   block[4] = self;
-  v26 = v15;
-  v27 = v16;
-  v28 = v17;
+  v26 = ssidCopy;
+  v27 = onCopy;
+  v28 = atCopy;
   v29 = v18;
   v30 = &v32;
-  v31 = a8;
+  memCopy = mem;
   v20 = v18;
-  v21 = v17;
-  v22 = v16;
-  v23 = v15;
-  dispatch_sync(v19, block);
+  v21 = atCopy;
+  v22 = onCopy;
+  v23 = ssidCopy;
+  dispatch_sync(dispatchQueue, block);
 
-  LOBYTE(v17) = *(v33 + 24);
+  LOBYTE(atCopy) = *(v33 + 24);
   _Block_object_dispose(&v32, 8);
 
-  return v17;
+  return atCopy;
 }
 
 void __87__WADeviceAnalyticsClient_scanResultEventWith_ssid_whileOn_at_with_andDeferReclaimMem___block_invoke(uint64_t a1)
@@ -3988,37 +3988,37 @@ void __87__WADeviceAnalyticsClient_scanResultEventWith_ssid_whileOn_at_with_andD
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)faultEventOn:(id)a3 at:(id)a4 type:(id)a5 interface:(id)a6 andDeferReclaimMem:(BOOL)a7
+- (BOOL)faultEventOn:(id)on at:(id)at type:(id)type interface:(id)interface andDeferReclaimMem:(BOOL)mem
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  onCopy = on;
+  atCopy = at;
+  typeCopy = type;
+  interfaceCopy = interface;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  v16 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__WADeviceAnalyticsClient_faultEventOn_at_type_interface_andDeferReclaimMem___block_invoke;
   block[3] = &unk_1E830F258;
   block[4] = self;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
+  v23 = onCopy;
+  v24 = atCopy;
+  v25 = typeCopy;
+  v26 = interfaceCopy;
   v27 = &v29;
-  v28 = a7;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  dispatch_sync(v16, block);
+  memCopy = mem;
+  v17 = interfaceCopy;
+  v18 = typeCopy;
+  v19 = atCopy;
+  v20 = onCopy;
+  dispatch_sync(dispatchQueue, block);
 
-  LOBYTE(v14) = *(v30 + 24);
+  LOBYTE(typeCopy) = *(v30 + 24);
   _Block_object_dispose(&v29, 8);
-  return v14;
+  return typeCopy;
 }
 
 void __77__WADeviceAnalyticsClient_faultEventOn_at_type_interface_andDeferReclaimMem___block_invoke(uint64_t a1)
@@ -4030,21 +4030,21 @@ void __77__WADeviceAnalyticsClient_faultEventOn_at_type_interface_andDeferReclai
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)immediateProcessCachedFaultsAndDeferReclaimMem:(BOOL)a3
+- (BOOL)immediateProcessCachedFaultsAndDeferReclaimMem:(BOOL)mem
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v5 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__WADeviceAnalyticsClient_immediateProcessCachedFaultsAndDeferReclaimMem___block_invoke;
   block[3] = &unk_1E830F280;
   block[4] = self;
   block[5] = &v10;
-  v9 = a3;
-  dispatch_sync(v5, block);
+  memCopy = mem;
+  dispatch_sync(dispatchQueue, block);
 
   v6 = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
@@ -4084,30 +4084,30 @@ void __74__WADeviceAnalyticsClient_immediateProcessCachedFaultsAndDeferReclaimMe
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)linkTestEventOn:(id)a3 at:(id)a4 with:(id)a5 andDeferReclaimMem:(BOOL)a6
+- (BOOL)linkTestEventOn:(id)on at:(id)at with:(id)with andDeferReclaimMem:(BOOL)mem
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  onCopy = on;
+  atCopy = at;
+  withCopy = with;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v13 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __70__WADeviceAnalyticsClient_linkTestEventOn_at_with_andDeferReclaimMem___block_invoke;
   v18[3] = &unk_1E830F1B8;
-  v21 = v12;
+  v21 = withCopy;
   v22 = &v24;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v23 = a6;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_sync(v13, v18);
+  v19 = onCopy;
+  v20 = atCopy;
+  memCopy = mem;
+  v14 = withCopy;
+  v15 = atCopy;
+  v16 = onCopy;
+  dispatch_sync(dispatchQueue, v18);
 
   LOBYTE(self) = *(v25 + 24);
   _Block_object_dispose(&v24, 8);
@@ -4123,27 +4123,27 @@ void __70__WADeviceAnalyticsClient_linkTestEventOn_at_with_andDeferReclaimMem___
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)diagnosticEventAt:(id)a3 with:(id)a4 andDeferReclaimMem:(BOOL)a5
+- (BOOL)diagnosticEventAt:(id)at with:(id)with andDeferReclaimMem:(BOOL)mem
 {
-  v8 = a3;
-  v9 = a4;
+  atCopy = at;
+  withCopy = with;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v10 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__WADeviceAnalyticsClient_diagnosticEventAt_with_andDeferReclaimMem___block_invoke;
   block[3] = &unk_1E830F2A8;
   block[4] = self;
-  v15 = v8;
-  v16 = v9;
+  v15 = atCopy;
+  v16 = withCopy;
   v17 = &v19;
-  v18 = a5;
-  v11 = v9;
-  v12 = v8;
-  dispatch_sync(v10, block);
+  memCopy = mem;
+  v11 = withCopy;
+  v12 = atCopy;
+  dispatch_sync(dispatchQueue, block);
 
   LOBYTE(self) = *(v20 + 24);
   _Block_object_dispose(&v19, 8);
@@ -4159,30 +4159,30 @@ void __69__WADeviceAnalyticsClient_diagnosticEventAt_with_andDeferReclaimMem___b
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)lqmEvent:(id)a3 on:(id)a4 at:(id)a5 andDeferReclaimMem:(BOOL)a6
+- (BOOL)lqmEvent:(id)event on:(id)on at:(id)at andDeferReclaimMem:(BOOL)mem
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  eventCopy = event;
+  onCopy = on;
+  atCopy = at;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v13 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __61__WADeviceAnalyticsClient_lqmEvent_on_at_andDeferReclaimMem___block_invoke;
   v18[3] = &unk_1E830DA38;
-  v21 = v12;
+  v21 = atCopy;
   v22 = &v24;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v23 = a6;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_sync(v13, v18);
+  v19 = eventCopy;
+  v20 = onCopy;
+  memCopy = mem;
+  v14 = atCopy;
+  v15 = onCopy;
+  v16 = eventCopy;
+  dispatch_sync(dispatchQueue, v18);
 
   LOBYTE(self) = *(v25 + 24);
   _Block_object_dispose(&v24, 8);
@@ -4198,18 +4198,18 @@ void __61__WADeviceAnalyticsClient_lqmEvent_on_at_andDeferReclaimMem___block_inv
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)processWiFiStats:(id)a3
+- (void)processWiFiStats:(id)stats
 {
-  v4 = a3;
-  v5 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  statsCopy = stats;
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__WADeviceAnalyticsClient_processWiFiStats___block_invoke;
   v7[3] = &unk_1E830DB70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = statsCopy;
+  v6 = statsCopy;
+  dispatch_sync(dispatchQueue, v7);
 }
 
 void __44__WADeviceAnalyticsClient_processWiFiStats___block_invoke(uint64_t a1)
@@ -4221,21 +4221,21 @@ void __44__WADeviceAnalyticsClient_processWiFiStats___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)processDatapathMetricStream:(id)a3 withDate:(id)a4
+- (void)processDatapathMetricStream:(id)stream withDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  streamCopy = stream;
+  dateCopy = date;
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__WADeviceAnalyticsClient_processDatapathMetricStream_withDate___block_invoke;
   block[3] = &unk_1E830EC20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = streamCopy;
+  v13 = dateCopy;
+  v9 = dateCopy;
+  v10 = streamCopy;
+  dispatch_sync(dispatchQueue, block);
 }
 
 void __64__WADeviceAnalyticsClient_processDatapathMetricStream_withDate___block_invoke(uint64_t a1)
@@ -4247,26 +4247,26 @@ void __64__WADeviceAnalyticsClient_processDatapathMetricStream_withDate___block_
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)a3 maxAgeInDays:(unint64_t)a4
+- (id)updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)network maxAgeInDays:(unint64_t)days
 {
-  v6 = a3;
+  networkCopy = network;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__7;
   v19 = __Block_byref_object_dispose__7;
   v20 = 0;
-  v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __90__WADeviceAnalyticsClient_updateRoamPoliciesAndSummarizeAnalyticsForNetwork_maxAgeInDays___block_invoke;
   v11[3] = &unk_1E830F2D0;
   v11[4] = self;
-  v12 = v6;
+  v12 = networkCopy;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
-  dispatch_sync(v7, v11);
+  daysCopy = days;
+  v8 = networkCopy;
+  dispatch_sync(dispatchQueue, v11);
 
   v9 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -4286,27 +4286,27 @@ void __90__WADeviceAnalyticsClient_updateRoamPoliciesAndSummarizeAnalyticsForNet
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)setPolicyHandlersConfig:(id *)a3
+- (void)setPolicyHandlersConfig:(id *)config
 {
-  v4 = [(WADeviceAnalyticsClient *)self analyticsProcessor];
-  v5 = *a3;
-  [v4 setPolicyHandlersConfig:&v5];
+  analyticsProcessor = [(WADeviceAnalyticsClient *)self analyticsProcessor];
+  v5 = *config;
+  [analyticsProcessor setPolicyHandlersConfig:&v5];
 }
 
 - (void)resetPolicyHandlersConfig
 {
-  v2 = [(WADeviceAnalyticsClient *)self analyticsProcessor];
-  [v2 resetPolicyHandlersConfig];
+  analyticsProcessor = [(WADeviceAnalyticsClient *)self analyticsProcessor];
+  [analyticsProcessor resetPolicyHandlersConfig];
 }
 
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)getPolicyHandlersConfig
 {
-  v4 = [(WADeviceAnalyticsClient *)self analyticsProcessor];
-  if (v4)
+  analyticsProcessor = [(WADeviceAnalyticsClient *)self analyticsProcessor];
+  if (analyticsProcessor)
   {
-    v6 = v4;
-    [v4 getPolicyHandlersConfig];
-    v4 = v6;
+    v6 = analyticsProcessor;
+    [analyticsProcessor getPolicyHandlersConfig];
+    analyticsProcessor = v6;
   }
 
   else
@@ -4319,9 +4319,9 @@ void __90__WADeviceAnalyticsClient_updateRoamPoliciesAndSummarizeAnalyticsForNet
   return result;
 }
 
-- (BOOL)updateRoamPoliciesForSourceBssid:(id)a3 andUpdateRoamCache:(BOOL)a4
+- (BOOL)updateRoamPoliciesForSourceBssid:(id)bssid andUpdateRoamCache:(BOOL)cache
 {
-  v6 = a3;
+  bssidCopy = bssid;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -4331,11 +4331,11 @@ void __90__WADeviceAnalyticsClient_updateRoamPoliciesAndSummarizeAnalyticsForNet
   v10[1] = 3221225472;
   v10[2] = __79__WADeviceAnalyticsClient_updateRoamPoliciesForSourceBssid_andUpdateRoamCache___block_invoke;
   v10[3] = &unk_1E830F2F8;
-  v14 = a4;
-  v12 = self;
+  cacheCopy = cache;
+  selfCopy = self;
   v13 = &v15;
-  v11 = v6;
-  v8 = v6;
+  v11 = bssidCopy;
+  v8 = bssidCopy;
   dispatch_sync(dispatchQueue, v10);
 
   LOBYTE(self) = *(v16 + 24);
@@ -4379,9 +4379,9 @@ void __79__WADeviceAnalyticsClient_updateRoamPoliciesForSourceBssid_andUpdateRoa
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)processDeferredPriorityPoliciesWithReason:(id)a3
+- (BOOL)processDeferredPriorityPoliciesWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -4392,12 +4392,12 @@ void __79__WADeviceAnalyticsClient_updateRoamPoliciesForSourceBssid_andUpdateRoa
   v15[3] = &unk_1E830F320;
   v15[4] = self;
   v17 = &v18;
-  v5 = v4;
+  v5 = reasonCopy;
   v16 = v5;
   v6 = MEMORY[0x1CCA780B0](v15);
   label = dispatch_queue_get_label(0);
-  v8 = [(WADeviceAnalyticsClient *)self dispatchQueue];
-  v9 = dispatch_queue_get_label(v8);
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  v9 = dispatch_queue_get_label(dispatchQueue);
 
   if (label && v9 && !strcmp(label, v9))
   {
@@ -4409,13 +4409,13 @@ void __79__WADeviceAnalyticsClient_updateRoamPoliciesForSourceBssid_andUpdateRoa
 
   else
   {
-    v10 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue2 = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __69__WADeviceAnalyticsClient_processDeferredPriorityPoliciesWithReason___block_invoke_110;
     v13[3] = &unk_1E830F000;
     v14 = v6;
-    dispatch_sync(v10, v13);
+    dispatch_sync(dispatchQueue2, v13);
   }
 
   v11 = *(v19 + 24);
@@ -4476,9 +4476,9 @@ void __69__WADeviceAnalyticsClient_processDeferredPriorityPoliciesWithReason___b
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)processDeferredPoliciesWithReason:(id)a3
+- (BOOL)processDeferredPoliciesWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -4488,10 +4488,10 @@ void __69__WADeviceAnalyticsClient_processDeferredPriorityPoliciesWithReason___b
   block[1] = 3221225472;
   block[2] = __61__WADeviceAnalyticsClient_processDeferredPoliciesWithReason___block_invoke;
   block[3] = &unk_1E830E5F0;
-  v9 = v4;
+  v9 = reasonCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = reasonCopy;
   dispatch_sync(dispatchQueue, block);
 
   LOBYTE(dispatchQueue) = *(v12 + 24);
@@ -4508,18 +4508,18 @@ void __61__WADeviceAnalyticsClient_processDeferredPoliciesWithReason___block_inv
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)performPruneBasedOnStoreSizeAndSaveWithReason:(id)a3
+- (void)performPruneBasedOnStoreSizeAndSaveWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  reasonCopy = reason;
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__WADeviceAnalyticsClient_performPruneBasedOnStoreSizeAndSaveWithReason___block_invoke;
   v7[3] = &unk_1E830DB70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = reasonCopy;
+  v6 = reasonCopy;
+  dispatch_sync(dispatchQueue, v7);
 }
 
 void __73__WADeviceAnalyticsClient_performPruneBasedOnStoreSizeAndSaveWithReason___block_invoke(uint64_t a1)
@@ -4531,11 +4531,11 @@ void __73__WADeviceAnalyticsClient_performPruneBasedOnStoreSizeAndSaveWithReason
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)performPruneTestBSSes:(id)a3 networks:(id)a4 lans:(id)a5 withError:(id *)a6
+- (BOOL)performPruneTestBSSes:(id)ses networks:(id)networks lans:(id)lans withError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  sesCopy = ses;
+  networksCopy = networks;
+  lansCopy = lans;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -4546,25 +4546,25 @@ void __73__WADeviceAnalyticsClient_performPruneBasedOnStoreSizeAndSaveWithReason
   v29 = __Block_byref_object_copy__7;
   v30 = __Block_byref_object_dispose__7;
   v31 = 0;
-  v13 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __73__WADeviceAnalyticsClient_performPruneTestBSSes_networks_lans_withError___block_invoke;
   v19[3] = &unk_1E830F348;
-  v14 = v10;
+  v14 = sesCopy;
   v20 = v14;
-  v15 = v11;
+  v15 = networksCopy;
   v21 = v15;
-  v22 = self;
+  selfCopy = self;
   v24 = &v26;
-  v16 = v12;
+  v16 = lansCopy;
   v23 = v16;
   v25 = &v32;
-  dispatch_sync(v13, v19);
+  dispatch_sync(dispatchQueue, v19);
 
-  if (a6)
+  if (error)
   {
-    *a6 = v27[5];
+    *error = v27[5];
   }
 
   v17 = *(v33 + 24);
@@ -4721,9 +4721,9 @@ LABEL_17:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)performPrunePoliciesWithReasons:(id)a3 withError:(id *)a4
+- (BOOL)performPrunePoliciesWithReasons:(id)reasons withError:(id *)error
 {
-  v6 = a3;
+  reasonsCopy = reasons;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -4734,21 +4734,21 @@ LABEL_17:
   v18 = __Block_byref_object_copy__7;
   v19 = __Block_byref_object_dispose__7;
   v20 = 0;
-  v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__WADeviceAnalyticsClient_performPrunePoliciesWithReasons_withError___block_invoke;
   v11[3] = &unk_1E830F078;
   v11[4] = self;
-  v8 = v6;
+  v8 = reasonsCopy;
   v12 = v8;
   v13 = &v15;
   v14 = &v21;
-  dispatch_sync(v7, v11);
+  dispatch_sync(dispatchQueue, v11);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v9 = *(v22 + 24);
@@ -4772,12 +4772,12 @@ void __69__WADeviceAnalyticsClient_performPrunePoliciesWithReasons_withError___b
   objc_autoreleasePoolPop(v2);
 }
 
-- (unint64_t)performPruneTestEntity:(id)a3 since:(id)a4 withPredicate:(id)a5 withError:(id *)a6
+- (unint64_t)performPruneTestEntity:(id)entity since:(id)since withPredicate:(id)predicate withError:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  entityCopy = entity;
+  sinceCopy = since;
+  predicateCopy = predicate;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -4788,7 +4788,7 @@ void __69__WADeviceAnalyticsClient_performPrunePoliciesWithReasons_withError___b
   v32 = __Block_byref_object_copy__7;
   v33 = __Block_byref_object_dispose__7;
   v34 = 0;
-  if (!v10)
+  if (!entityCopy)
   {
     v17 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -4800,7 +4800,7 @@ void __69__WADeviceAnalyticsClient_performPrunePoliciesWithReasons_withError___b
       _os_log_impl(&dword_1C8460000, v17, OS_LOG_TYPE_ERROR, "%{public}s::%d:entity nil", buf, 0x12u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_5;
     }
@@ -4811,12 +4811,12 @@ void __69__WADeviceAnalyticsClient_performPrunePoliciesWithReasons_withError___b
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
     v20 = [v18 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v19];
 LABEL_14:
-    *a6 = v20;
+    *error = v20;
 
     goto LABEL_4;
   }
 
-  if (!v11)
+  if (!sinceCopy)
   {
     v21 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -4828,7 +4828,7 @@ LABEL_14:
       _os_log_impl(&dword_1C8460000, v21, OS_LOG_TYPE_ERROR, "%{public}s::%d:startDate nil", buf, 0x12u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_5;
     }
@@ -4841,23 +4841,23 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v13 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __80__WADeviceAnalyticsClient_performPruneTestEntity_since_withPredicate_withError___block_invoke;
   v23[3] = &unk_1E830F348;
   v27 = &v35;
   v23[4] = self;
-  v24 = v10;
-  v25 = v11;
-  v26 = v12;
+  v24 = entityCopy;
+  v25 = sinceCopy;
+  v26 = predicateCopy;
   v28 = &v29;
-  dispatch_sync(v13, v23);
+  dispatch_sync(dispatchQueue, v23);
 
-  if (a6)
+  if (error)
   {
 LABEL_4:
-    *a6 = v30[5];
+    *error = v30[5];
   }
 
 LABEL_5:
@@ -4885,22 +4885,22 @@ void __80__WADeviceAnalyticsClient_performPruneTestEntity_since_withPredicate_wi
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)dumpDeviceAnalyticsToFileWithCompletion:(id)a3
+- (BOOL)dumpDeviceAnalyticsToFileWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
+  completionCopy = completion;
+  analyticsFileWriter = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
 
-  if (v5)
+  if (analyticsFileWriter)
   {
-    v6 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __67__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFileWithCompletion___block_invoke;
     v10[3] = &unk_1E830F370;
     v10[4] = self;
-    v11 = v4;
-    dispatch_async(v6, v10);
+    v11 = completionCopy;
+    dispatch_async(dispatchQueue, v10);
   }
 
   else
@@ -4917,7 +4917,7 @@ void __80__WADeviceAnalyticsClient_performPruneTestEntity_since_withPredicate_wi
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return v5 != 0;
+  return analyticsFileWriter != 0;
 }
 
 void __67__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFileWithCompletion___block_invoke(uint64_t a1)
@@ -4942,11 +4942,11 @@ void __67__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFileWithCompletion___blo
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)dumpDeviceAnalyticsToFileWithCompletion:(id)a3 fetchLimit:(unint64_t)a4 maxAge:(unint64_t)a5
+- (BOOL)dumpDeviceAnalyticsToFileWithCompletion:(id)completion fetchLimit:(unint64_t)limit maxAge:(unint64_t)age
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!a4)
+  completionCopy = completion;
+  if (!limit)
   {
     v14 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -4961,25 +4961,25 @@ void __67__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFileWithCompletion___blo
     goto LABEL_8;
   }
 
-  v9 = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
+  analyticsFileWriter = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
 
-  if (!v9)
+  if (!analyticsFileWriter)
   {
 LABEL_8:
     v11 = 0;
     goto LABEL_4;
   }
 
-  v10 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+  dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __85__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFileWithCompletion_fetchLimit_maxAge___block_invoke;
   v15[3] = &unk_1E830F398;
-  v17 = a5;
-  v18 = a4;
+  ageCopy = age;
+  limitCopy = limit;
   v15[4] = self;
-  v16 = v8;
-  dispatch_async(v10, v15);
+  v16 = completionCopy;
+  dispatch_async(dispatchQueue, v15);
 
   v11 = 1;
 LABEL_4:
@@ -5028,26 +5028,26 @@ void __85__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFileWithCompletion_fetch
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)dumpDeviceAnalyticsUsingBatchSizeToFileWithCompletion:(id)a3 batchSize:(unint64_t)a4 maxAge:(unint64_t)a5
+- (BOOL)dumpDeviceAnalyticsUsingBatchSizeToFileWithCompletion:(id)completion batchSize:(unint64_t)size maxAge:(unint64_t)age
 {
-  v8 = a3;
-  v9 = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
+  completionCopy = completion;
+  analyticsFileWriter = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
 
-  if (v9)
+  if (analyticsFileWriter)
   {
-    v10 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __98__WADeviceAnalyticsClient_dumpDeviceAnalyticsUsingBatchSizeToFileWithCompletion_batchSize_maxAge___block_invoke;
     v12[3] = &unk_1E830F398;
-    v14 = a5;
-    v15 = a4;
+    ageCopy = age;
+    sizeCopy = size;
     v12[4] = self;
-    v13 = v8;
-    dispatch_async(v10, v12);
+    v13 = completionCopy;
+    dispatch_async(dispatchQueue, v12);
   }
 
-  return v9 != 0;
+  return analyticsFileWriter != 0;
 }
 
 void __98__WADeviceAnalyticsClient_dumpDeviceAnalyticsUsingBatchSizeToFileWithCompletion_batchSize_maxAge___block_invoke(uint64_t a1)
@@ -5090,26 +5090,26 @@ void __98__WADeviceAnalyticsClient_dumpDeviceAnalyticsUsingBatchSizeToFileWithCo
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)dumpDeviceAnalyticsCSVsUsingBatchSizeToFileWithCompletion:(id)a3 batchSize:(unint64_t)a4 maxAge:(unint64_t)a5
+- (BOOL)dumpDeviceAnalyticsCSVsUsingBatchSizeToFileWithCompletion:(id)completion batchSize:(unint64_t)size maxAge:(unint64_t)age
 {
-  v8 = a3;
-  v9 = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
+  completionCopy = completion;
+  analyticsFileWriter = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
 
-  if (v9)
+  if (analyticsFileWriter)
   {
-    v10 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __102__WADeviceAnalyticsClient_dumpDeviceAnalyticsCSVsUsingBatchSizeToFileWithCompletion_batchSize_maxAge___block_invoke;
     v12[3] = &unk_1E830F398;
-    v14 = a5;
-    v15 = a4;
+    ageCopy = age;
+    sizeCopy = size;
     v12[4] = self;
-    v13 = v8;
-    dispatch_async(v10, v12);
+    v13 = completionCopy;
+    dispatch_async(dispatchQueue, v12);
   }
 
-  return v9 != 0;
+  return analyticsFileWriter != 0;
 }
 
 void __102__WADeviceAnalyticsClient_dumpDeviceAnalyticsCSVsUsingBatchSizeToFileWithCompletion_batchSize_maxAge___block_invoke(uint64_t a1)
@@ -5152,24 +5152,24 @@ void __102__WADeviceAnalyticsClient_dumpDeviceAnalyticsCSVsUsingBatchSizeToFileW
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)dumpDeploymentGraphJSONFileWithCompletion:(id)a3
+- (BOOL)dumpDeploymentGraphJSONFileWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
+  completionCopy = completion;
+  analyticsFileWriter = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
 
-  if (v5)
+  if (analyticsFileWriter)
   {
-    v6 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __69__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFileWithCompletion___block_invoke;
     v8[3] = &unk_1E830F370;
     v8[4] = self;
-    v9 = v4;
-    dispatch_async(v6, v8);
+    v9 = completionCopy;
+    dispatch_async(dispatchQueue, v8);
   }
 
-  return v5 != 0;
+  return analyticsFileWriter != 0;
 }
 
 void __69__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFileWithCompletion___block_invoke(uint64_t a1)
@@ -5202,13 +5202,13 @@ void __69__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFileWithCompletion___b
   v15 = __Block_byref_object_copy__7;
   v16 = __Block_byref_object_dispose__7;
   v17 = 0;
-  v3 = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
+  analyticsFileWriter = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
 
-  if (v3)
+  if (analyticsFileWriter)
   {
     label = dispatch_queue_get_label(0);
-    v5 = [(WADeviceAnalyticsClient *)self dispatchQueue];
-    v6 = dispatch_queue_get_label(v5);
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    v6 = dispatch_queue_get_label(dispatchQueue);
 
     if (label && v6 && !strcmp(label, v6))
     {
@@ -5229,14 +5229,14 @@ void __69__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFileWithCompletion___b
 
     else
     {
-      v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+      dispatchQueue2 = [(WADeviceAnalyticsClient *)self dispatchQueue];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __52__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFile__block_invoke_3;
       v10[3] = &unk_1E830EE78;
       v10[4] = self;
       v10[5] = &v12;
-      dispatch_sync(v7, v10);
+      dispatch_sync(dispatchQueue2, v10);
     }
   }
 
@@ -5302,7 +5302,7 @@ void __52__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFile__block_invoke_5(uin
   *(v3 + 40) = v2;
 }
 
-- (id)dumpDeviceAnalyticsToFileWithFetchLimit:(unint64_t)a3 maxAge:(unint64_t)a4
+- (id)dumpDeviceAnalyticsToFileWithFetchLimit:(unint64_t)limit maxAge:(unint64_t)age
 {
   v34 = *MEMORY[0x1E69E9840];
   v20 = 0;
@@ -5311,10 +5311,10 @@ void __52__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFile__block_invoke_5(uin
   v23 = __Block_byref_object_copy__7;
   v24 = __Block_byref_object_dispose__7;
   v25 = 0;
-  if (a3)
+  if (limit)
   {
-    v7 = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
-    v8 = v7 == 0;
+    analyticsFileWriter = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
+    v8 = analyticsFileWriter == 0;
 
     if (!v8)
     {
@@ -5326,15 +5326,15 @@ void __52__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFile__block_invoke_5(uin
         v28 = 1024;
         v29 = 1311;
         v30 = 2048;
-        v31 = a4;
+        ageCopy = age;
         v32 = 2048;
-        v33 = a3;
+        limitCopy = limit;
         _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_DEBUG, "%{public}s::%d:maxAge:%lu fetchLimit:%lu", buf, 0x26u);
       }
 
       label = dispatch_queue_get_label(0);
-      v11 = [(WADeviceAnalyticsClient *)self dispatchQueue];
-      v12 = dispatch_queue_get_label(v11);
+      dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
+      v12 = dispatch_queue_get_label(dispatchQueue);
 
       if (label && v12 && !strcmp(label, v12))
       {
@@ -5344,31 +5344,31 @@ void __52__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFile__block_invoke_5(uin
         v19[11] = &unk_1E830F3C0;
         v19[12] = self;
         v19[13] = &v20;
-        v19[14] = a3;
-        v19[15] = a4;
+        v19[14] = limit;
+        v19[15] = age;
         v19[0] = MEMORY[0x1E69E9820];
         v19[1] = 3221225472;
         v19[2] = __74__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFileWithFetchLimit_maxAge___block_invoke_2;
         v19[3] = &unk_1E830F3C0;
         v19[4] = self;
         v19[5] = &v20;
-        v19[6] = a3;
-        v19[7] = a4;
+        v19[6] = limit;
+        v19[7] = age;
         __74__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFileWithFetchLimit_maxAge___block_invoke_2(v19);
       }
 
       else
       {
-        v13 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+        dispatchQueue2 = [(WADeviceAnalyticsClient *)self dispatchQueue];
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __74__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFileWithFetchLimit_maxAge___block_invoke_3;
         v18[3] = &unk_1E830F3C0;
         v18[4] = self;
         v18[5] = &v20;
-        v18[6] = a3;
-        v18[7] = a4;
-        dispatch_sync(v13, v18);
+        v18[6] = limit;
+        v18[7] = age;
+        dispatch_sync(dispatchQueue2, v18);
       }
     }
   }
@@ -5455,7 +5455,7 @@ void __74__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFileWithFetchLimit_maxAg
   *(v3 + 40) = v2;
 }
 
-- (id)dumpDeviceAnalyticsUsingBatchSizeToFileWithBatchSize:(unint64_t)a3 maxAge:(unint64_t)a4
+- (id)dumpDeviceAnalyticsUsingBatchSizeToFileWithBatchSize:(unint64_t)size maxAge:(unint64_t)age
 {
   v33 = *MEMORY[0x1E69E9840];
   v19 = 0;
@@ -5464,8 +5464,8 @@ void __74__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFileWithFetchLimit_maxAg
   v22 = __Block_byref_object_copy__7;
   v23 = __Block_byref_object_dispose__7;
   v24 = 0;
-  v7 = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
-  v8 = v7 == 0;
+  analyticsFileWriter = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
+  v8 = analyticsFileWriter == 0;
 
   if (!v8)
   {
@@ -5477,15 +5477,15 @@ void __74__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFileWithFetchLimit_maxAg
       v27 = 1024;
       v28 = 1323;
       v29 = 2048;
-      v30 = a4;
+      ageCopy = age;
       v31 = 2048;
-      v32 = a3;
+      sizeCopy = size;
       _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_DEBUG, "%{public}s::%d:maxAge:%lu batchSize:%lu", buf, 0x26u);
     }
 
     label = dispatch_queue_get_label(0);
-    v11 = [(WADeviceAnalyticsClient *)self dispatchQueue];
-    v12 = dispatch_queue_get_label(v11);
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    v12 = dispatch_queue_get_label(dispatchQueue);
 
     if (label && v12 && !strcmp(label, v12))
     {
@@ -5495,31 +5495,31 @@ void __74__WADeviceAnalyticsClient_dumpDeviceAnalyticsToFileWithFetchLimit_maxAg
       v18[11] = &unk_1E830F3C0;
       v18[12] = self;
       v18[13] = &v19;
-      v18[14] = a3;
-      v18[15] = a4;
+      v18[14] = size;
+      v18[15] = age;
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __87__WADeviceAnalyticsClient_dumpDeviceAnalyticsUsingBatchSizeToFileWithBatchSize_maxAge___block_invoke_2;
       v18[3] = &unk_1E830F3C0;
       v18[4] = self;
       v18[5] = &v19;
-      v18[6] = a3;
-      v18[7] = a4;
+      v18[6] = size;
+      v18[7] = age;
       __87__WADeviceAnalyticsClient_dumpDeviceAnalyticsUsingBatchSizeToFileWithBatchSize_maxAge___block_invoke_2(v18);
     }
 
     else
     {
-      v13 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+      dispatchQueue2 = [(WADeviceAnalyticsClient *)self dispatchQueue];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __87__WADeviceAnalyticsClient_dumpDeviceAnalyticsUsingBatchSizeToFileWithBatchSize_maxAge___block_invoke_3;
       v17[3] = &unk_1E830F3C0;
       v17[4] = self;
       v17[5] = &v19;
-      v17[6] = a3;
-      v17[7] = a4;
-      dispatch_sync(v13, v17);
+      v17[6] = size;
+      v17[7] = age;
+      dispatch_sync(dispatchQueue2, v17);
     }
   }
 
@@ -5592,7 +5592,7 @@ void __87__WADeviceAnalyticsClient_dumpDeviceAnalyticsUsingBatchSizeToFileWithBa
   *(v3 + 40) = v2;
 }
 
-- (id)dumpDeviceAnalyticsCSVsToFileWithBatchSize:(unint64_t)a3 maxAge:(unint64_t)a4
+- (id)dumpDeviceAnalyticsCSVsToFileWithBatchSize:(unint64_t)size maxAge:(unint64_t)age
 {
   v33 = *MEMORY[0x1E69E9840];
   v19 = 0;
@@ -5601,8 +5601,8 @@ void __87__WADeviceAnalyticsClient_dumpDeviceAnalyticsUsingBatchSizeToFileWithBa
   v22 = __Block_byref_object_copy__7;
   v23 = __Block_byref_object_dispose__7;
   v24 = 0;
-  v7 = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
-  v8 = v7 == 0;
+  analyticsFileWriter = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
+  v8 = analyticsFileWriter == 0;
 
   if (!v8)
   {
@@ -5614,15 +5614,15 @@ void __87__WADeviceAnalyticsClient_dumpDeviceAnalyticsUsingBatchSizeToFileWithBa
       v27 = 1024;
       v28 = 1336;
       v29 = 2048;
-      v30 = a4;
+      ageCopy = age;
       v31 = 2048;
-      v32 = a3;
+      sizeCopy = size;
       _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_DEBUG, "%{public}s::%d:maxAge:%lu batchSize:%lu", buf, 0x26u);
     }
 
     label = dispatch_queue_get_label(0);
-    v11 = [(WADeviceAnalyticsClient *)self dispatchQueue];
-    v12 = dispatch_queue_get_label(v11);
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    v12 = dispatch_queue_get_label(dispatchQueue);
 
     if (label && v12 && !strcmp(label, v12))
     {
@@ -5632,31 +5632,31 @@ void __87__WADeviceAnalyticsClient_dumpDeviceAnalyticsUsingBatchSizeToFileWithBa
       v18[11] = &unk_1E830F3C0;
       v18[12] = self;
       v18[13] = &v19;
-      v18[14] = a3;
-      v18[15] = a4;
+      v18[14] = size;
+      v18[15] = age;
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __77__WADeviceAnalyticsClient_dumpDeviceAnalyticsCSVsToFileWithBatchSize_maxAge___block_invoke_2;
       v18[3] = &unk_1E830F3C0;
       v18[4] = self;
       v18[5] = &v19;
-      v18[6] = a3;
-      v18[7] = a4;
+      v18[6] = size;
+      v18[7] = age;
       __77__WADeviceAnalyticsClient_dumpDeviceAnalyticsCSVsToFileWithBatchSize_maxAge___block_invoke_2(v18);
     }
 
     else
     {
-      v13 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+      dispatchQueue2 = [(WADeviceAnalyticsClient *)self dispatchQueue];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __77__WADeviceAnalyticsClient_dumpDeviceAnalyticsCSVsToFileWithBatchSize_maxAge___block_invoke_3;
       v17[3] = &unk_1E830F3C0;
       v17[4] = self;
       v17[5] = &v19;
-      v17[6] = a3;
-      v17[7] = a4;
-      dispatch_sync(v13, v17);
+      v17[6] = size;
+      v17[7] = age;
+      dispatch_sync(dispatchQueue2, v17);
     }
   }
 
@@ -5737,13 +5737,13 @@ void __77__WADeviceAnalyticsClient_dumpDeviceAnalyticsCSVsToFileWithBatchSize_ma
   v15 = __Block_byref_object_copy__7;
   v16 = __Block_byref_object_dispose__7;
   v17 = 0;
-  v3 = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
+  analyticsFileWriter = [(WADeviceAnalyticsClient *)self analyticsFileWriter];
 
-  if (v3)
+  if (analyticsFileWriter)
   {
     label = dispatch_queue_get_label(0);
-    v5 = [(WADeviceAnalyticsClient *)self dispatchQueue];
-    v6 = dispatch_queue_get_label(v5);
+    dispatchQueue = [(WADeviceAnalyticsClient *)self dispatchQueue];
+    v6 = dispatch_queue_get_label(dispatchQueue);
 
     if (label && v6 && !strcmp(label, v6))
     {
@@ -5764,14 +5764,14 @@ void __77__WADeviceAnalyticsClient_dumpDeviceAnalyticsCSVsToFileWithBatchSize_ma
 
     else
     {
-      v7 = [(WADeviceAnalyticsClient *)self dispatchQueue];
+      dispatchQueue2 = [(WADeviceAnalyticsClient *)self dispatchQueue];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_3;
       v10[3] = &unk_1E830EE78;
       v10[4] = self;
       v10[5] = &v12;
-      dispatch_sync(v7, v10);
+      dispatch_sync(dispatchQueue2, v10);
     }
   }
 
@@ -5839,59 +5839,59 @@ void __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_5(u
 
 - (id)entities
 {
-  v2 = [(NSPersistentContainer *)self->_persistentContainer managedObjectModel];
-  v3 = [v2 entities];
+  managedObjectModel = [(NSPersistentContainer *)self->_persistentContainer managedObjectModel];
+  entities = [managedObjectModel entities];
 
-  return v3;
+  return entities;
 }
 
-- (id)performFetch:(id)a3 error:(id *)a4
+- (id)performFetch:(id)fetch error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WADeviceAnalyticsClient *)self analyticsRawAccess];
-  v8 = [v7 performFetchWithBlockAndWait:v6 error:a4];
+  fetchCopy = fetch;
+  analyticsRawAccess = [(WADeviceAnalyticsClient *)self analyticsRawAccess];
+  v8 = [analyticsRawAccess performFetchWithBlockAndWait:fetchCopy error:error];
 
   return v8;
 }
 
-- (unint64_t)countForFetchRequest:(id)a3 error:(id *)a4
+- (unint64_t)countForFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WADeviceAnalyticsClient *)self analyticsRawAccess];
-  v8 = [v7 countForFetchRequestWithBlockAndWait:v6 error:a4];
+  requestCopy = request;
+  analyticsRawAccess = [(WADeviceAnalyticsClient *)self analyticsRawAccess];
+  v8 = [analyticsRawAccess countForFetchRequestWithBlockAndWait:requestCopy error:error];
 
   return v8;
 }
 
 - (BOOL)rawAccessCanWrite
 {
-  v2 = [(WADeviceAnalyticsClient *)self analyticsRawAccess];
-  v3 = [v2 canWrite];
+  analyticsRawAccess = [(WADeviceAnalyticsClient *)self analyticsRawAccess];
+  canWrite = [analyticsRawAccess canWrite];
 
-  return v3;
+  return canWrite;
 }
 
-- (void)addPersistentStoreRemoteChangeNotificationObserver:(id)a3 selector:(SEL)a4
+- (void)addPersistentStoreRemoteChangeNotificationObserver:(id)observer selector:(SEL)selector
 {
-  v6 = a3;
+  observerCopy = observer;
   v7 = objc_opt_class();
-  v8 = [(NSPersistentContainer *)self->_persistentContainer persistentStoreCoordinator];
-  [v7 addPersistentStoreRemoteChangeNotificationObserver:v6 selector:a4 coordinator:v8];
+  persistentStoreCoordinator = [(NSPersistentContainer *)self->_persistentContainer persistentStoreCoordinator];
+  [v7 addPersistentStoreRemoteChangeNotificationObserver:observerCopy selector:selector coordinator:persistentStoreCoordinator];
 }
 
-- (void)removePersistentStoreRemoteChangeNotificationObserver:(id)a3
+- (void)removePersistentStoreRemoteChangeNotificationObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = objc_opt_class();
-  v6 = [(NSPersistentContainer *)self->_persistentContainer persistentStoreCoordinator];
-  [v5 removePersistentStoreRemoteChangeNotificationObserver:v4 coordinator:v6];
+  persistentStoreCoordinator = [(NSPersistentContainer *)self->_persistentContainer persistentStoreCoordinator];
+  [v5 removePersistentStoreRemoteChangeNotificationObserver:observerCopy coordinator:persistentStoreCoordinator];
 }
 
-+ (void)addPersistentStoreRemoteChangeNotificationObserver:(id)a3 selector:(SEL)a4 coordinator:(id)a5
++ (void)addPersistentStoreRemoteChangeNotificationObserver:(id)observer selector:(SEL)selector coordinator:(id)coordinator
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  observerCopy = observer;
+  coordinatorCopy = coordinator;
   v9 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -5900,23 +5900,23 @@ void __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_5(u
     v14 = 1024;
     v15 = 1393;
     v16 = 2112;
-    v17 = v7;
+    v17 = observerCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = coordinatorCopy;
     _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Adding %@ as observer of NSPersistentStoreRemoteChangeNotification from %@", &v12, 0x26u);
   }
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 addObserver:v7 selector:a4 name:*MEMORY[0x1E695D420] object:v8];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:observerCopy selector:selector name:*MEMORY[0x1E695D420] object:coordinatorCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)removePersistentStoreRemoteChangeNotificationObserver:(id)a3 coordinator:(id)a4
++ (void)removePersistentStoreRemoteChangeNotificationObserver:(id)observer coordinator:(id)coordinator
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  coordinatorCopy = coordinator;
   v7 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -5925,24 +5925,24 @@ void __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_5(u
     v12 = 1024;
     v13 = 1400;
     v14 = 2112;
-    v15 = v5;
+    v15 = observerCopy;
     v16 = 2112;
-    v17 = v6;
+    v17 = coordinatorCopy;
     _os_log_impl(&dword_1C8460000, v7, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Removing %@ as observer of NSPersistentStoreRemoteChangeNotification from %@", &v10, 0x26u);
   }
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 removeObserver:v5 name:*MEMORY[0x1E695D420] object:v6];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:observerCopy name:*MEMORY[0x1E695D420] object:coordinatorCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)ouiFromBssid:(id)a3
++ (id)ouiFromBssid:(id)bssid
 {
-  v3 = a3;
-  if ([v3 length])
+  bssidCopy = bssid;
+  if ([bssidCopy length])
   {
-    v4 = [BSSMO formattedMACAddressNotation:v3 as:3];
+    v4 = [BSSMO formattedMACAddressNotation:bssidCopy as:3];
   }
 
   else
@@ -5953,11 +5953,11 @@ void __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_5(u
   return v4;
 }
 
-+ (signed)convert32to16:(int)a3
++ (signed)convert32to16:(int)convert32to16
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (a3 != a3)
+  convert32to16Copy = convert32to16;
+  if (convert32to16 != convert32to16)
   {
     v7 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -5967,33 +5967,33 @@ void __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_5(u
       v10 = 1024;
       v11 = 1418;
       v12 = 1024;
-      v13 = a3;
+      convert32to16Copy2 = convert32to16;
       v14 = 1024;
-      v15 = v3;
+      v15 = convert32to16Copy;
       _os_log_impl(&dword_1C8460000, v7, OS_LOG_TYPE_FAULT, "%{public}s::%d:the value stored in input (%d) is larger than what we can store in 16 bits (%d). DB schema update required.", &v8, 0x1Eu);
     }
   }
 
   v4 = *MEMORY[0x1E69E9840];
-  return v3;
+  return convert32to16Copy;
 }
 
-+ (id)bandAsString:(signed __int16)a3
++ (id)bandAsString:(signed __int16)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"N/A";
   }
 
   else
   {
-    return off_1E830F3E0[a3];
+    return off_1E830F3E0[string];
   }
 }
 
-+ (signed)bandFromChannelFlags:(unsigned int)a3
++ (signed)bandFromChannelFlags:(unsigned int)flags
 {
-  if ((a3 & 0x2000) != 0)
+  if ((flags & 0x2000) != 0)
   {
     v3 = 2;
   }
@@ -6003,7 +6003,7 @@ void __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_5(u
     v3 = -1;
   }
 
-  if ((a3 & 0x10) != 0)
+  if ((flags & 0x10) != 0)
   {
     v4 = 1;
   }
@@ -6013,7 +6013,7 @@ void __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_5(u
     v4 = v3;
   }
 
-  if ((a3 & 8) != 0)
+  if ((flags & 8) != 0)
   {
     return 0;
   }
@@ -6021,20 +6021,20 @@ void __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_5(u
   return v4;
 }
 
-+ (signed)bandFromNSChannelFlags:(id)a3
++ (signed)bandFromNSChannelFlags:(id)flags
 {
-  v3 = a3;
-  if (([v3 unsignedLongValue] & 8) != 0)
+  flagsCopy = flags;
+  if (([flagsCopy unsignedLongValue] & 8) != 0)
   {
     v4 = 0;
   }
 
-  else if (([v3 unsignedLongValue] & 0x10) != 0)
+  else if (([flagsCopy unsignedLongValue] & 0x10) != 0)
   {
     v4 = 1;
   }
 
-  else if (([v3 unsignedLongValue] & 0x2000) != 0)
+  else if (([flagsCopy unsignedLongValue] & 0x2000) != 0)
   {
     v4 = 2;
   }
@@ -6047,9 +6047,9 @@ void __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_5(u
   return v4;
 }
 
-+ (signed)channelWidthFromChannelFlags:(unsigned int)a3
++ (signed)channelWidthFromChannelFlags:(unsigned int)flags
 {
-  if ((a3 & 0x800) != 0)
+  if ((flags & 0x800) != 0)
   {
     v3 = 3;
   }
@@ -6059,7 +6059,7 @@ void __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_5(u
     v3 = -1;
   }
 
-  if ((a3 & 0x400) != 0)
+  if ((flags & 0x400) != 0)
   {
     v4 = 2;
   }
@@ -6069,7 +6069,7 @@ void __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_5(u
     v4 = v3;
   }
 
-  if ((a3 & 4) != 0)
+  if ((flags & 4) != 0)
   {
     v5 = 1;
   }
@@ -6079,7 +6079,7 @@ void __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_5(u
     v5 = v4;
   }
 
-  if ((a3 & 2) != 0)
+  if ((flags & 2) != 0)
   {
     return 0;
   }
@@ -6087,72 +6087,72 @@ void __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_5(u
   return v5;
 }
 
-+ (id)channelWidthAsString:(signed __int16)a3
++ (id)channelWidthAsString:(signed __int16)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"N/A";
   }
 
   else
   {
-    return off_1E830F3F8[a3];
+    return off_1E830F3F8[string];
   }
 }
 
-+ (signed)subBandFromBand:(signed __int16)a3 channel:(unint64_t)a4
++ (signed)subBandFromBand:(signed __int16)band channel:(unint64_t)channel
 {
-  if (!a3)
+  if (!band)
   {
     return 1;
   }
 
-  if (a3 == 1 && a4 < 0x31)
+  if (band == 1 && channel < 0x31)
   {
     return 2;
   }
 
-  if (a3 == 1 && a4 < 0x45)
+  if (band == 1 && channel < 0x45)
   {
     return 3;
   }
 
-  if (a3 == 1 && a4 < 0x5D)
+  if (band == 1 && channel < 0x5D)
   {
     return 4;
   }
 
-  if (a3 == 1 && a4 < 0x91)
+  if (band == 1 && channel < 0x91)
   {
     return 5;
   }
 
-  if (a3 == 1 && a4 < 0xA6)
+  if (band == 1 && channel < 0xA6)
   {
     return 6;
   }
 
-  if (a3 == 1 && a4 < 0xB2)
+  if (band == 1 && channel < 0xB2)
   {
     return 7;
   }
 
-  if (a3 == 2 && a4 < 0x5E)
+  if (band == 2 && channel < 0x5E)
   {
     return 8;
   }
 
-  if (a3 == 2 && a4 < 0x72)
+  if (band == 2 && channel < 0x72)
   {
     return 9;
   }
 
-  if (a3 == 2 && a4 < 0xB6)
+  if (band == 2 && channel < 0xB6)
   {
     return 10;
   }
 
-  if (a4 < 0xEA && a3 == 2)
+  if (channel < 0xEA && band == 2)
   {
     return 11;
   }
@@ -6163,28 +6163,28 @@ void __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_5(u
   }
 }
 
-+ (id)subBandAsString:(signed __int16)a3
++ (id)subBandAsString:(signed __int16)string
 {
-  if ((a3 - 1) > 0xA)
+  if ((string - 1) > 0xA)
   {
     return 0;
   }
 
   else
   {
-    return off_1E830F418[(a3 - 1)];
+    return off_1E830F418[(string - 1)];
   }
 }
 
-+ (id)timeSpanToString:(unint64_t)a3
++ (id)timeSpanToString:(unint64_t)string
 {
   v3 = @"FIXME";
-  if (a3 == 3)
+  if (string == 3)
   {
     v3 = @"Monthly";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"Weekly";
   }
@@ -6195,15 +6195,15 @@ void __54__WADeviceAnalyticsClient_dumpDeploymentGraphJSONFile__block_invoke_5(u
   }
 }
 
-+ (id)timeSpanSelectorToString:(unint64_t)a3
++ (id)timeSpanSelectorToString:(unint64_t)string
 {
   v3 = @"FIXME";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"LatestComplete";
   }
 
-  if (a3)
+  if (string)
   {
     return v3;
   }

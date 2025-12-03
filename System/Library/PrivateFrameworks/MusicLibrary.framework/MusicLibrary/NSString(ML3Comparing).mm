@@ -11,7 +11,7 @@
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
-    v8 = [a1 compare:v7];
+    v8 = [self compare:v7];
     v9 = 0;
     if (a4 <= 4)
     {
@@ -21,13 +21,13 @@
         {
           if (a4 == 2)
           {
-            v9 = [a1 isEqualToString:v7] ^ 1;
+            v9 = [self isEqualToString:v7] ^ 1;
           }
 
           goto LABEL_29;
         }
 
-        v10 = [a1 isEqualToString:v7];
+        v10 = [self isEqualToString:v7];
         goto LABEL_28;
       }
 
@@ -47,13 +47,13 @@
         switch(a4)
         {
           case 7:
-            v10 = [a1 containsString:v7];
+            v10 = [self containsString:v7];
             break;
           case 8:
-            v10 = [a1 hasPrefix:v7];
+            v10 = [self hasPrefix:v7];
             break;
           case 9:
-            v10 = [a1 hasSuffix:v7];
+            v10 = [self hasSuffix:v7];
             break;
           default:
 LABEL_29:

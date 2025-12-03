@@ -1,54 +1,54 @@
 @interface AFConversation
-- (AFConversation)initWithIdentifier:(id)a3 languageCode:(id)a4;
-- (AFConversation)initWithIdentifier:(id)a3 languageCode:(id)a4 rootNode:(id)a5;
-- (AFConversation)initWithLanguageCode:(id)a3;
-- (AFConversation)initWithPropertyListRepresentation:(id)a3;
+- (AFConversation)initWithIdentifier:(id)identifier languageCode:(id)code;
+- (AFConversation)initWithIdentifier:(id)identifier languageCode:(id)code rootNode:(id)node;
+- (AFConversation)initWithLanguageCode:(id)code;
+- (AFConversation)initWithPropertyListRepresentation:(id)representation;
 - (AFConversationDelegate)delegate;
-- (BOOL)_nodeContainsProvisionalItems:(id)a3;
-- (BOOL)containsItemForAceViewWithIdentifier:(id)a3;
-- (BOOL)containsItemWithIdentifier:(id)a3;
-- (BOOL)hasItemWithIdentifier:(id)a3;
-- (BOOL)itemAtIndexPathIsVirgin:(id)a3;
-- (id)_changePresentationStateForNodes:(id)a3;
-- (id)_childOfNode:(id)a3 withItemWhichCanBeUpdatedWithAceObject:(id)a4 inDialogPhase:(id)a5;
-- (id)_indexPathForItemWithIdentifier:(id)a3 ignoreNonExistent:(BOOL)a4;
-- (id)_indexPathsForAddingItemsWithCount:(int64_t)a3 asChildrenOfItemWithIdentifier:(id)a4;
-- (id)_itemAtIndexPath:(id)a3;
-- (id)_nodeAtIndexPath:(id)a3;
-- (id)aceCommandIdentifierForItemAtIndexPath:(id)a3;
-- (id)aceObjectForItemAtIndexPath:(id)a3;
-- (id)additionalSpeechInterpretationsForRefId:(id)a3;
-- (id)dialogPhaseForItemAtIndexPath:(id)a3;
-- (id)identifierOfItemAtIndexPath:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)itemWithIdentifier:(id)a3;
+- (BOOL)_nodeContainsProvisionalItems:(id)items;
+- (BOOL)containsItemForAceViewWithIdentifier:(id)identifier;
+- (BOOL)containsItemWithIdentifier:(id)identifier;
+- (BOOL)hasItemWithIdentifier:(id)identifier;
+- (BOOL)itemAtIndexPathIsVirgin:(id)virgin;
+- (id)_changePresentationStateForNodes:(id)nodes;
+- (id)_childOfNode:(id)node withItemWhichCanBeUpdatedWithAceObject:(id)object inDialogPhase:(id)phase;
+- (id)_indexPathForItemWithIdentifier:(id)identifier ignoreNonExistent:(BOOL)existent;
+- (id)_indexPathsForAddingItemsWithCount:(int64_t)count asChildrenOfItemWithIdentifier:(id)identifier;
+- (id)_itemAtIndexPath:(id)path;
+- (id)_nodeAtIndexPath:(id)path;
+- (id)aceCommandIdentifierForItemAtIndexPath:(id)path;
+- (id)aceObjectForItemAtIndexPath:(id)path;
+- (id)additionalSpeechInterpretationsForRefId:(id)id;
+- (id)dialogPhaseForItemAtIndexPath:(id)path;
+- (id)identifierOfItemAtIndexPath:(id)path;
+- (id)itemAtIndexPath:(id)path;
+- (id)itemWithIdentifier:(id)identifier;
 - (id)lastItem;
-- (id)parentOfItemWithIdentifier:(id)a3;
+- (id)parentOfItemWithIdentifier:(id)identifier;
 - (id)propertyListRepresentation;
-- (int64_t)numberOfChildrenForItemAtIndexPath:(id)a3;
-- (int64_t)numberOfChildrenForItemWithIdentifier:(id)a3;
-- (int64_t)presentationStateForItemAtIndexPath:(id)a3;
-- (int64_t)typeForItemAtIndexPath:(id)a3;
-- (void)_addItemsForAceObjects:(id)a3 type:(int64_t)a4 aceCommandIdentifier:(id)a5 dialogPhase:(id)a6 asChildrenOfItemWithIdentifier:(id)a7;
-- (void)_addItemsForAceViews:(id)a3 withDialogPhase:(id)a4 fromCommandWithIdentifier:(id)a5 atIndexPaths:(id)a6 isSupplemental:(BOOL)a7 isImmersiveExperience:(BOOL)a8 isPersistentAcrossInvocations:(BOOL)a9;
-- (void)_enumerateItemsUsingBlock:(id)a3;
-- (void)_processInsertions:(id)a3 inDialogPhase:(id)a4;
-- (void)_removeNodes:(id)a3;
-- (void)addAdditionalSpeechInterpretation:(id)a3 refId:(id)a4;
-- (void)addItemForMusicStartSessionCommand:(id)a3;
-- (void)addItemForPartialResultCommand:(id)a3;
-- (void)addItemForSpeechRecognizedCommand:(id)a3;
-- (void)addItemsForAddViewsCommand:(id)a3;
-- (void)addItemsForShowHelpCommand:(id)a3;
-- (void)addRecognitionUpdateWithPhrases:(id)a3 utterances:(id)a4 refId:(id)a5;
-- (void)addSelectionResponse:(id)a3;
-- (void)cancelItemWithIdentifier:(id)a3;
-- (void)notifyDelegateOfUpdates:(id)a3 inserts:(id)a4 presentationChanges:(id)a5;
-- (void)removeItemsAtIndexPaths:(id)a3;
-- (void)removeItemsFollowingItemAtIndexPath:(id)a3;
-- (void)removeItemsWithIdentifiers:(id)a3;
+- (int64_t)numberOfChildrenForItemAtIndexPath:(id)path;
+- (int64_t)numberOfChildrenForItemWithIdentifier:(id)identifier;
+- (int64_t)presentationStateForItemAtIndexPath:(id)path;
+- (int64_t)typeForItemAtIndexPath:(id)path;
+- (void)_addItemsForAceObjects:(id)objects type:(int64_t)type aceCommandIdentifier:(id)identifier dialogPhase:(id)phase asChildrenOfItemWithIdentifier:(id)withIdentifier;
+- (void)_addItemsForAceViews:(id)views withDialogPhase:(id)phase fromCommandWithIdentifier:(id)identifier atIndexPaths:(id)paths isSupplemental:(BOOL)supplemental isImmersiveExperience:(BOOL)experience isPersistentAcrossInvocations:(BOOL)invocations;
+- (void)_enumerateItemsUsingBlock:(id)block;
+- (void)_processInsertions:(id)insertions inDialogPhase:(id)phase;
+- (void)_removeNodes:(id)nodes;
+- (void)addAdditionalSpeechInterpretation:(id)interpretation refId:(id)id;
+- (void)addItemForMusicStartSessionCommand:(id)command;
+- (void)addItemForPartialResultCommand:(id)command;
+- (void)addItemForSpeechRecognizedCommand:(id)command;
+- (void)addItemsForAddViewsCommand:(id)command;
+- (void)addItemsForShowHelpCommand:(id)command;
+- (void)addRecognitionUpdateWithPhrases:(id)phrases utterances:(id)utterances refId:(id)id;
+- (void)addSelectionResponse:(id)response;
+- (void)cancelItemWithIdentifier:(id)identifier;
+- (void)notifyDelegateOfUpdates:(id)updates inserts:(id)inserts presentationChanges:(id)changes;
+- (void)removeItemsAtIndexPaths:(id)paths;
+- (void)removeItemsFollowingItemAtIndexPath:(id)path;
+- (void)removeItemsWithIdentifiers:(id)identifiers;
 - (void)removeTransientItems;
-- (void)updateWithUpdateViewsCommand:(id)a3;
+- (void)updateWithUpdateViewsCommand:(id)command;
 @end
 
 @implementation AFConversation
@@ -74,38 +74,38 @@
 
 - (id)propertyListRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:&unk_1F056D758 forKey:@"Version"];
-  v4 = [(AFConversation *)self identifier];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKey:@"Identifier"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:&unk_1F056D758 forKey:@"Version"];
+  identifier = [(AFConversation *)self identifier];
+  uUIDString = [identifier UUIDString];
+  [dictionary setObject:uUIDString forKey:@"Identifier"];
 
-  v6 = [(AFConversation *)self languageCode];
-  [v3 setObject:v6 forKey:@"LanguageCode"];
+  languageCode = [(AFConversation *)self languageCode];
+  [dictionary setObject:languageCode forKey:@"LanguageCode"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[AFConversation isSynchronizedWithServer](self, "isSynchronizedWithServer")}];
-  [v3 setObject:v7 forKey:@"SynchronizedWithServer"];
+  [dictionary setObject:v7 forKey:@"SynchronizedWithServer"];
 
   v8 = objc_alloc_init(AFTreeNodePropertyListSerialization);
-  v9 = [(AFConversation *)self _rootNode];
-  v10 = [(AFTreeNodePropertyListSerialization *)v8 propertyListWithTreeNode:v9 itemPropertyListCreation:&__block_literal_global_58];
+  _rootNode = [(AFConversation *)self _rootNode];
+  v10 = [(AFTreeNodePropertyListSerialization *)v8 propertyListWithTreeNode:_rootNode itemPropertyListCreation:&__block_literal_global_58];
 
-  [v3 setObject:v10 forKey:@"RootNode"];
+  [dictionary setObject:v10 forKey:@"RootNode"];
 
-  return v3;
+  return dictionary;
 }
 
 - (void)removeTransientItems
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(AFConversation *)self _rootNode];
+  array = [MEMORY[0x1E695DF70] array];
+  _rootNode = [(AFConversation *)self _rootNode];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__AFConversation_removeTransientItems__block_invoke;
   v6[3] = &unk_1E7343D00;
-  v7 = v3;
-  v5 = v3;
-  [v4 enumerateDescendentNodesUsingBlock:v6];
+  v7 = array;
+  v5 = array;
+  [_rootNode enumerateDescendentNodesUsingBlock:v6];
 
   [(AFConversation *)self _removeNodes:v5];
 }
@@ -127,65 +127,65 @@ void __38__AFConversation_removeTransientItems__block_invoke(uint64_t a1, void *
   return WeakRetained;
 }
 
-- (void)notifyDelegateOfUpdates:(id)a3 inserts:(id)a4 presentationChanges:(id)a5
+- (void)notifyDelegateOfUpdates:(id)updates inserts:(id)inserts presentationChanges:(id)changes
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v23 count])
+  updatesCopy = updates;
+  insertsCopy = inserts;
+  changesCopy = changes;
+  if ([updatesCopy count])
   {
-    v10 = [(AFConversation *)self delegate];
+    delegate = [(AFConversation *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(AFConversation *)self delegate];
-      [v12 conversation:self didUpdateItemsAtIndexPaths:v23];
+      delegate2 = [(AFConversation *)self delegate];
+      [delegate2 conversation:self didUpdateItemsAtIndexPaths:updatesCopy];
     }
   }
 
-  if ([v8 count])
+  if ([insertsCopy count])
   {
-    v13 = [(AFConversation *)self delegate];
+    delegate3 = [(AFConversation *)self delegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(AFConversation *)self delegate];
-      [v15 conversation:self didInsertItemsAtIndexPaths:v8];
+      delegate4 = [(AFConversation *)self delegate];
+      [delegate4 conversation:self didInsertItemsAtIndexPaths:insertsCopy];
     }
   }
 
-  if ([v9 count])
+  if ([changesCopy count])
   {
-    v16 = [(AFConversation *)self delegate];
+    delegate5 = [(AFConversation *)self delegate];
     v17 = objc_opt_respondsToSelector();
 
     if (v17)
     {
-      v18 = [(AFConversation *)self delegate];
-      [v18 conversation:self presentationStateDidChangeForItemsAtIndexPaths:v9];
+      delegate6 = [(AFConversation *)self delegate];
+      [delegate6 conversation:self presentationStateDidChangeForItemsAtIndexPaths:changesCopy];
     }
   }
 
-  if ([v23 count] || objc_msgSend(v8, "count") || objc_msgSend(v9, "count"))
+  if ([updatesCopy count] || objc_msgSend(insertsCopy, "count") || objc_msgSend(changesCopy, "count"))
   {
-    v19 = [[AFConversationTransaction alloc] initWithUpdatedItemIndexPaths:v23 insertedItemIndexPaths:v8 presentationStateChangedItemIndexPaths:v9];
-    v20 = [(AFConversation *)self delegate];
+    v19 = [[AFConversationTransaction alloc] initWithUpdatedItemIndexPaths:updatesCopy insertedItemIndexPaths:insertsCopy presentationStateChangedItemIndexPaths:changesCopy];
+    delegate7 = [(AFConversation *)self delegate];
     v21 = objc_opt_respondsToSelector();
 
     if (v21)
     {
-      v22 = [(AFConversation *)self delegate];
-      [v22 conversation:self didChangeWithTransaction:v19];
+      delegate8 = [(AFConversation *)self delegate];
+      [delegate8 conversation:self didChangeWithTransaction:v19];
     }
   }
 }
 
-- (AFConversation)initWithPropertyListRepresentation:(id)a3
+- (AFConversation)initWithPropertyListRepresentation:(id)representation
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v5 = objc_alloc_init(AFDictionarySchema);
   v6 = +[AFCoercion stringToUUIDCoercion];
   [(AFDictionarySchema *)v5 setObjectCoercion:v6 forKey:@"Identifier"];
@@ -203,7 +203,7 @@ void __38__AFConversation_removeTransientItems__block_invoke(uint64_t a1, void *
   [(AFDictionarySchema *)v5 setObjectCoercion:v10 forKey:@"RootNode"];
 
   v30 = 0;
-  v11 = [(AFDictionarySchema *)v5 coerceObject:v4 error:&v30];
+  v11 = [(AFDictionarySchema *)v5 coerceObject:representationCopy error:&v30];
   v12 = v30;
   if (!v11)
   {
@@ -211,13 +211,13 @@ void __38__AFConversation_removeTransientItems__block_invoke(uint64_t a1, void *
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
     {
       v25 = v24;
-      v26 = [v12 localizedFailureReason];
+      localizedFailureReason = [v12 localizedFailureReason];
       *buf = 136315650;
       v32 = "[AFConversation initWithPropertyListRepresentation:]";
       v33 = 2112;
-      v34 = v26;
+      v34 = localizedFailureReason;
       v35 = 2114;
-      v36 = v4;
+      v36 = representationCopy;
       _os_log_error_impl(&dword_1912FE000, v25, OS_LOG_TYPE_ERROR, "%s passed invalid property list (%@): %{public}@", buf, 0x20u);
     }
 
@@ -225,9 +225,9 @@ void __38__AFConversation_removeTransientItems__block_invoke(uint64_t a1, void *
   }
 
   v13 = [v11 objectForKey:@"Version"];
-  v14 = [v13 integerValue];
+  integerValue = [v13 integerValue];
 
-  if (v14 != 1)
+  if (integerValue != 1)
   {
     v27 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -235,40 +235,40 @@ void __38__AFConversation_removeTransientItems__block_invoke(uint64_t a1, void *
       *buf = 136315394;
       v32 = "[AFConversation initWithPropertyListRepresentation:]";
       v33 = 2050;
-      v34 = v14;
+      v34 = integerValue;
       _os_log_error_impl(&dword_1912FE000, v27, OS_LOG_TYPE_ERROR, "%s Unable to create conversation from property list with version %{public}ld", buf, 0x16u);
     }
 
 LABEL_10:
-    v23 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   v15 = [v11 objectForKey:@"Identifier"];
   v16 = [v11 objectForKey:@"LanguageCode"];
   v17 = [v11 objectForKey:@"SynchronizedWithServer"];
-  v18 = [v17 BOOLValue];
+  bOOLValue = [v17 BOOLValue];
 
   v19 = [v11 objectForKey:@"RootNode"];
   self = [(AFConversation *)self initWithIdentifier:v15 languageCode:v16 rootNode:v19];
-  [(AFConversation *)self setSynchronizedWithServer:v18];
+  [(AFConversation *)self setSynchronizedWithServer:bOOLValue];
   v20 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v21 = v20;
-    v22 = [(AFConversation *)self _rootNode];
+    _rootNode = [(AFConversation *)self _rootNode];
     *buf = 136315394;
     v32 = "[AFConversation initWithPropertyListRepresentation:]";
     v33 = 2112;
-    v34 = v22;
+    v34 = _rootNode;
     _os_log_impl(&dword_1912FE000, v21, OS_LOG_TYPE_INFO, "%s rootNode=%@", buf, 0x16u);
   }
 
-  v23 = self;
+  selfCopy = self;
 LABEL_11:
 
   v28 = *MEMORY[0x1E69E9840];
-  return v23;
+  return selfCopy;
 }
 
 id __53__AFConversation_initWithPropertyListRepresentation___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -288,18 +288,18 @@ AFMutableConversationItem *__53__AFConversation_initWithPropertyListRepresentati
   return v3;
 }
 
-- (id)_changePresentationStateForNodes:(id)a3
+- (id)_changePresentationStateForNodes:(id)nodes
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  if ([v3 count])
+  nodesCopy = nodes;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([nodesCopy count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = nodesCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -315,12 +315,12 @@ AFMutableConversationItem *__53__AFConversation_initWithPropertyListRepresentati
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 parentNode];
+          parentNode = [v10 parentNode];
 
-          if (v11)
+          if (parentNode)
           {
-            v12 = [v10 absoluteIndexPath];
-            [v4 addObject:v12];
+            absoluteIndexPath = [v10 absoluteIndexPath];
+            [array addObject:absoluteIndexPath];
           }
         }
 
@@ -333,12 +333,12 @@ AFMutableConversationItem *__53__AFConversation_initWithPropertyListRepresentati
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
-- (BOOL)_nodeContainsProvisionalItems:(id)a3
+- (BOOL)_nodeContainsProvisionalItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -348,7 +348,7 @@ AFMutableConversationItem *__53__AFConversation_initWithPropertyListRepresentati
   v6[2] = __48__AFConversation__nodeContainsProvisionalItems___block_invoke;
   v6[3] = &unk_1E7343DA0;
   v6[4] = &v7;
-  [v3 enumerateChildNodesWithOptions:2 usingBlock:v6];
+  [itemsCopy enumerateChildNodesWithOptions:2 usingBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -365,9 +365,9 @@ void __48__AFConversation__nodeContainsProvisionalItems___block_invoke(uint64_t 
   }
 }
 
-- (BOOL)containsItemForAceViewWithIdentifier:(id)a3
+- (BOOL)containsItemForAceViewWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -376,7 +376,7 @@ void __48__AFConversation__nodeContainsProvisionalItems___block_invoke(uint64_t 
   v7[1] = 3221225472;
   v7[2] = __55__AFConversation_containsItemForAceViewWithIdentifier___block_invoke;
   v7[3] = &unk_1E7343D78;
-  v5 = v4;
+  v5 = identifierCopy;
   v8 = v5;
   v9 = &v10;
   [(AFConversation *)self _enumerateItemsUsingBlock:v7];
@@ -407,17 +407,17 @@ void __55__AFConversation_containsItemForAceViewWithIdentifier___block_invoke(ui
   }
 }
 
-- (void)_enumerateItemsUsingBlock:(id)a3
+- (void)_enumerateItemsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AFConversation *)self _rootNode];
+  blockCopy = block;
+  _rootNode = [(AFConversation *)self _rootNode];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__AFConversation__enumerateItemsUsingBlock___block_invoke;
   v7[3] = &unk_1E7343D50;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateDescendentNodesUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [_rootNode enumerateDescendentNodesUsingBlock:v7];
 }
 
 void __44__AFConversation__enumerateItemsUsingBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -427,122 +427,122 @@ void __44__AFConversation__enumerateItemsUsingBlock___block_invoke(uint64_t a1, 
   (*(v4 + 16))(v4, v5, a3);
 }
 
-- (BOOL)itemAtIndexPathIsVirgin:(id)a3
+- (BOOL)itemAtIndexPathIsVirgin:(id)virgin
 {
-  v3 = [(AFConversation *)self _itemAtIndexPath:a3];
-  v4 = [v3 isVirgin];
+  v3 = [(AFConversation *)self _itemAtIndexPath:virgin];
+  isVirgin = [v3 isVirgin];
 
-  return v4;
+  return isVirgin;
 }
 
-- (id)aceCommandIdentifierForItemAtIndexPath:(id)a3
+- (id)aceCommandIdentifierForItemAtIndexPath:(id)path
 {
-  v3 = [(AFConversation *)self _itemAtIndexPath:a3];
-  v4 = [v3 aceCommandIdentifier];
+  v3 = [(AFConversation *)self _itemAtIndexPath:path];
+  aceCommandIdentifier = [v3 aceCommandIdentifier];
 
-  return v4;
+  return aceCommandIdentifier;
 }
 
-- (int64_t)numberOfChildrenForItemAtIndexPath:(id)a3
+- (int64_t)numberOfChildrenForItemAtIndexPath:(id)path
 {
-  v3 = [(AFConversation *)self _nodeAtIndexPath:a3];
-  v4 = [v3 numberOfChildNodes];
+  v3 = [(AFConversation *)self _nodeAtIndexPath:path];
+  numberOfChildNodes = [v3 numberOfChildNodes];
 
-  return v4;
+  return numberOfChildNodes;
 }
 
-- (int64_t)numberOfChildrenForItemWithIdentifier:(id)a3
+- (int64_t)numberOfChildrenForItemWithIdentifier:(id)identifier
 {
-  v4 = [(AFConversation *)self indexPathForItemWithIdentifier:a3];
+  v4 = [(AFConversation *)self indexPathForItemWithIdentifier:identifier];
   v5 = [(AFConversation *)self numberOfChildrenForItemAtIndexPath:v4];
 
   return v5;
 }
 
-- (int64_t)presentationStateForItemAtIndexPath:(id)a3
+- (int64_t)presentationStateForItemAtIndexPath:(id)path
 {
-  v3 = [(AFConversation *)self _itemAtIndexPath:a3];
-  v4 = [v3 presentationState];
+  v3 = [(AFConversation *)self _itemAtIndexPath:path];
+  presentationState = [v3 presentationState];
 
-  return v4;
+  return presentationState;
 }
 
-- (id)aceObjectForItemAtIndexPath:(id)a3
+- (id)aceObjectForItemAtIndexPath:(id)path
 {
-  v3 = [(AFConversation *)self _itemAtIndexPath:a3];
-  v4 = [v3 aceObject];
+  v3 = [(AFConversation *)self _itemAtIndexPath:path];
+  aceObject = [v3 aceObject];
 
-  return v4;
+  return aceObject;
 }
 
-- (id)dialogPhaseForItemAtIndexPath:(id)a3
+- (id)dialogPhaseForItemAtIndexPath:(id)path
 {
-  v3 = [(AFConversation *)self _itemAtIndexPath:a3];
-  v4 = [v3 dialogPhase];
+  v3 = [(AFConversation *)self _itemAtIndexPath:path];
+  dialogPhase = [v3 dialogPhase];
 
-  return v4;
+  return dialogPhase;
 }
 
-- (int64_t)typeForItemAtIndexPath:(id)a3
+- (int64_t)typeForItemAtIndexPath:(id)path
 {
-  v3 = [(AFConversation *)self _itemAtIndexPath:a3];
-  v4 = [v3 type];
+  v3 = [(AFConversation *)self _itemAtIndexPath:path];
+  type = [v3 type];
 
-  return v4;
+  return type;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v3 = [(AFConversation *)self _itemAtIndexPath:a3];
+  v3 = [(AFConversation *)self _itemAtIndexPath:path];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)parentOfItemWithIdentifier:(id)a3
+- (id)parentOfItemWithIdentifier:(id)identifier
 {
-  v4 = [(AFConversation *)self indexPathForItemWithIdentifier:a3];
-  v5 = [v4 indexPathByRemovingLastIndex];
-  v6 = [(AFConversation *)self _itemAtIndexPath:v5];
+  v4 = [(AFConversation *)self indexPathForItemWithIdentifier:identifier];
+  indexPathByRemovingLastIndex = [v4 indexPathByRemovingLastIndex];
+  v6 = [(AFConversation *)self _itemAtIndexPath:indexPathByRemovingLastIndex];
 
   return v6;
 }
 
-- (id)itemWithIdentifier:(id)a3
+- (id)itemWithIdentifier:(id)identifier
 {
-  v4 = [(AFConversation *)self indexPathForItemWithIdentifier:a3];
+  v4 = [(AFConversation *)self indexPathForItemWithIdentifier:identifier];
   v5 = [(AFConversation *)self itemAtIndexPath:v4];
 
   return v5;
 }
 
-- (BOOL)hasItemWithIdentifier:(id)a3
+- (BOOL)hasItemWithIdentifier:(id)identifier
 {
-  v3 = [(AFConversation *)self _indexPathForItemWithIdentifier:a3 ignoreNonExistent:1];
+  v3 = [(AFConversation *)self _indexPathForItemWithIdentifier:identifier ignoreNonExistent:1];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)_indexPathForItemWithIdentifier:(id)a3 ignoreNonExistent:(BOOL)a4
+- (id)_indexPathForItemWithIdentifier:(id)identifier ignoreNonExistent:(BOOL)existent
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__11894;
   v22 = __Block_byref_object_dispose__11895;
   v23 = 0;
-  if (v7)
+  if (identifierCopy)
   {
-    v8 = [(AFConversation *)self _rootNode];
+    _rootNode = [(AFConversation *)self _rootNode];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __68__AFConversation__indexPathForItemWithIdentifier_ignoreNonExistent___block_invoke;
     v15[3] = &unk_1E7343D28;
-    v16 = v7;
+    v16 = identifierCopy;
     v17 = &v18;
-    [v8 enumerateDescendentNodesUsingBlock:v15];
+    [_rootNode enumerateDescendentNodesUsingBlock:v15];
 
     v9 = v16;
   }
@@ -555,10 +555,10 @@ void __44__AFConversation__enumerateItemsUsingBlock___block_invoke(uint64_t a1, 
   }
 
   v11 = v19;
-  if (!a4 && !v19[5])
+  if (!existent && !v19[5])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"AFConversation.m" lineNumber:726 description:@"Cannot return an index path to an item that is not contained in the conversation"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AFConversation.m" lineNumber:726 description:@"Cannot return an index path to an item that is not contained in the conversation"];
 
     v11 = v19;
   }
@@ -588,35 +588,35 @@ void __68__AFConversation__indexPathForItemWithIdentifier_ignoreNonExistent___bl
   }
 }
 
-- (id)identifierOfItemAtIndexPath:(id)a3
+- (id)identifierOfItemAtIndexPath:(id)path
 {
-  v3 = [(AFConversation *)self _itemAtIndexPath:a3];
-  v4 = [v3 identifier];
+  v3 = [(AFConversation *)self _itemAtIndexPath:path];
+  identifier = [v3 identifier];
 
-  return v4;
+  return identifier;
 }
 
-- (BOOL)containsItemWithIdentifier:(id)a3
+- (BOOL)containsItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(AFConversation *)self _rootNode];
+  _rootNode = [(AFConversation *)self _rootNode];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__AFConversation_containsItemWithIdentifier___block_invoke;
   v8[3] = &unk_1E7343D28;
-  v6 = v4;
+  v6 = identifierCopy;
   v9 = v6;
   v10 = &v11;
-  [v5 enumerateDescendentNodesUsingBlock:v8];
+  [_rootNode enumerateDescendentNodesUsingBlock:v8];
 
-  LOBYTE(v5) = *(v12 + 24);
+  LOBYTE(_rootNode) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
 
-  return v5;
+  return _rootNode;
 }
 
 void __45__AFConversation_containsItemWithIdentifier___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -632,10 +632,10 @@ void __45__AFConversation_containsItemWithIdentifier___block_invoke(uint64_t a1,
   }
 }
 
-- (void)cancelItemWithIdentifier:(id)a3
+- (void)cancelItemWithIdentifier:(id)identifier
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = [(AFConversation *)self _indexPathForItemWithIdentifier:a3 ignoreNonExistent:0];
+  v4 = [(AFConversation *)self _indexPathForItemWithIdentifier:identifier ignoreNonExistent:0];
   v5 = [(AFConversation *)self _itemAtIndexPath:v4];
   if ([v5 presentationState] != 3)
   {
@@ -648,15 +648,15 @@ void __45__AFConversation_containsItemWithIdentifier___block_invoke(uint64_t a1,
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeItemsFollowingItemAtIndexPath:(id)a3
+- (void)removeItemsFollowingItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 length])
+  pathCopy = path;
+  if ([pathCopy length])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = [v4 indexAtPosition:{objc_msgSend(v4, "length") - 1}];
-    v7 = [v4 indexPathByRemovingLastIndex];
-    v8 = [(AFConversation *)self _nodeAtIndexPath:v7];
+    v6 = [pathCopy indexAtPosition:{objc_msgSend(pathCopy, "length") - 1}];
+    indexPathByRemovingLastIndex = [pathCopy indexPathByRemovingLastIndex];
+    v8 = [(AFConversation *)self _nodeAtIndexPath:indexPathByRemovingLastIndex];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __54__AFConversation_removeItemsFollowingItemAtIndexPath___block_invoke;
@@ -680,16 +680,16 @@ uint64_t __54__AFConversation_removeItemsFollowingItemAtIndexPath___block_invoke
   return result;
 }
 
-- (void)removeItemsAtIndexPaths:(id)a3
+- (void)removeItemsAtIndexPaths:(id)paths
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  pathsCopy = paths;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(pathsCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = pathsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -722,16 +722,16 @@ uint64_t __54__AFConversation_removeItemsFollowingItemAtIndexPath___block_invoke
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeItemsWithIdentifiers:(id)a3
+- (void)removeItemsWithIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  identifiersCopy = identifiers;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -764,17 +764,17 @@ uint64_t __54__AFConversation_removeItemsFollowingItemAtIndexPath___block_invoke
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateWithUpdateViewsCommand:(id)a3
+- (void)updateWithUpdateViewsCommand:(id)command
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  commandCopy = command;
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v13 = v4;
-  obj = [v4 views];
+  v13 = commandCopy;
+  obj = [commandCopy views];
   v6 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -791,14 +791,14 @@ uint64_t __54__AFConversation_removeItemsFollowingItemAtIndexPath___block_invoke
         }
 
         v10 = *(*(&v17 + 1) + 8 * v9);
-        v11 = [(AFConversation *)self _rootNode];
+        _rootNode = [(AFConversation *)self _rootNode];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __47__AFConversation_updateWithUpdateViewsCommand___block_invoke;
         v15[3] = &unk_1E7343CB0;
         v15[4] = v10;
-        v16 = v5;
-        [v11 enumerateDescendentNodesUsingBlock:v15];
+        v16 = array;
+        [_rootNode enumerateDescendentNodesUsingBlock:v15];
 
         ++v9;
       }
@@ -810,7 +810,7 @@ uint64_t __54__AFConversation_removeItemsFollowingItemAtIndexPath___block_invoke
     while (v7);
   }
 
-  [(AFConversation *)self notifyDelegateOfUpdates:v5 inserts:0 presentationChanges:0];
+  [(AFConversation *)self notifyDelegateOfUpdates:array inserts:0 presentationChanges:0];
   v12 = *MEMORY[0x1E69E9840];
 }
 
@@ -835,86 +835,86 @@ void __47__AFConversation_updateWithUpdateViewsCommand___block_invoke(uint64_t a
   }
 }
 
-- (void)addSelectionResponse:(id)a3
+- (void)addSelectionResponse:(id)response
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  responseCopy = response;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
-  v7 = [AFDialogPhase userRequestDialogPhase:v9];
+  responseCopy2 = response;
+  v6 = [v4 arrayWithObjects:&responseCopy count:1];
+  v7 = [AFDialogPhase userRequestDialogPhase:responseCopy];
 
   [(AFConversation *)self addItemsForAceViews:v6 withDialogPhase:v7 asChildrenOfItemWithIdentifier:0];
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addItemForMusicStartSessionCommand:(id)a3
+- (void)addItemForMusicStartSessionCommand:(id)command
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  commandCopy = command;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
-  v7 = [v5 aceId];
+  commandCopy2 = command;
+  v6 = [v4 arrayWithObjects:&commandCopy count:1];
+  aceId = [commandCopy2 aceId];
   v8 = +[AFDialogPhase reflectionDialogPhase];
 
-  [(AFConversation *)self _addItemsForAceObjects:v6 type:5 aceCommandIdentifier:v7 dialogPhase:v8 asChildrenOfItemWithIdentifier:0];
+  [(AFConversation *)self _addItemsForAceObjects:v6 type:5 aceCommandIdentifier:aceId dialogPhase:v8 asChildrenOfItemWithIdentifier:0];
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addItemsForShowHelpCommand:(id)a3
+- (void)addItemsForShowHelpCommand:(id)command
 {
-  v20 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  commandCopy = command;
+  array = [MEMORY[0x1E695DF70] array];
   v5 = [(AFConversation *)self _indexPathsForAddingItemsWithCount:2 asChildrenOfItemWithIdentifier:0];
   v6 = [v5 mutableCopy];
 
-  v7 = [v20 text];
-  if (v7)
+  text = [commandCopy text];
+  if (text)
   {
     v8 = objc_alloc_init(MEMORY[0x1E69C7B08]);
-    [v8 setText:v7];
-    v9 = [v20 speakableText];
-    [v8 setSpeakableText:v9];
+    [v8 setText:text];
+    speakableText = [commandCopy speakableText];
+    [v8 setSpeakableText:speakableText];
 
-    v10 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     [v6 removeObjectAtIndex:0];
     v11 = [AFConversationInsertion alloc];
-    v12 = [v20 aceId];
+    aceId = [commandCopy aceId];
     LOBYTE(v19) = 0;
-    v13 = [(AFConversationInsertion *)v11 initWithConversationItemType:3 aceObject:v8 aceCommandIdentifier:v12 transient:0 supplemental:0 immersiveExperience:0 persistentAcrossInvocations:v19 indexPath:v10];
-    [v4 addObject:v13];
+    v13 = [(AFConversationInsertion *)v11 initWithConversationItemType:3 aceObject:v8 aceCommandIdentifier:aceId transient:0 supplemental:0 immersiveExperience:0 persistentAcrossInvocations:v19 indexPath:firstObject];
+    [array addObject:v13];
   }
 
   v14 = [AFConversationInsertion alloc];
-  v15 = [v20 aceId];
-  v16 = [v6 firstObject];
+  aceId2 = [commandCopy aceId];
+  firstObject2 = [v6 firstObject];
   LOBYTE(v19) = 0;
-  v17 = [(AFConversationInsertion *)v14 initWithConversationItemType:4 aceObject:v20 aceCommandIdentifier:v15 transient:0 supplemental:0 immersiveExperience:0 persistentAcrossInvocations:v19 indexPath:v16];
-  [v4 addObject:v17];
+  v17 = [(AFConversationInsertion *)v14 initWithConversationItemType:4 aceObject:commandCopy aceCommandIdentifier:aceId2 transient:0 supplemental:0 immersiveExperience:0 persistentAcrossInvocations:v19 indexPath:firstObject2];
+  [array addObject:v17];
 
   v18 = +[AFDialogPhase completionDialogPhase];
-  [(AFConversation *)self _processInsertions:v4 inDialogPhase:v18];
+  [(AFConversation *)self _processInsertions:array inDialogPhase:v18];
 }
 
-- (void)addItemForPartialResultCommand:(id)a3
+- (void)addItemForPartialResultCommand:(id)command
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [v4 refId];
-  v7 = [(AFConversation *)self _rootNode];
+  commandCopy = command;
+  array = [MEMORY[0x1E695DF70] array];
+  refId = [commandCopy refId];
+  _rootNode = [(AFConversation *)self _rootNode];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __49__AFConversation_addItemForPartialResultCommand___block_invoke;
   v15[3] = &unk_1E7343C88;
-  v8 = v6;
+  v8 = refId;
   v16 = v8;
-  v9 = v4;
+  v9 = commandCopy;
   v17 = v9;
-  v10 = v5;
+  v10 = array;
   v18 = v10;
-  [v7 enumerateDescendentNodesUsingBlock:v15];
+  [_rootNode enumerateDescendentNodesUsingBlock:v15];
 
   if ([v10 count])
   {
@@ -925,9 +925,9 @@ void __47__AFConversation_updateWithUpdateViewsCommand___block_invoke(uint64_t a
   {
     v19[0] = v9;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-    v12 = [v9 aceId];
+    aceId = [v9 aceId];
     v13 = +[AFDialogPhase userRequestDialogPhase];
-    [(AFConversation *)self _addItemsForAceObjects:v11 type:2 aceCommandIdentifier:v12 dialogPhase:v13 asChildrenOfItemWithIdentifier:0];
+    [(AFConversation *)self _addItemsForAceObjects:v11 type:2 aceCommandIdentifier:aceId dialogPhase:v13 asChildrenOfItemWithIdentifier:0];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -953,11 +953,11 @@ void __49__AFConversation_addItemForPartialResultCommand___block_invoke(void *a1
   }
 }
 
-- (void)addRecognitionUpdateWithPhrases:(id)a3 utterances:(id)a4 refId:(id)a5
+- (void)addRecognitionUpdateWithPhrases:(id)phrases utterances:(id)utterances refId:(id)id
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  phrasesCopy = phrases;
+  utterancesCopy = utterances;
+  idCopy = id;
   if (!self->_updatedUserUtteranceForRefId)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -965,24 +965,24 @@ void __49__AFConversation_addItemForPartialResultCommand___block_invoke(void *a1
     self->_updatedUserUtteranceForRefId = v10;
   }
 
-  v12 = [[AFUserUtterance alloc] initWithPhrases:v13 utterances:v8];
-  [(NSMutableDictionary *)self->_updatedUserUtteranceForRefId setObject:v12 forKey:v9];
+  v12 = [[AFUserUtterance alloc] initWithPhrases:phrasesCopy utterances:utterancesCopy];
+  [(NSMutableDictionary *)self->_updatedUserUtteranceForRefId setObject:v12 forKey:idCopy];
 }
 
-- (id)additionalSpeechInterpretationsForRefId:(id)a3
+- (id)additionalSpeechInterpretationsForRefId:(id)id
 {
-  v3 = [(NSMutableDictionary *)self->_additionalInterpretationsForRefId objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_additionalInterpretationsForRefId objectForKey:id];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (void)addAdditionalSpeechInterpretation:(id)a3 refId:(id)a4
+- (void)addAdditionalSpeechInterpretation:(id)interpretation refId:(id)id
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  interpretationCopy = interpretation;
+  idCopy = id;
+  if (idCopy)
   {
     additionalInterpretationsForRefId = self->_additionalInterpretationsForRefId;
     if (!additionalInterpretationsForRefId)
@@ -994,24 +994,24 @@ void __49__AFConversation_addItemForPartialResultCommand___block_invoke(void *a1
       additionalInterpretationsForRefId = self->_additionalInterpretationsForRefId;
     }
 
-    v11 = [(NSMutableDictionary *)additionalInterpretationsForRefId objectForKey:v7];
+    v11 = [(NSMutableDictionary *)additionalInterpretationsForRefId objectForKey:idCopy];
     if (!v11)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      [(NSMutableDictionary *)self->_additionalInterpretationsForRefId setValue:v11 forKey:v7];
+      [(NSMutableDictionary *)self->_additionalInterpretationsForRefId setValue:v11 forKey:idCopy];
     }
 
-    [v11 addObject:v6];
-    v12 = [MEMORY[0x1E695DF70] array];
-    v13 = [(AFConversation *)self _rootNode];
+    [v11 addObject:interpretationCopy];
+    array = [MEMORY[0x1E695DF70] array];
+    _rootNode = [(AFConversation *)self _rootNode];
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __58__AFConversation_addAdditionalSpeechInterpretation_refId___block_invoke;
     v20 = &unk_1E7343CB0;
-    v21 = v7;
-    v14 = v12;
+    v21 = idCopy;
+    v14 = array;
     v22 = v14;
-    [v13 enumerateDescendentNodesUsingBlock:&v17];
+    [_rootNode enumerateDescendentNodesUsingBlock:&v17];
 
     if ([v14 count])
     {
@@ -1049,24 +1049,24 @@ void __58__AFConversation_addAdditionalSpeechInterpretation_refId___block_invoke
   }
 }
 
-- (void)addItemForSpeechRecognizedCommand:(id)a3
+- (void)addItemForSpeechRecognizedCommand:(id)command
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [v4 refId];
-  v7 = [(AFConversation *)self _rootNode];
+  commandCopy = command;
+  array = [MEMORY[0x1E695DF70] array];
+  refId = [commandCopy refId];
+  _rootNode = [(AFConversation *)self _rootNode];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __52__AFConversation_addItemForSpeechRecognizedCommand___block_invoke;
   v15[3] = &unk_1E7343C88;
-  v8 = v6;
+  v8 = refId;
   v16 = v8;
-  v9 = v4;
+  v9 = commandCopy;
   v17 = v9;
-  v10 = v5;
+  v10 = array;
   v18 = v10;
-  [v7 enumerateDescendentNodesUsingBlock:v15];
+  [_rootNode enumerateDescendentNodesUsingBlock:v15];
 
   if ([v10 count])
   {
@@ -1077,9 +1077,9 @@ void __58__AFConversation_addAdditionalSpeechInterpretation_refId___block_invoke
   {
     v19[0] = v9;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-    v12 = [v9 aceId];
+    aceId = [v9 aceId];
     v13 = +[AFDialogPhase userRequestDialogPhase];
-    [(AFConversation *)self _addItemsForAceObjects:v11 type:1 aceCommandIdentifier:v12 dialogPhase:v13 asChildrenOfItemWithIdentifier:0];
+    [(AFConversation *)self _addItemsForAceObjects:v11 type:1 aceCommandIdentifier:aceId dialogPhase:v13 asChildrenOfItemWithIdentifier:0];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -1114,14 +1114,14 @@ void __52__AFConversation_addItemForSpeechRecognizedCommand___block_invoke(void 
 LABEL_6:
 }
 
-- (void)_addItemsForAceObjects:(id)a3 type:(int64_t)a4 aceCommandIdentifier:(id)a5 dialogPhase:(id)a6 asChildrenOfItemWithIdentifier:(id)a7
+- (void)_addItemsForAceObjects:(id)objects type:(int64_t)type aceCommandIdentifier:(id)identifier dialogPhase:(id)phase asChildrenOfItemWithIdentifier:(id)withIdentifier
 {
-  v12 = a5;
-  v13 = a7;
-  v14 = a6;
-  v15 = a3;
-  v16 = [v15 count];
-  v17 = [(AFConversation *)self _indexPathsForAddingItemsWithCount:v16 asChildrenOfItemWithIdentifier:v13];
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
+  phaseCopy = phase;
+  objectsCopy = objects;
+  v16 = [objectsCopy count];
+  v17 = [(AFConversation *)self _indexPathsForAddingItemsWithCount:v16 asChildrenOfItemWithIdentifier:withIdentifierCopy];
 
   v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:v16];
   v23 = MEMORY[0x1E69E9820];
@@ -1129,16 +1129,16 @@ LABEL_6:
   v25 = __110__AFConversation__addItemsForAceObjects_type_aceCommandIdentifier_dialogPhase_asChildrenOfItemWithIdentifier___block_invoke;
   v26 = &unk_1E7343C60;
   v27 = v17;
-  v28 = v12;
+  v28 = identifierCopy;
   v29 = v18;
-  v30 = a4;
+  typeCopy = type;
   v19 = v18;
-  v20 = v12;
+  v20 = identifierCopy;
   v21 = v17;
-  [v15 enumerateObjectsUsingBlock:&v23];
+  [objectsCopy enumerateObjectsUsingBlock:&v23];
 
   v22 = [v19 copy];
-  [(AFConversation *)self _processInsertions:v22 inDialogPhase:v14];
+  [(AFConversation *)self _processInsertions:v22 inDialogPhase:phaseCopy];
 }
 
 void __110__AFConversation__addItemsForAceObjects_type_aceCommandIdentifier_dialogPhase_asChildrenOfItemWithIdentifier___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1152,32 +1152,32 @@ void __110__AFConversation__addItemsForAceObjects_type_aceCommandIdentifier_dial
   [*(a1 + 48) addObject:v7];
 }
 
-- (void)addItemsForAddViewsCommand:(id)a3
+- (void)addItemsForAddViewsCommand:(id)command
 {
-  v4 = a3;
-  v5 = [v4 dialogPhase];
-  v12 = [AFDialogPhase dialogPhaseForAceDialogPhase:v5];
+  commandCopy = command;
+  dialogPhase = [commandCopy dialogPhase];
+  v12 = [AFDialogPhase dialogPhaseForAceDialogPhase:dialogPhase];
 
-  v6 = [v4 views];
-  v7 = [v4 aceId];
-  v8 = [v4 supplemental];
-  v9 = [v4 immersiveExperience];
-  v10 = [v4 persistentAcrossInvocations];
+  views = [commandCopy views];
+  aceId = [commandCopy aceId];
+  supplemental = [commandCopy supplemental];
+  immersiveExperience = [commandCopy immersiveExperience];
+  persistentAcrossInvocations = [commandCopy persistentAcrossInvocations];
 
-  LOBYTE(v11) = v10;
-  [(AFConversation *)self _addItemsForAceViews:v6 withDialogPhase:v12 fromCommandWithIdentifier:v7 asChildrenOfItemWithIdentifier:0 isSupplemental:v8 isImmersiveExperience:v9 isPersistentAcrossInvocations:v11];
+  LOBYTE(v11) = persistentAcrossInvocations;
+  [(AFConversation *)self _addItemsForAceViews:views withDialogPhase:v12 fromCommandWithIdentifier:aceId asChildrenOfItemWithIdentifier:0 isSupplemental:supplemental isImmersiveExperience:immersiveExperience isPersistentAcrossInvocations:v11];
 }
 
-- (id)_indexPathsForAddingItemsWithCount:(int64_t)a3 asChildrenOfItemWithIdentifier:(id)a4
+- (id)_indexPathsForAddingItemsWithCount:(int64_t)count asChildrenOfItemWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
-  v8 = [(AFConversation *)self indexPathForItemWithIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:count];
+  v8 = [(AFConversation *)self indexPathForItemWithIdentifier:identifierCopy];
   v9 = [(AFConversation *)self numberOfChildrenForItemAtIndexPath:v8];
-  if (a3 >= 1)
+  if (count >= 1)
   {
     v10 = v9;
-    v11 = v9 + a3;
+    v11 = v9 + count;
     do
     {
       v12 = [v8 indexPathByAddingIndex:v10];
@@ -1192,30 +1192,30 @@ void __110__AFConversation__addItemsForAceObjects_type_aceCommandIdentifier_dial
   return v7;
 }
 
-- (void)_addItemsForAceViews:(id)a3 withDialogPhase:(id)a4 fromCommandWithIdentifier:(id)a5 atIndexPaths:(id)a6 isSupplemental:(BOOL)a7 isImmersiveExperience:(BOOL)a8 isPersistentAcrossInvocations:(BOOL)a9
+- (void)_addItemsForAceViews:(id)views withDialogPhase:(id)phase fromCommandWithIdentifier:(id)identifier atIndexPaths:(id)paths isSupplemental:(BOOL)supplemental isImmersiveExperience:(BOOL)experience isPersistentAcrossInvocations:(BOOL)invocations
 {
-  v15 = a5;
-  v16 = a6;
+  identifierCopy = identifier;
+  pathsCopy = paths;
   v17 = MEMORY[0x1E695DF70];
-  v18 = a4;
-  v19 = a3;
-  v20 = [v17 arrayWithCapacity:{objc_msgSend(v19, "count")}];
+  phaseCopy = phase;
+  viewsCopy = views;
+  v20 = [v17 arrayWithCapacity:{objc_msgSend(viewsCopy, "count")}];
   v24 = MEMORY[0x1E69E9820];
   v25 = 3221225472;
   v26 = __161__AFConversation__addItemsForAceViews_withDialogPhase_fromCommandWithIdentifier_atIndexPaths_isSupplemental_isImmersiveExperience_isPersistentAcrossInvocations___block_invoke;
   v27 = &unk_1E7343C38;
-  v28 = v16;
+  v28 = pathsCopy;
   v29 = v20;
-  v30 = v15;
-  v31 = a7;
-  v32 = a8;
-  v33 = a9;
-  v21 = v15;
+  v30 = identifierCopy;
+  supplementalCopy = supplemental;
+  experienceCopy = experience;
+  invocationsCopy = invocations;
+  v21 = identifierCopy;
   v22 = v20;
-  v23 = v16;
-  [v19 enumerateObjectsUsingBlock:&v24];
+  v23 = pathsCopy;
+  [viewsCopy enumerateObjectsUsingBlock:&v24];
 
-  [(AFConversation *)self _processInsertions:v22 inDialogPhase:v18, v24, v25, v26, v27];
+  [(AFConversation *)self _processInsertions:v22 inDialogPhase:phaseCopy, v24, v25, v26, v27];
 }
 
 void __161__AFConversation__addItemsForAceViews_withDialogPhase_fromCommandWithIdentifier_atIndexPaths_isSupplemental_isImmersiveExperience_isPersistentAcrossInvocations___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1233,26 +1233,26 @@ void __161__AFConversation__addItemsForAceViews_withDialogPhase_fromCommandWithI
   [v7 addObject:v11];
 }
 
-- (void)_processInsertions:(id)a3 inDialogPhase:(id)a4
+- (void)_processInsertions:(id)insertions inDialogPhase:(id)phase
 {
   v63 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v6 = a4;
-  if (!v6)
+  insertionsCopy = insertions;
+  phaseCopy = phase;
+  if (!phaseCopy)
   {
-    v6 = +[AFDialogPhase completionDialogPhase];
+    phaseCopy = +[AFDialogPhase completionDialogPhase];
     v7 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v60 = "[AFConversation _processInsertions:inDialogPhase:]";
       v61 = 2112;
-      v62 = v6;
+      v62 = phaseCopy;
       _os_log_impl(&dword_1912FE000, v7, OS_LOG_TYPE_INFO, "%s No dialog phase provided for conversation insertions; defaulting to %@", buf, 0x16u);
     }
   }
 
-  if (([v6 isConfirmationDialogPhase] & 1) != 0 || objc_msgSend(v6, "isClarificationDialogPhase"))
+  if (([phaseCopy isConfirmationDialogPhase] & 1) != 0 || objc_msgSend(phaseCopy, "isClarificationDialogPhase"))
   {
     v8 = 2;
   }
@@ -1263,20 +1263,20 @@ void __161__AFConversation__addItemsForAceViews_withDialogPhase_fromCommandWithI
   }
 
   v36 = v8;
-  v39 = [MEMORY[0x1E695DFA0] orderedSet];
-  v9 = [MEMORY[0x1E695DFA0] orderedSet];
-  v35 = [MEMORY[0x1E695DFA0] orderedSet];
-  v33 = [MEMORY[0x1E695DFA0] orderedSet];
-  v10 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet3 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet4 = [MEMORY[0x1E695DFA0] orderedSet];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __51__AFConversation__processInsertions_inDialogPhase___block_invoke;
   v56[3] = &unk_1E7343BA0;
-  v11 = self;
+  selfCopy = self;
   v56[4] = self;
-  v12 = v10;
+  v12 = strongToStrongObjectsMapTable;
   v57 = v12;
-  [v40 enumerateObjectsUsingBlock:v56];
+  [insertionsCopy enumerateObjectsUsingBlock:v56];
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
@@ -1284,7 +1284,7 @@ void __161__AFConversation__addItemsForAceViews_withDialogPhase_fromCommandWithI
   v37 = v12;
   obj = [v12 keyEnumerator];
   v13 = [obj countByEnumeratingWithState:&v52 objects:v58 count:16];
-  v38 = v9;
+  v38 = orderedSet2;
   if (v13)
   {
     v14 = v13;
@@ -1301,23 +1301,23 @@ void __161__AFConversation__addItemsForAceViews_withDialogPhase_fromCommandWithI
 
         v17 = *(*(&v52 + 1) + 8 * v16);
         v18 = [v37 objectForKey:v17];
-        v19 = [v40 af_mappedArray:&__block_literal_global_11914];
-        if (([v6 isExpository] & 1) == 0 && (objc_msgSend(v6, "isConfirmedDialogPhase") & 1) == 0 && ((objc_msgSend(v19, "containsObject:", &unk_1F056D710) & 1) != 0 || (objc_msgSend(v19, "containsObject:", &unk_1F056D728) & 1) != 0 || objc_msgSend(v19, "containsObject:", &unk_1F056D740)) && -[AFConversation _nodeContainsProvisionalItems:](v11, "_nodeContainsProvisionalItems:", v17))
+        v19 = [insertionsCopy af_mappedArray:&__block_literal_global_11914];
+        if (([phaseCopy isExpository] & 1) == 0 && (objc_msgSend(phaseCopy, "isConfirmedDialogPhase") & 1) == 0 && ((objc_msgSend(v19, "containsObject:", &unk_1F056D710) & 1) != 0 || (objc_msgSend(v19, "containsObject:", &unk_1F056D728) & 1) != 0 || objc_msgSend(v19, "containsObject:", &unk_1F056D740)) && -[AFConversation _nodeContainsProvisionalItems:](selfCopy, "_nodeContainsProvisionalItems:", v17))
         {
-          if (([v6 isConfirmationDialogPhase] & 1) != 0 || objc_msgSend(v6, "isClarificationDialogPhase"))
+          if (([phaseCopy isConfirmationDialogPhase] & 1) != 0 || objc_msgSend(phaseCopy, "isClarificationDialogPhase"))
           {
             v50[0] = MEMORY[0x1E69E9820];
             v50[1] = 3221225472;
             v50[2] = __51__AFConversation__processInsertions_inDialogPhase___block_invoke_18;
             v50[3] = &unk_1E7343BE8;
-            v51 = v35;
+            v51 = orderedSet3;
             [v17 enumerateChildNodesUsingBlock:v50];
             v20 = &v51;
           }
 
           else
           {
-            if ([v6 isSummaryDialogPhase])
+            if ([phaseCopy isSummaryDialogPhase])
             {
               goto LABEL_23;
             }
@@ -1326,7 +1326,7 @@ void __161__AFConversation__addItemsForAceViews_withDialogPhase_fromCommandWithI
             v48[1] = 3221225472;
             v48[2] = __51__AFConversation__processInsertions_inDialogPhase___block_invoke_2_19;
             v48[3] = &unk_1E7343BE8;
-            v49 = v33;
+            v49 = orderedSet4;
             [v17 enumerateChildNodesWithOptions:2 usingBlock:v48];
             v20 = &v49;
           }
@@ -1339,7 +1339,7 @@ LABEL_23:
           v46[1] = 3221225472;
           v46[2] = __51__AFConversation__processInsertions_inDialogPhase___block_invoke_3;
           v46[3] = &unk_1E7343BE8;
-          v47 = v35;
+          v47 = orderedSet3;
           [v17 enumerateChildNodesUsingBlock:v46];
         }
 
@@ -1347,13 +1347,13 @@ LABEL_23:
         v41[1] = 3221225472;
         v41[2] = __51__AFConversation__processInsertions_inDialogPhase___block_invoke_4;
         v41[3] = &unk_1E7343C10;
-        v41[4] = v11;
+        v41[4] = selfCopy;
         v41[5] = v17;
-        v42 = v6;
+        v42 = phaseCopy;
         v45 = v36;
-        v9 = v38;
+        orderedSet2 = v38;
         v43 = v38;
-        v44 = v39;
+        v44 = orderedSet;
         [v18 enumerateObjectsUsingBlock:v41];
 
         ++v16;
@@ -1367,10 +1367,10 @@ LABEL_23:
     while (v21);
   }
 
-  if ([v9 count])
+  if ([orderedSet2 count])
   {
-    v22 = [v9 array];
-    v23 = [AFTreeNode absoluteIndexPathsForTreeNodes:v22];
+    array = [orderedSet2 array];
+    v23 = [AFTreeNode absoluteIndexPathsForTreeNodes:array];
   }
 
   else
@@ -1378,10 +1378,10 @@ LABEL_23:
     v23 = 0;
   }
 
-  if ([v39 count])
+  if ([orderedSet count])
   {
-    v24 = [v39 array];
-    v25 = [AFTreeNode absoluteIndexPathsForTreeNodes:v24];
+    array2 = [orderedSet array];
+    v25 = [AFTreeNode absoluteIndexPathsForTreeNodes:array2];
   }
 
   else
@@ -1389,10 +1389,10 @@ LABEL_23:
     v25 = 0;
   }
 
-  if ([v33 count])
+  if ([orderedSet4 count])
   {
-    v26 = [v33 array];
-    v27 = [(AFConversation *)v11 _changePresentationStateForNodes:v26];
+    array3 = [orderedSet4 array];
+    v27 = [(AFConversation *)selfCopy _changePresentationStateForNodes:array3];
   }
 
   else
@@ -1400,22 +1400,22 @@ LABEL_23:
     v27 = 0;
   }
 
-  [(AFConversation *)v11 notifyDelegateOfUpdates:v23 inserts:v25 presentationChanges:v27];
-  if ([v35 count])
+  [(AFConversation *)selfCopy notifyDelegateOfUpdates:v23 inserts:v25 presentationChanges:v27];
+  if ([orderedSet3 count])
   {
-    v28 = [v35 array];
-    [(AFConversation *)v11 _removeNodes:v28];
+    array4 = [orderedSet3 array];
+    [(AFConversation *)selfCopy _removeNodes:array4];
   }
 
   v29 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v30 = v29;
-    v31 = [(AFConversation *)v11 _rootNode];
+    _rootNode = [(AFConversation *)selfCopy _rootNode];
     *buf = 136315394;
     v60 = "[AFConversation _processInsertions:inDialogPhase:]";
     v61 = 2112;
-    v62 = v31;
+    v62 = _rootNode;
     _os_log_impl(&dword_1912FE000, v30, OS_LOG_TYPE_INFO, "%s rootNode=%@", buf, 0x16u);
   }
 
@@ -1599,44 +1599,44 @@ uint64_t __51__AFConversation__processInsertions_inDialogPhase___block_invoke_2(
   return [v2 numberWithInteger:v3];
 }
 
-- (id)_childOfNode:(id)a3 withItemWhichCanBeUpdatedWithAceObject:(id)a4 inDialogPhase:(id)a5
+- (id)_childOfNode:(id)node withItemWhichCanBeUpdatedWithAceObject:(id)object inDialogPhase:(id)phase
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nodeCopy = node;
+  objectCopy = object;
+  phaseCopy = phase;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__11894;
   v28 = __Block_byref_object_dispose__11895;
   v29 = 0;
-  if ([(AFConversation *)self _nodeContainsProvisionalItems:v8])
+  if ([(AFConversation *)self _nodeContainsProvisionalItems:nodeCopy])
   {
-    v11 = [v10 isConfirmedDialogPhase];
+    isConfirmedDialogPhase = [phaseCopy isConfirmedDialogPhase];
   }
 
   else
   {
-    v11 = 0;
+    isConfirmedDialogPhase = 0;
   }
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __84__AFConversation__childOfNode_withItemWhichCanBeUpdatedWithAceObject_inDialogPhase___block_invoke;
   v21[3] = &unk_1E7343B50;
-  v23 = v11;
-  v12 = v9;
+  v23 = isConfirmedDialogPhase;
+  v12 = objectCopy;
   v22 = v12;
   v13 = MEMORY[0x193AFB7B0](v21);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __84__AFConversation__childOfNode_withItemWhichCanBeUpdatedWithAceObject_inDialogPhase___block_invoke_2;
   v17[3] = &unk_1E7343B78;
-  v20 = v11;
+  v20 = isConfirmedDialogPhase;
   v14 = v13;
   v18 = v14;
   v19 = &v24;
-  [v8 enumerateChildNodesWithOptions:2 usingBlock:v17];
+  [nodeCopy enumerateChildNodesWithOptions:2 usingBlock:v17];
   v15 = v25[5];
 
   _Block_object_dispose(&v24, 8);
@@ -1704,34 +1704,34 @@ void __84__AFConversation__childOfNode_withItemWhichCanBeUpdatedWithAceObject_in
 LABEL_6:
 }
 
-- (void)_removeNodes:(id)a3
+- (void)_removeNodes:(id)nodes
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  nodesCopy = nodes;
+  if ([nodesCopy count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [MEMORY[0x1E695DF70] array];
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __31__AFConversation__removeNodes___block_invoke;
     v38[3] = &unk_1E7343B00;
-    v26 = v5;
+    v26 = array;
     v39 = v26;
-    v40 = self;
-    v23 = self;
-    v25 = v6;
+    selfCopy = self;
+    selfCopy2 = self;
+    v25 = array2;
     v41 = v25;
-    v24 = v7;
+    v24 = array3;
     v42 = v24;
     v8 = MEMORY[0x193AFB7B0](v38);
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v27 = v4;
-    v9 = v4;
+    v27 = nodesCopy;
+    v9 = nodesCopy;
     v10 = [v9 countByEnumeratingWithState:&v34 objects:v44 count:16];
     if (v10)
     {
@@ -1794,11 +1794,11 @@ LABEL_6:
 
     if ([v26 count])
     {
-      v21 = [(AFConversation *)v23 delegate];
-      [v21 conversation:v23 didRemoveItemsWithIdentifiers:v26 atIndexPaths:v25 parentItemIdentifiers:v24];
+      delegate = [(AFConversation *)selfCopy2 delegate];
+      [delegate conversation:selfCopy2 didRemoveItemsWithIdentifiers:v26 atIndexPaths:v25 parentItemIdentifiers:v24];
     }
 
-    v4 = v27;
+    nodesCopy = v27;
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -1842,59 +1842,59 @@ void __31__AFConversation__removeNodes___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)_itemAtIndexPath:(id)a3
+- (id)_itemAtIndexPath:(id)path
 {
-  v3 = [(AFConversation *)self _nodeAtIndexPath:a3];
-  v4 = [v3 item];
+  v3 = [(AFConversation *)self _nodeAtIndexPath:path];
+  item = [v3 item];
 
-  return v4;
+  return item;
 }
 
-- (id)_nodeAtIndexPath:(id)a3
+- (id)_nodeAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(AFConversation *)self _rootNode];
-  v6 = [v5 nodeAtIndexPath:v4];
+  pathCopy = path;
+  _rootNode = [(AFConversation *)self _rootNode];
+  v6 = [_rootNode nodeAtIndexPath:pathCopy];
 
   return v6;
 }
 
-- (AFConversation)initWithLanguageCode:(id)a3
+- (AFConversation)initWithLanguageCode:(id)code
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [(AFConversation *)self initWithIdentifier:v6 languageCode:v5];
+  codeCopy = code;
+  uUID = [v4 UUID];
+  v7 = [(AFConversation *)self initWithIdentifier:uUID languageCode:codeCopy];
 
   return v7;
 }
 
-- (AFConversation)initWithIdentifier:(id)a3 languageCode:(id)a4
+- (AFConversation)initWithIdentifier:(id)identifier languageCode:(id)code
 {
-  v6 = a4;
-  v7 = a3;
+  codeCopy = code;
+  identifierCopy = identifier;
   v8 = objc_alloc_init(AFTreeNode);
-  v9 = [(AFConversation *)self initWithIdentifier:v7 languageCode:v6 rootNode:v8];
+  v9 = [(AFConversation *)self initWithIdentifier:identifierCopy languageCode:codeCopy rootNode:v8];
 
   return v9;
 }
 
-- (AFConversation)initWithIdentifier:(id)a3 languageCode:(id)a4 rootNode:(id)a5
+- (AFConversation)initWithIdentifier:(id)identifier languageCode:(id)code rootNode:(id)node
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  codeCopy = code;
+  nodeCopy = node;
   v17.receiver = self;
   v17.super_class = AFConversation;
   v11 = [(AFConversation *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    objc_storeStrong(&v11->_rootNode, a5);
-    v14 = [v9 copy];
+    objc_storeStrong(&v11->_rootNode, node);
+    v14 = [codeCopy copy];
     languageCode = v11->_languageCode;
     v11->_languageCode = v14;
 

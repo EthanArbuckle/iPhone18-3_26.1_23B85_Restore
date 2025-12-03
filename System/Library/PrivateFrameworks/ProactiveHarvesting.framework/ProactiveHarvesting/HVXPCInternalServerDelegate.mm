@@ -1,20 +1,20 @@
 @interface HVXPCInternalServerDelegate
 + (id)server;
 + (void)start;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation HVXPCInternalServerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v4 = MEMORY[0x277CCAE90];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [v4 interfaceWithProtocol:&unk_28475F1F0];
   v7 = MEMORY[0x277D42660];
   v8 = objc_opt_new();
   v9 = hv_default_log_handle();
-  LOBYTE(v7) = [v7 shouldAcceptConnection:v5 serviceName:@"com.apple.proactive.ProactiveHarvesting.Internal" whitelistedServerInterface:v6 whitelistedClientInterface:0 requestHandler:v8 validateConnection:&__block_literal_global_48 setupClientProxy:0 interruptionHandler:&__block_literal_global_53 invalidationHandler:&__block_literal_global_56_2580 logHandle:v9];
+  LOBYTE(v7) = [v7 shouldAcceptConnection:connectionCopy serviceName:@"com.apple.proactive.ProactiveHarvesting.Internal" whitelistedServerInterface:v6 whitelistedClientInterface:0 requestHandler:v8 validateConnection:&__block_literal_global_48 setupClientProxy:0 interruptionHandler:&__block_literal_global_53 invalidationHandler:&__block_literal_global_56_2580 logHandle:v9];
 
   return v7;
 }

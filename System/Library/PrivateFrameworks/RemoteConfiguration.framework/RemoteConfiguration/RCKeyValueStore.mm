@@ -1,31 +1,31 @@
 @interface RCKeyValueStore
 + (id)persistenceQueue;
-- (BOOL)BOOLValueForKey:(id)a3;
-- (BOOL)containsObjectForKey:(id)a3;
+- (BOOL)BOOLValueForKey:(id)key;
+- (BOOL)containsObjectForKey:(id)key;
 - (NSDictionary)asDictionary;
 - (RCKeyValueStore)init;
-- (RCKeyValueStore)initWithName:(id)a3 directory:(id)a4 version:(unint64_t)a5 options:(unint64_t)a6 migrator:(id)a7;
+- (RCKeyValueStore)initWithName:(id)name directory:(id)directory version:(unint64_t)version options:(unint64_t)options migrator:(id)migrator;
 - (id)_dictionary;
-- (id)_initializeStoreDirectoryWithName:(id)a3;
+- (id)_initializeStoreDirectoryWithName:(id)name;
 - (id)_loadFromDisk;
 - (id)allKeys;
-- (id)objectForKey:(id)a3;
-- (id)objectsForKeys:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)objectsForKeys:(id)keys;
 - (void)_clearStore;
 - (void)_loadFromDisk;
 - (void)_logCacheStatus;
 - (void)_queueSave;
-- (void)_saveAsyncWithCompletionHandler:(id)a3;
-- (void)addAllEntriesToDictionary:(id)a3;
-- (void)addEntriesFromDictionary:(id)a3;
+- (void)_saveAsyncWithCompletionHandler:(id)handler;
+- (void)addAllEntriesToDictionary:(id)dictionary;
+- (void)addEntriesFromDictionary:(id)dictionary;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)removeObjectsForKeys:(id)a3;
-- (void)saveWithCompletionHandler:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObjects:(id)a3 forKeys:(id)a4;
-- (void)setOptionBackupEnabled:(BOOL)a3;
-- (void)updateObjectsForKeys:(id)a3 withBlock:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)removeObjectsForKeys:(id)keys;
+- (void)saveWithCompletionHandler:(id)handler;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObjects:(id)objects forKeys:(id)keys;
+- (void)setOptionBackupEnabled:(BOOL)enabled;
+- (void)updateObjectsForKeys:(id)keys withBlock:(id)block;
 @end
 
 @implementation RCKeyValueStore
@@ -33,9 +33,9 @@
 - (id)_loadFromDisk
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = [(RCKeyValueStore *)self storeDirectory];
-  v4 = [(RCKeyValueStore *)self name];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  storeDirectory = [(RCKeyValueStore *)self storeDirectory];
+  name = [(RCKeyValueStore *)self name];
+  v5 = [storeDirectory stringByAppendingPathComponent:name];
 
   Current = CFAbsoluteTimeGetCurrent();
   v7 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v5];
@@ -43,35 +43,35 @@
   if (v7)
   {
     -[RCKeyValueStore setStoreSize:](self, "setStoreSize:", [v7 length]);
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v45 = 0;
     v10 = [MEMORY[0x277CCAC58] propertyListWithData:v8 options:0 format:0 error:&v45];
     v11 = v45;
     v12 = [v10 objectForKey:@"data"];
-    [v9 addEntriesFromDictionary:v12];
+    [dictionary addEntriesFromDictionary:v12];
     v13 = [v10 objectForKey:@"version"];
-    v14 = [v13 unsignedIntegerValue];
+    unsignedIntegerValue = [v13 unsignedIntegerValue];
 
     v15 = [v10 objectForKey:@"clientVersion"];
-    v40 = [v15 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v15 unsignedIntegerValue];
 
     v16 = CFAbsoluteTimeGetCurrent();
     v17 = RCSharedLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v34 = [(RCKeyValueStore *)self name];
+      name2 = [(RCKeyValueStore *)self name];
       *buf = 138412546;
-      v48 = v34;
+      v48 = name2;
       v49 = 2048;
       v50 = (v16 - Current) * 1000.0;
       _os_log_debug_impl(&dword_2179FC000, v17, OS_LOG_TYPE_DEBUG, "Loaded %@ cache in %f ms", buf, 0x16u);
     }
 
-    if (v14 == 1)
+    if (unsignedIntegerValue == 1)
     {
-      if (v40 == [(RCKeyValueStore *)self clientVersion])
+      if (unsignedIntegerValue2 == [(RCKeyValueStore *)self clientVersion])
       {
-        v18 = v9;
+        v18 = dictionary;
       }
 
       else
@@ -79,15 +79,15 @@
         v39 = v12;
         if ([(RCKeyValueStore *)self _shouldMigrateOnUpgrade])
         {
-          v19 = [(RCKeyValueStore *)self migrator];
+          migrator = [(RCKeyValueStore *)self migrator];
 
-          if (!v19 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+          if (!migrator && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
             [RCKeyValueStore _loadFromDisk];
           }
         }
 
-        if (-[RCKeyValueStore _shouldMigrateOnUpgrade](self, "_shouldMigrateOnUpgrade") && (-[RCKeyValueStore migrator](self, "migrator"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 keyValueStore:self canMigrateFromVersion:v40], v20, v21))
+        if (-[RCKeyValueStore _shouldMigrateOnUpgrade](self, "_shouldMigrateOnUpgrade") && (-[RCKeyValueStore migrator](self, "migrator"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 keyValueStore:self canMigrateFromVersion:unsignedIntegerValue2], v20, v21))
         {
           v35 = v11;
           v36 = v10;
@@ -97,8 +97,8 @@
           v44 = 0u;
           v41 = 0u;
           v42 = 0u;
-          v22 = [v9 allKeys];
-          v23 = [v22 copy];
+          allKeys = [dictionary allKeys];
+          v23 = [allKeys copy];
 
           v24 = [v23 countByEnumeratingWithState:&v41 objects:v46 count:16];
           if (v24)
@@ -115,18 +115,18 @@
                 }
 
                 v28 = *(*(&v41 + 1) + 8 * i);
-                v29 = [v9 objectForKey:v28];
-                v30 = [(RCKeyValueStore *)self migrator];
-                v31 = [v30 keyValueStore:self migrateObject:v29 forKey:v28 fromVersion:v40];
+                v29 = [dictionary objectForKey:v28];
+                migrator2 = [(RCKeyValueStore *)self migrator];
+                v31 = [migrator2 keyValueStore:self migrateObject:v29 forKey:v28 fromVersion:unsignedIntegerValue2];
 
                 if (v31)
                 {
-                  [v9 setObject:v31 forKey:v28];
+                  [dictionary setObject:v31 forKey:v28];
                 }
 
                 else
                 {
-                  [v9 removeObjectForKey:v28];
+                  [dictionary removeObjectForKey:v28];
                 }
               }
 
@@ -136,7 +136,7 @@
             while (v25);
           }
 
-          v18 = v9;
+          v18 = dictionary;
           v8 = v37;
           v5 = v38;
           v11 = v35;
@@ -172,10 +172,10 @@
 
 - (id)allKeys
 {
-  v2 = [(RCKeyValueStore *)self objectsByKey];
-  v3 = [v2 allKeys];
+  objectsByKey = [(RCKeyValueStore *)self objectsByKey];
+  allKeys = [objectsByKey allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 + (id)persistenceQueue
@@ -228,32 +228,32 @@ void __35__RCKeyValueStore_persistenceQueue__block_invoke()
   objc_exception_throw(v6);
 }
 
-- (RCKeyValueStore)initWithName:(id)a3 directory:(id)a4 version:(unint64_t)a5 options:(unint64_t)a6 migrator:(id)a7
+- (RCKeyValueStore)initWithName:(id)name directory:(id)directory version:(unint64_t)version options:(unint64_t)options migrator:(id)migrator
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  nameCopy = name;
+  directoryCopy = directory;
+  migratorCopy = migrator;
   v29.receiver = self;
   v29.super_class = RCKeyValueStore;
   v16 = [(RCKeyValueStore *)&v29 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_name, a3);
-    v17->_clientVersion = a5;
-    v17->_optionsMask = a6;
-    v18 = [(RCKeyValueStore *)v17 _initializeStoreDirectoryWithName:v14];
+    objc_storeStrong(&v16->_name, name);
+    v17->_clientVersion = version;
+    v17->_optionsMask = options;
+    v18 = [(RCKeyValueStore *)v17 _initializeStoreDirectoryWithName:directoryCopy];
     storeDirectory = v17->_storeDirectory;
     v17->_storeDirectory = v18;
 
-    objc_storeStrong(&v17->_migrator, a7);
+    objc_storeStrong(&v17->_migrator, migrator);
     v20 = objc_alloc_init(RCMutexLock);
     writeLock = v17->_writeLock;
     v17->_writeLock = v20;
 
     v22 = MEMORY[0x277CBEB38];
-    v23 = [(RCKeyValueStore *)v17 _loadFromDisk];
-    v24 = [v22 dictionaryWithDictionary:v23];
+    _loadFromDisk = [(RCKeyValueStore *)v17 _loadFromDisk];
+    v24 = [v22 dictionaryWithDictionary:_loadFromDisk];
     objectsByKey = v17->_objectsByKey;
     v17->_objectsByKey = v24;
 
@@ -267,36 +267,36 @@ void __35__RCKeyValueStore_persistenceQueue__block_invoke()
   return v17;
 }
 
-- (BOOL)containsObjectForKey:(id)a3
+- (BOOL)containsObjectForKey:(id)key
 {
-  v3 = [(RCKeyValueStore *)self objectForKey:a3];
+  v3 = [(RCKeyValueStore *)self objectForKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  objectCopy = object;
+  keyCopy = key;
+  if (keyCopy)
   {
-    if (v6)
+    if (objectCopy)
     {
-      v8 = [(RCKeyValueStore *)self objectsByKey];
-      v9 = [v8 objectForKey:v7];
+      objectsByKey = [(RCKeyValueStore *)self objectsByKey];
+      v9 = [objectsByKey objectForKey:keyCopy];
 
-      if (v9 != v6)
+      if (v9 != objectCopy)
       {
-        v10 = [(RCKeyValueStore *)self writeLock];
+        writeLock = [(RCKeyValueStore *)self writeLock];
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __36__RCKeyValueStore_setObject_forKey___block_invoke;
         v11[3] = &unk_27822FE40;
         v11[4] = self;
-        v12 = v6;
-        v13 = v7;
-        [v10 performWithLockSync:v11];
+        v12 = objectCopy;
+        v13 = keyCopy;
+        [writeLock performWithLockSync:v11];
       }
 
       [(RCKeyValueStore *)self _queueSave];
@@ -304,7 +304,7 @@ void __35__RCKeyValueStore_persistenceQueue__block_invoke()
 
     else
     {
-      [(RCKeyValueStore *)self removeObjectForKey:v7];
+      [(RCKeyValueStore *)self removeObjectForKey:keyCopy];
     }
   }
 
@@ -324,16 +324,16 @@ uint64_t __36__RCKeyValueStore_setObject_forKey___block_invoke(uint64_t a1)
   return [v3 setNeedSave:1];
 }
 
-- (void)setObjects:(id)a3 forKeys:(id)a4
+- (void)setObjects:(id)objects forKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  objectsCopy = objects;
+  keysCopy = keys;
+  v8 = keysCopy;
+  if (objectsCopy)
   {
-    if (v7)
+    if (keysCopy)
     {
-      v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:v7];
+      v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:objectsCopy forKeys:keysCopy];
       [(RCKeyValueStore *)self addEntriesFromDictionary:v9];
 
       goto LABEL_9;
@@ -359,19 +359,19 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)addEntriesFromDictionary:(id)a3
+- (void)addEntriesFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v5 = [(RCKeyValueStore *)self writeLock];
+    writeLock = [(RCKeyValueStore *)self writeLock];
     v6 = MEMORY[0x277D85DD0];
     v7 = 3221225472;
     v8 = __44__RCKeyValueStore_addEntriesFromDictionary___block_invoke;
     v9 = &unk_27822F130;
-    v10 = self;
-    v11 = v4;
-    [v5 performWithLockSync:&v6];
+    selfCopy = self;
+    v11 = dictionaryCopy;
+    [writeLock performWithLockSync:&v6];
 
     [(RCKeyValueStore *)self _queueSave:v6];
   }
@@ -392,22 +392,22 @@ uint64_t __44__RCKeyValueStore_addEntriesFromDictionary___block_invoke(uint64_t 
   return [v3 setNeedSave:1];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(RCKeyValueStore *)self objectsByKey];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  objectsByKey = [(RCKeyValueStore *)self objectsByKey];
+  v6 = [objectsByKey objectForKey:keyCopy];
 
   if (v6)
   {
-    v7 = [(RCKeyValueStore *)self writeLock];
+    writeLock = [(RCKeyValueStore *)self writeLock];
     v8 = MEMORY[0x277D85DD0];
     v9 = 3221225472;
     v10 = __38__RCKeyValueStore_removeObjectForKey___block_invoke;
     v11 = &unk_27822F130;
-    v12 = self;
-    v13 = v4;
-    [v7 performWithLockSync:&v8];
+    selfCopy = self;
+    v13 = keyCopy;
+    [writeLock performWithLockSync:&v8];
 
     [(RCKeyValueStore *)self _queueSave:v8];
   }
@@ -423,19 +423,19 @@ uint64_t __38__RCKeyValueStore_removeObjectForKey___block_invoke(uint64_t a1)
   return [v3 setNeedSave:1];
 }
 
-- (void)removeObjectsForKeys:(id)a3
+- (void)removeObjectsForKeys:(id)keys
 {
-  v4 = a3;
-  if ([v4 count])
+  keysCopy = keys;
+  if ([keysCopy count])
   {
-    v5 = [(RCKeyValueStore *)self writeLock];
+    writeLock = [(RCKeyValueStore *)self writeLock];
     v6 = MEMORY[0x277D85DD0];
     v7 = 3221225472;
     v8 = __40__RCKeyValueStore_removeObjectsForKeys___block_invoke;
     v9 = &unk_27822F130;
-    v10 = self;
-    v11 = v4;
-    [v5 performWithLockSync:&v6];
+    selfCopy = self;
+    v11 = keysCopy;
+    [writeLock performWithLockSync:&v6];
 
     [(RCKeyValueStore *)self _queueSave:v6];
   }
@@ -453,13 +453,13 @@ uint64_t __40__RCKeyValueStore_removeObjectsForKeys___block_invoke(uint64_t a1)
 
 - (void)removeAllObjects
 {
-  v3 = [(RCKeyValueStore *)self writeLock];
+  writeLock = [(RCKeyValueStore *)self writeLock];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __35__RCKeyValueStore_removeAllObjects__block_invoke;
   v4[3] = &unk_27822F2B0;
   v4[4] = self;
-  [v3 performWithLockSync:v4];
+  [writeLock performWithLockSync:v4];
 
   [(RCKeyValueStore *)self _queueSave];
 }
@@ -474,22 +474,22 @@ uint64_t __35__RCKeyValueStore_removeAllObjects__block_invoke(uint64_t a1)
   return [v3 setNeedSave:1];
 }
 
-- (void)updateObjectsForKeys:(id)a3 withBlock:(id)a4
+- (void)updateObjectsForKeys:(id)keys withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
-  if (v7 && v8)
+  keysCopy = keys;
+  blockCopy = block;
+  v8 = [keysCopy count];
+  if (blockCopy && v8)
   {
-    v9 = [(RCKeyValueStore *)self writeLock];
+    writeLock = [(RCKeyValueStore *)self writeLock];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __50__RCKeyValueStore_updateObjectsForKeys_withBlock___block_invoke;
     v10[3] = &unk_27822FE68;
-    v11 = v6;
-    v12 = self;
-    v13 = v7;
-    [v9 performWithLockSync:v10];
+    v11 = keysCopy;
+    selfCopy = self;
+    v13 = blockCopy;
+    [writeLock performWithLockSync:v10];
 
     [(RCKeyValueStore *)self _queueSave];
   }
@@ -544,80 +544,80 @@ uint64_t __50__RCKeyValueStore_updateObjectsForKeys_withBlock___block_invoke(uin
   return result;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(RCKeyValueStore *)self objectsByKey];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  objectsByKey = [(RCKeyValueStore *)self objectsByKey];
+  v6 = [objectsByKey objectForKey:keyCopy];
 
   return v6;
 }
 
-- (id)objectsForKeys:(id)a3
+- (id)objectsForKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(RCKeyValueStore *)self objectsByKey];
-  v6 = [v5 rc_subdictionaryForKeys:v4];
+  keysCopy = keys;
+  objectsByKey = [(RCKeyValueStore *)self objectsByKey];
+  v6 = [objectsByKey rc_subdictionaryForKeys:keysCopy];
 
   return v6;
 }
 
-- (BOOL)BOOLValueForKey:(id)a3
+- (BOOL)BOOLValueForKey:(id)key
 {
-  v3 = [(RCKeyValueStore *)self objectForKey:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(RCKeyValueStore *)self objectForKey:key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)addAllEntriesToDictionary:(id)a3
+- (void)addAllEntriesToDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(RCKeyValueStore *)self objectsByKey];
-  [v4 addEntriesFromDictionary:v5];
+  dictionaryCopy = dictionary;
+  objectsByKey = [(RCKeyValueStore *)self objectsByKey];
+  [dictionaryCopy addEntriesFromDictionary:objectsByKey];
 }
 
 - (NSDictionary)asDictionary
 {
-  v2 = [(RCKeyValueStore *)self objectsByKey];
-  v3 = [v2 copy];
+  objectsByKey = [(RCKeyValueStore *)self objectsByKey];
+  v3 = [objectsByKey copy];
 
   return v3;
 }
 
-- (void)saveWithCompletionHandler:(id)a3
+- (void)saveWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RCKeyValueStore *)self saveThrottler];
-  [v5 tickleWithCompletion:v4];
+  handlerCopy = handler;
+  saveThrottler = [(RCKeyValueStore *)self saveThrottler];
+  [saveThrottler tickleWithCompletion:handlerCopy];
 }
 
 - (id)_dictionary
 {
-  v3 = [(RCKeyValueStore *)self writeLock];
-  [v3 lock];
+  writeLock = [(RCKeyValueStore *)self writeLock];
+  [writeLock lock];
 
-  v4 = [(RCKeyValueStore *)self objectsByKey];
-  v5 = [v4 copy];
+  objectsByKey = [(RCKeyValueStore *)self objectsByKey];
+  v5 = [objectsByKey copy];
 
-  v6 = [(RCKeyValueStore *)self writeLock];
-  [v6 unlock];
+  writeLock2 = [(RCKeyValueStore *)self writeLock];
+  [writeLock2 unlock];
 
   return v5;
 }
 
-- (void)_saveAsyncWithCompletionHandler:(id)a3
+- (void)_saveAsyncWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [objc_opt_class() persistenceQueue];
+  handlerCopy = handler;
+  persistenceQueue = [objc_opt_class() persistenceQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__RCKeyValueStore__saveAsyncWithCompletionHandler___block_invoke;
   v7[3] = &unk_27822F1A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [persistenceQueue addOperationWithBlock:v7];
 }
 
 void __51__RCKeyValueStore__saveAsyncWithCompletionHandler___block_invoke(uint64_t a1)
@@ -755,10 +755,10 @@ uint64_t __51__RCKeyValueStore__saveAsyncWithCompletionHandler___block_invoke_2(
 - (void)_logCacheStatus
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = vcvts_n_f32_u64(a1, 0x14uLL);
-  v5 = [a2 name];
+  v4 = vcvts_n_f32_u64(self, 0x14uLL);
+  name = [a2 name];
   v7 = 138412546;
-  v8 = v5;
+  v8 = name;
   v9 = 2048;
   v10 = v4;
   _os_log_debug_impl(&dword_2179FC000, a3, OS_LOG_TYPE_DEBUG, "Cache Status:\n* Cache name:\t\t%@\n* Total size (MB):\t%2.4f\n*", &v7, 0x16u);
@@ -768,21 +768,21 @@ uint64_t __51__RCKeyValueStore__saveAsyncWithCompletionHandler___block_invoke_2(
 
 - (void)_queueSave
 {
-  v2 = [(RCKeyValueStore *)self saveThrottler];
-  [v2 tickle];
+  saveThrottler = [(RCKeyValueStore *)self saveThrottler];
+  [saveThrottler tickle];
 }
 
-- (id)_initializeStoreDirectoryWithName:(id)a3
+- (id)_initializeStoreDirectoryWithName:(id)name
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  nameCopy = name;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:nameCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v10 = 0;
-    v7 = [v6 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v10];
+    v7 = [defaultManager2 createDirectoryAtPath:nameCopy withIntermediateDirectories:1 attributes:0 error:&v10];
     v8 = v10;
 
     if ((v7 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -791,31 +791,31 @@ uint64_t __51__RCKeyValueStore__saveAsyncWithCompletionHandler___block_invoke_2(
     }
   }
 
-  return v3;
+  return nameCopy;
 }
 
 - (void)_clearStore
 {
-  v3 = [(RCKeyValueStore *)self storeDirectory];
-  v4 = [(RCKeyValueStore *)self name];
-  v6 = [v3 stringByAppendingPathComponent:v4];
+  storeDirectory = [(RCKeyValueStore *)self storeDirectory];
+  name = [(RCKeyValueStore *)self name];
+  v6 = [storeDirectory stringByAppendingPathComponent:name];
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  [v5 removeItemAtPath:v6 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager removeItemAtPath:v6 error:0];
 
   [(RCKeyValueStore *)self setStoreSize:0];
 }
 
-- (void)setOptionBackupEnabled:(BOOL)a3
+- (void)setOptionBackupEnabled:(BOOL)enabled
 {
-  v5 = [(RCKeyValueStore *)self writeLock];
+  writeLock = [(RCKeyValueStore *)self writeLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__RCKeyValueStore_setOptionBackupEnabled___block_invoke;
   v6[3] = &unk_27822FE90;
-  v7 = a3;
+  enabledCopy = enabled;
   v6[4] = self;
-  [v5 performWithLockSync:v6];
+  [writeLock performWithLockSync:v6];
 }
 
 - (void)setObject:forKey:.cold.1()

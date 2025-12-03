@@ -1,21 +1,21 @@
 @interface AABeneficiaryClaimUIRequest
-- (AABeneficiaryClaimUIRequest)initWithGrandSlamAccount:(id)a3 accountStore:(id)a4 claimCode:(id)a5;
+- (AABeneficiaryClaimUIRequest)initWithGrandSlamAccount:(id)account accountStore:(id)store claimCode:(id)code;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation AABeneficiaryClaimUIRequest
 
-- (AABeneficiaryClaimUIRequest)initWithGrandSlamAccount:(id)a3 accountStore:(id)a4 claimCode:(id)a5
+- (AABeneficiaryClaimUIRequest)initWithGrandSlamAccount:(id)account accountStore:(id)store claimCode:(id)code
 {
-  v9 = a5;
+  codeCopy = code;
   v13.receiver = self;
   v13.super_class = AABeneficiaryClaimUIRequest;
-  v10 = [(AAAppleIDSettingsRequest *)&v13 initWithGrandSlamAccount:a3 accountStore:a4];
+  v10 = [(AAAppleIDSettingsRequest *)&v13 initWithGrandSlamAccount:account accountStore:store];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_claimCode, a5);
+    objc_storeStrong(&v10->_claimCode, code);
   }
 
   return v11;
@@ -24,13 +24,13 @@
 - (id)urlString
 {
   v2 = MEMORY[0x1E698DDF8];
-  v3 = [(AAAppleIDSettingsRequest *)self grandSlamAccount];
-  v4 = [v3 aida_alternateDSID];
-  v5 = [v2 bagForAltDSID:v4];
+  grandSlamAccount = [(AAAppleIDSettingsRequest *)self grandSlamAccount];
+  aida_alternateDSID = [grandSlamAccount aida_alternateDSID];
+  v5 = [v2 bagForAltDSID:aida_alternateDSID];
   v6 = [v5 urlAtKey:@"startBeneficiaryClaim"];
-  v7 = [v6 absoluteString];
+  absoluteString = [v6 absoluteString];
 
-  return v7;
+  return absoluteString;
 }
 
 - (id)urlRequest
@@ -38,8 +38,8 @@
   v11[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = AABeneficiaryClaimUIRequest;
-  v3 = [(AAAppleIDSettingsRequest *)&v9 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AAAppleIDSettingsRequest *)&v9 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   claimCode = self->_claimCode;
   if (claimCode)

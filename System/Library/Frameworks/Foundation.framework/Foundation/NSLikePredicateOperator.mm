@@ -6,9 +6,9 @@
 
 - (id)symbol
 {
-  v2 = [(NSStringPredicateOperator *)self _modifierString];
+  _modifierString = [(NSStringPredicateOperator *)self _modifierString];
 
-  return [@"LIKE" stringByAppendingString:v2];
+  return [@"LIKE" stringByAppendingString:_modifierString];
 }
 
 @end

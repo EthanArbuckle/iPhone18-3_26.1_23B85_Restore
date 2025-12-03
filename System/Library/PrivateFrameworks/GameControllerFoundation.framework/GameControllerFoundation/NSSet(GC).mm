@@ -8,32 +8,32 @@
 
 - (id)gc_member:()GC
 {
-  v5 = [a1 member:?];
-  if (v5 || [a1 count] != 1)
+  v5 = [self member:?];
+  if (v5 || [self count] != 1)
   {
-    v7 = v5;
+    anyObject2 = v5;
   }
 
   else
   {
-    v6 = [a1 anyObject];
-    if ([v6 isEqual:a3])
+    anyObject = [self anyObject];
+    if ([anyObject isEqual:a3])
     {
-      v7 = [a1 anyObject];
+      anyObject2 = [self anyObject];
     }
 
     else
     {
-      v7 = 0;
+      anyObject2 = 0;
     }
   }
 
-  return v7;
+  return anyObject2;
 }
 
 - (id)gc_setByRemovingObject:()GC
 {
-  v4 = [a1 mutableCopy];
+  v4 = [self mutableCopy];
   [v4 removeObject:a3];
   v5 = [v4 copy];
 
@@ -42,7 +42,7 @@
 
 - (id)gc_setByRemovingObjectsFromSet:()GC
 {
-  v4 = [a1 mutableCopy];
+  v4 = [self mutableCopy];
   [v4 minusSet:a3];
   v5 = [v4 copy];
 

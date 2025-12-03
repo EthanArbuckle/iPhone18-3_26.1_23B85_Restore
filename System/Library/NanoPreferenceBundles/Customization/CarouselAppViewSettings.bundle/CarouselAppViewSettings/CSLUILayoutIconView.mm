@@ -1,15 +1,15 @@
 @interface CSLUILayoutIconView
-+ (id)circleMaskImage:(id)a3;
++ (id)circleMaskImage:(id)image;
 - ($153C3A5BC4E016D58A1B9CA554FFC462)layoutAttributes;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)beginDraggingAtPoint:(CGPoint)a3;
-- (void)endDraggingToLayoutAttributes:(id)a3;
-- (void)setLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)beginDraggingAtPoint:(CGPoint)point;
+- (void)endDraggingToLayoutAttributes:(id)attributes;
+- (void)setLayoutAttributes:(id)attributes;
 @end
 
 @implementation CSLUILayoutIconView
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v4 = v3;
   if (![(CSLUILayoutIconView *)self isDragging])
@@ -33,10 +33,10 @@
   }
 }
 
-- (void)beginDraggingAtPoint:(CGPoint)a3
+- (void)beginDraggingAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CSLUILayoutIconView *)self setDragging:1];
   memset(&v10, 0, sizeof(v10));
   [(CSLUILayoutIconView *)self transform];
@@ -54,24 +54,24 @@
   [UIView animateWithDuration:0 delay:v6 options:0 animations:0.1 completion:0.0];
 }
 
-- (void)endDraggingToLayoutAttributes:(id)a3
+- (void)endDraggingToLayoutAttributes:(id)attributes
 {
   v4 = v3;
-  [(CSLUILayoutIconView *)self setDragging:0, a3.var0];
+  [(CSLUILayoutIconView *)self setDragging:0, attributes.var0];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_24D0;
   v7[3] = &unk_3C990;
-  v10 = self;
+  selfCopy = self;
   v6 = v4[1];
   v8 = *v4;
   v9 = v6;
   [UIView animateWithDuration:0 delay:v7 options:0 animations:0.1 completion:0.0];
 }
 
-+ (id)circleMaskImage:(id)a3
++ (id)circleMaskImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   +[CSLUILayoutIconView defaultDiameter];
   v5 = v4;
   v19.origin.x = 0.0;
@@ -83,15 +83,15 @@
   y = v20.origin.y;
   width = v20.size.width;
   height = v20.size.height;
-  v10 = [v3 CGImage];
+  cGImage = [imageCopy CGImage];
 
   v18.width = v5;
   v18.height = v5;
   UIGraphicsBeginImageContextWithOptions(v18, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetInterpolationQuality(CurrentContext, kCGInterpolationHigh);
-  v12 = [UIBezierPath bezierPathWithOvalInRect:x, y, width, height];
-  CGContextAddPath(CurrentContext, [v12 CGPath]);
+  height = [UIBezierPath bezierPathWithOvalInRect:x, y, width, height];
+  CGContextAddPath(CurrentContext, [height CGPath]);
 
   CGContextClip(CurrentContext);
   v16.b = 0.0;
@@ -104,7 +104,7 @@
   v21.origin.y = y;
   v21.size.width = width;
   v21.size.height = height;
-  CGContextDrawImage(CurrentContext, v21, v10);
+  CGContextDrawImage(CurrentContext, v21, cGImage);
   Image = CGBitmapContextCreateImage(CurrentContext);
   v14 = [UIImage imageWithCGImage:Image];
   CGImageRelease(Image);
@@ -122,7 +122,7 @@
   return v3;
 }
 
-- (void)setLayoutAttributes:(id)a3
+- (void)setLayoutAttributes:(id)attributes
 {
   v4 = v3[1];
   *&self[1].super.super.super.isa = *v3;

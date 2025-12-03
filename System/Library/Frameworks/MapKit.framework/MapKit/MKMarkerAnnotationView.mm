@@ -1,69 +1,69 @@
 @interface MKMarkerAnnotationView
-- ($F305BA3B40A0ABD2276B1E2CDC82332E)_metricsForState:(SEL)a3;
+- ($F305BA3B40A0ABD2276B1E2CDC82332E)_metricsForState:(SEL)state;
 - (BOOL)_hasCustomGlyphContent;
 - (BOOL)_hasDataRequiringCallout;
 - (BOOL)canShowCallout;
 - (BOOL)isProvidingCustomFeature;
-- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)a3;
-- (CGPoint)_anchorPointForCalloutAnchorPosition:(int64_t)a3;
+- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)animated;
+- (CGPoint)_anchorPointForCalloutAnchorPosition:(int64_t)position;
 - (CGRect)_frameForSelectionAdjustment;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MKMarkerAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MKMarkerAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)_defaultCollisionAlignmentRectInsets;
 - (double)_preferredScale;
-- (id)_createMarkerStyleConfigurationForState:(int64_t)a3;
-- (id)_currentMarkerStyleForState:(int64_t)a3;
+- (id)_createMarkerStyleConfigurationForState:(int64_t)state;
+- (id)_currentMarkerStyleForState:(int64_t)state;
 - (id)_customLegibleGlyphColor;
-- (id)_effectiveGlyphImageForState:(int64_t)a3;
+- (id)_effectiveGlyphImageForState:(int64_t)state;
 - (id)_effectiveGlyphText;
-- (id)_effectiveGlyphTintColorForState:(int64_t)a3;
-- (id)_glyphImageForImage:(id)a3;
+- (id)_effectiveGlyphTintColorForState:(int64_t)state;
+- (id)_glyphImageForImage:(id)image;
 - (id)_resolvedCustomGlyphTintColor;
 - (int64_t)_currentMarkerState;
-- (void)_configureAnimated:(BOOL)a3 fromState:(int64_t)a4 toState:(int64_t)a5;
+- (void)_configureAnimated:(BOOL)animated fromState:(int64_t)state toState:(int64_t)toState;
 - (void)_configureCalloutOffset;
-- (void)_configureViewsForState:(int64_t)a3 usesCallout:(BOOL)a4 animated:(BOOL)a5;
-- (void)_didDragWithVelocity:(CGPoint)a3;
-- (void)_setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setStyleAttributes:(id)a3;
-- (void)_setWalletMerchantStylingInfo:(id)a3;
+- (void)_configureViewsForState:(int64_t)state usesCallout:(BOOL)callout animated:(BOOL)animated;
+- (void)_didDragWithVelocity:(CGPoint)velocity;
+- (void)_setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)_setStyleAttributes:(id)attributes;
+- (void)_setWalletMerchantStylingInfo:(id)info;
 - (void)_setupNormalViewsIfNeeded;
-- (void)_setupSelectedViewsIfNeededUsesCallout:(BOOL)a3;
+- (void)_setupSelectedViewsIfNeededUsesCallout:(BOOL)callout;
 - (void)_swayAnimation;
 - (void)_unhideForDisplay;
-- (void)_updateContentForState:(int64_t)a3 forceUpdate:(BOOL)a4;
-- (void)_updateContentView:(id)a3 forState:(int64_t)a4;
+- (void)_updateContentForState:(int64_t)state forceUpdate:(BOOL)update;
+- (void)_updateContentView:(id)view forState:(int64_t)state;
 - (void)_updateFromMap;
-- (void)_updateMarkerStyleForState:(int64_t)a3;
-- (void)_updateMarkerStyleIfNeededForState:(int64_t)a3;
+- (void)_updateMarkerStyleForState:(int64_t)state;
+- (void)_updateMarkerStyleIfNeededForState:(int64_t)state;
 - (void)_updateStyle;
 - (void)dealloc;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
 - (void)prepareForSnapshotting;
-- (void)setAnnotation:(id)a3;
-- (void)setDragState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setFrame:(CGRect)a3;
+- (void)setAnnotation:(id)annotation;
+- (void)setDragState:(unint64_t)state animated:(BOOL)animated;
+- (void)setFrame:(CGRect)frame;
 - (void)setGlyphImage:(UIImage *)glyphImage;
 - (void)setGlyphText:(NSString *)glyphText;
 - (void)setGlyphTintColor:(UIColor *)glyphTintColor;
 - (void)setMarkerTintColor:(UIColor *)markerTintColor;
-- (void)setSelectedContentView:(id)a3;
+- (void)setSelectedContentView:(id)view;
 - (void)setSelectedGlyphImage:(UIImage *)selectedGlyphImage;
 - (void)setSubtitleVisibility:(MKFeatureVisibility)subtitleVisibility;
 - (void)setTitleVisibility:(MKFeatureVisibility)titleVisibility;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 @end
 
 @implementation MKMarkerAnnotationView
 
 - (BOOL)_hasCustomGlyphContent
 {
-  v3 = [(MKMarkerAnnotationView *)self _effectiveGlyphText];
-  if (v3)
+  _effectiveGlyphText = [(MKMarkerAnnotationView *)self _effectiveGlyphText];
+  if (_effectiveGlyphText)
   {
     v4 = 1;
   }
@@ -105,17 +105,17 @@
 - (void)_swayAnimation
 {
   v4 = _MKMarkerAnnotationViewSelectionSwayAnimation();
-  v3 = [(MKMarkerBalloonView *)self->_selectedMarkerView layer];
-  [v3 addAnimation:v4 forKey:@"rotate"];
+  layer = [(MKMarkerBalloonView *)self->_selectedMarkerView layer];
+  [layer addAnimation:v4 forKey:@"rotate"];
 }
 
 - (void)dealloc
 {
   if (self->_isObserving)
   {
-    v3 = [(MKAnnotationView *)self annotation];
-    [v3 removeObserver:self forKeyPath:@"title"];
-    [v3 removeObserver:self forKeyPath:@"subtitle"];
+    annotation = [(MKAnnotationView *)self annotation];
+    [annotation removeObserver:self forKeyPath:@"title"];
+    [annotation removeObserver:self forKeyPath:@"subtitle"];
     self->_isObserving = 0;
   }
 
@@ -127,107 +127,107 @@
   [(MKAnnotationView *)&v5 dealloc];
 }
 
-- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)a3
+- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(MKAnnotationView *)self isSelected])
   {
-    [(MKMarkerAnnotationView *)self _configureAnimated:v3 fromState:1 toState:1];
+    [(MKMarkerAnnotationView *)self _configureAnimated:animatedCopy fromState:1 toState:1];
   }
 
   v6.receiver = self;
   v6.super_class = MKMarkerAnnotationView;
-  return [(MKAnnotationView *)&v6 updateCalloutViewIfNeededAnimated:v3];
+  return [(MKAnnotationView *)&v6 updateCalloutViewIfNeededAnimated:animatedCopy];
 }
 
-- (void)_setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)_setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(MKAnnotationView *)self isSelected];
+  animatedCopy = animated;
+  selectedCopy = selected;
+  isSelected = [(MKAnnotationView *)self isSelected];
   v8.receiver = self;
   v8.super_class = MKMarkerAnnotationView;
-  [(MKAnnotationView *)&v8 _setSelected:v5 animated:v4];
-  if (v7 != v5)
+  [(MKAnnotationView *)&v8 _setSelected:selectedCopy animated:animatedCopy];
+  if (isSelected != selectedCopy)
   {
-    [(MKMarkerAnnotationView *)self _configureAnimated:v4 fromState:[(MKMarkerAnnotationView *)self _stateForIsSelected:v5 ^ 1] toState:[(MKMarkerAnnotationView *)self _stateForIsSelected:v5]];
+    [(MKMarkerAnnotationView *)self _configureAnimated:animatedCopy fromState:[(MKMarkerAnnotationView *)self _stateForIsSelected:selectedCopy ^ 1] toState:[(MKMarkerAnnotationView *)self _stateForIsSelected:selectedCopy]];
     [(MKAnnotationView *)self invalidateCustomFeatureForced:0];
   }
 }
 
-- (void)setDragState:(unint64_t)a3 animated:(BOOL)a4
+- (void)setDragState:(unint64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
-  if ([(MKAnnotationView *)self dragState]!= a3)
+  animatedCopy = animated;
+  if ([(MKAnnotationView *)self dragState]!= state)
   {
     v10.receiver = self;
     v10.super_class = MKMarkerAnnotationView;
-    [(MKAnnotationView *)&v10 setDragState:a3 animated:v4];
-    if (a3 == 1)
+    [(MKAnnotationView *)&v10 setDragState:state animated:animatedCopy];
+    if (state == 1)
     {
-      [(MKMarkerAnnotationView *)self setDragState:2 animated:v4];
+      [(MKMarkerAnnotationView *)self setDragState:2 animated:animatedCopy];
       v9 = [(MKMarkerAnnotationView *)self _stateForIsSelected:[(MKAnnotationView *)self isSelected]];
-      v8 = self;
+      selfCopy2 = self;
       v7 = 2;
     }
 
     else
     {
-      if (a3 - 3 > 1)
+      if (state - 3 > 1)
       {
         return;
       }
 
       if (!_MKLinkedOnOrAfterReleaseSet(2053) || _MKLinkedOnOrAfterReleaseSet(2310))
       {
-        [(MKMarkerAnnotationView *)self setDragState:0 animated:v4];
+        [(MKMarkerAnnotationView *)self setDragState:0 animated:animatedCopy];
       }
 
       v7 = [(MKMarkerAnnotationView *)self _stateForIsSelected:[(MKAnnotationView *)self isSelected]];
-      v8 = self;
+      selfCopy2 = self;
       v9 = 2;
     }
 
-    [(MKMarkerAnnotationView *)v8 _configureAnimated:1 fromState:v9 toState:v7];
-    [(MKAnnotationView *)self invalidateCustomFeatureForced:a3 != 1];
+    [(MKMarkerAnnotationView *)selfCopy2 _configureAnimated:1 fromState:v9 toState:v7];
+    [(MKAnnotationView *)self invalidateCustomFeatureForced:state != 1];
   }
 }
 
-- (void)_configureAnimated:(BOOL)a3 fromState:(int64_t)a4 toState:(int64_t)a5
+- (void)_configureAnimated:(BOOL)animated fromState:(int64_t)state toState:(int64_t)toState
 {
-  v7 = a3;
-  v9 = [(MKAnnotationView *)self _shouldShowCalloutIfSelected];
+  animatedCopy = animated;
+  _shouldShowCalloutIfSelected = [(MKAnnotationView *)self _shouldShowCalloutIfSelected];
   [(MKMarkerAnnotationView *)self _setupNormalViewsIfNeeded];
-  if (v7)
+  if (animatedCopy)
   {
-    [(MKMarkerAnnotationView *)self _updateContentForState:a4];
-    [(MKMarkerAnnotationView *)self _setupSelectedViewsIfNeededUsesCallout:v9];
-    [(MKMarkerAnnotationView *)self _updateContentForState:a5];
-    [(MKMarkerAnnotationView *)self _configureViewsForState:a4 usesCallout:v9 animated:0];
+    [(MKMarkerAnnotationView *)self _updateContentForState:state];
+    [(MKMarkerAnnotationView *)self _setupSelectedViewsIfNeededUsesCallout:_shouldShowCalloutIfSelected];
+    [(MKMarkerAnnotationView *)self _updateContentForState:toState];
+    [(MKMarkerAnnotationView *)self _configureViewsForState:state usesCallout:_shouldShowCalloutIfSelected animated:0];
   }
 
   else
   {
-    [(MKMarkerAnnotationView *)self _setupSelectedViewsIfNeededUsesCallout:v9];
-    [(MKMarkerAnnotationView *)self _updateContentForState:a5];
+    [(MKMarkerAnnotationView *)self _setupSelectedViewsIfNeededUsesCallout:_shouldShowCalloutIfSelected];
+    [(MKMarkerAnnotationView *)self _updateContentForState:toState];
   }
 
-  [(MKMarkerAnnotationView *)self _configureViewsForState:a5 usesCallout:v9 animated:v7];
+  [(MKMarkerAnnotationView *)self _configureViewsForState:toState usesCallout:_shouldShowCalloutIfSelected animated:animatedCopy];
   [(MKAnnotationView *)self _updateEffectiveZPriority];
-  v11 = a5 != 1 || (a4 - 1) < 2;
-  if (!v11 && !v9 && v7 && _MKMarkerAnnotationViewSelectionShouldSway())
+  v11 = toState != 1 || (state - 1) < 2;
+  if (!v11 && !_shouldShowCalloutIfSelected && animatedCopy && _MKMarkerAnnotationViewSelectionShouldSway())
   {
 
     [(MKMarkerAnnotationView *)self _swayAnimation];
   }
 }
 
-- (void)_setupSelectedViewsIfNeededUsesCallout:(BOOL)a3
+- (void)_setupSelectedViewsIfNeededUsesCallout:(BOOL)callout
 {
   selectedDotView = self->_selectedDotView;
   if (selectedDotView)
   {
-    if (a3)
+    if (callout)
     {
 LABEL_6:
       if (selectedDotView)
@@ -251,7 +251,7 @@ LABEL_6:
     self->_selectedDotView = v9;
 
     [(MKMarkerAnnotationView *)self addSubview:self->_selectedDotView];
-    if (a3)
+    if (callout)
     {
       goto LABEL_6;
     }
@@ -290,7 +290,7 @@ LABEL_9:
   }
 }
 
-- (void)_didDragWithVelocity:(CGPoint)a3
+- (void)_didDragWithVelocity:(CGPoint)velocity
 {
   v4 = *MEMORY[0x1E695EFD0];
   v5 = *(MEMORY[0x1E695EFD0] + 16);
@@ -298,7 +298,7 @@ LABEL_9:
   *&v13.c = v5;
   v6 = *(MEMORY[0x1E695EFD0] + 32);
   *&v13.tx = v6;
-  v7 = a3.x / 1000.0;
+  v7 = velocity.x / 1000.0;
   v8 = 1.0;
   v9 = v7 <= -1.0 || v7 > 1.0;
   if (v7 <= -1.0 || v7 <= 1.0)
@@ -334,10 +334,10 @@ uint64_t __47__MKMarkerAnnotationView__didDragWithVelocity___block_invoke(uint64
   return [v1 setTransform:v4];
 }
 
-- (void)_configureViewsForState:(int64_t)a3 usesCallout:(BOOL)a4 animated:(BOOL)a5
+- (void)_configureViewsForState:(int64_t)state usesCallout:(BOOL)callout animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
+  animatedCopy = animated;
+  calloutCopy = callout;
   v44[1] = *MEMORY[0x1E69E9840];
   v38 = 0.0;
   v36 = 0u;
@@ -346,9 +346,9 @@ uint64_t __47__MKMarkerAnnotationView__didDragWithVelocity___block_invoke(uint64
   v35 = 0u;
   v33 = 0u;
   [(MKMarkerAnnotationView *)self _metricsForState:?];
-  if (!a3 || !v6)
+  if (!state || !calloutCopy)
   {
-    if (a3)
+    if (state)
     {
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:{self->_selectedDotView, self->_selectedMarkerView, 0}];
       markerView = self->_markerView;
@@ -362,13 +362,13 @@ uint64_t __47__MKMarkerAnnotationView__didDragWithVelocity___block_invoke(uint64
       [MEMORY[0x1E695DEC8] arrayWithObjects:{self->_selectedDotView, self->_selectedMarkerView, 0}];
     }
     v10 = ;
-    if (!v5)
+    if (!animatedCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_16:
-    if (a3)
+    if (state)
     {
       v17 = 0.0;
     }
@@ -378,7 +378,7 @@ LABEL_16:
       v17 = 0.0833333333;
     }
 
-    if (a3)
+    if (state)
     {
       v18 = 0.0;
     }
@@ -397,7 +397,7 @@ LABEL_16:
   v44[0] = self->_selectedDotView;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:1];
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:{self->_markerView, self->_selectedMarkerView, 0}];
-  if (v5)
+  if (animatedCopy)
   {
     goto LABEL_16;
   }
@@ -492,7 +492,7 @@ LABEL_23:
   _setViewTransform(self, &v40, v16);
 }
 
-- ($F305BA3B40A0ABD2276B1E2CDC82332E)_metricsForState:(SEL)a3
+- ($F305BA3B40A0ABD2276B1E2CDC82332E)_metricsForState:(SEL)state
 {
   [(MKMarkerStyle *)self->_unselectedMarkerStyle balloonRect];
   v8 = v7;
@@ -545,16 +545,16 @@ LABEL_23:
 
 - (void)_updateStyle
 {
-  v3 = [(MKMarkerAnnotationView *)self _currentMarkerState];
+  _currentMarkerState = [(MKMarkerAnnotationView *)self _currentMarkerState];
 
-  [(MKMarkerAnnotationView *)self _updateContentForState:v3];
+  [(MKMarkerAnnotationView *)self _updateContentForState:_currentMarkerState];
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(MKMarkerAnnotationView *)self traitCollection];
-  v7 = [v6 hasDifferentColorAppearanceComparedToTraitCollection:v5];
+  collectionCopy = collection;
+  traitCollection = [(MKMarkerAnnotationView *)self traitCollection];
+  v7 = [traitCollection hasDifferentColorAppearanceComparedToTraitCollection:collectionCopy];
 
   if (v7)
   {
@@ -622,15 +622,15 @@ uint64_t __43__MKMarkerAnnotationView__unhideForDisplay__block_invoke(uint64_t a
   v5.super_class = MKMarkerAnnotationView;
   [(MKAnnotationView *)&v5 prepareForDisplay];
   [(MKMarkerAnnotationView *)self _setupNormalViewsIfNeeded];
-  v3 = [(MKAnnotationView *)self _shouldShowCalloutIfSelected];
+  _shouldShowCalloutIfSelected = [(MKAnnotationView *)self _shouldShowCalloutIfSelected];
   if ([(MKAnnotationView *)self isSelected])
   {
-    [(MKMarkerAnnotationView *)self _setupSelectedViewsIfNeededUsesCallout:v3];
+    [(MKMarkerAnnotationView *)self _setupSelectedViewsIfNeededUsesCallout:_shouldShowCalloutIfSelected];
   }
 
-  v4 = [(MKMarkerAnnotationView *)self _currentMarkerState];
-  [(MKMarkerAnnotationView *)self _configureViewsForState:v4 usesCallout:v3 animated:0];
-  [(MKMarkerAnnotationView *)self _updateContentForState:v4 forceUpdate:1];
+  _currentMarkerState = [(MKMarkerAnnotationView *)self _currentMarkerState];
+  [(MKMarkerAnnotationView *)self _configureViewsForState:_currentMarkerState usesCallout:_shouldShowCalloutIfSelected animated:0];
+  [(MKMarkerAnnotationView *)self _updateContentForState:_currentMarkerState forceUpdate:1];
 }
 
 - (void)prepareForReuse
@@ -659,11 +659,11 @@ uint64_t __43__MKMarkerAnnotationView__unhideForDisplay__block_invoke(uint64_t a
   selectedContentView = self->_selectedContentView;
   self->_selectedContentView = 0;
 
-  v10 = [(MKMarkerBalloonView *)self->_markerView contentView];
-  [v10 clear];
+  contentView = [(MKMarkerBalloonView *)self->_markerView contentView];
+  [contentView clear];
 
-  v11 = [(MKMarkerBalloonView *)self->_selectedMarkerView contentView];
-  [v11 clear];
+  contentView2 = [(MKMarkerBalloonView *)self->_selectedMarkerView contentView];
+  [contentView2 clear];
 }
 
 - (int64_t)_currentMarkerState
@@ -681,29 +681,29 @@ uint64_t __43__MKMarkerAnnotationView__unhideForDisplay__block_invoke(uint64_t a
   return 1;
 }
 
-- (void)_updateContentView:(id)a3 forState:(int64_t)a4
+- (void)_updateContentView:(id)view forState:(int64_t)state
 {
-  v6 = a3;
-  v12 = v6;
-  if (a4 && self->_selectedContentView)
+  viewCopy = view;
+  v12 = viewCopy;
+  if (state && self->_selectedContentView)
   {
-    [v6 setCustomContentView:?];
+    [viewCopy setCustomContentView:?];
   }
 
   else
   {
-    v7 = [(MKMarkerAnnotationView *)self _effectiveGlyphTintColorForState:a4];
+    v7 = [(MKMarkerAnnotationView *)self _effectiveGlyphTintColorForState:state];
     [v12 setGlyphTintColor:v7];
 
-    v8 = [(MKMarkerAnnotationView *)self _effectiveGlyphText];
-    if (v8)
+    _effectiveGlyphText = [(MKMarkerAnnotationView *)self _effectiveGlyphText];
+    if (_effectiveGlyphText)
     {
-      [v12 setGlyphText:v8];
+      [v12 setGlyphText:_effectiveGlyphText];
     }
 
     else
     {
-      v9 = [(MKMarkerAnnotationView *)self _effectiveGlyphImageForState:a4];
+      v9 = [(MKMarkerAnnotationView *)self _effectiveGlyphImageForState:state];
       if (v9)
       {
         v10 = v12;
@@ -722,12 +722,12 @@ uint64_t __43__MKMarkerAnnotationView__unhideForDisplay__block_invoke(uint64_t a
   }
 }
 
-- (void)_updateContentForState:(int64_t)a3 forceUpdate:(BOOL)a4
+- (void)_updateContentForState:(int64_t)state forceUpdate:(BOOL)update
 {
-  if (a4 || ([(MKMarkerAnnotationView *)self window], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  if (update || ([(MKMarkerAnnotationView *)self window], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    [(MKMarkerAnnotationView *)self _updateMarkerStyleIfNeededForState:a3];
-    if (a3)
+    [(MKMarkerAnnotationView *)self _updateMarkerStyleIfNeededForState:state];
+    if (state)
     {
       p_selectedMarkerView = &self->_selectedMarkerView;
       [(MKMarkerBalloonView *)self->_selectedMarkerView updateWithMarkerStyle:self->_selectedMarkerStyle];
@@ -736,55 +736,55 @@ uint64_t __43__MKMarkerAnnotationView__unhideForDisplay__block_invoke(uint64_t a
 
     else
     {
-      v8 = [(MKMarkerStyle *)self->_unselectedMarkerStyle balloonImage];
+      balloonImage = [(MKMarkerStyle *)self->_unselectedMarkerStyle balloonImage];
       p_selectedMarkerView = &self->_markerView;
-      [(MKMarkerBalloonView *)self->_markerView setImage:v8];
+      [(MKMarkerBalloonView *)self->_markerView setImage:balloonImage];
 
-      a3 = 0;
+      state = 0;
     }
 
-    v9 = [(MKMarkerBalloonView *)*p_selectedMarkerView contentView];
-    [(MKMarkerAnnotationView *)self _updateContentView:v9 forState:a3];
+    contentView = [(MKMarkerBalloonView *)*p_selectedMarkerView contentView];
+    [(MKMarkerAnnotationView *)self _updateContentView:contentView forState:state];
   }
 }
 
-- (id)_createMarkerStyleConfigurationForState:(int64_t)a3
+- (id)_createMarkerStyleConfigurationForState:(int64_t)state
 {
   v5 = [MKMarkerStyleConfiguration configurationForView:self];
-  [v5 setSelected:a3 != 0];
+  [v5 setSelected:state != 0];
   if ([v5 selected])
   {
-    v6 = [(MKMarkerAnnotationView *)self _hasCustomSelectedGlyphContent];
+    _hasCustomSelectedGlyphContent = [(MKMarkerAnnotationView *)self _hasCustomSelectedGlyphContent];
   }
 
   else
   {
-    v6 = [(MKMarkerAnnotationView *)self _hasCustomGlyphContent];
+    _hasCustomSelectedGlyphContent = [(MKMarkerAnnotationView *)self _hasCustomGlyphContent];
   }
 
-  [v5 setGlyphHidden:v6];
-  v7 = [(MKMarkerAnnotationView *)self _resolvedCustomGlyphTintColor];
-  [v5 setGlyphColor:v7];
+  [v5 setGlyphHidden:_hasCustomSelectedGlyphContent];
+  _resolvedCustomGlyphTintColor = [(MKMarkerAnnotationView *)self _resolvedCustomGlyphTintColor];
+  [v5 setGlyphColor:_resolvedCustomGlyphTintColor];
 
-  v8 = [(MKMarkerAnnotationView *)self _resolvedMarkerTintColor];
-  [v5 setFillColor:v8];
+  _resolvedMarkerTintColor = [(MKMarkerAnnotationView *)self _resolvedMarkerTintColor];
+  [v5 setFillColor:_resolvedMarkerTintColor];
 
   [v5 setStyleAttributes:self->_customStyleAttributes];
 
   return v5;
 }
 
-- (void)_updateMarkerStyleForState:(int64_t)a3
+- (void)_updateMarkerStyleForState:(int64_t)state
 {
   v11 = [(MKMarkerAnnotationView *)self _createMarkerStyleConfigurationForState:?];
-  v5 = [(MKMarkerAnnotationView *)self _currentMarkerStyleForState:a3];
-  v6 = [v5 configuration];
+  v5 = [(MKMarkerAnnotationView *)self _currentMarkerStyleForState:state];
+  configuration = [v5 configuration];
 
-  if (([v11 isEqualToMarkerStyleConfiguration:v6] & 1) == 0)
+  if (([v11 isEqualToMarkerStyleConfiguration:configuration] & 1) == 0)
   {
     v7 = [MKMarkerStyle markerStyleForConfiguration:v11];
     v8 = &OBJC_IVAR___MKMarkerAnnotationView__selectedMarkerStyle;
-    if (!a3)
+    if (!state)
     {
       v8 = &OBJC_IVAR___MKMarkerAnnotationView__unselectedMarkerStyle;
     }
@@ -795,10 +795,10 @@ uint64_t __43__MKMarkerAnnotationView__unhideForDisplay__block_invoke(uint64_t a
   }
 }
 
-- (id)_currentMarkerStyleForState:(int64_t)a3
+- (id)_currentMarkerStyleForState:(int64_t)state
 {
   v3 = &OBJC_IVAR___MKMarkerAnnotationView__selectedMarkerStyle;
-  if (!a3)
+  if (!state)
   {
     v3 = &OBJC_IVAR___MKMarkerAnnotationView__unselectedMarkerStyle;
   }
@@ -806,9 +806,9 @@ uint64_t __43__MKMarkerAnnotationView__unhideForDisplay__block_invoke(uint64_t a
   return *(&self->super.super.super.super.isa + *v3);
 }
 
-- (void)_updateMarkerStyleIfNeededForState:(int64_t)a3
+- (void)_updateMarkerStyleIfNeededForState:(int64_t)state
 {
-  if (!a3)
+  if (!state)
   {
     v3 = 1024;
 LABEL_5:
@@ -846,17 +846,17 @@ LABEL_6:
   v14.size.width = width;
   v14.size.height = height;
   MaxY = CGRectGetMaxY(v14);
-  v9 = [(MKMarkerBalloonView *)self->_markerView layer];
-  [v9 setPosition:{MidX, MaxY}];
+  layer = [(MKMarkerBalloonView *)self->_markerView layer];
+  [layer setPosition:{MidX, MaxY}];
 
-  v10 = [(MKMarkerDotView *)self->_selectedDotView layer];
-  [v10 setPosition:{MidX, MaxY}];
+  layer2 = [(MKMarkerDotView *)self->_selectedDotView layer];
+  [layer2 setPosition:{MidX, MaxY}];
 
-  v11 = [(MKMarkerBalloonView *)self->_selectedMarkerView layer];
-  [v11 setPosition:{MidX, MaxY}];
+  layer3 = [(MKMarkerBalloonView *)self->_selectedMarkerView layer];
+  [layer3 setPosition:{MidX, MaxY}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   width = self->_size.width;
   height = self->_size.height;
@@ -886,8 +886,8 @@ LABEL_6:
   y = v33.origin.y;
   width = v33.size.width;
   height = v33.size.height;
-  v19 = [(MKMarkerAnnotationView *)self superview];
-  [v19 convertRect:self->_selectedMarkerView fromView:{x, y, width, height}];
+  superview = [(MKMarkerAnnotationView *)self superview];
+  [superview convertRect:self->_selectedMarkerView fromView:{x, y, width, height}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -904,21 +904,21 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)_anchorPointForCalloutAnchorPosition:(int64_t)a3
+- (CGPoint)_anchorPointForCalloutAnchorPosition:(int64_t)position
 {
   [(MKMarkerAnnotationView *)self _frameForSelectionAdjustment];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(MKMarkerAnnotationView *)self superview];
-  [(MKMarkerAnnotationView *)self convertRect:v13 fromView:v6, v8, v10, v12];
+  superview = [(MKMarkerAnnotationView *)self superview];
+  [(MKMarkerAnnotationView *)self convertRect:superview fromView:v6, v8, v10, v12];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  if (a3 == 4)
+  if (position == 4)
   {
     [(MKMarkerStyle *)self->_selectedMarkerStyle contentRect];
     rect.origin.x = v39;
@@ -946,7 +946,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (a3 == 3)
+  if (position == 3)
   {
     [(MKMarkerStyle *)self->_selectedMarkerStyle contentRect];
     rect.origin.x = v24;
@@ -981,11 +981,11 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a3 != 2)
+  if (position != 2)
   {
     *&rect.origin.y = self;
     *&rect.size.width = MKMarkerAnnotationView;
-    [(CGFloat *)&rect.origin.y _anchorPointForCalloutAnchorPosition:a3];
+    [(CGFloat *)&rect.origin.y _anchorPointForCalloutAnchorPosition:position];
     MidX = v51;
     goto LABEL_10;
   }
@@ -1009,12 +1009,12 @@ LABEL_10:
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([v10 isEqualToString:@"title"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"subtitle"))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (([pathCopy isEqualToString:@"title"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"subtitle"))
   {
     [(MKAnnotationView *)self invalidateCustomFeatureForced:0];
   }
@@ -1023,7 +1023,7 @@ LABEL_10:
   {
     v13.receiver = self;
     v13.super_class = MKMarkerAnnotationView;
-    [(MKMarkerAnnotationView *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(MKMarkerAnnotationView *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -1045,51 +1045,51 @@ LABEL_10:
   }
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(MKAnnotationView *)self annotation];
-  v6 = v5;
-  if (v5 != v4)
+  annotationCopy = annotation;
+  annotation = [(MKAnnotationView *)self annotation];
+  v6 = annotation;
+  if (annotation != annotationCopy)
   {
-    if (v5)
+    if (annotation)
     {
       self->_isObserving = 0;
-      [v5 removeObserver:self forKeyPath:@"title"];
+      [annotation removeObserver:self forKeyPath:@"title"];
       [v6 removeObserver:self forKeyPath:@"subtitle"];
     }
 
     v7.receiver = self;
     v7.super_class = MKMarkerAnnotationView;
-    [(MKAnnotationView *)&v7 setAnnotation:v4];
-    if (v4)
+    [(MKAnnotationView *)&v7 setAnnotation:annotationCopy];
+    if (annotationCopy)
     {
       self->_isObserving = 1;
-      [v4 addObserver:self forKeyPath:@"title" options:0 context:0];
-      [v4 addObserver:self forKeyPath:@"subtitle" options:0 context:0];
+      [annotationCopy addObserver:self forKeyPath:@"title" options:0 context:0];
+      [annotationCopy addObserver:self forKeyPath:@"subtitle" options:0 context:0];
     }
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   width = self->_size.width;
   height = self->_size.height;
   v5.receiver = self;
   v5.super_class = MKMarkerAnnotationView;
-  [(MKMarkerAnnotationView *)&v5 setFrame:a3.origin.x, a3.origin.y, width, height];
+  [(MKMarkerAnnotationView *)&v5 setFrame:frame.origin.x, frame.origin.y, width, height];
 }
 
 - (double)_preferredScale
 {
-  v2 = [(MKMarkerAnnotationView *)self traitCollection];
-  [v2 displayScale];
+  traitCollection = [(MKMarkerAnnotationView *)self traitCollection];
+  [traitCollection displayScale];
   v4 = v3;
 
   if (v4 == 0.0)
   {
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v4 = v6;
   }
 
@@ -1104,11 +1104,11 @@ LABEL_10:
   [(MKAnnotationView *)self setCalloutOffset:0.0, self->_size.height + v3 * -0.5];
 }
 
-- (MKMarkerAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (MKMarkerAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
   v13.receiver = self;
   v13.super_class = MKMarkerAnnotationView;
-  v4 = [(MKAnnotationView *)&v13 initWithAnnotation:a3 reuseIdentifier:a4];
+  v4 = [(MKAnnotationView *)&v13 initWithAnnotation:annotation reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -1124,8 +1124,8 @@ LABEL_10:
     [(MKMarkerAnnotationView *)v5 _configureCalloutOffset];
     v5->super._titleVisibility = 0;
     v5->super._subtitleVisibility = 0;
-    v9 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-    v10 = [(MKMarkerAnnotationView *)v5 registerForTraitChanges:v9 withAction:sel_traitEnvironment_didChangeTraitCollection_];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+    v10 = [(MKMarkerAnnotationView *)v5 registerForTraitChanges:systemTraitsAffectingColorAppearance withAction:sel_traitEnvironment_didChangeTraitCollection_];
 
     v11 = +[MKMarkerStyleCache sharedCache];
     [v11 incrementLiveMarkerCount];
@@ -1144,10 +1144,10 @@ LABEL_10:
     [(MKAnnotationView *)&v9 _updateFromMap];
     self->super._titleVisibility = 1;
     self->super._subtitleVisibility = 1;
-    v3 = [(MKAnnotationView *)self annotation];
-    v4 = [v3 marker];
+    annotation = [(MKAnnotationView *)self annotation];
+    marker = [annotation marker];
 
-    [v4 calloutAnchorPointWithSnapToPixels:1];
+    [marker calloutAnchorPointWithSnapToPixels:1];
     v6 = v5;
     v8 = v7;
     [(MKMarkerAnnotationView *)self bounds];
@@ -1155,9 +1155,9 @@ LABEL_10:
   }
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   if (!_MKLinkedOnOrAfterReleaseSet(1796))
   {
     [(MKMarkerAnnotationView *)self prepareForDisplay];
@@ -1165,7 +1165,7 @@ LABEL_10:
 
   v5.receiver = self;
   v5.super_class = MKMarkerAnnotationView;
-  [(MKMarkerAnnotationView *)&v5 layoutSublayersOfLayer:v4];
+  [(MKMarkerAnnotationView *)&v5 layoutSublayersOfLayer:layerCopy];
 }
 
 - (id)_effectiveGlyphText
@@ -1178,8 +1178,8 @@ LABEL_10:
 
   else
   {
-    v4 = [(MKAnnotationView *)self annotation];
-    if ([v4 _mapkit_isMKClusterAnnotation])
+    annotation = [(MKAnnotationView *)self annotation];
+    if ([annotation _mapkit_isMKClusterAnnotation])
     {
       if (_effectiveGlyphText_onceToken != -1)
       {
@@ -1188,8 +1188,8 @@ LABEL_10:
 
       v5 = _effectiveGlyphText_formatter;
       v6 = MEMORY[0x1E696AD98];
-      v7 = [v4 memberAnnotations];
-      v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
+      memberAnnotations = [annotation memberAnnotations];
+      v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(memberAnnotations, "count")}];
       v3 = [v5 stringFromNumber:v8];
     }
 
@@ -1233,9 +1233,9 @@ void __45__MKMarkerAnnotationView__effectiveGlyphText__block_invoke()
   }
 }
 
-- (id)_effectiveGlyphImageForState:(int64_t)a3
+- (id)_effectiveGlyphImageForState:(int64_t)state
 {
-  if (a3 && (selectedGlyphImage = self->_selectedGlyphImage) != 0 || (selectedGlyphImage = self->_glyphImage) != 0)
+  if (state && (selectedGlyphImage = self->_selectedGlyphImage) != 0 || (selectedGlyphImage = self->_glyphImage) != 0)
   {
     v5 = selectedGlyphImage;
   }
@@ -1248,10 +1248,10 @@ void __45__MKMarkerAnnotationView__effectiveGlyphText__block_invoke()
   return v5;
 }
 
-- (id)_glyphImageForImage:(id)a3
+- (id)_glyphImageForImage:(id)image
 {
-  v4 = a3;
-  v5 = [(MKAnnotationView *)self annotation];
+  imageCopy = image;
+  annotation = [(MKAnnotationView *)self annotation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1265,7 +1265,7 @@ void __45__MKMarkerAnnotationView__effectiveGlyphText__block_invoke()
     v7 = 2;
   }
 
-  v8 = [v4 imageWithRenderingMode:v7];
+  v8 = [imageCopy imageWithRenderingMode:v7];
 
   return v8;
 }
@@ -1328,20 +1328,20 @@ void __45__MKMarkerAnnotationView__effectiveGlyphText__block_invoke()
 {
   if (self->_markerTintColor && _MKLinkedOnOrAfterReleaseSet(2310))
   {
-    v3 = [(MKMarkerAnnotationView *)self _resolvedMarkerTintColor];
-    v4 = [objc_alloc(MEMORY[0x1E69DD5B8]) initWithContentColor:v3];
-    v5 = [v4 primaryColor];
+    _resolvedMarkerTintColor = [(MKMarkerAnnotationView *)self _resolvedMarkerTintColor];
+    v4 = [objc_alloc(MEMORY[0x1E69DD5B8]) initWithContentColor:_resolvedMarkerTintColor];
+    primaryColor = [v4 primaryColor];
   }
 
   else
   {
-    v5 = 0;
+    primaryColor = 0;
   }
 
-  return v5;
+  return primaryColor;
 }
 
-- (id)_effectiveGlyphTintColorForState:(int64_t)a3
+- (id)_effectiveGlyphTintColorForState:(int64_t)state
 {
   glyphTintColor = self->_glyphTintColor;
   if (glyphTintColor)
@@ -1351,16 +1351,16 @@ void __45__MKMarkerAnnotationView__effectiveGlyphText__block_invoke()
 
   else
   {
-    v7 = [(MKMarkerAnnotationView *)self _customLegibleGlyphColor];
-    v8 = v7;
-    if (v7)
+    _customLegibleGlyphColor = [(MKMarkerAnnotationView *)self _customLegibleGlyphColor];
+    v8 = _customLegibleGlyphColor;
+    if (_customLegibleGlyphColor)
     {
-      v9 = v7;
+      defaultGlyphColor = _customLegibleGlyphColor;
     }
 
     else
     {
-      if (a3)
+      if (state)
       {
         v10 = 1048;
       }
@@ -1370,10 +1370,10 @@ void __45__MKMarkerAnnotationView__effectiveGlyphText__block_invoke()
         v10 = 1056;
       }
 
-      v9 = [*(&self->super.super.super.super.isa + v10) defaultGlyphColor];
+      defaultGlyphColor = [*(&self->super.super.super.super.isa + v10) defaultGlyphColor];
     }
 
-    v4 = v9;
+    v4 = defaultGlyphColor;
   }
 
   return v4;
@@ -1403,18 +1403,18 @@ void __45__MKMarkerAnnotationView__effectiveGlyphText__block_invoke()
     v5 = self->_glyphTintColor;
     self->_glyphTintColor = v4;
 
-    v6 = [(MKMarkerAnnotationView *)self _currentMarkerState];
+    _currentMarkerState = [(MKMarkerAnnotationView *)self _currentMarkerState];
 
-    [(MKMarkerAnnotationView *)self _updateContentForState:v6];
+    [(MKMarkerAnnotationView *)self _updateContentForState:_currentMarkerState];
   }
 }
 
-- (void)setSelectedContentView:(id)a3
+- (void)setSelectedContentView:(id)view
 {
-  v5 = a3;
-  if (self->_selectedContentView != v5)
+  viewCopy = view;
+  if (self->_selectedContentView != viewCopy)
   {
-    objc_storeStrong(&self->_selectedContentView, a3);
+    objc_storeStrong(&self->_selectedContentView, view);
     if ([(MKMarkerAnnotationView *)self _currentMarkerState])
     {
       [(MKMarkerAnnotationView *)self _updateContentForState:[(MKMarkerAnnotationView *)self _currentMarkerState]];
@@ -1422,15 +1422,15 @@ void __45__MKMarkerAnnotationView__effectiveGlyphText__block_invoke()
   }
 }
 
-- (void)_setStyleAttributes:(id)a3
+- (void)_setStyleAttributes:(id)attributes
 {
-  v5 = a3;
-  if (self->_customStyleAttributes != v5)
+  attributesCopy = attributes;
+  if (self->_customStyleAttributes != attributesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_customStyleAttributes, a3);
+    v6 = attributesCopy;
+    objc_storeStrong(&self->_customStyleAttributes, attributes);
     [(MKMarkerAnnotationView *)self _updateContentForState:[(MKMarkerAnnotationView *)self _currentMarkerState]];
-    v5 = v6;
+    attributesCopy = v6;
   }
 }
 
@@ -1442,9 +1442,9 @@ void __45__MKMarkerAnnotationView__effectiveGlyphText__block_invoke()
     v5 = self->_markerTintColor;
     self->_markerTintColor = v4;
 
-    v6 = [(MKMarkerAnnotationView *)self _currentMarkerState];
+    _currentMarkerState = [(MKMarkerAnnotationView *)self _currentMarkerState];
 
-    [(MKMarkerAnnotationView *)self _updateContentForState:v6];
+    [(MKMarkerAnnotationView *)self _updateContentForState:_currentMarkerState];
   }
 }
 
@@ -1452,47 +1452,47 @@ void __45__MKMarkerAnnotationView__effectiveGlyphText__block_invoke()
 {
   v5.receiver = self;
   v5.super_class = MKMarkerAnnotationView;
-  v3 = [(MKAnnotationView *)&v5 canShowCallout];
-  return v3 & [(MKMarkerAnnotationView *)self _hasDataRequiringCallout];
+  canShowCallout = [(MKAnnotationView *)&v5 canShowCallout];
+  return canShowCallout & [(MKMarkerAnnotationView *)self _hasDataRequiringCallout];
 }
 
 - (BOOL)_hasDataRequiringCallout
 {
-  v3 = [(MKAnnotationView *)self rightCalloutAccessoryView];
-  if (v3)
+  rightCalloutAccessoryView = [(MKAnnotationView *)self rightCalloutAccessoryView];
+  if (rightCalloutAccessoryView)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MKAnnotationView *)self leftCalloutAccessoryView];
-    if (v5)
+    leftCalloutAccessoryView = [(MKAnnotationView *)self leftCalloutAccessoryView];
+    if (leftCalloutAccessoryView)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(MKAnnotationView *)self detailCalloutAccessoryView];
-      v4 = v6 != 0;
+      detailCalloutAccessoryView = [(MKAnnotationView *)self detailCalloutAccessoryView];
+      v4 = detailCalloutAccessoryView != 0;
     }
   }
 
   return v4;
 }
 
-- (void)_setWalletMerchantStylingInfo:(id)a3
+- (void)_setWalletMerchantStylingInfo:(id)info
 {
-  v5 = a3;
-  if (self->_walletMerchantStylingInfo != v5)
+  infoCopy = info;
+  if (self->_walletMerchantStylingInfo != infoCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_walletMerchantStylingInfo, a3);
-    v6 = [(MKWalletMerchantStylingInfo *)v7 _featureStyleAttributes];
-    [(MKMarkerAnnotationView *)self _setStyleAttributes:v6];
+    v7 = infoCopy;
+    objc_storeStrong(&self->_walletMerchantStylingInfo, info);
+    _featureStyleAttributes = [(MKWalletMerchantStylingInfo *)v7 _featureStyleAttributes];
+    [(MKMarkerAnnotationView *)self _setStyleAttributes:_featureStyleAttributes];
 
-    v5 = v7;
+    infoCopy = v7;
   }
 }
 

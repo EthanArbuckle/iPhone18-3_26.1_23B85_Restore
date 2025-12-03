@@ -1,5 +1,5 @@
 @interface WADeploymentAnalyzerDefaults
-+ (id)_numberDefaultForKey:(id)a3;
++ (id)_numberDefaultForKey:(id)key;
 - (WADeploymentAnalyzerDefaults)init;
 @end
 
@@ -203,12 +203,12 @@
   return v3;
 }
 
-+ (id)_numberDefaultForKey:(id)a3
++ (id)_numberDefaultForKey:(id)key
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 _WADefaults];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  _WADefaults = [v3 _WADefaults];
+  v6 = [_WADefaults objectForKey:keyCopy];
 
   return v6;
 }

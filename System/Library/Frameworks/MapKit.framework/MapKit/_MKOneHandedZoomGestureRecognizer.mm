@@ -1,22 +1,22 @@
 @interface _MKOneHandedZoomGestureRecognizer
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGPoint)locationOfTapGesture;
-- (_MKOneHandedZoomGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_MKOneHandedZoomGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)_clearTapTimer;
-- (void)_panGestureRecognizerStateDidChange:(id)a3;
-- (void)_startTapTimer:(double)a3;
-- (void)_tapGestureRecognizerStateDidChange:(id)a3;
-- (void)_tooSlow:(id)a3;
+- (void)_panGestureRecognizerStateDidChange:(id)change;
+- (void)_startTapTimer:(double)timer;
+- (void)_tapGestureRecognizerStateDidChange:(id)change;
+- (void)_tooSlow:(id)slow;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)reset;
-- (void)setAllowedPressTypes:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)setAllowedPressTypes:(id)types;
+- (void)setConfiguration:(id)configuration;
+- (void)setEnabled:(BOOL)enabled;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation _MKOneHandedZoomGestureRecognizer
@@ -43,7 +43,7 @@
   self->_timerOn = 0;
 }
 
-- (void)_tooSlow:(id)a3
+- (void)_tooSlow:(id)slow
 {
   [(_MKOneHandedZoomGestureRecognizer *)self _clearTapTimer];
   [(_MKZoomingPanGestureRecognizer *)self->_panGestureRecognizer setEnabled:0];
@@ -51,18 +51,18 @@
   [(_MKOneHandedZoomGestureRecognizer *)self setState:5];
 }
 
-- (void)_startTapTimer:(double)a3
+- (void)_startTapTimer:(double)timer
 {
   [(_MKOneHandedZoomGestureRecognizer *)self _clearTapTimer];
   self->_timerOn = 1;
   [(_MKZoomingPanGestureRecognizer *)self->_panGestureRecognizer setEnabled:1];
 
-  [(_MKOneHandedZoomGestureRecognizer *)self performSelector:sel__tooSlow_ withObject:0 afterDelay:a3];
+  [(_MKOneHandedZoomGestureRecognizer *)self performSelector:sel__tooSlow_ withObject:0 afterDelay:timer];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_panGestureRecognizer == a3 && !self->_didReceive1stTap)
+  if (self->_panGestureRecognizer == begin && !self->_didReceive1stTap)
   {
     [(_MKOneHandedZoomGestureRecognizer *)self setState:5];
     return 0;
@@ -70,31 +70,31 @@
 
   else
   {
-    v4 = [(_MKOneHandedZoomGestureRecognizer *)self delegate];
-    v5 = !v4 || (objc_opt_respondsToSelector() & 1) == 0 || [v4 gestureRecognizerShouldBegin:self];
+    delegate = [(_MKOneHandedZoomGestureRecognizer *)self delegate];
+    v5 = !delegate || (objc_opt_respondsToSelector() & 1) == 0 || [delegate gestureRecognizerShouldBegin:self];
   }
 
   return v5;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_tapGestureRecognizer == a3 && [a3 state] == 5)
+  if (self->_tapGestureRecognizer == recognizer && [recognizer state] == 5)
   {
-    v5 = [(_MKOneHandedZoomGestureRecognizer *)self isEnabled];
+    isEnabled = [(_MKOneHandedZoomGestureRecognizer *)self isEnabled];
     [(_MKOneHandedZoomGestureRecognizer *)self setEnabled:0];
-    [(_MKOneHandedZoomGestureRecognizer *)self setEnabled:v5];
+    [(_MKOneHandedZoomGestureRecognizer *)self setEnabled:isEnabled];
   }
 
   return 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   v8 = 0;
-  if (self->_tapGestureRecognizer == v6)
+  if (self->_tapGestureRecognizer == recognizerCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -106,20 +106,20 @@
   return v8;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(_MKOneHandedZoomGestureRecognizer *)self delegate];
-  v7 = !v6 || (objc_opt_respondsToSelector() & 1) == 0 || [v6 gestureRecognizer:self shouldReceiveTouch:v5];
+  touchCopy = touch;
+  delegate = [(_MKOneHandedZoomGestureRecognizer *)self delegate];
+  v7 = !delegate || (objc_opt_respondsToSelector() & 1) == 0 || [delegate gestureRecognizer:self shouldReceiveTouch:touchCopy];
 
   return v7;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _MKOneHandedZoomGestureRecognizer;
-  [(_MKOneHandedZoomGestureRecognizer *)&v5 touchesBegan:a3 withEvent:a4];
+  [(_MKOneHandedZoomGestureRecognizer *)&v5 touchesBegan:began withEvent:event];
   if (self->_didReceive1stTap && ![(_MKZoomingPanGestureRecognizer *)self->_panGestureRecognizer state])
   {
     if ([(_MKZoomingPanGestureRecognizer *)self->_panGestureRecognizer isEnabled])
@@ -138,48 +138,48 @@
   return result;
 }
 
-- (void)_panGestureRecognizerStateDidChange:(id)a3
+- (void)_panGestureRecognizerStateDidChange:(id)change
 {
   if (self->_didReceive1stTap)
   {
-    v5 = [a3 state];
+    state = [change state];
 
-    [(_MKOneHandedZoomGestureRecognizer *)self setState:v5];
+    [(_MKOneHandedZoomGestureRecognizer *)self setState:state];
   }
 }
 
-- (void)_tapGestureRecognizerStateDidChange:(id)a3
+- (void)_tapGestureRecognizerStateDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   didReceive1stTap = self->_didReceive1stTap;
-  v12 = v4;
-  v6 = [v4 state];
+  v12 = changeCopy;
+  state = [changeCopy state];
   if (didReceive1stTap)
   {
-    if (v6 != 3)
+    if (state != 3)
     {
       goto LABEL_7;
     }
 
-    v7 = self;
-    v8 = 5;
+    selfCopy2 = self;
+    state2 = 5;
     goto LABEL_6;
   }
 
-  if ((v6 - 4) < 2)
+  if ((state - 4) < 2)
   {
-    v8 = [v12 state];
-    v7 = self;
+    state2 = [v12 state];
+    selfCopy2 = self;
 LABEL_6:
-    [(_MKOneHandedZoomGestureRecognizer *)v7 setState:v8];
+    [(_MKOneHandedZoomGestureRecognizer *)selfCopy2 setState:state2];
     goto LABEL_7;
   }
 
-  if (v6 == 3)
+  if (state == 3)
   {
     self->_didReceive1stTap = 1;
-    v9 = [v12 view];
-    [v12 locationInView:v9];
+    view = [v12 view];
+    [v12 locationInView:view];
     self->_locationOfTapGesture.x = v10;
     self->_locationOfTapGesture.y = v11;
 
@@ -189,12 +189,12 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (MKOneHandedZoomTapGestureRecognizerStateObserverContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (MKOneHandedZoomTapGestureRecognizerStateObserverContext == context)
   {
     if ([(UITapGestureRecognizer *)self->_tapGestureRecognizer state]== 5)
     {
@@ -202,7 +202,7 @@ LABEL_7:
     }
   }
 
-  else if (MKOneHandedZoomPanGestureRecognizerStateObserverContext == a6)
+  else if (MKOneHandedZoomPanGestureRecognizerStateObserverContext == context)
   {
     if ([(_MKZoomingPanGestureRecognizer *)self->_panGestureRecognizer state]== 5)
     {
@@ -214,39 +214,39 @@ LABEL_7:
   {
     v13.receiver = self;
     v13.super_class = _MKOneHandedZoomGestureRecognizer;
-    [(_MKOneHandedZoomGestureRecognizer *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(_MKOneHandedZoomGestureRecognizer *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (self->_configuration != v5)
+  configurationCopy = configuration;
+  if (self->_configuration != configurationCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_configuration, a3);
+    v6 = configurationCopy;
+    objc_storeStrong(&self->_configuration, configuration);
     [(MKZoomingGestureControlConfiguration *)v6 zoomDraggingResistance];
     [(_MKZoomingPanGestureRecognizer *)self->_panGestureRecognizer setZoomDraggingResistance:?];
-    v5 = v6;
+    configurationCopy = v6;
   }
 }
 
-- (void)setAllowedPressTypes:(id)a3
+- (void)setAllowedPressTypes:(id)types
 {
   v5.receiver = self;
   v5.super_class = _MKOneHandedZoomGestureRecognizer;
-  v4 = a3;
-  [(_MKOneHandedZoomGestureRecognizer *)&v5 setAllowedPressTypes:v4];
-  [(_MKZoomingPanGestureRecognizer *)self->_panGestureRecognizer setAllowedPressTypes:v4, v5.receiver, v5.super_class];
+  typesCopy = types;
+  [(_MKOneHandedZoomGestureRecognizer *)&v5 setAllowedPressTypes:typesCopy];
+  [(_MKZoomingPanGestureRecognizer *)self->_panGestureRecognizer setAllowedPressTypes:typesCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = _MKOneHandedZoomGestureRecognizer;
   [(_MKOneHandedZoomGestureRecognizer *)&v5 setEnabled:?];
-  [(UITapGestureRecognizer *)self->_tapGestureRecognizer setEnabled:v3];
+  [(UITapGestureRecognizer *)self->_tapGestureRecognizer setEnabled:enabledCopy];
 }
 
 - (void)dealloc
@@ -258,11 +258,11 @@ LABEL_7:
   [(_MKOneHandedZoomGestureRecognizer *)&v3 dealloc];
 }
 
-- (_MKOneHandedZoomGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_MKOneHandedZoomGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v15.receiver = self;
   v15.super_class = _MKOneHandedZoomGestureRecognizer;
-  v4 = [(_MKOneHandedZoomGestureRecognizer *)&v15 initWithTarget:a3 action:a4];
+  v4 = [(_MKOneHandedZoomGestureRecognizer *)&v15 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -279,9 +279,9 @@ LABEL_7:
     v5->_panGestureRecognizer = v8;
 
     v10 = +[MKSystemController sharedInstance];
-    v11 = [v10 supportsExtendedGestures];
+    supportsExtendedGestures = [v10 supportsExtendedGestures];
 
-    if (v11)
+    if (supportsExtendedGestures)
     {
       [(_MKZoomingPanGestureRecognizer *)v5->_panGestureRecognizer setMaximumNumberOfTouches:[(_MKZoomingPanGestureRecognizer *)v5->_panGestureRecognizer minimumNumberOfTouches]];
     }

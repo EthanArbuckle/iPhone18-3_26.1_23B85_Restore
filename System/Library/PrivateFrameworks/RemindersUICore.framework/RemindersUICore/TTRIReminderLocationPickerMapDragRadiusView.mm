@@ -3,71 +3,71 @@
 - (CAShapeLayer)shapeLayer;
 - (CGPoint)_maxPoint;
 - (CGPoint)_minPoint;
-- (CGPoint)_pointForRadius:(double)a3;
+- (CGPoint)_pointForRadius:(double)radius;
 - (CGPoint)initialHandleCenterForDraggin;
 - (CGRect)accessibilityFrame;
-- (TTRIReminderLocationPickerMapDragRadiusView)initWithFrame:(CGRect)a3 mapView:(id)a4;
+- (TTRIReminderLocationPickerMapDragRadiusView)initWithFrame:(CGRect)frame mapView:(id)view;
 - (TTRIReminderLocationPickerMapDragRadiusViewDelegate)delegate;
 - (double)_currentHandleDistance;
-- (double)_radiusForPoint:(CGPoint)a3;
+- (double)_radiusForPoint:(CGPoint)point;
 - (double)_ttriAccessibilityRadiusIncrement;
 - (double)radius;
-- (id)_bezierPathWithEndPoint:(CGPoint)a3;
+- (id)_bezierPathWithEndPoint:(CGPoint)point;
 - (id)_currentHandleDistanceMeasurement;
-- (id)_measurementFor:(double)a3 fromUnit:(id)a4 toUnit:(id)a5 normalized:(BOOL)a6;
-- (id)_shapeLayerWithEndPoint:(CGPoint)a3;
+- (id)_measurementFor:(double)for fromUnit:(id)unit toUnit:(id)toUnit normalized:(BOOL)normalized;
+- (id)_shapeLayerWithEndPoint:(CGPoint)point;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_animateHandleIn:(BOOL)a3;
-- (void)_centerAndZoomToFitRegion:(id)a3 animated:(BOOL)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_animateHandleIn:(BOOL)in;
+- (void)_centerAndZoomToFitRegion:(id)region animated:(BOOL)animated;
 - (void)_hideCircleAfterDelay;
 - (void)_popAnimateHandle;
 - (void)_removeHandle;
 - (void)_updateHandleImageView;
-- (void)_updateHandleImageViewWithPoint:(CGPoint)a3;
-- (void)_updateRegionWithPoint:(CGPoint)a3;
-- (void)_updateRegionWithRadius:(double)a3;
+- (void)_updateHandleImageViewWithPoint:(CGPoint)point;
+- (void)_updateRegionWithPoint:(CGPoint)point;
+- (void)_updateRegionWithRadius:(double)radius;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)drawRect:(CGRect)a3;
-- (void)handlePanGesture:(id)a3;
-- (void)setHandleColor:(id)a3;
-- (void)startEditingRegion:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)handlePanGesture:(id)gesture;
+- (void)setHandleColor:(id)color;
+- (void)startEditingRegion:(id)region;
 - (void)stopEditing;
 @end
 
 @implementation TTRIReminderLocationPickerMapDragRadiusView
 
-- (TTRIReminderLocationPickerMapDragRadiusView)initWithFrame:(CGRect)a3 mapView:(id)a4
+- (TTRIReminderLocationPickerMapDragRadiusView)initWithFrame:(CGRect)frame mapView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v27.receiver = self;
   v27.super_class = TTRIReminderLocationPickerMapDragRadiusView;
-  v11 = [(TTRIReminderLocationPickerMapDragRadiusView *)&v27 initWithFrame:x, y, width, height];
-  if (v11)
+  height = [(TTRIReminderLocationPickerMapDragRadiusView *)&v27 initWithFrame:x, y, width, height];
+  if (height)
   {
     [MEMORY[0x277D44868] minimumRegionMonitoringDistance];
-    v11->_minimumRadius = v12;
-    v11->_maximumRadius = 241401.0;
-    v11->_radiusPaddingMultiplier = 3.5;
+    height->_minimumRadius = v12;
+    height->_maximumRadius = 241401.0;
+    height->_radiusPaddingMultiplier = 3.5;
     v13 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:0];
-    handleImageView = v11->_handleImageView;
-    v11->_handleImageView = v13;
+    handleImageView = height->_handleImageView;
+    height->_handleImageView = v13;
 
-    v15 = [(UIImageView *)v11->_handleImageView layer];
-    [v15 setZPosition:50.0];
+    layer = [(UIImageView *)height->_handleImageView layer];
+    [layer setZPosition:50.0];
 
-    objc_storeStrong(&v11->_mapView, a4);
+    objc_storeStrong(&height->_mapView, view);
     v16 = objc_alloc_init(MEMORY[0x277CCAB18]);
-    measurementFormatter = v11->_measurementFormatter;
-    v11->_measurementFormatter = v16;
+    measurementFormatter = height->_measurementFormatter;
+    height->_measurementFormatter = v16;
 
-    if ([(TTRIReminderLocationPickerMapDragRadiusView *)v11 _usesMetric])
+    if ([(TTRIReminderLocationPickerMapDragRadiusView *)height _usesMetric])
     {
       v18 = 3;
     }
@@ -77,58 +77,58 @@
       v18 = 2;
     }
 
-    [(NSMeasurementFormatter *)v11->_measurementFormatter setUnitOptions:v18];
-    v19 = [(NSMeasurementFormatter *)v11->_measurementFormatter numberFormatter];
-    [v19 setMinimumFractionDigits:0];
+    [(NSMeasurementFormatter *)height->_measurementFormatter setUnitOptions:v18];
+    numberFormatter = [(NSMeasurementFormatter *)height->_measurementFormatter numberFormatter];
+    [numberFormatter setMinimumFractionDigits:0];
 
-    v20 = [(NSMeasurementFormatter *)v11->_measurementFormatter numberFormatter];
-    [v20 setMaximumFractionDigits:1];
+    numberFormatter2 = [(NSMeasurementFormatter *)height->_measurementFormatter numberFormatter];
+    [numberFormatter2 setMaximumFractionDigits:1];
 
-    v21 = [MEMORY[0x277D75348] blueColor];
-    circleColor = v11->_circleColor;
-    v11->_circleColor = v21;
+    blueColor = [MEMORY[0x277D75348] blueColor];
+    circleColor = height->_circleColor;
+    height->_circleColor = blueColor;
 
-    v23 = [MEMORY[0x277D75348] blueColor];
-    handleColor = v11->_handleColor;
-    v11->_handleColor = v23;
+    blueColor2 = [MEMORY[0x277D75348] blueColor];
+    handleColor = height->_handleColor;
+    height->_handleColor = blueColor2;
 
-    [(TTRIReminderLocationPickerMapDragRadiusView *)v11 _updateHandleImageView];
-    v25 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:v11 action:sel_handlePanGesture_];
-    [(TTRIReminderLocationPickerMapDragRadiusView *)v11 addGestureRecognizer:v25];
+    [(TTRIReminderLocationPickerMapDragRadiusView *)height _updateHandleImageView];
+    v25 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:height action:sel_handlePanGesture_];
+    [(TTRIReminderLocationPickerMapDragRadiusView *)height addGestureRecognizer:v25];
   }
 
-  return v11;
+  return height;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v44[3] = *MEMORY[0x277D85DE8];
   v42.receiver = self;
   v42.super_class = TTRIReminderLocationPickerMapDragRadiusView;
-  [(TTRIReminderLocationPickerMapDragRadiusView *)&v42 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TTRIReminderLocationPickerMapDragRadiusView *)&v42 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   if ([(TTRIReminderLocationPickerMapDragRadiusView *)self isDragging])
   {
-    v4 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-    v5 = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
-    [v5 center];
-    [v4 convertCoordinate:self toPointToView:?];
+    mapView = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+    region = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
+    [region center];
+    [mapView convertCoordinate:self toPointToView:?];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-    [v10 center];
+    handleImageView = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+    [handleImageView center];
     v12 = v11 - v7;
 
-    v13 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-    [v13 center];
+    handleImageView2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+    [handleImageView2 center];
     v15 = v14 - (v12 + v12);
-    v16 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-    [v16 center];
+    handleImageView3 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+    [handleImageView3 center];
     v18 = v17 - v12;
 
-    v19 = [(TTRIReminderLocationPickerMapDragRadiusView *)self circleColor];
-    v20 = [(TTRIReminderLocationPickerMapDragRadiusView *)self circleColor];
-    v21 = [v20 colorWithAlphaComponent:0.15];
+    circleColor = [(TTRIReminderLocationPickerMapDragRadiusView *)self circleColor];
+    circleColor2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self circleColor];
+    v21 = [circleColor2 colorWithAlphaComponent:0.15];
 
     CurrentContext = UIGraphicsGetCurrentContext();
     v45.origin.x = v15;
@@ -144,13 +144,13 @@
     v46.size.width = v12 + v12;
     v46.size.height = v12 + v12;
     CGContextAddEllipseInRect(CurrentContext, v46);
-    v24 = CGColorGetComponents([v19 CGColor]);
+    v24 = CGColorGetComponents([circleColor CGColor]);
     CGContextSetStrokeColor(CurrentContext, v24);
     CGContextSetLineWidth(CurrentContext, 3.0);
     CGContextStrokePath(CurrentContext);
-    v25 = [(TTRIReminderLocationPickerMapDragRadiusView *)self _currentHandleDistanceMeasurement];
-    v26 = [(TTRIReminderLocationPickerMapDragRadiusView *)self measurementFormatter];
-    v27 = [v26 stringFromMeasurement:v25];
+    _currentHandleDistanceMeasurement = [(TTRIReminderLocationPickerMapDragRadiusView *)self _currentHandleDistanceMeasurement];
+    measurementFormatter = [(TTRIReminderLocationPickerMapDragRadiusView *)self measurementFormatter];
+    v27 = [measurementFormatter stringFromMeasurement:_currentHandleDistanceMeasurement];
 
     v47.origin.y = v9 + -16.0;
     v47.size.width = v12 + -14.0;
@@ -161,9 +161,9 @@
     y = v48.origin.y;
     width = v48.size.width;
     height = v48.size.height;
-    [v19 set];
+    [circleColor set];
     v32 = [MEMORY[0x277D74300] boldSystemFontOfSize:12.0];
-    [v19 set];
+    [circleColor set];
     CGContextSetLineJoin(CurrentContext, kCGLineJoinRound);
     CGContextSetRGBFillColor(CurrentContext, 0.937254902, 0.560784314, 0.0784313725, 1.0);
     CGContextSetRGBStrokeColor(CurrentContext, 1.0, 1.0, 1.0, 0.5);
@@ -176,14 +176,14 @@
     v43[0] = *MEMORY[0x277D740A8];
     v43[1] = v34;
     v44[0] = v32;
-    v44[1] = v19;
+    v44[1] = circleColor;
     v43[2] = *MEMORY[0x277D74118];
     v44[2] = v33;
     v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:3];
     [v27 drawInRect:v35 withAttributes:{x, y, width, height}];
 
-    v36 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-    [v36 center];
+    handleImageView4 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+    [handleImageView4 center];
     v38 = v37;
     v40 = v39;
 
@@ -191,12 +191,12 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-  [v7 frame];
+  y = test.y;
+  x = test.x;
+  handleImageView = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+  [handleImageView frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -210,29 +210,29 @@
   v21.y = y;
   if (CGRectContainsPoint(v22, v21) && (-[TTRIReminderLocationPickerMapDragRadiusView handleImageView](self, "handleImageView"), v16 = objc_claimAutoreleasedReturnValue(), [v16 superview], v17 = objc_claimAutoreleasedReturnValue(), v17, v16, v17))
   {
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (void)handlePanGesture:(id)a3
+- (void)handlePanGesture:(id)gesture
 {
-  v4 = a3;
-  [v4 translationInView:self];
+  gestureCopy = gesture;
+  [gestureCopy translationInView:self];
   v6 = v5;
   v8 = v7;
-  v9 = [v4 state];
+  state = [gestureCopy state];
 
-  if ((v9 - 3) < 2)
+  if ((state - 3) < 2)
   {
-    v14 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-    [v14 setHighlighted:0];
+    handleImageView = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+    [handleImageView setHighlighted:0];
 
     [(TTRIReminderLocationPickerMapDragRadiusView *)self initialHandleCenterForDraggin];
     v16 = v6 + v15;
@@ -242,7 +242,7 @@
     [(TTRIReminderLocationPickerMapDragRadiusView *)self _updateRegionWithPoint:v16, v18];
   }
 
-  else if (v9 == 2)
+  else if (state == 2)
   {
     [(TTRIReminderLocationPickerMapDragRadiusView *)self initialHandleCenterForDraggin];
     v20 = v6 + v19;
@@ -252,57 +252,57 @@
     [(TTRIReminderLocationPickerMapDragRadiusView *)self _updateHandleImageViewWithPoint:v20, v22];
   }
 
-  else if (v9 == 1)
+  else if (state == 1)
   {
-    v10 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-    [v10 center];
+    handleImageView2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+    [handleImageView2 center];
     [(TTRIReminderLocationPickerMapDragRadiusView *)self setInitialHandleCenterForDraggin:?];
 
     [(TTRIReminderLocationPickerMapDragRadiusView *)self setIsDragging:1];
-    v11 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-    [v11 setHighlighted:1];
+    handleImageView3 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+    [handleImageView3 setHighlighted:1];
 
-    v12 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-    v13 = [(TTRIReminderLocationPickerMapDragRadiusView *)self overlay];
-    [v12 removeOverlay:v13];
+    mapView = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+    overlay = [(TTRIReminderLocationPickerMapDragRadiusView *)self overlay];
+    [mapView removeOverlay:overlay];
 
     [(TTRIReminderLocationPickerMapDragRadiusView *)self setNeedsDisplay];
   }
 }
 
-- (void)startEditingRegion:(id)a3
+- (void)startEditingRegion:(id)region
 {
-  v14 = a3;
-  v4 = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
-  v5 = [v4 isEqual:v14];
+  regionCopy = region;
+  region = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
+  v5 = [region isEqual:regionCopy];
 
   if ((v5 & 1) == 0)
   {
     [(TTRIReminderLocationPickerMapDragRadiusView *)self stopEditing];
   }
 
-  [(TTRIReminderLocationPickerMapDragRadiusView *)self setRegion:v14];
-  [v14 center];
+  [(TTRIReminderLocationPickerMapDragRadiusView *)self setRegion:regionCopy];
+  [regionCopy center];
   v7 = v6;
   v9 = v8;
-  [v14 radius];
+  [regionCopy radius];
   v11 = [TTRIWorldBoundingMKCircle circleWithCenterCoordinate:v7 radius:v9, v10];
   [(TTRIReminderLocationPickerMapDragRadiusView *)self setOverlay:v11];
 
-  v12 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-  v13 = [(TTRIReminderLocationPickerMapDragRadiusView *)self overlay];
-  [v12 addOverlay:v13];
+  mapView = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+  overlay = [(TTRIReminderLocationPickerMapDragRadiusView *)self overlay];
+  [mapView addOverlay:overlay];
 
-  [(TTRIReminderLocationPickerMapDragRadiusView *)self _centerAndZoomToFitRegion:v14 animated:0];
+  [(TTRIReminderLocationPickerMapDragRadiusView *)self _centerAndZoomToFitRegion:regionCopy animated:0];
   [(TTRIReminderLocationPickerMapDragRadiusView *)self _animateHandleIn:v5];
 }
 
 - (void)stopEditing
 {
   [(TTRIReminderLocationPickerMapDragRadiusView *)self setRegion:0];
-  v3 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-  v4 = [(TTRIReminderLocationPickerMapDragRadiusView *)self overlay];
-  [v3 removeOverlay:v4];
+  mapView = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+  overlay = [(TTRIReminderLocationPickerMapDragRadiusView *)self overlay];
+  [mapView removeOverlay:overlay];
 
   [(TTRIReminderLocationPickerMapDragRadiusView *)self setOverlay:0];
 }
@@ -313,10 +313,10 @@
   if (!shapeLayer)
   {
     v4 = objc_alloc_init(MEMORY[0x277CD9F90]);
-    v5 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleColor];
-    [v4 setStrokeColor:{objc_msgSend(v5, "CGColor")}];
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [v4 setFillColor:{objc_msgSend(v6, "CGColor")}];
+    handleColor = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleColor];
+    [v4 setStrokeColor:{objc_msgSend(handleColor, "CGColor")}];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v4 setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
     [v4 setLineDashPattern:&unk_282F1B150];
     [v4 setLineCap:@"round"];
@@ -332,17 +332,17 @@
   return shapeLayer;
 }
 
-- (void)setHandleColor:(id)a3
+- (void)setHandleColor:(id)color
 {
-  objc_storeStrong(&self->_handleColor, a3);
+  objc_storeStrong(&self->_handleColor, color);
 
   [(TTRIReminderLocationPickerMapDragRadiusView *)self _updateHandleImageView];
 }
 
 - (double)radius
 {
-  v2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
-  [v2 radius];
+  region = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
+  [region radius];
   v4 = v3;
 
   return v4;
@@ -353,23 +353,23 @@
   v3 = MEMORY[0x277D755B8];
   v4 = RemindersUICoreBundleGet();
   v5 = [v3 imageNamed:@"locationDragHandle" inBundle:v4 compatibleWithTraitCollection:0];
-  v6 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleColor];
-  v10 = [v5 ttr_tintedImageWithColor:v6];
+  handleColor = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleColor];
+  v10 = [v5 ttr_tintedImageWithColor:handleColor];
 
-  v7 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-  [v7 setImage:v10];
+  handleImageView = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+  [handleImageView setImage:v10];
 
-  v8 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-  [v8 setHighlightedImage:v10];
+  handleImageView2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+  [handleImageView2 setHighlightedImage:v10];
 
-  v9 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-  [v9 sizeToFit];
+  handleImageView3 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+  [handleImageView3 sizeToFit];
 }
 
-- (void)_updateHandleImageViewWithPoint:(CGPoint)a3
+- (void)_updateHandleImageViewWithPoint:(CGPoint)point
 {
-  x = a3.x;
-  [(TTRIReminderLocationPickerMapDragRadiusView *)self _minPoint:a3.x];
+  x = point.x;
+  [(TTRIReminderLocationPickerMapDragRadiusView *)self _minPoint:point.x];
   v6 = v5;
   [(TTRIReminderLocationPickerMapDragRadiusView *)self _maxPoint];
   if (v7 >= 0.0)
@@ -391,8 +391,8 @@
     }
 
     v10 = v9 + -12.0;
-    v11 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-    [v11 frame];
+    handleImageView = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+    [handleImageView frame];
     v18.size.width = 24.0;
     v18.size.height = 24.0;
     v18.origin.x = v10;
@@ -401,17 +401,17 @@
     y = v19.origin.y;
     width = v19.size.width;
     height = v19.size.height;
-    v16 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-    [v16 setFrame:{v12, y, width, height}];
+    handleImageView2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+    [handleImageView2 setFrame:{v12, y, width, height}];
 
     [(TTRIReminderLocationPickerMapDragRadiusView *)self setNeedsDisplay];
   }
 }
 
-- (void)_updateRegionWithPoint:(CGPoint)a3
+- (void)_updateRegionWithPoint:(CGPoint)point
 {
-  x = a3.x;
-  [(TTRIReminderLocationPickerMapDragRadiusView *)self _minPoint:a3.x];
+  x = point.x;
+  [(TTRIReminderLocationPickerMapDragRadiusView *)self _minPoint:point.x];
   if (x > v5)
   {
     [(TTRIReminderLocationPickerMapDragRadiusView *)self setIsMinimum:0];
@@ -449,34 +449,34 @@
   [(TTRIReminderLocationPickerMapDragRadiusView *)self _updateRegionWithRadius:v10];
 }
 
-- (void)_updateRegionWithRadius:(double)a3
+- (void)_updateRegionWithRadius:(double)radius
 {
   [(TTRIReminderLocationPickerMapDragRadiusView *)self minimumRadius];
   v6 = v5;
   [(TTRIReminderLocationPickerMapDragRadiusView *)self maximumRadius];
-  if (v7 >= a3)
+  if (radiusCopy >= radius)
   {
-    v7 = a3;
+    radiusCopy = radius;
   }
 
-  if (v6 >= v7)
+  if (v6 >= radiusCopy)
   {
     v8 = v6;
   }
 
   else
   {
-    v8 = v7;
+    v8 = radiusCopy;
   }
 
   v9 = objc_alloc(MEMORY[0x277CBFBC8]);
-  v10 = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
-  [v10 center];
+  region = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
+  [region center];
   v12 = v11;
   v14 = v13;
-  v15 = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
-  v16 = [v15 identifier];
-  v27 = [v9 initWithCenter:v16 radius:v12 identifier:{v14, v8}];
+  region2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
+  identifier = [region2 identifier];
+  v27 = [v9 initWithCenter:identifier radius:v12 identifier:{v14, v8}];
 
   [v27 center];
   v18 = v17;
@@ -485,19 +485,19 @@
   v22 = [TTRIWorldBoundingMKCircle circleWithCenterCoordinate:v18 radius:v20, v21];
   [(TTRIReminderLocationPickerMapDragRadiusView *)self _centerAndZoomToFitRegion:v27 animated:0];
   [(TTRIReminderLocationPickerMapDragRadiusView *)self setRegion:v27];
-  v23 = [(TTRIReminderLocationPickerMapDragRadiusView *)self overlay];
+  overlay = [(TTRIReminderLocationPickerMapDragRadiusView *)self overlay];
 
-  if (v23)
+  if (overlay)
   {
-    v24 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-    v25 = [(TTRIReminderLocationPickerMapDragRadiusView *)self overlay];
-    [v24 removeOverlay:v25];
+    mapView = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+    overlay2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self overlay];
+    [mapView removeOverlay:overlay2];
 
     [(TTRIReminderLocationPickerMapDragRadiusView *)self setOverlay:0];
   }
 
-  v26 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-  [v26 addOverlay:v22];
+  mapView2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+  [mapView2 addOverlay:v22];
 
   [(TTRIReminderLocationPickerMapDragRadiusView *)self setOverlay:v22];
   [(TTRIReminderLocationPickerMapDragRadiusView *)self setNeedsDisplay];
@@ -507,24 +507,24 @@
 
 - (void)_popAnimateHandle
 {
-  v2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-  v3 = [v2 layer];
+  handleImageView = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+  layer = [handleImageView layer];
 
   v4 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"transform"];
   [v4 setDuration:0.35];
   memset(&v30, 0, sizeof(v30));
-  if (v3)
+  if (layer)
   {
-    [v3 transform];
+    [layer transform];
     CATransform3DScale(&v30, &v29, 0.5, 0.5, 1.0);
     memset(&v29, 0, sizeof(v29));
-    [v3 transform];
+    [layer transform];
     CATransform3DScale(&v29, &v28, 1.2, 1.2, 1.0);
     memset(&v28, 0, sizeof(v28));
-    [v3 transform];
+    [layer transform];
     CATransform3DScale(&v28, &v27, 0.9, 0.9, 1.0);
     memset(&v27, 0, sizeof(v27));
-    [v3 transform];
+    [layer transform];
   }
 
   else
@@ -573,71 +573,71 @@
   [v4 setTimingFunctions:v25];
   [v4 setFillMode:*MEMORY[0x277CDA238]];
   [v4 setRemovedOnCompletion:0];
-  [v3 addAnimation:v4 forKey:@"transform"];
+  [layer addAnimation:v4 forKey:@"transform"];
 }
 
-- (id)_bezierPathWithEndPoint:(CGPoint)a3
+- (id)_bezierPathWithEndPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v16 = *MEMORY[0x277D85DE8];
-  v6 = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
+  region = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
 
-  if (v6)
+  if (region)
   {
-    v7 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-    v8 = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
-    [v8 center];
-    [v7 convertCoordinate:self toPointToView:?];
+    mapView = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+    region2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
+    [region2 center];
+    [mapView convertCoordinate:self toPointToView:?];
     v10 = v9;
     v12 = v11;
 
-    v13 = [MEMORY[0x277D75208] bezierPath];
+    bezierPath = [MEMORY[0x277D75208] bezierPath];
     v15 = xmmword_21DC05FE0;
-    [v13 setLineDash:&v15 count:2 phase:0.0];
-    [v13 setLineWidth:2.0];
-    [v13 setLineCapStyle:1];
-    [v13 moveToPoint:{floor(v10), floor(v12)}];
-    [v13 addLineToPoint:{floor(x), floor(y)}];
-    [v13 stroke];
+    [bezierPath setLineDash:&v15 count:2 phase:0.0];
+    [bezierPath setLineWidth:2.0];
+    [bezierPath setLineCapStyle:1];
+    [bezierPath moveToPoint:{floor(v10), floor(v12)}];
+    [bezierPath addLineToPoint:{floor(x), floor(y)}];
+    [bezierPath stroke];
   }
 
   else
   {
-    v13 = 0;
+    bezierPath = 0;
   }
 
-  return v13;
+  return bezierPath;
 }
 
-- (id)_shapeLayerWithEndPoint:(CGPoint)a3
+- (id)_shapeLayerWithEndPoint:(CGPoint)point
 {
-  v4 = [(TTRIReminderLocationPickerMapDragRadiusView *)self _bezierPathWithEndPoint:a3.x, a3.y];
-  v5 = [(TTRIReminderLocationPickerMapDragRadiusView *)self shapeLayer];
-  [v5 setPath:{objc_msgSend(v4, "CGPath")}];
-  v6 = [v5 superlayer];
+  v4 = [(TTRIReminderLocationPickerMapDragRadiusView *)self _bezierPathWithEndPoint:point.x, point.y];
+  shapeLayer = [(TTRIReminderLocationPickerMapDragRadiusView *)self shapeLayer];
+  [shapeLayer setPath:{objc_msgSend(v4, "CGPath")}];
+  superlayer = [shapeLayer superlayer];
 
-  if (!v6)
+  if (!superlayer)
   {
-    v7 = [(TTRIReminderLocationPickerMapDragRadiusView *)self layer];
-    [v7 addSublayer:v5];
+    layer = [(TTRIReminderLocationPickerMapDragRadiusView *)self layer];
+    [layer addSublayer:shapeLayer];
   }
 
-  return v5;
+  return shapeLayer;
 }
 
-- (void)_animateHandleIn:(BOOL)a3
+- (void)_animateHandleIn:(BOOL)in
 {
-  v3 = a3;
-  v5 = [(TTRIReminderLocationPickerMapDragRadiusView *)self overlay];
-  [v5 originalBoundingMapRect];
+  inCopy = in;
+  overlay = [(TTRIReminderLocationPickerMapDragRadiusView *)self overlay];
+  [overlay originalBoundingMapRect];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-  [v14 visibleMapRect];
+  mapView = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+  [mapView visibleMapRect];
   v61.origin.x = v15;
   v61.origin.y = v16;
   v61.size.width = v17;
@@ -650,18 +650,18 @@
 
   if (v19)
   {
-    v20 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-    v21 = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
-    [v21 center];
-    [v20 convertCoordinate:self toPointToView:?];
+    mapView2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+    region = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
+    [region center];
+    [mapView2 convertCoordinate:self toPointToView:?];
     v23 = v22;
     v25 = v24;
 
-    v26 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-    [v26 setCenter:{floor(v23), floor(v25)}];
+    handleImageView = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+    [handleImageView setCenter:{floor(v23), floor(v25)}];
 
-    v27 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-    [(TTRIReminderLocationPickerMapDragRadiusView *)self addSubview:v27];
+    handleImageView2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+    [(TTRIReminderLocationPickerMapDragRadiusView *)self addSubview:handleImageView2];
 
     v57.origin.x = v7;
     v57.origin.y = v9;
@@ -672,8 +672,8 @@
     longitude = v58.center.longitude;
     latitudeDelta = v58.span.latitudeDelta;
     longitudeDelta = v58.span.longitudeDelta;
-    v32 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-    [v32 convertRegion:self toRectToView:{latitude, longitude, latitudeDelta, longitudeDelta}];
+    mapView3 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+    [mapView3 convertRegion:self toRectToView:{latitude, longitude, latitudeDelta, longitudeDelta}];
     v34 = v33;
     v36 = v35;
     v38 = v37;
@@ -689,12 +689,12 @@
     v60.size.width = v38;
     v60.size.height = v40;
     MidY = CGRectGetMidY(v60);
-    v43 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-    v51 = v43;
+    handleImageView3 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+    handleImageView4 = handleImageView3;
     if (v41 - v23 >= 12.0)
     {
       v44 = floor(MidY);
-      [v43 setAlpha:1.0];
+      [handleImageView3 setAlpha:1.0];
 
       [(TTRIReminderLocationPickerMapDragRadiusView *)self frame];
       v55.width = v45;
@@ -705,14 +705,14 @@
       v48 = [(TTRIReminderLocationPickerMapDragRadiusView *)self _shapeLayerWithEndPoint:v41, v44];
       CGContextRestoreGState(CurrentContext);
       UIGraphicsEndImageContext();
-      if (v3)
+      if (inCopy)
       {
         v49 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"strokeEnd"];
         [v49 setDuration:0.35];
         [v49 setFromValue:&unk_282F1B240];
         [v49 setToValue:&unk_282F1B250];
-        v50 = [(TTRIReminderLocationPickerMapDragRadiusView *)self shapeLayer];
-        [v50 addAnimation:v49 forKey:@"strokeEndAnimation"];
+        shapeLayer = [(TTRIReminderLocationPickerMapDragRadiusView *)self shapeLayer];
+        [shapeLayer addAnimation:v49 forKey:@"strokeEndAnimation"];
 
         v53[0] = MEMORY[0x277D85DD0];
         v53[1] = 3221225472;
@@ -731,13 +731,13 @@
         return;
       }
 
-      v51 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-      [v51 setCenter:{v41, v44}];
+      handleImageView4 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+      [handleImageView4 setCenter:{v41, v44}];
     }
 
     else
     {
-      [v43 setAlpha:0.0];
+      [handleImageView3 setAlpha:0.0];
     }
   }
 }
@@ -764,42 +764,42 @@ uint64_t __64__TTRIReminderLocationPickerMapDragRadiusView__animateHandleIn___bl
 {
   if (![(TTRIReminderLocationPickerMapDragRadiusView *)self isDragging])
   {
-    v3 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-    [v3 removeFromSuperview];
+    handleImageView = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+    [handleImageView removeFromSuperview];
 
-    v4 = [(TTRIReminderLocationPickerMapDragRadiusView *)self shapeLayer];
-    [v4 removeFromSuperlayer];
+    shapeLayer = [(TTRIReminderLocationPickerMapDragRadiusView *)self shapeLayer];
+    [shapeLayer removeFromSuperlayer];
   }
 }
 
 - (void)_hideCircleAfterDelay
 {
   [(TTRIReminderLocationPickerMapDragRadiusView *)self setIsDragging:0];
-  v3 = [(TTRIReminderLocationPickerMapDragRadiusView *)self delegate];
-  v4 = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
-  [v3 mapDragRadiusView:self didUpdateRegion:v4];
+  delegate = [(TTRIReminderLocationPickerMapDragRadiusView *)self delegate];
+  region = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
+  [delegate mapDragRadiusView:self didUpdateRegion:region];
 
   [(TTRIReminderLocationPickerMapDragRadiusView *)self setNeedsDisplay];
 
   [(TTRIReminderLocationPickerMapDragRadiusView *)self _animateHandleIn:0];
 }
 
-- (CGPoint)_pointForRadius:(double)a3
+- (CGPoint)_pointForRadius:(double)radius
 {
-  v5 = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
-  [v5 center];
+  region = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
+  [region center];
   v7 = v6;
 
   v8 = MEMORY[0x223D456B0](v7);
-  v9 = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
-  [v9 center];
+  region2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
+  [region2 center];
   v10 = MKMapPointForCoordinate(v19);
 
-  v20.x = v10.x + v8 * a3;
+  v20.x = v10.x + v8 * radius;
   v20.y = v10.y;
   v11 = MKCoordinateForMapPoint(v20);
-  v12 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-  [v12 convertCoordinate:self toPointToView:{v11.latitude, v11.longitude}];
+  mapView = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+  [mapView convertCoordinate:self toPointToView:{v11.latitude, v11.longitude}];
   v14 = v13;
   v16 = v15;
 
@@ -832,8 +832,8 @@ uint64_t __64__TTRIReminderLocationPickerMapDragRadiusView__animateHandleIn___bl
 
 - (double)_currentHandleDistance
 {
-  v3 = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
-  [v3 center];
+  handleImageView = [(TTRIReminderLocationPickerMapDragRadiusView *)self handleImageView];
+  [handleImageView center];
   v5 = v4;
   v7 = v6;
 
@@ -841,18 +841,18 @@ uint64_t __64__TTRIReminderLocationPickerMapDragRadiusView__animateHandleIn___bl
   return result;
 }
 
-- (double)_radiusForPoint:(CGPoint)a3
+- (double)_radiusForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-  [v6 convertPoint:self toCoordinateFromView:{x, y}];
+  y = point.y;
+  x = point.x;
+  mapView = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+  [mapView convertPoint:self toCoordinateFromView:{x, y}];
   v8 = v7;
   v10 = v9;
 
   v11 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:v8 longitude:v10];
-  v12 = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
-  [v12 center];
+  region = [(TTRIReminderLocationPickerMapDragRadiusView *)self region];
+  [region center];
   v14 = v13;
   v16 = v15;
 
@@ -867,7 +867,7 @@ uint64_t __64__TTRIReminderLocationPickerMapDragRadiusView__animateHandleIn___bl
 {
   [(TTRIReminderLocationPickerMapDragRadiusView *)self _currentHandleDistance];
   v4 = v3;
-  v5 = [MEMORY[0x277CCAE20] meters];
+  meters = [MEMORY[0x277CCAE20] meters];
   if ([(TTRIReminderLocationPickerMapDragRadiusView *)self _usesMetric])
   {
     [MEMORY[0x277CCAE20] meters];
@@ -878,31 +878,31 @@ uint64_t __64__TTRIReminderLocationPickerMapDragRadiusView__animateHandleIn___bl
     [MEMORY[0x277CCAE20] feet];
   }
   v6 = ;
-  v7 = [(TTRIReminderLocationPickerMapDragRadiusView *)self _measurementFor:v5 fromUnit:v6 toUnit:1 normalized:v4];
+  v7 = [(TTRIReminderLocationPickerMapDragRadiusView *)self _measurementFor:meters fromUnit:v6 toUnit:1 normalized:v4];
 
   return v7;
 }
 
-- (id)_measurementFor:(double)a3 fromUnit:(id)a4 toUnit:(id)a5 normalized:(BOOL)a6
+- (id)_measurementFor:(double)for fromUnit:(id)unit toUnit:(id)toUnit normalized:(BOOL)normalized
 {
-  v6 = a6;
+  normalizedCopy = normalized;
   v9 = MEMORY[0x277CCAB10];
-  v10 = a5;
-  v11 = a4;
-  v12 = [[v9 alloc] initWithDoubleValue:v11 unit:a3];
+  toUnitCopy = toUnit;
+  unitCopy = unit;
+  v12 = [[v9 alloc] initWithDoubleValue:unitCopy unit:for];
 
-  v13 = [v12 measurementByConvertingToUnit:v10];
+  v13 = [v12 measurementByConvertingToUnit:toUnitCopy];
 
   v14 = v13;
   v15 = v14;
   v16 = v14;
-  if (v6)
+  if (normalizedCopy)
   {
     [v14 doubleValue];
     v18 = floor(v17 / 10.0) * 10.0;
     v19 = objc_alloc(MEMORY[0x277CCAB10]);
-    v20 = [v15 unit];
-    v16 = [v19 initWithDoubleValue:v20 unit:v18];
+    unit = [v15 unit];
+    v16 = [v19 initWithDoubleValue:unit unit:v18];
   }
 
   return v16;
@@ -910,45 +910,45 @@ uint64_t __64__TTRIReminderLocationPickerMapDragRadiusView__animateHandleIn___bl
 
 - (BOOL)_usesMetric
 {
-  v2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self measurementFormatter];
-  v3 = [v2 locale];
-  v4 = [v3 objectForKey:*MEMORY[0x277CBE718]];
-  v5 = [v4 BOOLValue];
+  measurementFormatter = [(TTRIReminderLocationPickerMapDragRadiusView *)self measurementFormatter];
+  locale = [measurementFormatter locale];
+  v4 = [locale objectForKey:*MEMORY[0x277CBE718]];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)_centerAndZoomToFitRegion:(id)a3 animated:(BOOL)a4
+- (void)_centerAndZoomToFitRegion:(id)region animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 radius];
+  animatedCopy = animated;
+  regionCopy = region;
+  [regionCopy radius];
   [(TTRIReminderLocationPickerMapDragRadiusView *)self radiusPaddingMultiplier];
-  v7 = MEMORY[0x223D45690]([v6 center]);
+  v7 = MEMORY[0x223D45690]([regionCopy center]);
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-  [v14 regionThatFits:{v7, v9, v11, v13}];
+  mapView = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+  [mapView regionThatFits:{v7, v9, v11, v13}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  v23 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-  [v6 center];
+  mapView2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+  [regionCopy center];
   v25 = v24;
   v27 = v26;
 
-  [v23 setCenterCoordinate:v4 animated:{v25, v27}];
-  v28 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-  [v28 setRegion:v4 animated:{v16, v18, v20, v22}];
+  [mapView2 setCenterCoordinate:animatedCopy animated:{v25, v27}];
+  mapView3 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+  [mapView3 setRegion:animatedCopy animated:{v16, v18, v20, v22}];
 }
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
-  [v2 accessibilityFrame];
+  mapView = [(TTRIReminderLocationPickerMapDragRadiusView *)self mapView];
+  [mapView accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -975,9 +975,9 @@ uint64_t __64__TTRIReminderLocationPickerMapDragRadiusView__animateHandleIn___bl
 
 - (id)accessibilityValue
 {
-  v3 = [(TTRIReminderLocationPickerMapDragRadiusView *)self _currentHandleDistanceMeasurement];
-  v4 = [(TTRIReminderLocationPickerMapDragRadiusView *)self measurementFormatter];
-  v5 = [v4 stringFromMeasurement:v3];
+  _currentHandleDistanceMeasurement = [(TTRIReminderLocationPickerMapDragRadiusView *)self _currentHandleDistanceMeasurement];
+  measurementFormatter = [(TTRIReminderLocationPickerMapDragRadiusView *)self measurementFormatter];
+  v5 = [measurementFormatter stringFromMeasurement:_currentHandleDistanceMeasurement];
 
   return v5;
 }
@@ -1009,9 +1009,9 @@ uint64_t __64__TTRIReminderLocationPickerMapDragRadiusView__animateHandleIn___bl
     return 200.0;
   }
 
-  v4 = [MEMORY[0x277CCAE20] feet];
-  v5 = [MEMORY[0x277CCAE20] meters];
-  v6 = [(TTRIReminderLocationPickerMapDragRadiusView *)self _measurementFor:v4 fromUnit:v5 toUnit:0 normalized:200.0];
+  feet = [MEMORY[0x277CCAE20] feet];
+  meters = [MEMORY[0x277CCAE20] meters];
+  v6 = [(TTRIReminderLocationPickerMapDragRadiusView *)self _measurementFor:feet fromUnit:meters toUnit:0 normalized:200.0];
   [v6 doubleValue];
   v8 = v7;
 

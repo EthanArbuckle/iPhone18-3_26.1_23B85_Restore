@@ -1,15 +1,15 @@
 @interface MLServerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation MLServerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  _objc_retain(a3);
-  _objc_retain(a4);
+  _objc_retain(listener);
+  _objc_retain(connection);
   _objc_retain(self);
-  MLServerDelegate.listener(_:shouldAcceptNewConnection:)(a3, a4);
+  MLServerDelegate.listener(_:shouldAcceptNewConnection:)(listener, connection);
 
   return _convertBoolToObjCBool(_:)() & 1;
 }

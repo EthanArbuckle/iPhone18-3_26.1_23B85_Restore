@@ -1,44 +1,44 @@
 @interface VUIJSUserDefaults
 - (VUIAppUserDefaultsStoring)userDefaultsStorage;
-- (VUIJSUserDefaults)initWithAppContext:(id)a3 userDefaultsStorage:(id)a4;
-- (id)getData:(id)a3;
-- (void)removeData:(id)a3;
-- (void)setData:(id)a3 :(id)a4;
+- (VUIJSUserDefaults)initWithAppContext:(id)context userDefaultsStorage:(id)storage;
+- (id)getData:(id)data;
+- (void)removeData:(id)data;
+- (void)setData:(id)data :(id)a4;
 @end
 
 @implementation VUIJSUserDefaults
 
-- (VUIJSUserDefaults)initWithAppContext:(id)a3 userDefaultsStorage:(id)a4
+- (VUIJSUserDefaults)initWithAppContext:(id)context userDefaultsStorage:(id)storage
 {
-  v6 = a4;
+  storageCopy = storage;
   v10.receiver = self;
   v10.super_class = VUIJSUserDefaults;
-  v7 = [(VUIJSObject *)&v10 initWithAppContext:a3];
+  v7 = [(VUIJSObject *)&v10 initWithAppContext:context];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_userDefaultsStorage, v6);
+    objc_storeWeak(&v7->_userDefaultsStorage, storageCopy);
   }
 
   return v8;
 }
 
-- (id)getData:(id)a3
+- (id)getData:(id)data
 {
-  v4 = a3;
-  v5 = [(VUIJSObject *)self appContext];
+  dataCopy = data;
+  appContext = [(VUIJSObject *)self appContext];
   v6 = MEMORY[0x1E696EB58];
-  v7 = [v5 jsContext];
-  v8 = [v6 valueWithNullInContext:v7];
+  jsContext = [appContext jsContext];
+  v8 = [v6 valueWithNullInContext:jsContext];
 
-  v9 = [(VUIJSUserDefaults *)self userDefaultsStorage];
-  v10 = [v9 dataForKey:v4];
+  userDefaultsStorage = [(VUIJSUserDefaults *)self userDefaultsStorage];
+  v10 = [userDefaultsStorage dataForKey:dataCopy];
 
   if (v10)
   {
     v11 = MEMORY[0x1E696EB58];
-    v12 = [v5 jsContext];
-    v13 = [v11 valueWithObject:v10 inContext:v12];
+    jsContext2 = [appContext jsContext];
+    v13 = [v11 valueWithObject:v10 inContext:jsContext2];
 
     v8 = v13;
   }
@@ -46,46 +46,46 @@
   return v8;
 }
 
-- (void)setData:(id)a3 :(id)a4
+- (void)setData:(id)data :(id)a4
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = a4;
-  v8 = [(VUIJSUserDefaults *)self userDefaultsStorage];
+  userDefaultsStorage = [(VUIJSUserDefaults *)self userDefaultsStorage];
   if ([v7 isNull])
   {
-    [v8 removeDataForKey:v6];
+    [userDefaultsStorage removeDataForKey:dataCopy];
   }
 
   else
   {
     if ([v7 isString])
     {
-      v9 = [v7 toString];
+      toString = [v7 toString];
     }
 
     else
     {
-      v9 = 0;
+      toString = 0;
     }
 
-    if ([v7 isBoolean] && !v9)
+    if ([v7 isBoolean] && !toString)
     {
-      v9 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "toBool")}];
+      toString = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "toBool")}];
     }
 
-    if ([v7 isNumber] && !v9)
+    if ([v7 isNumber] && !toString)
     {
-      v9 = [v7 toNumber];
+      toString = [v7 toNumber];
     }
 
-    if ([v7 isArray] && !v9)
+    if ([v7 isArray] && !toString)
     {
-      v9 = [v7 toArray];
+      toString = [v7 toArray];
     }
 
-    if (v9)
+    if (toString)
     {
-      [v8 setData:v9 forKey:v6];
+      [userDefaultsStorage setData:toString forKey:dataCopy];
     }
 
     else
@@ -93,17 +93,17 @@
       v10 = VUIDefaultLogObject();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [VUIJSUserDefaults setData:v6];
+        [VUIJSUserDefaults setData:dataCopy];
       }
     }
   }
 }
 
-- (void)removeData:(id)a3
+- (void)removeData:(id)data
 {
-  v4 = a3;
-  v5 = [(VUIJSUserDefaults *)self userDefaultsStorage];
-  [v5 removeDataForKey:v4];
+  dataCopy = data;
+  userDefaultsStorage = [(VUIJSUserDefaults *)self userDefaultsStorage];
+  [userDefaultsStorage removeDataForKey:dataCopy];
 }
 
 - (VUIAppUserDefaultsStoring)userDefaultsStorage

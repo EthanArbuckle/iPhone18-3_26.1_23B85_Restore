@@ -1,24 +1,24 @@
 @interface HFAnalyticsCCPredictionEvent
-+ (void)sendMetricsForPredictionEventAtStage:(unint64_t)a3 withCount:(unint64_t)a4;
-- (HFAnalyticsCCPredictionEvent)initWithData:(id)a3;
++ (void)sendMetricsForPredictionEventAtStage:(unint64_t)stage withCount:(unint64_t)count;
+- (HFAnalyticsCCPredictionEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsCCPredictionEvent
 
-- (HFAnalyticsCCPredictionEvent)initWithData:(id)a3
+- (HFAnalyticsCCPredictionEvent)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"predictionStage"];
-  v6 = [v5 integerValue];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"predictionStage"];
+  integerValue = [v5 integerValue];
 
-  if (!v6)
+  if (!integerValue)
   {
     NSLog(&cfstr_Hfanalyticsccp.isa);
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"predictionCount"];
-  v8 = [v7 integerValue];
+  v7 = [dataCopy objectForKeyedSubscript:@"predictionCount"];
+  integerValue2 = [v7 integerValue];
 
   v12.receiver = self;
   v12.super_class = HFAnalyticsCCPredictionEvent;
@@ -26,8 +26,8 @@
   v10 = v9;
   if (v9)
   {
-    v9->_predictionStage = v6;
-    v9->_predictionCount = v8;
+    v9->_predictionStage = integerValue;
+    v9->_predictionCount = integerValue2;
   }
 
   return v10;
@@ -37,8 +37,8 @@
 {
   v8.receiver = self;
   v8.super_class = HFAnalyticsCCPredictionEvent;
-  v3 = [(HFAnalyticsEvent *)&v8 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v8 payload];
+  v4 = [payload mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HFAnalyticsCCPredictionEvent predictionStage](self, "predictionStage")}];
   [v4 setObject:v5 forKeyedSubscript:@"predictionStage"];
@@ -49,16 +49,16 @@
   return v4;
 }
 
-+ (void)sendMetricsForPredictionEventAtStage:(unint64_t)a3 withCount:(unint64_t)a4
++ (void)sendMetricsForPredictionEventAtStage:(unint64_t)stage withCount:(unint64_t)count
 {
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v8 setObject:v6 forKeyedSubscript:@"predictionStage"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:stage];
+  [dictionary setObject:v6 forKeyedSubscript:@"predictionStage"];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [v8 setObject:v7 forKeyedSubscript:@"predictionCount"];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:count];
+  [dictionary setObject:v7 forKeyedSubscript:@"predictionCount"];
 
-  [HFAnalytics sendEvent:1 withData:v8];
+  [HFAnalytics sendEvent:1 withData:dictionary];
 }
 
 @end

@@ -8,7 +8,7 @@
 - (MTLTexture)renderTexture;
 - (PXGMetalRenderDestinationDelegate)delegate;
 - (PXGMetalViewRenderDestination)init;
-- (PXGMetalViewRenderDestination)initWithDisplayConfiguration:(id *)a3;
+- (PXGMetalViewRenderDestination)initWithDisplayConfiguration:(id *)configuration;
 - (double)currentDynamicRangeHeadroom;
 - (double)maximumDynamicRangeHeadroom;
 - (double)scale;
@@ -17,8 +17,8 @@
 - (unint64_t)depthStencilPixelFormat;
 - (unint64_t)destinationColorSpaceName;
 - (void)_setupMetalIfNeeded;
-- (void)drawInMTKView:(id)a3;
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4;
+- (void)drawInMTKView:(id)view;
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change;
 - (void)present;
 - (void)releaseCachedResources;
 - (void)renderImmediately;
@@ -31,9 +31,9 @@
 - (void)_setupMetalIfNeeded
 {
   v3 = +[PXTungstenSettings sharedInstance];
-  v4 = [v3 simulateMissingMetalDevice];
+  simulateMissingMetalDevice = [v3 simulateMissingMetalDevice];
 
-  if ((v4 & 1) != 0 || (v5 = MTLCreateSystemDefaultDevice()) == 0)
+  if ((simulateMissingMetalDevice & 1) != 0 || (v5 = MTLCreateSystemDefaultDevice()) == 0)
   {
     v6 = PXGTungstenGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -45,9 +45,9 @@
     v5 = 0;
   }
 
-  v7 = [(PXGMetalViewRenderDestination *)self metalView];
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
 
-  if (!v7)
+  if (!metalView)
   {
     v8 = PXAssertGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -57,16 +57,16 @@
     }
   }
 
-  v9 = [(PXGMetalViewRenderDestination *)self metalView];
-  v10 = [v9 device];
+  metalView2 = [(PXGMetalViewRenderDestination *)self metalView];
+  device = [metalView2 device];
 
-  if (v10 != v5)
+  if (device != v5)
   {
-    v11 = [(PXGMetalViewRenderDestination *)self metalView];
-    [v11 setDevice:v5];
+    metalView3 = [(PXGMetalViewRenderDestination *)self metalView];
+    [metalView3 setDevice:v5];
 
-    v12 = [(PXGMetalViewRenderDestination *)self delegate];
-    [v12 renderDestinationDeviceDidChange:self];
+    delegate = [(PXGMetalViewRenderDestination *)self delegate];
+    [delegate renderDestinationDeviceDidChange:self];
   }
 }
 
@@ -108,10 +108,10 @@
 
 - (MTLDevice)device
 {
-  v2 = [(PXGMetalViewRenderDestination *)self metalView];
-  v3 = [v2 device];
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  device = [metalView device];
 
-  return v3;
+  return device;
 }
 
 - (PXGMetalRenderDestinationDelegate)delegate
@@ -123,8 +123,8 @@
 
 - (void)setNeedsRender
 {
-  v2 = [(PXGMetalViewRenderDestination *)self metalView];
-  [v2 setNeedsDisplay];
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  [metalView setNeedsDisplay];
 }
 
 - (double)scale
@@ -159,8 +159,8 @@
 
 - (CGSize)renderSize
 {
-  v2 = [(PXGMetalViewRenderDestination *)self metalView];
-  [v2 drawableSize];
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  [metalView drawableSize];
   v4 = v3;
   v6 = v5;
 
@@ -173,8 +173,8 @@
 
 - (CGRect)renderBoundsInPoints
 {
-  v2 = [(PXGMetalViewRenderDestination *)self metalView];
-  [v2 bounds];
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  [metalView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -193,42 +193,42 @@
 
 - (unint64_t)colorPixelFormat
 {
-  v2 = [(PXGMetalViewRenderDestination *)self metalView];
-  v3 = [v2 colorPixelFormat];
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  colorPixelFormat = [metalView colorPixelFormat];
 
-  return v3;
+  return colorPixelFormat;
 }
 
 - (int64_t)sampleCount
 {
-  v2 = [(PXGMetalViewRenderDestination *)self metalView];
-  v3 = [v2 sampleCount];
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  sampleCount = [metalView sampleCount];
 
-  return v3;
+  return sampleCount;
 }
 
 - (MTLRenderPassDescriptor)currentRenderPassDescriptor
 {
-  v2 = [(PXGMetalViewRenderDestination *)self metalView];
-  v3 = [v2 currentRenderPassDescriptor];
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  currentRenderPassDescriptor = [metalView currentRenderPassDescriptor];
 
-  return v3;
+  return currentRenderPassDescriptor;
 }
 
 - (unint64_t)depthStencilPixelFormat
 {
-  v2 = [(PXGMetalViewRenderDestination *)self metalView];
-  v3 = [v2 depthStencilPixelFormat];
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  depthStencilPixelFormat = [metalView depthStencilPixelFormat];
 
-  return v3;
+  return depthStencilPixelFormat;
 }
 
 - (void)present
 {
-  v10 = [(PXGMetalViewRenderDestination *)self metalView];
-  v3 = [(PXGMetalViewRenderDestination *)self disableDisplayCompositing];
-  v4 = v3;
-  v5 = !v3;
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  disableDisplayCompositing = [(PXGMetalViewRenderDestination *)self disableDisplayCompositing];
+  v4 = disableDisplayCompositing;
+  v5 = !disableDisplayCompositing;
   if ([(PXGMetalViewRenderDestination *)self lowMemoryMode]&& !v4)
   {
     v6 = (mach_absolute_time() - self->_lastSizeChangeTime);
@@ -236,35 +236,35 @@
     v5 = v7 * v6 > 1.0;
   }
 
-  v8 = [v10 layer];
-  if (v5 != [v8 allowsDisplayCompositing])
+  layer = [metalView layer];
+  if (v5 != [layer allowsDisplayCompositing])
   {
-    [v8 setAllowsDisplayCompositing:v5];
+    [layer setAllowsDisplayCompositing:v5];
   }
 
-  v9 = [v10 currentDrawable];
-  [v9 present];
+  currentDrawable = [metalView currentDrawable];
+  [currentDrawable present];
 }
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
   kdebug_trace();
-  v4 = [(PXGMetalViewRenderDestination *)self delegate];
-  [v4 renderDestinationRequestRender:self];
+  delegate = [(PXGMetalViewRenderDestination *)self delegate];
+  [delegate renderDestinationRequestRender:self];
 }
 
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change
 {
-  height = a4.height;
-  width = a4.width;
-  [a3 drawableSize];
+  height = change.height;
+  width = change.width;
+  [view drawableSize];
   if ((PXSizeIsEmpty() & 1) == 0)
   {
     self->_lastSizeChangeTime = mach_absolute_time();
   }
 
-  v7 = [(PXGMetalViewRenderDestination *)self delegate];
-  [v7 renderDestination:self renderSizeWillChange:{width, height}];
+  delegate = [(PXGMetalViewRenderDestination *)self delegate];
+  [delegate renderDestination:self renderSizeWillChange:{width, height}];
 }
 
 - (void)test_configureForRenderSnapshot
@@ -277,10 +277,10 @@
 
 - (void)releaseCachedResources
 {
-  v10 = [(PXGMetalViewRenderDestination *)self metalView];
-  [v10 releaseDrawables];
-  v4 = [v10 layer];
-  if (v4)
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  [metalView releaseDrawables];
+  layer = [metalView layer];
+  if (layer)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -288,36 +288,36 @@
       goto LABEL_3;
     }
 
-    v5 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v7 = NSStringFromClass(v8);
-    v9 = [v4 px_descriptionForAssertionMessage];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXGMetalViewRenderDestination.m" lineNumber:288 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"metalView.layer", v7, v9}];
+    px_descriptionForAssertionMessage = [layer px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalViewRenderDestination.m" lineNumber:288 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"metalView.layer", v7, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    [v5 handleFailureInMethod:a2 object:self file:@"PXGMetalViewRenderDestination.m" lineNumber:288 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"metalView.layer", v7}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalViewRenderDestination.m" lineNumber:288 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"metalView.layer", v7}];
   }
 
 LABEL_3:
-  [v4 discardContents];
-  [v4 removeBackBuffers];
+  [layer discardContents];
+  [layer removeBackBuffers];
 }
 
 - (void)renderImmediately
 {
-  v2 = [(PXGMetalViewRenderDestination *)self metalView];
-  [v2 draw];
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  [metalView draw];
 }
 
 - ($01BB1521EC52D44A8E7628F5261DCEC8)clearColor
 {
-  v2 = [(PXGMetalViewRenderDestination *)self metalView];
-  [v2 clearColor];
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  [metalView clearColor];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -336,25 +336,25 @@ LABEL_3:
 
 - (MTLTexture)depthStencilTexture
 {
-  v2 = [(PXGMetalViewRenderDestination *)self metalView];
-  v3 = [v2 depthStencilTexture];
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  depthStencilTexture = [metalView depthStencilTexture];
 
-  return v3;
+  return depthStencilTexture;
 }
 
 - (MTLTexture)renderTexture
 {
-  v2 = [(PXGMetalViewRenderDestination *)self metalView];
-  v3 = [v2 currentDrawable];
-  v4 = [v3 texture];
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  currentDrawable = [metalView currentDrawable];
+  texture = [currentDrawable texture];
 
-  return v4;
+  return texture;
 }
 
 - (double)currentDynamicRangeHeadroom
 {
-  v2 = [(PXGMetalViewRenderDestination *)self metalView];
-  [v2 currentDynamicRangeHeadroom];
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  [metalView currentDynamicRangeHeadroom];
   v4 = v3;
 
   return v4;
@@ -362,8 +362,8 @@ LABEL_3:
 
 - (double)maximumDynamicRangeHeadroom
 {
-  v2 = [(PXGMetalViewRenderDestination *)self metalView];
-  [v2 maximumDynamicRangeHeadroom];
+  metalView = [(PXGMetalViewRenderDestination *)self metalView];
+  [metalView maximumDynamicRangeHeadroom];
   v4 = v3;
 
   return v4;
@@ -382,7 +382,7 @@ void __38__PXGMetalViewRenderDestination_scale__block_invoke(uint64_t a1)
   }
 }
 
-- (PXGMetalViewRenderDestination)initWithDisplayConfiguration:(id *)a3
+- (PXGMetalViewRenderDestination)initWithDisplayConfiguration:(id *)configuration
 {
   v29 = *MEMORY[0x277D85DE8];
   v26.receiver = self;
@@ -394,27 +394,27 @@ void __38__PXGMetalViewRenderDestination_scale__block_invoke(uint64_t a1)
     return v6;
   }
 
-  v7 = *&a3->var0;
-  *(v5 + 9) = a3->var3;
+  v7 = *&configuration->var0;
+  *(v5 + 9) = configuration->var3;
   *(v5 + 56) = v7;
   objc_storeStrong(v5 + 4, MEMORY[0x277D85CD0]);
   *(v6 + 5) = 1065353216;
   v8 = +[PXTungstenSettings sharedInstance];
   v9 = objc_alloc(MEMORY[0x277CD71F8]);
   v10 = [v9 initWithFrame:0 device:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  v11 = [v10 layer];
-  [v11 setZPosition:-1.0];
+  layer = [v10 layer];
+  [layer setZPosition:-1.0];
 
   [v10 setDelegate:v6];
   [v10 setPresentsWithTransaction:1];
   [v10 setClearColor:{0.0, 0.0, 0.0, 0.0}];
-  v12 = [v10 layer];
-  if (!v12)
+  layer2 = [v10 layer];
+  if (!layer2)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
-    [v21 handleFailureInMethod:a2 object:v6 file:@"PXGMetalViewRenderDestination.m" lineNumber:62 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"metalView.layer", v23}];
+    [currentHandler handleFailureInMethod:a2 object:v6 file:@"PXGMetalViewRenderDestination.m" lineNumber:62 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"metalView.layer", v23}];
 LABEL_19:
 
     goto LABEL_4;
@@ -423,21 +423,21 @@ LABEL_19:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v24 = objc_opt_class();
     v23 = NSStringFromClass(v24);
-    v25 = [v12 px_descriptionForAssertionMessage];
-    [v21 handleFailureInMethod:a2 object:v6 file:@"PXGMetalViewRenderDestination.m" lineNumber:62 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"metalView.layer", v23, v25}];
+    px_descriptionForAssertionMessage = [layer2 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:v6 file:@"PXGMetalViewRenderDestination.m" lineNumber:62 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"metalView.layer", v23, px_descriptionForAssertionMessage}];
 
     goto LABEL_19;
   }
 
 LABEL_4:
-  [v12 setAllowsNextDrawableTimeout:0];
-  [v12 setFenceEnabled:1];
-  [v12 setLowLatency:{objc_msgSend(v8, "lowLatency")}];
-  v13 = [MEMORY[0x277D75348] clearColor];
-  [v10 setBackgroundColor:v13];
+  [layer2 setAllowsNextDrawableTimeout:0];
+  [layer2 setFenceEnabled:1];
+  [layer2 setLowLatency:{objc_msgSend(v8, "lowLatency")}];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v10 setBackgroundColor:clearColor];
 
   [v10 setEnableSetNeedsDisplay:1];
   [v10 setPaused:1];
@@ -445,20 +445,20 @@ LABEL_4:
   [v6 _setupMetalIfNeeded];
   [v10 setDepthStencilPixelFormat:260];
   v14 = MEMORY[0x277CD9DB8];
-  if (!a3->var0)
+  if (!configuration->var0)
   {
     v14 = MEMORY[0x277CD9DC0];
   }
 
-  [v12 setPreferredDynamicRange:*v14];
-  if (a3->var0 || a3->var2)
+  [layer2 setPreferredDynamicRange:*v14];
+  if (configuration->var0 || configuration->var2)
   {
     [v6 destinationColorSpaceName];
-    [v12 setColorspace:PXGetColorSpace()];
+    [layer2 setColorspace:PXGetColorSpace()];
   }
 
-  v15 = [v10 device];
-  v16 = [v15 supportsTextureSampleCount:{objc_msgSend(v8, "sampleCount")}];
+  device = [v10 device];
+  v16 = [device supportsTextureSampleCount:{objc_msgSend(v8, "sampleCount")}];
 
   if (v16)
   {
@@ -467,16 +467,16 @@ LABEL_4:
 
   else
   {
-    v17 = [v10 device];
+    device2 = [v10 device];
 
-    if (v17)
+    if (device2)
     {
       v18 = PXGTungstenGetLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v8 sampleCount];
+        sampleCount = [v8 sampleCount];
         *buf = 134217984;
-        v28 = v19;
+        v28 = sampleCount;
         _os_log_impl(&dword_21AD38000, v18, OS_LOG_TYPE_ERROR, "Unsupported sample count:%ld", buf, 0xCu);
       }
     }

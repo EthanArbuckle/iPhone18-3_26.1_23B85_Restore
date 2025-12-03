@@ -1,7 +1,7 @@
 @interface MSASProtocol
-- (BOOL)responseDict:(id)a3 containsLimitErrorCode:(id)a4 outMaxAllowed:(id *)a5;
-- (MSASProtocol)initWithPersonID:(id)a3;
-- (id)HTTPErrorWithStatusCode:(int64_t)a3;
+- (BOOL)responseDict:(id)dict containsLimitErrorCode:(id)code outMaxAllowed:(id *)allowed;
+- (MSASProtocol)initWithPersonID:(id)d;
+- (id)HTTPErrorWithStatusCode:(int64_t)code;
 - (id)_albumStateURL;
 - (id)_couldNotReauthorizeError;
 - (id)_createAlbumURL;
@@ -17,74 +17,74 @@
 - (id)_unshareURL;
 - (id)_unsubscribeURL;
 - (id)_validateInvitationURL;
-- (id)errorFromStandardProcessingOnResponse:(id)a3 responseObject:(id)a4 checkServerSideConfigVersion:(BOOL)a5 error:(id)a6 body:(id)a7;
+- (id)errorFromStandardProcessingOnResponse:(id)response responseObject:(id)object checkServerSideConfigVersion:(BOOL)version error:(id)error body:(id)body;
 - (id)shutDownError;
 - (id)stopHandlerBlock;
 - (id)stoppingError;
-- (void)_fetchClientOrgKeyAndPersistLocallyForResponseDict:(id)a3 isOwned:(BOOL)a4 completionHandler:(id)a5;
-- (void)_prepareHeadersForRequest:(id)a3;
-- (void)_sendOneURLRequest:(id)a3 checkServerSideConfigVersion:(BOOL)a4 retryCount:(unint64_t)a5 completionBlock:(id)a6;
-- (void)_setClientOrgKeyForRequestBody:(id)a3 clientOrgKey:(id)a4;
-- (void)acceptInvitationWithToken:(id)a3 completionBlock:(id)a4;
-- (void)addComment:(id)a3 toAssetCollection:(id)a4 inAlbum:(id)a5 albumURLString:(id)a6 completionBlock:(id)a7;
-- (void)addSharingRelationships:(id)a3 toAlbum:(id)a4 completionBlock:(id)a5;
-- (void)albumSummaryAlbum:(id)a3 albumURLString:(id)a4 resetSync:(BOOL)a5 completionBlock:(id)a6;
-- (void)createAlbum:(id)a3 completionBlock:(id)a4;
-- (void)deleteAlbum:(id)a3 completionBlock:(id)a4;
-- (void)deleteAssetCollections:(id)a3 inAlbum:(id)a4 completionBlock:(id)a5;
-- (void)deleteComment:(id)a3 fromAssetCollection:(id)a4 inAlbum:(id)a5 albumURLString:(id)a6 completionBlock:(id)a7;
-- (void)getAlbumSyncedStateForAlbum:(id)a3 assetCollectionStateBlock:(id)a4 completionBlock:(id)a5;
-- (void)getAlbumURLForAlbumWithGUID:(id)a3 completionBlock:(id)a4;
-- (void)getAssetCollections:(id)a3 inAlbum:(id)a4 albumURLString:(id)a5 completionBlock:(id)a6;
-- (void)getChangesRootCtag:(id)a3 migrationCtag:(id)a4 completionBlock:(id)a5;
-- (void)getCommentChanges:(id)a3 inAlbumWithGUID:(id)a4 withClientOrgKey:(id)a5 albumURLString:(id)a6 completionBlock:(id)a7;
-- (void)getServerSideConfigCompletionBlock:(id)a3;
-- (void)getSharingInfoForAlbum:(id)a3 albumURLString:(id)a4 completionBlock:(id)a5;
-- (void)getTokensForAssets:(id)a3 inAlbum:(id)a4 albumURLString:(id)a5 completionBlock:(id)a6;
-- (void)getUploadTokens:(id)a3 forAssetCollectionWithGUID:(id)a4 inAlbumWithGUID:(id)a5 albumURLString:(id)a6 completionBlock:(id)a7;
-- (void)getVideoURL:(id)a3 forAssetCollectionWithGUID:(id)a4 inAlbumWithGUID:(id)a5 albumURLString:(id)a6 withClientOrgKey:(id)a7 completionBlock:(id)a8;
-- (void)markAsSpamInvitationForAlbum:(id)a3 completionBlock:(id)a4;
-- (void)markAsSpamInvitationForToken:(id)a3 completionBlock:(id)a4;
-- (void)putAssetCollections:(id)a3 intoAlbum:(id)a4 albumURLString:(id)a5 completionBlock:(id)a6;
-- (void)removeSharingRelationships:(id)a3 fromAlbum:(id)a4 completionBlock:(id)a5;
-- (void)sendURLRequest:(id)a3 method:(id)a4 bodyObj:(id)a5 checkServerSideConfigVersion:(BOOL)a6 completionBlock:(id)a7;
-- (void)sendUploadCompleteSuccessfulAssetCollections:(id)a3 failedAssetCollections:(id)a4 album:(id)a5 completionBlock:(id)a6;
-- (void)setAlbumSyncedState:(id)a3 forAlbum:(id)a4 albumStateCtag:(id)a5 completionBlock:(id)a6;
-- (void)setAssetCollectionSyncedState:(id)a3 forAssetCollection:(id)a4 inAlbum:(id)a5 assetCollectionStateCtag:(id)a6 completionBlock:(id)a7;
-- (void)setMultipleContributorsEnabled:(BOOL)a3 forAlbum:(id)a4 completionBlock:(id)a5;
-- (void)setPublicAccessEnabled:(BOOL)a3 forAlbum:(id)a4 completionBlock:(id)a5;
-- (void)shutDownCompletionBlock:(id)a3;
-- (void)stopCompletionBlock:(id)a3;
-- (void)subscribeToAlbum:(id)a3 completionBlock:(id)a4;
-- (void)unsubscribeFromAlbum:(id)a3 completionBlock:(id)a4;
-- (void)updateAlbum:(id)a3 albumURLString:(id)a4 completionBlock:(id)a5;
-- (void)validateInvitationForAlbum:(id)a3 completionBlock:(id)a4;
+- (void)_fetchClientOrgKeyAndPersistLocallyForResponseDict:(id)dict isOwned:(BOOL)owned completionHandler:(id)handler;
+- (void)_prepareHeadersForRequest:(id)request;
+- (void)_sendOneURLRequest:(id)request checkServerSideConfigVersion:(BOOL)version retryCount:(unint64_t)count completionBlock:(id)block;
+- (void)_setClientOrgKeyForRequestBody:(id)body clientOrgKey:(id)key;
+- (void)acceptInvitationWithToken:(id)token completionBlock:(id)block;
+- (void)addComment:(id)comment toAssetCollection:(id)collection inAlbum:(id)album albumURLString:(id)string completionBlock:(id)block;
+- (void)addSharingRelationships:(id)relationships toAlbum:(id)album completionBlock:(id)block;
+- (void)albumSummaryAlbum:(id)album albumURLString:(id)string resetSync:(BOOL)sync completionBlock:(id)block;
+- (void)createAlbum:(id)album completionBlock:(id)block;
+- (void)deleteAlbum:(id)album completionBlock:(id)block;
+- (void)deleteAssetCollections:(id)collections inAlbum:(id)album completionBlock:(id)block;
+- (void)deleteComment:(id)comment fromAssetCollection:(id)collection inAlbum:(id)album albumURLString:(id)string completionBlock:(id)block;
+- (void)getAlbumSyncedStateForAlbum:(id)album assetCollectionStateBlock:(id)block completionBlock:(id)completionBlock;
+- (void)getAlbumURLForAlbumWithGUID:(id)d completionBlock:(id)block;
+- (void)getAssetCollections:(id)collections inAlbum:(id)album albumURLString:(id)string completionBlock:(id)block;
+- (void)getChangesRootCtag:(id)ctag migrationCtag:(id)migrationCtag completionBlock:(id)block;
+- (void)getCommentChanges:(id)changes inAlbumWithGUID:(id)d withClientOrgKey:(id)key albumURLString:(id)string completionBlock:(id)block;
+- (void)getServerSideConfigCompletionBlock:(id)block;
+- (void)getSharingInfoForAlbum:(id)album albumURLString:(id)string completionBlock:(id)block;
+- (void)getTokensForAssets:(id)assets inAlbum:(id)album albumURLString:(id)string completionBlock:(id)block;
+- (void)getUploadTokens:(id)tokens forAssetCollectionWithGUID:(id)d inAlbumWithGUID:(id)iD albumURLString:(id)string completionBlock:(id)block;
+- (void)getVideoURL:(id)l forAssetCollectionWithGUID:(id)d inAlbumWithGUID:(id)iD albumURLString:(id)string withClientOrgKey:(id)key completionBlock:(id)block;
+- (void)markAsSpamInvitationForAlbum:(id)album completionBlock:(id)block;
+- (void)markAsSpamInvitationForToken:(id)token completionBlock:(id)block;
+- (void)putAssetCollections:(id)collections intoAlbum:(id)album albumURLString:(id)string completionBlock:(id)block;
+- (void)removeSharingRelationships:(id)relationships fromAlbum:(id)album completionBlock:(id)block;
+- (void)sendURLRequest:(id)request method:(id)method bodyObj:(id)obj checkServerSideConfigVersion:(BOOL)version completionBlock:(id)block;
+- (void)sendUploadCompleteSuccessfulAssetCollections:(id)collections failedAssetCollections:(id)assetCollections album:(id)album completionBlock:(id)block;
+- (void)setAlbumSyncedState:(id)state forAlbum:(id)album albumStateCtag:(id)ctag completionBlock:(id)block;
+- (void)setAssetCollectionSyncedState:(id)state forAssetCollection:(id)collection inAlbum:(id)album assetCollectionStateCtag:(id)ctag completionBlock:(id)block;
+- (void)setMultipleContributorsEnabled:(BOOL)enabled forAlbum:(id)album completionBlock:(id)block;
+- (void)setPublicAccessEnabled:(BOOL)enabled forAlbum:(id)album completionBlock:(id)block;
+- (void)shutDownCompletionBlock:(id)block;
+- (void)stopCompletionBlock:(id)block;
+- (void)subscribeToAlbum:(id)album completionBlock:(id)block;
+- (void)unsubscribeFromAlbum:(id)album completionBlock:(id)block;
+- (void)updateAlbum:(id)album albumURLString:(id)string completionBlock:(id)block;
+- (void)validateInvitationForAlbum:(id)album completionBlock:(id)block;
 @end
 
 @implementation MSASProtocol
 
-- (void)_setClientOrgKeyForRequestBody:(id)a3 clientOrgKey:(id)a4
+- (void)_setClientOrgKeyForRequestBody:(id)body clientOrgKey:(id)key
 {
-  v7 = a3;
-  v5 = a4;
+  bodyCopy = body;
+  keyCopy = key;
   v6 = _os_feature_enabled_impl();
-  if (v5 && v6)
+  if (keyCopy && v6)
   {
-    [v7 setObject:v5 forKey:@"clientOrgKey"];
+    [bodyCopy setObject:keyCopy forKey:@"clientOrgKey"];
   }
 }
 
-- (void)_fetchClientOrgKeyAndPersistLocallyForResponseDict:(id)a3 isOwned:(BOOL)a4 completionHandler:(id)a5
+- (void)_fetchClientOrgKeyAndPersistLocallyForResponseDict:(id)dict isOwned:(BOOL)owned completionHandler:(id)handler
 {
-  v20 = a4;
+  ownedCopy = owned;
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 objectForKey:@"dbrMetadataInfo"];
+  dictCopy = dict;
+  handlerCopy = handler;
+  v9 = [dictCopy objectForKey:@"dbrMetadataInfo"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v7 objectForKey:@"dbrMetadataInfo"];
+    v10 = [dictCopy objectForKey:@"dbrMetadataInfo"];
   }
 
   else
@@ -148,8 +148,8 @@
     v21[3] = &unk_278E92510;
     v21[4] = self;
     v22 = v12;
-    v23 = v8;
-    [MSASCloudKitPlugin fetchClientOrgKeyForRecordID:v14 zoneName:v22 fieldName:v16 ownerUserID:v18 isOwned:v20 completionHandler:v21];
+    v23 = handlerCopy;
+    [MSASCloudKitPlugin fetchClientOrgKeyForRecordID:v14 zoneName:v22 fieldName:v16 ownerUserID:v18 isOwned:ownedCopy completionHandler:v21];
   }
 
   else
@@ -157,7 +157,7 @@
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 138544130;
-      v25 = self;
+      selfCopy = self;
       v26 = 2114;
       v27 = v12;
       v28 = 2114;
@@ -167,7 +167,7 @@
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Missing one of zoneName: %{public}@ recordId: %{public}@ fieldName:%{public}@. Account may not be in DBR.", buf, 0x2Au);
     }
 
-    (*(v8 + 2))(v8, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -196,37 +196,37 @@ void __93__MSASProtocol__fetchClientOrgKeyAndPersistLocallyForResponseDict_isOwn
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getAlbumURLForAlbumWithGUID:(id)a3 completionBlock:(id)a4
+- (void)getAlbumURLForAlbumWithGUID:(id)d completionBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   v8 = MEMORY[0x277CBAB50];
-  v9 = [(MSASProtocol *)self _getAlbumURL];
-  v10 = [v8 requestWithURL:v9];
+  _getAlbumURL = [(MSASProtocol *)self _getAlbumURL];
+  v10 = [v8 requestWithURL:_getAlbumURL];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v6;
+    v20 = dCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Retrieving new album URL for album with GUID %{public}@.", buf, 0x16u);
   }
 
-  v11 = [MEMORY[0x277CBEB38] dictionary];
-  v12 = v11;
-  if (v6)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v12 = dictionary;
+  if (dCopy)
   {
-    [v11 setObject:v6 forKey:@"albumguid"];
+    [dictionary setObject:dCopy forKey:@"albumguid"];
   }
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__MSASProtocol_getAlbumURLForAlbumWithGUID_completionBlock___block_invoke;
   v15[3] = &unk_278E92430;
-  v16 = v7;
-  v13 = v7;
+  v16 = blockCopy;
+  v13 = blockCopy;
   [(MSASProtocol *)self sendURLRequest:v10 bodyObj:v12 completionBlock:v15];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -267,18 +267,18 @@ void __60__MSASProtocol_getAlbumURLForAlbumWithGUID_completionBlock___block_invo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getServerSideConfigCompletionBlock:(id)a3
+- (void)getServerSideConfigCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x277CBAB50];
-  v6 = [(MSASProtocol *)self _serverSideConfigURL];
-  v7 = [v5 requestWithURL:v6];
+  _serverSideConfigURL = [(MSASProtocol *)self _serverSideConfigURL];
+  v7 = [v5 requestWithURL:_serverSideConfigURL];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Refreshing server-side configuration.", buf, 0xCu);
   }
 
@@ -286,8 +286,8 @@ void __60__MSASProtocol_getAlbumURLForAlbumWithGUID_completionBlock___block_invo
   v10[1] = 3221225472;
   v10[2] = __51__MSASProtocol_getServerSideConfigCompletionBlock___block_invoke;
   v10[3] = &unk_278E92430;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(MSASProtocol *)self sendURLRequest:v7 method:@"GET" bodyObj:0 checkServerSideConfigVersion:0 completionBlock:v10];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -321,40 +321,40 @@ void __51__MSASProtocol_getServerSideConfigCompletionBlock___block_invoke(uint64
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setAlbumSyncedState:(id)a3 forAlbum:(id)a4 albumStateCtag:(id)a5 completionBlock:(id)a6
+- (void)setAlbumSyncedState:(id)state forAlbum:(id)album albumStateCtag:(id)ctag completionBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MSASProtocol *)self _setAlbumStateURL];
-  v15 = [MEMORY[0x277CBAB50] requestWithURL:v14];
-  v16 = [MEMORY[0x277CBEB38] dictionary];
-  v17 = [v11 GUID];
+  stateCopy = state;
+  albumCopy = album;
+  ctagCopy = ctag;
+  blockCopy = block;
+  _setAlbumStateURL = [(MSASProtocol *)self _setAlbumStateURL];
+  v15 = [MEMORY[0x277CBAB50] requestWithURL:_setAlbumStateURL];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v17)
+  if (gUID)
   {
-    v18 = [v11 GUID];
-    [v16 setObject:v18 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
-  if (v12)
+  if (ctagCopy)
   {
-    [v16 setObject:v12 forKey:@"albumstatectag"];
+    [dictionary setObject:ctagCopy forKey:@"albumstatectag"];
   }
 
-  if (v10)
+  if (stateCopy)
   {
-    [v16 setObject:v10 forKey:@"state"];
+    [dictionary setObject:stateCopy forKey:@"state"];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
-    v26 = v11;
+    v26 = albumCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Setting synced state for album %{public}@", buf, 0x16u);
   }
 
@@ -362,9 +362,9 @@ void __51__MSASProtocol_getServerSideConfigCompletionBlock___block_invoke(uint64
   v21[1] = 3221225472;
   v21[2] = __76__MSASProtocol_setAlbumSyncedState_forAlbum_albumStateCtag_completionBlock___block_invoke;
   v21[3] = &unk_278E92430;
-  v22 = v13;
-  v19 = v13;
-  [(MSASProtocol *)self sendURLRequest:v15 bodyObj:v16 completionBlock:v21];
+  v22 = blockCopy;
+  v19 = blockCopy;
+  [(MSASProtocol *)self sendURLRequest:v15 bodyObj:dictionary completionBlock:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -404,36 +404,36 @@ void __76__MSASProtocol_setAlbumSyncedState_forAlbum_albumStateCtag_completionBl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setAssetCollectionSyncedState:(id)a3 forAssetCollection:(id)a4 inAlbum:(id)a5 assetCollectionStateCtag:(id)a6 completionBlock:(id)a7
+- (void)setAssetCollectionSyncedState:(id)state forAssetCollection:(id)collection inAlbum:(id)album assetCollectionStateCtag:(id)ctag completionBlock:(id)block
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(MSASProtocol *)self _setAssetStateURL];
-  v18 = [MEMORY[0x277CBAB50] requestWithURL:v17];
-  v19 = [MEMORY[0x277CBEB38] dictionary];
-  v20 = [v14 GUID];
+  stateCopy = state;
+  collectionCopy = collection;
+  albumCopy = album;
+  ctagCopy = ctag;
+  blockCopy = block;
+  _setAssetStateURL = [(MSASProtocol *)self _setAssetStateURL];
+  v18 = [MEMORY[0x277CBAB50] requestWithURL:_setAssetStateURL];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v20)
+  if (gUID)
   {
-    v21 = [v14 GUID];
-    [v19 setObject:v21 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
-  v22 = [v13 GUID];
+  gUID3 = [collectionCopy GUID];
 
-  if (v22)
+  if (gUID3)
   {
-    v23 = [v13 GUID];
-    [v19 setObject:v23 forKey:@"assetguid"];
+    gUID4 = [collectionCopy GUID];
+    [dictionary setObject:gUID4 forKey:@"assetguid"];
   }
 
-  if (v15)
+  if (ctagCopy)
   {
-    v24 = v15;
+    v24 = ctagCopy;
   }
 
   else
@@ -441,20 +441,20 @@ void __76__MSASProtocol_setAlbumSyncedState_forAlbum_albumStateCtag_completionBl
     v24 = &stru_2858BC598;
   }
 
-  [v19 setObject:v24 forKey:@"assetstatectag"];
-  if (v12)
+  [dictionary setObject:v24 forKey:@"assetstatectag"];
+  if (stateCopy)
   {
-    [v19 setObject:v12 forKey:@"state"];
+    [dictionary setObject:stateCopy forKey:@"state"];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543874;
-    v30 = self;
+    selfCopy = self;
     v31 = 2114;
-    v32 = v13;
+    v32 = collectionCopy;
     v33 = 2114;
-    v34 = v14;
+    v34 = albumCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Setting synced state for asset collection %{public}@ in album %{public}@", buf, 0x20u);
   }
 
@@ -462,9 +462,9 @@ void __76__MSASProtocol_setAlbumSyncedState_forAlbum_albumStateCtag_completionBl
   v27[1] = 3221225472;
   v27[2] = __114__MSASProtocol_setAssetCollectionSyncedState_forAssetCollection_inAlbum_assetCollectionStateCtag_completionBlock___block_invoke;
   v27[3] = &unk_278E92430;
-  v28 = v16;
-  v25 = v16;
-  [(MSASProtocol *)self sendURLRequest:v18 bodyObj:v19 completionBlock:v27];
+  v28 = blockCopy;
+  v25 = blockCopy;
+  [(MSASProtocol *)self sendURLRequest:v18 bodyObj:dictionary completionBlock:v27];
 
   v26 = *MEMORY[0x277D85DE8];
 }
@@ -485,29 +485,29 @@ void __114__MSASProtocol_setAssetCollectionSyncedState_forAssetCollection_inAlbu
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getAlbumSyncedStateForAlbum:(id)a3 assetCollectionStateBlock:(id)a4 completionBlock:(id)a5
+- (void)getAlbumSyncedStateForAlbum:(id)album assetCollectionStateBlock:(id)block completionBlock:(id)completionBlock
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MSASProtocol *)self _albumStateURL];
-  v12 = [MEMORY[0x277CBAB50] requestWithURL:v11];
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  v14 = [v8 GUID];
+  albumCopy = album;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  _albumStateURL = [(MSASProtocol *)self _albumStateURL];
+  v12 = [MEMORY[0x277CBAB50] requestWithURL:_albumStateURL];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v14)
+  if (gUID)
   {
-    v15 = [v8 GUID];
-    [v13 setObject:v15 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v23 = self;
+    selfCopy = self;
     v24 = 2114;
-    v25 = v8;
+    v25 = albumCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Getting synced state for album %{public}@.", buf, 0x16u);
   }
 
@@ -515,11 +515,11 @@ void __114__MSASProtocol_setAssetCollectionSyncedState_forAssetCollection_inAlbu
   v19[1] = 3221225472;
   v19[2] = __86__MSASProtocol_getAlbumSyncedStateForAlbum_assetCollectionStateBlock_completionBlock___block_invoke;
   v19[3] = &unk_278E924E8;
-  v20 = v9;
-  v21 = v10;
-  v16 = v10;
-  v17 = v9;
-  [(MSASProtocol *)self sendURLRequest:v12 bodyObj:v13 completionBlock:v19];
+  v20 = blockCopy;
+  v21 = completionBlockCopy;
+  v16 = completionBlockCopy;
+  v17 = blockCopy;
+  [(MSASProtocol *)self sendURLRequest:v12 bodyObj:dictionary completionBlock:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -650,17 +650,17 @@ LABEL_30:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getCommentChanges:(id)a3 inAlbumWithGUID:(id)a4 withClientOrgKey:(id)a5 albumURLString:(id)a6 completionBlock:(id)a7
+- (void)getCommentChanges:(id)changes inAlbumWithGUID:(id)d withClientOrgKey:(id)key albumURLString:(id)string completionBlock:(id)block
 {
   v36 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v15)
+  changesCopy = changes;
+  dCopy = d;
+  keyCopy = key;
+  stringCopy = string;
+  blockCopy = block;
+  if (stringCopy)
   {
-    [MEMORY[0x277CBEBC0] URLWithString:v15];
+    [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
   }
 
   else
@@ -671,22 +671,22 @@ LABEL_30:
   v18 = [(MSASProtocol *)self _getCommentsURLWithBaseURL:v17];
 
   v19 = [MEMORY[0x277CBAB50] requestWithURL:v18];
-  v20 = [MEMORY[0x277CBEB38] dictionary];
-  v21 = v20;
-  if (v13)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v21 = dictionary;
+  if (dCopy)
   {
-    [v20 setObject:v13 forKey:@"albumguid"];
+    [dictionary setObject:dCopy forKey:@"albumguid"];
   }
 
-  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v21 clientOrgKey:v14];
-  v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v12, "count")}];
+  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v21 clientOrgKey:keyCopy];
+  v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(changesCopy, "count")}];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __98__MSASProtocol_getCommentChanges_inAlbumWithGUID_withClientOrgKey_albumURLString_completionBlock___block_invoke;
   v28[3] = &unk_278E92328;
   v23 = v22;
   v29 = v23;
-  [v12 enumerateKeysAndObjectsUsingBlock:v28];
+  [changesCopy enumerateKeysAndObjectsUsingBlock:v28];
   if ([v23 count])
   {
     [v21 setObject:v23 forKey:@"assets"];
@@ -695,11 +695,11 @@ LABEL_30:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543874;
-    v31 = self;
+    selfCopy = self;
     v32 = 2114;
-    v33 = v12;
+    v33 = changesCopy;
     v34 = 2114;
-    v35 = v13;
+    v35 = dCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Retrieving comments for asset collections %{public}@ in album %{public}@", buf, 0x20u);
   }
 
@@ -708,8 +708,8 @@ LABEL_30:
   v26[2] = __98__MSASProtocol_getCommentChanges_inAlbumWithGUID_withClientOrgKey_albumURLString_completionBlock___block_invoke_592;
   v26[3] = &unk_278E924C0;
   v26[4] = self;
-  v27 = v16;
-  v24 = v16;
+  v27 = blockCopy;
+  v24 = blockCopy;
   [(MSASProtocol *)self sendURLRequest:v19 bodyObj:v21 completionBlock:v26];
 
   v25 = *MEMORY[0x277D85DE8];
@@ -991,38 +991,38 @@ LABEL_60:
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (void)validateInvitationForAlbum:(id)a3 completionBlock:(id)a4
+- (void)validateInvitationForAlbum:(id)album completionBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  albumCopy = album;
+  blockCopy = block;
   v8 = MEMORY[0x277CBAB50];
-  v9 = [(MSASProtocol *)self _validateInvitationURL];
-  v10 = [v8 requestWithURL:v9];
+  _validateInvitationURL = [(MSASProtocol *)self _validateInvitationURL];
+  v10 = [v8 requestWithURL:_validateInvitationURL];
 
-  v11 = [MEMORY[0x277CBEB38] dictionary];
-  v12 = [v6 metadataValueForKey:@"phoneInvitationToken"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v12 = [albumCopy metadataValueForKey:@"phoneInvitationToken"];
   if (v12)
   {
-    [v11 setObject:v12 forKey:@"invitationtoken"];
+    [dictionary setObject:v12 forKey:@"invitationtoken"];
   }
 
-  v13 = [v6 metadataValueForKey:@"name"];
+  v13 = [albumCopy metadataValueForKey:@"name"];
   if (v13)
   {
-    [v11 setObject:v13 forKey:@"albumname"];
+    [dictionary setObject:v13 forKey:@"albumname"];
   }
 
-  v14 = [v6 metadataValueForKey:@"inviterAddress"];
+  v14 = [albumCopy metadataValueForKey:@"inviterAddress"];
   if (v14)
   {
-    [v11 setObject:v14 forKey:@"idsfromid"];
+    [dictionary setObject:v14 forKey:@"idsfromid"];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543874;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
     v24 = v12;
     v25 = 2112;
@@ -1035,10 +1035,10 @@ LABEL_60:
   v18[2] = __59__MSASProtocol_validateInvitationForAlbum_completionBlock___block_invoke;
   v18[3] = &unk_278E924C0;
   v19 = v12;
-  v20 = v7;
+  v20 = blockCopy;
   v15 = v12;
-  v16 = v7;
-  [(MSASProtocol *)self sendURLRequest:v10 bodyObj:v11 completionBlock:v18];
+  v16 = blockCopy;
+  [(MSASProtocol *)self sendURLRequest:v10 bodyObj:dictionary completionBlock:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -1086,26 +1086,26 @@ void __59__MSASProtocol_validateInvitationForAlbum_completionBlock___block_invok
   }
 }
 
-- (void)acceptInvitationWithToken:(id)a3 completionBlock:(id)a4
+- (void)acceptInvitationWithToken:(id)token completionBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  blockCopy = block;
   v8 = MEMORY[0x277CBAB50];
-  v9 = [(MSASProtocol *)self _subscribeURL];
-  v10 = [v8 requestWithURL:v9];
+  _subscribeURL = [(MSASProtocol *)self _subscribeURL];
+  v10 = [v8 requestWithURL:_subscribeURL];
 
-  v11 = [MEMORY[0x277CBEB38] dictionary];
-  v12 = v11;
-  if (v6)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v12 = dictionary;
+  if (tokenCopy)
   {
-    [v11 setObject:v6 forKey:@"invitationtoken"];
+    [dictionary setObject:tokenCopy forKey:@"invitationtoken"];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Accepting invitation using token.", buf, 0xCu);
   }
 
@@ -1113,30 +1113,30 @@ void __59__MSASProtocol_validateInvitationForAlbum_completionBlock___block_invok
   v15[1] = 3221225472;
   v15[2] = __58__MSASProtocol_acceptInvitationWithToken_completionBlock___block_invoke;
   v15[3] = &unk_278E92430;
-  v16 = v7;
-  v13 = v7;
+  v16 = blockCopy;
+  v13 = blockCopy;
   [(MSASProtocol *)self sendURLRequest:v10 bodyObj:v12 completionBlock:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markAsSpamInvitationForToken:(id)a3 completionBlock:(id)a4
+- (void)markAsSpamInvitationForToken:(id)token completionBlock:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  blockCopy = block;
   v8 = MEMORY[0x277CBAB50];
-  v9 = [(MSASProtocol *)self _reportSpamURL];
-  v10 = [v8 requestWithURL:v9];
+  _reportSpamURL = [(MSASProtocol *)self _reportSpamURL];
+  v10 = [v8 requestWithURL:_reportSpamURL];
 
-  v11 = [MEMORY[0x277CBEB38] dictionary];
-  [v11 setObject:v6 forKeyedSubscript:@"invitationtoken"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:tokenCopy forKeyedSubscript:@"invitationtoken"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
-    v19 = v6;
+    v19 = tokenCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Marking as spam invitation with token %{public}@", buf, 0x16u);
   }
 
@@ -1144,32 +1144,32 @@ void __59__MSASProtocol_validateInvitationForAlbum_completionBlock___block_invok
   v14[1] = 3221225472;
   v14[2] = __61__MSASProtocol_markAsSpamInvitationForToken_completionBlock___block_invoke;
   v14[3] = &unk_278E92430;
-  v15 = v7;
-  v12 = v7;
-  [(MSASProtocol *)self sendURLRequest:v10 bodyObj:v11 completionBlock:v14];
+  v15 = blockCopy;
+  v12 = blockCopy;
+  [(MSASProtocol *)self sendURLRequest:v10 bodyObj:dictionary completionBlock:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markAsSpamInvitationForAlbum:(id)a3 completionBlock:(id)a4
+- (void)markAsSpamInvitationForAlbum:(id)album completionBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  albumCopy = album;
+  blockCopy = block;
   v8 = MEMORY[0x277CBAB50];
-  v9 = [(MSASProtocol *)self _reportSpamURL];
-  v10 = [v8 requestWithURL:v9];
+  _reportSpamURL = [(MSASProtocol *)self _reportSpamURL];
+  v10 = [v8 requestWithURL:_reportSpamURL];
 
-  v11 = [MEMORY[0x277CBEB38] dictionary];
-  v12 = [v6 GUID];
-  [v11 setObject:v12 forKeyedSubscript:@"albumguid"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
+  [dictionary setObject:gUID forKeyedSubscript:@"albumguid"];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v6;
+    v20 = albumCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Marking as spam invitation for album %{public}@", buf, 0x16u);
   }
 
@@ -1177,48 +1177,48 @@ void __59__MSASProtocol_validateInvitationForAlbum_completionBlock___block_invok
   v15[1] = 3221225472;
   v15[2] = __61__MSASProtocol_markAsSpamInvitationForAlbum_completionBlock___block_invoke;
   v15[3] = &unk_278E92430;
-  v16 = v7;
-  v13 = v7;
-  [(MSASProtocol *)self sendURLRequest:v10 bodyObj:v11 completionBlock:v15];
+  v16 = blockCopy;
+  v13 = blockCopy;
+  [(MSASProtocol *)self sendURLRequest:v10 bodyObj:dictionary completionBlock:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unsubscribeFromAlbum:(id)a3 completionBlock:(id)a4
+- (void)unsubscribeFromAlbum:(id)album completionBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  albumCopy = album;
+  blockCopy = block;
   v8 = MEMORY[0x277CBAB50];
-  v9 = [(MSASProtocol *)self _unsubscribeURL];
-  v10 = [v8 requestWithURL:v9];
+  _unsubscribeURL = [(MSASProtocol *)self _unsubscribeURL];
+  v10 = [v8 requestWithURL:_unsubscribeURL];
 
-  v11 = [MEMORY[0x277CBEB38] dictionary];
-  v12 = [v6 GUID];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v12)
+  if (gUID)
   {
-    v13 = [v6 GUID];
-    [v11 setObject:v13 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
-  v14 = [v6 clientOrgKey];
-  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v11 clientOrgKey:v14];
+  clientOrgKey = [albumCopy clientOrgKey];
+  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:dictionary clientOrgKey:clientOrgKey];
 
-  v15 = [v6 ctag];
+  ctag = [albumCopy ctag];
 
-  if (v15)
+  if (ctag)
   {
-    v16 = [v6 ctag];
-    [v11 setObject:v16 forKey:@"albumctag"];
+    ctag2 = [albumCopy ctag];
+    [dictionary setObject:ctag2 forKey:@"albumctag"];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
-    v24 = v6;
+    v24 = albumCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Unsubscribing from album %{public}@", buf, 0x16u);
   }
 
@@ -1226,45 +1226,45 @@ void __59__MSASProtocol_validateInvitationForAlbum_completionBlock___block_invok
   v19[1] = 3221225472;
   v19[2] = __53__MSASProtocol_unsubscribeFromAlbum_completionBlock___block_invoke;
   v19[3] = &unk_278E92430;
-  v20 = v7;
-  v17 = v7;
-  [(MSASProtocol *)self sendURLRequest:v10 bodyObj:v11 completionBlock:v19];
+  v20 = blockCopy;
+  v17 = blockCopy;
+  [(MSASProtocol *)self sendURLRequest:v10 bodyObj:dictionary completionBlock:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeToAlbum:(id)a3 completionBlock:(id)a4
+- (void)subscribeToAlbum:(id)album completionBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  albumCopy = album;
+  blockCopy = block;
   v8 = MEMORY[0x277CBAB50];
-  v9 = [(MSASProtocol *)self _subscribeURL];
-  v10 = [v8 requestWithURL:v9];
+  _subscribeURL = [(MSASProtocol *)self _subscribeURL];
+  v10 = [v8 requestWithURL:_subscribeURL];
 
-  v11 = [MEMORY[0x277CBEB38] dictionary];
-  v12 = [v6 GUID];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v12)
+  if (gUID)
   {
-    v13 = [v6 GUID];
-    [v11 setObject:v13 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
-  v14 = [v6 ctag];
+  ctag = [albumCopy ctag];
 
-  if (v14)
+  if (ctag)
   {
-    v15 = [v6 ctag];
-    [v11 setObject:v15 forKey:@"albumctag"];
+    ctag2 = [albumCopy ctag];
+    [dictionary setObject:ctag2 forKey:@"albumctag"];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v6;
+    v23 = albumCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Subscribing to album %{public}@", buf, 0x16u);
   }
 
@@ -1273,9 +1273,9 @@ void __59__MSASProtocol_validateInvitationForAlbum_completionBlock___block_invok
   v18[2] = __49__MSASProtocol_subscribeToAlbum_completionBlock___block_invoke;
   v18[3] = &unk_278E924C0;
   v18[4] = self;
-  v19 = v7;
-  v16 = v7;
-  [(MSASProtocol *)self sendURLRequest:v10 bodyObj:v11 completionBlock:v18];
+  v19 = blockCopy;
+  v16 = blockCopy;
+  [(MSASProtocol *)self sendURLRequest:v10 bodyObj:dictionary completionBlock:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -1301,16 +1301,16 @@ void __49__MSASProtocol_subscribeToAlbum_completionBlock___block_invoke(uint64_t
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getTokensForAssets:(id)a3 inAlbum:(id)a4 albumURLString:(id)a5 completionBlock:(id)a6
+- (void)getTokensForAssets:(id)assets inAlbum:(id)album albumURLString:(id)string completionBlock:(id)block
 {
   v53 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v33 = a6;
-  if (v12)
+  assetsCopy = assets;
+  albumCopy = album;
+  stringCopy = string;
+  blockCopy = block;
+  if (stringCopy)
   {
-    [MEMORY[0x277CBEBC0] URLWithString:v12];
+    [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
   }
 
   else
@@ -1318,28 +1318,28 @@ void __49__MSASProtocol_subscribeToAlbum_completionBlock___block_invoke(uint64_t
     [(MSASProtocol *)self baseURL];
   }
   v13 = ;
-  v36 = v12;
+  v36 = stringCopy;
   v14 = [(MSASProtocol *)self _getTokensURLWithBaseURL:v13];
 
   v35 = v14;
   v34 = [MEMORY[0x277CBAB50] requestWithURL:v14];
-  v15 = [MEMORY[0x277CBEB38] dictionary];
-  if (v11)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (albumCopy)
   {
-    v16 = [v11 GUID];
-    [v15 setObject:v16 forKey:@"albumguid"];
+    gUID = [albumCopy GUID];
+    [dictionary setObject:gUID forKey:@"albumguid"];
   }
 
-  v17 = [v11 clientOrgKey];
-  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v15 clientOrgKey:v17];
+  clientOrgKey = [albumCopy clientOrgKey];
+  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:dictionary clientOrgKey:clientOrgKey];
 
-  v32 = [v10 mutableCopy];
-  v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+  v32 = [assetsCopy mutableCopy];
+  v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(assetsCopy, "count")}];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v19 = v10;
+  v19 = assetsCopy;
   v20 = [v19 countByEnumeratingWithState:&v42 objects:v52 count:16];
   if (v20)
   {
@@ -1355,12 +1355,12 @@ void __49__MSASProtocol_subscribeToAlbum_completionBlock___block_invoke(uint64_t
         }
 
         v24 = *(*(&v42 + 1) + 8 * i);
-        v25 = [v24 assetCollectionGUID];
+        assetCollectionGUID = [v24 assetCollectionGUID];
 
-        if (v25)
+        if (assetCollectionGUID)
         {
-          v26 = [v24 assetCollectionGUID];
-          [v18 addObject:v26];
+          assetCollectionGUID2 = [v24 assetCollectionGUID];
+          [v18 addObject:assetCollectionGUID2];
         }
       }
 
@@ -1370,16 +1370,16 @@ void __49__MSASProtocol_subscribeToAlbum_completionBlock___block_invoke(uint64_t
     while (v21);
   }
 
-  [v15 setObject:v18 forKey:@"assets"];
+  [dictionary setObject:v18 forKey:@"assets"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v27 = [v19 count];
     *buf = 138543874;
-    v47 = self;
+    selfCopy = self;
     v48 = 2048;
     v49 = v27;
     v50 = 2114;
-    v51 = v11;
+    v51 = albumCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Getting tokens for %ld assets from album %{public}@", buf, 0x20u);
   }
 
@@ -1388,13 +1388,13 @@ void __49__MSASProtocol_subscribeToAlbum_completionBlock___block_invoke(uint64_t
   v37[2] = __74__MSASProtocol_getTokensForAssets_inAlbum_albumURLString_completionBlock___block_invoke;
   v37[3] = &unk_278E92380;
   v38 = v32;
-  v39 = self;
-  v40 = v11;
-  v41 = v33;
-  v28 = v33;
-  v29 = v11;
+  selfCopy2 = self;
+  v40 = albumCopy;
+  v41 = blockCopy;
+  v28 = blockCopy;
+  v29 = albumCopy;
   v30 = v32;
-  [(MSASProtocol *)self sendURLRequest:v34 bodyObj:v15 completionBlock:v37];
+  [(MSASProtocol *)self sendURLRequest:v34 bodyObj:dictionary completionBlock:v37];
 
   v31 = *MEMORY[0x277D85DE8];
 }
@@ -1632,17 +1632,17 @@ void __41__MSASProtocol__couldNotReauthorizeError__block_invoke()
   _couldNotReauthorizeError_error = v1;
 }
 
-- (void)getAssetCollections:(id)a3 inAlbum:(id)a4 albumURLString:(id)a5 completionBlock:(id)a6
+- (void)getAssetCollections:(id)collections inAlbum:(id)album albumURLString:(id)string completionBlock:(id)block
 {
   v56 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v35 = a6;
-  v38 = v12;
-  if (v12)
+  collectionsCopy = collections;
+  albumCopy = album;
+  stringCopy = string;
+  blockCopy = block;
+  v38 = stringCopy;
+  if (stringCopy)
   {
-    [MEMORY[0x277CBEBC0] URLWithString:v12];
+    [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
   }
 
   else
@@ -1654,24 +1654,24 @@ void __41__MSASProtocol__couldNotReauthorizeError__block_invoke()
 
   v37 = v14;
   v36 = [MEMORY[0x277CBAB50] requestWithURL:v14];
-  v15 = [MEMORY[0x277CBEB38] dictionary];
-  v16 = [v11 GUID];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v16)
+  if (gUID)
   {
-    v17 = [v11 GUID];
-    [v15 setObject:v17 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
-  v18 = [v11 clientOrgKey];
-  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v15 clientOrgKey:v18];
+  clientOrgKey = [albumCopy clientOrgKey];
+  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:dictionary clientOrgKey:clientOrgKey];
 
-  v19 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v10, "count")}];
+  v19 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(collectionsCopy, "count")}];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v20 = v10;
+  v20 = collectionsCopy;
   v21 = [v20 countByEnumeratingWithState:&v45 objects:v55 count:16];
   if (v21)
   {
@@ -1687,12 +1687,12 @@ void __41__MSASProtocol__couldNotReauthorizeError__block_invoke()
         }
 
         v25 = *(*(&v45 + 1) + 8 * i);
-        v26 = [v25 GUID];
+        gUID3 = [v25 GUID];
 
-        if (v26)
+        if (gUID3)
         {
-          v27 = [v25 GUID];
-          [v19 setObject:v25 forKey:v27];
+          gUID4 = [v25 GUID];
+          [v19 setObject:v25 forKey:gUID4];
         }
       }
 
@@ -1702,18 +1702,18 @@ void __41__MSASProtocol__couldNotReauthorizeError__block_invoke()
     while (v22);
   }
 
-  v28 = [v19 allKeys];
-  [v15 setObject:v28 forKey:@"assets"];
+  allKeys = [v19 allKeys];
+  [dictionary setObject:allKeys forKey:@"assets"];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v29 = [v20 count];
     *buf = 138543874;
-    v50 = self;
+    selfCopy = self;
     v51 = 2048;
     v52 = v29;
     v53 = 2114;
-    v54 = v11;
+    v54 = albumCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Requesting metadata for %ld photos in album %{public}@.", buf, 0x20u);
   }
 
@@ -1723,14 +1723,14 @@ void __41__MSASProtocol__couldNotReauthorizeError__block_invoke()
   v39[3] = &unk_278E92480;
   v40 = v20;
   v41 = v19;
-  v42 = self;
-  v43 = v11;
-  v44 = v35;
-  v30 = v35;
-  v31 = v11;
+  selfCopy2 = self;
+  v43 = albumCopy;
+  v44 = blockCopy;
+  v30 = blockCopy;
+  v31 = albumCopy;
   v32 = v19;
   v33 = v20;
-  [(MSASProtocol *)self sendURLRequest:v36 bodyObj:v15 completionBlock:v39];
+  [(MSASProtocol *)self sendURLRequest:v36 bodyObj:dictionary completionBlock:v39];
 
   v34 = *MEMORY[0x277D85DE8];
 }
@@ -2007,15 +2007,15 @@ void __75__MSASProtocol_getAssetCollections_inAlbum_albumURLString_completionBlo
   v59 = *MEMORY[0x277D85DE8];
 }
 
-- (void)albumSummaryAlbum:(id)a3 albumURLString:(id)a4 resetSync:(BOOL)a5 completionBlock:(id)a6
+- (void)albumSummaryAlbum:(id)album albumURLString:(id)string resetSync:(BOOL)sync completionBlock:(id)block
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v11)
+  albumCopy = album;
+  stringCopy = string;
+  blockCopy = block;
+  if (stringCopy)
   {
-    [MEMORY[0x277CBEBC0] URLWithString:v11];
+    [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
   }
 
   else
@@ -2026,48 +2026,48 @@ void __75__MSASProtocol_getAssetCollections_inAlbum_albumURLString_completionBlo
   v14 = [(MSASProtocol *)self _albumSummaryURLWithBaseURL:v13];
 
   v15 = [MEMORY[0x277CBAB50] requestWithURL:v14];
-  if (a5)
+  if (sync)
   {
     v16 = 0;
   }
 
   else
   {
-    if ([v10 useForeignCtag])
+    if ([albumCopy useForeignCtag])
     {
-      [v10 foreignCtag];
+      [albumCopy foreignCtag];
     }
 
     else
     {
-      [v10 ctag];
+      [albumCopy ctag];
     }
     v16 = ;
   }
 
-  v17 = [MEMORY[0x277CBEB38] dictionary];
-  v18 = [v10 GUID];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v18)
+  if (gUID)
   {
-    v19 = [v10 GUID];
-    [v17 setObject:v19 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
   if (v16)
   {
-    [v17 setObject:v16 forKey:@"albumctag"];
+    [dictionary setObject:v16 forKey:@"albumctag"];
   }
 
-  v20 = [v10 clientOrgKey];
-  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v17 clientOrgKey:v20];
+  clientOrgKey = [albumCopy clientOrgKey];
+  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:dictionary clientOrgKey:clientOrgKey];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v31 = self;
+    selfCopy = self;
     v32 = 2114;
-    v33 = v10;
+    v33 = albumCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Requesting summary of changes for album %{public}@.", buf, 0x16u);
   }
 
@@ -2075,14 +2075,14 @@ void __75__MSASProtocol_getAssetCollections_inAlbum_albumURLString_completionBlo
   v25[1] = 3221225472;
   v25[2] = __75__MSASProtocol_albumSummaryAlbum_albumURLString_resetSync_completionBlock___block_invoke;
   v25[3] = &unk_278E92380;
-  v26 = v10;
+  v26 = albumCopy;
   v27 = v16;
-  v28 = self;
-  v29 = v12;
-  v21 = v12;
+  selfCopy2 = self;
+  v29 = blockCopy;
+  v21 = blockCopy;
   v22 = v16;
-  v23 = v10;
-  [(MSASProtocol *)self sendURLRequest:v15 bodyObj:v17 completionBlock:v25];
+  v23 = albumCopy;
+  [(MSASProtocol *)self sendURLRequest:v15 bodyObj:dictionary completionBlock:v25];
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -2427,15 +2427,15 @@ void __75__MSASProtocol_albumSummaryAlbum_albumURLString_resetSync_completionBlo
   [*(a1 + 32) setClientOrgKey:v6];
 }
 
-- (void)getSharingInfoForAlbum:(id)a3 albumURLString:(id)a4 completionBlock:(id)a5
+- (void)getSharingInfoForAlbum:(id)album albumURLString:(id)string completionBlock:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  albumCopy = album;
+  stringCopy = string;
+  blockCopy = block;
+  if (stringCopy)
   {
-    [MEMORY[0x277CBEBC0] URLWithString:v9];
+    [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
   }
 
   else
@@ -2446,21 +2446,21 @@ void __75__MSASProtocol_albumSummaryAlbum_albumURLString_resetSync_completionBlo
   v12 = [(MSASProtocol *)self _sharingInfoURLWithBaseURL:v11];
 
   v13 = [MEMORY[0x277CBAB50] requestWithURL:v12];
-  v14 = [MEMORY[0x277CBEB38] dictionary];
-  v15 = [v8 GUID];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v15)
+  if (gUID)
   {
-    v16 = [v8 GUID];
-    [v14 setObject:v16 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
-    v27 = v8;
+    v27 = albumCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Requesting sharing relationships for album %{public}@", buf, 0x16u);
   }
 
@@ -2468,12 +2468,12 @@ void __75__MSASProtocol_albumSummaryAlbum_albumURLString_resetSync_completionBlo
   v20[1] = 3221225472;
   v20[2] = __70__MSASProtocol_getSharingInfoForAlbum_albumURLString_completionBlock___block_invoke;
   v20[3] = &unk_278E923B8;
-  v21 = v8;
-  v22 = self;
-  v23 = v10;
-  v17 = v10;
-  v18 = v8;
-  [(MSASProtocol *)self sendURLRequest:v13 bodyObj:v14 completionBlock:v20];
+  v21 = albumCopy;
+  selfCopy2 = self;
+  v23 = blockCopy;
+  v17 = blockCopy;
+  v18 = albumCopy;
+  [(MSASProtocol *)self sendURLRequest:v13 bodyObj:dictionary completionBlock:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -2600,35 +2600,35 @@ void __70__MSASProtocol_getSharingInfoForAlbum_albumURLString_completionBlock___
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getChangesRootCtag:(id)a3 migrationCtag:(id)a4 completionBlock:(id)a5
+- (void)getChangesRootCtag:(id)ctag migrationCtag:(id)migrationCtag completionBlock:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  ctagCopy = ctag;
+  migrationCtagCopy = migrationCtag;
+  blockCopy = block;
   v11 = MEMORY[0x277CBAB50];
-  v12 = [(MSASProtocol *)self _getChangesURL];
-  v13 = [v11 requestWithURL:v12];
+  _getChangesURL = [(MSASProtocol *)self _getChangesURL];
+  v13 = [v11 requestWithURL:_getChangesURL];
 
-  v14 = [MEMORY[0x277CBEB38] dictionary];
-  v15 = v14;
-  if (v8)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v15 = dictionary;
+  if (ctagCopy)
   {
-    [v14 setObject:v8 forKey:@"rootctag"];
+    [dictionary setObject:ctagCopy forKey:@"rootctag"];
   }
 
   v16 = _os_feature_enabled_impl();
-  if (v9 && v16)
+  if (migrationCtagCopy && v16)
   {
-    [v15 setObject:v9 forKey:@"migrationctag"];
+    [v15 setObject:migrationCtagCopy forKey:@"migrationctag"];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
-    v27 = v8;
+    v27 = ctagCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Requesting changes since root ctag %{public}@", buf, 0x16u);
   }
 
@@ -2636,11 +2636,11 @@ void __70__MSASProtocol_getSharingInfoForAlbum_albumURLString_completionBlock___
   v20[1] = 3221225472;
   v20[2] = __65__MSASProtocol_getChangesRootCtag_migrationCtag_completionBlock___block_invoke;
   v20[3] = &unk_278E923B8;
-  v21 = v8;
-  v22 = self;
-  v23 = v10;
-  v17 = v10;
-  v18 = v8;
+  v21 = ctagCopy;
+  selfCopy2 = self;
+  v23 = blockCopy;
+  v17 = blockCopy;
+  v18 = ctagCopy;
   [(MSASProtocol *)self sendURLRequest:v13 bodyObj:v15 completionBlock:v20];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -3145,17 +3145,17 @@ LABEL_115:
   v85 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteComment:(id)a3 fromAssetCollection:(id)a4 inAlbum:(id)a5 albumURLString:(id)a6 completionBlock:(id)a7
+- (void)deleteComment:(id)comment fromAssetCollection:(id)collection inAlbum:(id)album albumURLString:(id)string completionBlock:(id)block
 {
   v40 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v15)
+  commentCopy = comment;
+  collectionCopy = collection;
+  albumCopy = album;
+  stringCopy = string;
+  blockCopy = block;
+  if (stringCopy)
   {
-    [MEMORY[0x277CBEBC0] URLWithString:v15];
+    [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
   }
 
   else
@@ -3167,55 +3167,55 @@ LABEL_115:
 
   v33 = v18;
   v19 = [MEMORY[0x277CBAB50] requestWithURL:v18];
-  v20 = [MEMORY[0x277CBEB38] dictionary];
-  v21 = [v14 GUID];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v21)
+  if (gUID)
   {
-    v22 = [v14 GUID];
-    [v20 setObject:v22 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
-  v23 = [v14 clientOrgKey];
-  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v20 clientOrgKey:v23];
+  clientOrgKey = [albumCopy clientOrgKey];
+  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:dictionary clientOrgKey:clientOrgKey];
 
-  v24 = [v13 GUID];
+  gUID3 = [collectionCopy GUID];
 
-  if (v24)
+  if (gUID3)
   {
-    v25 = [v13 GUID];
-    [v20 setObject:v25 forKey:@"assetguid"];
+    gUID4 = [collectionCopy GUID];
+    [dictionary setObject:gUID4 forKey:@"assetguid"];
   }
 
-  if (([v12 ID] & 0x80000000) != 0)
+  if (([commentCopy ID] & 0x80000000) != 0)
   {
-    v27 = [v12 timestamp];
+    timestamp = [commentCopy timestamp];
 
-    if (!v27)
+    if (!timestamp)
     {
       goto LABEL_13;
     }
 
     v28 = MEMORY[0x277CCACA8];
-    v26 = [v12 timestamp];
-    [v26 timeIntervalSinceReferenceDate];
+    timestamp2 = [commentCopy timestamp];
+    [timestamp2 timeIntervalSinceReferenceDate];
     v30 = [v28 stringWithFormat:@"%f", v29];
-    [v20 setObject:v30 forKey:@"commenttimestamp"];
+    [dictionary setObject:v30 forKey:@"commenttimestamp"];
   }
 
   else
   {
-    v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(v12, "ID")];
-    [v20 setObject:v26 forKey:@"commentposition"];
+    timestamp2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(commentCopy, "ID")];
+    [dictionary setObject:timestamp2 forKey:@"commentposition"];
   }
 
 LABEL_13:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v37 = self;
+    selfCopy = self;
     v38 = 2114;
-    v39 = v12;
+    v39 = commentCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Sending request to delete comment %{public}@", buf, 0x16u);
   }
 
@@ -3223,43 +3223,43 @@ LABEL_13:
   v34[1] = 3221225472;
   v34[2] = __89__MSASProtocol_deleteComment_fromAssetCollection_inAlbum_albumURLString_completionBlock___block_invoke;
   v34[3] = &unk_278E92430;
-  v35 = v16;
-  v31 = v16;
-  [(MSASProtocol *)self sendURLRequest:v19 bodyObj:v20 completionBlock:v34];
+  v35 = blockCopy;
+  v31 = blockCopy;
+  [(MSASProtocol *)self sendURLRequest:v19 bodyObj:dictionary completionBlock:v34];
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAssetCollections:(id)a3 inAlbum:(id)a4 completionBlock:(id)a5
+- (void)deleteAssetCollections:(id)collections inAlbum:(id)album completionBlock:(id)block
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v32 = a5;
-  v10 = [v9 URLString];
-  if (v10)
+  collectionsCopy = collections;
+  albumCopy = album;
+  blockCopy = block;
+  uRLString = [albumCopy URLString];
+  if (uRLString)
   {
     v11 = MEMORY[0x277CBEBC0];
-    v12 = [v9 URLString];
-    v13 = [v11 URLWithString:v12];
+    uRLString2 = [albumCopy URLString];
+    baseURL = [v11 URLWithString:uRLString2];
   }
 
   else
   {
-    v13 = [(MSASProtocol *)self baseURL];
+    baseURL = [(MSASProtocol *)self baseURL];
   }
 
   v14 = MEMORY[0x277CBAB50];
-  v33 = v13;
-  v15 = [(MSASProtocol *)self _deleteAssetsURLWithBaseURL:v13];
+  v33 = baseURL;
+  v15 = [(MSASProtocol *)self _deleteAssetsURLWithBaseURL:baseURL];
   v16 = [v14 requestWithURL:v15];
 
-  v17 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v18 = v8;
+  v18 = collectionsCopy;
   v19 = [v18 countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v19)
   {
@@ -3275,12 +3275,12 @@ LABEL_13:
         }
 
         v23 = *(*(&v36 + 1) + 8 * i);
-        v24 = [v23 GUID];
+        gUID = [v23 GUID];
 
-        if (v24)
+        if (gUID)
         {
-          v25 = [v23 GUID];
-          [v17 addObject:v25];
+          gUID2 = [v23 GUID];
+          [array addObject:gUID2];
         }
       }
 
@@ -3290,21 +3290,21 @@ LABEL_13:
     while (v20);
   }
 
-  v26 = [MEMORY[0x277CBEB38] dictionary];
-  [v26 setObject:v17 forKey:@"assets"];
-  v27 = [v9 GUID];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:array forKey:@"assets"];
+  gUID3 = [albumCopy GUID];
 
-  if (v27)
+  if (gUID3)
   {
-    v28 = [v9 GUID];
-    [v26 setObject:v28 forKey:@"albumguid"];
+    gUID4 = [albumCopy GUID];
+    [dictionary setObject:gUID4 forKey:@"albumguid"];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v29 = [v17 count];
+    v29 = [array count];
     *buf = 138543618;
-    v41 = self;
+    selfCopy = self;
     v42 = 2048;
     v43 = v29;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Sending request to delete %ld photos.", buf, 0x16u);
@@ -3314,58 +3314,58 @@ LABEL_13:
   v34[1] = 3221225472;
   v34[2] = __63__MSASProtocol_deleteAssetCollections_inAlbum_completionBlock___block_invoke;
   v34[3] = &unk_278E92430;
-  v35 = v32;
-  v30 = v32;
-  [(MSASProtocol *)self sendURLRequest:v16 bodyObj:v26 completionBlock:v34];
+  v35 = blockCopy;
+  v30 = blockCopy;
+  [(MSASProtocol *)self sendURLRequest:v16 bodyObj:dictionary completionBlock:v34];
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAlbum:(id)a3 completionBlock:(id)a4
+- (void)deleteAlbum:(id)album completionBlock:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 URLString];
-  if (v8)
+  albumCopy = album;
+  blockCopy = block;
+  uRLString = [albumCopy URLString];
+  if (uRLString)
   {
     v9 = MEMORY[0x277CBEBC0];
-    v10 = [v6 URLString];
-    v11 = [v9 URLWithString:v10];
+    uRLString2 = [albumCopy URLString];
+    baseURL = [v9 URLWithString:uRLString2];
   }
 
   else
   {
-    v11 = [(MSASProtocol *)self baseURL];
+    baseURL = [(MSASProtocol *)self baseURL];
   }
 
   v12 = MEMORY[0x277CBAB50];
-  v13 = [(MSASProtocol *)self _deleteURLWithBaseURL:v11];
+  v13 = [(MSASProtocol *)self _deleteURLWithBaseURL:baseURL];
   v14 = [v12 requestWithURL:v13];
 
-  v15 = [MEMORY[0x277CBEB38] dictionary];
-  v16 = [v6 GUID];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v16)
+  if (gUID)
   {
-    v17 = [v6 GUID];
-    [v15 setObject:v17 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
-  v18 = [v6 ctag];
+  ctag = [albumCopy ctag];
 
-  if (v18)
+  if (ctag)
   {
-    v19 = [v6 ctag];
-    [v15 setObject:v19 forKey:@"albumctag"];
+    ctag2 = [albumCopy ctag];
+    [dictionary setObject:ctag2 forKey:@"albumctag"];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
-    v27 = v6;
+    v27 = albumCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Sending request to delete album %{public}@", buf, 0x16u);
   }
 
@@ -3373,48 +3373,48 @@ LABEL_13:
   v22[1] = 3221225472;
   v22[2] = __44__MSASProtocol_deleteAlbum_completionBlock___block_invoke;
   v22[3] = &unk_278E92430;
-  v23 = v7;
-  v20 = v7;
-  [(MSASProtocol *)self sendURLRequest:v14 bodyObj:v15 completionBlock:v22];
+  v23 = blockCopy;
+  v20 = blockCopy;
+  [(MSASProtocol *)self sendURLRequest:v14 bodyObj:dictionary completionBlock:v22];
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMultipleContributorsEnabled:(BOOL)a3 forAlbum:(id)a4 completionBlock:(id)a5
+- (void)setMultipleContributorsEnabled:(BOOL)enabled forAlbum:(id)album completionBlock:(id)block
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 URLString];
-  if (v10)
+  enabledCopy = enabled;
+  albumCopy = album;
+  blockCopy = block;
+  uRLString = [albumCopy URLString];
+  if (uRLString)
   {
     v11 = MEMORY[0x277CBEBC0];
-    v12 = [v8 URLString];
-    v13 = [v11 URLWithString:v12];
+    uRLString2 = [albumCopy URLString];
+    baseURL = [v11 URLWithString:uRLString2];
   }
 
   else
   {
-    v13 = [(MSASProtocol *)self baseURL];
+    baseURL = [(MSASProtocol *)self baseURL];
   }
 
   v14 = MEMORY[0x277CBAB50];
-  v15 = [(MSASProtocol *)self _enableMultipleContributorsURLWithBaseURL:v13];
+  v15 = [(MSASProtocol *)self _enableMultipleContributorsURLWithBaseURL:baseURL];
   v16 = [v14 requestWithURL:v15];
 
-  v17 = [MEMORY[0x277CBEB38] dictionary];
-  v18 = [v8 GUID];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v18)
+  if (gUID)
   {
-    v19 = [v8 GUID];
-    [v17 setObject:v19 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
-  v20 = [v8 clientOrgKey];
-  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v17 clientOrgKey:v20];
+  clientOrgKey = [albumCopy clientOrgKey];
+  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:dictionary clientOrgKey:clientOrgKey];
 
-  if (v6)
+  if (enabledCopy)
   {
     v21 = @"1";
   }
@@ -3424,51 +3424,51 @@ LABEL_13:
     v21 = @"0";
   }
 
-  [v17 setObject:v21 forKey:@"allowcontributions"];
+  [dictionary setObject:v21 forKey:@"allowcontributions"];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __72__MSASProtocol_setMultipleContributorsEnabled_forAlbum_completionBlock___block_invoke;
   v23[3] = &unk_278E92430;
-  v24 = v9;
-  v22 = v9;
-  [(MSASProtocol *)self sendURLRequest:v16 bodyObj:v17 completionBlock:v23];
+  v24 = blockCopy;
+  v22 = blockCopy;
+  [(MSASProtocol *)self sendURLRequest:v16 bodyObj:dictionary completionBlock:v23];
 }
 
-- (void)setPublicAccessEnabled:(BOOL)a3 forAlbum:(id)a4 completionBlock:(id)a5
+- (void)setPublicAccessEnabled:(BOOL)enabled forAlbum:(id)album completionBlock:(id)block
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 URLString];
-  if (v10)
+  enabledCopy = enabled;
+  albumCopy = album;
+  blockCopy = block;
+  uRLString = [albumCopy URLString];
+  if (uRLString)
   {
     v11 = MEMORY[0x277CBEBC0];
-    v12 = [v8 URLString];
-    v13 = [v11 URLWithString:v12];
+    uRLString2 = [albumCopy URLString];
+    baseURL = [v11 URLWithString:uRLString2];
   }
 
   else
   {
-    v13 = [(MSASProtocol *)self baseURL];
+    baseURL = [(MSASProtocol *)self baseURL];
   }
 
   v14 = MEMORY[0x277CBAB50];
-  v15 = [(MSASProtocol *)self _enablePublicAccessURLWithBaseURL:v13];
+  v15 = [(MSASProtocol *)self _enablePublicAccessURLWithBaseURL:baseURL];
   v16 = [v14 requestWithURL:v15];
 
-  v17 = [MEMORY[0x277CBEB38] dictionary];
-  v18 = [v8 GUID];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v18)
+  if (gUID)
   {
-    v19 = [v8 GUID];
-    [v17 setObject:v19 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
-  v20 = [v8 clientOrgKey];
-  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v17 clientOrgKey:v20];
+  clientOrgKey = [albumCopy clientOrgKey];
+  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:dictionary clientOrgKey:clientOrgKey];
 
-  if (v6)
+  if (enabledCopy)
   {
     v21 = @"1";
   }
@@ -3478,26 +3478,26 @@ LABEL_13:
     v21 = @"0";
   }
 
-  [v17 setObject:v21 forKey:@"ispublic"];
+  [dictionary setObject:v21 forKey:@"ispublic"];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __64__MSASProtocol_setPublicAccessEnabled_forAlbum_completionBlock___block_invoke;
   v23[3] = &unk_278E92430;
-  v24 = v9;
-  v22 = v9;
-  [(MSASProtocol *)self sendURLRequest:v16 bodyObj:v17 completionBlock:v23];
+  v24 = blockCopy;
+  v22 = blockCopy;
+  [(MSASProtocol *)self sendURLRequest:v16 bodyObj:dictionary completionBlock:v23];
 }
 
-- (void)addComment:(id)a3 toAssetCollection:(id)a4 inAlbum:(id)a5 albumURLString:(id)a6 completionBlock:(id)a7
+- (void)addComment:(id)comment toAssetCollection:(id)collection inAlbum:(id)album albumURLString:(id)string completionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v15)
+  commentCopy = comment;
+  collectionCopy = collection;
+  albumCopy = album;
+  stringCopy = string;
+  blockCopy = block;
+  if (stringCopy)
   {
-    [MEMORY[0x277CBEBC0] URLWithString:v15];
+    [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
   }
 
   else
@@ -3510,38 +3510,38 @@ LABEL_13:
   v19 = [(MSASProtocol *)self _addCommentURLWithBaseURL:v17];
   v20 = [v18 requestWithURL:v19];
 
-  v21 = [MEMORY[0x277CBEB38] dictionary];
-  v22 = [v14 GUID];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v22)
+  if (gUID)
   {
-    v23 = [v14 GUID];
-    [v21 setObject:v23 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
-  v24 = [v14 clientOrgKey];
-  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v21 clientOrgKey:v24];
+  clientOrgKey = [albumCopy clientOrgKey];
+  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:dictionary clientOrgKey:clientOrgKey];
 
-  v25 = [v13 GUID];
+  gUID3 = [collectionCopy GUID];
 
-  if (v25)
+  if (gUID3)
   {
-    v26 = [v13 GUID];
-    [v21 setObject:v26 forKey:@"assetguid"];
+    gUID4 = [collectionCopy GUID];
+    [dictionary setObject:gUID4 forKey:@"assetguid"];
   }
 
-  v27 = [v12 timestamp];
+  timestamp = [commentCopy timestamp];
 
-  if (v27)
+  if (timestamp)
   {
     v28 = MEMORY[0x277CCACA8];
-    v29 = [v12 timestamp];
-    [v29 timeIntervalSinceReferenceDate];
+    timestamp2 = [commentCopy timestamp];
+    [timestamp2 timeIntervalSinceReferenceDate];
     v31 = [v28 stringWithFormat:@"%f", v30];
-    [v21 setObject:v31 forKey:@"commenttimestamp"];
+    [dictionary setObject:v31 forKey:@"commenttimestamp"];
   }
 
-  if ([v12 isBatchComment])
+  if ([commentCopy isBatchComment])
   {
     v32 = @"1";
   }
@@ -3551,21 +3551,21 @@ LABEL_13:
     v32 = @"0";
   }
 
-  [v21 setObject:v32 forKey:@"isbatchcomment"];
-  if ([v12 isLike])
+  [dictionary setObject:v32 forKey:@"isbatchcomment"];
+  if ([commentCopy isLike])
   {
-    [v21 setObject:@"1" forKey:@"commenttype"];
+    [dictionary setObject:@"1" forKey:@"commenttype"];
   }
 
   else
   {
-    [v21 setObject:@"0" forKey:@"commenttype"];
-    v33 = [v12 content];
+    [dictionary setObject:@"0" forKey:@"commenttype"];
+    content = [commentCopy content];
 
-    if (v33)
+    if (content)
     {
-      v34 = [v12 content];
-      [v21 setObject:v34 forKey:@"comment"];
+      content2 = [commentCopy content];
+      [dictionary setObject:content2 forKey:@"comment"];
     }
   }
 
@@ -3574,13 +3574,13 @@ LABEL_13:
   v39[2] = __84__MSASProtocol_addComment_toAssetCollection_inAlbum_albumURLString_completionBlock___block_invoke;
   v39[3] = &unk_278E92380;
   v39[4] = self;
-  v40 = v14;
-  v41 = v13;
-  v42 = v16;
-  v35 = v16;
-  v36 = v13;
-  v37 = v14;
-  [(MSASProtocol *)self sendURLRequest:v20 bodyObj:v21 completionBlock:v39];
+  v40 = albumCopy;
+  v41 = collectionCopy;
+  v42 = blockCopy;
+  v35 = blockCopy;
+  v36 = collectionCopy;
+  v37 = albumCopy;
+  [(MSASProtocol *)self sendURLRequest:v20 bodyObj:dictionary completionBlock:v39];
 }
 
 void __84__MSASProtocol_addComment_toAssetCollection_inAlbum_albumURLString_completionBlock___block_invoke(void *a1, void *a2, void *a3, void *a4)
@@ -3698,42 +3698,42 @@ LABEL_22:
 LABEL_24:
 }
 
-- (void)removeSharingRelationships:(id)a3 fromAlbum:(id)a4 completionBlock:(id)a5
+- (void)removeSharingRelationships:(id)relationships fromAlbum:(id)album completionBlock:(id)block
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v29 = a5;
+  relationshipsCopy = relationships;
+  albumCopy = album;
+  blockCopy = block;
   v10 = MEMORY[0x277CBAB50];
-  v11 = [(MSASProtocol *)self _unshareURL];
-  v30 = [v10 requestWithURL:v11];
+  _unshareURL = [(MSASProtocol *)self _unshareURL];
+  v30 = [v10 requestWithURL:_unshareURL];
 
-  v12 = [MEMORY[0x277CBEB38] dictionary];
-  v13 = [v9 GUID];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v13)
+  if (gUID)
   {
-    v14 = [v9 GUID];
-    [v12 setObject:v14 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
-  v15 = [v9 clientOrgKey];
-  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v12 clientOrgKey:v15];
+  clientOrgKey = [albumCopy clientOrgKey];
+  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:dictionary clientOrgKey:clientOrgKey];
 
-  v16 = [v9 ctag];
+  ctag = [albumCopy ctag];
 
-  if (v16)
+  if (ctag)
   {
-    v17 = [v9 ctag];
-    [v12 setObject:v17 forKey:@"albumctag"];
+    ctag2 = [albumCopy ctag];
+    [dictionary setObject:ctag2 forKey:@"albumctag"];
   }
 
-  v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(relationshipsCopy, "count")}];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v19 = v8;
+  v19 = relationshipsCopy;
   v20 = [v19 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v20)
   {
@@ -3749,12 +3749,12 @@ LABEL_24:
         }
 
         v24 = *(*(&v33 + 1) + 8 * i);
-        v25 = [v24 GUID];
+        gUID3 = [v24 GUID];
 
-        if (v25)
+        if (gUID3)
         {
-          v26 = [v24 GUID];
-          [v18 addObject:v26];
+          gUID4 = [v24 GUID];
+          [v18 addObject:gUID4];
         }
       }
 
@@ -3764,59 +3764,59 @@ LABEL_24:
     while (v21);
   }
 
-  [v12 setObject:v18 forKey:@"invitations"];
+  [dictionary setObject:v18 forKey:@"invitations"];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __69__MSASProtocol_removeSharingRelationships_fromAlbum_completionBlock___block_invoke;
   v31[3] = &unk_278E92430;
-  v32 = v29;
-  v27 = v29;
-  [(MSASProtocol *)self sendURLRequest:v30 bodyObj:v12 completionBlock:v31];
+  v32 = blockCopy;
+  v27 = blockCopy;
+  [(MSASProtocol *)self sendURLRequest:v30 bodyObj:dictionary completionBlock:v31];
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSharingRelationships:(id)a3 toAlbum:(id)a4 completionBlock:(id)a5
+- (void)addSharingRelationships:(id)relationships toAlbum:(id)album completionBlock:(id)block
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v37 = a5;
+  relationshipsCopy = relationships;
+  albumCopy = album;
+  blockCopy = block;
   v10 = MEMORY[0x277CBAB50];
-  v11 = [(MSASProtocol *)self _shareURL];
-  v41 = [v10 requestWithURL:v11];
+  _shareURL = [(MSASProtocol *)self _shareURL];
+  v41 = [v10 requestWithURL:_shareURL];
 
   v12 = 0x277CBE000uLL;
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  v14 = [v9 GUID];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v14)
+  if (gUID)
   {
-    v15 = [v9 GUID];
-    [v13 setObject:v15 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
-  v16 = [v9 clientOrgKey];
-  v40 = self;
-  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v13 clientOrgKey:v16];
+  clientOrgKey = [albumCopy clientOrgKey];
+  selfCopy = self;
+  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:dictionary clientOrgKey:clientOrgKey];
 
-  v17 = [v9 ctag];
+  ctag = [albumCopy ctag];
 
-  if (v17)
+  if (ctag)
   {
-    v18 = [v9 ctag];
-    [v13 setObject:v18 forKey:@"albumctag"];
+    ctag2 = [albumCopy ctag];
+    [dictionary setObject:ctag2 forKey:@"albumctag"];
   }
 
-  v38 = v9;
-  v39 = v13;
-  v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
-  v44 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v8, "count")}];
+  v38 = albumCopy;
+  v39 = dictionary;
+  v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(relationshipsCopy, "count")}];
+  v44 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(relationshipsCopy, "count")}];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v8;
+  obj = relationshipsCopy;
   v46 = [obj countByEnumeratingWithState:&v51 objects:v55 count:16];
   if (v46)
   {
@@ -3833,34 +3833,34 @@ LABEL_24:
         }
 
         v21 = *(*(&v51 + 1) + 8 * v20);
-        v22 = [*(v12 + 2872) dictionary];
-        v23 = [v21 GUID];
-        if (v23)
+        dictionary2 = [*(v12 + 2872) dictionary];
+        gUID3 = [v21 GUID];
+        if (gUID3)
         {
-          [v22 setObject:v23 forKey:@"invitationguid"];
-          [v44 addObject:v23];
+          [dictionary2 setObject:gUID3 forKey:@"invitationguid"];
+          [v44 addObject:gUID3];
         }
 
-        v24 = [v21 phones];
-        v25 = [v21 emails];
-        if (v24 && [v24 count])
+        phones = [v21 phones];
+        emails = [v21 emails];
+        if (phones && [phones count])
         {
-          [v22 setObject:v24 forKey:@"phonenumbers"];
+          [dictionary2 setObject:phones forKey:@"phonenumbers"];
         }
 
-        if (v25 && [v25 count])
+        if (emails && [emails count])
         {
-          v26 = [v25 objectAtIndex:0];
-          [v22 setObject:v26 forKey:@"email"];
-          if ([v25 count] >= 2)
+          email = [emails objectAtIndex:0];
+          [dictionary2 setObject:email forKey:@"email"];
+          if ([emails count] >= 2)
           {
-            v27 = [MEMORY[0x277CBEB58] setWithArray:v25];
-            [v27 removeObject:v26];
+            v27 = [MEMORY[0x277CBEB58] setWithArray:emails];
+            [v27 removeObject:email];
             if ([v27 count])
             {
               [v27 allObjects];
               v29 = v28 = v12;
-              [v22 setObject:v29 forKey:@"alternateemails"];
+              [dictionary2 setObject:v29 forKey:@"alternateemails"];
 
               v12 = v28;
               v19 = v42;
@@ -3870,32 +3870,32 @@ LABEL_24:
 
         else
         {
-          v26 = [v21 email];
-          if (v26)
+          email = [v21 email];
+          if (email)
           {
-            [v22 setObject:v26 forKey:@"email"];
+            [dictionary2 setObject:email forKey:@"email"];
           }
         }
 
-        v30 = [v21 firstName];
-        if (v30)
+        firstName = [v21 firstName];
+        if (firstName)
         {
-          [v22 setObject:v30 forKey:@"firstname"];
+          [dictionary2 setObject:firstName forKey:@"firstname"];
         }
 
-        v31 = [v21 lastName];
-        if (v31)
+        lastName = [v21 lastName];
+        if (lastName)
         {
-          [v22 setObject:v31 forKey:@"lastname"];
+          [dictionary2 setObject:lastName forKey:@"lastname"];
         }
 
-        v32 = [v21 fullName];
-        if (v32)
+        fullName = [v21 fullName];
+        if (fullName)
         {
-          [v22 setObject:v32 forKey:@"fullname"];
+          [dictionary2 setObject:fullName forKey:@"fullname"];
         }
 
-        [v19 addObject:v22];
+        [v19 addObject:dictionary2];
 
         ++v20;
       }
@@ -3912,14 +3912,14 @@ LABEL_24:
   v47[1] = 3221225472;
   v47[2] = __64__MSASProtocol_addSharingRelationships_toAlbum_completionBlock___block_invoke;
   v47[3] = &unk_278E92380;
-  v47[4] = v40;
+  v47[4] = selfCopy;
   v48 = v38;
   v49 = v44;
-  v50 = v37;
-  v33 = v37;
+  v50 = blockCopy;
+  v33 = blockCopy;
   v34 = v44;
   v35 = v38;
-  [(MSASProtocol *)v40 sendURLRequest:v41 bodyObj:v39 completionBlock:v47];
+  [(MSASProtocol *)selfCopy sendURLRequest:v41 bodyObj:v39 completionBlock:v47];
 
   v36 = *MEMORY[0x277D85DE8];
 }
@@ -4179,40 +4179,40 @@ LABEL_33:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendUploadCompleteSuccessfulAssetCollections:(id)a3 failedAssetCollections:(id)a4 album:(id)a5 completionBlock:(id)a6
+- (void)sendUploadCompleteSuccessfulAssetCollections:(id)collections failedAssetCollections:(id)assetCollections album:(id)album completionBlock:(id)block
 {
   v96 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v57 = a4;
-  v11 = a5;
-  v59 = a6;
-  v12 = [v11 URLString];
-  if (v12)
+  collectionsCopy = collections;
+  assetCollectionsCopy = assetCollections;
+  albumCopy = album;
+  blockCopy = block;
+  uRLString = [albumCopy URLString];
+  if (uRLString)
   {
     v13 = MEMORY[0x277CBEBC0];
-    v14 = [v11 URLString];
-    v15 = [v13 URLWithString:v14];
+    uRLString2 = [albumCopy URLString];
+    baseURL = [v13 URLWithString:uRLString2];
   }
 
   else
   {
-    v15 = [(MSASProtocol *)self baseURL];
+    baseURL = [(MSASProtocol *)self baseURL];
   }
 
-  v61 = v11;
+  v61 = albumCopy;
 
   v16 = MEMORY[0x277CBAB50];
-  v60 = v15;
-  v17 = [(MSASProtocol *)self _uploadCompleteURLWithBaseURL:v15];
+  v60 = baseURL;
+  v17 = [(MSASProtocol *)self _uploadCompleteURLWithBaseURL:baseURL];
   v58 = [v16 requestWithURL:v17];
 
-  v64 = [MEMORY[0x277CBEB18] array];
-  v70 = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  obj = v10;
+  obj = collectionsCopy;
   v65 = [obj countByEnumeratingWithState:&v83 objects:v95 count:16];
   if (v65)
   {
@@ -4227,38 +4227,38 @@ LABEL_33:
         }
 
         v19 = *(*(&v83 + 1) + 8 * i);
-        v20 = [v19 metadata];
-        v21 = [v20 objectForKey:@"pendingUploadGUID"];
+        metadata = [v19 metadata];
+        v21 = [metadata objectForKey:@"pendingUploadGUID"];
 
         if (v21)
         {
-          [v70 setObject:v19 forKey:v21];
-          v22 = [MEMORY[0x277CBEB38] dictionary];
-          [v22 setObject:v21 forKey:@"pendinguploadid"];
-          [v22 setObject:@"1" forKey:@"promote"];
+          [dictionary setObject:v19 forKey:v21];
+          dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary2 setObject:v21 forKey:@"pendinguploadid"];
+          [dictionary2 setObject:@"1" forKey:@"promote"];
           v23 = MEMORY[0x277CBEB18];
-          v24 = [v19 assets];
-          v25 = [v23 arrayWithCapacity:{objc_msgSend(v24, "count")}];
+          assets = [v19 assets];
+          v25 = [v23 arrayWithCapacity:{objc_msgSend(assets, "count")}];
 
           if ([v19 isVideo])
           {
-            [v22 setObject:@"video" forKey:@"mediaAssetType"];
+            [dictionary2 setObject:@"video" forKey:@"mediaAssetType"];
           }
 
           v67 = v21;
           v68 = i;
           if ([v19 isPhotoIris])
           {
-            [v22 setObject:@"videoCompl" forKey:@"mediaAssetType"];
+            [dictionary2 setObject:@"videoCompl" forKey:@"mediaAssetType"];
           }
 
-          v66 = v22;
+          v66 = dictionary2;
           v81 = 0u;
           v82 = 0u;
           v80 = 0u;
           v79 = 0u;
-          v26 = [v19 assets];
-          v27 = [v26 countByEnumeratingWithState:&v79 objects:v94 count:16];
+          assets2 = [v19 assets];
+          v27 = [assets2 countByEnumeratingWithState:&v79 objects:v94 count:16];
           if (v27)
           {
             v28 = v27;
@@ -4269,39 +4269,39 @@ LABEL_33:
               {
                 if (*v80 != v29)
                 {
-                  objc_enumerationMutation(v26);
+                  objc_enumerationMutation(assets2);
                 }
 
                 v31 = *(*(&v79 + 1) + 8 * j);
-                v32 = [v31 MMCSReceipt];
+                mMCSReceipt = [v31 MMCSReceipt];
 
-                if (v32)
+                if (mMCSReceipt)
                 {
-                  v33 = [MEMORY[0x277CBEB38] dictionary];
+                  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
                   v34 = [v31 metadataValueForKey:@"MSAssetMetadataFileSize"];
-                  v35 = [v31 MMCSReceipt];
-                  [v33 setObject:v35 forKey:@"receipt"];
+                  mMCSReceipt2 = [v31 MMCSReceipt];
+                  [dictionary3 setObject:mMCSReceipt2 forKey:@"receipt"];
 
                   if (v34)
                   {
-                    v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", objc_msgSend(v34, "unsignedLongLongValue"), v57];
-                    [v33 setObject:v36 forKey:@"size"];
+                    assetCollectionsCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", objc_msgSend(v34, "unsignedLongLongValue"), assetCollectionsCopy];
+                    [dictionary3 setObject:assetCollectionsCopy forKey:@"size"];
                   }
 
-                  v37 = [v31 MMCSHash];
+                  mMCSHash = [v31 MMCSHash];
 
-                  if (v37)
+                  if (mMCSHash)
                   {
-                    v38 = [v31 MMCSHash];
-                    v39 = [v38 MSHexString];
-                    [v33 setObject:v39 forKey:@"checksum"];
+                    mMCSHash2 = [v31 MMCSHash];
+                    mSHexString = [mMCSHash2 MSHexString];
+                    [dictionary3 setObject:mSHexString forKey:@"checksum"];
                   }
 
-                  [v25 addObject:v33];
+                  [v25 addObject:dictionary3];
                 }
               }
 
-              v28 = [v26 countByEnumeratingWithState:&v79 objects:v94 count:16];
+              v28 = [assets2 countByEnumeratingWithState:&v79 objects:v94 count:16];
             }
 
             while (v28);
@@ -4310,7 +4310,7 @@ LABEL_33:
           if ([v25 count])
           {
             [v66 setObject:v25 forKey:@"files"];
-            [v64 addObject:v66];
+            [array addObject:v66];
           }
 
           v21 = v67;
@@ -4328,7 +4328,7 @@ LABEL_33:
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v69 = v57;
+  v69 = assetCollectionsCopy;
   v40 = [v69 countByEnumeratingWithState:&v75 objects:v93 count:16];
   if (v40)
   {
@@ -4344,16 +4344,16 @@ LABEL_33:
         }
 
         v44 = *(*(&v75 + 1) + 8 * k);
-        v45 = [v44 metadata];
-        v46 = [v45 objectForKey:@"pendingUploadGUID"];
+        metadata2 = [v44 metadata];
+        v46 = [metadata2 objectForKey:@"pendingUploadGUID"];
 
         if (v46)
         {
-          [v70 setObject:v44 forKey:v46];
-          v47 = [MEMORY[0x277CBEB38] dictionary];
-          [v47 setObject:v46 forKey:@"pendinguploadid"];
-          [v47 setObject:@"0" forKey:@"promote"];
-          [v64 addObject:v47];
+          [dictionary setObject:v44 forKey:v46];
+          dictionary4 = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary4 setObject:v46 forKey:@"pendinguploadid"];
+          [dictionary4 setObject:@"0" forKey:@"promote"];
+          [array addObject:dictionary4];
         }
       }
 
@@ -4363,25 +4363,25 @@ LABEL_33:
     while (v41);
   }
 
-  v48 = [MEMORY[0x277CBEB38] dictionary];
-  [v48 setObject:v64 forKey:@"assets"];
-  v49 = [v61 GUID];
+  dictionary5 = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary5 setObject:array forKey:@"assets"];
+  gUID = [v61 GUID];
 
-  if (v49)
+  if (gUID)
   {
-    v50 = [v61 GUID];
-    [v48 setObject:v50 forKey:@"albumguid"];
+    gUID2 = [v61 GUID];
+    [dictionary5 setObject:gUID2 forKey:@"albumguid"];
   }
 
-  v51 = [v61 clientOrgKey];
-  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v48 clientOrgKey:v51];
+  clientOrgKey = [v61 clientOrgKey];
+  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:dictionary5 clientOrgKey:clientOrgKey];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v52 = [obj count];
     v53 = [v69 count];
     *buf = 138543874;
-    v88 = self;
+    selfCopy = self;
     v89 = 2048;
     v90 = v52;
     v91 = 2048;
@@ -4393,12 +4393,12 @@ LABEL_33:
   v71[1] = 3221225472;
   v71[2] = __106__MSASProtocol_sendUploadCompleteSuccessfulAssetCollections_failedAssetCollections_album_completionBlock___block_invoke;
   v71[3] = &unk_278E923B8;
-  v72 = v70;
-  v73 = self;
-  v74 = v59;
-  v54 = v59;
-  v55 = v70;
-  [(MSASProtocol *)self sendURLRequest:v58 bodyObj:v48 completionBlock:v71];
+  v72 = dictionary;
+  selfCopy2 = self;
+  v74 = blockCopy;
+  v54 = blockCopy;
+  v55 = dictionary;
+  [(MSASProtocol *)self sendURLRequest:v58 bodyObj:dictionary5 completionBlock:v71];
 
   v56 = *MEMORY[0x277D85DE8];
 }
@@ -4718,14 +4718,14 @@ LABEL_56:
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)responseDict:(id)a3 containsLimitErrorCode:(id)a4 outMaxAllowed:(id *)a5
+- (BOOL)responseDict:(id)dict containsLimitErrorCode:(id)code outMaxAllowed:(id *)allowed
 {
-  v7 = a3;
-  v8 = a4;
+  dictCopy = dict;
+  codeCopy = code;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v7;
+    v9 = dictCopy;
   }
 
   else
@@ -4744,7 +4744,7 @@ LABEL_56:
     {
       v14 = [v11 objectForKey:@"code"];
 
-      if (!v14 || ![v14 isEqualToString:v8])
+      if (!v14 || ![v14 isEqualToString:codeCopy])
       {
         isKindOfClass = 0;
         goto LABEL_16;
@@ -4756,10 +4756,10 @@ LABEL_56:
       {
         v12 = [v11 objectForKey:@"maxallowed"];
 
-        if (a5 && v12)
+        if (allowed && v12)
         {
           v16 = v12;
-          *a5 = v12;
+          *allowed = v12;
         }
       }
 
@@ -4785,18 +4785,18 @@ LABEL_17:
   return isKindOfClass & 1;
 }
 
-- (void)getVideoURL:(id)a3 forAssetCollectionWithGUID:(id)a4 inAlbumWithGUID:(id)a5 albumURLString:(id)a6 withClientOrgKey:(id)a7 completionBlock:(id)a8
+- (void)getVideoURL:(id)l forAssetCollectionWithGUID:(id)d inAlbumWithGUID:(id)iD albumURLString:(id)string withClientOrgKey:(id)key completionBlock:(id)block
 {
   v41 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v17)
+  lCopy = l;
+  dCopy = d;
+  iDCopy = iD;
+  stringCopy = string;
+  keyCopy = key;
+  blockCopy = block;
+  if (stringCopy)
   {
-    [MEMORY[0x277CBEBC0] URLWithString:v17];
+    [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
   }
 
   else
@@ -4808,22 +4808,22 @@ LABEL_17:
   v22 = [(MSASProtocol *)self _getVideoURLWithBaseURL:v20];
   v23 = [v21 requestWithURL:v22];
 
-  v24 = [MEMORY[0x277CBEB38] dictionary];
-  v32 = v16;
-  [v24 setObject:v16 forKey:@"albumguid"];
-  v31 = v18;
-  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v24 clientOrgKey:v18];
-  [v24 setObject:v15 forKey:@"assetguid"];
-  v25 = [v14 MMCSHash];
-  v26 = [v25 MSHexString];
-  [v24 setObject:v26 forKey:@"checksum"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v32 = iDCopy;
+  [dictionary setObject:iDCopy forKey:@"albumguid"];
+  v31 = keyCopy;
+  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:dictionary clientOrgKey:keyCopy];
+  [dictionary setObject:dCopy forKey:@"assetguid"];
+  mMCSHash = [lCopy MMCSHash];
+  mSHexString = [mMCSHash MSHexString];
+  [dictionary setObject:mSHexString forKey:@"checksum"];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v38 = self;
+    selfCopy = self;
     v39 = 2114;
-    v40 = v14;
+    v40 = lCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Getting video URL for asset %{public}@.", buf, 0x16u);
   }
 
@@ -4832,13 +4832,13 @@ LABEL_17:
   v33[2] = __119__MSASProtocol_getVideoURL_forAssetCollectionWithGUID_inAlbumWithGUID_albumURLString_withClientOrgKey_completionBlock___block_invoke;
   v33[3] = &unk_278E92380;
   v33[4] = self;
-  v34 = v15;
-  v35 = v14;
-  v36 = v19;
-  v27 = v19;
-  v28 = v14;
-  v29 = v15;
-  [(MSASProtocol *)self sendURLRequest:v23 bodyObj:v24 completionBlock:v33];
+  v34 = dCopy;
+  v35 = lCopy;
+  v36 = blockCopy;
+  v27 = blockCopy;
+  v28 = lCopy;
+  v29 = dCopy;
+  [(MSASProtocol *)self sendURLRequest:v23 bodyObj:dictionary completionBlock:v33];
 
   v30 = *MEMORY[0x277D85DE8];
 }
@@ -5151,20 +5151,20 @@ void __119__MSASProtocol_getVideoURL_forAssetCollectionWithGUID_inAlbumWithGUID_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getUploadTokens:(id)a3 forAssetCollectionWithGUID:(id)a4 inAlbumWithGUID:(id)a5 albumURLString:(id)a6 completionBlock:(id)a7
+- (void)getUploadTokens:(id)tokens forAssetCollectionWithGUID:(id)d inAlbumWithGUID:(id)iD albumURLString:(id)string completionBlock:(id)block
 {
   v56 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v39 = a4;
-  v38 = a5;
-  v37 = a6;
-  v36 = a7;
-  v12 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v11, "count")}];
+  tokensCopy = tokens;
+  dCopy = d;
+  iDCopy = iD;
+  stringCopy = string;
+  blockCopy = block;
+  v12 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(tokensCopy, "count")}];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v13 = v11;
+  v13 = tokensCopy;
   v14 = [v13 countByEnumeratingWithState:&v45 objects:v55 count:16];
   if (v14)
   {
@@ -5181,33 +5181,33 @@ void __119__MSASProtocol_getVideoURL_forAssetCollectionWithGUID_inAlbumWithGUID_
         }
 
         v19 = *(*(&v45 + 1) + 8 * i);
-        v20 = [v19 MMCSAccessHeader];
+        mMCSAccessHeader = [v19 MMCSAccessHeader];
 
-        if (v20)
+        if (mMCSAccessHeader)
         {
           if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
             continue;
           }
 
-          v21 = [v19 MMCSAccessHeader];
+          mMCSAccessHeader2 = [v19 MMCSAccessHeader];
           *buf = 138543874;
-          v50 = self;
+          selfCopy5 = self;
           v51 = 2114;
           v52 = v19;
           v53 = 2114;
-          v54 = v21;
+          v54 = mMCSAccessHeader2;
           _os_log_error_impl(&dword_245B99000, v16, OS_LOG_TYPE_ERROR, "%{public}@: Requesting MMCS upload token for asset %{public}@ that already has token %{public}@. Ignoring the request.", buf, 0x20u);
           goto LABEL_11;
         }
 
-        v22 = [v19 MMCSHash];
+        mMCSHash = [v19 MMCSHash];
 
-        if (v22)
+        if (mMCSHash)
         {
-          v21 = [v19 MMCSHash];
-          v23 = [v21 MSHexString];
-          [v12 setObject:v19 forKey:v23];
+          mMCSAccessHeader2 = [v19 MMCSHash];
+          mSHexString = [mMCSAccessHeader2 MSHexString];
+          [v12 setObject:v19 forKey:mSHexString];
 
 LABEL_11:
           continue;
@@ -5216,7 +5216,7 @@ LABEL_11:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v50 = self;
+          selfCopy5 = self;
           v51 = 2114;
           v52 = v19;
           _os_log_error_impl(&dword_245B99000, v16, OS_LOG_TYPE_ERROR, "%{public}@: Empty MMCS hash for asset %{public}@ requesting upload token. Ignoring the request.", buf, 0x16u);
@@ -5231,11 +5231,11 @@ LABEL_11:
 
   if ([v12 count])
   {
-    v24 = v39;
-    v25 = v37;
-    if (v37)
+    v24 = dCopy;
+    v25 = stringCopy;
+    if (stringCopy)
     {
-      [MEMORY[0x277CBEBC0] URLWithString:v37];
+      [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
     }
 
     else
@@ -5243,26 +5243,26 @@ LABEL_11:
       [(MSASProtocol *)self baseURL];
     }
     v28 = ;
-    v27 = v38;
+    v27 = iDCopy;
     v29 = MEMORY[0x277CBAB50];
     v30 = [(MSASProtocol *)self _getUploadTokensURLWithBaseURL:v28];
     v31 = [v29 requestWithURL:v30];
 
-    v32 = [MEMORY[0x277CBEB38] dictionary];
-    [v32 setObject:v38 forKey:@"albumguid"];
-    [v32 setObject:v39 forKey:@"assetguid"];
-    v33 = [v12 allKeys];
-    [v32 setObject:v33 forKey:@"checksums"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:iDCopy forKey:@"albumguid"];
+    [dictionary setObject:dCopy forKey:@"assetguid"];
+    allKeys = [v12 allKeys];
+    [dictionary setObject:allKeys forKey:@"checksums"];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v34 = [v13 count];
       *buf = 138543874;
-      v50 = self;
+      selfCopy5 = self;
       v51 = 2048;
       v52 = v34;
       v53 = 2114;
-      v54 = v39;
+      v54 = dCopy;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Getting upload tokens for %ld assets of asset collection with GUID %{public}@.", buf, 0x20u);
     }
 
@@ -5271,28 +5271,28 @@ LABEL_11:
     v41[2] = __106__MSASProtocol_getUploadTokens_forAssetCollectionWithGUID_inAlbumWithGUID_albumURLString_completionBlock___block_invoke;
     v41[3] = &unk_278E923B8;
     v42 = v12;
-    v43 = self;
-    v26 = v36;
-    v44 = v36;
-    [(MSASProtocol *)self sendURLRequest:v31 bodyObj:v32 completionBlock:v41];
+    selfCopy4 = self;
+    v26 = blockCopy;
+    v44 = blockCopy;
+    [(MSASProtocol *)self sendURLRequest:v31 bodyObj:dictionary completionBlock:v41];
   }
 
   else
   {
-    v24 = v39;
-    v26 = v36;
-    v25 = v37;
+    v24 = dCopy;
+    v26 = blockCopy;
+    v25 = stringCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v50 = self;
+      selfCopy5 = self;
       v51 = 2114;
       v52 = v13;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Assets %{public}@ already have upload tokens. Ignoring the request.", buf, 0x16u);
     }
 
-    (*(v36 + 2))(v36, 0);
-    v27 = v38;
+    (*(blockCopy + 2))(blockCopy, 0);
+    v27 = iDCopy;
   }
 
   v35 = *MEMORY[0x277D85DE8];
@@ -5425,17 +5425,17 @@ LABEL_28:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)putAssetCollections:(id)a3 intoAlbum:(id)a4 albumURLString:(id)a5 completionBlock:(id)a6
+- (void)putAssetCollections:(id)collections intoAlbum:(id)album albumURLString:(id)string completionBlock:(id)block
 {
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v34 = v12;
-  if (v12)
+  collectionsCopy = collections;
+  albumCopy = album;
+  stringCopy = string;
+  blockCopy = block;
+  v34 = stringCopy;
+  if (stringCopy)
   {
-    [MEMORY[0x277CBEBC0] URLWithString:v12];
+    [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
   }
 
   else
@@ -5448,19 +5448,19 @@ LABEL_28:
   v16 = [(MSASProtocol *)self _putAssetsURLWithBaseURL:v14];
   v32 = [v15 requestWithURL:v16];
 
-  v17 = [MEMORY[0x277CBEB38] dictionary];
-  v18 = [v11 GUID];
-  [v17 setObject:v18 forKey:@"albumguid"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
+  [dictionary setObject:gUID forKey:@"albumguid"];
 
-  v19 = [v11 clientOrgKey];
-  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v17 clientOrgKey:v19];
+  clientOrgKey = [albumCopy clientOrgKey];
+  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:dictionary clientOrgKey:clientOrgKey];
 
-  v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+  v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(collectionsCopy, "count")}];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v21 = v10;
+  v21 = collectionsCopy;
   v22 = [v21 countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v22)
   {
@@ -5475,8 +5475,8 @@ LABEL_28:
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v40 + 1) + 8 * i) MSASPProtocolDictionary];
-        [v20 addObject:v26];
+        mSASPProtocolDictionary = [*(*(&v40 + 1) + 8 * i) MSASPProtocolDictionary];
+        [v20 addObject:mSASPProtocolDictionary];
       }
 
       v23 = [v21 countByEnumeratingWithState:&v40 objects:v50 count:16];
@@ -5485,16 +5485,16 @@ LABEL_28:
     while (v23);
   }
 
-  [v17 setObject:v20 forKey:@"assets"];
+  [dictionary setObject:v20 forKey:@"assets"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v27 = [v21 count];
     *buf = 138543874;
-    v45 = self;
+    selfCopy = self;
     v46 = 2048;
     v47 = v27;
     v48 = 2114;
-    v49 = v11;
+    v49 = albumCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Sending metadata for %ld photos into album %{public}@.", buf, 0x20u);
   }
 
@@ -5503,13 +5503,13 @@ LABEL_28:
   v35[2] = __77__MSASProtocol_putAssetCollections_intoAlbum_albumURLString_completionBlock___block_invoke;
   v35[3] = &unk_278E92380;
   v36 = v21;
-  v37 = self;
-  v38 = v11;
-  v39 = v13;
-  v28 = v13;
-  v29 = v11;
+  selfCopy2 = self;
+  v38 = albumCopy;
+  v39 = blockCopy;
+  v28 = blockCopy;
+  v29 = albumCopy;
   v30 = v21;
-  [(MSASProtocol *)self sendURLRequest:v32 bodyObj:v17 completionBlock:v35];
+  [(MSASProtocol *)self sendURLRequest:v32 bodyObj:dictionary completionBlock:v35];
 
   v31 = *MEMORY[0x277D85DE8];
 }
@@ -6039,15 +6039,15 @@ LABEL_106:
   v94 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAlbum:(id)a3 albumURLString:(id)a4 completionBlock:(id)a5
+- (void)updateAlbum:(id)album albumURLString:(id)string completionBlock:(id)block
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  albumCopy = album;
+  stringCopy = string;
+  blockCopy = block;
+  if (stringCopy)
   {
-    [MEMORY[0x277CBEBC0] URLWithString:v9];
+    [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
   }
 
   else
@@ -6059,38 +6059,38 @@ LABEL_106:
   v13 = [(MSASProtocol *)self _updateAlbumURLWithBaseURL:v11];
   v14 = [v12 requestWithURL:v13];
 
-  v15 = [v8 metadata];
-  v16 = [MEMORY[0x277CBEB38] dictionary];
-  v17 = [v8 GUID];
+  metadata = [albumCopy metadata];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v17)
+  if (gUID)
   {
-    v18 = [v8 GUID];
-    [v16 setObject:v18 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
-  v19 = [v8 clientOrgKey];
-  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:v16 clientOrgKey:v19];
+  clientOrgKey = [albumCopy clientOrgKey];
+  [(MSASProtocol *)self _setClientOrgKeyForRequestBody:dictionary clientOrgKey:clientOrgKey];
 
-  v20 = [v8 ctag];
+  ctag = [albumCopy ctag];
 
-  if (v20)
+  if (ctag)
   {
-    v21 = [v8 ctag];
-    [v16 setObject:v21 forKey:@"albumctag"];
+    ctag2 = [albumCopy ctag];
+    [dictionary setObject:ctag2 forKey:@"albumctag"];
   }
 
-  if (v15)
+  if (metadata)
   {
-    [v16 setValue:v15 forKey:@"attributes"];
+    [dictionary setValue:metadata forKey:@"attributes"];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v27 = self;
+    selfCopy = self;
     v28 = 2114;
-    v29 = v8;
+    v29 = albumCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Updating album %{public}@", buf, 0x16u);
   }
 
@@ -6099,9 +6099,9 @@ LABEL_106:
   v24[2] = __59__MSASProtocol_updateAlbum_albumURLString_completionBlock___block_invoke;
   v24[3] = &unk_278E924C0;
   v24[4] = self;
-  v25 = v10;
-  v22 = v10;
-  [(MSASProtocol *)self sendURLRequest:v14 bodyObj:v16 completionBlock:v24];
+  v25 = blockCopy;
+  v22 = blockCopy;
+  [(MSASProtocol *)self sendURLRequest:v14 bodyObj:dictionary completionBlock:v24];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -6126,37 +6126,37 @@ void __59__MSASProtocol_updateAlbum_albumURLString_completionBlock___block_invok
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createAlbum:(id)a3 completionBlock:(id)a4
+- (void)createAlbum:(id)album completionBlock:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  albumCopy = album;
+  blockCopy = block;
   v8 = MEMORY[0x277CBAB50];
-  v9 = [(MSASProtocol *)self _createAlbumURL];
-  v10 = [v8 requestWithURL:v9];
+  _createAlbumURL = [(MSASProtocol *)self _createAlbumURL];
+  v10 = [v8 requestWithURL:_createAlbumURL];
 
-  v11 = [v6 metadata];
-  v12 = [v11 objectForKey:@"name"];
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  v14 = [v6 GUID];
+  metadata = [albumCopy metadata];
+  v12 = [metadata objectForKey:@"name"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [albumCopy GUID];
 
-  if (v14)
+  if (gUID)
   {
-    v15 = [v6 GUID];
-    [v13 setObject:v15 forKey:@"albumguid"];
+    gUID2 = [albumCopy GUID];
+    [dictionary setObject:gUID2 forKey:@"albumguid"];
   }
 
-  if (v11)
+  if (metadata)
   {
-    [v13 setValue:v11 forKey:@"attributes"];
+    [dictionary setValue:metadata forKey:@"attributes"];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v6;
+    v28 = albumCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Creating album %{public}@", buf, 0x16u);
   }
 
@@ -6164,14 +6164,14 @@ void __59__MSASProtocol_updateAlbum_albumURLString_completionBlock___block_invok
   v20[1] = 3221225472;
   v20[2] = __44__MSASProtocol_createAlbum_completionBlock___block_invoke;
   v20[3] = &unk_278E92380;
-  v21 = v6;
+  v21 = albumCopy;
   v22 = v12;
-  v23 = self;
-  v24 = v7;
-  v16 = v7;
+  selfCopy2 = self;
+  v24 = blockCopy;
+  v16 = blockCopy;
   v17 = v12;
-  v18 = v6;
-  [(MSASProtocol *)self sendURLRequest:v10 bodyObj:v13 completionBlock:v20];
+  v18 = albumCopy;
+  [(MSASProtocol *)self sendURLRequest:v10 bodyObj:dictionary completionBlock:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -6350,133 +6350,133 @@ void __44__MSASProtocol_createAlbum_completionBlock___block_invoke_2(uint64_t a1
 
 - (id)_getAlbumURL
 {
-  v2 = [(MSASProtocol *)self baseURL];
-  v3 = [v2 URLByAppendingPathComponent:@"albumurl"];
+  baseURL = [(MSASProtocol *)self baseURL];
+  v3 = [baseURL URLByAppendingPathComponent:@"albumurl"];
 
   return v3;
 }
 
 - (id)_serverSideConfigURL
 {
-  v2 = [(MSASProtocol *)self baseURL];
-  v3 = [v2 URLByAppendingPathComponent:@"configuration"];
+  baseURL = [(MSASProtocol *)self baseURL];
+  v3 = [baseURL URLByAppendingPathComponent:@"configuration"];
 
   return v3;
 }
 
 - (id)_setAlbumStateURL
 {
-  v2 = [(MSASProtocol *)self baseURL];
-  v3 = [v2 URLByAppendingPathComponent:@"setalbumstate"];
+  baseURL = [(MSASProtocol *)self baseURL];
+  v3 = [baseURL URLByAppendingPathComponent:@"setalbumstate"];
 
   return v3;
 }
 
 - (id)_setAssetStateURL
 {
-  v2 = [(MSASProtocol *)self baseURL];
-  v3 = [v2 URLByAppendingPathComponent:@"setassetstate"];
+  baseURL = [(MSASProtocol *)self baseURL];
+  v3 = [baseURL URLByAppendingPathComponent:@"setassetstate"];
 
   return v3;
 }
 
 - (id)_albumStateURL
 {
-  v2 = [(MSASProtocol *)self baseURL];
-  v3 = [v2 URLByAppendingPathComponent:@"albumstate"];
+  baseURL = [(MSASProtocol *)self baseURL];
+  v3 = [baseURL URLByAppendingPathComponent:@"albumstate"];
 
   return v3;
 }
 
 - (id)_setCommentPositionURL
 {
-  v2 = [(MSASProtocol *)self baseURL];
-  v3 = [v2 URLByAppendingPathComponent:@"setcommentposition"];
+  baseURL = [(MSASProtocol *)self baseURL];
+  v3 = [baseURL URLByAppendingPathComponent:@"setcommentposition"];
 
   return v3;
 }
 
 - (id)_reportSpamURL
 {
-  v2 = [(MSASProtocol *)self baseURL];
-  v3 = [v2 URLByAppendingPathComponent:@"reportspam"];
+  baseURL = [(MSASProtocol *)self baseURL];
+  v3 = [baseURL URLByAppendingPathComponent:@"reportspam"];
 
   return v3;
 }
 
 - (id)_unsubscribeURL
 {
-  v2 = [(MSASProtocol *)self baseURL];
-  v3 = [v2 URLByAppendingPathComponent:@"unsubscribe"];
+  baseURL = [(MSASProtocol *)self baseURL];
+  v3 = [baseURL URLByAppendingPathComponent:@"unsubscribe"];
 
   return v3;
 }
 
 - (id)_subscribeURL
 {
-  v2 = [(MSASProtocol *)self baseURL];
-  v3 = [v2 URLByAppendingPathComponent:@"subscribe"];
+  baseURL = [(MSASProtocol *)self baseURL];
+  v3 = [baseURL URLByAppendingPathComponent:@"subscribe"];
 
   return v3;
 }
 
 - (id)_validateInvitationURL
 {
-  v2 = [(MSASProtocol *)self baseURL];
-  v3 = [v2 URLByAppendingPathComponent:@"validateinvitation"];
+  baseURL = [(MSASProtocol *)self baseURL];
+  v3 = [baseURL URLByAppendingPathComponent:@"validateinvitation"];
 
   return v3;
 }
 
 - (id)_getChangesURL
 {
-  v2 = [(MSASProtocol *)self baseURL];
-  v3 = [v2 URLByAppendingPathComponent:@"getchanges"];
+  baseURL = [(MSASProtocol *)self baseURL];
+  v3 = [baseURL URLByAppendingPathComponent:@"getchanges"];
 
   return v3;
 }
 
 - (id)_unshareURL
 {
-  v2 = [(MSASProtocol *)self baseURL];
-  v3 = [v2 URLByAppendingPathComponent:@"unshare"];
+  baseURL = [(MSASProtocol *)self baseURL];
+  v3 = [baseURL URLByAppendingPathComponent:@"unshare"];
 
   return v3;
 }
 
 - (id)_shareURL
 {
-  v2 = [(MSASProtocol *)self baseURL];
-  v3 = [v2 URLByAppendingPathComponent:@"share"];
+  baseURL = [(MSASProtocol *)self baseURL];
+  v3 = [baseURL URLByAppendingPathComponent:@"share"];
 
   return v3;
 }
 
 - (id)_createAlbumURL
 {
-  v2 = [(MSASProtocol *)self baseURL];
-  v3 = [v2 URLByAppendingPathComponent:@"createalbum"];
+  baseURL = [(MSASProtocol *)self baseURL];
+  v3 = [baseURL URLByAppendingPathComponent:@"createalbum"];
 
   return v3;
 }
 
-- (id)errorFromStandardProcessingOnResponse:(id)a3 responseObject:(id)a4 checkServerSideConfigVersion:(BOOL)a5 error:(id)a6 body:(id)a7
+- (id)errorFromStandardProcessingOnResponse:(id)response responseObject:(id)object checkServerSideConfigVersion:(BOOL)version error:(id)error body:(id)body
 {
-  v9 = a5;
+  versionCopy = version;
   v76 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = v14;
-  if (!v11)
+  responseCopy = response;
+  objectCopy = object;
+  errorCopy = error;
+  bodyCopy = body;
+  v15 = bodyCopy;
+  if (!responseCopy)
   {
-    v24 = v13;
+    v24 = errorCopy;
     goto LABEL_61;
   }
 
-  v58 = v14;
-  [v11 allHeaderFields];
+  v58 = bodyCopy;
+  [responseCopy allHeaderFields];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
@@ -6516,20 +6516,20 @@ void __44__MSASProtocol_createAlbum_completionBlock___block_invoke_2(uint64_t a1
 
 LABEL_12:
 
-  v22 = self;
-  if ([v11 statusCode] != 200 && objc_msgSend(v11, "statusCode") != 207)
+  selfCopy11 = self;
+  if ([responseCopy statusCode] != 200 && objc_msgSend(responseCopy, "statusCode") != 207)
   {
     v57 = v17;
-    if ([v11 statusCode] == 403)
+    if ([responseCopy statusCode] == 403)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v28 = [v12 objectForKey:@"code"];
+        v28 = [objectCopy objectForKey:@"code"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v23 = [v12 objectForKey:@"code"];
+          v23 = [objectCopy objectForKey:@"code"];
         }
 
         else
@@ -6544,17 +6544,17 @@ LABEL_12:
 
           if (v39)
           {
-            v22 = self;
+            selfCopy11 = self;
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
               *buf = 138543362;
-              v69 = self;
+              selfCopy10 = self;
               _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Visitor authentication has failed. Client must reauth.", buf, 0xCu);
             }
 
             v40 = MEMORY[0x277CCA9B8];
             v29 = MSCFCopyLocalizedString(@"ERROR_MSAS_PROT_VISITOR_AUTH_FAILURE");
-            v41 = -[MSASProtocol HTTPErrorWithStatusCode:](self, "HTTPErrorWithStatusCode:", [v11 statusCode]);
+            v41 = -[MSASProtocol HTTPErrorWithStatusCode:](self, "HTTPErrorWithStatusCode:", [responseCopy statusCode]);
             v24 = [v40 MSErrorWithDomain:@"MSASProtocolErrorDomain" code:18 description:v29 underlyingError:v41];
 
 LABEL_52:
@@ -6567,49 +6567,49 @@ LABEL_53:
       }
     }
 
-    else if ([v11 statusCode] == 426 && _os_feature_enabled_impl())
+    else if ([responseCopy statusCode] == 426 && _os_feature_enabled_impl())
     {
-      v22 = self;
+      selfCopy11 = self;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v69 = self;
+        selfCopy10 = self;
         _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Invalid/missing clientOrgKey in request. Client must fetch new clientOrgKey for album.", buf, 0xCu);
       }
 
       v37 = MEMORY[0x277CCA9B8];
       v23 = MSCFCopyLocalizedString(@"ERROR_MSAS_PROT_INVALID_CLIENTORGKEY");
-      v29 = -[MSASProtocol HTTPErrorWithStatusCode:](self, "HTTPErrorWithStatusCode:", [v11 statusCode]);
+      v29 = -[MSASProtocol HTTPErrorWithStatusCode:](self, "HTTPErrorWithStatusCode:", [responseCopy statusCode]);
       v24 = [v37 MSErrorWithDomain:@"MSASProtocolErrorDomain" code:22 description:v23 underlyingError:v29];
       goto LABEL_52;
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
-      v56 = [v11 statusCode];
+      statusCode = [responseCopy statusCode];
       *buf = 138543618;
-      v69 = self;
+      selfCopy10 = self;
       v70 = 2048;
-      v71 = v56;
+      v71 = statusCode;
       _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: Rejecting response code %ld", buf, 0x16u);
     }
 
     v42 = MEMORY[0x277CCA9B8];
     v43 = MEMORY[0x277CCACA8];
     v44 = MSCFCopyLocalizedString(@"ERROR_MSAS_PROT_HTTP_ERROR_P_CODE");
-    v45 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v11, "statusCode")}];
+    v45 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(responseCopy, "statusCode")}];
     v46 = [v43 stringWithFormat:v44, v45];
-    v47 = -[MSASProtocol HTTPErrorWithStatusCode:](self, "HTTPErrorWithStatusCode:", [v11 statusCode]);
+    v47 = -[MSASProtocol HTTPErrorWithStatusCode:](self, "HTTPErrorWithStatusCode:", [responseCopy statusCode]);
     v23 = [v42 MSErrorWithDomain:@"MSASProtocolErrorDomain" code:4 description:v46 underlyingError:v47];
 
-    v22 = self;
+    selfCopy11 = self;
     v48 = MEMORY[0x277CCA9B8];
     v29 = MSCFCopyLocalizedString(@"ERROR_MSAS_PROT_CANNOT_CONTINUE");
     v24 = [v48 MSErrorWithDomain:@"MSASProtocolErrorDomain" code:3 description:v29 underlyingError:v23];
     goto LABEL_52;
   }
 
-  if (v9)
+  if (versionCopy)
   {
     v62 = 0u;
     v63 = 0u;
@@ -6634,36 +6634,36 @@ LABEL_53:
           if (![v27 caseInsensitiveCompare:@"x-apple-mme-sharedstreams-config-version"])
           {
             v29 = [v23 objectForKey:v27];
-            v22 = self;
-            v30 = [(MSASProtocol *)self serverSideConfigVersion];
-            v31 = [v30 isEqualToString:v29];
+            selfCopy11 = self;
+            serverSideConfigVersion = [(MSASProtocol *)self serverSideConfigVersion];
+            v31 = [serverSideConfigVersion isEqualToString:v29];
 
             if ((v31 & 1) == 0)
             {
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
-                v69 = self;
+                selfCopy10 = self;
                 _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Server side config version has changed.", buf, 0xCu);
               }
 
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
               {
-                v32 = [(MSASProtocol *)self serverSideConfigVersion];
+                serverSideConfigVersion2 = [(MSASProtocol *)self serverSideConfigVersion];
                 *buf = 138543874;
-                v69 = self;
+                selfCopy10 = self;
                 v70 = 2114;
-                v71 = v32;
+                v71 = serverSideConfigVersion2;
                 v72 = 2114;
                 v73 = v29;
                 _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Our version string: %{public}@, server’s version string: %{public}@", buf, 0x20u);
               }
 
-              v33 = [MEMORY[0x277CCAB98] defaultCenter];
+              defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
               v34 = MEMORY[0x277CBEAC0];
-              v35 = [(MSASProtocol *)self personID];
-              v36 = [v34 dictionaryWithObjectsAndKeys:{v35, @"personID", 0}];
-              [v33 postNotificationName:@"MSASPServerSideConfigurationDidChangeNotification" object:self userInfo:v36];
+              personID = [(MSASProtocol *)self personID];
+              v36 = [v34 dictionaryWithObjectsAndKeys:{personID, @"personID", 0}];
+              [defaultCenter postNotificationName:@"MSASPServerSideConfigurationDidChangeNotification" object:self userInfo:v36];
             }
 
             v24 = 0;
@@ -6680,7 +6680,7 @@ LABEL_53:
         break;
       }
 
-      v22 = self;
+      selfCopy11 = self;
     }
 
     goto LABEL_53;
@@ -6693,28 +6693,28 @@ LABEL_54:
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
-      v49 = [(MSASProtocol *)v22 personID];
+      personID2 = [(MSASProtocol *)selfCopy11 personID];
       *buf = 138543874;
-      v69 = v22;
+      selfCopy10 = selfCopy11;
       v70 = 2114;
       v71 = v17;
       v72 = 2112;
-      v73 = v49;
+      v73 = personID2;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Posting retry-after date of %{public}@ for person ID %@.", buf, 0x20u);
     }
 
-    v50 = [MEMORY[0x277CBEB38] dictionary];
-    v51 = [(MSASProtocol *)v22 personID];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    personID3 = [(MSASProtocol *)selfCopy11 personID];
 
-    if (v51)
+    if (personID3)
     {
-      v52 = [(MSASProtocol *)v22 personID];
-      [v50 setObject:v52 forKey:@"personID"];
+      personID4 = [(MSASProtocol *)selfCopy11 personID];
+      [dictionary setObject:personID4 forKey:@"personID"];
     }
 
-    [v50 setObject:v17 forKey:@"retryAfterDate"];
-    v53 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v53 postNotificationName:@"MSASPDidReceiveRetryAfterNotification" object:v22 userInfo:v50];
+    [dictionary setObject:v17 forKey:@"retryAfterDate"];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:@"MSASPDidReceiveRetryAfterNotification" object:selfCopy11 userInfo:dictionary];
   }
 
   v15 = v58;
@@ -6725,32 +6725,32 @@ LABEL_61:
   return v24;
 }
 
-- (id)HTTPErrorWithStatusCode:(int64_t)a3
+- (id)HTTPErrorWithStatusCode:(int64_t)code
 {
   v4 = MEMORY[0x277CCA9B8];
   v5 = *MEMORY[0x277CBACE8];
   v6 = MEMORY[0x277CCACA8];
   v7 = MSCFCopyLocalizedString(@"ERROR_MSAS_PROT_HTTP_ERROR_P_CODE");
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:code];
   v9 = [v6 stringWithFormat:v7, v8];
-  v10 = [v4 MSErrorWithDomain:v5 code:a3 description:v9];
+  v10 = [v4 MSErrorWithDomain:v5 code:code description:v9];
 
   return v10;
 }
 
-- (void)_prepareHeadersForRequest:(id)a3
+- (void)_prepareHeadersForRequest:(id)request
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  requestCopy = request;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6 = [MSProtocolUtilities deviceInfoDictForPersonID:self->_personID];
-  [v5 setObject:self->_headerVersion forKey:@"x-apple-mme-sharedstreams-version"];
+  [dictionary setObject:self->_headerVersion forKey:@"x-apple-mme-sharedstreams-version"];
   v7 = [v6 objectForKey:@"pushToken"];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 MSHexString];
-    [v5 setObject:v9 forKey:@"x-apple-mme-sharedstreams-client-token"];
+    mSHexString = [v7 MSHexString];
+    [dictionary setObject:mSHexString forKey:@"x-apple-mme-sharedstreams-client-token"];
   }
 
   v10 = [v6 objectForKey:@"authToken"];
@@ -6764,7 +6764,7 @@ LABEL_61:
     if (v15)
     {
       v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"X-MobileMe-AuthToken %@", v15];
-      [v5 setObject:v16 forKey:@"authorization"];
+      [dictionary setObject:v16 forKey:@"authorization"];
     }
 
     v8 = v11;
@@ -6774,26 +6774,26 @@ LABEL_61:
   v17 = [v6 objectForKey:@"clientInfo"];
   if (v17)
   {
-    [v5 setObject:v17 forKey:@"x-mme-client-info"];
+    [dictionary setObject:v17 forKey:@"x-mme-client-info"];
   }
 
-  [v5 setObject:@"text/plist" forKey:@"Content-Type"];
+  [dictionary setObject:@"text/plist" forKey:@"Content-Type"];
   v18 = +[MSProtocolUtilities appleIDSession];
-  v19 = [v18 appleIDHeadersForRequest:v4];
+  v19 = [v18 appleIDHeadersForRequest:requestCopy];
 
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __42__MSASProtocol__prepareHeadersForRequest___block_invoke;
   v46[3] = &unk_278E92328;
-  v20 = v5;
+  v20 = dictionary;
   v47 = v20;
   [v19 enumerateKeysAndObjectsUsingBlock:v46];
-  [v4 setAllHTTPHeaderFields:v20];
+  [requestCopy setAllHTTPHeaderFields:v20];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v21 = [v4 URL];
+    v21 = [requestCopy URL];
     *buf = 138543618;
-    v50 = self;
+    selfCopy = self;
     v51 = 2114;
     v52 = v21;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Sending request to %{public}@.", buf, 0x16u);
@@ -6808,14 +6808,14 @@ LABEL_61:
     v38 = v17;
     v39 = v10;
     v40 = v8;
-    v41 = v4;
-    v24 = [v4 allHTTPHeaderFields];
-    v25 = [MEMORY[0x277CBEB38] dictionary];
+    v41 = requestCopy;
+    allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v26 = v24;
+    v26 = allHTTPHeaderFields;
     v27 = [v26 countByEnumeratingWithState:&v42 objects:v48 count:16];
     if (v27)
     {
@@ -6841,7 +6841,7 @@ LABEL_61:
             v32 = @"[present]";
           }
 
-          [(MSASProtocol *)v25 setObject:v32 forKey:v31];
+          [(MSASProtocol *)dictionary2 setObject:v32 forKey:v31];
         }
 
         v28 = [v26 countByEnumeratingWithState:&v42 objects:v48 count:16];
@@ -6853,21 +6853,21 @@ LABEL_61:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543362;
-      v50 = v25;
+      selfCopy = dictionary2;
       _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Headers: %{public}@", buf, 0xCu);
     }
 
     v33 = objc_alloc(MEMORY[0x277CCACA8]);
-    v4 = v41;
-    v34 = [v41 HTTPBody];
-    v35 = [v33 initWithData:v34 encoding:4];
+    requestCopy = v41;
+    hTTPBody = [v41 HTTPBody];
+    v35 = [v33 initWithData:hTTPBody encoding:4];
 
     v17 = v38;
     v10 = v39;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543362;
-      v50 = v35;
+      selfCopy = v35;
       _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@", buf, 0xCu);
     }
 
@@ -6878,19 +6878,19 @@ LABEL_61:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendOneURLRequest:(id)a3 checkServerSideConfigVersion:(BOOL)a4 retryCount:(unint64_t)a5 completionBlock:(id)a6
+- (void)_sendOneURLRequest:(id)request checkServerSideConfigVersion:(BOOL)version retryCount:(unint64_t)count completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(MSASProtocol *)self memberQueue];
+  requestCopy = request;
+  blockCopy = block;
+  memberQueue = [(MSASProtocol *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91__MSASProtocol__sendOneURLRequest_checkServerSideConfigVersion_retryCount_completionBlock___block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_barrier_sync(v12, block);
+  dispatch_barrier_sync(memberQueue, block);
 
-  [(MSASProtocol *)self _prepareHeadersForRequest:v10];
+  [(MSASProtocol *)self _prepareHeadersForRequest:requestCopy];
   v13 = MEMORY[0x277CBAB78];
   v14 = objc_alloc_init(MEMORY[0x277CCABD8]);
   v17[0] = MEMORY[0x277D85DD0];
@@ -6898,12 +6898,12 @@ LABEL_61:
   v17[2] = __91__MSASProtocol__sendOneURLRequest_checkServerSideConfigVersion_retryCount_completionBlock___block_invoke_2;
   v17[3] = &unk_278E922E8;
   v17[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = a5;
-  v21 = a4;
-  v15 = v10;
-  v16 = v11;
+  v18 = requestCopy;
+  v19 = blockCopy;
+  countCopy = count;
+  versionCopy = version;
+  v15 = requestCopy;
+  v16 = blockCopy;
   [v13 sendAsynchronousRequest:v15 queue:v14 completionHandler:v17];
 }
 
@@ -7176,28 +7176,28 @@ void __91__MSASProtocol__sendOneURLRequest_checkServerSideConfigVersion_retryCou
   dispatch_resume(*(*(a1 + 32) + 24));
 }
 
-- (void)sendURLRequest:(id)a3 method:(id)a4 bodyObj:(id)a5 checkServerSideConfigVersion:(BOOL)a6 completionBlock:(id)a7
+- (void)sendURLRequest:(id)request method:(id)method bodyObj:(id)obj checkServerSideConfigVersion:(BOOL)version completionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  requestCopy = request;
+  methodCopy = method;
+  objCopy = obj;
+  blockCopy = block;
   pendingConnectionsQueue = self->_pendingConnectionsQueue;
   pendingConnectionsGroup = self->_pendingConnectionsGroup;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __91__MSASProtocol_sendURLRequest_method_bodyObj_checkServerSideConfigVersion_completionBlock___block_invoke;
   v22[3] = &unk_278E92270;
-  v25 = v13;
-  v26 = v15;
+  v25 = methodCopy;
+  v26 = blockCopy;
   v22[4] = self;
-  v23 = v14;
-  v24 = v12;
-  v27 = a6;
-  v18 = v13;
-  v19 = v12;
-  v20 = v14;
-  v21 = v15;
+  v23 = objCopy;
+  v24 = requestCopy;
+  versionCopy = version;
+  v18 = methodCopy;
+  v19 = requestCopy;
+  v20 = objCopy;
+  v21 = blockCopy;
   dispatch_group_async(pendingConnectionsGroup, pendingConnectionsQueue, v22);
 }
 
@@ -7352,16 +7352,16 @@ void __32__MSASProtocol_stopHandlerBlock__block_invoke_2(uint64_t a1)
   [v2 setError:v1];
 }
 
-- (void)stopCompletionBlock:(id)a3
+- (void)stopCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MSASProtocol *)self memberQueue];
+  blockCopy = block;
+  memberQueue = [(MSASProtocol *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__MSASProtocol_stopCompletionBlock___block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_barrier_async(v5, block);
+  dispatch_barrier_async(memberQueue, block);
 
   v6 = dispatch_get_global_queue(0, 0);
   v8[0] = MEMORY[0x277D85DD0];
@@ -7369,8 +7369,8 @@ void __32__MSASProtocol_stopHandlerBlock__block_invoke_2(uint64_t a1)
   v8[2] = __36__MSASProtocol_stopCompletionBlock___block_invoke_2;
   v8[3] = &unk_278E927A0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = blockCopy;
+  v7 = blockCopy;
   dispatch_async(v6, v8);
 }
 
@@ -7393,16 +7393,16 @@ uint64_t __36__MSASProtocol_stopCompletionBlock___block_invoke_2(uint64_t a1)
   return v4();
 }
 
-- (void)shutDownCompletionBlock:(id)a3
+- (void)shutDownCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MSASProtocol *)self memberQueue];
+  blockCopy = block;
+  memberQueue = [(MSASProtocol *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__MSASProtocol_shutDownCompletionBlock___block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_barrier_async(v5, block);
+  dispatch_barrier_async(memberQueue, block);
 
   v6 = dispatch_get_global_queue(0, 0);
   v8[0] = MEMORY[0x277D85DD0];
@@ -7410,8 +7410,8 @@ uint64_t __36__MSASProtocol_stopCompletionBlock___block_invoke_2(uint64_t a1)
   v8[2] = __40__MSASProtocol_shutDownCompletionBlock___block_invoke_2;
   v8[3] = &unk_278E927A0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = blockCopy;
+  v7 = blockCopy;
   dispatch_async(v6, v8);
 }
 
@@ -7475,18 +7475,18 @@ void __29__MSASProtocol_shutDownError__block_invoke()
   shutDownError_error = v1;
 }
 
-- (MSASProtocol)initWithPersonID:(id)a3
+- (MSASProtocol)initWithPersonID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = MSASProtocol;
   v6 = [(MSASProtocol *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_personID, a3);
+    objc_storeStrong(&v6->_personID, d);
     v8 = MSASPlatform();
-    v9 = [v8 baseSharingURLForPersonID:v5];
+    v9 = [v8 baseSharingURLForPersonID:dCopy];
     baseURL = v7->_baseURL;
     v7->_baseURL = v9;
 
@@ -7513,9 +7513,9 @@ void __29__MSASProtocol_shutDownError__block_invoke()
     if (v20)
     {
       v21 = MSASPlatform();
-      v22 = [v21 sharedStreamsProtocolVersionString];
+      sharedStreamsProtocolVersionString = [v21 sharedStreamsProtocolVersionString];
       headerVersion = v7->_headerVersion;
-      v7->_headerVersion = v22;
+      v7->_headerVersion = sharedStreamsProtocolVersionString;
     }
 
     if (!v7->_headerVersion)

@@ -1,12 +1,12 @@
 @interface NUDefaultSourceDerivation
-- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleFromOriginalSize:(id)a3 derivativeSize:(id)a4;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleFromOriginalSize:(id)size derivativeSize:(id)derivativeSize;
 @end
 
 @implementation NUDefaultSourceDerivation
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleFromOriginalSize:(id)a3 derivativeSize:(id)a4
+- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleFromOriginalSize:(id)size derivativeSize:(id)derivativeSize
 {
-  if (a3.var0 < 1 || a3.var1 <= 0)
+  if (size.var0 < 1 || size.var1 <= 0)
   {
     var0 = *(&NUScaleOne + 1);
     var1 = NUScaleOne;
@@ -14,24 +14,24 @@
 
   else
   {
-    if (a3.var0 <= a3.var1)
+    if (size.var0 <= size.var1)
     {
-      var1 = a4.var1;
+      var1 = derivativeSize.var1;
     }
 
     else
     {
-      var1 = a4.var0;
+      var1 = derivativeSize.var0;
     }
 
-    if (a3.var0 <= a3.var1)
+    if (size.var0 <= size.var1)
     {
-      var0 = a3.var1;
+      var0 = size.var1;
     }
 
     else
     {
-      var0 = a3.var0;
+      var0 = size.var0;
     }
   }
 

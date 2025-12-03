@@ -7,9 +7,9 @@
 
 - (double)firstBaselineFromTop
 {
-  v2 = self;
-  v3 = [(UITextView *)v2 layoutManager];
-  [(NSLayoutManager *)v3 baselineOffsetForGlyphAtIndex:0];
+  selfCopy = self;
+  layoutManager = [(UITextView *)selfCopy layoutManager];
+  [(NSLayoutManager *)layoutManager baselineOffsetForGlyphAtIndex:0];
   v5 = v4;
 
   return v5;
@@ -17,10 +17,10 @@
 
 - (double)lastBaselineFromBottom
 {
-  v2 = self;
-  v3 = [(UITextView *)v2 layoutManager];
-  v4 = [(UITextView *)v2 textContainer];
-  [(NSLayoutManager *)v3 usedRectForTextContainer:v4];
+  selfCopy = self;
+  layoutManager = [(UITextView *)selfCopy layoutManager];
+  textContainer = [(UITextView *)selfCopy textContainer];
+  [(NSLayoutManager *)layoutManager usedRectForTextContainer:textContainer];
   v6 = v5;
   v8 = v7;
   v10 = v9;

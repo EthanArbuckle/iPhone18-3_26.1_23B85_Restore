@@ -1,15 +1,15 @@
 @interface ULServerEntitlements
-+ (BOOL)_checkEntitlement:(id)a3 forConnection:(id)a4;
++ (BOOL)_checkEntitlement:(id)entitlement forConnection:(id)connection;
 @end
 
 @implementation ULServerEntitlements
 
-+ (BOOL)_checkEntitlement:(id)a3 forConnection:(id)a4
++ (BOOL)_checkEntitlement:(id)entitlement forConnection:(id)connection
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 hasBooleanEntitlement:v5];
+  entitlementCopy = entitlement;
+  connectionCopy = connection;
+  v7 = [connectionCopy hasBooleanEntitlement:entitlementCopy];
   if ((v7 & 1) == 0)
   {
     if (onceToken_MicroLocation_Default != -1)
@@ -21,11 +21,11 @@
     if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_ERROR))
     {
       v9 = v8;
-      v10 = [v6 signingIdentity];
+      signingIdentity = [connectionCopy signingIdentity];
       v13 = 138412546;
-      v14 = v10;
+      v14 = signingIdentity;
       v15 = 2112;
-      v16 = v5;
+      v16 = entitlementCopy;
       _os_log_impl(&dword_258FE9000, v9, OS_LOG_TYPE_ERROR, "Missing entitlement: %@ is missing required entitlement: %@, rejecting connection.", &v13, 0x16u);
     }
   }

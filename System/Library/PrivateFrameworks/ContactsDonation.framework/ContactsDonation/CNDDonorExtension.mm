@@ -1,35 +1,35 @@
 @interface CNDDonorExtension
-- (CNDDonorExtension)initWithExtension:(id)a3;
-- (CNDDonorExtension)initWithExtension:(id)a3 logger:(id)a4;
+- (CNDDonorExtension)initWithExtension:(id)extension;
+- (CNDDonorExtension)initWithExtension:(id)extension logger:(id)logger;
 - (id)description;
-- (void)redonateAllValuesWithReason:(unint64_t)a3;
-- (void)renewExpirationDateForDonatedValue:(id)a3 acknowledgementHandler:(id)a4;
+- (void)redonateAllValuesWithReason:(unint64_t)reason;
+- (void)renewExpirationDateForDonatedValue:(id)value acknowledgementHandler:(id)handler;
 @end
 
 @implementation CNDDonorExtension
 
-- (CNDDonorExtension)initWithExtension:(id)a3
+- (CNDDonorExtension)initWithExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = +[CNDonationLoggerProvider defaultProvider];
-  v6 = [v5 extensionLogger];
+  extensionLogger = [v5 extensionLogger];
 
-  v7 = [(CNDDonorExtension *)self initWithExtension:v4 logger:v6];
+  v7 = [(CNDDonorExtension *)self initWithExtension:extensionCopy logger:extensionLogger];
   return v7;
 }
 
-- (CNDDonorExtension)initWithExtension:(id)a3 logger:(id)a4
+- (CNDDonorExtension)initWithExtension:(id)extension logger:(id)logger
 {
-  v7 = a3;
-  v8 = a4;
+  extensionCopy = extension;
+  loggerCopy = logger;
   v13.receiver = self;
   v13.super_class = CNDDonorExtension;
   v9 = [(CNDDonorExtension *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_extension, a3);
-    objc_storeStrong(&v10->_logger, a4);
+    objc_storeStrong(&v9->_extension, extension);
+    objc_storeStrong(&v10->_logger, logger);
     v11 = v10;
   }
 
@@ -39,24 +39,24 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CFBDF0] descriptionBuilderWithObject:self];
-  v4 = [(CNDDonorExtension *)self extension];
-  v5 = [v4 identifier];
-  v6 = [v3 appendName:@"identifier" object:v5];
+  extension = [(CNDDonorExtension *)self extension];
+  identifier = [extension identifier];
+  v6 = [v3 appendName:@"identifier" object:identifier];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (void)renewExpirationDateForDonatedValue:(id)a3 acknowledgementHandler:(id)a4
+- (void)renewExpirationDateForDonatedValue:(id)value acknowledgementHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNDDonorExtension *)self logger];
-  [v8 willRenewDonation:v6];
+  valueCopy = value;
+  handlerCopy = handler;
+  logger = [(CNDDonorExtension *)self logger];
+  [logger willRenewDonation:valueCopy];
 
-  v9 = [(CNDDonorExtension *)self extension];
-  v10 = [v9 _cnd_requestWithInputItems:MEMORY[0x277CBEBF8]];
+  extension = [(CNDDonorExtension *)self extension];
+  v10 = [extension _cnd_requestWithInputItems:MEMORY[0x277CBEBF8]];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -68,11 +68,11 @@
   v17[1] = 3221225472;
   v17[2] = __79__CNDDonorExtension_renewExpirationDateForDonatedValue_acknowledgementHandler___block_invoke_2;
   v17[3] = &unk_278569F00;
-  v12 = v6;
+  v12 = valueCopy;
   v18 = v12;
-  v19 = self;
-  v20 = v7;
-  v13 = v7;
+  selfCopy = self;
+  v20 = handlerCopy;
+  v13 = handlerCopy;
   [v11 addSuccessBlock:v17];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -141,13 +141,13 @@ void __79__CNDDonorExtension_renewExpirationDateForDonatedValue_acknowledgementH
   [v5 couldNotRenewDonation:*(a1 + 40) error:v4];
 }
 
-- (void)redonateAllValuesWithReason:(unint64_t)a3
+- (void)redonateAllValuesWithReason:(unint64_t)reason
 {
-  v5 = [(CNDDonorExtension *)self logger];
-  [v5 willRedonateValuesWithReason:a3];
+  logger = [(CNDDonorExtension *)self logger];
+  [logger willRedonateValuesWithReason:reason];
 
-  v6 = [(CNDDonorExtension *)self extension];
-  v7 = [v6 _cnd_requestWithInputItems:MEMORY[0x277CBEBF8]];
+  extension = [(CNDDonorExtension *)self extension];
+  v7 = [extension _cnd_requestWithInputItems:MEMORY[0x277CBEBF8]];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -160,14 +160,14 @@ void __79__CNDDonorExtension_renewExpirationDateForDonatedValue_acknowledgementH
   v10[2] = __49__CNDDonorExtension_redonateAllValuesWithReason___block_invoke_2;
   v10[3] = &unk_278569F28;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = reason;
   [v8 addSuccessBlock:v10];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__CNDDonorExtension_redonateAllValuesWithReason___block_invoke_3;
   v9[3] = &unk_278569F50;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = reason;
   [v8 addFailureBlock:v9];
 }
 

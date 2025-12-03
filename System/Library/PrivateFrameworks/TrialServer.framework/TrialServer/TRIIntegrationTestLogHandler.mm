@@ -1,8 +1,8 @@
 @interface TRIIntegrationTestLogHandler
 + (BOOL)shouldUseOverrideLogHandler;
-+ (void)addTestLoggerInPlaceOnClient:(id)a3;
++ (void)addTestLoggerInPlaceOnClient:(id)client;
 - (TRIIntegrationTestLogHandler)init;
-- (void)logEvent:(id)a3 subgroupName:(id)a4 queue:(id)a5;
+- (void)logEvent:(id)event subgroupName:(id)name queue:(id)queue;
 @end
 
 @implementation TRIIntegrationTestLogHandler
@@ -23,10 +23,10 @@
   tempDir = v2->_tempDir;
   v2->_tempDir = v4;
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v7 = v2->_tempDir;
   v25 = 0;
-  v8 = [v6 removeItemAtPath:v7 error:&v25];
+  v8 = [defaultManager removeItemAtPath:v7 error:&v25];
   v9 = v25;
 
   v10 = TRILogCategory_Server();
@@ -59,10 +59,10 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v17 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v18 = v2->_tempDir;
   v24 = v9;
-  v19 = [v17 createDirectoryAtPath:v18 withIntermediateDirectories:1 attributes:0 error:&v24];
+  v19 = [defaultManager2 createDirectoryAtPath:v18 withIntermediateDirectories:1 attributes:0 error:&v24];
   v20 = v24;
 
   if ((v19 & 1) == 0)
@@ -103,9 +103,9 @@ LABEL_13:
   return v2;
 }
 
-+ (void)addTestLoggerInPlaceOnClient:(id)a3
++ (void)addTestLoggerInPlaceOnClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   v4 = TRILogCategory_Server();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -114,26 +114,26 @@ LABEL_13:
   }
 
   v5 = objc_opt_new();
-  v6 = [v3 logger];
-  v7 = [v6 logHandlers];
-  v8 = [v7 arrayByAddingObject:v5];
+  logger = [clientCopy logger];
+  logHandlers = [logger logHandlers];
+  v8 = [logHandlers arrayByAddingObject:v5];
 
-  v9 = [[TRILogger alloc] initWithClient:v3 projectId:1 logHandlers:v8];
-  [v3 setLogger:v9];
+  v9 = [[TRILogger alloc] initWithClient:clientCopy projectId:1 logHandlers:v8];
+  [clientCopy setLogger:v9];
 }
 
-- (void)logEvent:(id)a3 subgroupName:(id)a4 queue:(id)a5
+- (void)logEvent:(id)event subgroupName:(id)name queue:(id)queue
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  eventCopy = event;
   tempDir = self->_tempDir;
   v8 = objc_opt_new();
-  v9 = [v8 UUIDString];
-  v10 = [(NSString *)tempDir stringByAppendingPathComponent:v9];
+  uUIDString = [v8 UUIDString];
+  v10 = [(NSString *)tempDir stringByAppendingPathComponent:uUIDString];
 
-  v11 = [v6 data];
+  data = [eventCopy data];
   v21 = 0;
-  v12 = [v11 writeToFile:v10 options:1 error:&v21];
+  v12 = [data writeToFile:v10 options:1 error:&v21];
   v13 = v21;
   if ((v12 & 1) == 0)
   {
@@ -151,14 +151,14 @@ LABEL_13:
   v15 = TRILogCategory_Server();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = [v6 logEventId];
-    v17 = [v6 denormalizedEvent];
-    v18 = [v17 trialSystemTelemetry];
-    v19 = [v18 trialdTaskName];
+    logEventId = [eventCopy logEventId];
+    denormalizedEvent = [eventCopy denormalizedEvent];
+    trialSystemTelemetry = [denormalizedEvent trialSystemTelemetry];
+    trialdTaskName = [trialSystemTelemetry trialdTaskName];
     *buf = 138412802;
-    v23 = v16;
+    v23 = logEventId;
     v24 = 2112;
-    v25 = v19;
+    v25 = trialdTaskName;
     v26 = 2112;
     v27 = v10;
     _os_log_impl(&dword_26F567000, v15, OS_LOG_TYPE_INFO, "Integration test logger wrote: id %@, task name %@, to: %@", buf, 0x20u);

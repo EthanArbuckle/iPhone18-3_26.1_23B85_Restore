@@ -2,9 +2,9 @@
 - (MPSImageMedian)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSImageMedian)initWithDevice:(id)device;
 - (MPSImageMedian)initWithDevice:(id)device kernelDiameter:(NSUInteger)kernelDiameter;
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSImageMedian
@@ -101,20 +101,20 @@ LABEL_12:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v8.receiver = self;
   v8.super_class = MPSImageMedian;
   [(MPSUnaryImageKernel *)&v8 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_filterDiameter, @"MPSImageMedian.kernelDiameter", v6, v7);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_filterDiameter, @"MPSImageMedian.kernelDiameter", v6, v7);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v12.receiver = self;
   v12.super_class = MPSImageMedian;
-  result = [(MPSUnaryImageKernel *)&v12 copyWithZone:a3 device:a4];
+  result = [(MPSUnaryImageKernel *)&v12 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 26) = self->_filterDiameter;
@@ -126,7 +126,7 @@ LABEL_12:
   return result;
 }
 
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size
 {
   *&retstr->origin.z = 0u;
   *&retstr->size.height = 0u;

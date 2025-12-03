@@ -1,10 +1,10 @@
 @interface TFBetaAppLaunchPresenter
-- (TFBetaAppLaunchPresenter)initWithBundleURL:(id)a3 launchDataProvider:(id)a4 launchScreenSidepack:(id)a5;
+- (TFBetaAppLaunchPresenter)initWithBundleURL:(id)l launchDataProvider:(id)provider launchScreenSidepack:(id)sidepack;
 - (TFBetaAppLaunchPresenterView)presenterView;
-- (void)_abortLaunchScreenLoadWithError:(id)a3;
-- (void)_showHowToViewWithLaunchScreen:(id)a3;
+- (void)_abortLaunchScreenLoadWithError:(id)error;
+- (void)_showHowToViewWithLaunchScreen:(id)screen;
 - (void)_showLoading;
-- (void)_showTestNotesViewWithLaunchScreen:(id)a3;
+- (void)_showTestNotesViewWithLaunchScreen:(id)screen;
 - (void)exitLaunchScreen;
 - (void)openHowToSupportLink;
 - (void)showHowToScreen;
@@ -13,22 +13,22 @@
 
 @implementation TFBetaAppLaunchPresenter
 
-- (TFBetaAppLaunchPresenter)initWithBundleURL:(id)a3 launchDataProvider:(id)a4 launchScreenSidepack:(id)a5
+- (TFBetaAppLaunchPresenter)initWithBundleURL:(id)l launchDataProvider:(id)provider launchScreenSidepack:(id)sidepack
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  providerCopy = provider;
+  sidepackCopy = sidepack;
   v17.receiver = self;
   v17.super_class = TFBetaAppLaunchPresenter;
   v11 = [(TFBetaAppLaunchPresenter *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [lCopy copy];
     bundleURL = v11->_bundleURL;
     v11->_bundleURL = v12;
 
-    objc_storeStrong(&v11->_launchDataProvider, a4);
-    objc_storeStrong(&v11->_launchScreen, a5);
+    objc_storeStrong(&v11->_launchDataProvider, provider);
+    objc_storeStrong(&v11->_launchScreen, sidepack);
     v14 = objc_alloc_init(TFImageFetcher);
     imageFetcher = v11->_imageFetcher;
     v11->_imageFetcher = v14;
@@ -39,25 +39,25 @@
 
 - (void)update
 {
-  v3 = [(TFBetaAppLaunchPresenter *)self launchScreen];
+  launchScreen = [(TFBetaAppLaunchPresenter *)self launchScreen];
 
-  if (v3)
+  if (launchScreen)
   {
-    v6 = [(TFBetaAppLaunchPresenter *)self launchScreen];
-    [(TFBetaAppLaunchPresenter *)self _showTestNotesViewWithLaunchScreen:v6];
+    launchScreen2 = [(TFBetaAppLaunchPresenter *)self launchScreen];
+    [(TFBetaAppLaunchPresenter *)self _showTestNotesViewWithLaunchScreen:launchScreen2];
   }
 
   else
   {
     [(TFBetaAppLaunchPresenter *)self _showLoading];
-    v4 = [(TFBetaAppLaunchPresenter *)self launchDataProvider];
-    v5 = [(TFBetaAppLaunchPresenter *)self bundleURL];
+    launchDataProvider = [(TFBetaAppLaunchPresenter *)self launchDataProvider];
+    bundleURL = [(TFBetaAppLaunchPresenter *)self bundleURL];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __34__TFBetaAppLaunchPresenter_update__block_invoke;
     v7[3] = &unk_279D98450;
     v7[4] = self;
-    [v4 loadLaunchScreenForBundleWithURL:v5 withCompletionHandler:v7];
+    [launchDataProvider loadLaunchScreenForBundleWithURL:bundleURL withCompletionHandler:v7];
   }
 }
 
@@ -107,86 +107,86 @@ LABEL_10:
 
 - (void)showHowToScreen
 {
-  v3 = [(TFBetaAppLaunchPresenter *)self launchScreen];
+  launchScreen = [(TFBetaAppLaunchPresenter *)self launchScreen];
 
-  if (v3)
+  if (launchScreen)
   {
-    v4 = [(TFBetaAppLaunchPresenter *)self launchScreen];
-    [(TFBetaAppLaunchPresenter *)self _showHowToViewWithLaunchScreen:v4];
+    launchScreen2 = [(TFBetaAppLaunchPresenter *)self launchScreen];
+    [(TFBetaAppLaunchPresenter *)self _showHowToViewWithLaunchScreen:launchScreen2];
   }
 }
 
 - (void)openHowToSupportLink
 {
-  v3 = [(TFBetaAppLaunchPresenter *)self launchScreen];
+  launchScreen = [(TFBetaAppLaunchPresenter *)self launchScreen];
 
-  if (v3)
+  if (launchScreen)
   {
-    v6 = [MEMORY[0x277D75128] sharedApplication];
-    v4 = [(TFBetaAppLaunchPresenter *)self launchScreen];
-    v5 = [v4 howToScreenshotSupportUrl];
-    [v6 openURL:v5 options:MEMORY[0x277CBEC10] completionHandler:0];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    launchScreen2 = [(TFBetaAppLaunchPresenter *)self launchScreen];
+    howToScreenshotSupportUrl = [launchScreen2 howToScreenshotSupportUrl];
+    [mEMORY[0x277D75128] openURL:howToScreenshotSupportUrl options:MEMORY[0x277CBEC10] completionHandler:0];
   }
 }
 
 - (void)exitLaunchScreen
 {
-  v2 = [(TFBetaAppLaunchPresenter *)self presenterView];
-  [v2 dismissAnimated:1];
+  presenterView = [(TFBetaAppLaunchPresenter *)self presenterView];
+  [presenterView dismissAnimated:1];
 }
 
 - (void)_showLoading
 {
-  v2 = [(TFBetaAppLaunchPresenter *)self presenterView];
-  [v2 showLoadingAnimated:1];
+  presenterView = [(TFBetaAppLaunchPresenter *)self presenterView];
+  [presenterView showLoadingAnimated:1];
 }
 
-- (void)_showTestNotesViewWithLaunchScreen:(id)a3
+- (void)_showTestNotesViewWithLaunchScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   v12 = TFLocalizedString(@"LAUNCH_BUTTON_CONTINUE");
-  v5 = [(TFBetaAppLaunchPresenter *)self presenterView];
+  presenterView = [(TFBetaAppLaunchPresenter *)self presenterView];
   v6 = TFLocalizedString(@"LAUNCH_TITLE_FROM_THE_DEVELOPER");
-  v7 = [v4 lockup];
+  lockup = [screenCopy lockup];
   v8 = TFLocalizedString(@"LAUNCH_TEST_NOTES_TITLE");
-  v9 = [v4 testerNotes];
+  testerNotes = [screenCopy testerNotes];
 
-  v10 = [(TFBetaAppLaunchPresenter *)self imageFetcher];
+  imageFetcher = [(TFBetaAppLaunchPresenter *)self imageFetcher];
   LOBYTE(v11) = 1;
-  [v5 showTestNotesWithTitle:v6 lockup:v7 testNotesTitle:v8 testNotesText:v9 primaryButtonTitle:v12 primaryButtonEvent:0 animated:v11 fetchingOnImageFetcher:v10];
+  [presenterView showTestNotesWithTitle:v6 lockup:lockup testNotesTitle:v8 testNotesText:testerNotes primaryButtonTitle:v12 primaryButtonEvent:0 animated:v11 fetchingOnImageFetcher:imageFetcher];
 }
 
-- (void)_showHowToViewWithLaunchScreen:(id)a3
+- (void)_showHowToViewWithLaunchScreen:(id)screen
 {
   v10 = +[TFCoreUtils tf_screenshotInstructionImageDict];
-  v4 = [(TFBetaAppLaunchPresenter *)self presenterView];
+  presenterView = [(TFBetaAppLaunchPresenter *)self presenterView];
   v5 = TFLocalizedString(@"LAUNCH_TITLE_SHARE_FEEDBACK");
   v6 = TFLocalizedString(@"LAUNCH_SUBTITLE_TAKE_SCREENSHOT_MESSAGE");
   v7 = TFLocalizedString(@"LAUNCH_BUTTON_START_TESTING");
   v8 = TFLocalizedString(@"LAUNCH_BUTTON_LEARN_MORE");
   LOBYTE(v9) = 1;
-  [v4 showHowToWithTitle:v5 subtitle:v6 screenshotImageDict:v10 primaryButtonTitle:v7 primaryButtonEvent:2 secondaryButtonTitle:v8 secondaryButtonEvent:1 animated:v9];
+  [presenterView showHowToWithTitle:v5 subtitle:v6 screenshotImageDict:v10 primaryButtonTitle:v7 primaryButtonEvent:2 secondaryButtonTitle:v8 secondaryButtonEvent:1 animated:v9];
 }
 
-- (void)_abortLaunchScreenLoadWithError:(id)a3
+- (void)_abortLaunchScreenLoadWithError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = +[TFLogConfiguration defaultConfiguration];
-  v6 = [v5 generatedLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  generatedLogger = [v5 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_ERROR))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(TFBetaAppLaunchPresenter *)self bundleURL];
-    v10 = [v4 localizedDescription];
+    bundleURL = [(TFBetaAppLaunchPresenter *)self bundleURL];
+    localizedDescription = [errorCopy localizedDescription];
     v11 = 138543874;
     v12 = v7;
     v13 = 2114;
-    v14 = v9;
+    v14 = bundleURL;
     v15 = 2112;
-    v16 = v10;
-    _os_log_impl(&dword_26D2C7000, v6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] _abortLaunchScreenLoadWithError: error = %@", &v11, 0x20u);
+    v16 = localizedDescription;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] _abortLaunchScreenLoadWithError: error = %@", &v11, 0x20u);
   }
 
   [(TFBetaAppLaunchPresenter *)self exitLaunchScreen];

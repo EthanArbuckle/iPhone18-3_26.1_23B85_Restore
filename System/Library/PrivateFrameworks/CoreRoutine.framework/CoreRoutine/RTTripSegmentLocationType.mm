@@ -1,19 +1,19 @@
 @interface RTTripSegmentLocationType
-- (BOOL)isEqual:(id)a3;
-- (RTTripSegmentLocationType)initWithCoder:(id)a3;
-- (RTTripSegmentLocationType)initWithDateInterval:(id)a3 distanceInterval:(id)a4 locationType:(int64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (RTTripSegmentLocationType)initWithCoder:(id)coder;
+- (RTTripSegmentLocationType)initWithDateInterval:(id)interval distanceInterval:(id)distanceInterval locationType:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTTripSegmentLocationType
 
-- (RTTripSegmentLocationType)initWithDateInterval:(id)a3 distanceInterval:(id)a4 locationType:(int64_t)a5
+- (RTTripSegmentLocationType)initWithDateInterval:(id)interval distanceInterval:(id)distanceInterval locationType:(int64_t)type
 {
   v21 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (v9)
+  intervalCopy = interval;
+  distanceIntervalCopy = distanceInterval;
+  if (intervalCopy)
   {
     v18.receiver = self;
     v18.super_class = RTTripSegmentLocationType;
@@ -21,9 +21,9 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_dateInterval, a3);
-      objc_storeStrong(&v12->_distanceInterval, a4);
-      v12->_locationType = a5;
+      objc_storeStrong(&v11->_dateInterval, interval);
+      objc_storeStrong(&v12->_distanceInterval, distanceInterval);
+      v12->_locationType = type;
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
         v13 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -37,7 +37,7 @@
     }
 
     self = v12;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -49,49 +49,49 @@
       _os_log_error_impl(&dword_1BF1C4000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: dateInterval", buf, 2u);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dateInterval = self->_dateInterval;
-  v5 = a3;
-  [v5 encodeObject:dateInterval forKey:@"dateInterval"];
-  [v5 encodeObject:self->_distanceInterval forKey:@"distanceInterval"];
-  [v5 encodeInt64:self->_locationType forKey:@"locationType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeObject:self->_distanceInterval forKey:@"distanceInterval"];
+  [coderCopy encodeInt64:self->_locationType forKey:@"locationType"];
 }
 
-- (RTTripSegmentLocationType)initWithCoder:(id)a3
+- (RTTripSegmentLocationType)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"distanceInterval"];
-  v7 = [v4 decodeIntForKey:@"locationType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"distanceInterval"];
+  v7 = [coderCopy decodeIntForKey:@"locationType"];
 
   v8 = [(RTTripSegmentLocationType *)self initWithDateInterval:v5 distanceInterval:v6 locationType:v7];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()];
   dateInterval = self->_dateInterval;
-  v7 = [v4 dateInterval];
-  v8 = [(NSDateInterval *)dateInterval isEqual:v7];
+  dateInterval = [equalCopy dateInterval];
+  v8 = [(NSDateInterval *)dateInterval isEqual:dateInterval];
 
   distanceInterval = self->_distanceInterval;
-  v10 = [v4 distanceInterval];
-  v11 = [(RTDistanceInterval *)distanceInterval isEqual:v10];
+  distanceInterval = [equalCopy distanceInterval];
+  v11 = [(RTDistanceInterval *)distanceInterval isEqual:distanceInterval];
 
   locationType = self->_locationType;
-  v13 = [v4 locationType];
+  locationType = [equalCopy locationType];
 
-  if (locationType == v13)
+  if (locationType == locationType)
   {
     v14 = v8;
   }

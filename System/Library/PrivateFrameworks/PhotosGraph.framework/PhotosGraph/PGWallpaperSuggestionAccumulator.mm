@@ -1,8 +1,8 @@
 @interface PGWallpaperSuggestionAccumulator
 - (BOOL)accumulationIsComplete;
 - (NSArray)suggestions;
-- (PGWallpaperSuggestionAccumulator)initWithTargetNumberOfSuggestions:(unint64_t)a3 targetMinimumNumberOfGatedSuggestions:(unint64_t)a4 maximumNumberOfSuggestionsToTryForGating:(unint64_t)a5 loggingConnection:(id)a6;
-- (void)addSuggestion:(id)a3 passingGating:(BOOL)a4;
+- (PGWallpaperSuggestionAccumulator)initWithTargetNumberOfSuggestions:(unint64_t)suggestions targetMinimumNumberOfGatedSuggestions:(unint64_t)gatedSuggestions maximumNumberOfSuggestionsToTryForGating:(unint64_t)gating loggingConnection:(id)connection;
+- (void)addSuggestion:(id)suggestion passingGating:(BOOL)gating;
 @end
 
 @implementation PGWallpaperSuggestionAccumulator
@@ -52,15 +52,15 @@
   return [(NSMutableArray *)self->_gatingOverflow count]+ v4 >= self->_targetNumberOfSuggestions;
 }
 
-- (void)addSuggestion:(id)a3 passingGating:(BOOL)a4
+- (void)addSuggestion:(id)suggestion passingGating:(BOOL)gating
 {
-  v4 = a4;
+  gatingCopy = gating;
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  suggestionCopy = suggestion;
   suggestions = self->_suggestions;
-  if (v4)
+  if (gatingCopy)
   {
-    [(NSMutableArray *)suggestions addObject:v6];
+    [(NSMutableArray *)suggestions addObject:suggestionCopy];
     ++self->_numberOfGatedSuggestions;
   }
 
@@ -101,7 +101,7 @@
 
       else
       {
-        [(NSMutableArray *)self->_gatingOverflow addObject:v6];
+        [(NSMutableArray *)self->_gatingOverflow addObject:suggestionCopy];
         v29 = self->_loggingConnection;
         if (!os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
         {
@@ -136,7 +136,7 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    [(NSMutableArray *)v9 addObject:v6];
+    [(NSMutableArray *)v9 addObject:suggestionCopy];
   }
 
   v10 = self->_targetMinimumNumberOfGatedSuggestions;
@@ -146,7 +146,7 @@ LABEL_19:
   {
     if (v12)
     {
-      if (v4)
+      if (gatingCopy)
       {
         v13 = @"gated";
       }
@@ -201,18 +201,18 @@ LABEL_20:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (PGWallpaperSuggestionAccumulator)initWithTargetNumberOfSuggestions:(unint64_t)a3 targetMinimumNumberOfGatedSuggestions:(unint64_t)a4 maximumNumberOfSuggestionsToTryForGating:(unint64_t)a5 loggingConnection:(id)a6
+- (PGWallpaperSuggestionAccumulator)initWithTargetNumberOfSuggestions:(unint64_t)suggestions targetMinimumNumberOfGatedSuggestions:(unint64_t)gatedSuggestions maximumNumberOfSuggestionsToTryForGating:(unint64_t)gating loggingConnection:(id)connection
 {
-  v11 = a6;
+  connectionCopy = connection;
   v19.receiver = self;
   v19.super_class = PGWallpaperSuggestionAccumulator;
   v12 = [(PGWallpaperSuggestionAccumulator *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    v12->_targetNumberOfSuggestions = a3;
-    v12->_targetMinimumNumberOfGatedSuggestions = a4;
-    v12->_maximumNumberOfSuggestionsToTryForGating = a5;
+    v12->_targetNumberOfSuggestions = suggestions;
+    v12->_targetMinimumNumberOfGatedSuggestions = gatedSuggestions;
+    v12->_maximumNumberOfSuggestionsToTryForGating = gating;
     v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
     suggestions = v13->_suggestions;
     v13->_suggestions = v14;
@@ -221,7 +221,7 @@ LABEL_20:
     gatingOverflow = v13->_gatingOverflow;
     v13->_gatingOverflow = v16;
 
-    objc_storeStrong(&v13->_loggingConnection, a6);
+    objc_storeStrong(&v13->_loggingConnection, connection);
   }
 
   return v13;

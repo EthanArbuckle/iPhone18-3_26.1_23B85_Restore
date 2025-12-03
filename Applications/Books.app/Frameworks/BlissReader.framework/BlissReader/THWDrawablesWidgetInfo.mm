@@ -1,21 +1,21 @@
 @interface THWDrawablesWidgetInfo
-- (THWDrawablesWidgetInfo)initWithContext:(id)a3 geometry:(id)a4;
+- (THWDrawablesWidgetInfo)initWithContext:(id)context geometry:(id)geometry;
 - (TSWPopUpInfo)popUpInfo;
 - (id)childEnumerator;
 - (id)childInfos;
 - (void)dealloc;
-- (void)setAdornmentInfo:(id)a3;
-- (void)setExpandedStageDrawable:(id)a3;
-- (void)setStageDrawable:(id)a3;
+- (void)setAdornmentInfo:(id)info;
+- (void)setExpandedStageDrawable:(id)drawable;
+- (void)setStageDrawable:(id)drawable;
 @end
 
 @implementation THWDrawablesWidgetInfo
 
-- (THWDrawablesWidgetInfo)initWithContext:(id)a3 geometry:(id)a4
+- (THWDrawablesWidgetInfo)initWithContext:(id)context geometry:(id)geometry
 {
   v5.receiver = self;
   v5.super_class = THWDrawablesWidgetInfo;
-  result = [(THWDrawablesWidgetInfo *)&v5 initWithContext:a3 geometry:a4];
+  result = [(THWDrawablesWidgetInfo *)&v5 initWithContext:context geometry:geometry];
   if (result)
   {
     result->_containerWrap = 1;
@@ -31,62 +31,62 @@
   [(THWDrawablesWidgetInfo *)&v3 dealloc];
 }
 
-- (void)setStageDrawable:(id)a3
+- (void)setStageDrawable:(id)drawable
 {
   stageDrawable = self->_stageDrawable;
-  if (stageDrawable != a3)
+  if (stageDrawable != drawable)
   {
     [(TSDInfo *)stageDrawable setParentInfo:0];
 
-    v6 = a3;
-    self->_stageDrawable = v6;
-    [(TSDInfo *)v6 setParentInfo:self];
+    drawableCopy = drawable;
+    self->_stageDrawable = drawableCopy;
+    [(TSDInfo *)drawableCopy setParentInfo:self];
     v7 = TSUProtocolCast();
-    v8 = [(THWDrawablesWidgetInfo *)self adornmentInfo];
+    adornmentInfo = [(THWDrawablesWidgetInfo *)self adornmentInfo];
 
-    [v7 setPanelContentProvider:v8];
+    [v7 setPanelContentProvider:adornmentInfo];
   }
 }
 
-- (void)setExpandedStageDrawable:(id)a3
+- (void)setExpandedStageDrawable:(id)drawable
 {
   expandedStageDrawable = self->_expandedStageDrawable;
-  if (expandedStageDrawable != a3)
+  if (expandedStageDrawable != drawable)
   {
     [(TSDInfo *)expandedStageDrawable setParentInfo:0];
 
-    v6 = a3;
-    self->_expandedStageDrawable = v6;
-    [(TSDInfo *)v6 setParentInfo:self];
+    drawableCopy = drawable;
+    self->_expandedStageDrawable = drawableCopy;
+    [(TSDInfo *)drawableCopy setParentInfo:self];
     v7 = TSUProtocolCast();
-    v8 = [(THWDrawablesWidgetInfo *)self adornmentInfo];
+    adornmentInfo = [(THWDrawablesWidgetInfo *)self adornmentInfo];
 
-    [v7 setPanelContentProvider:v8];
+    [v7 setPanelContentProvider:adornmentInfo];
   }
 }
 
-- (void)setAdornmentInfo:(id)a3
+- (void)setAdornmentInfo:(id)info
 {
   adornmentInfo = self->_adornmentInfo;
-  if (adornmentInfo != a3)
+  if (adornmentInfo != info)
   {
 
-    self->_adornmentInfo = a3;
+    self->_adornmentInfo = info;
     [TSUProtocolCast() setPanelContentProvider:{-[THWDrawablesWidgetInfo adornmentInfo](self, "adornmentInfo")}];
     v6 = TSUProtocolCast();
-    v7 = [(THWDrawablesWidgetInfo *)self adornmentInfo];
+    adornmentInfo = [(THWDrawablesWidgetInfo *)self adornmentInfo];
 
-    [v6 setPanelContentProvider:v7];
+    [v6 setPanelContentProvider:adornmentInfo];
   }
 }
 
 - (id)childInfos
 {
-  v3 = [(THWDrawablesWidgetInfo *)self adornmentInfo];
+  adornmentInfo = [(THWDrawablesWidgetInfo *)self adornmentInfo];
   if ([(THWDrawablesWidgetInfo *)self stageDrawable])
   {
-    v6 = [(THWDrawablesWidgetInfo *)self stageDrawable];
-    v4 = [NSArray arrayWithObjects:&v6 count:1];
+    stageDrawable = [(THWDrawablesWidgetInfo *)self stageDrawable];
+    v4 = [NSArray arrayWithObjects:&stageDrawable count:1];
   }
 
   else
@@ -94,7 +94,7 @@
     v4 = &__NSArray0__struct;
   }
 
-  return [(THWWidgetAdornmentInfo *)v3 interleavedInfosWithInfos:v4];
+  return [(THWWidgetAdornmentInfo *)adornmentInfo interleavedInfosWithInfos:v4];
 }
 
 - (TSWPopUpInfo)popUpInfo
@@ -107,9 +107,9 @@
 
 - (id)childEnumerator
 {
-  v2 = [(THWDrawablesWidgetInfo *)self childInfos];
+  childInfos = [(THWDrawablesWidgetInfo *)self childInfos];
 
-  return [v2 objectEnumerator];
+  return [childInfos objectEnumerator];
 }
 
 @end

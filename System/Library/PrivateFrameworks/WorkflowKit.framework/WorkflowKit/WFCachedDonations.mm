@@ -1,41 +1,41 @@
 @interface WFCachedDonations
-- (BOOL)isValidWithBallpark:(unint64_t)a3;
-- (WFCachedDonations)initWithDonations:(id)a3 ballpark:(unint64_t)a4;
+- (BOOL)isValidWithBallpark:(unint64_t)ballpark;
+- (WFCachedDonations)initWithDonations:(id)donations ballpark:(unint64_t)ballpark;
 @end
 
 @implementation WFCachedDonations
 
-- (BOOL)isValidWithBallpark:(unint64_t)a3
+- (BOOL)isValidWithBallpark:(unint64_t)ballpark
 {
-  if ([(WFCachedDonations *)self ballpark]!= a3)
+  if ([(WFCachedDonations *)self ballpark]!= ballpark)
   {
     return 0;
   }
 
-  v4 = [(WFCachedDonations *)self fetchDate];
+  fetchDate = [(WFCachedDonations *)self fetchDate];
   v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-600.0];
-  v6 = [v4 compare:v5] == 1;
+  v6 = [fetchDate compare:v5] == 1;
 
   return v6;
 }
 
-- (WFCachedDonations)initWithDonations:(id)a3 ballpark:(unint64_t)a4
+- (WFCachedDonations)initWithDonations:(id)donations ballpark:(unint64_t)ballpark
 {
-  v6 = a3;
+  donationsCopy = donations;
   v14.receiver = self;
   v14.super_class = WFCachedDonations;
   v7 = [(WFCachedDonations *)&v14 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [donationsCopy copy];
     donations = v7->_donations;
     v7->_donations = v8;
 
-    v10 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     fetchDate = v7->_fetchDate;
-    v7->_fetchDate = v10;
+    v7->_fetchDate = date;
 
-    v7->_ballpark = a4;
+    v7->_ballpark = ballpark;
     v12 = v7;
   }
 

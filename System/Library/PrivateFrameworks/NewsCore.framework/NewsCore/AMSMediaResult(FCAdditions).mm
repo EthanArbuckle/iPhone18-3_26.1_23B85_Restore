@@ -12,11 +12,11 @@
 
 - (id)fc_appAdamID
 {
-  v1 = [a1 responseDataItems];
-  v2 = [v1 firstObject];
+  responseDataItems = [self responseDataItems];
+  firstObject = [responseDataItems firstObject];
 
   objc_opt_class();
-  v3 = [v2 objectForKey:@"relationships"];
+  v3 = [firstObject objectForKey:@"relationships"];
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -82,8 +82,8 @@
   v11 = v10;
 
   objc_opt_class();
-  v12 = [v11 firstObject];
-  v13 = [v12 objectForKey:@"id"];
+  firstObject2 = [v11 firstObject];
+  v13 = [firstObject2 objectForKey:@"id"];
   if (v13)
   {
     if (objc_opt_isKindOfClass())
@@ -119,11 +119,11 @@
 
 - (void)fc_offerName
 {
-  v1 = [a1 responseDataItems];
-  v2 = [v1 firstObject];
+  responseDataItems = [self responseDataItems];
+  firstObject = [responseDataItems firstObject];
 
   objc_opt_class();
-  v3 = [v2 objectForKey:@"attributes"];
+  v3 = [firstObject objectForKey:@"attributes"];
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -171,11 +171,11 @@
 
 - (void)fc_externalVersionID
 {
-  v1 = [a1 responseDataItems];
-  v2 = [v1 firstObject];
+  responseDataItems = [self responseDataItems];
+  firstObject = [responseDataItems firstObject];
 
   objc_opt_class();
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  v3 = [firstObject objectForKeyedSubscript:@"attributes"];
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -267,11 +267,11 @@
 
 - (void)fc_bundleID
 {
-  v1 = [a1 responseDataItems];
-  v2 = [v1 firstObject];
+  responseDataItems = [self responseDataItems];
+  firstObject = [responseDataItems firstObject];
 
   objc_opt_class();
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  v3 = [firstObject objectForKeyedSubscript:@"attributes"];
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -363,13 +363,13 @@
 
 - (id)fc_introductoryOffers
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = [a1 responseDataItems];
-  v4 = [v3 firstObject];
+  array = [MEMORY[0x1E695DF70] array];
+  responseDataItems = [self responseDataItems];
+  firstObject = [responseDataItems firstObject];
 
   objc_opt_class();
-  v30 = v4;
-  v5 = [v4 objectForKey:@"attributes"];
+  v30 = firstObject;
+  v5 = [firstObject objectForKey:@"attributes"];
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -392,9 +392,9 @@
 
   v29 = v7;
   v8 = [v7 objectForKey:@"offers"];
-  v9 = [v8 firstObject];
+  firstObject2 = [v8 firstObject];
   objc_opt_class();
-  v10 = [v9 objectForKey:@"discounts"];
+  v10 = [firstObject2 objectForKey:@"discounts"];
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -415,9 +415,9 @@
 
   v12 = v11;
 
-  v13 = [v12 firstObject];
+  firstObject3 = [v12 firstObject];
   objc_opt_class();
-  v14 = [v13 objectForKey:@"priceFormatted"];
+  v14 = [firstObject3 objectForKey:@"priceFormatted"];
   if (v14)
   {
     if (objc_opt_isKindOfClass())
@@ -439,7 +439,7 @@
   v16 = v15;
 
   objc_opt_class();
-  v17 = [v13 objectForKey:@"recurringSubscriptionPeriod"];
+  v17 = [firstObject3 objectForKey:@"recurringSubscriptionPeriod"];
   if (v17)
   {
     if (objc_opt_isKindOfClass())
@@ -461,7 +461,7 @@
   v19 = v18;
 
   objc_opt_class();
-  v20 = [v13 objectForKey:@"numOfPeriods"];
+  v20 = [firstObject3 objectForKey:@"numOfPeriods"];
   if (v20)
   {
     if (objc_opt_isKindOfClass())
@@ -483,7 +483,7 @@
   v22 = v21;
 
   objc_opt_class();
-  v23 = [v13 objectForKey:@"modeType"];
+  v23 = [firstObject3 objectForKey:@"modeType"];
   if (v23)
   {
     if (objc_opt_isKindOfClass())
@@ -525,20 +525,20 @@
   }
 
   v27 = -[FCIntroductoryOffer initWithOfferType:priceFormatted:recurringSubscriptionPeriod:numOfPeriods:]([FCIntroductoryOffer alloc], "initWithOfferType:priceFormatted:recurringSubscriptionPeriod:numOfPeriods:", v26, v16, v19, [v22 unsignedIntegerValue]);
-  [v2 addObject:v27];
+  [array addObject:v27];
 
 LABEL_38:
 
-  return v2;
+  return array;
 }
 
 - (void)fc_subscriptionPeriodInISO_8601
 {
-  v2 = [a1 responseDataItems];
-  v3 = [v2 firstObject];
+  responseDataItems = [self responseDataItems];
+  firstObject = [responseDataItems firstObject];
 
   objc_opt_class();
-  v4 = [v3 objectForKey:@"attributes"];
+  v4 = [firstObject objectForKey:@"attributes"];
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -560,9 +560,9 @@ LABEL_38:
   v6 = v5;
 
   v7 = [v6 objectForKey:@"offers"];
-  v8 = [v7 firstObject];
+  firstObject2 = [v7 firstObject];
   objc_opt_class();
-  v9 = [v8 objectForKey:@"recurringSubscriptionPeriod"];
+  v9 = [firstObject2 objectForKey:@"recurringSubscriptionPeriod"];
   if (v9)
   {
     if (objc_opt_isKindOfClass())
@@ -608,7 +608,7 @@ LABEL_38:
     v11 = v13;
   }
 
-  if ([a1 isPeriodValid:v11])
+  if ([self isPeriodValid:v11])
   {
     v14 = v11;
   }

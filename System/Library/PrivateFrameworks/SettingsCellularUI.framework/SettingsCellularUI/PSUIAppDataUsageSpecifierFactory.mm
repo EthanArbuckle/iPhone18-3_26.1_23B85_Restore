@@ -2,39 +2,39 @@
 - (Class)_bundleClassForHotspotDataUsage;
 - (PSAppCellularUsageSpecifierDelegate)policySpecifierDelegate;
 - (PSBillingPeriodSelectorSpecifierDelegate)billingCycleDelegate;
-- (PSUIAppDataUsageSpecifierFactory)initWithGroupSpecifierTitle:(id)a3 managementCache:(id)a4 statisticsCache:(id)a5 carrierSpaceManager:(id)a6 usageType:(unint64_t)a7 billingCycleDelegate:(id)a8 policySpecifierDelegate:(id)a9;
+- (PSUIAppDataUsageSpecifierFactory)initWithGroupSpecifierTitle:(id)title managementCache:(id)cache statisticsCache:(id)statisticsCache carrierSpaceManager:(id)manager usageType:(unint64_t)type billingCycleDelegate:(id)delegate policySpecifierDelegate:(id)specifierDelegate;
 - (id)contentSpecifiers;
 - (id)headerSpecifiers;
-- (void)addAppUsageSpecifiersToContentSpecifiers:(id)a3;
-- (void)addLeadingSpecifiersToContentSpecifiers:(id)a3;
-- (void)addTrailingSpecifiersToContentSpecifiers:(id)a3;
+- (void)addAppUsageSpecifiersToContentSpecifiers:(id)specifiers;
+- (void)addLeadingSpecifiersToContentSpecifiers:(id)specifiers;
+- (void)addTrailingSpecifiersToContentSpecifiers:(id)specifiers;
 - (void)refreshOrderingOfContentSpecifiers;
-- (void)setGroupSpecifierTitle:(id)a3;
+- (void)setGroupSpecifierTitle:(id)title;
 @end
 
 @implementation PSUIAppDataUsageSpecifierFactory
 
-- (PSUIAppDataUsageSpecifierFactory)initWithGroupSpecifierTitle:(id)a3 managementCache:(id)a4 statisticsCache:(id)a5 carrierSpaceManager:(id)a6 usageType:(unint64_t)a7 billingCycleDelegate:(id)a8 policySpecifierDelegate:(id)a9
+- (PSUIAppDataUsageSpecifierFactory)initWithGroupSpecifierTitle:(id)title managementCache:(id)cache statisticsCache:(id)statisticsCache carrierSpaceManager:(id)manager usageType:(unint64_t)type billingCycleDelegate:(id)delegate policySpecifierDelegate:(id)specifierDelegate
 {
-  v24 = a3;
-  v23 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = a9;
+  titleCopy = title;
+  cacheCopy = cache;
+  statisticsCacheCopy = statisticsCache;
+  managerCopy = manager;
+  delegateCopy = delegate;
+  specifierDelegateCopy = specifierDelegate;
   v25.receiver = self;
   v25.super_class = PSUIAppDataUsageSpecifierFactory;
   v19 = [(PSUIAppDataUsageSpecifierFactory *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_managementCache, a4);
-    objc_storeStrong(&v20->_statisticsCache, a5);
-    objc_storeStrong(&v20->_carrierSpaceManager, a6);
-    v20->_usageType = a7;
-    objc_storeWeak(&v20->_billingCycleDelegate, v17);
-    objc_storeWeak(&v20->_policySpecifierDelegate, v18);
-    objc_storeStrong(&v20->_groupSpecifierTitle, a3);
+    objc_storeStrong(&v19->_managementCache, cache);
+    objc_storeStrong(&v20->_statisticsCache, statisticsCache);
+    objc_storeStrong(&v20->_carrierSpaceManager, manager);
+    v20->_usageType = type;
+    objc_storeWeak(&v20->_billingCycleDelegate, delegateCopy);
+    objc_storeWeak(&v20->_policySpecifierDelegate, specifierDelegateCopy);
+    objc_storeStrong(&v20->_groupSpecifierTitle, title);
   }
 
   return v20;
@@ -49,11 +49,11 @@
     if ([(PSCellularManagementCache *)self->_managementCache hasManagedCellularData])
     {
       v5 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"DATA_USAGE_MANAGED_GROUP"];
-      v6 = [(PSCellularManagementCache *)self->_managementCache mdmName];
+      mdmName = [(PSCellularManagementCache *)self->_managementCache mdmName];
       v7 = MEMORY[0x277CCACA8];
       v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v9 = [v8 localizedStringForKey:@"APP_DATA_USAGE_MANAGED" value:&stru_287733598 table:@"Cellular"];
-      v10 = [v7 stringWithFormat:v9, v6];
+      v10 = [v7 stringWithFormat:v9, mdmName];
       [v5 setProperty:v10 forKey:*MEMORY[0x277D3FF88]];
 
       [(NSArray *)v4 addObject:v5];
@@ -72,60 +72,60 @@
 
 - (id)contentSpecifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_savedContentSpecifiers)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_savedContentSpecifiers)
   {
-    if ([(PSDataUsageStatisticsCache *)v2->_statisticsCache billingCycleSupported])
+    if ([(PSDataUsageStatisticsCache *)selfCopy->_statisticsCache billingCycleSupported])
     {
-      [(PSBillingPeriodSelectorSpecifier *)v2->_billingPeriodSelectorSpecifier refreshSelectorWithStatisticsCache:v2->_statisticsCache];
+      [(PSBillingPeriodSelectorSpecifier *)selfCopy->_billingPeriodSelectorSpecifier refreshSelectorWithStatisticsCache:selfCopy->_statisticsCache];
     }
   }
 
   else
   {
-    v3 = [(PSUIAppDataUsageSpecifierFactory *)v2 getLogger];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUIAppDataUsageSpecifierFactory *)selfCopy getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Creating app usage specifiers", buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Creating app usage specifiers", buf, 2u);
     }
 
     v4 = objc_alloc_init(PSUICellularUsageContentSpecifiers);
-    [(PSUIAppDataUsageSpecifierFactory *)v2 addLeadingSpecifiersToContentSpecifiers:v4];
-    [(PSUIAppDataUsageSpecifierFactory *)v2 addAppUsageSpecifiersToContentSpecifiers:v4];
-    [(PSUIAppDataUsageSpecifierFactory *)v2 addTrailingSpecifiersToContentSpecifiers:v4];
-    savedContentSpecifiers = v2->_savedContentSpecifiers;
-    v2->_savedContentSpecifiers = v4;
+    [(PSUIAppDataUsageSpecifierFactory *)selfCopy addLeadingSpecifiersToContentSpecifiers:v4];
+    [(PSUIAppDataUsageSpecifierFactory *)selfCopy addAppUsageSpecifiersToContentSpecifiers:v4];
+    [(PSUIAppDataUsageSpecifierFactory *)selfCopy addTrailingSpecifiersToContentSpecifiers:v4];
+    savedContentSpecifiers = selfCopy->_savedContentSpecifiers;
+    selfCopy->_savedContentSpecifiers = v4;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v6 = [(PSUIAppDataUsageSpecifierFactory *)v2 getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  getLogger2 = [(PSUIAppDataUsageSpecifierFactory *)selfCopy getLogger];
+  if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
   {
     *v9 = 0;
-    _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "Returning saved specifiers", v9, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Returning saved specifiers", v9, 2u);
   }
 
-  v7 = [(PSUICellularUsageContentSpecifiers *)v2->_savedContentSpecifiers specifiers];
+  specifiers = [(PSUICellularUsageContentSpecifiers *)selfCopy->_savedContentSpecifiers specifiers];
 
-  return v7;
+  return specifiers;
 }
 
-- (void)addLeadingSpecifiersToContentSpecifiers:(id)a3
+- (void)addLeadingSpecifiersToContentSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   v5 = objc_opt_new();
-  v6 = [(PSDataUsageStatisticsCache *)self->_statisticsCache billingCycleSupported];
-  v7 = [(PSUIAppDataUsageSpecifierFactory *)self getLogger];
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  billingCycleSupported = [(PSDataUsageStatisticsCache *)self->_statisticsCache billingCycleSupported];
+  getLogger = [(PSUIAppDataUsageSpecifierFactory *)self getLogger];
+  v8 = os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT);
+  if (billingCycleSupported)
   {
     if (v8)
     {
       *buf = 0;
-      _os_log_impl(&dword_2658DE000, v7, OS_LOG_TYPE_DEFAULT, "Billing cycle supported, adding billing period selector.", buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Billing cycle supported, adding billing period selector.", buf, 2u);
     }
 
     if (!self->_billingPeriodSelectorSpecifier)
@@ -141,11 +141,11 @@
     [v5 insertObject:self->_billingPeriodSelectorSpecifier atIndex:0];
     if ([(PSDataUsageStatisticsCache *)self->_statisticsCache useCalendarMonthBillingCycle])
     {
-      v12 = [(PSUIAppDataUsageSpecifierFactory *)self getLogger];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      getLogger2 = [(PSUIAppDataUsageSpecifierFactory *)self getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
       {
         *v30 = 0;
-        _os_log_impl(&dword_2658DE000, v12, OS_LOG_TYPE_DEFAULT, "Using calendar month billing cycle and adding total usage subgroup", v30, 2u);
+        _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Using calendar month billing cycle and adding total usage subgroup", v30, 2u);
       }
 
       p_totalUsageSubgroup = &self->_totalUsageSubgroup;
@@ -156,8 +156,8 @@
 LABEL_18:
         [(PSUITotalCellularUsageSubgroup *)totalUsageSubgroup setBillingPeriodSource:v15];
 LABEL_22:
-        v25 = [(PSUITotalCellularUsageSubgroup *)*p_totalUsageSubgroup specifiers];
-        [v5 addObjectsFromArray:v25];
+        specifiers = [(PSUITotalCellularUsageSubgroup *)*p_totalUsageSubgroup specifiers];
+        [v5 addObjectsFromArray:specifiers];
 
         goto LABEL_23;
       }
@@ -175,19 +175,19 @@ LABEL_22:
     if (v8)
     {
       *v29 = 0;
-      _os_log_impl(&dword_2658DE000, v7, OS_LOG_TYPE_DEFAULT, "Billing cycle not supported, adding standard total app usage headers.", v29, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Billing cycle not supported, adding standard total app usage headers.", v29, 2u);
     }
 
-    v16 = [(PSUICarrierSpaceManager *)self->_carrierSpaceManager capabilities];
-    v17 = [v16 supportsUsage];
+    capabilities = [(PSUICarrierSpaceManager *)self->_carrierSpaceManager capabilities];
+    supportsUsage = [capabilities supportsUsage];
 
-    if ((v17 & 1) == 0)
+    if ((supportsUsage & 1) == 0)
     {
-      v18 = [(PSUIAppDataUsageSpecifierFactory *)self getLogger];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      getLogger3 = [(PSUIAppDataUsageSpecifierFactory *)self getLogger];
+      if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
       {
         *v28 = 0;
-        _os_log_impl(&dword_2658DE000, v18, OS_LOG_TYPE_DEFAULT, "carrier space usage not supported, adding local total usage headers", v28, 2u);
+        _os_log_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_DEFAULT, "carrier space usage not supported, adding local total usage headers", v28, 2u);
       }
 
       p_totalUsageSubgroup = &self->_totalUsageSubgroup;
@@ -216,25 +216,25 @@ LABEL_23:
   [v26 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
   [v5 addObject:v26];
   v27 = [MEMORY[0x277CBEA60] arrayWithArray:v5];
-  [v4 setLeadingContentSpecifiers:v27];
+  [specifiersCopy setLeadingContentSpecifiers:v27];
 }
 
-- (void)addAppUsageSpecifiersToContentSpecifiers:(id)a3
+- (void)addAppUsageSpecifiersToContentSpecifiers:(id)specifiers
 {
   v41 = *MEMORY[0x277D85DE8];
-  v28 = a3;
+  specifiersCopy = specifiers;
   v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = [PSUIAppsAndCategoriesDataUsageSubgroup alloc];
   WeakRetained = objc_loadWeakRetained(&self->_policySpecifierDelegate);
   statisticsCache = self->_statisticsCache;
-  v7 = [MEMORY[0x277D4D840] sharedInstance];
-  v8 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)v4 initWithPolicySpecifierDelegate:WeakRetained statisticsCache:statisticsCache policyCache:v7 usageType:self->_usageType];
+  mEMORY[0x277D4D840] = [MEMORY[0x277D4D840] sharedInstance];
+  v8 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)v4 initWithPolicySpecifierDelegate:WeakRetained statisticsCache:statisticsCache policyCache:mEMORY[0x277D4D840] usageType:self->_usageType];
 
   v9 = +[CTUIDataUsageSorting userSelectedComparator];
   v27 = v8;
   v10 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)v8 specifiersWithSortComparator:v9];
 
-  v11 = [(PSUIAppDataUsageSpecifierFactory *)self _bundleClassForHotspotDataUsage];
+  _bundleClassForHotspotDataUsage = [(PSUIAppDataUsageSpecifierFactory *)self _bundleClassForHotspotDataUsage];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -263,8 +263,8 @@ LABEL_23:
           v34 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v17 = [v16 subcategorySpecifiers];
-          v18 = [v17 countByEnumeratingWithState:&v31 objects:v39 count:16];
+          subcategorySpecifiers = [v16 subcategorySpecifiers];
+          v18 = [subcategorySpecifiers countByEnumeratingWithState:&v31 objects:v39 count:16];
           if (v18)
           {
             v19 = v18;
@@ -275,13 +275,13 @@ LABEL_23:
               {
                 if (*v32 != v20)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(subcategorySpecifiers);
                 }
 
                 [*(*(&v31 + 1) + 8 * j) setBillingPeriodSource:self->_billingPeriodSelectorSpecifier];
               }
 
-              v19 = [v17 countByEnumeratingWithState:&v31 objects:v39 count:16];
+              v19 = [subcategorySpecifiers countByEnumeratingWithState:&v31 objects:v39 count:16];
             }
 
             while (v19);
@@ -291,16 +291,16 @@ LABEL_23:
         else
         {
           v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-          v23 = [v22 principalClass];
+          principalClass = [v22 principalClass];
 
-          if (v11 && v23 == v11)
+          if (_bundleClassForHotspotDataUsage && principalClass == _bundleClassForHotspotDataUsage)
           {
             [v16 setBillingPeriodSource:self->_billingPeriodSelectorSpecifier];
             continue;
           }
 
-          v17 = [v16 bundleID];
-          [(NSArray *)v29 addObject:v17];
+          subcategorySpecifiers = [v16 bundleID];
+          [(NSArray *)v29 addObject:subcategorySpecifiers];
         }
       }
 
@@ -311,7 +311,7 @@ LABEL_23:
   }
 
   v24 = [MEMORY[0x277CBEB18] arrayWithArray:obj];
-  [v28 setAppSpecifiers:v24];
+  [specifiersCopy setAppSpecifiers:v24];
 
   bundleIDs = self->_bundleIDs;
   self->_bundleIDs = v29;
@@ -319,27 +319,27 @@ LABEL_23:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addTrailingSpecifiersToContentSpecifiers:(id)a3
+- (void)addTrailingSpecifiersToContentSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   v5 = objc_opt_new();
-  v6 = [v4 appSpecifiers];
-  v7 = [v6 count];
+  appSpecifiers = [specifiersCopy appSpecifiers];
+  v7 = [appSpecifiers count];
 
   if (!v7)
   {
-    v8 = [(PSUIAppDataUsageSpecifierFactory *)self getLogger];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUIAppDataUsageSpecifierFactory *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "No app usage specifiers, adding No Usage specifier", buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "No app usage specifiers, adding No Usage specifier", buf, 2u);
     }
 
-    v9 = [MEMORY[0x277D75418] currentDevice];
-    v10 = [v9 sf_isChinaRegionCellularDevice];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    sf_isChinaRegionCellularDevice = [currentDevice sf_isChinaRegionCellularDevice];
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = v11;
-    if (v10)
+    if (sf_isChinaRegionCellularDevice)
     {
       v13 = @"APPS_APPEAR_AFTER_WIRELESS_DATA_USAGE";
     }
@@ -357,27 +357,27 @@ LABEL_23:
   }
 
   v16 = [MEMORY[0x277CBEA60] arrayWithArray:v5];
-  [v4 setTrailingContentSpecifiers:v16];
+  [specifiersCopy setTrailingContentSpecifiers:v16];
 }
 
 - (void)refreshOrderingOfContentSpecifiers
 {
-  v3 = [(PSUIAppDataUsageSpecifierFactory *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIAppDataUsageSpecifierFactory *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Sorting app specifiers", v6, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Sorting app specifiers", v6, 2u);
   }
 
-  v4 = [(PSUICellularUsageContentSpecifiers *)self->_savedContentSpecifiers appSpecifiers];
+  appSpecifiers = [(PSUICellularUsageContentSpecifiers *)self->_savedContentSpecifiers appSpecifiers];
   v5 = +[CTUIDataUsageSorting userSelectedComparator];
-  [v4 sortUsingComparator:v5];
+  [appSpecifiers sortUsingComparator:v5];
 }
 
-- (void)setGroupSpecifierTitle:(id)a3
+- (void)setGroupSpecifierTitle:(id)title
 {
-  objc_storeStrong(&self->_groupSpecifierTitle, a3);
-  v7 = a3;
+  objc_storeStrong(&self->_groupSpecifierTitle, title);
+  titleCopy = title;
   savedContentSpecifiers = self->_savedContentSpecifiers;
   self->_savedContentSpecifiers = 0;
 
@@ -395,15 +395,15 @@ LABEL_23:
     v6 = [v3 bundleWithPath:v5];
 
     [v6 load];
-    v7 = [v6 principalClass];
+    principalClass = [v6 principalClass];
   }
 
   else
   {
-    v7 = 0;
+    principalClass = 0;
   }
 
-  return v7;
+  return principalClass;
 }
 
 - (PSBillingPeriodSelectorSpecifierDelegate)billingCycleDelegate

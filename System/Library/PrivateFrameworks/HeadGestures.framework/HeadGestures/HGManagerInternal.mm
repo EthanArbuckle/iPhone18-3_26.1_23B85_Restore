@@ -1,11 +1,11 @@
 @interface HGManagerInternal
 - (HGConfigurationInternal)configuration;
 - (HGManagerInternal)init;
-- (HGManagerInternal)initWithDelegate:(id)a3 config:(id)a4;
-- (void)muteAudioFeedbackWithSetting:(BOOL)a3;
-- (void)setConfiguration:(id)a3;
+- (HGManagerInternal)initWithDelegate:(id)delegate config:(id)config;
+- (void)muteAudioFeedbackWithSetting:(BOOL)setting;
+- (void)setConfiguration:(id)configuration;
 - (void)start;
-- (void)stopWith:(id)a3;
+- (void)stopWith:(id)with;
 @end
 
 @implementation HGManagerInternal
@@ -17,20 +17,20 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v5 = OBJC_IVAR___HGManagerInternal_configuration;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = configuration;
+  configurationCopy = configuration;
 }
 
-- (HGManagerInternal)initWithDelegate:(id)a3 config:(id)a4
+- (HGManagerInternal)initWithDelegate:(id)delegate config:(id)config
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = sub_2511247C8(a3, v6);
+  configCopy = config;
+  v7 = sub_2511247C8(delegate, configCopy);
   swift_unknownObjectRelease();
 
   return v7;
@@ -38,13 +38,13 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_251121984();
 }
 
-- (void)stopWith:(id)a3
+- (void)stopWith:(id)with
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(with);
   if (v4)
   {
     v5 = v4;
@@ -59,15 +59,15 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_251122774(v7, v6);
   sub_251102FFC(v7);
 }
 
-- (void)muteAudioFeedbackWithSetting:(BOOL)a3
+- (void)muteAudioFeedbackWithSetting:(BOOL)setting
 {
-  v4 = self;
-  sub_251123CF4(a3);
+  selfCopy = self;
+  sub_251123CF4(setting);
 }
 
 - (HGManagerInternal)init

@@ -13,114 +13,114 @@
 
 + (void)initGlobalCache
 {
-  v14 = [MEMORY[0x277CCACC8] currentThread];
-  v2 = [v14 threadDictionary];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v2 setObject:v3 forKey:@"gColorPropertyCache"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [threadDictionary setObject:dictionary forKey:@"gColorPropertyCache"];
 
-  v15 = [MEMORY[0x277CCACC8] currentThread];
-  v4 = [v15 threadDictionary];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  [v4 setObject:v5 forKey:@"gLengthPropertyCache"];
+  currentThread2 = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary2 = [currentThread2 threadDictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [threadDictionary2 setObject:dictionary2 forKey:@"gLengthPropertyCache"];
 
-  v16 = [MEMORY[0x277CCACC8] currentThread];
-  v6 = [v16 threadDictionary];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  [v6 setObject:v7 forKey:@"gBorderStyleCache"];
+  currentThread3 = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary3 = [currentThread3 threadDictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+  [threadDictionary3 setObject:dictionary3 forKey:@"gBorderStyleCache"];
 
-  v17 = [MEMORY[0x277CCACC8] currentThread];
-  v8 = [v17 threadDictionary];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  [v8 setObject:v9 forKey:@"gBorderWidthCache"];
+  currentThread4 = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary4 = [currentThread4 threadDictionary];
+  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
+  [threadDictionary4 setObject:dictionary4 forKey:@"gBorderWidthCache"];
 
-  v18 = [MEMORY[0x277CCACC8] currentThread];
-  v10 = [v18 threadDictionary];
-  v11 = [MEMORY[0x277CBEB38] dictionary];
-  [v10 setObject:v11 forKey:@"gCssStylesheetCache"];
+  currentThread5 = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary5 = [currentThread5 threadDictionary];
+  dictionary5 = [MEMORY[0x277CBEB38] dictionary];
+  [threadDictionary5 setObject:dictionary5 forKey:@"gCssStylesheetCache"];
 
-  v19 = [MEMORY[0x277CCACC8] currentThread];
-  v12 = [v19 threadDictionary];
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  [v12 setObject:v13 forKey:@"gDrawableElementCache"];
+  currentThread6 = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary6 = [currentThread6 threadDictionary];
+  dictionary6 = [MEMORY[0x277CBEB38] dictionary];
+  [threadDictionary6 setObject:dictionary6 forKey:@"gDrawableElementCache"];
 }
 
 + (id)colorPropertyCache
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKey:@"gColorPropertyCache"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKey:@"gColorPropertyCache"];
 
   return v4;
 }
 
 + (id)drawableElementCache
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKey:@"gDrawableElementCache"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKey:@"gDrawableElementCache"];
 
   return v4;
 }
 
 + (id)lengthPropertyCache
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKey:@"gLengthPropertyCache"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKey:@"gLengthPropertyCache"];
 
   return v4;
 }
 
 + (void)releaseGlobalCache
 {
-  v8 = [MEMORY[0x277CCACC8] currentThread];
-  v2 = [v8 threadDictionary];
-  [v2 setValue:0 forKey:@"gColorPropertyCache"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  [threadDictionary setValue:0 forKey:@"gColorPropertyCache"];
 
-  v9 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v9 threadDictionary];
-  [v3 setValue:0 forKey:@"gLengthPropertyCache"];
+  currentThread2 = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary2 = [currentThread2 threadDictionary];
+  [threadDictionary2 setValue:0 forKey:@"gLengthPropertyCache"];
 
-  v10 = [MEMORY[0x277CCACC8] currentThread];
-  v4 = [v10 threadDictionary];
-  [v4 setValue:0 forKey:@"gBorderStyleCache"];
+  currentThread3 = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary3 = [currentThread3 threadDictionary];
+  [threadDictionary3 setValue:0 forKey:@"gBorderStyleCache"];
 
-  v11 = [MEMORY[0x277CCACC8] currentThread];
-  v5 = [v11 threadDictionary];
-  [v5 setValue:0 forKey:@"gBorderWidthCache"];
+  currentThread4 = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary4 = [currentThread4 threadDictionary];
+  [threadDictionary4 setValue:0 forKey:@"gBorderWidthCache"];
 
-  v12 = [MEMORY[0x277CCACC8] currentThread];
-  v6 = [v12 threadDictionary];
-  [v6 setValue:0 forKey:@"gCssStylesheetCache"];
+  currentThread5 = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary5 = [currentThread5 threadDictionary];
+  [threadDictionary5 setValue:0 forKey:@"gCssStylesheetCache"];
 
-  v13 = [MEMORY[0x277CCACC8] currentThread];
-  v7 = [v13 threadDictionary];
-  [v7 setValue:0 forKey:@"gDrawableElementCache"];
+  currentThread6 = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary6 = [currentThread6 threadDictionary];
+  [threadDictionary6 setValue:0 forKey:@"gDrawableElementCache"];
 }
 
 + (id)borderStyleCache
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKey:@"gBorderStyleCache"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKey:@"gBorderStyleCache"];
 
   return v4;
 }
 
 + (id)borderWidthCache
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKey:@"gBorderWidthCache"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKey:@"gBorderWidthCache"];
 
   return v4;
 }
 
 + (id)cssStylesheetCache
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKey:@"gCssStylesheetCache"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKey:@"gCssStylesheetCache"];
 
   return v4;
 }

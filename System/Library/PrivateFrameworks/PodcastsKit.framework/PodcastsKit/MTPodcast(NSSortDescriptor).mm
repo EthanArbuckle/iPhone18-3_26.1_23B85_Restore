@@ -18,7 +18,7 @@
     switch(a3)
     {
       case 0:
-        v5 = [MEMORY[0x277D3DB38] sortDescriptorsForManualOrder];
+        sortDescriptorsForManualOrder = [MEMORY[0x277D3DB38] sortDescriptorsForManualOrder];
         goto LABEL_18;
       case 1:
         v3 = 0;
@@ -26,7 +26,7 @@
       case 2:
         v3 = 1;
 LABEL_15:
-        v5 = [MEMORY[0x277D3DB38] sortDescriptorsForDateAddedAscending:v3];
+        sortDescriptorsForManualOrder = [MEMORY[0x277D3DB38] sortDescriptorsForDateAddedAscending:v3];
         goto LABEL_18;
     }
 
@@ -38,7 +38,7 @@ LABEL_15:
     case 4:
       v6 = 0;
 LABEL_13:
-      v5 = [MEMORY[0x277D3DB38] sortDescriptorsForTitle:v6];
+      sortDescriptorsForManualOrder = [MEMORY[0x277D3DB38] sortDescriptorsForTitle:v6];
       goto LABEL_18;
     case 5:
       v4 = 0;
@@ -52,10 +52,10 @@ LABEL_12:
       goto LABEL_13;
   }
 
-  v5 = [MEMORY[0x277D3DB38] sortDescriptorsForFirstTimeAvailableAscending:v4];
+  sortDescriptorsForManualOrder = [MEMORY[0x277D3DB38] sortDescriptorsForFirstTimeAvailableAscending:v4];
 LABEL_18:
 
-  return v5;
+  return sortDescriptorsForManualOrder;
 }
 
 + (id)sortDescriptorsForManualOrder
@@ -75,9 +75,9 @@ LABEL_18:
 + (id)sortDescriptorsForAllPodcasts
 {
   v0 = +[MTShowsPreferencesDataStore sharedInstance];
-  v1 = [v0 sortDescriptors];
+  sortDescriptors = [v0 sortDescriptors];
 
-  return v1;
+  return sortDescriptors;
 }
 
 + (id)sortDescriptorsForLastDatePlayed

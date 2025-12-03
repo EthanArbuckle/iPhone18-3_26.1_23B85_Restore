@@ -1,11 +1,11 @@
 @interface _MapEngineRenderQueueSource
-- (_MapEngineRenderQueueSource)initWithEngine:(void *)a3;
-- (void)renderQueueForTimestamp:(double)a3;
+- (_MapEngineRenderQueueSource)initWithEngine:(void *)engine;
+- (void)renderQueueForTimestamp:(double)timestamp;
 @end
 
 @implementation _MapEngineRenderQueueSource
 
-- (void)renderQueueForTimestamp:(double)a3
+- (void)renderQueueForTimestamp:(double)timestamp
 {
   v11 = *MEMORY[0x1E69E9840];
   if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
@@ -28,7 +28,7 @@
   return 0;
 }
 
-- (_MapEngineRenderQueueSource)initWithEngine:(void *)a3
+- (_MapEngineRenderQueueSource)initWithEngine:(void *)engine
 {
   v8.receiver = self;
   v8.super_class = _MapEngineRenderQueueSource;
@@ -36,7 +36,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_mapEngine = a3;
+    v4->_mapEngine = engine;
     v6 = v4;
   }
 

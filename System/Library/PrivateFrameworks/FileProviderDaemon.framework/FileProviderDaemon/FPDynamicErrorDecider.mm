@@ -1,14 +1,14 @@
 @interface FPDynamicErrorDecider
-+ (BOOL)shouldSendFor:(id)a3;
++ (BOOL)shouldSendFor:(id)for;
 - (_TtC18FileProviderDaemon21FPDynamicErrorDecider)init;
 @end
 
 @implementation FPDynamicErrorDecider
 
-+ (BOOL)shouldSendFor:(id)a3
++ (BOOL)shouldSendFor:(id)for
 {
-  v3 = a3;
-  v4 = shouldSendDynamicError(for:)(v3);
+  forCopy = for;
+  v4 = shouldSendDynamicError(for:)(forCopy);
 
   return v4;
 }

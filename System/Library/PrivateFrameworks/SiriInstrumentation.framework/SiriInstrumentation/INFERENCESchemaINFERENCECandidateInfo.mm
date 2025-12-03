@@ -1,43 +1,43 @@
 @interface INFERENCESchemaINFERENCECandidateInfo
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCECandidateInfo)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCECandidateInfo)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCECandidateInfo)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCECandidateInfo)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCandidateType:(BOOL)a3;
-- (void)setHasIsShownToUser:(BOOL)a3;
-- (void)setHasRank:(BOOL)a3;
-- (void)setHasScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCandidateType:(BOOL)type;
+- (void)setHasIsShownToUser:(BOOL)user;
+- (void)setHasRank:(BOOL)rank;
+- (void)setHasScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCECandidateInfo
 
-- (INFERENCESchemaINFERENCECandidateInfo)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCECandidateInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = INFERENCESchemaINFERENCECandidateInfo;
   v5 = [(INFERENCESchemaINFERENCECandidateInfo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"searchProvider"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"searchProvider"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECandidateInfo setSearchProvider:](v5, "setSearchProvider:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"rank"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"rank"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECandidateInfo setRank:](v5, "setRank:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"score"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,14 +45,14 @@
       [(INFERENCESchemaINFERENCECandidateInfo *)v5 setScore:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isShownToUser"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isShownToUser"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECandidateInfo setIsShownToUser:](v5, "setIsShownToUser:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"anonymizedEntityIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"anonymizedEntityIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
       [(INFERENCESchemaINFERENCECandidateInfo *)v5 setAnonymizedEntityIdentifier:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"candidateType"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"candidateType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCECandidateInfo)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCECandidateInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCECandidateInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCECandidateInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCECandidateInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,25 +109,25 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_anonymizedEntityIdentifier)
   {
-    v4 = [(INFERENCESchemaINFERENCECandidateInfo *)self anonymizedEntityIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"anonymizedEntityIdentifier"];
+    anonymizedEntityIdentifier = [(INFERENCESchemaINFERENCECandidateInfo *)self anonymizedEntityIdentifier];
+    v5 = [anonymizedEntityIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"anonymizedEntityIdentifier"];
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v7 = [(INFERENCESchemaINFERENCECandidateInfo *)self candidateType];
+    candidateType = [(INFERENCESchemaINFERENCECandidateInfo *)self candidateType];
     v8 = @"INFERENCECANDIDATETYPE_UNKNOWN";
-    if (v7 == 1)
+    if (candidateType == 1)
     {
       v8 = @"INFERENCECANDIDATETYPE_CONTACT";
     }
 
-    if (v7 == 2)
+    if (candidateType == 2)
     {
       v9 = @"INFERENCECANDIDATETYPE_CONTACT_HANDLE";
     }
@@ -137,14 +137,14 @@
       v9 = v8;
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"candidateType"];
+    [dictionary setObject:v9 forKeyedSubscript:@"candidateType"];
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECandidateInfo isShownToUser](self, "isShownToUser")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isShownToUser"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isShownToUser"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -159,7 +159,7 @@ LABEL_17:
       v12 = MEMORY[0x1E696AD98];
       [(INFERENCESchemaINFERENCECandidateInfo *)self score];
       v13 = [v12 numberWithFloat:?];
-      [v3 setObject:v13 forKeyedSubscript:@"score"];
+      [dictionary setObject:v13 forKeyedSubscript:@"score"];
 
       if ((*&self->_has & 1) == 0)
       {
@@ -178,7 +178,7 @@ LABEL_18:
         v15 = off_1E78D8730[v14];
       }
 
-      [v3 setObject:v15 forKeyedSubscript:@"searchProvider"];
+      [dictionary setObject:v15 forKeyedSubscript:@"searchProvider"];
       goto LABEL_22;
     }
   }
@@ -189,7 +189,7 @@ LABEL_18:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[INFERENCESchemaINFERENCECandidateInfo rank](self, "rank")}];
-  [v3 setObject:v11 forKeyedSubscript:@"rank"];
+  [dictionary setObject:v11 forKeyedSubscript:@"rank"];
 
   has = self->_has;
   if ((has & 4) != 0)
@@ -204,9 +204,9 @@ LABEL_13:
   }
 
 LABEL_22:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -300,16 +300,16 @@ LABEL_12:
   return v6 ^ v5 ^ v11 ^ v12 ^ v14 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   has = self->_has;
-  v6 = v4[36];
+  v6 = equalCopy[36];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_27;
@@ -318,13 +318,13 @@ LABEL_12:
   if (*&has)
   {
     searchProvider = self->_searchProvider;
-    if (searchProvider != [v4 searchProvider])
+    if (searchProvider != [equalCopy searchProvider])
     {
       goto LABEL_27;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -336,13 +336,13 @@ LABEL_12:
   if (v8)
   {
     rank = self->_rank;
-    if (rank != [v4 rank])
+    if (rank != [equalCopy rank])
     {
       goto LABEL_27;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -354,11 +354,11 @@ LABEL_12:
   if (v10)
   {
     score = self->_score;
-    [v4 score];
+    [equalCopy score];
     if (score == v12)
     {
       has = self->_has;
-      v6 = v4[36];
+      v6 = equalCopy[36];
       goto LABEL_14;
     }
 
@@ -377,28 +377,28 @@ LABEL_14:
   if (v13)
   {
     isShownToUser = self->_isShownToUser;
-    if (isShownToUser != [v4 isShownToUser])
+    if (isShownToUser != [equalCopy isShownToUser])
     {
       goto LABEL_27;
     }
   }
 
-  v15 = [(INFERENCESchemaINFERENCECandidateInfo *)self anonymizedEntityIdentifier];
-  v16 = [v4 anonymizedEntityIdentifier];
-  v17 = v16;
-  if ((v15 != 0) == (v16 == 0))
+  anonymizedEntityIdentifier = [(INFERENCESchemaINFERENCECandidateInfo *)self anonymizedEntityIdentifier];
+  anonymizedEntityIdentifier2 = [equalCopy anonymizedEntityIdentifier];
+  v17 = anonymizedEntityIdentifier2;
+  if ((anonymizedEntityIdentifier != 0) == (anonymizedEntityIdentifier2 == 0))
   {
 
     goto LABEL_27;
   }
 
-  v18 = [(INFERENCESchemaINFERENCECandidateInfo *)self anonymizedEntityIdentifier];
-  if (v18)
+  anonymizedEntityIdentifier3 = [(INFERENCESchemaINFERENCECandidateInfo *)self anonymizedEntityIdentifier];
+  if (anonymizedEntityIdentifier3)
   {
-    v19 = v18;
-    v20 = [(INFERENCESchemaINFERENCECandidateInfo *)self anonymizedEntityIdentifier];
-    v21 = [v4 anonymizedEntityIdentifier];
-    v22 = [v20 isEqual:v21];
+    v19 = anonymizedEntityIdentifier3;
+    anonymizedEntityIdentifier4 = [(INFERENCESchemaINFERENCECandidateInfo *)self anonymizedEntityIdentifier];
+    anonymizedEntityIdentifier5 = [equalCopy anonymizedEntityIdentifier];
+    v22 = [anonymizedEntityIdentifier4 isEqual:anonymizedEntityIdentifier5];
 
     if (!v22)
     {
@@ -411,7 +411,7 @@ LABEL_14:
   }
 
   v23 = (*&self->_has >> 4) & 1;
-  if (v23 != ((v4[36] >> 4) & 1))
+  if (v23 != ((equalCopy[36] >> 4) & 1))
   {
     goto LABEL_27;
   }
@@ -419,7 +419,7 @@ LABEL_14:
   if (v23)
   {
     candidateType = self->_candidateType;
-    if (candidateType != [v4 candidateType])
+    if (candidateType != [equalCopy candidateType])
     {
       goto LABEL_27;
     }
@@ -431,9 +431,9 @@ LABEL_28:
   return v25;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -478,9 +478,9 @@ LABEL_5:
   }
 
 LABEL_6:
-  v5 = [(INFERENCESchemaINFERENCECandidateInfo *)self anonymizedEntityIdentifier];
+  anonymizedEntityIdentifier = [(INFERENCESchemaINFERENCECandidateInfo *)self anonymizedEntityIdentifier];
 
-  if (v5)
+  if (anonymizedEntityIdentifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -491,9 +491,9 @@ LABEL_6:
   }
 }
 
-- (void)setHasCandidateType:(BOOL)a3
+- (void)setHasCandidateType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -506,9 +506,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIsShownToUser:(BOOL)a3
+- (void)setHasIsShownToUser:(BOOL)user
 {
-  if (a3)
+  if (user)
   {
     v3 = 8;
   }
@@ -521,9 +521,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasScore:(BOOL)a3
+- (void)setHasScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 4;
   }
@@ -536,9 +536,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRank:(BOOL)a3
+- (void)setHasRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 2;
   }

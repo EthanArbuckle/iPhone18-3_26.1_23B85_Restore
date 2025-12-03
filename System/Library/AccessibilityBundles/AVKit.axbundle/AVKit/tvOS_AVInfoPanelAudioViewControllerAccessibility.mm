@@ -13,40 +13,40 @@
   v3 = [(tvOS_AVInfoPanelAudioViewControllerAccessibility *)self safeValueForKey:@"languageHeaderView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 contentView];
-  v6 = [v5 subviews];
-  v7 = [v6 firstObject];
+  contentView = [v4 contentView];
+  subviews = [contentView subviews];
+  firstObject = [subviews firstObject];
 
   objc_opt_class();
   v8 = [(tvOS_AVInfoPanelAudioViewControllerAccessibility *)self safeValueForKey:@"soundHeaderView"];
   v9 = __UIAccessibilityCastAsClass();
 
-  v10 = [v9 contentView];
-  v11 = [v10 subviews];
-  v12 = [v11 firstObject];
+  contentView2 = [v9 contentView];
+  subviews2 = [contentView2 subviews];
+  firstObject2 = [subviews2 firstObject];
 
   objc_opt_class();
   v13 = [(tvOS_AVInfoPanelAudioViewControllerAccessibility *)self safeValueForKey:@"speakerHeaderView"];
   v14 = __UIAccessibilityCastAsClass();
 
-  v15 = [v14 contentView];
-  v16 = [v15 subviews];
-  v17 = [v16 firstObject];
+  contentView3 = [v14 contentView];
+  subviews3 = [contentView3 subviews];
+  firstObject3 = [subviews3 firstObject];
 
   [v4 setIsAccessibilityElement:1];
   [v9 setIsAccessibilityElement:1];
   [v14 setIsAccessibilityElement:1];
-  [v7 setIsAccessibilityElement:0];
-  [v12 setIsAccessibilityElement:0];
-  [v17 setIsAccessibilityElement:0];
-  v18 = [v7 accessibilityLabel];
-  [v4 setAccessibilityLabel:v18];
+  [firstObject setIsAccessibilityElement:0];
+  [firstObject2 setIsAccessibilityElement:0];
+  [firstObject3 setIsAccessibilityElement:0];
+  accessibilityLabel = [firstObject accessibilityLabel];
+  [v4 setAccessibilityLabel:accessibilityLabel];
 
-  v19 = [v12 accessibilityLabel];
-  [v9 setAccessibilityLabel:v19];
+  accessibilityLabel2 = [firstObject2 accessibilityLabel];
+  [v9 setAccessibilityLabel:accessibilityLabel2];
 
-  v20 = [v17 accessibilityLabel];
-  [v14 setAccessibilityLabel:v20];
+  accessibilityLabel3 = [firstObject3 accessibilityLabel];
+  [v14 setAccessibilityLabel:accessibilityLabel3];
 
   v21 = *MEMORY[0x29EDC7F80];
   [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];

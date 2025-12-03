@@ -1,12 +1,12 @@
 @interface AAOBInheritanceSetupCompleteModel
-- (AAOBInheritanceSetupCompleteModel)initWithBeneficiaryName:(id)a3 accessKeyShareType:(unint64_t)a4 inviteType:(unint64_t)a5;
+- (AAOBInheritanceSetupCompleteModel)initWithBeneficiaryName:(id)name accessKeyShareType:(unint64_t)type inviteType:(unint64_t)inviteType;
 @end
 
 @implementation AAOBInheritanceSetupCompleteModel
 
-- (AAOBInheritanceSetupCompleteModel)initWithBeneficiaryName:(id)a3 accessKeyShareType:(unint64_t)a4 inviteType:(unint64_t)a5
+- (AAOBInheritanceSetupCompleteModel)initWithBeneficiaryName:(id)name accessKeyShareType:(unint64_t)type inviteType:(unint64_t)inviteType
 {
-  v8 = a3;
+  nameCopy = name;
   v37.receiver = self;
   v37.super_class = AAOBInheritanceSetupCompleteModel;
   v9 = [(AAOBInheritanceSetupCompleteModel *)&v37 init];
@@ -23,7 +23,7 @@
     title = v10->_title;
     v10->_title = v13;
 
-    if (a4 == 1)
+    if (type == 1)
     {
       v20 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
       v16 = [v20 localizedStringForKey:@"SETTINGS" value:0 table:@"Localizable"];
@@ -31,14 +31,14 @@
       v21 = MEMORY[0x1E696AEC0];
       v22 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
       v23 = [v22 localizedStringForKey:@"INHERITANCE_SETUP_COMPLETE_MESSAGE_AFTER_PRINTING" value:0 table:@"Localizable"];
-      v24 = [v21 stringWithFormat:v23, v8, v16];
+      v24 = [v21 stringWithFormat:v23, nameCopy, v16];
       detailText = v10->_detailText;
       v10->_detailText = v24;
     }
 
     else
     {
-      if (a4)
+      if (type)
       {
 LABEL_13:
         v28 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
@@ -63,7 +63,7 @@ LABEL_13:
       v15 = MEMORY[0x1E696AEC0];
       v16 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
       v17 = +[AAUrlBagHelper isLCInviteAcceptanceEnabled];
-      if (a5 == 1)
+      if (inviteType == 1)
       {
         v18 = @"INHERITANCE_INVITE_COMPLETE_MESSAGE_AFTER_MESSAGING";
         v19 = @"INHERITANCE_INVITE_COMPLETE_MESSAGE_AFTER_MESSAGING_v2";
@@ -86,9 +86,9 @@ LABEL_13:
       }
 
       v22 = [v16 localizedStringForKey:v26 value:0 table:@"Localizable"];
-      v27 = [v15 stringWithFormat:v22, v8];
+      nameCopy = [v15 stringWithFormat:v22, nameCopy];
       v23 = v10->_detailText;
-      v10->_detailText = v27;
+      v10->_detailText = nameCopy;
     }
 
     goto LABEL_13;

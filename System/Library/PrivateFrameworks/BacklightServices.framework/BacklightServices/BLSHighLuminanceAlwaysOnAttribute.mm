@@ -1,23 +1,23 @@
 @interface BLSHighLuminanceAlwaysOnAttribute
 + (id)highLuminanceWhileInAlwaysOn;
-+ (id)highLuminanceWhileInAlwaysOnForFBSScene:(id)a3;
-+ (id)highLuminanceWhileInAlwaysOnForFBSSceneIdentityToken:(id)a3;
++ (id)highLuminanceWhileInAlwaysOnForFBSScene:(id)scene;
++ (id)highLuminanceWhileInAlwaysOnForFBSSceneIdentityToken:(id)token;
 @end
 
 @implementation BLSHighLuminanceAlwaysOnAttribute
 
-+ (id)highLuminanceWhileInAlwaysOnForFBSScene:(id)a3
++ (id)highLuminanceWhileInAlwaysOnForFBSScene:(id)scene
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFBSScene:v4];
+  sceneCopy = scene;
+  v5 = [[self alloc] initWithFBSScene:sceneCopy];
 
   return v5;
 }
 
-+ (id)highLuminanceWhileInAlwaysOnForFBSSceneIdentityToken:(id)a3
++ (id)highLuminanceWhileInAlwaysOnForFBSSceneIdentityToken:(id)token
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSceneIdentityToken:v4];
+  tokenCopy = token;
+  v5 = [[self alloc] initWithSceneIdentityToken:tokenCopy];
 
   return v5;
 }

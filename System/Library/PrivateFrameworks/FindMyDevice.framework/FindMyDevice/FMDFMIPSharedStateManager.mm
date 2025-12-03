@@ -1,7 +1,7 @@
 @interface FMDFMIPSharedStateManager
 + (id)sharedInstance;
 - (BOOL)_removeSharedInfo;
-- (BOOL)_writeSharedInfo:(id)a3;
+- (BOOL)_writeSharedInfo:(id)info;
 - (BOOL)fmipActive;
 - (FMDFMIPSharedStateManager)init;
 - (id)_fmipSharedFileURL;
@@ -51,28 +51,28 @@ uint64_t __43__FMDFMIPSharedStateManager_sharedInstance__block_invoke()
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = +[FMDFMIPManager sharedInstance];
-  v4 = [v3 lostModeInfo];
+  lostModeInfo = [v3 lostModeInfo];
 
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v14 = [v4 lostModeType];
+    lostModeType = [lostModeInfo lostModeType];
     _os_log_impl(&dword_1DF650000, v5, OS_LOG_TYPE_DEFAULT, "Updating shared file with lost mode - %lu", buf, 0xCu);
   }
 
-  v6 = [(FMDFMIPSharedStateManager *)self _readSharedInfo];
-  v7 = v6;
-  if (v6)
+  _readSharedInfo = [(FMDFMIPSharedStateManager *)self _readSharedInfo];
+  v7 = _readSharedInfo;
+  if (_readSharedInfo)
   {
-    v8 = [v6 mutableCopy];
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "lostModeType")}];
+    v8 = [_readSharedInfo mutableCopy];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(lostModeInfo, "lostModeType")}];
     [v8 setObject:v9 forKey:@"fmipLostModeType"];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "lostModeType", @"fmipLostModeType"}];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(lostModeInfo, "lostModeType", @"fmipLostModeType"}];
     v12 = v9;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   }
@@ -84,18 +84,18 @@ uint64_t __43__FMDFMIPSharedStateManager_sharedInstance__block_invoke()
 - (BOOL)fmipActive
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [(FMDFMIPSharedStateManager *)self _readSharedInfo];
-  v3 = v2;
-  if (v2)
+  _readSharedInfo = [(FMDFMIPSharedStateManager *)self _readSharedInfo];
+  v3 = _readSharedInfo;
+  if (_readSharedInfo)
   {
-    v4 = [v2 objectForKey:@"fmipActive"];
-    v5 = [v4 BOOLValue];
+    v4 = [_readSharedInfo objectForKey:@"fmipActive"];
+    bOOLValue = [v4 BOOLValue];
 
     v6 = LogCategory_Unspecified();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9[0] = 67109120;
-      v9[1] = v5;
+      v9[1] = bOOLValue;
       _os_log_impl(&dword_1DF650000, v6, OS_LOG_TYPE_DEFAULT, "Shared file found. Returning FMiP active - %i", v9, 8u);
     }
   }
@@ -109,28 +109,28 @@ uint64_t __43__FMDFMIPSharedStateManager_sharedInstance__block_invoke()
       _os_log_impl(&dword_1DF650000, v6, OS_LOG_TYPE_DEFAULT, "Shared file not found. Returning FMiP active as - NO", v9, 2u);
     }
 
-    LOBYTE(v5) = 0;
+    LOBYTE(bOOLValue) = 0;
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return v5;
+  return bOOLValue;
 }
 
 - (unint64_t)lostModeType
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [(FMDFMIPSharedStateManager *)self _readSharedInfo];
-  v3 = v2;
-  if (v2)
+  _readSharedInfo = [(FMDFMIPSharedStateManager *)self _readSharedInfo];
+  v3 = _readSharedInfo;
+  if (_readSharedInfo)
   {
-    v4 = [v2 objectForKey:@"fmipLostModeType"];
-    v5 = [v4 integerValue];
+    v4 = [_readSharedInfo objectForKey:@"fmipLostModeType"];
+    integerValue = [v4 integerValue];
 
     v6 = LogCategory_Unspecified();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134217984;
-      v10 = v5;
+      v10 = integerValue;
       _os_log_impl(&dword_1DF650000, v6, OS_LOG_TYPE_DEFAULT, "Shared file found. Returning lost mode type as - %lu", &v9, 0xCu);
     }
   }
@@ -144,19 +144,19 @@ uint64_t __43__FMDFMIPSharedStateManager_sharedInstance__block_invoke()
       _os_log_impl(&dword_1DF650000, v6, OS_LOG_TYPE_DEFAULT, "Shared file not found. Returning lost mode type as - FMDLostModeTypeNone", &v9, 2u);
     }
 
-    v5 = 0;
+    integerValue = 0;
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return v5;
+  return integerValue;
 }
 
 - (id)_readSharedInfo
 {
-  v2 = [(FMDFMIPSharedStateManager *)self _fmipSharedFileURL];
-  if (v2 && ([MEMORY[0x1E696AC08] defaultManager], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "path"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v3, "fileExistsAtPath:", v4), v4, v3, v5))
+  _fmipSharedFileURL = [(FMDFMIPSharedStateManager *)self _fmipSharedFileURL];
+  if (_fmipSharedFileURL && ([MEMORY[0x1E696AC08] defaultManager], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(_fmipSharedFileURL, "path"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v3, "fileExistsAtPath:", v4), v4, v3, v5))
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfURL:v2];
+    v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfURL:_fmipSharedFileURL];
   }
 
   else
@@ -167,11 +167,11 @@ uint64_t __43__FMDFMIPSharedStateManager_sharedInstance__block_invoke()
   return v6;
 }
 
-- (BOOL)_writeSharedInfo:(id)a3
+- (BOOL)_writeSharedInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(FMDFMIPSharedStateManager *)self _fmipSharedFileURL];
-  if (v5 && (v11 = 0, [v4 writeToURL:v5 error:&v11], (v6 = v11) != 0))
+  infoCopy = info;
+  _fmipSharedFileURL = [(FMDFMIPSharedStateManager *)self _fmipSharedFileURL];
+  if (_fmipSharedFileURL && (v11 = 0, [infoCopy writeToURL:_fmipSharedFileURL error:&v11], (v6 = v11) != 0))
   {
     v7 = v6;
     v8 = LogCategory_Unspecified();
@@ -193,10 +193,10 @@ uint64_t __43__FMDFMIPSharedStateManager_sharedInstance__block_invoke()
 
 - (BOOL)_removeSharedInfo
 {
-  v2 = [(FMDFMIPSharedStateManager *)self _fmipSharedFileURL];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  _fmipSharedFileURL = [(FMDFMIPSharedStateManager *)self _fmipSharedFileURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v7 = 0;
-  [v3 removeItemAtURL:v2 error:&v7];
+  [defaultManager removeItemAtURL:_fmipSharedFileURL error:&v7];
   v4 = v7;
 
   if (v4)
@@ -272,7 +272,7 @@ void __47__FMDFMIPSharedStateManager__fmipSharedFileURL__block_invoke(uint64_t a
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1DF650000, a2, OS_LOG_TYPE_ERROR, "Could not remove the shared file. Error - %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

@@ -1,5 +1,5 @@
 @interface ASCMobileGestalt
-+ (BOOL)hasCapabilitiesIncludingCompatibilityCheck:(id)a3 isVisionOSCompatibleIOSApp:(BOOL)a4;
++ (BOOL)hasCapabilitiesIncludingCompatibilityCheck:(id)check isVisionOSCompatibleIOSApp:(BOOL)app;
 + (CGSize)mainScreenPointSize;
 + (CGSize)mainScreenSize;
 + (NSString)activePairedSystemVersion;
@@ -102,16 +102,16 @@ void __45__ASCMobileGestalt_activePairedSystemVersion__block_invoke()
   objc_storeStrong(&activePairedSystemVersion_systemVersion, v2);
 }
 
-+ (BOOL)hasCapabilitiesIncludingCompatibilityCheck:(id)a3 isVisionOSCompatibleIOSApp:(BOOL)a4
++ (BOOL)hasCapabilitiesIncludingCompatibilityCheck:(id)check isVisionOSCompatibleIOSApp:(BOOL)app
 {
-  v4 = a4;
+  appCopy = app;
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  checkCopy = check;
+  v6 = [checkCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -123,12 +123,12 @@ void __45__ASCMobileGestalt_activePairedSystemVersion__block_invoke()
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(checkCopy);
         }
 
         if (([*(*(&v16 + 1) + 8 * i) isEqualToString:{&stru_2835CD1E8, v16}] & 1) == 0)
         {
-          v11 = (v4 ? _MGCopyAnswerWithMode() : MGCopyAnswer());
+          v11 = (appCopy ? _MGCopyAnswerWithMode() : MGCopyAnswer());
           v12 = v11;
           if (v11)
           {
@@ -143,7 +143,7 @@ void __45__ASCMobileGestalt_activePairedSystemVersion__block_invoke()
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [checkCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;

@@ -1,7 +1,7 @@
 @interface PXSocialGroupMakeKeyPhotoAction
 - (NSString)localizedActionName;
-- (PXSocialGroupMakeKeyPhotoAction)initWithPhotoLibrary:(id)a3;
-- (PXSocialGroupMakeKeyPhotoAction)initWithSocialGroup:(id)a3 newKeyAsset:(id)a4;
+- (PXSocialGroupMakeKeyPhotoAction)initWithPhotoLibrary:(id)library;
+- (PXSocialGroupMakeKeyPhotoAction)initWithSocialGroup:(id)group newKeyAsset:(id)asset;
 @end
 
 @implementation PXSocialGroupMakeKeyPhotoAction
@@ -14,16 +14,16 @@
   return v2;
 }
 
-- (PXSocialGroupMakeKeyPhotoAction)initWithSocialGroup:(id)a3 newKeyAsset:(id)a4
+- (PXSocialGroupMakeKeyPhotoAction)initWithSocialGroup:(id)group newKeyAsset:(id)asset
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR___PXSocialGroupMakeKeyPhotoAction_originalKeyAsset) = 0;
-  *(&self->super.super.super.isa + OBJC_IVAR___PXSocialGroupMakeKeyPhotoAction_socialGroup) = a3;
-  *(&self->super.super.super.isa + OBJC_IVAR___PXSocialGroupMakeKeyPhotoAction_newKeyAsset) = a4;
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
-  v11 = v9;
+  *(&self->super.super.super.isa + OBJC_IVAR___PXSocialGroupMakeKeyPhotoAction_socialGroup) = group;
+  *(&self->super.super.super.isa + OBJC_IVAR___PXSocialGroupMakeKeyPhotoAction_newKeyAsset) = asset;
+  groupCopy = group;
+  assetCopy = asset;
+  v10 = groupCopy;
+  v11 = assetCopy;
   result = [v10 photoLibrary];
   if (result)
   {
@@ -43,7 +43,7 @@
   return result;
 }
 
-- (PXSocialGroupMakeKeyPhotoAction)initWithPhotoLibrary:(id)a3
+- (PXSocialGroupMakeKeyPhotoAction)initWithPhotoLibrary:(id)library
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -8,12 +8,12 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 navigationController];
-  v4 = [v3 navigationBar];
-  v5 = [v4 accessibilityElements];
-  v6 = [v5 firstObject];
+  navigationController = [v2 navigationController];
+  navigationBar = [navigationController navigationBar];
+  accessibilityElements = [navigationBar accessibilityElements];
+  firstObject = [accessibilityElements firstObject];
 
-  return v6;
+  return firstObject;
 }
 
 @end

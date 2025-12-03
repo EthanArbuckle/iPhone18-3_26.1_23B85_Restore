@@ -1,14 +1,14 @@
 @interface AXPiOSElementData
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)uid;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation AXPiOSElementData
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = [(AXPiOSElementData *)self uid];
@@ -17,13 +17,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [v5 pid];
     if (v6 == -[AXPiOSElementData pid](self, "pid") && ([v5 uid], v8 = v7, -[AXPiOSElementData uid](self, "uid"), v8 == v9))
     {

@@ -1,17 +1,17 @@
 @interface INFPartOfSpeech
-+ (id)adjectiveWithIdentifier:(id)a3 language:(id)a4;
-+ (id)nounWithGender:(unint64_t)a3 identifier:(id)a4 language:(id)a5;
-+ (id)nounWithIdentifier:(id)a3 language:(id)a4;
++ (id)adjectiveWithIdentifier:(id)identifier language:(id)language;
++ (id)nounWithGender:(unint64_t)gender identifier:(id)identifier language:(id)language;
++ (id)nounWithIdentifier:(id)identifier language:(id)language;
 - (INFPartOfSpeech)init;
-- (INFPartOfSpeech)initWithDictionary:(id)a3 identifier:(id)a4;
-- (INFPartOfSpeech)initWithPartOfSpeechType:(unint64_t)a3 identifier:(id)a4 language:(id)a5;
+- (INFPartOfSpeech)initWithDictionary:(id)dictionary identifier:(id)identifier;
+- (INFPartOfSpeech)initWithPartOfSpeechType:(unint64_t)type identifier:(id)identifier language:(id)language;
 - (id)contributingSentenceContext;
 - (id)dictionaryRepresentation;
-- (id)stringForContext:(id)a3;
-- (id)stringForVariants:(unint64_t)a3;
-- (id)stringForVariantsDescriptor:(id)a3;
-- (void)setString:(id)a3 forVariants:(unint64_t)a4;
-- (void)setString:(id)a3 forVariantsDescriptor:(id)a4;
+- (id)stringForContext:(id)context;
+- (id)stringForVariants:(unint64_t)variants;
+- (id)stringForVariantsDescriptor:(id)descriptor;
+- (void)setString:(id)string forVariants:(unint64_t)variants;
+- (void)setString:(id)string forVariantsDescriptor:(id)descriptor;
 - (void)validateSelf;
 @end
 
@@ -19,7 +19,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   partOfSpeechType = self->_partOfSpeechType;
   if (partOfSpeechType)
   {
@@ -40,7 +40,7 @@
     }
 
     v7 = v6;
-    [v3 setObject:v7 forKeyedSubscript:@"LOCPartOfSpeechType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"LOCPartOfSpeechType"];
   }
 
   gender = self->_gender;
@@ -63,22 +63,22 @@
     }
 
     v11 = v10;
-    [v3 setObject:v11 forKeyedSubscript:@"LOCGender"];
+    [dictionary setObject:v11 forKeyedSubscript:@"LOCGender"];
   }
 
-  [v3 setObject:self->_variants forKeyedSubscript:@"LOCVariants"];
-  [v3 setObject:self->_language forKeyedSubscript:@"LOCLanguageIdentifier"];
+  [dictionary setObject:self->_variants forKeyedSubscript:@"LOCVariants"];
+  [dictionary setObject:self->_language forKeyedSubscript:@"LOCLanguageIdentifier"];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)stringForContext:(id)a3
+- (id)stringForContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 number];
-  v6 = [v5 integerValue];
+  contextCopy = context;
+  number = [contextCopy number];
+  integerValue = [number integerValue];
 
-  if (v6 == 1)
+  if (integerValue == 1)
   {
     v7 = 1;
   }
@@ -90,7 +90,7 @@
 
   v8 = +[INFVariantsDescriptor variant];
   [v8 setPlurality:v7];
-  [v8 setGender:{objc_msgSend(v4, "gender")}];
+  [v8 setGender:{objc_msgSend(contextCopy, "gender")}];
   v9 = [(INFPartOfSpeech *)self stringForVariantsDescriptor:v8];
   if (v9)
   {
@@ -101,8 +101,8 @@
   {
     do
     {
-      v13 = [v8 variantByRemovingOneAttribute];
-      v14 = [v8 isEqual:v13];
+      variantByRemovingOneAttribute = [v8 variantByRemovingOneAttribute];
+      v14 = [v8 isEqual:variantByRemovingOneAttribute];
 
       if (v14)
       {
@@ -110,15 +110,15 @@
         goto LABEL_10;
       }
 
-      v11 = [v8 variantByRemovingOneAttribute];
+      variantByRemovingOneAttribute2 = [v8 variantByRemovingOneAttribute];
 
-      v12 = [(INFPartOfSpeech *)self stringForVariantsDescriptor:v11];
-      v8 = v11;
+      v12 = [(INFPartOfSpeech *)self stringForVariantsDescriptor:variantByRemovingOneAttribute2];
+      v8 = variantByRemovingOneAttribute2;
     }
 
     while (!v12);
     v10 = v12;
-    v8 = v11;
+    v8 = variantByRemovingOneAttribute2;
   }
 
 LABEL_10:
@@ -139,36 +139,36 @@ LABEL_10:
   return v4;
 }
 
-- (id)stringForVariantsDescriptor:(id)a3
+- (id)stringForVariantsDescriptor:(id)descriptor
 {
   variants = self->_variants;
-  v4 = [a3 dictionaryKey];
-  v5 = [(NSMutableDictionary *)variants objectForKeyedSubscript:v4];
+  dictionaryKey = [descriptor dictionaryKey];
+  v5 = [(NSMutableDictionary *)variants objectForKeyedSubscript:dictionaryKey];
 
   return v5;
 }
 
-- (void)setString:(id)a3 forVariantsDescriptor:(id)a4
+- (void)setString:(id)string forVariantsDescriptor:(id)descriptor
 {
   variants = self->_variants;
-  v6 = a3;
-  v7 = [a4 dictionaryKey];
-  [(NSMutableDictionary *)variants setObject:v6 forKeyedSubscript:v7];
+  stringCopy = string;
+  dictionaryKey = [descriptor dictionaryKey];
+  [(NSMutableDictionary *)variants setObject:stringCopy forKeyedSubscript:dictionaryKey];
 }
 
-- (id)stringForVariants:(unint64_t)a3
+- (id)stringForVariants:(unint64_t)variants
 {
-  v4 = [INFVariantsDescriptor variantWithVariants:a3];
+  v4 = [INFVariantsDescriptor variantWithVariants:variants];
   v5 = [(INFPartOfSpeech *)self stringForVariantsDescriptor:v4];
 
   return v5;
 }
 
-- (void)setString:(id)a3 forVariants:(unint64_t)a4
+- (void)setString:(id)string forVariants:(unint64_t)variants
 {
-  v6 = a3;
-  v7 = [INFVariantsDescriptor variantWithVariants:a4];
-  [(INFPartOfSpeech *)self setString:v6 forVariantsDescriptor:v7];
+  stringCopy = string;
+  v7 = [INFVariantsDescriptor variantWithVariants:variants];
+  [(INFPartOfSpeech *)self setString:stringCopy forVariantsDescriptor:v7];
 }
 
 - (void)validateSelf
@@ -179,24 +179,24 @@ LABEL_10:
   }
 }
 
-- (INFPartOfSpeech)initWithDictionary:(id)a3 identifier:(id)a4
+- (INFPartOfSpeech)initWithDictionary:(id)dictionary identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
   v8 = [(INFPartOfSpeech *)self init];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"LOCLanguageIdentifier"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"LOCLanguageIdentifier"];
     v10 = [v9 copy];
     language = v8->_language;
     v8->_language = v10;
 
-    v12 = [v6 objectForKeyedSubscript:@"LOCVariants"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"LOCVariants"];
     variants = v8->_variants;
     v8->_variants = v12;
 
-    objc_storeStrong(&v8->_identifier, a4);
-    v14 = [v6 objectForKeyedSubscript:@"LOCPartOfSpeechType"];
+    objc_storeStrong(&v8->_identifier, identifier);
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"LOCPartOfSpeechType"];
     if ([v14 isEqualToString:@"LOCPartOfSpeechTypeNoun"])
     {
       v15 = 1;
@@ -213,7 +213,7 @@ LABEL_10:
     }
 
     v8->_partOfSpeechType = v15;
-    v16 = [v6 objectForKeyedSubscript:@"LOCGender"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"LOCGender"];
     if ([v16 isEqualToString:@"LOCGenderFeminine"])
     {
       v17 = 1;
@@ -235,17 +235,17 @@ LABEL_10:
   return v8;
 }
 
-- (INFPartOfSpeech)initWithPartOfSpeechType:(unint64_t)a3 identifier:(id)a4 language:(id)a5
+- (INFPartOfSpeech)initWithPartOfSpeechType:(unint64_t)type identifier:(id)identifier language:(id)language
 {
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  languageCopy = language;
   v11 = [(INFPartOfSpeech *)self init];
   v12 = v11;
   if (v11)
   {
-    v11->_partOfSpeechType = a3;
-    objc_storeStrong(&v11->_identifier, a4);
-    v13 = [v10 copy];
+    v11->_partOfSpeechType = type;
+    objc_storeStrong(&v11->_identifier, identifier);
+    v13 = [languageCopy copy];
     language = v12->_language;
     v12->_language = v13;
   }
@@ -260,9 +260,9 @@ LABEL_10:
   v2 = [(INFPartOfSpeech *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     variants = v2->_variants;
-    v2->_variants = v3;
+    v2->_variants = dictionary;
 
     identifier = v2->_identifier;
     v2->_identifier = &stru_28676DA60;
@@ -276,28 +276,28 @@ LABEL_10:
   return v2;
 }
 
-+ (id)adjectiveWithIdentifier:(id)a3 language:(id)a4
++ (id)adjectiveWithIdentifier:(id)identifier language:(id)language
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithPartOfSpeechType:2 identifier:v7 language:v6];
+  languageCopy = language;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithPartOfSpeechType:2 identifier:identifierCopy language:languageCopy];
 
   return v8;
 }
 
-+ (id)nounWithGender:(unint64_t)a3 identifier:(id)a4 language:(id)a5
++ (id)nounWithGender:(unint64_t)gender identifier:(id)identifier language:(id)language
 {
-  v6 = [a1 nounWithIdentifier:a4 language:a5];
-  [v6 setGender:a3];
+  v6 = [self nounWithIdentifier:identifier language:language];
+  [v6 setGender:gender];
 
   return v6;
 }
 
-+ (id)nounWithIdentifier:(id)a3 language:(id)a4
++ (id)nounWithIdentifier:(id)identifier language:(id)language
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithPartOfSpeechType:1 identifier:v7 language:v6];
+  languageCopy = language;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithPartOfSpeechType:1 identifier:identifierCopy language:languageCopy];
 
   return v8;
 }

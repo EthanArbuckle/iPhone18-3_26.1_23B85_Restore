@@ -2,8 +2,8 @@
 - (BOOL)startUpdatingSignals;
 - (BOOL)stopUpdatingSignals;
 - (BOOL)updateSignals;
-- (MapsSuggestionsMapsSyncFeeler)initWithDelegate:(id)a3 mapsSync:(id)a4;
-- (void)mapsSync:(id)a3 didChangeForContentType:(int64_t)a4;
+- (MapsSuggestionsMapsSyncFeeler)initWithDelegate:(id)delegate mapsSync:(id)sync;
+- (void)mapsSync:(id)sync didChangeForContentType:(int64_t)type;
 @end
 
 @implementation MapsSuggestionsMapsSyncFeeler
@@ -31,11 +31,11 @@
   return 1;
 }
 
-- (MapsSuggestionsMapsSyncFeeler)initWithDelegate:(id)a3 mapsSync:(id)a4
+- (MapsSuggestionsMapsSyncFeeler)initWithDelegate:(id)delegate mapsSync:(id)sync
 {
-  objc_initWeak(&location, a3);
-  v6 = a4;
-  if (v6)
+  objc_initWeak(&location, delegate);
+  syncCopy = sync;
+  if (syncCopy)
   {
     v7 = objc_loadWeakRetained(&location);
     v16.receiver = self;
@@ -48,14 +48,14 @@
       signalPack = v8->_signalPack;
       v8->_signalPack = v9;
 
-      objc_storeStrong(&v8->_mapsSync, a4);
+      objc_storeStrong(&v8->_mapsSync, sync);
       v11 = [[MapsSuggestionsQueue alloc] initSerialQueueWithName:@"MapsSuggestionsMapsSyncFeelerQueue"];
       queue = v8->_queue;
       v8->_queue = v11;
     }
 
     self = v8;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -74,16 +74,16 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. mapsSync cannot be nil", buf, 0x26u);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
   objc_destroyWeak(&location);
-  return v13;
+  return selfCopy;
 }
 
-- (void)mapsSync:(id)a3 didChangeForContentType:(int64_t)a4
+- (void)mapsSync:(id)sync didChangeForContentType:(int64_t)type
 {
-  v6 = a3;
+  syncCopy = sync;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
@@ -91,7 +91,7 @@
   v8[2] = sub_10002FE18;
   v8[3] = &unk_100075EC8;
   objc_copyWeak(v9, &location);
-  v9[1] = a4;
+  v9[1] = type;
   [(MapsSuggestionsQueue *)queue asyncBlock:v8];
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);

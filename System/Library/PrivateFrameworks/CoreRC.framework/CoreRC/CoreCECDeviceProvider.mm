@@ -1,56 +1,56 @@
 @interface CoreCECDeviceProvider
 - (BOOL)activeARCAudioSystem;
-- (BOOL)activeSource:(id *)a3;
-- (BOOL)audioSystemRequestSystemAudioModeStatusChangeTo:(unint64_t)a3 error:(id *)a4;
-- (BOOL)deckControlCommandWithMode:(unint64_t)a3 target:(id)a4 error:(id *)a5;
-- (BOOL)deckControlPlayWithMode:(unint64_t)a3 target:(id)a4 error:(id *)a5;
-- (BOOL)deckControlRefreshStatus:(id)a3 requestType:(unint64_t)a4 error:(id *)a5;
-- (BOOL)deckControlSetDeckStatus:(unint64_t)a3 error:(id *)a4;
-- (BOOL)deviceRequestSystemAudioModeStatusChangeTo:(unint64_t)a3 error:(id *)a4;
-- (BOOL)getRemoteControlDestination:(id *)a3 logicalAddress:(unsigned __int8 *)a4 forTargetDevice:(id)a5 command:(unsigned __int8)a6 error:(id *)a7;
-- (BOOL)handlingRequiredForAudioReturnChannelMessage:(id)a3;
-- (BOOL)handlingRequiredForSystemAudioModeMessage:(id)a3;
-- (BOOL)initiatorAddressErrorDetectedForMessage:(id)a3;
-- (BOOL)performStandbyWithTargetDevice:(id)a3 error:(id *)a4;
-- (BOOL)refreshProperties:(id)a3 ofDevice:(id)a4 error:(id *)a5;
-- (BOOL)reportFeatures:(id *)a3;
-- (BOOL)reportPhysicalAddress:(id *)a3;
-- (BOOL)reportShortAudioDescriptorTo:(unsigned __int8)a3 error:(id *)a4;
-- (BOOL)requestActiveSource:(id *)a3;
-- (BOOL)requestAudioReturnChannelStatusChangeTo:(unint64_t)a3 error:(id *)a4;
-- (BOOL)requestAudioStatus:(id *)a3;
-- (BOOL)requestShortAudioDescriptor:(unsigned __int8)a3 error:(id *)a4;
-- (BOOL)requestSystemAudioModeStatusChangeTo:(unint64_t)a3 error:(id *)a4;
-- (BOOL)resignActiveSource:(id *)a3;
-- (BOOL)sendHIDEvent:(id)a3 target:(id)a4 error:(id *)a5;
-- (BOOL)setAudioVolumeStatus:(unint64_t)a3 error:(id *)a4;
-- (BOOL)setExtendedProperty:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setMenuLanguage:(CECLanguage)a3 error:(id *)a4;
-- (BOOL)setSupportedAudioFormats:(id)a3 error:(id *)a4;
-- (BOOL)setSystemAudioMode:(unint64_t)a3 to:(unsigned __int8)a4 error:(id *)a5;
-- (BOOL)systemAudioModeRequest:(unint64_t)a3 error:(id *)a4;
-- (BOOL)systemAudioModeStatus:(unsigned __int8)a3 error:(id *)a4;
-- (CoreCECDeviceProvider)initWithCoder:(id)a3;
-- (CoreCECDeviceProvider)initWithDevice:(id)a3;
+- (BOOL)activeSource:(id *)source;
+- (BOOL)audioSystemRequestSystemAudioModeStatusChangeTo:(unint64_t)to error:(id *)error;
+- (BOOL)deckControlCommandWithMode:(unint64_t)mode target:(id)target error:(id *)error;
+- (BOOL)deckControlPlayWithMode:(unint64_t)mode target:(id)target error:(id *)error;
+- (BOOL)deckControlRefreshStatus:(id)status requestType:(unint64_t)type error:(id *)error;
+- (BOOL)deckControlSetDeckStatus:(unint64_t)status error:(id *)error;
+- (BOOL)deviceRequestSystemAudioModeStatusChangeTo:(unint64_t)to error:(id *)error;
+- (BOOL)getRemoteControlDestination:(id *)destination logicalAddress:(unsigned __int8 *)address forTargetDevice:(id)device command:(unsigned __int8)command error:(id *)error;
+- (BOOL)handlingRequiredForAudioReturnChannelMessage:(id)message;
+- (BOOL)handlingRequiredForSystemAudioModeMessage:(id)message;
+- (BOOL)initiatorAddressErrorDetectedForMessage:(id)message;
+- (BOOL)performStandbyWithTargetDevice:(id)device error:(id *)error;
+- (BOOL)refreshProperties:(id)properties ofDevice:(id)device error:(id *)error;
+- (BOOL)reportFeatures:(id *)features;
+- (BOOL)reportPhysicalAddress:(id *)address;
+- (BOOL)reportShortAudioDescriptorTo:(unsigned __int8)to error:(id *)error;
+- (BOOL)requestActiveSource:(id *)source;
+- (BOOL)requestAudioReturnChannelStatusChangeTo:(unint64_t)to error:(id *)error;
+- (BOOL)requestAudioStatus:(id *)status;
+- (BOOL)requestShortAudioDescriptor:(unsigned __int8)descriptor error:(id *)error;
+- (BOOL)requestSystemAudioModeStatusChangeTo:(unint64_t)to error:(id *)error;
+- (BOOL)resignActiveSource:(id *)source;
+- (BOOL)sendHIDEvent:(id)event target:(id)target error:(id *)error;
+- (BOOL)setAudioVolumeStatus:(unint64_t)status error:(id *)error;
+- (BOOL)setExtendedProperty:(id)property forKey:(id)key error:(id *)error;
+- (BOOL)setMenuLanguage:(CECLanguage)language error:(id *)error;
+- (BOOL)setSupportedAudioFormats:(id)formats error:(id *)error;
+- (BOOL)setSystemAudioMode:(unint64_t)mode to:(unsigned __int8)to error:(id *)error;
+- (BOOL)systemAudioModeRequest:(unint64_t)request error:(id *)error;
+- (BOOL)systemAudioModeStatus:(unsigned __int8)status error:(id *)error;
+- (CoreCECDeviceProvider)initWithCoder:(id)coder;
+- (CoreCECDeviceProvider)initWithDevice:(id)device;
 - (OS_dispatch_queue)serialQueue;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)extendedPropertyForKey:(id)a3 error:(id *)a4;
-- (id)filterActiveSourceMessage:(id)a3;
-- (id)filterCECVersionMessage:(id)a3 toDevice:(id)a4;
-- (id)filterDeckStatusMessage:(id)a3 toDevice:(id)a4;
-- (id)filterDeviceVendorIDMessage:(id)a3;
-- (id)filterInactiveSourceMessage:(id)a3 toDevice:(id)a4;
-- (id)filterMessage:(id)a3 toDevice:(id)a4;
-- (id)filterReportFeaturesMessage:(id)a3 toDevice:(id)a4;
-- (id)filterReportPhysicalAddressMessage:(id)a3;
-- (id)filterReportPowerStatusMessage:(id)a3 toDevice:(id)a4;
-- (id)filterRoutingChangeMessage:(id)a3;
-- (id)filterRoutingInformationMessage:(id)a3;
-- (id)filterSetMenuLanguageMessage:(id)a3;
-- (id)filterSetOSDNameMessage:(id)a3 toDevice:(id)a4;
-- (id)filterSetStreamPathMessage:(id)a3;
-- (id)filterSetSystemAudioModeMessage:(id)a3 toDevice:(id)a4;
-- (id)filterSystemAudioModeStatusMessage:(id)a3 toDevice:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)extendedPropertyForKey:(id)key error:(id *)error;
+- (id)filterActiveSourceMessage:(id)message;
+- (id)filterCECVersionMessage:(id)message toDevice:(id)device;
+- (id)filterDeckStatusMessage:(id)message toDevice:(id)device;
+- (id)filterDeviceVendorIDMessage:(id)message;
+- (id)filterInactiveSourceMessage:(id)message toDevice:(id)device;
+- (id)filterMessage:(id)message toDevice:(id)device;
+- (id)filterReportFeaturesMessage:(id)message toDevice:(id)device;
+- (id)filterReportPhysicalAddressMessage:(id)message;
+- (id)filterReportPowerStatusMessage:(id)message toDevice:(id)device;
+- (id)filterRoutingChangeMessage:(id)message;
+- (id)filterRoutingInformationMessage:(id)message;
+- (id)filterSetMenuLanguageMessage:(id)message;
+- (id)filterSetOSDNameMessage:(id)message toDevice:(id)device;
+- (id)filterSetStreamPathMessage:(id)message;
+- (id)filterSetSystemAudioModeMessage:(id)message toDevice:(id)device;
+- (id)filterSystemAudioModeStatusMessage:(id)message toDevice:(id)device;
 - (uint64_t)arcStarting;
 - (uint64_t)arcStopping;
 - (uint64_t)dsamStopping;
@@ -61,69 +61,69 @@
 - (uint64_t)serialQueue;
 - (uint64_t)userControlFollowerSafetyTimeoutExpired;
 - (uint64_t)userControlFollowerSynthesizeRelease;
-- (void)arcInformDelegateOfSuccessTransitioningTo:(unint64_t)a3;
-- (void)arcInformDelegateTransitionTo:(unint64_t)a3 failedWithError:(id)a4;
+- (void)arcInformDelegateOfSuccessTransitioningTo:(unint64_t)to;
+- (void)arcInformDelegateTransitionTo:(unint64_t)to failedWithError:(id)error;
 - (void)arcStarting;
 - (void)arcStarting_handleReportARCInitiatedReceived;
 - (void)arcStopping;
 - (void)arcStopping_handleReportARCTerminatedReceived;
 - (void)audioStatusChanged;
-- (void)audioStatusHandleUserControl:(CECUserControl)a3 pressed:(BOOL)a4;
+- (void)audioStatusHandleUserControl:(CECUserControl)control pressed:(BOOL)pressed;
 - (void)audioStatusHandleUserControlReleased;
 - (void)broadcastPresence;
 - (void)dealloc;
-- (void)didAddToBus:(id)a3;
-- (void)didChangePowerStatus:(unint64_t)a3;
-- (void)didNotHandleMessage:(id)a3 unsupportedOperand:(BOOL)a4;
-- (void)didRemoveFromBus:(id)a3;
-- (void)dispatchAsyncLowPriority:(id)a3;
-- (void)dispatchSelector:(SEL)a3;
-- (void)dispatchSelector:(SEL)a3 afterDelay:(double)a4;
-- (void)dispatchSelector:(SEL)a3 withObject:(id)a4;
-- (void)dispatchSelector:(SEL)a3 withObject:(id)a4 afterDelay:(double)a5;
-- (void)dsamStarting:(id)a3;
+- (void)didAddToBus:(id)bus;
+- (void)didChangePowerStatus:(unint64_t)status;
+- (void)didNotHandleMessage:(id)message unsupportedOperand:(BOOL)operand;
+- (void)didRemoveFromBus:(id)bus;
+- (void)dispatchAsyncLowPriority:(id)priority;
+- (void)dispatchSelector:(SEL)selector;
+- (void)dispatchSelector:(SEL)selector afterDelay:(double)delay;
+- (void)dispatchSelector:(SEL)selector withObject:(id)object;
+- (void)dispatchSelector:(SEL)selector withObject:(id)object afterDelay:(double)delay;
+- (void)dsamStarting:(id)starting;
 - (void)dsamStarting_handleBroadcastSSAMOnResponseReceived;
 - (void)dsamStarting_handleBroadcastSSAMOnResponseTimeout;
 - (void)dsamStopping;
 - (void)dsamStopping_handleBroadcastSSAMOffResponseReceived;
 - (void)dsamStopping_handleBroadcastSSAMOffResponseTimeout;
-- (void)error:(id)a3 handlingMessage:(id)a4 fromDevice:(id)a5;
-- (void)handleActiveSourceMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleDeckControlMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleDeckControlPlayMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleFeatureAbortMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleGetCECVersionMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleGetMenuLanguageMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleGiveAudioStatusMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleGiveDeckStatusMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleGiveDevicePowerStatusMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleGiveDeviceVendorIDMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleGiveFeaturesMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleGiveOSDNameMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleGivePhysicalAddressMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleGiveSystemAudioModeStatusMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleMenuRequest:(id)a3 fromDevice:(id)a4;
-- (void)handleMessage:(id)a3 fromDevice:(id)a4 broadcast:(BOOL)a5;
-- (void)handleReportARCInitiatedMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleReportARCTerminatedMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleReportAudioStatusMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleRequestARCInitiationMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleRequestARCTerminationMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleRequestActiveSourceMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleRequestShortAudioDescriptorMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleSetAudioVolumeLevelMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleSetStreamPathMessage:(id)a3;
-- (void)handleSetSystemAudioModeMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleSystemAudioModeRequestMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleUserControlPressedMessage:(id)a3 fromDevice:(id)a4;
-- (void)handleUserControlReleasedMessage:(id)a3 fromDevice:(id)a4;
-- (void)hibernationChanged:(BOOL)a3;
-- (void)probeAbsoluteVolumeControl_handleFeatureAbortReceivedFromDevice:(id)a3 withOpcode:(unsigned __int8)a4 reason:(unsigned __int8)a5;
+- (void)error:(id)error handlingMessage:(id)message fromDevice:(id)device;
+- (void)handleActiveSourceMessage:(id)message fromDevice:(id)device;
+- (void)handleDeckControlMessage:(id)message fromDevice:(id)device;
+- (void)handleDeckControlPlayMessage:(id)message fromDevice:(id)device;
+- (void)handleFeatureAbortMessage:(id)message fromDevice:(id)device;
+- (void)handleGetCECVersionMessage:(id)message fromDevice:(id)device;
+- (void)handleGetMenuLanguageMessage:(id)message fromDevice:(id)device;
+- (void)handleGiveAudioStatusMessage:(id)message fromDevice:(id)device;
+- (void)handleGiveDeckStatusMessage:(id)message fromDevice:(id)device;
+- (void)handleGiveDevicePowerStatusMessage:(id)message fromDevice:(id)device;
+- (void)handleGiveDeviceVendorIDMessage:(id)message fromDevice:(id)device;
+- (void)handleGiveFeaturesMessage:(id)message fromDevice:(id)device;
+- (void)handleGiveOSDNameMessage:(id)message fromDevice:(id)device;
+- (void)handleGivePhysicalAddressMessage:(id)message fromDevice:(id)device;
+- (void)handleGiveSystemAudioModeStatusMessage:(id)message fromDevice:(id)device;
+- (void)handleMenuRequest:(id)request fromDevice:(id)device;
+- (void)handleMessage:(id)message fromDevice:(id)device broadcast:(BOOL)broadcast;
+- (void)handleReportARCInitiatedMessage:(id)message fromDevice:(id)device;
+- (void)handleReportARCTerminatedMessage:(id)message fromDevice:(id)device;
+- (void)handleReportAudioStatusMessage:(id)message fromDevice:(id)device;
+- (void)handleRequestARCInitiationMessage:(id)message fromDevice:(id)device;
+- (void)handleRequestARCTerminationMessage:(id)message fromDevice:(id)device;
+- (void)handleRequestActiveSourceMessage:(id)message fromDevice:(id)device;
+- (void)handleRequestShortAudioDescriptorMessage:(id)message fromDevice:(id)device;
+- (void)handleSetAudioVolumeLevelMessage:(id)message fromDevice:(id)device;
+- (void)handleSetStreamPathMessage:(id)message;
+- (void)handleSetSystemAudioModeMessage:(id)message fromDevice:(id)device;
+- (void)handleSystemAudioModeRequestMessage:(id)message fromDevice:(id)device;
+- (void)handleUserControlPressedMessage:(id)message fromDevice:(id)device;
+- (void)handleUserControlReleasedMessage:(id)message fromDevice:(id)device;
+- (void)hibernationChanged:(BOOL)changed;
+- (void)probeAbsoluteVolumeControl_handleFeatureAbortReceivedFromDevice:(id)device withOpcode:(unsigned __int8)opcode reason:(unsigned __int8)reason;
 - (void)refreshActiveSource;
 - (void)refreshSystemAudioModeStatus;
 - (void)resetAudioStatusState;
-- (void)samInformDelegateOfSuccessTransitioningTo:(unint64_t)a3;
-- (void)samInformDelegateTransitionTo:(unint64_t)a3 failedWithError:(id)a4;
+- (void)samInformDelegateOfSuccessTransitioningTo:(unint64_t)to;
+- (void)samInformDelegateTransitionTo:(unint64_t)to failedWithError:(id)error;
 - (void)samResetStateToOff;
 - (void)samStarting;
 - (void)samStarting_broadcast_Req_Act_Src;
@@ -134,7 +134,7 @@
 - (void)samStarting_handleFeatureAbortResponseTimeout;
 - (void)samStarting_send_SSAM_ON_to_TV;
 - (void)samStopping;
-- (void)sendDeckStatusToDevice:(id)a3;
+- (void)sendDeckStatusToDevice:(id)device;
 - (void)userControlFollowerSafetyTimeoutExpired;
 - (void)userControlFollowerSynthesizeRelease;
 - (void)userControlInitiatorRepetitionTimeoutExpired;
@@ -142,12 +142,12 @@
 - (void)userControlScheduleFollowerSafetyTimeout;
 - (void)userControlScheduleInitiatorRepetitionTimeout;
 - (void)userControlScheduleInitiatorTrackAudioStatusTimeout;
-- (void)willRemoveFromBus:(id)a3;
+- (void)willRemoveFromBus:(id)bus;
 @end
 
 @implementation CoreCECDeviceProvider
 
-- (CoreCECDeviceProvider)initWithDevice:(id)a3
+- (CoreCECDeviceProvider)initWithDevice:(id)device
 {
   v7.receiver = self;
   v7.super_class = CoreCECDeviceProvider;
@@ -157,26 +157,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a3 sendFromAddress];
+      sendFromAddress = [device sendFromAddress];
     }
 
     else
     {
-      v5 = 15;
+      sendFromAddress = 15;
     }
 
-    v4->_sendFromAddress = v5;
+    v4->_sendFromAddress = sendFromAddress;
     v4->_isValid = 1;
   }
 
   return v4;
 }
 
-- (CoreCECDeviceProvider)initWithCoder:(id)a3
+- (CoreCECDeviceProvider)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CoreCECDeviceProvider;
-  result = [(CoreCECDevice *)&v4 initWithCoder:a3];
+  result = [(CoreCECDevice *)&v4 initWithCoder:coder];
   if (result)
   {
     result->_sendFromAddress = 15;
@@ -193,7 +193,7 @@
   [(CoreCECDevice *)&v2 dealloc];
 }
 
-- (void)willRemoveFromBus:(id)a3
+- (void)willRemoveFromBus:(id)bus
 {
   self->_isValid = 0;
   p_userControlInitiatorState = &self->_userControlInitiatorState;
@@ -223,14 +223,14 @@
 
   v6.receiver = self;
   v6.super_class = CoreCECDeviceProvider;
-  [(CoreRCDevice *)&v6 willRemoveFromBus:a3];
+  [(CoreRCDevice *)&v6 willRemoveFromBus:bus];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CoreCECDeviceProvider;
-  return [(CoreRCDevice *)&v4 copyWithZone:a3];
+  return [(CoreRCDevice *)&v4 copyWithZone:zone];
 }
 
 - (OS_dispatch_queue)serialQueue
@@ -244,7 +244,7 @@
   return v2;
 }
 
-- (BOOL)setExtendedProperty:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setExtendedProperty:(id)property forKey:(id)key error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 90 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
@@ -254,7 +254,7 @@
   return 0;
 }
 
-- (id)extendedPropertyForKey:(id)a3 error:(id *)a4
+- (id)extendedPropertyForKey:(id)key error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 90 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
@@ -264,7 +264,7 @@
   return 0;
 }
 
-- (void)didAddToBus:(id)a3
+- (void)didAddToBus:(id)bus
 {
   v5.receiver = self;
   v5.super_class = CoreCECDeviceProvider;
@@ -272,14 +272,14 @@
   [(CoreRCDevice *)&v5 didAddToBus:?];
   if ([(CoreRCDevice *)self isLocalDevice])
   {
-    if (([a3 setAllowHibernation:0 error:&v6] & 1) == 0)
+    if (([bus setAllowHibernation:0 error:&v6] & 1) == 0)
     {
       [CoreCECDeviceProvider didAddToBus:];
     }
   }
 }
 
-- (BOOL)deckControlCommandWithMode:(unint64_t)a3 target:(id)a4 error:(id *)a5
+- (BOOL)deckControlCommandWithMode:(unint64_t)mode target:(id)target error:(id *)error
 {
   v14 = 0;
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
@@ -294,13 +294,13 @@
     goto LABEL_12;
   }
 
-  v10 = [a4 logicalAddress];
-  if (v10 == 15)
+  logicalAddress = [target logicalAddress];
+  if (logicalAddress == 15)
   {
     [CoreCECDeviceProvider deckControlCommandWithMode:v11 target:? error:?];
 LABEL_12:
     v12 = v15;
-    if (!a5)
+    if (!error)
     {
       return v12 == 0;
     }
@@ -308,18 +308,18 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  [(CoreCECDeviceProvider *)self deckControlWithMode:a3 to:v10 error:&v14];
+  [(CoreCECDeviceProvider *)self deckControlWithMode:mode to:logicalAddress error:&v14];
   v12 = v14;
-  if (a5)
+  if (error)
   {
 LABEL_7:
-    *a5 = v12;
+    *error = v12;
   }
 
   return v12 == 0;
 }
 
-- (BOOL)deckControlPlayWithMode:(unint64_t)a3 target:(id)a4 error:(id *)a5
+- (BOOL)deckControlPlayWithMode:(unint64_t)mode target:(id)target error:(id *)error
 {
   v14 = 0;
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
@@ -334,13 +334,13 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  v10 = [a4 logicalAddress];
-  if (v10 == 15)
+  logicalAddress = [target logicalAddress];
+  if (logicalAddress == 15)
   {
     [CoreCECDeviceProvider deckControlCommandWithMode:v11 target:? error:?];
 LABEL_12:
     v12 = v15;
-    if (!a5)
+    if (!error)
     {
       return v12 == 0;
     }
@@ -348,18 +348,18 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  [(CoreCECDeviceProvider *)self playWithMode:a3 to:v10 error:&v14];
+  [(CoreCECDeviceProvider *)self playWithMode:mode to:logicalAddress error:&v14];
   v12 = v14;
-  if (a5)
+  if (error)
   {
 LABEL_7:
-    *a5 = v12;
+    *error = v12;
   }
 
   return v12 == 0;
 }
 
-- (BOOL)deckControlRefreshStatus:(id)a3 requestType:(unint64_t)a4 error:(id *)a5
+- (BOOL)deckControlRefreshStatus:(id)status requestType:(unint64_t)type error:(id *)error
 {
   v17 = 0;
   v16 = 0;
@@ -375,20 +375,20 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  v10 = [a3 logicalAddress];
-  if (v10 == 15)
+  logicalAddress = [status logicalAddress];
+  if (logicalAddress == 15)
   {
     [CoreCECDeviceProvider deckControlCommandWithMode:v11 target:? error:?];
     goto LABEL_14;
   }
 
-  v12 = v10;
-  if (!CECStatusRequestForCoreCECStatusRequest(&v16, a4))
+  v12 = logicalAddress;
+  if (!CECStatusRequestForCoreCECStatusRequest(&v16, type))
   {
     [CoreIRDeviceProvider setOSDName:v13 error:?];
 LABEL_14:
     v14 = v18;
-    if (!a5)
+    if (!error)
     {
       return v14 == 0;
     }
@@ -398,32 +398,32 @@ LABEL_14:
 
   [(CoreCECDeviceProvider *)self giveDeckStatusWithRequest:v16 to:v12 error:&v17];
   v14 = v17;
-  if (a5)
+  if (error)
   {
 LABEL_8:
-    *a5 = v14;
+    *error = v14;
   }
 
   return v14 == 0;
 }
 
-- (BOOL)performStandbyWithTargetDevice:(id)a3 error:(id *)a4
+- (BOOL)performStandbyWithTargetDevice:(id)device error:(id *)error
 {
   v12 = 0;
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
     [CoreCECDeviceProvider performStandbyWithTargetDevice:error:];
-    if (a3)
+    if (device)
     {
       goto LABEL_5;
     }
 
 LABEL_9:
-    v9 = 15;
+    logicalAddress = 15;
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!device)
   {
     goto LABEL_9;
   }
@@ -435,7 +435,7 @@ LABEL_5:
     [CoreIRDeviceProvider setOSDName:v7 error:?];
 LABEL_14:
     v10 = v13;
-    if (!a4)
+    if (!error)
     {
       return v10 == 0;
     }
@@ -443,42 +443,42 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  v9 = [a3 logicalAddress];
-  if (v9 == 15)
+  logicalAddress = [device logicalAddress];
+  if (logicalAddress == 15)
   {
     [CoreCECDeviceProvider deckControlCommandWithMode:v8 target:? error:?];
     goto LABEL_14;
   }
 
 LABEL_10:
-  [(CoreCECDeviceProvider *)self standbyTo:v9 error:&v12];
+  [(CoreCECDeviceProvider *)self standbyTo:logicalAddress error:&v12];
   v10 = v12;
-  if (a4)
+  if (error)
   {
 LABEL_11:
-    *a4 = v10;
+    *error = v10;
   }
 
   return v10 == 0;
 }
 
-- (BOOL)refreshProperties:(id)a3 ofDevice:(id)a4 error:(id *)a5
+- (BOOL)refreshProperties:(id)properties ofDevice:(id)device error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
-    v16 = a3;
-    v17 = a4;
+    propertiesCopy = properties;
+    deviceCopy = device;
     v14 = objc_opt_class();
-    v15 = self;
+    selfCopy = self;
     LogPrintF();
   }
 
-  if (a3 || a4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (properties || device && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [CoreIRDeviceProvider setOSDName:a2 error:?];
 LABEL_17:
     v12 = v27;
-    if (!a5)
+    if (!error)
     {
       return v12 == 0;
     }
@@ -486,20 +486,20 @@ LABEL_17:
     goto LABEL_12;
   }
 
-  v9 = [a4 logicalAddress];
-  if (v9 == 15)
+  logicalAddress = [device logicalAddress];
+  if (logicalAddress == 15)
   {
     [CoreCECDeviceProvider deckControlCommandWithMode:v10 target:? error:?];
     goto LABEL_17;
   }
 
-  v11 = v9;
+  v11 = logicalAddress;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __58__CoreCECDeviceProvider_refreshProperties_ofDevice_error___block_invoke;
   v25[3] = &unk_278EA42E8;
   v25[4] = self;
-  v26 = v9;
+  v26 = logicalAddress;
   [(CoreCECDeviceProvider *)self dispatchAsyncLowPriority:v25];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -522,7 +522,7 @@ LABEL_17:
   v19[4] = self;
   v20 = v11;
   [(CoreCECDeviceProvider *)self dispatchAsyncLowPriority:v19];
-  if ([a4 logicalAddress] == 5)
+  if ([device logicalAddress] == 5)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -533,10 +533,10 @@ LABEL_17:
   }
 
   v12 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_12:
-    *a5 = v12;
+    *error = v12;
   }
 
   return v12 == 0;
@@ -579,30 +579,30 @@ LABEL_12:
   }
 
   [(CoreCECDeviceProvider *)self reportPhysicalAddress:0];
-  v3 = [(CoreCECDevice *)self vendorID];
+  vendorID = [(CoreCECDevice *)self vendorID];
 
-  [(CoreCECDeviceProvider *)self deviceVendorID:v3 error:0];
+  [(CoreCECDeviceProvider *)self deviceVendorID:vendorID error:0];
 }
 
-- (void)dispatchAsyncLowPriority:(id)a3
+- (void)dispatchAsyncLowPriority:(id)priority
 {
-  v4 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_UTILITY, 0, a3);
+  v4 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_UTILITY, 0, priority);
   dispatch_async([(CoreCECDeviceProvider *)self serialQueue], v4);
 
   _Block_release(v4);
 }
 
-- (void)probeAbsoluteVolumeControl_handleFeatureAbortReceivedFromDevice:(id)a3 withOpcode:(unsigned __int8)a4 reason:(unsigned __int8)a5
+- (void)probeAbsoluteVolumeControl_handleFeatureAbortReceivedFromDevice:(id)device withOpcode:(unsigned __int8)opcode reason:(unsigned __int8)reason
 {
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
-    [CoreCECDeviceProvider probeAbsoluteVolumeControl_handleFeatureAbortReceivedFromDevice:a5 withOpcode:? reason:?];
+    [CoreCECDeviceProvider probeAbsoluteVolumeControl_handleFeatureAbortReceivedFromDevice:reason withOpcode:? reason:?];
   }
 
-  [a3 setFeature:20 supportStatus:1];
+  [device setFeature:20 supportStatus:1];
 }
 
-- (BOOL)systemAudioModeRequest:(unint64_t)a3 error:(id *)a4
+- (BOOL)systemAudioModeRequest:(unint64_t)request error:(id *)error
 {
   v9 = 0;
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
@@ -616,12 +616,12 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  if (a3 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+  if (request - 3 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     [CoreIRDeviceProvider setOSDName:v7 error:?];
 LABEL_17:
     result = 0;
-    if (!a4)
+    if (!error)
     {
       return result;
     }
@@ -629,26 +629,26 @@ LABEL_17:
     goto LABEL_10;
   }
 
-  if ([-[CoreCECDeviceProvider busProvider](self "busProvider")] == a3)
+  if ([-[CoreCECDeviceProvider busProvider](self "busProvider")] == request)
   {
     return 1;
   }
 
-  result = [(CoreCECDeviceProvider *)self deviceRequestSystemAudioModeStatusChangeTo:a3 == 2 error:&v9];
-  if (a4)
+  result = [(CoreCECDeviceProvider *)self deviceRequestSystemAudioModeStatusChangeTo:request == 2 error:&v9];
+  if (error)
   {
 LABEL_10:
     if (!result)
     {
       result = 0;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
   return result;
 }
 
-- (BOOL)requestSystemAudioModeStatusChangeTo:(unint64_t)a3 error:(id *)a4
+- (BOOL)requestSystemAudioModeStatusChangeTo:(unint64_t)to error:(id *)error
 {
   v9 = 0;
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
@@ -670,7 +670,7 @@ LABEL_10:
 
   if ([(CoreCECDevice *)self deviceType]!= 1)
   {
-    if (![(CoreCECDeviceProvider *)self deviceRequestSystemAudioModeStatusChangeTo:a3 error:&v9])
+    if (![(CoreCECDeviceProvider *)self deviceRequestSystemAudioModeStatusChangeTo:to error:&v9])
     {
       goto LABEL_14;
     }
@@ -678,7 +678,7 @@ LABEL_10:
     return 1;
   }
 
-  if ([(CoreCECDeviceProvider *)self audioSystemRequestSystemAudioModeStatusChangeTo:a3 error:&v9])
+  if ([(CoreCECDeviceProvider *)self audioSystemRequestSystemAudioModeStatusChangeTo:to error:&v9])
   {
     return 1;
   }
@@ -690,30 +690,30 @@ LABEL_14:
   }
 
   result = 0;
-  if (a4)
+  if (error)
   {
-    *a4 = v9;
+    *error = v9;
   }
 
   return result;
 }
 
-- (BOOL)requestAudioReturnChannelStatusChangeTo:(unint64_t)a3 error:(id *)a4
+- (BOOL)requestAudioReturnChannelStatusChangeTo:(unint64_t)to error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
-    [CoreCECDeviceProvider requestAudioReturnChannelStatusChangeTo:a3 error:?];
+    [CoreCECDeviceProvider requestAudioReturnChannelStatusChangeTo:to error:?];
   }
 
-  v7 = [(CoreCECDevice *)self audioReturnChannelControlEnabled];
-  if (v7)
+  audioReturnChannelControlEnabled = [(CoreCECDevice *)self audioReturnChannelControlEnabled];
+  if (audioReturnChannelControlEnabled)
   {
     if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
-      [CoreCECDeviceProvider requestAudioReturnChannelStatusChangeTo:a3 error:?];
+      [CoreCECDeviceProvider requestAudioReturnChannelStatusChangeTo:to error:?];
     }
 
-    if (a3 == 1)
+    if (to == 1)
     {
       v8 = sel_arcStarting;
     }
@@ -728,20 +728,20 @@ LABEL_14:
 
   else
   {
-    [CoreCECDeviceProvider requestAudioReturnChannelStatusChangeTo:a4 error:a3];
+    [CoreCECDeviceProvider requestAudioReturnChannelStatusChangeTo:error error:to];
   }
 
-  return v7;
+  return audioReturnChannelControlEnabled;
 }
 
-- (void)didChangePowerStatus:(unint64_t)a3
+- (void)didChangePowerStatus:(unint64_t)status
 {
-  if (a3 == 2)
+  if (status == 2)
   {
     [-[CoreCECDeviceProvider busProvider](self "busProvider")];
   }
 
-  else if (a3 == 1 && [(CoreCECDevice *)self systemAudioControlEnabled])
+  else if (status == 1 && [(CoreCECDevice *)self systemAudioControlEnabled])
   {
     [(CoreCECDeviceProvider *)self refreshSystemAudioModeStatus];
   }
@@ -751,7 +751,7 @@ LABEL_14:
   {
     v7 = 0;
     v6 = 0;
-    CECPowerStatusForCoreCECPowerStatus(&v6, a3);
+    CECPowerStatusForCoreCECPowerStatus(&v6, status);
     if (![(CoreCECDeviceProvider *)self reportPowerStatus:v6 to:15 error:&v7]&& gLogCategory_CoreRCDevice <= 60 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
       [CoreCECDeviceProvider didChangePowerStatus:?];
@@ -760,10 +760,10 @@ LABEL_14:
 
   v5.receiver = self;
   v5.super_class = CoreCECDeviceProvider;
-  [(CoreCECDevice *)&v5 didChangePowerStatus:a3];
+  [(CoreCECDevice *)&v5 didChangePowerStatus:status];
 }
 
-- (BOOL)requestAudioStatus:(id *)a3
+- (BOOL)requestAudioStatus:(id *)status
 {
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
@@ -778,23 +778,23 @@ LABEL_14:
     [(CoreCECDeviceProvider *)self giveAudioStatusTo:v7 error:&v8];
   }
 
-  else if (a3)
+  else if (status)
   {
-    *a3 = v8;
+    *status = v8;
   }
 
   return v5;
 }
 
-- (BOOL)getRemoteControlDestination:(id *)a3 logicalAddress:(unsigned __int8 *)a4 forTargetDevice:(id)a5 command:(unsigned __int8)a6 error:(id *)a7
+- (BOOL)getRemoteControlDestination:(id *)destination logicalAddress:(unsigned __int8 *)address forTargetDevice:(id)device command:(unsigned __int8)command error:(id *)error
 {
-  if (a5)
+  if (device)
   {
-    v10 = a5;
+    deviceCopy = device;
     goto LABEL_3;
   }
 
-  if ((a6 - 65) <= 0x25 && ((1 << (a6 - 65)) & 0x3000400007) != 0)
+  if ((command - 65) <= 0x25 && ((1 << (command - 65)) & 0x3000400007) != 0)
   {
     if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
@@ -803,27 +803,27 @@ LABEL_14:
 
     if ([(CoreCECDevice *)self systemAudioControlEnabled])
     {
-      v10 = 0;
+      deviceCopy = 0;
       if ([-[CoreCECDeviceProvider busProvider](self "busProvider")] == 2)
       {
-        v11 = 5;
+        logicalAddress = 5;
       }
 
       else
       {
-        v11 = 0;
+        logicalAddress = 0;
       }
 
-      if (!a3)
+      if (!destination)
       {
 LABEL_5:
         v12 = 0;
-        if (a4)
+        if (address)
         {
-          *a4 = v11;
+          *address = logicalAddress;
         }
 
-        if (a7)
+        if (error)
         {
           goto LABEL_8;
         }
@@ -832,7 +832,7 @@ LABEL_5:
       }
 
 LABEL_4:
-      *a3 = v10;
+      *destination = deviceCopy;
       goto LABEL_5;
     }
   }
@@ -841,9 +841,9 @@ LABEL_4:
   {
     if ([(CoreCECDevice *)self logicalAddress])
     {
-      v10 = 0;
-      v11 = 0;
-      if (!a3)
+      deviceCopy = 0;
+      logicalAddress = 0;
+      if (!destination)
       {
         goto LABEL_5;
       }
@@ -857,10 +857,10 @@ LABEL_4:
     v16 = [-[CoreRCDevice bus](self "bus")];
     if (v16)
     {
-      v10 = v16;
+      deviceCopy = v16;
 LABEL_3:
-      v11 = [v10 logicalAddress];
-      if (!a3)
+      logicalAddress = [deviceCopy logicalAddress];
+      if (!destination)
       {
         goto LABEL_5;
       }
@@ -871,10 +871,10 @@ LABEL_3:
 
   [CoreCECDeviceProvider systemAudioModeRequest:v15 error:?];
   v12 = v17;
-  if (a7)
+  if (error)
   {
 LABEL_8:
-    *a7 = v12;
+    *error = v12;
   }
 
 LABEL_9:
@@ -891,14 +891,14 @@ LABEL_9:
   v3 = self->_userControlInitiatorRepetitionTimeoutGeneration + 1;
   self->_userControlInitiatorRepetitionTimeoutGeneration = v3;
   v4 = dispatch_time(0, 250000000);
-  v5 = [(CoreCECDeviceProvider *)self serialQueue];
+  serialQueue = [(CoreCECDeviceProvider *)self serialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __70__CoreCECDeviceProvider_userControlScheduleInitiatorRepetitionTimeout__block_invoke;
   v6[3] = &unk_278EA4310;
   v7 = v3;
   v6[4] = self;
-  dispatch_after(v4, v5, v6);
+  dispatch_after(v4, serialQueue, v6);
 }
 
 _DWORD *__70__CoreCECDeviceProvider_userControlScheduleInitiatorRepetitionTimeout__block_invoke(uint64_t a1)
@@ -989,14 +989,14 @@ LABEL_5:
   }
 
   v6 = dispatch_time(0, 1000000 * v5);
-  v7 = [(CoreCECDeviceProvider *)self serialQueue];
+  serialQueue = [(CoreCECDeviceProvider *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__CoreCECDeviceProvider_userControlScheduleInitiatorTrackAudioStatusTimeout__block_invoke;
   block[3] = &unk_278EA4310;
   v11 = v3;
   block[4] = self;
-  dispatch_after(v6, v7, block);
+  dispatch_after(v6, serialQueue, block);
 }
 
 _DWORD *__76__CoreCECDeviceProvider_userControlScheduleInitiatorTrackAudioStatusTimeout__block_invoke(uint64_t a1)
@@ -1058,14 +1058,14 @@ _DWORD *__76__CoreCECDeviceProvider_userControlScheduleInitiatorTrackAudioStatus
   v3 = self->_userControlFollowerSafetyTimeoutGeneration + 1;
   self->_userControlFollowerSafetyTimeoutGeneration = v3;
   v4 = dispatch_time(0, 550000000);
-  v5 = [(CoreCECDeviceProvider *)self serialQueue];
+  serialQueue = [(CoreCECDeviceProvider *)self serialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__CoreCECDeviceProvider_userControlScheduleFollowerSafetyTimeout__block_invoke;
   v6[3] = &unk_278EA4310;
   v7 = v3;
   v6[4] = self;
-  dispatch_after(v4, v5, v6);
+  dispatch_after(v4, serialQueue, v6);
 }
 
 _DWORD *__65__CoreCECDeviceProvider_userControlScheduleFollowerSafetyTimeout__block_invoke(uint64_t a1)
@@ -1143,12 +1143,12 @@ _DWORD *__65__CoreCECDeviceProvider_userControlScheduleFollowerSafetyTimeout__bl
   }
 }
 
-- (void)audioStatusHandleUserControl:(CECUserControl)a3 pressed:(BOOL)a4
+- (void)audioStatusHandleUserControl:(CECUserControl)control pressed:(BOOL)pressed
 {
-  v4 = a4;
+  pressedCopy = pressed;
   if ([(CoreCECDeviceProvider *)self activeARCAudioSystem])
   {
-    if (v4)
+    if (pressedCopy)
     {
 
       [(CoreCECDeviceProvider *)self audioStatusHandleUserControlPressed];
@@ -1224,14 +1224,14 @@ LABEL_14:
   self->_userControlAudioState.reportAudioStatusNeeded = 0;
 }
 
-- (BOOL)deviceRequestSystemAudioModeStatusChangeTo:(unint64_t)a3 error:(id *)a4
+- (BOOL)deviceRequestSystemAudioModeStatusChangeTo:(unint64_t)to error:(id *)error
 {
   v6 = gLogCategory_CoreRCDevice;
   if (gLogCategory_CoreRCDevice <= 10)
   {
     if (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize())
     {
-      [CoreCECDeviceProvider deviceRequestSystemAudioModeStatusChangeTo:a3 error:?];
+      [CoreCECDeviceProvider deviceRequestSystemAudioModeStatusChangeTo:to error:?];
     }
 
     v6 = gLogCategory_CoreRCDevice;
@@ -1239,10 +1239,10 @@ LABEL_14:
 
   if (v6 <= 40 && (v6 != -1 || _LogCategory_Initialize()))
   {
-    [CoreCECDeviceProvider deviceRequestSystemAudioModeStatusChangeTo:a3 error:self];
+    [CoreCECDeviceProvider deviceRequestSystemAudioModeStatusChangeTo:to error:self];
   }
 
-  if (a3 == 1)
+  if (to == 1)
   {
     -[CoreCECDeviceProvider dispatchSelector:withObject:](self, "dispatchSelector:withObject:", sel_dsamStarting_, [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[CoreCECDevice physicalAddress](self, "physicalAddress")}]);
   }
@@ -1255,15 +1255,15 @@ LABEL_14:
   return 1;
 }
 
-- (void)dsamStarting:(id)a3
+- (void)dsamStarting:(id)starting
 {
-  v4 = [a3 unsignedIntegerValue];
+  unsignedIntegerValue = [starting unsignedIntegerValue];
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
     [CoreCECDeviceProvider dsamStarting:];
   }
 
-  [(CoreCECDeviceProvider *)self dsamStartingWithPhysicalAddress:v4];
+  [(CoreCECDeviceProvider *)self dsamStartingWithPhysicalAddress:unsignedIntegerValue];
 }
 
 - (void)dsamStarting_handleBroadcastSSAMOnResponseTimeout
@@ -1278,9 +1278,9 @@ LABEL_14:
       }
 
       [(CoreCECDeviceProvider *)self samResetStateToOff];
-      v3 = [MEMORY[0x277CCA9B8] cecTimeoutError];
+      cecTimeoutError = [MEMORY[0x277CCA9B8] cecTimeoutError];
 
-      [(CoreCECDeviceProvider *)self samInformDelegateTransitionTo:1 failedWithError:v3];
+      [(CoreCECDeviceProvider *)self samInformDelegateTransitionTo:1 failedWithError:cecTimeoutError];
     }
 
     else if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
@@ -1351,9 +1351,9 @@ LABEL_14:
       }
 
       [(CoreCECDeviceProvider *)self setSystemAudioModeState:7];
-      v3 = [MEMORY[0x277CCA9B8] cecTimeoutError];
+      cecTimeoutError = [MEMORY[0x277CCA9B8] cecTimeoutError];
 
-      [(CoreCECDeviceProvider *)self samInformDelegateTransitionTo:0 failedWithError:v3];
+      [(CoreCECDeviceProvider *)self samInformDelegateTransitionTo:0 failedWithError:cecTimeoutError];
     }
 
     else if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
@@ -1391,15 +1391,15 @@ LABEL_14:
   }
 }
 
-- (BOOL)audioSystemRequestSystemAudioModeStatusChangeTo:(unint64_t)a3 error:(id *)a4
+- (BOOL)audioSystemRequestSystemAudioModeStatusChangeTo:(unint64_t)to error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
-    [CoreCECDeviceProvider audioSystemRequestSystemAudioModeStatusChangeTo:a3 error:self];
+    [CoreCECDeviceProvider audioSystemRequestSystemAudioModeStatusChangeTo:to error:self];
   }
 
   v6 = &selRef_samStarting;
-  if (a3 != 1)
+  if (to != 1)
   {
     v6 = &selRef_samStopping;
   }
@@ -1410,18 +1410,18 @@ LABEL_14:
 
 - (void)samStarting
 {
-  v3 = [(CoreCECDeviceProvider *)self systemAudioModeRequestedByTV];
-  v4 = [(CoreCECDeviceProvider *)self systemAudioModeRequestedByOtherDevice];
+  systemAudioModeRequestedByTV = [(CoreCECDeviceProvider *)self systemAudioModeRequestedByTV];
+  systemAudioModeRequestedByOtherDevice = [(CoreCECDeviceProvider *)self systemAudioModeRequestedByOtherDevice];
   [(CoreCECDeviceProvider *)self setSystemAudioModeState:1];
   [(CoreCECDeviceProvider *)self setSystemAudioModeRequestedByTV:0];
   [(CoreCECDeviceProvider *)self setSystemAudioModeRequestedByOtherDevice:0];
-  if (v3)
+  if (systemAudioModeRequestedByTV)
   {
 
     [(CoreCECDeviceProvider *)self samStarting_broadcast_SSAM_ON];
   }
 
-  else if (v4 || [-[CoreCECDeviceProvider busProvider](self "busProvider")])
+  else if (systemAudioModeRequestedByOtherDevice || [-[CoreCECDeviceProvider busProvider](self "busProvider")])
   {
 
     [(CoreCECDeviceProvider *)self samStarting_send_SSAM_ON_to_TV];
@@ -1639,21 +1639,21 @@ LABEL_14:
   [(CoreCECDeviceProvider *)self setSystemAudioModeRequestedByOtherDevice:0];
 }
 
-- (void)samInformDelegateOfSuccessTransitioningTo:(unint64_t)a3
+- (void)samInformDelegateOfSuccessTransitioningTo:(unint64_t)to
 {
   if ([(CoreCECDeviceProvider *)self isValid])
   {
 
-    [(CoreCECDevice *)self requestSystemAudioModeStatusChangeTo:a3 didFinishWithResult:1 error:0];
+    [(CoreCECDevice *)self requestSystemAudioModeStatusChangeTo:to didFinishWithResult:1 error:0];
   }
 }
 
-- (void)samInformDelegateTransitionTo:(unint64_t)a3 failedWithError:(id)a4
+- (void)samInformDelegateTransitionTo:(unint64_t)to failedWithError:(id)error
 {
   if ([(CoreCECDeviceProvider *)self isValid])
   {
 
-    [(CoreCECDevice *)self requestSystemAudioModeStatusChangeTo:a3 didFinishWithResult:0 error:a4];
+    [(CoreCECDevice *)self requestSystemAudioModeStatusChangeTo:to didFinishWithResult:0 error:error];
   }
 }
 
@@ -1713,89 +1713,89 @@ LABEL_14:
   [(CoreCECDeviceProvider *)self arcInformDelegateOfSuccessTransitioningTo:0];
 }
 
-- (void)arcInformDelegateOfSuccessTransitioningTo:(unint64_t)a3
+- (void)arcInformDelegateOfSuccessTransitioningTo:(unint64_t)to
 {
   if ([(CoreCECDeviceProvider *)self isValid])
   {
 
-    [(CoreCECDevice *)self requestAudioReturnChannelStatusChangeTo:a3 didFinishWithResult:1 error:0];
+    [(CoreCECDevice *)self requestAudioReturnChannelStatusChangeTo:to didFinishWithResult:1 error:0];
   }
 }
 
-- (void)arcInformDelegateTransitionTo:(unint64_t)a3 failedWithError:(id)a4
+- (void)arcInformDelegateTransitionTo:(unint64_t)to failedWithError:(id)error
 {
   if ([(CoreCECDeviceProvider *)self isValid])
   {
 
-    [(CoreCECDevice *)self requestAudioReturnChannelStatusChangeTo:a3 didFinishWithResult:0 error:a4];
+    [(CoreCECDevice *)self requestAudioReturnChannelStatusChangeTo:to didFinishWithResult:0 error:error];
   }
 }
 
-- (void)dispatchSelector:(SEL)a3
+- (void)dispatchSelector:(SEL)selector
 {
   if ([(CoreCECDeviceProvider *)self isValid])
   {
-    v5 = [(CoreCECDeviceProvider *)self serialQueue];
+    serialQueue = [(CoreCECDeviceProvider *)self serialQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __42__CoreCECDeviceProvider_dispatchSelector___block_invoke;
     v6[3] = &unk_278EA2AA0;
     v6[4] = self;
-    v6[5] = a3;
-    dispatch_async(v5, v6);
+    v6[5] = selector;
+    dispatch_async(serialQueue, v6);
   }
 }
 
-- (void)dispatchSelector:(SEL)a3 withObject:(id)a4
+- (void)dispatchSelector:(SEL)selector withObject:(id)object
 {
   if ([(CoreCECDeviceProvider *)self isValid])
   {
-    v7 = [(CoreCECDeviceProvider *)self serialQueue];
+    serialQueue = [(CoreCECDeviceProvider *)self serialQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__CoreCECDeviceProvider_dispatchSelector_withObject___block_invoke;
     block[3] = &unk_278EA4220;
-    block[5] = a4;
-    block[6] = a3;
+    block[5] = object;
+    block[6] = selector;
     block[4] = self;
-    dispatch_async(v7, block);
+    dispatch_async(serialQueue, block);
   }
 }
 
-- (void)dispatchSelector:(SEL)a3 afterDelay:(double)a4
+- (void)dispatchSelector:(SEL)selector afterDelay:(double)delay
 {
   if ([(CoreCECDeviceProvider *)self isValid])
   {
-    v7 = dispatch_time(0, (a4 * 1000000000.0));
-    v8 = [(CoreCECDeviceProvider *)self serialQueue];
+    v7 = dispatch_time(0, (delay * 1000000000.0));
+    serialQueue = [(CoreCECDeviceProvider *)self serialQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __53__CoreCECDeviceProvider_dispatchSelector_afterDelay___block_invoke;
     v9[3] = &unk_278EA2AA0;
     v9[4] = self;
-    v9[5] = a3;
-    dispatch_after(v7, v8, v9);
+    v9[5] = selector;
+    dispatch_after(v7, serialQueue, v9);
   }
 }
 
-- (void)dispatchSelector:(SEL)a3 withObject:(id)a4 afterDelay:(double)a5
+- (void)dispatchSelector:(SEL)selector withObject:(id)object afterDelay:(double)delay
 {
   if ([(CoreCECDeviceProvider *)self isValid])
   {
-    v9 = dispatch_time(0, (a5 * 1000000000.0));
-    v10 = [(CoreCECDeviceProvider *)self serialQueue];
+    v9 = dispatch_time(0, (delay * 1000000000.0));
+    serialQueue = [(CoreCECDeviceProvider *)self serialQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __64__CoreCECDeviceProvider_dispatchSelector_withObject_afterDelay___block_invoke;
     block[3] = &unk_278EA4220;
-    block[5] = a4;
-    block[6] = a3;
+    block[5] = object;
+    block[6] = selector;
     block[4] = self;
-    dispatch_after(v9, v10, block);
+    dispatch_after(v9, serialQueue, block);
   }
 }
 
-- (void)hibernationChanged:(BOOL)a3
+- (void)hibernationChanged:(BOOL)changed
 {
   if (gLogCategory_CoreRCDevice <= 50 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
@@ -1803,10 +1803,10 @@ LABEL_14:
   }
 }
 
-- (id)filterMessage:(id)a3 toDevice:(id)a4
+- (id)filterMessage:(id)message toDevice:(id)device
 {
-  v5 = a3;
-  if ([a3 shouldBeIgnored])
+  messageCopy = message;
+  if ([message shouldBeIgnored])
   {
     if (gLogCategory_CoreRCDevice <= 60 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
@@ -1816,174 +1816,174 @@ LABEL_14:
     return 0;
   }
 
-  v7 = [(CoreCECDeviceProvider *)self initiatorAddressErrorDetectedForMessage:v5];
-  v8 = [v5 messageType];
+  v7 = [(CoreCECDeviceProvider *)self initiatorAddressErrorDetectedForMessage:messageCopy];
+  messageType = [messageCopy messageType];
   if (v7)
   {
-    [(CoreCECDevice *)self sendLogicalAddressErrorAnalyticsForMessage:CECMessageTypeString(v8)];
+    [(CoreCECDevice *)self sendLogicalAddressErrorAnalyticsForMessage:CECMessageTypeString(messageType)];
     return 0;
   }
 
-  if (v8 <= 129)
+  if (messageType <= 129)
   {
-    if (v8 <= 113)
+    if (messageType <= 113)
     {
-      switch(v8)
+      switch(messageType)
       {
         case 27:
 
-          return [(CoreCECDeviceProvider *)self filterDeckStatusMessage:v5 toDevice:a4];
+          return [(CoreCECDeviceProvider *)self filterDeckStatusMessage:messageCopy toDevice:device];
         case 50:
 
-          return [(CoreCECDeviceProvider *)self filterSetMenuLanguageMessage:v5];
+          return [(CoreCECDeviceProvider *)self filterSetMenuLanguageMessage:messageCopy];
         case 71:
 
-          return [(CoreCECDeviceProvider *)self filterSetOSDNameMessage:v5 toDevice:a4];
+          return [(CoreCECDeviceProvider *)self filterSetOSDNameMessage:messageCopy toDevice:device];
         default:
-          return v5;
+          return messageCopy;
       }
     }
 
-    else if (v8 > 127)
+    else if (messageType > 127)
     {
-      if (v8 == 128)
+      if (messageType == 128)
       {
 
-        return [(CoreCECDeviceProvider *)self filterRoutingChangeMessage:v5];
+        return [(CoreCECDeviceProvider *)self filterRoutingChangeMessage:messageCopy];
       }
 
       else
       {
 
-        return [(CoreCECDeviceProvider *)self filterRoutingInformationMessage:v5];
+        return [(CoreCECDeviceProvider *)self filterRoutingInformationMessage:messageCopy];
       }
     }
 
-    else if (v8 == 114)
+    else if (messageType == 114)
     {
 
-      return [(CoreCECDeviceProvider *)self filterSetSystemAudioModeMessage:v5 toDevice:a4];
+      return [(CoreCECDeviceProvider *)self filterSetSystemAudioModeMessage:messageCopy toDevice:device];
     }
 
     else
     {
-      if (v8 != 126)
+      if (messageType != 126)
       {
-        return v5;
+        return messageCopy;
       }
 
-      return [(CoreCECDeviceProvider *)self filterSystemAudioModeStatusMessage:v5 toDevice:a4];
+      return [(CoreCECDeviceProvider *)self filterSystemAudioModeStatusMessage:messageCopy toDevice:device];
     }
   }
 
-  else if (v8 > 143)
+  else if (messageType > 143)
   {
-    if (v8 > 157)
+    if (messageType > 157)
     {
-      if (v8 == 158)
+      if (messageType == 158)
       {
 
-        return [(CoreCECDeviceProvider *)self filterCECVersionMessage:v5 toDevice:a4];
+        return [(CoreCECDeviceProvider *)self filterCECVersionMessage:messageCopy toDevice:device];
       }
 
       else
       {
-        if (v8 != 166)
+        if (messageType != 166)
         {
-          return v5;
+          return messageCopy;
         }
 
-        return [(CoreCECDeviceProvider *)self filterReportFeaturesMessage:v5 toDevice:a4];
+        return [(CoreCECDeviceProvider *)self filterReportFeaturesMessage:messageCopy toDevice:device];
       }
     }
 
-    else if (v8 == 144)
+    else if (messageType == 144)
     {
 
-      return [(CoreCECDeviceProvider *)self filterReportPowerStatusMessage:v5 toDevice:a4];
+      return [(CoreCECDeviceProvider *)self filterReportPowerStatusMessage:messageCopy toDevice:device];
     }
 
     else
     {
-      if (v8 != 157)
+      if (messageType != 157)
       {
-        return v5;
+        return messageCopy;
       }
 
-      return [(CoreCECDeviceProvider *)self filterInactiveSourceMessage:v5 toDevice:a4];
+      return [(CoreCECDeviceProvider *)self filterInactiveSourceMessage:messageCopy toDevice:device];
     }
   }
 
-  else if (v8 > 133)
+  else if (messageType > 133)
   {
-    if (v8 == 134)
+    if (messageType == 134)
     {
 
-      return [(CoreCECDeviceProvider *)self filterSetStreamPathMessage:v5];
+      return [(CoreCECDeviceProvider *)self filterSetStreamPathMessage:messageCopy];
     }
 
     else
     {
-      if (v8 != 135)
+      if (messageType != 135)
       {
-        return v5;
+        return messageCopy;
       }
 
-      return [(CoreCECDeviceProvider *)self filterDeviceVendorIDMessage:v5];
+      return [(CoreCECDeviceProvider *)self filterDeviceVendorIDMessage:messageCopy];
     }
   }
 
-  else if (v8 == 130)
+  else if (messageType == 130)
   {
 
-    return [(CoreCECDeviceProvider *)self filterActiveSourceMessage:v5];
+    return [(CoreCECDeviceProvider *)self filterActiveSourceMessage:messageCopy];
   }
 
   else
   {
-    if (v8 != 132)
+    if (messageType != 132)
     {
-      return v5;
+      return messageCopy;
     }
 
-    return [(CoreCECDeviceProvider *)self filterReportPhysicalAddressMessage:v5];
+    return [(CoreCECDeviceProvider *)self filterReportPhysicalAddressMessage:messageCopy];
   }
 }
 
-- (void)handleMessage:(id)a3 fromDevice:(id)a4 broadcast:(BOOL)a5
+- (void)handleMessage:(id)message fromDevice:(id)device broadcast:(BOOL)broadcast
 {
-  v8 = [a4 logicalAddress];
-  if (v8 == [(CoreCECDeviceProvider *)self sendFromAddress])
+  logicalAddress = [device logicalAddress];
+  if (logicalAddress == [(CoreCECDeviceProvider *)self sendFromAddress])
   {
     [CoreCECDeviceProvider handleMessage:fromDevice:broadcast:];
     return;
   }
 
-  v9 = [a3 messageType];
-  if (v9 <= 111)
+  messageType = [message messageType];
+  if (messageType <= 111)
   {
-    if (v9 <= 53)
+    if (messageType <= 53)
     {
-      if (v9 <= 25)
+      if (messageType <= 25)
       {
-        if (v9 == -1)
+        if (messageType == -1)
         {
           return;
         }
 
-        if (v9)
+        if (messageType)
         {
           goto LABEL_117;
         }
 
-        [(CoreCECDeviceProvider *)self handleFeatureAbortMessage:a3 fromDevice:a4];
+        [(CoreCECDeviceProvider *)self handleFeatureAbortMessage:message fromDevice:device];
       }
 
       else
       {
-        if (v9 != 26)
+        if (messageType != 26)
         {
-          if (v9 == 27 || v9 == 50)
+          if (messageType == 27 || messageType == 50)
           {
             return;
           }
@@ -1991,25 +1991,25 @@ LABEL_14:
           goto LABEL_117;
         }
 
-        [(CoreCECDeviceProvider *)self handleGiveDeckStatusMessage:a3 fromDevice:a4];
+        [(CoreCECDeviceProvider *)self handleGiveDeckStatusMessage:message fromDevice:device];
       }
     }
 
-    else if (v9 > 67)
+    else if (messageType > 67)
     {
-      switch(v9)
+      switch(messageType)
       {
         case 'D':
 
-          [(CoreCECDeviceProvider *)self handleUserControlPressedMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleUserControlPressedMessage:message fromDevice:device];
           break;
         case 'E':
 
-          [(CoreCECDeviceProvider *)self handleUserControlReleasedMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleUserControlReleasedMessage:message fromDevice:device];
           break;
         case 'F':
 
-          [(CoreCECDeviceProvider *)self handleGiveOSDNameMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleGiveOSDNameMessage:message fromDevice:device];
           break;
         default:
           goto LABEL_117;
@@ -2018,19 +2018,19 @@ LABEL_14:
 
     else
     {
-      switch(v9)
+      switch(messageType)
       {
         case '6':
 
-          [(CoreCECDevice *)self standbyRequestHasBeenReceived:a4];
+          [(CoreCECDevice *)self standbyRequestHasBeenReceived:device];
           break;
         case 'A':
 
-          [(CoreCECDeviceProvider *)self handleDeckControlPlayMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleDeckControlPlayMessage:message fromDevice:device];
           break;
         case 'B':
 
-          [(CoreCECDeviceProvider *)self handleDeckControlMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleDeckControlMessage:message fromDevice:device];
           break;
         default:
           goto LABEL_117;
@@ -2040,33 +2040,33 @@ LABEL_14:
 
   else
   {
-    if (v9 <= 192)
+    if (messageType <= 192)
     {
-      switch(v9)
+      switch(messageType)
       {
         case 112:
 
-          [(CoreCECDeviceProvider *)self handleSystemAudioModeRequestMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleSystemAudioModeRequestMessage:message fromDevice:device];
           break;
         case 113:
 
-          [(CoreCECDeviceProvider *)self handleGiveAudioStatusMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleGiveAudioStatusMessage:message fromDevice:device];
           break;
         case 114:
 
-          [(CoreCECDeviceProvider *)self handleSetSystemAudioModeMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleSetSystemAudioModeMessage:message fromDevice:device];
           break;
         case 115:
 
-          [(CoreCECDeviceProvider *)self handleSetAudioVolumeLevelMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleSetAudioVolumeLevelMessage:message fromDevice:device];
           break;
         case 122:
 
-          [(CoreCECDeviceProvider *)self handleReportAudioStatusMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleReportAudioStatusMessage:message fromDevice:device];
           break;
         case 125:
 
-          [(CoreCECDeviceProvider *)self handleGiveSystemAudioModeStatusMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleGiveSystemAudioModeStatusMessage:message fromDevice:device];
           break;
         case 126:
         case 128:
@@ -2079,43 +2079,43 @@ LABEL_14:
           return;
         case 130:
 
-          [(CoreCECDeviceProvider *)self handleActiveSourceMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleActiveSourceMessage:message fromDevice:device];
           break;
         case 131:
 
-          [(CoreCECDeviceProvider *)self handleGivePhysicalAddressMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleGivePhysicalAddressMessage:message fromDevice:device];
           break;
         case 133:
 
-          [(CoreCECDeviceProvider *)self handleRequestActiveSourceMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleRequestActiveSourceMessage:message fromDevice:device];
           break;
         case 134:
 
-          [(CoreCECDeviceProvider *)self handleSetStreamPathMessage:a3];
+          [(CoreCECDeviceProvider *)self handleSetStreamPathMessage:message];
           break;
         case 140:
 
-          [(CoreCECDeviceProvider *)self handleGiveDeviceVendorIDMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleGiveDeviceVendorIDMessage:message fromDevice:device];
           break;
         case 141:
 
-          [(CoreCECDeviceProvider *)self handleMenuRequest:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleMenuRequest:message fromDevice:device];
           break;
         case 143:
 
-          [(CoreCECDeviceProvider *)self handleGiveDevicePowerStatusMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleGiveDevicePowerStatusMessage:message fromDevice:device];
           break;
         case 145:
 
-          [(CoreCECDeviceProvider *)self handleGetMenuLanguageMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleGetMenuLanguageMessage:message fromDevice:device];
           break;
         case 159:
 
-          [(CoreCECDeviceProvider *)self handleGetCECVersionMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleGetCECVersionMessage:message fromDevice:device];
           break;
         case 164:
 
-          [(CoreCECDeviceProvider *)self handleRequestShortAudioDescriptorMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleRequestShortAudioDescriptorMessage:message fromDevice:device];
           break;
         case 165:
           if (![(CoreCECDevice *)self isCEC2Device])
@@ -2123,7 +2123,7 @@ LABEL_14:
             goto LABEL_117;
           }
 
-          [(CoreCECDeviceProvider *)self handleGiveFeaturesMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleGiveFeaturesMessage:message fromDevice:device];
           break;
         default:
           goto LABEL_117;
@@ -2132,48 +2132,48 @@ LABEL_14:
       return;
     }
 
-    if (v9 <= 194)
+    if (messageType <= 194)
     {
-      if (v9 == 193)
+      if (messageType == 193)
       {
 
-        [(CoreCECDeviceProvider *)self handleReportARCInitiatedMessage:a3 fromDevice:a4];
+        [(CoreCECDeviceProvider *)self handleReportARCInitiatedMessage:message fromDevice:device];
       }
 
       else
       {
 
-        [(CoreCECDeviceProvider *)self handleReportARCTerminatedMessage:a3 fromDevice:a4];
+        [(CoreCECDeviceProvider *)self handleReportARCTerminatedMessage:message fromDevice:device];
       }
     }
 
     else
     {
-      switch(v9)
+      switch(messageType)
       {
         case 195:
 
-          [(CoreCECDeviceProvider *)self handleRequestARCInitiationMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleRequestARCInitiationMessage:message fromDevice:device];
           break;
         case 196:
 
-          [(CoreCECDeviceProvider *)self handleRequestARCTerminationMessage:a3 fromDevice:a4];
+          [(CoreCECDeviceProvider *)self handleRequestARCTerminationMessage:message fromDevice:device];
           break;
         case 255:
 
-          [(CoreCECDeviceProvider *)self sendFeatureAbort:4 forMessage:a3];
+          [(CoreCECDeviceProvider *)self sendFeatureAbort:4 forMessage:message];
           return;
         default:
 LABEL_117:
 
-          [(CoreCECDeviceProvider *)self didNotHandleMessage:a3 unsupportedOperand:0];
+          [(CoreCECDeviceProvider *)self didNotHandleMessage:message unsupportedOperand:0];
           return;
       }
     }
   }
 }
 
-- (void)error:(id)a3 handlingMessage:(id)a4 fromDevice:(id)a5
+- (void)error:(id)error handlingMessage:(id)message fromDevice:(id)device
 {
   if (gLogCategory_CoreRCDevice <= 60 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
@@ -2181,10 +2181,10 @@ LABEL_117:
   }
 }
 
-- (void)didNotHandleMessage:(id)a3 unsupportedOperand:(BOOL)a4
+- (void)didNotHandleMessage:(id)message unsupportedOperand:(BOOL)operand
 {
-  v4 = a4;
-  if ([a3 isBroadcast])
+  operandCopy = operand;
+  if ([message isBroadcast])
   {
     if (gLogCategory_CoreRCDevice <= 60 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
@@ -2194,7 +2194,7 @@ LABEL_117:
 
   else
   {
-    if (v4)
+    if (operandCopy)
     {
       v7 = 3;
     }
@@ -2209,33 +2209,33 @@ LABEL_117:
       [CoreCECDeviceProvider didNotHandleMessage:v7 unsupportedOperand:?];
     }
 
-    [(CoreCECDeviceProvider *)self sendFeatureAbort:v7 forMessage:a3];
+    [(CoreCECDeviceProvider *)self sendFeatureAbort:v7 forMessage:message];
   }
 }
 
-- (BOOL)handlingRequiredForSystemAudioModeMessage:(id)a3
+- (BOOL)handlingRequiredForSystemAudioModeMessage:(id)message
 {
-  v5 = [(CoreCECDevice *)self systemAudioControlEnabled];
-  if (!v5)
+  systemAudioControlEnabled = [(CoreCECDevice *)self systemAudioControlEnabled];
+  if (!systemAudioControlEnabled)
   {
     if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
       [CoreCECDeviceProvider handlingRequiredForSystemAudioModeMessage:?];
     }
 
-    [(CoreCECDeviceProvider *)self sendFeatureAbort:1 forMessage:a3];
+    [(CoreCECDeviceProvider *)self sendFeatureAbort:1 forMessage:message];
   }
 
-  return v5;
+  return systemAudioControlEnabled;
 }
 
-- (BOOL)handlingRequiredForAudioReturnChannelMessage:(id)a3
+- (BOOL)handlingRequiredForAudioReturnChannelMessage:(id)message
 {
   if ([(CoreCECDevice *)self featureSupportStatus:16]== 2)
   {
-    v5 = [(CoreCECDevice *)self audioReturnChannelControlEnabled];
+    audioReturnChannelControlEnabled = [(CoreCECDevice *)self audioReturnChannelControlEnabled];
     v6 = 1;
-    if (v5)
+    if (audioReturnChannelControlEnabled)
     {
       return v6;
     }
@@ -2246,52 +2246,52 @@ LABEL_117:
     v6 = 0;
   }
 
-  [(CoreCECDeviceProvider *)self sendFeatureAbort:v6 forMessage:a3];
+  [(CoreCECDeviceProvider *)self sendFeatureAbort:v6 forMessage:message];
   LOBYTE(v6) = 0;
   return v6;
 }
 
-- (BOOL)initiatorAddressErrorDetectedForMessage:(id)a3
+- (BOOL)initiatorAddressErrorDetectedForMessage:(id)message
 {
-  v4 = [(CoreRCDevice *)self isLocalDevice];
-  if (v4)
+  isLocalDevice = [(CoreRCDevice *)self isLocalDevice];
+  if (isLocalDevice)
   {
-    if ([a3 loopback])
+    if ([message loopback])
     {
 LABEL_3:
-      LOBYTE(v4) = 0;
-      return v4;
+      LOBYTE(isLocalDevice) = 0;
+      return isLocalDevice;
     }
 
-    v5 = [a3 messageType];
-    LOBYTE(v4) = 1;
-    if (((v5 - 130) > 0x24 || ((1 << (v5 + 126)) & 0x1018004025) == 0) && v5 != 27)
+    messageType = [message messageType];
+    LOBYTE(isLocalDevice) = 1;
+    if (((messageType - 130) > 0x24 || ((1 << (messageType + 126)) & 0x1018004025) == 0) && messageType != 27)
     {
       if (gLogCategory_CoreRCDevice > 60)
       {
         goto LABEL_3;
       }
 
-      if (gLogCategory_CoreRCDevice != -1 || (v4 = _LogCategory_Initialize()) != 0)
+      if (gLogCategory_CoreRCDevice != -1 || (isLocalDevice = _LogCategory_Initialize()) != 0)
       {
-        [CoreCECDeviceProvider initiatorAddressErrorDetectedForMessage:a3];
+        [CoreCECDeviceProvider initiatorAddressErrorDetectedForMessage:message];
         goto LABEL_3;
       }
     }
   }
 
-  return v4;
+  return isLocalDevice;
 }
 
-- (void)handleFeatureAbortMessage:(id)a3 fromDevice:(id)a4
+- (void)handleFeatureAbortMessage:(id)message fromDevice:(id)device
 {
   v9 = 0;
-  if ([a3 parseFeatureAbortOpcode:&v9 + 1 reason:&v9])
+  if ([message parseFeatureAbortOpcode:&v9 + 1 reason:&v9])
   {
     v6 = HIBYTE(v9);
     if (HIBYTE(v9) == 114)
     {
-      if (![a4 logicalAddress] && -[CoreCECDeviceProvider systemAudioModeState](self, "systemAudioModeState") == 5)
+      if (![device logicalAddress] && -[CoreCECDeviceProvider systemAudioModeState](self, "systemAudioModeState") == 5)
       {
         [(CoreCECDeviceProvider *)self samStarting_handleFeatureAbortReceived];
         return;
@@ -2300,19 +2300,19 @@ LABEL_3:
       v6 = HIBYTE(v9);
     }
 
-    if (v6 == 192 && (v7 = [a4 logicalAddress], v6 = HIBYTE(v9), !v7))
+    if (v6 == 192 && (v7 = [device logicalAddress], v6 = HIBYTE(v9), !v7))
     {
       [(CoreCECDeviceProvider *)self arcStarting_handleFeatureAbortReceivedWithOpcode:HIBYTE(v9) reason:v9];
     }
 
-    else if (v6 == 197 && (v8 = [a4 logicalAddress], v6 = HIBYTE(v9), !v8))
+    else if (v6 == 197 && (v8 = [device logicalAddress], v6 = HIBYTE(v9), !v8))
     {
       [(CoreCECDeviceProvider *)self arcStopping_handleFeatureAbortReceivedWithOpcode:HIBYTE(v9) reason:v9];
     }
 
     else if (v6 == 115)
     {
-      [(CoreCECDeviceProvider *)self probeAbsoluteVolumeControl_handleFeatureAbortReceivedFromDevice:a4 withOpcode:115 reason:v9];
+      [(CoreCECDeviceProvider *)self probeAbsoluteVolumeControl_handleFeatureAbortReceivedFromDevice:device withOpcode:115 reason:v9];
     }
 
     else
@@ -2327,10 +2327,10 @@ LABEL_3:
   }
 }
 
-- (id)filterActiveSourceMessage:(id)a3
+- (id)filterActiveSourceMessage:(id)message
 {
   v6 = 0;
-  if ([a3 parseActiveSourcePhysicalAddress:&v6])
+  if ([message parseActiveSourcePhysicalAddress:&v6])
   {
     [(CoreCECDevice *)self setPhysicalAddress:v6];
     [-[CoreRCDevice bus](self "bus")];
@@ -2342,20 +2342,20 @@ LABEL_3:
     [CoreCECDeviceProvider filterActiveSourceMessage:];
   }
 
-  return a3;
+  return message;
 }
 
-- (void)handleActiveSourceMessage:(id)a3 fromDevice:(id)a4
+- (void)handleActiveSourceMessage:(id)message fromDevice:(id)device
 {
-  if ([(CoreCECDevice *)self deviceType:a3]== 1)
+  if ([(CoreCECDevice *)self deviceType:message]== 1)
   {
-    v5 = [(CoreCECDeviceProvider *)self systemAudioModeTransitionInProgress];
+    systemAudioModeTransitionInProgress = [(CoreCECDeviceProvider *)self systemAudioModeTransitionInProgress];
     if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
     }
 
-    if (v5)
+    if (systemAudioModeTransitionInProgress)
     {
 
       [(CoreCECDeviceProvider *)self samStarting_handleActiveSourceReceived];
@@ -2363,22 +2363,22 @@ LABEL_3:
   }
 }
 
-- (void)handleRequestActiveSourceMessage:(id)a3 fromDevice:(id)a4
+- (void)handleRequestActiveSourceMessage:(id)message fromDevice:(id)device
 {
   if ([(CoreCECDevice *)self isActiveSource])
   {
     v7 = 0;
     if (![(CoreCECDeviceProvider *)self sendActiveSourceStatus:1 error:&v7])
     {
-      [(CoreCECDeviceProvider *)self error:v7 handlingMessage:a3 fromDevice:a4];
+      [(CoreCECDeviceProvider *)self error:v7 handlingMessage:message fromDevice:device];
     }
   }
 }
 
-- (id)filterInactiveSourceMessage:(id)a3 toDevice:(id)a4
+- (id)filterInactiveSourceMessage:(id)message toDevice:(id)device
 {
   v7 = 0;
-  if ([a3 parseInactiveSourcePhysicalAddress:{&v7, a4}])
+  if ([message parseInactiveSourcePhysicalAddress:{&v7, device}])
   {
     [-[CoreCECDeviceProvider busProvider](self "busProvider")];
   }
@@ -2388,20 +2388,20 @@ LABEL_3:
     [CoreCECDeviceProvider filterInactiveSourceMessage:toDevice:];
   }
 
-  return a3;
+  return message;
 }
 
-- (id)filterSetStreamPathMessage:(id)a3
+- (id)filterSetStreamPathMessage:(id)message
 {
-  v3 = a3;
-  if ([a3 initiator])
+  messageCopy = message;
+  if ([message initiator])
   {
-    [(CoreCECDeviceProvider *)v3 filterSetStreamPathMessage:?];
+    [(CoreCECDeviceProvider *)messageCopy filterSetStreamPathMessage:?];
     return v7;
   }
 
   v6 = 0;
-  if (([v3 parseSetStreamPathPhysicalAddress:&v6] & 1) == 0)
+  if (([messageCopy parseSetStreamPathPhysicalAddress:&v6] & 1) == 0)
   {
     [CoreCECDeviceProvider filterSetStreamPathMessage:];
     return v7;
@@ -2409,105 +2409,105 @@ LABEL_3:
 
   if (v6 == 0xFFFF)
   {
-    [(CoreCECDeviceProvider *)v3 filterSetStreamPathMessage:?];
+    [(CoreCECDeviceProvider *)messageCopy filterSetStreamPathMessage:?];
     return v7;
   }
 
   [-[CoreCECDeviceProvider busProvider](self "busProvider")];
-  return v3;
+  return messageCopy;
 }
 
-- (void)handleSetStreamPathMessage:(id)a3
+- (void)handleSetStreamPathMessage:(id)message
 {
-  v4 = [-[CoreCECDeviceProvider busProvider](self busProvider];
-  if (v4 == [(CoreCECDevice *)self physicalAddress])
+  busProvider = [-[CoreCECDeviceProvider busProvider](self busProvider];
+  if (busProvider == [(CoreCECDevice *)self physicalAddress])
   {
 
     [(CoreCECDeviceProvider *)self handleDeviceSelected];
   }
 }
 
-- (id)filterRoutingChangeMessage:(id)a3
+- (id)filterRoutingChangeMessage:(id)message
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = [(CoreCECDeviceProvider *)self busProvider];
+  busProvider = [(CoreCECDeviceProvider *)self busProvider];
   v8 = 0;
-  if (([a3 parseRoutingChangeOriginalAddress:&v8 + 2 newAddress:&v8] & 1) == 0)
+  if (([message parseRoutingChangeOriginalAddress:&v8 + 2 newAddress:&v8] & 1) == 0)
   {
     [CoreCECDeviceProvider filterRoutingChangeMessage:];
     goto LABEL_11;
   }
 
-  if (!v4)
+  if (!busProvider)
   {
     [CoreCECDeviceProvider filterRoutingChangeMessage:];
     goto LABEL_11;
   }
 
-  v5 = [v4 streamPath];
-  if (v5 != 0xFFFF && HIWORD(v8) == v5)
+  streamPath = [busProvider streamPath];
+  if (streamPath != 0xFFFF && HIWORD(v8) == streamPath)
   {
-    if (v8 != v5)
+    if (v8 != streamPath)
     {
-      [v4 setActiveSource:0];
+      [busProvider setActiveSource:0];
       goto LABEL_7;
     }
 
-    [(CoreCECDeviceProvider *)v5 filterRoutingChangeMessage:v10, a3, &v9];
+    [(CoreCECDeviceProvider *)streamPath filterRoutingChangeMessage:v10, message, &v9];
 LABEL_11:
-    a3 = v9;
+    message = v9;
   }
 
 LABEL_7:
   v6 = *MEMORY[0x277D85DE8];
-  return a3;
+  return message;
 }
 
-- (id)filterRoutingInformationMessage:(id)a3
+- (id)filterRoutingInformationMessage:(id)message
 {
   v5 = 0;
-  if (([a3 parseRoutingInformationPhysicalAddress:&v5] & 1) == 0)
+  if (([message parseRoutingInformationPhysicalAddress:&v5] & 1) == 0)
   {
     [CoreCECDeviceProvider filterRoutingInformationMessage:];
   }
 
-  return a3;
+  return message;
 }
 
-- (id)filterSetOSDNameMessage:(id)a3 toDevice:(id)a4
+- (id)filterSetOSDNameMessage:(id)message toDevice:(id)device
 {
   v6 = 0;
-  if (([a3 parseSetOSDName:{&v6, a4}] & 1) == 0)
+  if (([message parseSetOSDName:{&v6, device}] & 1) == 0)
   {
     [CoreCECDeviceProvider filterSetOSDNameMessage:toDevice:];
   }
 
-  return a3;
+  return message;
 }
 
-- (void)handleGiveOSDNameMessage:(id)a3 fromDevice:(id)a4
+- (void)handleGiveOSDNameMessage:(id)message fromDevice:(id)device
 {
   v7 = [-[CoreCECDeviceProvider busProvider](self "busProvider")];
   v9 = 0;
   if (v7)
   {
-    if (!-[CoreCECDeviceProvider setOSDName:to:error:](self, "setOSDName:to:error:", v7, v8 & 0xFFFFFFFFFFFFFFLL, [a4 logicalAddress], &v9))
+    if (!-[CoreCECDeviceProvider setOSDName:to:error:](self, "setOSDName:to:error:", v7, v8 & 0xFFFFFFFFFFFFFFLL, [device logicalAddress], &v9))
     {
-      [(CoreCECDeviceProvider *)self error:v9 handlingMessage:a3 fromDevice:a4];
+      [(CoreCECDeviceProvider *)self error:v9 handlingMessage:message fromDevice:device];
     }
   }
 
   else
   {
 
-    [(CoreCECDeviceProvider *)self sendFeatureAbort:1 forMessage:a3];
+    [(CoreCECDeviceProvider *)self sendFeatureAbort:1 forMessage:message];
   }
 }
 
-- (id)filterDeviceVendorIDMessage:(id)a3
+- (id)filterDeviceVendorIDMessage:(id)message
 {
   v6 = 0;
-  if ([a3 parseDeviceVendorID:&v6])
+  if ([message parseDeviceVendorID:&v6])
   {
     [(CoreCECDevice *)self setVendorID:v6];
     [-[CoreRCDevice bus](self "bus")];
@@ -2518,28 +2518,28 @@ LABEL_7:
     [CoreCECDeviceProvider filterDeviceVendorIDMessage:];
   }
 
-  return a3;
+  return message;
 }
 
-- (void)handleGiveDeviceVendorIDMessage:(id)a3 fromDevice:(id)a4
+- (void)handleGiveDeviceVendorIDMessage:(id)message fromDevice:(id)device
 {
   v7 = 0;
   if ([(CoreCECDevice *)self vendorID]== -1)
   {
 
-    [(CoreCECDeviceProvider *)self didNotHandleMessage:a3 unsupportedOperand:0];
+    [(CoreCECDeviceProvider *)self didNotHandleMessage:message unsupportedOperand:0];
   }
 
   else if (![(CoreCECDeviceProvider *)self deviceVendorID:[(CoreCECDevice *)self vendorID] error:&v7])
   {
-    [(CoreCECDeviceProvider *)self error:v7 handlingMessage:a3 fromDevice:a4];
+    [(CoreCECDeviceProvider *)self error:v7 handlingMessage:message fromDevice:device];
   }
 }
 
-- (id)filterCECVersionMessage:(id)a3 toDevice:(id)a4
+- (id)filterCECVersionMessage:(id)message toDevice:(id)device
 {
   v7 = 0;
-  if ([a3 parseCECVersion:{&v7, a4}])
+  if ([message parseCECVersion:{&v7, device}])
   {
     [(CoreCECDevice *)self setCecVersion:v7];
     [-[CoreRCDevice bus](self "bus")];
@@ -2550,23 +2550,23 @@ LABEL_7:
     [CoreCECDeviceProvider filterCECVersionMessage:toDevice:];
   }
 
-  return a3;
+  return message;
 }
 
-- (void)handleGetCECVersionMessage:(id)a3 fromDevice:(id)a4
+- (void)handleGetCECVersionMessage:(id)message fromDevice:(id)device
 {
   v7 = 0;
-  if (!-[CoreCECDeviceProvider cecVersion:to:error:](self, "cecVersion:to:error:", -[CoreCECDevice cecVersion](self, "cecVersion"), [a4 logicalAddress], &v7))
+  if (!-[CoreCECDeviceProvider cecVersion:to:error:](self, "cecVersion:to:error:", -[CoreCECDevice cecVersion](self, "cecVersion"), [device logicalAddress], &v7))
   {
-    [(CoreCECDeviceProvider *)self error:v7 handlingMessage:a3 fromDevice:a4];
+    [(CoreCECDeviceProvider *)self error:v7 handlingMessage:message fromDevice:device];
   }
 }
 
-- (id)filterReportPhysicalAddressMessage:(id)a3
+- (id)filterReportPhysicalAddressMessage:(id)message
 {
   v7 = 0;
   v6 = 0;
-  if ([a3 parseReportPhysicalAddress:&v7 deviceType:&v6])
+  if ([message parseReportPhysicalAddress:&v7 deviceType:&v6])
   {
     [(CoreCECDevice *)self setPhysicalAddress:v7];
     [(CoreCECDevice *)self setDeviceType:v6];
@@ -2578,49 +2578,49 @@ LABEL_7:
     [CoreCECDeviceProvider filterReportPhysicalAddressMessage:];
   }
 
-  return a3;
+  return message;
 }
 
-- (void)handleGivePhysicalAddressMessage:(id)a3 fromDevice:(id)a4
+- (void)handleGivePhysicalAddressMessage:(id)message fromDevice:(id)device
 {
   v7 = 0;
   if (![(CoreCECDeviceProvider *)self reportPhysicalAddress:&v7])
   {
-    [(CoreCECDeviceProvider *)self error:v7 handlingMessage:a3 fromDevice:a4];
+    [(CoreCECDeviceProvider *)self error:v7 handlingMessage:message fromDevice:device];
   }
 }
 
-- (void)handleGetMenuLanguageMessage:(id)a3 fromDevice:(id)a4
+- (void)handleGetMenuLanguageMessage:(id)message fromDevice:(id)device
 {
   if ([(CoreCECDevice *)self deviceType]== 7 && (![(CoreCECDevice *)self logicalAddress]|| [(CoreCECDevice *)self logicalAddress]== 14))
   {
     v7 = 0;
     if (!-[CoreCECDeviceProvider setMenuLanguage:error:](self, "setMenuLanguage:error:", [-[CoreCECDeviceProvider busProvider](self "busProvider")] & 0xFFFFFF, &v7))
     {
-      [(CoreCECDeviceProvider *)self error:v7 handlingMessage:a3 fromDevice:a4];
+      [(CoreCECDeviceProvider *)self error:v7 handlingMessage:message fromDevice:device];
     }
   }
 
   else
   {
 
-    [(CoreCECDeviceProvider *)self didNotHandleMessage:a3 unsupportedOperand:0];
+    [(CoreCECDeviceProvider *)self didNotHandleMessage:message unsupportedOperand:0];
   }
 }
 
-- (void)handleGiveFeaturesMessage:(id)a3 fromDevice:(id)a4
+- (void)handleGiveFeaturesMessage:(id)message fromDevice:(id)device
 {
   v7 = 0;
   if (![(CoreCECDeviceProvider *)self reportFeatures:&v7])
   {
-    [(CoreCECDeviceProvider *)self error:v7 handlingMessage:a3 fromDevice:a4];
+    [(CoreCECDeviceProvider *)self error:v7 handlingMessage:message fromDevice:device];
   }
 }
 
-- (id)filterReportPowerStatusMessage:(id)a3 toDevice:(id)a4
+- (id)filterReportPowerStatusMessage:(id)message toDevice:(id)device
 {
   v7 = 0;
-  if ([a3 parseReportPowerStatus:{&v7, a4}])
+  if ([message parseReportPowerStatus:{&v7, device}])
   {
     [(CoreCECDevice *)self setPowerStatus:v7];
     [-[CoreRCDevice bus](self "bus")];
@@ -2631,10 +2631,10 @@ LABEL_7:
     [CoreCECDeviceProvider filterReportPowerStatusMessage:toDevice:];
   }
 
-  return a3;
+  return message;
 }
 
-- (void)handleGiveDevicePowerStatusMessage:(id)a3 fromDevice:(id)a4
+- (void)handleGiveDevicePowerStatusMessage:(id)message fromDevice:(id)device
 {
   v9 = 0;
   v8 = 0;
@@ -2649,48 +2649,48 @@ LABEL_7:
     v8 = 0;
   }
 
-  if (!-[CoreCECDeviceProvider reportPowerStatus:to:error:](self, "reportPowerStatus:to:error:", v7, [a4 logicalAddress], &v9))
+  if (!-[CoreCECDeviceProvider reportPowerStatus:to:error:](self, "reportPowerStatus:to:error:", v7, [device logicalAddress], &v9))
   {
-    [(CoreCECDeviceProvider *)self error:v9 handlingMessage:a3 fromDevice:a4];
+    [(CoreCECDeviceProvider *)self error:v9 handlingMessage:message fromDevice:device];
   }
 }
 
-- (void)handleDeckControlPlayMessage:(id)a3 fromDevice:(id)a4
+- (void)handleDeckControlPlayMessage:(id)message fromDevice:(id)device
 {
   v7 = 0;
-  if ([a3 parsePlayMode:&v7])
+  if ([message parsePlayMode:&v7])
   {
-    [(CoreCECDevice *)self deckControlPlayHasBeenReceived:v7 fromDevice:a4];
+    [(CoreCECDevice *)self deckControlPlayHasBeenReceived:v7 fromDevice:device];
   }
 
   else
   {
-    [(CoreCECDeviceProvider *)self didNotHandleMessage:a3 unsupportedOperand:1];
+    [(CoreCECDeviceProvider *)self didNotHandleMessage:message unsupportedOperand:1];
   }
 }
 
-- (void)handleDeckControlMessage:(id)a3 fromDevice:(id)a4
+- (void)handleDeckControlMessage:(id)message fromDevice:(id)device
 {
   v7 = 0;
-  if ([a3 parseDeckControlMode:&v7])
+  if ([message parseDeckControlMode:&v7])
   {
-    [(CoreCECDevice *)self deckControlCommandHasBeenReceived:v7 fromDevice:a4];
+    [(CoreCECDevice *)self deckControlCommandHasBeenReceived:v7 fromDevice:device];
   }
 
   else
   {
-    [(CoreCECDeviceProvider *)self didNotHandleMessage:a3 unsupportedOperand:1];
+    [(CoreCECDeviceProvider *)self didNotHandleMessage:message unsupportedOperand:1];
   }
 }
 
-- (id)filterDeckStatusMessage:(id)a3 toDevice:(id)a4
+- (id)filterDeckStatusMessage:(id)message toDevice:(id)device
 {
   v8 = 0;
-  if ([a3 parseDeckStatusInfo:&v8])
+  if ([message parseDeckStatusInfo:&v8])
   {
     [(CoreCECDevice *)self setDeckStatus:v8];
     [-[CoreRCDevice bus](self "bus")];
-    [a4 deckControlStatusHasBeenUpdated:v8 fromDevice:self];
+    [device deckControlStatusHasBeenUpdated:v8 fromDevice:self];
   }
 
   else
@@ -2698,34 +2698,34 @@ LABEL_7:
     [CoreCECDeviceProvider filterDeckStatusMessage:toDevice:];
   }
 
-  return a3;
+  return message;
 }
 
-- (void)handleGiveDeckStatusMessage:(id)a3 fromDevice:(id)a4
+- (void)handleGiveDeckStatusMessage:(id)message fromDevice:(id)device
 {
   v13 = 0;
-  if (([a3 parseGiveDeckStatusRequest:&v13] & 1) == 0)
+  if (([message parseGiveDeckStatusRequest:&v13] & 1) == 0)
   {
-    v8 = self;
-    v9 = a3;
+    selfCopy3 = self;
+    messageCopy2 = message;
     v10 = 1;
 LABEL_27:
-    [(CoreCECDeviceProvider *)v8 didNotHandleMessage:v9 unsupportedOperand:v10, v11, v12];
+    [(CoreCECDeviceProvider *)selfCopy3 didNotHandleMessage:messageCopy2 unsupportedOperand:v10, selfCopy2, deviceCopy];
     return;
   }
 
-  v7 = [(CoreCECDevice *)self deviceType];
-  if (v7 != 4 && v7 != 2)
+  deviceType = [(CoreCECDevice *)self deviceType];
+  if (deviceType != 4 && deviceType != 2)
   {
     if (gLogCategory_CoreRCDevice <= 60 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
-      v11 = self;
-      v12 = a4;
+      selfCopy2 = self;
+      deviceCopy = device;
       LogPrintF();
     }
 
-    v8 = self;
-    v9 = a3;
+    selfCopy3 = self;
+    messageCopy2 = message;
     v10 = 0;
     goto LABEL_27;
   }
@@ -2736,7 +2736,7 @@ LABEL_27:
       if (![(CoreCECDevice *)self deckStatus])
       {
 LABEL_34:
-        [(CoreCECDeviceProvider *)self sendFeatureAbort:1 forMessage:a3];
+        [(CoreCECDeviceProvider *)self sendFeatureAbort:1 forMessage:message];
         return;
       }
 
@@ -2745,9 +2745,9 @@ LABEL_34:
         [CoreCECDeviceProvider handleGiveDeckStatusMessage:fromDevice:];
       }
 
-      self->_deckStatusRequestMask |= 1 << [a4 logicalAddress];
+      self->_deckStatusRequestMask |= 1 << [device logicalAddress];
 LABEL_21:
-      [(CoreCECDeviceProvider *)self sendDeckStatusToDevice:a4];
+      [(CoreCECDeviceProvider *)self sendDeckStatusToDevice:device];
       return;
     case 3:
       if (![(CoreCECDevice *)self deckStatus])
@@ -2762,7 +2762,7 @@ LABEL_21:
         [CoreCECDeviceProvider handleGiveDeckStatusMessage:fromDevice:];
       }
 
-      self->_deckStatusRequestMask &= ~(1 << [a4 logicalAddress]);
+      self->_deckStatusRequestMask &= ~(1 << [device logicalAddress]);
       break;
     default:
       if (gLogCategory_CoreRCDevice <= 90 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
@@ -2774,31 +2774,31 @@ LABEL_21:
   }
 }
 
-- (void)handleMenuRequest:(id)a3 fromDevice:(id)a4
+- (void)handleMenuRequest:(id)request fromDevice:(id)device
 {
   v8 = 0;
   v7 = 0;
-  if ([a3 parseMenuRequest:&v7])
+  if ([request parseMenuRequest:&v7])
   {
-    if (!-[CoreCECDeviceProvider menuStatus:to:error:](self, "menuStatus:to:error:", 0, [a3 initiator], &v8))
+    if (!-[CoreCECDeviceProvider menuStatus:to:error:](self, "menuStatus:to:error:", 0, [request initiator], &v8))
     {
-      [(CoreCECDeviceProvider *)self error:v8 handlingMessage:a3 fromDevice:a4];
+      [(CoreCECDeviceProvider *)self error:v8 handlingMessage:request fromDevice:device];
     }
   }
 
   else
   {
-    [(CoreCECDeviceProvider *)self didNotHandleMessage:a3 unsupportedOperand:1];
+    [(CoreCECDeviceProvider *)self didNotHandleMessage:request unsupportedOperand:1];
   }
 }
 
-- (void)handleUserControlPressedMessage:(id)a3 fromDevice:(id)a4
+- (void)handleUserControlPressedMessage:(id)message fromDevice:(id)device
 {
   v9 = 0;
-  if ([a3 parseUserControlPressed:&v9])
+  if ([message parseUserControlPressed:&v9])
   {
     p_userControlFollowerState = &self->_userControlFollowerState;
-    if (self->_userControlFollowerState.isValid && CECUserControlEquals(*&self->_userControlFollowerState.control, v9) && [(CoreRCDevice *)p_userControlFollowerState->sender isEqual:a4])
+    if (self->_userControlFollowerState.isValid && CECUserControlEquals(*&self->_userControlFollowerState.control, v9) && [(CoreRCDevice *)p_userControlFollowerState->sender isEqual:device])
     {
       [(CoreCECDeviceProvider *)self userControlScheduleFollowerSafetyTimeout];
       if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
@@ -2815,36 +2815,36 @@ LABEL_21:
         [(CoreCECDeviceProvider *)self userControlFollowerSynthesizeRelease];
       }
 
-      if ([(CoreCECDeviceProvider *)self handleUserControl:v9 pressed:1 fromDevice:a4 abortReason:&v8])
+      if ([(CoreCECDeviceProvider *)self handleUserControl:v9 pressed:1 fromDevice:device abortReason:&v8])
       {
         self->_userControlFollowerState.control = v9;
-        p_userControlFollowerState->sender = a4;
+        p_userControlFollowerState->sender = device;
         self->_userControlFollowerState.isValid = 1;
         [(CoreCECDeviceProvider *)self userControlScheduleFollowerSafetyTimeout];
       }
 
       else
       {
-        [(CoreCECDeviceProvider *)self sendFeatureAbort:v8 forMessage:a3];
+        [(CoreCECDeviceProvider *)self sendFeatureAbort:v8 forMessage:message];
       }
     }
   }
 
   else
   {
-    [(CoreCECDeviceProvider *)self didNotHandleMessage:a3 unsupportedOperand:1];
+    [(CoreCECDeviceProvider *)self didNotHandleMessage:message unsupportedOperand:1];
   }
 }
 
-- (void)handleUserControlReleasedMessage:(id)a3 fromDevice:(id)a4
+- (void)handleUserControlReleasedMessage:(id)message fromDevice:(id)device
 {
   p_userControlFollowerState = &self->_userControlFollowerState;
   if (self->_userControlFollowerState.isValid)
   {
-    if ([(CoreRCDevice *)p_userControlFollowerState->sender isEqual:a4])
+    if ([(CoreRCDevice *)p_userControlFollowerState->sender isEqual:device])
     {
       [(CoreCECDeviceProvider *)self userControlCancelFollowerSafetyTimeout];
-      [(CoreCECDeviceProvider *)self handleUserControl:*&p_userControlFollowerState->control pressed:0 fromDevice:a4 abortReason:0];
+      [(CoreCECDeviceProvider *)self handleUserControl:*&p_userControlFollowerState->control pressed:0 fromDevice:device abortReason:0];
       p_userControlFollowerState->isValid = 0;
 
       p_userControlFollowerState->sender = 0;
@@ -2862,24 +2862,24 @@ LABEL_21:
   }
 }
 
-- (void)handleReportAudioStatusMessage:(id)a3 fromDevice:(id)a4
+- (void)handleReportAudioStatusMessage:(id)message fromDevice:(id)device
 {
   v7 = 0;
   v8 = 0;
   v6 = 0;
-  if ([a3 parseReportAudioStatus:&v7 muteStatus:&v6])
+  if ([message parseReportAudioStatus:&v7 muteStatus:&v6])
   {
     if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
       [CoreCECDeviceProvider handleReportAudioStatusMessage:&v6 fromDevice:?];
     }
 
-    if (([a4 setAudioVolumeStatus:v7 error:&v8] & 1) == 0 && gLogCategory_CoreRCDevice <= 90 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
+    if (([device setAudioVolumeStatus:v7 error:&v8] & 1) == 0 && gLogCategory_CoreRCDevice <= 90 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
       [CoreCECDeviceProvider handleReportAudioStatusMessage:? fromDevice:?];
     }
 
-    if (([a4 setAudioMuteStatus:v6 error:&v8] & 1) == 0 && gLogCategory_CoreRCDevice <= 90 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
+    if (([device setAudioMuteStatus:v6 error:&v8] & 1) == 0 && gLogCategory_CoreRCDevice <= 90 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
       [CoreCECDeviceProvider handleReportAudioStatusMessage:? fromDevice:?];
     }
@@ -2893,51 +2893,51 @@ LABEL_21:
   }
 }
 
-- (void)handleGiveAudioStatusMessage:(id)a3 fromDevice:(id)a4
+- (void)handleGiveAudioStatusMessage:(id)message fromDevice:(id)device
 {
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
-    v8 = a3;
-    v9 = self;
+    messageCopy = message;
+    selfCopy = self;
     LogPrintF();
   }
 
-  if (-[CoreCECDeviceProvider handlingRequiredForSystemAudioModeMessage:](self, "handlingRequiredForSystemAudioModeMessage:", a3, v8, v9) && ([a3 isBroadcast] & 1) == 0)
+  if (-[CoreCECDeviceProvider handlingRequiredForSystemAudioModeMessage:](self, "handlingRequiredForSystemAudioModeMessage:", message, messageCopy, selfCopy) && ([message isBroadcast] & 1) == 0)
   {
-    v7 = [a4 logicalAddress];
+    logicalAddress = [device logicalAddress];
 
-    [(CoreCECDeviceProvider *)self reportAudioStatusTo:v7 error:0];
+    [(CoreCECDeviceProvider *)self reportAudioStatusTo:logicalAddress error:0];
   }
 }
 
-- (void)handleGiveSystemAudioModeStatusMessage:(id)a3 fromDevice:(id)a4
+- (void)handleGiveSystemAudioModeStatusMessage:(id)message fromDevice:(id)device
 {
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
-    v8 = a3;
-    v9 = self;
+    messageCopy = message;
+    selfCopy = self;
     LogPrintF();
   }
 
-  if (-[CoreCECDeviceProvider handlingRequiredForSystemAudioModeMessage:](self, "handlingRequiredForSystemAudioModeMessage:", a3, v8, v9) && ([a3 isBroadcast] & 1) == 0)
+  if (-[CoreCECDeviceProvider handlingRequiredForSystemAudioModeMessage:](self, "handlingRequiredForSystemAudioModeMessage:", message, messageCopy, selfCopy) && ([message isBroadcast] & 1) == 0)
   {
-    v7 = +[CECMessage systemAudioModeStatus:from:to:](CECMessage, "systemAudioModeStatus:from:to:", [-[CoreCECDeviceProvider busProvider](self "busProvider")], -[CoreCECDeviceProvider sendFromAddress](self, "sendFromAddress"), objc_msgSend(a4, "logicalAddress"));
+    v7 = +[CECMessage systemAudioModeStatus:from:to:](CECMessage, "systemAudioModeStatus:from:to:", [-[CoreCECDeviceProvider busProvider](self "busProvider")], -[CoreCECDeviceProvider sendFromAddress](self, "sendFromAddress"), objc_msgSend(device, "logicalAddress"));
 
     [(CoreCECDeviceProvider *)self sendMessage:v7 error:0];
   }
 }
 
-- (id)filterSetSystemAudioModeMessage:(id)a3 toDevice:(id)a4
+- (id)filterSetSystemAudioModeMessage:(id)message toDevice:(id)device
 {
-  if ([a3 initiator] != 5 && gLogCategory_CoreRCDevice <= 60 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
+  if ([message initiator] != 5 && gLogCategory_CoreRCDevice <= 60 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
     [CoreCECDeviceProvider filterSetSystemAudioModeMessage:toDevice:];
   }
 
-  if ([a3 isBroadcast])
+  if ([message isBroadcast])
   {
     v7 = 0;
-    if ([a3 parseSystemAudioModeStatus:&v7])
+    if ([message parseSystemAudioModeStatus:&v7])
     {
       [-[CoreCECDeviceProvider busProvider](self "busProvider")];
     }
@@ -2948,10 +2948,10 @@ LABEL_21:
     }
   }
 
-  return a3;
+  return message;
 }
 
-- (void)handleRequestShortAudioDescriptorMessage:(id)a3 fromDevice:(id)a4
+- (void)handleRequestShortAudioDescriptorMessage:(id)message fromDevice:(id)device
 {
   v27 = *MEMORY[0x277D85DE8];
   v26 = 0;
@@ -2961,33 +2961,33 @@ LABEL_21:
     [CoreCECDeviceProvider handleRequestShortAudioDescriptorMessage:fromDevice:];
   }
 
-  if ([(CoreCECDeviceProvider *)self handlingRequiredForSystemAudioModeMessage:a3])
+  if ([(CoreCECDeviceProvider *)self handlingRequiredForSystemAudioModeMessage:message])
   {
     if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
-      [CoreCECDeviceProvider handleRequestShortAudioDescriptorMessage:a3 fromDevice:v24];
+      [CoreCECDeviceProvider handleRequestShortAudioDescriptorMessage:message fromDevice:v24];
     }
 
     v7 = 0;
-    if (a3)
+    if (message)
     {
       for (i = 2; ; ++i)
       {
-        [a3 frame];
+        [message frame];
         if (i >= (v23 & 0x1Fu))
         {
           break;
         }
 
-        [a3 frame];
+        [message frame];
         v9 = v20[i];
         if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
         {
           [CoreCECDeviceProvider handleRequestShortAudioDescriptorMessage:fromDevice:];
         }
 
-        v10 = [(CoreCECDevice *)self audioFormats];
-        v11 = -[NSDictionary objectForKey:](v10, "objectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedChar:v9]);
+        audioFormats = [(CoreCECDevice *)self audioFormats];
+        v11 = -[NSDictionary objectForKey:](audioFormats, "objectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedChar:v9]);
         if (v11)
         {
           v12 = v11;
@@ -2996,23 +2996,23 @@ LABEL_21:
             [CoreCECDeviceProvider handleRequestShortAudioDescriptorMessage:fromDevice:];
           }
 
-          v13 = [v12 bytes];
-          if (v13)
+          bytes = [v12 bytes];
+          if (bytes)
           {
             for (j = 0; j != 3; ++j)
             {
               if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
               {
                 v18 = j;
-                v19 = *(v13 + j);
+                v19 = *(bytes + j);
                 LogPrintF();
               }
             }
           }
 
-          v15 = *v13;
+          v15 = *bytes;
           v16 = &v25 + v7;
-          v16[2] = *(v13 + 2);
+          v16[2] = *(bytes + 2);
           *v16 = v15;
           v7 += 3;
         }
@@ -3028,7 +3028,7 @@ LABEL_21:
 
     if (v7)
     {
-      -[CoreCECDeviceProvider sendMessage:error:](self, "sendMessage:error:", +[CECMessage reportShortAudioDescriptor:length:from:to:](CECMessage, "reportShortAudioDescriptor:length:from:to:", &v25, v7, -[CoreCECDevice logicalAddress](self, "logicalAddress"), [a4 logicalAddress]), 0);
+      -[CoreCECDeviceProvider sendMessage:error:](self, "sendMessage:error:", +[CECMessage reportShortAudioDescriptor:length:from:to:](CECMessage, "reportShortAudioDescriptor:length:from:to:", &v25, v7, -[CoreCECDevice logicalAddress](self, "logicalAddress"), [device logicalAddress]), 0);
     }
 
     else
@@ -3038,20 +3038,20 @@ LABEL_21:
         [CoreCECDeviceProvider handleRequestShortAudioDescriptorMessage:fromDevice:];
       }
 
-      [(CoreCECDeviceProvider *)self sendFeatureAbort:3 forMessage:a3, v18, v19];
+      [(CoreCECDeviceProvider *)self sendFeatureAbort:3 forMessage:message, v18, v19];
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSetSystemAudioModeMessage:(id)a3 fromDevice:(id)a4
+- (void)handleSetSystemAudioModeMessage:(id)message fromDevice:(id)device
 {
-  if (([a3 isBroadcast] & 1) == 0)
+  if (([message isBroadcast] & 1) == 0)
   {
     if ([(CoreCECDevice *)self deviceType]== 7)
     {
-      if ([a3 initiator] != 5 && gLogCategory_CoreRCDevice <= 60 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
+      if ([message initiator] != 5 && gLogCategory_CoreRCDevice <= 60 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
       {
         [CoreCECDeviceProvider handleSetSystemAudioModeMessage:fromDevice:];
       }
@@ -3060,39 +3060,39 @@ LABEL_21:
     else
     {
 
-      [(CoreCECDeviceProvider *)self didNotHandleMessage:a3 unsupportedOperand:0];
+      [(CoreCECDeviceProvider *)self didNotHandleMessage:message unsupportedOperand:0];
     }
   }
 }
 
-- (void)handleSystemAudioModeRequestMessage:(id)a3 fromDevice:(id)a4
+- (void)handleSystemAudioModeRequestMessage:(id)message fromDevice:(id)device
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (-[CoreCECDeviceProvider handlingRequiredForSystemAudioModeMessage:](self, "handlingRequiredForSystemAudioModeMessage:") && ([a3 isBroadcast] & 1) == 0 && -[CoreCECDevice deviceType](self, "deviceType") == 1)
+  if (-[CoreCECDeviceProvider handlingRequiredForSystemAudioModeMessage:](self, "handlingRequiredForSystemAudioModeMessage:") && ([message isBroadcast] & 1) == 0 && -[CoreCECDevice deviceType](self, "deviceType") == 1)
   {
-    if (!a3 || ([a3 frame], (v11 & 0x1F) != 2) && (objc_msgSend(a3, "frame"), (v10 & 0x1F) != 4))
+    if (!message || ([message frame], (v11 & 0x1F) != 2) && (objc_msgSend(message, "frame"), (v10 & 0x1F) != 4))
     {
       if (gLogCategory_CoreRCDevice <= 50 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
       {
         [CoreCECDeviceProvider handleSystemAudioModeRequestMessage:fromDevice:];
-        if (!a3)
+        if (!message)
         {
           goto LABEL_20;
         }
       }
 
-      else if (!a3)
+      else if (!message)
       {
         goto LABEL_20;
       }
     }
 
-    [a3 frame];
+    [message frame];
     if ((v9 & 0x1C) != 0)
     {
-      [a3 frame];
-      [a3 frame];
-      if ([a4 deviceType] == 7)
+      [message frame];
+      [message frame];
+      if ([device deviceType] == 7)
       {
         [(CoreCECDeviceProvider *)self setSystemAudioModeRequestedByTV:1];
       }
@@ -3109,7 +3109,7 @@ LABEL_21:
 
       v7 = 1;
 LABEL_24:
-      [(CoreCECDevice *)self receivedRequestSystemAudioModeStatusChangeTo:v7 fromDevice:a4];
+      [(CoreCECDevice *)self receivedRequestSystemAudioModeStatusChangeTo:v7 fromDevice:device];
       goto LABEL_25;
     }
 
@@ -3127,12 +3127,12 @@ LABEL_25:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSetAudioVolumeLevelMessage:(id)a3 fromDevice:(id)a4
+- (void)handleSetAudioVolumeLevelMessage:(id)message fromDevice:(id)device
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (message)
   {
-    [a3 frame];
+    [message frame];
     v6 = BYTE2(v10);
   }
 
@@ -3147,7 +3147,7 @@ LABEL_25:
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
     v8 = v6;
-    v9 = self;
+    selfCopy = self;
     LogPrintF();
   }
 
@@ -3168,27 +3168,27 @@ LABEL_25:
         [CoreCECDeviceProvider handleSetAudioVolumeLevelMessage:fromDevice:];
       }
 
-      -[CoreCECDeviceProvider featureAbort:reason:to:error:](self, "featureAbort:reason:to:error:", 115, 3, [a4 logicalAddress], 0);
+      -[CoreCECDeviceProvider featureAbort:reason:to:error:](self, "featureAbort:reason:to:error:", 115, 3, [device logicalAddress], 0);
     }
   }
 
   else
   {
-    [(CoreCECDeviceProvider *)self receivedSetAudioVolumeLevel:v6 fromDevice:a4];
+    [(CoreCECDeviceProvider *)self receivedSetAudioVolumeLevel:v6 fromDevice:device];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)filterSystemAudioModeStatusMessage:(id)a3 toDevice:(id)a4
+- (id)filterSystemAudioModeStatusMessage:(id)message toDevice:(id)device
 {
-  if ([a3 initiator] != 5 && gLogCategory_CoreRCDevice <= 60 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
+  if ([message initiator] != 5 && gLogCategory_CoreRCDevice <= 60 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
     [CoreCECDeviceProvider filterSystemAudioModeStatusMessage:toDevice:];
   }
 
   v7 = 0;
-  if ([a3 parseSystemAudioModeStatus:&v7])
+  if ([message parseSystemAudioModeStatus:&v7])
   {
     [-[CoreCECDeviceProvider busProvider](self "busProvider")];
   }
@@ -3198,119 +3198,119 @@ LABEL_25:
     [CoreCECDeviceProvider filterSystemAudioModeStatusMessage:toDevice:];
   }
 
-  return a3;
+  return message;
 }
 
-- (void)handleRequestARCInitiationMessage:(id)a3 fromDevice:(id)a4
+- (void)handleRequestARCInitiationMessage:(id)message fromDevice:(id)device
 {
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
-    v7 = a3;
-    v8 = self;
+    messageCopy = message;
+    selfCopy = self;
     LogPrintF();
   }
 
-  if ([(CoreCECDeviceProvider *)self handlingRequiredForAudioReturnChannelMessage:a3, v7, v8])
+  if ([(CoreCECDeviceProvider *)self handlingRequiredForAudioReturnChannelMessage:message, messageCopy, selfCopy])
   {
     if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
       [CoreCECDeviceProvider handleRequestARCInitiationMessage:fromDevice:];
     }
 
-    [(CoreCECDevice *)self receivedRequestAudioReturnChannelStatusChangeTo:1 fromDevice:a4];
+    [(CoreCECDevice *)self receivedRequestAudioReturnChannelStatusChangeTo:1 fromDevice:device];
   }
 }
 
-- (void)handleReportARCInitiatedMessage:(id)a3 fromDevice:(id)a4
+- (void)handleReportARCInitiatedMessage:(id)message fromDevice:(id)device
 {
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
-    v6 = a3;
-    v7 = self;
+    messageCopy = message;
+    selfCopy = self;
     LogPrintF();
   }
 
-  if ([(CoreCECDeviceProvider *)self handlingRequiredForAudioReturnChannelMessage:a3, v6, v7])
+  if ([(CoreCECDeviceProvider *)self handlingRequiredForAudioReturnChannelMessage:message, messageCopy, selfCopy])
   {
 
     [(CoreCECDeviceProvider *)self arcStarting_handleReportARCInitiatedReceived];
   }
 }
 
-- (void)handleRequestARCTerminationMessage:(id)a3 fromDevice:(id)a4
+- (void)handleRequestARCTerminationMessage:(id)message fromDevice:(id)device
 {
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
-    v7 = a3;
-    v8 = self;
+    messageCopy = message;
+    selfCopy = self;
     LogPrintF();
   }
 
-  if ([(CoreCECDeviceProvider *)self handlingRequiredForAudioReturnChannelMessage:a3, v7, v8])
+  if ([(CoreCECDeviceProvider *)self handlingRequiredForAudioReturnChannelMessage:message, messageCopy, selfCopy])
   {
     if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
       [CoreCECDeviceProvider handleRequestARCTerminationMessage:fromDevice:];
     }
 
-    [(CoreCECDevice *)self receivedRequestAudioReturnChannelStatusChangeTo:0 fromDevice:a4];
+    [(CoreCECDevice *)self receivedRequestAudioReturnChannelStatusChangeTo:0 fromDevice:device];
   }
 }
 
-- (void)handleReportARCTerminatedMessage:(id)a3 fromDevice:(id)a4
+- (void)handleReportARCTerminatedMessage:(id)message fromDevice:(id)device
 {
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
-    v6 = a3;
-    v7 = self;
+    messageCopy = message;
+    selfCopy = self;
     LogPrintF();
   }
 
-  if ([(CoreCECDeviceProvider *)self handlingRequiredForAudioReturnChannelMessage:a3, v6, v7])
+  if ([(CoreCECDeviceProvider *)self handlingRequiredForAudioReturnChannelMessage:message, messageCopy, selfCopy])
   {
 
     [(CoreCECDeviceProvider *)self arcStopping_handleReportARCTerminatedReceived];
   }
 }
 
-- (BOOL)activeSource:(id *)a3
+- (BOOL)activeSource:(id *)source
 {
   v5 = [CECMessage activeSourceFrom:[(CoreCECDeviceProvider *)self sendFromAddress] physicalAddress:[(CoreCECDevice *)self physicalAddress]];
 
-  return [(CoreCECDeviceProvider *)self sendMessage:v5 error:a3];
+  return [(CoreCECDeviceProvider *)self sendMessage:v5 error:source];
 }
 
-- (BOOL)requestActiveSource:(id *)a3
+- (BOOL)requestActiveSource:(id *)source
 {
   v5 = [CECMessage requestActiveSourceFrom:[(CoreCECDeviceProvider *)self sendFromAddress]];
 
-  return [(CoreCECDeviceProvider *)self sendMessage:v5 error:a3];
+  return [(CoreCECDeviceProvider *)self sendMessage:v5 error:source];
 }
 
-- (BOOL)reportPhysicalAddress:(id *)a3
+- (BOOL)reportPhysicalAddress:(id *)address
 {
   v7 = 0;
   if (CECDeviceTypeForCoreCECDeviceType(&v7, [(CoreCECDevice *)self deviceType]))
   {
-    v5 = [(CoreCECDevice *)self physicalAddress];
-    return [(CoreCECDeviceProvider *)self sendMessage:[CECMessage error:"reportPhysicalAddress:deviceType:from:" reportPhysicalAddress:v5 deviceType:v7 from:[(CoreCECDeviceProvider *)self sendFromAddress]], a3];
+    physicalAddress = [(CoreCECDevice *)self physicalAddress];
+    return [(CoreCECDeviceProvider *)self sendMessage:[CECMessage error:"reportPhysicalAddress:deviceType:from:" reportPhysicalAddress:physicalAddress deviceType:v7 from:[(CoreCECDeviceProvider *)self sendFromAddress]], address];
   }
 
   else
   {
-    [(CoreCECDeviceProvider *)a3 reportPhysicalAddress:?];
+    [(CoreCECDeviceProvider *)address reportPhysicalAddress:?];
     return v8;
   }
 }
 
-- (BOOL)setMenuLanguage:(CECLanguage)a3 error:(id *)a4
+- (BOOL)setMenuLanguage:(CECLanguage)language error:(id *)error
 {
-  v6 = [CECMessage setMenuLanguage:*a3.characters & 0xFFFFFF from:[(CoreCECDeviceProvider *)self sendFromAddress]];
+  v6 = [CECMessage setMenuLanguage:*language.characters & 0xFFFFFF from:[(CoreCECDeviceProvider *)self sendFromAddress]];
 
-  return [(CoreCECDeviceProvider *)self sendMessage:v6 error:a4];
+  return [(CoreCECDeviceProvider *)self sendMessage:v6 error:error];
 }
 
-- (BOOL)reportFeatures:(id *)a3
+- (BOOL)reportFeatures:(id *)features
 {
   v12 = 0;
   v11 = 0;
@@ -3326,35 +3326,35 @@ LABEL_25:
 
       if (CECRCProfileForCoreCECRCProfile(&v10, [(CoreCECDevice *)self rcProfile]))
       {
-        v5 = [(CoreCECDevice *)self cecVersion];
+        cecVersion = [(CoreCECDevice *)self cecVersion];
         v6 = v12;
         v7 = v11;
-        v8 = [(CoreCECDeviceProvider *)self sendFromAddress];
-        return [(CoreCECDeviceProvider *)self sendMessage:[CECMessage error:"reportFeaturesWith:deviceTypes:rcProfile:deviceFeatures:from:" reportFeaturesWith:v5 deviceTypes:v6 rcProfile:v10 deviceFeatures:v7 from:v8], a3];
+        sendFromAddress = [(CoreCECDeviceProvider *)self sendFromAddress];
+        return [(CoreCECDeviceProvider *)self sendMessage:[CECMessage error:"reportFeaturesWith:deviceTypes:rcProfile:deviceFeatures:from:" reportFeaturesWith:cecVersion deviceTypes:v6 rcProfile:v10 deviceFeatures:v7 from:sendFromAddress], features];
       }
 
       else
       {
-        [(CoreCECDeviceProvider *)a3 reportPhysicalAddress:?];
+        [(CoreCECDeviceProvider *)features reportPhysicalAddress:?];
         return v15;
       }
     }
 
     else
     {
-      [(CoreCECDeviceProvider *)a3 reportPhysicalAddress:?];
+      [(CoreCECDeviceProvider *)features reportPhysicalAddress:?];
       return v14;
     }
   }
 
   else
   {
-    [(CoreCECDeviceProvider *)a3 reportPhysicalAddress:?];
+    [(CoreCECDeviceProvider *)features reportPhysicalAddress:?];
     return v13;
   }
 }
 
-- (BOOL)reportShortAudioDescriptorTo:(unsigned __int8)a3 error:(id *)a4
+- (BOOL)reportShortAudioDescriptorTo:(unsigned __int8)to error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
@@ -3364,7 +3364,7 @@ LABEL_25:
   return 0;
 }
 
-- (BOOL)requestShortAudioDescriptor:(unsigned __int8)a3 error:(id *)a4
+- (BOOL)requestShortAudioDescriptor:(unsigned __int8)descriptor error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
@@ -3374,7 +3374,7 @@ LABEL_25:
   return 0;
 }
 
-- (BOOL)setSystemAudioMode:(unint64_t)a3 to:(unsigned __int8)a4 error:(id *)a5
+- (BOOL)setSystemAudioMode:(unint64_t)mode to:(unsigned __int8)to error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
@@ -3384,7 +3384,7 @@ LABEL_25:
   return 0;
 }
 
-- (BOOL)systemAudioModeStatus:(unsigned __int8)a3 error:(id *)a4
+- (BOOL)systemAudioModeStatus:(unsigned __int8)status error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
@@ -3394,7 +3394,7 @@ LABEL_25:
   return 0;
 }
 
-- (void)didRemoveFromBus:(id)a3
+- (void)didRemoveFromBus:(id)bus
 {
   v4.receiver = self;
   v4.super_class = CoreCECDeviceProvider;
@@ -3402,24 +3402,24 @@ LABEL_25:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a3 updateAllowHibernation];
+    [bus updateAllowHibernation];
   }
 }
 
-- (BOOL)deckControlSetDeckStatus:(unint64_t)a3 error:(id *)a4
+- (BOOL)deckControlSetDeckStatus:(unint64_t)status error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
     v7 = objc_opt_class();
-    v12 = self;
-    v13 = CoreCECDeckInfoString(a3);
+    selfCopy = self;
+    v13 = CoreCECDeckInfoString(status);
     v11 = v7;
     LogPrintF();
   }
 
   v14.receiver = self;
   v14.super_class = CoreCECDeviceProvider;
-  v8 = [(CoreCECDevice *)&v14 deckControlSetDeckStatus:a3 error:a4, v11, v12, v13];
+  v8 = [(CoreCECDevice *)&v14 deckControlSetDeckStatus:status error:error, v11, selfCopy, v13];
   if (v8)
   {
     [-[CoreRCDevice bus](self "bus")];
@@ -3440,26 +3440,26 @@ LABEL_25:
   return v8;
 }
 
-- (BOOL)sendHIDEvent:(id)a3 target:(id)a4 error:(id *)a5
+- (BOOL)sendHIDEvent:(id)event target:(id)target error:(id *)error
 {
   v19 = 0;
-  v20 = a4;
+  targetCopy = target;
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
-    v14 = a3;
-    v15 = a4;
+    eventCopy = event;
+    targetCopy2 = target;
     v12 = objc_opt_class();
-    v13 = self;
+    selfCopy = self;
     LogPrintF();
   }
 
-  if ([a3 isRepeat] || a4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v18 = 0, v17 = 0, v16 = 0, (objc_msgSend(a3, "getCECUserControl:pressed:", &v17, &v16) & 1) == 0))
+  if ([event isRepeat] || target && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v18 = 0, v17 = 0, v16 = 0, (objc_msgSend(event, "getCECUserControl:pressed:", &v17, &v16) & 1) == 0))
   {
     v19 = OUTLINED_FUNCTION_1_6(MEMORY[0x277CCA9B8], v9, *MEMORY[0x277CCA590]);
     goto LABEL_18;
   }
 
-  if (![(CoreCECDeviceProvider *)self getRemoteControlDestination:&v20 logicalAddress:&v18 forTargetDevice:a4 command:v17 error:&v19])
+  if (![(CoreCECDeviceProvider *)self getRemoteControlDestination:&targetCopy logicalAddress:&v18 forTargetDevice:target command:v17 error:&v19])
   {
     goto LABEL_18;
   }
@@ -3506,15 +3506,15 @@ LABEL_25:
 
 LABEL_18:
   v10 = v19;
-  if (a5)
+  if (error)
   {
-    *a5 = v19;
+    *error = v19;
   }
 
   return v10 == 0;
 }
 
-- (BOOL)resignActiveSource:(id *)a3
+- (BOOL)resignActiveSource:(id *)source
 {
   OUTLINED_FUNCTION_18();
   v9 = 0;
@@ -3539,18 +3539,18 @@ LABEL_18:
   return v5 == 0;
 }
 
-- (BOOL)setAudioVolumeStatus:(unint64_t)a3 error:(id *)a4
+- (BOOL)setAudioVolumeStatus:(unint64_t)status error:(id *)error
 {
   v28 = 0;
   OUTLINED_FUNCTION_16();
   if (v9 ^ v10 | v8 && (v7 != -1 || _LogCategory_Initialize()))
   {
-    v24 = a3;
-    v26 = self;
+    statusCopy = status;
+    selfCopy = self;
     LogPrintF();
   }
 
-  if ([(CoreCECDevice *)self deviceType:v24]!= 1)
+  if ([(CoreCECDevice *)self deviceType:statusCopy]!= 1)
   {
     if (![(CoreCECDevice *)self systemAudioControlEnabled])
     {
@@ -3601,13 +3601,13 @@ LABEL_49:
         OUTLINED_FUNCTION_16();
         if (v9 ^ v10 | v8 && (v16 != -1 || _LogCategory_Initialize()))
         {
-          v25 = a3;
+          statusCopy2 = status;
           LogPrintF();
         }
 
         if ([-[CoreRCDevice bus](self "bus")])
         {
-          [v14 setAudioVolumeStatus:a3 error:0];
+          [v14 setAudioVolumeStatus:status error:0];
           goto LABEL_32;
         }
 
@@ -3658,7 +3658,7 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if ([(CoreCECDevice *)self audioVolumeStatus]== a3)
+  if ([(CoreCECDevice *)self audioVolumeStatus]== status)
   {
 LABEL_32:
     LOBYTE(v11) = 1;
@@ -3667,7 +3667,7 @@ LABEL_32:
 
   v27.receiver = self;
   v27.super_class = CoreCECDeviceProvider;
-  v11 = [(CoreCECDevice *)&v27 setAudioVolumeStatus:a3 error:&v28];
+  v11 = [(CoreCECDevice *)&v27 setAudioVolumeStatus:status error:&v28];
   if (v11)
   {
     [(CoreCECDeviceProvider *)self audioStatusChanged];
@@ -3676,35 +3676,35 @@ LABEL_32:
   }
 
 LABEL_38:
-  if (a4 && v28)
+  if (error && v28)
   {
-    *a4 = v28;
+    *error = v28;
   }
 
   return v11;
 }
 
-- (BOOL)setSupportedAudioFormats:(id)a3 error:(id *)a4
+- (BOOL)setSupportedAudioFormats:(id)formats error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
     v9 = objc_opt_class();
-    v10 = self;
+    selfCopy = self;
     LogPrintF();
   }
 
   v11.receiver = self;
   v11.super_class = CoreCECDeviceProvider;
-  v7 = [(CoreCECDevice *)&v11 setSupportedAudioFormats:a3 error:a4, v9, v10];
-  if (v7)
+  selfCopy = [(CoreCECDevice *)&v11 setSupportedAudioFormats:formats error:error, v9, selfCopy];
+  if (selfCopy)
   {
     [-[CoreRCDevice bus](self "bus")];
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)filterSetMenuLanguageMessage:(id)a3
+- (id)filterSetMenuLanguageMessage:(id)message
 {
   OUTLINED_FUNCTION_18();
   if ([v5 initiator])
@@ -3727,7 +3727,7 @@ LABEL_38:
   return v3;
 }
 
-- (id)filterReportFeaturesMessage:(id)a3 toDevice:(id)a4
+- (id)filterReportFeaturesMessage:(id)message toDevice:(id)device
 {
   OUTLINED_FUNCTION_18();
   v18 = 0;
@@ -3774,37 +3774,37 @@ LABEL_38:
   return v4;
 }
 
-- (void)sendDeckStatusToDevice:(id)a3
+- (void)sendDeckStatusToDevice:(id)device
 {
   v9 = 0;
-  v5 = [(CoreCECDevice *)self deckStatus];
-  if (a3 && v5)
+  deckStatus = [(CoreCECDevice *)self deckStatus];
+  if (device && deckStatus)
   {
     if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
-      v6 = a3;
+      deviceCopy = device;
       LogPrintF();
     }
 
-    if (!-[CoreCECDeviceProvider deckStatusWithInfo:to:error:](self, "deckStatusWithInfo:to:error:", -[CoreCECDevice deckStatus](self, "deckStatus", v6), [a3 logicalAddress], &v9))
+    if (!-[CoreCECDeviceProvider deckStatusWithInfo:to:error:](self, "deckStatusWithInfo:to:error:", -[CoreCECDevice deckStatus](self, "deckStatus", deviceCopy), [device logicalAddress], &v9))
     {
       if (gLogCategory_CoreRCDevice <= 90)
       {
         if (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize())
         {
-          v7 = a3;
+          deviceCopy3 = device;
           v8 = v9;
           LogPrintF();
         }
 
         if (gLogCategory_CoreRCDevice <= 60 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
         {
-          v7 = a3;
+          deviceCopy3 = device;
           LogPrintF();
         }
       }
 
-      self->_deckStatusRequestMask &= ~(1 << [a3 logicalAddress]);
+      self->_deckStatusRequestMask &= ~(1 << [device logicalAddress]);
     }
   }
 }
@@ -3819,9 +3819,9 @@ LABEL_38:
 - (uint64_t)serialQueue
 {
   OUTLINED_FUNCTION_1_4();
-  v2 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
 
-  return [v2 handleFailureInMethod:v1 object:v0 file:@"CoreCECDeviceProvider.m" lineNumber:337 description:@"busProvider queue must not be nil!"];
+  return [currentHandler handleFailureInMethod:v1 object:v0 file:@"CoreCECDeviceProvider.m" lineNumber:337 description:@"busProvider queue must not be nil!"];
 }
 
 - (void)didAddToBus:.cold.1()
@@ -4003,10 +4003,10 @@ uint64_t __76__CoreCECDeviceProvider_userControlScheduleInitiatorTrackAudioStatu
 - (uint64_t)userControlFollowerSafetyTimeoutExpired
 {
   objc_opt_class();
-  CECUserControlString(*(a1 + 184));
-  v2 = *(a1 + 176);
+  CECUserControlString(*(self + 184));
+  v2 = *(self + 176);
   objc_opt_class();
-  v4 = *(a1 + 176);
+  v4 = *(self + 176);
   return LogPrintF();
 }
 
@@ -4104,7 +4104,7 @@ uint64_t __76__CoreCECDeviceProvider_userControlScheduleInitiatorTrackAudioStatu
 
 - (uint64_t)samStarting_broadcast_SSAM_ON
 {
-  if (a1 <= 90 && (a1 != -1 || _LogCategory_Initialize()))
+  if (self <= 90 && (self != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
@@ -4115,7 +4115,7 @@ uint64_t __76__CoreCECDeviceProvider_userControlScheduleInitiatorTrackAudioStatu
 
 - (uint64_t)samStopping
 {
-  if (a1 <= 60 && (a1 != -1 || _LogCategory_Initialize()))
+  if (self <= 60 && (self != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }

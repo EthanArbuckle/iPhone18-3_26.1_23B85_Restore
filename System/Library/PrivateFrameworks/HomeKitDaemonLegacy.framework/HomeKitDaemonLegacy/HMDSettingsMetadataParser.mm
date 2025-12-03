@@ -1,9 +1,9 @@
 @interface HMDSettingsMetadataParser
 + (id)logCategory;
 - (HMDSettingsControllerDependency)dependency;
-- (HMDSettingsMetadataParser)initWithDependency:(id)a3;
+- (HMDSettingsMetadataParser)initWithDependency:(id)dependency;
 - (id)logIdentifier;
-- (id)modelsFromMetadata:(id)a3;
+- (id)modelsFromMetadata:(id)metadata;
 @end
 
 @implementation HMDSettingsMetadataParser
@@ -17,24 +17,24 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDSettingsMetadataParser *)self dependency];
-  v3 = [v2 parentIdentifier];
-  v4 = [v3 UUIDString];
+  dependency = [(HMDSettingsMetadataParser *)self dependency];
+  parentIdentifier = [dependency parentIdentifier];
+  uUIDString = [parentIdentifier UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (id)modelsFromMetadata:(id)a3
+- (id)modelsFromMetadata:(id)metadata
 {
   v186 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [v4 hmf_dictionaryForKey:@"Info"];
+  v6 = [metadataCopy hmf_dictionaryForKey:@"Info"];
   v7 = v6;
   if (!v6)
   {
     v98 = objc_autoreleasePoolPush();
-    v99 = self;
+    selfCopy = self;
     v100 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
     {
@@ -51,7 +51,7 @@
 
   v8 = [v6 hmf_numberForKey:@"Version"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy2 = self;
   v11 = HMFGetOSLogHandle();
   v12 = v11;
   if (!v8)
@@ -80,11 +80,11 @@
   }
 
   objc_autoreleasePoolPop(v9);
-  v14 = [v4 hmf_dictionaryForKey:@"Data"];
+  v14 = [metadataCopy hmf_dictionaryForKey:@"Data"];
   if (!v14)
   {
     v103 = objc_autoreleasePoolPush();
-    v104 = v10;
+    v104 = selfCopy2;
     v105 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v105, OS_LOG_TYPE_ERROR))
     {
@@ -102,19 +102,19 @@
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v146 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v145 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v147 = v10;
-  v16 = [(HMDSettingsMetadataParser *)v10 dependency];
-  v17 = [v16 parentIdentifier];
-  v157 = v16;
-  v18 = [v16 createSettingRootGroupModelWithParentModelID:v17];
+  v147 = selfCopy2;
+  dependency = [(HMDSettingsMetadataParser *)selfCopy2 dependency];
+  parentIdentifier = [dependency parentIdentifier];
+  v157 = dependency;
+  v18 = [dependency createSettingRootGroupModelWithParentModelID:parentIdentifier];
 
   [v15 addObject:v18];
   v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v176[0] = @"parentUUID";
   v138 = v18;
-  v20 = [v18 hmbModelID];
+  hmbModelID = [v18 hmbModelID];
   v176[1] = @"group";
-  v177[0] = v20;
+  v177[0] = hmbModelID;
   v177[1] = v14;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v177 forKeys:v176 count:2];
   [v19 addObject:v21];
@@ -223,9 +223,9 @@ LABEL_70:
           v33 = [v157 createSettingGroupModelWithName:v32 parent:v154];
           [v156 addObject:v33];
           v173[0] = @"parentUUID";
-          v34 = [v33 hmbModelID];
+          hmbModelID2 = [v33 hmbModelID];
           v173[1] = @"group";
-          v174[0] = v34;
+          v174[0] = hmbModelID2;
           v174[1] = v30;
           v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v174 forKeys:v173 count:2];
           [v155 addObject:v35];
@@ -262,7 +262,7 @@ LABEL_69:
 
   v141 = *v161;
   v134 = v7;
-  v135 = v4;
+  v135 = metadataCopy;
 LABEL_18:
   v37 = 0;
   while (1)
@@ -452,9 +452,9 @@ LABEL_95:
   v142 = v40;
   v55 = [v149 hmf_arrayForKey:@"Constraints"];
   v148 = v54;
-  v56 = [v54 hmbModelID];
+  hmbModelID3 = [v54 hmbModelID];
   v57 = v55;
-  v58 = v56;
+  v58 = hmbModelID3;
   v59 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v168 = 0u;
   v169 = 0u;
@@ -488,8 +488,8 @@ LABEL_51:
 
         v67 = [v64 objectForKey:@"Value"];
         v68 = [HMDSettingConstraintModel alloc];
-        v69 = [MEMORY[0x277CCAD78] UUID];
-        v70 = [(HMBModel *)v68 initWithModelID:v69 parentModelID:v58];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        v70 = [(HMBModel *)v68 initWithModelID:uUID parentModelID:v58];
 
         v71 = [MEMORY[0x277CCABB0] numberWithInteger:v66];
         [(HMDSettingConstraintModel *)v70 setType:v71];
@@ -519,8 +519,8 @@ LABEL_52:
       if (v72)
       {
         v73 = [HMDSettingConstraintModel alloc];
-        v74 = [MEMORY[0x277CCAD78] UUID];
-        v70 = [(HMBModel *)v73 initWithModelID:v74 parentModelID:v58];
+        uUID2 = [MEMORY[0x277CCAD78] UUID];
+        v70 = [(HMBModel *)v73 initWithModelID:uUID2 parentModelID:v58];
 
         v75 = [MEMORY[0x277CCABB0] numberWithInteger:4];
         [(HMDSettingConstraintModel *)v70 setType:v75];
@@ -572,7 +572,7 @@ LABEL_61:
     v84 = v145;
     [v145 addObjectsFromArray:v77];
     v7 = v134;
-    v4 = v135;
+    metadataCopy = v135;
     v14 = v139;
   }
 
@@ -581,7 +581,7 @@ LABEL_61:
     v85 = objc_autoreleasePoolPush();
     v86 = v147;
     v87 = HMFGetOSLogHandle();
-    v4 = v135;
+    metadataCopy = v135;
     v83 = v146;
     if (os_log_type_enabled(v87, OS_LOG_TYPE_ERROR))
     {
@@ -626,16 +626,16 @@ LABEL_101:
   return v97;
 }
 
-- (HMDSettingsMetadataParser)initWithDependency:(id)a3
+- (HMDSettingsMetadataParser)initWithDependency:(id)dependency
 {
-  v4 = a3;
+  dependencyCopy = dependency;
   v8.receiver = self;
   v8.super_class = HMDSettingsMetadataParser;
   v5 = [(HMDSettingsMetadataParser *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dependency, v4);
+    objc_storeWeak(&v5->_dependency, dependencyCopy);
   }
 
   return v6;

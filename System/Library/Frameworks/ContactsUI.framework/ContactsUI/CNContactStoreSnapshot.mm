@@ -4,11 +4,11 @@
 - (NSArray)indexSections;
 - (NSArray)sections;
 - (id)_keysToFetch;
-- (id)objectIn_contactsAtIndex:(unint64_t)a3;
+- (id)objectIn_contactsAtIndex:(unint64_t)index;
 - (unint64_t)countOf_contacts;
-- (void)_generateExcerptsInRange:(_NSRange)a3;
+- (void)_generateExcerptsInRange:(_NSRange)range;
 - (void)_loadAllContacts;
-- (void)_loadContactsInRange:(_NSRange)a3 inBackground:(BOOL)a4;
+- (void)_loadContactsInRange:(_NSRange)range inBackground:(BOOL)background;
 - (void)dealloc;
 - (void)prepareAllContacts;
 - (void)prepareEnoughContacts;
@@ -27,8 +27,8 @@
     _os_log_debug_impl(&dword_199A75000, v3, OS_LOG_TYPE_DEBUG, "preparationSize: %ld", &v7, 0xCu);
   }
 
-  v4 = [(CNContactStoreSnapshot *)self contacts];
-  v5 = [v4 count];
+  contacts = [(CNContactStoreSnapshot *)self contacts];
+  v5 = [contacts count];
 
   if (v5 >= 0x64)
   {
@@ -53,9 +53,9 @@
   contactsCache = v2->_contactsCache;
   v2->_contactsCache = v3;
 
-  v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   identifiersToIndexPath = v2->_identifiersToIndexPath;
-  v2->_identifiersToIndexPath = v5;
+  v2->_identifiersToIndexPath = strongToStrongObjectsMapTable;
 
   v7 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:&stru_1F0CE7398 attributes:0];
   emptyExcerptInstanceMarker = v2->_emptyExcerptInstanceMarker;
@@ -69,22 +69,22 @@
   summarizationQueue = v2->_summarizationQueue;
   v2->_summarizationQueue = v11;
 
-  v13 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+  weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
   summarizationFutures = v2->_summarizationFutures;
-  v2->_summarizationFutures = v13;
+  v2->_summarizationFutures = weakObjectsPointerArray;
 
   return v2;
 }
 
 - (unint64_t)countOf_contacts
 {
-  v3 = [(CNContactStoreSnapshot *)self dataSource];
+  dataSource = [(CNContactStoreSnapshot *)self dataSource];
   if (self->_contactsCount == 0x7FFFFFFFFFFFFFFFLL)
   {
     if ([(CNContactStoreFilter *)self->_filter showsEverything])
     {
-      v4 = [v3 store];
-      v5 = [v4 unifiedContactCountWithError:0];
+      store = [dataSource store];
+      v5 = [store unifiedContactCountWithError:0];
       self->_contactsCount = [v5 unsignedIntegerValue];
     }
 
@@ -108,73 +108,73 @@
 
 - (id)_keysToFetch
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E695CD60] descriptorForRequiredKeys];
-  [v3 addObject:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  descriptorForRequiredKeys = [MEMORY[0x1E695CD60] descriptorForRequiredKeys];
+  [array addObject:descriptorForRequiredKeys];
 
-  v5 = [(CNContactStoreSnapshot *)self dataSource];
-  v6 = [v5 keysToFetch];
+  dataSource = [(CNContactStoreSnapshot *)self dataSource];
+  keysToFetch = [dataSource keysToFetch];
 
-  if (v6)
+  if (keysToFetch)
   {
-    v7 = [v5 keysToFetch];
-    [v3 addObjectsFromArray:v7];
+    keysToFetch2 = [dataSource keysToFetch];
+    [array addObjectsFromArray:keysToFetch2];
   }
 
-  v8 = [v5 contactFormatter];
+  contactFormatter = [dataSource contactFormatter];
 
-  if (v8)
+  if (contactFormatter)
   {
-    v9 = [v5 contactFormatter];
-    v10 = [v9 descriptorForRequiredKeys];
-    [v3 addObject:v10];
+    contactFormatter2 = [dataSource contactFormatter];
+    descriptorForRequiredKeys2 = [contactFormatter2 descriptorForRequiredKeys];
+    [array addObject:descriptorForRequiredKeys2];
   }
 
-  if (![v3 count])
+  if (![array count])
   {
     v11 = +[CNContactViewController descriptorForRequiredKeys];
-    [v3 addObject:v11];
+    [array addObject:v11];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)sections
 {
-  v2 = self;
+  selfCopy = self;
   v60 = *MEMORY[0x1E69E9840];
   if (![(CNContactStoreFilter *)self->_filter showsEverything])
   {
-    [(CNContactStoreSnapshot *)v2 _loadAllContacts];
+    [(CNContactStoreSnapshot *)selfCopy _loadAllContacts];
   }
 
-  if (!v2->_sections)
+  if (!selfCopy->_sections)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
-    sections = v2->_sections;
-    v2->_sections = v3;
+    null = [MEMORY[0x1E695DFB0] null];
+    sections = selfCopy->_sections;
+    selfCopy->_sections = null;
 
-    if ([(CNContactStoreFilter *)v2->_filter supportsSections])
+    if ([(CNContactStoreFilter *)selfCopy->_filter supportsSections])
     {
-      v5 = [(CNContactStoreSnapshot *)v2 contacts];
-      v6 = [v5 count];
+      contacts = [(CNContactStoreSnapshot *)selfCopy contacts];
+      v6 = [contacts count];
 
       if (v6 >= 6)
       {
-        v7 = [(CNContactStoreSnapshot *)v2 dataSource];
-        v52 = [v7 sectionHeadersDictionary];
+        dataSource = [(CNContactStoreSnapshot *)selfCopy dataSource];
+        sectionHeadersDictionary = [dataSource sectionHeadersDictionary];
 
-        v8 = [(CNContactStoreSnapshot *)v2 dataSource];
-        v51 = [v8 localizedSectionHeaders];
+        dataSource2 = [(CNContactStoreSnapshot *)selfCopy dataSource];
+        localizedSectionHeaders = [dataSource2 localizedSectionHeaders];
 
-        v9 = [(CNContactStoreSnapshot *)v2 dataSource];
-        v10 = [v9 store];
-        v11 = [(CNContactStoreSnapshot *)v2 dataSource];
-        v12 = [v10 sectionListOffsetsForSortOrder:objc_msgSend(v11 error:{"sortOrder"), 0}];
+        dataSource3 = [(CNContactStoreSnapshot *)selfCopy dataSource];
+        store = [dataSource3 store];
+        dataSource4 = [(CNContactStoreSnapshot *)selfCopy dataSource];
+        v12 = [store sectionListOffsetsForSortOrder:objc_msgSend(dataSource4 error:{"sortOrder"), 0}];
 
         if (v12)
         {
-          v49 = v2;
+          v49 = selfCopy;
           v50 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v12, "count")}];
           v55 = 0u;
           v56 = 0u;
@@ -188,7 +188,7 @@
             v14 = v13;
             v15 = 0;
             v54 = *v56;
-            v16 = v52;
+            v16 = sectionHeadersDictionary;
             do
             {
               for (i = 0; i != v14; ++i)
@@ -199,8 +199,8 @@
                 }
 
                 v18 = *(*(&v55 + 1) + 8 * i);
-                v19 = [v18 first];
-                v20 = [v16 objectForKeyedSubscript:v19];
+                first = [v18 first];
+                v20 = [v16 objectForKeyedSubscript:first];
                 v21 = v20;
                 v22 = @"#";
                 if (v20)
@@ -210,21 +210,21 @@
 
                 v23 = v22;
 
-                v24 = [(CNContactSection *)v15 sortKey];
-                if (v19 | v24 && (v25 = v24, -[CNContactSection sortKey](v15, "sortKey"), v26 = objc_claimAutoreleasedReturnValue(), v27 = [v26 isEqual:v19], v26, v25, !v27))
+                sortKey = [(CNContactSection *)v15 sortKey];
+                if (first | sortKey && (v25 = sortKey, -[CNContactSection sortKey](v15, "sortKey"), v26 = objc_claimAutoreleasedReturnValue(), v27 = [v26 isEqual:first], v26, v25, !v27))
                 {
                   if (v15)
                   {
-                    v31 = [(CNContactSection *)v15 range];
-                    v28 = v31 + v32;
+                    range = [(CNContactSection *)v15 range];
+                    range2 = range + v32;
                   }
 
                   else
                   {
-                    v28 = 0;
+                    range2 = 0;
                   }
 
-                  v33 = [v51 objectForKeyedSubscript:v23];
+                  v33 = [localizedSectionHeaders objectForKeyedSubscript:v23];
                   v34 = v33;
                   if (v33)
                   {
@@ -239,7 +239,7 @@
                   v36 = v35;
 
                   v37 = objc_alloc_init(CNContactSection);
-                  [(CNContactSection *)v37 setSortKey:v19];
+                  [(CNContactSection *)v37 setSortKey:first];
                   [(CNContactSection *)v37 setTitle:v36];
                   [(CNContactSection *)v37 setIdentifier:v23];
                   v38 = v37;
@@ -247,20 +247,20 @@
                   [(NSArray *)v50 addObject:v38];
                   v30 = 0;
                   v15 = v38;
-                  v16 = v52;
+                  v16 = sectionHeadersDictionary;
                 }
 
                 else
                 {
-                  v28 = [(CNContactSection *)v15 range];
+                  range2 = [(CNContactSection *)v15 range];
                   v30 = v29;
                   v15 = v15;
                 }
 
-                v39 = [v18 second];
-                v40 = [v39 integerValue];
+                second = [v18 second];
+                integerValue = [second integerValue];
 
-                [(CNContactSection *)v15 setRange:v28, v40 + v30];
+                [(CNContactSection *)v15 setRange:range2, integerValue + v30];
               }
 
               v14 = [obj countByEnumeratingWithState:&v55 objects:v59 count:16];
@@ -274,7 +274,7 @@
             v15 = 0;
           }
 
-          v2 = v49;
+          selfCopy = v49;
           v41 = v49->_sections;
           v49->_sections = v50;
           v42 = v50;
@@ -285,16 +285,16 @@
     }
   }
 
-  v43 = v2->_sections;
-  v44 = [MEMORY[0x1E695DFB0] null];
-  if (v43 == v44)
+  v43 = selfCopy->_sections;
+  null2 = [MEMORY[0x1E695DFB0] null];
+  if (v43 == null2)
   {
     v45 = 0;
   }
 
   else
   {
-    v45 = v2->_sections;
+    v45 = selfCopy->_sections;
   }
 
   v46 = v45;
@@ -304,25 +304,25 @@
 
 - (NSArray)indexSections
 {
-  v2 = self;
+  selfCopy = self;
   v41 = *MEMORY[0x1E69E9840];
   indexSections = self->_indexSections;
   if (!indexSections)
   {
-    v4 = [(CNContactStoreSnapshot *)self sections];
+    sections = [(CNContactStoreSnapshot *)self sections];
     v5 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v6 = [(CNContactStoreSnapshot *)v2 dataSource];
-    v7 = [v6 indexSectionsArray];
-    v8 = [v5 initWithArray:v7 copyItems:1];
-    v9 = v2->_indexSections;
-    v2->_indexSections = v8;
+    dataSource = [(CNContactStoreSnapshot *)selfCopy dataSource];
+    indexSectionsArray = [dataSource indexSectionsArray];
+    v8 = [v5 initWithArray:indexSectionsArray copyItems:1];
+    v9 = selfCopy->_indexSections;
+    selfCopy->_indexSections = v8;
 
-    v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(sections, "count")}];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v11 = v4;
+    v11 = sections;
     v12 = [v11 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v12)
     {
@@ -337,8 +337,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v35 + 1) + 8 * i) identifier];
-          [v10 addObject:v16];
+          identifier = [*(*(&v35 + 1) + 8 * i) identifier];
+          [v10 addObject:identifier];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -351,8 +351,8 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v30 = v2;
-    v17 = v2->_indexSections;
+    v30 = selfCopy;
+    v17 = selfCopy->_indexSections;
     v18 = [(NSArray *)v17 countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v18)
     {
@@ -369,8 +369,8 @@
           }
 
           v23 = *(*(&v31 + 1) + 8 * j);
-          v24 = [v23 identifier];
-          v25 = [v10 containsObject:v24];
+          identifier2 = [v23 identifier];
+          v25 = [v10 containsObject:identifier2];
 
           v21 += v25;
           [v23 setRange:{v21 & ~(v21 >> 63), 0}];
@@ -382,19 +382,19 @@
       while (v19);
     }
 
-    v2 = v30;
+    selfCopy = v30;
     indexSections = v30->_indexSections;
   }
 
-  v26 = [MEMORY[0x1E695DFB0] null];
-  if (indexSections == v26)
+  null = [MEMORY[0x1E695DFB0] null];
+  if (indexSections == null)
   {
     v27 = 0;
   }
 
   else
   {
-    v27 = v2->_indexSections;
+    v27 = selfCopy->_indexSections;
   }
 
   v28 = v27;
@@ -442,8 +442,8 @@
 
 - (void)prepareAllContacts
 {
-  v3 = [(CNContactStoreSnapshot *)self contacts];
-  -[CNContactStoreSnapshot _loadContactsInRange:inBackground:](self, "_loadContactsInRange:inBackground:", 0, [v3 count], 0);
+  contacts = [(CNContactStoreSnapshot *)self contacts];
+  -[CNContactStoreSnapshot _loadContactsInRange:inBackground:](self, "_loadContactsInRange:inBackground:", 0, [contacts count], 0);
 }
 
 - (void)_loadAllContacts
@@ -451,17 +451,17 @@
   v126[2] = *MEMORY[0x1E69E9840];
   if (self->_contactsCount == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [(CNContactStoreSnapshot *)self dataSource];
-    v58 = [(CNContactStoreSnapshot *)self _keysToFetch];
+    dataSource = [(CNContactStoreSnapshot *)self dataSource];
+    _keysToFetch = [(CNContactStoreSnapshot *)self _keysToFetch];
     if ([(CNContactStoreFilter *)self->_filter supportsSections])
     {
       v4 = *MEMORY[0x1E695C3B0];
       v126[0] = *MEMORY[0x1E695C3B8];
       v126[1] = v4;
       v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v126 count:2];
-      v6 = [v58 arrayByAddingObjectsFromArray:v5];
+      v6 = [_keysToFetch arrayByAddingObjectsFromArray:v5];
 
-      v58 = v6;
+      _keysToFetch = v6;
     }
 
     if ([(CNContactStoreFilter *)self->_filter limitedAccessFilterMode]== 2)
@@ -470,20 +470,20 @@
       v125[0] = *MEMORY[0x1E695C330];
       v125[1] = v7;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v125 count:2];
-      v9 = [v58 arrayByAddingObjectsFromArray:v8];
+      v9 = [_keysToFetch arrayByAddingObjectsFromArray:v8];
 
-      v58 = v9;
+      _keysToFetch = v9;
     }
 
-    v10 = [objc_alloc(MEMORY[0x1E695CD78]) initWithKeysToFetch:v58];
-    [v10 setUnifyResults:{objc_msgSend(v3, "fetchUnified")}];
-    [v10 setSortOrder:{objc_msgSend(v3, "sortOrder")}];
-    v11 = [(CNContactStoreFilter *)self->_filter predicate];
-    [v10 setPredicate:v11];
+    v10 = [objc_alloc(MEMORY[0x1E695CD78]) initWithKeysToFetch:_keysToFetch];
+    [v10 setUnifyResults:{objc_msgSend(dataSource, "fetchUnified")}];
+    [v10 setSortOrder:{objc_msgSend(dataSource, "sortOrder")}];
+    predicate = [(CNContactStoreFilter *)self->_filter predicate];
+    [v10 setPredicate:predicate];
 
     [v10 setRankSort:{-[CNContactFilter rankSortedResults](self->_filter, "rankSortedResults")}];
-    v12 = [(CNContactFilter *)self->_filter fullTextString];
-    v13 = [v12 length] != 0;
+    fullTextString = [(CNContactFilter *)self->_filter fullTextString];
+    v13 = [fullTextString length] != 0;
 
     v119 = 0;
     v120 = &v119;
@@ -542,26 +542,26 @@
     v85 = 0x3032000000;
     v86 = __Block_byref_object_copy__55801;
     v87 = __Block_byref_object_dispose__55802;
-    v88 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-    v14 = [MEMORY[0x1E695DF70] array];
-    v15 = [(CNContactStoreSnapshot *)self dataSource];
-    v16 = [v15 sectionHeadersDictionary];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    array = [MEMORY[0x1E695DF70] array];
+    dataSource2 = [(CNContactStoreSnapshot *)self dataSource];
+    sectionHeadersDictionary = [dataSource2 sectionHeadersDictionary];
 
-    v17 = [(CNContactStoreSnapshot *)self dataSource];
-    v18 = [v17 localizedSectionHeaders];
+    dataSource3 = [(CNContactStoreSnapshot *)self dataSource];
+    localizedSectionHeaders = [dataSource3 localizedSectionHeaders];
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
-    v20 = [(CNContactStoreSnapshot *)self filter];
-    v21 = [v20 limitedAccessIdentifiers];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    filter = [(CNContactStoreSnapshot *)self filter];
+    limitedAccessIdentifiers = [filter limitedAccessIdentifiers];
 
-    v22 = [v3 store];
+    store = [dataSource store];
     v82 = 0;
     v59[0] = MEMORY[0x1E69E9820];
     v59[1] = 3221225472;
     v59[2] = __42__CNContactStoreSnapshot__loadAllContacts__block_invoke;
     v59[3] = &unk_1E74E5F68;
-    v80 = v21 != 0;
-    v54 = v3;
+    v80 = limitedAccessIdentifiers != 0;
+    v54 = dataSource;
     v60 = v54;
     v81 = v13;
     v67 = v95;
@@ -572,23 +572,23 @@
     v72 = &v99;
     v73 = &v107;
     v74 = &v103;
-    v56 = v21;
+    v56 = limitedAccessIdentifiers;
     v61 = v56;
-    v62 = self;
+    selfCopy = self;
     v75 = v92;
     v76 = v94;
     v77 = v89;
-    v55 = v14;
+    v55 = array;
     v63 = v55;
-    v23 = v16;
+    v23 = sectionHeadersDictionary;
     v64 = v23;
-    v24 = v18;
+    v24 = localizedSectionHeaders;
     v65 = v24;
     v78 = v91;
     v79 = &v83;
-    v25 = v19;
+    v25 = dictionary;
     v66 = v25;
-    v26 = [v22 enumerateContactsAndMatchInfoWithFetchRequest:v10 error:&v82 usingBlock:v59];
+    v26 = [store enumerateContactsAndMatchInfoWithFetchRequest:v10 error:&v82 usingBlock:v59];
     v57 = v82;
 
     if (!v26)
@@ -606,22 +606,22 @@
     }
 
     self->_contactsCount = v120[3];
-    objc_storeStrong(&self->_contactMatchInfos, v19);
+    objc_storeStrong(&self->_contactMatchInfos, dictionary);
     if ([(CNContactStoreFilter *)self->_filter supportsSections])
     {
       if (v120[3] < 6)
       {
         objc_storeStrong(&self->_identifiersToIndexPath, v84[5]);
-        v49 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
         sections = self->_sections;
-        self->_sections = v49;
+        self->_sections = null;
 
         [MEMORY[0x1E695DFB0] null];
       }
 
       else
       {
-        objc_storeStrong(&self->_sections, v14);
+        objc_storeStrong(&self->_sections, array);
         [(CNContactStoreSnapshot *)self indexSections];
       }
       v27 = ;
@@ -710,9 +710,9 @@
       }
 
       objc_storeStrong(&self->_sections, obj);
-      v46 = [MEMORY[0x1E695DFB0] null];
+      null2 = [MEMORY[0x1E695DFB0] null];
       v47 = self->_indexSections;
-      self->_indexSections = v46;
+      self->_indexSections = null2;
 
       indexSections = obj;
     }
@@ -997,11 +997,11 @@ void __42__CNContactStoreSnapshot__loadAllContacts__block_invoke_2(uint64_t a1)
   [v2 didFetchResultSuggested:*(a1 + 32)];
 }
 
-- (void)_generateExcerptsInRange:(_NSRange)a3
+- (void)_generateExcerptsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [MEMORY[0x1E695DF70] array];
+  length = range.length;
+  location = range.location;
+  array = [MEMORY[0x1E695DF70] array];
   v32 = objc_opt_new();
   v33 = objc_opt_new();
   dispatch_semaphore_wait(self->_cacheAccessSemaphore, 0xFFFFFFFFFFFFFFFFLL);
@@ -1012,30 +1012,30 @@ void __42__CNContactStoreSnapshot__loadAllContacts__block_invoke_2(uint64_t a1)
     {
       v8 = NSMapGet(self->_contactsCache, v7);
       contactMatchInfos = self->_contactMatchInfos;
-      v10 = [v8 identifier];
-      v11 = [(NSMutableDictionary *)contactMatchInfos objectForKey:v10];
+      identifier = [v8 identifier];
+      v11 = [(NSMutableDictionary *)contactMatchInfos objectForKey:identifier];
 
       if (v11)
       {
-        v12 = [v11 excerpt];
-        if (!v12 || (v13 = v12, [v11 excerpt], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "future"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isFinished"), v15, v14, v13, (v16 & 1) == 0))
+        excerpt = [v11 excerpt];
+        if (!excerpt || (v13 = excerpt, [v11 excerpt], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "future"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isFinished"), v15, v14, v13, (v16 & 1) == 0))
         {
-          v17 = [v8 identifier];
-          [v6 addObject:v17];
+          identifier2 = [v8 identifier];
+          [array addObject:identifier2];
 
-          v18 = [v8 identifier];
-          [v32 setObject:v8 forKey:v18];
+          identifier3 = [v8 identifier];
+          [v32 setObject:v8 forKey:identifier3];
 
-          v19 = [v11 excerpt];
+          excerpt2 = [v11 excerpt];
 
-          if (!v19)
+          if (!excerpt2)
           {
             v20 = objc_alloc_init(MEMORY[0x1E69967D0]);
             [v11 setExcerpt:v20];
           }
 
-          v21 = [v8 identifier];
-          [v33 setObject:v11 forKey:v21];
+          identifier4 = [v8 identifier];
+          [v33 setObject:v11 forKey:identifier4];
         }
       }
 
@@ -1047,7 +1047,7 @@ void __42__CNContactStoreSnapshot__loadAllContacts__block_invoke_2(uint64_t a1)
   }
 
   dispatch_semaphore_signal(self->_cacheAccessSemaphore);
-  if ([v6 count])
+  if ([array count])
   {
     summarizer = self->_summarizer;
     if (!summarizer)
@@ -1060,9 +1060,9 @@ void __42__CNContactStoreSnapshot__loadAllContacts__block_invoke_2(uint64_t a1)
     }
 
     v25 = self->_contactMatchInfos;
-    v26 = [(CNContactStoreSnapshot *)self dataSource];
-    v27 = [v26 store];
-    v28 = [(CNContactMatchSummarizer *)summarizer summariesFutureForContactsIdentifiers:v6 matchInfos:v25 contactStore:v27 scheduler:self->_summarizationQueue];
+    dataSource = [(CNContactStoreSnapshot *)self dataSource];
+    store = [dataSource store];
+    v28 = [(CNContactMatchSummarizer *)summarizer summariesFutureForContactsIdentifiers:array matchInfos:v25 contactStore:store scheduler:self->_summarizationQueue];
 
     v29 = self->_emptyExcerptInstanceMarker;
     v34[0] = MEMORY[0x1E69E9820];
@@ -1073,8 +1073,8 @@ void __42__CNContactStoreSnapshot__loadAllContacts__block_invoke_2(uint64_t a1)
     v36 = v29;
     v30 = v29;
     [v28 addSuccessBlock:v34];
-    v31 = [(CNContactStoreSnapshot *)self summarizationFutures];
-    [v31 addPointer:v28];
+    summarizationFutures = [(CNContactStoreSnapshot *)self summarizationFutures];
+    [summarizationFutures addPointer:v28];
   }
 }
 
@@ -1105,42 +1105,42 @@ void __51__CNContactStoreSnapshot__generateExcerptsInRange___block_invoke_2(uint
   [v7 finishWithResult:v9];
 }
 
-- (void)_loadContactsInRange:(_NSRange)a3 inBackground:(BOOL)a4
+- (void)_loadContactsInRange:(_NSRange)range inBackground:(BOOL)background
 {
-  v4 = a4;
-  length = a3.length;
-  location = a3.location;
-  v7 = self;
+  backgroundCopy = background;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   v68 = *MEMORY[0x1E69E9840];
-  v8 = [(CNContactStoreSnapshot *)self dataSource];
-  if ([(CNContactStoreFilter *)v7->_filter showsEverything])
+  dataSource = [(CNContactStoreSnapshot *)self dataSource];
+  if ([(CNContactStoreFilter *)selfCopy->_filter showsEverything])
   {
-    v44 = v4;
+    v44 = backgroundCopy;
     v9 = [MEMORY[0x1E695CD58] predicateForPreferredNameInRange:{location, length}];
     v10 = objc_alloc(MEMORY[0x1E695CD78]);
-    v11 = [(CNContactStoreSnapshot *)v7 _keysToFetch];
-    v12 = [v10 initWithKeysToFetch:v11];
+    _keysToFetch = [(CNContactStoreSnapshot *)selfCopy _keysToFetch];
+    v12 = [v10 initWithKeysToFetch:_keysToFetch];
 
-    [v12 setSortOrder:{objc_msgSend(v8, "sortOrder")}];
+    [v12 setSortOrder:{objc_msgSend(dataSource, "sortOrder")}];
     v45 = v9;
     [v12 setPredicate:v9];
-    [v12 setUnifyResults:{objc_msgSend(v8, "fetchUnified")}];
-    v13 = [MEMORY[0x1E695DF70] array];
-    v46 = v8;
-    v14 = [v8 store];
+    [v12 setUnifyResults:{objc_msgSend(dataSource, "fetchUnified")}];
+    array = [MEMORY[0x1E695DF70] array];
+    v46 = dataSource;
+    store = [dataSource store];
     v63 = 0;
     v61[0] = MEMORY[0x1E69E9820];
     v61[1] = 3221225472;
     v61[2] = __60__CNContactStoreSnapshot__loadContactsInRange_inBackground___block_invoke;
     v61[3] = &unk_1E74E5ED0;
-    v15 = v13;
+    v15 = array;
     v62 = v15;
     v42 = v12;
-    v41 = [v14 enumerateContactsAndMatchInfoWithFetchRequest:v12 error:&v63 usingBlock:v61];
+    v41 = [store enumerateContactsAndMatchInfoWithFetchRequest:v12 error:&v63 usingBlock:v61];
     v43 = v63;
 
-    dispatch_semaphore_wait(v7->_cacheAccessSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-    v16 = [(CNContactStoreSnapshot *)v7 sections];
+    dispatch_semaphore_wait(selfCopy->_cacheAccessSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+    sections = [(CNContactStoreSnapshot *)selfCopy sections];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
@@ -1151,8 +1151,8 @@ void __51__CNContactStoreSnapshot__generateExcerptsInRange___block_invoke_2(uint
     {
       v19 = v18;
       v20 = *v58;
-      v49 = v16;
-      v50 = v7;
+      v49 = sections;
+      v50 = selfCopy;
       v47 = *v58;
       v48 = v17;
       do
@@ -1167,9 +1167,9 @@ void __51__CNContactStoreSnapshot__generateExcerptsInRange___block_invoke_2(uint
           }
 
           v22 = *(*(&v57 + 1) + 8 * v21);
-          identifiersToIndexPath = v7->_identifiersToIndexPath;
-          v24 = [v22 identifier];
-          v25 = [(NSMapTable *)identifiersToIndexPath objectForKey:v24];
+          identifiersToIndexPath = selfCopy->_identifiersToIndexPath;
+          identifier = [v22 identifier];
+          v25 = [(NSMapTable *)identifiersToIndexPath objectForKey:identifier];
 
           if (v25)
           {
@@ -1178,13 +1178,13 @@ void __51__CNContactStoreSnapshot__generateExcerptsInRange___block_invoke_2(uint
 
           else
           {
-            if (v16)
+            if (sections)
             {
               v55 = 0u;
               v56 = 0u;
               v53 = 0u;
               v54 = 0u;
-              v26 = v16;
+              v26 = sections;
               v27 = [v26 countByEnumeratingWithState:&v53 objects:v66 count:16];
               v52 = location;
               if (v27)
@@ -1240,8 +1240,8 @@ void __51__CNContactStoreSnapshot__generateExcerptsInRange___block_invoke_2(uint
 LABEL_22:
 
               v36 = [MEMORY[0x1E696AC88] indexPathForItem:v31 inSection:v29];
-              v16 = v49;
-              v7 = v50;
+              sections = v49;
+              selfCopy = v50;
               location = v52;
               v20 = v47;
               v17 = v48;
@@ -1252,11 +1252,11 @@ LABEL_22:
               v36 = [MEMORY[0x1E696AC88] indexPathForItem:location inSection:0];
             }
 
-            v37 = v7->_identifiersToIndexPath;
-            v38 = [v22 identifier];
-            [(NSMapTable *)v37 setObject:v36 forKey:v38];
+            v37 = selfCopy->_identifiersToIndexPath;
+            identifier2 = [v22 identifier];
+            [(NSMapTable *)v37 setObject:v36 forKey:identifier2];
 
-            NSMapInsert(v7->_contactsCache, ++location, v22);
+            NSMapInsert(selfCopy->_contactsCache, ++location, v22);
             v19 = v51;
           }
 
@@ -1272,11 +1272,11 @@ LABEL_22:
 
     if (v44)
     {
-      v7->_currentlyLoadingBackgroundRange.location = 0;
-      v7->_currentlyLoadingBackgroundRange.length = 0;
+      selfCopy->_currentlyLoadingBackgroundRange.location = 0;
+      selfCopy->_currentlyLoadingBackgroundRange.length = 0;
     }
 
-    dispatch_semaphore_signal(v7->_cacheAccessSemaphore);
+    dispatch_semaphore_signal(selfCopy->_cacheAccessSemaphore);
 
     v39 = v41;
     if (!v43)
@@ -1287,7 +1287,7 @@ LABEL_22:
     if ((v39 & 1) == 0)
     {
       v40 = CNUILogContactStoreDataSource();
-      v8 = v46;
+      dataSource = v46;
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
@@ -1298,7 +1298,7 @@ LABEL_22:
       goto LABEL_36;
     }
 
-    v8 = v46;
+    dataSource = v46;
     if (v43)
     {
       v40 = CNUILogContactStoreDataSource();
@@ -1314,18 +1314,18 @@ LABEL_36:
   }
 }
 
-- (id)objectIn_contactsAtIndex:(unint64_t)a3
+- (id)objectIn_contactsAtIndex:(unint64_t)index
 {
   contactsCount = self->_contactsCount;
-  if (contactsCount <= a3)
+  if (contactsCount <= index)
   {
     v19 = 0;
     goto LABEL_45;
   }
 
-  if (a3 >= 0x32)
+  if (index >= 0x32)
   {
-    v6 = a3 - 50;
+    v6 = index - 50;
   }
 
   else
@@ -1351,7 +1351,7 @@ LABEL_36:
     v10 = contactsCount - (v7 + v6);
   }
 
-  if (lastRequestedIndex >= a3)
+  if (lastRequestedIndex >= index)
   {
     v9 = 0;
     v10 = 0;
@@ -1375,7 +1375,7 @@ LABEL_36:
     v14 = v12;
   }
 
-  if (lastRequestedIndex > a3)
+  if (lastRequestedIndex > index)
   {
     v15 = v6;
   }
@@ -1385,7 +1385,7 @@ LABEL_36:
     v15 = v9;
   }
 
-  if (lastRequestedIndex > a3)
+  if (lastRequestedIndex > index)
   {
     v16 = v14;
   }
@@ -1395,7 +1395,7 @@ LABEL_36:
     v16 = v10;
   }
 
-  if (lastRequestedIndex > a3)
+  if (lastRequestedIndex > index)
   {
     v17 = v11;
   }
@@ -1405,9 +1405,9 @@ LABEL_36:
     v17 = v9;
   }
 
-  self->_lastRequestedIndex = a3;
+  self->_lastRequestedIndex = index;
   dispatch_semaphore_wait(self->_cacheAccessSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  v18 = NSMapGet(self->_contactsCache, (a3 + 1));
+  v18 = NSMapGet(self->_contactsCache, (index + 1));
   v19 = v18;
   if (self->_currentlyLoadingBackgroundRange.length)
   {
@@ -1428,7 +1428,7 @@ LABEL_36:
   }
 
   location = self->_currentlyLoadingBackgroundRange.location;
-  if (location > a3)
+  if (location > index)
   {
 LABEL_32:
     v22 = 0;
@@ -1440,7 +1440,7 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v22 = self->_currentlyLoadingBackgroundRange.length + location >= a3;
+  v22 = self->_currentlyLoadingBackgroundRange.length + location >= index;
   if (v20)
   {
 LABEL_33:
@@ -1460,7 +1460,7 @@ LABEL_34:
     do
     {
       dispatch_semaphore_wait(self->_cacheAccessSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-      v19 = NSMapGet(self->_contactsCache, (a3 + 1));
+      v19 = NSMapGet(self->_contactsCache, (index + 1));
       dispatch_semaphore_signal(self->_cacheAccessSemaphore);
     }
 
@@ -1476,7 +1476,7 @@ LABEL_37:
 
   [(CNContactStoreSnapshot *)self _loadContactsInRange:v6 inBackground:v7, 0];
   dispatch_semaphore_wait(self->_cacheAccessSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  v19 = NSMapGet(self->_contactsCache, (a3 + 1));
+  v19 = NSMapGet(self->_contactsCache, (index + 1));
   dispatch_semaphore_signal(self->_cacheAccessSemaphore);
   if (v20)
   {
@@ -1496,13 +1496,13 @@ LABEL_39:
   if ([(NSMutableDictionary *)self->_contactMatchInfos count])
   {
     contactMatchInfos = self->_contactMatchInfos;
-    v25 = [v19 identifier];
-    v26 = [(NSMutableDictionary *)contactMatchInfos objectForKey:v25];
+    identifier = [v19 identifier];
+    v26 = [(NSMutableDictionary *)contactMatchInfos objectForKey:identifier];
 
     if (v26)
     {
-      v27 = [v26 excerpt];
-      if (!v27 || (v28 = v27, [v26 excerpt], v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "future"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isFinished"), v30, v29, v28, (v31 & 1) == 0))
+      excerpt = [v26 excerpt];
+      if (!excerpt || (v28 = excerpt, [v26 excerpt], v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "future"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isFinished"), v30, v29, v28, (v31 & 1) == 0))
       {
         [(CNContactStoreSnapshot *)self _generateExcerptsInRange:v6, v7];
       }

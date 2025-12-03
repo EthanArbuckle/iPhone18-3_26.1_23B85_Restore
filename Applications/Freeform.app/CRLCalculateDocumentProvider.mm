@@ -1,7 +1,7 @@
 @interface CRLCalculateDocumentProvider
 - (NSSet)declaredVariables;
 - (_TtC8Freeform28CRLCalculateDocumentProvider)init;
-- (void)setDeclaredVariables:(id)a3;
+- (void)setDeclaredVariables:(id)variables;
 @end
 
 @implementation CRLCalculateDocumentProvider
@@ -14,7 +14,7 @@
   return v2.super.isa;
 }
 
-- (void)setDeclaredVariables:(id)a3
+- (void)setDeclaredVariables:(id)variables
 {
   *(self + OBJC_IVAR____TtC8Freeform28CRLCalculateDocumentProvider_declaredVariables) = static Set._unconditionallyBridgeFromObjectiveC(_:)();
 }

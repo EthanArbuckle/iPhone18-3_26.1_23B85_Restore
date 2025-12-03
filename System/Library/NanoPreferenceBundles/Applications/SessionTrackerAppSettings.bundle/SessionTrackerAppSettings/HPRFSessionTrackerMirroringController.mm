@@ -7,7 +7,7 @@
 - (int64_t)mirrorSetting;
 - (void)dealloc;
 - (void)selectMirrorSettingSpecifier;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -61,14 +61,14 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HPRFSessionTrackerMirroringController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(HPRFSessionTrackerMirroringController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [v9 identifier];
-  v11 = [v10 isEqualToString:@"LIVE_ACTIVITY_TIME_ONLY_ID"];
+  identifier = [v9 identifier];
+  v11 = [identifier isEqualToString:@"LIVE_ACTIVITY_TIME_ONLY_ID"];
 
   if (v11)
   {
@@ -78,8 +78,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v13 = [v9 identifier];
-  v14 = [v13 isEqualToString:@"LIVE_ACTIVITY_ALL_METRICS_ID"];
+  identifier2 = [v9 identifier];
+  v14 = [identifier2 isEqualToString:@"LIVE_ACTIVITY_ALL_METRICS_ID"];
 
   if (v14)
   {
@@ -90,7 +90,7 @@ LABEL_5:
 LABEL_6:
   v15.receiver = self;
   v15.super_class = HPRFSessionTrackerMirroringController;
-  [(HPRFSessionTrackerMirroringController *)&v15 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(HPRFSessionTrackerMirroringController *)&v15 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 - (id)bundle
@@ -102,10 +102,10 @@ LABEL_6:
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(HPRFSessionTrackerMirroringController *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(HPRFSessionTrackerMirroringController *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)isMirrorModeEnabled
@@ -118,17 +118,17 @@ LABEL_6:
 - (int64_t)mirrorSetting
 {
   v2 = FIWorkoutMirroringSetting();
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (void)selectMirrorSettingSpecifier
 {
-  v3 = [(HPRFSessionTrackerMirroringController *)self mirrorSetting];
+  mirrorSetting = [(HPRFSessionTrackerMirroringController *)self mirrorSetting];
   v4 = OBJC_IVAR___PSListController__specifiers;
   v5 = *&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSListController__specifiers];
-  if (v3 == 1)
+  if (mirrorSetting == 1)
   {
     v6 = @"LIVE_ACTIVITY_ALL_METRICS_ID";
   }

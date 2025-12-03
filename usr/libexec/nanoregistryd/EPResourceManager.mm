@@ -1,33 +1,33 @@
 @interface EPResourceManager
-+ (id)stringForResourceAvailability:(unint64_t)a3;
-- (EPResourceManager)initWithQueue:(id)a3;
-- (id)newResourceWithDelegate:(id)a3;
++ (id)stringForResourceAvailability:(unint64_t)availability;
+- (EPResourceManager)initWithQueue:(id)queue;
+- (id)newResourceWithDelegate:(id)delegate;
 - (int64_t)referenceCounter;
 - (void)createResource;
 - (void)dealloc;
 - (void)destroyResource;
-- (void)enumerateResourcesWithBlock:(id)a3;
+- (void)enumerateResourcesWithBlock:(id)block;
 - (void)invalidate;
-- (void)removeResource:(void *)a3 async:(BOOL)a4;
-- (void)setAvailability:(unint64_t)a3 withError:(id)a4;
-- (void)setNeedsResource:(BOOL)a3;
-- (void)trackResource:(id)a3;
+- (void)removeResource:(void *)resource async:(BOOL)async;
+- (void)setAvailability:(unint64_t)availability withError:(id)error;
+- (void)setNeedsResource:(BOOL)resource;
+- (void)trackResource:(id)resource;
 - (void)updateNeedsResource;
 - (void)updateResourceAvailability;
 @end
 
 @implementation EPResourceManager
 
-- (EPResourceManager)initWithQueue:(id)a3
+- (EPResourceManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = EPResourceManager;
   v6 = [(EPResourceManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = +[NSPointerArray weakObjectsPointerArray];
     resources = v7->_resources;
     v7->_resources = v8;
@@ -43,15 +43,15 @@
   [(EPResourceManager *)&v2 dealloc];
 }
 
-+ (id)stringForResourceAvailability:(unint64_t)a3
++ (id)stringForResourceAvailability:(unint64_t)availability
 {
   v3 = @"EPResourceAvailabilityResourceIsBecomingAvailable";
-  if (a3 == 1)
+  if (availability == 1)
   {
     v3 = @"EPResourceAvailabilityResourceIsAvailable";
   }
 
-  if (a3 == 2)
+  if (availability == 2)
   {
     return @"EPResourceAvailabilityResourceWillNotBecomeAvailable";
   }
@@ -62,9 +62,9 @@
   }
 }
 
-- (id)newResourceWithDelegate:(id)a3
+- (id)newResourceWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [objc_alloc(objc_msgSend(objc_opt_class() "resourceClass"))];
 
   [(EPResourceManager *)self trackResource:v5];
@@ -72,13 +72,13 @@
   return v5;
 }
 
-- (void)trackResource:(id)a3
+- (void)trackResource:(id)resource
 {
-  v4 = a3;
-  if (v4)
+  resourceCopy = resource;
+  if (resourceCopy)
   {
-    v5 = [(NSPointerArray *)self->_resources allObjects];
-    v6 = [v5 containsObject:v4];
+    allObjects = [(NSPointerArray *)self->_resources allObjects];
+    v6 = [allObjects containsObject:resourceCopy];
 
     if (v6)
     {
@@ -95,7 +95,7 @@
           v12 = 138412546;
           v13 = v11;
           v14 = 2048;
-          v15 = v4;
+          v15 = resourceCopy;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@[%p]: Avoiding a duplicate resource pointer (Crazy!)", &v12, 0x16u);
         }
       }
@@ -103,41 +103,41 @@
 
     else
     {
-      [(NSPointerArray *)self->_resources addPointer:v4];
+      [(NSPointerArray *)self->_resources addPointer:resourceCopy];
     }
 
     [(NSPointerArray *)self->_resources compact];
     [(EPResourceManager *)self updateNeedsResource];
-    [v4 setAvailability:self->_availability withError:self->_error];
+    [resourceCopy setAvailability:self->_availability withError:self->_error];
   }
 }
 
 - (int64_t)referenceCounter
 {
-  v2 = [(NSPointerArray *)self->_resources allObjects];
-  v3 = [v2 count];
+  allObjects = [(NSPointerArray *)self->_resources allObjects];
+  v3 = [allObjects count];
 
   return v3;
 }
 
 - (void)updateNeedsResource
 {
-  v3 = [(NSPointerArray *)self->_resources allObjects];
-  -[EPResourceManager setNeedsResource:](self, "setNeedsResource:", [v3 count] != 0);
+  allObjects = [(NSPointerArray *)self->_resources allObjects];
+  -[EPResourceManager setNeedsResource:](self, "setNeedsResource:", [allObjects count] != 0);
 }
 
-- (void)removeResource:(void *)a3 async:(BOOL)a4
+- (void)removeResource:(void *)resource async:(BOOL)async
 {
-  v4 = a4;
+  asyncCopy = async;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000CE1D8;
   v8[3] = &unk_1001761C0;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = resource;
   v6 = objc_retainBlock(v8);
   v7 = v6;
-  if (v4)
+  if (asyncCopy)
   {
     dispatch_async(self->_queue, v6);
   }
@@ -148,12 +148,12 @@
   }
 }
 
-- (void)setNeedsResource:(BOOL)a3
+- (void)setNeedsResource:(BOOL)resource
 {
-  if (self->_needsResource != a3)
+  if (self->_needsResource != resource)
   {
-    self->_needsResource = a3;
-    if (a3)
+    self->_needsResource = resource;
+    if (resource)
     {
       objc_storeStrong(&self->_me, self);
 
@@ -169,14 +169,14 @@
   }
 }
 
-- (void)setAvailability:(unint64_t)a3 withError:(id)a4
+- (void)setAvailability:(unint64_t)availability withError:(id)error
 {
-  v7 = a4;
-  if (self->_availability != a3 || (error = self->_error, error != v7) && ([(NSError *)error isEqual:v7]& 1) == 0)
+  errorCopy = error;
+  if (self->_availability != availability || (error = self->_error, error != errorCopy) && ([(NSError *)error isEqual:errorCopy]& 1) == 0)
   {
-    self->_availability = a3;
-    objc_storeStrong(&self->_error, a4);
-    if (v7)
+    self->_availability = availability;
+    objc_storeStrong(&self->_error, error);
+    if (errorCopy)
     {
       v9 = sub_1000A98C0();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
@@ -186,7 +186,7 @@
         v11 = sub_1000A98C0();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          sub_1001036E4(self, v7, v11);
+          sub_1001036E4(self, errorCopy, v11);
         }
       }
     }
@@ -205,9 +205,9 @@
   [(EPResourceManager *)self enumerateResourcesWithBlock:v2];
 }
 
-- (void)enumerateResourcesWithBlock:(id)a3
+- (void)enumerateResourcesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_autoreleasePoolPush();
   v6 = [(NSPointerArray *)self->_resources copy];
   v13 = 0u;
@@ -233,7 +233,7 @@
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (v12 && ([*(*(&v13 + 1) + 8 * v11) invalidated] & 1) == 0)
         {
-          v4[2](v4, v12);
+          blockCopy[2](blockCopy, v12);
         }
 
         v11 = v11 + 1;
@@ -265,7 +265,7 @@
       v8 = 138412546;
       v9 = v7;
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "invalidated %@[%p]", &v8, 0x16u);
     }
   }
@@ -283,8 +283,8 @@
     v4 = sub_1000A98C0();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [objc_opt_class() resourceClass];
-      v6 = NSStringFromClass(v5);
+      resourceClass = [objc_opt_class() resourceClass];
+      v6 = NSStringFromClass(resourceClass);
       v7 = 138412290;
       v8 = v6;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Creating resource for %@", &v7, 0xCu);
@@ -303,8 +303,8 @@
     v4 = sub_1000A98C0();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [objc_opt_class() resourceClass];
-      v6 = NSStringFromClass(v5);
+      resourceClass = [objc_opt_class() resourceClass];
+      v6 = NSStringFromClass(resourceClass);
       v7 = 138412290;
       v8 = v6;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Destroying resource for %@", &v7, 0xCu);

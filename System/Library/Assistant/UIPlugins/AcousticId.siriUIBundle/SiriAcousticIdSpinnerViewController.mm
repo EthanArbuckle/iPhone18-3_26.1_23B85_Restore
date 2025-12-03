@@ -13,9 +13,9 @@
 
 - (void)_aceObjectViewControllerWillBeRemoved
 {
-  v4 = [(SiriAcousticIdSpinnerViewController *)self delegate];
-  v3 = [(SiriAcousticIdSpinnerViewController *)self view];
-  [v4 siriViewController:self didHideVibrantView:v3];
+  delegate = [(SiriAcousticIdSpinnerViewController *)self delegate];
+  view = [(SiriAcousticIdSpinnerViewController *)self view];
+  [delegate siriViewController:self didHideVibrantView:view];
 }
 
 @end

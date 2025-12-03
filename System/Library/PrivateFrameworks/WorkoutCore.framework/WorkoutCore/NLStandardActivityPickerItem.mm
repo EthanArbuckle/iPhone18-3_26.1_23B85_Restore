@@ -1,10 +1,10 @@
 @interface NLStandardActivityPickerItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NLStandardActivityPickerItem)init;
 - (NSString)description;
 - (_TtC11WorkoutCore26CompoundActivityPickerItem)compoundItem;
-- (id)copyWithZone:(void *)a3;
-- (id)detailWithFormattingManager:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (id)detailWithFormattingManager:(id)manager;
 - (int64_t)hash;
 @end
 
@@ -20,18 +20,18 @@
   *&v5[OBJC_IVAR____TtC11WorkoutCore26CompoundActivityPickerItem_value] = self;
   v10.receiver = v5;
   v10.super_class = v4;
-  v6 = self;
+  selfCopy = self;
   v7 = v3;
   v8 = [(NLStandardActivityPickerItem *)&v10 init];
 
   return v8;
 }
 
-- (id)detailWithFormattingManager:(id)a3
+- (id)detailWithFormattingManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
-  v6 = StandardActivityPickerItem.detail(formattingManager:)(v4);
+  managerCopy = manager;
+  selfCopy = self;
+  v6 = StandardActivityPickerItem.detail(formattingManager:)(managerCopy);
   v8 = v7;
 
   v9 = MEMORY[0x20F2E6C00](v6, v8);
@@ -46,7 +46,7 @@
   return result;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v12 = *(&self->super.isa + OBJC_IVAR___NLStandardActivityPickerItem_type);
   v3 = *(&self->super.isa + OBJC_IVAR___NLStandardActivityPickerItem_activityType);
@@ -63,17 +63,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = StandardActivityPickerItem.hash.getter();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -82,7 +82,7 @@
   else
   {
     memset(v11, 0, sizeof(v11));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   outlined init with copy of Any?(v11, v9);
@@ -110,7 +110,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = StandardActivityPickerItem.description.getter();
   v5 = v4;
 

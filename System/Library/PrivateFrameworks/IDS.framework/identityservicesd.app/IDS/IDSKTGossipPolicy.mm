@@ -1,20 +1,20 @@
 @interface IDSKTGossipPolicy
-- (BOOL)shouldGossipToURI:(id)a3;
+- (BOOL)shouldGossipToURI:(id)i;
 - (BOOL)shouldSelfVerifyBecauseOfPeer;
-- (IDSKTGossipPolicy)initWithGossipSpecification:(id)a3;
+- (IDSKTGossipPolicy)initWithGossipSpecification:(id)specification;
 - (void)_loadGossipRecipients;
 - (void)_storeGossipRecipients;
-- (void)markGossipForURI:(id)a3;
+- (void)markGossipForURI:(id)i;
 - (void)markSelfVerifyBecauseOfPeer;
 - (void)resetGossipState;
 @end
 
 @implementation IDSKTGossipPolicy
 
-- (IDSKTGossipPolicy)initWithGossipSpecification:(id)a3
+- (IDSKTGossipPolicy)initWithGossipSpecification:(id)specification
 {
-  v6 = a3;
-  if (!v6)
+  specificationCopy = specification;
+  if (!specificationCopy)
   {
     sub_10092935C(a2, self);
   }
@@ -25,7 +25,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_spec, a3);
+    objc_storeStrong(&v7->_spec, specification);
     v9 = objc_alloc_init(NSMutableSet);
     gossipRecipients = v8->_gossipRecipients;
     v8->_gossipRecipients = v9;
@@ -68,38 +68,38 @@
   [(IDSKTGossipPolicy *)self _storeGossipRecipients];
 }
 
-- (BOOL)shouldGossipToURI:(id)a3
+- (BOOL)shouldGossipToURI:(id)i
 {
-  v4 = [(NSMutableSet *)self->_gossipRecipients containsObject:a3];
-  v5 = [(IDSKTGossipPolicy *)self spec];
-  v6 = v5;
+  v4 = [(NSMutableSet *)self->_gossipRecipients containsObject:i];
+  spec = [(IDSKTGossipPolicy *)self spec];
+  v6 = spec;
   if (v4)
   {
-    v7 = [v5 subsequentGossipChance];
+    subsequentGossipChance = [spec subsequentGossipChance];
   }
 
   else
   {
-    v7 = [v5 firstGossipChance];
+    subsequentGossipChance = [spec firstGossipChance];
   }
 
-  v8 = arc4random_uniform(0x64u) < v7;
+  v8 = arc4random_uniform(0x64u) < subsequentGossipChance;
 
   return v8;
 }
 
-- (void)markGossipForURI:(id)a3
+- (void)markGossipForURI:(id)i
 {
-  v7 = a3;
+  iCopy = i;
   v4 = [(NSMutableSet *)self->_gossipRecipients count];
   if (v4 >= [(IDSKTGossipPolicySpecification *)self->_spec maxRecipientMemory])
   {
-    v5 = [(NSMutableSet *)self->_gossipRecipients allObjects];
-    v6 = [v5 objectAtIndex:{arc4random_uniform(objc_msgSend(v5, "count"))}];
+    allObjects = [(NSMutableSet *)self->_gossipRecipients allObjects];
+    v6 = [allObjects objectAtIndex:{arc4random_uniform(objc_msgSend(allObjects, "count"))}];
     [(NSMutableSet *)self->_gossipRecipients removeObject:v6];
   }
 
-  [(NSMutableSet *)self->_gossipRecipients addObject:v7];
+  [(NSMutableSet *)self->_gossipRecipients addObject:iCopy];
   [(IDSKTGossipPolicy *)self _storeGossipRecipients];
 }
 

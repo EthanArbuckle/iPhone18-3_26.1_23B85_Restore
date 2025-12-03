@@ -1,5 +1,5 @@
 @interface VSTVAppDeveloperSettingsViewController_iOS
-- (VSTVAppDeveloperSettingsViewController_iOS)initWithNibName:(id)a3 bundle:(id)a4;
+- (VSTVAppDeveloperSettingsViewController_iOS)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
 - (void)fetchAccounts;
 - (void)viewDidLoad;
@@ -7,7 +7,7 @@
 
 @implementation VSTVAppDeveloperSettingsViewController_iOS
 
-- (VSTVAppDeveloperSettingsViewController_iOS)initWithNibName:(id)a3 bundle:(id)a4
+- (VSTVAppDeveloperSettingsViewController_iOS)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = VSTVAppDeveloperSettingsViewController_iOS;
@@ -36,16 +36,16 @@
 - (id)specifiers
 {
   v37 = objc_alloc_init(NSMutableArray);
-  v3 = [(VSTVAppDeveloperSettingsViewController_iOS *)self groupedDeveloperAccounts];
-  if ([v3 count])
+  groupedDeveloperAccounts = [(VSTVAppDeveloperSettingsViewController_iOS *)self groupedDeveloperAccounts];
+  if ([groupedDeveloperAccounts count])
   {
-    v36 = self;
+    selfCopy = self;
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v29 = v3;
-    obj = v3;
+    v29 = groupedDeveloperAccounts;
+    obj = groupedDeveloperAccounts;
     v31 = [obj countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v31)
     {
@@ -89,15 +89,15 @@
 
                 v14 = *(*(&v38 + 1) + 8 * i);
                 v15 = [[VSUserAccountFacade alloc] initWithAccount:v14];
-                v16 = [(VSUserAccountFacade *)v15 displayName];
-                v17 = [PSSpecifier preferenceSpecifierNamed:v16 target:v36 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+                displayName = [(VSUserAccountFacade *)v15 displayName];
+                v17 = [PSSpecifier preferenceSpecifierNamed:displayName target:selfCopy set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
                 [v17 setProperty:v14 forKey:@"VSTVAppDeveloperSettingsUserAccountKey"];
                 [v17 setProperty:objc_opt_class() forKey:v4];
-                v18 = [(VSUserAccountFacade *)v15 displayNameWithSynchedToThisDeviceIndicator];
-                [v17 setProperty:v18 forKey:v5];
-                v19 = [(VSUserAccountFacade *)v15 lastModifiedLong];
-                [v17 setProperty:v19 forKey:v6];
+                displayNameWithSynchedToThisDeviceIndicator = [(VSUserAccountFacade *)v15 displayNameWithSynchedToThisDeviceIndicator];
+                [v17 setProperty:displayNameWithSynchedToThisDeviceIndicator forKey:v5];
+                lastModifiedLong = [(VSUserAccountFacade *)v15 lastModifiedLong];
+                [v17 setProperty:lastModifiedLong forKey:v6];
 
                 [v37 addObject:v17];
               }
@@ -118,8 +118,8 @@
       while (v31);
     }
 
-    self = v36;
-    v3 = v29;
+    self = selfCopy;
+    groupedDeveloperAccounts = v29;
   }
 
   else if (![(VSTVAppDeveloperSettingsViewController_iOS *)self loading])

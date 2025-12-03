@@ -1,7 +1,7 @@
 @interface BKSharedWithYouProvider
 - (_TtC5Books23BKSharedWithYouProvider)init;
 - (void)refresh;
-- (void)update:(id)a3;
+- (void)update:(id)update;
 @end
 
 @implementation BKSharedWithYouProvider
@@ -31,14 +31,14 @@
   v7[2] = 0;
   v7[3] = 0;
   v7[4] = self;
-  v8 = self;
+  selfCopy = self;
   sub_1003457A0(0, 0, v5, &unk_1008213E8, v7);
 }
 
-- (void)update:(id)a3
+- (void)update:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   BKSharedWithYouProvider.update(_:)();
 }
 

@@ -1,10 +1,10 @@
 @interface FBSProcessWatchdog
 - (BOOL)isActive;
 - (FBSProcess)process;
-- (FBSProcessWatchdog)initWithName:(id)a3 process:(id)a4 policy:(id)a5;
+- (FBSProcessWatchdog)initWithName:(id)name process:(id)process policy:(id)policy;
 - (id)completion;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)_beginMonitoringConstraints;
@@ -13,8 +13,8 @@
 - (void)deactivate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)provision:(id)a3 wasViolatedWithError:(id)a4;
-- (void)setCompletion:(id)a3;
+- (void)provision:(id)provision wasViolatedWithError:(id)error;
+- (void)setCompletion:(id)completion;
 @end
 
 @implementation FBSProcessWatchdog
@@ -29,16 +29,16 @@
 - (void)_beginMonitoringConstraints
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_active)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_active)
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(FBSProcessWatchdogPolicy *)v2->_policy provisions];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    provisions = [(FBSProcessWatchdogPolicy *)selfCopy->_policy provisions];
+    v4 = [provisions countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = *v10;
@@ -48,24 +48,24 @@
         {
           if (*v10 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(provisions);
           }
 
           v7 = *(*(&v9 + 1) + 8 * i);
           [v7 prepareForReuse];
-          [v7 setDelegate:v2];
-          WeakRetained = objc_loadWeakRetained(&v2->_process);
+          [v7 setDelegate:selfCopy];
+          WeakRetained = objc_loadWeakRetained(&selfCopy->_process);
           [v7 monitorProcess:WeakRetained];
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [provisions countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v4);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (FBSProcess)process
@@ -91,14 +91,14 @@
 - (void)_stopMonitoringConstraints
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v10 = 0u;
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(FBSProcessWatchdogPolicy *)v2->_policy provisions];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  provisions = [(FBSProcessWatchdogPolicy *)selfCopy->_policy provisions];
+  v4 = [provisions countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -108,7 +108,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(provisions);
         }
 
         v7 = *(*(&v8 + 1) + 8 * i);
@@ -116,13 +116,13 @@
         [v7 stopMonitoring];
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [provisions countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)invalidate
@@ -137,7 +137,7 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -149,12 +149,12 @@
   _bs_set_crash_log_message();
 }
 
-- (FBSProcessWatchdog)initWithName:(id)a3 process:(id)a4 policy:(id)a5
+- (FBSProcessWatchdog)initWithName:(id)name process:(id)process policy:(id)policy
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v10;
+  nameCopy = name;
+  processCopy = process;
+  policyCopy = policy;
+  v12 = processCopy;
   if (!v12)
   {
     [FBSProcessWatchdog initWithName:a2 process:? policy:?];
@@ -166,7 +166,7 @@
     [FBSProcessWatchdog initWithName:a2 process:? policy:?];
   }
 
-  v14 = v9;
+  v14 = nameCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v14)
   {
@@ -178,7 +178,7 @@
     [FBSProcessWatchdog initWithName:a2 process:? policy:?];
   }
 
-  v15 = v11;
+  v15 = policyCopy;
   NSClassFromString(&cfstr_Fbsprocesswatc_1.isa);
   if (!v15)
   {
@@ -211,52 +211,52 @@
 
 - (id)completion
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = MEMORY[0x1A58E80F0](v2->_completion);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = MEMORY[0x1A58E80F0](selfCopy->_completion);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setCompletion:(id)a3
+- (void)setCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_completion != v7)
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_completion != completionCopy)
   {
-    v5 = [v7 copy];
-    completion = v4->_completion;
-    v4->_completion = v5;
+    v5 = [completionCopy copy];
+    completion = selfCopy->_completion;
+    selfCopy->_completion = v5;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)isActive
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  active = v2->_active;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  active = selfCopy->_active;
+  objc_sync_exit(selfCopy);
 
   return active;
 }
 
-- (void)provision:(id)a3 wasViolatedWithError:(id)a4
+- (void)provision:(id)provision wasViolatedWithError:(id)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  WeakRetained = objc_loadWeakRetained(&v8->_process);
-  v10 = [(FBSProcessWatchdog *)v8 completion];
-  [(FBSProcessWatchdog *)v8 setCompletion:0];
-  if (v8->_active && (-[FBSProcessWatchdogPolicy provisions](v8->_policy, "provisions"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 containsObject:v6], v11, v12))
+  provisionCopy = provision;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_process);
+  completion = [(FBSProcessWatchdog *)selfCopy completion];
+  [(FBSProcessWatchdog *)selfCopy setCompletion:0];
+  if (selfCopy->_active && (-[FBSProcessWatchdogPolicy provisions](selfCopy->_policy, "provisions"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 containsObject:provisionCopy], v11, v12))
   {
-    [(FBSProcessWatchdog *)v8 deactivate];
+    [(FBSProcessWatchdog *)selfCopy deactivate];
     v13 = 1;
   }
 
@@ -265,39 +265,39 @@
     v13 = 0;
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v14 = FBLogWatchdog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     v25 = FBSProcessPrettyDescription(WeakRetained);
-    v26 = [(FBSProcessWatchdog *)v8 succinctDescription];
-    v27 = [v6 succinctDescription];
+    succinctDescription = [(FBSProcessWatchdog *)selfCopy succinctDescription];
+    succinctDescription2 = [provisionCopy succinctDescription];
     *buf = 138543874;
     v31 = v25;
     v32 = 2114;
-    v33 = v26;
+    v33 = succinctDescription;
     v34 = 2114;
-    v35 = v27;
+    v35 = succinctDescription2;
     _os_log_error_impl(&dword_1A2DBB000, v14, OS_LOG_TYPE_ERROR, "[%{public}@] Watchdog %{public}@ provision violated: %{public}@", buf, 0x20u);
   }
 
   if (v13)
   {
-    v15 = [MEMORY[0x1E695DF90] dictionary];
-    [v15 bs_setSafeObject:v6 forKey:@"FBSProcessExecutionProvision"];
-    [v15 bs_setSafeObject:@"An execution provision was violated." forKey:*MEMORY[0x1E696A578]];
-    [v15 bs_setSafeObject:v7 forKey:*MEMORY[0x1E696AA08]];
-    v16 = [v7 localizedFailureReason];
-    [v15 bs_setSafeObject:v16 forKey:*MEMORY[0x1E696A588]];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary bs_setSafeObject:provisionCopy forKey:@"FBSProcessExecutionProvision"];
+    [dictionary bs_setSafeObject:@"An execution provision was violated." forKey:*MEMORY[0x1E696A578]];
+    [dictionary bs_setSafeObject:errorCopy forKey:*MEMORY[0x1E696AA08]];
+    localizedFailureReason = [errorCopy localizedFailureReason];
+    [dictionary bs_setSafeObject:localizedFailureReason forKey:*MEMORY[0x1E696A588]];
 
     v29 = 0;
-    v17 = [WeakRetained _watchdog:v8 shouldTerminateWithDeclineReason:&v29];
+    v17 = [WeakRetained _watchdog:selfCopy shouldTerminateWithDeclineReason:&v29];
     v28 = v29;
     if (v17)
     {
-      v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"FBSProcessWatchdogErrorDomain" code:1 userInfo:v15];
-      v19 = [WeakRetained _watchdog:v8 terminationRequestForError:v18];
+      v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"FBSProcessWatchdogErrorDomain" code:1 userInfo:dictionary];
+      v19 = [WeakRetained _watchdog:selfCopy terminationRequestForError:v18];
       v20 = FBLogWatchdog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
@@ -321,11 +321,11 @@
       v19 = 0;
     }
 
-    if (!v10 || ([v15 bs_setSafeObject:v19 forKey:@"FBSProcessTerminationRequest"], objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", @"FBSProcessWatchdogErrorDomain", 1, v15), v22 = objc_claimAutoreleasedReturnValue(), v23 = (v10)[2](v10, 1, v22), v22, (v23 & 1) == 0))
+    if (!completion || ([dictionary bs_setSafeObject:v19 forKey:@"FBSProcessTerminationRequest"], objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", @"FBSProcessWatchdogErrorDomain", 1, dictionary), v22 = objc_claimAutoreleasedReturnValue(), v23 = (completion)[2](completion, 1, v22), v22, (v23 & 1) == 0))
     {
       if (v19)
       {
-        [WeakRetained _terminateWithRequest:v19 forWatchdog:v8];
+        [WeakRetained _terminateWithRequest:v19 forWatchdog:selfCopy];
       }
 
       else
@@ -342,10 +342,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(FBSProcessWatchdog *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSProcessWatchdog *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -357,8 +357,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(FBSProcessWatchdogPolicy *)self->_policy provisions];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  provisions = [(FBSProcessWatchdogPolicy *)self->_policy provisions];
+  v5 = [provisions countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -371,11 +371,11 @@
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(provisions);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 type];
+        type = [v11 type];
         memset(v18, 0, sizeof(v18));
         if (v11)
         {
@@ -384,18 +384,18 @@
 
         Value = FBSProcessResourceAllowanceGetValue(v18);
         v14 = FBSProcessResourceTimeIntervalForValue(Value);
-        if (v12 == 2)
+        if (type == 2)
         {
           v8 = v8 + v14;
         }
 
-        else if (v12 == 1)
+        else if (type == 1)
         {
           v9 = v9 + v14;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [provisions countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
@@ -418,27 +418,27 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSProcessWatchdog *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSProcessWatchdog *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSProcessWatchdog *)self succinctDescriptionBuilder];
-  v6 = [v5 appendBool:self->_active withName:@"active"];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSProcessWatchdog *)self succinctDescriptionBuilder];
+  v6 = [succinctDescriptionBuilder appendBool:self->_active withName:@"active"];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__FBSProcessWatchdog_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E76BCD60;
-  v7 = v5;
+  v7 = succinctDescriptionBuilder;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v4 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;

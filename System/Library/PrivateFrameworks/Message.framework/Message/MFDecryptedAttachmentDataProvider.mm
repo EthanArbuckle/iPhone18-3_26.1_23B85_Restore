@@ -1,48 +1,48 @@
 @interface MFDecryptedAttachmentDataProvider
-- (MFDecryptedAttachmentDataProvider)initWithDecryptedMessage:(id)a3;
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4;
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6;
+- (MFDecryptedAttachmentDataProvider)initWithDecryptedMessage:(id)message;
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message;
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion;
 @end
 
 @implementation MFDecryptedAttachmentDataProvider
 
-- (MFDecryptedAttachmentDataProvider)initWithDecryptedMessage:(id)a3
+- (MFDecryptedAttachmentDataProvider)initWithDecryptedMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = [(MFDecryptedAttachmentDataProvider *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_message, a3);
+    objc_storeStrong(&v6->_message, message);
   }
 
   return v7;
 }
 
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  attachmentCopy = attachment;
+  consumerCopy = consumer;
+  progressCopy = progress;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__MFDecryptedAttachmentDataProvider_fetchDataForAttachment_consumer_progress_completion___block_invoke;
   aBlock[3] = &unk_1E7AA4D60;
-  v14 = v12;
+  v14 = progressCopy;
   v34 = v14;
   v32 = _Block_copy(aBlock);
-  v31 = [(MFMailMessage *)self->_message messageStore];
-  v15 = [v10 part];
-  v16 = [(MFMailMessage *)self->_message messageBody];
-  [v15 setMimeBody:v16];
+  messageStore = [(MFMailMessage *)self->_message messageStore];
+  part = [attachmentCopy part];
+  messageBody = [(MFMailMessage *)self->_message messageBody];
+  [part setMimeBody:messageBody];
 
-  v17 = [v10 readFromDisk];
-  if (v17)
+  readFromDisk = [attachmentCopy readFromDisk];
+  if (readFromDisk)
   {
-    [v11 appendData:v17];
-    v18 = [v17 length];
+    [consumerCopy appendData:readFromDisk];
+    v18 = [readFromDisk length];
     [v14 setCompletedUnitCount:v18];
     v19 = 0;
     [v14 setTotalUnitCount:v18];
@@ -53,15 +53,15 @@
 
   else
   {
-    v23 = [v10 decodeFilterWithDataConsumer:v11];
+    v23 = [attachmentCopy decodeFilterWithDataConsumer:consumerCopy];
     v24 = objc_alloc(MEMORY[0x1E69AD750]);
     v37[0] = v23;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
-    v19 = [v24 initWithConsumers:v25 expectedSize:{objc_msgSend(v10, "encodedFileSize")}];
+    v19 = [v24 initWithConsumers:v25 expectedSize:{objc_msgSend(attachmentCopy, "encodedFileSize")}];
 
     [v19 setProgressBlock:v32];
-    [v15 range];
-    LOBYTE(v25) = [v31 dataForMimePart:v15 inRange:0 withConsumer:v26 downloadIfNecessary:{v19, 1}];
+    [part range];
+    LOBYTE(v25) = [messageStore dataForMimePart:part inRange:0 withConsumer:v26 downloadIfNecessary:{v19, 1}];
 
     if (v25)
     {
@@ -73,12 +73,12 @@
     else
     {
       v27 = +[MFActivityMonitor currentMonitor];
-      v28 = [v27 error];
+      error = [v27 error];
 
-      if (v28)
+      if (error)
       {
         v35 = *MEMORY[0x1E696AA08];
-        v36 = v28;
+        v36 = error;
         v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
       }
 
@@ -95,8 +95,8 @@
   }
 
   [v19 done];
-  [v11 done];
-  v13[2](v13, v21, v22, v20);
+  [consumerCopy done];
+  completionCopy[2](completionCopy, v21, v22, v20);
 
   v30 = *MEMORY[0x1E69E9840];
 }
@@ -109,9 +109,9 @@ uint64_t __89__MFDecryptedAttachmentDataProvider_fetchDataForAttachment_consumer
   return [v6 setCompletedUnitCount:a2];
 }
 
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message
 {
-  v4 = [a4 storageLocationForAttachment:a3];
+  v4 = [message storageLocationForAttachment:attachment];
 
   return v4;
 }

@@ -1,63 +1,63 @@
 @interface DayNavigationWeekScrollView
-- (BOOL)_isDateWeekend:(id)a3;
-- (BOOL)canAnimateToDate:(id)a3;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)_isDateWeekend:(id)weekend;
+- (BOOL)canAnimateToDate:(id)date;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGSize)cellSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (DayNavigationWeekScrollView)initWithFrame:(CGRect)a3 calendar:(id)a4 selectedDate:(id)a5 cellFactory:(id)a6 eventSpringLoadingEnabled:(BOOL)a7;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (DayNavigationWeekScrollView)initWithFrame:(CGRect)frame calendar:(id)calendar selectedDate:(id)date cellFactory:(id)factory eventSpringLoadingEnabled:(BOOL)enabled;
 - (DayNavigationWeekScrollViewDelegate)navDelegate;
 - (NSDate)today;
-- (double)_alignXToPage:(double)a3;
+- (double)_alignXToPage:(double)page;
 - (double)_calculateCellWidth;
-- (double)_offsetAllViews:(double)a3;
-- (id)_badgeDataForDate:(id)a3 outIsLoading:(BOOL *)a4;
+- (double)_offsetAllViews:(double)views;
+- (id)_badgeDataForDate:(id)date outIsLoading:(BOOL *)loading;
 - (id)_selectedDateAsCalendarDate;
-- (id)_weekStartForDate:(id)a3;
+- (id)_weekStartForDate:(id)date;
 - (id)multiDayHighlightView;
-- (id)selectedDateAfterScrollingToPoint:(CGPoint)a3;
+- (id)selectedDateAfterScrollingToPoint:(CGPoint)point;
 - (id)visibleCellBadgeColors;
 - (id)visibleCellBadgeLocales;
 - (id)visibleCellDayTypes;
-- (int64_t)_cellIndexForX:(double)a3;
+- (int64_t)_cellIndexForX:(double)x;
 - (int64_t)_firstVisibleIndex;
 - (int64_t)_firstVisibleIndexInView;
-- (int64_t)_indexForDate:(id)a3;
-- (int64_t)_indexOfCellToScrollToForDateAndBuildIfNeeded:(id)a3;
+- (int64_t)_indexForDate:(id)date;
+- (int64_t)_indexOfCellToScrollToForDateAndBuildIfNeeded:(id)needed;
 - (int64_t)_lastVisibleIndex;
 - (int64_t)firstVisibleDayOffsetFromSelectedDay;
-- (void)_addNewCellToSide:(BOOL)a3;
+- (void)_addNewCellToSide:(BOOL)side;
 - (void)_adjustCellsIfNeeded;
 - (void)_adjustContentOffsetIfNeeded;
-- (void)_createSubviewsWithFirstVisibleDate:(id)a3;
+- (void)_createSubviewsWithFirstVisibleDate:(id)date;
 - (void)_didFinishDecelerating;
 - (void)_layoutCells;
-- (void)_setCell:(id)a3 highlight:(BOOL)a4 animated:(BOOL)a5;
-- (void)_setCell:(id)a3 toDate:(id)a4;
-- (void)_setOffscreenCellsHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)_updateBadgeForCell:(id)a3 forDate:(id)a4;
+- (void)_setCell:(id)cell highlight:(BOOL)highlight animated:(BOOL)animated;
+- (void)_setCell:(id)cell toDate:(id)date;
+- (void)_setOffscreenCellsHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)_updateBadgeForCell:(id)cell forDate:(id)date;
 - (void)_updateCellWidthIfNeeded;
 - (void)cancelScrollingAnimation;
 - (void)contentSizeCategoryChanged;
-- (void)dayNavigationCellTouchUpOccurred:(id)a3;
+- (void)dayNavigationCellTouchUpOccurred:(id)occurred;
 - (void)didFinishScrolling;
 - (void)layoutSubviews;
 - (void)pulseToday;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCalendar:(id)a3;
-- (void)setEventSpringLoadingEnabled:(BOOL)a3;
-- (void)setFirstVisibleDate:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSelectedDate:(id)a3 animated:(BOOL)a4;
-- (void)setSelectedDateWithoutScrolling:(id)a3;
-- (void)setShowsMultiDay:(BOOL)a3;
-- (void)setToSelectedDateAtLocation:(CGPoint)a3;
-- (void)setToday:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setCalendar:(id)calendar;
+- (void)setEventSpringLoadingEnabled:(BOOL)enabled;
+- (void)setFirstVisibleDate:(id)date;
+- (void)setFrame:(CGRect)frame;
+- (void)setSelectedDate:(id)date animated:(BOOL)animated;
+- (void)setSelectedDateWithoutScrolling:(id)scrolling;
+- (void)setShowsMultiDay:(BOOL)day;
+- (void)setToSelectedDateAtLocation:(CGPoint)location;
+- (void)setToday:(id)today;
 - (void)significantTimeChangeOccurred;
 - (void)sizeToFit;
 - (void)stopPulsingToday;
 - (void)updateDayBadges;
 - (void)updateHighlightIfNeeded;
-- (void)updateMultiDayHighlightViewAnimated:(BOOL)a3;
+- (void)updateMultiDayHighlightViewAnimated:(BOOL)animated;
 - (void)updateOverlays;
 @end
 
@@ -70,12 +70,12 @@
   if (vabdd_f64(v3, self->_cellWidth) >= 2.22044605e-16)
   {
     self->_cellWidth = v3;
-    v5 = [(DayNavigationWeekScrollView *)self navDelegate];
+    navDelegate = [(DayNavigationWeekScrollView *)self navDelegate];
 
-    if (v5)
+    if (navDelegate)
     {
-      v6 = [(DayNavigationWeekScrollView *)self navDelegate];
-      [v6 dayNavigationWeekScrollView:self didChangeCellWidth:v4];
+      navDelegate2 = [(DayNavigationWeekScrollView *)self navDelegate];
+      [navDelegate2 dayNavigationWeekScrollView:self didChangeCellWidth:v4];
     }
   }
 }
@@ -131,10 +131,10 @@
 {
   if (self->_selectedDate)
   {
-    v3 = [(NSCalendar *)self->_calendar timeZone];
-    if (v3)
+    timeZone = [(NSCalendar *)self->_calendar timeZone];
+    if (timeZone)
     {
-      v4 = [[EKCalendarDate alloc] initWithDate:self->_selectedDate timeZone:v3];
+      v4 = [[EKCalendarDate alloc] initWithDate:self->_selectedDate timeZone:timeZone];
     }
 
     else
@@ -227,8 +227,8 @@
     self->_multiDayHighlightView = v4;
 
     [(UIView *)self->_multiDayHighlightView setFrame:0.0, 0.0, 50.0, 50.0];
-    v6 = [(UIView *)self->_multiDayHighlightView layer];
-    [v6 setMasksToBounds:1];
+    layer = [(UIView *)self->_multiDayHighlightView layer];
+    [layer setMasksToBounds:1];
 
     multiDayHighlightView = self->_multiDayHighlightView;
   }
@@ -258,8 +258,8 @@
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
-        v9 = [v8 date];
-        [(DayNavigationWeekScrollView *)self _updateBadgeForCell:v8 forDate:v9];
+        date = [v8 date];
+        [(DayNavigationWeekScrollView *)self _updateBadgeForCell:v8 forDate:date];
       }
 
       v5 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -436,20 +436,20 @@ LABEL_11:
     [(DayNavigationWeekScrollView *)self frame];
     v6 = v4 + v5;
     firstCellX = self->_firstCellX;
-    v8 = [(NSMutableArray *)self->_cells lastObject];
-    [v8 frame];
+    lastObject = [(NSMutableArray *)self->_cells lastObject];
+    [lastObject frame];
     MaxX = CGRectGetMaxX(v16);
     while (v4 < firstCellX)
     {
       [(DayNavigationWeekScrollView *)self _addNewCellToSide:1];
-      v10 = [(NSMutableArray *)self->_cells firstObject];
-      [v10 frame];
+      firstObject = [(NSMutableArray *)self->_cells firstObject];
+      [firstObject frame];
       firstCellX = v11;
     }
 
     if (v6 <= MaxX)
     {
-      v14 = v8;
+      lastObject2 = lastObject;
     }
 
     else
@@ -457,56 +457,56 @@ LABEL_11:
       do
       {
         [(DayNavigationWeekScrollView *)self _addNewCellToSide:0];
-        v14 = [(NSMutableArray *)self->_cells lastObject];
+        lastObject2 = [(NSMutableArray *)self->_cells lastObject];
 
-        [v14 frame];
-        v8 = v14;
+        [lastObject2 frame];
+        lastObject = lastObject2;
       }
 
       while (v6 > CGRectGetMaxX(v17));
     }
 
-    v12 = [(NSMutableArray *)self->_cells firstObject];
-    [v12 frame];
+    firstObject2 = [(NSMutableArray *)self->_cells firstObject];
+    [firstObject2 frame];
     self->_firstCellX = v13;
   }
 }
 
-- (DayNavigationWeekScrollView)initWithFrame:(CGRect)a3 calendar:(id)a4 selectedDate:(id)a5 cellFactory:(id)a6 eventSpringLoadingEnabled:(BOOL)a7
+- (DayNavigationWeekScrollView)initWithFrame:(CGRect)frame calendar:(id)calendar selectedDate:(id)date cellFactory:(id)factory eventSpringLoadingEnabled:(BOOL)enabled
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  calendarCopy = calendar;
+  dateCopy = date;
+  factoryCopy = factory;
   v26.receiver = self;
   v26.super_class = DayNavigationWeekScrollView;
-  v19 = [(DayNavigationWeekScrollView *)&v26 initWithFrame:x, y, width, height];
-  v20 = v19;
-  if (v19)
+  height = [(DayNavigationWeekScrollView *)&v26 initWithFrame:x, y, width, height];
+  v20 = height;
+  if (height)
   {
-    objc_storeStrong(&v19->_calendar, a4);
-    [(NSCalendar *)v20->_calendar rangeOfUnit:512 inUnit:4096 forDate:v17];
+    objc_storeStrong(&height->_calendar, calendar);
+    [(NSCalendar *)v20->_calendar rangeOfUnit:512 inUnit:4096 forDate:dateCopy];
     v20->_weekLength = v21;
     v20->_sideViews = v21 / 2;
     v20->_maxBufferViews = v20->_weekLength;
-    objc_storeStrong(&v20->_cellFactory, a6);
-    v20->_eventSpringLoadingEnabled = a7;
+    objc_storeStrong(&v20->_cellFactory, factory);
+    v20->_eventSpringLoadingEnabled = enabled;
     [(DayNavigationWeekScrollView *)v20 setShowsHorizontalScrollIndicator:0];
     v22 = +[UIColor whiteColor];
     [(DayNavigationWeekScrollView *)v20 setBackgroundColor:v22];
 
     [(DayNavigationWeekScrollView *)v20 setPagingEnabled:1];
-    v23 = [(DayNavigationWeekScrollView *)v20 panGestureRecognizer];
-    [v23 setDelaysTouchesBegan:1];
+    panGestureRecognizer = [(DayNavigationWeekScrollView *)v20 panGestureRecognizer];
+    [panGestureRecognizer setDelaysTouchesBegan:1];
 
     [(DayNavigationWeekScrollView *)v20 setContentInsetAdjustmentBehavior:2];
-    v24 = [(DayNavigationWeekScrollView *)v20 _weekStartForDate:v17];
+    v24 = [(DayNavigationWeekScrollView *)v20 _weekStartForDate:dateCopy];
     [(DayNavigationWeekScrollView *)v20 _createSubviewsWithFirstVisibleDate:v24];
     [(DayNavigationWeekScrollView *)v20 setFrame:x, y, v20->_cellWidth * ((2 * [(DayNavigationWeekScrollView *)v20 sideViews]) | 1), height];
-    [(DayNavigationWeekScrollView *)v20 setSelectedDate:v17 animated:0];
+    [(DayNavigationWeekScrollView *)v20 setSelectedDate:dateCopy animated:0];
   }
 
   return v20;
@@ -514,8 +514,8 @@ LABEL_11:
 
 - (void)updateOverlays
 {
-  v3 = [(DayNavigationWeekScrollView *)self superview];
-  [v3 setNeedsLayout];
+  superview = [(DayNavigationWeekScrollView *)self superview];
+  [superview setNeedsLayout];
 
   v11 = 0u;
   v12 = 0u;
@@ -549,10 +549,10 @@ LABEL_11:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(DayNavigationWeekScrollView *)self traitCollection:a3.width];
+  width = fits.width;
+  v5 = [(DayNavigationWeekScrollView *)self traitCollection:fits.width];
   v6 = EKUIUsesRoundedRectsInsteadOfCircles();
 
   if (v6)
@@ -585,11 +585,11 @@ LABEL_11:
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = ((2 * [(DayNavigationWeekScrollView *)self sideViews]) | 1);
   [(DayNavigationWeekScrollView *)self sideViews];
   CalRoundToScreenScale();
@@ -632,12 +632,12 @@ LABEL_11:
   [(DayNavigationWeekScrollView *)&v15 setFrame:x, y, v9, height];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = DayNavigationWeekScrollView;
-  [(DayNavigationWeekScrollView *)&v14 setBackgroundColor:v4];
+  [(DayNavigationWeekScrollView *)&v14 setBackgroundColor:colorCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -658,7 +658,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) setBackgroundColor:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9) setBackgroundColor:{colorCopy, v10}];
         v9 = v9 + 1;
       }
 
@@ -670,42 +670,42 @@ LABEL_11:
   }
 }
 
-- (int64_t)_indexOfCellToScrollToForDateAndBuildIfNeeded:(id)a3
+- (int64_t)_indexOfCellToScrollToForDateAndBuildIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_cells firstObject];
-  v6 = [(NSMutableArray *)self->_cells lastObject];
+  neededCopy = needed;
+  firstObject = [(NSMutableArray *)self->_cells firstObject];
+  lastObject = [(NSMutableArray *)self->_cells lastObject];
   IsLeftToRight = CalTimeDirectionIsLeftToRight();
   if (IsLeftToRight)
   {
-    v8 = v5;
+    v8 = firstObject;
   }
 
   else
   {
-    v8 = v6;
+    v8 = lastObject;
   }
 
   if (IsLeftToRight)
   {
-    v9 = v6;
+    v9 = lastObject;
   }
 
   else
   {
-    v9 = v5;
+    v9 = firstObject;
   }
 
-  v10 = [v8 date];
-  v11 = [v9 date];
-  if ([v4 compare:v10] == -1 || objc_msgSend(v4, "compare:", v11) == 1)
+  date = [v8 date];
+  date2 = [v9 date];
+  if ([neededCopy compare:date] == -1 || objc_msgSend(neededCopy, "compare:", date2) == 1)
   {
-    v12 = [(DayNavigationWeekScrollView *)self _firstVisibleIndex];
-    v13 = [(DayNavigationWeekScrollView *)self _lastVisibleIndex];
-    if (v12 < 0 || v12 >= [(NSMutableArray *)self->_cells count])
+    _firstVisibleIndex = [(DayNavigationWeekScrollView *)self _firstVisibleIndex];
+    _lastVisibleIndex = [(DayNavigationWeekScrollView *)self _lastVisibleIndex];
+    if (_firstVisibleIndex < 0 || _firstVisibleIndex >= [(NSMutableArray *)self->_cells count])
     {
       v14 = 0;
-      if (v13 < 0)
+      if (_lastVisibleIndex < 0)
       {
         goto LABEL_16;
       }
@@ -713,16 +713,16 @@ LABEL_11:
 
     else
     {
-      v14 = [(NSMutableArray *)self->_cells objectAtIndex:v12];
-      if (v13 < 0)
+      v14 = [(NSMutableArray *)self->_cells objectAtIndex:_firstVisibleIndex];
+      if (_lastVisibleIndex < 0)
       {
         goto LABEL_16;
       }
     }
 
-    if (v13 < [(NSMutableArray *)self->_cells count])
+    if (_lastVisibleIndex < [(NSMutableArray *)self->_cells count])
     {
-      v15 = [(NSMutableArray *)self->_cells objectAtIndex:v13];
+      v15 = [(NSMutableArray *)self->_cells objectAtIndex:_lastVisibleIndex];
       goto LABEL_17;
     }
 
@@ -746,19 +746,19 @@ LABEL_17:
       v14 = v15;
     }
 
-    v17 = [v16 date];
-    v18 = [v14 date];
-    if (!v17 || v18)
+    date3 = [v16 date];
+    date4 = [v14 date];
+    if (!date3 || date4)
     {
-      v41 = v18;
-      if (!v17 && v18)
+      v41 = date4;
+      if (!date3 && date4)
       {
         v20 = objc_alloc_init(NSDateComponents);
         [v20 setDay:1 - self->_weekLength];
-        v17 = [(NSCalendar *)self->_calendar dateByAddingComponents:v20 toDate:v41 options:0];
+        date3 = [(NSCalendar *)self->_calendar dateByAddingComponents:v20 toDate:v41 options:0];
       }
 
-      if (!v17)
+      if (!date3)
       {
         goto LABEL_30;
       }
@@ -768,13 +768,13 @@ LABEL_17:
     {
       v19 = objc_alloc_init(NSDateComponents);
       [v19 setDay:self->_weekLength - 1];
-      v41 = [(NSCalendar *)self->_calendar dateByAddingComponents:v19 toDate:v17 options:0];
+      v41 = [(NSCalendar *)self->_calendar dateByAddingComponents:v19 toDate:date3 options:0];
     }
 
-    if ([v4 compare:v17] == -1)
+    if ([neededCopy compare:date3] == -1)
     {
-      v38 = v17;
-      v26 = [(NSCalendar *)self->_calendar components:16 fromDate:v4 toDate:v17 options:0];
+      v38 = date3;
+      v26 = [(NSCalendar *)self->_calendar components:16 fromDate:neededCopy toDate:date3 options:0];
       v27 = [v26 day];
 
       v25 = v39;
@@ -783,10 +783,10 @@ LABEL_17:
     }
 
 LABEL_30:
-    v38 = v17;
+    v38 = date3;
     if (v41)
     {
-      v21 = [(NSCalendar *)self->_calendar components:16 fromDate:v41 toDate:v4 options:0, v17];
+      v21 = [(NSCalendar *)self->_calendar components:16 fromDate:v41 toDate:neededCopy options:0, date3];
       v22 = [v21 day];
 
       if (v22 > self->_weekLength)
@@ -799,7 +799,7 @@ LABEL_53:
         goto LABEL_54;
       }
 
-      if ([v4 compare:v11] == 1)
+      if ([neededCopy compare:date2] == 1)
       {
         v25 = v39;
         do
@@ -807,26 +807,26 @@ LABEL_53:
           if (IsLeftToRight)
           {
             [(DayNavigationWeekScrollView *)self _addNewCellToSide:0];
-            v32 = [(NSMutableArray *)self->_cells lastObject];
-            v33 = v6;
-            v6 = v32;
+            lastObject2 = [(NSMutableArray *)self->_cells lastObject];
+            v33 = lastObject;
+            lastObject = lastObject2;
           }
 
           else
           {
             [(DayNavigationWeekScrollView *)self _addNewCellToSide:1];
-            v32 = [(NSMutableArray *)self->_cells firstObject];
-            v33 = v5;
-            v5 = v32;
+            lastObject2 = [(NSMutableArray *)self->_cells firstObject];
+            v33 = firstObject;
+            firstObject = lastObject2;
           }
 
-          v34 = [v32 date];
+          date5 = [lastObject2 date];
 
-          v11 = v34;
+          date2 = date5;
         }
 
-        while ([v4 compare:v34] == 1);
-        v11 = v34;
+        while ([neededCopy compare:date5] == 1);
+        date2 = date5;
       }
 
       else
@@ -835,12 +835,12 @@ LABEL_53:
       }
 
 LABEL_52:
-      v35 = [(NSMutableArray *)self->_cells firstObject];
+      firstObject2 = [(NSMutableArray *)self->_cells firstObject];
 
-      [v35 frame];
+      [firstObject2 frame];
       self->_firstCellX = v36;
-      v23 = [(DayNavigationWeekScrollView *)self _indexForDate:v4];
-      v5 = v35;
+      v23 = [(DayNavigationWeekScrollView *)self _indexForDate:neededCopy];
+      firstObject = firstObject2;
       v24 = v40;
       goto LABEL_53;
     }
@@ -859,53 +859,53 @@ LABEL_54:
     }
 
     v41 = v28;
-    if ([v4 compare:v10] == -1)
+    if ([neededCopy compare:date] == -1)
     {
       do
       {
         if (IsLeftToRight)
         {
           [(DayNavigationWeekScrollView *)self _addNewCellToSide:1];
-          v29 = [(NSMutableArray *)self->_cells firstObject];
-          v30 = v5;
-          v5 = v29;
+          firstObject3 = [(NSMutableArray *)self->_cells firstObject];
+          v30 = firstObject;
+          firstObject = firstObject3;
         }
 
         else
         {
           [(DayNavigationWeekScrollView *)self _addNewCellToSide:0];
-          v29 = [(NSMutableArray *)self->_cells lastObject];
-          v30 = v6;
-          v6 = v29;
+          firstObject3 = [(NSMutableArray *)self->_cells lastObject];
+          v30 = lastObject;
+          lastObject = firstObject3;
         }
 
-        v31 = [v29 date];
+        date6 = [firstObject3 date];
 
-        v10 = v31;
+        date = date6;
       }
 
-      while ([v4 compare:v31] == -1);
-      v10 = v31;
+      while ([neededCopy compare:date6] == -1);
+      date = date6;
     }
 
     goto LABEL_52;
   }
 
-  v23 = [(DayNavigationWeekScrollView *)self _indexForDate:v4];
+  v23 = [(DayNavigationWeekScrollView *)self _indexForDate:neededCopy];
 LABEL_55:
 
   return v23;
 }
 
-- (void)setSelectedDate:(id)a3 animated:(BOOL)a4
+- (void)setSelectedDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  dateCopy = date;
   self->_decelerationWasLastInput = 0;
-  if (v6)
+  if (dateCopy)
   {
-    v7 = v6;
-    v8 = [(NSCalendar *)self->_calendar components:30 fromDate:v6];
+    v7 = dateCopy;
+    v8 = [(NSCalendar *)self->_calendar components:30 fromDate:dateCopy];
     v9 = [(NSCalendar *)self->_calendar dateFromComponents:v8];
   }
 
@@ -937,7 +937,7 @@ LABEL_55:
             objc_enumerationMutation(v11);
           }
 
-          [(DayNavigationWeekScrollView *)self _setCell:*(*(&v28 + 1) + 8 * i) highlight:0 animated:v4];
+          [(DayNavigationWeekScrollView *)self _setCell:*(*(&v28 + 1) + 8 * i) highlight:0 animated:animatedCopy];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -968,7 +968,7 @@ LABEL_55:
         [v19 frame];
         [(DayNavigationWeekScrollView *)self _alignXToPage:CGRectGetMidX(v33)];
         self->_targetX = v20;
-        if (v4)
+        if (animatedCopy)
         {
           self->_isScrolling = 1;
           [(DayNavigationWeekScrollView *)self _setOffscreenCellsHidden:1 animated:1];
@@ -1010,7 +1010,7 @@ LABEL_22:
         [(DayNavigationWeekScrollView *)self _setOffscreenCellsHidden:1 animated:0];
       }
 
-      [(DayNavigationWeekScrollView *)self _setCell:v19 highlight:1 animated:v4];
+      [(DayNavigationWeekScrollView *)self _setCell:v19 highlight:1 animated:animatedCopy];
       [(DayNavigationWeekScrollView *)self _setOffscreenCellsHidden:1 animated:0];
       goto LABEL_26;
     }
@@ -1019,19 +1019,19 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)setSelectedDateWithoutScrolling:(id)a3
+- (void)setSelectedDateWithoutScrolling:(id)scrolling
 {
-  v5 = a3;
-  objc_storeStrong(&self->_selectedDate, a3);
-  v6 = [(DayNavigationWeekScrollView *)self _indexOfCellToScrollToForDateAndBuildIfNeeded:v5];
+  scrollingCopy = scrolling;
+  objc_storeStrong(&self->_selectedDate, scrolling);
+  v6 = [(DayNavigationWeekScrollView *)self _indexOfCellToScrollToForDateAndBuildIfNeeded:scrollingCopy];
   if (v6 < 0 || (v7 = v6, v6 >= [(NSMutableArray *)self->_cells count]))
   {
-    v15 = [(DayNavigationWeekScrollView *)self _weekStartForDate:v5];
+    v15 = [(DayNavigationWeekScrollView *)self _weekStartForDate:scrollingCopy];
     [(DayNavigationWeekScrollView *)self _createSubviewsWithFirstVisibleDate:v15];
     selectedDate = self->_selectedDate;
     self->_selectedDate = 0;
 
-    [(DayNavigationWeekScrollView *)self setSelectedDate:v5 animated:0];
+    [(DayNavigationWeekScrollView *)self setSelectedDate:scrollingCopy animated:0];
   }
 
   else
@@ -1142,10 +1142,10 @@ LABEL_23:
 LABEL_11:
 }
 
-- (void)setCalendar:(id)a3
+- (void)setCalendar:(id)calendar
 {
-  objc_storeStrong(&self->_calendar, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_calendar, calendar);
+  calendarCopy = calendar;
   today = self->_today;
   self->_today = 0;
 
@@ -1154,18 +1154,18 @@ LABEL_11:
   [(DayNavigationWeekScrollView *)self _createSubviewsWithFirstVisibleDate:v7];
 }
 
-- (void)_setCell:(id)a3 highlight:(BOOL)a4 animated:(BOOL)a5
+- (void)_setCell:(id)cell highlight:(BOOL)highlight animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  [v7 setCircled:v6 animated:v5];
-  [v7 setUserInteractionEnabled:v6 ^ 1];
+  animatedCopy = animated;
+  highlightCopy = highlight;
+  cellCopy = cell;
+  [cellCopy setCircled:highlightCopy animated:animatedCopy];
+  [cellCopy setUserInteractionEnabled:highlightCopy ^ 1];
 }
 
-- (void)setFirstVisibleDate:(id)a3
+- (void)setFirstVisibleDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1200,33 +1200,33 @@ LABEL_11:
   cells = self->_cells;
   self->_cells = 0;
 
-  [(DayNavigationWeekScrollView *)self _createSubviewsWithFirstVisibleDate:v4];
+  [(DayNavigationWeekScrollView *)self _createSubviewsWithFirstVisibleDate:dateCopy];
 }
 
-- (void)setToSelectedDateAtLocation:(CGPoint)a3
+- (void)setToSelectedDateAtLocation:(CGPoint)location
 {
-  v4 = [(DayNavigationWeekScrollView *)self _cellIndexForX:a3.x, a3.y];
+  v4 = [(DayNavigationWeekScrollView *)self _cellIndexForX:location.x, location.y];
   if ((v4 & 0x8000000000000000) == 0)
   {
     v5 = v4;
     if (v4 < [(NSMutableArray *)self->_cells count])
     {
       v7 = [(NSMutableArray *)self->_cells objectAtIndex:v5];
-      v6 = [v7 date];
-      [(DayNavigationWeekScrollView *)self setSelectedDate:v6 animated:1];
+      date = [v7 date];
+      [(DayNavigationWeekScrollView *)self setSelectedDate:date animated:1];
     }
   }
 }
 
-- (BOOL)canAnimateToDate:(id)a3
+- (BOOL)canAnimateToDate:(id)date
 {
-  v4 = a3;
-  v5 = [(DayNavigationWeekScrollView *)self _firstVisibleIndex];
-  v6 = [(DayNavigationWeekScrollView *)self _lastVisibleIndex];
-  if (v5 < 0 || v5 >= [(NSMutableArray *)self->_cells count])
+  dateCopy = date;
+  _firstVisibleIndex = [(DayNavigationWeekScrollView *)self _firstVisibleIndex];
+  _lastVisibleIndex = [(DayNavigationWeekScrollView *)self _lastVisibleIndex];
+  if (_firstVisibleIndex < 0 || _firstVisibleIndex >= [(NSMutableArray *)self->_cells count])
   {
     v7 = 0;
-    if (v6 < 0)
+    if (_lastVisibleIndex < 0)
     {
 LABEL_8:
       v8 = 0;
@@ -1236,47 +1236,47 @@ LABEL_8:
 
   else
   {
-    v7 = [(NSMutableArray *)self->_cells objectAtIndex:v5];
-    if (v6 < 0)
+    v7 = [(NSMutableArray *)self->_cells objectAtIndex:_firstVisibleIndex];
+    if (_lastVisibleIndex < 0)
     {
       goto LABEL_8;
     }
   }
 
-  if (v6 >= [(NSMutableArray *)self->_cells count])
+  if (_lastVisibleIndex >= [(NSMutableArray *)self->_cells count])
   {
     goto LABEL_8;
   }
 
-  v8 = [(NSMutableArray *)self->_cells objectAtIndex:v6];
+  v8 = [(NSMutableArray *)self->_cells objectAtIndex:_lastVisibleIndex];
 LABEL_9:
-  v9 = [v7 date];
-  v10 = [v8 date];
-  v11 = v10;
-  if (!v9 || v10)
+  date = [v7 date];
+  date2 = [v8 date];
+  v11 = date2;
+  if (!date || date2)
   {
-    if (v9 || !v10)
+    if (date || !date2)
     {
       goto LABEL_16;
     }
 
     v12 = objc_alloc_init(NSDateComponents);
     [v12 setDay:1 - self->_weekLength];
-    v9 = [(NSCalendar *)self->_calendar dateByAddingComponents:v12 toDate:v11 options:0];
+    date = [(NSCalendar *)self->_calendar dateByAddingComponents:v12 toDate:v11 options:0];
   }
 
   else
   {
     v12 = objc_alloc_init(NSDateComponents);
     [v12 setDay:self->_weekLength - 1];
-    v11 = [(NSCalendar *)self->_calendar dateByAddingComponents:v12 toDate:v9 options:0];
+    v11 = [(NSCalendar *)self->_calendar dateByAddingComponents:v12 toDate:date options:0];
   }
 
 LABEL_16:
   v17 = 0;
-  if (v9 && v11)
+  if (date && v11)
   {
-    if ([v9 compare:v4] != 1 && objc_msgSend(v11, "compare:", v4) != -1 || (objc_msgSend(v4, "compare:", v9) == -1 ? (v13 = v4, v14 = v9) : (v13 = v11, v14 = v4), -[NSCalendar components:fromDate:toDate:options:](self->_calendar, "components:fromDate:toDate:options:", 16, v13, v14, 0), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "day"), v15, v16 <= self->_weekLength))
+    if ([date compare:dateCopy] != 1 && objc_msgSend(v11, "compare:", dateCopy) != -1 || (objc_msgSend(dateCopy, "compare:", date) == -1 ? (v13 = dateCopy, v14 = date) : (v13 = v11, v14 = dateCopy), -[NSCalendar components:fromDate:toDate:options:](self->_calendar, "components:fromDate:toDate:options:", 16, v13, v14, 0), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "day"), v15, v16 <= self->_weekLength))
     {
       v17 = 1;
     }
@@ -1316,8 +1316,8 @@ LABEL_16:
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          v13 = [v12 date];
-          [v12 setIsToday:{objc_msgSend(v13, "isEqualToDate:", self->_today)}];
+          date = [v12 date];
+          [v12 setIsToday:{objc_msgSend(date, "isEqualToDate:", self->_today)}];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1336,31 +1336,31 @@ LABEL_16:
   [(DayNavigationWeekScrollView *)self _createSubviewsWithFirstVisibleDate:v3];
 }
 
-- (void)setShowsMultiDay:(BOOL)a3
+- (void)setShowsMultiDay:(BOOL)day
 {
-  v3 = a3;
-  self->_showsMultiDay = a3;
-  v5 = [(DayNavigationWeekScrollView *)self multiDayHighlightView];
-  v7 = v5;
-  if (v3)
+  dayCopy = day;
+  self->_showsMultiDay = day;
+  multiDayHighlightView = [(DayNavigationWeekScrollView *)self multiDayHighlightView];
+  v7 = multiDayHighlightView;
+  if (dayCopy)
   {
-    [(DayNavigationWeekScrollView *)self addSubview:v5];
+    [(DayNavigationWeekScrollView *)self addSubview:multiDayHighlightView];
 
-    v6 = [(DayNavigationWeekScrollView *)self multiDayHighlightView];
-    [(DayNavigationWeekScrollView *)self sendSubviewToBack:v6];
+    multiDayHighlightView2 = [(DayNavigationWeekScrollView *)self multiDayHighlightView];
+    [(DayNavigationWeekScrollView *)self sendSubviewToBack:multiDayHighlightView2];
 
     [(DayNavigationWeekScrollView *)self updateMultiDayHighlightViewAnimated:0];
   }
 
   else
   {
-    [v5 removeFromSuperview];
+    [multiDayHighlightView removeFromSuperview];
   }
 }
 
-- (void)updateMultiDayHighlightViewAnimated:(BOOL)a3
+- (void)updateMultiDayHighlightViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   selectedIndex = self->_selectedIndex;
   if (selectedIndex < [(NSMutableArray *)self->_cells count])
   {
@@ -1385,7 +1385,7 @@ LABEL_16:
 
     v18 = v8 + -1.0;
     v19 = v14 + 5.0;
-    v20 = [(DayNavigationWeekScrollView *)self traitCollection];
+    traitCollection = [(DayNavigationWeekScrollView *)self traitCollection];
     v21 = EKUIUsesRoundedRectsInsteadOfCircles();
 
     if (v21)
@@ -1398,11 +1398,11 @@ LABEL_16:
       v22 = v16 * 0.5 + 1.0;
     }
 
-    v23 = [(UIView *)self->_multiDayHighlightView layer];
-    [v23 setCornerRadius:v22];
+    layer = [(UIView *)self->_multiDayHighlightView layer];
+    [layer setCornerRadius:v22];
 
-    v24 = [(DayNavigationWeekScrollView *)self traitCollection];
-    if ([v24 userInterfaceStyle] == 2)
+    traitCollection2 = [(DayNavigationWeekScrollView *)self traitCollection];
+    if ([traitCollection2 userInterfaceStyle] == 2)
     {
       v25 = 0.5;
     }
@@ -1416,7 +1416,7 @@ LABEL_16:
     v27 = [v26 colorWithAlphaComponent:v25];
     [(UIView *)self->_multiDayHighlightView setBackgroundColor:v27];
 
-    if (v3)
+    if (animatedCopy)
     {
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
@@ -1437,9 +1437,9 @@ LABEL_16:
   }
 }
 
-- (id)selectedDateAfterScrollingToPoint:(CGPoint)a3
+- (id)selectedDateAfterScrollingToPoint:(CGPoint)point
 {
-  x = a3.x;
+  x = point.x;
   weekLength = self->_weekLength;
   [(DayNavigationWeekScrollView *)self cellSize];
   v7 = v6 * weekLength;
@@ -1506,10 +1506,10 @@ LABEL_16:
   return v20;
 }
 
-- (int64_t)_indexForDate:(id)a3
+- (int64_t)_indexForDate:(id)date
 {
   v5 = self->_calendar;
-  v6 = [(NSCalendar *)v5 components:30 fromDate:a3];
+  v6 = [(NSCalendar *)v5 components:30 fromDate:date];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -1533,17 +1533,17 @@ LABEL_16:
           objc_enumerationMutation(v7);
         }
 
-        v14 = [*(*(&v21 + 1) + 8 * v12) date];
-        v15 = [(NSCalendar *)v5 components:30 fromDate:v14];
+        date = [*(*(&v21 + 1) + 8 * v12) date];
+        v15 = [(NSCalendar *)v5 components:30 fromDate:date];
 
         v16 = [v6 day];
         if (v16 == [v15 day])
         {
-          v17 = [v6 month];
-          if (v17 == [v15 month])
+          month = [v6 month];
+          if (month == [v15 month])
           {
-            v18 = [v6 year];
-            if (v18 == [v15 year])
+            year = [v6 year];
+            if (year == [v15 year])
             {
               v19 = [v6 era];
               if (v19 == [v15 era])
@@ -1577,12 +1577,12 @@ LABEL_14:
   return v13;
 }
 
-- (int64_t)_cellIndexForX:(double)a3
+- (int64_t)_cellIndexForX:(double)x
 {
   cellWidth = self->_cellWidth;
   if (cellWidth != 0.0)
   {
-    return vcvtmd_s64_f64((a3 - self->_firstCellX) / cellWidth);
+    return vcvtmd_s64_f64((x - self->_firstCellX) / cellWidth);
   }
 
   v9 = v3;
@@ -1597,9 +1597,9 @@ LABEL_14:
   return 0;
 }
 
-- (void)_createSubviewsWithFirstVisibleDate:(id)a3
+- (void)_createSubviewsWithFirstVisibleDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   cells = self->_cells;
   if (cells)
   {
@@ -1646,7 +1646,7 @@ LABEL_14:
   [(DayNavigationWeekScrollView *)self bounds];
   [(DayNavigationWeekScrollView *)self setBounds:?];
   v16 = self->_calendar;
-  v45 = [(NSCalendar *)v16 components:30 fromDate:v4];
+  v45 = [(NSCalendar *)v16 components:30 fromDate:dateCopy];
   v17 = [(NSCalendar *)v16 dateFromComponents:?];
 
   v18 = objc_alloc_init(NSDateComponents);
@@ -1660,8 +1660,8 @@ LABEL_14:
   v44 = v18;
   v21 = [(NSCalendar *)v16 dateByAddingComponents:v18 toDate:v19 options:0];
   v46 = v16;
-  v22 = [(NSCalendar *)v16 timeZone];
-  v23 = [EKCalendarDate calendarDateWithDate:v21 timeZone:v22];
+  timeZone = [(NSCalendar *)v16 timeZone];
+  v23 = [EKCalendarDate calendarDateWithDate:v21 timeZone:timeZone];
 
   if ((IsLeftToRight & 1) == 0)
   {
@@ -1677,9 +1677,9 @@ LABEL_14:
 
   [(DayNavigationWeekScrollView *)self contentSize];
   v28 = v27 * 0.5;
-  v29 = [(DayNavigationWeekScrollView *)self sideViews];
+  sideViews = [(DayNavigationWeekScrollView *)self sideViews];
   v30 = self->_cellWidth;
-  v31 = v28 - v29 * v30 - v30 * 0.5;
+  v31 = v28 - sideViews * v30 - v30 * 0.5;
   [(DayNavigationWeekScrollView *)self bounds];
   v33 = v32;
   [(DayNavigationWeekScrollView *)self _alignXToPage:v31];
@@ -1695,12 +1695,12 @@ LABEL_14:
     do
     {
       v36 = [(DayNavigationViewCellFactory *)self->_cellFactory createCellWithFrame:v35, 0.0, v30, v33];
-      v37 = [(DayNavigationWeekScrollView *)self backgroundColor];
-      [v36 setBackgroundColor:v37];
+      backgroundColor = [(DayNavigationWeekScrollView *)self backgroundColor];
+      [v36 setBackgroundColor:backgroundColor];
 
-      v38 = [v23 calendarDateForDay];
-      v39 = [v38 date];
-      [(DayNavigationWeekScrollView *)self _setCell:v36 toDate:v39];
+      calendarDateForDay = [v23 calendarDateForDay];
+      date = [calendarDateForDay date];
+      [(DayNavigationWeekScrollView *)self _setCell:v36 toDate:date];
 
       [v36 setDelegate:self];
       [(DayNavigationWeekScrollView *)self addSubview:v36];
@@ -1735,33 +1735,33 @@ LABEL_14:
   [(DayNavigationWeekScrollView *)self setBounds:?];
 }
 
-- (id)_weekStartForDate:(id)a3
+- (id)_weekStartForDate:(id)date
 {
   calendar = self->_calendar;
-  v5 = a3;
+  dateCopy = date;
   [(NSCalendar *)calendar setFirstWeekday:CUIKOneIndexedWeekStart()];
-  v6 = [(NSCalendar *)self->_calendar components:24578 fromDate:v5];
+  v6 = [(NSCalendar *)self->_calendar components:24578 fromDate:dateCopy];
 
   v7 = [(NSCalendar *)self->_calendar dateFromComponents:v6];
 
   return v7;
 }
 
-- (void)setEventSpringLoadingEnabled:(BOOL)a3
+- (void)setEventSpringLoadingEnabled:(BOOL)enabled
 {
-  if (self->_eventSpringLoadingEnabled != a3)
+  if (self->_eventSpringLoadingEnabled != enabled)
   {
-    self->_eventSpringLoadingEnabled = a3;
+    self->_eventSpringLoadingEnabled = enabled;
     v6 = [(NSMutableArray *)self->_cells objectAtIndexedSubscript:[(DayNavigationWeekScrollView *)self _firstVisibleIndex]];
-    v5 = [v6 date];
-    [(DayNavigationWeekScrollView *)self _createSubviewsWithFirstVisibleDate:v5];
+    date = [v6 date];
+    [(DayNavigationWeekScrollView *)self _createSubviewsWithFirstVisibleDate:date];
   }
 }
 
 - (int64_t)firstVisibleDayOffsetFromSelectedDay
 {
-  v3 = [(DayNavigationWeekScrollView *)self selectedDate];
-  v4 = [(DayNavigationWeekScrollView *)self _indexForDate:v3];
+  selectedDate = [(DayNavigationWeekScrollView *)self selectedDate];
+  v4 = [(DayNavigationWeekScrollView *)self _indexForDate:selectedDate];
 
   return [(DayNavigationWeekScrollView *)self _firstVisibleIndexInView]- v4;
 }
@@ -1769,17 +1769,17 @@ LABEL_14:
 - (id)visibleCellDayTypes
 {
   v3 = +[NSMutableArray array];
-  v4 = [(DayNavigationWeekScrollView *)self _firstVisibleIndex];
-  if (v4 <= [(DayNavigationWeekScrollView *)self _lastVisibleIndex])
+  _firstVisibleIndex = [(DayNavigationWeekScrollView *)self _firstVisibleIndex];
+  if (_firstVisibleIndex <= [(DayNavigationWeekScrollView *)self _lastVisibleIndex])
   {
     do
     {
-      v5 = [(NSMutableArray *)self->_cells objectAtIndexedSubscript:v4];
+      v5 = [(NSMutableArray *)self->_cells objectAtIndexedSubscript:_firstVisibleIndex];
       v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 badgeType]);
       [v3 addObject:v6];
     }
 
-    while (v4++ < [(DayNavigationWeekScrollView *)self _lastVisibleIndex]);
+    while (_firstVisibleIndex++ < [(DayNavigationWeekScrollView *)self _lastVisibleIndex]);
   }
 
   return v3;
@@ -1788,14 +1788,14 @@ LABEL_14:
 - (id)visibleCellBadgeColors
 {
   v3 = +[NSMutableArray array];
-  v4 = [(DayNavigationWeekScrollView *)self _firstVisibleIndex];
-  if (v4 <= [(DayNavigationWeekScrollView *)self _lastVisibleIndex])
+  _firstVisibleIndex = [(DayNavigationWeekScrollView *)self _firstVisibleIndex];
+  if (_firstVisibleIndex <= [(DayNavigationWeekScrollView *)self _lastVisibleIndex])
   {
     do
     {
-      v5 = [(NSMutableArray *)self->_cells objectAtIndexedSubscript:v4];
-      v6 = [v5 badgeColor];
-      if (v6)
+      v5 = [(NSMutableArray *)self->_cells objectAtIndexedSubscript:_firstVisibleIndex];
+      badgeColor = [v5 badgeColor];
+      if (badgeColor)
       {
         [v5 badgeColor];
       }
@@ -1808,7 +1808,7 @@ LABEL_14:
       [v3 addObject:v7];
     }
 
-    while (v4++ < [(DayNavigationWeekScrollView *)self _lastVisibleIndex]);
+    while (_firstVisibleIndex++ < [(DayNavigationWeekScrollView *)self _lastVisibleIndex]);
   }
 
   return v3;
@@ -1817,29 +1817,29 @@ LABEL_14:
 - (id)visibleCellBadgeLocales
 {
   v3 = +[NSLocale currentLocale];
-  v4 = [v3 localeIdentifier];
+  localeIdentifier = [v3 localeIdentifier];
 
   v5 = +[NSMutableArray array];
-  v6 = [(DayNavigationWeekScrollView *)self _firstVisibleIndex];
-  if (v6 <= [(DayNavigationWeekScrollView *)self _lastVisibleIndex])
+  _firstVisibleIndex = [(DayNavigationWeekScrollView *)self _firstVisibleIndex];
+  if (_firstVisibleIndex <= [(DayNavigationWeekScrollView *)self _lastVisibleIndex])
   {
     do
     {
-      v7 = [(NSMutableArray *)self->_cells objectAtIndexedSubscript:v6];
-      v8 = [v7 badgeLocale];
-      if (v8)
+      v7 = [(NSMutableArray *)self->_cells objectAtIndexedSubscript:_firstVisibleIndex];
+      badgeLocale = [v7 badgeLocale];
+      if (badgeLocale)
       {
-        v9 = [v7 badgeLocale];
-        [v5 addObject:v9];
+        badgeLocale2 = [v7 badgeLocale];
+        [v5 addObject:badgeLocale2];
       }
 
       else
       {
-        [v5 addObject:v4];
+        [v5 addObject:localeIdentifier];
       }
     }
 
-    while (v6++ < [(DayNavigationWeekScrollView *)self _lastVisibleIndex]);
+    while (_firstVisibleIndex++ < [(DayNavigationWeekScrollView *)self _lastVisibleIndex]);
   }
 
   return v5;
@@ -1866,12 +1866,12 @@ LABEL_14:
     do
     {
       v7 = v5;
-      v8 = [(DayNavigationWeekScrollView *)self _firstVisibleIndex];
+      _firstVisibleIndex = [(DayNavigationWeekScrollView *)self _firstVisibleIndex];
       v5 = v7 + weekLength;
       v6 += weekLength;
     }
 
-    while (v6 < v8);
+    while (v6 < _firstVisibleIndex);
     do
     {
       v7 -= weekLength;
@@ -1881,16 +1881,16 @@ LABEL_14:
     if ((v7 & 0x8000000000000000) == 0 && self->_selectedIndex != v7 && v7 < [(NSMutableArray *)self->_cells count])
     {
       v9 = [(NSMutableArray *)self->_cells objectAtIndex:v7];
-      v10 = [v9 date];
-      [(DayNavigationWeekScrollView *)self setSelectedDate:v10 animated:1];
+      date = [v9 date];
+      [(DayNavigationWeekScrollView *)self setSelectedDate:date animated:1];
 
-      v11 = [(DayNavigationWeekScrollView *)self navDelegate];
+      navDelegate = [(DayNavigationWeekScrollView *)self navDelegate];
 
-      if (v11)
+      if (navDelegate)
       {
-        v12 = [(DayNavigationWeekScrollView *)self navDelegate];
-        v13 = [v9 date];
-        [v12 dayNavigationWeekScrollView:self selectedDateChanged:v13];
+        navDelegate2 = [(DayNavigationWeekScrollView *)self navDelegate];
+        date2 = [v9 date];
+        [navDelegate2 dayNavigationWeekScrollView:self selectedDateChanged:date2];
       }
     }
 
@@ -1898,46 +1898,46 @@ LABEL_14:
   }
 }
 
-- (void)_addNewCellToSide:(BOOL)a3
+- (void)_addNewCellToSide:(BOOL)side
 {
-  v3 = a3;
+  sideCopy = side;
   cells = self->_cells;
-  if (a3)
+  if (side)
   {
-    v38 = [(NSMutableArray *)cells objectAtIndex:0];
-    [v38 frame];
+    lastObject = [(NSMutableArray *)cells objectAtIndex:0];
+    [lastObject frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [v38 frame];
+    [lastObject frame];
     v15 = v7 - v14;
-    v16 = [(DayNavigationWeekScrollView *)self _loadedBufferViewsRight];
+    _loadedBufferViewsRight = [(DayNavigationWeekScrollView *)self _loadedBufferViewsRight];
     v17 = [(NSMutableArray *)self->_cells count]- 1;
   }
 
   else
   {
-    v38 = [(NSMutableArray *)cells lastObject];
-    [v38 frame];
+    lastObject = [(NSMutableArray *)cells lastObject];
+    [lastObject frame];
     v19 = v18;
     v9 = v20;
     v11 = v21;
     v13 = v22;
-    [v38 frame];
+    [lastObject frame];
     v15 = v19 + v23;
-    v16 = [(DayNavigationWeekScrollView *)self _loadedBufferViewsLeft];
+    _loadedBufferViewsRight = [(DayNavigationWeekScrollView *)self _loadedBufferViewsLeft];
     v17 = 0;
   }
 
   v24 = objc_alloc_init(NSDateComponents);
-  v25 = [v38 date];
+  date = [lastObject date];
   [v24 setHour:4];
-  v26 = [(NSCalendar *)self->_calendar dateByAddingComponents:v24 toDate:v25 options:0];
+  v26 = [(NSCalendar *)self->_calendar dateByAddingComponents:v24 toDate:date options:0];
 
-  if (!CalTimeDirectionIsLeftToRight() || v3)
+  if (!CalTimeDirectionIsLeftToRight() || sideCopy)
   {
-    if ((v3 & ~CalTimeDirectionIsLeftToRight()) != 0)
+    if ((sideCopy & ~CalTimeDirectionIsLeftToRight()) != 0)
     {
       v27 = 1;
     }
@@ -1953,20 +1953,20 @@ LABEL_14:
     v27 = 1;
   }
 
-  v28 = [(NSCalendar *)self->_calendar timeZone];
+  timeZone = [(NSCalendar *)self->_calendar timeZone];
   v37 = v26;
-  v29 = [EKCalendarDate calendarDateWithDate:v26 timeZone:v28];
+  v29 = [EKCalendarDate calendarDateWithDate:v26 timeZone:timeZone];
 
   v30 = [v29 calendarDateByAddingDays:v27];
 
-  v31 = [v30 calendarDateForDay];
+  calendarDateForDay = [v30 calendarDateForDay];
 
-  v32 = [v31 date];
-  if (v16 < [(DayNavigationWeekScrollView *)self maxBufferViews]|| self->_selectedIndex == v17)
+  date2 = [calendarDateForDay date];
+  if (_loadedBufferViewsRight < [(DayNavigationWeekScrollView *)self maxBufferViews]|| self->_selectedIndex == v17)
   {
     v33 = [(DayNavigationViewCellFactory *)self->_cellFactory createCellWithFrame:v15, v9, v11, v13];
-    v34 = [(DayNavigationWeekScrollView *)self backgroundColor];
-    [v33 setBackgroundColor:v34];
+    backgroundColor = [(DayNavigationWeekScrollView *)self backgroundColor];
+    [v33 setBackgroundColor:backgroundColor];
 
     [v33 setDelegate:self];
     [(DayNavigationWeekScrollView *)self addSubview:v33];
@@ -1985,9 +1985,9 @@ LABEL_14:
     }
   }
 
-  [(DayNavigationWeekScrollView *)self _setCell:v33 toDate:v32];
+  [(DayNavigationWeekScrollView *)self _setCell:v33 toDate:date2];
   v35 = self->_cells;
-  if (v3)
+  if (sideCopy)
   {
     [(NSMutableArray *)v35 insertObject:v33 atIndex:0];
     ++self->_selectedIndex;
@@ -1999,9 +1999,9 @@ LABEL_14:
   }
 }
 
-- (void)_setOffscreenCellsHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)_setOffscreenCellsHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if (self->_isScrolling)
   {
     targetX = self->_targetX;
@@ -2019,12 +2019,12 @@ LABEL_14:
   v13[2] = sub_100117D4C;
   v13[3] = &unk_100211AC8;
   v13[4] = self;
-  v14 = a3;
+  hiddenCopy = hidden;
   *&v13[5] = targetX;
   *&v13[6] = targetX + CGRectGetWidth(v15);
   v9 = objc_retainBlock(v13);
   v10 = v9;
-  if (v4)
+  if (animatedCopy)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -2040,105 +2040,105 @@ LABEL_14:
   }
 }
 
-- (void)_setCell:(id)a3 toDate:(id)a4
+- (void)_setCell:(id)cell toDate:(id)date
 {
-  v16 = a3;
-  v6 = a4;
-  [v16 setDate:v6];
-  v7 = [(DayNavigationWeekScrollView *)self _selectedDateAsCalendarDate];
-  v8 = v7;
-  if (v7)
+  cellCopy = cell;
+  dateCopy = date;
+  [cellCopy setDate:dateCopy];
+  _selectedDateAsCalendarDate = [(DayNavigationWeekScrollView *)self _selectedDateAsCalendarDate];
+  v8 = _selectedDateAsCalendarDate;
+  if (_selectedDateAsCalendarDate)
   {
-    v9 = [v7 calendarDateForDay];
-    v10 = [v9 date];
+    calendarDateForDay = [_selectedDateAsCalendarDate calendarDateForDay];
+    date = [calendarDateForDay date];
 
-    v11 = [v8 calendarDateForEndOfDay];
-    v12 = [v11 date];
+    calendarDateForEndOfDay = [v8 calendarDateForEndOfDay];
+    date2 = [calendarDateForEndOfDay date];
 
-    v13 = [v10 compare:v6] != 1 && objc_msgSend(v12, "compare:", v6) != -1;
-    [v16 setCircled:v13 animated:1];
+    v13 = [date compare:dateCopy] != 1 && objc_msgSend(date2, "compare:", dateCopy) != -1;
+    [cellCopy setCircled:v13 animated:1];
   }
 
-  v14 = [(DayNavigationWeekScrollView *)self today];
-  v15 = [v6 isEqualToDate:v14];
+  today = [(DayNavigationWeekScrollView *)self today];
+  v15 = [dateCopy isEqualToDate:today];
 
   if (v15)
   {
-    [v16 setIsToday:1];
+    [cellCopy setIsToday:1];
   }
 
-  if ([(DayNavigationWeekScrollView *)self _isDateWeekend:v6])
+  if ([(DayNavigationWeekScrollView *)self _isDateWeekend:dateCopy])
   {
-    [v16 setIsWeekend:1];
+    [cellCopy setIsWeekend:1];
   }
 
-  [v16 setOverlayShowsMonth:-[NSCalendar component:fromDate:](self->_calendar animated:{"component:fromDate:", 512, v6) == CUIKOneIndexedWeekStart(), 0}];
-  [(DayNavigationWeekScrollView *)self _updateBadgeForCell:v16 forDate:v6];
-  [v16 setAlpha:1.0];
+  [cellCopy setOverlayShowsMonth:-[NSCalendar component:fromDate:](self->_calendar animated:{"component:fromDate:", 512, dateCopy) == CUIKOneIndexedWeekStart(), 0}];
+  [(DayNavigationWeekScrollView *)self _updateBadgeForCell:cellCopy forDate:dateCopy];
+  [cellCopy setAlpha:1.0];
 }
 
-- (void)_updateBadgeForCell:(id)a3 forDate:(id)a4
+- (void)_updateBadgeForCell:(id)cell forDate:(id)date
 {
-  v6 = a3;
+  cellCopy = cell;
   v12 = 0;
-  v7 = [(DayNavigationWeekScrollView *)self _badgeDataForDate:a4 outIsLoading:&v12];
+  v7 = [(DayNavigationWeekScrollView *)self _badgeDataForDate:date outIsLoading:&v12];
   v8 = v7;
   if ((v12 & 1) == 0)
   {
-    v9 = [v7 color];
-    [v6 setBadgeColor:v9];
+    color = [v7 color];
+    [cellCopy setBadgeColor:color];
 
     if (v8)
     {
-      v10 = [v8 dayType];
+      dayType = [v8 dayType];
     }
 
     else
     {
-      v10 = 0;
+      dayType = 0;
     }
 
-    [v6 setBadgeType:v10];
-    v11 = [v8 locale];
-    [v6 setBadgeLocale:v11];
+    [cellCopy setBadgeType:dayType];
+    locale = [v8 locale];
+    [cellCopy setBadgeLocale:locale];
   }
 }
 
-- (void)setToday:(id)a3
+- (void)setToday:(id)today
 {
   v5 = self->_calendar;
-  v6 = [(NSCalendar *)v5 components:30 fromDate:a3];
+  v6 = [(NSCalendar *)v5 components:30 fromDate:today];
   v7 = [(NSCalendar *)v5 dateFromComponents:v6];
   today = self->_today;
   self->_today = v7;
   v9 = v7;
 }
 
-- (BOOL)_isDateWeekend:(id)a3
+- (BOOL)_isDateWeekend:(id)weekend
 {
-  v4 = a3;
+  weekendCopy = weekend;
   v5 = +[CUIKPreferences sharedPreferences];
-  v6 = [v5 overrideLocaleWeekends];
+  overrideLocaleWeekends = [v5 overrideLocaleWeekends];
 
   calendar = self->_calendar;
-  if (v6)
+  if (overrideLocaleWeekends)
   {
-    v8 = [(NSCalendar *)calendar components:512 fromDate:v4];
+    v8 = [(NSCalendar *)calendar components:512 fromDate:weekendCopy];
 
-    v9 = [v8 weekday];
-    v11 = v9 == 1 || v9 == 7;
-    v4 = v8;
+    weekday = [v8 weekday];
+    v11 = weekday == 1 || weekday == 7;
+    weekendCopy = v8;
   }
 
   else
   {
-    v11 = [(NSCalendar *)calendar isDateInWeekend:v4];
+    v11 = [(NSCalendar *)calendar isDateInWeekend:weekendCopy];
   }
 
   return v11;
 }
 
-- (double)_offsetAllViews:(double)a3
+- (double)_offsetAllViews:(double)views
 {
   cellWidth = self->_cellWidth;
   if (cellWidth == 0.0)
@@ -2154,7 +2154,7 @@ LABEL_14:
 
   else
   {
-    v6 = cellWidth * round(a3 / cellWidth);
+    v6 = cellWidth * round(views / cellWidth);
   }
 
   v18 = 0u;
@@ -2187,10 +2187,10 @@ LABEL_14:
     while (v10);
   }
 
-  return v6 - a3;
+  return v6 - views;
 }
 
-- (double)_alignXToPage:(double)a3
+- (double)_alignXToPage:(double)page
 {
   CalRoundToScreenScale();
   v5 = v4;
@@ -2244,23 +2244,23 @@ LABEL_14:
   return v6;
 }
 
-- (id)_badgeDataForDate:(id)a3 outIsLoading:(BOOL *)a4
+- (id)_badgeDataForDate:(id)date outIsLoading:(BOOL *)loading
 {
-  v6 = a3;
-  v7 = [(DayNavigationWeekScrollView *)self navDelegate];
+  dateCopy = date;
+  navDelegate = [(DayNavigationWeekScrollView *)self navDelegate];
 
-  if (v7)
+  if (navDelegate)
   {
-    v8 = [(DayNavigationWeekScrollView *)self navDelegate];
-    v9 = [v8 dayNavigationWeekScrollViewIsLoadingSpecialDayData:self];
+    navDelegate2 = [(DayNavigationWeekScrollView *)self navDelegate];
+    v9 = [navDelegate2 dayNavigationWeekScrollViewIsLoadingSpecialDayData:self];
 
-    if (a4)
+    if (loading)
     {
-      *a4 = v9;
+      *loading = v9;
     }
 
-    v10 = [(DayNavigationWeekScrollView *)self navDelegate];
-    v11 = [v10 dayNavigationWeekScrollView:self dayDataForDate:v6];
+    navDelegate3 = [(DayNavigationWeekScrollView *)self navDelegate];
+    v11 = [navDelegate3 dayNavigationWeekScrollView:self dayDataForDate:dateCopy];
   }
 
   else
@@ -2271,49 +2271,49 @@ LABEL_14:
   return v11;
 }
 
-- (void)dayNavigationCellTouchUpOccurred:(id)a3
+- (void)dayNavigationCellTouchUpOccurred:(id)occurred
 {
-  v4 = a3;
-  v5 = [(DayNavigationWeekScrollView *)self navDelegate];
+  occurredCopy = occurred;
+  navDelegate = [(DayNavigationWeekScrollView *)self navDelegate];
 
-  if (v5)
+  if (navDelegate)
   {
-    v6 = [(DayNavigationWeekScrollView *)self navDelegate];
-    v7 = [v6 dayNavigationWeekScrollViewAllowedToChangeSelectedDate];
+    navDelegate2 = [(DayNavigationWeekScrollView *)self navDelegate];
+    dayNavigationWeekScrollViewAllowedToChangeSelectedDate = [navDelegate2 dayNavigationWeekScrollViewAllowedToChangeSelectedDate];
 
-    if (v7)
+    if (dayNavigationWeekScrollViewAllowedToChangeSelectedDate)
     {
-      v8 = [v4 date];
-      [(DayNavigationWeekScrollView *)self setSelectedDate:v8 animated:1];
+      date = [occurredCopy date];
+      [(DayNavigationWeekScrollView *)self setSelectedDate:date animated:1];
 
       CalAnalyticsSendEventLazy();
-      v9 = [(DayNavigationWeekScrollView *)self navDelegate];
-      v10 = [v4 date];
-      [v9 dayNavigationWeekScrollView:self selectedDateChanged:v10];
+      navDelegate3 = [(DayNavigationWeekScrollView *)self navDelegate];
+      date2 = [occurredCopy date];
+      [navDelegate3 dayNavigationWeekScrollView:self selectedDateChanged:date2];
     }
 
     else
     {
-      v11 = [(DayNavigationWeekScrollView *)self navDelegate];
+      navDelegate4 = [(DayNavigationWeekScrollView *)self navDelegate];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100118790;
       v12[3] = &unk_10020EC68;
       v12[4] = self;
-      v13 = v4;
-      [v11 dayNavigationWeekScrollViewFailedToSelectDate:v12];
+      v13 = occurredCopy;
+      [navDelegate4 dayNavigationWeekScrollViewFailedToSelectDate:v12];
     }
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(DayNavigationWeekScrollView *)self navDelegate];
-  if (v5 && (v6 = v5, -[DayNavigationWeekScrollView navDelegate](self, "navDelegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 dayNavigationWeekScrollViewAllowedToChangeSelectedDate], v7, v6, (v8 & 1) == 0))
+  beginCopy = begin;
+  navDelegate = [(DayNavigationWeekScrollView *)self navDelegate];
+  if (navDelegate && (v6 = navDelegate, -[DayNavigationWeekScrollView navDelegate](self, "navDelegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 dayNavigationWeekScrollViewAllowedToChangeSelectedDate], v7, v6, (v8 & 1) == 0))
   {
-    v10 = [(DayNavigationWeekScrollView *)self navDelegate];
-    [v10 dayNavigationWeekScrollViewFailedToSelectDate:0];
+    navDelegate2 = [(DayNavigationWeekScrollView *)self navDelegate];
+    [navDelegate2 dayNavigationWeekScrollViewFailedToSelectDate:0];
 
     v9 = 0;
   }
@@ -2326,7 +2326,7 @@ LABEL_14:
     {
       v12.receiver = self;
       v12.super_class = DayNavigationWeekScrollView;
-      v9 = [(DayNavigationWeekScrollView *)&v12 gestureRecognizerShouldBegin:v4];
+      v9 = [(DayNavigationWeekScrollView *)&v12 gestureRecognizerShouldBegin:beginCopy];
     }
 
     else

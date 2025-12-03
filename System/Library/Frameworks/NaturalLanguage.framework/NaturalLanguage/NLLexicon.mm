@@ -1,26 +1,26 @@
 @interface NLLexicon
-+ (NLLexicon)lexiconWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)getProbabilityForString:(id)a3 probability:(double *)a4;
-- (BOOL)getProbabilityForTokenID:(unsigned int)a3 probability:(double *)a4;
-- (NLLexicon)initWithLocalization:(id)a3;
-- (NLLexicon)initWithLocalization:(id)a3 error:(id *)a4;
++ (NLLexicon)lexiconWithOptions:(id)options error:(id *)error;
+- (BOOL)getProbabilityForString:(id)string probability:(double *)probability;
+- (BOOL)getProbabilityForTokenID:(unsigned int)d probability:(double *)probability;
+- (NLLexicon)initWithLocalization:(id)localization;
+- (NLLexicon)initWithLocalization:(id)localization error:(id *)error;
 - (id)description;
-- (id)entryForString:(id)a3;
-- (id)entryForTokenID:(unsigned int)a3;
+- (id)entryForString:(id)string;
+- (id)entryForTokenID:(unsigned int)d;
 - (id)languages;
-- (void)_enumerateEntriesForString:(id)a3 usingBlock:(id)a4;
+- (void)_enumerateEntriesForString:(id)string usingBlock:(id)block;
 - (void)dealloc;
-- (void)enumerateCompletionsForPrefix:(id)a3 usingBlock:(id)a4;
+- (void)enumerateCompletionsForPrefix:(id)prefix usingBlock:(id)block;
 @end
 
 @implementation NLLexicon
 
-- (NLLexicon)initWithLocalization:(id)a3 error:(id *)a4
+- (NLLexicon)initWithLocalization:(id)localization error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  localizationCopy = localization;
   v22 = 0;
-  v7 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v6];
+  v7 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:localizationCopy];
   v8 = objc_alloc(MEMORY[0x1E695DF20]);
   v9 = [v8 initWithObjectsAndKeys:{MEMORY[0x1E695E118], *MEMORY[0x1E69ABFD8], v7, *MEMORY[0x1E69ABFE8], 0}];
   v10 = LXLexiconCreate();
@@ -32,7 +32,7 @@
     v12 = [(NLLexicon *)&v21 init];
     if (v12)
     {
-      v13 = [v6 copy];
+      v13 = [localizationCopy copy];
       localization = v12->_localization;
       v12->_localization = v13;
 
@@ -40,38 +40,38 @@
     }
 
     self = v12;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load lexicon for %@", v6];
+      localizationCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load lexicon for %@", localizationCopy];
       v17 = MEMORY[0x1E696ABC0];
       v23 = *MEMORY[0x1E696A578];
-      v24[0] = v16;
+      v24[0] = localizationCopy;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-      *a4 = [v17 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:10 userInfo:v18];
+      *error = [v17 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:10 userInfo:v18];
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
   v19 = *MEMORY[0x1E69E9840];
-  return v15;
+  return selfCopy;
 }
 
-- (NLLexicon)initWithLocalization:(id)a3
+- (NLLexicon)initWithLocalization:(id)localization
 {
-  v4 = a3;
+  localizationCopy = localization;
   v9 = 0;
-  v5 = [(NLLexicon *)self initWithLocalization:v4 error:&v9];
+  v5 = [(NLLexicon *)self initWithLocalization:localizationCopy error:&v9];
   v6 = v9;
   v7 = v6;
   if (v6)
   {
-    NSLog(&cfstr_LexiconCreatio.isa, v4, v6);
+    NSLog(&cfstr_LexiconCreatio.isa, localizationCopy, v6);
   }
 
   return v5;
@@ -103,16 +103,16 @@
   [(NLLexicon *)&v4 dealloc];
 }
 
-- (void)_enumerateEntriesForString:(id)a3 usingBlock:(id)a4
+- (void)_enumerateEntriesForString:(id)string usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[NLLexiconCursor alloc] initWithLexicon:self string:v7];
+  blockCopy = block;
+  stringCopy = string;
+  v8 = [[NLLexiconCursor alloc] initWithLexicon:self string:stringCopy];
 
-  [(NLLexiconCursor *)v8 _enumerateEntriesUsingBlock:v6];
+  [(NLLexiconCursor *)v8 _enumerateEntriesUsingBlock:blockCopy];
 }
 
-- (id)entryForTokenID:(unsigned int)a3
+- (id)entryForTokenID:(unsigned int)d
 {
   lexicon = self->_lexicon;
   v4 = LXLexiconCopyEntryForTokenID();
@@ -140,9 +140,9 @@
   return v9;
 }
 
-- (id)entryForString:(id)a3
+- (id)entryForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -153,7 +153,7 @@
   v8[1] = 3221225472;
   v8[2] = __28__NLLexicon_entryForString___block_invoke;
   v8[3] = &unk_1E7629148;
-  v5 = v4;
+  v5 = stringCopy;
   v9 = v5;
   v10 = &v11;
   [(NLLexicon *)self _enumerateEntriesForString:v5 usingBlock:v8];
@@ -178,9 +178,9 @@ void __28__NLLexicon_entryForString___block_invoke(uint64_t a1, void *a2, uint64
   }
 }
 
-- (BOOL)getProbabilityForString:(id)a3 probability:(double *)a4
+- (BOOL)getProbabilityForString:(id)string probability:(double *)probability
 {
-  v6 = a3;
+  stringCopy = string;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -193,15 +193,15 @@ void __28__NLLexicon_entryForString___block_invoke(uint64_t a1, void *a2, uint64
   v10[1] = 3221225472;
   v10[2] = __49__NLLexicon_getProbabilityForString_probability___block_invoke;
   v10[3] = &unk_1E7629170;
-  v7 = v6;
+  v7 = stringCopy;
   v11 = v7;
   v12 = &v14;
   v13 = &v18;
   [(NLLexicon *)self _enumerateEntriesForString:v7 usingBlock:v10];
   v8 = *(v19 + 24);
-  if (a4 && *(v19 + 24))
+  if (probability && *(v19 + 24))
   {
-    *a4 = v15[3];
+    *probability = v15[3];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -223,7 +223,7 @@ uint64_t __49__NLLexicon_getProbabilityForString_probability___block_invoke(uint
   return result;
 }
 
-- (BOOL)getProbabilityForTokenID:(unsigned int)a3 probability:(double *)a4
+- (BOOL)getProbabilityForTokenID:(unsigned int)d probability:(double *)probability
 {
   lexicon = self->_lexicon;
   v6 = LXLexiconCopyEntryForTokenID();
@@ -232,28 +232,28 @@ uint64_t __49__NLLexicon_getProbabilityForString_probability___block_invoke(uint
     LXEntryGetProbability();
     v8 = v7;
     CFRelease(v6);
-    if (a4)
+    if (probability)
     {
-      *a4 = v8;
+      *probability = v8;
     }
   }
 
   return v6 != 0;
 }
 
-- (void)enumerateCompletionsForPrefix:(id)a3 usingBlock:(id)a4
+- (void)enumerateCompletionsForPrefix:(id)prefix usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[NLLexiconCursor alloc] initWithLexicon:self string:v7];
+  blockCopy = block;
+  prefixCopy = prefix;
+  v8 = [[NLLexiconCursor alloc] initWithLexicon:self string:prefixCopy];
 
-  [(NLLexiconCursor *)v8 enumerateCompletionsUsingBlock:v6];
+  [(NLLexiconCursor *)v8 enumerateCompletionsUsingBlock:blockCopy];
 }
 
-+ (NLLexicon)lexiconWithOptions:(id)a3 error:(id *)a4
++ (NLLexicon)lexiconWithOptions:(id)options error:(id *)error
 {
-  v5 = localizationForOptions(a3);
-  v6 = [[NLLexicon alloc] initWithLocalization:v5 error:a4];
+  v5 = localizationForOptions(options);
+  v6 = [[NLLexicon alloc] initWithLocalization:v5 error:error];
 
   return v6;
 }
@@ -261,8 +261,8 @@ uint64_t __49__NLLexicon_getProbabilityForString_probability___block_invoke(uint
 - (id)languages
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(NLLexicon *)self language];
-  v6[0] = v2;
+  language = [(NLLexicon *)self language];
+  v6[0] = language;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];

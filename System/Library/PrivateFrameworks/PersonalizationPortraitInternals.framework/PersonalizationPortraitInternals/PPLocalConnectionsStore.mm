@@ -1,10 +1,10 @@
 @interface PPLocalConnectionsStore
 + (id)defaultStore;
 - (PPLocalConnectionsStore)init;
-- (PPLocalConnectionsStore)initWithPredictionStore:(id)a3 donationStore:(id)a4;
-- (id)recentLocationsForConsumer:(unint64_t)a3 criteria:(id)a4 limit:(unint64_t)a5 explanationSet:(id)a6 timeout:(unint64_t)a7 error:(id *)a8;
-- (void)processFeedback:(id)a3;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
+- (PPLocalConnectionsStore)initWithPredictionStore:(id)store donationStore:(id)donationStore;
+- (id)recentLocationsForConsumer:(unint64_t)consumer criteria:(id)criteria limit:(unint64_t)limit explanationSet:(id)set timeout:(unint64_t)timeout error:(id *)error;
+- (void)processFeedback:(id)feedback;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPLocalConnectionsStore
@@ -35,36 +35,36 @@
   return v5;
 }
 
-- (void)processFeedback:(id)a3
+- (void)processFeedback:(id)feedback
 {
-  v8 = a3;
-  v3 = [v8 feedbackItems];
-  v4 = [v3 count];
+  feedbackCopy = feedback;
+  feedbackItems = [feedbackCopy feedbackItems];
+  v4 = [feedbackItems count];
 
   if (v4)
   {
-    [PPFeedbackStorage logFeedback:v8 domain:5 domainStatus:2 inBackground:1];
-    v5 = [v8 feedbackItems];
-    v6 = [v8 clientBundleId];
-    v7 = [v8 clientIdentifier];
-    [PPFeedbackUtils recordUserEventsFromFeedback:v8 matchingFeedbackItems:v5 clientBundleId:v6 clientIdentifier:v7 domain:5];
+    [PPFeedbackStorage logFeedback:feedbackCopy domain:5 domainStatus:2 inBackground:1];
+    feedbackItems2 = [feedbackCopy feedbackItems];
+    clientBundleId = [feedbackCopy clientBundleId];
+    clientIdentifier = [feedbackCopy clientIdentifier];
+    [PPFeedbackUtils recordUserEventsFromFeedback:feedbackCopy matchingFeedbackItems:feedbackItems2 clientBundleId:clientBundleId clientIdentifier:clientIdentifier domain:5];
   }
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v36 = a4;
+  feedbackCopy = feedback;
+  completionCopy = completion;
   v7 = pp_connections_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *v48 = 138739971;
-    v49 = v6;
+    v49 = feedbackCopy;
     _os_log_debug_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEBUG, "PPConnections: registerFeedback: %{sensitive}@", v48, 0xCu);
   }
 
-  v8 = v6;
+  v8 = feedbackCopy;
   if (self)
   {
     v40 = 0u;
@@ -92,8 +92,8 @@
 
         v13 = *(*(&v38 + 1) + 8 * i);
         nameToIdentifierMap = self->_nameToIdentifierMap;
-        v15 = [v13 itemString];
-        v16 = [(NSCache *)nameToIdentifierMap objectForKey:v15];
+        itemString = [v13 itemString];
+        v16 = [(NSCache *)nameToIdentifierMap objectForKey:itemString];
 
         if (v16 || ([v13 itemString], v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "length") == 36, v26, v27) && (objc_msgSend(v13, "itemString"), (v16 = objc_claimAutoreleasedReturnValue()) != 0))
         {
@@ -123,8 +123,8 @@
 
           v20 = v19;
           _Block_object_dispose(&v42, 8);
-          v21 = [v19 sharedAnalytics];
-          if (v21)
+          sharedAnalytics = [v19 sharedAnalytics];
+          if (sharedAnalytics)
           {
             v46 = @"identifier";
             v47 = v16;
@@ -137,9 +137,9 @@
               _os_log_impl(&dword_23224A000, v23, OS_LOG_TYPE_DEFAULT, "PPConnections: registerFeedback: reporting %@ DisplayedInMaps to Siri", &buf, 0xCu);
             }
 
-            [v21 logEventWithType:6201 context:v22];
-            v24 = [v13 itemFeedbackType];
-            if ((v24 - 3) < 3)
+            [sharedAnalytics logEventWithType:6201 context:v22];
+            itemFeedbackType = [v13 itemFeedbackType];
+            if ((itemFeedbackType - 3) < 3)
             {
               v28 = pp_connections_log_handle();
               if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -150,16 +150,16 @@
               }
             }
 
-            else if ((v24 - 1) >= 2)
+            else if ((itemFeedbackType - 1) >= 2)
             {
-              if (!v24)
+              if (!itemFeedbackType)
               {
                 v29 = pp_default_log_handle();
                 if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
                 {
-                  v30 = [v35 clientIdentifier];
+                  clientIdentifier = [v35 clientIdentifier];
                   LODWORD(buf) = 138412290;
-                  *(&buf + 4) = v30;
+                  *(&buf + 4) = clientIdentifier;
                   _os_log_fault_impl(&dword_23224A000, v29, OS_LOG_TYPE_FAULT, "PPConnections: registerFeedback: received feedback of unknown type from %@", &buf, 0xCu);
                 }
               }
@@ -175,7 +175,7 @@
                 _os_log_impl(&dword_23224A000, v25, OS_LOG_TYPE_DEFAULT, "PPConnections: registerFeedback: reporting %@ SelectedInMaps to Siri", &buf, 0xCu);
               }
 
-              [v21 logEventWithType:6202 context:v22];
+              [sharedAnalytics logEventWithType:6202 context:v22];
             }
           }
 
@@ -192,11 +192,11 @@
 
         else
         {
-          v21 = pp_default_log_handle();
-          if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+          sharedAnalytics = pp_default_log_handle();
+          if (os_log_type_enabled(sharedAnalytics, OS_LOG_TYPE_DEFAULT))
           {
             LOWORD(buf) = 0;
-            _os_log_impl(&dword_23224A000, v21, OS_LOG_TYPE_DEFAULT, "PPConnections: registerFeedback: skipping immediate processing of feedback due to lack of identifier.", &buf, 2u);
+            _os_log_impl(&dword_23224A000, sharedAnalytics, OS_LOG_TYPE_DEFAULT, "PPConnections: registerFeedback: skipping immediate processing of feedback due to lack of identifier.", &buf, 2u);
           }
 
           v16 = 0;
@@ -222,18 +222,18 @@ LABEL_39:
   v33 = [PPInternalFeedback fromBaseFeedback:v31 storeType:2];
   [v32 storePendingFeedback:v33 storeType:6 error:0];
 
-  if (v36)
+  if (completionCopy)
   {
-    v36[2](v36, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)recentLocationsForConsumer:(unint64_t)a3 criteria:(id)a4 limit:(unint64_t)a5 explanationSet:(id)a6 timeout:(unint64_t)a7 error:(id *)a8
+- (id)recentLocationsForConsumer:(unint64_t)consumer criteria:(id)criteria limit:(unint64_t)limit explanationSet:(id)set timeout:(unint64_t)timeout error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v9 = [(PPConnectionsPredictionStore *)self->_predictionStore recentLocationsForConsumer:a3 criteria:a4 limit:a5 explanationSet:a6 timeout:a7 error:a8];
+  v9 = [(PPConnectionsPredictionStore *)self->_predictionStore recentLocationsForConsumer:consumer criteria:criteria limit:limit explanationSet:set timeout:timeout error:error];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -254,20 +254,20 @@ LABEL_39:
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
-        v16 = [v15 originatingBundleID];
-        v17 = [v16 isEqualToString:v13];
+        originatingBundleID = [v15 originatingBundleID];
+        v17 = [originatingBundleID isEqualToString:v13];
 
         if (v17)
         {
           identifierToSourceBundleMap = self->_identifierToSourceBundleMap;
-          v19 = [v15 originatingBundleID];
-          v20 = [v15 identifier];
-          [(NSCache *)identifierToSourceBundleMap setObject:v19 forKey:v20];
+          originatingBundleID2 = [v15 originatingBundleID];
+          identifier = [v15 identifier];
+          [(NSCache *)identifierToSourceBundleMap setObject:originatingBundleID2 forKey:identifier];
 
           nameToIdentifierMap = self->_nameToIdentifierMap;
-          v22 = [v15 identifier];
-          v23 = [v15 name];
-          [(NSCache *)nameToIdentifierMap setObject:v22 forKey:v23];
+          identifier2 = [v15 identifier];
+          name = [v15 name];
+          [(NSCache *)nameToIdentifierMap setObject:identifier2 forKey:name];
         }
       }
 
@@ -306,30 +306,30 @@ LABEL_39:
       _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPLocalConnectionsStore -init failed to get prediction or donation store.", v10, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PPLocalConnectionsStore *)self initWithPredictionStore:v3 donationStore:v4];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PPLocalConnectionsStore)initWithPredictionStore:(id)a3 donationStore:(id)a4
+- (PPLocalConnectionsStore)initWithPredictionStore:(id)store donationStore:(id)donationStore
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  donationStoreCopy = donationStore;
   v16.receiver = self;
   v16.super_class = PPLocalConnectionsStore;
   v9 = [(PPLocalConnectionsStore *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_predictionStore, a3);
-    objc_storeStrong(&v10->_donationStore, a4);
+    objc_storeStrong(&v9->_predictionStore, store);
+    objc_storeStrong(&v10->_donationStore, donationStore);
     v11 = objc_opt_new();
     identifierToSourceBundleMap = v10->_identifierToSourceBundleMap;
     v10->_identifierToSourceBundleMap = v11;

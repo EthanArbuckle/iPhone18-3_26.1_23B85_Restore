@@ -1,23 +1,23 @@
 @interface _LTSpeechCompressor
-- (_LTSpeechCompressor)initWithDelegate:(id)a3;
-- (void)addAudioSampleData:(id)a3;
+- (_LTSpeechCompressor)initWithDelegate:(id)delegate;
+- (void)addAudioSampleData:(id)data;
 - (void)dealloc;
 - (void)reset;
-- (void)startCompressionNarrowband:(BOOL)a3;
+- (void)startCompressionNarrowband:(BOOL)narrowband;
 @end
 
 @implementation _LTSpeechCompressor
 
-- (_LTSpeechCompressor)initWithDelegate:(id)a3
+- (_LTSpeechCompressor)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = _LTSpeechCompressor;
   v5 = [(_LTSpeechCompressor *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = v6;
   }
 
@@ -32,10 +32,10 @@
   [(_LTSpeechCompressor *)&v3 dealloc];
 }
 
-- (void)startCompressionNarrowband:(BOOL)a3
+- (void)startCompressionNarrowband:(BOOL)narrowband
 {
   v4 = 16000.0;
-  if (a3)
+  if (narrowband)
   {
     v4 = 8000.0;
   }
@@ -45,7 +45,7 @@
   *&inSourceFormat.mBytesPerFrame = xmmword_233005DD0;
   inDestinationFormat.mSampleRate = v4;
   *&inDestinationFormat.mFormatID = 1869641075;
-  if (a3)
+  if (narrowband)
   {
     v5 = 160;
   }
@@ -82,9 +82,9 @@
   self->_bytesConsumed = 0;
 }
 
-- (void)addAudioSampleData:(id)a3
+- (void)addAudioSampleData:(id)data
 {
-  v3 = MEMORY[0x28223BE20](self, a2, a3);
+  v3 = MEMORY[0x28223BE20](self, a2, data);
   v21 = *MEMORY[0x277D85DE8];
   v13 = v4;
   [*(v3 + 24) appendData:?];

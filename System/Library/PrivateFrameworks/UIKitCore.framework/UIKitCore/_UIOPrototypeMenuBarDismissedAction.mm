@@ -1,22 +1,22 @@
 @interface _UIOPrototypeMenuBarDismissedAction
 + (id)action;
-- (void)handleClientActionToOverlayService:(id)a3;
+- (void)handleClientActionToOverlayService:(id)service;
 @end
 
 @implementation _UIOPrototypeMenuBarDismissedAction
 
 + (id)action
 {
-  v2 = [[a1 alloc] initWithInfo:0 responder:0];
+  v2 = [[self alloc] initWithInfo:0 responder:0];
 
   return v2;
 }
 
-- (void)handleClientActionToOverlayService:(id)a3
+- (void)handleClientActionToOverlayService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = +[_UIOPrototypeMenuBarService sharedService];
-  [v4 prototypeMenuBarDidDismissForOverlayService:v3];
+  [v4 prototypeMenuBarDidDismissForOverlayService:serviceCopy];
 }
 
 @end

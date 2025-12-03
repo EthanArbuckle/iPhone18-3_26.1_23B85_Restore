@@ -1,13 +1,13 @@
 @interface TSApplicationBackgroundFetchScheduler
-- (void)setMinimumBackgroundFetchInterval:(double)a3;
+- (void)setMinimumBackgroundFetchInterval:(double)interval;
 @end
 
 @implementation TSApplicationBackgroundFetchScheduler
 
-- (void)setMinimumBackgroundFetchInterval:(double)a3
+- (void)setMinimumBackgroundFetchInterval:(double)interval
 {
-  v4 = self;
-  ApplicationBackgroundFetchScheduler.setMinimumBackgroundFetchInterval(_:)(a3);
+  selfCopy = self;
+  ApplicationBackgroundFetchScheduler.setMinimumBackgroundFetchInterval(_:)(interval);
 }
 
 @end

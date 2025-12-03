@@ -1,26 +1,26 @@
 @interface CKTranscriptDNDCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityValue;
-- (void)setMuteSwitch:(id)a3;
+- (void)setMuteSwitch:(id)switch;
 @end
 
 @implementation CKTranscriptDNDCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKTranscriptDNDCell" hasInstanceMethod:@"setMuteSwitch:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKTranscriptDNDCell" hasInstanceVariable:@"_muteSwitch" withType:"UISwitch"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKTranscriptDNDCell" hasInstanceMethod:@"setMuteSwitch:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptDNDCell" hasInstanceVariable:@"_muteSwitch" withType:"UISwitch"];
 }
 
-- (void)setMuteSwitch:(id)a3
+- (void)setMuteSwitch:(id)switch
 {
   v4.receiver = self;
   v4.super_class = CKTranscriptDNDCellAccessibility;
-  v3 = a3;
-  [(CKTranscriptDNDCellAccessibility *)&v4 setMuteSwitch:v3];
-  [v3 setIsAccessibilityElement:{0, v4.receiver, v4.super_class}];
+  switchCopy = switch;
+  [(CKTranscriptDNDCellAccessibility *)&v4 setMuteSwitch:switchCopy];
+  [switchCopy setIsAccessibilityElement:{0, v4.receiver, v4.super_class}];
 }
 
 - (CGPoint)accessibilityActivationPoint

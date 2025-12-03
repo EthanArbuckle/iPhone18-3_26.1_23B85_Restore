@@ -1,32 +1,32 @@
 @interface CSBehavior
 + (id)behavior;
-+ (id)behaviorForProvider:(id)a3;
-- (BOOL)isEqualToBehavior:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)behaviorForProvider:(id)provider;
+- (BOOL)isEqualToBehavior:(id)behavior;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)reset;
-- (void)unionBehavior:(id)a3;
+- (void)unionBehavior:(id)behavior;
 @end
 
 @implementation CSBehavior
 
 + (id)behavior
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)behaviorForProvider:(id)a3
++ (id)behaviorForProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [a1 behavior];
-  [v5 setNotificationBehavior:{objc_msgSend(v4, "notificationBehavior")}];
-  [v5 setRestrictedCapabilities:{objc_msgSend(v4, "restrictedCapabilities")}];
-  [v5 setScrollingStrategy:{objc_msgSend(v4, "scrollingStrategy")}];
-  [v5 setProximityDetectionMode:{objc_msgSend(v4, "proximityDetectionMode")}];
-  v6 = v4;
+  providerCopy = provider;
+  behavior = [self behavior];
+  [behavior setNotificationBehavior:{objc_msgSend(providerCopy, "notificationBehavior")}];
+  [behavior setRestrictedCapabilities:{objc_msgSend(providerCopy, "restrictedCapabilities")}];
+  [behavior setScrollingStrategy:{objc_msgSend(providerCopy, "scrollingStrategy")}];
+  [behavior setProximityDetectionMode:{objc_msgSend(providerCopy, "proximityDetectionMode")}];
+  v6 = providerCopy;
   if (objc_opt_respondsToSelector())
   {
     v7 = v6;
@@ -41,35 +41,35 @@
 
   if (v8)
   {
-    [v5 setIdleTimerDuration:{objc_msgSend(v8, "idleTimerDuration")}];
-    [v5 setIdleTimerMode:{objc_msgSend(v8, "idleTimerMode")}];
-    v9 = [v8 idleWarnMode];
+    [behavior setIdleTimerDuration:{objc_msgSend(v8, "idleTimerDuration")}];
+    [behavior setIdleTimerMode:{objc_msgSend(v8, "idleTimerMode")}];
+    idleWarnMode = [v8 idleWarnMode];
   }
 
   else
   {
-    [v5 setIdleTimerDuration:0];
-    [v5 setIdleTimerMode:0];
-    v9 = 0;
+    [behavior setIdleTimerDuration:0];
+    [behavior setIdleTimerMode:0];
+    idleWarnMode = 0;
   }
 
-  [v5 setIdleWarnMode:v9];
+  [behavior setIdleWarnMode:idleWarnMode];
 
-  return v5;
+  return behavior;
 }
 
-- (BOOL)isEqualToBehavior:(id)a3
+- (BOOL)isEqualToBehavior:(id)behavior
 {
-  v4 = a3;
-  if (self == v4)
+  behaviorCopy = behavior;
+  if (self == behaviorCopy)
   {
     v12 = 1;
   }
 
-  else if ([(CSBehavior *)v4 isMemberOfClass:objc_opt_class()]&& (notificationBehavior = self->_notificationBehavior, notificationBehavior == [(CSBehavior *)v4 notificationBehavior]) && (idleTimerDuration = self->_idleTimerDuration, idleTimerDuration == [(CSBehavior *)v4 idleTimerDuration]) && (idleTimerMode = self->_idleTimerMode, idleTimerMode == [(CSBehavior *)v4 idleTimerMode]) && (idleWarnMode = self->_idleWarnMode, idleWarnMode == [(CSBehavior *)v4 idleWarnMode]) && (scrollingStrategy = self->_scrollingStrategy, scrollingStrategy == [(CSBehavior *)v4 scrollingStrategy]) && (restrictedCapabilities = self->_restrictedCapabilities, restrictedCapabilities == [(CSBehavior *)v4 restrictedCapabilities]))
+  else if ([(CSBehavior *)behaviorCopy isMemberOfClass:objc_opt_class()]&& (notificationBehavior = self->_notificationBehavior, notificationBehavior == [(CSBehavior *)behaviorCopy notificationBehavior]) && (idleTimerDuration = self->_idleTimerDuration, idleTimerDuration == [(CSBehavior *)behaviorCopy idleTimerDuration]) && (idleTimerMode = self->_idleTimerMode, idleTimerMode == [(CSBehavior *)behaviorCopy idleTimerMode]) && (idleWarnMode = self->_idleWarnMode, idleWarnMode == [(CSBehavior *)behaviorCopy idleWarnMode]) && (scrollingStrategy = self->_scrollingStrategy, scrollingStrategy == [(CSBehavior *)behaviorCopy scrollingStrategy]) && (restrictedCapabilities = self->_restrictedCapabilities, restrictedCapabilities == [(CSBehavior *)behaviorCopy restrictedCapabilities]))
   {
     proximityDetectionMode = self->_proximityDetectionMode;
-    v12 = proximityDetectionMode == [(CSBehavior *)v4 proximityDetectionMode];
+    v12 = proximityDetectionMode == [(CSBehavior *)behaviorCopy proximityDetectionMode];
   }
 
   else
@@ -88,17 +88,17 @@
   *&self->_idleTimerDuration = 0u;
 }
 
-- (void)unionBehavior:(id)a3
+- (void)unionBehavior:(id)behavior
 {
-  v4 = a3;
-  if (v4)
+  behaviorCopy = behavior;
+  if (behaviorCopy)
   {
     notificationBehavior = self->_notificationBehavior;
-    v27 = v4;
-    v6 = [v4 notificationBehavior];
-    if (notificationBehavior <= v6)
+    v27 = behaviorCopy;
+    notificationBehavior = [behaviorCopy notificationBehavior];
+    if (notificationBehavior <= notificationBehavior)
     {
-      v7 = v6;
+      v7 = notificationBehavior;
     }
 
     else
@@ -110,10 +110,10 @@
     restrictedCapabilities = self->_restrictedCapabilities;
     self->_restrictedCapabilities = [v27 restrictedCapabilities] | restrictedCapabilities;
     scrollingStrategy = self->_scrollingStrategy;
-    v10 = [v27 scrollingStrategy];
-    if (scrollingStrategy <= v10)
+    scrollingStrategy = [v27 scrollingStrategy];
+    if (scrollingStrategy <= scrollingStrategy)
     {
-      v11 = v10;
+      v11 = scrollingStrategy;
     }
 
     else
@@ -123,10 +123,10 @@
 
     self->_scrollingStrategy = v11;
     proximityDetectionMode = self->_proximityDetectionMode;
-    v13 = [v27 proximityDetectionMode];
-    if (proximityDetectionMode <= v13)
+    proximityDetectionMode = [v27 proximityDetectionMode];
+    if (proximityDetectionMode <= proximityDetectionMode)
     {
-      v14 = v13;
+      v14 = proximityDetectionMode;
     }
 
     else
@@ -151,19 +151,19 @@
 
     if (v16)
     {
-      v19 = [v15 idleTimerDuration];
+      idleTimerDuration = [v15 idleTimerDuration];
       idleTimerDuration = self->_idleTimerDuration;
       idleTimerMode = self->_idleTimerMode;
-      if (idleTimerDuration <= v19)
+      if (idleTimerDuration <= idleTimerDuration)
       {
-        idleTimerDuration = v19;
+        idleTimerDuration = idleTimerDuration;
       }
 
       self->_idleTimerDuration = idleTimerDuration;
-      v22 = [v15 idleTimerMode];
-      if (idleTimerMode <= v22)
+      idleTimerMode = [v15 idleTimerMode];
+      if (idleTimerMode <= idleTimerMode)
       {
-        v23 = v22;
+        v23 = idleTimerMode;
       }
 
       else
@@ -173,10 +173,10 @@
 
       self->_idleTimerMode = v23;
       idleWarnMode = self->_idleWarnMode;
-      v25 = [v15 idleWarnMode];
-      if (idleWarnMode <= v25)
+      idleWarnMode = [v15 idleWarnMode];
+      if (idleWarnMode <= idleWarnMode)
       {
-        v26 = v25;
+        v26 = idleWarnMode;
       }
 
       else
@@ -187,16 +187,16 @@
       self->_idleWarnMode = v26;
     }
 
-    v4 = v27;
+    behaviorCopy = v27;
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(CSBehavior *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CSBehavior *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -254,12 +254,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CSBehavior *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CSBehavior *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

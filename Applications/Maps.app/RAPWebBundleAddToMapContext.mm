@@ -8,27 +8,27 @@
 {
   v13.receiver = self;
   v13.super_class = RAPWebBundleAddToMapContext;
-  v3 = [(RAPWebBundleBaseContext *)&v13 context];
-  v4 = [v3 mutableCopy];
+  context = [(RAPWebBundleBaseContext *)&v13 context];
+  v4 = [context mutableCopy];
 
   v5 = objc_alloc_init(NSMutableDictionary);
   [v4 setObject:v5 forKeyedSubscript:@"place"];
-  v6 = [(RAPWebBundleAddToMapContext *)self address];
+  address = [(RAPWebBundleAddToMapContext *)self address];
 
-  if (v6)
+  if (address)
   {
-    v7 = [(RAPWebBundleAddToMapContext *)self address];
-    v14 = v7;
+    address2 = [(RAPWebBundleAddToMapContext *)self address];
+    v14 = address2;
     v8 = [NSArray arrayWithObjects:&v14 count:1];
     [v5 setObject:v8 forKeyedSubscript:@"formattedAddress"];
   }
 
-  v9 = [(RAPWebBundleAddToMapContext *)self entityName];
+  entityName = [(RAPWebBundleAddToMapContext *)self entityName];
 
-  if (v9)
+  if (entityName)
   {
-    v10 = [(RAPWebBundleAddToMapContext *)self entityName];
-    [v5 setObject:v10 forKeyedSubscript:@"entityName"];
+    entityName2 = [(RAPWebBundleAddToMapContext *)self entityName];
+    [v5 setObject:entityName2 forKeyedSubscript:@"entityName"];
   }
 
   v11 = [v4 copy];

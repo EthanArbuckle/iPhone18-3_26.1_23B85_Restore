@@ -1,44 +1,44 @@
 @interface FPAppMetadata
-+ (BOOL)_isContainerIDPermitted:(id)a3;
-+ (id)_entitledCloudDocsContainerIDForAppProxy:(id)a3;
-+ (id)_entitledUbiquityContainerIDForAppProxy:(id)a3;
-+ (id)_localizedCustomDisplayNameForAppProxy:(id)a3;
-+ (id)findBundleIDForCurrentPlatformInSet:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (FPAppMetadata)initWithAppProxy:(id)a3 providerDomainID:(id)a4;
-- (FPAppMetadata)initWithBundleID:(id)a3 displayName:(id)a4 documentsURL:(id)a5 providerDomainID:(id)a6 isManaged:(BOOL)a7;
-- (FPAppMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)_isContainerIDPermitted:(id)permitted;
++ (id)_entitledCloudDocsContainerIDForAppProxy:(id)proxy;
++ (id)_entitledUbiquityContainerIDForAppProxy:(id)proxy;
++ (id)_localizedCustomDisplayNameForAppProxy:(id)proxy;
++ (id)findBundleIDForCurrentPlatformInSet:(id)set;
+- (BOOL)isEqual:(id)equal;
+- (FPAppMetadata)initWithAppProxy:(id)proxy providerDomainID:(id)d;
+- (FPAppMetadata)initWithBundleID:(id)d displayName:(id)name documentsURL:(id)l providerDomainID:(id)iD isManaged:(BOOL)managed;
+- (FPAppMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPAppMetadata
 
-- (FPAppMetadata)initWithAppProxy:(id)a3 providerDomainID:(id)a4
+- (FPAppMetadata)initWithAppProxy:(id)proxy providerDomainID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 bundleIdentifier];
-  v9 = [objc_opt_class() _localizedCustomDisplayNameForAppProxy:v6];
+  proxyCopy = proxy;
+  dCopy = d;
+  bundleIdentifier = [proxyCopy bundleIdentifier];
+  v9 = [objc_opt_class() _localizedCustomDisplayNameForAppProxy:proxyCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = v9;
+    localizedName = v9;
   }
 
   else
   {
-    v11 = [v6 localizedName];
+    localizedName = [proxyCopy localizedName];
   }
 
-  v12 = v11;
-  v13 = [v6 dataContainerURL];
-  v14 = [v13 URLByAppendingPathComponent:@"Documents"];
+  v12 = localizedName;
+  dataContainerURL = [proxyCopy dataContainerURL];
+  v14 = [dataContainerURL URLByAppendingPathComponent:@"Documents"];
 
-  if (v6 && [v8 length])
+  if (proxyCopy && [bundleIdentifier length])
   {
-    v15 = 0;
+    selfCopy = 0;
     if ([v12 length] && v14)
     {
       v22.receiver = self;
@@ -47,81 +47,81 @@
       v17 = v16;
       if (v16)
       {
-        objc_storeStrong(&v16->_bundleID, v8);
+        objc_storeStrong(&v16->_bundleID, bundleIdentifier);
         objc_storeStrong(&v17->_displayName, v12);
         objc_storeStrong(&v17->_documentsURL, v14);
-        if (v7)
+        if (dCopy)
         {
-          objc_storeStrong(&v17->_providerDomainID, a4);
+          objc_storeStrong(&v17->_providerDomainID, d);
         }
 
         else
         {
-          v18 = [MEMORY[0x1E696AEC0] fp_defaultProviderDomainID];
+          fp_defaultProviderDomainID = [MEMORY[0x1E696AEC0] fp_defaultProviderDomainID];
           providerDomainID = v17->_providerDomainID;
-          v17->_providerDomainID = v18;
+          v17->_providerDomainID = fp_defaultProviderDomainID;
 
           v17->_useDefaultProviderDomainID = 1;
         }
 
-        v20 = [MEMORY[0x1E69ADFB8] sharedConnection];
-        v17->_isManaged = [v20 isAppManaged:v8];
+        mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+        v17->_isManaged = [mEMORY[0x1E69ADFB8] isAppManaged:bundleIdentifier];
       }
 
       self = v17;
-      v15 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (FPAppMetadata)initWithBundleID:(id)a3 displayName:(id)a4 documentsURL:(id)a5 providerDomainID:(id)a6 isManaged:(BOOL)a7
+- (FPAppMetadata)initWithBundleID:(id)d displayName:(id)name documentsURL:(id)l providerDomainID:(id)iD isManaged:(BOOL)managed
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  dCopy = d;
+  nameCopy = name;
+  lCopy = l;
+  iDCopy = iD;
   v20.receiver = self;
   v20.super_class = FPAppMetadata;
   v17 = [(FPAppMetadata *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_bundleID, a3);
-    objc_storeStrong(&v18->_displayName, a4);
-    objc_storeStrong(&v18->_documentsURL, a5);
-    objc_storeStrong(&v18->_providerDomainID, a6);
-    v18->_isManaged = a7;
+    objc_storeStrong(&v17->_bundleID, d);
+    objc_storeStrong(&v18->_displayName, name);
+    objc_storeStrong(&v18->_documentsURL, l);
+    objc_storeStrong(&v18->_providerDomainID, iD);
+    v18->_isManaged = managed;
   }
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v16) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [(FPAppMetadata *)self bundleID];
-        v7 = [(FPAppMetadata *)v5 bundleID];
-        if (![v6 isEqual:v7])
+        bundleID = [(FPAppMetadata *)self bundleID];
+        bundleID2 = [(FPAppMetadata *)v5 bundleID];
+        if (![bundleID isEqual:bundleID2])
         {
           LOBYTE(v16) = 0;
 LABEL_26:
@@ -129,9 +129,9 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v8 = [(FPAppMetadata *)self displayName];
-        v9 = [(FPAppMetadata *)v5 displayName];
-        if (![v8 isEqual:v9])
+        displayName = [(FPAppMetadata *)self displayName];
+        displayName2 = [(FPAppMetadata *)v5 displayName];
+        if (![displayName isEqual:displayName2])
         {
           LOBYTE(v16) = 0;
 LABEL_25:
@@ -139,9 +139,9 @@ LABEL_25:
           goto LABEL_26;
         }
 
-        v10 = [(FPAppMetadata *)self documentsURL];
-        v11 = [(FPAppMetadata *)v5 documentsURL];
-        if (![v10 isEqual:v11])
+        documentsURL = [(FPAppMetadata *)self documentsURL];
+        documentsURL2 = [(FPAppMetadata *)v5 documentsURL];
+        if (![documentsURL isEqual:documentsURL2])
         {
           LOBYTE(v16) = 0;
 LABEL_24:
@@ -149,21 +149,21 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v12 = [(FPAppMetadata *)self providerDomainID];
-        v13 = [(FPAppMetadata *)v5 providerDomainID];
-        v14 = v13;
-        if (v12 == v13)
+        providerDomainID = [(FPAppMetadata *)self providerDomainID];
+        providerDomainID2 = [(FPAppMetadata *)v5 providerDomainID];
+        v14 = providerDomainID2;
+        if (providerDomainID == providerDomainID2)
         {
-          v23 = v12;
+          v23 = providerDomainID;
         }
 
         else
         {
-          v21 = v13;
-          v15 = [(FPAppMetadata *)self providerDomainID];
+          v21 = providerDomainID2;
+          providerDomainID3 = [(FPAppMetadata *)self providerDomainID];
           [(FPAppMetadata *)v5 providerDomainID];
-          v24 = v22 = v15;
-          if (![v15 isEqual:?])
+          v24 = v22 = providerDomainID3;
+          if (![providerDomainID3 isEqual:?])
           {
             LOBYTE(v16) = 0;
             v14 = v21;
@@ -174,15 +174,15 @@ LABEL_23:
             goto LABEL_24;
           }
 
-          v23 = v12;
+          v23 = providerDomainID;
           v14 = v21;
         }
 
-        v17 = [(FPAppMetadata *)self useDefaultProviderDomainID];
-        if (v17 == [(FPAppMetadata *)v5 useDefaultProviderDomainID])
+        useDefaultProviderDomainID = [(FPAppMetadata *)self useDefaultProviderDomainID];
+        if (useDefaultProviderDomainID == [(FPAppMetadata *)v5 useDefaultProviderDomainID])
         {
-          v18 = [(FPAppMetadata *)self isManaged];
-          v16 = v18 ^ [(FPAppMetadata *)v5 isManaged]^ 1;
+          isManaged = [(FPAppMetadata *)self isManaged];
+          v16 = isManaged ^ [(FPAppMetadata *)v5 isManaged]^ 1;
         }
 
         else
@@ -190,7 +190,7 @@ LABEL_23:
           LOBYTE(v16) = 0;
         }
 
-        v12 = v23;
+        providerDomainID = v23;
         v19 = v24;
         if (v23 == v14)
         {
@@ -209,63 +209,63 @@ LABEL_27:
   return v16;
 }
 
-- (FPAppMetadata)initWithCoder:(id)a3
+- (FPAppMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = FPAppMetadata;
   v5 = [(FPAppMetadata *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bundleID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_displayName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_documentsURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_documentsURL"];
     documentsURL = v5->_documentsURL;
     v5->_documentsURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_providerDomainID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_providerDomainID"];
     providerDomainID = v5->_providerDomainID;
     v5->_providerDomainID = v12;
 
-    v5->_useDefaultProviderDomainID = [v4 decodeBoolForKey:@"_useDefaultProviderDomainID"];
-    v5->_isManaged = [v4 decodeBoolForKey:@"_isManaged"];
+    v5->_useDefaultProviderDomainID = [coderCopy decodeBoolForKey:@"_useDefaultProviderDomainID"];
+    v5->_isManaged = [coderCopy decodeBoolForKey:@"_isManaged"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleID = self->_bundleID;
-  v5 = a3;
-  [v5 encodeObject:bundleID forKey:@"_bundleID"];
-  [v5 encodeObject:self->_displayName forKey:@"_displayName"];
-  [v5 encodeObject:self->_documentsURL forKey:@"_documentsURL"];
-  [v5 encodeObject:self->_providerDomainID forKey:@"_providerDomainID"];
-  [v5 encodeBool:self->_useDefaultProviderDomainID forKey:@"_useDefaultProviderDomainID"];
-  [v5 encodeBool:self->_isManaged forKey:@"_isManaged"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleID forKey:@"_bundleID"];
+  [coderCopy encodeObject:self->_displayName forKey:@"_displayName"];
+  [coderCopy encodeObject:self->_documentsURL forKey:@"_documentsURL"];
+  [coderCopy encodeObject:self->_providerDomainID forKey:@"_providerDomainID"];
+  [coderCopy encodeBool:self->_useDefaultProviderDomainID forKey:@"_useDefaultProviderDomainID"];
+  [coderCopy encodeBool:self->_isManaged forKey:@"_isManaged"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(FPAppMetadata *)self bundleID];
-  [v4 setValue:v5 forKey:@"bundleID"];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  bundleID = [(FPAppMetadata *)self bundleID];
+  [v4 setValue:bundleID forKey:@"bundleID"];
 
-  v6 = [(FPAppMetadata *)self displayName];
-  [v4 setValue:v6 forKey:@"displayName"];
+  displayName = [(FPAppMetadata *)self displayName];
+  [v4 setValue:displayName forKey:@"displayName"];
 
-  v7 = [(FPAppMetadata *)self documentsURL];
-  [v4 setValue:v7 forKey:@"documentsURL"];
+  documentsURL = [(FPAppMetadata *)self documentsURL];
+  [v4 setValue:documentsURL forKey:@"documentsURL"];
 
-  v8 = [(FPAppMetadata *)self providerDomainID];
-  [v4 setValue:v8 forKey:@"providerDomainID"];
+  providerDomainID = [(FPAppMetadata *)self providerDomainID];
+  [v4 setValue:providerDomainID forKey:@"providerDomainID"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[FPAppMetadata useDefaultProviderDomainID](self, "useDefaultProviderDomainID")}];
   [v4 setValue:v9 forKey:@"useDefaultProviderDomainID"];
@@ -280,7 +280,7 @@ LABEL_27:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(FPAppMetadata *)self bundleID];
+  bundleID = [(FPAppMetadata *)self bundleID];
   if ([(FPAppMetadata *)self isManaged])
   {
     v6 = @" (managed)";
@@ -291,29 +291,29 @@ LABEL_27:
     v6 = @" ";
   }
 
-  v7 = [(FPAppMetadata *)self displayName];
-  v8 = [(FPAppMetadata *)self providerDomainID];
-  v9 = [(FPAppMetadata *)self useDefaultProviderDomainID];
+  displayName = [(FPAppMetadata *)self displayName];
+  providerDomainID = [(FPAppMetadata *)self providerDomainID];
+  useDefaultProviderDomainID = [(FPAppMetadata *)self useDefaultProviderDomainID];
   v10 = &stru_1F1F94B20;
-  if (v9)
+  if (useDefaultProviderDomainID)
   {
     v10 = @"[default]";
   }
 
-  v11 = [v3 stringWithFormat:@"<%@:%p %@%@n:'%@' p:'%@'%@>", v4, self, v5, v6, v7, v8, v10];
+  v11 = [v3 stringWithFormat:@"<%@:%p %@%@n:'%@' p:'%@'%@>", v4, self, bundleID, v6, displayName, providerDomainID, v10];
 
   return v11;
 }
 
-+ (id)findBundleIDForCurrentPlatformInSet:(id)a3
++ (id)findBundleIDForCurrentPlatformInSet:(id)set
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  setCopy = set;
+  if ([setCopy count])
   {
-    if ([v3 count] == 1)
+    if ([setCopy count] == 1)
     {
-      v4 = [v3 anyObject];
+      anyObject = [setCopy anyObject];
     }
 
     else
@@ -324,8 +324,8 @@ LABEL_27:
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v26 = v3;
-      v7 = v3;
+      v26 = setCopy;
+      v7 = setCopy;
       v8 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v8)
       {
@@ -403,7 +403,7 @@ LABEL_18:
 
       if ([v5 count])
       {
-        v4 = [v5 anyObject];
+        anyObject = [v5 anyObject];
       }
 
       else
@@ -420,30 +420,30 @@ LABEL_18:
           v23 = v7;
         }
 
-        v4 = [v23 anyObject];
+        anyObject = [v23 anyObject];
       }
 
-      v3 = v26;
+      setCopy = v26;
     }
   }
 
   else
   {
-    v4 = 0;
+    anyObject = 0;
   }
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return anyObject;
 }
 
-+ (id)_localizedCustomDisplayNameForAppProxy:(id)a3
++ (id)_localizedCustomDisplayNameForAppProxy:(id)proxy
 {
-  v4 = a3;
-  if (v4)
+  proxyCopy = proxy;
+  if (proxyCopy)
   {
-    v5 = [v4 objectForInfoDictionaryKey:@"NSUbiquitousContainers" ofClass:objc_opt_class()];
-    if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (([a1 _entitledCloudDocsContainerIDForAppProxy:v4], (v6 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(a1, "_entitledUbiquityContainerIDForAppProxy:", v4), (v6 = objc_claimAutoreleasedReturnValue()) != 0)))
+    v5 = [proxyCopy objectForInfoDictionaryKey:@"NSUbiquitousContainers" ofClass:objc_opt_class()];
+    if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (([self _entitledCloudDocsContainerIDForAppProxy:proxyCopy], (v6 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(self, "_entitledUbiquityContainerIDForAppProxy:", proxyCopy), (v6 = objc_claimAutoreleasedReturnValue()) != 0)))
     {
       v7 = v6;
       v8 = [v5 objectForKeyedSubscript:v6];
@@ -453,7 +453,7 @@ LABEL_18:
         if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v10 = [MEMORY[0x1E695DFD8] setWithObject:@"NSUbiquitousContainerName"];
-          v11 = [v4 localizedValuesForKeys:v10 fromTable:@"InfoPlist"];
+          v11 = [proxyCopy localizedValuesForKeys:v10 fromTable:@"InfoPlist"];
           v12 = [v11 stringForKey:@"NSUbiquitousContainerName"];
           v13 = v12;
           if (v12)
@@ -495,10 +495,10 @@ LABEL_18:
   return v15;
 }
 
-+ (BOOL)_isContainerIDPermitted:(id)a3
++ (BOOL)_isContainerIDPermitted:(id)permitted
 {
-  v3 = a3;
-  v4 = v3;
+  permittedCopy = permitted;
+  v4 = permittedCopy;
   if (_isContainerIDPermitted__onceToken != -1)
   {
     +[FPAppMetadata _isContainerIDPermitted:];
@@ -512,7 +512,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!permittedCopy)
   {
     goto LABEL_5;
   }
@@ -531,11 +531,11 @@ uint64_t __41__FPAppMetadata__isContainerIDPermitted___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)_entitledCloudDocsContainerIDForAppProxy:(id)a3
++ (id)_entitledCloudDocsContainerIDForAppProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v5 = objc_opt_class();
-  v6 = [v4 entitlementValueForKey:@"com.apple.developer.icloud-services" ofClass:v5 valuesOfClass:objc_opt_class()];
+  v6 = [proxyCopy entitlementValueForKey:@"com.apple.developer.icloud-services" ofClass:v5 valuesOfClass:objc_opt_class()];
   v7 = v6;
   if (!v6 || ![v6 containsObject:@"CloudDocuments"])
   {
@@ -544,16 +544,16 @@ uint64_t __41__FPAppMetadata__isContainerIDPermitted___block_invoke()
   }
 
   v8 = objc_opt_class();
-  v9 = [v4 entitlementValueForKey:@"com.apple.developer.icloud-container-identifiers" ofClass:v8 valuesOfClass:objc_opt_class()];
+  v9 = [proxyCopy entitlementValueForKey:@"com.apple.developer.icloud-container-identifiers" ofClass:v8 valuesOfClass:objc_opt_class()];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 firstObject];
-    if (v11)
+    firstObject = [v9 firstObject];
+    if (firstObject)
     {
-      if ([a1 _isContainerIDPermitted:v11])
+      if ([self _isContainerIDPermitted:firstObject])
       {
-        v12 = v11;
+        v12 = firstObject;
       }
 
       else
@@ -570,13 +570,13 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v11 = [v4 entitlementValueForKey:@"application-identifier" ofClass:objc_opt_class()];
-  if (!v11)
+  firstObject = [proxyCopy entitlementValueForKey:@"application-identifier" ofClass:objc_opt_class()];
+  if (!firstObject)
   {
     goto LABEL_13;
   }
 
-  v13 = [@"iCloud." stringByAppendingString:v11];
+  v13 = [@"iCloud." stringByAppendingString:firstObject];
 LABEL_12:
   v14 = v13;
 LABEL_14:
@@ -586,20 +586,20 @@ LABEL_15:
   return v14;
 }
 
-+ (id)_entitledUbiquityContainerIDForAppProxy:(id)a3
++ (id)_entitledUbiquityContainerIDForAppProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v5 = objc_opt_class();
-  v6 = [v4 entitlementValueForKey:@"com.apple.developer.ubiquity-container-identifiers" ofClass:v5 valuesOfClass:objc_opt_class()];
+  v6 = [proxyCopy entitlementValueForKey:@"com.apple.developer.ubiquity-container-identifiers" ofClass:v5 valuesOfClass:objc_opt_class()];
 
   if (v6)
   {
-    v7 = [v6 firstObject];
-    if (v7)
+    firstObject = [v6 firstObject];
+    if (firstObject)
     {
-      if ([a1 _isContainerIDPermitted:v7])
+      if ([self _isContainerIDPermitted:firstObject])
       {
-        v8 = v7;
+        v8 = firstObject;
       }
 
       else

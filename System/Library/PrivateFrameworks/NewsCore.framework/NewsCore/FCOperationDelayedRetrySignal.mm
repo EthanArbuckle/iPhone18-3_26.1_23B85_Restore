@@ -1,11 +1,11 @@
 @interface FCOperationDelayedRetrySignal
-- (FCOperationDelayedRetrySignal)initWithDelay:(double)a3;
-- (void)onQueue:(id)a3 signal:(id)a4;
+- (FCOperationDelayedRetrySignal)initWithDelay:(double)delay;
+- (void)onQueue:(id)queue signal:(id)signal;
 @end
 
 @implementation FCOperationDelayedRetrySignal
 
-- (FCOperationDelayedRetrySignal)initWithDelay:(double)a3
+- (FCOperationDelayedRetrySignal)initWithDelay:(double)delay
 {
   v7.receiver = self;
   v7.super_class = FCOperationDelayedRetrySignal;
@@ -13,24 +13,24 @@
   v5 = v4;
   if (v4)
   {
-    v4->_delay = a3;
-    v4->_signalTime = dispatch_time(0, (a3 * 1000000000.0));
+    v4->_delay = delay;
+    v4->_signalTime = dispatch_time(0, (delay * 1000000000.0));
   }
 
   return v5;
 }
 
-- (void)onQueue:(id)a3 signal:(id)a4
+- (void)onQueue:(id)queue signal:(id)signal
 {
-  v6 = a4;
+  signalCopy = signal;
   signalTime = self->_signalTime;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__FCOperationDelayedRetrySignal_onQueue_signal___block_invoke;
   block[3] = &unk_1E7C379C8;
-  v10 = v6;
-  v8 = v6;
-  dispatch_after(signalTime, a3, block);
+  v10 = signalCopy;
+  v8 = signalCopy;
+  dispatch_after(signalTime, queue, block);
 }
 
 @end

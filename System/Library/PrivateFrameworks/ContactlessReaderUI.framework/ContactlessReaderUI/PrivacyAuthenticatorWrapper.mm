@@ -1,12 +1,12 @@
 @interface PrivacyAuthenticatorWrapper
 - (_TtC19ContactlessReaderUI27PrivacyAuthenticatorWrapper)init;
-- (void)authenticator:(id)a3 didTransitionToCoachingState:(int64_t)a4;
-- (void)authenticator:(id)a3 didTransitionToEvaluationStateWithEvent:(id)a4;
+- (void)authenticator:(id)authenticator didTransitionToCoachingState:(int64_t)state;
+- (void)authenticator:(id)authenticator didTransitionToEvaluationStateWithEvent:(id)event;
 - (void)dealloc;
 - (void)dismissPasscodeViewController;
 - (void)dismissPassphraseViewController;
-- (void)presentPasscodeViewController:(id)a3 completionHandler:(id)a4 reply:(id)a5;
-- (void)presentPassphraseViewController:(id)a3 completionHandler:(id)a4 reply:(id)a5;
+- (void)presentPasscodeViewController:(id)controller completionHandler:(id)handler reply:(id)reply;
+- (void)presentPassphraseViewController:(id)controller completionHandler:(id)handler reply:(id)reply;
 @end
 
 @implementation PrivacyAuthenticatorWrapper
@@ -19,13 +19,13 @@
   if (v5)
   {
     v6 = ObjectType;
-    v7 = self;
+    selfCopy = self;
     [v5 invalidate];
     v8 = *(&self->super.isa + v4);
     if (v8)
     {
       [v8 setDelegate_];
-      v9.receiver = v7;
+      v9.receiver = selfCopy;
       v9.super_class = v6;
       [(PrivacyAuthenticatorWrapper *)&v9 dealloc];
       return;
@@ -47,26 +47,26 @@
   return result;
 }
 
-- (void)authenticator:(id)a3 didTransitionToEvaluationStateWithEvent:(id)a4
+- (void)authenticator:(id)authenticator didTransitionToEvaluationStateWithEvent:(id)event
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v7 = a3;
-  v8 = self;
+  var1 = event.var1;
+  var0 = event.var0;
+  authenticatorCopy = authenticator;
+  selfCopy = self;
   sub_2440AF830(var0, var1);
 }
 
-- (void)authenticator:(id)a3 didTransitionToCoachingState:(int64_t)a4
+- (void)authenticator:(id)authenticator didTransitionToCoachingState:(int64_t)state
 {
-  v6 = a3;
-  v7 = self;
-  sub_2440B0930(a4);
+  authenticatorCopy = authenticator;
+  selfCopy = self;
+  sub_2440B0930(state);
 }
 
-- (void)presentPasscodeViewController:(id)a3 completionHandler:(id)a4 reply:(id)a5
+- (void)presentPasscodeViewController:(id)controller completionHandler:(id)handler reply:(id)reply
 {
-  v8 = _Block_copy(a4);
-  v9 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
+  v9 = _Block_copy(reply);
   v10 = v9;
   if (v8)
   {
@@ -90,19 +90,19 @@ LABEL_3:
   }
 
 LABEL_5:
-  v12 = a3;
-  v13 = self;
-  sub_2440B0B58(a3, v8, v11);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_2440B0B58(controller, v8, v11);
   sub_243F7EE58(v10);
   sub_243F7EE58(v8);
 }
 
-- (void)presentPassphraseViewController:(id)a3 completionHandler:(id)a4 reply:(id)a5
+- (void)presentPassphraseViewController:(id)controller completionHandler:(id)handler reply:(id)reply
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EDC0A50);
   MEMORY[0x28223BE20](v6 - 8);
   v8 = &v16 - v7;
-  v9 = self;
+  selfCopy = self;
   v10 = sub_243F4E0C8();
   sub_243F5F574(v10, v8, &qword_27EDC0A50);
   v11 = sub_2440D11E0();
@@ -117,7 +117,7 @@ LABEL_5:
   {
     v13 = sub_243F4E2F4();
     v14 = sub_243F4E2FC();
-    sub_243F4E308(v13 & 1, v9, 0xD00000000000003BLL, 0x80000002440EF4D0, v14, v15);
+    sub_243F4E308(v13 & 1, selfCopy, 0xD00000000000003BLL, 0x80000002440EF4D0, v14, v15);
 
     (*(v12 + 8))(v8, v11);
   }
@@ -125,7 +125,7 @@ LABEL_5:
 
 - (void)dismissPasscodeViewController
 {
-  v2 = self;
+  selfCopy = self;
   sub_2440AF118();
 }
 
@@ -134,7 +134,7 @@ LABEL_5:
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EDC0A50);
   MEMORY[0x28223BE20](v3 - 8);
   v5 = &v13 - v4;
-  v6 = self;
+  selfCopy = self;
   v7 = sub_243F4E0C8();
   sub_243F5F574(v7, v5, &qword_27EDC0A50);
   v8 = sub_2440D11E0();
@@ -149,7 +149,7 @@ LABEL_5:
   {
     v10 = sub_243F4E2F4();
     v11 = sub_243F4E2FC();
-    sub_243F4E308(v10 & 1, v6, 0xD000000000000021, 0x80000002440EF530, v11, v12);
+    sub_243F4E308(v10 & 1, selfCopy, 0xD000000000000021, 0x80000002440EF530, v11, v12);
 
     (*(v9 + 8))(v5, v8);
   }

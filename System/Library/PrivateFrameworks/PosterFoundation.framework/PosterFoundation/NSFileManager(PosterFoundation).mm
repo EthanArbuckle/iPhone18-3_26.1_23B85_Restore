@@ -50,8 +50,8 @@
         v24 = @"(Unknown Location)";
       }
 
-      v25 = [v12 path];
-      v18 = PFGeneralErrorFromObjectWithLocalizedFailureReason(a1, v24, 0, 0, 1, @"unable to lookup inode for path '%@'", v26, v27, v25);
+      path = [v12 path];
+      v18 = PFGeneralErrorFromObjectWithLocalizedFailureReason(self, v24, 0, 0, 1, @"unable to lookup inode for path '%@'", v26, v27, path);
     }
 
     if (a5)
@@ -76,7 +76,7 @@
 
   if (!v14)
   {
-    v21 = [a1 moveItemAtURL:v12 toURL:v10 error:a5];
+    v21 = [self moveItemAtURL:v12 toURL:v10 error:a5];
     goto LABEL_41;
   }
 
@@ -94,14 +94,14 @@
       }
 
       v32 = v10;
-      v33 = [v10 fileSystemRepresentation];
+      fileSystemRepresentation = [v10 fileSystemRepresentation];
       v34 = v12;
-      if (renamex_np(v33, [v12 fileSystemRepresentation], 2u) != -1)
+      if (renamex_np(fileSystemRepresentation, [v12 fileSystemRepresentation], 2u) != -1)
       {
         if ([v12 checkResourceIsReachableAndReturnError:0])
         {
           v96 = 0;
-          [a1 removeItemAtURL:v12 error:&v96];
+          [self removeItemAtURL:v12 error:&v96];
           v35 = v96;
           if (v35)
           {
@@ -141,8 +141,8 @@
         v64 = *MEMORY[0x1E696A368];
         v105[0] = v63;
         v105[1] = v64;
-        v65 = [v10 path];
-        v106[1] = v65;
+        path2 = [v10 path];
+        v106[1] = path2;
         v66 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v106 forKeys:v105 count:2];
         *a5 = [v62 errorWithDomain:*MEMORY[0x1E696A798] code:v56 userInfo:v66];
       }
@@ -179,7 +179,7 @@ LABEL_20:
     v85[1] = 3221225472;
     v85[2] = __63__NSFileManager_PosterFoundation__pf_replaceURL_withURL_error___block_invoke;
     v85[3] = &unk_1E8189EA0;
-    v85[4] = a1;
+    v85[4] = self;
     v41 = v39;
     v86 = v41;
     v42 = v40;
@@ -190,7 +190,7 @@ LABEL_20:
     v78[2] = __63__NSFileManager_PosterFoundation__pf_replaceURL_withURL_error___block_invoke_2;
     v78[3] = &unk_1E8189EC8;
     v82 = &v88;
-    v78[4] = a1;
+    v78[4] = self;
     v43 = v10;
     v79 = v43;
     v71 = v42;
@@ -201,7 +201,7 @@ LABEL_20:
     p_buf = &buf;
     v44 = MEMORY[0x1C691C400](v78);
     v77 = 0;
-    LOBYTE(v42) = [a1 copyItemAtURL:v12 toURL:v71 error:&v77];
+    LOBYTE(v42) = [self copyItemAtURL:v12 toURL:v71 error:&v77];
     v45 = v77;
     *(*(&buf + 1) + 24) = v42;
     if (v45)
@@ -219,7 +219,7 @@ LABEL_20:
     else
     {
       v76 = 0;
-      v50 = [a1 moveItemAtURL:v43 toURL:v70 error:&v76];
+      v50 = [self moveItemAtURL:v43 toURL:v70 error:&v76];
       v51 = v76;
       *(v93 + 24) = v50;
       if (v51)
@@ -237,7 +237,7 @@ LABEL_20:
       else
       {
         v75 = 0;
-        v53 = [a1 moveItemAtURL:v71 toURL:v43 error:&v75];
+        v53 = [self moveItemAtURL:v71 toURL:v43 error:&v75];
         v54 = v75;
         *(v89 + 24) = v53;
         if (!v54)
@@ -246,7 +246,7 @@ LABEL_20:
           if ([v12 checkResourceIsReachableAndReturnError:0])
           {
             v74 = 0;
-            [a1 removeItemAtURL:v12 error:&v74];
+            [self removeItemAtURL:v12 error:&v74];
             v67 = v74;
             if (v67)
             {

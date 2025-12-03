@@ -1,16 +1,16 @@
 @interface MigratorValidateAppleIDsTask
-- (MigratorValidateAppleIDsTask)initWithConfiguration:(id)a3;
+- (MigratorValidateAppleIDsTask)initWithConfiguration:(id)configuration;
 - (id)copyConfiguration;
 - (void)main;
 @end
 
 @implementation MigratorValidateAppleIDsTask
 
-- (MigratorValidateAppleIDsTask)initWithConfiguration:(id)a3
+- (MigratorValidateAppleIDsTask)initWithConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = MigratorValidateAppleIDsTask;
-  return [(MigratorTask *)&v4 initWithConfiguration:a3];
+  return [(MigratorTask *)&v4 initWithConfiguration:configuration];
 }
 
 - (id)copyConfiguration

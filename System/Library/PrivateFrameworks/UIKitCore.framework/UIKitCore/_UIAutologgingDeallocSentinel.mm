@@ -8,8 +8,8 @@
 {
   if (![(_UIAutologgingDeallocSentinel *)self called])
   {
-    v3 = [(_UIAutologgingDeallocSentinel *)self message];
-    NSLog(&stru_1EFB25450.isa, v3);
+    message = [(_UIAutologgingDeallocSentinel *)self message];
+    NSLog(&stru_1EFB25450.isa, message);
   }
 
   v4.receiver = self;

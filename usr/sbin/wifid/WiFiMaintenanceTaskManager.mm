@@ -283,7 +283,7 @@
         }
 
         objc_autoreleasePoolPop(v13);
-        v14 = [(WiFiMaintenanceTaskManager *)self symptomsNetworkHistoryFeed];
+        symptomsNetworkHistoryFeed = [(WiFiMaintenanceTaskManager *)self symptomsNetworkHistoryFeed];
         v18[0] = _NSConcreteStackBlock;
         v18[1] = 3221225472;
         v18[2] = sub_10004CE2C;
@@ -292,7 +292,7 @@
         v18[5] = v11;
         v18[6] = v3;
         v18[7] = v5;
-        if ([(NetworkPerformanceFeed *)v14 fullScorecardFor:1 options:v12 reply:v18])
+        if ([(NetworkPerformanceFeed *)symptomsNetworkHistoryFeed fullScorecardFor:1 options:v12 reply:v18])
         {
           dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
         }

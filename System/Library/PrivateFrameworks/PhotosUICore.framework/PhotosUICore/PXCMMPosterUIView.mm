@@ -1,44 +1,44 @@
 @interface PXCMMPosterUIView
-- (CGSize)_performLayoutInWidth:(double)a3 updateSubviewFrames:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_performLayoutInWidth:(double)width updateSubviewFrames:(BOOL)frames;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)dateString;
 - (NSString)locationString;
 - (NSString)statusString;
-- (PXCMMPosterUIView)initWithFrame:(CGRect)a3;
-- (id)_fontDescriptorWithTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4;
+- (PXCMMPosterUIView)initWithFrame:(CGRect)frame;
+- (id)_fontDescriptorWithTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits;
 - (void)_updateBannerActionButton;
 - (void)_updateBannerTitles;
 - (void)_updateBannerView;
 - (void)_updateCorners;
 - (void)layoutSubviews;
-- (void)setActionButtonWithType:(int64_t)a3 actionBlock:(id)a4;
-- (void)setActionInProgress:(BOOL)a3;
-- (void)setAsset:(id)a3 mediaProvider:(id)a4;
-- (void)setBannerHeadline:(id)a3 boldRange:(_NSRange)a4;
-- (void)setBannerSubheadline:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setCornersToRound:(unint64_t)a3;
-- (void)setDateString:(id)a3;
-- (void)setLocationString:(id)a3;
-- (void)setNeedsBannerView:(BOOL)a3;
-- (void)setOpaqueAncestorBackgroundColor:(id)a3;
-- (void)setSelectedCount:(int64_t)a3;
-- (void)setStatusString:(id)a3;
-- (void)setTotalCount:(int64_t)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setActionButtonWithType:(int64_t)type actionBlock:(id)block;
+- (void)setActionInProgress:(BOOL)progress;
+- (void)setAsset:(id)asset mediaProvider:(id)provider;
+- (void)setBannerHeadline:(id)headline boldRange:(_NSRange)range;
+- (void)setBannerSubheadline:(id)subheadline;
+- (void)setCornerRadius:(double)radius;
+- (void)setCornersToRound:(unint64_t)round;
+- (void)setDateString:(id)string;
+- (void)setLocationString:(id)string;
+- (void)setNeedsBannerView:(BOOL)view;
+- (void)setOpaqueAncestorBackgroundColor:(id)color;
+- (void)setSelectedCount:(int64_t)count;
+- (void)setStatusString:(id)string;
+- (void)setTotalCount:(int64_t)count;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation PXCMMPosterUIView
 
-- (id)_fontDescriptorWithTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4
+- (id)_fontDescriptorWithTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits
 {
-  v4 = *&a4;
-  v5 = a3;
-  v6 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v6))
+  v4 = *&traits;
+  styleCopy = style;
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    v7 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v6];
-    v8 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v5 compatibleWithTraitCollection:v7];
+    v7 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:preferredContentSizeCategory];
+    v8 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:styleCopy compatibleWithTraitCollection:v7];
     v9 = v8;
     if (v4)
     {
@@ -50,7 +50,7 @@
 
   else
   {
-    v9 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v5 addingSymbolicTraits:v4 options:2];
+    v9 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:styleCopy addingSymbolicTraits:v4 options:2];
   }
 
   return v9;
@@ -60,9 +60,9 @@
 {
   [(PXCMMPosterUIView *)self cornerRadius];
   v4 = v3;
-  v5 = [(PXCMMPosterUIView *)self cornersToRound];
+  cornersToRound = [(PXCMMPosterUIView *)self cornersToRound];
   roundedCornerOverlayView = self->_roundedCornerOverlayView;
-  if (v4 <= 0.0 || v5 == 0)
+  if (v4 <= 0.0 || cornersToRound == 0)
   {
     [(PXRoundedCornerOverlayView *)roundedCornerOverlayView removeFromSuperview];
     v8 = self->_roundedCornerOverlayView;
@@ -89,7 +89,7 @@
     v12[3] = &unk_1E7736220;
     *&v12[5] = v4;
     v12[4] = self;
-    v12[6] = v5;
+    v12[6] = cornersToRound;
     [(PXRoundedCornerOverlayView *)roundedCornerOverlayView performChanges:v12];
   }
 }
@@ -108,30 +108,30 @@ void __35__PXCMMPosterUIView__updateCorners__block_invoke(uint64_t a1, void *a2)
   [v5 setCornersToRound:*(a1 + 48)];
 }
 
-- (CGSize)_performLayoutInWidth:(double)a3 updateSubviewFrames:(BOOL)a4
+- (CGSize)_performLayoutInWidth:(double)width updateSubviewFrames:(BOOL)frames
 {
   [(PXUpdater *)self->_updater updateIfNeeded];
-  v6 = [(PXCMMPosterUIView *)self traitCollection];
-  [v6 displayScale];
+  traitCollection = [(PXCMMPosterUIView *)self traitCollection];
+  [traitCollection displayScale];
 
   v11.origin.x = 0.0;
   v11.origin.y = 0.0;
-  v11.size.width = a3;
+  v11.size.width = width;
   v11.size.height = 1.79769313e308;
   Width = CGRectGetWidth(v11);
-  v8 = [(PXCMMPosterUIView *)self window];
-  v9 = [v8 screen];
-  [PXPhotosDetailsHeaderTileWidget preferredHeaderContentHeightForWidth:v9 screen:Width];
+  window = [(PXCMMPosterUIView *)self window];
+  screen = [window screen];
+  [PXPhotosDetailsHeaderTileWidget preferredHeaderContentHeightForWidth:screen screen:Width];
 
   PXSizeRoundToPixel();
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = PXCMMPosterUIView;
   [(PXCMMPosterUIView *)&v5 willMoveToWindow:?];
-  if (a3)
+  if (window)
   {
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateBannerActionButton];
   }
@@ -146,9 +146,9 @@ void __35__PXCMMPosterUIView__updateCorners__block_invoke(uint64_t a1, void *a2)
   [(PXCMMPosterUIView *)self _performLayoutInWidth:1 updateSubviewFrames:v3];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PXCMMPosterUIView *)self _performLayoutInWidth:0 updateSubviewFrames:a3.width, a3.height];
+  [(PXCMMPosterUIView *)self _performLayoutInWidth:0 updateSubviewFrames:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -207,7 +207,7 @@ void __38__PXCMMPosterUIView__updateBannerView__block_invoke_2(uint64_t a1)
 
 - (void)_updateBannerActionButton
 {
-  v3 = [(PXCMMPosterUIView *)self selectedCount];
+  selectedCount = [(PXCMMPosterUIView *)self selectedCount];
   v4 = _Block_copy(self->_actionButtonAction);
   v5 = v4;
   actionButtonType = self->_actionButtonType;
@@ -215,7 +215,7 @@ void __38__PXCMMPosterUIView__updateBannerView__block_invoke_2(uint64_t a1)
   {
     v10 = v4;
     v7 = PXLocalizedStringFromTable(@"PXCMMSaveButtonTitle", @"PhotosUICore");
-    if (v3 >= 1)
+    if (selectedCount >= 1)
     {
       goto LABEL_4;
     }
@@ -227,7 +227,7 @@ void __38__PXCMMPosterUIView__updateBannerView__block_invoke_2(uint64_t a1)
   {
     v10 = v4;
     v7 = PXLocalizedStringFromTable(@"PXCMMNextButtonTitle", @"PhotosUICore");
-    if (v3 > 0)
+    if (selectedCount > 0)
     {
 LABEL_4:
       actionButtonAction = self->_actionButtonAction;
@@ -258,19 +258,19 @@ LABEL_9:
   [(PXCMMPosterBannerView *)bannerView setSubheadline:bannerSubheadline];
 }
 
-- (void)setActionInProgress:(BOOL)a3
+- (void)setActionInProgress:(BOOL)progress
 {
-  if (self->_actionInProgress != a3)
+  if (self->_actionInProgress != progress)
   {
-    self->_actionInProgress = a3;
+    self->_actionInProgress = progress;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateBannerActionButton];
   }
 }
 
-- (void)setActionButtonWithType:(int64_t)a3 actionBlock:(id)a4
+- (void)setActionButtonWithType:(int64_t)type actionBlock:(id)block
 {
-  self->_actionButtonType = a3;
-  v5 = [a4 copy];
+  self->_actionButtonType = type;
+  v5 = [block copy];
   actionButtonAction = self->_actionButtonAction;
   self->_actionButtonAction = v5;
 
@@ -279,46 +279,46 @@ LABEL_9:
   [(PXUpdater *)updater setNeedsUpdateOf:sel__updateBannerActionButton];
 }
 
-- (void)setNeedsBannerView:(BOOL)a3
+- (void)setNeedsBannerView:(BOOL)view
 {
-  if (self->_needsBannerView != a3)
+  if (self->_needsBannerView != view)
   {
-    self->_needsBannerView = a3;
+    self->_needsBannerView = view;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateBannerView];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateCorners];
   }
 }
 
-- (void)setCornersToRound:(unint64_t)a3
+- (void)setCornersToRound:(unint64_t)round
 {
-  if (self->_cornersToRound != a3)
+  if (self->_cornersToRound != round)
   {
-    self->_cornersToRound = a3;
+    self->_cornersToRound = round;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateCorners];
   }
 }
 
-- (void)setOpaqueAncestorBackgroundColor:(id)a3
+- (void)setOpaqueAncestorBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (!v5)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCMMPosterUIView.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"opaqueAncestorBackgroundColor"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPosterUIView.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"opaqueAncestorBackgroundColor"}];
   }
 
   opaqueAncestorBackgroundColor = self->_opaqueAncestorBackgroundColor;
-  if (opaqueAncestorBackgroundColor != v5 && ([(UIColor *)opaqueAncestorBackgroundColor isEqual:v5]& 1) == 0)
+  if (opaqueAncestorBackgroundColor != colorCopy && ([(UIColor *)opaqueAncestorBackgroundColor isEqual:colorCopy]& 1) == 0)
   {
-    v7 = [(UIColor *)v5 copy];
+    v7 = [(UIColor *)colorCopy copy];
     v8 = self->_opaqueAncestorBackgroundColor;
     self->_opaqueAncestorBackgroundColor = v7;
 
@@ -332,11 +332,11 @@ LABEL_9:
   }
 }
 
-- (void)setSelectedCount:(int64_t)a3
+- (void)setSelectedCount:(int64_t)count
 {
-  if (self->_selectedCount != a3)
+  if (self->_selectedCount != count)
   {
-    self->_selectedCount = a3;
+    self->_selectedCount = count;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateBannerTitles];
     updater = self->_updater;
 
@@ -344,23 +344,23 @@ LABEL_9:
   }
 }
 
-- (void)setTotalCount:(int64_t)a3
+- (void)setTotalCount:(int64_t)count
 {
-  if (self->_totalCount != a3)
+  if (self->_totalCount != count)
   {
-    self->_totalCount = a3;
+    self->_totalCount = count;
   }
 }
 
-- (void)setBannerSubheadline:(id)a3
+- (void)setBannerSubheadline:(id)subheadline
 {
-  v4 = a3;
+  subheadlineCopy = subheadline;
   bannerSubheadline = self->_bannerSubheadline;
-  if (bannerSubheadline != v4)
+  if (bannerSubheadline != subheadlineCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)bannerSubheadline isEqualToString:v4];
-    v4 = v9;
+    v9 = subheadlineCopy;
+    v6 = [(NSString *)bannerSubheadline isEqualToString:subheadlineCopy];
+    subheadlineCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -368,45 +368,45 @@ LABEL_9:
       self->_bannerSubheadline = v7;
 
       [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateBannerTitles];
-      v4 = v9;
+      subheadlineCopy = v9;
     }
   }
 }
 
-- (void)setBannerHeadline:(id)a3 boldRange:(_NSRange)a4
+- (void)setBannerHeadline:(id)headline boldRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  headlineCopy = headline;
   bannerHeadline = self->_bannerHeadline;
-  v13 = v7;
-  if (bannerHeadline != v7 && (v9 = [(NSString *)bannerHeadline isEqualToString:v7], v7 = v13, !v9) || (self->_bannerHeadlineBoldRange.location == location ? (v10 = self->_bannerHeadlineBoldRange.length == length) : (v10 = 0), !v10))
+  v13 = headlineCopy;
+  if (bannerHeadline != headlineCopy && (v9 = [(NSString *)bannerHeadline isEqualToString:headlineCopy], headlineCopy = v13, !v9) || (self->_bannerHeadlineBoldRange.location == location ? (v10 = self->_bannerHeadlineBoldRange.length == length) : (v10 = 0), !v10))
   {
-    v11 = [(NSString *)v7 copy];
+    v11 = [(NSString *)headlineCopy copy];
     v12 = self->_bannerHeadline;
     self->_bannerHeadline = v11;
 
     self->_bannerHeadlineBoldRange.location = location;
     self->_bannerHeadlineBoldRange.length = length;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateBannerTitles];
-    v7 = v13;
+    headlineCopy = v13;
   }
 }
 
-- (void)setAsset:(id)a3 mediaProvider:(id)a4
+- (void)setAsset:(id)asset mediaProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXCMMPosterHeaderView *)self->_headerView viewModel];
+  assetCopy = asset;
+  providerCopy = provider;
+  viewModel = [(PXCMMPosterHeaderView *)self->_headerView viewModel];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __44__PXCMMPosterUIView_setAsset_mediaProvider___block_invoke;
   v11[3] = &unk_1E77361F8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 performChanges:v11];
+  v12 = assetCopy;
+  v13 = providerCopy;
+  v9 = providerCopy;
+  v10 = assetCopy;
+  [viewModel performChanges:v11];
 }
 
 void __44__PXCMMPosterUIView_setAsset_mediaProvider___block_invoke(uint64_t a1, void *a2)
@@ -417,78 +417,78 @@ void __44__PXCMMPosterUIView_setAsset_mediaProvider___block_invoke(uint64_t a1, 
   [v4 setMediaProvider:*(a1 + 40)];
 }
 
-- (void)setStatusString:(id)a3
+- (void)setStatusString:(id)string
 {
-  v4 = a3;
-  v5 = [(PXCMMPosterHeaderView *)self->_headerView viewModel];
+  stringCopy = string;
+  viewModel = [(PXCMMPosterHeaderView *)self->_headerView viewModel];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__PXCMMPosterUIView_setStatusString___block_invoke;
   v7[3] = &unk_1E77361D0;
-  v8 = v4;
-  v6 = v4;
-  [v5 performChanges:v7];
+  v8 = stringCopy;
+  v6 = stringCopy;
+  [viewModel performChanges:v7];
 }
 
 - (NSString)statusString
 {
-  v2 = [(PXCMMPosterHeaderView *)self->_headerView viewModel];
-  v3 = [v2 statusString];
+  viewModel = [(PXCMMPosterHeaderView *)self->_headerView viewModel];
+  statusString = [viewModel statusString];
 
-  return v3;
+  return statusString;
 }
 
-- (void)setDateString:(id)a3
+- (void)setDateString:(id)string
 {
-  v4 = a3;
-  v5 = [(PXCMMPosterHeaderView *)self->_headerView viewModel];
+  stringCopy = string;
+  viewModel = [(PXCMMPosterHeaderView *)self->_headerView viewModel];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__PXCMMPosterUIView_setDateString___block_invoke;
   v7[3] = &unk_1E77361D0;
-  v8 = v4;
-  v6 = v4;
-  [v5 performChanges:v7];
+  v8 = stringCopy;
+  v6 = stringCopy;
+  [viewModel performChanges:v7];
 }
 
 - (NSString)dateString
 {
-  v2 = [(PXCMMPosterHeaderView *)self->_headerView viewModel];
-  v3 = [v2 subtitle];
+  viewModel = [(PXCMMPosterHeaderView *)self->_headerView viewModel];
+  subtitle = [viewModel subtitle];
 
-  return v3;
+  return subtitle;
 }
 
-- (void)setLocationString:(id)a3
+- (void)setLocationString:(id)string
 {
-  v4 = a3;
-  v5 = [(PXCMMPosterHeaderView *)self->_headerView viewModel];
+  stringCopy = string;
+  viewModel = [(PXCMMPosterHeaderView *)self->_headerView viewModel];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__PXCMMPosterUIView_setLocationString___block_invoke;
   v7[3] = &unk_1E77361D0;
-  v8 = v4;
-  v6 = v4;
-  [v5 performChanges:v7];
+  v8 = stringCopy;
+  v6 = stringCopy;
+  [viewModel performChanges:v7];
 }
 
 - (NSString)locationString
 {
-  v2 = [(PXCMMPosterHeaderView *)self->_headerView viewModel];
-  v3 = [v2 title];
+  viewModel = [(PXCMMPosterHeaderView *)self->_headerView viewModel];
+  title = [viewModel title];
 
-  return v3;
+  return title;
 }
 
-- (PXCMMPosterUIView)initWithFrame:(CGRect)a3
+- (PXCMMPosterUIView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = PXCMMPosterUIView;
-  v3 = [(PXCMMPosterUIView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXCMMPosterUIView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [v3 setBackgroundColor:systemBackgroundColor];
 
     *(v3 + 408) = xmmword_1A5380D90;
     *(v3 + 64) = -1;

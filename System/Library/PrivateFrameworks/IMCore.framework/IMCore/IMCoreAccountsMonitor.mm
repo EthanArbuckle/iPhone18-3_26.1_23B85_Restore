@@ -3,7 +3,7 @@
 - (BOOL)isSignedIntoiCloud;
 - (IMCoreAccountsMonitor)init;
 - (id)_cachedPrimaryAppleAccount;
-- (void)accountStoreDidChange:(id)a3;
+- (void)accountStoreDidChange:(id)change;
 @end
 
 @implementation IMCoreAccountsMonitor
@@ -70,9 +70,9 @@
   return v3;
 }
 
-- (void)accountStoreDidChange:(id)a3
+- (void)accountStoreDidChange:(id)change
 {
-  v4 = objc_msgSend_userInfo(a3, a2, a3);
+  v4 = objc_msgSend_userInfo(change, a2, change);
   v6 = objc_msgSend_objectForKeyedSubscript_(v4, v5, *MEMORY[0x1E69598B8]);
   isEqualToString = objc_msgSend_isEqualToString_(v6, v7, *MEMORY[0x1E69597F8]);
 

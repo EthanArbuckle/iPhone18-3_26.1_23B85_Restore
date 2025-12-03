@@ -1,27 +1,27 @@
 @interface HTMLView.Coordinator
 - (_TtCV19ContactlessReaderUI8HTMLView11Coordinator)init;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation HTMLView.Coordinator
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_244073ED0(v6);
+  viewCopy = view;
+  navigationCopy = navigation;
+  selfCopy = self;
+  sub_244073ED0(viewCopy);
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_244074714(v10, v11, v8);
+  viewCopy = view;
+  actionCopy = action;
+  selfCopy = self;
+  sub_244074714(actionCopy, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }

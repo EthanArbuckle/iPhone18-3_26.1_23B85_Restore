@@ -1,5 +1,5 @@
 @interface CSAttendingHintInfo
-- (CSAttendingHintInfo)initWithOrigin:(unint64_t)a3;
+- (CSAttendingHintInfo)initWithOrigin:(unint64_t)origin;
 - (id)_originString;
 - (id)description;
 @end
@@ -9,8 +9,8 @@
 - (id)description
 {
   v3 = +[NSMutableString string];
-  v4 = [(CSAttendingHintInfo *)self _originString];
-  [v3 appendFormat:@"[origin: %@]", v4];
+  _originString = [(CSAttendingHintInfo *)self _originString];
+  [v3 appendFormat:@"[origin: %@]", _originString];
 
   return v3;
 }
@@ -35,14 +35,14 @@
   }
 }
 
-- (CSAttendingHintInfo)initWithOrigin:(unint64_t)a3
+- (CSAttendingHintInfo)initWithOrigin:(unint64_t)origin
 {
   v5.receiver = self;
   v5.super_class = CSAttendingHintInfo;
   result = [(CSAttendingHintInfo *)&v5 init];
   if (result)
   {
-    result->_origin = a3;
+    result->_origin = origin;
   }
 
   return result;

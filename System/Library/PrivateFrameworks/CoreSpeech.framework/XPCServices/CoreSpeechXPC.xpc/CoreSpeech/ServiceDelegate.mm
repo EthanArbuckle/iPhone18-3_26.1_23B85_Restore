@@ -1,14 +1,14 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (ServiceDelegate)init;
 - (void)dealloc;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v22 = a4;
+  connectionCopy = connection;
   v4 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CoreSpeechXPCProtocol];
   v30[0] = objc_opt_class();
   v30[1] = objc_opt_class();
@@ -57,13 +57,13 @@
   v16 = [NSSet setWithArray:v15];
   [v4 setClasses:v16 forSelector:"voiceTriggerJarvisLanguageList:jarvisSelectedLanguage:completion:" argumentIndex:0 ofReply:0];
 
-  [v22 setExportedInterface:v4];
-  v17 = [CSUtils xpcConnection:v22 hasEntitlement:@"corespeech.xpc"];
+  [connectionCopy setExportedInterface:v4];
+  v17 = [CSUtils xpcConnection:connectionCopy hasEntitlement:@"corespeech.xpc"];
   if (v17)
   {
     v18 = [[CoreSpeechXPC alloc] initWithFakeMonitor:self->_fakeModelMonitor];
-    [v22 setExportedObject:v18];
-    [v22 resume];
+    [connectionCopy setExportedObject:v18];
+    [connectionCopy resume];
   }
 
   else
@@ -74,11 +74,11 @@
       *buf = 136315394;
       *&buf[4] = "[ServiceDelegate listener:shouldAcceptNewConnection:]";
       *&buf[12] = 2114;
-      *&buf[14] = v22;
+      *&buf[14] = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%s Connecting request %{public}@ rejected due to missing entitlement", buf, 0x16u);
     }
 
-    [v22 invalidate];
+    [connectionCopy invalidate];
   }
 
   return v17;

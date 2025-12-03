@@ -1,10 +1,10 @@
 @interface MRWeakProxy
-+ (id)weakProxyWithObject:(id)a3 protocol:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
++ (id)weakProxyWithObject:(id)object protocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)object;
 - (unint64_t)hash;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation MRWeakProxy
@@ -16,22 +16,22 @@
   return WeakRetained;
 }
 
-+ (id)weakProxyWithObject:(id)a3 protocol:(id)a4
++ (id)weakProxyWithObject:(id)object protocol:(id)protocol
 {
-  v5 = a4;
-  v6 = a3;
+  protocolCopy = protocol;
+  objectCopy = object;
   v7 = objc_alloc_init(MRWeakProxy);
-  [(MRWeakProxy *)v7 setObject:v6];
+  [(MRWeakProxy *)v7 setObject:objectCopy];
 
-  [(MRWeakProxy *)v7 setProtocol:v5];
+  [(MRWeakProxy *)v7 setProtocol:protocolCopy];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(MRWeakProxy *)self object];
-  v4 = [v3 hash];
+  object = [(MRWeakProxy *)self object];
+  v4 = [object hash];
   if (!v4)
   {
     v6.receiver = self;
@@ -42,15 +42,15 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MRWeakProxy *)self object];
-    v6 = [v4 object];
-    v7 = v5 == v6;
+    object = [(MRWeakProxy *)self object];
+    object2 = [equalCopy object];
+    v7 = object == object2;
   }
 
   else
@@ -61,45 +61,45 @@
   return v7;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = [(MRWeakProxy *)self object];
-  if (v5)
+  invocationCopy = invocation;
+  object = [(MRWeakProxy *)self object];
+  if (object)
   {
-    [v4 selector];
+    [invocationCopy selector];
     if (objc_opt_respondsToSelector())
     {
-      [v4 invokeWithTarget:v5];
+      [invocationCopy invokeWithTarget:object];
     }
 
     else
     {
       v6.receiver = self;
       v6.super_class = MRWeakProxy;
-      [(MRWeakProxy *)&v6 forwardInvocation:v4];
+      [(MRWeakProxy *)&v6 forwardInvocation:invocationCopy];
     }
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v5 = [(MRWeakProxy *)self object];
-  v6 = v5;
-  if (v5)
+  object = [(MRWeakProxy *)self object];
+  v6 = object;
+  if (object)
   {
-    v7 = [v5 methodSignatureForSelector:a3];
+    v7 = [object methodSignatureForSelector:selector];
 LABEL_6:
     v9 = v7;
     goto LABEL_7;
   }
 
-  MethodDescription = protocol_getMethodDescription(self->_protocol, a3, 1, 1);
+  MethodDescription = protocol_getMethodDescription(self->_protocol, selector, 1, 1);
   if (!MethodDescription.types || ([MEMORY[0x1E695DF68] signatureWithObjCTypes:MethodDescription.types], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v11.receiver = self;
     v11.super_class = MRWeakProxy;
-    v7 = [(MRWeakProxy *)&v11 methodSignatureForSelector:a3];
+    v7 = [(MRWeakProxy *)&v11 methodSignatureForSelector:selector];
     goto LABEL_6;
   }
 

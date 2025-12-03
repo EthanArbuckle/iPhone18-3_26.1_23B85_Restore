@@ -1,9 +1,9 @@
 @interface MSDDemoVolumeManager
 + (id)sharedInstance;
-- (BOOL)mountAPFSVolume:(id)a3 atMountPoint:(id)a4 withAttributes:(id)a5;
-- (BOOL)moveStagingToFinal:(id)a3;
-- (id)findAPFSVolumeMountPoint:(id)a3;
-- (id)lookupAPFSVolumeDevByName:(id)a3;
+- (BOOL)mountAPFSVolume:(id)volume atMountPoint:(id)point withAttributes:(id)attributes;
+- (BOOL)moveStagingToFinal:(id)final;
+- (id)findAPFSVolumeMountPoint:(id)point;
+- (id)lookupAPFSVolumeDevByName:(id)name;
 - (void)mountDemoVolume;
 - (void)moveDataFromShelterToFinal;
 @end
@@ -65,16 +65,16 @@ LABEL_7:
   }
 }
 
-- (id)lookupAPFSVolumeDevByName:(id)a3
+- (id)lookupAPFSVolumeDevByName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
+  nameCopy = name;
+  v4 = nameCopy;
   existing = 0;
   memset(name, 0, 128);
   properties = 0;
-  if (v3)
+  if (nameCopy)
   {
-    v5 = IOServiceNameMatching([v3 UTF8String]);
+    v5 = IOServiceNameMatching([nameCopy UTF8String]);
     MatchingServices = IOServiceGetMatchingServices(kIOMasterPortDefault, v5, &existing);
     if (!MatchingServices)
     {
@@ -179,13 +179,13 @@ LABEL_23:
   return v9;
 }
 
-- (BOOL)moveStagingToFinal:(id)a3
+- (BOOL)moveStagingToFinal:(id)final
 {
-  v29 = a3;
+  finalCopy = final;
   v3 = +[NSFileManager defaultManager];
   if ([v3 fileExistsAtPath:@"/private/var/demo_backup/backup"])
   {
-    [v3 enumeratorAtPath:v29];
+    [v3 enumeratorAtPath:finalCopy];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -210,12 +210,12 @@ LABEL_23:
 
           v9 = *(*(&v32 + 1) + 8 * i);
           v10 = objc_autoreleasePoolPush();
-          v11 = [v29 stringByAppendingPathComponent:v9];
+          v11 = [finalCopy stringByAppendingPathComponent:v9];
           if ([v3 fileExistsAtPath:v11])
           {
             v12 = [@"/private/var/demo_backup/backup" stringByAppendingPathComponent:v9];
-            v13 = [v12 stringByDeletingLastPathComponent];
-            if (([v3 fileExistsAtPath:v12] & 1) == 0 && objc_msgSend(v3, "fileExistsAtPath:", v13))
+            stringByDeletingLastPathComponent = [v12 stringByDeletingLastPathComponent];
+            if (([v3 fileExistsAtPath:v12] & 1) == 0 && objc_msgSend(v3, "fileExistsAtPath:", stringByDeletingLastPathComponent))
             {
               v14 = +[MSDLogModel sharedInstance];
               [v14 logMessage:1 prefix:@"[INF]" message:{@"Moving %@ to %@", v11, v12}];
@@ -227,8 +227,8 @@ LABEL_23:
               if (!v15)
               {
                 v23 = +[MSDLogModel sharedInstance];
-                v24 = [v16 localizedDescription];
-                [v23 logMessage:1 prefix:@"[INF]" message:{@"Cannot move %@ to %@ with error - %@", v11, v12, v24}];
+                localizedDescription = [v16 localizedDescription];
+                [v23 logMessage:1 prefix:@"[INF]" message:{@"Cannot move %@ to %@ with error - %@", v11, v12, localizedDescription}];
 
                 objc_autoreleasePoolPop(v10);
                 v17 = 0;
@@ -275,15 +275,15 @@ LABEL_19:
 
   v19 = +[MSDLogModel sharedInstance];
   v17 = 1;
-  [v19 logMessage:1 prefix:@"[INF]" message:{@"Moving %@ to %@", v29, @"/private/var/demo_backup/backup"}];
+  [v19 logMessage:1 prefix:@"[INF]" message:{@"Moving %@ to %@", finalCopy, @"/private/var/demo_backup/backup"}];
 
   v30 = 0;
-  v20 = [v3 moveItemAtPath:v29 toPath:@"/private/var/demo_backup/backup" error:&v30];
+  v20 = [v3 moveItemAtPath:finalCopy toPath:@"/private/var/demo_backup/backup" error:&v30];
   v21 = v30;
   v16 = v21;
   if ((v20 & 1) == 0)
   {
-    sub_100003A54(v21, v29, &v36, &v37);
+    sub_100003A54(v21, finalCopy, &v36, &v37);
     v17 = 0;
     v18 = v36;
     v4 = v37;
@@ -346,11 +346,11 @@ LABEL_20:
 LABEL_8:
 }
 
-- (id)findAPFSVolumeMountPoint:(id)a3
+- (id)findAPFSVolumeMountPoint:(id)point
 {
-  v3 = a3;
+  pointCopy = point;
   v17 = 0;
-  if (!v3)
+  if (!pointCopy)
   {
     goto LABEL_18;
   }
@@ -363,7 +363,7 @@ LABEL_8:
     [v14 logMessage:1 prefix:@"[INF]" message:{@"Failed to get mounted filesystem info with error - %s", strerror(*v15)}];
 
 LABEL_18:
-    v9 = 0;
+    1024 = 0;
     goto LABEL_14;
   }
 
@@ -373,9 +373,9 @@ LABEL_18:
   {
     if (!strncmp("apfs", v5 + v7 - 1040, 0xFuLL))
     {
-      v8 = [v3 UTF8String];
+      uTF8String = [pointCopy UTF8String];
       v5 = v17;
-      if (!strncmp(v8, v17 + v7, 0xFuLL))
+      if (!strncmp(uTF8String, v17 + v7, 0xFuLL))
       {
         break;
       }
@@ -384,7 +384,7 @@ LABEL_18:
     v7 += 2168;
     if (!--v6)
     {
-      v9 = 0;
+      1024 = 0;
       goto LABEL_13;
     }
   }
@@ -397,12 +397,12 @@ LABEL_18:
     v12 = +[MSDLogModel sharedInstance];
     [v12 logMessage:1 prefix:@"[INF]" message:{@"Mount point corrupted with error - %d", v11}];
 
-    v9 = 0;
+    1024 = 0;
   }
 
   else
   {
-    v9 = [NSString stringWithUTF8String:v17 + v7 - 1024];
+    1024 = [NSString stringWithUTF8String:v17 + v7 - 1024];
   }
 
   v5 = v17;
@@ -410,28 +410,28 @@ LABEL_13:
   free(v5);
 LABEL_14:
 
-  return v9;
+  return 1024;
 }
 
-- (BOOL)mountAPFSVolume:(id)a3 atMountPoint:(id)a4 withAttributes:(id)a5
+- (BOOL)mountAPFSVolume:(id)volume atMountPoint:(id)point withAttributes:(id)attributes
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  volumeCopy = volume;
+  pointCopy = point;
+  attributesCopy = attributes;
   bzero(v27, 0x138uLL);
   bzero(&v24, 0x90uLL);
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  if (v7 && v8)
+  if (volumeCopy && pointCopy)
   {
     v10 = +[NSFileManager defaultManager];
     v23 = 0;
-    v13 = [v10 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v23];
+    v13 = [v10 createDirectoryAtPath:pointCopy withIntermediateDirectories:1 attributes:0 error:&v23];
     v12 = v23;
     if (v13)
     {
-      v14 = stat([v8 UTF8String], &v24);
+      v14 = stat([pointCopy UTF8String], &v24);
       if (v14)
       {
         v20 = v14;
@@ -441,11 +441,11 @@ LABEL_14:
 
       else
       {
-        v25 = [v7 UTF8String];
+        uTF8String = [volumeCopy UTF8String];
         v27[2] = 1;
         v28 = *&v24.st_uid;
         v26 = 0x100000;
-        if (mount("apfs", [v8 UTF8String], 0x100000, &v25))
+        if (mount("apfs", [pointCopy UTF8String], 0x100000, &uTF8String))
         {
           v18 = +[MSDLogModel sharedInstance];
           v21 = __error();
@@ -454,14 +454,14 @@ LABEL_14:
 
         else
         {
-          if (!v9)
+          if (!attributesCopy)
           {
             v11 = 1;
             goto LABEL_10;
           }
 
           v22 = v12;
-          v15 = [v10 setAttributes:v9 ofItemAtPath:v8 error:&v22];
+          v15 = [v10 setAttributes:attributesCopy ofItemAtPath:pointCopy error:&v22];
           v16 = v22;
 
           if (v15)
@@ -481,8 +481,8 @@ LABEL_14:
     else
     {
       v18 = +[MSDLogModel sharedInstance];
-      v19 = [v12 localizedDescription];
-      [v18 logMessage:1 prefix:@"[INF]" message:{@"Failed to create mount point at '%@' -  %@", v8, v19}];
+      localizedDescription = [v12 localizedDescription];
+      [v18 logMessage:1 prefix:@"[INF]" message:{@"Failed to create mount point at '%@' -  %@", pointCopy, localizedDescription}];
     }
 
     v11 = 0;

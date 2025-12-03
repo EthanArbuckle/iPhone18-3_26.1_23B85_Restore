@@ -1,10 +1,10 @@
 @interface PSSearchOperation
 + (__CFStringTokenizer)_wordBoundaryTokenizer;
-- (BOOL)_searchEntries:(id)a3 forQuery:(id)a4;
+- (BOOL)_searchEntries:(id)entries forQuery:(id)query;
 - (BOOL)_systemLanguageHasContinuousScript;
-- (PSSearchOperation)initWithSearchQuery:(id)a3 rootEntries:(id)a4;
+- (PSSearchOperation)initWithSearchQuery:(id)query rootEntries:(id)entries;
 - (PSSearchOperationDelegate)delegate;
-- (id)_filterEntriesMatchingQuery:(id)a3 forQuery:(id)a4;
+- (id)_filterEntriesMatchingQuery:(id)query forQuery:(id)forQuery;
 - (id)debugDescription;
 - (id)description;
 - (void)_didCancel;
@@ -14,20 +14,20 @@
 
 @implementation PSSearchOperation
 
-- (PSSearchOperation)initWithSearchQuery:(id)a3 rootEntries:(id)a4
+- (PSSearchOperation)initWithSearchQuery:(id)query rootEntries:(id)entries
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  entriesCopy = entries;
   v14.receiver = self;
   v14.super_class = PSSearchOperation;
   v8 = [(PSSearchOperation *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [queryCopy copy];
     query = v8->_query;
     v8->_query = v9;
 
-    v11 = [v7 copy];
+    v11 = [entriesCopy copy];
     rootEntries = v8->_rootEntries;
     v8->_rootEntries = v11;
   }
@@ -45,8 +45,8 @@
 
 - (void)_didCancel
 {
-  v3 = [(PSSearchOperation *)self delegate];
-  [v3 searchOperationDidCancel:self];
+  delegate = [(PSSearchOperation *)self delegate];
+  [delegate searchOperationDidCancel:self];
 
   [(PSSearchOperation *)self setDelegate:0];
 }
@@ -62,8 +62,8 @@
   currentResults = self->_currentResults;
   self->_currentResults = v3;
 
-  v5 = [(PSSearchOperation *)self delegate];
-  [v5 searchOperationDidBegin:self];
+  delegate = [(PSSearchOperation *)self delegate];
+  [delegate searchOperationDidBegin:self];
 
   if (![(NSString *)self->_query length])
   {
@@ -78,8 +78,8 @@ LABEL_7:
     return;
   }
 
-  v6 = [(PSSearchOperation *)self delegate];
-  [v6 searchOperation:self configureSearchResults:self->_currentResults];
+  delegate2 = [(PSSearchOperation *)self delegate];
+  [delegate2 searchOperation:self configureSearchResults:self->_currentResults];
 
   [(PSSearchOperation *)self isNewQuery];
 LABEL_6:
@@ -88,16 +88,16 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v8 = [(PSSearchOperation *)self delegate];
-  v7 = [(PSSearchOperation *)self currentResults];
-  [v8 searchOperationDidFinish:self withResults:v7];
+  delegate3 = [(PSSearchOperation *)self delegate];
+  currentResults = [(PSSearchOperation *)self currentResults];
+  [delegate3 searchOperationDidFinish:self withResults:currentResults];
 }
 
-- (BOOL)_searchEntries:(id)a3 forQuery:(id)a4
+- (BOOL)_searchEntries:(id)entries forQuery:(id)query
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  entriesCopy = entries;
+  queryCopy = query;
   if (([(PSSearchOperation *)self isCancelled]& 1) != 0)
   {
     v8 = 0;
@@ -105,22 +105,22 @@ LABEL_6:
 
   else
   {
-    v9 = [(PSSearchOperation *)self delegate];
-    if (v9)
+    delegate = [(PSSearchOperation *)self delegate];
+    if (delegate)
     {
-      v10 = [(PSSearchOperation *)self delegate];
-      v11 = [v10 searchOperation:self filteredEntriesForEntries:v6];
+      delegate2 = [(PSSearchOperation *)self delegate];
+      v11 = [delegate2 searchOperation:self filteredEntriesForEntries:entriesCopy];
     }
 
     else
     {
-      v11 = v6;
+      v11 = entriesCopy;
     }
 
-    v12 = [(PSSearchOperation *)self _filterEntriesMatchingQuery:v11 forQuery:v7];
+    v12 = [(PSSearchOperation *)self _filterEntriesMatchingQuery:v11 forQuery:queryCopy];
     currentResults = self->_currentResults;
-    v14 = [v12 allObjects];
-    [(PSSearchResults *)currentResults addEntries:v14];
+    allObjects = [v12 allObjects];
+    [(PSSearchResults *)currentResults addEntries:allObjects];
 
     v24 = 0u;
     v25 = 0u;
@@ -141,8 +141,8 @@ LABEL_6:
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v22 + 1) + 8 * i) childEntries];
-          if ([v20 count] && !-[PSSearchOperation _searchEntries:forQuery:](self, "_searchEntries:forQuery:", v20, v7))
+          childEntries = [*(*(&v22 + 1) + 8 * i) childEntries];
+          if ([childEntries count] && !-[PSSearchOperation _searchEntries:forQuery:](self, "_searchEntries:forQuery:", childEntries, queryCopy))
           {
 
             v8 = 0;
@@ -239,24 +239,24 @@ void __55__PSSearchOperation__systemLanguageHasContinuousScript__block_invoke()
   }
 }
 
-- (id)_filterEntriesMatchingQuery:(id)a3 forQuery:(id)a4
+- (id)_filterEntriesMatchingQuery:(id)query forQuery:(id)forQuery
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v5 = a4;
+  queryCopy = query;
+  forQueryCopy = forQuery;
   v6 = +[PSSearchOperation _wordBoundaryTokenizer];
-  v28.length = [(__CFString *)v5 length];
+  v28.length = [(__CFString *)forQueryCopy length];
   v28.location = 0;
-  CFStringTokenizerSetString(v6, v5, v28);
-  v7 = [MEMORY[0x1E695DF70] array];
+  CFStringTokenizerSetString(v6, forQueryCopy, v28);
+  array = [MEMORY[0x1E695DF70] array];
   while (CFStringTokenizerAdvanceToNextToken(v6))
   {
     CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v6);
     if (CurrentTokenRange.location != -1 && CurrentTokenRange.length)
     {
-      v9 = [(__CFString *)v5 substringWithRange:CurrentTokenRange.location, CurrentTokenRange.length];
-      v10 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-      v11 = [v10 characterIsMember:{objc_msgSend(v9, "characterAtIndex:", 0)}];
+      v9 = [(__CFString *)forQueryCopy substringWithRange:CurrentTokenRange.location, CurrentTokenRange.length];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+      v11 = [whitespaceAndNewlineCharacterSet characterIsMember:{objc_msgSend(v9, "characterAtIndex:", 0)}];
 
       if ((v11 & 1) == 0)
       {
@@ -282,22 +282,22 @@ void __55__PSSearchOperation__systemLanguageHasContinuousScript__block_invoke()
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
         v19 = [v17 orPredicateWithSubpredicates:v18];
 
-        [v7 addObject:v19];
+        [array addObject:v19];
       }
     }
   }
 
-  if ([v7 count])
+  if ([array count])
   {
-    v20 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v7];
-    v21 = v24;
-    v22 = [v24 filteredSetUsingPredicate:v20];
+    v20 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
+    v21 = queryCopy;
+    v22 = [queryCopy filteredSetUsingPredicate:v20];
   }
 
   else
   {
     v22 = [MEMORY[0x1E695DFD8] set];
-    v21 = v24;
+    v21 = queryCopy;
   }
 
   return v22;

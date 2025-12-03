@@ -1,59 +1,59 @@
 @interface MCDRadioMusicKitContentManager
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_modelRequest;
-- (id)childrenOfItemAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)viewModelsAtIndexPath:(id)a3 prefersTallArtwork:(BOOL)a4 withSubtitleForPlaylists:(BOOL)a5 actionToPerform:(unint64_t)a6;
-- (int64_t)allowedNumberOfItemsForDisplayWithResponse:(id)a3 inSection:(int64_t)a4;
-- (unint64_t)cellTypeAtIndexPath:(id)a3;
-- (void)__initiatePlaybackForItem:(id)a3;
-- (void)_initiatePlaybackForItem:(id)a3;
-- (void)_initiatePlaybackForItem:(id)a3 shouldPushNowPlaying:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)childrenOfItemAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)viewModelsAtIndexPath:(id)path prefersTallArtwork:(BOOL)artwork withSubtitleForPlaylists:(BOOL)playlists actionToPerform:(unint64_t)perform;
+- (int64_t)allowedNumberOfItemsForDisplayWithResponse:(id)response inSection:(int64_t)section;
+- (unint64_t)cellTypeAtIndexPath:(id)path;
+- (void)__initiatePlaybackForItem:(id)item;
+- (void)_initiatePlaybackForItem:(id)item;
+- (void)_initiatePlaybackForItem:(id)item shouldPushNowPlaying:(BOOL)playing;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateLiveStationsRow;
 @end
 
 @implementation MCDRadioMusicKitContentManager
 
-- (id)childrenOfItemAtIndexPath:(id)a3
+- (id)childrenOfItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v6 = [v5 results];
-  v7 = [v6 numberOfSections];
-  v8 = [v4 section];
+  pathCopy = path;
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  numberOfSections = [results numberOfSections];
+  section = [pathCopy section];
 
-  if (v7 <= v8)
+  if (numberOfSections <= section)
   {
     v11 = &__NSArray0__struct;
   }
 
   else
   {
-    v9 = [(MCDFuseContentManager *)self lastReceivedResponse];
-    v10 = [v9 results];
-    v11 = [v10 itemsInSectionAtIndex:{objc_msgSend(v4, "section")}];
+    lastReceivedResponse2 = [(MCDFuseContentManager *)self lastReceivedResponse];
+    results2 = [lastReceivedResponse2 results];
+    v11 = [results2 itemsInSectionAtIndex:{objc_msgSend(pathCopy, "section")}];
   }
 
   return v11;
 }
 
-- (int64_t)allowedNumberOfItemsForDisplayWithResponse:(id)a3 inSection:(int64_t)a4
+- (int64_t)allowedNumberOfItemsForDisplayWithResponse:(id)response inSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(MCDFuseContentManager *)self contentResults];
+  responseCopy = response;
+  contentResults = [(MCDFuseContentManager *)self contentResults];
 
-  if (v7)
+  if (contentResults)
   {
-    v8 = [(MCDFuseContentManager *)self contentResults];
-    v9 = [v8 numberOfItemsInSection:a4];
+    contentResults2 = [(MCDFuseContentManager *)self contentResults];
+    v9 = [contentResults2 numberOfItemsInSection:section];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = MCDRadioMusicKitContentManager;
-    v9 = [(MCDGroupingsContentManager *)&v11 allowedNumberOfItemsForDisplayWithResponse:v6 inSection:a4];
+    v9 = [(MCDGroupingsContentManager *)&v11 allowedNumberOfItemsForDisplayWithResponse:responseCopy inSection:section];
   }
 
   return v9;
@@ -63,10 +63,10 @@
 {
   v8.receiver = self;
   v8.super_class = MCDRadioMusicKitContentManager;
-  v2 = [(MCDGroupingsContentManager *)&v8 _modelRequest];
+  _modelRequest = [(MCDGroupingsContentManager *)&v8 _modelRequest];
   v3 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.mobileipod"];
   v4 = +[MPCloudServiceStatusController sharedController];
-  v5 = [v4 musicSubscriptionStatus];
+  musicSubscriptionStatus = [v4 musicSubscriptionStatus];
 
   if ([v3 BOOLForKey:@"UserRequestedSubscriptionHidden"])
   {
@@ -75,12 +75,12 @@
 
   else
   {
-    if (!v5)
+    if (!musicSubscriptionStatus)
     {
       goto LABEL_8;
     }
 
-    if ([v5 hasCapability:1])
+    if ([musicSubscriptionStatus hasCapability:1])
     {
       v6 = 1;
     }
@@ -91,72 +91,72 @@
     }
   }
 
-  [v2 setSubscriptionStatus:v6];
+  [_modelRequest setSubscriptionStatus:v6];
 LABEL_8:
-  [v2 setAdditionalContent:1];
-  [v2 setOptions:4];
+  [_modelRequest setAdditionalContent:1];
+  [_modelRequest setOptions:4];
 
-  return v2;
+  return _modelRequest;
 }
 
-- (void)_initiatePlaybackForItem:(id)a3 shouldPushNowPlaying:(BOOL)a4
+- (void)_initiatePlaybackForItem:(id)item shouldPushNowPlaying:(BOOL)playing
 {
-  v4 = a4;
-  v6 = a3;
-  [(MCDRadioMusicKitContentManager *)self setShouldPushNowPlayingOnNextPlaybackManagerCall:v4];
-  [(MCDRadioMusicKitContentManager *)self __initiatePlaybackForItem:v6];
+  playingCopy = playing;
+  itemCopy = item;
+  [(MCDRadioMusicKitContentManager *)self setShouldPushNowPlayingOnNextPlaybackManagerCall:playingCopy];
+  [(MCDRadioMusicKitContentManager *)self __initiatePlaybackForItem:itemCopy];
 }
 
-- (void)_initiatePlaybackForItem:(id)a3
+- (void)_initiatePlaybackForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(MCDRadioMusicKitContentManager *)self setShouldPushNowPlayingOnNextPlaybackManagerCall:1];
-  [(MCDRadioMusicKitContentManager *)self __initiatePlaybackForItem:v4];
+  [(MCDRadioMusicKitContentManager *)self __initiatePlaybackForItem:itemCopy];
 }
 
-- (void)__initiatePlaybackForItem:(id)a3
+- (void)__initiatePlaybackForItem:(id)item
 {
-  v11 = a3;
+  itemCopy = item;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v10 = v11;
+    v10 = itemCopy;
     if ((isKindOfClass & 1) == 0)
     {
       goto LABEL_8;
     }
 
-    v4 = [(MCDFuseContentManager *)self playbackManager];
-    v5 = [(MCDFuseContentManager *)self viewController];
-    v6 = [v5 combinedPlayActivityFeatureName];
-    [v4 initiatePlaybackForRadioStation:v11 lastResponse:0 shuffled:0 playActivityFeatureName:v6];
+    playbackManager = [(MCDFuseContentManager *)self playbackManager];
+    viewController = [(MCDFuseContentManager *)self viewController];
+    combinedPlayActivityFeatureName = [viewController combinedPlayActivityFeatureName];
+    [playbackManager initiatePlaybackForRadioStation:itemCopy lastResponse:0 shuffled:0 playActivityFeatureName:combinedPlayActivityFeatureName];
     goto LABEL_6;
   }
 
-  v4 = v11;
-  if ([v4 hasLoadedValueForKey:MPModelStoreBrowseSectionRelationshipRadioStation])
+  playbackManager = itemCopy;
+  if ([playbackManager hasLoadedValueForKey:MPModelStoreBrowseSectionRelationshipRadioStation])
   {
-    v5 = [(MCDFuseContentManager *)self playbackManager];
-    v6 = [v4 radioStation];
-    v7 = [(MCDFuseContentManager *)self viewController];
-    v8 = [v7 combinedPlayActivityFeatureName];
-    [v5 initiatePlaybackForRadioStation:v6 lastResponse:0 shuffled:0 playActivityFeatureName:v8];
+    viewController = [(MCDFuseContentManager *)self playbackManager];
+    combinedPlayActivityFeatureName = [playbackManager radioStation];
+    viewController2 = [(MCDFuseContentManager *)self viewController];
+    combinedPlayActivityFeatureName2 = [viewController2 combinedPlayActivityFeatureName];
+    [viewController initiatePlaybackForRadioStation:combinedPlayActivityFeatureName lastResponse:0 shuffled:0 playActivityFeatureName:combinedPlayActivityFeatureName2];
 
 LABEL_6:
   }
 
-  v10 = v11;
+  v10 = itemCopy;
 LABEL_8:
 }
 
-- (unint64_t)cellTypeAtIndexPath:(id)a3
+- (unint64_t)cellTypeAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v6 = [v5 results];
-  v7 = [v6 sectionAtIndex:{objc_msgSend(v4, "section")}];
+  pathCopy = path;
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  v7 = [results sectionAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   if ([v7 sectionType] == 13)
   {
@@ -172,29 +172,29 @@ LABEL_8:
   {
     v10.receiver = self;
     v10.super_class = MCDRadioMusicKitContentManager;
-    v8 = [(MCDGroupingsContentManager *)&v10 cellTypeAtIndexPath:v4];
+    v8 = [(MCDGroupingsContentManager *)&v10 cellTypeAtIndexPath:pathCopy];
   }
 
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(MCDFuseContentManager *)self contentResults];
+  viewCopy = view;
+  contentResults = [(MCDFuseContentManager *)self contentResults];
 
   v8 = 0.0;
-  if (!v7)
+  if (!contentResults)
   {
-    v9 = [(MCDFuseContentManager *)self lastReceivedResponse];
-    v10 = [v9 results];
-    v11 = [v10 sectionAtIndex:a4];
+    lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+    results = [lastReceivedResponse results];
+    v11 = [results sectionAtIndex:section];
 
     if ([v11 sectionType] != 13)
     {
       v14.receiver = self;
       v14.super_class = MCDRadioMusicKitContentManager;
-      [(MCDFuseContentManager *)&v14 tableView:v6 heightForHeaderInSection:a4];
+      [(MCDFuseContentManager *)&v14 tableView:viewCopy heightForHeaderInSection:section];
       v8 = v12;
     }
   }
@@ -202,12 +202,12 @@ LABEL_8:
   return v8;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v8 = [v7 results];
-  v9 = [v8 sectionAtIndex:a4];
+  viewCopy = view;
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  v9 = [results sectionAtIndex:section];
 
   if ([v9 sectionType] == 13)
   {
@@ -218,38 +218,38 @@ LABEL_8:
   {
     v12.receiver = self;
     v12.super_class = MCDRadioMusicKitContentManager;
-    v10 = [(MCDFuseContentManager *)&v12 tableView:v6 viewForHeaderInSection:a4];
+    v10 = [(MCDFuseContentManager *)&v12 tableView:viewCopy viewForHeaderInSection:section];
   }
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v9 = [v8 results];
-  v10 = [v9 sectionAtIndex:{objc_msgSend(v7, "section")}];
+  viewCopy = view;
+  pathCopy = path;
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  v10 = [results sectionAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   if ([v10 sectionType] != 13)
   {
     v11.receiver = self;
     v11.super_class = MCDRadioMusicKitContentManager;
-    [(MCDFuseContentManager *)&v11 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(MCDFuseContentManager *)&v11 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
 - (void)updateLiveStationsRow
 {
-  v3 = [(MCDFuseContentManager *)self tableView];
-  v4 = [v3 indexPathsForVisibleRows];
+  tableView = [(MCDFuseContentManager *)self tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v4;
+  v5 = indexPathsForVisibleRows;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -266,14 +266,14 @@ LABEL_8:
         }
 
         v10 = *(*(&v17 + 1) + 8 * v9);
-        v11 = [(MCDFuseContentManager *)self lastReceivedResponse];
-        v12 = [v11 results];
-        v13 = [v12 sectionAtIndex:{objc_msgSend(v10, "section")}];
+        lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+        results = [lastReceivedResponse results];
+        v13 = [results sectionAtIndex:{objc_msgSend(v10, "section")}];
 
         if ([v13 sectionType] == 13)
         {
-          v14 = [(MCDFuseContentManager *)self tableView];
-          v15 = [v14 cellForRowAtIndexPath:v10];
+          tableView2 = [(MCDFuseContentManager *)self tableView];
+          v15 = [tableView2 cellForRowAtIndexPath:v10];
 
           v16 = [(MCDRadioMusicKitContentManager *)self viewModelsAtIndexPath:v10 prefersTallArtwork:0 withSubtitleForPlaylists:1 actionToPerform:1];
           [v15 setViewModels:v16];
@@ -290,13 +290,13 @@ LABEL_8:
   }
 }
 
-- (id)viewModelsAtIndexPath:(id)a3 prefersTallArtwork:(BOOL)a4 withSubtitleForPlaylists:(BOOL)a5 actionToPerform:(unint64_t)a6
+- (id)viewModelsAtIndexPath:(id)path prefersTallArtwork:(BOOL)artwork withSubtitleForPlaylists:(BOOL)playlists actionToPerform:(unint64_t)perform
 {
-  v7 = a3;
+  pathCopy = path;
   v49 = objc_opt_new();
-  v47 = self;
-  v41 = v7;
-  v8 = [(MCDRadioMusicKitContentManager *)self childrenOfItemAtIndexPath:v7];
+  selfCopy = self;
+  v41 = pathCopy;
+  v8 = [(MCDRadioMusicKitContentManager *)self childrenOfItemAtIndexPath:pathCopy];
   v9 = objc_opt_new();
   v53 = 0u;
   v54 = 0u;
@@ -319,40 +319,40 @@ LABEL_8:
         }
 
         v12 = *(*(&v53 + 1) + 8 * i);
-        v13 = [v12 radioStation];
-        v14 = [v13 identifiers];
-        v15 = [v14 radio];
-        v16 = [v15 stationStringID];
+        radioStation = [v12 radioStation];
+        identifiers = [radioStation identifiers];
+        radio = [identifiers radio];
+        stationStringID = [radio stationStringID];
 
-        v17 = [v9 objectForKey:v16];
+        v17 = [v9 objectForKey:stationStringID];
         if (v17)
         {
-          v18 = [v9 objectForKey:v16];
-          v19 = [v18 unsignedIntegerValue];
+          v18 = [v9 objectForKey:stationStringID];
+          unsignedIntegerValue = [v18 unsignedIntegerValue];
 
-          v20 = v19 + 1;
-          v21 = [NSNumber numberWithUnsignedInteger:v19 + 1];
-          [v9 setValue:v21 forKey:v16];
+          v20 = unsignedIntegerValue + 1;
+          v21 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue + 1];
+          [v9 setValue:v21 forKey:stationStringID];
 
-          v22 = [NSString stringWithFormat:@"%@-%ld", v16, v20];
+          v22 = [NSString stringWithFormat:@"%@-%ld", stationStringID, v20];
 
-          v16 = v22;
+          stationStringID = v22;
         }
 
         else
         {
-          [v9 setValue:&off_10110B2B0 forKey:v16];
+          [v9 setValue:&off_10110B2B0 forKey:stationStringID];
         }
 
-        v23 = [v10 + 3960 shared];
-        v24 = [v23 currentPlayingRadioStation];
-        v25 = [v24 identifiers];
-        v26 = [v25 radio];
-        v27 = [v26 stationStringID];
-        if ([v27 isEqualToString:v16])
+        shared = [v10 + 3960 shared];
+        currentPlayingRadioStation = [shared currentPlayingRadioStation];
+        identifiers2 = [currentPlayingRadioStation identifiers];
+        radio2 = [identifiers2 radio];
+        stationStringID2 = [radio2 stationStringID];
+        if ([stationStringID2 isEqualToString:stationStringID])
         {
-          v28 = [v10 + 3960 shared];
-          v51 = [v28 playerState] == 2;
+          shared2 = [v10 + 3960 shared];
+          v51 = [shared2 playerState] == 2;
         }
 
         else
@@ -361,16 +361,16 @@ LABEL_8:
         }
 
         v29 = [CPUIGridViewBaseViewModel alloc];
-        v30 = [v12 radioStation];
-        v31 = [v30 name];
-        v32 = [v12 radioStation];
-        v33 = [v32 editorialArtworkCatalog];
-        v34 = v33;
-        if (!v33)
+        radioStation2 = [v12 radioStation];
+        name = [radioStation2 name];
+        radioStation3 = [v12 radioStation];
+        editorialArtworkCatalog = [radioStation3 editorialArtworkCatalog];
+        artworkCatalog = editorialArtworkCatalog;
+        if (!editorialArtworkCatalog)
         {
-          v44 = [v12 radioStation];
-          v34 = [v44 artworkCatalog];
-          v43 = v34;
+          radioStation4 = [v12 radioStation];
+          artworkCatalog = [radioStation4 artworkCatalog];
+          v43 = artworkCatalog;
         }
 
         v35 = [CPUIGridViewBaseViewModelImagePlaceholder cpuiPlaceholder:6];
@@ -379,14 +379,14 @@ LABEL_8:
         v52[2] = sub_1000FC01C;
         v52[3] = &unk_101098068;
         v52[5] = v12;
-        v52[6] = a6;
-        v52[4] = v47;
+        v52[6] = perform;
+        v52[4] = selfCopy;
         BYTE2(v40) = v51;
         LOWORD(v40) = 1;
         LOBYTE(v39) = 0;
-        v36 = [v29 initWithId:v16 title:v31 subtitle:0 titlePriority:1 artworkCatalog:v34 imageShape:0 isTallArtwork:v39 placeholder:v35 accessorySystemImage:0 allowsTouches:v40 disabledAppearance:v52 isPressed:? action:?];
+        v36 = [v29 initWithId:stationStringID title:name subtitle:0 titlePriority:1 artworkCatalog:artworkCatalog imageShape:0 isTallArtwork:v39 placeholder:v35 accessorySystemImage:0 allowsTouches:v40 disabledAppearance:v52 isPressed:? action:?];
 
-        if (!v33)
+        if (!editorialArtworkCatalog)
         {
         }
 

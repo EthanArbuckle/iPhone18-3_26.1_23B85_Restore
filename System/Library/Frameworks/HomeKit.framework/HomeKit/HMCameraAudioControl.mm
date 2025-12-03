@@ -1,5 +1,5 @@
 @interface HMCameraAudioControl
-- (HMCameraAudioControl)initWithAudioControl:(id)a3;
+- (HMCameraAudioControl)initWithAudioControl:(id)control;
 - (HMCharacteristic)mute;
 - (HMCharacteristic)volume;
 @end
@@ -8,30 +8,30 @@
 
 - (HMCharacteristic)volume
 {
-  v2 = [(HMCameraAudioControl *)self audioControl];
-  v3 = [v2 volume];
+  audioControl = [(HMCameraAudioControl *)self audioControl];
+  volume = [audioControl volume];
 
-  return v3;
+  return volume;
 }
 
 - (HMCharacteristic)mute
 {
-  v2 = [(HMCameraAudioControl *)self audioControl];
-  v3 = [v2 mute];
+  audioControl = [(HMCameraAudioControl *)self audioControl];
+  mute = [audioControl mute];
 
-  return v3;
+  return mute;
 }
 
-- (HMCameraAudioControl)initWithAudioControl:(id)a3
+- (HMCameraAudioControl)initWithAudioControl:(id)control
 {
-  v5 = a3;
+  controlCopy = control;
   v9.receiver = self;
   v9.super_class = HMCameraAudioControl;
   v6 = [(HMCameraControl *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_audioControl, a3);
+    objc_storeStrong(&v6->_audioControl, control);
   }
 
   return v7;

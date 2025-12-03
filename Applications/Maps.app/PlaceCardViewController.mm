@@ -2,176 +2,176 @@
 + (BOOL)shouldInsertRecentPOIForRouting;
 - (BOOL)isContact;
 - (BOOL)isMeCard;
-- (BOOL)placeViewController:(id)a3 canSelectDepartureSequence:(id)a4 mapItem:(id)a5;
-- (BOOL)placeViewController:(id)a3 presentOfflineAlertIfNecessaryForUGC:(int64_t)a4;
+- (BOOL)placeViewController:(id)controller canSelectDepartureSequence:(id)sequence mapItem:(id)item;
+- (BOOL)placeViewController:(id)controller presentOfflineAlertIfNecessaryForUGC:(int64_t)c;
 - (MKMapItem)mapItem;
-- (PlaceCardViewController)initWithVisualEffectDisabled:(BOOL)a3;
+- (PlaceCardViewController)initWithVisualEffectDisabled:(BOOL)disabled;
 - (PlaceCardViewControllerDelegate)placeCardDelegate;
 - (double)_mediumLayoutHeightInSAR;
-- (double)heightForLayout:(unint64_t)a3;
-- (double)placeViewControllerPlaceCardHeaderTitlePaddingConstant:(id)a3;
-- (double)placeViewControllerPlaceCardHeaderTitleTrailingConstant:(id)a3;
+- (double)heightForLayout:(unint64_t)layout;
+- (double)placeViewControllerPlaceCardHeaderTitlePaddingConstant:(id)constant;
+- (double)placeViewControllerPlaceCardHeaderTitleTrailingConstant:(id)constant;
 - (id)_secondaryButtonController;
 - (id)_shortcut;
-- (id)activityViewControllerForPlaceViewController:(id)a3;
-- (id)alternatePrimaryButtonControllerForPlaceViewController:(id)a3;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)inlineRatingViewControllerForPlaceViewController:(id)a3;
-- (id)menuElementForActionItem:(id)a3;
-- (id)placeViewController:(id)a3 collectionViewsForPlaceItem:(id)a4;
-- (id)placeViewController:(id)a3 hikingTipViewForTipModel:(id)a4;
-- (id)placeViewController:(id)a3 webPlacecardGuidesForPlaceItem:(id)a4;
-- (id)placeViewControllerRequestsMapViewAssociatedWithVC:(id)a3;
-- (id)placeViewControllerUserIcon:(id)a3;
+- (id)activityViewControllerForPlaceViewController:(id)controller;
+- (id)alternatePrimaryButtonControllerForPlaceViewController:(id)controller;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)inlineRatingViewControllerForPlaceViewController:(id)controller;
+- (id)menuElementForActionItem:(id)item;
+- (id)placeViewController:(id)controller collectionViewsForPlaceItem:(id)item;
+- (id)placeViewController:(id)controller hikingTipViewForTipModel:(id)model;
+- (id)placeViewController:(id)controller webPlacecardGuidesForPlaceItem:(id)item;
+- (id)placeViewControllerRequestsMapViewAssociatedWithVC:(id)c;
+- (id)placeViewControllerUserIcon:(id)icon;
 - (id)shareItemSource;
 - (id)suggestionViewController;
-- (id)targetedDragPreviewForInteraction:(id)a3;
-- (id)traitsForPlaceViewController:(id)a3;
-- (int)mapTypeForPlaceViewController:(id)a3;
+- (id)targetedDragPreviewForInteraction:(id)interaction;
+- (id)traitsForPlaceViewController:(id)controller;
+- (int)mapTypeForPlaceViewController:(id)controller;
 - (int64_t)_overriddenUserInterfaceStyle;
-- (int64_t)overriddenInterfaceStyleForPlaceViewControllerSubviews:(id)a3;
+- (int64_t)overriddenInterfaceStyleForPlaceViewControllerSubviews:(id)subviews;
 - (unint64_t)_collectionsCount;
 - (unint64_t)_numberOfRAPsInReview;
-- (void)_addPlaceToCollection:(id)a3 editCollection:(BOOL)a4;
-- (void)_carryOverTransitDisplayInformationFromCurrentItemToNewFetchedResult:(id)a3;
-- (void)_chromeViewControllerPresent:(id)a3;
+- (void)_addPlaceToCollection:(id)collection editCollection:(BOOL)editCollection;
+- (void)_carryOverTransitDisplayInformationFromCurrentItemToNewFetchedResult:(id)result;
+- (void)_chromeViewControllerPresent:(id)present;
 - (void)_clearOfflineDownloadTipIfNeeded;
 - (void)_initSuggestion;
-- (void)_instrumentHeaderButtonAction:(int)a3 withFeedbackType:(int)a4;
-- (void)_presentPOIEnrichmentCoordinator:(id)a3 presentingViewController:(id)a4 progressObserver:(id)a5;
-- (void)_presentPOIEnrichmentCoordinator:(id)a3 withProgressObserver:(id)a4;
+- (void)_instrumentHeaderButtonAction:(int)action withFeedbackType:(int)type;
+- (void)_presentPOIEnrichmentCoordinator:(id)coordinator presentingViewController:(id)controller progressObserver:(id)observer;
+- (void)_presentPOIEnrichmentCoordinator:(id)coordinator withProgressObserver:(id)observer;
 - (void)_routeFromCurrentSearchResult;
-- (void)_routeToCurrentSearchResultWithTransportType:(int64_t)a3;
-- (void)_searchWithSuggestion:(id)a3;
-- (void)_setupConstraintsForSuggestionView:(id)a3;
+- (void)_routeToCurrentSearchResultWithTransportType:(int64_t)type;
+- (void)_searchWithSuggestion:(id)suggestion;
+- (void)_setupConstraintsForSuggestionView:(id)view;
 - (void)_updateCallToActionStateIfNeeded;
-- (void)_updateCollectionsAnimated:(BOOL)a3;
+- (void)_updateCollectionsAnimated:(BOOL)animated;
 - (void)_updateFavoritesGuide;
-- (void)_updateOfflineFeatureDiscoveryViewIfNeededWithMapItem:(id)a3;
-- (void)_updatePlacecardCallToActionAnimated:(BOOL)a3;
+- (void)_updateOfflineFeatureDiscoveryViewIfNeededWithMapItem:(id)item;
+- (void)_updatePlacecardCallToActionAnimated:(BOOL)animated;
 - (void)_updateRAPInReviewStatus;
 - (void)_updateShortcut;
 - (void)_updateSuggestionVisibility;
 - (void)_updateVerifiedBusinessHeaderIfNeeded;
-- (void)appStoreAppSelected:(id)a3;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)copy:(id)a3;
+- (void)appStoreAppSelected:(id)selected;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)copy:(id)copy;
 - (void)dealloc;
 - (void)didBecomeCurrent;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)didResignCurrent;
 - (void)didScrollPastTransition;
-- (void)didSelectSavePublisherGuide:(id)a3;
-- (void)didSelectSharePublisherGuide:(id)a3;
-- (void)didSelectShowPublisherForPublisherGuide:(id)a3;
+- (void)didSelectSavePublisherGuide:(id)guide;
+- (void)didSelectSharePublisherGuide:(id)guide;
+- (void)didSelectShowPublisherForPublisherGuide:(id)guide;
 - (void)dismissContactsViewController;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4;
-- (void)handleAddOrRemovePlaceFromLibrary:(BOOL)a3;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion;
+- (void)handleAddOrRemovePlaceFromLibrary:(BOOL)library;
 - (void)initPlaceCard;
-- (void)inlinePOIEnrichmentController:(id)a3 didSelectTermsOfServiceURL:(id)a4;
-- (void)inlinePOIEnrichmentControllerPresentPOIEnrichment:(id)a3;
+- (void)inlinePOIEnrichmentController:(id)controller didSelectTermsOfServiceURL:(id)l;
+- (void)inlinePOIEnrichmentControllerPresentPOIEnrichment:(id)enrichment;
 - (void)insertInHistory;
 - (void)instrumentDismissAction;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)openFindMy;
 - (void)openRequestLocation;
-- (void)placeCardItemMapItemDidChangeWithFailedRefinement:(BOOL)a3;
-- (void)placeEnrichmentAPIContollerDidFetchEnrichmentData:(id)a3 forMapItem:(id)a4;
-- (void)placePhotoViewerSceneWillDisconnect:(id)a3;
-- (void)placeViewController:(id)a3 didRequestAddOrRemovePlaceFromLibrary:(BOOL)a4 environment:(id)a5;
-- (void)placeViewController:(id)a3 didRequestEditingNoteWithInitialText:(id)a4 libraryAccessProvider:(id)a5 completion:(id)a6;
-- (void)placeViewController:(id)a3 didRequestHikingToolTipRegionIDForLocation:(CLLocationCoordinate2D)a4;
-- (void)placeViewController:(id)a3 didRequestSceneActivationForPhotoGalleryViewController:(id)a4;
-- (void)placeViewController:(id)a3 didSelectAddMissingDataOfType:(int64_t)a4;
-- (void)placeViewController:(id)a3 didSelectAddPhotosWithPresentationOptions:(id)a4 entryPoint:(int64_t)a5 originTarget:(id)a6;
-- (void)placeViewController:(id)a3 didSelectAddRatingsWithPresentationOptions:(id)a4 overallState:(int64_t)a5 originTarget:(id)a6;
-- (void)placeViewController:(id)a3 didSelectAddToCollectionWithPlaceActionEnvironment:(id)a4 showsAddToLibrarySection:(BOOL)a5;
-- (void)placeViewController:(id)a3 didSelectDepartureSequence:(id)a4 mapItem:(id)a5;
-- (void)placeViewController:(id)a3 didSelectDirectionsForDestinationAddress:(id)a4 contact:(id)a5 transportType:(id)a6;
-- (void)placeViewController:(id)a3 didSelectDirectionsForDestinationMapItem:(id)a4 transportType:(id)a5;
-- (void)placeViewController:(id)a3 didSelectEditPlaceDetailsOfType:(int64_t)a4;
-- (void)placeViewController:(id)a3 didSelectEditSubmissionWithPresentationOptions:(id)a4;
-- (void)placeViewController:(id)a3 didSelectMapsExtension:(id)a4 usingAppStoreApp:(id)a5 parameters:(id)a6;
-- (void)placeViewController:(id)a3 didSelectParent:(id)a4;
-- (void)placeViewController:(id)a3 didSelectPhotoCategoryAtIndex:(unint64_t)a4;
-- (void)placeViewController:(id)a3 didSelectPhotoToReport:(id)a4 withPhotoGalleryViewController:(id)a5;
-- (void)placeViewController:(id)a3 didSelectRouteToCurrentSearchResultWithTransportTypePreference:(id)a4;
-- (void)placeViewController:(id)a3 didSelectSearchCategory:(id)a4;
-- (void)placeViewController:(id)a3 didSelectSendToDevice:(id)a4;
-- (void)placeViewController:(id)a3 didSelectShareCurrentLocationWithCompletion:(id)a4;
-- (void)placeViewController:(id)a3 didSelectTransitConnectionInformation:(id)a4;
-- (void)placeViewController:(id)a3 didSelectTransitLine:(id)a4;
-- (void)placeViewController:(id)a3 expandCardAnimated:(BOOL)a4;
-- (void)placeViewController:(id)a3 launchAttributionURLs:(id)a4 withAttribution:(id)a5 completionHandler:(id)a6;
-- (void)placeViewController:(id)a3 openURL:(id)a4;
-- (void)placeViewController:(id)a3 photoGalleryDidScroll:(id)a4;
-- (void)placeViewController:(id)a3 requestPasscodeUnlockWithCompletion:(id)a4;
-- (void)placeViewController:(id)a3 seeAllCollections:(id)a4 usingTitle:(id)a5 usingCollectionIds:(id)a6;
-- (void)placeViewController:(id)a3 selectCollectionIdentifier:(id)a4;
-- (void)placeViewController:(id)a3 selectCuratedCollection:(id)a4;
-- (void)placeViewController:(id)a3 selectCuratedCollectionIdentifier:(id)a4;
-- (void)placeViewController:(id)a3 selectExploreGuidesWithGuideLocation:(id)a4;
-- (void)placeViewController:(id)a3 showRelatedMapItems:(id)a4 withTitle:(id)a5 originalMapItem:(id)a6 analyticsDelegate:(id)a7;
-- (void)placeViewController:(id)a3 showTransitIncidents:(id)a4;
-- (void)placeViewControllerDidClose:(id)a3;
-- (void)placeViewControllerDidSelectAddAPlace:(id)a3 environment:(id)a4;
-- (void)placeViewControllerDidSelectAddOrRemoveFromFavoritesGuide:(id)a3;
-- (void)placeViewControllerDidSelectAddShortcut:(id)a3;
-- (void)placeViewControllerDidSelectChangeAddress:(id)a3;
-- (void)placeViewControllerDidSelectDisplayedAddress:(id)a3;
-- (void)placeViewControllerDidSelectDownloadOffline:(id)a3 environment:(id)a4;
-- (void)placeViewControllerDidSelectDropPin:(id)a3;
-- (void)placeViewControllerDidSelectEditLocationOfMarkedLocation:(id)a3;
-- (void)placeViewControllerDidSelectFlyover:(id)a3;
-- (void)placeViewControllerDidSelectOfflineManagement:(id)a3;
-- (void)placeViewControllerDidSelectPauseOfflineDownload:(id)a3;
-- (void)placeViewControllerDidSelectPlaceEnrichmentRAP:(id)a3;
-- (void)placeViewControllerDidSelectRAPViewReport:(id)a3;
-- (void)placeViewControllerDidSelectRefineLocation:(id)a3;
-- (void)placeViewControllerDidSelectRemoveMarker:(id)a3;
-- (void)placeViewControllerDidSelectRemoveShortcut:(id)a3;
-- (void)placeViewControllerDidSelectReportAProblem:(id)a3 fromView:(id)a4 environment:(id)a5;
-- (void)placeViewControllerDidSelectSeeMorePhotos:(id)a3 withStartingIndex:(unint64_t)a4;
-- (void)placeViewControllerDidTapHikingTip:(id)a3 originMapItem:(id)a4;
-- (void)placeViewControllerDidTapMiniBrowseCategory:(id)a3;
-- (void)placeViewControllerDidUpdateHeight:(id)a3;
-- (void)poiEnrichmentCoordinator:(id)a3 didFinishSubmissionLookup:(id)a4;
+- (void)placeCardItemMapItemDidChangeWithFailedRefinement:(BOOL)refinement;
+- (void)placeEnrichmentAPIContollerDidFetchEnrichmentData:(id)data forMapItem:(id)item;
+- (void)placePhotoViewerSceneWillDisconnect:(id)disconnect;
+- (void)placeViewController:(id)controller didRequestAddOrRemovePlaceFromLibrary:(BOOL)library environment:(id)environment;
+- (void)placeViewController:(id)controller didRequestEditingNoteWithInitialText:(id)text libraryAccessProvider:(id)provider completion:(id)completion;
+- (void)placeViewController:(id)controller didRequestHikingToolTipRegionIDForLocation:(CLLocationCoordinate2D)location;
+- (void)placeViewController:(id)controller didRequestSceneActivationForPhotoGalleryViewController:(id)viewController;
+- (void)placeViewController:(id)controller didSelectAddMissingDataOfType:(int64_t)type;
+- (void)placeViewController:(id)controller didSelectAddPhotosWithPresentationOptions:(id)options entryPoint:(int64_t)point originTarget:(id)target;
+- (void)placeViewController:(id)controller didSelectAddRatingsWithPresentationOptions:(id)options overallState:(int64_t)state originTarget:(id)target;
+- (void)placeViewController:(id)controller didSelectAddToCollectionWithPlaceActionEnvironment:(id)environment showsAddToLibrarySection:(BOOL)section;
+- (void)placeViewController:(id)controller didSelectDepartureSequence:(id)sequence mapItem:(id)item;
+- (void)placeViewController:(id)controller didSelectDirectionsForDestinationAddress:(id)address contact:(id)contact transportType:(id)type;
+- (void)placeViewController:(id)controller didSelectDirectionsForDestinationMapItem:(id)item transportType:(id)type;
+- (void)placeViewController:(id)controller didSelectEditPlaceDetailsOfType:(int64_t)type;
+- (void)placeViewController:(id)controller didSelectEditSubmissionWithPresentationOptions:(id)options;
+- (void)placeViewController:(id)controller didSelectMapsExtension:(id)extension usingAppStoreApp:(id)app parameters:(id)parameters;
+- (void)placeViewController:(id)controller didSelectParent:(id)parent;
+- (void)placeViewController:(id)controller didSelectPhotoCategoryAtIndex:(unint64_t)index;
+- (void)placeViewController:(id)controller didSelectPhotoToReport:(id)report withPhotoGalleryViewController:(id)viewController;
+- (void)placeViewController:(id)controller didSelectRouteToCurrentSearchResultWithTransportTypePreference:(id)preference;
+- (void)placeViewController:(id)controller didSelectSearchCategory:(id)category;
+- (void)placeViewController:(id)controller didSelectSendToDevice:(id)device;
+- (void)placeViewController:(id)controller didSelectShareCurrentLocationWithCompletion:(id)completion;
+- (void)placeViewController:(id)controller didSelectTransitConnectionInformation:(id)information;
+- (void)placeViewController:(id)controller didSelectTransitLine:(id)line;
+- (void)placeViewController:(id)controller expandCardAnimated:(BOOL)animated;
+- (void)placeViewController:(id)controller launchAttributionURLs:(id)ls withAttribution:(id)attribution completionHandler:(id)handler;
+- (void)placeViewController:(id)controller openURL:(id)l;
+- (void)placeViewController:(id)controller photoGalleryDidScroll:(id)scroll;
+- (void)placeViewController:(id)controller requestPasscodeUnlockWithCompletion:(id)completion;
+- (void)placeViewController:(id)controller seeAllCollections:(id)collections usingTitle:(id)title usingCollectionIds:(id)ids;
+- (void)placeViewController:(id)controller selectCollectionIdentifier:(id)identifier;
+- (void)placeViewController:(id)controller selectCuratedCollection:(id)collection;
+- (void)placeViewController:(id)controller selectCuratedCollectionIdentifier:(id)identifier;
+- (void)placeViewController:(id)controller selectExploreGuidesWithGuideLocation:(id)location;
+- (void)placeViewController:(id)controller showRelatedMapItems:(id)items withTitle:(id)title originalMapItem:(id)item analyticsDelegate:(id)delegate;
+- (void)placeViewController:(id)controller showTransitIncidents:(id)incidents;
+- (void)placeViewControllerDidClose:(id)close;
+- (void)placeViewControllerDidSelectAddAPlace:(id)place environment:(id)environment;
+- (void)placeViewControllerDidSelectAddOrRemoveFromFavoritesGuide:(id)guide;
+- (void)placeViewControllerDidSelectAddShortcut:(id)shortcut;
+- (void)placeViewControllerDidSelectChangeAddress:(id)address;
+- (void)placeViewControllerDidSelectDisplayedAddress:(id)address;
+- (void)placeViewControllerDidSelectDownloadOffline:(id)offline environment:(id)environment;
+- (void)placeViewControllerDidSelectDropPin:(id)pin;
+- (void)placeViewControllerDidSelectEditLocationOfMarkedLocation:(id)location;
+- (void)placeViewControllerDidSelectFlyover:(id)flyover;
+- (void)placeViewControllerDidSelectOfflineManagement:(id)management;
+- (void)placeViewControllerDidSelectPauseOfflineDownload:(id)download;
+- (void)placeViewControllerDidSelectPlaceEnrichmentRAP:(id)p;
+- (void)placeViewControllerDidSelectRAPViewReport:(id)report;
+- (void)placeViewControllerDidSelectRefineLocation:(id)location;
+- (void)placeViewControllerDidSelectRemoveMarker:(id)marker;
+- (void)placeViewControllerDidSelectRemoveShortcut:(id)shortcut;
+- (void)placeViewControllerDidSelectReportAProblem:(id)problem fromView:(id)view environment:(id)environment;
+- (void)placeViewControllerDidSelectSeeMorePhotos:(id)photos withStartingIndex:(unint64_t)index;
+- (void)placeViewControllerDidTapHikingTip:(id)tip originMapItem:(id)item;
+- (void)placeViewControllerDidTapMiniBrowseCategory:(id)category;
+- (void)placeViewControllerDidUpdateHeight:(id)height;
+- (void)poiEnrichmentCoordinator:(id)coordinator didFinishSubmissionLookup:(id)lookup;
 - (void)prepareForPresentationWithExistingPlaceCardItem;
-- (void)presentAppClip:(id)a3;
-- (void)presentExtensionFlowController:(id)a3;
-- (void)presentQuickLink:(id)a3;
-- (void)relatedSearchSuggestionViewController:(id)a3 didDismissWithReason:(unint64_t)a4;
-- (void)relatedSearchSuggestionViewControllerDidScrollLeft:(id)a3;
-- (void)relatedSearchSuggestionViewControllerDidScrollRight:(id)a3;
-- (void)relatedSearchSuggestionViewControllerDidTapActionButton:(id)a3;
+- (void)presentAppClip:(id)clip;
+- (void)presentExtensionFlowController:(id)controller;
+- (void)presentQuickLink:(id)link;
+- (void)relatedSearchSuggestionViewController:(id)controller didDismissWithReason:(unint64_t)reason;
+- (void)relatedSearchSuggestionViewControllerDidScrollLeft:(id)left;
+- (void)relatedSearchSuggestionViewControllerDidScrollRight:(id)right;
+- (void)relatedSearchSuggestionViewControllerDidTapActionButton:(id)button;
 - (void)resetState;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)searchFindMyFriendDidRemoveHandleWithIdentifier:(id)a3;
-- (void)setDraggableContent:(id)a3;
-- (void)setExcludedContent:(int64_t)a3;
-- (void)setIsAdditionalStop:(BOOL)a3;
-- (void)setIsPresentedInSearchAlongTheRoute:(BOOL)a3;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)searchFindMyFriendDidRemoveHandleWithIdentifier:(id)identifier;
+- (void)setDraggableContent:(id)content;
+- (void)setExcludedContent:(int64_t)content;
+- (void)setIsAdditionalStop:(BOOL)stop;
+- (void)setIsPresentedInSearchAlongTheRoute:(BOOL)route;
 - (void)setNeedsContentUpdate;
-- (void)setPlaceCardItem:(id)a3;
-- (void)setPlaceCardItem:(id)a3 withHistory:(BOOL)a4;
-- (void)suggestionViewProviderDidSelectAddPhotos:(id)a3;
-- (void)suggestionViewProviderDidSelectRateThisPlace:(id)a3 overallState:(int64_t)a4;
-- (void)suggestionViewProviderDidUpdateView:(id)a3;
+- (void)setPlaceCardItem:(id)item;
+- (void)setPlaceCardItem:(id)item withHistory:(BOOL)history;
+- (void)suggestionViewProviderDidSelectAddPhotos:(id)photos;
+- (void)suggestionViewProviderDidSelectRateThisPlace:(id)place overallState:(int64_t)state;
+- (void)suggestionViewProviderDidUpdateView:(id)view;
 - (void)updateContent;
-- (void)updateForViewMode:(int64_t)a3;
-- (void)updateHeaderTitle:(id)a3;
+- (void)updateForViewMode:(int64_t)mode;
+- (void)updateHeaderTitle:(id)title;
 - (void)updatePreviewDrag;
 - (void)viewContact;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)willChangeLayout:(unint64_t)a3;
-- (void)willMoveToParentViewController:(id)a3;
-- (void)willResignCurrent:(BOOL)a3;
+- (void)willChangeLayout:(unint64_t)layout;
+- (void)willMoveToParentViewController:(id)controller;
+- (void)willResignCurrent:(BOOL)current;
 @end
 
 @implementation PlaceCardViewController
@@ -183,143 +183,143 @@
   return WeakRetained;
 }
 
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  draftCopy = draft;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100B8D294;
   v10[3] = &unk_10165DEA0;
   objc_copyWeak(&v13, &location);
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = draftCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = draftCopy;
   dispatch_async(&_dispatch_main_q, v10);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)placeViewController:(id)a3 didSelectSendToDevice:(id)a4
+- (void)placeViewController:(id)controller didSelectSendToDevice:(id)device
 {
-  v4 = a4;
+  deviceCopy = device;
   v6 = +[UIApplication sharedMapsDelegate];
-  v5 = [v4 deviceID];
+  deviceID = [deviceCopy deviceID];
 
-  [v6 sendToDeviceWithID:v5];
+  [v6 sendToDeviceWithID:deviceID];
 }
 
 - (void)instrumentDismissAction
 {
-  v2 = [(MUPlaceViewController *)self->_placeViewController analyticsController];
-  [v2 instrumentAction:4 forModuleType:1 usingFeedbackType:0];
+  analyticsController = [(MUPlaceViewController *)self->_placeViewController analyticsController];
+  [analyticsController instrumentAction:4 forModuleType:1 usingFeedbackType:0];
 }
 
-- (void)suggestionViewProviderDidSelectRateThisPlace:(id)a3 overallState:(int64_t)a4
+- (void)suggestionViewProviderDidSelectRateThisPlace:(id)place overallState:(int64_t)state
 {
-  v12 = a3;
+  placeCopy = place;
   IsEnabled_LagunaBeach = MapsFeature_IsEnabled_LagunaBeach();
-  v7 = v12;
+  v7 = placeCopy;
   if (IsEnabled_LagunaBeach)
   {
-    v8 = [v12 mapItem];
-    v9 = [UGCPOIEnrichmentCoordinator ratingsAndPhotosCoordinatorWithMapItem:v8 initialOverallState:a4 entryPoint:2 originTarget:@"PLACECARD_ARP_SUGGESTION"];
+    mapItem = [placeCopy mapItem];
+    v9 = [UGCPOIEnrichmentCoordinator ratingsAndPhotosCoordinatorWithMapItem:mapItem initialOverallState:state entryPoint:2 originTarget:@"PLACECARD_ARP_SUGGESTION"];
 
     [(PlaceCardViewController *)self _presentPOIEnrichmentCoordinator:v9 withProgressObserver:0];
-    if (a4 > 2)
+    if (state > 2)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = dword_1012154C8[a4];
+      v10 = dword_1012154C8[state];
     }
 
-    v11 = [(MUPlaceViewController *)self->_placeViewController analyticsController];
-    [v11 instrumentAction:v10 target:201 eventValue:@"Suggestion" moduleType:3 feedbackType:0];
+    analyticsController = [(MUPlaceViewController *)self->_placeViewController analyticsController];
+    [analyticsController instrumentAction:v10 target:201 eventValue:@"Suggestion" moduleType:3 feedbackType:0];
 
-    v7 = v12;
+    v7 = placeCopy;
   }
 }
 
-- (void)suggestionViewProviderDidSelectAddPhotos:(id)a3
+- (void)suggestionViewProviderDidSelectAddPhotos:(id)photos
 {
-  v7 = a3;
+  photosCopy = photos;
   if (MapsFeature_IsEnabled_LagunaBeach())
   {
-    v4 = [v7 mapItem];
-    v5 = [UGCPOIEnrichmentCoordinator ratingsAndPhotosCoordinatorWithMapItem:v4 entryPoint:2 originTarget:@"PLACECARD_ARP_SUGGESTION"];
+    mapItem = [photosCopy mapItem];
+    v5 = [UGCPOIEnrichmentCoordinator ratingsAndPhotosCoordinatorWithMapItem:mapItem entryPoint:2 originTarget:@"PLACECARD_ARP_SUGGESTION"];
 
     [v5 setEntryPointRequiresARPPrivacyScreenIfNeeded:1];
     [(PlaceCardViewController *)self _presentPOIEnrichmentCoordinator:v5 withProgressObserver:0];
-    v6 = [(MUPlaceViewController *)self->_placeViewController analyticsController];
-    [v6 instrumentAction:300 target:201 eventValue:@"Suggestion" moduleType:3 feedbackType:0];
+    analyticsController = [(MUPlaceViewController *)self->_placeViewController analyticsController];
+    [analyticsController instrumentAction:300 target:201 eventValue:@"Suggestion" moduleType:3 feedbackType:0];
   }
 }
 
-- (void)suggestionViewProviderDidUpdateView:(id)a3
+- (void)suggestionViewProviderDidUpdateView:(id)view
 {
   if (MapsFeature_IsEnabled_LagunaBeach())
   {
     [(MUPlaceViewController *)self->_placeViewController updateSuggestionView];
-    v4 = [(MUPlaceViewController *)self->_placeViewController analyticsController];
-    [v4 instrumentAction:339 forModuleType:3 usingFeedbackType:0];
+    analyticsController = [(MUPlaceViewController *)self->_placeViewController analyticsController];
+    [analyticsController instrumentAction:339 forModuleType:3 usingFeedbackType:0];
   }
 }
 
 - (MKMapItem)mapItem
 {
-  v2 = [(PlaceCardViewController *)self placeCardItem];
-  v3 = [v2 mapItem];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  mapItem = [placeCardItem mapItem];
 
-  return v3;
+  return mapItem;
 }
 
-- (void)placePhotoViewerSceneWillDisconnect:(id)a3
+- (void)placePhotoViewerSceneWillDisconnect:(id)disconnect
 {
   photoViewerScene = self->_photoViewerScene;
   self->_photoViewerScene = 0;
 }
 
-- (void)placeViewController:(id)a3 didSelectPhotoCategoryAtIndex:(unint64_t)a4
+- (void)placeViewController:(id)controller didSelectPhotoCategoryAtIndex:(unint64_t)index
 {
-  v6 = [(PlaceCardViewController *)self placeCardItem];
-  v7 = [v6 mapItem];
-  v8 = [UGCPOIEnrichmentCoordinator photoThumbnailGalleryCoordinatorWithMapItem:v7 albumIndex:a4];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  mapItem = [placeCardItem mapItem];
+  v8 = [UGCPOIEnrichmentCoordinator photoThumbnailGalleryCoordinatorWithMapItem:mapItem albumIndex:index];
 
   [(PlaceCardViewController *)self _presentPOIEnrichmentCoordinator:v8 withProgressObserver:0];
 }
 
-- (void)placeViewController:(id)a3 didRequestSceneActivationForPhotoGalleryViewController:(id)a4
+- (void)placeViewController:(id)controller didRequestSceneActivationForPhotoGalleryViewController:(id)viewController
 {
-  v5 = a4;
+  viewControllerCopy = viewController;
   v6 = +[MacPlacePhotoViewerScene requestSceneActivation];
   photoViewerScene = self->_photoViewerScene;
   self->_photoViewerScene = v6;
 
   v8 = [MacPlacePhotoViewerConfiguration alloc];
-  v9 = [(PlaceCardViewController *)self placeCardItem];
-  v10 = [v9 mapItem];
-  v14 = [(MacPlacePhotoViewerConfiguration *)v8 initWithMapItem:v10 photoGalleryViewController:v5];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  mapItem = [placeCardItem mapItem];
+  v14 = [(MacPlacePhotoViewerConfiguration *)v8 initWithMapItem:mapItem photoGalleryViewController:viewControllerCopy];
 
-  v11 = [(UGCCallToActionViewProvider *)self->_callToActionViewProvider lookupResult];
-  [(MacPlacePhotoViewerConfiguration *)v14 setUserSubmissionLookupResult:v11];
+  lookupResult = [(UGCCallToActionViewProvider *)self->_callToActionViewProvider lookupResult];
+  [(MacPlacePhotoViewerConfiguration *)v14 setUserSubmissionLookupResult:lookupResult];
 
   v12 = self->_photoViewerScene;
-  v13 = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
-  [(MacPlacePhotoViewerScene *)v12 openPhotoGalleryWithConfiguration:v14 sceneDelegate:v13 delegate:self];
+  _maps_mapsSceneDelegate = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
+  [(MacPlacePhotoViewerScene *)v12 openPhotoGalleryWithConfiguration:v14 sceneDelegate:_maps_mapsSceneDelegate delegate:self];
 }
 
-- (void)placeViewControllerDidClose:(id)a3
+- (void)placeViewControllerDidClose:(id)close
 {
-  v4 = [a3 view];
+  view = [close view];
   v5.receiver = self;
   v5.super_class = PlaceCardViewController;
-  [(InfoCardViewController *)&v5 handleDismissAction:v4];
+  [(InfoCardViewController *)&v5 handleDismissAction:view];
 }
 
 - (void)_updateSuggestionVisibility
@@ -328,16 +328,16 @@
   if (suggestionViewController)
   {
     v5 = suggestionViewController;
-    v3 = [(RelatedSearchSuggestionViewController *)v5 suggestion];
-    v4 = v3 == 0;
+    suggestion = [(RelatedSearchSuggestionViewController *)v5 suggestion];
+    v4 = suggestion == 0;
 
     [(RelatedSearchSuggestionViewController *)v5 setHidden:v4 animated:1];
   }
 }
 
-- (void)_setupConstraintsForSuggestionView:(id)a3
+- (void)_setupConstraintsForSuggestionView:(id)view
 {
-  v6 = _NSDictionaryOfVariableBindings(@"suggestionView", a3, 0);
+  v6 = _NSDictionaryOfVariableBindings(@"suggestionView", view, 0);
   v3 = +[NSMutableArray array];
   v4 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-0-[suggestionView]-0-|", 0, 0, v6);
   [v3 addObjectsFromArray:v4];
@@ -348,44 +348,44 @@
   [NSLayoutConstraint activateConstraints:v3];
 }
 
-- (void)_searchWithSuggestion:(id)a3
+- (void)_searchWithSuggestion:(id)suggestion
 {
-  if (a3)
+  if (suggestion)
   {
-    v4 = a3;
+    suggestionCopy = suggestion;
     v9 = objc_alloc_init(SearchFieldItem);
-    [(SearchFieldItem *)v9 setSuggestion:v4];
+    [(SearchFieldItem *)v9 setSuggestion:suggestionCopy];
     WeakRetained = objc_loadWeakRetained(&self->_placeCardDelegate);
     [WeakRetained placeCardViewController:self doSearchItem:v9 withUserInfo:0];
 
     v6 = +[MKMapService sharedService];
-    v7 = [(PlaceCardViewController *)self currentUITargetForAnalytics];
-    v8 = [v4 displayString];
+    currentUITargetForAnalytics = [(PlaceCardViewController *)self currentUITargetForAnalytics];
+    displayString = [suggestionCopy displayString];
 
-    [v6 captureUserAction:2020 onTarget:v7 eventValue:v8];
+    [v6 captureUserAction:2020 onTarget:currentUITargetForAnalytics eventValue:displayString];
   }
 }
 
 - (void)_initSuggestion
 {
-  v3 = [(PlaceCardViewController *)self placeCardItem];
-  v4 = [v3 searchResult];
-  v11 = [v4 relatedSearchSuggestion];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  searchResult = [placeCardItem searchResult];
+  relatedSearchSuggestion = [searchResult relatedSearchSuggestion];
 
-  if (v11)
+  if (relatedSearchSuggestion)
   {
-    v5 = [(PlaceCardViewController *)self suggestionViewController];
-    [v5 setSuggestion:v11];
+    suggestionViewController = [(PlaceCardViewController *)self suggestionViewController];
+    [suggestionViewController setSuggestion:relatedSearchSuggestion];
 
-    v6 = [(PlaceCardViewController *)self suggestionViewController];
-    v7 = [v6 view];
-    [v7 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+    suggestionViewController2 = [(PlaceCardViewController *)self suggestionViewController];
+    view = [suggestionViewController2 view];
+    [view systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
 
     [(PlaceCardViewController *)self _updateSuggestionVisibility];
     v8 = +[MKMapService sharedService];
-    v9 = [(PlaceCardViewController *)self currentUITargetForAnalytics];
-    v10 = [v11 displayString];
-    [v8 captureUserAction:2019 onTarget:v9 eventValue:v10];
+    currentUITargetForAnalytics = [(PlaceCardViewController *)self currentUITargetForAnalytics];
+    displayString = [relatedSearchSuggestion displayString];
+    [v8 captureUserAction:2019 onTarget:currentUITargetForAnalytics eventValue:displayString];
   }
 }
 
@@ -395,16 +395,16 @@
   if (!suggestionViewController)
   {
     v4 = objc_alloc_init(RelatedSearchSuggestionViewController);
-    v5 = [(RelatedSearchSuggestionViewController *)v4 view];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(RelatedSearchSuggestionViewController *)v4 view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
     [(RelatedSearchSuggestionViewController *)v4 setDelegate:self];
     [(RelatedSearchSuggestionViewController *)v4 willMoveToParentViewController:self];
-    v6 = [(PlaceCardViewController *)self view];
-    [v6 addSubview:v5];
+    view2 = [(PlaceCardViewController *)self view];
+    [view2 addSubview:view];
 
     [(PlaceCardViewController *)self addChildViewController:v4];
     [(RelatedSearchSuggestionViewController *)v4 didMoveToParentViewController:self];
-    [(PlaceCardViewController *)self _setupConstraintsForSuggestionView:v5];
+    [(PlaceCardViewController *)self _setupConstraintsForSuggestionView:view];
     v7 = self->_suggestionViewController;
     self->_suggestionViewController = v4;
 
@@ -414,56 +414,56 @@
   return suggestionViewController;
 }
 
-- (void)relatedSearchSuggestionViewController:(id)a3 didDismissWithReason:(unint64_t)a4
+- (void)relatedSearchSuggestionViewController:(id)controller didDismissWithReason:(unint64_t)reason
 {
-  v8 = a3;
-  if (a4 >= 3)
+  controllerCopy = controller;
+  if (reason >= 3)
   {
-    v6 = [NSString stringWithFormat:@"(unknown: %lu)", a4];
+    reason = [NSString stringWithFormat:@"(unknown: %lu)", reason];
   }
 
   else
   {
-    v6 = *(&off_10163BEA8 + a4);
+    reason = *(&off_10163BEA8 + reason);
   }
 
   v7 = +[MKMapService sharedService];
-  [v7 captureUserAction:2021 onTarget:-[PlaceCardViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), v6}];
+  [v7 captureUserAction:2021 onTarget:-[PlaceCardViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), reason}];
 }
 
-- (void)relatedSearchSuggestionViewControllerDidTapActionButton:(id)a3
+- (void)relatedSearchSuggestionViewControllerDidTapActionButton:(id)button
 {
-  v4 = [a3 pdSuggestion];
-  [(PlaceCardViewController *)self _searchWithSuggestion:v4];
+  pdSuggestion = [button pdSuggestion];
+  [(PlaceCardViewController *)self _searchWithSuggestion:pdSuggestion];
 }
 
-- (void)relatedSearchSuggestionViewControllerDidScrollRight:(id)a3
+- (void)relatedSearchSuggestionViewControllerDidScrollRight:(id)right
 {
   v4 = +[MKMapService sharedService];
   [v4 captureUserAction:2023 onTarget:-[PlaceCardViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 }
 
-- (void)relatedSearchSuggestionViewControllerDidScrollLeft:(id)a3
+- (void)relatedSearchSuggestionViewControllerDidScrollLeft:(id)left
 {
   v4 = +[MKMapService sharedService];
   [v4 captureUserAction:2022 onTarget:-[PlaceCardViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
-  v7 = [a4 items];
-  v18 = [v7 firstObject];
+  items = [session items];
+  firstObject = [items firstObject];
 
-  v8 = [v18 localObject];
-  v9 = [v8 analyticsHelper];
-  if (a5 == 2)
+  localObject = [firstObject localObject];
+  analyticsHelper = [localObject analyticsHelper];
+  if (operation == 2)
   {
     v10 = 17003;
   }
 
   else
   {
-    if (a5)
+    if (operation)
     {
       goto LABEL_6;
     }
@@ -472,10 +472,10 @@
   }
 
   v11 = +[MKMapService sharedService];
-  v12 = [v8 analyticsTarget];
-  v13 = [v9 eventValue];
-  v14 = [v9 actionDetails];
-  [v11 captureUserAction:v10 onTarget:v12 eventValue:v13 placeActionDetails:v14];
+  analyticsTarget = [localObject analyticsTarget];
+  eventValue = [analyticsHelper eventValue];
+  actionDetails = [analyticsHelper actionDetails];
+  [v11 captureUserAction:v10 onTarget:analyticsTarget eventValue:eventValue placeActionDetails:actionDetails];
 
 LABEL_6:
   currentDragSession = self->_currentDragSession;
@@ -488,71 +488,71 @@ LABEL_6:
   self->_previewView = 0;
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
-  v5 = a4;
+  beginCopy = begin;
   v6 = [MapsDragLocalContext alloc];
-  v7 = [(PlaceCardViewController *)self view];
-  v8 = [v7 window];
-  v9 = [v8 windowScene];
-  v10 = [(MapsDragLocalContext *)v6 initWithWindowScene:v9];
-  [v5 setLocalContext:v10];
+  view = [(PlaceCardViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  v10 = [(MapsDragLocalContext *)v6 initWithWindowScene:windowScene];
+  [beginCopy setLocalContext:v10];
 
   currentDragSession = self->_currentDragSession;
-  self->_currentDragSession = v5;
-  v12 = v5;
+  self->_currentDragSession = beginCopy;
+  v12 = beginCopy;
 
   v13 = +[MapsDragAndDropManager sharedManager];
   [v13 setDragSession:v12];
 
   [(PlaceCardViewController *)self updatePreviewDrag];
-  v14 = [v12 items];
-  v21 = [v14 firstObject];
+  items = [v12 items];
+  firstObject = [items firstObject];
 
-  v15 = [v21 localObject];
-  v16 = [v15 analyticsHelper];
+  localObject = [firstObject localObject];
+  analyticsHelper = [localObject analyticsHelper];
   v17 = +[MKMapService sharedService];
 
-  v18 = [v15 analyticsTarget];
-  v19 = [v16 eventValue];
-  v20 = [v16 actionDetails];
-  [v17 captureUserAction:17001 onTarget:v18 eventValue:v19 placeActionDetails:v20];
+  analyticsTarget = [localObject analyticsTarget];
+  eventValue = [analyticsHelper eventValue];
+  actionDetails = [analyticsHelper actionDetails];
+  [v17 captureUserAction:17001 onTarget:analyticsTarget eventValue:eventValue placeActionDetails:actionDetails];
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100B8E360;
   v5[3] = &unk_10165F3A0;
   v5[4] = self;
-  [a4 addCompletion:v5];
+  [animator addCompletion:v5];
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v5 = a3;
+  interactionCopy = interaction;
   v6 = +[MapsDragAndDropManager sharedManager];
-  v7 = [v6 canStartNewDrag];
+  canStartNewDrag = [v6 canStartNewDrag];
 
-  if (!v7)
+  if (!canStartNewDrag)
   {
     v22 = &__NSArray0__struct;
     goto LABEL_18;
   }
 
-  v8 = [v5 view];
-  v9 = [(InfoCardViewController *)self fixedHeaderView];
+  view = [interactionCopy view];
+  fixedHeaderView = [(InfoCardViewController *)self fixedHeaderView];
 
-  if (v8 == v9)
+  if (view == fixedHeaderView)
   {
-    v23 = [(PlaceCardViewController *)self placeCardItem];
-    v11 = [v23 mapItem];
+    placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+    mapItem = [placeCardItem mapItem];
 
-    v12 = [(PlaceCardViewController *)self placeCardItem];
-    v14 = 0;
-    v13 = 1501;
-    if (v11)
+    placeCardItem2 = [(PlaceCardViewController *)self placeCardItem];
+    view2 = 0;
+    analyticsTarget = 1501;
+    if (mapItem)
     {
       goto LABEL_4;
     }
@@ -560,70 +560,70 @@ LABEL_6:
 
   else
   {
-    v10 = [(NSMapTable *)self->_draggableContentInteractions objectForKey:v5];
-    v11 = [v10 draggableContent];
-    v12 = v10;
-    v13 = [v12 analyticsTarget];
-    v14 = [v12 view];
+    v10 = [(NSMapTable *)self->_draggableContentInteractions objectForKey:interactionCopy];
+    mapItem = [v10 draggableContent];
+    placeCardItem2 = v10;
+    analyticsTarget = [placeCardItem2 analyticsTarget];
+    view2 = [placeCardItem2 view];
 
-    if (v11)
+    if (mapItem)
     {
 LABEL_4:
       objc_opt_class();
-      v39 = v14;
+      v39 = view2;
       if (objc_opt_isKindOfClass())
       {
-        v15 = [DragAndDropMapItem dragAndDropItemWithObject:v11];
-        v16 = [v15 itemProviderWriting];
+        placeCardItem3 = [DragAndDropMapItem dragAndDropItemWithObject:mapItem];
+        itemProviderWriting = [placeCardItem3 itemProviderWriting];
 
         v17 = [DragAndDropPreview alloc];
-        v18 = [(PlaceCardViewController *)self view];
-        v19 = [v18 traitCollection];
-        v20 = [(DragAndDropPreview *)v17 initWithDragAndDropMapItem:v15 traitCollection:v19];
+        view3 = [(PlaceCardViewController *)self view];
+        traitCollection = [view3 traitCollection];
+        v20 = [(DragAndDropPreview *)v17 initWithDragAndDropMapItem:placeCardItem3 traitCollection:traitCollection];
         previewView = self->_previewView;
         self->_previewView = v20;
 
         [(DragAndDropPreview *)self->_previewView setContentUpdateDelegate:self];
-        v38 = [v15 analyticsHelper];
-        v11 = v16;
+        analyticsHelper = [placeCardItem3 analyticsHelper];
+        mapItem = itemProviderWriting;
       }
 
       else
       {
         v24 = [MapsAnalyticsHelper alloc];
-        v15 = [(PlaceCardViewController *)self placeCardItem];
-        v25 = [v15 mapItem];
-        v38 = [(MapsAnalyticsHelper *)v24 initWithMapItem:v25];
+        placeCardItem3 = [(PlaceCardViewController *)self placeCardItem];
+        mapItem2 = [placeCardItem3 mapItem];
+        analyticsHelper = [(MapsAnalyticsHelper *)v24 initWithMapItem:mapItem2];
       }
 
-      v26 = v13;
+      v26 = analyticsTarget;
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v27 = v11;
-        v28 = [(PlaceCardViewController *)self placeCardItem];
-        v29 = [v28 mapItem];
-        v30 = [v29 name];
-        v31 = [NSItemProvider itemProviderWithURL:v27 title:v30];
+        v27 = mapItem;
+        placeCardItem4 = [(PlaceCardViewController *)self placeCardItem];
+        mapItem3 = [placeCardItem4 mapItem];
+        name = [mapItem3 name];
+        v31 = [NSItemProvider itemProviderWithURL:v27 title:name];
       }
 
       else
       {
-        v31 = [[NSItemProvider alloc] initWithObject:v11];
+        v31 = [[NSItemProvider alloc] initWithObject:mapItem];
       }
 
-      v32 = [(PlaceCardViewController *)self placeCardItem];
-      v33 = [v32 mapItem];
-      v34 = [v33 name];
-      [v31 setSuggestedName:v34];
+      placeCardItem5 = [(PlaceCardViewController *)self placeCardItem];
+      mapItem4 = [placeCardItem5 mapItem];
+      name2 = [mapItem4 name];
+      [v31 setSuggestedName:name2];
 
       v35 = [[UIDragItem alloc] initWithItemProvider:v31];
       v36 = objc_opt_new();
-      [v36 setContent:v12];
+      [v36 setContent:placeCardItem2];
       [v36 setAnalyticsTarget:v26];
-      [v36 setAnalyticsHelper:v38];
-      v14 = v39;
+      [v36 setAnalyticsHelper:analyticsHelper];
+      view2 = v39;
       if (sub_10000FA08(self) == 5 && v39)
       {
         v40[0] = _NSConcreteStackBlock;
@@ -650,61 +650,61 @@ LABEL_18:
   return v22;
 }
 
-- (id)targetedDragPreviewForInteraction:(id)a3
+- (id)targetedDragPreviewForInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = [(InfoCardViewController *)self fixedHeaderView];
+  interactionCopy = interaction;
+  view = [interactionCopy view];
+  fixedHeaderView = [(InfoCardViewController *)self fixedHeaderView];
 
-  if (v5 == v6)
+  if (view == fixedHeaderView)
   {
-    v8 = [(InfoCardViewController *)self fixedHeaderView];
-    v9 = 1;
+    fixedHeaderView2 = [(InfoCardViewController *)self fixedHeaderView];
+    isHeader = 1;
   }
 
   else
   {
-    v7 = [(NSMapTable *)self->_draggableContentInteractions objectForKey:v4];
-    v8 = [v7 view];
-    v9 = [v7 isHeader];
+    v7 = [(NSMapTable *)self->_draggableContentInteractions objectForKey:interactionCopy];
+    fixedHeaderView2 = [v7 view];
+    isHeader = [v7 isHeader];
   }
 
   v10 = objc_alloc_init(UIDragPreviewParameters);
-  v11 = [(PlaceCardViewController *)self theme];
-  v12 = [v11 controlBackgroundColor];
-  [v10 setBackgroundColor:v12];
+  theme = [(PlaceCardViewController *)self theme];
+  controlBackgroundColor = [theme controlBackgroundColor];
+  [v10 setBackgroundColor:controlBackgroundColor];
 
-  if (v9)
+  if (isHeader)
   {
     if ([(InfoCardViewController *)self isShowingFullHeader])
     {
-      v13 = [(MUPlaceViewController *)self->_placeViewController draggableHeaderView];
+      draggableHeaderView = [(MUPlaceViewController *)self->_placeViewController draggableHeaderView];
 
-      v14 = [v13 snapshotViewAfterScreenUpdates:0];
+      v14 = [draggableHeaderView snapshotViewAfterScreenUpdates:0];
     }
 
     else
     {
-      v13 = [(InfoCardViewController *)self fixedHeaderView];
+      draggableHeaderView = [(InfoCardViewController *)self fixedHeaderView];
 
-      v15 = [(InfoCardViewController *)self fixedHeaderView];
-      [v15 setHideActionButtons:1];
+      fixedHeaderView3 = [(InfoCardViewController *)self fixedHeaderView];
+      [fixedHeaderView3 setHideActionButtons:1];
 
-      v14 = [v13 snapshotViewAfterScreenUpdates:1];
-      v16 = [(InfoCardViewController *)self fixedHeaderView];
-      [v16 setHideActionButtons:0];
+      v14 = [draggableHeaderView snapshotViewAfterScreenUpdates:1];
+      fixedHeaderView4 = [(InfoCardViewController *)self fixedHeaderView];
+      [fixedHeaderView4 setHideActionButtons:0];
     }
 
-    v8 = v13;
+    fixedHeaderView2 = draggableHeaderView;
     [v14 frame];
     v18 = v17;
     [v14 frame];
     v20 = v19;
-    v21 = [(InfoCardViewController *)self fixedHeaderView];
-    [v21 _cornerRadius];
+    fixedHeaderView5 = [(InfoCardViewController *)self fixedHeaderView];
+    [fixedHeaderView5 _cornerRadius];
     v23 = v22;
-    v24 = [(InfoCardViewController *)self fixedHeaderView];
-    [v24 _cornerRadius];
+    fixedHeaderView6 = [(InfoCardViewController *)self fixedHeaderView];
+    [fixedHeaderView6 _cornerRadius];
     v26 = v25;
 
     v27 = [UIBezierPath bezierPathWithRoundedRect:3 byRoundingCorners:0.0 cornerRadii:0.0, v18, v20, v23, v26];
@@ -713,22 +713,22 @@ LABEL_18:
 
   else
   {
-    v14 = [v8 snapshotViewAfterScreenUpdates:0];
+    v14 = [fixedHeaderView2 snapshotViewAfterScreenUpdates:0];
   }
 
   v28 = v14;
-  v29 = [v8 window];
-  if (v29)
+  window = [fixedHeaderView2 window];
+  if (window)
   {
-    [v8 bounds];
-    [v8 convertRect:v29 toView:?];
+    [fixedHeaderView2 bounds];
+    [fixedHeaderView2 convertRect:window toView:?];
     [v28 setFrame:?];
     v30 = [UIDragPreviewTarget alloc];
     [v28 frame];
     MidX = CGRectGetMidX(v47);
     [v28 frame];
-    v32 = [v30 initWithContainer:v29 center:{MidX, CGRectGetMidY(v48)}];
-    [v29 frame];
+    v32 = [v30 initWithContainer:window center:{MidX, CGRectGetMidY(v48)}];
+    [window frame];
     v34 = v33;
     v36 = v35;
     v38 = v37;
@@ -766,26 +766,26 @@ LABEL_18:
     previewView = self->_previewView;
     if (previewView)
     {
-      v4 = [(DragAndDropPreview *)previewView renderPreviewImage];
-      [v4 dragPreview];
+      renderPreviewImage = [(DragAndDropPreview *)previewView renderPreviewImage];
+      [renderPreviewImage dragPreview];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_100B8ECC4;
       v10 = v9[3] = &unk_10164EFF0;
       currentDragSession = self->_currentDragSession;
       v6 = v10;
-      v7 = [(UIDragSession *)currentDragSession items];
-      v8 = [v7 firstObject];
-      [v8 setPreviewProvider:v9];
+      items = [(UIDragSession *)currentDragSession items];
+      firstObject = [items firstObject];
+      [firstObject setPreviewProvider:v9];
     }
   }
 }
 
-- (void)setDraggableContent:(id)a3
+- (void)setDraggableContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v5 = self->_draggableContent;
-  v6 = v4;
+  v6 = contentCopy;
   if (v6 | v5)
   {
     v7 = [v5 isEqual:v6];
@@ -800,8 +800,8 @@ LABEL_18:
         v53 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v10 = [(NSMapTable *)draggableContentInteractions keyEnumerator];
-        v11 = [v10 countByEnumeratingWithState:&v50 objects:v56 count:16];
+        keyEnumerator = [(NSMapTable *)draggableContentInteractions keyEnumerator];
+        v11 = [keyEnumerator countByEnumeratingWithState:&v50 objects:v56 count:16];
         if (v11)
         {
           v12 = v11;
@@ -812,16 +812,16 @@ LABEL_18:
             {
               if (*v51 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(keyEnumerator);
               }
 
               v15 = *(*(&v50 + 1) + 8 * i);
               v16 = [(NSMapTable *)self->_draggableContentInteractions objectForKey:v15];
-              v17 = [v16 view];
-              [v17 removeInteraction:v15];
+              view = [v16 view];
+              [view removeInteraction:v15];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v50 objects:v56 count:16];
+            v12 = [keyEnumerator countByEnumeratingWithState:&v50 objects:v56 count:16];
           }
 
           while (v12);
@@ -838,10 +838,10 @@ LABEL_18:
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v19 = [(InfoCardViewController *)self fixedHeaderView];
-      v20 = [v19 interactions];
+      fixedHeaderView = [(InfoCardViewController *)self fixedHeaderView];
+      interactions = [fixedHeaderView interactions];
 
-      v21 = [v20 countByEnumeratingWithState:&v46 objects:v55 count:16];
+      v21 = [interactions countByEnumeratingWithState:&v46 objects:v55 count:16];
       if (v21)
       {
         v22 = v21;
@@ -852,19 +852,19 @@ LABEL_18:
           {
             if (*v47 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(interactions);
             }
 
             v25 = *(*(&v46 + 1) + 8 * j);
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v26 = [(InfoCardViewController *)self fixedHeaderView];
-              [v26 removeInteraction:v25];
+              fixedHeaderView2 = [(InfoCardViewController *)self fixedHeaderView];
+              [fixedHeaderView2 removeInteraction:v25];
             }
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v46 objects:v55 count:16];
+          v22 = [interactions countByEnumeratingWithState:&v46 objects:v55 count:16];
         }
 
         while (v22);
@@ -902,8 +902,8 @@ LABEL_18:
 
               v36 = *(*(&v42 + 1) + 8 * k);
               v37 = [[UIDragInteraction alloc] initWithDelegate:self];
-              v38 = [v36 view];
-              [v38 addInteraction:v37];
+              view2 = [v36 view];
+              [view2 addInteraction:v37];
 
               [(NSMapTable *)self->_draggableContentInteractions setObject:v36 forKey:v37];
             }
@@ -918,28 +918,28 @@ LABEL_18:
         if (sub_10000FA08(self) != 5 && [(NSArray *)self->_draggableContent count])
         {
           v39 = [[UIDragInteraction alloc] initWithDelegate:self];
-          v40 = [(InfoCardViewController *)self fixedHeaderView];
-          [v40 addInteraction:v39];
+          fixedHeaderView3 = [(InfoCardViewController *)self fixedHeaderView];
+          [fixedHeaderView3 addInteraction:v39];
         }
       }
     }
   }
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v4 = a4;
+  contactCopy = contact;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [v4 postalAddresses];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  postalAddresses = [contactCopy postalAddresses];
+  v6 = [postalAddresses countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
-    v21 = v4;
-    obj = v5;
+    v21 = contactCopy;
+    obj = postalAddresses;
     v8 = *v25;
 LABEL_3:
     v9 = 0;
@@ -951,12 +951,12 @@ LABEL_3:
       }
 
       v10 = *(*(&v24 + 1) + 8 * v9);
-      v11 = [v10 value];
-      v12 = [(PlaceCardViewController *)self placeCardItem];
-      v13 = [v12 address];
-      v14 = [v13 addressValue];
-      v15 = [v14 value];
-      v16 = [v11 isEqual:v15];
+      value = [v10 value];
+      placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+      address = [placeCardItem address];
+      addressValue = [address addressValue];
+      value2 = [addressValue value];
+      v16 = [value isEqual:value2];
 
       if (v16)
       {
@@ -971,15 +971,15 @@ LABEL_3:
           goto LABEL_3;
         }
 
-        v4 = v21;
-        v5 = obj;
+        contactCopy = v21;
+        postalAddresses = obj;
         goto LABEL_12;
       }
     }
 
     v17 = v10;
 
-    v4 = v21;
+    contactCopy = v21;
     if (!v17)
     {
       goto LABEL_13;
@@ -987,10 +987,10 @@ LABEL_3:
 
     v18 = [[MKMapItem alloc] initWithContact:v21];
     v19 = [[AddressBookAddress alloc] initWithContact:v21 addressValue:v17];
-    v20 = [(PlaceCardViewController *)self placeCardDelegate];
-    [v20 placeCardViewController:self selectMapItem:v18 address:v19];
+    placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+    [placeCardDelegate placeCardViewController:self selectMapItem:v18 address:v19];
 
-    v5 = v17;
+    postalAddresses = v17;
   }
 
 LABEL_12:
@@ -998,61 +998,61 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)presentExtensionFlowController:(id)a3
+- (void)presentExtensionFlowController:(id)controller
 {
-  v4 = a3;
-  [v4 setContentUpdateDelegate:self];
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 presentViewController:v4 animated:1 completion:0];
+  controllerCopy = controller;
+  [controllerCopy setContentUpdateDelegate:self];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController presentViewController:controllerCopy animated:1 completion:0];
 }
 
-- (void)presentAppClip:(id)a3
+- (void)presentAppClip:(id)clip
 {
-  v4 = a3;
-  v5 = [v4 appClipURL];
+  clipCopy = clip;
+  appClipURL = [clipCopy appClipURL];
   v6 = +[MKClipServices sharedInstance];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100B8F410;
   v8[3] = &unk_10163BE28;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  [v6 requestAppClip:v4 completion:v8];
+  v9 = appClipURL;
+  selfCopy = self;
+  v7 = appClipURL;
+  [v6 requestAppClip:clipCopy completion:v8];
 }
 
-- (void)presentQuickLink:(id)a3
+- (void)presentQuickLink:(id)link
 {
-  v4 = [a3 URLString];
-  if ([v4 length])
+  uRLString = [link URLString];
+  if ([uRLString length])
   {
-    v5 = [[NSURL alloc] initWithString:v4];
+    v5 = [[NSURL alloc] initWithString:uRLString];
     if (v5)
     {
-      v6 = [(PlaceCardViewController *)self placeCardDelegate];
-      [v6 placeCardViewController:self openURL:v5];
+      placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+      [placeCardDelegate placeCardViewController:self openURL:v5];
     }
 
     else
     {
-      v6 = sub_1007986AC();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      placeCardDelegate = sub_1007986AC();
+      if (os_log_type_enabled(placeCardDelegate, OS_LOG_TYPE_ERROR))
       {
         v7 = 138412290;
-        v8 = self;
-        _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "The URL associated with quicklink %@ is nil", &v7, 0xCu);
+        selfCopy = self;
+        _os_log_impl(&_mh_execute_header, placeCardDelegate, OS_LOG_TYPE_ERROR, "The URL associated with quicklink %@ is nil", &v7, 0xCu);
       }
     }
   }
 }
 
-- (void)appStoreAppSelected:(id)a3
+- (void)appStoreAppSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [(PlaceCardViewController *)self placeCardDelegate];
-  v6 = [v4 identifier];
-  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 integerValue]);
-  [v5 placeCardViewController:self displayStoreViewControllerForAppWithiTunesIdentifier:v7];
+  selectedCopy = selected;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  identifier = [selectedCopy identifier];
+  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [identifier integerValue]);
+  [placeCardDelegate placeCardViewController:self displayStoreViewControllerForAppWithiTunesIdentifier:v7];
 
   if ([(MUPlaceViewController *)self->_placeViewController conformsToProtocol:&OBJC_PROTOCOL____MKInfoCardAnalyticsDelegate])
   {
@@ -1064,55 +1064,55 @@ LABEL_13:
     v9 = 0;
   }
 
-  v8 = [v4 iOSBundleIdentifier];
+  iOSBundleIdentifier = [selectedCopy iOSBundleIdentifier];
 
-  [(MUPlaceViewController *)v9 infoCardAnalyticsDidSelectAction:45 target:733 eventValue:v8 feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
+  [(MUPlaceViewController *)v9 infoCardAnalyticsDidSelectAction:45 target:733 eventValue:iOSBundleIdentifier feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
 }
 
 - (BOOL)isMeCard
 {
-  v3 = [(PlaceCardViewController *)self placeCardItem];
-  v4 = [v3 address];
-  if ([v4 isMeCard])
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  address = [placeCardItem address];
+  if ([address isMeCard])
   {
-    v5 = 1;
+    isHomeWorkSchoolAddress = 1;
   }
 
   else
   {
-    v6 = [(PlaceCardViewController *)self placeCardItem];
-    v5 = [v6 isHomeWorkSchoolAddress];
+    placeCardItem2 = [(PlaceCardViewController *)self placeCardItem];
+    isHomeWorkSchoolAddress = [placeCardItem2 isHomeWorkSchoolAddress];
   }
 
-  return v5;
+  return isHomeWorkSchoolAddress;
 }
 
 - (BOOL)isContact
 {
-  v2 = [(PlaceCardViewController *)self placeCardItem];
-  v3 = [v2 address];
-  v4 = v3 != 0;
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  address = [placeCardItem address];
+  v4 = address != 0;
 
   return v4;
 }
 
 - (void)dismissContactsViewController
 {
-  v3 = [(PlaceCardViewController *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(PlaceCardViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 5)
+  if (userInterfaceIdiom == 5)
   {
     objc_initWeak(&location, self);
     v5 = +[UIApplication sharedMapsDelegate];
-    v6 = [v5 appCoordinator];
-    v7 = [v6 chromeViewController];
+    appCoordinator = [v5 appCoordinator];
+    chromeViewController = [appCoordinator chromeViewController];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100B8F9E8;
     v8[3] = &unk_101661B98;
     objc_copyWeak(&v9, &location);
-    [v7 dismissViewControllerAnimated:1 completion:v8];
+    [chromeViewController dismissViewControllerAnimated:1 completion:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -1125,29 +1125,29 @@ LABEL_13:
   }
 }
 
-- (void)placeViewControllerDidSelectAddOrRemoveFromFavoritesGuide:(id)a3
+- (void)placeViewControllerDidSelectAddOrRemoveFromFavoritesGuide:(id)guide
 {
   v4 = +[CollectionManager sharedManager];
-  v5 = [v4 favoriteCollection];
+  favoriteCollection = [v4 favoriteCollection];
 
-  [(PlaceCardViewController *)self _addPlaceToCollection:v5 editCollection:0];
+  [(PlaceCardViewController *)self _addPlaceToCollection:favoriteCollection editCollection:0];
 }
 
-- (void)searchFindMyFriendDidRemoveHandleWithIdentifier:(id)a3
+- (void)searchFindMyFriendDidRemoveHandleWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PlaceCardItem *)self->_placeCardItem searchResult];
-  v6 = [v5 autocompletePerson];
+  identifierCopy = identifier;
+  searchResult = [(PlaceCardItem *)self->_placeCardItem searchResult];
+  autocompletePerson = [searchResult autocompletePerson];
 
-  if (v6)
+  if (autocompletePerson)
   {
-    v7 = [(PlaceCardItem *)self->_placeCardItem searchResult];
-    v8 = [v7 autocompletePerson];
-    v9 = [v8 handle];
-    v10 = [v9 handle];
-    v11 = [v10 handleIdentifier];
+    searchResult2 = [(PlaceCardItem *)self->_placeCardItem searchResult];
+    autocompletePerson2 = [searchResult2 autocompletePerson];
+    handle = [autocompletePerson2 handle];
+    v9Handle = [handle handle];
+    handleIdentifier = [v9Handle handleIdentifier];
 
-    if ([v4 isEqualToString:v11])
+    if ([identifierCopy isEqualToString:handleIdentifier])
     {
       v12 = sub_1007986AC();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1168,12 +1168,12 @@ LABEL_13:
 
 - (void)openRequestLocation
 {
-  v3 = [(PlaceCardViewController *)self placeCardItem];
-  v4 = [v3 searchResult];
-  v5 = [v4 autocompletePerson];
-  v6 = [v5 requestLocationURL];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  searchResult = [placeCardItem searchResult];
+  autocompletePerson = [searchResult autocompletePerson];
+  requestLocationURL = [autocompletePerson requestLocationURL];
 
-  if (v6)
+  if (requestLocationURL)
   {
     objc_initWeak(location, self);
     v7 = +[UIApplication sharedApplication];
@@ -1182,10 +1182,10 @@ LABEL_13:
     v13[2] = sub_100B8FEB8;
     v13[3] = &unk_1016619A8;
     objc_copyWeak(&v14, location);
-    [v7 _maps_openURL:v6 options:0 completionHandler:v13];
+    [v7 _maps_openURL:requestLocationURL options:0 completionHandler:v13];
 
-    v8 = [(PlaceCardViewController *)self analyticsDelegate];
-    [v8 infoCardAnalyticsDidSelectAction:405 eventValue:0 feedbackDelegateSelector:0 classification:0];
+    analyticsDelegate = [(PlaceCardViewController *)self analyticsDelegate];
+    [analyticsDelegate infoCardAnalyticsDidSelectAction:405 eventValue:0 feedbackDelegateSelector:0 classification:0];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(location);
@@ -1196,11 +1196,11 @@ LABEL_13:
     v9 = sub_1007986AC();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(PlaceCardViewController *)self placeCardItem];
-      v11 = [v10 searchResult];
-      v12 = [v11 autocompletePerson];
+      placeCardItem2 = [(PlaceCardViewController *)self placeCardItem];
+      searchResult2 = [placeCardItem2 searchResult];
+      autocompletePerson2 = [searchResult2 autocompletePerson];
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v12;
+      *(location + 4) = autocompletePerson2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Error opening messages app, missing request location Identifier for person: %@", location, 0xCu);
     }
   }
@@ -1208,12 +1208,12 @@ LABEL_13:
 
 - (void)openFindMy
 {
-  v3 = [(PlaceCardViewController *)self placeCardItem];
-  v4 = [v3 searchResult];
-  v5 = [v4 autocompletePerson];
-  v6 = [v5 openFindMyURL];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  searchResult = [placeCardItem searchResult];
+  autocompletePerson = [searchResult autocompletePerson];
+  openFindMyURL = [autocompletePerson openFindMyURL];
 
-  if (v6)
+  if (openFindMyURL)
   {
     objc_initWeak(location, self);
     v7 = +[UIApplication sharedApplication];
@@ -1222,7 +1222,7 @@ LABEL_13:
     v15 = sub_100B90200;
     v16 = &unk_10165FC50;
     objc_copyWeak(&v18, location);
-    v17 = v6;
+    v17 = openFindMyURL;
     [v7 _maps_openURL:v17 options:0 completionHandler:&v13];
 
     v8 = [(PlaceCardViewController *)self analyticsDelegate:v13];
@@ -1237,11 +1237,11 @@ LABEL_13:
     v9 = sub_1007986AC();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(PlaceCardViewController *)self placeCardItem];
-      v11 = [v10 searchResult];
-      v12 = [v11 autocompletePerson];
+      placeCardItem2 = [(PlaceCardViewController *)self placeCardItem];
+      searchResult2 = [placeCardItem2 searchResult];
+      autocompletePerson2 = [searchResult2 autocompletePerson];
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v12;
+      *(location + 4) = autocompletePerson2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Error opening the find my app, missing handle Identifier for person: %@", location, 0xCu);
     }
   }
@@ -1249,27 +1249,27 @@ LABEL_13:
 
 - (void)viewContact
 {
-  v3 = [(PlaceCardViewController *)self placeCardItem];
-  v4 = [v3 address];
-  v5 = [v4 contact];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  address = [placeCardItem address];
+  contact = [address contact];
 
   if (MapsFeature_IsEnabled_MapsWally())
   {
-    v6 = [v5 mutableCopy];
-    v7 = [v5 postalAddresses];
+    v6 = [contact mutableCopy];
+    postalAddresses = [contact postalAddresses];
     v8 = [NSPredicate predicateWithBlock:&stru_10163BE00];
-    v9 = [v7 filteredArrayUsingPredicate:v8];
+    v9 = [postalAddresses filteredArrayUsingPredicate:v8];
     [v6 setPostalAddresses:v9];
 
     v10 = [v6 copy];
-    v5 = v10;
+    contact = v10;
   }
 
-  v11 = [CNContactViewController viewControllerForContact:v5];
+  v11 = [CNContactViewController viewControllerForContact:contact];
   [v11 setDelegate:self];
   v12 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"dismissContactsViewController"];
-  v13 = [v11 navigationItem];
-  [v13 setBackBarButtonItem:v12];
+  navigationItem = [v11 navigationItem];
+  [navigationItem setBackBarButtonItem:v12];
 
   [v11 setModalPresentationStyle:3];
   [v11 setDisplayMode:1];
@@ -1296,21 +1296,21 @@ LABEL_13:
   }
 }
 
-- (void)_chromeViewControllerPresent:(id)a3
+- (void)_chromeViewControllerPresent:(id)present
 {
-  v3 = a3;
+  presentCopy = present;
   v6 = +[UIApplication sharedMapsDelegate];
-  v4 = [v6 appCoordinator];
-  v5 = [v4 chromeViewController];
-  [v5 presentViewController:v3 animated:1 completion:0];
+  appCoordinator = [v6 appCoordinator];
+  chromeViewController = [appCoordinator chromeViewController];
+  [chromeViewController presentViewController:presentCopy animated:1 completion:0];
 }
 
-- (void)_instrumentHeaderButtonAction:(int)a3 withFeedbackType:(int)a4
+- (void)_instrumentHeaderButtonAction:(int)action withFeedbackType:(int)type
 {
-  v4 = *&a4;
-  v5 = *&a3;
-  v6 = [(MUPlaceViewController *)self->_placeViewController analyticsController];
-  [v6 instrumentAction:v5 forModuleType:2 usingFeedbackType:v4];
+  v4 = *&type;
+  v5 = *&action;
+  analyticsController = [(MUPlaceViewController *)self->_placeViewController analyticsController];
+  [analyticsController instrumentAction:v5 forModuleType:2 usingFeedbackType:v4];
 }
 
 - (id)_secondaryButtonController
@@ -1383,10 +1383,10 @@ LABEL_25:
 
   if ((excludedContent & 8) == 0)
   {
-    v13 = [(PlaceCardViewController *)self placeCardItem];
-    v14 = [v13 isDroppedPin];
+    placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+    isDroppedPin = [placeCardItem isDroppedPin];
 
-    if (v14)
+    if (isDroppedPin)
     {
       v15 = +[NSBundle mainBundle];
       v6 = [v15 localizedStringForKey:@"Move [Marked Location in Place Card]" value:@"localized string not found" table:0];
@@ -1406,19 +1406,19 @@ LABEL_32:
     }
   }
 
-  v16 = [(PlaceCardViewController *)self placeCardItem];
-  v17 = [v16 mapItem];
-  if ([v17 _hasFlyover])
+  placeCardItem2 = [(PlaceCardViewController *)self placeCardItem];
+  mapItem = [placeCardItem2 mapItem];
+  if ([mapItem _hasFlyover])
   {
     v18 = (self->_excludedContent & 4) == 0;
 
     if (v18)
     {
       v19 = +[VKPlatform sharedPlatform];
-      v20 = [v19 supportsARMode];
+      supportsARMode = [v19 supportsARMode];
 
       +[NSBundle mainBundle];
-      if (v20)
+      if (supportsARMode)
         v21 = {;
         [v21 localizedStringForKey:@"Flyover" value:@"localized string not found" table:0];
       }
@@ -1447,10 +1447,10 @@ LABEL_32:
   {
   }
 
-  v22 = [(PlaceCardViewController *)self placeCardItem];
-  v23 = [v22 isCurrentLocation];
+  placeCardItem3 = [(PlaceCardViewController *)self placeCardItem];
+  isCurrentLocation = [placeCardItem3 isCurrentLocation];
 
-  if (v23)
+  if (isCurrentLocation)
   {
     if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
     {
@@ -1486,10 +1486,10 @@ LABEL_32:
 
   if ((excludedContent & 8) == 0)
   {
-    v25 = [(PlaceCardViewController *)self placeCardItem];
-    v26 = [v25 isHomeWorkSchoolShortcut];
+    placeCardItem4 = [(PlaceCardViewController *)self placeCardItem];
+    isHomeWorkSchoolShortcut = [placeCardItem4 isHomeWorkSchoolShortcut];
 
-    if (v26)
+    if (isHomeWorkSchoolShortcut)
     {
       v27 = +[NSBundle mainBundle];
       v6 = [v27 localizedStringForKey:@"Move [Marked Location in Place Card]" value:@"localized string not found" table:0];
@@ -1505,21 +1505,21 @@ LABEL_32:
     }
   }
 
-  v33 = [(PlaceCardViewController *)self placeCardItem];
-  v34 = [v33 chargeStationWaypointInfo];
+  placeCardItem5 = [(PlaceCardViewController *)self placeCardItem];
+  chargeStationWaypointInfo = [placeCardItem5 chargeStationWaypointInfo];
 
-  if (!v34)
+  if (!chargeStationWaypointInfo)
   {
-    v42 = [(PlaceCardViewController *)self placeCardItem];
-    if ([v42 isMeCard])
+    placeCardItem6 = [(PlaceCardViewController *)self placeCardItem];
+    if ([placeCardItem6 isMeCard])
     {
     }
 
     else
     {
-      v45 = [(PlaceCardViewController *)self mapItem];
-      v46 = [v45 _quickLinks];
-      v47 = [v46 count] == 0;
+      mapItem2 = [(PlaceCardViewController *)self mapItem];
+      _quickLinks = [mapItem2 _quickLinks];
+      v47 = [_quickLinks count] == 0;
 
       if (!v47)
       {
@@ -1527,10 +1527,10 @@ LABEL_32:
         v66 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v48 = [(PlaceCardViewController *)self mapItem];
-        v49 = [v48 _quickLinks];
+        mapItem3 = [(PlaceCardViewController *)self mapItem];
+        _quickLinks2 = [mapItem3 _quickLinks];
 
-        v50 = [v49 countByEnumeratingWithState:&v63 objects:v85 count:16];
+        v50 = [_quickLinks2 countByEnumeratingWithState:&v63 objects:v85 count:16];
         if (v50)
         {
           v51 = *v64;
@@ -1540,7 +1540,7 @@ LABEL_44:
           {
             if (*v64 != v51)
             {
-              objc_enumerationMutation(v49);
+              objc_enumerationMutation(_quickLinks2);
             }
 
             v53 = *(*(&v63 + 1) + 8 * v52);
@@ -1551,7 +1551,7 @@ LABEL_44:
 
             if (v50 == ++v52)
             {
-              v50 = [v49 countByEnumeratingWithState:&v63 objects:v85 count:16];
+              v50 = [_quickLinks2 countByEnumeratingWithState:&v63 objects:v85 count:16];
               if (v50)
               {
                 goto LABEL_44;
@@ -1565,7 +1565,7 @@ LABEL_44:
 
           if (v7)
           {
-            v58 = [(Block_layout *)v7 title];
+            title = [(Block_layout *)v7 title];
             v60[0] = _NSConcreteStackBlock;
             v60[1] = 3221225472;
             v60[2] = sub_100B91730;
@@ -1573,7 +1573,7 @@ LABEL_44:
             objc_copyWeak(&v62, &location);
             v59 = v7;
             v61 = v59;
-            v3 = [_MKPlaceActionButtonController actionButtonControllerWithTitle:v58 subTitle:0 selectedBlock:v60];
+            v3 = [_MKPlaceActionButtonController actionButtonControllerWithTitle:title subTitle:0 selectedBlock:v60];
 
             objc_destroyWeak(&v62);
             v7 = 0;
@@ -1599,10 +1599,10 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  v35 = [(PlaceCardViewController *)self placeCardItem];
-  v36 = [v35 chargeStationWaypointInfo];
-  v37 = [v36 chargeInfo];
-  [v37 chargingTime];
+  placeCardItem7 = [(PlaceCardViewController *)self placeCardItem];
+  chargeStationWaypointInfo2 = [placeCardItem7 chargeStationWaypointInfo];
+  chargeInfo = [chargeStationWaypointInfo2 chargeInfo];
+  [chargeInfo chargingTime];
   v39 = [NSString _navigation_stringWithSeconds:v38 abbreviated:1];
 
   v31 = v39 != 0;
@@ -1662,26 +1662,26 @@ LABEL_63:
   return v3;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   suggestionViewController = self->_suggestionViewController;
-  v5 = a3;
+  draggingCopy = dragging;
   [(RelatedSearchSuggestionViewController *)suggestionViewController dismiss];
   v6.receiver = self;
   v6.super_class = PlaceCardViewController;
-  [(ContaineeViewController *)&v6 scrollViewWillBeginDragging:v5];
+  [(ContaineeViewController *)&v6 scrollViewWillBeginDragging:draggingCopy];
 }
 
-- (void)placeViewController:(id)a3 didRequestAddOrRemovePlaceFromLibrary:(BOOL)a4 environment:(id)a5
+- (void)placeViewController:(id)controller didRequestAddOrRemovePlaceFromLibrary:(BOOL)library environment:(id)environment
 {
-  v5 = a4;
+  libraryCopy = library;
   libraryOperationsCoordinator = self->_libraryOperationsCoordinator;
-  v8 = a5;
-  v9 = [(PlaceCardLibraryOperationsCoordinator *)libraryOperationsCoordinator mapItem];
-  v10 = [v9 _muid];
-  v11 = [v8 isActionBar];
+  environmentCopy = environment;
+  mapItem = [(PlaceCardLibraryOperationsCoordinator *)libraryOperationsCoordinator mapItem];
+  _muid = [mapItem _muid];
+  isActionBar = [environmentCopy isActionBar];
 
-  if (v11)
+  if (isActionBar)
   {
     v12 = 203;
   }
@@ -1691,55 +1691,55 @@ LABEL_63:
     v12 = 30;
   }
 
-  [_TtC4Maps16LibraryAnalytics captureAddOrRemoveFromLibraryWithPlaceMUID:v10 captureAdd:v5 target:v12];
+  [_TtC4Maps16LibraryAnalytics captureAddOrRemoveFromLibraryWithPlaceMUID:_muid captureAdd:libraryCopy target:v12];
 
-  [(PlaceCardViewController *)self handleAddOrRemovePlaceFromLibrary:v5];
+  [(PlaceCardViewController *)self handleAddOrRemovePlaceFromLibrary:libraryCopy];
 }
 
-- (void)placeViewController:(id)a3 didSelectTransitConnectionInformation:(id)a4
+- (void)placeViewController:(id)controller didSelectTransitConnectionInformation:(id)information
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  informationCopy = information;
   v8 = +[UIApplication sharedMapsDelegate];
-  v9 = [v8 poiSearchManager];
+  poiSearchManager = [v8 poiSearchManager];
 
   v10 = [MKMapItemIdentifier alloc];
-  v11 = [v7 itemIdentifier];
-  v12 = [v10 initWithGEOMapItemIdentifier:v11];
+  itemIdentifier = [informationCopy itemIdentifier];
+  v12 = [v10 initWithGEOMapItemIdentifier:itemIdentifier];
 
-  v13 = [(PlaceCardViewController *)self placeCardDelegate];
-  v14 = [v13 newTraits];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  newTraits = [placeCardDelegate newTraits];
 
-  [v14 useOnlineToOfflineFailoverRequestModeIfAllowed];
+  [newTraits useOnlineToOfflineFailoverRequestModeIfAllowed];
   objc_initWeak(&location, self);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100B91C28;
   v15[3] = &unk_10163BD50;
   objc_copyWeak(&v16, &location);
-  [v9 searchForIdentifier:v12 allowExpired:0 traits:v14 completionHandler:v15];
+  [poiSearchManager searchForIdentifier:v12 allowExpired:0 traits:newTraits completionHandler:v15];
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (void)placeViewController:(id)a3 didRequestEditingNoteWithInitialText:(id)a4 libraryAccessProvider:(id)a5 completion:(id)a6
+- (void)placeViewController:(id)controller didRequestEditingNoteWithInitialText:(id)text libraryAccessProvider:(id)provider completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v13 = [(PlaceCardViewController *)self placeCardDelegate];
-  v12 = [(PlaceCardLibraryOperationsCoordinator *)self->_libraryOperationsCoordinator mapItem];
-  [v13 placeCardViewController:self didRequestEditingNoteWithInitialText:v11 libraryAccessProvider:v10 placeMUID:objc_msgSend(v12 completion:{"_muid"), v9}];
+  completionCopy = completion;
+  providerCopy = provider;
+  textCopy = text;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  mapItem = [(PlaceCardLibraryOperationsCoordinator *)self->_libraryOperationsCoordinator mapItem];
+  [placeCardDelegate placeCardViewController:self didRequestEditingNoteWithInitialText:textCopy libraryAccessProvider:providerCopy placeMUID:objc_msgSend(mapItem completion:{"_muid"), completionCopy}];
 }
 
-- (void)placeViewController:(id)a3 didSelectMapsExtension:(id)a4 usingAppStoreApp:(id)a5 parameters:(id)a6
+- (void)placeViewController:(id)controller didSelectMapsExtension:(id)extension usingAppStoreApp:(id)app parameters:(id)parameters
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  parametersCopy = parameters;
+  appCopy = app;
+  extensionCopy = extension;
   v12 = [RestaurantReservationRouter alloc];
-  v13 = [(PlaceCardViewController *)self mapItem];
-  v14 = [(RestaurantReservationRouter *)v12 initWithExtension:v11 parameters:v9 appStoreApp:v10 mapItem:v13 presenter:self];
+  mapItem = [(PlaceCardViewController *)self mapItem];
+  v14 = [(RestaurantReservationRouter *)v12 initWithExtension:extensionCopy parameters:parametersCopy appStoreApp:appCopy mapItem:mapItem presenter:self];
 
   reservationRouter = self->_reservationRouter;
   self->_reservationRouter = v14;
@@ -1749,16 +1749,16 @@ LABEL_63:
   [(RestaurantReservationRouter *)v16 resolve];
 }
 
-- (void)placeViewController:(id)a3 didSelectShareCurrentLocationWithCompletion:(id)a4
+- (void)placeViewController:(id)controller didSelectShareCurrentLocationWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v8 = +[MKLocationManager sharedLocationManager];
-  v9 = [v8 isAuthorizedForPreciseLocation];
+  isAuthorizedForPreciseLocation = [v8 isAuthorizedForPreciseLocation];
 
-  if (v9)
+  if (isAuthorizedForPreciseLocation)
   {
-    v7[2](v7, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
@@ -1774,7 +1774,7 @@ LABEL_63:
     v13[2] = sub_100B91FF4;
     v13[3] = &unk_10165DC78;
     objc_copyWeak(&v15, &location);
-    v14 = v7;
+    v14 = completionCopy;
     [v12 requestTemporaryPreciseLocationAuthorizationWithPurposeKey:@"AppInfoTemporaryPreciseLocationAuthorizationForShareLocationPurposeKey" completion:v13];
 
     objc_destroyWeak(&v15);
@@ -1782,241 +1782,241 @@ LABEL_63:
   }
 }
 
-- (void)placeViewControllerDidTapMiniBrowseCategory:(id)a3
+- (void)placeViewControllerDidTapMiniBrowseCategory:(id)category
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 wantsLayout:3];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController wantsLayout:3];
 }
 
-- (void)placeViewController:(id)a3 requestPasscodeUnlockWithCompletion:(id)a4
+- (void)placeViewController:(id)controller requestPasscodeUnlockWithCompletion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100B923E0;
   v5[3] = &unk_1016610B8;
-  v6 = a4;
-  v4 = v6;
+  completionCopy = completion;
+  v4 = completionCopy;
   [UIApplication _maps_unlockApplicationWithCompletion:v5];
 }
 
-- (void)placeViewController:(id)a3 didSelectParent:(id)a4
+- (void)placeViewController:(id)controller didSelectParent:(id)parent
 {
-  if (a4)
+  if (parent)
   {
-    v5 = a4;
+    parentCopy = parent;
     if (sub_10000FA08(self) != 5)
     {
-      v6 = [(ContaineeViewController *)self cardPresentationController];
-      v7 = [v6 containerStyle];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      containerStyle = [cardPresentationController containerStyle];
 
-      if (v7 == 1)
+      if (containerStyle == 1)
       {
-        v8 = [(ContaineeViewController *)self cardPresentationController];
-        [v8 wantsLayout:2];
+        cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+        [cardPresentationController2 wantsLayout:2];
       }
     }
 
-    v9 = [(PlaceCardViewController *)self placeCardDelegate];
-    [v9 placeCardViewController:self didSelectParent:v5];
+    placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+    [placeCardDelegate placeCardViewController:self didSelectParent:parentCopy];
   }
 }
 
-- (void)placeViewController:(id)a3 didSelectSearchCategory:(id)a4
+- (void)placeViewController:(id)controller didSelectSearchCategory:(id)category
 {
-  v5 = a4;
-  v8 = [(PlaceCardViewController *)self placeCardDelegate];
-  v6 = [(PlaceCardViewController *)self placeCardItem];
-  v7 = [v6 mapItem];
-  [v8 placeCardViewController:self presentCategoryPlacesListForMapItem:v7 searchCategory:v5];
+  categoryCopy = category;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  mapItem = [placeCardItem mapItem];
+  [placeCardDelegate placeCardViewController:self presentCategoryPlacesListForMapItem:mapItem searchCategory:categoryCopy];
 }
 
-- (void)placeViewControllerDidSelectRemoveMarker:(id)a3
+- (void)placeViewControllerDidSelectRemoveMarker:(id)marker
 {
-  v4 = [(PlaceCardViewController *)self placeCardItem];
-  v6 = [v4 searchResult];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  searchResult = [placeCardItem searchResult];
 
-  v5 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v5 placeCardViewController:self removeDroppedPin:v6];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self removeDroppedPin:searchResult];
 }
 
-- (void)placeViewControllerDidSelectDisplayedAddress:(id)a3
+- (void)placeViewControllerDidSelectDisplayedAddress:(id)address
 {
-  v4 = [(PlaceCardViewController *)self placeCardDelegate];
-  v5 = [(PlaceCardViewController *)self placeCardItem];
-  [v4 placeCardViewController:self selectDisplayedAddressFromPlaceCardItem:v5];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  [placeCardDelegate placeCardViewController:self selectDisplayedAddressFromPlaceCardItem:placeCardItem];
 
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  [v6 wantsLayout:1];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController wantsLayout:1];
 }
 
-- (void)placeViewControllerDidSelectEditLocationOfMarkedLocation:(id)a3
+- (void)placeViewControllerDidSelectEditLocationOfMarkedLocation:(id)location
 {
-  v6 = [(PlaceCardViewController *)self placeCardDelegate];
-  v4 = [(PlaceCardViewController *)self placeCardItem];
-  v5 = [v4 searchResult];
-  [v6 placeCardViewController:self editLocationOfMarkedLocation:v5];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  searchResult = [placeCardItem searchResult];
+  [placeCardDelegate placeCardViewController:self editLocationOfMarkedLocation:searchResult];
 }
 
-- (void)placeViewControllerDidSelectDropPin:(id)a3
+- (void)placeViewControllerDidSelectDropPin:(id)pin
 {
-  v5 = [(PlaceCardViewController *)self placeCardDelegate];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
   v4 = +[SearchResult currentLocationSearchResult];
-  [v5 placeCardViewController:self createDroppedPin:v4];
+  [placeCardDelegate placeCardViewController:self createDroppedPin:v4];
 }
 
-- (void)placeViewControllerDidSelectFlyover:(id)a3
+- (void)placeViewControllerDidSelectFlyover:(id)flyover
 {
-  v6 = [(PlaceCardViewController *)self placeCardDelegate];
-  v4 = [(PlaceCardViewController *)self placeCardItem];
-  v5 = [v4 mapItem];
-  [v6 placeCardViewController:self enterFlyoverForMapItem:v5];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  mapItem = [placeCardItem mapItem];
+  [placeCardDelegate placeCardViewController:self enterFlyoverForMapItem:mapItem];
 }
 
-- (void)placeViewControllerDidSelectOfflineManagement:(id)a3
+- (void)placeViewControllerDidSelectOfflineManagement:(id)management
 {
-  v4 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v4 placeCardViewControllerShowOfflineMaps:self];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewControllerShowOfflineMaps:self];
 }
 
-- (void)placeViewControllerDidSelectPauseOfflineDownload:(id)a3
+- (void)placeViewControllerDidSelectPauseOfflineDownload:(id)download
 {
-  v3 = [(PlaceCardOfflineMapProvider *)self->_offlineMapProvider subscriptionInfo];
-  if (v3)
+  subscriptionInfo = [(PlaceCardOfflineMapProvider *)self->_offlineMapProvider subscriptionInfo];
+  if (subscriptionInfo)
   {
-    v5 = v3;
+    v5 = subscriptionInfo;
     v4 = +[MapsOfflineUIHelper sharedHelper];
     [v4 pauseDownloadForSubscriptionInfo:v5];
 
-    v3 = v5;
+    subscriptionInfo = v5;
   }
 }
 
-- (void)placeViewControllerDidSelectDownloadOffline:(id)a3 environment:(id)a4
+- (void)placeViewControllerDidSelectDownloadOffline:(id)offline environment:(id)environment
 {
-  v13 = a4;
-  v5 = [(PlaceCardOfflineMapProvider *)self->_offlineMapProvider subscriptionInfo];
-  if (v5)
+  environmentCopy = environment;
+  subscriptionInfo = [(PlaceCardOfflineMapProvider *)self->_offlineMapProvider subscriptionInfo];
+  if (subscriptionInfo)
   {
-    if ([v13 isQuickAction])
+    if ([environmentCopy isQuickAction])
     {
-      v6 = [(PlaceCardViewController *)self placeCardDelegate];
-      [v6 placeCardViewControllerShowOfflineMaps:self];
+      placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+      [placeCardDelegate placeCardViewControllerShowOfflineMaps:self];
     }
 
     else
     {
-      v6 = +[MapsOfflineUIHelper sharedHelper];
-      [v6 resumeDownloadForSubscriptionInfo:v5 mode:1];
+      placeCardDelegate = +[MapsOfflineUIHelper sharedHelper];
+      [placeCardDelegate resumeDownloadForSubscriptionInfo:subscriptionInfo mode:1];
     }
   }
 
   else
   {
-    v7 = [(PlaceCardViewController *)self mapItem];
-    v8 = [v7 _geoMapItem];
-    v6 = [v8 offlineDownloadRegion];
+    mapItem = [(PlaceCardViewController *)self mapItem];
+    _geoMapItem = [mapItem _geoMapItem];
+    placeCardDelegate = [_geoMapItem offlineDownloadRegion];
 
-    v9 = [(PlaceCardViewController *)self mapItem];
-    v10 = [v9 name];
+    mapItem2 = [(PlaceCardViewController *)self mapItem];
+    name = [mapItem2 name];
 
-    v11 = [(PlaceCardViewController *)self placeCardDelegate];
-    v12 = [(PlaceCardViewController *)self mapItem];
-    [v11 placeCardViewController:self showOfflineMapRegionSelectorForRegion:v6 name:v10 muid:objc_msgSend(v12 shouldShowDataManagementAfterDownload:{"_muid"), objc_msgSend(v13, "isQuickAction")}];
+    placeCardDelegate2 = [(PlaceCardViewController *)self placeCardDelegate];
+    mapItem3 = [(PlaceCardViewController *)self mapItem];
+    [placeCardDelegate2 placeCardViewController:self showOfflineMapRegionSelectorForRegion:placeCardDelegate name:name muid:objc_msgSend(mapItem3 shouldShowDataManagementAfterDownload:{"_muid"), objc_msgSend(environmentCopy, "isQuickAction")}];
   }
 
   [(PlaceCardViewController *)self _clearOfflineDownloadTipIfNeeded];
 }
 
-- (void)placeViewControllerDidSelectPlaceEnrichmentRAP:(id)a3
+- (void)placeViewControllerDidSelectPlaceEnrichmentRAP:(id)p
 {
   v4 = self->_placeCardItem;
-  v5 = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
-  v6 = [v5 rapPresenter];
-  v7 = [(PlaceCardViewController *)self currentUITargetForAnalytics];
+  _maps_mapsSceneDelegate = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
+  rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
+  currentUITargetForAnalytics = [(PlaceCardViewController *)self currentUITargetForAnalytics];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100B92BB4;
   v9[3] = &unk_10163BCB0;
   v10 = v4;
   v8 = v4;
-  [v6 presentPlaceEnrichmentRAPWithTarget:v7 fromPlacecardWithEditingContext:v9 completion:0];
+  [rapPresenter presentPlaceEnrichmentRAPWithTarget:currentUITargetForAnalytics fromPlacecardWithEditingContext:v9 completion:0];
 }
 
-- (void)placeViewControllerDidSelectRAPViewReport:(id)a3
+- (void)placeViewControllerDidSelectRAPViewReport:(id)report
 {
-  v4 = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
-  v3 = [v4 rapPresenter];
-  [v3 presentReportAProblemWithCompletion:0];
+  _maps_mapsSceneDelegate = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
+  rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
+  [rapPresenter presentReportAProblemWithCompletion:0];
 }
 
-- (void)placeViewController:(id)a3 didSelectEditPlaceDetailsOfType:(int64_t)a4
+- (void)placeViewController:(id)controller didSelectEditPlaceDetailsOfType:(int64_t)type
 {
   v6 = self->_placeCardItem;
-  v7 = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
-  v8 = [v7 rapPresenter];
+  _maps_mapsSceneDelegate = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
+  rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100B92D4C;
   v10[3] = &unk_10163BCB0;
   v11 = v6;
   v9 = v6;
-  [v8 presentEditPlaceDetailsOfType:a4 fromPlacecardWithEditingContext:v10];
+  [rapPresenter presentEditPlaceDetailsOfType:type fromPlacecardWithEditingContext:v10];
 }
 
-- (void)placeViewController:(id)a3 didSelectAddMissingDataOfType:(int64_t)a4
+- (void)placeViewController:(id)controller didSelectAddMissingDataOfType:(int64_t)type
 {
   v6 = self->_placeCardItem;
-  v7 = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
-  v8 = [v7 rapPresenter];
+  _maps_mapsSceneDelegate = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
+  rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100B92E88;
   v10[3] = &unk_10163BCB0;
   v11 = v6;
   v9 = v6;
-  [v8 presentAddMissingDataOfType:a4 fromPlacecardWithEditingContext:v10];
+  [rapPresenter presentAddMissingDataOfType:type fromPlacecardWithEditingContext:v10];
 }
 
-- (void)placeViewControllerDidSelectAddAPlace:(id)a3 environment:(id)a4
+- (void)placeViewControllerDidSelectAddAPlace:(id)place environment:(id)environment
 {
-  v6 = a4;
+  environmentCopy = environment;
   placeCardItem = self->_placeCardItem;
-  v8 = a3;
-  v9 = [(PlaceCardItem *)placeCardItem isDroppedPin]|| [(PlaceCardItem *)self->_placeCardItem isCurrentLocation];
+  placeCopy = place;
+  isCurrentLocation = [(PlaceCardItem *)placeCardItem isDroppedPin]|| [(PlaceCardItem *)self->_placeCardItem isCurrentLocation];
   v10 = self->_placeCardItem;
-  if ([v6 isActionBar])
+  if ([environmentCopy isActionBar])
   {
-    v11 = 203;
+    currentUITargetForAnalytics = 203;
   }
 
-  else if ([v6 isQuickAction])
+  else if ([environmentCopy isQuickAction])
   {
-    v11 = 30;
+    currentUITargetForAnalytics = 30;
   }
 
   else
   {
-    v11 = [(PlaceCardViewController *)self currentUITargetForAnalytics];
+    currentUITargetForAnalytics = [(PlaceCardViewController *)self currentUITargetForAnalytics];
   }
 
-  v12 = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
-  v13 = [v12 rapPresenter];
+  _maps_mapsSceneDelegate = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
+  rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100B93094;
   v17[3] = &unk_10163BCB0;
   v18 = v10;
   v14 = v10;
-  v15 = [(PlaceCardViewController *)self _overriddenUserInterfaceStyle];
-  v16 = [v8 view];
+  _overriddenUserInterfaceStyle = [(PlaceCardViewController *)self _overriddenUserInterfaceStyle];
+  view = [placeCopy view];
 
-  [v13 presentAddAPlaceFromPlacecardWithEditingContext:v17 overriddenUserInterfaceStyle:v15 shouldShowDetailedFlow:v9 sourceView:v16 entryPoint:v11 completion:0];
-  [GEOAPPortal captureUserAction:222 target:v11 value:0];
+  [rapPresenter presentAddAPlaceFromPlacecardWithEditingContext:v17 overriddenUserInterfaceStyle:_overriddenUserInterfaceStyle shouldShowDetailedFlow:isCurrentLocation sourceView:view entryPoint:currentUITargetForAnalytics completion:0];
+  [GEOAPPortal captureUserAction:222 target:currentUITargetForAnalytics value:0];
 }
 
 - (int64_t)_overriddenUserInterfaceStyle
 {
-  v3 = [(PlaceCardViewController *)self placeCardDelegate];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -2024,141 +2024,141 @@ LABEL_63:
     return 0;
   }
 
-  v5 = [(PlaceCardViewController *)self placeCardDelegate];
-  v6 = [v5 overriddenInterfaceStyleForPlaceViewControllerSubviews:self];
+  placeCardDelegate2 = [(PlaceCardViewController *)self placeCardDelegate];
+  v6 = [placeCardDelegate2 overriddenInterfaceStyleForPlaceViewControllerSubviews:self];
 
   return v6;
 }
 
-- (void)placeViewController:(id)a3 photoGalleryDidScroll:(id)a4
+- (void)placeViewController:(id)controller photoGalleryDidScroll:(id)scroll
 {
   reportImageryController = self->_reportImageryController;
-  v5 = a4;
+  scrollCopy = scroll;
   [(UGCReportImageryController *)reportImageryController cancelPresentation];
-  [v5 stopAnimatingActivityIndicatorViewForRAP];
+  [scrollCopy stopAnimatingActivityIndicatorViewForRAP];
 }
 
-- (void)placeViewController:(id)a3 didSelectPhotoToReport:(id)a4 withPhotoGalleryViewController:(id)a5
+- (void)placeViewController:(id)controller didSelectPhotoToReport:(id)report withPhotoGalleryViewController:(id)viewController
 {
-  v7 = a5;
-  v8 = a4;
+  viewControllerCopy = viewController;
+  reportCopy = report;
   v9 = [UGCReportImageryController alloc];
-  v10 = [(PlaceCardItem *)self->_placeCardItem mapItem];
-  v11 = [(UGCReportImageryController *)v9 initWithMapItem:v10 reportedPhoto:v8 presentingViewController:v7];
+  mapItem = [(PlaceCardItem *)self->_placeCardItem mapItem];
+  v11 = [(UGCReportImageryController *)v9 initWithMapItem:mapItem reportedPhoto:reportCopy presentingViewController:viewControllerCopy];
 
   reportImageryController = self->_reportImageryController;
   self->_reportImageryController = v11;
 
-  [v7 startAnimatingActivityIndicatorViewForRAP];
+  [viewControllerCopy startAnimatingActivityIndicatorViewForRAP];
   v13 = self->_reportImageryController;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100B932EC;
   v15[3] = &unk_10163BCD8;
-  v16 = v7;
-  v14 = v7;
+  v16 = viewControllerCopy;
+  v14 = viewControllerCopy;
   [(UGCReportImageryController *)v13 fetchLayoutAndPresentWithCompletion:v15];
 }
 
-- (void)placeViewControllerDidSelectReportAProblem:(id)a3 fromView:(id)a4 environment:(id)a5
+- (void)placeViewControllerDidSelectReportAProblem:(id)problem fromView:(id)view environment:(id)environment
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  problemCopy = problem;
+  viewCopy = view;
+  environmentCopy = environment;
+  if (!viewCopy)
   {
-    v9 = [v8 view];
+    viewCopy = [problemCopy view];
   }
 
-  v11 = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
-  v12 = [v11 rapPresenter];
+  _maps_mapsSceneDelegate = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
+  rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100B9343C;
   v15[3] = &unk_10163BCB0;
   v15[4] = self;
-  v13 = [(PlaceCardViewController *)self _overriddenUserInterfaceStyle];
-  if ([v10 isActionBar])
+  _overriddenUserInterfaceStyle = [(PlaceCardViewController *)self _overriddenUserInterfaceStyle];
+  if ([environmentCopy isActionBar])
   {
-    v14 = 203;
+    currentUITargetForAnalytics = 203;
   }
 
-  else if ([v10 isQuickAction])
+  else if ([environmentCopy isQuickAction])
   {
-    v14 = 30;
+    currentUITargetForAnalytics = 30;
   }
 
   else
   {
-    v14 = [(PlaceCardViewController *)self currentUITargetForAnalytics];
+    currentUITargetForAnalytics = [(PlaceCardViewController *)self currentUITargetForAnalytics];
   }
 
-  [v12 presentReportAProblemFromPlaceCardViewController:self editingContext:v15 overriddenUserInterfaceStyle:v13 sourceView:v9 entryPoint:v14 completion:0];
+  [rapPresenter presentReportAProblemFromPlaceCardViewController:self editingContext:v15 overriddenUserInterfaceStyle:_overriddenUserInterfaceStyle sourceView:viewCopy entryPoint:currentUITargetForAnalytics completion:0];
 }
 
-- (void)placeViewController:(id)a3 showTransitIncidents:(id)a4
+- (void)placeViewController:(id)controller showTransitIncidents:(id)incidents
 {
-  v5 = a4;
-  v6 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v6 placeCardViewController:self showTransitIncidents:v5];
+  incidentsCopy = incidents;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self showTransitIncidents:incidentsCopy];
 }
 
-- (void)placeViewController:(id)a3 openURL:(id)a4
+- (void)placeViewController:(id)controller openURL:(id)l
 {
-  v5 = a4;
-  v6 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v6 placeCardViewController:self openURL:v5];
+  lCopy = l;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self openURL:lCopy];
 }
 
-- (void)placeViewController:(id)a3 didSelectTransitLine:(id)a4
+- (void)placeViewController:(id)controller didSelectTransitLine:(id)line
 {
-  v5 = a4;
+  lineCopy = line;
   v6 = [IncompleteTransitLineItem alloc];
-  v7 = [v5 mapItemIdentifier];
-  v8 = [v5 labelText];
+  mapItemIdentifier = [lineCopy mapItemIdentifier];
+  labelText = [lineCopy labelText];
 
-  v10 = [(IncompleteTransitLineItem *)v6 initWithIdentifier:v7 name:v8];
-  v9 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v9 placeCardViewController:self selectTransitLineItem:v10];
+  v10 = [(IncompleteTransitLineItem *)v6 initWithIdentifier:mapItemIdentifier name:labelText];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self selectTransitLineItem:v10];
 }
 
-- (BOOL)placeViewController:(id)a3 canSelectDepartureSequence:(id)a4 mapItem:(id)a5
+- (BOOL)placeViewController:(id)controller canSelectDepartureSequence:(id)sequence mapItem:(id)item
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(PlaceCardViewController *)self placeCardDelegate];
-  LOBYTE(self) = [v9 placeCardViewController:self shouldShowTransitScheduleForMapItem:v7 departureSequence:v8];
+  itemCopy = item;
+  sequenceCopy = sequence;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  LOBYTE(self) = [placeCardDelegate placeCardViewController:self shouldShowTransitScheduleForMapItem:itemCopy departureSequence:sequenceCopy];
 
   return self;
 }
 
-- (void)placeViewController:(id)a3 didSelectDepartureSequence:(id)a4 mapItem:(id)a5
+- (void)placeViewController:(id)controller didSelectDepartureSequence:(id)sequence mapItem:(id)item
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v9 placeCardViewController:self showTransitScheduleForMapItem:v7 departureSequence:v8];
+  itemCopy = item;
+  sequenceCopy = sequence;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self showTransitScheduleForMapItem:itemCopy departureSequence:sequenceCopy];
 }
 
-- (void)placeViewController:(id)a3 expandCardAnimated:(BOOL)a4
+- (void)placeViewController:(id)controller expandCardAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 wantsLayout:3 animated:v4];
+  animatedCopy = animated;
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController wantsLayout:3 animated:animatedCopy];
 }
 
-- (int)mapTypeForPlaceViewController:(id)a3
+- (int)mapTypeForPlaceViewController:(id)controller
 {
-  v3 = [(PlaceCardViewController *)self placeCardDelegate];
-  v4 = [v3 displayedViewMode];
-  if (v4 + 1 > 7)
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  displayedViewMode = [placeCardDelegate displayedViewMode];
+  if (displayedViewMode + 1 > 7)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = dword_101215C80[v4 + 1];
+    v5 = dword_101215C80[displayedViewMode + 1];
   }
 
   return v5;
@@ -2167,19 +2167,19 @@ LABEL_63:
 - (void)_updateFavoritesGuide
 {
   v3 = +[CollectionManager sharedManager];
-  v5 = [v3 favoriteCollection];
+  favoriteCollection = [v3 favoriteCollection];
 
-  v4 = [(PlaceCardViewController *)self mapItem];
-  -[MUPlaceViewController setPlaceInFavoritesGuide:](self->_placeViewController, "setPlaceInFavoritesGuide:", [v5 containsItem:v4]);
+  mapItem = [(PlaceCardViewController *)self mapItem];
+  -[MUPlaceViewController setPlaceInFavoritesGuide:](self->_placeViewController, "setPlaceInFavoritesGuide:", [favoriteCollection containsItem:mapItem]);
 }
 
 - (void)_updateShortcut
 {
-  v3 = [(PlaceCardViewController *)self _shortcut];
-  v5 = v3;
-  if (v3)
+  _shortcut = [(PlaceCardViewController *)self _shortcut];
+  v5 = _shortcut;
+  if (_shortcut)
   {
-    v4 = [v3 isHidden] ^ 1;
+    v4 = [_shortcut isHidden] ^ 1;
   }
 
   else
@@ -2191,43 +2191,43 @@ LABEL_63:
   [(InfoCardViewController *)self rebuildHeaderMenu];
 }
 
-- (void)placeViewControllerDidSelectRefineLocation:(id)a3
+- (void)placeViewControllerDidSelectRefineLocation:(id)location
 {
-  v4 = [(PlaceCardViewController *)self _shortcut];
-  if (v4)
+  _shortcut = [(PlaceCardViewController *)self _shortcut];
+  if (_shortcut)
   {
-    v7 = v4;
-    v5 = [ShortcutEditSession editSessionWithShortcut:v4];
+    v7 = _shortcut;
+    v5 = [ShortcutEditSession editSessionWithShortcut:_shortcut];
     [v5 setEditingModeType:3];
-    v6 = [(PlaceCardViewController *)self placeCardDelegate];
-    [v6 placeCardViewController:self editShortcut:v5];
+    placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+    [placeCardDelegate placeCardViewController:self editShortcut:v5];
 
-    v4 = v7;
+    _shortcut = v7;
   }
 }
 
-- (void)placeViewControllerDidSelectChangeAddress:(id)a3
+- (void)placeViewControllerDidSelectChangeAddress:(id)address
 {
-  v4 = [(PlaceCardViewController *)self _shortcut];
-  if (v4)
+  _shortcut = [(PlaceCardViewController *)self _shortcut];
+  if (_shortcut)
   {
-    v7 = v4;
-    v5 = [ShortcutEditSession editSessionWithShortcut:v4];
+    v7 = _shortcut;
+    v5 = [ShortcutEditSession editSessionWithShortcut:_shortcut];
     [v5 setEditingModeType:2];
-    v6 = [(PlaceCardViewController *)self placeCardDelegate];
-    [v6 placeCardViewController:self editShortcut:v5];
+    placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+    [placeCardDelegate placeCardViewController:self editShortcut:v5];
 
-    v4 = v7;
+    _shortcut = v7;
   }
 }
 
-- (void)placeViewControllerDidSelectRemoveShortcut:(id)a3
+- (void)placeViewControllerDidSelectRemoveShortcut:(id)shortcut
 {
-  v4 = a3;
-  v5 = [(PlaceCardViewController *)self _shortcut];
-  if (v5 && !self->_shortcutEditSession)
+  shortcutCopy = shortcut;
+  _shortcut = [(PlaceCardViewController *)self _shortcut];
+  if (_shortcut && !self->_shortcutEditSession)
   {
-    v6 = [ShortcutEditSession editSessionWithShortcut:v5];
+    v6 = [ShortcutEditSession editSessionWithShortcut:_shortcut];
     shortcutEditSession = self->_shortcutEditSession;
     self->_shortcutEditSession = v6;
 
@@ -2244,32 +2244,32 @@ LABEL_63:
   }
 }
 
-- (void)placeViewControllerDidSelectAddShortcut:(id)a3
+- (void)placeViewControllerDidSelectAddShortcut:(id)shortcut
 {
-  v4 = a3;
-  v5 = [(PlaceCardViewController *)self _shortcut];
-  if (!v5 || (v6 = v5, -[PlaceCardViewController _shortcut](self, "_shortcut"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isHidden], v7, v6, v8))
+  shortcutCopy = shortcut;
+  _shortcut = [(PlaceCardViewController *)self _shortcut];
+  if (!_shortcut || (v6 = _shortcut, -[PlaceCardViewController _shortcut](self, "_shortcut"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isHidden], v7, v6, v8))
   {
     if (!self->_shortcutEditSession)
     {
-      v9 = [(PlaceCardViewController *)self _shortcut];
+      _shortcut2 = [(PlaceCardViewController *)self _shortcut];
 
-      if (v9)
+      if (_shortcut2)
       {
-        v10 = [(PlaceCardViewController *)self _shortcut];
-        v11 = [ShortcutEditSession addSessionWithShortcut:v10];
-        v12 = 0;
+        _shortcut3 = [(PlaceCardViewController *)self _shortcut];
+        v11 = [ShortcutEditSession addSessionWithShortcut:_shortcut3];
+        syncObject = 0;
       }
 
       else
       {
         if ([(PlaceCardLibraryOperationsCoordinator *)self->_libraryOperationsCoordinator savedStateOfPlace]!= 1 || ([(PlaceCardLibraryOperationsCoordinator *)self->_libraryOperationsCoordinator syncObject], v14 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v14, (isKindOfClass & 1) == 0))
         {
-          v16 = [(PlaceCardViewController *)self placeCardItem];
-          if ([v16 isHomeWorkSchoolAddress])
+          placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+          if ([placeCardItem isHomeWorkSchoolAddress])
           {
-            v17 = [(PlaceCardViewController *)self placeCardItem];
-            [v17 addressType];
+            placeCardItem2 = [(PlaceCardViewController *)self placeCardItem];
+            [placeCardItem2 addressType];
             v18 = shortcutTypeForLOIType();
           }
 
@@ -2278,22 +2278,22 @@ LABEL_63:
             v18 = 1;
           }
 
-          v10 = [(PlaceCardViewController *)self placeCardItem];
-          v13 = [(MapsFavoriteItem *)v10 mapItem];
-          v19 = [ShortcutEditSession addSessionWithType:v18 mapItem:v13];
+          _shortcut3 = [(PlaceCardViewController *)self placeCardItem];
+          mapItem = [(MapsFavoriteItem *)_shortcut3 mapItem];
+          v19 = [ShortcutEditSession addSessionWithType:v18 mapItem:mapItem];
           shortcutEditSession = self->_shortcutEditSession;
           self->_shortcutEditSession = v19;
 
-          v12 = 0;
+          syncObject = 0;
           goto LABEL_14;
         }
 
-        v12 = [(PlaceCardLibraryOperationsCoordinator *)self->_libraryOperationsCoordinator syncObject];
-        v10 = [[_TtC4Maps16MapsFavoriteItem alloc] initWithCollectionItem:v12];
-        v11 = [ShortcutEditSession addSessionWithShortcut:v10];
+        syncObject = [(PlaceCardLibraryOperationsCoordinator *)self->_libraryOperationsCoordinator syncObject];
+        _shortcut3 = [[_TtC4Maps16MapsFavoriteItem alloc] initWithCollectionItem:syncObject];
+        v11 = [ShortcutEditSession addSessionWithShortcut:_shortcut3];
       }
 
-      v13 = self->_shortcutEditSession;
+      mapItem = self->_shortcutEditSession;
       self->_shortcutEditSession = v11;
 LABEL_14:
 
@@ -2304,7 +2304,7 @@ LABEL_14:
       v23[2] = sub_100B93E8C;
       v23[3] = &unk_10165FC50;
       objc_copyWeak(&v25, &location);
-      v22 = v12;
+      v22 = syncObject;
       v24 = v22;
       [(ShortcutEditSession *)v21 saveWithCompletion:v23];
 
@@ -2316,43 +2316,43 @@ LABEL_14:
 
 - (id)_shortcut
 {
-  v2 = [(PlaceCardViewController *)self placeCardItem];
-  v3 = [v2 shortcut];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  shortcut = [placeCardItem shortcut];
 
-  return v3;
+  return shortcut;
 }
 
-- (void)placeViewControllerDidTapHikingTip:(id)a3 originMapItem:(id)a4
+- (void)placeViewControllerDidTapHikingTip:(id)tip originMapItem:(id)item
 {
-  v9 = a4;
-  v5 = [(PlaceCardViewController *)self placeCardDelegate];
+  itemCopy = item;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PlaceCardViewController *)self placeCardDelegate];
-    [v7 placeCardViewControllerDidTapHikingTip:self originMapItem:v9];
+    placeCardDelegate2 = [(PlaceCardViewController *)self placeCardDelegate];
+    [placeCardDelegate2 placeCardViewControllerDidTapHikingTip:self originMapItem:itemCopy];
 
-    v8 = [(PlaceCardViewController *)self analyticsDelegate];
-    [v8 infoCardAnalyticsDidSelectAction:465 eventValue:0 feedbackDelegateSelector:0 classification:0];
+    analyticsDelegate = [(PlaceCardViewController *)self analyticsDelegate];
+    [analyticsDelegate infoCardAnalyticsDidSelectAction:465 eventValue:0 feedbackDelegateSelector:0 classification:0];
   }
 }
 
-- (id)placeViewController:(id)a3 hikingTipViewForTipModel:(id)a4
+- (id)placeViewController:(id)controller hikingTipViewForTipModel:(id)model
 {
-  v5 = a4;
+  modelCopy = model;
   v6 = +[GEOFeatureStyleAttributes customSavedRouteDashedStyleAttributes];
-  v7 = [(PlaceCardViewController *)self view];
-  v8 = [v7 traitCollection];
-  [v8 displayScale];
+  view = [(PlaceCardViewController *)self view];
+  traitCollection = [view traitCollection];
+  [traitCollection displayScale];
   v9 = [MKIconManager imageForStyle:v6 size:3 forScale:0 format:?];
 
   v10 = [FeatureDiscoveryModel alloc];
-  v11 = [v5 title];
-  v12 = [v5 subtitle];
+  title = [modelCopy title];
+  subtitle = [modelCopy subtitle];
 
   LOBYTE(v16) = 0;
-  v13 = [(FeatureDiscoveryModel *)v10 initWithImage:v9 title:v11 subtitle:v12 actionTitle:0 actionHandler:0 bodyTapHandler:0 displayedHandler:0 dismissHandler:0 disableAffordanceAfterAction:v16];
+  v13 = [(FeatureDiscoveryModel *)v10 initWithImage:v9 title:title subtitle:subtitle actionTitle:0 actionHandler:0 bodyTapHandler:0 displayedHandler:0 dismissHandler:0 disableAffordanceAfterAction:v16];
 
   v14 = objc_alloc_init(FeatureDiscoveryView);
   [(FeatureDiscoveryView *)v14 setModel:v13];
@@ -2361,43 +2361,43 @@ LABEL_14:
   return v14;
 }
 
-- (void)placeViewController:(id)a3 didRequestHikingToolTipRegionIDForLocation:(CLLocationCoordinate2D)a4
+- (void)placeViewController:(id)controller didRequestHikingToolTipRegionIDForLocation:(CLLocationCoordinate2D)location
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = [(PlaceCardViewController *)self placeCardDelegate];
+  longitude = location.longitude;
+  latitude = location.latitude;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PlaceCardViewController *)self placeCardDelegate];
-    [v9 placeCardViewController:self didRequestHikingToolTipRegionIDForLocation:{latitude, longitude}];
+    placeCardDelegate2 = [(PlaceCardViewController *)self placeCardDelegate];
+    [placeCardDelegate2 placeCardViewController:self didRequestHikingToolTipRegionIDForLocation:{latitude, longitude}];
   }
 }
 
-- (id)placeViewControllerRequestsMapViewAssociatedWithVC:(id)a3
+- (id)placeViewControllerRequestsMapViewAssociatedWithVC:(id)c
 {
-  v4 = [(PlaceCardViewController *)self placeCardDelegate];
-  v5 = [v4 placeCardViewControllerRequestsMapViewAssociatedWithVC:self];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  v5 = [placeCardDelegate placeCardViewControllerRequestsMapViewAssociatedWithVC:self];
 
   return v5;
 }
 
-- (void)placeViewController:(id)a3 showRelatedMapItems:(id)a4 withTitle:(id)a5 originalMapItem:(id)a6 analyticsDelegate:(id)a7
+- (void)placeViewController:(id)controller showRelatedMapItems:(id)items withTitle:(id)title originalMapItem:(id)item analyticsDelegate:(id)delegate
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v15 placeCardViewController:self showRelatedMapItems:v14 withTitle:v13 originalMapItem:v12 analyticsDelegate:v11];
+  delegateCopy = delegate;
+  itemCopy = item;
+  titleCopy = title;
+  itemsCopy = items;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self showRelatedMapItems:itemsCopy withTitle:titleCopy originalMapItem:itemCopy analyticsDelegate:delegateCopy];
 }
 
-- (id)inlineRatingViewControllerForPlaceViewController:(id)a3
+- (id)inlineRatingViewControllerForPlaceViewController:(id)controller
 {
-  v4 = [(PlaceCardViewController *)self mapItem];
+  mapItem = [(PlaceCardViewController *)self mapItem];
 
-  if (v4)
+  if (mapItem)
   {
     inlineRatingsController = self->_inlineRatingsController;
     if (!inlineRatingsController)
@@ -2405,10 +2405,10 @@ LABEL_14:
       goto LABEL_6;
     }
 
-    v6 = [(UGCInlinePOIEnrichmentController *)inlineRatingsController mapItem];
-    v7 = [(PlaceCardViewController *)self mapItem];
+    mapItem2 = [(UGCInlinePOIEnrichmentController *)inlineRatingsController mapItem];
+    mapItem3 = [(PlaceCardViewController *)self mapItem];
 
-    if (v6 != v7)
+    if (mapItem2 != mapItem3)
     {
       [(PlaceCardViewController *)self _submitInlineRatingsIfNeeded];
       v8 = self->_inlineRatingsController;
@@ -2420,14 +2420,14 @@ LABEL_14:
     {
 LABEL_6:
       v10 = [UGCInlinePOIEnrichmentController alloc];
-      v11 = [(PlaceCardViewController *)self mapItem];
-      v12 = [(UGCInlinePOIEnrichmentController *)v10 initWithMapItem:v11];
+      mapItem4 = [(PlaceCardViewController *)self mapItem];
+      v12 = [(UGCInlinePOIEnrichmentController *)v10 initWithMapItem:mapItem4];
       v13 = self->_inlineRatingsController;
       self->_inlineRatingsController = v12;
 
       [(UGCInlinePOIEnrichmentController *)self->_inlineRatingsController setDelegate:self];
-      v14 = [(MUPlaceViewController *)self->_placeViewController analyticsController];
-      [(UGCInlinePOIEnrichmentController *)self->_inlineRatingsController setAnalyticsController:v14];
+      analyticsController = [(MUPlaceViewController *)self->_placeViewController analyticsController];
+      [(UGCInlinePOIEnrichmentController *)self->_inlineRatingsController setAnalyticsController:analyticsController];
 
       [(UGCInlinePOIEnrichmentController *)self->_inlineRatingsController setPresentingViewController:self];
       [(PlaceCardViewController *)self _updateCallToActionStateIfNeeded];
@@ -2435,15 +2435,15 @@ LABEL_6:
       v9 = self->_inlineRatingsController;
     }
 
-    v15 = [(UGCInlinePOIEnrichmentController *)v9 contentViewController];
+    contentViewController = [(UGCInlinePOIEnrichmentController *)v9 contentViewController];
   }
 
   else
   {
-    v15 = 0;
+    contentViewController = 0;
   }
 
-  return v15;
+  return contentViewController;
 }
 
 - (void)_updateCallToActionStateIfNeeded
@@ -2457,15 +2457,15 @@ LABEL_6:
       self->_callToActionViewProvider = v3;
     }
 
-    v5 = [(PlaceCardViewController *)self placeCardItem];
-    v6 = [v5 mapItem];
-    v7 = [(UGCCallToActionViewProvider *)self->_callToActionViewProvider mapItem];
+    placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+    mapItem = [placeCardItem mapItem];
+    mapItem2 = [(UGCCallToActionViewProvider *)self->_callToActionViewProvider mapItem];
 
-    if (v6 != v7)
+    if (mapItem != mapItem2)
     {
-      v8 = [(PlaceCardViewController *)self placeCardItem];
-      v9 = [v8 mapItem];
-      [(UGCCallToActionViewProvider *)self->_callToActionViewProvider setMapItem:v9];
+      placeCardItem2 = [(PlaceCardViewController *)self placeCardItem];
+      mapItem3 = [placeCardItem2 mapItem];
+      [(UGCCallToActionViewProvider *)self->_callToActionViewProvider setMapItem:mapItem3];
     }
 
     v10 = self->_inlineRatingsController != 0;
@@ -2475,149 +2475,149 @@ LABEL_6:
   }
 }
 
-- (void)poiEnrichmentCoordinator:(id)a3 didFinishSubmissionLookup:(id)a4
+- (void)poiEnrichmentCoordinator:(id)coordinator didFinishSubmissionLookup:(id)lookup
 {
-  v6 = a4;
-  v5 = [v6 status];
-  if (v5 == 1)
+  lookupCopy = lookup;
+  status = [lookupCopy status];
+  if (status == 1)
   {
-    [(UGCCallToActionViewProvider *)self->_callToActionViewProvider updateWithFetchedLookupResult:v6];
+    [(UGCCallToActionViewProvider *)self->_callToActionViewProvider updateWithFetchedLookupResult:lookupCopy];
   }
 
-  else if (v5 == 3)
+  else if (status == 3)
   {
     [(UGCCallToActionViewProvider *)self->_callToActionViewProvider resolveForUserEdit];
   }
 }
 
-- (void)_presentPOIEnrichmentCoordinator:(id)a3 withProgressObserver:(id)a4
+- (void)_presentPOIEnrichmentCoordinator:(id)coordinator withProgressObserver:(id)observer
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
-  v8 = [v9 topMostPresentedViewController];
-  [(PlaceCardViewController *)self _presentPOIEnrichmentCoordinator:v7 presentingViewController:v8 progressObserver:v6];
+  observerCopy = observer;
+  coordinatorCopy = coordinator;
+  _maps_mapsSceneDelegate = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
+  topMostPresentedViewController = [_maps_mapsSceneDelegate topMostPresentedViewController];
+  [(PlaceCardViewController *)self _presentPOIEnrichmentCoordinator:coordinatorCopy presentingViewController:topMostPresentedViewController progressObserver:observerCopy];
 }
 
-- (void)_presentPOIEnrichmentCoordinator:(id)a3 presentingViewController:(id)a4 progressObserver:(id)a5
+- (void)_presentPOIEnrichmentCoordinator:(id)coordinator presentingViewController:(id)controller progressObserver:(id)observer
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  coordinatorCopy = coordinator;
+  controllerCopy = controller;
+  observerCopy = observer;
   if (self->_photoViewerScene)
   {
     +[MacPlacePhotoViewerScene teardownCurrentScene];
   }
 
-  [v12 setPresentingViewController:v8];
-  [v12 setSubmissionLookupObserver:v9];
-  [v12 setSubmissionStatusDelegate:self];
-  [v12 setPresentationContext:1];
-  v10 = [(UGCCallToActionViewProvider *)self->_callToActionViewProvider lookupResult];
-  [v12 setSubmissionLookupResult:v10];
+  [coordinatorCopy setPresentingViewController:controllerCopy];
+  [coordinatorCopy setSubmissionLookupObserver:observerCopy];
+  [coordinatorCopy setSubmissionStatusDelegate:self];
+  [coordinatorCopy setPresentationContext:1];
+  lookupResult = [(UGCCallToActionViewProvider *)self->_callToActionViewProvider lookupResult];
+  [coordinatorCopy setSubmissionLookupResult:lookupResult];
 
-  v11 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v11 placeCardViewController:self presentPOIEnrichmentWithCoordinator:v12];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self presentPOIEnrichmentWithCoordinator:coordinatorCopy];
 }
 
-- (void)placeViewController:(id)a3 didSelectAddRatingsWithPresentationOptions:(id)a4 overallState:(int64_t)a5 originTarget:(id)a6
+- (void)placeViewController:(id)controller didSelectAddRatingsWithPresentationOptions:(id)options overallState:(int64_t)state originTarget:(id)target
 {
-  v15 = a4;
-  v9 = a6;
+  optionsCopy = options;
+  targetCopy = target;
   if (MapsFeature_IsEnabled_LagunaBeach())
   {
-    if (a5 == 1)
+    if (state == 1)
     {
       v10 = 1;
     }
 
     else
     {
-      v10 = 2 * (a5 == 2);
+      v10 = 2 * (state == 2);
     }
 
-    v11 = [(PlaceCardViewController *)self placeCardItem];
-    v12 = [v11 mapItem];
-    v13 = [UGCPOIEnrichmentCoordinator ratingsAndPhotosCoordinatorWithMapItem:v12 initialOverallState:v10 entryPoint:0 originTarget:v9];
+    placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+    mapItem = [placeCardItem mapItem];
+    v13 = [UGCPOIEnrichmentCoordinator ratingsAndPhotosCoordinatorWithMapItem:mapItem initialOverallState:v10 entryPoint:0 originTarget:targetCopy];
 
-    v14 = [v15 progressObserver];
-    [(PlaceCardViewController *)self _presentPOIEnrichmentCoordinator:v13 withProgressObserver:v14];
+    progressObserver = [optionsCopy progressObserver];
+    [(PlaceCardViewController *)self _presentPOIEnrichmentCoordinator:v13 withProgressObserver:progressObserver];
   }
 }
 
-- (void)placeViewController:(id)a3 didSelectEditSubmissionWithPresentationOptions:(id)a4
+- (void)placeViewController:(id)controller didSelectEditSubmissionWithPresentationOptions:(id)options
 {
-  v9 = a4;
+  optionsCopy = options;
   if (MapsFeature_IsEnabled_LagunaBeach())
   {
-    v5 = [(PlaceCardViewController *)self placeCardItem];
-    v6 = [v5 mapItem];
-    v7 = [UGCPOIEnrichmentCoordinator ratingsAndPhotosCoordinatorWithMapItem:v6 entryPoint:0 originTarget:0];
+    placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+    mapItem = [placeCardItem mapItem];
+    v7 = [UGCPOIEnrichmentCoordinator ratingsAndPhotosCoordinatorWithMapItem:mapItem entryPoint:0 originTarget:0];
 
-    v8 = [v9 progressObserver];
-    [(PlaceCardViewController *)self _presentPOIEnrichmentCoordinator:v7 withProgressObserver:v8];
+    progressObserver = [optionsCopy progressObserver];
+    [(PlaceCardViewController *)self _presentPOIEnrichmentCoordinator:v7 withProgressObserver:progressObserver];
   }
 }
 
-- (void)placeViewController:(id)a3 didSelectAddPhotosWithPresentationOptions:(id)a4 entryPoint:(int64_t)a5 originTarget:(id)a6
+- (void)placeViewController:(id)controller didSelectAddPhotosWithPresentationOptions:(id)options entryPoint:(int64_t)point originTarget:(id)target
 {
-  v16 = a4;
-  v9 = a6;
+  optionsCopy = options;
+  targetCopy = target;
   if (MapsFeature_IsEnabled_LagunaBeach())
   {
-    if (a5 == 1)
+    if (point == 1)
     {
       v10 = 1;
     }
 
     else
     {
-      v10 = 2 * (a5 == 2);
+      v10 = 2 * (point == 2);
     }
 
-    v11 = [(PlaceCardViewController *)self placeCardItem];
-    v12 = [v11 mapItem];
-    v13 = [UGCPOIEnrichmentCoordinator photoEmphasizedAddCoordinatorWithMapItem:v12 preferredSourceType:v10 originTarget:v9];
+    placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+    mapItem = [placeCardItem mapItem];
+    v13 = [UGCPOIEnrichmentCoordinator photoEmphasizedAddCoordinatorWithMapItem:mapItem preferredSourceType:v10 originTarget:targetCopy];
 
-    v14 = [v16 sourceView];
-    [v13 setAnchoringView:v14];
+    sourceView = [optionsCopy sourceView];
+    [v13 setAnchoringView:sourceView];
 
-    v15 = [v16 progressObserver];
-    [(PlaceCardViewController *)self _presentPOIEnrichmentCoordinator:v13 withProgressObserver:v15];
+    progressObserver = [optionsCopy progressObserver];
+    [(PlaceCardViewController *)self _presentPOIEnrichmentCoordinator:v13 withProgressObserver:progressObserver];
   }
 }
 
-- (void)placeViewControllerDidSelectSeeMorePhotos:(id)a3 withStartingIndex:(unint64_t)a4
+- (void)placeViewControllerDidSelectSeeMorePhotos:(id)photos withStartingIndex:(unint64_t)index
 {
-  v6 = [a3 mapItem];
-  v7 = [UGCPOIEnrichmentCoordinator photoThumbnailGalleryCoordinatorWithMapItem:v6 withStartingIndex:a4];
+  mapItem = [photos mapItem];
+  v7 = [UGCPOIEnrichmentCoordinator photoThumbnailGalleryCoordinatorWithMapItem:mapItem withStartingIndex:index];
 
   [(PlaceCardViewController *)self _presentPOIEnrichmentCoordinator:v7 withProgressObserver:0];
 }
 
-- (void)_updatePlacecardCallToActionAnimated:(BOOL)a3
+- (void)_updatePlacecardCallToActionAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (MapsFeature_IsEnabled_LagunaBeach())
   {
-    v29 = v3;
-    v5 = [(UGCCallToActionViewProvider *)self->_callToActionViewProvider submissionStatusAppearance];
+    v29 = animatedCopy;
+    submissionStatusAppearance = [(UGCCallToActionViewProvider *)self->_callToActionViewProvider submissionStatusAppearance];
     if (MapsFeature_IsEnabled_SydneyARP())
     {
-      [(UGCSuggestionViewProvider *)self->_suggestionViewProvider setSubmissionStatus:v5];
-      [(UGCInlinePOIEnrichmentController *)self->_inlineRatingsController setSubmissionStatus:v5];
-      v6 = [(UGCCallToActionViewProvider *)self->_callToActionViewProvider lookupResult];
-      [(UGCInlinePOIEnrichmentController *)self->_inlineRatingsController setLookupResult:v6];
+      [(UGCSuggestionViewProvider *)self->_suggestionViewProvider setSubmissionStatus:submissionStatusAppearance];
+      [(UGCInlinePOIEnrichmentController *)self->_inlineRatingsController setSubmissionStatus:submissionStatusAppearance];
+      lookupResult = [(UGCCallToActionViewProvider *)self->_callToActionViewProvider lookupResult];
+      [(UGCInlinePOIEnrichmentController *)self->_inlineRatingsController setLookupResult:lookupResult];
     }
 
-    v30 = v5;
-    v28 = self;
-    v7 = [(UGCCallToActionViewProvider *)self->_callToActionViewProvider lookupResult];
-    v8 = [v7 previousSubmission];
+    v30 = submissionStatusAppearance;
+    selfCopy = self;
+    lookupResult2 = [(UGCCallToActionViewProvider *)self->_callToActionViewProvider lookupResult];
+    previousSubmission = [lookupResult2 previousSubmission];
 
-    v27 = v8;
-    v9 = [v8 scorecard];
-    v10 = [UGCRatingCategory ratingCategoryListForScorecard:v9];
+    v27 = previousSubmission;
+    scorecard = [previousSubmission scorecard];
+    v10 = [UGCRatingCategory ratingCategoryListForScorecard:scorecard];
 
     v11 = objc_alloc_init(NSMutableArray);
     v31 = 0u;
@@ -2641,17 +2641,17 @@ LABEL_6:
 
           v17 = *(*(&v31 + 1) + 8 * i);
           v18 = objc_alloc_init(NSNumber);
-          v19 = [v17 currentState];
-          if (v19 <= 2)
+          currentState = [v17 currentState];
+          if (currentState <= 2)
           {
-            v20 = off_10163BE90[v19];
+            v20 = off_10163BE90[currentState];
 
             v18 = v20;
           }
 
           v21 = [MUUGCRatingViewModel alloc];
-          v22 = [v17 localizedTitle];
-          v23 = [v21 initWithCategory:v22 value:v18];
+          localizedTitle = [v17 localizedTitle];
+          v23 = [v21 initWithCategory:localizedTitle value:v18];
 
           [v11 addObject:v23];
         }
@@ -2662,98 +2662,98 @@ LABEL_6:
       while (v14);
     }
 
-    v24 = [v5 type] == 4 && objc_msgSend(v5, "ratingState") != 0;
-    if ([v5 type] != 5)
+    v24 = [submissionStatusAppearance type] == 4 && objc_msgSend(submissionStatusAppearance, "ratingState") != 0;
+    if ([submissionStatusAppearance type] != 5)
     {
-      [(MUPlaceViewController *)v28->_placeViewController setPlaceHasRating:v24];
+      [(MUPlaceViewController *)selfCopy->_placeViewController setPlaceHasRating:v24];
     }
 
-    placeViewController = v28->_placeViewController;
+    placeViewController = selfCopy->_placeViewController;
     v26 = [v11 copy];
     [(MUPlaceViewController *)placeViewController updateViewsWithSubmissionStatus:v30 userRatings:v26 animated:v29];
   }
 }
 
-- (void)inlinePOIEnrichmentControllerPresentPOIEnrichment:(id)a3
+- (void)inlinePOIEnrichmentControllerPresentPOIEnrichment:(id)enrichment
 {
-  v4 = [(PlaceCardViewController *)self placeCardItem];
-  v5 = [v4 mapItem];
-  v7 = [UGCPOIEnrichmentCoordinator ratingsAndPhotosCoordinatorWithMapItem:v5 initialOverallState:0 entryPoint:3 originTarget:0];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  mapItem = [placeCardItem mapItem];
+  v7 = [UGCPOIEnrichmentCoordinator ratingsAndPhotosCoordinatorWithMapItem:mapItem initialOverallState:0 entryPoint:3 originTarget:0];
 
-  v6 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v6 placeCardViewController:self presentPOIEnrichmentWithCoordinator:v7];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self presentPOIEnrichmentWithCoordinator:v7];
 }
 
-- (void)inlinePOIEnrichmentController:(id)a3 didSelectTermsOfServiceURL:(id)a4
+- (void)inlinePOIEnrichmentController:(id)controller didSelectTermsOfServiceURL:(id)l
 {
-  v5 = a4;
-  v6 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v6 placeCardViewController:self openURL:v5];
+  lCopy = l;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self openURL:lCopy];
 }
 
-- (void)didSelectSharePublisherGuide:(id)a3
+- (void)didSelectSharePublisherGuide:(id)guide
 {
-  v4 = a3;
+  guideCopy = guide;
   v5 = [CuratedCollectionShareItemSource alloc];
-  v6 = [v4 publisher];
+  publisher = [guideCopy publisher];
 
-  v8 = [(CuratedCollectionShareItemSource *)v5 initWithPublisher:v6];
-  v7 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v7 placeCardViewController:self didSelectSharePublisherShareItem:v8];
+  v8 = [(CuratedCollectionShareItemSource *)v5 initWithPublisher:publisher];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self didSelectSharePublisherShareItem:v8];
 }
 
-- (void)didSelectSavePublisherGuide:(id)a3
+- (void)didSelectSavePublisherGuide:(id)guide
 {
-  v3 = a3;
+  guideCopy = guide;
   v4 = +[CuratedCollectionSyncManager sharedManager];
-  [v4 addSavedCuratedCollection:v3 completion:0];
+  [v4 addSavedCuratedCollection:guideCopy completion:0];
 }
 
-- (void)didSelectShowPublisherForPublisherGuide:(id)a3
+- (void)didSelectShowPublisherForPublisherGuide:(id)guide
 {
-  v4 = a3;
-  v6 = [(PlaceCardViewController *)self placeCardDelegate];
-  v5 = [v4 publisher];
+  guideCopy = guide;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  publisher = [guideCopy publisher];
 
-  [v6 placeCardViewController:self didSelectShowPublisherForPublisher:v5];
+  [placeCardDelegate placeCardViewController:self didSelectShowPublisherForPublisher:publisher];
 }
 
-- (void)placeViewController:(id)a3 seeAllCollections:(id)a4 usingTitle:(id)a5 usingCollectionIds:(id)a6
+- (void)placeViewController:(id)controller seeAllCollections:(id)collections usingTitle:(id)title usingCollectionIds:(id)ids
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v12 placeCardViewController:self seeAllCollections:v11 usingTitle:v10 usingCollectionIds:v9];
+  idsCopy = ids;
+  titleCopy = title;
+  collectionsCopy = collections;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self seeAllCollections:collectionsCopy usingTitle:titleCopy usingCollectionIds:idsCopy];
 }
 
-- (void)placeViewController:(id)a3 selectExploreGuidesWithGuideLocation:(id)a4
+- (void)placeViewController:(id)controller selectExploreGuidesWithGuideLocation:(id)location
 {
-  v5 = a4;
-  v6 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v6 placeCardViewController:self selectExploreGuidesWithGuideLocation:v5];
+  locationCopy = location;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self selectExploreGuidesWithGuideLocation:locationCopy];
 }
 
-- (void)placeViewController:(id)a3 selectCuratedCollectionIdentifier:(id)a4
+- (void)placeViewController:(id)controller selectCuratedCollectionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v6 placeCardViewController:self showCuratedCollectionIdentifier:v5];
+  identifierCopy = identifier;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self showCuratedCollectionIdentifier:identifierCopy];
 }
 
-- (void)placeViewController:(id)a3 selectCuratedCollection:(id)a4
+- (void)placeViewController:(id)controller selectCuratedCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v6 placeCardViewController:self showCuratedCollection:v5];
+  collectionCopy = collection;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self showCuratedCollection:collectionCopy];
 }
 
-- (id)placeViewControllerUserIcon:(id)a3
+- (id)placeViewControllerUserIcon:(id)icon
 {
   v3 = +[UserInformationManager sharedInstance];
-  v4 = [v3 userIcon];
+  userIcon = [v3 userIcon];
 
-  return v4;
+  return userIcon;
 }
 
 - (unint64_t)_numberOfRAPsInReview
@@ -2773,23 +2773,23 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(PlaceCardViewController *)self mapItem];
-  v4 = [v3 _identifier];
+  mapItem = [(PlaceCardViewController *)self mapItem];
+  _identifier = [mapItem _identifier];
 
-  if (!v4)
+  if (!_identifier)
   {
     return 0;
   }
 
   v5 = +[UserProfileReportHistoryManager sharedInstance];
-  v6 = [v5 rapHistory];
+  rapHistory = [v5 rapHistory];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100B954C0;
   v10[3] = &unk_10163BC88;
   v10[4] = self;
-  v7 = sub_1000282CC(v6, v10);
+  v7 = sub_1000282CC(rapHistory, v10);
   v8 = [v7 count];
 
   return v8;
@@ -2803,12 +2803,12 @@ LABEL_6:
   [(MUPlaceViewController *)placeViewController updatePlaceInfo];
 }
 
-- (void)placeEnrichmentAPIContollerDidFetchEnrichmentData:(id)a3 forMapItem:(id)a4
+- (void)placeEnrichmentAPIContollerDidFetchEnrichmentData:(id)data forMapItem:(id)item
 {
-  v5 = a4;
-  v6 = [(PlaceCardViewController *)self placeCardItem];
-  v7 = [v6 mapItem];
-  v8 = [v7 isEqual:v5];
+  itemCopy = item;
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  mapItem = [placeCardItem mapItem];
+  v8 = [mapItem isEqual:itemCopy];
 
   if (v8)
   {
@@ -2818,60 +2818,60 @@ LABEL_6:
   }
 }
 
-- (void)_updateCollectionsAnimated:(BOOL)a3
+- (void)_updateCollectionsAnimated:(BOOL)animated
 {
-  [(MUPlaceViewController *)self->_placeViewController updateCollectionViewsAnimated:a3];
+  [(MUPlaceViewController *)self->_placeViewController updateCollectionViewsAnimated:animated];
   [(MUPlaceViewController *)self->_placeViewController setPlaceInCollections:[(PlaceCardViewController *)self _collectionsCount]!= 0];
   [(MUPlaceViewController *)self->_placeViewController updateActionRowView];
 
   [(InfoCardViewController *)self rebuildHeaderMenu];
 }
 
-- (void)_addPlaceToCollection:(id)a3 editCollection:(BOOL)a4
+- (void)_addPlaceToCollection:(id)collection editCollection:(BOOL)editCollection
 {
-  v6 = a3;
-  v7 = [(PlaceCardViewController *)self placeCardItem];
-  v8 = [v7 mapItem];
+  collectionCopy = collection;
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  mapItem = [placeCardItem mapItem];
 
-  v9 = [(PlaceCardViewController *)self placeCardDelegate];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
   objc_initWeak(&location, self);
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100B9596C;
   v20[3] = &unk_10163BC60;
-  v10 = v6;
+  v10 = collectionCopy;
   v21 = v10;
-  v11 = v8;
+  v11 = mapItem;
   v22 = v11;
-  v25 = a4;
-  v12 = v9;
+  editCollectionCopy = editCollection;
+  v12 = placeCardDelegate;
   v23 = v12;
   objc_copyWeak(&v24, &location);
   v13 = objc_retainBlock(v20);
-  v14 = [(PlaceCardViewController *)self placeCardItem];
-  if ([v14 isDroppedPin])
+  placeCardItem2 = [(PlaceCardViewController *)self placeCardItem];
+  if ([placeCardItem2 isDroppedPin])
   {
   }
 
   else
   {
-    v15 = [v11 _maps_canRenameCollectionItem];
+    _maps_canRenameCollectionItem = [v11 _maps_canRenameCollectionItem];
 
-    if ((v15 & 1) == 0)
+    if ((_maps_canRenameCollectionItem & 1) == 0)
     {
       (v13[2])(v13);
       goto LABEL_6;
     }
   }
 
-  v16 = [(PlaceCardViewController *)self placeCardDelegate];
+  placeCardDelegate2 = [(PlaceCardViewController *)self placeCardDelegate];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100B95A80;
   v17[3] = &unk_10165F618;
   v18 = v11;
   v19 = v13;
-  [v16 placeCardViewController:self editNameOfMapItem:v18 saveHandler:v17 cancelHandler:0];
+  [placeCardDelegate2 placeCardViewController:self editNameOfMapItem:v18 saveHandler:v17 cancelHandler:0];
 
 LABEL_6:
   objc_destroyWeak(&v24);
@@ -2879,52 +2879,52 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)placeViewController:(id)a3 selectCollectionIdentifier:(id)a4
+- (void)placeViewController:(id)controller selectCollectionIdentifier:(id)identifier
 {
-  v5 = [(PlaceCardCollectionMembershipProvider *)self->_collectionMembershipProvider containingCollectionWithIdentifer:a4];
+  v5 = [(PlaceCardCollectionMembershipProvider *)self->_collectionMembershipProvider containingCollectionWithIdentifer:identifier];
   if (v5)
   {
     v7 = v5;
-    v6 = [(PlaceCardViewController *)self placeCardDelegate];
-    [v6 placeCardViewController:self showCollection:v7];
+    placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+    [placeCardDelegate placeCardViewController:self showCollection:v7];
 
     v5 = v7;
   }
 }
 
-- (void)placeViewController:(id)a3 didSelectAddToCollectionWithPlaceActionEnvironment:(id)a4 showsAddToLibrarySection:(BOOL)a5
+- (void)placeViewController:(id)controller didSelectAddToCollectionWithPlaceActionEnvironment:(id)environment showsAddToLibrarySection:(BOOL)section
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PlaceCardViewController *)self placeCardItem];
-  v11 = [v10 mapItem];
+  sectionCopy = section;
+  controllerCopy = controller;
+  environmentCopy = environment;
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  mapItem = [placeCardItem mapItem];
 
-  v12 = [(CollectionSaveSession *)[CollectionAddOrRemoveSession alloc] initWithMapItem:v11 showsAddToLibrarySection:v5];
+  v12 = [(CollectionSaveSession *)[CollectionAddOrRemoveSession alloc] initWithMapItem:mapItem showsAddToLibrarySection:sectionCopy];
   objc_initWeak(&location, self);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100B95DC8;
   v16[3] = &unk_10163BC10;
   objc_copyWeak(&v18, &location);
-  v13 = v9;
+  v13 = environmentCopy;
   v17 = v13;
   [(CollectionEditSession *)v12 setAnalyticsHandler:v16];
-  v14 = [v13 sourceView];
-  v15 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v14 bounds];
-  [v15 placeCardViewController:self pickCollectionWithSession:v12 sourceView:v14 sourceRect:?];
+  sourceView = [v13 sourceView];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [sourceView bounds];
+  [placeCardDelegate placeCardViewController:self pickCollectionWithSession:v12 sourceView:sourceView sourceRect:?];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
 }
 
-- (id)placeViewController:(id)a3 webPlacecardGuidesForPlaceItem:(id)a4
+- (id)placeViewController:(id)controller webPlacecardGuidesForPlaceItem:(id)item
 {
-  v5 = [a4 mapItem];
-  if (v5)
+  mapItem = [item mapItem];
+  if (mapItem)
   {
-    v22 = v5;
+    v22 = mapItem;
     v24 = objc_alloc_init(NSMutableArray);
     [(PlaceCardCollectionMembershipProvider *)self->_collectionMembershipProvider containingCollections];
     v25 = 0u;
@@ -2946,16 +2946,16 @@ LABEL_6:
           }
 
           v10 = *(*(&v25 + 1) + 8 * i);
-          v11 = [v10 image];
-          v12 = UIImagePNGRepresentation(v11);
+          image = [v10 image];
+          v12 = UIImagePNGRepresentation(image);
 
           v13 = [MUPersonalGuideViewModel alloc];
-          v14 = [v10 identifier];
-          v15 = [v10 title];
-          v16 = [v10 numberOfItems];
-          v17 = [v16 unsignedIntegerValue];
+          identifier = [v10 identifier];
+          title = [v10 title];
+          numberOfItems = [v10 numberOfItems];
+          unsignedIntegerValue = [numberOfItems unsignedIntegerValue];
           v18 = [v12 base64EncodedStringWithOptions:0];
-          v19 = [v13 initWithGuideID:v14 title:v15 numberOfPlaces:v17 image:v18];
+          v19 = [v13 initWithGuideID:identifier title:title numberOfPlaces:unsignedIntegerValue image:v18];
 
           [v24 addObject:v19];
         }
@@ -2968,7 +2968,7 @@ LABEL_6:
 
     v20 = [v24 copy];
 
-    v5 = v22;
+    mapItem = v22;
   }
 
   else
@@ -2979,19 +2979,19 @@ LABEL_6:
   return v20;
 }
 
-- (id)placeViewController:(id)a3 collectionViewsForPlaceItem:(id)a4
+- (id)placeViewController:(id)controller collectionViewsForPlaceItem:(id)item
 {
-  v5 = [a4 mapItem];
-  if (v5)
+  mapItem = [item mapItem];
+  if (mapItem)
   {
-    v21 = v5;
+    v21 = mapItem;
     v6 = +[NSMutableDictionary dictionary];
-    v7 = [(PlaceCardCollectionMembershipProvider *)self->_collectionMembershipProvider containingCollections];
+    containingCollections = [(PlaceCardCollectionMembershipProvider *)self->_collectionMembershipProvider containingCollections];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v8 = [containingCollections countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v8)
     {
       v9 = v8;
@@ -3005,28 +3005,28 @@ LABEL_6:
         {
           if (*v23 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(containingCollections);
           }
 
           v15 = *(*(&v22 + 1) + 8 * i);
           if (sub_10000FA08(self) == 5)
           {
-            v16 = [[TwoLinesContentView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+            height = [[TwoLinesContentView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
             v17 = [TwoLinesContentViewModelComposer cellModelForCollection:v15];
-            [(TwoLinesContentView *)v16 setViewModel:v17];
+            [(TwoLinesContentView *)height setViewModel:v17];
           }
 
           else
           {
-            v16 = [[CollectionView alloc] initWithCollectionViewSize:0];
-            [(TwoLinesContentView *)v16 setCollectionInfo:v15];
+            height = [[CollectionView alloc] initWithCollectionViewSize:0];
+            [(TwoLinesContentView *)height setCollectionInfo:v15];
           }
 
-          v18 = [v15 identifier];
-          [v6 setObject:v16 forKeyedSubscript:v18];
+          identifier = [v15 identifier];
+          [v6 setObject:height forKeyedSubscript:identifier];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v9 = [containingCollections countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v9);
@@ -3034,7 +3034,7 @@ LABEL_6:
 
     v19 = [v6 copy];
 
-    v5 = v21;
+    mapItem = v21;
   }
 
   else
@@ -3047,17 +3047,17 @@ LABEL_6:
 
 - (unint64_t)_collectionsCount
 {
-  v2 = [(PlaceCardCollectionMembershipProvider *)self->_collectionMembershipProvider containingCollections];
-  v3 = [v2 count];
+  containingCollections = [(PlaceCardCollectionMembershipProvider *)self->_collectionMembershipProvider containingCollections];
+  v3 = [containingCollections count];
 
   return v3;
 }
 
-- (id)menuElementForActionItem:(id)a3
+- (id)menuElementForActionItem:(id)item
 {
-  v4 = a3;
-  v29 = v4;
-  if ([v4 type] == 16)
+  itemCopy = item;
+  v29 = itemCopy;
+  if ([itemCopy type] == 16)
   {
     v5 = [MapsMenuBuilder sendToDeviceAndShareMenuWithSendToDeviceEnabled:1];
 LABEL_3:
@@ -3065,9 +3065,9 @@ LABEL_3:
     goto LABEL_28;
   }
 
-  if ([v4 type] != 21)
+  if ([itemCopy type] != 21)
   {
-    if ([v4 type] == 2)
+    if ([itemCopy type] == 2)
     {
       objc_initWeak(&location, self);
       if (GEOConfigGetBOOL())
@@ -3097,17 +3097,17 @@ LABEL_3:
 
     v32.receiver = self;
     v32.super_class = PlaceCardViewController;
-    v5 = [(InfoCardViewController *)&v32 menuElementForActionItem:v4];
+    v5 = [(InfoCardViewController *)&v32 menuElementForActionItem:itemCopy];
     goto LABEL_3;
   }
 
-  v7 = [(PlaceCardViewController *)self placeCardItem];
-  v28 = [v7 mapItem];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  mapItem = [placeCardItem mapItem];
 
-  if (v28)
+  if (mapItem)
   {
     v8 = +[CollectionManager sharedManager];
-    v9 = [v8 collectionsNotContainingMapItem:v28];
+    v9 = [v8 collectionsNotContainingMapItem:mapItem];
 
     v31 = +[NSMutableArray array];
     objc_initWeak(&location, self);
@@ -3130,11 +3130,11 @@ LABEL_3:
           }
 
           v13 = *(*(&v40 + 1) + 8 * i);
-          v14 = [v13 title];
-          v15 = v14;
-          if (v14)
+          title = [v13 title];
+          v15 = title;
+          if (title)
           {
-            v16 = v14;
+            v16 = title;
           }
 
           else
@@ -3168,7 +3168,7 @@ LABEL_3:
     v35[2] = sub_100B96A00;
     v35[3] = &unk_101660418;
     objc_copyWeak(&v37, &location);
-    v36 = v28;
+    v36 = mapItem;
     v20 = [UIAction actionWithTitle:v19 image:0 identifier:0 handler:v35];
     v45 = v20;
     v21 = [NSArray arrayWithObjects:&v45 count:1];
@@ -3204,9 +3204,9 @@ LABEL_28:
   return v6;
 }
 
-- (id)alternatePrimaryButtonControllerForPlaceViewController:(id)a3
+- (id)alternatePrimaryButtonControllerForPlaceViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (sub_10000FA08(self) == 5)
   {
     objc_initWeak(&location, self);
@@ -3233,17 +3233,17 @@ LABEL_28:
   return v9;
 }
 
-- (void)placeViewControllerDidUpdateHeight:(id)a3
+- (void)placeViewControllerDidUpdateHeight:(id)height
 {
   if (self->_shouldFetchDraggableViews)
   {
-    v4 = [(PlaceCardViewController *)self placeCardItem];
-    v5 = [v4 isIntermediateMapItem];
+    placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+    isIntermediateMapItem = [placeCardItem isIntermediateMapItem];
 
-    if ((v5 & 1) == 0)
+    if ((isIntermediateMapItem & 1) == 0)
     {
-      v6 = [(MUPlaceViewController *)self->_placeViewController draggableContent];
-      [(PlaceCardViewController *)self setDraggableContent:v6];
+      draggableContent = [(MUPlaceViewController *)self->_placeViewController draggableContent];
+      [(PlaceCardViewController *)self setDraggableContent:draggableContent];
     }
   }
 }
@@ -3258,17 +3258,17 @@ LABEL_28:
   }
 
   v4 = objc_alloc_init(SearchFieldItem);
-  v5 = [(PlaceCardItem *)self->_placeCardItem searchResult];
-  if (v5)
+  searchResult = [(PlaceCardItem *)self->_placeCardItem searchResult];
+  if (searchResult)
   {
-    [(SearchFieldItem *)v4 setSearchResult:v5];
+    [(SearchFieldItem *)v4 setSearchResult:searchResult];
   }
 
   else
   {
     v6 = [SearchResult alloc];
-    v7 = [(PlaceCardItem *)self->_placeCardItem mapItem];
-    v8 = [(SearchResult *)v6 initWithMapItem:v7];
+    mapItem = [(PlaceCardItem *)self->_placeCardItem mapItem];
+    v8 = [(SearchResult *)v6 initWithMapItem:mapItem];
     [(SearchFieldItem *)v4 setSearchResult:v8];
   }
 
@@ -3289,23 +3289,23 @@ LABEL_28:
   v17[0] = &__kCFBooleanTrue;
   v17[1] = &off_1016E8AC8;
   v13 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
-  v14 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v14 placeCardViewController:self doDirectionItem:v12 userInfo:v13];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self doDirectionItem:v12 userInfo:v13];
 }
 
-- (void)_routeToCurrentSearchResultWithTransportType:(int64_t)a3
+- (void)_routeToCurrentSearchResultWithTransportType:(int64_t)type
 {
   v5 = sub_100B9707C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    if ((a3 - 1) > 4)
+    if ((type - 1) > 4)
     {
       v6 = @"Undefined";
     }
 
     else
     {
-      v6 = off_10163BE68[a3 - 1];
+      v6 = off_10163BE68[type - 1];
     }
 
     *buf = 138412290;
@@ -3313,21 +3313,21 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Routing to current search result with transport type: %@", buf, 0xCu);
   }
 
-  v7 = [(PlaceCardViewController *)self isAdditionalStop];
+  isAdditionalStop = [(PlaceCardViewController *)self isAdditionalStop];
   v8 = objc_alloc_init(SearchFieldItem);
-  if (v7)
+  if (isAdditionalStop)
   {
-    v9 = [(PlaceCardItem *)self->_placeCardItem searchResult];
-    if (v9)
+    searchResult = [(PlaceCardItem *)self->_placeCardItem searchResult];
+    if (searchResult)
     {
-      [(SearchFieldItem *)v8 setSearchResult:v9];
+      [(SearchFieldItem *)v8 setSearchResult:searchResult];
     }
 
     else
     {
       v13 = [SearchResult alloc];
-      v14 = [(PlaceCardItem *)self->_placeCardItem mapItem];
-      v15 = [(SearchResult *)v13 initWithMapItem:v14];
+      mapItem = [(PlaceCardItem *)self->_placeCardItem mapItem];
+      v15 = [(SearchResult *)v13 initWithMapItem:mapItem];
       [(SearchFieldItem *)v8 setSearchResult:v15];
     }
 
@@ -3341,17 +3341,17 @@ LABEL_28:
     [(SearchFieldItem *)v8 setSearchResult:v10];
 
     v11 = objc_alloc_init(SearchFieldItem);
-    v12 = [(PlaceCardItem *)self->_placeCardItem searchResult];
-    if (v12)
+    searchResult2 = [(PlaceCardItem *)self->_placeCardItem searchResult];
+    if (searchResult2)
     {
-      [(SearchFieldItem *)v11 setSearchResult:v12];
+      [(SearchFieldItem *)v11 setSearchResult:searchResult2];
     }
 
     else
     {
       v17 = [SearchResult alloc];
-      v18 = [(PlaceCardItem *)self->_placeCardItem mapItem];
-      v19 = [(SearchResult *)v17 initWithMapItem:v18];
+      mapItem2 = [(PlaceCardItem *)self->_placeCardItem mapItem];
+      v19 = [(SearchResult *)v17 initWithMapItem:mapItem2];
       [(SearchFieldItem *)v11 setSearchResult:v19];
     }
 
@@ -3360,7 +3360,7 @@ LABEL_28:
     v16 = [NSArray arrayWithObjects:v26 count:2];
   }
 
-  v20 = [[DirectionItem alloc] initWithItems:v16 transportType:a3];
+  v20 = [[DirectionItem alloc] initWithItems:v16 transportType:type];
   if (+[PlaceCardViewController shouldInsertRecentPOIForRouting])
   {
     [(PlaceCardViewController *)self insertInHistory];
@@ -3375,11 +3375,11 @@ LABEL_28:
   v25[2] = v21;
   v22 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:3];
 
-  v23 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v23 placeCardViewController:self doDirectionItem:v20 userInfo:v22];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self doDirectionItem:v20 userInfo:v22];
 }
 
-- (int64_t)overriddenInterfaceStyleForPlaceViewControllerSubviews:(id)a3
+- (int64_t)overriddenInterfaceStyleForPlaceViewControllerSubviews:(id)subviews
 {
   WeakRetained = objc_loadWeakRetained(&self->_placeCardDelegate);
   v5 = objc_opt_respondsToSelector();
@@ -3395,7 +3395,7 @@ LABEL_28:
   return v7;
 }
 
-- (id)activityViewControllerForPlaceViewController:(id)a3
+- (id)activityViewControllerForPlaceViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_placeCardDelegate);
   v5 = objc_opt_respondsToSelector();
@@ -3403,12 +3403,12 @@ LABEL_28:
   if ((v5 & 1) == 0 || (v6 = objc_loadWeakRetained(&self->_placeCardDelegate), [v6 activityViewControllerForPlaceViewController:self], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
     v8 = [MapsActivityViewController alloc];
-    v9 = [(PlaceCardViewController *)self shareItemSource];
-    v7 = [(MapsActivityViewController *)v8 initWithShareItem:v9];
+    shareItemSource = [(PlaceCardViewController *)self shareItemSource];
+    v7 = [(MapsActivityViewController *)v8 initWithShareItem:shareItemSource];
 
     v10 = +[UIApplication sharedMapsDelegate];
-    v11 = [v10 appCoordinator];
-    [(MapsActivityViewController *)v7 setMapsActivityDelegate:v11];
+    appCoordinator = [v10 appCoordinator];
+    [(MapsActivityViewController *)v7 setMapsActivityDelegate:appCoordinator];
   }
 
   return v7;
@@ -3416,133 +3416,133 @@ LABEL_28:
 
 - (id)shareItemSource
 {
-  v3 = [(PlaceCardViewController *)self placeCardItem];
-  if ([v3 isCurrentLocation])
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  if ([placeCardItem isCurrentLocation])
   {
     updatedCurrentLocation = self->_updatedCurrentLocation;
     if (updatedCurrentLocation)
     {
-      v5 = updatedCurrentLocation;
+      mapItem = updatedCurrentLocation;
     }
 
     else
     {
-      v8 = [(PlaceCardViewController *)self placeCardItem];
-      v5 = [v8 mapItem];
+      placeCardItem2 = [(PlaceCardViewController *)self placeCardItem];
+      mapItem = [placeCardItem2 mapItem];
     }
 
-    v9 = [ShareItem shareItemForCurrentLocationIncludingPrintActivity:1 withBackingMapItem:v5];
+    v9 = [ShareItem shareItemForCurrentLocationIncludingPrintActivity:1 withBackingMapItem:mapItem];
   }
 
   else
   {
-    v6 = [v3 searchResult];
-    v7 = v6;
-    if (v6)
+    searchResult = [placeCardItem searchResult];
+    v7 = searchResult;
+    if (searchResult)
     {
-      v5 = v6;
+      mapItem = searchResult;
     }
 
     else
     {
       v10 = [SearchResult alloc];
-      v11 = [v3 mapItem];
-      v5 = [(SearchResult *)v10 initWithMapItem:v11];
+      mapItem2 = [placeCardItem mapItem];
+      mapItem = [(SearchResult *)v10 initWithMapItem:mapItem2];
     }
 
-    v12 = [v3 address];
+    address = [placeCardItem address];
 
-    if (v12)
+    if (address)
     {
-      v13 = [v3 address];
-      [(MKMapItem *)v5 setAddress:v13];
+      address2 = [placeCardItem address];
+      [(MKMapItem *)mapItem setAddress:address2];
     }
 
-    v14 = [v3 contact];
-    if (v14 && (v15 = v14, [v3 address], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
+    contact = [placeCardItem contact];
+    if (contact && (v15 = contact, [placeCardItem address], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
     {
       v17 = objc_alloc_init(CNMutableContact);
-      v18 = [v3 contact];
-      [v17 setContactType:{objc_msgSend(v18, "contactType")}];
+      contact2 = [placeCardItem contact];
+      [v17 setContactType:{objc_msgSend(contact2, "contactType")}];
 
       if (![v17 contactType])
       {
-        v19 = [v3 contact];
-        v20 = [v19 namePrefix];
-        [v17 setNamePrefix:v20];
+        contact3 = [placeCardItem contact];
+        namePrefix = [contact3 namePrefix];
+        [v17 setNamePrefix:namePrefix];
 
-        v21 = [v3 contact];
-        v22 = [v21 givenName];
-        [v17 setGivenName:v22];
+        contact4 = [placeCardItem contact];
+        givenName = [contact4 givenName];
+        [v17 setGivenName:givenName];
 
-        v23 = [v3 contact];
-        v24 = [v23 familyName];
-        [v17 setFamilyName:v24];
+        contact5 = [placeCardItem contact];
+        familyName = [contact5 familyName];
+        [v17 setFamilyName:familyName];
 
-        v25 = [v3 contact];
-        v26 = [v25 nameSuffix];
-        [v17 setNameSuffix:v26];
+        contact6 = [placeCardItem contact];
+        nameSuffix = [contact6 nameSuffix];
+        [v17 setNameSuffix:nameSuffix];
       }
 
       v27 = [CNContactFormatter stringFromContact:v17 style:0];
       if ([v17 contactType] == 1 || !objc_msgSend(v27, "length"))
       {
-        v28 = [v3 contact];
-        v29 = [v28 organizationName];
-        [v17 setOrganizationName:v29];
+        contact7 = [placeCardItem contact];
+        organizationName = [contact7 organizationName];
+        [v17 setOrganizationName:organizationName];
       }
 
-      v30 = [v3 address];
-      v31 = [v30 addressValue];
+      address3 = [placeCardItem address];
+      addressValue = [address3 addressValue];
 
-      if (v31)
+      if (addressValue)
       {
-        v36 = v31;
+        v36 = addressValue;
         v32 = [NSArray arrayWithObjects:&v36 count:1];
         [v17 setPostalAddresses:v32];
       }
 
-      v33 = [v17 copy];
+      unknownContact = [v17 copy];
     }
 
     else
     {
-      v33 = [(MKMapItem *)v5 unknownContact];
+      unknownContact = [(MKMapItem *)mapItem unknownContact];
     }
 
     if (sub_10000FA08(self) == 5)
     {
-      v34 = &__NSArray0__struct;
+      createShareSheetFooterActions = &__NSArray0__struct;
     }
 
     else
     {
-      v34 = [(MUPlaceViewController *)self->_placeViewController createShareSheetFooterActions];
+      createShareSheetFooterActions = [(MUPlaceViewController *)self->_placeViewController createShareSheetFooterActions];
     }
 
-    v9 = [ShareItem shareItemWithSearchResult:v5 contact:v33 includePrintActivity:1 applicationActivities:v34];
+    v9 = [ShareItem shareItemWithSearchResult:mapItem contact:unknownContact includePrintActivity:1 applicationActivities:createShareSheetFooterActions];
   }
 
   return v9;
 }
 
-- (void)placeViewController:(id)a3 didSelectRouteToCurrentSearchResultWithTransportTypePreference:(id)a4
+- (void)placeViewController:(id)controller didSelectRouteToCurrentSearchResultWithTransportTypePreference:(id)preference
 {
-  v5 = a4;
+  preferenceCopy = preference;
   v6 = sub_100B9707C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = preferenceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "didSelectRouteToCurrentSearchResultWithTransportTypePreference: %@", &v9, 0xCu);
   }
 
-  if (v5)
+  if (preferenceCopy)
   {
-    v7 = [v5 integerValue];
-    if ((v7 - 1) < 4)
+    integerValue = [preferenceCopy integerValue];
+    if ((integerValue - 1) < 4)
     {
-      v8 = (v7 + 1);
+      v8 = (integerValue + 1);
     }
 
     else
@@ -3559,22 +3559,22 @@ LABEL_28:
   [(PlaceCardViewController *)self _routeToCurrentSearchResultWithTransportType:v8];
 }
 
-- (void)placeViewController:(id)a3 didSelectDirectionsForDestinationAddress:(id)a4 contact:(id)a5 transportType:(id)a6
+- (void)placeViewController:(id)controller didSelectDirectionsForDestinationAddress:(id)address contact:(id)contact transportType:(id)type
 {
-  v9 = a4;
-  if (v9 && a5)
+  addressCopy = address;
+  if (addressCopy && contact)
   {
-    v10 = a6;
-    v11 = a5;
-    v12 = [[AddressBookAddress alloc] initWithContact:v11 addressValue:v9];
+    typeCopy = type;
+    contactCopy = contact;
+    v12 = [[AddressBookAddress alloc] initWithContact:contactCopy addressValue:addressCopy];
 
     v13 = [SearchResult alloc];
-    v14 = [(AddressBookAddress *)v12 generatedMapItem];
-    v15 = [(SearchResult *)v13 initWithMapItem:v14];
+    generatedMapItem = [(AddressBookAddress *)v12 generatedMapItem];
+    v15 = [(SearchResult *)v13 initWithMapItem:generatedMapItem];
 
-    v16 = [(PlaceCardViewController *)self isAdditionalStop];
+    isAdditionalStop = [(PlaceCardViewController *)self isAdditionalStop];
     v17 = objc_alloc_init(SearchFieldItem);
-    if (v16)
+    if (isAdditionalStop)
     {
       v18 = [[SearchResult alloc] initWithSearchResult:v15 address:v12];
       [(SearchFieldItem *)v17 setSearchResult:v18];
@@ -3591,15 +3591,15 @@ LABEL_28:
       v21 = objc_alloc_init(SearchFieldItem);
       v35 = v15;
       v22 = [[SearchResult alloc] initWithSearchResult:v15 address:v12];
-      v23 = [v9 identifier];
+      identifier = [addressCopy identifier];
       v24 = +[_TtC4Maps22MapsAutocompletePerson sharedLocationLabelIdentifier];
-      v25 = [v23 isEqualToString:v24];
+      v25 = [identifier isEqualToString:v24];
 
       if (v25)
       {
-        v26 = [(PlaceCardItem *)self->_placeCardItem searchResult];
-        v27 = [v26 autocompletePerson];
-        [(SearchResult *)v22 setAutocompletePerson:v27];
+        searchResult = [(PlaceCardItem *)self->_placeCardItem searchResult];
+        autocompletePerson = [searchResult autocompletePerson];
+        [(SearchResult *)v22 setAutocompletePerson:autocompletePerson];
       }
 
       [(SearchFieldItem *)v21 setSearchResult:v22];
@@ -3611,11 +3611,11 @@ LABEL_28:
     }
 
     v28 = [DirectionItem alloc];
-    v29 = [v10 integerValue];
+    integerValue = [typeCopy integerValue];
 
-    if ((v29 - 1) < 4)
+    if ((integerValue - 1) < 4)
     {
-      v30 = (v29 + 1);
+      v30 = (integerValue + 1);
     }
 
     else
@@ -3633,22 +3633,22 @@ LABEL_28:
     v37[2] = v32;
     v33 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:3];
 
-    v34 = [(PlaceCardViewController *)self placeCardDelegate];
-    [v34 placeCardViewController:self doDirectionItem:v31 userInfo:v33];
+    placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+    [placeCardDelegate placeCardViewController:self doDirectionItem:v31 userInfo:v33];
   }
 }
 
-- (void)placeViewController:(id)a3 didSelectDirectionsForDestinationMapItem:(id)a4 transportType:(id)a5
+- (void)placeViewController:(id)controller didSelectDirectionsForDestinationMapItem:(id)item transportType:(id)type
 {
-  v7 = a4;
-  if (v7)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v8 = a5;
-    v9 = [(PlaceCardViewController *)self isAdditionalStop];
+    typeCopy = type;
+    isAdditionalStop = [(PlaceCardViewController *)self isAdditionalStop];
     v10 = objc_alloc_init(SearchFieldItem);
-    if (v9)
+    if (isAdditionalStop)
     {
-      v11 = [[SearchResult alloc] initWithMapItem:v7];
+      v11 = [[SearchResult alloc] initWithMapItem:itemCopy];
       [(SearchFieldItem *)v10 setSearchResult:v11];
 
       v26 = v10;
@@ -3661,7 +3661,7 @@ LABEL_28:
       [(SearchFieldItem *)v10 setSearchResult:v13];
 
       v14 = objc_alloc_init(SearchFieldItem);
-      v15 = [[SearchResult alloc] initWithMapItem:v7];
+      v15 = [[SearchResult alloc] initWithMapItem:itemCopy];
       [(SearchFieldItem *)v14 setSearchResult:v15];
 
       v25[0] = v10;
@@ -3670,11 +3670,11 @@ LABEL_28:
     }
 
     v16 = [DirectionItem alloc];
-    v17 = [v8 integerValue];
+    integerValue = [typeCopy integerValue];
 
-    if ((v17 - 1) < 4)
+    if ((integerValue - 1) < 4)
     {
-      v18 = (v17 + 1);
+      v18 = (integerValue + 1);
     }
 
     else
@@ -3687,22 +3687,22 @@ LABEL_28:
     v24[2] = v20;
     v21 = [NSDictionary dictionaryWithObjects:v24 forKeys:&v23 count:3];
 
-    v22 = [(PlaceCardViewController *)self placeCardDelegate];
-    [v22 placeCardViewController:self doDirectionItem:v19 userInfo:v21];
+    placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+    [placeCardDelegate placeCardViewController:self doDirectionItem:v19 userInfo:v21];
   }
 }
 
-- (id)traitsForPlaceViewController:(id)a3
+- (id)traitsForPlaceViewController:(id)controller
 {
-  v3 = [(PlaceCardViewController *)self placeCardDelegate];
-  v4 = [v3 newTraits];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  newTraits = [placeCardDelegate newTraits];
 
-  return v4;
+  return newTraits;
 }
 
-- (double)placeViewControllerPlaceCardHeaderTitlePaddingConstant:(id)a3
+- (double)placeViewControllerPlaceCardHeaderTitlePaddingConstant:(id)constant
 {
-  v4 = a3;
+  constantCopy = constant;
   v9.receiver = self;
   v9.super_class = PlaceCardViewController;
   v5 = 0.0;
@@ -3710,16 +3710,16 @@ LABEL_28:
   {
     v8.receiver = self;
     v8.super_class = PlaceCardViewController;
-    [(InfoCardViewController *)&v8 placeViewControllerPlaceCardHeaderTitlePaddingConstant:v4];
+    [(InfoCardViewController *)&v8 placeViewControllerPlaceCardHeaderTitlePaddingConstant:constantCopy];
     v5 = v6;
   }
 
   return v5;
 }
 
-- (double)placeViewControllerPlaceCardHeaderTitleTrailingConstant:(id)a3
+- (double)placeViewControllerPlaceCardHeaderTitleTrailingConstant:(id)constant
 {
-  v4 = a3;
+  constantCopy = constant;
   v9.receiver = self;
   v9.super_class = PlaceCardViewController;
   v5 = 0.0;
@@ -3727,30 +3727,30 @@ LABEL_28:
   {
     v8.receiver = self;
     v8.super_class = PlaceCardViewController;
-    [(InfoCardViewController *)&v8 placeViewControllerPlaceCardHeaderTitleTrailingConstant:v4];
+    [(InfoCardViewController *)&v8 placeViewControllerPlaceCardHeaderTitleTrailingConstant:constantCopy];
     v5 = v6;
   }
 
   return v5;
 }
 
-- (void)placeViewController:(id)a3 launchAttributionURLs:(id)a4 withAttribution:(id)a5 completionHandler:(id)a6
+- (void)placeViewController:(id)controller launchAttributionURLs:(id)ls withAttribution:(id)attribution completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  lsCopy = ls;
+  attributionCopy = attribution;
+  handlerCopy = handler;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = v8;
+  v11 = lsCopy;
   v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v25;
-    v21 = v10;
-    v22 = v9;
+    v21 = handlerCopy;
+    v22 = attributionCopy;
     while (2)
     {
       v15 = 0;
@@ -3762,21 +3762,21 @@ LABEL_28:
         }
 
         v16 = [NSURL URLWithString:*(*(&v24 + 1) + 8 * v15)];
-        v17 = [v16 scheme];
-        if ([v17 isEqualToString:@"http"])
+        scheme = [v16 scheme];
+        if ([scheme isEqualToString:@"http"])
         {
 
 LABEL_12:
-          v20 = [(PlaceCardViewController *)self placeCardDelegate];
-          [v20 placeCardViewController:self openURL:v16];
+          placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+          [placeCardDelegate placeCardViewController:self openURL:v16];
 
-          v10 = v21;
-          v9 = v22;
+          handlerCopy = v21;
+          attributionCopy = v22;
           goto LABEL_13;
         }
 
-        v18 = [v16 scheme];
-        v19 = [v18 isEqualToString:@"https"];
+        scheme2 = [v16 scheme];
+        v19 = [scheme2 isEqualToString:@"https"];
 
         if (v19)
         {
@@ -3788,8 +3788,8 @@ LABEL_12:
 
       while (v13 != v15);
       v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
-      v10 = v21;
-      v9 = v22;
+      handlerCopy = v21;
+      attributionCopy = v22;
       if (v13)
       {
         continue;
@@ -3799,11 +3799,11 @@ LABEL_12:
     }
   }
 
-  [MKAppLaunchController launchAttributionURLs:v11 withAttribution:v9 completionHandler:v10];
+  [MKAppLaunchController launchAttributionURLs:v11 withAttribution:attributionCopy completionHandler:handlerCopy];
 LABEL_13:
 }
 
-- (void)updateForViewMode:(int64_t)a3
+- (void)updateForViewMode:(int64_t)mode
 {
   WeakRetained = objc_loadWeakRetained(&self->_placeCardDelegate);
   v6 = objc_opt_respondsToSelector();
@@ -3811,7 +3811,7 @@ LABEL_13:
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_placeCardDelegate);
-    [v7 placeCardViewController:self didUpdateForViewMode:a3];
+    [v7 placeCardViewController:self didUpdateForViewMode:mode];
   }
 }
 
@@ -3827,11 +3827,11 @@ LABEL_13:
     [(MUPlaceViewController *)self->_placeViewController setMapsAppDelegate:self];
     [(InfoCardViewController *)self setContentViewController:self->_placeViewController];
     v5 = +[UIColor clearColor];
-    v6 = [(MUPlaceViewController *)self->_placeViewController view];
-    [v6 setBackgroundColor:v5];
+    view = [(MUPlaceViewController *)self->_placeViewController view];
+    [view setBackgroundColor:v5];
 
-    v7 = [(MUPlaceViewController *)self->_placeViewController view];
-    [v7 _setHostsLayoutEngine:1];
+    view2 = [(MUPlaceViewController *)self->_placeViewController view];
+    [view2 _setHostsLayoutEngine:1];
 
     v8 = objc_alloc_init(_TtC4Maps34MapsSyncPlaceItemMapStorageUpdater);
     mapsSyncPlaceItemMapStorageUpdater = self->_mapsSyncPlaceItemMapStorageUpdater;
@@ -3853,8 +3853,8 @@ LABEL_13:
       }
 
       v15 = +[MapsImpressionsPlaceCardFloatingDebugViewController sharedInstance];
-      v14 = [(MUPlaceViewController *)self->_placeViewController impressionsCalculator];
-      [v15 setCalculator:v14];
+      impressionsCalculator = [(MUPlaceViewController *)self->_placeViewController impressionsCalculator];
+      [v15 setCalculator:impressionsCalculator];
 
       if (([v15 isAttached] & 1) == 0)
       {
@@ -3864,12 +3864,12 @@ LABEL_13:
   }
 }
 
-- (BOOL)placeViewController:(id)a3 presentOfflineAlertIfNecessaryForUGC:(int64_t)a4
+- (BOOL)placeViewController:(id)controller presentOfflineAlertIfNecessaryForUGC:(int64_t)c
 {
   v6 = +[MapsOfflineUIHelper sharedHelper];
-  v7 = [v6 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v6 isUsingOfflineMaps];
 
-  if (v7)
+  if (isUsingOfflineMaps)
   {
     v8 = sub_100B9707C();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -3879,58 +3879,58 @@ LABEL_13:
     }
 
     v9 = 0;
-    if (a4 <= 2)
+    if (c <= 2)
     {
-      switch(a4)
+      switch(c)
       {
         case 0:
           v10 = +[MapsOfflineUIHelper sharedHelper];
-          v11 = [v10 alertControllerForAttemptedAddNote];
+          alertControllerForAttemptedAddNote = [v10 alertControllerForAttemptedAddNote];
           goto LABEL_20;
         case 1:
           v10 = +[MapsOfflineUIHelper sharedHelper];
-          v11 = [v10 alertControllerForAttemptedAddToPlaces];
+          alertControllerForAttemptedAddNote = [v10 alertControllerForAttemptedAddToPlaces];
           goto LABEL_20;
         case 2:
           v10 = +[MapsOfflineUIHelper sharedHelper];
-          v11 = [v10 alertControllerForAttemptedAddShortcut];
+          alertControllerForAttemptedAddNote = [v10 alertControllerForAttemptedAddShortcut];
           goto LABEL_20;
       }
     }
 
-    else if (a4 > 5)
+    else if (c > 5)
     {
-      if (a4 == 6)
+      if (c == 6)
       {
         v10 = +[MapsOfflineUIHelper sharedHelper];
-        v11 = [v10 alertControllerForAttemptedAddPhotos];
+        alertControllerForAttemptedAddNote = [v10 alertControllerForAttemptedAddPhotos];
         goto LABEL_20;
       }
 
-      if (a4 == 7)
+      if (c == 7)
       {
         v10 = +[MapsOfflineUIHelper sharedHelper];
-        v11 = [v10 alertControllerForAttemptedReportAnIssue];
+        alertControllerForAttemptedAddNote = [v10 alertControllerForAttemptedReportAnIssue];
         goto LABEL_20;
       }
     }
 
     else
     {
-      if ((a4 - 3) < 2)
+      if ((c - 3) < 2)
       {
         v10 = +[MapsOfflineUIHelper sharedHelper];
-        v11 = [v10 alertControllerForAttemptedAddCollection];
+        alertControllerForAttemptedAddNote = [v10 alertControllerForAttemptedAddCollection];
 LABEL_20:
-        v9 = v11;
+        v9 = alertControllerForAttemptedAddNote;
 
         goto LABEL_21;
       }
 
-      if (a4 == 5)
+      if (c == 5)
       {
         v10 = +[MapsOfflineUIHelper sharedHelper];
-        v11 = [v10 alertControllerForAttemptedRate];
+        alertControllerForAttemptedAddNote = [v10 alertControllerForAttemptedRate];
         goto LABEL_20;
       }
     }
@@ -3939,14 +3939,14 @@ LABEL_21:
     [(PlaceCardViewController *)self presentViewController:v9 animated:1 completion:0];
   }
 
-  return v7;
+  return isUsingOfflineMaps;
 }
 
 - (void)_clearOfflineDownloadTipIfNeeded
 {
-  v3 = [(MUPlaceViewController *)self->_placeViewController offlineFeatureDiscoveryView];
+  offlineFeatureDiscoveryView = [(MUPlaceViewController *)self->_placeViewController offlineFeatureDiscoveryView];
 
-  if (v3)
+  if (offlineFeatureDiscoveryView)
   {
     placeViewController = self->_placeViewController;
 
@@ -3954,9 +3954,9 @@ LABEL_21:
   }
 }
 
-- (void)_updateOfflineFeatureDiscoveryViewIfNeededWithMapItem:(id)a3
+- (void)_updateOfflineFeatureDiscoveryViewIfNeededWithMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   UInteger = GEOConfigGetUInteger();
   v6 = +[NSUserDefaults standardUserDefaults];
   v7 = [v6 BOOLForKey:@"OfflineMapsPlaceCardDownloadTipsShownKey"];
@@ -3967,10 +3967,10 @@ LABEL_21:
   if ((v7 & 1) == 0 && v9 < UInteger)
   {
     v10 = +[MapsOfflineUIHelper sharedHelper];
-    v11 = [v4 _displayMapRegion];
-    v12 = [v10 isRegionDownloaded:v11 requireFullyDownloaded:0];
+    _displayMapRegion = [itemCopy _displayMapRegion];
+    v12 = [v10 isRegionDownloaded:_displayMapRegion requireFullyDownloaded:0];
 
-    if ((v12 & 1) == 0 && (([v4 _maps_isLargeAreaPlace] & 1) != 0 || objc_msgSend(v4, "_isMapItemTypeSettlement")))
+    if ((v12 & 1) == 0 && (([itemCopy _maps_isLargeAreaPlace] & 1) != 0 || objc_msgSend(itemCopy, "_isMapItemTypeSettlement")))
     {
       v13 = objc_alloc_init(ImageIconWithBackgroundConfiguration);
       [(ImageIconWithBackgroundConfiguration *)v13 setIconSize:35.0, 35.0];
@@ -3987,8 +3987,8 @@ LABEL_21:
 
       v18 = +[NSBundle mainBundle];
       v19 = [v18 localizedStringForKey:@"[Offline] download tip title in placecard" value:@"localized string not found" table:@"Offline"];
-      v20 = [v4 name];
-      v21 = [NSString stringWithFormat:v19, v20];
+      name = [itemCopy name];
+      v21 = [NSString stringWithFormat:v19, name];
 
       v22 = +[NSBundle mainBundle];
       v23 = [v22 localizedStringForKey:@"[Offline] download tip subtitle in placecard" value:@"localized string not found" table:@"Offline"];
@@ -4035,10 +4035,10 @@ LABEL_21:
     {
       if ([(PlaceCardItem *)placeCardItem shouldInsertInHistory])
       {
-        v4 = [(PlaceCardItem *)self->_placeCardItem mapItem];
-        v5 = [(PlaceCardItem *)self->_placeCardItem searchResult];
-        v6 = [v5 searchToSupersedeIfRecordedInHistory];
-        [HistoryEntryRecentsItem saveMapItem:v4 superseedUUID:v6 tracksRAPReportingOnly:[(PlaceCardItem *)self->_placeCardItem shouldInsertInHistoryForRAPTrackingOnly]];
+        mapItem = [(PlaceCardItem *)self->_placeCardItem mapItem];
+        searchResult = [(PlaceCardItem *)self->_placeCardItem searchResult];
+        searchToSupersedeIfRecordedInHistory = [searchResult searchToSupersedeIfRecordedInHistory];
+        [HistoryEntryRecentsItem saveMapItem:mapItem superseedUUID:searchToSupersedeIfRecordedInHistory tracksRAPReportingOnly:[(PlaceCardItem *)self->_placeCardItem shouldInsertInHistoryForRAPTrackingOnly]];
 
         self->_didInsertInHistory = 1;
       }
@@ -4046,29 +4046,29 @@ LABEL_21:
   }
 }
 
-- (void)placeCardItemMapItemDidChangeWithFailedRefinement:(BOOL)a3
+- (void)placeCardItemMapItemDidChangeWithFailedRefinement:(BOOL)refinement
 {
-  self->_refinementFailed = a3;
-  v4 = [(PlaceCardViewController *)self placeCardDelegate];
-  v5 = [(PlaceCardViewController *)self placeCardItem];
-  [v4 placeCardViewController:self didUpdateLinkedPlacesFromPlaceCardItem:v5];
+  self->_refinementFailed = refinement;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  [placeCardDelegate placeCardViewController:self didUpdateLinkedPlacesFromPlaceCardItem:placeCardItem];
 
   if (!self->_suppressNotifyMapItemDidChange)
   {
-    v6 = [(PlaceCardViewController *)self placeCardDelegate];
-    v7 = [(PlaceCardViewController *)self placeCardItem];
-    v8 = [v7 mapItem];
-    [v6 placeCardViewController:self mapItemDidChange:v8];
+    placeCardDelegate2 = [(PlaceCardViewController *)self placeCardDelegate];
+    placeCardItem2 = [(PlaceCardViewController *)self placeCardItem];
+    mapItem = [placeCardItem2 mapItem];
+    [placeCardDelegate2 placeCardViewController:self mapItemDidChange:mapItem];
   }
 
   [(PlaceCardViewController *)self setNeedsContentUpdate];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_101931A80 == a6)
+  if (off_101931A80 == context)
   {
-    if ([a3 isEqualToString:{@"mapItem", a4, a5}])
+    if ([path isEqualToString:{@"mapItem", object, change}])
     {
 
       [(PlaceCardViewController *)self placeCardItemMapItemDidChangeWithFailedRefinement:0];
@@ -4079,50 +4079,50 @@ LABEL_21:
   {
     v7.receiver = self;
     v7.super_class = PlaceCardViewController;
-    [(InfoCardViewController *)&v7 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(InfoCardViewController *)&v7 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)setIsPresentedInSearchAlongTheRoute:(BOOL)a3
+- (void)setIsPresentedInSearchAlongTheRoute:(BOOL)route
 {
-  if (self->_isPresentedInSearchAlongTheRoute != a3)
+  if (self->_isPresentedInSearchAlongTheRoute != route)
   {
-    self->_isPresentedInSearchAlongTheRoute = a3;
+    self->_isPresentedInSearchAlongTheRoute = route;
     [(PlaceCardViewController *)self setNeedsContentUpdate];
   }
 }
 
-- (void)setIsAdditionalStop:(BOOL)a3
+- (void)setIsAdditionalStop:(BOOL)stop
 {
-  if (self->_isAdditionalStop != a3)
+  if (self->_isAdditionalStop != stop)
   {
-    self->_isAdditionalStop = a3;
+    self->_isAdditionalStop = stop;
     [(PlaceCardViewController *)self setNeedsContentUpdate];
   }
 }
 
-- (void)setExcludedContent:(int64_t)a3
+- (void)setExcludedContent:(int64_t)content
 {
-  if (self->_excludedContent != a3)
+  if (self->_excludedContent != content)
   {
-    self->_excludedContent = a3;
+    self->_excludedContent = content;
     [(PlaceCardViewController *)self setNeedsContentUpdate];
   }
 }
 
-- (void)setPlaceCardItem:(id)a3
+- (void)setPlaceCardItem:(id)item
 {
-  v10 = a3;
-  if (sub_100C73A6C(self->_placeCardItem, v10))
+  itemCopy = item;
+  if (sub_100C73A6C(self->_placeCardItem, itemCopy))
   {
-    v5 = [(InfoCardViewController *)self contentViewController];
-    [v5 scrollToTopAnimated:0];
+    contentViewController = [(InfoCardViewController *)self contentViewController];
+    [contentViewController scrollToTopAnimated:0];
   }
 
   else
   {
-    v6 = [(PlaceCardViewController *)self placeCardDelegate];
-    [v6 placeCardViewController:self placeCardItemWillChange:v10];
+    placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+    [placeCardDelegate placeCardViewController:self placeCardItemWillChange:itemCopy];
 
     placeCardItem = self->_placeCardItem;
     if (placeCardItem)
@@ -4130,7 +4130,7 @@ LABEL_21:
       [(PlaceCardItem *)placeCardItem removeObserver:self forKeyPath:@"mapItem"];
     }
 
-    objc_storeStrong(&self->_placeCardItem, a3);
+    objc_storeStrong(&self->_placeCardItem, item);
     self->_shouldPresentSecondaryActionWhenReady = 0;
     v8 = self->_placeCardItem;
     if (v8)
@@ -4143,41 +4143,41 @@ LABEL_21:
       [(PlaceCardViewController *)self _updateCallToActionStateIfNeeded];
     }
 
-    v5 = [(MUPlaceViewController *)self->_placeViewController view];
-    [v5 _maps_annotateViewWithPlaceCardViewController:self];
+    contentViewController = [(MUPlaceViewController *)self->_placeViewController view];
+    [contentViewController _maps_annotateViewWithPlaceCardViewController:self];
   }
 }
 
-- (void)setPlaceCardItem:(id)a3 withHistory:(BOOL)a4
+- (void)setPlaceCardItem:(id)item withHistory:(BOOL)history
 {
-  self->_shouldInsertInHistory = a4;
+  self->_shouldInsertInHistory = history;
   self->_suppressNotifyMapItemDidChange = 1;
-  [(PlaceCardViewController *)self setPlaceCardItem:a3];
+  [(PlaceCardViewController *)self setPlaceCardItem:item];
   self->_suppressNotifyMapItemDidChange = 0;
 }
 
-- (void)updateHeaderTitle:(id)a3
+- (void)updateHeaderTitle:(id)title
 {
   placeViewController = self->_placeViewController;
-  v5 = a3;
+  titleCopy = title;
   [(MUPlaceViewController *)placeViewController updateHeaderTitle];
-  [(InfoCardViewController *)self setHeaderTitle:v5];
+  [(InfoCardViewController *)self setHeaderTitle:titleCopy];
 }
 
-- (void)handleAddOrRemovePlaceFromLibrary:(BOOL)a3
+- (void)handleAddOrRemovePlaceFromLibrary:(BOOL)library
 {
-  if (a3)
+  if (library)
   {
     if (-[PlaceCardItem isDroppedPin](self->_placeCardItem, "isDroppedPin") || (-[PlaceCardLibraryOperationsCoordinator mapItem](self->_libraryOperationsCoordinator, "mapItem"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 _maps_canRenameCollectionItem], v4, v5))
     {
-      v6 = [(PlaceCardViewController *)self placeCardDelegate];
-      v7 = [(PlaceCardLibraryOperationsCoordinator *)self->_libraryOperationsCoordinator mapItem];
+      placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+      mapItem = [(PlaceCardLibraryOperationsCoordinator *)self->_libraryOperationsCoordinator mapItem];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_100B99384;
       v10[3] = &unk_10165EF00;
       v10[4] = self;
-      [v6 placeCardViewController:self editNameOfMapItem:v7 saveHandler:v10 cancelHandler:0];
+      [placeCardDelegate placeCardViewController:self editNameOfMapItem:mapItem saveHandler:v10 cancelHandler:0];
     }
 
     else
@@ -4196,30 +4196,30 @@ LABEL_21:
   }
 }
 
-- (void)_carryOverTransitDisplayInformationFromCurrentItemToNewFetchedResult:(id)a3
+- (void)_carryOverTransitDisplayInformationFromCurrentItemToNewFetchedResult:(id)result
 {
-  v14 = a3;
-  v4 = [(PlaceCardViewController *)self placeCardItem];
-  v5 = [v4 mapItem];
-  v6 = [v5 _geoMapItem];
+  resultCopy = result;
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  mapItem = [placeCardItem mapItem];
+  _geoMapItem = [mapItem _geoMapItem];
 
-  v7 = [v14 mapItem];
-  v8 = [v7 _geoMapItem];
+  mapItem2 = [resultCopy mapItem];
+  _geoMapItem2 = [mapItem2 _geoMapItem];
 
-  v9 = [v6 _identifier];
-  v10 = [v8 _identifier];
-  v11 = [v9 isEqual:v10];
+  _identifier = [_geoMapItem _identifier];
+  _identifier2 = [_geoMapItem2 _identifier];
+  v11 = [_identifier isEqual:_identifier2];
 
   if (v11)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v6 _labelMarker];
+      _labelMarker = [_geoMapItem _labelMarker];
       if (objc_opt_respondsToSelector())
       {
-        v13 = [v8 _mapItemBySettingIsTransitDisplayFeature:{objc_msgSend(v12, "isTransit")}];
-        [v14 updateWithGEOMapItem:v13];
+        v13 = [_geoMapItem2 _mapItemBySettingIsTransitDisplayFeature:{objc_msgSend(_labelMarker, "isTransit")}];
+        [resultCopy updateWithGEOMapItem:v13];
       }
     }
   }
@@ -4231,41 +4231,41 @@ LABEL_21:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v100 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "PlaceCardViewController: updateContent %@", buf, 0xCu);
   }
 
   self->_contentNeedsUpdating = 0;
   [(PlaceCardViewController *)self initPlaceCard];
-  v4 = [(InfoCardViewController *)self contentViewController];
-  [v4 scrollToTopAnimated:0];
+  contentViewController = [(InfoCardViewController *)self contentViewController];
+  [contentViewController scrollToTopAnimated:0];
 
-  v5 = [(MUPlaceViewController *)self->_placeViewController view];
-  [v5 setHidden:0];
+  view = [(MUPlaceViewController *)self->_placeViewController view];
+  [view setHidden:0];
 
   v6 = sub_1007986AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(MUPlaceViewController *)self->_placeViewController view];
+    view2 = [(MUPlaceViewController *)self->_placeViewController view];
     *buf = 138412546;
-    v100 = self;
+    selfCopy2 = self;
     v101 = 2112;
-    v102 = v7;
+    v102 = view2;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "PlaceCardViewController: %@ updateContent setting _placeViewController's view visible %@", buf, 0x16u);
   }
 
-  v8 = [(PlaceCardViewController *)self placeCardItem];
-  v9 = [v8 searchResult];
-  v10 = [v9 relatedSearchSuggestion];
+  placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+  searchResult = [placeCardItem searchResult];
+  relatedSearchSuggestion = [searchResult relatedSearchSuggestion];
 
-  if (v10)
+  if (relatedSearchSuggestion)
   {
     [(PlaceCardViewController *)self _initSuggestion];
     [(PlaceCardViewController *)self _updateSuggestionVisibility];
   }
 
-  v11 = [(PlaceCardItem *)self->_placeCardItem mapItem];
-  if ([v11 _hasMUID] && objc_msgSend(v11, "_muid"))
+  mapItem = [(PlaceCardItem *)self->_placeCardItem mapItem];
+  if ([mapItem _hasMUID] && objc_msgSend(mapItem, "_muid"))
   {
     v95 = 1;
   }
@@ -4281,11 +4281,11 @@ LABEL_21:
   }
 
   v12 = +[UIApplication sharedApplication];
-  v13 = [v12 delegate];
+  delegate = [v12 delegate];
 
-  v96 = v13;
-  v97 = v11;
-  if ([v13 isCoreRoutineEnabled] && (-[PlaceCardViewController placeCardItem](self, "placeCardItem"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isHomeWorkSchoolAddress"), v14, v15))
+  v96 = delegate;
+  v97 = mapItem;
+  if ([delegate isCoreRoutineEnabled] && (-[PlaceCardViewController placeCardItem](self, "placeCardItem"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isHomeWorkSchoolAddress"), v14, v15))
   {
     excludedContent = self->_excludedContent;
     v17 = ~(excludedContent << 9) & 0x80000;
@@ -4299,12 +4299,12 @@ LABEL_21:
 
   else
   {
-    v19 = [(PlaceCardViewController *)self placeCardItem];
-    v20 = [v19 isDroppedPin];
+    placeCardItem2 = [(PlaceCardViewController *)self placeCardItem];
+    isDroppedPin = [placeCardItem2 isDroppedPin];
 
     excludedContent = self->_excludedContent;
     v18 = ~(excludedContent << 15) & 0x40000;
-    if (!v20)
+    if (!isDroppedPin)
     {
       v18 = 0;
     }
@@ -4322,8 +4322,8 @@ LABEL_21:
 
   v22 = (excludedContent << 22) & 0x400000000;
   v23 = ~(excludedContent << 7) & 0x100;
-  v24 = [(PlaceCardViewController *)self placeCardItem];
-  if ([v24 canAddToCollections])
+  placeCardItem3 = [(PlaceCardViewController *)self placeCardItem];
+  if ([placeCardItem3 canAddToCollections])
   {
     v25 = 0x8000;
   }
@@ -4333,8 +4333,8 @@ LABEL_21:
     v25 = 0;
   }
 
-  v26 = [(PlaceCardViewController *)self placeCardItem];
-  if ([v26 canAddToLibrary])
+  placeCardItem4 = [(PlaceCardViewController *)self placeCardItem];
+  if ([placeCardItem4 canAddToLibrary])
   {
     v27 = 0x10000000000;
   }
@@ -4344,8 +4344,8 @@ LABEL_21:
     v27 = 0;
   }
 
-  v28 = [(PlaceCardViewController *)self placeCardItem];
-  if ([v28 canAddNote])
+  placeCardItem5 = [(PlaceCardViewController *)self placeCardItem];
+  if ([placeCardItem5 canAddNote])
   {
     v29 = 0x20000000000;
   }
@@ -4358,9 +4358,9 @@ LABEL_21:
   v30 = self->_excludedContent;
   v31 = v94 | v22 | v21 | v23 | v25 | v27 | v29 | (v30 << 18) & 0x4000000 | (v30 << 20) & 0x80000000 | (v30 << 23) & 0x1000000000 | (v30 << 19) & 0x2000000 | ~(v30 << 10) & 0x20000 | ~(v30 << 20) & 0x400000 | ~(v30 << 16) & 0x100000;
   v32 = +[GEOPlatform sharedPlatform];
-  v33 = [v32 isInternalInstall];
+  isInternalInstall = [v32 isInternalInstall];
 
-  if (v33)
+  if (isInternalInstall)
   {
     v34 = +[NSUserDefaults standardUserDefaults];
     v35 = [v34 BOOLForKey:@"__internal__PlaceCardLocationSimulation"];
@@ -4394,10 +4394,10 @@ LABEL_21:
 
   v42 = v38 | v41;
 
-  v43 = [(PlaceCardViewController *)self placeCardItem];
-  v44 = [v43 canAddToShortcuts];
+  placeCardItem6 = [(PlaceCardViewController *)self placeCardItem];
+  canAddToShortcuts = [placeCardItem6 canAddToShortcuts];
   v45 = 0x10000000;
-  if (!v44)
+  if (!canAddToShortcuts)
   {
     v45 = 0;
   }
@@ -4421,20 +4421,20 @@ LABEL_21:
   v51 = v50 | 0x40800000;
   if (MapsFeature_IsEnabled_MapsWally())
   {
-    v52 = [(PlaceCardViewController *)self placeCardItem];
-    v53 = [v52 canShowOpenFindMyAction];
+    placeCardItem7 = [(PlaceCardViewController *)self placeCardItem];
+    canShowOpenFindMyAction = [placeCardItem7 canShowOpenFindMyAction];
 
-    if (v53)
+    if (canShowOpenFindMyAction)
     {
       v51 = v50 | 0x2040800000;
     }
 
     else
     {
-      v54 = [(PlaceCardViewController *)self placeCardItem];
-      v55 = [v54 canShowRequestLocation];
+      placeCardItem8 = [(PlaceCardViewController *)self placeCardItem];
+      canShowRequestLocation = [placeCardItem8 canShowRequestLocation];
 
-      if (v55)
+      if (canShowRequestLocation)
       {
         v51 = v50 | 0x4040800000;
       }
@@ -4444,9 +4444,9 @@ LABEL_21:
   if (GEOConfigGetBOOL())
   {
     v56 = +[MapsOfflineUIHelper sharedHelper];
-    v57 = [v56 isUsingOfflineMaps];
+    isUsingOfflineMaps = [v56 isUsingOfflineMaps];
 
-    if ((v57 & 1) == 0)
+    if ((isUsingOfflineMaps & 1) == 0)
     {
       v51 |= 0x40000000000uLL;
     }
@@ -4460,8 +4460,8 @@ LABEL_21:
 
   if (([v97 _hasResolvablePartialInformation] & 1) == 0)
   {
-    v91 = [v97 _geoMapItem];
-    if ([v91 hasExpiredComponents] & 1) != 0 || -[PlaceCardItem isIntermediateMapItem](self->_placeCardItem, "isIntermediateMapItem") || (objc_msgSend(v97, "_maps_isIncompleteVenueSearchResult"))
+    _geoMapItem = [v97 _geoMapItem];
+    if ([_geoMapItem hasExpiredComponents] & 1) != 0 || -[PlaceCardItem isIntermediateMapItem](self->_placeCardItem, "isIntermediateMapItem") || (objc_msgSend(v97, "_maps_isIncompleteVenueSearchResult"))
     {
 
       goto LABEL_74;
@@ -4469,8 +4469,8 @@ LABEL_21:
 
     if ([v97 _maps_isVenueOrBuilding])
     {
-      v92 = [v97 _browseCategories];
-      if (![v92 count])
+      _browseCategories = [v97 _browseCategories];
+      if (![_browseCategories count])
       {
         originalContent = self->_originalContent;
 
@@ -4480,8 +4480,8 @@ LABEL_21:
         }
 
 LABEL_58:
-        v58 = [(MUPlaceViewController *)self->_placeViewController analyticsController];
-        [v58 disableDeferLoggingUntilRefinementWithShouldInvokeReveal:0];
+        analyticsController = [(MUPlaceViewController *)self->_placeViewController analyticsController];
+        [analyticsController disableDeferLoggingUntilRefinementWithShouldInvokeReveal:0];
         v59 = 0;
         goto LABEL_59;
       }
@@ -4493,15 +4493,15 @@ LABEL_58:
 LABEL_74:
   v59 = 1;
   [(PlaceCardItem *)self->_placeCardItem setIsIntermediateMapItem:1];
-  v58 = [(MUPlaceViewController *)self->_placeViewController analyticsController];
-  [v58 setDisableDeferLoggingUntilRefinement];
+  analyticsController = [(MUPlaceViewController *)self->_placeViewController analyticsController];
+  [analyticsController setDisableDeferLoggingUntilRefinement];
 LABEL_59:
 
   [(InfoCardTipKitController *)self->_tipKitController setNeedsRefinement:v59];
-  v60 = [(PlaceCardItem *)self->_placeCardItem placeItem];
-  [(MUPlaceViewController *)self->_placeViewController setPlaceItem:v60 updateOriginalContact:!self->_originalContent];
-  v61 = [v60 name];
-  [(InfoCardViewController *)self setHeaderTitle:v61];
+  placeItem = [(PlaceCardItem *)self->_placeCardItem placeItem];
+  [(MUPlaceViewController *)self->_placeViewController setPlaceItem:placeItem updateOriginalContact:!self->_originalContent];
+  name = [placeItem name];
+  [(InfoCardViewController *)self setHeaderTitle:name];
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
     if ([(PlaceCardItem *)self->_placeCardItem isCurrentLocation])
@@ -4541,17 +4541,17 @@ LABEL_59:
   self->_collectionMembershipProvider = v68;
 
   [(PlaceCardCollectionMembershipProvider *)self->_collectionMembershipProvider setDelegate:self];
-  v70 = [(PlaceCardViewController *)self placeCardItem];
-  v71 = [v70 mapItem];
-  [(PlaceCardCollectionMembershipProvider *)self->_collectionMembershipProvider setMapItem:v71];
+  placeCardItem9 = [(PlaceCardViewController *)self placeCardItem];
+  mapItem2 = [placeCardItem9 mapItem];
+  [(PlaceCardCollectionMembershipProvider *)self->_collectionMembershipProvider setMapItem:mapItem2];
 
   v72 = +[CuratedCollectionSyncManager sharedManager];
   [v72 addObserver:self];
 
   [(PlaceCardViewController *)self _updateCollectionsAnimated:0];
   v73 = +[UserProfileReportHistoryManager sharedInstance];
-  v74 = [v73 observers];
-  [v74 registerObserver:self];
+  observers = [v73 observers];
+  [observers registerObserver:self];
 
   [(PlaceCardViewController *)self _updateRAPInReviewStatus];
   v75 = +[MUPlaceEnrichmentAPIController sharedPlaceEnrichmentAPIController];
@@ -4569,29 +4569,29 @@ LABEL_59:
   if (v59)
   {
     v78 = +[UIApplication sharedMapsDelegate];
-    v79 = [v78 poiSearchManager];
+    poiSearchManager = [v78 poiSearchManager];
 
-    v80 = [(PlaceCardViewController *)self placeCardDelegate];
-    v81 = [v80 newTraits];
+    placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+    newTraits = [placeCardDelegate newTraits];
 
-    [v81 useOnlineToOfflineFailoverRequestModeIfAllowed];
-    v82 = [v97 _identifier];
+    [newTraits useOnlineToOfflineFailoverRequestModeIfAllowed];
+    _identifier = [v97 _identifier];
     v98[0] = _NSConcreteStackBlock;
     v98[1] = 3221225472;
     v98[2] = sub_100B9A04C;
     v98[3] = &unk_10163BBC8;
     v98[4] = self;
-    [v79 searchForIdentifier:v82 allowExpired:0 traits:v81 completionHandler:v98];
+    [poiSearchManager searchForIdentifier:_identifier allowExpired:0 traits:newTraits completionHandler:v98];
   }
 
-  v83 = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
-  [v83 setNeedsUserActivityUpdate];
+  _maps_mapsSceneDelegate = [(PlaceCardViewController *)self _maps_mapsSceneDelegate];
+  [_maps_mapsSceneDelegate setNeedsUserActivityUpdate];
 
   self->_shouldFetchDraggableViews = !self->_contentNeedsUpdating;
-  v84 = [(PlaceCardViewController *)self mapItem];
-  v85 = [v84 _businessAssets];
-  v86 = [v85 coverPhoto];
-  self->_hasCoverPhoto = v86 != 0;
+  mapItem3 = [(PlaceCardViewController *)self mapItem];
+  _businessAssets = [mapItem3 _businessAssets];
+  coverPhoto = [_businessAssets coverPhoto];
+  self->_hasCoverPhoto = coverPhoto != 0;
 
   [(PlaceCardViewController *)self _updateCallToActionStateIfNeeded];
   [(PlaceCardViewController *)self _updateVerifiedBusinessHeaderIfNeeded];
@@ -4629,14 +4629,14 @@ LABEL_59:
 {
   [(MUPlaceViewController *)self->_placeViewController resetAnalyticsState];
   [(MUPlaceViewController *)self->_placeViewController setForceCaptureRevealEventOnNextBecomeActive:1];
-  v3 = [(PlaceCardViewController *)self placeCardDelegate];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v6 = [(PlaceCardViewController *)self placeCardDelegate];
-    v5 = [(PlaceCardViewController *)self placeCardItem];
-    [v6 placeCardViewController:self willReusePlaceCardItem:v5];
+    placeCardDelegate2 = [(PlaceCardViewController *)self placeCardDelegate];
+    placeCardItem = [(PlaceCardViewController *)self placeCardItem];
+    [placeCardDelegate2 placeCardViewController:self willReusePlaceCardItem:placeCardItem];
   }
 }
 
@@ -4646,7 +4646,7 @@ LABEL_59:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v16 = 138412290;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "PlaceCardViewController: resetState %@", &v16, 0xCu);
   }
 
@@ -4661,8 +4661,8 @@ LABEL_59:
   updatedCurrentLocation = self->_updatedCurrentLocation;
   self->_updatedCurrentLocation = 0;
 
-  v5 = [(MUPlaceViewController *)self->_placeViewController view];
-  [v5 setHidden:1];
+  view = [(MUPlaceViewController *)self->_placeViewController view];
+  [view setHidden:1];
 
   [(MUPlaceViewController *)self->_placeViewController resetAnalyticsState];
   self->_isAdditionalStop = 0;
@@ -4678,8 +4678,8 @@ LABEL_59:
   [v8 removeObserver:self];
 
   v9 = +[UserProfileReportHistoryManager sharedInstance];
-  v10 = [v9 observers];
-  [v10 unregisterObserver:self];
+  observers = [v9 observers];
+  [observers unregisterObserver:self];
 
   v11 = +[MUPlaceEnrichmentAPIController sharedPlaceEnrichmentAPIController];
   [v11 unregisterObserver:self];
@@ -4722,15 +4722,15 @@ LABEL_59:
   objc_destroyWeak(&location);
 }
 
-- (void)willResignCurrent:(BOOL)a3
+- (void)willResignCurrent:(BOOL)current
 {
-  v4 = [(PlaceCardViewController *)self placeCardDelegate];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PlaceCardViewController *)self placeCardDelegate];
-    [v6 placeCardViewControllerWillResignCurrent:self];
+    placeCardDelegate2 = [(PlaceCardViewController *)self placeCardDelegate];
+    [placeCardDelegate2 placeCardViewControllerWillResignCurrent:self];
   }
 }
 
@@ -4739,29 +4739,29 @@ LABEL_59:
   v19.receiver = self;
   v19.super_class = PlaceCardViewController;
   [(ContaineeViewController *)&v19 didBecomeCurrent];
-  v3 = [(PlaceCardViewController *)self placeCardDelegate];
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PlaceCardViewController *)self placeCardDelegate];
-    [v5 placeCardViewControllerWillBecomeCurrent:self];
+    placeCardDelegate2 = [(PlaceCardViewController *)self placeCardDelegate];
+    [placeCardDelegate2 placeCardViewControllerWillBecomeCurrent:self];
   }
 
   [(MUPlaceViewController *)self->_placeViewController becomeActive];
-  v6 = [(PlaceCardItem *)self->_placeCardItem searchResult];
-  v7 = [v6 autocompletePerson];
+  searchResult = [(PlaceCardItem *)self->_placeCardItem searchResult];
+  autocompletePerson = [searchResult autocompletePerson];
 
-  v8 = [v7 handle];
-  v9 = [v8 handle];
+  handle = [autocompletePerson handle];
+  v8Handle = [handle handle];
 
-  if (v9)
+  if (v8Handle)
   {
     v10 = [_TtC4Maps33SearchFindMyFriendshipCoordinator alloc];
-    v11 = [v7 handle];
-    v12 = [v11 handle];
-    v13 = [v12 handleIdentifier];
-    v14 = [(SearchFindMyFriendshipCoordinator *)v10 initWith:v13];
+    handle2 = [autocompletePerson handle];
+    v11Handle = [handle2 handle];
+    handleIdentifier = [v11Handle handleIdentifier];
+    v14 = [(SearchFindMyFriendshipCoordinator *)v10 initWith:handleIdentifier];
     friendshipCoordinator = self->_friendshipCoordinator;
     self->_friendshipCoordinator = v14;
 
@@ -4773,7 +4773,7 @@ LABEL_59:
       *buf = 138412546;
       v21 = placeCardItem;
       v22 = 2112;
-      v23 = v7;
+      v23 = autocompletePerson;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Started monitoring friendship stream for PlaceCardItem: %@, person: %@", buf, 0x16u);
     }
 
@@ -4784,30 +4784,30 @@ LABEL_59:
   [v18 addAttachmentProvider:self];
 }
 
-- (void)willChangeLayout:(unint64_t)a3
+- (void)willChangeLayout:(unint64_t)layout
 {
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v6 = [v5 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
   v17.receiver = self;
   v17.super_class = PlaceCardViewController;
-  [(InfoCardViewController *)&v17 willChangeLayout:a3];
-  v7 = [(ContaineeViewController *)self cardPresentationController];
-  v8 = [v7 containerStyle];
+  [(InfoCardViewController *)&v17 willChangeLayout:layout];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController2 containerStyle];
 
-  v10 = v8 - 1 < 2 || (v8 & 0xFFFFFFFFFFFFFFFELL) == 4;
-  if (a3 - 3 <= 1 && v10 && v6)
+  v10 = containerStyle - 1 < 2 || (containerStyle & 0xFFFFFFFFFFFFFFFELL) == 4;
+  if (layout - 3 <= 1 && v10 && containeeLayout)
   {
     [(PlaceCardViewController *)self insertInHistory];
   }
 
-  v11 = [(ContaineeViewController *)self cardPresentationController];
-  v12 = [v11 containeeLayout];
+  cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout2 = [cardPresentationController3 containeeLayout];
 
   previousLayout = self->_previousLayout;
   if (previousLayout)
   {
-    v14 = previousLayout >= v12;
+    v14 = previousLayout >= containeeLayout2;
   }
 
   else
@@ -4817,24 +4817,24 @@ LABEL_59:
 
   if (!v14)
   {
-    v15 = [(PlaceCardViewController *)self analyticsDelegate];
-    [v15 infoCardAnalyticsDidSelectAction:1 eventValue:0 feedbackDelegateSelector:0 classification:0];
+    analyticsDelegate = [(PlaceCardViewController *)self analyticsDelegate];
+    [analyticsDelegate infoCardAnalyticsDidSelectAction:1 eventValue:0 feedbackDelegateSelector:0 classification:0];
 
     previousLayout = self->_previousLayout;
   }
 
-  if (v12 && previousLayout > v12)
+  if (containeeLayout2 && previousLayout > containeeLayout2)
   {
-    v16 = [(PlaceCardViewController *)self analyticsDelegate];
-    [v16 infoCardAnalyticsDidSelectAction:2 eventValue:0 feedbackDelegateSelector:0 classification:0];
+    analyticsDelegate2 = [(PlaceCardViewController *)self analyticsDelegate];
+    [analyticsDelegate2 infoCardAnalyticsDidSelectAction:2 eventValue:0 feedbackDelegateSelector:0 classification:0];
   }
 
-  self->_previousLayout = v12;
+  self->_previousLayout = containeeLayout2;
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 == 2 && [(PlaceCardViewController *)self isPresentedInSearchAlongTheRoute])
+  if (layout == 2 && [(PlaceCardViewController *)self isPresentedInSearchAlongTheRoute])
   {
 
     [(PlaceCardViewController *)self _mediumLayoutHeightInSAR];
@@ -4844,7 +4844,7 @@ LABEL_59:
   {
     v6.receiver = self;
     v6.super_class = PlaceCardViewController;
-    [(InfoCardViewController *)&v6 heightForLayout:a3];
+    [(InfoCardViewController *)&v6 heightForLayout:layout];
   }
 
   return result;
@@ -4852,22 +4852,22 @@ LABEL_59:
 
 - (double)_mediumLayoutHeightInSAR
 {
-  v2 = [(PlaceCardViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 screen];
+  view = [(PlaceCardViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
 
-  if (!v5)
+  if (!screen)
   {
-    v5 = +[UIScreen mainScreen];
+    screen = +[UIScreen mainScreen];
   }
 
-  [v5 bounds];
+  [screen bounds];
   v7 = v6;
-  [v5 bounds];
+  [screen bounds];
   if (v7 == 320.0)
   {
-    [v5 bounds];
+    [screen bounds];
     UIRoundToScreenScale();
     v10 = v9;
   }
@@ -4880,25 +4880,25 @@ LABEL_59:
   return v10;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = a3;
-  v5 = [(PlaceCardViewController *)self placeCardDelegate];
-  [v5 placeCardViewController:self requestCopyLinkToClipboard:v4];
+  copyCopy = copy;
+  placeCardDelegate = [(PlaceCardViewController *)self placeCardDelegate];
+  [placeCardDelegate placeCardViewController:self requestCopyLinkToClipboard:copyCopy];
 }
 
 - (void)_updateVerifiedBusinessHeaderIfNeeded
 {
   if (sub_10000FA08(self) != 5)
   {
-    v3 = [(ContaineeViewController *)self cardPresentationController];
-    v4 = [v3 containerStyle];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    containerStyle = [cardPresentationController containerStyle];
 
-    v5 = [(ContaineeViewController *)self cardPresentationController];
-    v6 = v5;
-    if (v4 == 4)
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    v6 = cardPresentationController2;
+    if (containerStyle == 4)
     {
-      [v5 transitionProgressFromLayout:1 toLayout:3];
+      [cardPresentationController2 transitionProgressFromLayout:1 toLayout:3];
       v8 = v7;
 
       if (v8 < 0.5)
@@ -4914,13 +4914,13 @@ LABEL_59:
 
     else
     {
-      [v5 transitionProgressFromLayout:2 toLayout:3];
+      [cardPresentationController2 transitionProgressFromLayout:2 toLayout:3];
       v9 = v10;
     }
 
     v11 = v9 > 0.0 && self->_hasCoverPhoto;
-    v12 = [(ContaineeViewController *)self cardPresentationController];
-    [v12 setGrabberBlurEnabled:v11];
+    cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController3 setGrabberBlurEnabled:v11];
 
     placeViewController = self->_placeViewController;
 
@@ -4928,23 +4928,23 @@ LABEL_59:
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = PlaceCardViewController;
   [(PlaceCardViewController *)&v5 didMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     self->_isBeingRemovedFromParentViewController = 0;
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = PlaceCardViewController;
   [(PlaceCardViewController *)&v5 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     self->_isBeingRemovedFromParentViewController = 1;
   }
@@ -4957,17 +4957,17 @@ LABEL_59:
   [(PlaceCardViewController *)&v6 viewWillLayoutSubviews];
   [(PlaceCardViewController *)self headerSecondaryNameLabelPadding];
   v4 = v3;
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 setHeaderTransitionHeight:v4];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setHeaderTransitionHeight:v4];
 
   [(PlaceCardViewController *)self _updateVerifiedBusinessHeaderIfNeeded];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PlaceCardViewController;
-  [(InfoCardViewController *)&v4 viewDidDisappear:a3];
+  [(InfoCardViewController *)&v4 viewDidDisappear:disappear];
   if (self->_wantsInsertOnDismiss && (([(PlaceCardViewController *)self isMovingFromParentViewController]& 1) != 0 || sub_10000FA08(self) == 5))
   {
     [(PlaceCardViewController *)self insertInHistory];
@@ -4979,36 +4979,36 @@ LABEL_59:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v20.receiver = self;
   v20.super_class = PlaceCardViewController;
-  [(ContaineeViewController *)&v20 viewWillAppear:a3];
+  [(ContaineeViewController *)&v20 viewWillAppear:appear];
   if (self->_placeViewController)
   {
     v4 = [DrivePreferences alloc];
     v5 = +[NSUserDefaults standardUserDefaults];
     v6 = [(DrivePreferences *)v4 initWithDefaults:v5];
-    v7 = [(DrivePreferences *)v6 automobileOptions];
-    [(MUPlaceViewController *)self->_placeViewController setAutomobileOptions:v7];
+    automobileOptions = [(DrivePreferences *)v6 automobileOptions];
+    [(MUPlaceViewController *)self->_placeViewController setAutomobileOptions:automobileOptions];
 
     v8 = [WalkPreferences alloc];
     v9 = +[NSUserDefaults standardUserDefaults];
     v10 = [(WalkPreferences *)v8 initWithDefaults:v9];
-    v11 = [(WalkPreferences *)v10 walkingOptions];
-    [(MUPlaceViewController *)self->_placeViewController setWalkingOptions:v11];
+    walkingOptions = [(WalkPreferences *)v10 walkingOptions];
+    [(MUPlaceViewController *)self->_placeViewController setWalkingOptions:walkingOptions];
 
     v12 = [TransitPreferences alloc];
     v13 = +[NSUserDefaults standardUserDefaults];
     v14 = [(WatchSyncedPreferences *)v12 initWithDefaults:v13];
-    v15 = [(TransitPreferences *)v14 transitOptions];
-    [(MUPlaceViewController *)self->_placeViewController setTransitOptions:v15];
+    transitOptions = [(TransitPreferences *)v14 transitOptions];
+    [(MUPlaceViewController *)self->_placeViewController setTransitOptions:transitOptions];
 
     v16 = [CyclePreferences alloc];
     v17 = +[NSUserDefaults standardUserDefaults];
     v18 = [(CyclePreferences *)v16 initWithDefaults:v17];
-    v19 = [(CyclePreferences *)v18 cyclingOptions];
-    [(MUPlaceViewController *)self->_placeViewController setCyclingOptions:v19];
+    cyclingOptions = [(CyclePreferences *)v18 cyclingOptions];
+    [(MUPlaceViewController *)self->_placeViewController setCyclingOptions:cyclingOptions];
 
     [(PlaceCardViewController *)self _updateVerifiedBusinessHeaderIfNeeded];
   }
@@ -5044,7 +5044,7 @@ LABEL_59:
   [(InfoCardViewController *)&v6 dealloc];
 }
 
-- (PlaceCardViewController)initWithVisualEffectDisabled:(BOOL)a3
+- (PlaceCardViewController)initWithVisualEffectDisabled:(BOOL)disabled
 {
   v11.receiver = self;
   v11.super_class = PlaceCardViewController;
@@ -5052,25 +5052,25 @@ LABEL_59:
   v4 = v3;
   if (v3)
   {
-    v5 = [(ContaineeViewController *)v3 cardPresentationController];
-    [v5 setAlwaysUseDefaultContaineeLayout:1];
+    cardPresentationController = [(ContaineeViewController *)v3 cardPresentationController];
+    [cardPresentationController setAlwaysUseDefaultContaineeLayout:1];
   }
 
-  v6 = [(PlaceCardViewController *)v4 traitCollection];
-  if ([v6 userInterfaceIdiom] == 1)
+  traitCollection = [(PlaceCardViewController *)v4 traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
 
 LABEL_6:
-    v9 = [(ContaineeViewController *)v4 cardPresentationController];
-    [v9 setDefaultContaineeLayout:3];
+    cardPresentationController2 = [(ContaineeViewController *)v4 cardPresentationController];
+    [cardPresentationController2 setDefaultContaineeLayout:3];
 
     return v4;
   }
 
-  v7 = [(PlaceCardViewController *)v4 traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  traitCollection2 = [(PlaceCardViewController *)v4 traitCollection];
+  userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
 
-  if (v8 == 6)
+  if (userInterfaceIdiom == 6)
   {
     goto LABEL_6;
   }

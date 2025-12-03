@@ -1,32 +1,32 @@
 @interface CLBApplicationSceneView
-- (CGSize)_flipDimensionsForSize:(CGSize)a3;
-- (CLBApplicationSceneView)initWithSceneInterfaceOrientation:(int64_t)a3 includeBackgroundView:(BOOL)a4;
+- (CGSize)_flipDimensionsForSize:(CGSize)size;
+- (CLBApplicationSceneView)initWithSceneInterfaceOrientation:(int64_t)orientation includeBackgroundView:(BOOL)view;
 - (UIEdgeInsets)realSafeAreaInsets;
-- (double)_angleForInterfaceOrientation:(int64_t)a3;
-- (void)_trackScene:(id)a3;
+- (double)_angleForInterfaceOrientation:(int64_t)orientation;
+- (void)_trackScene:(id)scene;
 - (void)_updateHostView;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setRealSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)setScene:(id)a3;
-- (void)setSceneInterfaceOrientation:(int64_t)a3;
-- (void)setShouldPresentWithinSafeArea:(BOOL)a3;
+- (void)setRealSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)setScene:(id)scene;
+- (void)setSceneInterfaceOrientation:(int64_t)orientation;
+- (void)setShouldPresentWithinSafeArea:(BOOL)area;
 - (void)updateSceneUI;
 @end
 
 @implementation CLBApplicationSceneView
 
-- (CLBApplicationSceneView)initWithSceneInterfaceOrientation:(int64_t)a3 includeBackgroundView:(BOOL)a4
+- (CLBApplicationSceneView)initWithSceneInterfaceOrientation:(int64_t)orientation includeBackgroundView:(BOOL)view
 {
-  v4 = a4;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = CLBApplicationSceneView;
   v6 = [(CLBApplicationSceneView *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    v6->_includeBackgroundView = v4;
-    if (v4)
+    v6->_includeBackgroundView = viewCopy;
+    if (viewCopy)
     {
       v8 = objc_opt_new();
       [(CLBApplicationSceneView *)v7 addSubview:v8];
@@ -40,7 +40,7 @@
     requester = v7->_requester;
     v7->_requester = v10;
 
-    v7->_sceneInterfaceOrientation = a3;
+    v7->_sceneInterfaceOrientation = orientation;
   }
 
   return v7;
@@ -54,41 +54,41 @@
   [(CLBApplicationSceneView *)&v3 dealloc];
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
-  if (self->_scene != a3)
+  if (self->_scene != scene)
   {
     [(CLBApplicationSceneView *)self _trackScene:?];
   }
 }
 
-- (void)setRealSafeAreaInsets:(UIEdgeInsets)a3
+- (void)setRealSafeAreaInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_realSafeAreaInsets.top, v3), vceqq_f64(*&self->_realSafeAreaInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_realSafeAreaInsets = a3;
+    self->_realSafeAreaInsets = insets;
     [(CLBApplicationSceneView *)self setNeedsLayout];
   }
 }
 
-- (void)setShouldPresentWithinSafeArea:(BOOL)a3
+- (void)setShouldPresentWithinSafeArea:(BOOL)area
 {
-  if (self->_shouldPresentWithinSafeArea != a3)
+  if (self->_shouldPresentWithinSafeArea != area)
   {
-    self->_shouldPresentWithinSafeArea = a3;
+    self->_shouldPresentWithinSafeArea = area;
     [(CLBApplicationSceneView *)self setNeedsLayout];
   }
 }
 
-- (void)setSceneInterfaceOrientation:(int64_t)a3
+- (void)setSceneInterfaceOrientation:(int64_t)orientation
 {
-  if (self->_sceneInterfaceOrientation != a3)
+  if (self->_sceneInterfaceOrientation != orientation)
   {
-    self->_sceneInterfaceOrientation = a3;
+    self->_sceneInterfaceOrientation = orientation;
     [(CLBApplicationSceneView *)self setNeedsLayout];
   }
 }
@@ -119,25 +119,25 @@
     v10 = v10 - (v12 + v14);
   }
 
-  v15 = [(CLBApplicationSceneView *)self scene];
-  v16 = [v15 settings];
-  [v16 frame];
+  scene = [(CLBApplicationSceneView *)self scene];
+  settings = [scene settings];
+  [settings frame];
   v18 = v17;
   v20 = v19;
 
-  v21 = [(CLBApplicationSceneView *)self sceneInterfaceOrientation];
-  if (v21)
+  sceneInterfaceOrientation = [(CLBApplicationSceneView *)self sceneInterfaceOrientation];
+  if (sceneInterfaceOrientation)
   {
-    v22 = [(CLBApplicationSceneView *)self sceneInterfaceOrientation];
+    sceneInterfaceOrientation2 = [(CLBApplicationSceneView *)self sceneInterfaceOrientation];
   }
 
   else
   {
-    v23 = [(CLBApplicationSceneView *)self window];
-    v22 = [v23 interfaceOrientation];
+    window = [(CLBApplicationSceneView *)self window];
+    sceneInterfaceOrientation2 = [window interfaceOrientation];
   }
 
-  if ((v22 - 3) <= 1)
+  if ((sceneInterfaceOrientation2 - 3) <= 1)
   {
     [(CLBApplicationSceneView *)self _flipDimensionsForSize:v18, v20];
     v18 = v24;
@@ -146,11 +146,11 @@
 
   v26 = v10;
   v27 = v8;
-  if (v21)
+  if (sceneInterfaceOrientation)
   {
     v28 = [(CLBApplicationSceneView *)self sceneInterfaceOrientation]- 3 < 2;
-    v29 = [(CLBApplicationSceneView *)self window];
-    v30 = [v29 interfaceOrientation] - 3 < 2;
+    window2 = [(CLBApplicationSceneView *)self window];
+    v30 = [window2 interfaceOrientation] - 3 < 2;
 
     v26 = v10;
     v27 = v8;
@@ -176,7 +176,7 @@
   v51.size.height = v10;
   [(UIView *)self->_sceneHostContainerView setCenter:v34, CGRectGetMidY(v51)];
   v35 = fmin(v27 / v18, v26 / v20);
-  if (v21)
+  if (sceneInterfaceOrientation)
   {
     [(CLBApplicationSceneView *)self _angleForInterfaceOrientation:[(CLBApplicationSceneView *)self sceneInterfaceOrientation]];
     v37 = v36;
@@ -198,7 +198,7 @@
   v41 = +[CLFLog commonLog];
   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
   {
-    v42 = [(CLBApplicationSceneView *)self scene];
+    scene2 = [(CLBApplicationSceneView *)self scene];
     [(UIView *)self->_sceneHostContainerView bounds];
     v43 = NSStringFromCGRect(v52);
     v44 = self->_sceneHostContainerView;
@@ -214,7 +214,7 @@
 
     v45 = NSStringFromCGAffineTransform(&t1);
     LODWORD(t1.a) = 138412802;
-    *(&t1.a + 4) = v42;
+    *(&t1.a + 4) = scene2;
     WORD2(t1.b) = 2112;
     *(&t1.b + 6) = v43;
     HIWORD(t1.c) = 2112;
@@ -223,30 +223,30 @@
   }
 }
 
-- (double)_angleForInterfaceOrientation:(int64_t)a3
+- (double)_angleForInterfaceOrientation:(int64_t)orientation
 {
   result = 0.0;
-  if ((a3 - 2) <= 2)
+  if ((orientation - 2) <= 2)
   {
-    return dbl_1002966F0[a3 - 2];
+    return dbl_1002966F0[orientation - 2];
   }
 
   return result;
 }
 
-- (CGSize)_flipDimensionsForSize:(CGSize)a3
+- (CGSize)_flipDimensionsForSize:(CGSize)size
 {
-  width = a3.width;
-  height = a3.height;
+  width = size.width;
+  height = size.height;
   v5 = width;
   result.height = v5;
   result.width = height;
   return result;
 }
 
-- (void)_trackScene:(id)a3
+- (void)_trackScene:(id)scene
 {
-  v17 = a3;
+  sceneCopy = scene;
   [(UIScenePresenter *)self->_scenePresenter invalidate];
   scenePresenter = self->_scenePresenter;
   self->_scenePresenter = 0;
@@ -260,19 +260,19 @@
   scene = self->_scene;
   self->_scene = 0;
 
-  if (v17)
+  if (sceneCopy)
   {
-    objc_storeStrong(&self->_scene, a3);
-    v9 = [v17 uiPresentationManager];
-    v10 = [v9 createPresenterWithIdentifier:self->_requester];
+    objc_storeStrong(&self->_scene, scene);
+    uiPresentationManager = [sceneCopy uiPresentationManager];
+    v10 = [uiPresentationManager createPresenterWithIdentifier:self->_requester];
     v11 = self->_scenePresenter;
     self->_scenePresenter = v10;
 
     [(UIScenePresenter *)self->_scenePresenter modifyPresentationContext:&stru_1002FD168];
     [(UIScenePresenter *)self->_scenePresenter activate];
-    v12 = [(UIScenePresenter *)self->_scenePresenter presentationView];
+    presentationView = [(UIScenePresenter *)self->_scenePresenter presentationView];
     v13 = self->_sceneHostView;
-    self->_sceneHostView = v12;
+    self->_sceneHostView = presentationView;
 
     v14 = objc_opt_new();
     v15 = self->_sceneHostContainerView;
@@ -293,9 +293,9 @@
 
 - (void)_updateHostView
 {
-  v3 = [(FBScene *)self->_scene contentState];
+  contentState = [(FBScene *)self->_scene contentState];
   v4 = 0.0;
-  if (v3 == 2)
+  if (contentState == 2)
   {
     v4 = 1.0;
   }

@@ -1,8 +1,8 @@
 @interface FBSDisplayLayoutMonitorConfiguration
 + (id)configurationForDefaultMainDisplayMonitor;
-+ (id)configurationWithEndpoint:(id)a3;
++ (id)configurationWithEndpoint:(id)endpoint;
 - (FBSDisplayLayoutMonitorConfiguration)init;
-- (id)_initWithEndpoint:(id)a3;
+- (id)_initWithEndpoint:(id)endpoint;
 @end
 
 @implementation FBSDisplayLayoutMonitorConfiguration
@@ -29,7 +29,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSDisplayLayoutMonitor.m";
     v16 = 1024;
@@ -43,26 +43,26 @@
   _bs_set_crash_log_message();
 }
 
-- (id)_initWithEndpoint:(id)a3
+- (id)_initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v9.receiver = self;
   v9.super_class = FBSDisplayLayoutMonitorConfiguration;
   v6 = [(FBSDisplayLayoutMonitorConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpoint, a3);
+    objc_storeStrong(&v6->_endpoint, endpoint);
   }
 
   return v7;
 }
 
-+ (id)configurationWithEndpoint:(id)a3
++ (id)configurationWithEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   NSClassFromString(&cfstr_Bsserviceconne.isa);
-  if (!v4)
+  if (!endpointCopy)
   {
     [FBSDisplayLayoutMonitorConfiguration configurationWithEndpoint:a2];
   }
@@ -72,16 +72,16 @@
     [FBSDisplayLayoutMonitorConfiguration configurationWithEndpoint:a2];
   }
 
-  v5 = [v4 service];
+  service = [endpointCopy service];
   v6 = +[FBSDisplayLayoutMonitor serviceIdentifier];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [service isEqualToString:v6];
 
   if ((v7 & 1) == 0)
   {
-    [(FBSDisplayLayoutMonitorConfiguration *)v4 configurationWithEndpoint:a2];
+    [(FBSDisplayLayoutMonitorConfiguration *)endpointCopy configurationWithEndpoint:a2];
   }
 
-  v8 = [[FBSDisplayLayoutMonitorConfiguration alloc] _initWithEndpoint:v4];
+  v8 = [[FBSDisplayLayoutMonitorConfiguration alloc] _initWithEndpoint:endpointCopy];
 
   return v8;
 }

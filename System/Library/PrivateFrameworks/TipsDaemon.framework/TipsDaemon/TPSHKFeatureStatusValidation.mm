@@ -1,18 +1,18 @@
 @interface TPSHKFeatureStatusValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSHKFeatureStatusValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TPSTargetingValidation *)self value];
-  v6 = [v5 TPSSafeIntegerForKey:@"featureIdentifier"];
+  completionCopy = completion;
+  value = [(TPSTargetingValidation *)self value];
+  v6 = [value TPSSafeIntegerForKey:@"featureIdentifier"];
 
-  v7 = [(TPSTargetingValidation *)self value];
-  v8 = [v7 TPSSafeIntegerForKey:@"statusType"];
+  value2 = [(TPSTargetingValidation *)self value];
+  v8 = [value2 TPSSafeIntegerForKey:@"statusType"];
 
   v9 = [TPSHealthKitDefines identifierForFeature:v6];
   v10 = [TPSHealthKitDefines featureAvailabilityContextForStatusType:v8];
@@ -20,8 +20,8 @@
   v12 = 0x277D71000uLL;
   if (v9 && v10)
   {
-    v13 = +[TPSHealthKitDefines sharedHealthStore];
-    v14 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureIdentifier:v9 healthStore:v13 countryCodeSource:1];
+    targeting2 = +[TPSHealthKitDefines sharedHealthStore];
+    v14 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureIdentifier:v9 healthStore:targeting2 countryCodeSource:1];
     v33 = 0;
     v15 = [v14 featureStatusWithError:&v33];
     v16 = v33;
@@ -29,28 +29,28 @@
     if (v15)
     {
       v17 = [v15 objectForKeyedSubscript:v11];
-      v18 = [v17 areAllRequirementsSatisfied];
+      areAllRequirementsSatisfied = [v17 areAllRequirementsSatisfied];
 
-      v19 = [(TPSTargetingValidation *)self value];
-      v20 = [v19 TPSSafeBoolForKey:@"value"];
+      value3 = [(TPSTargetingValidation *)self value];
+      v20 = [value3 TPSSafeBoolForKey:@"value"];
 
-      v21 = v18 ^ v20 ^ 1u;
+      v21 = areAllRequirementsSatisfied ^ v20 ^ 1u;
     }
 
     else
     {
-      v22 = [MEMORY[0x277D71778] targeting];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      targeting = [MEMORY[0x277D71778] targeting];
+      if (os_log_type_enabled(targeting, OS_LOG_TYPE_ERROR))
       {
-        v30 = [(TPSTargetingValidation *)self name];
+        name = [(TPSTargetingValidation *)self name];
         v31 = [MEMORY[0x277CCABB0] numberWithInteger:v6];
         *buf = 138412802;
-        v35 = v30;
+        v35 = name;
         v36 = 2112;
         v37 = v31;
         v38 = 2112;
         v39[0] = v16;
-        _os_log_error_impl(&dword_232D6F000, v22, OS_LOG_TYPE_ERROR, "%@ - unable to query feature status (%@). Error: %@", buf, 0x20u);
+        _os_log_error_impl(&dword_232D6F000, targeting, OS_LOG_TYPE_ERROR, "%@ - unable to query feature status (%@). Error: %@", buf, 0x20u);
       }
 
       v21 = 0;
@@ -62,19 +62,19 @@
 
   else
   {
-    v13 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    targeting2 = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting2, OS_LOG_TYPE_ERROR))
     {
-      v27 = [(TPSTargetingValidation *)self name];
+      name2 = [(TPSTargetingValidation *)self name];
       v28 = [MEMORY[0x277CCABB0] numberWithInteger:v6];
       v29 = [MEMORY[0x277CCABB0] numberWithInteger:v8];
       *buf = 138412802;
-      v35 = v27;
+      v35 = name2;
       v36 = 2112;
       v37 = v28;
       v38 = 2112;
       v39[0] = v29;
-      _os_log_error_impl(&dword_232D6F000, v13, OS_LOG_TYPE_ERROR, "%@ - unrecognized feature (%@) or statusType (%@)", buf, 0x20u);
+      _os_log_error_impl(&dword_232D6F000, targeting2, OS_LOG_TYPE_ERROR, "%@ - unrecognized feature (%@) or statusType (%@)", buf, 0x20u);
 
       v12 = 0x277D71000;
     }
@@ -83,23 +83,23 @@
     v21 = 0;
   }
 
-  v23 = [*(v12 + 1912) targeting];
-  if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+  targeting3 = [*(v12 + 1912) targeting];
+  if (os_log_type_enabled(targeting3, OS_LOG_TYPE_DEBUG))
   {
-    v25 = [(TPSTargetingValidation *)self name];
-    v26 = [(TPSTargetingValidation *)self targetContext];
+    name3 = [(TPSTargetingValidation *)self name];
+    targetContext = [(TPSTargetingValidation *)self targetContext];
     *buf = 138413058;
-    v35 = v25;
+    v35 = name3;
     v36 = 2112;
-    v37 = v26;
+    v37 = targetContext;
     v38 = 1024;
     LODWORD(v39[0]) = v21;
     WORD2(v39[0]) = 2112;
     *(v39 + 6) = v16;
-    _os_log_debug_impl(&dword_232D6F000, v23, OS_LOG_TYPE_DEBUG, "%@ - targetContext: %@. Valid: %d. Error: %@", buf, 0x26u);
+    _os_log_debug_impl(&dword_232D6F000, targeting3, OS_LOG_TYPE_DEBUG, "%@ - targetContext: %@. Valid: %d. Error: %@", buf, 0x26u);
   }
 
-  v4[2](v4, v21, v16);
+  completionCopy[2](completionCopy, v21, v16);
   v24 = *MEMORY[0x277D85DE8];
 }
 

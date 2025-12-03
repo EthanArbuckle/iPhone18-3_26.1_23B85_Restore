@@ -4,18 +4,18 @@
 - (id)QRCodeGroupSpecifier;
 - (id)addOnGroupSpecifier;
 - (id)carrierItemGroupSpecifier;
-- (id)createAddOnGroupIfNeeded:(id)a3;
-- (id)createCarrierItemGroupIfNeeded:(id)a3;
-- (id)createCrossPlatformGroupIfNeeded:(id)a3;
-- (id)createPendingInstallGroupIfNeeded:(id)a3;
-- (id)createQRCodeGroupIfNeeded:(id)a3;
-- (id)createTransferablePlanGroupIfNeeded:(id)a3;
+- (id)createAddOnGroupIfNeeded:(id)needed;
+- (id)createCarrierItemGroupIfNeeded:(id)needed;
+- (id)createCrossPlatformGroupIfNeeded:(id)needed;
+- (id)createPendingInstallGroupIfNeeded:(id)needed;
+- (id)createQRCodeGroupIfNeeded:(id)needed;
+- (id)createTransferablePlanGroupIfNeeded:(id)needed;
 - (id)crossPlatformGroupSpecifier;
 - (id)pendingInstallGroupSpecifier;
 - (id)specifiers;
 - (id)transferablePlanGroupSpecifier;
 - (void)addCancelButton;
-- (void)cellularPlanChanged:(id)a3;
+- (void)cellularPlanChanged:(id)changed;
 - (void)viewDidLoad;
 @end
 
@@ -32,12 +32,12 @@
     cancelButton = v2->_cancelButton;
     v2->_cancelButton = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_cellularPlanChanged_ name:@"PSUICellularPlanChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_cellularPlanChanged_ name:@"PSUICellularPlanChanged" object:0];
 
     [(PSUIAddNewPlanController *)v2 setModalInPresentation:1];
     v6 = +[PSUICellularPlanManagerCache sharedInstance];
-    v7 = [v6 planItems];
+    planItems = [v6 planItems];
   }
 
   return v2;
@@ -51,7 +51,7 @@
   [(PSUIAddNewPlanController *)self addCancelButton];
 }
 
-- (void)cellularPlanChanged:(id)a3
+- (void)cellularPlanChanged:(id)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -63,20 +63,20 @@
 
 - (void)addCancelButton
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 sf_isiPad];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
 
-  v5 = [(PSUIAddNewPlanController *)self navigationItem];
+  navigationItem = [(PSUIAddNewPlanController *)self navigationItem];
   cancelButton = self->_cancelButton;
-  v7 = v5;
-  if (v4)
+  v7 = navigationItem;
+  if (sf_isiPad)
   {
-    [v5 setRightBarButtonItem:cancelButton animated:1];
+    [navigationItem setRightBarButtonItem:cancelButton animated:1];
   }
 
   else
   {
-    [v5 setLeftBarButtonItem:cancelButton animated:1];
+    [navigationItem setLeftBarButtonItem:cancelButton animated:1];
   }
 }
 
@@ -85,86 +85,86 @@
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([(PSUIAddNewPlanController *)self shouldShowPendingInstallPlan])
   {
-    v4 = [(PSUIAddNewPlanController *)self pendingInstallGroupSpecifier];
+    pendingInstallGroupSpecifier = [(PSUIAddNewPlanController *)self pendingInstallGroupSpecifier];
     pendingInstallGroupSpecifier = self->_pendingInstallGroupSpecifier;
-    self->_pendingInstallGroupSpecifier = v4;
+    self->_pendingInstallGroupSpecifier = pendingInstallGroupSpecifier;
 
     v6 = [(PSUIAddNewPlanController *)self createPendingInstallGroupIfNeeded:self->_pendingInstallGroupSpecifier];
     [(PSUIAddNewPlanController *)self setPendingInstallGroup:v6];
 
     [v3 addObject:self->_pendingInstallGroupSpecifier];
-    v7 = [(PSUIAddNewPlanController *)self pendingInstallGroup];
-    v8 = [v7 specifiers];
-    [v3 addObjectsFromArray:v8];
+    pendingInstallGroup = [(PSUIAddNewPlanController *)self pendingInstallGroup];
+    specifiers = [pendingInstallGroup specifiers];
+    [v3 addObjectsFromArray:specifiers];
   }
 
-  v9 = [(PSUIAddNewPlanController *)self transferablePlanGroupSpecifier];
+  transferablePlanGroupSpecifier = [(PSUIAddNewPlanController *)self transferablePlanGroupSpecifier];
   transferablePlanGroupSpecifier = self->_transferablePlanGroupSpecifier;
-  self->_transferablePlanGroupSpecifier = v9;
+  self->_transferablePlanGroupSpecifier = transferablePlanGroupSpecifier;
 
   v11 = [(PSUIAddNewPlanController *)self createTransferablePlanGroupIfNeeded:self->_transferablePlanGroupSpecifier];
   [(PSUIAddNewPlanController *)self setTransferablePlanGroup:v11];
 
   [v3 addObject:self->_transferablePlanGroupSpecifier];
-  v12 = [(PSUIAddNewPlanController *)self transferablePlanGroup];
-  v13 = [v12 specifiers];
-  [v3 addObjectsFromArray:v13];
+  transferablePlanGroup = [(PSUIAddNewPlanController *)self transferablePlanGroup];
+  specifiers2 = [transferablePlanGroup specifiers];
+  [v3 addObjectsFromArray:specifiers2];
 
-  v14 = [(PSUIAddNewPlanController *)self addOnGroupSpecifier];
+  addOnGroupSpecifier = [(PSUIAddNewPlanController *)self addOnGroupSpecifier];
   addOnGroupSpecifier = self->_addOnGroupSpecifier;
-  self->_addOnGroupSpecifier = v14;
+  self->_addOnGroupSpecifier = addOnGroupSpecifier;
 
   v16 = [(PSUIAddNewPlanController *)self createAddOnGroupIfNeeded:self->_addOnGroupSpecifier];
   [(PSUIAddNewPlanController *)self setAddOnPlanGroup:v16];
 
-  v17 = [(PSUIAddNewPlanController *)self addOnPlanGroup];
-  v18 = [v17 specifiers];
+  addOnPlanGroup = [(PSUIAddNewPlanController *)self addOnPlanGroup];
+  specifiers3 = [addOnPlanGroup specifiers];
 
-  if ([v18 count])
+  if ([specifiers3 count])
   {
     [v3 addObject:self->_addOnGroupSpecifier];
   }
 
-  [v3 ps_addSpecifiers:v18 toGroup:self->_addOnGroupSpecifier];
-  v19 = [(PSUIAddNewPlanController *)self carrierItemGroupSpecifier];
+  [v3 ps_addSpecifiers:specifiers3 toGroup:self->_addOnGroupSpecifier];
+  carrierItemGroupSpecifier = [(PSUIAddNewPlanController *)self carrierItemGroupSpecifier];
   carrierItemGroupSpecifier = self->_carrierItemGroupSpecifier;
-  self->_carrierItemGroupSpecifier = v19;
+  self->_carrierItemGroupSpecifier = carrierItemGroupSpecifier;
 
   v21 = [(PSUIAddNewPlanController *)self createCarrierItemGroupIfNeeded:self->_carrierItemGroupSpecifier];
   [(PSUIAddNewPlanController *)self setCarrierItemGroup:v21];
 
-  v22 = [(PSUIAddNewPlanController *)self carrierItemGroup];
-  v23 = [v22 specifiers];
+  carrierItemGroup = [(PSUIAddNewPlanController *)self carrierItemGroup];
+  specifiers4 = [carrierItemGroup specifiers];
 
-  if ([v23 count])
+  if ([specifiers4 count])
   {
     [v3 addObject:self->_carrierItemGroupSpecifier];
   }
 
-  [v3 ps_addSpecifiers:v23 toGroup:self->_carrierItemGroupSpecifier];
-  v24 = [(PSUIAddNewPlanController *)self QRCodeGroupSpecifier];
+  [v3 ps_addSpecifiers:specifiers4 toGroup:self->_carrierItemGroupSpecifier];
+  qRCodeGroupSpecifier = [(PSUIAddNewPlanController *)self QRCodeGroupSpecifier];
   QRCodeGroupSpecifier = self->_QRCodeGroupSpecifier;
-  self->_QRCodeGroupSpecifier = v24;
+  self->_QRCodeGroupSpecifier = qRCodeGroupSpecifier;
 
   v26 = [(PSUIAddNewPlanController *)self createQRCodeGroupIfNeeded:self->_QRCodeGroupSpecifier];
   [(PSUIAddNewPlanController *)self setQRCodeGroup:v26];
 
   [v3 addObject:self->_QRCodeGroupSpecifier];
-  v27 = [(PSUIAddNewPlanController *)self QRCodeGroup];
-  v28 = [v27 specifiers];
-  [v3 addObjectsFromArray:v28];
+  qRCodeGroup = [(PSUIAddNewPlanController *)self QRCodeGroup];
+  specifiers5 = [qRCodeGroup specifiers];
+  [v3 addObjectsFromArray:specifiers5];
 
-  v29 = [(PSUIAddNewPlanController *)self crossPlatformGroupSpecifier];
+  crossPlatformGroupSpecifier = [(PSUIAddNewPlanController *)self crossPlatformGroupSpecifier];
   crossPlatformGroupSpecifier = self->_crossPlatformGroupSpecifier;
-  self->_crossPlatformGroupSpecifier = v29;
+  self->_crossPlatformGroupSpecifier = crossPlatformGroupSpecifier;
 
   v31 = [(PSUIAddNewPlanController *)self createCrossPlatformGroupIfNeeded:self->_crossPlatformGroupSpecifier];
   [(PSUIAddNewPlanController *)self setCrossPlatformGroup:v31];
 
   [v3 addObject:self->_crossPlatformGroupSpecifier];
-  v32 = [(PSUIAddNewPlanController *)self crossPlatformGroup];
-  v33 = [v32 specifiers];
-  [v3 addObjectsFromArray:v33];
+  crossPlatformGroup = [(PSUIAddNewPlanController *)self crossPlatformGroup];
+  specifiers6 = [crossPlatformGroup specifiers];
+  [v3 addObjectsFromArray:specifiers6];
 
   v34 = *MEMORY[0x277D3FC48];
   v35 = *(&self->super.super.super.super.super.isa + v34);
@@ -273,7 +273,7 @@
   return v3;
 }
 
-- (id)createPendingInstallGroupIfNeeded:(id)a3
+- (id)createPendingInstallGroupIfNeeded:(id)needed
 {
   pendingInstallGroup = self->_pendingInstallGroup;
   if (pendingInstallGroup)
@@ -283,14 +283,14 @@
 
   else
   {
-    v6 = a3;
-    v4 = [[PSUIPendingInstallPlanGroup alloc] initWithListController:self groupSpecifier:v6];
+    neededCopy = needed;
+    v4 = [[PSUIPendingInstallPlanGroup alloc] initWithListController:self groupSpecifier:neededCopy];
   }
 
   return v4;
 }
 
-- (id)createTransferablePlanGroupIfNeeded:(id)a3
+- (id)createTransferablePlanGroupIfNeeded:(id)needed
 {
   transferablePlanGroup = self->_transferablePlanGroup;
   if (transferablePlanGroup)
@@ -300,14 +300,14 @@
 
   else
   {
-    v6 = a3;
-    v4 = [[PSUIPlanPendingTransferListGroup alloc] initWithListController:self groupSpecifier:v6];
+    neededCopy = needed;
+    v4 = [[PSUIPlanPendingTransferListGroup alloc] initWithListController:self groupSpecifier:neededCopy];
   }
 
   return v4;
 }
 
-- (id)createCarrierItemGroupIfNeeded:(id)a3
+- (id)createCarrierItemGroupIfNeeded:(id)needed
 {
   carrierItemGroup = self->_carrierItemGroup;
   if (carrierItemGroup)
@@ -317,14 +317,14 @@
 
   else
   {
-    v6 = a3;
-    v4 = [[PSUICarrierItemGroup alloc] initWithListController:self groupSpecifier:v6 showCarrierItems:0];
+    neededCopy = needed;
+    v4 = [[PSUICarrierItemGroup alloc] initWithListController:self groupSpecifier:neededCopy showCarrierItems:0];
   }
 
   return v4;
 }
 
-- (id)createAddOnGroupIfNeeded:(id)a3
+- (id)createAddOnGroupIfNeeded:(id)needed
 {
   addOnPlanGroup = self->_addOnPlanGroup;
   if (addOnPlanGroup)
@@ -334,14 +334,14 @@
 
   else
   {
-    v6 = a3;
-    v4 = [[PSUIAddOnPlanGroup alloc] initWithListController:self groupSpecifier:v6 showAddOnPlans:0];
+    neededCopy = needed;
+    v4 = [[PSUIAddOnPlanGroup alloc] initWithListController:self groupSpecifier:neededCopy showAddOnPlans:0];
   }
 
   return v4;
 }
 
-- (id)createQRCodeGroupIfNeeded:(id)a3
+- (id)createQRCodeGroupIfNeeded:(id)needed
 {
   QRCodeGroup = self->_QRCodeGroup;
   if (QRCodeGroup)
@@ -351,14 +351,14 @@
 
   else
   {
-    v6 = a3;
-    v4 = [[PSUIQRCodeGroup alloc] initWithListController:self groupSpecifier:v6];
+    neededCopy = needed;
+    v4 = [[PSUIQRCodeGroup alloc] initWithListController:self groupSpecifier:neededCopy];
   }
 
   return v4;
 }
 
-- (id)createCrossPlatformGroupIfNeeded:(id)a3
+- (id)createCrossPlatformGroupIfNeeded:(id)needed
 {
   crossPlatformGroup = self->_crossPlatformGroup;
   if (crossPlatformGroup)
@@ -368,8 +368,8 @@
 
   else
   {
-    v6 = a3;
-    v4 = [[PSUICrossPlatformGroup alloc] initWithListController:self groupSpecifier:v6];
+    neededCopy = needed;
+    v4 = [[PSUICrossPlatformGroup alloc] initWithListController:self groupSpecifier:neededCopy];
   }
 
   return v4;
@@ -377,17 +377,17 @@
 
 - (BOOL)shouldShowPendingInstallPlan
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  if ([v2 sf_isiPad])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice sf_isiPad])
   {
     v3 = +[PSUICellularPlanManagerCache sharedInstance];
-    v4 = [v3 planItems];
-    if ([v4 count])
+    planItems = [v3 planItems];
+    if ([planItems count])
     {
       v5 = +[PSUICellularPlanManagerCache sharedInstance];
-      v6 = [v5 pendingInstallPlans];
-      v7 = [v6 plans];
-      v8 = [v7 count] != 0;
+      pendingInstallPlans = [v5 pendingInstallPlans];
+      plans = [pendingInstallPlans plans];
+      v8 = [plans count] != 0;
     }
 
     else

@@ -1,8 +1,8 @@
 @interface PBFFocusPosterCell
-+ (CGSize)estimatedCellSizeForItemWidth:(double)a3 screen:(id)a4 hasAccessory:(BOOL)a5;
++ (CGSize)estimatedCellSizeForItemWidth:(double)width screen:(id)screen hasAccessory:(BOOL)accessory;
 - (CGRect)posterPreviewFrame;
-- (PBFFocusPosterCell)initWithCoder:(id)a3;
-- (PBFFocusPosterCell)initWithFrame:(CGRect)a3;
+- (PBFFocusPosterCell)initWithCoder:(id)coder;
+- (PBFFocusPosterCell)initWithFrame:(CGRect)frame;
 - (PBFPosterPreviewGenerator)posterPreviewGenerator;
 - (id)makeComplicationsPortalView;
 - (void)createCheckboxViewIfNecessary;
@@ -11,50 +11,50 @@
 - (void)createPosterView;
 - (void)createPreviewComplicationContentView;
 - (void)createShadowView;
-- (void)setActionType:(int64_t)a3;
-- (void)setCheckboxOn:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFocusSymbolImageName:(id)a3;
-- (void)setLayoutOrientation:(int64_t)a3;
-- (void)setPosterImage:(id)a3;
-- (void)setPosterPreview:(id)a3;
+- (void)setActionType:(int64_t)type;
+- (void)setCheckboxOn:(BOOL)on;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFocusSymbolImageName:(id)name;
+- (void)setLayoutOrientation:(int64_t)orientation;
+- (void)setPosterImage:(id)image;
+- (void)setPosterPreview:(id)preview;
 @end
 
 @implementation PBFFocusPosterCell
 
-+ (CGSize)estimatedCellSizeForItemWidth:(double)a3 screen:(id)a4 hasAccessory:(BOOL)a5
++ (CGSize)estimatedCellSizeForItemWidth:(double)width screen:(id)screen hasAccessory:(BOOL)accessory
 {
-  v5 = a5;
-  v9 = a4;
-  if (!v9)
+  accessoryCopy = accessory;
+  screenCopy = screen;
+  if (!screenCopy)
   {
-    [PBFFocusPosterCell estimatedCellSizeForItemWidth:a2 screen:a1 hasAccessory:?];
+    [PBFFocusPosterCell estimatedCellSizeForItemWidth:a2 screen:self hasAccessory:?];
   }
 
-  v10 = v9;
-  [v9 bounds];
-  if (v5)
+  v10 = screenCopy;
+  [screenCopy bounds];
+  if (accessoryCopy)
   {
-    v13 = v12 / v11 * a3 + 54.0;
+    v13 = v12 / v11 * width + 54.0;
   }
 
   else
   {
-    v13 = v12 / v11 * a3;
+    v13 = v12 / v11 * width;
   }
 
-  v14 = a3;
+  widthCopy = width;
   v15 = v13;
   result.height = v15;
-  result.width = v14;
+  result.width = widthCopy;
   return result;
 }
 
-- (PBFFocusPosterCell)initWithFrame:(CGRect)a3
+- (PBFFocusPosterCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PBFFocusPosterCell;
-  v3 = [(PBFFocusPosterCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PBFFocusPosterCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -67,17 +67,17 @@
   return v4;
 }
 
-- (PBFFocusPosterCell)initWithCoder:(id)a3
+- (PBFFocusPosterCell)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCA890];
-  v5 = a3;
-  v6 = [v4 currentHandler];
+  coderCopy = coder;
+  currentHandler = [v4 currentHandler];
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PBFFocusPosterCell initWithCoder:]"];
-  [v6 handleFailureInFunction:v7 file:@"PBFFocusPosterCell.m" lineNumber:72 description:{@"%s: not supported", "-[PBFFocusPosterCell initWithCoder:]"}];
+  [currentHandler handleFailureInFunction:v7 file:@"PBFFocusPosterCell.m" lineNumber:72 description:{@"%s: not supported", "-[PBFFocusPosterCell initWithCoder:]"}];
 
   v10.receiver = self;
   v10.super_class = PBFFocusPosterCell;
-  v8 = [(PBFFocusPosterCell *)&v10 initWithCoder:v5];
+  v8 = [(PBFFocusPosterCell *)&v10 initWithCoder:coderCopy];
 
   return v8;
 }
@@ -90,28 +90,28 @@
 
   [(UIView *)self->_shadowView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_shadowView _setContinuousCornerRadius:16.0];
-  v5 = [(UIView *)self->_shadowView layer];
-  [v5 setShadowPathIsBounds:1];
+  layer = [(UIView *)self->_shadowView layer];
+  [layer setShadowPathIsBounds:1];
 
-  v6 = [(UIView *)self->_shadowView layer];
-  v7 = [MEMORY[0x277D75348] blackColor];
-  [v6 setShadowColor:{objc_msgSend(v7, "CGColor")}];
+  layer2 = [(UIView *)self->_shadowView layer];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [layer2 setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-  v8 = [(UIView *)self->_shadowView layer];
-  [v8 setShadowOffset:{0.0, 4.0}];
+  layer3 = [(UIView *)self->_shadowView layer];
+  [layer3 setShadowOffset:{0.0, 4.0}];
 
-  v9 = [(UIView *)self->_shadowView layer];
-  [v9 setShadowRadius:10.0];
+  layer4 = [(UIView *)self->_shadowView layer];
+  [layer4 setShadowRadius:10.0];
 
-  v10 = [(UIView *)self->_shadowView layer];
+  layer5 = [(UIView *)self->_shadowView layer];
   LODWORD(v11) = 1036831949;
-  [v10 setShadowOpacity:v11];
+  [layer5 setShadowOpacity:v11];
 
-  v12 = [(PBFFocusPosterCell *)self contentView];
-  [v12 addSubview:self->_shadowView];
+  contentView = [(PBFFocusPosterCell *)self contentView];
+  [contentView addSubview:self->_shadowView];
 
-  v13 = [(PBFFocusPosterCell *)self contentView];
-  [v13 sendSubviewToBack:self->_shadowView];
+  contentView2 = [(PBFFocusPosterCell *)self contentView];
+  [contentView2 sendSubviewToBack:self->_shadowView];
 }
 
 - (void)createPosterView
@@ -122,13 +122,13 @@
 
   [(UIImageView *)self->_posterView setTranslatesAutoresizingMaskIntoConstraints:0];
   v5 = self->_posterView;
-  v6 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  [(UIImageView *)v5 setBackgroundColor:v6];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [(UIImageView *)v5 setBackgroundColor:secondarySystemBackgroundColor];
 
   [(UIImageView *)self->_posterView setClipsToBounds:1];
   [(UIImageView *)self->_posterView _setContinuousCornerRadius:16.0];
-  v7 = [(PBFFocusPosterCell *)self contentView];
-  [v7 addSubview:self->_posterView];
+  contentView = [(PBFFocusPosterCell *)self contentView];
+  [contentView addSubview:self->_posterView];
 }
 
 - (void)createPreviewComplicationContentView
@@ -141,8 +141,8 @@
   [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView setPreferredCornerRadius:1];
   [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView setLayoutOrientation:[(PBFFocusPosterCell *)self layoutOrientation]];
-  v6 = [(PBFFocusPosterCell *)self contentView];
-  [v6 addSubview:self->_posterPreviewComplicationContentView];
+  contentView = [(PBFFocusPosterCell *)self contentView];
+  [contentView addSubview:self->_posterPreviewComplicationContentView];
 }
 
 - (void)createCheckboxViewIfNecessary
@@ -156,43 +156,43 @@
 
     [(PBFFocusCheckboxView *)self->_checkboxView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PBFFocusCheckboxView *)self->_checkboxView setOn:self->_checkboxOn];
-    v5 = [(PBFFocusPosterCell *)self contentView];
-    [v5 addSubview:self->_checkboxView];
+    contentView = [(PBFFocusPosterCell *)self contentView];
+    [contentView addSubview:self->_checkboxView];
 
     v16 = MEMORY[0x277CCAAD0];
-    v17 = [(PBFFocusCheckboxView *)self->_checkboxView centerXAnchor];
-    v6 = [(UIImageView *)self->_posterView centerXAnchor];
-    v7 = [v17 constraintEqualToAnchor:v6];
+    centerXAnchor = [(PBFFocusCheckboxView *)self->_checkboxView centerXAnchor];
+    centerXAnchor2 = [(UIImageView *)self->_posterView centerXAnchor];
+    v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v18[0] = v7;
-    v8 = [(PBFFocusCheckboxView *)self->_checkboxView topAnchor];
-    v9 = [(UIImageView *)self->_posterView bottomAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9 constant:10.0];
+    topAnchor = [(PBFFocusCheckboxView *)self->_checkboxView topAnchor];
+    bottomAnchor = [(UIImageView *)self->_posterView bottomAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:10.0];
     v18[1] = v10;
-    v11 = [(PBFFocusCheckboxView *)self->_checkboxView bottomAnchor];
-    v12 = [(PBFFocusPosterCell *)self contentView];
-    v13 = [v12 bottomAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
+    bottomAnchor2 = [(PBFFocusCheckboxView *)self->_checkboxView bottomAnchor];
+    contentView2 = [(PBFFocusPosterCell *)self contentView];
+    bottomAnchor3 = [contentView2 bottomAnchor];
+    v14 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v18[2] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
     [v16 activateConstraints:v15];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v8.receiver = self;
   v8.super_class = PBFFocusPosterCell;
   [(PBFFocusPosterCell *)&v8 setUserInteractionEnabled:?];
-  v5 = [(PBFFocusPosterCell *)self contentView];
-  v6 = v5;
+  contentView = [(PBFFocusPosterCell *)self contentView];
+  v6 = contentView;
   v7 = 0.5;
-  if (v3)
+  if (enabledCopy)
   {
     v7 = 1.0;
   }
 
-  [v5 setAlpha:v7];
+  [contentView setAlpha:v7];
 }
 
 - (void)createFocusSymbolViewIfNecessary
@@ -205,35 +205,35 @@
     self->_focusSymbolView = v3;
 
     v5 = self->_focusSymbolView;
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    [(UIImageView *)v5 setTintColor:v6];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIImageView *)v5 setTintColor:whiteColor];
 
     [(UIImageView *)self->_focusSymbolView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(UIImageView *)self->_focusSymbolView layer];
-    v8 = [MEMORY[0x277D75348] blackColor];
-    [v7 setShadowColor:{objc_msgSend(v8, "CGColor")}];
+    layer = [(UIImageView *)self->_focusSymbolView layer];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-    v9 = [(UIImageView *)self->_focusSymbolView layer];
-    [v9 setShadowOffset:{0.0, 1.0}];
+    layer2 = [(UIImageView *)self->_focusSymbolView layer];
+    [layer2 setShadowOffset:{0.0, 1.0}];
 
-    v10 = [(UIImageView *)self->_focusSymbolView layer];
-    [v10 setShadowRadius:4.0];
+    layer3 = [(UIImageView *)self->_focusSymbolView layer];
+    [layer3 setShadowRadius:4.0];
 
-    v11 = [(UIImageView *)self->_focusSymbolView layer];
+    layer4 = [(UIImageView *)self->_focusSymbolView layer];
     LODWORD(v12) = 1045220557;
-    [v11 setShadowOpacity:v12];
+    [layer4 setShadowOpacity:v12];
 
-    v13 = [(PBFFocusPosterCell *)self contentView];
-    [v13 addSubview:self->_focusSymbolView];
+    contentView = [(PBFFocusPosterCell *)self contentView];
+    [contentView addSubview:self->_focusSymbolView];
 
     v14 = MEMORY[0x277CCAAD0];
-    v15 = [(UIImageView *)self->_focusSymbolView centerXAnchor];
-    v16 = [(UIImageView *)self->_posterView centerXAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    centerXAnchor = [(UIImageView *)self->_focusSymbolView centerXAnchor];
+    centerXAnchor2 = [(UIImageView *)self->_posterView centerXAnchor];
+    v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v22[0] = v17;
-    v18 = [(UIImageView *)self->_focusSymbolView bottomAnchor];
-    v19 = [(UIImageView *)self->_posterView bottomAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19 constant:-12.0];
+    bottomAnchor = [(UIImageView *)self->_focusSymbolView bottomAnchor];
+    bottomAnchor2 = [(UIImageView *)self->_posterView bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-12.0];
     v22[1] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
     [v14 activateConstraints:v21];
@@ -243,79 +243,79 @@
 - (void)createConstraints
 {
   v47[12] = *MEMORY[0x277D85DE8];
-  v3 = [(UIImageView *)self->_posterView bottomAnchor];
-  v4 = [(PBFFocusPosterCell *)self contentView];
-  v5 = [v4 bottomAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  bottomAnchor = [(UIImageView *)self->_posterView bottomAnchor];
+  contentView = [(PBFFocusPosterCell *)self contentView];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v6 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
   LODWORD(v7) = 1144733696;
   v40 = v6;
   [v6 setPriority:v7];
   v30 = MEMORY[0x277CCAAD0];
-  v45 = [(UIImageView *)self->_posterView leadingAnchor];
-  v46 = [(PBFFocusPosterCell *)self contentView];
-  v44 = [v46 leadingAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  leadingAnchor = [(UIImageView *)self->_posterView leadingAnchor];
+  contentView2 = [(PBFFocusPosterCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v47[0] = v43;
-  v41 = [(UIImageView *)self->_posterView topAnchor];
-  v42 = [(PBFFocusPosterCell *)self contentView];
-  v39 = [v42 topAnchor];
-  v38 = [v41 constraintEqualToAnchor:v39];
+  topAnchor = [(UIImageView *)self->_posterView topAnchor];
+  contentView3 = [(PBFFocusPosterCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v38 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v47[1] = v38;
-  v36 = [(UIImageView *)self->_posterView trailingAnchor];
-  v37 = [(PBFFocusPosterCell *)self contentView];
-  v35 = [v37 trailingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  trailingAnchor = [(UIImageView *)self->_posterView trailingAnchor];
+  contentView4 = [(PBFFocusPosterCell *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v47[2] = v34;
   v47[3] = v6;
-  v33 = [(UIView *)self->_shadowView leadingAnchor];
-  v32 = [(UIImageView *)self->_posterView leadingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  leadingAnchor3 = [(UIView *)self->_shadowView leadingAnchor];
+  leadingAnchor4 = [(UIImageView *)self->_posterView leadingAnchor];
+  v31 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v47[4] = v31;
-  v29 = [(UIView *)self->_shadowView topAnchor];
-  v28 = [(UIImageView *)self->_posterView topAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  topAnchor3 = [(UIView *)self->_shadowView topAnchor];
+  topAnchor4 = [(UIImageView *)self->_posterView topAnchor];
+  v27 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v47[5] = v27;
-  v26 = [(UIView *)self->_shadowView trailingAnchor];
-  v25 = [(UIImageView *)self->_posterView trailingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  trailingAnchor3 = [(UIView *)self->_shadowView trailingAnchor];
+  trailingAnchor4 = [(UIImageView *)self->_posterView trailingAnchor];
+  v24 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v47[6] = v24;
-  v23 = [(UIView *)self->_shadowView bottomAnchor];
-  v22 = [(UIImageView *)self->_posterView bottomAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  bottomAnchor3 = [(UIView *)self->_shadowView bottomAnchor];
+  bottomAnchor4 = [(UIImageView *)self->_posterView bottomAnchor];
+  v21 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v47[7] = v21;
-  v20 = [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView leadingAnchor];
-  v19 = [(UIImageView *)self->_posterView leadingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  leadingAnchor5 = [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView leadingAnchor];
+  leadingAnchor6 = [(UIImageView *)self->_posterView leadingAnchor];
+  v18 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v47[8] = v18;
-  v8 = [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView topAnchor];
-  v9 = [(UIImageView *)self->_posterView topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  topAnchor5 = [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView topAnchor];
+  topAnchor6 = [(UIImageView *)self->_posterView topAnchor];
+  v10 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v47[9] = v10;
-  v11 = [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView trailingAnchor];
-  v12 = [(UIImageView *)self->_posterView trailingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  trailingAnchor5 = [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView trailingAnchor];
+  trailingAnchor6 = [(UIImageView *)self->_posterView trailingAnchor];
+  v13 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v47[10] = v13;
-  v14 = [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView bottomAnchor];
-  v15 = [(UIImageView *)self->_posterView bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  bottomAnchor5 = [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView bottomAnchor];
+  bottomAnchor6 = [(UIImageView *)self->_posterView bottomAnchor];
+  v16 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v47[11] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:12];
   [v30 activateConstraints:v17];
 }
 
-- (void)setActionType:(int64_t)a3
+- (void)setActionType:(int64_t)type
 {
-  if (self->_actionType != a3)
+  if (self->_actionType != type)
   {
-    self->_actionType = a3;
-    if (a3 == 1)
+    self->_actionType = type;
+    if (type == 1)
     {
 
       [(PBFFocusPosterCell *)self createCheckboxViewIfNecessary];
     }
 
-    else if (!a3)
+    else if (!type)
     {
       [(PBFFocusCheckboxView *)self->_checkboxView removeFromSuperview];
       checkboxView = self->_checkboxView;
@@ -324,30 +324,30 @@
   }
 }
 
-- (void)setPosterPreview:(id)a3
+- (void)setPosterPreview:(id)preview
 {
-  v5 = a3;
-  if (self->_posterPreview != v5)
+  previewCopy = preview;
+  if (self->_posterPreview != previewCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_posterPreview, a3);
+    v8 = previewCopy;
+    objc_storeStrong(&self->_posterPreview, preview);
     [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView setLayoutOrientation:[(PBFFocusPosterCell *)self layoutOrientation]];
     [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView setPosterPreview:v8];
     posterPreviewComplicationContentView = self->_posterPreviewComplicationContentView;
-    v7 = [(PBFFocusPosterCell *)self posterPreviewGenerator];
-    [(PBFPosterGalleryPreviewComplicationContentView *)posterPreviewComplicationContentView prepareComplicationPreviewWithGenerator:v7];
+    posterPreviewGenerator = [(PBFFocusPosterCell *)self posterPreviewGenerator];
+    [(PBFPosterGalleryPreviewComplicationContentView *)posterPreviewComplicationContentView prepareComplicationPreviewWithGenerator:posterPreviewGenerator];
 
-    v5 = v8;
+    previewCopy = v8;
   }
 }
 
-- (void)setPosterImage:(id)a3
+- (void)setPosterImage:(id)image
 {
-  v5 = a3;
-  if (self->_posterImage != v5)
+  imageCopy = image;
+  if (self->_posterImage != imageCopy)
   {
-    v14 = v5;
-    objc_storeStrong(&self->_posterImage, a3);
+    v14 = imageCopy;
+    objc_storeStrong(&self->_posterImage, image);
     [(UIImageView *)self->_posterView setImage:v14];
     [(NSLayoutConstraint *)self->_posterViewHeightConstraint setActive:0];
     posterViewHeightConstraint = self->_posterViewHeightConstraint;
@@ -357,9 +357,9 @@
     {
       [(UIImage *)v14 size];
       v9 = v8 / v7;
-      v10 = [(UIImageView *)self->_posterView heightAnchor];
-      v11 = [(UIImageView *)self->_posterView widthAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11 multiplier:v9 constant:0.0];
+      heightAnchor = [(UIImageView *)self->_posterView heightAnchor];
+      widthAnchor = [(UIImageView *)self->_posterView widthAnchor];
+      v12 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:v9 constant:0.0];
       v13 = self->_posterViewHeightConstraint;
       self->_posterViewHeightConstraint = v12;
 
@@ -367,25 +367,25 @@
     }
 
     [(PBFFocusPosterCell *)self setNeedsLayout];
-    v5 = v14;
+    imageCopy = v14;
   }
 }
 
-- (void)setFocusSymbolImageName:(id)a3
+- (void)setFocusSymbolImageName:(id)name
 {
-  v9 = a3;
+  nameCopy = name;
   if ((BSEqualStrings() & 1) == 0)
   {
-    v4 = [v9 copy];
+    v4 = [nameCopy copy];
     focusSymbolImageName = self->_focusSymbolImageName;
     self->_focusSymbolImageName = v4;
 
-    if (v9)
+    if (nameCopy)
     {
       [(PBFFocusPosterCell *)self createFocusSymbolViewIfNecessary];
       v6 = [MEMORY[0x277D755D0] configurationWithScale:2];
       focusSymbolView = self->_focusSymbolView;
-      v8 = [MEMORY[0x277D755B8] _systemImageNamed:v9 withConfiguration:v6];
+      v8 = [MEMORY[0x277D755B8] _systemImageNamed:nameCopy withConfiguration:v6];
       [(UIImageView *)focusSymbolView setImage:v8];
     }
 
@@ -398,20 +398,20 @@
   }
 }
 
-- (void)setCheckboxOn:(BOOL)a3
+- (void)setCheckboxOn:(BOOL)on
 {
-  if (self->_checkboxOn != a3)
+  if (self->_checkboxOn != on)
   {
-    self->_checkboxOn = a3;
+    self->_checkboxOn = on;
     [(PBFFocusCheckboxView *)self->_checkboxView setOn:?];
   }
 }
 
-- (void)setLayoutOrientation:(int64_t)a3
+- (void)setLayoutOrientation:(int64_t)orientation
 {
-  if (self->_layoutOrientation != a3)
+  if (self->_layoutOrientation != orientation)
   {
-    self->_layoutOrientation = a3;
+    self->_layoutOrientation = orientation;
     [(PBFPosterGalleryPreviewComplicationContentView *)self->_posterPreviewComplicationContentView setLayoutOrientation:?];
   }
 }

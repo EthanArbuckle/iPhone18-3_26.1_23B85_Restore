@@ -1,35 +1,35 @@
 @interface SFUserActivityData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFUserActivityData)initWithCoder:(id)a3;
-- (SFUserActivityData)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFUserActivityData)initWithCoder:(id)coder;
+- (SFUserActivityData)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFUserActivityData
 
-- (SFUserActivityData)initWithProtobuf:(id)a3
+- (SFUserActivityData)initWithProtobuf:(id)protobuf
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v23.receiver = self;
   v23.super_class = SFUserActivityData;
   v5 = [(SFUserActivityData *)&v23 init];
   if (v5)
   {
-    v6 = [v4 activityType];
+    activityType = [protobufCopy activityType];
 
-    if (v6)
+    if (activityType)
     {
-      v7 = [v4 activityType];
-      [(SFUserActivityData *)v5 setActivityType:v7];
+      activityType2 = [protobufCopy activityType];
+      [(SFUserActivityData *)v5 setActivityType:activityType2];
     }
 
-    v8 = [v4 userInfos];
-    if (v8)
+    userInfos = [protobufCopy userInfos];
+    if (userInfos)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -43,8 +43,8 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [v4 userInfos];
-    v11 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    userInfos2 = [protobufCopy userInfos];
+    v11 = [userInfos2 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v11)
     {
       v12 = v11;
@@ -55,7 +55,7 @@
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(userInfos2);
           }
 
           v15 = [[SFUserActivityInfo alloc] initWithProtobuf:*(*(&v19 + 1) + 8 * i)];
@@ -65,7 +65,7 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v12 = [userInfos2 countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v12);
@@ -81,30 +81,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFUserActivityData *)self activityType];
-  v4 = [v3 hash];
-  v5 = [(SFUserActivityData *)self userInfo];
-  v6 = [v5 hash];
+  activityType = [(SFUserActivityData *)self activityType];
+  v4 = [activityType hash];
+  userInfo = [(SFUserActivityData *)self userInfo];
+  v6 = [userInfo hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFUserActivityData *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFUserActivityData *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFUserActivityData *)self activityType];
-      v8 = [(SFUserActivityData *)v6 activityType];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      activityType = [(SFUserActivityData *)self activityType];
+      activityType2 = [(SFUserActivityData *)v6 activityType];
+      if ((activityType != 0) == (activityType2 == 0))
       {
         v11 = 0;
 LABEL_19:
@@ -112,12 +112,12 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = [(SFUserActivityData *)self activityType];
-      if (v9)
+      activityType3 = [(SFUserActivityData *)self activityType];
+      if (activityType3)
       {
-        v3 = [(SFUserActivityData *)self activityType];
-        v10 = [(SFUserActivityData *)v6 activityType];
-        if (![v3 isEqual:v10])
+        activityType4 = [(SFUserActivityData *)self activityType];
+        activityType5 = [(SFUserActivityData *)v6 activityType];
+        if (![activityType4 isEqual:activityType5])
         {
           v11 = 0;
 LABEL_17:
@@ -126,13 +126,13 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v21 = v10;
+        v21 = activityType5;
       }
 
-      v12 = [(SFUserActivityData *)self userInfo];
-      v13 = [(SFUserActivityData *)v6 userInfo];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      userInfo = [(SFUserActivityData *)self userInfo];
+      userInfo2 = [(SFUserActivityData *)v6 userInfo];
+      v14 = userInfo2;
+      if ((userInfo != 0) == (userInfo2 == 0))
       {
 
         v11 = 0;
@@ -140,16 +140,16 @@ LABEL_18:
 
       else
       {
-        v15 = [(SFUserActivityData *)self userInfo];
-        if (v15)
+        userInfo3 = [(SFUserActivityData *)self userInfo];
+        if (userInfo3)
         {
-          v16 = v15;
-          v19 = [(SFUserActivityData *)self userInfo];
+          v16 = userInfo3;
+          userInfo4 = [(SFUserActivityData *)self userInfo];
           [(SFUserActivityData *)v6 userInfo];
-          v17 = v20 = v3;
-          v11 = [v19 isEqual:v17];
+          v17 = v20 = activityType4;
+          v11 = [userInfo4 isEqual:v17];
 
-          v3 = v20;
+          activityType4 = v20;
         }
 
         else
@@ -159,8 +159,8 @@ LABEL_18:
         }
       }
 
-      v10 = v21;
-      if (!v9)
+      activityType5 = v21;
+      if (!activityType3)
       {
         goto LABEL_18;
       }
@@ -176,15 +176,15 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFUserActivityData *)self activityType];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  activityType = [(SFUserActivityData *)self activityType];
+  v6 = [activityType copy];
   [v4 setActivityType:v6];
 
-  v7 = [(SFUserActivityData *)self userInfo];
-  v8 = [v7 copy];
+  userInfo = [(SFUserActivityData *)self userInfo];
+  v8 = [userInfo copy];
   [v4 setUserInfo:v8];
 
   return v4;
@@ -193,31 +193,31 @@ LABEL_20:
 - (NSData)jsonData
 {
   v2 = [[_SFPBUserActivityData alloc] initWithFacade:self];
-  v3 = [(_SFPBUserActivityData *)v2 jsonData];
+  jsonData = [(_SFPBUserActivityData *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBUserActivityData alloc] initWithFacade:self];
-  v3 = [(_SFPBUserActivityData *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBUserActivityData *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBUserActivityData alloc] initWithFacade:self];
-  v5 = [(_SFPBUserActivityData *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBUserActivityData *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFUserActivityData)initWithCoder:(id)a3
+- (SFUserActivityData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBUserActivityData alloc] initWithData:v5];
   v7 = [(SFUserActivityData *)self initWithProtobuf:v6];

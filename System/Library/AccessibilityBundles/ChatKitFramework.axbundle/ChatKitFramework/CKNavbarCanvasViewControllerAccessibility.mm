@@ -1,16 +1,16 @@
 @interface CKNavbarCanvasViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)backButtonView;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CKNavbarCanvasViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKNavbarCanvasViewController" hasInstanceMethod:@"backButtonView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKNavbarCanvasViewController" hasInstanceMethod:@"_buttonPressed:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKNavbarCanvasViewController" hasInstanceMethod:@"backButtonView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKNavbarCanvasViewController" hasInstanceMethod:@"_buttonPressed:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -27,22 +27,22 @@
 {
   v10.receiver = self;
   v10.super_class = CKNavbarCanvasViewControllerAccessibility;
-  v3 = [(CKNavbarCanvasViewControllerAccessibility *)&v10 backButtonView];
+  backButtonView = [(CKNavbarCanvasViewControllerAccessibility *)&v10 backButtonView];
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v3);
+  objc_initWeak(&from, backButtonView);
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __59__CKNavbarCanvasViewControllerAccessibility_backButtonView__block_invoke;
   v5[3] = &unk_29F2B0EC0;
   objc_copyWeak(&v6, &location);
   objc_copyWeak(&v7, &from);
-  [v3 _setAccessibilityActivateBlock:v5];
+  [backButtonView _setAccessibilityActivateBlock:v5];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v6);
   objc_destroyWeak(&from);
   objc_destroyWeak(&location);
 
-  return v3;
+  return backButtonView;
 }
 
 uint64_t __59__CKNavbarCanvasViewControllerAccessibility_backButtonView__block_invoke(uint64_t a1)

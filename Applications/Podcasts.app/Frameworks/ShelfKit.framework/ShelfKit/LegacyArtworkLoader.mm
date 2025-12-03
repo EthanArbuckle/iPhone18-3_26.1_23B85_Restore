@@ -1,24 +1,24 @@
 @interface LegacyArtworkLoader
-- (void)imageRequest:(id)a3 didFailWithError:(id)a4;
-- (void)imageRequest:(id)a3 didLoadImage:(id)a4;
+- (void)imageRequest:(id)request didFailWithError:(id)error;
+- (void)imageRequest:(id)request didLoadImage:(id)image;
 @end
 
 @implementation LegacyArtworkLoader
 
-- (void)imageRequest:(id)a3 didLoadImage:(id)a4
+- (void)imageRequest:(id)request didLoadImage:(id)image
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  imageCopy = image;
 
-  sub_386820(v5, a4, 0);
+  sub_386820(requestCopy, image, 0);
 }
 
-- (void)imageRequest:(id)a3 didFailWithError:(id)a4
+- (void)imageRequest:(id)request didFailWithError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
 
-  sub_386820(v5, 0, a4);
+  sub_386820(requestCopy, 0, error);
 }
 
 @end

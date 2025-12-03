@@ -1,31 +1,31 @@
 @interface ACMToken
-+ (id)tokenWithPrincipal:(id)a3 creationDate:(id)a4 tokenData:(id)a5;
-+ (id)tokenWithPrincipal:(id)a3 creationDate:(id)a4 tokenString:(id)a5;
++ (id)tokenWithPrincipal:(id)principal creationDate:(id)date tokenData:(id)data;
++ (id)tokenWithPrincipal:(id)principal creationDate:(id)date tokenString:(id)string;
 - (NSDate)expirationDate;
 - (NSString)tokenString;
 - (void)dealloc;
-- (void)setExpirationDate:(id)a3;
-- (void)setTokenString:(id)a3;
+- (void)setExpirationDate:(id)date;
+- (void)setTokenString:(id)string;
 @end
 
 @implementation ACMToken
 
-+ (id)tokenWithPrincipal:(id)a3 creationDate:(id)a4 tokenData:(id)a5
++ (id)tokenWithPrincipal:(id)principal creationDate:(id)date tokenData:(id)data
 {
   v8 = objc_opt_new();
-  [v8 setPrincipal:a3];
-  [v8 setCreationDate:a4];
-  [v8 setTokenData:a5];
+  [v8 setPrincipal:principal];
+  [v8 setCreationDate:date];
+  [v8 setTokenData:data];
 
   return v8;
 }
 
-+ (id)tokenWithPrincipal:(id)a3 creationDate:(id)a4 tokenString:(id)a5
++ (id)tokenWithPrincipal:(id)principal creationDate:(id)date tokenString:(id)string
 {
   v8 = objc_opt_new();
-  [v8 setPrincipal:a3];
-  [v8 setCreationDate:a4];
-  [v8 setTokenString:a5];
+  [v8 setPrincipal:principal];
+  [v8 setCreationDate:date];
+  [v8 setTokenString:string];
 
   return v8;
 }
@@ -52,31 +52,31 @@
     return self->_expirationDate;
   }
 
-  v5 = [(ACMToken *)self creationDate];
+  creationDate = [(ACMToken *)self creationDate];
 
-  return [(NSDate *)v5 dateByAddingTimeInterval:300.0];
+  return [(NSDate *)creationDate dateByAddingTimeInterval:300.0];
 }
 
-- (void)setExpirationDate:(id)a3
+- (void)setExpirationDate:(id)date
 {
   expirationDate = self->_expirationDate;
-  if (expirationDate != a3)
+  if (expirationDate != date)
   {
     v6 = expirationDate;
-    self->_expirationDate = a3;
+    self->_expirationDate = date;
   }
 }
 
 - (NSString)tokenString
 {
-  v2 = [(ACMToken *)self tokenData];
+  tokenData = [(ACMToken *)self tokenData];
 
-  return ACFEncodeBase64(v2);
+  return ACFEncodeBase64(tokenData);
 }
 
-- (void)setTokenString:(id)a3
+- (void)setTokenString:(id)string
 {
-  v4 = ACFDecodeBase64(a3);
+  v4 = ACFDecodeBase64(string);
 
   [(ACMToken *)self setTokenData:v4];
 }

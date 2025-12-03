@@ -1,6 +1,6 @@
 @interface NLActivityUpNextRelevanceEngineDataSource
 - (BOOL)_shouldShowWalkSuggestion;
-- (BOOL)enumerateActivitySummariesFromDateComponents:(id)a3 toDateComponents:(id)a4 error:(id *)a5 handler:(id)a6;
+- (BOOL)enumerateActivitySummariesFromDateComponents:(id)components toDateComponents:(id)dateComponents error:(id *)error handler:(id)handler;
 - (NLActivityUpNextRelevanceEngineDataSource)init;
 - (id)_activitySummaryPredicateForTypicalDateInterval;
 - (id)_createWalkSuggestionElement;
@@ -9,22 +9,22 @@
 - (id)firstOnWristDateToday;
 - (id)supportedSections;
 - (void)_addNotificationObservers;
-- (void)_executeQuery:(id)a3;
-- (void)_queryActivitySummaryHistoryWithRemainingRetries:(unint64_t)a3;
-- (void)_queue_handleNewActivitySummaries:(id)a3;
-- (void)_queue_handleUpdatedCurrentActivitySummary:(id)a3;
+- (void)_executeQuery:(id)query;
+- (void)_queryActivitySummaryHistoryWithRemainingRetries:(unint64_t)retries;
+- (void)_queue_handleNewActivitySummaries:(id)summaries;
+- (void)_queue_handleUpdatedCurrentActivitySummary:(id)summary;
 - (void)_queue_updateCachedTypicalDayValues;
 - (void)_rebuildTypicalDayModel;
 - (void)_removeNotificationObservers;
 - (void)_significantTimeChangeOccurred;
-- (void)_startCurrentActivitySummaryQueryWithRemainingRetries:(unint64_t)a3;
+- (void)_startCurrentActivitySummaryQueryWithRemainingRetries:(unint64_t)retries;
 - (void)_stopQueries;
 - (void)_typicalDayTodayActivityChanged;
 - (void)dealloc;
-- (void)fetchProjectedOffWristDateTodayWithDateInterval:(id)a3 completion:(id)a4;
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4;
+- (void)fetchProjectedOffWristDateTodayWithDateInterval:(id)interval completion:(id)completion;
+- (void)getElementsInSection:(id)section withHandler:(id)handler;
 - (void)pause;
-- (void)periodOfDayPredictorDidUpdatePredictedIntervals:(id)a3;
+- (void)periodOfDayPredictorDidUpdatePredictedIntervals:(id)intervals;
 - (void)resume;
 @end
 
@@ -53,8 +53,8 @@
     [(NLActivityUpNextRelevanceEngineDataSource *)v2 setHealthStore:v9];
 
     v10 = [FIActivitySettingsController alloc];
-    v11 = [(NLActivityUpNextRelevanceEngineDataSource *)v2 healthStore];
-    v12 = [v10 initWithHealthStore:v11];
+    healthStore = [(NLActivityUpNextRelevanceEngineDataSource *)v2 healthStore];
+    v12 = [v10 initWithHealthStore:healthStore];
     [(NLActivityUpNextRelevanceEngineDataSource *)v2 setSettingsController:v12];
 
     v13 = +[NSSet set];
@@ -62,8 +62,8 @@
 
     [(NLActivityUpNextRelevanceEngineDataSource *)v2 setProgressUpdatesEnabled:_CoachingProgressUpdatesEnabled()];
     v14 = [FITypicalDayActivityModel alloc];
-    v15 = [(NLActivityUpNextRelevanceEngineDataSource *)v2 _typicalDayDateInterval];
-    v16 = [v14 initForDateInterval:v15 delegate:v2];
+    _typicalDayDateInterval = [(NLActivityUpNextRelevanceEngineDataSource *)v2 _typicalDayDateInterval];
+    v16 = [v14 initForDateInterval:_typicalDayDateInterval delegate:v2];
     [(NLActivityUpNextRelevanceEngineDataSource *)v2 setTypicalDayModel:v16];
   }
 
@@ -117,61 +117,61 @@
   [(NLActivityUpNextRelevanceEngineDataSource *)&v5 dealloc];
 }
 
-- (void)fetchProjectedOffWristDateTodayWithDateInterval:(id)a3 completion:(id)a4
+- (void)fetchProjectedOffWristDateTodayWithDateInterval:(id)interval completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(NLActivityUpNextRelevanceEngineDataSource *)self _wristOffDate];
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  _wristOffDate = [(NLActivityUpNextRelevanceEngineDataSource *)self _wristOffDate];
+  (*(completion + 2))(completionCopy, _wristOffDate);
 }
 
 - (id)firstOnWristDateToday
 {
-  v3 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
-  v4 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentDate];
-  v5 = [v3 startOfDayForDate:v4];
+  currentCalendar = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
+  currentDate = [(NLActivityUpNextRelevanceEngineDataSource *)self currentDate];
+  v5 = [currentCalendar startOfDayForDate:currentDate];
 
   v6 = +[REPeriodOfDayPredictor sharedInstance];
   v7 = [v6 dateIntervalForPreviousPeriodOfDay:0];
 
-  v8 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
-  v9 = [v7 endDate];
-  v10 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentDate];
-  v11 = [v8 isDate:v9 inSameDayAsDate:v10];
+  currentCalendar2 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
+  endDate = [v7 endDate];
+  currentDate2 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentDate];
+  v11 = [currentCalendar2 isDate:endDate inSameDayAsDate:currentDate2];
 
   if (v11)
   {
-    v12 = [v7 startDate];
+    startDate = [v7 startDate];
 LABEL_5:
-    v15 = v12;
+    startDate2 = startDate;
     goto LABEL_6;
   }
 
   v13 = +[REPeriodOfDayPredictor sharedInstance];
-  v14 = [v13 currentPeriodOfDay];
+  currentPeriodOfDay = [v13 currentPeriodOfDay];
 
-  if (v14)
+  if (currentPeriodOfDay)
   {
-    v12 = v5;
+    startDate = v5;
     goto LABEL_5;
   }
 
   v26 = +[REPeriodOfDayPredictor sharedInstance];
-  v27 = [v26 intervalForCurrentPeriodOfDay];
-  v15 = [v27 startDate];
+  intervalForCurrentPeriodOfDay = [v26 intervalForCurrentPeriodOfDay];
+  startDate2 = [intervalForCurrentPeriodOfDay startDate];
 
 LABEL_6:
-  v16 = [v15 laterDate:v5];
+  v16 = [startDate2 laterDate:v5];
   [v16 timeIntervalSinceReferenceDate];
   v18 = v17;
-  v19 = [(NLActivityUpNextRelevanceEngineDataSource *)self _wristOffDate];
-  [v19 timeIntervalSinceReferenceDate];
+  _wristOffDate = [(NLActivityUpNextRelevanceEngineDataSource *)self _wristOffDate];
+  [_wristOffDate timeIntervalSinceReferenceDate];
   v21 = v20;
 
   if (v18 >= v21)
   {
-    v23 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
-    v24 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentDate];
-    v22 = [v23 startOfDayForDate:v24];
+    currentCalendar3 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
+    currentDate3 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentDate];
+    v22 = [currentCalendar3 startOfDayForDate:currentDate3];
   }
 
   else
@@ -182,11 +182,11 @@ LABEL_6:
   return v22;
 }
 
-- (BOOL)enumerateActivitySummariesFromDateComponents:(id)a3 toDateComponents:(id)a4 error:(id *)a5 handler:(id)a6
+- (BOOL)enumerateActivitySummariesFromDateComponents:(id)components toDateComponents:(id)dateComponents error:(id *)error handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v30 = a6;
+  componentsCopy = components;
+  dateComponentsCopy = dateComponents;
+  handlerCopy = handler;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -208,9 +208,9 @@ LABEL_6:
   block[5] = &v42;
   block[6] = &v36;
   dispatch_sync(serialQueue, block);
-  v29 = v9;
-  v12 = [v43[5] dateFromComponents:v9];
-  v13 = [v43[5] dateFromComponents:v10];
+  v29 = componentsCopy;
+  v12 = [v43[5] dateFromComponents:componentsCopy];
+  v13 = [v43[5] dateFromComponents:dateComponentsCopy];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -244,7 +244,7 @@ LABEL_6:
           [v13 timeIntervalSinceReferenceDate];
           if (v26 <= v27)
           {
-            v30[2](v30, v18);
+            handlerCopy[2](handlerCopy, v18);
           }
         }
       }
@@ -293,14 +293,14 @@ LABEL_6:
   else
   {
     objc_initWeak(&location, self);
-    v3 = [@"SignificantTimeChangeNotification" UTF8String];
+    uTF8String = [@"SignificantTimeChangeNotification" UTF8String];
     v4 = &_dispatch_main_q;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_1F10;
     handler[3] = &unk_C3D8;
     objc_copyWeak(&v10, &location);
-    notify_register_dispatch(v3, &self->_significantTimeChangeToken, &_dispatch_main_q, handler);
+    notify_register_dispatch(uTF8String, &self->_significantTimeChangeToken, &_dispatch_main_q, handler);
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -338,10 +338,10 @@ LABEL_6:
   return v2;
 }
 
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4
+- (void)getElementsInSection:(id)section withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sectionCopy = section;
+  handlerCopy = handler;
   _HKInitializeLogging();
   if (os_log_type_enabled(HKLogCoaching, OS_LOG_TYPE_DEBUG))
   {
@@ -355,7 +355,7 @@ LABEL_6:
     v8[2] = sub_2260;
     v8[3] = &unk_C400;
     v8[4] = self;
-    v9 = v7;
+    v9 = handlerCopy;
     dispatch_async(&_dispatch_main_q, v8);
   }
 
@@ -367,11 +367,11 @@ LABEL_6:
       sub_4EC4();
     }
 
-    (*(v7 + 2))(v7, &__NSArray0__struct);
+    (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct);
   }
 }
 
-- (void)periodOfDayPredictorDidUpdatePredictedIntervals:(id)a3
+- (void)periodOfDayPredictorDidUpdatePredictedIntervals:(id)intervals
 {
   _HKInitializeLogging();
   v4 = HKLogCoaching;
@@ -416,7 +416,7 @@ LABEL_8:
     v8[0] = 67109376;
     v8[1] = [(NLActivityUpNextRelevanceEngineDataSource *)self willCompleteGoal];
     v9 = 1024;
-    v10 = [(NLActivityUpNextRelevanceEngineDataSource *)self shouldSuggestWalk];
+    shouldSuggestWalk = [(NLActivityUpNextRelevanceEngineDataSource *)self shouldSuggestWalk];
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "[Supergreen] Checking if walk is appropriate to suggest: willCompleteGoal=%{BOOL}d, shouldSuggestWalk=%{BOOL}d.", v8, 0xEu);
   }
 
@@ -431,19 +431,19 @@ LABEL_8:
 
 - (id)_createWalkSuggestionElement
 {
-  v3 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentSummary];
-  v4 = [v3 activityMoveMode];
+  currentSummary = [(NLActivityUpNextRelevanceEngineDataSource *)self currentSummary];
+  activityMoveMode = [currentSummary activityMoveMode];
 
-  if (v4 == &dword_0 + 2)
+  if (activityMoveMode == &dword_0 + 2)
   {
     _HKInitializeLogging();
     v5 = HKLogCoaching;
     if (os_log_type_enabled(HKLogCoaching, OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentSummary];
+      currentSummary2 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentSummary];
       *buf = 138412290;
-      v54 = v7;
+      v54 = currentSummary2;
       v8 = "[Supergreen] Not creating walk suggestion element for user in move minutes mode. Current summary = %@";
 LABEL_11:
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, v8, buf, 0xCu);
@@ -454,19 +454,19 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v9 = [(NLActivityUpNextRelevanceEngineDataSource *)self settingsController];
-  v10 = [v9 experienceType];
+  settingsController = [(NLActivityUpNextRelevanceEngineDataSource *)self settingsController];
+  experienceType = [settingsController experienceType];
 
   _HKInitializeLogging();
   v11 = HKLogCoaching;
-  if (v10 != &dword_0 + 1)
+  if (experienceType != &dword_0 + 1)
   {
     if (os_log_type_enabled(HKLogCoaching, OS_LOG_TYPE_DEFAULT))
     {
       v6 = v11;
-      v7 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentSummary];
+      currentSummary2 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentSummary];
       *buf = 138412290;
-      v54 = v7;
+      v54 = currentSummary2;
       v8 = "[Supergreen] Not creating walk suggestion element for user in fitness jr. experience. Current summary = %@";
       goto LABEL_11;
     }
@@ -481,20 +481,20 @@ LABEL_12:
     sub_4FA0(v11, self);
   }
 
-  v12 = [(NLActivityUpNextRelevanceEngineDataSource *)self _walkSuggestionDurationInMinutes];
-  v13 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentSummary];
-  v14 = [v13 activeEnergyBurnedGoal];
+  _walkSuggestionDurationInMinutes = [(NLActivityUpNextRelevanceEngineDataSource *)self _walkSuggestionDurationInMinutes];
+  currentSummary3 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentSummary];
+  activeEnergyBurnedGoal = [currentSummary3 activeEnergyBurnedGoal];
   v15 = +[HKUnit kilocalorieUnit];
-  [v14 doubleValueForUnit:v15];
+  [activeEnergyBurnedGoal doubleValueForUnit:v15];
   v17 = v16;
-  v18 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentSummary];
-  v19 = [v18 activeEnergyBurned];
+  currentSummary4 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentSummary];
+  activeEnergyBurned = [currentSummary4 activeEnergyBurned];
   v20 = +[HKUnit kilocalorieUnit];
-  [v19 doubleValueForUnit:v20];
+  [activeEnergyBurned doubleValueForUnit:v20];
   v22 = v17 - v21;
 
-  v23 = [(NLActivityUpNextRelevanceEngineDataSource *)self _wristOffDate];
-  v49 = NLActivityUpNextRelevanceEngineContent(v12);
+  _wristOffDate = [(NLActivityUpNextRelevanceEngineDataSource *)self _wristOffDate];
+  v49 = NLActivityUpNextRelevanceEngineContent(_walkSuggestionDurationInMinutes);
   v24 = objc_alloc_init(NSURLComponents);
   [v24 setScheme:@"SessionTrackerApp"];
   if (v22 >= 1.0)
@@ -516,8 +516,8 @@ LABEL_12:
     v51[2] = v33;
     v34 = [NSArray arrayWithObjects:v51 count:3];
 
-    v35 = [v24 queryItems];
-    v36 = [v35 arrayByAddingObjectsFromArray:v34];
+    queryItems = [v24 queryItems];
+    v36 = [queryItems arrayByAddingObjectsFromArray:v34];
     [v24 setQueryItems:v36];
   }
 
@@ -530,12 +530,12 @@ LABEL_12:
   v38 = [v24 URL];
   v39 = [v37 initWithURL:v38 applicationID:@"com.apple.SessionTrackerApp"];
 
-  v40 = [v23 dateByAddingTimeInterval:-10800.0];
-  v41 = [v23 dateByAddingTimeInterval:10800.0 * -0.33];
-  v42 = [[NSDateInterval alloc] initWithStartDate:v41 endDate:v23];
-  v43 = [[REDateRelevanceProvider alloc] initWithEventInterval:v42 becomesIrrelevantDate:v23 firstBecomesRelevantDate:v40 recentDuration:0.0];
+  v40 = [_wristOffDate dateByAddingTimeInterval:-10800.0];
+  v41 = [_wristOffDate dateByAddingTimeInterval:10800.0 * -0.33];
+  v42 = [[NSDateInterval alloc] initWithStartDate:v41 endDate:_wristOffDate];
+  v43 = [[REDateRelevanceProvider alloc] initWithEventInterval:v42 becomesIrrelevantDate:_wristOffDate firstBecomesRelevantDate:v40 recentDuration:0.0];
   [v43 providerWithPriority:1];
-  v44 = v48 = v23;
+  v44 = v48 = _wristOffDate;
   v45 = [REElement alloc];
   v50 = v44;
   v46 = [NSArray arrayWithObjects:&v50 count:1];
@@ -581,10 +581,10 @@ LABEL_15:
 - (void)_queue_updateCachedTypicalDayValues
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v3 = [(NLActivityUpNextRelevanceEngineDataSource *)self isUpdatingTypicalDayCachedValues];
+  isUpdatingTypicalDayCachedValues = [(NLActivityUpNextRelevanceEngineDataSource *)self isUpdatingTypicalDayCachedValues];
   _HKInitializeLogging();
   v4 = HKLogCoaching;
-  if (v3)
+  if (isUpdatingTypicalDayCachedValues)
   {
     if (os_log_type_enabled(HKLogCoaching, OS_LOG_TYPE_INFO))
     {
@@ -625,60 +625,60 @@ LABEL_15:
 
 - (id)_wristOffDate
 {
-  v3 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
-  v4 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentDate];
-  v5 = [v3 hk_startOfDateByAddingDays:1 toDate:v4];
+  currentCalendar = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
+  currentDate = [(NLActivityUpNextRelevanceEngineDataSource *)self currentDate];
+  v5 = [currentCalendar hk_startOfDateByAddingDays:1 toDate:currentDate];
 
   v6 = +[REPeriodOfDayPredictor sharedInstance];
   v7 = [v6 dateIntervalForNextPeriodOfDay:1];
 
-  v8 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
-  v9 = [v7 startDate];
-  v10 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentDate];
-  v11 = [v8 isDate:v9 inSameDayAsDate:v10];
+  currentCalendar2 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
+  startDate = [v7 startDate];
+  currentDate2 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentDate];
+  v11 = [currentCalendar2 isDate:startDate inSameDayAsDate:currentDate2];
 
   if (v11)
   {
-    v12 = [v7 endDate];
+    endDate = [v7 endDate];
   }
 
   else
   {
     v13 = +[REPeriodOfDayPredictor sharedInstance];
-    v14 = [v13 currentPeriodOfDay];
+    currentPeriodOfDay = [v13 currentPeriodOfDay];
 
-    if (v14 == &dword_0 + 1)
+    if (currentPeriodOfDay == &dword_0 + 1)
     {
       v15 = +[REPeriodOfDayPredictor sharedInstance];
-      v16 = [v15 intervalForCurrentPeriodOfDay];
-      v17 = [v16 endDate];
+      intervalForCurrentPeriodOfDay = [v15 intervalForCurrentPeriodOfDay];
+      endDate2 = [intervalForCurrentPeriodOfDay endDate];
 
       goto LABEL_7;
     }
 
-    v12 = v5;
+    endDate = v5;
   }
 
-  v17 = v12;
+  endDate2 = endDate;
 LABEL_7:
-  v18 = [v17 earlierDate:v5];
+  v18 = [endDate2 earlierDate:v5];
 
   return v18;
 }
 
 - (id)_typicalDayDateInterval
 {
-  v3 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
+  currentCalendar = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
   v4 = FITypicalDayActivityModelDaysOfActivityHistory;
-  v5 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentDate];
-  v6 = [v3 hk_startOfDateBySubtractingDays:v4 fromDate:v5];
+  currentDate = [(NLActivityUpNextRelevanceEngineDataSource *)self currentDate];
+  v6 = [currentCalendar hk_startOfDateBySubtractingDays:v4 fromDate:currentDate];
 
-  v7 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
-  v8 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentDate];
-  v9 = [v7 startOfDayForDate:v8];
+  currentCalendar2 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
+  currentDate2 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentDate];
+  v9 = [currentCalendar2 startOfDayForDate:currentDate2];
 
-  v10 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
-  v11 = [v10 dateByAddingUnit:128 value:-1 toDate:v9 options:0];
+  currentCalendar3 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
+  v11 = [currentCalendar3 dateByAddingUnit:128 value:-1 toDate:v9 options:0];
 
   v12 = [[NSDateInterval alloc] initWithStartDate:v6 endDate:v11];
 
@@ -687,26 +687,26 @@ LABEL_7:
 
 - (id)_activitySummaryPredicateForTypicalDateInterval
 {
-  v3 = [(NLActivityUpNextRelevanceEngineDataSource *)self _typicalDayDateInterval];
-  v4 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
-  v5 = [v3 startDate];
-  v6 = [v4 hk_activitySummaryDateComponentsFromDate:v5];
+  _typicalDayDateInterval = [(NLActivityUpNextRelevanceEngineDataSource *)self _typicalDayDateInterval];
+  currentCalendar = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
+  startDate = [_typicalDayDateInterval startDate];
+  v6 = [currentCalendar hk_activitySummaryDateComponentsFromDate:startDate];
 
-  v7 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
-  v8 = [v3 endDate];
-  v9 = [v7 hk_activitySummaryDateComponentsFromDate:v8];
+  currentCalendar2 = [(NLActivityUpNextRelevanceEngineDataSource *)self currentCalendar];
+  endDate = [_typicalDayDateInterval endDate];
+  v9 = [currentCalendar2 hk_activitySummaryDateComponentsFromDate:endDate];
 
   v10 = [HKQuery predicateForActivitySummariesBetweenStartDateComponents:v6 endDateComponents:v9];
 
   return v10;
 }
 
-- (void)_queue_handleUpdatedCurrentActivitySummary:(id)a3
+- (void)_queue_handleUpdatedCurrentActivitySummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   dispatch_assert_queue_V2(self->_serialQueue);
-  [(NLActivityUpNextRelevanceEngineDataSource *)self setCurrentSummary:v4];
-  v5 = [NSSet setWithObject:v4];
+  [(NLActivityUpNextRelevanceEngineDataSource *)self setCurrentSummary:summaryCopy];
+  v5 = [NSSet setWithObject:summaryCopy];
   [(NLActivityUpNextRelevanceEngineDataSource *)self _queue_handleNewActivitySummaries:v5];
 
   v6 = dispatch_get_global_queue(21, 0);
@@ -715,23 +715,23 @@ LABEL_7:
   v8[2] = sub_3898;
   v8[3] = &unk_C478;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = summaryCopy;
+  v7 = summaryCopy;
   dispatch_async(v6, v8);
 }
 
-- (void)_queue_handleNewActivitySummaries:(id)a3
+- (void)_queue_handleNewActivitySummaries:(id)summaries
 {
-  v4 = a3;
+  summariesCopy = summaries;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v5 = [(NLActivityUpNextRelevanceEngineDataSource *)self historicalSummariesByIndex];
-  v6 = [v5 mutableCopy];
+  historicalSummariesByIndex = [(NLActivityUpNextRelevanceEngineDataSource *)self historicalSummariesByIndex];
+  v6 = [historicalSummariesByIndex mutableCopy];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v4;
+  v7 = summariesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -764,16 +764,16 @@ LABEL_7:
   [(NLActivityUpNextRelevanceEngineDataSource *)self setHistoricalSummariesByIndex:v14];
 }
 
-- (void)_queryActivitySummaryHistoryWithRemainingRetries:(unint64_t)a3
+- (void)_queryActivitySummaryHistoryWithRemainingRetries:(unint64_t)retries
 {
   _HKInitializeLogging();
   v5 = HKLogCoaching;
-  if (a3)
+  if (retries)
   {
     if (os_log_type_enabled(HKLogCoaching, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v16 = a3;
+      retriesCopy = retries;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[Supergreen] Trying to start historical activity summary query with remaining retries %lu.", buf, 0xCu);
     }
 
@@ -783,7 +783,7 @@ LABEL_7:
     v12 = sub_3C68;
     v13 = &unk_C4A0;
     objc_copyWeak(v14, buf);
-    v14[1] = a3;
+    v14[1] = retries;
     v6 = objc_retainBlock(&v10);
     v7 = [HKActivitySummaryQuery alloc];
     v8 = [(NLActivityUpNextRelevanceEngineDataSource *)self _activitySummaryPredicateForTypicalDateInterval:v10];
@@ -803,16 +803,16 @@ LABEL_7:
   }
 }
 
-- (void)_startCurrentActivitySummaryQueryWithRemainingRetries:(unint64_t)a3
+- (void)_startCurrentActivitySummaryQueryWithRemainingRetries:(unint64_t)retries
 {
   _HKInitializeLogging();
   v5 = HKLogCoaching;
-  if (a3)
+  if (retries)
   {
     if (os_log_type_enabled(HKLogCoaching, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v15 = a3;
+      retriesCopy = retries;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[Supergreen] Trying to start current activity summary query with remaining retries %lu.", buf, 0xCu);
     }
 
@@ -822,7 +822,7 @@ LABEL_7:
     v11 = sub_4064;
     v12 = &unk_C4C8;
     objc_copyWeak(v13, buf);
-    v13[1] = a3;
+    v13[1] = retries;
     v6 = objc_retainBlock(&v9);
     v7 = [_HKCurrentActivitySummaryQuery alloc];
     v8 = [v7 initWithUpdateHandler:{v6, v9, v10, v11, v12}];
@@ -838,17 +838,17 @@ LABEL_7:
   }
 }
 
-- (void)_executeQuery:(id)a3
+- (void)_executeQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_4270;
   v7[3] = &unk_C478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queryCopy;
+  v6 = queryCopy;
   dispatch_async(serialQueue, v7);
 }
 

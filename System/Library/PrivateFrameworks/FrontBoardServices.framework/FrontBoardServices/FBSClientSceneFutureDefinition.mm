@@ -1,24 +1,24 @@
 @interface FBSClientSceneFutureDefinition
-- (FBSClientSceneFutureDefinition)initWithWorkspaceID:(id)a3;
+- (FBSClientSceneFutureDefinition)initWithWorkspaceID:(id)d;
 - (FBSMutableSceneParameters)parameters;
-- (void)configureParameters:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setSpecification:(id)a3;
+- (void)configureParameters:(id)parameters;
+- (void)setIdentifier:(id)identifier;
+- (void)setSpecification:(id)specification;
 @end
 
 @implementation FBSClientSceneFutureDefinition
 
-- (FBSClientSceneFutureDefinition)initWithWorkspaceID:(id)a3
+- (FBSClientSceneFutureDefinition)initWithWorkspaceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = FBSClientSceneFutureDefinition;
   v5 = [(FBSClientSceneFutureDefinition *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v7 = [v6 UUIDString];
-    v8 = [FBSSceneIdentity identityForIdentifier:v7 workspaceIdentifier:v4];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v8 = [FBSSceneIdentity identityForIdentifier:uUIDString workspaceIdentifier:dCopy];
     identity = v5->_identity;
     v5->_identity = v8;
 
@@ -30,33 +30,33 @@
   return v5;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v8 = a3;
-  if (!v8)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v8 = [v4 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    identifierCopy = [uUID UUIDString];
   }
 
-  v5 = [(FBSSceneIdentity *)self->_identity workspaceIdentifier];
-  v6 = [FBSSceneIdentity identityForIdentifier:v8 workspaceIdentifier:v5];
+  workspaceIdentifier = [(FBSSceneIdentity *)self->_identity workspaceIdentifier];
+  v6 = [FBSSceneIdentity identityForIdentifier:identifierCopy workspaceIdentifier:workspaceIdentifier];
   identity = self->_identity;
   self->_identity = v6;
 }
 
-- (void)setSpecification:(id)a3
+- (void)setSpecification:(id)specification
 {
-  v5 = a3;
+  specificationCopy = specification;
   if (self->_parameters)
   {
     [FBSClientSceneFutureDefinition setSpecification:a2];
   }
 
-  v8 = v5;
-  if (v5)
+  v8 = specificationCopy;
+  if (specificationCopy)
   {
-    v6 = v5;
+    v6 = specificationCopy;
   }
 
   else
@@ -68,22 +68,22 @@
   self->_specification = v6;
 }
 
-- (void)configureParameters:(id)a3
+- (void)configureParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   parameters = self->_parameters;
-  v8 = v4;
+  v8 = parametersCopy;
   if (!parameters)
   {
     v6 = [(FBSSceneParameters *)FBSMutableSceneParameters parametersForSpecification:self->_specification];
     v7 = self->_parameters;
     self->_parameters = v6;
 
-    v4 = v8;
+    parametersCopy = v8;
     parameters = self->_parameters;
   }
 
-  (*(v4 + 2))(v4, parameters);
+  (*(parametersCopy + 2))(parametersCopy, parameters);
 }
 
 - (FBSMutableSceneParameters)parameters

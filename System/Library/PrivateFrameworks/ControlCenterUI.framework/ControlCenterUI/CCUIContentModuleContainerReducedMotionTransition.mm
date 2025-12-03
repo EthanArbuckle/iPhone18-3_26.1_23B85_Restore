@@ -2,35 +2,35 @@
 - (CGAffineTransform)snapshotCorrectiveTransform;
 - (UIWindow)snapshotHostWindow;
 - (id)customAnimator;
-- (void)performTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5;
-- (void)setSnapshotCorrectiveTransform:(CGAffineTransform *)a3;
+- (void)performTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView;
+- (void)setSnapshotCorrectiveTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation CCUIContentModuleContainerReducedMotionTransition
 
-- (void)performTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5
+- (void)performTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  toViewCopy = toView;
+  containerViewCopy = containerView;
   v11 = MEMORY[0x277D75D18];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __100__CCUIContentModuleContainerReducedMotionTransition_performTransitionFromView_toView_containerView___block_invoke;
   v21[3] = &unk_278382DD0;
-  v22 = v8;
-  v23 = v9;
-  v24 = v10;
-  v25 = self;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v22 = viewCopy;
+  v23 = toViewCopy;
+  v24 = containerViewCopy;
+  selfCopy = self;
+  v12 = containerViewCopy;
+  v13 = toViewCopy;
+  v14 = viewCopy;
   [v11 performWithoutAnimation:v21];
-  v15 = [v14 window];
-  v16 = [v15 windowScene];
-  v17 = [v16 screen];
+  window = [v14 window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
 
-  v18 = [v17 snapshotViewAfterScreenUpdates:0];
+  v18 = [screen snapshotViewAfterScreenUpdates:0];
   snapshotView = self->_snapshotView;
   self->_snapshotView = v18;
 
@@ -113,11 +113,11 @@ uint64_t __67__CCUIContentModuleContainerReducedMotionTransition_customAnimator_
   return self;
 }
 
-- (void)setSnapshotCorrectiveTransform:(CGAffineTransform *)a3
+- (void)setSnapshotCorrectiveTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_snapshotCorrectiveTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_snapshotCorrectiveTransform.a = *&transform->a;
   *&self->_snapshotCorrectiveTransform.c = v4;
   *&self->_snapshotCorrectiveTransform.tx = v3;
 }

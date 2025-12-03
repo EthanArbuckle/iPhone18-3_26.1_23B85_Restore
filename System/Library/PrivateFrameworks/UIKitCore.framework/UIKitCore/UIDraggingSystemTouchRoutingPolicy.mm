@@ -1,14 +1,14 @@
 @interface UIDraggingSystemTouchRoutingPolicy
-- (UIDraggingSystemTouchRoutingPolicy)initWithCoder:(id)a3;
+- (UIDraggingSystemTouchRoutingPolicy)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIDraggingSystemTouchRoutingPolicy
 
-- (UIDraggingSystemTouchRoutingPolicy)initWithCoder:(id)a3
+- (UIDraggingSystemTouchRoutingPolicy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = UIDraggingSystemTouchRoutingPolicy;
   v5 = [(UIDraggingSystemTouchRoutingPolicy *)&v16 init];
@@ -18,49 +18,49 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [MEMORY[0x1E695DFD8] setWithObjects:{v8, objc_opt_class(), v6, v7, 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"contextIDsToAlwaysSendTouchesByDisplayIdentifier"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"contextIDsToAlwaysSendTouchesByDisplayIdentifier"];
     contextIDsToAlwaysSendTouchesByDisplayIdentifier = v5->_contextIDsToAlwaysSendTouchesByDisplayIdentifier;
     v5->_contextIDsToAlwaysSendTouchesByDisplayIdentifier = v10;
 
     v12 = [MEMORY[0x1E695DFD8] setWithObjects:{v6, v7, 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"contextIDsToExcludeFromHitTesting"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"contextIDsToExcludeFromHitTesting"];
     contextIDsToExcludeFromHitTesting = v5->_contextIDsToExcludeFromHitTesting;
     v5->_contextIDsToExcludeFromHitTesting = v13;
 
-    v5->_hitTestingDisabled = [v4 decodeBoolForKey:@"hitTestingDisabled"];
+    v5->_hitTestingDisabled = [coderCopy decodeBoolForKey:@"hitTestingDisabled"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contextIDsToAlwaysSendTouchesByDisplayIdentifier = self->_contextIDsToAlwaysSendTouchesByDisplayIdentifier;
-  v5 = a3;
-  [v5 encodeObject:contextIDsToAlwaysSendTouchesByDisplayIdentifier forKey:@"contextIDsToAlwaysSendTouchesByDisplayIdentifier"];
-  [v5 encodeObject:self->_contextIDsToExcludeFromHitTesting forKey:@"contextIDsToExcludeFromHitTesting"];
-  [v5 encodeBool:self->_hitTestingDisabled forKey:@"hitTestingDisabled"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contextIDsToAlwaysSendTouchesByDisplayIdentifier forKey:@"contextIDsToAlwaysSendTouchesByDisplayIdentifier"];
+  [coderCopy encodeObject:self->_contextIDsToExcludeFromHitTesting forKey:@"contextIDsToExcludeFromHitTesting"];
+  [coderCopy encodeBool:self->_hitTestingDisabled forKey:@"hitTestingDisabled"];
 }
 
 - (id)description
 {
-  v3 = [self _ui_descriptionBuilder];
+  _ui_descriptionBuilder = [self _ui_descriptionBuilder];
   if (self->_contextIDsToAlwaysSendTouchesByDisplayIdentifier)
   {
-    v4 = [(UIDraggingSystemTouchRoutingPolicy *)self contextIDsToAlwaysSendTouchesByDisplayIdentifier];
-    v5 = [v3 appendName:@"contextIDsToAlwaysSendTouchesByDisplayIdentifier" object:v4];
+    contextIDsToAlwaysSendTouchesByDisplayIdentifier = [(UIDraggingSystemTouchRoutingPolicy *)self contextIDsToAlwaysSendTouchesByDisplayIdentifier];
+    v5 = [_ui_descriptionBuilder appendName:@"contextIDsToAlwaysSendTouchesByDisplayIdentifier" object:contextIDsToAlwaysSendTouchesByDisplayIdentifier];
   }
 
   if (self->_contextIDsToExcludeFromHitTesting)
   {
-    v6 = [(UIDraggingSystemTouchRoutingPolicy *)self contextIDsToExcludeFromHitTesting];
-    v7 = [v3 appendName:@"contextIDsToExcludeFromHitTesting" object:v6];
+    contextIDsToExcludeFromHitTesting = [(UIDraggingSystemTouchRoutingPolicy *)self contextIDsToExcludeFromHitTesting];
+    v7 = [_ui_descriptionBuilder appendName:@"contextIDsToExcludeFromHitTesting" object:contextIDsToExcludeFromHitTesting];
   }
 
-  v8 = [v3 appendName:@"hitTestingDisabled" BOOLValue:{-[UIDraggingSystemTouchRoutingPolicy isHitTestingDisabled](self, "isHitTestingDisabled")}];
-  v9 = [v3 string];
+  v8 = [_ui_descriptionBuilder appendName:@"hitTestingDisabled" BOOLValue:{-[UIDraggingSystemTouchRoutingPolicy isHitTestingDisabled](self, "isHitTestingDisabled")}];
+  string = [_ui_descriptionBuilder string];
 
-  return v9;
+  return string;
 }
 
 @end

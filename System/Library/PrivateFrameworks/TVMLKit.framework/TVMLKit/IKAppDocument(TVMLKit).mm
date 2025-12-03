@@ -10,24 +10,24 @@
 
 - (double)tv_adjustedWindowSize
 {
-  v2 = [a1 delegate];
-  if (([v2 conformsToProtocol:&unk_287E7C5F0] & 1) == 0)
+  delegate = [self delegate];
+  if (([delegate conformsToProtocol:&unk_287E7C5F0] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v3 = [a1 delegate];
+  delegate2 = [self delegate];
 
-  if (!v3)
+  if (!delegate2)
   {
 LABEL_5:
-    v3 = [*MEMORY[0x277D76620] keyWindow];
-    [v3 size];
+    delegate2 = [*MEMORY[0x277D76620] keyWindow];
+    [delegate2 size];
     goto LABEL_6;
   }
 
-  [v3 tv_adjustedWindowSizeForDocument:a1];
+  [delegate2 tv_adjustedWindowSizeForDocument:self];
 LABEL_6:
   v5 = v4;
 
@@ -39,20 +39,20 @@ LABEL_6:
   v10 = a3;
   v11 = a4;
   v12 = a5;
-  v13 = [a1 delegate];
-  if ([v13 conformsToProtocol:&unk_287E7C5F0])
+  delegate = [self delegate];
+  if ([delegate conformsToProtocol:&unk_287E7C5F0])
   {
-    v14 = [a1 delegate];
+    delegate2 = [self delegate];
   }
 
   else
   {
-    v14 = 0;
+    delegate2 = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v14 tv_handleEventForDocument:a1 eventName:v10 targetResponder:v11 viewElement:v12 extraInfo:a6];
+    v15 = [delegate2 tv_handleEventForDocument:self eventName:v10 targetResponder:v11 viewElement:v12 extraInfo:a6];
   }
 
   else
@@ -65,20 +65,20 @@ LABEL_6:
 
 - (id)tv_featuresManager
 {
-  v2 = [a1 delegate];
-  if ([v2 conformsToProtocol:&unk_287E7C5F0])
+  delegate = [self delegate];
+  if ([delegate conformsToProtocol:&unk_287E7C5F0])
   {
-    v3 = [a1 delegate];
+    delegate2 = [self delegate];
   }
 
   else
   {
-    v3 = 0;
+    delegate2 = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 tv_featuresManagerForDocument:a1];
+    v4 = [delegate2 tv_featuresManagerForDocument:self];
   }
 
   else
@@ -91,11 +91,11 @@ LABEL_6:
 
 - (uint64_t)tv_isPresentedModal
 {
-  v2 = [a1 delegate];
+  delegate = [self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [a1 delegate];
-    v4 = [v3 tv_isPresentedModalForDocument:a1];
+    delegate2 = [self delegate];
+    v4 = [delegate2 tv_isPresentedModalForDocument:self];
   }
 
   else
@@ -111,20 +111,20 @@ LABEL_6:
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [a1 delegate];
-  if ([v11 conformsToProtocol:&unk_287E7C5F0])
+  delegate = [self delegate];
+  if ([delegate conformsToProtocol:&unk_287E7C5F0])
   {
-    v12 = [a1 delegate];
+    delegate2 = [self delegate];
   }
 
   else
   {
-    v12 = 0;
+    delegate2 = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v12 tv_interactionPreviewControllerForViewController:v8 presentingView:v9 presentingElement:v10];
+    v13 = [delegate2 tv_interactionPreviewControllerForViewController:v8 presentingView:v9 presentingElement:v10];
   }
 
   else

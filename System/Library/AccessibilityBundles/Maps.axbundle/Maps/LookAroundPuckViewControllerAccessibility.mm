@@ -1,22 +1,22 @@
 @interface LookAroundPuckViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation LookAroundPuckViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LookAroundModeController"];
-  [v3 validateClass:@"UIApplication" hasClassMethod:@"sharedMapsDelegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MapsAppDelegate" hasInstanceMethod:@"chromeViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ChromeViewController" hasInstanceMethod:@"topContext" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LookAroundModeController" hasInstanceMethod:@"actionCoordinator" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LookAroundActionCoordinator" hasInstanceMethod:@"dataCoordinator" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LookAroundPIPDataCoordinatorImpl" hasInstanceMethod:@"lookAroundViewHeading" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"LookAroundPuckViewController" hasInstanceVariable:@"_puckView" withType:"LookAroundPuckView"];
-  [v3 validateClass:@"IOSBasedChromeViewController" isKindOfClass:@"ChromeViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LookAroundModeController"];
+  [validationsCopy validateClass:@"UIApplication" hasClassMethod:@"sharedMapsDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MapsAppDelegate" hasInstanceMethod:@"chromeViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ChromeViewController" hasInstanceMethod:@"topContext" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LookAroundModeController" hasInstanceMethod:@"actionCoordinator" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LookAroundActionCoordinator" hasInstanceMethod:@"dataCoordinator" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LookAroundPIPDataCoordinatorImpl" hasInstanceMethod:@"lookAroundViewHeading" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"LookAroundPuckViewController" hasInstanceVariable:@"_puckView" withType:"LookAroundPuckView"];
+  [validationsCopy validateClass:@"IOSBasedChromeViewController" isKindOfClass:@"ChromeViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

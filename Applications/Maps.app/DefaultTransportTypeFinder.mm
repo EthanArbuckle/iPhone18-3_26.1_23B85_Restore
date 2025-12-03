@@ -1,24 +1,24 @@
 @interface DefaultTransportTypeFinder
-- (DefaultTransportTypeFinder)initWithMapTypeSource:(id)a3;
+- (DefaultTransportTypeFinder)initWithMapTypeSource:(id)source;
 - (MapTypeSource)mapTypeSource;
-- (int)geoIdealTransportTypeForCoordinates:(CLLocationCoordinate2D *)a3 count:(unint64_t)a4 ignoreMapType:(BOOL)a5;
-- (int)geoIdealTransportTypeForOrigin:(CLLocationCoordinate2D)a3 destination:(CLLocationCoordinate2D)a4 ignoreMapType:(BOOL)a5;
-- (void)findDirectionsTypeForOriginCoordinate:(CLLocationCoordinate2D)a3 destinationCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5;
-- (void)mkDirectionsTypeForOrigin:(CLLocationCoordinate2D)a3 destination:(CLLocationCoordinate2D)a4 ignoreMapType:(BOOL)a5 completion:(id)a6;
-- (void)transportTypeForCoordinates:(CLLocationCoordinate2D *)a3 count:(unint64_t)a4 ignoreMapType:(BOOL)a5 completion:(id)a6;
-- (void)transportTypeForDirectionItem:(id)a3 ignoreMapType:(BOOL)a4 completion:(id)a5;
-- (void)transportTypeForOrigin:(CLLocationCoordinate2D)a3 destination:(CLLocationCoordinate2D)a4 ignoreMapType:(BOOL)a5 completion:(id)a6;
+- (int)geoIdealTransportTypeForCoordinates:(CLLocationCoordinate2D *)coordinates count:(unint64_t)count ignoreMapType:(BOOL)type;
+- (int)geoIdealTransportTypeForOrigin:(CLLocationCoordinate2D)origin destination:(CLLocationCoordinate2D)destination ignoreMapType:(BOOL)type;
+- (void)findDirectionsTypeForOriginCoordinate:(CLLocationCoordinate2D)coordinate destinationCoordinate:(CLLocationCoordinate2D)destinationCoordinate handler:(id)handler;
+- (void)mkDirectionsTypeForOrigin:(CLLocationCoordinate2D)origin destination:(CLLocationCoordinate2D)destination ignoreMapType:(BOOL)type completion:(id)completion;
+- (void)transportTypeForCoordinates:(CLLocationCoordinate2D *)coordinates count:(unint64_t)count ignoreMapType:(BOOL)type completion:(id)completion;
+- (void)transportTypeForDirectionItem:(id)item ignoreMapType:(BOOL)type completion:(id)completion;
+- (void)transportTypeForOrigin:(CLLocationCoordinate2D)origin destination:(CLLocationCoordinate2D)destination ignoreMapType:(BOOL)type completion:(id)completion;
 @end
 
 @implementation DefaultTransportTypeFinder
 
-- (void)transportTypeForDirectionItem:(id)a3 ignoreMapType:(BOOL)a4 completion:(id)a5
+- (void)transportTypeForDirectionItem:(id)item ignoreMapType:(BOOL)type completion:(id)completion
 {
-  v21 = a4;
-  v20 = self;
-  v6 = a5;
-  v7 = [a3 items];
-  v8 = [v7 count];
+  typeCopy = type;
+  selfCopy = self;
+  completionCopy = completion;
+  items = [item items];
+  v8 = [items count];
   v9 = v8;
   v10 = &v19 - 2 * v8;
   if (v8)
@@ -27,10 +27,10 @@
     v12 = (&v19 - 2 * v8);
     do
     {
-      v13 = [v7 objectAtIndexedSubscript:v11];
-      v14 = [v13 waypoint];
-      [v14 coordinate];
-      if (v14 && (v17 = v15, v18 = v16, CLLocationCoordinate2DIsValid(*&v15)))
+      v13 = [items objectAtIndexedSubscript:v11];
+      waypoint = [v13 waypoint];
+      [waypoint coordinate];
+      if (waypoint && (v17 = v15, v18 = v16, CLLocationCoordinate2DIsValid(*&v15)))
       {
         v12->latitude = v17;
         v12->longitude = v18;
@@ -48,7 +48,7 @@
     while (v9 != v11);
   }
 
-  [(DefaultTransportTypeFinder *)v20 transportTypeForCoordinates:v10 count:v9 ignoreMapType:v21 completion:v6];
+  [(DefaultTransportTypeFinder *)selfCopy transportTypeForCoordinates:v10 count:v9 ignoreMapType:typeCopy completion:completionCopy];
 }
 
 - (MapTypeSource)mapTypeSource
@@ -58,37 +58,37 @@
   return WeakRetained;
 }
 
-- (void)findDirectionsTypeForOriginCoordinate:(CLLocationCoordinate2D)a3 destinationCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5
+- (void)findDirectionsTypeForOriginCoordinate:(CLLocationCoordinate2D)coordinate destinationCoordinate:(CLLocationCoordinate2D)destinationCoordinate handler:(id)handler
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3.longitude;
-  v8 = a3.latitude;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  longitude = destinationCoordinate.longitude;
+  latitude = destinationCoordinate.latitude;
+  v7 = coordinate.longitude;
+  v8 = coordinate.latitude;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (handlerCopy)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100EC0190;
     v12[3] = &unk_101657E40;
-    v13 = v10;
+    v13 = handlerCopy;
     [(DefaultTransportTypeFinder *)self mkDirectionsTypeForOrigin:0 destination:v12 ignoreMapType:v8 completion:v7, latitude, longitude];
   }
 }
 
-- (void)transportTypeForCoordinates:(CLLocationCoordinate2D *)a3 count:(unint64_t)a4 ignoreMapType:(BOOL)a5 completion:(id)a6
+- (void)transportTypeForCoordinates:(CLLocationCoordinate2D *)coordinates count:(unint64_t)count ignoreMapType:(BOOL)type completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = v10;
-  if (v10)
+  typeCopy = type;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
     v44[2] = sub_100EC05DC;
     v44[3] = &unk_101657DF0;
-    v45 = v10;
+    v45 = completionCopy;
     v12 = objc_retainBlock(v44);
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -98,22 +98,22 @@
     }
 
     v14 = &kCLLocationCoordinate2DInvalid;
-    v15 = &a3[a4];
+    v15 = &coordinates[count];
     v16 = v15 - 1;
     p_longitude = &v15[-1].longitude;
-    if (a4)
+    if (count)
     {
-      v18 = a3;
+      coordinatesCopy = coordinates;
     }
 
     else
     {
-      v18 = &kCLLocationCoordinate2DInvalid;
+      coordinatesCopy = &kCLLocationCoordinate2DInvalid;
     }
 
-    latitude = v18->latitude;
-    longitude = v18->longitude;
-    if (a4)
+    latitude = coordinatesCopy->latitude;
+    longitude = coordinatesCopy->longitude;
+    if (count)
     {
       v14 = v16;
     }
@@ -125,14 +125,14 @@
 
     v21 = v14->latitude;
     v22 = *p_longitude;
-    v23 = CLLocationCoordinate2DIsValid(*v18);
+    v23 = CLLocationCoordinate2DIsValid(*coordinatesCopy);
     v50.latitude = v21;
     v50.longitude = v22;
     v24 = CLLocationCoordinate2DIsValid(v50);
     v25 = v24;
     if (v23 && v24)
     {
-      v26 = [(DefaultTransportTypeFinder *)self geoIdealTransportTypeForCoordinates:a3 count:a4 ignoreMapType:v6];
+      v26 = [(DefaultTransportTypeFinder *)self geoIdealTransportTypeForCoordinates:coordinates count:count ignoreMapType:typeCopy];
       v27 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
@@ -219,52 +219,52 @@
   }
 }
 
-- (void)transportTypeForOrigin:(CLLocationCoordinate2D)a3 destination:(CLLocationCoordinate2D)a4 ignoreMapType:(BOOL)a5 completion:(id)a6
+- (void)transportTypeForOrigin:(CLLocationCoordinate2D)origin destination:(CLLocationCoordinate2D)destination ignoreMapType:(BOOL)type completion:(id)completion
 {
-  v6[0] = a3;
-  v6[1] = a4;
-  [(DefaultTransportTypeFinder *)self transportTypeForCoordinates:v6 count:2 ignoreMapType:a5 completion:a6];
+  v6[0] = origin;
+  v6[1] = destination;
+  [(DefaultTransportTypeFinder *)self transportTypeForCoordinates:v6 count:2 ignoreMapType:type completion:completion];
 }
 
-- (void)mkDirectionsTypeForOrigin:(CLLocationCoordinate2D)a3 destination:(CLLocationCoordinate2D)a4 ignoreMapType:(BOOL)a5 completion:(id)a6
+- (void)mkDirectionsTypeForOrigin:(CLLocationCoordinate2D)origin destination:(CLLocationCoordinate2D)destination ignoreMapType:(BOOL)type completion:(id)completion
 {
-  v6 = a5;
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v9 = a3.longitude;
-  v10 = a3.latitude;
-  v12 = a6;
-  v13 = v12;
-  if (v12)
+  typeCopy = type;
+  longitude = destination.longitude;
+  latitude = destination.latitude;
+  v9 = origin.longitude;
+  v10 = origin.latitude;
+  completionCopy = completion;
+  v13 = completionCopy;
+  if (completionCopy)
   {
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100EC0B08;
     v14[3] = &unk_101657DA0;
-    v15 = v12;
-    [(DefaultTransportTypeFinder *)self transportTypeForOrigin:v6 destination:v14 ignoreMapType:v10 completion:v9, latitude, longitude];
+    v15 = completionCopy;
+    [(DefaultTransportTypeFinder *)self transportTypeForOrigin:typeCopy destination:v14 ignoreMapType:v10 completion:v9, latitude, longitude];
   }
 }
 
-- (int)geoIdealTransportTypeForCoordinates:(CLLocationCoordinate2D *)a3 count:(unint64_t)a4 ignoreMapType:(BOOL)a5
+- (int)geoIdealTransportTypeForCoordinates:(CLLocationCoordinate2D *)coordinates count:(unint64_t)count ignoreMapType:(BOOL)type
 {
-  if (a5)
+  if (type)
   {
-    v7 = 0;
+    displayedMapType = 0;
   }
 
   else
   {
-    v8 = [(DefaultTransportTypeFinder *)self mapTypeSource];
-    v7 = [v8 displayedMapType];
+    mapTypeSource = [(DefaultTransportTypeFinder *)self mapTypeSource];
+    displayedMapType = [mapTypeSource displayedMapType];
   }
 
   v9 = __chkstk_darwin(self);
-  if (a4)
+  if (count)
   {
-    p_longitude = &a3->longitude;
-    v11 = (&v16 - 2 * a4);
-    v12 = a4;
+    p_longitude = &coordinates->longitude;
+    v11 = (&v16 - 2 * count);
+    countCopy = count;
     do
     {
       v13 = *(p_longitude - 1);
@@ -285,33 +285,33 @@
 
       v11 += 2;
       p_longitude += 2;
-      --v12;
+      --countCopy;
     }
 
-    while (v12);
+    while (countCopy);
   }
 
-  [GEOIdealTransportTypeFinder idealTransportTypeForCoordinates:&v16 - 2 * a4 count:a4 mapType:v7, v9];
+  [GEOIdealTransportTypeFinder idealTransportTypeForCoordinates:&v16 - 2 * count count:count mapType:displayedMapType, v9];
   return GEOTransportTypeFromGEOTransportTypePreference();
 }
 
-- (int)geoIdealTransportTypeForOrigin:(CLLocationCoordinate2D)a3 destination:(CLLocationCoordinate2D)a4 ignoreMapType:(BOOL)a5
+- (int)geoIdealTransportTypeForOrigin:(CLLocationCoordinate2D)origin destination:(CLLocationCoordinate2D)destination ignoreMapType:(BOOL)type
 {
-  v6[0] = a3;
-  v6[1] = a4;
-  return [(DefaultTransportTypeFinder *)self geoIdealTransportTypeForCoordinates:v6 count:2 ignoreMapType:a5];
+  v6[0] = origin;
+  v6[1] = destination;
+  return [(DefaultTransportTypeFinder *)self geoIdealTransportTypeForCoordinates:v6 count:2 ignoreMapType:type];
 }
 
-- (DefaultTransportTypeFinder)initWithMapTypeSource:(id)a3
+- (DefaultTransportTypeFinder)initWithMapTypeSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = DefaultTransportTypeFinder;
   v5 = [(DefaultTransportTypeFinder *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_mapTypeSource, v4);
+    objc_storeWeak(&v5->_mapTypeSource, sourceCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("transportTypeFinderQueue", v7);
     transportTypeFinderQueue = v6->_transportTypeFinderQueue;

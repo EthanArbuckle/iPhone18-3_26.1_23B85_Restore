@@ -6,7 +6,7 @@
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_218A50F00();
 
   if (v3)

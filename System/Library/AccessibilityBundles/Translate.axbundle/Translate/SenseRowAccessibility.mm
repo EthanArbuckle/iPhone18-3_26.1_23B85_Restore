@@ -1,17 +1,17 @@
 @interface SenseRowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SenseRowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SequoiaTranslator.SenseRow" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SequoiaTranslator.SenseRow" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SequoiaTranslator.SenseRow" hasInstanceMethod:@"checkmark" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SequoiaTranslator.SenseRow" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SequoiaTranslator.SenseRow" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SequoiaTranslator.SenseRow" hasInstanceMethod:@"checkmark" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -40,17 +40,17 @@
 
   if ([v4 _accessibilityViewIsVisible])
   {
-    v5 = *MEMORY[0x29EDC7FC0];
+    accessibilityTraits = *MEMORY[0x29EDC7FC0];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SenseRowAccessibility;
-    v5 = [(SenseRowAccessibility *)&v7 accessibilityTraits];
+    accessibilityTraits = [(SenseRowAccessibility *)&v7 accessibilityTraits];
   }
 
-  return v5;
+  return accessibilityTraits;
 }
 
 @end

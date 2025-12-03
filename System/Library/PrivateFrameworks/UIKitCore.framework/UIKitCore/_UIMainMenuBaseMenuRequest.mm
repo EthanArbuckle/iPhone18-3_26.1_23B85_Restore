@@ -1,7 +1,7 @@
 @interface _UIMainMenuBaseMenuRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIMainMenuBaseMenuRequest)init;
-- (_UIMainMenuBaseMenuRequest)initWithCoder:(id)a3;
+- (_UIMainMenuBaseMenuRequest)initWithCoder:(id)coder;
 - (id)description;
 @end
 
@@ -14,14 +14,14 @@
   return [(_UIMainMenuBaseMenuRequest *)&v3 init];
 }
 
-- (_UIMainMenuBaseMenuRequest)initWithCoder:(id)a3
+- (_UIMainMenuBaseMenuRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenuBaseMenuRequest *)self init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"SessionRequest"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"SessionRequest"];
     sessionRequest = v5->_sessionRequest;
     v5->_sessionRequest = v7;
   }
@@ -29,10 +29,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -44,7 +44,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       sessionRequest = v7->_sessionRequest;
       v9 = self->_sessionRequest;
       v10 = sessionRequest;
@@ -77,9 +77,9 @@
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_sessionRequest withName:@"sessionRequest" skipIfNil:1];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

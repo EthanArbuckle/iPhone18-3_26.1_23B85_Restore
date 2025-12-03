@@ -1,13 +1,13 @@
 @interface _TVRemoteAlertVisualStyle_Pad
-- (CGRect)frameForParentView:(id)a3;
+- (CGRect)frameForParentView:(id)view;
 @end
 
 @implementation _TVRemoteAlertVisualStyle_Pad
 
-- (CGRect)frameForParentView:(id)a3
+- (CGRect)frameForParentView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v5 = CGRectGetHeight(v27) + -27.0 + -27.0;
   [(_TVRemoteAlertVisualStyle_Pad *)self remoteHeight];
   if (v5 > v6)
@@ -16,11 +16,11 @@
     v5 = v7;
   }
 
-  [v4 bounds];
+  [viewCopy bounds];
   v8 = CGRectGetWidth(v28) * 0.5;
   [(_TVRemoteAlertVisualStyle_Pad *)self remoteWidth];
   v10 = v8 - v9 * 0.5;
-  [v4 bounds];
+  [viewCopy bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;

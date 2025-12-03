@@ -1,22 +1,22 @@
 @interface AVCaptureBlockKVOObserver
-- (AVCaptureBlockKVOObserver)initWithObjectToObserve:(id)a3 keyPath:(id)a4 options:(unint64_t)a5 handler:(id)a6;
+- (AVCaptureBlockKVOObserver)initWithObjectToObserve:(id)observe keyPath:(id)path options:(unint64_t)options handler:(id)handler;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation AVCaptureBlockKVOObserver
 
-- (AVCaptureBlockKVOObserver)initWithObjectToObserve:(id)a3 keyPath:(id)a4 options:(unint64_t)a5 handler:(id)a6
+- (AVCaptureBlockKVOObserver)initWithObjectToObserve:(id)observe keyPath:(id)path options:(unint64_t)options handler:(id)handler
 {
   v12.receiver = self;
   v12.super_class = AVCaptureBlockKVOObserver;
   v10 = [(AVCaptureBlockKVOObserver *)&v12 init];
   if (v10)
   {
-    v10->_object = a3;
-    v10->_keyPath = a4;
-    v10->_handler = a6;
-    [a3 addObserver:v10 forKeyPath:a4 options:a5 context:AVCaptureBlockKVOObserverContext];
+    v10->_object = observe;
+    v10->_keyPath = path;
+    v10->_handler = handler;
+    [observe addObserver:v10 forKeyPath:path options:options context:AVCaptureBlockKVOObserverContext];
   }
 
   return v10;
@@ -31,9 +31,9 @@
   [(AVCaptureBlockKVOObserver *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (AVCaptureBlockKVOObserverContext == a6)
+  if (AVCaptureBlockKVOObserverContext == context)
   {
     v8 = *(self->_handler + 2);
 
@@ -46,7 +46,7 @@
     v11 = v7;
     v9.receiver = self;
     v9.super_class = AVCaptureBlockKVOObserver;
-    [(AVCaptureBlockKVOObserver *)&v9 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(AVCaptureBlockKVOObserver *)&v9 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

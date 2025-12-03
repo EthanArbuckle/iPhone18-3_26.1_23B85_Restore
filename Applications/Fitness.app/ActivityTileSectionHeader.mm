@@ -1,16 +1,16 @@
 @interface ActivityTileSectionHeader
 + (NSString)reuseIdentifier;
-- (_TtC10FitnessApp25ActivityTileSectionHeader)initWithReuseIdentifier:(id)a3;
-- (void)configureWithTitle:(id)a3 subtitle:(id)a4 buttonAction:(id)a5 horizontalMargin:(double)a6;
+- (_TtC10FitnessApp25ActivityTileSectionHeader)initWithReuseIdentifier:(id)identifier;
+- (void)configureWithTitle:(id)title subtitle:(id)subtitle buttonAction:(id)action horizontalMargin:(double)margin;
 - (void)didTapButton;
 - (void)prepareForReuse;
 @end
 
 @implementation ActivityTileSectionHeader
 
-- (_TtC10FitnessApp25ActivityTileSectionHeader)initWithReuseIdentifier:(id)a3
+- (_TtC10FitnessApp25ActivityTileSectionHeader)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -24,14 +24,14 @@
   return sub_100509878(v3, v4);
 }
 
-- (void)configureWithTitle:(id)a3 subtitle:(id)a4 buttonAction:(id)a5 horizontalMargin:(double)a6
+- (void)configureWithTitle:(id)title subtitle:(id)subtitle buttonAction:(id)action horizontalMargin:(double)margin
 {
-  v10 = _Block_copy(a5);
-  if (a3)
+  v10 = _Block_copy(action);
+  if (title)
   {
     v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v12;
-    if (a4)
+    title = v12;
+    if (subtitle)
     {
       goto LABEL_3;
     }
@@ -47,14 +47,14 @@ LABEL_6:
   }
 
   v11 = 0;
-  if (!a4)
+  if (!subtitle)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   v13 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-  a4 = v14;
+  subtitle = v14;
   if (v10)
   {
 LABEL_4:
@@ -67,14 +67,14 @@ LABEL_4:
 LABEL_7:
   v15 = 0;
 LABEL_8:
-  v16 = self;
-  sub_10050ADC0(v11, a3, v13, a4, v10, v15, a6);
+  selfCopy = self;
+  sub_10050ADC0(v11, title, v13, subtitle, v10, v15, margin);
   sub_1000245E0(v10);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_10050B968();
 }
 
@@ -83,7 +83,7 @@ LABEL_8:
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC10FitnessApp25ActivityTileSectionHeader_buttonAction);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     sub_10000B210(v2);
     v2(1);
 

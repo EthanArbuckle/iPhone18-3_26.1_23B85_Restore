@@ -1,49 +1,49 @@
 @interface STUIStatusBarBackgroundActivityItem
-+ (BOOL)_identifierContainsItemImage:(id)a3;
-+ (BOOL)_identifierContainsSecondaryItemImage:(id)a3;
-+ (double)_fontSizeAdjustmentForActivityWithIdentifier:(id)a3;
-+ (double)_verticalOffsetForActivityWithIdentifier:(id)a3;
-- (BOOL)_shouldPulseBackgroundForActivityWithIdentifier:(id)a3 traitCollection:(id)a4;
-- (BOOL)_shouldPulseSymbolForActivityWithIdentifier:(id)a3 traitCollection:(id)a4;
-- (BOOL)_shouldRingForActivityWithIdentifier:(id)a3 traitCollection:(id)a4;
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4;
-- (BOOL)crossfadeForUpdate:(id)a3;
++ (BOOL)_identifierContainsItemImage:(id)image;
++ (BOOL)_identifierContainsSecondaryItemImage:(id)image;
++ (double)_fontSizeAdjustmentForActivityWithIdentifier:(id)identifier;
++ (double)_verticalOffsetForActivityWithIdentifier:(id)identifier;
+- (BOOL)_shouldPulseBackgroundForActivityWithIdentifier:(id)identifier traitCollection:(id)collection;
+- (BOOL)_shouldPulseSymbolForActivityWithIdentifier:(id)identifier traitCollection:(id)collection;
+- (BOOL)_shouldRingForActivityWithIdentifier:(id)identifier traitCollection:(id)collection;
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data;
+- (BOOL)crossfadeForUpdate:(id)update;
 - (STUIStatusBarActivityIconView)iconView;
 - (STUIStatusBarImageView)secondaryIconView;
 - (STUIStatusBarPillView)backgroundView;
-- (id)_backgroundActivityViewForIdentifier:(id)a3;
-- (id)_backgroundColorForActivityWithIdentifier:(id)a3;
-- (id)_imageNameForActivityWithIdentifier:(id)a3;
-- (id)_systemImageNameForActivityWithIdentifier:(id)a3;
-- (id)_textLabelForActivityWithIdentifier:(id)a3;
-- (id)_visualEffectForActivityWithIdentifier:(id)a3 traitCollection:(id)a4;
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)createDisplayItemForIdentifier:(id)a3;
-- (id)imageForUpdate:(id)a3;
-- (id)imageNameForUpdate:(id)a3;
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3;
-- (id)secondaryImageForUpdate:(id)a3;
-- (id)systemImageNameForUpdate:(id)a3;
-- (id)viewForIdentifier:(id)a3;
+- (id)_backgroundActivityViewForIdentifier:(id)identifier;
+- (id)_backgroundColorForActivityWithIdentifier:(id)identifier;
+- (id)_imageNameForActivityWithIdentifier:(id)identifier;
+- (id)_systemImageNameForActivityWithIdentifier:(id)identifier;
+- (id)_textLabelForActivityWithIdentifier:(id)identifier;
+- (id)_visualEffectForActivityWithIdentifier:(id)identifier traitCollection:(id)collection;
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)createDisplayItemForIdentifier:(id)identifier;
+- (id)imageForUpdate:(id)update;
+- (id)imageNameForUpdate:(id)update;
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier;
+- (id)secondaryImageForUpdate:(id)update;
+- (id)systemImageNameForUpdate:(id)update;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_backgroundView;
 - (void)_create_iconView;
 - (void)_create_secondaryIconView;
-- (void)applyStyleAttributes:(id)a3 toDisplayItem:(id)a4;
-- (void)updatedDisplayItemsWithData:(id)a3;
+- (void)applyStyleAttributes:(id)attributes toDisplayItem:(id)item;
+- (void)updatedDisplayItemsWithData:(id)data;
 @end
 
 @implementation STUIStatusBarBackgroundActivityItem
 
-- (id)createDisplayItemForIdentifier:(id)a3
+- (id)createDisplayItemForIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = STUIStatusBarBackgroundActivityItem;
-  v3 = [(STUIStatusBarItem *)&v7 createDisplayItemForIdentifier:a3];
-  v4 = [v3 identifier];
-  v5 = [objc_opt_class() backgroundDisplayIdentifier];
+  v3 = [(STUIStatusBarItem *)&v7 createDisplayItemForIdentifier:identifier];
+  identifier = [v3 identifier];
+  backgroundDisplayIdentifier = [objc_opt_class() backgroundDisplayIdentifier];
 
-  if (v4 == v5)
+  if (identifier == backgroundDisplayIdentifier)
   {
     [v3 setBackground:1];
   }
@@ -51,48 +51,48 @@
   return v3;
 }
 
-- (id)_backgroundActivityViewForIdentifier:(id)a3
+- (id)_backgroundActivityViewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() backgroundDisplayIdentifier];
+  identifierCopy = identifier;
+  backgroundDisplayIdentifier = [objc_opt_class() backgroundDisplayIdentifier];
 
-  if (v5 == v4)
+  if (backgroundDisplayIdentifier == identifierCopy)
   {
-    v6 = [(STUIStatusBarBackgroundActivityItem *)self backgroundView];
+    backgroundView = [(STUIStatusBarBackgroundActivityItem *)self backgroundView];
   }
 
   else
   {
-    v6 = 0;
+    backgroundView = 0;
   }
 
-  return v6;
+  return backgroundView;
 }
 
-+ (BOOL)_identifierContainsItemImage:(id)a3
++ (BOOL)_identifierContainsItemImage:(id)image
 {
-  v4 = a3;
-  v5 = [a1 defaultDisplayIdentifier];
+  imageCopy = image;
+  defaultDisplayIdentifier = [self defaultDisplayIdentifier];
 
-  return v5 == v4;
+  return defaultDisplayIdentifier == imageCopy;
 }
 
-+ (BOOL)_identifierContainsSecondaryItemImage:(id)a3
++ (BOOL)_identifierContainsSecondaryItemImage:(id)image
 {
-  v4 = a3;
-  v5 = [a1 secondaryIconDisplayIdentifier];
+  imageCopy = image;
+  secondaryIconDisplayIdentifier = [self secondaryIconDisplayIdentifier];
 
-  return v5 == v4;
+  return secondaryIconDisplayIdentifier == imageCopy;
 }
 
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [objc_opt_class() secondaryIconDisplayIdentifier];
+  itemCopy = item;
+  dataCopy = data;
+  identifier = [itemCopy identifier];
+  secondaryIconDisplayIdentifier = [objc_opt_class() secondaryIconDisplayIdentifier];
 
-  if (v8 == v9)
+  if (identifier == secondaryIconDisplayIdentifier)
   {
     v10 = 0;
   }
@@ -101,42 +101,42 @@
   {
     v12.receiver = self;
     v12.super_class = STUIStatusBarBackgroundActivityItem;
-    v10 = [(STUIStatusBarItem *)&v12 canEnableDisplayItem:v6 fromData:v7];
+    v10 = [(STUIStatusBarItem *)&v12 canEnableDisplayItem:itemCopy fromData:dataCopy];
   }
 
   return v10;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v52.receiver = self;
   v52.super_class = STUIStatusBarBackgroundActivityItem;
-  v8 = [(STUIStatusBarIndicatorItem *)&v52 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [v6 data];
-  v10 = [v9 backgroundActivityEntry];
+  v8 = [(STUIStatusBarIndicatorItem *)&v52 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  data = [updateCopy data];
+  backgroundActivityEntry = [data backgroundActivityEntry];
 
-  v11 = [v10 backgroundActivityIdentifier];
-  if ([v6 dataChanged])
+  backgroundActivityIdentifier = [backgroundActivityEntry backgroundActivityIdentifier];
+  if ([updateCopy dataChanged])
   {
     v12 = _STUIStatusBar_BackgroundActivity_Log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v54 = v11;
+      v54 = backgroundActivityIdentifier;
       _os_log_impl(&dword_26C4DD000, v12, OS_LOG_TYPE_DEFAULT, "Updating background activity item to type: %@", buf, 0xCu);
     }
 
-    v13 = [v7 identifier];
-    v14 = [(STUIStatusBarBackgroundActivityItem *)self _backgroundActivityViewForIdentifier:v13];
+    identifier = [itemCopy identifier];
+    v14 = [(STUIStatusBarBackgroundActivityItem *)self _backgroundActivityViewForIdentifier:identifier];
 
     if (v14)
     {
-      v46 = v10;
-      v15 = [(STUIStatusBarBackgroundActivityItem *)self _backgroundColorForActivityWithIdentifier:v11];
-      if ([(STUIStatusBarBackgroundActivityItem *)self crossfadeForUpdate:v6])
+      v46 = backgroundActivityEntry;
+      v15 = [(STUIStatusBarBackgroundActivityItem *)self _backgroundColorForActivityWithIdentifier:backgroundActivityIdentifier];
+      if ([(STUIStatusBarBackgroundActivityItem *)self crossfadeForUpdate:updateCopy])
       {
         v49[0] = MEMORY[0x277D85DD0];
         v49[1] = 3221225472;
@@ -153,94 +153,94 @@
         [v14 setPillColor:v15];
       }
 
-      v17 = [v6 styleAttributes];
-      v18 = [v17 traitCollection];
-      v19 = [(STUIStatusBarBackgroundActivityItem *)self _visualEffectForActivityWithIdentifier:v11 traitCollection:v18];
+      styleAttributes = [updateCopy styleAttributes];
+      traitCollection = [styleAttributes traitCollection];
+      v19 = [(STUIStatusBarBackgroundActivityItem *)self _visualEffectForActivityWithIdentifier:backgroundActivityIdentifier traitCollection:traitCollection];
       [v14 setVisualEffect:v19];
 
-      v20 = [v6 styleAttributes];
-      v21 = [v20 traitCollection];
-      [v14 setPulsing:{-[STUIStatusBarBackgroundActivityItem _shouldPulseBackgroundForActivityWithIdentifier:traitCollection:](self, "_shouldPulseBackgroundForActivityWithIdentifier:traitCollection:", v11, v21)}];
+      styleAttributes2 = [updateCopy styleAttributes];
+      traitCollection2 = [styleAttributes2 traitCollection];
+      [v14 setPulsing:{-[STUIStatusBarBackgroundActivityItem _shouldPulseBackgroundForActivityWithIdentifier:traitCollection:](self, "_shouldPulseBackgroundForActivityWithIdentifier:traitCollection:", backgroundActivityIdentifier, traitCollection2)}];
 
       v8 = v16;
-      v10 = v46;
+      backgroundActivityEntry = v46;
     }
 
-    v22 = [(STUIStatusBarBackgroundActivityItem *)self iconView];
-    v23 = [v6 styleAttributes];
-    v24 = [v23 traitCollection];
-    [v22 setSymbolPulsing:-[STUIStatusBarBackgroundActivityItem _shouldPulseSymbolForActivityWithIdentifier:traitCollection:](self forUpdate:{"_shouldPulseSymbolForActivityWithIdentifier:traitCollection:", v11, v24), v6}];
+    iconView = [(STUIStatusBarBackgroundActivityItem *)self iconView];
+    styleAttributes3 = [updateCopy styleAttributes];
+    traitCollection3 = [styleAttributes3 traitCollection];
+    [iconView setSymbolPulsing:-[STUIStatusBarBackgroundActivityItem _shouldPulseSymbolForActivityWithIdentifier:traitCollection:](self forUpdate:{"_shouldPulseSymbolForActivityWithIdentifier:traitCollection:", backgroundActivityIdentifier, traitCollection3), updateCopy}];
 
-    v25 = [(STUIStatusBarBackgroundActivityItem *)self iconView];
-    v26 = [v6 styleAttributes];
-    v27 = [v26 traitCollection];
-    [v25 setRinging:-[STUIStatusBarBackgroundActivityItem _shouldRingForActivityWithIdentifier:traitCollection:](self forUpdate:{"_shouldRingForActivityWithIdentifier:traitCollection:", v11, v27), v6}];
+    iconView2 = [(STUIStatusBarBackgroundActivityItem *)self iconView];
+    styleAttributes4 = [updateCopy styleAttributes];
+    traitCollection4 = [styleAttributes4 traitCollection];
+    [iconView2 setRinging:-[STUIStatusBarBackgroundActivityItem _shouldRingForActivityWithIdentifier:traitCollection:](self forUpdate:{"_shouldRingForActivityWithIdentifier:traitCollection:", backgroundActivityIdentifier, traitCollection4), updateCopy}];
   }
 
   v28 = objc_opt_class();
-  v29 = [v7 identifier];
-  if (![v28 _identifierContainsItemImage:v29] || !objc_msgSend(v7, "isEnabled"))
+  identifier2 = [itemCopy identifier];
+  if (![v28 _identifierContainsItemImage:identifier2] || !objc_msgSend(itemCopy, "isEnabled"))
   {
     goto LABEL_18;
   }
 
-  if ([v6 styleAttributesChanged])
+  if ([updateCopy styleAttributesChanged])
   {
 
 LABEL_15:
-    v31 = [v6 styleAttributes];
-    v29 = [v31 copy];
+    styleAttributes5 = [updateCopy styleAttributes];
+    identifier2 = [styleAttributes5 copy];
 
-    [objc_opt_class() _fontSizeAdjustmentForActivityWithIdentifier:v11];
+    [objc_opt_class() _fontSizeAdjustmentForActivityWithIdentifier:backgroundActivityIdentifier];
     if (v32 != 0.0)
     {
       v33 = v32;
       v34 = MEMORY[0x277D74300];
-      v35 = [v29 font];
-      v36 = [v35 fontDescriptor];
-      [v29 font];
-      v47 = v10;
+      font = [identifier2 font];
+      fontDescriptor = [font fontDescriptor];
+      [identifier2 font];
+      v47 = backgroundActivityEntry;
       v38 = v37 = v8;
       [v38 pointSize];
-      v40 = [v34 fontWithDescriptor:v36 size:v33 + v39];
-      [v29 setFont:v40];
+      v40 = [v34 fontWithDescriptor:fontDescriptor size:v33 + v39];
+      [identifier2 setFont:v40];
 
       v8 = v37;
-      v10 = v47;
+      backgroundActivityEntry = v47;
     }
 
-    [objc_opt_class() _verticalOffsetForActivityWithIdentifier:v11];
-    [v7 setCenterOffset:?];
+    [objc_opt_class() _verticalOffsetForActivityWithIdentifier:backgroundActivityIdentifier];
+    [itemCopy setCenterOffset:?];
     v48.receiver = self;
     v48.super_class = STUIStatusBarBackgroundActivityItem;
-    [(STUIStatusBarItem *)&v48 applyStyleAttributes:v29 toDisplayItem:v7];
+    [(STUIStatusBarItem *)&v48 applyStyleAttributes:identifier2 toDisplayItem:itemCopy];
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v30 = [v6 dataChanged];
+  dataChanged = [updateCopy dataChanged];
 
-  if (v30)
+  if (dataChanged)
   {
     goto LABEL_15;
   }
 
 LABEL_19:
   v41 = objc_opt_class();
-  v42 = [v7 identifier];
-  if ([v41 _identifierContainsSecondaryItemImage:v42] && objc_msgSend(v7, "isEnabled"))
+  identifier3 = [itemCopy identifier];
+  if ([v41 _identifierContainsSecondaryItemImage:identifier3] && objc_msgSend(itemCopy, "isEnabled"))
   {
-    v43 = [v6 dataChanged];
+    dataChanged2 = [updateCopy dataChanged];
 
-    if (!v43)
+    if (!dataChanged2)
     {
       goto LABEL_24;
     }
 
-    v42 = [(STUIStatusBarBackgroundActivityItem *)self secondaryImageForUpdate:v6];
-    v44 = [(STUIStatusBarBackgroundActivityItem *)self secondaryIconView];
-    [v44 setImage:v42];
+    identifier3 = [(STUIStatusBarBackgroundActivityItem *)self secondaryImageForUpdate:updateCopy];
+    secondaryIconView = [(STUIStatusBarBackgroundActivityItem *)self secondaryIconView];
+    [secondaryIconView setImage:identifier3];
   }
 
 LABEL_24:
@@ -260,113 +260,113 @@ void __65__STUIStatusBarBackgroundActivityItem_applyUpdate_toDisplayItem___block
   [v6 animateWithDuration:0 delay:v7 options:a4 animations:0.333 completion:0.0];
 }
 
-- (void)updatedDisplayItemsWithData:(id)a3
+- (void)updatedDisplayItemsWithData:(id)data
 {
   v8.receiver = self;
   v8.super_class = STUIStatusBarBackgroundActivityItem;
-  v4 = a3;
-  [(STUIStatusBarItem *)&v8 updatedDisplayItemsWithData:v4];
-  v5 = [v4 backgroundActivityEntry];
+  dataCopy = data;
+  [(STUIStatusBarItem *)&v8 updatedDisplayItemsWithData:dataCopy];
+  backgroundActivityEntry = [dataCopy backgroundActivityEntry];
 
-  if (v5)
+  if (backgroundActivityEntry)
   {
-    v6 = [v5 backgroundActivityIdentifier];
+    backgroundActivityIdentifier = [backgroundActivityEntry backgroundActivityIdentifier];
     previousBackgroundActivityIdentifier = self->_previousBackgroundActivityIdentifier;
-    self->_previousBackgroundActivityIdentifier = v6;
+    self->_previousBackgroundActivityIdentifier = backgroundActivityIdentifier;
   }
 }
 
-- (void)applyStyleAttributes:(id)a3 toDisplayItem:(id)a4
+- (void)applyStyleAttributes:(id)attributes toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  itemCopy = item;
   v8 = objc_opt_class();
-  v9 = [v7 identifier];
-  LOBYTE(v8) = [v8 _identifierContainsItemImage:v9];
+  identifier = [itemCopy identifier];
+  LOBYTE(v8) = [v8 _identifierContainsItemImage:identifier];
 
   if ((v8 & 1) == 0)
   {
     v10.receiver = self;
     v10.super_class = STUIStatusBarBackgroundActivityItem;
-    [(STUIStatusBarItem *)&v10 applyStyleAttributes:v6 toDisplayItem:v7];
+    [(STUIStatusBarItem *)&v10 applyStyleAttributes:attributesCopy toDisplayItem:itemCopy];
   }
 }
 
-- (id)systemImageNameForUpdate:(id)a3
+- (id)systemImageNameForUpdate:(id)update
 {
-  v4 = [a3 data];
-  v5 = [v4 backgroundActivityEntry];
-  v6 = [v5 backgroundActivityIdentifier];
-  v7 = [(STUIStatusBarBackgroundActivityItem *)self _systemImageNameForActivityWithIdentifier:v6];
+  data = [update data];
+  backgroundActivityEntry = [data backgroundActivityEntry];
+  backgroundActivityIdentifier = [backgroundActivityEntry backgroundActivityIdentifier];
+  v7 = [(STUIStatusBarBackgroundActivityItem *)self _systemImageNameForActivityWithIdentifier:backgroundActivityIdentifier];
 
   return v7;
 }
 
-- (id)imageNameForUpdate:(id)a3
+- (id)imageNameForUpdate:(id)update
 {
-  v4 = [a3 data];
-  v5 = [v4 backgroundActivityEntry];
-  v6 = [v5 backgroundActivityIdentifier];
-  v7 = [(STUIStatusBarBackgroundActivityItem *)self _imageNameForActivityWithIdentifier:v6];
+  data = [update data];
+  backgroundActivityEntry = [data backgroundActivityEntry];
+  backgroundActivityIdentifier = [backgroundActivityEntry backgroundActivityIdentifier];
+  v7 = [(STUIStatusBarBackgroundActivityItem *)self _imageNameForActivityWithIdentifier:backgroundActivityIdentifier];
 
   return v7;
 }
 
-- (id)_systemImageNameForActivityWithIdentifier:(id)a3
-{
-  v3 = MEMORY[0x277D6B920];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 visualDescriptorForBackgroundActivityWithIdentifier:v4];
-
-  v7 = [v6 systemImageName];
-
-  return v7;
-}
-
-- (id)_imageNameForActivityWithIdentifier:(id)a3
+- (id)_systemImageNameForActivityWithIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D6B920];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 visualDescriptorForBackgroundActivityWithIdentifier:v4];
+  identifierCopy = identifier;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance visualDescriptorForBackgroundActivityWithIdentifier:identifierCopy];
 
-  v7 = [v6 imageName];
+  systemImageName = [v6 systemImageName];
 
-  return v7;
+  return systemImageName;
 }
 
-- (id)_textLabelForActivityWithIdentifier:(id)a3
+- (id)_imageNameForActivityWithIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D6B920];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 visualDescriptorForBackgroundActivityWithIdentifier:v4];
+  identifierCopy = identifier;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance visualDescriptorForBackgroundActivityWithIdentifier:identifierCopy];
 
-  v7 = [v6 textLabel];
+  imageName = [v6 imageName];
 
-  return v7;
+  return imageName;
 }
 
-- (id)imageForUpdate:(id)a3
+- (id)_textLabelForActivityWithIdentifier:(id)identifier
+{
+  v3 = MEMORY[0x277D6B920];
+  identifierCopy = identifier;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance visualDescriptorForBackgroundActivityWithIdentifier:identifierCopy];
+
+  textLabel = [v6 textLabel];
+
+  return textLabel;
+}
+
+- (id)imageForUpdate:(id)update
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 data];
-  v6 = [v5 backgroundActivityEntry];
-  v7 = [v6 backgroundActivityIdentifier];
+  updateCopy = update;
+  data = [updateCopy data];
+  backgroundActivityEntry = [data backgroundActivityEntry];
+  backgroundActivityIdentifier = [backgroundActivityEntry backgroundActivityIdentifier];
 
-  v8 = [(STUIStatusBarBackgroundActivityItem *)self _textLabelForActivityWithIdentifier:v7];
+  v8 = [(STUIStatusBarBackgroundActivityItem *)self _textLabelForActivityWithIdentifier:backgroundActivityIdentifier];
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277CCA898]);
     v23[0] = *MEMORY[0x277D740A8];
-    v10 = [v4 styleAttributes];
-    v11 = [v10 smallFont];
-    v24[0] = v11;
+    styleAttributes = [updateCopy styleAttributes];
+    smallFont = [styleAttributes smallFont];
+    v24[0] = smallFont;
     v23[1] = *MEMORY[0x277D740C0];
-    v12 = [MEMORY[0x277D75348] whiteColor];
-    v24[1] = v12;
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v24[1] = whiteColor;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
     v14 = [v9 initWithString:v8 attributes:v13];
 
@@ -386,18 +386,18 @@ void __65__STUIStatusBarBackgroundActivityItem_applyUpdate_toDisplayItem___block
   {
     v20.receiver = self;
     v20.super_class = STUIStatusBarBackgroundActivityItem;
-    v18 = [(STUIStatusBarIndicatorItem *)&v20 imageForUpdate:v4];
+    v18 = [(STUIStatusBarIndicatorItem *)&v20 imageForUpdate:updateCopy];
   }
 
   return v18;
 }
 
-- (id)secondaryImageForUpdate:(id)a3
+- (id)secondaryImageForUpdate:(id)update
 {
-  v4 = [a3 data];
-  v5 = [v4 backgroundActivityEntry];
-  v6 = [v5 backgroundActivityIdentifier];
-  v7 = [(STUIStatusBarBackgroundActivityItem *)self _secondarySystemImageNameForActivityWithIdentifier:v6];
+  data = [update data];
+  backgroundActivityEntry = [data backgroundActivityEntry];
+  backgroundActivityIdentifier = [backgroundActivityEntry backgroundActivityIdentifier];
+  v7 = [(STUIStatusBarBackgroundActivityItem *)self _secondarySystemImageNameForActivityWithIdentifier:backgroundActivityIdentifier];
 
   if (v7)
   {
@@ -412,12 +412,12 @@ void __65__STUIStatusBarBackgroundActivityItem_applyUpdate_toDisplayItem___block
   return v8;
 }
 
-+ (double)_verticalOffsetForActivityWithIdentifier:(id)a3
++ (double)_verticalOffsetForActivityWithIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D6B920];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 visualDescriptorForBackgroundActivityWithIdentifier:v4];
+  identifierCopy = identifier;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance visualDescriptorForBackgroundActivityWithIdentifier:identifierCopy];
 
   [v6 verticalOffset];
   v8 = v7;
@@ -425,12 +425,12 @@ void __65__STUIStatusBarBackgroundActivityItem_applyUpdate_toDisplayItem___block
   return v8;
 }
 
-+ (double)_fontSizeAdjustmentForActivityWithIdentifier:(id)a3
++ (double)_fontSizeAdjustmentForActivityWithIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D6B920];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 visualDescriptorForBackgroundActivityWithIdentifier:v4];
+  identifierCopy = identifier;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance visualDescriptorForBackgroundActivityWithIdentifier:identifierCopy];
 
   [v6 fontSizeAdjustment];
   v8 = v7;
@@ -438,98 +438,98 @@ void __65__STUIStatusBarBackgroundActivityItem_applyUpdate_toDisplayItem___block
   return v8;
 }
 
-- (id)_backgroundColorForActivityWithIdentifier:(id)a3
+- (id)_backgroundColorForActivityWithIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D6B920];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 visualDescriptorForBackgroundActivityWithIdentifier:v4];
+  identifierCopy = identifier;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance visualDescriptorForBackgroundActivityWithIdentifier:identifierCopy];
 
-  v7 = [v6 backgroundColor];
+  backgroundColor = [v6 backgroundColor];
 
-  return v7;
+  return backgroundColor;
 }
 
-- (BOOL)_shouldRingForActivityWithIdentifier:(id)a3 traitCollection:(id)a4
+- (BOOL)_shouldRingForActivityWithIdentifier:(id)identifier traitCollection:(id)collection
 {
-  v5 = a3;
-  if ([a4 userInterfaceIdiom] == 3)
+  identifierCopy = identifier;
+  if ([collection userInterfaceIdiom] == 3)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D6B920] sharedInstance];
-    v8 = [v7 visualDescriptorForBackgroundActivityWithIdentifier:v5];
+    mEMORY[0x277D6B920] = [MEMORY[0x277D6B920] sharedInstance];
+    v8 = [mEMORY[0x277D6B920] visualDescriptorForBackgroundActivityWithIdentifier:identifierCopy];
 
     v9 = *MEMORY[0x277D6BBD0];
-    v10 = [v8 preferredContinuousAnimationName];
-    v6 = [v9 isEqualToString:v10];
+    preferredContinuousAnimationName = [v8 preferredContinuousAnimationName];
+    v6 = [v9 isEqualToString:preferredContinuousAnimationName];
   }
 
   return v6;
 }
 
-- (BOOL)_shouldPulseBackgroundForActivityWithIdentifier:(id)a3 traitCollection:(id)a4
+- (BOOL)_shouldPulseBackgroundForActivityWithIdentifier:(id)identifier traitCollection:(id)collection
 {
-  v5 = a3;
-  if ([a4 userInterfaceIdiom] == 3)
+  identifierCopy = identifier;
+  if ([collection userInterfaceIdiom] == 3)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D6B920] sharedInstance];
-    v8 = [v7 visualDescriptorForBackgroundActivityWithIdentifier:v5];
+    mEMORY[0x277D6B920] = [MEMORY[0x277D6B920] sharedInstance];
+    v8 = [mEMORY[0x277D6B920] visualDescriptorForBackgroundActivityWithIdentifier:identifierCopy];
 
     v9 = *MEMORY[0x277D6BBC0];
-    v10 = [v8 preferredContinuousAnimationName];
-    v6 = [v9 isEqualToString:v10];
+    preferredContinuousAnimationName = [v8 preferredContinuousAnimationName];
+    v6 = [v9 isEqualToString:preferredContinuousAnimationName];
   }
 
   return v6;
 }
 
-- (BOOL)_shouldPulseSymbolForActivityWithIdentifier:(id)a3 traitCollection:(id)a4
+- (BOOL)_shouldPulseSymbolForActivityWithIdentifier:(id)identifier traitCollection:(id)collection
 {
-  v5 = a3;
-  if ([a4 userInterfaceIdiom] == 3)
+  identifierCopy = identifier;
+  if ([collection userInterfaceIdiom] == 3)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D6B920] sharedInstance];
-    v8 = [v7 visualDescriptorForBackgroundActivityWithIdentifier:v5];
+    mEMORY[0x277D6B920] = [MEMORY[0x277D6B920] sharedInstance];
+    v8 = [mEMORY[0x277D6B920] visualDescriptorForBackgroundActivityWithIdentifier:identifierCopy];
 
     v9 = *MEMORY[0x277D6BBC8];
-    v10 = [v8 preferredContinuousAnimationName];
-    v6 = [v9 isEqualToString:v10];
+    preferredContinuousAnimationName = [v8 preferredContinuousAnimationName];
+    v6 = [v9 isEqualToString:preferredContinuousAnimationName];
   }
 
   return v6;
 }
 
-- (id)_visualEffectForActivityWithIdentifier:(id)a3 traitCollection:(id)a4
+- (id)_visualEffectForActivityWithIdentifier:(id)identifier traitCollection:(id)collection
 {
-  v5 = a3;
-  if ([a4 userInterfaceIdiom] == 3)
+  identifierCopy = identifier;
+  if ([collection userInterfaceIdiom] == 3)
   {
-    v6 = 0;
+    preferredVisualEffect = 0;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D6B920] sharedInstance];
-    v8 = [v7 visualDescriptorForBackgroundActivityWithIdentifier:v5];
+    mEMORY[0x277D6B920] = [MEMORY[0x277D6B920] sharedInstance];
+    v8 = [mEMORY[0x277D6B920] visualDescriptorForBackgroundActivityWithIdentifier:identifierCopy];
 
-    v6 = [v8 preferredVisualEffect];
+    preferredVisualEffect = [v8 preferredVisualEffect];
   }
 
-  return v6;
+  return preferredVisualEffect;
 }
 
 - (STUIStatusBarPillView)backgroundView
@@ -598,85 +598,85 @@ void __65__STUIStatusBarBackgroundActivityItem_applyUpdate_toDisplayItem___block
   MEMORY[0x2821F96F8](v4, secondaryIconView);
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() backgroundDisplayIdentifier];
+  identifierCopy = identifier;
+  backgroundDisplayIdentifier = [objc_opt_class() backgroundDisplayIdentifier];
 
-  if (v5 == v4)
+  if (backgroundDisplayIdentifier == identifierCopy)
   {
-    v7 = [(STUIStatusBarBackgroundActivityItem *)self backgroundView];
+    backgroundView = [(STUIStatusBarBackgroundActivityItem *)self backgroundView];
   }
 
   else
   {
-    v6 = [objc_opt_class() secondaryIconDisplayIdentifier];
+    secondaryIconDisplayIdentifier = [objc_opt_class() secondaryIconDisplayIdentifier];
 
-    if (v6 == v4)
+    if (secondaryIconDisplayIdentifier == identifierCopy)
     {
-      v7 = [(STUIStatusBarBackgroundActivityItem *)self secondaryIconView];
+      backgroundView = [(STUIStatusBarBackgroundActivityItem *)self secondaryIconView];
     }
 
     else
     {
       v10.receiver = self;
       v10.super_class = STUIStatusBarBackgroundActivityItem;
-      v7 = [(STUIStatusBarIndicatorItem *)&v10 viewForIdentifier:v4];
+      backgroundView = [(STUIStatusBarIndicatorItem *)&v10 viewForIdentifier:identifierCopy];
     }
   }
 
-  v8 = v7;
+  v8 = backgroundView;
 
   return v8;
 }
 
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _STUIStatusBar_BackgroundActivity_Log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_26C4DD000, v5, OS_LOG_TYPE_DEFAULT, "Adding default background activity item view with identifier: %@", buf, 0xCu);
   }
 
   v8.receiver = self;
   v8.super_class = STUIStatusBarBackgroundActivityItem;
-  v6 = [(STUIStatusBarItem *)&v8 additionAnimationForDisplayItemWithIdentifier:v4];
+  v6 = [(STUIStatusBarItem *)&v8 additionAnimationForDisplayItemWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _STUIStatusBar_BackgroundActivity_Log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_26C4DD000, v5, OS_LOG_TYPE_DEFAULT, "Removing default background activity item view with identifier: %@", buf, 0xCu);
   }
 
   v8.receiver = self;
   v8.super_class = STUIStatusBarBackgroundActivityItem;
-  v6 = [(STUIStatusBarItem *)&v8 removalAnimationForDisplayItemWithIdentifier:v4];
+  v6 = [(STUIStatusBarItem *)&v8 removalAnimationForDisplayItemWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)crossfadeForUpdate:(id)a3
+- (BOOL)crossfadeForUpdate:(id)update
 {
-  v4 = [a3 data];
-  v5 = [v4 backgroundActivityEntry];
-  v6 = [v5 backgroundActivityIdentifier];
+  data = [update data];
+  backgroundActivityEntry = [data backgroundActivityEntry];
+  backgroundActivityIdentifier = [backgroundActivityEntry backgroundActivityIdentifier];
 
   if (self->_previousBackgroundActivityIdentifier)
   {
-    v7 = v6 == 0;
+    v7 = backgroundActivityIdentifier == 0;
   }
 
   else
@@ -691,10 +691,10 @@ void __65__STUIStatusBarBackgroundActivityItem_applyUpdate_toDisplayItem___block
 
   else
   {
-    v8 = [MEMORY[0x277D6B920] sharedInstance];
-    v9 = [v8 visualDescriptorForBackgroundActivityWithIdentifier:self->_previousBackgroundActivityIdentifier];
+    mEMORY[0x277D6B920] = [MEMORY[0x277D6B920] sharedInstance];
+    v9 = [mEMORY[0x277D6B920] visualDescriptorForBackgroundActivityWithIdentifier:self->_previousBackgroundActivityIdentifier];
 
-    v10 = [v9 canCrossfadeToBackgroundActivityWithIdentifier:v6];
+    v10 = [v9 canCrossfadeToBackgroundActivityWithIdentifier:backgroundActivityIdentifier];
   }
 
   return v10;

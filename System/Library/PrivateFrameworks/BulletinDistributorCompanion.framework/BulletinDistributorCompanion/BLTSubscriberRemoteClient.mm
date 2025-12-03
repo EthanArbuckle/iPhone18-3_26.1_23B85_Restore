@@ -1,24 +1,24 @@
 @interface BLTSubscriberRemoteClient
-- (BLTSubscriberRemoteClient)initWithConnection:(id)a3;
+- (BLTSubscriberRemoteClient)initWithConnection:(id)connection;
 - (void)dealloc;
-- (void)pingWithBulletin:(id)a3;
-- (void)pingWithBulletin:(id)a3 ack:(id)a4;
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4;
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4 ack:(id)a5;
+- (void)pingWithBulletin:(id)bulletin;
+- (void)pingWithBulletin:(id)bulletin ack:(id)ack;
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD;
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD ack:(id)ack;
 @end
 
 @implementation BLTSubscriberRemoteClient
 
-- (BLTSubscriberRemoteClient)initWithConnection:(id)a3
+- (BLTSubscriberRemoteClient)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = BLTSubscriberRemoteClient;
   v6 = [(BLTSubscriberRemoteClient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
@@ -35,40 +35,40 @@
   [(BLTSubscriberRemoteClient *)&v4 dealloc];
 }
 
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD
 {
   connection = self->_connection;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v8 pingWithRecordID:v7 forSectionID:v6];
+  iDCopy = iD;
+  dCopy = d;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy pingWithRecordID:dCopy forSectionID:iDCopy];
 }
 
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4 ack:(id)a5
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD ack:(id)ack
 {
   connection = self->_connection;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v11 pingWithRecordID:v10 forSectionID:v9 ack:v8];
+  ackCopy = ack;
+  iDCopy = iD;
+  dCopy = d;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy pingWithRecordID:dCopy forSectionID:iDCopy ack:ackCopy];
 }
 
-- (void)pingWithBulletin:(id)a3
+- (void)pingWithBulletin:(id)bulletin
 {
   connection = self->_connection;
-  v4 = a3;
-  v5 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v5 pingWithBulletin:v4];
+  bulletinCopy = bulletin;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy pingWithBulletin:bulletinCopy];
 }
 
-- (void)pingWithBulletin:(id)a3 ack:(id)a4
+- (void)pingWithBulletin:(id)bulletin ack:(id)ack
 {
   connection = self->_connection;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v8 pingWithBulletin:v7 ack:v6];
+  ackCopy = ack;
+  bulletinCopy = bulletin;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy pingWithBulletin:bulletinCopy ack:ackCopy];
 }
 
 @end

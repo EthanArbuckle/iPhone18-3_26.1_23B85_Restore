@@ -2,9 +2,9 @@
 - (MNIdleTimerUpdater)init;
 - (MNIdleTimerUpdaterDelegate)delegate;
 - (double)_speedThresholdForCurrentTransportType;
-- (void)_updateForLocation:(id)a3;
+- (void)_updateForLocation:(id)location;
 - (void)dealloc;
-- (void)setNavigationSessionState:(id)a3;
+- (void)setNavigationSessionState:(id)state;
 - (void)updateForStartNavigation;
 @end
 
@@ -19,18 +19,18 @@
 
 - (double)_speedThresholdForCurrentTransportType
 {
-  v3 = [(MNNavigationSessionState *)self->_navigationSessionState currentRouteInfo];
-  v4 = [v3 route];
-  v5 = [v4 transportType];
+  currentRouteInfo = [(MNNavigationSessionState *)self->_navigationSessionState currentRouteInfo];
+  route = [currentRouteInfo route];
+  transportType = [route transportType];
 
-  if (v5 > 3)
+  if (transportType > 3)
   {
     v6 = @"default";
   }
 
   else
   {
-    v6 = *(&off_1E842EE28 + v5);
+    v6 = *(&off_1E842EE28 + transportType);
   }
 
   v7 = [(NSDictionary *)self->_speedThresholdsToConsiderStopped objectForKeyedSubscript:v6];
@@ -40,14 +40,14 @@
   return v9;
 }
 
-- (void)_updateForLocation:(id)a3
+- (void)_updateForLocation:(id)location
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->_isStarted && v4 && self->_isArrived)
+  locationCopy = location;
+  v5 = locationCopy;
+  if (self->_isStarted && locationCopy && self->_isArrived)
   {
-    [v4 speed];
+    [locationCopy speed];
     v7 = v6;
     [(MNIdleTimerUpdater *)self _speedThresholdForCurrentTransportType];
     notMovingTimer = self->_notMovingTimer;
@@ -143,16 +143,16 @@ void __41__MNIdleTimerUpdater__updateForLocation___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setNavigationSessionState:(id)a3
+- (void)setNavigationSessionState:(id)state
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 location];
-  v6 = -[MNIdleTimerUpdater _shouldEnableIdleTimerForArrivalState:](self, "_shouldEnableIdleTimerForArrivalState:", [v4 arrivalState]);
-  v7 = [(MNNavigationSessionState *)self->_navigationSessionState location];
+  stateCopy = state;
+  location = [stateCopy location];
+  v6 = -[MNIdleTimerUpdater _shouldEnableIdleTimerForArrivalState:](self, "_shouldEnableIdleTimerForArrivalState:", [stateCopy arrivalState]);
+  location2 = [(MNNavigationSessionState *)self->_navigationSessionState location];
 
   v8 = [(MNIdleTimerUpdater *)self _shouldEnableIdleTimerForArrivalState:[(MNNavigationSessionState *)self->_navigationSessionState arrivalState]];
-  v9 = [v4 copy];
+  v9 = [stateCopy copy];
 
   navigationSessionState = self->_navigationSessionState;
   self->_navigationSessionState = v9;
@@ -186,9 +186,9 @@ void __41__MNIdleTimerUpdater__updateForLocation___block_invoke(uint64_t a1)
     }
   }
 
-  if (v5 != v7)
+  if (location != location2)
   {
-    [(MNIdleTimerUpdater *)self _updateForLocation:v5];
+    [(MNIdleTimerUpdater *)self _updateForLocation:location];
   }
 
   v15 = *MEMORY[0x1E69E9840];

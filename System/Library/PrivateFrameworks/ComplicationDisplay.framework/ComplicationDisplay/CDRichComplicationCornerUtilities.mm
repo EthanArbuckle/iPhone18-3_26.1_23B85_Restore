@@ -1,30 +1,30 @@
 @interface CDRichComplicationCornerUtilities
-+ (CGRect)cornerGaugeCustomViewRectWithPosition:(int64_t)a3 forDevice:(id)a4;
-+ (id)hitTestPathWithViewBounds:(CGRect)a3 position:(int64_t)a4 forDevice:(id)a5;
++ (CGRect)cornerGaugeCustomViewRectWithPosition:(int64_t)position forDevice:(id)device;
++ (id)hitTestPathWithViewBounds:(CGRect)bounds position:(int64_t)position forDevice:(id)device;
 @end
 
 @implementation CDRichComplicationCornerUtilities
 
-+ (id)hitTestPathWithViewBounds:(CGRect)a3 position:(int64_t)a4 forDevice:(id)a5
++ (id)hitTestPathWithViewBounds:(CGRect)bounds position:(int64_t)position forDevice:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a5;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  deviceCopy = device;
   CLKLargeDialDiameterForDevice();
   v12 = v11;
-  [v10 screenBounds];
+  [deviceCopy screenBounds];
   v14 = v13;
   v16 = v15;
 
   v17 = (v14 - v12) * 0.5;
   v18 = (v16 - v12) * 0.5;
   v19 = [MEMORY[0x277D75208] bezierPathWithRect:{x, y, width, height}];
-  if (a4 > 1)
+  if (position > 1)
   {
     v20 = height - v16;
-    if (a4 == 2)
+    if (position == 2)
     {
       v18 = v20 + v18;
     }
@@ -32,7 +32,7 @@
     else
     {
       v21 = v20 + v18;
-      if (a4 == 3)
+      if (position == 3)
       {
         v18 = v21;
       }
@@ -42,7 +42,7 @@
         v18 = *(MEMORY[0x277CBF348] + 8);
       }
 
-      if (a4 == 3)
+      if (position == 3)
       {
         v17 = width - v12 - v17;
       }
@@ -54,9 +54,9 @@
     }
   }
 
-  else if (a4)
+  else if (position)
   {
-    if (a4 == 1)
+    if (position == 1)
     {
       v17 = width - v12 - v17;
     }
@@ -69,30 +69,30 @@
   }
 
   v22 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{v17, v18, v12, v12}];
-  v23 = [v22 bezierPathByReversingPath];
-  [v19 appendPath:v23];
+  bezierPathByReversingPath = [v22 bezierPathByReversingPath];
+  [v19 appendPath:bezierPathByReversingPath];
 
   return v19;
 }
 
-+ (CGRect)cornerGaugeCustomViewRectWithPosition:(int64_t)a3 forDevice:(id)a4
++ (CGRect)cornerGaugeCustomViewRectWithPosition:(int64_t)position forDevice:(id)device
 {
-  v5 = a4;
-  v6 = ___LayoutConstants_block_invoke_4(v5, v5);
+  deviceCopy = device;
+  v6 = ___LayoutConstants_block_invoke_4(deviceCopy, deviceCopy);
   v8 = v7;
   v10 = v9;
-  v11 = CDCornerComplicationSize(v5);
+  v11 = CDCornerComplicationSize(deviceCopy);
   v13 = v12;
-  if (CDUsingRadialCornerComplicationLayout(v5))
+  if (CDUsingRadialCornerComplicationLayout(deviceCopy))
   {
-    v8 = CDCornerComplicationOuterImageCenterPoint(v5);
+    v8 = CDCornerComplicationOuterImageCenterPoint(deviceCopy);
     v10 = v14;
   }
 
   v15 = 0.0;
   v16 = v13 - v10;
   v17 = v11 - v8;
-  if (a3 == 3)
+  if (position == 3)
   {
     v18 = v11 - v8;
   }
@@ -102,7 +102,7 @@
     v18 = 0.0;
   }
 
-  if (a3 == 3)
+  if (position == 3)
   {
     v19 = v13 - v10;
   }
@@ -112,7 +112,7 @@
     v19 = 0.0;
   }
 
-  if (a3 == 2)
+  if (position == 2)
   {
     v18 = v8;
   }
@@ -122,7 +122,7 @@
     v16 = v19;
   }
 
-  if (a3 == 1)
+  if (position == 1)
   {
     v15 = v10;
   }
@@ -132,13 +132,13 @@
     v17 = 0.0;
   }
 
-  if (!a3)
+  if (!position)
   {
     v17 = v8;
     v15 = v10;
   }
 
-  if (a3 > 1)
+  if (position > 1)
   {
     v17 = v18;
     v15 = v16;

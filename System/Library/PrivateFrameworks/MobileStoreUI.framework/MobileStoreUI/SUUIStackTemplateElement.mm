@@ -1,36 +1,36 @@
 @interface SUUIStackTemplateElement
 - (NSArray)collectionElements;
-- (SUUIStackTemplateElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIStackTemplateElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SUUIViewElement)collectionHeaderViewElement;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 - (int64_t)numberOfSplits;
 @end
 
 @implementation SUUIStackTemplateElement
 
-- (SUUIStackTemplateElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIStackTemplateElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v12.receiver = self;
   v12.super_class = SUUIStackTemplateElement;
-  v9 = [(SUUIViewElement *)&v12 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v12 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"resetState"];
+    v10 = [elementCopy getAttribute:@"resetState"];
     v9->_needsStateReset = [v10 BOOLValue];
   }
 
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = SUUIStackTemplateElement;
-  v4 = a3;
-  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  elementCopy = element;
+  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
 
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
     collectionElements = self->_collectionElements;
     self->_collectionElements = 0;

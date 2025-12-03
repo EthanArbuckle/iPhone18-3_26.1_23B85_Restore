@@ -1,27 +1,27 @@
 @interface STUIStatusBarRadarView
 - (CGSize)intrinsicContentSize;
-- (STUIStatusBarRadarView)initWithFrame:(CGRect)a3;
+- (STUIStatusBarRadarView)initWithFrame:(CGRect)frame;
 - (id)accessibilityUserInputLabels;
 - (void)_updateTintColor;
-- (void)applyStyleAttributes:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation STUIStatusBarRadarView
 
-- (STUIStatusBarRadarView)initWithFrame:(CGRect)a3
+- (STUIStatusBarRadarView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = STUIStatusBarRadarView;
-  v3 = [(STUIStatusBarImageView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STUIStatusBarImageView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(STUIStatusBarRadarView *)v3 layer];
-    [v5 setCornerRadius:12.0];
+    layer = [(STUIStatusBarRadarView *)v3 layer];
+    [layer setCornerRadius:12.0];
 
-    v6 = [MEMORY[0x277D75C80] systemTraitsAffectingColorAppearance];
-    v7 = [(STUIStatusBarRadarView *)v4 registerForTraitChanges:v6 withAction:sel__updateTintColor];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x277D75C80] systemTraitsAffectingColorAppearance];
+    v7 = [(STUIStatusBarRadarView *)v4 registerForTraitChanges:systemTraitsAffectingColorAppearance withAction:sel__updateTintColor];
 
     [(STUIStatusBarRadarView *)v4 _updateTintColor];
   }
@@ -29,22 +29,22 @@
   return v4;
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
   v4.receiver = self;
   v4.super_class = STUIStatusBarRadarView;
-  [(STUIStatusBarImageView *)&v4 applyStyleAttributes:a3];
+  [(STUIStatusBarImageView *)&v4 applyStyleAttributes:attributes];
   [(STUIStatusBarRadarView *)self _updateTintColor];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = [a3 nextFocusedItem];
+  nextFocusedItem = [context nextFocusedItem];
 
-  if (v5 == self)
+  if (nextFocusedItem == self)
   {
-    v6 = [MEMORY[0x277D75348] _carSystemFocusColor];
-    [(STUIStatusBarRadarView *)self setBackgroundColor:v6];
+    _carSystemFocusColor = [MEMORY[0x277D75348] _carSystemFocusColor];
+    [(STUIStatusBarRadarView *)self setBackgroundColor:_carSystemFocusColor];
   }
 
   else
@@ -66,35 +66,35 @@
 
 - (void)_updateTintColor
 {
-  v4 = [(STUIStatusBarRadarView *)self isFocused];
-  if (v4)
+  isFocused = [(STUIStatusBarRadarView *)self isFocused];
+  if (isFocused)
   {
-    v2 = [(STUIStatusBarRadarView *)self traitCollection];
-    if ([v2 userInterfaceStyle] == 1)
+    traitCollection = [(STUIStatusBarRadarView *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 1)
     {
 
 LABEL_7:
-      v7 = [MEMORY[0x277D75348] whiteColor];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
       goto LABEL_9;
     }
   }
 
-  v5 = [(STUIStatusBarRadarView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  traitCollection2 = [(STUIStatusBarRadarView *)self traitCollection];
+  userInterfaceStyle = [traitCollection2 userInterfaceStyle];
 
-  if (v4)
+  if (isFocused)
   {
   }
 
-  if (v6 == 2)
+  if (userInterfaceStyle == 2)
   {
     goto LABEL_7;
   }
 
-  v7 = [MEMORY[0x277D75348] blackColor];
+  whiteColor = [MEMORY[0x277D75348] blackColor];
 LABEL_9:
-  v8 = v7;
-  [(STUIStatusBarRadarView *)self setTintColor:v7];
+  v8 = whiteColor;
+  [(STUIStatusBarRadarView *)self setTintColor:whiteColor];
 }
 
 - (id)accessibilityUserInputLabels

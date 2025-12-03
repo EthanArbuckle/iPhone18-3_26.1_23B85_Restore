@@ -1,16 +1,16 @@
 @interface ASCABLEAuthenticator
 - (_TtC26AuthenticationServicesCore20ASCABLEAuthenticator)init;
-- (_TtC26AuthenticationServicesCore20ASCABLEAuthenticator)initWithCaBLEURL:(id)a3 error:(id *)a4;
+- (_TtC26AuthenticationServicesCore20ASCABLEAuthenticator)initWithCaBLEURL:(id)l error:(id *)error;
 - (_TtP26AuthenticationServicesCore28ASCABLEAuthenticatorDelegate_)delegate;
 - (void)dealloc;
-- (void)finishTransactionWithCredential:(id)a3 error:(id)a4;
+- (void)finishTransactionWithCredential:(id)credential error:(id)error;
 - (void)sendExcludedCredentialMatchError;
-- (void)startWithCompletionHandler:(id)a3;
+- (void)startWithCompletionHandler:(id)handler;
 @end
 
 @implementation ASCABLEAuthenticator
 
-- (_TtC26AuthenticationServicesCore20ASCABLEAuthenticator)initWithCaBLEURL:(id)a3 error:(id *)a4
+- (_TtC26AuthenticationServicesCore20ASCABLEAuthenticator)initWithCaBLEURL:(id)l error:(id *)error
 {
   v5 = sub_1C2170024();
   v6 = *(v5 - 8);
@@ -33,9 +33,9 @@
   return v16;
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR____TtC26AuthenticationServicesCore20ASCABLEAuthenticator_completionHandler);
@@ -43,25 +43,25 @@
   v8 = *(self + OBJC_IVAR____TtC26AuthenticationServicesCore20ASCABLEAuthenticator_completionHandler + 8);
   *v6 = sub_1C20EB1A4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
 
   sub_1C20B0080(v7);
   sub_1C20E19CC(0);
-  [*(v9 + OBJC_IVAR____TtC26AuthenticationServicesCore20ASCABLEAuthenticator_powerLogger) logAuthenticationStartedEventIfNeeded];
+  [*(selfCopy + OBJC_IVAR____TtC26AuthenticationServicesCore20ASCABLEAuthenticator_powerLogger) logAuthenticationStartedEventIfNeeded];
 }
 
 - (void)sendExcludedCredentialMatchError
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C20DF13C();
 }
 
-- (void)finishTransactionWithCredential:(id)a3 error:(id)a4
+- (void)finishTransactionWithCredential:(id)credential error:(id)error
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = a4;
-  sub_1C20DF4F8(a3, a4);
+  selfCopy = self;
+  errorCopy = error;
+  sub_1C20DF4F8(credential, error);
   swift_unknownObjectRelease();
 }
 
@@ -76,9 +76,9 @@
 - (void)dealloc
 {
   v2 = *(self + OBJC_IVAR____TtC26AuthenticationServicesCore20ASCABLEAuthenticator_bluetoothAdvertiser);
-  v3 = self;
+  selfCopy = self;
   [v2 invalidate];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for ASCABLEAuthenticator();
   [(ASCABLEAuthenticator *)&v4 dealloc];
 }

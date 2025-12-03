@@ -1,20 +1,20 @@
 @interface MSDHVolumeManager
 + (id)sharedInstance;
-- (BOOL)checkFreeSpaceLeftInContainer:(id)a3 neededSpace:(unint64_t)a4;
-- (BOOL)deleteAPFSVolume:(id)a3;
+- (BOOL)checkFreeSpaceLeftInContainer:(id)container neededSpace:(unint64_t)space;
+- (BOOL)deleteAPFSVolume:(id)volume;
 - (BOOL)deleteDemoVolume;
-- (BOOL)manageSnapshot:(id)a3 forVolumeAt:(id)a4;
-- (BOOL)mountAPFSVolume:(id)a3 atMountPoint:(id)a4 withAttributes:(id)a5;
-- (BOOL)mountSnapshotAt:(id)a3 forVolumeAt:(id)a4;
+- (BOOL)manageSnapshot:(id)snapshot forVolumeAt:(id)at;
+- (BOOL)mountAPFSVolume:(id)volume atMountPoint:(id)point withAttributes:(id)attributes;
+- (BOOL)mountSnapshotAt:(id)at forVolumeAt:(id)volumeAt;
 - (BOOL)setupDemoVolume;
-- (BOOL)unmountAPFSVolume:(id)a3;
-- (BOOL)unmountSnapshotAt:(id)a3;
+- (BOOL)unmountAPFSVolume:(id)volume;
+- (BOOL)unmountSnapshotAt:(id)at;
 - (MSDHVolumeManager)init;
-- (id)createAPFSVolume:(id)a3 withSizeInMB:(unint64_t)a4 inContainer:(id)a5;
-- (id)findAPFSVolumeMountPoint:(id)a3;
+- (id)createAPFSVolume:(id)volume withSizeInMB:(unint64_t)b inContainer:(id)container;
+- (id)findAPFSVolumeMountPoint:(id)point;
 - (id)getAPFSBootContainerDeviceNode;
-- (id)lookupAPFSVolumeDevByName:(id)a3;
-- (void)waitForSnapshotDeletionOnVolume:(int)a3;
+- (id)lookupAPFSVolumeDevByName:(id)name;
+- (void)waitForSnapshotDeletionOnVolume:(int)volume;
 @end
 
 @implementation MSDHVolumeManager
@@ -46,10 +46,10 @@
   return v3;
 }
 
-- (BOOL)manageSnapshot:(id)a3 forVolumeAt:(id)a4
+- (BOOL)manageSnapshot:(id)snapshot forVolumeAt:(id)at
 {
-  v6 = a3;
-  v7 = open([a4 UTF8String], 0);
+  snapshotCopy = snapshot;
+  v7 = open([at UTF8String], 0);
   if (v7 <= 0)
   {
     sub_10002D774();
@@ -57,7 +57,7 @@
     goto LABEL_24;
   }
 
-  if ([v6 isEqualToString:@"RevertSnapshot"])
+  if ([snapshotCopy isEqualToString:@"RevertSnapshot"])
   {
     v8 = fs_snapshot_revert(v7, "com.apple.snapshot.mobilestoredemo", 0);
     v9 = sub_100021268();
@@ -84,7 +84,7 @@ LABEL_21:
 
   else
   {
-    if ([v6 isEqualToString:@"DeleteSnapshot"])
+    if ([snapshotCopy isEqualToString:@"DeleteSnapshot"])
     {
       if (fs_snapshot_delete(v7, "com.apple.snapshot.mobilestoredemo", 0))
       {
@@ -116,7 +116,7 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    if ([v6 isEqualToString:@"CreateSnapshot"])
+    if ([snapshotCopy isEqualToString:@"CreateSnapshot"])
     {
       v12 = fs_snapshot_create(v7, "com.apple.snapshot.mobilestoredemo", 0);
       v13 = sub_100021268();
@@ -147,7 +147,7 @@ LABEL_22:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138543362;
-        v17 = v6;
+        v17 = snapshotCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Unknown snapshot operation: %{public}@", &v16, 0xCu);
       }
     }
@@ -163,10 +163,10 @@ LABEL_24:
   return v14;
 }
 
-- (BOOL)mountSnapshotAt:(id)a3 forVolumeAt:(id)a4
+- (BOOL)mountSnapshotAt:(id)at forVolumeAt:(id)volumeAt
 {
-  v5 = a3;
-  v6 = open([a4 UTF8String], 0);
+  atCopy = at;
+  v6 = open([volumeAt UTF8String], 0);
   if (v6 <= 0)
   {
     sub_10002D774();
@@ -175,7 +175,7 @@ LABEL_24:
 
   else
   {
-    v7 = fs_snapshot_mount(v6, [v5 UTF8String], "com.apple.snapshot.mobilestoredemo", 0);
+    v7 = fs_snapshot_mount(v6, [atCopy UTF8String], "com.apple.snapshot.mobilestoredemo", 0);
     v8 = v7 == 0;
     v9 = sub_100021268();
     v10 = v9;
@@ -196,9 +196,9 @@ LABEL_24:
   return v8;
 }
 
-- (BOOL)unmountSnapshotAt:(id)a3
+- (BOOL)unmountSnapshotAt:(id)at
 {
-  v3 = unmount([a3 UTF8String], 0x80000);
+  v3 = unmount([at UTF8String], 0x80000);
   v4 = sub_100021268();
   v5 = v4;
   if (v3)
@@ -227,11 +227,11 @@ LABEL_24:
   return v3;
 }
 
-- (BOOL)checkFreeSpaceLeftInContainer:(id)a3 neededSpace:(unint64_t)a4
+- (BOOL)checkFreeSpaceLeftInContainer:(id)container neededSpace:(unint64_t)space
 {
   v10[0] = 0;
   v10[1] = 0;
-  [a3 UTF8String];
+  [container UTF8String];
   SpaceInfo = APFSContainerGetSpaceInfo();
   if (SpaceInfo)
   {
@@ -245,7 +245,7 @@ LABEL_24:
 
   else
   {
-    if (v10[0] > a4)
+    if (v10[0] > space)
     {
       return 1;
     }
@@ -253,23 +253,23 @@ LABEL_24:
     v8 = sub_100021268();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_10002DC54(v10, a4, v8);
+      sub_10002DC54(v10, space, v8);
     }
   }
 
   return 0;
 }
 
-- (id)lookupAPFSVolumeDevByName:(id)a3
+- (id)lookupAPFSVolumeDevByName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
+  nameCopy = name;
+  v4 = nameCopy;
   existing = 0;
   memset(name, 0, 128);
   properties = 0;
-  if (v3)
+  if (nameCopy)
   {
-    v5 = IOServiceNameMatching([v3 UTF8String]);
+    v5 = IOServiceNameMatching([nameCopy UTF8String]);
     if (!IOServiceGetMatchingServices(kIOMasterPortDefault, v5, &existing))
     {
       v6 = IOIteratorNext(existing);
@@ -395,12 +395,12 @@ LABEL_26:
   return v8;
 }
 
-- (void)waitForSnapshotDeletionOnVolume:(int)a3
+- (void)waitForSnapshotDeletionOnVolume:(int)volume
 {
   v9[1] = 0;
   v9[2] = 0;
   v9[0] = 3;
-  if (ffsctl(a3, 0x80184A24uLL, v9, 0) < 0)
+  if (ffsctl(volume, 0x80184A24uLL, v9, 0) < 0)
   {
     v3 = *__error();
     v4 = sub_100021268();
@@ -432,17 +432,17 @@ LABEL_7:
 
 - (BOOL)setupDemoVolume
 {
-  v3 = [(MSDHVolumeManager *)self demoVolumeDev];
+  demoVolumeDev = [(MSDHVolumeManager *)self demoVolumeDev];
 
-  if (!v3)
+  if (!demoVolumeDev)
   {
-    v4 = [(MSDHVolumeManager *)self getAPFSBootContainerDeviceNode];
-    v5 = [(MSDHVolumeManager *)self createAPFSVolume:@"com.apple.mobilestoredemo.storage" withSizeInMB:64 inContainer:v4];
+    getAPFSBootContainerDeviceNode = [(MSDHVolumeManager *)self getAPFSBootContainerDeviceNode];
+    v5 = [(MSDHVolumeManager *)self createAPFSVolume:@"com.apple.mobilestoredemo.storage" withSizeInMB:64 inContainer:getAPFSBootContainerDeviceNode];
     [(MSDHVolumeManager *)self setDemoVolumeDev:v5];
 
-    v6 = [(MSDHVolumeManager *)self demoVolumeDev];
+    demoVolumeDev2 = [(MSDHVolumeManager *)self demoVolumeDev];
 
-    if (!v6)
+    if (!demoVolumeDev2)
     {
       goto LABEL_8;
     }
@@ -455,17 +455,17 @@ LABEL_7:
   v18[2] = NSFilePosixPermissions;
   v7 = [NSNumber numberWithShort:448];
   v19[2] = v7;
-  v6 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:3];
+  demoVolumeDev2 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:3];
 
-  v8 = [(MSDHVolumeManager *)self demoVolumeDev];
-  v9 = [(MSDHVolumeManager *)self mountAPFSVolume:v8 atMountPoint:@"/private/var/mnt/com.apple.mobilestoredemo.storage" withAttributes:v6];
+  demoVolumeDev3 = [(MSDHVolumeManager *)self demoVolumeDev];
+  v9 = [(MSDHVolumeManager *)self mountAPFSVolume:demoVolumeDev3 atMountPoint:@"/private/var/mnt/com.apple.mobilestoredemo.storage" withAttributes:demoVolumeDev2];
 
   if (v9)
   {
     v10 = sub_100021268();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(MSDHVolumeManager *)self demoVolumeDev];
+      demoVolumeDev4 = [(MSDHVolumeManager *)self demoVolumeDev];
       sub_100013F48();
       _os_log_impl(v11, v12, OS_LOG_TYPE_DEFAULT, v13, v14, 0xCu);
     }
@@ -484,20 +484,20 @@ LABEL_8:
 
 - (BOOL)deleteDemoVolume
 {
-  v3 = [(MSDHVolumeManager *)self demoVolumeDev];
+  demoVolumeDev = [(MSDHVolumeManager *)self demoVolumeDev];
 
-  if (v3)
+  if (demoVolumeDev)
   {
-    v4 = [(MSDHVolumeManager *)self demoVolumeDev];
-    v5 = [(MSDHVolumeManager *)self unmountAPFSVolume:v4];
+    demoVolumeDev2 = [(MSDHVolumeManager *)self demoVolumeDev];
+    v5 = [(MSDHVolumeManager *)self unmountAPFSVolume:demoVolumeDev2];
 
     if (!v5)
     {
       return 0;
     }
 
-    v6 = [(MSDHVolumeManager *)self demoVolumeDev];
-    v7 = [(MSDHVolumeManager *)self deleteAPFSVolume:v6];
+    demoVolumeDev3 = [(MSDHVolumeManager *)self demoVolumeDev];
+    v7 = [(MSDHVolumeManager *)self deleteAPFSVolume:demoVolumeDev3];
 
     if (!v7)
     {
@@ -531,25 +531,25 @@ LABEL_8:
   return 1;
 }
 
-- (id)createAPFSVolume:(id)a3 withSizeInMB:(unint64_t)a4 inContainer:(id)a5
+- (id)createAPFSVolume:(id)volume withSizeInMB:(unint64_t)b inContainer:(id)container
 {
-  v8 = a3;
-  v9 = a5;
+  volumeCopy = volume;
+  containerCopy = container;
   v10 = +[NSMutableDictionary dictionary];
   v11 = 0;
   v12 = 0;
-  if (v8 && v9)
+  if (volumeCopy && containerCopy)
   {
-    if ([(MSDHVolumeManager *)self checkFreeSpaceLeftInContainer:v9 neededSpace:a4 << 20])
+    if ([(MSDHVolumeManager *)self checkFreeSpaceLeftInContainer:containerCopy neededSpace:b << 20])
     {
-      if (a4)
+      if (b)
       {
-        v13 = [NSNumber numberWithUnsignedLongLong:a4 << 20];
+        v13 = [NSNumber numberWithUnsignedLongLong:b << 20];
         [v10 setObject:v13 forKey:kAPFSVolumeReserveSizeKey];
       }
 
-      [v10 setObject:v8 forKey:kAPFSVolumeNameKey];
-      [v9 UTF8String];
+      [v10 setObject:volumeCopy forKey:kAPFSVolumeNameKey];
+      [containerCopy UTF8String];
       v14 = APFSVolumeCreate();
       if (v14)
       {
@@ -584,14 +584,14 @@ LABEL_8:
 
         else
         {
-          v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ss%d", [v9 UTF8String], objc_msgSend(v12, "intValue") + 1);
+          v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ss%d", [containerCopy UTF8String], objc_msgSend(v12, "intValue") + 1);
           self = sub_100021268();
           if (os_log_type_enabled(&self->super, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
             v22 = v11;
             v23 = 2048;
-            v24 = a4;
+            bCopy = b;
             _os_log_impl(&_mh_execute_header, &self->super, OS_LOG_TYPE_DEFAULT, "APFS volume '%{public}@' with size %llu MB is created.", buf, 0x16u);
           }
         }
@@ -608,13 +608,13 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)deleteAPFSVolume:(id)a3
+- (BOOL)deleteAPFSVolume:(id)volume
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  volumeCopy = volume;
+  v4 = volumeCopy;
+  if (volumeCopy)
   {
-    [v3 UTF8String];
+    [volumeCopy UTF8String];
     v5 = APFSVolumeDelete();
     v6 = v5 == 0;
     v7 = sub_100021268();
@@ -643,14 +643,14 @@ LABEL_8:
   return v6;
 }
 
-- (id)findAPFSVolumeMountPoint:(id)a3
+- (id)findAPFSVolumeMountPoint:(id)point
 {
-  v3 = a3;
+  pointCopy = point;
   v18 = 0;
-  if (!v3)
+  if (!pointCopy)
   {
 LABEL_22:
-    v10 = 0;
+    1024 = 0;
     goto LABEL_16;
   }
 
@@ -676,10 +676,10 @@ LABEL_22:
   {
     if (!strncmp("apfs", v5 + v7 - 1040, 0xFuLL))
     {
-      v8 = [v3 UTF8String];
+      uTF8String = [pointCopy UTF8String];
       v5 = v18;
       v9 = v18 + v7;
-      if (!strncmp(v8, v18 + v7, 0xFuLL))
+      if (!strncmp(uTF8String, v18 + v7, 0xFuLL))
       {
         break;
       }
@@ -688,7 +688,7 @@ LABEL_22:
     v7 += 2168;
     if (!--v6)
     {
-      v10 = 0;
+      1024 = 0;
       goto LABEL_15;
     }
   }
@@ -706,12 +706,12 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Mount point corrupted. error - %d", buf, 8u);
     }
 
-    v10 = 0;
+    1024 = 0;
   }
 
   else
   {
-    v10 = [NSString stringWithUTF8String:v18 + v7 - 1024];
+    1024 = [NSString stringWithUTF8String:v18 + v7 - 1024];
   }
 
   v5 = v18;
@@ -719,25 +719,25 @@ LABEL_15:
   free(v5);
 LABEL_16:
 
-  return v10;
+  return 1024;
 }
 
-- (BOOL)mountAPFSVolume:(id)a3 atMountPoint:(id)a4 withAttributes:(id)a5
+- (BOOL)mountAPFSVolume:(id)volume atMountPoint:(id)point withAttributes:(id)attributes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  volumeCopy = volume;
+  pointCopy = point;
+  attributesCopy = attributes;
   bzero(&v57, 0x144uLL);
   bzero(&v51, 0x90uLL);
   v11 = 0;
   v12 = 0;
   v13 = 0;
-  if (!v8 || !v9)
+  if (!volumeCopy || !pointCopy)
   {
     goto LABEL_20;
   }
 
-  v14 = [(MSDHVolumeManager *)self findAPFSVolumeMountPoint:v8];
+  v14 = [(MSDHVolumeManager *)self findAPFSVolumeMountPoint:volumeCopy];
 
   if (v14)
   {
@@ -756,18 +756,18 @@ LABEL_16:
 
   v13 = +[NSFileManager defaultManager];
   v50 = 0;
-  v11 = [v13 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:&v50];
+  v11 = [v13 createDirectoryAtPath:pointCopy withIntermediateDirectories:1 attributes:0 error:&v50];
   v12 = v50;
   if ((v11 & 1) == 0)
   {
     v23 = sub_100021268();
     if (sub_100013F30(v23))
     {
-      v24 = [v12 localizedDescription];
+      localizedDescription = [v12 localizedDescription];
       *buf = 138543618;
-      v53 = v9;
+      v53 = pointCopy;
       v54 = 2114;
-      v55 = v24;
+      v55 = localizedDescription;
       sub_100013F08();
       _os_log_error_impl(v25, v26, v27, v28, v29, 0x16u);
     }
@@ -775,7 +775,7 @@ LABEL_16:
     goto LABEL_31;
   }
 
-  if (stat([v9 UTF8String], &v51))
+  if (stat([pointCopy UTF8String], &v51))
   {
     v30 = sub_100021268();
     if (sub_100013F30(v30))
@@ -790,21 +790,21 @@ LABEL_16:
     goto LABEL_31;
   }
 
-  v56 = [v8 UTF8String];
+  uTF8String = [volumeCopy UTF8String];
   v58 = 1;
   v59 = *&v51.st_uid;
   v57 = 0x100000;
-  if (!mount("apfs", [v9 UTF8String], 0x100000, &v56))
+  if (!mount("apfs", [pointCopy UTF8String], 0x100000, &uTF8String))
   {
 LABEL_16:
-    if (!v10)
+    if (!attributesCopy)
     {
       LOBYTE(v11) = 1;
       goto LABEL_20;
     }
 
     v49 = v12;
-    v11 = [v13 setAttributes:v10 ofItemAtPath:v9 error:&v49];
+    v11 = [v13 setAttributes:attributesCopy ofItemAtPath:pointCopy error:&v49];
     v20 = v49;
 
     if (v11)
@@ -817,9 +817,9 @@ LABEL_16:
     v37 = sub_100021268();
     if (sub_100013F30(v37))
     {
-      v43 = [v20 localizedDescription];
+      localizedDescription2 = [v20 localizedDescription];
       *buf = 138543362;
-      v53 = v43;
+      v53 = localizedDescription2;
       sub_100013F08();
       _os_log_error_impl(v44, v45, v46, v47, v48, 0xCu);
     }
@@ -839,7 +839,7 @@ LABEL_31:
     {
       v19 = *__error();
       *buf = 138543618;
-      v53 = v9;
+      v53 = pointCopy;
       v54 = 1024;
       LODWORD(v55) = v19;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to mount APFS volume on %{public}@ - %{errno}d", buf, 0x12u);
@@ -852,8 +852,8 @@ LABEL_31:
 
     --v15;
     usleep(0x7A120u);
-    v18 = [v9 UTF8String];
-    if (!mount("apfs", v18, v57, &v56))
+    uTF8String2 = [pointCopy UTF8String];
+    if (!mount("apfs", uTF8String2, v57, &uTF8String))
     {
       goto LABEL_16;
     }
@@ -865,10 +865,10 @@ LABEL_20:
   return v11;
 }
 
-- (BOOL)unmountAPFSVolume:(id)a3
+- (BOOL)unmountAPFSVolume:(id)volume
 {
-  v4 = a3;
-  if (!v4)
+  volumeCopy = volume;
+  if (!volumeCopy)
   {
     v10 = 0;
     v7 = 0;
@@ -877,7 +877,7 @@ LABEL_20:
     goto LABEL_11;
   }
 
-  v5 = [(MSDHVolumeManager *)self findAPFSVolumeMountPoint:v4];
+  v5 = [(MSDHVolumeManager *)self findAPFSVolumeMountPoint:volumeCopy];
   v6 = v5 == 0;
   if (!v5)
   {
@@ -923,11 +923,11 @@ LABEL_10:
     v11 = sub_100021268();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v10 localizedDescription];
+      localizedDescription = [v10 localizedDescription];
       *buf = 138543618;
       v18 = v7;
       v19 = 2114;
-      v20 = v13;
+      v20 = localizedDescription;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to remove mount point at '%{public}@' -  %{public}@", buf, 0x16u);
     }
 

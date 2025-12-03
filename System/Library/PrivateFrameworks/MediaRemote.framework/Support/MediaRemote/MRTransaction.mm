@@ -1,35 +1,35 @@
 @interface MRTransaction
-- (MRTransaction)initWithName:(unint64_t)a3 fromMessage:(id)a4 withDelegate:(id)a5;
-- (MRTransaction)initWithName:(unint64_t)a3 playerPath:(id)a4;
+- (MRTransaction)initWithName:(unint64_t)name fromMessage:(id)message withDelegate:(id)delegate;
+- (MRTransaction)initWithName:(unint64_t)name playerPath:(id)path;
 - (MRTransactionDelegate)delegate;
 - (double)outOfMemoryWaitDuration;
 - (unint64_t)_calculateMemory;
-- (void)_processMessage:(id)a3;
-- (void)_query:(id)a3;
+- (void)_processMessage:(id)message;
+- (void)_query:(id)_query;
 - (void)_transactionEnded;
 - (void)cancel;
 - (void)dealloc;
-- (void)send:(id)a3 toConnection:(id)a4 completion:(id)a5;
+- (void)send:(id)send toConnection:(id)connection completion:(id)completion;
 @end
 
 @implementation MRTransaction
 
-- (MRTransaction)initWithName:(unint64_t)a3 fromMessage:(id)a4 withDelegate:(id)a5
+- (MRTransaction)initWithName:(unint64_t)name fromMessage:(id)message withDelegate:(id)delegate
 {
-  v8 = a4;
-  v9 = a5;
+  messageCopy = message;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = MRTransaction;
   v10 = [(MRTransaction *)&v22 init];
   v11 = v10;
   if (v10)
   {
-    v10->_name = a3;
+    v10->_name = name;
     v12 = MRCreatePlayerPathFromXPCMessage();
     playerPath = v11->_playerPath;
     v11->_playerPath = v12;
 
-    objc_storeWeak(&v11->_delegate, v9);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     v14 = _MRLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -50,24 +50,24 @@
     v19[2] = sub_1000B5B38;
     v19[3] = &unk_1004B68F0;
     v20 = v11;
-    v21 = v8;
+    v21 = messageCopy;
     dispatch_async(v15, v19);
   }
 
   return v11;
 }
 
-- (MRTransaction)initWithName:(unint64_t)a3 playerPath:(id)a4
+- (MRTransaction)initWithName:(unint64_t)name playerPath:(id)path
 {
-  v7 = a4;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = MRTransaction;
   v8 = [(MRTransaction *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    v8->_name = a3;
-    objc_storeStrong(&v8->_playerPath, a4);
+    v8->_name = name;
+    objc_storeStrong(&v8->_playerPath, path);
     v10 = _MRLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -110,12 +110,12 @@
   [(MRTransaction *)&v4 dealloc];
 }
 
-- (void)send:(id)a3 toConnection:(id)a4 completion:(id)a5
+- (void)send:(id)send toConnection:(id)connection completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  sendCopy = send;
+  connectionCopy = connection;
+  completionCopy = completion;
+  if ([sendCopy count])
   {
     v11 = MRCreateXPCMessage();
     v12 = MRTransactionPacketsCreateExternalRepresentation();
@@ -129,14 +129,14 @@
     v16[2] = sub_1000B5F18;
     v16[3] = &unk_1004BA8F0;
     v17 = v11;
-    v18 = v10;
+    v18 = completionCopy;
     v15 = v11;
-    xpc_connection_send_message_with_reply(v9, v15, v14, v16);
+    xpc_connection_send_message_with_reply(connectionCopy, v15, v14, v16);
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -151,11 +151,11 @@
   [(MRTransaction *)self _transactionEnded];
 }
 
-- (void)_processMessage:(id)a3
+- (void)_processMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == &_xpc_error_connection_interrupted || v4 == &_xpc_error_connection_invalid)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy == &_xpc_error_connection_interrupted || messageCopy == &_xpc_error_connection_invalid)
   {
     v7 = _MRLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -191,10 +191,10 @@
   }
 }
 
-- (void)_query:(id)a3
+- (void)_query:(id)_query
 {
-  v4 = a3;
-  if (xpc_dictionary_get_BOOL(v4, "MRXPC_TRANSACTION_ENDED"))
+  _queryCopy = _query;
+  if (xpc_dictionary_get_BOOL(_queryCopy, "MRXPC_TRANSACTION_ENDED"))
   {
     v5 = _MRLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -207,14 +207,14 @@
 
   else
   {
-    v6 = [(MRTransaction *)self _calculateMemory];
-    self->_bytesInUse = v6;
-    if (v6)
+    _calculateMemory = [(MRTransaction *)self _calculateMemory];
+    self->_bytesInUse = _calculateMemory;
+    if (_calculateMemory)
     {
-      v7 = xpc_dictionary_get_remote_connection(v4);
+      v7 = xpc_dictionary_get_remote_connection(_queryCopy);
       if (v7)
       {
-        reply = xpc_dictionary_create_reply(v4);
+        reply = xpc_dictionary_create_reply(_queryCopy);
         v9 = reply;
         if (reply)
         {
@@ -265,7 +265,7 @@
       {
         [(MRTransaction *)self outOfMemoryWaitDuration];
         *buf = 134218240;
-        v23 = self;
+        selfCopy = self;
         v24 = 2048;
         v25 = v13;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%p No memory available, waiting %lf and requesting again", buf, 0x16u);
@@ -279,7 +279,7 @@
       block[2] = sub_1000B64B4;
       block[3] = &unk_1004B68F0;
       block[4] = self;
-      v21 = v4;
+      v21 = _queryCopy;
       dispatch_after(v15, v16, block);
     }
   }

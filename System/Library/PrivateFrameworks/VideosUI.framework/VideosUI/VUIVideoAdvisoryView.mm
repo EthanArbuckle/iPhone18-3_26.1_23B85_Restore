@@ -3,29 +3,29 @@
 - (CGSize)_dividerSize;
 - (CGSize)_legendSize;
 - (CGSize)_logoSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)_dividerMargin;
 - (UIEdgeInsets)_legendsMargin;
 - (UIEdgeInsets)_logoMargin;
 - (UIEdgeInsets)_margin;
-- (VUIVideoAdvisoryView)initWithAdvisoryInfoDictionary:(id)a3 reduceMotion:(BOOL)a4;
-- (void)_configureSubviewsWithDictionary:(id)a3;
-- (void)_hideWithCoreAnimationWithPlatterView:(id)a3 completion:(id)a4;
+- (VUIVideoAdvisoryView)initWithAdvisoryInfoDictionary:(id)dictionary reduceMotion:(BOOL)motion;
+- (void)_configureSubviewsWithDictionary:(id)dictionary;
+- (void)_hideWithCoreAnimationWithPlatterView:(id)view completion:(id)completion;
 - (void)_layoutAdditionalViews;
-- (void)_showAdditionalViewAtIndex:(unint64_t)a3 animated:(BOOL)a4 platterView:(id)a5 superview:(id)a6 completion:(id)a7;
-- (void)_showWithCoreAnimationWithPlatterView:(id)a3 completion:(id)a4;
-- (void)hideAnimated:(BOOL)a3 platterView:(id)a4 completion:(id)a5;
+- (void)_showAdditionalViewAtIndex:(unint64_t)index animated:(BOOL)animated platterView:(id)view superview:(id)superview completion:(id)completion;
+- (void)_showWithCoreAnimationWithPlatterView:(id)view completion:(id)completion;
+- (void)hideAnimated:(BOOL)animated platterView:(id)view completion:(id)completion;
 - (void)layoutSubviews;
 - (void)removeAllViews;
-- (void)showAnimated:(BOOL)a3 platterView:(id)a4 completion:(id)a5;
+- (void)showAnimated:(BOOL)animated platterView:(id)view completion:(id)completion;
 @end
 
 @implementation VUIVideoAdvisoryView
 
-- (VUIVideoAdvisoryView)initWithAdvisoryInfoDictionary:(id)a3 reduceMotion:(BOOL)a4
+- (VUIVideoAdvisoryView)initWithAdvisoryInfoDictionary:(id)dictionary reduceMotion:(BOOL)motion
 {
-  v4 = a4;
-  v6 = a3;
+  motionCopy = motion;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = VUIVideoAdvisoryView;
   v7 = [(VUIVideoAdvisoryView *)&v15 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -35,24 +35,24 @@
     layout = v7->_layout;
     v7->_layout = v8;
 
-    [(VUIVideoAdvisoryView *)v7 _configureSubviewsWithDictionary:v6];
+    [(VUIVideoAdvisoryView *)v7 _configureSubviewsWithDictionary:dictionaryCopy];
   }
 
   v10 = 40.0;
-  if (v4)
+  if (motionCopy)
   {
     v10 = 0.0;
   }
 
   v7->_legendAnimationDistance = v10;
   v11 = 100.0;
-  if (v4)
+  if (motionCopy)
   {
     v11 = 0.0;
   }
 
   v7->_legendYAnimationDistance = v11;
-  v7->_reduceMotion = v4;
+  v7->_reduceMotion = motionCopy;
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   additionalViews = v7->_additionalViews;
   v7->_additionalViews = v12;
@@ -60,10 +60,10 @@
   return v7;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v61 = *MEMORY[0x1E69E9840];
   [(VUIVideoAdvisoryView *)self _logoSize];
   v54 = v6;
@@ -78,9 +78,9 @@
   v14 = v13;
   v49 = v15;
   v17 = v16;
-  v18 = [(VUIVideoAdvisoryView *)self layout];
-  v19 = [v18 legendLayout];
-  [v19 margin];
+  layout = [(VUIVideoAdvisoryView *)self layout];
+  legendLayout = [layout legendLayout];
+  [legendLayout margin];
   v21 = v20;
   v23 = v22;
 
@@ -88,8 +88,8 @@
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v24 = [(VUIVideoAdvisoryView *)self legendViews];
-  v25 = [v24 countByEnumeratingWithState:&v56 objects:v60 count:16];
+  legendViews = [(VUIVideoAdvisoryView *)self legendViews];
+  v25 = [legendViews countByEnumeratingWithState:&v56 objects:v60 count:16];
   v46 = v17;
   v47 = v14;
   if (v25)
@@ -106,7 +106,7 @@
       {
         if (*v57 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(legendViews);
         }
 
         v33 = *(*(&v56 + 1) + 8 * i);
@@ -122,7 +122,7 @@
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v56 objects:v60 count:16];
+      v26 = [legendViews countByEnumeratingWithState:&v56 objects:v60 count:16];
     }
 
     while (v26);
@@ -134,11 +134,11 @@
     v31 = 0.0;
   }
 
-  v39 = [(VUIVideoAdvisoryView *)self legendViews];
-  v40 = [v39 count];
+  legendViews2 = [(VUIVideoAdvisoryView *)self legendViews];
+  v40 = [legendViews2 count];
 
-  v41 = [(VUIVideoAdvisoryView *)self legendViews];
-  if ([v41 count])
+  legendViews3 = [(VUIVideoAdvisoryView *)self legendViews];
+  if ([legendViews3 count])
   {
     v42 = v47 + v46 + v54 + v50 + v48 + v31;
   }
@@ -171,8 +171,8 @@
   v102.receiver = self;
   v102.super_class = VUIVideoAdvisoryView;
   [(VUIVideoAdvisoryView *)&v102 layoutSubviews];
-  v3 = [(VUIVideoAdvisoryView *)self layout];
-  v4 = [(VUIVideoAdvisoryView *)self vuiIsRTL];
+  layout = [(VUIVideoAdvisoryView *)self layout];
+  vuiIsRTL = [(VUIVideoAdvisoryView *)self vuiIsRTL];
   [(VUIVideoAdvisoryView *)self bounds];
   v90 = v5;
   v92 = v6;
@@ -203,7 +203,7 @@
   v30 = v8 - v19 - v12;
   v31 = v12;
   v32 = v90 + v16;
-  if (v4)
+  if (vuiIsRTL)
   {
     v33 = v30;
   }
@@ -215,10 +215,10 @@
 
   VUIRoundValue();
   v35 = v34;
-  v36 = [(VUIVideoAdvisoryView *)self logoImageView];
-  [v36 setFrame:{v33, v35, v31, v87}];
+  logoImageView = [(VUIVideoAdvisoryView *)self logoImageView];
+  [logoImageView setFrame:{v33, v35, v31, v87}];
 
-  if (v4)
+  if (vuiIsRTL)
   {
     v37 = v30 - (v88 + v91 - v89);
   }
@@ -228,12 +228,12 @@
     v37 = v32 + v91 + v88 + v31 + v32;
   }
 
-  v38 = [(VUIVideoAdvisoryView *)self dividerView];
+  dividerView = [(VUIVideoAdvisoryView *)self dividerView];
 
-  if (v38)
+  if (dividerView)
   {
-    v39 = [(VUIVideoAdvisoryView *)self dividerView];
-    [v39 frame];
+    dividerView2 = [(VUIVideoAdvisoryView *)self dividerView];
+    [dividerView2 frame];
     v41 = v40;
 
     if (v41 > 0.0)
@@ -241,8 +241,8 @@
       v41 = v81;
     }
 
-    v42 = [(VUIVideoAdvisoryView *)self dividerView];
-    [v42 setFrame:{v37, v92 + v80, v89, v41}];
+    dividerView3 = [(VUIVideoAdvisoryView *)self dividerView];
+    [dividerView3 setFrame:{v37, v92 + v80, v89, v41}];
 
     v43 = v89;
   }
@@ -252,8 +252,8 @@
     v43 = *(MEMORY[0x1E695F058] + 16);
   }
 
-  v44 = [(VUIVideoAdvisoryView *)self legendViews];
-  v45 = [v44 count];
+  legendViews = [(VUIVideoAdvisoryView *)self legendViews];
+  v45 = [legendViews count];
 
   if (v45)
   {
@@ -261,8 +261,8 @@
     v101 = 0u;
     v98 = 0u;
     v99 = 0u;
-    v46 = [(VUIVideoAdvisoryView *)self legendViews];
-    v47 = [v46 countByEnumeratingWithState:&v98 objects:v104 count:16];
+    legendViews2 = [(VUIVideoAdvisoryView *)self legendViews];
+    v47 = [legendViews2 countByEnumeratingWithState:&v98 objects:v104 count:16];
     if (v47)
     {
       v48 = v47;
@@ -274,11 +274,11 @@
         {
           if (*v99 != v49)
           {
-            objc_enumerationMutation(v46);
+            objc_enumerationMutation(legendViews2);
           }
 
           v52 = *(*(&v98 + 1) + 8 * i);
-          [v3 legendNameMinWidth];
+          [layout legendNameMinWidth];
           v54 = v53;
           [v52 legendNameSizeThatFits:{v8, v10}];
           if (v54 >= v55)
@@ -286,7 +286,7 @@
             v55 = v54;
           }
 
-          [v3 setLegendNameMinWidth:v55];
+          [layout setLegendNameMinWidth:v55];
           [v52 sizeThatFits:{v8, v10}];
           if (v50 < v56)
           {
@@ -294,7 +294,7 @@
           }
         }
 
-        v48 = [v46 countByEnumeratingWithState:&v98 objects:v104 count:16];
+        v48 = [legendViews2 countByEnumeratingWithState:&v98 objects:v104 count:16];
       }
 
       while (v48);
@@ -305,8 +305,8 @@
       v50 = 0.0;
     }
 
-    v57 = [(VUIVideoAdvisoryView *)self legendViews];
-    v58 = [v57 count];
+    legendViews3 = [(VUIVideoAdvisoryView *)self legendViews];
+    v58 = [legendViews3 count];
 
     if (v58 < 2)
     {
@@ -322,15 +322,15 @@
     else
     {
       v59 = v85;
-      v60 = [(VUIVideoAdvisoryView *)self legendViews];
-      [v60 count];
-      v61 = [(VUIVideoAdvisoryView *)self legendViews];
-      [v61 count];
+      legendViews4 = [(VUIVideoAdvisoryView *)self legendViews];
+      [legendViews4 count];
+      legendViews5 = [(VUIVideoAdvisoryView *)self legendViews];
+      [legendViews5 count];
     }
 
     VUIRoundValue();
     v63 = v62;
-    if (v4)
+    if (vuiIsRTL)
     {
       v64 = v37 + v83 * -2.0;
     }
@@ -340,16 +340,16 @@
       v64 = v8 - v37 + v83 * -2.0;
     }
 
-    v65 = [(VUIVideoAdvisoryView *)self legendViews];
-    v66 = [v65 count];
+    legendViews6 = [(VUIVideoAdvisoryView *)self legendViews];
+    v66 = [legendViews6 count];
 
     if (v66 == 1)
     {
-      [v3 legendMaxWidth];
+      [layout legendMaxWidth];
       v64 = v67;
     }
 
-    if (v4)
+    if (vuiIsRTL)
     {
       v68 = v37 - (v83 + v84 + v64);
     }
@@ -363,8 +363,8 @@
     v97 = 0u;
     v94 = 0u;
     v95 = 0u;
-    v69 = [(VUIVideoAdvisoryView *)self legendViews];
-    v70 = [v69 countByEnumeratingWithState:&v94 objects:v103 count:16];
+    legendViews7 = [(VUIVideoAdvisoryView *)self legendViews];
+    v70 = [legendViews7 countByEnumeratingWithState:&v94 objects:v103 count:16];
     if (v70)
     {
       v71 = v70;
@@ -376,17 +376,17 @@
         {
           if (*v95 != v73)
           {
-            objc_enumerationMutation(v69);
+            objc_enumerationMutation(legendViews7);
           }
 
           v75 = *(*(&v94 + 1) + 8 * j);
-          v76 = [v75 layer];
-          v77 = [v76 presentationLayer];
+          layer = [v75 layer];
+          presentationLayer = [layer presentationLayer];
           v78 = 0.0;
-          if (!v77)
+          if (!presentationLayer)
           {
             [(VUIVideoAdvisoryView *)self legendAnimationDistance];
-            if (v4)
+            if (vuiIsRTL)
             {
               v78 = -v79;
             }
@@ -401,7 +401,7 @@
           v72 = v86 + v59 + v26 + v72;
         }
 
-        v71 = [v69 countByEnumeratingWithState:&v94 objects:v103 count:16];
+        v71 = [legendViews7 countByEnumeratingWithState:&v94 objects:v103 count:16];
       }
 
       while (v71);
@@ -416,8 +416,8 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [(VUIVideoAdvisoryView *)self additionalViews];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  additionalViews = [(VUIVideoAdvisoryView *)self additionalViews];
+  v4 = [additionalViews countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -428,7 +428,7 @@
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(additionalViews);
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
@@ -436,17 +436,17 @@
         [v8 sizeThatFits:{v9, v10}];
         v12 = v11;
         v14 = v13;
-        v15 = [(VUIVideoAdvisoryView *)self vuiIsRTL];
+        vuiIsRTL = [(VUIVideoAdvisoryView *)self vuiIsRTL];
         v16 = 0.0;
-        if (v15)
+        if (vuiIsRTL)
         {
           [(VUIVideoAdvisoryView *)self frame];
           v16 = v17 - v12;
         }
 
         [v8 setFrame:{v16, 0.0, v12, v14}];
-        v18 = [v8 superview];
-        v19 = [v18 isEqual:self];
+        superview = [v8 superview];
+        v19 = [superview isEqual:self];
 
         if ((v19 & 1) == 0)
         {
@@ -456,7 +456,7 @@
         [v8 layoutIfNeeded];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [additionalViews countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v5);
@@ -470,8 +470,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(VUIVideoAdvisoryView *)self additionalViews];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  additionalViews = [(VUIVideoAdvisoryView *)self additionalViews];
+  v4 = [additionalViews countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -483,14 +483,14 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(additionalViews);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) removeFromSuperview];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [additionalViews countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -501,10 +501,10 @@
 
 - (BOOL)_isPortrait
 {
-  v2 = [(VUIVideoAdvisoryView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(VUIVideoAdvisoryView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v3 && ([MEMORY[0x1E69DD2E8] vui_interfaceOrientation] - 1) < 2 || (v4 = +[VUIUtilities isIpadPortrait](VUIUtilities, "isIpadPortrait")))
+  if (!userInterfaceIdiom && ([MEMORY[0x1E69DD2E8] vui_interfaceOrientation] - 1) < 2 || (v4 = +[VUIUtilities isIpadPortrait](VUIUtilities, "isIpadPortrait")))
   {
     LOBYTE(v4) = 1;
   }
@@ -514,17 +514,17 @@
 
 - (UIEdgeInsets)_margin
 {
-  v3 = [(VUIVideoAdvisoryView *)self _isPortrait];
-  v4 = [(VUIVideoAdvisoryView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIVideoAdvisoryView *)self _isPortrait];
+  layout = [(VUIVideoAdvisoryView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitMargin];
+    [layout portraitMargin];
   }
 
   else
   {
-    [v4 margin];
+    [layout margin];
   }
 
   v10 = v6;
@@ -545,17 +545,17 @@
 
 - (CGSize)_logoSize
 {
-  v3 = [(VUIVideoAdvisoryView *)self _isPortrait];
-  v4 = [(VUIVideoAdvisoryView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIVideoAdvisoryView *)self _isPortrait];
+  layout = [(VUIVideoAdvisoryView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitLogoSize];
+    [layout portraitLogoSize];
   }
 
   else
   {
-    [v4 logoSize];
+    [layout logoSize];
   }
 
   v8 = v6;
@@ -570,17 +570,17 @@
 
 - (CGSize)_legendSize
 {
-  v3 = [(VUIVideoAdvisoryView *)self _isPortrait];
-  v4 = [(VUIVideoAdvisoryView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIVideoAdvisoryView *)self _isPortrait];
+  layout = [(VUIVideoAdvisoryView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitLegendSize];
+    [layout portraitLegendSize];
   }
 
   else
   {
-    [v4 legendSize];
+    [layout legendSize];
   }
 
   v8 = v6;
@@ -597,17 +597,17 @@
 {
   [(VUIVideoAdvisoryView *)self bounds];
   v4 = v3;
-  v5 = [(VUIVideoAdvisoryView *)self _isPortrait];
-  v6 = [(VUIVideoAdvisoryView *)self layout];
-  v7 = v6;
-  if (v5)
+  _isPortrait = [(VUIVideoAdvisoryView *)self _isPortrait];
+  layout = [(VUIVideoAdvisoryView *)self layout];
+  v7 = layout;
+  if (_isPortrait)
   {
-    [v6 portraitDividerSize];
+    [layout portraitDividerSize];
   }
 
   else
   {
-    [v6 dividerSize];
+    [layout dividerSize];
   }
 
   v9 = v8;
@@ -621,17 +621,17 @@
 
 - (UIEdgeInsets)_logoMargin
 {
-  v3 = [(VUIVideoAdvisoryView *)self _isPortrait];
-  v4 = [(VUIVideoAdvisoryView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIVideoAdvisoryView *)self _isPortrait];
+  layout = [(VUIVideoAdvisoryView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitLogoMargin];
+    [layout portraitLogoMargin];
   }
 
   else
   {
-    [v4 logoMargin];
+    [layout logoMargin];
   }
 
   v10 = v6;
@@ -652,17 +652,17 @@
 
 - (UIEdgeInsets)_legendsMargin
 {
-  v3 = [(VUIVideoAdvisoryView *)self _isPortrait];
-  v4 = [(VUIVideoAdvisoryView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIVideoAdvisoryView *)self _isPortrait];
+  layout = [(VUIVideoAdvisoryView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitLegendsMargin];
+    [layout portraitLegendsMargin];
   }
 
   else
   {
-    [v4 legendsMargin];
+    [layout legendsMargin];
   }
 
   v10 = v6;
@@ -683,17 +683,17 @@
 
 - (UIEdgeInsets)_dividerMargin
 {
-  v3 = [(VUIVideoAdvisoryView *)self _isPortrait];
-  v4 = [(VUIVideoAdvisoryView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIVideoAdvisoryView *)self _isPortrait];
+  layout = [(VUIVideoAdvisoryView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitDividerMargin];
+    [layout portraitDividerMargin];
   }
 
   else
   {
-    [v4 dividerMargin];
+    [layout dividerMargin];
   }
 
   v10 = v6;
@@ -712,11 +712,11 @@
   return result;
 }
 
-- (void)_configureSubviewsWithDictionary:(id)a3
+- (void)_configureSubviewsWithDictionary:(id)dictionary
 {
-  v26 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
-  v5 = [v26 objectForKeyedSubscript:@"VUIAdvisoryViewLogoImageKey"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"VUIAdvisoryViewLogoImageKey"];
   if (v5)
   {
     [v4 setImage:v5];
@@ -725,7 +725,7 @@
   [v4 setAlpha:0.0];
   [(VUIVideoAdvisoryView *)self addSubview:v4];
   [(VUIVideoAdvisoryView *)self setLogoImageView:v4];
-  v6 = [v26 objectForKeyedSubscript:@"VUIAdvisoryViewLegendsKey"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"VUIAdvisoryViewLegendsKey"];
   v7 = objc_opt_new();
   if ([v6 count])
   {
@@ -734,9 +734,9 @@
     [(VUIVideoAdvisoryView *)self _dividerSize];
     v9 = v8;
     v10 = objc_opt_new();
-    v11 = [(VUIVideoAdvisoryView *)self layout];
-    v12 = [v11 dividerColor];
-    [v10 setBackgroundColor:v12];
+    layout = [(VUIVideoAdvisoryView *)self layout];
+    dividerColor = [layout dividerColor];
+    [v10 setBackgroundColor:dividerColor];
 
     [v10 setFrame:{0.0, 0.0, v9, 0.0}];
     [(VUIVideoAdvisoryView *)self addSubview:v10];
@@ -760,8 +760,8 @@
       {
         v16 = [v6 objectAtIndexedSubscript:v15];
         v17 = [VUIVideoAdvisoryLegendView alloc];
-        v18 = [(VUIVideoAdvisoryView *)self layout];
-        v19 = [(VUIVideoAdvisoryLegendView *)v17 initWithLayout:v18];
+        layout2 = [(VUIVideoAdvisoryView *)self layout];
+        v19 = [(VUIVideoAdvisoryLegendView *)v17 initWithLayout:layout2];
 
         v20 = [v16 objectForKeyedSubscript:@"VUIAdvisoryViewLegendDescriptionKey"];
         [(VUIVideoAdvisoryLegendView *)v19 setLegendDescription:v20];
@@ -787,48 +787,48 @@
     v4 = v25;
   }
 
-  v22 = [v26 objectForKeyedSubscript:@"VUIAdvisoryViewAdditionalViewsDictionaryKey"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"VUIAdvisoryViewAdditionalViewsDictionaryKey"];
   [(VUIVideoAdvisoryView *)self setAdditionalViewsInfo:v22];
 }
 
-- (void)showAnimated:(BOOL)a3 platterView:(id)a4 completion:(id)a5
+- (void)showAnimated:(BOOL)animated platterView:(id)view completion:(id)completion
 {
-  v6 = a3;
+  animatedCopy = animated;
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (v6)
+  viewCopy = view;
+  completionCopy = completion;
+  if (animatedCopy)
   {
-    [(VUIVideoAdvisoryView *)self _showWithCoreAnimationWithPlatterView:v8 completion:v9];
+    [(VUIVideoAdvisoryView *)self _showWithCoreAnimationWithPlatterView:viewCopy completion:completionCopy];
   }
 
   else
   {
-    v10 = [(VUIVideoAdvisoryView *)self dividerView];
+    dividerView = [(VUIVideoAdvisoryView *)self dividerView];
 
-    if (v10)
+    if (dividerView)
     {
-      v11 = [(VUIVideoAdvisoryView *)self dividerView];
-      [v11 frame];
+      dividerView2 = [(VUIVideoAdvisoryView *)self dividerView];
+      [dividerView2 frame];
       v13 = v12;
       v15 = v14;
       v17 = v16;
 
       [(VUIVideoAdvisoryView *)self _dividerSize];
       v19 = v18;
-      v20 = [(VUIVideoAdvisoryView *)self dividerView];
-      [v20 setFrame:{v13, v15, v17, v19}];
+      dividerView3 = [(VUIVideoAdvisoryView *)self dividerView];
+      [dividerView3 setFrame:{v13, v15, v17, v19}];
     }
 
-    v21 = [(VUIVideoAdvisoryView *)self logoImageView];
-    [v21 setAlpha:1.0];
+    logoImageView = [(VUIVideoAdvisoryView *)self logoImageView];
+    [logoImageView setAlpha:1.0];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v22 = [(VUIVideoAdvisoryView *)self legendViews];
-    v23 = [v22 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    legendViews = [(VUIVideoAdvisoryView *)self legendViews];
+    v23 = [legendViews countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v23)
     {
       v24 = v23;
@@ -840,47 +840,47 @@
         {
           if (*v34 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(legendViews);
           }
 
           [*(*(&v33 + 1) + 8 * v26++) setAlpha:1.0];
         }
 
         while (v24 != v26);
-        v24 = [v22 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v24 = [legendViews countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v24);
     }
 
-    if (v8)
+    if (viewCopy)
     {
       [(VUIVideoAdvisoryView *)self frame];
       v28 = v27 + -15.0;
-      [v8 frame];
+      [viewCopy frame];
       v30 = v29;
       [(VUIVideoAdvisoryView *)self frame];
       v32 = v31 + 30.0;
-      [v8 frame];
-      [v8 setFrame:{v28, v30, v32}];
+      [viewCopy frame];
+      [viewCopy setFrame:{v28, v30, v32}];
     }
 
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)_showWithCoreAnimationWithPlatterView:(id)a3 completion:(id)a4
+- (void)_showWithCoreAnimationWithPlatterView:(id)view completion:(id)completion
 {
   v88 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  completionCopy = completion;
   [MEMORY[0x1E6979518] begin];
   v8 = MEMORY[0x1E6979518];
   v85[0] = MEMORY[0x1E69E9820];
   v85[1] = 3221225472;
   v85[2] = __83__VUIVideoAdvisoryView_Animator___showWithCoreAnimationWithPlatterView_completion___block_invoke;
   v85[3] = &unk_1E872D7E0;
-  v78 = v7;
+  v78 = completionCopy;
   v86 = v78;
   [v8 setCompletionBlock:v85];
   v9 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"bounds"];
@@ -890,10 +890,10 @@
   [v9 setInitialVelocity:0.0];
   [v9 settlingDuration];
   [v9 setDuration:?];
-  v10 = [(VUIVideoAdvisoryView *)self dividerView];
-  v11 = [v10 layer];
+  dividerView = [(VUIVideoAdvisoryView *)self dividerView];
+  layer = [dividerView layer];
 
-  [v11 bounds];
+  [layer bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -905,13 +905,13 @@
   v21 = [MEMORY[0x1E696B098] valueWithCGRect:{v13, v15, v17, v19}];
   [v9 setToValue:v21];
 
-  [v11 addAnimation:v9 forKey:@"bounds"];
-  v77 = v11;
-  [v11 setBounds:{v13, v15, v17, v19}];
-  if (v6)
+  [layer addAnimation:v9 forKey:@"bounds"];
+  v77 = layer;
+  [layer setBounds:{v13, v15, v17, v19}];
+  if (viewCopy)
   {
-    v22 = [v6 layer];
-    [v22 bounds];
+    layer2 = [viewCopy layer];
+    [layer2 bounds];
     v24 = v23;
     v26 = v25;
     v28 = v27;
@@ -923,11 +923,11 @@
     v32 = [MEMORY[0x1E696B098] valueWithCGRect:{v24, v26, v30, v28}];
     [v9 setToValue:v32];
 
-    [v22 addAnimation:v9 forKey:@"bounds"];
-    [v22 setBounds:{v24, v26, v30, v28}];
+    [layer2 addAnimation:v9 forKey:@"bounds"];
+    [layer2 setBounds:{v24, v26, v30, v28}];
   }
 
-  v79 = v6;
+  v79 = viewCopy;
   [v9 settlingDuration];
   v34 = v33;
   v35 = objc_alloc(MEMORY[0x1E69793D0]);
@@ -955,7 +955,7 @@
   [v9 setRemovedOnCompletion:0];
   v75 = v45;
   [v9 setFillMode:v45];
-  v46 = [(VUIVideoAdvisoryView *)self vuiIsRTL];
+  vuiIsRTL = [(VUIVideoAdvisoryView *)self vuiIsRTL];
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
@@ -965,7 +965,7 @@
   if (v47)
   {
     v48 = v47;
-    v49 = self;
+    selfCopy2 = self;
     v50 = *v82;
     do
     {
@@ -978,12 +978,12 @@
           objc_enumerationMutation(obj);
         }
 
-        v53 = [*(*(&v81 + 1) + 8 * v51) layer];
-        [v53 position];
+        layer3 = [*(*(&v81 + 1) + 8 * v51) layer];
+        [layer3 position];
         v55 = v54;
         v57 = v56;
-        [(VUIVideoAdvisoryView *)v49 legendAnimationDistance];
-        if (!v46)
+        [(VUIVideoAdvisoryView *)selfCopy2 legendAnimationDistance];
+        if (!vuiIsRTL)
         {
           v58 = -v58;
         }
@@ -997,10 +997,10 @@
 
         [v52 setBeginTime:v34 + CACurrentMediaTime()];
         [v41 setBeginTime:v34 + CACurrentMediaTime()];
-        [v53 addAnimation:v52 forKey:@"position"];
-        [v53 setPosition:{v59, v57}];
-        [v53 addAnimation:v41 forKey:@"opacity"];
-        [v53 setOpacity:0.0];
+        [layer3 addAnimation:v52 forKey:@"position"];
+        [layer3 setPosition:{v59, v57}];
+        [layer3 addAnimation:v41 forKey:@"opacity"];
+        [layer3 setOpacity:0.0];
         v34 = v34 + 0.200000003;
         v9 = [v52 copy];
 
@@ -1017,7 +1017,7 @@
 
   else
   {
-    v49 = self;
+    selfCopy2 = self;
   }
 
   [v9 settlingDuration];
@@ -1040,11 +1040,11 @@
   [v69 setDuration:0.88];
   [v69 setRemovedOnCompletion:0];
   [v69 setFillMode:v75];
-  v73 = [(VUIVideoAdvisoryView *)v49 logoImageView];
-  v74 = [v73 layer];
+  logoImageView = [(VUIVideoAdvisoryView *)selfCopy2 logoImageView];
+  layer4 = [logoImageView layer];
 
-  [v74 addAnimation:v69 forKey:@"opacity"];
-  [v74 setOpacity:0.0];
+  [layer4 addAnimation:v69 forKey:@"opacity"];
+  [layer4 setOpacity:0.0];
   [MEMORY[0x1E6979518] commit];
 }
 
@@ -1059,42 +1059,42 @@ uint64_t __83__VUIVideoAdvisoryView_Animator___showWithCoreAnimationWithPlatterV
   return result;
 }
 
-- (void)hideAnimated:(BOOL)a3 platterView:(id)a4 completion:(id)a5
+- (void)hideAnimated:(BOOL)animated platterView:(id)view completion:(id)completion
 {
-  v6 = a3;
+  animatedCopy = animated;
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (v6)
+  viewCopy = view;
+  completionCopy = completion;
+  if (animatedCopy)
   {
-    [(VUIVideoAdvisoryView *)self _hideWithCoreAnimationWithPlatterView:v8 completion:v9];
+    [(VUIVideoAdvisoryView *)self _hideWithCoreAnimationWithPlatterView:viewCopy completion:completionCopy];
   }
 
   else
   {
-    v10 = [(VUIVideoAdvisoryView *)self dividerView];
+    dividerView = [(VUIVideoAdvisoryView *)self dividerView];
 
-    if (v10)
+    if (dividerView)
     {
-      v11 = [(VUIVideoAdvisoryView *)self dividerView];
-      [v11 frame];
+      dividerView2 = [(VUIVideoAdvisoryView *)self dividerView];
+      [dividerView2 frame];
       v13 = v12;
       v15 = v14;
       v17 = v16;
 
-      v18 = [(VUIVideoAdvisoryView *)self dividerView];
-      [v18 setFrame:{v13, v15, v17, 0.0}];
+      dividerView3 = [(VUIVideoAdvisoryView *)self dividerView];
+      [dividerView3 setFrame:{v13, v15, v17, 0.0}];
     }
 
-    v19 = [(VUIVideoAdvisoryView *)self logoImageView];
-    [v19 setAlpha:0.0];
+    logoImageView = [(VUIVideoAdvisoryView *)self logoImageView];
+    [logoImageView setAlpha:0.0];
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v20 = [(VUIVideoAdvisoryView *)self legendViews];
-    v21 = [v20 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    legendViews = [(VUIVideoAdvisoryView *)self legendViews];
+    v21 = [legendViews countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v21)
     {
       v22 = v21;
@@ -1106,46 +1106,46 @@ uint64_t __83__VUIVideoAdvisoryView_Animator___showWithCoreAnimationWithPlatterV
         {
           if (*v29 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(legendViews);
           }
 
           [*(*(&v28 + 1) + 8 * v24++) setAlpha:0.0];
         }
 
         while (v22 != v24);
-        v22 = [v20 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v22 = [legendViews countByEnumeratingWithState:&v28 objects:v32 count:16];
       }
 
       while (v22);
     }
 
-    v25 = [(VUIVideoAdvisoryView *)self additionalViewsInfo];
-    v26 = [v25 count];
+    additionalViewsInfo = [(VUIVideoAdvisoryView *)self additionalViewsInfo];
+    v26 = [additionalViewsInfo count];
 
     if (v26)
     {
-      v27 = [(VUIVideoAdvisoryView *)self superview];
-      [(VUIVideoAdvisoryView *)self _showAdditionalViewAtIndex:0 animated:0 platterView:v8 superview:v27 completion:v9];
+      superview = [(VUIVideoAdvisoryView *)self superview];
+      [(VUIVideoAdvisoryView *)self _showAdditionalViewAtIndex:0 animated:0 platterView:viewCopy superview:superview completion:completionCopy];
     }
 
     else
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)_showAdditionalViewAtIndex:(unint64_t)a3 animated:(BOOL)a4 platterView:(id)a5 superview:(id)a6 completion:(id)a7
+- (void)_showAdditionalViewAtIndex:(unint64_t)index animated:(BOOL)animated platterView:(id)view superview:(id)superview completion:(id)completion
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(VUIVideoAdvisoryView *)self additionalViewsInfo];
-  v16 = [v15 objectAtIndexedSubscript:a3];
+  viewCopy = view;
+  superviewCopy = superview;
+  completionCopy = completion;
+  additionalViewsInfo = [(VUIVideoAdvisoryView *)self additionalViewsInfo];
+  v16 = [additionalViewsInfo objectAtIndexedSubscript:index];
 
   v17 = [[VUIAdditionalAdvisoryInfoView alloc] initWithAdvisoryInfoDictionary:v16 reduceMotion:[(VUIVideoAdvisoryView *)self reduceMotion]];
-  v18 = [(VUIVideoAdvisoryView *)self additionalViews];
-  [v18 addObject:v17];
+  additionalViews = [(VUIVideoAdvisoryView *)self additionalViews];
+  [additionalViews addObject:v17];
 
   v19 = [v16 objectForKeyedSubscript:@"VUIIAdditionalAdvisoryInfoDisplayDurationKey"];
   [v19 floatValue];
@@ -1163,16 +1163,16 @@ uint64_t __83__VUIVideoAdvisoryView_Animator___showWithCoreAnimationWithPlatterV
   block[2] = __103__VUIVideoAdvisoryView_Animator___showAdditionalViewAtIndex_animated_platterView_superview_completion___block_invoke;
   block[3] = &unk_1E87361C8;
   objc_copyWeak(v32, &location);
-  v32[1] = a3;
-  v33 = a4;
+  v32[1] = index;
+  animatedCopy = animated;
   v28 = v17;
-  v29 = v12;
+  v29 = viewCopy;
   v32[2] = *&v20;
-  v30 = v13;
-  v31 = v14;
-  v23 = v14;
-  v24 = v13;
-  v25 = v12;
+  v30 = superviewCopy;
+  v31 = completionCopy;
+  v23 = completionCopy;
+  v24 = superviewCopy;
+  v25 = viewCopy;
   v26 = v17;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
@@ -1286,18 +1286,18 @@ uint64_t __103__VUIVideoAdvisoryView_Animator___showAdditionalViewAtIndex_animat
   return result;
 }
 
-- (void)_hideWithCoreAnimationWithPlatterView:(id)a3 completion:(id)a4
+- (void)_hideWithCoreAnimationWithPlatterView:(id)view completion:(id)completion
 {
   v121 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VUIVideoAdvisoryView *)self additionalViewsInfo];
-  v9 = [v8 count];
+  viewCopy = view;
+  completionCopy = completion;
+  additionalViewsInfo = [(VUIVideoAdvisoryView *)self additionalViewsInfo];
+  v9 = [additionalViewsInfo count];
 
   if (v9)
   {
-    v10 = [(VUIVideoAdvisoryView *)self superview];
-    [(VUIVideoAdvisoryView *)self _showAdditionalViewAtIndex:0 animated:1 platterView:v6 superview:v10 completion:v7];
+    superview = [(VUIVideoAdvisoryView *)self superview];
+    [(VUIVideoAdvisoryView *)self _showAdditionalViewAtIndex:0 animated:1 platterView:viewCopy superview:superview completion:completionCopy];
   }
 
   v11 = 0x1E6979000uLL;
@@ -1307,17 +1307,17 @@ uint64_t __103__VUIVideoAdvisoryView_Animator___showAdditionalViewAtIndex_animat
   v117[1] = 3221225472;
   v117[2] = __83__VUIVideoAdvisoryView_Animator___hideWithCoreAnimationWithPlatterView_completion___block_invoke;
   v117[3] = &unk_1E872DC10;
-  v105 = v7;
+  v105 = completionCopy;
   v117[4] = self;
   v118 = v105;
   [v12 setCompletionBlock:v117];
-  v13 = [(VUIVideoAdvisoryView *)self additionalViewsInfo];
-  v14 = [v13 count];
+  additionalViewsInfo2 = [(VUIVideoAdvisoryView *)self additionalViewsInfo];
+  v14 = [additionalViewsInfo2 count];
 
   v15 = objc_alloc(MEMORY[0x1E69793D0]);
   if (v14)
   {
-    v101 = v6;
+    v101 = viewCopy;
     LODWORD(v18) = 1059816735;
     LODWORD(v16) = 1051260355;
     v19 = [v15 initWithControlPoints:v16 :0.0 :0.0 :v18];
@@ -1325,13 +1325,13 @@ uint64_t __103__VUIVideoAdvisoryView_Animator___showAdditionalViewAtIndex_animat
     [v20 setDuration:0.883000016];
     v104 = v19;
     [v20 setTimingFunction:v19];
-    v21 = [(VUIVideoAdvisoryView *)self logoImageView];
-    v22 = [v21 layer];
+    logoImageView = [(VUIVideoAdvisoryView *)self logoImageView];
+    layer = [logoImageView layer];
 
     v103 = v20;
-    [v22 addAnimation:v20 forKey:@"opacity"];
-    v106 = v22;
-    [v22 setOpacity:0.0];
+    [layer addAnimation:v20 forKey:@"opacity"];
+    v106 = layer;
+    [layer setOpacity:0.0];
     v23 = objc_alloc(MEMORY[0x1E69793D0]);
     LODWORD(v24) = 1043207291;
     LODWORD(v25) = 1.0;
@@ -1357,11 +1357,11 @@ uint64_t __103__VUIVideoAdvisoryView_Animator___showAdditionalViewAtIndex_animat
     v112 = 0u;
     v109 = 0u;
     v110 = 0u;
-    v30 = self;
-    v31 = [(VUIVideoAdvisoryView *)self legendViews];
-    v32 = [v31 reverseObjectEnumerator];
+    selfCopy = self;
+    legendViews = [(VUIVideoAdvisoryView *)self legendViews];
+    reverseObjectEnumerator = [legendViews reverseObjectEnumerator];
 
-    v33 = [v32 countByEnumeratingWithState:&v109 objects:v119 count:16];
+    v33 = [reverseObjectEnumerator countByEnumeratingWithState:&v109 objects:v119 count:16];
     if (v33)
     {
       v34 = v33;
@@ -1376,16 +1376,16 @@ uint64_t __103__VUIVideoAdvisoryView_Animator___showAdditionalViewAtIndex_animat
         {
           if (*v110 != v35)
           {
-            objc_enumerationMutation(v32);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
-          v40 = [*(*(&v109 + 1) + 8 * v37) layer];
-          v41 = [v40 presentationLayer];
-          [v41 position];
+          layer2 = [*(*(&v109 + 1) + 8 * v37) layer];
+          presentationLayer = [layer2 presentationLayer];
+          [presentationLayer position];
           v43 = v42;
           v45 = v44;
 
-          [(VUIVideoAdvisoryView *)v30 legendYAnimationDistance];
+          [(VUIVideoAdvisoryView *)selfCopy legendYAnimationDistance];
           v47 = v45 + v46;
           v48 = [MEMORY[0x1E696B098] valueWithCGPoint:{v43, v45}];
           [v38 setFromValue:v48];
@@ -1395,12 +1395,12 @@ uint64_t __103__VUIVideoAdvisoryView_Animator___showAdditionalViewAtIndex_animat
 
           [v38 setRemovedOnCompletion:0];
           [v38 setFillMode:v107];
-          [v40 addAnimation:v38 forKey:@"position"];
-          [v40 setPosition:{v43, v47}];
-          [v40 addAnimation:v39 forKey:@"opacity"];
+          [layer2 addAnimation:v38 forKey:@"position"];
+          [layer2 setPosition:{v43, v47}];
+          [layer2 addAnimation:v39 forKey:@"opacity"];
           [v39 setBeginTime:v36 + CACurrentMediaTime()];
           LODWORD(v50) = 1.0;
-          [v40 setOpacity:v50];
+          [layer2 setOpacity:v50];
           v36 = v36 + 0.100000001;
           v29 = [v38 copy];
 
@@ -1411,7 +1411,7 @@ uint64_t __103__VUIVideoAdvisoryView_Animator___showAdditionalViewAtIndex_animat
         }
 
         while (v34 != v37);
-        v34 = [v32 countByEnumeratingWithState:&v109 objects:v119 count:16];
+        v34 = [reverseObjectEnumerator countByEnumeratingWithState:&v109 objects:v119 count:16];
       }
 
       while (v34);
@@ -1422,12 +1422,12 @@ uint64_t __103__VUIVideoAdvisoryView_Animator___showAdditionalViewAtIndex_animat
     v52 = objc_alloc(MEMORY[0x1E69793D0]);
     LODWORD(v53) = 1051260355;
     LODWORD(v54) = 1062501089;
-    v55 = [v52 initWithControlPoints:v53 :0.0 :v54 :0.0];
-    [v51 setTimingFunction:v55];
-    v56 = [(VUIVideoAdvisoryView *)v30 dividerView];
-    v57 = [v56 layer];
+    layer7 = [v52 initWithControlPoints:v53 :0.0 :v54 :0.0];
+    [v51 setTimingFunction:layer7];
+    dividerView = [(VUIVideoAdvisoryView *)selfCopy dividerView];
+    layer3 = [dividerView layer];
 
-    [v57 bounds];
+    [layer3 bounds];
     v59 = v58;
     v61 = v60;
     v63 = v62;
@@ -1440,10 +1440,10 @@ uint64_t __103__VUIVideoAdvisoryView_Animator___showAdditionalViewAtIndex_animat
 
     [v51 setRemovedOnCompletion:0];
     [v51 setFillMode:v107];
-    [v57 addAnimation:v51 forKey:@"bounds"];
-    [v57 setBounds:{v59, v61, v63, v65}];
+    [layer3 addAnimation:v51 forKey:@"bounds"];
+    [layer3 setBounds:{v59, v61, v63, v65}];
 
-    v6 = v101;
+    viewCopy = v101;
     v11 = 0x1E6979000;
   }
 
@@ -1464,17 +1464,17 @@ uint64_t __103__VUIVideoAdvisoryView_Animator___showAdditionalViewAtIndex_animat
     v72 = [MEMORY[0x1E696AD98] numberWithFloat:0.0];
     [v69 setToValue:v72];
 
-    v73 = [(VUIVideoAdvisoryView *)self logoImageView];
-    v74 = [v73 layer];
+    logoImageView2 = [(VUIVideoAdvisoryView *)self logoImageView];
+    layer4 = [logoImageView2 layer];
 
-    [v74 addAnimation:v69 forKey:@"opacity"];
-    v106 = v74;
-    [v74 setOpacity:0.0];
-    if (v6)
+    [layer4 addAnimation:v69 forKey:@"opacity"];
+    v106 = layer4;
+    [layer4 setOpacity:0.0];
+    if (viewCopy)
     {
-      v75 = [v6 layer];
-      [v75 addAnimation:v69 forKey:@"opacity"];
-      [v75 setOpacity:0.0];
+      layer5 = [viewCopy layer];
+      [layer5 addAnimation:v69 forKey:@"opacity"];
+      [layer5 setOpacity:0.0];
     }
 
     v103 = v69;
@@ -1491,9 +1491,9 @@ uint64_t __103__VUIVideoAdvisoryView_Animator___showAdditionalViewAtIndex_animat
     v116 = 0u;
     v113 = 0u;
     v114 = 0u;
-    v108 = self;
-    v81 = [(VUIVideoAdvisoryView *)self legendViews];
-    v82 = [v81 countByEnumeratingWithState:&v113 objects:v120 count:16];
+    selfCopy2 = self;
+    legendViews2 = [(VUIVideoAdvisoryView *)self legendViews];
+    v82 = [legendViews2 countByEnumeratingWithState:&v113 objects:v120 count:16];
     if (v82)
     {
       v83 = v82;
@@ -1504,15 +1504,15 @@ uint64_t __103__VUIVideoAdvisoryView_Animator___showAdditionalViewAtIndex_animat
         {
           if (*v114 != v84)
           {
-            objc_enumerationMutation(v81);
+            objc_enumerationMutation(legendViews2);
           }
 
-          v86 = [*(*(&v113 + 1) + 8 * i) layer];
-          [v86 addAnimation:v28 forKey:@"opacity"];
+          layer6 = [*(*(&v113 + 1) + 8 * i) layer];
+          [layer6 addAnimation:v28 forKey:@"opacity"];
           [v106 setOpacity:0.0];
         }
 
-        v83 = [v81 countByEnumeratingWithState:&v113 objects:v120 count:16];
+        v83 = [legendViews2 countByEnumeratingWithState:&v113 objects:v120 count:16];
       }
 
       while (v83);
@@ -1525,10 +1525,10 @@ uint64_t __103__VUIVideoAdvisoryView_Animator___showAdditionalViewAtIndex_animat
     LODWORD(v89) = 1062501089;
     v51 = [v87 initWithControlPoints:v88 :0.0 :v89 :0.0];
     [v29 setTimingFunction:v51];
-    v90 = [(VUIVideoAdvisoryView *)v108 dividerView];
-    v55 = [v90 layer];
+    dividerView2 = [(VUIVideoAdvisoryView *)selfCopy2 dividerView];
+    layer7 = [dividerView2 layer];
 
-    [v55 bounds];
+    [layer7 bounds];
     v92 = v91;
     v94 = v93;
     v96 = v95;
@@ -1541,8 +1541,8 @@ uint64_t __103__VUIVideoAdvisoryView_Animator___showAdditionalViewAtIndex_animat
 
     [v29 setRemovedOnCompletion:0];
     [v29 setFillMode:*MEMORY[0x1E69797E8]];
-    [v55 addAnimation:v29 forKey:@"bounds"];
-    [v55 setBounds:{v92, v94, v96, v98}];
+    [layer7 addAnimation:v29 forKey:@"bounds"];
+    [layer7 setBounds:{v92, v94, v96, v98}];
   }
 
   [*(v11 + 1304) commit];

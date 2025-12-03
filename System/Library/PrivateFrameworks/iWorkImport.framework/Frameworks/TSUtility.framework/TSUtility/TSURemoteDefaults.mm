@@ -1,9 +1,9 @@
 @interface TSURemoteDefaults
 + (id)sharedDefaults;
-- (TSURemoteDefaults)initWithRemoteURL:(id)a3 localURL:(id)a4;
+- (TSURemoteDefaults)initWithRemoteURL:(id)l localURL:(id)rL;
 - (id)initInternal;
-- (id)objectForKey:(id)a3;
-- (void)processPropertyList:(id)a3;
+- (id)objectForKey:(id)key;
+- (void)processPropertyList:(id)list;
 - (void)registerDefaults;
 @end
 
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_2770F5890;
   block[3] = &unk_27A701A20;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A63E78 != -1)
   {
     dispatch_once(&qword_280A63E78, block);
@@ -26,10 +26,10 @@
   return v2;
 }
 
-- (TSURemoteDefaults)initWithRemoteURL:(id)a3 localURL:(id)a4
+- (TSURemoteDefaults)initWithRemoteURL:(id)l localURL:(id)rL
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSURemoteDefaults initWithRemoteURL:localURL:]"];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSURemoteDefaults.m"];
   [TSUAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:352 isFatal:0 description:"Do not call method"];
@@ -62,19 +62,19 @@
 - (void)registerDefaults
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 URLForResource:@"RemoteDefaults" withExtension:@"plist"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle URLForResource:@"RemoteDefaults" withExtension:@"plist"];
 
   if (v3)
   {
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v3];
     if (v4)
     {
-      v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
       v11 = @"TSURemoteDefaults";
       v12[0] = v4;
       v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-      [v5 registerDefaults:v6];
+      [standardUserDefaults registerDefaults:v6];
     }
 
     else
@@ -97,33 +97,33 @@
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 dictionaryForKey:@"TSURemoteDefaults"];
-  v7 = [v6 objectForKey:v4];
+  keyCopy = key;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults dictionaryForKey:@"TSURemoteDefaults"];
+  v7 = [v6 objectForKey:keyCopy];
 
   if (!v7)
   {
     v9.receiver = self;
     v9.super_class = TSURemoteDefaults;
-    v7 = [(TSURemotePropertyList *)&v9 objectForKey:v4];
+    v7 = [(TSURemotePropertyList *)&v9 objectForKey:keyCopy];
   }
 
   return v7;
 }
 
-- (void)processPropertyList:(id)a3
+- (void)processPropertyList:(id)list
 {
   v4 = MEMORY[0x277CBEBD0];
-  v5 = a3;
-  v6 = [v4 standardUserDefaults];
-  [v6 setObject:v5 forKey:@"TSURemoteDefaults"];
+  listCopy = list;
+  standardUserDefaults = [v4 standardUserDefaults];
+  [standardUserDefaults setObject:listCopy forKey:@"TSURemoteDefaults"];
 
   v7.receiver = self;
   v7.super_class = TSURemoteDefaults;
-  [(TSURemotePropertyList *)&v7 processPropertyList:v5];
+  [(TSURemotePropertyList *)&v7 processPropertyList:listCopy];
 }
 
 @end

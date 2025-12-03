@@ -1,7 +1,7 @@
 @interface CPLDeleteChainedRecordExtractionStep
-- (BOOL)extractToBatch:(id)a3 maximumCount:(unint64_t)a4 maximumResourceSize:(unint64_t)a5 error:(id *)a6;
-- (BOOL)shouldResetFromThisStepWithIncomingChange:(id)a3;
-- (CPLDeleteChainedRecordExtractionStep)initWithStorage:(id)a3 class:(Class)a4 classDescription:(id)a5 scopeIdentifier:(id)a6 maximumCount:(unint64_t)a7;
+- (BOOL)extractToBatch:(id)batch maximumCount:(unint64_t)count maximumResourceSize:(unint64_t)size error:(id *)error;
+- (BOOL)shouldResetFromThisStepWithIncomingChange:(id)change;
+- (CPLDeleteChainedRecordExtractionStep)initWithStorage:(id)storage class:(Class)class classDescription:(id)description scopeIdentifier:(id)identifier maximumCount:(unint64_t)count;
 - (id)shortDescription;
 @end
 
@@ -14,33 +14,33 @@
   return v2;
 }
 
-- (BOOL)shouldResetFromThisStepWithIncomingChange:(id)a3
+- (BOOL)shouldResetFromThisStepWithIncomingChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   recordClass = self->_recordClass;
-  v6 = (objc_opt_isKindOfClass() & 1) != 0 && ([v4 isDelete] & 1) != 0;
+  v6 = (objc_opt_isKindOfClass() & 1) != 0 && ([changeCopy isDelete] & 1) != 0;
 
   return v6;
 }
 
-- (BOOL)extractToBatch:(id)a3 maximumCount:(unint64_t)a4 maximumResourceSize:(unint64_t)a5 error:(id *)a6
+- (BOOL)extractToBatch:(id)batch maximumCount:(unint64_t)count maximumResourceSize:(unint64_t)size error:(id *)error
 {
   v90 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  batchCopy = batch;
   maximumCount = self->_maximumCount;
-  if (maximumCount >= a4)
+  if (maximumCount >= count)
   {
-    maximumCount = a4;
+    maximumCount = count;
   }
 
-  v59 = v8;
+  v59 = batchCopy;
   v60 = maximumCount;
-  v10 = [(CPLBatchExtractionStep *)self storage];
-  v63 = self;
+  storage = [(CPLBatchExtractionStep *)self storage];
+  selfCopy = self;
   recordClass = self->_recordClass;
-  v12 = [(CPLBatchExtractionStep *)self scopeIdentifier];
-  v65 = v10;
-  v13 = [v10 allChangesWithClass:recordClass scopeIdentifier:v12 changeType:1024];
+  scopeIdentifier = [(CPLBatchExtractionStep *)self scopeIdentifier];
+  v65 = storage;
+  v13 = [storage allChangesWithClass:recordClass scopeIdentifier:scopeIdentifier changeType:1024];
 
   v14 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v82 = 0u;
@@ -68,11 +68,11 @@
         }
 
         v20 = *(*(&v82 + 1) + 8 * v19);
-        v21 = [v20 scopedIdentifier];
-        if (([v14 containsObject:v21] & 1) == 0)
+        scopedIdentifier = [v20 scopedIdentifier];
+        if (([v14 containsObject:scopedIdentifier] & 1) == 0)
         {
           v55 = v19;
-          v56 = v21;
+          v56 = scopedIdentifier;
           v61 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:5];
           v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v20, 0}];
           v58 = v17;
@@ -104,16 +104,16 @@
                     objc_enumerationMutation(v67);
                   }
 
-                  v28 = [*(*(&v78 + 1) + 8 * v27) scopedIdentifier];
-                  if (([v14 containsObject:v28] & 1) == 0)
+                  scopedIdentifier2 = [*(*(&v78 + 1) + 8 * v27) scopedIdentifier];
+                  if (([v14 containsObject:scopedIdentifier2] & 1) == 0)
                   {
-                    [v14 addObject:v28];
+                    [v14 addObject:scopedIdentifier2];
                     v76 = 0u;
                     v77 = 0u;
                     v74 = 0u;
                     v75 = 0u;
-                    v68 = v28;
-                    v29 = [v65 allChangesWithClass:v63->_recordClass relatedScopedIdentifier:v28];
+                    v68 = scopedIdentifier2;
+                    v29 = [v65 allChangesWithClass:selfCopy->_recordClass relatedScopedIdentifier:scopedIdentifier2];
                     v30 = [v29 countByEnumeratingWithState:&v74 objects:v87 count:16];
                     if (v30)
                     {
@@ -131,8 +131,8 @@
                           v34 = *(*(&v74 + 1) + 8 * i);
                           if ([v34 isDelete])
                           {
-                            v35 = [v34 scopedIdentifier];
-                            v36 = [v14 containsObject:v35];
+                            scopedIdentifier3 = [v34 scopedIdentifier];
+                            v36 = [v14 containsObject:scopedIdentifier3];
 
                             if ((v36 & 1) == 0)
                             {
@@ -149,7 +149,7 @@
 
                     v26 = v64;
                     v25 = v66;
-                    v28 = v68;
+                    scopedIdentifier2 = v68;
                   }
 
                   ++v27;
@@ -169,8 +169,8 @@
           v73 = 0u;
           v70 = 0u;
           v71 = 0u;
-          v37 = [v61 reverseObjectEnumerator];
-          v38 = [v37 countByEnumeratingWithState:&v70 objects:v86 count:16];
+          reverseObjectEnumerator = [v61 reverseObjectEnumerator];
+          v38 = [reverseObjectEnumerator countByEnumeratingWithState:&v70 objects:v86 count:16];
           if (v38)
           {
             v39 = v38;
@@ -185,7 +185,7 @@
               {
                 if (*v71 != v40)
                 {
-                  objc_enumerationMutation(v37);
+                  objc_enumerationMutation(reverseObjectEnumerator);
                 }
 
                 v43 = *(*(&v70 + 1) + 8 * v41);
@@ -217,7 +217,7 @@
 
               while (v39 != v41);
               v57 = v45;
-              v39 = [v37 countByEnumeratingWithState:&v70 objects:v86 count:16];
+              v39 = [reverseObjectEnumerator countByEnumeratingWithState:&v70 objects:v86 count:16];
               if (v39)
               {
                 continue;
@@ -250,7 +250,7 @@ LABEL_43:
           v18 = v52;
           v16 = v53;
           v19 = v55;
-          v21 = v56;
+          scopedIdentifier = v56;
         }
 
         ++v19;
@@ -281,7 +281,7 @@ LABEL_54:
     [v59 setFull:1];
   }
 
-  if (a6)
+  if (error)
   {
     v48 = v44;
   }
@@ -293,54 +293,54 @@ LABEL_54:
 
   if ((v48 & 1) == 0)
   {
-    *a6 = v57;
+    *error = v57;
   }
 
   v49 = *MEMORY[0x1E69E9840];
   return v44;
 }
 
-- (CPLDeleteChainedRecordExtractionStep)initWithStorage:(id)a3 class:(Class)a4 classDescription:(id)a5 scopeIdentifier:(id)a6 maximumCount:(unint64_t)a7
+- (CPLDeleteChainedRecordExtractionStep)initWithStorage:(id)storage class:(Class)class classDescription:(id)description scopeIdentifier:(id)identifier maximumCount:(unint64_t)count
 {
   v31 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  storageCopy = storage;
+  descriptionCopy = description;
+  identifierCopy = identifier;
   v26.receiver = self;
   v26.super_class = CPLDeleteChainedRecordExtractionStep;
-  v16 = [(CPLBatchExtractionStep *)&v26 initWithStorage:v13 scopeIdentifier:v15];
+  v16 = [(CPLBatchExtractionStep *)&v26 initWithStorage:storageCopy scopeIdentifier:identifierCopy];
   if (v16)
   {
-    if ([(objc_class *)a4 relatedRecordClass]!= a4)
+    if ([(objc_class *)class relatedRecordClass]!= class)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
         v21 = __CPLGenericOSLogDomain();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          v22 = [(objc_class *)a4 relatedRecordClass];
+          relatedRecordClass = [(objc_class *)class relatedRecordClass];
           *buf = 138412546;
-          v28 = a4;
+          classCopy = class;
           v29 = 2112;
-          v30 = v22;
-          v23 = v22;
+          v30 = relatedRecordClass;
+          v23 = relatedRecordClass;
           _os_log_impl(&dword_1DC05A000, v21, OS_LOG_TYPE_ERROR, "Trying to extract new %@ chained but their related record class is %@", buf, 0x16u);
         }
       }
 
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLBatchExtractionStep.m"];
-      [v24 handleFailureInMethod:a2 object:v16 file:v25 lineNumber:282 description:{@"Trying to extract new %@ chained but their related record class is %@", a4, -[objc_class relatedRecordClass](a4, "relatedRecordClass")}];
+      [currentHandler handleFailureInMethod:a2 object:v16 file:v25 lineNumber:282 description:{@"Trying to extract new %@ chained but their related record class is %@", class, -[objc_class relatedRecordClass](class, "relatedRecordClass")}];
 
       abort();
     }
 
-    objc_storeStrong(&v16->_recordClass, a4);
-    v17 = [v14 copy];
+    objc_storeStrong(&v16->_recordClass, class);
+    v17 = [descriptionCopy copy];
     classDescription = v16->_classDescription;
     v16->_classDescription = v17;
 
-    v16->_maximumCount = a7;
+    v16->_maximumCount = count;
   }
 
   v19 = *MEMORY[0x1E69E9840];

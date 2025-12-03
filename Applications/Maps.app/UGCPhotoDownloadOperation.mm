@@ -1,5 +1,5 @@
 @interface UGCPhotoDownloadOperation
-- (UGCPhotoDownloadOperation)initWithPhotoInfo:(id)a3 completionQueue:(id)a4 completion:(id)a5;
+- (UGCPhotoDownloadOperation)initWithPhotoInfo:(id)info completionQueue:(id)queue completion:(id)completion;
 - (void)_completeOperation;
 - (void)cancel;
 - (void)main;
@@ -21,9 +21,9 @@
   v3 = sub_100799780();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(UGCPhotoDownloadOperation *)self name];
+    name = [(UGCPhotoDownloadOperation *)self name];
     v5 = 138412290;
-    v6 = v4;
+    v6 = name;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Download operation finished %@", &v5, 0xCu);
   }
 
@@ -78,25 +78,25 @@
   }
 }
 
-- (UGCPhotoDownloadOperation)initWithPhotoInfo:(id)a3 completionQueue:(id)a4 completion:(id)a5
+- (UGCPhotoDownloadOperation)initWithPhotoInfo:(id)info completionQueue:(id)queue completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  infoCopy = info;
+  queueCopy = queue;
+  completionCopy = completion;
   v17.receiver = self;
   v17.super_class = UGCPhotoDownloadOperation;
   v12 = [(UGCPhotoDownloadOperation *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_photoInfo, a3);
+    objc_storeStrong(&v12->_photoInfo, info);
     v13->_finished = 0;
     v13->_executing = 0;
-    v14 = [v11 copy];
+    v14 = [completionCopy copy];
     completionBlock = v13->_completionBlock;
     v13->_completionBlock = v14;
 
-    objc_storeStrong(&v13->_completionQueue, a4);
+    objc_storeStrong(&v13->_completionQueue, queue);
   }
 
   return v13;

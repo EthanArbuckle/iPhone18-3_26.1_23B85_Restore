@@ -1,9 +1,9 @@
 @interface IDSReportClientEventMessage
 - (IDSReportClientEventMessage)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseBody:(id)a3;
+- (void)handleResponseBody:(id)body;
 @end
 
 @implementation IDSReportClientEventMessage
@@ -22,19 +22,19 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = IDSReportClientEventMessage;
-  v4 = [(IDSReportClientEventMessage *)&v9 copyWithZone:a3];
-  v5 = [(IDSReportClientEventMessage *)self report];
-  [v4 setReport:v5];
+  v4 = [(IDSReportClientEventMessage *)&v9 copyWithZone:zone];
+  report = [(IDSReportClientEventMessage *)self report];
+  [v4 setReport:report];
 
-  v6 = [(IDSReportClientEventMessage *)self reportType];
-  [v4 setReportType:v6];
+  reportType = [(IDSReportClientEventMessage *)self reportType];
+  [v4 setReportType:reportType];
 
-  v7 = [(IDSReportClientEventMessage *)self responseMessage];
-  [v4 setResponseMessage:v7];
+  responseMessage = [(IDSReportClientEventMessage *)self responseMessage];
+  [v4 setResponseMessage:responseMessage];
 
   return v4;
 }
@@ -51,10 +51,10 @@
 - (id)messageBody
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(IDSReportClientEventMessage *)self reportType];
-  if (v4)
+  reportType = [(IDSReportClientEventMessage *)self reportType];
+  if (reportType)
   {
-    CFDictionarySetValue(v3, @"report-type", v4);
+    CFDictionarySetValue(v3, @"report-type", reportType);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -62,10 +62,10 @@
     sub_10091B2E4();
   }
 
-  v5 = [(IDSReportClientEventMessage *)self report];
-  if (v5)
+  report = [(IDSReportClientEventMessage *)self report];
+  if (report)
   {
-    CFDictionarySetValue(v3, @"report", v5);
+    CFDictionarySetValue(v3, @"report", report);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -73,10 +73,10 @@
     sub_10091B36C();
   }
 
-  v6 = [(IDSReportClientEventMessage *)self hardwareVersion];
-  if (v6)
+  hardwareVersion = [(IDSReportClientEventMessage *)self hardwareVersion];
+  if (hardwareVersion)
   {
-    CFDictionarySetValue(v3, @"hardware-version", v6);
+    CFDictionarySetValue(v3, @"hardware-version", hardwareVersion);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -84,10 +84,10 @@
     sub_1009151DC();
   }
 
-  v7 = [(IDSReportClientEventMessage *)self osVersion];
-  if (v7)
+  osVersion = [(IDSReportClientEventMessage *)self osVersion];
+  if (osVersion)
   {
-    CFDictionarySetValue(v3, @"os-version", v7);
+    CFDictionarySetValue(v3, @"os-version", osVersion);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -98,9 +98,9 @@
   return v3;
 }
 
-- (void)handleResponseBody:(id)a3
+- (void)handleResponseBody:(id)body
 {
-  v4 = a3;
+  bodyCopy = body;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -114,7 +114,7 @@
   }
 
   v11 = 0;
-  v6 = [NSJSONSerialization JSONObjectWithData:v4 options:0 error:&v11];
+  v6 = [NSJSONSerialization JSONObjectWithData:bodyCopy options:0 error:&v11];
   v7 = v11;
   if (v7)
   {

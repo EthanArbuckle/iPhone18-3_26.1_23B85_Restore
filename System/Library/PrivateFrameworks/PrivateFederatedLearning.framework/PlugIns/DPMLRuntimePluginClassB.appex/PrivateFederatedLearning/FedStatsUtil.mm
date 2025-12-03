@@ -1,15 +1,15 @@
 @interface FedStatsUtil
-+ (id)intToBitString:(int)a3 length:(int)a4;
-+ (id)sha1:(id)a3;
-+ (int)bitStringToInt:(id)a3;
++ (id)intToBitString:(int)string length:(int)length;
++ (id)sha1:(id)sha1;
++ (int)bitStringToInt:(id)int;
 @end
 
 @implementation FedStatsUtil
 
-+ (int)bitStringToInt:(id)a3
++ (int)bitStringToInt:(id)int
 {
-  v3 = a3;
-  v4 = [v3 length];
+  intCopy = int;
+  v4 = [intCopy length];
   if (v4)
   {
     v5 = v4;
@@ -18,7 +18,7 @@
     v8 = v4 - 1;
     do
     {
-      v9 = [v3 substringWithRange:{v6, 1}];
+      v9 = [intCopy substringWithRange:{v6, 1}];
       v10 = [v9 isEqualToString:@"1"];
 
       v11 = 1 << v8;
@@ -43,15 +43,15 @@
   return v7;
 }
 
-+ (id)intToBitString:(int)a3 length:(int)a4
++ (id)intToBitString:(int)string length:(int)length
 {
   v6 = +[NSMutableString string];
-  if (a4 >= 1)
+  if (length >= 1)
   {
     v7 = 0;
     do
     {
-      if ((a3 >> v7))
+      if ((string >> v7))
       {
         v8 = @"1";
       }
@@ -65,22 +65,22 @@
       ++v7;
     }
 
-    while (a4 != v7);
+    while (length != v7);
   }
 
   return v6;
 }
 
-+ (id)sha1:(id)a3
++ (id)sha1:(id)sha1
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
-  v7 = strlen(v6);
-  CC_SHA1(v6, v7, md);
+  sha1Copy = sha1;
+  uTF8String = [sha1 UTF8String];
+  v7 = strlen(uTF8String);
+  CC_SHA1(uTF8String, v7, md);
   v8 = [NSMutableString stringWithCapacity:40];
   for (i = 0; i != 20; ++i)
   {
-    v10 = [a1 intToBitString:md[i] length:8];
+    v10 = [self intToBitString:md[i] length:8];
     [v8 appendFormat:@"%@", v10];
   }
 

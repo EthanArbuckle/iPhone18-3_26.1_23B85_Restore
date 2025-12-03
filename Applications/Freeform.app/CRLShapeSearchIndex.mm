@@ -1,26 +1,26 @@
 @interface CRLShapeSearchIndex
-- (CRLShapeSearchIndex)initWithLocale:(id)a3;
-- (_NSRange)p_rangeOfSearchTerm:(id)a3 inString:(id)a4 shouldPerformDiacriticInsensitiveSearch:(BOOL)a5;
+- (CRLShapeSearchIndex)initWithLocale:(id)locale;
+- (_NSRange)p_rangeOfSearchTerm:(id)term inString:(id)string shouldPerformDiacriticInsensitiveSearch:(BOOL)search;
 - (id)p_keywords;
-- (id)p_permuteStrings:(id)a3;
-- (id)p_predicateWithSearchTerm:(id)a3 shouldPerformDiacriticInsensitiveSearch:(BOOL)a4;
-- (id)p_resultsDictionaryForSearchTerm:(id)a3 withFilteredKeywords:(id)a4 shouldPerformDiacriticInsensitiveSearch:(BOOL)a5;
-- (id)p_resultsForKeyword:(id)a3;
-- (id)p_resultsForSearchTermBasedOnAnchoredSearch:(id)a3 shouldPerformDiacriticInsensitiveSearch:(BOOL)a4;
-- (id)p_sortedFilteredKeywordsForSearchTerm:(id)a3 usingPredicate:(id)a4;
-- (id)resultsForSearchTerm:(id)a3;
-- (void)addSearchResultWithIdentifier:(id)a3 forKeyword:(id)a4 priority:(unint64_t)a5;
-- (void)addSearchResults:(id)a3;
-- (void)p_removeSearchResultWithIdentifier:(id)a3 forTokenizedKeyword:(id)a4;
-- (void)p_tokenizeKeywordIfNeeded:(id)a3 yieldingKeyword:(id)a4;
-- (void)removeSearchResultWithIdentifier:(id)a3 forKeyword:(id)a4;
+- (id)p_permuteStrings:(id)strings;
+- (id)p_predicateWithSearchTerm:(id)term shouldPerformDiacriticInsensitiveSearch:(BOOL)search;
+- (id)p_resultsDictionaryForSearchTerm:(id)term withFilteredKeywords:(id)keywords shouldPerformDiacriticInsensitiveSearch:(BOOL)search;
+- (id)p_resultsForKeyword:(id)keyword;
+- (id)p_resultsForSearchTermBasedOnAnchoredSearch:(id)search shouldPerformDiacriticInsensitiveSearch:(BOOL)insensitiveSearch;
+- (id)p_sortedFilteredKeywordsForSearchTerm:(id)term usingPredicate:(id)predicate;
+- (id)resultsForSearchTerm:(id)term;
+- (void)addSearchResultWithIdentifier:(id)identifier forKeyword:(id)keyword priority:(unint64_t)priority;
+- (void)addSearchResults:(id)results;
+- (void)p_removeSearchResultWithIdentifier:(id)identifier forTokenizedKeyword:(id)keyword;
+- (void)p_tokenizeKeywordIfNeeded:(id)needed yieldingKeyword:(id)keyword;
+- (void)removeSearchResultWithIdentifier:(id)identifier forKeyword:(id)keyword;
 @end
 
 @implementation CRLShapeSearchIndex
 
-- (CRLShapeSearchIndex)initWithLocale:(id)a3
+- (CRLShapeSearchIndex)initWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   v12.receiver = self;
   v12.super_class = CRLShapeSearchIndex;
   v6 = [(CRLShapeSearchIndex *)&v12 init];
@@ -30,7 +30,7 @@
     searchIndex = v6->_searchIndex;
     v6->_searchIndex = v7;
 
-    objc_storeStrong(&v6->_locale, a3);
+    objc_storeStrong(&v6->_locale, locale);
     v9 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
     whitespaceCharacterSet = v6->_whitespaceCharacterSet;
     v6->_whitespaceCharacterSet = v9;
@@ -39,22 +39,22 @@
   return v6;
 }
 
-- (id)resultsForSearchTerm:(id)a3
+- (id)resultsForSearchTerm:(id)term
 {
-  v4 = a3;
-  if (v4)
+  termCopy = term;
+  if (termCopy)
   {
-    v5 = v4;
-    v6 = [(CRLShapeSearchIndex *)self p_whitespaceCharacterSet];
-    v7 = [v5 stringByTrimmingCharactersInSet:v6];
+    v5 = termCopy;
+    p_whitespaceCharacterSet = [(CRLShapeSearchIndex *)self p_whitespaceCharacterSet];
+    v7 = [v5 stringByTrimmingCharactersInSet:p_whitespaceCharacterSet];
 
-    v8 = [v7 crl_stringWithNormalizedHyphensAndQuotationMarks];
+    crl_stringWithNormalizedHyphensAndQuotationMarks = [v7 crl_stringWithNormalizedHyphensAndQuotationMarks];
 
-    v9 = [(CRLShapeSearchIndex *)self p_locale];
-    v10 = [v9 locale];
-    v11 = [v8 stringByFoldingWithOptions:128 locale:v10];
+    p_locale = [(CRLShapeSearchIndex *)self p_locale];
+    locale = [p_locale locale];
+    v11 = [crl_stringWithNormalizedHyphensAndQuotationMarks stringByFoldingWithOptions:128 locale:locale];
 
-    v12 = -[CRLShapeSearchIndex p_resultsForSearchTermBasedOnAnchoredSearch:shouldPerformDiacriticInsensitiveSearch:](self, "p_resultsForSearchTermBasedOnAnchoredSearch:shouldPerformDiacriticInsensitiveSearch:", v8, [v8 isEqualToString:v11]);
+    v12 = -[CRLShapeSearchIndex p_resultsForSearchTermBasedOnAnchoredSearch:shouldPerformDiacriticInsensitiveSearch:](self, "p_resultsForSearchTermBasedOnAnchoredSearch:shouldPerformDiacriticInsensitiveSearch:", crl_stringWithNormalizedHyphensAndQuotationMarks, [crl_stringWithNormalizedHyphensAndQuotationMarks isEqualToString:v11]);
   }
 
   else
@@ -65,23 +65,23 @@
   return v12;
 }
 
-- (void)addSearchResultWithIdentifier:(id)a3 forKeyword:(id)a4 priority:(unint64_t)a5
+- (void)addSearchResultWithIdentifier:(id)identifier forKeyword:(id)keyword priority:(unint64_t)priority
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  identifierCopy = identifier;
+  keywordCopy = keyword;
+  v10 = keywordCopy;
+  if (identifierCopy)
   {
-    if (v9)
+    if (keywordCopy)
     {
-      v23[0] = v8;
+      v23[0] = identifierCopy;
       v22[0] = @"CRLShapeSearchIndexIdentifierKey";
       v22[1] = @"CRLShapeSearchIndexKeywords";
-      v21 = v9;
+      v21 = keywordCopy;
       v11 = [NSArray arrayWithObjects:&v21 count:1];
       v23[1] = v11;
       v22[2] = @"CRLShapeSearchIndexPriorities";
-      v12 = [NSNumber numberWithUnsignedInteger:a5];
+      v12 = [NSNumber numberWithUnsignedInteger:priority];
       v20 = v12;
       v13 = [NSArray arrayWithObjects:&v20 count:1];
       v23[2] = v13;
@@ -157,17 +157,17 @@ LABEL_13:
 LABEL_23:
 }
 
-- (void)addSearchResults:(id)a3
+- (void)addSearchResults:(id)results
 {
-  v4 = a3;
-  v5 = [(CRLShapeSearchIndex *)self p_searchIndex];
-  v43 = [v5 mutableCopy];
+  resultsCopy = results;
+  p_searchIndex = [(CRLShapeSearchIndex *)self p_searchIndex];
+  v43 = [p_searchIndex mutableCopy];
 
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v4;
+  obj = resultsCopy;
   v6 = [obj countByEnumeratingWithState:&v48 objects:v62 count:16];
   if (v6)
   {
@@ -360,55 +360,55 @@ LABEL_23:
   [(CRLShapeSearchIndex *)self setP_searchIndex:v43];
 }
 
-- (void)removeSearchResultWithIdentifier:(id)a3 forKeyword:(id)a4
+- (void)removeSearchResultWithIdentifier:(id)identifier forKeyword:(id)keyword
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001C48D8;
   v6[3] = &unk_101845C68;
-  v7 = self;
-  v8 = a3;
-  v5 = v8;
-  [(CRLShapeSearchIndex *)v7 p_tokenizeKeywordIfNeeded:a4 yieldingKeyword:v6];
+  selfCopy = self;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  [(CRLShapeSearchIndex *)selfCopy p_tokenizeKeywordIfNeeded:keyword yieldingKeyword:v6];
 }
 
 - (id)p_keywords
 {
-  v2 = [(CRLShapeSearchIndex *)self p_searchIndex];
-  v3 = [v2 allKeys];
+  p_searchIndex = [(CRLShapeSearchIndex *)self p_searchIndex];
+  allKeys = [p_searchIndex allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-- (id)p_resultsForKeyword:(id)a3
+- (id)p_resultsForKeyword:(id)keyword
 {
-  v4 = a3;
-  v5 = [(CRLShapeSearchIndex *)self p_searchIndex];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keywordCopy = keyword;
+  p_searchIndex = [(CRLShapeSearchIndex *)self p_searchIndex];
+  v6 = [p_searchIndex objectForKeyedSubscript:keywordCopy];
 
   v7 = [v6 copy];
 
   return v7;
 }
 
-- (void)p_tokenizeKeywordIfNeeded:(id)a3 yieldingKeyword:(id)a4
+- (void)p_tokenizeKeywordIfNeeded:(id)needed yieldingKeyword:(id)keyword
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  keywordCopy = keyword;
   if (qword_101A347E8 != -1)
   {
     sub_10132CD5C();
   }
 
   v8 = objc_alloc_init(NSMutableArray);
-  v9 = [v6 length];
+  v9 = [neededCopy length];
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = sub_1001C4D8C;
   v47[3] = &unk_101845CB0;
   v10 = v8;
   v48 = v10;
-  [v6 enumerateSubstringsInRange:0 options:v9 usingBlock:{3, v47}];
+  [neededCopy enumerateSubstringsInRange:0 options:v9 usingBlock:{3, v47}];
   v32 = v10;
   v11 = [(CRLShapeSearchIndex *)self p_permuteStrings:v10];
   v12 = [v11 mutableCopy];
@@ -417,9 +417,9 @@ LABEL_23:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v13 = [(CRLShapeSearchIndex *)self p_whitespaceCharacterSet];
-  v33 = v6;
-  v14 = [v6 componentsSeparatedByCharactersInSet:v13];
+  p_whitespaceCharacterSet = [(CRLShapeSearchIndex *)self p_whitespaceCharacterSet];
+  v33 = neededCopy;
+  v14 = [neededCopy componentsSeparatedByCharactersInSet:p_whitespaceCharacterSet];
 
   obj = v14;
   v15 = [v14 countByEnumeratingWithState:&v43 objects:v51 count:16];
@@ -500,8 +500,8 @@ LABEL_23:
           objc_enumerationMutation(v26);
         }
 
-        v31 = [*(*(&v35 + 1) + 8 * k) crl_stringWithNormalizedHyphensAndQuotationMarks];
-        v7[2](v7, v31);
+        crl_stringWithNormalizedHyphensAndQuotationMarks = [*(*(&v35 + 1) + 8 * k) crl_stringWithNormalizedHyphensAndQuotationMarks];
+        keywordCopy[2](keywordCopy, crl_stringWithNormalizedHyphensAndQuotationMarks);
       }
 
       v28 = [v26 countByEnumeratingWithState:&v35 objects:v49 count:16];
@@ -511,50 +511,50 @@ LABEL_23:
   }
 }
 
-- (id)p_permuteStrings:(id)a3
+- (id)p_permuteStrings:(id)strings
 {
-  v3 = a3;
-  v4 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
-  if ([v3 count])
+  stringsCopy = strings;
+  v4 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(stringsCopy, "count")}];
+  if ([stringsCopy count])
   {
     v5 = 0;
     do
     {
-      v6 = [v3 objectAtIndexedSubscript:v5];
+      v6 = [stringsCopy objectAtIndexedSubscript:v5];
       v7 = [v6 mutableCopy];
 
       v8 = ++v5;
-      if (v5 < [v3 count])
+      if (v5 < [stringsCopy count])
       {
         do
         {
           [v7 appendString:@" "];
-          v9 = [v3 objectAtIndexedSubscript:v8];
+          v9 = [stringsCopy objectAtIndexedSubscript:v8];
           [v7 appendString:v9];
 
           ++v8;
         }
 
-        while (v8 < [v3 count]);
+        while (v8 < [stringsCopy count]);
       }
 
       [v4 addObject:v7];
     }
 
-    while (v5 < [v3 count]);
+    while (v5 < [stringsCopy count]);
   }
 
   return v4;
 }
 
-- (void)p_removeSearchResultWithIdentifier:(id)a3 forTokenizedKeyword:(id)a4
+- (void)p_removeSearchResultWithIdentifier:(id)identifier forTokenizedKeyword:(id)keyword
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLShapeSearchIndex *)self p_searchIndex];
-  v9 = [v8 mutableCopy];
+  identifierCopy = identifier;
+  keywordCopy = keyword;
+  p_searchIndex = [(CRLShapeSearchIndex *)self p_searchIndex];
+  v9 = [p_searchIndex mutableCopy];
 
-  v10 = [(CRLShapeSearchIndex *)self p_resultsForKeyword:v7];
+  v10 = [(CRLShapeSearchIndex *)self p_resultsForKeyword:keywordCopy];
   v11 = [v10 mutableCopy];
 
   v19 = 0;
@@ -565,7 +565,7 @@ LABEL_23:
   v14 = 3221225472;
   v15 = sub_1001C505C;
   v16 = &unk_101845CD8;
-  v12 = v6;
+  v12 = identifierCopy;
   v17 = v12;
   v18 = &v19;
   [v11 enumerateObjectsUsingBlock:&v13];
@@ -576,12 +576,12 @@ LABEL_23:
 
   if ([v11 count])
   {
-    [v9 setObject:v11 forKeyedSubscript:v7];
+    [v9 setObject:v11 forKeyedSubscript:keywordCopy];
   }
 
   else
   {
-    [v9 removeObjectForKey:v7];
+    [v9 removeObjectForKey:keywordCopy];
   }
 
   [(CRLShapeSearchIndex *)self setP_searchIndex:v9];
@@ -589,16 +589,16 @@ LABEL_23:
   _Block_object_dispose(&v19, 8);
 }
 
-- (id)p_resultsForSearchTermBasedOnAnchoredSearch:(id)a3 shouldPerformDiacriticInsensitiveSearch:(BOOL)a4
+- (id)p_resultsForSearchTermBasedOnAnchoredSearch:(id)search shouldPerformDiacriticInsensitiveSearch:(BOOL)insensitiveSearch
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CRLShapeSearchIndex *)self p_predicateWithSearchTerm:v6 shouldPerformDiacriticInsensitiveSearch:v4];
-  v8 = [(CRLShapeSearchIndex *)self p_sortedFilteredKeywordsForSearchTerm:v6 usingPredicate:v7];
-  v9 = [(CRLShapeSearchIndex *)self p_resultsDictionaryForSearchTerm:v6 withFilteredKeywords:v8 shouldPerformDiacriticInsensitiveSearch:v4];
+  insensitiveSearchCopy = insensitiveSearch;
+  searchCopy = search;
+  v7 = [(CRLShapeSearchIndex *)self p_predicateWithSearchTerm:searchCopy shouldPerformDiacriticInsensitiveSearch:insensitiveSearchCopy];
+  v8 = [(CRLShapeSearchIndex *)self p_sortedFilteredKeywordsForSearchTerm:searchCopy usingPredicate:v7];
+  v9 = [(CRLShapeSearchIndex *)self p_resultsDictionaryForSearchTerm:searchCopy withFilteredKeywords:v8 shouldPerformDiacriticInsensitiveSearch:insensitiveSearchCopy];
   v10 = objc_alloc_init(NSMutableArray);
-  v11 = [v9 allKeys];
-  v12 = [v11 sortedArrayUsingSelector:"compare:"];
+  allKeys = [v9 allKeys];
+  v12 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   v22 = 0u;
   v23 = 0u;
@@ -632,16 +632,16 @@ LABEL_23:
   return v10;
 }
 
-- (_NSRange)p_rangeOfSearchTerm:(id)a3 inString:(id)a4 shouldPerformDiacriticInsensitiveSearch:(BOOL)a5
+- (_NSRange)p_rangeOfSearchTerm:(id)term inString:(id)string shouldPerformDiacriticInsensitiveSearch:(BOOL)search
 {
-  if (a5)
+  if (search)
   {
-    v5 = [a4 localizedStandardRangeOfString:a3];
+    v5 = [string localizedStandardRangeOfString:term];
   }
 
   else
   {
-    v5 = [a4 rangeOfString:a3 options:9];
+    v5 = [string rangeOfString:term options:9];
   }
 
   result.length = v6;
@@ -649,42 +649,42 @@ LABEL_23:
   return result;
 }
 
-- (id)p_predicateWithSearchTerm:(id)a3 shouldPerformDiacriticInsensitiveSearch:(BOOL)a4
+- (id)p_predicateWithSearchTerm:(id)term shouldPerformDiacriticInsensitiveSearch:(BOOL)search
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001C5378;
   v8[3] = &unk_101845D00;
   v8[4] = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v9;
+  termCopy = term;
+  searchCopy = search;
+  v5 = termCopy;
   v6 = [NSPredicate predicateWithBlock:v8];
 
   return v6;
 }
 
-- (id)p_sortedFilteredKeywordsForSearchTerm:(id)a3 usingPredicate:(id)a4
+- (id)p_sortedFilteredKeywordsForSearchTerm:(id)term usingPredicate:(id)predicate
 {
-  v5 = a4;
-  v6 = [(CRLShapeSearchIndex *)self p_keywords];
-  v7 = [v6 filteredArrayUsingPredicate:v5];
+  predicateCopy = predicate;
+  p_keywords = [(CRLShapeSearchIndex *)self p_keywords];
+  v7 = [p_keywords filteredArrayUsingPredicate:predicateCopy];
 
   v8 = [v7 sortedArrayUsingComparator:&stru_101845D40];
 
   return v8;
 }
 
-- (id)p_resultsDictionaryForSearchTerm:(id)a3 withFilteredKeywords:(id)a4 shouldPerformDiacriticInsensitiveSearch:(BOOL)a5
+- (id)p_resultsDictionaryForSearchTerm:(id)term withFilteredKeywords:(id)keywords shouldPerformDiacriticInsensitiveSearch:(BOOL)search
 {
-  v8 = a3;
-  v9 = a4;
+  termCopy = term;
+  keywordsCopy = keywords;
   v10 = +[NSMutableDictionary dictionary];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v9;
+  obj = keywordsCopy;
   v11 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -705,9 +705,9 @@ LABEL_23:
         v18[2] = sub_1001C5614;
         v18[3] = &unk_101845D68;
         v19 = v10;
-        v20 = self;
-        v21 = v8;
-        v22 = a5;
+        selfCopy = self;
+        v21 = termCopy;
+        searchCopy = search;
         [v15 enumerateObjectsUsingBlock:v18];
       }
 

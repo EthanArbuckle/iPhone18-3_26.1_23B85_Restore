@@ -1,6 +1,6 @@
 @interface SSVMediaSocialShareExtension
 - (SSVMediaSocialShareExtension)init;
-- (void)getVisibilityWithCompletionBlock:(id)a3;
+- (void)getVisibilityWithCompletionBlock:(id)block;
 @end
 
 @implementation SSVMediaSocialShareExtension
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (void)getVisibilityWithCompletionBlock:(id)a3
+- (void)getVisibilityWithCompletionBlock:(id)block
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   if (!self->_connection)
   {
     v20 = MEMORY[0x1E695DF30];
@@ -35,7 +35,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (!v4)
+  if (!blockCopy)
   {
     v20 = MEMORY[0x1E695DF30];
     v21 = *MEMORY[0x1E695D940];
@@ -54,19 +54,19 @@ LABEL_21:
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
-  v9 = [v6 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
   {
     v10 = v8;
   }
@@ -88,9 +88,9 @@ LABEL_21:
 
   if (v11)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, &v26, v23}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, &v26, v23}];
     free(v11);
-    SSFileLog(v6, @"%@", v12, v13, v14, v15, v16, v17, v9);
+    SSFileLog(v6, @"%@", v12, v13, v14, v15, v16, v17, oSLogObject);
 LABEL_16:
   }
 

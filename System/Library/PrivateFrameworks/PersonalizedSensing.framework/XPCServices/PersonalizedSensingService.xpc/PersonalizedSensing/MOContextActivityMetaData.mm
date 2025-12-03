@@ -1,11 +1,11 @@
 @interface MOContextActivityMetaData
 - (MOContextActivityMetaData)init;
-- (MOContextActivityMetaData)initWithActivityMetaDataMO:(id)a3;
-- (MOContextActivityMetaData)initWithActivityType:(id)a3;
-- (MOContextActivityMetaData)initWithActivityType:(id)a3 activityDuration:(id)a4;
-- (MOContextActivityMetaData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MOContextActivityMetaData)initWithActivityMetaDataMO:(id)o;
+- (MOContextActivityMetaData)initWithActivityType:(id)type;
+- (MOContextActivityMetaData)initWithActivityType:(id)type activityDuration:(id)duration;
+- (MOContextActivityMetaData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOContextActivityMetaData
@@ -17,25 +17,25 @@
   return [(MOContextActivityMetaData *)&v3 init];
 }
 
-- (MOContextActivityMetaData)initWithActivityType:(id)a3 activityDuration:(id)a4
+- (MOContextActivityMetaData)initWithActivityType:(id)type activityDuration:(id)duration
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  durationCopy = duration;
   v13.receiver = self;
   v13.super_class = MOContextActivityMetaData;
   v9 = [(MOContextActivityMetaData *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_activityType, a3);
-    objc_storeStrong(&v10->_activityDuration, a4);
+    objc_storeStrong(&v9->_activityType, type);
+    objc_storeStrong(&v10->_activityDuration, duration);
     v11 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v15 = v7;
+      v15 = typeCopy;
       v16 = 2112;
-      v17 = v8;
+      v17 = durationCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "ActivityMetaData activityType,%@,activityDuration,%@", buf, 0x16u);
     }
   }
@@ -43,21 +43,21 @@
   return v10;
 }
 
-- (MOContextActivityMetaData)initWithActivityType:(id)a3
+- (MOContextActivityMetaData)initWithActivityType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v10.receiver = self;
   v10.super_class = MOContextActivityMetaData;
   v6 = [(MOContextActivityMetaData *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_activityType, a3);
+    objc_storeStrong(&v6->_activityType, type);
     v8 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v12 = v5;
+      v12 = typeCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "ActivityMetaData activityType,%@", buf, 0xCu);
     }
   }
@@ -65,52 +65,52 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MOContextActivityMetaData alloc];
-  v5 = [(MOContextActivityMetaData *)self activityType];
-  v6 = [(MOContextActivityMetaData *)self activityDuration];
-  v7 = [(MOContextActivityMetaData *)v4 initWithActivityType:v5 activityDuration:v6];
+  activityType = [(MOContextActivityMetaData *)self activityType];
+  activityDuration = [(MOContextActivityMetaData *)self activityDuration];
+  v7 = [(MOContextActivityMetaData *)v4 initWithActivityType:activityType activityDuration:activityDuration];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activityType = self->_activityType;
-  v5 = a3;
-  [v5 encodeObject:activityType forKey:@"activityType"];
-  [v5 encodeObject:self->_activityDuration forKey:@"activityDuration"];
+  coderCopy = coder;
+  [coderCopy encodeObject:activityType forKey:@"activityType"];
+  [coderCopy encodeObject:self->_activityDuration forKey:@"activityDuration"];
 }
 
-- (MOContextActivityMetaData)initWithCoder:(id)a3
+- (MOContextActivityMetaData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityDuration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityDuration"];
 
   v7 = [(MOContextActivityMetaData *)self initWithActivityType:v5 activityDuration:v6];
   return v7;
 }
 
-- (MOContextActivityMetaData)initWithActivityMetaDataMO:(id)a3
+- (MOContextActivityMetaData)initWithActivityMetaDataMO:(id)o
 {
-  if (a3)
+  if (o)
   {
-    v4 = a3;
-    v5 = [v4 activityType];
-    v6 = [v4 activityDuration];
+    oCopy = o;
+    activityType = [oCopy activityType];
+    activityDuration = [oCopy activityDuration];
 
-    self = [(MOContextActivityMetaData *)self initWithActivityType:v5 activityDuration:v6];
-    v7 = self;
+    self = [(MOContextActivityMetaData *)self initWithActivityType:activityType activityDuration:activityDuration];
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

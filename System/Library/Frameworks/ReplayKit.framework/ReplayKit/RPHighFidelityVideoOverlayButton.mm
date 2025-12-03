@@ -1,12 +1,12 @@
 @interface RPHighFidelityVideoOverlayButton
-- (RPHighFidelityVideoOverlayButton)initWithStyle:(int64_t)a3;
+- (RPHighFidelityVideoOverlayButton)initWithStyle:(int64_t)style;
 - (id)target;
-- (void)_playButtonTapped:(id)a3;
+- (void)_playButtonTapped:(id)tapped;
 @end
 
 @implementation RPHighFidelityVideoOverlayButton
 
-- (RPHighFidelityVideoOverlayButton)initWithStyle:(int64_t)a3
+- (RPHighFidelityVideoOverlayButton)initWithStyle:(int64_t)style
 {
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [MEMORY[0x277D755B8] imageNamed:@"RPVideoOverlayGlyphMask" inBundle:v5];
@@ -21,7 +21,7 @@
   v10 = v9;
   if (v9)
   {
-    v9->_style = a3;
+    v9->_style = style;
     objc_storeStrong(&v9->_button, v8);
     [v8 addTarget:v10 action:sel__playButtonTapped_ forControlEvents:64];
     [v8 addTarget:v10 action:sel__playButtonActivate_ forControlEvents:64];
@@ -30,7 +30,7 @@
     [v8 setDeliversTouchesForGesturesToSuperview:0];
     [(RPHighFidelityVideoOverlayButton *)v10 addSubview:v10->_button];
     [(RPHighFidelityVideoOverlayButton *)v10 setAutoresizingMask:45];
-    if (!a3)
+    if (!style)
     {
       v11 = [MEMORY[0x277D755B8] imageNamed:@"RPVideoOverlayBackgroundMask" inBundle:v5];
       v12 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v11];
@@ -53,9 +53,9 @@
   return v10;
 }
 
-- (void)_playButtonTapped:(id)a3
+- (void)_playButtonTapped:(id)tapped
 {
-  [(RPHighFidelityVideoOverlayButton *)self _playButtonDeactivate:a3];
+  [(RPHighFidelityVideoOverlayButton *)self _playButtonDeactivate:tapped];
   WeakRetained = objc_loadWeakRetained(&self->_target);
   action = self->_action;
   v6 = objc_opt_respondsToSelector();

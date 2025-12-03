@@ -1,8 +1,8 @@
 @interface SCNAnimationReference
-- (SCNAnimationReference)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNAnimationReference)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNAnimationReference
@@ -15,30 +15,30 @@
   [(SCNAnimationReference *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SCNAnimationReference;
-  v4 = [(SCNAnimationReference *)&v6 copyWithZone:a3];
+  v4 = [(SCNAnimationReference *)&v6 copyWithZone:zone];
   [v4 setReferenceName:{-[SCNAnimationReference referenceName](self, "referenceName")}];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[SCNAnimationReference referenceName](self forKey:{"referenceName"), @"referenceName"}];
+  [coder encodeObject:-[SCNAnimationReference referenceName](self forKey:{"referenceName"), @"referenceName"}];
   [(SCNAnimationReference *)self repeatCount];
-  [a3 encodeFloat:@"repeatCount" forKey:?];
+  [coder encodeFloat:@"repeatCount" forKey:?];
   [(SCNAnimationReference *)self repeatDuration];
   *&v5 = v5;
-  [a3 encodeFloat:@"repeatDuration" forKey:v5];
-  [a3 encodeBool:-[CAAnimation usesSceneTimeBase](self forKey:{"usesSceneTimeBase"), @"usesSceneTimeBase"}];
+  [coder encodeFloat:@"repeatDuration" forKey:v5];
+  [coder encodeBool:-[CAAnimation usesSceneTimeBase](self forKey:{"usesSceneTimeBase"), @"usesSceneTimeBase"}];
   v6.receiver = self;
   v6.super_class = SCNAnimationReference;
-  [(SCNAnimationReference *)&v6 encodeWithCoder:a3];
+  [(SCNAnimationReference *)&v6 encodeWithCoder:coder];
 }
 
-- (SCNAnimationReference)initWithCoder:(id)a3
+- (SCNAnimationReference)initWithCoder:(id)coder
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10.receiver = self;
@@ -46,16 +46,16 @@
   v4 = [(SCNAnimationReference *)&v10 init];
   if (v4)
   {
-    -[SCNAnimationReference setReferenceName:](v4, "setReferenceName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"referenceName"]);
-    [a3 decodeFloatForKey:@"repeatCount"];
+    -[SCNAnimationReference setReferenceName:](v4, "setReferenceName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"referenceName"]);
+    [coder decodeFloatForKey:@"repeatCount"];
     [(SCNAnimationReference *)v4 setRepeatCount:?];
-    [a3 decodeFloatForKey:@"repeatDuration"];
+    [coder decodeFloatForKey:@"repeatDuration"];
     [(SCNAnimationReference *)v4 setRepeatDuration:v5];
-    -[CAAnimation setUsesSceneTimeBase:](v4, "setUsesSceneTimeBase:", [a3 decodeBoolForKey:@"usesSceneTimeBase"]);
+    -[CAAnimation setUsesSceneTimeBase:](v4, "setUsesSceneTimeBase:", [coder decodeBoolForKey:@"usesSceneTimeBase"]);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [objc_msgSend(a3 "assetCatalog")];
+      v6 = [objc_msgSend(coder "assetCatalog")];
       if (v6)
       {
         v7 = v6;

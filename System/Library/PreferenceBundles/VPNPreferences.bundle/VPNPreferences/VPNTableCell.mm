@@ -1,19 +1,19 @@
 @interface VPNTableCell
-- (VPNTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (VPNTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setAlert:(id)a3;
-- (void)setChecked:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
+- (void)setAlert:(id)alert;
+- (void)setChecked:(BOOL)checked;
+- (void)setSubtitle:(id)subtitle;
 - (void)updateDetail;
 @end
 
 @implementation VPNTableCell
 
-- (VPNTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (VPNTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = VPNTableCell;
-  v4 = [(VPNTableCell *)&v11 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(VPNTableCell *)&v11 initWithStyle:3 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -31,21 +31,21 @@
   return v5;
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
   v4 = OBJC_IVAR___PSTableCell__checked;
-  if (self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__checked] != a3)
+  if (self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__checked] != checked)
   {
-    self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__checked] = a3;
+    self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__checked] = checked;
   }
 
   v5 = +[UIColor labelColor];
-  v6 = [(VPNTableCell *)self titleLabel];
-  [v6 setTextColor:v5];
+  titleLabel = [(VPNTableCell *)self titleLabel];
+  [titleLabel setTextColor:v5];
 
   v7 = +[UIColor secondaryLabelColor];
-  v8 = [(VPNTableCell *)self detailTextLabel];
-  [v8 setTextColor:v7];
+  detailTextLabel = [(VPNTableCell *)self detailTextLabel];
+  [detailTextLabel setTextColor:v7];
 
   if (!qword_4A0B0)
   {
@@ -56,8 +56,8 @@
 
   [(VPNTableCell *)self setIcon:?];
   v11 = self->PSTableCell_opaque[v4] == 0;
-  v12 = [(VPNTableCell *)self imageView];
-  [v12 setHidden:v11];
+  imageView = [(VPNTableCell *)self imageView];
+  [imageView setHidden:v11];
 }
 
 - (void)updateDetail
@@ -94,24 +94,24 @@ LABEL_11:
   {
     v22.receiver = self;
     v22.super_class = VPNTableCell;
-    v7 = [(VPNTableCell *)&v22 detailTextLabel];
-    [v7 setText:self->_detailText];
+    detailTextLabel = [(VPNTableCell *)&v22 detailTextLabel];
+    [detailTextLabel setText:self->_detailText];
     v21.receiver = self;
     v21.super_class = VPNTableCell;
-    v8 = [(VPNTableCell *)&v21 detailTextLabel];
-    [v8 frame];
+    detailTextLabel2 = [(VPNTableCell *)&v21 detailTextLabel];
+    [detailTextLabel2 frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
 
-    v15 = [(VPNTableCell *)self contentView];
-    [v15 size];
+    contentView = [(VPNTableCell *)self contentView];
+    [contentView size];
     v17 = v16 + -30.0;
 
     v20.receiver = self;
     v20.super_class = VPNTableCell;
-    v18 = [(VPNTableCell *)&v20 detailTextLabel];
-    [v18 setFrame:{v10, v12, v17, v14}];
+    detailTextLabel3 = [(VPNTableCell *)&v20 detailTextLabel];
+    [detailTextLabel3 setFrame:{v10, v12, v17, v14}];
 
     if (v6)
     {
@@ -123,39 +123,39 @@ LABEL_11:
       +[UIColor secondaryLabelColor];
     }
     v19 = ;
-    [v7 setTextColor:v19];
+    [detailTextLabel setTextColor:v19];
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  subtitleCopy = subtitle;
+  v6 = subtitleCopy;
+  if (subtitleCopy)
   {
-    v7 = v5;
-    v5 = [(NSString *)self->_subtitle isEqualToString:v5];
+    v7 = subtitleCopy;
+    subtitleCopy = [(NSString *)self->_subtitle isEqualToString:subtitleCopy];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((subtitleCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_subtitle, a3);
+      objc_storeStrong(&self->_subtitle, subtitle);
       [(VPNTableCell *)self updateDetail];
-      v5 = [(VPNTableCell *)self setNeedsLayout];
+      subtitleCopy = [(VPNTableCell *)self setNeedsLayout];
       v6 = v7;
     }
   }
 
-  _objc_release_x1(v5, v6);
+  _objc_release_x1(subtitleCopy, v6);
 }
 
-- (void)setAlert:(id)a3
+- (void)setAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   alert = self->_alert;
-  v7 = v4;
-  if (v4)
+  v7 = alertCopy;
+  if (alertCopy)
   {
-    if ([(NSString *)alert isEqualToString:v4])
+    if ([(NSString *)alert isEqualToString:alertCopy])
     {
       goto LABEL_6;
     }
@@ -180,8 +180,8 @@ LABEL_6:
 {
   v5.receiver = self;
   v5.super_class = VPNTableCell;
-  v3 = [(VPNTableCell *)&v5 titleLabel];
-  [v3 setAdjustsFontSizeToFitWidth:1];
+  titleLabel = [(VPNTableCell *)&v5 titleLabel];
+  [titleLabel setAdjustsFontSizeToFitWidth:1];
   v4.receiver = self;
   v4.super_class = VPNTableCell;
   [(VPNTableCell *)&v4 layoutSubviews];

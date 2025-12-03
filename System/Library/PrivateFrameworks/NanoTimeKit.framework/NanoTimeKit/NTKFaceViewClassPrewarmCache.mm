@@ -1,8 +1,8 @@
 @interface NTKFaceViewClassPrewarmCache
 + (id)sharedInstance;
 - (NTKFaceViewClassPrewarmCache)init;
-- (id)prewarmDataForClass:(Class)a3;
-- (void)prewarmClasses:(id)a3;
+- (id)prewarmDataForClass:(Class)class;
+- (void)prewarmClasses:(id)classes;
 @end
 
 @implementation NTKFaceViewClassPrewarmCache
@@ -41,36 +41,36 @@ void __46__NTKFaceViewClassPrewarmCache_sharedInstance__block_invoke()
   sharedInstance_singleton = v0;
 }
 
-- (id)prewarmDataForClass:(Class)a3
+- (id)prewarmDataForClass:(Class)class
 {
-  v5 = NSStringFromClass(a3);
-  v6 = [(NSMutableDictionary *)self->_prewarmCache objectForKeyedSubscript:v5];
-  if (!v6)
+  v5 = NSStringFromClass(class);
+  _prewarmSharedData = [(NSMutableDictionary *)self->_prewarmCache objectForKeyedSubscript:v5];
+  if (!_prewarmSharedData)
   {
-    v6 = [(objc_class *)a3 _prewarmSharedData];
-    if (v6)
+    _prewarmSharedData = [(objc_class *)class _prewarmSharedData];
+    if (_prewarmSharedData)
     {
-      [(NSMutableDictionary *)self->_prewarmCache setObject:v6 forKey:v5];
+      [(NSMutableDictionary *)self->_prewarmCache setObject:_prewarmSharedData forKey:v5];
     }
   }
 
-  return v6;
+  return _prewarmSharedData;
 }
 
-- (void)prewarmClasses:(id)a3
+- (void)prewarmClasses:(id)classes
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  classesCopy = classes;
   v5 = MEMORY[0x277CBEB58];
-  v6 = [(NSMutableDictionary *)self->_prewarmCache allKeys];
-  v7 = [v5 setWithArray:v6];
+  allKeys = [(NSMutableDictionary *)self->_prewarmCache allKeys];
+  v7 = [v5 setWithArray:allKeys];
 
   v8 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v9 = v4;
+  v9 = classesCopy;
   v10 = [v9 countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v10)
   {
@@ -148,10 +148,10 @@ void __46__NTKFaceViewClassPrewarmCache_sharedInstance__block_invoke()
         }
 
         v27 = *(*(&v30 + 1) + 8 * k);
-        v28 = [NSClassFromString(v27) _prewarmSharedData];
-        if (v28)
+        _prewarmSharedData = [NSClassFromString(v27) _prewarmSharedData];
+        if (_prewarmSharedData)
         {
-          [(NSMutableDictionary *)self->_prewarmCache setObject:v28 forKey:v27];
+          [(NSMutableDictionary *)self->_prewarmCache setObject:_prewarmSharedData forKey:v27];
         }
       }
 

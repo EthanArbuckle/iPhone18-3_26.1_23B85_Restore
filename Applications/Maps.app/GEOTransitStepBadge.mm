@@ -11,15 +11,15 @@
     v3 = [[NSMutableArray alloc] initWithCapacity:2];
     if ([(GEOTransitStepBadge *)self hasArtwork])
     {
-      v4 = [(GEOTransitStepBadge *)self artwork];
-      [v3 addObject:v4];
+      artwork = [(GEOTransitStepBadge *)self artwork];
+      [v3 addObject:artwork];
     }
 
     if ([(GEOTransitStepBadge *)self hasText])
     {
       v5 = [MKTransitText alloc];
-      v6 = [(GEOTransitStepBadge *)self text];
-      v7 = [v5 initWithFormattedString:v6];
+      text = [(GEOTransitStepBadge *)self text];
+      v7 = [v5 initWithFormattedString:text];
 
       v8 = [[MKTransitArtwork alloc] initWithText:v7];
       [v3 addObject:v8];

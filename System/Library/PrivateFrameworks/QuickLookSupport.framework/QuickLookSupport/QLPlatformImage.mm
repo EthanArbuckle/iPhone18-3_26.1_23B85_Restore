@@ -1,22 +1,22 @@
 @interface QLPlatformImage
-+ (id)imageWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(unsigned int)a5;
-+ (id)imageWithUIImage:(id)a3;
++ (id)imageWithCGImage:(CGImage *)image scale:(double)scale orientation:(unsigned int)orientation;
++ (id)imageWithUIImage:(id)image;
 - (CGSize)size;
 - (UIImage)UIImage;
 - (void)dealloc;
-- (void)setCGImage:(CGImage *)a3;
+- (void)setCGImage:(CGImage *)image;
 @end
 
 @implementation QLPlatformImage
 
 - (void)dealloc
 {
-  v3 = [(QLPlatformImage *)self cleanupDataBlock];
+  cleanupDataBlock = [(QLPlatformImage *)self cleanupDataBlock];
 
-  if (v3)
+  if (cleanupDataBlock)
   {
-    v4 = [(QLPlatformImage *)self cleanupDataBlock];
-    v4[2]();
+    cleanupDataBlock2 = [(QLPlatformImage *)self cleanupDataBlock];
+    cleanupDataBlock2[2]();
 
     [(QLPlatformImage *)self setCleanupDataBlock:0];
   }
@@ -32,51 +32,51 @@
   [(QLPlatformImage *)&v6 dealloc];
 }
 
-- (void)setCGImage:(CGImage *)a3
+- (void)setCGImage:(CGImage *)image
 {
   cgImage = self->_cgImage;
-  if (cgImage != a3)
+  if (cgImage != image)
   {
     CGImageRelease(cgImage);
-    self->_cgImage = CGImageRetain(a3);
-    Width = CGImageGetWidth(a3);
-    Height = CGImageGetHeight(a3);
+    self->_cgImage = CGImageRetain(image);
+    Width = CGImageGetWidth(image);
+    Height = CGImageGetHeight(image);
 
     [(QLPlatformImage *)self setSize:Width, Height];
   }
 }
 
-+ (id)imageWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(unsigned int)a5
++ (id)imageWithCGImage:(CGImage *)image scale:(double)scale orientation:(unsigned int)orientation
 {
-  v5 = *&a5;
+  v5 = *&orientation;
   v8 = objc_alloc_init(QLPlatformImage);
-  [(QLPlatformImage *)v8 setCGImage:a3];
-  [(QLPlatformImage *)v8 setScale:a4];
+  [(QLPlatformImage *)v8 setCGImage:image];
+  [(QLPlatformImage *)v8 setScale:scale];
   [(QLPlatformImage *)v8 setOrientation:v5];
 
   return v8;
 }
 
-+ (id)imageWithUIImage:(id)a3
++ (id)imageWithUIImage:(id)image
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 CGImage])
+  imageCopy = image;
+  v5 = imageCopy;
+  if (imageCopy && [imageCopy CGImage])
   {
-    v6 = [v5 imageOrientation];
-    if (v6 > 7)
+    imageOrientation = [v5 imageOrientation];
+    if (imageOrientation > 7)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = dword_2615C7A30[v6];
+      v7 = dword_2615C7A30[imageOrientation];
     }
 
-    v9 = [v5 CGImage];
+    cGImage = [v5 CGImage];
     [v5 scale];
-    v8 = [a1 imageWithCGImage:v9 scale:v7 orientation:?];
+    v8 = [self imageWithCGImage:cGImage scale:v7 orientation:?];
   }
 
   else
@@ -90,7 +90,7 @@
 - (UIImage)UIImage
 {
   v3 = QLTImageClassWithError();
-  v4 = [(QLPlatformImage *)self CGImage];
+  cGImage = [(QLPlatformImage *)self CGImage];
   [(QLPlatformImage *)self scale];
   v6 = v5;
   v7 = [(QLPlatformImage *)self orientation]- 2;
@@ -104,7 +104,7 @@
     v8 = dword_2615C7A50[v7];
   }
 
-  return [v3 imageWithCGImage:v4 scale:v8 orientation:v6];
+  return [v3 imageWithCGImage:cGImage scale:v8 orientation:v6];
 }
 
 - (CGSize)size

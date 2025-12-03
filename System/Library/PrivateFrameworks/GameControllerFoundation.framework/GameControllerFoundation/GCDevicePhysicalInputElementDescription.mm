@@ -1,21 +1,21 @@
 @interface GCDevicePhysicalInputElementDescription
-+ (id)descriptionWithIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validate:(id *)a3;
++ (id)descriptionWithIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validate:(id *)validate;
 - (GCDevicePhysicalInputElementDescription)init;
-- (GCDevicePhysicalInputElementDescription)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GCDevicePhysicalInputElementDescription)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCDevicePhysicalInputElementDescription
 
-+ (id)descriptionWithIdentifier:(id)a3
++ (id)descriptionWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
-  [v4 setIdentifier:v3];
+  [v4 setIdentifier:identifierCopy];
 
   return v4;
 }
@@ -27,29 +27,29 @@
   return [(GCDevicePhysicalInputViewDescription *)&v3 init];
 }
 
-- (GCDevicePhysicalInputElementDescription)initWithCoder:(id)a3
+- (GCDevicePhysicalInputElementDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(GCDevicePhysicalInputElementDescription *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"aliases"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"aliases"];
   aliases = v5->_aliases;
   v5->_aliases = v11;
 
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v4 decodeObjectOfClasses:v15 forKey:@"localizedName"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"localizedName"];
   localizedName = v5->_localizedName;
   v5->_localizedName = v16;
 
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbol"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbol"];
 
   symbol = v5->_symbol;
   v5->_symbol = v18;
@@ -57,17 +57,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_aliases forKey:@"aliases"];
-  [v5 encodeObject:self->_localizedName forKey:@"localizedName"];
-  [v5 encodeObject:self->_symbol forKey:@"symbol"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_aliases forKey:@"aliases"];
+  [coderCopy encodeObject:self->_localizedName forKey:@"localizedName"];
+  [coderCopy encodeObject:self->_symbol forKey:@"symbol"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
@@ -78,12 +78,12 @@
   return v4;
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   v14[1] = *MEMORY[0x1E69E9840];
   if (!self->_identifier)
   {
-    if (a3)
+    if (validate)
     {
       v5 = MEMORY[0x1E696ABC0];
       v13 = *MEMORY[0x1E696A588];
@@ -93,7 +93,7 @@
       v8 = &v13;
 LABEL_8:
       v9 = [v6 dictionaryWithObjects:v7 forKeys:v8 count:1];
-      *a3 = [v5 errorWithDomain:@"GCDevicePhysicalInputError" code:0 userInfo:v9];
+      *validate = [v5 errorWithDomain:@"GCDevicePhysicalInputError" code:0 userInfo:v9];
     }
 
 LABEL_9:
@@ -103,7 +103,7 @@ LABEL_9:
 
   if (![(NSSet *)self->_aliases count])
   {
-    if (a3)
+    if (validate)
     {
       v5 = MEMORY[0x1E696ABC0];
       v11 = *MEMORY[0x1E696A588];
@@ -123,14 +123,14 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ((identifier = self->_identifier, identifier == v4[2]) || [(NSString *)identifier isEqual:?]) && ((aliases = self->_aliases, aliases == v4[3]) || [(NSSet *)aliases isEqual:?]) && ((localizedName = self->_localizedName, localizedName == v4[4]) || [(NSString *)localizedName isEqual:?]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ((identifier = self->_identifier, identifier == equalCopy[2]) || [(NSString *)identifier isEqual:?]) && ((aliases = self->_aliases, aliases == equalCopy[3]) || [(NSSet *)aliases isEqual:?]) && ((localizedName = self->_localizedName, localizedName == equalCopy[4]) || [(NSString *)localizedName isEqual:?]))
   {
     symbol = self->_symbol;
-    if (symbol == v4[5])
+    if (symbol == equalCopy[5])
     {
       v9 = 1;
     }
@@ -153,8 +153,8 @@ LABEL_10:
 {
   v3 = MEMORY[0x1E696AEC0];
   identifier = self->_identifier;
-  v5 = [(NSSet *)self->_aliases allObjects];
-  v6 = [v5 componentsJoinedByString:{@", "}];
+  allObjects = [(NSSet *)self->_aliases allObjects];
+  v6 = [allObjects componentsJoinedByString:{@", "}];
   v7 = [v3 stringWithFormat:@"Element '%@' [%@] '%@'", identifier, v6, self->_localizedName];
 
   return v7;

@@ -1,19 +1,19 @@
 @interface _SSSPDFPageMiniMapVisibleRegionView
 - (CGRect)visibleRect;
-- (_SSSPDFPageMiniMapVisibleRegionView)initWithFrame:(CGRect)a3;
+- (_SSSPDFPageMiniMapVisibleRegionView)initWithFrame:(CGRect)frame;
 - (double)_scaledSelectionCornerRadius;
 - (void)layoutSubviews;
-- (void)updateHiddenRegionViewWithVisibleRect:(CGRect)a3;
-- (void)updateVisibleRegionViewWithVisibleRect:(CGRect)a3;
+- (void)updateHiddenRegionViewWithVisibleRect:(CGRect)rect;
+- (void)updateVisibleRegionViewWithVisibleRect:(CGRect)rect;
 @end
 
 @implementation _SSSPDFPageMiniMapVisibleRegionView
 
-- (_SSSPDFPageMiniMapVisibleRegionView)initWithFrame:(CGRect)a3
+- (_SSSPDFPageMiniMapVisibleRegionView)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = _SSSPDFPageMiniMapVisibleRegionView;
-  v3 = [(_SSSPDFPageMiniMapVisibleRegionView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SSSPDFPageMiniMapVisibleRegionView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = objc_alloc_init(CAShapeLayer);
   shadowMask = v3->_shadowMask;
   v3->_shadowMask = v4;
@@ -30,16 +30,16 @@
   v13 = [UIColor colorWithWhite:0.0 alpha:0.5];
   [(UIView *)v12 setBackgroundColor:v13];
 
-  v14 = [(UIView *)v3->_shadowView layer];
-  [v14 setMask:v3->_shadowMask];
+  layer = [(UIView *)v3->_shadowView layer];
+  [layer setMask:v3->_shadowMask];
 
   if (_SSScreenshotsRedesign2025Enabled())
   {
-    v15 = [(UIView *)v3->_shadowView layer];
-    [v15 setCornerCurve:kCACornerCurveContinuous];
+    layer2 = [(UIView *)v3->_shadowView layer];
+    [layer2 setCornerCurve:kCACornerCurveContinuous];
 
-    v16 = [(UIView *)v3->_shadowView layer];
-    [v16 setCornerRadius:4.0];
+    layer3 = [(UIView *)v3->_shadowView layer];
+    [layer3 setCornerRadius:4.0];
   }
 
   [(_SSSPDFPageMiniMapVisibleRegionView *)v3 addSubview:v3->_shadowView];
@@ -47,17 +47,17 @@
   highlightView = v3->_highlightView;
   v3->_highlightView = v17;
 
-  v19 = [(UIView *)v3->_highlightView layer];
+  layer4 = [(UIView *)v3->_highlightView layer];
   v20 = +[UIColor whiteColor];
-  [v19 setBorderColor:{objc_msgSend(v20, "CGColor")}];
+  [layer4 setBorderColor:{objc_msgSend(v20, "CGColor")}];
 
-  v21 = [(UIView *)v3->_highlightView layer];
-  [v21 setBorderWidth:2.0];
+  layer5 = [(UIView *)v3->_highlightView layer];
+  [layer5 setBorderWidth:2.0];
 
   if (_SSScreenshotsRedesign2025Enabled())
   {
-    v22 = [(UIView *)v3->_highlightView layer];
-    [v22 setCornerCurve:kCACornerCurveContinuous];
+    layer6 = [(UIView *)v3->_highlightView layer];
+    [layer6 setCornerCurve:kCACornerCurveContinuous];
   }
 
   [(_SSSPDFPageMiniMapVisibleRegionView *)v3 addSubview:v3->_highlightView];
@@ -73,9 +73,9 @@
   [(_SSSPDFPageMiniMapVisibleRegionView *)self updateVisibleRegionViewWithVisibleRect:?];
   [(_SSSPDFPageMiniMapVisibleRegionView *)self visibleRect];
   [(_SSSPDFPageMiniMapVisibleRegionView *)self updateHiddenRegionViewWithVisibleRect:?];
-  v3 = [(UIView *)self->_highlightView layer];
+  layer = [(UIView *)self->_highlightView layer];
   [(_SSSPDFPageMiniMapVisibleRegionView *)self _scaledSelectionCornerRadius];
-  [v3 setCornerRadius:?];
+  [layer setCornerRadius:?];
 }
 
 - (double)_scaledSelectionCornerRadius
@@ -96,14 +96,14 @@
   return v5 / v6;
 }
 
-- (void)updateVisibleRegionViewWithVisibleRect:(CGRect)a3
+- (void)updateVisibleRegionViewWithVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   highlightView = self->_highlightView;
-  v12 = CGRectInset(a3, -2.0, -2.0);
+  v12 = CGRectInset(rect, -2.0, -2.0);
   [(UIView *)highlightView setFrame:v12.origin.x, v12.origin.y, v12.size.width, v12.size.height];
   v9 = self->_highlightView;
   v14.origin.x = CGRectZero.origin.x;
@@ -119,12 +119,12 @@
   [(UIView *)v9 setHidden:v10];
 }
 
-- (void)updateHiddenRegionViewWithVisibleRect:(CGRect)a3
+- (void)updateHiddenRegionViewWithVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   shadowView = self->_shadowView;
   [(_SSSPDFPageMiniMapVisibleRegionView *)self bounds];
   [(UIView *)shadowView setFrame:?];

@@ -1,16 +1,16 @@
 @interface IDSContinuity
-- (IDSContinuity)initWithDelegate:(id)a3 queue:(id)a4;
+- (IDSContinuity)initWithDelegate:(id)delegate queue:(id)queue;
 - (int64_t)state;
 - (void)dealloc;
-- (void)startAdvertisingOfType:(int64_t)a3 withData:(id)a4 withOptions:(id)a5;
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 peers:(id)a6 withOptions:(id)a7;
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 peers:(id)a6 withOptions:(id)a7 boostedScan:(BOOL)a8 duplicates:(BOOL)a9;
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 withOptions:(id)a6;
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 withOptions:(id)a6 boostedScan:(BOOL)a7 duplicates:(BOOL)a8;
-- (void)startTrackingPeer:(id)a3;
-- (void)stopAdvertisingOfType:(int64_t)a3;
-- (void)stopScanningForType:(int64_t)a3;
-- (void)stopTrackingPeer:(id)a3;
+- (void)startAdvertisingOfType:(int64_t)type withData:(id)data withOptions:(id)options;
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask peers:(id)peers withOptions:(id)options;
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask peers:(id)peers withOptions:(id)options boostedScan:(BOOL)scan duplicates:(BOOL)duplicates;
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask withOptions:(id)options;
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask withOptions:(id)options boostedScan:(BOOL)scan duplicates:(BOOL)duplicates;
+- (void)startTrackingPeer:(id)peer;
+- (void)stopAdvertisingOfType:(int64_t)type;
+- (void)stopScanningForType:(int64_t)type;
+- (void)stopTrackingPeer:(id)peer;
 @end
 
 @implementation IDSContinuity
@@ -35,19 +35,19 @@
   return v4;
 }
 
-- (IDSContinuity)initWithDelegate:(id)a3 queue:(id)a4
+- (IDSContinuity)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsNotCurrent];
+  assertQueueIsNotCurrent = [v8 assertQueueIsNotCurrent];
 
-  if (v9)
+  if (assertQueueIsNotCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
-      sub_195B26824(v10);
+      sub_195B26824(utilities);
     }
   }
 
@@ -59,7 +59,7 @@
       sub_195B268D8(self, v11);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -75,16 +75,16 @@
       v16[2] = sub_195A0F064;
       v16[3] = &unk_1E743E620;
       v17 = v13;
-      v18 = v6;
-      v19 = v7;
+      v18 = delegateCopy;
+      v19 = queueCopy;
       [v14 performBlock:v16];
     }
 
     self = v13;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -109,25 +109,25 @@
   [(IDSContinuity *)&v4 dealloc];
 }
 
-- (void)startAdvertisingOfType:(int64_t)a3 withData:(id)a4 withOptions:(id)a5
+- (void)startAdvertisingOfType:(int64_t)type withData:(id)data withOptions:(id)options
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  optionsCopy = options;
   v10 = +[IDSInternalQueueController sharedInstance];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_195A0F2F8;
   v13[3] = &unk_1E743E698;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = dataCopy;
+  v15 = optionsCopy;
+  typeCopy = type;
+  v11 = optionsCopy;
+  v12 = dataCopy;
   [v10 performBlock:v13];
 }
 
-- (void)stopAdvertisingOfType:(int64_t)a3
+- (void)stopAdvertisingOfType:(int64_t)type
 {
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
@@ -135,93 +135,93 @@
   v6[2] = sub_195A0F3A8;
   v6[3] = &unk_1E743E6C0;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = type;
   [v5 performBlock:v6];
 }
 
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 peers:(id)a6 withOptions:(id)a7
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask peers:(id)peers withOptions:(id)options
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  maskCopy = mask;
+  peersCopy = peers;
   v14 = +[IDSInternalQueueController sharedInstance];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = sub_195A0F4DC;
   v18[3] = &unk_1E743E6E8;
-  v21 = v13;
-  v22 = a3;
+  v21 = peersCopy;
+  typeCopy = type;
   v18[4] = self;
-  v19 = v11;
-  v20 = v12;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
+  v19 = dataCopy;
+  v20 = maskCopy;
+  v15 = peersCopy;
+  v16 = maskCopy;
+  v17 = dataCopy;
   [v14 performBlock:v18];
 }
 
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 withOptions:(id)a6
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask withOptions:(id)options
 {
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  maskCopy = mask;
   v11 = +[IDSInternalQueueController sharedInstance];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_195A0F5DC;
   v14[3] = &unk_1E743E698;
   v14[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v17 = a3;
-  v12 = v10;
-  v13 = v9;
+  v15 = dataCopy;
+  v16 = maskCopy;
+  typeCopy = type;
+  v12 = maskCopy;
+  v13 = dataCopy;
   [v11 performBlock:v14];
 }
 
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 peers:(id)a6 withOptions:(id)a7 boostedScan:(BOOL)a8 duplicates:(BOOL)a9
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask peers:(id)peers withOptions:(id)options boostedScan:(BOOL)scan duplicates:(BOOL)duplicates
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  dataCopy = data;
+  maskCopy = mask;
+  peersCopy = peers;
   v17 = +[IDSInternalQueueController sharedInstance];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = sub_195A0F740;
   v21[3] = &unk_1E743E710;
-  v24 = v16;
-  v25 = a3;
+  v24 = peersCopy;
+  typeCopy = type;
   v21[4] = self;
-  v22 = v14;
-  v23 = v15;
-  v26 = a8;
-  v27 = a9;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
+  v22 = dataCopy;
+  v23 = maskCopy;
+  scanCopy = scan;
+  duplicatesCopy = duplicates;
+  v18 = peersCopy;
+  v19 = maskCopy;
+  v20 = dataCopy;
   [v17 performBlock:v21];
 }
 
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 withOptions:(id)a6 boostedScan:(BOOL)a7 duplicates:(BOOL)a8
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask withOptions:(id)options boostedScan:(BOOL)scan duplicates:(BOOL)duplicates
 {
-  v13 = a4;
-  v14 = a5;
+  dataCopy = data;
+  maskCopy = mask;
   v15 = +[IDSInternalQueueController sharedInstance];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = sub_195A0F860;
   v18[3] = &unk_1E743E738;
   v18[4] = self;
-  v19 = v13;
-  v20 = v14;
-  v21 = a3;
-  v22 = a7;
-  v23 = a8;
-  v16 = v14;
-  v17 = v13;
+  v19 = dataCopy;
+  v20 = maskCopy;
+  typeCopy = type;
+  scanCopy = scan;
+  duplicatesCopy = duplicates;
+  v16 = maskCopy;
+  v17 = dataCopy;
   [v15 performBlock:v18];
 }
 
-- (void)stopScanningForType:(int64_t)a3
+- (void)stopScanningForType:(int64_t)type
 {
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
@@ -229,11 +229,11 @@
   v6[2] = sub_195A0F918;
   v6[3] = &unk_1E743E6C0;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = type;
   [v5 performBlock:v6];
 }
 
-- (void)startTrackingPeer:(id)a3
+- (void)startTrackingPeer:(id)peer
 {
   v3 = +[IDSLogging continuity];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -242,7 +242,7 @@
   }
 }
 
-- (void)stopTrackingPeer:(id)a3
+- (void)stopTrackingPeer:(id)peer
 {
   v3 = +[IDSLogging continuity];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))

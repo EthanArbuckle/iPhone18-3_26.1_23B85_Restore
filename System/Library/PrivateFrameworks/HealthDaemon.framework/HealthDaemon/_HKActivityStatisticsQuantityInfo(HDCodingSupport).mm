@@ -18,8 +18,8 @@
     v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:?];
     v7 = [objc_alloc(MEMORY[0x277CCDD10]) initWithStartDate:v5 endDate:v6];
     v8 = MEMORY[0x277CCDAB0];
-    v9 = [v4 unit];
-    v10 = [v8 unitFromString:v9];
+    unit = [v4 unit];
+    v10 = [v8 unitFromString:unit];
 
     v11 = MEMORY[0x277CCD7E8];
     [v4 value];
@@ -40,23 +40,23 @@
 - (HDCodableActivityStatisticsQuantityInfo)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableActivityStatisticsQuantityInfo);
-  v3 = [a1 startDate];
-  [v3 timeIntervalSinceReferenceDate];
+  startDate = [self startDate];
+  [startDate timeIntervalSinceReferenceDate];
   [(HDCodableActivityStatisticsQuantityInfo *)v2 setStartDate:?];
 
-  v4 = [a1 endDate];
-  [v4 timeIntervalSinceReferenceDate];
+  endDate = [self endDate];
+  [endDate timeIntervalSinceReferenceDate];
   [(HDCodableActivityStatisticsQuantityInfo *)v2 setEndDate:?];
 
-  v5 = [a1 quantityValue];
-  v6 = [v5 _unit];
-  v7 = [v6 unitString];
-  [(HDCodableActivityStatisticsQuantityInfo *)v2 setUnit:v7];
+  quantityValue = [self quantityValue];
+  _unit = [quantityValue _unit];
+  unitString = [_unit unitString];
+  [(HDCodableActivityStatisticsQuantityInfo *)v2 setUnit:unitString];
 
-  v8 = [a1 quantityValue];
-  v9 = [a1 quantityValue];
-  v10 = [v9 _unit];
-  [v8 doubleValueForUnit:v10];
+  quantityValue2 = [self quantityValue];
+  quantityValue3 = [self quantityValue];
+  _unit2 = [quantityValue3 _unit];
+  [quantityValue2 doubleValueForUnit:_unit2];
   [(HDCodableActivityStatisticsQuantityInfo *)v2 setValue:?];
 
   return v2;

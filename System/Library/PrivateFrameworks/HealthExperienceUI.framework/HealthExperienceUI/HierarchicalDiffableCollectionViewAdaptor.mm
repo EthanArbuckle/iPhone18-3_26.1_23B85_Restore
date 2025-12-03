@@ -1,12 +1,12 @@
 @interface HierarchicalDiffableCollectionViewAdaptor
-- (void)snapshotDidChangeWithDataSourceID:(id)a3 snapshot:(id)a4 animated:(BOOL)a5;
+- (void)snapshotDidChangeWithDataSourceID:(id)d snapshot:(id)snapshot animated:(BOOL)animated;
 @end
 
 @implementation HierarchicalDiffableCollectionViewAdaptor
 
-- (void)snapshotDidChangeWithDataSourceID:(id)a3 snapshot:(id)a4 animated:(BOOL)a5
+- (void)snapshotDidChangeWithDataSourceID:(id)d snapshot:(id)snapshot animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   sub_1B9F12538();
   v8 = v7;
   v9 = *(v7 - 8);
@@ -22,7 +22,7 @@
   v15 = swift_unknownObjectRetain();
   v16 = sub_1BA21582C(v15, ObjectType, v13);
   swift_unknownObjectRelease();
-  sub_1BA21515C(v16, v5, 0, 0);
+  sub_1BA21515C(v16, animatedCopy, 0, 0);
 
   (*(v9 + 8))(v11, v8);
 }

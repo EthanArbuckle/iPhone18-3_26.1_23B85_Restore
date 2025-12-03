@@ -1,28 +1,28 @@
 @interface MADProgressReporterProcessingTask
-+ (id)taskWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
-- (BOOL)run:(id *)a3;
-- (MADProgressReporterProcessingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
++ (id)taskWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (BOOL)run:(id *)run;
+- (MADProgressReporterProcessingTask)initWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation MADProgressReporterProcessingTask
 
-- (MADProgressReporterProcessingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (MADProgressReporterProcessingTask)initWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v18.receiver = self;
   v18.super_class = MADProgressReporterProcessingTask;
-  v11 = [(MADProgressReporterProcessingTask *)&v18 initWithCompletionHandler:v10];
+  v11 = [(MADProgressReporterProcessingTask *)&v18 initWithCompletionHandler:completionHandlerCopy];
   v12 = v11;
   if (v11)
   {
     reportingTaskIDs = v11->_reportingTaskIDs;
     v11->_reportingTaskIDs = &off_1002961A0;
 
-    if (v9)
+    if (handlerCopy)
     {
-      v14 = v9;
+      v14 = handlerCopy;
     }
 
     else
@@ -34,23 +34,23 @@
     progressHandler = v12->_progressHandler;
     v12->_progressHandler = v15;
 
-    [(MADProgressReporterProcessingTask *)v12 setCancelBlock:v8];
+    [(MADProgressReporterProcessingTask *)v12 setCancelBlock:blockCopy];
   }
 
   return v12;
 }
 
-+ (id)taskWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
++ (id)taskWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[a1 alloc] initWithCancelBlock:v8 progressHandler:v9 completionHandler:v10];
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v11 = [[self alloc] initWithCancelBlock:blockCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   return v11;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   if (MediaAnalysisLogLevel() >= 5)
   {
@@ -64,13 +64,13 @@
   }
 
   v7 = +[VCPPhotoLibraryManager sharedManager];
-  v8 = [v7 allPhotoLibraries];
+  allPhotoLibraries = [v7 allPhotoLibraries];
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v9 = v8;
+  v9 = allPhotoLibraries;
   v29 = v9;
   v31 = [v9 countByEnumeratingWithState:&v41 objects:v48 count:16];
   if (v31)
@@ -102,19 +102,19 @@
               }
             }
 
-            if (a3)
+            if (run)
             {
               v46 = NSLocalizedDescriptionKey;
               v23 = [NSString stringWithFormat:@"%@", v21];
               v47 = v23;
               v24 = [NSDictionary dictionaryWithObjects:&v47 forKeys:&v46 count:1];
               v25 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v24];
-              v26 = *a3;
-              *a3 = v25;
+              v26 = *run;
+              *run = v25;
             }
 
             v20 = 0;
-            v19 = v29;
+            completionHandler = v29;
             goto LABEL_37;
           }
 
@@ -155,8 +155,8 @@
                     v16 = +[MADManagedKeyValueStore isMACDReadEnabled];
                     if (v16)
                     {
-                      v4 = [v10 mad_fetchRequest];
-                      v17 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v4 dataStoreValueForKey:v15]);
+                      mad_fetchRequest = [v10 mad_fetchRequest];
+                      v17 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [mad_fetchRequest dataStoreValueForKey:v15]);
                       v3 = v17;
                     }
 
@@ -171,7 +171,7 @@
                     if (v16)
                     {
 
-                      v18 = v4;
+                      v18 = mad_fetchRequest;
                     }
                   }
                 }
@@ -201,8 +201,8 @@
     }
   }
 
-  v19 = [(MADProgressReporterProcessingTask *)self completionHandler];
-  v19[2](v19, 0, 0);
+  completionHandler = [(MADProgressReporterProcessingTask *)self completionHandler];
+  completionHandler[2](completionHandler, 0, 0);
   v20 = 1;
 LABEL_37:
 

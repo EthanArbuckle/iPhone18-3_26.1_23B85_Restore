@@ -1,27 +1,27 @@
 @interface TVRUICastViewController
 - (TVRUIActionProviding)actionProvider;
-- (TVRUICastViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (TVRUICastViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_layout;
-- (void)_filterNonCharacterRolesIfNeededForMediaInfo:(id)a3;
-- (void)_updateUIForMediaInfo:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)_filterNonCharacterRolesIfNeededForMediaInfo:(id)info;
+- (void)_updateUIForMediaInfo:(id)info;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)configureHierarchy;
-- (void)openURL:(id)a3;
-- (void)requestImageForTemplate:(id)a3 size:(CGSize)a4 identifier:(id)a5 completion:(id)a6;
+- (void)openURL:(id)l;
+- (void)requestImageForTemplate:(id)template size:(CGSize)size identifier:(id)identifier completion:(id)completion;
 - (void)resetContent;
-- (void)setMediaInfo:(id)a3;
-- (void)setMetadata:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setMediaInfo:(id)info;
+- (void)setMetadata:(id)metadata;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation TVRUICastViewController
 
-- (TVRUICastViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (TVRUICastViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = TVRUICastViewController;
-  v4 = [(TVRUICastViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(TVRUICastViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -46,36 +46,36 @@
   [(TVRUICastViewController *)self configureHierarchy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v14.receiver = self;
   v14.super_class = TVRUICastViewController;
-  [(TVRUICastViewController *)&v14 viewDidAppear:a3];
+  [(TVRUICastViewController *)&v14 viewDidAppear:appear];
   [(TVRUICastViewController *)self setHasAppeared:1];
-  v4 = [(TVRUICastViewController *)self dataSource];
-  v5 = [v4 snapshot];
-  v6 = [v5 itemIdentifiers];
-  v7 = [v6 count];
+  dataSource = [(TVRUICastViewController *)self dataSource];
+  snapshot = [dataSource snapshot];
+  itemIdentifiers = [snapshot itemIdentifiers];
+  v7 = [itemIdentifiers count];
 
   if (!v7)
   {
-    v8 = [(TVRUICastViewController *)self mediaInfo];
+    mediaInfo = [(TVRUICastViewController *)self mediaInfo];
 
-    if (v8)
+    if (mediaInfo)
     {
-      v9 = [(TVRUICastViewController *)self mediaInfo];
-      [(TVRUICastViewController *)self _updateUIForMediaInfo:v9];
+      mediaInfo2 = [(TVRUICastViewController *)self mediaInfo];
+      [(TVRUICastViewController *)self _updateUIForMediaInfo:mediaInfo2];
     }
   }
 
-  v10 = [(TVRUICastViewController *)self collectionView];
-  v11 = [v10 indexPathsForSelectedItems];
+  collectionView = [(TVRUICastViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  if ([v11 count])
+  if ([indexPathsForSelectedItems count])
   {
-    v12 = [(TVRUICastViewController *)self collectionView];
-    v13 = [v11 firstObject];
-    [v12 deselectItemAtIndexPath:v13 animated:1];
+    collectionView2 = [(TVRUICastViewController *)self collectionView];
+    firstObject = [indexPathsForSelectedItems firstObject];
+    [collectionView2 deselectItemAtIndexPath:firstObject animated:1];
   }
 }
 
@@ -86,44 +86,44 @@
 
   v6 = objc_alloc_init(MEMORY[0x277CFB890]);
   [v6 appendSectionsWithIdentifiers:&unk_287E84C48];
-  v4 = [(TVRUICastViewController *)self dataSource];
-  [v4 applySnapshot:v6 animatingDifferences:0];
+  dataSource = [(TVRUICastViewController *)self dataSource];
+  [dataSource applySnapshot:v6 animatingDifferences:0];
 
   if ([(TVRUICastViewController *)self horizontalMode])
   {
-    v5 = [(TVRUICastViewController *)self notPlayingLabel];
-    [v5 setHidden:0];
+    notPlayingLabel = [(TVRUICastViewController *)self notPlayingLabel];
+    [notPlayingLabel setHidden:0];
   }
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v5 = a3;
-  v6 = [v5 canonicalID];
-  v7 = [(TVRCNowPlayingMetadata *)self->_metadata canonicalID];
-  v8 = [v6 isEqualToString:v7];
+  metadataCopy = metadata;
+  canonicalID = [metadataCopy canonicalID];
+  canonicalID2 = [(TVRCNowPlayingMetadata *)self->_metadata canonicalID];
+  v8 = [canonicalID isEqualToString:canonicalID2];
 
-  objc_storeStrong(&self->_metadata, a3);
-  if (v5)
+  objc_storeStrong(&self->_metadata, metadata);
+  if (metadataCopy)
   {
-    v9 = [v5 canonicalID];
-    if ([v9 length])
+    canonicalID3 = [metadataCopy canonicalID];
+    if ([canonicalID3 length])
     {
-      v10 = [v5 canonicalID];
-      v11 = [v10 isEqualToString:*MEMORY[0x277D6C5B0]];
+      canonicalID4 = [metadataCopy canonicalID];
+      v11 = [canonicalID4 isEqualToString:*MEMORY[0x277D6C5B0]];
 
       if (((v11 | v8) & 1) == 0)
       {
         [(TVRUICastViewController *)self setMediaInfo:0];
         v12 = objc_alloc_init(MEMORY[0x277D6C540]);
         objc_initWeak(&location, self);
-        v13 = [v5 canonicalID];
+        canonicalID5 = [metadataCopy canonicalID];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __39__TVRUICastViewController_setMetadata___block_invoke;
         v14[3] = &unk_279D87EA0;
         objc_copyWeak(&v15, &location);
-        [v12 requestForCanonicalID:v13 includeRoles:1 completion:v14];
+        [v12 requestForCanonicalID:canonicalID5 includeRoles:1 completion:v14];
 
         objc_destroyWeak(&v15);
         objc_destroyWeak(&location);
@@ -179,8 +179,8 @@ void __39__TVRUICastViewController_setMetadata___block_invoke_2(uint64_t a1, voi
 - (void)configureHierarchy
 {
   v60[6] = *MEMORY[0x277D85DE8];
-  v3 = [(TVRUICastViewController *)self horizontalMode];
-  v50 = self;
+  horizontalMode = [(TVRUICastViewController *)self horizontalMode];
+  selfCopy = self;
   objc_initWeak(&location, self);
   v4 = MEMORY[0x277D752B0];
   v5 = objc_opt_class();
@@ -199,15 +199,15 @@ void __39__TVRUICastViewController_setMetadata___block_invoke_2(uint64_t a1, voi
   objc_copyWeak(&v56, &location);
   v9 = [v7 registrationWithCellClass:v8 configurationHandler:v55];
   v10 = objc_alloc(MEMORY[0x277D752A0]);
-  v11 = [(TVRUICastViewController *)v50 _layout];
-  v12 = [v10 initWithFrame:v11 collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+  _layout = [(TVRUICastViewController *)selfCopy _layout];
+  v12 = [v10 initWithFrame:_layout collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
 
   [(UICollectionView *)v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v13 = [MEMORY[0x277D75348] clearColor];
-  [(UICollectionView *)v12 setBackgroundColor:v13];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UICollectionView *)v12 setBackgroundColor:clearColor];
 
-  [(UICollectionView *)v12 setDelegate:v50];
-  if (v3)
+  [(UICollectionView *)v12 setDelegate:selfCopy];
+  if (horizontalMode)
   {
     [(UICollectionView *)v12 setBouncesVertically:0];
   }
@@ -217,67 +217,67 @@ void __39__TVRUICastViewController_setMetadata___block_invoke_2(uint64_t a1, voi
   v51[1] = 3221225472;
   v51[2] = __45__TVRUICastViewController_configureHierarchy__block_invoke_3;
   v51[3] = &unk_279D88CA8;
-  v54 = v3;
+  v54 = horizontalMode;
   v35 = v9;
   v52 = v35;
   v34 = v6;
   v53 = v34;
   v36 = [v14 initWithCollectionView:v12 cellProvider:v51];
-  v15 = [(TVRUICastViewController *)v50 view];
-  [v15 addSubview:v12];
-  v49 = v15;
+  view = [(TVRUICastViewController *)selfCopy view];
+  [view addSubview:v12];
+  v49 = view;
   v16 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(UILabel *)v16 setTranslatesAutoresizingMaskIntoConstraints:0];
   v17 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A28]];
   [(UILabel *)v16 setFont:v17];
 
-  v18 = [MEMORY[0x277D75348] lightTextColor];
-  [(UILabel *)v16 setTextColor:v18];
+  lightTextColor = [MEMORY[0x277D75348] lightTextColor];
+  [(UILabel *)v16 setTextColor:lightTextColor];
 
   v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v20 = [v19 localizedStringForKey:@"TVRUINoCast" value:&stru_287E6AEF8 table:@"Localizable"];
   [(UILabel *)v16 setText:v20];
 
-  [(UILabel *)v16 setHidden:[(TVRUICastViewController *)v50 horizontalMode]^ 1];
+  [(UILabel *)v16 setHidden:[(TVRUICastViewController *)selfCopy horizontalMode]^ 1];
   [v49 addSubview:v16];
   v37 = MEMORY[0x277CCAAD0];
-  v48 = [(UICollectionView *)v12 leadingAnchor];
-  v47 = [v49 leadingAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  leadingAnchor = [(UICollectionView *)v12 leadingAnchor];
+  leadingAnchor2 = [v49 leadingAnchor];
+  v46 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v60[0] = v46;
-  v45 = [(UICollectionView *)v12 trailingAnchor];
-  v44 = [v49 trailingAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  trailingAnchor = [(UICollectionView *)v12 trailingAnchor];
+  trailingAnchor2 = [v49 trailingAnchor];
+  v43 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v60[1] = v43;
-  v42 = [(UICollectionView *)v12 topAnchor];
-  v41 = [v49 topAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  topAnchor = [(UICollectionView *)v12 topAnchor];
+  topAnchor2 = [v49 topAnchor];
+  v40 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v60[2] = v40;
-  v39 = [(UICollectionView *)v12 bottomAnchor];
-  v38 = [v49 bottomAnchor];
-  v21 = [v39 constraintEqualToAnchor:v38];
+  bottomAnchor = [(UICollectionView *)v12 bottomAnchor];
+  bottomAnchor2 = [v49 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v60[3] = v21;
-  v22 = [(UILabel *)v16 centerXAnchor];
-  v23 = [v49 centerXAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  centerXAnchor = [(UILabel *)v16 centerXAnchor];
+  centerXAnchor2 = [v49 centerXAnchor];
+  v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v60[4] = v24;
-  v25 = [(UILabel *)v16 centerYAnchor];
-  v26 = [v49 centerYAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  centerYAnchor = [(UILabel *)v16 centerYAnchor];
+  centerYAnchor2 = [v49 centerYAnchor];
+  v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v60[5] = v27;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:6];
   [v37 activateConstraints:v28];
 
-  collectionView = v50->_collectionView;
-  v50->_collectionView = v12;
+  collectionView = selfCopy->_collectionView;
+  selfCopy->_collectionView = v12;
   v30 = v12;
 
-  dataSource = v50->_dataSource;
-  v50->_dataSource = v36;
+  dataSource = selfCopy->_dataSource;
+  selfCopy->_dataSource = v36;
   v32 = v36;
 
-  notPlayingLabel = v50->_notPlayingLabel;
-  v50->_notPlayingLabel = v16;
+  notPlayingLabel = selfCopy->_notPlayingLabel;
+  selfCopy->_notPlayingLabel = v16;
 
   objc_destroyWeak(&v56);
   objc_destroyWeak(&v58);
@@ -327,24 +327,24 @@ id __45__TVRUICastViewController_configureHierarchy__block_invoke_3(uint64_t a1,
   return v5;
 }
 
-- (void)setMediaInfo:(id)a3
+- (void)setMediaInfo:(id)info
 {
-  v7 = a3;
-  objc_storeStrong(&self->_mediaInfo, a3);
-  v5 = [(TVRUICastViewController *)self _filterNonCharacterRolesIfNeededForMediaInfo:self->_mediaInfo];
-  v6 = v7;
-  if (v7)
+  infoCopy = info;
+  objc_storeStrong(&self->_mediaInfo, info);
+  hasAppeared = [(TVRUICastViewController *)self _filterNonCharacterRolesIfNeededForMediaInfo:self->_mediaInfo];
+  v6 = infoCopy;
+  if (infoCopy)
   {
-    v5 = [(TVRUICastViewController *)self hasAppeared];
-    v6 = v7;
-    if (v5)
+    hasAppeared = [(TVRUICastViewController *)self hasAppeared];
+    v6 = infoCopy;
+    if (hasAppeared)
     {
-      v5 = [(TVRUICastViewController *)self _updateUIForMediaInfo:v7];
-      v6 = v7;
+      hasAppeared = [(TVRUICastViewController *)self _updateUIForMediaInfo:infoCopy];
+      v6 = infoCopy;
     }
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](hasAppeared, v6);
 }
 
 - (id)_layout
@@ -410,18 +410,18 @@ id __34__TVRUICastViewController__layout__block_invoke()
   return v12;
 }
 
-- (void)_updateUIForMediaInfo:(id)a3
+- (void)_updateUIForMediaInfo:(id)info
 {
-  v10 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(MEMORY[0x277CFB890]);
   [v4 appendSectionsWithIdentifiers:&unk_287E84C60];
-  v5 = [v10 roles];
-  v6 = [v5 count];
+  roles = [infoCopy roles];
+  v6 = [roles count];
 
   if (v6)
   {
-    v7 = [v10 roles];
-    [v4 appendItemsWithIdentifiers:v7];
+    roles2 = [infoCopy roles];
+    [v4 appendItemsWithIdentifiers:roles2];
 
     if (![(TVRUICastViewController *)self horizontalMode])
     {
@@ -434,28 +434,28 @@ id __34__TVRUICastViewController__layout__block_invoke()
   if ([(TVRUICastViewController *)self horizontalMode])
   {
 LABEL_3:
-    v8 = [(TVRUICastViewController *)self notPlayingLabel];
-    [v8 setHidden:v6 != 0];
+    notPlayingLabel = [(TVRUICastViewController *)self notPlayingLabel];
+    [notPlayingLabel setHidden:v6 != 0];
   }
 
 LABEL_4:
-  v9 = [(TVRUICastViewController *)self dataSource];
-  [v9 applySnapshot:v4 animatingDifferences:0];
+  dataSource = [(TVRUICastViewController *)self dataSource];
+  [dataSource applySnapshot:v4 animatingDifferences:0];
 }
 
-- (void)openURL:(id)a3
+- (void)openURL:(id)l
 {
-  v4 = a3;
-  v5 = [(TVRUICastViewController *)self actionProvider];
-  [v5 openURL:v4];
+  lCopy = l;
+  actionProvider = [(TVRUICastViewController *)self actionProvider];
+  [actionProvider openURL:lCopy];
 }
 
-- (void)_filterNonCharacterRolesIfNeededForMediaInfo:(id)a3
+- (void)_filterNonCharacterRolesIfNeededForMediaInfo:(id)info
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 roles];
-  v5 = [v4 count];
+  infoCopy = info;
+  roles = [infoCopy roles];
+  v5 = [roles count];
 
   if (v5)
   {
@@ -464,8 +464,8 @@ LABEL_4:
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [v3 roles];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    roles2 = [infoCopy roles];
+    v8 = [roles2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -476,12 +476,12 @@ LABEL_4:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(roles2);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          v13 = [v12 characterName];
-          v14 = [v13 length];
+          characterName = [v12 characterName];
+          v14 = [characterName length];
 
           if (v14)
           {
@@ -489,7 +489,7 @@ LABEL_4:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [roles2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -497,39 +497,39 @@ LABEL_4:
 
     if ([v6 count])
     {
-      [v3 setRoles:v6];
+      [infoCopy setRoles:v6];
     }
   }
 }
 
-- (void)requestImageForTemplate:(id)a3 size:(CGSize)a4 identifier:(id)a5 completion:(id)a6
+- (void)requestImageForTemplate:(id)template size:(CGSize)size identifier:(id)identifier completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [(TVRUICastViewController *)self imageFetcher];
-  [v14 fetchImageWithTemplateString:v13 size:v12 identifier:v11 completion:{width, height}];
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  templateCopy = template;
+  imageFetcher = [(TVRUICastViewController *)self imageFetcher];
+  [imageFetcher fetchImageWithTemplateString:templateCopy size:identifierCopy identifier:completionCopy completion:{width, height}];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectItemAtIndexPath:v6 animated:1];
-  v7 = [(TVRUICastViewController *)self dataSource];
-  v14 = [v7 itemIdentifierForIndexPath:v6];
+  pathCopy = path;
+  [view deselectItemAtIndexPath:pathCopy animated:1];
+  dataSource = [(TVRUICastViewController *)self dataSource];
+  v14 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
   if (v14)
   {
-    v8 = [(TVRUICastViewController *)self imageFetcher];
-    v9 = [v14 canonicalID];
-    v10 = [v8 cachedImageForIdentifier:v9];
+    imageFetcher = [(TVRUICastViewController *)self imageFetcher];
+    canonicalID = [v14 canonicalID];
+    v10 = [imageFetcher cachedImageForIdentifier:canonicalID];
 
-    v11 = [(TVRUICastViewController *)self actionProvider];
-    v12 = [v14 canonicalID];
-    v13 = [v14 actorName];
-    [v11 presentPersonWithID:v12 name:v13 image:v10 presentingViewController:self];
+    actionProvider = [(TVRUICastViewController *)self actionProvider];
+    canonicalID2 = [v14 canonicalID];
+    actorName = [v14 actorName];
+    [actionProvider presentPersonWithID:canonicalID2 name:actorName image:v10 presentingViewController:self];
   }
 }
 

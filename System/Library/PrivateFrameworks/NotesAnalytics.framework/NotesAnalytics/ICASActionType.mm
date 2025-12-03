@@ -1,34 +1,34 @@
 @interface ICASActionType
-- (ICASActionType)initWithActionType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASActionType)initWithActionType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASActionType
 
-- (ICASActionType)initWithActionType:(int64_t)a3
+- (ICASActionType)initWithActionType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASActionType;
   result = [(ICASActionType *)&v5 init];
   if (result)
   {
-    result->_actionType = a3;
+    result->_actionType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASActionType *)self actionType];
-  if ((v3 - 1) > 3)
+  actionType = [(ICASActionType *)self actionType];
+  if ((actionType - 1) > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF5C0[v3 - 1];
+    return off_2799AF5C0[actionType - 1];
   }
 }
 

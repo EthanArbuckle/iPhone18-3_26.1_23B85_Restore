@@ -1,13 +1,13 @@
 @interface DebugFormatUploadEntryTableViewCell
-- (_TtC8NewsFeed35DebugFormatUploadEntryTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC8NewsFeed35DebugFormatUploadEntryTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
 @implementation DebugFormatUploadEntryTableViewCell
 
-- (_TtC8NewsFeed35DebugFormatUploadEntryTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8NewsFeed35DebugFormatUploadEntryTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_1D726207C();
   }

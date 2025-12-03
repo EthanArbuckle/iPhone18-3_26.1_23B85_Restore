@@ -1,7 +1,7 @@
 @interface ContinuousRecordingsDiagnosticExtension
 + (OS_os_log)log;
-- (id)attachmentsForParameters:(id)a3;
-- (id)directoryRegexForComponentID:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
+- (id)directoryRegexForComponentID:(id)d;
 - (void)forceFlushHIDContinuousRecorder;
 @end
 
@@ -26,17 +26,17 @@ void __46__ContinuousRecordingsDiagnosticExtension_log__block_invoke(id a1)
   _objc_release_x1();
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   [(ContinuousRecordingsDiagnosticExtension *)self forceFlushHIDContinuousRecorder];
-  v5 = [v4 objectForKeyedSubscript:@"componentID"];
+  v5 = [parametersCopy objectForKeyedSubscript:@"componentID"];
   v31 = [(ContinuousRecordingsDiagnosticExtension *)self directoryRegexForComponentID:v5];
   if (v31)
   {
-    [v4 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+    [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
     v26 = v5;
-    v27 = v4;
+    v27 = parametersCopy;
     v25 = v28 = self;
     if ([v25 BOOLValue])
     {
@@ -49,8 +49,8 @@ void __46__ContinuousRecordingsDiagnosticExtension_log__block_invoke(id a1)
     }
 
     v7 = [NSURL alloc];
-    v8 = [@"/private/var/mobile/Library/Logs/ContinuousRecordings" stringByStandardizingPath];
-    v9 = [v7 initFileURLWithPath:v8 isDirectory:1];
+    stringByStandardizingPath = [@"/private/var/mobile/Library/Logs/ContinuousRecordings" stringByStandardizingPath];
+    v9 = [v7 initFileURLWithPath:stringByStandardizingPath isDirectory:1];
 
     v10 = +[NSFileManager defaultManager];
     v39[0] = NSURLNameKey;
@@ -105,7 +105,7 @@ void __46__ContinuousRecordingsDiagnosticExtension_log__block_invoke(id a1)
     }
 
     v5 = v26;
-    v4 = v27;
+    parametersCopy = v27;
   }
 
   else
@@ -122,17 +122,17 @@ void __46__ContinuousRecordingsDiagnosticExtension_log__block_invoke(id a1)
   return v30;
 }
 
-- (id)directoryRegexForComponentID:(id)a3
+- (id)directoryRegexForComponentID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v3 = a3;
+    dCopy = d;
     v4 = +[NSBundle mainBundle];
     v5 = [v4 objectForInfoDictionaryKey:@"ComponentDirectoryPatterns"];
 
-    v6 = [v3 stringValue];
+    stringValue = [dCopy stringValue];
 
-    v7 = [v5 objectForKeyedSubscript:v6];
+    v7 = [v5 objectForKeyedSubscript:stringValue];
 
     if (v7 || (+[NSBundle mainBundle](NSBundle, "mainBundle"), v8 = objc_claimAutoreleasedReturnValue(), [v8 objectForInfoDictionaryKey:@"FallbackDirectoryPattern"], v7 = objc_claimAutoreleasedReturnValue(), v8, v7))
     {

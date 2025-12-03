@@ -1,31 +1,31 @@
 @interface SUTSchemaTestAssociatedSchemaIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SUTSchemaTestAssociatedSchemaIdentifier)initWithDictionary:(id)a3;
-- (SUTSchemaTestAssociatedSchemaIdentifier)initWithJSON:(id)a3;
+- (SUTSchemaTestAssociatedSchemaIdentifier)initWithDictionary:(id)dictionary;
+- (SUTSchemaTestAssociatedSchemaIdentifier)initWithJSON:(id)n;
 - (SUTSchemaTestGeneratedRequestId)requestId;
 - (SUTSchemaTestGeneratedTurnID)turnID;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteRequestId;
 - (void)deleteTurnID;
-- (void)setRequestId:(id)a3;
-- (void)setTurnID:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setRequestId:(id)id;
+- (void)setTurnID:(id)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SUTSchemaTestAssociatedSchemaIdentifier
 
-- (SUTSchemaTestAssociatedSchemaIdentifier)initWithDictionary:(id)a3
+- (SUTSchemaTestAssociatedSchemaIdentifier)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SUTSchemaTestAssociatedSchemaIdentifier;
   v5 = [(SUTSchemaTestAssociatedSchemaIdentifier *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"turnID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"turnID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(SUTSchemaTestAssociatedSchemaIdentifier *)v5 setTurnID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"requestId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"requestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,30 +47,30 @@
   return v5;
 }
 
-- (SUTSchemaTestAssociatedSchemaIdentifier)initWithJSON:(id)a3
+- (SUTSchemaTestAssociatedSchemaIdentifier)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SUTSchemaTestAssociatedSchemaIdentifier *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SUTSchemaTestAssociatedSchemaIdentifier *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -83,72 +83,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_requestId)
   {
-    v4 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self requestId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    requestId = [(SUTSchemaTestAssociatedSchemaIdentifier *)self requestId];
+    dictionaryRepresentation = [requestId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"requestId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"requestId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"requestId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"requestId"];
     }
   }
 
   if (self->_turnID)
   {
-    v7 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self turnID];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    turnID = [(SUTSchemaTestAssociatedSchemaIdentifier *)self turnID];
+    dictionaryRepresentation2 = [turnID dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"turnID"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"turnID"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"turnID"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"turnID"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichIdentifier_Type = self->_whichIdentifier_Type;
-  if (whichIdentifier_Type != [v4 whichIdentifier_Type])
+  if (whichIdentifier_Type != [equalCopy whichIdentifier_Type])
   {
     goto LABEL_13;
   }
 
-  v6 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self turnID];
-  v7 = [v4 turnID];
-  if ((v6 != 0) == (v7 == 0))
+  turnID = [(SUTSchemaTestAssociatedSchemaIdentifier *)self turnID];
+  turnID2 = [equalCopy turnID];
+  if ((turnID != 0) == (turnID2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self turnID];
-  if (v8)
+  turnID3 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self turnID];
+  if (turnID3)
   {
-    v9 = v8;
-    v10 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self turnID];
-    v11 = [v4 turnID];
-    v12 = [v10 isEqual:v11];
+    v9 = turnID3;
+    turnID4 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self turnID];
+    turnID5 = [equalCopy turnID];
+    v12 = [turnID4 isEqual:turnID5];
 
     if (!v12)
     {
@@ -160,12 +160,12 @@
   {
   }
 
-  v6 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self requestId];
-  v7 = [v4 requestId];
-  if ((v6 != 0) != (v7 == 0))
+  turnID = [(SUTSchemaTestAssociatedSchemaIdentifier *)self requestId];
+  turnID2 = [equalCopy requestId];
+  if ((turnID != 0) != (turnID2 == 0))
   {
-    v13 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self requestId];
-    if (!v13)
+    requestId = [(SUTSchemaTestAssociatedSchemaIdentifier *)self requestId];
+    if (!requestId)
     {
 
 LABEL_16:
@@ -173,10 +173,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self requestId];
-    v16 = [v4 requestId];
-    v17 = [v15 isEqual:v16];
+    v14 = requestId;
+    requestId2 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self requestId];
+    requestId3 = [equalCopy requestId];
+    v17 = [requestId2 isEqual:requestId3];
 
     if (v17)
     {
@@ -196,22 +196,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self turnID];
+  toCopy = to;
+  turnID = [(SUTSchemaTestAssociatedSchemaIdentifier *)self turnID];
 
-  if (v4)
+  if (turnID)
   {
-    v5 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self turnID];
+    turnID2 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self turnID];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self requestId];
+  requestId = [(SUTSchemaTestAssociatedSchemaIdentifier *)self requestId];
 
-  if (v6)
+  if (requestId)
   {
-    v7 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self requestId];
+    requestId2 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self requestId];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -241,21 +241,21 @@ LABEL_14:
   return v3;
 }
 
-- (void)setRequestId:(id)a3
+- (void)setRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   turnID = self->_turnID;
   self->_turnID = 0;
 
   v6 = 102;
-  if (!v4)
+  if (!idCopy)
   {
     v6 = 0;
   }
 
   self->_whichIdentifier_Type = v6;
   requestId = self->_requestId;
-  self->_requestId = v4;
+  self->_requestId = idCopy;
 }
 
 - (void)deleteTurnID
@@ -283,43 +283,43 @@ LABEL_14:
   return v3;
 }
 
-- (void)setTurnID:(id)a3
+- (void)setTurnID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   requestId = self->_requestId;
   self->_requestId = 0;
 
   v6 = 101;
-  if (!v4)
+  if (!dCopy)
   {
     v6 = 0;
   }
 
   self->_whichIdentifier_Type = v6;
   turnID = self->_turnID;
-  self->_turnID = v4;
+  self->_turnID = dCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = SUTSchemaTestAssociatedSchemaIdentifier;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self turnID];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  turnID = [(SUTSchemaTestAssociatedSchemaIdentifier *)self turnID];
+  v7 = [turnID applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SUTSchemaTestAssociatedSchemaIdentifier *)self deleteTurnID];
   }
 
-  v9 = [(SUTSchemaTestAssociatedSchemaIdentifier *)self requestId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  requestId = [(SUTSchemaTestAssociatedSchemaIdentifier *)self requestId];
+  v10 = [requestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SUTSchemaTestAssociatedSchemaIdentifier *)self deleteRequestId];
   }

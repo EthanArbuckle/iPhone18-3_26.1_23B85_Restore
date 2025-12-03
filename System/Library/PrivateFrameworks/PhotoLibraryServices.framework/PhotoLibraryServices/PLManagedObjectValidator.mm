@@ -1,8 +1,8 @@
 @interface PLManagedObjectValidator
-+ (BOOL)validateAllObjectsUsingManagedObjectContext:(id)a3 resultHandler:(id)a4;
-+ (BOOL)validateAllObjectsWithEntityClass:(Class)a3 inManagedObjectContext:(id)a4 resultHandler:(id)a5;
++ (BOOL)validateAllObjectsUsingManagedObjectContext:(id)context resultHandler:(id)handler;
++ (BOOL)validateAllObjectsWithEntityClass:(Class)class inManagedObjectContext:(id)context resultHandler:(id)handler;
 + (id)_entityClassesToValidate;
-+ (id)validateManagedObject:(id)a3;
++ (id)validateManagedObject:(id)object;
 @end
 
 @implementation PLManagedObjectValidator
@@ -61,17 +61,17 @@
   return v2;
 }
 
-+ (BOOL)validateAllObjectsUsingManagedObjectContext:(id)a3 resultHandler:(id)a4
++ (BOOL)validateAllObjectsUsingManagedObjectContext:(id)context resultHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [a1 _entityClassesToValidate];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _entityClassesToValidate = [self _entityClassesToValidate];
+  v9 = [_entityClassesToValidate countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -83,13 +83,13 @@
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_entityClassesToValidate);
         }
 
-        v12 &= [PLManagedObjectValidator validateAllObjectsWithEntityClass:*(*(&v15 + 1) + 8 * i) inManagedObjectContext:v6 resultHandler:v7];
+        v12 &= [PLManagedObjectValidator validateAllObjectsWithEntityClass:*(*(&v15 + 1) + 8 * i) inManagedObjectContext:contextCopy resultHandler:handlerCopy];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [_entityClassesToValidate countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -103,29 +103,29 @@
   return v12;
 }
 
-+ (BOOL)validateAllObjectsWithEntityClass:(Class)a3 inManagedObjectContext:(id)a4 resultHandler:(id)a5
++ (BOOL)validateAllObjectsWithEntityClass:(Class)class inManagedObjectContext:(id)context resultHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 1;
-  if (a3 && v8 && [(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if (class && contextCopy && [(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v10 = MEMORY[0x1E695D5E0];
-    v11 = [(objc_class *)a3 entityName];
-    v12 = [v10 fetchRequestWithEntityName:v11];
+    entityName = [(objc_class *)class entityName];
+    v12 = [v10 fetchRequestWithEntityName:entityName];
 
-    v19 = a1;
+    selfCopy = self;
     v20 = 0;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __99__PLManagedObjectValidator_validateAllObjectsWithEntityClass_inManagedObjectContext_resultHandler___block_invoke;
     v16[3] = &unk_1E7576D80;
     v18 = &v21;
-    v17 = v9;
-    v13 = [v8 enumerateObjectsFromFetchRequest:v12 count:&v20 usingDefaultBatchSizeWithBlock:v16];
+    v17 = handlerCopy;
+    v13 = [contextCopy enumerateObjectsFromFetchRequest:v12 count:&v20 usingDefaultBatchSizeWithBlock:v16];
   }
 
   v14 = *(v22 + 24);
@@ -145,24 +145,24 @@ void __99__PLManagedObjectValidator_validateAllObjectsWithEntityClass_inManagedO
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)validateManagedObject:(id)a3
++ (id)validateManagedObject:(id)object
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_alloc_init(PLManagedObjectValidationResult);
   [(PLManagedObjectValidationResult *)v4 setStatus:1];
   v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v3 entity];
-  v6 = [v5 attributesByName];
-  v7 = [v6 allKeys];
+  entity = [objectCopy entity];
+  attributesByName = [entity attributesByName];
+  allKeys = [attributesByName allKeys];
 
-  v8 = [objc_opt_class() attributeValidationRules];
+  attributeValidationRules = [objc_opt_class() attributeValidationRules];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v7;
+  v9 = allKeys;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -178,14 +178,14 @@ void __99__PLManagedObjectValidator_validateAllObjectsWithEntityClass_inManagedO
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [v8 objectForKeyedSubscript:v14];
+        v15 = [attributeValidationRules objectForKeyedSubscript:v14];
         if (!v15)
         {
           v15 = _PLPropertyValidationRuleMake(0, v14, 0, 0, 0, 0);
         }
 
         v22 = 0;
-        v16 = [v15 evaluateWithObject:v3 outMessage:&v22];
+        v16 = [v15 evaluateWithObject:objectCopy outMessage:&v22];
         v17 = v22;
         [(PLManagedObjectValidationResult *)v4 setStatus:v16];
         if (v17)
@@ -212,7 +212,7 @@ void __99__PLManagedObjectValidator_validateAllObjectsWithEntityClass_inManagedO
 
   [(PLManagedObjectValidationResult *)v4 setErrorMessages:v21];
   [(PLManagedObjectValidationResult *)v4 setInfoMessages:v20];
-  [(PLManagedObjectValidationResult *)v4 setValidatedObject:v3];
+  [(PLManagedObjectValidationResult *)v4 setValidatedObject:objectCopy];
 
   return v4;
 }

@@ -44,35 +44,35 @@
 - (id)cmsCoded
 {
   v2 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:10];
-  v3 = INMediaItemTypeToString([a1 mediaType]);
+  v3 = INMediaItemTypeToString([self mediaType]);
   [v2 setObject:v3 forKey:@"mediaType"];
 
-  v4 = INMediaSortOrderToString([a1 sortOrder]);
+  v4 = INMediaSortOrderToString([self sortOrder]);
   [v2 setObject:v4 forKey:@"sortOrder"];
 
-  v5 = [a1 mediaName];
-  [v2 cmsSetOptionalObject:v5 forKey:@"mediaName"];
+  mediaName = [self mediaName];
+  [v2 cmsSetOptionalObject:mediaName forKey:@"mediaName"];
 
-  v6 = [a1 artistName];
-  [v2 cmsSetOptionalObject:v6 forKey:@"artistName"];
+  artistName = [self artistName];
+  [v2 cmsSetOptionalObject:artistName forKey:@"artistName"];
 
-  v7 = [a1 albumName];
-  [v2 cmsSetOptionalObject:v7 forKey:@"albumName"];
+  albumName = [self albumName];
+  [v2 cmsSetOptionalObject:albumName forKey:@"albumName"];
 
-  v8 = [a1 genreNames];
-  [v2 cmsSetOptionalObject:v8 forKey:@"genreNames"];
+  genreNames = [self genreNames];
+  [v2 cmsSetOptionalObject:genreNames forKey:@"genreNames"];
 
-  v9 = [a1 moodNames];
-  [v2 cmsSetOptionalObject:v9 forKey:@"moodNames"];
+  moodNames = [self moodNames];
+  [v2 cmsSetOptionalObject:moodNames forKey:@"moodNames"];
 
-  v10 = [a1 releaseDate];
-  [v2 cmsSetOptionalCodedObject:v10 forKey:@"releaseDate"];
+  releaseDate = [self releaseDate];
+  [v2 cmsSetOptionalCodedObject:releaseDate forKey:@"releaseDate"];
 
-  v11 = INMediaReferenceToString([a1 reference]);
+  v11 = INMediaReferenceToString([self reference]);
   [v2 setObject:v11 forKey:@"reference"];
 
-  v12 = [a1 mediaIdentifier];
-  [v2 cmsSetOptionalObject:v12 forKey:@"mediaIdentifier"];
+  mediaIdentifier = [self mediaIdentifier];
+  [v2 cmsSetOptionalObject:mediaIdentifier forKey:@"mediaIdentifier"];
 
   return v2;
 }

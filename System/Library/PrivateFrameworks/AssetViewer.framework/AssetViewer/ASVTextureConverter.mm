@@ -1,27 +1,27 @@
 @interface ASVTextureConverter
 + (id)defaultTextureConverters;
-+ (id)newConverterOfType:(int64_t)a3;
-+ (id)preferredConverterFromConverters:(id)a3 forTextureDescription:(id)a4;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)estimatedMemoryDeltaForTextureWithDescription:(id)a3;
-- (unint64_t)alignUp:(unint64_t)a3 toAlignment:(unint64_t)a4;
++ (id)newConverterOfType:(int64_t)type;
++ (id)preferredConverterFromConverters:(id)converters forTextureDescription:(id)description;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)estimatedMemoryDeltaForTextureWithDescription:(id)description;
+- (unint64_t)alignUp:(unint64_t)up toAlignment:(unint64_t)alignment;
 @end
 
 @implementation ASVTextureConverter
 
-- (unint64_t)alignUp:(unint64_t)a3 toAlignment:(unint64_t)a4
+- (unint64_t)alignUp:(unint64_t)up toAlignment:(unint64_t)alignment
 {
-  if ((a4 & (a4 - 1)) != 0)
+  if ((alignment & (alignment - 1)) != 0)
   {
     return 0;
   }
 
   else
   {
-    return (a4 - 1 + a3) & -a4;
+    return (alignment - 1 + up) & -alignment;
   }
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)estimatedMemoryDeltaForTextureWithDescription:(id)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)estimatedMemoryDeltaForTextureWithDescription:(id)description
 {
   v3 = 0;
   v4 = 0;
@@ -40,9 +40,9 @@
   return v3;
 }
 
-+ (id)newConverterOfType:(int64_t)a3
++ (id)newConverterOfType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return objc_alloc_init(ASVImageIOTextureConverter);
   }
@@ -53,16 +53,16 @@
   }
 }
 
-+ (id)preferredConverterFromConverters:(id)a3 forTextureDescription:(id)a4
++ (id)preferredConverterFromConverters:(id)converters forTextureDescription:(id)description
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  convertersCopy = converters;
+  descriptionCopy = description;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = convertersCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -77,7 +77,7 @@
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 canConvertTextureWithDescription:{v6, v13}])
+        if ([v11 canConvertTextureWithDescription:{descriptionCopy, v13}])
         {
           v8 = v11;
           goto LABEL_11;

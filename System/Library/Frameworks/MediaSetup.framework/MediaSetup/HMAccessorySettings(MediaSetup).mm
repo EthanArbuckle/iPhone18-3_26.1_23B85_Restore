@@ -8,12 +8,12 @@
 - (uint64_t)_settingForKeyPath:()MediaSetup
 {
   v4 = a3;
-  v5 = [a1 _getMusicGroup];
-  if (v5)
+  _getMusicGroup = [self _getMusicGroup];
+  if (_getMusicGroup)
   {
-    v6 = findSettingWithKeyPath(v4, v5);
-    v7 = [v6 value];
-    v8 = [v7 BOOLValue];
+    v6 = findSettingWithKeyPath(v4, _getMusicGroup);
+    value = [v6 value];
+    bOOLValue = [value BOOLValue];
   }
 
   else
@@ -24,10 +24,10 @@
       [HMAccessorySettings(MediaSetup) _settingForKeyPath:v9];
     }
 
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 - (id)_getMusicGroup
@@ -37,10 +37,10 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v1 = [a1 rootGroup];
-  v2 = [v1 groups];
+  rootGroup = [self rootGroup];
+  groups = [rootGroup groups];
 
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v3 = [groups countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -51,12 +51,12 @@
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(groups);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v7 keyPath];
-        v9 = [v8 isEqualToString:@"root.music"];
+        keyPath = [v7 keyPath];
+        v9 = [keyPath isEqualToString:@"root.music"];
 
         if (v9)
         {
@@ -65,7 +65,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [groups countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;

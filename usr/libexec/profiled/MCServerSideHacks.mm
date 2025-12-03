@@ -1,41 +1,41 @@
 @interface MCServerSideHacks
-+ (id)mergeArray:(id)a3 withArray:(id)a4;
++ (id)mergeArray:(id)array withArray:(id)withArray;
 + (id)sharedHacks;
-- (BOOL)_anyBoolRestrictionChangedInSet:(id)a3 oldRestrictions:(id)a4 newRestrictions:(id)a5;
-- (BOOL)applyEffectiveSettings:(id)a3 toSettings:(id)a4 withOldRestrictions:(id)a5 newRestrictions:(id)a6;
+- (BOOL)_anyBoolRestrictionChangedInSet:(id)set oldRestrictions:(id)restrictions newRestrictions:(id)newRestrictions;
+- (BOOL)applyEffectiveSettings:(id)settings toSettings:(id)toSettings withOldRestrictions:(id)restrictions newRestrictions:(id)newRestrictions;
 - (id)recomputeAccountVPNAssociations;
-- (void)_applyServerSideChangesWithOldRestrictions:(id)a3 newRestrictions:(id)a4 oldEffectiveUserSettings:(id)a5 newEffectiveUserSettings:(id)a6;
-- (void)applyEffectiveSettings:(id)a3 toOtherSubsystemsWithCredentialSet:(id)a4;
+- (void)_applyServerSideChangesWithOldRestrictions:(id)restrictions newRestrictions:(id)newRestrictions oldEffectiveUserSettings:(id)settings newEffectiveUserSettings:(id)userSettings;
+- (void)applyEffectiveSettings:(id)settings toOtherSubsystemsWithCredentialSet:(id)set;
 - (void)applyGracePeriodSettingFromKeybagToUserSettings;
-- (void)recomputeAppOptionsEffectiveUserSettings:(id)a3 outEffectiveChangeDetected:(BOOL *)a4;
+- (void)recomputeAppOptionsEffectiveUserSettings:(id)settings outEffectiveChangeDetected:(BOOL *)detected;
 - (void)recomputeAppRulesForNetworkExtension;
-- (void)recomputeHacksAfterProfileChangesEffectiveUserSettings:(id)a3 sendNotifications:(BOOL)a4;
-- (void)recomputeWebContentFilterEffectiveUserSettings:(id)a3 outEffectiveChangeDetected:(BOOL *)a4 outMechanismChangedDetected:(BOOL *)a5;
-- (void)resetSettingsSender:(id)a3;
-- (void)setUserTrackingTCCAccessOverrideForRestrictions:(id)a3;
+- (void)recomputeHacksAfterProfileChangesEffectiveUserSettings:(id)settings sendNotifications:(BOOL)notifications;
+- (void)recomputeWebContentFilterEffectiveUserSettings:(id)settings outEffectiveChangeDetected:(BOOL *)detected outMechanismChangedDetected:(BOOL *)changedDetected;
+- (void)resetSettingsSender:(id)sender;
+- (void)setUserTrackingTCCAccessOverrideForRestrictions:(id)restrictions;
 @end
 
 @implementation MCServerSideHacks
 
 + (id)sharedHacks
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___MCServerSideHacks;
   v2 = objc_msgSendSuper2(&v4, "sharedHacks");
 
   return v2;
 }
 
-- (BOOL)_anyBoolRestrictionChangedInSet:(id)a3 oldRestrictions:(id)a4 newRestrictions:(id)a5
+- (BOOL)_anyBoolRestrictionChangedInSet:(id)set oldRestrictions:(id)restrictions newRestrictions:(id)newRestrictions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  setCopy = set;
+  restrictionsCopy = restrictions;
+  newRestrictionsCopy = newRestrictions;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = v7;
+  v10 = setCopy;
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
@@ -49,7 +49,7 @@
           objc_enumerationMutation(v10);
         }
 
-        if (([MCRestrictionManagerWriter restrictedBool:*(*(&v15 + 1) + 8 * i) changedBetweenOldRestrictions:v8 andNewRestrictions:v9, v15]& 1) != 0)
+        if (([MCRestrictionManagerWriter restrictedBool:*(*(&v15 + 1) + 8 * i) changedBetweenOldRestrictions:restrictionsCopy andNewRestrictions:newRestrictionsCopy, v15]& 1) != 0)
         {
           LOBYTE(v11) = 1;
           goto LABEL_11;
@@ -71,12 +71,12 @@ LABEL_11:
   return v11;
 }
 
-- (void)_applyServerSideChangesWithOldRestrictions:(id)a3 newRestrictions:(id)a4 oldEffectiveUserSettings:(id)a5 newEffectiveUserSettings:(id)a6
+- (void)_applyServerSideChangesWithOldRestrictions:(id)restrictions newRestrictions:(id)newRestrictions oldEffectiveUserSettings:(id)settings newEffectiveUserSettings:(id)userSettings
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  restrictionsCopy = restrictions;
+  newRestrictionsCopy = newRestrictions;
+  settingsCopy = settings;
+  userSettingsCopy = userSettings;
   if ((byte_100136660 & 1) == 0)
   {
     v30 = _MCLogObjects[0];
@@ -89,15 +89,15 @@ LABEL_11:
     goto LABEL_72;
   }
 
-  if ([MCRestrictionManager BOOLSetting:MCFeatureEncryptedBackupRequired valueChangedBetweenOldSettings:v12 andNewSettings:v13])
+  if ([MCRestrictionManager BOOLSetting:MCFeatureEncryptedBackupRequired valueChangedBetweenOldSettings:settingsCopy andNewSettings:userSettingsCopy])
   {
-    [(MCServerSideHacks *)self _setRequriesEncryptedBackupInLockdownWithEffectiveUserSettings:v13];
+    [(MCServerSideHacks *)self _setRequriesEncryptedBackupInLockdownWithEffectiveUserSettings:userSettingsCopy];
   }
 
   v14 = MCFeatureAppInstallationAllowed;
-  if ([MCRestrictionManager BOOLSetting:MCFeatureAppInstallationAllowed valueChangedBetweenOldSettings:v12 andNewSettings:v13])
+  if ([MCRestrictionManager BOOLSetting:MCFeatureAppInstallationAllowed valueChangedBetweenOldSettings:settingsCopy andNewSettings:userSettingsCopy])
   {
-    v15 = [MCRestrictionManager BOOLSettingForFeature:v14 withUserSettingDictionary:v13]!= 2;
+    v15 = [MCRestrictionManager BOOLSettingForFeature:v14 withUserSettingDictionary:userSettingsCopy]!= 2;
     v16 = MCLockdownOperationQueue();
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -108,9 +108,9 @@ LABEL_11:
   }
 
   v17 = MCFeatureAppRemovalAllowed;
-  if ([MCRestrictionManager BOOLSetting:MCFeatureAppRemovalAllowed valueChangedBetweenOldSettings:v12 andNewSettings:v13])
+  if ([MCRestrictionManager BOOLSetting:MCFeatureAppRemovalAllowed valueChangedBetweenOldSettings:settingsCopy andNewSettings:userSettingsCopy])
   {
-    v18 = [MCRestrictionManager BOOLSettingForFeature:v17 withUserSettingDictionary:v13]!= 2;
+    v18 = [MCRestrictionManager BOOLSettingForFeature:v17 withUserSettingDictionary:userSettingsCopy]!= 2;
     v19 = MCLockdownOperationQueue();
     v79[0] = _NSConcreteStackBlock;
     v79[1] = 3221225472;
@@ -121,27 +121,27 @@ LABEL_11:
   }
 
   v20 = MCFeatureHostPairingAllowed;
-  if ([MCRestrictionManager BOOLSetting:MCFeatureHostPairingAllowed valueChangedBetweenOldSettings:v12 andNewSettings:v13]&& [MCRestrictionManager BOOLSettingForFeature:v20 withUserSettingDictionary:v13]== 2)
+  if ([MCRestrictionManager BOOLSetting:MCFeatureHostPairingAllowed valueChangedBetweenOldSettings:settingsCopy andNewSettings:userSettingsCopy]&& [MCRestrictionManager BOOLSettingForFeature:v20 withUserSettingDictionary:userSettingsCopy]== 2)
   {
     v21 = MCLockdownOperationQueue();
     dispatch_async(v21, &stru_10011CE88);
   }
 
-  if ([MCRestrictionManager unionValuesSetting:MCFeatureTrustedCodeSigningIdentities valueChangedBetweenOldSettings:v12 andNewSettings:v13])
+  if ([MCRestrictionManager unionValuesSetting:MCFeatureTrustedCodeSigningIdentities valueChangedBetweenOldSettings:settingsCopy andNewSettings:userSettingsCopy])
   {
     v22 = +[MCProvisioningProfileJanitor sharedJanitor];
     [v22 updateMISTrust];
   }
 
   v23 = MCFeatureAllowGlobalBackgroundFetchWhenRoaming;
-  if ([MCRestrictionManager BOOLSetting:MCFeatureAllowGlobalBackgroundFetchWhenRoaming valueChangedBetweenOldSettings:v12 andNewSettings:v13])
+  if ([MCRestrictionManager BOOLSetting:MCFeatureAllowGlobalBackgroundFetchWhenRoaming valueChangedBetweenOldSettings:settingsCopy andNewSettings:userSettingsCopy])
   {
-    [MCRestrictionManager BOOLSettingForFeature:v23 withUserSettingDictionary:v13];
+    [MCRestrictionManager BOOLSettingForFeature:v23 withUserSettingDictionary:userSettingsCopy];
     PCSettingsSetGlobalMCCForceManualWhenRoaming();
   }
 
   v24 = MCFeatureAssistantAllowed;
-  if ([MCRestrictionManager BOOLSetting:MCFeatureAssistantAllowed valueChangedBetweenOldSettings:v12 andNewSettings:v13]&& [MCRestrictionManager BOOLSettingForFeature:v24 withUserSettingDictionary:v13]== 2)
+  if ([MCRestrictionManager BOOLSetting:MCFeatureAssistantAllowed valueChangedBetweenOldSettings:settingsCopy andNewSettings:userSettingsCopy]&& [MCRestrictionManager BOOLSettingForFeature:v24 withUserSettingDictionary:userSettingsCopy]== 2)
   {
     CFPreferencesSetAppValue(@"Assistant Enabled", kCFBooleanFalse, @"com.apple.assistant.support");
     CFPreferencesAppSynchronize(@"com.apple.assistant.support");
@@ -150,9 +150,9 @@ LABEL_11:
   }
 
   v26 = MCFeatureFIPSVerificationForced;
-  if ([MCRestrictionManager BOOLSetting:MCFeatureFIPSVerificationForced valueChangedBetweenOldSettings:v12 andNewSettings:v13])
+  if ([MCRestrictionManager BOOLSetting:MCFeatureFIPSVerificationForced valueChangedBetweenOldSettings:settingsCopy andNewSettings:userSettingsCopy])
   {
-    if ([MCRestrictionManager BOOLSettingForFeature:v26 withUserSettingDictionary:v13]== 1)
+    if ([MCRestrictionManager BOOLSettingForFeature:v26 withUserSettingDictionary:userSettingsCopy]== 1)
     {
       v27 = +[NSData data];
       [v27 writeToFile:@"/var/mobile/Library/Preferences/enable_fips_mode" atomically:0];
@@ -183,21 +183,21 @@ LABEL_26:
   }
 
   v32 = MCFeatureDiagnosticsSubmissionAllowed;
-  if ([MCRestrictionManager BOOLSetting:MCFeatureDiagnosticsSubmissionAllowed valueChangedBetweenOldSettings:v12 andNewSettings:v13]&& [MCRestrictionManager BOOLSettingForFeature:v32 withUserSettingDictionary:v12])
+  if ([MCRestrictionManager BOOLSetting:MCFeatureDiagnosticsSubmissionAllowed valueChangedBetweenOldSettings:settingsCopy andNewSettings:userSettingsCopy]&& [MCRestrictionManager BOOLSettingForFeature:v32 withUserSettingDictionary:settingsCopy])
   {
     v33 = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(v33, @"com.apple.OTACrashCopier.SubmissionPreferenceChanged", 0, 0, 1u);
   }
 
   v34 = MCFeatureCloudKeychainSyncAllowed;
-  if (![MCRestrictionManager restrictedBool:MCFeatureCloudKeychainSyncAllowed changedBetweenOldRestrictions:v10 andNewRestrictions:v11]|| [MCRestrictionManager restrictedBoolForFeature:v34 withRestrictionsDictionary:v11]!= 2)
+  if (![MCRestrictionManager restrictedBool:MCFeatureCloudKeychainSyncAllowed changedBetweenOldRestrictions:restrictionsCopy andNewRestrictions:newRestrictionsCopy]|| [MCRestrictionManager restrictedBoolForFeature:v34 withRestrictionsDictionary:newRestrictionsCopy]!= 2)
   {
     goto LABEL_39;
   }
 
-  v35 = self;
-  v36 = v13;
-  v37 = v12;
+  selfCopy = self;
+  v36 = userSettingsCopy;
+  v37 = settingsCopy;
   v38 = objc_opt_new();
   v39 = [[OTClique alloc] initWithContextData:v38];
   v78 = 0;
@@ -229,9 +229,9 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  v12 = v37;
-  v13 = v36;
-  self = v35;
+  settingsCopy = v37;
+  userSettingsCopy = v36;
+  self = selfCopy;
 LABEL_39:
   v72 = MCFeaturePhotoStreamAllowed;
   v73 = MCFeatureCloudPhotoLibraryAllowed;
@@ -245,17 +245,17 @@ LABEL_39:
   v84[4] = MCFeatureCloudDocumentSyncAllowed;
   v48 = [NSArray arrayWithObjects:v84 count:5];
   v49 = [NSSet setWithArray:v48];
-  v63 = self;
-  v50 = [(MCServerSideHacks *)self _anyBoolRestrictionChangedInSet:v49 oldRestrictions:v10 newRestrictions:v11];
+  selfCopy2 = self;
+  v50 = [(MCServerSideHacks *)self _anyBoolRestrictionChangedInSet:v49 oldRestrictions:restrictionsCopy newRestrictions:newRestrictionsCopy];
 
   if (!v50)
   {
     goto LABEL_68;
   }
 
-  v60 = v13;
-  v61 = v12;
-  v62 = v10;
+  v60 = userSettingsCopy;
+  v61 = settingsCopy;
+  v62 = restrictionsCopy;
   +[ACAccountStore defaultStore];
   v74 = 0u;
   v75 = 0u;
@@ -287,7 +287,7 @@ LABEL_39:
       }
 
       v58 = *(*(&v74 + 1) + 8 * i);
-      if (+[MCRestrictionManagerWriter restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManagerWriter, "restrictedBoolForFeature:withRestrictionsDictionary:", v73, v11) == 2 && [v58 isEnabledForDataclass:v54])
+      if (+[MCRestrictionManagerWriter restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManagerWriter, "restrictedBoolForFeature:withRestrictionsDictionary:", v73, newRestrictionsCopy) == 2 && [v58 isEnabledForDataclass:v54])
       {
         [v58 setEnabled:0 forDataclass:v54];
         v59 = 1;
@@ -298,25 +298,25 @@ LABEL_39:
         v59 = 0;
       }
 
-      if (+[MCRestrictionManagerWriter restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManagerWriter, "restrictedBoolForFeature:withRestrictionsDictionary:", v72, v11) == 2 && [v58 isEnabledForDataclass:v69])
+      if (+[MCRestrictionManagerWriter restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManagerWriter, "restrictedBoolForFeature:withRestrictionsDictionary:", v72, newRestrictionsCopy) == 2 && [v58 isEnabledForDataclass:v69])
       {
         [v58 setEnabled:0 forDataclass:v69];
         v59 = 1;
       }
 
-      if (+[MCRestrictionManagerWriter restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManagerWriter, "restrictedBoolForFeature:withRestrictionsDictionary:", v71, v11) == 2 && [v58 isEnabledForDataclass:v68])
+      if (+[MCRestrictionManagerWriter restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManagerWriter, "restrictedBoolForFeature:withRestrictionsDictionary:", v71, newRestrictionsCopy) == 2 && [v58 isEnabledForDataclass:v68])
       {
         [v58 setEnabled:0 forDataclass:v68];
         v59 = 1;
       }
 
-      if (+[MCRestrictionManagerWriter restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManagerWriter, "restrictedBoolForFeature:withRestrictionsDictionary:", v70, v11) == 2 && [v58 isEnabledForDataclass:v67])
+      if (+[MCRestrictionManagerWriter restrictedBoolForFeature:withRestrictionsDictionary:](MCRestrictionManagerWriter, "restrictedBoolForFeature:withRestrictionsDictionary:", v70, newRestrictionsCopy) == 2 && [v58 isEnabledForDataclass:v67])
       {
         [v58 setEnabled:0 forDataclass:v67];
         v59 = 1;
       }
 
-      if ([MCRestrictionManagerWriter restrictedBoolForFeature:v47 withRestrictionsDictionary:v11]!= 2)
+      if ([MCRestrictionManagerWriter restrictedBoolForFeature:v47 withRestrictionsDictionary:newRestrictionsCopy]!= 2)
       {
         goto LABEL_63;
       }
@@ -352,30 +352,30 @@ LABEL_65:
   while (v52);
 LABEL_67:
 
-  v12 = v61;
-  v10 = v62;
-  v13 = v60;
+  settingsCopy = v61;
+  restrictionsCopy = v62;
+  userSettingsCopy = v60;
 LABEL_68:
-  if ([MCRestrictionManagerWriter BOOLSetting:MCFeatureVehicleUIAllowed valueChangedBetweenOldSettings:v12 andNewSettings:v13])
+  if ([MCRestrictionManagerWriter BOOLSetting:MCFeatureVehicleUIAllowed valueChangedBetweenOldSettings:settingsCopy andNewSettings:userSettingsCopy])
   {
     CRHandleCarPlayRestrictionChanged();
   }
 
-  if ([MCRestrictionManager restrictedBool:MCFeatureLimitAdTrackingForced changedBetweenOldRestrictions:v10 andNewRestrictions:v11])
+  if ([MCRestrictionManager restrictedBool:MCFeatureLimitAdTrackingForced changedBetweenOldRestrictions:restrictionsCopy andNewRestrictions:newRestrictionsCopy])
   {
-    [(MCServerSideHacks *)v63 setUserTrackingTCCAccessOverrideForRestrictions:v11];
+    [(MCServerSideHacks *)selfCopy2 setUserTrackingTCCAccessOverrideForRestrictions:newRestrictionsCopy];
   }
 
 LABEL_72:
 }
 
-- (void)applyEffectiveSettings:(id)a3 toOtherSubsystemsWithCredentialSet:(id)a4
+- (void)applyEffectiveSettings:(id)settings toOtherSubsystemsWithCredentialSet:(id)set
 {
-  v5 = a3;
-  v6 = a4;
+  settingsCopy = settings;
+  setCopy = set;
   if (byte_100136660)
   {
-    if ([MCRestrictionManager BOOLSettingForFeature:MCFeatureAutomaticDateAndTimeForced withUserSettingDictionary:v5]== 1)
+    if ([MCRestrictionManager BOOLSettingForFeature:MCFeatureAutomaticDateAndTimeForced withUserSettingDictionary:settingsCopy]== 1)
     {
       TMSetAutomaticTimeZoneEnabled();
       TMSetAutomaticTimeEnabled();
@@ -384,12 +384,12 @@ LABEL_72:
     if (MCGestaltHasSEP())
     {
       v7 = +[MCRestrictionManager sharedManager];
-      v8 = [v7 memberQueueRestrictions];
+      memberQueueRestrictions = [v7 memberQueueRestrictions];
 
-      v9 = [MCRestrictionManager valueForFeature:MCFeatureMaximumFailedPasscodeAttempts withRestrictionsDictionary:v8];
-      v10 = [v9 unsignedIntegerValue];
+      v9 = [MCRestrictionManager valueForFeature:MCFeatureMaximumFailedPasscodeAttempts withRestrictionsDictionary:memberQueueRestrictions];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-      if (v10 != MCKeybagCurrentMaximumFailedPasscodeAttempts())
+      if (unsignedIntegerValue != MCKeybagCurrentMaximumFailedPasscodeAttempts())
       {
         v11 = MCKeybagSetMaximumFailedPasscodeAttempts();
         if (v11)
@@ -406,11 +406,11 @@ LABEL_72:
     }
 
     v13 = MCFeaturePasscodeLockGraceTime;
-    v14 = [MCRestrictionManager valueSettingForFeature:MCFeaturePasscodeLockGraceTime withUserSettingDictionary:v5];
-    v15 = [v14 unsignedLongValue];
+    v14 = [MCRestrictionManager valueSettingForFeature:MCFeaturePasscodeLockGraceTime withUserSettingDictionary:settingsCopy];
+    unsignedLongValue = [v14 unsignedLongValue];
 
     v16 = MCKeybagCurrentPasscodeGracePeriod();
-    if (v15 != v16)
+    if (unsignedLongValue != v16)
     {
       v17 = v16;
       v18 = MCKeybagSetPasscodeGracePeriod();
@@ -435,22 +435,22 @@ LABEL_72:
         v85 = v22;
         v23 = [NSDictionary dictionaryWithObjects:&v85 forKeys:&v84 count:1];
 
-        [v5 MCDeepCopyEntriesFromDictionary:v23];
+        [settingsCopy MCDeepCopyEntriesFromDictionary:v23];
       }
     }
 
-    if (_os_feature_enabled_impl() && [MCRestrictionManager BOOLSettingForFeature:MCFeaturePasscodeRecoveryAllowed withUserSettingDictionary:v5]== 2 && MCKeybagMementoBlobExists())
+    if (_os_feature_enabled_impl() && [MCRestrictionManager BOOLSettingForFeature:MCFeaturePasscodeRecoveryAllowed withUserSettingDictionary:settingsCopy]== 2 && MCKeybagMementoBlobExists())
     {
       v24 = +[MCPasscodeManagerWriter sharedManager];
-      v25 = [v24 clearRecoveryPasscode];
+      clearRecoveryPasscode = [v24 clearRecoveryPasscode];
 
-      if (v25)
+      if (clearRecoveryPasscode)
       {
         v26 = _MCLogObjects[0];
         if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v87 = v25;
+          v87 = clearRecoveryPasscode;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Failed to clear recovery passcode. Error: %{public}@", buf, 0xCu);
         }
       }
@@ -469,7 +469,7 @@ LABEL_72:
     if (v28)
     {
       v31 = MCFeatureFingerprintUnlockAllowed;
-      v32 = [MCRestrictionManager BOOLSettingForFeature:MCFeatureFingerprintUnlockAllowed withUserSettingDictionary:v5];
+      v32 = [MCRestrictionManager BOOLSettingForFeature:MCFeatureFingerprintUnlockAllowed withUserSettingDictionary:settingsCopy];
       if (!v29 || (v33 = v32, (v32 != 2) == [v29 BOOLValue]))
       {
         v34 = 0;
@@ -481,7 +481,7 @@ LABEL_72:
       }
 
       v36 = MCFeatureFingerprintForContactlessPaymentAllowed;
-      v37 = [MCRestrictionManager BOOLSettingForFeature:MCFeatureFingerprintForContactlessPaymentAllowed withUserSettingDictionary:v5];
+      v37 = [MCRestrictionManager BOOLSettingForFeature:MCFeatureFingerprintForContactlessPaymentAllowed withUserSettingDictionary:settingsCopy];
       if (!v30 || (v38 = v37, (v37 != 2) == [v30 BOOLValue]))
       {
         v39 = 0;
@@ -494,7 +494,7 @@ LABEL_72:
 
       if (v34 | v39)
       {
-        v40 = sub_10005502C(v34, v39, v6);
+        v40 = sub_10005502C(v34, v39, setCopy);
         if (v40)
         {
           v64 = v40;
@@ -510,7 +510,7 @@ LABEL_72:
             v79 = v42;
             v43 = [NSDictionary dictionaryWithObjects:&v79 forKeys:&v78 count:1];
 
-            [v5 MCDeepCopyEntriesFromDictionary:v43];
+            [settingsCopy MCDeepCopyEntriesFromDictionary:v43];
             v40 = v64;
           }
 
@@ -526,7 +526,7 @@ LABEL_72:
             v73 = v45;
             v46 = [NSDictionary dictionaryWithObjects:&v73 forKeys:&v72 count:1];
 
-            [v5 MCDeepCopyEntriesFromDictionary:v46];
+            [settingsCopy MCDeepCopyEntriesFromDictionary:v46];
             v40 = v64;
           }
         }
@@ -543,7 +543,7 @@ LABEL_72:
       }
     }
 
-    if ([MCRestrictionManager BOOLSettingForFeature:MCFeatureWifiPowerOnEnforced withUserSettingDictionary:v5, v64]== 1)
+    if ([MCRestrictionManager BOOLSettingForFeature:MCFeatureWifiPowerOnEnforced withUserSettingDictionary:settingsCopy, v64]== 1)
     {
       v47 = objc_opt_new();
       [v47 activate];
@@ -567,7 +567,7 @@ LABEL_72:
       [v47 invalidate];
     }
 
-    v50 = [MCRestrictionManager valueSettingForFeature:MCFeatureSafariAcceptCookies withUserSettingDictionary:v5];
+    v50 = [MCRestrictionManager valueSettingForFeature:MCFeatureSafariAcceptCookies withUserSettingDictionary:settingsCopy];
     v51 = v50;
     v52 = &kMCSafariCookieAcceptPolicyExclusivelyFromMainDocumentDomain;
     if (v50)
@@ -612,7 +612,7 @@ LABEL_72:
       MCSendSafariCookiePolicyChangedNotification();
     }
 
-    [MCRestrictionManager BOOLSettingForFeature:MCFeatureEnterpriseBookBackupAllowed withUserSettingDictionary:v5];
+    [MCRestrictionManager BOOLSettingForFeature:MCFeatureEnterpriseBookBackupAllowed withUserSettingDictionary:settingsCopy];
     v58 = +[NSFileManager defaultManager];
     v59 = MDMManagedNonStoreBooksDirectory();
     v60 = [v58 fileExistsAtPath:v59];
@@ -645,28 +645,28 @@ LABEL_72:
   }
 }
 
-- (BOOL)applyEffectiveSettings:(id)a3 toSettings:(id)a4 withOldRestrictions:(id)a5 newRestrictions:(id)a6
+- (BOOL)applyEffectiveSettings:(id)settings toSettings:(id)toSettings withOldRestrictions:(id)restrictions newRestrictions:(id)newRestrictions
 {
-  v9 = a3;
-  v10 = a4;
+  settingsCopy = settings;
+  toSettingsCopy = toSettings;
   v11 = MCFeaturePasscodeLockGraceTime;
-  if (![MCRestrictionManager restrictedValue:MCFeaturePasscodeLockGraceTime changedBetweenOldRestrictions:a5 andNewRestrictions:a6])
+  if (![MCRestrictionManager restrictedValue:MCFeaturePasscodeLockGraceTime changedBetweenOldRestrictions:restrictions andNewRestrictions:newRestrictions])
   {
     goto LABEL_3;
   }
 
-  v12 = [MCRestrictionManager valueSettingForFeature:v11 withUserSettingDictionary:v9];
-  v13 = [v12 unsignedLongValue];
+  v12 = [MCRestrictionManager valueSettingForFeature:v11 withUserSettingDictionary:settingsCopy];
+  unsignedLongValue = [v12 unsignedLongValue];
 
-  v14 = [MCRestrictionManager valueSettingForFeature:v11 withUserSettingDictionary:v10];
-  v15 = [v14 unsignedLongValue];
+  v14 = [MCRestrictionManager valueSettingForFeature:v11 withUserSettingDictionary:toSettingsCopy];
+  unsignedLongValue2 = [v14 unsignedLongValue];
 
-  if (v13 != v15)
+  if (unsignedLongValue != unsignedLongValue2)
   {
     v26 = MCRestrictedValueKey;
     v24 = v11;
     v22 = MCRestrictedValueValueKey;
-    v17 = [NSNumber numberWithUnsignedInteger:v13];
+    v17 = [NSNumber numberWithUnsignedInteger:unsignedLongValue];
     v23 = v17;
     v16 = 1;
     v18 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
@@ -675,7 +675,7 @@ LABEL_72:
     v27 = v19;
     v20 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
 
-    [v10 MCDeepCopyEntriesFromDictionary:v20];
+    [toSettingsCopy MCDeepCopyEntriesFromDictionary:v20];
   }
 
   else
@@ -687,9 +687,9 @@ LABEL_3:
   return v16;
 }
 
-- (void)recomputeAppOptionsEffectiveUserSettings:(id)a3 outEffectiveChangeDetected:(BOOL *)a4
+- (void)recomputeAppOptionsEffectiveUserSettings:(id)settings outEffectiveChangeDetected:(BOOL *)detected
 {
-  v82 = a3;
+  settingsCopy = settings;
   v4 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
   {
@@ -698,14 +698,14 @@ LABEL_3:
   }
 
   v86 = +[MCManifest sharedManifest];
-  v5 = [v86 allInstalledProfileIdentifiers];
+  allInstalledProfileIdentifiers = [v86 allInstalledProfileIdentifiers];
   v6 = +[NSMutableDictionary dictionary];
   v83 = +[NSMutableDictionary dictionary];
   v133 = 0u;
   v134 = 0u;
   v135 = 0u;
   v136 = 0u;
-  obj = v5;
+  obj = allInstalledProfileIdentifiers;
   v87 = [obj countByEnumeratingWithState:&v133 objects:v145 count:16];
   if (v87)
   {
@@ -738,8 +738,8 @@ LABEL_3:
           v131 = 0u;
           v132 = 0u;
           v88 = v13;
-          v103 = [v13 payloads];
-          v16 = [v103 countByEnumeratingWithState:&v129 objects:v144 count:16];
+          payloads = [v13 payloads];
+          v16 = [payloads countByEnumeratingWithState:&v129 objects:v144 count:16];
           if (v16)
           {
             v17 = v16;
@@ -754,7 +754,7 @@ LABEL_3:
               {
                 if (*v130 != v18)
                 {
-                  objc_enumerationMutation(v103);
+                  objc_enumerationMutation(payloads);
                 }
 
                 v20 = *(*(&v129 + 1) + 8 * v19);
@@ -762,17 +762,17 @@ LABEL_3:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v22 = [v20 whitelistedAppsAndOptions];
-                  if (v22)
+                  whitelistedAppsAndOptions = [v20 whitelistedAppsAndOptions];
+                  if (whitelistedAppsAndOptions)
                   {
-                    v23 = [v20 UUID];
-                    [v15 setObject:v22 forKey:v23];
+                    uUID = [v20 UUID];
+                    [v15 setObject:whitelistedAppsAndOptions forKey:uUID];
 
                     v127 = 0u;
                     v128 = 0u;
                     v125 = 0u;
                     v126 = 0u;
-                    v24 = v22;
+                    v24 = whitelistedAppsAndOptions;
                     v25 = [v24 countByEnumeratingWithState:&v125 objects:v143 count:16];
                     if (v25)
                     {
@@ -812,7 +812,7 @@ LABEL_3:
               }
 
               while (v19 != v17);
-              v17 = [v103 countByEnumeratingWithState:&v129 objects:v144 count:16];
+              v17 = [payloads countByEnumeratingWithState:&v129 objects:v144 count:16];
             }
 
             while (v17);
@@ -820,8 +820,8 @@ LABEL_3:
 
           if ([v15 count])
           {
-            v31 = [v88 identifier];
-            [v83 setObject:v15 forKey:v31];
+            identifier = [v88 identifier];
+            [v83 setObject:v15 forKey:identifier];
           }
 
           v7 = v84;
@@ -845,8 +845,8 @@ LABEL_3:
   v122 = 0u;
   v123 = 0u;
   v104 = v124 = 0u;
-  v92 = [v104 memberQueueUserClientRestrictions];
-  v100 = [v92 countByEnumeratingWithState:&v121 objects:v142 count:16];
+  memberQueueUserClientRestrictions = [v104 memberQueueUserClientRestrictions];
+  v100 = [memberQueueUserClientRestrictions countByEnumeratingWithState:&v121 objects:v142 count:16];
   if (v100)
   {
     v96 = *v122;
@@ -857,7 +857,7 @@ LABEL_3:
       {
         if (*v122 != v96)
         {
-          objc_enumerationMutation(v92);
+          objc_enumerationMutation(memberQueueUserClientRestrictions);
         }
 
         v34 = [v104 memberQueueAppsAndOptionsForClientUUID:*(*(&v121 + 1) + 8 * j)];
@@ -903,7 +903,7 @@ LABEL_3:
         }
       }
 
-      v100 = [v92 countByEnumeratingWithState:&v121 objects:v142 count:16];
+      v100 = [memberQueueUserClientRestrictions countByEnumeratingWithState:&v121 objects:v142 count:16];
     }
 
     while (v100);
@@ -913,8 +913,8 @@ LABEL_3:
   v116 = 0u;
   v113 = 0u;
   v114 = 0u;
-  v93 = [v104 memberQueueSystemClientRestrictions];
-  v101 = [v93 countByEnumeratingWithState:&v113 objects:v140 count:16];
+  memberQueueSystemClientRestrictions = [v104 memberQueueSystemClientRestrictions];
+  v101 = [memberQueueSystemClientRestrictions countByEnumeratingWithState:&v113 objects:v140 count:16];
   if (v101)
   {
     v97 = *v114;
@@ -925,7 +925,7 @@ LABEL_3:
       {
         if (*v114 != v97)
         {
-          objc_enumerationMutation(v93);
+          objc_enumerationMutation(memberQueueSystemClientRestrictions);
         }
 
         v45 = [v104 memberQueueAppsAndOptionsForClientUUID:*(*(&v113 + 1) + 8 * m)];
@@ -971,7 +971,7 @@ LABEL_3:
         }
       }
 
-      v101 = [v93 countByEnumeratingWithState:&v113 objects:v140 count:16];
+      v101 = [memberQueueSystemClientRestrictions countByEnumeratingWithState:&v113 objects:v140 count:16];
     }
 
     while (v101);
@@ -1021,7 +1021,7 @@ LABEL_3:
 
   if ([v6 count])
   {
-    v63 = [MCRestrictionManager intersectedValuesSettingForFeature:MCFeatureAppLockBundleIDs withUserSettingDectionary:v82];
+    v63 = [MCRestrictionManager intersectedValuesSettingForFeature:MCFeatureAppLockBundleIDs withUserSettingDectionary:settingsCopy];
     if ([v63 count])
     {
       v94 = v62;
@@ -1134,13 +1134,13 @@ LABEL_102:
   }
 
   v3 = +[MDMManagedMediaReader attributesByAppID];
-  v4 = [v3 allKeys];
+  allKeys = [v3 allKeys];
   v5 = MCNEProfileIngestionHandlerClassForPayload();
   if ([v5 lockConfigurations])
   {
     [v5 loadConfigurationsForceReloadFromDisk];
     [v5 updatePerAppMappingRules:v3];
-    [v5 updateManagedAppRules:v4];
+    [v5 updateManagedAppRules:allKeys];
     [v5 unlockConfigurations];
   }
 
@@ -1198,8 +1198,8 @@ LABEL_102:
           v48 = 0u;
           v49 = 0u;
           v40 = v11;
-          v46 = [v11 payloads];
-          v13 = [v46 countByEnumeratingWithState:&v48 objects:v56 count:16];
+          payloads = [v11 payloads];
+          v13 = [payloads countByEnumeratingWithState:&v48 objects:v56 count:16];
           if (v13)
           {
             v14 = v13;
@@ -1213,65 +1213,65 @@ LABEL_102:
               {
                 if (*v49 != v15)
                 {
-                  objc_enumerationMutation(v46);
+                  objc_enumerationMutation(payloads);
                 }
 
                 v17 = *(*(&v48 + 1) + 8 * v16);
                 if ([v17 conformsToProtocol:v7[124].data])
                 {
                   v18 = v17;
-                  v19 = [v18 VPNUUID];
-                  if (v19)
+                  vPNUUID = [v18 VPNUUID];
+                  if (vPNUUID)
                   {
                     if (objc_opt_respondsToSelector())
                     {
-                      v20 = [v18 mailAccountIdentifiers];
+                      mailAccountIdentifiers = [v18 mailAccountIdentifiers];
                     }
 
                     else
                     {
-                      v20 = 0;
+                      mailAccountIdentifiers = 0;
                     }
 
                     if (objc_opt_respondsToSelector())
                     {
-                      v21 = [v18 contactsAccountIdentifiers];
+                      contactsAccountIdentifiers = [v18 contactsAccountIdentifiers];
                     }
 
                     else
                     {
-                      v21 = 0;
+                      contactsAccountIdentifiers = 0;
                     }
 
                     if (objc_opt_respondsToSelector())
                     {
-                      v22 = [v18 calendarAccountIdentifiers];
+                      calendarAccountIdentifiers = [v18 calendarAccountIdentifiers];
                     }
 
                     else
                     {
-                      v22 = 0;
+                      calendarAccountIdentifiers = 0;
                     }
 
-                    if ([v20 count] || objc_msgSend(v21, "count") || objc_msgSend(v22, "count"))
+                    if ([mailAccountIdentifiers count] || objc_msgSend(contactsAccountIdentifiers, "count") || objc_msgSend(calendarAccountIdentifiers, "count"))
                     {
-                      v23 = [v45 objectForKeyedSubscript:v19];
+                      v23 = [v45 objectForKeyedSubscript:vPNUUID];
                       if (!v23)
                       {
                         v23 = objc_opt_new();
-                        [v45 setObject:v23 forKeyedSubscript:v19];
+                        [v45 setObject:v23 forKeyedSubscript:vPNUUID];
                       }
 
-                      v24 = [v23 mailAccountIdentifiers];
-                      v25 = [MCServerSideHacks mergeArray:v24 withArray:v20];
+                      mailAccountIdentifiers2 = [v23 mailAccountIdentifiers];
+                      v25 = [MCServerSideHacks mergeArray:mailAccountIdentifiers2 withArray:mailAccountIdentifiers];
                       [v23 setMailAccountIdentifiers:v25];
 
-                      v26 = [v23 contactsAccountIdentifiers];
-                      v27 = [MCServerSideHacks mergeArray:v26 withArray:v21];
+                      contactsAccountIdentifiers2 = [v23 contactsAccountIdentifiers];
+                      v27 = [MCServerSideHacks mergeArray:contactsAccountIdentifiers2 withArray:contactsAccountIdentifiers];
                       [v23 setContactsAccountIdentifiers:v27];
 
-                      v28 = [v23 calendarAccountIdentifiers];
-                      v29 = [MCServerSideHacks mergeArray:v28 withArray:v22];
+                      calendarAccountIdentifiers2 = [v23 calendarAccountIdentifiers];
+                      v29 = [MCServerSideHacks mergeArray:calendarAccountIdentifiers2 withArray:calendarAccountIdentifiers];
                       [v23 setCalendarAccountIdentifiers:v29];
 
                       v7 = @"Credential";
@@ -1285,7 +1285,7 @@ LABEL_102:
               }
 
               while (v14 != v16);
-              v14 = [v46 countByEnumeratingWithState:&v48 objects:v56 count:16];
+              v14 = [payloads countByEnumeratingWithState:&v48 objects:v56 count:16];
             }
 
             while (v14);
@@ -1335,39 +1335,39 @@ LABEL_102:
   return v31;
 }
 
-+ (id)mergeArray:(id)a3 withArray:(id)a4
++ (id)mergeArray:(id)array withArray:(id)withArray
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  arrayCopy = array;
+  withArrayCopy = withArray;
+  v7 = withArrayCopy;
+  if (arrayCopy)
   {
-    if (v6)
+    if (withArrayCopy)
     {
-      v8 = [NSSet setWithArray:v5];
+      v8 = [NSSet setWithArray:arrayCopy];
       v9 = [v8 setByAddingObjectsFromArray:v7];
-      v10 = [v9 allObjects];
+      allObjects = [v9 allObjects];
 
       goto LABEL_7;
     }
 
-    v11 = v5;
+    v11 = arrayCopy;
   }
 
   else
   {
-    v11 = v6;
+    v11 = withArrayCopy;
   }
 
-  v10 = v11;
+  allObjects = v11;
 LABEL_7:
 
-  return v10;
+  return allObjects;
 }
 
-- (void)recomputeWebContentFilterEffectiveUserSettings:(id)a3 outEffectiveChangeDetected:(BOOL *)a4 outMechanismChangedDetected:(BOOL *)a5
+- (void)recomputeWebContentFilterEffectiveUserSettings:(id)settings outEffectiveChangeDetected:(BOOL *)detected outMechanismChangedDetected:(BOOL *)changedDetected
 {
-  v7 = a3;
+  settingsCopy = settings;
   v8 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
   {
@@ -1379,10 +1379,10 @@ LABEL_7:
   v10 = MCWebContentFilterOutputPath();
   v11 = [v9 fileExistsAtPath:v10];
 
-  v125 = v7;
-  v122 = a4;
+  v125 = settingsCopy;
+  detectedCopy = detected;
   v123 = v9;
-  v121 = a5;
+  changedDetectedCopy = changedDetected;
   if (v11)
   {
     v12 = MCWebContentFilterOutputPath();
@@ -1396,13 +1396,13 @@ LABEL_7:
 
   v14 = +[NSMutableDictionary dictionary];
   v15 = +[MCBookmarkManager sharedManager];
-  v16 = [v15 userBookmarks];
+  userBookmarks = [v15 userBookmarks];
 
   v160 = 0u;
   v161 = 0u;
   v158 = 0u;
   v159 = 0u;
-  v17 = v16;
+  v17 = userBookmarks;
   v18 = [v17 countByEnumeratingWithState:&v158 objects:v169 count:16];
   if (v18)
   {
@@ -1418,11 +1418,11 @@ LABEL_7:
           objc_enumerationMutation(v17);
         }
 
-        v23 = [*(*(&v158 + 1) + 8 * i) serializableDictionary];
-        v24 = [v23 objectForKeyedSubscript:v21];
+        serializableDictionary = [*(*(&v158 + 1) + 8 * i) serializableDictionary];
+        v24 = [serializableDictionary objectForKeyedSubscript:v21];
         if (v24)
         {
-          [v14 setObject:v23 forKeyedSubscript:v24];
+          [v14 setObject:serializableDictionary forKeyedSubscript:v24];
         }
       }
 
@@ -1469,8 +1469,8 @@ LABEL_7:
         v150 = 0u;
         v151 = 0u;
         v131 = v32;
-        v140 = [v32 payloads];
-        v33 = [v140 countByEnumeratingWithState:&v150 objects:v167 count:16];
+        payloads = [v32 payloads];
+        v33 = [payloads countByEnumeratingWithState:&v150 objects:v167 count:16];
         if (v33)
         {
           v34 = v33;
@@ -1484,7 +1484,7 @@ LABEL_7:
             {
               if (*v151 != v35)
               {
-                objc_enumerationMutation(v140);
+                objc_enumerationMutation(payloads);
               }
 
               v37 = *(*(&v150 + 1) + 8 * v36);
@@ -1493,12 +1493,12 @@ LABEL_7:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v40 = [v37 allowListBookmarks];
+                allowListBookmarks = [v37 allowListBookmarks];
                 v146 = 0u;
                 v147 = 0u;
                 v148 = 0u;
                 v149 = 0u;
-                v41 = [v40 countByEnumeratingWithState:&v146 objects:v166 count:16];
+                v41 = [allowListBookmarks countByEnumeratingWithState:&v146 objects:v166 count:16];
                 if (v41)
                 {
                   v42 = v41;
@@ -1509,7 +1509,7 @@ LABEL_7:
                     {
                       if (*v147 != v43)
                       {
-                        objc_enumerationMutation(v40);
+                        objc_enumerationMutation(allowListBookmarks);
                       }
 
                       v45 = *(*(&v146 + 1) + 8 * j);
@@ -1517,7 +1517,7 @@ LABEL_7:
                       [v14 setObject:v45 forKeyedSubscript:v46];
                     }
 
-                    v42 = [v40 countByEnumeratingWithState:&v146 objects:v166 count:16];
+                    v42 = [allowListBookmarks countByEnumeratingWithState:&v146 objects:v166 count:16];
                   }
 
                   while (v42);
@@ -1533,7 +1533,7 @@ LABEL_7:
             }
 
             while (v36 != v34);
-            v34 = [v140 countByEnumeratingWithState:&v150 objects:v167 count:16];
+            v34 = [payloads countByEnumeratingWithState:&v150 objects:v167 count:16];
           }
 
           while (v34);
@@ -1582,9 +1582,9 @@ LABEL_7:
   if ((+[DMCMultiUserModeUtilities isSharediPad]& 1) == 0)
   {
     v58 = +[MOWebContentSettingsGroup blockedByFilterMetadata];
-    v59 = [v58 responsibleClients];
+    responsibleClients = [v58 responsibleClients];
 
-    if ([v59 count] != 1 || (objc_msgSend(v59, "containsObject:", @"com.apple.ScreenTime") & 1) == 0)
+    if ([responsibleClients count] != 1 || (objc_msgSend(responsibleClients, "containsObject:", @"com.apple.ScreenTime") & 1) == 0)
     {
       [v141 setObject:&__kCFBooleanTrue forKeyedSubscript:@"noOverridingAllowed"];
     }
@@ -1613,8 +1613,8 @@ LABEL_7:
     v64 = [MCRestrictionManager intersectedValuesSettingForFeature:v134 withUserSettingDectionary:v125];
     v65 = [NSSet setWithArray:v64];
 
-    v66 = [v14 allKeys];
-    v67 = [NSMutableSet setWithArray:v66];
+    allKeys = [v14 allKeys];
+    v67 = [NSMutableSet setWithArray:allKeys];
 
     [v67 intersectSet:v65];
     v68 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v67 count]);
@@ -1791,32 +1791,32 @@ LABEL_7:
     sub_10009A8CC();
   }
 
-  if (v121)
+  if (changedDetectedCopy)
   {
-    *v121 = v119 & 1;
+    *changedDetectedCopy = v119 & 1;
   }
 
-  if (v122)
+  if (detectedCopy)
   {
-    *v122 = [v124 isEqualToDictionary:v141] ^ 1;
+    *detectedCopy = [v124 isEqualToDictionary:v141] ^ 1;
   }
 
   v118 = MCWebContentFilterOutputPath();
   [v141 MCWriteToBinaryFile:v118];
 }
 
-- (void)recomputeHacksAfterProfileChangesEffectiveUserSettings:(id)a3 sendNotifications:(BOOL)a4
+- (void)recomputeHacksAfterProfileChangesEffectiveUserSettings:(id)settings sendNotifications:(BOOL)notifications
 {
-  v4 = a4;
-  v6 = a3;
+  notificationsCopy = notifications;
+  settingsCopy = settings;
   [(MCServerSideHacks *)self recomputeAppRulesForNetworkExtension];
   v10 = 0;
-  [(MCServerSideHacks *)self recomputeAppOptionsEffectiveUserSettings:v6 outEffectiveChangeDetected:&v10];
+  [(MCServerSideHacks *)self recomputeAppOptionsEffectiveUserSettings:settingsCopy outEffectiveChangeDetected:&v10];
   v9 = 0;
   v8 = 0;
-  [(MCServerSideHacks *)self recomputeWebContentFilterEffectiveUserSettings:v6 outEffectiveChangeDetected:&v9 outMechanismChangedDetected:&v8];
+  [(MCServerSideHacks *)self recomputeWebContentFilterEffectiveUserSettings:settingsCopy outEffectiveChangeDetected:&v9 outMechanismChangedDetected:&v8];
 
-  if (v4)
+  if (notificationsCopy)
   {
     if (v10 == 1)
     {
@@ -1846,10 +1846,10 @@ LABEL_7:
   v2 = +[MCRestrictionManagerWriter sharedManager];
   v3 = MCFeaturePasscodeLockGraceTime;
   v4 = [v2 valueSettingForFeature:MCFeaturePasscodeLockGraceTime];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
   v6 = MCKeybagCurrentPasscodeGracePeriod();
-  if (v5 != v6)
+  if (unsignedIntegerValue != v6)
   {
     v7 = v6;
     v8 = _MCLogObjects[0];
@@ -1865,17 +1865,17 @@ LABEL_7:
   }
 }
 
-- (void)resetSettingsSender:(id)a3
+- (void)resetSettingsSender:(id)sender
 {
-  v3 = a3;
+  senderCopy = sender;
   v4 = +[MCRestrictionManagerWriter sharedManager];
-  [v4 setBoolValue:0 forSetting:MCFeatureDiagnosticsSubmissionAllowed sender:v3];
-  [v4 setBoolValue:0 forSetting:MCFeatureAppAnalyticsAllowed sender:v3];
+  [v4 setBoolValue:0 forSetting:MCFeatureDiagnosticsSubmissionAllowed sender:senderCopy];
+  [v4 setBoolValue:0 forSetting:MCFeatureAppAnalyticsAllowed sender:senderCopy];
 }
 
-- (void)setUserTrackingTCCAccessOverrideForRestrictions:(id)a3
+- (void)setUserTrackingTCCAccessOverrideForRestrictions:(id)restrictions
 {
-  v3 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureLimitAdTrackingForced withRestrictionsDictionary:a3]== 1;
+  v3 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureLimitAdTrackingForced withRestrictionsDictionary:restrictions]== 1;
   v4 = kTCCServiceUserTracking;
 
   _TCCAccessSetOverride(v4, v3);

@@ -1,9 +1,9 @@
 @interface MRDPersonalDeviceController
 - (MRDPersonalDeviceController)init;
 - (MRDPersonalDeviceControllerDelegate)delegate;
-- (void)_handlePersonalDeviceChangeNotification:(id)a3;
-- (void)_onQueue_beginTimerWithInterval:(double)a3;
-- (void)_onQueue_recalculateStateForReason:(id)a3;
+- (void)_handlePersonalDeviceChangeNotification:(id)notification;
+- (void)_onQueue_beginTimerWithInterval:(double)interval;
+- (void)_onQueue_recalculateStateForReason:(id)reason;
 - (void)_onQueue_restoreState;
 @end
 
@@ -49,7 +49,7 @@
   return v2;
 }
 
-- (void)_handlePersonalDeviceChangeNotification:(id)a3
+- (void)_handlePersonalDeviceChangeNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -62,22 +62,22 @@
 
 - (void)_onQueue_restoreState
 {
-  v3 = [(MRDPersonalDeviceController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MRDPersonalDeviceController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = +[MRAVOutputContext sharedAudioPresentationContext];
-  v5 = [v4 personalDeviceUIDs];
+  personalDeviceUIDs = [v4 personalDeviceUIDs];
 
-  if (![v5 count])
+  if (![personalDeviceUIDs count])
   {
     goto LABEL_9;
   }
 
   v6 = +[MRDSettings currentSettings];
-  v7 = [v6 personalDeviceState];
+  personalDeviceState = [v6 personalDeviceState];
 
-  v8 = [v7 objectForKeyedSubscript:@"kMRDPersonalDeviceControllerPersonalDeviceStateDateKey"];
-  v9 = [v7 objectForKeyedSubscript:@"kMRDPersonalDeviceControllerPersonalDeviceStateDevicesKey"];
+  v8 = [personalDeviceState objectForKeyedSubscript:@"kMRDPersonalDeviceControllerPersonalDeviceStateDateKey"];
+  v9 = [personalDeviceState objectForKeyedSubscript:@"kMRDPersonalDeviceControllerPersonalDeviceStateDevicesKey"];
   v10 = +[MRUserSettings currentSettings];
   [v10 personalDeviceLockScreenTimeout];
   v12 = v11;
@@ -85,7 +85,7 @@
   [v13 timeIntervalSinceDate:v8];
   v15 = v12 - v14;
 
-  if (v15 <= 0.0 || ![v9 count] || (+[NSSet setWithArray:](NSSet, "setWithArray:", v9), v16 = objc_claimAutoreleasedReturnValue(), +[NSSet setWithArray:](NSSet, "setWithArray:", v5), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "isEqualToSet:", v17), v17, v16, !v18))
+  if (v15 <= 0.0 || ![v9 count] || (+[NSSet setWithArray:](NSSet, "setWithArray:", v9), v16 = objc_claimAutoreleasedReturnValue(), +[NSSet setWithArray:](NSSet, "setWithArray:", personalDeviceUIDs), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "isEqualToSet:", v17), v17, v16, !v18))
   {
 
 LABEL_9:
@@ -104,34 +104,34 @@ LABEL_9:
   }
 
   [(MRDPersonalDeviceController *)self setPersonalDeviceWasRecentlyAttached:1];
-  v20 = [NSSet setWithArray:v5];
+  v20 = [NSSet setWithArray:personalDeviceUIDs];
   [(MRDPersonalDeviceController *)self setCurrentPersonalDeviceUIDs:v20];
 
   [(MRDPersonalDeviceController *)self _onQueue_beginTimerWithInterval:v15];
 LABEL_10:
 }
 
-- (void)_onQueue_recalculateStateForReason:(id)a3
+- (void)_onQueue_recalculateStateForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(MRDPersonalDeviceController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  reasonCopy = reason;
+  queue = [(MRDPersonalDeviceController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v41 = v4;
+    v41 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[MRDPersonalDeviceController] Recalculating state for reason: %@", buf, 0xCu);
   }
 
   v7 = +[MRAVOutputContext sharedAudioPresentationContext];
-  v8 = [v7 personalDeviceUIDs];
-  v9 = v8;
+  personalDeviceUIDs = [v7 personalDeviceUIDs];
+  v9 = personalDeviceUIDs;
   v10 = &__NSArray0__struct;
-  if (v8)
+  if (personalDeviceUIDs)
   {
-    v10 = v8;
+    v10 = personalDeviceUIDs;
   }
 
   v11 = v10;
@@ -156,8 +156,8 @@ LABEL_10:
         }
 
         v17 = *(*(&v33 + 1) + 8 * i);
-        v18 = [(MRDPersonalDeviceController *)self currentPersonalDeviceUIDs];
-        v19 = [v18 containsObject:v17];
+        currentPersonalDeviceUIDs = [(MRDPersonalDeviceController *)self currentPersonalDeviceUIDs];
+        v19 = [currentPersonalDeviceUIDs containsObject:v17];
 
         if ((v19 & 1) == 0)
         {
@@ -202,46 +202,46 @@ LABEL_17:
   v25 = +[MRDSettings currentSettings];
   [v25 setPersonalDeviceState:v24];
 
-  v26 = [(MRDPersonalDeviceController *)self currentPersonalDeviceUIDs];
-  v27 = [v26 count];
+  currentPersonalDeviceUIDs2 = [(MRDPersonalDeviceController *)self currentPersonalDeviceUIDs];
+  v27 = [currentPersonalDeviceUIDs2 count];
 
   if (!v27)
   {
     [(MRDPersonalDeviceController *)self setPersonalDeviceWasRecentlyAttached:0];
-    v28 = [(MRDPersonalDeviceController *)self overrideTimer];
-    [v28 invalidate];
+    overrideTimer = [(MRDPersonalDeviceController *)self overrideTimer];
+    [overrideTimer invalidate];
   }
 
-  v29 = [(MRDPersonalDeviceController *)self delegate];
+  delegate = [(MRDPersonalDeviceController *)self delegate];
   v30 = objc_opt_respondsToSelector();
 
   if (v30)
   {
-    v31 = [(MRDPersonalDeviceController *)self delegateQueue];
+    delegateQueue = [(MRDPersonalDeviceController *)self delegateQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000AF29C;
     block[3] = &unk_1004B6D08;
     block[4] = self;
-    dispatch_async(v31, block);
+    dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)_onQueue_beginTimerWithInterval:(double)a3
+- (void)_onQueue_beginTimerWithInterval:(double)interval
 {
-  v5 = [(MRDPersonalDeviceController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(MRDPersonalDeviceController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   objc_initWeak(&location, self);
   v6 = [MRPersistentTimer alloc];
-  v7 = [(MRDPersonalDeviceController *)self queue];
+  queue2 = [(MRDPersonalDeviceController *)self queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000AF428;
   v9[3] = &unk_1004B9630;
   objc_copyWeak(&v10, &location);
   v9[4] = self;
-  v8 = [v6 initWithInterval:@"com.apple.mediaremote.mrdpersonaldevicecontroller.overridetimer" name:v7 queue:v9 block:a3];
+  v8 = [v6 initWithInterval:@"com.apple.mediaremote.mrdpersonaldevicecontroller.overridetimer" name:queue2 queue:v9 block:interval];
   [(MRDPersonalDeviceController *)self setOverrideTimer:v8];
 
   objc_destroyWeak(&v10);

@@ -1,17 +1,17 @@
 @interface SDHeadphoneEndCallManager
 - (BOOL)isStatusUnknown;
-- (SDHeadphoneEndCallManager)initWithBluetoothAddress:(id)a3;
+- (SDHeadphoneEndCallManager)initWithBluetoothAddress:(id)address;
 @end
 
 @implementation SDHeadphoneEndCallManager
 
-- (SDHeadphoneEndCallManager)initWithBluetoothAddress:(id)a3
+- (SDHeadphoneEndCallManager)initWithBluetoothAddress:(id)address
 {
   v10.receiver = self;
   v10.super_class = SDHeadphoneEndCallManager;
-  v3 = a3;
+  addressCopy = address;
   v4 = [(SDHeadphoneEndCallManager *)&v10 init];
-  v5 = [v3 copy];
+  v5 = [addressCopy copy];
 
   v6 = *(v4 + 1);
   *(v4 + 1) = v5;
@@ -50,8 +50,8 @@
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
-        v9 = [v8 address];
-        v10 = [v9 isEqualToString:self->_bluetoothAddressString];
+        address = [v8 address];
+        v10 = [address isEqualToString:self->_bluetoothAddressString];
 
         if (v10)
         {
@@ -79,10 +79,10 @@ LABEL_13:
 
   bluetoothDevice = self->_bluetoothDevice;
   p_bluetoothDevice = &self->_bluetoothDevice;
-  v13 = [(BluetoothDevice *)bluetoothDevice getCallManagementConfig];
+  getCallManagementConfig = [(BluetoothDevice *)bluetoothDevice getCallManagementConfig];
   if ([(BluetoothDevice *)*p_bluetoothDevice getAACPCapabilityBit:80])
   {
-    v14 = v13 == 0;
+    v14 = getCallManagementConfig == 0;
   }
 
   else
@@ -92,7 +92,7 @@ LABEL_13:
 
   if (v14)
   {
-    v15 = (v13 & 0xFE00) == 0;
+    v15 = (getCallManagementConfig & 0xFE00) == 0;
   }
 
   else

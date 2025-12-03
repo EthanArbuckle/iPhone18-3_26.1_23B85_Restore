@@ -1,7 +1,7 @@
 @interface IDSPseudonymRequestProperties
 + (id)defaultProperties;
-- (IDSPseudonymRequestProperties)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (IDSPseudonymRequestProperties)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -9,7 +9,7 @@
 
 + (id)defaultProperties
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setRequestTimeoutInterval:600.0];
 
   return v2;
@@ -25,22 +25,22 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   *(result + 1) = *&self->_requestTimeoutInterval;
   return result;
 }
 
-- (IDSPseudonymRequestProperties)initWithCoder:(id)a3
+- (IDSPseudonymRequestProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = IDSPseudonymRequestProperties;
   v5 = [(IDSPseudonymRequestProperties *)&v8 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"timeout"];
+    [coderCopy decodeDoubleForKey:@"timeout"];
     v5->_requestTimeoutInterval = v6;
   }
 

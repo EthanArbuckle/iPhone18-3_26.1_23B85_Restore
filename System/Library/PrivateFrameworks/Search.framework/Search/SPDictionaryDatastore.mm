@@ -1,6 +1,6 @@
 @interface SPDictionaryDatastore
 - (SPDictionaryDatastore)init;
-- (id)performQuery:(id)a3;
+- (id)performQuery:(id)query;
 @end
 
 @implementation SPDictionaryDatastore
@@ -20,9 +20,9 @@
   return v2;
 }
 
-- (id)performQuery:(id)a3
+- (id)performQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = si_tracing_current_span();
   v6 = *(v5 + 16);
   v22 = *v5;
@@ -38,7 +38,7 @@
   *(v5 + 28) = 102;
   *(v5 + 32) = "[SPDictionaryDatastore performQuery:]";
   si_tracing_log_span_begin();
-  if ([v4 isPeopleSearch] & 1) != 0 || (objc_msgSend(v4, "isScopedAppSearch"))
+  if ([queryCopy isPeopleSearch] & 1) != 0 || (objc_msgSend(queryCopy, "isScopedAppSearch"))
   {
     v11 = 0;
   }
@@ -53,7 +53,7 @@
     }
 
     v11 = [[SPDictionaryDatastoreToken alloc] initWithStore:self];
-    [(SPDictionaryDatastoreToken *)v11 begin:v4];
+    [(SPDictionaryDatastoreToken *)v11 begin:queryCopy];
   }
 
   v13 = *v5;

@@ -1,27 +1,27 @@
 @interface AKAuthorizationValidator
-+ (BOOL)canPerformAuthorizationRequest:(id)a3 error:(id *)a4;
-+ (BOOL)canPerformCredentialRequest:(id)a3 error:(id *)a4;
-+ (BOOL)canPerformPasswordRequest:(id)a3 error:(id *)a4;
-+ (BOOL)shouldContinueWithResponse:(id)a3 error:(id *)a4;
++ (BOOL)canPerformAuthorizationRequest:(id)request error:(id *)error;
++ (BOOL)canPerformCredentialRequest:(id)request error:(id *)error;
++ (BOOL)canPerformPasswordRequest:(id)request error:(id *)error;
++ (BOOL)shouldContinueWithResponse:(id)response error:(id *)error;
 @end
 
 @implementation AKAuthorizationValidator
 
-+ (BOOL)canPerformCredentialRequest:(id)a3 error:(id *)a4
++ (BOOL)canPerformCredentialRequest:(id)request error:(id *)error
 {
-  v22 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = a4;
+  objc_storeStrong(location, request);
+  errorCopy = error;
   v19 = 0;
   v17 = 0;
-  v12 = [v22 canPerformAuthorizationRequest:location[0] error:&v17];
+  v12 = [selfCopy canPerformAuthorizationRequest:location[0] error:&v17];
   objc_storeStrong(&v19, v17);
   v18 = v12;
   v16 = 0;
   obj = 0;
-  v13 = [v22 canPerformPasswordRequest:location[0] error:&obj];
+  v13 = [selfCopy canPerformPasswordRequest:location[0] error:&obj];
   objc_storeStrong(&v16, obj);
   v15 = v13;
   if (v18 & 1) != 0 || (v15)
@@ -33,29 +33,29 @@
   {
     if (v19)
     {
-      if (v20)
+      if (errorCopy)
       {
         v10 = v19;
         v4 = v19;
-        *v20 = v10;
+        *errorCopy = v10;
       }
     }
 
     else if (v16)
     {
-      if (v20)
+      if (errorCopy)
       {
         v9 = v16;
         v5 = v16;
-        *v20 = v9;
+        *errorCopy = v9;
       }
     }
 
-    else if (v20)
+    else if (errorCopy)
     {
       v8 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7001];
       v6 = v8;
-      *v20 = v8;
+      *errorCopy = v8;
     }
 
     v23 = 0;
@@ -67,17 +67,17 @@
   return v23 & 1;
 }
 
-+ (BOOL)canPerformAuthorizationRequest:(id)a3 error:(id *)a4
++ (BOOL)canPerformAuthorizationRequest:(id)request error:(id *)error
 {
-  v81 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v79 = a4;
-  v78 = [location[0] authorizationRequest];
-  if (v78)
+  objc_storeStrong(location, request);
+  errorCopy = error;
+  authorizationRequest = [location[0] authorizationRequest];
+  if (authorizationRequest)
   {
-    if ([v81 _requirePasscodeSet])
+    if ([selfCopy _requirePasscodeSet])
     {
       v73 = _AKLogSiwa();
       v72 = 16;
@@ -90,11 +90,11 @@
       }
 
       objc_storeStrong(&v73, 0);
-      if (v79)
+      if (errorCopy)
       {
         v39 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7080];
         v5 = v39;
-        *v79 = v39;
+        *errorCopy = v39;
       }
 
       v82 = 0;
@@ -103,23 +103,23 @@
 
     else
     {
-      v38 = [v78 authkitAccount];
-      MEMORY[0x1E69E5920](v38);
-      if (v38)
+      authkitAccount = [authorizationRequest authkitAccount];
+      MEMORY[0x1E69E5920](authkitAccount);
+      if (authkitAccount)
       {
         v67 = +[AKAccountManager sharedInstance];
-        v34 = [v78 altDSID];
+        altDSID = [authorizationRequest altDSID];
         v66 = [v67 iCloudAccountForAltDSID:?];
-        MEMORY[0x1E69E5920](v34);
-        v65 = [v78 authkitAccount];
+        MEMORY[0x1E69E5920](altDSID);
+        authkitAccount2 = [authorizationRequest authkitAccount];
         if (([location[0] _isItunesLogin] & 1) != 0 || v66)
         {
-          if ([v67 securityLevelForAccount:v65] == 5)
+          if ([v67 securityLevelForAccount:authkitAccount2] == 5)
           {
             v29 = +[AKDevice currentDevice];
-            v30 = [v29 isMultiUserMode];
+            isMultiUserMode = [v29 isMultiUserMode];
             MEMORY[0x1E69E5920](v29);
-            if (v30 == 1)
+            if (isMultiUserMode == 1)
             {
               v60 = _AKLogSiwa();
               v59 = 16;
@@ -132,11 +132,11 @@
               }
 
               objc_storeStrong(&v60, 0);
-              if (v79)
+              if (errorCopy)
               {
                 v26 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7027];
                 v8 = v26;
-                *v79 = v26;
+                *errorCopy = v26;
               }
 
               v82 = 0;
@@ -150,7 +150,7 @@
             }
           }
 
-          else if ([v67 authenticationModeForAccount:v65] == 2)
+          else if ([v67 authenticationModeForAccount:authkitAccount2] == 2)
           {
             v57 = _AKLogSiwa();
             v56 = 16;
@@ -163,25 +163,25 @@
             }
 
             objc_storeStrong(&v57, 0);
-            if (v79)
+            if (errorCopy)
             {
               v23 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7027];
               v9 = v23;
-              *v79 = v23;
+              *errorCopy = v23;
             }
 
             v82 = 0;
             v74 = 1;
           }
 
-          else if ([AKAuthorizationAgeValidator isValidAgeForRequest:location[0] account:v65])
+          else if ([AKAuthorizationAgeValidator isValidAgeForRequest:location[0] account:authkitAccount2])
           {
-            if ([v67 securityLevelForAccount:v65] == 4)
+            if ([v67 securityLevelForAccount:authkitAccount2] == 4)
             {
-              v17 = [v78 requestedScopes];
-              v18 = [v17 containsObject:@"email"];
-              MEMORY[0x1E69E5920](v17);
-              if (v18 & 1) == 0 || (v51 = [v67 isPrimaryiCloudAccountEmailVerified:v66], v50 = objc_msgSend(v67, "verifiedPrimaryEmailForAccount:", v65), v49 = objc_msgSend(v67, "phoneAsAppleIDForAccount:", v65), (v51) || (v50 & 1) != 0 || (v49)
+              requestedScopes = [authorizationRequest requestedScopes];
+              v18 = [requestedScopes containsObject:@"email"];
+              MEMORY[0x1E69E5920](requestedScopes);
+              if (v18 & 1) == 0 || (v51 = [v67 isPrimaryiCloudAccountEmailVerified:v66], v50 = objc_msgSend(v67, "verifiedPrimaryEmailForAccount:", authkitAccount2), v49 = objc_msgSend(v67, "phoneAsAppleIDForAccount:", authkitAccount2), (v51) || (v50 & 1) != 0 || (v49)
               {
                 v82 = 1;
                 v74 = 1;
@@ -200,11 +200,11 @@
                 }
 
                 objc_storeStrong(&v48, 0);
-                if (v79)
+                if (errorCopy)
                 {
                   v14 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7072];
                   v12 = v14;
-                  *v79 = v14;
+                  *errorCopy = v14;
                 }
 
                 v82 = 0;
@@ -225,11 +225,11 @@
               }
 
               objc_storeStrong(&v54, 0);
-              if (v79)
+              if (errorCopy)
               {
                 v19 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7070];
                 v11 = v19;
-                *v79 = v19;
+                *errorCopy = v19;
               }
 
               v82 = 0;
@@ -239,11 +239,11 @@
 
           else
           {
-            if (v79)
+            if (errorCopy)
             {
               v22 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7076];
               v10 = v22;
-              *v79 = v22;
+              *errorCopy = v22;
             }
 
             v82 = 0;
@@ -264,18 +264,18 @@
           }
 
           objc_storeStrong(&v64, 0);
-          if (v79)
+          if (errorCopy)
           {
             v31 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7022];
             v7 = v31;
-            *v79 = v31;
+            *errorCopy = v31;
           }
 
           v82 = 0;
           v74 = 1;
         }
 
-        objc_storeStrong(&v65, 0);
+        objc_storeStrong(&authkitAccount2, 0);
         objc_storeStrong(&v66, 0);
         objc_storeStrong(&v67, 0);
       }
@@ -293,11 +293,11 @@
         }
 
         objc_storeStrong(&v70, 0);
-        if (v79)
+        if (errorCopy)
         {
           v35 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7022];
           v6 = v35;
-          *v79 = v35;
+          *errorCopy = v35;
         }
 
         v82 = 0;
@@ -319,33 +319,33 @@
     }
 
     objc_storeStrong(&v77, 0);
-    if (v79)
+    if (errorCopy)
     {
       v42 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7044];
       v4 = v42;
-      *v79 = v42;
+      *errorCopy = v42;
     }
 
     v82 = 0;
     v74 = 1;
   }
 
-  objc_storeStrong(&v78, 0);
+  objc_storeStrong(&authorizationRequest, 0);
   objc_storeStrong(location, 0);
   return v82 & 1;
 }
 
-+ (BOOL)canPerformPasswordRequest:(id)a3 error:(id *)a4
++ (BOOL)canPerformPasswordRequest:(id)request error:(id *)error
 {
-  v24 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22 = a4;
-  v21 = [location[0] passwordRequest];
-  if (v21)
+  objc_storeStrong(location, request);
+  errorCopy = error;
+  passwordRequest = [location[0] passwordRequest];
+  if (passwordRequest)
   {
-    if ([v24 _requirePasscodeSet])
+    if ([selfCopy _requirePasscodeSet])
     {
       v16 = _AKLogSiwa();
       v15 = 16;
@@ -358,11 +358,11 @@
       }
 
       objc_storeStrong(&v16, 0);
-      if (v22)
+      if (errorCopy)
       {
         v7 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7080];
         v5 = v7;
-        *v22 = v7;
+        *errorCopy = v7;
       }
 
       v25 = 0;
@@ -389,34 +389,34 @@
     }
 
     objc_storeStrong(&v20, 0);
-    if (v22)
+    if (errorCopy)
     {
       v10 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7026];
       v4 = v10;
-      *v22 = v10;
+      *errorCopy = v10;
     }
 
     v25 = 0;
     v17 = 1;
   }
 
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&passwordRequest, 0);
   objc_storeStrong(location, 0);
   return v25 & 1;
 }
 
-+ (BOOL)shouldContinueWithResponse:(id)a3 error:(id *)a4
++ (BOOL)shouldContinueWithResponse:(id)response error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v36 = a4;
-  v35 = [location[0] userSelection];
-  v24 = [location[0] selectedRequest];
+  objc_storeStrong(location, response);
+  errorCopy = error;
+  userSelection = [location[0] userSelection];
+  selectedRequest = [location[0] selectedRequest];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  MEMORY[0x1E69E5920](v24);
+  MEMORY[0x1E69E5920](selectedRequest);
   if (isKindOfClass)
   {
     v38 = 1;
@@ -431,49 +431,49 @@
 
   else
   {
-    v33 = [location[0] selectedRequest];
-    v21 = [v33 requestedScopes];
-    v22 = [v21 containsObject:@"name"];
-    MEMORY[0x1E69E5920](v21);
+    selectedRequest2 = [location[0] selectedRequest];
+    requestedScopes = [selectedRequest2 requestedScopes];
+    v22 = [requestedScopes containsObject:@"name"];
+    MEMORY[0x1E69E5920](requestedScopes);
     v32 = v22;
     if ((v22 & 1) == 0)
     {
       goto LABEL_16;
     }
 
-    v18 = [v35 userInformation];
-    v19 = [v18 givenName];
+    userInformation = [userSelection userInformation];
+    givenName = [userInformation givenName];
     v30 = 0;
     v28 = 0;
     v20 = 0;
-    if (![v19 length])
+    if (![givenName length])
     {
-      v31 = [v35 userInformation];
+      userInformation2 = [userSelection userInformation];
       v30 = 1;
-      v29 = [v31 familyName];
+      familyName = [userInformation2 familyName];
       v28 = 1;
-      v20 = [v29 length] == 0;
+      v20 = [familyName length] == 0;
     }
 
     if (v28)
     {
-      MEMORY[0x1E69E5920](v29);
+      MEMORY[0x1E69E5920](familyName);
     }
 
     if (v30)
     {
-      MEMORY[0x1E69E5920](v31);
+      MEMORY[0x1E69E5920](userInformation2);
     }
 
-    MEMORY[0x1E69E5920](v19);
-    MEMORY[0x1E69E5920](v18);
+    MEMORY[0x1E69E5920](givenName);
+    MEMORY[0x1E69E5920](userInformation);
     if (v20)
     {
-      if (v36)
+      if (errorCopy)
       {
         v17 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7012];
         v4 = v17;
-        *v36 = v17;
+        *errorCopy = v17;
       }
 
       v38 = 0;
@@ -483,9 +483,9 @@
     else
     {
 LABEL_16:
-      v15 = [v33 requestedScopes];
-      v16 = [v15 containsObject:@"email"];
-      MEMORY[0x1E69E5920](v15);
+      requestedScopes2 = [selectedRequest2 requestedScopes];
+      v16 = [requestedScopes2 containsObject:@"email"];
+      MEMORY[0x1E69E5920](requestedScopes2);
       v27 = v16;
       if ((v16 & 1) == 0)
       {
@@ -493,9 +493,9 @@ LABEL_16:
       }
 
       v26 = +[AKAccountManager sharedInstance];
-      v13 = [v33 authkitAccount];
+      authkitAccount = [selectedRequest2 authkitAccount];
       v14 = [v26 isManagedAppleIDForAccount:?];
-      MEMORY[0x1E69E5920](v13);
+      MEMORY[0x1E69E5920](authkitAccount);
       if (v14)
       {
         v38 = 1;
@@ -504,26 +504,26 @@ LABEL_16:
 
       else
       {
-        v8 = [v33 authkitAccount];
+        authkitAccount2 = [selectedRequest2 authkitAccount];
         v9 = [v26 phoneAsAppleIDForAccount:?];
-        MEMORY[0x1E69E5920](v8);
-        v10 = [v35 userInformation];
-        v11 = [v10 selectedEmail];
+        MEMORY[0x1E69E5920](authkitAccount2);
+        userInformation3 = [userSelection userInformation];
+        selectedEmail = [userInformation3 selectedEmail];
         v12 = 0;
-        if (![v11 length])
+        if (![selectedEmail length])
         {
           v12 = (v9 & 1) == 0;
         }
 
-        MEMORY[0x1E69E5920](v11);
-        MEMORY[0x1E69E5920](v10);
+        MEMORY[0x1E69E5920](selectedEmail);
+        MEMORY[0x1E69E5920](userInformation3);
         if (v12)
         {
-          if (v36)
+          if (errorCopy)
           {
             v7 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7012];
             v5 = v7;
-            *v36 = v7;
+            *errorCopy = v7;
           }
 
           v38 = 0;
@@ -545,10 +545,10 @@ LABEL_27:
       }
     }
 
-    objc_storeStrong(&v33, 0);
+    objc_storeStrong(&selectedRequest2, 0);
   }
 
-  objc_storeStrong(&v35, 0);
+  objc_storeStrong(&userSelection, 0);
   objc_storeStrong(location, 0);
   return v38 & 1;
 }

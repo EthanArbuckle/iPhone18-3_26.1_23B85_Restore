@@ -1,8 +1,8 @@
 @interface MTRContentControlClusterBlockUnratedContentParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRContentControlClusterBlockUnratedContentParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -26,14 +26,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRContentControlClusterBlockUnratedContentParams);
-  v5 = [(MTRContentControlClusterBlockUnratedContentParams *)self timedInvokeTimeoutMs];
-  [(MTRContentControlClusterBlockUnratedContentParams *)v4 setTimedInvokeTimeoutMs:v5];
+  timedInvokeTimeoutMs = [(MTRContentControlClusterBlockUnratedContentParams *)self timedInvokeTimeoutMs];
+  [(MTRContentControlClusterBlockUnratedContentParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v6 = [(MTRContentControlClusterBlockUnratedContentParams *)self serverSideProcessingTimeout];
-  [(MTRContentControlClusterBlockUnratedContentParams *)v4 setServerSideProcessingTimeout:v6];
+  serverSideProcessingTimeout = [(MTRContentControlClusterBlockUnratedContentParams *)self serverSideProcessingTimeout];
+  [(MTRContentControlClusterBlockUnratedContentParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -48,7 +48,7 @@
   return v5;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v19[0] = 0;
   v19[1] = 0;
@@ -72,8 +72,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v17);
-      v4 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v17);
+      v4 = sub_2393C7114(reader, 21, 256);
       v7 = v11;
       v6 = v4;
     }
@@ -101,19 +101,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRContentControlClusterBlockUnratedContentParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -124,7 +124,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x806D00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

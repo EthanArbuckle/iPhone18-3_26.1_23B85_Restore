@@ -1,5 +1,5 @@
 @interface ICStorePlatformOffer
-- (ICStorePlatformOffer)initWithResponseDictionary:(id)a3;
+- (ICStorePlatformOffer)initWithResponseDictionary:(id)dictionary;
 - (NSArray)assets;
 - (NSNumber)price;
 - (NSString)buyParameters;
@@ -130,15 +130,15 @@
   return v6;
 }
 
-- (ICStorePlatformOffer)initWithResponseDictionary:(id)a3
+- (ICStorePlatformOffer)initWithResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ICStorePlatformOffer;
   v5 = [(ICStorePlatformOffer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     responseDictionary = v5->_responseDictionary;
     v5->_responseDictionary = v6;
   }

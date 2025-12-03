@@ -2,34 +2,34 @@
 + (CGRect)normalizedCameraButtonRect;
 + (CGRect)normalizedLockButtonRect;
 + (id)sharedSiriUISettingsDefaults;
-- (AFUISiriSAEEffectsViewController)initWithDelegate:(id)a3 instrumentationHandler:(id)a4;
+- (AFUISiriSAEEffectsViewController)initWithDelegate:(id)delegate instrumentationHandler:(id)handler;
 - (AFUISiriSAEEffectsViewControllerDelegate)delegate;
 - (BOOL)_supportsSAE;
-- (BOOL)_supportsShockwaveForInvocationType:(int64_t)a3;
+- (BOOL)_supportsShockwaveForInvocationType:(int64_t)type;
 - (SUIAShockwaveViewController)shockwaveViewController;
 - (SUICEdgeLightMaskMetalLayer)edgeLightMaskMetalLayer;
 - (UIView)eyesFreeView;
 - (_UIIntelligenceSystemLightView)systemLightView;
 - (id)_createEdgeLightMaskMetalLayer;
-- (id)_createShockwaveViewControllerForInvocationType:(int64_t)a3;
+- (id)_createShockwaveViewControllerForInvocationType:(int64_t)type;
 - (id)_createSystemLightView;
 - (void)_beginAnimatingEdgeLight;
-- (void)_handleDismissalRequestDidCompleteWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)_handlePresentationRequestDidCompleteWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)_setUpEffectsIfNeededForInvocationType:(int64_t)a3;
-- (void)_transitionToShockwaveState:(int64_t)a3;
+- (void)_handleDismissalRequestDidCompleteWithSuccess:(BOOL)success error:(id)error;
+- (void)_handlePresentationRequestDidCompleteWithSuccess:(BOOL)success error:(id)error;
+- (void)_setUpEffectsIfNeededForInvocationType:(int64_t)type;
+- (void)_transitionToShockwaveState:(int64_t)state;
 - (void)_updateEdgeLightMaskMetalLayerFramerate;
-- (void)beginAnimatingEffectsForInvocationType:(int64_t)a3;
-- (void)beginHintingForInvocationType:(int64_t)a3;
-- (void)insertEyesFreeView:(id)a3;
-- (void)requestDismissalWithHandler:(id)a3;
-- (void)requestPresentationWithHandler:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)beginAnimatingEffectsForInvocationType:(int64_t)type;
+- (void)beginHintingForInvocationType:(int64_t)type;
+- (void)insertEyesFreeView:(id)view;
+- (void)requestDismissalWithHandler:(id)handler;
+- (void)requestPresentationWithHandler:(id)handler;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AFUISiriSAEEffectsViewController
@@ -247,19 +247,19 @@ void __62__AFUISiriSAEEffectsViewController_normalizedCameraButtonRect__block_in
   }
 }
 
-- (AFUISiriSAEEffectsViewController)initWithDelegate:(id)a3 instrumentationHandler:(id)a4
+- (AFUISiriSAEEffectsViewController)initWithDelegate:(id)delegate instrumentationHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = AFUISiriSAEEffectsViewController;
   v8 = [(AFUISiriSAEEffectsViewController *)&v21 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_viewHostingInstrumentationHandler, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_viewHostingInstrumentationHandler, handler);
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     presentationHandlers = v9->_presentationHandlers;
     v9->_presentationHandlers = v10;
@@ -272,19 +272,19 @@ void __62__AFUISiriSAEEffectsViewController_normalizedCameraButtonRect__block_in
     v9->_forceOrb = [v14 integerForKey:@"ForceOrbGraphic"] != 0;
     v9->_shockwaveDisablement = [v14 integerForKey:@"DisableShockwave"];
     v9->_edgeLightBurstStartPosition = 0;
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v9 selector:sel__thermalStateDidChange_ name:*MEMORY[0x277CCA600] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__thermalStateDidChange_ name:*MEMORY[0x277CCA600] object:0];
 
     v16 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
       v17 = v16;
-      v18 = [(AFUISiriSAEEffectsViewController *)v9 _supportsSAE];
+      _supportsSAE = [(AFUISiriSAEEffectsViewController *)v9 _supportsSAE];
       v19 = [(AFUISiriSAEEffectsViewController *)v9 _supportsShockwaveForInvocationType:0];
       *buf = 136315650;
       v23 = "[AFUISiriSAEEffectsViewController initWithDelegate:instrumentationHandler:]";
       v24 = 1024;
-      v25 = v18;
+      v25 = _supportsSAE;
       v26 = 1024;
       v27 = v19;
       _os_log_impl(&dword_241432000, v17, OS_LOG_TYPE_DEFAULT, "%s #effects initializing with supportsSAE: %{BOOL}u; supportsShockwave: %{BOOL}u", buf, 0x18u);
@@ -299,66 +299,66 @@ void __62__AFUISiriSAEEffectsViewController_normalizedCameraButtonRect__block_in
   v8.receiver = self;
   v8.super_class = AFUISiriSAEEffectsViewController;
   [(AFUISiriSAEEffectsViewController *)&v8 viewDidLoad];
-  v3 = [(AFUISiriSAEEffectsViewController *)self _createEdgeLightMaskMetalLayer];
-  v4 = [(AFUISiriSAEEffectsViewController *)self _createSystemLightView];
-  v5 = [v4 layer];
-  [v5 addSublayer:v3];
+  _createEdgeLightMaskMetalLayer = [(AFUISiriSAEEffectsViewController *)self _createEdgeLightMaskMetalLayer];
+  _createSystemLightView = [(AFUISiriSAEEffectsViewController *)self _createSystemLightView];
+  layer = [_createSystemLightView layer];
+  [layer addSublayer:_createEdgeLightMaskMetalLayer];
 
-  v6 = [(AFUISiriSAEEffectsViewController *)self view];
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [v6 setBackgroundColor:v7];
+  view = [(AFUISiriSAEEffectsViewController *)self view];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [view setBackgroundColor:clearColor];
 
-  [v6 addSubview:v4];
-  [(AFUISiriSAEEffectsViewController *)self setSystemLightView:v4];
-  [(AFUISiriSAEEffectsViewController *)self setEdgeLightMaskMetalLayer:v3];
+  [view addSubview:_createSystemLightView];
+  [(AFUISiriSAEEffectsViewController *)self setSystemLightView:_createSystemLightView];
+  [(AFUISiriSAEEffectsViewController *)self setEdgeLightMaskMetalLayer:_createEdgeLightMaskMetalLayer];
   [(AFUISiriSAEEffectsViewController *)self _updateEdgeLightMaskMetalLayerFramerate];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v26 = [(AFUISiriSAEEffectsViewController *)self view];
-  v3 = [(AFUISiriSAEEffectsViewController *)self eyesFreeView];
-  v4 = [(AFUISiriSAEEffectsViewController *)self shockwaveViewController];
-  v5 = [(AFUISiriSAEEffectsViewController *)self systemLightView];
-  if (v3)
+  view = [(AFUISiriSAEEffectsViewController *)self view];
+  eyesFreeView = [(AFUISiriSAEEffectsViewController *)self eyesFreeView];
+  shockwaveViewController = [(AFUISiriSAEEffectsViewController *)self shockwaveViewController];
+  systemLightView = [(AFUISiriSAEEffectsViewController *)self systemLightView];
+  if (eyesFreeView)
   {
-    [v26 bringSubviewToFront:v3];
+    [view bringSubviewToFront:eyesFreeView];
   }
 
-  if (v4)
+  if (shockwaveViewController)
   {
-    v6 = [v4 view];
-    [v26 bringSubviewToFront:v6];
+    view2 = [shockwaveViewController view];
+    [view bringSubviewToFront:view2];
   }
 
-  [v26 bringSubviewToFront:v5];
-  [v26 bounds];
+  [view bringSubviewToFront:systemLightView];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v3 setFrame:?];
-  [v5 setFrame:{v8, v10, v12, v14}];
-  v15 = [v4 view];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  [eyesFreeView setFrame:?];
+  [systemLightView setFrame:{v8, v10, v12, v14}];
+  view3 = [shockwaveViewController view];
+  [view3 setFrame:{v8, v10, v12, v14}];
 
-  v16 = [(AFUISiriSAEEffectsViewController *)self edgeLightMaskMetalLayer];
-  v17 = [v16 superlayer];
-  [v17 bounds];
+  edgeLightMaskMetalLayer = [(AFUISiriSAEEffectsViewController *)self edgeLightMaskMetalLayer];
+  superlayer = [edgeLightMaskMetalLayer superlayer];
+  [superlayer bounds];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  [v16 setFrame:{v19, v21, v23, v25}];
+  [edgeLightMaskMetalLayer setFrame:{v19, v21, v23, v25}];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v12 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
   v9.super_class = AFUISiriSAEEffectsViewController;
-  [(AFUISiriSAEEffectsViewController *)&v9 viewIsAppearing:a3];
+  [(AFUISiriSAEEffectsViewController *)&v9 viewIsAppearing:appearing];
   v4 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -367,21 +367,21 @@ void __62__AFUISiriSAEEffectsViewController_normalizedCameraButtonRect__block_in
     _os_log_impl(&dword_241432000, v4, OS_LOG_TYPE_DEFAULT, "%s #effects is appearing", buf, 0xCu);
   }
 
-  v5 = [(AFUISiriSAEEffectsViewController *)self edgeLightMaskMetalLayer];
-  v6 = [(AFUISiriSAEEffectsViewController *)self view];
-  v7 = [v6 window];
-  v8 = [v7 screen];
-  [v5 setScreen:v8];
+  edgeLightMaskMetalLayer = [(AFUISiriSAEEffectsViewController *)self edgeLightMaskMetalLayer];
+  view = [(AFUISiriSAEEffectsViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  [edgeLightMaskMetalLayer setScreen:screen];
 
   [(AFUISiriSAEEffectsViewController *)self setState:4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8 = *MEMORY[0x277D85DE8];
   v5.receiver = self;
   v5.super_class = AFUISiriSAEEffectsViewController;
-  [(AFUISiriSAEEffectsViewController *)&v5 viewDidAppear:a3];
+  [(AFUISiriSAEEffectsViewController *)&v5 viewDidAppear:appear];
   v4 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -393,12 +393,12 @@ void __62__AFUISiriSAEEffectsViewController_normalizedCameraButtonRect__block_in
   [(AFUISiriSAEEffectsViewController *)self setState:5];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v8 = *MEMORY[0x277D85DE8];
   v5.receiver = self;
   v5.super_class = AFUISiriSAEEffectsViewController;
-  [(AFUISiriSAEEffectsViewController *)&v5 viewWillDisappear:a3];
+  [(AFUISiriSAEEffectsViewController *)&v5 viewWillDisappear:disappear];
   v4 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -410,12 +410,12 @@ void __62__AFUISiriSAEEffectsViewController_normalizedCameraButtonRect__block_in
   [(AFUISiriSAEEffectsViewController *)self setState:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v8 = *MEMORY[0x277D85DE8];
   v5.receiver = self;
   v5.super_class = AFUISiriSAEEffectsViewController;
-  [(AFUISiriSAEEffectsViewController *)&v5 viewDidDisappear:a3];
+  [(AFUISiriSAEEffectsViewController *)&v5 viewDidDisappear:disappear];
   v4 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -427,13 +427,13 @@ void __62__AFUISiriSAEEffectsViewController_normalizedCameraButtonRect__block_in
   [(AFUISiriSAEEffectsViewController *)self setState:0];
 }
 
-- (void)requestPresentationWithHandler:(id)a3
+- (void)requestPresentationWithHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [(AFUISiriSAEEffectsViewController *)self state];
-  if (v5 < 3)
+  state = [(AFUISiriSAEEffectsViewController *)self state];
+  if (state < 3)
   {
     v10 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -443,26 +443,26 @@ void __62__AFUISiriSAEEffectsViewController_normalizedCameraButtonRect__block_in
       _os_log_impl(&dword_241432000, v10, OS_LOG_TYPE_DEFAULT, "%s #effects currently dismissed or dismissing; requesting presentation", buf, 0xCu);
     }
 
-    v11 = [(AFUISiriSAEEffectsViewController *)self presentationHandlers];
-    v12 = [v4 copy];
+    presentationHandlers = [(AFUISiriSAEEffectsViewController *)self presentationHandlers];
+    v12 = [handlerCopy copy];
     v13 = _Block_copy(v12);
-    [v11 addObject:v13];
+    [presentationHandlers addObject:v13];
 
     [(AFUISiriSAEEffectsViewController *)self setState:3];
-    v14 = [(AFUISiriSAEEffectsViewController *)self delegate];
+    delegate = [(AFUISiriSAEEffectsViewController *)self delegate];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __67__AFUISiriSAEEffectsViewController_requestPresentationWithHandler___block_invoke;
     v16[3] = &unk_278CD62A0;
     objc_copyWeak(&v17, &location);
-    [v14 siriSAEEffectsViewController:self requestsPresentationWithHandler:v16];
+    [delegate siriSAEEffectsViewController:self requestsPresentationWithHandler:v16];
 
     objc_destroyWeak(&v17);
   }
 
-  else if (v5 - 3 >= 2)
+  else if (state - 3 >= 2)
   {
-    if (v5 == 5)
+    if (state == 5)
     {
       v15 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -472,7 +472,7 @@ void __62__AFUISiriSAEEffectsViewController_normalizedCameraButtonRect__block_in
         _os_log_impl(&dword_241432000, v15, OS_LOG_TYPE_DEFAULT, "%s #effects already presented; completing immediately", buf, 0xCu);
       }
 
-      (*(v4 + 2))(v4, 1, 0);
+      (*(handlerCopy + 2))(handlerCopy, 1, 0);
     }
   }
 
@@ -486,10 +486,10 @@ void __62__AFUISiriSAEEffectsViewController_normalizedCameraButtonRect__block_in
       _os_log_impl(&dword_241432000, v6, OS_LOG_TYPE_DEFAULT, "%s #effects presentation request in progress; enqueuing handler", buf, 0xCu);
     }
 
-    v7 = [(AFUISiriSAEEffectsViewController *)self presentationHandlers];
-    v8 = [v4 copy];
+    presentationHandlers2 = [(AFUISiriSAEEffectsViewController *)self presentationHandlers];
+    v8 = [handlerCopy copy];
     v9 = _Block_copy(v8);
-    [v7 addObject:v9];
+    [presentationHandlers2 addObject:v9];
   }
 
   objc_destroyWeak(&location);
@@ -502,13 +502,13 @@ void __67__AFUISiriSAEEffectsViewController_requestPresentationWithHandler___blo
   [WeakRetained _handlePresentationRequestDidCompleteWithSuccess:a2 error:v5];
 }
 
-- (void)requestDismissalWithHandler:(id)a3
+- (void)requestDismissalWithHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [(AFUISiriSAEEffectsViewController *)self state];
-  if ((v5 - 3) < 3)
+  state = [(AFUISiriSAEEffectsViewController *)self state];
+  if ((state - 3) < 3)
   {
     v10 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -518,26 +518,26 @@ void __67__AFUISiriSAEEffectsViewController_requestPresentationWithHandler___blo
       _os_log_impl(&dword_241432000, v10, OS_LOG_TYPE_DEFAULT, "%s #effects currently presented or presenting; requesting dismissal", buf, 0xCu);
     }
 
-    v11 = [(AFUISiriSAEEffectsViewController *)self dismissalHandlers];
-    v12 = [v4 copy];
+    dismissalHandlers = [(AFUISiriSAEEffectsViewController *)self dismissalHandlers];
+    v12 = [handlerCopy copy];
     v13 = _Block_copy(v12);
-    [v11 addObject:v13];
+    [dismissalHandlers addObject:v13];
 
     [(AFUISiriSAEEffectsViewController *)self setState:2];
-    v14 = [(AFUISiriSAEEffectsViewController *)self delegate];
+    delegate = [(AFUISiriSAEEffectsViewController *)self delegate];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __64__AFUISiriSAEEffectsViewController_requestDismissalWithHandler___block_invoke;
     v16[3] = &unk_278CD62A0;
     objc_copyWeak(&v17, &location);
-    [v14 siriSAEEffectsViewController:self requestsDismissalWithHandler:v16];
+    [delegate siriSAEEffectsViewController:self requestsDismissalWithHandler:v16];
 
     objc_destroyWeak(&v17);
   }
 
-  else if ((v5 - 1) >= 2)
+  else if ((state - 1) >= 2)
   {
-    if (!v5)
+    if (!state)
     {
       v15 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -547,7 +547,7 @@ void __67__AFUISiriSAEEffectsViewController_requestPresentationWithHandler___blo
         _os_log_impl(&dword_241432000, v15, OS_LOG_TYPE_DEFAULT, "%s #effects already dismissed; completing immediately", buf, 0xCu);
       }
 
-      (*(v4 + 2))(v4, 1, 0);
+      (*(handlerCopy + 2))(handlerCopy, 1, 0);
     }
   }
 
@@ -561,10 +561,10 @@ void __67__AFUISiriSAEEffectsViewController_requestPresentationWithHandler___blo
       _os_log_impl(&dword_241432000, v6, OS_LOG_TYPE_DEFAULT, "%s #effects dismissal request in progress; enqueuing handler", buf, 0xCu);
     }
 
-    v7 = [(AFUISiriSAEEffectsViewController *)self dismissalHandlers];
-    v8 = [v4 copy];
+    dismissalHandlers2 = [(AFUISiriSAEEffectsViewController *)self dismissalHandlers];
+    v8 = [handlerCopy copy];
     v9 = _Block_copy(v8);
-    [v7 addObject:v9];
+    [dismissalHandlers2 addObject:v9];
   }
 
   objc_destroyWeak(&location);
@@ -577,25 +577,25 @@ void __64__AFUISiriSAEEffectsViewController_requestDismissalWithHandler___block_
   [WeakRetained _handleDismissalRequestDidCompleteWithSuccess:a2 error:v5];
 }
 
-- (void)beginHintingForInvocationType:(int64_t)a3
+- (void)beginHintingForInvocationType:(int64_t)type
 {
   v11 = *MEMORY[0x277D85DE8];
   [(AFUISiriSAEEffectsViewController *)self _setUpEffectsIfNeededForInvocationType:?];
-  v5 = [(AFUISiriSAEEffectsViewController *)self shockwaveViewController];
+  shockwaveViewController = [(AFUISiriSAEEffectsViewController *)self shockwaveViewController];
 
-  if (v5)
+  if (shockwaveViewController)
   {
     v6 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
-      if ((a3 - 1) > 2)
+      if ((type - 1) > 2)
       {
         v7 = @".Unspecified";
       }
 
       else
       {
-        v7 = off_278CD6338[a3 - 1];
+        v7 = off_278CD6338[type - 1];
       }
 
       *v10 = 136315394;
@@ -611,19 +611,19 @@ void __64__AFUISiriSAEEffectsViewController_requestDismissalWithHandler___block_
   }
 }
 
-- (void)beginAnimatingEffectsForInvocationType:(int64_t)a3
+- (void)beginAnimatingEffectsForInvocationType:(int64_t)type
 {
   v16 = *MEMORY[0x277D85DE8];
   [(AFUISiriSAEEffectsViewController *)self _setUpEffectsIfNeededForInvocationType:?];
-  v5 = [(AFUISiriSAEEffectsViewController *)self view];
-  [v5 layoutIfNeeded];
+  view = [(AFUISiriSAEEffectsViewController *)self view];
+  [view layoutIfNeeded];
 
-  v6 = [(AFUISiriSAEEffectsViewController *)self shockwaveViewController];
+  shockwaveViewController = [(AFUISiriSAEEffectsViewController *)self shockwaveViewController];
 
-  if (v6)
+  if (shockwaveViewController)
   {
-    v7 = [(AFUISiriSAEEffectsViewController *)self shockwaveViewController];
-    [v7 setState:1];
+    shockwaveViewController2 = [(AFUISiriSAEEffectsViewController *)self shockwaveViewController];
+    [shockwaveViewController2 setState:1];
 
     objc_initWeak(location, self);
     v11[0] = MEMORY[0x277D85DD0];
@@ -631,7 +631,7 @@ void __64__AFUISiriSAEEffectsViewController_requestDismissalWithHandler___block_
     v11[2] = __75__AFUISiriSAEEffectsViewController_beginAnimatingEffectsForInvocationType___block_invoke;
     v11[3] = &unk_278CD62C8;
     objc_copyWeak(v12, location);
-    v12[1] = a3;
+    v12[1] = type;
     dispatch_async(MEMORY[0x277D85CD0], v11);
     objc_destroyWeak(v12);
     objc_destroyWeak(location);
@@ -642,14 +642,14 @@ void __64__AFUISiriSAEEffectsViewController_requestDismissalWithHandler___block_
     v8 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
-      if ((a3 - 1) > 2)
+      if ((type - 1) > 2)
       {
         v9 = @".Unspecified";
       }
 
       else
       {
-        v9 = off_278CD6338[a3 - 1];
+        v9 = off_278CD6338[type - 1];
       }
 
       *location = 136315394;
@@ -697,20 +697,20 @@ void __75__AFUISiriSAEEffectsViewController_beginAnimatingEffectsForInvocationTy
   }
 }
 
-- (void)insertEyesFreeView:(id)a3
+- (void)insertEyesFreeView:(id)view
 {
-  v6 = a3;
-  v4 = [(AFUISiriSAEEffectsViewController *)self eyesFreeView];
-  [v4 removeFromSuperview];
+  viewCopy = view;
+  eyesFreeView = [(AFUISiriSAEEffectsViewController *)self eyesFreeView];
+  [eyesFreeView removeFromSuperview];
 
   [(AFUISiriSAEEffectsViewController *)self setEyesFreeView:0];
-  if (v6)
+  if (viewCopy)
   {
-    v5 = [(AFUISiriSAEEffectsViewController *)self view];
-    [v5 addSubview:v6];
-    [(AFUISiriSAEEffectsViewController *)self setEyesFreeView:v6];
-    [v5 setNeedsLayout];
-    [v5 layoutIfNeeded];
+    view = [(AFUISiriSAEEffectsViewController *)self view];
+    [view addSubview:viewCopy];
+    [(AFUISiriSAEEffectsViewController *)self setEyesFreeView:viewCopy];
+    [view setNeedsLayout];
+    [view layoutIfNeeded];
   }
 }
 
@@ -726,7 +726,7 @@ void __75__AFUISiriSAEEffectsViewController_beginAnimatingEffectsForInvocationTy
   return [v3 saeAvailable];
 }
 
-- (BOOL)_supportsShockwaveForInvocationType:(int64_t)a3
+- (BOOL)_supportsShockwaveForInvocationType:(int64_t)type
 {
   if ([(AFUISiriSAEEffectsViewController *)self shockwaveDisablement])
   {
@@ -734,7 +734,7 @@ void __75__AFUISiriSAEEffectsViewController_beginAnimatingEffectsForInvocationTy
   }
 
   v5 = !UIAccessibilityIsReduceMotionEnabled();
-  return a3 != 3 && v5;
+  return type != 3 && v5;
 }
 
 - (id)_createEdgeLightMaskMetalLayer
@@ -759,14 +759,14 @@ void __75__AFUISiriSAEEffectsViewController_beginAnimatingEffectsForInvocationTy
   v2 = objc_alloc(MEMORY[0x277D76050]);
   v3 = [v2 initWithFrame:1 preferringAudioReactivity:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v3 setUserInteractionEnabled:0];
-  v4 = [v3 layer];
+  layer = [v3 layer];
   LODWORD(v5) = 2.0;
-  [v4 setGain:v5];
+  [layer setGain:v5];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v4 setValue:v6 forKey:@"allowsLimitedHeadroom"];
+  [layer setValue:v6 forKey:@"allowsLimitedHeadroom"];
 
-  [v4 setOpaque:0];
-  [v4 setAllowsHitTesting:0];
+  [layer setOpaque:0];
+  [layer setAllowsHitTesting:0];
   v7 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA2C0]];
   v8 = MEMORY[0x277CCAE60];
   CAColorMatrixMakeMultiplyColor();
@@ -776,21 +776,21 @@ void __75__AFUISiriSAEEffectsViewController_beginAnimatingEffectsForInvocationTy
   [v7 setValue:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CDA350]];
   v13[0] = v7;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-  [v4 setFilters:v10];
+  [layer setFilters:v10];
 
   return v3;
 }
 
-- (id)_createShockwaveViewControllerForInvocationType:(int64_t)a3
+- (id)_createShockwaveViewControllerForInvocationType:(int64_t)type
 {
-  v4 = [(AFUISiriSAEEffectsViewController *)self view];
-  [v4 bounds];
+  view = [(AFUISiriSAEEffectsViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v13 = objc_alloc(MEMORY[0x277D6C050]);
     [objc_opt_class() normalizedLockButtonRect];
@@ -808,29 +808,29 @@ void __75__AFUISiriSAEEffectsViewController_beginAnimatingEffectsForInvocationTy
   return v16;
 }
 
-- (void)_handlePresentationRequestDidCompleteWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_handlePresentationRequestDidCompleteWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
+  successCopy = success;
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v19 = "[AFUISiriSAEEffectsViewController _handlePresentationRequestDidCompleteWithSuccess:error:]";
     v20 = 1024;
-    v21 = v4;
+    v21 = successCopy;
     v22 = 2114;
-    v23 = v6;
+    v23 = errorCopy;
     _os_log_impl(&dword_241432000, v7, OS_LOG_TYPE_DEFAULT, "%s #effects presentation request completed; success: %{BOOL}u; error: %{public}@", buf, 0x1Cu);
   }
 
-  v8 = [(AFUISiriSAEEffectsViewController *)self presentationHandlers];
+  presentationHandlers = [(AFUISiriSAEEffectsViewController *)self presentationHandlers];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v9 = [presentationHandlers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -842,45 +842,45 @@ void __75__AFUISiriSAEEffectsViewController_beginAnimatingEffectsForInvocationTy
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(presentationHandlers);
         }
 
         (*(*(*(&v13 + 1) + 8 * v12++) + 16))();
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [presentationHandlers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 
-  [v8 removeAllObjects];
+  [presentationHandlers removeAllObjects];
 }
 
-- (void)_handleDismissalRequestDidCompleteWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_handleDismissalRequestDidCompleteWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
+  successCopy = success;
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v19 = "[AFUISiriSAEEffectsViewController _handleDismissalRequestDidCompleteWithSuccess:error:]";
     v20 = 1024;
-    v21 = v4;
+    v21 = successCopy;
     v22 = 2114;
-    v23 = v6;
+    v23 = errorCopy;
     _os_log_impl(&dword_241432000, v7, OS_LOG_TYPE_DEFAULT, "%s #effects dismissal request completed; success: %{BOOL}u; error: %{public}@", buf, 0x1Cu);
   }
 
-  v8 = [(AFUISiriSAEEffectsViewController *)self dismissalHandlers];
+  dismissalHandlers = [(AFUISiriSAEEffectsViewController *)self dismissalHandlers];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v9 = [dismissalHandlers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -892,44 +892,44 @@ void __75__AFUISiriSAEEffectsViewController_beginAnimatingEffectsForInvocationTy
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(dismissalHandlers);
         }
 
         (*(*(*(&v13 + 1) + 8 * v12++) + 16))();
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [dismissalHandlers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 
-  [v8 removeAllObjects];
+  [dismissalHandlers removeAllObjects];
 }
 
-- (void)_setUpEffectsIfNeededForInvocationType:(int64_t)a3
+- (void)_setUpEffectsIfNeededForInvocationType:(int64_t)type
 {
   v22 = *MEMORY[0x277D85DE8];
   if ([(AFUISiriSAEEffectsViewController *)self _supportsSAE])
   {
-    if ([(AFUISiriSAEEffectsViewController *)self _supportsShockwaveForInvocationType:a3])
+    if ([(AFUISiriSAEEffectsViewController *)self _supportsShockwaveForInvocationType:type])
     {
-      v5 = [(AFUISiriSAEEffectsViewController *)self shockwaveViewController];
+      shockwaveViewController = [(AFUISiriSAEEffectsViewController *)self shockwaveViewController];
 
-      if (!v5)
+      if (!shockwaveViewController)
       {
         v6 = *MEMORY[0x277CEF098];
         if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
         {
-          if ((a3 - 1) > 2)
+          if ((type - 1) > 2)
           {
             v7 = @".Unspecified";
           }
 
           else
           {
-            v7 = off_278CD6338[a3 - 1];
+            v7 = off_278CD6338[type - 1];
           }
 
           *v21 = 136315394;
@@ -940,7 +940,7 @@ void __75__AFUISiriSAEEffectsViewController_beginAnimatingEffectsForInvocationTy
           _os_log_impl(&dword_241432000, v9, OS_LOG_TYPE_DEFAULT, "%s #effects setting up shockwave for %{public}@ invocation", v21, 0x16u);
         }
 
-        v10 = [(AFUISiriSAEEffectsViewController *)self _createShockwaveViewControllerForInvocationType:a3, *v21, *&v21[16]];
+        v10 = [(AFUISiriSAEEffectsViewController *)self _createShockwaveViewControllerForInvocationType:type, *v21, *&v21[16]];
         [(AFUISiriSAEEffectsViewController *)self bs_addChildViewController:v10];
         [(AFUISiriSAEEffectsViewController *)self setShockwaveViewController:v10];
       }
@@ -951,14 +951,14 @@ void __75__AFUISiriSAEEffectsViewController_beginAnimatingEffectsForInvocationTy
       v11 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
       {
-        if ((a3 - 1) > 2)
+        if ((type - 1) > 2)
         {
           v12 = @".Unspecified";
         }
 
         else
         {
-          v12 = off_278CD6338[a3 - 1];
+          v12 = off_278CD6338[type - 1];
         }
 
         *v21 = 136315394;
@@ -969,9 +969,9 @@ void __75__AFUISiriSAEEffectsViewController_beginAnimatingEffectsForInvocationTy
         _os_log_impl(&dword_241432000, v13, OS_LOG_TYPE_DEFAULT, "%s #effects setting up edge light for %{public}@ invocation", v21, 0x16u);
       }
 
-      if ((a3 - 1) >= 2)
+      if ((type - 1) >= 2)
       {
-        if (a3 == 3)
+        if (type == 3)
         {
           [objc_opt_class() normalizedCameraButtonRect];
           x = v23.origin.x;
@@ -984,20 +984,20 @@ void __75__AFUISiriSAEEffectsViewController_beginAnimatingEffectsForInvocationTy
           v24.size.width = width;
           v24.size.height = height;
           MidY = CGRectGetMidY(v24);
-          v20 = [(AFUISiriSAEEffectsViewController *)self edgeLightMaskMetalLayer];
-          [v20 setBurstStartPositionCustom:{MidX, MidY}];
-          a3 = 7;
+          edgeLightMaskMetalLayer = [(AFUISiriSAEEffectsViewController *)self edgeLightMaskMetalLayer];
+          [edgeLightMaskMetalLayer setBurstStartPositionCustom:{MidX, MidY}];
+          type = 7;
 LABEL_23:
 
-          [(AFUISiriSAEEffectsViewController *)self setEdgeLightBurstStartPosition:a3];
+          [(AFUISiriSAEEffectsViewController *)self setEdgeLightBurstStartPosition:type];
           return;
         }
 
-        a3 = 0;
+        type = 0;
       }
 
-      v20 = [(AFUISiriSAEEffectsViewController *)self edgeLightMaskMetalLayer];
-      [v20 setBurstStartPosition:a3];
+      edgeLightMaskMetalLayer = [(AFUISiriSAEEffectsViewController *)self edgeLightMaskMetalLayer];
+      [edgeLightMaskMetalLayer setBurstStartPosition:type];
       goto LABEL_23;
     }
   }
@@ -1017,13 +1017,13 @@ LABEL_23:
 - (void)_beginAnimatingEdgeLight
 {
   objc_initWeak(&location, self);
-  v3 = [(AFUISiriSAEEffectsViewController *)self edgeLightMaskMetalLayer];
+  edgeLightMaskMetalLayer = [(AFUISiriSAEEffectsViewController *)self edgeLightMaskMetalLayer];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __60__AFUISiriSAEEffectsViewController__beginAnimatingEdgeLight__block_invoke;
   v4[3] = &unk_278CD55A0;
   objc_copyWeak(&v5, &location);
-  [v3 animateOnWithCompletion:v4];
+  [edgeLightMaskMetalLayer animateOnWithCompletion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1043,7 +1043,7 @@ void __60__AFUISiriSAEEffectsViewController__beginAnimatingEdgeLight__block_invo
   }
 }
 
-- (void)_transitionToShockwaveState:(int64_t)a3
+- (void)_transitionToShockwaveState:(int64_t)state
 {
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -1056,11 +1056,11 @@ void __60__AFUISiriSAEEffectsViewController__beginAnimatingEdgeLight__block_invo
   v9 = 3221225472;
   v10 = __64__AFUISiriSAEEffectsViewController__transitionToShockwaveState___block_invoke_2;
   v11 = &unk_278CD62F0;
-  v12[1] = a3;
+  v12[1] = state;
   objc_copyWeak(v12, &location);
   v6 = _Block_copy(&v8);
   v7 = [(AFUISiriSAEEffectsViewController *)self shockwaveViewController:v8];
-  [v7 setState:a3 animated:a3 != 0 recommendedNextAction:v5 completion:v6];
+  [v7 setState:state animated:state != 0 recommendedNextAction:v5 completion:v6];
 
   objc_destroyWeak(v12);
   objc_destroyWeak(&v14);
@@ -1096,10 +1096,10 @@ void __64__AFUISiriSAEEffectsViewController__transitionToShockwaveState___block_
 - (void)_updateEdgeLightMaskMetalLayerFramerate
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  v4 = [v3 thermalState];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  thermalState = [processInfo thermalState];
 
-  if (v4 < 2)
+  if (thermalState < 2)
   {
     v7 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -1109,12 +1109,12 @@ void __64__AFUISiriSAEEffectsViewController__transitionToShockwaveState___block_
       _os_log_impl(&dword_241432000, v7, OS_LOG_TYPE_DEFAULT, "%s #effects Edge Light Mask exiting performance mode due to decreased thermal pressure", &v9, 0xCu);
     }
 
-    v6 = [(AFUISiriSAEEffectsViewController *)self edgeLightMaskMetalLayer];
-    [v6 endReducedFramerateForPerformance];
+    edgeLightMaskMetalLayer = [(AFUISiriSAEEffectsViewController *)self edgeLightMaskMetalLayer];
+    [edgeLightMaskMetalLayer endReducedFramerateForPerformance];
     goto LABEL_9;
   }
 
-  if (v4 - 2 <= 1)
+  if (thermalState - 2 <= 1)
   {
     v5 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -1124,8 +1124,8 @@ void __64__AFUISiriSAEEffectsViewController__transitionToShockwaveState___block_
       _os_log_impl(&dword_241432000, v5, OS_LOG_TYPE_DEFAULT, "%s #effects Edge Light Mask entering performance mode due to thermal pressure", &v9, 0xCu);
     }
 
-    v6 = [(AFUISiriSAEEffectsViewController *)self edgeLightMaskMetalLayer];
-    [v6 startReducedFramerateForPerformance];
+    edgeLightMaskMetalLayer = [(AFUISiriSAEEffectsViewController *)self edgeLightMaskMetalLayer];
+    [edgeLightMaskMetalLayer startReducedFramerateForPerformance];
 LABEL_9:
 
     return;

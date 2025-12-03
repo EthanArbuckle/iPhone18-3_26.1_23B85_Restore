@@ -2,20 +2,20 @@
 + (id)timeStampString;
 - (CSVTUIEndpointAnalyzer)init;
 - (CSVTUIEndpointAnalyzerDelegate)delegate;
-- (double)_effectiveAudioTimeInSecsForSNObservation:(id)a3;
-- (id)_pcmBufferForAudioChunk:(id)a3;
-- (void)_checkSNObservationForEndpoint:(id)a3;
-- (void)_checkSNObservationForStartpoint:(id)a3;
-- (void)_reportEndpointAtTsInSecs:(double)a3;
-- (void)_reportStartpointAtTsInSecs:(double)a3;
-- (void)handleVoiceTriggerWithActivationInfo:(id)a3;
-- (void)processAudioSamplesAsynchronously:(id)a3;
-- (void)recordingStoppedForReason:(int64_t)a3;
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)request:(id)a3 didProduceResult:(id)a4;
-- (void)resetForNewRequestWithSampleRate:(unint64_t)a3;
-- (void)setEndWaitTime:(double)a3;
-- (void)setStartWaitTime:(double)a3;
+- (double)_effectiveAudioTimeInSecsForSNObservation:(id)observation;
+- (id)_pcmBufferForAudioChunk:(id)chunk;
+- (void)_checkSNObservationForEndpoint:(id)endpoint;
+- (void)_checkSNObservationForStartpoint:(id)startpoint;
+- (void)_reportEndpointAtTsInSecs:(double)secs;
+- (void)_reportStartpointAtTsInSecs:(double)secs;
+- (void)handleVoiceTriggerWithActivationInfo:(id)info;
+- (void)processAudioSamplesAsynchronously:(id)asynchronously;
+- (void)recordingStoppedForReason:(int64_t)reason;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)request:(id)request didProduceResult:(id)result;
+- (void)resetForNewRequestWithSampleRate:(unint64_t)rate;
+- (void)setEndWaitTime:(double)time;
+- (void)setStartWaitTime:(double)time;
 - (void)stopEndpointer;
 @end
 
@@ -28,7 +28,7 @@
   return WeakRetained;
 }
 
-- (void)setEndWaitTime:(double)a3
+- (void)setEndWaitTime:(double)time
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -36,7 +36,7 @@
   v4[2] = __41__CSVTUIEndpointAnalyzer_setEndWaitTime___block_invoke;
   v4[3] = &unk_278578170;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = time;
   dispatch_async(queue, v4);
 }
 
@@ -47,7 +47,7 @@ double __41__CSVTUIEndpointAnalyzer_setEndWaitTime___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setStartWaitTime:(double)a3
+- (void)setStartWaitTime:(double)time
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -55,7 +55,7 @@ double __41__CSVTUIEndpointAnalyzer_setEndWaitTime___block_invoke(uint64_t a1)
   v4[2] = __43__CSVTUIEndpointAnalyzer_setStartWaitTime___block_invoke;
   v4[3] = &unk_278578170;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = time;
   dispatch_async(queue, v4);
 }
 
@@ -66,7 +66,7 @@ double __43__CSVTUIEndpointAnalyzer_setStartWaitTime___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_reportStartpointAtTsInSecs:(double)a3
+- (void)_reportStartpointAtTsInSecs:(double)secs
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D01970];
@@ -79,12 +79,12 @@ double __43__CSVTUIEndpointAnalyzer_setStartWaitTime___block_invoke(uint64_t a1)
 
   self->_nnvadState = 1;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained endpointer:self didDetectStartpointAtTime:a3];
+  [WeakRetained endpointer:self didDetectStartpointAtTime:secs];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportEndpointAtTsInSecs:(double)a3
+- (void)_reportEndpointAtTsInSecs:(double)secs
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D01970];
@@ -97,7 +97,7 @@ double __43__CSVTUIEndpointAnalyzer_setStartWaitTime___block_invoke(uint64_t a1)
   }
 
   self->_nnvadState = 2;
-  v7 = self->_vtExtraAudioAtStartInMs / 1000.0 + a3;
+  v7 = self->_vtExtraAudioAtStartInMs / 1000.0 + secs;
   [MEMORY[0x277D016E0] inputRecordingSampleRate];
   v9 = (v7 * v8);
   v10 = MEMORY[0x277D01798];
@@ -119,37 +119,37 @@ double __43__CSVTUIEndpointAnalyzer_setStartWaitTime___block_invoke(uint64_t a1)
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained endpointer:self didDetectHardEndpointAtTime:a3];
+  [WeakRetained endpointer:self didDetectHardEndpointAtTime:secs];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   v7 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315650;
     v10 = "[CSVTUIEndpointAnalyzer request:didFailWithError:]";
     v11 = 2114;
-    v12 = v5;
+    v12 = requestCopy;
     v13 = 2114;
-    v14 = v6;
+    v14 = errorCopy;
     _os_log_impl(&dword_225E12000, v7, OS_LOG_TYPE_DEFAULT, "%s request: %{public}@, returnedError: %{public}@", &v9, 0x20u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)request:(id)a3 didProduceResult:(id)a4
+- (void)request:(id)request didProduceResult:(id)result
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  requestCopy = request;
+  resultCopy = result;
+  v8 = resultCopy;
   if (self->_nnvadState == 2)
   {
     v9 = *MEMORY[0x277D01970];
@@ -168,8 +168,8 @@ double __43__CSVTUIEndpointAnalyzer_setStartWaitTime___block_invoke(uint64_t a1)
     v12[1] = 3221225472;
     v12[2] = __51__CSVTUIEndpointAnalyzer_request_didProduceResult___block_invoke;
     v12[3] = &unk_278579350;
-    v13 = v7;
-    v14 = self;
+    v13 = resultCopy;
+    selfCopy = self;
     dispatch_async(queue, v12);
   }
 
@@ -212,25 +212,25 @@ void __51__CSVTUIEndpointAnalyzer_request_didProduceResult___block_invoke(uint64
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkSNObservationForEndpoint:(id)a3
+- (void)_checkSNObservationForEndpoint:(id)endpoint
 {
-  v4 = a3;
-  if (([v4 detected] & 1) == 0)
+  endpointCopy = endpoint;
+  if (([endpointCopy detected] & 1) == 0)
   {
-    [(CSVTUIEndpointAnalyzer *)self _effectiveAudioTimeInSecsForSNObservation:v4];
+    [(CSVTUIEndpointAnalyzer *)self _effectiveAudioTimeInSecsForSNObservation:endpointCopy];
     [(CSVTUIEndpointAnalyzer *)self _reportEndpointAtTsInSecs:?];
   }
 }
 
-- (void)_checkSNObservationForStartpoint:(id)a3
+- (void)_checkSNObservationForStartpoint:(id)startpoint
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(CSVTUIEndpointAnalyzer *)self _effectiveAudioTimeInSecsForSNObservation:v4];
+  startpointCopy = startpoint;
+  [(CSVTUIEndpointAnalyzer *)self _effectiveAudioTimeInSecsForSNObservation:startpointCopy];
   v6 = v5;
-  v7 = [v4 detected];
+  detected = [startpointCopy detected];
 
-  if (v7)
+  if (detected)
   {
     v8 = *MEMORY[0x277D85DE8];
 
@@ -261,11 +261,11 @@ void __51__CSVTUIEndpointAnalyzer_request_didProduceResult___block_invoke(uint64
   }
 }
 
-- (double)_effectiveAudioTimeInSecsForSNObservation:(id)a3
+- (double)_effectiveAudioTimeInSecsForSNObservation:(id)observation
 {
-  if (a3)
+  if (observation)
   {
-    [a3 timeRange];
+    [observation timeRange];
     v4 = v6;
   }
 
@@ -277,7 +277,7 @@ void __51__CSVTUIEndpointAnalyzer_request_didProduceResult___block_invoke(uint64
   return self->_vtEndInSecs + v4 / self->_currentRequestSampleRate;
 }
 
-- (void)recordingStoppedForReason:(int64_t)a3
+- (void)recordingStoppedForReason:(int64_t)reason
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -285,7 +285,7 @@ void __51__CSVTUIEndpointAnalyzer_request_didProduceResult___block_invoke(uint64
   v4[2] = __52__CSVTUIEndpointAnalyzer_recordingStoppedForReason___block_invoke;
   v4[3] = &unk_278578170;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_async(queue, v4);
 }
 
@@ -342,17 +342,17 @@ void __40__CSVTUIEndpointAnalyzer_stopEndpointer__block_invoke(uint64_t a1)
   *(v2 + 136) = 0;
 }
 
-- (void)processAudioSamplesAsynchronously:(id)a3
+- (void)processAudioSamplesAsynchronously:(id)asynchronously
 {
-  v4 = a3;
+  asynchronouslyCopy = asynchronously;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__CSVTUIEndpointAnalyzer_processAudioSamplesAsynchronously___block_invoke;
   v7[3] = &unk_278579350;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = asynchronouslyCopy;
+  v6 = asynchronouslyCopy;
   dispatch_async(queue, v7);
 }
 
@@ -454,35 +454,35 @@ void __60__CSVTUIEndpointAnalyzer_processAudioSamplesAsynchronously___block_invo
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_pcmBufferForAudioChunk:(id)a3
+- (id)_pcmBufferForAudioChunk:(id)chunk
 {
   activeChannel = self->_activeChannel;
-  v5 = a3;
-  v6 = [v5 dataForChannel:activeChannel];
-  v7 = [v5 numSamples];
-  v8 = [objc_alloc(MEMORY[0x277CB83C0]) initWithPCMFormat:self->_currentRequestAudioFormat frameCapacity:v7];
-  [v8 setFrameLength:v7];
+  chunkCopy = chunk;
+  v6 = [chunkCopy dataForChannel:activeChannel];
+  numSamples = [chunkCopy numSamples];
+  v8 = [objc_alloc(MEMORY[0x277CB83C0]) initWithPCMFormat:self->_currentRequestAudioFormat frameCapacity:numSamples];
+  [v8 setFrameLength:numSamples];
   v9 = *([v8 mutableAudioBufferList] + 16);
-  v10 = [v6 bytes];
-  v11 = [v5 numSamples];
-  v12 = [v5 sampleByteDepth];
+  bytes = [v6 bytes];
+  numSamples2 = [chunkCopy numSamples];
+  sampleByteDepth = [chunkCopy sampleByteDepth];
 
-  memcpy(v9, v10, v12 * v11);
+  memcpy(v9, bytes, sampleByteDepth * numSamples2);
 
   return v8;
 }
 
-- (void)handleVoiceTriggerWithActivationInfo:(id)a3
+- (void)handleVoiceTriggerWithActivationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__CSVTUIEndpointAnalyzer_handleVoiceTriggerWithActivationInfo___block_invoke;
   v7[3] = &unk_278579350;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -532,7 +532,7 @@ void __63__CSVTUIEndpointAnalyzer_handleVoiceTriggerWithActivationInfo___block_i
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetForNewRequestWithSampleRate:(unint64_t)a3
+- (void)resetForNewRequestWithSampleRate:(unint64_t)rate
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -540,7 +540,7 @@ void __63__CSVTUIEndpointAnalyzer_handleVoiceTriggerWithActivationInfo___block_i
   v4[2] = __59__CSVTUIEndpointAnalyzer_resetForNewRequestWithSampleRate___block_invoke;
   v4[3] = &unk_278578170;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = rate;
   dispatch_async(queue, v4);
 }
 
@@ -646,8 +646,8 @@ void __59__CSVTUIEndpointAnalyzer_resetForNewRequestWithSampleRate___block_invok
   [v2 setLocale:v3];
 
   [v2 setDateFormat:@"yyyyMMdd-HHmmss"];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v2 stringFromDate:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [v2 stringFromDate:date];
 
   return v5;
 }

@@ -1,30 +1,30 @@
 @interface SIRINLUEXTERNALUsoEntitySpan
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSourceComponent:(id)a3;
+- (int)StringAsSourceComponent:(id)component;
 - (int)sourceComponent;
 - (unint64_t)hash;
 - (unsigned)nodeIndex;
-- (void)addAlternatives:(id)a3;
-- (void)addProperties:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSourceComponent:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAlternatives:(id)alternatives;
+- (void)addProperties:(id)properties;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSourceComponent:(BOOL)component;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALUsoEntitySpan
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4[24])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[24])
   {
-    self->_nodeIndex = v4[10];
+    self->_nodeIndex = fromCopy[10];
     *&self->_has |= 1u;
   }
 
@@ -231,31 +231,31 @@
   return v9 ^ v12 ^ [(SIRINLUEXTERNALPayloadAttachmentInfo *)self->_payloadAttachmentInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   has = self->_has;
-  v6 = *(v4 + 96);
+  v6 = *(equalCopy + 96);
   if (has)
   {
-    if ((*(v4 + 96) & 1) == 0 || self->_nodeIndex != *(v4 + 10))
+    if ((*(equalCopy + 96) & 1) == 0 || self->_nodeIndex != *(equalCopy + 10))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
     goto LABEL_31;
   }
 
   originAppId = self->_originAppId;
-  if (originAppId | *(v4 + 6))
+  if (originAppId | *(equalCopy + 6))
   {
     if (![(SIRICOMMONStringValue *)originAppId isEqual:?])
     {
@@ -265,12 +265,12 @@ LABEL_31:
     }
 
     has = self->_has;
-    v6 = *(v4 + 96);
+    v6 = *(equalCopy + 96);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_sourceComponent != *(v4 + 20))
+    if ((v6 & 2) == 0 || self->_sourceComponent != *(equalCopy + 20))
     {
       goto LABEL_31;
     }
@@ -282,13 +282,13 @@ LABEL_31:
   }
 
   label = self->_label;
-  if (label | *(v4 + 3) && ![(SIRICOMMONStringValue *)label isEqual:?])
+  if (label | *(equalCopy + 3) && ![(SIRICOMMONStringValue *)label isEqual:?])
   {
     goto LABEL_31;
   }
 
   matchInfo = self->_matchInfo;
-  if (matchInfo | *(v4 + 4))
+  if (matchInfo | *(equalCopy + 4))
   {
     if (![(SIRINLUEXTERNALMatchInfo *)matchInfo isEqual:?])
     {
@@ -297,7 +297,7 @@ LABEL_31:
   }
 
   properties = self->_properties;
-  if (properties | *(v4 + 9))
+  if (properties | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)properties isEqual:?])
     {
@@ -306,7 +306,7 @@ LABEL_31:
   }
 
   startIndex = self->_startIndex;
-  if (startIndex | *(v4 + 11))
+  if (startIndex | *(equalCopy + 11))
   {
     if (![(SIRICOMMONUInt32Value *)startIndex isEqual:?])
     {
@@ -315,7 +315,7 @@ LABEL_31:
   }
 
   endIndex = self->_endIndex;
-  if (endIndex | *(v4 + 2))
+  if (endIndex | *(equalCopy + 2))
   {
     if (![(SIRICOMMONUInt32Value *)endIndex isEqual:?])
     {
@@ -324,7 +324,7 @@ LABEL_31:
   }
 
   alternatives = self->_alternatives;
-  if (alternatives | *(v4 + 1))
+  if (alternatives | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)alternatives isEqual:?])
     {
@@ -333,7 +333,7 @@ LABEL_31:
   }
 
   originEntityId = self->_originEntityId;
-  if (originEntityId | *(v4 + 7))
+  if (originEntityId | *(equalCopy + 7))
   {
     if (![(SIRICOMMONStringValue *)originEntityId isEqual:?])
     {
@@ -342,7 +342,7 @@ LABEL_31:
   }
 
   payloadAttachmentInfo = self->_payloadAttachmentInfo;
-  if (payloadAttachmentInfo | *(v4 + 8))
+  if (payloadAttachmentInfo | *(equalCopy + 8))
   {
     v16 = [(SIRINLUEXTERNALPayloadAttachmentInfo *)payloadAttachmentInfo isEqual:?];
   }
@@ -357,10 +357,10 @@ LABEL_32:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -368,7 +368,7 @@ LABEL_32:
     *(v5 + 96) |= 1u;
   }
 
-  v7 = [(SIRICOMMONStringValue *)self->_originAppId copyWithZone:a3];
+  v7 = [(SIRICOMMONStringValue *)self->_originAppId copyWithZone:zone];
   v8 = *(v6 + 48);
   *(v6 + 48) = v7;
 
@@ -378,11 +378,11 @@ LABEL_32:
     *(v6 + 96) |= 2u;
   }
 
-  v9 = [(SIRICOMMONStringValue *)self->_label copyWithZone:a3];
+  v9 = [(SIRICOMMONStringValue *)self->_label copyWithZone:zone];
   v10 = *(v6 + 24);
   *(v6 + 24) = v9;
 
-  v11 = [(SIRINLUEXTERNALMatchInfo *)self->_matchInfo copyWithZone:a3];
+  v11 = [(SIRINLUEXTERNALMatchInfo *)self->_matchInfo copyWithZone:zone];
   v12 = *(v6 + 32);
   *(v6 + 32) = v11;
 
@@ -406,7 +406,7 @@ LABEL_32:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v39 + 1) + 8 * v17) copyWithZone:a3];
+        v18 = [*(*(&v39 + 1) + 8 * v17) copyWithZone:zone];
         [v6 addProperties:v18];
 
         ++v17;
@@ -419,11 +419,11 @@ LABEL_32:
     while (v15);
   }
 
-  v19 = [(SIRICOMMONUInt32Value *)self->_startIndex copyWithZone:a3];
+  v19 = [(SIRICOMMONUInt32Value *)self->_startIndex copyWithZone:zone];
   v20 = *(v6 + 88);
   *(v6 + 88) = v19;
 
-  v21 = [(SIRICOMMONUInt32Value *)self->_endIndex copyWithZone:a3];
+  v21 = [(SIRICOMMONUInt32Value *)self->_endIndex copyWithZone:zone];
   v22 = *(v6 + 16);
   *(v6 + 16) = v21;
 
@@ -447,7 +447,7 @@ LABEL_32:
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v35 + 1) + 8 * v27) copyWithZone:{a3, v35}];
+        v28 = [*(*(&v35 + 1) + 8 * v27) copyWithZone:{zone, v35}];
         [v6 addAlternatives:v28];
 
         ++v27;
@@ -460,11 +460,11 @@ LABEL_32:
     while (v25);
   }
 
-  v29 = [(SIRICOMMONStringValue *)self->_originEntityId copyWithZone:a3];
+  v29 = [(SIRICOMMONStringValue *)self->_originEntityId copyWithZone:zone];
   v30 = *(v6 + 56);
   *(v6 + 56) = v29;
 
-  v31 = [(SIRINLUEXTERNALPayloadAttachmentInfo *)self->_payloadAttachmentInfo copyWithZone:a3];
+  v31 = [(SIRINLUEXTERNALPayloadAttachmentInfo *)self->_payloadAttachmentInfo copyWithZone:zone];
   v32 = *(v6 + 64);
   *(v6 + 64) = v31;
 
@@ -472,26 +472,26 @@ LABEL_32:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[10] = self->_nodeIndex;
-    *(v4 + 96) |= 1u;
+    toCopy[10] = self->_nodeIndex;
+    *(toCopy + 96) |= 1u;
   }
 
-  v14 = v4;
+  v14 = toCopy;
   if (self->_originAppId)
   {
-    [v4 setOriginAppId:?];
-    v4 = v14;
+    [toCopy setOriginAppId:?];
+    toCopy = v14;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[20] = self->_sourceComponent;
-    *(v4 + 96) |= 2u;
+    toCopy[20] = self->_sourceComponent;
+    *(toCopy + 96) |= 2u;
   }
 
   if (self->_label)
@@ -507,10 +507,10 @@ LABEL_32:
   if ([(SIRINLUEXTERNALUsoEntitySpan *)self propertiesCount])
   {
     [v14 clearProperties];
-    v5 = [(SIRINLUEXTERNALUsoEntitySpan *)self propertiesCount];
-    if (v5)
+    propertiesCount = [(SIRINLUEXTERNALUsoEntitySpan *)self propertiesCount];
+    if (propertiesCount)
     {
-      v6 = v5;
+      v6 = propertiesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(SIRINLUEXTERNALUsoEntitySpan *)self propertiesAtIndex:i];
@@ -532,10 +532,10 @@ LABEL_32:
   if ([(SIRINLUEXTERNALUsoEntitySpan *)self alternativesCount])
   {
     [v14 clearAlternatives];
-    v9 = [(SIRINLUEXTERNALUsoEntitySpan *)self alternativesCount];
-    if (v9)
+    alternativesCount = [(SIRINLUEXTERNALUsoEntitySpan *)self alternativesCount];
+    if (alternativesCount)
     {
-      v10 = v9;
+      v10 = alternativesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(SIRINLUEXTERNALUsoEntitySpan *)self alternativesAtIndex:j];
@@ -557,10 +557,10 @@ LABEL_32:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     nodeIndex = self->_nodeIndex;
@@ -678,18 +678,18 @@ LABEL_32:
 - (id)dictionaryRepresentation
 {
   v47 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_nodeIndex];
-    [v3 setObject:v4 forKey:@"node_index"];
+    [dictionary setObject:v4 forKey:@"node_index"];
   }
 
   originAppId = self->_originAppId;
   if (originAppId)
   {
-    v6 = [(SIRICOMMONStringValue *)originAppId dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"origin_app_id"];
+    dictionaryRepresentation = [(SIRICOMMONStringValue *)originAppId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"origin_app_id"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -705,21 +705,21 @@ LABEL_32:
       v8 = off_1E83283A0[sourceComponent];
     }
 
-    [v3 setObject:v8 forKey:@"source_component"];
+    [dictionary setObject:v8 forKey:@"source_component"];
   }
 
   label = self->_label;
   if (label)
   {
-    v10 = [(SIRICOMMONStringValue *)label dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"label"];
+    dictionaryRepresentation2 = [(SIRICOMMONStringValue *)label dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"label"];
   }
 
   matchInfo = self->_matchInfo;
   if (matchInfo)
   {
-    v12 = [(SIRINLUEXTERNALMatchInfo *)matchInfo dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"match_info"];
+    dictionaryRepresentation3 = [(SIRINLUEXTERNALMatchInfo *)matchInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"match_info"];
   }
 
   if ([(NSMutableArray *)self->_properties count])
@@ -744,8 +744,8 @@ LABEL_32:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation4 = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation4];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v41 objects:v46 count:16];
@@ -754,21 +754,21 @@ LABEL_32:
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"properties"];
+    [dictionary setObject:v13 forKey:@"properties"];
   }
 
   startIndex = self->_startIndex;
   if (startIndex)
   {
-    v21 = [(SIRICOMMONUInt32Value *)startIndex dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"start_index"];
+    dictionaryRepresentation5 = [(SIRICOMMONUInt32Value *)startIndex dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"start_index"];
   }
 
   endIndex = self->_endIndex;
   if (endIndex)
   {
-    v23 = [(SIRICOMMONUInt32Value *)endIndex dictionaryRepresentation];
-    [v3 setObject:v23 forKey:@"end_index"];
+    dictionaryRepresentation6 = [(SIRICOMMONUInt32Value *)endIndex dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"end_index"];
   }
 
   if ([(NSMutableArray *)self->_alternatives count])
@@ -793,8 +793,8 @@ LABEL_32:
             objc_enumerationMutation(v25);
           }
 
-          v30 = [*(*(&v37 + 1) + 8 * j) dictionaryRepresentation];
-          [v24 addObject:v30];
+          dictionaryRepresentation7 = [*(*(&v37 + 1) + 8 * j) dictionaryRepresentation];
+          [v24 addObject:dictionaryRepresentation7];
         }
 
         v27 = [(NSMutableArray *)v25 countByEnumeratingWithState:&v37 objects:v45 count:16];
@@ -803,26 +803,26 @@ LABEL_32:
       while (v27);
     }
 
-    [v3 setObject:v24 forKey:@"alternatives"];
+    [dictionary setObject:v24 forKey:@"alternatives"];
   }
 
   originEntityId = self->_originEntityId;
   if (originEntityId)
   {
-    v32 = [(SIRICOMMONStringValue *)originEntityId dictionaryRepresentation];
-    [v3 setObject:v32 forKey:@"origin_entity_id"];
+    dictionaryRepresentation8 = [(SIRICOMMONStringValue *)originEntityId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation8 forKey:@"origin_entity_id"];
   }
 
   payloadAttachmentInfo = self->_payloadAttachmentInfo;
   if (payloadAttachmentInfo)
   {
-    v34 = [(SIRINLUEXTERNALPayloadAttachmentInfo *)payloadAttachmentInfo dictionaryRepresentation];
-    [v3 setObject:v34 forKey:@"payload_attachment_info"];
+    dictionaryRepresentation9 = [(SIRINLUEXTERNALPayloadAttachmentInfo *)payloadAttachmentInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation9 forKey:@"payload_attachment_info"];
   }
 
   v35 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -831,82 +831,82 @@ LABEL_32:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALUsoEntitySpan;
   v4 = [(SIRINLUEXTERNALUsoEntitySpan *)&v8 description];
-  v5 = [(SIRINLUEXTERNALUsoEntitySpan *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALUsoEntitySpan *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addAlternatives:(id)a3
+- (void)addAlternatives:(id)alternatives
 {
-  v4 = a3;
+  alternativesCopy = alternatives;
   alternatives = self->_alternatives;
-  v8 = v4;
+  v8 = alternativesCopy;
   if (!alternatives)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_alternatives;
     self->_alternatives = v6;
 
-    v4 = v8;
+    alternativesCopy = v8;
     alternatives = self->_alternatives;
   }
 
-  [(NSMutableArray *)alternatives addObject:v4];
+  [(NSMutableArray *)alternatives addObject:alternativesCopy];
 }
 
-- (void)addProperties:(id)a3
+- (void)addProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   properties = self->_properties;
-  v8 = v4;
+  v8 = propertiesCopy;
   if (!properties)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_properties;
     self->_properties = v6;
 
-    v4 = v8;
+    propertiesCopy = v8;
     properties = self->_properties;
   }
 
-  [(NSMutableArray *)properties addObject:v4];
+  [(NSMutableArray *)properties addObject:propertiesCopy];
 }
 
-- (int)StringAsSourceComponent:(id)a3
+- (int)StringAsSourceComponent:(id)component
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NLU_COMPONENT_UNKNOWN"])
+  componentCopy = component;
+  if ([componentCopy isEqualToString:@"NLU_COMPONENT_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_SIRI_VOCAB"])
+  else if ([componentCopy isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_SIRI_VOCAB"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_VOC_FILE"])
+  else if ([componentCopy isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_VOC_FILE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_MENTION_RESOLVER"])
+  else if ([componentCopy isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_MENTION_RESOLVER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_CONTEXTUAL_SPAN_MATCHER"])
+  else if ([componentCopy isEqualToString:@"NLU_COMPONENT_SPAN_MATCH_CONTEXTUAL_SPAN_MATCHER"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NLU_COMPONENT_PARSER_CATI"])
+  else if ([componentCopy isEqualToString:@"NLU_COMPONENT_PARSER_CATI"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"NLU_COMPONENT_PARSER_SSU"])
+  else if ([componentCopy isEqualToString:@"NLU_COMPONENT_PARSER_SSU"])
   {
     v4 = 6;
   }
@@ -919,9 +919,9 @@ LABEL_32:
   return v4;
 }
 
-- (void)setHasSourceComponent:(BOOL)a3
+- (void)setHasSourceComponent:(BOOL)component
 {
-  if (a3)
+  if (component)
   {
     v3 = 2;
   }

@@ -1,7 +1,7 @@
 @interface WBSOpenSearchSchemaFetcher
 + (id)sharedFetcher;
-- (void)_didFinishFetchingOpenSearchDescriptionDocumentWithURL:(id)a3;
-- (void)fetchOpenSearchDescriptionWithURL:(id)a3;
+- (void)_didFinishFetchingOpenSearchDescriptionDocumentWithURL:(id)l;
+- (void)fetchOpenSearchDescriptionWithURL:(id)l;
 @end
 
 @implementation WBSOpenSearchSchemaFetcher
@@ -21,20 +21,20 @@
   return v3;
 }
 
-- (void)fetchOpenSearchDescriptionWithURL:(id)a3
+- (void)fetchOpenSearchDescriptionWithURL:(id)l
 {
-  v4 = a3;
-  if (([(NSMutableSet *)self->_openSearchDescriptionURLs containsObject:v4]& 1) == 0)
+  lCopy = l;
+  if (([(NSMutableSet *)self->_openSearchDescriptionURLs containsObject:lCopy]& 1) == 0)
   {
     openSearchDescriptionURLs = self->_openSearchDescriptionURLs;
     if (openSearchDescriptionURLs)
     {
-      [(NSMutableSet *)openSearchDescriptionURLs addObject:v4];
+      [(NSMutableSet *)openSearchDescriptionURLs addObject:lCopy];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFA8] setWithObject:v4];
+      v6 = [MEMORY[0x1E695DFA8] setWithObject:lCopy];
       v7 = self->_openSearchDescriptionURLs;
       self->_openSearchDescriptionURLs = v6;
     }
@@ -46,16 +46,16 @@
     v15[1] = 3221225472;
     v15[2] = __64__WBSOpenSearchSchemaFetcher_fetchOpenSearchDescriptionWithURL___block_invoke;
     v15[3] = &unk_1E7FC7AA8;
-    v10 = v4;
+    v10 = lCopy;
     v16 = v10;
-    v17 = self;
+    selfCopy = self;
     v11 = [v9 remoteObjectProxyWithErrorHandler:v15];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __64__WBSOpenSearchSchemaFetcher_fetchOpenSearchDescriptionWithURL___block_invoke_8;
     v12[3] = &unk_1E7FC78D0;
     v13 = v10;
-    v14 = self;
+    selfCopy2 = self;
     [v11 fetchOpenSearchDescriptionWithURL:v13 completionHandler:v12];
   }
 }
@@ -141,9 +141,9 @@ void __64__WBSOpenSearchSchemaFetcher_fetchOpenSearchDescriptionWithURL___block_
   }
 }
 
-- (void)_didFinishFetchingOpenSearchDescriptionDocumentWithURL:(id)a3
+- (void)_didFinishFetchingOpenSearchDescriptionDocumentWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   [(NSMutableSet *)self->_openSearchDescriptionURLs removeObject:?];
   if (![(NSMutableSet *)self->_openSearchDescriptionURLs count])
   {

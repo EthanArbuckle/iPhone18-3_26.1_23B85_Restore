@@ -1,17 +1,17 @@
 @interface CEKDynamicTickCell
-- (CEKDynamicTickCell)initWithFrame:(CGRect)a3;
+- (CEKDynamicTickCell)initWithFrame:(CGRect)frame;
 - (void)_applyContentConfiguration;
 - (void)layoutSubviews;
-- (void)setContentConfiguration:(id)a3;
+- (void)setContentConfiguration:(id)configuration;
 @end
 
 @implementation CEKDynamicTickCell
 
-- (CEKDynamicTickCell)initWithFrame:(CGRect)a3
+- (CEKDynamicTickCell)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = CEKDynamicTickCell;
-  v3 = [(CEKDynamicTickCell *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKDynamicTickCell *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -47,50 +47,50 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CEKDynamicTickCell *)self _textLabel];
-  v12 = [(CEKDynamicTickCell *)self _imageView];
+  _textLabel = [(CEKDynamicTickCell *)self _textLabel];
+  _imageView = [(CEKDynamicTickCell *)self _imageView];
   UIRectGetCenter();
-  [v11 setCenter:?];
-  [v11 setBounds:{v4, v6, v8, v10}];
+  [_textLabel setCenter:?];
+  [_textLabel setBounds:{v4, v6, v8, v10}];
   UIRectGetCenter();
-  [v12 setCenter:?];
-  [v12 setBounds:{v4, v6, v8, v10}];
+  [_imageView setCenter:?];
+  [_imageView setBounds:{v4, v6, v8, v10}];
 }
 
-- (void)setContentConfiguration:(id)a3
+- (void)setContentConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (self->_contentConfiguration != v5)
+  configurationCopy = configuration;
+  if (self->_contentConfiguration != configurationCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contentConfiguration, a3);
+    v6 = configurationCopy;
+    objc_storeStrong(&self->_contentConfiguration, configuration);
     [(CEKDynamicTickCell *)self _applyContentConfiguration];
-    v5 = v6;
+    configurationCopy = v6;
   }
 }
 
 - (void)_applyContentConfiguration
 {
-  v9 = [(CEKDynamicTickCell *)self contentConfiguration];
-  v3 = [v9 image];
-  v4 = [v9 text];
-  v5 = [(CEKDynamicTickCell *)self _imageView];
-  v6 = [(CEKDynamicTickCell *)self _textLabel];
-  if (v3)
+  contentConfiguration = [(CEKDynamicTickCell *)self contentConfiguration];
+  image = [contentConfiguration image];
+  text = [contentConfiguration text];
+  _imageView = [(CEKDynamicTickCell *)self _imageView];
+  _textLabel = [(CEKDynamicTickCell *)self _textLabel];
+  if (image)
   {
-    [v5 setImage:v3];
-    [v6 setText:0];
+    [_imageView setImage:image];
+    [_textLabel setText:0];
   }
 
   else
   {
-    [v5 setImage:0];
-    [v6 setText:v4];
-    v7 = [v9 font];
-    [v6 setFont:v7];
+    [_imageView setImage:0];
+    [_textLabel setText:text];
+    font = [contentConfiguration font];
+    [_textLabel setFont:font];
 
-    v8 = [(CEKDynamicTickCell *)self tintColor];
-    [v6 setTextColor:v8];
+    tintColor = [(CEKDynamicTickCell *)self tintColor];
+    [_textLabel setTextColor:tintColor];
   }
 }
 

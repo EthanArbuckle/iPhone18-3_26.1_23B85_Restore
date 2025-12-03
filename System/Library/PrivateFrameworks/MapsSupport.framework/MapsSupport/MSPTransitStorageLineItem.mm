@@ -3,7 +3,7 @@
 - (BOOL)hasIncidentComponent;
 - (BOOL)hasLineColorString;
 - (BOOL)isBus;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)showVehicleNumber;
 - (GEOMapItemIdentifier)identifier;
 - (GEOTransitArtworkDataSource)alternateArtwork;
@@ -11,39 +11,39 @@
 - (GEOTransitArtworkDataSource)headerArtwork;
 - (GEOTransitArtworkDataSource)modeArtwork;
 - (GEOTransitSystem)system;
-- (MSPTransitStorageLineItem)initWithLineItem:(id)a3;
+- (MSPTransitStorageLineItem)initWithLineItem:(id)item;
 - (NSArray)operatingHours;
 - (NSString)description;
 - (NSString)lineColorString;
 - (NSString)name;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)departureTimeDisplayStyle;
 - (unint64_t)hash;
 - (unint64_t)muid;
-- (void)addIncidents:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addIncidents:(id)incidents;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPTransitStorageLineItem
 
-- (MSPTransitStorageLineItem)initWithLineItem:(id)a3
+- (MSPTransitStorageLineItem)initWithLineItem:(id)item
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v24.receiver = self;
   v24.super_class = MSPTransitStorageLineItem;
   v5 = [(MSPTransitStorageLineItem *)&v24 init];
   if (v5)
   {
-    v6 = [[MSPTransitStorageLine alloc] initWithLine:v4];
+    v6 = [[MSPTransitStorageLine alloc] initWithLine:itemCopy];
     [(MSPTransitStorageLineItem *)v5 setLine:v6];
 
     v7 = [MSPTransitStorageAttribution alloc];
-    v8 = [v4 attribution];
-    v9 = [(MSPTransitStorageAttribution *)v7 initWithAttribution:v8];
+    attribution = [itemCopy attribution];
+    v9 = [(MSPTransitStorageAttribution *)v7 initWithAttribution:attribution];
     [(MSPTransitStorageLineItem *)v5 setTransitAttribution:v9];
 
     v10 = objc_opt_new();
@@ -51,8 +51,8 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = [v4 incidents];
-    v12 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    incidents = [itemCopy incidents];
+    v12 = [incidents countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v12)
     {
       v13 = v12;
@@ -64,7 +64,7 @@
         {
           if (*v21 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(incidents);
           }
 
           v16 = [[MSPTransitStorageIncident alloc] initWithIncident:*(*(&v20 + 1) + 8 * v15)];
@@ -74,15 +74,15 @@
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v13 = [incidents countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v13);
     }
 
     [(MSPTransitStorageLineItem *)v5 setIncidents:v10];
-    v17 = [v4 mapRegion];
-    [(MSPTransitStorageLineItem *)v5 setStoredMapRegion:v17];
+    mapRegion = [itemCopy mapRegion];
+    [(MSPTransitStorageLineItem *)v5 setStoredMapRegion:mapRegion];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -91,166 +91,166 @@
 
 - (unint64_t)muid
 {
-  v2 = [(MSPTransitStorageLineItem *)self line];
-  v3 = [v2 muid];
+  line = [(MSPTransitStorageLineItem *)self line];
+  muid = [line muid];
 
-  return v3;
+  return muid;
 }
 
 - (GEOMapItemIdentifier)identifier
 {
-  v3 = [(MSPTransitStorageLineItem *)self storedMapRegion];
+  storedMapRegion = [(MSPTransitStorageLineItem *)self storedMapRegion];
 
-  if (v3)
+  if (storedMapRegion)
   {
     v4 = objc_alloc(MEMORY[0x277D0EBA8]);
-    v5 = [(MSPTransitStorageLineItem *)self line];
-    v6 = [v5 muid];
-    v7 = [(MSPTransitStorageLineItem *)self storedMapRegion];
-    [v7 centerLat];
+    line = [(MSPTransitStorageLineItem *)self line];
+    muid = [line muid];
+    storedMapRegion2 = [(MSPTransitStorageLineItem *)self storedMapRegion];
+    [storedMapRegion2 centerLat];
     v9 = v8;
-    v10 = [(MSPTransitStorageLineItem *)self storedMapRegion];
-    [v10 centerLng];
-    v12 = [v4 initWithMUID:v6 resultProviderID:0 coordinate:{v9, v11}];
+    storedMapRegion3 = [(MSPTransitStorageLineItem *)self storedMapRegion];
+    [storedMapRegion3 centerLng];
+    identifier = [v4 initWithMUID:muid resultProviderID:0 coordinate:{v9, v11}];
   }
 
   else
   {
-    v5 = [(MSPTransitStorageLineItem *)self line];
-    v12 = [v5 identifier];
+    line = [(MSPTransitStorageLineItem *)self line];
+    identifier = [line identifier];
   }
 
-  return v12;
+  return identifier;
 }
 
 - (NSString)name
 {
-  v2 = [(MSPTransitStorageLineItem *)self line];
-  v3 = [v2 name];
+  line = [(MSPTransitStorageLineItem *)self line];
+  name = [line name];
 
-  return v3;
+  return name;
 }
 
 - (GEOTransitSystem)system
 {
-  v2 = [(MSPTransitStorageLineItem *)self line];
-  v3 = [v2 system];
+  line = [(MSPTransitStorageLineItem *)self line];
+  system = [line system];
 
-  return v3;
+  return system;
 }
 
 - (unint64_t)departureTimeDisplayStyle
 {
-  v2 = [(MSPTransitStorageLineItem *)self line];
-  v3 = [v2 departureTimeDisplayStyle];
+  line = [(MSPTransitStorageLineItem *)self line];
+  departureTimeDisplayStyle = [line departureTimeDisplayStyle];
 
-  return v3;
+  return departureTimeDisplayStyle;
 }
 
 - (BOOL)departuresAreVehicleSpecific
 {
-  v2 = [(MSPTransitStorageLineItem *)self line];
-  v3 = [v2 departuresAreVehicleSpecific];
+  line = [(MSPTransitStorageLineItem *)self line];
+  departuresAreVehicleSpecific = [line departuresAreVehicleSpecific];
 
-  return v3;
+  return departuresAreVehicleSpecific;
 }
 
 - (GEOTransitArtworkDataSource)artwork
 {
-  v2 = [(MSPTransitStorageLineItem *)self line];
-  v3 = [v2 artwork];
+  line = [(MSPTransitStorageLineItem *)self line];
+  artwork = [line artwork];
 
-  return v3;
+  return artwork;
 }
 
 - (GEOTransitArtworkDataSource)modeArtwork
 {
-  v2 = [(MSPTransitStorageLineItem *)self line];
-  v3 = [v2 modeArtwork];
+  line = [(MSPTransitStorageLineItem *)self line];
+  modeArtwork = [line modeArtwork];
 
-  return v3;
+  return modeArtwork;
 }
 
 - (GEOTransitArtworkDataSource)alternateArtwork
 {
-  v2 = [(MSPTransitStorageLineItem *)self line];
-  v3 = [v2 alternateArtwork];
+  line = [(MSPTransitStorageLineItem *)self line];
+  alternateArtwork = [line alternateArtwork];
 
-  return v3;
+  return alternateArtwork;
 }
 
 - (GEOTransitArtworkDataSource)headerArtwork
 {
-  v2 = [(MSPTransitStorageLineItem *)self line];
-  v3 = [v2 headerArtwork];
+  line = [(MSPTransitStorageLineItem *)self line];
+  headerArtwork = [line headerArtwork];
 
-  return v3;
+  return headerArtwork;
 }
 
 - (BOOL)hasLineColorString
 {
-  v2 = [(MSPTransitStorageLineItem *)self line];
-  v3 = [v2 hasLineColorString];
+  line = [(MSPTransitStorageLineItem *)self line];
+  hasLineColorString = [line hasLineColorString];
 
-  return v3;
+  return hasLineColorString;
 }
 
 - (NSString)lineColorString
 {
-  v2 = [(MSPTransitStorageLineItem *)self line];
-  v3 = [v2 lineColorString];
+  line = [(MSPTransitStorageLineItem *)self line];
+  lineColorString = [line lineColorString];
 
-  return v3;
+  return lineColorString;
 }
 
 - (BOOL)showVehicleNumber
 {
-  v2 = [(MSPTransitStorageLineItem *)self line];
-  v3 = [v2 showVehicleNumber];
+  line = [(MSPTransitStorageLineItem *)self line];
+  showVehicleNumber = [line showVehicleNumber];
 
-  return v3;
+  return showVehicleNumber;
 }
 
 - (NSArray)operatingHours
 {
-  v2 = [(MSPTransitStorageLineItem *)self line];
-  v3 = [v2 operatingHours];
+  line = [(MSPTransitStorageLineItem *)self line];
+  operatingHours = [line operatingHours];
 
-  return v3;
+  return operatingHours;
 }
 
 - (BOOL)hasIncidentComponent
 {
-  v2 = [(MSPTransitStorageLineItem *)self incidents];
-  v3 = v2 != 0;
+  incidents = [(MSPTransitStorageLineItem *)self incidents];
+  v3 = incidents != 0;
 
   return v3;
 }
 
 - (BOOL)isBus
 {
-  v2 = [(MSPTransitStorageLineItem *)self line];
-  v3 = [v2 isBus];
+  line = [(MSPTransitStorageLineItem *)self line];
+  isBus = [line isBus];
 
-  return v3;
+  return isBus;
 }
 
-- (void)addIncidents:(id)a3
+- (void)addIncidents:(id)incidents
 {
-  v4 = a3;
+  incidentsCopy = incidents;
   incidents = self->_incidents;
-  v8 = v4;
+  v8 = incidentsCopy;
   if (!incidents)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_incidents;
     self->_incidents = v6;
 
-    v4 = v8;
+    incidentsCopy = v8;
     incidents = self->_incidents;
   }
 
-  [(NSMutableArray *)incidents addObject:v4];
+  [(NSMutableArray *)incidents addObject:incidentsCopy];
 }
 
 - (NSString)description
@@ -259,8 +259,8 @@
   v8.receiver = self;
   v8.super_class = MSPTransitStorageLineItem;
   v4 = [(MSPTransitStorageLineItem *)&v8 description];
-  v5 = [(MSPTransitStorageLineItem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPTransitStorageLineItem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -268,26 +268,26 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   line = self->_line;
   if (line)
   {
-    v5 = [(MSPTransitStorageLine *)line dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"line"];
+    dictionaryRepresentation = [(MSPTransitStorageLine *)line dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"line"];
   }
 
   storedMapRegion = self->_storedMapRegion;
   if (storedMapRegion)
   {
-    v7 = [(GEOMapRegion *)storedMapRegion dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"stored_map_region"];
+    dictionaryRepresentation2 = [(GEOMapRegion *)storedMapRegion dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"stored_map_region"];
   }
 
   transitAttribution = self->_transitAttribution;
   if (transitAttribution)
   {
-    v9 = [(MSPTransitStorageAttribution *)transitAttribution dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"transit_attribution"];
+    dictionaryRepresentation3 = [(MSPTransitStorageAttribution *)transitAttribution dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"transit_attribution"];
   }
 
   if ([(NSMutableArray *)self->_incidents count])
@@ -312,8 +312,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation4 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation4];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -322,25 +322,25 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"incidents"];
+    [dictionary setObject:v10 forKey:@"incidents"];
   }
 
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v18 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v3 setObject:v18 forKey:@"Unknown Fields"];
+    dictionaryRepresentation5 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"Unknown Fields"];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_line)
   {
     PBDataWriterWriteSubmessage();
@@ -388,57 +388,57 @@
     while (v7);
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4, v12];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy, v12];
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_line)
   {
-    [v8 setLine:?];
+    [toCopy setLine:?];
   }
 
   if (self->_storedMapRegion)
   {
-    [v8 setStoredMapRegion:?];
+    [toCopy setStoredMapRegion:?];
   }
 
   if (self->_transitAttribution)
   {
-    [v8 setTransitAttribution:?];
+    [toCopy setTransitAttribution:?];
   }
 
   if ([(MSPTransitStorageLineItem *)self incidentsCount])
   {
-    [v8 clearIncidents];
-    v4 = [(MSPTransitStorageLineItem *)self incidentsCount];
-    if (v4)
+    [toCopy clearIncidents];
+    incidentsCount = [(MSPTransitStorageLineItem *)self incidentsCount];
+    if (incidentsCount)
     {
-      v5 = v4;
+      v5 = incidentsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(MSPTransitStorageLineItem *)self incidentsAtIndex:i];
-        [v8 addIncidents:v7];
+        [toCopy addIncidents:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MSPTransitStorageLine *)self->_line copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MSPTransitStorageLine *)self->_line copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(GEOMapRegion *)self->_storedMapRegion copyWithZone:a3];
+  v8 = [(GEOMapRegion *)self->_storedMapRegion copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(MSPTransitStorageAttribution *)self->_transitAttribution copyWithZone:a3];
+  v10 = [(MSPTransitStorageAttribution *)self->_transitAttribution copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
@@ -462,7 +462,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addIncidents:v17];
 
         ++v16;
@@ -480,13 +480,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((line = self->_line, !(line | v4[3])) || -[MSPTransitStorageLine isEqual:](line, "isEqual:")) && ((storedMapRegion = self->_storedMapRegion, !(storedMapRegion | v4[4])) || -[GEOMapRegion isEqual:](storedMapRegion, "isEqual:")) && ((transitAttribution = self->_transitAttribution, !(transitAttribution | v4[5])) || -[MSPTransitStorageAttribution isEqual:](transitAttribution, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((line = self->_line, !(line | equalCopy[3])) || -[MSPTransitStorageLine isEqual:](line, "isEqual:")) && ((storedMapRegion = self->_storedMapRegion, !(storedMapRegion | equalCopy[4])) || -[GEOMapRegion isEqual:](storedMapRegion, "isEqual:")) && ((transitAttribution = self->_transitAttribution, !(transitAttribution | equalCopy[5])) || -[MSPTransitStorageAttribution isEqual:](transitAttribution, "isEqual:")))
   {
     incidents = self->_incidents;
-    if (incidents | v4[2])
+    if (incidents | equalCopy[2])
     {
       v9 = [(NSMutableArray *)incidents isEqual:?];
     }
@@ -513,12 +513,12 @@
   return v4 ^ v5 ^ [(NSMutableArray *)self->_incidents hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   line = self->_line;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (line)
   {
     if (v6)
@@ -533,7 +533,7 @@
   }
 
   storedMapRegion = self->_storedMapRegion;
-  v8 = *(v4 + 4);
+  v8 = *(fromCopy + 4);
   if (storedMapRegion)
   {
     if (v8)
@@ -548,7 +548,7 @@
   }
 
   transitAttribution = self->_transitAttribution;
-  v10 = *(v4 + 5);
+  v10 = *(fromCopy + 5);
   if (transitAttribution)
   {
     if (v10)
@@ -566,7 +566,7 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = *(v4 + 2);
+  v11 = *(fromCopy + 2);
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {

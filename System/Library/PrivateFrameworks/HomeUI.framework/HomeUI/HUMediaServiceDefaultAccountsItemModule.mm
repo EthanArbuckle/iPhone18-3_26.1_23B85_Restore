@@ -1,27 +1,27 @@
 @interface HUMediaServiceDefaultAccountsItemModule
-- (BOOL)containsItem:(id)a3;
-- (HUMediaServiceDefaultAccountsItemModule)initWithItemUpdater:(id)a3 home:(id)a4;
+- (BOOL)containsItem:(id)item;
+- (HUMediaServiceDefaultAccountsItemModule)initWithItemUpdater:(id)updater home:(id)home;
 - (NSSet)itemProviders;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)updateDefaultAccount:(id)a3;
-- (void)mediaServiceItemProviderDidUpdateServices:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)updateDefaultAccount:(id)account;
+- (void)mediaServiceItemProviderDidUpdateServices:(id)services;
 - (void)registerForExternalUpdates;
 - (void)unregisterForExternalUpdates;
 @end
 
 @implementation HUMediaServiceDefaultAccountsItemModule
 
-- (HUMediaServiceDefaultAccountsItemModule)initWithItemUpdater:(id)a3 home:(id)a4
+- (HUMediaServiceDefaultAccountsItemModule)initWithItemUpdater:(id)updater home:(id)home
 {
-  v7 = a4;
+  homeCopy = home;
   v13.receiver = self;
   v13.super_class = HUMediaServiceDefaultAccountsItemModule;
-  v8 = [(HFItemModule *)&v13 initWithItemUpdater:a3];
+  v8 = [(HFItemModule *)&v13 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
-    v10 = [[HUMediaServiceItemProvider alloc] initWithHome:v7 delegate:v9];
+    objc_storeStrong(&v8->_home, home);
+    v10 = [[HUMediaServiceItemProvider alloc] initWithHome:homeCopy delegate:v9];
     mediaServiceItemProvider = v9->_mediaServiceItemProvider;
     v9->_mediaServiceItemProvider = v10;
   }
@@ -40,8 +40,8 @@
   else
   {
     v5 = objc_opt_new();
-    v6 = [(HUMediaServiceDefaultAccountsItemModule *)self mediaServiceItemProvider];
-    [(NSSet *)v5 na_safeAddObject:v6];
+    mediaServiceItemProvider = [(HUMediaServiceDefaultAccountsItemModule *)self mediaServiceItemProvider];
+    [(NSSet *)v5 na_safeAddObject:mediaServiceItemProvider];
 
     v7 = self->_itemProviders;
     self->_itemProviders = v5;
@@ -53,30 +53,30 @@
   return v3;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
-  v6 = [(HUMediaServiceDefaultAccountsItemModule *)self mediaServiceItemProvider];
-  v7 = [v6 items];
+  mediaServiceItemProvider = [(HUMediaServiceDefaultAccountsItemModule *)self mediaServiceItemProvider];
+  items = [mediaServiceItemProvider items];
 
-  if ([v7 intersectsSet:v4])
+  if ([items intersectsSet:itemsCopy])
   {
     v8 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HomeMediaServicesDefaultAccountsSection"];
-    v9 = [(HUMediaServiceDefaultAccountsItemModule *)self mediaServiceItemProvider];
-    v10 = [v9 items];
-    v11 = [v10 allObjects];
+    mediaServiceItemProvider2 = [(HUMediaServiceDefaultAccountsItemModule *)self mediaServiceItemProvider];
+    items2 = [mediaServiceItemProvider2 items];
+    allObjects = [items2 allObjects];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __75__HUMediaServiceDefaultAccountsItemModule_buildSectionsWithDisplayedItems___block_invoke;
     v17[3] = &unk_277DB85D8;
-    v18 = v4;
-    v12 = [v11 na_filter:v17];
+    v18 = itemsCopy;
+    v12 = [allObjects na_filter:v17];
     [v8 setItems:v12];
 
-    v13 = [v8 items];
+    items3 = [v8 items];
     v14 = +[HUMediaServiceItemProvider itemComparator];
-    v15 = [v13 sortedArrayUsingComparator:v14];
+    v15 = [items3 sortedArrayUsingComparator:v14];
     [v8 setItems:v15];
 
     [v5 addObject:v8];
@@ -85,17 +85,17 @@
   return v5;
 }
 
-- (BOOL)containsItem:(id)a3
+- (BOOL)containsItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUMediaServiceDefaultAccountsItemModule *)self itemProviders];
+  itemCopy = item;
+  itemProviders = [(HUMediaServiceDefaultAccountsItemModule *)self itemProviders];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__HUMediaServiceDefaultAccountsItemModule_containsItem___block_invoke;
   v9[3] = &unk_277DBC9C8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_any:v9];
+  v10 = itemCopy;
+  v6 = itemCopy;
+  v7 = [itemProviders na_any:v9];
 
   return v7;
 }
@@ -108,36 +108,36 @@ uint64_t __56__HUMediaServiceDefaultAccountsItemModule_containsItem___block_invo
   return v4;
 }
 
-- (id)updateDefaultAccount:(id)a3
+- (id)updateDefaultAccount:(id)account
 {
   v4 = MEMORY[0x277D14820];
-  v5 = a3;
-  v6 = [v4 sharedManager];
-  v7 = [(HUMediaServiceDefaultAccountsItemModule *)self home];
-  v8 = [v6 updateDefaultMediaService:v5 forHome:v7];
+  accountCopy = account;
+  sharedManager = [v4 sharedManager];
+  home = [(HUMediaServiceDefaultAccountsItemModule *)self home];
+  v8 = [sharedManager updateDefaultMediaService:accountCopy forHome:home];
 
   return v8;
 }
 
 - (void)registerForExternalUpdates
 {
-  v2 = [(HUMediaServiceDefaultAccountsItemModule *)self mediaServiceItemProvider];
-  [v2 registerForExternalUpdates];
+  mediaServiceItemProvider = [(HUMediaServiceDefaultAccountsItemModule *)self mediaServiceItemProvider];
+  [mediaServiceItemProvider registerForExternalUpdates];
 }
 
 - (void)unregisterForExternalUpdates
 {
-  v2 = [(HUMediaServiceDefaultAccountsItemModule *)self mediaServiceItemProvider];
-  [v2 unregisterForExternalUpdates];
+  mediaServiceItemProvider = [(HUMediaServiceDefaultAccountsItemModule *)self mediaServiceItemProvider];
+  [mediaServiceItemProvider unregisterForExternalUpdates];
 }
 
-- (void)mediaServiceItemProviderDidUpdateServices:(id)a3
+- (void)mediaServiceItemProviderDidUpdateServices:(id)services
 {
-  v9 = [(HFItemModule *)self itemUpdater];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
   v5 = MEMORY[0x277D14788];
-  v6 = [(HUMediaServiceDefaultAccountsItemModule *)self itemProviders];
-  v7 = [v5 requestToReloadItemProviders:v6 senderSelector:a2];
-  v8 = [v9 performItemUpdateRequest:v7];
+  itemProviders = [(HUMediaServiceDefaultAccountsItemModule *)self itemProviders];
+  v7 = [v5 requestToReloadItemProviders:itemProviders senderSelector:a2];
+  v8 = [itemUpdater performItemUpdateRequest:v7];
 }
 
 @end

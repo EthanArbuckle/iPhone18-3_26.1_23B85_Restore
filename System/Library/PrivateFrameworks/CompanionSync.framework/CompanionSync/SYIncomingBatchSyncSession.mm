@@ -1,18 +1,18 @@
 @interface SYIncomingBatchSyncSession
-- (SYIncomingBatchSyncSession)initWithService:(id)a3;
+- (SYIncomingBatchSyncSession)initWithService:(id)service;
 - (void)_continueProcessing;
-- (void)_handleBatchChunk:(id)a3 completion:(id)a4;
-- (void)_handleEndSync:(id)a3 completion:(id)a4;
-- (void)_sendEndSessionResponse:(id)a3;
+- (void)_handleBatchChunk:(id)chunk completion:(id)completion;
+- (void)_handleEndSync:(id)sync completion:(id)completion;
+- (void)_sendEndSessionResponse:(id)response;
 @end
 
 @implementation SYIncomingBatchSyncSession
 
-- (SYIncomingBatchSyncSession)initWithService:(id)a3
+- (SYIncomingBatchSyncSession)initWithService:(id)service
 {
   v10.receiver = self;
   v10.super_class = SYIncomingBatchSyncSession;
-  v3 = [(SYIncomingFullSyncSession *)&v10 initWithService:a3];
+  v3 = [(SYIncomingFullSyncSession *)&v10 initWithService:service];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -30,76 +30,76 @@
   return v3;
 }
 
-- (void)_sendEndSessionResponse:(id)a3
+- (void)_sendEndSessionResponse:(id)response
 {
   completion = self->_completion;
   if (completion)
   {
-    v5 = a3;
-    v6 = [(SYSession *)self wrappedUserContext];
-    completion[2](completion, v5, v6);
+    responseCopy = response;
+    wrappedUserContext = [(SYSession *)self wrappedUserContext];
+    completion[2](completion, responseCopy, wrappedUserContext);
   }
 }
 
 - (void)_continueProcessing
 {
-  v3 = [(SYSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SYSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   os_unfair_lock_lock(&self->_queueLock);
-  v4 = [(NSMutableArray *)self->_incomingBatchQueue firstObject];
-  if (v4)
+  firstObject = [(NSMutableArray *)self->_incomingBatchQueue firstObject];
+  if (firstObject)
   {
     [(NSMutableArray *)self->_incomingBatchQueue removeObjectAtIndex:0];
     os_unfair_lock_unlock(&self->_queueLock);
     v5 = objc_opt_new();
-    v6 = [v4 batch];
-    [v5 setChunkIndex:{objc_msgSend(v6, "chunkIndex")}];
+    batch = [firstObject batch];
+    [v5 setChunkIndex:{objc_msgSend(batch, "chunkIndex")}];
 
-    v7 = [v4 batch];
-    v8 = [v7 syncID];
-    [v5 setSyncID:v8];
+    batch2 = [firstObject batch];
+    syncID = [batch2 syncID];
+    [v5 setSyncID:syncID];
 
-    v9 = [(SYIncomingFullSyncSession *)self state];
-    if (v9 == 5)
+    state = [(SYIncomingFullSyncSession *)self state];
+    if (state == 5)
     {
       v10 = [SYErrorInfo alloc];
-      v11 = [(SYSession *)self error];
+      error = [(SYSession *)self error];
     }
 
     else
     {
-      if (v9 != 3)
+      if (state != 3)
       {
         goto LABEL_9;
       }
 
       v10 = [SYErrorInfo alloc];
-      v11 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:-128 userInfo:0];
+      error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:-128 userInfo:0];
     }
 
-    v12 = v11;
-    v13 = [(SYErrorInfo *)v10 initWithError:v11];
+    v12 = error;
+    v13 = [(SYErrorInfo *)v10 initWithError:error];
     [v5 setError:v13];
 
 LABEL_9:
-    v14 = [v5 error];
+    error2 = [v5 error];
 
-    if (v14)
+    if (error2)
     {
-      v15 = [v4 completion];
-      v16 = [(SYSession *)self wrappedUserContext];
-      (v15)[2](v15, v5, v16);
+      completion = [firstObject completion];
+      wrappedUserContext = [(SYSession *)self wrappedUserContext];
+      (completion)[2](completion, v5, wrappedUserContext);
     }
 
     v17 = objc_alloc(MEMORY[0x1E695DF70]);
-    v18 = [v4 batch];
-    v19 = [v18 objects];
-    v20 = [v17 initWithCapacity:{objc_msgSend(v19, "count")}];
+    batch3 = [firstObject batch];
+    objects = [batch3 objects];
+    v20 = [v17 initWithCapacity:{objc_msgSend(objects, "count")}];
 
-    v21 = [v4 batch];
-    v22 = [v21 objects];
-    v23 = [v22 count];
+    batch4 = [firstObject batch];
+    objects2 = [batch4 objects];
+    v23 = [objects2 count];
 
     if (v23 >= 1)
     {
@@ -113,24 +113,24 @@ LABEL_9:
     }
 
     v24 = [_SYLazyChangeArray alloc];
-    v25 = [v4 batch];
-    v26 = [v25 objects];
-    v27 = [(SYSession *)self serializer];
-    v28 = [(_SYLazyChangeArray *)v24 initWithSYObjectDataArray:v26 typeArray:v20 decoder:v27];
+    batch5 = [firstObject batch];
+    objects3 = [batch5 objects];
+    serializer = [(SYSession *)self serializer];
+    v28 = [(_SYLazyChangeArray *)v24 initWithSYObjectDataArray:objects3 typeArray:v20 decoder:serializer];
 
     if (v28)
     {
       [(SYIncomingFullSyncSession *)self setState:11];
-      v29 = [(SYSession *)self targetQueue];
+      targetQueue = [(SYSession *)self targetQueue];
       v40 = MEMORY[0x1E69E9820];
       v41 = 3221225472;
       v42 = __49__SYIncomingBatchSyncSession__continueProcessing__block_invoke;
       v43 = &unk_1E86CA728;
-      v44 = self;
+      selfCopy = self;
       v45 = v28;
       v46 = v5;
-      v47 = v4;
-      dispatch_sync(v29, &v40);
+      v47 = firstObject;
+      dispatch_sync(targetQueue, &v40);
     }
 
     else
@@ -151,13 +151,13 @@ LABEL_9:
       v33 = [(SYErrorInfo *)v31 initWithError:v32];
       [v5 setError:v33];
 
-      v34 = [(SYSession *)self service];
-      v35 = [v34 _newMessageHeader];
-      [v5 setHeader:v35];
+      service = [(SYSession *)self service];
+      _newMessageHeader = [service _newMessageHeader];
+      [v5 setHeader:_newMessageHeader];
 
-      v36 = [v4 completion];
-      v37 = [(SYSession *)self wrappedUserContext];
-      (v36)[2](v36, v5, v37);
+      completion2 = [firstObject completion];
+      wrappedUserContext2 = [(SYSession *)self wrappedUserContext];
+      (completion2)[2](completion2, v5, wrappedUserContext2);
     }
 
     os_unfair_lock_lock(&self->_queueLock);
@@ -180,7 +180,7 @@ LABEL_25:
       v39 = 9;
     }
 
-    [(SYIncomingFullSyncSession *)self setState:v39, v40, v41, v42, v43, v44];
+    [(SYIncomingFullSyncSession *)self setState:v39, v40, v41, v42, v43, selfCopy];
     goto LABEL_25;
   }
 
@@ -347,16 +347,16 @@ void __49__SYIncomingBatchSyncSession__continueProcessing__block_invoke_27(uint6
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleBatchChunk:(id)a3 completion:(id)a4
+- (void)_handleBatchChunk:(id)chunk completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  chunkCopy = chunk;
+  completionCopy = completion;
   v8 = [(SYIncomingFullSyncSession *)self sessionActivity:0];
   os_activity_scope_enter(v8, &v10);
 
   v9 = objc_opt_new();
-  [v9 setBatch:v6];
-  [v9 setCompletion:v7];
+  [v9 setBatch:chunkCopy];
+  [v9 setCompletion:completionCopy];
   os_unfair_lock_lock(&self->_queueLock);
   [(NSMutableArray *)self->_incomingBatchQueue addObject:v9];
   os_unfair_lock_unlock(&self->_queueLock);
@@ -365,14 +365,14 @@ void __49__SYIncomingBatchSyncSession__continueProcessing__block_invoke_27(uint6
   os_activity_scope_leave(&v10);
 }
 
-- (void)_handleEndSync:(id)a3 completion:(id)a4
+- (void)_handleEndSync:(id)sync completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  syncCopy = sync;
+  completionCopy = completion;
   v8 = [(SYIncomingFullSyncSession *)self sessionActivity:0];
   os_activity_scope_enter(v8, &v11);
 
-  v9 = [v7 copy];
+  v9 = [completionCopy copy];
   completion = self->_completion;
   self->_completion = v9;
 

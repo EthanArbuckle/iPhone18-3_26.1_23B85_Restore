@@ -1,10 +1,10 @@
 @interface _PKDataDetectorController
 - (_PKDataDetectorController)init;
 - (_PKDataDetectorControllerDelegate)delegate;
-- (id)dataDetectorItemAllItems:(id)a3;
-- (id)hitTest:(CGPoint)a3;
-- (void)_foundDataDetectorItems:(uint64_t)a1;
-- (void)setDelegate:(id)a3;
+- (id)dataDetectorItemAllItems:(id)items;
+- (id)hitTest:(CGPoint)test;
+- (void)_foundDataDetectorItems:(uint64_t)items;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _PKDataDetectorController
@@ -24,10 +24,10 @@
   return v2;
 }
 
-- (id)hitTest:(CGPoint)a3
+- (id)hitTest:(CGPoint)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
@@ -70,19 +70,19 @@ LABEL_11:
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v5 = objc_opt_respondsToSelector();
 
   *&self->_delegateFlags = *&self->_delegateFlags & 0xFE | v5 & 1;
 }
 
-- (void)_foundDataDetectorItems:(uint64_t)a1
+- (void)_foundDataDetectorItems:(uint64_t)items
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (items)
   {
     if (a2)
     {
@@ -95,10 +95,10 @@ LABEL_11:
     }
 
     v4 = [MEMORY[0x1E695DFA8] setWithArray:v3];
-    v5 = [*(a1 + 8) mutableCopy];
+    v5 = [*(items + 8) mutableCopy];
     [v5 minusSet:v4];
     v6 = [v4 mutableCopy];
-    [v6 minusSet:*(a1 + 8)];
+    [v6 minusSet:*(items + 8)];
     if ([v5 count])
     {
       v7 = os_log_create("com.apple.pencilkit", "DataDetectorController");
@@ -169,7 +169,7 @@ LABEL_11:
             objc_enumerationMutation(v15);
           }
 
-          [*(*(&v21 + 1) + 8 * j) setDelegate:{a1, v21}];
+          [*(*(&v21 + 1) + 8 * j) setDelegate:{items, v21}];
         }
 
         v17 = [v15 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -178,20 +178,20 @@ LABEL_11:
       while (v17);
     }
 
-    [*(a1 + 8) minusSet:v10];
-    [*(a1 + 8) unionSet:v15];
-    if ([v15 count] || objc_msgSend(v10, "count")) && (*(a1 + 16))
+    [*(items + 8) minusSet:v10];
+    [*(items + 8) unionSet:v15];
+    if ([v15 count] || objc_msgSend(v10, "count")) && (*(items + 16))
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 24));
-      [WeakRetained _dataDetectorControllerItemsDidChange:a1];
+      WeakRetained = objc_loadWeakRetained((items + 24));
+      [WeakRetained _dataDetectorControllerItemsDidChange:items];
     }
   }
 }
 
-- (id)dataDetectorItemAllItems:(id)a3
+- (id)dataDetectorItemAllItems:(id)items
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   if ([(NSMutableSet *)self->_currentDataDetectorItems count])
   {
     v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSMutableSet count](self->_currentDataDetectorItems, "count")}];
@@ -214,10 +214,10 @@ LABEL_11:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) coreResult];
-          if (v11)
+          coreResult = [*(*(&v15 + 1) + 8 * i) coreResult];
+          if (coreResult)
           {
-            [v5 addObject:v11];
+            [v5 addObject:coreResult];
           }
         }
 
@@ -232,10 +232,10 @@ LABEL_11:
 
   else
   {
-    v13 = [v4 coreResult];
-    if (v13)
+    coreResult2 = [itemsCopy coreResult];
+    if (coreResult2)
     {
-      v19 = v13;
+      v19 = coreResult2;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
     }
 

@@ -1,33 +1,33 @@
 @interface EKAutocompleteSearchResult
-+ (id)_copyAlarmsForAutocompleteFromResult:(id)a3;
-- (BOOL)isDifferentEnoughFromInitialEvent:(id)a3 consideringTimeProperties:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_copyAlarmsForAutocompleteFromResult:(id)result;
+- (BOOL)isDifferentEnoughFromInitialEvent:(id)event consideringTimeProperties:(BOOL)properties;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isReminder;
-- (EKAutocompleteSearchResult)initWithSource:(unint64_t)a3;
+- (EKAutocompleteSearchResult)initWithSource:(unint64_t)source;
 - (EKStructuredLocation)preferredLocation;
 - (NSString)descriptionForDebugging;
 - (NSString)uniqueID;
-- (id)_attendeesForSuggestedEventFromAttendees:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_attendeesForSuggestedEventFromAttendees:(id)attendees;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)eventRepresentingSelf;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setAttendees:(id)a3;
-- (void)setCalendarColor:(CGColor *)a3;
-- (void)updateEventFromSelf:(id)a3 updateTimeProperties:(BOOL)a4 updateTravelTimeProperties:(BOOL)a5 updateMode:(unint64_t)a6 overrideCalendar:(id)a7;
-- (void)updateSelfFromEvent:(id)a3;
+- (void)setAttendees:(id)attendees;
+- (void)setCalendarColor:(CGColor *)color;
+- (void)updateEventFromSelf:(id)self updateTimeProperties:(BOOL)properties updateTravelTimeProperties:(BOOL)timeProperties updateMode:(unint64_t)mode overrideCalendar:(id)calendar;
+- (void)updateSelfFromEvent:(id)event;
 @end
 
 @implementation EKAutocompleteSearchResult
 
-- (EKAutocompleteSearchResult)initWithSource:(unint64_t)a3
+- (EKAutocompleteSearchResult)initWithSource:(unint64_t)source
 {
   v5.receiver = self;
   v5.super_class = EKAutocompleteSearchResult;
   result = [(EKAutocompleteSearchResult *)&v5 init];
   if (result)
   {
-    result->_source = a3;
+    result->_source = source;
   }
 
   return result;
@@ -44,37 +44,37 @@
 - (NSString)uniqueID
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(EKAutocompleteSearchResult *)self title];
-  v5 = [(EKAutocompleteSearchResult *)self startDate];
-  v6 = [(EKAutocompleteSearchResult *)self endDate];
-  v7 = [(EKAutocompleteSearchResult *)self calendar];
-  v8 = [v7 title];
-  v9 = [v3 stringWithFormat:@"%@-%@-%@-%@", v4, v5, v6, v8];
+  title = [(EKAutocompleteSearchResult *)self title];
+  startDate = [(EKAutocompleteSearchResult *)self startDate];
+  endDate = [(EKAutocompleteSearchResult *)self endDate];
+  calendar = [(EKAutocompleteSearchResult *)self calendar];
+  title2 = [calendar title];
+  v9 = [v3 stringWithFormat:@"%@-%@-%@-%@", title, startDate, endDate, title2];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(EKAutocompleteSearchResult *)self title];
-    v7 = [v5 title];
+    v5 = equalCopy;
+    title = [(EKAutocompleteSearchResult *)self title];
+    title2 = [v5 title];
     if (CalEqualObjects() && (v8 = -[EKAutocompleteSearchResult allDay](self, "allDay"), v8 == [v5 allDay]))
     {
-      v10 = [(EKAutocompleteSearchResult *)self calendar];
-      v11 = [v5 calendar];
+      calendar = [(EKAutocompleteSearchResult *)self calendar];
+      calendar2 = [v5 calendar];
       if (CalEqualObjects())
       {
-        v12 = [(EKAutocompleteSearchResult *)self startDate];
-        v13 = [v5 startDate];
+        startDate = [(EKAutocompleteSearchResult *)self startDate];
+        startDate2 = [v5 startDate];
         if (CalEqualObjects())
         {
-          v16 = [(EKAutocompleteSearchResult *)self endDate];
-          v14 = [v5 endDate];
+          endDate = [(EKAutocompleteSearchResult *)self endDate];
+          endDate2 = [v5 endDate];
           v9 = CalEqualObjects();
         }
 
@@ -106,10 +106,10 @@
 
 - (unint64_t)hash
 {
-  v2 = [(EKAutocompleteSearchResult *)self title];
-  v3 = [v2 trimWhiteSpace];
-  v4 = [v3 lowercaseString];
-  v5 = [v4 hash];
+  title = [(EKAutocompleteSearchResult *)self title];
+  trimWhiteSpace = [title trimWhiteSpace];
+  lowercaseString = [trimWhiteSpace lowercaseString];
+  v5 = [lowercaseString hash];
 
   return v5;
 }
@@ -122,7 +122,7 @@
   v4 = [(EKAutocompleteSearchResult *)&v29 description];
   v5 = [v3 initWithSuperclassDescription:v4];
 
-  v6 = [(EKAutocompleteSearchResult *)self source];
+  source = [(EKAutocompleteSearchResult *)self source];
   v7 = [(EKAutocompleteSearchResult *)self source]- 1;
   if (v7 > 3)
   {
@@ -134,158 +134,158 @@
     v8 = off_1E77FD850[v7];
   }
 
-  [v5 setKey:@"source" withEnumNumericalValue:v6 andStringValue:v8];
-  v9 = [(EKAutocompleteSearchResult *)self title];
-  [v5 setKey:@"title" withString:v9];
+  [v5 setKey:@"source" withEnumNumericalValue:source andStringValue:v8];
+  title = [(EKAutocompleteSearchResult *)self title];
+  [v5 setKey:@"title" withString:title];
 
-  v10 = [(EKAutocompleteSearchResult *)self startDate];
-  [v5 setKey:@"startDate" withDate:v10];
+  startDate = [(EKAutocompleteSearchResult *)self startDate];
+  [v5 setKey:@"startDate" withDate:startDate];
 
-  v11 = [(EKAutocompleteSearchResult *)self endDate];
-  [v5 setKey:@"endDate" withDate:v11];
+  endDate = [(EKAutocompleteSearchResult *)self endDate];
+  [v5 setKey:@"endDate" withDate:endDate];
 
-  v12 = [(EKAutocompleteSearchResult *)self timeZone];
-  [v5 setKey:@"timeZone" withObject:v12];
+  timeZone = [(EKAutocompleteSearchResult *)self timeZone];
+  [v5 setKey:@"timeZone" withObject:timeZone];
 
   [v5 setKey:@"allDay" withBoolean:{-[EKAutocompleteSearchResult allDay](self, "allDay")}];
-  v13 = [(EKAutocompleteSearchResult *)self clientLocation];
-  [v5 setKey:@"clientLocation" withObject:v13];
+  clientLocation = [(EKAutocompleteSearchResult *)self clientLocation];
+  [v5 setKey:@"clientLocation" withObject:clientLocation];
 
-  v14 = [(EKAutocompleteSearchResult *)self structuredLocation];
-  [v5 setKey:@"structuredLocation" withObject:v14];
+  structuredLocation = [(EKAutocompleteSearchResult *)self structuredLocation];
+  [v5 setKey:@"structuredLocation" withObject:structuredLocation];
 
-  v15 = [(EKAutocompleteSearchResult *)self alarms];
-  [v5 setKey:@"alarms" withArray:v15];
+  alarms = [(EKAutocompleteSearchResult *)self alarms];
+  [v5 setKey:@"alarms" withArray:alarms];
 
-  v16 = [(EKAutocompleteSearchResult *)self attendees];
-  [v5 setKey:@"attendees" withArray:v16];
+  attendees = [(EKAutocompleteSearchResult *)self attendees];
+  [v5 setKey:@"attendees" withArray:attendees];
 
   v17 = [(EKAutocompleteSearchResult *)self URL];
   [v5 setKey:@"URL" withObject:v17];
 
-  v18 = [(EKAutocompleteSearchResult *)self notes];
-  [v5 setKey:@"notes" withString:v18];
+  notes = [(EKAutocompleteSearchResult *)self notes];
+  [v5 setKey:@"notes" withString:notes];
 
-  v19 = [(EKAutocompleteSearchResult *)self calendar];
-  [v5 setKey:@"calendar" withObject:v19];
+  calendar = [(EKAutocompleteSearchResult *)self calendar];
+  [v5 setKey:@"calendar" withObject:calendar];
 
   [(EKAutocompleteSearchResult *)self travelTime];
   [v5 setKey:@"travelTime" withTimeInterval:?];
-  v20 = [(EKAutocompleteSearchResult *)self travelStartLocation];
-  [v5 setKey:@"travelStartLocation" withObject:v20];
+  travelStartLocation = [(EKAutocompleteSearchResult *)self travelStartLocation];
+  [v5 setKey:@"travelStartLocation" withObject:travelStartLocation];
 
-  v21 = [(EKAutocompleteSearchResult *)self suggestionInfo];
-  [v5 setKey:@"suggestionInfo" withObject:v21];
+  suggestionInfo = [(EKAutocompleteSearchResult *)self suggestionInfo];
+  [v5 setKey:@"suggestionInfo" withObject:suggestionInfo];
 
   [v5 setKey:@"privacyLevel" withEnumNumericalValue:-[EKAutocompleteSearchResult privacyLevel](self andStringValue:{"privacyLevel"), 0}];
   [v5 setKey:@"availability" withEnumNumericalValue:-[EKAutocompleteSearchResult availability](self andStringValue:{"availability"), 0}];
-  v22 = [(EKAutocompleteSearchResult *)self localStructuredData];
-  [v5 setKey:@"localStructuredData" withObject:v22];
+  localStructuredData = [(EKAutocompleteSearchResult *)self localStructuredData];
+  [v5 setKey:@"localStructuredData" withObject:localStructuredData];
 
   [v5 setKey:@"calendarColor" withCGColor:{-[EKAutocompleteSearchResult calendarColor](self, "calendarColor")}];
-  v23 = [(EKAutocompleteSearchResult *)self foundInBundleID];
-  [v5 setKey:@"foundInBundleID" withString:v23];
+  foundInBundleID = [(EKAutocompleteSearchResult *)self foundInBundleID];
+  [v5 setKey:@"foundInBundleID" withString:foundInBundleID];
 
-  v24 = [(EKAutocompleteSearchResult *)self displayLocation];
-  [v5 setKey:@"displayLocation" withString:v24];
+  displayLocation = [(EKAutocompleteSearchResult *)self displayLocation];
+  [v5 setKey:@"displayLocation" withString:displayLocation];
 
-  v25 = [(EKAutocompleteSearchResult *)self displayLocationWithoutPrediction];
-  [v5 setKey:@"displayLocationWithoutPrediction" withString:v25];
+  displayLocationWithoutPrediction = [(EKAutocompleteSearchResult *)self displayLocationWithoutPrediction];
+  [v5 setKey:@"displayLocationWithoutPrediction" withString:displayLocationWithoutPrediction];
 
-  v26 = [(EKAutocompleteSearchResult *)self pasteboardResults];
-  [v5 setKey:@"pasteboardResults" withArray:v26];
+  pasteboardResults = [(EKAutocompleteSearchResult *)self pasteboardResults];
+  [v5 setKey:@"pasteboardResults" withArray:pasteboardResults];
 
-  v27 = [v5 build];
+  build = [v5 build];
 
-  return v27;
+  return build;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[EKAutocompleteSearchResult alloc] initWithSource:[(EKAutocompleteSearchResult *)self source]];
-  v5 = [(EKAutocompleteSearchResult *)self title];
-  [(EKAutocompleteSearchResult *)v4 setTitle:v5];
+  title = [(EKAutocompleteSearchResult *)self title];
+  [(EKAutocompleteSearchResult *)v4 setTitle:title];
 
-  v6 = [(EKAutocompleteSearchResult *)self startDate];
-  [(EKAutocompleteSearchResult *)v4 setStartDate:v6];
+  startDate = [(EKAutocompleteSearchResult *)self startDate];
+  [(EKAutocompleteSearchResult *)v4 setStartDate:startDate];
 
-  v7 = [(EKAutocompleteSearchResult *)self endDate];
-  [(EKAutocompleteSearchResult *)v4 setEndDate:v7];
+  endDate = [(EKAutocompleteSearchResult *)self endDate];
+  [(EKAutocompleteSearchResult *)v4 setEndDate:endDate];
 
-  v8 = [(EKAutocompleteSearchResult *)self timeZone];
-  [(EKAutocompleteSearchResult *)v4 setTimeZone:v8];
+  timeZone = [(EKAutocompleteSearchResult *)self timeZone];
+  [(EKAutocompleteSearchResult *)v4 setTimeZone:timeZone];
 
   [(EKAutocompleteSearchResult *)v4 setAllDay:[(EKAutocompleteSearchResult *)self allDay]];
-  v9 = [(EKAutocompleteSearchResult *)self clientLocation];
-  [(EKAutocompleteSearchResult *)v4 setClientLocation:v9];
+  clientLocation = [(EKAutocompleteSearchResult *)self clientLocation];
+  [(EKAutocompleteSearchResult *)v4 setClientLocation:clientLocation];
 
-  v10 = [(EKAutocompleteSearchResult *)self structuredLocation];
-  [(EKAutocompleteSearchResult *)v4 setStructuredLocation:v10];
+  structuredLocation = [(EKAutocompleteSearchResult *)self structuredLocation];
+  [(EKAutocompleteSearchResult *)v4 setStructuredLocation:structuredLocation];
 
-  v11 = [(EKAutocompleteSearchResult *)self alarms];
-  [(EKAutocompleteSearchResult *)v4 setAlarms:v11];
+  alarms = [(EKAutocompleteSearchResult *)self alarms];
+  [(EKAutocompleteSearchResult *)v4 setAlarms:alarms];
 
-  v12 = [(EKAutocompleteSearchResult *)self attendees];
-  [(EKAutocompleteSearchResult *)v4 setAttendees:v12];
+  attendees = [(EKAutocompleteSearchResult *)self attendees];
+  [(EKAutocompleteSearchResult *)v4 setAttendees:attendees];
 
   v13 = [(EKAutocompleteSearchResult *)self URL];
   [(EKAutocompleteSearchResult *)v4 setURL:v13];
 
-  v14 = [(EKAutocompleteSearchResult *)self notes];
-  [(EKAutocompleteSearchResult *)v4 setNotes:v14];
+  notes = [(EKAutocompleteSearchResult *)self notes];
+  [(EKAutocompleteSearchResult *)v4 setNotes:notes];
 
-  v15 = [(EKAutocompleteSearchResult *)self calendar];
-  [(EKAutocompleteSearchResult *)v4 setCalendar:v15];
+  calendar = [(EKAutocompleteSearchResult *)self calendar];
+  [(EKAutocompleteSearchResult *)v4 setCalendar:calendar];
 
   [(EKAutocompleteSearchResult *)self travelTime];
   [(EKAutocompleteSearchResult *)v4 setTravelTime:?];
-  v16 = [(EKAutocompleteSearchResult *)self travelStartLocation];
-  [(EKAutocompleteSearchResult *)v4 setTravelStartLocation:v16];
+  travelStartLocation = [(EKAutocompleteSearchResult *)self travelStartLocation];
+  [(EKAutocompleteSearchResult *)v4 setTravelStartLocation:travelStartLocation];
 
-  v17 = [(EKAutocompleteSearchResult *)self suggestionInfo];
-  [(EKAutocompleteSearchResult *)v4 setSuggestionInfo:v17];
+  suggestionInfo = [(EKAutocompleteSearchResult *)self suggestionInfo];
+  [(EKAutocompleteSearchResult *)v4 setSuggestionInfo:suggestionInfo];
 
   [(EKAutocompleteSearchResult *)v4 setPrivacyLevel:[(EKAutocompleteSearchResult *)self privacyLevel]];
   [(EKAutocompleteSearchResult *)v4 setAvailability:[(EKAutocompleteSearchResult *)self availability]];
-  v18 = [(EKAutocompleteSearchResult *)self localStructuredData];
-  [(EKAutocompleteSearchResult *)v4 setLocalStructuredData:v18];
+  localStructuredData = [(EKAutocompleteSearchResult *)self localStructuredData];
+  [(EKAutocompleteSearchResult *)v4 setLocalStructuredData:localStructuredData];
 
   [(EKAutocompleteSearchResult *)v4 setCalendarColor:[(EKAutocompleteSearchResult *)self calendarColor]];
-  v19 = [(EKAutocompleteSearchResult *)self foundInBundleID];
-  [(EKAutocompleteSearchResult *)v4 setFoundInBundleID:v19];
+  foundInBundleID = [(EKAutocompleteSearchResult *)self foundInBundleID];
+  [(EKAutocompleteSearchResult *)v4 setFoundInBundleID:foundInBundleID];
 
-  v20 = [(EKAutocompleteSearchResult *)self displayLocation];
-  [(EKAutocompleteSearchResult *)v4 setDisplayLocation:v20];
+  displayLocation = [(EKAutocompleteSearchResult *)self displayLocation];
+  [(EKAutocompleteSearchResult *)v4 setDisplayLocation:displayLocation];
 
-  v21 = [(EKAutocompleteSearchResult *)self displayLocationWithoutPrediction];
-  [(EKAutocompleteSearchResult *)v4 setDisplayLocationWithoutPrediction:v21];
+  displayLocationWithoutPrediction = [(EKAutocompleteSearchResult *)self displayLocationWithoutPrediction];
+  [(EKAutocompleteSearchResult *)v4 setDisplayLocationWithoutPrediction:displayLocationWithoutPrediction];
 
-  v22 = [(EKAutocompleteSearchResult *)self pasteboardResults];
-  [(EKAutocompleteSearchResult *)v4 setPasteboardResults:v22];
+  pasteboardResults = [(EKAutocompleteSearchResult *)self pasteboardResults];
+  [(EKAutocompleteSearchResult *)v4 setPasteboardResults:pasteboardResults];
 
   return v4;
 }
 
-- (void)setCalendarColor:(CGColor *)a3
+- (void)setCalendarColor:(CGColor *)color
 {
   calendarColor = self->_calendarColor;
-  if (calendarColor != a3)
+  if (calendarColor != color)
   {
     CGColorRelease(calendarColor);
-    self->_calendarColor = CGColorRetain(a3);
+    self->_calendarColor = CGColorRetain(color);
   }
 }
 
-- (id)_attendeesForSuggestedEventFromAttendees:(id)a3
+- (id)_attendeesForSuggestedEventFromAttendees:(id)attendees
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  attendeesCopy = attendees;
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = attendeesCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -303,18 +303,18 @@
         v10 = *(*(&v18 + 1) + 8 * i);
         if (([v10 isCurrentUser] & 1) == 0)
         {
-          v11 = [v10 name];
+          name = [v10 name];
           v12 = [v10 URL];
-          v13 = [EKAttendee attendeeWithName:v11 url:v12];
+          v13 = [EKAttendee attendeeWithName:name url:v12];
 
           [v13 setParticipantType:{objc_msgSend(v10, "participantType")}];
-          v14 = [v10 emailAddress];
-          [v13 setEmailAddress:v14];
+          emailAddress = [v10 emailAddress];
+          [v13 setEmailAddress:emailAddress];
 
-          v15 = [v10 phoneNumber];
-          [v13 setPhoneNumber:v15];
+          phoneNumber = [v10 phoneNumber];
+          [v13 setPhoneNumber:phoneNumber];
 
-          [v4 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -326,12 +326,12 @@
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
-- (void)setAttendees:(id)a3
+- (void)setAttendees:(id)attendees
 {
-  v4 = [(EKAutocompleteSearchResult *)self _attendeesForSuggestedEventFromAttendees:a3];
+  v4 = [(EKAutocompleteSearchResult *)self _attendeesForSuggestedEventFromAttendees:attendees];
   attendees = self->_attendees;
   self->_attendees = v4;
 
@@ -340,279 +340,279 @@
 
 - (EKStructuredLocation)preferredLocation
 {
-  v3 = [(EKAutocompleteSearchResult *)self clientLocation];
-  v4 = [(EKAutocompleteSearchResult *)self structuredLocation];
-  v5 = [EKCalendarItem preferredLocationWithClientLocation:v3 structuredLocation:v4];
+  clientLocation = [(EKAutocompleteSearchResult *)self clientLocation];
+  structuredLocation = [(EKAutocompleteSearchResult *)self structuredLocation];
+  v5 = [EKCalendarItem preferredLocationWithClientLocation:clientLocation structuredLocation:structuredLocation];
 
   return v5;
 }
 
-- (void)updateSelfFromEvent:(id)a3
+- (void)updateSelfFromEvent:(id)event
 {
-  v36 = a3;
-  v4 = [(EKAutocompleteSearchResult *)self title];
+  eventCopy = event;
+  title = [(EKAutocompleteSearchResult *)self title];
 
-  if (!v4)
+  if (!title)
   {
-    v5 = [v36 title];
-    [(EKAutocompleteSearchResult *)self setTitle:v5];
+    title2 = [eventCopy title];
+    [(EKAutocompleteSearchResult *)self setTitle:title2];
   }
 
-  v6 = [(EKAutocompleteSearchResult *)self startDate];
+  startDate = [(EKAutocompleteSearchResult *)self startDate];
 
-  if (!v6)
+  if (!startDate)
   {
-    v7 = [v36 startDate];
-    [(EKAutocompleteSearchResult *)self setStartDate:v7];
+    startDate2 = [eventCopy startDate];
+    [(EKAutocompleteSearchResult *)self setStartDate:startDate2];
   }
 
-  v8 = [(EKAutocompleteSearchResult *)self endDate];
+  endDate = [(EKAutocompleteSearchResult *)self endDate];
 
-  if (!v8)
+  if (!endDate)
   {
-    v9 = [v36 endDateUnadjustedForLegacyClients];
-    [(EKAutocompleteSearchResult *)self setEndDate:v9];
+    endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
+    [(EKAutocompleteSearchResult *)self setEndDate:endDateUnadjustedForLegacyClients];
   }
 
-  v10 = [(EKAutocompleteSearchResult *)self timeZone];
+  timeZone = [(EKAutocompleteSearchResult *)self timeZone];
 
-  if (!v10)
+  if (!timeZone)
   {
-    v11 = [v36 timeZone];
-    [(EKAutocompleteSearchResult *)self setTimeZone:v11];
+    timeZone2 = [eventCopy timeZone];
+    [(EKAutocompleteSearchResult *)self setTimeZone:timeZone2];
   }
 
-  v12 = [(EKAutocompleteSearchResult *)self clientLocation];
-  if (v12 || ([(EKAutocompleteSearchResult *)self structuredLocation], (v12 = objc_claimAutoreleasedReturnValue()) != 0) || ([(EKAutocompleteSearchResult *)self displayLocation], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  clientLocation = [(EKAutocompleteSearchResult *)self clientLocation];
+  if (clientLocation || ([(EKAutocompleteSearchResult *)self structuredLocation], (clientLocation = objc_claimAutoreleasedReturnValue()) != 0) || ([(EKAutocompleteSearchResult *)self displayLocation], (clientLocation = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v13 = v12;
+    locationWithoutPrediction = clientLocation;
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v32 = [(EKAutocompleteSearchResult *)self displayLocationWithoutPrediction];
+  displayLocationWithoutPrediction = [(EKAutocompleteSearchResult *)self displayLocationWithoutPrediction];
 
-  if (!v32)
+  if (!displayLocationWithoutPrediction)
   {
-    v33 = [v36 clientLocation];
-    [(EKAutocompleteSearchResult *)self setClientLocation:v33];
+    clientLocation2 = [eventCopy clientLocation];
+    [(EKAutocompleteSearchResult *)self setClientLocation:clientLocation2];
 
-    v34 = [v36 structuredLocation];
-    [(EKAutocompleteSearchResult *)self setStructuredLocation:v34];
+    structuredLocation = [eventCopy structuredLocation];
+    [(EKAutocompleteSearchResult *)self setStructuredLocation:structuredLocation];
 
-    v35 = [v36 location];
-    [(EKAutocompleteSearchResult *)self setDisplayLocation:v35];
+    location = [eventCopy location];
+    [(EKAutocompleteSearchResult *)self setDisplayLocation:location];
 
-    v13 = [v36 locationWithoutPrediction];
-    [(EKAutocompleteSearchResult *)self setDisplayLocationWithoutPrediction:v13];
+    locationWithoutPrediction = [eventCopy locationWithoutPrediction];
+    [(EKAutocompleteSearchResult *)self setDisplayLocationWithoutPrediction:locationWithoutPrediction];
     goto LABEL_13;
   }
 
 LABEL_14:
-  v14 = [(EKAutocompleteSearchResult *)self alarms];
-  v15 = [v14 count];
+  alarms = [(EKAutocompleteSearchResult *)self alarms];
+  v15 = [alarms count];
 
   if (!v15)
   {
-    v16 = [v36 alarms];
-    [(EKAutocompleteSearchResult *)self setAlarms:v16];
+    alarms2 = [eventCopy alarms];
+    [(EKAutocompleteSearchResult *)self setAlarms:alarms2];
   }
 
-  v17 = [(EKAutocompleteSearchResult *)self attendees];
-  v18 = [v17 count];
+  attendees = [(EKAutocompleteSearchResult *)self attendees];
+  v18 = [attendees count];
 
   if (!v18)
   {
-    v19 = [v36 attendeesNotIncludingOrganizer];
-    [(EKAutocompleteSearchResult *)self setAttendees:v19];
+    attendeesNotIncludingOrganizer = [eventCopy attendeesNotIncludingOrganizer];
+    [(EKAutocompleteSearchResult *)self setAttendees:attendeesNotIncludingOrganizer];
   }
 
   v20 = [(EKAutocompleteSearchResult *)self URL];
   if (!v20)
   {
-    if ([v36 isBirthday])
+    if ([eventCopy isBirthday])
     {
       goto LABEL_22;
     }
 
-    v20 = [v36 URL];
+    v20 = [eventCopy URL];
     [(EKAutocompleteSearchResult *)self setURL:v20];
   }
 
 LABEL_22:
-  v21 = [(EKAutocompleteSearchResult *)self notes];
+  notes = [(EKAutocompleteSearchResult *)self notes];
 
-  if (!v21)
+  if (!notes)
   {
-    v22 = [v36 notes];
-    [(EKAutocompleteSearchResult *)self setNotes:v22];
+    notes2 = [eventCopy notes];
+    [(EKAutocompleteSearchResult *)self setNotes:notes2];
   }
 
-  v23 = [(EKAutocompleteSearchResult *)self calendar];
+  calendar = [(EKAutocompleteSearchResult *)self calendar];
 
-  if (!v23)
+  if (!calendar)
   {
-    v24 = [v36 calendar];
-    [(EKAutocompleteSearchResult *)self setCalendar:v24];
+    calendar2 = [eventCopy calendar];
+    [(EKAutocompleteSearchResult *)self setCalendar:calendar2];
   }
 
   if (![(EKAutocompleteSearchResult *)self calendarColor])
   {
-    v25 = [v36 calendar];
-    -[EKAutocompleteSearchResult setCalendarColor:](self, "setCalendarColor:", [v25 CGColor]);
+    calendar3 = [eventCopy calendar];
+    -[EKAutocompleteSearchResult setCalendarColor:](self, "setCalendarColor:", [calendar3 CGColor]);
   }
 
-  v26 = [(EKAutocompleteSearchResult *)self suggestionInfo];
+  suggestionInfo = [(EKAutocompleteSearchResult *)self suggestionInfo];
 
-  if (!v26)
+  if (!suggestionInfo)
   {
-    v27 = [v36 suggestionInfo];
-    [(EKAutocompleteSearchResult *)self setSuggestionInfo:v27];
+    suggestionInfo2 = [eventCopy suggestionInfo];
+    [(EKAutocompleteSearchResult *)self setSuggestionInfo:suggestionInfo2];
   }
 
-  v28 = [(EKAutocompleteSearchResult *)self foundInBundleID];
-  if (v28)
+  foundInBundleID = [(EKAutocompleteSearchResult *)self foundInBundleID];
+  if (foundInBundleID)
   {
     goto LABEL_31;
   }
 
-  v31 = [v36 suggestionInfo];
+  suggestionInfo3 = [eventCopy suggestionInfo];
 
-  if (v31)
+  if (suggestionInfo3)
   {
-    v28 = [v36 localCustomObjectForKey:@"SuggestionsOriginBundleId"];
+    foundInBundleID = [eventCopy localCustomObjectForKey:@"SuggestionsOriginBundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(EKAutocompleteSearchResult *)self setFoundInBundleID:v28];
+      [(EKAutocompleteSearchResult *)self setFoundInBundleID:foundInBundleID];
     }
 
 LABEL_31:
   }
 
-  -[EKAutocompleteSearchResult setPrivacyLevel:](self, "setPrivacyLevel:", [v36 privacyLevel]);
-  -[EKAutocompleteSearchResult setAvailability:](self, "setAvailability:", [v36 availability]);
-  v29 = [(EKAutocompleteSearchResult *)self localStructuredData];
+  -[EKAutocompleteSearchResult setPrivacyLevel:](self, "setPrivacyLevel:", [eventCopy privacyLevel]);
+  -[EKAutocompleteSearchResult setAvailability:](self, "setAvailability:", [eventCopy availability]);
+  localStructuredData = [(EKAutocompleteSearchResult *)self localStructuredData];
 
-  if (!v29)
+  if (!localStructuredData)
   {
-    v30 = [v36 localStructuredData];
-    [(EKAutocompleteSearchResult *)self setLocalStructuredData:v30];
+    localStructuredData2 = [eventCopy localStructuredData];
+    [(EKAutocompleteSearchResult *)self setLocalStructuredData:localStructuredData2];
   }
 }
 
-- (void)updateEventFromSelf:(id)a3 updateTimeProperties:(BOOL)a4 updateTravelTimeProperties:(BOOL)a5 updateMode:(unint64_t)a6 overrideCalendar:(id)a7
+- (void)updateEventFromSelf:(id)self updateTimeProperties:(BOOL)properties updateTravelTimeProperties:(BOOL)timeProperties updateMode:(unint64_t)mode overrideCalendar:(id)calendar
 {
-  v8 = a5;
-  v9 = a4;
+  timePropertiesCopy = timeProperties;
+  propertiesCopy = properties;
   v81 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a7;
-  v13 = [(EKAutocompleteSearchResult *)self title];
-  [v11 setTitle:v13];
+  selfCopy = self;
+  calendarCopy = calendar;
+  title = [(EKAutocompleteSearchResult *)self title];
+  [selfCopy setTitle:title];
 
-  if (v12)
+  if (calendarCopy)
   {
-    v14 = v12;
+    calendar = calendarCopy;
   }
 
   else
   {
-    v14 = [(EKAutocompleteSearchResult *)self calendar];
+    calendar = [(EKAutocompleteSearchResult *)self calendar];
   }
 
-  v15 = v14;
-  if ([v11 canMoveToCalendar:v14 error:0])
+  v15 = calendar;
+  if ([selfCopy canMoveToCalendar:calendar error:0])
   {
-    [v11 setCalendar:v15];
+    [selfCopy setCalendar:v15];
   }
 
   v67 = v15;
-  if (v9)
+  if (propertiesCopy)
   {
-    v16 = [(EKAutocompleteSearchResult *)self timeZone];
-    [v11 setTimeZone:v16];
+    timeZone = [(EKAutocompleteSearchResult *)self timeZone];
+    [selfCopy setTimeZone:timeZone];
 
-    if ([v11 changingAllDayPropertyIsAllowed])
+    if ([selfCopy changingAllDayPropertyIsAllowed])
     {
-      [v11 setAllDay:{-[EKAutocompleteSearchResult allDay](self, "allDay")}];
+      [selfCopy setAllDay:{-[EKAutocompleteSearchResult allDay](self, "allDay")}];
     }
 
-    v17 = [(EKAutocompleteSearchResult *)self startDate];
-    [v11 setStartDate:v17];
+    startDate = [(EKAutocompleteSearchResult *)self startDate];
+    [selfCopy setStartDate:startDate];
 
-    v18 = [(EKAutocompleteSearchResult *)self endDate];
-    [v11 setEndDateUnadjustedForLegacyClients:v18];
+    endDate = [(EKAutocompleteSearchResult *)self endDate];
+    [selfCopy setEndDateUnadjustedForLegacyClients:endDate];
   }
 
-  v70 = v11;
-  if (v8)
+  v70 = selfCopy;
+  if (timePropertiesCopy)
   {
     [(EKAutocompleteSearchResult *)self travelTime];
-    [v11 setTravelTime:?];
-    v19 = [(EKAutocompleteSearchResult *)self travelStartLocation];
-    v20 = [v19 duplicate];
-    [v11 setTravelStartLocation:v20];
+    [selfCopy setTravelTime:?];
+    travelStartLocation = [(EKAutocompleteSearchResult *)self travelStartLocation];
+    duplicate = [travelStartLocation duplicate];
+    [selfCopy setTravelStartLocation:duplicate];
   }
 
-  v21 = [(EKAutocompleteSearchResult *)self structuredLocation];
-  if (v21)
+  structuredLocation = [(EKAutocompleteSearchResult *)self structuredLocation];
+  if (structuredLocation)
   {
 
-    v22 = a6;
+    modeCopy3 = mode;
   }
 
   else
   {
-    v23 = [(EKAutocompleteSearchResult *)self clientLocation];
+    clientLocation = [(EKAutocompleteSearchResult *)self clientLocation];
 
-    v22 = a6;
-    if (!v23)
+    modeCopy3 = mode;
+    if (!clientLocation)
     {
       goto LABEL_20;
     }
   }
 
-  if (!v22)
+  if (!modeCopy3)
   {
     goto LABEL_18;
   }
 
-  v24 = [v11 structuredLocation];
-  if (v24)
+  structuredLocation2 = [selfCopy structuredLocation];
+  if (structuredLocation2)
   {
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v25 = [v11 clientLocation];
+  clientLocation2 = [selfCopy clientLocation];
 
-  if (!v25)
+  if (!clientLocation2)
   {
 LABEL_18:
-    v26 = [(EKAutocompleteSearchResult *)self structuredLocation];
-    v27 = [v26 duplicate];
-    [v11 setStructuredLocation:v27];
+    structuredLocation3 = [(EKAutocompleteSearchResult *)self structuredLocation];
+    duplicate2 = [structuredLocation3 duplicate];
+    [selfCopy setStructuredLocation:duplicate2];
 
-    v24 = [(EKAutocompleteSearchResult *)self clientLocation];
-    v28 = [v24 duplicate];
-    [v11 setClientLocation:v28];
+    structuredLocation2 = [(EKAutocompleteSearchResult *)self clientLocation];
+    duplicate3 = [structuredLocation2 duplicate];
+    [selfCopy setClientLocation:duplicate3];
 
     goto LABEL_19;
   }
 
 LABEL_20:
-  v29 = [(EKAutocompleteSearchResult *)self notes];
-  v30 = [v29 length];
+  notes = [(EKAutocompleteSearchResult *)self notes];
+  v30 = [notes length];
 
   if (v30)
   {
-    if (!v22 || ([v11 notes], v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "length"), v31, !v32))
+    if (!modeCopy3 || ([selfCopy notes], v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "length"), v31, !v32))
     {
-      v33 = [(EKAutocompleteSearchResult *)self notes];
-      [v11 setNotes:v33];
+      notes2 = [(EKAutocompleteSearchResult *)self notes];
+      [selfCopy setNotes:notes2];
     }
   }
 
@@ -620,41 +620,41 @@ LABEL_20:
 
   if (v34)
   {
-    if (!v22 || ([v11 URL], v35 = objc_claimAutoreleasedReturnValue(), v35, !v35))
+    if (!modeCopy3 || ([selfCopy URL], v35 = objc_claimAutoreleasedReturnValue(), v35, !v35))
     {
       v36 = [(EKAutocompleteSearchResult *)self URL];
-      [v11 setURL:v36];
+      [selfCopy setURL:v36];
     }
   }
 
-  v37 = [(EKAutocompleteSearchResult *)self attendees];
-  v38 = [v37 count];
+  attendees = [(EKAutocompleteSearchResult *)self attendees];
+  v38 = [attendees count];
 
   if (v38)
   {
-    if (!v22)
+    if (!modeCopy3)
     {
-      v53 = [(EKAutocompleteSearchResult *)self attendees];
-      v52 = v11;
-      [v11 setAttendees:v53];
+      attendees2 = [(EKAutocompleteSearchResult *)self attendees];
+      v52 = selfCopy;
+      [selfCopy setAttendees:attendees2];
 
 LABEL_46:
       [v52 setPrivacyLevel:{-[EKAutocompleteSearchResult privacyLevel](self, "privacyLevel")}];
       goto LABEL_47;
     }
 
-    v66 = v12;
-    v39 = v11;
-    v40 = [v11 attendees];
-    v69 = [v40 valueForKey:@"URL"];
+    v66 = calendarCopy;
+    v39 = selfCopy;
+    attendees3 = [selfCopy attendees];
+    v69 = [attendees3 valueForKey:@"URL"];
 
     v77 = 0u;
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v65 = self;
-    v41 = [(EKAutocompleteSearchResult *)self attendees];
-    v42 = [v41 countByEnumeratingWithState:&v75 objects:v80 count:16];
+    selfCopy2 = self;
+    attendees4 = [(EKAutocompleteSearchResult *)self attendees];
+    v42 = [attendees4 countByEnumeratingWithState:&v75 objects:v80 count:16];
     if (v42)
     {
       v43 = v42;
@@ -665,14 +665,14 @@ LABEL_46:
         {
           if (*v76 != v44)
           {
-            objc_enumerationMutation(v41);
+            objc_enumerationMutation(attendees4);
           }
 
           v46 = *(*(&v75 + 1) + 8 * i);
           v47 = [v46 URL];
-          v48 = [v39 calendar];
-          v49 = [v48 ownerIdentityAddress];
-          if ([v47 isEqual:v49])
+          calendar2 = [v39 calendar];
+          ownerIdentityAddress = [calendar2 ownerIdentityAddress];
+          if ([v47 isEqual:ownerIdentityAddress])
           {
 
             v39 = v70;
@@ -691,33 +691,33 @@ LABEL_46:
           }
         }
 
-        v43 = [v41 countByEnumeratingWithState:&v75 objects:v80 count:16];
+        v43 = [attendees4 countByEnumeratingWithState:&v75 objects:v80 count:16];
       }
 
       while (v43);
     }
 
-    self = v65;
-    v12 = v66;
-    v22 = a6;
+    self = selfCopy2;
+    calendarCopy = v66;
+    modeCopy3 = mode;
   }
 
   v52 = v70;
-  if (!v22 || ([v70 isPrivacySet] & 1) == 0)
+  if (!modeCopy3 || ([v70 isPrivacySet] & 1) == 0)
   {
     goto LABEL_46;
   }
 
 LABEL_47:
   [v52 setAvailability:{-[EKAutocompleteSearchResult availability](self, "availability")}];
-  if (v22)
+  if (modeCopy3)
   {
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v54 = [(EKAutocompleteSearchResult *)self alarms];
-    v55 = [v54 countByEnumeratingWithState:&v71 objects:v79 count:16];
+    alarms = [(EKAutocompleteSearchResult *)self alarms];
+    v55 = [alarms countByEnumeratingWithState:&v71 objects:v79 count:16];
     if (v55)
     {
       v56 = v55;
@@ -728,18 +728,18 @@ LABEL_47:
         {
           if (*v72 != v57)
           {
-            objc_enumerationMutation(v54);
+            objc_enumerationMutation(alarms);
           }
 
           v59 = *(*(&v71 + 1) + 8 * j);
           if (([v59 isDefaultAlarm] & 1) == 0)
           {
-            v60 = [v59 duplicate];
-            [v52 addAlarm:v60];
+            duplicate4 = [v59 duplicate];
+            [v52 addAlarm:duplicate4];
           }
         }
 
-        v56 = [v54 countByEnumeratingWithState:&v71 objects:v79 count:16];
+        v56 = [alarms countByEnumeratingWithState:&v71 objects:v79 count:16];
       }
 
       while (v56);
@@ -750,49 +750,49 @@ LABEL_47:
 
   if (![(EKAutocompleteSearchResult *)self source]|| [(EKAutocompleteSearchResult *)self source]== 3 || [(EKAutocompleteSearchResult *)self source]== 4)
   {
-    v54 = [objc_opt_class() _copyAlarmsForAutocompleteFromResult:self];
-    [v52 setAlarms:v54];
+    alarms = [objc_opt_class() _copyAlarmsForAutocompleteFromResult:self];
+    [v52 setAlarms:alarms];
 LABEL_62:
   }
 
-  v61 = [(EKAutocompleteSearchResult *)self suggestionInfo];
-  v62 = [v61 duplicate];
-  [v52 setSuggestionInfo:v62];
+  suggestionInfo = [(EKAutocompleteSearchResult *)self suggestionInfo];
+  duplicate5 = [suggestionInfo duplicate];
+  [v52 setSuggestionInfo:duplicate5];
 
-  v63 = [(EKAutocompleteSearchResult *)self localStructuredData];
-  [v52 setLocalStructuredData:v63];
+  localStructuredData = [(EKAutocompleteSearchResult *)self localStructuredData];
+  [v52 setLocalStructuredData:localStructuredData];
 
   v64 = *MEMORY[0x1E69E9840];
 }
 
 - (id)eventRepresentingSelf
 {
-  v3 = [(EKAutocompleteSearchResult *)self calendar];
-  v4 = [v3 eventStore];
-  v5 = [EKEvent eventWithEventStore:v4];
+  calendar = [(EKAutocompleteSearchResult *)self calendar];
+  eventStore = [calendar eventStore];
+  v5 = [EKEvent eventWithEventStore:eventStore];
 
-  v6 = [(EKAutocompleteSearchResult *)self calendar];
-  [v5 setCalendar:v6];
+  calendar2 = [(EKAutocompleteSearchResult *)self calendar];
+  [v5 setCalendar:calendar2];
 
   [(EKAutocompleteSearchResult *)self updateEventFromSelf:v5 updateTimeProperties:1 updateTravelTimeProperties:0 updateMode:0 overrideCalendar:0];
 
   return v5;
 }
 
-+ (id)_copyAlarmsForAutocompleteFromResult:(id)a3
++ (id)_copyAlarmsForAutocompleteFromResult:(id)result
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultCopy = result;
   v4 = objc_alloc(MEMORY[0x1E695DF70]);
-  v5 = [v3 alarms];
-  v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  alarms = [resultCopy alarms];
+  v6 = [v4 initWithCapacity:{objc_msgSend(alarms, "count")}];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v3 alarms];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  alarms2 = [resultCopy alarms];
+  v8 = [alarms2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -803,18 +803,18 @@ LABEL_62:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(alarms2);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
         if (([v12 isDefaultAlarm] & 1) == 0)
         {
-          v13 = [v12 duplicate];
-          [v6 addObject:v13];
+          duplicate = [v12 duplicate];
+          [v6 addObject:duplicate];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [alarms2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -824,15 +824,15 @@ LABEL_62:
   return v6;
 }
 
-- (BOOL)isDifferentEnoughFromInitialEvent:(id)a3 consideringTimeProperties:(BOOL)a4
+- (BOOL)isDifferentEnoughFromInitialEvent:(id)event consideringTimeProperties:(BOOL)properties
 {
-  v6 = a3;
-  v7 = [(EKAutocompleteSearchResult *)self clientLocation];
-  v8 = [v6 clientLocation];
+  eventCopy = event;
+  clientLocation = [(EKAutocompleteSearchResult *)self clientLocation];
+  clientLocation2 = [eventCopy clientLocation];
   if (!CalEqualObjects())
   {
 
-    if (a4)
+    if (properties)
     {
 LABEL_30:
       LOBYTE(v28) = 1;
@@ -845,41 +845,41 @@ LABEL_29:
     goto LABEL_37;
   }
 
-  v9 = [(EKAutocompleteSearchResult *)self structuredLocation];
-  v10 = [v6 structuredLocation];
+  structuredLocation = [(EKAutocompleteSearchResult *)self structuredLocation];
+  structuredLocation2 = [eventCopy structuredLocation];
   if (CalEqualObjects())
   {
-    v11 = [(EKAutocompleteSearchResult *)self notes];
-    v12 = [v6 notes];
+    notes = [(EKAutocompleteSearchResult *)self notes];
+    notes2 = [eventCopy notes];
     if (CalEqualObjects())
     {
-      v13 = [(EKAutocompleteSearchResult *)self calendar];
-      v40 = [v6 calendar];
-      v41 = v13;
+      calendar = [(EKAutocompleteSearchResult *)self calendar];
+      calendar2 = [eventCopy calendar];
+      v41 = calendar;
       if (CalEqualObjects())
       {
-        v14 = [(EKAutocompleteSearchResult *)self attendees];
-        v38 = [v6 attendees];
-        v39 = v14;
+        attendees = [(EKAutocompleteSearchResult *)self attendees];
+        attendees2 = [eventCopy attendees];
+        v39 = attendees;
         if (CalEqualObjects())
         {
           v15 = [(EKAutocompleteSearchResult *)self URL];
-          v36 = [v6 URL];
+          v36 = [eventCopy URL];
           v37 = v15;
-          if (CalEqualObjects() && (v16 = -[EKAutocompleteSearchResult privacyLevel](self, "privacyLevel"), v16 == [v6 privacyLevel]) && (v17 = -[EKAutocompleteSearchResult availability](self, "availability"), v17 == objc_msgSend(v6, "availability")))
+          if (CalEqualObjects() && (v16 = -[EKAutocompleteSearchResult privacyLevel](self, "privacyLevel"), v16 == [eventCopy privacyLevel]) && (v17 = -[EKAutocompleteSearchResult availability](self, "availability"), v17 == objc_msgSend(eventCopy, "availability")))
           {
-            v18 = [(EKAutocompleteSearchResult *)self suggestionInfo];
-            v34 = [v6 suggestionInfo];
-            v35 = v18;
+            suggestionInfo = [(EKAutocompleteSearchResult *)self suggestionInfo];
+            suggestionInfo2 = [eventCopy suggestionInfo];
+            v35 = suggestionInfo;
             if (CalEqualObjects())
             {
-              v19 = [(EKAutocompleteSearchResult *)self localStructuredData];
-              v32 = [v6 localStructuredData];
-              v33 = v19;
+              localStructuredData = [(EKAutocompleteSearchResult *)self localStructuredData];
+              localStructuredData2 = [eventCopy localStructuredData];
+              v33 = localStructuredData;
               if (CalEqualObjects())
               {
-                v31 = [(EKAutocompleteSearchResult *)self alarms];
-                v30 = [v6 alarms];
+                alarms = [(EKAutocompleteSearchResult *)self alarms];
+                alarms2 = [eventCopy alarms];
                 v20 = CalEqualObjects();
               }
 
@@ -924,7 +924,7 @@ LABEL_29:
     v20 = 0;
   }
 
-  if (!a4)
+  if (!properties)
   {
     goto LABEL_29;
   }
@@ -934,20 +934,20 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v21 = [(EKAutocompleteSearchResult *)self startDate];
-  v22 = [v6 startDate];
+  startDate = [(EKAutocompleteSearchResult *)self startDate];
+  startDate2 = [eventCopy startDate];
   if (CalEqualObjects())
   {
-    v23 = [(EKAutocompleteSearchResult *)self endDate];
-    v24 = [v6 endDateUnadjustedForLegacyClients];
+    endDate = [(EKAutocompleteSearchResult *)self endDate];
+    endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
     if (CalEqualObjects())
     {
-      v25 = [(EKAutocompleteSearchResult *)self timeZone];
-      v26 = [v6 timeZone];
+      timeZone = [(EKAutocompleteSearchResult *)self timeZone];
+      timeZone2 = [eventCopy timeZone];
       if (CalEqualObjects())
       {
-        v27 = [(EKAutocompleteSearchResult *)self allDay];
-        v28 = v27 ^ [v6 isAllDay];
+        allDay = [(EKAutocompleteSearchResult *)self allDay];
+        v28 = allDay ^ [eventCopy isAllDay];
       }
 
       else
@@ -973,8 +973,8 @@ LABEL_37:
 
 - (BOOL)isReminder
 {
-  v2 = [(EKCalendar *)self->_calendar source];
-  v3 = [v2 sourceType] == 6;
+  source = [(EKCalendar *)self->_calendar source];
+  v3 = [source sourceType] == 6;
 
   return v3;
 }

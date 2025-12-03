@@ -1,14 +1,14 @@
 @interface SearchResultsItemSource
 - (SearchResultsItemSource)init;
 - (id)allItems;
-- (id)keysForSearchResult:(id)a3;
-- (void)_updateSearchResults:(id)a3;
-- (void)checkForVisitedPlacesPOI:(id)a3 searchResult:(id)a4;
+- (id)keysForSearchResult:(id)result;
+- (void)_updateSearchResults:(id)results;
+- (void)checkForVisitedPlacesPOI:(id)i searchResult:(id)result;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setPreferredDisplayedSearchResultType:(int64_t)a3;
-- (void)setSearchResults:(id)a3;
-- (void)setShouldHideSearchResults:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setPreferredDisplayedSearchResultType:(int64_t)type;
+- (void)setSearchResults:(id)results;
+- (void)setShouldHideSearchResults:(BOOL)results;
 @end
 
 @implementation SearchResultsItemSource
@@ -51,17 +51,17 @@
   return v3;
 }
 
-- (void)setPreferredDisplayedSearchResultType:(int64_t)a3
+- (void)setPreferredDisplayedSearchResultType:(int64_t)type
 {
-  if (self->_preferredDisplayedSearchResultType != a3)
+  if (self->_preferredDisplayedSearchResultType != type)
   {
-    self->_preferredDisplayedSearchResultType = a3;
+    self->_preferredDisplayedSearchResultType = type;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(SearchResultsItemSource *)self allItems];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allItems = [(SearchResultsItemSource *)self allItems];
+    v6 = [allItems countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -72,13 +72,13 @@
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allItems);
           }
 
-          [*(*(&v10 + 1) + 8 * i) setPreferredDisplayedSearchResultType:a3];
+          [*(*(&v10 + 1) + 8 * i) setPreferredDisplayedSearchResultType:type];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [allItems countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -88,56 +88,56 @@
   }
 }
 
-- (void)setShouldHideSearchResults:(BOOL)a3
+- (void)setShouldHideSearchResults:(BOOL)results
 {
-  if (self->_shouldHideSearchResults == a3)
+  if (self->_shouldHideSearchResults == results)
   {
     return;
   }
 
-  v3 = a3;
+  resultsCopy = results;
   v5 = sub_1000177D0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = self;
+    selfCopy = self;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(SearchResultsItemSource *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(SearchResultsItemSource *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
     v12 = @"NO";
-    if (v3)
+    if (resultsCopy)
     {
       v12 = @"YES";
     }
 
     v13 = v12;
     *buf = 138543618;
-    v29 = v11;
+    v29 = selfCopy;
     v30 = 2112;
     v31 = v13;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set shouldHideSearchResults: %@", buf, 0x16u);
   }
 
-  self->_shouldHideSearchResults = v3;
-  v14 = [(SearchResultsItemSource *)self allItems];
+  self->_shouldHideSearchResults = resultsCopy;
+  allItems = [(SearchResultsItemSource *)self allItems];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v15 = [allItems countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v15)
   {
     v16 = v15;
@@ -149,15 +149,15 @@ LABEL_8:
       {
         if (*v24 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allItems);
         }
 
-        [*(*(&v23 + 1) + 8 * v18) setShouldBeHiddenFromMap:v3];
+        [*(*(&v23 + 1) + 8 * v18) setShouldBeHiddenFromMap:resultsCopy];
         v18 = v18 + 1;
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v16 = [allItems countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v16);
@@ -169,25 +169,25 @@ LABEL_8:
   block[2] = sub_100D58D20;
   block[3] = &unk_101661A90;
   block[4] = self;
-  v22 = v14;
-  v20 = v14;
+  v22 = allItems;
+  v20 = allItems;
   dispatch_sync(lockQueue, block);
   [(PersonalizedItemSource *)self _notifyObserversItemsDidChange];
 }
 
-- (id)keysForSearchResult:(id)a3
+- (id)keysForSearchResult:(id)result
 {
-  v3 = a3;
-  if (v3)
+  resultCopy = result;
+  if (resultCopy)
   {
     v4 = +[NSMutableSet set];
-    v5 = [v3 personalizedItemKey];
-    [v4 addObject:v5];
+    personalizedItemKey = [resultCopy personalizedItemKey];
+    [v4 addObject:personalizedItemKey];
 
-    if ([v3 type] == 3)
+    if ([resultCopy type] == 3)
     {
       v6 = [DroppedPinMapItemKey alloc];
-      [v3 coordinate];
+      [resultCopy coordinate];
       v7 = [(DroppedPinMapItemKey *)v6 initWithCoordinate:?];
       [v4 addObject:v7];
     }
@@ -201,12 +201,12 @@ LABEL_8:
   return v4;
 }
 
-- (void)checkForVisitedPlacesPOI:(id)a3 searchResult:(id)a4
+- (void)checkForVisitedPlacesPOI:(id)i searchResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 personalizedItemKey];
-  if (v8)
+  iCopy = i;
+  resultCopy = result;
+  personalizedItemKey = [resultCopy personalizedItemKey];
+  if (personalizedItemKey)
   {
     if (!self->_mode)
     {
@@ -214,15 +214,15 @@ LABEL_8:
       if (objc_opt_isKindOfClass())
       {
         objc_initWeak(&location, self);
-        v9 = [v7 mapItem];
+        mapItem = [resultCopy mapItem];
         v10[0] = _NSConcreteStackBlock;
         v10[1] = 3221225472;
         v10[2] = sub_100D58FB0;
         v10[3] = &unk_10165F3F0;
         objc_copyWeak(&v13, &location);
-        v11 = v6;
-        v12 = v7;
-        [v11 isVisitedMapItem:v9 completionHandler:v10];
+        v11 = iCopy;
+        v12 = resultCopy;
+        [v11 isVisitedMapItem:mapItem completionHandler:v10];
 
         objc_destroyWeak(&v13);
         objc_destroyWeak(&location);
@@ -231,9 +231,9 @@ LABEL_8:
   }
 }
 
-- (void)_updateSearchResults:(id)a3
+- (void)_updateSearchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   if (self->_mode > 1)
   {
     v5 = 0;
@@ -248,7 +248,7 @@ LABEL_8:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = v4;
+  v6 = resultsCopy;
   v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v7)
   {
@@ -340,9 +340,9 @@ LABEL_8:
   [(PersonalizedItemSource *)self _notifyObserversItemsDidChange];
 }
 
-- (void)setSearchResults:(id)a3
+- (void)setSearchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -374,7 +374,7 @@ LABEL_8:
     while (v7);
   }
 
-  v10 = [v4 copy];
+  v10 = [resultsCopy copy];
   searchResults = self->_searchResults;
   self->_searchResults = v10;
 
@@ -423,23 +423,23 @@ LABEL_8:
   [(SearchResultsItemSource *)self _updateSearchResults:self->_searchResults];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_101935B08 == a6)
+  if (off_101935B08 == context)
   {
-    v13 = a4;
-    v11 = a4;
-    v10 = [NSArray arrayWithObjects:&v13 count:1];
+    objectCopy = object;
+    objectCopy2 = object;
+    objectCopy3 = [NSArray arrayWithObjects:&objectCopy count:1];
 
-    [(SearchResultsItemSource *)self _updateSearchResults:v10];
+    [(SearchResultsItemSource *)self _updateSearchResults:objectCopy3];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = SearchResultsItemSource;
-    v10 = a4;
-    [(SearchResultsItemSource *)&v12 observeValueForKeyPath:a3 ofObject:v10 change:a5 context:a6];
+    objectCopy3 = object;
+    [(SearchResultsItemSource *)&v12 observeValueForKeyPath:path ofObject:objectCopy3 change:change context:context];
   }
 }
 

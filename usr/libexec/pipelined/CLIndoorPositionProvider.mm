@@ -1,26 +1,26 @@
 @interface CLIndoorPositionProvider
-- (CLIndoorPositionProvider)initWithApiKey:(id)a3;
-- (CLIndoorPositionProvider)initWithApiKey:(id)a3 onServer:(id)a4;
-- (CLIndoorPositionProvider)initWithConnection:(id)a3;
+- (CLIndoorPositionProvider)initWithApiKey:(id)key;
+- (CLIndoorPositionProvider)initWithApiKey:(id)key onServer:(id)server;
+- (CLIndoorPositionProvider)initWithConnection:(id)connection;
 - (id)withinQueuePermanentShutdownReason;
-- (void)clVisionNotificationAvailable:(id)a3;
-- (void)clpOutdoorEstimatorLogEntryNotificationAvailable:(id)a3;
-- (void)gpsEstimateAvailable:(id)a3;
-- (void)gpsSignalQualityAvailable:(id)a3;
-- (void)outdoorLocationAvailable:(id)a3;
-- (void)playbackDatarun:(id)a3;
-- (void)setApiKey:(id)a3;
-- (void)setApiKey:(id)a3 onServer:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)startUpdatingLocationAtLocation:(id)a3;
+- (void)clVisionNotificationAvailable:(id)available;
+- (void)clpOutdoorEstimatorLogEntryNotificationAvailable:(id)available;
+- (void)gpsEstimateAvailable:(id)available;
+- (void)gpsSignalQualityAvailable:(id)available;
+- (void)outdoorLocationAvailable:(id)available;
+- (void)playbackDatarun:(id)datarun;
+- (void)setApiKey:(id)key;
+- (void)setApiKey:(id)key onServer:(id)server;
+- (void)setDelegate:(id)delegate;
+- (void)startUpdatingLocationAtLocation:(id)location;
 - (void)stopUpdatingLocation;
 - (void)withinQueueReinitializeRemoteState;
-- (void)withinQueueSetDelegate:(id)a3;
+- (void)withinQueueSetDelegate:(id)delegate;
 @end
 
 @implementation CLIndoorPositionProvider
 
-- (CLIndoorPositionProvider)initWithApiKey:(id)a3
+- (CLIndoorPositionProvider)initWithApiKey:(id)key
 {
   v7.receiver = self;
   v7.super_class = CLIndoorPositionProvider;
@@ -48,11 +48,11 @@ LABEL_3:
   return v3;
 }
 
-- (CLIndoorPositionProvider)initWithApiKey:(id)a3 onServer:(id)a4
+- (CLIndoorPositionProvider)initWithApiKey:(id)key onServer:(id)server
 {
   v8.receiver = self;
   v8.super_class = CLIndoorPositionProvider;
-  v4 = [(CLIndoorXPCProvider *)&v8 init:a3];
+  v4 = [(CLIndoorXPCProvider *)&v8 init:key];
   if (qword_10045B060 != -1)
   {
     sub_1003828D4();
@@ -76,12 +76,12 @@ LABEL_3:
   return v4;
 }
 
-- (CLIndoorPositionProvider)initWithConnection:(id)a3
+- (CLIndoorPositionProvider)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = CLIndoorPositionProvider;
-  v5 = [(CLIndoorXPCProvider *)&v9 initWithConnection:v4];
+  v5 = [(CLIndoorXPCProvider *)&v9 initWithConnection:connectionCopy];
   if (v5)
   {
     v6 = objc_alloc_init(ServiceState);
@@ -94,65 +94,65 @@ LABEL_3:
 
 - (id)withinQueuePermanentShutdownReason
 {
-  v2 = [(ServiceState *)self->_state delegateProxy];
-  v3 = [v2 shutdownReason];
+  delegateProxy = [(ServiceState *)self->_state delegateProxy];
+  shutdownReason = [delegateProxy shutdownReason];
 
-  return v3;
+  return shutdownReason;
 }
 
 - (void)withinQueueReinitializeRemoteState
 {
-  v6 = [(CLIndoorPositionProvider *)self state];
-  v3 = [v6 delegateProxy];
-  v4 = [v3 delegate];
-  [(CLIndoorPositionProvider *)self withinQueueSetDelegate:v4];
+  state = [(CLIndoorPositionProvider *)self state];
+  delegateProxy = [state delegateProxy];
+  delegate = [delegateProxy delegate];
+  [(CLIndoorPositionProvider *)self withinQueueSetDelegate:delegate];
 
-  v7 = [(CLIndoorPositionProvider *)self state];
-  LODWORD(v3) = [v7 updateLocation];
+  state2 = [(CLIndoorPositionProvider *)self state];
+  LODWORD(delegateProxy) = [state2 updateLocation];
 
-  if (v3)
+  if (delegateProxy)
   {
-    v8 = [(CLIndoorPositionProvider *)self state];
-    [v8 setUpdateLocation:0];
+    state3 = [(CLIndoorPositionProvider *)self state];
+    [state3 setUpdateLocation:0];
 
-    v9 = [(CLIndoorPositionProvider *)self state];
-    v5 = [v9 lastLocation];
-    [(CLIndoorPositionProvider *)self startUpdatingLocationAtLocation:v5];
+    state4 = [(CLIndoorPositionProvider *)self state];
+    lastLocation = [state4 lastLocation];
+    [(CLIndoorPositionProvider *)self startUpdatingLocationAtLocation:lastLocation];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   frameworkQueue = self->super._frameworkQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100021DA0;
   v7[3] = &unk_1004328A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(frameworkQueue, v7);
 }
 
-- (void)withinQueueSetDelegate:(id)a3
+- (void)withinQueueSetDelegate:(id)delegate
 {
-  v9 = a3;
-  v4 = [[IndoorProtocolProxy alloc] initWithDelegate:v9];
-  v5 = [(CLIndoorPositionProvider *)self state];
-  [v5 setDelegateProxy:v4];
+  delegateCopy = delegate;
+  v4 = [[IndoorProtocolProxy alloc] initWithDelegate:delegateCopy];
+  state = [(CLIndoorPositionProvider *)self state];
+  [state setDelegateProxy:v4];
 
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CLIndoorDelegateProtocolInternal];
   [(NSXPCConnection *)self->super._connection setExportedInterface:v6];
 
-  v7 = [(CLIndoorPositionProvider *)self state];
-  v8 = [v7 delegateProxy];
-  [(NSXPCConnection *)self->super._connection setExportedObject:v8];
+  state2 = [(CLIndoorPositionProvider *)self state];
+  delegateProxy = [state2 delegateProxy];
+  [(NSXPCConnection *)self->super._connection setExportedObject:delegateProxy];
 }
 
-- (void)setApiKey:(id)a3
+- (void)setApiKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (qword_10045B060 != -1)
   {
     sub_1003828FC();
@@ -176,10 +176,10 @@ LABEL_3:
 LABEL_4:
 }
 
-- (void)setApiKey:(id)a3 onServer:(id)a4
+- (void)setApiKey:(id)key onServer:(id)server
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  serverCopy = server;
   if (qword_10045B060 != -1)
   {
     sub_1003828FC();
@@ -203,35 +203,35 @@ LABEL_3:
 LABEL_4:
 }
 
-- (void)playbackDatarun:(id)a3
+- (void)playbackDatarun:(id)datarun
 {
-  v4 = a3;
+  datarunCopy = datarun;
   frameworkQueue = self->super._frameworkQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3321888768;
   v9[2] = sub_100022138;
   v9[3] = &unk_1004328C0;
-  v6 = self;
-  v7 = v4;
-  v10 = v6;
+  selfCopy = self;
+  v7 = datarunCopy;
+  v10 = selfCopy;
   v11 = v7;
-  v8 = v6;
+  v8 = selfCopy;
   dispatch_async(frameworkQueue, v9);
 }
 
-- (void)startUpdatingLocationAtLocation:(id)a3
+- (void)startUpdatingLocationAtLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   frameworkQueue = self->super._frameworkQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3321888768;
   v9[2] = sub_1000223B0;
   v9[3] = &unk_1004328F0;
-  v6 = self;
-  v7 = v4;
-  v10 = v6;
+  selfCopy = self;
+  v7 = locationCopy;
+  v10 = selfCopy;
   v11 = v7;
-  v8 = v6;
+  v8 = selfCopy;
   dispatch_async(frameworkQueue, v9);
 }
 
@@ -242,88 +242,88 @@ LABEL_4:
   block[1] = 3321888768;
   block[2] = sub_100022800;
   block[3] = &unk_100432920;
-  v5 = self;
-  v3 = v5;
+  selfCopy = self;
+  v3 = selfCopy;
   dispatch_async(frameworkQueue, block);
 }
 
-- (void)outdoorLocationAvailable:(id)a3
+- (void)outdoorLocationAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   frameworkQueue = self->super._frameworkQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3321888768;
   v9[2] = sub_100022B1C;
   v9[3] = &unk_100432950;
-  v6 = self;
-  v7 = v4;
-  v10 = v6;
+  selfCopy = self;
+  v7 = availableCopy;
+  v10 = selfCopy;
   v11 = v7;
-  v8 = v6;
+  v8 = selfCopy;
   dispatch_async(frameworkQueue, v9);
 }
 
-- (void)gpsEstimateAvailable:(id)a3
+- (void)gpsEstimateAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   frameworkQueue = self->super._frameworkQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3321888768;
   v9[2] = sub_100022F70;
   v9[3] = &unk_100432980;
-  v6 = self;
-  v7 = v4;
-  v10 = v6;
+  selfCopy = self;
+  v7 = availableCopy;
+  v10 = selfCopy;
   v11 = v7;
-  v8 = v6;
+  v8 = selfCopy;
   dispatch_sync(frameworkQueue, v9);
 }
 
-- (void)gpsSignalQualityAvailable:(id)a3
+- (void)gpsSignalQualityAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   frameworkQueue = self->super._frameworkQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3321888768;
   v9[2] = sub_1000231C4;
   v9[3] = &unk_1004329B0;
-  v6 = self;
-  v7 = v4;
-  v10 = v6;
+  selfCopy = self;
+  v7 = availableCopy;
+  v10 = selfCopy;
   v11 = v7;
-  v8 = v6;
+  v8 = selfCopy;
   dispatch_sync(frameworkQueue, v9);
 }
 
-- (void)clVisionNotificationAvailable:(id)a3
+- (void)clVisionNotificationAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   frameworkQueue = self->super._frameworkQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3321888768;
   v9[2] = sub_100023418;
   v9[3] = &unk_1004329E0;
-  v6 = self;
-  v7 = v4;
-  v10 = v6;
+  selfCopy = self;
+  v7 = availableCopy;
+  v10 = selfCopy;
   v11 = v7;
-  v8 = v6;
+  v8 = selfCopy;
   dispatch_sync(frameworkQueue, v9);
 }
 
-- (void)clpOutdoorEstimatorLogEntryNotificationAvailable:(id)a3
+- (void)clpOutdoorEstimatorLogEntryNotificationAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   frameworkQueue = self->super._frameworkQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3321888768;
   v9[2] = sub_10002366C;
   v9[3] = &unk_100432A10;
-  v6 = self;
-  v7 = v4;
-  v10 = v6;
+  selfCopy = self;
+  v7 = availableCopy;
+  v10 = selfCopy;
   v11 = v7;
-  v8 = v6;
+  v8 = selfCopy;
   dispatch_sync(frameworkQueue, v9);
 }
 

@@ -1,35 +1,35 @@
 @interface ICInstrumentationUtilitiesRecentPasswordMode
-- (ICInstrumentationUtilitiesRecentPasswordMode)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ICInstrumentationUtilitiesRecentPasswordMode)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICInstrumentationUtilitiesRecentPasswordMode
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ICInstrumentationUtilitiesRecentPasswordMode *)self lockedNotesMode];
+  coderCopy = coder;
+  lockedNotesMode = [(ICInstrumentationUtilitiesRecentPasswordMode *)self lockedNotesMode];
   v6 = NSStringFromSelector(sel_lockedNotesMode);
-  [v4 encodeInteger:v5 forKey:v6];
+  [coderCopy encodeInteger:lockedNotesMode forKey:v6];
 
-  v7 = [(ICInstrumentationUtilitiesRecentPasswordMode *)self contextPath];
+  contextPath = [(ICInstrumentationUtilitiesRecentPasswordMode *)self contextPath];
   v8 = NSStringFromSelector(sel_contextPath);
-  [v4 encodeInteger:v7 forKey:v8];
+  [coderCopy encodeInteger:contextPath forKey:v8];
 }
 
-- (ICInstrumentationUtilitiesRecentPasswordMode)initWithCoder:(id)a3
+- (ICInstrumentationUtilitiesRecentPasswordMode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ICInstrumentationUtilitiesRecentPasswordMode;
   v5 = [(ICInstrumentationUtilitiesRecentPasswordMode *)&v9 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_lockedNotesMode);
-    v5->_lockedNotesMode = [v4 decodeIntegerForKey:v6];
+    v5->_lockedNotesMode = [coderCopy decodeIntegerForKey:v6];
 
     v7 = NSStringFromSelector(sel_contextPath);
-    v5->_contextPath = [v4 decodeIntegerForKey:v7];
+    v5->_contextPath = [coderCopy decodeIntegerForKey:v7];
   }
 
   return v5;

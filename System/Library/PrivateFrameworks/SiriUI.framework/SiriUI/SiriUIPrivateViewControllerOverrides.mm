@@ -1,18 +1,18 @@
 @interface SiriUIPrivateViewControllerOverrides
-+ (id)viewControllerForSnippet:(id)a3 sizeClass:(int64_t)a4;
++ (id)viewControllerForSnippet:(id)snippet sizeClass:(int64_t)class;
 @end
 
 @implementation SiriUIPrivateViewControllerOverrides
 
-+ (id)viewControllerForSnippet:(id)a3 sizeClass:(int64_t)a4
++ (id)viewControllerForSnippet:(id)snippet sizeClass:(int64_t)class
 {
-  v5 = a3;
+  snippetCopy = snippet;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = SiriUIPrivatePeoplePickerViewController;
 LABEL_3:
-    v7 = [[v6 alloc] initWithSnippet:v5];
+    v7 = [[v6 alloc] initWithSnippet:snippetCopy];
     goto LABEL_10;
   }
 
@@ -20,8 +20,8 @@ LABEL_3:
   if (objc_opt_isKindOfClass())
   {
     v7 = objc_alloc_init(SiriUICardSnippetViewController);
-    [(SiriUICardSnippetViewController *)v7 configureContentWithSizeClass:a4];
-    [(SiriUICardSnippetViewController *)v7 setSnippet:v5];
+    [(SiriUICardSnippetViewController *)v7 configureContentWithSizeClass:class];
+    [(SiriUICardSnippetViewController *)v7 setSnippet:snippetCopy];
   }
 
   else

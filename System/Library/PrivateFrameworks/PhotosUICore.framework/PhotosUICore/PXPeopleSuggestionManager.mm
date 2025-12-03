@@ -2,26 +2,26 @@
 - (BOOL)_fetchingSuggestions;
 - (BOOL)canUndo;
 - (BOOL)isLoading;
-- (BOOL)isSuggestionConfirmed:(id)a3;
+- (BOOL)isSuggestionConfirmed:(id)confirmed;
 - (NSArray)currentSuggestions;
-- (PXPeopleSuggestionManager)initWithPerson:(id)a3;
+- (PXPeopleSuggestionManager)initWithPerson:(id)person;
 - (PXPeopleSuggestionManagerDelegate)delegate;
-- (id)_nonSkippedSuggestionsForSuggestions:(id)a3;
-- (id)commitUserResponsesToPerson:(id)a3;
-- (unsigned)_soundIdWithFilename:(id)a3;
-- (void)_loadMoreSuggestionsWithCompletion:(id)a3;
-- (void)_notifyDelegateWeHaveMoreSuggestions:(BOOL)a3;
+- (id)_nonSkippedSuggestionsForSuggestions:(id)suggestions;
+- (id)commitUserResponsesToPerson:(id)person;
+- (unsigned)_soundIdWithFilename:(id)filename;
+- (void)_loadMoreSuggestionsWithCompletion:(id)completion;
+- (void)_notifyDelegateWeHaveMoreSuggestions:(BOOL)suggestions;
 - (void)_playConfirmNoSound;
 - (void)_playConfirmYesSound;
 - (void)cancelPendingSuggestionLoading;
 - (void)commitUserResponses;
 - (void)dealloc;
-- (void)markSuggestions:(id)a3 confirmed:(BOOL)a4 wantsSound:(BOOL)a5;
-- (void)markSuggestionsAsSkipped:(id)a3;
+- (void)markSuggestions:(id)suggestions confirmed:(BOOL)confirmed wantsSound:(BOOL)sound;
+- (void)markSuggestionsAsSkipped:(id)skipped;
 - (void)preloadSounds;
 - (void)removeAllSuggestions;
-- (void)requestNextSuggestionsWithPageLimit:(unint64_t)a3;
-- (void)setDataSource:(id)a3;
+- (void)requestNextSuggestionsWithPageLimit:(unint64_t)limit;
+- (void)setDataSource:(id)source;
 - (void)undo;
 @end
 
@@ -36,23 +36,23 @@
 
 - (BOOL)_fetchingSuggestions
 {
-  v2 = [(PXPeopleSuggestionManager *)self suggestionToken];
-  v3 = v2 != 0;
+  suggestionToken = [(PXPeopleSuggestionManager *)self suggestionToken];
+  v3 = suggestionToken != 0;
 
   return v3;
 }
 
-- (id)_nonSkippedSuggestionsForSuggestions:(id)a3
+- (id)_nonSkippedSuggestionsForSuggestions:(id)suggestions
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXPeopleSuggestionManager *)self skippedSuggestions];
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  suggestionsCopy = suggestions;
+  skippedSuggestions = [(PXPeopleSuggestionManager *)self skippedSuggestions];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(suggestionsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v4;
+  v7 = suggestionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -68,8 +68,8 @@
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 px_localIdentifier];
-        v14 = [v5 containsObject:v13];
+        px_localIdentifier = [v12 px_localIdentifier];
+        v14 = [skippedSuggestions containsObject:px_localIdentifier];
 
         if ((v14 & 1) == 0)
         {
@@ -86,28 +86,28 @@
   return v6;
 }
 
-- (void)_notifyDelegateWeHaveMoreSuggestions:(BOOL)a3
+- (void)_notifyDelegateWeHaveMoreSuggestions:(BOOL)suggestions
 {
-  v3 = a3;
+  suggestionsCopy = suggestions;
   v42 = *MEMORY[0x1E69E9840];
-  v5 = [(PXPeopleSuggestionManager *)self delegate];
-  if (v3)
+  delegate = [(PXPeopleSuggestionManager *)self delegate];
+  if (suggestionsCopy)
   {
-    v6 = [(PXPeopleSuggestionManager *)self currentSuggestions];
-    [v5 suggestionManager:self hasNewSuggestionsAvailable:v6];
+    currentSuggestions = [(PXPeopleSuggestionManager *)self currentSuggestions];
+    [delegate suggestionManager:self hasNewSuggestionsAvailable:currentSuggestions];
   }
 
   else
   {
     if (PFOSVariantHasInternalUI())
     {
-      v7 = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
-      v8 = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
+      confirmedSuggestions = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
+      rejectedSuggestions = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v9 = v7;
+      v9 = confirmedSuggestions;
       v10 = [v9 countByEnumeratingWithState:&v28 objects:v41 count:16];
       if (v10)
       {
@@ -141,7 +141,7 @@
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v15 = v8;
+      v15 = rejectedSuggestions;
       v16 = [v15 countByEnumeratingWithState:&v24 objects:v40 count:16];
       if (v16)
       {
@@ -188,46 +188,46 @@
       }
     }
 
-    [v5 noMoreSuggestionsAvailableForSuggestionManager:{self, v24}];
+    [delegate noMoreSuggestionsAvailableForSuggestionManager:{self, v24}];
   }
 }
 
-- (void)_loadMoreSuggestionsWithCompletion:(id)a3
+- (void)_loadMoreSuggestionsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PXPeopleSuggestionManager *)self dataSource];
-  v6 = [(PXPeopleSuggestionManager *)self delegate];
-  v7 = [(PXPeopleSuggestionManager *)self person];
-  if (v7)
+  completionCopy = completion;
+  dataSource = [(PXPeopleSuggestionManager *)self dataSource];
+  delegate = [(PXPeopleSuggestionManager *)self delegate];
+  person = [(PXPeopleSuggestionManager *)self person];
+  if (person)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v6 willLoadMoreSuggestionsForSuggestionManager:self];
+      [delegate willLoadMoreSuggestionsForSuggestionManager:self];
     }
 
     objc_initWeak(&location, self);
-    v8 = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
-    v9 = [v8 allObjects];
-    v10 = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
-    v11 = [v10 allObjects];
+    confirmedSuggestions = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
+    allObjects = [confirmedSuggestions allObjects];
+    rejectedSuggestions = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
+    allObjects2 = [rejectedSuggestions allObjects];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __64__PXPeopleSuggestionManager__loadMoreSuggestionsWithCompletion___block_invoke;
     v14[3] = &unk_1E77456C0;
     objc_copyWeak(&v16, &location);
-    v15 = v4;
-    v12 = v5;
-    v13 = [v5 suggestionsForPerson:v7 withConfirmedSuggestions:v9 andRejectedSuggestions:v11 completion:v14];
+    v15 = completionCopy;
+    v12 = dataSource;
+    v13 = [dataSource suggestionsForPerson:person withConfirmedSuggestions:allObjects andRejectedSuggestions:allObjects2 completion:v14];
     [(PXPeopleSuggestionManager *)self setSuggestionToken:v13];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
-    v5 = v12;
+    dataSource = v12;
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -264,8 +264,8 @@ void __64__PXPeopleSuggestionManager__loadMoreSuggestionsWithCompletion___block_
     [(PXPeopleSuggestionManager *)self setConfirmNoSoundID:v3];
   }
 
-  v4 = [(PXPeopleSuggestionManager *)self mute];
-  if (v3 && !v4)
+  mute = [(PXPeopleSuggestionManager *)self mute];
+  if (v3 && !mute)
   {
 
     AudioServicesPlaySystemSound(v3);
@@ -281,21 +281,21 @@ void __64__PXPeopleSuggestionManager__loadMoreSuggestionsWithCompletion___block_
     [(PXPeopleSuggestionManager *)self setConfirmYesSoundID:v3];
   }
 
-  v4 = [(PXPeopleSuggestionManager *)self mute];
-  if (v3 && !v4)
+  mute = [(PXPeopleSuggestionManager *)self mute];
+  if (v3 && !mute)
   {
 
     AudioServicesPlaySystemSound(v3);
   }
 }
 
-- (unsigned)_soundIdWithFilename:(id)a3
+- (unsigned)_soundIdWithFilename:(id)filename
 {
   outSystemSoundID = 0;
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
-  v5 = [v3 px_bundle];
-  v6 = [v5 pathForResource:v4 ofType:@"caf"];
+  filenameCopy = filename;
+  px_bundle = [v3 px_bundle];
+  v6 = [px_bundle pathForResource:filenameCopy ofType:@"caf"];
 
   if ([v6 length])
   {
@@ -316,13 +316,13 @@ void __64__PXPeopleSuggestionManager__loadMoreSuggestionsWithCompletion___block_
 - (void)cancelPendingSuggestionLoading
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPeopleSuggestionManager *)self suggestionToken];
-  if (v3)
+  suggestionToken = [(PXPeopleSuggestionManager *)self suggestionToken];
+  if (suggestionToken)
   {
-    v4 = [(PXPeopleSuggestionManager *)self dataSource];
-    v5 = [(PXPeopleSuggestionManager *)self person];
+    dataSource = [(PXPeopleSuggestionManager *)self dataSource];
+    person = [(PXPeopleSuggestionManager *)self person];
     v10 = 0;
-    v6 = [v4 cancelSuggestionForPerson:v5 withToken:v3 error:&v10];
+    v6 = [dataSource cancelSuggestionForPerson:person withToken:suggestionToken error:&v10];
     v7 = v10;
 
     v8 = PLUIGetLog();
@@ -350,40 +350,40 @@ void __64__PXPeopleSuggestionManager__loadMoreSuggestionsWithCompletion___block_
   }
 }
 
-- (id)commitUserResponsesToPerson:(id)a3
+- (id)commitUserResponsesToPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   if ([(PXPeopleSuggestionManager *)self _fetchingSuggestions])
   {
     [(PXPeopleSuggestionManager *)self cancelPendingSuggestionLoading];
   }
 
-  v5 = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
-  v6 = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
-  v7 = [(PXPeopleSuggestionManager *)self person];
-  v8 = v4;
-  if (v7)
+  confirmedSuggestions = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
+  rejectedSuggestions = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
+  person = [(PXPeopleSuggestionManager *)self person];
+  v8 = personCopy;
+  if (person)
   {
-    v9 = v7;
-    if ([v5 count])
+    v9 = person;
+    if ([confirmedSuggestions count])
     {
     }
 
     else
     {
-      v10 = [v6 count];
+      v10 = [rejectedSuggestions count];
 
-      v8 = v4;
+      v8 = personCopy;
       if (!v10)
       {
         goto LABEL_8;
       }
     }
 
-    v11 = [(PXPeopleSuggestionManager *)self dataSource];
-    v12 = [v5 allObjects];
-    v13 = [v6 allObjects];
-    v8 = [v11 commitSuggestionsForPerson:v4 withConfirmedSuggestions:v12 andRejectedSuggestions:v13];
+    dataSource = [(PXPeopleSuggestionManager *)self dataSource];
+    allObjects = [confirmedSuggestions allObjects];
+    allObjects2 = [rejectedSuggestions allObjects];
+    v8 = [dataSource commitSuggestionsForPerson:personCopy withConfirmedSuggestions:allObjects andRejectedSuggestions:allObjects2];
   }
 
 LABEL_8:
@@ -393,8 +393,8 @@ LABEL_8:
 
 - (void)commitUserResponses
 {
-  v4 = [(PXPeopleSuggestionManager *)self person];
-  v3 = [(PXPeopleSuggestionManager *)self commitUserResponsesToPerson:v4];
+  person = [(PXPeopleSuggestionManager *)self person];
+  v3 = [(PXPeopleSuggestionManager *)self commitUserResponsesToPerson:person];
 }
 
 - (void)undo
@@ -407,24 +407,24 @@ LABEL_8:
       [(PXPeopleSuggestionManager *)self cancelPendingSuggestionLoading];
     }
 
-    v3 = [(PXPeopleSuggestionManager *)self delegate];
-    v4 = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
-    v5 = [(PXPeopleSuggestionManager *)self suggestionProvider];
-    v17 = v5;
+    delegate = [(PXPeopleSuggestionManager *)self delegate];
+    confirmedSuggestions = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
+    suggestionProvider = [(PXPeopleSuggestionManager *)self suggestionProvider];
+    v17 = suggestionProvider;
     if ([(PXPeopleSuggestionManager *)self didReachEnd])
     {
-      [v5 currentSuggestions];
+      [suggestionProvider currentSuggestions];
     }
 
     else
     {
-      [v5 previousSuggestions];
+      [suggestionProvider previousSuggestions];
     }
     v6 = ;
     [(PXPeopleSuggestionManager *)self setDidReachEnd:0];
-    v7 = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
+    rejectedSuggestions = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
     v8 = [MEMORY[0x1E695DFD8] setWithArray:v6];
-    [v7 minusSet:v8];
+    [rejectedSuggestions minusSet:v8];
 
     v20 = 0u;
     v21 = 0u;
@@ -448,9 +448,9 @@ LABEL_8:
           }
 
           v16 = *(*(&v18 + 1) + 8 * i);
-          if ([v4 containsObject:v16])
+          if ([confirmedSuggestions containsObject:v16])
           {
-            [v4 removeObject:v16];
+            [confirmedSuggestions removeObject:v16];
             ++v13;
             v12 = v12 + [v16 numberOfAssets] - 1;
           }
@@ -472,45 +472,45 @@ LABEL_8:
     [(PXPeopleSuggestionManager *)self setUserConfirmationsCount:[(PXPeopleSuggestionManager *)self userConfirmationsCount]- v13];
     if (objc_opt_respondsToSelector())
     {
-      [v3 confirmationCountUpdatedForSuggestionManager:self undoing:1];
+      [delegate confirmationCountUpdatedForSuggestionManager:self undoing:1];
     }
 
-    [v3 suggestionManager:self hasNewSuggestionsAvailable:v9];
+    [delegate suggestionManager:self hasNewSuggestionsAvailable:v9];
   }
 }
 
 - (void)removeAllSuggestions
 {
-  v3 = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
-  [v3 removeAllObjects];
+  rejectedSuggestions = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
+  [rejectedSuggestions removeAllObjects];
 
-  v4 = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
-  [v4 removeAllObjects];
+  confirmedSuggestions = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
+  [confirmedSuggestions removeAllObjects];
 
-  v5 = [(PXPeopleSuggestionManager *)self skippedSuggestions];
-  [v5 removeAllObjects];
+  skippedSuggestions = [(PXPeopleSuggestionManager *)self skippedSuggestions];
+  [skippedSuggestions removeAllObjects];
 
-  v6 = [(PXPeopleSuggestionManager *)self suggestionProvider];
-  [v6 removeAllSuggestions];
+  suggestionProvider = [(PXPeopleSuggestionManager *)self suggestionProvider];
+  [suggestionProvider removeAllSuggestions];
 
   [(PXPeopleSuggestionManager *)self setUserConfirmationsCount:0];
   [(PXPeopleSuggestionManager *)self setAutoConfirmationsCount:0];
   [(PXPeopleSuggestionManager *)self setDidReachEnd:0];
-  v7 = [(PXPeopleSuggestionManager *)self delegate];
-  [v7 confirmationCountUpdatedForSuggestionManager:self undoing:1];
+  delegate = [(PXPeopleSuggestionManager *)self delegate];
+  [delegate confirmationCountUpdatedForSuggestionManager:self undoing:1];
 }
 
-- (void)markSuggestionsAsSkipped:(id)a3
+- (void)markSuggestionsAsSkipped:(id)skipped
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 count];
+  skippedCopy = skipped;
+  v5 = [skippedCopy count];
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v5];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v4;
+  v7 = skippedCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -526,8 +526,8 @@ LABEL_8:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v19 + 1) + 8 * v11) px_localIdentifier];
-        [v6 addObject:v12];
+        px_localIdentifier = [*(*(&v19 + 1) + 8 * v11) px_localIdentifier];
+        [v6 addObject:px_localIdentifier];
 
         ++v11;
       }
@@ -539,34 +539,34 @@ LABEL_8:
     while (v9);
   }
 
-  v13 = [(PXPeopleSuggestionManager *)self skippedSuggestions];
-  [v13 addObjectsFromArray:v6];
+  skippedSuggestions = [(PXPeopleSuggestionManager *)self skippedSuggestions];
+  [skippedSuggestions addObjectsFromArray:v6];
 
-  v14 = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
+  confirmedSuggestions = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
   v15 = [MEMORY[0x1E695DFD8] setWithArray:v7];
-  [v14 minusSet:v15];
+  [confirmedSuggestions minusSet:v15];
 
-  v16 = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
+  rejectedSuggestions = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
   v17 = [MEMORY[0x1E695DFD8] setWithArray:v7];
-  [v16 minusSet:v17];
+  [rejectedSuggestions minusSet:v17];
 
-  v18 = [(PXPeopleSuggestionManager *)self suggestionProvider];
-  [v18 removeSuggestions:v7];
+  suggestionProvider = [(PXPeopleSuggestionManager *)self suggestionProvider];
+  [suggestionProvider removeSuggestions:v7];
 }
 
-- (void)markSuggestions:(id)a3 confirmed:(BOOL)a4 wantsSound:(BOOL)a5
+- (void)markSuggestions:(id)suggestions confirmed:(BOOL)confirmed wantsSound:(BOOL)sound
 {
-  v5 = a5;
-  v6 = a4;
+  soundCopy = sound;
+  confirmedCopy = confirmed;
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [v8 count];
+  suggestionsCopy = suggestions;
+  v9 = [suggestionsCopy count];
   v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v9];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v11 = v8;
+  v11 = suggestionsCopy;
   v12 = [v11 countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v12)
   {
@@ -581,8 +581,8 @@ LABEL_8:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v38 + 1) + 8 * i) px_localIdentifier];
-        [v10 addObject:v16];
+        px_localIdentifier = [*(*(&v38 + 1) + 8 * i) px_localIdentifier];
+        [v10 addObject:px_localIdentifier];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v38 objects:v43 count:16];
@@ -591,43 +591,43 @@ LABEL_8:
     while (v13);
   }
 
-  if (!v6)
+  if (!confirmedCopy)
   {
-    if (v5)
+    if (soundCopy)
     {
       [(PXPeopleSuggestionManager *)self _playConfirmNoSound];
     }
 
-    v29 = [(PXPeopleSuggestionManager *)self skippedSuggestions];
+    skippedSuggestions = [(PXPeopleSuggestionManager *)self skippedSuggestions];
     v30 = [MEMORY[0x1E695DFD8] setWithArray:v10];
-    [v29 minusSet:v30];
+    [skippedSuggestions minusSet:v30];
 
-    v31 = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
+    confirmedSuggestions = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
     v32 = [MEMORY[0x1E695DFD8] setWithArray:v11];
-    [v31 minusSet:v32];
+    [confirmedSuggestions minusSet:v32];
 
-    v33 = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
-    [v33 addObjectsFromArray:v11];
+    rejectedSuggestions = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
+    [rejectedSuggestions addObjectsFromArray:v11];
     goto LABEL_25;
   }
 
-  if (v5)
+  if (soundCopy)
   {
     [(PXPeopleSuggestionManager *)self _playConfirmYesSound];
   }
 
-  v17 = [(PXPeopleSuggestionManager *)self skippedSuggestions];
+  skippedSuggestions2 = [(PXPeopleSuggestionManager *)self skippedSuggestions];
   v18 = [MEMORY[0x1E695DFD8] setWithArray:v10];
-  [v17 minusSet:v18];
+  [skippedSuggestions2 minusSet:v18];
 
-  v19 = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
+  rejectedSuggestions2 = [(PXPeopleSuggestionManager *)self rejectedSuggestions];
   v20 = [MEMORY[0x1E695DFD8] setWithArray:v11];
-  [v19 minusSet:v20];
+  [rejectedSuggestions2 minusSet:v20];
 
-  v21 = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
-  [v21 addObjectsFromArray:v11];
+  confirmedSuggestions2 = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
+  [confirmedSuggestions2 addObjectsFromArray:v11];
 
-  v22 = [(PXPeopleSuggestionManager *)self delegate];
+  delegate = [(PXPeopleSuggestionManager *)self delegate];
   LOBYTE(v20) = objc_opt_respondsToSelector();
 
   if (v20)
@@ -668,29 +668,29 @@ LABEL_8:
     }
 
     [(PXPeopleSuggestionManager *)self setAutoConfirmationsCount:v26 - v9 + [(PXPeopleSuggestionManager *)self autoConfirmationsCount]];
-    v33 = [(PXPeopleSuggestionManager *)self delegate];
-    [v33 confirmationCountUpdatedForSuggestionManager:self undoing:0];
+    rejectedSuggestions = [(PXPeopleSuggestionManager *)self delegate];
+    [rejectedSuggestions confirmationCountUpdatedForSuggestionManager:self undoing:0];
 LABEL_25:
   }
 }
 
-- (BOOL)isSuggestionConfirmed:(id)a3
+- (BOOL)isSuggestionConfirmed:(id)confirmed
 {
-  v4 = a3;
-  v5 = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
-  v6 = [v5 containsObject:v4];
+  confirmedCopy = confirmed;
+  confirmedSuggestions = [(PXPeopleSuggestionManager *)self confirmedSuggestions];
+  v6 = [confirmedSuggestions containsObject:confirmedCopy];
 
   return v6;
 }
 
-- (void)requestNextSuggestionsWithPageLimit:(unint64_t)a3
+- (void)requestNextSuggestionsWithPageLimit:(unint64_t)limit
 {
   if (![(PXPeopleSuggestionManager *)self _fetchingSuggestions])
   {
-    v5 = [(PXPeopleSuggestionManager *)self suggestionProvider];
-    if ([v5 hasNextSuggestions])
+    suggestionProvider = [(PXPeopleSuggestionManager *)self suggestionProvider];
+    if ([suggestionProvider hasNextSuggestions])
     {
-      v6 = [v5 nextSuggestionsWithPageLimit:a3];
+      v6 = [suggestionProvider nextSuggestionsWithPageLimit:limit];
       [(PXPeopleSuggestionManager *)self _notifyDelegateWeHaveMoreSuggestions:1];
     }
 
@@ -702,7 +702,7 @@ LABEL_25:
       v7[2] = __65__PXPeopleSuggestionManager_requestNextSuggestionsWithPageLimit___block_invoke;
       v7[3] = &unk_1E7745698;
       objc_copyWeak(v8, &location);
-      v8[1] = a3;
+      v8[1] = limit;
       v7[4] = self;
       [(PXPeopleSuggestionManager *)self _loadMoreSuggestionsWithCompletion:v7];
       objc_destroyWeak(v8);
@@ -737,24 +737,24 @@ void __65__PXPeopleSuggestionManager_requestNextSuggestionsWithPageLimit___block
   [(PXPeopleSuggestionManager *)self setConfirmNoSoundID:v3];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v5 = a3;
-  objc_storeStrong(&self->_dataSource, a3);
-  v6 = [(PXPeopleSuggestionManager *)self suggestionProvider];
-  [v6 removeAllSuggestions];
+  sourceCopy = source;
+  objc_storeStrong(&self->_dataSource, source);
+  suggestionProvider = [(PXPeopleSuggestionManager *)self suggestionProvider];
+  [suggestionProvider removeAllSuggestions];
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v5 initialPageLimit];
-    if (v7 <= 1)
+    initialPageLimit = [sourceCopy initialPageLimit];
+    if (initialPageLimit <= 1)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = v7;
+      v8 = initialPageLimit;
     }
   }
 
@@ -790,35 +790,35 @@ void __43__PXPeopleSuggestionManager_setDataSource___block_invoke(uint64_t a1, u
 
 - (BOOL)isLoading
 {
-  v2 = [(PXPeopleSuggestionManager *)self suggestionToken];
-  v3 = v2 != 0;
+  suggestionToken = [(PXPeopleSuggestionManager *)self suggestionToken];
+  v3 = suggestionToken != 0;
 
   return v3;
 }
 
 - (BOOL)canUndo
 {
-  v3 = [(PXPeopleSuggestionManager *)self suggestionProvider];
+  suggestionProvider = [(PXPeopleSuggestionManager *)self suggestionProvider];
   if ([(PXPeopleSuggestionManager *)self didReachEnd])
   {
-    v4 = [v3 currentSuggestions];
-    v5 = [v4 count] != 0;
+    currentSuggestions = [suggestionProvider currentSuggestions];
+    hasPreviousSuggestions = [currentSuggestions count] != 0;
   }
 
   else
   {
-    v5 = [v3 hasPreviousSuggestions];
+    hasPreviousSuggestions = [suggestionProvider hasPreviousSuggestions];
   }
 
-  return v5;
+  return hasPreviousSuggestions;
 }
 
 - (NSArray)currentSuggestions
 {
-  v2 = [(PXPeopleSuggestionManager *)self suggestionProvider];
-  v3 = [v2 currentSuggestions];
+  suggestionProvider = [(PXPeopleSuggestionManager *)self suggestionProvider];
+  currentSuggestions = [suggestionProvider currentSuggestions];
 
-  return v3;
+  return currentSuggestions;
 }
 
 - (void)dealloc
@@ -842,9 +842,9 @@ void __43__PXPeopleSuggestionManager_setDataSource___block_invoke(uint64_t a1, u
   [(PXPeopleSuggestionManager *)&v5 dealloc];
 }
 
-- (PXPeopleSuggestionManager)initWithPerson:(id)a3
+- (PXPeopleSuggestionManager)initWithPerson:(id)person
 {
-  v5 = a3;
+  personCopy = person;
   v17.receiver = self;
   v17.super_class = PXPeopleSuggestionManager;
   v6 = [(PXPeopleSuggestionManager *)&v17 init];
@@ -853,7 +853,7 @@ void __43__PXPeopleSuggestionManager_setDataSource___block_invoke(uint64_t a1, u
   {
     v6->_confirmYesSoundID = 0;
     v6->_confirmNoSoundID = 0;
-    objc_storeStrong(&v6->_person, a3);
+    objc_storeStrong(&v6->_person, person);
     v8 = objc_alloc_init(PXPeoplePagingSuggestionProvider);
     suggestionProvider = v7->_suggestionProvider;
     v7->_suggestionProvider = v8;

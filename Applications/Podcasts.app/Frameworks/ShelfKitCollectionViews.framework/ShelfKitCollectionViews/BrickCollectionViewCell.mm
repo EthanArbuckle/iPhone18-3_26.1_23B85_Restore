@@ -1,12 +1,12 @@
 @interface BrickCollectionViewCell
-- (_TtC23ShelfKitCollectionViews23BrickCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC23ShelfKitCollectionViews23BrickCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation BrickCollectionViewCell
 
-- (_TtC23ShelfKitCollectionViews23BrickCollectionViewCell)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews23BrickCollectionViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews23BrickCollectionViewCell_objectGraph) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews23BrickCollectionViewCell_isHovering) = 0;
@@ -17,7 +17,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_21B248();
 }
 
@@ -28,13 +28,13 @@
   v2 = v17.receiver;
   [(BrickCollectionViewCell *)&v17 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC23ShelfKitCollectionViews23BrickCollectionViewCell_artworkContainer];
-  v4 = [v2 contentView];
-  [v4 bounds];
+  contentView = [v2 contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 layoutMargins];
+  [contentView layoutMargins];
   v14 = v13;
   v16 = v15;
 

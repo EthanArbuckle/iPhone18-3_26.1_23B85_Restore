@@ -1,30 +1,30 @@
 @interface NNMKSQLiteConnection
-- (BOOL)_openDatabaseWithPath:(id)a3 errorCode:(int *)a4;
+- (BOOL)_openDatabaseWithPath:(id)path errorCode:(int *)code;
 - (BOOL)beginTransaction;
 - (BOOL)commitTransaction;
 - (BOOL)rollbackTransaction;
-- (BOOL)tableExists:(id)a3 inDatabase:(id)a4;
-- (NNMKSQLiteConnection)initWithPath:(id)a3 errorCode:(int *)a4;
+- (BOOL)tableExists:(id)exists inDatabase:(id)database;
+- (NNMKSQLiteConnection)initWithPath:(id)path errorCode:(int *)code;
 - (id)_lastErrorMessage;
 - (id)lastErrorMessage;
-- (int)_executeSQL:(id)a3;
+- (int)_executeSQL:(id)l;
 - (int)_lastErrorCode;
-- (int)_runRetryingIfNeeded:(id)a3;
-- (int)_stepPreparedStatement:(sqlite3_stmt *)a3;
-- (int)executeSQL:(id)a3;
+- (int)_runRetryingIfNeeded:(id)needed;
+- (int)_stepPreparedStatement:(sqlite3_stmt *)statement;
+- (int)executeSQL:(id)l;
 - (int)lastErrorCode;
-- (int)stepPreparedStatement:(sqlite3_stmt *)a3;
-- (sqlite3_stmt)_preparedStatementForPattern:(id)a3 cacheStatement:(BOOL)a4;
-- (sqlite3_stmt)preparedStatementForPattern:(id)a3 cacheStatement:(BOOL)a4;
+- (int)stepPreparedStatement:(sqlite3_stmt *)statement;
+- (sqlite3_stmt)_preparedStatementForPattern:(id)pattern cacheStatement:(BOOL)statement;
+- (sqlite3_stmt)preparedStatementForPattern:(id)pattern cacheStatement:(BOOL)statement;
 - (void)_closeDatabase;
 - (void)dealloc;
 @end
 
 @implementation NNMKSQLiteConnection
 
-- (NNMKSQLiteConnection)initWithPath:(id)a3 errorCode:(int *)a4
+- (NNMKSQLiteConnection)initWithPath:(id)path errorCode:(int *)code
 {
-  v7 = a3;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = NNMKSQLiteConnection;
   v8 = [(NNMKSQLiteConnection *)&v20 init];
@@ -36,10 +36,10 @@
     dbQueue = v9->_dbQueue;
     v9->_dbQueue = v10;
 
-    objc_storeStrong(&v9->_databasePath, a3);
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v9->_databasePath, path);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     cachedPreparedStatementsBySQLPattern = v9->_cachedPreparedStatementsBySQLPattern;
-    v9->_cachedPreparedStatementsBySQLPattern = v12;
+    v9->_cachedPreparedStatementsBySQLPattern = dictionary;
 
     v14 = v9->_dbQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -47,8 +47,8 @@
     block[2] = __47__NNMKSQLiteConnection_initWithPath_errorCode___block_invoke;
     block[3] = &unk_279936218;
     v17 = v9;
-    v18 = v7;
-    v19 = a4;
+    v18 = pathCopy;
+    codeCopy = code;
     dispatch_sync(v14, block);
   }
 
@@ -69,9 +69,9 @@
   [(NNMKSQLiteConnection *)&v4 dealloc];
 }
 
-- (sqlite3_stmt)preparedStatementForPattern:(id)a3 cacheStatement:(BOOL)a4
+- (sqlite3_stmt)preparedStatementForPattern:(id)pattern cacheStatement:(BOOL)statement
 {
-  v6 = a3;
+  patternCopy = pattern;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -81,11 +81,11 @@
   v11[1] = 3221225472;
   v11[2] = __67__NNMKSQLiteConnection_preparedStatementForPattern_cacheStatement___block_invoke;
   v11[3] = &unk_279936240;
-  v12 = v6;
+  v12 = patternCopy;
   v13 = &v15;
   v11[4] = self;
-  v14 = a4;
-  v8 = v6;
+  statementCopy = statement;
+  v8 = patternCopy;
   dispatch_sync(dbQueue, v11);
   v9 = v16[3];
 
@@ -100,7 +100,7 @@ uint64_t __67__NNMKSQLiteConnection_preparedStatementForPattern_cacheStatement__
   return result;
 }
 
-- (int)stepPreparedStatement:(sqlite3_stmt *)a3
+- (int)stepPreparedStatement:(sqlite3_stmt *)statement
 {
   v7 = 0;
   v8 = &v7;
@@ -113,7 +113,7 @@ uint64_t __67__NNMKSQLiteConnection_preparedStatementForPattern_cacheStatement__
   block[3] = &unk_279936268;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = statement;
   dispatch_sync(dbQueue, block);
   v4 = *(v8 + 6);
   _Block_object_dispose(&v7, 8);
@@ -127,9 +127,9 @@ uint64_t __46__NNMKSQLiteConnection_stepPreparedStatement___block_invoke(uint64_
   return result;
 }
 
-- (int)executeSQL:(id)a3
+- (int)executeSQL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -139,10 +139,10 @@ uint64_t __46__NNMKSQLiteConnection_stepPreparedStatement___block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __35__NNMKSQLiteConnection_executeSQL___block_invoke;
   block[3] = &unk_279936290;
-  v9 = v4;
+  v9 = lCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = lCopy;
   dispatch_sync(dbQueue, block);
   LODWORD(dbQueue) = *(v12 + 6);
 
@@ -338,10 +338,10 @@ uint64_t __40__NNMKSQLiteConnection_lastErrorMessage__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)tableExists:(id)a3 inDatabase:(id)a4
+- (BOOL)tableExists:(id)exists inDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
+  existsCopy = exists;
+  databaseCopy = database;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -351,17 +351,17 @@ uint64_t __40__NNMKSQLiteConnection_lastErrorMessage__block_invoke(uint64_t a1)
   v12[1] = 3221225472;
   v12[2] = __47__NNMKSQLiteConnection_tableExists_inDatabase___block_invoke;
   v12[3] = &unk_279936308;
-  v13 = v7;
-  v14 = self;
-  v15 = v6;
+  v13 = databaseCopy;
+  selfCopy = self;
+  v15 = existsCopy;
   v16 = &v17;
-  v9 = v6;
-  v10 = v7;
+  v9 = existsCopy;
+  v10 = databaseCopy;
   dispatch_sync(dbQueue, v12);
-  LOBYTE(v6) = *(v18 + 24);
+  LOBYTE(existsCopy) = *(v18 + 24);
 
   _Block_object_dispose(&v17, 8);
-  return v6;
+  return existsCopy;
 }
 
 void __47__NNMKSQLiteConnection_tableExists_inDatabase___block_invoke(uint64_t a1)
@@ -387,27 +387,27 @@ void __47__NNMKSQLiteConnection_tableExists_inDatabase___block_invoke(uint64_t a
   sqlite3_reset(v5);
 }
 
-- (BOOL)_openDatabaseWithPath:(id)a3 errorCode:(int *)a4
+- (BOOL)_openDatabaseWithPath:(id)path errorCode:(int *)code
 {
   *&v29[13] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 stringByDeletingLastPathComponent];
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v8 fileExistsAtPath:v7];
+  pathCopy = path;
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:stringByDeletingLastPathComponent];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v25 = 0;
-    v11 = [v10 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v25];
-    v12 = v25;
+    v11 = [defaultManager2 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v25];
+    pathCopy = v25;
 
     if ((v11 & 1) == 0)
     {
       v18 = qword_28144D620;
       if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_ERROR))
       {
-        [(NNMKSQLiteConnection *)v7 _openDatabaseWithPath:v12 errorCode:v18];
+        [(NNMKSQLiteConnection *)stringByDeletingLastPathComponent _openDatabaseWithPath:pathCopy errorCode:v18];
       }
 
       v17 = 0;
@@ -415,8 +415,8 @@ void __47__NNMKSQLiteConnection_tableExists_inDatabase___block_invoke(uint64_t a
     }
   }
 
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"file:%@", v6];
-  v13 = sqlite3_open_v2([v12 UTF8String], &self->_db, 4194310, 0);
+  pathCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"file:%@", pathCopy];
+  v13 = sqlite3_open_v2([pathCopy UTF8String], &self->_db, 4194310, 0);
   if (v13)
   {
     goto LABEL_10;
@@ -438,26 +438,26 @@ LABEL_10:
     {
       if (v16)
       {
-        [(NNMKSQLiteConnection *)v6 _openDatabaseWithPath:v15 errorCode:self];
+        [(NNMKSQLiteConnection *)pathCopy _openDatabaseWithPath:v15 errorCode:self];
       }
     }
 
     else if (v16)
     {
       v21 = v15;
-      v22 = [(NNMKSQLiteConnection *)self _lastErrorMessage];
+      _lastErrorMessage = [(NNMKSQLiteConnection *)self _lastErrorMessage];
       *buf = 138543874;
-      v27 = v6;
+      v27 = pathCopy;
       v28 = 1024;
       *v29 = v14;
       v29[2] = 2114;
-      *&v29[3] = v22;
+      *&v29[3] = _lastErrorMessage;
       _os_log_fault_impl(&dword_25B19F000, v21, OS_LOG_TYPE_FAULT, "Error opening database (Path: %{public}@, Error Code: %d, Error Message: %{public}@). Closing... and retrying", buf, 0x1Cu);
     }
 
     [(NNMKSQLiteConnection *)self _closeDatabase];
     v17 = 0;
-    if (a4)
+    if (code)
     {
       goto LABEL_16;
     }
@@ -469,18 +469,18 @@ LABEL_10:
     if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v27 = v6;
+      v27 = pathCopy;
       v28 = 2114;
       *v29 = self;
       _os_log_impl(&dword_25B19F000, v23, OS_LOG_TYPE_DEFAULT, "Database opened (%{public}@, %{public}@).", buf, 0x16u);
     }
 
     v17 = 1;
-    if (a4)
+    if (code)
     {
       v14 = 0;
 LABEL_16:
-      *a4 = v14;
+      *code = v14;
     }
   }
 
@@ -500,7 +500,7 @@ uint64_t __56__NNMKSQLiteConnection__openDatabaseWithPath_errorCode___block_invo
 - (void)_closeDatabase
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v9 = 0;
   }
@@ -511,7 +511,7 @@ uint64_t __56__NNMKSQLiteConnection__openDatabaseWithPath_errorCode___block_invo
   }
 
   OUTLINED_FUNCTION_0_0(&dword_25B19F000, a2, a3, "Error closing database. File no longer exists. (Path: %{public}@).", a5, a6, a7, a8, 2u);
-  if ((a1 & 1) == 0)
+  if ((self & 1) == 0)
   {
   }
 
@@ -525,20 +525,20 @@ uint64_t __38__NNMKSQLiteConnection__closeDatabase__block_invoke(uint64_t a1, _D
   return result;
 }
 
-- (sqlite3_stmt)_preparedStatementForPattern:(id)a3 cacheStatement:(BOOL)a4
+- (sqlite3_stmt)_preparedStatementForPattern:(id)pattern cacheStatement:(BOOL)statement
 {
-  v4 = a4;
+  statementCopy = statement;
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  patternCopy = pattern;
   if (self->_db)
   {
     v19 = 0;
     v20 = &v19;
     v21 = 0x2020000000;
-    v7 = [(NSMutableDictionary *)self->_cachedPreparedStatementsBySQLPattern objectForKey:v6];
-    v8 = [v7 pointerValue];
+    v7 = [(NSMutableDictionary *)self->_cachedPreparedStatementsBySQLPattern objectForKey:patternCopy];
+    pointerValue = [v7 pointerValue];
 
-    v22 = v8;
+    v22 = pointerValue;
     v9 = v20[3];
     if (v9)
     {
@@ -552,7 +552,7 @@ LABEL_13:
     v16[2] = __68__NNMKSQLiteConnection__preparedStatementForPattern_cacheStatement___block_invoke;
     v16[3] = &unk_279936358;
     v16[4] = self;
-    v10 = v6;
+    v10 = patternCopy;
     v17 = v10;
     v18 = &v19;
     if ([(NNMKSQLiteConnection *)self _runRetryingIfNeeded:v16])
@@ -562,14 +562,14 @@ LABEL_13:
       v11 = qword_28144D620;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [(NNMKSQLiteConnection *)self _lastErrorMessage];
-        [(NNMKSQLiteConnection *)v10 _preparedStatementForPattern:v12 cacheStatement:buf, v11];
+        _lastErrorMessage = [(NNMKSQLiteConnection *)self _lastErrorMessage];
+        [(NNMKSQLiteConnection *)v10 _preparedStatementForPattern:_lastErrorMessage cacheStatement:buf, v11];
       }
     }
 
     else
     {
-      if (!v4)
+      if (!statementCopy)
       {
 LABEL_12:
 
@@ -604,13 +604,13 @@ uint64_t __68__NNMKSQLiteConnection__preparedStatementForPattern_cacheStatement_
   return result;
 }
 
-- (int)_stepPreparedStatement:(sqlite3_stmt *)a3
+- (int)_stepPreparedStatement:(sqlite3_stmt *)statement
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__NNMKSQLiteConnection__stepPreparedStatement___block_invoke;
   v4[3] = &__block_descriptor_40_e9_v16__0_i8l;
-  v4[4] = a3;
+  v4[4] = statement;
   return [(NNMKSQLiteConnection *)self _runRetryingIfNeeded:v4];
 }
 
@@ -621,10 +621,10 @@ uint64_t __47__NNMKSQLiteConnection__stepPreparedStatement___block_invoke(uint64
   return result;
 }
 
-- (int)_executeSQL:(id)a3
+- (int)_executeSQL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
+  lCopy = l;
+  v5 = lCopy;
   if (self->_db)
   {
     v16[0] = MEMORY[0x277D85DD0];
@@ -632,7 +632,7 @@ uint64_t __47__NNMKSQLiteConnection__stepPreparedStatement___block_invoke(uint64
     v16[2] = __36__NNMKSQLiteConnection__executeSQL___block_invoke;
     v16[3] = &unk_2799363A0;
     v16[4] = self;
-    v17 = v4;
+    v17 = lCopy;
     v6 = [(NNMKSQLiteConnection *)self _runRetryingIfNeeded:v16];
   }
 
@@ -700,11 +700,11 @@ uint64_t __36__NNMKSQLiteConnection__executeSQL___block_invoke(uint64_t a1, _DWO
   return v3;
 }
 
-- (int)_runRetryingIfNeeded:(id)a3
+- (int)_runRetryingIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v14 = 0;
-  v3[2](v3, &v14);
+  neededCopy[2](neededCopy, &v14);
   v4 = v14;
   if ((v14 - 5) <= 2)
   {
@@ -730,7 +730,7 @@ uint64_t __36__NNMKSQLiteConnection__executeSQL___block_invoke(uint64_t a1, _DWO
       }
 
       v6 *= 5;
-      v3[2](v3, &v14);
+      neededCopy[2](neededCopy, &v14);
       v4 = v14;
       ++v5;
     }

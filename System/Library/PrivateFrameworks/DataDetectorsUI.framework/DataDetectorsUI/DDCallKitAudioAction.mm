@@ -1,18 +1,18 @@
 @interface DDCallKitAudioAction
-+ (BOOL)providerIsValid:(id)a3 forHandleType:(int64_t)a4;
-+ (id)_callKitProvidersForHandleType:(uint64_t)a1;
-+ (id)actionsWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5 defaultAppsOnly:(BOOL)a6;
-+ (id)defaultActionWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
-+ (id)patchedSchemeForScheme:(id)a3;
-+ (id)providersIfHandleIsEmergency:(id)a3;
-- (id)_nonSymbolBadgeForSenderIdentityCompact:(BOOL)a3;
++ (BOOL)providerIsValid:(id)valid forHandleType:(int64_t)type;
++ (id)_callKitProvidersForHandleType:(uint64_t)type;
++ (id)actionsWithURL:(id)l result:(__DDResult *)result context:(id)context defaultAppsOnly:(BOOL)only;
++ (id)defaultActionWithURL:(id)l result:(__DDResult *)result context:(id)context;
++ (id)patchedSchemeForScheme:(id)scheme;
++ (id)providersIfHandleIsEmergency:(id)emergency;
+- (id)_nonSymbolBadgeForSenderIdentityCompact:(BOOL)compact;
 - (id)_senderIdentityInitialForSymbolName;
 - (id)_serviceIdentifier;
 - (id)baseIconName;
 - (id)compactIcon;
 - (id)defaultAction;
 - (id)dialRequest;
-- (id)dialRequestWithProvider:(void *)a1;
+- (id)dialRequestWithProvider:(void *)provider;
 - (id)icon;
 - (id)iconName;
 - (id)localizedName;
@@ -29,17 +29,17 @@
   v24 = *MEMORY[0x277D85DE8];
   if (self->super._defaultAppPolicy)
   {
-    v3 = [(TUCallProvider *)self->_provider identifier];
-    v4 = [v3 isEqualToString:@"com.apple.coretelephony"];
+    identifier = [(TUCallProvider *)self->_provider identifier];
+    v4 = [identifier isEqualToString:@"com.apple.coretelephony"];
 
     v5 = @"com.apple.mobilephone";
     if ((v4 & 1) == 0)
     {
-      v6 = [(TUCallProvider *)self->_provider displayAppBundleIdentifier];
-      v7 = v6;
-      if (v6)
+      displayAppBundleIdentifier = [(TUCallProvider *)self->_provider displayAppBundleIdentifier];
+      v7 = displayAppBundleIdentifier;
+      if (displayAppBundleIdentifier)
       {
-        v8 = v6;
+        v8 = displayAppBundleIdentifier;
       }
 
       else
@@ -55,17 +55,17 @@
   {
     if (dd_isLSTrusted())
     {
-      v9 = [MEMORY[0x277CC1E80] defaultWorkspace];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
       v19 = 0;
-      v10 = [v9 defaultApplicationForCategory:4 error:&v19];
+      v10 = [defaultWorkspace defaultApplicationForCategory:4 error:&v19];
       v11 = v19;
 
       if (v11 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [MEMORY[0x277CCA8D8] mainBundle];
-        v13 = [v12 bundleIdentifier];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        bundleIdentifier = [mainBundle bundleIdentifier];
         *buf = 138412546;
-        v21 = v13;
+        v21 = bundleIdentifier;
         v22 = 2112;
         v23 = v11;
         _os_log_impl(&dword_21AB70000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Couldn't get default phone app from %@. Error: %@", buf, 0x16u);
@@ -78,12 +78,12 @@
       v10 = 0;
     }
 
-    v14 = [v10 bundleIdentifier];
-    v15 = v14;
+    bundleIdentifier2 = [v10 bundleIdentifier];
+    v15 = bundleIdentifier2;
     v16 = @"com.apple.mobilephone";
-    if (v14)
+    if (bundleIdentifier2)
     {
-      v16 = v14;
+      v16 = bundleIdentifier2;
     }
 
     v5 = v16;
@@ -98,25 +98,25 @@
 {
   v9.receiver = self;
   v9.super_class = DDCallKitAudioAction;
-  v3 = [(DDCallAction *)&v9 defaultAction];
-  v4 = v3;
-  if (!v3)
+  defaultAction = [(DDCallAction *)&v9 defaultAction];
+  v4 = defaultAction;
+  if (!defaultAction)
   {
     goto LABEL_8;
   }
 
-  objc_storeStrong((v3 + 184), self->_provider);
+  objc_storeStrong((defaultAction + 184), self->_provider);
   objc_storeStrong(v4 + 24, self->_senderIdentity);
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  if ([v5 userInterfaceIdiom] != 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] != 1)
   {
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v6 = [(TUCallProvider *)self->_provider identifier];
-  if (([v6 isEqualToString:@"com.apple.coretelephony"] & 1) == 0)
+  identifier = [(TUCallProvider *)self->_provider identifier];
+  if (([identifier isEqualToString:@"com.apple.coretelephony"] & 1) == 0)
   {
 
     goto LABEL_7;
@@ -134,7 +134,7 @@ LABEL_8:
   return v4;
 }
 
-+ (id)_callKitProvidersForHandleType:(uint64_t)a1
++ (id)_callKitProvidersForHandleType:(uint64_t)type
 {
   v3 = objc_opt_self();
   if (dd_isDeviceLocked())
@@ -159,12 +159,12 @@ LABEL_8:
   return v4;
 }
 
-+ (BOOL)providerIsValid:(id)a3 forHandleType:(int64_t)a4
++ (BOOL)providerIsValid:(id)valid forHandleType:(int64_t)type
 {
-  v5 = a3;
-  if ([v5 supportsAudioOnly])
+  validCopy = valid;
+  if ([validCopy supportsAudioOnly])
   {
-    v6 = [v5 supportsHandleType:a4];
+    v6 = [validCopy supportsHandleType:type];
 
     return v6;
   }
@@ -176,33 +176,33 @@ LABEL_8:
   }
 }
 
-+ (id)defaultActionWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
++ (id)defaultActionWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
-  v5 = [a1 actionsWithURL:a3 result:a4 context:a5 defaultAppsOnly:0];
-  v6 = [v5 firstObject];
-  v7 = [v6 defaultAction];
+  v5 = [self actionsWithURL:l result:result context:context defaultAppsOnly:0];
+  firstObject = [v5 firstObject];
+  defaultAction = [firstObject defaultAction];
 
-  return v7;
+  return defaultAction;
 }
 
-+ (id)providersIfHandleIsEmergency:(id)a3
++ (id)providersIfHandleIsEmergency:(id)emergency
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 type] != 3)
+  emergencyCopy = emergency;
+  v4 = emergencyCopy;
+  if (emergencyCopy && [emergencyCopy type] != 3)
   {
     v6 = objc_alloc_init(MEMORY[0x277D6EE28]);
-    v7 = [v6 telephonyProvider];
-    if (v7)
+    telephonyProvider = [v6 telephonyProvider];
+    if (telephonyProvider)
     {
       v8 = objc_alloc_init(MEMORY[0x277D6EF38]);
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v9 = [v7 prioritizedSenderIdentities];
-      v5 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      prioritizedSenderIdentities = [telephonyProvider prioritizedSenderIdentities];
+      v5 = [prioritizedSenderIdentities countByEnumeratingWithState:&v19 objects:v24 count:16];
       if (v5)
       {
         v18 = v6;
@@ -213,13 +213,13 @@ LABEL_8:
           {
             if (*v20 != v10)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(prioritizedSenderIdentities);
             }
 
             v12 = *(*(&v19 + 1) + 8 * i);
-            v13 = [v4 value];
-            v14 = [v12 UUID];
-            v15 = [v8 isEmergencyNumberForDigits:v13 senderIdentityUUID:v14];
+            value = [v4 value];
+            uUID = [v12 UUID];
+            v15 = [v8 isEmergencyNumberForDigits:value senderIdentityUUID:uUID];
 
             if (v15)
             {
@@ -228,13 +228,13 @@ LABEL_8:
                 +[DDCallKitAudioAction providersIfHandleIsEmergency:];
               }
 
-              v23 = v7;
+              v23 = telephonyProvider;
               v5 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
               goto LABEL_17;
             }
           }
 
-          v5 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+          v5 = [prioritizedSenderIdentities countByEnumeratingWithState:&v19 objects:v24 count:16];
           if (v5)
           {
             continue;
@@ -264,20 +264,20 @@ LABEL_17:
   return v5;
 }
 
-+ (id)actionsWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5 defaultAppsOnly:(BOOL)a6
++ (id)actionsWithURL:(id)l result:(__DDResult *)result context:(id)context defaultAppsOnly:(BOOL)only
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
-  v44 = a4;
-  v12 = [(DDTelephoneNumberAction *)[DDCallAction alloc] initWithURL:v10 result:a4 context:v11];
+  onlyCopy = only;
+  lCopy = l;
+  contextCopy = context;
+  resultCopy = result;
+  v12 = [(DDTelephoneNumberAction *)[DDCallAction alloc] initWithURL:lCopy result:result context:contextCopy];
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = v12->super._phoneNumber;
   v16 = v15;
   if (v15)
   {
-    v41 = v6;
+    v41 = onlyCopy;
     v43 = v12;
     if ([(NSString *)v15 containsString:@"@"])
     {
@@ -290,47 +290,47 @@ LABEL_17:
     }
 
     obj = [objc_alloc(MEMORY[0x277D6EEE8]) initWithType:v17 value:v16];
-    v18 = [v10 scheme];
-    v19 = [v18 lowercaseString];
+    scheme = [lCopy scheme];
+    lowercaseString = [scheme lowercaseString];
 
-    v20 = [a1 facetimeScheme];
+    facetimeScheme = [self facetimeScheme];
     v63 = 0;
     v64 = &v63;
     v65 = 0x2020000000;
     v47 = v14;
-    v42 = v20;
-    if ([v19 isEqualToString:v20])
+    v42 = facetimeScheme;
+    if ([lowercaseString isEqualToString:facetimeScheme])
     {
       v21 = 1;
     }
 
     else
     {
-      v22 = [v20 stringByAppendingString:@"-prompt"];
-      v21 = [v19 isEqualToString:v22];
+      v22 = [facetimeScheme stringByAppendingString:@"-prompt"];
+      v21 = [lowercaseString isEqualToString:v22];
     }
 
     v66 = v21;
     v61[0] = 0;
     v61[1] = v61;
     v61[2] = 0x2020000000;
-    if ([v19 isEqualToString:@"telephony"])
+    if ([lowercaseString isEqualToString:@"telephony"])
     {
       v23 = 1;
     }
 
     else
     {
-      v23 = [v19 isEqualToString:@"telephonyprompt"];
+      v23 = [lowercaseString isEqualToString:@"telephonyprompt"];
     }
 
     v62 = v23;
-    v24 = [a1 providersIfHandleIsEmergency:obj];
+    v24 = [self providersIfHandleIsEmergency:obj];
     v45 = v13;
-    v46 = v11;
+    v46 = contextCopy;
     if (v24)
     {
-      if ([a1 video])
+      if ([self video])
       {
 
         _Block_object_dispose(v61, 8);
@@ -350,7 +350,7 @@ LABEL_17:
     else
     {
       v26 = dd_hostApplicationCanListCallProviders();
-      [(DDCallKitAudioAction *)a1 _callKitProvidersForHandleType:v17];
+      [(DDCallKitAudioAction *)self _callKitProvidersForHandleType:v17];
       v28 = v27 = v46;
     }
 
@@ -359,10 +359,10 @@ LABEL_17:
     v49[1] = 3221225472;
     v49[2] = __70__DDCallKitAudioAction_actionsWithURL_result_context_defaultAppsOnly___block_invoke;
     v49[3] = &unk_278291880;
-    v57 = a1;
-    v30 = v10;
+    selfCopy = self;
+    v30 = lCopy;
     v50 = v30;
-    v58 = v44;
+    v58 = resultCopy;
     v31 = v27;
     v51 = v31;
     v39 = obj;
@@ -377,15 +377,15 @@ LABEL_17:
     v56 = v61;
     v40 = v28;
     [v28 enumerateObjectsUsingBlock:v49];
-    if (!(v26 & 1 | ((v64[3] & 1) == 0)) && [a1 facetimeAvailable])
+    if (!(v26 & 1 | ((v64[3] & 1) == 0)) && [self facetimeAvailable])
     {
       v34 = objc_alloc_init(MEMORY[0x277D6EE28]);
-      v35 = [v34 faceTimeProvider];
-      if (v35)
+      faceTimeProvider = [v34 faceTimeProvider];
+      if (faceTimeProvider)
       {
-        v36 = [a1 actionWithURL:v30 result:v44 context:v31];
+        v36 = [self actionWithURL:v30 result:resultCopy context:v31];
         objc_storeStrong((v36 + 168), obj);
-        objc_storeStrong((v36 + 184), v35);
+        objc_storeStrong((v36 + 184), faceTimeProvider);
         *(v36 + 176) = 2;
         [v33 insertObject:v36 atIndex:0];
       }
@@ -393,9 +393,9 @@ LABEL_17:
 
     if (v41 && [v33 count] >= 2)
     {
-      v37 = [v33 firstObject];
+      firstObject = [v33 firstObject];
       [v33 removeAllObjects];
-      [v33 addObject:v37];
+      [v33 addObject:firstObject];
     }
 
     [v33 addObjectsFromArray:v32];
@@ -404,7 +404,7 @@ LABEL_17:
     _Block_object_dispose(&v63, 8);
 
     v13 = v45;
-    v11 = v46;
+    contextCopy = v46;
     v12 = v43;
     v14 = v47;
   }
@@ -610,29 +610,29 @@ void __70__DDCallKitAudioAction_actionsWithURL_result_context_defaultAppsOnly___
 
 - (id)localizedName
 {
-  v3 = [(DDCallKitAudioAction *)self serviceName];
-  if (!v3)
+  serviceName = [(DDCallKitAudioAction *)self serviceName];
+  if (!serviceName)
   {
 LABEL_13:
     v14.receiver = self;
     v14.super_class = DDCallKitAudioAction;
-    v3 = [(DDCallAction *)&v14 localizedName];
+    serviceName = [(DDCallAction *)&v14 localizedName];
 
-    return v3;
+    return serviceName;
   }
 
   if (self->super.super.super._disambiguatedTitle)
   {
-    v4 = v3;
+    v4 = serviceName;
     v5 = [(NSDictionary *)self->super.super.super._context objectForKeyedSubscript:@"HeyBarcodeSheet"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
-      v7 = [(DDCallKitAudioAction *)self menuName];
+      menuName = [(DDCallKitAudioAction *)self menuName];
 
-      v3 = v7;
-      if (!v7)
+      serviceName = menuName;
+      if (!menuName)
       {
         goto LABEL_13;
       }
@@ -640,9 +640,9 @@ LABEL_13:
 
     else
     {
-      v8 = [objc_opt_class() video];
+      video = [objc_opt_class() video];
       v9 = MEMORY[0x277CCACA8];
-      if (v8)
+      if (video)
       {
         v10 = @"Video (%@)";
       }
@@ -655,7 +655,7 @@ LABEL_13:
       v11 = DDLocalizedString(v10);
       v12 = [v9 stringWithFormat:v11, v4];
 
-      v3 = v12;
+      serviceName = v12;
       if (!v12)
       {
         goto LABEL_13;
@@ -663,13 +663,13 @@ LABEL_13:
     }
   }
 
-  return v3;
+  return serviceName;
 }
 
 - (id)dialRequest
 {
-  v3 = [(DDCallKitAudioAction *)self callProvider];
-  v4 = [(DDCallKitAudioAction *)self dialRequestWithProvider:v3];
+  callProvider = [(DDCallKitAudioAction *)self callProvider];
+  v4 = [(DDCallKitAudioAction *)self dialRequestWithProvider:callProvider];
 
   return v4;
 }
@@ -678,9 +678,9 @@ LABEL_13:
 {
   v4.receiver = self;
   v4.super_class = DDCallKitAudioAction;
-  v2 = [(DDTelephoneNumberAction *)&v4 iconName];
+  iconName = [(DDTelephoneNumberAction *)&v4 iconName];
 
-  return v2;
+  return iconName;
 }
 
 - (id)_senderIdentityInitialForSymbolName
@@ -688,20 +688,20 @@ LABEL_13:
   senderIdentity = self->_senderIdentity;
   if (senderIdentity)
   {
-    v3 = [(TUSenderIdentity *)senderIdentity localizedName];
-    v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v5 = [v4 mutableCopy];
+    localizedName = [(TUSenderIdentity *)senderIdentity localizedName];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v5 = [whitespaceAndNewlineCharacterSet mutableCopy];
 
-    v6 = [MEMORY[0x277CCA900] controlCharacterSet];
-    [v5 formUnionWithCharacterSet:v6];
+    controlCharacterSet = [MEMORY[0x277CCA900] controlCharacterSet];
+    [v5 formUnionWithCharacterSet:controlCharacterSet];
 
-    v7 = [MEMORY[0x277CCA900] illegalCharacterSet];
-    [v5 formUnionWithCharacterSet:v7];
+    illegalCharacterSet = [MEMORY[0x277CCA900] illegalCharacterSet];
+    [v5 formUnionWithCharacterSet:illegalCharacterSet];
 
-    v8 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-    [v5 formUnionWithCharacterSet:v8];
+    punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+    [v5 formUnionWithCharacterSet:punctuationCharacterSet];
 
-    v9 = [v3 stringByTrimmingCharactersInSet:v5];
+    v9 = [localizedName stringByTrimmingCharactersInSet:v5];
 
     if (![v9 length] || ((v10 = objc_msgSend(v9, "rangeOfComposedCharacterSequenceAtIndex:", 0)) == 0 ? (v12 = v11 == 0) : (v12 = 1), v12))
     {
@@ -713,13 +713,13 @@ LABEL_13:
     v13 = v10;
     if (v11 == 1)
     {
-      v3 = [v9 substringWithRange:{v10, 1}];
-      v14 = [v3 characterAtIndex:0];
+      localizedName = [v9 substringWithRange:{v10, 1}];
+      v14 = [localizedName characterAtIndex:0];
       if ((v14 - 48) < 0xA || (v14 & 0xFFFFFFDF) - 65 < 0x1A)
       {
 LABEL_23:
 
-        senderIdentity = v3;
+        senderIdentity = localizedName;
         goto LABEL_24;
       }
 
@@ -750,14 +750,14 @@ LABEL_23:
     v19 = [v28[5] length] - 3;
     if (v19 >= 0xFFFFFFFFFFFFFFFELL)
     {
-      v3 = v28[5];
+      localizedName = v28[5];
     }
 
     _Block_object_dispose(&v27, 8);
     if (v19 < 0xFFFFFFFFFFFFFFFELL)
     {
 LABEL_21:
-      v3 = v16;
+      localizedName = v16;
     }
 
     goto LABEL_23;
@@ -778,18 +778,18 @@ uint64_t __59__DDCallKitAudioAction__senderIdentityInitialForSymbolName__block_i
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_nonSymbolBadgeForSenderIdentityCompact:(BOOL)a3
+- (id)_nonSymbolBadgeForSenderIdentityCompact:(BOOL)compact
 {
   v40[1] = *MEMORY[0x277D85DE8];
   if (self->_senderIdentity)
   {
-    v4 = [(DDCallKitAudioAction *)self _senderIdentityInitialForSymbolName];
-    if (v4)
+    _senderIdentityInitialForSymbolName = [(DDCallKitAudioAction *)self _senderIdentityInitialForSymbolName];
+    if (_senderIdentityInitialForSymbolName)
     {
-      v5 = v4;
+      v5 = _senderIdentityInitialForSymbolName;
       v6 = [MEMORY[0x277D74300] systemFontOfSize:64.0 weight:*MEMORY[0x277D74420]];
-      v7 = [v6 fontDescriptor];
-      v8 = [v7 fontDescriptorWithDesign:*MEMORY[0x277D74368]];
+      fontDescriptor = [v6 fontDescriptor];
+      v8 = [fontDescriptor fontDescriptorWithDesign:*MEMORY[0x277D74368]];
 
       v9 = [MEMORY[0x277D74300] fontWithDescriptor:v8 size:0.0];
 
@@ -832,7 +832,7 @@ uint64_t __59__DDCallKitAudioAction__senderIdentityInitialForSymbolName__block_i
       v32 = v17;
       v33 = v12;
       v34 = v14;
-      v38 = a3;
+      compactCopy = compact;
       v35 = v15;
       v36 = v18;
       v37 = v27;
@@ -842,18 +842,18 @@ uint64_t __59__DDCallKitAudioAction__senderIdentityInitialForSymbolName__block_i
       v23 = v5;
       v24 = [v21 imageWithActions:v28];
 
-      v4 = v24;
+      _senderIdentityInitialForSymbolName = v24;
     }
   }
 
   else
   {
-    v4 = 0;
+    _senderIdentityInitialForSymbolName = 0;
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return _senderIdentityInitialForSymbolName;
 }
 
 void __64__DDCallKitAudioAction__nonSymbolBadgeForSenderIdentityCompact___block_invoke(uint64_t a1, void *a2)
@@ -902,37 +902,37 @@ void __64__DDCallKitAudioAction__nonSymbolBadgeForSenderIdentityCompact___block_
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    compactIcon = v3;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = DDCallKitAudioAction;
-    v5 = [(DDAction *)&v8 compactIcon];
+    compactIcon = [(DDAction *)&v8 compactIcon];
   }
 
-  v6 = v5;
+  v6 = compactIcon;
 
   return v6;
 }
 
 - (id)menuIcon
 {
-  v3 = [(DDCallKitAudioAction *)self baseIconName];
-  v4 = [(DDAction *)self _iconFromName:v3];
+  baseIconName = [(DDCallKitAudioAction *)self baseIconName];
+  v4 = [(DDAction *)self _iconFromName:baseIconName];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    icon = v4;
   }
 
   else
   {
-    v6 = [(DDCallKitAudioAction *)self icon];
+    icon = [(DDCallKitAudioAction *)self icon];
   }
 
-  v7 = v6;
+  v7 = icon;
 
   return v7;
 }
@@ -943,7 +943,7 @@ void __64__DDCallKitAudioAction__nonSymbolBadgeForSenderIdentityCompact___block_
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    icon = v3;
   }
 
   else
@@ -955,10 +955,10 @@ void __64__DDCallKitAudioAction__nonSymbolBadgeForSenderIdentityCompact___block_
 
     v8.receiver = self;
     v8.super_class = DDCallKitAudioAction;
-    v5 = [(DDAction *)&v8 icon];
+    icon = [(DDAction *)&v8 icon];
   }
 
-  v6 = v5;
+  v6 = icon;
 
   return v6;
 }
@@ -967,13 +967,13 @@ void __64__DDCallKitAudioAction__nonSymbolBadgeForSenderIdentityCompact___block_
 {
   if (!self->super.super.super._isDefaultAction && self->_senderIdentity)
   {
-    v2 = self;
-    v3 = [(TUSenderIdentity *)self->_senderIdentity localizedName];
-    v4 = [v3 lowercaseString];
+    selfCopy = self;
+    localizedName = [(TUSenderIdentity *)self->_senderIdentity localizedName];
+    lowercaseString = [localizedName lowercaseString];
 
-    if ([v4 length])
+    if ([lowercaseString length])
     {
-      v5 = [v4 characterAtIndex:0];
+      v5 = [lowercaseString characterAtIndex:0];
       v11 = v5;
       if ((v5 - 48) < 0xA || (v5 - 97) < 0x1A)
       {
@@ -981,62 +981,62 @@ void __64__DDCallKitAudioAction__nonSymbolBadgeForSenderIdentityCompact___block_
 
         v8 = [v7 stringByAppendingString:@".square"];
 
-        v9 = v8;
+        baseIconName = v8;
 
-        return v9;
+        return baseIconName;
       }
     }
 
-    self = v2;
+    self = selfCopy;
   }
 
-  v9 = [(DDCallKitAudioAction *)self baseIconName];
+  baseIconName = [(DDCallKitAudioAction *)self baseIconName];
 
-  return v9;
+  return baseIconName;
 }
 
 - (id)menuName
 {
-  v3 = [(DDTelephoneNumberAction *)self bizItem];
+  bizItem = [(DDTelephoneNumberAction *)self bizItem];
 
-  if (v3)
+  if (bizItem)
   {
     if (self->_senderIdentity)
     {
       v4 = MEMORY[0x277CCACA8];
       v5 = DDLocalizedStringWithDefaultValue(@"AUDIO_CALL_WITH_SERVICE", 0, 0, @"Call (%@)");
-      v6 = [(TUSenderIdentity *)self->_senderIdentity localizedName];
-      v7 = [v4 localizedStringWithFormat:v5, v6];
+      localizedName = [(TUSenderIdentity *)self->_senderIdentity localizedName];
+      v7 = [v4 localizedStringWithFormat:v5, localizedName];
 
-      v8 = v7;
+      localizedName2 = v7;
     }
 
     else
     {
       v10.receiver = self;
       v10.super_class = DDCallKitAudioAction;
-      v8 = [(DDCallAction *)&v10 localizedName];
+      localizedName2 = [(DDCallAction *)&v10 localizedName];
     }
   }
 
   else
   {
-    v8 = DDLocalizedStringWithDefaultValue(@"AUDIO_CALL", 0, 0, @"Call");
+    localizedName2 = DDLocalizedStringWithDefaultValue(@"AUDIO_CALL", 0, 0, @"Call");
   }
 
-  return v8;
+  return localizedName2;
 }
 
 - (id)serviceName
 {
-  v3 = [(DDCallKitAudioAction *)self callProvider];
-  v4 = [v3 identifier];
-  v5 = [v4 isEqualToString:@"com.apple.coretelephony"];
+  callProvider = [(DDCallKitAudioAction *)self callProvider];
+  identifier = [callProvider identifier];
+  v5 = [identifier isEqualToString:@"com.apple.coretelephony"];
 
   if (!v5)
   {
-    v7 = [(DDCallKitAudioAction *)self callProvider];
-    v6 = [v7 localizedName];
+    callProvider2 = [(DDCallKitAudioAction *)self callProvider];
+    localizedName = [callProvider2 localizedName];
 
     if (!self->_senderIdentity)
     {
@@ -1046,49 +1046,49 @@ void __64__DDCallKitAudioAction__nonSymbolBadgeForSenderIdentityCompact___block_
     goto LABEL_5;
   }
 
-  v6 = DDLocalizedString(@"Phone");
+  localizedName = DDLocalizedString(@"Phone");
   if (self->_senderIdentity)
   {
 LABEL_5:
     v8 = MEMORY[0x277CCACA8];
     v9 = DDLocalizedStringWithDefaultValue(@"CALL_EXT_SERVICE_NAME_FORMAT", 0, 0, @"%@ (%@)");
-    v10 = [(TUSenderIdentity *)self->_senderIdentity localizedName];
-    v11 = [v8 localizedStringWithFormat:v9, v6, v10];
+    localizedName2 = [(TUSenderIdentity *)self->_senderIdentity localizedName];
+    v11 = [v8 localizedStringWithFormat:v9, localizedName, localizedName2];
 
-    v6 = v11;
+    localizedName = v11;
   }
 
 LABEL_6:
 
-  return v6;
+  return localizedName;
 }
 
 - (id)_serviceIdentifier
 {
   senderIdentity = self->_senderIdentity;
-  v4 = [(DDCallKitAudioAction *)self callProvider];
-  v5 = [v4 identifier];
+  callProvider = [(DDCallKitAudioAction *)self callProvider];
+  identifier = [callProvider identifier];
   if (senderIdentity)
   {
-    v6 = [(TUSenderIdentity *)self->_senderIdentity accountUUID];
-    v7 = [v5 stringByAppendingFormat:@"+%@", v6];
+    accountUUID = [(TUSenderIdentity *)self->_senderIdentity accountUUID];
+    v7 = [identifier stringByAppendingFormat:@"+%@", accountUUID];
 
-    v5 = v7;
+    identifier = v7;
   }
 
-  return v5;
+  return identifier;
 }
 
-+ (id)patchedSchemeForScheme:(id)a3
++ (id)patchedSchemeForScheme:(id)scheme
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  schemeCopy = scheme;
+  v5 = schemeCopy;
+  if (!schemeCopy)
   {
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"facetime"])
+  if ([schemeCopy isEqualToString:@"facetime"])
   {
     v6 = @"facetime-audio";
     goto LABEL_9;
@@ -1100,8 +1100,8 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v7 = [a1 matchingSchemes];
-  v8 = [v7 containsObject:v5];
+  matchingSchemes = [self matchingSchemes];
+  v8 = [matchingSchemes containsObject:v5];
 
   if (v8)
   {
@@ -1119,19 +1119,19 @@ LABEL_9:
   return v6;
 }
 
-- (id)dialRequestWithProvider:(void *)a1
+- (id)dialRequestWithProvider:(void *)provider
 {
-  if (a1)
+  if (provider)
   {
-    v7.receiver = a1;
+    v7.receiver = provider;
     v7.super_class = DDCallKitAudioAction;
     v3 = objc_msgSendSuper2(&v7, sel_dialRequestWithProvider_, a2);
     [v3 setVideo:{objc_msgSend(objc_opt_class(), "video")}];
-    v4 = a1[24];
+    v4 = provider[24];
     if (v4)
     {
-      v5 = [v4 accountUUID];
-      [v3 setLocalSenderIdentityAccountUUID:v5];
+      accountUUID = [v4 accountUUID];
+      [v3 setLocalSenderIdentityAccountUUID:accountUUID];
     }
   }
 

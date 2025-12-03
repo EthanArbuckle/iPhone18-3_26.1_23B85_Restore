@@ -7,8 +7,8 @@
 
 - (id)cls_hexString
 {
-  v2 = [a1 length];
-  v3 = [a1 bytes];
+  v2 = [self length];
+  bytes = [self bytes];
   v4 = malloc_type_calloc(1uLL, (2 * v2) | 1, 0xCC7C4C37uLL);
   if (v4)
   {
@@ -20,7 +20,7 @@
       v8 = 1;
       do
       {
-        snprintf(&v5[v6], ((2 * v2) | 1) - v6, "%02x", *(v3 + v7));
+        snprintf(&v5[v6], ((2 * v2) | 1) - v6, "%02x", *(bytes + v7));
         v7 = v8;
         v9 = v2 > v8++;
         v6 += 2;
@@ -46,7 +46,7 @@
   v6 = *MEMORY[0x277D85DE8];
   memset(&v4, 0, sizeof(v4));
   CC_SHA1_Init(&v4);
-  CC_SHA1_Update(&v4, [a1 bytes], objc_msgSend(a1, "length"));
+  CC_SHA1_Update(&v4, [self bytes], objc_msgSend(self, "length"));
   CC_SHA1_Final(md, &v4);
   v2 = [MEMORY[0x277CBEA90] dataWithBytes:md length:20];
 

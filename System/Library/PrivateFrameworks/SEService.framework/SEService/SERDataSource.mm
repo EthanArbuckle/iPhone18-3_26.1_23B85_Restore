@@ -1,7 +1,7 @@
 @interface SERDataSource
 - (NSString)description;
 - (_TtC9SEService13SERDataSource)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SERDataSource
@@ -12,7 +12,7 @@
   v4 = *(v3 + 48);
   v5 = *(v3 + 52);
   swift_allocObject();
-  v6 = self;
+  selfCopy = self;
   sub_1C7C7CFA4();
   type metadata accessor for SERDataSource();
   sub_1C7C5CA10(&qword_1EC264888, type metadata accessor for SERDataSource);
@@ -27,11 +27,11 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C7C58B20(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1C7C58B20(coderCopy);
 }
 
 - (_TtC9SEService13SERDataSource)init

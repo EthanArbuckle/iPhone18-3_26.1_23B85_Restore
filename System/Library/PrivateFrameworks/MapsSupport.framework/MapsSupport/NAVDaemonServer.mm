@@ -1,5 +1,5 @@
 @interface NAVDaemonServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NAVDaemonServer)init;
 @end
 
@@ -55,10 +55,10 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -66,7 +66,7 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Connection created.", buf, 2u);
   }
 
-  v9 = [[NAVDaemonPeer alloc] initWithNavdManager:self->_navdManager forXPCConnection:v7];
+  v9 = [[NAVDaemonPeer alloc] initWithNavdManager:self->_navdManager forXPCConnection:connectionCopy];
   peersQueue = self->_peersQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -77,9 +77,9 @@
   v20 = v11;
   dispatch_sync(peersQueue, block);
   v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___GEONavdXPCInterface];
-  [v7 setExportedInterface:v12];
+  [connectionCopy setExportedInterface:v12];
 
-  [v7 setExportedObject:v11];
+  [connectionCopy setExportedObject:v11];
   objc_initWeak(buf, v11);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -87,8 +87,8 @@
   v16[3] = &unk_100064F58;
   objc_copyWeak(&v17, buf);
   v16[4] = self;
-  [v7 setInvalidationHandler:v16];
-  [v7 resume];
+  [connectionCopy setInvalidationHandler:v16];
+  [connectionCopy resume];
   v13 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {

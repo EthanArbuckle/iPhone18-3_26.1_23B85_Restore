@@ -1,45 +1,45 @@
 @interface SDSuggestionNode
 - (BOOL)isIntentsBased;
 - (BOOL)loadIcon;
-- (SDSuggestionNode)initWithSuggestion:(id)a3;
+- (SDSuggestionNode)initWithSuggestion:(id)suggestion;
 - (id)description;
 - (void)dealloc;
-- (void)setIcon:(CGImage *)a3;
+- (void)setIcon:(CGImage *)icon;
 @end
 
 @implementation SDSuggestionNode
 
-- (SDSuggestionNode)initWithSuggestion:(id)a3
+- (SDSuggestionNode)initWithSuggestion:(id)suggestion
 {
-  v5 = a3;
+  suggestionCopy = suggestion;
   v32.receiver = self;
   v32.super_class = SDSuggestionNode;
   v6 = [(SDSuggestionNode *)&v32 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_suggestion, a3);
-    v8 = [v5 transportBundleIdentifier];
+    objc_storeStrong(&v6->_suggestion, suggestion);
+    transportBundleIdentifier = [suggestionCopy transportBundleIdentifier];
     bundleID = v7->_bundleID;
-    v7->_bundleID = v8;
+    v7->_bundleID = transportBundleIdentifier;
 
-    v10 = [v5 displayName];
+    displayName = [suggestionCopy displayName];
     displayName = v7->_displayName;
-    v7->_displayName = v10;
+    v7->_displayName = displayName;
 
-    v12 = [v5 formattedHandles];
+    formattedHandles = [suggestionCopy formattedHandles];
     formattedHandles = v7->_formattedHandles;
-    v7->_formattedHandles = v12;
+    v7->_formattedHandles = formattedHandles;
 
-    v14 = [v5 handles];
+    handles = [suggestionCopy handles];
     actualHandles = v7->_actualHandles;
-    v7->_actualHandles = v14;
+    v7->_actualHandles = handles;
 
-    v16 = [v5 conversationIdentifier];
-    v17 = v16;
-    if (v16)
+    conversationIdentifier = [suggestionCopy conversationIdentifier];
+    v17 = conversationIdentifier;
+    if (conversationIdentifier)
     {
-      v18 = v16;
+      v18 = conversationIdentifier;
       identifier = v7->_identifier;
       v7->_identifier = v18;
     }
@@ -47,27 +47,27 @@
     else
     {
       identifier = +[NSUUID UUID];
-      v20 = [identifier UUIDString];
-      v21 = [v20 substringWithRange:{24, 12}];
-      v22 = [v21 lowercaseString];
+      uUIDString = [identifier UUIDString];
+      v21 = [uUIDString substringWithRange:{24, 12}];
+      lowercaseString = [v21 lowercaseString];
       v23 = v7->_identifier;
-      v7->_identifier = v22;
+      v7->_identifier = lowercaseString;
     }
 
-    v24 = [v5 reason];
+    reason = [suggestionCopy reason];
     suggestionReason = v7->_suggestionReason;
-    v7->_suggestionReason = v24;
+    v7->_suggestionReason = reason;
 
-    v26 = [v5 recipients];
-    v7->_hasGroupImage = [v26 count] > 1;
+    recipients = [suggestionCopy recipients];
+    v7->_hasGroupImage = [recipients count] > 1;
 
-    v27 = [v5 contactsIdentifiers];
+    contactsIdentifiers = [suggestionCopy contactsIdentifiers];
     contactIDs = v7->_contactIDs;
-    v7->_contactIDs = v27;
+    v7->_contactIDs = contactsIdentifiers;
 
-    v29 = [v5 derivedIntentIdentifier];
+    derivedIntentIdentifier = [suggestionCopy derivedIntentIdentifier];
     derivedIntentIdentifier = v7->_derivedIntentIdentifier;
-    v7->_derivedIntentIdentifier = v29;
+    v7->_derivedIntentIdentifier = derivedIntentIdentifier;
 
     v7->_iconIndex = -1;
   }
@@ -138,17 +138,17 @@
   return ((v5 | v8) & 1) == 0;
 }
 
-- (void)setIcon:(CGImage *)a3
+- (void)setIcon:(CGImage *)icon
 {
   icon = self->_icon;
-  if (icon != a3)
+  if (icon != icon)
   {
     if (icon)
     {
       CFRelease(icon);
     }
 
-    self->_icon = CFRetain(a3);
+    self->_icon = CFRetain(icon);
   }
 }
 
@@ -159,20 +159,20 @@
     return 1;
   }
 
-  v3 = [(SDSuggestionNode *)self iconData];
+  iconData = [(SDSuggestionNode *)self iconData];
 
-  if (v3)
+  if (iconData)
   {
     return 1;
   }
 
-  v6 = [(SDSuggestionNode *)self loadIconHandler];
+  loadIconHandler = [(SDSuggestionNode *)self loadIconHandler];
   [(SDSuggestionNode *)self setLoadIconHandler:0];
-  if (v6)
+  if (loadIconHandler)
   {
     v9 = 0;
     v10 = 0;
-    (v6)[2](v6, self, &v10, &v9);
+    (loadIconHandler)[2](loadIconHandler, self, &v10, &v9);
     v7 = v9;
     [(SDSuggestionNode *)self setIcon:v10];
     [(SDSuggestionNode *)self setIconData:v7];
@@ -194,8 +194,8 @@
 
   else
   {
-    v8 = [(SDSuggestionNode *)self iconData];
-    v4 = v8 != 0;
+    iconData2 = [(SDSuggestionNode *)self iconData];
+    v4 = iconData2 != 0;
   }
 
   return v4;

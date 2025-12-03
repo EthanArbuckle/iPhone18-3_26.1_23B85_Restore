@@ -1,15 +1,15 @@
 @interface BCSParser
-+ (id)parseString:(id)a3;
++ (id)parseString:(id)string;
 @end
 
 @implementation BCSParser
 
-+ (id)parseString:(id)a3
++ (id)parseString:(id)string
 {
   v19[9] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 _bcs_trimmedString];
-  if ([v4 length])
+  stringCopy = string;
+  _bcs_trimmedString = [stringCopy _bcs_trimmedString];
+  if ([_bcs_trimmedString length])
   {
     v19[0] = objc_opt_class();
     v19[1] = objc_opt_class();
@@ -39,7 +39,7 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) parseString:{v4, v14}];
+          v10 = [*(*(&v14 + 1) + 8 * i) parseString:{_bcs_trimmedString, v14}];
           if (v10)
           {
             v11 = v10;
@@ -58,7 +58,7 @@
       }
     }
 
-    v11 = [[BCSStringData alloc] initWithString:v3];
+    v11 = [[BCSStringData alloc] initWithString:stringCopy];
 LABEL_12:
   }
 

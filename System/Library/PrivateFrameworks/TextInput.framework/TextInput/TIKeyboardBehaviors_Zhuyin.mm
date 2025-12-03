@@ -1,20 +1,20 @@
 @interface TIKeyboardBehaviors_Zhuyin
-- (id)keyBehaviorsForState:(id)a3;
+- (id)keyBehaviorsForState:(id)state;
 @end
 
 @implementation TIKeyboardBehaviors_Zhuyin
 
-- (id)keyBehaviorsForState:(id)a3
+- (id)keyBehaviorsForState:(id)state
 {
-  v3 = a3;
-  if ([v3 hasInput])
+  stateCopy = state;
+  if ([stateCopy hasInput])
   {
-    if ([v3 followsZhuyin])
+    if ([stateCopy followsZhuyin])
     {
       v4 = 100;
     }
 
-    else if ([v3 hasCandidateSelected])
+    else if ([stateCopy hasCandidateSelected])
     {
       v4 = 4;
     }
@@ -27,9 +27,9 @@
     goto LABEL_10;
   }
 
-  if ([v3 hasCandidates])
+  if ([stateCopy hasCandidates])
   {
-    if (![v3 hasCandidateSelected])
+    if (![stateCopy hasCandidateSelected])
     {
       v4 = 7;
       v5 = 9;

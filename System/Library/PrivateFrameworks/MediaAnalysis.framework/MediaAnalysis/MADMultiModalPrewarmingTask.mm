@@ -1,20 +1,20 @@
 @interface MADMultiModalPrewarmingTask
-- (BOOL)run:(id *)a3;
-- (MADMultiModalPrewarmingTask)initWithRequests:(id)a3 cancelBlock:(id)a4 completionHandler:(id)a5;
+- (BOOL)run:(id *)run;
+- (MADMultiModalPrewarmingTask)initWithRequests:(id)requests cancelBlock:(id)block completionHandler:(id)handler;
 @end
 
 @implementation MADMultiModalPrewarmingTask
 
-- (MADMultiModalPrewarmingTask)initWithRequests:(id)a3 cancelBlock:(id)a4 completionHandler:(id)a5
+- (MADMultiModalPrewarmingTask)initWithRequests:(id)requests cancelBlock:(id)block completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestsCopy = requests;
+  blockCopy = block;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __78__MADMultiModalPrewarmingTask_initWithRequests_cancelBlock_completionHandler___block_invoke;
   v18[3] = &unk_1E834CF90;
-  v12 = v11;
+  v12 = handlerCopy;
   v19 = v12;
   v17.receiver = self;
   v17.super_class = MADMultiModalPrewarmingTask;
@@ -22,17 +22,17 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_requests, a3);
+    objc_storeStrong(&v13->_requests, requests);
     signpostPayload = v14->_signpostPayload;
     v14->_signpostPayload = &stru_1F496CB30;
 
-    [(VCPMABaseTask *)v14 setCancelBlock:v10];
+    [(VCPMABaseTask *)v14 setCancelBlock:blockCopy];
   }
 
   return v14;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   v66 = *MEMORY[0x1E69E9840];
   v5 = VCPSignPostLog();
@@ -61,7 +61,7 @@
     v14 = *v52;
     obj = v11;
     v47 = v6;
-    v48 = a3;
+    runCopy = run;
     v46 = v6 - 1;
 LABEL_6:
     v15 = 0;
@@ -96,8 +96,8 @@ LABEL_6:
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ does not support prewarming", buf, 0xCu);
         }
 
-        v26 = obj;
-        if (v48)
+        completionHandler = obj;
+        if (runCopy)
         {
           v33 = MEMORY[0x1E696ABC0];
           v34 = *MEMORY[0x1E696A768];
@@ -106,8 +106,8 @@ LABEL_6:
           v56 = v30;
           v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
           v36 = [v33 errorWithDomain:v34 code:-50 userInfo:v35];
-          v37 = *v48;
-          *v48 = v36;
+          v37 = *runCopy;
+          *runCopy = v36;
 
 LABEL_31:
         }
@@ -136,8 +136,8 @@ LABEL_39:
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to prewarm %@ (%@)", buf, 0x16u);
         }
 
-        v26 = obj;
-        if (v48)
+        completionHandler = obj;
+        if (runCopy)
         {
           v39 = MEMORY[0x1E696ABC0];
           v40 = *MEMORY[0x1E696A768];
@@ -146,8 +146,8 @@ LABEL_39:
           v58 = v41;
           v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
           v43 = [v39 errorWithDomain:v40 code:-50 userInfo:v42];
-          v44 = *v48;
-          *v48 = v43;
+          v44 = *runCopy;
+          *runCopy = v43;
         }
 
         objc_autoreleasePoolPop(v19);
@@ -176,8 +176,8 @@ LABEL_39:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Request canceled", buf, 2u);
     }
 
-    v26 = obj;
-    if (v48)
+    completionHandler = obj;
+    if (runCopy)
     {
       v28 = MEMORY[0x1E696ABC0];
       v29 = *MEMORY[0x1E696A768];
@@ -186,8 +186,8 @@ LABEL_39:
       v64 = v18;
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
       v31 = [v28 errorWithDomain:v29 code:-128 userInfo:v30];
-      v32 = *v48;
-      *v48 = v31;
+      v32 = *runCopy;
+      *runCopy = v31;
 
       goto LABEL_31;
     }
@@ -207,8 +207,8 @@ LABEL_17:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v24, OS_SIGNPOST_INTERVAL_END, v6, "MADMultiModalPrewarmingTask_Run", "%@", buf, 0xCu);
   }
 
-  v26 = [(VCPMABaseTask *)self completionHandler];
-  v26[2](v26, 0, 0);
+  completionHandler = [(VCPMABaseTask *)self completionHandler];
+  completionHandler[2](completionHandler, 0, 0);
   v27 = 1;
 LABEL_40:
 

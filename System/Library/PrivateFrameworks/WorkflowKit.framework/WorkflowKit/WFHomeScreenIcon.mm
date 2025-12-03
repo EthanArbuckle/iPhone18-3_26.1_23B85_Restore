@@ -1,17 +1,17 @@
 @interface WFHomeScreenIcon
-- (WFHomeScreenIcon)initWithWorkflowIcon:(id)a3 customImageData:(id)a4;
+- (WFHomeScreenIcon)initWithWorkflowIcon:(id)icon customImageData:(id)data;
 @end
 
 @implementation WFHomeScreenIcon
 
-- (WFHomeScreenIcon)initWithWorkflowIcon:(id)a3 customImageData:(id)a4
+- (WFHomeScreenIcon)initWithWorkflowIcon:(id)icon customImageData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  iconCopy = icon;
+  dataCopy = data;
+  if (!iconCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFHomeScreenIcon.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"workflowIcon"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFHomeScreenIcon.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"workflowIcon"}];
   }
 
   v15.receiver = self;
@@ -20,8 +20,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_workflowIcon, a3);
-    objc_storeStrong(&v11->_customImageData, a4);
+    objc_storeStrong(&v10->_workflowIcon, icon);
+    objc_storeStrong(&v11->_customImageData, data);
     v12 = v11;
   }
 

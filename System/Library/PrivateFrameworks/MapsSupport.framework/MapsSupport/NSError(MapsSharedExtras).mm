@@ -7,10 +7,10 @@
 
 - (BOOL)_maps_isCancellation
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x277CCA050]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA050]])
   {
-    v3 = [a1 code] == 3072;
+    v3 = [self code] == 3072;
   }
 
   else
@@ -24,12 +24,12 @@
 - (BOOL)_maps_isErrorOfDomain:()MapsSharedExtras code:
 {
   v6 = a3;
-  v7 = [a1 domain];
-  v8 = [v7 isEqualToString:v6];
+  domain = [self domain];
+  v8 = [domain isEqualToString:v6];
 
   if (v8)
   {
-    v9 = [a1 code] == a4;
+    v9 = [self code] == a4;
   }
 
   else

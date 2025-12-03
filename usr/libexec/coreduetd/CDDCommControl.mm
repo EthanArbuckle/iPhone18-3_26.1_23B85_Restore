@@ -1,44 +1,44 @@
 @interface CDDCommControl
 - (CDD)cdd;
-- (CDDCommControl)initWithCommInstance:(id)a3;
+- (CDDCommControl)initWithCommInstance:(id)instance;
 - (CDDCommunicator)comm;
-- (id)deviceDescriptionFromDevice:(id)a3;
-- (id)deviceFromDeviceDescription:(id)a3;
-- (id)identifierFromDeviceDescription:(id)a3;
-- (id)requestDataFromDevice:(id)a3 message:(id)a4;
-- (void)addDevice:(id)a3;
-- (void)checkDevices:(id)a3;
+- (id)deviceDescriptionFromDevice:(id)device;
+- (id)deviceFromDeviceDescription:(id)description;
+- (id)identifierFromDeviceDescription:(id)description;
+- (id)requestDataFromDevice:(id)device message:(id)message;
+- (void)addDevice:(id)device;
+- (void)checkDevices:(id)devices;
 - (void)checkForecastSync;
 - (void)dealloc;
 - (void)loadSavedDateIfExist;
-- (void)receiveData:(id)a3 context:(id)a4 device:(id)a5;
-- (void)removeDevice:(id)a3;
+- (void)receiveData:(id)data context:(id)context device:(id)device;
+- (void)removeDevice:(id)device;
 - (void)saveLastDate;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
 - (void)setupIDSLink;
 - (void)setupPairedSyncClient;
-- (void)syncCoordinatorDidReceiveStartSyncCommand:(id)a3;
-- (void)triggeredExchange:(id)a3 opportunistic:(BOOL)a4 queue:(id)a5 timeout:(id)a6 urgent:(BOOL)a7;
-- (void)updateOutgoingVersionNumberAndSyncState:(unint64_t)a3 forIncomingSupportedVersions:(id)a4;
+- (void)syncCoordinatorDidReceiveStartSyncCommand:(id)command;
+- (void)triggeredExchange:(id)exchange opportunistic:(BOOL)opportunistic queue:(id)queue timeout:(id)timeout urgent:(BOOL)urgent;
+- (void)updateOutgoingVersionNumberAndSyncState:(unint64_t)state forIncomingSupportedVersions:(id)versions;
 @end
 
 @implementation CDDCommControl
 
-- (CDDCommControl)initWithCommInstance:(id)a3
+- (CDDCommControl)initWithCommInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v29.receiver = self;
   v29.super_class = CDDCommControl;
   v5 = [(CDDCommControl *)&v29 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->comm, v4);
-    v8 = [v4 cdd];
+    v7 = objc_storeWeak(&v5->comm, instanceCopy);
+    v8 = [instanceCopy cdd];
     objc_storeWeak(&v6->cdd, v8);
 
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -151,10 +151,10 @@ LABEL_12:
 
   objc_storeStrong(&self->lastForecastSent, v5);
   v8 = [(CDDCommControl *)self cdd];
-  v9 = [v8 config];
-  v10 = [v9 verbose];
+  config = [v8 config];
+  verbose = [config verbose];
 
-  if (v10)
+  if (verbose)
   {
     [(NSDate *)self->lastForecastSent timeIntervalSinceNow];
     v12 = v11;
@@ -197,12 +197,12 @@ LABEL_13:
 - (void)setupIDSLink
 {
   WeakRetained = objc_loadWeakRetained(&self->cdd);
-  v4 = [WeakRetained config];
-  v5 = [v4 commEnabled];
+  config = [WeakRetained config];
+  commEnabled = [config commEnabled];
 
   v6 = +[_CDLogging communicatorChannel];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (commEnabled)
   {
     if (v7)
     {
@@ -264,10 +264,10 @@ LABEL_13:
 - (void)setupPairedSyncClient
 {
   WeakRetained = objc_loadWeakRetained(&self->cdd);
-  v4 = [WeakRetained config];
-  v5 = [v4 commEnabled];
+  config = [WeakRetained config];
+  commEnabled = [config commEnabled];
 
-  if (v5)
+  if (commEnabled)
   {
     v6 = +[_CDLogging communicatorChannel];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -299,9 +299,9 @@ LABEL_13:
   }
 }
 
-- (void)syncCoordinatorDidReceiveStartSyncCommand:(id)a3
+- (void)syncCoordinatorDidReceiveStartSyncCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = +[_CDLogging communicatorChannel];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -315,7 +315,7 @@ LABEL_13:
   v7 = objc_loadWeakRetained(&self->comm);
   [v7 requestRemoteDeviceSync];
 
-  [v4 syncDidComplete];
+  [commandCopy syncDidComplete];
 }
 
 - (void)checkForecastSync
@@ -339,21 +339,21 @@ LABEL_13:
   dispatch_async(v4, block);
 }
 
-- (void)updateOutgoingVersionNumberAndSyncState:(unint64_t)a3 forIncomingSupportedVersions:(id)a4
+- (void)updateOutgoingVersionNumberAndSyncState:(unint64_t)state forIncomingSupportedVersions:(id)versions
 {
-  v5 = a4;
+  versionsCopy = versions;
   WeakRetained = objc_loadWeakRetained(&self->comm);
-  v7 = [WeakRetained localMaxSupportedVersionNumber];
+  localMaxSupportedVersionNumber = [WeakRetained localMaxSupportedVersionNumber];
 
   v8 = objc_loadWeakRetained(&self->comm);
-  v9 = [v8 remoteVersionNumber];
+  remoteVersionNumber = [v8 remoteVersionNumber];
 
   v10 = objc_loadWeakRetained(&self->comm);
-  v11 = [v10 getOutgoingVersionForIncomingVersions:v5];
+  v11 = [v10 getOutgoingVersionForIncomingVersions:versionsCopy];
 
   v12 = +[_CDLogging communicatorChannel];
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-  if (v9 == v11)
+  if (remoteVersionNumber == v11)
   {
     if (v13)
     {
@@ -367,9 +367,9 @@ LABEL_13:
     if (v13)
     {
       v15 = 134218496;
-      v16 = v7;
+      v16 = localMaxSupportedVersionNumber;
       v17 = 2048;
-      v18 = v9;
+      v18 = remoteVersionNumber;
       v19 = 2048;
       v20 = v11;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "CDDCommunicator: VersionMismatch: localMaxSupportedVersionNumber = %llu,currentoutgoingVersionNumber = %llu updating outgoingVersionNumber to %llu", &v15, 0x20u);
@@ -383,15 +383,15 @@ LABEL_13:
   }
 }
 
-- (void)receiveData:(id)a3 context:(id)a4 device:(id)a5
+- (void)receiveData:(id)data context:(id)context device:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v100 = v9;
-  v101 = v10;
-  v102 = v8;
-  if (!v10)
+  dataCopy = data;
+  contextCopy = context;
+  deviceCopy = device;
+  v100 = contextCopy;
+  v101 = deviceCopy;
+  v102 = dataCopy;
+  if (!deviceCopy)
   {
     v18 = +[_CDLogging communicatorChannel];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -405,7 +405,7 @@ LABEL_9:
 LABEL_10:
 
     v14 = 0;
-    v15 = 0;
+    getAckMessage = 0;
     v16 = 0;
     v20 = 0;
     v21 = 0;
@@ -417,8 +417,8 @@ LABEL_10:
     goto LABEL_23;
   }
 
-  v11 = v10;
-  v12 = [(CDDCommControl *)self deviceDescriptionFromDevice:v10];
+  v11 = deviceCopy;
+  v12 = [(CDDCommControl *)self deviceDescriptionFromDevice:deviceCopy];
   if (!v12)
   {
     v18 = +[_CDLogging communicatorChannel];
@@ -442,12 +442,12 @@ LABEL_10:
     v105[2] = sub_10000F194;
     v105[3] = &unk_10003CCB0;
     v105[4] = self;
-    v106 = v9;
+    v106 = contextCopy;
     v107 = v11;
-    [v8 enumerateObjectsUsingBlock:v105];
+    [dataCopy enumerateObjectsUsingBlock:v105];
 
     v14 = 0;
-    v15 = 0;
+    getAckMessage = 0;
     v16 = 0;
     v17 = v13;
 LABEL_22:
@@ -472,48 +472,48 @@ LABEL_22:
     }
 
     v14 = 0;
-    v15 = 0;
+    getAckMessage = 0;
     v16 = 0;
     goto LABEL_22;
   }
 
-  v98 = [v9 incomingResponseIdentifier];
-  v99 = [v9 outgoingResponseIdentifier];
-  v22 = [v8 objectForKey:&off_10003F098];
-  v26 = [v8 objectForKey:&off_10003F0B0];
-  v27 = [v22 unsignedIntValue];
+  incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
+  outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+  v22 = [dataCopy objectForKey:&off_10003F098];
+  v26 = [dataCopy objectForKey:&off_10003F0B0];
+  unsignedIntValue = [v22 unsignedIntValue];
   WeakRetained = objc_loadWeakRetained(&self->comm);
-  v29 = [WeakRetained remoteVersionNumber];
+  remoteVersionNumber = [WeakRetained remoteVersionNumber];
 
-  if (v29 != v27)
+  if (remoteVersionNumber != unsignedIntValue)
   {
     v30 = +[_CDLogging communicatorChannel];
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v115 = v29;
+      v115 = remoteVersionNumber;
       v116 = 2048;
-      v117 = v27;
+      v117 = unsignedIntValue;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "CDDCommunicator: receivedData: VersionMismatch. OutgoingVersionNumber = %llu IncomingVersionNumber = %llu", buf, 0x16u);
     }
 
-    [(CDDCommControl *)self updateOutgoingVersionNumberAndSyncState:v27 forIncomingSupportedVersions:v26];
+    [(CDDCommControl *)self updateOutgoingVersionNumberAndSyncState:unsignedIntValue forIncomingSupportedVersions:v26];
   }
 
   v31 = objc_loadWeakRetained(&self->comm);
-  v32 = [v31 localMaxSupportedVersionNumber];
+  localMaxSupportedVersionNumber = [v31 localMaxSupportedVersionNumber];
 
   v97 = v26;
-  if (v32 <= v27)
+  if (localMaxSupportedVersionNumber <= unsignedIntValue)
   {
-    if (v32 < v27)
+    if (localMaxSupportedVersionNumber < unsignedIntValue)
     {
       v38 = objc_loadWeakRetained(&self->comm);
-      v15 = [v38 getAckMessage];
+      getAckMessage = [v38 getAckMessage];
 
       v112[0] = IDSSendMessageOptionPeerResponseIdentifierKey;
       v112[1] = IDSSendMessageOptionEnforceRemoteTimeoutsKey;
-      v113[0] = v99;
+      v113[0] = outgoingResponseIdentifier;
       v113[1] = &__kCFBooleanFalse;
       v112[2] = IDSSendMessageOptionBypassDuetKey;
       v113[2] = &__kCFBooleanTrue;
@@ -522,8 +522,8 @@ LABEL_22:
       v39 = 0;
       v21 = 0;
 LABEL_26:
-      v102 = v8;
-      if (v15)
+      v102 = dataCopy;
+      if (getAckMessage)
       {
         v40 = IDSCopyIDForDevice();
         if (!v40)
@@ -537,8 +537,8 @@ LABEL_26:
             _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_INFO, "CDDCommunicator: receiveRequestData: failed to get idsIdentifier, cannot proceed.", buf, 2u);
           }
 
-          v24 = v98;
-          v23 = v99;
+          v24 = incomingResponseIdentifier;
+          v23 = outgoingResponseIdentifier;
           goto LABEL_36;
         }
 
@@ -547,7 +547,7 @@ LABEL_26:
         v41 = [NSSet setWithObject:v40];
         v103 = 0;
         v104 = 0;
-        logb = [(IDSService *)service sendData:v15 toDestinations:v41 priority:300 options:v14 identifier:&v104 error:&v103];
+        logb = [(IDSService *)service sendData:getAckMessage toDestinations:v41 priority:300 options:v14 identifier:&v104 error:&v103];
         v88 = v104;
         v95 = v103;
 
@@ -558,9 +558,9 @@ LABEL_26:
           {
             [v95 description];
             v43 = logc = v42;
-            v44 = [v43 UTF8String];
+            uTF8String = [v43 UTF8String];
             *buf = 136315138;
-            v115 = v44;
+            v115 = uTF8String;
             _os_log_impl(&_mh_execute_header, logc, OS_LOG_TYPE_DEFAULT, "CDDCommunicator: receiveData: send error %s.", buf, 0xCu);
 
             v42 = logc;
@@ -568,7 +568,7 @@ LABEL_26:
         }
       }
 
-      v24 = v98;
+      v24 = incomingResponseIdentifier;
       goto LABEL_34;
     }
   }
@@ -576,35 +576,35 @@ LABEL_26:
   else
   {
     v33 = objc_loadWeakRetained(&self->comm);
-    v34 = [v33 isConversionRequiredForMessage:v8 fromVersion:v27 toVersion:v32];
+    v34 = [v33 isConversionRequiredForMessage:dataCopy fromVersion:unsignedIntValue toVersion:localMaxSupportedVersionNumber];
 
     if (v34)
     {
       v35 = objc_loadWeakRetained(&self->comm);
-      v36 = [v35 convertMessage:v8 fromVersion:v27 toVersion:v32];
+      v36 = [v35 convertMessage:dataCopy fromVersion:unsignedIntValue toVersion:localMaxSupportedVersionNumber];
 
-      v8 = v36;
+      dataCopy = v36;
     }
   }
 
-  v21 = [v8 objectForKey:&off_10003F0C8];
-  v39 = [v8 objectForKey:&off_10003F0E0];
-  v16 = [v8 objectForKey:&off_10003F0F8];
-  v45 = [v21 intValue];
-  v102 = v8;
-  if (v45 <= 5)
+  v21 = [dataCopy objectForKey:&off_10003F0C8];
+  v39 = [dataCopy objectForKey:&off_10003F0E0];
+  v16 = [dataCopy objectForKey:&off_10003F0F8];
+  intValue = [v21 intValue];
+  v102 = dataCopy;
+  if (intValue <= 5)
   {
-    if (v45 >= 2)
+    if (intValue >= 2)
     {
-      if (v45 == 3)
+      if (intValue == 3)
       {
         v71 = +[_CDLogging communicatorChannel];
         if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
         {
-          v72 = [v11 uniqueIDOverride];
-          v73 = [v72 UTF8String];
+          uniqueIDOverride = [v11 uniqueIDOverride];
+          uTF8String2 = [uniqueIDOverride UTF8String];
           *buf = 136315138;
-          v115 = v73;
+          v115 = uTF8String2;
           _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_INFO, "CDDCommunicator: receivedData: received forecast data from %s.", buf, 0xCu);
         }
 
@@ -614,14 +614,14 @@ LABEL_26:
         v76 = v75;
         if (v74)
         {
-          v24 = v98;
-          [v75 receiveRequestedForecast:v39 paramDict:v16 transactionId:objc_msgSend(v98 device:{"hash"), v13}];
+          v24 = incomingResponseIdentifier;
+          [v75 receiveRequestedForecast:v39 paramDict:v16 transactionId:objc_msgSend(incomingResponseIdentifier device:{"hash"), v13}];
 
-          [(NSMutableDictionary *)self->sentRequestedTimestamps removeObjectForKey:v98];
+          [(NSMutableDictionary *)self->sentRequestedTimestamps removeObjectForKey:incomingResponseIdentifier];
           v14 = 0;
-          v15 = 0;
+          getAckMessage = 0;
 LABEL_34:
-          v23 = v99;
+          v23 = outgoingResponseIdentifier;
           v17 = v13;
 LABEL_35:
           v20 = v39;
@@ -633,11 +633,11 @@ LABEL_36:
         [v75 receiveForecast:v39 paramDict:v16 device:v13];
 
         v79 = objc_loadWeakRetained(&self->comm);
-        v15 = [v79 getAckMessage];
+        getAckMessage = [v79 getAckMessage];
 
         v110[0] = IDSSendMessageOptionPeerResponseIdentifierKey;
         v110[1] = IDSSendMessageOptionEnforceRemoteTimeoutsKey;
-        v111[0] = v99;
+        v111[0] = outgoingResponseIdentifier;
         v111[1] = &__kCFBooleanFalse;
         v110[2] = IDSSendMessageOptionBypassDuetKey;
         v111[2] = &__kCFBooleanTrue;
@@ -646,12 +646,12 @@ LABEL_36:
         goto LABEL_81;
       }
 
-      if (v45 == 5)
+      if (intValue == 5)
       {
-        v46 = [v39 intValue];
+        intValue2 = [v39 intValue];
         v47 = +[_CDLogging communicatorChannel];
         v48 = os_log_type_enabled(v47, OS_LOG_TYPE_INFO);
-        if (v46 != 2)
+        if (intValue2 != 2)
         {
           v89 = v21;
           v91 = v16;
@@ -660,10 +660,10 @@ LABEL_36:
           log = v39;
           if (v48)
           {
-            v53 = [v101 uniqueIDOverride];
-            v78 = [v53 UTF8String];
+            uniqueIDOverride2 = [v101 uniqueIDOverride];
+            uTF8String3 = [uniqueIDOverride2 UTF8String];
             *buf = 136315138;
-            v115 = v78;
+            v115 = uTF8String3;
             v55 = "CDDCommunicator: receivedData: Invalid data value request from %s.";
             v56 = v47;
             v57 = OS_LOG_TYPE_INFO;
@@ -671,11 +671,11 @@ LABEL_36:
           }
 
 LABEL_75:
-          v24 = v98;
-          v23 = v99;
+          v24 = incomingResponseIdentifier;
+          v23 = outgoingResponseIdentifier;
 
           v14 = 0;
-          v15 = 0;
+          getAckMessage = 0;
 LABEL_76:
           v22 = v96;
           v25 = v97;
@@ -688,17 +688,17 @@ LABEL_76:
 
         if (v48)
         {
-          v49 = [v11 uniqueIDOverride];
-          v50 = [v49 UTF8String];
+          uniqueIDOverride3 = [v11 uniqueIDOverride];
+          uTF8String4 = [uniqueIDOverride3 UTF8String];
           *buf = 136315138;
-          v115 = v50;
+          v115 = uTF8String4;
           _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_INFO, "CDDCommunicator: receivedData: received forecast data request from %s.", buf, 0xCu);
         }
 
         v51 = [(CDDCommControl *)self cdd];
-        v52 = [v51 classCLocked];
+        classCLocked = [v51 classCLocked];
 
-        if (v52)
+        if (classCLocked)
         {
           v89 = v21;
           v91 = v16;
@@ -708,10 +708,10 @@ LABEL_76:
           v92 = v13;
           if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
           {
-            v53 = [v101 uniqueIDOverride];
-            v54 = [v53 UTF8String];
+            uniqueIDOverride2 = [v101 uniqueIDOverride];
+            uTF8String5 = [uniqueIDOverride2 UTF8String];
             *buf = 136315138;
-            v115 = v54;
+            v115 = uTF8String5;
             v55 = "CDDCommunicator: forecast data unavailable before class C unlock form %s.";
             v56 = v47;
             v57 = OS_LOG_TYPE_DEFAULT;
@@ -725,11 +725,11 @@ LABEL_74:
         }
 
         v82 = objc_loadWeakRetained(&self->comm);
-        v15 = [v82 satisfyForecastDataRequest:v16];
+        getAckMessage = [v82 satisfyForecastDataRequest:v16];
 
         v108[0] = IDSSendMessageOptionPeerResponseIdentifierKey;
         v108[1] = IDSSendMessageOptionEnforceRemoteTimeoutsKey;
-        v109[0] = v99;
+        v109[0] = outgoingResponseIdentifier;
         v109[1] = &__kCFBooleanFalse;
         v108[2] = IDSSendMessageOptionBypassDuetKey;
         v109[2] = &__kCFBooleanTrue;
@@ -748,33 +748,33 @@ LABEL_62:
       v68 = +[_CDLogging communicatorChannel];
       if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
       {
-        v69 = [v101 uniqueIDOverride];
-        v70 = [v69 UTF8String];
+        uniqueIDOverride4 = [v101 uniqueIDOverride];
+        uTF8String6 = [uniqueIDOverride4 UTF8String];
         *buf = 136315138;
-        v115 = v70;
+        v115 = uTF8String6;
         _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEFAULT, "CDDCommunicator: receivedData: Invalid request type from %s.", buf, 0xCu);
       }
 
       v14 = 0;
-      v15 = 0;
-      v24 = v98;
-      v23 = v99;
+      getAckMessage = 0;
+      v24 = incomingResponseIdentifier;
+      v23 = outgoingResponseIdentifier;
       goto LABEL_76;
     }
 
     goto LABEL_53;
   }
 
-  if (v45 == 6)
+  if (intValue == 6)
   {
-    v24 = v98;
-    v66 = [(NSMutableDictionary *)self->sentRequestedTimestamps objectForKey:v98];
+    v24 = incomingResponseIdentifier;
+    v66 = [(NSMutableDictionary *)self->sentRequestedTimestamps objectForKey:incomingResponseIdentifier];
 
     v17 = v13;
     if (v66)
     {
       v20 = v39;
-      [(NSMutableDictionary *)self->sentRequestedTimestamps removeObjectForKey:v98];
+      [(NSMutableDictionary *)self->sentRequestedTimestamps removeObjectForKey:incomingResponseIdentifier];
       v67 = +[_CDLogging communicatorChannel];
       if (os_log_type_enabled(v67, OS_LOG_TYPE_INFO))
       {
@@ -783,17 +783,17 @@ LABEL_62:
       }
 
       v14 = 0;
-      v15 = 0;
-      v23 = v99;
+      getAckMessage = 0;
+      v23 = outgoingResponseIdentifier;
       goto LABEL_36;
     }
 
-    v23 = v99;
+    v23 = outgoingResponseIdentifier;
     if (!v39)
     {
       v20 = 0;
       v83 = +[_CDLogging communicatorChannel];
-      v24 = v98;
+      v24 = incomingResponseIdentifier;
       if (os_log_type_enabled(v83, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
@@ -801,56 +801,56 @@ LABEL_62:
       }
 
       v14 = 0;
-      v15 = 0;
+      getAckMessage = 0;
       goto LABEL_36;
     }
 
     v14 = 0;
-    v15 = 0;
-    v24 = v98;
+    getAckMessage = 0;
+    v24 = incomingResponseIdentifier;
     goto LABEL_35;
   }
 
-  if (v45 == 7)
+  if (intValue == 7)
   {
 LABEL_53:
     v60 = objc_loadWeakRetained(&self->comm);
     [v60 receiveSystemData:v39 device:v13];
 
     v61 = objc_loadWeakRetained(&self->cdd);
-    v62 = [v61 watchUpdate];
+    watchUpdate = [v61 watchUpdate];
     v93 = v13;
-    [v62 receiveWatchfaceInfo:v39 device:v13];
+    [watchUpdate receiveWatchfaceInfo:v39 device:v13];
 
     v63 = +[_CDLogging communicatorChannel];
     if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
     {
-      v64 = [v11 uniqueIDOverride];
-      v65 = [v64 UTF8String];
+      uniqueIDOverride5 = [v11 uniqueIDOverride];
+      uTF8String7 = [uniqueIDOverride5 UTF8String];
       *buf = 136315138;
-      v115 = v65;
+      v115 = uTF8String7;
       _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "CDDCommunicator: receivedData: received system data from %s.", buf, 0xCu);
     }
 
     v20 = v39;
 
-    v24 = v98;
-    v14 = [(NSMutableDictionary *)self->sentRequestedTimestamps objectForKey:v98];
+    v24 = incomingResponseIdentifier;
+    v14 = [(NSMutableDictionary *)self->sentRequestedTimestamps objectForKey:incomingResponseIdentifier];
 
     if (v14)
     {
-      [(NSMutableDictionary *)self->sentRequestedTimestamps removeObjectForKey:v98];
+      [(NSMutableDictionary *)self->sentRequestedTimestamps removeObjectForKey:incomingResponseIdentifier];
       v14 = 0;
     }
 
-    v15 = 0;
-    v23 = v99;
+    getAckMessage = 0;
+    v23 = outgoingResponseIdentifier;
     v25 = v97;
     v17 = v93;
     goto LABEL_23;
   }
 
-  if (v45 != 8)
+  if (intValue != 8)
   {
     goto LABEL_62;
   }
@@ -870,35 +870,35 @@ LABEL_53:
   [(CDDCommControl *)self setLastForecastSent:0];
   [(CDDCommControl *)self checkForecastSync];
   v14 = 0;
-  v15 = 0;
-  v24 = v98;
-  v23 = v99;
+  getAckMessage = 0;
+  v24 = incomingResponseIdentifier;
+  v23 = outgoingResponseIdentifier;
   v25 = v97;
   v20 = loga;
 LABEL_23:
 }
 
-- (void)triggeredExchange:(id)a3 opportunistic:(BOOL)a4 queue:(id)a5 timeout:(id)a6 urgent:(BOOL)a7
+- (void)triggeredExchange:(id)exchange opportunistic:(BOOL)opportunistic queue:(id)queue timeout:(id)timeout urgent:(BOOL)urgent
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  exchangeCopy = exchange;
+  queueCopy = queue;
+  timeoutCopy = timeout;
   commQueue = self->commQueue;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10000F6A4;
   v23[3] = &unk_10003CCD8;
   v23[4] = self;
-  v24 = v12;
-  v27 = a4;
-  v28 = a7;
-  v25 = v14;
-  v26 = v13;
+  v24 = exchangeCopy;
+  opportunisticCopy = opportunistic;
+  urgentCopy = urgent;
+  v25 = timeoutCopy;
+  v26 = queueCopy;
   v16 = v23;
   v17 = commQueue;
-  v18 = v13;
-  v19 = v14;
-  v20 = v12;
+  v18 = queueCopy;
+  v19 = timeoutCopy;
+  v20 = exchangeCopy;
   v21 = os_transaction_create();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -910,28 +910,28 @@ LABEL_23:
   dispatch_async(v17, block);
 }
 
-- (id)requestDataFromDevice:(id)a3 message:(id)a4
+- (id)requestDataFromDevice:(id)device message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:&off_10003F098];
+  deviceCopy = device;
+  messageCopy = message;
+  v8 = [deviceCopy objectForKey:&off_10003F098];
   if (v8)
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    v10 = [(NSMutableDictionary *)v9->identifierCache objectForKey:v8];
-    objc_sync_exit(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v10 = [(NSMutableDictionary *)selfCopy->identifierCache objectForKey:v8];
+    objc_sync_exit(selfCopy);
 
     if (v10)
     {
-      service = v9->_service;
+      service = selfCopy->_service;
       v12 = [NSSet setWithObject:v10];
       v29 = IDSSendMessageOptionExpectsPeerResponseKey;
       v30 = &__kCFBooleanTrue;
       v13 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
       v27 = 0;
       v28 = 0;
-      v14 = [(IDSService *)service sendData:v7 toDestinations:v12 priority:300 options:v13 identifier:&v28 error:&v27];
+      v14 = [(IDSService *)service sendData:messageCopy toDestinations:v12 priority:300 options:v13 identifier:&v28 error:&v27];
       v15 = v28;
       v16 = v27;
 
@@ -947,7 +947,7 @@ LABEL_23:
 
       if (v17)
       {
-        sentRequestedTimestamps = v9->sentRequestedTimestamps;
+        sentRequestedTimestamps = selfCopy->sentRequestedTimestamps;
         v19 = +[NSDate date];
         [(NSMutableDictionary *)sentRequestedTimestamps setObject:v19 forKey:v15];
 
@@ -961,9 +961,9 @@ LABEL_23:
         {
           v23 = [v16 description];
           v24 = v23;
-          v25 = [v23 UTF8String];
+          uTF8String = [v23 UTF8String];
           *buf = 136315138;
-          v32 = v25;
+          uTF8String2 = uTF8String;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "CDDCommunicator: requestDataFromDevice: send error %s.", buf, 0xCu);
         }
 
@@ -989,9 +989,9 @@ LABEL_23:
     v10 = +[_CDLogging communicatorChannel];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v21 = [v6 description];
+      v21 = [deviceCopy description];
       *buf = 136315138;
-      v32 = [v21 UTF8String];
+      uTF8String2 = [v21 UTF8String];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "CDDCommunicator: requestDataFromDevice: bad description %s.", buf, 0xCu);
     }
 
@@ -1001,15 +1001,15 @@ LABEL_23:
   return v20;
 }
 
-- (id)deviceDescriptionFromDevice:(id)a3
+- (id)deviceDescriptionFromDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 uniqueIDOverride];
-  v5 = [v3 modelIdentifier];
-  v6 = v5;
-  if (v5)
+  deviceCopy = device;
+  uniqueIDOverride = [deviceCopy uniqueIDOverride];
+  modelIdentifier = [deviceCopy modelIdentifier];
+  v6 = modelIdentifier;
+  if (modelIdentifier)
   {
-    v7 = v5;
+    v7 = modelIdentifier;
   }
 
   else
@@ -1019,11 +1019,11 @@ LABEL_23:
 
   v8 = v7;
 
-  v9 = [v3 name];
-  v10 = v9;
-  if (v9)
+  name = [deviceCopy name];
+  v10 = name;
+  if (name)
   {
-    v11 = v9;
+    v11 = name;
   }
 
   else
@@ -1033,11 +1033,11 @@ LABEL_23:
 
   v12 = v11;
 
-  v13 = [v3 productName];
+  productName = [deviceCopy productName];
 
-  if (v13)
+  if (productName)
   {
-    v14 = v13;
+    v14 = productName;
   }
 
   else
@@ -1047,11 +1047,11 @@ LABEL_23:
 
   v15 = v14;
 
-  if (v4)
+  if (uniqueIDOverride)
   {
     v20[0] = &off_10003F098;
     v20[1] = &off_10003F0E0;
-    v21[0] = v4;
+    v21[0] = uniqueIDOverride;
     v21[1] = v8;
     v20[2] = &off_10003F0C8;
     v20[3] = &off_10003F0F8;
@@ -1075,20 +1075,20 @@ LABEL_23:
   return v16;
 }
 
-- (id)deviceFromDeviceDescription:(id)a3
+- (id)deviceFromDeviceDescription:(id)description
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:&off_10003F098];
-  v6 = [v4 objectForKey:&off_10003F0E0];
+  descriptionCopy = description;
+  v5 = [descriptionCopy objectForKey:&off_10003F098];
+  v6 = [descriptionCopy objectForKey:&off_10003F0E0];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(IDSService *)self->_service devices];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  devices = [(IDSService *)self->_service devices];
+  v8 = [devices countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
-    v16 = v4;
+    v16 = descriptionCopy;
     v9 = *v18;
     do
     {
@@ -1096,15 +1096,15 @@ LABEL_23:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(devices);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 uniqueIDOverride];
-        if ([v12 isEqualToString:v5])
+        uniqueIDOverride = [v11 uniqueIDOverride];
+        if ([uniqueIDOverride isEqualToString:v5])
         {
-          v13 = [v11 modelIdentifier];
-          v14 = [v13 isEqualToString:v6];
+          modelIdentifier = [v11 modelIdentifier];
+          v14 = [modelIdentifier isEqualToString:v6];
 
           if (v14)
           {
@@ -1118,20 +1118,20 @@ LABEL_23:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [devices countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
 LABEL_12:
-    v4 = v16;
+    descriptionCopy = v16;
   }
 
   return v8;
 }
 
-- (id)identifierFromDeviceDescription:(id)a3
+- (id)identifierFromDeviceDescription:(id)description
 {
-  v3 = [a3 objectForKeyedSubscript:&off_10003F098];
+  v3 = [description objectForKeyedSubscript:&off_10003F098];
   v4 = v3;
   if (v3)
   {
@@ -1146,14 +1146,14 @@ LABEL_12:
   return v5;
 }
 
-- (void)addDevice:(id)a3
+- (void)addDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[_CDLogging communicatorChannel];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "addDevice: %@", &buf, 0xCu);
   }
 
@@ -1163,10 +1163,10 @@ LABEL_12:
   v12[2] = sub_100010368;
   v12[3] = &unk_10003CB38;
   v12[4] = self;
-  v13 = v4;
+  v13 = deviceCopy;
   v7 = v12;
   v8 = commQueue;
-  v9 = v4;
+  v9 = deviceCopy;
   v10 = os_transaction_create();
   *&buf = _NSConcreteStackBlock;
   *(&buf + 1) = 3221225472;
@@ -1178,29 +1178,29 @@ LABEL_12:
   dispatch_async(v8, &buf);
 }
 
-- (void)removeDevice:(id)a3
+- (void)removeDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = +[_CDLogging communicatorChannel];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v3 description];
+    v5 = [deviceCopy description];
     v6 = 136315138;
-    v7 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "removeDevice: %s.", &v6, 0xCu);
   }
 }
 
-- (void)checkDevices:(id)a3
+- (void)checkDevices:(id)devices
 {
-  v3 = a3;
+  devicesCopy = devices;
   v29 = os_transaction_create();
   v30 = +[NSMutableArray array];
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v3;
+  obj = devicesCopy;
   v4 = [obj countByEnumeratingWithState:&v38 objects:v45 count:16];
   if (v4)
   {
@@ -1230,13 +1230,13 @@ LABEL_12:
             if ([v9 isDefaultPairedDevice])
             {
               [v30 addObject:v11];
-              v12 = self;
-              objc_sync_enter(v12);
+              selfCopy = self;
+              objc_sync_enter(selfCopy);
               identifierCache = self->identifierCache;
               v14 = [v11 objectForKey:&off_10003F098];
               [(NSMutableDictionary *)identifierCache setObject:v6 forKey:v14];
 
-              objc_sync_exit(v12);
+              objc_sync_exit(selfCopy);
               v15 = +[_CDLogging communicatorChannel];
               if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
               {
@@ -1356,40 +1356,40 @@ LABEL_12:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v7 = a6;
-  v9 = a5;
+  successCopy = success;
+  identifierCopy = identifier;
   v10 = +[_CDLogging communicatorChannel];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [v9 UTF8String];
+    uTF8String = [identifierCopy UTF8String];
     v12 = "NO";
-    if (v7)
+    if (successCopy)
     {
       v12 = "YES";
     }
 
     v14 = 136315394;
-    v15 = v11;
+    v15 = uTF8String;
     v16 = 2080;
     v17 = v12;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "CDDCommunicator: Message Sent to %s with success %s.", &v14, 0x16u);
   }
 
-  if (!v7)
+  if (!successCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->comm);
     [WeakRetained informCommunicationError];
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v30 = a3;
-  v29 = a6;
-  v28 = a7;
-  v10 = a5;
+  serviceCopy = service;
+  dCopy = d;
+  contextCopy = context;
+  dataCopy = data;
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = objc_opt_class();
@@ -1401,7 +1401,7 @@ LABEL_12:
   v19 = objc_opt_class();
   v20 = [NSSet setWithObjects:v11, v12, v13, v14, v15, v16, v17, v18, v19, objc_opt_class(), 0];
   v32 = 0;
-  v21 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v20 fromData:v10 error:&v32];
+  v21 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v20 fromData:dataCopy error:&v32];
 
   v22 = v32;
   if (v22)
@@ -1413,11 +1413,11 @@ LABEL_12:
     }
   }
 
-  v24 = [v30 deviceForFromID:v29];
+  v24 = [serviceCopy deviceForFromID:dCopy];
   if (v21)
   {
-    v25 = v28;
-    [(CDDCommControl *)self receiveData:v21 context:v28 device:v24];
+    v25 = contextCopy;
+    [(CDDCommControl *)self receiveData:v21 context:contextCopy device:v24];
   }
 
   else
@@ -1429,21 +1429,21 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "CDDCommunicator: NIL object received from IDS.", buf, 2u);
     }
 
-    v25 = v28;
+    v25 = contextCopy;
   }
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_service == a3)
+  changedCopy = changed;
+  v7 = changedCopy;
+  if (self->_service == service)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v8 = [changedCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1481,22 +1481,22 @@ LABEL_12:
   }
 }
 
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block
 {
-  v6 = a5;
+  blockCopy = block;
   [(CDDCommControl *)self setLastForecastSent:0];
-  v6[2]();
+  blockCopy[2]();
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
-  v4 = a4;
+  changedCopy = changed;
   v5 = +[_CDLogging communicatorChannel];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 description];
+    v6 = [changedCopy description];
     v7 = 136315138;
-    v8 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "checkAccounts: accounts changed to %s.", &v7, 0xCu);
   }
 }

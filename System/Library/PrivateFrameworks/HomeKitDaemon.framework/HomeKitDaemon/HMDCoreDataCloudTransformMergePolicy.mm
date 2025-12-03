@@ -1,20 +1,20 @@
 @interface HMDCoreDataCloudTransformMergePolicy
-- (BOOL)resolveOptimisticLockingVersionConflicts:(id)a3 error:(id *)a4;
+- (BOOL)resolveOptimisticLockingVersionConflicts:(id)conflicts error:(id *)error;
 - (HMDCoreDataCloudTransformMergePolicy)init;
 @end
 
 @implementation HMDCoreDataCloudTransformMergePolicy
 
-- (BOOL)resolveOptimisticLockingVersionConflicts:(id)a3 error:(id *)a4
+- (BOOL)resolveOptimisticLockingVersionConflicts:(id)conflicts error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  conflictsCopy = conflicts;
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(conflictsCopy, "count")}];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v7 = v5;
+  v7 = conflictsCopy;
   v8 = [v7 countByEnumeratingWithState:&v39 objects:v48 count:16];
   if (v8)
   {
@@ -30,13 +30,13 @@
         }
 
         v12 = *(*(&v39 + 1) + 8 * i);
-        v13 = [v12 sourceObject];
-        v14 = [v13 isDeleted];
+        sourceObject = [v12 sourceObject];
+        isDeleted = [sourceObject isDeleted];
 
-        if (v14)
+        if (isDeleted)
         {
-          v15 = [v12 sourceObject];
-          [v6 addObject:v15];
+          sourceObject2 = [v12 sourceObject];
+          [v6 addObject:sourceObject2];
         }
       }
 
@@ -48,7 +48,7 @@
 
   v38.receiver = self;
   v38.super_class = HMDCoreDataCloudTransformMergePolicy;
-  v16 = [(NSMergePolicy *)&v38 resolveOptimisticLockingVersionConflicts:v7 error:a4];
+  v16 = [(NSMergePolicy *)&v38 resolveOptimisticLockingVersionConflicts:v7 error:error];
   v17 = v16;
   if (v16)
   {
@@ -74,11 +74,11 @@
           }
 
           v22 = *(*(&v34 + 1) + 8 * j);
-          v23 = [v22 managedObjectContext];
-          [v23 refreshObject:v22 mergeChanges:0];
-          [v23 deleteObject:v22];
+          managedObjectContext = [v22 managedObjectContext];
+          [managedObjectContext refreshObject:v22 mergeChanges:0];
+          [managedObjectContext deleteObject:v22];
           v24 = objc_autoreleasePoolPush();
-          v25 = self;
+          selfCopy = self;
           v26 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
           {

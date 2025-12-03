@@ -1,9 +1,9 @@
 @interface PDOrionBootstrapOperation
 + (id)defaultEndpointInfo;
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4;
-- (BOOL)saveClientConfig:(id)a3;
-- (BOOL)updateAllowedHosts:(id)a3;
-- (id)overrideConfig:(id)a3;
+- (BOOL)processResponseObject:(id)object error:(id *)error;
+- (BOOL)saveClientConfig:(id)config;
+- (BOOL)updateAllowedHosts:(id)hosts;
+- (id)overrideConfig:(id)config;
 @end
 
 @implementation PDOrionBootstrapOperation
@@ -28,47 +28,47 @@
   return v3;
 }
 
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4
+- (BOOL)processResponseObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   if (![(PDOperation *)self isAborted])
   {
-    v8 = [(PDOperation *)self database];
-    v9 = [(PDURLRequestOperation *)self stats];
-    if (v9)
+    database = [(PDOperation *)self database];
+    stats = [(PDURLRequestOperation *)self stats];
+    if (stats)
     {
-      v9[15] = 1;
+      stats[15] = 1;
     }
 
     CLSInitLog();
-    v10 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    logSubsystem = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_opt_class();
       v12 = v11;
-      v13 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       *buf = 138543618;
       *&buf[4] = v11;
       *&buf[12] = 2114;
-      *&buf[14] = v13;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ processing response;", buf, 0x16u);
+      *&buf[14] = operationID;
+      _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ processing response;", buf, 0x16u);
     }
 
     CLSInitLog();
-    v14 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    logSubsystem2 = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
     {
       v21 = objc_opt_class();
       v22 = v21;
-      v23 = [(PDURLRequestOperation *)self operationID];
-      v24 = [v6 dictionaryRepresentation];
+      operationID2 = [(PDURLRequestOperation *)self operationID];
+      dictionaryRepresentation = [objectCopy dictionaryRepresentation];
       *buf = 138543874;
       *&buf[4] = v21;
       *&buf[12] = 2114;
-      *&buf[14] = v23;
+      *&buf[14] = operationID2;
       *&buf[22] = 2112;
-      v34 = v24;
-      _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%{public}@ %{public}@ response data: %@", buf, 0x20u);
+      v34 = dictionaryRepresentation;
+      _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "%{public}@ %{public}@ response data: %@", buf, 0x20u);
     }
 
     *buf = 0;
@@ -81,11 +81,11 @@
     v26 = 3221225472;
     v27 = sub_1000DFC88;
     v28 = &unk_100203CF0;
-    v15 = v8;
+    v15 = database;
     v29 = v15;
-    v16 = v6;
+    v16 = objectCopy;
     v30 = v16;
-    v31 = self;
+    selfCopy = self;
     v32 = buf;
     if (v15)
     {
@@ -94,10 +94,10 @@
       v19 = *(*&buf[8] + 40);
       if (v19)
       {
-        if (a4)
+        if (error)
         {
           v7 = 0;
-          *a4 = v19;
+          *error = v19;
 LABEL_18:
 
           _Block_object_dispose(buf, 8);
@@ -127,20 +127,20 @@ LABEL_19:
   return v7;
 }
 
-- (id)overrideConfig:(id)a3
+- (id)overrideConfig:(id)config
 {
   v5.receiver = self;
   v5.super_class = PDOrionBootstrapOperation;
-  v3 = [(PDBootstrapOperation *)&v5 overrideConfig:a3];
+  v3 = [(PDBootstrapOperation *)&v5 overrideConfig:config];
 
   return v3;
 }
 
-- (BOOL)updateAllowedHosts:(id)a3
+- (BOOL)updateAllowedHosts:(id)hosts
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
-  [v5 deleteAll:objc_opt_class() where:0 bindings:0];
+  hostsCopy = hosts;
+  database = [(PDOperation *)self database];
+  [database deleteAll:objc_opt_class() where:0 bindings:0];
   v6 = objc_opt_new();
   v7 = sub_10006F334([PDAllowedHost alloc], @"ws-ee-maidsvc.icloud.com");
   [v6 addObject:v7];
@@ -152,7 +152,7 @@ LABEL_19:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v4;
+  v9 = hostsCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -184,17 +184,17 @@ LABEL_19:
     while (v11);
   }
 
-  v17 = [v6 allObjects];
-  v18 = [v5 insertOrUpdateObjects:v17];
+  allObjects = [v6 allObjects];
+  v18 = [database insertOrUpdateObjects:allObjects];
 
   return v18;
 }
 
-- (BOOL)saveClientConfig:(id)a3
+- (BOOL)saveClientConfig:(id)config
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
-  v6 = [v5 select:objc_opt_class() where:0 bindings:0];
+  configCopy = config;
+  database = [(PDOperation *)self database];
+  v6 = [database select:objc_opt_class() where:0 bindings:0];
   v7 = v6;
   if (v6)
   {
@@ -211,12 +211,12 @@ LABEL_19:
   v30[2] = sub_1000E0370;
   v30[3] = &unk_100203D18;
   v34 = v8 & 1;
-  v9 = v4;
+  v9 = configCopy;
   v31 = v9;
-  v10 = v5;
+  v10 = database;
   v11 = v10;
   v32 = v10;
-  v33 = self;
+  selfCopy = self;
   if (v10 && [v10 performTransaction:v30 forWriting:1])
   {
     v25 = v7;
@@ -227,8 +227,8 @@ LABEL_19:
     v28 = 0u;
     v29 = 0u;
     v24 = v9;
-    v13 = [v9 excludeAppIds];
-    v14 = [v13 countByEnumeratingWithState:&v26 objects:v35 count:16];
+    excludeAppIds = [v9 excludeAppIds];
+    v14 = [excludeAppIds countByEnumeratingWithState:&v26 objects:v35 count:16];
     if (v14)
     {
       v15 = v14;
@@ -239,7 +239,7 @@ LABEL_19:
         {
           if (*v27 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(excludeAppIds);
           }
 
           v18 = *(*(&v26 + 1) + 8 * i);
@@ -253,7 +253,7 @@ LABEL_19:
           objc_autoreleasePoolPop(v19);
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v26 objects:v35 count:16];
+        v15 = [excludeAppIds countByEnumeratingWithState:&v26 objects:v35 count:16];
       }
 
       while (v15);
@@ -262,8 +262,8 @@ LABEL_19:
     if ([v11 insertOrUpdateObjects:v12])
     {
       v9 = v24;
-      v21 = [v24 hostAllowLists];
-      v22 = [(PDOrionBootstrapOperation *)self updateAllowedHosts:v21];
+      hostAllowLists = [v24 hostAllowLists];
+      v22 = [(PDOrionBootstrapOperation *)self updateAllowedHosts:hostAllowLists];
     }
 
     else

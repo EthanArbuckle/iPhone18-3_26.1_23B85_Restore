@@ -1,55 +1,55 @@
 @interface SLSheetPlaceViewController
-- ($DA0B4FCCDF5A2F6D3EADA3DE312E1039)_regionForPlaces:(SEL)a3;
-- (BOOL)_forceSelectPlace:(id)a3 setMapAnnotation:(BOOL)a4;
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
-- (BOOL)searchDisplayController:(id)a3 shouldReloadTableForSearchString:(id)a4;
-- (SLSheetPlaceViewController)initWithPlaceDataSource:(id)a3 effectiveBundle:(id)a4;
+- ($DA0B4FCCDF5A2F6D3EADA3DE312E1039)_regionForPlaces:(SEL)places;
+- (BOOL)_forceSelectPlace:(id)place setMapAnnotation:(BOOL)annotation;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
+- (BOOL)searchDisplayController:(id)controller shouldReloadTableForSearchString:(id)string;
+- (SLSheetPlaceViewController)initWithPlaceDataSource:(id)source effectiveBundle:(id)bundle;
 - (SLSheetPlaceViewControllerDelegate)selectionDelegate;
-- (double)_mapHeightForInterfaceOrientation:(int64_t)a3;
+- (double)_mapHeightForInterfaceOrientation:(int64_t)orientation;
 - (double)_preferredViewHeight;
-- (id)_placeForRow:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)_placeForRow:(int64_t)row;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_calculatePreferredContentSize;
 - (void)_centerMapForPlaces;
-- (void)_centerMapWithSelectedPlace:(id)a3;
+- (void)_centerMapWithSelectedPlace:(id)place;
 - (void)_layoutForSearch;
 - (void)_layoutNormal;
 - (void)_presentSearch;
 - (void)_restoreFromSearch;
-- (void)cancelButtonTapped:(id)a3;
+- (void)cancelButtonTapped:(id)tapped;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)loadView;
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4;
-- (void)placeManager:(id)a3 failedWithError:(id)a4;
-- (void)placeManager:(id)a3 updatedPlaces:(id)a4;
-- (void)setPlaces:(id)a3;
-- (void)setSelectedPlace:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView;
+- (void)placeManager:(id)manager failedWithError:(id)error;
+- (void)placeManager:(id)manager updatedPlaces:(id)places;
+- (void)setPlaces:(id)places;
+- (void)setSelectedPlace:(id)place;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation SLSheetPlaceViewController
 
-- (SLSheetPlaceViewController)initWithPlaceDataSource:(id)a3 effectiveBundle:(id)a4
+- (SLSheetPlaceViewController)initWithPlaceDataSource:(id)source effectiveBundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  bundleCopy = bundle;
   v14.receiver = self;
   v14.super_class = SLSheetPlaceViewController;
   v9 = [(SLSheetPlaceViewController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_placeDataSource, a3);
-    objc_storeStrong(&v10->_effectiveBundle, a4);
+    objc_storeStrong(&v9->_placeDataSource, source);
+    objc_storeStrong(&v10->_effectiveBundle, bundle);
     [(SLPlaceDataSource *)v10->_placeDataSource setDelegate:v10];
     v11 = SLSocialFrameworkBundle();
     v12 = [v11 localizedStringForKey:@"CHOOSE_LOCATION" value:&stru_1F41EC300 table:@"Localizable"];
@@ -76,16 +76,16 @@
   [(SLSheetPlaceViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)setPlaces:(id)a3
+- (void)setPlaces:(id)places
 {
-  v8 = a3;
+  placesCopy = places;
   _SLLog(v3, 7, @"SLPlaceViewController setPlaces");
   if (([(SLSheetPlaceViewController *)self isViewLoaded]& 1) != 0)
   {
     [(MKMapView *)self->_mapView removeAnnotations:self->_places];
   }
 
-  objc_storeStrong(&self->_places, a3);
+  objc_storeStrong(&self->_places, places);
   if ([(SLSheetPlaceViewController *)self isViewLoaded])
   {
     [(UITableView *)self->_tableView beginUpdates];
@@ -100,7 +100,7 @@
   }
 }
 
-- ($DA0B4FCCDF5A2F6D3EADA3DE312E1039)_regionForPlaces:(SEL)a3
+- ($DA0B4FCCDF5A2F6D3EADA3DE312E1039)_regionForPlaces:(SEL)places
 {
   v56 = *MEMORY[0x1E69E9840];
   v4 = a4;
@@ -236,18 +236,18 @@
   return result;
 }
 
-- (void)setSelectedPlace:(id)a3
+- (void)setSelectedPlace:(id)place
 {
-  objc_storeStrong(&self->_selectedPlace, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_selectedPlace, place);
+  placeCopy = place;
   [(UITableView *)self->_tableView reloadData];
 }
 
-- (id)_placeForRow:(int64_t)a3
+- (id)_placeForRow:(int64_t)row
 {
-  if (a3)
+  if (row)
   {
-    v4 = [(NSArray *)self->_places objectAtIndexedSubscript:a3 - 1];
+    v4 = [(NSArray *)self->_places objectAtIndexedSubscript:row - 1];
   }
 
   else
@@ -258,10 +258,10 @@
   return v4;
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
-  v4 = [(SLSheetPlaceViewController *)self selectionDelegate];
-  [v4 placeViewController:self didSelectPlace:self->_selectedPlace];
+  selectionDelegate = [(SLSheetPlaceViewController *)self selectionDelegate];
+  [selectionDelegate placeViewController:self didSelectPlace:self->_selectedPlace];
 }
 
 - (double)_preferredViewHeight
@@ -295,46 +295,46 @@
   [(SLSheetPlaceViewController *)self setPreferredContentSize:320.0, v5];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   if (!self->_searchPresented)
   {
-    [(SLSheetPlaceViewController *)self _layoutNormal:a3];
+    [(SLSheetPlaceViewController *)self _layoutNormal:orientation];
   }
 }
 
-- (double)_mapHeightForInterfaceOrientation:(int64_t)a3
+- (double)_mapHeightForInterfaceOrientation:(int64_t)orientation
 {
-  if ((a3 - 3) > 1)
+  if ((orientation - 3) > 1)
   {
     return 125.0;
   }
 
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
   }
 
   else
   {
-    v5 = 0;
+    userInterfaceIdiom = 0;
   }
 
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
+  currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [MEMORY[0x1E69DC938] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom2 = [currentDevice4 userInterfaceIdiom];
   }
 
   else
   {
-    v8 = 0;
+    userInterfaceIdiom2 = 0;
   }
 
-  if (v5 == v8)
+  if (userInterfaceIdiom == userInterfaceIdiom2)
   {
     return 80.0;
   }
@@ -345,7 +345,7 @@
   }
 }
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
   searchAnimationComplete = self->_searchAnimationComplete;
   if (!searchAnimationComplete)
@@ -384,8 +384,8 @@ uint64_t __58__SLSheetPlaceViewController_searchBarShouldBeginEditing___block_in
 
 - (void)_restoreFromSearch
 {
-  v3 = [(SLSheetPlaceSearchController *)self->_placeSearchController placeDataSource];
-  [v3 stopUpdatingLocation];
+  placeDataSource = [(SLSheetPlaceSearchController *)self->_placeSearchController placeDataSource];
+  [placeDataSource stopUpdatingLocation];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -415,11 +415,11 @@ uint64_t __48__SLSheetPlaceViewController__restoreFromSearch__block_invoke_2(uin
   [(UISearchBar *)self->_searchBar setFrame:?];
   [(UISearchBar *)self->_searchBar frame];
   MaxY = CGRectGetMaxY(v14);
-  v4 = [(SLSheetPlaceViewController *)self view];
-  [v4 frame];
+  view = [(SLSheetPlaceViewController *)self view];
+  [view frame];
   v6 = v5;
-  v7 = [(SLSheetPlaceViewController *)self view];
-  [v7 frame];
+  view2 = [(SLSheetPlaceViewController *)self view];
+  [view2 frame];
   v9 = v8;
   [(UISearchBar *)self->_searchBar frame];
   v11 = v9 - v10;
@@ -431,8 +431,8 @@ uint64_t __48__SLSheetPlaceViewController__restoreFromSearch__block_invoke_2(uin
 
 - (void)_layoutNormal
 {
-  v3 = [(SLSheetPlaceViewController *)self view];
-  [v3 frame];
+  view = [(SLSheetPlaceViewController *)self view];
+  [view frame];
   v5 = v4;
   [(SLSheetPlaceViewController *)self _mapHeightForInterfaceOrientation:[(SLSheetPlaceViewController *)self interfaceOrientation]];
   [(MKMapView *)self->_mapView setFrame:0.0, 0.0, v5, v6];
@@ -441,8 +441,8 @@ uint64_t __48__SLSheetPlaceViewController__restoreFromSearch__block_invoke_2(uin
   MaxY = CGRectGetMaxY(v17);
   if ([(SLSheetPlaceViewController *)self searchEnabled])
   {
-    v8 = [(SLSheetPlaceViewController *)self view];
-    [v8 frame];
+    view2 = [(SLSheetPlaceViewController *)self view];
+    [view2 frame];
     [(UISearchBar *)self->_searchBar setFrame:0.0, MaxY];
   }
 
@@ -454,19 +454,19 @@ uint64_t __48__SLSheetPlaceViewController__restoreFromSearch__block_invoke_2(uin
   [(UISearchDisplayController *)self->_searchDisplayController set_activationGapHeight:MaxY];
   [(UISearchBar *)self->_searchBar frame];
   v9 = CGRectGetMaxY(v18);
-  v15 = [(SLSheetPlaceViewController *)self view];
-  [v15 frame];
+  view3 = [(SLSheetPlaceViewController *)self view];
+  [view3 frame];
   v11 = v10;
-  v12 = [(SLSheetPlaceViewController *)self view];
-  [v12 frame];
+  view4 = [(SLSheetPlaceViewController *)self view];
+  [view4 frame];
   v14 = v13;
   [(UISearchBar *)self->_searchBar frame];
   [(UITableView *)self->_tableView setFrame:0.0, v9, v11, v14 - CGRectGetMaxY(v19)];
 }
 
-- (void)_centerMapWithSelectedPlace:(id)a3
+- (void)_centerMapWithSelectedPlace:(id)place
 {
-  v5 = a3;
+  placeCopy = place;
   selectedPlace = self->_selectedPlace;
   if (!selectedPlace || ![(SLSheetPlaceViewController *)self _forceSelectPlace:selectedPlace setMapAnnotation:1])
   {
@@ -476,39 +476,39 @@ uint64_t __48__SLSheetPlaceViewController__restoreFromSearch__block_invoke_2(uin
 
 - (void)_centerMapForPlaces
 {
-  v3 = [(SLSheetPlaceViewController *)self places];
-  v4 = [v3 count];
+  places = [(SLSheetPlaceViewController *)self places];
+  v4 = [places count];
 
   if (v4)
   {
     mapView = self->_mapView;
-    v6 = [(SLSheetPlaceViewController *)self places];
-    [(SLSheetPlaceViewController *)self _regionForPlaces:v6];
+    places2 = [(SLSheetPlaceViewController *)self places];
+    [(SLSheetPlaceViewController *)self _regionForPlaces:places2];
     [(MKMapView *)mapView setRegion:?];
   }
 }
 
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView
 {
-  v10 = a4;
-  v5 = [v10 annotation];
+  annotationViewCopy = annotationView;
+  annotation = [annotationViewCopy annotation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v10 annotation];
+    annotation2 = [annotationViewCopy annotation];
     selectedPlace = self->_selectedPlace;
-    self->_selectedPlace = v7;
-    v9 = v7;
+    self->_selectedPlace = annotation2;
+    v9 = annotation2;
 
     [(SLSheetPlaceViewController *)self _forceSelectPlace:v9 setMapAnnotation:0];
   }
 }
 
-- (BOOL)_forceSelectPlace:(id)a3 setMapAnnotation:(BOOL)a4
+- (BOOL)_forceSelectPlace:(id)place setMapAnnotation:(BOOL)annotation
 {
-  v6 = a3;
+  placeCopy = place;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -518,7 +518,7 @@ uint64_t __48__SLSheetPlaceViewController__restoreFromSearch__block_invoke_2(uin
   v10[1] = 3221225472;
   v10[2] = __65__SLSheetPlaceViewController__forceSelectPlace_setMapAnnotation___block_invoke;
   v10[3] = &unk_1E8175DE0;
-  v11 = a4;
+  annotationCopy = annotation;
   v10[4] = self;
   v10[5] = &v12;
   [(NSArray *)places enumerateObjectsUsingBlock:v10];
@@ -587,18 +587,18 @@ void __65__SLSheetPlaceViewController__forceSelectPlace_setMapAnnotation___block
   }
 }
 
-- (void)placeManager:(id)a3 updatedPlaces:(id)a4
+- (void)placeManager:(id)manager updatedPlaces:(id)places
 {
   v5 = MEMORY[0x1E69DC668];
-  v6 = a4;
+  placesCopy = places;
   [v5 shouldShowNetworkActivityIndicatorInRemoteApplication:0];
-  [(SLSheetPlaceViewController *)self setPlaces:v6];
+  [(SLSheetPlaceViewController *)self setPlaces:placesCopy];
 }
 
-- (void)placeManager:(id)a3 failedWithError:(id)a4
+- (void)placeManager:(id)manager failedWithError:(id)error
 {
   v5 = MEMORY[0x1E69DC668];
-  v6 = a4;
+  errorCopy = error;
   [v5 shouldShowNetworkActivityIndicatorInRemoteApplication:0];
   _SLLog(v4, 3, @"Base place manager failed to fetch places with error %{public}@");
 }
@@ -608,12 +608,12 @@ void __65__SLSheetPlaceViewController__forceSelectPlace_setMapAnnotation___block
   v39.receiver = self;
   v39.super_class = SLSheetPlaceViewController;
   [(SLSheetPlaceViewController *)&v39 loadView];
-  v3 = [(SLSheetPlaceViewController *)self view];
-  [v3 setOpaque:0];
+  view = [(SLSheetPlaceViewController *)self view];
+  [view setOpaque:0];
 
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  v5 = [(SLSheetPlaceViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view2 = [(SLSheetPlaceViewController *)self view];
+  [view2 setBackgroundColor:clearColor];
 
   effectiveBundle = self->_effectiveBundle;
   v45 = 0;
@@ -634,8 +634,8 @@ void __65__SLSheetPlaceViewController__forceSelectPlace_setMapAnnotation___block
 
   v8 = v7;
   _Block_object_dispose(&v45, 8);
-  v9 = [v7 sharedLocationManager];
-  [v9 setEffectiveBundle:effectiveBundle];
+  sharedLocationManager = [v7 sharedLocationManager];
+  [sharedLocationManager setEffectiveBundle:effectiveBundle];
 
   v45 = 0;
   v46 = &v45;
@@ -671,15 +671,15 @@ void __65__SLSheetPlaceViewController__forceSelectPlace_setMapAnnotation___block
   [(MKMapView *)self->_mapView setDelegate:self];
   if (![(NSArray *)self->_places count])
   {
-    v19 = [(SLSheetPlaceViewController *)self placeDataSource];
-    v20 = [v19 currentLocation];
+    placeDataSource = [(SLSheetPlaceViewController *)self placeDataSource];
+    currentLocation = [placeDataSource currentLocation];
 
-    if (v20)
+    if (currentLocation)
     {
       v21 = self->_mapView;
-      v22 = [(SLSheetPlaceViewController *)self placeDataSource];
-      v23 = [v22 currentLocation];
-      [v23 coordinate];
+      placeDataSource2 = [(SLSheetPlaceViewController *)self placeDataSource];
+      currentLocation2 = [placeDataSource2 currentLocation];
+      [currentLocation2 coordinate];
       __MKCoordinateRegionMakeWithDistance(v24, v25, 3000.0, 3000.0);
       [(MKMapView *)v21 setRegion:?];
     }
@@ -699,15 +699,15 @@ void __65__SLSheetPlaceViewController__forceSelectPlace_setMapAnnotation___block
   [(UITableView *)self->_tableView setDelegate:self];
   [(UITableView *)self->_tableView setDataSource:self];
   [(UITableView *)self->_tableView setOpaque:0];
-  v30 = [MEMORY[0x1E69DC888] clearColor];
-  [(UITableView *)self->_tableView setBackgroundColor:v30];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [(UITableView *)self->_tableView setBackgroundColor:clearColor2];
 
-  v31 = [(UITableView *)self->_tableView backgroundView];
-  [v31 setOpaque:0];
+  backgroundView = [(UITableView *)self->_tableView backgroundView];
+  [backgroundView setOpaque:0];
 
-  v32 = [MEMORY[0x1E69DC888] clearColor];
-  v33 = [(UITableView *)self->_tableView backgroundView];
-  [v33 setBackgroundColor:v32];
+  clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+  backgroundView2 = [(UITableView *)self->_tableView backgroundView];
+  [backgroundView2 setBackgroundColor:clearColor3];
 
   [(UITableView *)self->_tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
   v34 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
@@ -715,17 +715,17 @@ void __65__SLSheetPlaceViewController__forceSelectPlace_setMapAnnotation___block
   [(UITableView *)self->_tableView setEstimatedRowHeight:v35 + v35];
 
   [(SLSheetPlaceViewController *)self _layoutNormal];
-  v36 = [(SLSheetPlaceViewController *)self view];
-  [v36 addSubview:self->_mapView];
+  view3 = [(SLSheetPlaceViewController *)self view];
+  [view3 addSubview:self->_mapView];
 
   if ([(SLSheetPlaceViewController *)self searchEnabled])
   {
-    v37 = [(SLSheetPlaceViewController *)self view];
-    [v37 addSubview:self->_searchBar];
+    view4 = [(SLSheetPlaceViewController *)self view];
+    [view4 addSubview:self->_searchBar];
   }
 
-  v38 = [(SLSheetPlaceViewController *)self view];
-  [v38 addSubview:self->_tableView];
+  view5 = [(SLSheetPlaceViewController *)self view];
+  [view5 addSubview:self->_tableView];
 }
 
 - (void)viewDidLoad
@@ -733,8 +733,8 @@ void __65__SLSheetPlaceViewController__forceSelectPlace_setMapAnnotation___block
   v5.receiver = self;
   v5.super_class = SLSheetPlaceViewController;
   [(SLSheetPlaceViewController *)&v5 viewDidLoad];
-  v3 = [(SLSheetPlaceViewController *)self places];
-  v4 = [v3 count];
+  places = [(SLSheetPlaceViewController *)self places];
+  v4 = [places count];
 
   if (v4)
   {
@@ -743,85 +743,85 @@ void __65__SLSheetPlaceViewController__forceSelectPlace_setMapAnnotation___block
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SLSheetPlaceViewController;
-  [(SLSheetPlaceViewController *)&v4 viewWillAppear:a3];
+  [(SLSheetPlaceViewController *)&v4 viewWillAppear:appear];
   [MEMORY[0x1E69DC668] shouldShowNetworkActivityIndicatorInRemoteApplication:1];
   [(SLPlaceDataSource *)self->_placeDataSource fetchPlaces];
   [(UITableView *)self->_tableView reloadData];
   [(SLSheetPlaceViewController *)self _calculatePreferredContentSize];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SLSheetPlaceViewController;
-  [(SLSheetPlaceViewController *)&v4 viewDidAppear:a3];
+  [(SLSheetPlaceViewController *)&v4 viewDidAppear:appear];
   [(UITableView *)self->_tableView flashScrollIndicators];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(SLSheetPlaceViewController *)self placeDataSource];
-  [v5 cancelPlaceFetch];
+  disappearCopy = disappear;
+  placeDataSource = [(SLSheetPlaceViewController *)self placeDataSource];
+  [placeDataSource cancelPlaceFetch];
 
-  v6 = [(SLSheetPlaceViewController *)self placeDataSource];
-  [v6 stopUpdatingLocation];
+  placeDataSource2 = [(SLSheetPlaceViewController *)self placeDataSource];
+  [placeDataSource2 stopUpdatingLocation];
 
   v10.receiver = self;
   v10.super_class = SLSheetPlaceViewController;
-  [(SLSheetPlaceViewController *)&v10 viewWillDisappear:v3];
-  v7 = [(SLSheetPlaceViewController *)self selectionDelegate];
+  [(SLSheetPlaceViewController *)&v10 viewWillDisappear:disappearCopy];
+  selectionDelegate = [(SLSheetPlaceViewController *)self selectionDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SLSheetPlaceViewController *)self selectionDelegate];
-    [v9 placeViewController:self willDisappear:v3];
+    selectionDelegate2 = [(SLSheetPlaceViewController *)self selectionDelegate];
+    [selectionDelegate2 placeViewController:self willDisappear:disappearCopy];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = SLSheetPlaceViewController;
-  [(SLSheetPlaceViewController *)&v3 viewDidDisappear:a3];
+  [(SLSheetPlaceViewController *)&v3 viewDidDisappear:disappear];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(SLSheetPlaceViewController *)self places:a3];
+  v4 = [(SLSheetPlaceViewController *)self places:view];
   v5 = [v4 count];
 
   return v5 + 1;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"SLFacebookPlaceCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"SLFacebookPlaceCell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"SLFacebookPlaceCell"];
   }
 
   [v7 setOpaque:0];
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [v7 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v7 setBackgroundColor:clearColor];
 
-  if ([v6 row])
+  if ([pathCopy row])
   {
-    v9 = -[SLSheetPlaceViewController _placeForRow:](self, "_placeForRow:", [v6 row]);
-    v10 = [v9 name];
-    v11 = [v7 textLabel];
-    [v11 setText:v10];
+    v9 = -[SLSheetPlaceViewController _placeForRow:](self, "_placeForRow:", [pathCopy row]);
+    name = [v9 name];
+    textLabel = [v7 textLabel];
+    [textLabel setText:name];
 
-    v12 = [v9 category];
-    v13 = [v7 detailTextLabel];
-    [v13 setText:v12];
+    category = [v9 category];
+    detailTextLabel = [v7 detailTextLabel];
+    [detailTextLabel setText:category];
 
     if (self->_selectedPlace && ([v9 identifier], v14 = objc_claimAutoreleasedReturnValue(), -[SLPlace identifier](self->_selectedPlace, "identifier"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "isEqualToString:", v15), v15, v14, (v16 & 1) != 0))
     {
@@ -840,11 +840,11 @@ void __65__SLSheetPlaceViewController__forceSelectPlace_setMapAnnotation___block
   {
     v18 = SLSocialFrameworkBundle();
     v19 = [v18 localizedStringForKey:@"SHEET_LOCATION_NO_VALUE" value:&stru_1F41EC300 table:@"Localizable"];
-    v20 = [v7 textLabel];
-    [v20 setText:v19];
+    textLabel2 = [v7 textLabel];
+    [textLabel2 setText:v19];
 
-    v21 = [v7 detailTextLabel];
-    [v21 setText:&stru_1F41EC300];
+    detailTextLabel2 = [v7 detailTextLabel];
+    [detailTextLabel2 setText:&stru_1F41EC300];
 
     if (self->_selectedPlace)
     {
@@ -862,35 +862,35 @@ void __65__SLSheetPlaceViewController__forceSelectPlace_setMapAnnotation___block
   return v7;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  [v5 setOpaque:0];
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [v5 setBackgroundColor:v6];
+  cellCopy = cell;
+  [cellCopy setOpaque:0];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [cellCopy setBackgroundColor:clearColor];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   tableView = self->_tableView;
   v21 = v4;
-  if (tableView == v7)
+  if (tableView == viewCopy)
   {
     _SLLog(v4, 6, @"Selection from standard place results");
-    v10 = self->_tableView;
-    v12 = -[SLSheetPlaceViewController _placeForRow:](self, "_placeForRow:", [v8 row]);
+    searchResultsTableView = self->_tableView;
+    v12 = -[SLSheetPlaceViewController _placeForRow:](self, "_placeForRow:", [pathCopy row]);
     [(MKMapView *)self->_mapView selectAnnotation:v12 animated:1];
   }
 
   else
   {
     _SLLog(v4, 6, @"Selection from search results");
-    v10 = [(UISearchDisplayController *)self->_searchDisplayController searchResultsTableView];
-    v11 = [(SLSheetPlaceSearchController *)self->_placeSearchController searchResults];
-    v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v8, "row")}];
+    searchResultsTableView = [(UISearchDisplayController *)self->_searchDisplayController searchResultsTableView];
+    searchResults = [(SLSheetPlaceSearchController *)self->_placeSearchController searchResults];
+    v12 = [searchResults objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   objc_storeStrong(&self->_selectedPlace, v12);
@@ -898,8 +898,8 @@ void __65__SLSheetPlaceViewController__forceSelectPlace_setMapAnnotation___block
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [(UITableView *)v10 visibleCells];
-  v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  visibleCells = [(UITableView *)searchResultsTableView visibleCells];
+  v14 = [visibleCells countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v14)
   {
     v15 = v14;
@@ -910,25 +910,25 @@ void __65__SLSheetPlaceViewController__forceSelectPlace_setMapAnnotation___block
       {
         if (*v24 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v23 + 1) + 8 * i) setAccessoryType:{0, v21}];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v15 = [visibleCells countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v15);
   }
 
-  v18 = [(UITableView *)v10 cellForRowAtIndexPath:v8];
+  v18 = [(UITableView *)searchResultsTableView cellForRowAtIndexPath:pathCopy];
   [v18 setAccessoryType:3];
-  [(UITableView *)v10 deselectRowAtIndexPath:v8 animated:1];
-  v19 = [(SLSheetPlaceViewController *)self selectionDelegate];
-  [v19 placeViewController:self didSelectPlace:v12];
+  [(UITableView *)searchResultsTableView deselectRowAtIndexPath:pathCopy animated:1];
+  selectionDelegate = [(SLSheetPlaceViewController *)self selectionDelegate];
+  [selectionDelegate placeViewController:self didSelectPlace:v12];
 
-  if (tableView != v7)
+  if (tableView != viewCopy)
   {
     _SLLog(v21, 7, @"Popping after delay");
     v20 = dispatch_time(0, 400000000);
@@ -947,14 +947,14 @@ void __64__SLSheetPlaceViewController_tableView_didSelectRowAtIndexPath___block_
   v1 = [v2 popToRootViewControllerAnimated:1];
 }
 
-- (BOOL)searchDisplayController:(id)a3 shouldReloadTableForSearchString:(id)a4
+- (BOOL)searchDisplayController:(id)controller shouldReloadTableForSearchString:(id)string
 {
-  v7 = a4;
-  v8 = a3;
+  stringCopy = string;
+  controllerCopy = controller;
   _SLLog(v4, 6, @"User started place search with search string %@");
-  [(SLSheetPlaceSearchController *)self->_placeSearchController searchWithSearchString:v7, v7];
+  [(SLSheetPlaceSearchController *)self->_placeSearchController searchWithSearchString:stringCopy, stringCopy];
 
-  [v8 setNoResultsMessage:&stru_1F41EC300];
+  [controllerCopy setNoResultsMessage:&stru_1F41EC300];
   return 0;
 }
 

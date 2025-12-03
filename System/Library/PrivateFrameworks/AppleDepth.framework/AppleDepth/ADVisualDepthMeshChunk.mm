@@ -1,60 +1,60 @@
 @interface ADVisualDepthMeshChunk
-+ (ADVisualDepthMeshChunk)meshChunkWithVertices:(double)a3 faces:(double)a4 confidence:(double)a5 classification:(uint64_t)a6 transform:(uint64_t)a7 uuid:(void *)a8 timestamp:(void *)a9 longRange:(void *)a10;
-+ (id)meshChunkWithVertices:(id)a3 faces:(id)a4 confidence:(id)a5 classification:(id)a6 uuid:(id)a7 timestamp:(double)a8;
-+ (id)meshChunkWithVertices:(id)a3 faces:(id)a4 confidence:(id)a5 classification:(id)a6 uuid:(id)a7 timestamp:(double)a8 longRange:(BOOL)a9;
-+ (id)meshChunkWithVertices:(uint64_t)a1 faces:(uint64_t)a2 confidence:(uint64_t)a3 classification:(uint64_t)a4 transform:(uint64_t)a5 uuid:(uint64_t)a6 timestamp:(uint64_t)a7;
-+ (id)meshChunkWithVerticesBuffer:(id)a3 verticesCount:(int64_t)a4 verticesOffset:(int64_t)a5 verticesStride:(int64_t)a6 facesBuffer:(id)a7 facesCount:(int64_t)a8 facesOffset:(int64_t)a9 facesStride:(int64_t)a10 uuid:(id)a11 timestamp:(double)a12;
-+ (id)removedMeshChunkWithUuid:(id)a3 timestamp:(double)a4;
-+ (id)removedMeshChunkWithUuid:(id)a3 timestamp:(double)a4 longRange:(BOOL)a5;
++ (ADVisualDepthMeshChunk)meshChunkWithVertices:(double)vertices faces:(double)faces confidence:(double)confidence classification:(uint64_t)classification transform:(uint64_t)transform uuid:(void *)uuid timestamp:(void *)timestamp longRange:(void *)self0;
++ (id)meshChunkWithVertices:(id)vertices faces:(id)faces confidence:(id)confidence classification:(id)classification uuid:(id)uuid timestamp:(double)timestamp;
++ (id)meshChunkWithVertices:(id)vertices faces:(id)faces confidence:(id)confidence classification:(id)classification uuid:(id)uuid timestamp:(double)timestamp longRange:(BOOL)range;
++ (id)meshChunkWithVertices:(uint64_t)vertices faces:(uint64_t)faces confidence:(uint64_t)confidence classification:(uint64_t)classification transform:(uint64_t)transform uuid:(uint64_t)uuid timestamp:(uint64_t)timestamp;
++ (id)meshChunkWithVerticesBuffer:(id)buffer verticesCount:(int64_t)count verticesOffset:(int64_t)offset verticesStride:(int64_t)stride facesBuffer:(id)facesBuffer facesCount:(int64_t)facesCount facesOffset:(int64_t)facesOffset facesStride:(int64_t)self0 uuid:(id)self1 timestamp:(double)self2;
++ (id)removedMeshChunkWithUuid:(id)uuid timestamp:(double)timestamp;
++ (id)removedMeshChunkWithUuid:(id)uuid timestamp:(double)timestamp longRange:(BOOL)range;
 - (ADVisualDepthMeshChunk)init;
-- (ADVisualDepthMeshChunk)initWithFile:(id)a3;
-- (ADVisualDepthMeshChunk)initWithVertices:(__n128)a3 faces:(__n128)a4 confidence:(__n128)a5 classification:(double)a6 transform:(uint64_t)a7 uuid:(void *)a8 timestamp:(void *)a9 longRange:(void *)a10;
-- (BOOL)writeToFile:(id)a3 atomically:(BOOL)a4;
-- (__n128)setTransform:(__n128)a3;
+- (ADVisualDepthMeshChunk)initWithFile:(id)file;
+- (ADVisualDepthMeshChunk)initWithVertices:(__n128)vertices faces:(__n128)faces confidence:(__n128)confidence classification:(double)classification transform:(uint64_t)transform uuid:(void *)uuid timestamp:(void *)timestamp longRange:(void *)self0;
+- (BOOL)writeToFile:(id)file atomically:(BOOL)atomically;
+- (__n128)setTransform:(__n128)transform;
 @end
 
 @implementation ADVisualDepthMeshChunk
 
-- (__n128)setTransform:(__n128)a3
+- (__n128)setTransform:(__n128)transform
 {
   result[4] = a2;
-  result[5] = a3;
+  result[5] = transform;
   result[6] = a4;
   result[7] = a5;
   return result;
 }
 
-- (BOOL)writeToFile:(id)a3 atomically:(BOOL)a4
+- (BOOL)writeToFile:(id)file atomically:(BOOL)atomically
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = fopen([v5 UTF8String], "w");
+  fileCopy = file;
+  v6 = fopen([fileCopy UTF8String], "w");
   if (v6)
   {
-    v7 = [(NSUUID *)self->_uuid UUIDString];
-    fprintf(v6, "#UUID: %s\n", [v7 UTF8String]);
+    uUIDString = [(NSUUID *)self->_uuid UUIDString];
+    fprintf(v6, "#UUID: %s\n", [uUIDString UTF8String]);
 
     fprintf(v6, "#timestamp: %f\n", self->_timestamp);
     fprintf(v6, "#vertices count: %ld\n", [(ADVisualDepthGeometry *)self->_vertices count]);
     fprintf(v6, "#faces count: %ld\n", [(ADVisualDepthGeometry *)self->_faces count]);
-    v8 = [(ADVisualDepthGeometry *)self->_vertices buffer];
-    v9 = [v8 contents];
+    buffer = [(ADVisualDepthGeometry *)self->_vertices buffer];
+    contents = [buffer contents];
 
     for (i = 0; i < [(ADVisualDepthGeometry *)self->_vertices count]; ++i)
     {
-      v11 = [(ADVisualDepthGeometry *)self->_vertices offset];
-      v12 = [(ADVisualDepthGeometry *)self->_vertices stride];
-      fprintf(v6, "v %f %f %f\n", *(v9 + v11 + v12 * i), *(v9 + v11 + v12 * i + 4), *(v9 + v11 + v12 * i + 8));
+      offset = [(ADVisualDepthGeometry *)self->_vertices offset];
+      stride = [(ADVisualDepthGeometry *)self->_vertices stride];
+      fprintf(v6, "v %f %f %f\n", *(contents + offset + stride * i), *(contents + offset + stride * i + 4), *(contents + offset + stride * i + 8));
     }
 
-    v13 = [(ADVisualDepthGeometry *)self->_faces buffer];
-    v14 = [v13 contents];
+    buffer2 = [(ADVisualDepthGeometry *)self->_faces buffer];
+    contents2 = [buffer2 contents];
 
     for (j = 0; j < [(ADVisualDepthGeometry *)self->_faces count]; ++j)
     {
-      v16 = [(ADVisualDepthGeometry *)self->_faces offset];
-      v17 = [(ADVisualDepthGeometry *)self->_faces stride];
-      fprintf(v6, "f %d %d %d\n", *(v14 + v16 + v17 * j) + 1, *(v14 + v16 + v17 * j + 4) + 1, *(v14 + v16 + v17 * j + 8) + 1);
+      offset2 = [(ADVisualDepthGeometry *)self->_faces offset];
+      stride2 = [(ADVisualDepthGeometry *)self->_faces stride];
+      fprintf(v6, "f %d %d %d\n", *(contents2 + offset2 + stride2 * j) + 1, *(contents2 + offset2 + stride2 * j + 4) + 1, *(contents2 + offset2 + stride2 * j + 8) + 1);
     }
 
     fclose(v6);
@@ -63,18 +63,18 @@
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v20 = v5;
+    v20 = fileCopy;
     _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "could not open %{public}@ for write", buf, 0xCu);
   }
 
   return v6 != 0;
 }
 
-- (ADVisualDepthMeshChunk)initWithFile:(id)a3
+- (ADVisualDepthMeshChunk)initWithFile:(id)file
 {
   v68 = *MEMORY[0x277D85DE8];
   v62 = 0;
-  v51 = a3;
+  fileCopy = file;
   v54 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:? encoding:? error:?];
   v3 = 0;
   v52 = v3;
@@ -97,7 +97,7 @@ LABEL_57:
 
     v56 = objc_opt_new();
     v55 = objc_opt_new();
-    v57 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
@@ -114,7 +114,7 @@ LABEL_28:
         v22 = MTLCreateSystemDefaultDevice();
         v23 = [v22 newBufferWithLength:12 * objc_msgSend(v56 options:{"count"), 0}];
         v24 = v23;
-        v25 = [v23 contents];
+        contents = [v23 contents];
         for (i = 0; [v56 count] > i; ++i)
         {
           v27 = [v56 objectAtIndexedSubscript:i];
@@ -134,7 +134,7 @@ LABEL_28:
 
           v29 = [v28 objectAtIndexedSubscript:1];
           [v29 floatValue];
-          v30 = (v25 + 12 * i);
+          v30 = (contents + 12 * i);
           *v30 = v31;
 
           v32 = [v28 objectAtIndexedSubscript:2];
@@ -148,7 +148,7 @@ LABEL_28:
 
         v28 = [v22 newBufferWithLength:12 * objc_msgSend(v55 options:{"count"), 0}];
         v37 = v28;
-        v38 = [v28 contents];
+        contents2 = [v28 contents];
         for (j = 0; [v55 count] > j; ++j)
         {
           v40 = [v55 objectAtIndexedSubscript:j];
@@ -167,7 +167,7 @@ LABEL_28:
           }
 
           v42 = [(ADVisualDepthGeometry *)v41 objectAtIndexedSubscript:1];
-          v43 = (v38 + 12 * j);
+          v43 = (contents2 + 12 * j);
           *v43 = [v42 integerValue] - 1;
 
           v44 = [(ADVisualDepthGeometry *)v41 objectAtIndexedSubscript:2];
@@ -181,7 +181,7 @@ LABEL_28:
         v46 = -[ADVisualDepthGeometry initWithBuffer:count:offset:stride:]([ADVisualDepthGeometry alloc], "initWithBuffer:count:offset:stride:", v28, [v55 count], 0, 12);
         if (v46 && v41)
         {
-          v5 = [(ADVisualDepthMeshChunk *)self initWithVertices:v41 faces:v46 confidence:0 classification:0 transform:v57 uuid:0 timestamp:*MEMORY[0x277D860B8] longRange:*(MEMORY[0x277D860B8] + 16), *(MEMORY[0x277D860B8] + 32), *(MEMORY[0x277D860B8] + 48), v9];
+          v5 = [(ADVisualDepthMeshChunk *)self initWithVertices:v41 faces:v46 confidence:0 classification:0 transform:uUID uuid:0 timestamp:*MEMORY[0x277D860B8] longRange:*(MEMORY[0x277D860B8] + 16), *(MEMORY[0x277D860B8] + 32), *(MEMORY[0x277D860B8] + 48), v9];
           self = v5;
         }
 
@@ -237,7 +237,7 @@ LABEL_11:
         v13 = [v12 objectAtIndexedSubscript:1];
 
         v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v13];
-        v57 = v14;
+        uUID = v14;
       }
 
       else
@@ -290,29 +290,29 @@ LABEL_58:
   return v5;
 }
 
-- (ADVisualDepthMeshChunk)initWithVertices:(__n128)a3 faces:(__n128)a4 confidence:(__n128)a5 classification:(double)a6 transform:(uint64_t)a7 uuid:(void *)a8 timestamp:(void *)a9 longRange:(void *)a10
+- (ADVisualDepthMeshChunk)initWithVertices:(__n128)vertices faces:(__n128)faces confidence:(__n128)confidence classification:(double)classification transform:(uint64_t)transform uuid:(void *)uuid timestamp:(void *)timestamp longRange:(void *)self0
 {
-  v32 = a8;
-  v20 = a9;
-  v21 = a10;
+  uuidCopy = uuid;
+  timestampCopy = timestamp;
+  rangeCopy = range;
   v22 = a11;
   v23 = a12;
-  v33.receiver = a1;
+  v33.receiver = self;
   v33.super_class = ADVisualDepthMeshChunk;
   v24 = [(ADVisualDepthMeshChunk *)&v33 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_vertices, a8);
-    objc_storeStrong(&v25->_faces, a9);
-    objc_storeStrong(&v25->_confidence, a10);
+    objc_storeStrong(&v24->_vertices, uuid);
+    objc_storeStrong(&v25->_faces, timestamp);
+    objc_storeStrong(&v25->_confidence, range);
     objc_storeStrong(&v25->_classification, a11);
     objc_storeStrong(&v25->_uuid, a12);
-    v25->_timestamp = a6;
+    v25->_timestamp = classification;
     *&v25[1].super.isa = a2;
-    *&v25[1]._uuid = a3;
-    *&v25[1]._vertices = a4;
-    *&v25[1]._confidence = a5;
+    *&v25[1]._uuid = vertices;
+    *&v25[1]._vertices = faces;
+    *&v25[1]._confidence = confidence;
     v25->_longRange = a13;
   }
 
@@ -345,31 +345,31 @@ LABEL_58:
   return v2;
 }
 
-+ (id)removedMeshChunkWithUuid:(id)a3 timestamp:(double)a4
++ (id)removedMeshChunkWithUuid:(id)uuid timestamp:(double)timestamp
 {
-  v4 = [ADVisualDepthMeshChunk meshChunkWithVertices:0 faces:0 confidence:0 classification:0 transform:a3 uuid:*MEMORY[0x277D860B8] timestamp:*(MEMORY[0x277D860B8] + 16), *(MEMORY[0x277D860B8] + 32), *(MEMORY[0x277D860B8] + 48), a4];
+  timestamp = [ADVisualDepthMeshChunk meshChunkWithVertices:0 faces:0 confidence:0 classification:0 transform:uuid uuid:*MEMORY[0x277D860B8] timestamp:*(MEMORY[0x277D860B8] + 16), *(MEMORY[0x277D860B8] + 32), *(MEMORY[0x277D860B8] + 48), timestamp];
 
-  return v4;
+  return timestamp;
 }
 
-+ (id)removedMeshChunkWithUuid:(id)a3 timestamp:(double)a4 longRange:(BOOL)a5
++ (id)removedMeshChunkWithUuid:(id)uuid timestamp:(double)timestamp longRange:(BOOL)range
 {
-  v5 = [ADVisualDepthMeshChunk meshChunkWithVertices:0 faces:0 confidence:0 classification:0 transform:a3 uuid:a5 timestamp:*MEMORY[0x277D860B8] longRange:*(MEMORY[0x277D860B8] + 16), *(MEMORY[0x277D860B8] + 32), *(MEMORY[0x277D860B8] + 48), a4];
+  timestamp = [ADVisualDepthMeshChunk meshChunkWithVertices:0 faces:0 confidence:0 classification:0 transform:uuid uuid:range timestamp:*MEMORY[0x277D860B8] longRange:*(MEMORY[0x277D860B8] + 16), *(MEMORY[0x277D860B8] + 32), *(MEMORY[0x277D860B8] + 48), timestamp];
 
-  return v5;
+  return timestamp;
 }
 
-+ (id)meshChunkWithVerticesBuffer:(id)a3 verticesCount:(int64_t)a4 verticesOffset:(int64_t)a5 verticesStride:(int64_t)a6 facesBuffer:(id)a7 facesCount:(int64_t)a8 facesOffset:(int64_t)a9 facesStride:(int64_t)a10 uuid:(id)a11 timestamp:(double)a12
++ (id)meshChunkWithVerticesBuffer:(id)buffer verticesCount:(int64_t)count verticesOffset:(int64_t)offset verticesStride:(int64_t)stride facesBuffer:(id)facesBuffer facesCount:(int64_t)facesCount facesOffset:(int64_t)facesOffset facesStride:(int64_t)self0 uuid:(id)self1 timestamp:(double)self2
 {
   v29 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v19 = a7;
-  v20 = a11;
-  v21 = [[ADVisualDepthGeometry alloc] initWithBuffer:v18 count:a4 offset:a5 stride:a6];
-  v22 = [[ADVisualDepthGeometry alloc] initWithBuffer:v19 count:a8 offset:a9 stride:a10];
+  bufferCopy = buffer;
+  facesBufferCopy = facesBuffer;
+  uuidCopy = uuid;
+  v21 = [[ADVisualDepthGeometry alloc] initWithBuffer:bufferCopy count:count offset:offset stride:stride];
+  v22 = [[ADVisualDepthGeometry alloc] initWithBuffer:facesBufferCopy count:facesCount offset:facesOffset stride:facesStride];
   if (v22 && v21)
   {
-    v23 = [ADVisualDepthMeshChunk meshChunkWithVertices:v21 faces:v22 confidence:0 classification:0 transform:v20 uuid:*MEMORY[0x277D860B8] timestamp:*(MEMORY[0x277D860B8] + 16), *(MEMORY[0x277D860B8] + 32), *(MEMORY[0x277D860B8] + 48), a12];
+    timestamp = [ADVisualDepthMeshChunk meshChunkWithVertices:v21 faces:v22 confidence:0 classification:0 transform:uuidCopy uuid:*MEMORY[0x277D860B8] timestamp:*(MEMORY[0x277D860B8] + 16), *(MEMORY[0x277D860B8] + 32), *(MEMORY[0x277D860B8] + 48), timestamp];
   }
 
   else
@@ -383,50 +383,50 @@ LABEL_58:
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed allocating mesh chunk. faces:%p vertices:%p", &v25, 0x16u);
     }
 
-    v23 = 0;
+    timestamp = 0;
   }
 
-  return v23;
+  return timestamp;
 }
 
-+ (ADVisualDepthMeshChunk)meshChunkWithVertices:(double)a3 faces:(double)a4 confidence:(double)a5 classification:(uint64_t)a6 transform:(uint64_t)a7 uuid:(void *)a8 timestamp:(void *)a9 longRange:(void *)a10
++ (ADVisualDepthMeshChunk)meshChunkWithVertices:(double)vertices faces:(double)faces confidence:(double)confidence classification:(uint64_t)classification transform:(uint64_t)transform uuid:(void *)uuid timestamp:(void *)timestamp longRange:(void *)self0
 {
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  uuidCopy = uuid;
+  timestampCopy = timestamp;
+  rangeCopy = range;
   v22 = a11;
   v23 = a12;
-  v24 = [[ADVisualDepthMeshChunk alloc] initWithVertices:v19 faces:v20 confidence:v21 classification:v22 transform:v23 uuid:a13 timestamp:a1 longRange:a2, a3, a4, a5];
+  confidence = [[ADVisualDepthMeshChunk alloc] initWithVertices:uuidCopy faces:timestampCopy confidence:rangeCopy classification:v22 transform:v23 uuid:a13 timestamp:self longRange:a2, vertices, faces, confidence];
 
-  return v24;
+  return confidence;
 }
 
-+ (id)meshChunkWithVertices:(uint64_t)a1 faces:(uint64_t)a2 confidence:(uint64_t)a3 classification:(uint64_t)a4 transform:(uint64_t)a5 uuid:(uint64_t)a6 timestamp:(uint64_t)a7
++ (id)meshChunkWithVertices:(uint64_t)vertices faces:(uint64_t)faces confidence:(uint64_t)confidence classification:(uint64_t)classification transform:(uint64_t)transform uuid:(uint64_t)uuid timestamp:(uint64_t)timestamp
 {
-  v7 = [ADVisualDepthMeshChunk meshChunkWithVertices:"meshChunkWithVertices:faces:confidence:classification:transform:uuid:timestamp:longRange:" faces:a3 confidence:a4 classification:a5 transform:a6 uuid:a7 timestamp:0 longRange:?];
+  v7 = [ADVisualDepthMeshChunk meshChunkWithVertices:"meshChunkWithVertices:faces:confidence:classification:transform:uuid:timestamp:longRange:" faces:confidence confidence:classification classification:transform transform:uuid uuid:timestamp timestamp:0 longRange:?];
 
   return v7;
 }
 
-+ (id)meshChunkWithVertices:(id)a3 faces:(id)a4 confidence:(id)a5 classification:(id)a6 uuid:(id)a7 timestamp:(double)a8
++ (id)meshChunkWithVertices:(id)vertices faces:(id)faces confidence:(id)confidence classification:(id)classification uuid:(id)uuid timestamp:(double)timestamp
 {
-  v8 = [ADVisualDepthMeshChunk meshChunkWithVertices:a3 faces:a4 confidence:a5 classification:a6 uuid:a7 timestamp:0 longRange:a8];
+  v8 = [ADVisualDepthMeshChunk meshChunkWithVertices:vertices faces:faces confidence:confidence classification:classification uuid:uuid timestamp:0 longRange:timestamp];
 
   return v8;
 }
 
-+ (id)meshChunkWithVertices:(id)a3 faces:(id)a4 confidence:(id)a5 classification:(id)a6 uuid:(id)a7 timestamp:(double)a8 longRange:(BOOL)a9
++ (id)meshChunkWithVertices:(id)vertices faces:(id)faces confidence:(id)confidence classification:(id)classification uuid:(id)uuid timestamp:(double)timestamp longRange:(BOOL)range
 {
-  v9 = a9;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
+  rangeCopy = range;
+  verticesCopy = vertices;
+  facesCopy = faces;
+  confidenceCopy = confidence;
+  classificationCopy = classification;
+  uuidCopy = uuid;
   v20 = [ADVisualDepthMeshChunk alloc];
-  v21 = [(ADVisualDepthMeshChunk *)v20 initWithVertices:v15 faces:v16 confidence:v17 classification:v18 transform:v19 uuid:v9 timestamp:*MEMORY[0x277D860B8] longRange:*(MEMORY[0x277D860B8] + 16), *(MEMORY[0x277D860B8] + 32), *(MEMORY[0x277D860B8] + 48), a8];
+  timestamp = [(ADVisualDepthMeshChunk *)v20 initWithVertices:verticesCopy faces:facesCopy confidence:confidenceCopy classification:classificationCopy transform:uuidCopy uuid:rangeCopy timestamp:*MEMORY[0x277D860B8] longRange:*(MEMORY[0x277D860B8] + 16), *(MEMORY[0x277D860B8] + 32), *(MEMORY[0x277D860B8] + 48), timestamp];
 
-  return v21;
+  return timestamp;
 }
 
 @end

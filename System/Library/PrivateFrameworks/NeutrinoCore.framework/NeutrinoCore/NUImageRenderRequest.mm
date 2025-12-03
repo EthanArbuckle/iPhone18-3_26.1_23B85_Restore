@@ -2,7 +2,7 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)borderSize;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)tileSize;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_commonInit;
 @end
 
@@ -33,35 +33,35 @@
   v16.receiver = self;
   v16.super_class = NUImageRenderRequest;
   v3 = [(NURenderRequest *)&v16 description];
-  v4 = [(NUImageRenderRequest *)self colorSpace];
+  colorSpace = [(NUImageRenderRequest *)self colorSpace];
   [(NUImageRenderRequest *)self currentEDRHeadroom];
   v6 = v5;
   [(NUImageRenderRequest *)self maxEDRHeadroom];
   v8 = v7;
-  v9 = [(NUImageRenderRequest *)self scalePolicy];
-  v10 = [(NUImageRenderRequest *)self regionPolicy];
-  v11 = [(NUImageRenderRequest *)self auxiliaryImageType];
-  if (v11 > 0xB)
+  scalePolicy = [(NUImageRenderRequest *)self scalePolicy];
+  regionPolicy = [(NUImageRenderRequest *)self regionPolicy];
+  auxiliaryImageType = [(NUImageRenderRequest *)self auxiliaryImageType];
+  if (auxiliaryImageType > 0xB)
   {
     v12 = @"Invalid";
   }
 
   else
   {
-    v12 = off_1E8109908[v11];
+    v12 = off_1E8109908[auxiliaryImageType];
   }
 
   v13 = v12;
-  v14 = [v3 stringByAppendingFormat:@" Color Space: %@ EDR: %.1f/%.1f, Scale: %@ Region: %@, Aux: %@", v4, v6, v8, v9, v10, v13];
+  v14 = [v3 stringByAppendingFormat:@" Color Space: %@ EDR: %.1f/%.1f, Scale: %@ Region: %@, Aux: %@", colorSpace, v6, v8, scalePolicy, regionPolicy, v13];
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NUImageRenderRequest;
-  v4 = [(NURenderRequest *)&v7 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -110,9 +110,9 @@
   v13 = +[NUGlobalSettings imageTileSize];
   if (v13 < 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NUPixelSize NUPixelSizeMake(NSInteger, NSInteger)"}];
-    [v14 handleFailureInFunction:v15 file:@"NUGeometryPrimitives.h" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"(width >= 0) && (height >= 0)"}];
+    [currentHandler handleFailureInFunction:v15 file:@"NUGeometryPrimitives.h" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"(width >= 0) && (height >= 0)"}];
   }
 
   self->_tileSize.width = v13;

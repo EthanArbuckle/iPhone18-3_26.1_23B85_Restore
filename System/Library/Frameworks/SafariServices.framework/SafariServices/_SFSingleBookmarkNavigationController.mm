@@ -1,59 +1,59 @@
 @interface _SFSingleBookmarkNavigationController
-- (BOOL)bookmarkInfoViewControllerCanSaveBookmarkChanges:(id)a3;
-- (BOOL)prepareForPresentationForAddingBookmark:(BOOL)a3;
+- (BOOL)bookmarkInfoViewControllerCanSaveBookmarkChanges:(id)changes;
+- (BOOL)prepareForPresentationForAddingBookmark:(BOOL)bookmark;
 - (_SFSingleBookmarkNavigationControllerDelegate)bookmarkNavDelegate;
 - (_SFSyntheticBookmarkProvider)syntheticBookmarkProvider;
-- (id)_initWithBookmark:(id)a3 childBookmarks:(id)a4 inCollection:(id)a5 withSyntheticFolder:(id)a6 addingBookmark:(BOOL)a7 toFavorites:(BOOL)a8;
-- (id)addBookmarkWithTitle:(id)a3 address:(id)a4 parentBookmark:(id)a5;
-- (id)syntheticBookmarkProviderForBookmarkInfoViewController:(id)a3;
+- (id)_initWithBookmark:(id)bookmark childBookmarks:(id)bookmarks inCollection:(id)collection withSyntheticFolder:(id)folder addingBookmark:(BOOL)addingBookmark toFavorites:(BOOL)favorites;
+- (id)addBookmarkWithTitle:(id)title address:(id)address parentBookmark:(id)bookmark;
+- (id)syntheticBookmarkProviderForBookmarkInfoViewController:(id)controller;
 - (void)_didBecomeActive;
 - (void)_releaseBookmarkLockIfNeeded;
 - (void)_willResignActive;
-- (void)bookmarkInfoViewController:(id)a3 didFinishWithResult:(BOOL)a4;
+- (void)bookmarkInfoViewController:(id)controller didFinishWithResult:(BOOL)result;
 - (void)dealloc;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation _SFSingleBookmarkNavigationController
 
-- (id)_initWithBookmark:(id)a3 childBookmarks:(id)a4 inCollection:(id)a5 withSyntheticFolder:(id)a6 addingBookmark:(BOOL)a7 toFavorites:(BOOL)a8
+- (id)_initWithBookmark:(id)bookmark childBookmarks:(id)bookmarks inCollection:(id)collection withSyntheticFolder:(id)folder addingBookmark:(BOOL)addingBookmark toFavorites:(BOOL)favorites
 {
-  v8 = a8;
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  objc_storeStrong(&self->_collection, a5);
-  if ([v15 count])
+  favoritesCopy = favorites;
+  addingBookmarkCopy = addingBookmark;
+  bookmarkCopy = bookmark;
+  bookmarksCopy = bookmarks;
+  collectionCopy = collection;
+  folderCopy = folder;
+  objc_storeStrong(&self->_collection, collection);
+  if ([bookmarksCopy count])
   {
     v18 = objc_alloc(MEMORY[0x1E69E20F0]);
     [(_SFSingleBookmarkNavigationController *)self _lastSelectedFolder];
-    v35 = v15;
-    v19 = v17;
-    v20 = v9;
-    v21 = v8;
-    v23 = v22 = v16;
-    v24 = [v23 identifier];
-    v25 = [(WebBookmarkCollection *)self->_collection configuration];
-    v26 = [v18 initFolderWithParentID:v24 collectionType:{objc_msgSend(v25, "collectionType")}];
+    v35 = bookmarksCopy;
+    v19 = folderCopy;
+    v20 = addingBookmarkCopy;
+    v21 = favoritesCopy;
+    v23 = v22 = collectionCopy;
+    identifier = [v23 identifier];
+    configuration = [(WebBookmarkCollection *)self->_collection configuration];
+    v26 = [v18 initFolderWithParentID:identifier collectionType:{objc_msgSend(configuration, "collectionType")}];
 
-    v16 = v22;
-    v8 = v21;
-    v9 = v20;
-    v17 = v19;
-    v15 = v35;
+    collectionCopy = v22;
+    favoritesCopy = v21;
+    addingBookmarkCopy = v20;
+    folderCopy = v19;
+    bookmarksCopy = v35;
     v27 = _WBSLocalizedString();
     [v26 setTitle:v27];
 
-    v14 = v26;
+    bookmarkCopy = v26;
   }
 
-  v28 = [[_SFBookmarkInfoViewController alloc] initWithBookmark:v14 childBookmarks:v15 inCollection:v16 addingBookmark:v9 toFavorites:v8 willBeDisplayedModally:1];
+  v28 = [[_SFBookmarkInfoViewController alloc] initWithBookmark:bookmarkCopy childBookmarks:bookmarksCopy inCollection:collectionCopy addingBookmark:addingBookmarkCopy toFavorites:favoritesCopy willBeDisplayedModally:1];
   v29 = v28;
-  if (v17)
+  if (folderCopy)
   {
-    [(_SFBookmarkInfoViewController *)v28 setParent:0 syntheticParentFolder:v17];
+    [(_SFBookmarkInfoViewController *)v28 setParent:0 syntheticParentFolder:folderCopy];
   }
 
   v36.receiver = self;
@@ -65,9 +65,9 @@
     [(_SFSingleBookmarkNavigationController *)v30 _setClipUnderlapWhileTransitioning:1];
     objc_storeStrong(&v31->_infoViewController, v29);
     [(_SFBookmarkInfoViewController *)v31->_infoViewController setDelegate:v31];
-    v32 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v32 addObserver:v31 selector:sel__willResignActive name:*MEMORY[0x1E69DDBC8] object:0];
-    [v32 addObserver:v31 selector:sel__didBecomeActive name:*MEMORY[0x1E69DDAB0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v31 selector:sel__willResignActive name:*MEMORY[0x1E69DDBC8] object:0];
+    [defaultCenter addObserver:v31 selector:sel__didBecomeActive name:*MEMORY[0x1E69DDAB0] object:0];
     v31->_needsBookmarksLockOnAppResume = 0;
     v33 = v31;
   }
@@ -83,25 +83,25 @@
   [(_SFSingleBookmarkNavigationController *)&v3 dealloc];
 }
 
-- (id)addBookmarkWithTitle:(id)a3 address:(id)a4 parentBookmark:(id)a5
+- (id)addBookmarkWithTitle:(id)title address:(id)address parentBookmark:(id)bookmark
 {
-  v8 = a5;
+  bookmarkCopy = bookmark;
   v9 = MEMORY[0x1E69E20F0];
-  v10 = a4;
-  v11 = a3;
+  addressCopy = address;
+  titleCopy = title;
   v12 = [v9 alloc];
-  v13 = [(WebBookmarkCollection *)self->_collection configuration];
-  v14 = [v12 initWithTitle:v11 address:v10 collectionType:{objc_msgSend(v13, "collectionType")}];
+  configuration = [(WebBookmarkCollection *)self->_collection configuration];
+  v14 = [v12 initWithTitle:titleCopy address:addressCopy collectionType:{objc_msgSend(configuration, "collectionType")}];
 
   collection = self->_collection;
-  v16 = v8;
-  if (!v8)
+  _lastSelectedFolder = bookmarkCopy;
+  if (!bookmarkCopy)
   {
-    v16 = [(_SFSingleBookmarkNavigationController *)self _lastSelectedFolder];
+    _lastSelectedFolder = [(_SFSingleBookmarkNavigationController *)self _lastSelectedFolder];
   }
 
-  -[WebBookmarkCollection moveBookmark:toFolderWithID:](collection, "moveBookmark:toFolderWithID:", v14, [v16 identifier]);
-  if (v8)
+  -[WebBookmarkCollection moveBookmark:toFolderWithID:](collection, "moveBookmark:toFolderWithID:", v14, [_lastSelectedFolder identifier]);
+  if (bookmarkCopy)
   {
     [(_SFBookmarkInfoViewController *)self->_infoViewController setBookmark:v14];
   }
@@ -164,13 +164,13 @@
   [MEMORY[0x1E69E20F8] unholdLockSync:self];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(_SFSingleBookmarkNavigationController *)self _releaseBookmarkLockIfNeeded];
   v6.receiver = self;
   v6.super_class = _SFSingleBookmarkNavigationController;
-  [(_SFSingleBookmarkNavigationController *)&v6 viewDidDisappear:v3];
+  [(_SFSingleBookmarkNavigationController *)&v6 viewDidDisappear:disappearCopy];
   if (!self->_delegateNotifiedOfResult)
   {
     WeakRetained = objc_loadWeakRetained(&self->_bookmarkNavDelegate);
@@ -178,7 +178,7 @@
   }
 }
 
-- (BOOL)prepareForPresentationForAddingBookmark:(BOOL)a3
+- (BOOL)prepareForPresentationForAddingBookmark:(BOOL)bookmark
 {
   v5 = WBS_LOG_CHANNEL_PREFIXBookmarkSync();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -187,8 +187,8 @@
     _os_log_impl(&dword_1D4644000, v5, OS_LOG_TYPE_INFO, "Single bookmark navigation controller preparing for presentation for adding bookmark", v9, 2u);
   }
 
-  v6 = [MEMORY[0x1E69B1AC8] sharedCoordinator];
-  [v6 unlockBookmarksIfNeeded];
+  mEMORY[0x1E69B1AC8] = [MEMORY[0x1E69B1AC8] sharedCoordinator];
+  [mEMORY[0x1E69B1AC8] unlockBookmarksIfNeeded];
 
   [MEMORY[0x1E69E20F8] holdLockSync:self];
   if (!self->_bookmarkCollectionLocked && ([MEMORY[0x1E69E20F8] isLockedSync] & 1) == 0)
@@ -196,18 +196,18 @@
     self->_bookmarkCollectionLocked = [MEMORY[0x1E69E20F8] lockSync];
   }
 
-  return a3 || self->_bookmarkCollectionLocked;
+  return bookmark || self->_bookmarkCollectionLocked;
 }
 
-- (void)bookmarkInfoViewController:(id)a3 didFinishWithResult:(BOOL)a4
+- (void)bookmarkInfoViewController:(id)controller didFinishWithResult:(BOOL)result
 {
-  v4 = a4;
+  resultCopy = result;
   self->_delegateNotifiedOfResult = 1;
-  v6 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_bookmarkNavDelegate);
-  v7 = [v6 bookmark];
+  bookmark = [controllerCopy bookmark];
 
-  [WeakRetained addBookmarkNavController:self didFinishWithResult:v4 bookmark:v7];
+  [WeakRetained addBookmarkNavController:self didFinishWithResult:resultCopy bookmark:bookmark];
   v8 = WeakRetained;
   if (!WeakRetained)
   {
@@ -216,16 +216,16 @@
   }
 }
 
-- (BOOL)bookmarkInfoViewControllerCanSaveBookmarkChanges:(id)a3
+- (BOOL)bookmarkInfoViewControllerCanSaveBookmarkChanges:(id)changes
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_bookmarkNavDelegate);
-  LOBYTE(v3) = [WeakRetained addBookmarkNavControllerCanSaveBookmarkChanges:v3];
+  LOBYTE(selfCopy) = [WeakRetained addBookmarkNavControllerCanSaveBookmarkChanges:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)syntheticBookmarkProviderForBookmarkInfoViewController:(id)a3
+- (id)syntheticBookmarkProviderForBookmarkInfoViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_syntheticBookmarkProvider);
 

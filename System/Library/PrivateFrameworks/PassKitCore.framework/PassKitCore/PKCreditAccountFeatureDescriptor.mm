@@ -1,13 +1,13 @@
 @interface PKCreditAccountFeatureDescriptor
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCreditAccountFeatureDescriptor:(id)a3;
-- (PKCreditAccountFeatureDescriptor)initWithCoder:(id)a3;
-- (PKCreditAccountFeatureDescriptor)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCreditAccountFeatureDescriptor:(id)descriptor;
+- (PKCreditAccountFeatureDescriptor)initWithCoder:(id)coder;
+- (PKCreditAccountFeatureDescriptor)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)productForFeature:(unint64_t)a3;
+- (id)productForFeature:(unint64_t)feature;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCreditAccountFeatureDescriptor
@@ -23,30 +23,30 @@
   v7 = self->_maximumAccountUsers - v6 + 32 * v6;
   v8 = self->_minimumOwnerAge - v7 + 32 * v7;
   v9 = self->_minimumParticipantAge - v8 + 32 * v8;
-  v10 = [MEMORY[0x1E695DF70] array];
-  [v10 safelyAddObject:self->_paymentTermsIdentifier];
-  [v10 safelyAddObject:self->_supportedFileFormatsForTransactionData];
-  [v10 safelyAddObject:self->_supportedDestinations];
-  [v10 safelyAddObject:self->_savingsAPY];
-  [v10 safelyAddObject:self->_savingsInterestRate];
-  v11 = PKCombinedHash(v9, v10);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_paymentTermsIdentifier];
+  [array safelyAddObject:self->_supportedFileFormatsForTransactionData];
+  [array safelyAddObject:self->_supportedDestinations];
+  [array safelyAddObject:self->_savingsAPY];
+  [array safelyAddObject:self->_savingsInterestRate];
+  v11 = PKCombinedHash(v9, array);
 
   return v11;
 }
 
-- (PKCreditAccountFeatureDescriptor)initWithDictionary:(id)a3
+- (PKCreditAccountFeatureDescriptor)initWithDictionary:(id)dictionary
 {
   v70 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v64.receiver = self;
   v64.super_class = PKCreditAccountFeatureDescriptor;
-  v5 = [(PKAccountFeatureDescriptor *)&v64 initWithDictionary:v4];
+  v5 = [(PKAccountFeatureDescriptor *)&v64 initWithDictionary:dictionaryCopy];
   v6 = v5;
   if (v5)
   {
     v60 = v5;
-    v61 = v4;
-    v7 = [v4 PKArrayContaining:objc_opt_class() forKey:@"paymentPresets"];
+    v61 = dictionaryCopy;
+    v7 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"paymentPresets"];
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
@@ -241,7 +241,7 @@ LABEL_53:
             v6 = v60;
             v60->_paymentFrequencies = v26;
 
-            v4 = v61;
+            dictionaryCopy = v61;
             v48 = [v61 PKArrayContaining:objc_opt_class() forKey:@"paymentFundingSourceTypes"];
             v60->_paymentFundingSourceTypes = PKAccountFundingSourceTypeFromStrings(v48);
 
@@ -280,19 +280,19 @@ LABEL_54:
   return v6;
 }
 
-- (PKCreditAccountFeatureDescriptor)initWithCoder:(id)a3
+- (PKCreditAccountFeatureDescriptor)initWithCoder:(id)coder
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = PKCreditAccountFeatureDescriptor;
-  v5 = [(PKAccountFeatureDescriptor *)&v23 initWithCoder:v4];
+  v5 = [(PKAccountFeatureDescriptor *)&v23 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_paymentPresets = [v4 decodeIntegerForKey:@"paymentPresets"];
-    v5->_paymentFrequencies = [v4 decodeIntegerForKey:@"paymentFrequencies"];
-    v5->_paymentFundingSourceTypes = [v4 decodeIntegerForKey:@"paymentFundingSourceTypes"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentTermsIdentifier"];
+    v5->_paymentPresets = [coderCopy decodeIntegerForKey:@"paymentPresets"];
+    v5->_paymentFrequencies = [coderCopy decodeIntegerForKey:@"paymentFrequencies"];
+    v5->_paymentFundingSourceTypes = [coderCopy decodeIntegerForKey:@"paymentFundingSourceTypes"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentTermsIdentifier"];
     paymentTermsIdentifier = v5->_paymentTermsIdentifier;
     v5->_paymentTermsIdentifier = v6;
 
@@ -301,27 +301,27 @@ LABEL_54:
     v25[1] = objc_opt_class();
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
     v10 = [v8 setWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"supportedFileFormatsForTransactionData"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"supportedFileFormatsForTransactionData"];
     supportedFileFormatsForTransactionData = v5->_supportedFileFormatsForTransactionData;
     v5->_supportedFileFormatsForTransactionData = v11;
 
-    v5->_maximumAccountUsers = [v4 decodeIntegerForKey:@"maximumAccountUsers"];
-    v5->_minimumOwnerAge = [v4 decodeIntegerForKey:@"minimumOwnerAge"];
-    v5->_minimumParticipantAge = [v4 decodeIntegerForKey:@"minimumParticipantAge"];
+    v5->_maximumAccountUsers = [coderCopy decodeIntegerForKey:@"maximumAccountUsers"];
+    v5->_minimumOwnerAge = [coderCopy decodeIntegerForKey:@"minimumOwnerAge"];
+    v5->_minimumParticipantAge = [coderCopy decodeIntegerForKey:@"minimumParticipantAge"];
     v13 = MEMORY[0x1E695DFD8];
     v24[0] = objc_opt_class();
     v24[1] = objc_opt_class();
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
     v15 = [v13 setWithArray:v14];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"supportedDestinations"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"supportedDestinations"];
     supportedDestinations = v5->_supportedDestinations;
     v5->_supportedDestinations = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"savingsApy"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"savingsApy"];
     savingsAPY = v5->_savingsAPY;
     v5->_savingsAPY = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"savingsInterestRate"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"savingsInterestRate"];
     savingsInterestRate = v5->_savingsInterestRate;
     v5->_savingsInterestRate = v20;
   }
@@ -329,43 +329,43 @@ LABEL_54:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKCreditAccountFeatureDescriptor;
-  v4 = a3;
-  [(PKAccountFeatureDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_paymentPresets forKey:{@"paymentPresets", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_paymentFrequencies forKey:@"paymentFrequencies"];
-  [v4 encodeInteger:self->_paymentFundingSourceTypes forKey:@"paymentFundingSourceTypes"];
-  [v4 encodeObject:self->_paymentTermsIdentifier forKey:@"paymentTermsIdentifier"];
-  [v4 encodeObject:self->_supportedFileFormatsForTransactionData forKey:@"supportedFileFormatsForTransactionData"];
-  [v4 encodeInteger:self->_maximumAccountUsers forKey:@"maximumAccountUsers"];
-  [v4 encodeInteger:self->_minimumOwnerAge forKey:@"minimumOwnerAge"];
-  [v4 encodeInteger:self->_minimumParticipantAge forKey:@"minimumParticipantAge"];
-  [v4 encodeObject:self->_supportedDestinations forKey:@"supportedDestinations"];
-  [v4 encodeObject:self->_savingsAPY forKey:@"savingsApy"];
-  [v4 encodeObject:self->_savingsInterestRate forKey:@"savingsInterestRate"];
+  coderCopy = coder;
+  [(PKAccountFeatureDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_paymentPresets forKey:{@"paymentPresets", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_paymentFrequencies forKey:@"paymentFrequencies"];
+  [coderCopy encodeInteger:self->_paymentFundingSourceTypes forKey:@"paymentFundingSourceTypes"];
+  [coderCopy encodeObject:self->_paymentTermsIdentifier forKey:@"paymentTermsIdentifier"];
+  [coderCopy encodeObject:self->_supportedFileFormatsForTransactionData forKey:@"supportedFileFormatsForTransactionData"];
+  [coderCopy encodeInteger:self->_maximumAccountUsers forKey:@"maximumAccountUsers"];
+  [coderCopy encodeInteger:self->_minimumOwnerAge forKey:@"minimumOwnerAge"];
+  [coderCopy encodeInteger:self->_minimumParticipantAge forKey:@"minimumParticipantAge"];
+  [coderCopy encodeObject:self->_supportedDestinations forKey:@"supportedDestinations"];
+  [coderCopy encodeObject:self->_savingsAPY forKey:@"savingsApy"];
+  [coderCopy encodeObject:self->_savingsInterestRate forKey:@"savingsInterestRate"];
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKAccountFeatureDescriptor *)self identifier];
-  [v3 appendFormat:@"identifier: '%@'; ", v4];
-  if (([v4 isEqualToString:@"schedulePayment"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"scheduleRecurringPayments"))
+  identifier = [(PKAccountFeatureDescriptor *)self identifier];
+  [v3 appendFormat:@"identifier: '%@'; ", identifier];
+  if (([identifier isEqualToString:@"schedulePayment"] & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", @"scheduleRecurringPayments"))
   {
-    v5 = [(PKAccountFeatureDescriptor *)self minimumAmount];
-    [v3 appendFormat:@"minimumAmount: '%@'; ", v5];
+    minimumAmount = [(PKAccountFeatureDescriptor *)self minimumAmount];
+    [v3 appendFormat:@"minimumAmount: '%@'; ", minimumAmount];
 
-    v6 = [(PKAccountFeatureDescriptor *)self maximumAmount];
-    [v3 appendFormat:@"maximumAmount: '%@'; ", v6];
+    maximumAmount = [(PKAccountFeatureDescriptor *)self maximumAmount];
+    [v3 appendFormat:@"maximumAmount: '%@'; ", maximumAmount];
 
-    v7 = [(PKAccountFeatureDescriptor *)self merchantIdentifier];
-    [v3 appendFormat:@"merchantIdentifier: '%@'; ", v7];
+    merchantIdentifier = [(PKAccountFeatureDescriptor *)self merchantIdentifier];
+    [v3 appendFormat:@"merchantIdentifier: '%@'; ", merchantIdentifier];
 
-    v8 = [(PKAccountFeatureDescriptor *)self supportedNetworks];
-    [v3 appendFormat:@"supportedNetworks: '%@'; ", v8];
+    supportedNetworks = [(PKAccountFeatureDescriptor *)self supportedNetworks];
+    [v3 appendFormat:@"supportedNetworks: '%@'; ", supportedNetworks];
 
     v9 = PKMerchantCapabilityToStrings([(PKAccountFeatureDescriptor *)self merchantCapabilities]);
     [v3 appendFormat:@"merchantCapabilities: '%@'; ", v9];
@@ -374,11 +374,11 @@ LABEL_54:
     [v3 appendFormat:@"fundingSourceTypes: '%@'; ", v10];
 
     paymentPresets = self->_paymentPresets;
-    v12 = [MEMORY[0x1E695DF70] array];
-    v13 = v12;
+    array = [MEMORY[0x1E695DF70] array];
+    v13 = array;
     if (paymentPresets)
     {
-      [v12 addObject:@"fixedAmount"];
+      [array addObject:@"fixedAmount"];
       if ((paymentPresets & 2) == 0)
       {
 LABEL_5:
@@ -404,11 +404,11 @@ LABEL_7:
 
       [v3 appendFormat:@"paymentPresets: '%@'; ", v14];
       paymentFrequencies = self->_paymentFrequencies;
-      v16 = [MEMORY[0x1E695DF70] array];
-      v17 = v16;
+      array2 = [MEMORY[0x1E695DF70] array];
+      v17 = array2;
       if (paymentFrequencies)
       {
-        [v16 addObject:@"now"];
+        [array2 addObject:@"now"];
         if ((paymentFrequencies & 2) == 0)
         {
 LABEL_9:
@@ -486,21 +486,21 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"addFundingSource"])
+  if ([identifier isEqualToString:@"addFundingSource"])
   {
-    v20 = [(PKAccountFeatureDescriptor *)self fundingSourceTermsIdentifier];
-    [v3 appendFormat:@"fundingSourceTermsIdentifier: '%@'; ", v20];
+    fundingSourceTermsIdentifier = [(PKAccountFeatureDescriptor *)self fundingSourceTermsIdentifier];
+    [v3 appendFormat:@"fundingSourceTermsIdentifier: '%@'; ", fundingSourceTermsIdentifier];
 LABEL_29:
 
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"exportTransactionData"])
+  if ([identifier isEqualToString:@"exportTransactionData"])
   {
     [v3 appendFormat:@"supportedFileFormatsForTransactionData: '%@'; ", self->_supportedFileFormatsForTransactionData];
   }
 
-  else if ([v4 isEqualToString:@"accountUserInvitationAllowed"])
+  else if ([identifier isEqualToString:@"accountUserInvitationAllowed"])
   {
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_maximumAccountUsers];
     [v3 appendFormat:@"maximumAccountUsers: '%@'; ", v21];
@@ -511,13 +511,13 @@ LABEL_29:
     v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_minimumParticipantAge];
     [v3 appendFormat:@"minimumParticipantAge: '%@'; ", v23];
 
-    v24 = [(PKAccountFeatureDescriptor *)self osVersionRange];
+    osVersionRange = [(PKAccountFeatureDescriptor *)self osVersionRange];
 
-    if (v24)
+    if (osVersionRange)
     {
-      v20 = [(PKAccountFeatureDescriptor *)self osVersionRange];
-      v25 = [v20 asDictionary];
-      [v3 appendFormat:@"osVersionRange: '%@'; ", v25];
+      fundingSourceTermsIdentifier = [(PKAccountFeatureDescriptor *)self osVersionRange];
+      asDictionary = [fundingSourceTermsIdentifier asDictionary];
+      [v3 appendFormat:@"osVersionRange: '%@'; ", asDictionary];
 
       goto LABEL_29;
     }
@@ -525,17 +525,17 @@ LABEL_29:
 
   else
   {
-    v26 = v4;
+    v26 = identifier;
     if (v26 == @"redeemRewards" || (v27 = v26) != 0 && (v28 = [(__CFString *)v26 isEqualToString:@"redeemRewards"], v27, v28))
     {
       v29 = [(NSArray *)self->_supportedDestinations componentsJoinedByString:@", "];
       [v3 appendFormat:@"supportedDestinations: '%@'; ", v29];
 
-      v30 = [(NSDecimalNumber *)self->_savingsAPY stringValue];
-      [v3 appendFormat:@"savingsAPY: '%@'; ", v30];
+      stringValue = [(NSDecimalNumber *)self->_savingsAPY stringValue];
+      [v3 appendFormat:@"savingsAPY: '%@'; ", stringValue];
 
-      v20 = [(NSDecimalNumber *)self->_savingsInterestRate stringValue];
-      [v3 appendFormat:@"savingsInterestRate: '%@'; ", v20];
+      fundingSourceTermsIdentifier = [(NSDecimalNumber *)self->_savingsInterestRate stringValue];
+      [v3 appendFormat:@"savingsInterestRate: '%@'; ", fundingSourceTermsIdentifier];
       goto LABEL_29;
     }
   }
@@ -546,33 +546,33 @@ LABEL_15:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCreditAccountFeatureDescriptor *)self isEqualToCreditAccountFeatureDescriptor:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCreditAccountFeatureDescriptor *)self isEqualToCreditAccountFeatureDescriptor:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToCreditAccountFeatureDescriptor:(id)a3
+- (BOOL)isEqualToCreditAccountFeatureDescriptor:(id)descriptor
 {
-  v4 = a3;
-  if (![(PKAccountFeatureDescriptor *)self isEqualToAccountFeatureDescriptor:v4]|| self->_paymentFundingSourceTypes != v4[9] || self->_paymentPresets != v4[10] || self->_paymentFrequencies != v4[11])
+  descriptorCopy = descriptor;
+  if (![(PKAccountFeatureDescriptor *)self isEqualToAccountFeatureDescriptor:descriptorCopy]|| self->_paymentFundingSourceTypes != descriptorCopy[9] || self->_paymentPresets != descriptorCopy[10] || self->_paymentFrequencies != descriptorCopy[11])
   {
     goto LABEL_36;
   }
 
   paymentTermsIdentifier = self->_paymentTermsIdentifier;
-  v6 = v4[13];
+  v6 = descriptorCopy[13];
   if (paymentTermsIdentifier)
   {
     v7 = v6 == 0;
@@ -597,7 +597,7 @@ LABEL_15:
   }
 
   supportedFileFormatsForTransactionData = self->_supportedFileFormatsForTransactionData;
-  v9 = v4[12];
+  v9 = descriptorCopy[12];
   if (supportedFileFormatsForTransactionData)
   {
     v10 = v9 == 0;
@@ -621,13 +621,13 @@ LABEL_15:
     goto LABEL_36;
   }
 
-  if (self->_maximumAccountUsers != v4[14] || self->_minimumOwnerAge != v4[15] || self->_minimumParticipantAge != v4[16])
+  if (self->_maximumAccountUsers != descriptorCopy[14] || self->_minimumOwnerAge != descriptorCopy[15] || self->_minimumParticipantAge != descriptorCopy[16])
   {
     goto LABEL_36;
   }
 
   supportedDestinations = self->_supportedDestinations;
-  v12 = v4[17];
+  v12 = descriptorCopy[17];
   if (supportedDestinations && v12)
   {
     if (([(NSArray *)supportedDestinations isEqual:?]& 1) == 0)
@@ -642,7 +642,7 @@ LABEL_15:
   }
 
   savingsAPY = self->_savingsAPY;
-  v14 = v4[18];
+  v14 = descriptorCopy[18];
   if (!savingsAPY || !v14)
   {
     if (savingsAPY == v14)
@@ -662,7 +662,7 @@ LABEL_36:
 
 LABEL_32:
   savingsInterestRate = self->_savingsInterestRate;
-  v16 = v4[19];
+  v16 = descriptorCopy[19];
   if (savingsInterestRate && v16)
   {
     v17 = [(NSDecimalNumber *)savingsInterestRate isEqual:?];
@@ -678,7 +678,7 @@ LABEL_37:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v17.receiver = self;
   v17.super_class = PKCreditAccountFeatureDescriptor;
@@ -686,36 +686,36 @@ LABEL_37:
   v5[9] = self->_paymentFundingSourceTypes;
   v5[10] = self->_paymentPresets;
   v5[11] = self->_paymentFrequencies;
-  v6 = [(NSString *)self->_paymentTermsIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_paymentTermsIdentifier copyWithZone:zone];
   v7 = v5[13];
   v5[13] = v6;
 
-  v8 = [(NSArray *)self->_supportedFileFormatsForTransactionData copyWithZone:a3];
+  v8 = [(NSArray *)self->_supportedFileFormatsForTransactionData copyWithZone:zone];
   v9 = v5[12];
   v5[12] = v8;
 
   v5[14] = self->_maximumAccountUsers;
   v5[15] = self->_minimumOwnerAge;
   v5[16] = self->_minimumParticipantAge;
-  v10 = [(NSArray *)self->_supportedDestinations copyWithZone:a3];
+  v10 = [(NSArray *)self->_supportedDestinations copyWithZone:zone];
   v11 = v5[17];
   v5[17] = v10;
 
-  v12 = [(NSDecimalNumber *)self->_savingsAPY copyWithZone:a3];
+  v12 = [(NSDecimalNumber *)self->_savingsAPY copyWithZone:zone];
   v13 = v5[18];
   v5[18] = v12;
 
-  v14 = [(NSDecimalNumber *)self->_savingsInterestRate copyWithZone:a3];
+  v14 = [(NSDecimalNumber *)self->_savingsInterestRate copyWithZone:zone];
   v15 = v5[19];
   v5[19] = v14;
 
   return v5;
 }
 
-- (id)productForFeature:(unint64_t)a3
+- (id)productForFeature:(unint64_t)feature
 {
   v51[2] = *MEMORY[0x1E69E9840];
-  if (a3 != 5 || !self->_savingsAPY)
+  if (feature != 5 || !self->_savingsAPY)
   {
     v15 = 0;
     goto LABEL_18;
@@ -723,16 +723,16 @@ LABEL_37:
 
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = +[PKPaymentWebService sharedService];
-  v6 = [v5 context];
+  context = [v5 context];
 
   v7 = PKPassKitBundle();
-  v8 = [v6 applyServicePreferredLanguageForFeatureIdentifier:5 mainLanguageBundle:v7];
+  v8 = [context applyServicePreferredLanguageForFeatureIdentifier:5 mainLanguageBundle:v7];
 
-  v9 = [MEMORY[0x1E695DF58] currentLocale];
-  v10 = [(PKDynamicProvisioningPageContent *)v9 languageCode];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageCode = [(PKDynamicProvisioningPageContent *)currentLocale languageCode];
   v11 = v8;
   v12 = v11;
-  if (v10 == v11)
+  if (languageCode == v11)
   {
 
     v14 = 0;
@@ -741,35 +741,35 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v11 || !v10)
+  if (!v11 || !languageCode)
   {
 
     goto LABEL_11;
   }
 
-  v13 = [v10 isEqualToString:v11];
+  v13 = [languageCode isEqualToString:v11];
 
   if ((v13 & 1) == 0)
   {
 LABEL_11:
-    v9 = objc_alloc_init(PKDynamicProvisioningPageContent);
-    [(PKDynamicProvisioningPageContent *)v9 setPageNumber:0];
+    currentLocale = objc_alloc_init(PKDynamicProvisioningPageContent);
+    [(PKDynamicProvisioningPageContent *)currentLocale setPageNumber:0];
     v21 = PKLocalizedFeatureString(@"LANGUAGE_NOTICE_TITLE", 5, 0, v16, v17, v18, v19, v20, v46);
-    [(PKDynamicProvisioningPageContent *)v9 setTitle:v21];
+    [(PKDynamicProvisioningPageContent *)currentLocale setTitle:v21];
 
     v27 = PKLocalizedFeatureString(@"LANGUAGE_NOTICE_BODY", 5, 0, v22, v23, v24, v25, v26, v47);
-    [(PKDynamicProvisioningPageContent *)v9 setSubtitle:v27];
+    [(PKDynamicProvisioningPageContent *)currentLocale setSubtitle:v27];
 
     v33 = PKLocalizedFeatureString(@"CONTINUE", 5, 0, v28, v29, v30, v31, v32, v48);
-    [(PKDynamicProvisioningPageContent *)v9 setPrimaryActionTitle:v33];
+    [(PKDynamicProvisioningPageContent *)currentLocale setPrimaryActionTitle:v33];
 
     v39 = PKLocalizedFeatureString(@"CANCEL", 5, 0, v34, v35, v36, v37, v38, v49);
-    [(PKDynamicProvisioningPageContent *)v9 setSecondaryActionTitle:v39];
+    [(PKDynamicProvisioningPageContent *)currentLocale setSecondaryActionTitle:v39];
 
-    [(PKDynamicProvisioningPageContent *)v9 setIdentifier:@"languageNotice"];
-    [(PKDynamicProvisioningPageContent *)v9 setHeroImageURL:&stru_1F227FD28];
-    [(PKDynamicProvisioningPageContent *)v9 setContentAlignment:2];
-    [v4 addObject:v9];
+    [(PKDynamicProvisioningPageContent *)currentLocale setIdentifier:@"languageNotice"];
+    [(PKDynamicProvisioningPageContent *)currentLocale setHeroImageURL:&stru_1F227FD28];
+    [(PKDynamicProvisioningPageContent *)currentLocale setContentAlignment:2];
+    [v4 addObject:currentLocale];
     v14 = 1;
     goto LABEL_12;
   }

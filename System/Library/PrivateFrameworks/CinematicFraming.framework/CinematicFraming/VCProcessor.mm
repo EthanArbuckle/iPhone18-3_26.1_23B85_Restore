@@ -1,28 +1,28 @@
 @interface VCProcessor
-+ (CGPoint)warpCGPoint:(CGPoint)a3 fromCamera:(id)a4 toCamera:(id)a5;
-+ (CGRect)warpCGRect:(CGRect)a3 fromCamera:(id)a4 toCamera:(id)a5;
++ (CGPoint)warpCGPoint:(CGPoint)point fromCamera:(id)camera toCamera:(id)toCamera;
++ (CGRect)warpCGRect:(CGRect)rect fromCamera:(id)camera toCamera:(id)toCamera;
 - (CGPoint)warpCGPoint:(CGPoint)result;
 - (CGRect)outputROI;
 - (CGRect)warpCGRect:(CGRect)result;
 - (VCProcessor)init;
-- (__n128)_getGravityVectorForCamera:(void *)a3 fromMetadata:(void *)a4;
+- (__n128)_getGravityVectorForCamera:(void *)camera fromMetadata:(void *)metadata;
 - (double)getPhysicalCameraToVirtualCameraTransform;
-- (float)_getBaseZoomFactor:(id)a3;
-- (id)_bindCVPixleBuffer:(__CVBuffer *)a3 usage:(unint64_t)a4;
-- (id)_cachedTexturesFromPixelBuffer:(__CVBuffer *)a3 usage:(unint64_t)a4;
-- (int)_confineOutputCameraToInputCameraFrustum:(BOOL)a3;
-- (int)_createRenderTargetForOutputLumaTex:(id)a3 outputChromaTex:(id)a4 renderTargetLumaTex:(id *)a5 renderTargetChromaTex:(id *)a6;
-- (int)_encodeDownsample:(id)a3 inputLumaTex:(id)a4 inputChromaTex:(id)a5 outputLumaTex:(id)a6 outputChromaTex:(id)a7;
-- (int)_encodeRender:(id)a3 inputLumaTex:(id)a4 inputChromaTex:(id)a5 outputLumaTex:(id)a6 outputChromaTex:(id)a7;
-- (int)_encodeRenderTargetResolve:(id)a3 renderTargetLumaTex:(id)a4 renderTargetChromaTex:(id)a5 outputLumaTex:(id)a6 outputChromaTex:(id)a7;
-- (int)_fillRenderParams:(id *)a3;
+- (float)_getBaseZoomFactor:(id)factor;
+- (id)_bindCVPixleBuffer:(__CVBuffer *)buffer usage:(unint64_t)usage;
+- (id)_cachedTexturesFromPixelBuffer:(__CVBuffer *)buffer usage:(unint64_t)usage;
+- (int)_confineOutputCameraToInputCameraFrustum:(BOOL)frustum;
+- (int)_createRenderTargetForOutputLumaTex:(id)tex outputChromaTex:(id)chromaTex renderTargetLumaTex:(id *)lumaTex renderTargetChromaTex:(id *)targetChromaTex;
+- (int)_encodeDownsample:(id)downsample inputLumaTex:(id)tex inputChromaTex:(id)chromaTex outputLumaTex:(id)lumaTex outputChromaTex:(id)outputChromaTex;
+- (int)_encodeRender:(id)render inputLumaTex:(id)tex inputChromaTex:(id)chromaTex outputLumaTex:(id)lumaTex outputChromaTex:(id)outputChromaTex;
+- (int)_encodeRenderTargetResolve:(id)resolve renderTargetLumaTex:(id)tex renderTargetChromaTex:(id)chromaTex outputLumaTex:(id)lumaTex outputChromaTex:(id)outputChromaTex;
+- (int)_fillRenderParams:(id *)params;
 - (int)_loadTuningParameters;
 - (int)_processStill;
 - (int)_processVideo;
 - (int)_render;
 - (int)_setOutputPixelBufferAttachments;
 - (int)_updateAutoFraming;
-- (int)_updateCamera:(id)a3 withMetadata:(id)a4;
+- (int)_updateCamera:(id)camera withMetadata:(id)metadata;
 - (int)_updateManualFraming;
 - (int)_updateManualFramingStateMetadata;
 - (int)_updateOutputCameraAnimation;
@@ -32,24 +32,24 @@
 - (int)process;
 - (int)purgeResources;
 - (int)setup;
-- (unint64_t)_metalTextureFormatFromPixelBufferFormat:(unsigned int)a3 forPlane:(unsigned int)a4;
+- (unint64_t)_metalTextureFormatFromPixelBufferFormat:(unsigned int)format forPlane:(unsigned int)plane;
 - (void)_cacheManualFramingState;
-- (void)_getEquivalentOutputCameraFocalLength:(VCProcessor *)self rotation:(SEL)a2 forViewport:;
+- (void)_getEquivalentOutputCameraFocalLength:(VCProcessor *)self rotation:(SEL)rotation forViewport:;
 - (void)_restoreManualFramingState;
 - (void)_updateOutputCameraFocalLengthWithVideoZoomFactor;
 - (void)_updateOutputCameraRotationWithCursor;
-- (void)_updateVideoZoomFactorFromInputCamera:(id)a3 toOutputCamera:(id)a4;
+- (void)_updateVideoZoomFactorFromInputCamera:(id)camera toOutputCamera:(id)outputCamera;
 - (void)adjustToFrameCurrentScene;
-- (void)continueRotatingToPoint:(CGPoint)a3;
+- (void)continueRotatingToPoint:(CGPoint)point;
 - (void)dealloc;
 - (void)resetOutputCamera;
-- (void)setAutoFramingEnabled:(BOOL)a3;
-- (void)setManualFramingDefaultVideoZoomFactor:(float)a3;
-- (void)setMetalCommandQueue:(id)a3;
+- (void)setAutoFramingEnabled:(BOOL)enabled;
+- (void)setManualFramingDefaultVideoZoomFactor:(float)factor;
+- (void)setMetalCommandQueue:(id)queue;
 - (void)setOutputCameraDefaultRotation:(VCProcessor *)self;
-- (void)setOutputROI:(CGRect)a3;
-- (void)setVideoZoomFactor:(float)a3;
-- (void)startRotatingFromPoint:(CGPoint)a3;
+- (void)setOutputROI:(CGRect)i;
+- (void)setVideoZoomFactor:(float)factor;
+- (void)startRotatingFromPoint:(CGPoint)point;
 @end
 
 @implementation VCProcessor
@@ -91,13 +91,13 @@
   }
 
   v7 = objc_alloc(MEMORY[0x277CF6C68]);
-  v8 = [(FigMetalContext *)self->_context device];
-  v9 = [v7 initWithDevice:v8 allocatorType:2];
+  device = [(FigMetalContext *)self->_context device];
+  v9 = [v7 initWithDevice:device allocatorType:2];
   [(FigMetalContext *)self->_context setAllocator:v9];
 
-  v10 = [(FigMetalContext *)self->_context allocator];
+  allocator = [(FigMetalContext *)self->_context allocator];
 
-  if (!v10)
+  if (!allocator)
   {
     return -1;
   }
@@ -107,12 +107,12 @@
   [v11 setWireMemory:1];
   [v11 setMemSize:10485760];
   [v11 setResourceOptions:512];
-  v12 = [(FigMetalContext *)self->_context allocator];
-  [v12 setupWithDescriptor:v11];
+  allocator2 = [(FigMetalContext *)self->_context allocator];
+  [allocator2 setupWithDescriptor:v11];
 
-  v13 = [(FigMetalContext *)self->_context commandQueue];
+  commandQueue = [(FigMetalContext *)self->_context commandQueue];
   metalCommandQueue = self->_metalCommandQueue;
-  self->_metalCommandQueue = v13;
+  self->_metalCommandQueue = commandQueue;
 
   result = [(VCProcessor *)self _loadTuningParameters];
   if (result)
@@ -187,8 +187,8 @@
       v9 = *MEMORY[0x277CC4D40];
       v10 = &unk_28563D560;
       v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-      v7 = [(FigMetalContext *)self->_context device];
-      CVMetalTextureCacheCreate(*MEMORY[0x277CBECE8], v6, v7, 0, p_cvMetalTextureCacheRef);
+      device = [(FigMetalContext *)self->_context device];
+      CVMetalTextureCacheCreate(*MEMORY[0x277CBECE8], v6, device, 0, p_cvMetalTextureCacheRef);
     }
   }
 
@@ -209,11 +209,11 @@
     }
   }
 
-  v5 = [(FigMetalContext *)self->_context allocator];
-  [v5 reset];
+  allocator = [(FigMetalContext *)self->_context allocator];
+  [allocator reset];
 
-  v6 = [(FigMetalContext *)self->_context allocator];
-  [v6 purgeResources];
+  allocator2 = [(FigMetalContext *)self->_context allocator];
+  [allocator2 purgeResources];
 
   return 0;
 }
@@ -226,16 +226,16 @@
   [(VCProcessor *)&v3 dealloc];
 }
 
-- (void)setMetalCommandQueue:(id)a3
+- (void)setMetalCommandQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   metalCommandQueue = self->_metalCommandQueue;
   p_metalCommandQueue = &self->_metalCommandQueue;
-  if (metalCommandQueue == v5)
+  if (metalCommandQueue == queueCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_metalCommandQueue, a3);
-    v5 = v8;
+    v8 = queueCopy;
+    objc_storeStrong(p_metalCommandQueue, queue);
+    queueCopy = v8;
   }
 }
 
@@ -265,12 +265,12 @@
   }
 }
 
-- (void)setOutputROI:(CGRect)a3
+- (void)setOutputROI:(CGRect)i
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = i.size.height;
+  width = i.size.width;
+  y = i.origin.y;
+  x = i.origin.x;
   v18.origin.x = 0.0;
   v18.origin.y = 0.0;
   v18.size.width = 1.0;
@@ -313,14 +313,14 @@
   }
 }
 
-- (void)setVideoZoomFactor:(float)a3
+- (void)setVideoZoomFactor:(float)factor
 {
-  if (a3 > 0.0 && !self->_autoFramingEnabled)
+  if (factor > 0.0 && !self->_autoFramingEnabled)
   {
     *&self->_outputCameraResetCompleted = 257;
     [(VCCameraAnimator *)self->_outputCameraAnimator configureWithPreset:1];
-    self->_videoZoomFactor = a3;
-    if (a3 == 1.0)
+    self->_videoZoomFactor = factor;
+    if (factor == 1.0)
     {
       v5 = *self->_outputCameraDefaultRotation;
       outputCamera = self->_outputCamera;
@@ -332,12 +332,12 @@
 
 - (double)getPhysicalCameraToVirtualCameraTransform
 {
-  [*(a1 + 176) extrinsicMatrix];
+  [*(self + 176) extrinsicMatrix];
   v10 = v2;
   v11 = v3;
   v8 = v5;
   v9 = v4;
-  [*(a1 + 160) extrinsicMatrix];
+  [*(self + 160) extrinsicMatrix];
   v15 = __invert_f4(v14);
   v6 = 0;
   v12 = v15;
@@ -375,22 +375,22 @@
   return [(VCProcessor *)self _render];
 }
 
-- (void)startRotatingFromPoint:(CGPoint)a3
+- (void)startRotatingFromPoint:(CGPoint)point
 {
-  y = a3.y;
-  v4 = vcvt_f32_f64(a3);
+  y = point.y;
+  v4 = vcvt_f32_f64(point);
   *&self->_rotationCursorPrev[3] = v4;
   *&self->_rotationCursorCurr[3] = v4;
   *&self->_outputCameraResetCompleted = 257;
   [(VCCameraAnimator *)self->_outputCameraAnimator configureWithPreset:1];
 }
 
-- (void)continueRotatingToPoint:(CGPoint)a3
+- (void)continueRotatingToPoint:(CGPoint)point
 {
   if (!self->_confineOutputCamera || self->_videoZoomFactor != 1.0)
   {
-    y = a3.y;
-    *&self->_rotationCursorCurr[3] = vcvt_f32_f64(a3);
+    y = point.y;
+    *&self->_rotationCursorCurr[3] = vcvt_f32_f64(point);
     *&self->_outputCameraResetCompleted = 257;
     [(VCCameraAnimator *)self->_outputCameraAnimator configureWithPreset:1];
   }
@@ -414,11 +414,11 @@
   [(VCCameraAnimator *)outputCameraAnimator interrupt];
 }
 
-- (void)setManualFramingDefaultVideoZoomFactor:(float)a3
+- (void)setManualFramingDefaultVideoZoomFactor:(float)factor
 {
-  if (a3 > 0.0)
+  if (factor > 0.0)
   {
-    self->_manualFramingDefaultVideoZoomFactor = a3;
+    self->_manualFramingDefaultVideoZoomFactor = factor;
   }
 }
 
@@ -426,8 +426,8 @@
 {
   v3 = *&v2;
   *self->_outputCameraDefaultRotation = v2;
-  v4 = [(CinematicFramingSession *)self->_framingSession options];
-  [v4 setDefaultViewportRotation:v3];
+  options = [(CinematicFramingSession *)self->_framingSession options];
+  [options setDefaultViewportRotation:v3];
 }
 
 - (int)_updateManualFraming
@@ -577,11 +577,11 @@ LABEL_7:
     self->_outputCameraResetCompleted = 1;
   }
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = v5;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = dictionary;
   if (v3)
   {
-    [(NSDictionary *)v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CF6980]];
+    [(NSDictionary *)dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CF6980]];
   }
 
   if (v4)
@@ -592,9 +592,9 @@ LABEL_7:
   if (!self->_oneShotFramingCompleted || !self->_outputCameraResetCompleted)
   {
     v7 = self->_inputCamera;
-    v8 = [(VCCameraAnimator *)self->_outputCameraAnimator animatedCamera];
-    outputCamera = v8;
-    if (!v8)
+    animatedCamera = [(VCCameraAnimator *)self->_outputCameraAnimator animatedCamera];
+    outputCamera = animatedCamera;
+    if (!animatedCamera)
     {
       outputCamera = self->_outputCamera;
     }
@@ -686,10 +686,10 @@ LABEL_31:
   return 0;
 }
 
-- (void)setAutoFramingEnabled:(BOOL)a3
+- (void)setAutoFramingEnabled:(BOOL)enabled
 {
   autoFramingEnabled = self->_autoFramingEnabled;
-  if (autoFramingEnabled != a3)
+  if (autoFramingEnabled != enabled)
   {
     self->_framingModeJustChanged = 1;
     if (self->_autoRestoreManualFramingState)
@@ -706,7 +706,7 @@ LABEL_31:
     }
 
     *&self->_outputCameraResetCompleted = 257;
-    self->_autoFramingEnabled = a3;
+    self->_autoFramingEnabled = enabled;
   }
 }
 
@@ -734,18 +734,18 @@ LABEL_31:
   return 0;
 }
 
-+ (CGPoint)warpCGPoint:(CGPoint)a3 fromCamera:(id)a4 toCamera:(id)a5
++ (CGPoint)warpCGPoint:(CGPoint)point fromCamera:(id)camera toCamera:(id)toCamera
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 model];
-  v11 = [v9 model];
+  y = point.y;
+  x = point.x;
+  cameraCopy = camera;
+  toCameraCopy = toCamera;
+  model = [cameraCopy model];
+  model2 = [toCameraCopy model];
   v12.f32[0] = x;
   v13 = y;
   v12.f32[1] = v13;
-  warpPoint(v10, v11, v12);
+  warpPoint(model, model2, v12);
   v17 = vcvtq_f64_f32(v14);
 
   v16 = v17.f64[1];
@@ -755,14 +755,14 @@ LABEL_31:
   return result;
 }
 
-+ (CGRect)warpCGRect:(CGRect)a3 fromCamera:(id)a4 toCamera:(id)a5
++ (CGRect)warpCGRect:(CGRect)rect fromCamera:(id)camera toCamera:(id)toCamera
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
-  v11 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  cameraCopy = camera;
+  toCameraCopy = toCamera;
   v39.origin.x = x;
   v39.origin.y = y;
   v39.size.width = width;
@@ -796,7 +796,7 @@ LABEL_31:
   v38 = v17;
   do
   {
-    warpPoint([v10 model], objc_msgSend(v11, "model"), *(&v35 + v16));
+    warpPoint([cameraCopy model], objc_msgSend(toCameraCopy, "model"), *(&v35 + v16));
     *(&v35 + v16) = v20;
     v16 += 8;
   }
@@ -878,30 +878,30 @@ LABEL_31:
   return result;
 }
 
-- (float)_getBaseZoomFactor:(id)a3
+- (float)_getBaseZoomFactor:(id)factor
 {
-  v4 = a3;
-  v5 = [v4 portType];
+  factorCopy = factor;
+  portType = [factorCopy portType];
   v6 = 1.0;
-  if (!v5 || !self->_cameraInfoByPortType)
+  if (!portType || !self->_cameraInfoByPortType)
   {
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v7 = [v4 portType];
-  v8 = [v7 isEqual:@"Virtual"];
+  portType2 = [factorCopy portType];
+  v8 = [portType2 isEqual:@"Virtual"];
 
   if ((v8 & 1) == 0)
   {
     cameraInfoByPortType = self->_cameraInfoByPortType;
-    v10 = [v4 portType];
-    v5 = [(NSDictionary *)cameraInfoByPortType objectForKeyedSubscript:v10];
+    portType3 = [factorCopy portType];
+    portType = [(NSDictionary *)cameraInfoByPortType objectForKeyedSubscript:portType3];
 
-    if (v5)
+    if (portType)
     {
-      v11 = [v5 objectForKeyedSubscript:*MEMORY[0x277CF3C00]];
+      v11 = [portType objectForKeyedSubscript:*MEMORY[0x277CF3C00]];
       v12 = v11;
       if (v11)
       {
@@ -918,19 +918,19 @@ LABEL_9:
   return v6;
 }
 
-- (void)_updateVideoZoomFactorFromInputCamera:(id)a3 toOutputCamera:(id)a4
+- (void)_updateVideoZoomFactorFromInputCamera:(id)camera toOutputCamera:(id)outputCamera
 {
-  v19 = a3;
-  v6 = a4;
-  [v6 focalLength];
+  cameraCopy = camera;
+  outputCameraCopy = outputCamera;
+  [outputCameraCopy focalLength];
   v18 = v7;
-  [v6 sensorSize];
+  [outputCameraCopy sensorSize];
   v9 = v8;
-  [v19 focalLength];
+  [cameraCopy focalLength];
   v17 = v10;
-  [v19 sensorSize];
+  [cameraCopy sensorSize];
   v12 = v11;
-  [(VCProcessor *)self _getBaseZoomFactor:v19];
+  [(VCProcessor *)self _getBaseZoomFactor:cameraCopy];
   v13 = vdiv_f32(vdup_lane_s32(v18, 0), v9);
   v14 = vdiv_f32(vdup_lane_s32(v17, 0), v12);
   v16 = (fminf(v13.f32[0], v13.f32[1]) * v15) / fminf(v14.f32[0], v14.f32[1]);
@@ -942,7 +942,7 @@ LABEL_9:
   self->_videoZoomFactor = v16;
 }
 
-- (void)_getEquivalentOutputCameraFocalLength:(VCProcessor *)self rotation:(SEL)a2 forViewport:
+- (void)_getEquivalentOutputCameraFocalLength:(VCProcessor *)self rotation:(SEL)rotation forViewport:
 {
   v8 = v7;
   v9 = v6;
@@ -952,8 +952,8 @@ LABEL_9:
   v13 = v2;
   if (!self->_orientationCorrectionEnabled)
   {
-    v15 = [(VCCamera *)self->_inputCamera portType];
-    v16 = isCinematicFramingFrontCamera(v15);
+    portType = [(VCCamera *)self->_inputCamera portType];
+    v16 = isCinematicFramingFrontCamera(portType);
 
     v17 = computeNumberOfCCWRotationsFromInputToFramingSpaceForCameraOrientation([(CinematicFramingSessionInputMetadata *)self->_inputMetadata cameraOrientation], v16, [(CinematicFramingSessionInputMetadata *)self->_inputMetadata frontCameraHas180DegreesRotation]);
     v11 = rotateRectCCW(4 - v17, v11, v10, v9, v8);
@@ -999,18 +999,18 @@ LABEL_9:
   *v12 = __PAIR64__(LODWORD(v32), v33);
 }
 
-- (__n128)_getGravityVectorForCamera:(void *)a3 fromMetadata:(void *)a4
+- (__n128)_getGravityVectorForCamera:(void *)camera fromMetadata:(void *)metadata
 {
-  v5 = a3;
-  v6 = a4;
+  cameraCopy = camera;
+  metadataCopy = metadata;
   v35 = xmmword_2434F7680;
-  if ([v6 hasGravity])
+  if ([metadataCopy hasGravity])
   {
-    [v6 gravityX];
+    [metadataCopy gravityX];
     v33 = v7;
-    [v6 gravityY];
+    [metadataCopy gravityY];
     v30 = v8;
-    [v6 gravityZ];
+    [metadataCopy gravityZ];
     v9 = v33;
     v9.i32[1] = v30;
     v9.i32[2] = v10;
@@ -1020,15 +1020,15 @@ LABEL_9:
     v31 = v11;
     if (sqrtf(v11.f32[0]) > 0.00000011921)
     {
-      if ([v6 hasDeviceToCameraSpaceTransform])
+      if ([metadataCopy hasDeviceToCameraSpaceTransform])
       {
-        [v6 deviceToCameraSpaceTransform];
+        [metadataCopy deviceToCameraSpaceTransform];
       }
 
       else
       {
-        v15 = [v5 portType];
-        v16 = isCinematicFramingFrontCamera(v15);
+        portType = [cameraCopy portType];
+        v16 = isCinematicFramingFrontCamera(portType);
 
         if (v16)
         {
@@ -1064,22 +1064,22 @@ LABEL_9:
   return v35;
 }
 
-- (int)_updateCamera:(id)a3 withMetadata:(id)a4
+- (int)_updateCamera:(id)camera withMetadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 portType];
-  [v6 setPortType:v8];
+  cameraCopy = camera;
+  metadataCopy = metadata;
+  portType = [metadataCopy portType];
+  [cameraCopy setPortType:portType];
 
-  [v6 setSensorID:{objc_msgSend(v7, "sensorID")}];
-  v9 = [v7 calibrationDataDictionary];
-  if (!v9 || (v10 = [v6 updateWithCalibration:v9]) == 0)
+  [cameraCopy setSensorID:{objc_msgSend(metadataCopy, "sensorID")}];
+  calibrationDataDictionary = [metadataCopy calibrationDataDictionary];
+  if (!calibrationDataDictionary || (v10 = [cameraCopy updateWithCalibration:calibrationDataDictionary]) == 0)
   {
     if (self->_orientationCorrectionEnabled)
     {
-      if ([v7 hasGravity])
+      if ([metadataCopy hasGravity])
       {
-        [(VCProcessor *)self _getGravityVectorForCamera:v6 fromMetadata:v7];
+        [(VCProcessor *)self _getGravityVectorForCamera:cameraCopy fromMetadata:metadataCopy];
         v12 = sqrtf(vaddv_f32(*&vmulq_f32(v11, v11)));
         if (v12 >= 0.00000011921)
         {
@@ -1100,16 +1100,16 @@ LABEL_9:
 
       else
       {
-        v17 = [v6 portType];
-        v18 = isCinematicFramingFrontCamera(v17);
+        portType2 = [cameraCopy portType];
+        v18 = isCinematicFramingFrontCamera(portType2);
 
-        zRotationForOrientation([v7 cameraOrientation], v18);
+        zRotationForOrientation([metadataCopy cameraOrientation], v18);
       }
     }
 
     [(CinematicFramingSessionInputMetadata *)self->_inputMetadata additionalInputCameraRotation];
-    [v6 rotation];
-    [v6 setRotation:v19];
+    [cameraCopy rotation];
+    [cameraCopy setRotation:v19];
     v10 = 0;
   }
 
@@ -1130,8 +1130,8 @@ LABEL_9:
 
   else
   {
-    v6 = [(VCCamera *)self->_inputCamera portType];
-    v7 = isCinematicFramingFrontCamera(v6);
+    portType = [(VCCamera *)self->_inputCamera portType];
+    v7 = isCinematicFramingFrontCamera(portType);
 
     v8 = zRotationForOrientation([(CinematicFramingSessionInputMetadata *)self->_inputMetadata cameraOrientation], v7);
     v9 = *&v8;
@@ -1206,17 +1206,17 @@ LABEL_9:
   return 0;
 }
 
-- (unint64_t)_metalTextureFormatFromPixelBufferFormat:(unsigned int)a3 forPlane:(unsigned int)a4
+- (unint64_t)_metalTextureFormatFromPixelBufferFormat:(unsigned int)format forPlane:(unsigned int)plane
 {
-  if (a3 > 875704421)
+  if (format > 875704421)
   {
-    if (a3 <= 1885745711)
+    if (format <= 1885745711)
     {
-      if (a3 <= 1278226535)
+      if (format <= 1278226535)
       {
-        if (a3 != 875704422 && a3 != 875704438)
+        if (format != 875704422 && format != 875704438)
         {
-          if (a3 == 1278226534)
+          if (format == 1278226534)
           {
             return 55;
           }
@@ -1227,14 +1227,14 @@ LABEL_9:
         goto LABEL_29;
       }
 
-      if (a3 == 1278226536)
+      if (format == 1278226536)
       {
         return 25;
       }
 
-      if (a3 == 1751527984)
+      if (format == 1751527984)
       {
-        v7 = a4 == 0;
+        v7 = plane == 0;
         v8 = 65;
         v9 = 25;
 LABEL_30:
@@ -1253,16 +1253,16 @@ LABEL_30:
       goto LABEL_42;
     }
 
-    if (a3 <= 2084070959)
+    if (format <= 2084070959)
     {
-      if (a3 != 1885745712)
+      if (format != 1885745712)
       {
-        if (a3 != 2016686640 && a3 != 2019963440)
+        if (format != 2016686640 && format != 2019963440)
         {
           return 0;
         }
 
-        v7 = a4 == 0;
+        v7 = plane == 0;
         v8 = 60;
         v9 = 20;
         goto LABEL_30;
@@ -1271,26 +1271,26 @@ LABEL_30:
 
     else
     {
-      if (a3 <= 2088265263)
+      if (format <= 2088265263)
       {
-        if (a3 != 2084070960)
+        if (format != 2084070960)
         {
           v4 = 2084075056;
           goto LABEL_24;
         }
 
 LABEL_29:
-        v7 = a4 == 0;
+        v7 = plane == 0;
         v8 = 30;
         v9 = 10;
         goto LABEL_30;
       }
 
-      if (a3 != 2088265264)
+      if (format != 2088265264)
       {
         v5 = 2088269360;
 LABEL_42:
-        if (a3 != v5)
+        if (format != v5)
         {
           return 0;
         }
@@ -1302,11 +1302,11 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  if (a3 <= 762865199)
+  if (format <= 762865199)
   {
-    if (a3 <= 645428783)
+    if (format <= 645428783)
     {
-      if (a3 == 641230384 || a3 == 641234480)
+      if (format == 641230384 || format == 641234480)
       {
         goto LABEL_29;
       }
@@ -1315,19 +1315,19 @@ LABEL_42:
       goto LABEL_42;
     }
 
-    if (a3 == 645428784)
+    if (format == 645428784)
     {
       goto LABEL_43;
     }
 
-    if (a3 == 758670896)
+    if (format == 758670896)
     {
       goto LABEL_29;
     }
 
     v4 = 758674992;
 LABEL_24:
-    if (a3 != v4)
+    if (format != v4)
     {
       return 0;
     }
@@ -1335,9 +1335,9 @@ LABEL_24:
     goto LABEL_29;
   }
 
-  if (a3 <= 792229423)
+  if (format <= 792229423)
   {
-    if (a3 == 762865200 || a3 == 762869296)
+    if (format == 762865200 || format == 762869296)
     {
       goto LABEL_43;
     }
@@ -1346,19 +1346,19 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (a3 == 792229424)
+  if (format == 792229424)
   {
     goto LABEL_29;
   }
 
-  if (a3 != 796419632)
+  if (format != 796419632)
   {
     v5 = 796423728;
     goto LABEL_42;
   }
 
 LABEL_43:
-  if (a4)
+  if (plane)
   {
     return 589;
   }
@@ -1369,13 +1369,13 @@ LABEL_43:
   }
 }
 
-- (id)_cachedTexturesFromPixelBuffer:(__CVBuffer *)a3 usage:(unint64_t)a4
+- (id)_cachedTexturesFromPixelBuffer:(__CVBuffer *)buffer usage:(unint64_t)usage
 {
   v4 = 0;
   image = 0;
-  if (a3)
+  if (buffer)
   {
-    v5 = self;
+    selfCopy = self;
     v6 = 0;
     v7 = 0;
     if (self->_cvMetalTextureCacheRef)
@@ -1383,7 +1383,7 @@ LABEL_43:
       v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
       if (v4)
       {
-        PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+        PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
         v27 = v4;
         v9 = 0;
         v10 = 0;
@@ -1393,8 +1393,8 @@ LABEL_43:
         v11 = 1;
         while (1)
         {
-          v12 = v5;
-          v13 = v5;
+          v12 = selfCopy;
+          v13 = selfCopy;
           v14 = PixelFormatType;
           v15 = [(VCProcessor *)v13 _metalTextureFormatFromPixelBufferFormat:PixelFormatType forPlane:v9];
           if (v15 == MTLPixelFormatInvalid)
@@ -1402,14 +1402,14 @@ LABEL_43:
             break;
           }
 
-          WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, v9);
-          HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, v9);
+          WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, v9);
+          HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, v9);
           v29 = v25;
-          v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+          v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:usage];
           v30 = v18;
           v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
 
-          if (CVMetalTextureCacheCreateTextureFromImage(allocator, v12->_cvMetalTextureCacheRef, a3, v7, v15, WidthOfPlane, HeightOfPlane, v9, &image))
+          if (CVMetalTextureCacheCreateTextureFromImage(allocator, v12->_cvMetalTextureCacheRef, buffer, v7, v15, WidthOfPlane, HeightOfPlane, v9, &image))
           {
             goto LABEL_16;
           }
@@ -1434,7 +1434,7 @@ LABEL_43:
           v10 = v7;
           v11 = 0;
           PixelFormatType = v14;
-          v5 = v12;
+          selfCopy = v12;
           if ((v21 & 1) == 0)
           {
             v4 = v27;
@@ -1478,7 +1478,7 @@ LABEL_12:
   return v4;
 }
 
-- (id)_bindCVPixleBuffer:(__CVBuffer *)a3 usage:(unint64_t)a4
+- (id)_bindCVPixleBuffer:(__CVBuffer *)buffer usage:(unint64_t)usage
 {
   v7 = [VCProcessor _cachedTexturesFromPixelBuffer:"_cachedTexturesFromPixelBuffer:usage:" usage:?];
   v8 = v7;
@@ -1489,15 +1489,15 @@ LABEL_12:
 
   else
   {
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-    PlaneCount = CVPixelBufferGetPlaneCount(a3);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+    PlaneCount = CVPixelBufferGetPlaneCount(buffer);
     v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:PlaneCount];
     if (PlaneCount)
     {
       v12 = 0;
       while (1)
       {
-        v13 = [(FigMetalContext *)self->_context bindPixelBufferToMTL2DTexture:a3 pixelFormat:[(VCProcessor *)self _metalTextureFormatFromPixelBufferFormat:PixelFormatType forPlane:v12] usage:a4 plane:v12];
+        v13 = [(FigMetalContext *)self->_context bindPixelBufferToMTL2DTexture:buffer pixelFormat:[(VCProcessor *)self _metalTextureFormatFromPixelBufferFormat:PixelFormatType forPlane:v12] usage:usage plane:v12];
         if (!v13)
         {
           break;
@@ -1526,66 +1526,66 @@ LABEL_7:
   return v9;
 }
 
-- (int)_fillRenderParams:(id *)a3
+- (int)_fillRenderParams:(id *)params
 {
-  v5 = [(VCCamera *)self->_inputCamera model];
-  v6 = *&v5->var7.var7;
-  v8 = *&v5->var0;
-  v7 = *&v5->var6;
-  *&a3->var0.var7.var3 = *&v5->var7.var3;
-  *&a3->var0.var7.var7 = v6;
-  *&a3->var0.var0 = v8;
-  *&a3->var0.var6 = v7;
-  v9 = *&v5[1].var7.var0;
-  v11 = *&v5->var8.var3;
-  v10 = *&v5->var8.var7;
-  *&a3->var1.var1 = *&v5[1].var1;
-  *&a3->var1.var7.var0 = v9;
-  *&a3->var0.var8.var3 = v11;
-  *&a3->var0.var8.var7 = v10;
-  v12 = *&v5[1].var9;
-  v14 = *&v5[1].var7.var4;
-  v13 = *&v5[1].var8.var0;
-  *&a3->var1.var8.var4 = *&v5[1].var8.var4;
-  *&a3->var1.var9 = v12;
-  *&a3->var1.var7.var4 = v14;
-  *&a3->var1.var8.var0 = v13;
-  v15 = *&v5[2].var8.var1;
-  v17 = *&v5[2].var2;
-  v16 = *&v5[2].var7.var1;
-  *&a3[1].var0.var7.var5 = *&v5[2].var7.var5;
-  *&a3[1].var0.var8.var1 = v15;
-  *&a3[1].var0.var2 = v17;
-  *&a3[1].var0.var7.var1 = v16;
-  v18 = [(VCCamera *)self->_outputCamera model];
-  v19 = *&v18->var7.var7;
-  v21 = *&v18->var0;
-  v20 = *&v18->var6;
-  *&a3[1].var1.var5 = *&v18->var7.var3;
-  *&a3[1].var1.var7.var2 = v19;
-  *&a3[1].var0.var8.var5 = v21;
-  *&a3[1].var0.var10 = v20;
-  v22 = *&v18[1].var7.var0;
-  v24 = *&v18->var8.var3;
-  v23 = *&v18->var8.var7;
-  *&a3[1].var1.var8.var6 = *&v18[1].var1;
-  *&a3[2].var0.var0 = v22;
-  *&a3[1].var1.var7.var6 = v24;
-  *&a3[1].var1.var8.var2 = v23;
-  v25 = *&v18[1].var9;
-  v27 = *&v18[1].var7.var4;
-  v26 = *&v18[1].var8.var0;
-  *&a3[2].var0.var7.var7 = *&v18[1].var8.var4;
-  *&a3[2].var0.var8.var3 = v25;
-  *&a3[2].var0.var6 = v27;
-  *&a3[2].var0.var7.var3 = v26;
-  v28 = *&v18[2].var8.var1;
-  v30 = *&v18[2].var2;
-  v29 = *&v18[2].var7.var1;
-  *&a3[2].var1.var7.var0 = *&v18[2].var7.var5;
-  *&a3[2].var1.var7.var4 = v28;
-  *&a3[2].var0.var8.var7 = v30;
-  *&a3[2].var1.var1 = v29;
+  model = [(VCCamera *)self->_inputCamera model];
+  v6 = *&model->var7.var7;
+  v8 = *&model->var0;
+  v7 = *&model->var6;
+  *&params->var0.var7.var3 = *&model->var7.var3;
+  *&params->var0.var7.var7 = v6;
+  *&params->var0.var0 = v8;
+  *&params->var0.var6 = v7;
+  v9 = *&model[1].var7.var0;
+  v11 = *&model->var8.var3;
+  v10 = *&model->var8.var7;
+  *&params->var1.var1 = *&model[1].var1;
+  *&params->var1.var7.var0 = v9;
+  *&params->var0.var8.var3 = v11;
+  *&params->var0.var8.var7 = v10;
+  v12 = *&model[1].var9;
+  v14 = *&model[1].var7.var4;
+  v13 = *&model[1].var8.var0;
+  *&params->var1.var8.var4 = *&model[1].var8.var4;
+  *&params->var1.var9 = v12;
+  *&params->var1.var7.var4 = v14;
+  *&params->var1.var8.var0 = v13;
+  v15 = *&model[2].var8.var1;
+  v17 = *&model[2].var2;
+  v16 = *&model[2].var7.var1;
+  *&params[1].var0.var7.var5 = *&model[2].var7.var5;
+  *&params[1].var0.var8.var1 = v15;
+  *&params[1].var0.var2 = v17;
+  *&params[1].var0.var7.var1 = v16;
+  model2 = [(VCCamera *)self->_outputCamera model];
+  v19 = *&model2->var7.var7;
+  v21 = *&model2->var0;
+  v20 = *&model2->var6;
+  *&params[1].var1.var5 = *&model2->var7.var3;
+  *&params[1].var1.var7.var2 = v19;
+  *&params[1].var0.var8.var5 = v21;
+  *&params[1].var0.var10 = v20;
+  v22 = *&model2[1].var7.var0;
+  v24 = *&model2->var8.var3;
+  v23 = *&model2->var8.var7;
+  *&params[1].var1.var8.var6 = *&model2[1].var1;
+  *&params[2].var0.var0 = v22;
+  *&params[1].var1.var7.var6 = v24;
+  *&params[1].var1.var8.var2 = v23;
+  v25 = *&model2[1].var9;
+  v27 = *&model2[1].var7.var4;
+  v26 = *&model2[1].var8.var0;
+  *&params[2].var0.var7.var7 = *&model2[1].var8.var4;
+  *&params[2].var0.var8.var3 = v25;
+  *&params[2].var0.var6 = v27;
+  *&params[2].var0.var7.var3 = v26;
+  v28 = *&model2[2].var8.var1;
+  v30 = *&model2[2].var2;
+  v29 = *&model2[2].var7.var1;
+  *&params[2].var1.var7.var0 = *&model2[2].var7.var5;
+  *&params[2].var1.var7.var4 = v28;
+  *&params[2].var0.var8.var7 = v30;
+  *&params[2].var1.var1 = v29;
   v31 = *(MEMORY[0x277CBF398] + 16);
   v53.origin = *MEMORY[0x277CBF398];
   v53.size = v31;
@@ -1597,10 +1597,10 @@ LABEL_7:
     CFRelease(v33);
   }
 
-  *&a3[2].var1.var8.var0 = 0;
+  *&params[2].var1.var8.var0 = 0;
   __asm { FMOV            V0.2S, #1.0 }
 
-  *&a3[2].var1.var8.var2 = _D0;
+  *&params[2].var1.var8.var2 = _D0;
   if (!CGRectIsNull(v53))
   {
     Width = CVPixelBufferGetWidth(self->_inputPixelBuffer);
@@ -1610,8 +1610,8 @@ LABEL_7:
     v42 = vcvtq_f64_f32(vcvt_f32_f64(vcvtq_f64_u64(v41)));
     v43 = vcvt_f32_f64(vdivq_f64(v53.origin, v42));
     *&v42.f64[0] = vcvt_f32_f64(vdivq_f64(v53.size, v42));
-    *&a3[2].var1.var8.var0 = v43;
-    *&a3[2].var1.var8.var2 = v42.f64[0];
+    *&params[2].var1.var8.var0 = v43;
+    *&params[2].var1.var8.var2 = v42.f64[0];
   }
 
   outputDimensions = self->_outputDimensions;
@@ -1625,70 +1625,70 @@ LABEL_7:
   __asm { FMOV            V3.2D, #-10.0 }
 
   v51 = vmaxnmq_f64(vaddq_f64(v47, _Q3), 0);
-  *&a3[2].var1.var8.var4 = vcvt_f32_f64(vdivq_f64(v51, v46));
-  *&a3[2].var1.var8.var6 = vcvt_f32_f64(vdivq_f64(vsubq_f64(vbslq_s8(vcgtq_f64(v46, v49), v49, v46), v51), v46));
+  *&params[2].var1.var8.var4 = vcvt_f32_f64(vdivq_f64(v51, v46));
+  *&params[2].var1.var8.var6 = vcvt_f32_f64(vdivq_f64(vsubq_f64(vbslq_s8(vcgtq_f64(v46, v49), v49, v46), v51), v46));
   return 0;
 }
 
-- (int)_encodeRender:(id)a3 inputLumaTex:(id)a4 inputChromaTex:(id)a5 outputLumaTex:(id)a6 outputChromaTex:(id)a7
+- (int)_encodeRender:(id)render inputLumaTex:(id)tex inputChromaTex:(id)chromaTex outputLumaTex:(id)lumaTex outputChromaTex:(id)outputChromaTex
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  renderCopy = render;
+  texCopy = tex;
+  chromaTexCopy = chromaTex;
+  lumaTexCopy = lumaTex;
+  outputChromaTexCopy = outputChromaTex;
   v17 = [(VCProcessor *)self _fillRenderParams:v23];
   if (!v17)
   {
     v18 = [(VCShaders *)self->_shaders objectAtIndexedSubscript:0];
-    [v12 setComputePipelineState:v18];
+    [renderCopy setComputePipelineState:v18];
 
-    [v12 setTexture:v13 atIndex:0];
-    [v12 setTexture:v14 atIndex:1];
-    [v12 setTexture:v15 atIndex:2];
-    [v12 setTexture:v16 atIndex:3];
-    [v12 setBytes:v23 length:544 atIndex:0];
-    [v12 setImageblockWidth:32 height:32];
-    v22[0] = [v15 width];
-    v22[1] = [v15 height];
+    [renderCopy setTexture:texCopy atIndex:0];
+    [renderCopy setTexture:chromaTexCopy atIndex:1];
+    [renderCopy setTexture:lumaTexCopy atIndex:2];
+    [renderCopy setTexture:outputChromaTexCopy atIndex:3];
+    [renderCopy setBytes:v23 length:544 atIndex:0];
+    [renderCopy setImageblockWidth:32 height:32];
+    v22[0] = [lumaTexCopy width];
+    v22[1] = [lumaTexCopy height];
     v22[2] = 1;
     v20 = vdupq_n_s64(0x20uLL);
     v21 = 1;
-    [v12 dispatchThreads:v22 threadsPerThreadgroup:&v20];
+    [renderCopy dispatchThreads:v22 threadsPerThreadgroup:&v20];
   }
 
   return v17;
 }
 
-- (int)_encodeDownsample:(id)a3 inputLumaTex:(id)a4 inputChromaTex:(id)a5 outputLumaTex:(id)a6 outputChromaTex:(id)a7
+- (int)_encodeDownsample:(id)downsample inputLumaTex:(id)tex inputChromaTex:(id)chromaTex outputLumaTex:(id)lumaTex outputChromaTex:(id)outputChromaTex
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  downsampleCopy = downsample;
+  texCopy = tex;
+  chromaTexCopy = chromaTex;
+  lumaTexCopy = lumaTex;
+  outputChromaTexCopy = outputChromaTex;
   v17 = [(VCShaders *)self->_shaders objectAtIndexedSubscript:1];
-  [v12 setComputePipelineState:v17];
+  [downsampleCopy setComputePipelineState:v17];
 
-  [v12 setTexture:v13 atIndex:0];
-  [v12 setTexture:v14 atIndex:1];
-  [v12 setTexture:v15 atIndex:2];
-  [v12 setTexture:v16 atIndex:3];
-  [v12 setImageblockWidth:32 height:32];
-  v21[0] = [v15 width];
-  v21[1] = [v15 height];
+  [downsampleCopy setTexture:texCopy atIndex:0];
+  [downsampleCopy setTexture:chromaTexCopy atIndex:1];
+  [downsampleCopy setTexture:lumaTexCopy atIndex:2];
+  [downsampleCopy setTexture:outputChromaTexCopy atIndex:3];
+  [downsampleCopy setImageblockWidth:32 height:32];
+  v21[0] = [lumaTexCopy width];
+  v21[1] = [lumaTexCopy height];
   v21[2] = 1;
   v19 = vdupq_n_s64(0x20uLL);
   v20 = 1;
-  [v12 dispatchThreads:v21 threadsPerThreadgroup:&v19];
+  [downsampleCopy dispatchThreads:v21 threadsPerThreadgroup:&v19];
 
   return 0;
 }
 
-- (int)_createRenderTargetForOutputLumaTex:(id)a3 outputChromaTex:(id)a4 renderTargetLumaTex:(id *)a5 renderTargetChromaTex:(id *)a6
+- (int)_createRenderTargetForOutputLumaTex:(id)tex outputChromaTex:(id)chromaTex renderTargetLumaTex:(id *)lumaTex renderTargetChromaTex:(id *)targetChromaTex
 {
-  v10 = a3;
-  v11 = a4;
+  texCopy = tex;
+  chromaTexCopy = chromaTex;
   Width = CVPixelBufferGetWidth(self->_inputPixelBuffer);
   Height = CVPixelBufferGetHeight(self->_inputPixelBuffer);
   inputPixelBuffer = self->_inputPixelBuffer;
@@ -1740,55 +1740,55 @@ LABEL_7:
 
   if (v24)
   {
-    v25 = [(FigMetalContext *)self->_context allocator];
-    v26 = [v25 newTextureDescriptor];
+    allocator = [(FigMetalContext *)self->_context allocator];
+    newTextureDescriptor = [allocator newTextureDescriptor];
 
-    [v26 setLabel:0];
-    v27 = [v10 pixelFormat];
-    v28 = [v26 desc];
-    [v28 setPixelFormat:v27];
+    [newTextureDescriptor setLabel:0];
+    pixelFormat = [texCopy pixelFormat];
+    desc = [newTextureDescriptor desc];
+    [desc setPixelFormat:pixelFormat];
 
-    v29 = [v10 width];
-    v30 = [v26 desc];
-    [v30 setWidth:v29 << v24];
+    width = [texCopy width];
+    desc2 = [newTextureDescriptor desc];
+    [desc2 setWidth:width << v24];
 
-    v31 = [v10 height];
-    v32 = [v26 desc];
-    [v32 setHeight:v31 << v24];
+    height = [texCopy height];
+    desc3 = [newTextureDescriptor desc];
+    [desc3 setHeight:height << v24];
 
-    v33 = [v26 desc];
-    [v33 setUsage:7];
+    desc4 = [newTextureDescriptor desc];
+    [desc4 setUsage:7];
 
-    v34 = [(FigMetalContext *)self->_context allocator];
-    v35 = [v34 newTextureWithDescriptor:v26];
+    allocator2 = [(FigMetalContext *)self->_context allocator];
+    v35 = [allocator2 newTextureWithDescriptor:newTextureDescriptor];
 
-    [v26 setLabel:0];
-    v36 = [v11 pixelFormat];
-    v37 = [v26 desc];
-    [v37 setPixelFormat:v36];
+    [newTextureDescriptor setLabel:0];
+    pixelFormat2 = [chromaTexCopy pixelFormat];
+    desc5 = [newTextureDescriptor desc];
+    [desc5 setPixelFormat:pixelFormat2];
 
-    v38 = [v11 width];
-    v39 = [v26 desc];
-    [v39 setWidth:v38 << v24];
+    width2 = [chromaTexCopy width];
+    desc6 = [newTextureDescriptor desc];
+    [desc6 setWidth:width2 << v24];
 
-    v40 = [v11 height];
-    v41 = [v26 desc];
-    [v41 setHeight:v40 << v24];
+    height2 = [chromaTexCopy height];
+    desc7 = [newTextureDescriptor desc];
+    [desc7 setHeight:height2 << v24];
 
-    v42 = [v26 desc];
-    [v42 setUsage:7];
+    desc8 = [newTextureDescriptor desc];
+    [desc8 setUsage:7];
 
-    v43 = [(FigMetalContext *)self->_context allocator];
-    v44 = [v43 newTextureWithDescriptor:v26];
+    allocator3 = [(FigMetalContext *)self->_context allocator];
+    v44 = [allocator3 newTextureWithDescriptor:newTextureDescriptor];
 
     v45 = -1;
     if (v35 && v44)
     {
       v46 = v35;
-      *a5 = v35;
+      *lumaTex = v35;
       v47 = v44;
       v45 = 0;
-      *a6 = v44;
+      *targetChromaTex = v44;
     }
   }
 
@@ -1796,27 +1796,27 @@ LABEL_7:
   {
     FigMetalIncRef();
     FigMetalIncRef();
-    v48 = v10;
-    *a5 = v10;
-    v49 = v11;
+    v48 = texCopy;
+    *lumaTex = texCopy;
+    v49 = chromaTexCopy;
     v45 = 0;
-    *a6 = v11;
+    *targetChromaTex = chromaTexCopy;
   }
 
   return v45;
 }
 
-- (int)_encodeRenderTargetResolve:(id)a3 renderTargetLumaTex:(id)a4 renderTargetChromaTex:(id)a5 outputLumaTex:(id)a6 outputChromaTex:(id)a7
+- (int)_encodeRenderTargetResolve:(id)resolve renderTargetLumaTex:(id)tex renderTargetChromaTex:(id)chromaTex outputLumaTex:(id)lumaTex outputChromaTex:(id)outputChromaTex
 {
-  v12 = a3;
-  v13 = a4;
-  v45 = a5;
-  v14 = a6;
-  v15 = a7;
+  resolveCopy = resolve;
+  texCopy = tex;
+  chromaTexCopy = chromaTex;
+  lumaTexCopy = lumaTex;
+  outputChromaTexCopy = outputChromaTex;
   v46 = 0;
   location = 0;
-  v44 = v13;
-  if (v13 == v14)
+  v44 = texCopy;
+  if (texCopy == lumaTexCopy)
   {
     v40 = 0;
   }
@@ -1825,64 +1825,64 @@ LABEL_7:
   {
     FigMetalIncRef();
     FigMetalIncRef();
-    objc_storeStrong(&location, a4);
-    objc_storeStrong(&v46, a5);
+    objc_storeStrong(&location, tex);
+    objc_storeStrong(&v46, chromaTex);
     v16 = 0;
     v17 = 0;
-    for (i = v13; ; i = location)
+    for (i = texCopy; ; i = location)
     {
-      v19 = [i width];
-      if ([v14 width] >= v19 >> 1)
+      width = [i width];
+      if ([lumaTexCopy width] >= width >> 1)
       {
-        v41 = v14;
+        v41 = lumaTexCopy;
 
-        v42 = v15;
+        v42 = outputChromaTexCopy;
         v16 = v41;
         v17 = v42;
       }
 
       else
       {
-        v20 = [(FigMetalContext *)self->_context allocator];
-        v21 = [v20 newTextureDescriptor];
+        allocator = [(FigMetalContext *)self->_context allocator];
+        newTextureDescriptor = [allocator newTextureDescriptor];
 
-        [v21 setLabel:0];
-        v22 = [location pixelFormat];
-        v23 = [v21 desc];
-        [v23 setPixelFormat:v22];
+        [newTextureDescriptor setLabel:0];
+        pixelFormat = [location pixelFormat];
+        desc = [newTextureDescriptor desc];
+        [desc setPixelFormat:pixelFormat];
 
-        v24 = [location width];
-        v25 = [v21 desc];
-        [v25 setWidth:v24 >> 1];
+        width2 = [location width];
+        desc2 = [newTextureDescriptor desc];
+        [desc2 setWidth:width2 >> 1];
 
-        v26 = [location height];
-        v27 = [v21 desc];
-        [v27 setHeight:v26 >> 1];
+        height = [location height];
+        desc3 = [newTextureDescriptor desc];
+        [desc3 setHeight:height >> 1];
 
-        v28 = [v21 desc];
-        [v28 setUsage:7];
+        desc4 = [newTextureDescriptor desc];
+        [desc4 setUsage:7];
 
-        v29 = [(FigMetalContext *)self->_context allocator];
-        v30 = [v29 newTextureWithDescriptor:v21];
+        allocator2 = [(FigMetalContext *)self->_context allocator];
+        v30 = [allocator2 newTextureWithDescriptor:newTextureDescriptor];
 
-        [v21 setLabel:0];
-        v31 = [v46 pixelFormat];
-        v32 = [v21 desc];
-        [v32 setPixelFormat:v31];
+        [newTextureDescriptor setLabel:0];
+        pixelFormat2 = [v46 pixelFormat];
+        desc5 = [newTextureDescriptor desc];
+        [desc5 setPixelFormat:pixelFormat2];
 
-        v33 = [v46 width];
-        v34 = [v21 desc];
-        [v34 setWidth:v33 >> 1];
+        width3 = [v46 width];
+        desc6 = [newTextureDescriptor desc];
+        [desc6 setWidth:width3 >> 1];
 
-        v35 = [v46 height];
-        v36 = [v21 desc];
-        [v36 setHeight:v35 >> 1];
+        height2 = [v46 height];
+        desc7 = [newTextureDescriptor desc];
+        [desc7 setHeight:height2 >> 1];
 
-        v37 = [v21 desc];
-        [v37 setUsage:7];
+        desc8 = [newTextureDescriptor desc];
+        [desc8 setUsage:7];
 
-        v38 = [(FigMetalContext *)self->_context allocator];
-        v39 = [v38 newTextureWithDescriptor:v21];
+        allocator3 = [(FigMetalContext *)self->_context allocator];
+        v39 = [allocator3 newTextureWithDescriptor:newTextureDescriptor];
 
         v40 = -1;
         if (!v30)
@@ -1898,7 +1898,7 @@ LABEL_7:
         }
       }
 
-      v40 = [(VCProcessor *)self _encodeDownsample:v12 inputLumaTex:location inputChromaTex:v46 outputLumaTex:v16 outputChromaTex:v17];
+      v40 = [(VCProcessor *)self _encodeDownsample:resolveCopy inputLumaTex:location inputChromaTex:v46 outputLumaTex:v16 outputChromaTex:v17];
       if (v40)
       {
         break;
@@ -1906,7 +1906,7 @@ LABEL_7:
 
       FigMetalDecRef();
       FigMetalDecRef();
-      if (v16 == v14)
+      if (v16 == lumaTexCopy)
       {
         v40 = 0;
         break;
@@ -1961,27 +1961,27 @@ LABEL_13:
         else
         {
           v16 = v15;
-          v17 = [(FigMetalContext *)self->_context commandBuffer];
-          v18 = v17;
-          if (v17)
+          commandBuffer = [(FigMetalContext *)self->_context commandBuffer];
+          v18 = commandBuffer;
+          if (commandBuffer)
           {
-            v19 = [v17 computeCommandEncoder];
-            if (v19)
+            computeCommandEncoder = [commandBuffer computeCommandEncoder];
+            if (computeCommandEncoder)
             {
-              v4 = [(VCProcessor *)self _encodeRender:v19 inputLumaTex:v3 inputChromaTex:v22 outputLumaTex:v14 outputChromaTex:v16];
+              v4 = [(VCProcessor *)self _encodeRender:computeCommandEncoder inputLumaTex:v3 inputChromaTex:v22 outputLumaTex:v14 outputChromaTex:v16];
               if (!v4)
               {
-                v4 = [(VCProcessor *)self _encodeRenderTargetResolve:v19 renderTargetLumaTex:v14 renderTargetChromaTex:v16 outputLumaTex:v5 outputChromaTex:v21];
+                v4 = [(VCProcessor *)self _encodeRenderTargetResolve:computeCommandEncoder renderTargetLumaTex:v14 renderTargetChromaTex:v16 outputLumaTex:v5 outputChromaTex:v21];
                 if (!v4)
                 {
-                  [v19 endEncoding];
+                  [computeCommandEncoder endEncoding];
                   [(FigMetalContext *)self->_context commit];
                   v4 = 0;
                 }
               }
 
               v6 = v18;
-              v7 = v19;
+              v7 = computeCommandEncoder;
             }
 
             else
@@ -2032,26 +2032,26 @@ LABEL_16:
 
 - (int)_setOutputPixelBufferAttachments
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *MEMORY[0x277CF3FC8];
-  v4 = CVBufferCopyAttachment(self->_outputPixelBuffer, *MEMORY[0x277CF3FC8], 0);
-  if (!v4)
+  dictionary = CVBufferCopyAttachment(self->_outputPixelBuffer, *MEMORY[0x277CF3FC8], 0);
+  if (!dictionary)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    if (!v4)
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    if (!dictionary)
     {
       goto LABEL_27;
     }
   }
 
-  v5 = [(CinematicFramingSessionInputMetadata *)v2->_inputMetadata detectedObjectsInfo];
+  detectedObjectsInfo = [(CinematicFramingSessionInputMetadata *)selfCopy->_inputMetadata detectedObjectsInfo];
 
-  if (v5)
+  if (detectedObjectsInfo)
   {
-    v6 = [(CinematicFramingSessionInputMetadata *)v2->_inputMetadata detectedObjectsInfo];
-    v24 = v6;
-    v25 = v4;
-    DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x277CBECE8], v6, 1uLL);
+    detectedObjectsInfo2 = [(CinematicFramingSessionInputMetadata *)selfCopy->_inputMetadata detectedObjectsInfo];
+    v24 = detectedObjectsInfo2;
+    v25 = dictionary;
+    DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x277CBECE8], detectedObjectsInfo2, 1uLL);
     if (DeepCopy)
     {
       v23 = v3;
@@ -2059,8 +2059,8 @@ LABEL_16:
       v43[1] = 3221225472;
       v43[2] = __47__VCProcessor__setOutputPixelBufferAttachments__block_invoke;
       v43[3] = &unk_278DBCCB8;
-      v22 = v2;
-      v43[4] = v2;
+      v22 = selfCopy;
+      v43[4] = selfCopy;
       v8 = MEMORY[0x245D37F20](v43);
       v39 = 0u;
       v40 = 0u;
@@ -2135,8 +2135,8 @@ LABEL_16:
       }
 
       [v25 setObject:obj forKeyedSubscript:*MEMORY[0x277CF4BD0]];
-      v4 = v25;
-      v2 = v22;
+      dictionary = v25;
+      selfCopy = v22;
       v3 = v23;
       goto LABEL_22;
     }
@@ -2147,12 +2147,12 @@ LABEL_27:
   }
 
 LABEL_22:
-  if (!v2->_autoFramingEnabled)
+  if (!selfCopy->_autoFramingEnabled)
   {
-    [v4 setValuesForKeysWithDictionary:v2->_manualFramingStateMetadata];
+    [dictionary setValuesForKeysWithDictionary:selfCopy->_manualFramingStateMetadata];
   }
 
-  CVBufferSetAttachment(v2->_outputPixelBuffer, v3, v4, kCVAttachmentMode_ShouldPropagate);
+  CVBufferSetAttachment(selfCopy->_outputPixelBuffer, v3, dictionary, kCVAttachmentMode_ShouldPropagate);
   v20 = 0;
 LABEL_25:
 
@@ -2215,13 +2215,13 @@ void __47__VCProcessor__setOutputPixelBufferAttachments__block_invoke(uint64_t a
   if (!result)
   {
     outputCamera = self->_outputCamera;
-    v5 = [(VCCameraAnimator *)self->_outputCameraAnimator animatedCamera];
+    animatedCamera = [(VCCameraAnimator *)self->_outputCameraAnimator animatedCamera];
 
-    if (outputCamera == v5)
+    if (outputCamera == animatedCamera)
     {
-      v6 = [(VCCameraAnimator *)self->_outputCameraAnimator targetCamera];
+      targetCamera = [(VCCameraAnimator *)self->_outputCameraAnimator targetCamera];
       v7 = self->_outputCamera;
-      self->_outputCamera = v6;
+      self->_outputCamera = targetCamera;
     }
 
     if (self->_autoFramingEnabled)
@@ -2302,10 +2302,10 @@ void __47__VCProcessor__setOutputPixelBufferAttachments__block_invoke(uint64_t a
     self->_framingModeJustChanged = 0;
   }
 
-  v3 = [(VCCameraAnimator *)self->_outputCameraAnimator animatedCamera];
+  animatedCamera = [(VCCameraAnimator *)self->_outputCameraAnimator animatedCamera];
 
   outputCameraAnimator = self->_outputCameraAnimator;
-  if (v3)
+  if (animatedCamera)
   {
     inputMetadata = self->_inputMetadata;
     if (inputMetadata)
@@ -2346,13 +2346,13 @@ void __47__VCProcessor__setOutputPixelBufferAttachments__block_invoke(uint64_t a
     [(VCCameraAnimator *)self->_outputCameraAnimator configureWithPreset:1];
   }
 
-  v7 = [(VCCameraAnimator *)self->_outputCameraAnimator animatedCamera];
+  animatedCamera2 = [(VCCameraAnimator *)self->_outputCameraAnimator animatedCamera];
 
-  if (v7)
+  if (animatedCamera2)
   {
-    v8 = [(VCCameraAnimator *)self->_outputCameraAnimator animatedCamera];
+    animatedCamera3 = [(VCCameraAnimator *)self->_outputCameraAnimator animatedCamera];
     outputCamera = self->_outputCamera;
-    self->_outputCamera = v8;
+    self->_outputCamera = animatedCamera3;
   }
 
   OUTLINED_FUNCTION_1();
@@ -2378,9 +2378,9 @@ void __47__VCProcessor__setOutputPixelBufferAttachments__block_invoke(uint64_t a
   return result;
 }
 
-- (int)_confineOutputCameraToInputCameraFrustum:(BOOL)a3
+- (int)_confineOutputCameraToInputCameraFrustum:(BOOL)frustum
 {
-  if (a3)
+  if (frustum)
   {
     LODWORD(v3) = 1.0;
     [(VCCamera *)self->_outputCamera setZoomFactor:v3];

@@ -12,103 +12,103 @@
 
 - (__CFString)tsu_keyPathByRemovingLastKey
 {
-  v2 = [a1 rangeOfString:@"." options:6];
+  v2 = [self rangeOfString:@"." options:6];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return &stru_287DDF830;
   }
 
-  return [a1 substringToIndex:v2];
+  return [self substringToIndex:v2];
 }
 
 - (__CFString)tsu_keyPathByRemovingFirstKey
 {
-  v2 = [a1 rangeOfString:@"." options:2];
+  v2 = [self rangeOfString:@"." options:2];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return &stru_287DDF830;
   }
 
-  return [a1 substringFromIndex:v2 + 1];
+  return [self substringFromIndex:v2 + 1];
 }
 
 - (uint64_t)tsu_keyPathByPrependingKey:()TSDKVCKeyPathAdditions
 {
-  if ([a1 length])
+  if ([self length])
   {
     v5 = [a3 length];
     v6 = MEMORY[0x277CCACA8];
     if (v5)
     {
-      return [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", a3, a1];
+      return [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", a3, self];
     }
 
-    v8 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v6 = MEMORY[0x277CCACA8];
-    v8 = a3;
+    selfCopy = a3;
   }
 
-  return [v6 stringWithString:v8];
+  return [v6 stringWithString:selfCopy];
 }
 
 - (uint64_t)tsu_keyPathByAppendingKey:()TSDKVCKeyPathAdditions
 {
-  if ([a1 length])
+  if ([self length])
   {
     v5 = [a3 length];
     v6 = MEMORY[0x277CCACA8];
     if (v5)
     {
-      return [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", a1, a3];
+      return [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", self, a3];
     }
 
-    v8 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v6 = MEMORY[0x277CCACA8];
-    v8 = a3;
+    selfCopy = a3;
   }
 
-  return [v6 stringWithString:v8];
+  return [v6 stringWithString:selfCopy];
 }
 
 - (uint64_t)tsu_firstKey
 {
-  v2 = [a1 rangeOfString:@"." options:2];
+  v2 = [self rangeOfString:@"." options:2];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a1;
+    return self;
   }
 
-  return [a1 substringToIndex:v2];
+  return [self substringToIndex:v2];
 }
 
 - (uint64_t)tsu_lastKey
 {
-  v2 = [a1 rangeOfString:@"." options:6];
+  v2 = [self rangeOfString:@"." options:6];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a1;
+    return self;
   }
 
-  return [a1 substringFromIndex:v2 + 1];
+  return [self substringFromIndex:v2 + 1];
 }
 
 - (uint64_t)tsu_numberOfKeysInKeyPath
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = 0;
   v4 = 0;
   v5 = v2;
   do
   {
-    v6 = [a1 rangeOfString:@"." options:2 range:{v3, v5}];
+    v6 = [self rangeOfString:@"." options:2 range:{v3, v5}];
     ++v4;
     v3 = v6 + v7;
     v5 = v2 - (v6 + v7);

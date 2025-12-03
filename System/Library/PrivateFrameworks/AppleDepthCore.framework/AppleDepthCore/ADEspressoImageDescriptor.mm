@@ -1,22 +1,22 @@
 @interface ADEspressoImageDescriptor
-+ (id)descriptorWithName:(id)a3 imageDescriptor:(id)a4 isInput:(BOOL)a5;
-+ (id)inputDescriptorWithName:(id)a3 pixelFormat:(unsigned int)a4;
-+ (id)outputDescriptorWithName:(id)a3 pixelFormat:(unsigned int)a4;
-- (BOOL)conformedByPixelBuffer:(__CVBuffer *)a3 forLayout:(unint64_t)a4;
++ (id)descriptorWithName:(id)name imageDescriptor:(id)descriptor isInput:(BOOL)input;
++ (id)inputDescriptorWithName:(id)name pixelFormat:(unsigned int)format;
++ (id)outputDescriptorWithName:(id)name pixelFormat:(unsigned int)format;
+- (BOOL)conformedByPixelBuffer:(__CVBuffer *)buffer forLayout:(unint64_t)layout;
 @end
 
 @implementation ADEspressoImageDescriptor
 
-- (BOOL)conformedByPixelBuffer:(__CVBuffer *)a3 forLayout:(unint64_t)a4
+- (BOOL)conformedByPixelBuffer:(__CVBuffer *)buffer forLayout:(unint64_t)layout
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(ADImageDescriptor *)self->_imageDescriptor conformedByPixelBuffer:a3 forLayout:a4];
+  v5 = [(ADImageDescriptor *)self->_imageDescriptor conformedByPixelBuffer:buffer forLayout:layout];
   if (!v5)
   {
     return v5;
   }
 
-  if (!CVPixelBufferGetIOSurface(a3))
+  if (!CVPixelBufferGetIOSurface(buffer))
   {
     if (ADDebugUtilsADVerboseLogsEnabled == 1)
     {
@@ -39,10 +39,10 @@ LABEL_20:
     return v5;
   }
 
-  PlaneCount = CVPixelBufferGetPlaneCount(a3);
+  PlaneCount = CVPixelBufferGetPlaneCount(buffer);
   if (!PlaneCount)
   {
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
     if ((BytesPerRow & 0x3F) == 0)
     {
 LABEL_15:
@@ -74,7 +74,7 @@ LABEL_15:
   v8 = 0;
   while (1)
   {
-    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, v8);
+    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, v8);
     if ((BytesPerRowOfPlane & 0x3F) != 0)
     {
       break;
@@ -108,23 +108,23 @@ LABEL_15:
   return v5;
 }
 
-+ (id)descriptorWithName:(id)a3 imageDescriptor:(id)a4 isInput:(BOOL)a5
++ (id)descriptorWithName:(id)name imageDescriptor:(id)descriptor isInput:(BOOL)input
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  nameCopy = name;
+  descriptorCopy = descriptor;
+  v10 = descriptorCopy;
   v11 = 0;
-  if (v8)
+  if (nameCopy)
   {
-    if (v9)
+    if (descriptorCopy)
     {
       v12 = objc_opt_new();
       v11 = v12;
       if (v12)
       {
-        objc_storeStrong((v12 + 16), a3);
-        *(v11 + 8) = a5;
-        objc_storeStrong((v11 + 24), a4);
+        objc_storeStrong((v12 + 16), name);
+        *(v11 + 8) = input;
+        objc_storeStrong((v11 + 24), descriptor);
       }
     }
   }
@@ -132,22 +132,22 @@ LABEL_15:
   return v11;
 }
 
-+ (id)outputDescriptorWithName:(id)a3 pixelFormat:(unsigned int)a4
++ (id)outputDescriptorWithName:(id)name pixelFormat:(unsigned int)format
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&format;
+  nameCopy = name;
   v6 = [ADImageDescriptor descriptorForSupportedSizes:0 pixelFormat:v4];
-  v7 = [ADEspressoImageDescriptor descriptorWithName:v5 imageDescriptor:v6 isInput:0];
+  v7 = [ADEspressoImageDescriptor descriptorWithName:nameCopy imageDescriptor:v6 isInput:0];
 
   return v7;
 }
 
-+ (id)inputDescriptorWithName:(id)a3 pixelFormat:(unsigned int)a4
++ (id)inputDescriptorWithName:(id)name pixelFormat:(unsigned int)format
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&format;
+  nameCopy = name;
   v6 = [ADImageDescriptor descriptorForSupportedSizes:0 pixelFormat:v4];
-  v7 = [ADEspressoImageDescriptor descriptorWithName:v5 imageDescriptor:v6 isInput:1];
+  v7 = [ADEspressoImageDescriptor descriptorWithName:nameCopy imageDescriptor:v6 isInput:1];
 
   return v7;
 }

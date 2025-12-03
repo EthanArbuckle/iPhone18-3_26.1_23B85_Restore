@@ -10,27 +10,27 @@
 + (CGSize)defaultSize;
 - (IMTypingIndicatorLayer)init;
 - (double)convertedCurrentMediaTime;
-- (id)_largeBubbleGrowAnimationsWithSpeed:(double)a3 offset:(CGPoint)a4;
-- (id)_largeBubblePulseAnimationWithSpeed:(double)a3 delay:(double)a4;
-- (id)_mediumBubbleGrowAnimationsWithSpeed:(double)a3 offset:(CGPoint)a4;
-- (id)_mediumBubblePulseAnimationWithSpeed:(double)a3 delay:(double)a4;
-- (id)_smallBubbleGrowAnimationsWithSpeed:(double)a3 offset:(CGPoint)a4;
-- (id)_smallBubblePulseAnimationWithSpeed:(double)a3 delay:(double)a4;
-- (id)initHighlighted:(BOOL)a3;
-- (id)resolvedColor:(id)a3 forTraitCollection:(id)a4;
+- (id)_largeBubbleGrowAnimationsWithSpeed:(double)speed offset:(CGPoint)offset;
+- (id)_largeBubblePulseAnimationWithSpeed:(double)speed delay:(double)delay;
+- (id)_mediumBubbleGrowAnimationsWithSpeed:(double)speed offset:(CGPoint)offset;
+- (id)_mediumBubblePulseAnimationWithSpeed:(double)speed delay:(double)delay;
+- (id)_smallBubbleGrowAnimationsWithSpeed:(double)speed offset:(CGPoint)offset;
+- (id)_smallBubblePulseAnimationWithSpeed:(double)speed delay:(double)delay;
+- (id)initHighlighted:(BOOL)highlighted;
+- (id)resolvedColor:(id)color forTraitCollection:(id)collection;
 - (void)_buildIconImage;
 - (void)_buildThinkingDots;
 - (void)_setup;
 - (void)_updateBubbleColors;
 - (void)_updateBubbleOpacity;
 - (void)_updateForImage;
-- (void)setBubbleColor:(id)a3;
-- (void)setBubbleOpacity:(double)a3;
-- (void)setIconImage:(id)a3;
-- (void)setTraitCollection:(id)a3;
-- (void)startGrowAnimationWithCompletionBlock:(id)a3;
+- (void)setBubbleColor:(id)color;
+- (void)setBubbleOpacity:(double)opacity;
+- (void)setIconImage:(id)image;
+- (void)setTraitCollection:(id)collection;
+- (void)startGrowAnimationWithCompletionBlock:(id)block;
 - (void)startPulseAnimation;
-- (void)startShrinkAnimationWithCompletionBlock:(id)a3;
+- (void)startShrinkAnimationWithCompletionBlock:(id)block;
 - (void)stopAnimation;
 - (void)stopPulseAnimation;
 @end
@@ -51,7 +51,7 @@
   return v5;
 }
 
-- (id)initHighlighted:(BOOL)a3
+- (id)initHighlighted:(BOOL)highlighted
 {
   v9.receiver = self;
   v9.super_class = IMTypingIndicatorLayer;
@@ -59,7 +59,7 @@
   v7 = v4;
   if (v4)
   {
-    v4->_highlighted = a3;
+    v4->_highlighted = highlighted;
     objc_msgSend__setup(v4, v5, v6);
   }
 
@@ -74,39 +74,39 @@
   return result;
 }
 
-- (void)setBubbleColor:(id)a3
+- (void)setBubbleColor:(id)color
 {
-  v5 = a3;
-  if (self->_bubbleColor != v5)
+  colorCopy = color;
+  if (self->_bubbleColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_bubbleColor, a3);
+    v8 = colorCopy;
+    objc_storeStrong(&self->_bubbleColor, color);
     objc_msgSend__updateBubbleColors(self, v6, v7);
-    v5 = v8;
+    colorCopy = v8;
   }
 }
 
-- (void)setBubbleOpacity:(double)a3
+- (void)setBubbleOpacity:(double)opacity
 {
-  if (self->_bubbleOpacity != a3)
+  if (self->_bubbleOpacity != opacity)
   {
-    self->_bubbleOpacity = a3;
+    self->_bubbleOpacity = opacity;
     objc_msgSend__updateBubbleOpacity(self, a2, v3);
   }
 }
 
-- (id)resolvedColor:(id)a3 forTraitCollection:(id)a4
+- (id)resolvedColor:(id)color forTraitCollection:(id)collection
 {
-  v5 = a3;
-  v7 = v5;
-  if (a4)
+  colorCopy = color;
+  v7 = colorCopy;
+  if (collection)
   {
-    v8 = objc_msgSend_resolvedColorWithTraitCollection_(v5, v6, a4);
+    v8 = objc_msgSend_resolvedColorWithTraitCollection_(colorCopy, v6, collection);
   }
 
   else
   {
-    v8 = v5;
+    v8 = colorCopy;
   }
 
   v9 = v8;
@@ -114,13 +114,13 @@
   return v9;
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v5 = a3;
-  if (self->_traitCollection != v5)
+  collectionCopy = collection;
+  if (self->_traitCollection != collectionCopy)
   {
-    v29 = v5;
-    objc_storeStrong(&self->_traitCollection, a3);
+    v29 = collectionCopy;
+    objc_storeStrong(&self->_traitCollection, collection);
     v8 = objc_msgSend_defaultThinkingDotColor(self, v6, v7);
     v10 = objc_msgSend_resolvedColor_forTraitCollection_(self, v9, v8, self->_traitCollection);
     thinkingDotColor = self->_thinkingDotColor;
@@ -138,17 +138,17 @@
     v27 = objc_msgSend_CGColor(v24, v25, v26);
     objc_msgSend_setBackgroundColor_(thinkingDot, v28, v27);
 
-    v5 = v29;
+    collectionCopy = v29;
   }
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   iconImage = self->_iconImage;
-  if (iconImage != v5 && (objc_msgSend_isEqual_(iconImage, v5, v5) & 1) == 0)
+  if (iconImage != imageCopy && (objc_msgSend_isEqual_(iconImage, imageCopy, imageCopy) & 1) == 0)
   {
-    objc_storeStrong(&self->_iconImage, a3);
+    objc_storeStrong(&self->_iconImage, image);
     objc_msgSend__updateForImage(self, v7, v8);
   }
 
@@ -491,10 +491,10 @@
   objc_msgSend_setOpacity_(bubbleContainer, v23, v24, v25);
 }
 
-- (id)_smallBubbleGrowAnimationsWithSpeed:(double)a3 offset:(CGPoint)a4
+- (id)_smallBubbleGrowAnimationsWithSpeed:(double)speed offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v127[3] = *MEMORY[0x277D85DE8];
   v7 = objc_msgSend_animationWithKeyPath_(MEMORY[0x277CD9E10], a2, @"hidden");
   v9 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v8, 1);
@@ -536,8 +536,8 @@
   v54 = objc_msgSend_functionWithControlPoints__::(MEMORY[0x277CD9EF8], v52, v53, v48, v51, v49, v50);
   objc_msgSend_setTimingFunction_(v27, v55, v54);
 
-  *&a3 = a3;
-  LODWORD(v56) = LODWORD(a3);
+  *&speed = speed;
+  LODWORD(v56) = LODWORD(speed);
   objc_msgSend_setSpeed_(v27, v57, v58, v56);
   objc_msgSend_setFillMode_(v27, v59, v16);
   objc_msgSend_setRemovedOnCompletion_(v27, v60, 1);
@@ -565,7 +565,7 @@
   v88 = objc_msgSend_functionWithControlPoints__::(MEMORY[0x277CD9EF8], v86, v87, v82, v85, v83, v84);
   objc_msgSend_setTimingFunction_(v62, v89, v88);
 
-  LODWORD(v90) = LODWORD(a3);
+  LODWORD(v90) = LODWORD(speed);
   objc_msgSend_setSpeed_(v62, v91, v92, v90);
   objc_msgSend_setFillMode_(v62, v93, v16);
   objc_msgSend_setRemovedOnCompletion_(v62, v94, 1);
@@ -578,7 +578,7 @@
   objc_msgSend_setToValue_(v96, v105, v104);
 
   objc_msgSend_setDuration_(v96, v106, v107, 0.25);
-  LODWORD(v108) = LODWORD(a3);
+  LODWORD(v108) = LODWORD(speed);
   objc_msgSend_setSpeed_(v96, v109, v110, v108);
   LODWORD(v111) = 0.25;
   LODWORD(v112) = 0.25;
@@ -600,7 +600,7 @@
   return v122;
 }
 
-- (id)_smallBubblePulseAnimationWithSpeed:(double)a3 delay:(double)a4
+- (id)_smallBubblePulseAnimationWithSpeed:(double)speed delay:(double)delay
 {
   v7 = objc_msgSend_animationWithKeyPath_(MEMORY[0x277CD9EC8], a2, @"transform.scale.xy");
   objc_msgSend_setValues_(v7, v8, &unk_28669A778);
@@ -608,8 +608,8 @@
   objc_msgSend_setTensionValues_(v7, v10, &unk_28669A790);
   objc_msgSend_setDuration_(v7, v11, v12, 0.7);
   objc_msgSend_convertedCurrentMediaTime(self, v13, v14);
-  objc_msgSend_setBeginTime_(v7, v16, v17, v15 + a4);
-  *&v18 = a3;
+  objc_msgSend_setBeginTime_(v7, v16, v17, v15 + delay);
+  *&v18 = speed;
   objc_msgSend_setSpeed_(v7, v19, v20, v18);
   v22 = objc_msgSend_functionWithName_(MEMORY[0x277CD9EF8], v21, *MEMORY[0x277CDA7B8]);
   objc_msgSend_setTimingFunction_(v7, v23, v22);
@@ -623,10 +623,10 @@
   return v7;
 }
 
-- (id)_mediumBubbleGrowAnimationsWithSpeed:(double)a3 offset:(CGPoint)a4
+- (id)_mediumBubbleGrowAnimationsWithSpeed:(double)speed offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v145[3] = *MEMORY[0x277D85DE8];
   v8 = objc_msgSend_animationWithKeyPath_(MEMORY[0x277CD9E10], a2, @"hidden");
   v10 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v9, 1);
@@ -639,7 +639,7 @@
   v17 = *MEMORY[0x277CDA238];
   objc_msgSend_setFillMode_(v8, v18, *MEMORY[0x277CDA238]);
   objc_msgSend_setRemovedOnCompletion_(v8, v19, 1);
-  v142 = self;
+  selfCopy = self;
   v20 = objc_opt_class();
   objc_msgSend_mediumBubbleGrowOffset(v20, v21, v22);
   v24 = v23;
@@ -671,8 +671,8 @@
   v60 = objc_msgSend_functionWithControlPoints__::(MEMORY[0x277CD9EF8], v58, v59, v54, v57, v55, v56);
   objc_msgSend_setTimingFunction_(v28, v61, v60);
 
-  *&a3 = a3;
-  LODWORD(v62) = LODWORD(a3);
+  *&speed = speed;
+  LODWORD(v62) = LODWORD(speed);
   objc_msgSend_setSpeed_(v28, v63, v64, v62);
   v65 = v17;
   objc_msgSend_setFillMode_(v28, v66, v17);
@@ -693,7 +693,7 @@
   objc_msgSend_setValues_(v69, v85, v84);
 
   objc_msgSend_setCalculationMode_(v69, v86, v45);
-  objc_msgSend_convertedCurrentMediaTime(v142, v87, v88);
+  objc_msgSend_convertedCurrentMediaTime(selfCopy, v87, v88);
   objc_msgSend_setBeginTime_(v69, v90, v91, v89 + 0.065);
   objc_msgSend_setDuration_(v69, v92, v93, 0.4);
   LODWORD(v94) = 1051315048;
@@ -703,7 +703,7 @@
   v100 = objc_msgSend_functionWithControlPoints__::(MEMORY[0x277CD9EF8], v98, v99, v94, v97, v95, v96);
   objc_msgSend_setTimingFunction_(v69, v101, v100);
 
-  LODWORD(v102) = LODWORD(a3);
+  LODWORD(v102) = LODWORD(speed);
   objc_msgSend_setSpeed_(v69, v103, v104, v102);
   objc_msgSend_setFillMode_(v69, v105, v65);
   objc_msgSend_setRemovedOnCompletion_(v69, v106, 1);
@@ -715,10 +715,10 @@
   v116 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v114, v115, v113);
   objc_msgSend_setToValue_(v108, v117, v116);
 
-  objc_msgSend_convertedCurrentMediaTime(v142, v118, v119);
+  objc_msgSend_convertedCurrentMediaTime(selfCopy, v118, v119);
   objc_msgSend_setBeginTime_(v108, v121, v122, v120 + 0.065);
   objc_msgSend_setDuration_(v108, v123, v124, 0.25);
-  LODWORD(v125) = LODWORD(a3);
+  LODWORD(v125) = LODWORD(speed);
   objc_msgSend_setSpeed_(v108, v126, v127, v125);
   LODWORD(v128) = 0.25;
   LODWORD(v129) = 0.25;
@@ -740,16 +740,16 @@
   return v139;
 }
 
-- (id)_mediumBubblePulseAnimationWithSpeed:(double)a3 delay:(double)a4
+- (id)_mediumBubblePulseAnimationWithSpeed:(double)speed delay:(double)delay
 {
   v7 = objc_msgSend_animationWithKeyPath_(MEMORY[0x277CD9EC8], a2, @"transform.scale.xy");
   objc_msgSend_setValues_(v7, v8, &unk_28669A7A8);
   objc_msgSend_setCalculationMode_(v7, v9, *MEMORY[0x277CDA060]);
   objc_msgSend_setTensionValues_(v7, v10, &unk_28669A7C0);
   objc_msgSend_convertedCurrentMediaTime(self, v11, v12);
-  objc_msgSend_setBeginTime_(v7, v14, v15, v13 + a4);
+  objc_msgSend_setBeginTime_(v7, v14, v15, v13 + delay);
   objc_msgSend_setDuration_(v7, v16, v17, 0.9);
-  *&v18 = a3;
+  *&v18 = speed;
   objc_msgSend_setSpeed_(v7, v19, v20, v18);
   v22 = objc_msgSend_functionWithName_(MEMORY[0x277CD9EF8], v21, *MEMORY[0x277CDA7B8]);
   objc_msgSend_setTimingFunction_(v7, v23, v22);
@@ -763,10 +763,10 @@
   return v7;
 }
 
-- (id)_largeBubbleGrowAnimationsWithSpeed:(double)a3 offset:(CGPoint)a4
+- (id)_largeBubbleGrowAnimationsWithSpeed:(double)speed offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v145[3] = *MEMORY[0x277D85DE8];
   v8 = objc_msgSend_animationWithKeyPath_(MEMORY[0x277CD9E10], a2, @"hidden");
   v10 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v9, 1);
@@ -779,7 +779,7 @@
   v17 = *MEMORY[0x277CDA238];
   objc_msgSend_setFillMode_(v8, v18, *MEMORY[0x277CDA238]);
   objc_msgSend_setRemovedOnCompletion_(v8, v19, 1);
-  v142 = self;
+  selfCopy = self;
   v20 = objc_opt_class();
   objc_msgSend_largeBubbleGrowOffset(v20, v21, v22);
   v24 = v23;
@@ -811,8 +811,8 @@
   v60 = objc_msgSend_functionWithControlPoints__::(MEMORY[0x277CD9EF8], v58, v59, v54, v57, v55, v56);
   objc_msgSend_setTimingFunction_(v28, v61, v60);
 
-  *&a3 = a3;
-  LODWORD(v62) = LODWORD(a3);
+  *&speed = speed;
+  LODWORD(v62) = LODWORD(speed);
   objc_msgSend_setSpeed_(v28, v63, v64, v62);
   v65 = v17;
   objc_msgSend_setFillMode_(v28, v66, v17);
@@ -833,7 +833,7 @@
   objc_msgSend_setValues_(v69, v85, v84);
 
   objc_msgSend_setCalculationMode_(v69, v86, v45);
-  objc_msgSend_convertedCurrentMediaTime(v142, v87, v88);
+  objc_msgSend_convertedCurrentMediaTime(selfCopy, v87, v88);
   objc_msgSend_setBeginTime_(v69, v90, v91, v89 + 0.12);
   objc_msgSend_setDuration_(v69, v92, v93, 0.4);
   LODWORD(v94) = 1045836616;
@@ -843,7 +843,7 @@
   v100 = objc_msgSend_functionWithControlPoints__::(MEMORY[0x277CD9EF8], v98, v99, v94, v95, v96, v97);
   objc_msgSend_setTimingFunction_(v69, v101, v100);
 
-  LODWORD(v102) = LODWORD(a3);
+  LODWORD(v102) = LODWORD(speed);
   objc_msgSend_setSpeed_(v69, v103, v104, v102);
   objc_msgSend_setFillMode_(v69, v105, v65);
   objc_msgSend_setRemovedOnCompletion_(v69, v106, 1);
@@ -855,10 +855,10 @@
   v116 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v114, v115, v113);
   objc_msgSend_setToValue_(v108, v117, v116);
 
-  objc_msgSend_convertedCurrentMediaTime(v142, v118, v119);
+  objc_msgSend_convertedCurrentMediaTime(selfCopy, v118, v119);
   objc_msgSend_setBeginTime_(v108, v121, v122, v120 + 0.12);
   objc_msgSend_setDuration_(v108, v123, v124, 0.25);
-  LODWORD(v125) = LODWORD(a3);
+  LODWORD(v125) = LODWORD(speed);
   objc_msgSend_setSpeed_(v108, v126, v127, v125);
   LODWORD(v128) = 0.25;
   LODWORD(v129) = 0.25;
@@ -880,16 +880,16 @@
   return v139;
 }
 
-- (id)_largeBubblePulseAnimationWithSpeed:(double)a3 delay:(double)a4
+- (id)_largeBubblePulseAnimationWithSpeed:(double)speed delay:(double)delay
 {
   v7 = objc_msgSend_animationWithKeyPath_(MEMORY[0x277CD9EC8], a2, @"transform.scale.xy");
   objc_msgSend_setValues_(v7, v8, &unk_28669A7D8);
   objc_msgSend_setCalculationMode_(v7, v9, *MEMORY[0x277CDA060]);
   objc_msgSend_setTensionValues_(v7, v10, &unk_28669A7F0);
   objc_msgSend_convertedCurrentMediaTime(self, v11, v12);
-  objc_msgSend_setBeginTime_(v7, v14, v15, v13 + a4);
+  objc_msgSend_setBeginTime_(v7, v14, v15, v13 + delay);
   objc_msgSend_setDuration_(v7, v16, v17, 1.9);
-  *&v18 = a3;
+  *&v18 = speed;
   objc_msgSend_setSpeed_(v7, v19, v20, v18);
   v22 = objc_msgSend_functionWithName_(MEMORY[0x277CD9EF8], v21, *MEMORY[0x277CDA7B8]);
   objc_msgSend_setTimingFunction_(v7, v23, v22);
@@ -903,10 +903,10 @@
   return v7;
 }
 
-- (void)startGrowAnimationWithCompletionBlock:(id)a3
+- (void)startGrowAnimationWithCompletionBlock:(id)block
 {
   v93 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   objc_msgSend_begin(MEMORY[0x277CD9FF0], v5, v6);
   v87 = 0u;
   v88 = 0u;
@@ -1039,11 +1039,11 @@
   v68 = 3221225472;
   v69 = sub_2547FB9D8;
   v70 = &unk_279788F30;
-  v71 = self;
-  v72 = v4;
-  v62 = v4;
+  selfCopy = self;
+  v72 = blockCopy;
+  v62 = blockCopy;
   objc_msgSend_setCompletionBlock_(v61, v63, &v67);
-  objc_msgSend_commit(MEMORY[0x277CD9FF0], v64, v65, v67, v68, v69, v70, v71);
+  objc_msgSend_commit(MEMORY[0x277CD9FF0], v64, v65, v67, v68, v69, v70, selfCopy);
 
   v66 = *MEMORY[0x277D85DE8];
 }
@@ -1092,10 +1092,10 @@
   objc_msgSend_removeAnimationForKey_(thinkingDotContainer, v12, @"kCKAnimationKeyPulse");
 }
 
-- (void)startShrinkAnimationWithCompletionBlock:(id)a3
+- (void)startShrinkAnimationWithCompletionBlock:(id)block
 {
   v143[3] = *MEMORY[0x277D85DE8];
-  v138 = a3;
+  blockCopy = block;
   objc_msgSend_stopPulseAnimation(self, v4, v5);
   objc_msgSend_begin(MEMORY[0x277CD9FF0], v6, v7);
   v9 = objc_msgSend_animationWithKeyPath_(MEMORY[0x277CD9E10], v8, @"transform.scale.xy");
@@ -1198,14 +1198,14 @@
   objc_msgSend_addAnimation_forKey_(self->_mediumBubble, v130, v92, 0);
   objc_msgSend_addAnimation_forKey_(self->_largeBubble, v131, v92, 0);
   objc_msgSend_addAnimation_forKey_(self->_thinkingDotContainer, v132, v92, 0);
-  if (v138)
+  if (blockCopy)
   {
     v135 = MEMORY[0x277CD9FF0];
     v140[0] = MEMORY[0x277D85DD0];
     v140[1] = 3221225472;
     v140[2] = sub_2547FC200;
     v140[3] = &unk_279788F58;
-    v141 = v138;
+    v141 = blockCopy;
     objc_msgSend_setCompletionBlock_(v135, v136, v140);
   }
 
@@ -1258,7 +1258,7 @@
 
 + (CGRect)mediumBubbleFrame
 {
-  objc_msgSend_smallBubbleFrame(a1, a2, v2);
+  objc_msgSend_smallBubbleFrame(self, a2, v2);
   v4 = v3 + 7.0;
   v6 = v5 + -7.5;
   v7 = 11.5;
@@ -1281,7 +1281,7 @@
 
 + (CGRect)largeBubbleFrame
 {
-  objc_msgSend_smallBubbleFrame(a1, a2, v2);
+  objc_msgSend_smallBubbleFrame(self, a2, v2);
   v4 = v3 + 16.0;
   v6 = v5 + -25.5;
   v7 = 57.5;

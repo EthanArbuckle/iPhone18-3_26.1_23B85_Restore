@@ -6,11 +6,11 @@
 
 - (int64_t)resolvedGroupActionType
 {
-  v3 = [(ChatAssetStatusChangeContext *)self isHidden];
-  v4 = [(ChatAssetStatusChangeContext *)self type];
-  if (v3)
+  isHidden = [(ChatAssetStatusChangeContext *)self isHidden];
+  type = [(ChatAssetStatusChangeContext *)self type];
+  if (isHidden)
   {
-    if (v4)
+    if (type)
     {
       return 7;
     }
@@ -21,7 +21,7 @@
     }
   }
 
-  else if (v4 == 1)
+  else if (type == 1)
   {
     if ([(ChatAssetStatusChangeContext *)self hasSensitiveContent])
     {

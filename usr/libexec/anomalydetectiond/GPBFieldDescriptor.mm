@@ -2,7 +2,7 @@
 - ($452E035DCF5B90C660B45AC6A1361EDE)defaultValue;
 - (GPBEnumDescriptor)enumDescriptor;
 - (GPBFieldDescriptor)init;
-- (GPBFieldDescriptor)initWithFieldDescription:(void *)a3 includesDefault:(BOOL)a4 usesClassRefs:(BOOL)a5 proto3OptionalKnown:(BOOL)a6 syntax:(unsigned __int8)a7;
+- (GPBFieldDescriptor)initWithFieldDescription:(void *)description includesDefault:(BOOL)default usesClassRefs:(BOOL)refs proto3OptionalKnown:(BOOL)known syntax:(unsigned __int8)syntax;
 - (id)textFormatName;
 - (unsigned)fieldType;
 - (unsigned)mapKeyDataType;
@@ -24,11 +24,11 @@
   return 0;
 }
 
-- (GPBFieldDescriptor)initWithFieldDescription:(void *)a3 includesDefault:(BOOL)a4 usesClassRefs:(BOOL)a5 proto3OptionalKnown:(BOOL)a6 syntax:(unsigned __int8)a7
+- (GPBFieldDescriptor)initWithFieldDescription:(void *)description includesDefault:(BOOL)default usesClassRefs:(BOOL)refs proto3OptionalKnown:(BOOL)known syntax:(unsigned __int8)syntax
 {
-  v7 = a7;
-  v9 = a5;
-  v10 = a4;
+  syntaxCopy = syntax;
+  refsCopy = refs;
+  defaultCopy = default;
   v38.receiver = self;
   v38.super_class = GPBFieldDescriptor;
   v12 = [(GPBFieldDescriptor *)&v38 init];
@@ -39,14 +39,14 @@
   }
 
   v14 = 8;
-  if (!v10)
+  if (!defaultCopy)
   {
     v14 = 0;
   }
 
-  v15 = a3 + v14;
-  v12->description_ = (a3 + v14);
-  Uid = sel_getUid(*(a3 + v14));
+  v15 = description + v14;
+  v12->description_ = (description + v14);
+  Uid = sel_getUid(*(description + v14));
   if (Uid)
   {
     v17 = Uid;
@@ -73,7 +73,7 @@
   v20 = v15[30];
   v21 = v20 - 17;
   v22 = v13->description_->var5 & 0xF02;
-  if (v7 != 3 || a6 || (v13->description_->var5 & 0xF02) != 0)
+  if (syntaxCopy != 3 || known || (v13->description_->var5 & 0xF02) != 0)
   {
     if ((v13->description_->var5 & 0xF02) != 0)
     {
@@ -141,7 +141,7 @@ LABEL_20:
 LABEL_29:
   if (v21 >= 0xFFFFFFFE)
   {
-    if (v9)
+    if (refsCopy)
     {
       v13->msgClass_ = *(v15 + 1);
     }
@@ -178,12 +178,12 @@ LABEL_29:
 
   else
   {
-    v35 = !v10;
+    v35 = !defaultCopy;
   }
 
   if (!v35)
   {
-    v36 = *a3;
+    v36 = *description;
     v13->defaultValue_.valueInt64 = v36;
     if (v20 == 13)
     {
@@ -286,31 +286,31 @@ LABEL_29:
 {
   if ((self->description_->var5 & 0x40) == 0)
   {
-    v3 = [(GPBFieldDescriptor *)self name];
-    v4 = [(NSString *)v3 length];
-    if ([(NSString *)v3 hasSuffix:@"_p"])
+    name = [(GPBFieldDescriptor *)self name];
+    v4 = [(NSString *)name length];
+    if ([(NSString *)name hasSuffix:@"_p"])
     {
-      v3 = [(NSString *)v3 substringToIndex:v4 - 2];
-      v4 = [(NSString *)v3 length];
+      name = [(NSString *)name substringToIndex:v4 - 2];
+      v4 = [(NSString *)name length];
     }
 
-    if ((self->description_->var5 & 2) != 0 && [(NSString *)v3 hasSuffix:@"Array"])
+    if ((self->description_->var5 & 2) != 0 && [(NSString *)name hasSuffix:@"Array"])
     {
-      v3 = [(NSString *)v3 substringToIndex:v4 - 5];
-      v4 = [(NSString *)v3 length];
+      name = [(NSString *)name substringToIndex:v4 - 5];
+      v4 = [(NSString *)name length];
     }
 
     if (self->description_->var6 == 16)
     {
-      v5 = [(NSString *)v3 characterAtIndex:0];
+      v5 = [(NSString *)name characterAtIndex:0];
       if (v5 - 97 <= 0x19)
       {
         v6 = [NSString stringWithFormat:@"%C", (v5 - 32)];
 
-        return [(NSString *)v3 stringByReplacingCharactersInRange:0 withString:1, v6];
+        return [(NSString *)name stringByReplacingCharactersInRange:0 withString:1, v6];
       }
 
-      return v3;
+      return name;
     }
 
     else
@@ -322,7 +322,7 @@ LABEL_29:
         v13 = 1;
         do
         {
-          v14 = [(NSString *)v3 characterAtIndex:v12];
+          v14 = [(NSString *)name characterAtIndex:v12];
           if ((v14 - 65) > 0x19 || v13 == 1)
           {
             [(NSMutableString *)v11 appendFormat:@"%C", v14];
@@ -349,11 +349,11 @@ LABEL_29:
     return 0;
   }
 
-  v8 = [AssociatedObject pointerValue];
+  pointerValue = [AssociatedObject pointerValue];
   var2 = self->description_->var2;
-  v10 = [(GPBFieldDescriptor *)self name];
+  name2 = [(GPBFieldDescriptor *)self name];
 
-  return GPBDecodeTextFormatName(v8, var2, v10);
+  return GPBDecodeTextFormatName(pointerValue, var2, name2);
 }
 
 @end

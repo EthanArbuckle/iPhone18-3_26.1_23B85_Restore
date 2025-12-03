@@ -1,41 +1,41 @@
 @interface PKProvisioningWatchUICoordinator
-- (PKProvisioningWatchUICoordinator)initWithSetupContext:(int64_t)a3 provisioningController:(id)a4 credential:(id)a5;
-- (id)_initWithCoordinator:(id)a3;
-- (id)initManualEntryCoordinatorWithSetupContext:(int64_t)a3 provisioningController:(id)a4 skipRequirements:(BOOL)a5;
+- (PKProvisioningWatchUICoordinator)initWithSetupContext:(int64_t)context provisioningController:(id)controller credential:(id)credential;
+- (id)_initWithCoordinator:(id)coordinator;
+- (id)initManualEntryCoordinatorWithSetupContext:(int64_t)context provisioningController:(id)controller skipRequirements:(BOOL)requirements;
 @end
 
 @implementation PKProvisioningWatchUICoordinator
 
-- (PKProvisioningWatchUICoordinator)initWithSetupContext:(int64_t)a3 provisioningController:(id)a4 credential:(id)a5
+- (PKProvisioningWatchUICoordinator)initWithSetupContext:(int64_t)context provisioningController:(id)controller credential:(id)credential
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[_PKProvisioningWatchUICoordinator alloc] initWithSetupContext:a3 provisioningController:v9 credential:v8];
+  credentialCopy = credential;
+  controllerCopy = controller;
+  v10 = [[_PKProvisioningWatchUICoordinator alloc] initWithSetupContext:context provisioningController:controllerCopy credential:credentialCopy];
 
   v11 = [(PKProvisioningWatchUICoordinator *)self _initWithCoordinator:v10];
   return v11;
 }
 
-- (id)initManualEntryCoordinatorWithSetupContext:(int64_t)a3 provisioningController:(id)a4 skipRequirements:(BOOL)a5
+- (id)initManualEntryCoordinatorWithSetupContext:(int64_t)context provisioningController:(id)controller skipRequirements:(BOOL)requirements
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [[_PKProvisioningWatchUICoordinator alloc] initWithManualEntrySetupContext:a3 provisioningController:v8 skipRequirements:v5];
+  requirementsCopy = requirements;
+  controllerCopy = controller;
+  v9 = [[_PKProvisioningWatchUICoordinator alloc] initWithManualEntrySetupContext:context provisioningController:controllerCopy skipRequirements:requirementsCopy];
 
   v10 = [(PKProvisioningWatchUICoordinator *)self _initWithCoordinator:v9];
   return v10;
 }
 
-- (id)_initWithCoordinator:(id)a3
+- (id)_initWithCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   v9.receiver = self;
   v9.super_class = PKProvisioningWatchUICoordinator;
   v6 = [(PKProvisioningWatchUICoordinator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coordinator, a3);
+    objc_storeStrong(&v6->_coordinator, coordinator);
   }
 
   return v7;

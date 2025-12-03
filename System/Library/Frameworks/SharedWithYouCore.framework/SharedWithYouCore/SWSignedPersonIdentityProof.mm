@@ -8,11 +8,11 @@
 {
   v7 = data;
   v8 = personIdentityProof;
-  v9 = [(SWPersonIdentityProof *)v8 inclusionHashes];
-  v10 = [(SWPersonIdentityProof *)v8 publicKey];
-  v11 = [(SWPersonIdentityProof *)v8 publicKeyIndex];
+  inclusionHashes = [(SWPersonIdentityProof *)v8 inclusionHashes];
+  publicKey = [(SWPersonIdentityProof *)v8 publicKey];
+  publicKeyIndex = [(SWPersonIdentityProof *)v8 publicKeyIndex];
 
-  v12 = [(SWPersonIdentityProof *)self initWithInclusionHashes:v9 publicKey:v10 localKeyIndex:v11];
+  v12 = [(SWPersonIdentityProof *)self initWithInclusionHashes:inclusionHashes publicKey:publicKey localKeyIndex:publicKeyIndex];
   if (v12)
   {
     objc_storeStrong(&v12->_signatureData, data);

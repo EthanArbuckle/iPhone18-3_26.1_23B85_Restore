@@ -1,19 +1,19 @@
 @interface TRIXPCNamespaceManagementClient
-- (BOOL)deregisterNamespaceWithNamespaceName:(id)a3 error:(id *)a4;
-- (BOOL)immediateDownloadForNamespaceNames:(id)a3 allowExpensiveNetworking:(BOOL)a4 error:(id *)a5;
-- (BOOL)logSystemCovariatesWithError:(id *)a3;
-- (BOOL)promoteFactorPackId:(id)a3 forNamespaceName:(id)a4 rolloutDeployment:(id)a5 error:(id *)a6;
-- (BOOL)rejectFactorPackId:(id)a3 forNamespaceName:(id)a4 rolloutDeployment:(id)a5 error:(id *)a6;
-- (BOOL)setProvisionalFactorPackId:(id)a3 forNamespaceName:(id)a4 error:(id *)a5;
-- (BOOL)setPurgeabilityLevelsForFactors:(id)a3 forNamespaceName:(id)a4 error:(id *)a5;
-- (BOOL)startNamespaceDownloadWithName:(id)a3 options:(id)a4 error:(id *)a5;
+- (BOOL)deregisterNamespaceWithNamespaceName:(id)name error:(id *)error;
+- (BOOL)immediateDownloadForNamespaceNames:(id)names allowExpensiveNetworking:(BOOL)networking error:(id *)error;
+- (BOOL)logSystemCovariatesWithError:(id *)error;
+- (BOOL)promoteFactorPackId:(id)id forNamespaceName:(id)name rolloutDeployment:(id)deployment error:(id *)error;
+- (BOOL)rejectFactorPackId:(id)id forNamespaceName:(id)name rolloutDeployment:(id)deployment error:(id *)error;
+- (BOOL)setProvisionalFactorPackId:(id)id forNamespaceName:(id)name error:(id *)error;
+- (BOOL)setPurgeabilityLevelsForFactors:(id)factors forNamespaceName:(id)name error:(id *)error;
+- (BOOL)startNamespaceDownloadWithName:(id)name options:(id)options error:(id *)error;
 - (TRIXPCNamespaceManagementClient)init;
-- (id)activeRolloutInformation:(id *)a3;
-- (id)getOnDemandReferenceCountsPerUserAtGlobalPath:(id)a3 error:(id *)a4;
-- (id)getSandboxExtensionTokensForIdentifierQueryWithError:(id *)a3;
-- (id)loadNamespaceMetadataForNamespaceName:(id)a3 error:(id *)a4;
-- (unint64_t)statusOfDownloadForFactors:(id)a3 withNamespace:(id)a4 factorsState:(id)a5 notificationKey:(id *)a6 error:(id *)a7;
-- (void)downloadLevelsForFactors:(id)a3 withNamespace:(id)a4 queue:(id)a5 factorsState:(id)a6 options:(id)a7 progress:(id)a8 completion:(id)a9;
+- (id)activeRolloutInformation:(id *)information;
+- (id)getOnDemandReferenceCountsPerUserAtGlobalPath:(id)path error:(id *)error;
+- (id)getSandboxExtensionTokensForIdentifierQueryWithError:(id *)error;
+- (id)loadNamespaceMetadataForNamespaceName:(id)name error:(id *)error;
+- (unint64_t)statusOfDownloadForFactors:(id)factors withNamespace:(id)namespace factorsState:(id)state notificationKey:(id *)key error:(id *)error;
+- (void)downloadLevelsForFactors:(id)factors withNamespace:(id)namespace queue:(id)queue factorsState:(id)state options:(id)options progress:(id)progress completion:(id)completion;
 @end
 
 @implementation TRIXPCNamespaceManagementClient
@@ -59,14 +59,14 @@
   return v2;
 }
 
-- (BOOL)startNamespaceDownloadWithName:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)startNamespaceDownloadWithName:(id)name options:(id)options error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  nameCopy = name;
+  optionsCopy = options;
+  if (!nameCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
   if (+[TRIMisc unsafeFirstAuthenticationState])
@@ -100,15 +100,15 @@
     v18[3] = &unk_27885F6A0;
     v18[4] = &v25;
     v18[5] = &v19;
-    [v12 startDownloadNamespaceWithName:v9 options:v10 completion:v18];
+    [v12 startDownloadNamespaceWithName:nameCopy options:optionsCopy completion:v18];
     v13 = *(v31 + 5);
     if (v13)
     {
-      if (a5)
+      if (error)
       {
 LABEL_6:
         v14 = 0;
-        *a5 = v13;
+        *error = v13;
 LABEL_16:
 
         _Block_object_dispose(&v19, 8);
@@ -128,7 +128,7 @@ LABEL_16:
         goto LABEL_16;
       }
 
-      if (a5)
+      if (error)
       {
         goto LABEL_6;
       }
@@ -145,10 +145,10 @@ LABEL_16:
     _os_log_error_impl(&dword_22EA6B000, v15, OS_LOG_TYPE_ERROR, "unable to start namespace download while device is class C locked", buf, 2u);
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"TRIGeneralErrorDomain" code:5 userInfo:0];
-    *a5 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -161,19 +161,19 @@ LABEL_17:
   return v14 & 1;
 }
 
-- (void)downloadLevelsForFactors:(id)a3 withNamespace:(id)a4 queue:(id)a5 factorsState:(id)a6 options:(id)a7 progress:(id)a8 completion:(id)a9
+- (void)downloadLevelsForFactors:(id)factors withNamespace:(id)namespace queue:(id)queue factorsState:(id)state options:(id)options progress:(id)progress completion:(id)completion
 {
   v70 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v44 = a5;
-  v17 = a6;
-  v43 = a7;
-  v18 = a8;
-  v42 = a9;
-  if (v15)
+  factorsCopy = factors;
+  namespaceCopy = namespace;
+  queueCopy = queue;
+  stateCopy = state;
+  optionsCopy = options;
+  progressCopy = progress;
+  completionCopy = completion;
+  if (factorsCopy)
   {
-    if (v16)
+    if (namespaceCopy)
     {
       goto LABEL_3;
     }
@@ -181,17 +181,17 @@ LABEL_17:
 
   else
   {
-    v38 = [MEMORY[0x277CCA890] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"factors"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"factors"}];
 
-    if (v16)
+    if (namespaceCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v39 = [MEMORY[0x277CCA890] currentHandler];
-  [v39 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_3:
   v60[0] = 0;
@@ -227,9 +227,9 @@ LABEL_3:
     *buf = 138413058;
     v63 = v24;
     v64 = 2112;
-    v65 = v16;
+    v65 = namespaceCopy;
     v66 = 2112;
-    v67 = v15;
+    v67 = factorsCopy;
     v68 = 1024;
     v69 = v21;
     _os_log_impl(&dword_22EA6B000, v25, v22, "%@enqueuing downloadLevelsForFactors message for:%@ factors:%@ at qos:%u", buf, 0x26u);
@@ -243,24 +243,24 @@ LABEL_3:
   v46[2] = __121__TRIXPCNamespaceManagementClient_downloadLevelsForFactors_withNamespace_queue_factorsState_options_progress_completion___block_invoke_185;
   v46[3] = &unk_27885F718;
   v58 = 2 * (v20 == 1);
-  v27 = v16;
+  v27 = namespaceCopy;
   v47 = v27;
   v57 = v21;
-  v40 = v15;
+  v40 = factorsCopy;
   v48 = v40;
-  v49 = self;
+  selfCopy = self;
   v28 = v19;
   v53 = v28;
-  v29 = v17;
+  v29 = stateCopy;
   v50 = v29;
-  v30 = v43;
+  v30 = optionsCopy;
   v51 = v30;
   v56 = v60;
-  v31 = v42;
+  v31 = completionCopy;
   v54 = v31;
-  v32 = v18;
+  v32 = progressCopy;
   v55 = v32;
-  v33 = v44;
+  v33 = queueCopy;
   v52 = v33;
   v34 = MEMORY[0x2318F2490](v46);
   v35 = v34;
@@ -461,14 +461,14 @@ LABEL_15:
 LABEL_16:
 }
 
-- (BOOL)immediateDownloadForNamespaceNames:(id)a3 allowExpensiveNetworking:(BOOL)a4 error:(id *)a5
+- (BOOL)immediateDownloadForNamespaceNames:(id)names allowExpensiveNetworking:(BOOL)networking error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (!v9)
+  namesCopy = names;
+  if (!namesCopy)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:289 description:{@"Invalid parameter not satisfying: %@", @"namespaceNames"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:289 description:{@"Invalid parameter not satisfying: %@", @"namespaceNames"}];
   }
 
   v10 = qos_class_self();
@@ -493,7 +493,7 @@ LABEL_16:
     *buf = 138412802;
     *&buf[4] = v15;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = namesCopy;
     *&buf[22] = 1026;
     LODWORD(v40) = v10;
     _os_log_impl(&dword_22EA6B000, v16, v13, "%@enqueuing immediateDownloadForNamespaceNames for: %@ at qos:%{public}u", buf, 0x1Cu);
@@ -519,11 +519,11 @@ LABEL_16:
   v27[3] = &unk_27885F740;
   v19 = v18;
   v28 = v19;
-  v20 = v9;
+  v20 = namesCopy;
   v33 = v10;
   v29 = v20;
-  v30 = self;
-  v34 = a4;
+  selfCopy = self;
+  networkingCopy = networking;
   v31 = buf;
   v32 = &v35;
   v21 = MEMORY[0x2318F2490](v27);
@@ -539,9 +539,9 @@ LABEL_16:
   }
 
   dispatch_group_wait(v19, 0xFFFFFFFFFFFFFFFFLL);
-  if (a5)
+  if (error)
   {
-    *a5 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
   }
 
   v23 = *(v36 + 24);
@@ -645,13 +645,13 @@ void __109__TRIXPCNamespaceManagementClient_removeLevelsForFactors_withNamespace
   objc_autoreleasePoolPop(v0);
 }
 
-- (BOOL)deregisterNamespaceWithNamespaceName:(id)a3 error:(id *)a4
+- (BOOL)deregisterNamespaceWithNamespaceName:(id)name error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:420 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:420 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
   if (+[TRIMisc unsafeFirstAuthenticationState])
@@ -685,15 +685,15 @@ void __109__TRIXPCNamespaceManagementClient_removeLevelsForFactors_withNamespace
     v15[3] = &unk_27885F6A0;
     v15[4] = &v22;
     v15[5] = &v16;
-    [v9 deregisterNamespaceWithNamespaceName:v7 completion:v15];
+    [v9 deregisterNamespaceWithNamespaceName:nameCopy completion:v15];
     v10 = *(v28 + 5);
     if (v10)
     {
-      if (a4)
+      if (error)
       {
 LABEL_6:
         v11 = 0;
-        *a4 = v10;
+        *error = v10;
 LABEL_16:
 
         _Block_object_dispose(&v16, 8);
@@ -713,7 +713,7 @@ LABEL_16:
         goto LABEL_16;
       }
 
-      if (a4)
+      if (error)
       {
         goto LABEL_6;
       }
@@ -730,10 +730,10 @@ LABEL_16:
     _os_log_error_impl(&dword_22EA6B000, v12, OS_LOG_TYPE_ERROR, "unable to de-register namespace while device is class C locked", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"TRIGeneralErrorDomain" code:5 userInfo:0];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -746,14 +746,14 @@ LABEL_17:
   return v11 & 1;
 }
 
-- (BOOL)setPurgeabilityLevelsForFactors:(id)a3 forNamespaceName:(id)a4 error:(id *)a5
+- (BOOL)setPurgeabilityLevelsForFactors:(id)factors forNamespaceName:(id)name error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  factorsCopy = factors;
+  nameCopy = name;
+  v11 = nameCopy;
+  if (factorsCopy)
   {
-    if (v10)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -761,8 +761,8 @@ LABEL_17:
 
   else
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:466 description:{@"Invalid parameter not satisfying: %@", @"factorsWithPurgeabilityLevels"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:466 description:{@"Invalid parameter not satisfying: %@", @"factorsWithPurgeabilityLevels"}];
 
     if (v11)
     {
@@ -770,8 +770,8 @@ LABEL_17:
     }
   }
 
-  v19 = [MEMORY[0x277CCA890] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:467 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:467 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_3:
   if (+[TRIMisc unsafeFirstAuthenticationState])
@@ -800,15 +800,15 @@ LABEL_3:
     v20[2] = __90__TRIXPCNamespaceManagementClient_setPurgeabilityLevelsForFactors_forNamespaceName_error___block_invoke_2;
     v20[3] = &unk_27885EF10;
     v20[4] = &v21;
-    [v13 setPurgeabilityLevelsForFactors:v9 forNamespaceName:v11 completion:v20];
+    [v13 setPurgeabilityLevelsForFactors:factorsCopy forNamespaceName:v11 completion:v20];
     v14 = *(v29 + 5);
     if (v14)
     {
-      if (a5)
+      if (error)
       {
 LABEL_6:
         v15 = 0;
-        *a5 = v14;
+        *error = v14;
 LABEL_16:
 
         _Block_object_dispose(&v21, 8);
@@ -827,7 +827,7 @@ LABEL_16:
         goto LABEL_16;
       }
 
-      if (a5)
+      if (error)
       {
         goto LABEL_6;
       }
@@ -844,10 +844,10 @@ LABEL_16:
     _os_log_error_impl(&dword_22EA6B000, v16, OS_LOG_TYPE_ERROR, "unable to set purgeability levels while device is class C locked", buf, 2u);
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"TRIGeneralErrorDomain" code:5 userInfo:0];
-    *a5 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -860,13 +860,13 @@ LABEL_17:
   return v15;
 }
 
-- (id)loadNamespaceMetadataForNamespaceName:(id)a3 error:(id *)a4
+- (id)loadNamespaceMetadataForNamespaceName:(id)name error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:510 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:510 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
   if (+[TRIMisc unsafeFirstAuthenticationState])
@@ -902,15 +902,15 @@ LABEL_17:
     v15[3] = &unk_27885F768;
     v15[4] = &v16;
     v15[5] = &v22;
-    [v9 loadNamespaceMetadataForNamespaceName:v7 completion:v15];
+    [v9 loadNamespaceMetadataForNamespaceName:nameCopy completion:v15];
     v10 = *(v30 + 5);
     if (v10)
     {
-      if (a4)
+      if (error)
       {
 LABEL_6:
         v11 = 0;
-        *a4 = v10;
+        *error = v10;
 LABEL_16:
 
         _Block_object_dispose(&v16, 8);
@@ -930,7 +930,7 @@ LABEL_16:
         goto LABEL_16;
       }
 
-      if (a4)
+      if (error)
       {
         goto LABEL_6;
       }
@@ -947,10 +947,10 @@ LABEL_16:
     _os_log_error_impl(&dword_22EA6B000, v12, OS_LOG_TYPE_ERROR, "unable to load namespace metadata while device is class C locked", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"TRIGeneralErrorDomain" code:5 userInfo:0];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -977,14 +977,14 @@ void __79__TRIXPCNamespaceManagementClient_loadNamespaceMetadataForNamespaceName
   *(v9 + 40) = v6;
 }
 
-- (BOOL)setProvisionalFactorPackId:(id)a3 forNamespaceName:(id)a4 error:(id *)a5
+- (BOOL)setProvisionalFactorPackId:(id)id forNamespaceName:(id)name error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  idCopy = id;
+  nameCopy = name;
+  v11 = nameCopy;
+  if (idCopy)
   {
-    if (v10)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -992,8 +992,8 @@ void __79__TRIXPCNamespaceManagementClient_loadNamespaceMetadataForNamespaceName
 
   else
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:555 description:{@"Invalid parameter not satisfying: %@", @"factorPackId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:555 description:{@"Invalid parameter not satisfying: %@", @"factorPackId"}];
 
     if (v11)
     {
@@ -1001,8 +1001,8 @@ void __79__TRIXPCNamespaceManagementClient_loadNamespaceMetadataForNamespaceName
     }
   }
 
-  v19 = [MEMORY[0x277CCA890] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:556 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:556 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_3:
   if (+[TRIMisc unsafeFirstAuthenticationState])
@@ -1036,15 +1036,15 @@ LABEL_3:
     v20[3] = &unk_27885F6A0;
     v20[4] = &v27;
     v20[5] = &v21;
-    [v13 setProvisionalFactorPackId:v9 forNamespaceName:v11 completion:v20];
+    [v13 setProvisionalFactorPackId:idCopy forNamespaceName:v11 completion:v20];
     v14 = *(v33 + 5);
     if (v14)
     {
-      if (a5)
+      if (error)
       {
 LABEL_6:
         v15 = 0;
-        *a5 = v14;
+        *error = v14;
 LABEL_16:
 
         _Block_object_dispose(&v21, 8);
@@ -1064,7 +1064,7 @@ LABEL_16:
         goto LABEL_16;
       }
 
-      if (a5)
+      if (error)
       {
         goto LABEL_6;
       }
@@ -1081,10 +1081,10 @@ LABEL_16:
     _os_log_error_impl(&dword_22EA6B000, v16, OS_LOG_TYPE_ERROR, "unable to set factor pack provisional while device is class C locked", buf, 2u);
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"TRIGeneralErrorDomain" code:5 userInfo:0];
-    *a5 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -1097,14 +1097,14 @@ LABEL_17:
   return v15 & 1;
 }
 
-- (BOOL)rejectFactorPackId:(id)a3 forNamespaceName:(id)a4 rolloutDeployment:(id)a5 error:(id *)a6
+- (BOOL)rejectFactorPackId:(id)id forNamespaceName:(id)name rolloutDeployment:(id)deployment error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v11)
+  idCopy = id;
+  nameCopy = name;
+  deploymentCopy = deployment;
+  if (idCopy)
   {
-    if (v12)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -1112,17 +1112,17 @@ LABEL_17:
 
   else
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:603 description:{@"Invalid parameter not satisfying: %@", @"factorPackId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:603 description:{@"Invalid parameter not satisfying: %@", @"factorPackId"}];
 
-    if (v12)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v21 = [MEMORY[0x277CCA890] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:604 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:604 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_3:
   if (+[TRIMisc unsafeFirstAuthenticationState])
@@ -1156,15 +1156,15 @@ LABEL_3:
     v22[3] = &unk_27885F6A0;
     v22[4] = &v29;
     v22[5] = &v23;
-    [v15 rejectFactorPackId:v11 forNamespaceName:v12 rolloutDeployment:v13 completion:v22];
+    [v15 rejectFactorPackId:idCopy forNamespaceName:nameCopy rolloutDeployment:deploymentCopy completion:v22];
     v16 = *(v35 + 5);
     if (v16)
     {
-      if (a6)
+      if (error)
       {
 LABEL_6:
         v17 = 0;
-        *a6 = v16;
+        *error = v16;
 LABEL_16:
 
         _Block_object_dispose(&v23, 8);
@@ -1184,7 +1184,7 @@ LABEL_16:
         goto LABEL_16;
       }
 
-      if (a6)
+      if (error)
       {
         goto LABEL_6;
       }
@@ -1201,10 +1201,10 @@ LABEL_16:
     _os_log_error_impl(&dword_22EA6B000, v18, OS_LOG_TYPE_ERROR, "unable to reject factor pack provisional while device is class C locked", buf, 2u);
   }
 
-  if (a6)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"TRIGeneralErrorDomain" code:5 userInfo:0];
-    *a6 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -1217,14 +1217,14 @@ LABEL_17:
   return v17 & 1;
 }
 
-- (BOOL)promoteFactorPackId:(id)a3 forNamespaceName:(id)a4 rolloutDeployment:(id)a5 error:(id *)a6
+- (BOOL)promoteFactorPackId:(id)id forNamespaceName:(id)name rolloutDeployment:(id)deployment error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v11)
+  idCopy = id;
+  nameCopy = name;
+  deploymentCopy = deployment;
+  if (idCopy)
   {
-    if (v12)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -1232,17 +1232,17 @@ LABEL_17:
 
   else
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:652 description:{@"Invalid parameter not satisfying: %@", @"factorPackId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:652 description:{@"Invalid parameter not satisfying: %@", @"factorPackId"}];
 
-    if (v12)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v21 = [MEMORY[0x277CCA890] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:653 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:653 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_3:
   if (+[TRIMisc unsafeFirstAuthenticationState])
@@ -1276,15 +1276,15 @@ LABEL_3:
     v22[3] = &unk_27885F6A0;
     v22[4] = &v29;
     v22[5] = &v23;
-    [v15 promoteFactorPackId:v11 forNamespaceName:v12 rolloutDeployment:v13 completion:v22];
+    [v15 promoteFactorPackId:idCopy forNamespaceName:nameCopy rolloutDeployment:deploymentCopy completion:v22];
     v16 = *(v35 + 5);
     if (v16)
     {
-      if (a6)
+      if (error)
       {
 LABEL_6:
         v17 = 0;
-        *a6 = v16;
+        *error = v16;
 LABEL_16:
 
         _Block_object_dispose(&v23, 8);
@@ -1304,7 +1304,7 @@ LABEL_16:
         goto LABEL_16;
       }
 
-      if (a6)
+      if (error)
       {
         goto LABEL_6;
       }
@@ -1321,10 +1321,10 @@ LABEL_16:
     _os_log_error_impl(&dword_22EA6B000, v18, OS_LOG_TYPE_ERROR, "unable to promote factor pack while device is class C locked", buf, 2u);
   }
 
-  if (a6)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"TRIGeneralErrorDomain" code:5 userInfo:0];
-    *a6 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -1337,14 +1337,14 @@ LABEL_17:
   return v17 & 1;
 }
 
-- (unint64_t)statusOfDownloadForFactors:(id)a3 withNamespace:(id)a4 factorsState:(id)a5 notificationKey:(id *)a6 error:(id *)a7
+- (unint64_t)statusOfDownloadForFactors:(id)factors withNamespace:(id)namespace factorsState:(id)state notificationKey:(id *)key error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (v13)
+  factorsCopy = factors;
+  namespaceCopy = namespace;
+  stateCopy = state;
+  if (factorsCopy)
   {
-    if (v14)
+    if (namespaceCopy)
     {
       goto LABEL_3;
     }
@@ -1352,17 +1352,17 @@ LABEL_17:
 
   else
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:702 description:{@"Invalid parameter not satisfying: %@", @"factorNames"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:702 description:{@"Invalid parameter not satisfying: %@", @"factorNames"}];
 
-    if (v14)
+    if (namespaceCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v24 = [MEMORY[0x277CCA890] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:703 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCClient.m" lineNumber:703 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_3:
   if (+[TRIMisc unsafeFirstAuthenticationState])
@@ -1403,25 +1403,25 @@ LABEL_3:
     v25[4] = &v38;
     v25[5] = &v32;
     v25[6] = &v26;
-    [v17 statusOfDownloadForFactors:v13 withNamespace:v14 factorsState:v15 completion:v25];
+    [v17 statusOfDownloadForFactors:factorsCopy withNamespace:namespaceCopy factorsState:stateCopy completion:v25];
     v18 = *(v44 + 5);
     if (v18 || (v18 = v27[5]) != 0)
     {
-      if (a7)
+      if (error)
       {
-        objc_storeStrong(a7, v18);
-        a7 = 0;
+        objc_storeStrong(error, v18);
+        error = 0;
       }
     }
 
     else
     {
-      if (a6)
+      if (key)
       {
-        objc_storeStrong(a6, v33[5]);
+        objc_storeStrong(key, v33[5]);
       }
 
-      a7 = v39[3];
+      error = v39[3];
     }
 
     _Block_object_dispose(&v26, 8);
@@ -1440,17 +1440,17 @@ LABEL_3:
       _os_log_impl(&dword_22EA6B000, v19, OS_LOG_TYPE_DEFAULT, "device is class C locked - download status cannot be determined", buf, 2u);
     }
 
-    if (a7)
+    if (error)
     {
       v20 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRIGeneralErrorDomain" code:5 userInfo:0];
-      v21 = *a7;
-      *a7 = v20;
+      v21 = *error;
+      *error = v20;
 
-      a7 = 0;
+      error = 0;
     }
   }
 
-  return a7;
+  return error;
 }
 
 void __111__TRIXPCNamespaceManagementClient_statusOfDownloadForFactors_withNamespace_factorsState_notificationKey_error___block_invoke_2(void *a1, uint64_t a2, void *a3, void *a4)
@@ -1468,7 +1468,7 @@ void __111__TRIXPCNamespaceManagementClient_statusOfDownloadForFactors_withNames
   *(v11 + 40) = v8;
 }
 
-- (id)activeRolloutInformation:(id *)a3
+- (id)activeRolloutInformation:(id *)information
 {
   if (+[TRIMisc unsafeFirstAuthenticationState])
   {
@@ -1507,11 +1507,11 @@ void __111__TRIXPCNamespaceManagementClient_statusOfDownloadForFactors_withNames
     v7 = *(v26 + 5);
     if (v7)
     {
-      if (a3)
+      if (information)
       {
 LABEL_4:
         v8 = 0;
-        *a3 = v7;
+        *information = v7;
 LABEL_14:
 
         _Block_object_dispose(&v12, 8);
@@ -1531,7 +1531,7 @@ LABEL_14:
         goto LABEL_14;
       }
 
-      if (a3)
+      if (information)
       {
         goto LABEL_4;
       }
@@ -1548,10 +1548,10 @@ LABEL_14:
     _os_log_error_impl(&dword_22EA6B000, v9, OS_LOG_TYPE_ERROR, "device is class C locked - cannot fetch rollout information", buf, 2u);
   }
 
-  if (a3)
+  if (information)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"TRIGeneralErrorDomain" code:5 userInfo:0];
-    *a3 = v8 = 0;
+    *information = v8 = 0;
   }
 
   else
@@ -1578,7 +1578,7 @@ void __60__TRIXPCNamespaceManagementClient_activeRolloutInformation___block_invo
   *(v9 + 40) = v6;
 }
 
-- (BOOL)logSystemCovariatesWithError:(id *)a3
+- (BOOL)logSystemCovariatesWithError:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -1594,20 +1594,20 @@ void __60__TRIXPCNamespaceManagementClient_activeRolloutInformation___block_invo
   v5 = MEMORY[0x2318F2490](v9, a2);
   v6 = [(_PASXPCClientHelper *)self->_internalHelper synchronousRemoteObjectProxyWithErrorHandler:v5];
   [v6 logSystemCovariates];
-  if (a3)
+  if (error)
   {
     v7 = v11[5];
     if (v7)
     {
-      objc_storeStrong(a3, v7);
+      objc_storeStrong(error, v7);
     }
   }
 
   _Block_object_dispose(&v10, 8);
-  return a3 == 0;
+  return error == 0;
 }
 
-- (id)getSandboxExtensionTokensForIdentifierQueryWithError:(id *)a3
+- (id)getSandboxExtensionTokensForIdentifierQueryWithError:(id *)error
 {
   v25 = 0;
   v26 = &v25;
@@ -1644,9 +1644,9 @@ void __60__TRIXPCNamespaceManagementClient_activeRolloutInformation___block_invo
   v7 = v26[5];
   if (v7 || (v7 = v13[5]) != 0)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = v7;
+      *error = v7;
     }
 
     v8 = objc_opt_new();
@@ -1681,16 +1681,16 @@ void __88__TRIXPCNamespaceManagementClient_getSandboxExtensionTokensForIdentifie
   *(v9 + 40) = v6;
 }
 
-- (id)getOnDemandReferenceCountsPerUserAtGlobalPath:(id)a3 error:(id *)a4
+- (id)getOnDemandReferenceCountsPerUserAtGlobalPath:(id)path error:(id *)error
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (error)
   {
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v9 = *MEMORY[0x277CCA450];
     v10[0] = @"On-demand reference counts are not available on non-macOS platforms.";
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-    *a4 = [v5 initWithDomain:@"TRIGeneralErrorDomain" code:17 userInfo:v6];
+    *error = [v5 initWithDomain:@"TRIGeneralErrorDomain" code:17 userInfo:v6];
   }
 
   v7 = *MEMORY[0x277D85DE8];

@@ -1,9 +1,9 @@
 @interface VUIFavoritesRequestManager
 + (id)sharedInstance;
-+ (void)getFavoriteTeamsIgnoringCache:(BOOL)a3 completion:(id)a4;
++ (void)getFavoriteTeamsIgnoringCache:(BOOL)cache completion:(id)completion;
 - (VUIFavoritesRequestManager)init;
 - (id)_init;
-- (void)sendRequestForEntityID:(id)a3 teamName:(id)a4 action:(unint64_t)a5 fireBackgroundEvent:(BOOL)a6;
+- (void)sendRequestForEntityID:(id)d teamName:(id)name action:(unint64_t)action fireBackgroundEvent:(BOOL)event;
 @end
 
 @implementation VUIFavoritesRequestManager
@@ -34,9 +34,9 @@ void __44__VUIFavoritesRequestManager_sharedInstance__block_invoke()
   v2 = [(VUIFavoritesRequestManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     ongoingEntityIDOperationDictionary = v2->_ongoingEntityIDOperationDictionary;
-    v2->_ongoingEntityIDOperationDictionary = v3;
+    v2->_ongoingEntityIDOperationDictionary = dictionary;
   }
 
   return v2;
@@ -48,46 +48,46 @@ void __44__VUIFavoritesRequestManager_sharedInstance__block_invoke()
   objc_exception_throw(v2);
 }
 
-- (void)sendRequestForEntityID:(id)a3 teamName:(id)a4 action:(unint64_t)a5 fireBackgroundEvent:(BOOL)a6
+- (void)sendRequestForEntityID:(id)d teamName:(id)name action:(unint64_t)action fireBackgroundEvent:(BOOL)event
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = [(NSMutableDictionary *)self->_ongoingEntityIDOperationDictionary objectForKey:v10];
+  dCopy = d;
+  nameCopy = name;
+  v12 = [(NSMutableDictionary *)self->_ongoingEntityIDOperationDictionary objectForKey:dCopy];
   v13 = v12;
   if (v12 && ([v12 isCancelled] & 1) == 0)
   {
-    v21 = [v13 action];
+    action = [v13 action];
     v22 = 1;
-    if (a5 == 1)
+    if (action == 1)
     {
       v22 = 2;
     }
 
-    if (a5 == 2)
+    if (action == 2)
     {
       v22 = 0;
     }
 
-    if (v21 != v22)
+    if (action != v22)
     {
       [v13 cancel];
-      [(NSMutableDictionary *)self->_ongoingEntityIDOperationDictionary removeObjectForKey:v10];
+      [(NSMutableDictionary *)self->_ongoingEntityIDOperationDictionary removeObjectForKey:dCopy];
     }
   }
 
   else
   {
     v14 = objc_alloc(MEMORY[0x1E69E15E0]);
-    v30[0] = v10;
+    v30[0] = dCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
     v16 = 1;
-    if (a5 == 1)
+    if (action == 1)
     {
       v16 = 2;
     }
 
-    if (a5 == 2)
+    if (action == 2)
     {
       v17 = 0;
     }
@@ -108,15 +108,15 @@ void __44__VUIFavoritesRequestManager_sharedInstance__block_invoke()
       v23[2] = __89__VUIFavoritesRequestManager_sendRequestForEntityID_teamName_action_fireBackgroundEvent___block_invoke;
       v23[3] = &unk_1E872DBE8;
       objc_copyWeak(&v25, &location);
-      v26[1] = a5;
-      v27 = a6;
+      v26[1] = action;
+      eventCopy = event;
       objc_copyWeak(v26, &from);
-      v19 = v10;
+      v19 = dCopy;
       v24 = v19;
       [v18 setCompletionBlock:v23];
       [(NSMutableDictionary *)self->_ongoingEntityIDOperationDictionary setValue:v18 forKey:v19];
-      v20 = [MEMORY[0x1E696ADC8] wlkDefaultQueue];
-      [v20 addOperation:v18];
+      wlkDefaultQueue = [MEMORY[0x1E696ADC8] wlkDefaultQueue];
+      [wlkDefaultQueue addOperation:v18];
 
       objc_destroyWeak(v26);
       objc_destroyWeak(&v25);
@@ -162,19 +162,19 @@ void __89__VUIFavoritesRequestManager_sendRequestForEntityID_teamName_action_fir
   [v4 postNotificationName:@"VUIFavoritesRequestDidFinishNotification" object:*(a1 + 32) userInfo:*(a1 + 40)];
 }
 
-+ (void)getFavoriteTeamsIgnoringCache:(BOOL)a3 completion:(id)a4
++ (void)getFavoriteTeamsIgnoringCache:(BOOL)cache completion:(id)completion
 {
-  v4 = a3;
-  v5 = a4;
-  if (v5)
+  cacheCopy = cache;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v6 = [MEMORY[0x1E69E15D8] defaultManager];
+    defaultManager = [MEMORY[0x1E69E15D8] defaultManager];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __71__VUIFavoritesRequestManager_getFavoriteTeamsIgnoringCache_completion___block_invoke;
     v7[3] = &unk_1E872DC38;
-    v8 = v5;
-    [v6 getFavoritesIgnoringCache:v4 completion:v7];
+    v8 = completionCopy;
+    [defaultManager getFavoritesIgnoringCache:cacheCopy completion:v7];
   }
 }
 

@@ -21,18 +21,18 @@
   v3 = ;
   if (v3)
   {
-    v4 = [(NSMutableDictionary *)self->super.mAdjustValues keyEnumerator];
-    for (i = 0; ; i = v6)
+    keyEnumerator = [(NSMutableDictionary *)self->super.mAdjustValues keyEnumerator];
+    for (i = 0; ; i = nextObject)
     {
-      v6 = [v4 nextObject];
+      nextObject = [keyEnumerator nextObject];
 
-      if (!v6)
+      if (!nextObject)
       {
         break;
       }
 
-      v7 = [v6 unsignedIntValue];
-      [v3 setAdjustValue:-[OADShapeGeometry adjustValueAtIndex:](self atIndex:{"adjustValueAtIndex:", v7), v7}];
+      unsignedIntValue = [nextObject unsignedIntValue];
+      [v3 setAdjustValue:-[OADShapeGeometry adjustValueAtIndex:](self atIndex:{"adjustValueAtIndex:", unsignedIntValue), unsignedIntValue}];
     }
 
     v8 = v3;

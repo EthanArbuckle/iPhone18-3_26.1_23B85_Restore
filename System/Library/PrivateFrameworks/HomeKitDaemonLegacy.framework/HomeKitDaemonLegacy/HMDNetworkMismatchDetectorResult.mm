@@ -1,5 +1,5 @@
 @interface HMDNetworkMismatchDetectorResult
-- (HMDNetworkMismatchDetectorResult)initWithAccessoriesNotOnWiFi:(id)a3;
+- (HMDNetworkMismatchDetectorResult)initWithAccessoriesNotOnWiFi:(id)fi;
 - (id)description;
 @end
 
@@ -13,15 +13,15 @@
   return v3;
 }
 
-- (HMDNetworkMismatchDetectorResult)initWithAccessoriesNotOnWiFi:(id)a3
+- (HMDNetworkMismatchDetectorResult)initWithAccessoriesNotOnWiFi:(id)fi
 {
-  v4 = a3;
+  fiCopy = fi;
   v9.receiver = self;
   v9.super_class = HMDNetworkMismatchDetectorResult;
   v5 = [(HMDNetworkMismatchDetectorResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [fiCopy copy];
     accessoriesNotOnWiFi = v5->_accessoriesNotOnWiFi;
     v5->_accessoriesNotOnWiFi = v6;
   }

@@ -1,5 +1,5 @@
 @interface BSBlockTransaction
-- (BSBlockTransaction)initWithBlock:(id)a3;
+- (BSBlockTransaction)initWithBlock:(id)block;
 - (id)_descriptionProem;
 - (id)_graphNodeDebugName;
 - (void)_begin;
@@ -9,25 +9,25 @@
 
 - (id)_descriptionProem
 {
-  v3 = [(BSBlockTransaction *)self debugName];
-  if (v3)
+  debugName = [(BSBlockTransaction *)self debugName];
+  if (debugName)
   {
     v4 = MEMORY[0x1E696AEC0];
     v10.receiver = self;
     v10.super_class = BSBlockTransaction;
-    v5 = [(BSTransaction *)&v10 _descriptionProem];
-    v6 = [(BSBlockTransaction *)self debugName];
-    v7 = [v4 stringWithFormat:@"%@: %@", v5, v6];
+    _descriptionProem = [(BSTransaction *)&v10 _descriptionProem];
+    debugName2 = [(BSBlockTransaction *)self debugName];
+    _descriptionProem2 = [v4 stringWithFormat:@"%@: %@", _descriptionProem, debugName2];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = BSBlockTransaction;
-    v7 = [(BSTransaction *)&v9 _descriptionProem];
+    _descriptionProem2 = [(BSTransaction *)&v9 _descriptionProem];
   }
 
-  return v7;
+  return _descriptionProem2;
 }
 
 - (void)_begin
@@ -41,7 +41,7 @@
   v6 = 3221225472;
   v7 = __28__BSBlockTransaction__begin__block_invoke;
   v8 = &unk_1E72CB9F8;
-  v9 = self;
+  selfCopy = self;
   block[2]();
   v4 = self->_block;
   self->_block = 0;
@@ -61,12 +61,12 @@ uint64_t __28__BSBlockTransaction__begin__block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (BSBlockTransaction)initWithBlock:(id)a3
+- (BSBlockTransaction)initWithBlock:(id)block
 {
-  if (!a3)
+  if (!block)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"BSBlockTransaction.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSBlockTransaction.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   v11.receiver = self;
@@ -74,7 +74,7 @@ uint64_t __28__BSBlockTransaction__begin__block_invoke(uint64_t a1, int a2)
   v5 = [(BSTransaction *)&v11 init];
   if (v5)
   {
-    v6 = [a3 copy];
+    v6 = [block copy];
     block = v5->_block;
     v5->_block = v6;
   }
@@ -84,24 +84,24 @@ uint64_t __28__BSBlockTransaction__begin__block_invoke(uint64_t a1, int a2)
 
 - (id)_graphNodeDebugName
 {
-  v3 = [(BSBlockTransaction *)self debugName];
-  if (v3)
+  debugName = [(BSBlockTransaction *)self debugName];
+  if (debugName)
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [(BSBlockTransaction *)self debugName];
-    v8 = [v4 stringWithFormat:@"%@(%@)", v6, v7];
+    debugName2 = [(BSBlockTransaction *)self debugName];
+    _graphNodeDebugName = [v4 stringWithFormat:@"%@(%@)", v6, debugName2];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = BSBlockTransaction;
-    v8 = [(BSTransaction *)&v10 _graphNodeDebugName];
+    _graphNodeDebugName = [(BSTransaction *)&v10 _graphNodeDebugName];
   }
 
-  return v8;
+  return _graphNodeDebugName;
 }
 
 @end

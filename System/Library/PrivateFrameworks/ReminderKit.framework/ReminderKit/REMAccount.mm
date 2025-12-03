@@ -1,35 +1,35 @@
 @interface REMAccount
-+ (BOOL)canCopyReminderLosslesslyFromAccountWithType:(int64_t)a3 toAccountWithType:(int64_t)a4 accountTypeHost:(id)a5;
-+ (BOOL)isCloudBasedAccountType:(int64_t)a3;
++ (BOOL)canCopyReminderLosslesslyFromAccountWithType:(int64_t)type toAccountWithType:(int64_t)withType accountTypeHost:(id)host;
++ (BOOL)isCloudBasedAccountType:(int64_t)type;
 + (REMObjectID)localAccountID;
 + (REMObjectID)localInternalAccountID;
-+ (id)_accountTypeMaskWithBitMask:(int64_t)a3;
-- (BOOL)MCIsManagedWithResultPtr:(BOOL *)a3 error:(id *)a4;
-- (BOOL)canCopyReminderLosslesslyToAccount:(id)a3;
-- (BOOL)isConsideredEmptyWithResultPtr:(BOOL *)a3 withError:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_accountTypeMaskWithBitMask:(int64_t)mask;
+- (BOOL)MCIsManagedWithResultPtr:(BOOL *)ptr error:(id *)error;
+- (BOOL)canCopyReminderLosslesslyToAccount:(id)account;
+- (BOOL)isConsideredEmptyWithResultPtr:(BOOL *)ptr withError:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isUnsupported;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (BOOL)shouldUseExternalIdentifierAsDeletionKey;
 - (BOOL)supportsSharingLists;
 - (NSOrderedSet)listIDsOrdering;
-- (REMAccount)initWithStore:(id)a3 storage:(id)a4;
+- (REMAccount)initWithStore:(id)store storage:(id)storage;
 - (REMAccountGroupContext)groupContext;
 - (REMAccountTemplatesContext)templatesContext;
 - (id)accountTypeHost;
 - (id)debugDescription;
 - (id)description;
 - (id)externalIdentifierForMarkedForDeletionObject;
-- (id)fetchCustomSmartListsWithError:(id *)a3;
-- (id)fetchListIncludingSpecialContainerWithExternalIdentifier:(id)a3 error:(id *)a4;
-- (id)fetchListsAndSublistsWithError:(id *)a3;
-- (id)fetchListsIncludingSpecialContainersWithError:(id *)a3;
-- (id)fetchListsWithError:(id *)a3;
+- (id)fetchCustomSmartListsWithError:(id *)error;
+- (id)fetchListIncludingSpecialContainerWithExternalIdentifier:(id)identifier error:(id *)error;
+- (id)fetchListsAndSublistsWithError:(id *)error;
+- (id)fetchListsIncludingSpecialContainersWithError:(id *)error;
+- (id)fetchListsWithError:(id *)error;
 - (id)optionalObjectID;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
 - (void)listIDsOrdering;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation REMAccount
@@ -44,32 +44,32 @@
 
 - (id)optionalObjectID
 {
-  v2 = [(REMAccount *)self storage];
-  v3 = [v2 optionalObjectID];
+  storage = [(REMAccount *)self storage];
+  optionalObjectID = [storage optionalObjectID];
 
-  return v3;
+  return optionalObjectID;
 }
 
 - (id)accountTypeHost
 {
-  v2 = [(REMAccount *)self storage];
-  v3 = [v2 accountTypeHost];
+  storage = [(REMAccount *)self storage];
+  accountTypeHost = [storage accountTypeHost];
 
-  return v3;
+  return accountTypeHost;
 }
 
 - (BOOL)supportsSharingLists
 {
-  v3 = [(REMAccount *)self type];
+  type = [(REMAccount *)self type];
   result = 1;
-  if (v3 <= 7)
+  if (type <= 7)
   {
-    if (((1 << v3) & 0xB3) != 0)
+    if (((1 << type) & 0xB3) != 0)
     {
       return 0;
     }
 
-    else if (v3 == 3)
+    else if (type == 3)
     {
 
       return [(REMAccount *)self daSupportsSharedCalendars];
@@ -87,32 +87,32 @@
   return v3;
 }
 
-- (REMAccount)initWithStore:(id)a3 storage:(id)a4
+- (REMAccount)initWithStore:(id)store storage:(id)storage
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  storageCopy = storage;
   v14.receiver = self;
   v14.super_class = REMAccount;
   v9 = [(REMAccount *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_storage, a4);
-    objc_storeStrong(&v10->_store, a3);
-    v11 = -[REMAccountCapabilities initWithAccountType:]([REMAccountCapabilities alloc], "initWithAccountType:", [v8 type]);
+    objc_storeStrong(&v9->_storage, storage);
+    objc_storeStrong(&v10->_store, store);
+    v11 = -[REMAccountCapabilities initWithAccountType:]([REMAccountCapabilities alloc], "initWithAccountType:", [storageCopy type]);
     capabilities = v10->_capabilities;
     v10->_capabilities = v11;
 
-    -[REMAccountStorage setStoreGenerationIfNeeded:](v10->_storage, "setStoreGenerationIfNeeded:", [v7 storeGeneration]);
+    -[REMAccountStorage setStoreGenerationIfNeeded:](v10->_storage, "setStoreGenerationIfNeeded:", [storeCopy storeGeneration]);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -122,16 +122,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(REMAccount *)v5 store];
-      v7 = [(REMAccount *)self store];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      store = [(REMAccount *)v5 store];
+      store2 = [(REMAccount *)self store];
+      v8 = [store isEqual:store2];
 
       if (v8)
       {
-        v9 = [(REMAccount *)v5 storage];
-        v10 = [(REMAccount *)self storage];
-        v11 = [v9 isEqual:v10];
+        storage = [(REMAccount *)v5 storage];
+        storage2 = [(REMAccount *)self storage];
+        v11 = [storage isEqual:storage2];
       }
 
       else
@@ -151,8 +151,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(REMAccount *)self storage];
-  v3 = [v2 hash];
+  storage = [(REMAccount *)self storage];
+  v3 = [storage hash];
 
   return v3;
 }
@@ -161,8 +161,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMAccount *)self storage];
-  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v5];
+  storage = [(REMAccount *)self storage];
+  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, storage];
 
   return v6;
 }
@@ -171,8 +171,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMAccount *)self storage];
-  v6 = [v5 debugDescription];
+  storage = [(REMAccount *)self storage];
+  v6 = [storage debugDescription];
   v7 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v6];
 
   return v7;
@@ -180,10 +180,10 @@
 
 - (REMAccountGroupContext)groupContext
 {
-  v3 = [(REMAccount *)self capabilities];
-  v4 = [v3 supportsGroups];
+  capabilities = [(REMAccount *)self capabilities];
+  supportsGroups = [capabilities supportsGroups];
 
-  if (v4)
+  if (supportsGroups)
   {
     v5 = [[REMAccountGroupContext alloc] initWithAccount:self];
   }
@@ -198,10 +198,10 @@
 
 - (REMAccountTemplatesContext)templatesContext
 {
-  v3 = [(REMAccount *)self capabilities];
-  v4 = [v3 supportsTemplates];
+  capabilities = [(REMAccount *)self capabilities];
+  supportsTemplates = [capabilities supportsTemplates];
 
-  if (v4)
+  if (supportsTemplates)
   {
     v5 = [[REMAccountTemplatesContext alloc] initWithAccount:self];
   }
@@ -214,65 +214,65 @@
   return v5;
 }
 
-- (id)fetchListsWithError:(id *)a3
+- (id)fetchListsWithError:(id *)error
 {
   v5 = [REMListsDataView alloc];
-  v6 = [(REMAccount *)self store];
-  v7 = [(REMListsDataView *)v5 initWithStore:v6];
+  store = [(REMAccount *)self store];
+  v7 = [(REMListsDataView *)v5 initWithStore:store];
 
-  v8 = [(REMListsDataView *)v7 fetchListsInAccount:self error:a3];
+  v8 = [(REMListsDataView *)v7 fetchListsInAccount:self error:error];
 
   return v8;
 }
 
-- (id)fetchListsAndSublistsWithError:(id *)a3
+- (id)fetchListsAndSublistsWithError:(id *)error
 {
   v5 = [REMListsDataView alloc];
-  v6 = [(REMAccount *)self store];
-  v7 = [(REMListsDataView *)v5 initWithStore:v6];
+  store = [(REMAccount *)self store];
+  v7 = [(REMListsDataView *)v5 initWithStore:store];
 
-  v8 = [(REMListsDataView *)v7 fetchListsAndSublistsInAccount:self error:a3];
+  v8 = [(REMListsDataView *)v7 fetchListsAndSublistsInAccount:self error:error];
 
   return v8;
 }
 
-- (id)fetchCustomSmartListsWithError:(id *)a3
+- (id)fetchCustomSmartListsWithError:(id *)error
 {
   v5 = [REMSmartListsDataView alloc];
-  v6 = [(REMAccount *)self store];
-  v7 = [(REMSmartListsDataView *)v5 initWithStore:v6];
+  store = [(REMAccount *)self store];
+  v7 = [(REMSmartListsDataView *)v5 initWithStore:store];
 
-  v8 = [(REMSmartListsDataView *)v7 fetchCustomSmartListsInAccount:self error:a3];
+  v8 = [(REMSmartListsDataView *)v7 fetchCustomSmartListsInAccount:self error:error];
 
   return v8;
 }
 
-+ (BOOL)canCopyReminderLosslesslyFromAccountWithType:(int64_t)a3 toAccountWithType:(int64_t)a4 accountTypeHost:(id)a5
++ (BOOL)canCopyReminderLosslesslyFromAccountWithType:(int64_t)type toAccountWithType:(int64_t)withType accountTypeHost:(id)host
 {
-  if (a3 == a4)
+  if (type == withType)
   {
     return 1;
   }
 
   else
   {
-    return [a5 isCloudKit];
+    return [host isCloudKit];
   }
 }
 
-- (BOOL)canCopyReminderLosslesslyToAccount:(id)a3
+- (BOOL)canCopyReminderLosslesslyToAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = objc_opt_class();
-  v6 = [(REMAccount *)self type];
-  v7 = [v4 type];
-  v8 = [v4 accountTypeHost];
+  type = [(REMAccount *)self type];
+  type2 = [accountCopy type];
+  accountTypeHost = [accountCopy accountTypeHost];
 
-  LOBYTE(v6) = [v5 canCopyReminderLosslesslyFromAccountWithType:v6 toAccountWithType:v7 accountTypeHost:v8];
-  return v6;
+  LOBYTE(type) = [v5 canCopyReminderLosslesslyFromAccountWithType:type toAccountWithType:type2 accountTypeHost:accountTypeHost];
+  return type;
 }
 
-- (BOOL)isConsideredEmptyWithResultPtr:(BOOL *)a3 withError:(id *)a4
+- (BOOL)isConsideredEmptyWithResultPtr:(BOOL *)ptr withError:(id *)error
 {
   v26 = 0;
   v7 = [(REMAccount *)self fetchListsWithError:&v26];
@@ -289,16 +289,16 @@
 
   else if ([v7 count] < 2)
   {
-    v12 = [v7 firstObject];
-    if (v12)
+    firstObject = [v7 firstObject];
+    if (firstObject)
     {
       v13 = [REMRemindersDataView alloc];
-      v14 = [(REMAccount *)self store];
-      v15 = [(REMRemindersDataView *)v13 initWithStore:v14];
+      store = [(REMAccount *)self store];
+      v15 = [(REMRemindersDataView *)v13 initWithStore:store];
 
-      v16 = [v12 objectID];
+      objectID = [firstObject objectID];
       v25 = 0;
-      v17 = [(REMRemindersDataView *)v15 fetchRemindersCountWithListID:v16 includingCompleted:1 error:&v25];
+      v17 = [(REMRemindersDataView *)v15 fetchRemindersCountWithListID:objectID includingCompleted:1 error:&v25];
       v9 = v25;
 
       if (v9)
@@ -306,23 +306,23 @@
         v18 = +[REMLogStore read];
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          [REMAccount isConsideredEmptyWithResultPtr:v12 withError:?];
+          [REMAccount isConsideredEmptyWithResultPtr:firstObject withError:?];
         }
       }
 
       else
       {
-        v20 = [v17 intValue];
+        intValue = [v17 intValue];
         v21 = +[REMLogStore read];
         v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG);
-        if (v20)
+        if (intValue)
         {
           if (v22)
           {
             [REMAccount isConsideredEmptyWithResultPtr:withError:];
           }
 
-          *a3 = 0;
+          *ptr = 0;
         }
 
         else
@@ -332,7 +332,7 @@
             [REMAccount isConsideredEmptyWithResultPtr:withError:];
           }
 
-          *a3 = 1;
+          *ptr = 1;
         }
       }
     }
@@ -346,7 +346,7 @@
       }
 
       v9 = 0;
-      *a3 = 1;
+      *ptr = 1;
     }
   }
 
@@ -359,57 +359,57 @@
     }
 
     v9 = 0;
-    *a3 = 0;
+    *ptr = 0;
   }
 
-  if (a4)
+  if (error)
   {
     v23 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v9 == 0;
 }
 
-- (id)fetchListsIncludingSpecialContainersWithError:(id *)a3
+- (id)fetchListsIncludingSpecialContainersWithError:(id *)error
 {
-  v5 = [(REMAccount *)self store];
-  v6 = [v5 fetchListsIncludingSpecialContainersInAccount:self error:a3];
+  store = [(REMAccount *)self store];
+  v6 = [store fetchListsIncludingSpecialContainersInAccount:self error:error];
 
-  v7 = [v6 allValues];
+  allValues = [v6 allValues];
 
-  return v7;
+  return allValues;
 }
 
-- (id)fetchListIncludingSpecialContainerWithExternalIdentifier:(id)a3 error:(id *)a4
+- (id)fetchListIncludingSpecialContainerWithExternalIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = [REMListsDataView alloc];
-  v8 = [(REMAccount *)self store];
-  v9 = [(REMListsDataView *)v7 initWithStore:v8];
+  store = [(REMAccount *)self store];
+  v9 = [(REMListsDataView *)v7 initWithStore:store];
 
-  v10 = [(REMListsDataView *)v9 fetchListIncludingSpecialContainerWithExternalIdentifier:v6 inAccount:self error:a4];
+  v10 = [(REMListsDataView *)v9 fetchListIncludingSpecialContainerWithExternalIdentifier:identifierCopy inAccount:self error:error];
 
   return v10;
 }
 
-- (BOOL)MCIsManagedWithResultPtr:(BOOL *)a3 error:(id *)a4
+- (BOOL)MCIsManagedWithResultPtr:(BOOL *)ptr error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = [(REMAccount *)self store];
-  v8 = [(REMAccount *)self objectID];
+  store = [(REMAccount *)self store];
+  objectID = [(REMAccount *)self objectID];
   v15 = 0;
-  v9 = [v7 MCIsManagedAccountWithObjectID:v8 error:&v15];
+  v9 = [store MCIsManagedAccountWithObjectID:objectID error:&v15];
   v10 = v15;
 
   if (v9 || !v10)
   {
-    *a3 = [v9 BOOLValue];
+    *ptr = [v9 BOOLValue];
     v11 = +[REMLogStore read];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v9;
       _os_log_impl(&dword_19A0DB000, v11, OS_LOG_TYPE_INFO, "Performed XPC -MCIsManagedAccountWithObjectID: successful {account: %@, result: %@}", buf, 0x16u);
@@ -425,26 +425,26 @@
     }
   }
 
-  if (a4)
+  if (error)
   {
     v12 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   v13 = *MEMORY[0x1E69E9840];
   return v10 == 0;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(REMAccount *)self storage];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  storage = [(REMAccount *)self storage];
+  v6 = [storage valueForKey:keyCopy];
 
   return v6;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = REMAccount;
@@ -455,66 +455,66 @@
 
   else
   {
-    v5 = [(REMAccount *)self storage];
+    storage = [(REMAccount *)self storage];
     v4 = objc_opt_respondsToSelector();
   }
 
   return v4 & 1;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMAccount *)self storage];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  storage = [(REMAccount *)self storage];
+  [storage setValue:valueCopy forKey:keyCopy];
 }
 
 - (NSOrderedSet)listIDsOrdering
 {
-  v3 = [(REMAccount *)self storage];
-  v4 = [v3 listIDsMergeableOrdering];
+  storage = [(REMAccount *)self storage];
+  listIDsMergeableOrdering = [storage listIDsMergeableOrdering];
 
-  if (!v4)
+  if (!listIDsMergeableOrdering)
   {
     [(REMAccount *)self listIDsOrdering];
   }
 
-  v5 = [v4 orderedSet];
+  orderedSet = [listIDsMergeableOrdering orderedSet];
 
-  return v5;
+  return orderedSet;
 }
 
 - (BOOL)isUnsupported
 {
-  v2 = [(REMAccount *)self storage];
-  v3 = [v2 isUnsupported];
+  storage = [(REMAccount *)self storage];
+  isUnsupported = [storage isUnsupported];
 
-  return v3;
+  return isUnsupported;
 }
 
 - (id)externalIdentifierForMarkedForDeletionObject
 {
-  v2 = [(REMAccount *)self externalIdentifier];
-  v3 = [REMExternalSyncMetadataUtils decodeExternalIdentifierForMarkedForDeletionObject:v2];
+  externalIdentifier = [(REMAccount *)self externalIdentifier];
+  v3 = [REMExternalSyncMetadataUtils decodeExternalIdentifierForMarkedForDeletionObject:externalIdentifier];
 
   return v3;
 }
 
 - (BOOL)shouldUseExternalIdentifierAsDeletionKey
 {
-  v2 = [(REMAccount *)self type];
+  type = [(REMAccount *)self type];
 
-  return [REMExternalSyncMetadataUtils shouldUseExternalIdentifierAsDeletionKeyWithAccountType:v2];
+  return [REMExternalSyncMetadataUtils shouldUseExternalIdentifierAsDeletionKeyWithAccountType:type];
 }
 
-+ (id)_accountTypeMaskWithBitMask:(int64_t)a3
++ (id)_accountTypeMaskWithBitMask:(int64_t)mask
 {
-  v3 = a3;
+  maskCopy = mask;
   v4 = [MEMORY[0x1E695DFA8] set];
   for (i = 0; i != 7; ++i)
   {
-    if (((1 << i) & v3) != 0)
+    if (((1 << i) & maskCopy) != 0)
     {
       v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
       [v4 addObject:v6];
@@ -524,7 +524,7 @@
   return v4;
 }
 
-+ (BOOL)isCloudBasedAccountType:(int64_t)a3
++ (BOOL)isCloudBasedAccountType:(int64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -546,7 +546,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) integerValue] == a3)
+        if ([*(*(&v12 + 1) + 8 * i) integerValue] == type)
         {
           v9 = 1;
           goto LABEL_11;
@@ -605,7 +605,7 @@ LABEL_11:
   v2 = +[REMLogStore read];
   if (os_log_type_enabled(v2, OS_LOG_TYPE_FAULT))
   {
-    v4 = [a1 objectID];
+    objectID = [self objectID];
     OUTLINED_FUNCTION_2();
     _os_log_fault_impl(&dword_19A0DB000, v2, OS_LOG_TYPE_FAULT, "rem_log_fault_if (listIDsMergeableOrdering == nil) -- account.storage.listIDsMergeableOrdering should not be nil {objectID: %{public}@}", v5, 0xCu);
   }

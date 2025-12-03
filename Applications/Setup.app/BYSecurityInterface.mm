@@ -1,8 +1,8 @@
 @interface BYSecurityInterface
 + (id)sharedInterface;
-- (BOOL)getKeychainSyncCircleExists:(BOOL *)a3 inCircle:(BOOL *)a4 error:(id *)a5;
+- (BOOL)getKeychainSyncCircleExists:(BOOL *)exists inCircle:(BOOL *)circle error:(id *)error;
 - (BOOL)isHSA2EnabledForPrimaryAccount;
-- (BOOL)isICDPEnabledForDSID:(id)a3;
+- (BOOL)isICDPEnabledForDSID:(id)d;
 - (BOOL)isICDPEnabledForPrimaryAccount;
 - (BOOL)isManateeAvailable;
 - (id)primaryAccountDSID;
@@ -29,11 +29,11 @@
 
 - (int)keychainSyncStatus
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   if ([(BYSecurityInterface *)self simulating])
   {
-    if ([(BYSecurityInterface *)v12 simulateInCircle])
+    if ([(BYSecurityInterface *)selfCopy simulateInCircle])
     {
       return 2;
     }
@@ -65,9 +65,9 @@
 
         else if (location[0])
         {
-          v8 = [location[0] domain];
+          domain = [location[0] domain];
           v7 = 1;
-          v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v8, [location[0] code]);
+          v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [location[0] code]);
           v6 = v3;
           v5 = 1;
         }
@@ -98,21 +98,21 @@
   return v13;
 }
 
-- (BOOL)getKeychainSyncCircleExists:(BOOL *)a3 inCircle:(BOOL *)a4 error:(id *)a5
+- (BOOL)getKeychainSyncCircleExists:(BOOL *)exists inCircle:(BOOL *)circle error:(id *)error
 {
   if (![(BYSecurityInterface *)self simulating])
   {
     return PSKeychainSyncGetCircleMembershipStatus() & 1;
   }
 
-  if (a3)
+  if (exists)
   {
-    *a3 = [(BYSecurityInterface *)self simulateCircleExists];
+    *exists = [(BYSecurityInterface *)self simulateCircleExists];
   }
 
-  if (a4)
+  if (circle)
   {
-    *a4 = [(BYSecurityInterface *)self simulateInCircle];
+    *circle = [(BYSecurityInterface *)self simulateInCircle];
   }
 
   return 1;
@@ -125,34 +125,34 @@
   v2 = +[ACAccountStore defaultStore];
   location[0] = [v2 aa_primaryAppleAccount];
 
-  v5 = [location[0] aa_personID];
-  v3 = v5;
-  objc_storeStrong(&v5, 0);
+  aa_personID = [location[0] aa_personID];
+  v3 = aa_personID;
+  objc_storeStrong(&aa_personID, 0);
   objc_storeStrong(location, 0);
   return v3;
 }
 
 - (BOOL)isHSA2EnabledForPrimaryAccount
 {
-  v2 = [sub_100241D60() sharedInstance];
-  v3 = [v2 primaryAccountSecurityLevel] == 4;
+  sharedInstance = [sub_100241D60() sharedInstance];
+  v3 = [sharedInstance primaryAccountSecurityLevel] == 4;
 
   return v3;
 }
 
 - (BOOL)isICDPEnabledForPrimaryAccount
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v2 = +[ACAccountStore defaultStore];
   v6[0] = [v2 aa_primaryAppleAccount];
 
-  v3 = [v6[0] accountProperties];
-  location = [v3 objectForKeyedSubscript:@"personID"];
+  accountProperties = [v6[0] accountProperties];
+  location = [accountProperties objectForKeyedSubscript:@"personID"];
 
   if (location)
   {
-    v8 = [(BYSecurityInterface *)v7 isICDPEnabledForDSID:location];
+    v8 = [(BYSecurityInterface *)selfCopy isICDPEnabledForDSID:location];
   }
 
   else
@@ -165,13 +165,13 @@
   return v8 & 1;
 }
 
-- (BOOL)isICDPEnabledForDSID:(id)a3
+- (BOOL)isICDPEnabledForDSID:(id)d
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(BYSecurityInterface *)v5 simulating])
+  objc_storeStrong(location, d);
+  if ([(BYSecurityInterface *)selfCopy simulating])
   {
     v6 = 0;
   }
@@ -210,9 +210,9 @@
 
       else if (location[0])
       {
-        v10 = [location[0] domain];
+        domain = [location[0] domain];
         v9 = 1;
-        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v10, [location[0] code]);
+        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [location[0] code]);
         v8 = v4;
         v7 = 1;
       }

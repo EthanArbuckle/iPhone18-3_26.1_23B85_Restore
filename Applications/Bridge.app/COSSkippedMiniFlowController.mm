@@ -1,20 +1,20 @@
 @interface COSSkippedMiniFlowController
-- (COSSkippedMiniFlowController)initWithSkippedControllerClassNames:(id)a3;
+- (COSSkippedMiniFlowController)initWithSkippedControllerClassNames:(id)names;
 - (COSSkippedMiniFlowControllerDelegate)flowDelegate;
 - (id)currentController;
 - (id)nextViewController;
 - (id)setupFlowUserInfo;
 - (void)_didFinish;
-- (void)buddyControllerDone:(id)a3;
+- (void)buddyControllerDone:(id)done;
 - (void)doneButtonPressed;
 - (void)viewDidLoad;
 @end
 
 @implementation COSSkippedMiniFlowController
 
-- (COSSkippedMiniFlowController)initWithSkippedControllerClassNames:(id)a3
+- (COSSkippedMiniFlowController)initWithSkippedControllerClassNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   v24.receiver = self;
   v24.super_class = COSSkippedMiniFlowController;
   v5 = [(COSSkippedMiniFlowController *)&v24 init];
@@ -25,8 +25,8 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v19 = v4;
-    v7 = v4;
+    v19 = namesCopy;
+    v7 = namesCopy;
     v8 = [v7 countByEnumeratingWithState:&v20 objects:v27 count:16];
     if (v8)
     {
@@ -93,7 +93,7 @@
     v5->_skippedControllers = v6;
 
     v5->_controllerIndex = 0;
-    v4 = v19;
+    namesCopy = v19;
   }
 
   return v5;
@@ -101,19 +101,19 @@
 
 - (id)currentController
 {
-  v3 = [(COSSkippedMiniFlowController *)self controllerIndex];
-  v4 = [(COSSkippedMiniFlowController *)self skippedControllers];
-  v5 = [v4 count];
+  controllerIndex = [(COSSkippedMiniFlowController *)self controllerIndex];
+  skippedControllers = [(COSSkippedMiniFlowController *)self skippedControllers];
+  v5 = [skippedControllers count];
 
-  if (v3 >= v5)
+  if (controllerIndex >= v5)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(COSSkippedMiniFlowController *)self skippedControllers];
-    v7 = [v6 objectAtIndexedSubscript:{-[COSSkippedMiniFlowController controllerIndex](self, "controllerIndex")}];
+    skippedControllers2 = [(COSSkippedMiniFlowController *)self skippedControllers];
+    v7 = [skippedControllers2 objectAtIndexedSubscript:{-[COSSkippedMiniFlowController controllerIndex](self, "controllerIndex")}];
   }
 
   return v7;
@@ -121,16 +121,16 @@
 
 - (id)nextViewController
 {
-  v3 = [(COSSkippedMiniFlowController *)self currentController];
+  currentController = [(COSSkippedMiniFlowController *)self currentController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 viewController];
+    viewController = [currentController viewController];
 LABEL_5:
-    v5 = v4;
+    v5 = viewController;
     v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"doneButtonPressed"];
-    v7 = [v5 navigationItem];
-    [v7 setRightBarButtonItem:v6];
+    navigationItem = [v5 navigationItem];
+    [navigationItem setRightBarButtonItem:v6];
 
     v8 = v5;
     v9 = v8;
@@ -140,7 +140,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    viewController = currentController;
     goto LABEL_5;
   }
 
@@ -163,11 +163,11 @@ LABEL_10:
   v6.super_class = COSSkippedMiniFlowController;
   [(COSSkippedMiniFlowController *)&v6 viewDidLoad];
   [(COSSkippedMiniFlowController *)self setModalInPresentation:1];
-  v3 = [(COSSkippedMiniFlowController *)self nextViewController];
-  v4 = v3;
-  if (v3)
+  nextViewController = [(COSSkippedMiniFlowController *)self nextViewController];
+  v4 = nextViewController;
+  if (nextViewController)
   {
-    v7 = v3;
+    v7 = nextViewController;
     v5 = [NSArray arrayWithObjects:&v7 count:1];
     [(COSSkippedMiniFlowController *)self setViewControllers:v5];
   }
@@ -196,40 +196,40 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v9, 0xCu);
   }
 
-  v4 = [(COSSkippedMiniFlowController *)self flowDelegate];
-  if (v4)
+  flowDelegate = [(COSSkippedMiniFlowController *)self flowDelegate];
+  if (flowDelegate)
   {
-    v5 = v4;
-    v6 = [(COSSkippedMiniFlowController *)self flowDelegate];
+    v5 = flowDelegate;
+    flowDelegate2 = [(COSSkippedMiniFlowController *)self flowDelegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(COSSkippedMiniFlowController *)self flowDelegate];
-      [v8 skippedMiniFlowDidFinish:self];
+      flowDelegate3 = [(COSSkippedMiniFlowController *)self flowDelegate];
+      [flowDelegate3 skippedMiniFlowDidFinish:self];
     }
   }
 
   [(COSSkippedMiniFlowController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)buddyControllerDone:(id)a3
+- (void)buddyControllerDone:(id)done
 {
-  v4 = a3;
+  doneCopy = done;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[COSSkippedMiniFlowController buddyControllerDone:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = doneCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v8, 0x16u);
   }
 
   [BPSFollowUpController removeSkippedPaneClassForCurrentDevice:objc_opt_class()];
   [(COSSkippedMiniFlowController *)self setControllerIndex:[(COSSkippedMiniFlowController *)self controllerIndex]+ 1];
-  v6 = [(COSSkippedMiniFlowController *)self nextViewController];
-  if (v6)
+  nextViewController = [(COSSkippedMiniFlowController *)self nextViewController];
+  if (nextViewController)
   {
     v7 = pbb_bridge_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -237,11 +237,11 @@ LABEL_10:
       v8 = 136315394;
       v9 = "[COSSkippedMiniFlowController buddyControllerDone:]";
       v10 = 2112;
-      v11 = v6;
+      v11 = nextViewController;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s pushing %@", &v8, 0x16u);
     }
 
-    [(COSSkippedMiniFlowController *)self pushViewController:v6 animated:1];
+    [(COSSkippedMiniFlowController *)self pushViewController:nextViewController animated:1];
   }
 
   else
@@ -254,11 +254,11 @@ LABEL_10:
 {
   v2 = +[NSMutableDictionary dictionary];
   v3 = +[BPSTinkerSupport sharedInstance];
-  v4 = [v3 cachedTinkerFamilyMemeber];
+  cachedTinkerFamilyMemeber = [v3 cachedTinkerFamilyMemeber];
 
-  if (v4)
+  if (cachedTinkerFamilyMemeber)
   {
-    [v2 setObject:v4 forKey:BPSPairingFlowFamilyMember];
+    [v2 setObject:cachedTinkerFamilyMemeber forKey:BPSPairingFlowFamilyMember];
   }
 
   return v2;

@@ -1,28 +1,28 @@
 @interface BLTReferenceCountedFile
-+ (BOOL)release:(id)a3;
-+ (BOOL)retain:(id)a3;
-+ (BOOL)retain:(id)a3 fileData:(id)a4;
-+ (BOOL)writeRetainCount:(int64_t)a3 oldMetadata:(id)a4 to:(id)a5;
-+ (id)metadataForFile:(id)a3;
++ (BOOL)release:(id)release;
++ (BOOL)retain:(id)retain;
++ (BOOL)retain:(id)retain fileData:(id)data;
++ (BOOL)writeRetainCount:(int64_t)count oldMetadata:(id)metadata to:(id)to;
++ (id)metadataForFile:(id)file;
 @end
 
 @implementation BLTReferenceCountedFile
 
-+ (BOOL)retain:(id)a3 fileData:(id)a4
++ (BOOL)retain:(id)retain fileData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  retainCopy = retain;
+  dataCopy = data;
   os_unfair_lock_lock(&__read_write_lock);
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v6 relativePath];
-  v10 = [v8 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  relativePath = [retainCopy relativePath];
+  v10 = [defaultManager fileExistsAtPath:relativePath];
 
   if (!v10)
   {
-    if ([v7 writeToURL:v6 atomically:1])
+    if ([dataCopy writeToURL:retainCopy atomically:1])
     {
-      v12 = [v6 blt_metadataURL];
-      v13 = [a1 writeRetainCount:1 oldMetadata:MEMORY[0x277CBEC10] to:v12];
+      blt_metadataURL = [retainCopy blt_metadataURL];
+      v13 = [self writeRetainCount:1 oldMetadata:MEMORY[0x277CBEC10] to:blt_metadataURL];
 
       if (v13)
       {
@@ -31,9 +31,9 @@
         goto LABEL_15;
       }
 
-      v15 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v20 = 0;
-      v16 = [v15 removeItemAtURL:v6 error:&v20];
+      v16 = [defaultManager2 removeItemAtURL:retainCopy error:&v20];
       v17 = v20;
 
       if ((v16 & 1) == 0)
@@ -63,18 +63,18 @@
     goto LABEL_15;
   }
 
-  v11 = [a1 retain:v6];
+  v11 = [self retain:retainCopy];
   os_unfair_lock_unlock(&__read_write_lock);
 LABEL_15:
 
   return v11;
 }
 
-+ (BOOL)retain:(id)a3
++ (BOOL)retain:(id)retain
 {
-  v4 = a3;
+  retainCopy = retain;
   os_unfair_lock_assert_owner(&__read_write_lock);
-  v5 = [a1 metadataForFile:v4];
+  v5 = [self metadataForFile:retainCopy];
   v6 = v5;
   if (!v5)
   {
@@ -103,20 +103,20 @@ LABEL_9:
   }
 
   v9 = ([v7 intValue]+ 1);
-  v10 = [v4 blt_metadataURL];
-  v11 = [a1 writeRetainCount:v9 oldMetadata:v6 to:v10];
+  blt_metadataURL = [retainCopy blt_metadataURL];
+  v11 = [self writeRetainCount:v9 oldMetadata:v6 to:blt_metadataURL];
 
 LABEL_10:
   return v11;
 }
 
-+ (id)metadataForFile:(id)a3
++ (id)metadataForFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   os_unfair_lock_assert_owner(&__read_write_lock);
-  v4 = [v3 blt_metadataURL];
+  blt_metadataURL = [fileCopy blt_metadataURL];
 
-  v5 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v4];
+  v5 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:blt_metadataURL];
   if (!v5)
   {
     v6 = blt_general_log();
@@ -129,17 +129,17 @@ LABEL_10:
   return v5;
 }
 
-+ (BOOL)writeRetainCount:(int64_t)a3 oldMetadata:(id)a4 to:(id)a5
++ (BOOL)writeRetainCount:(int64_t)count oldMetadata:(id)metadata to:(id)to
 {
-  v7 = a5;
-  v8 = a4;
+  toCopy = to;
+  metadataCopy = metadata;
   os_unfair_lock_assert_owner(&__read_write_lock);
-  v9 = [v8 mutableCopy];
+  v9 = [metadataCopy mutableCopy];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:count];
   [v9 setObject:v10 forKeyedSubscript:@"refCount"];
 
-  v11 = [v9 writeToURL:v7 atomically:1];
+  v11 = [v9 writeToURL:toCopy atomically:1];
   if ((v11 & 1) == 0)
   {
     v12 = blt_general_log();
@@ -152,27 +152,27 @@ LABEL_10:
   return v11;
 }
 
-+ (BOOL)release:(id)a3
++ (BOOL)release:(id)release
 {
-  v4 = a3;
+  releaseCopy = release;
   os_unfair_lock_lock(&__read_write_lock);
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v4 relativePath];
-  v7 = [v5 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  relativePath = [releaseCopy relativePath];
+  v7 = [defaultManager fileExistsAtPath:relativePath];
 
   if (v7)
   {
-    v8 = [a1 metadataForFile:v4];
+    v8 = [self metadataForFile:releaseCopy];
     v9 = [v8 objectForKeyedSubscript:@"refCount"];
     v10 = v9;
     if (v8 && v9)
     {
-      v11 = [v9 intValue];
-      if (v11 < 2)
+      intValue = [v9 intValue];
+      if (intValue < 2)
       {
-        v18 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
         v28 = 0;
-        v15 = [v18 removeItemAtURL:v4 error:&v28];
+        v15 = [defaultManager2 removeItemAtURL:releaseCopy error:&v28];
         v19 = v28;
 
         if ((v15 & 1) == 0)
@@ -184,10 +184,10 @@ LABEL_10:
           }
         }
 
-        v21 = [MEMORY[0x277CCAA00] defaultManager];
-        v22 = [v4 blt_metadataURL];
+        defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+        blt_metadataURL = [releaseCopy blt_metadataURL];
         v27 = v19;
-        v23 = [v21 removeItemAtURL:v22 error:&v27];
+        v23 = [defaultManager3 removeItemAtURL:blt_metadataURL error:&v27];
         v24 = v27;
 
         if ((v23 & 1) == 0)
@@ -206,9 +206,9 @@ LABEL_10:
         goto LABEL_22;
       }
 
-      v12 = (v11 - 1);
-      v13 = [v4 blt_metadataURL];
-      v14 = [a1 writeRetainCount:v12 oldMetadata:v8 to:v13];
+      v12 = (intValue - 1);
+      blt_metadataURL2 = [releaseCopy blt_metadataURL];
+      v14 = [self writeRetainCount:v12 oldMetadata:v8 to:blt_metadataURL2];
 
       if (v14)
       {

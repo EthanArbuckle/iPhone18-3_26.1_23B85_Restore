@@ -23,20 +23,20 @@
 
 - (MTFlexibleEventHandler)flexible
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_flexible)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_flexible)
   {
     v3 = [MTFlexibleEventHandler alloc];
-    v4 = [(MTObject *)v2 metricsKit];
-    v5 = [(MTObject *)v3 initWithMetricsKit:v4];
-    flexible = v2->_flexible;
-    v2->_flexible = v5;
+    metricsKit = [(MTObject *)selfCopy metricsKit];
+    v5 = [(MTObject *)v3 initWithMetricsKit:metricsKit];
+    flexible = selfCopy->_flexible;
+    selfCopy->_flexible = v5;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v7 = v2->_flexible;
+  v7 = selfCopy->_flexible;
 
   return v7;
 }

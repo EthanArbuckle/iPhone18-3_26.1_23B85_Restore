@@ -1,22 +1,22 @@
 @interface SCLSchoolModeXPCClient
-- (BOOL)_makeConnection:(id)a3;
+- (BOOL)_makeConnection:(id)connection;
 - (BOOL)isLoaded;
 - (SCLScheduleSettings)scheduleSettings;
-- (SCLSchoolModeXPCClient)initWithDelegate:(id)a3 configuration:(id)a4;
+- (SCLSchoolModeXPCClient)initWithDelegate:(id)delegate configuration:(id)configuration;
 - (SCLSchoolModeXPCClientDelegate)delegate;
 - (SCLState)state;
-- (id)serverWithErrorHandler:(id)a3;
+- (id)serverWithErrorHandler:(id)handler;
 - (void)_connectionDidInterrupt;
 - (void)_connectionDidInvalidate;
 - (void)_reconnectToServer;
-- (void)addUnlockHistoryItem:(id)a3 completion:(id)a4;
-- (void)applyScheduleSettings:(id)a3 completion:(id)a4;
-- (void)applyServerSettings:(id)a3;
+- (void)addUnlockHistoryItem:(id)item completion:(id)completion;
+- (void)applyScheduleSettings:(id)settings completion:(id)completion;
+- (void)applyServerSettings:(id)settings;
 - (void)dealloc;
-- (void)deleteHistoryWithCompletion:(id)a3;
+- (void)deleteHistoryWithCompletion:(id)completion;
 - (void)didChangeUnlockHistory;
 - (void)dumpState;
-- (void)fetchRecentUnlockHistoryItemsWithCompletion:(id)a3;
+- (void)fetchRecentUnlockHistoryItemsWithCompletion:(id)completion;
 - (void)invalidate;
 - (void)noteSignificantUserInteraction;
 - (void)resume;
@@ -25,11 +25,11 @@
 
 @implementation SCLSchoolModeXPCClient
 
-- (SCLSchoolModeXPCClient)initWithDelegate:(id)a3 configuration:(id)a4
+- (SCLSchoolModeXPCClient)initWithDelegate:(id)delegate configuration:(id)configuration
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  configurationCopy = configuration;
   v31.receiver = self;
   v31.super_class = SCLSchoolModeXPCClient;
   v8 = [(SCLSchoolModeXPCClient *)&v31 init];
@@ -37,8 +37,8 @@
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_configuration, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_configuration, configuration);
     v9->_connectionLock._os_unfair_lock_opaque = 0;
     v9->_connectionState = 0;
     v9->_clientState = 0;
@@ -48,7 +48,7 @@
       v11 = scl_framework_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(SCLSchoolModeXPCClient *)v7 initWithDelegate:v10 configuration:v11];
+        [(SCLSchoolModeXPCClient *)configurationCopy initWithDelegate:v10 configuration:v11];
       }
     }
 
@@ -63,20 +63,20 @@
     [(SCLSchoolModeServerSettings *)v9->_serverSettings setScheduleSettings:v14];
     v16 = [[SCLState alloc] initWithActiveState:0 scheduleEnabled:0 inSchedule:0];
     [(SCLSchoolModeServerSettings *)v9->_serverSettings setState:v16];
-    [(SCLSchoolModeXPCClient *)v9 _makeConnection:v7];
-    v17 = [v7 identifier];
+    [(SCLSchoolModeXPCClient *)v9 _makeConnection:configurationCopy];
+    identifier = [configurationCopy identifier];
     objc_initWeak(&location, v9);
-    v18 = [@"SCLServerStartNotification" UTF8String];
-    v19 = [(SCLSchoolModeXPCClient *)v9 configuration];
-    v20 = [v19 targetQueue];
+    uTF8String = [@"SCLServerStartNotification" UTF8String];
+    configuration = [(SCLSchoolModeXPCClient *)v9 configuration];
+    targetQueue = [configuration targetQueue];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __57__SCLSchoolModeXPCClient_initWithDelegate_configuration___block_invoke;
     handler[3] = &unk_279B6C0B0;
-    v21 = v17;
+    v21 = identifier;
     v28 = v21;
     objc_copyWeak(&v29, &location);
-    v22 = notify_register_dispatch(v18, &v9->_restartNotificationToken, v20, handler);
+    v22 = notify_register_dispatch(uTF8String, &v9->_restartNotificationToken, targetQueue, handler);
 
     if (v22)
     {
@@ -129,9 +129,9 @@ void __57__SCLSchoolModeXPCClient_initWithDelegate_configuration___block_invoke(
   [(SCLSchoolModeXPCClient *)&v4 dealloc];
 }
 
-- (BOOL)_makeConnection:(id)a3
+- (BOOL)_makeConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_connectionLock);
   if ([(SCLSchoolModeXPCClient *)self clientState]== 2)
   {
@@ -157,14 +157,14 @@ void __57__SCLSchoolModeXPCClient_initWithDelegate_configuration___block_invoke(
     v9 = v8;
     if (!v8)
     {
-      v10 = [v4 testingEndpoint];
+      testingEndpoint = [connectionCopy testingEndpoint];
 
       v11 = objc_alloc(MEMORY[0x277CCAE80]);
       v12 = v11;
-      if (v10)
+      if (testingEndpoint)
       {
-        v13 = [v4 testingEndpoint];
-        v14 = [v12 initWithListenerEndpoint:v13];
+        testingEndpoint2 = [connectionCopy testingEndpoint];
+        v14 = [v12 initWithListenerEndpoint:testingEndpoint2];
         v15 = self->_connection;
         self->_connection = v14;
       }
@@ -172,11 +172,11 @@ void __57__SCLSchoolModeXPCClient_initWithDelegate_configuration___block_invoke(
       else
       {
         v16 = [v11 initWithMachServiceName:@"com.apple.schooltime.schedule" options:0];
-        v13 = self->_connection;
+        testingEndpoint2 = self->_connection;
         self->_connection = v16;
       }
 
-      v17 = [v4 identifier];
+      identifier = [connectionCopy identifier];
       [(NSXPCConnection *)self->_connection setExportedObject:self];
       v18 = self->_connection;
       v19 = SCLSchoolModeClientXPCInterface();
@@ -187,8 +187,8 @@ void __57__SCLSchoolModeXPCClient_initWithDelegate_configuration___block_invoke(
       [(NSXPCConnection *)v20 setRemoteObjectInterface:v21];
 
       v22 = self->_connection;
-      v23 = [v4 targetQueue];
-      [(NSXPCConnection *)v22 _setQueue:v23];
+      targetQueue = [connectionCopy targetQueue];
+      [(NSXPCConnection *)v22 _setQueue:targetQueue];
 
       objc_initWeak(&location, self);
       v24 = self->_connection;
@@ -197,7 +197,7 @@ void __57__SCLSchoolModeXPCClient_initWithDelegate_configuration___block_invoke(
       v32[2] = __42__SCLSchoolModeXPCClient__makeConnection___block_invoke;
       v32[3] = &unk_279B6C0D8;
       objc_copyWeak(&v34, &location);
-      v25 = v17;
+      v25 = identifier;
       v33 = v25;
       [(NSXPCConnection *)v24 setInterruptionHandler:v32];
       v26 = self->_connection;
@@ -266,7 +266,7 @@ void __42__SCLSchoolModeXPCClient__makeConnection___block_invoke_10(uint64_t a1)
 - (void)resume
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_264829000, log, OS_LOG_TYPE_ERROR, "Cannot resume an invalidated client %{public}@", buf, 0xCu);
 }
 
@@ -334,28 +334,28 @@ void __32__SCLSchoolModeXPCClient_resume__block_invoke_12(uint64_t a1, void *a2)
   v13.opaque[0] = 0;
   v13.opaque[1] = 0;
   os_activity_scope_enter(v3, &v13);
-  v4 = [(SCLSchoolModeConfiguration *)self->_configuration identifier];
-  v5 = [(SCLSchoolModeXPCClient *)self configuration];
-  v6 = [(SCLSchoolModeXPCClient *)self _makeConnection:v5];
+  identifier = [(SCLSchoolModeConfiguration *)self->_configuration identifier];
+  configuration = [(SCLSchoolModeXPCClient *)self configuration];
+  v6 = [(SCLSchoolModeXPCClient *)self _makeConnection:configuration];
 
   os_unfair_lock_lock(&self->_connectionLock);
-  v7 = [(SCLSchoolModeXPCClient *)self clientState];
+  clientState = [(SCLSchoolModeXPCClient *)self clientState];
   os_unfair_lock_unlock(&self->_connectionLock);
   v8 = scl_framework_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (v7 > 2)
+    if (clientState > 2)
     {
       v9 = &stru_287622948;
     }
 
     else
     {
-      v9 = off_279B6C1E0[v7];
+      v9 = off_279B6C1E0[clientState];
     }
 
     *buf = 138543874;
-    v15 = v4;
+    v15 = identifier;
     v16 = 1024;
     v17 = v6;
     v18 = 2112;
@@ -363,13 +363,13 @@ void __32__SCLSchoolModeXPCClient_resume__block_invoke_12(uint64_t a1, void *a2)
     _os_log_impl(&dword_264829000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] made new connection for reconnect: %{BOOL}d; clientState: %@", buf, 0x1Cu);
   }
 
-  if (v7 == 1 && v6)
+  if (clientState == 1 && v6)
   {
     v11 = scl_framework_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = v4;
+      v15 = identifier;
       _os_log_impl(&dword_264829000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] new connection and previously running, resuming", buf, 0xCu);
     }
 
@@ -383,27 +383,27 @@ void __32__SCLSchoolModeXPCClient_resume__block_invoke_12(uint64_t a1, void *a2)
 - (SCLState)state
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(SCLSchoolModeServerSettings *)self->_serverSettings state];
+  state = [(SCLSchoolModeServerSettings *)self->_serverSettings state];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return state;
 }
 
 - (SCLScheduleSettings)scheduleSettings
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(SCLSchoolModeServerSettings *)self->_serverSettings scheduleSettings];
+  scheduleSettings = [(SCLSchoolModeServerSettings *)self->_serverSettings scheduleSettings];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return scheduleSettings;
 }
 
 - (BOOL)isLoaded
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(SCLSchoolModeServerSettings *)self->_serverSettings isLoaded];
+  isLoaded = [(SCLSchoolModeServerSettings *)self->_serverSettings isLoaded];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return isLoaded;
 }
 
 - (void)invalidate
@@ -412,25 +412,25 @@ void __32__SCLSchoolModeXPCClient_resume__block_invoke_12(uint64_t a1, void *a2)
   [(SCLSchoolModeXPCClient *)self setClientState:2];
   notify_cancel(self->_restartNotificationToken);
   self->_restartNotificationToken = -1;
-  v3 = [(SCLSchoolModeXPCClient *)self connection];
-  [v3 setInterruptionHandler:0];
-  [v3 setInvalidationHandler:0];
+  connection = [(SCLSchoolModeXPCClient *)self connection];
+  [connection setInterruptionHandler:0];
+  [connection setInvalidationHandler:0];
   os_unfair_lock_unlock(&self->_connectionLock);
-  [v3 invalidate];
+  [connection invalidate];
 }
 
-- (void)applyScheduleSettings:(id)a3 completion:(id)a4
+- (void)applyScheduleSettings:(id)settings completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__SCLSchoolModeXPCClient_applyScheduleSettings_completion___block_invoke;
   v11[3] = &unk_279B6C150;
-  v12 = v6;
-  v7 = v6;
-  v8 = a3;
+  v12 = completionCopy;
+  v7 = completionCopy;
+  settingsCopy = settings;
   v9 = [(SCLSchoolModeXPCClient *)self serverWithErrorHandler:v11];
-  v10 = [v8 copy];
+  v10 = [settingsCopy copy];
 
   [v9 applySchedule:v10 completion:v7];
 }
@@ -483,42 +483,42 @@ void __55__SCLSchoolModeXPCClient_setActive_options_completion___block_invoke_14
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchRecentUnlockHistoryItemsWithCompletion:(id)a3
+- (void)fetchRecentUnlockHistoryItemsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__SCLSchoolModeXPCClient_fetchRecentUnlockHistoryItemsWithCompletion___block_invoke;
   v7[3] = &unk_279B6C150;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(SCLSchoolModeXPCClient *)self serverWithErrorHandler:v7];
   [v6 fetchRecentUnlockHistoryItemsWithCompletion:v5];
 }
 
-- (void)addUnlockHistoryItem:(id)a3 completion:(id)a4
+- (void)addUnlockHistoryItem:(id)item completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__SCLSchoolModeXPCClient_addUnlockHistoryItem_completion___block_invoke;
   v10[3] = &unk_279B6C150;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  itemCopy = item;
   v9 = [(SCLSchoolModeXPCClient *)self serverWithErrorHandler:v10];
-  [v9 addUnlockHistoryItem:v8 completion:v7];
+  [v9 addUnlockHistoryItem:itemCopy completion:v7];
 }
 
-- (void)deleteHistoryWithCompletion:(id)a3
+- (void)deleteHistoryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__SCLSchoolModeXPCClient_deleteHistoryWithCompletion___block_invoke;
   v7[3] = &unk_279B6C150;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(SCLSchoolModeXPCClient *)self serverWithErrorHandler:v7];
   [v6 deleteHistoryWithCompletion:v5];
 }
@@ -541,19 +541,19 @@ void __55__SCLSchoolModeXPCClient_setActive_options_completion___block_invoke_14
   [v2 dumpState];
 }
 
-- (id)serverWithErrorHandler:(id)a3
+- (id)serverWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SCLSchoolModeXPCClient *)self configuration];
-  v6 = [(SCLSchoolModeXPCClient *)self _makeConnection:v5];
+  handlerCopy = handler;
+  configuration = [(SCLSchoolModeXPCClient *)self configuration];
+  v6 = [(SCLSchoolModeXPCClient *)self _makeConnection:configuration];
 
   if (v6)
   {
     [(SCLSchoolModeXPCClient *)self resume];
   }
 
-  v7 = [(SCLSchoolModeXPCClient *)self connection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v4];
+  connection = [(SCLSchoolModeXPCClient *)self connection];
+  v8 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v8;
 }
@@ -564,14 +564,14 @@ void __55__SCLSchoolModeXPCClient_setActive_options_completion___block_invoke_14
   v3 = scl_framework_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SCLSchoolModeXPCClient *)self configuration];
-    v5 = [v4 identifier];
-    v6 = [(SCLSchoolModeXPCClient *)self configuration];
-    v7 = [v6 pairingID];
+    configuration = [(SCLSchoolModeXPCClient *)self configuration];
+    identifier = [configuration identifier];
+    configuration2 = [(SCLSchoolModeXPCClient *)self configuration];
+    pairingID = [configuration2 pairingID];
     v9 = 138412546;
-    v10 = v5;
+    v10 = identifier;
     v11 = 2112;
-    v12 = v7;
+    v12 = pairingID;
     _os_log_impl(&dword_264829000, v3, OS_LOG_TYPE_DEFAULT, "Marking connection as interrupted and NOT reconnecting %@ - %@", &v9, 0x16u);
   }
 
@@ -584,23 +584,23 @@ void __55__SCLSchoolModeXPCClient_setActive_options_completion___block_invoke_14
 - (void)_connectionDidInterrupt
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(SCLSchoolModeXPCClient *)self configuration];
-  v4 = [v3 targetQueue];
-  dispatch_assert_queue_V2(v4);
+  configuration = [(SCLSchoolModeXPCClient *)self configuration];
+  targetQueue = [configuration targetQueue];
+  dispatch_assert_queue_V2(targetQueue);
 
   if ([(SCLSchoolModeXPCClient *)self lastServerRestartTime]&& (v5 = mach_continuous_time(), (v5 - [(SCLSchoolModeXPCClient *)self lastServerRestartTime]) * self->_timebase.numer / self->_timebase.denom <= 0x773593FF))
   {
     v6 = scl_framework_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(SCLSchoolModeXPCClient *)self configuration];
-      v8 = [v7 identifier];
-      v9 = [(SCLSchoolModeXPCClient *)self configuration];
-      v10 = [v9 pairingID];
+      configuration2 = [(SCLSchoolModeXPCClient *)self configuration];
+      identifier = [configuration2 identifier];
+      configuration3 = [(SCLSchoolModeXPCClient *)self configuration];
+      pairingID = [configuration3 pairingID];
       v17 = 138412546;
-      v18 = v8;
+      v18 = identifier;
       v19 = 2112;
-      v20 = v10;
+      v20 = pairingID;
       _os_log_impl(&dword_264829000, v6, OS_LOG_TYPE_DEFAULT, "Marking connection as interrupted and reconnecting %@ - %@ because server recently restarted", &v17, 0x16u);
     }
 
@@ -615,14 +615,14 @@ void __55__SCLSchoolModeXPCClient_setActive_options_completion___block_invoke_14
     v11 = scl_framework_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(SCLSchoolModeXPCClient *)self configuration];
-      v13 = [v12 identifier];
-      v14 = [(SCLSchoolModeXPCClient *)self configuration];
-      v15 = [v14 pairingID];
+      configuration4 = [(SCLSchoolModeXPCClient *)self configuration];
+      identifier2 = [configuration4 identifier];
+      configuration5 = [(SCLSchoolModeXPCClient *)self configuration];
+      pairingID2 = [configuration5 pairingID];
       v17 = 138412546;
-      v18 = v13;
+      v18 = identifier2;
       v19 = 2112;
-      v20 = v15;
+      v20 = pairingID2;
       _os_log_impl(&dword_264829000, v11, OS_LOG_TYPE_DEFAULT, "Marking connection as interrupted and NOT reconnecting %@ - %@", &v17, 0x16u);
     }
 
@@ -634,51 +634,51 @@ void __55__SCLSchoolModeXPCClient_setActive_options_completion___block_invoke_14
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applyServerSettings:(id)a3
+- (void)applyServerSettings:(id)settings
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_serverSettings;
-  v6 = [v4 copy];
+  v6 = [settingsCopy copy];
   serverSettings = self->_serverSettings;
   self->_serverSettings = v6;
 
   os_unfair_lock_unlock(&self->_lock);
-  v8 = [(SCLSchoolModeServerSettings *)v5 state];
-  v9 = [v4 state];
+  state = [(SCLSchoolModeServerSettings *)v5 state];
+  state2 = [settingsCopy state];
   v10 = scl_framework_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [(SCLSchoolModeXPCClient *)self configuration];
-    v12 = [v11 identifier];
+    configuration = [(SCLSchoolModeXPCClient *)self configuration];
+    identifier = [configuration identifier];
     v19 = 138543874;
-    v20 = v12;
+    v20 = identifier;
     v21 = 2112;
-    v22 = v8;
+    v22 = state;
     v23 = 2112;
-    v24 = v9;
+    v24 = state2;
     _os_log_impl(&dword_264829000, v10, OS_LOG_TYPE_INFO, "[%{public}@] Applying server settings, oldState %@, newState %@", &v19, 0x20u);
   }
 
-  if (v8 != v9 && ([v8 isEqual:v9] & 1) == 0)
+  if (state != state2 && ([state isEqual:state2] & 1) == 0)
   {
-    v13 = [(SCLSchoolModeXPCClient *)self delegate];
-    [v13 client:self didUpdateToState:v9 fromState:v8];
+    delegate = [(SCLSchoolModeXPCClient *)self delegate];
+    [delegate client:self didUpdateToState:state2 fromState:state];
   }
 
-  v14 = [(SCLSchoolModeServerSettings *)v5 scheduleSettings];
-  v15 = [v4 scheduleSettings];
-  if (!-[SCLSchoolModeServerSettings isLoaded](v5, "isLoaded") && [v4 isLoaded])
+  scheduleSettings = [(SCLSchoolModeServerSettings *)v5 scheduleSettings];
+  scheduleSettings2 = [settingsCopy scheduleSettings];
+  if (!-[SCLSchoolModeServerSettings isLoaded](v5, "isLoaded") && [settingsCopy isLoaded])
   {
-    v16 = [(SCLSchoolModeXPCClient *)self delegate];
-    [v16 client:self didLoadScheduleSettings:v15];
+    delegate2 = [(SCLSchoolModeXPCClient *)self delegate];
+    [delegate2 client:self didLoadScheduleSettings:scheduleSettings2];
   }
 
-  if (([v14 isEqual:v15] & 1) == 0 && -[SCLSchoolModeServerSettings isLoaded](v5, "isLoaded") && objc_msgSend(v4, "isLoaded"))
+  if (([scheduleSettings isEqual:scheduleSettings2] & 1) == 0 && -[SCLSchoolModeServerSettings isLoaded](v5, "isLoaded") && objc_msgSend(settingsCopy, "isLoaded"))
   {
-    v17 = [(SCLSchoolModeXPCClient *)self delegate];
-    [v17 client:self didUpdateScheduleSettings:v15];
+    delegate3 = [(SCLSchoolModeXPCClient *)self delegate];
+    [delegate3 client:self didUpdateScheduleSettings:scheduleSettings2];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -686,8 +686,8 @@ void __55__SCLSchoolModeXPCClient_setActive_options_completion___block_invoke_14
 
 - (void)didChangeUnlockHistory
 {
-  v3 = [(SCLSchoolModeXPCClient *)self delegate];
-  [v3 clientDidChangeUnlockHistory:self];
+  delegate = [(SCLSchoolModeXPCClient *)self delegate];
+  [delegate clientDidChangeUnlockHistory:self];
 }
 
 - (SCLSchoolModeXPCClientDelegate)delegate

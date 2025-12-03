@@ -1,12 +1,12 @@
 @interface AADeviceModelHelper
-+ (BOOL)isDeviceEqualTo:(id)a3;
++ (BOOL)isDeviceEqualTo:(id)to;
 @end
 
 @implementation AADeviceModelHelper
 
-+ (BOOL)isDeviceEqualTo:(id)a3
++ (BOOL)isDeviceEqualTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   if (isDeviceEqualTo__onceToken != -1)
   {
     +[AADeviceModelHelper isDeviceEqualTo:];
@@ -18,7 +18,7 @@
     [AADeviceModelHelper isDeviceEqualTo:v4];
   }
 
-  v5 = [isDeviceEqualTo__deviceModel isEqualToString:v3];
+  v5 = [isDeviceEqualTo__deviceModel isEqualToString:toCopy];
   return v5;
 }
 

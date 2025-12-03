@@ -1,60 +1,60 @@
 @interface CPUIBannerTransitioningDelegate
-- (Class)_bannerTransitionAnimatorClassForAnimationStyle:(int64_t)a3;
-- (id)animationControllerForDismissedController:(id)a3 userInfo:(id)a4;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5 userInfo:(id)a6;
-- (id)animationControllerForResizingController:(id)a3 userInfo:(id)a4;
+- (Class)_bannerTransitionAnimatorClassForAnimationStyle:(int64_t)style;
+- (id)animationControllerForDismissedController:(id)controller userInfo:(id)info;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController userInfo:(id)info;
+- (id)animationControllerForResizingController:(id)controller userInfo:(id)info;
 @end
 
 @implementation CPUIBannerTransitioningDelegate
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5 userInfo:(id)a6
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController userInfo:(id)info
 {
-  v7 = a6;
-  v8 = [v7 objectForKey:@"CPUIBannerTransitionAnimationStyle"];
+  infoCopy = info;
+  v8 = [infoCopy objectForKey:@"CPUIBannerTransitionAnimationStyle"];
   if (v8)
   {
-    v9 = [v7 objectForKey:@"CPUIBannerTransitionAnimationStyle"];
-    v10 = [v9 integerValue];
+    v9 = [infoCopy objectForKey:@"CPUIBannerTransitionAnimationStyle"];
+    integerValue = [v9 integerValue];
   }
 
   else
   {
-    v10 = 0;
+    integerValue = 0;
   }
 
-  v11 = [objc_alloc(-[CPUIBannerTransitioningDelegate _bannerTransitionAnimatorClassForAnimationStyle:](self _bannerTransitionAnimatorClassForAnimationStyle:{v10)), "initForPresenting:", 1}];
+  v11 = [objc_alloc(-[CPUIBannerTransitioningDelegate _bannerTransitionAnimatorClassForAnimationStyle:](self _bannerTransitionAnimatorClassForAnimationStyle:{integerValue)), "initForPresenting:", 1}];
 
   return v11;
 }
 
-- (id)animationControllerForDismissedController:(id)a3 userInfo:(id)a4
+- (id)animationControllerForDismissedController:(id)controller userInfo:(id)info
 {
-  v5 = a4;
-  v6 = [v5 objectForKey:@"CPUIBannerTransitionAnimationStyle"];
+  infoCopy = info;
+  v6 = [infoCopy objectForKey:@"CPUIBannerTransitionAnimationStyle"];
   if (v6)
   {
-    v7 = [v5 objectForKey:@"CPUIBannerTransitionAnimationStyle"];
-    v8 = [v7 integerValue];
+    v7 = [infoCopy objectForKey:@"CPUIBannerTransitionAnimationStyle"];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v8 = 1;
+    integerValue = 1;
   }
 
-  v9 = [objc_alloc(-[CPUIBannerTransitioningDelegate _bannerTransitionAnimatorClassForAnimationStyle:](self _bannerTransitionAnimatorClassForAnimationStyle:{v8)), "initForPresenting:", 0}];
+  v9 = [objc_alloc(-[CPUIBannerTransitioningDelegate _bannerTransitionAnimatorClassForAnimationStyle:](self _bannerTransitionAnimatorClassForAnimationStyle:{integerValue)), "initForPresenting:", 0}];
 
   return v9;
 }
 
-- (id)animationControllerForResizingController:(id)a3 userInfo:(id)a4
+- (id)animationControllerForResizingController:(id)controller userInfo:(id)info
 {
   v4 = [(BNBannerTransitionAnimator *)[CPUIBannerTransitionAnimator alloc] initForPresenting:1];
 
   return v4;
 }
 
-- (Class)_bannerTransitionAnimatorClassForAnimationStyle:(int64_t)a3
+- (Class)_bannerTransitionAnimatorClassForAnimationStyle:(int64_t)style
 {
   v3 = objc_opt_class();
 

@@ -1,38 +1,38 @@
 @interface HDSHSleepApneaRescindedNotificationManager
-- (BOOL)_isFeatureRescindedWithRequirementsEvaluation:(id)a3;
-- (BOOL)_isFeatureUnavailableForNonRescindedReasonWithRequirementsEvaluation:(id)a3;
-- (HDSHSleepApneaRescindedNotificationManager)initWithProfile:(id)a3 featureStatusProvider:(id)a4;
-- (HDSHSleepApneaRescindedNotificationManager)initWithProfile:(id)a3 featureStatusProvider:(id)a4 queueOverride:(id)a5;
-- (id)_categoryIdentifierFromRescindedReason:(id)a3;
-- (id)_rescindedNotificationTitleAndBodyKeysWithHighestPriorityUnsatisfiedRequirementIdentifier:(id)a3;
+- (BOOL)_isFeatureRescindedWithRequirementsEvaluation:(id)evaluation;
+- (BOOL)_isFeatureUnavailableForNonRescindedReasonWithRequirementsEvaluation:(id)evaluation;
+- (HDSHSleepApneaRescindedNotificationManager)initWithProfile:(id)profile featureStatusProvider:(id)provider;
+- (HDSHSleepApneaRescindedNotificationManager)initWithProfile:(id)profile featureStatusProvider:(id)provider queueOverride:(id)override;
+- (id)_categoryIdentifierFromRescindedReason:(id)reason;
+- (id)_rescindedNotificationTitleAndBodyKeysWithHighestPriorityUnsatisfiedRequirementIdentifier:(id)identifier;
 - (id)_rescindedRequirementIdentifiers;
 - (void)_queue_checkFeatureStatus;
-- (void)_queue_sendNotificationRequestIfNeededWithFeatureStatus:(id)a3;
-- (void)_showRescindedNotificationWithTitleAndBodyKeys:(id)a3 rescindedReason:(id)a4;
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)_queue_sendNotificationRequestIfNeededWithFeatureStatus:(id)status;
+- (void)_showRescindedNotificationWithTitleAndBodyKeys:(id)keys rescindedReason:(id)reason;
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation HDSHSleepApneaRescindedNotificationManager
 
-- (HDSHSleepApneaRescindedNotificationManager)initWithProfile:(id)a3 featureStatusProvider:(id)a4 queueOverride:(id)a5
+- (HDSHSleepApneaRescindedNotificationManager)initWithProfile:(id)profile featureStatusProvider:(id)provider queueOverride:(id)override
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  providerCopy = provider;
+  overrideCopy = override;
   v17.receiver = self;
   v17.super_class = HDSHSleepApneaRescindedNotificationManager;
   v11 = [(HDSHSleepApneaRescindedNotificationManager *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_profile, v8);
-    objc_storeStrong(&v12->_featureStatusProvider, a4);
-    v13 = [objc_alloc(MEMORY[0x277D10718]) initWithCategory:100 domainName:@"com.apple.health.Sleep.SleepApneaRescindedNotification" profile:v8];
+    objc_storeWeak(&v11->_profile, profileCopy);
+    objc_storeStrong(&v12->_featureStatusProvider, provider);
+    v13 = [objc_alloc(MEMORY[0x277D10718]) initWithCategory:100 domainName:@"com.apple.health.Sleep.SleepApneaRescindedNotification" profile:profileCopy];
     localKeyValueDomain = v12->_localKeyValueDomain;
     v12->_localKeyValueDomain = v13;
 
-    objc_storeStrong(&v12->_queue, a5);
+    objc_storeStrong(&v12->_queue, override);
     WeakRetained = objc_loadWeakRetained(&v12->_profile);
     [WeakRetained registerProfileReadyObserver:v12 queue:v12->_queue];
   }
@@ -40,17 +40,17 @@
   return v12;
 }
 
-- (HDSHSleepApneaRescindedNotificationManager)initWithProfile:(id)a3 featureStatusProvider:(id)a4
+- (HDSHSleepApneaRescindedNotificationManager)initWithProfile:(id)profile featureStatusProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  profileCopy = profile;
   v8 = HKCreateSerialDispatchQueue();
-  v9 = [(HDSHSleepApneaRescindedNotificationManager *)self initWithProfile:v7 featureStatusProvider:v6 queueOverride:v8];
+  v9 = [(HDSHSleepApneaRescindedNotificationManager *)self initWithProfile:profileCopy featureStatusProvider:providerCopy queueOverride:v8];
 
   return v9;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   dispatch_assert_queue_V2(self->_queue);
   featureStatusProvider = self->_featureStatusProvider;
@@ -59,10 +59,10 @@
   [(HKFeatureStatusProviding *)featureStatusProvider registerObserver:self queue:queue];
 }
 
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  statusCopy = status;
   dispatch_assert_queue_V2(self->_queue);
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC320];
@@ -72,12 +72,12 @@
     *v10 = 138543618;
     *&v10[4] = objc_opt_class();
     *&v10[12] = 2112;
-    *&v10[14] = v5;
+    *&v10[14] = statusCopy;
     v8 = *&v10[4];
     _os_log_impl(&dword_269C02000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Feature status changed to: %@", v10, 0x16u);
   }
 
-  [(HDSHSleepApneaRescindedNotificationManager *)self _queue_sendNotificationRequestIfNeededWithFeatureStatus:v5, *v10, *&v10[16], v11];
+  [(HDSHSleepApneaRescindedNotificationManager *)self _queue_sendNotificationRequestIfNeededWithFeatureStatus:statusCopy, *v10, *&v10[16], v11];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -115,15 +115,15 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_sendNotificationRequestIfNeededWithFeatureStatus:(id)a3
+- (void)_queue_sendNotificationRequestIfNeededWithFeatureStatus:(id)status
 {
   v45 = *MEMORY[0x277D85DE8];
   queue = self->_queue;
-  v5 = a3;
+  statusCopy = status;
   dispatch_assert_queue_V2(queue);
-  v6 = [v5 requirementsEvaluationByContext];
+  requirementsEvaluationByContext = [statusCopy requirementsEvaluationByContext];
 
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
+  v7 = [requirementsEvaluationByContext objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
 
   if (![(HDSHSleepApneaRescindedNotificationManager *)self _isFeatureUnavailableForNonRescindedReasonWithRequirementsEvaluation:v7])
   {
@@ -176,11 +176,11 @@ LABEL_20:
         goto LABEL_20;
       }
 
-      v23 = [v7 highestPriorityUnsatisfiedRequirement];
-      v15 = [(HDSHSleepApneaRescindedNotificationManager *)self _rescindedNotificationTitleAndBodyKeysWithHighestPriorityUnsatisfiedRequirementIdentifier:v23];
+      highestPriorityUnsatisfiedRequirement = [v7 highestPriorityUnsatisfiedRequirement];
+      v15 = [(HDSHSleepApneaRescindedNotificationManager *)self _rescindedNotificationTitleAndBodyKeysWithHighestPriorityUnsatisfiedRequirementIdentifier:highestPriorityUnsatisfiedRequirement];
 
-      v24 = [v7 highestPriorityUnsatisfiedRequirement];
-      [(HDSHSleepApneaRescindedNotificationManager *)self _showRescindedNotificationWithTitleAndBodyKeys:v15 rescindedReason:v24];
+      highestPriorityUnsatisfiedRequirement2 = [v7 highestPriorityUnsatisfiedRequirement];
+      [(HDSHSleepApneaRescindedNotificationManager *)self _showRescindedNotificationWithTitleAndBodyKeys:v15 rescindedReason:highestPriorityUnsatisfiedRequirement2];
 
       v25 = self->_localKeyValueDomain;
       v26 = [MEMORY[0x277CBEAA8] now];
@@ -261,23 +261,23 @@ LABEL_21:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_rescindedNotificationTitleAndBodyKeysWithHighestPriorityUnsatisfiedRequirementIdentifier:(id)a3
+- (id)_rescindedNotificationTitleAndBodyKeysWithHighestPriorityUnsatisfiedRequirementIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:&unk_287A9AD20];
-  if ([v3 isEqualToString:*MEMORY[0x277CCBF30]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x277CCBF30]])
   {
     v5 = @"SLEEP_APNEA_RESCINDED_NOTIFICATION_BODY_REMOTELY_DISABLED";
     v6 = @"SLEEP_APNEA_RESCINDED_NOTIFICATION_TITLE_REMOTELY_DISABLED";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CCBFD0]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x277CCBFD0]])
   {
     v5 = @"SLEEP_APNEA_RESCINDED_NOTIFICATION_BODY_SEED_EXPIRED";
     v6 = @"SLEEP_APNEA_RESCINDED_NOTIFICATION_TITLE_SEED_EXPIRED";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CCBF08]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x277CCBF08]])
   {
     v5 = @"SLEEP_APNEA_RESCINDED_NOTIFICATION_BODY_UNSUPPORTED_REGION";
     v6 = @"SLEEP_APNEA_RESCINDED_NOTIFICATION_TITLE_UNSUPPORTED_REGION";
@@ -285,7 +285,7 @@ LABEL_21:
 
   else
   {
-    if (![v3 isEqualToString:*MEMORY[0x277CCBF00]])
+    if (![identifierCopy isEqualToString:*MEMORY[0x277CCBF00]])
     {
       goto LABEL_10;
     }
@@ -302,19 +302,19 @@ LABEL_10:
   return v7;
 }
 
-- (void)_showRescindedNotificationWithTitleAndBodyKeys:(id)a3 rescindedReason:(id)a4
+- (void)_showRescindedNotificationWithTitleAndBodyKeys:(id)keys rescindedReason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   v7 = MEMORY[0x277CE1F60];
-  v8 = a3;
+  keysCopy = keys;
   v9 = objc_alloc_init(v7);
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v8 objectAtIndexedSubscript:0];
+  v11 = [keysCopy objectAtIndexedSubscript:0];
   v12 = [v10 localizedUserNotificationStringForKey:v11 arguments:0];
   [v9 setTitle:v12];
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [v8 objectAtIndexedSubscript:1];
+  v14 = [keysCopy objectAtIndexedSubscript:1];
 
   v15 = [v13 localizedUserNotificationStringForKey:v14 arguments:0];
   [v9 setBody:v15];
@@ -322,9 +322,9 @@ LABEL_10:
   v16 = [MEMORY[0x277CE1F70] soundWithAlertType:25];
   [v9 setSound:v16];
 
-  if (v6)
+  if (reasonCopy)
   {
-    v17 = [(HDSHSleepApneaRescindedNotificationManager *)self _categoryIdentifierFromRescindedReason:v6];
+    v17 = [(HDSHSleepApneaRescindedNotificationManager *)self _categoryIdentifierFromRescindedReason:reasonCopy];
     [v9 setCategoryIdentifier:v17];
   }
 
@@ -333,13 +333,13 @@ LABEL_10:
     [v9 setCategoryIdentifier:*MEMORY[0x277D62668]];
   }
 
-  v18 = [MEMORY[0x277CBEB38] dictionary];
-  [v18 setObject:&unk_287A9AD50 forKeyedSubscript:*MEMORY[0x277CCE4D0]];
-  [v9 setUserInfo:v18];
-  v19 = [MEMORY[0x277CBEAA8] date];
-  [v9 setDate:v19];
-  v20 = [MEMORY[0x277CBEA80] currentCalendar];
-  v21 = [v20 hk_dateByAddingDays:1 toDate:v19];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:&unk_287A9AD50 forKeyedSubscript:*MEMORY[0x277CCE4D0]];
+  [v9 setUserInfo:dictionary];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v9 setDate:date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v21 = [currentCalendar hk_dateByAddingDays:1 toDate:date];
   [v9 setExpirationDate:v21];
 
   v22 = [MEMORY[0x277CE1FC0] requestWithIdentifier:*MEMORY[0x277D62690] content:v9 trigger:0];
@@ -417,13 +417,13 @@ void __109__HDSHSleepApneaRescindedNotificationManager__showRescindedNotificatio
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isFeatureRescindedWithRequirementsEvaluation:(id)a3
+- (BOOL)_isFeatureRescindedWithRequirementsEvaluation:(id)evaluation
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSHSleepApneaRescindedNotificationManager *)self _rescindedRequirementIdentifiers];
-  v6 = [v4 unsatisfiedRequirementIdentifiers];
-  v7 = [v6 componentsJoinedByString:{@", "}];
+  evaluationCopy = evaluation;
+  _rescindedRequirementIdentifiers = [(HDSHSleepApneaRescindedNotificationManager *)self _rescindedRequirementIdentifiers];
+  unsatisfiedRequirementIdentifiers = [evaluationCopy unsatisfiedRequirementIdentifiers];
+  v7 = [unsatisfiedRequirementIdentifiers componentsJoinedByString:{@", "}];
 
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC320];
@@ -442,8 +442,8 @@ void __109__HDSHSleepApneaRescindedNotificationManager__showRescindedNotificatio
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [v4 unsatisfiedRequirementIdentifiers];
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  unsatisfiedRequirementIdentifiers2 = [evaluationCopy unsatisfiedRequirementIdentifiers];
+  v12 = [unsatisfiedRequirementIdentifiers2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = *v18;
@@ -453,17 +453,17 @@ void __109__HDSHSleepApneaRescindedNotificationManager__showRescindedNotificatio
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(unsatisfiedRequirementIdentifiers2);
         }
 
-        if ([v5 containsObject:*(*(&v17 + 1) + 8 * i)])
+        if ([_rescindedRequirementIdentifiers containsObject:*(*(&v17 + 1) + 8 * i)])
         {
           LOBYTE(v12) = 1;
           goto LABEL_13;
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [unsatisfiedRequirementIdentifiers2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v12)
       {
         continue;
@@ -479,13 +479,13 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)_isFeatureUnavailableForNonRescindedReasonWithRequirementsEvaluation:(id)a3
+- (BOOL)_isFeatureUnavailableForNonRescindedReasonWithRequirementsEvaluation:(id)evaluation
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSHSleepApneaRescindedNotificationManager *)self _rescindedRequirementIdentifiers];
-  v6 = [v4 unsatisfiedRequirementIdentifiers];
-  v7 = [v6 componentsJoinedByString:{@", "}];
+  evaluationCopy = evaluation;
+  _rescindedRequirementIdentifiers = [(HDSHSleepApneaRescindedNotificationManager *)self _rescindedRequirementIdentifiers];
+  unsatisfiedRequirementIdentifiers = [evaluationCopy unsatisfiedRequirementIdentifiers];
+  v7 = [unsatisfiedRequirementIdentifiers componentsJoinedByString:{@", "}];
 
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC320];
@@ -504,8 +504,8 @@ LABEL_13:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [v4 unsatisfiedRequirementIdentifiers];
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  unsatisfiedRequirementIdentifiers2 = [evaluationCopy unsatisfiedRequirementIdentifiers];
+  v12 = [unsatisfiedRequirementIdentifiers2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = *v18;
@@ -515,17 +515,17 @@ LABEL_13:
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(unsatisfiedRequirementIdentifiers2);
         }
 
-        if (![v5 containsObject:*(*(&v17 + 1) + 8 * i)])
+        if (![_rescindedRequirementIdentifiers containsObject:*(*(&v17 + 1) + 8 * i)])
         {
           LOBYTE(v12) = 1;
           goto LABEL_13;
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [unsatisfiedRequirementIdentifiers2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v12)
       {
         continue;
@@ -559,10 +559,10 @@ LABEL_13:
   return v6;
 }
 
-- (id)_categoryIdentifierFromRescindedReason:(id)a3
+- (id)_categoryIdentifierFromRescindedReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277CCBF30]])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:*MEMORY[0x277CCBF30]])
   {
     v4 = MEMORY[0x277D62680];
 LABEL_9:
@@ -570,19 +570,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277CCBFD0]])
+  if ([reasonCopy isEqualToString:*MEMORY[0x277CCBFD0]])
   {
     v4 = MEMORY[0x277D62688];
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277CCBF08]])
+  if ([reasonCopy isEqualToString:*MEMORY[0x277CCBF08]])
   {
     v4 = MEMORY[0x277D62678];
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277CCBF00]])
+  if ([reasonCopy isEqualToString:*MEMORY[0x277CCBF00]])
   {
     v4 = MEMORY[0x277D62670];
     goto LABEL_9;

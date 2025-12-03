@@ -1,24 +1,24 @@
 @interface TSCHStyleOwnerReference
-+ (id)styleOwnerReferenceWithType:(int)a3 index:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)styleOwnerReferenceWithType:(int)type index:(unint64_t)index;
+- (BOOL)isEqual:(id)equal;
 - (Class)nonstyleClass;
 - (Class)styleClass;
-- (TSCHStyleOwnerReference)initWithStyleOwnerType:(int)a3 index:(unint64_t)a4;
+- (TSCHStyleOwnerReference)initWithStyleOwnerType:(int)type index:(unint64_t)index;
 - (id)description;
 @end
 
 @implementation TSCHStyleOwnerReference
 
-+ (id)styleOwnerReferenceWithType:(int)a3 index:(unint64_t)a4
++ (id)styleOwnerReferenceWithType:(int)type index:(unint64_t)index
 {
-  v5 = *&a3;
+  v5 = *&type;
   v6 = objc_alloc(objc_opt_class());
-  v11 = objc_msgSend_initWithStyleOwnerType_index_(v6, v7, v8, v9, v10, v5, a4);
+  v11 = objc_msgSend_initWithStyleOwnerType_index_(v6, v7, v8, v9, v10, v5, index);
 
   return v11;
 }
 
-- (TSCHStyleOwnerReference)initWithStyleOwnerType:(int)a3 index:(unint64_t)a4
+- (TSCHStyleOwnerReference)initWithStyleOwnerType:(int)type index:(unint64_t)index
 {
   v28.receiver = self;
   v28.super_class = TSCHStyleOwnerReference;
@@ -26,14 +26,14 @@
   v11 = v6;
   if (v6)
   {
-    v6->_type = a3;
-    v6->_index = a4;
-    if ((a3 - 1) >= 5)
+    v6->_type = type;
+    v6->_index = index;
+    if ((type - 1) >= 5)
     {
       v12 = MEMORY[0x277D81150];
       v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v8, v9, v10, "[TSCHStyleOwnerReference initWithStyleOwnerType:index:]");
       v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHStyleOwningImplementation.m");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 312, 0, "Unknown TSCHStyleOwnerType: %lu", a3);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 312, 0, "Unknown TSCHStyleOwnerType: %lu", type);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
       return 0;
@@ -43,14 +43,14 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUSpecificCast();
 

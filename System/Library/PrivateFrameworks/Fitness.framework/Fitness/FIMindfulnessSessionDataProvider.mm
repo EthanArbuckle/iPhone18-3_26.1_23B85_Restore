@@ -1,10 +1,10 @@
 @interface FIMindfulnessSessionDataProvider
-- (FIMindfulnessSessionDataProvider)initWithHealthStore:(id)a3;
-- (id)_createMindfulnessSessionsQueryWithRetryCount:(int64_t)a3;
-- (void)_queue_retryMindfulSessionQueryWithRetryCount:(int64_t)a3;
-- (void)_queue_startMindfulnessSessionQueryWithRetryCount:(int64_t)a3;
+- (FIMindfulnessSessionDataProvider)initWithHealthStore:(id)store;
+- (id)_createMindfulnessSessionsQueryWithRetryCount:(int64_t)count;
+- (void)_queue_retryMindfulSessionQueryWithRetryCount:(int64_t)count;
+- (void)_queue_startMindfulnessSessionQueryWithRetryCount:(int64_t)count;
 - (void)_queue_stopMindfulSessionQuery;
-- (void)allMindfulnessSessionsWithCompletion:(id)a3;
+- (void)allMindfulnessSessionsWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)startMindfulnessSessionQueryIfNeeded;
 @end
@@ -33,16 +33,16 @@ void *__72__FIMindfulnessSessionDataProvider_startMindfulnessSessionQueryIfNeede
   return result;
 }
 
-- (FIMindfulnessSessionDataProvider)initWithHealthStore:(id)a3
+- (FIMindfulnessSessionDataProvider)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = FIMindfulnessSessionDataProvider;
   v6 = [(FIMindfulnessSessionDataProvider *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = HKCreateSerialDispatchQueue();
     serialQueue = v7->_serialQueue;
     v7->_serialQueue = v8;
@@ -68,7 +68,7 @@ void *__72__FIMindfulnessSessionDataProvider_startMindfulnessSessionQueryIfNeede
   [(FIMindfulnessSessionDataProvider *)&v3 dealloc];
 }
 
-- (id)_createMindfulnessSessionsQueryWithRetryCount:(int64_t)a3
+- (id)_createMindfulnessSessionsQueryWithRetryCount:(int64_t)count
 {
   v5 = [MEMORY[0x277CCD8D8] categoryTypeForIdentifier:*MEMORY[0x277CCBA30]];
   objc_initWeak(&location, self);
@@ -77,8 +77,8 @@ void *__72__FIMindfulnessSessionDataProvider_startMindfulnessSessionQueryIfNeede
   v12 = __82__FIMindfulnessSessionDataProvider__createMindfulnessSessionsQueryWithRetryCount___block_invoke;
   v13 = &unk_279004B10;
   objc_copyWeak(v15, &location);
-  v14 = self;
-  v15[1] = a3;
+  selfCopy = self;
+  v15[1] = count;
   v6 = _Block_copy(&v10);
   v7 = objc_alloc(MEMORY[0x277CCCFF0]);
   v8 = [v7 initWithType:v5 predicate:0 anchor:0 limit:0 resultsHandler:{v6, v10, v11, v12, v13}];
@@ -141,7 +141,7 @@ void __82__FIMindfulnessSessionDataProvider__createMindfulnessSessionsQueryWithR
   }
 }
 
-- (void)_queue_startMindfulnessSessionQueryWithRetryCount:(int64_t)a3
+- (void)_queue_startMindfulnessSessionQueryWithRetryCount:(int64_t)count
 {
   v16 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -154,11 +154,11 @@ void __82__FIMindfulnessSessionDataProvider__createMindfulnessSessionsQueryWithR
     v12 = 138412546;
     v13 = v8;
     v14 = 2048;
-    v15 = a3;
+    countCopy = count;
     _os_log_impl(&dword_24B35E000, v6, OS_LOG_TYPE_DEFAULT, "%@ starting mindfulness sessions query (retry count: %lu)", &v12, 0x16u);
   }
 
-  v9 = [(FIMindfulnessSessionDataProvider *)self _createMindfulnessSessionsQueryWithRetryCount:a3];
+  v9 = [(FIMindfulnessSessionDataProvider *)self _createMindfulnessSessionsQueryWithRetryCount:count];
   mindfulnessSessionsQuery = self->_mindfulnessSessionsQuery;
   self->_mindfulnessSessionsQuery = v9;
 
@@ -189,19 +189,19 @@ void __82__FIMindfulnessSessionDataProvider__createMindfulnessSessionsQueryWithR
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_retryMindfulSessionQueryWithRetryCount:(int64_t)a3
+- (void)_queue_retryMindfulSessionQueryWithRetryCount:(int64_t)count
 {
   [(FIMindfulnessSessionDataProvider *)self _queue_stopMindfulSessionQuery];
-  if (a3 < 6)
+  if (count < 6)
   {
-    v6 = dispatch_time(0, 1000000000 * a3);
+    v6 = dispatch_time(0, 1000000000 * count);
     serialQueue = self->_serialQueue;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __82__FIMindfulnessSessionDataProvider__queue_retryMindfulSessionQueryWithRetryCount___block_invoke;
     v8[3] = &unk_279004B38;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = count;
     dispatch_after(v6, serialQueue, v8);
   }
 
@@ -211,14 +211,14 @@ void __82__FIMindfulnessSessionDataProvider__createMindfulnessSessionsQueryWithR
     v5 = *MEMORY[0x277CCC270];
     if (os_log_type_enabled(*MEMORY[0x277CCC270], OS_LOG_TYPE_ERROR))
     {
-      [(FIMindfulnessSessionDataProvider *)v5 _queue_retryMindfulSessionQueryWithRetryCount:a3];
+      [(FIMindfulnessSessionDataProvider *)v5 _queue_retryMindfulSessionQueryWithRetryCount:count];
     }
   }
 }
 
-- (void)allMindfulnessSessionsWithCompletion:(id)a3
+- (void)allMindfulnessSessionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -226,8 +226,8 @@ void __82__FIMindfulnessSessionDataProvider__createMindfulnessSessionsQueryWithR
   block[2] = __73__FIMindfulnessSessionDataProvider_allMindfulnessSessionsWithCompletion___block_invoke;
   block[3] = &unk_279004B88;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);

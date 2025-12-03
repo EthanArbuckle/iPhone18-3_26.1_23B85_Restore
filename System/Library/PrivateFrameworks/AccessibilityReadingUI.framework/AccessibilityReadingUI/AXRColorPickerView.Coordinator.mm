@@ -1,16 +1,16 @@
 @interface AXRColorPickerView.Coordinator
 - (_TtCV22AccessibilityReadingUIP33_3A47046ABAFE506C5503D521820D125D18AXRColorPickerView11Coordinator)init;
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5;
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously;
 @end
 
 @implementation AXRColorPickerView.Coordinator
 
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_23D8AF898(v7, v8);
+  controllerCopy = controller;
+  colorCopy = color;
+  selfCopy = self;
+  sub_23D8AF898(controllerCopy, colorCopy);
 }
 
 - (_TtCV22AccessibilityReadingUIP33_3A47046ABAFE506C5503D521820D125D18AXRColorPickerView11Coordinator)init

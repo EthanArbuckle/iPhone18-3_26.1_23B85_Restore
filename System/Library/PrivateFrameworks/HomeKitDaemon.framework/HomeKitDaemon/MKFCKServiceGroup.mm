@@ -1,26 +1,26 @@
 @interface MKFCKServiceGroup
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (id)_fetchServiceDetailsWithLocalModel:(void *)a1;
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (id)_fetchServiceDetailsWithLocalModel:(void *)model;
 @end
 
 @implementation MKFCKServiceGroup
 
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
-  v7 = a3;
-  if ([(MKFCKModel *)self copyPropertiesIntoLocalModel:v7 context:a5])
+  modelCopy = model;
+  if ([(MKFCKModel *)self copyPropertiesIntoLocalModel:modelCopy context:context])
   {
-    v8 = v7;
+    v8 = modelCopy;
     v9 = v8;
     if (self)
     {
-      v10 = [(MKFCKServiceGroup *)self services];
-      v11 = v10;
+      services = [(MKFCKServiceGroup *)self services];
+      v11 = services;
       v12 = MEMORY[0x277CBEBF8];
-      if (v10)
+      if (services)
       {
-        v12 = v10;
+        v12 = services;
       }
 
       v13 = v12;
@@ -33,11 +33,11 @@
         v19 = 3221225472;
         v20 = __50__MKFCKServiceGroup_importServicesIntoLocalModel___block_invoke;
         v21 = &unk_278689E38;
-        v22 = self;
+        selfCopy = self;
         v23 = v15;
         v16 = v15;
         [v13 hmf_enumerateWithAutoreleasePoolUsingBlock:&v18];
-        [v9 setServices_:{v16, v18, v19, v20, v21, v22}];
+        [v9 setServices_:{v16, v18, v19, v20, v21, selfCopy}];
       }
 
       self = [(MKFCKServiceGroup *)self applicationData];
@@ -59,10 +59,10 @@
   return self;
 }
 
-- (id)_fetchServiceDetailsWithLocalModel:(void *)a1
+- (id)_fetchServiceDetailsWithLocalModel:(void *)model
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  modelCopy = model;
   v2 = objc_alloc_init(MEMORY[0x277CBE410]);
   [v2 setName:@"a"];
   [v2 setExpressionResultType:1100];
@@ -76,7 +76,7 @@
   [v4 setExpression:v5];
 
   v6 = +[_MKFService fetchRequest];
-  v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%@ in %K", v1, @"serviceGroups_"];
+  v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%@ in %K", modelCopy, @"serviceGroups_"];
   [v6 setPredicate:v7];
 
   v27[0] = v2;
@@ -101,7 +101,7 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = HMFGetLogIdentifier();
-      [v1 hmd_debugIdentifier];
+      [modelCopy hmd_debugIdentifier];
       v16 = v19 = v12;
       *buf = 138543874;
       v22 = v15;
@@ -283,10 +283,10 @@ LABEL_30:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
-  v7 = a3;
-  v8 = [(MKFCKModel *)self copyPropertiesFromLocalModel:v7 context:a5];
+  modelCopy = model;
+  v8 = [(MKFCKModel *)self copyPropertiesFromLocalModel:modelCopy context:context];
   if (self)
   {
     v9 = v8;
@@ -299,17 +299,17 @@ LABEL_30:
 
   if (v9)
   {
-    v10 = [MKFCKServiceGroup _fetchServiceDetailsWithLocalModel:v7];
-    v11 = [(MKFCKServiceGroup *)self services];
-    v12 = arraysEqualIgnoringOrder(v11, v10);
+    v10 = [MKFCKServiceGroup _fetchServiceDetailsWithLocalModel:modelCopy];
+    services = [(MKFCKServiceGroup *)self services];
+    v12 = arraysEqualIgnoringOrder(services, v10);
 
     if ((v12 & 1) == 0)
     {
       [(MKFCKServiceGroup *)self setServices:v10];
     }
 
-    v13 = [_MKFApplicationData appDataDictionaryForContainer:v7];
-    v14 = [(MKFCKServiceGroup *)self applicationData];
+    v13 = [_MKFApplicationData appDataDictionaryForContainer:modelCopy];
+    applicationData = [(MKFCKServiceGroup *)self applicationData];
     v15 = HMFEqualObjects();
 
     if ((v15 & 1) == 0)

@@ -1,18 +1,18 @@
 @interface SBNCScreenController
 - (BOOL)_isDeviceUILocked;
-- (BOOL)canTurnOnScreenForNotificationRequest:(id)a3;
+- (BOOL)canTurnOnScreenForNotificationRequest:(id)request;
 - (SBNCScreenController)init;
-- (SBNCScreenController)initWithBackLightController:(id)a3 lockScreenManager:(id)a4 lockStateAggregator:(id)a5;
-- (void)_createOrResetPowerAssertionWithTimeout:(double)a3;
+- (SBNCScreenController)initWithBackLightController:(id)controller lockScreenManager:(id)manager lockStateAggregator:(id)aggregator;
+- (void)_createOrResetPowerAssertionWithTimeout:(double)timeout;
 - (void)_releasePowerAssertion;
 - (void)_turnOnScreen;
-- (void)_turnOnScreenForOutOfPocketEventBeforeTimeInterval:(double)a3;
+- (void)_turnOnScreenForOutOfPocketEventBeforeTimeInterval:(double)interval;
 - (void)_turnOnScreenForOutOfPocketEventIfNecessary;
 - (void)_turnOnScreenForPocketMode;
-- (void)pocketStateManager:(id)a3 didUpdateState:(int64_t)a4;
-- (void)resetAutomaticLockStateForNotificationRequest:(id)a3;
-- (void)turnOnScreenForNotificationRequest:(id)a3;
-- (void)turnOnScreenIfPossibleForNotificationRequest:(id)a3;
+- (void)pocketStateManager:(id)manager didUpdateState:(int64_t)state;
+- (void)resetAutomaticLockStateForNotificationRequest:(id)request;
+- (void)turnOnScreenForNotificationRequest:(id)request;
+- (void)turnOnScreenIfPossibleForNotificationRequest:(id)request;
 @end
 
 @implementation SBNCScreenController
@@ -24,11 +24,11 @@
   return 0;
 }
 
-- (SBNCScreenController)initWithBackLightController:(id)a3 lockScreenManager:(id)a4 lockStateAggregator:(id)a5
+- (SBNCScreenController)initWithBackLightController:(id)controller lockScreenManager:(id)manager lockStateAggregator:(id)aggregator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  managerCopy = manager;
+  aggregatorCopy = aggregator;
   v16.receiver = self;
   v16.super_class = SBNCScreenController;
   v12 = [(SBNCScreenController *)&v16 init];
@@ -40,41 +40,41 @@
 
     [(CMPocketStateManager *)v12->_pocketStateManager setDelegate:v12];
     v12->_powerAssertionID = 0;
-    objc_storeStrong(&v12->_backlightController, a3);
-    objc_storeStrong(&v12->_lockScreenManager, a4);
-    objc_storeStrong(&v12->_lockStateAggregator, a5);
+    objc_storeStrong(&v12->_backlightController, controller);
+    objc_storeStrong(&v12->_lockScreenManager, manager);
+    objc_storeStrong(&v12->_lockStateAggregator, aggregator);
   }
 
   return v12;
 }
 
-- (BOOL)canTurnOnScreenForNotificationRequest:(id)a3
+- (BOOL)canTurnOnScreenForNotificationRequest:(id)request
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 options];
-  v6 = [v5 canTurnOnDisplay];
+  requestCopy = request;
+  options = [requestCopy options];
+  canTurnOnDisplay = [options canTurnOnDisplay];
 
-  LODWORD(v5) = [SBApp caseIsEnabledAndLatched];
-  v7 = [(SBNCScreenController *)self lockScreenManager];
-  v8 = v6 & ((v5 | [v7 isInLostMode]) ^ 1);
+  LODWORD(options) = [SBApp caseIsEnabledAndLatched];
+  lockScreenManager = [(SBNCScreenController *)self lockScreenManager];
+  v8 = canTurnOnDisplay & ((options | [lockScreenManager isInLostMode]) ^ 1);
 
-  v9 = [(SBNCScreenController *)self _isDeviceUILocked];
+  _isDeviceUILocked = [(SBNCScreenController *)self _isDeviceUILocked];
   v10 = MEMORY[0x277D77FC8];
   v11 = MEMORY[0x277D77FE0];
-  if (v9)
+  if (_isDeviceUILocked)
   {
-    v12 = [v4 options];
-    v13 = [v12 alertsWhenLocked];
+    options2 = [requestCopy options];
+    alertsWhenLocked = [options2 alertsWhenLocked];
 
-    v14 = [v4 requestDestinations];
-    v15 = v13 & [v14 containsObject:*v11];
+    requestDestinations = [requestCopy requestDestinations];
+    v15 = alertsWhenLocked & [requestDestinations containsObject:*v11];
   }
 
   else
   {
-    v14 = [v4 requestDestinations];
-    v15 = [v14 containsObject:*v10];
+    requestDestinations = [requestCopy requestDestinations];
+    v15 = [requestDestinations containsObject:*v10];
   }
 
   v16 = v8 & v15;
@@ -82,36 +82,36 @@
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     log = v17;
-    v33 = [v4 notificationIdentifier];
-    v18 = [v33 un_logDigest];
-    v32 = [v4 options];
-    v29 = [v32 canTurnOnDisplay];
-    v28 = [SBApp caseIsEnabledAndLatched];
-    v30 = [(SBNCScreenController *)self lockScreenManager];
-    v19 = [v30 isInLostMode];
-    v20 = [(SBNCScreenController *)self _isDeviceUILocked];
-    v21 = [v4 options];
-    v22 = [v21 alertsWhenLocked];
-    v23 = [v4 requestDestinations];
-    v24 = [v23 containsObject:*v11];
-    v25 = [v4 requestDestinations];
-    v26 = [v25 containsObject:*MEMORY[0x277D77FC8]];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
+    options3 = [requestCopy options];
+    canTurnOnDisplay2 = [options3 canTurnOnDisplay];
+    caseIsEnabledAndLatched = [SBApp caseIsEnabledAndLatched];
+    lockScreenManager2 = [(SBNCScreenController *)self lockScreenManager];
+    isInLostMode = [lockScreenManager2 isInLostMode];
+    _isDeviceUILocked2 = [(SBNCScreenController *)self _isDeviceUILocked];
+    options4 = [requestCopy options];
+    alertsWhenLocked2 = [options4 alertsWhenLocked];
+    requestDestinations2 = [requestCopy requestDestinations];
+    v24 = [requestDestinations2 containsObject:*v11];
+    requestDestinations3 = [requestCopy requestDestinations];
+    v26 = [requestDestinations3 containsObject:*MEMORY[0x277D77FC8]];
     *buf = 138545666;
-    v35 = v18;
+    v35 = un_logDigest;
     v36 = 1024;
     v37 = v16;
     v38 = 1024;
-    v39 = v4 != 0;
+    v39 = requestCopy != 0;
     v40 = 1024;
-    v41 = v29;
+    v41 = canTurnOnDisplay2;
     v42 = 1024;
-    v43 = v28;
+    v43 = caseIsEnabledAndLatched;
     v44 = 1024;
-    v45 = v19;
+    v45 = isInLostMode;
     v46 = 1024;
-    v47 = v20;
+    v47 = _isDeviceUILocked2;
     v48 = 1024;
-    v49 = v22;
+    v49 = alertsWhenLocked2;
     v50 = 1024;
     v51 = v24;
     v52 = 1024;
@@ -122,39 +122,39 @@
   return v16;
 }
 
-- (void)turnOnScreenForNotificationRequest:(id)a3
+- (void)turnOnScreenForNotificationRequest:(id)request
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 notificationIdentifier];
-    v8 = [v7 un_logDigest];
-    v9 = [v4 options];
-    v10 = [v9 overridesPocketMode];
-    v11 = [(SBNCScreenController *)self backlightController];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
+    options = [requestCopy options];
+    overridesPocketMode = [options overridesPocketMode];
+    backlightController = [(SBNCScreenController *)self backlightController];
     v15 = 138543874;
-    v16 = v8;
+    v16 = un_logDigest;
     v17 = 1024;
-    v18 = v10;
+    v18 = overridesPocketMode;
     v19 = 1024;
-    v20 = [v11 screenIsOn];
+    screenIsOn = [backlightController screenIsOn];
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Turn on screen for notification %{public}@ [ overridesPocketMode: %d screenIsOn: %d ]", &v15, 0x18u);
   }
 
-  v12 = [v4 options];
-  if ([v12 overridesPocketMode])
+  options2 = [requestCopy options];
+  if ([options2 overridesPocketMode])
   {
   }
 
   else
   {
-    v13 = [(SBNCScreenController *)self backlightController];
-    v14 = [v13 screenIsOn];
+    backlightController2 = [(SBNCScreenController *)self backlightController];
+    screenIsOn2 = [backlightController2 screenIsOn];
 
-    if ((v14 & 1) == 0)
+    if ((screenIsOn2 & 1) == 0)
     {
       [(SBNCScreenController *)self _turnOnScreenForPocketMode];
       goto LABEL_8;
@@ -165,53 +165,53 @@
 LABEL_8:
 }
 
-- (void)turnOnScreenIfPossibleForNotificationRequest:(id)a3
+- (void)turnOnScreenIfPossibleForNotificationRequest:(id)request
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(SBNCScreenController *)self canTurnOnScreenForNotificationRequest:v4])
+  requestCopy = request;
+  if ([(SBNCScreenController *)self canTurnOnScreenForNotificationRequest:requestCopy])
   {
-    v5 = [v4 alertOptions];
-    v6 = [v5 shouldSuppress];
+    alertOptions = [requestCopy alertOptions];
+    shouldSuppress = [alertOptions shouldSuppress];
 
-    if (v6)
+    if (shouldSuppress)
     {
       v7 = *MEMORY[0x277D77DB0];
       if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
       {
         v8 = v7;
-        v9 = [v4 notificationIdentifier];
-        v10 = [v9 un_logDigest];
+        notificationIdentifier = [requestCopy notificationIdentifier];
+        un_logDigest = [notificationIdentifier un_logDigest];
         v11 = 138543362;
-        v12 = v10;
+        v12 = un_logDigest;
         _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Screen cannot be turned on for notification %{public}@ because DND suppressed it", &v11, 0xCu);
       }
     }
 
     else
     {
-      [(SBNCScreenController *)self turnOnScreenForNotificationRequest:v4];
+      [(SBNCScreenController *)self turnOnScreenForNotificationRequest:requestCopy];
     }
   }
 }
 
-- (void)resetAutomaticLockStateForNotificationRequest:(id)a3
+- (void)resetAutomaticLockStateForNotificationRequest:(id)request
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 options];
-  v6 = [v5 preventsAutomaticLock];
+  requestCopy = request;
+  options = [requestCopy options];
+  preventsAutomaticLock = [options preventsAutomaticLock];
 
-  if (v6)
+  if (preventsAutomaticLock)
   {
     v7 = *MEMORY[0x277D77DB0];
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [v4 notificationIdentifier];
-      v10 = [v9 un_logDigest];
+      notificationIdentifier = [requestCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v12 = 138543362;
-      v13 = v10;
+      v13 = un_logDigest;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Reset idle timer for notification %{public}@", &v12, 0xCu);
     }
 
@@ -225,8 +225,8 @@ LABEL_8:
   v15 = *MEMORY[0x277D85DE8];
   if ([(SBNCScreenController *)self _isDeviceUILocked])
   {
-    v3 = [(SBNCScreenController *)self backlightController];
-    v4 = [v3 screenIsOn] ^ 1;
+    backlightController = [(SBNCScreenController *)self backlightController];
+    v4 = [backlightController screenIsOn] ^ 1;
 
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -236,23 +236,23 @@ LABEL_8:
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Reset idle timer [ doFadeIn: %d ]", buf, 8u);
     }
 
-    v6 = [(SBNCScreenController *)self lockScreenManager];
+    lockScreenManager = [(SBNCScreenController *)self lockScreenManager];
     v7 = [MEMORY[0x277CCABB0] numberWithBool:{1, @"SBUIUnlockOptionsTurnOnScreenFirstKey"}];
     v12[0] = v7;
     v11[1] = @"SBUIUnlockOptionsStartFadeInAnimation";
     v8 = [MEMORY[0x277CCABB0] numberWithBool:v4];
     v12[1] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
-    [v6 unlockUIFromSource:10 withOptions:v9];
+    [lockScreenManager unlockUIFromSource:10 withOptions:v9];
   }
 
   else
   {
-    v6 = SBLogCommon();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    lockScreenManager = SBLogCommon();
+    if (os_log_type_enabled(lockScreenManager, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Reset idle timer", buf, 2u);
+      _os_log_impl(&dword_21ED4E000, lockScreenManager, OS_LOG_TYPE_DEFAULT, "Reset idle timer", buf, 2u);
     }
   }
 
@@ -269,15 +269,15 @@ LABEL_8:
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_INFO, "PocketStateManager: query state", buf, 2u);
   }
 
-  v4 = [(SBNCScreenController *)self pocketStateManager];
-  v5 = [(SBNCScreenController *)self backlightController];
-  [v5 defaultLockScreenDimIntervalWhenNotificationsPresent];
+  pocketStateManager = [(SBNCScreenController *)self pocketStateManager];
+  backlightController = [(SBNCScreenController *)self backlightController];
+  [backlightController defaultLockScreenDimIntervalWhenNotificationsPresent];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__SBNCScreenController__turnOnScreenForPocketMode__block_invoke;
   v6[3] = &unk_2783AD478;
   v6[4] = self;
-  [v4 queryStateOntoQueue:MEMORY[0x277D85CD0] andMonitorFor:v6 withTimeout:? andHandler:?];
+  [pocketStateManager queryStateOntoQueue:MEMORY[0x277D85CD0] andMonitorFor:v6 withTimeout:? andHandler:?];
 }
 
 void __50__SBNCScreenController__turnOnScreenForPocketMode__block_invoke(uint64_t a1, uint64_t a2)
@@ -307,27 +307,27 @@ void __50__SBNCScreenController__turnOnScreenForPocketMode__block_invoke(uint64_
 
 - (BOOL)_isDeviceUILocked
 {
-  v2 = [(SBNCScreenController *)self lockStateAggregator];
-  v3 = [v2 hasAnyLockState];
+  lockStateAggregator = [(SBNCScreenController *)self lockStateAggregator];
+  hasAnyLockState = [lockStateAggregator hasAnyLockState];
 
-  return v3;
+  return hasAnyLockState;
 }
 
-- (void)_turnOnScreenForOutOfPocketEventBeforeTimeInterval:(double)a3
+- (void)_turnOnScreenForOutOfPocketEventBeforeTimeInterval:(double)interval
 {
   v8 = *MEMORY[0x277D85DE8];
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    intervalCopy = interval;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "PocketStateManager: turn on screen for out of pocket event before %lf", &v6, 0xCu);
   }
 
   self->_turnOnScreenForOutOfPocketEvent = 1;
-  [(SBNCScreenController *)self _createOrResetPowerAssertionWithTimeout:a3];
+  [(SBNCScreenController *)self _createOrResetPowerAssertionWithTimeout:interval];
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__cancelTurnOnScreenForOutOfPocketEvents object:0];
-  [(SBNCScreenController *)self performSelector:sel__cancelTurnOnScreenForOutOfPocketEvents withObject:0 afterDelay:a3];
+  [(SBNCScreenController *)self performSelector:sel__cancelTurnOnScreenForOutOfPocketEvents withObject:0 afterDelay:interval];
 }
 
 - (void)_turnOnScreenForOutOfPocketEventIfNecessary
@@ -349,7 +349,7 @@ void __50__SBNCScreenController__turnOnScreenForPocketMode__block_invoke(uint64_
   }
 }
 
-- (void)_createOrResetPowerAssertionWithTimeout:(double)a3
+- (void)_createOrResetPowerAssertionWithTimeout:(double)timeout
 {
   v20 = *MEMORY[0x277D85DE8];
   if (self->_powerAssertionID)
@@ -361,11 +361,11 @@ void __50__SBNCScreenController__turnOnScreenForPocketMode__block_invoke(uint64_
       *buf = 138543618;
       v17 = powerAssertionName;
       v18 = 2048;
-      v19 = a3;
+      timeoutCopy2 = timeout;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Extending an existing power assertion with name %{public}@ and timeout: %f - so we keep the device awake while we wait to see if it is removed from the pocket", buf, 0x16u);
     }
 
-    IOPMAssertionSetProperty(self->_powerAssertionID, @"TimeoutSeconds", [MEMORY[0x277CCABB0] numberWithDouble:a3]);
+    IOPMAssertionSetProperty(self->_powerAssertionID, @"TimeoutSeconds", [MEMORY[0x277CCABB0] numberWithDouble:timeout]);
   }
 
   else
@@ -378,7 +378,7 @@ void __50__SBNCScreenController__turnOnScreenForPocketMode__block_invoke(uint64_
       *buf = 138543618;
       v17 = v8;
       v18 = 2048;
-      v19 = a3;
+      timeoutCopy2 = timeout;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "About to take out a power assertion with name %{public}@ and timeout: %f - so we keep the device awake while we wait to see if it is removed from the pocket", buf, 0x16u);
     }
 
@@ -390,7 +390,7 @@ void __50__SBNCScreenController__turnOnScreenForPocketMode__block_invoke(uint64_
     v15[2] = v8;
     v14[2] = @"AssertName";
     v14[3] = @"TimeoutSeconds";
-    v10 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithDouble:timeout];
     v15[3] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:4];
 
@@ -430,18 +430,18 @@ void __50__SBNCScreenController__turnOnScreenForPocketMode__block_invoke(uint64_
   }
 }
 
-- (void)pocketStateManager:(id)a3 didUpdateState:(int64_t)a4
+- (void)pocketStateManager:(id)manager didUpdateState:(int64_t)state
 {
   v8 = *MEMORY[0x277D85DE8];
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v7 = a4;
+    stateCopy = state;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "pocketStateManager:didUpdateState:%ld", buf, 0xCu);
   }
 
-  if (([MEMORY[0x277CC1D28] _sb_isScreenObscuredInPocketState:a4] & 1) == 0)
+  if (([MEMORY[0x277CC1D28] _sb_isScreenObscuredInPocketState:state] & 1) == 0)
   {
     BSDispatchMain();
   }

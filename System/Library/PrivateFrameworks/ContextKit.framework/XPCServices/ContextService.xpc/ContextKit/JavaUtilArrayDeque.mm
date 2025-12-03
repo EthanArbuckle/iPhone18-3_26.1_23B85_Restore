@@ -1,10 +1,10 @@
 @interface JavaUtilArrayDeque
-- (BOOL)containsWithId:(id)a3;
-- (BOOL)removeFirstOccurrenceWithId:(id)a3;
-- (BOOL)removeLastOccurrenceWithId:(id)a3;
-- (JavaUtilArrayDeque)initWithInt:(int)a3;
+- (BOOL)containsWithId:(id)id;
+- (BOOL)removeFirstOccurrenceWithId:(id)id;
+- (BOOL)removeLastOccurrenceWithId:(id)id;
+- (JavaUtilArrayDeque)initWithInt:(int)int;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descendingIterator;
 - (id)getFirst;
 - (id)getLast;
@@ -16,28 +16,28 @@
 - (id)removeFirst;
 - (id)removeLast;
 - (id)toArray;
-- (id)toArrayWithNSObjectArray:(id)a3;
+- (id)toArrayWithNSObjectArray:(id)array;
 - (int)size;
-- (void)addFirstWithId:(id)a3;
-- (void)addLastWithId:(id)a3;
+- (void)addFirstWithId:(id)id;
+- (void)addLastWithId:(id)id;
 - (void)clear;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilArrayDeque
 
-- (JavaUtilArrayDeque)initWithInt:(int)a3
+- (JavaUtilArrayDeque)initWithInt:(int)int
 {
   JavaUtilAbstractCollection_init(self, a2);
-  sub_1002531D8(self, a3);
+  sub_1002531D8(self, int);
   return self;
 }
 
-- (void)addFirstWithId:(id)a3
+- (void)addFirstWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     v6 = new_JavaLangNullPointerException_init();
     objc_exception_throw(v6);
@@ -51,7 +51,7 @@
 
   v5 = (elements->super.size_ - 1) & (self->head_ - 1);
   self->head_ = v5;
-  IOSObjectArray_Set(elements, v5, a3);
+  IOSObjectArray_Set(elements, v5, id);
   if (self->head_ == self->tail_)
   {
 
@@ -59,9 +59,9 @@
   }
 }
 
-- (void)addLastWithId:(id)a3
+- (void)addLastWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     v6 = new_JavaLangNullPointerException_init();
     objc_exception_throw(v6);
@@ -73,7 +73,7 @@
     JreThrowNullPointerException();
   }
 
-  IOSObjectArray_Set(elements, self->tail_, a3);
+  IOSObjectArray_Set(elements, self->tail_, id);
   v5 = (self->elements_->super.size_ - 1) & (self->tail_ + 1);
   self->tail_ = v5;
   if (v5 == self->head_)
@@ -246,9 +246,9 @@
   return (&elements->elementType_)[v6];
 }
 
-- (BOOL)removeFirstOccurrenceWithId:(id)a3
+- (BOOL)removeFirstOccurrenceWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
     elements = self->elements_;
     if (!elements)
@@ -272,7 +272,7 @@
         break;
       }
 
-      if ([a3 isEqual:?])
+      if ([id isEqual:?])
       {
         sub_100253C94(self, v9);
         return 1;
@@ -287,9 +287,9 @@
   return 0;
 }
 
-- (BOOL)removeLastOccurrenceWithId:(id)a3
+- (BOOL)removeLastOccurrenceWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
     elements = self->elements_;
     if (!elements)
@@ -314,7 +314,7 @@
         break;
       }
 
-      if ([a3 isEqual:?])
+      if ([id isEqual:?])
       {
         sub_100253C94(self, tail);
         return 1;
@@ -358,9 +358,9 @@
   return v3;
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     return 0;
   }
@@ -384,7 +384,7 @@
 
     v10 = (&elements->elementType_)[head];
     v11 = v10 != 0;
-    if (!v10 || ([a3 isEqual:?] & 1) != 0)
+    if (!v10 || ([id isEqual:?] & 1) != 0)
     {
       break;
     }
@@ -429,20 +429,20 @@
   return sub_1002533D4(self, v3);
 }
 
-- (id)toArrayWithNSObjectArray:(id)a3
+- (id)toArrayWithNSObjectArray:(id)array
 {
   v5 = [(JavaUtilArrayDeque *)self size];
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
   v6 = v5;
-  if (*(a3 + 2) < v5)
+  if (*(array + 2) < v5)
   {
-    a3 = JavaLangReflectArray_newInstanceWithIOSClass_withInt_([objc_msgSend(a3 "getClass")], v5);
+    array = JavaLangReflectArray_newInstanceWithIOSClass_withInt_([objc_msgSend(array "getClass")], v5);
     objc_opt_class();
-    if (!a3)
+    if (!array)
     {
       sub_1002533D4(self, 0);
       JreThrowNullPointerException();
@@ -454,22 +454,22 @@
     }
   }
 
-  sub_1002533D4(self, a3);
-  if (*(a3 + 2) > v6)
+  sub_1002533D4(self, array);
+  if (*(array + 2) > v6)
   {
-    IOSObjectArray_Set(a3, v6, 0);
+    IOSObjectArray_Set(array, v6, 0);
   }
 
-  return a3;
+  return array;
 }
 
 - (id)clone
 {
   v7.receiver = self;
   v7.super_class = JavaUtilArrayDeque;
-  v3 = [(JavaUtilArrayDeque *)&v7 clone];
+  clone = [(JavaUtilArrayDeque *)&v7 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     goto LABEL_5;
   }
@@ -487,13 +487,13 @@ LABEL_5:
   }
 
   v5 = JavaUtilArrays_copyOfWithNSObjectArray_withInt_(elements, elements->super.size_);
-  JreStrongAssign(v3 + 1, v5);
-  return v3;
+  JreStrongAssign(clone + 1, v5);
+  return clone;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3 || ([a3 defaultWriteObject], objc_msgSend(a3, "writeIntWithInt:", -[JavaUtilArrayDeque size](self, "size")), (elements = self->elements_) == 0))
+  if (!stream || ([stream defaultWriteObject], objc_msgSend(stream, "writeIntWithInt:", -[JavaUtilArrayDeque size](self, "size")), (elements = self->elements_) == 0))
   {
     JreThrowNullPointerException();
   }
@@ -512,7 +512,7 @@ LABEL_5:
         IOSArray_throwOutOfBoundsWithMsg(size, head);
       }
 
-      [a3 writeObjectWithId:(&v8->elementType_)[head]];
+      [stream writeObjectWithId:(&v8->elementType_)[head]];
       head = (v9 + 1) & v7;
     }
 
@@ -520,22 +520,22 @@ LABEL_5:
   }
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     goto LABEL_7;
   }
 
-  [a3 defaultReadObject];
-  v5 = [a3 readInt];
-  sub_1002531D8(self, v5);
+  [stream defaultReadObject];
+  readInt = [stream readInt];
+  sub_1002531D8(self, readInt);
   self->head_ = 0;
-  self->tail_ = v5;
-  if (v5 >= 1)
+  self->tail_ = readInt;
+  if (readInt >= 1)
   {
     v6 = 0;
-    v7 = v5;
+    v7 = readInt;
     while (1)
     {
       elements = self->elements_;
@@ -544,7 +544,7 @@ LABEL_5:
         break;
       }
 
-      IOSObjectArray_Set(elements, v6++, [a3 readObject]);
+      IOSObjectArray_Set(elements, v6++, [stream readObject]);
       if (v7 == v6)
       {
         return;
@@ -563,11 +563,11 @@ LABEL_7:
   [(JavaUtilArrayDeque *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(JavaUtilArrayDeque *)self clone];
+  clone = [(JavaUtilArrayDeque *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

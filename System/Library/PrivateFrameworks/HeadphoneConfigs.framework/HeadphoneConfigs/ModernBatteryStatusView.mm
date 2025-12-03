@@ -1,10 +1,10 @@
 @interface ModernBatteryStatusView
-- (_TtC16HeadphoneConfigs23ModernBatteryStatusView)initWithCoder:(id)a3;
-- (_TtC16HeadphoneConfigs23ModernBatteryStatusView)initWithFrame:(CGRect)a3;
+- (_TtC16HeadphoneConfigs23ModernBatteryStatusView)initWithCoder:(id)coder;
+- (_TtC16HeadphoneConfigs23ModernBatteryStatusView)initWithFrame:(CGRect)frame;
 - (id)batteryIconViewInstance;
 - (void)cleanUp;
 - (void)setupViews;
-- (void)startLisentingWithDevice:(id)a3;
+- (void)startLisentingWithDevice:(id)device;
 @end
 
 @implementation ModernBatteryStatusView
@@ -21,11 +21,11 @@
   return v7;
 }
 
-- (void)startLisentingWithDevice:(id)a3
+- (void)startLisentingWithDevice:(id)device
 {
-  v5 = a3;
-  v6 = self;
-  sub_2511D162C(a3);
+  deviceCopy = device;
+  selfCopy = self;
+  sub_2511D162C(device);
 }
 
 - (void)setupViews
@@ -33,11 +33,11 @@
   v4.receiver = self;
   v4.super_class = type metadata accessor for ModernBatteryStatusView();
   v2 = v4.receiver;
-  v3 = [(HPSBatteryStatusView *)&v4 setupViews];
-  (*((*MEMORY[0x277D85000] & *v2) + 0xA0))(v3);
+  setupViews = [(HPSBatteryStatusView *)&v4 setupViews];
+  (*((*MEMORY[0x277D85000] & *v2) + 0xA0))(setupViews);
 }
 
-- (_TtC16HeadphoneConfigs23ModernBatteryStatusView)initWithCoder:(id)a3
+- (_TtC16HeadphoneConfigs23ModernBatteryStatusView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16HeadphoneConfigs23ModernBatteryStatusView_listeners) = MEMORY[0x277D84FA0];
   result = sub_251211C4C();
@@ -53,7 +53,7 @@
   *(&self->super.super.super.super.isa + v3) = MEMORY[0x277D84FA0];
 }
 
-- (_TtC16HeadphoneConfigs23ModernBatteryStatusView)initWithFrame:(CGRect)a3
+- (_TtC16HeadphoneConfigs23ModernBatteryStatusView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

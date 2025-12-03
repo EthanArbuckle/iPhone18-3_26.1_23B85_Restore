@@ -1,5 +1,5 @@
 @interface SBAppResizeGrabberViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -7,11 +7,11 @@
 
 @implementation SBAppResizeGrabberViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBAppResizeGrabberView" hasInstanceVariable:@"_corner" withType:"NSUInteger"];
-  [v3 validateClass:@"SBReusableSnapshotItemContainer"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBAppResizeGrabberView" hasInstanceVariable:@"_corner" withType:"NSUInteger"];
+  [validationsCopy validateClass:@"SBReusableSnapshotItemContainer"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -28,8 +28,8 @@
 - (id)accessibilityLabel
 {
   v2 = [(SBAppResizeGrabberViewAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Sbreusablesnap_0.isa)];
-  v3 = [v2 accessibilityLabel];
-  if (v3)
+  accessibilityLabel = [v2 accessibilityLabel];
+  if (accessibilityLabel)
   {
     [v2 accessibilityLabel];
   }
@@ -49,14 +49,14 @@
 - (id)accessibilityValue
 {
   v3 = [(SBAppResizeGrabberViewAccessibility *)self safeIntegerForKey:@"_corner"];
-  if (v3 > 3 || (accessibilityLocalizedString(off_29F2FBC10[v3]), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (v3 > 3 || (accessibilityLocalizedString(off_29F2FBC10[v3]), (accessibilityValue = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v6.receiver = self;
     v6.super_class = SBAppResizeGrabberViewAccessibility;
-    v4 = [(SBAppResizeGrabberViewAccessibility *)&v6 accessibilityValue];
+    accessibilityValue = [(SBAppResizeGrabberViewAccessibility *)&v6 accessibilityValue];
   }
 
-  return v4;
+  return accessibilityValue;
 }
 
 @end

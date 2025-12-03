@@ -1,13 +1,13 @@
 @interface ISShapeDetection
-+ (double)standardCornerRadiusForSize:(double)a3;
-+ (unint64_t)categorizeShapeWithWidth:(int)a3 height:(int)a4 cornerRadius:(int)a5;
-- (BOOL)detectShapeInCGImage:(ISShapeDetection *)self bounds:(SEL)a2 cornerRadius:(CGImage *)a3;
-- (BOOL)detectShapeInImageWithWidth:(ISShapeDetection *)self height:(SEL)a2 samples:(int)a3 bounds:(int)a4 cornerRadius:(id)a5;
++ (double)standardCornerRadiusForSize:(double)size;
++ (unint64_t)categorizeShapeWithWidth:(int)width height:(int)height cornerRadius:(int)radius;
+- (BOOL)detectShapeInCGImage:(ISShapeDetection *)self bounds:(SEL)bounds cornerRadius:(CGImage *)radius;
+- (BOOL)detectShapeInImageWithWidth:(ISShapeDetection *)self height:(SEL)height samples:(int)samples bounds:(int)bounds cornerRadius:(id)radius;
 @end
 
 @implementation ISShapeDetection
 
-- (BOOL)detectShapeInCGImage:(ISShapeDetection *)self bounds:(SEL)a2 cornerRadius:(CGImage *)a3
+- (BOOL)detectShapeInCGImage:(ISShapeDetection *)self bounds:(SEL)bounds cornerRadius:(CGImage *)radius
 {
   v5 = v4;
   v6 = v3;
@@ -22,13 +22,13 @@
     *v4 = 0;
   }
 
-  if (!a3)
+  if (!radius)
   {
     return 0;
   }
 
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(radius);
+  Height = CGImageGetHeight(radius);
   v11 = Height;
   if (v6)
   {
@@ -37,17 +37,17 @@
     *v6 = v12;
   }
 
-  ColorSpace = CGImageGetColorSpace(a3);
+  ColorSpace = CGImageGetColorSpace(radius);
   if (CGColorSpaceGetModel(ColorSpace) != kCGColorSpaceModelRGB)
   {
     return 0;
   }
 
-  BitsPerPixel = CGImageGetBitsPerPixel(a3);
+  BitsPerPixel = CGImageGetBitsPerPixel(radius);
   v15 = 0;
-  if (CGImageGetBitsPerComponent(a3) == 8 && BitsPerPixel == 32)
+  if (CGImageGetBitsPerComponent(radius) == 8 && BitsPerPixel == 32)
   {
-    BytesPerRow = CGImageGetBytesPerRow(a3);
+    BytesPerRow = CGImageGetBytesPerRow(radius);
     if (BytesPerRow >= 0)
     {
       v17 = BytesPerRow;
@@ -58,7 +58,7 @@
       v17 = BytesPerRow + 3;
     }
 
-    AlphaInfo = CGImageGetAlphaInfo(a3);
+    AlphaInfo = CGImageGetAlphaInfo(radius);
     if (AlphaInfo == kCGImageAlphaNoneSkipLast)
     {
       return 1;
@@ -67,7 +67,7 @@
     v19 = AlphaInfo;
     if ((AlphaInfo & 0xFFFFFFFD) == 1)
     {
-      DataProvider = CGImageGetDataProvider(a3);
+      DataProvider = CGImageGetDataProvider(radius);
       if (DataProvider)
       {
         v21 = CGDataProviderCopyData(DataProvider);
@@ -98,16 +98,16 @@
   return v15;
 }
 
-- (BOOL)detectShapeInImageWithWidth:(ISShapeDetection *)self height:(SEL)a2 samples:(int)a3 bounds:(int)a4 cornerRadius:(id)a5
+- (BOOL)detectShapeInImageWithWidth:(ISShapeDetection *)self height:(SEL)height samples:(int)samples bounds:(int)bounds cornerRadius:(id)radius
 {
   v6 = v5;
-  v7 = *&a5.var2;
-  v8 = *&a5.var0;
-  if (*&a5.var2)
+  v7 = *&radius.var2;
+  v8 = *&radius.var0;
+  if (*&radius.var2)
   {
     *&v10 = 0;
-    *(&v10 + 1) = __PAIR64__(a4, a3);
-    **&a5.var2 = v10;
+    *(&v10 + 1) = __PAIR64__(bounds, samples);
+    **&radius.var2 = v10;
   }
 
   if (v5)
@@ -115,19 +115,19 @@
     *v5 = 0;
   }
 
-  if (a3 != a4)
+  if (samples != bounds)
   {
     goto LABEL_83;
   }
 
   v11 = 0;
-  v12 = a3 / 2;
-  v13 = (a3 / 2) & ~((a3 + (a3 >> 31)) >> 31);
+  v12 = samples / 2;
+  v13 = (samples / 2) & ~((samples + (samples >> 31)) >> 31);
   while (v13 != v11)
   {
     v67 = *v8;
     v68 = *(v8 + 16);
-    UcharSampleOpacity_xy = ISSegmentationSamples_readUcharSampleOpacity_xy(&v67, v11++, a3 / 2);
+    UcharSampleOpacity_xy = ISSegmentationSamples_readUcharSampleOpacity_xy(&v67, v11++, samples / 2);
     if (UcharSampleOpacity_xy >= 0xFD)
     {
       v15 = v11 - 1;
@@ -142,15 +142,15 @@ LABEL_11:
     goto LABEL_83;
   }
 
-  v16 = a3 - 1;
+  v16 = samples - 1;
   v17 = -1;
-  v66 = a3 - 1;
+  v66 = samples - 1;
   v18 = v13;
   while (v18)
   {
     v67 = *v8;
     v68 = *(v8 + 16);
-    v19 = ISSegmentationSamples_readUcharSampleOpacity_xy(&v67, v16, a3 / 2);
+    v19 = ISSegmentationSamples_readUcharSampleOpacity_xy(&v67, v16, samples / 2);
     --v18;
     ++v17;
     --v16;
@@ -172,7 +172,7 @@ LABEL_17:
   {
     v67 = *v8;
     v68 = *(v8 + 16);
-    v21 = ISSegmentationSamples_readUcharSampleOpacity_xy(&v67, a3 / 2, v20++);
+    v21 = ISSegmentationSamples_readUcharSampleOpacity_xy(&v67, samples / 2, v20++);
     if (v21 >= 0xFD)
     {
       v22 = v20 - 1;
@@ -190,13 +190,13 @@ LABEL_23:
 
   v64 = v6;
   v23 = -1;
-  v24 = a3 - 1;
+  v24 = samples - 1;
   v25 = v13;
   while (v25)
   {
     v67 = *v8;
     v68 = *(v8 + 16);
-    v26 = ISSegmentationSamples_readUcharSampleOpacity_xy(&v67, a3 / 2, v24);
+    v26 = ISSegmentationSamples_readUcharSampleOpacity_xy(&v67, samples / 2, v24);
     --v25;
     ++v23;
     --v24;
@@ -213,8 +213,8 @@ LABEL_29:
     goto LABEL_83;
   }
 
-  v27 = a3 - v17 - v15;
-  v28 = a3 - v23 - v65;
+  v27 = samples - v17 - v15;
+  v28 = samples - v23 - v65;
   if (v7)
   {
     *&v29 = __PAIR64__(v65, v15);
@@ -225,17 +225,17 @@ LABEL_29:
   v30 = v27 - v28;
   if (v27 >= v28)
   {
-    v31 = a3 - v23 - v65;
+    v31 = samples - v23 - v65;
   }
 
   else
   {
-    v31 = a3 - v17 - v15;
+    v31 = samples - v17 - v15;
   }
 
   if (v27 <= v28)
   {
-    v27 = a3 - v23 - v65;
+    v27 = samples - v23 - v65;
   }
 
   if ((v31 / v27) < 0.97)
@@ -247,7 +247,7 @@ LABEL_29:
     }
   }
 
-  v63 = a3 - v17;
+  v63 = samples - v17;
   v33 = 0;
   v34 = v31 / 2;
   v35 = (v31 / 2) & ~((v31 + (v31 >> 31)) >> 31);
@@ -272,9 +272,9 @@ LABEL_47:
   }
 
   v61 = v37;
-  v62 = a3 - v23;
+  v62 = samples - v23;
   v38 = 0;
-  v39 = ~v17 + a3;
+  v39 = ~v17 + samples;
   while (v35 != v38)
   {
     v67 = *v8;
@@ -296,7 +296,7 @@ LABEL_53:
 
   v60 = v41;
   v42 = 0;
-  v43 = ~v23 + a3;
+  v43 = ~v23 + samples;
   while (v35 != v42)
   {
     v67 = *v8;
@@ -402,7 +402,7 @@ LABEL_83:
   {
     v67 = *v8;
     v68 = *(v8 + 16);
-    v57 = validateTransparentMargin(a3, a3, &v67, v15, v63, v65, v62);
+    v57 = validateTransparentMargin(samples, samples, &v67, v15, v63, v65, v62);
     if (v57)
     {
       v67 = *v8;
@@ -438,48 +438,48 @@ LABEL_83:
   return v57;
 }
 
-+ (double)standardCornerRadiusForSize:(double)a3
++ (double)standardCornerRadiusForSize:(double)size
 {
   v4 = +[ISDefaults sharedInstance];
-  v5 = [v4 isSolariumCornerRadiusEnabled];
+  isSolariumCornerRadiusEnabled = [v4 isSolariumCornerRadiusEnabled];
 
   v6 = 0.225;
-  if (v5)
+  if (isSolariumCornerRadiusEnabled)
   {
     v6 = 0.26;
   }
 
-  return v6 * a3;
+  return v6 * size;
 }
 
-+ (unint64_t)categorizeShapeWithWidth:(int)a3 height:(int)a4 cornerRadius:(int)a5
++ (unint64_t)categorizeShapeWithWidth:(int)width height:(int)height cornerRadius:(int)radius
 {
-  v6 = a3 - a4;
-  if (a3 >= a4)
+  v6 = width - height;
+  if (width >= height)
   {
-    v7 = a4;
+    widthCopy = height;
   }
 
   else
   {
-    v7 = a3;
+    widthCopy = width;
   }
 
-  if (a3 <= a4)
+  if (width <= height)
   {
-    v8 = a4;
+    widthCopy2 = height;
   }
 
   else
   {
-    v8 = a3;
+    widthCopy2 = width;
   }
 
-  if ((v7 / v8) < 0.97)
+  if ((widthCopy / widthCopy2) < 0.97)
   {
     if (v6 < 0)
     {
-      v6 = a4 - a3;
+      v6 = height - width;
     }
 
     if (v6 > 2)
@@ -488,36 +488,36 @@ LABEL_83:
     }
   }
 
-  v10 = v7;
-  [a1 standardCornerRadiusForSize:v7];
-  v12 = a5;
-  if (v10 * 0.48 <= a5)
+  v10 = widthCopy;
+  [self standardCornerRadiusForSize:widthCopy];
+  radiusCopy = radius;
+  if (v10 * 0.48 <= radius)
   {
     return 0;
   }
 
-  if (!a5)
+  if (!radius)
   {
     return 6;
   }
 
-  if (v10 * 0.305 < v12)
+  if (v10 * 0.305 < radiusCopy)
   {
     return 1;
   }
 
-  if (v10 * 0.115 > v12)
+  if (v10 * 0.115 > radiusCopy)
   {
     return 5;
   }
 
   v13 = v11;
-  if (v10 * 0.002 < (a5 - v13))
+  if (v10 * 0.002 < (radius - v13))
   {
     return 2;
   }
 
-  if (v10 * 0.025 >= (v13 - a5))
+  if (v10 * 0.025 >= (v13 - radius))
   {
     return 3;
   }

@@ -2,10 +2,10 @@
 - (UIView)effectiveHideButtonView;
 - (id)hideButtonHandler;
 - (void)fadeIn;
-- (void)fadeOutWithCompletion:(id)a3;
+- (void)fadeOutWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)setHideButtonHandler:(id)a3;
-- (void)setShowsHideButton:(BOOL)a3;
+- (void)setHideButtonHandler:(id)handler;
+- (void)setShowsHideButton:(BOOL)button;
 @end
 
 @implementation SFScribbleSelectionOverlay
@@ -25,9 +25,9 @@
   return v3;
 }
 
-- (void)setHideButtonHandler:(id)a3
+- (void)setHideButtonHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR___SFScribbleSelectionOverlay_hideButtonHandler);
@@ -35,11 +35,11 @@
   v6[1] = v5;
 }
 
-- (void)setShowsHideButton:(BOOL)a3
+- (void)setShowsHideButton:(BOOL)button
 {
-  v3 = a3;
-  v4 = self;
-  sub_18BBE55C0(v3);
+  buttonCopy = button;
+  selfCopy = self;
+  sub_18BBE55C0(buttonCopy);
 }
 
 - (UIView)effectiveHideButtonView
@@ -48,38 +48,38 @@
   {
     if (*(self + OBJC_IVAR___SFScribbleSelectionOverlay_hideButtonTypeThatFits) == 1)
     {
-      v2 = *(self + OBJC_IVAR___SFScribbleSelectionOverlay_smallHideButton);
+      regularHideButton = *(self + OBJC_IVAR___SFScribbleSelectionOverlay_smallHideButton);
     }
 
     else
     {
-      v2 = 0;
+      regularHideButton = 0;
     }
   }
 
   else
   {
-    v2 = [(SFScribbleSelectionOverlay *)self regularHideButton];
+    regularHideButton = [(SFScribbleSelectionOverlay *)self regularHideButton];
   }
 
-  return v2;
+  return regularHideButton;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SFScribbleSelectionOverlay.layoutSubviews()();
 }
 
 - (void)fadeIn
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BBE721C();
 }
 
-- (void)fadeOutWithCompletion:(id)a3
+- (void)fadeOutWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -94,7 +94,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_18BBE750C(v7, v6);
   sub_18B7E0A10(v7);
 }

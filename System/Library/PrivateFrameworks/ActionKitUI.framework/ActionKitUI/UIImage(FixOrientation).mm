@@ -9,9 +9,9 @@
 
 - (__n128)wf_affineTransformForImageMirroringOrientation:()FixOrientation
 {
-  if (([a1 imageOrientation] & 0xFFFFFFFFFFFFFFFCLL) == 4)
+  if (([self imageOrientation] & 0xFFFFFFFFFFFFFFFCLL) == 4)
   {
-    [a1 wf_majorAxisOrientedSize];
+    [self wf_majorAxisOrientedSize];
     v6 = a2[1];
     *&v13.a = *a2;
     *&v13.c = v6;
@@ -42,14 +42,14 @@
 
 - (__n128)wf_affineTransformForImageOrientation:()FixOrientation
 {
-  v6 = [a1 imageOrientation];
-  if (v6 <= 7)
+  imageOrientation = [self imageOrientation];
+  if (imageOrientation <= 7)
   {
-    if (((1 << v6) & 0x22) != 0)
+    if (((1 << imageOrientation) & 0x22) != 0)
     {
-      [a1 size];
+      [self size];
       v17 = v16;
-      [a1 size];
+      [self size];
       v18 = a2[1];
       *&v25.a = *a2;
       *&v25.c = v18;
@@ -67,9 +67,9 @@
       goto LABEL_8;
     }
 
-    if (((1 << v6) & 0x44) != 0)
+    if (((1 << imageOrientation) & 0x44) != 0)
     {
-      [a1 size];
+      [self size];
       v12 = a2[1];
       *&v25.a = *a2;
       *&v25.c = v12;
@@ -87,9 +87,9 @@
       goto LABEL_8;
     }
 
-    if (((1 << v6) & 0x88) != 0)
+    if (((1 << imageOrientation) & 0x88) != 0)
     {
-      [a1 size];
+      [self size];
       v7 = a2[1];
       *&v25.a = *a2;
       *&v25.c = v7;
@@ -123,23 +123,23 @@ LABEL_8:
 
 - (uint64_t)wf_majorAxisOrientedSize
 {
-  v2 = [a1 imageOrientation];
-  if (v2 <= 7 && ((1 << v2) & 0xCC) != 0)
+  imageOrientation = [self imageOrientation];
+  if (imageOrientation <= 7 && ((1 << imageOrientation) & 0xCC) != 0)
   {
-    [a1 size];
-    return [a1 size];
+    [self size];
+    return [self size];
   }
 
   else
   {
 
-    return [a1 size];
+    return [self size];
   }
 }
 
 - (id)wf_imageInIntrinsicOrientation
 {
-  if ([a1 imageOrientation])
+  if ([self imageOrientation])
   {
     v2 = *(MEMORY[0x277CBF2C0] + 16);
     *&v21.a = *MEMORY[0x277CBF2C0];
@@ -148,41 +148,41 @@ LABEL_8:
     *&transform.a = *&v21.a;
     *&transform.c = v2;
     *&transform.tx = *&v21.tx;
-    [a1 wf_affineTransformForImageOrientation:&transform];
+    [self wf_affineTransformForImageOrientation:&transform];
     v19 = v21;
-    [a1 wf_affineTransformForImageMirroringOrientation:&v19];
+    [self wf_affineTransformForImageMirroringOrientation:&v19];
     v21 = transform;
-    [a1 size];
+    [self size];
     v4 = v3;
-    [a1 size];
+    [self size];
     v6 = v5;
-    BitsPerComponent = CGImageGetBitsPerComponent([a1 CGImage]);
-    ColorSpace = CGImageGetColorSpace([a1 CGImage]);
-    BitmapInfo = CGImageGetBitmapInfo([a1 CGImage]);
+    BitsPerComponent = CGImageGetBitsPerComponent([self CGImage]);
+    ColorSpace = CGImageGetColorSpace([self CGImage]);
+    BitmapInfo = CGImageGetBitmapInfo([self CGImage]);
     v10 = CGBitmapContextCreate(0, v4, v6, BitsPerComponent, 0, ColorSpace, BitmapInfo);
     transform = v21;
     CGContextConcatCTM(v10, &transform);
-    [a1 wf_majorAxisOrientedSize];
+    [self wf_majorAxisOrientedSize];
     v12 = v11;
     v14 = v13;
-    v15 = [a1 CGImage];
+    cGImage = [self CGImage];
     v23.origin.x = 0.0;
     v23.origin.y = 0.0;
     v23.size.width = v12;
     v23.size.height = v14;
-    CGContextDrawImage(v10, v23, v15);
+    CGContextDrawImage(v10, v23, cGImage);
     Image = CGBitmapContextCreateImage(v10);
-    v17 = [MEMORY[0x277D755B8] imageWithCGImage:Image];
+    selfCopy = [MEMORY[0x277D755B8] imageWithCGImage:Image];
     CGContextRelease(v10);
     CGImageRelease(Image);
   }
 
   else
   {
-    v17 = a1;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 @end

@@ -1,51 +1,51 @@
 @interface ADSystemStateContextProvider
-- (ADSystemStateContextProvider)initWithDonationService:(id)a3;
-- (void)_donateSystemStateContextWithSnapshot:(id)a3;
-- (void)_handleSleepStateChangedToState:(int64_t)a3 fromState:(int64_t)a4;
-- (void)pineBoardSystemStateObserver:(id)a3 pineBoardStateDidChangeFrom:(int64_t)a4 to:(int64_t)a5;
+- (ADSystemStateContextProvider)initWithDonationService:(id)service;
+- (void)_donateSystemStateContextWithSnapshot:(id)snapshot;
+- (void)_handleSleepStateChangedToState:(int64_t)state fromState:(int64_t)fromState;
+- (void)pineBoardSystemStateObserver:(id)observer pineBoardStateDidChangeFrom:(int64_t)from to:(int64_t)to;
 @end
 
 @implementation ADSystemStateContextProvider
 
-- (void)pineBoardSystemStateObserver:(id)a3 pineBoardStateDidChangeFrom:(int64_t)a4 to:(int64_t)a5
+- (void)pineBoardSystemStateObserver:(id)observer pineBoardStateDidChangeFrom:(int64_t)from to:(int64_t)to
 {
-  if ((a5 - 1) > 7)
+  if ((to - 1) > 7)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_1003F04D8[a5 - 1];
+    v5 = qword_1003F04D8[to - 1];
   }
 
-  if ((a4 - 1) > 7)
+  if ((from - 1) > 7)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = qword_1003F04D8[a4 - 1];
+    v6 = qword_1003F04D8[from - 1];
   }
 
   [(ADSystemStateContextProvider *)self _handleSleepStateChangedToState:v5 fromState:v6];
 }
 
-- (void)_donateSystemStateContextWithSnapshot:(id)a3
+- (void)_donateSystemStateContextWithSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v9 = +[NSDate date];
   v5 = [v9 dateByAddingTimeInterval:86400.0];
   v6 = [AFDeviceContextMetadata alloc];
   v7 = [v6 initWithType:AFDeviceContextKeySystemState deliveryDate:v9 expirationDate:v5 redactedKeyPaths:0 historyConfiguration:0];
   WeakRetained = objc_loadWeakRetained(&self->_donationService);
-  [WeakRetained donateContext:v4 withMetadata:v7 pushToRemote:1];
+  [WeakRetained donateContext:snapshotCopy withMetadata:v7 pushToRemote:1];
 }
 
-- (void)_handleSleepStateChangedToState:(int64_t)a3 fromState:(int64_t)a4
+- (void)_handleSleepStateChangedToState:(int64_t)state fromState:(int64_t)fromState
 {
-  if (a3 != a4)
+  if (state != fromState)
   {
     v6 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -62,34 +62,34 @@
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s #hal to: %@, from: %@", &v11, 0x20u);
     }
 
-    v7 = [[AFSystemStateSnapshot alloc] initWithSleepState:a3];
+    v7 = [[AFSystemStateSnapshot alloc] initWithSleepState:state];
     [(ADSystemStateContextProvider *)self _donateSystemStateContextWithSnapshot:v7];
   }
 }
 
-- (ADSystemStateContextProvider)initWithDonationService:(id)a3
+- (ADSystemStateContextProvider)initWithDonationService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v13.receiver = self;
   v13.super_class = ADSystemStateContextProvider;
   v5 = [(ADSystemStateContextProvider *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_donationService, v4);
+    objc_storeWeak(&v5->_donationService, serviceCopy);
     v7 = +[AFPineBoardSystemStateObserver defaultObserver];
     [v7 addListener:v6];
 
     v8 = +[AFPineBoardSystemStateObserver defaultObserver];
-    v9 = [v8 pineBoardSystemState];
-    if ((v9 - 1) > 7)
+    pineBoardSystemState = [v8 pineBoardSystemState];
+    if ((pineBoardSystemState - 1) > 7)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = qword_1003F04D8[(v9 - 1)];
+      v10 = qword_1003F04D8[(pineBoardSystemState - 1)];
     }
 
     [(ADSystemStateContextProvider *)v6 _handleSleepStateChangedToState:v10 fromState:0];

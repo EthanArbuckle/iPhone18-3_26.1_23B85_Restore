@@ -24,13 +24,13 @@
 
 - (uint64_t)px_shouldShowCPLOptimizedMessage
 {
-  v1 = a1;
-  v2 = [a1 isAppleDevice];
-  LODWORD(v1) = [v1 isOptimizedCPLStorage];
+  selfCopy = self;
+  isAppleDevice = [self isAppleDevice];
+  LODWORD(selfCopy) = [selfCopy isOptimizedCPLStorage];
   v3 = +[PXImportSettings sharedInstance];
-  v4 = [v3 alwaysShowCPLOptimizedMessage];
+  alwaysShowCPLOptimizedMessage = [v3 alwaysShowCPLOptimizedMessage];
 
-  return v2 & (v1 | v4);
+  return isAppleDevice & (selfCopy | alwaysShowCPLOptimizedMessage);
 }
 
 @end

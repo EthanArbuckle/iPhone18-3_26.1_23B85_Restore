@@ -1,5 +1,5 @@
 @interface CSProcessingStateUpdater
-- (BOOL)handleDonation:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6;
+- (BOOL)handleDonation:(id)donation turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block;
 - (id)description;
 @end
 
@@ -9,19 +9,19 @@
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = objc_opt_class();
-  v5 = [(CSProcessingStateUpdater *)self taskName];
-  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, v5];
+  taskName = [(CSProcessingStateUpdater *)self taskName];
+  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, taskName];
 
   return v6;
 }
 
-- (BOOL)handleDonation:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6
+- (BOOL)handleDonation:(id)donation turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
+  donationCopy = donation;
+  handlerCopy = handler;
+  blockCopy = block;
   v11 = objc_alloc(MEMORY[0x277CCACA8]);
-  v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalMap](v8)];
+  v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalMap](donationCopy)];
   v13 = [v11 initWithString:v12];
 
   v40 = 0;
@@ -42,12 +42,12 @@
   v25 = &unk_27893D610;
   v14 = v13;
   v26 = v14;
-  v15 = v8;
+  v15 = donationCopy;
   v27 = v15;
   v29 = &v32;
   v30 = &v40;
   v31 = &v36;
-  v16 = v10;
+  v16 = blockCopy;
   v28 = v16;
   [v15 iterateItems:&v22];
   v17 = v37[3];
@@ -56,12 +56,12 @@
   {
     v19 = objc_alloc(MEMORY[0x277CCA9B8]);
     v20 = [v19 initWithDomain:@"CSProcessingStateUpdaterError" code:1 userInfo:{0, v22, v23, v24, v25, v26, v27}];
-    v9[2](v9, v17, v18, v20);
+    handlerCopy[2](handlerCopy, v17, v18, v20);
   }
 
   else
   {
-    v9[2](v9, v37[3], v33[3], 0);
+    handlerCopy[2](handlerCopy, v37[3], v33[3], 0);
   }
 
   _Block_object_dispose(&v32, 8);

@@ -2,23 +2,23 @@
 - (BOOL)_accessibilityInvertColorsActsAsDarkWindow;
 - (BOOL)_accessibilityInvertColorsSupportsDarkWindowInvert;
 - (id)_accessibilityInvertColorsSupportsDarkWindowInvertBlock;
-- (void)_accessibilitySetInvertColorsActsAsDarkWindowBlock:(id)a3;
-- (void)_accessibilitySetInvertColorsSupportsDarkWindowInvertBlock:(id)a3;
-- (void)accessibilityApplyIgnoreInvertToWindow:(id)a3;
-- (void)accessibilityDeapplyIgnoreInvertToWindow:(id)a3;
+- (void)_accessibilitySetInvertColorsActsAsDarkWindowBlock:(id)block;
+- (void)_accessibilitySetInvertColorsSupportsDarkWindowInvertBlock:(id)block;
+- (void)accessibilityApplyIgnoreInvertToWindow:(id)window;
+- (void)accessibilityDeapplyIgnoreInvertToWindow:(id)window;
 @end
 
 @implementation NSObject
 
-- (void)accessibilityApplyIgnoreInvertToWindow:(id)a3
+- (void)accessibilityApplyIgnoreInvertToWindow:(id)window
 {
-  v4 = a3;
-  if (v4)
+  windowCopy = window;
+  if (windowCopy)
   {
     v5 = +[AXSubsystemInvertColors sharedInstance];
-    v6 = [v5 ignoreLogging];
+    ignoreLogging = [v5 ignoreLogging];
 
-    if ((v6 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
       v7 = +[AXSubsystemInvertColors identifier];
       v8 = AXLoggerForFacility();
@@ -27,7 +27,7 @@
       if (os_log_type_enabled(v8, v9))
       {
         v10 = AXColorizeFormatLog();
-        v20 = v4;
+        v20 = windowCopy;
         v11 = _AXStringForArgs();
         if (os_log_type_enabled(v8, v9))
         {
@@ -38,9 +38,9 @@
       }
     }
 
-    if (([v4 accessibilityIgnoresInvertColors] & 1) == 0)
+    if (([windowCopy accessibilityIgnoresInvertColors] & 1) == 0)
     {
-      [v4 setAccessibilityIgnoresInvertColors:1];
+      [windowCopy setAccessibilityIgnoresInvertColors:1];
       v12 = AXLogInvertColors();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
@@ -53,15 +53,15 @@
   }
 }
 
-- (void)accessibilityDeapplyIgnoreInvertToWindow:(id)a3
+- (void)accessibilityDeapplyIgnoreInvertToWindow:(id)window
 {
-  v4 = a3;
-  if (v4)
+  windowCopy = window;
+  if (windowCopy)
   {
     v5 = +[AXSubsystemInvertColors sharedInstance];
-    v6 = [v5 ignoreLogging];
+    ignoreLogging = [v5 ignoreLogging];
 
-    if ((v6 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
       v7 = +[AXSubsystemInvertColors identifier];
       v8 = AXLoggerForFacility();
@@ -70,7 +70,7 @@
       if (os_log_type_enabled(v8, v9))
       {
         v10 = AXColorizeFormatLog();
-        v20 = v4;
+        v20 = windowCopy;
         v11 = _AXStringForArgs();
         if (os_log_type_enabled(v8, v9))
         {
@@ -81,9 +81,9 @@
       }
     }
 
-    if ([v4 accessibilityIgnoresInvertColors])
+    if ([windowCopy accessibilityIgnoresInvertColors])
     {
-      [v4 setAccessibilityIgnoresInvertColors:0];
+      [windowCopy setAccessibilityIgnoresInvertColors:0];
       v12 = AXLogInvertColors();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
@@ -98,36 +98,36 @@
 
 - (BOOL)_accessibilityInvertColorsActsAsDarkWindow
 {
-  v3 = [self _accessibilityInvertColorsActsAsDarkWindowBlock];
+  _accessibilityInvertColorsActsAsDarkWindowBlock = [self _accessibilityInvertColorsActsAsDarkWindowBlock];
 
-  if (v3)
+  if (_accessibilityInvertColorsActsAsDarkWindowBlock)
   {
-    v4 = [self _accessibilityInvertColorsActsAsDarkWindowBlock];
-    v5 = v4[2]();
+    _accessibilityInvertColorsActsAsDarkWindowBlock2 = [self _accessibilityInvertColorsActsAsDarkWindowBlock];
+    bOOLValue = _accessibilityInvertColorsActsAsDarkWindowBlock2[2]();
   }
 
   else
   {
     v6 = [self _accessibilityValueForKey:@"_accessibilityInvertColorsActsAsDarkWindow"];
-    v4 = v6;
+    _accessibilityInvertColorsActsAsDarkWindowBlock2 = v6;
     if (!v6)
     {
       v7 = 0;
       goto LABEL_6;
     }
 
-    v5 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
-  v7 = v5;
+  v7 = bOOLValue;
 LABEL_6:
 
   return v7;
 }
 
-- (void)_accessibilitySetInvertColorsActsAsDarkWindowBlock:(id)a3
+- (void)_accessibilitySetInvertColorsActsAsDarkWindowBlock:(id)block
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(block);
   [self _accessibilitySetRetainedValue:v4 forKey:@"_accessibilityInvertColorsActsAsDarkWindowBlock"];
 
   objc_opt_class();
@@ -140,36 +140,36 @@ LABEL_6:
 
 - (BOOL)_accessibilityInvertColorsSupportsDarkWindowInvert
 {
-  v3 = [self _accessibilityInvertColorsSupportsDarkWindowInvertBlock];
+  _accessibilityInvertColorsSupportsDarkWindowInvertBlock = [self _accessibilityInvertColorsSupportsDarkWindowInvertBlock];
 
-  if (v3)
+  if (_accessibilityInvertColorsSupportsDarkWindowInvertBlock)
   {
-    v4 = [self _accessibilityInvertColorsSupportsDarkWindowInvertBlock];
-    v5 = v4[2]();
+    _accessibilityInvertColorsSupportsDarkWindowInvertBlock2 = [self _accessibilityInvertColorsSupportsDarkWindowInvertBlock];
+    bOOLValue = _accessibilityInvertColorsSupportsDarkWindowInvertBlock2[2]();
   }
 
   else
   {
     v6 = [self _accessibilityValueForKey:@"_accessibilityInvertColorsSupportsDarkWindowInvert"];
-    v4 = v6;
+    _accessibilityInvertColorsSupportsDarkWindowInvertBlock2 = v6;
     if (!v6)
     {
       v7 = 1;
       goto LABEL_6;
     }
 
-    v5 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
-  v7 = v5;
+  v7 = bOOLValue;
 LABEL_6:
 
   return v7;
 }
 
-- (void)_accessibilitySetInvertColorsSupportsDarkWindowInvertBlock:(id)a3
+- (void)_accessibilitySetInvertColorsSupportsDarkWindowInvertBlock:(id)block
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(block);
   [self _accessibilitySetRetainedValue:v4 forKey:@"_accessibilitySetInvertColorsSupportsDarkWindowInvertBlock"];
 
   objc_opt_class();

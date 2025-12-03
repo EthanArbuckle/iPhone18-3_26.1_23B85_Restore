@@ -1,21 +1,21 @@
 @interface PHImportOptions
 - (PHImportOptions)init;
 - (id)description;
-- (void)setAllowDuplicates:(BOOL)a3;
-- (void)setAllowUnsupported:(BOOL)a3;
-- (void)setDeleteAfterImport:(BOOL)a3;
-- (void)setHideProgress:(BOOL)a3;
-- (void)setOmitImportComplete:(BOOL)a3;
-- (void)setShouldImportAsReferenced:(BOOL)a3;
-- (void)setSkipAlertWhenFinished:(BOOL)a3;
-- (void)setSkipDiskSpaceCheck:(BOOL)a3;
+- (void)setAllowDuplicates:(BOOL)duplicates;
+- (void)setAllowUnsupported:(BOOL)unsupported;
+- (void)setDeleteAfterImport:(BOOL)import;
+- (void)setHideProgress:(BOOL)progress;
+- (void)setOmitImportComplete:(BOOL)complete;
+- (void)setShouldImportAsReferenced:(BOOL)referenced;
+- (void)setSkipAlertWhenFinished:(BOOL)finished;
+- (void)setSkipDiskSpaceCheck:(BOOL)check;
 @end
 
 @implementation PHImportOptions
 
-- (void)setAllowUnsupported:(BOOL)a3
+- (void)setAllowUnsupported:(BOOL)unsupported
 {
-  if (a3)
+  if (unsupported)
   {
     v3 = 512;
   }
@@ -28,9 +28,9 @@
   self->_options_bits = (*&self->_options_bits & 0xFFFFFDFF | v3);
 }
 
-- (void)setOmitImportComplete:(BOOL)a3
+- (void)setOmitImportComplete:(BOOL)complete
 {
-  if (a3)
+  if (complete)
   {
     v3 = 256;
   }
@@ -43,9 +43,9 @@
   self->_options_bits = (*&self->_options_bits & 0xFFFFFEFF | v3);
 }
 
-- (void)setDeleteAfterImport:(BOOL)a3
+- (void)setDeleteAfterImport:(BOOL)import
 {
-  if (a3)
+  if (import)
   {
     v3 = 64;
   }
@@ -58,9 +58,9 @@
   self->_options_bits = (*&self->_options_bits & 0xFFFFFFBF | v3);
 }
 
-- (void)setSkipDiskSpaceCheck:(BOOL)a3
+- (void)setSkipDiskSpaceCheck:(BOOL)check
 {
-  if (a3)
+  if (check)
   {
     v3 = 32;
   }
@@ -73,9 +73,9 @@
   self->_options_bits = (*&self->_options_bits & 0xFFFFFFDF | v3);
 }
 
-- (void)setAllowDuplicates:(BOOL)a3
+- (void)setAllowDuplicates:(BOOL)duplicates
 {
-  if (a3)
+  if (duplicates)
   {
     v3 = 16;
   }
@@ -88,9 +88,9 @@
   self->_options_bits = (*&self->_options_bits & 0xFFFFFFEF | v3);
 }
 
-- (void)setShouldImportAsReferenced:(BOOL)a3
+- (void)setShouldImportAsReferenced:(BOOL)referenced
 {
-  if (a3)
+  if (referenced)
   {
     v3 = 8;
   }
@@ -103,9 +103,9 @@
   self->_options_bits = (*&self->_options_bits & 0xFFFFFFF7 | v3);
 }
 
-- (void)setSkipAlertWhenFinished:(BOOL)a3
+- (void)setSkipAlertWhenFinished:(BOOL)finished
 {
-  if (a3)
+  if (finished)
   {
     v3 = 4;
   }
@@ -118,9 +118,9 @@
   self->_options_bits = (*&self->_options_bits & 0xFFFFFFFB | v3);
 }
 
-- (void)setHideProgress:(BOOL)a3
+- (void)setHideProgress:(BOOL)progress
 {
-  if (a3)
+  if (progress)
   {
     v3 = 2;
   }
@@ -147,7 +147,7 @@
   }
 
   v22 = v3;
-  v21 = [(PHImportOptions *)self importedBy];
+  importedBy = [(PHImportOptions *)self importedBy];
   if ([(PHImportOptions *)self hideProgress])
   {
     v4 = @"YES";
@@ -170,7 +170,7 @@
   }
 
   v19 = v5;
-  v18 = [(PHImportOptions *)self fileOperation];
+  fileOperation = [(PHImportOptions *)self fileOperation];
   if ([(PHImportOptions *)self shouldImportAsReferenced])
   {
     v6 = @"YES";
@@ -211,7 +211,7 @@
     v9 = @"NO";
   }
 
-  v10 = [(PHImportOptions *)self metadataAddMode];
+  metadataAddMode = [(PHImportOptions *)self metadataAddMode];
   if ([(PHImportOptions *)self omitImportComplete])
   {
     v11 = @"YES";
@@ -232,10 +232,10 @@
     v12 = @"NO";
   }
 
-  v13 = [(PHImportOptions *)self personId];
-  v14 = [(PHImportOptions *)self libraryScope];
-  v15 = [(PHImportOptions *)self library];
-  v16 = [v23 stringWithFormat:@"\npreserveFolderStructure: %@\nimportedBy: %d\nhideProgress: %@\nskipAlertWhenFinished: %@\nfileOperation: %d\nshouldImportAsReferenced: %@\nallowDuplicates: %@\nskipDiskSpaceCheck: %@\ndeleteAfterImport: %@\nmetadataAddMode: %d\nomitImportComplete: %@\nallowUnsupported: %@\npersonId: %@\nlibraryScope: %@\nlibrary: %@\n", v22, v21, v20, v19, v18, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15];
+  personId = [(PHImportOptions *)self personId];
+  libraryScope = [(PHImportOptions *)self libraryScope];
+  library = [(PHImportOptions *)self library];
+  v16 = [v23 stringWithFormat:@"\npreserveFolderStructure: %@\nimportedBy: %d\nhideProgress: %@\nskipAlertWhenFinished: %@\nfileOperation: %d\nshouldImportAsReferenced: %@\nallowDuplicates: %@\nskipDiskSpaceCheck: %@\ndeleteAfterImport: %@\nmetadataAddMode: %d\nomitImportComplete: %@\nallowUnsupported: %@\npersonId: %@\nlibraryScope: %@\nlibrary: %@\n", v22, importedBy, v20, v19, fileOperation, v6, v7, v8, v9, metadataAddMode, v11, v12, personId, libraryScope, library];
 
   return v16;
 }

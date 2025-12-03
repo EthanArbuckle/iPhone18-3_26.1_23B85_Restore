@@ -1,10 +1,10 @@
 @interface StockListSectionHeaderView
-- (_TtC8StocksUI26StockListSectionHeaderView)initWithCoder:(id)a3;
+- (_TtC8StocksUI26StockListSectionHeaderView)initWithCoder:(id)coder;
 @end
 
 @implementation StockListSectionHeaderView
 
-- (_TtC8StocksUI26StockListSectionHeaderView)initWithCoder:(id)a3
+- (_TtC8StocksUI26StockListSectionHeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8StocksUI26StockListSectionHeaderView_switcherButton;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(sub_22088AC2C()) initWithFrame_];

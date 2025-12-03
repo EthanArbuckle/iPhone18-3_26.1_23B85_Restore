@@ -1,7 +1,7 @@
 @interface PHVoicemailVoiceMemoURLItem
 - (PHVoicemailVoiceMemoURLItem)init;
-- (PHVoicemailVoiceMemoURLItem)initWithVoiceMemoURL:(id)a3 voiceMemoName:(id)a4 voiceMemoDate:(id)a5;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (PHVoicemailVoiceMemoURLItem)initWithVoiceMemoURL:(id)l voiceMemoName:(id)name voiceMemoDate:(id)date;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 @end
 
 @implementation PHVoicemailVoiceMemoURLItem
@@ -16,34 +16,34 @@
   return v5;
 }
 
-- (PHVoicemailVoiceMemoURLItem)initWithVoiceMemoURL:(id)a3 voiceMemoName:(id)a4 voiceMemoDate:(id)a5
+- (PHVoicemailVoiceMemoURLItem)initWithVoiceMemoURL:(id)l voiceMemoName:(id)name voiceMemoDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  nameCopy = name;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = PHVoicemailVoiceMemoURLItem;
   v12 = [(PHVoicemailVoiceMemoURLItem *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_voiceMemoURL, a3);
-    objc_storeStrong(&v13->_voiceMemoName, a4);
-    objc_storeStrong(&v13->_voiceMemoDate, a5);
+    objc_storeStrong(&v12->_voiceMemoURL, l);
+    objc_storeStrong(&v13->_voiceMemoName, name);
+    objc_storeStrong(&v13->_voiceMemoDate, date);
   }
 
   return v13;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
   v4 = objc_alloc_init(LPFileMetadata);
-  v5 = [(PHVoicemailVoiceMemoURLItem *)self voiceMemoName];
-  [v4 setName:v5];
+  voiceMemoName = [(PHVoicemailVoiceMemoURLItem *)self voiceMemoName];
+  [v4 setName:voiceMemoName];
 
   [v4 setType:AVFileTypeAppleM4A];
-  v6 = [(PHVoicemailVoiceMemoURLItem *)self voiceMemoDate];
-  [v4 setCreationDate:v6];
+  voiceMemoDate = [(PHVoicemailVoiceMemoURLItem *)self voiceMemoDate];
+  [v4 setCreationDate:voiceMemoDate];
 
   v7 = objc_alloc_init(LPLinkMetadata);
   [v7 setSpecialization:v4];

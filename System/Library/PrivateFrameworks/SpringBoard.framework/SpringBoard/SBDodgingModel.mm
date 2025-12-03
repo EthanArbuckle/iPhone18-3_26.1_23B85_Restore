@@ -1,21 +1,21 @@
 @interface SBDodgingModel
-- (CGPoint)centerForIdentifier:(id)a3;
+- (CGPoint)centerForIdentifier:(id)identifier;
 - (CGRect)referenceBounds;
-- (CGSize)sizeForIdentifier:(id)a3;
-- (SBDodgingModel)initWithReferenceBounds:(CGRect)a3;
+- (CGSize)sizeForIdentifier:(id)identifier;
+- (SBDodgingModel)initWithReferenceBounds:(CGRect)bounds;
 - (id)description;
-- (id)modelByModifyingModelWithBlock:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)modelByModifyingModelWithBlock:(id)block;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBDodgingModel
 
-- (SBDodgingModel)initWithReferenceBounds:(CGRect)a3
+- (SBDodgingModel)initWithReferenceBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v15.receiver = self;
   v15.super_class = SBDodgingModel;
   v7 = [(SBDodgingModel *)&v15 init];
@@ -42,9 +42,9 @@
   return v7;
 }
 
-- (CGPoint)centerForIdentifier:(id)a3
+- (CGPoint)centerForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_centersForIdentifiers objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_centersForIdentifiers objectForKey:identifier];
   [v3 CGPointValue];
   v5 = v4;
   v7 = v6;
@@ -56,9 +56,9 @@
   return result;
 }
 
-- (CGSize)sizeForIdentifier:(id)a3
+- (CGSize)sizeForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_sizesForIdentifiers objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_sizesForIdentifiers objectForKey:identifier];
   [v3 CGSizeValue];
   v5 = v4;
   v7 = v6;
@@ -83,16 +83,16 @@
   return result;
 }
 
-- (id)modelByModifyingModelWithBlock:(id)a3
+- (id)modelByModifyingModelWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(SBDodgingModel *)self mutableCopy];
-  v4[2](v4, v5);
+  blockCopy[2](blockCopy, v5);
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(SBDodgingModel *)[SBMutableDodgingModel alloc] initWithReferenceBounds:self->_referenceBounds.origin.x, self->_referenceBounds.origin.y, self->_referenceBounds.size.width, self->_referenceBounds.size.height];
   v5 = [(NSMutableArray *)self->_identifiers mutableCopy];

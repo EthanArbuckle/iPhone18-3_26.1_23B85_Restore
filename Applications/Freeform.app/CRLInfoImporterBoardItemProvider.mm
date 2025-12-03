@@ -1,19 +1,19 @@
 @interface CRLInfoImporterBoardItemProvider
-+ (BOOL)canInitWithType:(id)a3;
++ (BOOL)canInitWithType:(id)type;
 + (NSArray)disallowedTypes;
 - (CRLInfoImporterBoardItemProvider)init;
-- (CRLInfoImporterBoardItemProvider)initWithData:(id)a3 type:(id)a4 boardItemFactory:(id)a5;
-- (CRLInfoImporterBoardItemProvider)initWithURL:(id)a3 type:(id)a4 boardItemFactory:(id)a5;
-- (void)boardItemImporter:(id)a3 needsMediaCompatibilityFeedbackWithReasons:(int64_t)a4 forMediaType:(int64_t)a5 usingBlock:(id)a6;
-- (void)boardItemImporterWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)a3;
-- (void)provideBoardItemWithFactory:(id)a3 completionHandler:(id)a4;
+- (CRLInfoImporterBoardItemProvider)initWithData:(id)data type:(id)type boardItemFactory:(id)factory;
+- (CRLInfoImporterBoardItemProvider)initWithURL:(id)l type:(id)type boardItemFactory:(id)factory;
+- (void)boardItemImporter:(id)importer needsMediaCompatibilityFeedbackWithReasons:(int64_t)reasons forMediaType:(int64_t)type usingBlock:(id)block;
+- (void)boardItemImporterWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)requirement;
+- (void)provideBoardItemWithFactory:(id)factory completionHandler:(id)handler;
 @end
 
 @implementation CRLInfoImporterBoardItemProvider
 
-+ (BOOL)canInitWithType:(id)a3
++ (BOOL)canInitWithType:(id)type
 {
-  v3 = [UTType typeWithIdentifier:a3];
+  v3 = [UTType typeWithIdentifier:type];
   if (v3)
   {
     v4 = +[CRLBoardItemImporter supportedImageFileUTTypes];
@@ -87,23 +87,23 @@ LABEL_14:
   return v3;
 }
 
-- (CRLInfoImporterBoardItemProvider)initWithData:(id)a3 type:(id)a4 boardItemFactory:(id)a5
+- (CRLInfoImporterBoardItemProvider)initWithData:(id)data type:(id)type boardItemFactory:(id)factory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  typeCopy = type;
+  factoryCopy = factory;
   v19.receiver = self;
   v19.super_class = CRLInfoImporterBoardItemProvider;
   v12 = [(CRLInfoImporterBoardItemProvider *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_data, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_data, data);
+    v14 = [typeCopy copy];
     type = v13->_type;
     v13->_type = v14;
 
-    objc_storeStrong(&v13->_boardItemFactory, a5);
+    objc_storeStrong(&v13->_boardItemFactory, factory);
     v16 = objc_alloc_init(CRLScaledProgress);
     progress = v13->_progress;
     v13->_progress = v16;
@@ -112,11 +112,11 @@ LABEL_14:
   return v13;
 }
 
-- (CRLInfoImporterBoardItemProvider)initWithURL:(id)a3 type:(id)a4 boardItemFactory:(id)a5
+- (CRLInfoImporterBoardItemProvider)initWithURL:(id)l type:(id)type boardItemFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  typeCopy = type;
+  factoryCopy = factory;
   v29.receiver = self;
   v29.super_class = CRLInfoImporterBoardItemProvider;
   v11 = [(CRLInfoImporterBoardItemProvider *)&v29 init];
@@ -131,20 +131,20 @@ LABEL_14:
     if (!v13)
     {
       v15 = [(CRLTemporaryDirectory *)v11->_temporaryDirectory URL];
-      v16 = [v8 lastPathComponent];
-      v17 = [v15 URLByAppendingPathComponent:v16];
+      lastPathComponent = [lCopy lastPathComponent];
+      v17 = [v15 URLByAppendingPathComponent:lastPathComponent];
       dataURL = v11->_dataURL;
       v11->_dataURL = v17;
 
       v19 = +[NSFileManager defaultManager];
       v20 = v11->_dataURL;
       v27 = 0;
-      [v19 copyItemAtURL:v8 toURL:v20 error:&v27];
+      [v19 copyItemAtURL:lCopy toURL:v20 error:&v27];
       v13 = v27;
 
       if (!v13)
       {
-        v21 = [v9 copy];
+        v21 = [typeCopy copy];
         type = v11->_type;
         v11->_type = v21;
 
@@ -154,7 +154,7 @@ LABEL_14:
       }
     }
 
-    objc_storeStrong(&v11->_boardItemFactory, a5);
+    objc_storeStrong(&v11->_boardItemFactory, factory);
     if (v13)
     {
       if (qword_101AD5A08 != -1)
@@ -165,7 +165,7 @@ LABEL_14:
       v25 = off_1019EDA60;
       if (os_log_type_enabled(off_1019EDA60, OS_LOG_TYPE_ERROR))
       {
-        sub_101379420(v8, v25, v13);
+        sub_101379420(lCopy, v25, v13);
       }
 
       v11 = 0;
@@ -225,9 +225,9 @@ LABEL_14:
   objc_exception_throw(v10);
 }
 
-- (void)provideBoardItemWithFactory:(id)a3 completionHandler:(id)a4
+- (void)provideBoardItemWithFactory:(id)factory completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [UTType typeWithIdentifier:self->_type];
   if (!v6)
   {
@@ -259,7 +259,7 @@ LABEL_14:
     [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:132 isFatal:0 description:"Failed to create a UTType for %{public}@", self->_type];
   }
 
-  v12 = [v6 preferredFilenameExtension];
+  preferredFilenameExtension = [v6 preferredFilenameExtension];
   v13 = +[CRLIngestionTypes supportedMovieUTTypes];
   v14 = [v6 crl_conformsToAnyUTType:v13];
 
@@ -268,9 +268,9 @@ LABEL_14:
     v15 = +[CRLBoardItemImporter defaultPastedMovieName];
     v16 = [NSString alloc];
     v17 = @"mov";
-    if (v12)
+    if (preferredFilenameExtension)
     {
-      v17 = v12;
+      v17 = preferredFilenameExtension;
     }
 
     v18 = [v16 initWithFormat:@"%@.%@", v15, v17];
@@ -285,9 +285,9 @@ LABEL_14:
     v15 = +[CRLBoardItemImporter defaultPastedImageName];
     v21 = [NSString alloc];
     v22 = @"png";
-    if (v12)
+    if (preferredFilenameExtension)
     {
-      v22 = v12;
+      v22 = preferredFilenameExtension;
     }
 
     v23 = [v21 initWithFormat:@"%@.%@", v15, v22];
@@ -296,18 +296,18 @@ LABEL_14:
 
   else
   {
-    v25 = [v6 localizedDescription];
-    v15 = v25;
-    if (v12)
+    localizedDescription = [v6 localizedDescription];
+    v15 = localizedDescription;
+    if (preferredFilenameExtension)
     {
-      v18 = [[NSString alloc] initWithFormat:@"%@.%@", v25, v12];
+      v18 = [[NSString alloc] initWithFormat:@"%@.%@", localizedDescription, preferredFilenameExtension];
 LABEL_21:
       v23 = v18;
       v24 = 0;
       goto LABEL_22;
     }
 
-    v15 = v25;
+    v15 = localizedDescription;
     v24 = 0;
     v23 = v15;
   }
@@ -316,12 +316,12 @@ LABEL_22:
 
   if (self->_data)
   {
-    v58 = v5;
+    v58 = handlerCopy;
     v26 = [_TtC8Freeform27CRLPreinsertionAssetWrapper alloc];
     data = self->_data;
-    v28 = [(CRLBoardItemFactory *)self->_boardItemFactory assetOwner];
+    assetOwner = [(CRLBoardItemFactory *)self->_boardItemFactory assetOwner];
     v60 = 0;
-    v29 = [(CRLPreinsertionAssetWrapper *)v26 initWithData:data filename:v23 owner:v28 error:&v60];
+    v29 = [(CRLPreinsertionAssetWrapper *)v26 initWithData:data filename:v23 owner:assetOwner error:&v60];
     v30 = v60;
 
     if (!v29)
@@ -342,7 +342,7 @@ LABEL_22:
         sub_1013797B4();
       }
 
-      v5 = v58;
+      handlerCopy = v58;
       v37 = off_1019EDA68;
       if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
       {
@@ -383,9 +383,9 @@ LABEL_22:
           v35 = @"png";
 LABEL_53:
           v46 = [NSString alloc];
-          if (v12)
+          if (preferredFilenameExtension)
           {
-            v47 = v12;
+            v47 = preferredFilenameExtension;
           }
 
           else
@@ -397,9 +397,9 @@ LABEL_53:
 
           v49 = [_TtC8Freeform27CRLPreinsertionAssetWrapper alloc];
           v50 = self->_data;
-          v51 = [(CRLBoardItemFactory *)self->_boardItemFactory assetOwner];
+          assetOwner2 = [(CRLBoardItemFactory *)self->_boardItemFactory assetOwner];
           v59 = v30;
-          v29 = [(CRLPreinsertionAssetWrapper *)v49 initWithData:v50 filename:v48 owner:v51 error:&v59];
+          v29 = [(CRLPreinsertionAssetWrapper *)v49 initWithData:v50 filename:v48 owner:assetOwner2 error:&v59];
           v52 = v59;
 
           if (v29)
@@ -413,7 +413,7 @@ LABEL_59:
             self->_infoImporter = v53;
 
             v30 = v29;
-            v5 = v58;
+            handlerCopy = v58;
             goto LABEL_60;
           }
 
@@ -444,7 +444,7 @@ LABEL_59:
           [CRLAssertionHandler handleFailureInFunction:v38 file:v39 lineNumber:185 isFatal:0 description:"Error %@ creating pre-insertion asset wrapper for data.", v52];
           v23 = v48;
           v30 = v52;
-          v5 = v58;
+          handlerCopy = v58;
 LABEL_41:
 
           goto LABEL_60;
@@ -497,51 +497,51 @@ LABEL_60:
   v55 = self->_infoImporter;
   if (v55)
   {
-    v56 = [(CRLBoardItemImporter *)v55 progress];
-    [(CRLScaledProgress *)self->_progress setProgress:v56];
-    [v56 maxValue];
+    progress = [(CRLBoardItemImporter *)v55 progress];
+    [(CRLScaledProgress *)self->_progress setProgress:progress];
+    [progress maxValue];
     [(CRLScaledProgress *)self->_progress setMaxValue:?];
     [(CRLBoardItemImporter *)self->_infoImporter setDelegate:self];
-    [(CRLBoardItemImporter *)self->_infoImporter importBoardItemWithCompletionHandler:v5];
+    [(CRLBoardItemImporter *)self->_infoImporter importBoardItemWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v56 = [(CRLInfoImporterBoardItemProvider *)self delegate];
-    if (v56 && (objc_opt_respondsToSelector() & 1) != 0)
+    progress = [(CRLInfoImporterBoardItemProvider *)self delegate];
+    if (progress && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v56 importableBoardItemProviderWillIgnoreMediaCompatibilityOnAllDevicesRequirement:self];
+      [progress importableBoardItemProviderWillIgnoreMediaCompatibilityOnAllDevicesRequirement:self];
     }
 
-    if (v5)
+    if (handlerCopy)
     {
-      v5[2](v5);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
 
-- (void)boardItemImporter:(id)a3 needsMediaCompatibilityFeedbackWithReasons:(int64_t)a4 forMediaType:(int64_t)a5 usingBlock:(id)a6
+- (void)boardItemImporter:(id)importer needsMediaCompatibilityFeedbackWithReasons:(int64_t)reasons forMediaType:(int64_t)type usingBlock:(id)block
 {
-  v9 = a6;
-  v10 = [(CRLInfoImporterBoardItemProvider *)self delegate];
-  v11 = v10;
-  if (v10)
+  blockCopy = block;
+  delegate = [(CRLInfoImporterBoardItemProvider *)self delegate];
+  v11 = delegate;
+  if (delegate)
   {
-    [v10 importableBoardItemProvider:self needsMediaCompatibilityFeedbackWithReasons:a4 forMediaType:a5 usingBlock:v9];
+    [delegate importableBoardItemProvider:self needsMediaCompatibilityFeedbackWithReasons:reasons forMediaType:type usingBlock:blockCopy];
   }
 
   else
   {
-    v9[2](v9, 0, 1);
+    blockCopy[2](blockCopy, 0, 1);
   }
 }
 
-- (void)boardItemImporterWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)a3
+- (void)boardItemImporterWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)requirement
 {
-  v4 = [(CRLInfoImporterBoardItemProvider *)self delegate];
-  if (v4)
+  delegate = [(CRLInfoImporterBoardItemProvider *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
+    v5 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v5 importableBoardItemProviderWillIgnoreMediaCompatibilityOnAllDevicesRequirement:self];

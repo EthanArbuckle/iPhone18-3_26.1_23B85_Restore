@@ -1,13 +1,13 @@
 @interface CRKClassKitCurrentUserProvider
-- (CRKClassKitCurrentUserProvider)initWithClassKitFacade:(id)a3;
+- (CRKClassKitCurrentUserProvider)initWithClassKitFacade:(id)facade;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performKVOUpdateForKeyPaths:(id)a3 updateBlock:(id)a4;
-- (void)safeFetchCurrentUserWithCompletion:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performKVOUpdateForKeyPaths:(id)paths updateBlock:(id)block;
+- (void)safeFetchCurrentUserWithCompletion:(id)completion;
 - (void)startObservingCurrentUser;
 - (void)stopObservingCurrentUser;
 - (void)updateCurrentUser;
-- (void)updateCurrentUser:(id)a3 fetched:(BOOL)a4;
+- (void)updateCurrentUser:(id)user fetched:(BOOL)fetched;
 @end
 
 @implementation CRKClassKitCurrentUserProvider
@@ -20,16 +20,16 @@
   [(CRKClassKitCurrentUserProvider *)&v3 dealloc];
 }
 
-- (CRKClassKitCurrentUserProvider)initWithClassKitFacade:(id)a3
+- (CRKClassKitCurrentUserProvider)initWithClassKitFacade:(id)facade
 {
-  v5 = a3;
+  facadeCopy = facade;
   v9.receiver = self;
   v9.super_class = CRKClassKitCurrentUserProvider;
   v6 = [(CRKClassKitCurrentUserProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_classKitFacade, a3);
+    objc_storeStrong(&v6->_classKitFacade, facade);
     [(CRKClassKitCurrentUserProvider *)v7 startObservingCurrentUser];
     [(CRKClassKitCurrentUserProvider *)v7 updateCurrentUser];
   }
@@ -39,17 +39,17 @@
 
 - (void)startObservingCurrentUser
 {
-  v3 = [(CRKClassKitCurrentUserProvider *)self classKitFacade];
-  [v3 addObserver:self forKeyPath:@"accountState" options:3 context:@"CRKClassKitCurrentUserProviderObservationContext"];
+  classKitFacade = [(CRKClassKitCurrentUserProvider *)self classKitFacade];
+  [classKitFacade addObserver:self forKeyPath:@"accountState" options:3 context:@"CRKClassKitCurrentUserProviderObservationContext"];
 
   objc_initWeak(&location, self);
-  v4 = [(CRKClassKitCurrentUserProvider *)self classKitFacade];
+  classKitFacade2 = [(CRKClassKitCurrentUserProvider *)self classKitFacade];
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __59__CRKClassKitCurrentUserProvider_startObservingCurrentUser__block_invoke;
   v9 = &unk_278DC1870;
   objc_copyWeak(&v10, &location);
-  v5 = [v4 subscribeToCurrentUserDidChangeEvents:&v6];
+  v5 = [classKitFacade2 subscribeToCurrentUserDidChangeEvents:&v6];
   [(CRKClassKitCurrentUserProvider *)self setCurrentUserSubscription:v5, v6, v7, v8, v9];
 
   objc_destroyWeak(&v10);
@@ -64,28 +64,28 @@ void __59__CRKClassKitCurrentUserProvider_startObservingCurrentUser__block_invok
 
 - (void)stopObservingCurrentUser
 {
-  v3 = [(CRKClassKitCurrentUserProvider *)self classKitFacade];
-  [v3 removeObserver:self forKeyPath:@"accountState" context:@"CRKClassKitCurrentUserProviderObservationContext"];
+  classKitFacade = [(CRKClassKitCurrentUserProvider *)self classKitFacade];
+  [classKitFacade removeObserver:self forKeyPath:@"accountState" context:@"CRKClassKitCurrentUserProviderObservationContext"];
 
-  v4 = [(CRKClassKitCurrentUserProvider *)self currentUserSubscription];
-  [v4 cancel];
+  currentUserSubscription = [(CRKClassKitCurrentUserProvider *)self currentUserSubscription];
+  [currentUserSubscription cancel];
 
   [(CRKClassKitCurrentUserProvider *)self setCurrentUserSubscription:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"CRKClassKitCurrentUserProviderObservationContext")
+  if (context == @"CRKClassKitCurrentUserProviderObservationContext")
   {
-    v11 = a5;
-    v12 = [v11 crk_keyValueObservingOldObject];
-    v13 = [v12 integerValue];
+    changeCopy = change;
+    crk_keyValueObservingOldObject = [changeCopy crk_keyValueObservingOldObject];
+    integerValue = [crk_keyValueObservingOldObject integerValue];
 
-    v14 = [v11 crk_keyValueObservingNewObject];
+    crk_keyValueObservingNewObject = [changeCopy crk_keyValueObservingNewObject];
 
-    v15 = [v14 integerValue];
-    LODWORD(v14) = [(CRKClassKitCurrentUserProvider *)self isSafeToTalkToProgressdWithAccountState:v13];
-    if (v14 != [(CRKClassKitCurrentUserProvider *)self isSafeToTalkToProgressdWithAccountState:v15])
+    integerValue2 = [crk_keyValueObservingNewObject integerValue];
+    LODWORD(crk_keyValueObservingNewObject) = [(CRKClassKitCurrentUserProvider *)self isSafeToTalkToProgressdWithAccountState:integerValue];
+    if (crk_keyValueObservingNewObject != [(CRKClassKitCurrentUserProvider *)self isSafeToTalkToProgressdWithAccountState:integerValue2])
     {
 
       [(CRKClassKitCurrentUserProvider *)self updateCurrentUser];
@@ -96,22 +96,22 @@ void __59__CRKClassKitCurrentUserProvider_startObservingCurrentUser__block_invok
   {
     v16.receiver = self;
     v16.super_class = CRKClassKitCurrentUserProvider;
-    v10 = a5;
-    [(CRKClassKitCurrentUserProvider *)&v16 observeValueForKeyPath:a3 ofObject:a4 change:v10 context:a6];
+    changeCopy2 = change;
+    [(CRKClassKitCurrentUserProvider *)&v16 observeValueForKeyPath:path ofObject:object change:changeCopy2 context:context];
   }
 }
 
 - (void)updateCurrentUser
 {
   [(CRKClassKitCurrentUserProvider *)self setSequenceNumber:[(CRKClassKitCurrentUserProvider *)self sequenceNumber]+ 1];
-  v3 = [(CRKClassKitCurrentUserProvider *)self sequenceNumber];
+  sequenceNumber = [(CRKClassKitCurrentUserProvider *)self sequenceNumber];
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__CRKClassKitCurrentUserProvider_updateCurrentUser__block_invoke;
   v4[3] = &unk_278DC3428;
   objc_copyWeak(v5, &location);
-  v5[1] = v3;
+  v5[1] = sequenceNumber;
   [(CRKClassKitCurrentUserProvider *)self safeFetchCurrentUserWithCompletion:v4];
   objc_destroyWeak(v5);
   objc_destroyWeak(&location);
@@ -148,12 +148,12 @@ void __51__CRKClassKitCurrentUserProvider_updateCurrentUser__block_invoke(uint64
   }
 }
 
-- (void)updateCurrentUser:(id)a3 fetched:(BOOL)a4
+- (void)updateCurrentUser:(id)user fetched:(BOOL)fetched
 {
-  v4 = a4;
+  fetchedCopy = fetched;
   v16[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([(CRKClassKitCurrentUserProvider *)self currentUserFetched]== v4)
+  userCopy = user;
+  if ([(CRKClassKitCurrentUserProvider *)self currentUserFetched]== fetchedCopy)
   {
     v15 = @"currentUser";
     v7 = MEMORY[0x277CBEA60];
@@ -176,22 +176,22 @@ void __51__CRKClassKitCurrentUserProvider_updateCurrentUser__block_invoke(uint64
   v12[2] = __60__CRKClassKitCurrentUserProvider_updateCurrentUser_fetched___block_invoke;
   v12[3] = &unk_278DC3450;
   v12[4] = self;
-  v13 = v6;
-  v14 = v4;
-  v11 = v6;
+  v13 = userCopy;
+  v14 = fetchedCopy;
+  v11 = userCopy;
   [(CRKClassKitCurrentUserProvider *)self performKVOUpdateForKeyPaths:v10 updateBlock:v12];
 }
 
-- (void)performKVOUpdateForKeyPaths:(id)a3 updateBlock:(id)a4
+- (void)performKVOUpdateForKeyPaths:(id)paths updateBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathsCopy = paths;
+  blockCopy = block;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v8 = [pathsCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -203,26 +203,26 @@ void __51__CRKClassKitCurrentUserProvider_updateCurrentUser__block_invoke(uint64
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(pathsCopy);
         }
 
         [(CRKClassKitCurrentUserProvider *)self willChangeValueForKey:*(*(&v21 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v9 = [pathsCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v9);
   }
 
-  v7[2](v7);
+  blockCopy[2](blockCopy);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = [v6 reverseObjectEnumerator];
-  v13 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  reverseObjectEnumerator = [pathsCopy reverseObjectEnumerator];
+  v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v13)
   {
     v14 = v13;
@@ -234,40 +234,40 @@ void __51__CRKClassKitCurrentUserProvider_updateCurrentUser__block_invoke(uint64
       {
         if (*v18 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         [(CRKClassKitCurrentUserProvider *)self didChangeValueForKey:*(*(&v17 + 1) + 8 * v16++)];
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v14);
   }
 }
 
-- (void)safeFetchCurrentUserWithCompletion:(id)a3
+- (void)safeFetchCurrentUserWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKClassKitCurrentUserProvider *)self classKitFacade];
-  v6 = -[CRKClassKitCurrentUserProvider isSafeToTalkToProgressdWithAccountState:](self, "isSafeToTalkToProgressdWithAccountState:", [v5 accountState]);
+  completionCopy = completion;
+  classKitFacade = [(CRKClassKitCurrentUserProvider *)self classKitFacade];
+  v6 = -[CRKClassKitCurrentUserProvider isSafeToTalkToProgressdWithAccountState:](self, "isSafeToTalkToProgressdWithAccountState:", [classKitFacade accountState]);
 
   if (v6)
   {
-    v7 = [(CRKClassKitCurrentUserProvider *)self classKitFacade];
+    classKitFacade2 = [(CRKClassKitCurrentUserProvider *)self classKitFacade];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __69__CRKClassKitCurrentUserProvider_safeFetchCurrentUserWithCompletion___block_invoke;
     v8[3] = &unk_278DC3478;
-    v9 = v4;
-    [v7 currentUserWithCompletion:v8];
+    v9 = completionCopy;
+    [classKitFacade2 currentUserWithCompletion:v8];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 

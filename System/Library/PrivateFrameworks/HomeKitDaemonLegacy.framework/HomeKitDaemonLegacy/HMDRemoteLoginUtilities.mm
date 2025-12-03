@@ -2,7 +2,7 @@
 + (ACAccount)primaryITunesAccount;
 + (BOOL)isTwoFactorAuthenticationEnabledForAccount;
 + (id)logCategory;
-+ (void)fetchIsTwoFactorAuthenticationEnabledForAccountWithReason:(id)a3 completionHandler:(id)a4;
++ (void)fetchIsTwoFactorAuthenticationEnabledForAccountWithReason:(id)reason completionHandler:(id)handler;
 @end
 
 @implementation HMDRemoteLoginUtilities
@@ -33,12 +33,12 @@ uint64_t __38__HMDRemoteLoginUtilities_logCategory__block_invoke()
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = +[HMDAppleAccountManager sharedManager];
-  v4 = [v3 accountContext];
-  v5 = [v4 alternateDSID];
+  accountContext = [v3 accountContext];
+  alternateDSID = [accountContext alternateDSID];
 
-  v6 = [MEMORY[0x277CF0130] sharedInstance];
-  v7 = [v6 authKitAccountWithAltDSID:v5];
-  v8 = [v6 securityLevelForAccount:v7];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  v7 = [mEMORY[0x277CF0130] authKitAccountWithAltDSID:alternateDSID];
+  v8 = [mEMORY[0x277CF0130] securityLevelForAccount:v7];
   v9 = objc_alloc_init(MEMORY[0x277CFD548]);
   v19 = 0;
   v10 = [v9 isManateeAvailable:&v19];
@@ -46,7 +46,7 @@ uint64_t __38__HMDRemoteLoginUtilities_logCategory__block_invoke()
   if (v11)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -68,28 +68,28 @@ uint64_t __38__HMDRemoteLoginUtilities_logCategory__block_invoke()
   return (v8 > 2) & v10;
 }
 
-+ (void)fetchIsTwoFactorAuthenticationEnabledForAccountWithReason:(id)a3 completionHandler:(id)a4
++ (void)fetchIsTwoFactorAuthenticationEnabledForAccountWithReason:(id)reason completionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v8 = +[HMDAppleAccountManager sharedManager];
-  v9 = [v8 accountContext];
-  v10 = [v9 username];
+  accountContext = [v8 accountContext];
+  username = [accountContext username];
 
   v11 = +[HMDAppleAccountManager sharedManager];
-  v12 = [v11 accountContext];
-  v13 = [v12 alternateDSID];
+  accountContext2 = [v11 accountContext];
+  alternateDSID = [accountContext2 alternateDSID];
 
   v14 = objc_alloc_init(MEMORY[0x277CF0170]);
-  [v14 setUsername:v10];
-  [v14 setAltDSID:v13];
+  [v14 setUsername:username];
+  [v14 setAltDSID:alternateDSID];
   [v14 setIsUsernameEditable:0];
-  [v14 setReason:v6];
+  [v14 setReason:reasonCopy];
   [v14 setServiceType:0];
   [v14 setShouldPreventInteractiveAuth:1];
   v15 = objc_autoreleasePoolPush();
-  v16 = a1;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -97,11 +97,11 @@ uint64_t __38__HMDRemoteLoginUtilities_logCategory__block_invoke()
     *buf = 138544130;
     v26 = v18;
     v27 = 2112;
-    v28 = v10;
+    v28 = username;
     v29 = 2112;
-    v30 = v13;
+    v30 = alternateDSID;
     v31 = 2112;
-    v32 = v6;
+    v32 = reasonCopy;
     _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@Querying 2FA status with username: %@ altDSID: %@ reason: %@", buf, 0x2Au);
   }
 
@@ -111,9 +111,9 @@ uint64_t __38__HMDRemoteLoginUtilities_logCategory__block_invoke()
   v22[1] = 3221225472;
   v22[2] = __103__HMDRemoteLoginUtilities_fetchIsTwoFactorAuthenticationEnabledForAccountWithReason_completionHandler___block_invoke;
   v22[3] = &unk_2797339A8;
-  v23 = v7;
-  v24 = v16;
-  v20 = v7;
+  v23 = handlerCopy;
+  v24 = selfCopy;
+  v20 = handlerCopy;
   [v19 authenticateWithContext:v14 completion:v22];
 
   v21 = *MEMORY[0x277D85DE8];
@@ -186,10 +186,10 @@ LABEL_8:
 + (ACAccount)primaryITunesAccount
 {
   v2 = +[HMDAppleAccountManager sharedManager];
-  v3 = [v2 accountStore];
-  v4 = [v3 ams_activeiTunesAccount];
+  accountStore = [v2 accountStore];
+  ams_activeiTunesAccount = [accountStore ams_activeiTunesAccount];
 
-  return v4;
+  return ams_activeiTunesAccount;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface MSVArtworkServiceRequest
 + (BOOL)canConnectToMediaArtworkService;
-+ (BOOL)hasWriteAccessToPath:(id)a3;
++ (BOOL)hasWriteAccessToPath:(id)path;
 - (Class)operationClass;
 - (MSVArtworkServiceRequest)init;
-- (MSVArtworkServiceRequest)initWithCoder:(id)a3;
-- (void)addSandboxExtensionIfNeededForURL:(id)a3;
+- (MSVArtworkServiceRequest)initWithCoder:(id)coder;
+- (void)addSandboxExtensionIfNeededForURL:(id)l;
 - (void)consumeSandboxExtensions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)releaseSandboxExtensions;
 @end
 
@@ -14,8 +14,8 @@
 
 - (Class)operationClass
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"MSVArtworkServiceRequest.m" lineNumber:99 description:@"Subclass must implement!"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MSVArtworkServiceRequest.m" lineNumber:99 description:@"Subclass must implement!"];
 
   return 0;
 }
@@ -65,8 +65,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(NSMutableDictionary *)self->_sandboxExtensions allValues];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_sandboxExtensions allValues];
+  v4 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -78,7 +78,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v12 + 1) + 8 * v7) UTF8String];
@@ -91,7 +91,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -100,9 +100,9 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSandboxExtensionIfNeededForURL:(id)a3
+- (void)addSandboxExtensionIfNeededForURL:(id)l
 {
-  v14 = a3;
+  lCopy = l;
   v4 = [(NSMutableDictionary *)self->_sandboxExtensions objectForKeyedSubscript:?];
   if (v4)
   {
@@ -112,22 +112,22 @@
   {
     getpid();
     v5 = *MEMORY[0x1E69E9BD0];
-    v6 = [v14 path];
-    v13 = [v6 UTF8String];
+    path = [lCopy path];
+    uTF8String = [path UTF8String];
     v7 = sandbox_check();
 
     if (!v7)
     {
       v8 = *MEMORY[0x1E69E9BB0];
-      v9 = [v14 path];
-      [v9 fileSystemRepresentation];
+      path2 = [lCopy path];
+      [path2 fileSystemRepresentation];
       v10 = *MEMORY[0x1E69E9BF0];
       v11 = sandbox_extension_issue_file();
 
       if (v11)
       {
         v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v11];
-        [(NSMutableDictionary *)self->_sandboxExtensions setObject:v12 forKeyedSubscript:v14];
+        [(NSMutableDictionary *)self->_sandboxExtensions setObject:v12 forKeyedSubscript:lCopy];
 
         free(v11);
       }
@@ -135,17 +135,17 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sandboxExtensions = self->_sandboxExtensions;
-  v5 = a3;
-  [v5 encodeObject:sandboxExtensions forKey:@"MSVArtworkServiceRequestSandboxExtensions"];
-  [v5 encodeObject:self->_sandboxHandles forKey:@"MSVArtworkServiceRequestSandboxHandles"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sandboxExtensions forKey:@"MSVArtworkServiceRequestSandboxExtensions"];
+  [coderCopy encodeObject:self->_sandboxHandles forKey:@"MSVArtworkServiceRequestSandboxHandles"];
 }
 
-- (MSVArtworkServiceRequest)initWithCoder:(id)a3
+- (MSVArtworkServiceRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MSVArtworkServiceRequest *)self init];
   if (v5)
   {
@@ -153,14 +153,14 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"MSVArtworkServiceRequestSandboxExtensions"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"MSVArtworkServiceRequestSandboxExtensions"];
     sandboxExtensions = v5->_sandboxExtensions;
     v5->_sandboxExtensions = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"MSVArtworkServiceRequestSandboxHandles"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"MSVArtworkServiceRequestSandboxHandles"];
     sandboxHandles = v5->_sandboxHandles;
     v5->_sandboxHandles = v15;
   }
@@ -175,27 +175,27 @@
   v2 = [(MSVArtworkServiceRequest *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     sandboxExtensions = v2->_sandboxExtensions;
-    v2->_sandboxExtensions = v3;
+    v2->_sandboxExtensions = dictionary;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     sandboxHandles = v2->_sandboxHandles;
-    v2->_sandboxHandles = v5;
+    v2->_sandboxHandles = array;
   }
 
   return v2;
 }
 
-+ (BOOL)hasWriteAccessToPath:(id)a3
++ (BOOL)hasWriteAccessToPath:(id)path
 {
-  if (!a3)
+  if (!path)
   {
     return 0;
   }
 
-  v3 = [a3 path];
-  [v3 fileSystemRepresentation];
+  path = [path path];
+  [path fileSystemRepresentation];
 
   getpid();
   v4 = *MEMORY[0x1E69E9BD0];

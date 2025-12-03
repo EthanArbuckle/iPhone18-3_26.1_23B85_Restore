@@ -1,9 +1,9 @@
 @interface UARPDynamicAssetCrashLogDecoder
-- (BOOL)copySectionName:(id)a3 inDictionary:(id)a4;
-- (BOOL)createDictionary:(id)a3 inDictionary:(id)a4;
-- (BOOL)decodeCrashLog:(id)a3 inDictionary:(id)a4;
+- (BOOL)copySectionName:(id)name inDictionary:(id)dictionary;
+- (BOOL)createDictionary:(id)dictionary inDictionary:(id)inDictionary;
+- (BOOL)decodeCrashLog:(id)log inDictionary:(id)dictionary;
 - (UARPDynamicAssetCrashLogDecoder)init;
-- (UARPDynamicAssetCrashLogDecoder)initWithDecoderId:(unsigned int)a3 sectionName:(id)a4 inputDictionary:(id)a5;
+- (UARPDynamicAssetCrashLogDecoder)initWithDecoderId:(unsigned int)id sectionName:(id)name inputDictionary:(id)dictionary;
 @end
 
 @implementation UARPDynamicAssetCrashLogDecoder
@@ -15,10 +15,10 @@
   return 0;
 }
 
-- (UARPDynamicAssetCrashLogDecoder)initWithDecoderId:(unsigned int)a3 sectionName:(id)a4 inputDictionary:(id)a5
+- (UARPDynamicAssetCrashLogDecoder)initWithDecoderId:(unsigned int)id sectionName:(id)name inputDictionary:(id)dictionary
 {
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = UARPDynamicAssetCrashLogDecoder;
   v11 = [(UARPDynamicAssetCrashLogDecoder *)&v15 init];
@@ -28,28 +28,28 @@
     log = v11->_log;
     v11->_log = v12;
 
-    v11->_decoderId = a3;
-    objc_storeStrong(&v11->_sectionName, a4);
-    objc_storeStrong(&v11->_cmapDictionary, a5);
+    v11->_decoderId = id;
+    objc_storeStrong(&v11->_sectionName, name);
+    objc_storeStrong(&v11->_cmapDictionary, dictionary);
   }
 
   return v11;
 }
 
-- (BOOL)decodeCrashLog:(id)a3 inDictionary:(id)a4
+- (BOOL)decodeCrashLog:(id)log inDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
+  logCopy = log;
+  dictionaryCopy = dictionary;
   decoderId = self->_decoderId;
   if (decoderId == 2)
   {
-    v9 = [(UARPDynamicAssetCrashLogDecoder *)self createDictionary:v6 inDictionary:v7];
+    v9 = [(UARPDynamicAssetCrashLogDecoder *)self createDictionary:logCopy inDictionary:dictionaryCopy];
     goto LABEL_5;
   }
 
   if (decoderId == 1)
   {
-    v9 = [(UARPDynamicAssetCrashLogDecoder *)self copySectionName:v6 inDictionary:v7];
+    v9 = [(UARPDynamicAssetCrashLogDecoder *)self copySectionName:logCopy inDictionary:dictionaryCopy];
 LABEL_5:
     v10 = v9;
     goto LABEL_9;
@@ -66,11 +66,11 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)copySectionName:(id)a3 inDictionary:(id)a4
+- (BOOL)copySectionName:(id)name inDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dictionaryCopy = dictionary;
   v8 = [(NSDictionary *)self->_cmapDictionary objectForKey:@"CrashLogKey"];
   if (!v8)
   {
@@ -95,7 +95,7 @@ LABEL_19:
     goto LABEL_25;
   }
 
-  [v6 allKeys];
+  [nameCopy allKeys];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -105,7 +105,7 @@ LABEL_19:
   {
     v11 = v10;
     v12 = *v21;
-    v19 = v7;
+    v19 = dictionaryCopy;
 LABEL_5:
     v13 = 0;
     while (1)
@@ -125,8 +125,8 @@ LABEL_5:
 
       if ([v8 isEqualToString:v14])
       {
-        v16 = [v6 objectForKey:v8];
-        v7 = v19;
+        v16 = [nameCopy objectForKey:v8];
+        dictionaryCopy = v19;
         [v19 setObject:v16 forKey:v8];
 
 LABEL_23:
@@ -136,7 +136,7 @@ LABEL_23:
       if (v11 == ++v13)
       {
         v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
-        v7 = v19;
+        dictionaryCopy = v19;
         if (v11)
         {
           goto LABEL_5;
@@ -146,7 +146,7 @@ LABEL_23:
       }
     }
 
-    v7 = v19;
+    dictionaryCopy = v19;
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
       [UARPDynamicAssetCrashLogDecoder copySectionName:inDictionary:];
@@ -170,11 +170,11 @@ LABEL_25:
   return isKindOfClass & 1;
 }
 
-- (BOOL)createDictionary:(id)a3 inDictionary:(id)a4
+- (BOOL)createDictionary:(id)dictionary inDictionary:(id)inDictionary
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  inDictionaryCopy = inDictionary;
   v8 = [(NSDictionary *)self->_cmapDictionary objectForKey:@"CrashLogKey"];
   if (!v8)
   {
@@ -257,7 +257,7 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v13 = [v6 allKeys];
+  allKeys = [dictionaryCopy allKeys];
   v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
   if (![v8 count])
   {
@@ -287,7 +287,7 @@ LABEL_40:
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = v13;
+    obj = allKeys;
     v18 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (!v18)
     {
@@ -306,7 +306,7 @@ LABEL_49:
 
     v19 = v18;
     v31 = v14;
-    v29 = v13;
+    v29 = allKeys;
     v20 = 0;
     v33 = *v36;
     while (2)
@@ -322,7 +322,7 @@ LABEL_49:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v13 = v29;
+          allKeys = v29;
           if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
           {
             [UARPDynamicAssetCrashLogDecoder createDictionary:inDictionary:];
@@ -345,14 +345,14 @@ LABEL_49:
             [UARPDynamicAssetCrashLogDecoder createDictionary:inDictionary:];
           }
 
-          v13 = v29;
+          allKeys = v29;
 LABEL_48:
 
           v14 = v31;
           goto LABEL_49;
         }
 
-        v24 = [v6 objectForKey:v34];
+        v24 = [dictionaryCopy objectForKey:v34];
         [v31 setObject:v24 forKey:v23];
 
         v20 = 1;
@@ -367,7 +367,7 @@ LABEL_48:
       break;
     }
 
-    v13 = v29;
+    allKeys = v29;
     v14 = v31;
     if ((v20 & 1) == 0)
     {
@@ -385,7 +385,7 @@ LABEL_48:
   }
 
 LABEL_24:
-  [v7 setObject:v14 forKey:v11];
+  [inDictionaryCopy setObject:v14 forKey:v11];
   v25 = 1;
 LABEL_50:
 

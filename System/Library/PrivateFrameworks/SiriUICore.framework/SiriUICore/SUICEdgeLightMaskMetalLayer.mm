@@ -1,35 +1,35 @@
 @interface SUICEdgeLightMaskMetalLayer
 + (void)prewarm;
 - (SUICEdgeLightMaskMetalLayer)init;
-- (SUICEdgeLightMaskMetalLayer)initWithBaseEdgeLightLayer:(id)a3;
-- (SUICEdgeLightMaskMetalLayer)initWithCommandQueue:(id)a3;
-- (SUICEdgeLightMaskMetalLayer)initWithFullBorder:(BOOL)a3;
-- (SUICEdgeLightMaskMetalLayer)initWithScreen:(id)a3 commandQueue:(id)a4;
-- (id)_createRenderPipelineFromLibrary:(id)a3 archive:(id)a4 vert:(id)a5 frag:(id)a6;
+- (SUICEdgeLightMaskMetalLayer)initWithBaseEdgeLightLayer:(id)layer;
+- (SUICEdgeLightMaskMetalLayer)initWithCommandQueue:(id)queue;
+- (SUICEdgeLightMaskMetalLayer)initWithFullBorder:(BOOL)border;
+- (SUICEdgeLightMaskMetalLayer)initWithScreen:(id)screen commandQueue:(id)queue;
+- (id)_createRenderPipelineFromLibrary:(id)library archive:(id)archive vert:(id)vert frag:(id)frag;
 - (void)_calculateCornerRadiusRatio;
-- (void)_commonInitWithScreen:(id)a3 commandQueue:(id)a4;
-- (void)_drawFrame:(id)a3;
+- (void)_commonInitWithScreen:(id)screen commandQueue:(id)queue;
+- (void)_drawFrame:(id)frame;
 - (void)_invalidate;
 - (void)_loadMetalPipelines;
 - (void)_loadMetalState;
 - (void)_startOffAnimation;
 - (void)_updateCustomCornerRadius;
 - (void)_updateForUIIdiom;
-- (void)_updateMetalRatios:(CGSize)a3;
+- (void)_updateMetalRatios:(CGSize)ratios;
 - (void)_updateiPadLayout;
-- (void)animateOffWithCompletion:(id)a3;
-- (void)animateOnWithCompletion:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animateOffWithCompletion:(id)completion;
+- (void)animateOnWithCompletion:(id)completion;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
-- (void)dismissalBlur:(float)a3;
+- (void)dismissalBlur:(float)blur;
 - (void)endReducedFramerateForPerformance;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 - (void)setBurstOpacity:(float)_S0;
-- (void)setBurstStartPosition:(unint64_t)a3;
-- (void)setBurstStartPositionCustom:(CGPoint)a3;
+- (void)setBurstStartPosition:(unint64_t)position;
+- (void)setBurstStartPositionCustom:(CGPoint)custom;
 - (void)setFlamePosX:(float)_S0 posY:(float)_S1 radius:(float)_S2;
-- (void)setPaused:(BOOL)a3;
-- (void)setScreen:(id)a3;
+- (void)setPaused:(BOOL)paused;
+- (void)setScreen:(id)screen;
 - (void)startReducedFramerateForPerformance;
 @end
 
@@ -69,18 +69,18 @@
   v2 = 136315394;
   v3 = "[SUICEdgeLightMaskMetalLayer _loadMetalPipelines]";
   v4 = 2112;
-  v5 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1C432B000, a2, OS_LOG_TYPE_ERROR, "%s Failed to create binary archive, error %@", &v2, 0x16u);
 }
 
 - (void)_loadMetalState
 {
-  v3 = [MEMORY[0x1E6974128] renderPassDescriptor];
+  renderPassDescriptor = [MEMORY[0x1E6974128] renderPassDescriptor];
   renderPassDesc = self->_renderPassDesc;
-  self->_renderPassDesc = v3;
+  self->_renderPassDesc = renderPassDescriptor;
 
-  v5 = [(MTLRenderPassDescriptor *)self->_renderPassDesc colorAttachments];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  colorAttachments = [(MTLRenderPassDescriptor *)self->_renderPassDesc colorAttachments];
+  v6 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v6 setLoadAction:0];
   [v6 setStoreAction:1];
@@ -102,8 +102,8 @@
   idiom = self->_idiom;
   if (idiom == -1)
   {
-    v6 = [MEMORY[0x1E69DC938] currentDevice];
-    idiom = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    idiom = [currentDevice userInterfaceIdiom];
   }
 
   if (idiom == 1)
@@ -227,19 +227,19 @@ LABEL_33:
 
     else
     {
-      v6 = [MEMORY[0x1E69DCEB0] _carScreen];
-      v7 = v6;
-      if (v6)
+      _carScreen = [MEMORY[0x1E69DCEB0] _carScreen];
+      v7 = _carScreen;
+      if (_carScreen)
       {
-        v8 = v6;
+        mainScreen = _carScreen;
       }
 
       else
       {
-        v8 = [MEMORY[0x1E69DCEB0] mainScreen];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
       }
 
-      v16 = v8;
+      v16 = mainScreen;
 
       v5 = v16;
     }
@@ -265,8 +265,8 @@ LABEL_33:
 
       else
       {
-        v12 = [(UIScreen *)v17 traitCollection];
-        [v12 displayCornerRadius];
+        traitCollection = [(UIScreen *)v17 traitCollection];
+        [traitCollection displayCornerRadius];
         v11 = v13;
       }
 
@@ -288,9 +288,9 @@ LABEL_33:
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  [(SUICEdgeLightMaskMetalLayer *)self removeAllAnimations:a3];
+  [(SUICEdgeLightMaskMetalLayer *)self removeAllAnimations:stop];
   [(SUICEdgeLightMaskMetalLayer *)self _invalidate];
   offCompletion = self->_offCompletion;
   if (offCompletion)
@@ -301,16 +301,16 @@ LABEL_33:
   }
 }
 
-- (void)setBurstStartPosition:(unint64_t)a3
+- (void)setBurstStartPosition:(unint64_t)position
 {
   self->_shouldBurst = 1;
-  if (a3 > 3)
+  if (position > 3)
   {
-    if (a3 > 5)
+    if (position > 5)
     {
-      if (a3 != 6)
+      if (position != 6)
       {
-        if (a3 == 7)
+        if (position == 7)
         {
           return;
         }
@@ -321,7 +321,7 @@ LABEL_33:
       __asm { FMOV            V0.2S, #0.75 }
     }
 
-    else if (a3 == 4)
+    else if (position == 4)
     {
       *&_D0 = 1069547520;
     }
@@ -334,9 +334,9 @@ LABEL_33:
     }
   }
 
-  else if (a3 > 1)
+  else if (position > 1)
   {
-    if (a3 == 2)
+    if (position == 2)
     {
       _D0 = 0.125;
     }
@@ -347,9 +347,9 @@ LABEL_33:
     }
   }
 
-  else if (a3)
+  else if (position)
   {
-    if (a3 != 1)
+    if (position != 1)
     {
       goto LABEL_19;
     }
@@ -366,18 +366,18 @@ LABEL_33:
   *self->_anon_d0 = _D0;
 LABEL_19:
   self->_burstModeHasBeenSet = 1;
-  self->_burstAnimationType = a3;
+  self->_burstAnimationType = position;
   if (!self->_paused)
   {
     [(SUICEdgeLightMaskMetalLayer *)self animateOn];
   }
 }
 
-- (void)setBurstStartPositionCustom:(CGPoint)a3
+- (void)setBurstStartPositionCustom:(CGPoint)custom
 {
   self->_shouldBurst = 1;
-  y = a3.y;
-  *self->_anon_d0 = vcvt_f32_f64(a3);
+  y = custom.y;
+  *self->_anon_d0 = vcvt_f32_f64(custom);
   self->_burstModeHasBeenSet = 1;
   self->_burstAnimationType = 7;
   if (!self->_paused)
@@ -386,10 +386,10 @@ LABEL_19:
   }
 }
 
-- (void)_commonInitWithScreen:(id)a3 commandQueue:(id)a4
+- (void)_commonInitWithScreen:(id)screen commandQueue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
+  queueCopy = queue;
+  screenCopy = screen;
   AFLogInitIfNeeded();
   v8 = MEMORY[0x1E698D0B0];
   v9 = os_signpost_id_generate(*MEMORY[0x1E698D0B0]);
@@ -420,14 +420,14 @@ LABEL_19:
   wedgeLight = self->_wedgeLight;
   self->_wedgeLight = v22;
 
-  v24 = v6;
-  if (!v6)
+  newCommandQueue = queueCopy;
+  if (!queueCopy)
   {
-    v24 = [(MTLDevice *)self->_device newCommandQueue];
+    newCommandQueue = [(MTLDevice *)self->_device newCommandQueue];
   }
 
-  objc_storeStrong(&self->_commandQueue, v24);
-  if (!v6)
+  objc_storeStrong(&self->_commandQueue, newCommandQueue);
+  if (!queueCopy)
   {
   }
 
@@ -435,8 +435,8 @@ LABEL_19:
   self->_burstModeHasBeenSet = 0;
   self->_paused = 1;
   self->_customFlameScale = 1.0;
-  v25 = [MEMORY[0x1E69DC938] currentDevice];
-  self->_idiom = [v25 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  self->_idiom = [currentDevice userInterfaceIdiom];
 
   *&self->_anon_e8[22] = 0;
   *&self->_anon_d0[20] = COERCE_UNSIGNED_INT(1.0);
@@ -463,31 +463,31 @@ LABEL_19:
   noiseTexture = self->_noiseTexture;
   self->_noiseTexture = v27;
 
-  [(SUICEdgeLightMaskMetalLayer *)self setScreen:v7];
+  [(SUICEdgeLightMaskMetalLayer *)self setScreen:screenCopy];
 }
 
-- (SUICEdgeLightMaskMetalLayer)initWithBaseEdgeLightLayer:(id)a3
+- (SUICEdgeLightMaskMetalLayer)initWithBaseEdgeLightLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   v11.receiver = self;
   v11.super_class = SUICEdgeLightMaskMetalLayer;
   v6 = [(CAMetalLayer *)&v11 init];
   v7 = v6;
   if (v6 == self)
   {
-    objc_storeStrong(&v6->_baseLayer, a3);
-    v8 = [v5 _getScreen];
-    v9 = [v5 _getCommandQueue];
-    [(SUICEdgeLightMaskMetalLayer *)v7 _commonInitWithScreen:v8 commandQueue:v9];
+    objc_storeStrong(&v6->_baseLayer, layer);
+    _getScreen = [layerCopy _getScreen];
+    _getCommandQueue = [layerCopy _getCommandQueue];
+    [(SUICEdgeLightMaskMetalLayer *)v7 _commonInitWithScreen:_getScreen commandQueue:_getCommandQueue];
   }
 
   return v7;
 }
 
-- (SUICEdgeLightMaskMetalLayer)initWithScreen:(id)a3 commandQueue:(id)a4
+- (SUICEdgeLightMaskMetalLayer)initWithScreen:(id)screen commandQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  screenCopy = screen;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = SUICEdgeLightMaskMetalLayer;
   v8 = [(CAMetalLayer *)&v12 init];
@@ -497,15 +497,15 @@ LABEL_19:
     baseLayer = v8->_baseLayer;
     v8->_baseLayer = 0;
 
-    [(SUICEdgeLightMaskMetalLayer *)v9 _commonInitWithScreen:v6 commandQueue:v7];
+    [(SUICEdgeLightMaskMetalLayer *)v9 _commonInitWithScreen:screenCopy commandQueue:queueCopy];
   }
 
   return v9;
 }
 
-- (SUICEdgeLightMaskMetalLayer)initWithCommandQueue:(id)a3
+- (SUICEdgeLightMaskMetalLayer)initWithCommandQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = SUICEdgeLightMaskMetalLayer;
   v5 = [(CAMetalLayer *)&v9 init];
@@ -515,13 +515,13 @@ LABEL_19:
     baseLayer = v5->_baseLayer;
     v5->_baseLayer = 0;
 
-    [(SUICEdgeLightMaskMetalLayer *)v6 _commonInitWithScreen:0 commandQueue:v4];
+    [(SUICEdgeLightMaskMetalLayer *)v6 _commonInitWithScreen:0 commandQueue:queueCopy];
   }
 
   return v6;
 }
 
-- (SUICEdgeLightMaskMetalLayer)initWithFullBorder:(BOOL)a3
+- (SUICEdgeLightMaskMetalLayer)initWithFullBorder:(BOOL)border
 {
   v8.receiver = self;
   v8.super_class = SUICEdgeLightMaskMetalLayer;
@@ -549,44 +549,44 @@ LABEL_19:
   [(CAMetalLayer *)&v4 dealloc];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v6.receiver = self;
   v6.super_class = SUICEdgeLightMaskMetalLayer;
-  [(SUICEdgeLightMaskMetalLayer *)&v6 setBounds:a3.origin.x, a3.origin.y];
+  [(SUICEdgeLightMaskMetalLayer *)&v6 setBounds:bounds.origin.x, bounds.origin.y];
   if (width != 0.0 && height != 0.0)
   {
     [(SUICEdgeLightMaskMetalLayer *)self _updateMetalRatios:width, height];
   }
 }
 
-- (id)_createRenderPipelineFromLibrary:(id)a3 archive:(id)a4 vert:(id)a5 frag:(id)a6
+- (id)_createRenderPipelineFromLibrary:(id)library archive:(id)archive vert:(id)vert frag:(id)frag
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  libraryCopy = library;
+  archiveCopy = archive;
+  vertCopy = vert;
+  fragCopy = frag;
   v14 = objc_alloc_init(MEMORY[0x1E6974148]);
-  v15 = [v10 newFunctionWithName:v12];
+  v15 = [libraryCopy newFunctionWithName:vertCopy];
   [v14 setVertexFunction:v15];
 
-  v16 = [v10 newFunctionWithName:v13];
+  v16 = [libraryCopy newFunctionWithName:fragCopy];
   [v14 setFragmentFunction:v16];
 
-  v17 = [v14 colorAttachments];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  colorAttachments = [v14 colorAttachments];
+  v18 = [colorAttachments objectAtIndexedSubscript:0];
   [v18 setPixelFormat:65];
 
-  v19 = [v14 colorAttachments];
-  v20 = [v19 objectAtIndexedSubscript:0];
+  colorAttachments2 = [v14 colorAttachments];
+  v20 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v20 setBlendingEnabled:0];
 
-  if (v11)
+  if (archiveCopy)
   {
-    v42[0] = v11;
+    v42[0] = archiveCopy;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:1];
     [v14 setBinaryArchives:v21];
 
@@ -607,9 +607,9 @@ LABEL_19:
       *buf = 136315906;
       v35 = "[SUICEdgeLightMaskMetalLayer _createRenderPipelineFromLibrary:archive:vert:frag:]";
       v36 = 2112;
-      v37 = v12;
+      v37 = vertCopy;
       v38 = 2112;
-      v39 = v13;
+      v39 = fragCopy;
       v40 = 2112;
       v41 = v25;
       _os_log_error_impl(&dword_1C432B000, v27, OS_LOG_TYPE_ERROR, "%s Unable to load pipeline state from binary archive (v:%@ f:%@), error %@", buf, 0x2Au);
@@ -629,7 +629,7 @@ LABEL_19:
 
   if (!v29)
   {
-    [SUICEdgeLightMaskMetalLayer _createRenderPipelineFromLibrary:v12 archive:v13 vert:v30 frag:?];
+    [SUICEdgeLightMaskMetalLayer _createRenderPipelineFromLibrary:vertCopy archive:fragCopy vert:v30 frag:?];
   }
 
   v26 = v29;
@@ -639,31 +639,31 @@ LABEL_10:
   return v26;
 }
 
-- (void)_updateMetalRatios:(CGSize)a3
+- (void)_updateMetalRatios:(CGSize)ratios
 {
-  *&a3.width = a3.width;
-  height = a3.height;
+  *&ratios.width = ratios.width;
+  height = ratios.height;
   v4 = 1.0;
-  if (*&a3.width != 0.0)
+  if (*&ratios.width != 0.0)
   {
-    v4 = height / *&a3.width;
+    v4 = height / *&ratios.width;
   }
 
-  *(&a3.width + 1) = height;
-  *self->_anon_e8 = a3.width;
+  *(&ratios.width + 1) = height;
+  *self->_anon_e8 = ratios.width;
   *&self->_anon_e8[8] = v4;
   *&self->_anon_b0[8] = 0;
   LODWORD(v5) = 1056964608;
   HIDWORD(v6) = 1056964608;
-  if (*&a3.width >= height)
+  if (*&ratios.width >= height)
   {
-    *(&v5 + 1) = (height / *&a3.width) * 0.5;
+    *(&v5 + 1) = (height / *&ratios.width) * 0.5;
     v7 = v5;
   }
 
   else
   {
-    *&v6 = (*&a3.width / height) * 0.5;
+    *&v6 = (*&ratios.width / height) * 0.5;
     v7 = v6;
   }
 
@@ -671,12 +671,12 @@ LABEL_10:
   [(SUICEdgeLightMaskMetalLayer *)self _updateForUIIdiom];
 }
 
-- (void)_drawFrame:(id)a3
+- (void)_drawFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   if ([(CAMetalLayer *)self isDrawableAvailable])
   {
-    v5 = [(CAMetalLayer *)self nextDrawable];
+    nextDrawable = [(CAMetalLayer *)self nextDrawable];
     [(NSDate *)self->_burstStartDate timeIntervalSinceNow];
     v7 = v6;
     if (v7 <= 0.0)
@@ -691,12 +691,12 @@ LABEL_10:
         _S9 = 10.0;
       }
 
-      v9 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-      if (v9)
+      commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+      if (commandBuffer)
       {
-        [v4 targetTimestamp];
+        [frameCopy targetTimestamp];
         v11 = v10;
-        [v4 timestamp];
+        [frameCopy timestamp];
         *&v12 = v11 - *&v12;
         *&v12 = *&v12;
         if (self->_isInFluidDismissal)
@@ -716,14 +716,14 @@ LABEL_10:
         self->_physics.common.micPowerLevel = fluidDismissalProgress;
         v51 = v12;
         SUICLightPhysics_UpdatePhysics(&self->_physics, *&v12);
-        if (v5)
+        if (nextDrawable)
         {
-          v22 = [v5 texture];
-          v23 = [(MTLRenderPassDescriptor *)self->_renderPassDesc colorAttachments];
-          v24 = [v23 objectAtIndexedSubscript:0];
-          [v24 setTexture:v22];
+          texture = [nextDrawable texture];
+          colorAttachments = [(MTLRenderPassDescriptor *)self->_renderPassDesc colorAttachments];
+          v24 = [colorAttachments objectAtIndexedSubscript:0];
+          [v24 setTexture:texture];
 
-          v25 = [v9 renderCommandEncoderWithDescriptor:self->_renderPassDesc];
+          v25 = [commandBuffer renderCommandEncoderWithDescriptor:self->_renderPassDesc];
           value = self->_physics.volumeSpring.value;
           v27 = value;
           v29.i64[0] = 0xBC3439583BE56042;
@@ -826,7 +826,7 @@ LABEL_10:
           [v25 setFragmentBytes:self->_anon_e8 length:32 atIndex:1];
           [v25 drawPrimitives:3 vertexStart:0 vertexCount:3];
           [v25 endEncoding];
-          [v9 presentDrawable:v5];
+          [commandBuffer presentDrawable:nextDrawable];
         }
 
         if (self->_firstFrame)
@@ -836,11 +836,11 @@ LABEL_10:
           v52[2] = __42__SUICEdgeLightMaskMetalLayer__drawFrame___block_invoke;
           v52[3] = &unk_1E81E7DB8;
           v52[4] = self;
-          [v9 addCompletedHandler:v52];
+          [commandBuffer addCompletedHandler:v52];
           self->_firstFrame = 0;
         }
 
-        [v9 commit];
+        [commandBuffer commit];
       }
 
       else
@@ -982,15 +982,15 @@ void __42__SUICEdgeLightMaskMetalLayer__drawFrame___block_invoke(uint64_t a1, vo
   }
 
   v4 = objc_opt_new();
-  v5 = [v4[12] commandBuffer];
-  if (v5)
+  commandBuffer = [v4[12] commandBuffer];
+  if (commandBuffer)
   {
     [v4[16] setRenderTargetWidth:1];
     [v4[16] setRenderTargetHeight:1];
     [v4[16] setDefaultRasterSampleCount:1];
-    v6 = [v5 renderCommandEncoderWithDescriptor:v4[16]];
+    v6 = [commandBuffer renderCommandEncoderWithDescriptor:v4[16]];
     [v6 endEncoding];
-    [v5 commit];
+    [commandBuffer commit];
     v7 = *v2;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -1012,19 +1012,19 @@ void __42__SUICEdgeLightMaskMetalLayer__drawFrame___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)setScreen:(id)a3
+- (void)setScreen:(id)screen
 {
-  v5 = a3;
+  screenCopy = screen;
   displayLink = self->_displayLink;
   if (displayLink)
   {
-    v7 = [(CADisplayLink *)displayLink isPaused];
+    isPaused = [(CADisplayLink *)displayLink isPaused];
     [(CADisplayLink *)self->_displayLink setPaused:1];
     [(CADisplayLink *)self->_displayLink invalidate];
     v8 = self->_displayLink;
     self->_displayLink = 0;
 
-    if (v5)
+    if (screenCopy)
     {
       goto LABEL_3;
     }
@@ -1032,42 +1032,42 @@ void __42__SUICEdgeLightMaskMetalLayer__drawFrame___block_invoke(uint64_t a1, vo
 
   else
   {
-    v7 = 1;
-    if (v5)
+    isPaused = 1;
+    if (screenCopy)
     {
 LABEL_3:
-      v9 = [v5 traitCollection];
-      v10 = [v9 userInterfaceIdiom];
+      traitCollection = [screenCopy traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      if (v10 == 3)
+      if (userInterfaceIdiom == 3)
       {
-        v11 = [v5 displayConfiguration];
-        [v11 pixelSize];
+        displayConfiguration = [screenCopy displayConfiguration];
+        [displayConfiguration pixelSize];
         v13 = v12;
-        [v11 bounds];
+        [displayConfiguration bounds];
         self->_screenScale = v13 / v14;
       }
 
       else
       {
-        [v5 scale];
+        [screenCopy scale];
         self->_screenScale = v28;
       }
 
-      [v5 nativeBounds];
+      [screenCopy nativeBounds];
       self->_nativeScreenWidth = v29;
-      objc_storeStrong(&self->_screen, a3);
+      objc_storeStrong(&self->_screen, screen);
       [(SUICEdgeLightMaskMetalLayer *)self _updateForUIIdiom];
-      v30 = [v5 maximumFramesPerSecond];
-      self->_framesPerSecondTarget = v30;
-      v31 = v30;
+      maximumFramesPerSecond = [screenCopy maximumFramesPerSecond];
+      self->_framesPerSecondTarget = maximumFramesPerSecond;
+      v31 = maximumFramesPerSecond;
       v32 = 60;
       v33 = 60.0;
       if (v31 <= 119)
       {
         if (v31 == 30)
         {
-          v32 = v30;
+          v32 = maximumFramesPerSecond;
 LABEL_23:
           if (v32 != self->_physics.common.physicsRate)
           {
@@ -1075,17 +1075,17 @@ LABEL_23:
           }
 
           self->_physics.common.maxPhysicsIterationsPerFrame = 10;
-          v34 = [v5 displayLinkWithTarget:self->_wedgeLight selector:sel__drawFrame_];
+          v34 = [screenCopy displayLinkWithTarget:self->_wedgeLight selector:sel__drawFrame_];
           v35 = self->_displayLink;
           self->_displayLink = v34;
 
           v39 = CAFrameRateRangeMake(24.0, 90.0, self->_framesPerSecondTarget);
           [(CADisplayLink *)self->_displayLink setPreferredFrameRateRange:*&v39.minimum, *&v39.maximum, *&v39.preferred];
           v36 = self->_displayLink;
-          v37 = [MEMORY[0x1E695DFD0] currentRunLoop];
-          [(CADisplayLink *)v36 addToRunLoop:v37 forMode:*MEMORY[0x1E695DA28]];
+          currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+          [(CADisplayLink *)v36 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
 
-          [(CADisplayLink *)self->_displayLink setPaused:v7];
+          [(CADisplayLink *)self->_displayLink setPaused:isPaused];
           goto LABEL_26;
         }
 
@@ -1098,9 +1098,9 @@ LABEL_23:
       else if (v31 != 120 && v31 != 240 && v31 != 300)
       {
 LABEL_17:
-        if (v30 >= 24)
+        if (maximumFramesPerSecond >= 24)
         {
-          if (v30 < 0x5A)
+          if (maximumFramesPerSecond < 0x5A)
           {
             v32 = 240;
             goto LABEL_23;
@@ -1139,19 +1139,19 @@ LABEL_17:
   v38 = CAFrameRateRangeMake(24.0, 90.0, 60.0);
   [(CADisplayLink *)self->_displayLink setPreferredFrameRateRange:*&v38.minimum, *&v38.maximum, *&v38.preferred];
   v25 = self->_displayLink;
-  v26 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [(CADisplayLink *)v25 addToRunLoop:v26 forMode:*MEMORY[0x1E695DA28]];
+  currentRunLoop2 = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [(CADisplayLink *)v25 addToRunLoop:currentRunLoop2 forMode:*MEMORY[0x1E695DA28]];
 
-  [(CADisplayLink *)self->_displayLink setPaused:v7];
+  [(CADisplayLink *)self->_displayLink setPaused:isPaused];
   screen = self->_screen;
   self->_screen = 0;
 
 LABEL_26:
 }
 
-- (void)animateOnWithCompletion:(id)a3
+- (void)animateOnWithCompletion:(id)completion
 {
-  v4 = MEMORY[0x1C6937B00](a3, a2);
+  v4 = MEMORY[0x1C6937B00](completion, a2);
   onCompletion = self->_onCompletion;
   self->_onCompletion = v4;
 
@@ -1187,19 +1187,19 @@ LABEL_26:
   }
 }
 
-- (void)animateOffWithCompletion:(id)a3
+- (void)animateOffWithCompletion:(id)completion
 {
-  v4 = MEMORY[0x1C6937B00](a3, a2);
+  v4 = MEMORY[0x1C6937B00](completion, a2);
   offCompletion = self->_offCompletion;
   self->_offCompletion = v4;
 
   [(SUICEdgeLightMaskMetalLayer *)self _startOffAnimation];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
   paused = self->_paused;
-  if (paused == a3)
+  if (paused == paused)
   {
 LABEL_4:
     if (paused)
@@ -1210,8 +1210,8 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  self->_paused = a3;
-  if (a3)
+  self->_paused = paused;
+  if (paused)
   {
     [(SUICEdgeLightMaskMetalLayer *)self _startOffAnimation];
     paused = self->_paused;
@@ -1245,24 +1245,24 @@ LABEL_5:
   *&self->_anon_d0[12] = _S0;
 }
 
-- (void)dismissalBlur:(float)a3
+- (void)dismissalBlur:(float)blur
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  self->_isInFluidDismissal = a3 < 1.0;
+  self->_isInFluidDismissal = blur < 1.0;
   v5 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979928]];
   dismissalBlurFilter = self->_dismissalBlurFilter;
   self->_dismissalBlurFilter = v5;
 
   [(CAFilter *)self->_dismissalBlurFilter setName:@"blurFilter"];
   v7 = self->_dismissalBlurFilter;
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:(1.0 - a3) * 80.0];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:(1.0 - blur) * 80.0];
   [(CAFilter *)v7 setValue:v8 forKeyPath:*MEMORY[0x1E6979BA8]];
 
   v10[0] = self->_dismissalBlurFilter;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   [(SUICEdgeLightMaskMetalLayer *)self setFilters:v9];
 
-  self->_fluidDismissalProgress = a3;
+  self->_fluidDismissalProgress = blur;
 }
 
 - (void)startReducedFramerateForPerformance

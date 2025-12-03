@@ -1,13 +1,13 @@
 @interface SSURLDataCollection
-+ (void)collectURLSessionDataWithBlock:(id)a3;
++ (void)collectURLSessionDataWithBlock:(id)block;
 @end
 
 @implementation SSURLDataCollection
 
-+ (void)collectURLSessionDataWithBlock:(id)a3
++ (void)collectURLSessionDataWithBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v4 = +[SSLogConfig sharedStoreServicesConfig];
@@ -16,19 +16,19 @@
       v4 = +[SSLogConfig sharedConfig];
     }
 
-    v5 = [v4 shouldLog];
+    shouldLog = [v4 shouldLog];
     if ([v4 shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
-    v7 = [v4 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v8 = v6;
     }
@@ -52,16 +52,16 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v7 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v21, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v21, v18}];
       free(v9);
-      SSFileLog(v4, @"%@", v10, v11, v12, v13, v14, v15, v7);
+      SSFileLog(v4, @"%@", v10, v11, v12, v13, v14, v15, oSLogObject);
     }
 
     goto LABEL_15;
   }
 
 LABEL_16:
-  if (v3)
+  if (blockCopy)
   {
     v16 = SSXPCCreateMessageDictionary(199);
     v17 = [[SSXPCConnection alloc] initWithServiceName:@"com.apple.itunesstored.xpc"];
@@ -71,13 +71,13 @@ LABEL_16:
       v19[1] = 3221225472;
       v19[2] = __54__SSURLDataCollection_collectURLSessionDataWithBlock___block_invoke;
       v19[3] = &unk_1E84AE2D8;
-      v20 = v3;
+      v20 = blockCopy;
       [(SSXPCConnection *)v17 sendMessage:v16 withReply:v19];
     }
 
     else
     {
-      (*(v3 + 2))(v3, 0);
+      (*(blockCopy + 2))(blockCopy, 0);
     }
   }
 }

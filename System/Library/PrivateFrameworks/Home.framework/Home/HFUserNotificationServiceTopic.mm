@@ -6,14 +6,14 @@
 + (id)_cameraTopic;
 + (id)_energyTopic;
 + (id)_safetyAndSecurityTopic;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMatter;
 - (HFAccessoryType)accessoryType;
 - (HFUserNotificationServiceTopic)init;
-- (HFUserNotificationServiceTopic)initWithServiceType:(id)a3 topicNameLocalizationKey:(id)a4;
-- (HFUserNotificationServiceTopic)initWithServiceTypes:(id)a3 accessoryCategoryTypes:(id)a4 topicNameLocalizationKey:(id)a5 accessoryType:(id)a6;
-- (HFUserNotificationServiceTopic)initWithServiceTypes:(id)a3 accessoryCategoryTypes:(id)a4 topicNameLocalizationKey:(id)a5 iconDescriptor:(id)a6;
-- (HFUserNotificationServiceTopic)initWithTopicNameLocalizationKey:(id)a3 accessoryType:(id)a4;
+- (HFUserNotificationServiceTopic)initWithServiceType:(id)type topicNameLocalizationKey:(id)key;
+- (HFUserNotificationServiceTopic)initWithServiceTypes:(id)types accessoryCategoryTypes:(id)categoryTypes topicNameLocalizationKey:(id)key accessoryType:(id)type;
+- (HFUserNotificationServiceTopic)initWithServiceTypes:(id)types accessoryCategoryTypes:(id)categoryTypes topicNameLocalizationKey:(id)key iconDescriptor:(id)descriptor;
+- (HFUserNotificationServiceTopic)initWithTopicNameLocalizationKey:(id)key accessoryType:(id)type;
 - (NSString)identifier;
 - (unint64_t)hash;
 @end
@@ -22,21 +22,21 @@
 
 - (HFUserNotificationServiceTopic)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithServiceTypes_accessoryCategoryTypes_topicNameLocalizationKey_iconDescriptor_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFUserNotificationServiceTopic.m" lineNumber:33 description:{@"%s is unavailable; use %@ instead", "-[HFUserNotificationServiceTopic init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFUserNotificationServiceTopic.m" lineNumber:33 description:{@"%s is unavailable; use %@ instead", "-[HFUserNotificationServiceTopic init]", v5}];
 
   return 0;
 }
 
-- (HFUserNotificationServiceTopic)initWithServiceType:(id)a3 topicNameLocalizationKey:(id)a4
+- (HFUserNotificationServiceTopic)initWithServiceType:(id)type topicNameLocalizationKey:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  typeCopy = type;
   v7 = MEMORY[0x277D755D0];
-  v8 = a4;
+  keyCopy = key;
   v9 = [v7 configurationWithPointSize:26.0];
-  v10 = [HFServiceIconFactory defaultSymbolIconIdentifierForServiceType:v6];
+  v10 = [HFServiceIconFactory defaultSymbolIconIdentifierForServiceType:typeCopy];
   v11 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:v10 configuration:v9];
   if (!v11)
   {
@@ -44,54 +44,54 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412290;
-      v19 = v6;
+      v19 = typeCopy;
       _os_log_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_DEFAULT, "HFUserNotificationServiceTopic: Couldn't find SF Symbol for service type: %@", &v18, 0xCu);
     }
 
-    v11 = [HFServiceIconFactory defaultIconDescriptorForServiceType:v6 serviceSubtype:0];
+    v11 = [HFServiceIconFactory defaultIconDescriptorForServiceType:typeCopy serviceSubtype:0];
   }
 
-  v13 = [MEMORY[0x277CBEB98] setWithObject:v6];
+  v13 = [MEMORY[0x277CBEB98] setWithObject:typeCopy];
   v14 = [MEMORY[0x277CBEB98] set];
-  v15 = [(HFUserNotificationServiceTopic *)self initWithServiceTypes:v13 accessoryCategoryTypes:v14 topicNameLocalizationKey:v8 iconDescriptor:v11];
+  v15 = [(HFUserNotificationServiceTopic *)self initWithServiceTypes:v13 accessoryCategoryTypes:v14 topicNameLocalizationKey:keyCopy iconDescriptor:v11];
 
   v16 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-- (HFUserNotificationServiceTopic)initWithServiceTypes:(id)a3 accessoryCategoryTypes:(id)a4 topicNameLocalizationKey:(id)a5 iconDescriptor:(id)a6
+- (HFUserNotificationServiceTopic)initWithServiceTypes:(id)types accessoryCategoryTypes:(id)categoryTypes topicNameLocalizationKey:(id)key iconDescriptor:(id)descriptor
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  typesCopy = types;
+  categoryTypesCopy = categoryTypes;
+  keyCopy = key;
+  descriptorCopy = descriptor;
   v20.receiver = self;
   v20.super_class = HFUserNotificationServiceTopic;
   v15 = [(HFUserNotificationServiceTopic *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_serviceTypes, a3);
-    objc_storeStrong(&v16->_accessoryCategoryTypes, a4);
-    objc_storeStrong(&v16->_topicNameLocalizationKey, a5);
-    v17 = _HFLocalizedStringWithDefaultValue(v13, v13, 1);
+    objc_storeStrong(&v15->_serviceTypes, types);
+    objc_storeStrong(&v16->_accessoryCategoryTypes, categoryTypes);
+    objc_storeStrong(&v16->_topicNameLocalizationKey, key);
+    v17 = _HFLocalizedStringWithDefaultValue(keyCopy, keyCopy, 1);
     topicName = v16->_topicName;
     v16->_topicName = v17;
 
-    objc_storeStrong(&v16->_iconDescriptor, a6);
+    objc_storeStrong(&v16->_iconDescriptor, descriptor);
   }
 
   return v16;
 }
 
-- (HFUserNotificationServiceTopic)initWithServiceTypes:(id)a3 accessoryCategoryTypes:(id)a4 topicNameLocalizationKey:(id)a5 accessoryType:(id)a6
+- (HFUserNotificationServiceTopic)initWithServiceTypes:(id)types accessoryCategoryTypes:(id)categoryTypes topicNameLocalizationKey:(id)key accessoryType:(id)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  typesCopy = types;
+  categoryTypesCopy = categoryTypes;
+  keyCopy = key;
+  typeCopy = type;
   objc_opt_class();
-  v13 = v12;
+  v13 = typeCopy;
   if (objc_opt_isKindOfClass())
   {
     v14 = v13;
@@ -106,8 +106,8 @@
 
   if (v15)
   {
-    v16 = [v15 serviceType];
-    v17 = [HFServiceIconFactory defaultSymbolIconIdentifierForServiceType:v16];
+    serviceType = [v15 serviceType];
+    v17 = [HFServiceIconFactory defaultSymbolIconIdentifierForServiceType:serviceType];
 
     v18 = [MEMORY[0x277D755D0] configurationWithPointSize:26.0];
     v19 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:v17 configuration:v18];
@@ -139,38 +139,38 @@
     v19 = v23;
   }
 
-  v24 = [(HFUserNotificationServiceTopic *)self initWithServiceTypes:v9 accessoryCategoryTypes:v10 topicNameLocalizationKey:v11 iconDescriptor:v19];
+  v24 = [(HFUserNotificationServiceTopic *)self initWithServiceTypes:typesCopy accessoryCategoryTypes:categoryTypesCopy topicNameLocalizationKey:keyCopy iconDescriptor:v19];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_accessoryType, a6);
+    objc_storeStrong(&v24->_accessoryType, type);
   }
 
   return v25;
 }
 
-- (HFUserNotificationServiceTopic)initWithTopicNameLocalizationKey:(id)a3 accessoryType:(id)a4
+- (HFUserNotificationServiceTopic)initWithTopicNameLocalizationKey:(id)key accessoryType:(id)type
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
-  v8 = a3;
+  typeCopy = type;
+  keyCopy = key;
   v9 = [v6 set];
   v10 = [MEMORY[0x277CBEB98] set];
-  v11 = [(HFUserNotificationServiceTopic *)self initWithServiceTypes:v9 accessoryCategoryTypes:v10 topicNameLocalizationKey:v8 accessoryType:v7];
+  v11 = [(HFUserNotificationServiceTopic *)self initWithServiceTypes:v9 accessoryCategoryTypes:v10 topicNameLocalizationKey:keyCopy accessoryType:typeCopy];
 
   return v11;
 }
 
 - (NSString)identifier
 {
-  v3 = [(HFUserNotificationServiceTopic *)self serviceTypes];
-  v4 = [v3 allObjects];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_145];
+  serviceTypes = [(HFUserNotificationServiceTopic *)self serviceTypes];
+  allObjects = [serviceTypes allObjects];
+  v5 = [allObjects sortedArrayUsingComparator:&__block_literal_global_145];
   v6 = [v5 componentsJoinedByString:{@", "}];
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(HFUserNotificationServiceTopic *)self topicName];
-  v9 = [v7 stringWithFormat:@"service-{%@} topicName-%@", v6, v8];
+  topicName = [(HFUserNotificationServiceTopic *)self topicName];
+  v9 = [v7 stringWithFormat:@"service-{%@} topicName-%@", v6, topicName];
 
   return v9;
 }
@@ -198,19 +198,19 @@ void __45__HFUserNotificationServiceTopic_na_identity__block_invoke_2()
   qword_280E03378 = v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -225,22 +225,22 @@ void __45__HFUserNotificationServiceTopic_na_identity__block_invoke_2()
 
   else
   {
-    v5 = [(HFUserNotificationServiceTopic *)self serviceTypes];
-    v6 = [v5 anyObject];
+    serviceTypes = [(HFUserNotificationServiceTopic *)self serviceTypes];
+    anyObject = [serviceTypes anyObject];
 
-    if (v6)
+    if (anyObject)
     {
-      v3 = [HFAccessoryType serviceType:v6];
+      v3 = [HFAccessoryType serviceType:anyObject];
     }
 
     else
     {
-      v7 = [(HFUserNotificationServiceTopic *)self accessoryCategoryTypes];
-      v8 = [v7 anyObject];
+      accessoryCategoryTypes = [(HFUserNotificationServiceTopic *)self accessoryCategoryTypes];
+      anyObject2 = [accessoryCategoryTypes anyObject];
 
-      if (v8)
+      if (anyObject2)
       {
-        v3 = [HFAccessoryType categoryType:v8];
+        v3 = [HFAccessoryType categoryType:anyObject2];
       }
 
       else

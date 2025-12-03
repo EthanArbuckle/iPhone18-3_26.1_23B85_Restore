@@ -1,44 +1,44 @@
 @interface PKHoverInteraction
-- (PKHoverInteraction)initWithDelegate:(id)a3;
+- (PKHoverInteraction)initWithDelegate:(id)delegate;
 - (PKHoverInteractionDelegate)delegate;
 - (UIView)view;
-- (void)didMoveToView:(id)a3;
-- (void)hoverController:(id)a3 holdGestureMeanInputPoint:(id *)a4 latestInputPoint:(id *)a5;
-- (void)hoverControllerHoldGestureEnded:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)hoverController:(id)controller holdGestureMeanInputPoint:(id *)point latestInputPoint:(id *)inputPoint;
+- (void)hoverControllerHoldGestureEnded:(id)ended;
 @end
 
 @implementation PKHoverInteraction
 
-- (PKHoverInteraction)initWithDelegate:(id)a3
+- (PKHoverInteraction)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = PKHoverInteraction;
   v5 = [(PKHoverInteraction *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v6 = a3;
-  [(PKHoverInteraction *)self setView:v6];
-  v4 = v6;
-  if (v6)
+  viewCopy = view;
+  [(PKHoverInteraction *)self setView:viewCopy];
+  v4 = viewCopy;
+  if (viewCopy)
   {
-    v4 = [[PKHoverController alloc] initWithDelegate:v6 view:?];
+    v4 = [[PKHoverController alloc] initWithDelegate:viewCopy view:?];
   }
 
   hoverController = self->_hoverController;
   self->_hoverController = v4;
 }
 
-- (void)hoverController:(id)a3 holdGestureMeanInputPoint:(id *)a4 latestInputPoint:(id *)a5
+- (void)hoverController:(id)controller holdGestureMeanInputPoint:(id *)point latestInputPoint:(id *)inputPoint
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
@@ -46,11 +46,11 @@
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 hoverInteraction:self didBeginHoverAndHoldAtLocation:a4->var0.var0.x elevation:{a4->var0.var0.y, a4->var6}];
+    [v9 hoverInteraction:self didBeginHoverAndHoldAtLocation:point->var0.var0.x elevation:{point->var0.var0.y, point->var6}];
   }
 }
 
-- (void)hoverControllerHoldGestureEnded:(id)a3
+- (void)hoverControllerHoldGestureEnded:(id)ended
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();

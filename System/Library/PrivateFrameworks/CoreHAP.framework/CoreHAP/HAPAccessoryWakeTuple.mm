@@ -1,15 +1,15 @@
 @interface HAPAccessoryWakeTuple
-- (BOOL)isEqual:(id)a3;
-- (HAPAccessoryWakeTuple)initWithPort:(int64_t)a3 wakeAddress:(id)a4 wakePattern:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HAPAccessoryWakeTuple)initWithPort:(int64_t)port wakeAddress:(id)address wakePattern:(id)pattern;
 - (unint64_t)hash;
 @end
 
 @implementation HAPAccessoryWakeTuple
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -19,7 +19,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -33,20 +33,20 @@
       goto LABEL_9;
     }
 
-    v7 = [(HAPAccessoryWakeTuple *)self wakePort];
-    if (v7 != [(HAPAccessoryWakeTuple *)v6 wakePort])
+    wakePort = [(HAPAccessoryWakeTuple *)self wakePort];
+    if (wakePort != [(HAPAccessoryWakeTuple *)v6 wakePort])
     {
       goto LABEL_9;
     }
 
-    v8 = [(HAPAccessoryWakeTuple *)self wakeAddress];
-    v9 = [(HAPAccessoryWakeTuple *)v6 wakeAddress];
+    wakeAddress = [(HAPAccessoryWakeTuple *)self wakeAddress];
+    wakeAddress2 = [(HAPAccessoryWakeTuple *)v6 wakeAddress];
     v10 = HMFEqualObjects();
 
     if (v10)
     {
-      v11 = [(HAPAccessoryWakeTuple *)self wakePattern];
-      v12 = [(HAPAccessoryWakeTuple *)v6 wakePattern];
+      wakePattern = [(HAPAccessoryWakeTuple *)self wakePattern];
+      wakePattern2 = [(HAPAccessoryWakeTuple *)v6 wakePattern];
       v13 = HMFEqualObjects();
     }
 
@@ -62,28 +62,28 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v3 = [(HAPAccessoryWakeTuple *)self wakeAddress];
-  v4 = [v3 hash];
-  v5 = [(HAPAccessoryWakeTuple *)self wakePattern];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HAPAccessoryWakeTuple *)self wakePort];
+  wakeAddress = [(HAPAccessoryWakeTuple *)self wakeAddress];
+  v4 = [wakeAddress hash];
+  wakePattern = [(HAPAccessoryWakeTuple *)self wakePattern];
+  v6 = [wakePattern hash] ^ v4;
+  wakePort = [(HAPAccessoryWakeTuple *)self wakePort];
 
-  return v6 ^ v7;
+  return v6 ^ wakePort;
 }
 
-- (HAPAccessoryWakeTuple)initWithPort:(int64_t)a3 wakeAddress:(id)a4 wakePattern:(id)a5
+- (HAPAccessoryWakeTuple)initWithPort:(int64_t)port wakeAddress:(id)address wakePattern:(id)pattern
 {
-  v9 = a4;
-  v10 = a5;
+  addressCopy = address;
+  patternCopy = pattern;
   v14.receiver = self;
   v14.super_class = HAPAccessoryWakeTuple;
   v11 = [(HAPAccessoryWakeTuple *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_wakePort = a3;
-    objc_storeStrong(&v11->_wakeAddress, a4);
-    objc_storeStrong(&v12->_wakePattern, a5);
+    v11->_wakePort = port;
+    objc_storeStrong(&v11->_wakeAddress, address);
+    objc_storeStrong(&v12->_wakePattern, pattern);
   }
 
   return v12;

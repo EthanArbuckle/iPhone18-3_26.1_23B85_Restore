@@ -1,22 +1,22 @@
 @interface _UIColorWelliOSVisualStyle
-- (CGSize)intrinsicSizeWithinSize:(CGSize)a3;
-- (_UIColorWelliOSVisualStyle)initWithColorWell:(id)a3;
-- (double)_widthForTraitCollection:(id)a3;
+- (CGSize)intrinsicSizeWithinSize:(CGSize)size;
+- (_UIColorWelliOSVisualStyle)initWithColorWell:(id)well;
+- (double)_widthForTraitCollection:(id)collection;
 - (id)dragPreviewParameters;
-- (void)_invokeColorPicker:(id)a3;
+- (void)_invokeColorPicker:(id)picker;
 - (void)layoutSubviews;
-- (void)setMaxGain:(double)a3;
-- (void)setSelectedColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setMaxGain:(double)gain;
+- (void)setSelectedColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _UIColorWelliOSVisualStyle
 
-- (_UIColorWelliOSVisualStyle)initWithColorWell:(id)a3
+- (_UIColorWelliOSVisualStyle)initWithColorWell:(id)well
 {
   v18.receiver = self;
   v18.super_class = _UIColorWelliOSVisualStyle;
-  v3 = [(_UIColorWellVisualStyle *)&v18 initWithColorWell:a3];
+  v3 = [(_UIColorWellVisualStyle *)&v18 initWithColorWell:well];
   v4 = v3;
   if (v3)
   {
@@ -40,8 +40,8 @@
     [(UIView *)v13 setBackgroundColor:v14];
 
     v15 = v4->_button;
-    v16 = [(_UIColorWellVisualStyle *)v4 selectedColor];
-    [(UIView *)v15 setBackgroundColor:v16];
+    selectedColor = [(_UIColorWellVisualStyle *)v4 selectedColor];
+    [(UIView *)v15 setBackgroundColor:selectedColor];
 
     [(UIView *)v4 addSubview:v4->_gradientView];
     [(UIView *)v4 addSubview:v4->_borderView];
@@ -57,31 +57,31 @@
   return v4;
 }
 
-- (void)setSelectedColor:(id)a3
+- (void)setSelectedColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = _UIColorWelliOSVisualStyle;
-  [(_UIColorWellVisualStyle *)&v4 setSelectedColor:a3];
+  [(_UIColorWellVisualStyle *)&v4 setSelectedColor:color];
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)setMaxGain:(double)a3
+- (void)setMaxGain:(double)gain
 {
   v9.receiver = self;
   v9.super_class = _UIColorWelliOSVisualStyle;
   [(_UIColorWellVisualStyle *)&v9 setMaxGain:?];
   v5 = MEMORY[0x1E6979298];
-  if (a3 <= 1.0)
+  if (gain <= 1.0)
   {
     v5 = MEMORY[0x1E6979290];
   }
 
   v6 = *v5;
-  v7 = [(UIView *)self->_button layer];
-  [v7 setPreferredDynamicRange:v6];
+  layer = [(UIView *)self->_button layer];
+  [layer setPreferredDynamicRange:v6];
 
-  v8 = [(UIView *)self->_button layer];
-  [v8 setContentsMaximumDesiredEDR:a3];
+  layer2 = [(UIView *)self->_button layer];
+  [layer2 setContentsMaximumDesiredEDR:gain];
 }
 
 - (void)layoutSubviews
@@ -118,27 +118,27 @@
   v20 = v42.size.height;
   [(UIButton *)self->_button setFrame:?];
   [(UIView *)self->_borderView setFrame:x, y, width, height];
-  v21 = [(UIView *)self->_button layer];
+  layer = [(UIView *)self->_button layer];
   v43.origin.x = v17;
   v43.origin.y = v18;
   v43.size.width = v19;
   v43.size.height = v20;
-  [v21 setCornerRadius:CGRectGetWidth(v43) * 0.5];
+  [layer setCornerRadius:CGRectGetWidth(v43) * 0.5];
 
   button = self->_button;
-  v23 = [(_UIColorWellVisualStyle *)self selectedColor];
-  [(UIView *)button setBackgroundColor:v23];
+  selectedColor = [(_UIColorWellVisualStyle *)self selectedColor];
+  [(UIView *)button setBackgroundColor:selectedColor];
 
-  v24 = [(UIView *)self->_borderView layer];
+  layer2 = [(UIView *)self->_borderView layer];
   v44.origin.x = x;
   v44.origin.y = y;
   v44.size.width = width;
   v44.size.height = height;
-  [v24 setCornerRadius:CGRectGetWidth(v44) * 0.5];
+  [layer2 setCornerRadius:CGRectGetWidth(v44) * 0.5];
 
   borderView = self->_borderView;
-  v26 = [(_UIColorWellVisualStyle *)self selectedColor];
-  if (v26)
+  selectedColor2 = [(_UIColorWellVisualStyle *)self selectedColor];
+  if (selectedColor2)
   {
     v27 = 1.0;
   }
@@ -193,11 +193,11 @@
   [(UIView *)self _setTouchInsets:v38 * 0.5, v37, v38 * 0.5, v37];
 }
 
-- (double)_widthForTraitCollection:(id)a3
+- (double)_widthForTraitCollection:(id)collection
 {
-  v3 = [a3 horizontalSizeClass];
+  horizontalSizeClass = [collection horizontalSizeClass];
   result = 36.0;
-  if (v3 == 1)
+  if (horizontalSizeClass == 1)
   {
     return 28.0;
   }
@@ -205,9 +205,9 @@
   return result;
 }
 
-- (CGSize)intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)intrinsicSizeWithinSize:(CGSize)size
 {
-  v4 = [(UIView *)self traitCollection:a3.width];
+  v4 = [(UIView *)self traitCollection:size.width];
   [(_UIColorWelliOSVisualStyle *)self _widthForTraitCollection:v4];
   v6 = v5;
 
@@ -218,35 +218,35 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = _UIColorWelliOSVisualStyle;
-  [(UIView *)&v4 traitCollectionDidChange:a3];
+  [(UIView *)&v4 traitCollectionDidChange:change];
   [(UIView *)self invalidateIntrinsicContentSize];
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)_invokeColorPicker:(id)a3
+- (void)_invokeColorPicker:(id)picker
 {
-  v3 = [(_UIColorWellVisualStyle *)self colorWell];
-  [v3 styleRequestedColorPickerPresentation];
+  colorWell = [(_UIColorWellVisualStyle *)self colorWell];
+  [colorWell styleRequestedColorPickerPresentation];
 }
 
 - (id)dragPreviewParameters
 {
   v3 = objc_alloc_init(UIDragPreviewParameters);
-  v4 = [(_UIColorWellVisualStyle *)self selectedColor];
+  selectedColor = [(_UIColorWellVisualStyle *)self selectedColor];
 
-  if (v4)
+  if (selectedColor)
   {
     [(UIView *)self->_button frame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(UIView *)self->_button layer];
-    [v13 cornerRadius];
+    layer = [(UIView *)self->_button layer];
+    [layer cornerRadius];
     v15 = [UIBezierPath bezierPathWithRoundedRect:v6 cornerRadius:v8, v10, v12, v14];
     [(UIPreviewParameters *)v3 setVisiblePath:v15];
   }
@@ -259,8 +259,8 @@
     v21 = v20;
     v23 = v22;
     [(UIView *)self->_gradientView frame];
-    v13 = [UIBezierPath bezierPathWithRoundedRect:v17 cornerRadius:v19, v21, v23, CGRectGetWidth(v26) * 0.5];
-    [(UIPreviewParameters *)v3 setVisiblePath:v13];
+    layer = [UIBezierPath bezierPathWithRoundedRect:v17 cornerRadius:v19, v21, v23, CGRectGetWidth(v26) * 0.5];
+    [(UIPreviewParameters *)v3 setVisiblePath:layer];
   }
 
   return v3;

@@ -1,56 +1,56 @@
 @interface ICQUIRemoteExtensionEntry
-+ (void)dismissRemoteViewControllerWithError:(id)a3;
-+ (void)presentRemoteViewControllerWithContext:(id)a3 presentingViewController:(id)a4 completion:(id)a5;
-+ (void)setSharedInstance:(id)a3;
-- (BOOL)extensionShouldAccept:(id)a3;
-- (BOOL)shouldAcceptConnection:(id)a3;
++ (void)dismissRemoteViewControllerWithError:(id)error;
++ (void)presentRemoteViewControllerWithContext:(id)context presentingViewController:(id)controller completion:(id)completion;
++ (void)setSharedInstance:(id)instance;
+- (BOOL)extensionShouldAccept:(id)accept;
+- (BOOL)shouldAcceptConnection:(id)connection;
 - (ICQUIRemoteExtensionDelegate)transformer;
 - (ICQUIRemoteExtensionEntry)init;
 - (NSXPCConnection)currentConnection;
 - (id)extensionMakeContentViewController;
 - (id)makeContentViewController;
-- (void)dismissViewControllerWithError:(id)a3;
-- (void)extensionPrepareForSceneConnectionWith:(id)a3;
-- (void)prepareForSceneConnectionWithConfiguration:(id)a3;
-- (void)startConnectionWithContext:(id)a3 completion:(id)a4;
+- (void)dismissViewControllerWithError:(id)error;
+- (void)extensionPrepareForSceneConnectionWith:(id)with;
+- (void)prepareForSceneConnectionWithConfiguration:(id)configuration;
+- (void)startConnectionWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation ICQUIRemoteExtensionEntry
 
-+ (void)presentRemoteViewControllerWithContext:(id)a3 presentingViewController:(id)a4 completion:(id)a5
++ (void)presentRemoteViewControllerWithContext:(id)context presentingViewController:(id)controller completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  controllerCopy = controller;
+  completionCopy = completion;
+  contextCopy = context;
   v10 = _ICQGetLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v7;
+    v13 = controllerCopy;
     _os_log_impl(&dword_275623000, v10, OS_LOG_TYPE_DEFAULT, "Presenting remote extension by %@", &v12, 0xCu);
   }
 
   v11 = objc_opt_new();
-  [v11 presentRemoteViewControllerWithContext:v9 presentingViewController:v7 completion:v8];
+  [v11 presentRemoteViewControllerWithContext:contextCopy presentingViewController:controllerCopy completion:completionCopy];
 }
 
-+ (void)dismissRemoteViewControllerWithError:(id)a3
++ (void)dismissRemoteViewControllerWithError:(id)error
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  errorCopy = error;
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "+[ICQUIRemoteExtensionEntry dismissRemoteViewControllerWithError:]";
     v8 = 2112;
-    v9 = v3;
+    v9 = errorCopy;
     _os_log_impl(&dword_275623000, v4, OS_LOG_TYPE_DEFAULT, "%s - error: %@", &v6, 0x16u);
   }
 
   v5 = +[ICQUIRemoteExtensionEntry sharedInstance];
-  [v5 dismissViewControllerWithError:v3];
+  [v5 dismissViewControllerWithError:errorCopy];
 }
 
 - (ICQUIRemoteExtensionEntry)init
@@ -66,10 +66,10 @@
   return v2;
 }
 
-- (BOOL)shouldAcceptConnection:(id)a3
+- (BOOL)shouldAcceptConnection:(id)connection
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -78,14 +78,14 @@
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  v6 = [(ICQUIRemoteExtensionEntry *)self extensionShouldAccept:v4];
+  v6 = [(ICQUIRemoteExtensionEntry *)self extensionShouldAccept:connectionCopy];
   return v6;
 }
 
-- (void)prepareForSceneConnectionWithConfiguration:(id)a3
+- (void)prepareForSceneConnectionWithConfiguration:(id)configuration
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -94,7 +94,7 @@
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  [(ICQUIRemoteExtensionEntry *)self extensionPrepareForSceneConnectionWith:v4];
+  [(ICQUIRemoteExtensionEntry *)self extensionPrepareForSceneConnectionWith:configurationCopy];
 }
 
 - (id)makeContentViewController
@@ -108,9 +108,9 @@
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  v4 = [(ICQUIRemoteExtensionEntry *)self extensionMakeContentViewController];
+  extensionMakeContentViewController = [(ICQUIRemoteExtensionEntry *)self extensionMakeContentViewController];
 
-  return v4;
+  return extensionMakeContentViewController;
 }
 
 - (NSXPCConnection)currentConnection
@@ -120,70 +120,70 @@
   return WeakRetained;
 }
 
-+ (void)setSharedInstance:(id)a3
++ (void)setSharedInstance:(id)instance
 {
   swift_beginAccess();
   v4 = qword_280A0D530;
-  qword_280A0D530 = a3;
-  v5 = a3;
+  qword_280A0D530 = instance;
+  instanceCopy = instance;
 }
 
 - (ICQUIRemoteExtensionDelegate)transformer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_27578AFFC();
 
   return v3;
 }
 
-- (BOOL)extensionShouldAccept:(id)a3
+- (BOOL)extensionShouldAccept:(id)accept
 {
-  v4 = a3;
-  v5 = self;
-  ICQUIRemoteExtensionEntry.extensionShouldAccept(_:)(v4);
+  acceptCopy = accept;
+  selfCopy = self;
+  ICQUIRemoteExtensionEntry.extensionShouldAccept(_:)(acceptCopy);
 
   return 1;
 }
 
-- (void)extensionPrepareForSceneConnectionWith:(id)a3
+- (void)extensionPrepareForSceneConnectionWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  _sSo25ICQUIRemoteExtensionEntryC13iCloudQuotaUIE34extensionPrepareForSceneConnection4withySo21_EXSceneConfigurationC_tF_0(v4);
+  withCopy = with;
+  selfCopy = self;
+  _sSo25ICQUIRemoteExtensionEntryC13iCloudQuotaUIE34extensionPrepareForSceneConnection4withySo21_EXSceneConfigurationC_tF_0(withCopy);
 }
 
 - (id)extensionMakeContentViewController
 {
-  v2 = self;
-  v3 = [(ICQUIRemoteExtensionEntry *)v2 transformer];
-  if (v3)
+  selfCopy = self;
+  transformer = [(ICQUIRemoteExtensionEntry *)selfCopy transformer];
+  if (transformer)
   {
-    v4 = [(ICQUIRemoteExtensionDelegate *)v3 makeContentViewController];
+    makeContentViewController = [(ICQUIRemoteExtensionDelegate *)transformer makeContentViewController];
     swift_unknownObjectRelease();
   }
 
   else
   {
-    v4 = 0;
+    makeContentViewController = 0;
   }
 
-  return v4;
+  return makeContentViewController;
 }
 
-- (void)dismissViewControllerWithError:(id)a3
+- (void)dismissViewControllerWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  ICQUIRemoteExtensionEntry.dismissViewController(error:)(a3);
+  selfCopy = self;
+  errorCopy = error;
+  ICQUIRemoteExtensionEntry.dismissViewController(error:)(error);
 }
 
-- (void)startConnectionWithContext:(id)a3 completion:(id)a4
+- (void)startConnectionWithContext:(id)context completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_275797EB0();
   _Block_copy(v5);
-  v7 = self;
-  sub_27578CB84(v6, v7, v5);
+  selfCopy = self;
+  sub_27578CB84(v6, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }

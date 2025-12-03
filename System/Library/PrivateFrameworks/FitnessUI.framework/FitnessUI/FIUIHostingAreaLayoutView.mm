@@ -1,74 +1,74 @@
 @interface FIUIHostingAreaLayoutView
-+ (id)blackBackgroundViewHostingView:(id)a3;
-+ (id)viewHostingView:(id)a3;
++ (id)blackBackgroundViewHostingView:(id)view;
++ (id)viewHostingView:(id)view;
 - (CGSize)intrinsicContentSize;
-- (void)setHostedView:(id)a3;
+- (void)setHostedView:(id)view;
 @end
 
 @implementation FIUIHostingAreaLayoutView
 
-+ (id)viewHostingView:(id)a3
++ (id)viewHostingView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = [FIUIHostingAreaLayoutView alloc];
   v5 = [(FIUIHostingAreaLayoutView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  [(FIUIHostingAreaLayoutView *)v5 setHostedView:v3];
+  [(FIUIHostingAreaLayoutView *)v5 setHostedView:viewCopy];
 
   return v5;
 }
 
-+ (id)blackBackgroundViewHostingView:(id)a3
++ (id)blackBackgroundViewHostingView:(id)view
 {
-  v3 = [a1 viewHostingView:a3];
-  v4 = [MEMORY[0x1E69DC888] blackColor];
-  [v3 setBackgroundColor:v4];
+  v3 = [self viewHostingView:view];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [v3 setBackgroundColor:blackColor];
 
   return v3;
 }
 
-- (void)setHostedView:(id)a3
+- (void)setHostedView:(id)view
 {
-  objc_storeStrong(&self->_hostedView, a3);
-  v4 = [(FIUIHostingAreaLayoutView *)self hostedView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  objc_storeStrong(&self->_hostedView, view);
+  hostedView = [(FIUIHostingAreaLayoutView *)self hostedView];
+  [hostedView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(FIUIHostingAreaLayoutView *)self hostedView];
-  [(FIUIHostingAreaLayoutView *)self addSubview:v5];
+  hostedView2 = [(FIUIHostingAreaLayoutView *)self hostedView];
+  [(FIUIHostingAreaLayoutView *)self addSubview:hostedView2];
 
-  v6 = [(FIUIHostingAreaLayoutView *)self safeAreaLayoutGuide];
-  v7 = [v6 topAnchor];
-  v8 = [(FIUIHostingAreaLayoutView *)self hostedView];
-  v9 = [v8 topAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  safeAreaLayoutGuide = [(FIUIHostingAreaLayoutView *)self safeAreaLayoutGuide];
+  topAnchor = [safeAreaLayoutGuide topAnchor];
+  hostedView3 = [(FIUIHostingAreaLayoutView *)self hostedView];
+  topAnchor2 = [hostedView3 topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v10 setActive:1];
 
-  v11 = [(FIUIHostingAreaLayoutView *)self safeAreaLayoutGuide];
-  v12 = [v11 bottomAnchor];
-  v13 = [(FIUIHostingAreaLayoutView *)self hostedView];
-  v14 = [v13 bottomAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  safeAreaLayoutGuide2 = [(FIUIHostingAreaLayoutView *)self safeAreaLayoutGuide];
+  bottomAnchor = [safeAreaLayoutGuide2 bottomAnchor];
+  hostedView4 = [(FIUIHostingAreaLayoutView *)self hostedView];
+  bottomAnchor2 = [hostedView4 bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v15 setActive:1];
 
-  v16 = [(FIUIHostingAreaLayoutView *)self safeAreaLayoutGuide];
-  v17 = [v16 leadingAnchor];
-  v18 = [(FIUIHostingAreaLayoutView *)self hostedView];
-  v19 = [v18 leadingAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  safeAreaLayoutGuide3 = [(FIUIHostingAreaLayoutView *)self safeAreaLayoutGuide];
+  leadingAnchor = [safeAreaLayoutGuide3 leadingAnchor];
+  hostedView5 = [(FIUIHostingAreaLayoutView *)self hostedView];
+  leadingAnchor2 = [hostedView5 leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v20 setActive:1];
 
-  v25 = [(FIUIHostingAreaLayoutView *)self safeAreaLayoutGuide];
-  v21 = [v25 trailingAnchor];
-  v22 = [(FIUIHostingAreaLayoutView *)self hostedView];
-  v23 = [v22 trailingAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  safeAreaLayoutGuide4 = [(FIUIHostingAreaLayoutView *)self safeAreaLayoutGuide];
+  trailingAnchor = [safeAreaLayoutGuide4 trailingAnchor];
+  hostedView6 = [(FIUIHostingAreaLayoutView *)self hostedView];
+  trailingAnchor2 = [hostedView6 trailingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v24 setActive:1];
 }
 
 - (CGSize)intrinsicContentSize
 {
   v3 = *MEMORY[0x1E69DE788];
-  v4 = [(FIUIHostingAreaLayoutView *)self hostedView];
-  [v4 intrinsicContentSize];
+  hostedView = [(FIUIHostingAreaLayoutView *)self hostedView];
+  [hostedView intrinsicContentSize];
   v6 = v5;
   [(FIUIHostingAreaLayoutView *)self safeAreaInsets];
   v8 = v6 + v7;

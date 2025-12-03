@@ -3,7 +3,7 @@
 - (ASOServicePresentationQueue)init;
 - (ASOServicePresentationQueueDelegate)delegate;
 - (void)queueDismissOverlay;
-- (void)queuePresentOverlayWithConfiguration:(id)a3 delegate:(id)a4;
+- (void)queuePresentOverlayWithConfiguration:(id)configuration delegate:(id)delegate;
 - (void)removePendingPresentationOperations;
 @end
 
@@ -50,10 +50,10 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(ASOServicePresentationQueue *)self queue];
-  v3 = [v2 operations];
+  queue = [(ASOServicePresentationQueue *)self queue];
+  operations = [queue operations];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [operations countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -65,7 +65,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(operations);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -79,17 +79,17 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [operations countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)queuePresentOverlayWithConfiguration:(id)a3 delegate:(id)a4
+- (void)queuePresentOverlayWithConfiguration:(id)configuration delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v8 = +[ASOServicePresentationQueue log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -97,17 +97,17 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Queuing overlay presentation", buf, 2u);
   }
 
-  v9 = [(ASOServicePresentationQueue *)self accessQueue];
+  accessQueue = [(ASOServicePresentationQueue *)self accessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000081A0;
   block[3] = &unk_100024E20;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = configurationCopy;
+  v14 = delegateCopy;
+  v10 = delegateCopy;
+  v11 = configurationCopy;
+  dispatch_async(accessQueue, block);
 }
 
 - (void)queueDismissOverlay
@@ -119,13 +119,13 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Queuing overlay dismiss", buf, 2u);
   }
 
-  v4 = [(ASOServicePresentationQueue *)self accessQueue];
+  accessQueue = [(ASOServicePresentationQueue *)self accessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000082F4;
   block[3] = &unk_1000250B8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(accessQueue, block);
 }
 
 - (ASOServicePresentationQueueDelegate)delegate

@@ -1,7 +1,7 @@
 @interface EKEventImportedNoticeDetailItem
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (void)reset;
 @end
 
@@ -13,13 +13,13 @@
   self->_cell = 0;
 }
 
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview
 {
-  v6 = [(EKEvent *)self->super._event organizer:a3];
+  v6 = [(EKEvent *)self->super._event organizer:event];
   if (v6)
   {
-    v7 = [(EKEvent *)self->super._event selfAttendee];
-    if (v7)
+    selfAttendee = [(EKEvent *)self->super._event selfAttendee];
+    if (selfAttendee)
     {
       LOBYTE(v8) = 0;
     }
@@ -38,14 +38,14 @@
   return v8;
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update
 {
   cell = self->_cell;
   if (cell)
   {
-    v7 = a5;
-    [(EKEventDetailImportedNoticeCell *)cell sizeToFit:a3];
-    if (v7)
+    updateCopy = update;
+    [(EKEventDetailImportedNoticeCell *)cell sizeToFit:index];
+    if (updateCopy)
     {
       [(EKEventDetailImportedNoticeCell *)self->_cell update];
     }
@@ -57,7 +57,7 @@
 
   else
   {
-    v10 = [(EKEventImportedNoticeDetailItem *)self cellForSubitemAtIndex:a3, a5, a4];
+    width = [(EKEventImportedNoticeDetailItem *)self cellForSubitemAtIndex:index, update, width];
     [(EKEventDetailImportedNoticeCell *)self->_cell sizeToFit];
   }
 
@@ -65,7 +65,7 @@
   return v11;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   cell = self->_cell;
   if (!cell)

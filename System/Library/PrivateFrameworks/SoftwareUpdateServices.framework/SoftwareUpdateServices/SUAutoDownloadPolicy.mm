@@ -1,7 +1,7 @@
 @interface SUAutoDownloadPolicy
-- (SUAutoDownloadPolicy)initWithDescriptor:(id)a3;
-- (id)computAutoDownloadEndDateFromDate:(id)a3;
-- (id)computeTimeOfWifiOnlyPeriodEndFromDate:(id)a3;
+- (SUAutoDownloadPolicy)initWithDescriptor:(id)descriptor;
+- (id)computAutoDownloadEndDateFromDate:(id)date;
+- (id)computeTimeOfWifiOnlyPeriodEndFromDate:(id)date;
 - (id)createSpaceOptions;
 @end
 
@@ -9,14 +9,14 @@
 
 - (id)createSpaceOptions
 {
-  v10 = [(SUDefaultDownloadPolicy *)self descriptor];
-  if (v10)
+  descriptor = [(SUDefaultDownloadPolicy *)self descriptor];
+  if (descriptor)
   {
     v11 = objc_alloc_init(SUSpacePurgeOptions);
-    [(SUSpacePurgeOptions *)v11 setNeededBytes:[SUUtility totalDiskSpaceForUpdate:v10]];
+    [(SUSpacePurgeOptions *)v11 setNeededBytes:[SUUtility totalDiskSpaceForUpdate:descriptor]];
     [(SUSpacePurgeOptions *)v11 setEnableAppOffload:0];
-    v12 = [(SUDefaultDownloadPolicy *)self descriptor];
-    -[SUSpacePurgeOptions setEnableCacheDelete:](v11, "setEnableCacheDelete:", [v12 cdLevel4Disabled] ^ 1);
+    descriptor2 = [(SUDefaultDownloadPolicy *)self descriptor];
+    -[SUSpacePurgeOptions setEnableCacheDelete:](v11, "setEnableCacheDelete:", [descriptor2 cdLevel4Disabled] ^ 1);
 
     [(SUSpacePurgeOptions *)v11 setEnableMobileAssetSuspend:0];
     [(SUSpacePurgeOptions *)v11 setCacheDeleteUrgency:4];
@@ -31,11 +31,11 @@
   return v11;
 }
 
-- (SUAutoDownloadPolicy)initWithDescriptor:(id)a3
+- (SUAutoDownloadPolicy)initWithDescriptor:(id)descriptor
 {
   v6.receiver = self;
   v6.super_class = SUAutoDownloadPolicy;
-  v3 = [(SUDefaultDownloadPolicy *)&v6 initWithDescriptor:a3];
+  v3 = [(SUDefaultDownloadPolicy *)&v6 initWithDescriptor:descriptor];
   v4 = v3;
   if (v3)
   {
@@ -46,30 +46,30 @@
   return v4;
 }
 
-- (id)computAutoDownloadEndDateFromDate:(id)a3
+- (id)computAutoDownloadEndDateFromDate:(id)date
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dateCopy = date;
+  v4 = dateCopy;
+  if (dateCopy)
   {
-    v5 = v3;
+    date = dateCopy;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  v6 = v5;
-  v7 = [SUUtility addToDate:v5 numberOfDays:90];
+  v6 = date;
+  v7 = [SUUtility addToDate:date numberOfDays:90];
 
   return v7;
 }
 
-- (id)computeTimeOfWifiOnlyPeriodEndFromDate:(id)a3
+- (id)computeTimeOfWifiOnlyPeriodEndFromDate:(id)date
 {
-  v4 = a3;
-  v5 = [SUUtility addToDate:v4 numberOfDays:[(SUAutoDownloadPolicy *)self wifiOnlyPeriodInDays]];
+  dateCopy = date;
+  v5 = [SUUtility addToDate:dateCopy numberOfDays:[(SUAutoDownloadPolicy *)self wifiOnlyPeriodInDays]];
 
   return v5;
 }

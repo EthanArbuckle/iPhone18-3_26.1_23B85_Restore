@@ -1,16 +1,16 @@
 @interface ML3QueryResultSet
 - (BOOL)_updateToLibraryCurrentRevision;
 - (BOOL)updateToLibraryCurrentRevision;
-- (ML3QueryResultSet)initWithQuery:(id)a3;
-- (id)_initWithQuery:(id)a3 supportsIncrementalUpdate:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)persistentIDAtIndex:(unint64_t)a3;
+- (ML3QueryResultSet)initWithQuery:(id)query;
+- (id)_initWithQuery:(id)query supportsIncrementalUpdate:(BOOL)update;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)persistentIDAtIndex:(unint64_t)index;
 - (void)_loadCurrentFullResults;
-- (void)_mergeChangesWithFromNewPIDs:(const void *)a3 changedPIDs:(void *)a4;
-- (void)_onQueueAddUpdateFinishedBlock:(id)a3;
-- (void)_onQueueInvokeAndClearUpdateFinishedBlocksWithDidUpdateResult:(BOOL)a3;
-- (void)enumeratePersistentIDsUsingBlock:(id)a3;
-- (void)enumerateSectionsUsingBlock:(id)a3;
+- (void)_mergeChangesWithFromNewPIDs:(const void *)ds changedPIDs:(void *)iDs;
+- (void)_onQueueAddUpdateFinishedBlock:(id)block;
+- (void)_onQueueInvokeAndClearUpdateFinishedBlocksWithDidUpdateResult:(BOOL)result;
+- (void)enumeratePersistentIDsUsingBlock:(id)block;
+- (void)enumerateSectionsUsingBlock:(id)block;
 @end
 
 @implementation ML3QueryResultSet
@@ -71,15 +71,15 @@ uint64_t __51__ML3QueryResultSet_updateToLibraryCurrentRevision__block_invoke_4(
 - (BOOL)_updateToLibraryCurrentRevision
 {
   v3 = self->_query;
-  v4 = [(ML3Query *)v3 library];
+  library = [(ML3Query *)v3 library];
   if ([(ML3Query *)v3 filtersOnDynamicProperties])
   {
-    v5 = [v4 currentRevision];
+    currentRevision = [library currentRevision];
   }
 
   else
   {
-    v5 = [v4 currentContentRevision];
+    currentRevision = [library currentContentRevision];
   }
 
   if (!self->_backingStore)
@@ -88,13 +88,13 @@ uint64_t __51__ML3QueryResultSet_updateToLibraryCurrentRevision__block_invoke_4(
   }
 
   revision = self->_revision;
-  if (revision == v5)
+  if (revision == currentRevision)
   {
     LOBYTE(v7) = 0;
     goto LABEL_15;
   }
 
-  if (!self->_supportsIncrementalUpdate || !revision || revision > v5 || revision + 100 < v5)
+  if (!self->_supportsIncrementalUpdate || !revision || revision > currentRevision || revision + 100 < currentRevision)
   {
 LABEL_14:
     [(ML3QueryResultSet *)self _loadCurrentFullResults];
@@ -112,8 +112,8 @@ LABEL_14:
   v9[2] = __52__ML3QueryResultSet__updateToLibraryCurrentRevision__block_invoke;
   v9[3] = &unk_278763CB0;
   v10 = v3;
-  v11 = v4;
-  v12 = self;
+  v11 = library;
+  selfCopy = self;
   v13 = &v14;
   [v11 performReadOnlyDatabaseTransactionWithBlock:v9];
   v7 = *(v15 + 24);
@@ -181,11 +181,11 @@ void __51__ML3QueryResultSet_updateToLibraryCurrentRevision__block_invoke(uint64
 - (void)_loadCurrentFullResults
 {
   v3 = self->_query;
-  v4 = [(ML3Query *)v3 library];
-  self->_revision = [v4 currentRevision];
+  library = [(ML3Query *)v3 library];
+  self->_revision = [library currentRevision];
   v5 = objc_alloc_init(ML3QueryResultSet_MutableBackingStore);
-  v6 = [(ML3Query *)v3 sectionProperty];
-  if (v6)
+  sectionProperty = [(ML3Query *)v3 sectionProperty];
+  if (sectionProperty)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -193,7 +193,7 @@ void __51__ML3QueryResultSet_updateToLibraryCurrentRevision__block_invoke(uint64
     v11[3] = &unk_278763BD0;
     v7 = &v12;
     v12 = v5;
-    [(ML3Query *)v3 enumeratePersistentIDsAndSectionsWithProperty:v6 usingBlock:v11];
+    [(ML3Query *)v3 enumeratePersistentIDsAndSectionsWithProperty:sectionProperty usingBlock:v11];
   }
 
   else
@@ -253,35 +253,35 @@ void *__62__ML3QueryResultSet_BackingStore_enumerateSectionsUsingBlock___block_i
   return result;
 }
 
-- (void)enumerateSectionsUsingBlock:(id)a3
+- (void)enumerateSectionsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   fixedPriorityQueue = self->_fixedPriorityQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__ML3QueryResultSet_enumerateSectionsUsingBlock___block_invoke;
   v7[3] = &unk_278764A48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(fixedPriorityQueue, v7);
 }
 
-- (void)enumeratePersistentIDsUsingBlock:(id)a3
+- (void)enumeratePersistentIDsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   fixedPriorityQueue = self->_fixedPriorityQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__ML3QueryResultSet_enumeratePersistentIDsUsingBlock___block_invoke;
   v7[3] = &unk_278764A48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(fixedPriorityQueue, v7);
 }
 
-- (int64_t)persistentIDAtIndex:(unint64_t)a3
+- (int64_t)persistentIDAtIndex:(unint64_t)index
 {
   v7 = 0;
   v8 = &v7;
@@ -294,7 +294,7 @@ void *__62__ML3QueryResultSet_BackingStore_enumerateSectionsUsingBlock___block_i
   block[3] = &unk_2787656D0;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = index;
   dispatch_sync(fixedPriorityQueue, block);
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -404,7 +404,7 @@ void *__52__ML3QueryResultSet__updateToLibraryCurrentRevision__block_invoke_2(ui
   return result;
 }
 
-- (void)_onQueueInvokeAndClearUpdateFinishedBlocksWithDidUpdateResult:(BOOL)a3
+- (void)_onQueueInvokeAndClearUpdateFinishedBlocksWithDidUpdateResult:(BOOL)result
 {
   v5 = [(NSMutableArray *)self->_updateToLibraryCurrentRevisionCompletionBlocks copy];
   [(NSMutableArray *)self->_updateToLibraryCurrentRevisionCompletionBlocks removeAllObjects];
@@ -412,7 +412,7 @@ void *__52__ML3QueryResultSet__updateToLibraryCurrentRevision__block_invoke_2(ui
   v6[1] = 3221225472;
   v6[2] = __83__ML3QueryResultSet__onQueueInvokeAndClearUpdateFinishedBlocksWithDidUpdateResult___block_invoke;
   v6[3] = &__block_descriptor_33_e15_v32__0_8Q16_B24l;
-  v7 = a3;
+  resultCopy = result;
   [v5 enumerateObjectsUsingBlock:v6];
 }
 
@@ -422,16 +422,16 @@ void __83__ML3QueryResultSet__onQueueInvokeAndClearUpdateFinishedBlocksWithDidUp
   v3[2](v3, *(a1 + 32));
 }
 
-- (void)_onQueueAddUpdateFinishedBlock:(id)a3
+- (void)_onQueueAddUpdateFinishedBlock:(id)block
 {
-  v5 = a3;
-  v11 = v5;
-  if (!v5)
+  blockCopy = block;
+  v11 = blockCopy;
+  if (!blockCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"ML3QueryResultSet.mm" lineNumber:433 description:@"invalid parameter.  completion block must be specified."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3QueryResultSet.mm" lineNumber:433 description:@"invalid parameter.  completion block must be specified."];
 
-    v5 = 0;
+    blockCopy = 0;
   }
 
   updateToLibraryCurrentRevisionCompletionBlocks = self->_updateToLibraryCurrentRevisionCompletionBlocks;
@@ -442,32 +442,32 @@ void __83__ML3QueryResultSet__onQueueInvokeAndClearUpdateFinishedBlocksWithDidUp
     self->_updateToLibraryCurrentRevisionCompletionBlocks = v7;
 
     updateToLibraryCurrentRevisionCompletionBlocks = self->_updateToLibraryCurrentRevisionCompletionBlocks;
-    v5 = v11;
+    blockCopy = v11;
   }
 
-  v9 = [v5 copy];
+  v9 = [blockCopy copy];
   [(NSMutableArray *)updateToLibraryCurrentRevisionCompletionBlocks addObject:v9];
 }
 
-- (void)_mergeChangesWithFromNewPIDs:(const void *)a3 changedPIDs:(void *)a4
+- (void)_mergeChangesWithFromNewPIDs:(const void *)ds changedPIDs:(void *)iDs
 {
   v78[1] = *MEMORY[0x277D85DE8];
   v46 = self->_query;
-  v40 = [(ML3Query *)v46 library];
-  v52 = [v40 checkoutReaderConnection];
-  v7 = [(ML3Query *)v46 entityClass];
-  v45 = [(ML3Query *)v46 orderingTerms];
-  if (![v45 count])
+  library = [(ML3Query *)v46 library];
+  checkoutReaderConnection = [library checkoutReaderConnection];
+  entityClass = [(ML3Query *)v46 entityClass];
+  orderingTerms = [(ML3Query *)v46 orderingTerms];
+  if (![orderingTerms count])
   {
-    v39 = [MEMORY[0x277CCA890] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"ML3QueryResultSet.mm" lineNumber:298 description:{@"Updateable query has no ordering! query: %@", v46}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3QueryResultSet.mm" lineNumber:298 description:{@"Updateable query has no ordering! query: %@", v46}];
   }
 
-  v8 = [(ML3Query *)v46 sectionProperty];
-  v53 = v8;
-  if (v8)
+  sectionProperty = [(ML3Query *)v46 sectionProperty];
+  v53 = sectionProperty;
+  if (sectionProperty)
   {
-    v9 = [(objc_class *)v7 joinClausesForProperty:v8];
+    v9 = [(objc_class *)entityClass joinClausesForProperty:sectionProperty];
     if ([v9 count])
     {
       v10 = [v9 componentsJoinedByString:@" "];
@@ -478,14 +478,14 @@ void __83__ML3QueryResultSet__onQueueInvokeAndClearUpdateFinishedBlocksWithDidUp
       v10 = 0;
     }
 
-    v11 = [(objc_class *)v7 databaseTable];
+    databaseTable = [(objc_class *)entityClass databaseTable];
     v12 = &stru_28408B690;
     if (v10)
     {
       v12 = v10;
     }
 
-    v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT %@ FROM %@ %@ WHERE %@.ROWID = ?", v53, v11, v12, v11];
+    v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT %@ FROM %@ %@ WHERE %@.ROWID = ?", v53, databaseTable, v12, databaseTable];
   }
 
   else
@@ -493,18 +493,18 @@ void __83__ML3QueryResultSet__onQueueInvokeAndClearUpdateFinishedBlocksWithDidUp
     v51 = 0;
   }
 
-  v42 = [(objc_class *)v7 disambiguatedSQLForProperty:@"ROWID"];
+  v42 = [(objc_class *)entityClass disambiguatedSQLForProperty:@"ROWID"];
   v41 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v42, 0}];
-  v14 = *a3;
-  v13 = *(a3 + 1);
+  v14 = *ds;
+  v13 = *(ds + 1);
   location = &self->_backingStore;
-  v15 = [(ML3QueryResultSet_BackingStore *)self->_backingStore backingStoreByRemovingPersistentIDs:a4];
+  v15 = [(ML3QueryResultSet_BackingStore *)self->_backingStore backingStoreByRemovingPersistentIDs:iDs];
   v16 = [v15 count];
   v17 = objc_alloc_init(ML3QueryResultSet_MutableBackingStore);
-  v47 = [(ML3QueryResultSet *)self entityLimit];
-  v43 = [(ML3Query *)v46 selectSQLWithColumns:v41 groupBy:0 orderingTerms:v45 directionality:0 usingLowerBound:1];
-  v18 = [(ML3Query *)v46 predicateIncludingSystemwidePredicates];
-  v44 = [v18 databaseStatementParameters];
+  entityLimit = [(ML3QueryResultSet *)self entityLimit];
+  v43 = [(ML3Query *)v46 selectSQLWithColumns:v41 groupBy:0 orderingTerms:orderingTerms directionality:0 usingLowerBound:1];
+  predicateIncludingSystemwidePredicates = [(ML3Query *)v46 predicateIncludingSystemwidePredicates];
+  databaseStatementParameters = [predicateIncludingSystemwidePredicates databaseStatementParameters];
 
   if (v13 == v14)
   {
@@ -520,9 +520,9 @@ void __83__ML3QueryResultSet__onQueueInvokeAndClearUpdateFinishedBlocksWithDidUp
     v54 = (v13 - v14) >> 3;
     do
     {
-      v49 = [(ML3Query *)v46 lowerBoundParametersForOrderingTerms:v45 lowerBoundPersistentID:*(*a3 + 8 * v19)];
-      v22 = [v44 arrayByAddingObjectsFromArray:v49];
-      v50 = [v52 executeQuery:v43 withParameters:v22];
+      v49 = [(ML3Query *)v46 lowerBoundParametersForOrderingTerms:orderingTerms lowerBoundPersistentID:*(*ds + 8 * v19)];
+      v22 = [databaseStatementParameters arrayByAddingObjectsFromArray:v49];
+      v50 = [checkoutReaderConnection executeQuery:v43 withParameters:v22];
 
       v71 = 0;
       v72 = &v71;
@@ -542,7 +542,7 @@ void __83__ML3QueryResultSet__onQueueInvokeAndClearUpdateFinishedBlocksWithDidUp
       v56[3] = &unk_278763BF8;
       v58 = &v63;
       v61 = v54;
-      v62 = a3;
+      dsCopy = ds;
       v57 = v15;
       v59 = &v67;
       v60 = &v71;
@@ -567,23 +567,23 @@ void __83__ML3QueryResultSet__onQueueInvokeAndClearUpdateFinishedBlocksWithDidUp
 
           while (v19 < v64[3])
           {
-            v24 = *(*a3 + 8 * v19);
+            v24 = *(*ds + 8 * v19);
             if (v53)
             {
-              v25 = [MEMORY[0x277CCABB0] numberWithLongLong:*(*a3 + 8 * v19)];
+              v25 = [MEMORY[0x277CCABB0] numberWithLongLong:*(*ds + 8 * v19)];
               v78[0] = v25;
               v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v78 count:1];
-              v27 = [v52 executeQuery:v51 withParameters:v26];
-              v28 = [v27 int64ValueForFirstRowAndColumn];
+              v27 = [checkoutReaderConnection executeQuery:v51 withParameters:v26];
+              int64ValueForFirstRowAndColumn = [v27 int64ValueForFirstRowAndColumn];
             }
 
             else
             {
-              v28 = 0;
+              int64ValueForFirstRowAndColumn = 0;
             }
 
             v76 = v24;
-            v75 = v28;
+            v75 = int64ValueForFirstRowAndColumn;
             std::vector<unsigned long long>::push_back[abi:ne200100](&v17->super._persistentIDs, &v76);
             std::vector<unsigned char>::push_back[abi:ne200100](&v17->super._sections, &v75);
             ++v19;
@@ -615,23 +615,23 @@ void __83__ML3QueryResultSet__onQueueInvokeAndClearUpdateFinishedBlocksWithDidUp
         {
           do
           {
-            v30 = *(*a3 + 8 * v19);
+            v30 = *(*ds + 8 * v19);
             if (v53)
             {
-              v31 = [MEMORY[0x277CCABB0] numberWithLongLong:*(*a3 + 8 * v19)];
+              v31 = [MEMORY[0x277CCABB0] numberWithLongLong:*(*ds + 8 * v19)];
               v77 = v31;
               v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v77 count:1];
-              v33 = [v52 executeQuery:v51 withParameters:v32];
-              v34 = [v33 int64ValueForFirstRowAndColumn];
+              v33 = [checkoutReaderConnection executeQuery:v51 withParameters:v32];
+              int64ValueForFirstRowAndColumn2 = [v33 int64ValueForFirstRowAndColumn];
             }
 
             else
             {
-              v34 = 0;
+              int64ValueForFirstRowAndColumn2 = 0;
             }
 
             v76 = v30;
-            v75 = v34;
+            v75 = int64ValueForFirstRowAndColumn2;
             std::vector<unsigned long long>::push_back[abi:ne200100](&v17->super._persistentIDs, &v76);
             std::vector<unsigned char>::push_back[abi:ne200100](&v17->super._sections, &v75);
             ++v19;
@@ -674,13 +674,13 @@ LABEL_33:
 
   objc_storeStrong(location, v17);
   v38 = location;
-  while ([*v38 count] > v47)
+  while ([*v38 count] > entityLimit)
   {
     v38 = location;
     *(*location + 2) -= 8;
   }
 
-  [v40 checkInDatabaseConnection:v52];
+  [library checkInDatabaseConnection:checkoutReaderConnection];
 }
 
 void __62__ML3QueryResultSet__mergeChangesWithFromNewPIDs_changedPIDs___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -741,7 +741,7 @@ void __44__ML3QueryResultSet__loadCurrentFullResults__block_invoke_2(uint64_t a1
   std::vector<unsigned char>::push_back[abi:ne200100](v2 + 32, &v3);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_storeStrong(v4 + 2, self->_query);
@@ -756,15 +756,15 @@ void __44__ML3QueryResultSet__loadCurrentFullResults__block_invoke_2(uint64_t a1
   return v4;
 }
 
-- (ML3QueryResultSet)initWithQuery:(id)a3
+- (ML3QueryResultSet)initWithQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(ML3QueryResultSet *)self _initWithQuery:v4 supportsIncrementalUpdate:0];
+    v7 = [(ML3QueryResultSet *)self _initWithQuery:queryCopy supportsIncrementalUpdate:0];
 LABEL_7:
     self = v7;
     p_super = self;
@@ -776,16 +776,16 @@ LABEL_7:
 
   if ((v9 & 1) == 0)
   {
-    v7 = [(ML3QueryResultSet *)self _initWithQuery:v4 supportsIncrementalUpdate:1];
+    v7 = [(ML3QueryResultSet *)self _initWithQuery:queryCopy supportsIncrementalUpdate:1];
     goto LABEL_7;
   }
 
-  v10 = v4;
-  v11 = [v10 container];
-  v12 = [v11 valueForProperty:@"smart_is_dynamic"];
-  v13 = [v12 intValue];
+  v10 = queryCopy;
+  container = [v10 container];
+  v12 = [container valueForProperty:@"smart_is_dynamic"];
+  intValue = [v12 intValue];
 
-  if (v13)
+  if (intValue)
   {
     v14 = [[ML3ContainerQueryResultSet alloc] initWithQuery:v10];
   }
@@ -802,22 +802,22 @@ LABEL_10:
   return p_super;
 }
 
-- (id)_initWithQuery:(id)a3 supportsIncrementalUpdate:(BOOL)a4
+- (id)_initWithQuery:(id)query supportsIncrementalUpdate:(BOOL)update
 {
-  v4 = a4;
+  updateCopy = update;
   v35[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queryCopy = query;
   v34.receiver = self;
   v34.super_class = ML3QueryResultSet;
   v7 = [(ML3QueryResultSet *)&v34 init];
   v8 = v7;
   if (v7)
   {
-    v9 = [v6 orderingTerms];
-    if ([(ML3OrderingTerm *)v9 count])
+    orderingTerms = [queryCopy orderingTerms];
+    if ([(ML3OrderingTerm *)orderingTerms count])
     {
 
-      if (!v4)
+      if (!updateCopy)
       {
         goto LABEL_8;
       }
@@ -825,21 +825,21 @@ LABEL_10:
 
     else
     {
-      if (![v6 usingSections])
+      if (![queryCopy usingSections])
       {
         v15 = 0;
         goto LABEL_14;
       }
 
-      v10 = [v6 sectionProperty];
-      v11 = v10 != 0;
+      sectionProperty = [queryCopy sectionProperty];
+      v11 = sectionProperty != 0;
 
-      if (!v11 || !v4)
+      if (!v11 || !updateCopy)
       {
 LABEL_8:
         v15 = 0;
 LABEL_15:
-        objc_storeStrong(&v7->_query, v6);
+        objc_storeStrong(&v7->_query, queryCopy);
         v7->_supportsIncrementalUpdate = v15;
         v27 = dispatch_queue_create("com.apple.ML3QueryResultSet.coalescing", 0);
         queue = v7->_queue;
@@ -854,25 +854,25 @@ LABEL_15:
       }
     }
 
-    v12 = [v6 predicate];
-    v13 = [v12 spotlightPredicate];
-    v14 = v13 == 0;
+    predicate = [queryCopy predicate];
+    spotlightPredicate = [predicate spotlightPredicate];
+    v14 = spotlightPredicate == 0;
 
     if (!v14)
     {
       goto LABEL_8;
     }
 
-    v9 = [v6 orderingTerms];
-    if ([(ML3OrderingTerm *)v9 count])
+    orderingTerms = [queryCopy orderingTerms];
+    if ([(ML3OrderingTerm *)orderingTerms count])
     {
       v15 = 1;
     }
 
     else
     {
-      v16 = [v6 sectionProperty];
-      v17 = v16 == 0;
+      sectionProperty2 = [queryCopy sectionProperty];
+      v17 = sectionProperty2 == 0;
 
       if (v17)
       {
@@ -881,21 +881,21 @@ LABEL_15:
       }
 
       v18 = [ML3OrderingTerm alloc];
-      v19 = [v6 sectionProperty];
-      v9 = [(ML3OrderingTerm *)v18 initWithProperty:v19];
+      sectionProperty3 = [queryCopy sectionProperty];
+      orderingTerms = [(ML3OrderingTerm *)v18 initWithProperty:sectionProperty3];
 
       v20 = [ML3Query alloc];
-      v33 = [v6 library];
-      v21 = [v6 entityClass];
-      v22 = [v6 predicate];
-      v35[0] = v9;
+      library = [queryCopy library];
+      entityClass = [queryCopy entityClass];
+      predicate2 = [queryCopy predicate];
+      v35[0] = orderingTerms;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
-      v24 = [v6 usingSections];
-      v25 = [v6 nonDirectAggregateQuery];
-      v26 = -[ML3Query initWithLibrary:entityClass:predicate:orderingTerms:usingSections:nonDirectAggregateQuery:propertyToCount:options:](v20, "initWithLibrary:entityClass:predicate:orderingTerms:usingSections:nonDirectAggregateQuery:propertyToCount:options:", v33, v21, v22, v23, v24, v25, 0, [v6 options]);
+      usingSections = [queryCopy usingSections];
+      nonDirectAggregateQuery = [queryCopy nonDirectAggregateQuery];
+      v26 = -[ML3Query initWithLibrary:entityClass:predicate:orderingTerms:usingSections:nonDirectAggregateQuery:propertyToCount:options:](v20, "initWithLibrary:entityClass:predicate:orderingTerms:usingSections:nonDirectAggregateQuery:propertyToCount:options:", library, entityClass, predicate2, v23, usingSections, nonDirectAggregateQuery, 0, [queryCopy options]);
 
       v15 = 1;
-      v6 = v26;
+      queryCopy = v26;
     }
 
 LABEL_14:

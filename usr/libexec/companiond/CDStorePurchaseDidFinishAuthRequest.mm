@@ -1,21 +1,21 @@
 @interface CDStorePurchaseDidFinishAuthRequest
-- (CDStorePurchaseDidFinishAuthRequest)initWithRapportDictionary:(id)a3;
+- (CDStorePurchaseDidFinishAuthRequest)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDStorePurchaseDidFinishAuthRequest
 
-- (CDStorePurchaseDidFinishAuthRequest)initWithRapportDictionary:(id)a3
+- (CDStorePurchaseDidFinishAuthRequest)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = CDStorePurchaseDidFinishAuthRequest;
   v5 = [(CDStorePurchaseDidFinishAuthRequest *)&v22 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = v4;
+    v7 = dictionaryCopy;
     v8 = [NSSet setWithObject:v6];
     v9 = sub_100017500(v7, @"purchaseResult", v8);
 
@@ -77,9 +77,9 @@
 
   [v3 appendString:self->_deviceModel withName:@"deviceModel" skipIfEmpty:1];
   [v3 appendString:self->_deviceName withName:@"deviceName" skipIfEmpty:1];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

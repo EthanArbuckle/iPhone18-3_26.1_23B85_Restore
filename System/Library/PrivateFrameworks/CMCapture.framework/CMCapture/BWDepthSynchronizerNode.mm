@@ -1,25 +1,25 @@
 @interface BWDepthSynchronizerNode
 + (void)initialize;
-- (id)initForStreaming:(BOOL)a3 maxQueueDepth:(int)a4 separateDepthComponentsEnabled:(BOOL)a5;
-- (uint64_t)_attachDepthDataToSampleBufferOrReportDepthMissing:(_BYTE *)a3 isDepthMissing:;
+- (id)initForStreaming:(BOOL)streaming maxQueueDepth:(int)depth separateDepthComponentsEnabled:(BOOL)enabled;
+- (uint64_t)_attachDepthDataToSampleBufferOrReportDepthMissing:(_BYTE *)missing isDepthMissing:;
 - (uint64_t)_cleanupDepthBufferQueue;
-- (uint64_t)_setupDepthMediaConfigurationForOutput:(uint64_t)a3 inputAttachedMediaKey:(uint64_t)a4 outputAttachedMediaKey:;
-- (unint64_t)_isDepthExpectedForSampleBuffer:(uint64_t)a1;
+- (uint64_t)_setupDepthMediaConfigurationForOutput:(uint64_t)output inputAttachedMediaKey:(uint64_t)key outputAttachedMediaKey:;
+- (unint64_t)_isDepthExpectedForSampleBuffer:(uint64_t)buffer;
 - (void)_tryToEmitBuffers;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWDepthSynchronizerNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -28,31 +28,31 @@
   }
 }
 
-- (id)initForStreaming:(BOOL)a3 maxQueueDepth:(int)a4 separateDepthComponentsEnabled:(BOOL)a5
+- (id)initForStreaming:(BOOL)streaming maxQueueDepth:(int)depth separateDepthComponentsEnabled:(BOOL)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v27.receiver = self;
   v27.super_class = BWDepthSynchronizerNode;
   v8 = [(BWNode *)&v27 init];
   v9 = v8;
   if (v8)
   {
-    v8->_streaming = a3;
-    v8->_separateDepthComponentsEnabled = v5;
+    v8->_streaming = streaming;
+    v8->_separateDepthComponentsEnabled = enabledCopy;
     [(BWNode *)v8 setSupportsConcurrentLiveInputCallbacks:v8->_streaming];
     v11 = 0;
     v12 = 0;
-    if (a4 <= 2)
+    if (depth <= 2)
     {
-      v13 = 2;
+      depthCopy = 2;
     }
 
     else
     {
-      v13 = a4;
+      depthCopy = depth;
     }
 
-    *(v9 + 152) = v13;
+    *(v9 + 152) = depthCopy;
     v14 = 1;
     do
     {
@@ -65,7 +65,7 @@
       {
         v17 = objc_alloc_init(BWNodeInputMediaConfiguration);
         v18 = v17;
-        if (v5)
+        if (enabledCopy)
         {
           [(BWNodeInputMediaConfiguration *)v17 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
           [(BWNodeInputMediaConfiguration *)v18 setPassthroughMode:1];
@@ -136,14 +136,14 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(BWNode *)self outputs];
-  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v20 objects:v19 count:16];
+  outputs = [(BWNode *)self outputs];
+  v9 = [(NSArray *)outputs countByEnumeratingWithState:&v20 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -154,11 +154,11 @@
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(outputs);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 attachedMediaKeyDrivenByInputAttachedMediaKey:a5 inputIndex:{objc_msgSend(a4, "index")}];
+        v14 = [v13 attachedMediaKeyDrivenByInputAttachedMediaKey:key inputIndex:{objc_msgSend(input, "index")}];
         if (v14)
         {
           v15 = v14;
@@ -169,7 +169,7 @@
             {
               if ([v15 isEqualToString:@"PrimaryFormat"])
               {
-                v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ output %@ has no media properties for the primary format (provided media key is %@)", self, v13, a5];
+                v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ output %@ has no media properties for the primary format (provided media key is %@)", self, v13, key];
                 objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v17 userInfo:0]);
               }
 
@@ -177,19 +177,19 @@
               [v13 _setMediaProperties:v16 forAttachedMediaKey:v15];
             }
 
-            [(BWNodeOutputMediaProperties *)v16 setResolvedFormat:a3];
+            [(BWNodeOutputMediaProperties *)v16 setResolvedFormat:format];
           }
         }
       }
 
-      v10 = [(NSArray *)v8 countByEnumeratingWithState:&v20 objects:v19 count:16];
+      v10 = [(NSArray *)outputs countByEnumeratingWithState:&v20 objects:v19 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
   if (![(BWNodeOutput *)self->super._output liveFormat])
@@ -200,7 +200,7 @@
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   v5 = atomic_fetch_add_explicit(&self->_numEODMessagesReceived, 1u, memory_order_relaxed) + 1;
   if ([(NSArray *)[(BWNode *)self inputs] count]== v5)
@@ -211,7 +211,7 @@
     self->_numEODMessagesReceived = 0;
   }
 
-  else if (self->_flushOnDepthEOD && self->_depthInput == a3)
+  else if (self->_flushOnDepthEOD && self->_depthInput == input)
   {
     atomic_store(1u, &self->_depthInputHasReceivedEOD);
     os_unfair_lock_lock(&self->_bufferServicingLock);
@@ -221,11 +221,11 @@
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  v7 = [objc_msgSend(CMGetAttachment(a3 *off_1E798A3C8];
-  if (self->_imageInput == a4)
+  v7 = [objc_msgSend(CMGetAttachment(buffer *off_1E798A3C8];
+  if (self->_imageInput == input)
   {
     v8 = &OBJC_IVAR___BWDepthSynchronizerNode__lastReceivedImageID;
   }
@@ -237,7 +237,7 @@
 
   v9 = *(&self->super.super.isa + *v8);
   memset(&v23, 0, sizeof(v23));
-  CMSampleBufferGetPresentationTimeStamp(&v23, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v23, buffer);
   if (self->_streaming)
   {
     LOBYTE(v10) = 0;
@@ -246,7 +246,7 @@
 
   else
   {
-    v12 = [objc_msgSend(CMGetAttachment(a3 @"StillSettings"];
+    v12 = [objc_msgSend(CMGetAttachment(buffer @"StillSettings"];
     v10 = (v12 & 0x2000) >> 13;
     if ((v12 & 0x2000) != 0)
     {
@@ -270,7 +270,7 @@
 
   else
   {
-    if (self->_imageInput == a4)
+    if (self->_imageInput == input)
     {
       p_lastReceivedImageID = &self->_lastReceivedImageID;
       v15 = self->_lastReceivedImageID - v11;
@@ -295,8 +295,8 @@
       *p_imageIDWrapAroundCounter = ++imageIDWrapAroundCounter;
     }
 
-    CMSetAttachment(a3, @"ExtendedCaptureID", [MEMORY[0x1E696AD98] numberWithInt:v7 | (imageIDWrapAroundCounter << 24)], 0);
-    [*(&self->super.super.isa + *v19) addObject:a3];
+    CMSetAttachment(buffer, @"ExtendedCaptureID", [MEMORY[0x1E696AD98] numberWithInt:v7 | (imageIDWrapAroundCounter << 24)], 0);
+    [*(&self->super.super.isa + *v19) addObject:buffer];
     *p_lastReceivedImageID = v7;
     *(&self->super.super.isa + *v18) = v23;
     [(BWDepthSynchronizerNode *)self _tryToEmitBuffers];
@@ -305,7 +305,7 @@
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
   if (self->_streaming)
@@ -313,7 +313,7 @@
     goto LABEL_6;
   }
 
-  if ([a3 errorCode] == -16800 || objc_msgSend(a3, "errorCode") == -16802 || objc_msgSend(a3, "errorCode") == -16806)
+  if ([error errorCode] == -16800 || objc_msgSend(error, "errorCode") == -16802 || objc_msgSend(error, "errorCode") == -16806)
   {
     [(NSMutableArray *)self->_imageBufferQueue removeAllObjects];
     [(NSMutableArray *)self->_depthBufferQueue removeAllObjects];
@@ -321,22 +321,22 @@
     self->_errorForImageInput = 0;
     self->_errorForDepthInput = 0;
 LABEL_6:
-    [(BWNodeOutput *)self->super._output emitNodeError:a3];
+    [(BWNodeOutput *)self->super._output emitNodeError:error];
     goto LABEL_7;
   }
 
-  [(BWDepthSynchronizerNode *)self handleNodeError:a4 forInput:a3];
+  [(BWDepthSynchronizerNode *)self handleNodeError:input forInput:error];
 LABEL_7:
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
-  if (self->_imageInput == a4)
+  if (self->_imageInput == input)
   {
     os_unfair_lock_lock(&self->_bufferServicingLock);
-    [(BWNodeOutput *)self->super._output emitDroppedSample:a3];
+    [(BWNodeOutput *)self->super._output emitDroppedSample:sample];
 
     os_unfair_lock_unlock(&self->_bufferServicingLock);
   }
@@ -355,7 +355,7 @@ BOOL __44__BWDepthSynchronizerNode__tryToEmitBuffers__block_invoke(uint64_t a1, 
   return v6 == [v3 settingsID];
 }
 
-- (uint64_t)_setupDepthMediaConfigurationForOutput:(uint64_t)a3 inputAttachedMediaKey:(uint64_t)a4 outputAttachedMediaKey:
+- (uint64_t)_setupDepthMediaConfigurationForOutput:(uint64_t)output inputAttachedMediaKey:(uint64_t)key outputAttachedMediaKey:
 {
   if (result)
   {
@@ -363,9 +363,9 @@ BOOL __44__BWDepthSynchronizerNode__tryToEmitBuffers__block_invoke(uint64_t a1, 
     [(BWNodeOutputMediaConfiguration *)v7 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
     [(BWNodeOutputMediaConfiguration *)v7 setPassthroughMode:1];
     [(BWNodeOutputMediaConfiguration *)v7 setIndexOfInputWhichDrivesThisOutput:1];
-    [(BWNodeOutputMediaConfiguration *)v7 setAttachedMediaKeyOfInputWhichDrivesThisOutput:a3];
+    [(BWNodeOutputMediaConfiguration *)v7 setAttachedMediaKeyOfInputWhichDrivesThisOutput:output];
 
-    return [a2 setMediaConfiguration:v7 forAttachedMediaKey:a4];
+    return [a2 setMediaConfiguration:v7 forAttachedMediaKey:key];
   }
 
   return result;
@@ -373,10 +373,10 @@ BOOL __44__BWDepthSynchronizerNode__tryToEmitBuffers__block_invoke(uint64_t a1, 
 
 - (void)_tryToEmitBuffers
 {
-  if (a1)
+  if (self)
   {
     v2 = 0;
-    if ([*(a1 + 136) count])
+    if ([*(self + 136) count])
     {
       v29 = *off_1E798B708;
       v30 = *off_1E798A3C8;
@@ -384,19 +384,19 @@ BOOL __44__BWDepthSynchronizerNode__tryToEmitBuffers__block_invoke(uint64_t a1, 
       while (1)
       {
         v4 = [OUTLINED_FUNCTION_2_79() objectAtIndexedSubscript:0];
-        v5 = [(BWDepthSynchronizerNode *)a1 _isDepthExpectedForSampleBuffer:v4];
+        v5 = [(BWDepthSynchronizerNode *)self _isDepthExpectedForSampleBuffer:v4];
         v6 = [OUTLINED_FUNCTION_2_79() count];
-        v7 = *(a1 + 152);
+        v7 = *(self + 152);
         v32 = [CMGetAttachment(v4 v3];
         v8 = 0;
         v58[0] = 0;
         if (v5)
         {
-          v8 = [(BWDepthSynchronizerNode *)a1 _attachDepthDataToSampleBufferOrReportDepthMissing:v4 isDepthMissing:v58];
+          v8 = [(BWDepthSynchronizerNode *)self _attachDepthDataToSampleBufferOrReportDepthMissing:v4 isDepthMissing:v58];
         }
 
         v31 = v2;
-        v10 = (*(a1 + 208) & 1) == 0 && *(a1 + 168) && (v9 = CMGetAttachment(v4, @"StillSettings", 0), ([objc_msgSend(v9 "captureSettings")] & 0x2000) != 0) && objc_msgSend(v9, "settingsID") <= *(a1 + 168);
+        v10 = (*(self + 208) & 1) == 0 && *(self + 168) && (v9 = CMGetAttachment(v4, @"StillSettings", 0), ([objc_msgSend(v9 "captureSettings")] & 0x2000) != 0) && objc_msgSend(v9, "settingsID") <= *(self + 168);
         v11 = v3;
         if ((v6 > v7 || (v5 & 1) == 0) | v8 & 1)
         {
@@ -408,7 +408,7 @@ BOOL __44__BWDepthSynchronizerNode__tryToEmitBuffers__block_invoke(uint64_t a1, 
           v12 = v58[0] | v10;
         }
 
-        if ((*(a1 + 208) & 1) == 0 && (v12 & (dword_1EB58E1E0 != 0)) == 1)
+        if ((*(self + 208) & 1) == 0 && (v12 & (dword_1EB58E1E0 != 0)) == 1)
         {
           v57 = 0;
           v56 = OS_LOG_TYPE_DEFAULT;
@@ -424,14 +424,14 @@ BOOL __44__BWDepthSynchronizerNode__tryToEmitBuffers__block_invoke(uint64_t a1, 
           if (v16)
           {
             v17 = v6 > v7;
-            v18 = [a1 name];
+            name = [self name];
             v19 = BWStillImageCaptureIDForSampleBuffer(v4);
             v20 = [objc_msgSend(CMGetAttachment(v4 v30];
-            v21 = *(a1 + 168);
+            v21 = *(self + 168);
             v34 = 136317699;
             v35 = "[BWDepthSynchronizerNode _tryToEmitBuffers]";
             v36 = 2113;
-            v37 = v18;
+            v37 = name;
             v38 = 2050;
             v39 = v19;
             v40 = 1026;
@@ -465,8 +465,8 @@ BOOL __44__BWDepthSynchronizerNode__tryToEmitBuffers__block_invoke(uint64_t a1, 
 
         v3 = v11;
         CMRemoveAttachment(v4, v11);
-        [*(a1 + 16) emitSampleBuffer:v4];
-        *(a1 + 156) = v32;
+        [*(self + 16) emitSampleBuffer:v4];
+        *(self + 156) = v32;
         [OUTLINED_FUNCTION_2_79() removeObject:v4];
         v2 = 1;
         if (![OUTLINED_FUNCTION_2_79() count])
@@ -479,58 +479,58 @@ BOOL __44__BWDepthSynchronizerNode__tryToEmitBuffers__block_invoke(uint64_t a1, 
     }
 
 LABEL_26:
-    v22 = *(a1 + 216);
-    if (v22 && (([objc_msgSend(objc_msgSend(v22 "stillImageSettings")] & 0x800) == 0 || objc_msgSend(OUTLINED_FUNCTION_0_80(), "count") || *(a1 + 224)))
+    v22 = *(self + 216);
+    if (v22 && (([objc_msgSend(objc_msgSend(v22 "stillImageSettings")] & 0x800) == 0 || objc_msgSend(OUTLINED_FUNCTION_0_80(), "count") || *(self + 224)))
     {
-      [*(a1 + 16) emitNodeError:{*(a1 + 216), v27, v28}];
+      [*(self + 16) emitNodeError:{*(self + 216), v27, v28}];
       v23 = OUTLINED_FUNCTION_0_80();
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __44__BWDepthSynchronizerNode__tryToEmitBuffers__block_invoke;
       v33[3] = &unk_1E7999798;
-      v33[4] = a1;
+      v33[4] = self;
       v24 = [v23 indexesOfObjectsPassingTest:v33];
       if ([v24 count])
       {
         [OUTLINED_FUNCTION_0_80() removeObjectsAtIndexes:v24];
       }
 
-      [(BWDepthSynchronizerNode *)a1 _cleanupDepthBufferQueue];
+      [(BWDepthSynchronizerNode *)self _cleanupDepthBufferQueue];
     }
 
     else
     {
-      [(BWDepthSynchronizerNode *)a1 _cleanupDepthBufferQueue];
+      [(BWDepthSynchronizerNode *)self _cleanupDepthBufferQueue];
       if ((v2 & 1) == 0)
       {
         return;
       }
     }
 
-    v25 = *(a1 + 216);
+    v25 = *(self + 216);
     if (v25)
     {
 
-      *(a1 + 216) = 0;
+      *(self + 216) = 0;
     }
 
-    v26 = *(a1 + 224);
+    v26 = *(self + 224);
     if (v26)
     {
 
-      *(a1 + 224) = 0;
+      *(self + 224) = 0;
     }
   }
 }
 
-- (unint64_t)_isDepthExpectedForSampleBuffer:(uint64_t)a1
+- (unint64_t)_isDepthExpectedForSampleBuffer:(uint64_t)buffer
 {
-  if (!a1)
+  if (!buffer)
   {
     return 0;
   }
 
-  if ((*(a1 + 208) & 1) == 0)
+  if ((*(buffer + 208) & 1) == 0)
   {
     return ([CMGetAttachment(target @"BWStillImageCaptureSettings"] >> 11) & 1;
   }
@@ -546,14 +546,14 @@ LABEL_26:
   return v3;
 }
 
-- (uint64_t)_attachDepthDataToSampleBufferOrReportDepthMissing:(_BYTE *)a3 isDepthMissing:
+- (uint64_t)_attachDepthDataToSampleBufferOrReportDepthMissing:(_BYTE *)missing isDepthMissing:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if ((*(a1 + 208) & 1) == 0 && *(a1 + 224))
+  if ((*(self + 208) & 1) == 0 && *(self + 224))
   {
     goto LABEL_4;
   }
@@ -562,14 +562,14 @@ LABEL_26:
   if (![OUTLINED_FUNCTION_1_89() count])
   {
 LABEL_14:
-    if (![OUTLINED_FUNCTION_1_89() count] && *(a1 + 209) == 1)
+    if (![OUTLINED_FUNCTION_1_89() count] && *(self + 209) == 1)
     {
-      v12 = atomic_load((a1 + 132));
+      v12 = atomic_load((self + 132));
       if (v12)
       {
 LABEL_4:
         v6 = 0;
-        *a3 = 1;
+        *missing = 1;
         return v6;
       }
     }
@@ -584,7 +584,7 @@ LABEL_4:
     v10 = [CMGetAttachment(v9 @"ExtendedCaptureID"];
     if (v7 < v10)
     {
-      *a3 = 1;
+      *missing = 1;
       goto LABEL_14;
     }
 
@@ -600,9 +600,9 @@ LABEL_4:
   }
 
   v11 = CMGetAttachment(v9, *off_1E798A3C8, 0);
-  if (([objc_msgSend(v11 objectForKeyedSubscript:{*off_1E798B6F8), "BOOLValue"}] & 1) != 0 || *(a1 + 184) == 1 && objc_msgSend(objc_msgSend(v11, "objectForKeyedSubscript:", *off_1E798B6F0), "BOOLValue"))
+  if (([objc_msgSend(v11 objectForKeyedSubscript:{*off_1E798B6F8), "BOOLValue"}] & 1) != 0 || *(self + 184) == 1 && objc_msgSend(objc_msgSend(v11, "objectForKeyedSubscript:", *off_1E798B6F0), "BOOLValue"))
   {
-    *a3 = 1;
+    *missing = 1;
     [OUTLINED_FUNCTION_1_89() removeObject:v9];
     CMSetAttachment(target, *off_1E798D2A8, &unk_1F22452B0, 1u);
     goto LABEL_14;
@@ -636,7 +636,7 @@ LABEL_4:
 
   CMRemoveAttachment(v14, @"ExtendedCaptureID");
   v15 = @"Depth";
-  if (*(a1 + 185) == 1)
+  if (*(self + 185) == 1)
   {
     BWSampleBufferRemoveAttachedMedia(target, @"Depth");
     AttachedMedia = BWSampleBufferGetAttachedMedia(cf, @"DepthData_DY");

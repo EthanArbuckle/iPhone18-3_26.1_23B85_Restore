@@ -1,33 +1,33 @@
 @interface PDSProtoTopic
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAppInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAppInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDSProtoTopic
 
-- (void)addAppInfo:(id)a3
+- (void)addAppInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   appInfos = self->_appInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!appInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_appInfos;
     self->_appInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     appInfos = self->_appInfos;
   }
 
-  [(NSMutableArray *)appInfos addObject:v4];
+  [(NSMutableArray *)appInfos addObject:infoCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = PDSProtoTopic;
   v4 = [(PDSProtoTopic *)&v8 description];
-  v5 = [(PDSProtoTopic *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PDSProtoTopic *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   qualifier = self->_qualifier;
@@ -81,8 +81,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -99,16 +99,16 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (!self->_name)
   {
     [PDSProtoTopic writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   if (!self->_qualifier)
   {
@@ -151,36 +151,36 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setName:self->_name];
-  [v8 setQualifier:self->_qualifier];
+  toCopy = to;
+  [toCopy setName:self->_name];
+  [toCopy setQualifier:self->_qualifier];
   if ([(PDSProtoTopic *)self appInfosCount])
   {
-    [v8 clearAppInfos];
-    v4 = [(PDSProtoTopic *)self appInfosCount];
-    if (v4)
+    [toCopy clearAppInfos];
+    appInfosCount = [(PDSProtoTopic *)self appInfosCount];
+    if (appInfosCount)
     {
-      v5 = v4;
+      v5 = appInfosCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDSProtoTopic *)self appInfoAtIndex:i];
-        [v8 addAppInfo:v7];
+        [toCopy addAppInfo:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_qualifier copyWithZone:a3];
+  v8 = [(NSString *)self->_qualifier copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -204,7 +204,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addAppInfo:v15];
 
         ++v14;
@@ -221,13 +221,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((name = self->_name, !(name | v4[2])) || -[NSString isEqual:](name, "isEqual:")) && ((qualifier = self->_qualifier, !(qualifier | v4[3])) || -[NSString isEqual:](qualifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((name = self->_name, !(name | equalCopy[2])) || -[NSString isEqual:](name, "isEqual:")) && ((qualifier = self->_qualifier, !(qualifier | equalCopy[3])) || -[NSString isEqual:](qualifier, "isEqual:")))
   {
     appInfos = self->_appInfos;
-    if (appInfos | v4[1])
+    if (appInfos | equalCopy[1])
     {
       v8 = [(NSMutableArray *)appInfos isEqual:?];
     }
@@ -253,16 +253,16 @@
   return v4 ^ [(NSMutableArray *)self->_appInfos hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(PDSProtoTopic *)self setName:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PDSProtoTopic *)self setQualifier:?];
   }
@@ -271,7 +271,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

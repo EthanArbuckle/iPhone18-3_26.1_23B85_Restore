@@ -1,11 +1,11 @@
 @interface MTRPluginClientManager
 + (id)sharedInstance;
-- (BOOL)isPluginClientLowestHash:(id)a3;
-- (BOOL)removeClientForXPCConnection:(id)a3;
+- (BOOL)isPluginClientLowestHash:(id)hash;
+- (BOOL)removeClientForXPCConnection:(id)connection;
 - (MTRPluginClientManager)init;
-- (id)_findClientForXPCConnection:(id)a3 remove:(BOOL)a4;
-- (id)addClientForXPCConnection:(id)a3 sessionID:(id)a4 queue:(id)a5;
-- (id)clientForXPCConnection:(id)a3;
+- (id)_findClientForXPCConnection:(id)connection remove:(BOOL)remove;
+- (id)addClientForXPCConnection:(id)connection sessionID:(id)d queue:(id)queue;
+- (id)clientForXPCConnection:(id)connection;
 - (void)_scheduleNextStateLog;
 - (void)_startStateLoggingIfNeeded;
 - (void)logState;
@@ -39,8 +39,8 @@ uint64_t __40__MTRPluginClientManager_sharedInstance__block_invoke()
   v2 = [(MTRPluginClientManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
-    [(MTRPluginClientManager *)v2 setClients:v3];
+    array = [MEMORY[0x277CBEB18] array];
+    [(MTRPluginClientManager *)v2 setClients:array];
 
     v4 = v2;
   }
@@ -71,17 +71,17 @@ uint64_t __40__MTRPluginClientManager_sharedInstance__block_invoke()
   }
 }
 
-- (id)_findClientForXPCConnection:(id)a3 remove:(BOOL)a4
+- (id)_findClientForXPCConnection:(id)connection remove:(BOOL)remove
 {
-  v22 = a4;
+  removeCopy = remove;
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  connectionCopy = connection;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [(MTRPluginClientManager *)self clients];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  clients = [(MTRPluginClientManager *)self clients];
+  v7 = [clients countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -93,12 +93,12 @@ uint64_t __40__MTRPluginClientManager_sharedInstance__block_invoke()
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(clients);
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v12 xpcConnection];
-        v14 = [v13 isEqual:v5];
+        xpcConnection = [v12 xpcConnection];
+        v14 = [xpcConnection isEqual:connectionCopy];
 
         if (v14)
         {
@@ -108,7 +108,7 @@ uint64_t __40__MTRPluginClientManager_sharedInstance__block_invoke()
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v8 = [clients countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v8);
@@ -119,24 +119,24 @@ uint64_t __40__MTRPluginClientManager_sharedInstance__block_invoke()
     v9 = 0;
   }
 
-  if (v22)
+  if (removeCopy)
   {
     v16 = matterPluginLog_default;
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v28 = self;
+      selfCopy = self;
       v29 = 2112;
       v30 = v9;
       _os_log_impl(&dword_25830F000, v16, OS_LOG_TYPE_DEFAULT, "%@ => Removing tracked client %@", buf, 0x16u);
     }
 
-    v17 = [(MTRPluginClientManager *)self clients];
-    [v17 removeObject:v9];
+    clients2 = [(MTRPluginClientManager *)self clients];
+    [clients2 removeObject:v9];
   }
 
-  v18 = [(MTRPluginClientManager *)self clients];
-  v19 = [v18 count];
+  clients3 = [(MTRPluginClientManager *)self clients];
+  v19 = [clients3 count];
 
   if (v19)
   {
@@ -153,15 +153,15 @@ uint64_t __40__MTRPluginClientManager_sharedInstance__block_invoke()
   return v9;
 }
 
-- (id)addClientForXPCConnection:(id)a3 sessionID:(id)a4 queue:(id)a5
+- (id)addClientForXPCConnection:(id)connection sessionID:(id)d queue:(id)queue
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(MTRPluginClientManager *)v11 _findClientForXPCConnection:v8 remove:0];
+  connectionCopy = connection;
+  dCopy = d;
+  queueCopy = queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v12 = [(MTRPluginClientManager *)selfCopy _findClientForXPCConnection:connectionCopy remove:0];
 
   if (v12)
   {
@@ -169,9 +169,9 @@ uint64_t __40__MTRPluginClientManager_sharedInstance__block_invoke()
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412546;
-      v20 = v11;
+      v20 = selfCopy;
       v21 = 2112;
-      v22 = v8;
+      v22 = connectionCopy;
       _os_log_impl(&dword_25830F000, v13, OS_LOG_TYPE_DEFAULT, "%@ Cannot add client for same xpc connection %@", &v19, 0x16u);
     }
 
@@ -180,41 +180,41 @@ uint64_t __40__MTRPluginClientManager_sharedInstance__block_invoke()
 
   else
   {
-    v14 = [[MTRPluginClient alloc] initWithXPCConnection:v8 sessionID:v9 queue:v10];
+    v14 = [[MTRPluginClient alloc] initWithXPCConnection:connectionCopy sessionID:dCopy queue:queueCopy];
     v15 = matterPluginLog_default;
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138413058;
-      v20 = v11;
+      v20 = selfCopy;
       v21 = 2112;
       v22 = v14;
       v23 = 2112;
-      v24 = v8;
+      v24 = connectionCopy;
       v25 = 2112;
-      v26 = v10;
+      v26 = queueCopy;
       _os_log_impl(&dword_25830F000, v15, OS_LOG_TYPE_DEFAULT, "%@ Adding Client %@ for xpc connection %@ queue: %@", &v19, 0x2Au);
     }
 
-    v16 = [(MTRPluginClientManager *)v11 clients];
-    [v16 addObject:v14];
+    clients = [(MTRPluginClientManager *)selfCopy clients];
+    [clients addObject:v14];
 
-    [(MTRPluginClientManager *)v11 _startStateLoggingIfNeeded];
+    [(MTRPluginClientManager *)selfCopy _startStateLoggingIfNeeded];
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-- (BOOL)removeClientForXPCConnection:(id)a3
+- (BOOL)removeClientForXPCConnection:(id)connection
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MTRPluginClientManager *)v5 _findClientForXPCConnection:v4 remove:1];
+  connectionCopy = connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(MTRPluginClientManager *)selfCopy _findClientForXPCConnection:connectionCopy remove:1];
   v7 = matterPluginLog_default;
   v8 = os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT);
   if (v6)
@@ -222,11 +222,11 @@ uint64_t __40__MTRPluginClientManager_sharedInstance__block_invoke()
     if (v8)
     {
       v11 = 138412802;
-      v12 = v5;
+      v12 = selfCopy;
       v13 = 2112;
       v14 = v6;
       v15 = 2112;
-      v16 = v4;
+      v16 = connectionCopy;
       _os_log_impl(&dword_25830F000, v7, OS_LOG_TYPE_DEFAULT, "%@ Removing client %@  for xpc connection: %@", &v11, 0x20u);
     }
 
@@ -236,57 +236,57 @@ uint64_t __40__MTRPluginClientManager_sharedInstance__block_invoke()
   else if (v8)
   {
     v11 = 138412546;
-    v12 = v5;
+    v12 = selfCopy;
     v13 = 2112;
-    v14 = v4;
+    v14 = connectionCopy;
     _os_log_impl(&dword_25830F000, v7, OS_LOG_TYPE_DEFAULT, "%@ Cannot find and remove client for xpc connection %@", &v11, 0x16u);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v9 = *MEMORY[0x277D85DE8];
   return v6 != 0;
 }
 
-- (id)clientForXPCConnection:(id)a3
+- (id)clientForXPCConnection:(id)connection
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MTRPluginClientManager *)v5 _findClientForXPCConnection:v4 remove:0];
+  connectionCopy = connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(MTRPluginClientManager *)selfCopy _findClientForXPCConnection:connectionCopy remove:0];
   if (!v6)
   {
     v7 = matterPluginLog_default;
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412546;
-      v11 = v5;
+      v11 = selfCopy;
       v12 = 2112;
-      v13 = v4;
+      v13 = connectionCopy;
       _os_log_impl(&dword_25830F000, v7, OS_LOG_TYPE_DEFAULT, "%@ Cannot find client for xpc connection %@", &v10, 0x16u);
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (BOOL)isPluginClientLowestHash:(id)a3
+- (BOOL)isPluginClientLowestHash:(id)hash
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 hash];
+  hashCopy = hash;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [hashCopy hash];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(MTRPluginClientManager *)v5 clients];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  clients = [(MTRPluginClientManager *)selfCopy clients];
+  v8 = [clients countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = *v15;
@@ -296,7 +296,7 @@ uint64_t __40__MTRPluginClientManager_sharedInstance__block_invoke()
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(clients);
         }
 
         if ([*(*(&v14 + 1) + 8 * i) hash] < v6)
@@ -306,7 +306,7 @@ uint64_t __40__MTRPluginClientManager_sharedInstance__block_invoke()
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [clients countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -319,7 +319,7 @@ uint64_t __40__MTRPluginClientManager_sharedInstance__block_invoke()
   v11 = 1;
 LABEL_11:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
@@ -327,30 +327,30 @@ LABEL_11:
 - (void)logState
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = matterPluginLog_default;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MTRPluginClientManager *)v2 clients];
-    v5 = [v4 count];
-    v6 = [(MTRPluginClientManager *)v2 clients];
+    clients = [(MTRPluginClientManager *)selfCopy clients];
+    v5 = [clients count];
+    clients2 = [(MTRPluginClientManager *)selfCopy clients];
     v9 = 138412802;
-    v10 = v2;
+    v10 = selfCopy;
     v11 = 2048;
     v12 = v5;
     v13 = 2112;
-    v14 = v6;
+    v14 = clients2;
     _os_log_impl(&dword_25830F000, v3, OS_LOG_TYPE_DEFAULT, "%@ MTRPlugin active clients: %lu (%@)", &v9, 0x20u);
   }
 
-  [(MTRPluginClientManager *)v2 repeatStateLoggingInterval];
+  [(MTRPluginClientManager *)selfCopy repeatStateLoggingInterval];
   if (v7 > 0.0)
   {
-    [(MTRPluginClientManager *)v2 _scheduleNextStateLog];
+    [(MTRPluginClientManager *)selfCopy _scheduleNextStateLog];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x277D85DE8];
 }

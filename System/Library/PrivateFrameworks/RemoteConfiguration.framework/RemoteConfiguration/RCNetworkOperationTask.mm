@@ -1,21 +1,21 @@
 @interface RCNetworkOperationTask
 - (NSData)data;
-- (RCNetworkOperationTask)initWithIdentifier:(id)a3;
-- (void)receiveData:(id)a3;
+- (RCNetworkOperationTask)initWithIdentifier:(id)identifier;
+- (void)receiveData:(id)data;
 @end
 
 @implementation RCNetworkOperationTask
 
-- (RCNetworkOperationTask)initWithIdentifier:(id)a3
+- (RCNetworkOperationTask)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = RCNetworkOperationTask;
   v6 = [(RCNetworkOperationTask *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v8 = objc_alloc_init(MEMORY[0x277CBEB28]);
     dataStore = v7->_dataStore;
     v7->_dataStore = v8;
@@ -26,17 +26,17 @@
 
 - (NSData)data
 {
-  v2 = [(RCNetworkOperationTask *)self dataStore];
-  v3 = [v2 copy];
+  dataStore = [(RCNetworkOperationTask *)self dataStore];
+  v3 = [dataStore copy];
 
   return v3;
 }
 
-- (void)receiveData:(id)a3
+- (void)receiveData:(id)data
 {
-  v4 = a3;
-  v5 = [(RCNetworkOperationTask *)self dataStore];
-  [v5 appendData:v4];
+  dataCopy = data;
+  dataStore = [(RCNetworkOperationTask *)self dataStore];
+  [dataStore appendData:dataCopy];
 }
 
 @end

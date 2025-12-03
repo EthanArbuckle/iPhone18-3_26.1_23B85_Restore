@@ -1,18 +1,18 @@
 @interface ReflectionView
-- (_TtC12MobileSafari14ReflectionView)initWithCoder:(id)a3;
-- (_TtC12MobileSafari14ReflectionView)initWithFrame:(CGRect)a3;
+- (_TtC12MobileSafari14ReflectionView)initWithCoder:(id)coder;
+- (_TtC12MobileSafari14ReflectionView)initWithFrame:(CGRect)frame;
 - (void)displayScaleDidChange;
 - (void)layoutSubviews;
 @end
 
 @implementation ReflectionView
 
-- (_TtC12MobileSafari14ReflectionView)initWithFrame:(CGRect)a3
+- (_TtC12MobileSafari14ReflectionView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = self + OBJC_IVAR____TtC12MobileSafari14ReflectionView_reflection;
   *v8 = 0u;
   *(v8 + 1) = 0u;
@@ -25,13 +25,13 @@
   v10[32] = 1;
   v13.receiver = self;
   v13.super_class = type metadata accessor for ReflectionView();
-  v11 = [(ReflectionView *)&v13 initWithFrame:x, y, width, height];
+  height = [(ReflectionView *)&v13 initWithFrame:x, y, width, height];
   sub_18BBDD218();
 
-  return v11;
+  return height;
 }
 
-- (_TtC12MobileSafari14ReflectionView)initWithCoder:(id)a3
+- (_TtC12MobileSafari14ReflectionView)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC12MobileSafari14ReflectionView_reflection;
   *v4 = 0u;
@@ -51,18 +51,18 @@
 - (void)displayScaleDidChange
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12MobileSafari14ReflectionView_backdropView);
-  v7 = self;
-  v3 = [v2 layer];
-  v4 = [(ReflectionView *)v7 traitCollection];
-  [v4 displayScale];
+  selfCopy = self;
+  layer = [v2 layer];
+  traitCollection = [(ReflectionView *)selfCopy traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
-  [v3 setRasterizationScale_];
+  [layer setRasterizationScale_];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BBDD58C();
 }
 

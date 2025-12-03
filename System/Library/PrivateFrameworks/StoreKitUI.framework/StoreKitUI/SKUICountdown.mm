@@ -1,13 +1,13 @@
 @interface SKUICountdown
-- (SKUICountdown)initWithCountdownDictionary:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (SKUICountdown)initWithCountdownDictionary:(id)dictionary;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation SKUICountdown
 
-- (SKUICountdown)initWithCountdownDictionary:(id)a3
+- (SKUICountdown)initWithCountdownDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUICountdown initWithCountdownDictionary:];
@@ -20,15 +20,15 @@
   if (v5)
   {
     [(SKUICountdown *)v5 setType:1];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [(SKUICountdown *)v6 setEndDate:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(SKUICountdown *)v6 setEndDate:date];
 
-    v8 = [MEMORY[0x277CBEAA8] date];
-    [(SKUICountdown *)v6 setStartDate:v8];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [(SKUICountdown *)v6 setStartDate:date2];
 
     [(SKUICountdown *)v6 setFlapped:1];
     [(SKUICountdown *)v6 setRate:1];
-    v9 = [v4 objectForKey:@"type"];
+    v9 = [dictionaryCopy objectForKey:@"type"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -52,7 +52,7 @@
 
     [(SKUICountdown *)v6 setType:v10];
 LABEL_12:
-    v11 = [v4 objectForKey:@"subType"];
+    v11 = [dictionaryCopy objectForKey:@"subType"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -73,7 +73,7 @@ LABEL_17:
     }
 
 LABEL_18:
-    v13 = [v4 objectForKey:@"endDate"];
+    v13 = [dictionaryCopy objectForKey:@"endDate"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -90,7 +90,7 @@ LABEL_18:
       }
     }
 
-    v17 = [v4 objectForKey:@"dateFormat"];
+    v17 = [dictionaryCopy objectForKey:@"dateFormat"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -111,7 +111,7 @@ LABEL_18:
       [(SKUICountdown *)v6 setDateFormat:v21];
     }
 
-    v22 = [v4 objectForKey:@"numberFormat"];
+    v22 = [dictionaryCopy objectForKey:@"numberFormat"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -119,18 +119,18 @@ LABEL_18:
       [(SKUICountdown *)v6 setNumberFormat:v22];
     }
 
-    v23 = [v4 objectForKey:@"endValue"];
+    v23 = [dictionaryCopy objectForKey:@"endValue"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = [(SKUICountdown *)v6 numberFormat];
+      numberFormat = [(SKUICountdown *)v6 numberFormat];
 
-      if (v24)
+      if (numberFormat)
       {
         v25 = objc_alloc_init(MEMORY[0x277CCABB8]);
-        v26 = [(SKUICountdown *)v6 numberFormat];
-        [v25 setPositiveFormat:v26];
+        numberFormat2 = [(SKUICountdown *)v6 numberFormat];
+        [v25 setPositiveFormat:numberFormat2];
 
         v27 = [v25 numberFromString:v23];
         v28 = v27;
@@ -146,7 +146,7 @@ LABEL_18:
       -[SKUICountdown setFinalValue:](v6, "setFinalValue:", [v23 longLongValue]);
     }
 
-    v29 = [v4 objectForKey:@"url"];
+    v29 = [dictionaryCopy objectForKey:@"url"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -155,8 +155,8 @@ LABEL_18:
       [(SKUICountdown *)v6 setURL:v30];
     }
 
-    [(SKUICountdown *)v6 updateWithDictionary:v4];
-    v31 = [v4 objectForKey:@"fontColor"];
+    [(SKUICountdown *)v6 updateWithDictionary:dictionaryCopy];
+    v31 = [dictionaryCopy objectForKey:@"fontColor"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -165,7 +165,7 @@ LABEL_18:
       [(SKUICountdown *)v6 setFontColor:v32];
     }
 
-    v33 = [v4 objectForKey:@"flapTopColor"];
+    v33 = [dictionaryCopy objectForKey:@"flapTopColor"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -174,7 +174,7 @@ LABEL_18:
       [(SKUICountdown *)v6 setFlapTopColor:v34];
     }
 
-    v35 = [v4 objectForKey:@"flapBottomColor"];
+    v35 = [dictionaryCopy objectForKey:@"flapBottomColor"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -183,19 +183,19 @@ LABEL_18:
       [(SKUICountdown *)v6 setFlapBottomColor:v36];
     }
 
-    v37 = [v4 objectForKey:@"flapped"];
+    v37 = [dictionaryCopy objectForKey:@"flapped"];
 
     if (objc_opt_respondsToSelector())
     {
       -[SKUICountdown setFlapped:](v6, "setFlapped:", [v37 BOOLValue]);
     }
 
-    v38 = [v4 objectForKey:@"artwork"];
+    v38 = [dictionaryCopy objectForKey:@"artwork"];
 
     v39 = [SKUIArtworkProvidingFactory artworkProviderForStoreResponse:v38];
     [(SKUICountdown *)v6 setArtworkProvider:v39];
 
-    v40 = [v4 objectForKey:@"endArtwork"];
+    v40 = [dictionaryCopy objectForKey:@"endArtwork"];
 
     v41 = [SKUIArtworkProvidingFactory artworkProviderForStoreResponse:v40];
     [(SKUICountdown *)v6 setEndArtworkProvider:v41];
@@ -204,17 +204,17 @@ LABEL_18:
   return v6;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
-  v11 = a3;
-  v4 = [v11 objectForKey:@"value"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"value"];
   v5 = objc_opt_respondsToSelector();
   if (v5)
   {
     -[SKUICountdown setInitialValue:](self, "setInitialValue:", [v4 longLongValue]);
   }
 
-  v6 = [v11 objectForKey:@"rate"];
+  v6 = [dictionaryCopy objectForKey:@"rate"];
 
   if (objc_opt_respondsToSelector())
   {
@@ -226,7 +226,7 @@ LABEL_18:
     v5 = 0;
   }
 
-  v7 = [v11 objectForKey:@"timestamp"];
+  v7 = [dictionaryCopy objectForKey:@"timestamp"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

@@ -1,13 +1,13 @@
 @interface CPTableMaker
-+ (BOOL)isTable:(id)a3;
-+ (void)makeTableFrom:(id)a3;
-+ (void)makeTablesInPage:(id)a3;
-+ (void)makeTablesInZone:(id)a3;
-- (CPTableMaker)initWithZone:(id)a3;
-- (id)newBackgroundGraphicArrayFromRectangularZone:(id)a3;
-- (id)newTableCellFromZone:(id)a3;
++ (BOOL)isTable:(id)table;
++ (void)makeTableFrom:(id)from;
++ (void)makeTablesInPage:(id)page;
++ (void)makeTablesInZone:(id)zone;
+- (CPTableMaker)initWithZone:(id)zone;
+- (id)newBackgroundGraphicArrayFromRectangularZone:(id)zone;
+- (id)newTableCellFromZone:(id)zone;
 - (void)dealloc;
-- (void)determineRowsAndColumns:(BOOL)a3;
+- (void)determineRowsAndColumns:(BOOL)columns;
 - (void)makeTable;
 @end
 
@@ -15,10 +15,10 @@
 
 - (void)makeTable
 {
-  v3 = [(CPObject *)self->tableZone parent];
-  if (v3)
+  parent = [(CPObject *)self->tableZone parent];
+  if (parent)
   {
-    v4 = v3;
+    v4 = parent;
     v5 = [CPTable alloc];
     [(CPZone *)self->tableZone zoneBounds];
     self->table = [(CPTable *)v5 initWithBounds:?];
@@ -40,10 +40,10 @@
         {
           [CPTableMaker makeTablesInZone:v9];
           v10 = [(CPTableMaker *)self newTableCellFromZone:v9];
-          v11 = [v9 zOrder];
-          v12 = [v9 newTakeChildren];
-          [v10 setChildren:v12];
-          [v10 setZOrder:v11];
+          zOrder = [v9 zOrder];
+          newTakeChildren = [v9 newTakeChildren];
+          [v10 setChildren:newTakeChildren];
+          [v10 setZOrder:zOrder];
 
           [(CPChunk *)self->table add:v10];
           ++self->cellIndex;
@@ -70,11 +70,11 @@
   }
 }
 
-- (void)determineRowsAndColumns:(BOOL)a3
+- (void)determineRowsAndColumns:(BOOL)columns
 {
-  v3 = a3;
+  columnsCopy = columns;
   v5 = 40;
-  if (a3)
+  if (columns)
   {
     v5 = 32;
   }
@@ -196,19 +196,19 @@ LABEL_28:
     while (v27 != v7);
     table = self->table;
     v42 = v23 - 1;
-    if (v3)
+    if (columnsCopy)
     {
       [(CPTable *)table setRowCount:v42, v19, v20];
-      v43 = [(CPTable *)self->table rowY];
+      rowY = [(CPTable *)self->table rowY];
     }
 
     else
     {
       [(CPTable *)table setColumnCount:v42, v19, v20];
-      v43 = [(CPTable *)self->table columnX];
+      rowY = [(CPTable *)self->table columnX];
     }
 
-    v75 = v43;
+    v75 = rowY;
     v74 = v23;
     if (v23)
     {
@@ -270,9 +270,9 @@ LABEL_28:
             v62 = v63;
             v64 = [(CPObject *)self->table childAtIndex:v63 >> 1];
             v65 = v64;
-            if (v3)
+            if (columnsCopy)
             {
-              v66 = [v64 rowSpan];
+              rowSpan = [v64 rowSpan];
               if (v62)
               {
                 v68 = v74 + ~v57;
@@ -285,7 +285,7 @@ LABEL_28:
 
               if (v62)
               {
-                v69 = v57 - v66;
+                v69 = v57 - rowSpan;
               }
 
               else
@@ -298,10 +298,10 @@ LABEL_28:
 
             else
             {
-              v70 = [v64 columnSpan];
+              columnSpan = [v64 columnSpan];
               if (v62)
               {
-                v72 = v70;
+                v72 = columnSpan;
               }
 
               else
@@ -311,7 +311,7 @@ LABEL_28:
 
               if (v62)
               {
-                v73 = v57 - v70;
+                v73 = v57 - columnSpan;
               }
 
               else
@@ -342,17 +342,17 @@ LABEL_28:
   }
 }
 
-- (id)newTableCellFromZone:(id)a3
+- (id)newTableCellFromZone:(id)zone
 {
   v38[1] = *MEMORY[0x1E69E9840];
   v5 = [CPTableCell alloc];
-  [a3 zoneBounds];
+  [zone zoneBounds];
   v6 = [(CPTableCell *)v5 initWithBounds:?];
-  v7 = [(CPTableMaker *)self newBackgroundGraphicArrayFromRectangularZone:a3];
+  v7 = [(CPTableMaker *)self newBackgroundGraphicArrayFromRectangularZone:zone];
   v34 = v6;
   [(CPTableCell *)v6 setBackgroundGraphics:v7];
 
-  if ([a3 rectangleBordersAtLeft:v38 top:v35 right:&v36 bottom:&v37])
+  if ([zone rectangleBordersAtLeft:v38 top:v35 right:&v36 bottom:&v37])
   {
     for (i = 0; i != 4; ++i)
     {
@@ -361,8 +361,8 @@ LABEL_28:
       v12 = v11;
       v14 = v13;
       v16 = v15;
-      v17 = [*&v35[8 * i] graphicObjects];
-      -[CPTableCell setBorder:bounds:graphics:](v34, "setBorder:bounds:graphics:", i, [v17 sortedArrayUsingSelector:sel_compareZ_], v10, v12, v14, v16);
+      graphicObjects = [*&v35[8 * i] graphicObjects];
+      -[CPTableCell setBorder:bounds:graphics:](v34, "setBorder:bounds:graphics:", i, [graphicObjects sortedArrayUsingSelector:sel_compareZ_], v10, v12, v14, v16);
       v18 = 2 * self->cellIndex;
       if (i == 2)
       {
@@ -435,14 +435,14 @@ LABEL_28:
       p_var0 = &(*p_rowYIntervals)[v18].var0;
       *p_var0 = v20 + -2.0;
       p_var0[1] = v21 + 4.0;
-      v26 = [v17 count];
+      v26 = [graphicObjects count];
       v27 = v26;
       if (v26)
       {
         v28 = 0;
         do
         {
-          v29 = [v17 objectAtIndex:v28];
+          v29 = [graphicObjects objectAtIndex:v28];
           if ([v29 parent])
           {
             [v29 setUser:self->table];
@@ -454,10 +454,10 @@ LABEL_28:
         while (v27 != v28);
       }
 
-      v30 = [*&v35[8 * i] neighborCount];
-      if (v30)
+      neighborCount = [*&v35[8 * i] neighborCount];
+      if (neighborCount)
       {
-        v31 = v30;
+        v31 = neighborCount;
         v32 = 0;
         do
         {
@@ -481,30 +481,30 @@ LABEL_28:
   return v34;
 }
 
-- (id)newBackgroundGraphicArrayFromRectangularZone:(id)a3
+- (id)newBackgroundGraphicArrayFromRectangularZone:(id)zone
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v44 = 0;
   v45 = 0;
   v42 = 0;
   v43 = 0;
-  if ([a3 rectangleBordersAtLeft:&v45 top:&v44 right:&v43 bottom:&v42])
+  if ([zone rectangleBordersAtLeft:&v45 top:&v44 right:&v43 bottom:&v42])
   {
-    v5 = [v45 neighborCount];
-    v6 = [v44 neighborCount];
-    v7 = [v43 neighborCount];
-    v8 = [v42 neighborCount];
-    if (v5)
+    neighborCount = [v45 neighborCount];
+    neighborCount2 = [v44 neighborCount];
+    neighborCount3 = [v43 neighborCount];
+    neighborCount4 = [v42 neighborCount];
+    if (neighborCount)
     {
-      if (v6)
+      if (neighborCount2)
       {
-        if (v7)
+        if (neighborCount3)
         {
-          v9 = v8;
-          if (v8)
+          v9 = neighborCount4;
+          if (neighborCount4)
           {
             v41 = v4;
-            [a3 zoneBounds];
+            [zone zoneBounds];
             v11 = v10;
             v13 = v12;
             v15 = v14;
@@ -513,14 +513,14 @@ LABEL_28:
             do
             {
               v19 = [v45 neighborAtIndex:v18];
-              v20 = [v19 neighborShape];
-              v21 = [v20 fillColor];
-              if (v21)
+              neighborShape = [v19 neighborShape];
+              fillColor = [neighborShape fillColor];
+              if (fillColor)
               {
-                v29 = (v21 & 0x8000000000000000) != 0 ? CGTaggedColorGetAlpha(v21, v22, v23, v24, v25, v26, v27, v28) : *(v21 + 8 * *(v21 + 56) + 64);
+                v29 = (fillColor & 0x8000000000000000) != 0 ? CGTaggedColorGetAlpha(fillColor, v22, v23, v24, v25, v26, v27, v28) : *(fillColor + 8 * *(fillColor + 56) + 64);
                 if (v29 != 0.0)
                 {
-                  [v20 renderedBounds];
+                  [neighborShape renderedBounds];
                   v47.origin.x = v30;
                   v47.origin.y = v31;
                   v47.size.width = v32;
@@ -535,14 +535,14 @@ LABEL_28:
                     while (1)
                     {
                       v35 = [v44 neighborAtIndex:v34];
-                      if ([v35 neighborShape] == v20 && objc_msgSend(v35, "shapeSide") == 3)
+                      if ([v35 neighborShape] == neighborShape && objc_msgSend(v35, "shapeSide") == 3)
                       {
                         break;
                       }
 
 LABEL_25:
                       v34 = (v34 + 1);
-                      if (v34 == v6)
+                      if (v34 == neighborCount2)
                       {
                         goto LABEL_28;
                       }
@@ -552,14 +552,14 @@ LABEL_25:
                     while (1)
                     {
                       v37 = [v43 neighborAtIndex:v36];
-                      if ([v37 neighborShape] == v20 && objc_msgSend(v37, "shapeSide") == 4)
+                      if ([v37 neighborShape] == neighborShape && objc_msgSend(v37, "shapeSide") == 4)
                       {
                         break;
                       }
 
 LABEL_24:
                       v36 = (v36 + 1);
-                      if (v36 >= v7)
+                      if (v36 >= neighborCount3)
                       {
                         goto LABEL_25;
                       }
@@ -569,7 +569,7 @@ LABEL_24:
                     while (1)
                     {
                       v39 = [v42 neighborAtIndex:v38];
-                      if ([v39 neighborShape] == v20 && objc_msgSend(v39, "shapeSide") == 1)
+                      if ([v39 neighborShape] == neighborShape && objc_msgSend(v39, "shapeSide") == 1)
                       {
                         break;
                       }
@@ -581,7 +581,7 @@ LABEL_24:
                       }
                     }
 
-                    [v41 addObject:v20];
+                    [v41 addObject:neighborShape];
                   }
                 }
               }
@@ -590,7 +590,7 @@ LABEL_28:
               v18 = (v18 + 1);
             }
 
-            while (v18 != v5);
+            while (v18 != neighborCount);
             v4 = v41;
             [v41 sortUsingSelector:sel_compareZ_];
           }
@@ -609,22 +609,22 @@ LABEL_28:
   [(CPTableMaker *)&v3 dealloc];
 }
 
-- (CPTableMaker)initWithZone:(id)a3
+- (CPTableMaker)initWithZone:(id)zone
 {
   v6.receiver = self;
   v6.super_class = CPTableMaker;
   v4 = [(CPTableMaker *)&v6 init];
   if (v4)
   {
-    v4->tableZone = a3;
+    v4->tableZone = zone;
   }
 
   return v4;
 }
 
-+ (void)makeTablesInPage:(id)a3
++ (void)makeTablesInPage:(id)page
 {
-  v3 = [a3 firstDescendantOfClass:objc_opt_class()];
+  v3 = [page firstDescendantOfClass:objc_opt_class()];
   if (v3)
   {
 
@@ -632,16 +632,16 @@ LABEL_28:
   }
 }
 
-+ (void)makeTablesInZone:(id)a3
++ (void)makeTablesInZone:(id)zone
 {
-  v4 = [a3 count];
+  v4 = [zone count];
   if (v4)
   {
     v5 = v4;
     v6 = 0;
     do
     {
-      v7 = [a3 childAtIndex:v6];
+      v7 = [zone childAtIndex:v6];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -663,33 +663,33 @@ LABEL_28:
   }
 }
 
-+ (void)makeTableFrom:(id)a3
++ (void)makeTableFrom:(id)from
 {
-  v3 = [[CPTableMaker alloc] initWithZone:a3];
+  v3 = [[CPTableMaker alloc] initWithZone:from];
   [(CPTableMaker *)v3 makeTable];
 }
 
-+ (BOOL)isTable:(id)a3
++ (BOOL)isTable:(id)table
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_4:
-    LOBYTE(v4) = 0;
-    return v4;
+    LOBYTE(isRectangular) = 0;
+    return isRectangular;
   }
 
-  v4 = [a3 isRectangular];
-  if (v4)
+  isRectangular = [table isRectangular];
+  if (isRectangular)
   {
-    v5 = [a3 count];
+    v5 = [table count];
     if (v5 >= 2)
     {
       v6 = v5;
       v7 = 0;
       while (1)
       {
-        v8 = [a3 childAtIndex:v7];
+        v8 = [table childAtIndex:v7];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -705,8 +705,8 @@ LABEL_4:
         v7 = (v7 + 1);
         if (v6 == v7)
         {
-          LOBYTE(v4) = [a3 firstDescendantOfClass:objc_opt_class()] != 0;
-          return v4;
+          LOBYTE(isRectangular) = [table firstDescendantOfClass:objc_opt_class()] != 0;
+          return isRectangular;
         }
       }
     }
@@ -714,7 +714,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  return v4;
+  return isRectangular;
 }
 
 @end

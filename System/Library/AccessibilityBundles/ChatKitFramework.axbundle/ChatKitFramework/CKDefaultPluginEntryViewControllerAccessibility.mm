@@ -1,14 +1,14 @@
 @interface CKDefaultPluginEntryViewControllerAccessibility
-- (void)_axSetCloseActionProviderOnBubbleView:(id)a3;
+- (void)_axSetCloseActionProviderOnBubbleView:(id)view;
 @end
 
 @implementation CKDefaultPluginEntryViewControllerAccessibility
 
-- (void)_axSetCloseActionProviderOnBubbleView:(id)a3
+- (void)_axSetCloseActionProviderOnBubbleView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [(CKDefaultPluginEntryViewControllerAccessibility *)self safeValueForKey:@"balloonView"];
-  [v5 _accessibilitySetRetainedValue:v4 forKey:@"AXPluginClearActionProvider"];
+  [v5 _accessibilitySetRetainedValue:viewCopy forKey:@"AXPluginClearActionProvider"];
 }
 
 @end

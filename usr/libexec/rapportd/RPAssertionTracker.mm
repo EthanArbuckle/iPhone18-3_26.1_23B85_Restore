@@ -2,17 +2,17 @@
 + (id)sharedTracker;
 - (BOOL)_timerNeeded;
 - (RPAssertionTracker)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_activate;
 - (void)_checkAssertions;
 - (void)_invalidate;
 - (void)_timerStart;
 - (void)_timerStop;
-- (void)_withAssertionsLock:(id)a3;
+- (void)_withAssertionsLock:(id)lock;
 - (void)activate;
 - (void)invalidate;
-- (void)startTracking:(id)a3;
-- (void)stopTracking:(id)a3;
+- (void)startTracking:(id)tracking;
+- (void)stopTracking:(id)tracking;
 @end
 
 @implementation RPAssertionTracker
@@ -67,7 +67,7 @@
   return v3;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v6 = 0;
   v7 = &v6;
@@ -150,31 +150,31 @@
   }
 }
 
-- (void)startTracking:(id)a3
+- (void)startTracking:(id)tracking
 {
-  v4 = a3;
+  trackingCopy = tracking;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009078C;
   v7[3] = &unk_1001AB488;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = trackingCopy;
+  v6 = trackingCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)stopTracking:(id)a3
+- (void)stopTracking:(id)tracking
 {
-  v4 = a3;
+  trackingCopy = tracking;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000909B4;
   v7[3] = &unk_1001AB488;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = trackingCopy;
+  v6 = trackingCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -323,11 +323,11 @@ LABEL_11:
   return v4;
 }
 
-- (void)_withAssertionsLock:(id)a3
+- (void)_withAssertionsLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_assertionsLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_assertionsLock);
 }

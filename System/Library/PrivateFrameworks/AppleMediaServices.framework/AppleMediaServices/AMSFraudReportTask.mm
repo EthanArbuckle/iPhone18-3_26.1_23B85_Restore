@@ -1,22 +1,22 @@
 @interface AMSFraudReportTask
-+ (id)performFraudReportRefreshWithAccount:(id)a3 transactionID:(id)a4 nameSpace:(id)a5 fsrData:(id)a6 keyID:(id)a7;
-+ (id)performFraudReportRefreshWithOptions:(id)a3;
++ (id)performFraudReportRefreshWithAccount:(id)account transactionID:(id)d nameSpace:(id)space fsrData:(id)data keyID:(id)iD;
++ (id)performFraudReportRefreshWithOptions:(id)options;
 @end
 
 @implementation AMSFraudReportTask
 
-+ (id)performFraudReportRefreshWithAccount:(id)a3 transactionID:(id)a4 nameSpace:(id)a5 fsrData:(id)a6 keyID:(id)a7
++ (id)performFraudReportRefreshWithAccount:(id)account transactionID:(id)d nameSpace:(id)space fsrData:(id)data keyID:(id)iD
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v12 && v13 && v14)
+  accountCopy = account;
+  dCopy = d;
+  spaceCopy = space;
+  dataCopy = data;
+  iDCopy = iD;
+  if (dCopy && spaceCopy && dataCopy)
   {
-    v16 = [[AMSFraudReportOptions alloc] initWithTransactionIdentifier:v12 nameSpace:v13 fsrData:v14];
-    [(AMSFraudReportOptions *)v16 setAccount:v11];
-    [(AMSFraudReportOptions *)v16 setKeyIdentifier:v15];
+    v16 = [[AMSFraudReportOptions alloc] initWithTransactionIdentifier:dCopy nameSpace:spaceCopy fsrData:dataCopy];
+    [(AMSFraudReportOptions *)v16 setAccount:accountCopy];
+    [(AMSFraudReportOptions *)v16 setKeyIdentifier:iDCopy];
     v17 = [AMSFraudReportTask performFraudReportRefreshWithOptions:v16];
   }
 
@@ -31,10 +31,10 @@
   return v18;
 }
 
-+ (id)performFraudReportRefreshWithOptions:(id)a3
++ (id)performFraudReportRefreshWithOptions:(id)options
 {
-  v4 = a3;
-  if (v4)
+  optionsCopy = options;
+  if (optionsCopy)
   {
     v16 = 0;
     v17 = &v16;
@@ -42,18 +42,18 @@
     v19 = __Block_byref_object_copy__33;
     v20 = __Block_byref_object_dispose__33;
     v21 = objc_alloc_init(AMSDaemonConnection);
-    v5 = [v17[5] fraudReportServiceProxy];
+    fraudReportServiceProxy = [v17[5] fraudReportServiceProxy];
     v6 = AMSSetLogKeyIfNeeded();
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __59__AMSFraudReportTask_performFraudReportRefreshWithOptions___block_invoke;
     v11[3] = &unk_1E73B85A0;
-    v12 = v4;
-    v15 = a1;
+    v12 = optionsCopy;
+    selfCopy = self;
     v7 = v6;
     v13 = v7;
     v14 = &v16;
-    v8 = [v5 thenWithBlock:v11];
+    v8 = [fraudReportServiceProxy thenWithBlock:v11];
 
     _Block_object_dispose(&v16, 8);
   }

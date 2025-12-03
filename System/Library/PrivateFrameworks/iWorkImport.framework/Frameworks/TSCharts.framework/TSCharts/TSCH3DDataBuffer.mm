@@ -1,7 +1,7 @@
 @interface TSCH3DDataBuffer
 - (DataBufferInfo)bufferInfo;
-- (DataBufferLevelData)dataAtLevel:(SEL)a3;
-- (DataBufferLevelData)dataWithSizeGreaterOrEqualTo:(SEL)a3;
+- (DataBufferLevelData)dataAtLevel:(SEL)level;
+- (DataBufferLevelData)dataWithSizeGreaterOrEqualTo:(SEL)to;
 - (id)description;
 - (tvec2<int>)size2;
 - (tvec3<int>)size;
@@ -129,9 +129,9 @@
   return result;
 }
 
-- (DataBufferLevelData)dataAtLevel:(SEL)a3
+- (DataBufferLevelData)dataAtLevel:(SEL)level
 {
-  if (objc_msgSend_hasLevels(self, a3, v4, v5, v6))
+  if (objc_msgSend_hasLevels(self, level, v4, v5, v6))
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "[TSCH3DDataBuffer dataAtLevel:]");
@@ -159,9 +159,9 @@
   return result;
 }
 
-- (DataBufferLevelData)dataWithSizeGreaterOrEqualTo:(SEL)a3
+- (DataBufferLevelData)dataWithSizeGreaterOrEqualTo:(SEL)to
 {
-  if (objc_msgSend_hasLevels(self, a3, v4, v5, v6))
+  if (objc_msgSend_hasLevels(self, to, v4, v5, v6))
   {
     objc_msgSend_size(self, v9, v10, v11, v12);
     LODWORD(v17) = v20;

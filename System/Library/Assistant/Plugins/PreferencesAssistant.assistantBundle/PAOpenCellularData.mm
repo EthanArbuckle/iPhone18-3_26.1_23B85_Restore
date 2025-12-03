@@ -1,13 +1,13 @@
 @interface PAOpenCellularData
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation PAOpenCellularData
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v5 = a4;
-  v6 = a3;
+  helperCopy = helper;
+  completionCopy = completion;
   v7 = +[PSCellularDataSettingsDetail deviceSupportsCellularData];
   v8 = PALogForCategory(0);
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -20,7 +20,7 @@
     }
 
     v10 = +[PSCellularDataSettingsDetail preferencesURL];
-    [v5 openSensitiveURL:v10];
+    [helperCopy openSensitiveURL:v10];
 
     v11 = objc_alloc_init(SACommandSucceeded);
     v12 = 0;
@@ -41,8 +41,8 @@
     v11 = v12;
   }
 
-  v14 = [v11 dictionary];
-  v6[2](v6, v14);
+  dictionary = [v11 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

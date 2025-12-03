@@ -1,32 +1,32 @@
 @interface MRUNowPlayingVolumeControlsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
-- (void)_accessibilityIncreaseVolume:(BOOL)a3;
+- (void)_accessibilityIncreaseVolume:(BOOL)volume;
 @end
 
 @implementation MRUNowPlayingVolumeControlsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MRUNowPlayingVolumeControlsView" hasInstanceVariable:@"_volumeController" withType:"MRUVolumeController"];
-  [v3 validateClass:@"MRUVolumeController" hasInstanceMethod:@"volumeValue" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"MRUVolumeController" hasInstanceMethod:@"setVolumeValue:" withFullSignature:{"v", "f", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MRUNowPlayingVolumeControlsView" hasInstanceVariable:@"_volumeController" withType:"MRUVolumeController"];
+  [validationsCopy validateClass:@"MRUVolumeController" hasInstanceMethod:@"volumeValue" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"MRUVolumeController" hasInstanceMethod:@"setVolumeValue:" withFullSignature:{"v", "f", 0}];
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(MRUNowPlayingVolumeControlsViewAccessibility *)self volumeController];
-  [v2 safeFloatForKey:@"volumeValue"];
+  volumeController = [(MRUNowPlayingVolumeControlsViewAccessibility *)self volumeController];
+  [volumeController safeFloatForKey:@"volumeValue"];
   v3 = AXFormatFloatWithPercentage();
 
   return v3;
 }
 
-- (void)_accessibilityIncreaseVolume:(BOOL)a3
+- (void)_accessibilityIncreaseVolume:(BOOL)volume
 {
-  v3 = [(MRUNowPlayingVolumeControlsViewAccessibility *)self volumeController];
-  [v3 safeFloatForKey:@"volumeValue"];
+  volumeController = [(MRUNowPlayingVolumeControlsViewAccessibility *)self volumeController];
+  [volumeController safeFloatForKey:@"volumeValue"];
 
   AXPerformSafeBlock();
 }

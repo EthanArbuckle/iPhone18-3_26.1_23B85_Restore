@@ -1,19 +1,19 @@
 @interface TSDTapGestureRecognizer
 - (CGPoint)firstTapLocation;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation TSDTapGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if ([objc_msgSend(a4 "allTouches")] < 2)
+  if ([objc_msgSend(event "allTouches")] < 2)
   {
     v12.receiver = self;
     v12.super_class = TSDTapGestureRecognizer;
-    [(TSDTapGestureRecognizer *)&v12 touchesBegan:a3 withEvent:a4];
-    v9 = [a3 anyObject];
+    [(TSDTapGestureRecognizer *)&v12 touchesBegan:began withEvent:event];
+    anyObject = [began anyObject];
     if (!self->mSavedFirstTapLocation)
     {
       [(TSDTapGestureRecognizer *)self locationInView:0];
@@ -22,24 +22,24 @@
       self->mSavedFirstTapLocation = 1;
     }
 
-    self->mTapCount = [v9 tapCount];
+    self->mTapCount = [anyObject tapCount];
   }
 
   else
   {
     if ([(TSDTapGestureRecognizer *)self state])
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 4;
     }
 
     else
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 5;
     }
 
-    [(TSDTapGestureRecognizer *)v7 setState:v8];
+    [(TSDTapGestureRecognizer *)selfCopy2 setState:v8];
   }
 }
 

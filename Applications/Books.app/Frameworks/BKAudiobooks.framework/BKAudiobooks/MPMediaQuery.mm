@@ -1,25 +1,25 @@
 @interface MPMediaQuery
-+ (id)bk_queryWithStoreID:(id)a3 albumTitle:(id)a4 isCloudItem:(BOOL)a5;
++ (id)bk_queryWithStoreID:(id)d albumTitle:(id)title isCloudItem:(BOOL)item;
 @end
 
 @implementation MPMediaQuery
 
-+ (id)bk_queryWithStoreID:(id)a3 albumTitle:(id)a4 isCloudItem:(BOOL)a5
++ (id)bk_queryWithStoreID:(id)d albumTitle:(id)title isCloudItem:(BOOL)item
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if ([v8 length])
+  itemCopy = item;
+  dCopy = d;
+  titleCopy = title;
+  if ([titleCopy length])
   {
     v9 = BUStoreIdFromObject();
     v10 = +[BLMediaQuery audiobooksQuery];
-    v11 = [MPMediaPropertyPredicate predicateWithValue:v8 forProperty:MPMediaItemPropertyAlbumTitle];
+    v11 = [MPMediaPropertyPredicate predicateWithValue:titleCopy forProperty:MPMediaItemPropertyAlbumTitle];
     [v10 addFilterPredicate:v11];
 
     if (v9)
     {
       v12 = &MPMediaItemPropertyStoreID;
-      if (!v5)
+      if (!itemCopy)
       {
         v12 = &MPMediaItemPropertyStorePlaylistID;
       }

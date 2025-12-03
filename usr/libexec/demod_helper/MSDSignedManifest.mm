@@ -1,12 +1,12 @@
 @interface MSDSignedManifest
-+ (id)appsPrefixForManifestVersion:(id)a3;
-+ (id)getComponentFromPath:(id)a3 forManifestVersion:(id)a4;
-+ (id)signedManifestFromManifestData:(id)a3;
-- (BOOL)hasSystemContainerBackupInRange:(_NSRange)a3;
-- (BOOL)isContainerizedComponent:(id)a3;
-- (BOOL)parseBundleID:(id)a3;
++ (id)appsPrefixForManifestVersion:(id)version;
++ (id)getComponentFromPath:(id)path forManifestVersion:(id)version;
++ (id)signedManifestFromManifestData:(id)data;
+- (BOOL)hasSystemContainerBackupInRange:(_NSRange)range;
+- (BOOL)isContainerizedComponent:(id)component;
+- (BOOL)parseBundleID:(id)d;
 - (BOOL)validateInstallationOrder;
-- (MSDSignedManifest)initWithManifestData:(id)a3;
+- (MSDSignedManifest)initWithManifestData:(id)data;
 - (NSDictionary)getAppDataList;
 - (NSDictionary)getAppList;
 - (NSDictionary)getBackup;
@@ -14,18 +14,18 @@
 - (NSDictionary)getGroupDataList;
 - (NSDictionary)getInfo;
 - (NSDictionary)getPlugInDataList;
-- (_NSRange)rangeOfGroupedBackups:(int64_t)a3;
-- (id)appIdentifierFromOrderItem:(id)a3;
-- (id)getAppManifest:(id)a3;
-- (id)getComponentVersion:(id)a3;
-- (id)getDictFromSection:(id)a3 forIdentifier:(id)a4;
-- (id)getManifestFromSection:(id)a3 forIdentifier:(id)a4;
-- (id)getOriginServerFromSection:(id)a3 forIdentifier:(id)a4;
-- (id)getStandAlonePackageVersion:(id)a3;
-- (id)itemAtIndexInManifest:(int64_t)a3;
-- (id)mergedBackupManifest:(_NSRange)a3;
-- (id)originServerForApp:(id)a3;
-- (id)originServerForBackupManifest:(_NSRange)a3;
+- (_NSRange)rangeOfGroupedBackups:(int64_t)backups;
+- (id)appIdentifierFromOrderItem:(id)item;
+- (id)getAppManifest:(id)manifest;
+- (id)getComponentVersion:(id)version;
+- (id)getDictFromSection:(id)section forIdentifier:(id)identifier;
+- (id)getManifestFromSection:(id)section forIdentifier:(id)identifier;
+- (id)getOriginServerFromSection:(id)section forIdentifier:(id)identifier;
+- (id)getStandAlonePackageVersion:(id)version;
+- (id)itemAtIndexInManifest:(int64_t)manifest;
+- (id)mergedBackupManifest:(_NSRange)manifest;
+- (id)originServerForApp:(id)app;
+- (id)originServerForBackupManifest:(_NSRange)manifest;
 - (int)getVersion;
 - (void)dealloc;
 - (void)parseInstallationOrder;
@@ -33,10 +33,10 @@
 
 @implementation MSDSignedManifest
 
-+ (id)signedManifestFromManifestData:(id)a3
++ (id)signedManifestFromManifestData:(id)data
 {
-  v3 = a3;
-  v4 = [[MSDSignedManifest alloc] initWithManifestData:v3];
+  dataCopy = data;
+  v4 = [[MSDSignedManifest alloc] initWithManifestData:dataCopy];
 
   return v4;
 }
@@ -51,72 +51,72 @@
 
 - (int)getVersion
 {
-  v2 = [(MSDSignedManifest *)self payload];
-  v3 = [v2 objectForKey:@"Version"];
+  payload = [(MSDSignedManifest *)self payload];
+  v3 = [payload objectForKey:@"Version"];
 
-  LODWORD(v2) = [v3 intValue];
-  return v2;
+  LODWORD(payload) = [v3 intValue];
+  return payload;
 }
 
 - (NSDictionary)getInfo
 {
-  v2 = [(MSDSignedManifest *)self payload];
-  v3 = [v2 objectForKey:@"Info"];
+  payload = [(MSDSignedManifest *)self payload];
+  v3 = [payload objectForKey:@"Info"];
 
   return v3;
 }
 
 - (NSDictionary)getAppList
 {
-  v2 = [(MSDSignedManifest *)self payload];
-  v3 = [v2 objectForKey:@"App"];
+  payload = [(MSDSignedManifest *)self payload];
+  v3 = [payload objectForKey:@"App"];
 
   return v3;
 }
 
 - (NSDictionary)getAppDataList
 {
-  v2 = [(MSDSignedManifest *)self payload];
-  v3 = [v2 objectForKey:@"AppData"];
+  payload = [(MSDSignedManifest *)self payload];
+  v3 = [payload objectForKey:@"AppData"];
 
   return v3;
 }
 
 - (NSDictionary)getGroupDataList
 {
-  v2 = [(MSDSignedManifest *)self payload];
-  v3 = [v2 objectForKey:@"GroupData"];
+  payload = [(MSDSignedManifest *)self payload];
+  v3 = [payload objectForKey:@"GroupData"];
 
   return v3;
 }
 
 - (NSDictionary)getPlugInDataList
 {
-  v2 = [(MSDSignedManifest *)self payload];
-  v3 = [v2 objectForKey:@"ExtensionData"];
+  payload = [(MSDSignedManifest *)self payload];
+  v3 = [payload objectForKey:@"ExtensionData"];
 
   return v3;
 }
 
-- (BOOL)isContainerizedComponent:(id)a3
+- (BOOL)isContainerizedComponent:(id)component
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AppData"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"GroupData"))
+  componentCopy = component;
+  if ([componentCopy isEqualToString:@"AppData"] & 1) != 0 || (objc_msgSend(componentCopy, "isEqualToString:", @"GroupData"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"ExtensionData"];
+    v4 = [componentCopy isEqualToString:@"ExtensionData"];
   }
 
   return v4;
 }
 
-- (id)getOriginServerFromSection:(id)a3 forIdentifier:(id)a4
+- (id)getOriginServerFromSection:(id)section forIdentifier:(id)identifier
 {
-  v4 = [(MSDSignedManifest *)self getDictFromSection:a3 forIdentifier:a4];
+  v4 = [(MSDSignedManifest *)self getDictFromSection:section forIdentifier:identifier];
   v5 = [v4 objectForKey:@"OriginServer"];
 
   return v5;
@@ -132,8 +132,8 @@
 
   else
   {
-    v3 = [(MSDSignedManifest *)self payload];
-    v4 = [v3 objectForKey:@"Backup"];
+    payload = [(MSDSignedManifest *)self payload];
+    v4 = [payload objectForKey:@"Backup"];
   }
 
   return v4;
@@ -143,45 +143,45 @@
 {
   if ([(MSDSignedManifest *)self getVersion]< 5)
   {
-    v3 = [(MSDSignedManifest *)self getBackup];
-    [NSDictionary dictionaryWithObject:v3 forKey:@"backup.BaseBackup"];
+    getBackup = [(MSDSignedManifest *)self getBackup];
+    [NSDictionary dictionaryWithObject:getBackup forKey:@"backup.BaseBackup"];
   }
 
   else
   {
-    v3 = [(MSDSignedManifest *)self payload];
-    [v3 objectForKey:@"Backup"];
+    getBackup = [(MSDSignedManifest *)self payload];
+    [getBackup objectForKey:@"Backup"];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)itemAtIndexInManifest:(int64_t)a3
+- (id)itemAtIndexInManifest:(int64_t)manifest
 {
-  v4 = [(MSDSignedManifest *)self installationOrder];
-  v5 = [v4 objectAtIndex:a3];
+  installationOrder = [(MSDSignedManifest *)self installationOrder];
+  v5 = [installationOrder objectAtIndex:manifest];
 
   return v5;
 }
 
-- (_NSRange)rangeOfGroupedBackups:(int64_t)a3
+- (_NSRange)rangeOfGroupedBackups:(int64_t)backups
 {
   [(MSDSignedManifest *)self getVersion];
-  v4 = a3;
+  backupsCopy = backups;
   v5 = 1;
   result.length = v5;
-  result.location = v4;
+  result.location = backupsCopy;
   return result;
 }
 
-- (id)mergedBackupManifest:(_NSRange)a3
+- (id)mergedBackupManifest:(_NSRange)manifest
 {
-  length = a3.length;
-  location = a3.location;
+  length = manifest.length;
+  location = manifest.location;
   if ([(MSDSignedManifest *)self getVersion]<= 4)
   {
-    v21 = [(MSDSignedManifest *)self getBackup];
+    getBackup = [(MSDSignedManifest *)self getBackup];
     goto LABEL_19;
   }
 
@@ -196,15 +196,15 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Merging manifest item %{public}@", buf, 0xCu);
   }
 
-  v21 = +[NSMutableDictionary dictionary];
-  v8 = [(MSDSignedManifest *)self installationOrder];
+  getBackup = +[NSMutableDictionary dictionary];
+  installationOrder = [(MSDSignedManifest *)self installationOrder];
   if (location < location + length)
   {
     do
     {
-      v9 = [v8 objectAtIndex:location];
-      v10 = [(MSDSignedManifest *)self getBackupList];
-      v11 = [v10 objectForKey:v9];
+      v9 = [installationOrder objectAtIndex:location];
+      getBackupList = [(MSDSignedManifest *)self getBackupList];
+      v11 = [getBackupList objectForKey:v9];
 
       v12 = [v11 objectForKey:@"Manifest"];
       v13 = v12;
@@ -218,11 +218,11 @@
       if ([(MSDSignedManifest *)self isItemSystemContainerBackup:v9])
       {
         v15 = +[MSDPlatform sharedInstance];
-        v16 = [v15 watchOS];
+        watchOS = [v15 watchOS];
 
         v17 = sub_100021268();
         v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-        if (!v16)
+        if (!watchOS)
         {
           if (v18)
           {
@@ -244,7 +244,7 @@
         v11 = v19;
       }
 
-      [v21 addEntriesFromDictionary:v11];
+      [getBackup addEntriesFromDictionary:v11];
 LABEL_17:
 
       ++location;
@@ -256,28 +256,28 @@ LABEL_17:
 
 LABEL_19:
 
-  return v21;
+  return getBackup;
 }
 
-- (BOOL)hasSystemContainerBackupInRange:(_NSRange)a3
+- (BOOL)hasSystemContainerBackupInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if ([(MSDSignedManifest *)self getVersion]< 5)
   {
     return 0;
   }
 
   v6 = +[MSDPlatform sharedInstance];
-  v7 = [v6 watchOS];
+  watchOS = [v6 watchOS];
 
-  if (!v7)
+  if (!watchOS)
   {
     return 0;
   }
 
-  v8 = [(MSDSignedManifest *)self installationOrder];
-  v9 = v8;
+  installationOrder = [(MSDSignedManifest *)self installationOrder];
+  v9 = installationOrder;
   v10 = location + length;
   if (location >= location + length)
   {
@@ -286,7 +286,7 @@ LABEL_19:
 
   else
   {
-    v11 = [v8 objectAtIndex:location];
+    v11 = [installationOrder objectAtIndex:location];
     v12 = [v11 isEqualToString:@"backup.SystemContainer"];
 
     if (v12)
@@ -321,16 +321,16 @@ LABEL_19:
   return v13;
 }
 
-- (id)originServerForBackupManifest:(_NSRange)a3
+- (id)originServerForBackupManifest:(_NSRange)manifest
 {
-  location = a3.location;
-  if ([(MSDSignedManifest *)self getVersion:a3.location]>= 5)
+  location = manifest.location;
+  if ([(MSDSignedManifest *)self getVersion:manifest.location]>= 5)
   {
-    v6 = [(MSDSignedManifest *)self installationOrder];
-    v7 = [v6 objectAtIndex:location];
+    installationOrder = [(MSDSignedManifest *)self installationOrder];
+    v7 = [installationOrder objectAtIndex:location];
 
-    v8 = [(MSDSignedManifest *)self getBackupList];
-    v9 = [v8 objectForKey:v7];
+    getBackupList = [(MSDSignedManifest *)self getBackupList];
+    v9 = [getBackupList objectForKey:v7];
 
     v5 = [v9 objectForKey:@"OriginServer"];
   }
@@ -343,27 +343,27 @@ LABEL_19:
   return v5;
 }
 
-- (id)originServerForApp:(id)a3
+- (id)originServerForApp:(id)app
 {
-  v4 = a3;
-  v5 = [(MSDSignedManifest *)self getAppList];
-  v6 = [v5 objectForKey:v4];
+  appCopy = app;
+  getAppList = [(MSDSignedManifest *)self getAppList];
+  v6 = [getAppList objectForKey:appCopy];
 
   if (v6)
   {
-    v7 = [v5 objectForKey:v4];
+    v7 = [getAppList objectForKey:appCopy];
     v6 = [v7 objectForKey:@"OriginServer"];
   }
 
   return v6;
 }
 
-- (id)appIdentifierFromOrderItem:(id)a3
+- (id)appIdentifierFromOrderItem:(id)item
 {
-  v4 = a3;
-  if ([(MSDSignedManifest *)self isItemApp:v4])
+  itemCopy = item;
+  if ([(MSDSignedManifest *)self isItemApp:itemCopy])
   {
-    v5 = [v4 substringFromIndex:{objc_msgSend(@"app.", "length")}];
+    v5 = [itemCopy substringFromIndex:{objc_msgSend(@"app.", "length")}];
   }
 
   else
@@ -374,16 +374,16 @@ LABEL_19:
   return v5;
 }
 
-+ (id)appsPrefixForManifestVersion:(id)a3
++ (id)appsPrefixForManifestVersion:(id)version
 {
-  v3 = [a3 intValue];
+  intValue = [version intValue];
   v4 = @"/Apps/";
-  if (v3 != 7)
+  if (intValue != 7)
   {
     v4 = 0;
   }
 
-  if (v3 == 6)
+  if (intValue == 6)
   {
     return @"app.";
   }
@@ -394,79 +394,79 @@ LABEL_19:
   }
 }
 
-+ (id)getComponentFromPath:(id)a3 forManifestVersion:(id)a4
++ (id)getComponentFromPath:(id)path forManifestVersion:(id)version
 {
-  v5 = a3;
-  v6 = [a4 intValue];
-  if (v6 != 7)
+  pathCopy = path;
+  intValue = [version intValue];
+  if (intValue != 7)
   {
-    if (v6 != 6)
+    if (intValue != 6)
     {
       goto LABEL_19;
     }
 
-    if ([v5 hasPrefix:@"app."])
+    if ([pathCopy hasPrefix:@"app."])
     {
       v7 = @"app.";
 LABEL_15:
       v8 = [(__CFString *)v7 length];
-      v9 = v5;
+      v9 = pathCopy;
 LABEL_16:
       v10 = [v9 substringFromIndex:v8];
       goto LABEL_20;
     }
 
-    if ([v5 hasPrefix:@"backup."])
+    if ([pathCopy hasPrefix:@"backup."])
     {
       v7 = @"backup.";
       goto LABEL_15;
     }
   }
 
-  if ([v5 hasPrefix:@"/Apps/"])
+  if ([pathCopy hasPrefix:@"/Apps/"])
   {
     v7 = @"/Apps/";
     goto LABEL_15;
   }
 
-  if ([v5 hasPrefix:@"/BackupData/"])
+  if ([pathCopy hasPrefix:@"/BackupData/"])
   {
     v7 = @"/BackupData/";
     goto LABEL_15;
   }
 
-  if ([v5 hasPrefix:@"/Packages/"])
+  if ([pathCopy hasPrefix:@"/Packages/"])
   {
     v7 = @"/Packages/";
     goto LABEL_15;
   }
 
-  if ([v5 hasPrefix:@"/ConfigurationProfiles/"])
+  if ([pathCopy hasPrefix:@"/ConfigurationProfiles/"])
   {
     v7 = @"/ConfigurationProfiles/";
     goto LABEL_15;
   }
 
-  if ([v5 hasPrefix:@"/SystemApps"])
+  if ([pathCopy hasPrefix:@"/SystemApps"])
   {
-    v9 = v5;
+    v9 = pathCopy;
     v8 = 1;
     goto LABEL_16;
   }
 
 LABEL_19:
-  v10 = v5;
+  v10 = pathCopy;
 LABEL_20:
   v11 = v10;
 
   return v11;
 }
 
-- (id)getComponentVersion:(id)a3
+- (id)getComponentVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(MSDSignedManifest *)self getAppList];
-  v6 = [v5 objectForKey:v4];
+  versionCopy = version;
+  getAppList = [(MSDSignedManifest *)self getAppList];
+  v6 = [getAppList objectForKey:versionCopy];
 
   v7 = [v6 objectForKey:@"Manifest"];
   v8 = [v7 objectForKey:@"CFBundleShortVersionString"];
@@ -475,7 +475,7 @@ LABEL_20:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = v4;
+    v12 = versionCopy;
     v13 = 2114;
     v14 = v8;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "appName:%{public}@ componentVersion:%{public}@", &v11, 0x16u);
@@ -484,18 +484,18 @@ LABEL_20:
   return v8;
 }
 
-- (id)getAppManifest:(id)a3
+- (id)getAppManifest:(id)manifest
 {
-  v4 = a3;
-  v5 = [(MSDSignedManifest *)self getAppList];
-  v6 = [v5 objectForKey:v4];
+  manifestCopy = manifest;
+  getAppList = [(MSDSignedManifest *)self getAppList];
+  v6 = [getAppList objectForKey:manifestCopy];
 
   v7 = [v6 objectForKey:@"Manifest"];
 
   return v7;
 }
 
-- (id)getStandAlonePackageVersion:(id)a3
+- (id)getStandAlonePackageVersion:(id)version
 {
   v3 = sub_100021268();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -511,8 +511,8 @@ LABEL_20:
 - (void)parseInstallationOrder
 {
   v7 = objc_alloc_init(NSMutableArray);
-  v3 = [(MSDSignedManifest *)self payload];
-  v4 = [v3 objectForKey:@"InstallationOrder"];
+  payload = [(MSDSignedManifest *)self payload];
+  v4 = [payload objectForKey:@"InstallationOrder"];
 
   if (v4)
   {
@@ -565,8 +565,8 @@ LABEL_13:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(MSDSignedManifest *)self installationOrder];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  installationOrder = [(MSDSignedManifest *)self installationOrder];
+  v5 = [installationOrder countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v2 = v5;
@@ -578,7 +578,7 @@ LABEL_13:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installationOrder);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -612,7 +612,7 @@ LABEL_13:
         }
       }
 
-      v2 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v2 = [installationOrder countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v2)
       {
         continue;
@@ -628,31 +628,31 @@ LABEL_18:
   return (v2 | v10) & 1;
 }
 
-- (id)getDictFromSection:(id)a3 forIdentifier:(id)a4
+- (id)getDictFromSection:(id)section forIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MSDSignedManifest *)self payload];
-  v9 = [v8 objectForKey:v7];
+  identifierCopy = identifier;
+  sectionCopy = section;
+  payload = [(MSDSignedManifest *)self payload];
+  v9 = [payload objectForKey:sectionCopy];
 
-  v10 = [v9 objectForKey:v6];
+  v10 = [v9 objectForKey:identifierCopy];
 
   return v10;
 }
 
-- (id)getManifestFromSection:(id)a3 forIdentifier:(id)a4
+- (id)getManifestFromSection:(id)section forIdentifier:(id)identifier
 {
-  v4 = [(MSDSignedManifest *)self getDictFromSection:a3 forIdentifier:a4];
+  v4 = [(MSDSignedManifest *)self getDictFromSection:section forIdentifier:identifier];
   v5 = [v4 objectForKey:@"Manifest"];
 
   return v5;
 }
 
-- (BOOL)parseBundleID:(id)a3
+- (BOOL)parseBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"PartNumber"];
-  v6 = [v4 objectForKey:@"Revision"];
+  dCopy = d;
+  v5 = [dCopy objectForKey:@"PartNumber"];
+  v6 = [dCopy objectForKey:@"Revision"];
 
   if (!v5)
   {
@@ -677,17 +677,17 @@ LABEL_4:
   return v8;
 }
 
-- (MSDSignedManifest)initWithManifestData:(id)a3
+- (MSDSignedManifest)initWithManifestData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(NSMutableArray);
   v91.receiver = self;
   v91.super_class = MSDSignedManifest;
   v6 = [(MSDSignedManifest *)&v91 init];
   if (v6)
   {
-    v7 = [v4 objectForKey:@"Version"];
-    v8 = [v4 objectForKey:@"Info"];
+    v7 = [dataCopy objectForKey:@"Version"];
+    v8 = [dataCopy objectForKey:@"Info"];
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v9 = sub_100021268();
@@ -727,8 +727,8 @@ LABEL_4:
       v11 = NSClassFromString(@"MSDHubTestConfiguration");
       if (v11)
       {
-        v12 = [(objc_class *)v11 sharedInstance];
-        if ((objc_opt_respondsToSelector() & 1) != 0 && ([v12 shouldRunManifestRigorousTest] & 1) == 0)
+        sharedInstance = [(objc_class *)v11 sharedInstance];
+        if ((objc_opt_respondsToSelector() & 1) != 0 && ([sharedInstance shouldRunManifestRigorousTest] & 1) == 0)
         {
           v16 = sub_100021268();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -761,16 +761,16 @@ LABEL_4:
     v17 = +[MSDDemoManifestCheck sharedInstance];
     [(MSDSignedManifest *)v6 setManifestVerifier:v17];
 
-    v18 = [(MSDSignedManifest *)v6 manifestVerifier];
+    manifestVerifier = [(MSDSignedManifest *)v6 manifestVerifier];
 
-    if (v18)
+    if (manifestVerifier)
     {
-      v19 = [(MSDSignedManifest *)v6 manifestVerifier];
-      v20 = [(MSDSignedManifest *)v6 getDataSectionKeys];
+      manifestVerifier2 = [(MSDSignedManifest *)v6 manifestVerifier];
+      getDataSectionKeys = [(MSDSignedManifest *)v6 getDataSectionKeys];
       v92 = @"RigorousTestingOverride";
       v93 = v13;
       v21 = [NSDictionary dictionaryWithObjects:&v93 forKeys:&v92 count:1];
-      v14 = [v19 verifyManifestSignature:v4 forDataSectionKeys:v20 withOptions:v21];
+      v14 = [manifestVerifier2 verifyManifestSignature:dataCopy forDataSectionKeys:getDataSectionKeys withOptions:v21];
 
       if (!v14)
       {
@@ -863,7 +863,7 @@ LABEL_4:
 
         v88 = v7;
         objc_opt_class();
-        v25 = v4;
+        v25 = dataCopy;
         if (sub_10000C340())
         {
           v26 = [v9 objectForKey:@"CriticalComponents"];
@@ -899,7 +899,7 @@ LABEL_4:
         v33 = [v22 count];
         if (v31)
         {
-          v4 = v25;
+          dataCopy = v25;
           if (v32 != &v33[v24 + 1])
           {
             v34 = sub_100021268();
@@ -918,7 +918,7 @@ LABEL_83:
 
         else
         {
-          v4 = v25;
+          dataCopy = v25;
           if (v32 != &v24[v33])
           {
             v34 = sub_100021268();
@@ -951,7 +951,7 @@ LABEL_80:
 
       else
       {
-        v35 = [v4 objectForKey:@"SigningKey"];
+        v35 = [dataCopy objectForKey:@"SigningKey"];
         [(MSDSignedManifest *)v6 setSigningKey:v35];
       }
 

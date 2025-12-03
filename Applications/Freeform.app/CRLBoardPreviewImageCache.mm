@@ -1,6 +1,6 @@
 @interface CRLBoardPreviewImageCache
 - (_TtC8Freeform25CRLBoardPreviewImageCache)init;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
+- (void)cache:(id)cache willEvictObject:(id)object;
 @end
 
 @implementation CRLBoardPreviewImageCache
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v5 = a3;
+  cacheCopy = cache;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_1006EEF2C(v7);

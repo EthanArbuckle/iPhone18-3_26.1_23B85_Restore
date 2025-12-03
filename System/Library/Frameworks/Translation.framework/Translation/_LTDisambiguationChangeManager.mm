@@ -1,9 +1,9 @@
 @interface _LTDisambiguationChangeManager
-- (BOOL)hasAnyChangeOfType:(unint64_t)a3;
-- (BOOL)restoreChangesToResult:(id)a3;
+- (BOOL)hasAnyChangeOfType:(unint64_t)type;
+- (BOOL)restoreChangesToResult:(id)result;
 - (NSDictionary)changeMapping;
 - (_LTDisambiguationChangeManager)init;
-- (void)addUserSelection:(id)a3;
+- (void)addUserSelection:(id)selection;
 @end
 
 @implementation _LTDisambiguationChangeManager
@@ -15,9 +15,9 @@
   v2 = [(_LTDisambiguationChangeManager *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     changeMapping = v2->_changeMapping;
-    v2->_changeMapping = v3;
+    v2->_changeMapping = dictionary;
 
     v5 = v2;
   }
@@ -32,15 +32,15 @@
   return v2;
 }
 
-- (void)addUserSelection:(id)a3
+- (void)addUserSelection:(id)selection
 {
-  v4 = a3;
-  if (v4)
+  selectionCopy = selection;
+  if (selectionCopy)
   {
     changeMapping = self->_changeMapping;
-    v11 = v4;
-    v6 = [v4 sourceSnippet];
-    v7 = [(NSMutableDictionary *)changeMapping objectForKeyedSubscript:v6];
+    v11 = selectionCopy;
+    sourceSnippet = [selectionCopy sourceSnippet];
+    v7 = [(NSMutableDictionary *)changeMapping objectForKeyedSubscript:sourceSnippet];
 
     if (v7)
     {
@@ -52,23 +52,23 @@
       v8 = objc_alloc_init(_LTDisambiguationChangeSet);
       [(_LTDisambiguationChangeSet *)v8 addUserSelection:v11];
       v9 = self->_changeMapping;
-      v10 = [v11 sourceSnippet];
-      [(NSMutableDictionary *)v9 setObject:v8 forKeyedSubscript:v10];
+      sourceSnippet2 = [v11 sourceSnippet];
+      [(NSMutableDictionary *)v9 setObject:v8 forKeyedSubscript:sourceSnippet2];
     }
 
-    v4 = v11;
+    selectionCopy = v11;
   }
 }
 
-- (BOOL)restoreChangesToResult:(id)a3
+- (BOOL)restoreChangesToResult:(id)result
 {
   v22 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [a3 sentences];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  sentences = [result sentences];
+  v5 = [sentences countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -80,13 +80,13 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sentences);
         }
 
         v7 += [*(*(&v15 + 1) + 8 * i) _restoreChanges:self];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v6 = [sentences countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v6);
@@ -122,17 +122,17 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)hasAnyChangeOfType:(unint64_t)a3
+- (BOOL)hasAnyChangeOfType:(unint64_t)type
 {
-  v4 = [(NSMutableDictionary *)self->_changeMapping allValues];
+  allValues = [(NSMutableDictionary *)self->_changeMapping allValues];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53___LTDisambiguationChangeManager_hasAnyChangeOfType___block_invoke;
   v6[3] = &__block_descriptor_40_e36_B16__0___LTDisambiguationChangeSet_8l;
-  v6[4] = a3;
-  LOBYTE(a3) = [v4 lt_hasObjectPassingTest:v6];
+  v6[4] = type;
+  LOBYTE(type) = [allValues lt_hasObjectPassingTest:v6];
 
-  return a3;
+  return type;
 }
 
 @end

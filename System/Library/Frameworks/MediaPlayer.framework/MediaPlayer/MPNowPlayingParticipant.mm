@@ -1,32 +1,32 @@
 @interface MPNowPlayingParticipant
-- (MPNowPlayingParticipant)initWithIdentifier:(id)a3;
-- (MPNowPlayingParticipant)initWithIdentifier:(id)a3 mediaRemoteUserIdentity:(id)a4;
-- (MPNowPlayingParticipant)initWithMediaRemoteContentItem:(id)a3;
-- (MPNowPlayingParticipant)initWithMediaRemoteUserIdentity:(id)a3;
+- (MPNowPlayingParticipant)initWithIdentifier:(id)identifier;
+- (MPNowPlayingParticipant)initWithIdentifier:(id)identifier mediaRemoteUserIdentity:(id)identity;
+- (MPNowPlayingParticipant)initWithMediaRemoteContentItem:(id)item;
+- (MPNowPlayingParticipant)initWithMediaRemoteUserIdentity:(id)identity;
 - (MRUserIdentity)mediaRemoteUserIdentity;
 - (NSString)displayName;
 - (NSString)participantIdentifier;
 - (int64_t)participantIdentifierType;
-- (void)_postParticipantItemChangedNotificationWithDeltaBlock:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setParticipantIdentifier:(id)a3;
-- (void)setParticipantIdentifierType:(int64_t)a3;
+- (void)_postParticipantItemChangedNotificationWithDeltaBlock:(id)block;
+- (void)setDisplayName:(id)name;
+- (void)setParticipantIdentifier:(id)identifier;
+- (void)setParticipantIdentifierType:(int64_t)type;
 @end
 
 @implementation MPNowPlayingParticipant
 
-- (void)_postParticipantItemChangedNotificationWithDeltaBlock:(id)a3
+- (void)_postParticipantItemChangedNotificationWithDeltaBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (!+[MPContentItem isSuppressingChangeNotifications])
   {
-    v5 = [(MPNowPlayingParticipant *)self identifier];
-    if (v5)
+    identifier = [(MPNowPlayingParticipant *)self identifier];
+    if (identifier)
     {
-      if (v4)
+      if (blockCopy)
       {
-        v6 = [objc_alloc(MEMORY[0x1E69B09F0]) initWithIdentifier:v5];
-        v4[2](v4, v6);
+        v6 = [objc_alloc(MEMORY[0x1E69B09F0]) initWithIdentifier:identifier];
+        blockCopy[2](blockCopy, v6);
         v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
         [v7 setObject:v6 forKeyedSubscript:@"_MPContentItemDidChangeUserInfoKeyDeltaItem"];
       }
@@ -36,8 +36,8 @@
         v7 = 0;
       }
 
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v7];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"_MPContentItemDidChangeNotification" object:self userInfo:v7];
     }
 
     else
@@ -52,30 +52,30 @@
   }
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingParticipant *)self displayName];
-  v6 = v5;
-  if (v5 == v4)
+  nameCopy = name;
+  displayName = [(MPNowPlayingParticipant *)self displayName];
+  v6 = displayName;
+  if (displayName == nameCopy)
   {
   }
 
   else
   {
-    v7 = [v4 isEqual:v5];
+    v7 = [nameCopy isEqual:displayName];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [(MPNowPlayingParticipant *)self mediaRemoteContentItem];
-      v9 = [v8 metadata];
-      [v9 setParticipantName:v4];
+      mediaRemoteContentItem = [(MPNowPlayingParticipant *)self mediaRemoteContentItem];
+      metadata = [mediaRemoteContentItem metadata];
+      [metadata setParticipantName:nameCopy];
 
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __42__MPNowPlayingParticipant_setDisplayName___block_invoke;
       v10[3] = &unk_1E7681188;
-      v11 = v4;
+      v11 = nameCopy;
       [(MPNowPlayingParticipant *)self _postParticipantItemChangedNotificationWithDeltaBlock:v10];
     }
   }
@@ -90,21 +90,21 @@ void __42__MPNowPlayingParticipant_setDisplayName___block_invoke(uint64_t a1, vo
 
 - (NSString)displayName
 {
-  v2 = [(MPNowPlayingParticipant *)self mediaRemoteContentItem];
-  v3 = [v2 metadata];
-  v4 = [v3 participantName];
+  mediaRemoteContentItem = [(MPNowPlayingParticipant *)self mediaRemoteContentItem];
+  metadata = [mediaRemoteContentItem metadata];
+  participantName = [metadata participantName];
 
-  return v4;
+  return participantName;
 }
 
-- (void)setParticipantIdentifierType:(int64_t)a3
+- (void)setParticipantIdentifierType:(int64_t)type
 {
-  if ([(MPNowPlayingParticipant *)self participantIdentifierType]!= a3)
+  if ([(MPNowPlayingParticipant *)self participantIdentifierType]!= type)
   {
-    v5 = a3 == 1;
-    v6 = [(MPNowPlayingParticipant *)self mediaRemoteContentItem];
-    v7 = [v6 metadata];
-    [v7 setIsResolvableParticipant:v5];
+    v5 = type == 1;
+    mediaRemoteContentItem = [(MPNowPlayingParticipant *)self mediaRemoteContentItem];
+    metadata = [mediaRemoteContentItem metadata];
+    [metadata setIsResolvableParticipant:v5];
 
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -124,37 +124,37 @@ void __56__MPNowPlayingParticipant_setParticipantIdentifierType___block_invoke(u
 
 - (int64_t)participantIdentifierType
 {
-  v2 = [(MPNowPlayingParticipant *)self mediaRemoteContentItem];
-  v3 = [v2 metadata];
-  v4 = [v3 isResolvableParticipant];
+  mediaRemoteContentItem = [(MPNowPlayingParticipant *)self mediaRemoteContentItem];
+  metadata = [mediaRemoteContentItem metadata];
+  isResolvableParticipant = [metadata isResolvableParticipant];
 
-  return v4;
+  return isResolvableParticipant;
 }
 
-- (void)setParticipantIdentifier:(id)a3
+- (void)setParticipantIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MPNowPlayingParticipant *)self participantIdentifier];
-  v6 = v5;
-  if (v5 == v4)
+  identifierCopy = identifier;
+  participantIdentifier = [(MPNowPlayingParticipant *)self participantIdentifier];
+  v6 = participantIdentifier;
+  if (participantIdentifier == identifierCopy)
   {
   }
 
   else
   {
-    v7 = [v4 isEqual:v5];
+    v7 = [identifierCopy isEqual:participantIdentifier];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [(MPNowPlayingParticipant *)self mediaRemoteContentItem];
-      v9 = [v8 metadata];
-      [v9 setParticipantIdentifier:v4];
+      mediaRemoteContentItem = [(MPNowPlayingParticipant *)self mediaRemoteContentItem];
+      metadata = [mediaRemoteContentItem metadata];
+      [metadata setParticipantIdentifier:identifierCopy];
 
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __52__MPNowPlayingParticipant_setParticipantIdentifier___block_invoke;
       v10[3] = &unk_1E7681188;
-      v11 = v4;
+      v11 = identifierCopy;
       [(MPNowPlayingParticipant *)self _postParticipantItemChangedNotificationWithDeltaBlock:v10];
     }
   }
@@ -169,43 +169,43 @@ void __52__MPNowPlayingParticipant_setParticipantIdentifier___block_invoke(uint6
 
 - (NSString)participantIdentifier
 {
-  v2 = [(MPNowPlayingParticipant *)self mediaRemoteContentItem];
-  v3 = [v2 metadata];
-  v4 = [v3 participantIdentifier];
+  mediaRemoteContentItem = [(MPNowPlayingParticipant *)self mediaRemoteContentItem];
+  metadata = [mediaRemoteContentItem metadata];
+  participantIdentifier = [metadata participantIdentifier];
 
-  return v4;
+  return participantIdentifier;
 }
 
 - (MRUserIdentity)mediaRemoteUserIdentity
 {
-  v2 = [(MPNowPlayingParticipant *)self mediaRemoteContentItem];
+  mediaRemoteContentItem = [(MPNowPlayingParticipant *)self mediaRemoteContentItem];
   v3 = MRIdentityRepresentationForParticipantItem();
 
   return v3;
 }
 
-- (MPNowPlayingParticipant)initWithIdentifier:(id)a3 mediaRemoteUserIdentity:(id)a4
+- (MPNowPlayingParticipant)initWithIdentifier:(id)identifier mediaRemoteUserIdentity:(id)identity
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 length])
+  identifierCopy = identifier;
+  identityCopy = identity;
+  if (![identifierCopy length])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MPNowPlayingParticipant.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"identifier.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPNowPlayingParticipant.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"identifier.length > 0"}];
 
-    if (v8)
+    if (identityCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MPNowPlayingParticipant.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"mediaRemoteUserIdentity"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPNowPlayingParticipant.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"mediaRemoteUserIdentity"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!identityCopy)
   {
     goto LABEL_5;
   }
@@ -217,13 +217,13 @@ LABEL_3:
   return v10;
 }
 
-- (MPNowPlayingParticipant)initWithMediaRemoteUserIdentity:(id)a3
+- (MPNowPlayingParticipant)initWithMediaRemoteUserIdentity:(id)identity
 {
-  v5 = a3;
-  if (!v5)
+  identityCopy = identity;
+  if (!identityCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MPNowPlayingParticipant.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"mediaRemoteUserIdentity"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPNowPlayingParticipant.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"mediaRemoteUserIdentity"}];
   }
 
   v6 = MSVNanoIDCreateTaggedPointer();
@@ -233,13 +233,13 @@ LABEL_3:
   return v8;
 }
 
-- (MPNowPlayingParticipant)initWithMediaRemoteContentItem:(id)a3
+- (MPNowPlayingParticipant)initWithMediaRemoteContentItem:(id)item
 {
-  v6 = a3;
-  if (!v6)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MPNowPlayingParticipant.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"mediaRemoteContentItem"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPNowPlayingParticipant.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"mediaRemoteContentItem"}];
   }
 
   v11.receiver = self;
@@ -248,19 +248,19 @@ LABEL_3:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_mediaRemoteContentItem, a3);
+    objc_storeStrong(&v7->_mediaRemoteContentItem, item);
   }
 
   return v8;
 }
 
-- (MPNowPlayingParticipant)initWithIdentifier:(id)a3
+- (MPNowPlayingParticipant)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (![v5 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MPNowPlayingParticipant.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"identifier.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPNowPlayingParticipant.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"identifier.length > 0"}];
   }
 
   v11.receiver = self;
@@ -268,7 +268,7 @@ LABEL_3:
   v6 = [(MPNowPlayingParticipant *)&v11 init];
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x1E69B09F0]) initWithIdentifier:v5];
+    v7 = [objc_alloc(MEMORY[0x1E69B09F0]) initWithIdentifier:identifierCopy];
     mediaRemoteContentItem = v6->_mediaRemoteContentItem;
     v6->_mediaRemoteContentItem = v7;
   }

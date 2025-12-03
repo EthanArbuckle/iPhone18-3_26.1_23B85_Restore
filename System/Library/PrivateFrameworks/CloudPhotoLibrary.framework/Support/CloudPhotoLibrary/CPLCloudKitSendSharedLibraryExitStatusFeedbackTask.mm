@@ -1,27 +1,27 @@
 @interface CPLCloudKitSendSharedLibraryExitStatusFeedbackTask
-- (CPLCloudKitSendSharedLibraryExitStatusFeedbackTask)initWithController:(id)a3 scopeIdentifier:(id)a4 cloudKitScope:(id)a5 status:(int64_t)a6 completionHandler:(id)a7;
+- (CPLCloudKitSendSharedLibraryExitStatusFeedbackTask)initWithController:(id)controller scopeIdentifier:(id)identifier cloudKitScope:(id)scope status:(int64_t)status completionHandler:(id)handler;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitSendSharedLibraryExitStatusFeedbackTask
 
-- (CPLCloudKitSendSharedLibraryExitStatusFeedbackTask)initWithController:(id)a3 scopeIdentifier:(id)a4 cloudKitScope:(id)a5 status:(int64_t)a6 completionHandler:(id)a7
+- (CPLCloudKitSendSharedLibraryExitStatusFeedbackTask)initWithController:(id)controller scopeIdentifier:(id)identifier cloudKitScope:(id)scope status:(int64_t)status completionHandler:(id)handler
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  identifierCopy = identifier;
+  scopeCopy = scope;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = CPLCloudKitSendSharedLibraryExitStatusFeedbackTask;
-  v16 = [(CPLCloudKitTransportTask *)&v20 initWithController:a3];
+  v16 = [(CPLCloudKitTransportTask *)&v20 initWithController:controller];
   if (v16)
   {
-    v17 = [v15 copy];
+    v17 = [handlerCopy copy];
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v17;
 
-    objc_storeStrong(&v16->_scopeIdentifier, a4);
-    objc_storeStrong(&v16->_cloudKitScope, a5);
-    v16->_status = a6;
+    objc_storeStrong(&v16->_scopeIdentifier, identifier);
+    objc_storeStrong(&v16->_cloudKitScope, scope);
+    v16->_status = status;
   }
 
   return v16;
@@ -34,9 +34,9 @@
   v4 = v11;
   if (v3)
   {
-    v5 = [(CPLCloudKitScope *)self->_cloudKitScope zoneID];
+    zoneID = [(CPLCloudKitScope *)self->_cloudKitScope zoneID];
     v6 = +[NSUUID UUID];
-    v7 = [v6 UUIDString];
+    uUIDString = [v6 UUIDString];
 
     status = self->_status;
     v10[0] = _NSConcreteStackBlock;
@@ -44,7 +44,7 @@
     v10[2] = sub_100031640;
     v10[3] = &unk_100273958;
     v10[4] = self;
-    v9 = [CPLCKPhotosSharedLibraryOperation sendExitStatusFeedbackWithOperationID:v7 shareID:v5 status:status completionHandler:v10];
+    v9 = [CPLCKPhotosSharedLibraryOperation sendExitStatusFeedbackWithOperationID:uUIDString shareID:zoneID status:status completionHandler:v10];
     [(CPLCloudKitTransportTask *)self launchOperation:v9 type:CPLCloudKitOperationTypeForScope(self->_cloudKitScope) withContext:0];
   }
 

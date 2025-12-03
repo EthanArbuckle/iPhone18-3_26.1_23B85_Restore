@@ -85,8 +85,8 @@
     if ([v5 hasCalendar])
     {
       v7 = MEMORY[0x277CBEA80];
-      v8 = [v5 calendar];
-      v9 = [v7 calendarWithIdentifier:v8];
+      calendar = [v5 calendar];
+      v9 = [v7 calendarWithIdentifier:calendar];
 
       if (!v9)
       {
@@ -104,8 +104,8 @@ LABEL_50:
     }
 
     v10 = MEMORY[0x277CBEBB0];
-    v11 = [v5 timeZone];
-    v9 = [v10 timeZoneWithName:v11];
+    timeZone = [v5 timeZone];
+    v9 = [v10 timeZoneWithName:timeZone];
 
     if (v9)
     {
@@ -131,83 +131,83 @@ LABEL_53:
   if (objc_opt_isKindOfClass())
   {
     v5 = objc_alloc_init(HDCodableDateComponents);
-    if ((a3 & 2) != 0 && [a1 era] != 0x7FFFFFFFFFFFFFFFLL)
+    if ((a3 & 2) != 0 && [self era] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[HDCodableDateComponents setEra:](v5, "setEra:", [a1 era]);
+      -[HDCodableDateComponents setEra:](v5, "setEra:", [self era]);
     }
 
-    if ((a3 & 4) != 0 && [a1 year] != 0x7FFFFFFFFFFFFFFFLL)
+    if ((a3 & 4) != 0 && [self year] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[HDCodableDateComponents setYear:](v5, "setYear:", [a1 year]);
+      -[HDCodableDateComponents setYear:](v5, "setYear:", [self year]);
     }
 
-    if ((a3 & 8) != 0 && [a1 month] != 0x7FFFFFFFFFFFFFFFLL)
+    if ((a3 & 8) != 0 && [self month] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[HDCodableDateComponents setMonth:](v5, "setMonth:", [a1 month]);
+      -[HDCodableDateComponents setMonth:](v5, "setMonth:", [self month]);
     }
 
-    if ((a3 & 0x10) != 0 && [a1 day] != 0x7FFFFFFFFFFFFFFFLL)
+    if ((a3 & 0x10) != 0 && [self day] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[HDCodableDateComponents setDay:](v5, "setDay:", [a1 day]);
+      -[HDCodableDateComponents setDay:](v5, "setDay:", [self day]);
     }
 
-    if ((a3 & 0x20) != 0 && [a1 hour] != 0x7FFFFFFFFFFFFFFFLL)
+    if ((a3 & 0x20) != 0 && [self hour] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[HDCodableDateComponents setHour:](v5, "setHour:", [a1 hour]);
+      -[HDCodableDateComponents setHour:](v5, "setHour:", [self hour]);
     }
 
-    if ((a3 & 0x40) != 0 && [a1 minute] != 0x7FFFFFFFFFFFFFFFLL)
+    if ((a3 & 0x40) != 0 && [self minute] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[HDCodableDateComponents setMinute:](v5, "setMinute:", [a1 minute]);
+      -[HDCodableDateComponents setMinute:](v5, "setMinute:", [self minute]);
     }
 
-    if ((a3 & 0x80) != 0 && [a1 second] != 0x7FFFFFFFFFFFFFFFLL)
+    if ((a3 & 0x80) != 0 && [self second] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[HDCodableDateComponents setSecond:](v5, "setSecond:", [a1 second]);
+      -[HDCodableDateComponents setSecond:](v5, "setSecond:", [self second]);
     }
 
-    if ((a3 & 0x200) != 0 && [a1 weekday] != 0x7FFFFFFFFFFFFFFFLL)
+    if ((a3 & 0x200) != 0 && [self weekday] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[HDCodableDateComponents setWeekday:](v5, "setWeekday:", [a1 weekday]);
+      -[HDCodableDateComponents setWeekday:](v5, "setWeekday:", [self weekday]);
     }
 
-    if ((a3 & 0x400) != 0 && [a1 weekdayOrdinal] != 0x7FFFFFFFFFFFFFFFLL)
+    if ((a3 & 0x400) != 0 && [self weekdayOrdinal] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[HDCodableDateComponents setWeekdayOrdinal:](v5, "setWeekdayOrdinal:", [a1 weekdayOrdinal]);
+      -[HDCodableDateComponents setWeekdayOrdinal:](v5, "setWeekdayOrdinal:", [self weekdayOrdinal]);
     }
 
-    if ((a3 & 0x800) != 0 && [a1 quarter] != 0x7FFFFFFFFFFFFFFFLL)
+    if ((a3 & 0x800) != 0 && [self quarter] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[HDCodableDateComponents setQuarter:](v5, "setQuarter:", [a1 quarter]);
+      -[HDCodableDateComponents setQuarter:](v5, "setQuarter:", [self quarter]);
     }
 
-    if ((a3 & 0x1000) != 0 && [a1 weekOfMonth] != 0x7FFFFFFFFFFFFFFFLL)
+    if ((a3 & 0x1000) != 0 && [self weekOfMonth] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[HDCodableDateComponents setWeekOfMonth:](v5, "setWeekOfMonth:", [a1 weekOfMonth]);
+      -[HDCodableDateComponents setWeekOfMonth:](v5, "setWeekOfMonth:", [self weekOfMonth]);
     }
 
-    if ((a3 & 0x2000) != 0 && [a1 weekOfYear] != 0x7FFFFFFFFFFFFFFFLL)
+    if ((a3 & 0x2000) != 0 && [self weekOfYear] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[HDCodableDateComponents setWeekOfYear:](v5, "setWeekOfYear:", [a1 weekOfYear]);
+      -[HDCodableDateComponents setWeekOfYear:](v5, "setWeekOfYear:", [self weekOfYear]);
     }
 
-    if ((a3 & 0x4000) != 0 && [a1 yearForWeekOfYear] != 0x7FFFFFFFFFFFFFFFLL)
+    if ((a3 & 0x4000) != 0 && [self yearForWeekOfYear] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[HDCodableDateComponents setYearForWeekOfYear:](v5, "setYearForWeekOfYear:", [a1 yearForWeekOfYear]);
+      -[HDCodableDateComponents setYearForWeekOfYear:](v5, "setYearForWeekOfYear:", [self yearForWeekOfYear]);
     }
 
-    if (a3 < 0 && [a1 nanosecond] != 0x7FFFFFFFFFFFFFFFLL)
+    if (a3 < 0 && [self nanosecond] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[HDCodableDateComponents setNanosecond:](v5, "setNanosecond:", [a1 nanosecond]);
+      -[HDCodableDateComponents setNanosecond:](v5, "setNanosecond:", [self nanosecond]);
     }
 
-    v6 = [a1 calendar];
-    v7 = [v6 calendarIdentifier];
-    [(HDCodableDateComponents *)v5 setCalendar:v7];
+    calendar = [self calendar];
+    calendarIdentifier = [calendar calendarIdentifier];
+    [(HDCodableDateComponents *)v5 setCalendar:calendarIdentifier];
 
-    v8 = [a1 timeZone];
-    v9 = [v8 name];
-    [(HDCodableDateComponents *)v5 setTimeZone:v9];
+    timeZone = [self timeZone];
+    name = [timeZone name];
+    [(HDCodableDateComponents *)v5 setTimeZone:name];
   }
 
   else

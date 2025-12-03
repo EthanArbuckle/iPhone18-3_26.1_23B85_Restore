@@ -1,17 +1,17 @@
 @interface CurtainViewController
-- (_TtC5TeaUI21CurtainViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5TeaUI21CurtainViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation CurtainViewController
 
-- (_TtC5TeaUI21CurtainViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI21CurtainViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   CurtainViewController.init(nibName:bundle:)();
 }
 

@@ -1,25 +1,25 @@
 @interface AVAnnotationShapeRepresentation
-- (AVAnnotationShapeRepresentation)initWithShape:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AVAnnotationShapeRepresentation)initWithShape:(id)shape;
+- (BOOL)isEqual:(id)equal;
 - (CGColor)strokeColor;
-- (id)_initWithPropertyList:(id)a3 binaryData:(id)a4;
-- (id)_propertyListAndBinaryData:(id *)a3;
+- (id)_initWithPropertyList:(id)list binaryData:(id)data;
+- (id)_propertyListAndBinaryData:(id *)data;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setStrokeColor:(CGColor *)a3;
+- (void)setStrokeColor:(CGColor *)color;
 @end
 
 @implementation AVAnnotationShapeRepresentation
 
-- (AVAnnotationShapeRepresentation)initWithShape:(id)a3
+- (AVAnnotationShapeRepresentation)initWithShape:(id)shape
 {
   v6.receiver = self;
   v6.super_class = AVAnnotationShapeRepresentation;
   v4 = [(AVAnnotationRepresentation *)&v6 _initWithRepresentationType:@"AVAnnotationRepresentationTypeShape"];
   if (v4)
   {
-    v4->_shape = [a3 copy];
+    v4->_shape = [shape copy];
     v4->_strokeColor = FigCreateCGColorSRGBFromCFArray();
     v4->_strokeWidth = 1;
     v4->_dashed = 0;
@@ -29,18 +29,18 @@
   return v4;
 }
 
-- (id)_initWithPropertyList:(id)a3 binaryData:(id)a4
+- (id)_initWithPropertyList:(id)list binaryData:(id)data
 {
   v22 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = AVAnnotationShapeRepresentation;
-  v5 = [(AVAnnotationRepresentation *)&v20 _initWithPropertyList:a3 binaryData:a4];
+  v5 = [(AVAnnotationRepresentation *)&v20 _initWithPropertyList:list binaryData:data];
   if (!v5)
   {
     goto LABEL_17;
   }
 
-  v6 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyShape"];
+  v6 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyShape"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -48,7 +48,7 @@
   }
 
   v5[4] = [v6 copy];
-  v7 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyStrokeColor"];
+  v7 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyStrokeColor"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || [v7 count] != 4)
   {
@@ -93,9 +93,9 @@ LABEL_7:
   }
 
   v5[5] = FigCreateCGColorSRGBFromCFArray();
-  v12 = [a3 objectForKey:@"AVAnnotationRepresentationArchiveKeyStrokeWidth"];
+  v12 = [list objectForKey:@"AVAnnotationRepresentationArchiveKeyStrokeWidth"];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (v5[6] = [v12 integerValue], v13 = objc_msgSend(a3, "objectForKey:", @"AVAnnotationRepresentationArchiveKeyDashed"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (*(v5 + 56) = objc_msgSend(v13, "BOOLValue"), v14 = objc_msgSend(a3, "objectForKey:", @"AVAnnotationRepresentationArchiveKeyHasShadow"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (v5[6] = [v12 integerValue], v13 = objc_msgSend(list, "objectForKey:", @"AVAnnotationRepresentationArchiveKeyDashed"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (*(v5 + 56) = objc_msgSend(v13, "BOOLValue"), v14 = objc_msgSend(list, "objectForKey:", @"AVAnnotationRepresentationArchiveKeyHasShadow"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 LABEL_17:
 
@@ -120,24 +120,24 @@ LABEL_17:
   return v2;
 }
 
-- (void)setStrokeColor:(CGColor *)a3
+- (void)setStrokeColor:(CGColor *)color
 {
-  v4 = CGColorRetain(a3);
+  v4 = CGColorRetain(color);
   CGColorRelease(self->_strokeColor);
   self->_strokeColor = v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v10.receiver = self;
   v10.super_class = AVAnnotationShapeRepresentation;
   v5 = [(AVAnnotationRepresentation *)&v10 isEqual:?];
-  if (a3 != self)
+  if (equal != self)
   {
-    if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & v5 & 1) != 0) && -[NSString isEqualToString:](-[AVAnnotationShapeRepresentation shape](self, "shape"), "isEqualToString:", [a3 shape]) && CGColorEqualToColor(-[AVAnnotationShapeRepresentation strokeColor](self, "strokeColor"), objc_msgSend(a3, "strokeColor")) && (v6 = -[AVAnnotationShapeRepresentation strokeWidth](self, "strokeWidth"), v6 == objc_msgSend(a3, "strokeWidth")) && (v7 = -[AVAnnotationShapeRepresentation dashed](self, "dashed"), v7 == objc_msgSend(a3, "dashed")))
+    if (equal && (objc_opt_class(), (objc_opt_isKindOfClass() & v5 & 1) != 0) && -[NSString isEqualToString:](-[AVAnnotationShapeRepresentation shape](self, "shape"), "isEqualToString:", [equal shape]) && CGColorEqualToColor(-[AVAnnotationShapeRepresentation strokeColor](self, "strokeColor"), objc_msgSend(equal, "strokeColor")) && (v6 = -[AVAnnotationShapeRepresentation strokeWidth](self, "strokeWidth"), v6 == objc_msgSend(equal, "strokeWidth")) && (v7 = -[AVAnnotationShapeRepresentation dashed](self, "dashed"), v7 == objc_msgSend(equal, "dashed")))
     {
-      v9 = [(AVAnnotationShapeRepresentation *)self hasShadow];
-      return v9 ^ [a3 hasShadow] ^ 1;
+      hasShadow = [(AVAnnotationShapeRepresentation *)self hasShadow];
+      return hasShadow ^ [equal hasShadow] ^ 1;
     }
 
     else
@@ -162,7 +162,7 @@ LABEL_17:
   return v6 ^ v7 ^ [objc_msgSend(MEMORY[0x1E696AD98] numberWithBool:{-[AVAnnotationShapeRepresentation hasShadow](self, "hasShadow")), "hash"}];
 }
 
-- (id)_propertyListAndBinaryData:(id *)a3
+- (id)_propertyListAndBinaryData:(id *)data
 {
   v7.receiver = self;
   v7.super_class = AVAnnotationShapeRepresentation;
@@ -173,9 +173,9 @@ LABEL_17:
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", -[AVAnnotationShapeRepresentation strokeWidth](self, "strokeWidth")), @"AVAnnotationRepresentationArchiveKeyStrokeWidth"}];
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", -[AVAnnotationShapeRepresentation dashed](self, "dashed")), @"AVAnnotationRepresentationArchiveKeyDashed"}];
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", -[AVAnnotationShapeRepresentation hasShadow](self, "hasShadow")), @"AVAnnotationRepresentationArchiveKeyHasShadow"}];
-  if (a3)
+  if (data)
   {
-    *a3 = [MEMORY[0x1E695DEF0] data];
+    *data = [MEMORY[0x1E695DEF0] data];
   }
 
   return v5;

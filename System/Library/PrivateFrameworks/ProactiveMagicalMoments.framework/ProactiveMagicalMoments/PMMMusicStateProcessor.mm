@@ -9,8 +9,8 @@
 - (void)_initStarkConnect;
 - (void)_initStarkDisconnect;
 - (void)_persist;
-- (void)lastPlayedInCarWithHandler:(id)a3;
-- (void)lastPlayedWithHandler:(id)a3;
+- (void)lastPlayedInCarWithHandler:(id)handler;
+- (void)lastPlayedWithHandler:(id)handler;
 @end
 
 @implementation PMMMusicStateProcessor
@@ -139,20 +139,20 @@ id __46__PMMMusicStateProcessor__initNowPlayingPause__block_invoke_40(uint64_t a
 
 - (void)_handlePlay
 {
-  v11 = [MEMORY[0x277CFE338] keyPathForNowPlayingDataDictionary];
+  keyPathForNowPlayingDataDictionary = [MEMORY[0x277CFE338] keyPathForNowPlayingDataDictionary];
   v3 = +[PMMContextHelper sharedInstance];
-  v4 = [v3 fetchDataDictionaryForKeyPath:v11];
+  v4 = [v3 fetchDataDictionaryForKeyPath:keyPathForNowPlayingDataDictionary];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277CFE338] nowPlayingBundleIdKey];
-    v6 = [v4 objectForKeyedSubscript:v5];
+    nowPlayingBundleIdKey = [MEMORY[0x277CFE338] nowPlayingBundleIdKey];
+    v6 = [v4 objectForKeyedSubscript:nowPlayingBundleIdKey];
 
-    v7 = [MEMORY[0x277CFE338] nowPlayingTrackKey];
-    v8 = [v4 objectForKeyedSubscript:v7];
+    nowPlayingTrackKey = [MEMORY[0x277CFE338] nowPlayingTrackKey];
+    v8 = [v4 objectForKeyedSubscript:nowPlayingTrackKey];
 
-    v9 = [MEMORY[0x277CFE338] nowPlayingCreationDateKey];
-    v10 = [v4 objectForKeyedSubscript:v9];
+    nowPlayingCreationDateKey = [MEMORY[0x277CFE338] nowPlayingCreationDateKey];
+    v10 = [v4 objectForKeyedSubscript:nowPlayingCreationDateKey];
 
     [(PMMMusicContainer *)self->_lastPlayed setPlayingWithBundleId:v6 trackIdentifier:v8 playTime:v10];
     if ([(PMMMusicStateProcessor *)self inCar])
@@ -206,9 +206,9 @@ uint64_t __32__PMMMusicStateProcessor_shared__block_invoke()
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     v6 = [v3 stringWithFormat:@"%@-%p", v5, v2];
-    v7 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v9 = dispatch_queue_create(v7, v8);
+    v9 = dispatch_queue_create(uTF8String, v8);
     queue = v2->_queue;
     v2->_queue = v9;
 
@@ -218,9 +218,9 @@ uint64_t __32__PMMMusicStateProcessor_shared__block_invoke()
     if (v13)
     {
       v14 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v13 error:0];
-      v15 = [v14 decodeObject];
+      decodeObject = [v14 decodeObject];
       lastPlayed = v2->_lastPlayed;
-      v2->_lastPlayed = v15;
+      v2->_lastPlayed = decodeObject;
     }
 
     objc_autoreleasePoolPop(v12);
@@ -229,9 +229,9 @@ uint64_t __32__PMMMusicStateProcessor_shared__block_invoke()
     if (v18)
     {
       v19 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v18 error:0];
-      v20 = [v19 decodeObject];
+      decodeObject2 = [v19 decodeObject];
       lastPlayedInCar = v2->_lastPlayedInCar;
-      v2->_lastPlayedInCar = v20;
+      v2->_lastPlayedInCar = decodeObject2;
     }
 
     objc_autoreleasePoolPop(v17);
@@ -250,26 +250,26 @@ uint64_t __32__PMMMusicStateProcessor_shared__block_invoke()
     }
 
     v26 = +[PMMContextHelper sharedInstance];
-    v27 = [MEMORY[0x277CFE338] keyPathForCarplayConnectedStatus];
-    v28 = [v26 fetchContextValueForKeyPath:v27];
+    keyPathForCarplayConnectedStatus = [MEMORY[0x277CFE338] keyPathForCarplayConnectedStatus];
+    v28 = [v26 fetchContextValueForKeyPath:keyPathForCarplayConnectedStatus];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v29 = [v28 BOOLValue];
+      bOOLValue = [v28 BOOLValue];
     }
 
     else
     {
-      v29 = 0;
+      bOOLValue = 0;
     }
 
-    [(PMMMusicStateProcessor *)v2 setInCar:v29];
-    v30 = [MEMORY[0x277CFE338] keyPathForNowPlayingDataDictionary];
-    v31 = [v26 fetchDataDictionaryForKeyPath:v30];
+    [(PMMMusicStateProcessor *)v2 setInCar:bOOLValue];
+    keyPathForNowPlayingDataDictionary = [MEMORY[0x277CFE338] keyPathForNowPlayingDataDictionary];
+    v31 = [v26 fetchDataDictionaryForKeyPath:keyPathForNowPlayingDataDictionary];
     if (v31)
     {
-      v32 = [MEMORY[0x277CFE338] nowPlayingBundleIdKey];
-      v33 = [v31 objectForKeyedSubscript:v32];
+      nowPlayingBundleIdKey = [MEMORY[0x277CFE338] nowPlayingBundleIdKey];
+      v33 = [v31 objectForKeyedSubscript:nowPlayingBundleIdKey];
 
       if ([v33 isEqualToString:@"unknown"])
       {
@@ -294,8 +294,8 @@ uint64_t __32__PMMMusicStateProcessor_shared__block_invoke()
 - (void)_initStarkConnect
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277CFE338] keyPathForCarplayConnectedStatus];
-  v4 = [MEMORY[0x277CFE360] predicateForChangeAtKeyPath:v3];
+  keyPathForCarplayConnectedStatus = [MEMORY[0x277CFE338] keyPathForCarplayConnectedStatus];
+  v4 = [MEMORY[0x277CFE360] predicateForChangeAtKeyPath:keyPathForCarplayConnectedStatus];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43__PMMMusicStateProcessor__initStarkConnect__block_invoke;
@@ -352,8 +352,8 @@ id __43__PMMMusicStateProcessor__initStarkConnect__block_invoke_30(uint64_t a1)
 - (void)_initStarkDisconnect
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277CFE338] keyPathForCarplayConnectedStatus];
-  v4 = [MEMORY[0x277CFE360] predicateForChangeAtKeyPath:v3];
+  keyPathForCarplayConnectedStatus = [MEMORY[0x277CFE338] keyPathForCarplayConnectedStatus];
+  v4 = [MEMORY[0x277CFE360] predicateForChangeAtKeyPath:keyPathForCarplayConnectedStatus];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__PMMMusicStateProcessor__initStarkDisconnect__block_invoke;
@@ -410,8 +410,8 @@ id __46__PMMMusicStateProcessor__initStarkDisconnect__block_invoke_36(uint64_t a
 - (void)_initNowPlayingPause
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277CFE338] keyPathForNowPlayingDataDictionary];
-  v4 = [MEMORY[0x277CFE360] predicateForChangeAtKeyPath:v3];
+  keyPathForNowPlayingDataDictionary = [MEMORY[0x277CFE338] keyPathForNowPlayingDataDictionary];
+  v4 = [MEMORY[0x277CFE360] predicateForChangeAtKeyPath:keyPathForNowPlayingDataDictionary];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__PMMMusicStateProcessor__initNowPlayingPause__block_invoke;
@@ -430,8 +430,8 @@ id __46__PMMMusicStateProcessor__initStarkDisconnect__block_invoke_36(uint64_t a
 - (void)_initNowPlayingPlay
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277CFE338] keyPathForNowPlayingDataDictionary];
-  v4 = [MEMORY[0x277CFE360] predicateForChangeAtKeyPath:v3];
+  keyPathForNowPlayingDataDictionary = [MEMORY[0x277CFE338] keyPathForNowPlayingDataDictionary];
+  v4 = [MEMORY[0x277CFE360] predicateForChangeAtKeyPath:keyPathForNowPlayingDataDictionary];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__PMMMusicStateProcessor__initNowPlayingPlay__block_invoke;
@@ -447,19 +447,19 @@ id __46__PMMMusicStateProcessor__initStarkDisconnect__block_invoke_36(uint64_t a
   objc_destroyWeak(&location);
 }
 
-- (void)lastPlayedWithHandler:(id)a3
+- (void)lastPlayedWithHandler:(id)handler
 {
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v6 = [(PMMMusicStateProcessor *)self queue];
+    queue = [(PMMMusicStateProcessor *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __48__PMMMusicStateProcessor_lastPlayedWithHandler___block_invoke;
     v7[3] = &unk_2785925B0;
     v7[4] = self;
-    v8 = v5;
-    dispatch_async(v6, v7);
+    v8 = handlerCopy;
+    dispatch_async(queue, v7);
   }
 
   else
@@ -468,19 +468,19 @@ id __46__PMMMusicStateProcessor__initStarkDisconnect__block_invoke_36(uint64_t a
   }
 }
 
-- (void)lastPlayedInCarWithHandler:(id)a3
+- (void)lastPlayedInCarWithHandler:(id)handler
 {
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v6 = [(PMMMusicStateProcessor *)self queue];
+    queue = [(PMMMusicStateProcessor *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __53__PMMMusicStateProcessor_lastPlayedInCarWithHandler___block_invoke;
     v7[3] = &unk_2785925B0;
     v7[4] = self;
-    v8 = v5;
-    dispatch_async(v6, v7);
+    v8 = handlerCopy;
+    dispatch_async(queue, v7);
   }
 
   else

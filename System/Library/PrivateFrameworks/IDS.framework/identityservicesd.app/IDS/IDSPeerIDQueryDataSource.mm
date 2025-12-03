@@ -1,26 +1,26 @@
 @interface IDSPeerIDQueryDataSource
-- (BOOL)hasPeerTokensForURI:(id)a3 fromURI:(id)a4 service:(id)a5;
-- (BOOL)hasQueryResultsForURI:(id)a3 fromURI:(id)a4 service:(id)a5 isForceQuery:(BOOL)a6 validThrough:(id)a7;
+- (BOOL)hasPeerTokensForURI:(id)i fromURI:(id)rI service:(id)service;
+- (BOOL)hasQueryResultsForURI:(id)i fromURI:(id)rI service:(id)service isForceQuery:(BOOL)query validThrough:(id)through;
 - (IDSIDStatusQueryController)IDStatusQueryController;
 - (IDSPeerIDManagerProtocol)peerIDManager;
-- (IDSPeerIDQueryDataSource)initWithPeerIDManager:(id)a3 IDStatusQueryController:(id)a4;
-- (unint64_t)forceQueryGracePeriodForService:(id)a3;
+- (IDSPeerIDQueryDataSource)initWithPeerIDManager:(id)manager IDStatusQueryController:(id)controller;
+- (unint64_t)forceQueryGracePeriodForService:(id)service;
 @end
 
 @implementation IDSPeerIDQueryDataSource
 
-- (IDSPeerIDQueryDataSource)initWithPeerIDManager:(id)a3 IDStatusQueryController:(id)a4
+- (IDSPeerIDQueryDataSource)initWithPeerIDManager:(id)manager IDStatusQueryController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = IDSPeerIDQueryDataSource;
   v8 = [(IDSPeerIDQueryDataSource *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_peerIDManager, v6);
-    objc_storeStrong(&v9->_IDStatusQueryController, a4);
+    objc_storeWeak(&v8->_peerIDManager, managerCopy);
+    objc_storeStrong(&v9->_IDStatusQueryController, controller);
   }
 
   return v9;
@@ -41,36 +41,36 @@
   return IDStatusQueryController;
 }
 
-- (BOOL)hasPeerTokensForURI:(id)a3 fromURI:(id)a4 service:(id)a5
+- (BOOL)hasPeerTokensForURI:(id)i fromURI:(id)rI service:(id)service
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(IDSPeerIDQueryDataSource *)self peerIDManager];
-  v12 = [v11 hasPeerTokensForURI:v10 fromURI:v9 service:v8];
+  serviceCopy = service;
+  rICopy = rI;
+  iCopy = i;
+  peerIDManager = [(IDSPeerIDQueryDataSource *)self peerIDManager];
+  v12 = [peerIDManager hasPeerTokensForURI:iCopy fromURI:rICopy service:serviceCopy];
 
   return v12;
 }
 
-- (BOOL)hasQueryResultsForURI:(id)a3 fromURI:(id)a4 service:(id)a5 isForceQuery:(BOOL)a6 validThrough:(id)a7
+- (BOOL)hasQueryResultsForURI:(id)i fromURI:(id)rI service:(id)service isForceQuery:(BOOL)query validThrough:(id)through
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v8)
+  queryCopy = query;
+  iCopy = i;
+  rICopy = rI;
+  serviceCopy = service;
+  throughCopy = through;
+  if (queryCopy)
   {
-    v16 = [(IDSPeerIDQueryDataSource *)self peerIDManager];
-    v17 = [v12 tokenFreeURI];
-    v18 = [v16 queryDateForService:v14 fromURI:v13 toURI:v17];
+    peerIDManager = [(IDSPeerIDQueryDataSource *)self peerIDManager];
+    tokenFreeURI = [iCopy tokenFreeURI];
+    tokenFreeURI4 = [peerIDManager queryDateForService:serviceCopy fromURI:rICopy toURI:tokenFreeURI];
 
-    [v18 timeIntervalSinceNow];
+    [tokenFreeURI4 timeIntervalSinceNow];
     v20 = v19;
     v21 = fabs(v19);
-    v22 = [(IDSPeerIDQueryDataSource *)self forceQueryGracePeriodForService:v14];
+    v22 = [(IDSPeerIDQueryDataSource *)self forceQueryGracePeriodForService:serviceCopy];
     v23 = v22;
-    if (!v18 || v21 > v22)
+    if (!tokenFreeURI4 || v21 > v22)
     {
       v33 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -116,13 +116,13 @@
   }
 
   v25 = [(IDSPeerIDQueryDataSource *)self peerIDManager:v36];
-  v26 = [v25 hasPeerTokensForURI:v12 fromURI:v13 service:v14 validThrough:v15 outReason:0];
+  v26 = [v25 hasPeerTokensForURI:iCopy fromURI:rICopy service:serviceCopy validThrough:throughCopy outReason:0];
 
   if ((v26 & 1) == 0)
   {
-    v28 = [(IDSPeerIDQueryDataSource *)self IDStatusQueryController];
-    v29 = [v12 tokenFreeURI];
-    v30 = [v28 cachedIDStatusForID:v29 fromURI:v13 fromService:v14 respectExpiry:1 reason:@"InternalQueryCacheCheck"];
+    iDStatusQueryController = [(IDSPeerIDQueryDataSource *)self IDStatusQueryController];
+    tokenFreeURI2 = [iCopy tokenFreeURI];
+    v30 = [iDStatusQueryController cachedIDStatusForID:tokenFreeURI2 fromURI:rICopy fromService:serviceCopy respectExpiry:1 reason:@"InternalQueryCacheCheck"];
 
     if (v30 != 2)
     {
@@ -133,15 +133,15 @@
     v31 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v12 tokenFreeURI];
+      tokenFreeURI3 = [iCopy tokenFreeURI];
       *buf = 138413058;
-      v39 = *&v12;
+      v39 = *&iCopy;
       v40 = 2112;
-      v41 = *&v13;
+      v41 = *&rICopy;
       v42 = 2112;
-      v43 = v32;
+      v43 = tokenFreeURI3;
       v44 = 2112;
-      v45 = v14;
+      v45 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Already have cached invalid results {uri: %@, fromURI: %@, strippedURI: %@, service: %@}", buf, 0x2Au);
     }
 
@@ -149,7 +149,7 @@
     {
       if (_IDSShouldLog())
       {
-        v18 = [v12 tokenFreeURI];
+        tokenFreeURI4 = [iCopy tokenFreeURI];
         _IDSLogV();
         v27 = 1;
 LABEL_26:
@@ -165,35 +165,35 @@ LABEL_28:
   return v27;
 }
 
-- (unint64_t)forceQueryGracePeriodForService:(id)a3
+- (unint64_t)forceQueryGracePeriodForService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = +[IDSServerBag sharedInstance];
   v5 = [v4 objectForKey:@"client-query-force-query-debounce"];
 
   if (v5 && ![v5 BOOLValue])
   {
-    v9 = 0;
+    integerValue = 0;
   }
 
   else
   {
     v6 = +[IDSServerBag sharedInstance];
-    v7 = [NSString stringWithFormat:@"client-query-force-query-debounce--%@", v3];
-    v8 = [v6 objectForKey:v7];
+    serviceCopy = [NSString stringWithFormat:@"client-query-force-query-debounce--%@", serviceCopy];
+    v8 = [v6 objectForKey:serviceCopy];
 
     if (v8)
     {
-      v9 = [v8 integerValue];
+      integerValue = [v8 integerValue];
     }
 
     else
     {
-      v9 = 60;
+      integerValue = 60;
     }
   }
 
-  return v9;
+  return integerValue;
 }
 
 - (IDSPeerIDManagerProtocol)peerIDManager

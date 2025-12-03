@@ -1,27 +1,27 @@
 @interface CNChangeHistoryDifferentMeCardEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNChangeHistoryDifferentMeCardEvent)init;
-- (CNChangeHistoryDifferentMeCardEvent)initWithCoder:(id)a3;
-- (CNChangeHistoryDifferentMeCardEvent)initWithContactIdentifier:(id)a3;
+- (CNChangeHistoryDifferentMeCardEvent)initWithCoder:(id)coder;
+- (CNChangeHistoryDifferentMeCardEvent)initWithContactIdentifier:(id)identifier;
 - (id)description;
-- (int64_t)comparisonResultWithinSameClass:(id)a3;
+- (int64_t)comparisonResultWithinSameClass:(id)class;
 - (unint64_t)hash;
-- (void)acceptEventVisitor:(id)a3;
+- (void)acceptEventVisitor:(id)visitor;
 @end
 
 @implementation CNChangeHistoryDifferentMeCardEvent
 
 - (CNChangeHistoryDifferentMeCardEvent)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNChangeHistoryDifferentMeCardEvent)initWithContactIdentifier:(id)a3
+- (CNChangeHistoryDifferentMeCardEvent)initWithContactIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  identifierCopy = identifier;
+  if (!identifierCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (CNGuardOSLog_cn_once_token_0_3 != -1)
     {
@@ -40,7 +40,7 @@
   v6 = [(CNChangeHistoryDifferentMeCardEvent *)&v11 init];
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [identifierCopy copy];
     contactIdentifier = v6->_contactIdentifier;
     v6->_contactIdentifier = v7;
 
@@ -50,26 +50,26 @@
   return v6;
 }
 
-- (CNChangeHistoryDifferentMeCardEvent)initWithCoder:(id)a3
+- (CNChangeHistoryDifferentMeCardEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contactIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contactIdentifier"];
 
   v6 = [(CNChangeHistoryDifferentMeCardEvent *)self initWithContactIdentifier:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__CNChangeHistoryDifferentMeCardEvent_isEqual___block_invoke;
   v8[3] = &unk_1E7412228;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = equalCopy;
+  v6 = equalCopy;
   LOBYTE(self) = [v5 isObject:self memberOfSameClassAndEqualTo:v6 withBlocks:{v8, 0}];
 
   return self;
@@ -106,29 +106,29 @@ uint64_t __43__CNChangeHistoryDifferentMeCardEvent_hash__block_invoke(uint64_t a
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNChangeHistoryDifferentMeCardEvent *)self contactIdentifier];
-  v5 = [v3 appendName:@"contactIdentifier" object:v4];
+  contactIdentifier = [(CNChangeHistoryDifferentMeCardEvent *)self contactIdentifier];
+  v5 = [v3 appendName:@"contactIdentifier" object:contactIdentifier];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (void)acceptEventVisitor:(id)a3
+- (void)acceptEventVisitor:(id)visitor
 {
-  v4 = a3;
-  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:v4];
+  visitorCopy = visitor;
+  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:visitorCopy];
 
   [(CNSafeChangeHistoryEventVisitorWrapper *)v5 visitDifferentMeCardEvent:self];
 }
 
-- (int64_t)comparisonResultWithinSameClass:(id)a3
+- (int64_t)comparisonResultWithinSameClass:(id)class
 {
-  v4 = a3;
-  v5 = [(CNChangeHistoryDifferentMeCardEvent *)self contactIdentifier];
-  v6 = [v4 contactIdentifier];
+  classCopy = class;
+  contactIdentifier = [(CNChangeHistoryDifferentMeCardEvent *)self contactIdentifier];
+  contactIdentifier2 = [classCopy contactIdentifier];
 
-  v7 = [v5 compare:v6];
+  v7 = [contactIdentifier compare:contactIdentifier2];
   return v7;
 }
 

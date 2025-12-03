@@ -11,7 +11,7 @@
   v14.receiver = self;
   v14.super_class = NMSIncomingResponse;
   v4 = [(NMSIncomingResponse *)&v14 description];
-  v5 = [(NMSIncomingResponse *)self messageID];
+  messageID = [(NMSIncomingResponse *)self messageID];
   pbResponse = self->_pbResponse;
   if (pbResponse)
   {
@@ -25,9 +25,9 @@
     v9 = @"none";
   }
 
-  v10 = [(NMSIncomingResponse *)self idsIdentifier];
-  v11 = [(NMSIncomingResponse *)self data];
-  v12 = [v3 initWithFormat:@"%@ {messageID=%hu, protobuf class=%@, idsID=%@, data=%lu bytes}", v4, v5, v9, v10, objc_msgSend(v11, "length")];
+  idsIdentifier = [(NMSIncomingResponse *)self idsIdentifier];
+  data = [(NMSIncomingResponse *)self data];
+  v12 = [v3 initWithFormat:@"%@ {messageID=%hu, protobuf class=%@, idsID=%@, data=%lu bytes}", v4, messageID, v9, idsIdentifier, objc_msgSend(data, "length")];
 
   if (pbResponse)
   {
@@ -59,20 +59,20 @@
     [(NMSObfuscatableDescription *)v3 addDescription:@"Protobuf class" value:@"none"];
   }
 
-  v8 = [(NMSIncomingResponse *)self idsIdentifier];
-  [(NMSObfuscatableDescription *)v3 addDescription:@"IDS ID" value:v8];
+  idsIdentifier = [(NMSIncomingResponse *)self idsIdentifier];
+  [(NMSObfuscatableDescription *)v3 addDescription:@"IDS ID" value:idsIdentifier];
 
-  v9 = [(NMSIncomingResponse *)self requestIDSIdentifier];
-  [(NMSObfuscatableDescription *)v3 addDescription:@"Request IDS ID" value:v9];
+  requestIDSIdentifier = [(NMSIncomingResponse *)self requestIDSIdentifier];
+  [(NMSObfuscatableDescription *)v3 addDescription:@"Request IDS ID" value:requestIDSIdentifier];
 
-  v10 = [(NMSIncomingResponse *)self requestSent];
-  [(NMSObfuscatableDescription *)v3 addDescription:@"Request sent" value:v10];
+  requestSent = [(NMSIncomingResponse *)self requestSent];
+  [(NMSObfuscatableDescription *)v3 addDescription:@"Request sent" value:requestSent];
 
-  v11 = [(NMSIncomingResponse *)self data];
-  [(NMSObfuscatableDescription *)v3 addObfuscatedDescription:@"Data" value:v11];
+  data = [(NMSIncomingResponse *)self data];
+  [(NMSObfuscatableDescription *)v3 addObfuscatedDescription:@"Data" value:data];
 
-  v12 = [(NMSIncomingResponse *)self requestPersistentUserInfo];
-  [(NMSObfuscatableDescription *)v3 addDescription:@"Request user info" value:v12];
+  requestPersistentUserInfo = [(NMSIncomingResponse *)self requestPersistentUserInfo];
+  [(NMSObfuscatableDescription *)v3 addDescription:@"Request user info" value:requestPersistentUserInfo];
 
   return v3;
 }

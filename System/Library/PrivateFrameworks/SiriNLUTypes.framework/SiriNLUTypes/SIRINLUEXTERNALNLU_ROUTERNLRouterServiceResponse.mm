@@ -1,42 +1,42 @@
 @interface SIRINLUEXTERNALNLU_ROUTERNLRouterServiceResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRoutingDecision:(id)a3;
-- (int)StringAsRoutingDecisionSource:(id)a3;
-- (int)StringAsStatus:(id)a3;
+- (int)StringAsRoutingDecision:(id)decision;
+- (int)StringAsRoutingDecisionSource:(id)source;
+- (int)StringAsStatus:(id)status;
 - (int)routingDecision;
 - (int)routingDecisionSource;
 - (int)status;
 - (unint64_t)hash;
-- (void)addQueryRewrites:(id)a3;
-- (void)addSiriXRewriteUtterances:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRoutingDecisionSource:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addQueryRewrites:(id)rewrites;
+- (void)addSiriXRewriteUtterances:(id)utterances;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRoutingDecisionSource:(BOOL)source;
+- (void)setHasStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALNLU_ROUTERNLRouterServiceResponse
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 52);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 52);
   if (v6)
   {
-    self->_routingDecision = *(v4 + 8);
+    self->_routingDecision = *(fromCopy + 8);
     *&self->_has |= 1u;
-    v6 = *(v4 + 52);
+    v6 = *(fromCopy + 52);
   }
 
   if ((v6 & 4) != 0)
   {
-    self->_status = *(v4 + 12);
+    self->_status = *(fromCopy + 12);
     *&self->_has |= 4u;
   }
 
@@ -44,7 +44,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v8)
   {
@@ -166,24 +166,24 @@ LABEL_6:
   return v8 ^ v9 ^ [(NSString *)self->_heuristicRule hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(equalCopy + 52);
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_routingDecision != *(v4 + 8))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_routingDecision != *(equalCopy + 8))
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
 LABEL_25:
     v11 = 0;
@@ -192,25 +192,25 @@ LABEL_25:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_status != *(v4 + 12))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_status != *(equalCopy + 12))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_25;
   }
 
   siriXRewriteUtterances = self->_siriXRewriteUtterances;
-  if (siriXRewriteUtterances | *(v4 + 5) && ![(NSMutableArray *)siriXRewriteUtterances isEqual:?])
+  if (siriXRewriteUtterances | *(equalCopy + 5) && ![(NSMutableArray *)siriXRewriteUtterances isEqual:?])
   {
     goto LABEL_25;
   }
 
   queryRewrites = self->_queryRewrites;
-  if (queryRewrites | *(v4 + 3))
+  if (queryRewrites | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)queryRewrites isEqual:?])
     {
@@ -218,28 +218,28 @@ LABEL_25:
     }
   }
 
-  v8 = *(v4 + 52);
+  v8 = *(equalCopy + 52);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_routingDecisionSource != *(v4 + 9))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_routingDecisionSource != *(equalCopy + 9))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_25;
   }
 
   genAiMetadata = self->_genAiMetadata;
-  if (genAiMetadata | *(v4 + 1) && ![(SIRINLUEXTERNALNLU_ROUTERNLRoutingGenAIMetadata *)genAiMetadata isEqual:?])
+  if (genAiMetadata | *(equalCopy + 1) && ![(SIRINLUEXTERNALNLU_ROUTERNLRoutingGenAIMetadata *)genAiMetadata isEqual:?])
   {
     goto LABEL_25;
   }
 
   heuristicRule = self->_heuristicRule;
-  if (heuristicRule | *(v4 + 2))
+  if (heuristicRule | *(equalCopy + 2))
   {
     v11 = [(NSString *)heuristicRule isEqual:?];
   }
@@ -254,10 +254,10 @@ LABEL_26:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -292,7 +292,7 @@ LABEL_26:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v30 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v30 + 1) + 8 * i) copyWithZone:zone];
         [v6 addSiriXRewriteUtterances:v13];
       }
 
@@ -321,7 +321,7 @@ LABEL_26:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v26 + 1) + 8 * j) copyWithZone:{a3, v26}];
+        v19 = [*(*(&v26 + 1) + 8 * j) copyWithZone:{zone, v26}];
         [v6 addQueryRewrites:v19];
       }
 
@@ -337,11 +337,11 @@ LABEL_26:
     *(v6 + 52) |= 2u;
   }
 
-  v20 = [(SIRINLUEXTERNALNLU_ROUTERNLRoutingGenAIMetadata *)self->_genAiMetadata copyWithZone:a3, v26];
+  v20 = [(SIRINLUEXTERNALNLU_ROUTERNLRoutingGenAIMetadata *)self->_genAiMetadata copyWithZone:zone, v26];
   v21 = *(v6 + 8);
   *(v6 + 8) = v20;
 
-  v22 = [(NSString *)self->_heuristicRule copyWithZone:a3];
+  v22 = [(NSString *)self->_heuristicRule copyWithZone:zone];
   v23 = *(v6 + 16);
   *(v6 + 16) = v22;
 
@@ -349,31 +349,31 @@ LABEL_26:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[8] = self->_routingDecision;
-    *(v4 + 52) |= 1u;
+    toCopy[8] = self->_routingDecision;
+    *(toCopy + 52) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    v4[12] = self->_status;
-    *(v4 + 52) |= 4u;
+    toCopy[12] = self->_status;
+    *(toCopy + 52) |= 4u;
   }
 
-  v15 = v4;
+  v15 = toCopy;
   if ([(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceResponse *)self siriXRewriteUtterancesCount])
   {
     [v15 clearSiriXRewriteUtterances];
-    v6 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceResponse *)self siriXRewriteUtterancesCount];
-    if (v6)
+    siriXRewriteUtterancesCount = [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceResponse *)self siriXRewriteUtterancesCount];
+    if (siriXRewriteUtterancesCount)
     {
-      v7 = v6;
+      v7 = siriXRewriteUtterancesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceResponse *)self siriXRewriteUtterancesAtIndex:i];
@@ -385,10 +385,10 @@ LABEL_26:
   if ([(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceResponse *)self queryRewritesCount])
   {
     [v15 clearQueryRewrites];
-    v10 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceResponse *)self queryRewritesCount];
-    if (v10)
+    queryRewritesCount = [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceResponse *)self queryRewritesCount];
+    if (queryRewritesCount)
     {
-      v11 = v10;
+      v11 = queryRewritesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceResponse *)self queryRewritesAtIndex:j];
@@ -417,10 +417,10 @@ LABEL_26:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -515,7 +515,7 @@ LABEL_26:
 - (id)dictionaryRepresentation
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -530,7 +530,7 @@ LABEL_26:
       v6 = off_1E8327ED0[routingDecision];
     }
 
-    [v3 setObject:v6 forKey:@"routing_decision"];
+    [dictionary setObject:v6 forKey:@"routing_decision"];
 
     has = self->_has;
   }
@@ -548,7 +548,7 @@ LABEL_26:
       v8 = off_1E8327F08[status];
     }
 
-    [v3 setObject:v8 forKey:@"status"];
+    [dictionary setObject:v8 forKey:@"status"];
   }
 
   if ([(NSMutableArray *)self->_siriXRewriteUtterances count])
@@ -573,8 +573,8 @@ LABEL_26:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -583,7 +583,7 @@ LABEL_26:
       while (v12);
     }
 
-    [v3 setObject:v9 forKey:@"siri_x_rewrite_utterances"];
+    [dictionary setObject:v9 forKey:@"siri_x_rewrite_utterances"];
   }
 
   if ([(NSMutableArray *)self->_queryRewrites count])
@@ -608,8 +608,8 @@ LABEL_26:
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v30 + 1) + 8 * j) dictionaryRepresentation];
-          [v16 addObject:v22];
+          dictionaryRepresentation2 = [*(*(&v30 + 1) + 8 * j) dictionaryRepresentation];
+          [v16 addObject:dictionaryRepresentation2];
         }
 
         v19 = [(NSMutableArray *)v17 countByEnumeratingWithState:&v30 objects:v38 count:16];
@@ -618,7 +618,7 @@ LABEL_26:
       while (v19);
     }
 
-    [v3 setObject:v16 forKey:@"query_rewrites"];
+    [dictionary setObject:v16 forKey:@"query_rewrites"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -634,25 +634,25 @@ LABEL_26:
       v24 = off_1E8327F38[routingDecisionSource];
     }
 
-    [v3 setObject:v24 forKey:@"routingDecisionSource"];
+    [dictionary setObject:v24 forKey:@"routingDecisionSource"];
   }
 
   genAiMetadata = self->_genAiMetadata;
   if (genAiMetadata)
   {
-    v26 = [(SIRINLUEXTERNALNLU_ROUTERNLRoutingGenAIMetadata *)genAiMetadata dictionaryRepresentation];
-    [v3 setObject:v26 forKey:@"gen_ai_metadata"];
+    dictionaryRepresentation3 = [(SIRINLUEXTERNALNLU_ROUTERNLRoutingGenAIMetadata *)genAiMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"gen_ai_metadata"];
   }
 
   heuristicRule = self->_heuristicRule;
   if (heuristicRule)
   {
-    [v3 setObject:heuristicRule forKey:@"heuristic_rule"];
+    [dictionary setObject:heuristicRule forKey:@"heuristic_rule"];
   }
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -661,31 +661,31 @@ LABEL_26:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALNLU_ROUTERNLRouterServiceResponse;
   v4 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceResponse *)&v8 description];
-  v5 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsRoutingDecisionSource:(id)a3
+- (int)StringAsRoutingDecisionSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NL_ROUTING_DECISION_SOURCE_UNSET"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"NL_ROUTING_DECISION_SOURCE_UNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NL_ROUTING_DECISION_SOURCE_OVERRIDE"])
+  else if ([sourceCopy isEqualToString:@"NL_ROUTING_DECISION_SOURCE_OVERRIDE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NL_ROUTING_DECISION_SOURCE_MODEL"])
+  else if ([sourceCopy isEqualToString:@"NL_ROUTING_DECISION_SOURCE_MODEL"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NL_ROUTING_DECISION_SOURCE_HEURISTIC_RULE"])
+  else if ([sourceCopy isEqualToString:@"NL_ROUTING_DECISION_SOURCE_HEURISTIC_RULE"])
   {
     v4 = 3;
   }
@@ -698,9 +698,9 @@ LABEL_26:
   return v4;
 }
 
-- (void)setHasRoutingDecisionSource:(BOOL)a3
+- (void)setHasRoutingDecisionSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 2;
   }
@@ -726,71 +726,71 @@ LABEL_26:
   }
 }
 
-- (void)addQueryRewrites:(id)a3
+- (void)addQueryRewrites:(id)rewrites
 {
-  v4 = a3;
+  rewritesCopy = rewrites;
   queryRewrites = self->_queryRewrites;
-  v8 = v4;
+  v8 = rewritesCopy;
   if (!queryRewrites)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_queryRewrites;
     self->_queryRewrites = v6;
 
-    v4 = v8;
+    rewritesCopy = v8;
     queryRewrites = self->_queryRewrites;
   }
 
-  [(NSMutableArray *)queryRewrites addObject:v4];
+  [(NSMutableArray *)queryRewrites addObject:rewritesCopy];
 }
 
-- (void)addSiriXRewriteUtterances:(id)a3
+- (void)addSiriXRewriteUtterances:(id)utterances
 {
-  v4 = a3;
+  utterancesCopy = utterances;
   siriXRewriteUtterances = self->_siriXRewriteUtterances;
-  v8 = v4;
+  v8 = utterancesCopy;
   if (!siriXRewriteUtterances)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_siriXRewriteUtterances;
     self->_siriXRewriteUtterances = v6;
 
-    v4 = v8;
+    utterancesCopy = v8;
     siriXRewriteUtterances = self->_siriXRewriteUtterances;
   }
 
-  [(NSMutableArray *)siriXRewriteUtterances addObject:v4];
+  [(NSMutableArray *)siriXRewriteUtterances addObject:utterancesCopy];
 }
 
-- (int)StringAsStatus:(id)a3
+- (int)StringAsStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NL_ROUTER_SERVICE_RESPONSE_STATUS_UNSET"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"NL_ROUTER_SERVICE_RESPONSE_STATUS_UNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NL_ROUTER_SERVICE_RESPONSE_STATUS_SUCCEEDED"])
+  else if ([statusCopy isEqualToString:@"NL_ROUTER_SERVICE_RESPONSE_STATUS_SUCCEEDED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NL_ROUTER_SERVICE_RESPONSE_STATUS_CLIENT_NOT_INITIALIZED"])
+  else if ([statusCopy isEqualToString:@"NL_ROUTER_SERVICE_RESPONSE_STATUS_CLIENT_NOT_INITIALIZED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NL_ROUTER_SERVICE_RESPONSE_STATUS_INPUT_INVALID"])
+  else if ([statusCopy isEqualToString:@"NL_ROUTER_SERVICE_RESPONSE_STATUS_INPUT_INVALID"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NL_ROUTER_SERVICE_RESPONSE_STATUS_NO_CLIENT_RESPONSE"])
+  else if ([statusCopy isEqualToString:@"NL_ROUTER_SERVICE_RESPONSE_STATUS_NO_CLIENT_RESPONSE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NL_ROUTER_SERVICE_RESPONSE_STATUS_OVERRIDES_MATCHED"])
+  else if ([statusCopy isEqualToString:@"NL_ROUTER_SERVICE_RESPONSE_STATUS_OVERRIDES_MATCHED"])
   {
     v4 = 5;
   }
@@ -803,9 +803,9 @@ LABEL_26:
   return v4;
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 4;
   }
@@ -831,40 +831,40 @@ LABEL_26:
   }
 }
 
-- (int)StringAsRoutingDecision:(id)a3
+- (int)StringAsRoutingDecision:(id)decision
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NL_ROUTING_DECISION_UNSET"])
+  decisionCopy = decision;
+  if ([decisionCopy isEqualToString:@"NL_ROUTING_DECISION_UNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NL_ROUTING_DECISION_SIRI_X_NO_REWRITE"])
+  else if ([decisionCopy isEqualToString:@"NL_ROUTING_DECISION_SIRI_X_NO_REWRITE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NL_ROUTING_DECISION_SIRI_X_REWRITE"])
+  else if ([decisionCopy isEqualToString:@"NL_ROUTING_DECISION_SIRI_X_REWRITE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NL_ROUTING_DECISION_PLANNER"])
+  else if ([decisionCopy isEqualToString:@"NL_ROUTING_DECISION_PLANNER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NL_ROUTING_DECISION_QUERY_REWRITE"])
+  else if ([decisionCopy isEqualToString:@"NL_ROUTING_DECISION_QUERY_REWRITE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NL_ROUTING_DECISION_GEN_AI"])
+  else if ([decisionCopy isEqualToString:@"NL_ROUTING_DECISION_GEN_AI"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"NL_ROUTING_DECISION_SEARCH"])
+  else if ([decisionCopy isEqualToString:@"NL_ROUTING_DECISION_SEARCH"])
   {
     v4 = 6;
   }

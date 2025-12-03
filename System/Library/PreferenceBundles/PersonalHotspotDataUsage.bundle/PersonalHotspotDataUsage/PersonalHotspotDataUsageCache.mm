@@ -1,17 +1,17 @@
 @interface PersonalHotspotDataUsageCache
 + (id)sharedInstance;
-- (PersonalHotspotDataUsageCache)initWithCoreTelephonyClient:(id)a3;
-- (id)hotspotClientIDsForPeriod:(unint64_t)a3 mruMap:(id *)a4;
+- (PersonalHotspotDataUsageCache)initWithCoreTelephonyClient:(id)client;
+- (id)hotspotClientIDsForPeriod:(unint64_t)period mruMap:(id *)map;
 - (id)initPrivate;
-- (id)phClientInfoForID:(id)a3;
-- (id)usageForBundleID:(id)a3 inPeriod:(unint64_t)a4;
-- (unint64_t)totalHotspotClientUsageForPeriod:(unint64_t)a3;
-- (unint64_t)usageForHotspotClientID:(id)a3 inPeriod:(unint64_t)a4;
+- (id)phClientInfoForID:(id)d;
+- (id)usageForBundleID:(id)d inPeriod:(unint64_t)period;
+- (unint64_t)totalHotspotClientUsageForPeriod:(unint64_t)period;
+- (unint64_t)usageForHotspotClientID:(id)d inPeriod:(unint64_t)period;
 - (void)_clearCache;
 - (void)_handleUsageOrInfoChanged;
 - (void)dataRatesChanged;
 - (void)fetchDeviceDataUsage;
-- (void)fetchDeviceDataUsageWithCompletion:(id)a3;
+- (void)fetchDeviceDataUsageWithCompletion:(id)completion;
 - (void)fetchHotspotClientsUsage;
 - (void)refreshCacheIfNeeded;
 - (void)refreshDataUsageUINotification;
@@ -46,9 +46,9 @@
   return v8;
 }
 
-- (PersonalHotspotDataUsageCache)initWithCoreTelephonyClient:(id)a3
+- (PersonalHotspotDataUsageCache)initWithCoreTelephonyClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = PersonalHotspotDataUsageCache;
   v6 = [(PersonalHotspotDataUsageCache *)&v9 init];
@@ -56,7 +56,7 @@
   if (v6)
   {
     [(PersonalHotspotDataUsageCache *)v6 _clearCache];
-    objc_storeStrong(&v7->_ctClient, a3);
+    objc_storeStrong(&v7->_ctClient, client);
     [(CoreTelephonyClient *)v7->_ctClient setDelegate:v7];
   }
 
@@ -97,9 +97,9 @@
   }
 }
 
-- (void)fetchDeviceDataUsageWithCompletion:(id)a3
+- (void)fetchDeviceDataUsageWithCompletion:(id)completion
 {
-  [(PersonalHotspotDataUsageCache *)self setRefreshCompletionHandler:a3];
+  [(PersonalHotspotDataUsageCache *)self setRefreshCompletionHandler:completion];
 
   [(PersonalHotspotDataUsageCache *)self fetchDeviceDataUsage];
 }
@@ -141,23 +141,23 @@
   }
 }
 
-- (id)hotspotClientIDsForPeriod:(unint64_t)a3 mruMap:(id *)a4
+- (id)hotspotClientIDsForPeriod:(unint64_t)period mruMap:(id *)map
 {
   v33 = [(PersonalHotspotDataUsageCache *)self totalHotspotClientUsageForPeriod:?];
   v42 = objc_alloc_init(NSDateFormatter);
   [v42 setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
-  v6 = [(PersonalHotspotDataUsageCache *)self hotspotClientsUsage];
+  hotspotClientsUsage = [(PersonalHotspotDataUsageCache *)self hotspotClientsUsage];
 
-  if (!v6)
+  if (!hotspotClientsUsage)
   {
     [(PersonalHotspotDataUsageCache *)self fetchHotspotClientsUsage];
   }
 
   v7 = objc_opt_new();
-  v8 = [(PersonalHotspotDataUsageCache *)self hotspotClientsUsage];
-  v9 = [NSNumber numberWithUnsignedInteger:a3];
-  v10 = [v9 stringValue];
-  v11 = [v8 objectForKeyedSubscript:v10];
+  hotspotClientsUsage2 = [(PersonalHotspotDataUsageCache *)self hotspotClientsUsage];
+  v9 = [NSNumber numberWithUnsignedInteger:period];
+  stringValue = [v9 stringValue];
+  v11 = [hotspotClientsUsage2 objectForKeyedSubscript:stringValue];
 
   v32 = v11;
   if (v11)
@@ -232,15 +232,15 @@
                     v53 = v15;
                   }
 
-                  v23 = [v19 unsignedIntegerValue];
-                  v24 = [v18 unsignedIntegerValue];
+                  unsignedIntegerValue = [v19 unsignedIntegerValue];
+                  unsignedIntegerValue2 = [v18 unsignedIntegerValue];
                   v25 = [v17 objectForKey:v45];
                   if (v25)
                   {
                     [v7 addObject:v25];
-                    if (a4)
+                    if (map)
                     {
-                      v26 = *a4;
+                      v26 = *map;
                       v27 = [v26 objectForKeyedSubscript:v25];
                       if (v27 && ([v42 dateFromString:v27], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
                       {
@@ -268,7 +268,7 @@
                     }
                   }
 
-                  v11 = &v52[v23 + v24];
+                  v11 = &v52[unsignedIntegerValue + unsignedIntegerValue2];
 
                   v15 = v53;
                 }
@@ -314,17 +314,17 @@
   return v30;
 }
 
-- (id)phClientInfoForID:(id)a3
+- (id)phClientInfoForID:(id)d
 {
-  v4 = a3;
-  v5 = [(PersonalHotspotDataUsageCache *)self hotspotClientsUsage];
+  dCopy = d;
+  hotspotClientsUsage = [(PersonalHotspotDataUsageCache *)self hotspotClientsUsage];
 
-  if (!v5)
+  if (!hotspotClientsUsage)
   {
     [(PersonalHotspotDataUsageCache *)self fetchHotspotClientsUsage];
   }
 
-  if ([v4 isEqualToString:@"Others"])
+  if ([dCopy isEqualToString:@"Others"])
   {
     v12[0] = kWiFiDataUsageInterfacePeerIDKey;
     v12[1] = kWiFiSettingDataUsageInterfacePeerDisplayNameKey;
@@ -338,30 +338,30 @@
 
   else
   {
-    v10 = [(PersonalHotspotDataUsageCache *)self hotspotClientsUsage];
-    v6 = [v10 objectForKey:kWiFiSettingDataUsagePHClientsKey];
+    hotspotClientsUsage2 = [(PersonalHotspotDataUsageCache *)self hotspotClientsUsage];
+    v6 = [hotspotClientsUsage2 objectForKey:kWiFiSettingDataUsagePHClientsKey];
 
-    v9 = [v6 objectForKey:v4];
+    v9 = [v6 objectForKey:dCopy];
   }
 
   return v9;
 }
 
-- (unint64_t)totalHotspotClientUsageForPeriod:(unint64_t)a3
+- (unint64_t)totalHotspotClientUsageForPeriod:(unint64_t)period
 {
   [(PersonalHotspotDataUsageCache *)self refreshCacheIfNeeded];
-  v5 = [(PersonalHotspotDataUsageCache *)self usageForBundleID:@"com.apple.datausage.personalhotspot" inPeriod:a3];
+  v5 = [(PersonalHotspotDataUsageCache *)self usageForBundleID:@"com.apple.datausage.personalhotspot" inPeriod:period];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 native];
-    v8 = [v7 cellularHome];
-    v9 = [v6 native];
-    v10 = &v8[[v9 cellularRoaming]];
-    v11 = [v6 proxied];
-    v12 = [v11 cellularHome];
-    v13 = [v6 proxied];
-    v14 = &v10[[v13 cellularRoaming] + v12];
+    native = [v5 native];
+    cellularHome = [native cellularHome];
+    native2 = [v6 native];
+    v10 = &cellularHome[[native2 cellularRoaming]];
+    proxied = [v6 proxied];
+    cellularHome2 = [proxied cellularHome];
+    proxied2 = [v6 proxied];
+    v14 = &v10[[proxied2 cellularRoaming] + cellularHome2];
   }
 
   else
@@ -372,21 +372,21 @@
   return v14;
 }
 
-- (unint64_t)usageForHotspotClientID:(id)a3 inPeriod:(unint64_t)a4
+- (unint64_t)usageForHotspotClientID:(id)d inPeriod:(unint64_t)period
 {
-  v6 = a3;
-  v7 = [(PersonalHotspotDataUsageCache *)self totalHotspotClientUsageForPeriod:a4];
-  v8 = [(PersonalHotspotDataUsageCache *)self hotspotClientsUsage];
+  dCopy = d;
+  v7 = [(PersonalHotspotDataUsageCache *)self totalHotspotClientUsageForPeriod:period];
+  hotspotClientsUsage = [(PersonalHotspotDataUsageCache *)self hotspotClientsUsage];
 
-  if (!v8)
+  if (!hotspotClientsUsage)
   {
     [(PersonalHotspotDataUsageCache *)self fetchHotspotClientsUsage];
   }
 
-  v9 = [(PersonalHotspotDataUsageCache *)self hotspotClientsUsage];
-  v10 = [NSNumber numberWithUnsignedInteger:a4];
-  v11 = [v10 stringValue];
-  v12 = [v9 objectForKeyedSubscript:v11];
+  hotspotClientsUsage2 = [(PersonalHotspotDataUsageCache *)self hotspotClientsUsage];
+  v10 = [NSNumber numberWithUnsignedInteger:period];
+  stringValue = [v10 stringValue];
+  v12 = [hotspotClientsUsage2 objectForKeyedSubscript:stringValue];
 
   v33 = v7;
   if (v12 && [v12 count])
@@ -441,23 +441,23 @@
                 v20 = [v19 objectForKey:v15];
                 v21 = [v19 objectForKey:v42];
                 v22 = [v19 objectForKey:v41];
-                v23 = [v22 unsignedIntegerValue];
-                v24 = [v21 unsignedIntegerValue];
-                if ([v20 isEqualToString:v6])
+                unsignedIntegerValue = [v22 unsignedIntegerValue];
+                unsignedIntegerValue2 = [v21 unsignedIntegerValue];
+                if ([v20 isEqualToString:dCopy])
                 {
                   v40 = v13;
                   v25 = v15;
-                  v26 = v6;
-                  v27 = [v22 unsignedIntegerValue];
-                  v28 = [v21 unsignedIntegerValue];
-                  v29 = &v14[v27];
-                  v6 = v26;
+                  v26 = dCopy;
+                  unsignedIntegerValue3 = [v22 unsignedIntegerValue];
+                  unsignedIntegerValue4 = [v21 unsignedIntegerValue];
+                  v29 = &v14[unsignedIntegerValue3];
+                  dCopy = v26;
                   v15 = v25;
                   v13 = v40;
-                  v14 = &v28[v29];
+                  v14 = &unsignedIntegerValue4[v29];
                 }
 
-                v13 = &v13[v23 + v24];
+                v13 = &v13[unsignedIntegerValue + unsignedIntegerValue2];
               }
 
               v44 = [v39 countByEnumeratingWithState:&v45 objects:v53 count:16];
@@ -485,7 +485,7 @@
     v14 = 0;
   }
 
-  if (([v6 isEqualToString:@"Others"] & (v33 > v13)) != 0)
+  if (([dCopy isEqualToString:@"Others"] & (v33 > v13)) != 0)
   {
     v30 = v33 - v13;
   }
@@ -498,12 +498,12 @@
   return v30;
 }
 
-- (id)usageForBundleID:(id)a3 inPeriod:(unint64_t)a4
+- (id)usageForBundleID:(id)d inPeriod:(unint64_t)period
 {
-  v6 = a3;
+  dCopy = d;
   [(PersonalHotspotDataUsageCache *)self refreshCacheIfNeeded];
-  v7 = [(PersonalHotspotDataUsageCache *)self cachedDeviceDataUsage];
-  v8 = [v7 appDataUsageForPeriod:a4];
+  cachedDeviceDataUsage = [(PersonalHotspotDataUsageCache *)self cachedDeviceDataUsage];
+  v8 = [cachedDeviceDataUsage appDataUsageForPeriod:period];
 
   v79 = 0u;
   v80 = 0u;
@@ -525,12 +525,12 @@
         }
 
         v14 = *(*(&v77 + 1) + 8 * i);
-        v15 = [v14 bundleId];
-        v16 = [v6 isEqualToString:v15];
+        bundleId = [v14 bundleId];
+        v16 = [dCopy isEqualToString:bundleId];
 
         if (v16)
         {
-          v50 = [v14 used];
+          used = [v14 used];
           v19 = v9;
           goto LABEL_52;
         }
@@ -546,9 +546,9 @@
     }
   }
 
-  v17 = [(PersonalHotspotDataUsageCache *)self cachedDeviceDataUsage];
-  v58 = a4;
-  v18 = [v17 proxiedOnlyAppDataUsageForPeriod:a4];
+  cachedDeviceDataUsage2 = [(PersonalHotspotDataUsageCache *)self cachedDeviceDataUsage];
+  periodCopy = period;
+  v18 = [cachedDeviceDataUsage2 proxiedOnlyAppDataUsageForPeriod:period];
 
   v75 = 0u;
   v76 = 0u;
@@ -570,12 +570,12 @@
         }
 
         v24 = *(*(&v73 + 1) + 8 * j);
-        v25 = [v24 bundleId];
-        v26 = [v6 isEqualToString:v25];
+        bundleId2 = [v24 bundleId];
+        v26 = [dCopy isEqualToString:bundleId2];
 
         if (v26)
         {
-          v50 = [v24 used];
+          used = [v24 used];
           v56 = v19;
           goto LABEL_51;
         }
@@ -591,8 +591,8 @@
     }
   }
 
-  v27 = [(PersonalHotspotDataUsageCache *)self cachedDeviceDataUsage];
-  v28 = [v27 systemServiceDataUsageForPeriod:v58];
+  cachedDeviceDataUsage3 = [(PersonalHotspotDataUsageCache *)self cachedDeviceDataUsage];
+  v28 = [cachedDeviceDataUsage3 systemServiceDataUsageForPeriod:periodCopy];
 
   v71 = 0u;
   v72 = 0u;
@@ -615,12 +615,12 @@
         }
 
         v34 = *(*(&v69 + 1) + 8 * k);
-        v35 = [v34 bundleId];
-        v36 = [v6 isEqualToString:v35];
+        bundleId3 = [v34 bundleId];
+        v36 = [dCopy isEqualToString:bundleId3];
 
         if (v36)
         {
-          v50 = [v34 used];
+          used = [v34 used];
           v56 = obj;
           v46 = obj;
           goto LABEL_50;
@@ -638,8 +638,8 @@
     }
   }
 
-  v37 = [(PersonalHotspotDataUsageCache *)self cachedDeviceDataUsage];
-  v38 = [v37 uninstalledAppDataUsageForPeriod:v58];
+  cachedDeviceDataUsage4 = [(PersonalHotspotDataUsageCache *)self cachedDeviceDataUsage];
+  v38 = [cachedDeviceDataUsage4 uninstalledAppDataUsageForPeriod:periodCopy];
 
   v67 = 0u;
   v68 = 0u;
@@ -661,12 +661,12 @@
         }
 
         v43 = *(*(&v65 + 1) + 8 * m);
-        v44 = [v43 bundleId];
-        v45 = [v6 isEqualToString:v44];
+        bundleId4 = [v43 bundleId];
+        v45 = [dCopy isEqualToString:bundleId4];
 
         if (v45)
         {
-          v50 = [v43 used];
+          used = [v43 used];
           v46 = v59;
           v49 = v59;
           goto LABEL_49;
@@ -685,21 +685,21 @@
 
   v46 = v59;
 
-  v47 = [(PersonalHotspotDataUsageCache *)self cachedDeviceDataUsage];
-  v48 = [v47 hiddenAppDataUsageForPeriod:v58];
+  cachedDeviceDataUsage5 = [(PersonalHotspotDataUsageCache *)self cachedDeviceDataUsage];
+  v48 = [cachedDeviceDataUsage5 hiddenAppDataUsageForPeriod:periodCopy];
 
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
   v49 = v48;
-  v50 = [v49 countByEnumeratingWithState:&v61 objects:v81 count:16];
-  if (v50)
+  used = [v49 countByEnumeratingWithState:&v61 objects:v81 count:16];
+  if (used)
   {
     v51 = *v62;
     while (2)
     {
-      for (n = 0; n != v50; n = n + 1)
+      for (n = 0; n != used; n = n + 1)
       {
         if (*v62 != v51)
         {
@@ -707,18 +707,18 @@
         }
 
         v53 = *(*(&v61 + 1) + 8 * n);
-        v54 = [v53 bundleId];
-        v55 = [v6 isEqualToString:v54];
+        bundleId5 = [v53 bundleId];
+        v55 = [dCopy isEqualToString:bundleId5];
 
         if (v55)
         {
-          v50 = [v53 used];
+          used = [v53 used];
           goto LABEL_47;
         }
       }
 
-      v50 = [v49 countByEnumeratingWithState:&v61 objects:v81 count:16];
-      if (v50)
+      used = [v49 countByEnumeratingWithState:&v61 objects:v81 count:16];
+      if (used)
       {
         continue;
       }
@@ -738,7 +738,7 @@ LABEL_51:
 
 LABEL_52:
 
-  return v50;
+  return used;
 }
 
 - (void)_handleUsageOrInfoChanged

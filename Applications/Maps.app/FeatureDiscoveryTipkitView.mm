@@ -1,28 +1,28 @@
 @interface FeatureDiscoveryTipkitView
-- (void)setTopPadding:(double)a3;
-- (void)updateContent:(id)a3;
+- (void)setTopPadding:(double)padding;
+- (void)updateContent:(id)content;
 - (void)updateForSizeClassChange;
 @end
 
 @implementation FeatureDiscoveryTipkitView
 
-- (void)setTopPadding:(double)a3
+- (void)setTopPadding:(double)padding
 {
-  *&self->MUFeatureDiscoveryAnnotationView_opaque[OBJC_IVAR____TtC4Maps26FeatureDiscoveryTipkitView_topPadding] = a3;
-  v3 = self;
+  *&self->MUFeatureDiscoveryAnnotationView_opaque[OBJC_IVAR____TtC4Maps26FeatureDiscoveryTipkitView_topPadding] = padding;
+  selfCopy = self;
   sub_10021533C();
 }
 
-- (void)updateContent:(id)a3
+- (void)updateContent:(id)content
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002162E0(v4);
+  contentCopy = content;
+  selfCopy = self;
+  sub_1002162E0(contentCopy);
 }
 
 - (void)updateForSizeClassChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002171DC();
 }
 

@@ -1,36 +1,36 @@
 @interface HMDRemoteEventRouterProtoFragmentedMessage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFragmentNumber:(BOOL)a3;
-- (void)setHasRouterVersion:(BOOL)a3;
-- (void)setHasTotalSize:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFragmentNumber:(BOOL)number;
+- (void)setHasRouterVersion:(BOOL)version;
+- (void)setHasTotalSize:(BOOL)size;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMDRemoteEventRouterProtoFragmentedMessage
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(HMDRemoteEventRouterProtoFragmentedMessage *)self setFragmentData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 4) != 0)
   {
-    self->_fragmentNumber = *(v4 + 8);
+    self->_fragmentNumber = *(fromCopy + 8);
     *&self->_has |= 4u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -43,14 +43,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 40) & 2) == 0)
+  else if ((*(fromCopy + 40) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_totalSize = *(v4 + 2);
+  self->_totalSize = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 1) == 0)
   {
 LABEL_6:
@@ -63,12 +63,12 @@ LABEL_6:
   }
 
 LABEL_13:
-  self->_totalFragments = *(v4 + 1);
+  self->_totalFragments = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 40) & 8) != 0)
+  if ((*(fromCopy + 40) & 8) != 0)
   {
 LABEL_7:
-    self->_routerVersion = *(v4 + 9);
+    self->_routerVersion = *(fromCopy + 9);
     *&self->_has |= 8u;
   }
 
@@ -130,16 +130,16 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   fragmentData = self->_fragmentData;
-  if (fragmentData | *(v4 + 3))
+  if (fragmentData | *(equalCopy + 3))
   {
     if (![(NSData *)fragmentData isEqual:?])
     {
@@ -149,13 +149,13 @@ LABEL_5:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_fragmentNumber != *(v4 + 8))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_fragmentNumber != *(equalCopy + 8))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
 LABEL_23:
     v6 = 0;
@@ -164,34 +164,34 @@ LABEL_23:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_totalSize != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_totalSize != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_totalFragments != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_totalFragments != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_23;
   }
 
-  v6 = (*(v4 + 40) & 8) == 0;
+  v6 = (*(equalCopy + 40) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) == 0 || self->_routerVersion != *(v4 + 9))
+    if ((*(equalCopy + 40) & 8) == 0 || self->_routerVersion != *(equalCopy + 9))
     {
       goto LABEL_23;
     }
@@ -204,10 +204,10 @@ LABEL_24:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_fragmentData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_fragmentData copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -261,21 +261,21 @@ LABEL_5:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_fragmentData)
   {
-    v6 = v4;
-    [v4 setFragmentData:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setFragmentData:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 8) = self->_fragmentNumber;
-    *(v4 + 40) |= 4u;
+    *(toCopy + 8) = self->_fragmentNumber;
+    *(toCopy + 40) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -294,8 +294,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 2) = self->_totalSize;
-  *(v4 + 40) |= 2u;
+  *(toCopy + 2) = self->_totalSize;
+  *(toCopy + 40) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -309,26 +309,26 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(v4 + 1) = self->_totalFragments;
-  *(v4 + 40) |= 1u;
+  *(toCopy + 1) = self->_totalFragments;
+  *(toCopy + 40) |= 1u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
-    *(v4 + 9) = self->_routerVersion;
-    *(v4 + 40) |= 8u;
+    *(toCopy + 9) = self->_routerVersion;
+    *(toCopy + 40) |= 8u;
   }
 
 LABEL_8:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_fragmentData)
   {
     PBDataWriterWriteDataField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -336,7 +336,7 @@ LABEL_8:
   {
     fragmentNumber = self->_fragmentNumber;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -357,7 +357,7 @@ LABEL_5:
 
   totalSize = self->_totalSize;
   PBDataWriterWriteUint64Field();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -373,26 +373,26 @@ LABEL_6:
 LABEL_13:
   totalFragments = self->_totalFragments;
   PBDataWriterWriteUint64Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     routerVersion = self->_routerVersion;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_8:
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -403,18 +403,18 @@ LABEL_8:
       while (1)
       {
         v48 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v48 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v48 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v48 & 0x7F) << v6;
@@ -432,9 +432,9 @@ LABEL_8:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -463,18 +463,18 @@ LABEL_60:
           while (1)
           {
             v50 = 0;
-            v25 = [a3 position] + 1;
-            if (v25 >= [a3 position] && (v26 = objc_msgSend(a3, "position") + 1, v26 <= objc_msgSend(a3, "length")))
+            v25 = [from position] + 1;
+            if (v25 >= [from position] && (v26 = objc_msgSend(from, "position") + 1, v26 <= objc_msgSend(from, "length")))
             {
-              v27 = [a3 data];
-              [v27 getBytes:&v50 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:&v50 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v24 |= (v50 & 0x7F) << v22;
@@ -492,7 +492,7 @@ LABEL_60:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v21 = 0;
           }
@@ -524,18 +524,18 @@ LABEL_78:
             while (1)
             {
               v52 = 0;
-              v31 = [a3 position] + 1;
-              if (v31 >= [a3 position] && (v32 = objc_msgSend(a3, "position") + 1, v32 <= objc_msgSend(a3, "length")))
+              v31 = [from position] + 1;
+              if (v31 >= [from position] && (v32 = objc_msgSend(from, "position") + 1, v32 <= objc_msgSend(from, "length")))
               {
-                v33 = [a3 data];
-                [v33 getBytes:&v52 range:{objc_msgSend(a3, "position"), 1}];
+                data3 = [from data];
+                [data3 getBytes:&v52 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v30 |= (v52 & 0x7F) << v28;
@@ -553,7 +553,7 @@ LABEL_78:
               }
             }
 
-            if ([a3 hasError])
+            if ([from hasError])
             {
               v34 = 0;
             }
@@ -574,18 +574,18 @@ LABEL_65:
             while (1)
             {
               v51 = 0;
-              v38 = [a3 position] + 1;
-              if (v38 >= [a3 position] && (v39 = objc_msgSend(a3, "position") + 1, v39 <= objc_msgSend(a3, "length")))
+              v38 = [from position] + 1;
+              if (v38 >= [from position] && (v39 = objc_msgSend(from, "position") + 1, v39 <= objc_msgSend(from, "length")))
               {
-                v40 = [a3 data];
-                [v40 getBytes:&v51 range:{objc_msgSend(a3, "position"), 1}];
+                data4 = [from data];
+                [data4 getBytes:&v51 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v37 |= (v51 & 0x7F) << v35;
@@ -603,7 +603,7 @@ LABEL_65:
               }
             }
 
-            if ([a3 hasError])
+            if ([from hasError])
             {
               v34 = 0;
             }
@@ -624,18 +624,18 @@ LABEL_69:
             while (1)
             {
               v49 = 0;
-              v18 = [a3 position] + 1;
-              if (v18 >= [a3 position] && (v19 = objc_msgSend(a3, "position") + 1, v19 <= objc_msgSend(a3, "length")))
+              v18 = [from position] + 1;
+              if (v18 >= [from position] && (v19 = objc_msgSend(from, "position") + 1, v19 <= objc_msgSend(from, "length")))
               {
-                v20 = [a3 data];
-                [v20 getBytes:&v49 range:{objc_msgSend(a3, "position"), 1}];
+                data5 = [from data];
+                [data5 getBytes:&v49 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v17 |= (v49 & 0x7F) << v15;
@@ -653,7 +653,7 @@ LABEL_69:
               }
             }
 
-            if ([a3 hasError])
+            if ([from hasError])
             {
               v21 = 0;
             }
@@ -676,24 +676,24 @@ LABEL_79:
       }
 
 LABEL_80:
-      v46 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v46 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v43) = [a3 hasError] ^ 1;
+  LOBYTE(v43) = [from hasError] ^ 1;
   return v43;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   fragmentData = self->_fragmentData;
   if (fragmentData)
   {
-    [v3 setObject:fragmentData forKey:@"fragmentData"];
+    [dictionary setObject:fragmentData forKey:@"fragmentData"];
   }
 
   has = self->_has;
@@ -757,15 +757,15 @@ LABEL_8:
   v8.receiver = self;
   v8.super_class = HMDRemoteEventRouterProtoFragmentedMessage;
   v4 = [(HMDRemoteEventRouterProtoFragmentedMessage *)&v8 description];
-  v5 = [(HMDRemoteEventRouterProtoFragmentedMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMDRemoteEventRouterProtoFragmentedMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasRouterVersion:(BOOL)a3
+- (void)setHasRouterVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -778,9 +778,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTotalSize:(BOOL)a3
+- (void)setHasTotalSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 2;
   }
@@ -793,9 +793,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasFragmentNumber:(BOOL)a3
+- (void)setHasFragmentNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 4;
   }

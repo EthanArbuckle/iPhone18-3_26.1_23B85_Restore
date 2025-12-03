@@ -1,16 +1,16 @@
 @interface CUIKUserActivity
-+ (BOOL)_BOOLFromDictionary:(id)a3 key:(id)a4 error:(BOOL *)a5;
-+ (double)_doubleFromDictionary:(id)a3 key:(id)a4 error:(BOOL *)a5;
-+ (id)_stringFromDictionary:(id)a3 key:(id)a4 error:(BOOL *)a5;
-+ (id)activityForActivity:(id)a3;
-+ (id)activityForDictionary:(id)a3;
-+ (int64_t)_integerFromDictionary:(id)a3 key:(id)a4 error:(BOOL *)a5;
-+ (unint64_t)_typeFromDictionary:(id)a3;
-+ (unint64_t)_unsignedIntegerFromDictionary:(id)a3 key:(id)a4 error:(BOOL *)a5;
-- (CUIKUserActivity)initWithDictionary:(id)a3;
-- (CUIKUserActivity)initWithType:(unint64_t)a3;
++ (BOOL)_BOOLFromDictionary:(id)dictionary key:(id)key error:(BOOL *)error;
++ (double)_doubleFromDictionary:(id)dictionary key:(id)key error:(BOOL *)error;
++ (id)_stringFromDictionary:(id)dictionary key:(id)key error:(BOOL *)error;
++ (id)activityForActivity:(id)activity;
++ (id)activityForDictionary:(id)dictionary;
++ (int64_t)_integerFromDictionary:(id)dictionary key:(id)key error:(BOOL *)error;
++ (unint64_t)_typeFromDictionary:(id)dictionary;
++ (unint64_t)_unsignedIntegerFromDictionary:(id)dictionary key:(id)key error:(BOOL *)error;
+- (CUIKUserActivity)initWithDictionary:(id)dictionary;
+- (CUIKUserActivity)initWithType:(unint64_t)type;
 - (id)dictionary;
-- (void)updateActivity:(id)a3;
+- (void)updateActivity:(id)activity;
 @end
 
 @implementation CUIKUserActivity
@@ -29,31 +29,31 @@
   return v5;
 }
 
-- (CUIKUserActivity)initWithType:(unint64_t)a3
+- (CUIKUserActivity)initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = CUIKUserActivity;
   result = [(CUIKUserActivity *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
     result->_version = 65537;
   }
 
   return result;
 }
 
-- (CUIKUserActivity)initWithDictionary:(id)a3
+- (CUIKUserActivity)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = CUIKUserActivity;
   v5 = [(CUIKUserActivity *)&v12 init];
   if (v5)
   {
-    v5->_type = [objc_opt_class() _typeFromDictionary:v4];
+    v5->_type = [objc_opt_class() _typeFromDictionary:dictionaryCopy];
     v11 = 0;
-    v6 = [objc_opt_class() _unsignedIntegerFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.version" error:&v11];
+    v6 = [objc_opt_class() _unsignedIntegerFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.version" error:&v11];
     v5->_version = v6;
     if (v11 == 1)
     {
@@ -101,10 +101,10 @@ LABEL_15:
   return v8;
 }
 
-+ (id)activityForDictionary:(id)a3
++ (id)activityForDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [a1 _typeFromDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [self _typeFromDictionary:dictionaryCopy];
   v6 = v5;
   if (v5 <= 3)
   {
@@ -138,7 +138,7 @@ LABEL_15:
 
     if (v5 == 4097)
     {
-      if ([a1 _BOOLFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.tomorrow" error:0])
+      if ([self _BOOLFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.tomorrow" error:0])
       {
 LABEL_12:
         v6 = 4100;
@@ -164,42 +164,42 @@ LABEL_18:
 
   v7 = 0;
 LABEL_21:
-  v9 = [[v7 alloc] initWithDictionary:v4];
+  v9 = [[v7 alloc] initWithDictionary:dictionaryCopy];
 
   return v9;
 }
 
-+ (id)activityForActivity:(id)a3
++ (id)activityForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [a1 activityForDictionary:v5];
+  activityCopy = activity;
+  userInfo = [activityCopy userInfo];
+  v6 = [self activityForDictionary:userInfo];
 
-  v7 = [v4 title];
-  [v6 setActivityTitle:v7];
+  title = [activityCopy title];
+  [v6 setActivityTitle:title];
 
-  v8 = [v4 contentAttributeSet];
-  v9 = [v8 subtitle];
-  [v6 setActivitySubtitle:v9];
+  contentAttributeSet = [activityCopy contentAttributeSet];
+  subtitle = [contentAttributeSet subtitle];
+  [v6 setActivitySubtitle:subtitle];
 
-  v10 = [v4 _keywords];
+  _keywords = [activityCopy _keywords];
 
-  [v6 setActivityKeywords:v10];
+  [v6 setActivityKeywords:_keywords];
 
   return v6;
 }
 
-+ (BOOL)_BOOLFromDictionary:(id)a3 key:(id)a4 error:(BOOL *)a5
++ (BOOL)_BOOLFromDictionary:(id)dictionary key:(id)key error:(BOOL *)error
 {
-  v6 = [a3 objectForKeyedSubscript:a4];
+  v6 = [dictionary objectForKeyedSubscript:key];
   if (v6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
       v8 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_7;
       }
@@ -208,30 +208,30 @@ LABEL_21:
     }
   }
 
-  v7 = 0;
+  bOOLValue = 0;
   v8 = 1;
-  if (a5)
+  if (error)
   {
 LABEL_6:
-    *a5 = v8;
+    *error = v8;
   }
 
 LABEL_7:
 
-  return v7;
+  return bOOLValue;
 }
 
-+ (int64_t)_integerFromDictionary:(id)a3 key:(id)a4 error:(BOOL *)a5
++ (int64_t)_integerFromDictionary:(id)dictionary key:(id)key error:(BOOL *)error
 {
-  v6 = [a3 objectForKeyedSubscript:a4];
+  v6 = [dictionary objectForKeyedSubscript:key];
   if (v6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 integerValue];
+      integerValue = [v6 integerValue];
       v8 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_7;
       }
@@ -240,30 +240,30 @@ LABEL_7:
     }
   }
 
-  v7 = 0;
+  integerValue = 0;
   v8 = 1;
-  if (a5)
+  if (error)
   {
 LABEL_6:
-    *a5 = v8;
+    *error = v8;
   }
 
 LABEL_7:
 
-  return v7;
+  return integerValue;
 }
 
-+ (unint64_t)_unsignedIntegerFromDictionary:(id)a3 key:(id)a4 error:(BOOL *)a5
++ (unint64_t)_unsignedIntegerFromDictionary:(id)dictionary key:(id)key error:(BOOL *)error
 {
-  v6 = [a3 objectForKeyedSubscript:a4];
+  v6 = [dictionary objectForKeyedSubscript:key];
   if (v6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 unsignedIntegerValue];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
       v8 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_7;
       }
@@ -272,22 +272,22 @@ LABEL_7:
     }
   }
 
-  v7 = 0;
+  unsignedIntegerValue = 0;
   v8 = 1;
-  if (a5)
+  if (error)
   {
 LABEL_6:
-    *a5 = v8;
+    *error = v8;
   }
 
 LABEL_7:
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-+ (double)_doubleFromDictionary:(id)a3 key:(id)a4 error:(BOOL *)a5
++ (double)_doubleFromDictionary:(id)dictionary key:(id)key error:(BOOL *)error
 {
-  v6 = [a3 objectForKeyedSubscript:a4];
+  v6 = [dictionary objectForKeyedSubscript:key];
   v7 = 0.0;
   if (v6)
   {
@@ -297,7 +297,7 @@ LABEL_7:
       [v6 doubleValue];
       v7 = v8;
       v9 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_7;
       }
@@ -307,10 +307,10 @@ LABEL_7:
   }
 
   v9 = 1;
-  if (a5)
+  if (error)
   {
 LABEL_6:
-    *a5 = v9;
+    *error = v9;
   }
 
 LABEL_7:
@@ -318,14 +318,14 @@ LABEL_7:
   return v7;
 }
 
-+ (id)_stringFromDictionary:(id)a3 key:(id)a4 error:(BOOL *)a5
++ (id)_stringFromDictionary:(id)dictionary key:(id)key error:(BOOL *)error
 {
-  v6 = [a3 objectForKeyedSubscript:a4];
+  v6 = [dictionary objectForKeyedSubscript:key];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v7 = 0;
     v8 = 1;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -335,10 +335,10 @@ LABEL_7:
 
   v7 = v6;
   v8 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_6:
-    *a5 = v8;
+    *error = v8;
   }
 
 LABEL_7:
@@ -346,10 +346,10 @@ LABEL_7:
   return v7;
 }
 
-+ (unint64_t)_typeFromDictionary:(id)a3
++ (unint64_t)_typeFromDictionary:(id)dictionary
 {
   v5 = 0;
-  result = [a1 _unsignedIntegerFromDictionary:a3 key:@"com.apple.calendarUIKit.userActivity.type" error:&v5];
+  result = [self _unsignedIntegerFromDictionary:dictionary key:@"com.apple.calendarUIKit.userActivity.type" error:&v5];
   if (v5 == 1)
   {
     v4 = +[CUIKLogSubsystem continuity];
@@ -364,42 +364,42 @@ LABEL_7:
   return result;
 }
 
-- (void)updateActivity:(id)a3
+- (void)updateActivity:(id)activity
 {
-  v13 = a3;
-  v4 = [(CUIKUserActivity *)self activityTitle];
-  [v13 setTitle:v4];
+  activityCopy = activity;
+  activityTitle = [(CUIKUserActivity *)self activityTitle];
+  [activityCopy setTitle:activityTitle];
 
-  v5 = [(CUIKUserActivity *)self activitySubtitle];
+  activitySubtitle = [(CUIKUserActivity *)self activitySubtitle];
 
-  if (v5)
+  if (activitySubtitle)
   {
-    v6 = [v13 contentAttributeSet];
-    v7 = [v6 copy];
+    contentAttributeSet = [activityCopy contentAttributeSet];
+    v7 = [contentAttributeSet copy];
 
     if (!v7)
     {
       v8 = objc_alloc(EKWeakLinkClass());
-      v9 = [v13 activityType];
-      v7 = [v8 initWithItemContentType:v9];
+      activityType = [activityCopy activityType];
+      v7 = [v8 initWithItemContentType:activityType];
     }
 
-    v10 = [(CUIKUserActivity *)self activitySubtitle];
-    [v7 setSubtitle:v10];
+    activitySubtitle2 = [(CUIKUserActivity *)self activitySubtitle];
+    [v7 setSubtitle:activitySubtitle2];
 
-    [v13 setContentAttributeSet:v7];
+    [activityCopy setContentAttributeSet:v7];
   }
 
-  v11 = [(CUIKUserActivity *)self activityKeywords];
-  [v13 _setKeywords:v11];
+  activityKeywords = [(CUIKUserActivity *)self activityKeywords];
+  [activityCopy _setKeywords:activityKeywords];
 
-  v12 = [(CUIKUserActivity *)self dictionary];
-  [v13 setUserInfo:v12];
+  dictionary = [(CUIKUserActivity *)self dictionary];
+  [activityCopy setUserInfo:dictionary];
 
-  [v13 _setEligibleForUserActivityIndexing:1];
-  [v13 _setEligibleForUserActivityPublicIndexing:0];
-  [v13 _setEligibleForUserActivityHandoff:1];
-  [v13 _setEligibleForUserActivityReminders:1];
+  [activityCopy _setEligibleForUserActivityIndexing:1];
+  [activityCopy _setEligibleForUserActivityPublicIndexing:0];
+  [activityCopy _setEligibleForUserActivityHandoff:1];
+  [activityCopy _setEligibleForUserActivityReminders:1];
 }
 
 + (void)activityForDictionary:(uint64_t)a1 .cold.1(uint64_t a1)

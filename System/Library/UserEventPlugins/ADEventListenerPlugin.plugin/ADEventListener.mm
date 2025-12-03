@@ -1,11 +1,11 @@
 @interface ADEventListener
-- (ADEventListener)initWithQueue:(id)a3;
+- (ADEventListener)initWithQueue:(id)queue;
 - (void)dealloc;
 @end
 
 @implementation ADEventListener
 
-- (ADEventListener)initWithQueue:(id)a3
+- (ADEventListener)initWithQueue:(id)queue
 {
   v5.receiver = self;
   v5.super_class = ADEventListener;

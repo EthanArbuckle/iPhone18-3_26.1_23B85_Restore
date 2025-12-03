@@ -1,27 +1,27 @@
 @interface BLSHDefaultHandler
-+ (id)handlerForKey:(id)a3 attributes:(id)a4;
-- (BLSHDefaultHandler)initWithKey:(id)a3 attributes:(id)a4;
++ (id)handlerForKey:(id)key attributes:(id)attributes;
+- (BLSHDefaultHandler)initWithKey:(id)key attributes:(id)attributes;
 - (NSString)description;
 - (void)dealloc;
 - (void)invalidate;
-- (void)updateForNewValue:(BOOL)a3;
+- (void)updateForNewValue:(BOOL)value;
 @end
 
 @implementation BLSHDefaultHandler
 
-+ (id)handlerForKey:(id)a3 attributes:(id)a4
++ (id)handlerForKey:(id)key attributes:(id)attributes
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithKey:v7 attributes:v6];
+  attributesCopy = attributes;
+  keyCopy = key;
+  v8 = [[self alloc] initWithKey:keyCopy attributes:attributesCopy];
 
   return v8;
 }
 
-- (BLSHDefaultHandler)initWithKey:(id)a3 attributes:(id)a4
+- (BLSHDefaultHandler)initWithKey:(id)key attributes:(id)attributes
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  attributesCopy = attributes;
   v12.receiver = self;
   v12.super_class = BLSHDefaultHandler;
   v9 = [(BLSHDefaultHandler *)&v12 init];
@@ -29,8 +29,8 @@
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_key, a3);
-    objc_storeStrong(&v10->_attributes, a4);
+    objc_storeStrong(&v9->_key, key);
+    objc_storeStrong(&v10->_attributes, attributes);
   }
 
   return v10;
@@ -41,7 +41,7 @@
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"_invalidated"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v3 = NSStringFromSelector(a1);
+    v3 = NSStringFromSelector(self);
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     OUTLINED_FUNCTION_0_0();
@@ -62,9 +62,9 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   [v3 appendString:self->_key withName:@"key"];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)invalidate
@@ -76,9 +76,9 @@
   [(BLSAssertion *)v3 invalidate];
 }
 
-- (void)updateForNewValue:(BOOL)a3
+- (void)updateForNewValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   os_unfair_lock_lock(&self->_lock);
   invalidated = self->_invalidated;
   os_unfair_lock_unlock(&self->_lock);
@@ -86,7 +86,7 @@
   {
     os_unfair_lock_lock(&self->_lock);
     lock_assertion = self->_lock_assertion;
-    if (v3)
+    if (valueCopy)
     {
       if (lock_assertion)
       {

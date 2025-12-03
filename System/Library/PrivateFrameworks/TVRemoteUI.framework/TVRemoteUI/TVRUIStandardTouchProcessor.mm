@@ -1,40 +1,40 @@
 @interface TVRUIStandardTouchProcessor
-- (CGPoint)_virtualTouchLocationForTouchPoint:(CGPoint)a3;
+- (CGPoint)_virtualTouchLocationForTouchPoint:(CGPoint)point;
 - (CGPoint)startingPoint;
-- (CGRect)_calculateVirtualBoundingBox:(CGPoint)a3 sizingRatio:(double)a4 swipeDirection:(int64_t)a5;
+- (CGRect)_calculateVirtualBoundingBox:(CGPoint)box sizingRatio:(double)ratio swipeDirection:(int64_t)direction;
 - (CGRect)virtualBoundingBox;
-- (TVRUIStandardTouchProcessor)initWithTouchpadView:(id)a3;
+- (TVRUIStandardTouchProcessor)initWithTouchpadView:(id)view;
 - (_TVRUIEventDelegate)eventDelegate;
-- (id)_touchEventForTouch:(id)a3;
-- (int64_t)_calculateDominantSwipeDirection:(CGPoint)a3 toPoint:(CGPoint)a4;
+- (id)_touchEventForTouch:(id)touch;
+- (int64_t)_calculateDominantSwipeDirection:(CGPoint)direction toPoint:(CGPoint)point;
 - (void)_cleanupOnTouchesEnded;
 - (void)_configureGestureRecognizersOnView;
-- (void)_endAndRestartTouchesManually:(id)a3;
-- (void)_processTouches:(id)a3;
+- (void)_endAndRestartTouchesManually:(id)manually;
+- (void)_processTouches:(id)touches;
 - (void)_sendSelectButtonPressBegan;
 - (void)_sendSelectButtonPressEnded;
-- (void)handleLongPress:(id)a3;
-- (void)handleTapGesture:(id)a3;
-- (void)touchesBegan:(id)a3 touches:(id)a4 withEvent:(id)a5;
-- (void)touchesCancelled:(id)a3 touches:(id)a4 withEvent:(id)a5;
-- (void)touchesEnded:(id)a3 touches:(id)a4 withEvent:(id)a5;
-- (void)touchesMoved:(id)a3 touches:(id)a4 withEvent:(id)a5;
+- (void)handleLongPress:(id)press;
+- (void)handleTapGesture:(id)gesture;
+- (void)touchesBegan:(id)began touches:(id)touches withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled touches:(id)touches withEvent:(id)event;
+- (void)touchesEnded:(id)ended touches:(id)touches withEvent:(id)event;
+- (void)touchesMoved:(id)moved touches:(id)touches withEvent:(id)event;
 @end
 
 @implementation TVRUIStandardTouchProcessor
 
-- (TVRUIStandardTouchProcessor)initWithTouchpadView:(id)a3
+- (TVRUIStandardTouchProcessor)initWithTouchpadView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = TVRUIStandardTouchProcessor;
   v6 = [(TVRUIStandardTouchProcessor *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_touchpadView, a3);
+    objc_storeStrong(&v6->_touchpadView, view);
     [(TVRUIStandardTouchProcessor *)v7 _configureGestureRecognizersOnView];
-    v8 = [TVRButtonHaptic hapticForView:v5];
+    v8 = [TVRButtonHaptic hapticForView:viewCopy];
     haptic = v7->_haptic;
     v7->_haptic = v8;
   }
@@ -42,14 +42,14 @@
   return v7;
 }
 
-- (void)touchesBegan:(id)a3 touches:(id)a4 withEvent:(id)a5
+- (void)touchesBegan:(id)began touches:(id)touches withEvent:(id)event
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 anyObject];
-  v10 = [(TVRUIStandardTouchProcessor *)self touchpadView];
-  [v9 preciseLocationInView:v10];
+  touchesCopy = touches;
+  eventCopy = event;
+  anyObject = [touchesCopy anyObject];
+  touchpadView = [(TVRUIStandardTouchProcessor *)self touchpadView];
+  [anyObject preciseLocationInView:touchpadView];
   [(TVRUIStandardTouchProcessor *)self setStartingPoint:?];
 
   v11 = [MEMORY[0x277CBEB58] set];
@@ -65,19 +65,19 @@
   v13 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    [TVRUIStandardTouchProcessor touchesBegan:v7 touches:v13 withEvent:?];
+    [TVRUIStandardTouchProcessor touchesBegan:touchesCopy touches:v13 withEvent:?];
   }
 
-  v28 = v7;
+  v28 = touchesCopy;
 
-  v14 = [v8 allTouches];
-  v15 = [v14 allObjects];
+  allTouches = [eventCopy allTouches];
+  allObjects = [allTouches allObjects];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v16 = v15;
+  v16 = allObjects;
   v17 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v17)
   {
@@ -107,8 +107,8 @@
         v24 = [_TVRUITouch alloc];
         [v21 timestamp];
         v26 = -[_TVRUITouch initWithTimestamp:touchPhase:fingerIndex:](v24, "initWithTimestamp:touchPhase:fingerIndex:", [v21 phase], v23, v25);
-        v27 = [(TVRUIStandardTouchProcessor *)self startingTouches];
-        [v27 addObject:v26];
+        startingTouches = [(TVRUIStandardTouchProcessor *)self startingTouches];
+        [startingTouches addObject:v26];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -118,13 +118,13 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 touches:(id)a4 withEvent:(id)a5
+- (void)touchesMoved:(id)moved touches:(id)touches withEvent:(id)event
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 anyObject];
-  v8 = [(TVRUIStandardTouchProcessor *)self touchpadView];
-  [v7 preciseLocationInView:v8];
+  touchesCopy = touches;
+  anyObject = [touchesCopy anyObject];
+  touchpadView = [(TVRUIStandardTouchProcessor *)self touchpadView];
+  [anyObject preciseLocationInView:touchpadView];
   v10 = v9;
   v12 = v11;
 
@@ -138,8 +138,8 @@
     }
   }
 
-  v13 = [(TVRUIStandardTouchProcessor *)self startingTouches];
-  if ([v13 count])
+  startingTouches = [(TVRUIStandardTouchProcessor *)self startingTouches];
+  if ([startingTouches count])
   {
     [(TVRUIStandardTouchProcessor *)self startingPoint];
     v15 = v14;
@@ -157,19 +157,19 @@
   {
   }
 
-  v21 = [v6 anyObject];
-  v22 = [(TVRUIStandardTouchProcessor *)self touchpadView];
-  [v21 preciseLocationInView:v22];
+  anyObject2 = [touchesCopy anyObject];
+  touchpadView2 = [(TVRUIStandardTouchProcessor *)self touchpadView];
+  [anyObject2 preciseLocationInView:touchpadView2];
   [(TVRUIStandardTouchProcessor *)self setStartingPoint:?];
 
   v23 = [_TVRUITouch alloc];
-  [v21 timestamp];
+  [anyObject2 timestamp];
   v24 = [(_TVRUITouch *)v23 initWithTimestamp:0 touchPhase:1 fingerIndex:?];
-  v25 = [(TVRUIStandardTouchProcessor *)self startingTouches];
-  [v25 addObject:v24];
+  startingTouches2 = [(TVRUIStandardTouchProcessor *)self startingTouches];
+  [startingTouches2 addObject:v24];
 
-  v26 = [(TVRUIStandardTouchProcessor *)self endedTouches];
-  [v26 removeAllObjects];
+  endedTouches = [(TVRUIStandardTouchProcessor *)self endedTouches];
+  [endedTouches removeAllObjects];
 
 LABEL_11:
   [(TVRUIStandardTouchProcessor *)self startingPoint];
@@ -182,8 +182,8 @@ LABEL_11:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v28 = [(TVRUIStandardTouchProcessor *)self startingTouches];
-  v29 = [v28 countByEnumeratingWithState:&v44 objects:v48 count:16];
+  startingTouches3 = [(TVRUIStandardTouchProcessor *)self startingTouches];
+  v29 = [startingTouches3 countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v29)
   {
     v30 = v29;
@@ -195,7 +195,7 @@ LABEL_11:
       {
         if (*v45 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(startingTouches3);
         }
 
         v33 = *(*(&v44 + 1) + 8 * v32);
@@ -206,14 +206,14 @@ LABEL_11:
         v38 = [TVRUITouchEvent alloc];
         [v33 timestamp];
         v40 = -[TVRUITouchEvent initWithTimestamp:touchPhase:fingerIndex:digitizerLocation:](v38, "initWithTimestamp:touchPhase:fingerIndex:digitizerLocation:", [v33 phase], 1, v39, v35, v37);
-        v41 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
-        [v41 generatedTouchEvent:v40];
+        eventDelegate = [(TVRUIStandardTouchProcessor *)self eventDelegate];
+        [eventDelegate generatedTouchEvent:v40];
 
         ++v32;
       }
 
       while (v30 != v32);
-      v30 = [v28 countByEnumeratingWithState:&v44 objects:v48 count:16];
+      v30 = [startingTouches3 countByEnumeratingWithState:&v44 objects:v48 count:16];
     }
 
     while (v30);
@@ -225,33 +225,33 @@ LABEL_19:
   v50.y = v12;
   if (CGRectContainsPoint(v54, v50))
   {
-    [(TVRUIStandardTouchProcessor *)self _processTouches:v6];
+    [(TVRUIStandardTouchProcessor *)self _processTouches:touchesCopy];
   }
 
   else
   {
-    v42 = [(TVRUIStandardTouchProcessor *)self touchpadView];
-    [v42 bounds];
+    touchpadView3 = [(TVRUIStandardTouchProcessor *)self touchpadView];
+    [touchpadView3 bounds];
     v51.x = v10;
     v51.y = v12;
     v43 = CGRectContainsPoint(v55, v51);
 
     if (v43)
     {
-      [(TVRUIStandardTouchProcessor *)self _endAndRestartTouchesManually:v6];
+      [(TVRUIStandardTouchProcessor *)self _endAndRestartTouchesManually:touchesCopy];
     }
   }
 }
 
-- (void)_endAndRestartTouchesManually:(id)a3
+- (void)_endAndRestartTouchesManually:(id)manually
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  manuallyCopy = manually;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  v5 = [manuallyCopy countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v5)
   {
     v6 = v5;
@@ -263,50 +263,50 @@ LABEL_19:
       {
         if (*v31 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(manuallyCopy);
         }
 
         v9 = *(*(&v30 + 1) + 8 * v8);
-        v10 = [(TVRUIStandardTouchProcessor *)self touchpadView];
-        [v9 preciseLocationInView:v10];
+        touchpadView = [(TVRUIStandardTouchProcessor *)self touchpadView];
+        [v9 preciseLocationInView:touchpadView];
         [(TVRUIStandardTouchProcessor *)self _virtualTouchLocationForTouchPoint:?];
 
-        v11 = [(TVRUIStandardTouchProcessor *)self endedTouches];
-        v12 = [v11 containsObject:v9];
+        endedTouches = [(TVRUIStandardTouchProcessor *)self endedTouches];
+        v12 = [endedTouches containsObject:v9];
 
         if ((v12 & 1) == 0)
         {
           v13 = [TVRUITouchEvent alloc];
           [v9 timestamp];
           v14 = [TVRUITouchEvent initWithTimestamp:v13 touchPhase:"initWithTimestamp:touchPhase:fingerIndex:digitizerLocation:" fingerIndex:3 digitizerLocation:1];
-          v15 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
-          [v15 generatedTouchEvent:v14];
+          eventDelegate = [(TVRUIStandardTouchProcessor *)self eventDelegate];
+          [eventDelegate generatedTouchEvent:v14];
 
-          v16 = [(TVRUIStandardTouchProcessor *)self endedTouches];
-          [v16 addObject:v9];
+          endedTouches2 = [(TVRUIStandardTouchProcessor *)self endedTouches];
+          [endedTouches2 addObject:v9];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v6 = [manuallyCopy countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v6);
   }
 
   [(TVRUIStandardTouchProcessor *)self _cleanupOnTouchesEnded];
-  v17 = [v4 anyObject];
-  v18 = [(TVRUIStandardTouchProcessor *)self touchpadView];
-  [v17 previousLocationInView:v18];
+  anyObject = [manuallyCopy anyObject];
+  touchpadView2 = [(TVRUIStandardTouchProcessor *)self touchpadView];
+  [anyObject previousLocationInView:touchpadView2];
   [(TVRUIStandardTouchProcessor *)self setStartingPoint:?];
 
   [(TVRUIStandardTouchProcessor *)self startingPoint];
   v20 = v19;
   v22 = v21;
-  v23 = [(TVRUIStandardTouchProcessor *)self touchpadView];
-  [v17 preciseLocationInView:v23];
+  touchpadView3 = [(TVRUIStandardTouchProcessor *)self touchpadView];
+  [anyObject preciseLocationInView:touchpadView3];
   v26 = [(TVRUIStandardTouchProcessor *)self _calculateDominantSwipeDirection:v20 toPoint:v22, v24, v25];
 
   [(TVRUIStandardTouchProcessor *)self setStartingSwipeDirection:v26];
@@ -316,23 +316,23 @@ LABEL_19:
   [(TVRUIStandardTouchProcessor *)self startingPoint];
   [(TVRUIStandardTouchProcessor *)self _virtualTouchLocationForTouchPoint:?];
   v27 = [TVRUITouchEvent alloc];
-  [v17 timestamp];
+  [anyObject timestamp];
   v28 = [TVRUITouchEvent initWithTimestamp:v27 touchPhase:"initWithTimestamp:touchPhase:fingerIndex:digitizerLocation:" fingerIndex:0 digitizerLocation:1];
-  v29 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
-  [v29 generatedTouchEvent:v28];
+  eventDelegate2 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
+  [eventDelegate2 generatedTouchEvent:v28];
 
-  [(TVRUIStandardTouchProcessor *)self _processTouches:v4];
+  [(TVRUIStandardTouchProcessor *)self _processTouches:manuallyCopy];
 }
 
-- (void)touchesEnded:(id)a3 touches:(id)a4 withEvent:(id)a5
+- (void)touchesEnded:(id)ended touches:(id)touches withEvent:(id)event
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  touchesCopy = touches;
   v7 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v41 = v6;
+    v41 = touchesCopy;
     _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "TouchesEnded: touches: %@", buf, 0xCu);
   }
 
@@ -343,7 +343,7 @@ LABEL_19:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v8 = v6;
+    v8 = touchesCopy;
     v9 = [v8 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v9)
     {
@@ -367,11 +367,11 @@ LABEL_19:
               [TVRUIStandardTouchProcessor touchesEnded:v24 touches:? withEvent:?];
             }
 
-            v25 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
-            if (v25)
+            eventDelegate = [(TVRUIStandardTouchProcessor *)self eventDelegate];
+            if (eventDelegate)
             {
-              v26 = v25;
-              v27 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
+              v26 = eventDelegate;
+              eventDelegate2 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
               v28 = objc_opt_respondsToSelector();
 
               if (v28)
@@ -408,8 +408,8 @@ LABEL_19:
     }
   }
 
-  v13 = [(TVRUIStandardTouchProcessor *)self endedTouches];
-  v14 = [v13 count];
+  endedTouches = [(TVRUIStandardTouchProcessor *)self endedTouches];
+  v14 = [endedTouches count];
 
   if (v14)
   {
@@ -418,7 +418,7 @@ LABEL_19:
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v16 = v6;
+    v16 = touchesCopy;
     v17 = [v16 countByEnumeratingWithState:&v29 objects:v38 count:16];
     if (v17)
     {
@@ -435,8 +435,8 @@ LABEL_19:
           }
 
           v21 = *(*(&v29 + 1) + 8 * v20);
-          v22 = [(TVRUIStandardTouchProcessor *)self endedTouches];
-          v23 = [v22 containsObject:v21];
+          endedTouches2 = [(TVRUIStandardTouchProcessor *)self endedTouches];
+          v23 = [endedTouches2 containsObject:v21];
 
           if ((v23 & 1) == 0)
           {
@@ -458,29 +458,29 @@ LABEL_19:
 
   else
   {
-    [(TVRUIStandardTouchProcessor *)self _processTouches:v6];
+    [(TVRUIStandardTouchProcessor *)self _processTouches:touchesCopy];
   }
 
   [(TVRUIStandardTouchProcessor *)self _cleanupOnTouchesEnded];
 LABEL_32:
 }
 
-- (void)touchesCancelled:(id)a3 touches:(id)a4 withEvent:(id)a5
+- (void)touchesCancelled:(id)cancelled touches:(id)touches withEvent:(id)event
 {
-  [(TVRUIStandardTouchProcessor *)self _processTouches:a4];
+  [(TVRUIStandardTouchProcessor *)self _processTouches:touches];
 
   [(TVRUIStandardTouchProcessor *)self _cleanupOnTouchesEnded];
 }
 
-- (void)_processTouches:(id)a3
+- (void)_processTouches:(id)touches
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  touchesCopy = touches;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [touchesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -492,21 +492,21 @@ LABEL_32:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(touchesCopy);
         }
 
         v9 = [(TVRUIStandardTouchProcessor *)self _touchEventForTouch:*(*(&v15 + 1) + 8 * v8)];
-        v10 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
-        if (v10)
+        eventDelegate = [(TVRUIStandardTouchProcessor *)self eventDelegate];
+        if (eventDelegate)
         {
-          v11 = v10;
-          v12 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
+          v11 = eventDelegate;
+          eventDelegate2 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
           v13 = objc_opt_respondsToSelector();
 
           if (v13)
           {
-            v14 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
-            [v14 generatedTouchEvent:v9];
+            eventDelegate3 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
+            [eventDelegate3 generatedTouchEvent:v9];
           }
         }
 
@@ -514,7 +514,7 @@ LABEL_32:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [touchesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -524,11 +524,11 @@ LABEL_32:
 - (void)_cleanupOnTouchesEnded
 {
   [(TVRUIStandardTouchProcessor *)self setVirtualBoundingBox:*MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24)];
-  v3 = [(TVRUIStandardTouchProcessor *)self startingTouches];
-  [v3 removeAllObjects];
+  startingTouches = [(TVRUIStandardTouchProcessor *)self startingTouches];
+  [startingTouches removeAllObjects];
 
-  v4 = [(TVRUIStandardTouchProcessor *)self endedTouches];
-  [v4 removeAllObjects];
+  endedTouches = [(TVRUIStandardTouchProcessor *)self endedTouches];
+  [endedTouches removeAllObjects];
 
   v5 = *MEMORY[0x277CBF348];
   v6 = *(MEMORY[0x277CBF348] + 8);
@@ -536,31 +536,31 @@ LABEL_32:
   [(TVRUIStandardTouchProcessor *)self setStartingPoint:v5, v6];
 }
 
-- (id)_touchEventForTouch:(id)a3
+- (id)_touchEventForTouch:(id)touch
 {
-  v4 = a3;
-  v5 = [(TVRUIStandardTouchProcessor *)self touchpadView];
-  [v4 preciseLocationInView:v5];
+  touchCopy = touch;
+  touchpadView = [(TVRUIStandardTouchProcessor *)self touchpadView];
+  [touchCopy preciseLocationInView:touchpadView];
   [(TVRUIStandardTouchProcessor *)self _virtualTouchLocationForTouchPoint:?];
   v7 = v6;
   v9 = v8;
 
   v10 = [TVRUITouchEvent alloc];
-  [v4 timestamp];
+  [touchCopy timestamp];
   v12 = v11;
-  v13 = [v4 phase];
+  phase = [touchCopy phase];
 
-  v14 = [(TVRUITouchEvent *)v10 initWithTimestamp:v13 touchPhase:1 fingerIndex:v12 digitizerLocation:v7, v9];
+  v14 = [(TVRUITouchEvent *)v10 initWithTimestamp:phase touchPhase:1 fingerIndex:v12 digitizerLocation:v7, v9];
 
   return v14;
 }
 
-- (CGRect)_calculateVirtualBoundingBox:(CGPoint)a3 sizingRatio:(double)a4 swipeDirection:(int64_t)a5
+- (CGRect)_calculateVirtualBoundingBox:(CGPoint)box sizingRatio:(double)ratio swipeDirection:(int64_t)direction
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = [(TVRUIStandardTouchProcessor *)self touchpadView];
-  [v9 bounds];
+  y = box.y;
+  x = box.x;
+  touchpadView = [(TVRUIStandardTouchProcessor *)self touchpadView];
+  [touchpadView bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -571,13 +571,13 @@ LABEL_32:
     [TVRUIStandardTouchProcessor _calculateVirtualBoundingBox:sizingRatio:swipeDirection:];
   }
 
-  v18 = *&TVRPointSizeOfSiriRemoteOnMainScreen_size_0 * a4;
-  v19 = *&TVRPointSizeOfSiriRemoteOnMainScreen_size_1 * a4;
-  if (a5 <= 2)
+  v18 = *&TVRPointSizeOfSiriRemoteOnMainScreen_size_0 * ratio;
+  v19 = *&TVRPointSizeOfSiriRemoteOnMainScreen_size_1 * ratio;
+  if (direction <= 2)
   {
-    if (a5 != 1)
+    if (direction != 1)
     {
-      if (a5 == 2)
+      if (direction == 2)
       {
         v20 = -0.2;
 LABEL_10:
@@ -596,14 +596,14 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a5 == 3)
+  if (direction == 3)
   {
     v21 = x + v18 * -0.5;
     v31 = -0.2;
     goto LABEL_18;
   }
 
-  if (a5 == 4)
+  if (direction == 4)
   {
     v20 = -0.8;
     goto LABEL_10;
@@ -679,10 +679,10 @@ LABEL_19:
   return result;
 }
 
-- (CGPoint)_virtualTouchLocationForTouchPoint:(CGPoint)a3
+- (CGPoint)_virtualTouchLocationForTouchPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(TVRUIStandardTouchProcessor *)self virtualBoundingBox];
   v4 = v17.origin.x;
   v5 = v17.origin.y;
@@ -722,26 +722,26 @@ LABEL_19:
   return result;
 }
 
-- (int64_t)_calculateDominantSwipeDirection:(CGPoint)a3 toPoint:(CGPoint)a4
+- (int64_t)_calculateDominantSwipeDirection:(CGPoint)direction toPoint:(CGPoint)point
 {
-  if (a3.x == a4.x && a3.y == a4.y)
+  if (direction.x == point.x && direction.y == point.y)
   {
     return 0;
   }
 
   v5 = 2;
-  if (a4.x - a3.x < 0.0)
+  if (point.x - direction.x < 0.0)
   {
     v5 = 4;
   }
 
   v6 = 3;
-  if (a4.y - a3.y < 0.0)
+  if (point.y - direction.y < 0.0)
   {
     v6 = 1;
   }
 
-  if (vabdd_f64(a4.x, a3.x) >= vabdd_f64(a4.y, a3.y))
+  if (vabdd_f64(point.x, direction.x) >= vabdd_f64(point.y, direction.y))
   {
     return v5;
   }
@@ -769,25 +769,25 @@ LABEL_19:
   [(UIView *)self->_touchpadView addGestureRecognizer:v3];
 }
 
-- (void)handleTapGesture:(id)a3
+- (void)handleTapGesture:(id)gesture
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 state] == 3)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 3)
   {
     v5 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = v4;
+      v12 = gestureCopy;
       _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "Handling tap gesture on touchpad %@", buf, 0xCu);
     }
 
-    v6 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
-    if (v6)
+    eventDelegate = [(TVRUIStandardTouchProcessor *)self eventDelegate];
+    if (eventDelegate)
     {
-      v7 = v6;
-      v8 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
+      v7 = eventDelegate;
+      eventDelegate2 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
       v9 = objc_opt_respondsToSelector();
 
       if (v9)
@@ -806,15 +806,15 @@ LABEL_19:
   }
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  pressCopy = press;
+  if ([pressCopy state] == 1)
   {
     [(TVRUIStandardTouchProcessor *)self _sendSelectButtonPressBegan];
   }
 
-  else if ([v4 state] == 3 || objc_msgSend(v4, "state") == 4)
+  else if ([pressCopy state] == 3 || objc_msgSend(pressCopy, "state") == 4)
   {
     [(TVRUIStandardTouchProcessor *)self _sendSelectButtonPressEnded];
   }
@@ -823,15 +823,15 @@ LABEL_19:
 - (void)_sendSelectButtonPressBegan
 {
   v4 = [TVRUIButtonEvent createButtonEvent:1 buttonType:1];
-  v3 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
-  [v3 generatedButtonEvent:v4];
+  eventDelegate = [(TVRUIStandardTouchProcessor *)self eventDelegate];
+  [eventDelegate generatedButtonEvent:v4];
 }
 
 - (void)_sendSelectButtonPressEnded
 {
   v4 = [TVRUIButtonEvent createButtonEvent:2 buttonType:1];
-  v3 = [(TVRUIStandardTouchProcessor *)self eventDelegate];
-  [v3 generatedButtonEvent:v4];
+  eventDelegate = [(TVRUIStandardTouchProcessor *)self eventDelegate];
+  [eventDelegate generatedButtonEvent:v4];
 }
 
 - (_TVRUIEventDelegate)eventDelegate

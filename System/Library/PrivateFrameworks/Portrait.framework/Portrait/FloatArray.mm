@@ -1,27 +1,27 @@
 @interface FloatArray
-- (BOOL)isEqualToFloatArray:(id)a3 tolerance:(float)a4;
-- (FloatArray)initWithArray:(id)a3;
-- (FloatArray)initWithCount:(unint64_t)a3;
-- (FloatArray)initWithData:(id)a3;
-- (FloatArray)initWithFloat:(float)a3 repeatCount:(unint64_t)a4;
-- (FloatArray)initWithFloatArray:(id)a3;
-- (FloatArray)initWithFloats:(const float *)a3 count:(unint64_t)a4;
-- (FloatArray)initWithZeros:(unint64_t)a3;
-- (float)floatAtIndex:(unint64_t)a3;
-- (float)maximumDifferenceWithFloatArray:(id)a3;
+- (BOOL)isEqualToFloatArray:(id)array tolerance:(float)tolerance;
+- (FloatArray)initWithArray:(id)array;
+- (FloatArray)initWithCount:(unint64_t)count;
+- (FloatArray)initWithData:(id)data;
+- (FloatArray)initWithFloat:(float)float repeatCount:(unint64_t)count;
+- (FloatArray)initWithFloatArray:(id)array;
+- (FloatArray)initWithFloats:(const float *)floats count:(unint64_t)count;
+- (FloatArray)initWithZeros:(unint64_t)zeros;
+- (float)floatAtIndex:(unint64_t)index;
+- (float)maximumDifferenceWithFloatArray:(id)array;
 - (float)mean;
-- (id)addingConstant:(float)a3;
+- (id)addingConstant:(float)constant;
 - (id)asArray;
 - (id)asData;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)subtracting:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)subtracting:(id)subtracting;
 - (unint64_t)argMinimum;
 - (void)dealloc;
 @end
 
 @implementation FloatArray
 
-- (FloatArray)initWithCount:(unint64_t)a3
+- (FloatArray)initWithCount:(unint64_t)count
 {
   v8.receiver = self;
   v8.super_class = FloatArray;
@@ -29,15 +29,15 @@
   v5 = v4;
   if (v4)
   {
-    v4->_count = a3;
-    v4->_buffer = malloc_type_malloc(4 * a3, 0x100004052888210uLL);
+    v4->_count = count;
+    v4->_buffer = malloc_type_malloc(4 * count, 0x100004052888210uLL);
     v6 = v5;
   }
 
   return v5;
 }
 
-- (FloatArray)initWithZeros:(unint64_t)a3
+- (FloatArray)initWithZeros:(unint64_t)zeros
 {
   v8.receiver = self;
   v8.super_class = FloatArray;
@@ -45,44 +45,44 @@
   v5 = v4;
   if (v4)
   {
-    v4->_count = a3;
-    v4->_buffer = malloc_type_calloc(a3, 4uLL, 0x100004052888210uLL);
+    v4->_count = zeros;
+    v4->_buffer = malloc_type_calloc(zeros, 4uLL, 0x100004052888210uLL);
     v6 = v5;
   }
 
   return v5;
 }
 
-- (FloatArray)initWithFloat:(float)a3 repeatCount:(unint64_t)a4
+- (FloatArray)initWithFloat:(float)float repeatCount:(unint64_t)count
 {
-  __A = a3;
+  __A = float;
   v5 = [(FloatArray *)self initWithCount:?];
   v6 = v5;
   if (v5)
   {
-    vDSP_vfill(&__A, v5->_buffer, 1, a4);
+    vDSP_vfill(&__A, v5->_buffer, 1, count);
   }
 
   return v6;
 }
 
-- (FloatArray)initWithFloatArray:(id)a3
+- (FloatArray)initWithFloatArray:(id)array
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 floats];
-  v8 = [v6 count];
+  arrayCopy = array;
+  arrayCopy2 = array;
+  floats = [arrayCopy2 floats];
+  v8 = [arrayCopy2 count];
 
-  return [(FloatArray *)self initWithFloats:v7 count:v8];
+  return [(FloatArray *)self initWithFloats:floats count:v8];
 }
 
-- (FloatArray)initWithFloats:(const float *)a3 count:(unint64_t)a4
+- (FloatArray)initWithFloats:(const float *)floats count:(unint64_t)count
 {
-  v6 = [(FloatArray *)self initWithCount:a4];
+  v6 = [(FloatArray *)self initWithCount:count];
   v7 = v6;
   if (v6)
   {
-    memcpy(v6->_buffer, a3, 4 * a4);
+    memcpy(v6->_buffer, floats, 4 * count);
   }
 
   return v7;
@@ -96,24 +96,24 @@
   [(FloatArray *)&v3 dealloc];
 }
 
-- (float)floatAtIndex:(unint64_t)a3
+- (float)floatAtIndex:(unint64_t)index
 {
-  if (self->_count <= a3)
+  if (self->_count <= index)
   {
     [FloatArray floatAtIndex:];
   }
 
-  return self->_buffer[a3];
+  return self->_buffer[index];
 }
 
-- (BOOL)isEqualToFloatArray:(id)a3 tolerance:(float)a4
+- (BOOL)isEqualToFloatArray:(id)array tolerance:(float)tolerance
 {
-  v6 = a3;
+  arrayCopy = array;
   v7 = [(FloatArray *)self count];
-  if (v7 == [v6 count])
+  if (v7 == [arrayCopy count])
   {
-    [(FloatArray *)self maximumDifferenceWithFloatArray:v6];
-    v9 = v8 <= a4;
+    [(FloatArray *)self maximumDifferenceWithFloatArray:arrayCopy];
+    v9 = v8 <= tolerance;
   }
 
   else
@@ -124,18 +124,18 @@
   return v9;
 }
 
-- (float)maximumDifferenceWithFloatArray:(id)a3
+- (float)maximumDifferenceWithFloatArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = [(FloatArray *)self count];
-  v6 = [v4 count];
+  v6 = [arrayCopy count];
   if (v5 >= v6)
   {
     v5 = v6;
   }
 
-  v7 = [(FloatArray *)self floats];
-  v8 = [v4 floats];
+  floats = [(FloatArray *)self floats];
+  floats2 = [arrayCopy floats];
   if (v5 < 1)
   {
     v10 = 0.0;
@@ -143,13 +143,13 @@
 
   else
   {
-    v9 = &v7[v5];
+    v9 = &floats[v5];
     v10 = 0.0;
     do
     {
-      v11 = *v7++;
+      v11 = *floats++;
       v12 = v11;
-      v13 = *v8++;
+      v13 = *floats2++;
       v14 = v12 - v13;
       if (v14 < 0.0)
       {
@@ -162,7 +162,7 @@
       }
     }
 
-    while (v7 < v9);
+    while (floats < v9);
   }
 
   return v10;
@@ -183,47 +183,47 @@
   return v3;
 }
 
-- (id)addingConstant:(float)a3
+- (id)addingConstant:(float)constant
 {
-  v6 = a3;
+  constantCopy = constant;
   v4 = [[MutableFloatArray alloc] initWithCount:[(FloatArray *)self count]];
-  MEMORY[0x22AA502D0]([(FloatArray *)self floats], 1, &v6, [(MutableFloatArray *)v4 mutableFloats], 1, [(FloatArray *)self count]);
+  MEMORY[0x22AA502D0]([(FloatArray *)self floats], 1, &constantCopy, [(MutableFloatArray *)v4 mutableFloats], 1, [(FloatArray *)self count]);
 
   return v4;
 }
 
-- (id)subtracting:(id)a3
+- (id)subtracting:(id)subtracting
 {
-  v4 = a3;
-  if (self->_count != v4[2])
+  subtractingCopy = subtracting;
+  if (self->_count != subtractingCopy[2])
   {
     [FloatArray subtracting:];
   }
 
-  v5 = v4;
+  v5 = subtractingCopy;
   v6 = [[MutableFloatArray alloc] initWithCount:self->_count];
   MEMORY[0x22AA502E0]([v5 floats], 1, -[FloatArray floats](self, "floats"), 1, -[MutableFloatArray mutableFloats](v6, "mutableFloats"), 1, -[FloatArray count](self, "count"));
 
   return v6;
 }
 
-- (FloatArray)initWithArray:(id)a3
+- (FloatArray)initWithArray:(id)array
 {
-  v4 = a3;
-  v5 = -[FloatArray initWithCount:](self, "initWithCount:", [v4 count]);
-  if (v5 && [v4 count])
+  arrayCopy = array;
+  v5 = -[FloatArray initWithCount:](self, "initWithCount:", [arrayCopy count]);
+  if (v5 && [arrayCopy count])
   {
     v6 = 0;
     do
     {
-      v7 = [v4 objectAtIndexedSubscript:v6];
+      v7 = [arrayCopy objectAtIndexedSubscript:v6];
       [v7 floatValue];
       v5->_buffer[v6] = v8;
 
       ++v6;
     }
 
-    while (v6 < [v4 count]);
+    while (v6 < [arrayCopy count]);
   }
 
   return v5;
@@ -232,10 +232,10 @@
 - (id)asArray
 {
   v3 = objc_opt_new();
-  v4 = [(FloatArray *)self floats];
+  floats = [(FloatArray *)self floats];
   if (self->_count)
   {
-    v6 = v4;
+    v6 = floats;
     v7 = 0;
     do
     {
@@ -254,33 +254,33 @@
   return v9;
 }
 
-- (FloatArray)initWithData:(id)a3
+- (FloatArray)initWithData:(id)data
 {
-  v4 = a3;
-  if (([v4 length] & 3) != 0)
+  dataCopy = data;
+  if (([dataCopy length] & 3) != 0)
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    self = -[FloatArray initWithFloats:count:](self, "initWithFloats:count:", [v4 bytes], objc_msgSend(v4, "length") >> 2);
-    v5 = self;
+    self = -[FloatArray initWithFloats:count:](self, "initWithFloats:count:", [dataCopy bytes], objc_msgSend(dataCopy, "length") >> 2);
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)asData
 {
   v3 = MEMORY[0x277CBEA90];
-  v4 = [(FloatArray *)self floats];
+  floats = [(FloatArray *)self floats];
   v5 = 4 * [(FloatArray *)self count];
 
-  return [v3 dataWithBytes:v4 length:v5];
+  return [v3 dataWithBytes:floats length:v5];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [MutableFloatArray alloc];
 

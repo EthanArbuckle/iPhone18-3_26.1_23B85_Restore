@@ -6,12 +6,12 @@
 
 - (void)wf_handleBlockKeyCommand:()WFBlockKeyCommand
 {
-  v3 = [a3 block];
-  if (v3)
+  block = [a3 block];
+  if (block)
   {
-    v4 = v3;
-    v3[2]();
-    v3 = v4;
+    v4 = block;
+    block[2]();
+    block = v4;
   }
 }
 

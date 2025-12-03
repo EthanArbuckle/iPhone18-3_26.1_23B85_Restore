@@ -1,12 +1,12 @@
 @interface RMModelScreenSharingHostSettingsDeclaration
 + (NSSet)allowedPayloadKeys;
 + (id)assetTypes;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3;
-+ (id)buildWithIdentifier:(id)a3 maximumVirtualDisplays:(id)a4 portBase:(id)a5 preventCopyFilesFromHost:(id)a6 preventCopyFilesToHost:(id)a7 preventHighPerformanceConnections:(id)a8;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier;
++ (id)buildWithIdentifier:(id)identifier maximumVirtualDisplays:(id)displays portBase:(id)base preventCopyFilesFromHost:(id)host preventCopyFilesToHost:(id)toHost preventHighPerformanceConnections:(id)connections;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelScreenSharingHostSettingsDeclaration
@@ -35,35 +35,35 @@
   return v2;
 }
 
-+ (id)buildWithIdentifier:(id)a3 maximumVirtualDisplays:(id)a4 portBase:(id)a5 preventCopyFilesFromHost:(id)a6 preventCopyFilesToHost:(id)a7 preventHighPerformanceConnections:(id)a8
++ (id)buildWithIdentifier:(id)identifier maximumVirtualDisplays:(id)displays portBase:(id)base preventCopyFilesFromHost:(id)host preventCopyFilesToHost:(id)toHost preventHighPerformanceConnections:(id)connections
 {
-  v13 = a3;
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
+  identifierCopy = identifier;
+  connectionsCopy = connections;
+  toHostCopy = toHost;
+  hostCopy = host;
+  baseCopy = base;
+  displaysCopy = displays;
   v19 = objc_opt_new();
   [v19 setDeclarationType:@"com.apple.configuration.screensharing.host.settings"];
-  if (v13)
+  if (identifierCopy)
   {
-    [v19 setDeclarationIdentifier:v13];
+    [v19 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v20 = [MEMORY[0x277CCAD78] UUID];
-    v21 = [v20 UUIDString];
-    [v19 setDeclarationIdentifier:v21];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v19 setDeclarationIdentifier:uUIDString];
   }
 
-  [v19 setPayloadMaximumVirtualDisplays:v18];
+  [v19 setPayloadMaximumVirtualDisplays:displaysCopy];
 
-  [v19 setPayloadPortBase:v17];
+  [v19 setPayloadPortBase:baseCopy];
   v22 = MEMORY[0x277CBEC28];
-  if (v16)
+  if (hostCopy)
   {
-    v23 = v16;
+    v23 = hostCopy;
   }
 
   else
@@ -73,9 +73,9 @@
 
   [v19 setPayloadPreventCopyFilesFromHost:v23];
 
-  if (v15)
+  if (toHostCopy)
   {
-    v24 = v15;
+    v24 = toHostCopy;
   }
 
   else
@@ -85,9 +85,9 @@
 
   [v19 setPayloadPreventCopyFilesToHost:v24];
 
-  if (v14)
+  if (connectionsCopy)
   {
-    v25 = v14;
+    v25 = connectionsCopy;
   }
 
   else
@@ -102,21 +102,21 @@
   return v19;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   [v4 setDeclarationType:@"com.apple.configuration.screensharing.host.settings"];
-  if (v3)
+  if (identifierCopy)
   {
-    [v4 setDeclarationIdentifier:v3];
+    [v4 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
-    [v4 setDeclarationIdentifier:v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v4 setDeclarationIdentifier:uUIDString];
   }
 
   [v4 updateServerToken];
@@ -141,12 +141,12 @@
   return v5;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelScreenSharingHostSettingsDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -154,39 +154,39 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadIntegerFromDictionary:v7 usingKey:@"MaximumVirtualDisplays" forKeyPath:@"payloadMaximumVirtualDisplays" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v7 usingKey:@"PortBase" forKeyPath:@"payloadPortBase" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"PreventCopyFilesFromHost" forKeyPath:@"payloadPreventCopyFilesFromHost" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"PreventCopyFilesToHost" forKeyPath:@"payloadPreventCopyFilesToHost" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"PreventHighPerformanceConnections" forKeyPath:@"payloadPreventHighPerformanceConnections" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5];
+  v13 = [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"MaximumVirtualDisplays" forKeyPath:@"payloadMaximumVirtualDisplays" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"PortBase" forKeyPath:@"payloadPortBase" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"PreventCopyFilesFromHost" forKeyPath:@"payloadPreventCopyFilesFromHost" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"PreventCopyFilesToHost" forKeyPath:@"payloadPreventCopyFilesToHost" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"PreventHighPerformanceConnections" forKeyPath:@"payloadPreventHighPerformanceConnections" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error];
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelScreenSharingHostSettingsDeclaration *)self payloadMaximumVirtualDisplays];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"MaximumVirtualDisplays" value:v5 isRequired:0 defaultValue:0];
+  payloadMaximumVirtualDisplays = [(RMModelScreenSharingHostSettingsDeclaration *)self payloadMaximumVirtualDisplays];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"MaximumVirtualDisplays" value:payloadMaximumVirtualDisplays isRequired:0 defaultValue:0];
 
-  v6 = [(RMModelScreenSharingHostSettingsDeclaration *)self payloadPortBase];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"PortBase" value:v6 isRequired:0 defaultValue:0];
+  payloadPortBase = [(RMModelScreenSharingHostSettingsDeclaration *)self payloadPortBase];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"PortBase" value:payloadPortBase isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelScreenSharingHostSettingsDeclaration *)self payloadPreventCopyFilesFromHost];
+  payloadPreventCopyFilesFromHost = [(RMModelScreenSharingHostSettingsDeclaration *)self payloadPreventCopyFilesFromHost];
   v8 = MEMORY[0x277CBEC28];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"PreventCopyFilesFromHost" value:v7 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"PreventCopyFilesFromHost" value:payloadPreventCopyFilesFromHost isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v9 = [(RMModelScreenSharingHostSettingsDeclaration *)self payloadPreventCopyFilesToHost];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"PreventCopyFilesToHost" value:v9 isRequired:0 defaultValue:v8];
+  payloadPreventCopyFilesToHost = [(RMModelScreenSharingHostSettingsDeclaration *)self payloadPreventCopyFilesToHost];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"PreventCopyFilesToHost" value:payloadPreventCopyFilesToHost isRequired:0 defaultValue:v8];
 
-  v10 = [(RMModelScreenSharingHostSettingsDeclaration *)self payloadPreventHighPerformanceConnections];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"PreventHighPerformanceConnections" value:v10 isRequired:0 defaultValue:v8];
+  payloadPreventHighPerformanceConnections = [(RMModelScreenSharingHostSettingsDeclaration *)self payloadPreventHighPerformanceConnections];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"PreventHighPerformanceConnections" value:payloadPreventHighPerformanceConnections isRequired:0 defaultValue:v8];
 
   v11 = [v4 copy];
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v16.receiver = self;
   v16.super_class = RMModelScreenSharingHostSettingsDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v16 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v16 copyWithZone:zone];
   v5 = [(NSNumber *)self->_payloadMaximumVirtualDisplays copy];
   v6 = v4[6];
   v4[6] = v5;

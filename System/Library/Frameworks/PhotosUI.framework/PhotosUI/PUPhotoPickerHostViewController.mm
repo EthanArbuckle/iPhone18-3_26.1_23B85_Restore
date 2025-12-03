@@ -2,9 +2,9 @@
 - (PUPhotoPickerHostViewControllerDelegate)delegate;
 - (void)invalidate;
 - (void)performPhotoPickerPreviewOfFirstAsset;
-- (void)performTraitCollectionUpdateWithCompletion:(id)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)performTraitCollectionUpdateWithCompletion:(id)completion;
+- (void)viewServiceDidTerminateWithError:(id)error;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation PUPhotoPickerHostViewController
@@ -16,13 +16,13 @@
   return WeakRetained;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v8.receiver = self;
   v8.super_class = PUPhotoPickerHostViewController;
-  [(_UIRemoteViewController *)&v8 viewServiceDidTerminateWithError:v4];
+  [(_UIRemoteViewController *)&v8 viewServiceDidTerminateWithError:errorCopy];
   if (![(PUPhotoPickerHostViewController *)self _isInvalidated])
   {
     v5 = PLUIGetLog();
@@ -31,34 +31,34 @@
       *buf = 136315394;
       v10 = "[PUPhotoPickerHostViewController viewServiceDidTerminateWithError:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = errorCopy;
       _os_log_impl(&dword_1D2128000, v5, OS_LOG_TYPE_ERROR, "%s Error %@", buf, 0x16u);
     }
 
-    v6 = [(PUPhotoPickerHostViewController *)self hostProxy];
-    [v6 cancelPhotoPicker];
+    hostProxy = [(PUPhotoPickerHostViewController *)self hostProxy];
+    [hostProxy cancelPhotoPicker];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performTraitCollectionUpdateWithCompletion:(id)a3
+- (void)performTraitCollectionUpdateWithCompletion:(id)completion
 {
   v26[5] = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v4 = [(PUPhotoPickerHostViewController *)self traitCollection];
+  completionCopy = completion;
+  traitCollection = [(PUPhotoPickerHostViewController *)self traitCollection];
   v5 = MEMORY[0x1E69DD1B8];
-  v6 = [MEMORY[0x1E69DD1B8] traitCollectionWithVerticalSizeClass:{objc_msgSend(v4, "verticalSizeClass")}];
+  v6 = [MEMORY[0x1E69DD1B8] traitCollectionWithVerticalSizeClass:{objc_msgSend(traitCollection, "verticalSizeClass")}];
   v26[0] = v6;
-  v7 = [MEMORY[0x1E69DD1B8] traitCollectionWithHorizontalSizeClass:{objc_msgSend(v4, "horizontalSizeClass")}];
+  v7 = [MEMORY[0x1E69DD1B8] traitCollectionWithHorizontalSizeClass:{objc_msgSend(traitCollection, "horizontalSizeClass")}];
   v26[1] = v7;
-  v8 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceIdiom:{objc_msgSend(v4, "userInterfaceIdiom")}];
+  v8 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceIdiom:{objc_msgSend(traitCollection, "userInterfaceIdiom")}];
   v26[2] = v8;
-  v9 = [MEMORY[0x1E69DD1B8] traitCollectionWithLayoutDirection:{objc_msgSend(v4, "layoutDirection")}];
+  v9 = [MEMORY[0x1E69DD1B8] traitCollectionWithLayoutDirection:{objc_msgSend(traitCollection, "layoutDirection")}];
   v26[3] = v9;
   v10 = MEMORY[0x1E69DD1B8];
-  v11 = [v4 preferredContentSizeCategory];
-  v12 = [v10 traitCollectionWithPreferredContentSizeCategory:v11];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v12 = [v10 traitCollectionWithPreferredContentSizeCategory:preferredContentSizeCategory];
   v26[4] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:5];
   v14 = [v5 traitCollectionWithTraitsFromCollections:v13];
@@ -79,16 +79,16 @@
     }
   }
 
-  v18 = [(PUPhotoPickerHostViewController *)self hostProxy];
-  [v18 performTraitCollectionUpdateUsingData:v15 completion:v20];
+  hostProxy = [(PUPhotoPickerHostViewController *)self hostProxy];
+  [hostProxy performTraitCollectionUpdateUsingData:v15 completion:completionCopy];
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
 - (void)performPhotoPickerPreviewOfFirstAsset
 {
-  v2 = [(PUPhotoPickerHostViewController *)self hostProxy];
-  [v2 performPhotoPickerPreviewOfFirstAsset];
+  hostProxy = [(PUPhotoPickerHostViewController *)self hostProxy];
+  [hostProxy performPhotoPickerPreviewOfFirstAsset];
 }
 
 - (void)invalidate
@@ -96,20 +96,20 @@
   if (![(PUPhotoPickerHostViewController *)self _isInvalidated])
   {
     [(PUPhotoPickerHostViewController *)self set_invalidated:1];
-    v3 = [(PUPhotoPickerHostViewController *)self hostProxy];
-    [v3 invalidatePhotoPickerHostServices];
+    hostProxy = [(PUPhotoPickerHostViewController *)self hostProxy];
+    [hostProxy invalidatePhotoPickerHostServices];
 
     [(PUPhotoPickerHostViewController *)self setHostExtensionContext:0];
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 setNavigationBarHidden:1];
+    [controllerCopy setNavigationBarHidden:1];
   }
 }
 

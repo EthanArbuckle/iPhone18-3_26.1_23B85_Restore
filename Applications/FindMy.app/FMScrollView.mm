@@ -1,7 +1,7 @@
 @interface FMScrollView
 - (_TtC6FindMy12FMScrollView)init;
-- (_TtC6FindMy12FMScrollView)initWithCoder:(id)a3;
-- (_TtC6FindMy12FMScrollView)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy12FMScrollView)initWithCoder:(id)coder;
+- (_TtC6FindMy12FMScrollView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FMScrollView
@@ -21,7 +21,7 @@
   return v6;
 }
 
-- (_TtC6FindMy12FMScrollView)initWithCoder:(id)a3
+- (_TtC6FindMy12FMScrollView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC6FindMy12FMScrollView_content;
   *(&self->super.super.super.super.isa + v3) = [objc_allocWithZone(UIView) init];
@@ -30,7 +30,7 @@
   return result;
 }
 
-- (_TtC6FindMy12FMScrollView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy12FMScrollView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

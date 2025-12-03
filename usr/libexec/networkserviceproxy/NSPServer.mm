@@ -1,59 +1,59 @@
 @interface NSPServer
 - (BOOL)canIgnoreInvalidCertsOnInternalBuild;
-- (BOOL)configurationFetchDateIsWithinStart:(id)a3 end:(id)a4;
+- (BOOL)configurationFetchDateIsWithinStart:(id)start end:(id)end;
 - (BOOL)isSubscriberUnlimited;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)networkDiscoveredProxyInTrustedProxyList:(id)a3;
-- (BOOL)subscriberTierIsProhibited:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)networkDiscoveredProxyInTrustedProxyList:(id)list;
+- (BOOL)subscriberTierIsProhibited:(id)prohibited;
 - (BOOL)usesDefaultConfigurationServer;
 - (NSPServer)init;
 - (id)getSavedPrivateCloudComputeEnvironment;
-- (void)authInfoChanged:(id)a3;
-- (void)badTokenInfoForProxy:(id)a3;
-- (void)checkPrivacyProxyConnectivityOnInterface:(id)a3 proxyConnectivityCheckType:(unint64_t)a4 completionHandler:(id)a5;
-- (void)cloudSubscriptionChanged:(BOOL)a3 configManager:(id)a4;
-- (void)configDisabled:(id)a3;
-- (void)configEnabled:(id)a3;
-- (void)configEpochChanged:(id)a3;
-- (void)configFetched:(id)a3;
-- (void)configUpdated:(id)a3;
-- (void)configurationRestart:(id)a3;
-- (void)didUpdateCountryPlusTimezone:(id)a3;
-- (void)didUpdateGeohash:(id)a3;
+- (void)authInfoChanged:(id)changed;
+- (void)badTokenInfoForProxy:(id)proxy;
+- (void)checkPrivacyProxyConnectivityOnInterface:(id)interface proxyConnectivityCheckType:(unint64_t)type completionHandler:(id)handler;
+- (void)cloudSubscriptionChanged:(BOOL)changed configManager:(id)manager;
+- (void)configDisabled:(id)disabled;
+- (void)configEnabled:(id)enabled;
+- (void)configEpochChanged:(id)changed;
+- (void)configFetched:(id)fetched;
+- (void)configUpdated:(id)updated;
+- (void)configurationRestart:(id)restart;
+- (void)didUpdateCountryPlusTimezone:(id)timezone;
+- (void)didUpdateGeohash:(id)geohash;
 - (void)didUpdateSignificantLocation;
-- (void)disableCellularNetwork:(id)a3;
-- (void)disableWiFiNetwork:(id)a3;
-- (void)effectiveUserTierChanged:(id)a3;
-- (void)geohashSettingsChanged:(id)a3;
-- (void)multiHopProxyAgentRegistered:(BOOL)a3;
-- (void)networkDiscoveredProxyPaths:(id)a3 registeredForAgentUUID:(id)a4;
+- (void)disableCellularNetwork:(id)network;
+- (void)disableWiFiNetwork:(id)network;
+- (void)effectiveUserTierChanged:(id)changed;
+- (void)geohashSettingsChanged:(id)changed;
+- (void)multiHopProxyAgentRegistered:(BOOL)registered;
+- (void)networkDiscoveredProxyPaths:(id)paths registeredForAgentUUID:(id)d;
 - (void)networkSignatureChanged;
-- (void)obliviousHopAgentRegisteredForHostname:(id)a3 processes:(id)a4 agentUUID:(id)a5;
-- (void)obliviousHopAgentUnregisteredForHostname:(id)a3 agentUUID:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)policiesUpdated:(id)a3 policy:(id)a4 resolverInfoChanged:(BOOL)a5;
-- (void)preferredProxyAgentRegistered:(id)a3 agentUUID:(id)a4 domainFilter:(id)a5;
-- (void)preferredProxyAgentUnregistered:(id)a3;
-- (void)privateAccessTokensEnabledChanged:(id)a3;
-- (void)proxiedContentMaps:(id)a3 registeredForAgentUUID:(id)a4;
-- (void)proxiedContentMapsUnregisteredForAgentUUID:(id)a3;
+- (void)obliviousHopAgentRegisteredForHostname:(id)hostname processes:(id)processes agentUUID:(id)d;
+- (void)obliviousHopAgentUnregisteredForHostname:(id)hostname agentUUID:(id)d;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)policiesUpdated:(id)updated policy:(id)policy resolverInfoChanged:(BOOL)changed;
+- (void)preferredProxyAgentRegistered:(id)registered agentUUID:(id)d domainFilter:(id)filter;
+- (void)preferredProxyAgentUnregistered:(id)unregistered;
+- (void)privateAccessTokensEnabledChanged:(id)changed;
+- (void)proxiedContentMaps:(id)maps registeredForAgentUUID:(id)d;
+- (void)proxiedContentMapsUnregisteredForAgentUUID:(id)d;
 - (void)proxyConnectivityActive;
-- (void)proxyInfoChanged:(id)a3;
-- (void)proxyTokenFetchDisabled:(id)a3;
-- (void)proxyTokenFetchEnabled:(id)a3;
-- (void)refreshProxyInfo:(unint64_t)a3;
-- (void)reportActivityForApp:(id)a3 path:(id)a4;
-- (void)reportPrivacyProxySuccessOnInterface:(id)a3;
-- (void)resumePrivacyProxy:(id)a3;
-- (void)singleHopProxyAgentRegistered:(BOOL)a3;
-- (void)suspendPrivacyProxyTemporarily:(id)a3;
+- (void)proxyInfoChanged:(id)changed;
+- (void)proxyTokenFetchDisabled:(id)disabled;
+- (void)proxyTokenFetchEnabled:(id)enabled;
+- (void)refreshProxyInfo:(unint64_t)info;
+- (void)reportActivityForApp:(id)app path:(id)path;
+- (void)reportPrivacyProxySuccessOnInterface:(id)interface;
+- (void)resumePrivacyProxy:(id)proxy;
+- (void)singleHopProxyAgentRegistered:(BOOL)registered;
+- (void)suspendPrivacyProxyTemporarily:(id)temporarily;
 - (void)tokenFetchActive;
 - (void)tokenFetchOutage;
 - (void)tokenIssuanceAllowed;
 - (void)tokenIssuanceLimitReached;
-- (void)updateSavedPrivateCloudComputeEnvironment:(id)a3;
-- (void)userPreferredTierChanged:(id)a3;
-- (void)userTierChanged:(id)a3;
+- (void)updateSavedPrivateCloudComputeEnvironment:(id)environment;
+- (void)userPreferredTierChanged:(id)changed;
+- (void)userTierChanged:(id)changed;
 @end
 
 @implementation NSPServer
@@ -205,21 +205,21 @@ LABEL_31:
                 _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Detected outage interval in preferences file: %{public}@", &buf, 0xCu);
               }
 
-              v32 = [v30 unsignedIntegerValue];
+              unsignedIntegerValue = [v30 unsignedIntegerValue];
             }
 
             else
             {
-              v32 = 0;
+              unsignedIntegerValue = 0;
             }
           }
 
           else
           {
-            v32 = 0;
+            unsignedIntegerValue = 0;
           }
 
-          v28[40] = v32;
+          v28[40] = unsignedIntegerValue;
           v33 = objc_alloc_init(NSPToggleStats);
           v34 = v28[43];
           v28[43] = v33;
@@ -237,23 +237,23 @@ LABEL_22:
   return v19;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NSPServerCommands];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   if (self)
   {
     primaryPhysicalInterfaceEvaluator = self->_primaryPhysicalInterfaceEvaluator;
@@ -265,18 +265,18 @@ LABEL_22:
   }
 
   v14 = primaryPhysicalInterfaceEvaluator;
-  if (v14 != v11 || ![v10 isEqualToString:@"path"])
+  if (v14 != objectCopy || ![pathCopy isEqualToString:@"path"])
   {
 
     goto LABEL_8;
   }
 
-  if (a6 != self)
+  if (context != self)
   {
 LABEL_8:
     v16.receiver = self;
     v16.super_class = NSPServer;
-    [(NSPServer *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(NSPServer *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_9;
   }
 
@@ -299,24 +299,24 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)configFetched:(id)a3
+- (void)configFetched:(id)fetched
 {
-  v4 = a3;
+  fetchedCopy = fetched;
   if (self && self->_configOutage)
   {
     self->_configOutage = 0;
-    v6 = v4;
-    v5 = [(NSPConfigurationManager *)self->_configurationManager mergeProxyTrafficStateWithCurrentPolicy];
-    [(NSPServer *)self policiesUpdated:self->_configurationManager policy:v5 resolverInfoChanged:1];
+    v6 = fetchedCopy;
+    mergeProxyTrafficStateWithCurrentPolicy = [(NSPConfigurationManager *)self->_configurationManager mergeProxyTrafficStateWithCurrentPolicy];
+    [(NSPServer *)self policiesUpdated:self->_configurationManager policy:mergeProxyTrafficStateWithCurrentPolicy resolverInfoChanged:1];
     sub_1000654C0(self);
 
-    v4 = v6;
+    fetchedCopy = v6;
   }
 }
 
-- (void)configEnabled:(id)a3
+- (void)configEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -327,8 +327,8 @@ LABEL_9:
   if (self)
   {
     self->_isRunning = 1;
-    v6 = [(NSPConfigurationManager *)self->_configurationManager currentConfiguration];
-    objc_storeStrong(&self->_configuration, v6);
+    currentConfiguration = [(NSPConfigurationManager *)self->_configurationManager currentConfiguration];
+    objc_storeStrong(&self->_configuration, currentConfiguration);
 
     Property = objc_getProperty(self, v7, 280, 1);
   }
@@ -342,9 +342,9 @@ LABEL_9:
 
   sub_1000A09AC(Property);
   v9 = +[NSPPrivacyProxyPolicyHandler sharedHandler];
-  v10 = [v9 addPoliciesForProbing];
+  addPoliciesForProbing = [v9 addPoliciesForProbing];
 
-  if ((v10 & 1) == 0)
+  if ((addPoliciesForProbing & 1) == 0)
   {
     v11 = nplog_obj();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -366,7 +366,7 @@ LABEL_9:
   }
 
   v14 = primaryPhysicalInterfaceEvaluator;
-  v15 = [(NWPathEvaluator *)v14 path];
+  path = [(NWPathEvaluator *)v14 path];
   if (self)
   {
     toggleStats = self->_toggleStats;
@@ -377,7 +377,7 @@ LABEL_9:
     toggleStats = 0;
   }
 
-  v17 = sub_10004B19C(&v12->super.isa, self, v15, toggleStats);
+  v17 = sub_10004B19C(&v12->super.isa, self, path, toggleStats);
   sub_10001FD68(self, v17);
 
   v18 = [NSPServiceStatusManager alloc];
@@ -392,18 +392,18 @@ LABEL_9:
   }
 
   v20 = configuration;
-  v21 = [(NSPConfiguration *)v20 userTier];
-  v22 = [v21 unsignedIntValue];
+  userTier = [(NSPConfiguration *)v20 userTier];
+  unsignedIntValue = [userTier unsignedIntValue];
   if (!self)
   {
-    v82 = -[NSPServiceStatusManager initFromPreferencesWithUserTier:effectiveUserTier:delegate:](v18, "initFromPreferencesWithUserTier:effectiveUserTier:delegate:", v22, [0 effectiveUserTier], 0);
+    v82 = -[NSPServiceStatusManager initFromPreferencesWithUserTier:effectiveUserTier:delegate:](v18, "initFromPreferencesWithUserTier:effectiveUserTier:delegate:", unsignedIntValue, [0 effectiveUserTier], 0);
     sub_1000050EC(0, v82);
 
-    [0 proxyTokenFetchEnabled:v4];
+    [0 proxyTokenFetchEnabled:enabledCopy];
     goto LABEL_51;
   }
 
-  v23 = [(NSPServiceStatusManager *)v18 initFromPreferencesWithUserTier:v22 effectiveUserTier:[(NSPConfigurationManager *)self->_configurationManager effectiveUserTier] delegate:self];
+  v23 = [(NSPServiceStatusManager *)v18 initFromPreferencesWithUserTier:unsignedIntValue effectiveUserTier:[(NSPConfigurationManager *)self->_configurationManager effectiveUserTier] delegate:self];
   sub_1000050EC(self, v23);
 
   if (self->_proxyOutage)
@@ -459,7 +459,7 @@ LABEL_32:
       *(&buf + 1) = 3221225472;
       v96 = sub_100074C00;
       v97 = &unk_100109478;
-      v98 = self;
+      selfCopy3 = self;
       dispatch_async(v30, &buf);
     }
 
@@ -510,14 +510,14 @@ LABEL_35:
     }
   }
 
-  [(NSPServer *)self proxyTokenFetchEnabled:v4];
+  [(NSPServer *)self proxyTokenFetchEnabled:enabledCopy];
 
   objc_initWeak(&location, self);
   *&buf = _NSConcreteStackBlock;
   *(&buf + 1) = 3221225472;
   v96 = sub_10006148C;
   v97 = &unk_100109F80;
-  objc_copyWeak(&v98, &location);
+  objc_copyWeak(&selfCopy3, &location);
   xpc_activity_register("com.apple.networkserviceproxy.metadata-refresh-12h", XPC_ACTIVITY_CHECK_IN, &buf);
   *&handler = _NSConcreteStackBlock;
   *(&handler + 1) = 3221225472;
@@ -533,14 +533,14 @@ LABEL_35:
   xpc_activity_register("com.apple.networkserviceproxy.publish-daily-stats", XPC_ACTIVITY_CHECK_IN, v84);
   objc_destroyWeak(v88);
   objc_destroyWeak(v94);
-  objc_destroyWeak(&v98);
+  objc_destroyWeak(&selfCopy3);
   objc_destroyWeak(&location);
   v37 = NPGetInternalQueue();
   *&buf = _NSConcreteStackBlock;
   *(&buf + 1) = 3221225472;
   v96 = sub_1000726A4;
   v97 = &unk_10010A370;
-  v98 = self;
+  selfCopy3 = self;
   v38 = CNPluginMonitorStart();
 
   v39 = nplog_obj();
@@ -567,7 +567,7 @@ LABEL_35:
   *(&buf + 1) = 3221225472;
   v96 = sub_1000714C0;
   v97 = &unk_100109EC8;
-  v98 = self;
+  selfCopy3 = self;
   xpc_set_event_stream_handler("com.apple.distnoted.matching", v41, &buf);
 
   v42 = nplog_obj();
@@ -611,7 +611,7 @@ LABEL_51:
     *(&buf + 1) = 3221225472;
     v96 = sub_100074C4C;
     v97 = &unk_10010A520;
-    objc_copyWeak(&v98, &handler);
+    objc_copyWeak(&selfCopy3, &handler);
     self->_userActivityNotificationHandle = IOPMScheduleUserActivityLevelNotification();
 
     if (!self->_userActivityNotificationHandle)
@@ -624,7 +624,7 @@ LABEL_51:
       }
     }
 
-    objc_destroyWeak(&v98);
+    objc_destroyWeak(&selfCopy3);
     objc_destroyWeak(&handler);
   }
 
@@ -699,7 +699,7 @@ LABEL_51:
             v96 = sub_100074734;
             v97 = &unk_100109538;
             v74 = v73;
-            objc_copyWeak(&v98, &location);
+            objc_copyWeak(&selfCopy3, &location);
             dispatch_source_set_cancel_handler(v74, &buf);
 
             v75 = self->_linkQualityMonitoringSource;
@@ -712,7 +712,7 @@ LABEL_51:
             dispatch_source_set_event_handler(v76, &handler);
 
             objc_destroyWeak(v94);
-            objc_destroyWeak(&v98);
+            objc_destroyWeak(&selfCopy3);
             objc_destroyWeak(&location);
             v77 = self->_linkQualityMonitoringSource;
           }
@@ -747,12 +747,12 @@ LABEL_51:
         *(&buf + 1) = 3221225472;
         v96 = sub_100074C08;
         v97 = &unk_10010A4F8;
-        objc_copyWeak(&v98, &handler);
+        objc_copyWeak(&selfCopy3, &handler);
         v59 = [(TRIClient *)v57 addUpdateHandlerForNamespaceName:@"NETWORK_SERVICE_PROXY_CONFIG_UPDATE" queue:v58 usingBlock:&buf];
         trialNotificationToken = self->_trialNotificationToken;
         self->_trialNotificationToken = v59;
 
-        objc_destroyWeak(&v98);
+        objc_destroyWeak(&selfCopy3);
         objc_destroyWeak(&handler);
       }
     }
@@ -789,11 +789,11 @@ LABEL_51:
         v96 = sub_1000024F8;
         v97 = &unk_100109538;
         v68 = v67;
-        objc_copyWeak(&v98, &handler);
+        objc_copyWeak(&selfCopy3, &handler);
         dispatch_source_set_event_handler(v68, &buf);
 
         dispatch_resume(self->_toggleStatsTimer);
-        objc_destroyWeak(&v98);
+        objc_destroyWeak(&selfCopy3);
         objc_destroyWeak(&handler);
       }
     }
@@ -809,9 +809,9 @@ LABEL_51:
   sub_1000654C0(self);
 }
 
-- (void)configDisabled:(id)a3
+- (void)configDisabled:(id)disabled
 {
-  v4 = a3;
+  disabledCopy = disabled;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -851,7 +851,7 @@ LABEL_51:
 
   sub_1000A0904(Property, 1);
   sub_100061B54(self);
-  [(NSPServer *)self proxyTokenFetchDisabled:v4];
+  [(NSPServer *)self proxyTokenFetchDisabled:disabledCopy];
 
   v9 = +[NSPPrivacyProxyPolicyHandler sharedHandler];
   [v9 remove:1];
@@ -906,9 +906,9 @@ LABEL_51:
   }
 }
 
-- (void)configurationRestart:(id)a3
+- (void)configurationRestart:(id)restart
 {
-  v4 = a3;
+  restartCopy = restart;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -916,21 +916,21 @@ LABEL_51:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "server configuration reset", v6, 2u);
   }
 
-  [(NSPServer *)self configDisabled:v4];
-  [(NSPServer *)self configEnabled:v4];
+  [(NSPServer *)self configDisabled:restartCopy];
+  [(NSPServer *)self configEnabled:restartCopy];
 }
 
-- (BOOL)configurationFetchDateIsWithinStart:(id)a3 end:(id)a4
+- (BOOL)configurationFetchDateIsWithinStart:(id)start end:(id)end
 {
   if (self)
   {
     self = self->_configuration;
   }
 
-  return [(NSPServer *)self fetchDateIsWithinStart:a3 end:a4];
+  return [(NSPServer *)self fetchDateIsWithinStart:start end:end];
 }
 
-- (BOOL)subscriberTierIsProhibited:(id)a3
+- (BOOL)subscriberTierIsProhibited:(id)prohibited
 {
   v3 = NSSelectorFromString(@"isCloudPrivateRelayAllowed");
   v4 = +[MCProfileConnection sharedConnection];
@@ -954,9 +954,9 @@ LABEL_51:
   return v5;
 }
 
-- (void)suspendPrivacyProxyTemporarily:(id)a3
+- (void)suspendPrivacyProxyTemporarily:(id)temporarily
 {
-  v4 = a3;
+  temporarilyCopy = temporarily;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -977,12 +977,12 @@ LABEL_51:
 
   sub_1000A0904(Property, 1);
   sub_100061B54(self);
-  [(NSPServer *)self proxyTokenFetchDisabled:v4];
+  [(NSPServer *)self proxyTokenFetchDisabled:temporarilyCopy];
 }
 
-- (void)resumePrivacyProxy:(id)a3
+- (void)resumePrivacyProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1002,12 +1002,12 @@ LABEL_51:
   }
 
   sub_1000A09AC(Property);
-  [(NSPServer *)self proxyTokenFetchEnabled:v4];
+  [(NSPServer *)self proxyTokenFetchEnabled:proxyCopy];
 }
 
-- (void)proxyTokenFetchEnabled:(id)a3
+- (void)proxyTokenFetchEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1015,11 +1015,11 @@ LABEL_51:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Proxy token fetch enabled", v6, 2u);
   }
 
-  [(NSPServer *)self authInfoChanged:v4];
-  [(NSPServer *)self proxyInfoChanged:v4];
+  [(NSPServer *)self authInfoChanged:enabledCopy];
+  [(NSPServer *)self proxyInfoChanged:enabledCopy];
 }
 
-- (void)proxyTokenFetchDisabled:(id)a3
+- (void)proxyTokenFetchDisabled:(id)disabled
 {
   v4 = nplog_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1042,12 +1042,12 @@ LABEL_51:
   }
 
   v7 = configuration;
-  v8 = [(NSPConfiguration *)v7 proxyConfiguration];
-  v9 = [v8 regionId];
-  [(NSPServiceStatusManager *)v5 reportUnsupportedRegion:v9];
+  proxyConfiguration = [(NSPConfiguration *)v7 proxyConfiguration];
+  regionId = [proxyConfiguration regionId];
+  [(NSPServiceStatusManager *)v5 reportUnsupportedRegion:regionId];
 }
 
-- (void)userTierChanged:(id)a3
+- (void)userTierChanged:(id)changed
 {
   v4 = nplog_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1066,10 +1066,10 @@ LABEL_51:
     configuration = 0;
   }
 
-  v6 = [(NSPConfiguration *)configuration userTier];
-  v7 = [v6 unsignedIntegerValue];
+  userTier = [(NSPConfiguration *)configuration userTier];
+  unsignedIntegerValue = [userTier unsignedIntegerValue];
 
-  if (v7 != 2)
+  if (unsignedIntegerValue != 2)
   {
     +[NSPServiceStatusManager removeFromPreferences];
     v24 = [NSPServiceStatusManager alloc];
@@ -1125,9 +1125,9 @@ LABEL_51:
     v13 = 0;
   }
 
-  v14 = [(NSPConfiguration *)v13 proxyConfiguration];
+  proxyConfiguration = [(NSPConfiguration *)v13 proxyConfiguration];
 
-  if (v14)
+  if (proxyConfiguration)
   {
     if (self)
     {
@@ -1154,9 +1154,9 @@ LABEL_51:
       }
 
       v21 = v26;
-      v22 = [(NSPConfiguration *)v21 proxyConfiguration];
-      v23 = [v22 regionId];
-      [(NSPServiceStatusManager *)v19 reportSubscriberUnsupportedRegion:v23];
+      proxyConfiguration2 = [(NSPConfiguration *)v21 proxyConfiguration];
+      regionId = [proxyConfiguration2 regionId];
+      [(NSPServiceStatusManager *)v19 reportSubscriberUnsupportedRegion:regionId];
       goto LABEL_30;
     }
 
@@ -1170,10 +1170,10 @@ LABEL_51:
       v16 = 0;
     }
 
-    v17 = [(NSPConfiguration *)v16 proxyConfiguration];
-    v18 = [v17 enabled];
+    proxyConfiguration3 = [(NSPConfiguration *)v16 proxyConfiguration];
+    enabled = [proxyConfiguration3 enabled];
 
-    if ((v18 & 1) == 0)
+    if ((enabled & 1) == 0)
     {
       if (self)
       {
@@ -1188,9 +1188,9 @@ LABEL_51:
       }
 
       v21 = v20;
-      v22 = [(NSPConfiguration *)v21 proxyConfiguration];
-      v23 = [v22 regionId];
-      [(NSPServiceStatusManager *)v19 reportUnsupportedRegion:v23];
+      proxyConfiguration2 = [(NSPConfiguration *)v21 proxyConfiguration];
+      regionId = [proxyConfiguration2 regionId];
+      [(NSPServiceStatusManager *)v19 reportUnsupportedRegion:regionId];
 LABEL_30:
 
 LABEL_31:
@@ -1202,7 +1202,7 @@ LABEL_31:
   sub_10006815C(self);
 }
 
-- (void)userPreferredTierChanged:(id)a3
+- (void)userPreferredTierChanged:(id)changed
 {
   v4 = nplog_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1221,10 +1221,10 @@ LABEL_31:
     configuration = 0;
   }
 
-  v6 = [(NSPConfiguration *)configuration userPreferredTier];
-  v7 = [v6 unsignedIntValue];
+  userPreferredTier = [(NSPConfiguration *)configuration userPreferredTier];
+  unsignedIntValue = [userPreferredTier unsignedIntValue];
 
-  v8 = v7 == 2;
+  v8 = unsignedIntValue == 2;
   if (self)
   {
     [(NSPPrivacyProxyAgentManager *)self->_privacyProxyAgentManager sendRTCReportForPrivacyProxyToggleState:v8];
@@ -1237,7 +1237,7 @@ LABEL_31:
     toggleStats = 0;
   }
 
-  if (v7 == 2)
+  if (unsignedIntValue == 2)
   {
     [(NSPToggleStats *)toggleStats sendToggleOnStats];
   }
@@ -1248,7 +1248,7 @@ LABEL_31:
   }
 }
 
-- (void)effectiveUserTierChanged:(id)a3
+- (void)effectiveUserTierChanged:(id)changed
 {
   v4 = nplog_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1273,9 +1273,9 @@ LABEL_31:
     configuration = 0;
   }
 
-  v8 = [(NSPConfiguration *)configuration proxyConfiguration];
+  proxyConfiguration = [(NSPConfiguration *)configuration proxyConfiguration];
 
-  if (v8)
+  if (proxyConfiguration)
   {
     v9 = self ? self->_configurationManager : 0;
     if ([(NSPConfigurationManager *)v9 effectiveUserTier]== 1)
@@ -1291,8 +1291,8 @@ LABEL_31:
       }
 
       v11 = v10;
-      v12 = [(NSPServiceStatusManager *)v11 userTier];
-      if ([v12 unsignedIntegerValue] != 2)
+      userTier = [(NSPServiceStatusManager *)v11 userTier];
+      if ([userTier unsignedIntegerValue] != 2)
       {
         goto LABEL_18;
       }
@@ -1307,9 +1307,9 @@ LABEL_31:
         configurationManager = 0;
       }
 
-      v14 = [(NSPConfigurationManager *)configurationManager configurationSubscriberPoliciesCount];
+      configurationSubscriberPoliciesCount = [(NSPConfigurationManager *)configurationManager configurationSubscriberPoliciesCount];
 
-      if (!v14)
+      if (!configurationSubscriberPoliciesCount)
       {
         if (self)
         {
@@ -1324,9 +1324,9 @@ LABEL_31:
         }
 
         v16 = v15;
-        v12 = [(NSPConfiguration *)v16 proxyConfiguration];
-        v17 = [v12 regionId];
-        [(NSPServiceStatusManager *)v11 reportSubscriberUnsupportedRegion:v17];
+        userTier = [(NSPConfiguration *)v16 proxyConfiguration];
+        regionId = [userTier regionId];
+        [(NSPServiceStatusManager *)v11 reportSubscriberUnsupportedRegion:regionId];
 
 LABEL_18:
       }
@@ -1343,11 +1343,11 @@ LABEL_18:
     v18 = 0;
   }
 
-  v19 = [(NSPConfigurationManager *)v18 effectiveUserTier];
-  v20 = v19;
+  effectiveUserTier = [(NSPConfigurationManager *)v18 effectiveUserTier];
+  v20 = effectiveUserTier;
   if (self)
   {
-    [(NSPPrivacyProxyAgentManager *)self->_privacyProxyAgentManager handleTierChange:v19 == 2];
+    [(NSPPrivacyProxyAgentManager *)self->_privacyProxyAgentManager handleTierChange:effectiveUserTier == 2];
     if (v20 == 2 && self->_captiveOutage)
     {
       objc_storeStrong(&self->_captiveEvaluatedSSID, 0);
@@ -1361,17 +1361,17 @@ LABEL_18:
 
   else
   {
-    [0 handleTierChange:v19 == 2];
+    [0 handleTierChange:effectiveUserTier == 2];
     v21 = 0;
     v22 = 0;
   }
 
   v23 = v22;
-  v24 = [(NSPConfigurationManager *)v23 mergeProxyTrafficStateWithCurrentPolicy];
-  [(NSPServer *)self policiesUpdated:v21 policy:v24 resolverInfoChanged:1];
+  mergeProxyTrafficStateWithCurrentPolicy = [(NSPConfigurationManager *)v23 mergeProxyTrafficStateWithCurrentPolicy];
+  [(NSPServer *)self policiesUpdated:v21 policy:mergeProxyTrafficStateWithCurrentPolicy resolverInfoChanged:1];
 }
 
-- (void)authInfoChanged:(id)a3
+- (void)authInfoChanged:(id)changed
 {
   v7 = nplog_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1391,17 +1391,17 @@ LABEL_18:
   }
 
   v9 = configuration;
-  v10 = [(NSPConfiguration *)v9 proxyConfiguration];
-  v11 = [v10 authInfo];
-  v12 = [v11 authType];
-  if (v12)
+  proxyConfiguration = [(NSPConfiguration *)v9 proxyConfiguration];
+  authInfo = [proxyConfiguration authInfo];
+  authType = [authInfo authType];
+  if (authType)
   {
     v13 = self ? self->_configuration : 0;
     v3 = v13;
-    v4 = [(NSPConfiguration *)v3 proxyConfiguration];
-    v5 = [v4 authInfo];
-    v14 = [v5 authURL];
-    if (v14)
+    proxyConfiguration2 = [(NSPConfiguration *)v3 proxyConfiguration];
+    authInfo2 = [proxyConfiguration2 authInfo];
+    authURL = [authInfo2 authURL];
+    if (authURL)
     {
 
 LABEL_15:
@@ -1415,14 +1415,14 @@ LABEL_15:
         v19 = 0;
       }
 
-      v20 = [(NSPConfiguration *)v19 proxyConfiguration];
-      v21 = [v20 authInfo];
-      v22 = [v21 accessTokenTypesCount];
+      proxyConfiguration3 = [(NSPConfiguration *)v19 proxyConfiguration];
+      authInfo3 = [proxyConfiguration3 authInfo];
+      accessTokenTypesCount = [authInfo3 accessTokenTypesCount];
 
-      if (v22)
+      if (accessTokenTypesCount)
       {
         v23 = objc_alloc_init(NSMutableArray);
-        for (i = 0; i != v22; ++i)
+        for (i = 0; i != accessTokenTypesCount; ++i)
         {
           if (self)
           {
@@ -1434,9 +1434,9 @@ LABEL_15:
             v25 = 0;
           }
 
-          v26 = [(NSPConfiguration *)v25 proxyConfiguration];
-          v27 = [v26 authInfo];
-          v28 = [v27 accessTokenTypesAtIndex:i];
+          proxyConfiguration4 = [(NSPConfiguration *)v25 proxyConfiguration];
+          authInfo4 = [proxyConfiguration4 authInfo];
+          v28 = [authInfo4 accessTokenTypesAtIndex:i];
 
           v29 = [NSNumber numberWithUnsignedInt:v28];
           [v23 addObject:v29];
@@ -1460,9 +1460,9 @@ LABEL_15:
       }
 
       v50 = v30;
-      v49 = [(NSPConfiguration *)v50 proxyConfiguration];
-      v48 = [v49 authInfo];
-      v47 = [v48 authURL];
+      proxyConfiguration5 = [(NSPConfiguration *)v50 proxyConfiguration];
+      authInfo5 = [proxyConfiguration5 authInfo];
+      authURL2 = [authInfo5 authURL];
       if (self)
       {
         v31 = self->_configuration;
@@ -1474,9 +1474,9 @@ LABEL_15:
       }
 
       v46 = v31;
-      v45 = [(NSPConfiguration *)v46 proxyConfiguration];
-      v44 = [v45 authInfo];
-      v43 = [v44 accessTokenURL];
+      proxyConfiguration6 = [(NSPConfiguration *)v46 proxyConfiguration];
+      authInfo6 = [proxyConfiguration6 authInfo];
+      accessTokenURL = [authInfo6 accessTokenURL];
       if (self)
       {
         v32 = self->_configuration;
@@ -1488,9 +1488,9 @@ LABEL_15:
       }
 
       v42 = v32;
-      v41 = [(NSPConfiguration *)v42 proxyConfiguration];
-      v33 = [v41 authInfo];
-      v34 = [v33 accessTokenBlockedIssuers];
+      proxyConfiguration7 = [(NSPConfiguration *)v42 proxyConfiguration];
+      authInfo7 = [proxyConfiguration7 authInfo];
+      accessTokenBlockedIssuers = [authInfo7 accessTokenBlockedIssuers];
       if (self)
       {
         v35 = self->_configuration;
@@ -1502,9 +1502,9 @@ LABEL_15:
       }
 
       v36 = v35;
-      v37 = [(NSPConfiguration *)v36 proxyConfiguration];
-      v38 = [v37 authInfo];
-      v39 = [v38 authType];
+      proxyConfiguration8 = [(NSPConfiguration *)v36 proxyConfiguration];
+      authInfo8 = [proxyConfiguration8 authInfo];
+      authType2 = [authInfo8 authType];
       if (self)
       {
         v40 = self->_configuration;
@@ -1515,7 +1515,7 @@ LABEL_15:
         v40 = 0;
       }
 
-      [v52 updateTokenFetchURL:v47 accessTokenURL:v43 accessTokenTypes:v23 accessTokenBlockedIssuers:v34 authenticationType:v39 ignoreInvalidCerts:{-[NSPConfiguration ignoreInvalidCerts](v40, "ignoreInvalidCerts")}];
+      [v52 updateTokenFetchURL:authURL2 accessTokenURL:accessTokenURL accessTokenTypes:v23 accessTokenBlockedIssuers:accessTokenBlockedIssuers authenticationType:authType2 ignoreInvalidCerts:{-[NSPConfiguration ignoreInvalidCerts](v40, "ignoreInvalidCerts")}];
 
       return;
     }
@@ -1532,21 +1532,21 @@ LABEL_15:
     v15 = 0;
   }
 
-  v16 = [(NSPConfiguration *)v15 proxyConfiguration];
-  v17 = [v16 authInfo];
-  v18 = [v17 accessTokenURL];
+  proxyConfiguration9 = [(NSPConfiguration *)v15 proxyConfiguration];
+  authInfo9 = [proxyConfiguration9 authInfo];
+  accessTokenURL2 = [authInfo9 accessTokenURL];
 
-  if (v12)
+  if (authType)
   {
   }
 
-  if (v18)
+  if (accessTokenURL2)
   {
     goto LABEL_15;
   }
 }
 
-- (void)proxyInfoChanged:(id)a3
+- (void)proxyInfoChanged:(id)changed
 {
   v4 = nplog_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1557,9 +1557,9 @@ LABEL_15:
 
   if (self && self->_isRunning)
   {
-    v5 = [(NSPConfiguration *)self->_configuration proxyConfiguration];
-    v6 = [v5 proxies];
-    v7 = [v6 count];
+    proxyConfiguration = [(NSPConfiguration *)self->_configuration proxyConfiguration];
+    proxies = [proxyConfiguration proxies];
+    v7 = [proxies count];
 
     if (v7)
     {
@@ -1574,18 +1574,18 @@ LABEL_15:
         v11 = self->_privacyProxyAgentManager;
         v42 = self->_primaryPhysicalInterfaceEvaluator;
         v12 = v11;
-        v13 = [(NWPathEvaluator *)v42 path];
+        path = [(NWPathEvaluator *)v42 path];
         v40 = self->_configurationManager;
-        v38 = [(NSPConfigurationManager *)v40 policyIncludesUnlimited];
+        policyIncludesUnlimited = [(NSPConfigurationManager *)v40 policyIncludesUnlimited];
         v14 = self->_configuration;
-        v15 = [(NSPConfiguration *)v14 geohashSharingEnabledStatus];
-        v16 = [v15 BOOLValue];
+        geohashSharingEnabledStatus = [(NSPConfiguration *)v14 geohashSharingEnabledStatus];
+        bOOLValue = [geohashSharingEnabledStatus BOOLValue];
         v17 = self->_configuration;
-        v18 = [(NSPConfiguration *)v17 geohashOverride];
+        geohashOverride = [(NSPConfiguration *)v17 geohashOverride];
         v19 = self->_configuration;
-        v20 = [(NSPConfiguration *)v19 epoch];
+        epoch = [(NSPConfiguration *)v19 epoch];
         LODWORD(v32) = self->_primaryInterfaceLinkQuality;
-        [(NSPPrivacyProxyAgentManager *)v12 setupWithPath:v13 subscriber:v44 unlimited:v38 geohashSharingEnabled:v16 geohashOverride:v18 configEpoch:v20 linkQuality:v32];
+        [(NSPPrivacyProxyAgentManager *)v12 setupWithPath:path subscriber:v44 unlimited:policyIncludesUnlimited geohashSharingEnabled:bOOLValue geohashOverride:geohashOverride configEpoch:epoch linkQuality:v32];
 
         v21 = self->_privacyProxyAgentManager;
         [(NSPPrivacyProxyAgentManager *)v21 useDefaultNetworkInterface:[(NSPServer *)self usesDefaultConfigurationServer]^ 1];
@@ -1595,24 +1595,24 @@ LABEL_15:
 
       v41 = self->_configuration;
       p_super = privacyProxyAgentManager;
-      v43 = [(NSPConfiguration *)v41 proxyConfiguration];
-      v45 = [v43 proxies];
+      proxyConfiguration2 = [(NSPConfiguration *)v41 proxyConfiguration];
+      proxies2 = [proxyConfiguration2 proxies];
       v37 = self->_configuration;
-      v39 = [(NSPConfiguration *)v37 proxyConfiguration];
-      v23 = [v39 resolvers];
+      proxyConfiguration3 = [(NSPConfiguration *)v37 proxyConfiguration];
+      resolvers = [proxyConfiguration3 resolvers];
       v35 = self->_configuration;
-      v36 = [(NSPConfiguration *)v35 proxyConfiguration];
-      v24 = [v36 pathWeights];
+      proxyConfiguration4 = [(NSPConfiguration *)v35 proxyConfiguration];
+      pathWeights = [proxyConfiguration4 pathWeights];
       v33 = self->_configuration;
-      v34 = [(NSPConfiguration *)v33 proxyConfiguration];
-      v25 = [v34 fallbackPathWeights];
+      proxyConfiguration5 = [(NSPConfiguration *)v33 proxyConfiguration];
+      fallbackPathWeights = [proxyConfiguration5 fallbackPathWeights];
       v26 = self->_configuration;
-      v27 = [(NSPConfiguration *)v26 proxyConfiguration];
-      v28 = [v27 obliviousConfigs];
+      proxyConfiguration6 = [(NSPConfiguration *)v26 proxyConfiguration];
+      obliviousConfigs = [proxyConfiguration6 obliviousConfigs];
       v29 = self->_configuration;
-      v30 = [(NSPConfiguration *)v29 proxyConfiguration];
-      v31 = [v30 proxiedContentMaps];
-      [p_super updateProxyInfo:v45 resolverInfo:v23 proxyPathList:v24 fallbackProxyPathList:v25 obliviousConfigs:v28 proxiedContentMaps:v31];
+      proxyConfiguration7 = [(NSPConfiguration *)v29 proxyConfiguration];
+      proxiedContentMaps = [proxyConfiguration7 proxiedContentMaps];
+      [p_super updateProxyInfo:proxies2 resolverInfo:resolvers proxyPathList:pathWeights fallbackProxyPathList:fallbackPathWeights obliviousConfigs:obliviousConfigs proxiedContentMaps:proxiedContentMaps];
     }
 
     else
@@ -1633,21 +1633,21 @@ LABEL_15:
   }
 }
 
-- (void)policiesUpdated:(id)a3 policy:(id)a4 resolverInfoChanged:(BOOL)a5
+- (void)policiesUpdated:(id)updated policy:(id)policy resolverInfoChanged:(BOOL)changed
 {
-  v5 = a5;
-  v7 = a4;
+  changedCopy = changed;
+  policyCopy = policy;
   v8 = nplog_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v74 = v7;
+    selfCopy4 = policyCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "privacy proxy policies updated - %@", buf, 0xCu);
   }
 
-  if (v7)
+  if (policyCopy)
   {
-    v9 = v7;
+    v9 = policyCopy;
     if (!self)
     {
 LABEL_13:
@@ -1797,16 +1797,16 @@ LABEL_11:
 
     if ([(NSPPrivacyProxyAgentManager *)self->_privacyProxyAgentManager isSingleHopProxyAgentRegistered])
     {
-      v30 = [(NSPConfiguration *)self->_configuration proxyConfiguration];
-      v31 = [v30 bootstrapResolver];
+      proxyConfiguration = [(NSPConfiguration *)self->_configuration proxyConfiguration];
+      bootstrapResolver = [proxyConfiguration bootstrapResolver];
 
-      if ((sub_10004BC9C(self->_odohManager, v31) & 1) == 0)
+      if ((sub_10004BC9C(self->_odohManager, bootstrapResolver) & 1) == 0)
       {
         v32 = nplog_obj();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v74 = self;
+          selfCopy4 = self;
           _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "%@ failed to register bootstrap DNS network agent", buf, 0xCu);
         }
       }
@@ -1814,16 +1814,16 @@ LABEL_11:
 
     if (sub_1000653A4(self, v9))
     {
-      if (v5)
+      if (changedCopy)
       {
         v33 = nplog_obj();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
           v34 = self->_configuration;
-          v35 = [(NSPConfiguration *)v34 proxyConfiguration];
-          v36 = [v35 resolvers];
+          proxyConfiguration2 = [(NSPConfiguration *)v34 proxyConfiguration];
+          resolvers = [proxyConfiguration2 resolvers];
           *buf = 138412290;
-          v74 = v36;
+          selfCopy4 = resolvers;
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "privacy proxy resolver info updated %@", buf, 0xCu);
         }
 
@@ -1836,7 +1836,7 @@ LABEL_11:
           }
 
           *buf = 138412290;
-          v74 = self;
+          selfCopy4 = self;
           v42 = "%@ single hop proxy agent is not active, unable to set DNS policies";
           goto LABEL_112;
         }
@@ -1844,9 +1844,9 @@ LABEL_11:
         odohManager = self->_odohManager;
         v38 = self->_configuration;
         v39 = odohManager;
-        v40 = [(NSPConfiguration *)v38 proxyConfiguration];
-        v41 = [v40 resolvers];
-        sub_10004B91C(v39, v41);
+        proxyConfiguration3 = [(NSPConfiguration *)v38 proxyConfiguration];
+        resolvers2 = [proxyConfiguration3 resolvers];
+        sub_10004B91C(v39, resolvers2);
       }
 
       if ((sub_10004C128(self->_odohManager) & 1) == 0)
@@ -1858,7 +1858,7 @@ LABEL_11:
         }
 
         *buf = 138412290;
-        v74 = self;
+        selfCopy4 = self;
         v42 = "%@ failed to register DNS network agent";
 LABEL_112:
         _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, v42, buf, 0xCu);
@@ -1872,39 +1872,39 @@ LABEL_112:
       sub_100067468(self);
     }
 
-    v43 = [(NSPConfiguration *)self->_configuration inProcessFlowDivert];
+    inProcessFlowDivert = [(NSPConfiguration *)self->_configuration inProcessFlowDivert];
 
-    if (v43)
+    if (inProcessFlowDivert)
     {
-      v45 = [(NSPConfiguration *)self->_configuration inProcessFlowDivert];
-      v46 = [v45 BOOLValue];
+      inProcessFlowDivert2 = [(NSPConfiguration *)self->_configuration inProcessFlowDivert];
+      bOOLValue = [inProcessFlowDivert2 BOOLValue];
     }
 
     else
     {
-      v46 = 1;
+      bOOLValue = 1;
     }
 
     v47 = objc_getProperty(self, v44, 56, 1);
-    v48 = [(NSPServiceStatusManager *)self->_serviceStatusManager pausedBundleIDs];
-    v49 = v48;
-    if (v48)
+    pausedBundleIDs = [(NSPServiceStatusManager *)self->_serviceStatusManager pausedBundleIDs];
+    v49 = pausedBundleIDs;
+    if (pausedBundleIDs)
     {
       if (v47)
       {
-        v50 = [v47 arrayByAddingObjectsFromArray:v48];
+        v50 = [v47 arrayByAddingObjectsFromArray:pausedBundleIDs];
 
         v47 = v50;
       }
 
       else
       {
-        v47 = v48;
+        v47 = pausedBundleIDs;
       }
     }
 
     v70 = v47;
-    v72 = [(NSPServiceStatusManager *)self->_serviceStatusManager pausedProcessPaths];
+    pausedProcessPaths = [(NSPServiceStatusManager *)self->_serviceStatusManager pausedProcessPaths];
     v51 = +[NSPPrivacyProxyPolicyHandler sharedHandler];
     Property = objc_getProperty(self, v52, 280, 1);
     v71 = v49;
@@ -1920,19 +1920,19 @@ LABEL_112:
 
     v55 = v54;
     v56 = self->_privacyProxyAgentManager;
-    v57 = [(NSPPrivacyProxyAgentManager *)v56 ingressProxyURL];
+    ingressProxyURL = [(NSPPrivacyProxyAgentManager *)v56 ingressProxyURL];
     v58 = self->_privacyProxyAgentManager;
-    v59 = [(NSPPrivacyProxyAgentManager *)v58 ingressFallbackProxyURL];
-    v60 = v46;
+    ingressFallbackProxyURL = [(NSPPrivacyProxyAgentManager *)v58 ingressFallbackProxyURL];
+    v60 = bOOLValue;
     v28 = v70;
-    v61 = [v51 set:v9 flowDivertHandle:v55 inProcessFlowDivert:v60 ingressProxyURL:v57 ingressFallbackProxyURL:v59 exceptionBundleIDs:v70 exceptionProcessPaths:v72];
+    v61 = [v51 set:v9 flowDivertHandle:v55 inProcessFlowDivert:v60 ingressProxyURL:ingressProxyURL ingressFallbackProxyURL:ingressFallbackProxyURL exceptionBundleIDs:v70 exceptionProcessPaths:pausedProcessPaths];
 
     if (v61)
     {
-      v62 = [(NSPConfigurationManager *)self->_configurationManager configurationSubscriberPoliciesCount];
+      configurationSubscriberPoliciesCount = [(NSPConfigurationManager *)self->_configurationManager configurationSubscriberPoliciesCount];
       v63 = self->_serviceStatusManager;
       p_super = &v63->super;
-      if (v62)
+      if (configurationSubscriberPoliciesCount)
       {
         [(NSPServiceStatusManager *)v63 reportServiceActiveShouldReport:self->_userTierChangedFromNonSettingsApp];
       }
@@ -1940,9 +1940,9 @@ LABEL_112:
       else
       {
         v66 = self->_configuration;
-        v67 = [(NSPConfiguration *)v66 proxyConfiguration];
-        v68 = [v67 regionId];
-        [p_super reportSubscriberUnsupportedRegion:v68];
+        proxyConfiguration4 = [(NSPConfiguration *)v66 proxyConfiguration];
+        regionId = [proxyConfiguration4 regionId];
+        [p_super reportSubscriberUnsupportedRegion:regionId];
       }
 
       v65 = v71;
@@ -1955,7 +1955,7 @@ LABEL_112:
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v74 = self;
+        selfCopy4 = self;
         _os_log_error_impl(&_mh_execute_header, p_super, OS_LOG_TYPE_ERROR, "%@ failed to set privacy proxy policies", buf, 0xCu);
       }
     }
@@ -1967,26 +1967,26 @@ LABEL_14:
   if (!self)
   {
     [0 isNetworkOutage];
-    v69 = [0 isServiceOutage];
-    if (v7)
+    isServiceOutage = [0 isServiceOutage];
+    if (policyCopy)
     {
       goto LABEL_114;
     }
 
-    v13 = v69;
-    v15 = 0;
+    isServiceOutage2 = isServiceOutage;
+    lastProxyOutageReason = 0;
     goto LABEL_21;
   }
 
-  v12 = [(NSPServiceStatusManager *)self->_serviceStatusManager isNetworkOutage];
-  v13 = [(NSPServiceStatusManager *)self->_serviceStatusManager isServiceOutage];
+  isNetworkOutage = [(NSPServiceStatusManager *)self->_serviceStatusManager isNetworkOutage];
+  isServiceOutage2 = [(NSPServiceStatusManager *)self->_serviceStatusManager isServiceOutage];
   if (self->_systemIncompatible)
   {
     [(NSPServiceStatusManager *)self->_serviceStatusManager reportSystemIncompatibility];
     v14 = self->_toggleStats;
     [(NSPToggleStats *)v14 setSystemIncompatibleCount:[(NSPToggleStats *)v14 systemIncompatibleCount]+ 1];
 LABEL_19:
-    v15 = 0;
+    lastProxyOutageReason = 0;
 LABEL_20:
 
     goto LABEL_21;
@@ -2002,20 +2002,20 @@ LABEL_20:
 
   if (self->_captiveOutage)
   {
-    v27 = self->_lastCaptiveOutageReasonStats;
+    lastProxyOutageReason2 = self->_lastCaptiveOutageReasonStats;
 LABEL_37:
-    v15 = v27;
-    [(NSPServiceStatusManager *)self->_serviceStatusManager reportServiceOutageWithType:2 outageReasonStats:v27];
+    lastProxyOutageReason = lastProxyOutageReason2;
+    [(NSPServiceStatusManager *)self->_serviceStatusManager reportServiceOutageWithType:2 outageReasonStats:lastProxyOutageReason2];
     v14 = self->_toggleStats;
     [(NSPToggleStats *)v14 setNetworkOutageCount:[(NSPToggleStats *)v14 networkOutageCount]+ 1];
-    v13 = v12;
+    isServiceOutage2 = isNetworkOutage;
     goto LABEL_20;
   }
 
   if (self->_proxyOutage)
   {
-    v15 = [(NSPPrivacyProxyAgentManager *)self->_privacyProxyAgentManager lastProxyOutageReason];
-    [(NSPServiceStatusManager *)self->_serviceStatusManager reportServiceOutageWithType:5 outageReasonStats:v15];
+    lastProxyOutageReason = [(NSPPrivacyProxyAgentManager *)self->_privacyProxyAgentManager lastProxyOutageReason];
+    [(NSPServiceStatusManager *)self->_serviceStatusManager reportServiceOutageWithType:5 outageReasonStats:lastProxyOutageReason];
     v14 = self->_toggleStats;
     [(NSPToggleStats *)v14 setProxyOutageCount:[(NSPToggleStats *)v14 proxyOutageCount]+ 1];
     goto LABEL_20;
@@ -2023,14 +2023,14 @@ LABEL_37:
 
   if (self->_proxyNetworkOutage)
   {
-    v27 = [(NSPPrivacyProxyAgentManager *)self->_privacyProxyAgentManager lastProxyOutageReason];
+    lastProxyOutageReason2 = [(NSPPrivacyProxyAgentManager *)self->_privacyProxyAgentManager lastProxyOutageReason];
     goto LABEL_37;
   }
 
   if (self->_odohOutage || self->_odohAuthOutage)
   {
-    v15 = sub_10004D0A4(&self->_odohManager->super.isa);
-    [(NSPServiceStatusManager *)self->_serviceStatusManager reportServiceOutageWithType:4 outageReasonStats:v15];
+    lastProxyOutageReason = sub_10004D0A4(&self->_odohManager->super.isa);
+    [(NSPServiceStatusManager *)self->_serviceStatusManager reportServiceOutageWithType:4 outageReasonStats:lastProxyOutageReason];
     v14 = self->_toggleStats;
     [(NSPToggleStats *)v14 setOdohOutageCount:[(NSPToggleStats *)v14 odohOutageCount]+ 1];
     goto LABEL_20;
@@ -2038,8 +2038,8 @@ LABEL_37:
 
   if (self->_tokenOutage)
   {
-    v15 = [(NSPPrivacyProxyAgentManager *)self->_privacyProxyAgentManager lastTokenOutageReason];
-    [(NSPServiceStatusManager *)self->_serviceStatusManager reportServiceOutageWithType:3 outageReasonStats:v15];
+    lastProxyOutageReason = [(NSPPrivacyProxyAgentManager *)self->_privacyProxyAgentManager lastTokenOutageReason];
+    [(NSPServiceStatusManager *)self->_serviceStatusManager reportServiceOutageWithType:3 outageReasonStats:lastProxyOutageReason];
     v14 = self->_toggleStats;
     [(NSPToggleStats *)v14 setTokenOutageCount:[(NSPToggleStats *)v14 tokenOutageCount]+ 1];
     goto LABEL_20;
@@ -2047,16 +2047,16 @@ LABEL_37:
 
   if (self->_configOutage)
   {
-    v15 = self->_lastConfigOutageReasonStats;
-    [(NSPServiceStatusManager *)self->_serviceStatusManager reportServiceOutageWithType:1 outageReasonStats:v15];
+    lastProxyOutageReason = self->_lastConfigOutageReasonStats;
+    [(NSPServiceStatusManager *)self->_serviceStatusManager reportServiceOutageWithType:1 outageReasonStats:lastProxyOutageReason];
     v14 = self->_toggleStats;
     [(NSPToggleStats *)v14 setConfigOutageCount:[(NSPToggleStats *)v14 configOutageCount]+ 1];
     goto LABEL_20;
   }
 
-  v15 = 0;
+  lastProxyOutageReason = 0;
   v28 = 0;
-  if (v7)
+  if (policyCopy)
   {
 LABEL_109:
 
@@ -2085,7 +2085,7 @@ LABEL_21:
   }
 
   sub_10004BA70(v18);
-  if (!((v15 == 0) | v13 & 1))
+  if (!((lastProxyOutageReason == 0) | isServiceOutage2 & 1))
   {
     if (self)
     {
@@ -2097,7 +2097,7 @@ LABEL_21:
       privacyProxyAgentManager = 0;
     }
 
-    [(NSPPrivacyProxyAgentManager *)privacyProxyAgentManager sendRTCReportForServiceOutage:v15];
+    [(NSPPrivacyProxyAgentManager *)privacyProxyAgentManager sendRTCReportForServiceOutage:lastProxyOutageReason];
   }
 
   if (self)
@@ -2143,7 +2143,7 @@ LABEL_116:
 LABEL_118:
 }
 
-- (void)configUpdated:(id)a3
+- (void)configUpdated:(id)updated
 {
   v4 = nplog_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2173,7 +2173,7 @@ LABEL_118:
   [(NSPPrivacyProxyAgentManager *)privacyProxyAgentManager handleConfigChange];
 }
 
-- (void)geohashSettingsChanged:(id)a3
+- (void)geohashSettingsChanged:(id)changed
 {
   v4 = nplog_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2195,8 +2195,8 @@ LABEL_118:
   }
 
   v7 = configuration;
-  v8 = [(NSPConfiguration *)v7 geohashSharingEnabledStatus];
-  v9 = [v8 BOOLValue];
+  geohashSharingEnabledStatus = [(NSPConfiguration *)v7 geohashSharingEnabledStatus];
+  bOOLValue = [geohashSharingEnabledStatus BOOLValue];
   if (self)
   {
     v10 = self->_configuration;
@@ -2208,11 +2208,11 @@ LABEL_118:
   }
 
   v11 = v10;
-  v12 = [(NSPConfiguration *)v11 geohashOverride];
-  [(NSPPrivacyProxyAgentManager *)v5 updateGeohashSharingPreference:v9 geohashOverride:v12];
+  geohashOverride = [(NSPConfiguration *)v11 geohashOverride];
+  [(NSPPrivacyProxyAgentManager *)v5 updateGeohashSharingPreference:bOOLValue geohashOverride:geohashOverride];
 }
 
-- (void)configEpochChanged:(id)a3
+- (void)configEpochChanged:(id)changed
 {
   v4 = nplog_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2234,11 +2234,11 @@ LABEL_118:
   }
 
   v7 = configuration;
-  v8 = [(NSPConfiguration *)v7 epoch];
-  [(NSPPrivacyProxyAgentManager *)v5 updateConfigEpoch:v8];
+  epoch = [(NSPConfiguration *)v7 epoch];
+  [(NSPPrivacyProxyAgentManager *)v5 updateConfigEpoch:epoch];
 }
 
-- (void)privateAccessTokensEnabledChanged:(id)a3
+- (void)privateAccessTokensEnabledChanged:(id)changed
 {
   v3 = nplog_obj();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -2248,9 +2248,9 @@ LABEL_118:
   }
 }
 
-- (void)cloudSubscriptionChanged:(BOOL)a3 configManager:(id)a4
+- (void)cloudSubscriptionChanged:(BOOL)changed configManager:(id)manager
 {
-  if (a3)
+  if (changed)
   {
     sub_100066A0C(&self->super.isa);
 
@@ -2264,7 +2264,7 @@ LABEL_118:
   }
 }
 
-- (void)badTokenInfoForProxy:(id)a3
+- (void)badTokenInfoForProxy:(id)proxy
 {
   if (self)
   {
@@ -2277,9 +2277,9 @@ LABEL_118:
   }
 
   v6 = configuration;
-  v7 = a3;
-  v8 = [(NSPConfiguration *)v6 configurationFetchDate];
-  v9 = [NSDateFormatter localizedStringFromDate:v8 dateStyle:1 timeStyle:2];
+  proxyCopy = proxy;
+  configurationFetchDate = [(NSPConfiguration *)v6 configurationFetchDate];
+  v9 = [NSDateFormatter localizedStringFromDate:configurationFetchDate dateStyle:1 timeStyle:2];
 
   v10 = nplog_obj();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2295,9 +2295,9 @@ LABEL_118:
     }
 
     v12 = v11;
-    v13 = [(NSPConfiguration *)v12 etag];
+    etag = [(NSPConfiguration *)v12 etag];
     *buf = 138412546;
-    v28 = v13;
+    v28 = etag;
     v29 = 2112;
     v30 = v9;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Received bad token info for configuration tag[%@] with fetch date %@", buf, 0x16u);
@@ -2315,8 +2315,8 @@ LABEL_118:
     v15 = 0;
   }
 
-  v16 = [(NSPConfiguration *)v15 configurationFetchDate];
-  [v14 timeIntervalSinceDate:v16];
+  configurationFetchDate2 = [(NSPConfiguration *)v15 configurationFetchDate];
+  [v14 timeIntervalSinceDate:configurationFetchDate2];
   v18 = v17;
 
   v19 = objc_alloc_init(NSPBadTokenInfoStats);
@@ -2330,23 +2330,23 @@ LABEL_118:
     v20 = 0;
   }
 
-  v21 = [(NSPConfiguration *)v20 userTier];
-  v22 = [v21 intValue];
-  if (v22 >= 3)
+  userTier = [(NSPConfiguration *)v20 userTier];
+  intValue = [userTier intValue];
+  if (intValue >= 3)
   {
-    v23 = [NSString stringWithFormat:@"(unknown: %i)", v22];
+    v23 = [NSString stringWithFormat:@"(unknown: %i)", intValue];
   }
 
   else
   {
-    v23 = *(&off_10010A560 + v22);
+    v23 = *(&off_10010A560 + intValue);
   }
 
   [(NSPBadTokenInfoStats *)v19 setTierType:v23];
 
-  v24 = [v7 vendor];
+  vendor = [proxyCopy vendor];
 
-  [(NSPBadTokenInfoStats *)v19 setTokenProxy:v24];
+  [(NSPBadTokenInfoStats *)v19 setTokenProxy:vendor];
   if (self)
   {
     v25 = self->_configuration;
@@ -2357,14 +2357,14 @@ LABEL_118:
     v25 = 0;
   }
 
-  v26 = [(NSPConfiguration *)v25 etag];
-  [(NSPBadTokenInfoStats *)v19 setConfigTag:v26];
+  etag2 = [(NSPConfiguration *)v25 etag];
+  [(NSPBadTokenInfoStats *)v19 setConfigTag:etag2];
 
   [(NSPBadTokenInfoStats *)v19 setConfigAgeHours:(v18 / 3600.0)];
   [(NSPProxyAnalytics *)v19 sendAnalytics];
 }
 
-- (void)refreshProxyInfo:(unint64_t)a3
+- (void)refreshProxyInfo:(unint64_t)info
 {
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2396,19 +2396,19 @@ LABEL_118:
   v8[2] = sub_10006AA08;
   v8[3] = &unk_10010A058;
   v8[4] = &buf;
-  [(NSPConfigurationManager *)v7 refreshConfigurationWithReason:a3 completionHandler:v8];
+  [(NSPConfigurationManager *)v7 refreshConfigurationWithReason:info completionHandler:v8];
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)multiHopProxyAgentRegistered:(BOOL)a3
+- (void)multiHopProxyAgentRegistered:(BOOL)registered
 {
-  v3 = a3;
+  registeredCopy = registered;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = "is not";
-    if (v3)
+    if (registeredCopy)
     {
       v6 = "is";
     }
@@ -2418,7 +2418,7 @@ LABEL_118:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "multiHop proxy agent %s registered", &v11, 0xCu);
   }
 
-  if (v3)
+  if (registeredCopy)
   {
     if (self)
     {
@@ -2430,7 +2430,7 @@ LABEL_118:
       configurationManager = 0;
     }
 
-    v8 = [(NSPConfigurationManager *)configurationManager mergeProxyTrafficStateWithCurrentPolicy];
+    mergeProxyTrafficStateWithCurrentPolicy = [(NSPConfigurationManager *)configurationManager mergeProxyTrafficStateWithCurrentPolicy];
     if (self)
     {
       v9 = self->_configurationManager;
@@ -2441,7 +2441,7 @@ LABEL_118:
       v9 = 0;
     }
 
-    [(NSPServer *)self policiesUpdated:v9 policy:v8 resolverInfoChanged:1];
+    [(NSPServer *)self policiesUpdated:v9 policy:mergeProxyTrafficStateWithCurrentPolicy resolverInfoChanged:1];
   }
 
   else
@@ -2460,9 +2460,9 @@ LABEL_118:
   }
 }
 
-- (void)singleHopProxyAgentRegistered:(BOOL)a3
+- (void)singleHopProxyAgentRegistered:(BOOL)registered
 {
-  if (a3)
+  if (registered)
   {
     if (self)
     {
@@ -2480,12 +2480,12 @@ LABEL_118:
   }
 }
 
-- (void)obliviousHopAgentRegisteredForHostname:(id)a3 processes:(id)a4 agentUUID:(id)a5
+- (void)obliviousHopAgentRegisteredForHostname:(id)hostname processes:(id)processes agentUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 count];
+  hostnameCopy = hostname;
+  processesCopy = processes;
+  dCopy = d;
+  v10 = [processesCopy count];
   v11 = nplog_obj();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
   if (v10)
@@ -2493,11 +2493,11 @@ LABEL_118:
     if (v12)
     {
       v17 = 138412802;
-      v18 = v7;
+      v18 = hostnameCopy;
       v19 = 2112;
-      v20 = v9;
+      v20 = dCopy;
       v21 = 2112;
-      v22 = v8;
+      v22 = processesCopy;
       v13 = "Adding policies for oblivious agent for %@ (%@), limited to %@";
       v14 = v11;
       v15 = 32;
@@ -2509,9 +2509,9 @@ LABEL_6:
   else if (v12)
   {
     v17 = 138412546;
-    v18 = v7;
+    v18 = hostnameCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = dCopy;
     v13 = "Adding policies for oblivious agent for %@ (%@)";
     v14 = v11;
     v15 = 22;
@@ -2519,72 +2519,72 @@ LABEL_6:
   }
 
   v16 = +[NSPPrivacyProxyPolicyHandler sharedHandler];
-  [v16 addObliviousProxyAgent:v9 processes:v8 hostname:v7];
+  [v16 addObliviousProxyAgent:dCopy processes:processesCopy hostname:hostnameCopy];
 }
 
-- (void)obliviousHopAgentUnregisteredForHostname:(id)a3 agentUUID:(id)a4
+- (void)obliviousHopAgentUnregisteredForHostname:(id)hostname agentUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  hostnameCopy = hostname;
+  dCopy = d;
   v7 = nplog_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v5;
+    v10 = hostnameCopy;
     v11 = 2112;
-    v12 = v6;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Removing policies for oblivious agent for %@ (%@)", &v9, 0x16u);
   }
 
   v8 = +[NSPPrivacyProxyPolicyHandler sharedHandler];
-  [v8 removeObliviousProxyAgent:v6 forHostname:v5 apply:1];
+  [v8 removeObliviousProxyAgent:dCopy forHostname:hostnameCopy apply:1];
 }
 
-- (void)proxiedContentMaps:(id)a3 registeredForAgentUUID:(id)a4
+- (void)proxiedContentMaps:(id)maps registeredForAgentUUID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  mapsCopy = maps;
   v7 = nplog_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Adding policies for proxied content for %@", &v9, 0xCu);
   }
 
   v8 = +[NSPPrivacyProxyPolicyHandler sharedHandler];
-  [v8 addProxiedContentAgent:v5 maps:v6];
+  [v8 addProxiedContentAgent:dCopy maps:mapsCopy];
 }
 
-- (void)networkDiscoveredProxyPaths:(id)a3 registeredForAgentUUID:(id)a4
+- (void)networkDiscoveredProxyPaths:(id)paths registeredForAgentUUID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  pathsCopy = paths;
   v7 = nplog_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Adding policy for network discovered agent for %@", &v9, 0xCu);
   }
 
   v8 = +[NSPPrivacyProxyPolicyHandler sharedHandler];
-  [v8 addNetworkDiscoveryProxyAgent:v5 with:v6];
+  [v8 addNetworkDiscoveryProxyAgent:dCopy with:pathsCopy];
 }
 
-- (void)proxiedContentMapsUnregisteredForAgentUUID:(id)a3
+- (void)proxiedContentMapsUnregisteredForAgentUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = nplog_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = dCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Removing policies for proxied content for %@", &v6, 0xCu);
   }
 
   v5 = +[NSPPrivacyProxyPolicyHandler sharedHandler];
-  [v5 removeProxiedContentAgent:v3 apply:1];
+  [v5 removeProxiedContentAgent:dCopy apply:1];
 }
 
 - (void)tokenIssuanceLimitReached
@@ -2628,35 +2628,35 @@ LABEL_6:
     }
 
     self->_fraudAlert = 0;
-    v4 = [(NSPConfigurationManager *)self->_configurationManager mergeProxyTrafficStateWithCurrentPolicy];
-    [(NSPServer *)self policiesUpdated:self->_configurationManager policy:v4 resolverInfoChanged:1];
+    mergeProxyTrafficStateWithCurrentPolicy = [(NSPConfigurationManager *)self->_configurationManager mergeProxyTrafficStateWithCurrentPolicy];
+    [(NSPServer *)self policiesUpdated:self->_configurationManager policy:mergeProxyTrafficStateWithCurrentPolicy resolverInfoChanged:1];
     sub_1000654C0(self);
   }
 }
 
-- (void)checkPrivacyProxyConnectivityOnInterface:(id)a3 proxyConnectivityCheckType:(unint64_t)a4 completionHandler:(id)a5
+- (void)checkPrivacyProxyConnectivityOnInterface:(id)interface proxyConnectivityCheckType:(unint64_t)type completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 interfaceName];
+  interfaceCopy = interface;
+  handlerCopy = handler;
+  interfaceName = [interfaceCopy interfaceName];
   v11 = nplog_obj();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = interfaceName;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%@ received check proxy connectivity for interface %@", buf, 0x16u);
   }
 
-  if (a4 <= 3)
+  if (type <= 3)
   {
-    switch(a4)
+    switch(type)
     {
       case 1uLL:
-        v12 = 0;
+        lastProxyOutageReason = 0;
         v13 = 5;
-        if (!v10)
+        if (!interfaceName)
         {
           goto LABEL_29;
         }
@@ -2674,19 +2674,19 @@ LABEL_6:
         }
 
         v25 = privacyProxyAgentManager;
-        v12 = [(NSPPrivacyProxyAgentManager *)v25 lastProxyOutageReason];
+        lastProxyOutageReason = [(NSPPrivacyProxyAgentManager *)v25 lastProxyOutageReason];
 
         v13 = 3;
-        if (!v10)
+        if (!interfaceName)
         {
           goto LABEL_29;
         }
 
         goto LABEL_21;
       case 3uLL:
-        v12 = 0;
+        lastProxyOutageReason = 0;
         v13 = 10;
-        if (!v10)
+        if (!interfaceName)
         {
           goto LABEL_29;
         }
@@ -2696,8 +2696,8 @@ LABEL_6:
 
 LABEL_19:
     v13 = 0;
-    v12 = 0;
-    if ((a4 & 0xFFFFFFFFFFFFFFFELL) != 4)
+    lastProxyOutageReason = 0;
+    if ((type & 0xFFFFFFFFFFFFFFFELL) != 4)
     {
       goto LABEL_20;
     }
@@ -2705,13 +2705,13 @@ LABEL_19:
     goto LABEL_11;
   }
 
-  if (a4 - 4 >= 2)
+  if (type - 4 >= 2)
   {
-    if (a4 == 6)
+    if (type == 6)
     {
-      v12 = 0;
+      lastProxyOutageReason = 0;
       v13 = 12;
-      if (!v10)
+      if (!interfaceName)
       {
         goto LABEL_29;
       }
@@ -2735,10 +2735,10 @@ LABEL_11:
   }
 
   v15 = odohManager;
-  v12 = sub_10004D0A4(v15);
+  lastProxyOutageReason = sub_10004D0A4(v15);
 
 LABEL_20:
-  if (!v10)
+  if (!interfaceName)
   {
 LABEL_29:
     if (self)
@@ -2752,7 +2752,7 @@ LABEL_29:
     }
 
     v19 = configuration;
-    v20 = [(NSPConfiguration *)v19 etag];
+    etag = [(NSPConfiguration *)v19 etag];
 
     *buf = 0;
     *&buf[8] = buf;
@@ -2777,14 +2777,14 @@ LABEL_29:
     v26[2] = sub_10006B724;
     v26[3] = &unk_10010A080;
     objc_copyWeak(v34, &location);
-    v27 = v10;
-    v23 = v20;
-    v34[1] = a4;
+    v27 = interfaceName;
+    v23 = etag;
+    v34[1] = type;
     v28 = v23;
-    v29 = self;
-    v30 = v8;
-    v31 = v12;
-    v32 = v9;
+    selfCopy = self;
+    v30 = interfaceCopy;
+    v31 = lastProxyOutageReason;
+    v32 = handlerCopy;
     v33 = buf;
     [(NSPConfigurationManager *)v22 refreshConfigurationWithReason:v13 completionHandler:v26];
 
@@ -2798,7 +2798,7 @@ LABEL_29:
 LABEL_21:
   if (!self)
   {
-    if ([0 containsObject:v10])
+    if ([0 containsObject:interfaceName])
     {
       goto LABEL_23;
     }
@@ -2807,11 +2807,11 @@ LABEL_21:
     goto LABEL_28;
   }
 
-  if (![(NSMutableSet *)self->_interfacesBeingChecked containsObject:v10])
+  if (![(NSMutableSet *)self->_interfacesBeingChecked containsObject:interfaceName])
   {
     interfacesBeingChecked = self->_interfacesBeingChecked;
 LABEL_28:
-    [(NSMutableSet *)interfacesBeingChecked addObject:v10];
+    [(NSMutableSet *)interfacesBeingChecked addObject:interfaceName];
     goto LABEL_29;
   }
 
@@ -2822,37 +2822,37 @@ LABEL_23:
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = interfaceName;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%@ already checking connectivity for interface %@", buf, 0x16u);
   }
 
-  if (v9)
+  if (handlerCopy)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
 LABEL_34:
 }
 
-- (void)reportPrivacyProxySuccessOnInterface:(id)a3
+- (void)reportPrivacyProxySuccessOnInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [v4 interfaceName];
+  interfaceCopy = interface;
+  interfaceName = [interfaceCopy interfaceName];
   v6 = nplog_obj();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v51 = self;
+    selfCopy = self;
     v52 = 2112;
-    v53 = v5;
+    v53 = interfaceName;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@ reported proxy success on interface %@", buf, 0x16u);
   }
 
-  if (v5)
+  if (interfaceName)
   {
     if (self)
     {
-      if (![(NSMutableSet *)self->_interfacesBeingChecked containsObject:v5])
+      if (![(NSMutableSet *)self->_interfacesBeingChecked containsObject:interfaceName])
       {
         goto LABEL_8;
       }
@@ -2862,27 +2862,27 @@ LABEL_34:
 
     else
     {
-      v41 = [0 containsObject:v5];
+      v41 = [0 containsObject:interfaceName];
       interfacesBeingChecked = 0;
       if ((v41 & 1) == 0)
       {
-        if ([v4 type] == 1 || objc_msgSend(v4, "type") == 2)
+        if ([interfaceCopy type] == 1 || objc_msgSend(interfaceCopy, "type") == 2)
         {
           goto LABEL_60;
         }
 
-        v42 = v4;
+        v42 = interfaceCopy;
 LABEL_59:
 
         goto LABEL_60;
       }
     }
 
-    [(NSMutableSet *)interfacesBeingChecked removeObject:v5];
+    [(NSMutableSet *)interfacesBeingChecked removeObject:interfaceName];
   }
 
 LABEL_8:
-  if ([v4 type] == 1)
+  if ([interfaceCopy type] == 1)
   {
     if (self)
     {
@@ -2890,14 +2890,14 @@ LABEL_8:
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v8 = [(NSPServiceStatusManager *)self->_serviceStatusManager serviceStatus];
-      v9 = [v8 networkStatuses];
+      serviceStatus = [(NSPServiceStatusManager *)self->_serviceStatusManager serviceStatus];
+      networkStatuses = [serviceStatus networkStatuses];
 
-      v10 = [v9 countByEnumeratingWithState:&v46 objects:buf count:16];
+      v10 = [networkStatuses countByEnumeratingWithState:&v46 objects:buf count:16];
       if (v10)
       {
         v11 = v10;
-        v12 = v5;
+        v12 = interfaceName;
         v13 = 0;
         v14 = 0;
         v15 = *v47;
@@ -2907,7 +2907,7 @@ LABEL_8:
           {
             if (*v47 != v15)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(networkStatuses);
             }
 
             v17 = *(*(&v46 + 1) + 8 * i);
@@ -2920,15 +2920,15 @@ LABEL_8:
 
               if ([v17 networkStatus] == 2)
               {
-                v18 = [v17 networkName];
+                networkName = [v17 networkName];
 
                 v14 = 1;
-                v13 = v18;
+                v13 = networkName;
               }
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v46 objects:buf count:16];
+          v11 = [networkStatuses countByEnumeratingWithState:&v46 objects:buf count:16];
         }
 
         while (v11);
@@ -2936,10 +2936,10 @@ LABEL_8:
         if (v14)
         {
           [(NSPServiceStatusManager *)self->_serviceStatusManager reportActiveOnWiFiName:v13];
-          v9 = +[NSPPrivacyProxyPolicyHandler sharedHandler];
-          [v9 wifiDisabled:0];
+          networkStatuses = +[NSPPrivacyProxyPolicyHandler sharedHandler];
+          [networkStatuses wifiDisabled:0];
 LABEL_38:
-          v5 = v12;
+          interfaceName = v12;
 LABEL_40:
 
 LABEL_41:
@@ -2955,26 +2955,26 @@ LABEL_41:
     goto LABEL_60;
   }
 
-  if ([v4 type] != 2)
+  if ([interfaceCopy type] != 2)
   {
-    v27 = v4;
+    v27 = interfaceCopy;
     if (self)
     {
       v28 = v27;
       if ([v27 type] == 3)
       {
-        v43 = v5;
-        v44 = v4;
-        v29 = [v28 interfaceName];
-        v45 = sub_100073BA0(v29);
+        v43 = interfaceName;
+        v44 = interfaceCopy;
+        interfaceName2 = [v28 interfaceName];
+        v45 = sub_100073BA0(interfaceName2);
         v46 = 0u;
         v47 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v30 = [(NSPServiceStatusManager *)self->_serviceStatusManager serviceStatus];
-        v31 = [v30 networkStatuses];
+        serviceStatus2 = [(NSPServiceStatusManager *)self->_serviceStatusManager serviceStatus];
+        networkStatuses2 = [serviceStatus2 networkStatuses];
 
-        v32 = [v31 countByEnumeratingWithState:&v46 objects:buf count:16];
+        v32 = [networkStatuses2 countByEnumeratingWithState:&v46 objects:buf count:16];
         if (v32)
         {
           v33 = v32;
@@ -2986,14 +2986,14 @@ LABEL_41:
             {
               if (*v47 != v35)
               {
-                objc_enumerationMutation(v31);
+                objc_enumerationMutation(networkStatuses2);
               }
 
               v37 = *(*(&v46 + 1) + 8 * j);
               if ([v37 networkType] == 3)
               {
-                v38 = [v37 networkName];
-                v39 = [v38 isEqualToString:v29];
+                networkName2 = [v37 networkName];
+                v39 = [networkName2 isEqualToString:interfaceName2];
 
                 if (v39)
                 {
@@ -3007,7 +3007,7 @@ LABEL_41:
               }
             }
 
-            v33 = [v31 countByEnumeratingWithState:&v46 objects:buf count:16];
+            v33 = [networkStatuses2 countByEnumeratingWithState:&v46 objects:buf count:16];
           }
 
           while (v33);
@@ -3015,7 +3015,7 @@ LABEL_41:
           v40 = v45;
           if (v34)
           {
-            [(NSPServiceStatusManager *)self->_serviceStatusManager reportActiveOnInterfaceName:v29 displayName:v45 type:3];
+            [(NSPServiceStatusManager *)self->_serviceStatusManager reportActiveOnInterfaceName:interfaceName2 displayName:v45 type:3];
             sub_10006815C(self);
           }
         }
@@ -3027,8 +3027,8 @@ LABEL_57:
           v40 = v45;
         }
 
-        v5 = v43;
-        v4 = v44;
+        interfaceName = v43;
+        interfaceCopy = v44;
       }
     }
 
@@ -3041,14 +3041,14 @@ LABEL_57:
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v19 = [(NSPServiceStatusManager *)self->_serviceStatusManager serviceStatus];
-    v9 = [v19 networkStatuses];
+    serviceStatus3 = [(NSPServiceStatusManager *)self->_serviceStatusManager serviceStatus];
+    networkStatuses = [serviceStatus3 networkStatuses];
 
-    v20 = [v9 countByEnumeratingWithState:&v46 objects:buf count:16];
+    v20 = [networkStatuses countByEnumeratingWithState:&v46 objects:buf count:16];
     if (v20)
     {
       v21 = v20;
-      v12 = v5;
+      v12 = interfaceName;
       v13 = 0;
       v22 = 0;
       v23 = *v47;
@@ -3058,7 +3058,7 @@ LABEL_57:
         {
           if (*v47 != v23)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(networkStatuses);
           }
 
           v25 = *(*(&v46 + 1) + 8 * k);
@@ -3071,15 +3071,15 @@ LABEL_57:
 
             if ([v25 networkStatus] == 2)
             {
-              v26 = [v25 networkName];
+              networkName3 = [v25 networkName];
 
               v22 = 1;
-              v13 = v26;
+              v13 = networkName3;
             }
           }
         }
 
-        v21 = [v9 countByEnumeratingWithState:&v46 objects:buf count:16];
+        v21 = [networkStatuses countByEnumeratingWithState:&v46 objects:buf count:16];
       }
 
       while (v21);
@@ -3087,13 +3087,13 @@ LABEL_57:
       if (v22)
       {
         [(NSPServiceStatusManager *)self->_serviceStatusManager reportActiveOnCellularName:v13];
-        v9 = +[NSPPrivacyProxyPolicyHandler sharedHandler];
-        [v9 cellularDisabled:0];
+        networkStatuses = +[NSPPrivacyProxyPolicyHandler sharedHandler];
+        [networkStatuses cellularDisabled:0];
         goto LABEL_38;
       }
 
 LABEL_61:
-      v5 = v12;
+      interfaceName = v12;
       goto LABEL_41;
     }
 
@@ -3105,14 +3105,14 @@ LABEL_39:
 LABEL_60:
 }
 
-- (void)reportActivityForApp:(id)a3 path:(id)a4
+- (void)reportActivityForApp:(id)app path:(id)path
 {
   if (self)
   {
     self = self->_serviceStatusManager;
   }
 
-  [(NSPServer *)self reportActivityForApp:a3 path:a4];
+  [(NSPServer *)self reportActivityForApp:app path:path];
 }
 
 - (void)tokenFetchOutage
@@ -3154,8 +3154,8 @@ LABEL_60:
     }
 
     self->_tokenOutage = 0;
-    v4 = [(NSPConfigurationManager *)self->_configurationManager mergeProxyTrafficStateWithCurrentPolicy];
-    [(NSPServer *)self policiesUpdated:self->_configurationManager policy:v4 resolverInfoChanged:1];
+    mergeProxyTrafficStateWithCurrentPolicy = [(NSPConfigurationManager *)self->_configurationManager mergeProxyTrafficStateWithCurrentPolicy];
+    [(NSPServer *)self policiesUpdated:self->_configurationManager policy:mergeProxyTrafficStateWithCurrentPolicy resolverInfoChanged:1];
     sub_1000654C0(self);
   }
 }
@@ -3180,19 +3180,19 @@ LABEL_60:
     }
 
     objc_storeStrong(&self->_proxyOutageRestoreDate, 0);
-    v5 = [(NSPConfigurationManager *)self->_configurationManager mergeProxyTrafficStateWithCurrentPolicy];
-    [(NSPServer *)self policiesUpdated:self->_configurationManager policy:v5 resolverInfoChanged:1];
+    mergeProxyTrafficStateWithCurrentPolicy = [(NSPConfigurationManager *)self->_configurationManager mergeProxyTrafficStateWithCurrentPolicy];
+    [(NSPServer *)self policiesUpdated:self->_configurationManager policy:mergeProxyTrafficStateWithCurrentPolicy resolverInfoChanged:1];
     sub_100064320(self);
     [(NSPPrivacyProxyAgentManager *)self->_privacyProxyAgentManager resetProxyErrors];
     sub_1000654C0(self);
   }
 }
 
-- (void)preferredProxyAgentRegistered:(id)a3 agentUUID:(id)a4 domainFilter:(id)a5
+- (void)preferredProxyAgentRegistered:(id)registered agentUUID:(id)d domainFilter:(id)filter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  registeredCopy = registered;
+  dCopy = d;
+  filterCopy = filter;
   if (self)
   {
     configuration = self->_configuration;
@@ -3203,60 +3203,60 @@ LABEL_60:
     configuration = 0;
   }
 
-  v12 = [(NSPConfiguration *)configuration preferredPathRoutingEnabledStatus];
-  v13 = [v12 BOOLValue];
+  preferredPathRoutingEnabledStatus = [(NSPConfiguration *)configuration preferredPathRoutingEnabledStatus];
+  bOOLValue = [preferredPathRoutingEnabledStatus BOOLValue];
 
   v14 = nplog_obj();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (v13)
+  if (bOOLValue)
   {
     if (v15)
     {
       v16 = 138412546;
-      v17 = v8;
+      v17 = registeredCopy;
       v18 = 2112;
-      v19 = v9;
+      v19 = dCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Adding policies for preferred agent %@ / %@", &v16, 0x16u);
     }
 
     v14 = +[NSPPrivacyProxyPolicyHandler sharedHandler];
-    [v14 addPreferredProxy:v8 agentUUID:v9 withDomainFilter:v10];
+    [v14 addPreferredProxy:registeredCopy agentUUID:dCopy withDomainFilter:filterCopy];
   }
 
   else if (v15)
   {
     v16 = 138412546;
-    v17 = v8;
+    v17 = registeredCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = dCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Skipping adding policies preferred agent %@ / %@, feature disabled", &v16, 0x16u);
   }
 }
 
-- (void)preferredProxyAgentUnregistered:(id)a3
+- (void)preferredProxyAgentUnregistered:(id)unregistered
 {
-  v3 = a3;
+  unregisteredCopy = unregistered;
   v4 = nplog_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = unregisteredCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Removing policies for preferred agent %@", &v6, 0xCu);
   }
 
   v5 = +[NSPPrivacyProxyPolicyHandler sharedHandler];
-  [v5 removePreferredProxy:v3 apply:1];
+  [v5 removePreferredProxy:unregisteredCopy apply:1];
 }
 
-- (BOOL)networkDiscoveredProxyInTrustedProxyList:(id)a3
+- (BOOL)networkDiscoveredProxyInTrustedProxyList:(id)list
 {
-  v4 = a3;
-  v5 = [v4 host];
-  if (v5)
+  listCopy = list;
+  host = [listCopy host];
+  if (host)
   {
-    v6 = [v4 port];
+    port = [listCopy port];
 
-    if (v6)
+    if (port)
     {
       v34 = 0u;
       v35 = 0u;
@@ -3272,10 +3272,10 @@ LABEL_60:
         configuration = 0;
       }
 
-      v8 = [(NSPConfiguration *)configuration proxyConfiguration];
-      v9 = [v8 trustedNetworkDiscoveredProxies];
+      proxyConfiguration = [(NSPConfiguration *)configuration proxyConfiguration];
+      trustedNetworkDiscoveredProxies = [proxyConfiguration trustedNetworkDiscoveredProxies];
 
-      v10 = [v9 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v10 = [trustedNetworkDiscoveredProxies countByEnumeratingWithState:&v32 objects:v36 count:16];
       if (v10)
       {
         v11 = v10;
@@ -3290,7 +3290,7 @@ LABEL_60:
           {
             if (*v33 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(trustedNetworkDiscoveredProxies);
             }
 
             v16 = [*(*(&v32 + 1) + 8 * v15) componentsSeparatedByString:v13];
@@ -3307,25 +3307,25 @@ LABEL_60:
                 v21 = [v16 objectAtIndex:1];
                 v22 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v21 integerValue]);
 
-                v23 = [v4 host];
-                if ([v23 isEqualToString:v20])
+                host2 = [listCopy host];
+                if ([host2 isEqualToString:v20])
                 {
-                  [v4 port];
+                  [listCopy port];
                   v24 = v12;
                   v25 = v13;
-                  v26 = v9;
-                  v28 = v27 = v4;
+                  v26 = trustedNetworkDiscoveredProxies;
+                  v28 = v27 = listCopy;
 
                   v29 = v28 == v22;
-                  v4 = v27;
-                  v9 = v26;
+                  listCopy = v27;
+                  trustedNetworkDiscoveredProxies = v26;
                   v13 = v25;
                   v12 = v24;
                   v11 = v31;
                   if (v29)
                   {
 
-                    LOBYTE(v5) = 1;
+                    LOBYTE(host) = 1;
                     goto LABEL_22;
                   }
                 }
@@ -3342,39 +3342,39 @@ LABEL_60:
           }
 
           while (v11 != v15);
-          v11 = [v9 countByEnumeratingWithState:&v32 objects:v36 count:16];
+          v11 = [trustedNetworkDiscoveredProxies countByEnumeratingWithState:&v32 objects:v36 count:16];
         }
 
         while (v11);
       }
 
-      LOBYTE(v5) = 0;
+      LOBYTE(host) = 0;
 LABEL_22:
     }
 
     else
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(host) = 0;
     }
   }
 
-  return v5;
+  return host;
 }
 
 - (BOOL)canIgnoreInvalidCertsOnInternalBuild
 {
-  v2 = [[NSPConfiguration alloc] initFromPreferences];
-  if (v2 && os_variant_allows_internal_security_policies())
+  initFromPreferences = [[NSPConfiguration alloc] initFromPreferences];
+  if (initFromPreferences && os_variant_allows_internal_security_policies())
   {
-    v3 = [v2 ignoreInvalidCerts];
+    ignoreInvalidCerts = [initFromPreferences ignoreInvalidCerts];
   }
 
   else
   {
-    v3 = 0;
+    ignoreInvalidCerts = 0;
   }
 
-  return v3;
+  return ignoreInvalidCerts;
 }
 
 - (BOOL)usesDefaultConfigurationServer
@@ -3390,8 +3390,8 @@ LABEL_22:
   }
 
   v4 = configuration;
-  v5 = [(NSPConfiguration *)v4 configServerHost];
-  if ([v5 isEqualToString:@"mask-api.icloud.com"])
+  configServerHost = [(NSPConfiguration *)v4 configServerHost];
+  if ([configServerHost isEqualToString:@"mask-api.icloud.com"])
   {
     if (self)
     {
@@ -3443,37 +3443,37 @@ LABEL_22:
   _Block_object_dispose(v6, 8);
 }
 
-- (void)didUpdateCountryPlusTimezone:(id)a3
+- (void)didUpdateCountryPlusTimezone:(id)timezone
 {
-  v4 = a3;
+  timezoneCopy = timezone;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = timezoneCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@ country+timezone updated to [%@]", &v6, 0x16u);
   }
 
-  sub_10001FDC8(self, v4);
+  sub_10001FDC8(self, timezoneCopy);
   sub_1000654C0(self);
 }
 
-- (void)didUpdateGeohash:(id)a3
+- (void)didUpdateGeohash:(id)geohash
 {
-  v4 = a3;
+  geohashCopy = geohash;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = geohashCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@ Geohash updated to [%@]", &v6, 0x16u);
   }
 
-  sub_10007080C(self, v4);
+  sub_10007080C(self, geohashCopy);
   sub_1000654C0(self);
 }
 
@@ -3492,25 +3492,25 @@ LABEL_22:
   if (self)
   {
     sub_100072AB8(self);
-    v3 = [(NSPConfiguration *)self->_configuration proxyConfiguration];
-    v4 = [v3 dnsProbe];
+    proxyConfiguration = [(NSPConfiguration *)self->_configuration proxyConfiguration];
+    dnsProbe = [proxyConfiguration dnsProbe];
 
-    if (v4)
+    if (dnsProbe)
     {
-      v5 = [(NWPathEvaluator *)self->_primaryPhysicalInterfaceEvaluator path];
-      v6 = [v5 interface];
+      path = [(NWPathEvaluator *)self->_primaryPhysicalInterfaceEvaluator path];
+      interface = [path interface];
 
-      v7 = [v6 cInterface];
-      v8 = [(NWPathEvaluator *)self->_primaryPhysicalInterfaceEvaluator path];
-      v9 = [v8 status];
+      cInterface = [interface cInterface];
+      path2 = [(NWPathEvaluator *)self->_primaryPhysicalInterfaceEvaluator path];
+      status = [path2 status];
 
-      if (v9 == 1)
+      if (status == 1)
       {
-        if (v7)
+        if (cInterface)
         {
-          host = nw_endpoint_create_host([v4 UTF8String], "443");
+          host = nw_endpoint_create_host([dnsProbe UTF8String], "443");
           v11 = nw_parameters_create();
-          nw_parameters_require_interface(v11, v7);
+          nw_parameters_require_interface(v11, cInterface);
           v12 = nw_resolver_create_with_endpoint();
           dnsProbeResolver = self->_dnsProbeResolver;
           self->_dnsProbeResolver = v12;
@@ -3523,7 +3523,7 @@ LABEL_22:
           v16[2] = sub_100072B0C;
           v16[3] = &unk_10010A398;
           objc_copyWeak(v18, &location);
-          v17 = v7;
+          v17 = cInterface;
           nw_resolver_set_update_handler();
 
           objc_destroyWeak(v18);
@@ -3534,24 +3534,24 @@ LABEL_22:
 
     else
     {
-      v6 = nplog_obj();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+      interface = nplog_obj();
+      if (os_log_type_enabled(interface, OS_LOG_TYPE_DEBUG))
       {
         LOWORD(v16[0]) = 0;
-        _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "No DNS probe configured, ignoring", v16, 2u);
+        _os_log_debug_impl(&_mh_execute_header, interface, OS_LOG_TYPE_DEBUG, "No DNS probe configured, ignoring", v16, 2u);
       }
     }
   }
 }
 
-- (void)disableWiFiNetwork:(id)a3
+- (void)disableWiFiNetwork:(id)network
 {
-  v4 = a3;
+  networkCopy = network;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v16 = v4;
+    v16 = networkCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Saving preference to disable on Wi-Fi network: %{private}@", buf, 0xCu);
   }
 
@@ -3565,8 +3565,8 @@ LABEL_22:
     wifiInterface = 0;
   }
 
-  v7 = [(CWFInterface *)wifiInterface currentKnownNetworkProfile];
-  [v7 setPrivacyProxyEnabled:0];
+  currentKnownNetworkProfile = [(CWFInterface *)wifiInterface currentKnownNetworkProfile];
+  [currentKnownNetworkProfile setPrivacyProxyEnabled:0];
   if (self)
   {
     v8 = self->_wifiInterface;
@@ -3579,7 +3579,7 @@ LABEL_22:
 
   v14 = 0;
   v9 = v8;
-  [(CWFInterface *)v9 updateKnownNetworkProfile:v7 properties:0 error:&v14];
+  [(CWFInterface *)v9 updateKnownNetworkProfile:currentKnownNetworkProfile properties:0 error:&v14];
   v10 = v14;
 
   if (v10)
@@ -3588,7 +3588,7 @@ LABEL_22:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138478083;
-      v16 = v4;
+      v16 = networkCopy;
       v17 = 2112;
       v18 = v10;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to save preference to disable on Wi-Fi network %{private}@: %@", buf, 0x16u);
@@ -3605,19 +3605,19 @@ LABEL_22:
     serviceStatusManager = 0;
   }
 
-  [(NSPServiceStatusManager *)serviceStatusManager reportDisabledOnWiFiName:v4];
+  [(NSPServiceStatusManager *)serviceStatusManager reportDisabledOnWiFiName:networkCopy];
   v13 = +[NSPPrivacyProxyPolicyHandler sharedHandler];
   [v13 wifiDisabled:1];
 }
 
-- (void)disableCellularNetwork:(id)a3
+- (void)disableCellularNetwork:(id)network
 {
-  v4 = a3;
+  networkCopy = network;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = networkCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Saving preference to disable on cellular network: %@", buf, 0xCu);
   }
 
@@ -3646,8 +3646,8 @@ LABEL_22:
   v12[2] = sub_1000739B0;
   v12[3] = &unk_10010A460;
   v12[4] = self;
-  v13 = v4;
-  v11 = v4;
+  v13 = networkCopy;
+  v11 = networkCopy;
   [(CoreTelephonyClient *)cellularClient getCurrentDataSubscriptionContext:v12];
 }
 
@@ -3661,9 +3661,9 @@ LABEL_22:
   return self;
 }
 
-- (void)updateSavedPrivateCloudComputeEnvironment:(id)a3
+- (void)updateSavedPrivateCloudComputeEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   if (self)
   {
     privateCloudComputeEnvironment = self->_privateCloudComputeEnvironment;
@@ -3675,7 +3675,7 @@ LABEL_22:
   }
 
   v6 = privateCloudComputeEnvironment;
-  v9 = v4;
+  v9 = environmentCopy;
   v7 = v6;
   v8 = v7;
   if (!(v9 | v7) || v9 && v7 && [v9 isEqual:v7])

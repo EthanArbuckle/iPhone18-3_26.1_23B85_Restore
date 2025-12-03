@@ -1,7 +1,7 @@
 @interface VideoPlayerCoordinator
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (_TtC11MediaCoreUIP33_8A49DC2FB69555F909B7715363263FF722VideoPlayerCoordinator)init;
-- (void)didPinch:(id)a3;
+- (void)didPinch:(id)pinch;
 - (void)didTap;
 @end
 
@@ -9,23 +9,23 @@
 
 - (void)didTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5B96F6C();
 }
 
-- (void)didPinch:(id)a3
+- (void)didPinch:(id)pinch
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C5B971F4(v4);
+  pinchCopy = pinch;
+  selfCopy = self;
+  sub_1C5B971F4(pinchCopy);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1C5B973C4(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_1C5B973C4(recognizerCopy, gestureRecognizerCopy);
 
   return v9 & 1;
 }

@@ -1,26 +1,26 @@
 @interface TTSSchemaTTSRequestReceived
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (TTSSchemaTTSRequestReceived)initWithDictionary:(id)a3;
-- (TTSSchemaTTSRequestReceived)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (TTSSchemaTTSRequestReceived)initWithDictionary:(id)dictionary;
+- (TTSSchemaTTSRequestReceived)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TTSSchemaTTSRequestReceived
 
-- (TTSSchemaTTSRequestReceived)initWithDictionary:(id)a3
+- (TTSSchemaTTSRequestReceived)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = TTSSchemaTTSRequestReceived;
   v5 = [(TTSSchemaTTSRequestReceived *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(TTSSchemaTTSRequestReceived *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"requestedVoiceContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"requestedVoiceContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,14 +36,14 @@
       [(TTSSchemaTTSRequestReceived *)v5 setRequestedVoiceContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"inputTextLength"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"inputTextLength"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTSSchemaTTSRequestReceived setInputTextLength:](v5, "setInputTextLength:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"contextId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"contextId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (TTSSchemaTTSRequestReceived)initWithJSON:(id)a3
+- (TTSSchemaTTSRequestReceived)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(TTSSchemaTTSRequestReceived *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(TTSSchemaTTSRequestReceived *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(TTSSchemaTTSRequestReceived *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,64 +93,64 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_contextId)
   {
-    v4 = [(TTSSchemaTTSRequestReceived *)self contextId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    contextId = [(TTSSchemaTTSRequestReceived *)self contextId];
+    dictionaryRepresentation = [contextId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"contextId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"contextId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"contextId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"contextId"];
     }
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[TTSSchemaTTSRequestReceived inputTextLength](self, "inputTextLength")}];
-    [v3 setObject:v7 forKeyedSubscript:@"inputTextLength"];
+    [dictionary setObject:v7 forKeyedSubscript:@"inputTextLength"];
   }
 
   if (self->_linkId)
   {
-    v8 = [(TTSSchemaTTSRequestReceived *)self linkId];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    linkId = [(TTSSchemaTTSRequestReceived *)self linkId];
+    dictionaryRepresentation2 = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"linkId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"linkId"];
     }
   }
 
   if (self->_requestedVoiceContext)
   {
-    v11 = [(TTSSchemaTTSRequestReceived *)self requestedVoiceContext];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    requestedVoiceContext = [(TTSSchemaTTSRequestReceived *)self requestedVoiceContext];
+    dictionaryRepresentation3 = [requestedVoiceContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"requestedVoiceContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"requestedVoiceContext"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"requestedVoiceContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"requestedVoiceContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -170,28 +170,28 @@
   return v4 ^ v3 ^ v5 ^ [(SISchemaUUID *)self->_contextId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(TTSSchemaTTSRequestReceived *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(TTSSchemaTTSRequestReceived *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(TTSSchemaTTSRequestReceived *)self linkId];
-  if (v7)
+  linkId3 = [(TTSSchemaTTSRequestReceived *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(TTSSchemaTTSRequestReceived *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(TTSSchemaTTSRequestReceived *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -203,20 +203,20 @@
   {
   }
 
-  v5 = [(TTSSchemaTTSRequestReceived *)self requestedVoiceContext];
-  v6 = [v4 requestedVoiceContext];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(TTSSchemaTTSRequestReceived *)self requestedVoiceContext];
+  linkId2 = [equalCopy requestedVoiceContext];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v12 = [(TTSSchemaTTSRequestReceived *)self requestedVoiceContext];
-  if (v12)
+  requestedVoiceContext = [(TTSSchemaTTSRequestReceived *)self requestedVoiceContext];
+  if (requestedVoiceContext)
   {
-    v13 = v12;
-    v14 = [(TTSSchemaTTSRequestReceived *)self requestedVoiceContext];
-    v15 = [v4 requestedVoiceContext];
-    v16 = [v14 isEqual:v15];
+    v13 = requestedVoiceContext;
+    requestedVoiceContext2 = [(TTSSchemaTTSRequestReceived *)self requestedVoiceContext];
+    requestedVoiceContext3 = [equalCopy requestedVoiceContext];
+    v16 = [requestedVoiceContext2 isEqual:requestedVoiceContext3];
 
     if (!v16)
     {
@@ -228,7 +228,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_20;
   }
@@ -236,18 +236,18 @@
   if (*&self->_has)
   {
     inputTextLength = self->_inputTextLength;
-    if (inputTextLength != [v4 inputTextLength])
+    if (inputTextLength != [equalCopy inputTextLength])
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(TTSSchemaTTSRequestReceived *)self contextId];
-  v6 = [v4 contextId];
-  if ((v5 != 0) != (v6 == 0))
+  linkId = [(TTSSchemaTTSRequestReceived *)self contextId];
+  linkId2 = [equalCopy contextId];
+  if ((linkId != 0) != (linkId2 == 0))
   {
-    v18 = [(TTSSchemaTTSRequestReceived *)self contextId];
-    if (!v18)
+    contextId = [(TTSSchemaTTSRequestReceived *)self contextId];
+    if (!contextId)
     {
 
 LABEL_23:
@@ -255,10 +255,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v19 = v18;
-    v20 = [(TTSSchemaTTSRequestReceived *)self contextId];
-    v21 = [v4 contextId];
-    v22 = [v20 isEqual:v21];
+    v19 = contextId;
+    contextId2 = [(TTSSchemaTTSRequestReceived *)self contextId];
+    contextId3 = [equalCopy contextId];
+    v22 = [contextId2 isEqual:contextId3];
 
     if (v22)
     {
@@ -278,22 +278,22 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(TTSSchemaTTSRequestReceived *)self linkId];
+  toCopy = to;
+  linkId = [(TTSSchemaTTSRequestReceived *)self linkId];
 
-  if (v4)
+  if (linkId)
   {
-    v5 = [(TTSSchemaTTSRequestReceived *)self linkId];
+    linkId2 = [(TTSSchemaTTSRequestReceived *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(TTSSchemaTTSRequestReceived *)self requestedVoiceContext];
+  requestedVoiceContext = [(TTSSchemaTTSRequestReceived *)self requestedVoiceContext];
 
-  if (v6)
+  if (requestedVoiceContext)
   {
-    v7 = [(TTSSchemaTTSRequestReceived *)self requestedVoiceContext];
+    requestedVoiceContext2 = [(TTSSchemaTTSRequestReceived *)self requestedVoiceContext];
     PBDataWriterWriteSubmessage();
   }
 
@@ -302,47 +302,47 @@ LABEL_21:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(TTSSchemaTTSRequestReceived *)self contextId];
+  contextId = [(TTSSchemaTTSRequestReceived *)self contextId];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (contextId)
   {
-    v10 = [(TTSSchemaTTSRequestReceived *)self contextId];
+    contextId2 = [(TTSSchemaTTSRequestReceived *)self contextId];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = TTSSchemaTTSRequestReceived;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(TTSSchemaTTSRequestReceived *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  linkId = [(TTSSchemaTTSRequestReceived *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(TTSSchemaTTSRequestReceived *)self deleteLinkId];
   }
 
-  v9 = [(TTSSchemaTTSRequestReceived *)self requestedVoiceContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  requestedVoiceContext = [(TTSSchemaTTSRequestReceived *)self requestedVoiceContext];
+  v10 = [requestedVoiceContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(TTSSchemaTTSRequestReceived *)self deleteRequestedVoiceContext];
   }
 
-  v12 = [(TTSSchemaTTSRequestReceived *)self contextId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  contextId = [(TTSSchemaTTSRequestReceived *)self contextId];
+  v13 = [contextId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(TTSSchemaTTSRequestReceived *)self deleteContextId];
   }

@@ -1,23 +1,23 @@
 @interface SUSHistoryInstalls
-+ (id)sharedInstanceWithPath:(id)a3;
++ (id)sharedInstanceWithPath:(id)path;
 - (id)queryAllLogs;
-- (id)queryLogsFromDate:(id)a3 toDate:(id)a4;
-- (void)addLogWithName:(id)a3 build:(id)a4 date:(id)a5 operationType:(int64_t)a6;
+- (id)queryLogsFromDate:(id)date toDate:(id)toDate;
+- (void)addLogWithName:(id)name build:(id)build date:(id)date operationType:(int64_t)type;
 - (void)initializeDatabase;
 @end
 
 @implementation SUSHistoryInstalls
 
-+ (id)sharedInstanceWithPath:(id)a3
++ (id)sharedInstanceWithPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__SUSHistoryInstalls_sharedInstanceWithPath___block_invoke;
   block[3] = &unk_279CAA708;
-  v10 = v3;
+  v10 = pathCopy;
   v4 = sharedInstanceWithPath__onceToken;
-  v5 = v3;
+  v5 = pathCopy;
   if (v4 != -1)
   {
     dispatch_once(&sharedInstanceWithPath__onceToken, block);
@@ -43,8 +43,8 @@ uint64_t __45__SUSHistoryInstalls_sharedInstanceWithPath___block_invoke(uint64_t
 
 - (void)initializeDatabase
 {
-  v3 = [(SUSHistoryInstalls *)self path];
-  v4 = sqlite3_open([v3 UTF8String], &self->_db);
+  path = [(SUSHistoryInstalls *)self path];
+  v4 = sqlite3_open([path UTF8String], &self->_db);
 
   if (v4)
   {
@@ -63,15 +63,15 @@ uint64_t __45__SUSHistoryInstalls_sharedInstanceWithPath___block_invoke(uint64_t
   }
 }
 
-- (void)addLogWithName:(id)a3 build:(id)a4 date:(id)a5 operationType:(int64_t)a6
+- (void)addLogWithName:(id)name build:(id)build date:(id)date operationType:(int64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  buildCopy = build;
+  dateCopy = date;
   [(SUSHistoryInstalls *)self initializeDatabase];
   v13 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v13 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-  v14 = [v13 stringFromDate:v12];
+  v14 = [v13 stringFromDate:dateCopy];
 
   ppStmt = 0;
   if (sqlite3_prepare_v2(self->_db, "INSERT INTO logs (name, build, date, operationType) VALUES (?, ?, ?, ?);", -1, &ppStmt, 0))
@@ -82,10 +82,10 @@ uint64_t __45__SUSHistoryInstalls_sharedInstanceWithPath___block_invoke(uint64_t
 
   else
   {
-    sqlite3_bind_text(ppStmt, 1, [v10 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-    sqlite3_bind_text(ppStmt, 2, [v11 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+    sqlite3_bind_text(ppStmt, 1, [nameCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+    sqlite3_bind_text(ppStmt, 2, [buildCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
     sqlite3_bind_text(ppStmt, 3, [v14 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-    sqlite3_bind_int64(ppStmt, 4, a6);
+    sqlite3_bind_int64(ppStmt, 4, type);
     if (sqlite3_step(ppStmt) == 101)
     {
       SULogDebug(@"%s: Success entry insert", v22, v23, v24, v25, v26, v27, v28, "[SUSHistoryInstalls addLogWithName:build:date:operationType:]");
@@ -116,7 +116,7 @@ uint64_t __45__SUSHistoryInstalls_sharedInstanceWithPath___block_invoke(uint64_t
 {
   v28[4] = *MEMORY[0x277D85DE8];
   [(SUSHistoryInstalls *)self initializeDatabase];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   ppStmt = 0;
   if (sqlite3_prepare_v2(self->_db, "SELECT name, build, date, operationType FROM logs ORDER BY date ASC;", -1, &ppStmt, 0))
   {
@@ -141,7 +141,7 @@ uint64_t __45__SUSHistoryInstalls_sharedInstanceWithPath___block_invoke(uint64_t
       v15 = [MEMORY[0x277CCABB0] numberWithInteger:v14];
       v28[3] = v15;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:4];
-      [v3 addObject:v16];
+      [array addObject:v16];
     }
 
     sqlite3_finalize(ppStmt);
@@ -150,20 +150,20 @@ uint64_t __45__SUSHistoryInstalls_sharedInstanceWithPath___block_invoke(uint64_t
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
-- (id)queryLogsFromDate:(id)a3 toDate:(id)a4
+- (id)queryLogsFromDate:(id)date toDate:(id)toDate
 {
   v30[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  toDateCopy = toDate;
   [(SUSHistoryInstalls *)self initializeDatabase];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v9 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-  v10 = [v9 stringFromDate:v6];
-  v11 = [v9 stringFromDate:v7];
+  v10 = [v9 stringFromDate:dateCopy];
+  v11 = [v9 stringFromDate:toDateCopy];
   ppStmt = 0;
   if (sqlite3_prepare_v2(self->_db, "SELECT name, build, date, operationType FROM logs WHERE date BETWEEN ? AND ? ORDER BY date ASC;", -1, &ppStmt, 0))
   {
@@ -172,7 +172,7 @@ uint64_t __45__SUSHistoryInstalls_sharedInstanceWithPath___block_invoke(uint64_t
 
   else
   {
-    v27 = v6;
+    v27 = dateCopy;
     sqlite3_bind_text(ppStmt, 1, [v10 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
     sqlite3_bind_text(ppStmt, 2, [v11 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
     while (sqlite3_step(ppStmt) == 100)
@@ -191,16 +191,16 @@ uint64_t __45__SUSHistoryInstalls_sharedInstanceWithPath___block_invoke(uint64_t
       v23 = [MEMORY[0x277CCABB0] numberWithInteger:v22];
       v30[3] = v23;
       v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:4];
-      [v8 addObject:v24];
+      [array addObject:v24];
     }
 
     sqlite3_finalize(ppStmt);
-    v6 = v27;
+    dateCopy = v27;
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return array;
 }
 
 @end

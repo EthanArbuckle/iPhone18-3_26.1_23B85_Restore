@@ -1,9 +1,9 @@
 @interface AppCapabilitiesService
 + (NSString)entitlement;
 + (_TtC9appstored22AppCapabilitiesService)defaultService;
-- (BOOL)validateAction:(int64_t)a3 bundleID:(id)a4 capabilities:(id)a5 logKey:(id)a6 error:(id *)a7;
+- (BOOL)validateAction:(int64_t)action bundleID:(id)d capabilities:(id)capabilities logKey:(id)key error:(id *)error;
 - (_TtC9appstored22AppCapabilitiesService)init;
-- (void)isCapable:(ASDAppCapabilityMetadata *)a3 withCompletionHandler:(id)a4;
+- (void)isCapable:(ASDAppCapabilityMetadata *)capable withCompletionHandler:(id)handler;
 - (void)showIneligibleAlert;
 @end
 
@@ -28,14 +28,14 @@
   return v2;
 }
 
-- (void)isCapable:(ASDAppCapabilityMetadata *)a3 withCompletionHandler:(id)a4
+- (void)isCapable:(ASDAppCapabilityMetadata *)capable withCompletionHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = capable;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -50,19 +50,19 @@
   v14[3] = 0;
   v14[4] = &unk_1004366D0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  capableCopy = capable;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v9, &unk_1004344E0, v14);
 }
 
-- (BOOL)validateAction:(int64_t)a3 bundleID:(id)a4 capabilities:(id)a5 logKey:(id)a6 error:(id *)a7
+- (BOOL)validateAction:(int64_t)action bundleID:(id)d capabilities:(id)capabilities logKey:(id)key error:(id *)error
 {
-  v8 = a5;
-  if (!a4)
+  capabilitiesCopy = capabilities;
+  if (!d)
   {
     v11 = 0;
     v13 = 0;
-    if (!a5)
+    if (!capabilities)
     {
       goto LABEL_4;
     }
@@ -72,16 +72,16 @@
 
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
-  if (v8)
+  if (capabilitiesCopy)
   {
 LABEL_3:
-    v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    capabilitiesCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
 LABEL_4:
-  v14 = a6;
-  v15 = self;
-  sub_1000A5ACC(a3, v11, v13, v8, a6);
+  keyCopy = key;
+  selfCopy = self;
+  sub_1000A5ACC(action, v11, v13, capabilitiesCopy, key);
 
   return 1;
 }
@@ -116,7 +116,7 @@ LABEL_4:
 
   [v4 addButtonAction:v6];
   v7 = [objc_allocWithZone(AMSSystemAlertDialogTask) initWithRequest:v4];
-  v8 = [v7 present];
+  present = [v7 present];
 }
 
 @end

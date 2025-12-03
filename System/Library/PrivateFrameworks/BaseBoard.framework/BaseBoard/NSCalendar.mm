@@ -1,18 +1,18 @@
 @interface NSCalendar
-- (id)_dateOnlyComponentsForDate:(void *)a1;
+- (id)_dateOnlyComponentsForDate:(void *)date;
 @end
 
 @implementation NSCalendar
 
-- (id)_dateOnlyComponentsForDate:(void *)a1
+- (id)_dateOnlyComponentsForDate:(void *)date
 {
   v3 = a2;
-  if (a1)
+  if (date)
   {
-    a1 = [a1 components:542 fromDate:v3];
+    date = [date components:542 fromDate:v3];
   }
 
-  return a1;
+  return date;
 }
 
 @end

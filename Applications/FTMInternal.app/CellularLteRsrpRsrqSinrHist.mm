@@ -1,32 +1,32 @@
 @interface CellularLteRsrpRsrqSinrHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)rsrp0AtIndex:(unint64_t)a3;
-- (unsigned)rsrp1AtIndex:(unint64_t)a3;
-- (unsigned)rsrp2AtIndex:(unint64_t)a3;
-- (unsigned)rsrp3AtIndex:(unint64_t)a3;
-- (unsigned)rsrq0AtIndex:(unint64_t)a3;
-- (unsigned)rsrq1AtIndex:(unint64_t)a3;
-- (unsigned)rsrq2AtIndex:(unint64_t)a3;
-- (unsigned)rsrq3AtIndex:(unint64_t)a3;
-- (unsigned)sinr0AtIndex:(unint64_t)a3;
-- (unsigned)sinr1AtIndex:(unint64_t)a3;
-- (unsigned)sinr2AtIndex:(unint64_t)a3;
-- (unsigned)sinr3AtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)rsrp0AtIndex:(unint64_t)index;
+- (unsigned)rsrp1AtIndex:(unint64_t)index;
+- (unsigned)rsrp2AtIndex:(unint64_t)index;
+- (unsigned)rsrp3AtIndex:(unint64_t)index;
+- (unsigned)rsrq0AtIndex:(unint64_t)index;
+- (unsigned)rsrq1AtIndex:(unint64_t)index;
+- (unsigned)rsrq2AtIndex:(unint64_t)index;
+- (unsigned)rsrq3AtIndex:(unint64_t)index;
+- (unsigned)sinr0AtIndex:(unint64_t)index;
+- (unsigned)sinr1AtIndex:(unint64_t)index;
+- (unsigned)sinr2AtIndex:(unint64_t)index;
+- (unsigned)sinr3AtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasMinRsrpDbm:(BOOL)a3;
-- (void)setHasMinRsrqDb:(BOOL)a3;
-- (void)setHasMinSinrDbx2:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasMinRsrpDbm:(BOOL)dbm;
+- (void)setHasMinRsrqDb:(BOOL)db;
+- (void)setHasMinSinrDbx2:(BOOL)dbx2;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularLteRsrpRsrqSinrHist
@@ -50,9 +50,9 @@
   [(CellularLteRsrpRsrqSinrHist *)&v3 dealloc];
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasMinRsrpDbm:(BOOL)a3
+- (void)setHasMinRsrpDbm:(BOOL)dbm
 {
-  if (a3)
+  if (dbm)
   {
     v3 = 4;
   }
@@ -80,37 +80,37 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (unsigned)rsrp0AtIndex:(unint64_t)a3
+- (unsigned)rsrp0AtIndex:(unint64_t)index
 {
   p_rsrp0s = &self->_rsrp0s;
   count = self->_rsrp0s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rsrp0s->list[a3];
+  return p_rsrp0s->list[index];
 }
 
-- (unsigned)rsrp1AtIndex:(unint64_t)a3
+- (unsigned)rsrp1AtIndex:(unint64_t)index
 {
   p_rsrp1s = &self->_rsrp1s;
   count = self->_rsrp1s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rsrp1s->list[a3];
+  return p_rsrp1s->list[index];
 }
 
-- (void)setHasMinRsrqDb:(BOOL)a3
+- (void)setHasMinRsrqDb:(BOOL)db
 {
-  if (a3)
+  if (db)
   {
     v3 = 8;
   }
@@ -123,37 +123,37 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (unsigned)rsrq0AtIndex:(unint64_t)a3
+- (unsigned)rsrq0AtIndex:(unint64_t)index
 {
   p_rsrq0s = &self->_rsrq0s;
   count = self->_rsrq0s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rsrq0s->list[a3];
+  return p_rsrq0s->list[index];
 }
 
-- (unsigned)rsrq1AtIndex:(unint64_t)a3
+- (unsigned)rsrq1AtIndex:(unint64_t)index
 {
   p_rsrq1s = &self->_rsrq1s;
   count = self->_rsrq1s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rsrq1s->list[a3];
+  return p_rsrq1s->list[index];
 }
 
-- (void)setHasMinSinrDbx2:(BOOL)a3
+- (void)setHasMinSinrDbx2:(BOOL)dbx2
 {
-  if (a3)
+  if (dbx2)
   {
     v3 = 16;
   }
@@ -166,37 +166,37 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (unsigned)sinr0AtIndex:(unint64_t)a3
+- (unsigned)sinr0AtIndex:(unint64_t)index
 {
   p_sinr0s = &self->_sinr0s;
   count = self->_sinr0s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_sinr0s->list[a3];
+  return p_sinr0s->list[index];
 }
 
-- (unsigned)sinr1AtIndex:(unint64_t)a3
+- (unsigned)sinr1AtIndex:(unint64_t)index
 {
   p_sinr1s = &self->_sinr1s;
   count = self->_sinr1s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_sinr1s->list[a3];
+  return p_sinr1s->list[index];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 0x80;
   }
@@ -209,93 +209,93 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (unsigned)rsrp2AtIndex:(unint64_t)a3
+- (unsigned)rsrp2AtIndex:(unint64_t)index
 {
   p_rsrp2s = &self->_rsrp2s;
   count = self->_rsrp2s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rsrp2s->list[a3];
+  return p_rsrp2s->list[index];
 }
 
-- (unsigned)rsrp3AtIndex:(unint64_t)a3
+- (unsigned)rsrp3AtIndex:(unint64_t)index
 {
   p_rsrp3s = &self->_rsrp3s;
   count = self->_rsrp3s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rsrp3s->list[a3];
+  return p_rsrp3s->list[index];
 }
 
-- (unsigned)rsrq2AtIndex:(unint64_t)a3
+- (unsigned)rsrq2AtIndex:(unint64_t)index
 {
   p_rsrq2s = &self->_rsrq2s;
   count = self->_rsrq2s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rsrq2s->list[a3];
+  return p_rsrq2s->list[index];
 }
 
-- (unsigned)rsrq3AtIndex:(unint64_t)a3
+- (unsigned)rsrq3AtIndex:(unint64_t)index
 {
   p_rsrq3s = &self->_rsrq3s;
   count = self->_rsrq3s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rsrq3s->list[a3];
+  return p_rsrq3s->list[index];
 }
 
-- (unsigned)sinr2AtIndex:(unint64_t)a3
+- (unsigned)sinr2AtIndex:(unint64_t)index
 {
   p_sinr2s = &self->_sinr2s;
   count = self->_sinr2s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_sinr2s->list[a3];
+  return p_sinr2s->list[index];
 }
 
-- (unsigned)sinr3AtIndex:(unint64_t)a3
+- (unsigned)sinr3AtIndex:(unint64_t)index
 {
   p_sinr3s = &self->_sinr3s;
   count = self->_sinr3s.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_sinr3s->list[a3];
+  return p_sinr3s->list[index];
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 32;
   }
@@ -308,9 +308,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 64;
   }
@@ -328,8 +328,8 @@
   v7.receiver = self;
   v7.super_class = CellularLteRsrpRsrqSinrHist;
   v3 = [(CellularLteRsrpRsrqSinrHist *)&v7 description];
-  v4 = [(CellularLteRsrpRsrqSinrHist *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularLteRsrpRsrqSinrHist *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -450,9 +450,9 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -752,9 +752,9 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -764,8 +764,8 @@ LABEL_5:
     }
 
 LABEL_69:
-    v4[76] = self->_duration;
-    *(v4 + 344) |= 2u;
+    toCopy[76] = self->_duration;
+    *(toCopy + 344) |= 2u;
     if ((*&self->_has & 4) == 0)
     {
       goto LABEL_5;
@@ -774,8 +774,8 @@ LABEL_69:
     goto LABEL_4;
   }
 
-  *(v4 + 37) = self->_timestamp;
-  *(v4 + 344) |= 1u;
+  *(toCopy + 37) = self->_timestamp;
+  *(toCopy + 344) |= 1u;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -786,19 +786,19 @@ LABEL_3:
   if ((has & 4) != 0)
   {
 LABEL_4:
-    v4[77] = self->_minRsrpDbm;
-    *(v4 + 344) |= 4u;
+    toCopy[77] = self->_minRsrpDbm;
+    *(toCopy + 344) |= 4u;
   }
 
 LABEL_5:
-  v44 = v4;
+  v44 = toCopy;
   if ([(CellularLteRsrpRsrqSinrHist *)self rsrp0sCount])
   {
     [v44 clearRsrp0s];
-    v6 = [(CellularLteRsrpRsrqSinrHist *)self rsrp0sCount];
-    if (v6)
+    rsrp0sCount = [(CellularLteRsrpRsrqSinrHist *)self rsrp0sCount];
+    if (rsrp0sCount)
     {
-      v7 = v6;
+      v7 = rsrp0sCount;
       for (i = 0; i != v7; ++i)
       {
         [v44 addRsrp0:{-[CellularLteRsrpRsrqSinrHist rsrp0AtIndex:](self, "rsrp0AtIndex:", i)}];
@@ -809,10 +809,10 @@ LABEL_5:
   if ([(CellularLteRsrpRsrqSinrHist *)self rsrp1sCount])
   {
     [v44 clearRsrp1s];
-    v9 = [(CellularLteRsrpRsrqSinrHist *)self rsrp1sCount];
-    if (v9)
+    rsrp1sCount = [(CellularLteRsrpRsrqSinrHist *)self rsrp1sCount];
+    if (rsrp1sCount)
     {
-      v10 = v9;
+      v10 = rsrp1sCount;
       for (j = 0; j != v10; ++j)
       {
         [v44 addRsrp1:{-[CellularLteRsrpRsrqSinrHist rsrp1AtIndex:](self, "rsrp1AtIndex:", j)}];
@@ -829,10 +829,10 @@ LABEL_5:
   if ([(CellularLteRsrpRsrqSinrHist *)self rsrq0sCount])
   {
     [v44 clearRsrq0s];
-    v12 = [(CellularLteRsrpRsrqSinrHist *)self rsrq0sCount];
-    if (v12)
+    rsrq0sCount = [(CellularLteRsrpRsrqSinrHist *)self rsrq0sCount];
+    if (rsrq0sCount)
     {
-      v13 = v12;
+      v13 = rsrq0sCount;
       for (k = 0; k != v13; ++k)
       {
         [v44 addRsrq0:{-[CellularLteRsrpRsrqSinrHist rsrq0AtIndex:](self, "rsrq0AtIndex:", k)}];
@@ -843,10 +843,10 @@ LABEL_5:
   if ([(CellularLteRsrpRsrqSinrHist *)self rsrq1sCount])
   {
     [v44 clearRsrq1s];
-    v15 = [(CellularLteRsrpRsrqSinrHist *)self rsrq1sCount];
-    if (v15)
+    rsrq1sCount = [(CellularLteRsrpRsrqSinrHist *)self rsrq1sCount];
+    if (rsrq1sCount)
     {
-      v16 = v15;
+      v16 = rsrq1sCount;
       for (m = 0; m != v16; ++m)
       {
         [v44 addRsrq1:{-[CellularLteRsrpRsrqSinrHist rsrq1AtIndex:](self, "rsrq1AtIndex:", m)}];
@@ -863,10 +863,10 @@ LABEL_5:
   if ([(CellularLteRsrpRsrqSinrHist *)self sinr0sCount])
   {
     [v44 clearSinr0s];
-    v18 = [(CellularLteRsrpRsrqSinrHist *)self sinr0sCount];
-    if (v18)
+    sinr0sCount = [(CellularLteRsrpRsrqSinrHist *)self sinr0sCount];
+    if (sinr0sCount)
     {
-      v19 = v18;
+      v19 = sinr0sCount;
       for (n = 0; n != v19; ++n)
       {
         [v44 addSinr0:{-[CellularLteRsrpRsrqSinrHist sinr0AtIndex:](self, "sinr0AtIndex:", n)}];
@@ -877,10 +877,10 @@ LABEL_5:
   if ([(CellularLteRsrpRsrqSinrHist *)self sinr1sCount])
   {
     [v44 clearSinr1s];
-    v21 = [(CellularLteRsrpRsrqSinrHist *)self sinr1sCount];
-    if (v21)
+    sinr1sCount = [(CellularLteRsrpRsrqSinrHist *)self sinr1sCount];
+    if (sinr1sCount)
     {
-      v22 = v21;
+      v22 = sinr1sCount;
       for (ii = 0; ii != v22; ++ii)
       {
         [v44 addSinr1:{-[CellularLteRsrpRsrqSinrHist sinr1AtIndex:](self, "sinr1AtIndex:", ii)}];
@@ -897,10 +897,10 @@ LABEL_5:
   if ([(CellularLteRsrpRsrqSinrHist *)self rsrp2sCount])
   {
     [v44 clearRsrp2s];
-    v24 = [(CellularLteRsrpRsrqSinrHist *)self rsrp2sCount];
-    if (v24)
+    rsrp2sCount = [(CellularLteRsrpRsrqSinrHist *)self rsrp2sCount];
+    if (rsrp2sCount)
     {
-      v25 = v24;
+      v25 = rsrp2sCount;
       for (jj = 0; jj != v25; ++jj)
       {
         [v44 addRsrp2:{-[CellularLteRsrpRsrqSinrHist rsrp2AtIndex:](self, "rsrp2AtIndex:", jj)}];
@@ -911,10 +911,10 @@ LABEL_5:
   if ([(CellularLteRsrpRsrqSinrHist *)self rsrp3sCount])
   {
     [v44 clearRsrp3s];
-    v27 = [(CellularLteRsrpRsrqSinrHist *)self rsrp3sCount];
-    if (v27)
+    rsrp3sCount = [(CellularLteRsrpRsrqSinrHist *)self rsrp3sCount];
+    if (rsrp3sCount)
     {
-      v28 = v27;
+      v28 = rsrp3sCount;
       for (kk = 0; kk != v28; ++kk)
       {
         [v44 addRsrp3:{-[CellularLteRsrpRsrqSinrHist rsrp3AtIndex:](self, "rsrp3AtIndex:", kk)}];
@@ -925,10 +925,10 @@ LABEL_5:
   if ([(CellularLteRsrpRsrqSinrHist *)self rsrq2sCount])
   {
     [v44 clearRsrq2s];
-    v30 = [(CellularLteRsrpRsrqSinrHist *)self rsrq2sCount];
-    if (v30)
+    rsrq2sCount = [(CellularLteRsrpRsrqSinrHist *)self rsrq2sCount];
+    if (rsrq2sCount)
     {
-      v31 = v30;
+      v31 = rsrq2sCount;
       for (mm = 0; mm != v31; ++mm)
       {
         [v44 addRsrq2:{-[CellularLteRsrpRsrqSinrHist rsrq2AtIndex:](self, "rsrq2AtIndex:", mm)}];
@@ -939,10 +939,10 @@ LABEL_5:
   if ([(CellularLteRsrpRsrqSinrHist *)self rsrq3sCount])
   {
     [v44 clearRsrq3s];
-    v33 = [(CellularLteRsrpRsrqSinrHist *)self rsrq3sCount];
-    if (v33)
+    rsrq3sCount = [(CellularLteRsrpRsrqSinrHist *)self rsrq3sCount];
+    if (rsrq3sCount)
     {
-      v34 = v33;
+      v34 = rsrq3sCount;
       for (nn = 0; nn != v34; ++nn)
       {
         [v44 addRsrq3:{-[CellularLteRsrpRsrqSinrHist rsrq3AtIndex:](self, "rsrq3AtIndex:", nn)}];
@@ -953,10 +953,10 @@ LABEL_5:
   if ([(CellularLteRsrpRsrqSinrHist *)self sinr2sCount])
   {
     [v44 clearSinr2s];
-    v36 = [(CellularLteRsrpRsrqSinrHist *)self sinr2sCount];
-    if (v36)
+    sinr2sCount = [(CellularLteRsrpRsrqSinrHist *)self sinr2sCount];
+    if (sinr2sCount)
     {
-      v37 = v36;
+      v37 = sinr2sCount;
       for (i1 = 0; i1 != v37; ++i1)
       {
         [v44 addSinr2:{-[CellularLteRsrpRsrqSinrHist sinr2AtIndex:](self, "sinr2AtIndex:", i1)}];
@@ -967,10 +967,10 @@ LABEL_5:
   if ([(CellularLteRsrpRsrqSinrHist *)self sinr3sCount])
   {
     [v44 clearSinr3s];
-    v39 = [(CellularLteRsrpRsrqSinrHist *)self sinr3sCount];
-    if (v39)
+    sinr3sCount = [(CellularLteRsrpRsrqSinrHist *)self sinr3sCount];
+    if (sinr3sCount)
     {
-      v40 = v39;
+      v40 = sinr3sCount;
       for (i2 = 0; i2 != v40; ++i2)
       {
         [v44 addSinr3:{-[CellularLteRsrpRsrqSinrHist sinr3AtIndex:](self, "sinr3AtIndex:", i2)}];
@@ -1000,9 +1000,9 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -1081,57 +1081,57 @@ LABEL_5:
     *(v6 + 344) |= 0x40u;
   }
 
-  v9 = [(NSData *)self->_plmn copyWithZone:a3];
+  v9 = [(NSData *)self->_plmn copyWithZone:zone];
   v10 = *(v6 + 41);
   *(v6 + 41) = v9;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_46;
   }
 
-  v5 = v4[344];
+  v5 = equalCopy[344];
   if (*&self->_has)
   {
-    if ((v4[344] & 1) == 0 || self->_timestamp != *(v4 + 37))
+    if ((equalCopy[344] & 1) == 0 || self->_timestamp != *(equalCopy + 37))
     {
       goto LABEL_46;
     }
   }
 
-  else if (v4[344])
+  else if (equalCopy[344])
   {
     goto LABEL_46;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[344] & 2) == 0 || self->_duration != *(v4 + 76))
+    if ((equalCopy[344] & 2) == 0 || self->_duration != *(equalCopy + 76))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((v4[344] & 2) != 0)
+  else if ((equalCopy[344] & 2) != 0)
   {
     goto LABEL_46;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((v4[344] & 4) == 0 || self->_minRsrpDbm != *(v4 + 77))
+    if ((equalCopy[344] & 4) == 0 || self->_minRsrpDbm != *(equalCopy + 77))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((v4[344] & 4) != 0)
+  else if ((equalCopy[344] & 4) != 0)
   {
     goto LABEL_46;
   }
@@ -1141,16 +1141,16 @@ LABEL_5:
     goto LABEL_46;
   }
 
-  v6 = v4[344];
+  v6 = equalCopy[344];
   if ((*&self->_has & 8) != 0)
   {
-    if ((v4[344] & 8) == 0 || self->_minRsrqDb != *(v4 + 78))
+    if ((equalCopy[344] & 8) == 0 || self->_minRsrqDb != *(equalCopy + 78))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((v4[344] & 8) != 0)
+  else if ((equalCopy[344] & 8) != 0)
   {
     goto LABEL_46;
   }
@@ -1160,16 +1160,16 @@ LABEL_5:
     goto LABEL_46;
   }
 
-  v7 = v4[344];
+  v7 = equalCopy[344];
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((v4[344] & 0x10) == 0 || self->_minSinrDbx2 != *(v4 + 79))
+    if ((equalCopy[344] & 0x10) == 0 || self->_minSinrDbx2 != *(equalCopy + 79))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((v4[344] & 0x10) != 0)
+  else if ((equalCopy[344] & 0x10) != 0)
   {
     goto LABEL_46;
   }
@@ -1179,10 +1179,10 @@ LABEL_5:
     goto LABEL_46;
   }
 
-  v8 = v4[344];
+  v8 = equalCopy[344];
   if ((*&self->_has & 0x80000000) != 0)
   {
-    if ((v8 & 0x80000000) == 0 || self->_subsId != *(v4 + 85))
+    if ((v8 & 0x80000000) == 0 || self->_subsId != *(equalCopy + 85))
     {
       goto LABEL_46;
     }
@@ -1198,23 +1198,23 @@ LABEL_5:
     goto LABEL_46;
   }
 
-  v9 = v4[344];
+  v9 = equalCopy[344];
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((v4[344] & 0x20) == 0 || self->_numSubs != *(v4 + 80))
+    if ((equalCopy[344] & 0x20) == 0 || self->_numSubs != *(equalCopy + 80))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((v4[344] & 0x20) != 0)
+  else if ((equalCopy[344] & 0x20) != 0)
   {
     goto LABEL_46;
   }
 
   if ((*&self->_has & 0x40) == 0)
   {
-    if ((v4[344] & 0x40) == 0)
+    if ((equalCopy[344] & 0x40) == 0)
     {
       goto LABEL_55;
     }
@@ -1224,14 +1224,14 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  if ((v4[344] & 0x40) == 0 || self->_psPref != *(v4 + 84))
+  if ((equalCopy[344] & 0x40) == 0 || self->_psPref != *(equalCopy + 84))
   {
     goto LABEL_46;
   }
 
 LABEL_55:
   plmn = self->_plmn;
-  if (plmn | *(v4 + 41))
+  if (plmn | *(equalCopy + 41))
   {
     v10 = [(NSData *)plmn isEqual:?];
   }
@@ -1352,15 +1352,15 @@ LABEL_22:
   return v13 ^ v11 ^ v12 ^ [(NSData *)self->_plmn hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[344];
+  fromCopy = from;
+  v5 = fromCopy[344];
   if (v5)
   {
-    self->_timestamp = *(v4 + 37);
+    self->_timestamp = *(fromCopy + 37);
     *&self->_has |= 1u;
-    v5 = v4[344];
+    v5 = fromCopy[344];
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -1373,36 +1373,36 @@ LABEL_3:
     }
   }
 
-  else if ((v4[344] & 2) == 0)
+  else if ((fromCopy[344] & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_duration = *(v4 + 76);
+  self->_duration = *(fromCopy + 76);
   *&self->_has |= 2u;
-  if ((v4[344] & 4) != 0)
+  if ((fromCopy[344] & 4) != 0)
   {
 LABEL_4:
-    self->_minRsrpDbm = *(v4 + 77);
+    self->_minRsrpDbm = *(fromCopy + 77);
     *&self->_has |= 4u;
   }
 
 LABEL_5:
-  v44 = v4;
-  v6 = [v4 rsrp0sCount];
-  if (v6)
+  v44 = fromCopy;
+  rsrp0sCount = [fromCopy rsrp0sCount];
+  if (rsrp0sCount)
   {
-    v7 = v6;
+    v7 = rsrp0sCount;
     for (i = 0; i != v7; ++i)
     {
       -[CellularLteRsrpRsrqSinrHist addRsrp0:](self, "addRsrp0:", [v44 rsrp0AtIndex:i]);
     }
   }
 
-  v9 = [v44 rsrp1sCount];
-  if (v9)
+  rsrp1sCount = [v44 rsrp1sCount];
+  if (rsrp1sCount)
   {
-    v10 = v9;
+    v10 = rsrp1sCount;
     for (j = 0; j != v10; ++j)
     {
       -[CellularLteRsrpRsrqSinrHist addRsrp1:](self, "addRsrp1:", [v44 rsrp1AtIndex:j]);
@@ -1415,20 +1415,20 @@ LABEL_5:
     *&self->_has |= 8u;
   }
 
-  v12 = [v44 rsrq0sCount];
-  if (v12)
+  rsrq0sCount = [v44 rsrq0sCount];
+  if (rsrq0sCount)
   {
-    v13 = v12;
+    v13 = rsrq0sCount;
     for (k = 0; k != v13; ++k)
     {
       -[CellularLteRsrpRsrqSinrHist addRsrq0:](self, "addRsrq0:", [v44 rsrq0AtIndex:k]);
     }
   }
 
-  v15 = [v44 rsrq1sCount];
-  if (v15)
+  rsrq1sCount = [v44 rsrq1sCount];
+  if (rsrq1sCount)
   {
-    v16 = v15;
+    v16 = rsrq1sCount;
     for (m = 0; m != v16; ++m)
     {
       -[CellularLteRsrpRsrqSinrHist addRsrq1:](self, "addRsrq1:", [v44 rsrq1AtIndex:m]);
@@ -1441,20 +1441,20 @@ LABEL_5:
     *&self->_has |= 0x10u;
   }
 
-  v18 = [v44 sinr0sCount];
-  if (v18)
+  sinr0sCount = [v44 sinr0sCount];
+  if (sinr0sCount)
   {
-    v19 = v18;
+    v19 = sinr0sCount;
     for (n = 0; n != v19; ++n)
     {
       -[CellularLteRsrpRsrqSinrHist addSinr0:](self, "addSinr0:", [v44 sinr0AtIndex:n]);
     }
   }
 
-  v21 = [v44 sinr1sCount];
-  if (v21)
+  sinr1sCount = [v44 sinr1sCount];
+  if (sinr1sCount)
   {
-    v22 = v21;
+    v22 = sinr1sCount;
     for (ii = 0; ii != v22; ++ii)
     {
       -[CellularLteRsrpRsrqSinrHist addSinr1:](self, "addSinr1:", [v44 sinr1AtIndex:ii]);
@@ -1467,60 +1467,60 @@ LABEL_5:
     *&self->_has |= 0x80u;
   }
 
-  v24 = [v44 rsrp2sCount];
-  if (v24)
+  rsrp2sCount = [v44 rsrp2sCount];
+  if (rsrp2sCount)
   {
-    v25 = v24;
+    v25 = rsrp2sCount;
     for (jj = 0; jj != v25; ++jj)
     {
       -[CellularLteRsrpRsrqSinrHist addRsrp2:](self, "addRsrp2:", [v44 rsrp2AtIndex:jj]);
     }
   }
 
-  v27 = [v44 rsrp3sCount];
-  if (v27)
+  rsrp3sCount = [v44 rsrp3sCount];
+  if (rsrp3sCount)
   {
-    v28 = v27;
+    v28 = rsrp3sCount;
     for (kk = 0; kk != v28; ++kk)
     {
       -[CellularLteRsrpRsrqSinrHist addRsrp3:](self, "addRsrp3:", [v44 rsrp3AtIndex:kk]);
     }
   }
 
-  v30 = [v44 rsrq2sCount];
-  if (v30)
+  rsrq2sCount = [v44 rsrq2sCount];
+  if (rsrq2sCount)
   {
-    v31 = v30;
+    v31 = rsrq2sCount;
     for (mm = 0; mm != v31; ++mm)
     {
       -[CellularLteRsrpRsrqSinrHist addRsrq2:](self, "addRsrq2:", [v44 rsrq2AtIndex:mm]);
     }
   }
 
-  v33 = [v44 rsrq3sCount];
-  if (v33)
+  rsrq3sCount = [v44 rsrq3sCount];
+  if (rsrq3sCount)
   {
-    v34 = v33;
+    v34 = rsrq3sCount;
     for (nn = 0; nn != v34; ++nn)
     {
       -[CellularLteRsrpRsrqSinrHist addRsrq3:](self, "addRsrq3:", [v44 rsrq3AtIndex:nn]);
     }
   }
 
-  v36 = [v44 sinr2sCount];
-  if (v36)
+  sinr2sCount = [v44 sinr2sCount];
+  if (sinr2sCount)
   {
-    v37 = v36;
+    v37 = sinr2sCount;
     for (i1 = 0; i1 != v37; ++i1)
     {
       -[CellularLteRsrpRsrqSinrHist addSinr2:](self, "addSinr2:", [v44 sinr2AtIndex:i1]);
     }
   }
 
-  v39 = [v44 sinr3sCount];
-  if (v39)
+  sinr3sCount = [v44 sinr3sCount];
+  if (sinr3sCount)
   {
-    v40 = v39;
+    v40 = sinr3sCount;
     for (i2 = 0; i2 != v40; ++i2)
     {
       -[CellularLteRsrpRsrqSinrHist addSinr3:](self, "addSinr3:", [v44 sinr3AtIndex:i2]);

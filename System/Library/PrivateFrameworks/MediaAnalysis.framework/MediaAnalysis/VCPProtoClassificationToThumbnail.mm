@@ -1,10 +1,10 @@
 @interface VCPProtoClassificationToThumbnail
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoClassificationToThumbnail
@@ -15,52 +15,52 @@
   v8.receiver = self;
   v8.super_class = VCPProtoClassificationToThumbnail;
   v4 = [(VCPProtoClassificationToThumbnail *)&v8 description];
-  v5 = [(VCPProtoClassificationToThumbnail *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoClassificationToThumbnail *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_identifier];
-  [v3 setObject:v4 forKey:@"identifier"];
+  [dictionary setObject:v4 forKey:@"identifier"];
 
   thumbnailID = self->_thumbnailID;
   if (thumbnailID)
   {
-    [v3 setObject:thumbnailID forKey:@"thumbnailID"];
+    [dictionary setObject:thumbnailID forKey:@"thumbnailID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   PBDataWriterWriteStringField();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_identifier;
-  v6 = [(NSString *)self->_thumbnailID copyWithZone:a3];
+  v6 = [(NSString *)self->_thumbnailID copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_identifier == *(v4 + 2))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_identifier == *(equalCopy + 2))
   {
     thumbnailID = self->_thumbnailID;
-    if (thumbnailID | v4[2])
+    if (thumbnailID | equalCopy[2])
     {
       v6 = [(NSString *)thumbnailID isEqual:?];
     }
@@ -79,10 +79,10 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_identifier = *(a3 + 2);
-  if (*(a3 + 2))
+  self->_identifier = *(from + 2);
+  if (*(from + 2))
   {
     [(VCPProtoClassificationToThumbnail *)self setThumbnailID:?];
   }

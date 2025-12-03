@@ -1,17 +1,17 @@
 @interface _MKSmallCalloutPassthroughButton
-- (_MKSmallCalloutPassthroughButton)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (_MKSmallCalloutPassthroughButton)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation _MKSmallCalloutPassthroughButton
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v16.receiver = self;
   v16.super_class = _MKSmallCalloutPassthroughButton;
   [(_MKSmallCalloutPassthroughButton *)&v16 setHighlighted:?];
-  if (v3 && self->_targetControl)
+  if (highlightedCopy && self->_targetControl)
   {
     highlightView = self->_highlightView;
     if (!highlightView)
@@ -46,11 +46,11 @@
   }
 }
 
-- (_MKSmallCalloutPassthroughButton)initWithFrame:(CGRect)a3
+- (_MKSmallCalloutPassthroughButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _MKSmallCalloutPassthroughButton;
-  v3 = [(_MKSmallCalloutPassthroughButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_MKSmallCalloutPassthroughButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

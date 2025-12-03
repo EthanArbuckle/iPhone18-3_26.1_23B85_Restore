@@ -1,71 +1,71 @@
 @interface INFERENCESchemaINFERENCECommonAppIndependentSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCECommonAppIndependentSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCECommonAppIndependentSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCECommonAppIndependentSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCECommonAppIndependentSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppResolutionType:(BOOL)a3;
-- (void)setHasAppSelectionUses:(BOOL)a3;
-- (void)setHasClientDayOfWeek:(BOOL)a3;
-- (void)setHasIsClientDaylight:(BOOL)a3;
-- (void)setHasModelVersion:(BOOL)a3;
-- (void)setHasRawClientHourOfDay:(BOOL)a3;
-- (void)setHasRawCountry:(BOOL)a3;
-- (void)setHasRawLocale:(BOOL)a3;
-- (void)setHasRawRequestDeviceCategory:(BOOL)a3;
-- (void)setHasRawStateOrProvince:(BOOL)a3;
-- (void)setHasSirikitResponseCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppResolutionType:(BOOL)type;
+- (void)setHasAppSelectionUses:(BOOL)uses;
+- (void)setHasClientDayOfWeek:(BOOL)week;
+- (void)setHasIsClientDaylight:(BOOL)daylight;
+- (void)setHasModelVersion:(BOOL)version;
+- (void)setHasRawClientHourOfDay:(BOOL)day;
+- (void)setHasRawCountry:(BOOL)country;
+- (void)setHasRawLocale:(BOOL)locale;
+- (void)setHasRawRequestDeviceCategory:(BOOL)category;
+- (void)setHasRawStateOrProvince:(BOOL)province;
+- (void)setHasSirikitResponseCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCECommonAppIndependentSignals
 
-- (INFERENCESchemaINFERENCECommonAppIndependentSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCECommonAppIndependentSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = INFERENCESchemaINFERENCECommonAppIndependentSignals;
   v5 = [(INFERENCESchemaINFERENCECommonAppIndependentSignals *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"rawLanguage"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"rawLanguage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommonAppIndependentSignals setRawLanguage:](v5, "setRawLanguage:", [v6 longLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"rawLocale"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"rawLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommonAppIndependentSignals setRawLocale:](v5, "setRawLocale:", [v7 longLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"rawStateOrProvince"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"rawStateOrProvince"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommonAppIndependentSignals setRawStateOrProvince:](v5, "setRawStateOrProvince:", [v8 longLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"rawCountry"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"rawCountry"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommonAppIndependentSignals setRawCountry:](v5, "setRawCountry:", [v9 longLongValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"rawRequestDeviceCategory"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"rawRequestDeviceCategory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommonAppIndependentSignals setRawRequestDeviceCategory:](v5, "setRawRequestDeviceCategory:", [v10 longLongValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"clientDayOfWeek"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"clientDayOfWeek"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,7 +73,7 @@
     }
 
     v21 = v11;
-    v12 = [v4 objectForKeyedSubscript:@"rawClientHourOfDay"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"rawClientHourOfDay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
     }
 
     v25 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"isClientDaylight"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isClientDaylight"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
     }
 
     v24 = v7;
-    v14 = [v4 objectForKeyedSubscript:@"appResolutionType"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"appResolutionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,7 +98,7 @@
 
     v22 = v10;
     v23 = v8;
-    v15 = [v4 objectForKeyedSubscript:@"sirikitResponseCode"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"sirikitResponseCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -106,14 +106,14 @@
     }
 
     v16 = v9;
-    v17 = [v4 objectForKeyedSubscript:@"appSelectionUses"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"appSelectionUses"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommonAppIndependentSignals setAppSelectionUses:](v5, "setAppSelectionUses:", [v17 intValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"modelVersion"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -126,30 +126,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCECommonAppIndependentSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCECommonAppIndependentSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCECommonAppIndependentSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCECommonAppIndependentSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCECommonAppIndependentSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -162,7 +162,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -177,14 +177,14 @@
       v6 = off_1E78D8868[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"appResolutionType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"appResolutionType"];
     has = self->_has;
   }
 
   if ((has & 0x400) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommonAppIndependentSignals appSelectionUses](self, "appSelectionUses")}];
-    [v3 setObject:v9 forKeyedSubscript:@"appSelectionUses"];
+    [dictionary setObject:v9 forKeyedSubscript:@"appSelectionUses"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -205,7 +205,7 @@ LABEL_8:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommonAppIndependentSignals clientDayOfWeek](self, "clientDayOfWeek")}];
-  [v3 setObject:v10 forKeyedSubscript:@"clientDayOfWeek"];
+  [dictionary setObject:v10 forKeyedSubscript:@"clientDayOfWeek"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -221,7 +221,7 @@ LABEL_9:
 
 LABEL_23:
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECommonAppIndependentSignals isClientDaylight](self, "isClientDaylight")}];
-  [v3 setObject:v11 forKeyedSubscript:@"isClientDaylight"];
+  [dictionary setObject:v11 forKeyedSubscript:@"isClientDaylight"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -237,7 +237,7 @@ LABEL_10:
 
 LABEL_24:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[INFERENCESchemaINFERENCECommonAppIndependentSignals modelVersion](self, "modelVersion")}];
-  [v3 setObject:v12 forKeyedSubscript:@"modelVersion"];
+  [dictionary setObject:v12 forKeyedSubscript:@"modelVersion"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -253,7 +253,7 @@ LABEL_11:
 
 LABEL_25:
   v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommonAppIndependentSignals rawClientHourOfDay](self, "rawClientHourOfDay")}];
-  [v3 setObject:v13 forKeyedSubscript:@"rawClientHourOfDay"];
+  [dictionary setObject:v13 forKeyedSubscript:@"rawClientHourOfDay"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -269,7 +269,7 @@ LABEL_12:
 
 LABEL_26:
   v14 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCECommonAppIndependentSignals rawCountry](self, "rawCountry")}];
-  [v3 setObject:v14 forKeyedSubscript:@"rawCountry"];
+  [dictionary setObject:v14 forKeyedSubscript:@"rawCountry"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -285,7 +285,7 @@ LABEL_13:
 
 LABEL_27:
   v15 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCECommonAppIndependentSignals rawLanguage](self, "rawLanguage")}];
-  [v3 setObject:v15 forKeyedSubscript:@"rawLanguage"];
+  [dictionary setObject:v15 forKeyedSubscript:@"rawLanguage"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -301,7 +301,7 @@ LABEL_14:
 
 LABEL_28:
   v16 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCECommonAppIndependentSignals rawLocale](self, "rawLocale")}];
-  [v3 setObject:v16 forKeyedSubscript:@"rawLocale"];
+  [dictionary setObject:v16 forKeyedSubscript:@"rawLocale"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -317,7 +317,7 @@ LABEL_15:
 
 LABEL_29:
   v17 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCECommonAppIndependentSignals rawRequestDeviceCategory](self, "rawRequestDeviceCategory")}];
-  [v3 setObject:v17 forKeyedSubscript:@"rawRequestDeviceCategory"];
+  [dictionary setObject:v17 forKeyedSubscript:@"rawRequestDeviceCategory"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -333,19 +333,19 @@ LABEL_16:
 
 LABEL_30:
   v18 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCECommonAppIndependentSignals rawStateOrProvince](self, "rawStateOrProvince")}];
-  [v3 setObject:v18 forKeyedSubscript:@"rawStateOrProvince"];
+  [dictionary setObject:v18 forKeyedSubscript:@"rawStateOrProvince"];
 
   if ((*&self->_has & 0x200) != 0)
   {
 LABEL_17:
     v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommonAppIndependentSignals sirikitResponseCode](self, "sirikitResponseCode")}];
-    [v3 setObject:v7 forKeyedSubscript:@"sirikitResponseCode"];
+    [dictionary setObject:v7 forKeyedSubscript:@"sirikitResponseCode"];
   }
 
 LABEL_18:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -515,16 +515,16 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_50;
   }
 
   has = self->_has;
-  v6 = v4[38];
+  v6 = equalCopy[38];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_50;
@@ -533,13 +533,13 @@ LABEL_13:
   if (*&has)
   {
     rawLanguage = self->_rawLanguage;
-    if (rawLanguage != [v4 rawLanguage])
+    if (rawLanguage != [equalCopy rawLanguage])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[38];
+    v6 = equalCopy[38];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -551,13 +551,13 @@ LABEL_13:
   if (v8)
   {
     rawLocale = self->_rawLocale;
-    if (rawLocale != [v4 rawLocale])
+    if (rawLocale != [equalCopy rawLocale])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[38];
+    v6 = equalCopy[38];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -569,13 +569,13 @@ LABEL_13:
   if (v10)
   {
     rawStateOrProvince = self->_rawStateOrProvince;
-    if (rawStateOrProvince != [v4 rawStateOrProvince])
+    if (rawStateOrProvince != [equalCopy rawStateOrProvince])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[38];
+    v6 = equalCopy[38];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -587,13 +587,13 @@ LABEL_13:
   if (v12)
   {
     rawCountry = self->_rawCountry;
-    if (rawCountry != [v4 rawCountry])
+    if (rawCountry != [equalCopy rawCountry])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[38];
+    v6 = equalCopy[38];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -605,13 +605,13 @@ LABEL_13:
   if (v14)
   {
     rawRequestDeviceCategory = self->_rawRequestDeviceCategory;
-    if (rawRequestDeviceCategory != [v4 rawRequestDeviceCategory])
+    if (rawRequestDeviceCategory != [equalCopy rawRequestDeviceCategory])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[38];
+    v6 = equalCopy[38];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -623,13 +623,13 @@ LABEL_13:
   if (v16)
   {
     clientDayOfWeek = self->_clientDayOfWeek;
-    if (clientDayOfWeek != [v4 clientDayOfWeek])
+    if (clientDayOfWeek != [equalCopy clientDayOfWeek])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[38];
+    v6 = equalCopy[38];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -641,13 +641,13 @@ LABEL_13:
   if (v18)
   {
     rawClientHourOfDay = self->_rawClientHourOfDay;
-    if (rawClientHourOfDay != [v4 rawClientHourOfDay])
+    if (rawClientHourOfDay != [equalCopy rawClientHourOfDay])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[38];
+    v6 = equalCopy[38];
   }
 
   v20 = (*&has >> 7) & 1;
@@ -659,13 +659,13 @@ LABEL_13:
   if (v20)
   {
     isClientDaylight = self->_isClientDaylight;
-    if (isClientDaylight != [v4 isClientDaylight])
+    if (isClientDaylight != [equalCopy isClientDaylight])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[38];
+    v6 = equalCopy[38];
   }
 
   v22 = (*&has >> 8) & 1;
@@ -677,13 +677,13 @@ LABEL_13:
   if (v22)
   {
     appResolutionType = self->_appResolutionType;
-    if (appResolutionType != [v4 appResolutionType])
+    if (appResolutionType != [equalCopy appResolutionType])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[38];
+    v6 = equalCopy[38];
   }
 
   v24 = (*&has >> 9) & 1;
@@ -695,13 +695,13 @@ LABEL_13:
   if (v24)
   {
     sirikitResponseCode = self->_sirikitResponseCode;
-    if (sirikitResponseCode != [v4 sirikitResponseCode])
+    if (sirikitResponseCode != [equalCopy sirikitResponseCode])
     {
       goto LABEL_50;
     }
 
     has = self->_has;
-    v6 = v4[38];
+    v6 = equalCopy[38];
   }
 
   v26 = (*&has >> 10) & 1;
@@ -713,10 +713,10 @@ LABEL_13:
   if (v26)
   {
     appSelectionUses = self->_appSelectionUses;
-    if (appSelectionUses == [v4 appSelectionUses])
+    if (appSelectionUses == [equalCopy appSelectionUses])
     {
       has = self->_has;
-      v6 = v4[38];
+      v6 = equalCopy[38];
       goto LABEL_46;
     }
 
@@ -735,7 +735,7 @@ LABEL_46:
   if (v28)
   {
     modelVersion = self->_modelVersion;
-    if (modelVersion != [v4 modelVersion])
+    if (modelVersion != [equalCopy modelVersion])
     {
       goto LABEL_50;
     }
@@ -747,9 +747,9 @@ LABEL_51:
   return v30;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -908,9 +908,9 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)setHasModelVersion:(BOOL)a3
+- (void)setHasModelVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2048;
   }
@@ -923,9 +923,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasAppSelectionUses:(BOOL)a3
+- (void)setHasAppSelectionUses:(BOOL)uses
 {
-  if (a3)
+  if (uses)
   {
     v3 = 1024;
   }
@@ -938,9 +938,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasSirikitResponseCode:(BOOL)a3
+- (void)setHasSirikitResponseCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 512;
   }
@@ -953,9 +953,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasAppResolutionType:(BOOL)a3
+- (void)setHasAppResolutionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 256;
   }
@@ -968,9 +968,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasIsClientDaylight:(BOOL)a3
+- (void)setHasIsClientDaylight:(BOOL)daylight
 {
-  if (a3)
+  if (daylight)
   {
     v3 = 128;
   }
@@ -983,9 +983,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasRawClientHourOfDay:(BOOL)a3
+- (void)setHasRawClientHourOfDay:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 64;
   }
@@ -998,9 +998,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasClientDayOfWeek:(BOOL)a3
+- (void)setHasClientDayOfWeek:(BOOL)week
 {
-  if (a3)
+  if (week)
   {
     v3 = 32;
   }
@@ -1013,9 +1013,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRawRequestDeviceCategory:(BOOL)a3
+- (void)setHasRawRequestDeviceCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 16;
   }
@@ -1028,9 +1028,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasRawCountry:(BOOL)a3
+- (void)setHasRawCountry:(BOOL)country
 {
-  if (a3)
+  if (country)
   {
     v3 = 8;
   }
@@ -1043,9 +1043,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasRawStateOrProvince:(BOOL)a3
+- (void)setHasRawStateOrProvince:(BOOL)province
 {
-  if (a3)
+  if (province)
   {
     v3 = 4;
   }
@@ -1058,9 +1058,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasRawLocale:(BOOL)a3
+- (void)setHasRawLocale:(BOOL)locale
 {
-  if (a3)
+  if (locale)
   {
     v3 = 2;
   }

@@ -1,18 +1,18 @@
 @interface _MarqueeContentView
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
 @end
 
 @implementation _MarqueeContentView
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
-  v4 = a3;
-  v6 = [(_MarqueeContentView *)self superview];
-  v5 = [v6 viewForContentSize];
+  viewCopy = view;
+  superview = [(_MarqueeContentView *)self superview];
+  viewForContentSize = [superview viewForContentSize];
 
-  if (v5 == v4)
+  if (viewForContentSize == viewCopy)
   {
-    [v6 invalidateIntrinsicContentSize];
+    [superview invalidateIntrinsicContentSize];
   }
 }
 

@@ -8,43 +8,43 @@
 {
   v3 = a3;
   v4 = objc_alloc_init(MEMORY[0x277D58A70]);
-  v5 = [v3 displayMode];
-  if (v5 <= 3)
+  displayMode = [v3 displayMode];
+  if (displayMode <= 3)
   {
-    [v4 setDisplayMode:v5];
+    [v4 setDisplayMode:displayMode];
   }
 
   v6 = MEMORY[0x277D58B30];
-  v7 = [v3 localePair];
-  v8 = [v6 lt_initWithLocalePair:v7];
+  localePair = [v3 localePair];
+  v8 = [v6 lt_initWithLocalePair:localePair];
   [v4 setLocalePair:v8];
 
   [v4 setIsGenderAlternativeEnabled:{objc_msgSend(v3, "isGenderAlternativeEnabled")}];
-  v9 = [v3 tabName];
-  if (v9 <= 4)
+  tabName = [v3 tabName];
+  if (tabName <= 4)
   {
-    [v4 setTabName:v9];
+    [v4 setTabName:tabName];
   }
 
   v10 = objc_alloc(MEMORY[0x277D5AC78]);
-  v11 = [v3 tabSessionId];
-  v12 = [v10 initWithNSUUID:v11];
+  tabSessionId = [v3 tabSessionId];
+  v12 = [v10 initWithNSUUID:tabSessionId];
   [v4 setTabSessionId:v12];
 
-  v13 = [v3 conversationTabView];
-  if (v13 <= 2)
+  conversationTabView = [v3 conversationTabView];
+  if (conversationTabView <= 2)
   {
-    [v4 setConversationTabView:v13];
+    [v4 setConversationTabView:conversationTabView];
   }
 
   [v4 setIsPlayTranslationsEnabled:{objc_msgSend(v3, "isPlayTranslationsEnabled")}];
-  v14 = [v3 autoTranslateSessionId];
+  autoTranslateSessionId = [v3 autoTranslateSessionId];
 
-  if (v14)
+  if (autoTranslateSessionId)
   {
     v15 = objc_alloc(MEMORY[0x277D5AC78]);
-    v16 = [v3 autoTranslateSessionId];
-    v17 = [v15 initWithNSUUID:v16];
+    autoTranslateSessionId2 = [v3 autoTranslateSessionId];
+    v17 = [v15 initWithNSUUID:autoTranslateSessionId2];
     [v4 setAutoTranslateSessionId:v17];
   }
 

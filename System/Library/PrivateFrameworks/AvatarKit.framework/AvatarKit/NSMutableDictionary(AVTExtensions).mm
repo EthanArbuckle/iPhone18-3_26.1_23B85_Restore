@@ -12,8 +12,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [a1 allKeys];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [self allKeys];
+  v3 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -24,16 +24,16 @@
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allKeys);
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
-        v8 = [a1 objectForKeyedSubscript:v7];
+        v8 = [self objectForKeyedSubscript:v7];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v9 = [v8 avt_numberByRoundingWithBehavior:v11];
-          [a1 setObject:v9 forKeyedSubscript:v7];
+          [self setObject:v9 forKeyedSubscript:v7];
         }
 
         else if (objc_opt_respondsToSelector())
@@ -42,7 +42,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);

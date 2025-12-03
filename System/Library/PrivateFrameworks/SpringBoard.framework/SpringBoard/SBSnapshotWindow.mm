@@ -1,23 +1,23 @@
 @interface SBSnapshotWindow
-- (SBSnapshotWindow)initWithWindowScene:(id)a3 frame:(CGRect)a4 orientation:(int64_t)a5;
+- (SBSnapshotWindow)initWithWindowScene:(id)scene frame:(CGRect)frame orientation:(int64_t)orientation;
 @end
 
 @implementation SBSnapshotWindow
 
-- (SBSnapshotWindow)initWithWindowScene:(id)a3 frame:(CGRect)a4 orientation:(int64_t)a5
+- (SBSnapshotWindow)initWithWindowScene:(id)scene frame:(CGRect)frame orientation:(int64_t)orientation
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13.receiver = self;
   v13.super_class = SBSnapshotWindow;
-  v10 = [(SBSnapshotWindow *)&v13 initWithWindowScene:a3];
+  v10 = [(SBSnapshotWindow *)&v13 initWithWindowScene:scene];
   v11 = v10;
   if (v10)
   {
     [(SBSnapshotWindow *)v10 setFrame:x, y, width, height];
-    v11->_orientation = a5;
+    v11->_orientation = orientation;
   }
 
   return v11;

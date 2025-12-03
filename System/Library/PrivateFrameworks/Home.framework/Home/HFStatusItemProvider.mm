@@ -1,23 +1,23 @@
 @interface HFStatusItemProvider
-+ (BOOL)hasStatusItemForServiceType:(id)a3;
++ (BOOL)hasStatusItemForServiceType:(id)type;
 + (id)_statusItemClasses;
-+ (id)sortOrderForStatusItemCategory:(unint64_t)a3;
-- (HFStatusItemProvider)initWithHome:(id)a3 room:(id)a4 overrideValueSource:(id)a5 filter:(id)a6;
-- (HFStatusItemProvider)initWithItems:(id)a3;
-- (id)_buildStatusItemWithClass:(Class)a3 home:(id)a4 room:(id)a5 valueSource:(id)a6;
-- (id)_createStatusItemsForHome:(id)a3 room:(id)a4 valueSource:(id)a5 filter:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_buildStatusItemsForGroupedStatusItem:(id)a3;
++ (id)sortOrderForStatusItemCategory:(unint64_t)category;
+- (HFStatusItemProvider)initWithHome:(id)home room:(id)room overrideValueSource:(id)source filter:(id)filter;
+- (HFStatusItemProvider)initWithItems:(id)items;
+- (id)_buildStatusItemWithClass:(Class)class home:(id)home room:(id)room valueSource:(id)source;
+- (id)_createStatusItemsForHome:(id)home room:(id)room valueSource:(id)source filter:(id)filter;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_buildStatusItemsForGroupedStatusItem:(id)item;
 @end
 
 @implementation HFStatusItemProvider
 
-+ (BOOL)hasStatusItemForServiceType:(id)a3
++ (BOOL)hasStatusItemForServiceType:(id)type
 {
   v3 = MEMORY[0x277CD1D90];
-  v4 = a3;
-  v5 = [v3 hf_standardServiceTypes];
-  v6 = [v5 containsObject:v4];
+  typeCopy = type;
+  hf_standardServiceTypes = [v3 hf_standardServiceTypes];
+  v6 = [hf_standardServiceTypes containsObject:typeCopy];
 
   return v6;
 }
@@ -84,13 +84,13 @@ void __42__HFStatusItemProvider__statusItemClasses__block_invoke_2()
   qword_280E022D8 = v10;
 }
 
-+ (id)sortOrderForStatusItemCategory:(unint64_t)a3
++ (id)sortOrderForStatusItemCategory:(unint64_t)category
 {
-  if (a3 <= 1)
+  if (category <= 1)
   {
-    if (a3)
+    if (category)
     {
-      if (a3 != 1)
+      if (category != 1)
       {
         goto LABEL_18;
       }
@@ -123,7 +123,7 @@ LABEL_26:
     goto LABEL_17;
   }
 
-  if (a3 == 2)
+  if (category == 2)
   {
     if (qword_280E02300 == -1)
     {
@@ -136,7 +136,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (a3 == 3)
+  if (category == 3)
   {
     if (qword_280E02310 == -1)
     {
@@ -149,7 +149,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (a3 != 4)
+  if (category != 4)
   {
     goto LABEL_18;
   }
@@ -163,10 +163,10 @@ LABEL_26:
 
   v3 = &qword_280E02328;
 LABEL_17:
-  a1 = *v3;
+  self = *v3;
 LABEL_18:
 
-  return a1;
+  return self;
 }
 
 void __55__HFStatusItemProvider_sortOrderForStatusItemCategory___block_invoke_2()
@@ -358,33 +358,33 @@ uint64_t __44__HFStatusItemProvider_statusItemComparator__block_invoke(uint64_t 
   return v16;
 }
 
-- (HFStatusItemProvider)initWithItems:(id)a3
+- (HFStatusItemProvider)initWithItems:(id)items
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithHome_room_overrideValueSource_filter_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HFStatusItemProvider.m" lineNumber:248 description:{@"%s is unavailable; use %@ instead", "-[HFStatusItemProvider initWithItems:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFStatusItemProvider.m" lineNumber:248 description:{@"%s is unavailable; use %@ instead", "-[HFStatusItemProvider initWithItems:]", v6}];
 
   return 0;
 }
 
-- (HFStatusItemProvider)initWithHome:(id)a3 room:(id)a4 overrideValueSource:(id)a5 filter:(id)a6
+- (HFStatusItemProvider)initWithHome:(id)home room:(id)room overrideValueSource:(id)source filter:(id)filter
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v13)
+  homeCopy = home;
+  roomCopy = room;
+  sourceCopy = source;
+  filterCopy = filter;
+  if (sourceCopy)
   {
-    v15 = v13;
+    hf_characteristicValueManager = sourceCopy;
   }
 
   else
   {
-    v15 = [v11 hf_characteristicValueManager];
+    hf_characteristicValueManager = [homeCopy hf_characteristicValueManager];
   }
 
-  v16 = v15;
-  v17 = [(HFStatusItemProvider *)self _createStatusItemsForHome:v11 room:v12 valueSource:v15 filter:v14];
+  v16 = hf_characteristicValueManager;
+  v17 = [(HFStatusItemProvider *)self _createStatusItemsForHome:homeCopy room:roomCopy valueSource:hf_characteristicValueManager filter:filterCopy];
   v18 = [MEMORY[0x277CBEB98] setWithArray:v17];
   v23.receiver = self;
   v23.super_class = HFStatusItemProvider;
@@ -392,10 +392,10 @@ uint64_t __44__HFStatusItemProvider_statusItemComparator__block_invoke(uint64_t 
 
   if (v19)
   {
-    objc_storeStrong(&v19->_home, a3);
-    objc_storeStrong(&v19->_room, a4);
+    objc_storeStrong(&v19->_home, home);
+    objc_storeStrong(&v19->_room, room);
     objc_storeStrong(&v19->_valueSource, v16);
-    v20 = _Block_copy(v14);
+    v20 = _Block_copy(filterCopy);
     filter = v19->_filter;
     v19->_filter = v20;
   }
@@ -403,39 +403,39 @@ uint64_t __44__HFStatusItemProvider_statusItemComparator__block_invoke(uint64_t 
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFStatusItemProvider *)self home];
-  v6 = [(HFStatusItemProvider *)self room];
-  v7 = [(HFStatusItemProvider *)self valueSource];
-  v8 = [(HFStatusItemProvider *)self filter];
-  v9 = [v4 initWithHome:v5 room:v6 overrideValueSource:v7 filter:v8];
+  home = [(HFStatusItemProvider *)self home];
+  room = [(HFStatusItemProvider *)self room];
+  valueSource = [(HFStatusItemProvider *)self valueSource];
+  filter = [(HFStatusItemProvider *)self filter];
+  v9 = [v4 initWithHome:home room:room overrideValueSource:valueSource filter:filter];
 
   return v9;
 }
 
-- (id)_createStatusItemsForHome:(id)a3 room:(id)a4 valueSource:(id)a5 filter:(id)a6
+- (id)_createStatusItemsForHome:(id)home room:(id)room valueSource:(id)source filter:(id)filter
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [objc_opt_class() _statusItemClasses];
+  homeCopy = home;
+  roomCopy = room;
+  sourceCopy = source;
+  filterCopy = filter;
+  _statusItemClasses = [objc_opt_class() _statusItemClasses];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __74__HFStatusItemProvider__createStatusItemsForHome_room_valueSource_filter___block_invoke;
   v21[3] = &unk_277DFA038;
-  v24 = v12;
-  v25 = v13;
+  v24 = sourceCopy;
+  v25 = filterCopy;
   v21[4] = self;
-  v22 = v10;
-  v23 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v13;
-  v19 = [v14 na_map:v21];
+  v22 = homeCopy;
+  v23 = roomCopy;
+  v15 = sourceCopy;
+  v16 = roomCopy;
+  v17 = homeCopy;
+  v18 = filterCopy;
+  v19 = [_statusItemClasses na_map:v21];
 
   return v19;
 }
@@ -456,12 +456,12 @@ id __74__HFStatusItemProvider__createStatusItemsForHome_room_valueSource_filter_
   return v5;
 }
 
-- (id)_buildStatusItemWithClass:(Class)a3 home:(id)a4 room:(id)a5 valueSource:(id)a6
+- (id)_buildStatusItemWithClass:(Class)class home:(id)home room:(id)room valueSource:(id)source
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [[a3 alloc] initWithHome:v12 room:v11 valueSource:v10];
+  sourceCopy = source;
+  roomCopy = room;
+  homeCopy = home;
+  v13 = [[class alloc] initWithHome:homeCopy room:roomCopy valueSource:sourceCopy];
 
   objc_opt_class();
   v14 = v13;
@@ -485,18 +485,18 @@ id __74__HFStatusItemProvider__createStatusItemsForHome_room_valueSource_filter_
   return v14;
 }
 
-- (void)_buildStatusItemsForGroupedStatusItem:(id)a3
+- (void)_buildStatusItemsForGroupedStatusItem:(id)item
 {
-  v4 = a3;
-  v5 = [objc_opt_class() statusItemClasses];
+  itemCopy = item;
+  statusItemClasses = [objc_opt_class() statusItemClasses];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__HFStatusItemProvider__buildStatusItemsForGroupedStatusItem___block_invoke;
   v7[3] = &unk_277DFA060;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 na_each:v7];
+  v8 = itemCopy;
+  v6 = itemCopy;
+  [statusItemClasses na_each:v7];
 }
 
 void __62__HFStatusItemProvider__buildStatusItemsForGroupedStatusItem___block_invoke(uint64_t a1, uint64_t a2)

@@ -1,17 +1,17 @@
 @interface HMDTimeEvent
-+ (BOOL)isValidAbsoluteDateComponents:(id)a3;
-+ (BOOL)isValidOffsetDateComponents:(id)a3;
++ (BOOL)isValidAbsoluteDateComponents:(id)components;
++ (BOOL)isValidOffsetDateComponents:(id)components;
 + (id)logCategory;
-- (BOOL)_activate:(unint64_t)a3 completionHandler:(id)a4;
-- (BOOL)isCompatibleWithEvent:(id)a3;
+- (BOOL)_activate:(unint64_t)_activate completionHandler:(id)handler;
+- (BOOL)isCompatibleWithEvent:(id)event;
 - (HMDBackgroundTaskManager)backgroundTaskManager;
-- (HMDTimeEvent)initWithCoder:(id)a3;
-- (HMDTimeEvent)initWithModel:(id)a3 home:(id)a4;
+- (HMDTimeEvent)initWithCoder:(id)coder;
+- (HMDTimeEvent)initWithModel:(id)model home:(id)home;
 - (void)_initialize;
 - (void)_reactivateTriggerAfterDelay;
 - (void)_updateRepetitive;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleTimerFiredNotification:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleTimerFiredNotification:(id)notification;
 - (void)invalidate;
 @end
 
@@ -19,23 +19,23 @@
 
 - (void)invalidate
 {
-  v4 = [(HMDTimeEvent *)self backgroundTaskManager];
-  v3 = [(HMDTimeEvent *)self timerID];
-  [v4 cancelTaskWithIdentifier:v3 onObserver:self];
+  backgroundTaskManager = [(HMDTimeEvent *)self backgroundTaskManager];
+  timerID = [(HMDTimeEvent *)self timerID];
+  [backgroundTaskManager cancelTaskWithIdentifier:timerID onObserver:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = HMDTimeEvent;
-  [(HMDEvent *)&v3 encodeWithCoder:a3];
+  [(HMDEvent *)&v3 encodeWithCoder:coder];
 }
 
-- (HMDTimeEvent)initWithCoder:(id)a3
+- (HMDTimeEvent)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HMDTimeEvent;
-  v3 = [(HMDEvent *)&v6 initWithCoder:a3];
+  v3 = [(HMDEvent *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -47,24 +47,24 @@
 
 - (HMDBackgroundTaskManager)backgroundTaskManager
 {
-  v2 = [(HMDEvent *)self home];
-  v3 = [v2 backgroundTaskManager];
+  home = [(HMDEvent *)self home];
+  backgroundTaskManager = [home backgroundTaskManager];
 
-  return v3;
+  return backgroundTaskManager;
 }
 
 - (void)_reactivateTriggerAfterDelay
 {
   objc_initWeak(&location, self);
   v3 = dispatch_time(0, 60000000000);
-  v4 = [(HMDEvent *)self workQueue];
+  workQueue = [(HMDEvent *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__HMDTimeEvent__reactivateTriggerAfterDelay__block_invoke;
   block[3] = &unk_278686B48;
   block[4] = self;
   objc_copyWeak(&v6, &location);
-  dispatch_after(v3, v4, block);
+  dispatch_after(v3, workQueue, block);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -103,25 +103,25 @@ void __44__HMDTimeEvent__reactivateTriggerAfterDelay__block_invoke_2(uint64_t a1
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleTimerFiredNotification:(id)a3
+- (void)handleTimerFiredNotification:(id)notification
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 hmf_stringForKey:@"HMD.BGTM.NK"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo hmf_stringForKey:@"HMD.BGTM.NK"];
 
-  v7 = [(HMDTimeEvent *)self timerID];
+  timerID = [(HMDTimeEvent *)self timerID];
   v8 = HMFEqualObjects();
 
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = HMDEventTriggerActivationTypeAsString([(HMDEvent *)v10 activationType]);
+      v13 = HMDEventTriggerActivationTypeAsString([(HMDEvent *)selfCopy activationType]);
       v25 = 138543874;
       v26 = v12;
       v27 = 2112;
@@ -132,21 +132,21 @@ void __44__HMDTimeEvent__reactivateTriggerAfterDelay__block_invoke_2(uint64_t a1
     }
 
     objc_autoreleasePoolPop(v9);
-    if ([(HMDTimeEvent *)v10 isActive])
+    if ([(HMDTimeEvent *)selfCopy isActive])
     {
-      v14 = [(HMDEvent *)v10 delegate];
-      v15 = [v14 didOccurEvent:v10 causingDevice:0];
+      delegate = [(HMDEvent *)selfCopy delegate];
+      v15 = [delegate didOccurEvent:selfCopy causingDevice:0];
 
-      if ([(HMDTimeEvent *)v10 repetitive])
+      if ([(HMDTimeEvent *)selfCopy repetitive])
       {
-        v16 = [(HMDEvent *)v10 eventTrigger];
-        v17 = [v16 executeOnce];
+        eventTrigger = [(HMDEvent *)selfCopy eventTrigger];
+        executeOnce = [eventTrigger executeOnce];
 
         v18 = objc_autoreleasePoolPush();
-        v19 = v10;
+        v19 = selfCopy;
         v20 = HMFGetOSLogHandle();
         v21 = os_log_type_enabled(v20, OS_LOG_TYPE_INFO);
-        if (v17)
+        if (executeOnce)
         {
           if (v21)
           {
@@ -179,45 +179,45 @@ void __44__HMDTimeEvent__reactivateTriggerAfterDelay__block_invoke_2(uint64_t a1
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_activate:(unint64_t)a3 completionHandler:(id)a4
+- (BOOL)_activate:(unint64_t)_activate completionHandler:(id)handler
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v38.receiver = self;
   v38.super_class = HMDTimeEvent;
-  v7 = [(HMDEvent *)&v38 _activate:a3 completionHandler:0];
+  v7 = [(HMDEvent *)&v38 _activate:_activate completionHandler:0];
   if ([(HMDTimeEvent *)self isActive])
   {
-    v8 = [(HMDTimeEvent *)self _nextTimerDate];
-    if (v8)
+    _nextTimerDate = [(HMDTimeEvent *)self _nextTimerDate];
+    if (_nextTimerDate)
     {
-      v9 = [(HMDTimeEvent *)self timerID];
+      timerID = [(HMDTimeEvent *)self timerID];
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v13 = HMFGetLogIdentifier();
-        v14 = [v8 hmf_localTimeDescription];
+        hmf_localTimeDescription = [_nextTimerDate hmf_localTimeDescription];
         *buf = 138543874;
         v40 = v13;
         v41 = 2112;
-        v42 = v9;
+        v42 = timerID;
         v43 = 2112;
-        v44 = v14;
+        v44 = hmf_localTimeDescription;
         _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Starting the next timer (%@) set to [%@]", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v10);
-      v15 = [(HMDTimeEvent *)v11 backgroundTaskManager];
+      backgroundTaskManager = [(HMDTimeEvent *)selfCopy backgroundTaskManager];
       v37 = 0;
-      v16 = [v15 scheduleTaskWithIdentifier:v9 fireDate:v8 onObserver:v11 selector:sel_handleTimerFiredNotification_ error:&v37];
+      v16 = [backgroundTaskManager scheduleTaskWithIdentifier:timerID fireDate:_nextTimerDate onObserver:selfCopy selector:sel_handleTimerFiredNotification_ error:&v37];
       v17 = v37;
 
       if ((v16 & 1) == 0)
       {
         v18 = objc_autoreleasePoolPush();
-        v19 = v11;
+        v19 = selfCopy;
         v20 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
@@ -225,7 +225,7 @@ void __44__HMDTimeEvent__reactivateTriggerAfterDelay__block_invoke_2(uint64_t a1
           *buf = 138543874;
           v40 = v21;
           v41 = 2112;
-          v42 = v9;
+          v42 = timerID;
           v43 = 2112;
           v44 = v17;
           _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Failed to activate time trigger %@ with error %@", buf, 0x20u);
@@ -234,7 +234,7 @@ void __44__HMDTimeEvent__reactivateTriggerAfterDelay__block_invoke_2(uint64_t a1
         objc_autoreleasePoolPop(v18);
       }
 
-      v22 = _Block_copy(v6);
+      v22 = _Block_copy(handlerCopy);
       v23 = v22;
       if (v22)
       {
@@ -245,7 +245,7 @@ void __44__HMDTimeEvent__reactivateTriggerAfterDelay__block_invoke_2(uint64_t a1
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = self;
+      selfCopy2 = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -256,25 +256,25 @@ void __44__HMDTimeEvent__reactivateTriggerAfterDelay__block_invoke_2(uint64_t a1
       }
 
       objc_autoreleasePoolPop(v31);
-      v9 = _Block_copy(v6);
-      if (!v9)
+      timerID = _Block_copy(handlerCopy);
+      if (!timerID)
       {
         goto LABEL_22;
       }
 
       v17 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-      (v9)[2](v9, v17);
+      (timerID)[2](timerID, v17);
     }
 
 LABEL_22:
     goto LABEL_23;
   }
 
-  v8 = [(HMDTimeEvent *)self timerID];
-  v24 = [(HMDTimeEvent *)self backgroundTaskManager];
-  [v24 cancelTaskWithIdentifier:v8 onObserver:self];
+  _nextTimerDate = [(HMDTimeEvent *)self timerID];
+  backgroundTaskManager2 = [(HMDTimeEvent *)self backgroundTaskManager];
+  [backgroundTaskManager2 cancelTaskWithIdentifier:_nextTimerDate onObserver:self];
 
-  v25 = _Block_copy(v6);
+  v25 = _Block_copy(handlerCopy);
   v26 = v25;
   if (v25)
   {
@@ -282,7 +282,7 @@ LABEL_22:
   }
 
   v27 = objc_autoreleasePoolPush();
-  v28 = self;
+  selfCopy3 = self;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
@@ -290,7 +290,7 @@ LABEL_22:
     *buf = 138543618;
     v40 = v30;
     v41 = 2112;
-    v42 = v8;
+    v42 = _nextTimerDate;
     _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_INFO, "%{public}@Stopping the already scheduled timer with ID: %@", buf, 0x16u);
   }
 
@@ -301,11 +301,11 @@ LABEL_23:
   return v7;
 }
 
-- (BOOL)isCompatibleWithEvent:(id)a3
+- (BOOL)isCompatibleWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = HMDTimeEvent;
-  return [(HMDEvent *)&v4 isCompatibleWithEvent:a3];
+  return [(HMDEvent *)&v4 isCompatibleWithEvent:event];
 }
 
 - (void)_updateRepetitive
@@ -329,21 +329,21 @@ LABEL_4:
 
 - (void)_initialize
 {
-  v3 = [(HMDEvent *)self uuid];
-  v4 = [v3 UUIDString];
-  v5 = [@"com.apple.homed.triggers." stringByAppendingString:v4];
-  v6 = [v5 hmf_stringWithSmallestEncoding];
+  uuid = [(HMDEvent *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v5 = [@"com.apple.homed.triggers." stringByAppendingString:uUIDString];
+  hmf_stringWithSmallestEncoding = [v5 hmf_stringWithSmallestEncoding];
   timerID = self->_timerID;
-  self->_timerID = v6;
+  self->_timerID = hmf_stringWithSmallestEncoding;
 
   [(HMDTimeEvent *)self _updateRepetitive];
 }
 
-- (HMDTimeEvent)initWithModel:(id)a3 home:(id)a4
+- (HMDTimeEvent)initWithModel:(id)model home:(id)home
 {
   v7.receiver = self;
   v7.super_class = HMDTimeEvent;
-  v4 = [(HMDEvent *)&v7 initWithModel:a3 home:a4];
+  v4 = [(HMDEvent *)&v7 initWithModel:model home:home];
   v5 = v4;
   if (v4)
   {
@@ -373,38 +373,38 @@ void __27__HMDTimeEvent_logCategory__block_invoke()
   logCategory__hmf_once_v15_191596 = v1;
 }
 
-+ (BOOL)isValidOffsetDateComponents:(id)a3
++ (BOOL)isValidOffsetDateComponents:(id)components
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  componentsCopy = components;
+  if (componentsCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    if ([v4 minute] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([componentsCopy minute] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v5 setMinute:{objc_msgSend(v4, "minute")}];
+      [v5 setMinute:{objc_msgSend(componentsCopy, "minute")}];
     }
 
-    if ([v4 hour] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([componentsCopy hour] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v5 setHour:{objc_msgSend(v4, "hour")}];
+      [v5 setHour:{objc_msgSend(componentsCopy, "hour")}];
     }
 
-    if ([v4 day] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([componentsCopy day] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v5 setDay:{objc_msgSend(v4, "day")}];
+      [v5 setDay:{objc_msgSend(componentsCopy, "day")}];
     }
 
-    if ([v4 month] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([componentsCopy month] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v5 setMonth:{objc_msgSend(v4, "month")}];
+      [v5 setMonth:{objc_msgSend(componentsCopy, "month")}];
     }
 
-    v6 = [v4 isEqual:v5];
+    v6 = [componentsCopy isEqual:v5];
     if ((v6 & 1) == 0)
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = a1;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
@@ -412,7 +412,7 @@ void __27__HMDTimeEvent_logCategory__block_invoke()
         v13 = 138543618;
         v14 = v10;
         v15 = 2112;
-        v16 = v4;
+        v16 = componentsCopy;
         _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Given date component contains non supported fields set: %@", &v13, 0x16u);
       }
 
@@ -429,21 +429,21 @@ void __27__HMDTimeEvent_logCategory__block_invoke()
   return v6;
 }
 
-+ (BOOL)isValidAbsoluteDateComponents:(id)a3
++ (BOOL)isValidAbsoluteDateComponents:(id)components
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  componentsCopy = components;
+  v5 = componentsCopy;
+  if (componentsCopy)
   {
-    if ([v4 minute] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v5, "hour") != 0x7FFFFFFFFFFFFFFFLL)
+    if ([componentsCopy minute] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v5, "hour") != 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = [HMDTimeEvent isValidOffsetDateComponents:v5];
       goto LABEL_10;
     }
 
     v6 = objc_autoreleasePoolPush();
-    v7 = a1;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -463,7 +463,7 @@ LABEL_8:
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = a1;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {

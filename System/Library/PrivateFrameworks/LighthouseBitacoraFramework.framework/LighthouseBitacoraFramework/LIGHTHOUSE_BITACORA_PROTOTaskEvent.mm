@@ -1,20 +1,20 @@
 @interface LIGHTHOUSE_BITACORA_PROTOTaskEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSucceeded:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSucceeded:(BOOL)succeeded;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LIGHTHOUSE_BITACORA_PROTOTaskEvent
 
-- (void)setHasSucceeded:(BOOL)a3
+- (void)setHasSucceeded:(BOOL)succeeded
 {
-  if (a3)
+  if (succeeded)
   {
     v3 = 2;
   }
@@ -63,59 +63,59 @@
   return v9;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     succeeded = self->_succeeded;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_errorDomain)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     errorCode = self->_errorCode;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[24] = self->_succeeded;
-    v4[28] |= 2u;
+    toCopy[24] = self->_succeeded;
+    toCopy[28] |= 2u;
   }
 
   errorDomain = self->_errorDomain;
   if (errorDomain)
   {
-    v9 = v4;
-    objc_msgSend_setErrorDomain_(v4, v5, errorDomain, v6, v7);
-    v4 = v9;
+    v9 = toCopy;
+    objc_msgSend_setErrorDomain_(toCopy, v5, errorDomain, v6, v7);
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_errorCode;
-    v4[28] |= 1u;
+    *(toCopy + 2) = self->_errorCode;
+    toCopy[28] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v9 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8);
+  v9 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8);
   v14 = objc_msgSend_init(v9, v10, v11, v12, v13);
   v18 = v14;
   if ((*&self->_has & 2) != 0)
@@ -124,7 +124,7 @@
     *(v14 + 28) |= 2u;
   }
 
-  v19 = objc_msgSend_copyWithZone_(self->_errorDomain, v15, a3, v16, v17);
+  v19 = objc_msgSend_copyWithZone_(self->_errorDomain, v15, zone, v16, v17);
   v20 = *(v18 + 16);
   *(v18 + 16) = v19;
 
@@ -137,46 +137,46 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5, v7, v8))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5, v7, v8))
   {
     goto LABEL_12;
   }
 
   has = self->_has;
-  v13 = *(v4 + 28);
+  v13 = *(equalCopy + 28);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0)
+    if ((*(equalCopy + 28) & 2) == 0)
     {
       goto LABEL_12;
     }
 
-    v18 = *(v4 + 24);
+    v18 = *(equalCopy + 24);
     if (self->_succeeded)
     {
-      if ((v4[3] & 1) == 0)
+      if ((equalCopy[3] & 1) == 0)
       {
         goto LABEL_12;
       }
     }
 
-    else if (v4[3])
+    else if (equalCopy[3])
     {
       goto LABEL_12;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_12;
   }
 
   errorDomain = self->_errorDomain;
-  v15 = v4[2];
+  v15 = equalCopy[2];
   if (errorDomain | v15)
   {
     if (!objc_msgSend_isEqual_(errorDomain, v9, v15, v10, v11))
@@ -187,10 +187,10 @@
     has = self->_has;
   }
 
-  v16 = (*(v4 + 28) & 1) == 0;
+  v16 = (*(equalCopy + 28) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 28) & 1) != 0 && self->_errorCode == *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) != 0 && self->_errorCode == *(equalCopy + 2))
     {
       v16 = 1;
       goto LABEL_13;
@@ -231,26 +231,26 @@ LABEL_13:
   return v7 ^ v6 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 28) & 2) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 28) & 2) != 0)
   {
-    self->_succeeded = *(v4 + 24);
+    self->_succeeded = *(fromCopy + 24);
     *&self->_has |= 2u;
   }
 
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (v8)
   {
-    v9 = v4;
+    v9 = fromCopy;
     objc_msgSend_setErrorDomain_(self, v5, v8, v6, v7);
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_errorCode = *(v4 + 2);
+    self->_errorCode = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 }

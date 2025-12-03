@@ -7,13 +7,13 @@
 
 - (id)scrollingSegmentedController
 {
-  v1 = a1;
+  selfCopy = self;
   do
   {
-    v2 = v1;
-    v1 = [v1 parentViewController];
+    v2 = selfCopy;
+    selfCopy = [selfCopy parentViewController];
 
-    if (!v1)
+    if (!selfCopy)
     {
       break;
     }
@@ -23,21 +23,21 @@
 
   while ((objc_opt_isKindOfClass() & 1) == 0);
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)setNeedsScrollingSegmentContentScrollViewUpdate
 {
-  v1 = a1;
+  selfCopy = self;
   v3 = 0;
   do
   {
     v2 = v3;
-    v3 = v1;
+    v3 = selfCopy;
 
-    v1 = [v3 parentViewController];
+    selfCopy = [v3 parentViewController];
 
-    if (!v1)
+    if (!selfCopy)
     {
       break;
     }
@@ -46,7 +46,7 @@
   }
 
   while ((objc_opt_isKindOfClass() & 1) == 0);
-  [v1 _viewControllerNeedsContentScrollViewUpdates:v3];
+  [selfCopy _viewControllerNeedsContentScrollViewUpdates:v3];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface ABPKCameraParams
-- (ABPKCameraParams)initWithDictionary:(id)a3;
-- (ABPKCameraParams)initWithIntrinsics:(__n128)a3 andExtrinsics:(__n128)a4 andDistortion:(__n128)a5;
-- (ABPKCameraParams)initWithIntrinsics:(__n128)a3 andExtrinsics:(__n128)a4 andDistortion:(__n128)a5 andInputResolution:(__n128)a6;
+- (ABPKCameraParams)initWithDictionary:(id)dictionary;
+- (ABPKCameraParams)initWithIntrinsics:(__n128)intrinsics andExtrinsics:(__n128)extrinsics andDistortion:(__n128)distortion;
+- (ABPKCameraParams)initWithIntrinsics:(__n128)intrinsics andExtrinsics:(__n128)extrinsics andDistortion:(__n128)distortion andInputResolution:(__n128)resolution;
 - (CGSize)inputRes;
 - (id)toDict;
-- (uint64_t)isMatrixIdentity:(int8x16_t)a3;
+- (uint64_t)isMatrixIdentity:(int8x16_t)identity;
 - (void)checkAndSetApproximateIntrinsics;
-- (void)setExtrinsics:(__n128)a3;
-- (void)setIntrinsics:(__n128)a3;
+- (void)setExtrinsics:(__n128)extrinsics;
+- (void)setIntrinsics:(__n128)intrinsics;
 @end
 
 @implementation ABPKCameraParams
 
-- (uint64_t)isMatrixIdentity:(int8x16_t)a3
+- (uint64_t)isMatrixIdentity:(int8x16_t)identity
 {
-  a1.i32[3] = a2.i32[0];
-  v3 = vmovn_s16(vmvnq_s8(vuzp1q_s16(vceqq_f32(a1, xmmword_23EE28180), vceqq_f32(vextq_s8(vextq_s8(a2, a2, 0xCuLL), a3, 8uLL), xmmword_23EE28180))));
+  self.i32[3] = a2.i32[0];
+  v3 = vmovn_s16(vmvnq_s8(vuzp1q_s16(vceqq_f32(self, xmmword_23EE28180), vceqq_f32(vextq_s8(vextq_s8(a2, a2, 0xCuLL), identity, 8uLL), xmmword_23EE28180))));
   v3.i8[0] = vmaxv_u8(v3);
-  return (*&a3.i32[2] == 1.0) & ~v3.i32[0];
+  return (*&identity.i32[2] == 1.0) & ~v3.i32[0];
 }
 
 - (void)checkAndSetApproximateIntrinsics
@@ -48,18 +48,18 @@
   }
 }
 
-- (ABPKCameraParams)initWithIntrinsics:(__n128)a3 andExtrinsics:(__n128)a4 andDistortion:(__n128)a5
+- (ABPKCameraParams)initWithIntrinsics:(__n128)intrinsics andExtrinsics:(__n128)extrinsics andDistortion:(__n128)distortion
 {
-  v20.receiver = a1;
+  v20.receiver = self;
   v20.super_class = ABPKCameraParams;
   v9 = [(ABPKCameraParams *)&v20 init];
   v10 = v9;
   if (v9)
   {
     *v9->_anon_40 = a2;
-    *&v9->_anon_40[16] = a3;
-    *&v9->_anon_40[32] = a4;
-    *&v9[1].super.isa = a5;
+    *&v9->_anon_40[16] = intrinsics;
+    *&v9->_anon_40[32] = extrinsics;
+    *&v9[1].super.isa = distortion;
     *&v9[1]._deviceType = a6;
     *v9[1]._distortion = a7;
     v9[1]._inputRes = a8;
@@ -72,19 +72,19 @@
   return v10;
 }
 
-- (ABPKCameraParams)initWithIntrinsics:(__n128)a3 andExtrinsics:(__n128)a4 andDistortion:(__n128)a5 andInputResolution:(__n128)a6
+- (ABPKCameraParams)initWithIntrinsics:(__n128)intrinsics andExtrinsics:(__n128)extrinsics andDistortion:(__n128)distortion andInputResolution:(__n128)resolution
 {
-  v29.receiver = a1;
+  v29.receiver = self;
   v29.super_class = ABPKCameraParams;
   v18 = [(ABPKCameraParams *)&v29 init];
   v19 = v18;
   if (v18)
   {
     *v18->_anon_40 = a2;
-    *&v18->_anon_40[16] = a3;
-    *&v18->_anon_40[32] = a4;
-    *&v18[1].super.isa = a5;
-    *&v18[1]._deviceType = a6;
+    *&v18->_anon_40[16] = intrinsics;
+    *&v18->_anon_40[32] = extrinsics;
+    *&v18[1].super.isa = distortion;
+    *&v18[1]._deviceType = resolution;
     *v18[1]._distortion = a7;
     v18[1]._inputRes = a8;
     *v18->_distortion = a9;
@@ -98,10 +98,10 @@
   return v19;
 }
 
-- (ABPKCameraParams)initWithDictionary:(id)a3
+- (ABPKCameraParams)initWithDictionary:(id)dictionary
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v42.receiver = self;
   v42.super_class = ABPKCameraParams;
   v5 = [(ABPKCameraParams *)&v42 init];
@@ -110,7 +110,7 @@
     goto LABEL_19;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"intrinsics"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"intrinsics"];
   v7 = convertNSArrayToSimd3x3(v6);
   *&v5->_anon_40[8] = v7.n128_u32[2];
   *&v5->_anon_40[24] = v8;
@@ -119,28 +119,28 @@
   *&v5->_anon_40[40] = v10;
   *&v5->_anon_40[32] = v11;
 
-  v12 = [v4 objectForKeyedSubscript:@"distortion"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"distortion"];
   *v5->_distortion = convertNSArrayToSimd4(v12);
 
-  v13 = [v4 objectForKeyedSubscript:@"resolution"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"resolution"];
   v14 = [v13 objectAtIndexedSubscript:0];
-  v15 = [v14 integerValue];
-  v16 = [v4 objectForKeyedSubscript:@"resolution"];
+  integerValue = [v14 integerValue];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"resolution"];
   v17 = [v16 objectAtIndexedSubscript:1];
-  v18 = [v17 integerValue];
-  v5->_inputRes.width = v15;
-  v5->_inputRes.height = v18;
+  integerValue2 = [v17 integerValue];
+  v5->_inputRes.width = integerValue;
+  v5->_inputRes.height = integerValue2;
 
-  v19 = [v4 objectForKeyedSubscript:@"extrinsics"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"extrinsics"];
   *&v5[1].super.isa = convertNSMatToSimd4x4(v19);
   *&v5[1]._deviceType = v20;
   *v5[1]._distortion = v21;
   v5[1]._inputRes = v22;
 
-  v23 = [v4 objectForKeyedSubscript:@"is_image_rectified"];
-  LOBYTE(v15) = v23 == 0;
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"is_image_rectified"];
+  LOBYTE(integerValue) = v23 == 0;
 
-  if (v15)
+  if (integerValue)
   {
     v5->_isImageRectified = 0;
     v25 = __ABPKLogSharedInstance();
@@ -157,7 +157,7 @@
 
   else
   {
-    v24 = [v4 objectForKeyedSubscript:@"is_image_rectified"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"is_image_rectified"];
     v5->_isImageRectified = [v24 BOOLValue];
 
     v25 = __ABPKLogSharedInstance();
@@ -177,7 +177,7 @@
   _os_log_impl(&dword_23EDDC000, v28, OS_LOG_TYPE_DEBUG, v27, buf, v29);
 LABEL_8:
 
-  v30 = [v4 objectForKeyedSubscript:@"device_orientation"];
+  v30 = [dictionaryCopy objectForKeyedSubscript:@"device_orientation"];
   v31 = v30 == 0;
 
   if (v31)
@@ -199,7 +199,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v32 = [v4 objectForKeyedSubscript:@"device_orientation"];
+  v32 = [dictionaryCopy objectForKeyedSubscript:@"device_orientation"];
   v33 = [v32 isEqualToString:@"landscape"];
 
   if (v33)
@@ -218,7 +218,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v36 = [v4 objectForKeyedSubscript:@"device_orientation"];
+  v36 = [dictionaryCopy objectForKeyedSubscript:@"device_orientation"];
   v37 = [v36 isEqualToString:@"portrait"];
 
   if (v37)
@@ -300,21 +300,21 @@ LABEL_20:
   return v3;
 }
 
-- (void)setIntrinsics:(__n128)a3
+- (void)setIntrinsics:(__n128)intrinsics
 {
   v4[0] = a2;
-  v4[1] = a3;
+  v4[1] = intrinsics;
   v4[2] = a4;
-  objc_copyStruct((a1 + 64), v4, 48, 1, 0);
+  objc_copyStruct((self + 64), v4, 48, 1, 0);
 }
 
-- (void)setExtrinsics:(__n128)a3
+- (void)setExtrinsics:(__n128)extrinsics
 {
   v5[0] = a2;
-  v5[1] = a3;
+  v5[1] = extrinsics;
   v5[2] = a4;
   v5[3] = a5;
-  objc_copyStruct((a1 + 112), v5, 64, 1, 0);
+  objc_copyStruct((self + 112), v5, 64, 1, 0);
 }
 
 - (CGSize)inputRes

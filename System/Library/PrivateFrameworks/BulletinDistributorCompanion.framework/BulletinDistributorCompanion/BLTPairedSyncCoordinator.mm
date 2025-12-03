@@ -2,13 +2,13 @@
 + (id)syncState;
 - (BLTPairedSyncCoordinator)init;
 - (void)_initInitialSyncStateComplete;
-- (void)_reportProgress:(double)a3;
+- (void)_reportProgress:(double)progress;
 - (void)_syncDidComplete;
-- (void)initialSyncStateObserver:(id)a3 initialSyncDidCompleteForPairingIdentifier:(id)a4;
-- (void)initialSyncStateObserver:(id)a3 syncDidCompleteForPairingIdentifier:(id)a4;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3;
-- (void)syncSessionObserver:(id)a3 didReceiveUpdate:(id)a4;
+- (void)initialSyncStateObserver:(id)observer initialSyncDidCompleteForPairingIdentifier:(id)identifier;
+- (void)initialSyncStateObserver:(id)observer syncDidCompleteForPairingIdentifier:(id)identifier;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction;
+- (void)syncSessionObserver:(id)observer didReceiveUpdate:(id)update;
 @end
 
 @implementation BLTPairedSyncCoordinator
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __37__BLTPairedSyncCoordinator_syncState__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (syncState_onceToken != -1)
   {
     dispatch_once(&syncState_onceToken, block);
@@ -59,17 +59,17 @@ uint64_t __37__BLTPairedSyncCoordinator_syncState__block_invoke(uint64_t a1)
     v2->_pairedInitialSyncObserver = v8;
 
     [(PSYInitialSyncStateObserver *)v2->_pairedInitialSyncObserver setDelegate:v2];
-    v10 = [(PSYSyncCoordinator *)v2->_pairedSyncCoordinator syncRestriction];
+    syncRestriction = [(PSYSyncCoordinator *)v2->_pairedSyncCoordinator syncRestriction];
     v11 = blt_general_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v18 = v10;
+      v18 = syncRestriction;
       _os_log_impl(&dword_241FB3000, v11, OS_LOG_TYPE_DEFAULT, "Paired sync coordinator says current sync restriction is %lu", buf, 0xCu);
     }
 
-    [v3 setState:2 * (v10 != 1)];
-    if (v10 == 1)
+    [v3 setState:2 * (syncRestriction != 1)];
+    if (syncRestriction == 1)
     {
       v12 = objc_alloc_init(MEMORY[0x277D37C48]);
       pairedSyncObserver = v2->_pairedSyncObserver;
@@ -88,13 +88,13 @@ uint64_t __37__BLTPairedSyncCoordinator_syncState__block_invoke(uint64_t a1)
 
 - (void)_initInitialSyncStateComplete
 {
-  v3 = [MEMORY[0x277D2BCF8] sharedInstance];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __57__BLTPairedSyncCoordinator__initInitialSyncStateComplete__block_invoke;
   v4[3] = &unk_278D317C0;
   v4[4] = self;
-  [v3 waitForPairingStorePathPairingID:v4];
+  [mEMORY[0x277D2BCF8] waitForPairingStorePathPairingID:v4];
 }
 
 void __57__BLTPairedSyncCoordinator__initInitialSyncStateComplete__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -154,27 +154,27 @@ void __57__BLTPairedSyncCoordinator__initInitialSyncStateComplete__block_invoke_
 - (void)_syncDidComplete
 {
   self->_clientSyncComplete = 1;
-  v2 = [(PSYSyncCoordinator *)self->_pairedSyncCoordinator activeSyncSession];
-  [v2 syncDidComplete];
+  activeSyncSession = [(PSYSyncCoordinator *)self->_pairedSyncCoordinator activeSyncSession];
+  [activeSyncSession syncDidComplete];
 }
 
-- (void)_reportProgress:(double)a3
+- (void)_reportProgress:(double)progress
 {
-  v4 = [(PSYSyncCoordinator *)self->_pairedSyncCoordinator activeSyncSession];
-  [v4 reportProgress:a3];
+  activeSyncSession = [(PSYSyncCoordinator *)self->_pairedSyncCoordinator activeSyncSession];
+  [activeSyncSession reportProgress:progress];
 }
 
-- (void)syncSessionObserver:(id)a3 didReceiveUpdate:(id)a4
+- (void)syncSessionObserver:(id)observer didReceiveUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   v6 = BLTWorkQueue();
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__BLTPairedSyncCoordinator_syncSessionObserver_didReceiveUpdate___block_invoke;
   v8[3] = &unk_278D31400;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = updateCopy;
+  selfCopy = self;
+  v7 = updateCopy;
   dispatch_async(v6, v8);
 }
 
@@ -225,7 +225,7 @@ LABEL_8:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
   v5 = blt_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -239,24 +239,24 @@ LABEL_8:
 
   if (self->_clientSyncComplete)
   {
-    v7 = [(PSYSyncCoordinator *)self->_pairedSyncCoordinator activeSyncSession];
-    [v7 syncDidComplete];
+    activeSyncSession = [(PSYSyncCoordinator *)self->_pairedSyncCoordinator activeSyncSession];
+    [activeSyncSession syncDidComplete];
   }
 }
 
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(PSYSyncCoordinator *)self->_pairedSyncCoordinator syncRestriction];
+  syncRestriction = [(PSYSyncCoordinator *)self->_pairedSyncCoordinator syncRestriction];
   v4 = blt_general_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = v3;
+    v8 = syncRestriction;
     _os_log_impl(&dword_241FB3000, v4, OS_LOG_TYPE_DEFAULT, "Received syncCoordinatorDidChangeSyncRestriction. Coordinator says current sync restriction is %lu", &v7, 0xCu);
   }
 
-  if (v3 != 1)
+  if (syncRestriction != 1)
   {
     v5 = +[BLTPairedSyncState sharedInstance];
     [v5 leaveState:1];
@@ -265,7 +265,7 @@ LABEL_8:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initialSyncStateObserver:(id)a3 initialSyncDidCompleteForPairingIdentifier:(id)a4
+- (void)initialSyncStateObserver:(id)observer initialSyncDidCompleteForPairingIdentifier:(id)identifier
 {
   v4 = BLTWorkQueue();
   dispatch_async(v4, &__block_literal_global_17);
@@ -284,7 +284,7 @@ void __96__BLTPairedSyncCoordinator_initialSyncStateObserver_initialSyncDidCompl
   [v1 setInitialSyncComplete:1];
 }
 
-- (void)initialSyncStateObserver:(id)a3 syncDidCompleteForPairingIdentifier:(id)a4
+- (void)initialSyncStateObserver:(id)observer syncDidCompleteForPairingIdentifier:(id)identifier
 {
   v4 = BLTWorkQueue();
   dispatch_async(v4, &__block_literal_global_19);

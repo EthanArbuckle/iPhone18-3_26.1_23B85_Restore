@@ -11,7 +11,7 @@
     +[MTSingleton sharedInstance];
   }
 
-  v3 = NSStringFromClass(a1);
+  v3 = NSStringFromClass(self);
   v4 = _instanceMap;
   objc_sync_enter(v4);
   v5 = [_instanceMap objectForKey:v3];
@@ -25,18 +25,18 @@
   objc_sync_exit(v4);
 
   os_unfair_lock_lock(&v5->_lock);
-  v6 = [(MTSingletonHolder *)v5 instance];
-  if (!v6)
+  instance = [(MTSingletonHolder *)v5 instance];
+  if (!instance)
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___MTSingleton;
-    v6 = [objc_msgSendSuper2(&v8 allocWithZone_];
-    [(MTSingletonHolder *)v5 setInstance:v6];
+    instance = [objc_msgSendSuper2(&v8 allocWithZone_];
+    [(MTSingletonHolder *)v5 setInstance:instance];
   }
 
   os_unfair_lock_unlock(&v5->_lock);
 
-  return v6;
+  return instance;
 }
 
 uint64_t __29__MTSingleton_sharedInstance__block_invoke()

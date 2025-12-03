@@ -11,14 +11,14 @@
 - (int)wrapFitType;
 - (int)wrapType;
 - (void)dealloc;
-- (void)dragBy:(CGPoint)a3;
+- (void)dragBy:(CGPoint)by;
 - (void)i_invalidateWrap;
 - (void)invalidate;
 - (void)invalidateExteriorWrap;
 - (void)invalidateParentForWrap;
 - (void)parentDidChange;
-- (void)processChangedProperty:(int)a3;
-- (void)setGeometry:(id)a3;
+- (void)processChangedProperty:(int)property;
+- (void)setGeometry:(id)geometry;
 - (void)updateChildrenFromInfo;
 @end
 
@@ -42,13 +42,13 @@
 
 - (id)childrenForLayout
 {
-  v3 = [(TSDContainerLayout *)self childInfosForLayout];
-  v4 = [(SXContainerLayout *)self additionalLayouts];
-  v5 = v3;
+  childInfosForLayout = [(TSDContainerLayout *)self childInfosForLayout];
+  additionalLayouts = [(SXContainerLayout *)self additionalLayouts];
+  v5 = childInfosForLayout;
   v6 = v5;
-  if (v5 && v4)
+  if (v5 && additionalLayouts)
   {
-    v7 = [v5 arrayByAddingObjectsFromArray:v4];
+    v7 = [v5 arrayByAddingObjectsFromArray:additionalLayouts];
   }
 
   else
@@ -57,9 +57,9 @@
     if (!v5)
     {
       v7 = 0;
-      if (v4)
+      if (additionalLayouts)
       {
-        v7 = v4;
+        v7 = additionalLayouts;
       }
     }
   }
@@ -70,19 +70,19 @@
 - (void)updateChildrenFromInfo
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(SXContainerLayout *)self childrenForLayout];
-  v27 = [(TSDAbstractLayout *)self children];
-  if (!v27 || (v4 = [v3 count], v4 != objc_msgSend(v27, "count")))
+  childrenForLayout = [(SXContainerLayout *)self childrenForLayout];
+  children = [(TSDAbstractLayout *)self children];
+  if (!children || (v4 = [childrenForLayout count], v4 != objc_msgSend(children, "count")))
   {
 LABEL_16:
-    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-    v15 = [(TSDLayout *)self layoutController];
+    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(childrenForLayout, "count")}];
+    layoutController = [(TSDLayout *)self layoutController];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v26 = v3;
-    v16 = v3;
+    v26 = childrenForLayout;
+    v16 = childrenForLayout;
     v17 = [v16 countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (!v17)
     {
@@ -110,7 +110,7 @@ LABEL_16:
         else
         {
           v23 = TSUProtocolCast();
-          v24 = [v15 layoutForInfo:v23 childOfLayout:self];
+          v24 = [layoutController layoutForInfo:v23 childOfLayout:self];
           if (v24)
           {
             v22 = v24;
@@ -139,7 +139,7 @@ LABEL_29:
         [(TSDAbstractLayout *)self setChildren:v5];
         [(SXContainerLayout *)self invalidate];
 
-        v3 = v26;
+        childrenForLayout = v26;
         goto LABEL_30;
       }
     }
@@ -149,7 +149,7 @@ LABEL_29:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = v3;
+  v5 = childrenForLayout;
   v6 = [v5 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v6)
   {
@@ -167,7 +167,7 @@ LABEL_29:
         v10 = *(*(&v32 + 1) + 8 * j);
         objc_opt_class();
         v11 = TSUDynamicCast();
-        v12 = [v27 objectAtIndex:0];
+        v12 = [children objectAtIndex:0];
         v13 = v12;
         if (v11)
         {
@@ -180,9 +180,9 @@ LABEL_29:
 
         else
         {
-          v14 = [v12 info];
+          info = [v12 info];
 
-          if (v14 != v10)
+          if (info != v10)
           {
 LABEL_15:
 
@@ -199,8 +199,8 @@ LABEL_15:
 
 LABEL_30:
 
-  v25 = [(TSDAbstractLayout *)self children];
-  [v25 makeObjectsPerformSelector:sel_updateChildrenFromInfo];
+  children2 = [(TSDAbstractLayout *)self children];
+  [children2 makeObjectsPerformSelector:sel_updateChildrenFromInfo];
 }
 
 - (CGRect)boundsInfluencingExteriorWrap
@@ -210,11 +210,11 @@ LABEL_30:
   y = v5;
   width = v7;
   height = v9;
-  v11 = [(SXContainerLayout *)self i_exteriorTextWrap];
-  v12 = v11;
-  if (v11)
+  i_exteriorTextWrap = [(SXContainerLayout *)self i_exteriorTextWrap];
+  v12 = i_exteriorTextWrap;
+  if (i_exteriorTextWrap)
   {
-    [v11 margin];
+    [i_exteriorTextWrap margin];
     if (v13 > 0.0)
     {
       v14 = -v13;
@@ -244,8 +244,8 @@ LABEL_30:
 - (id)i_computeWrapPath
 {
   v2 = MEMORY[0x1E69D5628];
-  v3 = [(TSDAbstractLayout *)self geometry];
-  [v3 size];
+  geometry = [(TSDAbstractLayout *)self geometry];
+  [geometry size];
   TSDRectWithSize();
   v4 = [v2 bezierPathWithRect:?];
 
@@ -257,9 +257,9 @@ LABEL_30:
   mCachedWrapPath = self->mCachedWrapPath;
   if (!mCachedWrapPath)
   {
-    v4 = [(SXContainerLayout *)self i_computeWrapPath];
+    i_computeWrapPath = [(SXContainerLayout *)self i_computeWrapPath];
     v5 = self->mCachedWrapPath;
-    self->mCachedWrapPath = v4;
+    self->mCachedWrapPath = i_computeWrapPath;
 
     mCachedWrapPath = self->mCachedWrapPath;
   }
@@ -273,8 +273,8 @@ LABEL_30:
   if (!mCachedExternalWrapPath)
   {
     v4 = MEMORY[0x1E69D5628];
-    v5 = [(SXContainerLayout *)self i_wrapPath];
-    v6 = [v4 exteriorOfBezierPath:v5];
+    i_wrapPath = [(SXContainerLayout *)self i_wrapPath];
+    v6 = [v4 exteriorOfBezierPath:i_wrapPath];
     v7 = self->mCachedExternalWrapPath;
     self->mCachedExternalWrapPath = v6;
 
@@ -289,29 +289,29 @@ LABEL_30:
   mCachedWrapPolygon = self->mCachedWrapPolygon;
   if (!mCachedWrapPolygon)
   {
-    v4 = [(SXContainerLayout *)self i_wrapPath];
-    v5 = [(SXContainerLayout *)self i_exteriorTextWrap];
-    v6 = v5;
-    if (v5 && ([v5 margin], v7 > 0.0))
+    i_wrapPath = [(SXContainerLayout *)self i_wrapPath];
+    i_exteriorTextWrap = [(SXContainerLayout *)self i_exteriorTextWrap];
+    v6 = i_exteriorTextWrap;
+    if (i_exteriorTextWrap && ([i_exteriorTextWrap margin], v7 > 0.0))
     {
-      if ([v4 elementCount] >= 1001)
+      if ([i_wrapPath elementCount] >= 1001)
       {
         v8 = MEMORY[0x1E69D5628];
-        v9 = [(TSDAbstractLayout *)self geometry];
-        [v9 size];
+        geometry = [(TSDAbstractLayout *)self geometry];
+        [geometry size];
         TSDRectWithSize();
         v10 = [v8 bezierPathWithRect:?];
 
-        v4 = v10;
+        i_wrapPath = v10;
       }
 
       [v6 margin];
-      v11 = [v4 bezierPathByOffsettingPath:1 joinStyle:? withThreshold:?];
+      v11 = [i_wrapPath bezierPathByOffsettingPath:1 joinStyle:? withThreshold:?];
     }
 
     else
     {
-      v11 = [v4 copy];
+      v11 = [i_wrapPath copy];
     }
 
     v12 = v11;
@@ -326,10 +326,10 @@ LABEL_30:
     mCachedWrapPolygon = self->mCachedWrapPolygon;
     if (!mCachedWrapPolygon)
     {
-      v15 = [MEMORY[0x1E69D5768] currentHandler];
+      currentHandler = [MEMORY[0x1E69D5768] currentHandler];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[SXContainerLayout wrapPolygon]"];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/FeldsparServicesUI/Modules/silex/Silex/Text/Tangier/SXContainerLayout.m"];
-      [v15 handleFailureInFunction:v16 file:v17 lineNumber:225 description:{@"invalid nil value for '%s'", "mCachedWrapPolygon"}];
+      [currentHandler handleFailureInFunction:v16 file:v17 lineNumber:225 description:{@"invalid nil value for '%s'", "mCachedWrapPolygon"}];
 
       mCachedWrapPolygon = self->mCachedWrapPolygon;
     }
@@ -340,70 +340,70 @@ LABEL_30:
 
 - (BOOL)isHTMLWrap
 {
-  v2 = [(SXContainerLayout *)self i_exteriorTextWrap];
-  v3 = v2;
-  if (v2)
+  i_exteriorTextWrap = [(SXContainerLayout *)self i_exteriorTextWrap];
+  v3 = i_exteriorTextWrap;
+  if (i_exteriorTextWrap)
   {
-    v4 = [v2 isHTMLWrap];
+    isHTMLWrap = [i_exteriorTextWrap isHTMLWrap];
   }
 
   else
   {
-    v4 = 0;
+    isHTMLWrap = 0;
   }
 
-  return v4;
+  return isHTMLWrap;
 }
 
 - (int)wrapType
 {
-  v2 = [(SXContainerLayout *)self i_exteriorTextWrap];
-  v3 = v2;
-  if (v2)
+  i_exteriorTextWrap = [(SXContainerLayout *)self i_exteriorTextWrap];
+  v3 = i_exteriorTextWrap;
+  if (i_exteriorTextWrap)
   {
-    v4 = [v2 type];
+    type = [i_exteriorTextWrap type];
   }
 
   else
   {
-    v4 = 0;
+    type = 0;
   }
 
-  return v4;
+  return type;
 }
 
 - (int)wrapDirection
 {
-  v2 = [(SXContainerLayout *)self i_exteriorTextWrap];
-  v3 = v2;
-  if (v2)
+  i_exteriorTextWrap = [(SXContainerLayout *)self i_exteriorTextWrap];
+  v3 = i_exteriorTextWrap;
+  if (i_exteriorTextWrap)
   {
-    v4 = [v2 direction];
+    direction = [i_exteriorTextWrap direction];
   }
 
   else
   {
-    v4 = 2;
+    direction = 2;
   }
 
-  return v4;
+  return direction;
 }
 
 - (int)wrapFitType
 {
-  v2 = [(SXContainerLayout *)self i_exteriorTextWrap];
-  v3 = v2;
-  if (v2)
+  i_exteriorTextWrap = [(SXContainerLayout *)self i_exteriorTextWrap];
+  v3 = i_exteriorTextWrap;
+  if (i_exteriorTextWrap)
   {
-    v4 = [v2 fitType];
+    fitType = [i_exteriorTextWrap fitType];
   }
 
   else
   {
-    v4 = 0;
+    fitType = 0;
   }
 
-  return v4;
+  return fitType;
 }
 
 - (void)invalidate
@@ -426,20 +426,20 @@ LABEL_30:
   self->mCachedExternalWrapPath = 0;
 }
 
-- (void)dragBy:(CGPoint)a3
+- (void)dragBy:(CGPoint)by
 {
   v4.receiver = self;
   v4.super_class = SXContainerLayout;
-  [(TSDLayout *)&v4 dragBy:a3.x, a3.y];
+  [(TSDLayout *)&v4 dragBy:by.x, by.y];
   [(SXContainerLayout *)self invalidateParentForWrap];
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v4 = a3;
-  v5 = [(TSDAbstractLayout *)self geometry];
-  v6 = v5;
-  if (!v5)
+  geometryCopy = geometry;
+  geometry = [(TSDAbstractLayout *)self geometry];
+  v6 = geometry;
+  if (!geometry)
   {
     if (!self->mCachedWrapPolygon)
     {
@@ -449,21 +449,21 @@ LABEL_30:
     goto LABEL_8;
   }
 
-  if (([v5 isEqual:v4] & 1) != 0 || !self->mCachedWrapPolygon)
+  if (([geometry isEqual:geometryCopy] & 1) != 0 || !self->mCachedWrapPolygon)
   {
     goto LABEL_10;
   }
 
-  if ([v6 differsInMoreThanTranslationFrom:v4])
+  if ([v6 differsInMoreThanTranslationFrom:geometryCopy])
   {
 LABEL_8:
     [(SXContainerLayout *)self invalidateExteriorWrap];
     goto LABEL_10;
   }
 
-  if (v4)
+  if (geometryCopy)
   {
-    [v4 transform];
+    [geometryCopy transform];
   }
 
   [v6 transform];
@@ -474,15 +474,15 @@ LABEL_8:
 LABEL_10:
   v10.receiver = self;
   v10.super_class = SXContainerLayout;
-  [(TSDAbstractLayout *)&v10 setGeometry:v4];
+  [(TSDAbstractLayout *)&v10 setGeometry:geometryCopy];
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v5.receiver = self;
   v5.super_class = SXContainerLayout;
   [(TSDLayout *)&v5 processChangedProperty:?];
-  if (a3 == 521)
+  if (property == 521)
   {
     [(SXContainerLayout *)self invalidateExteriorWrap];
   }
@@ -498,21 +498,21 @@ LABEL_10:
 
 - (void)i_invalidateWrap
 {
-  v3 = [(TSDAbstractLayout *)self parent];
-  if (v3)
+  parent = [(TSDAbstractLayout *)self parent];
+  if (parent)
   {
     while (1)
     {
-      v5 = v3;
+      v5 = parent;
       if (objc_opt_respondsToSelector())
       {
         break;
       }
 
-      v4 = [v5 parent];
+      parent2 = [v5 parent];
 
-      v3 = v4;
-      if (!v4)
+      parent = parent2;
+      if (!parent2)
       {
         return;
       }
@@ -533,12 +533,12 @@ LABEL_10:
 
 - (BOOL)supportsInspectorPositioning
 {
-  v4 = [(TSDLayout *)self info];
-  v5 = [v4 isAnchoredToText];
-  if (v5)
+  info = [(TSDLayout *)self info];
+  isAnchoredToText = [info isAnchoredToText];
+  if (isAnchoredToText)
   {
-    v2 = [(SXContainerLayout *)self i_exteriorTextWrap];
-    if ([v2 isHTMLWrap])
+    i_exteriorTextWrap = [(SXContainerLayout *)self i_exteriorTextWrap];
+    if ([i_exteriorTextWrap isHTMLWrap])
     {
       LOBYTE(v6) = 0;
 LABEL_5:
@@ -547,10 +547,10 @@ LABEL_5:
     }
   }
 
-  v7 = [(TSDLayout *)self info];
-  v6 = [v7 isInlineWithText] ^ 1;
+  info2 = [(TSDLayout *)self info];
+  v6 = [info2 isInlineWithText] ^ 1;
 
-  if (v5)
+  if (isAnchoredToText)
   {
     goto LABEL_5;
   }

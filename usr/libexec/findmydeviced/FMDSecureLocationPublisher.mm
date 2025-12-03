@@ -1,19 +1,19 @@
 @interface FMDSecureLocationPublisher
 - (BOOL)publishPreviouslyReceivedLocation;
-- (FMDSecureLocationPublisher)initWithConfiguration:(id)a3;
+- (FMDSecureLocationPublisher)initWithConfiguration:(id)configuration;
 - (id)_persistedLastPublishedTimestamp;
-- (void)_persistLastPublishedTimestamp:(id)a3;
-- (void)_publishResultLocation:(id)a3;
-- (void)processUpdatedLocation:(id)a3;
-- (void)publishCriteriaMetBlock:(id)a3;
-- (void)startPublisherWithBlock:(id)a3;
+- (void)_persistLastPublishedTimestamp:(id)timestamp;
+- (void)_publishResultLocation:(id)location;
+- (void)processUpdatedLocation:(id)location;
+- (void)publishCriteriaMetBlock:(id)block;
+- (void)startPublisherWithBlock:(id)block;
 @end
 
 @implementation FMDSecureLocationPublisher
 
-- (FMDSecureLocationPublisher)initWithConfiguration:(id)a3
+- (FMDSecureLocationPublisher)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = FMDSecureLocationPublisher;
   v6 = [(FMDSecureLocationPublisher *)&v12 init];
@@ -27,61 +27,61 @@
     publishQueue = v6->_publishQueue;
     v6->_publishQueue = v9;
 
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, configuration);
   }
 
   return v6;
 }
 
-- (void)startPublisherWithBlock:(id)a3
+- (void)startPublisherWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  v5 = [(FMDSecureLocationPublisher *)self serialQueue];
+  serialQueue = [(FMDSecureLocationPublisher *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001D5C0C;
   block[3] = &unk_1002CDEF0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)publishCriteriaMetBlock:(id)a3
+- (void)publishCriteriaMetBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  v5 = [(FMDSecureLocationPublisher *)self serialQueue];
+  serialQueue = [(FMDSecureLocationPublisher *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001D5D58;
   block[3] = &unk_1002CDEF0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)processUpdatedLocation:(id)a3
+- (void)processUpdatedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   objc_initWeak(&location, self);
-  v5 = [(FMDSecureLocationPublisher *)self serialQueue];
+  serialQueue = [(FMDSecureLocationPublisher *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001D5E98;
   block[3] = &unk_1002CD288;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = locationCopy;
+  v6 = locationCopy;
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -89,40 +89,40 @@
 
 - (BOOL)publishPreviouslyReceivedLocation
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(FMDSecureLocationPublisher *)self serialQueue];
+  serialQueue = [(FMDSecureLocationPublisher *)self serialQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001D6894;
   v5[3] = &unk_1002CE5F0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(serialQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)_publishResultLocation:(id)a3
+- (void)_publishResultLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(FMDSecureLocationPublisher *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  locationCopy = location;
+  serialQueue = [(FMDSecureLocationPublisher *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v6 = +[FMNetworkMonitor sharedInstance];
-  v7 = [v6 isMonitoring];
+  isMonitoring = [v6 isMonitoring];
 
-  if (v7)
+  if (isMonitoring)
   {
     v8 = +[FMNetworkMonitor sharedInstance];
-    v9 = [v8 isNetworkUp];
+    isNetworkUp = [v8 isNetworkUp];
 
-    if ((v9 & 1) == 0)
+    if ((isNetworkUp & 1) == 0)
     {
       v10 = sub_1000029E0();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -131,7 +131,7 @@
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "SecureLocationPublisher: network is not up. lets keep location, not publish it", buf, 2u);
       }
 
-      [(FMDSecureLocationPublisher *)self setLastReceivedLocation:v4];
+      [(FMDSecureLocationPublisher *)self setLastReceivedLocation:locationCopy];
       goto LABEL_14;
     }
   }
@@ -146,23 +146,23 @@
     }
   }
 
-  [(FMDSecureLocationPublisher *)self setLastPublishedLocation:v4];
-  v12 = [(FMDSecureLocationPublisher *)self publishingBlock];
-  if (v12)
+  [(FMDSecureLocationPublisher *)self setLastPublishedLocation:locationCopy];
+  publishingBlock = [(FMDSecureLocationPublisher *)self publishingBlock];
+  if (publishingBlock)
   {
-    v13 = [(FMDSecureLocationPublisher *)self publishQueue];
+    publishQueue = [(FMDSecureLocationPublisher *)self publishQueue];
     v18 = _NSConcreteStackBlock;
     v19 = 3221225472;
     v20 = sub_1001D6CFC;
     v21 = &unk_1002CD8B0;
-    v23 = v12;
-    v14 = v4;
+    v23 = publishingBlock;
+    v14 = locationCopy;
     v22 = v14;
-    dispatch_async(v13, &v18);
+    dispatch_async(publishQueue, &v18);
 
-    v15 = [v14 locationInfo];
-    v16 = [v15 timestamp];
-    [(FMDSecureLocationPublisher *)self _persistLastPublishedTimestamp:v16];
+    locationInfo = [v14 locationInfo];
+    timestamp = [locationInfo timestamp];
+    [(FMDSecureLocationPublisher *)self _persistLastPublishedTimestamp:timestamp];
 
     [(FMDSecureLocationPublisher *)self setLastReceivedLocation:0];
     v17 = v23;
@@ -183,8 +183,8 @@ LABEL_14:
 
 - (id)_persistedLastPublishedTimestamp
 {
-  v2 = [(FMDSecureLocationPublisher *)self serialQueue];
-  dispatch_assert_queue_V2(v2);
+  serialQueue = [(FMDSecureLocationPublisher *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v3 = [FMPreferencesUtil objectForKey:@"secureLocationsLastPublishedTimestamp" inDomain:kFMDNotBackedUpPrefDomain];
   v4 = v3;
@@ -202,15 +202,15 @@ LABEL_14:
   return v5;
 }
 
-- (void)_persistLastPublishedTimestamp:(id)a3
+- (void)_persistLastPublishedTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = [(FMDSecureLocationPublisher *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  timestampCopy = timestamp;
+  serialQueue = [(FMDSecureLocationPublisher *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  if (v4)
+  if (timestampCopy)
   {
-    [v4 timeIntervalSince1970];
+    [timestampCopy timeIntervalSince1970];
     v6 = [NSNumber numberWithDouble:?];
     [FMPreferencesUtil setObject:v6 forKey:@"secureLocationsLastPublishedTimestamp" inDomain:kFMDNotBackedUpPrefDomain];
   }
@@ -219,7 +219,7 @@ LABEL_14:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = timestampCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "SecureLocationPublisher: Persisted lastPublished %@", &v8, 0xCu);
   }
 }

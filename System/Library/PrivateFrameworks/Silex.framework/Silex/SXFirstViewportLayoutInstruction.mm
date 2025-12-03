@@ -1,11 +1,11 @@
 @interface SXFirstViewportLayoutInstruction
-- (BOOL)isFulfilledForBlueprint:(id)a3;
-- (void)didLayoutComponentBlueprint:(id)a3 blueprint:(id)a4;
+- (BOOL)isFulfilledForBlueprint:(id)blueprint;
+- (void)didLayoutComponentBlueprint:(id)blueprint blueprint:(id)a4;
 @end
 
 @implementation SXFirstViewportLayoutInstruction
 
-- (BOOL)isFulfilledForBlueprint:(id)a3
+- (BOOL)isFulfilledForBlueprint:(id)blueprint
 {
   if (self->_fullfilled)
   {
@@ -14,22 +14,22 @@
 
   else
   {
-    return [a3 isComplete];
+    return [blueprint isComplete];
   }
 }
 
-- (void)didLayoutComponentBlueprint:(id)a3 blueprint:(id)a4
+- (void)didLayoutComponentBlueprint:(id)blueprint blueprint:(id)a4
 {
   v6 = a4;
-  [a3 frame];
+  [blueprint frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v6 layoutOptions];
+  layoutOptions = [v6 layoutOptions];
 
-  v16 = [v15 columnLayout];
-  [v16 constrainedViewportSize];
+  columnLayout = [layoutOptions columnLayout];
+  [columnLayout constrainedViewportSize];
   v18 = v17;
   v20 = v19;
 

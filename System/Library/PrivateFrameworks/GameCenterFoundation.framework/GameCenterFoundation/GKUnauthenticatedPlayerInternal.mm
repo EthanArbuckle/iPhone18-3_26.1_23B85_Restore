@@ -1,21 +1,21 @@
 @interface GKUnauthenticatedPlayerInternal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)alias;
 - (id)playerID;
 - (void)alias;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)playerID;
 @end
 
 @implementation GKUnauthenticatedPlayerInternal
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   GKAtomicIncrement32((&self->super._allowMultiplayerFriendInvites + 1));
   v5.receiver = self;
   v5.super_class = GKUnauthenticatedPlayerInternal;
-  [(GKPlayerInternal *)&v5 encodeWithCoder:v4];
+  [(GKPlayerInternal *)&v5 encodeWithCoder:coderCopy];
 
   GKAtomicDecrement32((&self->super._allowMultiplayerFriendInvites + 1));
 }
@@ -58,10 +58,10 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v4 = [equalCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }
@@ -69,7 +69,7 @@
 - (void)playerID
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = GKStackTraceWithFrameLimit(5);
   OUTLINED_FUNCTION_0_10(&dword_227904000, v3, v4, "asking for GKLocalPlayer playerID when player is not authenticated. Might be in the process of being authenticated or this is a race condition.Call stack:%@", v5, v6, v7, v8, 2u);
 
@@ -79,7 +79,7 @@
 - (void)alias
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = GKStackTraceWithFrameLimit(5);
   OUTLINED_FUNCTION_0_10(&dword_227904000, v3, v4, "asking for GKLocalPlayer playerID when player is not authenticated.Might be in the process of being authenticated or this is a race condition.Call stack:%@", v5, v6, v7, v8, 2u);
 

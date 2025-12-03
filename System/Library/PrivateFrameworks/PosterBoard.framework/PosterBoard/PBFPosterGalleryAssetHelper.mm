@@ -1,62 +1,62 @@
 @interface PBFPosterGalleryAssetHelper
-- (BOOL)_kickoffPreviewGeneratorForPosterPreview:(id)a3 context:(id)a4;
-- (BOOL)_setupHeroShotsForPosterPreview:(id)a3 context:(id)a4;
-- (BOOL)_setupLiveDisplayStyleForPreview:(id)a3;
-- (BOOL)_sizeContainerView:(id)a3 forPreview:(id)a4 displayContext:(id)a5;
+- (BOOL)_kickoffPreviewGeneratorForPosterPreview:(id)preview context:(id)context;
+- (BOOL)_setupHeroShotsForPosterPreview:(id)preview context:(id)context;
+- (BOOL)_setupLiveDisplayStyleForPreview:(id)preview;
+- (BOOL)_sizeContainerView:(id)view forPreview:(id)preview displayContext:(id)context;
 - (BOOL)_updateHydrationStateIfNeeded;
-- (BOOL)_updateHydrationStateTo:(int64_t)a3 reason:(id)a4;
-- (BOOL)updatePosterPreview:(id)a3 isVisible:(BOOL)a4;
-- (CGSize)_contentSizeForPreview:(id)a3;
+- (BOOL)_updateHydrationStateTo:(int64_t)to reason:(id)reason;
+- (BOOL)updatePosterPreview:(id)preview isVisible:(BOOL)visible;
+- (CGSize)_contentSizeForPreview:(id)preview;
 - (NSSet)knownDisplayContexts;
 - (PBFExtensionProviding)extensionProvider;
-- (PBFPosterGalleryAssetHelper)initWithPreviewGenerator:(id)a3 extensionProvider:(id)a4;
+- (PBFPosterGalleryAssetHelper)initWithPreviewGenerator:(id)generator extensionProvider:(id)provider;
 - (PBFPosterGalleryAssetHelperDelegate)delegate;
 - (PBFPosterPreviewGenerator)previewGenerator;
-- (id)_dequeueViewOfClass:(Class)a3;
-- (id)_newImageViewWithImage:(id)a3 posterPreview:(id)a4;
-- (id)assetsForPosterPreview:(id)a3;
+- (id)_dequeueViewOfClass:(Class)class;
+- (id)_newImageViewWithImage:(id)image posterPreview:(id)preview;
+- (id)assetsForPosterPreview:(id)preview;
 - (id)knownDisplayContextWithoutActiveDisplayContext;
-- (id)sizedDebugViewForPosterPreview:(id)a3 reason:(id)a4;
+- (id)sizedDebugViewForPosterPreview:(id)preview reason:(id)reason;
 - (void)_invalidateAllHistogramCache;
 - (void)_noteInteractionAssertionsWereUpdated;
-- (void)_receiveUpdatedAssetForPosterPreview:(id)a3 snapshotContext:(id)a4 snapshotBundle:(id)a5 fetchError:(id)a6;
-- (void)_recycleView:(id)a3;
+- (void)_receiveUpdatedAssetForPosterPreview:(id)preview snapshotContext:(id)context snapshotBundle:(id)bundle fetchError:(id)error;
+- (void)_recycleView:(id)view;
 - (void)_resetHydrationState;
 - (void)_sizeAssetsForActiveDisplayContext;
-- (void)_stateWasUpdated:(BOOL)a3;
-- (void)_stateWasUpdatedForPosterPreviews:(id)a3;
-- (void)_teardownLiveViewControllerForState:(id)a3 invalidate:(BOOL)a4;
-- (void)_teardownState:(id)a3;
-- (void)_teardownStateForPosterPreviews:(id)a3;
+- (void)_stateWasUpdated:(BOOL)updated;
+- (void)_stateWasUpdatedForPosterPreviews:(id)previews;
+- (void)_teardownLiveViewControllerForState:(id)state invalidate:(BOOL)invalidate;
+- (void)_teardownState:(id)state;
+- (void)_teardownStateForPosterPreviews:(id)previews;
 - (void)_updateActivePosters;
-- (void)_updateActivePostersAfterFinishingExecuting:(id)a3 successfully:(BOOL)a4;
+- (void)_updateActivePostersAfterFinishingExecuting:(id)executing successfully:(BOOL)successfully;
 - (void)_updateHistogramCacheIfNeeded;
 - (void)_updateHydrationStateIfNeeded;
 - (void)cancel;
-- (void)cancelPrefetchForPosterPreviews:(id)a3;
+- (void)cancelPrefetchForPosterPreviews:(id)previews;
 - (void)dealloc;
 - (void)invalidate;
-- (void)prefetchPosterPreviews:(id)a3;
+- (void)prefetchPosterPreviews:(id)previews;
 - (void)resetKnownDisplayContexts;
-- (void)setActiveDisplayContext:(id)a3;
-- (void)setKnownDisplayContexts:(id)a3;
-- (void)setPosterPreviews:(id)a3;
-- (void)setSuspended:(BOOL)a3;
+- (void)setActiveDisplayContext:(id)context;
+- (void)setKnownDisplayContexts:(id)contexts;
+- (void)setPosterPreviews:(id)previews;
+- (void)setSuspended:(BOOL)suspended;
 @end
 
 @implementation PBFPosterGalleryAssetHelper
 
-- (PBFPosterGalleryAssetHelper)initWithPreviewGenerator:(id)a3 extensionProvider:(id)a4
+- (PBFPosterGalleryAssetHelper)initWithPreviewGenerator:(id)generator extensionProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  generatorCopy = generator;
+  providerCopy = provider;
+  if (!generatorCopy)
   {
     [PBFPosterGalleryAssetHelper initWithPreviewGenerator:a2 extensionProvider:?];
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = providerCopy;
+  if (!providerCopy)
   {
     [PBFPosterGalleryAssetHelper initWithPreviewGenerator:a2 extensionProvider:?];
   }
@@ -67,23 +67,23 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_previewGenerator, v7);
+    objc_storeWeak(&v10->_previewGenerator, generatorCopy);
     objc_storeWeak(&v11->_extensionProvider, v9);
-    v12 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     visibleStatesWithLivePreviewEnabled = v11->_visibleStatesWithLivePreviewEnabled;
-    v11->_visibleStatesWithLivePreviewEnabled = v12;
+    v11->_visibleStatesWithLivePreviewEnabled = strongToStrongObjectsMapTable;
 
-    v14 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     alreadyPlayedLivePosters = v11->_alreadyPlayedLivePosters;
-    v11->_alreadyPlayedLivePosters = v14;
+    v11->_alreadyPlayedLivePosters = weakObjectsHashTable;
 
-    v16 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     successfullyPlayedLivePosters = v11->_successfullyPlayedLivePosters;
-    v11->_successfullyPlayedLivePosters = v16;
+    v11->_successfullyPlayedLivePosters = weakObjectsHashTable2;
 
-    v18 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     previewToState = v11->_previewToState;
-    v11->_previewToState = v18;
+    v11->_previewToState = strongToStrongObjectsMapTable2;
 
     v20 = [MEMORY[0x277CBEB98] set];
     knownDisplayContexts = v11->_knownDisplayContexts;
@@ -93,9 +93,9 @@
     executingLivePosterStates = v11->_executingLivePosterStates;
     v11->_executingLivePosterStates = v22;
 
-    v24 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     displayContextHistogramCache = v11->_displayContextHistogramCache;
-    v11->_displayContextHistogramCache = v24;
+    v11->_displayContextHistogramCache = dictionary;
 
     v26 = [MEMORY[0x277CBEB58] set];
     previewsRequiringHistogramCacheInvalidation = v11->_previewsRequiringHistogramCacheInvalidation;
@@ -148,10 +148,10 @@ void __74__PBFPosterGalleryAssetHelper_initWithPreviewGenerator_extensionProvide
   [(PBFPosterGalleryAssetHelper *)&v4 dealloc];
 }
 
-- (void)setPosterPreviews:(id)a3
+- (void)setPosterPreviews:(id)previews
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  previewsCopy = previews;
   BSDispatchQueueAssertMain();
   if (self->_isInvalidated)
   {
@@ -159,7 +159,7 @@ void __74__PBFPosterGalleryAssetHelper_initWithPreviewGenerator_extensionProvide
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134217984;
-      v13 = self;
+      selfCopy4 = self;
       v6 = "(%p) bail setPosterPreviews; invalidated";
 LABEL_7:
       _os_log_impl(&dword_21B526000, v5, OS_LOG_TYPE_DEFAULT, v6, &v12, 0xCu);
@@ -172,7 +172,7 @@ LABEL_7:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134217984;
-      v13 = self;
+      selfCopy4 = self;
       v6 = "(%p) bail setPosterPreviews; same poster previews, no need to do anything";
       goto LABEL_7;
     }
@@ -181,15 +181,15 @@ LABEL_7:
   else
   {
     [(PBFPosterGalleryAssetHelper *)self _resetHydrationState];
-    v5 = [v4 mutableCopy];
+    v5 = [previewsCopy mutableCopy];
     [v5 minusSet:self->_posterPreviews];
     v7 = [(NSSet *)self->_posterPreviews mutableCopy];
-    [v7 minusSet:v4];
+    [v7 minusSet:previewsCopy];
     v8 = PBFLogAssetHelper();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v12 = 134218242;
-      v13 = self;
+      selfCopy4 = self;
       v14 = 2114;
       v15 = v5;
       _os_log_impl(&dword_21B526000, v8, OS_LOG_TYPE_INFO, "(%p) added poster previews: %{public}@", &v12, 0x16u);
@@ -199,14 +199,14 @@ LABEL_7:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v12 = 134218242;
-      v13 = self;
+      selfCopy4 = self;
       v14 = 2114;
       v15 = v7;
       _os_log_impl(&dword_21B526000, v9, OS_LOG_TYPE_INFO, "(%p) added poster removed: %{public}@", &v12, 0x16u);
     }
 
     [(PBFPosterGalleryAssetHelper *)self _invalidateAllHistogramCache];
-    v10 = [v4 copy];
+    v10 = [previewsCopy copy];
     posterPreviews = self->_posterPreviews;
     self->_posterPreviews = v10;
 
@@ -215,10 +215,10 @@ LABEL_7:
   }
 }
 
-- (void)setActiveDisplayContext:(id)a3
+- (void)setActiveDisplayContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   BSDispatchQueueAssertMain();
   if (self->_isInvalidated)
   {
@@ -226,7 +226,7 @@ LABEL_7:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 134217984;
-      v20 = self;
+      selfCopy5 = self;
       v7 = "(%p) bail setActiveDisplayContext; invalidated";
       v8 = v6;
       v9 = OS_LOG_TYPE_DEFAULT;
@@ -246,13 +246,13 @@ LABEL_7:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 134218242;
-      v20 = self;
+      selfCopy5 = self;
       v21 = 2114;
-      v22 = v5;
+      v22 = contextCopy;
       _os_log_impl(&dword_21B526000, v6, OS_LOG_TYPE_DEFAULT, "(%p) updating active display context: %{public}@", &v19, 0x16u);
     }
 
-    objc_storeStrong(&self->_activeDisplayContext, a3);
+    objc_storeStrong(&self->_activeDisplayContext, context);
     if (self->_activeDisplayContext)
     {
       v12 = [PBFPosterGalleryViewSpec specForDisplayContext:?];
@@ -264,7 +264,7 @@ LABEL_7:
       {
         activeDisplayContext = self->_activeDisplayContext;
         v19 = 134218242;
-        v20 = self;
+        selfCopy5 = self;
         v21 = 2114;
         v22 = activeDisplayContext;
         v16 = "(%p) updating spec for active display context: %{public}@";
@@ -283,7 +283,7 @@ LABEL_16:
       {
         v18 = self->_activeDisplayContext;
         v19 = 134218242;
-        v20 = self;
+        selfCopy5 = self;
         v21 = 2114;
         v22 = v18;
         v16 = "(%p) clearing spec for active display context: %{public}@";
@@ -300,7 +300,7 @@ LABEL_16:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v19 = 134217984;
-    v20 = self;
+    selfCopy5 = self;
     v7 = "(%p) abort updating active display context; same as existing context";
     v8 = v6;
     v9 = OS_LOG_TYPE_INFO;
@@ -312,24 +312,24 @@ LABEL_8:
 LABEL_18:
 }
 
-- (void)setKnownDisplayContexts:(id)a3
+- (void)setKnownDisplayContexts:(id)contexts
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextsCopy = contexts;
   if (self->_isInvalidated)
   {
     v5 = PBFLogAssetHelper();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134217984;
-      v12 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_21B526000, v5, OS_LOG_TYPE_DEFAULT, "(%p) bail setKnownDisplayContexts; invalidated", &v11, 0xCu);
     }
   }
 
-  else if (![(NSSet *)self->_knownDisplayContexts isEqualToSet:v4])
+  else if (![(NSSet *)self->_knownDisplayContexts isEqualToSet:contextsCopy])
   {
-    v6 = [v4 copy];
+    v6 = [contextsCopy copy];
     v7 = v6;
     if (v6)
     {
@@ -349,9 +349,9 @@ LABEL_18:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134218242;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
-      v14 = v4;
+      v14 = contextsCopy;
       _os_log_impl(&dword_21B526000, v10, OS_LOG_TYPE_DEFAULT, "(%p) updated known display context: %{public}@", &v11, 0x16u);
     }
 
@@ -370,7 +370,7 @@ LABEL_18:
     if (v5)
     {
       v13 = 134217984;
-      v14 = self;
+      selfCopy4 = self;
       v6 = "(%p) bail resetKnownDisplayContexts; invalidated";
       v7 = v4;
       v8 = OS_LOG_TYPE_DEFAULT;
@@ -385,7 +385,7 @@ LABEL_12:
   if (v5)
   {
     v13 = 134217984;
-    v14 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_21B526000, v4, OS_LOG_TYPE_DEFAULT, "(%p) resetting known display context", &v13, 0xCu);
   }
 
@@ -402,7 +402,7 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = 134217984;
-      v14 = self;
+      selfCopy4 = self;
       v6 = "(%p) bail reset hydration state after resetKnownDisplayContexts";
       v7 = v4;
       v8 = OS_LOG_TYPE_INFO;
@@ -417,7 +417,7 @@ LABEL_13:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 134217984;
-    v14 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_21B526000, v4, OS_LOG_TYPE_DEFAULT, "(%p) known display context was reset during asset hydration state of alternate display context - resetting hydration state", &v13, 0xCu);
   }
 
@@ -450,7 +450,7 @@ LABEL_13:
   return v3;
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
   v15 = *MEMORY[0x277D85DE8];
   if (self->_isInvalidated)
@@ -459,7 +459,7 @@ LABEL_13:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134217984;
-      v12 = self;
+      selfCopy3 = self;
       v5 = "(%p) bail setSuspended; invalidated";
       v6 = v4;
       v7 = 12;
@@ -471,18 +471,18 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = a3;
+  suspendedCopy = suspended;
   isSuspended = self->_isSuspended;
   v4 = PBFLogAssetHelper();
   v10 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (isSuspended == v8)
+  if (isSuspended == suspendedCopy)
   {
     if (v10)
     {
       v11 = 134218240;
-      v12 = self;
+      selfCopy3 = self;
       v13 = 1024;
-      v14 = v8;
+      v14 = suspendedCopy;
       v5 = "(%p) bail update suspended; isSuspended is already %{BOOL}u";
       v6 = v4;
       v7 = 18;
@@ -497,21 +497,21 @@ LABEL_8:
   if (v10)
   {
     v11 = 134218240;
-    v12 = self;
+    selfCopy3 = self;
     v13 = 1024;
-    v14 = v8;
+    v14 = suspendedCopy;
     _os_log_impl(&dword_21B526000, v4, OS_LOG_TYPE_DEFAULT, "(%p) update suspended: %{BOOL}u", &v11, 0x12u);
   }
 
-  self->_isSuspended = v8;
+  self->_isSuspended = suspendedCopy;
   [(PBFPosterGalleryAssetHelper *)self _stateWasUpdated:1];
 }
 
-- (BOOL)updatePosterPreview:(id)a3 isVisible:(BOOL)a4
+- (BOOL)updatePosterPreview:(id)preview isVisible:(BOOL)visible
 {
-  v4 = a4;
+  visibleCopy = visible;
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  previewCopy = preview;
   BSDispatchQueueAssertMain();
   if (self->_isInvalidated)
   {
@@ -519,7 +519,7 @@ LABEL_8:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 134217984;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_21B526000, v7, OS_LOG_TYPE_DEFAULT, "(%p) bail updatePosterPreview; invalidated", &v15, 0xCu);
     }
 
@@ -528,8 +528,8 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  v7 = [(NSMapTable *)self->_previewToState objectForKey:v6];
-  if ([v7 isVisible]== v4)
+  v7 = [(NSMapTable *)self->_previewToState objectForKey:previewCopy];
+  if ([v7 isVisible]== visibleCopy)
   {
     v12 = PBFLogAssetHelper();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -540,35 +540,35 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  [(PBFPosterGalleryAssetHelper *)self _invalidateHistogramCacheForPosterPreview:v6];
+  [(PBFPosterGalleryAssetHelper *)self _invalidateHistogramCacheForPosterPreview:previewCopy];
   v8 = PBFLogAssetHelper();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v15 = 134218498;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2114;
-    v18 = v6;
+    v18 = previewCopy;
     v19 = 1024;
-    v20 = v4;
+    v20 = visibleCopy;
     _os_log_impl(&dword_21B526000, v8, OS_LOG_TYPE_INFO, "(%p) updatePosterPreview for posterPreview %{public}@; marking visible as %{BOOL}u", &v15, 0x1Cu);
   }
 
-  [v7 setVisible:v4];
-  v9 = [MEMORY[0x277CBEB98] setWithObject:v6];
+  [v7 setVisible:visibleCopy];
+  v9 = [MEMORY[0x277CBEB98] setWithObject:previewCopy];
   [(PBFPosterGalleryAssetHelper *)self _stateWasUpdatedForPosterPreviews:v9];
 
   if ([v7 willUseLivePreview])
   {
     visibleStatesWithLivePreviewEnabled = self->_visibleStatesWithLivePreviewEnabled;
-    v11 = [v7 preview];
-    if (v4)
+    preview = [v7 preview];
+    if (visibleCopy)
     {
-      [(NSMapTable *)visibleStatesWithLivePreviewEnabled setObject:v7 forKey:v11];
+      [(NSMapTable *)visibleStatesWithLivePreviewEnabled setObject:v7 forKey:preview];
     }
 
     else
     {
-      [(NSMapTable *)visibleStatesWithLivePreviewEnabled removeObjectForKey:v11];
+      [(NSMapTable *)visibleStatesWithLivePreviewEnabled removeObjectForKey:preview];
 
       [(NSHashTable *)self->_alreadyPlayedLivePosters removeObject:v7];
       [(NSHashTable *)self->_successfullyPlayedLivePosters removeObject:v7];
@@ -582,10 +582,10 @@ LABEL_16:
   return v13;
 }
 
-- (void)prefetchPosterPreviews:(id)a3
+- (void)prefetchPosterPreviews:(id)previews
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  previewsCopy = previews;
   BSDispatchQueueAssertMain();
   if (self->_isInvalidated)
   {
@@ -593,33 +593,33 @@ LABEL_16:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v15 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_21B526000, v5, OS_LOG_TYPE_DEFAULT, "(%p) bail prefetchPosterPreviews; invalidated", buf, 0xCu);
     }
   }
 
   else
   {
-    v6 = [v4 mutableCopy];
+    v6 = [previewsCopy mutableCopy];
     v8 = MEMORY[0x277D85DD0];
     v9 = 3221225472;
     v10 = __54__PBFPosterGalleryAssetHelper_prefetchPosterPreviews___block_invoke;
     v11 = &unk_2782C7760;
-    v12 = self;
+    selfCopy2 = self;
     v5 = v6;
     v13 = v5;
-    [v4 enumerateObjectsUsingBlock:&v8];
+    [previewsCopy enumerateObjectsUsingBlock:&v8];
     v7 = PBFLogAssetHelper();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 134218242;
-      v15 = self;
+      selfCopy3 = self;
       v16 = 2114;
       v17 = v5;
       _os_log_impl(&dword_21B526000, v7, OS_LOG_TYPE_INFO, "(%p) prefetchPosterPreviews: %{public}@", buf, 0x16u);
     }
 
-    [(PBFPosterGalleryAssetHelper *)self _stateWasUpdatedForPosterPreviews:v5, v8, v9, v10, v11, v12];
+    [(PBFPosterGalleryAssetHelper *)self _stateWasUpdatedForPosterPreviews:v5, v8, v9, v10, v11, selfCopy2];
   }
 }
 
@@ -639,10 +639,10 @@ void __54__PBFPosterGalleryAssetHelper_prefetchPosterPreviews___block_invoke(uin
   }
 }
 
-- (void)cancelPrefetchForPosterPreviews:(id)a3
+- (void)cancelPrefetchForPosterPreviews:(id)previews
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  previewsCopy = previews;
   BSDispatchQueueAssertMain();
   if (self->_isInvalidated)
   {
@@ -650,33 +650,33 @@ void __54__PBFPosterGalleryAssetHelper_prefetchPosterPreviews___block_invoke(uin
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v15 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_21B526000, v5, OS_LOG_TYPE_DEFAULT, "(%p) bail cancelPrefetchForPosterPreviews; invalidated", buf, 0xCu);
     }
   }
 
   else
   {
-    v6 = [v4 mutableCopy];
+    v6 = [previewsCopy mutableCopy];
     v8 = MEMORY[0x277D85DD0];
     v9 = 3221225472;
     v10 = __63__PBFPosterGalleryAssetHelper_cancelPrefetchForPosterPreviews___block_invoke;
     v11 = &unk_2782C7760;
-    v12 = self;
+    selfCopy2 = self;
     v5 = v6;
     v13 = v5;
-    [v4 enumerateObjectsUsingBlock:&v8];
+    [previewsCopy enumerateObjectsUsingBlock:&v8];
     v7 = PBFLogAssetHelper();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v15 = self;
+      selfCopy3 = self;
       v16 = 2114;
       v17 = v5;
       _os_log_impl(&dword_21B526000, v7, OS_LOG_TYPE_DEFAULT, "(%p) cancelPrefetchForPosterPreviews: %{public}@", buf, 0x16u);
     }
 
-    [(PBFPosterGalleryAssetHelper *)self _stateWasUpdatedForPosterPreviews:v5, v8, v9, v10, v11, v12];
+    [(PBFPosterGalleryAssetHelper *)self _stateWasUpdatedForPosterPreviews:v5, v8, v9, v10, v11, selfCopy2];
   }
 }
 
@@ -696,10 +696,10 @@ void __63__PBFPosterGalleryAssetHelper_cancelPrefetchForPosterPreviews___block_i
   }
 }
 
-- (id)assetsForPosterPreview:(id)a3
+- (id)assetsForPosterPreview:(id)preview
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  previewCopy = preview;
   BSDispatchQueueAssertMain();
   if (self->_isInvalidated)
   {
@@ -707,16 +707,16 @@ void __63__PBFPosterGalleryAssetHelper_cancelPrefetchForPosterPreviews___block_i
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 134217984;
-      v29 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_21B526000, v5, OS_LOG_TYPE_DEFAULT, "(%p) bail assetsForPosterPreview; invalidated", &v28, 0xCu);
     }
 
 LABEL_17:
-    v7 = 0;
+    asset = 0;
     goto LABEL_34;
   }
 
-  v6 = [(NSMapTable *)self->_previewToState objectForKey:v4];
+  v6 = [(NSMapTable *)self->_previewToState objectForKey:previewCopy];
   v5 = v6;
   if (!v6)
   {
@@ -724,123 +724,123 @@ LABEL_17:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 134218242;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2114;
-      v31 = v4;
+      v31 = previewCopy;
       _os_log_impl(&dword_21B526000, v22, OS_LOG_TYPE_DEFAULT, "(%p) assetsForPosterPreview: %{public}@ -- no state found; not tracking poster preview?", &v28, 0x16u);
     }
 
     goto LABEL_17;
   }
 
-  v7 = [v6 asset];
-  v8 = [v4 type];
+  asset = [v6 asset];
+  type = [previewCopy type];
   v9 = PBFPreviewTypeHero;
 
-  if (v8 == v9)
+  if (type == v9)
   {
-    v10 = [v5 heroMicaPackageView];
-    v23 = [v5 heroImageView];
-    v14 = v23;
-    if (v10 && (v24 = v10, v23) || (([(PBFPosterGalleryAssetHelper *)self _setupHeroShotsForPosterPreview:v4 context:self->_activeDisplayContext], v10) ? (v24 = v10) : (v24 = v14), v10 | v14))
+    heroMicaPackageView = [v5 heroMicaPackageView];
+    heroImageView = [v5 heroImageView];
+    assetViewController3 = heroImageView;
+    if (heroMicaPackageView && (v24 = heroMicaPackageView, heroImageView) || (([(PBFPosterGalleryAssetHelper *)self _setupHeroShotsForPosterPreview:previewCopy context:self->_activeDisplayContext], heroMicaPackageView) ? (v24 = heroMicaPackageView) : (v24 = assetViewController3), heroMicaPackageView | assetViewController3))
     {
-      [v7 setHeroView:v24];
+      [asset setHeroView:v24];
     }
 
     goto LABEL_33;
   }
 
-  v10 = [v5 snapshotBundleLayoutView];
+  heroMicaPackageView = [v5 snapshotBundleLayoutView];
   if ([v5 willUseLivePreview])
   {
-    v11 = [v7 assetViewController];
+    assetViewController = [asset assetViewController];
 
-    if (!v11)
+    if (!assetViewController)
     {
-      [(PBFPosterGalleryAssetHelper *)self _setupLiveDisplayStyleForPreview:v4];
+      [(PBFPosterGalleryAssetHelper *)self _setupLiveDisplayStyleForPreview:previewCopy];
     }
 
-    v12 = [v7 assetViewController];
-    v13 = [v12 viewIfLoaded];
-    [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:v13 forPreview:v4 displayContext:self->_activeDisplayContext];
+    assetViewController2 = [asset assetViewController];
+    viewIfLoaded = [assetViewController2 viewIfLoaded];
+    [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:viewIfLoaded forPreview:previewCopy displayContext:self->_activeDisplayContext];
   }
 
-  v14 = [v7 assetViewController];
+  assetViewController3 = [asset assetViewController];
   activeDisplayContext = self->_activeDisplayContext;
-  v16 = [PBFPosterSnapshotDefinition defaultPreviewDefinitionForPreview:v4];
+  v16 = [PBFPosterSnapshotDefinition defaultPreviewDefinitionForPreview:previewCopy];
   v17 = [PBFPosterSnapshotContext snapshotContextForDisplayContext:activeDisplayContext definition:v16];
 
-  v18 = [v5 snapshotCollection];
-  v19 = [v18 receivedSnapshotBundleForContext:v17];
+  snapshotCollection = [v5 snapshotCollection];
+  v19 = [snapshotCollection receivedSnapshotBundleForContext:v17];
 
   if (v19)
   {
-    if (v10)
+    if (heroMicaPackageView)
     {
       goto LABEL_12;
     }
 
     if (([v5 willUseLivePreview]& 1) != 0)
     {
-      v10 = 0;
+      heroMicaPackageView = 0;
     }
 
     else
     {
       v25 = objc_opt_self();
-      v10 = [(PBFPosterGalleryAssetHelper *)self _dequeueViewOfClass:v25];
+      heroMicaPackageView = [(PBFPosterGalleryAssetHelper *)self _dequeueViewOfClass:v25];
 
-      [v5 setSnapshotBundleLayoutView:v10];
-      if (v10)
+      [v5 setSnapshotBundleLayoutView:heroMicaPackageView];
+      if (heroMicaPackageView)
       {
 LABEL_12:
-        v20 = [v10 snapshotBundle];
-        v21 = [v19 isEqual:v20];
+        snapshotBundle = [heroMicaPackageView snapshotBundle];
+        v21 = [v19 isEqual:snapshotBundle];
 
         if ((v21 & 1) == 0)
         {
-          [v10 setSnapshotBundle:v19];
-          [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:v10 forPreview:v4 displayContext:self->_activeDisplayContext];
+          [heroMicaPackageView setSnapshotBundle:v19];
+          [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:heroMicaPackageView forPreview:previewCopy displayContext:self->_activeDisplayContext];
         }
       }
     }
   }
 
-  v26 = [v7 snapshotBundleLayoutView];
+  snapshotBundleLayoutView = [asset snapshotBundleLayoutView];
 
-  if (v26 != v10)
+  if (snapshotBundleLayoutView != heroMicaPackageView)
   {
-    [v7 setSnapshotBundleLayoutView:v10];
+    [asset setSnapshotBundleLayoutView:heroMicaPackageView];
   }
 
-  if (v14)
+  if (assetViewController3)
   {
-    [v14 setSnapshotBundle:v19 forDisplayContext:self->_activeDisplayContext];
+    [assetViewController3 setSnapshotBundle:v19 forDisplayContext:self->_activeDisplayContext];
   }
 
 LABEL_33:
 LABEL_34:
 
-  return v7;
+  return asset;
 }
 
-- (id)sizedDebugViewForPosterPreview:(id)a3 reason:(id)a4
+- (id)sizedDebugViewForPosterPreview:(id)preview reason:(id)reason
 {
-  v6 = a4;
-  v7 = a3;
+  reasonCopy = reason;
+  previewCopy = preview;
   BSDispatchQueueAssertMain();
-  v8 = [v7 posterDescriptorLookupInfo];
-  v9 = [v8 posterDescriptorPath];
-  v10 = [v9 identityPathComponent];
+  posterDescriptorLookupInfo = [previewCopy posterDescriptorLookupInfo];
+  posterDescriptorPath = [posterDescriptorLookupInfo posterDescriptorPath];
+  identityPathComponent = [posterDescriptorPath identityPathComponent];
 
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ for descriptor instance: %@", v6, v10];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ for descriptor instance: %@", reasonCopy, identityPathComponent];
 
   v12 = objc_opt_new();
-  [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:v12 forPreview:v7 displayContext:self->_activeDisplayContext];
+  [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:v12 forPreview:previewCopy displayContext:self->_activeDisplayContext];
   v13 = MEMORY[0x277D3EF48];
   [v12 frame];
   v14 = [v13 uiViewWithMessage:v11 level:16 frame:0 location:?];
-  [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:v14 forPreview:v7 displayContext:self->_activeDisplayContext];
+  [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:v14 forPreview:previewCopy displayContext:self->_activeDisplayContext];
 
   return v14;
 }
@@ -872,14 +872,14 @@ LABEL_34:
   }
 }
 
-- (void)_stateWasUpdated:(BOOL)a3
+- (void)_stateWasUpdated:(BOOL)updated
 {
-  v3 = a3;
+  updatedCopy = updated;
   v17 = *MEMORY[0x277D85DE8];
   BSDispatchQueueAssertMain();
   isInvalidated = self->_isInvalidated;
-  v6 = PBFLogAssetHelper();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
+  posterPreviews = PBFLogAssetHelper();
+  v7 = os_log_type_enabled(posterPreviews, OS_LOG_TYPE_DEBUG);
   if (isInvalidated)
   {
     if (v7)
@@ -895,24 +895,24 @@ LABEL_34:
       [PBFPosterGalleryAssetHelper _stateWasUpdated:];
     }
 
-    v6 = [(PBFPosterGalleryAssetHelper *)self posterPreviews];
-    v8 = [(PBFPosterGalleryAssetHelper *)self _updateHydrationStateIfNeeded];
+    posterPreviews = [(PBFPosterGalleryAssetHelper *)self posterPreviews];
+    _updateHydrationStateIfNeeded = [(PBFPosterGalleryAssetHelper *)self _updateHydrationStateIfNeeded];
     v9 = PBFLogAssetHelper();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
-    if (v8 || v3)
+    if (_updateHydrationStateIfNeeded || updatedCopy)
     {
       if (v10)
       {
         v11 = 134218498;
-        v12 = self;
+        selfCopy = self;
         v13 = 1024;
-        v14 = v3;
+        v14 = updatedCopy;
         v15 = 2114;
-        v16 = v6;
+        v16 = posterPreviews;
         _os_log_debug_impl(&dword_21B526000, v9, OS_LOG_TYPE_DEBUG, "(%p) _stateWasUpdated:%{BOOL}u; update hydration state was needed for poster previews: %{public}@", &v11, 0x1Cu);
       }
 
-      [(PBFPosterGalleryAssetHelper *)self _stateWasUpdatedForPosterPreviews:v6];
+      [(PBFPosterGalleryAssetHelper *)self _stateWasUpdatedForPosterPreviews:posterPreviews];
     }
 
     else
@@ -946,13 +946,13 @@ LABEL_34:
   p_assetHydrationState = &self->_assetHydrationState;
   if (self->_assetHydrationState)
   {
-    v6 = [(PBFPosterGalleryAssetHelper *)self posterPreviews];
+    posterPreviews = [(PBFPosterGalleryAssetHelper *)self posterPreviews];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __60__PBFPosterGalleryAssetHelper__updateHydrationStateIfNeeded__block_invoke;
     aBlock[3] = &unk_2782C7788;
     aBlock[4] = self;
-    v7 = v6;
+    v7 = posterPreviews;
     v63 = v7;
     v8 = _Block_copy(aBlock);
     v9 = self->_assetHydrationState - 1;
@@ -1015,7 +1015,7 @@ LABEL_77:
       }
 
       v16 = [v12 stringByAppendingString:@"outstanding active display context foreground hydration transitioning back to initial hydration state to finish those up"];;
-      v21 = self;
+      selfCopy4 = self;
       v22 = 1;
       goto LABEL_76;
     }
@@ -1056,10 +1056,10 @@ LABEL_78:
       }
 
       v16 = [v12 stringByAppendingString:@"outstanding active display context BACKGROUND hydration transitioning back to initial hydration state to finish those up"];;
-      v21 = self;
+      selfCopy4 = self;
       v22 = 2;
 LABEL_76:
-      v4 = [(PBFPosterGalleryAssetHelper *)v21 _updateHydrationStateTo:v22 reason:v16];
+      v4 = [(PBFPosterGalleryAssetHelper *)selfCopy4 _updateHydrationStateTo:v22 reason:v16];
       goto LABEL_77;
     }
 
@@ -1067,8 +1067,8 @@ LABEL_76:
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v23 = [(PBFPosterGalleryAssetHelper *)self knownDisplayContexts];
-    v24 = [v23 countByEnumeratingWithState:&v52 objects:v69 count:16];
+    knownDisplayContexts = [(PBFPosterGalleryAssetHelper *)self knownDisplayContexts];
+    v24 = [knownDisplayContexts countByEnumeratingWithState:&v52 objects:v69 count:16];
     if (v24)
     {
       v25 = v24;
@@ -1081,7 +1081,7 @@ LABEL_76:
         {
           if (*v53 != v27)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(knownDisplayContexts);
           }
 
           if (*(*(&v52 + 1) + 8 * i) != self->_activeDisplayContext)
@@ -1096,7 +1096,7 @@ LABEL_76:
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v52 objects:v69 count:16];
+        v25 = [knownDisplayContexts countByEnumeratingWithState:&v52 objects:v69 count:16];
       }
 
       while (v25);
@@ -1151,7 +1151,7 @@ LABEL_76:
           }
 
           v16 = [v51 stringByAppendingString:@"Outstanding display context fetches are needed after initial hydration"];
-          v21 = self;
+          selfCopy4 = self;
           v22 = 3;
           goto LABEL_76;
         }
@@ -1228,7 +1228,7 @@ LABEL_76:
     v49 = @"All requests for active display context as well as other display contexts are complete.";
 LABEL_75:
     v16 = [v12 stringByAppendingString:v49];
-    v21 = self;
+    selfCopy4 = self;
     v22 = 4;
     goto LABEL_76;
   }
@@ -1394,17 +1394,17 @@ LABEL_30:
 LABEL_33:
 }
 
-- (BOOL)_updateHydrationStateTo:(int64_t)a3 reason:(id)a4
+- (BOOL)_updateHydrationStateTo:(int64_t)to reason:(id)reason
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  reasonCopy = reason;
   if (self->_isInvalidated)
   {
     v7 = PBFLogAssetHelper();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v19 = 134217984;
-      v20 = self;
+      selfCopy3 = self;
       v8 = "(%p) bail _updateHydrationStateTo; invalidated";
       v9 = v7;
       v10 = 12;
@@ -1419,26 +1419,26 @@ LABEL_13:
   assetHydrationState = self->_assetHydrationState;
   v7 = PBFLogAssetHelper();
   v12 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (assetHydrationState == a3)
+  if (assetHydrationState == to)
   {
     if (v12)
     {
-      if ((a3 - 1) > 3)
+      if ((to - 1) > 3)
       {
         v13 = @"PBFPosterGalleryAssetHydrationStateDefault";
       }
 
       else
       {
-        v13 = off_2782C7840[a3 - 1];
+        v13 = off_2782C7840[to - 1];
       }
 
       v19 = 134218498;
-      v20 = self;
+      selfCopy3 = self;
       v21 = 2114;
       v22 = v13;
       v23 = 2114;
-      v24 = v6;
+      v24 = reasonCopy;
       v8 = "(%p) bail _updateHydrationStateTo; state is same '%{public}@' / reason %{public}@";
       v9 = v7;
       v10 = 32;
@@ -1464,28 +1464,28 @@ LABEL_14:
       v15 = off_2782C7840[v14];
     }
 
-    if ((a3 - 1) > 3)
+    if ((to - 1) > 3)
     {
       v17 = @"PBFPosterGalleryAssetHydrationStateDefault";
     }
 
     else
     {
-      v17 = off_2782C7840[a3 - 1];
+      v17 = off_2782C7840[to - 1];
     }
 
     v19 = 134218754;
-    v20 = self;
+    selfCopy3 = self;
     v21 = 2114;
     v22 = v15;
     v23 = 2114;
     v24 = v17;
     v25 = 2114;
-    v26 = v6;
+    v26 = reasonCopy;
     _os_log_impl(&dword_21B526000, v7, OS_LOG_TYPE_INFO, "(%p) bail _updateHydrationStateTo; updating state from %{public}@ to '%{public}@' / reason %{public}@", &v19, 0x2Au);
   }
 
-  self->_assetHydrationState = a3;
+  self->_assetHydrationState = to;
   v16 = 1;
 LABEL_21:
 
@@ -1501,7 +1501,7 @@ LABEL_21:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v58 = self;
+      selfCopy5 = self;
       v4 = "(%p) bail _sizeAssetsForActiveDisplayContext; invalidated";
       v5 = v3;
       v6 = OS_LOG_TYPE_DEFAULT;
@@ -1521,7 +1521,7 @@ LABEL_32:
       {
         v9 = self->_activeDisplayContext;
         *buf = 134218242;
-        v58 = self;
+        selfCopy5 = self;
         v59 = 2114;
         v60 = v9;
         _os_log_impl(&dword_21B526000, v3, OS_LOG_TYPE_INFO, "(%p) _sizeAssetsForActiveDisplayContext for %{public}@", buf, 0x16u);
@@ -1550,19 +1550,19 @@ LABEL_32:
             v12 = *(*(&v52 + 1) + 8 * i);
             v13 = [(NSMapTable *)self->_previewToState objectForKey:v12, v44];
             v14 = [PBFPosterSnapshotDefinition defaultPreviewDefinitionForPreview:v12];
-            v15 = [v13 asset];
-            v16 = [v15 assetViewController];
+            asset = [v13 asset];
+            assetViewController = [asset assetViewController];
 
-            if (v16)
+            if (assetViewController)
             {
-              v17 = [v13 asset];
-              v18 = [v17 assetViewController];
-              [v18 setDisplayContext:self->_activeDisplayContext];
+              asset2 = [v13 asset];
+              assetViewController2 = [asset2 assetViewController];
+              [assetViewController2 setDisplayContext:self->_activeDisplayContext];
 
-              v19 = [v13 asset];
-              v20 = [v19 assetViewController];
-              v21 = [v20 view];
-              v22 = [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:v21 forPreview:v12 displayContext:self->_activeDisplayContext];
+              asset3 = [v13 asset];
+              assetViewController3 = [asset3 assetViewController];
+              view = [assetViewController3 view];
+              v22 = [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:view forPreview:v12 displayContext:self->_activeDisplayContext];
 
               if (v22)
               {
@@ -1572,25 +1572,25 @@ LABEL_32:
 
             else
             {
-              v23 = [v13 snapshotBundleLayoutView];
+              snapshotBundleLayoutView = [v13 snapshotBundleLayoutView];
 
-              if (v23)
+              if (snapshotBundleLayoutView)
               {
                 v24 = [PBFPosterSnapshotContext snapshotContextForDisplayContext:self->_activeDisplayContext definition:v14];
-                v25 = [v13 snapshotBundleLayoutView];
-                v26 = [v13 snapshotCollection];
-                v27 = [v26 receivedSnapshotBundleForContext:v24];
+                snapshotBundleLayoutView2 = [v13 snapshotBundleLayoutView];
+                snapshotCollection = [v13 snapshotCollection];
+                v27 = [snapshotCollection receivedSnapshotBundleForContext:v24];
 
-                if (v27 && v25)
+                if (v27 && snapshotBundleLayoutView2)
                 {
-                  v28 = [v25 snapshotBundle];
-                  v29 = [v28 isEqual:v27];
+                  snapshotBundle = [snapshotBundleLayoutView2 snapshotBundle];
+                  v29 = [snapshotBundle isEqual:v27];
 
                   if ((v29 & 1) == 0)
                   {
                     [v44 addObject:v12];
-                    [v25 setSnapshotBundle:v27];
-                    if ([(PBFPosterGalleryAssetHelper *)self _sizeContainerView:v25 forPreview:v12 displayContext:self->_activeDisplayContext])
+                    [snapshotBundleLayoutView2 setSnapshotBundle:v27];
+                    if ([(PBFPosterGalleryAssetHelper *)self _sizeContainerView:snapshotBundleLayoutView2 forPreview:v12 displayContext:self->_activeDisplayContext])
                     {
                       [v44 addObject:v12];
                     }
@@ -1621,7 +1621,7 @@ LABEL_32:
         {
           v33 = self->_activeDisplayContext;
           *buf = 134218498;
-          v58 = self;
+          selfCopy5 = self;
           v59 = 2114;
           v60 = v33;
           v61 = 2114;
@@ -1677,7 +1677,7 @@ LABEL_32:
       {
         v37 = self->_activeDisplayContext;
         *buf = 134218242;
-        v58 = self;
+        selfCopy5 = self;
         v59 = 2114;
         v60 = v37;
         _os_log_impl(&dword_21B526000, v31, OS_LOG_TYPE_INFO, "(%p) bail _sizeAssetsForActiveDisplayContext for %{public}@; no updated poster previews to notify delegate of", buf, 0x16u);
@@ -1689,7 +1689,7 @@ LABEL_32:
     else if (v8)
     {
       *buf = 134217984;
-      v58 = self;
+      selfCopy5 = self;
       v4 = "(%p) bail _sizeAssetsForActiveDisplayContext; null active display context";
       v5 = v3;
       v6 = OS_LOG_TYPE_INFO;
@@ -1698,10 +1698,10 @@ LABEL_32:
   }
 }
 
-- (void)_stateWasUpdatedForPosterPreviews:(id)a3
+- (void)_stateWasUpdatedForPosterPreviews:(id)previews
 {
   v171 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  previewsCopy = previews;
   BSDispatchQueueAssertMain();
   if (self->_isInvalidated)
   {
@@ -1709,7 +1709,7 @@ LABEL_32:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v158 = self;
+      selfCopy13 = self;
       _os_log_impl(&dword_21B526000, v5, OS_LOG_TYPE_INFO, "(%p) bail _stateWasUpdatedForPosterPreviews; invalidated", buf, 0xCu);
     }
 
@@ -1722,7 +1722,7 @@ LABEL_32:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v158 = self;
+      selfCopy13 = self;
       _os_log_impl(&dword_21B526000, v6, OS_LOG_TYPE_INFO, "(%p) bail _stateWasUpdatedForPosterPreviews; is suspended", buf, 0xCu);
     }
 
@@ -1730,7 +1730,7 @@ LABEL_32:
     v154 = 0u;
     v151 = 0u;
     v152 = 0u;
-    v5 = v4;
+    v5 = previewsCopy;
     v7 = [v5 countByEnumeratingWithState:&v151 objects:v170 count:16];
     if (v7)
     {
@@ -1766,7 +1766,7 @@ LABEL_32:
   v150 = 0u;
   v147 = 0u;
   v148 = 0u;
-  v13 = v4;
+  v13 = previewsCopy;
   v14 = [v13 countByEnumeratingWithState:&v147 objects:v169 count:16];
   if (v14)
   {
@@ -1790,17 +1790,17 @@ LABEL_32:
     while (v15);
   }
 
-  v121 = v4;
+  v121 = previewsCopy;
 
   v122 = objc_opt_new();
-  v18 = [(PBFPosterGalleryAssetHelper *)self activeDisplayContext];
+  activeDisplayContext = [(PBFPosterGalleryAssetHelper *)self activeDisplayContext];
   v143 = 0u;
   v144 = 0u;
   v145 = 0u;
   v146 = 0u;
   obj = v13;
   v19 = [obj countByEnumeratingWithState:&v143 objects:v168 count:16];
-  v123 = v18;
+  v123 = activeDisplayContext;
   if (v19)
   {
     v21 = v19;
@@ -1819,31 +1819,31 @@ LABEL_32:
         }
 
         v23 = *(*(&v143 + 1) + 8 * v22);
-        v24 = [(NSMapTable *)self->_previewToState objectForKey:v23, v120];
-        if (!v24)
+        v120 = [(NSMapTable *)self->_previewToState objectForKey:v23, v120];
+        if (!v120)
         {
-          v24 = [[_PBFPosterGalleryAssetState alloc] initWithPreview:v23];
-          [(NSMapTable *)self->_previewToState setObject:v24 forKey:v23];
-          if (!v18)
+          v120 = [[_PBFPosterGalleryAssetState alloc] initWithPreview:v23];
+          [(NSMapTable *)self->_previewToState setObject:v120 forKey:v23];
+          if (!activeDisplayContext)
           {
             goto LABEL_140;
           }
 
 LABEL_33:
           v25 = [PBFPosterSnapshotDefinition defaultPreviewDefinitionForPreview:v23];
-          v129 = [(_PBFPosterGalleryAssetState *)v24 snapshotCollection];
+          snapshotCollection = [(_PBFPosterGalleryAssetState *)v120 snapshotCollection];
           v127 = v25;
           v128 = [PBFPosterSnapshotContext snapshotContextForDisplayContext:self->_activeDisplayContext definition:v25];
-          v26 = [(_PBFPosterGalleryAssetState *)v24 isVisible];
-          v27 = [(_PBFPosterGalleryAssetState *)v24 shouldPrefetch];
-          if ([(_PBFPosterGalleryAssetState *)v24 willUseLivePreview])
+          isVisible = [(_PBFPosterGalleryAssetState *)v120 isVisible];
+          shouldPrefetch = [(_PBFPosterGalleryAssetState *)v120 shouldPrefetch];
+          if ([(_PBFPosterGalleryAssetState *)v120 willUseLivePreview])
           {
-            v28 = [(_PBFPosterGalleryAssetState *)v24 asset];
-            v29 = [v28 assetViewController];
+            asset = [(_PBFPosterGalleryAssetState *)v120 asset];
+            assetViewController = [asset assetViewController];
 
-            if (v27)
+            if (shouldPrefetch)
             {
-              if (!v29)
+              if (!assetViewController)
               {
                 goto LABEL_41;
               }
@@ -1851,34 +1851,34 @@ LABEL_33:
 
             else
             {
-              if (v29)
+              if (assetViewController)
               {
                 v30 = 0;
               }
 
               else
               {
-                v30 = v26;
+                v30 = isVisible;
               }
 
               if (v30)
               {
 LABEL_41:
                 [(PBFPosterGalleryAssetHelper *)self _setupLiveDisplayStyleForPreview:v23];
-                v31 = [(_PBFPosterGalleryAssetState *)v24 asset];
-                v32 = [v31 assetViewController];
+                asset2 = [(_PBFPosterGalleryAssetState *)v120 asset];
+                assetViewController2 = [asset2 assetViewController];
 
-                v29 = v32;
+                assetViewController = assetViewController2;
               }
             }
 
             v21 = v124;
-            if (v26 & 1 | !-[PBFPosterGalleryAssetHelper _galleryInteractionsAreOngoing](self, "_galleryInteractionsAreOngoing") || ([v29 isVisible] & 1) == 0)
+            if (isVisible & 1 | !-[PBFPosterGalleryAssetHelper _galleryInteractionsAreOngoing](self, "_galleryInteractionsAreOngoing") || ([assetViewController isVisible] & 1) == 0)
             {
-              [v29 setVisible:v26];
+              [assetViewController setVisible:isVisible];
             }
 
-            [v29 setDisplayContext:self->_activeDisplayContext];
+            [assetViewController setDisplayContext:self->_activeDisplayContext];
           }
 
           v33 = PBFLogAssetHelper();
@@ -1892,7 +1892,7 @@ LABEL_41:
             }
 
             *buf = 134218498;
-            v158 = self;
+            selfCopy13 = self;
             v159 = 2114;
             v160 = v77;
             v161 = 2114;
@@ -1918,8 +1918,8 @@ LABEL_41:
                 goto LABEL_104;
               }
 
-              v35 = PBFLogAssetHelper();
-              if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
+              knownDisplayContextWithoutActiveDisplayContext = PBFLogAssetHelper();
+              if (os_log_type_enabled(knownDisplayContextWithoutActiveDisplayContext, OS_LOG_TYPE_DEBUG))
               {
                 v47 = self->_assetHydrationState - 1;
                 v48 = @"PBFPosterGalleryAssetHydrationStateDefault";
@@ -1929,18 +1929,18 @@ LABEL_41:
                 }
 
                 *buf = 134218498;
-                v158 = self;
+                selfCopy13 = self;
                 v159 = 2114;
                 v160 = v48;
                 v161 = 2114;
                 v162 = v23;
-                _os_log_debug_impl(&dword_21B526000, v35, OS_LOG_TYPE_DEBUG, "(%p; %{public}@)  _stateWasUpdatedForPosterPreviews for posterPreview '%{public}@'", buf, 0x20u);
+                _os_log_debug_impl(&dword_21B526000, knownDisplayContextWithoutActiveDisplayContext, OS_LOG_TYPE_DEBUG, "(%p; %{public}@)  _stateWasUpdatedForPosterPreviews for posterPreview '%{public}@'", buf, 0x20u);
               }
 
               goto LABEL_103;
             }
 
-            if (((v26 | v27) & 1) == 0)
+            if (((isVisible | shouldPrefetch) & 1) == 0)
             {
               goto LABEL_104;
             }
@@ -1949,8 +1949,8 @@ LABEL_41:
             v137 = 0u;
             v134 = 0u;
             v135 = 0u;
-            v35 = [(PBFPosterGalleryAssetHelper *)self knownDisplayContextWithoutActiveDisplayContext];
-            v64 = [v35 countByEnumeratingWithState:&v134 objects:v156 count:16];
+            knownDisplayContextWithoutActiveDisplayContext = [(PBFPosterGalleryAssetHelper *)self knownDisplayContextWithoutActiveDisplayContext];
+            v64 = [knownDisplayContextWithoutActiveDisplayContext countByEnumeratingWithState:&v134 objects:v156 count:16];
             if (!v64)
             {
               goto LABEL_103;
@@ -1965,7 +1965,7 @@ LABEL_41:
               {
                 if (*v135 != v66)
                 {
-                  objc_enumerationMutation(v35);
+                  objc_enumerationMutation(knownDisplayContextWithoutActiveDisplayContext);
                 }
 
                 v68 = *(*(&v134 + 1) + 8 * v67);
@@ -1980,7 +1980,7 @@ LABEL_41:
                   }
 
                   *buf = 134218754;
-                  v158 = self;
+                  selfCopy13 = self;
                   v159 = 2114;
                   v160 = v71;
                   v161 = 2114;
@@ -1995,7 +1995,7 @@ LABEL_41:
               }
 
               while (v65 != v67);
-              v72 = [v35 countByEnumeratingWithState:&v134 objects:v156 count:16];
+              v72 = [knownDisplayContextWithoutActiveDisplayContext countByEnumeratingWithState:&v134 objects:v156 count:16];
               v65 = v72;
             }
 
@@ -2011,9 +2011,9 @@ LABEL_41:
                 goto LABEL_104;
               }
 
-              v35 = [v129 invalidateAndRemoveInProgressRequestsNotMatchingDisplayContext:v18];
+              knownDisplayContextWithoutActiveDisplayContext = [snapshotCollection invalidateAndRemoveInProgressRequestsNotMatchingDisplayContext:activeDisplayContext];
               v138 = 0;
-              v49 = [v129 snapshotFutureForContext:v128 outStatus:&v138];
+              v49 = [snapshotCollection snapshotFutureForContext:v128 outStatus:&v138];
               if (v138 != 3)
               {
                 if (v138 == 2)
@@ -2045,14 +2045,14 @@ LABEL_41:
 
                 if (v138 != 1)
                 {
-                  if ([(PBFPosterGalleryAssetHelper *)self _kickoffPreviewGeneratorForPosterPreview:v23 context:v18])
+                  if ([(PBFPosterGalleryAssetHelper *)self _kickoffPreviewGeneratorForPosterPreview:v23 context:activeDisplayContext])
                   {
                     v95 = PBFLogAssetHelper();
                     v96 = os_log_type_enabled(v95, OS_LOG_TYPE_DEBUG);
 
                     if (v96)
                     {
-                      if (v35)
+                      if (knownDisplayContextWithoutActiveDisplayContext)
                       {
                         v97 = PBFLogAssetHelper();
                         if (os_log_type_enabled(v97, OS_LOG_TYPE_DEBUG))
@@ -2065,15 +2065,15 @@ LABEL_41:
                           }
 
                           *buf = v120;
-                          v158 = self;
+                          selfCopy13 = self;
                           v159 = 2114;
                           v160 = v106;
                           v161 = 2114;
                           v162 = v23;
                           v163 = 2114;
-                          v164 = v18;
+                          v164 = activeDisplayContext;
                           v165 = 1024;
-                          v166 = v26;
+                          v166 = isVisible;
                           _os_log_debug_impl(&dword_21B526000, v97, OS_LOG_TYPE_DEBUG, "(%p; %{public}@)  _stateWasUpdatedForPosterPreviews kickOffPreviewGenerator for posterPreview '%{public}@' w/ activeDisplayContext: %{public}@; notifyUpdatedContent? %{BOOL}u", buf, 0x30u);
                         }
                       }
@@ -2107,7 +2107,7 @@ LABEL_41:
 
 LABEL_57:
                 *buf = 134218498;
-                v158 = self;
+                selfCopy13 = self;
                 v159 = 2114;
                 v160 = v42;
                 v161 = 2114;
@@ -2143,7 +2143,7 @@ LABEL_136:
 
 LABEL_135:
               *buf = 134218498;
-              v158 = self;
+              selfCopy13 = self;
               v159 = 2114;
               v160 = v85;
               v161 = 2114;
@@ -2153,11 +2153,11 @@ LABEL_135:
               goto LABEL_136;
             }
 
-            v35 = [v129 invalidateAndRemoveInProgressRequestsNotMatchingDisplayContext:v18];
-            if ((v26 | v27))
+            knownDisplayContextWithoutActiveDisplayContext = [snapshotCollection invalidateAndRemoveInProgressRequestsNotMatchingDisplayContext:activeDisplayContext];
+            if ((isVisible | shouldPrefetch))
             {
               v138 = 0;
-              v36 = [v129 snapshotFutureForContext:v128 outStatus:&v138];
+              v36 = [snapshotCollection snapshotFutureForContext:v128 outStatus:&v138];
               if (v138 != 3)
               {
                 if (v138 != 2)
@@ -2192,12 +2192,12 @@ LABEL_139:
                     goto LABEL_140;
                   }
 
-                  if ([(PBFPosterGalleryAssetHelper *)self _kickoffPreviewGeneratorForPosterPreview:v23 context:v18])
+                  if ([(PBFPosterGalleryAssetHelper *)self _kickoffPreviewGeneratorForPosterPreview:v23 context:activeDisplayContext])
                   {
                     v89 = PBFLogAssetHelper();
                     v90 = os_log_type_enabled(v89, OS_LOG_TYPE_DEBUG);
 
-                    if (v90 && v35)
+                    if (v90 && knownDisplayContextWithoutActiveDisplayContext)
                     {
                       v91 = PBFLogAssetHelper();
                       if (os_log_type_enabled(v91, OS_LOG_TYPE_DEBUG))
@@ -2210,19 +2210,19 @@ LABEL_139:
                         }
 
                         *buf = v120;
-                        v158 = self;
+                        selfCopy13 = self;
                         v159 = 2114;
                         v160 = v104;
                         v161 = 2114;
                         v162 = v23;
                         v163 = 2114;
-                        v164 = v18;
+                        v164 = activeDisplayContext;
                         v165 = 1024;
-                        v166 = v26;
+                        v166 = isVisible;
                         _os_log_debug_impl(&dword_21B526000, v91, OS_LOG_TYPE_DEBUG, "(%p; %{public}@)  _stateWasUpdatedForPosterPreviews kickOffPreviewGenerator for posterPreview '%{public}@' w/ activeDisplayContext: %{public}@; notifyUpdatedContent? %{BOOL}u", buf, 0x30u);
                       }
 
-                      if (v26)
+                      if (isVisible)
                       {
                         goto LABEL_151;
                       }
@@ -2231,7 +2231,7 @@ LABEL_139:
                     else
                     {
 
-                      if (v26)
+                      if (isVisible)
                       {
 LABEL_151:
                         v100 = PBFLogAssetHelper();
@@ -2251,7 +2251,7 @@ LABEL_151:
                             }
 
                             *buf = 134218498;
-                            v158 = self;
+                            selfCopy13 = self;
                             v159 = 2114;
                             v160 = v108;
                             v161 = 2114;
@@ -2283,7 +2283,7 @@ LABEL_104:
                         }
 
                         *buf = 134218498;
-                        v158 = self;
+                        selfCopy13 = self;
                         v159 = 2114;
                         v160 = v99;
                         v161 = 2114;
@@ -2324,7 +2324,7 @@ LABEL_103:
 
 LABEL_114:
                 *buf = 134218498;
-                v158 = self;
+                selfCopy13 = self;
                 v159 = 2114;
                 v160 = v81;
                 v161 = 2114;
@@ -2362,7 +2362,7 @@ LABEL_114:
             v53 = PBFLogAssetHelper();
             v54 = os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG);
 
-            if (!v54 || !v35)
+            if (!v54 || !knownDisplayContextWithoutActiveDisplayContext)
             {
               goto LABEL_103;
             }
@@ -2371,8 +2371,8 @@ LABEL_114:
             v142 = 0u;
             v139 = 0u;
             v140 = 0u;
-            v35 = v35;
-            v55 = [v35 countByEnumeratingWithState:&v139 objects:v167 count:16];
+            knownDisplayContextWithoutActiveDisplayContext = knownDisplayContextWithoutActiveDisplayContext;
+            v55 = [knownDisplayContextWithoutActiveDisplayContext countByEnumeratingWithState:&v139 objects:v167 count:16];
             if (v55)
             {
               v56 = v55;
@@ -2384,7 +2384,7 @@ LABEL_114:
                 {
                   if (*v140 != v57)
                   {
-                    objc_enumerationMutation(v35);
+                    objc_enumerationMutation(knownDisplayContextWithoutActiveDisplayContext);
                   }
 
                   v59 = *(*(&v139 + 1) + 8 * v58);
@@ -2399,7 +2399,7 @@ LABEL_114:
                     }
 
                     *buf = 134218754;
-                    v158 = self;
+                    selfCopy13 = self;
                     v159 = 2114;
                     v160 = v62;
                     v161 = 2114;
@@ -2413,7 +2413,7 @@ LABEL_114:
                 }
 
                 while (v56 != v58);
-                v63 = [v35 countByEnumeratingWithState:&v139 objects:v167 count:16];
+                v63 = [knownDisplayContextWithoutActiveDisplayContext countByEnumeratingWithState:&v139 objects:v167 count:16];
                 v56 = v63;
               }
 
@@ -2421,12 +2421,12 @@ LABEL_114:
             }
           }
 
-          v18 = v123;
+          activeDisplayContext = v123;
           v21 = v124;
           goto LABEL_103;
         }
 
-        if (v18)
+        if (activeDisplayContext)
         {
           goto LABEL_33;
         }
@@ -2445,7 +2445,7 @@ LABEL_140:
   }
 
   v5 = v122;
-  v4 = v121;
+  previewsCopy = v121;
   if ([v122 count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -2495,52 +2495,52 @@ LABEL_140:
 LABEL_177:
 }
 
-- (BOOL)_setupHeroShotsForPosterPreview:(id)a3 context:(id)a4
+- (BOOL)_setupHeroShotsForPosterPreview:(id)preview context:(id)context
 {
   v68 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  previewCopy = preview;
+  contextCopy = context;
   BSDispatchQueueAssertMain();
   if (!self->_isInvalidated)
   {
-    v10 = [(NSMapTable *)self->_previewToState objectForKey:v6];
+    v10 = [(NSMapTable *)self->_previewToState objectForKey:previewCopy];
     v8 = v10;
     if (!v10)
     {
-      v11 = PBFLogAssetHelper();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+      galleryOptions = PBFLogAssetHelper();
+      if (os_log_type_enabled(galleryOptions, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v61 = self;
-        _os_log_impl(&dword_21B526000, v11, OS_LOG_TYPE_INFO, "(%p) bail _setupHeroShotsForPosterPreview; no state", buf, 0xCu);
+        selfCopy7 = self;
+        _os_log_impl(&dword_21B526000, galleryOptions, OS_LOG_TYPE_INFO, "(%p) bail _setupHeroShotsForPosterPreview; no state", buf, 0xCu);
       }
 
       LOBYTE(v9) = 0;
       goto LABEL_56;
     }
 
-    v11 = [v10 galleryOptions];
-    v57 = [v11 galleryAssetLookupInfo];
-    v12 = [v6 posterDescriptorLookupInfo];
-    v13 = [v8 heroMicaPackageView];
-    v58 = [v8 heroImageView];
-    v14 = [v8 heroImage];
+    galleryOptions = [v10 galleryOptions];
+    galleryAssetLookupInfo = [galleryOptions galleryAssetLookupInfo];
+    posterDescriptorLookupInfo = [previewCopy posterDescriptorLookupInfo];
+    heroMicaPackageView = [v8 heroMicaPackageView];
+    heroImageView = [v8 heroImageView];
+    heroImage = [v8 heroImage];
     activeDisplayContext = self->_activeDisplayContext;
     LOBYTE(v9) = 0;
-    v55 = v13;
-    v56 = v12;
-    if (PUIFeatureEnabled() && !v13)
+    v55 = heroMicaPackageView;
+    v56 = posterDescriptorLookupInfo;
+    if (PUIFeatureEnabled() && !heroMicaPackageView)
     {
-      v53 = v11;
-      v15 = [v12 posterDescriptorExtension];
-      v16 = [v15 posterExtensionBundle];
+      v53 = galleryOptions;
+      posterDescriptorExtension = [posterDescriptorLookupInfo posterDescriptorExtension];
+      posterExtensionBundle = [posterDescriptorExtension posterExtensionBundle];
       v59 = 0;
-      v9 = [v57 pbf_micaViewFromBundle:v16 error:&v59];
+      v9 = [galleryAssetLookupInfo pbf_micaViewFromBundle:posterExtensionBundle error:&v59];
       v17 = v59;
 
-      if (v9 || ([MEMORY[0x277CF0D48] pbf_galleryHeroMicaViewForExtension:v15], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (v9 || ([MEMORY[0x277CF0D48] pbf_galleryHeroMicaViewForExtension:posterDescriptorExtension], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        [(PBFPosterGalleryAssetHelper *)self _contentSizeForPreview:v6, activeDisplayContext];
+        [(PBFPosterGalleryAssetHelper *)self _contentSizeForPreview:previewCopy, activeDisplayContext];
         v19 = v18;
         v21 = v20;
         v22 = objc_opt_self();
@@ -2548,17 +2548,17 @@ LABEL_177:
 
         [v23 updatePackageView:v9 contentSize:{v19, v21}];
         [v8 setHeroMicaPackageView:v23];
-        v24 = [v8 asset];
-        [v24 setHeroView:v23];
+        asset = [v8 asset];
+        [asset setHeroView:v23];
 
         LODWORD(v9) = 1;
       }
 
-      v11 = v53;
+      galleryOptions = v53;
       if (v9)
       {
-        v12 = v56;
-        if (v14)
+        posterDescriptorLookupInfo = v56;
+        if (heroImage)
         {
           LOBYTE(v9) = 1;
 LABEL_55:
@@ -2570,7 +2570,7 @@ LABEL_56:
 
       else
       {
-        v12 = v56;
+        posterDescriptorLookupInfo = v56;
       }
     }
 
@@ -2580,13 +2580,13 @@ LABEL_56:
       [PBFPosterGalleryAssetHelper _setupHeroShotsForPosterPreview:context:];
     }
 
-    v26 = [v12 posterDescriptorPath];
-    v27 = [v12 posterDescriptorExtension];
-    v54 = v26;
-    v52 = [v26 descriptorIdentifier];
-    v28 = [MEMORY[0x277D755B8] pbf_galleryHeroSnapshotForExtension:v27 descriptorIdentifier:? displayContext:?];
+    posterDescriptorPath = [posterDescriptorLookupInfo posterDescriptorPath];
+    posterDescriptorExtension2 = [posterDescriptorLookupInfo posterDescriptorExtension];
+    v54 = posterDescriptorPath;
+    descriptorIdentifier = [posterDescriptorPath descriptorIdentifier];
+    v28 = [MEMORY[0x277D755B8] pbf_galleryHeroSnapshotForExtension:posterDescriptorExtension2 descriptorIdentifier:? displayContext:?];
 
-    v14 = v28;
+    heroImage = v28;
     if (!v28)
     {
       v36 = PBFLogAssetHelper();
@@ -2601,7 +2601,7 @@ LABEL_56:
         }
       }
 
-      if (!v11 || ([v27 posterExtensionBundle], v39 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v57, "pbf_imageFromBundle:displayContext:error:", v39, v7, 0), v14 = objc_claimAutoreleasedReturnValue(), v39, !v14))
+      if (!galleryOptions || ([posterDescriptorExtension2 posterExtensionBundle], v39 = objc_claimAutoreleasedReturnValue(), objc_msgSend(galleryAssetLookupInfo, "pbf_imageFromBundle:displayContext:error:", v39, contextCopy, 0), heroImage = objc_claimAutoreleasedReturnValue(), v39, !heroImage))
       {
         v49 = PBFLogAssetHelper();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
@@ -2609,7 +2609,7 @@ LABEL_56:
           [PBFPosterGalleryAssetHelper _setupHeroShotsForPosterPreview:context:];
         }
 
-        v14 = 0;
+        heroImage = 0;
         goto LABEL_54;
       }
 
@@ -2623,26 +2623,26 @@ LABEL_56:
     v29 = PBFLogAssetHelper();
     v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG);
 
-    v31 = v58;
+    v31 = heroImageView;
     if (v30)
     {
       v32 = PBFLogAssetHelper();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218754;
-        v61 = self;
+        selfCopy7 = self;
         v62 = 2114;
-        v63 = v6;
+        v63 = previewCopy;
         v64 = 2114;
-        v65 = v7;
+        v65 = contextCopy;
         v66 = 1024;
-        v67 = activeDisplayContext == v7;
+        v67 = activeDisplayContext == contextCopy;
         _os_log_debug_impl(&dword_21B526000, v32, OS_LOG_TYPE_DEBUG, "(%p) _setupHeroShotsForPosterPreview; hero image hydrated already for %{public}@ && context %{public}@; isActiveContext: %{BOOL}u", buf, 0x26u);
       }
     }
 
-    [v8 setHeroImage:v14, activeDisplayContext];
-    if (v58)
+    [v8 setHeroImage:heroImage, activeDisplayContext];
+    if (heroImageView)
     {
       v33 = PBFLogAssetHelper();
       v34 = os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG);
@@ -2653,25 +2653,25 @@ LABEL_56:
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
         {
           *buf = 134218498;
-          v61 = self;
+          selfCopy7 = self;
           v62 = 2114;
-          v63 = v6;
+          v63 = previewCopy;
           v64 = 2114;
-          v65 = v7;
+          v65 = contextCopy;
           _os_log_debug_impl(&dword_21B526000, v35, OS_LOG_TYPE_DEBUG, "(%p) _setupHeroShotsForPosterPreview; updating image view for %{public}@ && context %{public}@;", buf, 0x20u);
         }
       }
 
-      [(PBFPosterGalleryAssetHelper *)self _contentSizeForPreview:v6];
-      [v58 updateImage:v14 imageSize:?];
+      [(PBFPosterGalleryAssetHelper *)self _contentSizeForPreview:previewCopy];
+      [heroImageView updateImage:heroImage imageSize:?];
     }
 
     else
     {
-      v31 = [(PBFPosterGalleryAssetHelper *)self _newImageViewWithImage:v14 posterPreview:v6];
+      v31 = [(PBFPosterGalleryAssetHelper *)self _newImageViewWithImage:heroImage posterPreview:previewCopy];
       [v8 setHeroImageView:v31];
-      v41 = [v8 asset];
-      [v41 setHeroView:v31];
+      asset2 = [v8 asset];
+      [asset2 setHeroView:v31];
 
       v42 = PBFLogAssetHelper();
       v43 = os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG);
@@ -2682,18 +2682,18 @@ LABEL_56:
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
         {
           *buf = 134218498;
-          v61 = self;
+          selfCopy7 = self;
           v62 = 2114;
-          v63 = v6;
+          v63 = previewCopy;
           v64 = 2114;
-          v65 = v7;
+          v65 = contextCopy;
           _os_log_debug_impl(&dword_21B526000, v44, OS_LOG_TYPE_DEBUG, "(%p) _setupHeroShotsForPosterPreview; new image view created for %{public}@ && context %{public}@;", buf, 0x20u);
         }
       }
     }
 
-    v58 = v31;
-    v45 = [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:v31 forPreview:v6 displayContext:v7];
+    heroImageView = v31;
+    v45 = [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:v31 forPreview:previewCopy displayContext:contextCopy];
     v46 = PBFLogAssetHelper();
     v47 = os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG);
 
@@ -2703,11 +2703,11 @@ LABEL_56:
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218754;
-        v61 = self;
+        selfCopy7 = self;
         v62 = 2114;
-        v63 = v6;
+        v63 = previewCopy;
         v64 = 2114;
-        v65 = v7;
+        v65 = contextCopy;
         v66 = 1024;
         v67 = v45;
         _os_log_debug_impl(&dword_21B526000, v48, OS_LOG_TYPE_DEBUG, "(%p) _setupHeroShotsForPosterPreview; finished updating image view for %{public}@ && context %{public}@; notifyDidUpdateContent: %{BOOL}u", buf, 0x26u);
@@ -2718,18 +2718,18 @@ LABEL_56:
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218498;
-      v61 = self;
+      selfCopy7 = self;
       v62 = 2114;
-      v63 = v6;
+      v63 = previewCopy;
       v64 = 2114;
-      v65 = v7;
+      v65 = contextCopy;
       _os_log_debug_impl(&dword_21B526000, v49, OS_LOG_TYPE_DEBUG, "(%p) _setupHeroShotsForPosterPreview; stashing generated image for %{public}@ && context %{public}@; and marking notifyDidUpdateContent", buf, 0x20u);
     }
 
     LOBYTE(v9) = 1;
 LABEL_54:
 
-    v12 = v56;
+    posterDescriptorLookupInfo = v56;
     goto LABEL_55;
   }
 
@@ -2737,7 +2737,7 @@ LABEL_54:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v61 = self;
+    selfCopy7 = self;
     _os_log_impl(&dword_21B526000, v8, OS_LOG_TYPE_INFO, "(%p) bail _setupHeroShotsForPosterPreview; invalidated", buf, 0xCu);
   }
 
@@ -2747,11 +2747,11 @@ LABEL_57:
   return v9;
 }
 
-- (BOOL)_kickoffPreviewGeneratorForPosterPreview:(id)a3 context:(id)a4
+- (BOOL)_kickoffPreviewGeneratorForPosterPreview:(id)preview context:(id)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  previewCopy = preview;
+  contextCopy = context;
   BSDispatchQueueAssertMain();
   if (self->_isInvalidated)
   {
@@ -2759,7 +2759,7 @@ LABEL_57:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v30 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_21B526000, v8, OS_LOG_TYPE_INFO, "(%p) bail _kickoffPreviewGeneratorForPosterPreview; invalidated", buf, 0xCu);
     }
 
@@ -2768,56 +2768,56 @@ LABEL_57:
 
   else
   {
-    v10 = [(NSMapTable *)self->_previewToState objectForKey:v6];
+    v10 = [(NSMapTable *)self->_previewToState objectForKey:previewCopy];
     v8 = v10;
     if (v10)
     {
-      v11 = [v10 snapshotCollection];
-      v12 = [PBFPosterSnapshotDefinition defaultPreviewDefinitionForPreview:v6];
+      snapshotCollection = [v10 snapshotCollection];
+      v12 = [PBFPosterSnapshotDefinition defaultPreviewDefinitionForPreview:previewCopy];
       activeDisplayContext = self->_activeDisplayContext;
-      v14 = [v6 type];
-      v15 = [v14 isEqual:PBFPreviewTypeHero];
+      type = [previewCopy type];
+      v15 = [type isEqual:PBFPreviewTypeHero];
 
       if (v15)
       {
-        v9 = [(PBFPosterGalleryAssetHelper *)self _setupHeroShotsForPosterPreview:v6 context:v7];
+        v9 = [(PBFPosterGalleryAssetHelper *)self _setupHeroShotsForPosterPreview:previewCopy context:contextCopy];
       }
 
       else
       {
-        v16 = [PBFPosterSnapshotContext snapshotContextForDisplayContext:v7 definition:v12];
-        if ([v11 shouldProceedFetchingSnapshotForContext:v16 maxNumberOfRetryAfterErrors:3])
+        v16 = [PBFPosterSnapshotContext snapshotContextForDisplayContext:contextCopy definition:v12];
+        if ([snapshotCollection shouldProceedFetchingSnapshotForContext:v16 maxNumberOfRetryAfterErrors:3])
         {
           v17 = PBFLogAssetHelper();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
             *buf = 134218754;
-            v30 = self;
+            selfCopy3 = self;
             v31 = 2114;
-            v32 = v6;
+            v32 = previewCopy;
             v33 = 2114;
-            v34 = v7;
+            v34 = contextCopy;
             v35 = 1024;
-            v36 = activeDisplayContext == v7;
+            v36 = activeDisplayContext == contextCopy;
             _os_log_impl(&dword_21B526000, v17, OS_LOG_TYPE_INFO, "(%p) _kickoffPreviewGeneratorForPosterPreview; no image found for %{public}@ / default definition; kicking off image request for display context %{public}@, isActiveDisplayContext? %{BOOL}u", buf, 0x26u);
           }
 
           objc_initWeak(buf, self);
-          v23 = [PBFPosterSnapshotRequest snapshotRequestForPreview:v6 context:v7 definition:v12];
+          v23 = [PBFPosterSnapshotRequest snapshotRequestForPreview:previewCopy context:contextCopy definition:v12];
           WeakRetained = objc_loadWeakRetained(&self->_previewGenerator);
           v19 = [WeakRetained snapshotBundleForRequest:v23];
 
-          v20 = [v11 trackRequestForContext:v16 future:v19];
+          v20 = [snapshotCollection trackRequestForContext:v16 future:v19];
           v24[0] = MEMORY[0x277D85DD0];
           v24[1] = 3221225472;
           v24[2] = __80__PBFPosterGalleryAssetHelper__kickoffPreviewGeneratorForPosterPreview_context___block_invoke;
           v24[3] = &unk_2782C77B0;
           objc_copyWeak(&v28, buf);
-          v25 = v6;
-          v26 = v7;
+          v25 = previewCopy;
+          v26 = contextCopy;
           v27 = v16;
-          v21 = [MEMORY[0x277D3EC60] mainThreadScheduler];
-          [v20 addCompletionBlock:v24 scheduler:v21];
+          mainThreadScheduler = [MEMORY[0x277D3EC60] mainThreadScheduler];
+          [v20 addCompletionBlock:v24 scheduler:mainThreadScheduler];
 
           objc_destroyWeak(&v28);
           objc_destroyWeak(buf);
@@ -2829,12 +2829,12 @@ LABEL_57:
 
     else
     {
-      v11 = PBFLogAssetHelper();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+      snapshotCollection = PBFLogAssetHelper();
+      if (os_log_type_enabled(snapshotCollection, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v30 = self;
-        _os_log_impl(&dword_21B526000, v11, OS_LOG_TYPE_INFO, "(%p) bail _kickoffPreviewGeneratorForPosterPreview; no state", buf, 0xCu);
+        selfCopy3 = self;
+        _os_log_impl(&dword_21B526000, snapshotCollection, OS_LOG_TYPE_INFO, "(%p) bail _kickoffPreviewGeneratorForPosterPreview; no state", buf, 0xCu);
       }
 
       v9 = 0;
@@ -2893,19 +2893,19 @@ void __80__PBFPosterGalleryAssetHelper__kickoffPreviewGeneratorForPosterPreview_
   }
 }
 
-- (id)_newImageViewWithImage:(id)a3 posterPreview:(id)a4
+- (id)_newImageViewWithImage:(id)image posterPreview:(id)preview
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  previewCopy = preview;
   if (self->_isInvalidated)
   {
-    v8 = PBFLogAssetHelper();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    posterDescriptorLookupInfo = PBFLogAssetHelper();
+    if (os_log_type_enabled(posterDescriptorLookupInfo, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v27 = self;
-      _os_log_impl(&dword_21B526000, v8, OS_LOG_TYPE_INFO, "(%p) bail _newImageViewWithImage; invalidated", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_21B526000, posterDescriptorLookupInfo, OS_LOG_TYPE_INFO, "(%p) bail _newImageViewWithImage; invalidated", buf, 0xCu);
     }
 
     v9 = 0;
@@ -2913,23 +2913,23 @@ void __80__PBFPosterGalleryAssetHelper__kickoffPreviewGeneratorForPosterPreview_
 
   else
   {
-    [(PBFPosterGalleryAssetHelper *)self _contentSizeForPreview:v7];
+    [(PBFPosterGalleryAssetHelper *)self _contentSizeForPreview:previewCopy];
     v11 = v10;
     v13 = v12;
-    v14 = [(PBFPosterGalleryAssetHelper *)self reusableViewMap];
+    reusableViewMap = [(PBFPosterGalleryAssetHelper *)self reusableViewMap];
     v15 = objc_opt_self();
-    v9 = [v14 viewOfClass:v15];
+    v9 = [reusableViewMap viewOfClass:v15];
 
     [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v9 updateImage:v6 imageSize:{v11, v13}];
-    v8 = [v7 posterDescriptorLookupInfo];
-    v16 = [v8 posterDescriptorExtension];
-    v17 = [v16 posterExtensionBundleIdentifier];
+    [v9 updateImage:imageCopy imageSize:{v11, v13}];
+    posterDescriptorLookupInfo = [previewCopy posterDescriptorLookupInfo];
+    posterDescriptorExtension = [posterDescriptorLookupInfo posterDescriptorExtension];
+    posterExtensionBundleIdentifier = [posterDescriptorExtension posterExtensionBundleIdentifier];
 
-    v18 = [v8 posterDescriptorPath];
-    v19 = [v18 descriptorIdentifier];
+    posterDescriptorPath = [posterDescriptorLookupInfo posterDescriptorPath];
+    descriptorIdentifier = [posterDescriptorPath descriptorIdentifier];
 
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v17, v19];
+    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", posterExtensionBundleIdentifier, descriptorIdentifier];
     [v9 setAccessibilityIdentifier:v20];
     v21 = PBFLogAssetHelper();
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG);
@@ -2943,9 +2943,9 @@ void __80__PBFPosterGalleryAssetHelper__kickoffPreviewGeneratorForPosterPreview_
         v35.height = v13;
         v25 = NSStringFromCGSize(v35);
         *buf = 134218754;
-        v27 = self;
+        selfCopy2 = self;
         v28 = 2114;
-        v29 = v7;
+        v29 = previewCopy;
         v30 = 2114;
         v31 = v20;
         v32 = 2114;
@@ -2958,10 +2958,10 @@ void __80__PBFPosterGalleryAssetHelper__kickoffPreviewGeneratorForPosterPreview_
   return v9;
 }
 
-- (CGSize)_contentSizeForPreview:(id)a3
+- (CGSize)_contentSizeForPreview:(id)preview
 {
-  v4 = [a3 type];
-  v5 = [v4 isEqual:PBFPreviewTypeHero];
+  type = [preview type];
+  v5 = [type isEqual:PBFPreviewTypeHero];
 
   activeDisplayContextSpec = self->_activeDisplayContextSpec;
   if (v5)
@@ -2973,9 +2973,9 @@ void __80__PBFPosterGalleryAssetHelper__kickoffPreviewGeneratorForPosterPreview_
 
   else
   {
-    v10 = [(PBFDisplayContext *)self->_activeDisplayContext pbf_interfaceOrientation];
+    pbf_interfaceOrientation = [(PBFDisplayContext *)self->_activeDisplayContext pbf_interfaceOrientation];
 
-    [(PBFPosterGalleryViewSpec *)activeDisplayContextSpec posterContentSizeForOrientation:v10];
+    [(PBFPosterGalleryViewSpec *)activeDisplayContextSpec posterContentSizeForOrientation:pbf_interfaceOrientation];
   }
 
   result.height = v9;
@@ -2983,14 +2983,14 @@ void __80__PBFPosterGalleryAssetHelper__kickoffPreviewGeneratorForPosterPreview_
   return result;
 }
 
-- (BOOL)_sizeContainerView:(id)a3 forPreview:(id)a4 displayContext:(id)a5
+- (BOOL)_sizeContainerView:(id)view forPreview:(id)preview displayContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  viewCopy = view;
+  previewCopy = preview;
+  contextCopy = context;
+  v11 = contextCopy;
+  if (viewCopy)
   {
     if (self->_isInvalidated)
     {
@@ -2998,15 +2998,15 @@ void __80__PBFPosterGalleryAssetHelper__kickoffPreviewGeneratorForPosterPreview_
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v24 = 134217984;
-        v25 = self;
+        selfCopy = self;
         _os_log_impl(&dword_21B526000, v12, OS_LOG_TYPE_DEFAULT, "(%p) bail _sizeContainerView; invalidated", &v24, 0xCu);
       }
     }
 
-    else if (self->_activeDisplayContext == v10)
+    else if (self->_activeDisplayContext == contextCopy)
     {
-      v13 = [v9 type];
-      v14 = [v13 isEqual:PBFPreviewTypeHero];
+      type = [previewCopy type];
+      v14 = [type isEqual:PBFPreviewTypeHero];
 
       activeDisplayContextSpec = self->_activeDisplayContextSpec;
       if (v14)
@@ -3021,11 +3021,11 @@ void __80__PBFPosterGalleryAssetHelper__kickoffPreviewGeneratorForPosterPreview_
 
       v18 = v16;
       v19 = v17;
-      [v8 frame];
+      [viewCopy frame];
       if (v21 != v18 || v20 != v19)
       {
-        [v8 setFrame:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v18, v19}];
-        [v8 setNeedsLayout];
+        [viewCopy setFrame:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v18, v19}];
+        [viewCopy setNeedsLayout];
         v22 = 1;
         goto LABEL_13;
       }
@@ -3038,79 +3038,79 @@ LABEL_13:
   return v22;
 }
 
-- (void)_receiveUpdatedAssetForPosterPreview:(id)a3 snapshotContext:(id)a4 snapshotBundle:(id)a5 fetchError:(id)a6
+- (void)_receiveUpdatedAssetForPosterPreview:(id)preview snapshotContext:(id)context snapshotBundle:(id)bundle fetchError:(id)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  previewCopy = preview;
+  contextCopy = context;
+  bundleCopy = bundle;
+  errorCopy = error;
   BSDispatchQueueAssertMain();
   if (!self->_isInvalidated)
   {
-    v14 = [(NSMapTable *)self->_previewToState objectForKey:v10];
+    v14 = [(NSMapTable *)self->_previewToState objectForKey:previewCopy];
     if (!v14)
     {
-      v15 = PBFLogAssetHelper();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+      displayContext = PBFLogAssetHelper();
+      if (os_log_type_enabled(displayContext, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v53 = self;
-        _os_log_impl(&dword_21B526000, v15, OS_LOG_TYPE_INFO, "(%p) bail _receiveUpdatedAssetForPosterPreview; no state", buf, 0xCu);
+        selfCopy7 = self;
+        _os_log_impl(&dword_21B526000, displayContext, OS_LOG_TYPE_INFO, "(%p) bail _receiveUpdatedAssetForPosterPreview; no state", buf, 0xCu);
       }
 
       goto LABEL_48;
     }
 
-    [(PBFPosterGalleryAssetHelper *)self _invalidateHistogramCacheForPosterPreview:v10];
-    v15 = [v11 displayContext];
-    v16 = [v14 snapshotCollection];
+    [(PBFPosterGalleryAssetHelper *)self _invalidateHistogramCacheForPosterPreview:previewCopy];
+    displayContext = [contextCopy displayContext];
+    snapshotCollection = [v14 snapshotCollection];
     v51 = 0;
-    v17 = [v16 snapshotFutureForContext:v11 outStatus:&v51];
+    v17 = [snapshotCollection snapshotFutureForContext:contextCopy outStatus:&v51];
     if (v51 != 3)
     {
       v23 = PBFLogAssetHelper();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v53 = self;
+        selfCopy7 = self;
         _os_log_impl(&dword_21B526000, v23, OS_LOG_TYPE_INFO, "(%p) bail _receiveUpdatedAssetForPosterPreview; request was cancelled", buf, 0xCu);
       }
 
       goto LABEL_47;
     }
 
-    v50 = v16;
-    if (!v12 || v13)
+    v50 = snapshotCollection;
+    if (!bundleCopy || errorCopy)
     {
-      v24 = [v13 pbf_isGeneralCancelledError];
+      pbf_isGeneralCancelledError = [errorCopy pbf_isGeneralCancelledError];
       v25 = PBFLogAssetHelper();
       v26 = v25;
-      if (v24)
+      if (pbf_isGeneralCancelledError)
       {
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218498;
-          v53 = self;
+          selfCopy7 = self;
           v54 = 2114;
-          v55 = v10;
+          v55 = previewCopy;
           v56 = 2114;
-          v57 = v13;
+          v57 = errorCopy;
           _os_log_impl(&dword_21B526000, v26, OS_LOG_TYPE_DEFAULT, "(%p) _receiveUpdatedAssetForPosterPreview; request was cancelled for preview %{public}@: %{public}@", buf, 0x20u);
         }
 
-        v26 = [MEMORY[0x277CBEB98] setWithObject:v10];
+        v26 = [MEMORY[0x277CBEB98] setWithObject:previewCopy];
         [(PBFPosterGalleryAssetHelper *)self _stateWasUpdatedForPosterPreviews:v26];
       }
 
       else if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218498;
-        v53 = self;
+        selfCopy7 = self;
         v54 = 2114;
-        v55 = v10;
+        v55 = previewCopy;
         v56 = 2114;
-        v57 = v13;
+        v57 = errorCopy;
         _os_log_error_impl(&dword_21B526000, v26, OS_LOG_TYPE_ERROR, "(%p) _receiveUpdatedAssetForPosterPreview; request failed for preview %{public}@ with error: %{public}@", buf, 0x20u);
       }
     }
@@ -3122,29 +3122,29 @@ LABEL_13:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         *buf = 134218498;
-        v53 = self;
+        selfCopy7 = self;
         v54 = 2114;
-        v55 = v10;
+        v55 = previewCopy;
         v56 = 2114;
-        v57 = v12;
+        v57 = bundleCopy;
         _os_log_impl(&dword_21B526000, v19, OS_LOG_TYPE_INFO, "(%p) _receiveUpdatedAssetForPosterPreview; preview %{public}@ received snapshot bundle %{public}@", buf, 0x20u);
       }
 
-      if (v15 == activeDisplayContext)
+      if (displayContext == activeDisplayContext)
       {
         v20 = PBFLogAssetHelper();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
           *buf = 134218242;
-          v53 = self;
+          selfCopy7 = self;
           v54 = 2114;
-          v55 = v10;
+          v55 = previewCopy;
           _os_log_impl(&dword_21B526000, v20, OS_LOG_TYPE_INFO, "(%p) _receiveUpdatedAssetForPosterPreview; preview %{public}@ received active display context image; updating image views", buf, 0x16u);
         }
 
-        v21 = [v14 snapshotBundleLayoutView];
-        v22 = [v14 snapshotBundleLayoutView];
-        if (v22)
+        snapshotBundleLayoutView = [v14 snapshotBundleLayoutView];
+        snapshotBundleLayoutView2 = [v14 snapshotBundleLayoutView];
+        if (snapshotBundleLayoutView2)
         {
         }
 
@@ -3163,10 +3163,10 @@ LABEL_13:
           goto LABEL_57;
         }
 
-        v49 = v21;
-        v38 = [v14 snapshotBundleLayoutView];
-        v39 = [v38 snapshotBundle];
-        v40 = [v39 isEqual:v12];
+        v49 = snapshotBundleLayoutView;
+        snapshotBundleLayoutView3 = [v14 snapshotBundleLayoutView];
+        snapshotBundle = [snapshotBundleLayoutView3 snapshotBundle];
+        v40 = [snapshotBundle isEqual:bundleCopy];
 
         if (v40)
         {
@@ -3174,8 +3174,8 @@ LABEL_13:
           goto LABEL_58;
         }
 
-        v42 = [v14 snapshotBundleLayoutView];
-        [v42 setSnapshotBundle:v12];
+        snapshotBundleLayoutView4 = [v14 snapshotBundleLayoutView];
+        [snapshotBundleLayoutView4 setSnapshotBundle:bundleCopy];
 
         v43 = v49;
 LABEL_57:
@@ -3183,13 +3183,13 @@ LABEL_57:
         [PBFPosterGalleryAssetHelper _sizeContainerView:"_sizeContainerView:forPreview:displayContext:" forPreview:? displayContext:?];
         v41 = 1;
 LABEL_58:
-        v46 = [v14 asset];
-        v47 = [v46 assetViewController];
+        asset = [v14 asset];
+        assetViewController = [asset assetViewController];
 
-        if (v47 && [v47 setSnapshotBundle:v12 forDisplayContext:v15])
+        if (assetViewController && [assetViewController setSnapshotBundle:bundleCopy forDisplayContext:displayContext])
         {
-          v48 = [v47 view];
-          [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:v48 forPreview:v10 displayContext:v15];
+          view = [assetViewController view];
+          [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:view forPreview:previewCopy displayContext:displayContext];
 
           v41 = 1;
         }
@@ -3208,12 +3208,12 @@ LABEL_28:
           }
         }
 
-        if ([v14 isVisible]&& (v15 != self->_activeDisplayContext ? (v31 = 1) : (v31 = v27), (v31 & 1) == 0))
+        if ([v14 isVisible]&& (displayContext != self->_activeDisplayContext ? (v31 = 1) : (v31 = v27), (v31 & 1) == 0))
         {
           v35 = PBFLogAssetHelper();
           v36 = os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG);
 
-          v16 = v50;
+          snapshotCollection = v50;
           if (v36)
           {
             v37 = PBFLogAssetHelper();
@@ -3224,7 +3224,7 @@ LABEL_28:
           }
 
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
-          [WeakRetained assetHelper:self didUpdateAssetsForPosterPreview:v10];
+          [WeakRetained assetHelper:self didUpdateAssetsForPosterPreview:previewCopy];
         }
 
         else
@@ -3232,7 +3232,7 @@ LABEL_28:
           v32 = PBFLogAssetHelper();
           v33 = os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG);
 
-          v16 = v50;
+          snapshotCollection = v50;
           if (!v33)
           {
 LABEL_46:
@@ -3262,24 +3262,24 @@ LABEL_48:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v53 = self;
+    selfCopy7 = self;
     _os_log_impl(&dword_21B526000, v14, OS_LOG_TYPE_DEFAULT, "(%p) bail _receiveUpdatedAssetForPosterPreview; invalidated", buf, 0xCu);
   }
 
 LABEL_49:
 }
 
-- (void)_teardownStateForPosterPreviews:(id)a3
+- (void)_teardownStateForPosterPreviews:(id)previews
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  previewsCopy = previews;
   BSDispatchQueueAssertMain();
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v13 = v4;
-  v5 = [v4 copy];
+  v13 = previewsCopy;
+  v5 = [previewsCopy copy];
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v6)
   {
@@ -3308,7 +3308,7 @@ LABEL_49:
           if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
           {
             *buf = 134218242;
-            v19 = self;
+            selfCopy = self;
             v20 = 2114;
             v21 = v10;
             _os_log_impl(&dword_21B526000, v12, OS_LOG_TYPE_INFO, "(%p) bail _teardownStateForPosterPreviews; bail teardown for %{public}@; no state", buf, 0x16u);
@@ -3323,91 +3323,91 @@ LABEL_49:
   }
 }
 
-- (void)_teardownState:(id)a3
+- (void)_teardownState:(id)state
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   BSDispatchQueueAssertMain();
   v5 = PBFLogAssetHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 preview];
+    preview = [stateCopy preview];
     v21 = 134218242;
-    v22 = self;
+    selfCopy4 = self;
     v23 = 2114;
-    v24 = v6;
+    v24 = preview;
     _os_log_impl(&dword_21B526000, v5, OS_LOG_TYPE_INFO, "(%p) bail _teardownState; %{public}@", &v21, 0x16u);
   }
 
-  if ([v4 willUseLivePreview])
+  if ([stateCopy willUseLivePreview])
   {
     v7 = PBFLogAssetHelper();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v4 preview];
+      preview2 = [stateCopy preview];
       v21 = 134218242;
-      v22 = self;
+      selfCopy4 = self;
       v23 = 2114;
-      v24 = v8;
+      v24 = preview2;
       _os_log_impl(&dword_21B526000, v7, OS_LOG_TYPE_INFO, "(%p) _teardownState; %{public}@; tearing down live view controller", &v21, 0x16u);
     }
 
-    [(PBFPosterGalleryAssetHelper *)self _teardownLiveViewControllerForState:v4 invalidate:1];
+    [(PBFPosterGalleryAssetHelper *)self _teardownLiveViewControllerForState:stateCopy invalidate:1];
   }
 
-  v9 = [v4 heroImageView];
+  heroImageView = [stateCopy heroImageView];
 
-  if (v9)
+  if (heroImageView)
   {
     v10 = PBFLogAssetHelper();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v4 preview];
+      preview3 = [stateCopy preview];
       v21 = 134218242;
-      v22 = self;
+      selfCopy4 = self;
       v23 = 2114;
-      v24 = v11;
+      v24 = preview3;
       _os_log_impl(&dword_21B526000, v10, OS_LOG_TYPE_INFO, "(%p) _teardownState; %{public}@; tearing down previewImageView", &v21, 0x16u);
     }
 
-    v12 = [v4 heroImageView];
-    [v12 updateImage:0 imageSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+    heroImageView2 = [stateCopy heroImageView];
+    [heroImageView2 updateImage:0 imageSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
 
-    v13 = [v4 heroImageView];
-    [(PBFPosterGalleryAssetHelper *)self _recycleView:v13];
-    [v4 setHeroImageView:0];
+    heroImageView3 = [stateCopy heroImageView];
+    [(PBFPosterGalleryAssetHelper *)self _recycleView:heroImageView3];
+    [stateCopy setHeroImageView:0];
   }
 
-  v14 = [v4 snapshotBundleLayoutView];
+  snapshotBundleLayoutView = [stateCopy snapshotBundleLayoutView];
 
-  if (v14)
+  if (snapshotBundleLayoutView)
   {
     v15 = PBFLogAssetHelper();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [v4 preview];
+      preview4 = [stateCopy preview];
       v21 = 134218242;
-      v22 = self;
+      selfCopy4 = self;
       v23 = 2114;
-      v24 = v16;
+      v24 = preview4;
       _os_log_impl(&dword_21B526000, v15, OS_LOG_TYPE_INFO, "(%p) _teardownState; %{public}@; tearing down previewImageView", &v21, 0x16u);
     }
 
-    v17 = [v4 snapshotBundleLayoutView];
-    [(PBFPosterGalleryAssetHelper *)self _recycleView:v17];
+    snapshotBundleLayoutView2 = [stateCopy snapshotBundleLayoutView];
+    [(PBFPosterGalleryAssetHelper *)self _recycleView:snapshotBundleLayoutView2];
 
-    [v4 setSnapshotBundleLayoutView:0];
+    [stateCopy setSnapshotBundleLayoutView:0];
   }
 
-  v18 = [v4 snapshotCollection];
-  [v18 cancel];
+  snapshotCollection = [stateCopy snapshotCollection];
+  [snapshotCollection cancel];
 
   visibleStatesWithLivePreviewEnabled = self->_visibleStatesWithLivePreviewEnabled;
-  v20 = [v4 preview];
-  [(NSMapTable *)visibleStatesWithLivePreviewEnabled removeObjectForKey:v20];
+  preview5 = [stateCopy preview];
+  [(NSMapTable *)visibleStatesWithLivePreviewEnabled removeObjectForKey:preview5];
 
-  [(NSHashTable *)self->_alreadyPlayedLivePosters removeObject:v4];
-  [(NSHashTable *)self->_successfullyPlayedLivePosters removeObject:v4];
+  [(NSHashTable *)self->_alreadyPlayedLivePosters removeObject:stateCopy];
+  [(NSHashTable *)self->_successfullyPlayedLivePosters removeObject:stateCopy];
   [(PBFPosterGalleryAssetHelper *)self _updateActivePosters];
 }
 
@@ -3426,7 +3426,7 @@ LABEL_49:
     }
 
     v6 = 134218498;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
     v9 = v5;
     v10 = 2114;
@@ -3452,17 +3452,17 @@ void __51__PBFPosterGalleryAssetHelper__updateActivePosters__block_invoke_2(uint
   [WeakRetained _updateActivePostersAfterFinishingExecuting:*(a1 + 32) successfully:a3 == 0];
 }
 
-- (void)_updateActivePostersAfterFinishingExecuting:(id)a3 successfully:(BOOL)a4
+- (void)_updateActivePostersAfterFinishingExecuting:(id)executing successfully:(BOOL)successfully
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  successfullyCopy = successfully;
+  executingCopy = executing;
+  if (executingCopy)
   {
-    [(NSHashTable *)self->_alreadyPlayedLivePosters addObject:v6];
-    [(NSMutableSet *)self->_executingLivePosterStates removeObject:v6];
-    if (v4)
+    [(NSHashTable *)self->_alreadyPlayedLivePosters addObject:executingCopy];
+    [(NSMutableSet *)self->_executingLivePosterStates removeObject:executingCopy];
+    if (successfullyCopy)
     {
-      [(NSHashTable *)self->_successfullyPlayedLivePosters addObject:v6];
+      [(NSHashTable *)self->_successfullyPlayedLivePosters addObject:executingCopy];
     }
   }
 
@@ -3470,11 +3470,11 @@ void __51__PBFPosterGalleryAssetHelper__updateActivePosters__block_invoke_2(uint
   [(PBFPosterGalleryAssetHelper *)self performSelector:sel__updateActivePosters withObject:0 afterDelay:0.0];
 }
 
-- (id)_dequeueViewOfClass:(Class)a3
+- (id)_dequeueViewOfClass:(Class)class
 {
-  v4 = [(PBFPosterGalleryAssetHelper *)self reusableViewMap];
-  v5 = v4;
-  if (!v4 || ([v4 viewOfClass:a3], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  reusableViewMap = [(PBFPosterGalleryAssetHelper *)self reusableViewMap];
+  v5 = reusableViewMap;
+  if (!reusableViewMap || ([reusableViewMap viewOfClass:class], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v6 = objc_opt_new();
   }
@@ -3482,22 +3482,22 @@ void __51__PBFPosterGalleryAssetHelper__updateActivePosters__block_invoke_2(uint
   return v6;
 }
 
-- (void)_recycleView:(id)a3
+- (void)_recycleView:(id)view
 {
-  v4 = a3;
-  v5 = [(PBFPosterGalleryAssetHelper *)self reusableViewMap];
-  [v5 recycleView:v4];
+  viewCopy = view;
+  reusableViewMap = [(PBFPosterGalleryAssetHelper *)self reusableViewMap];
+  [reusableViewMap recycleView:viewCopy];
 }
 
-- (BOOL)_setupLiveDisplayStyleForPreview:(id)a3
+- (BOOL)_setupLiveDisplayStyleForPreview:(id)preview
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  previewCopy = preview;
   BSDispatchQueueAssertMain();
   if (!self->_isInvalidated)
   {
-    v6 = [v4 type];
-    v7 = [v6 isEqual:PBFPreviewTypeHero];
+    type = [previewCopy type];
+    v7 = [type isEqual:PBFPreviewTypeHero];
 
     if (v7)
     {
@@ -3510,18 +3510,18 @@ void __51__PBFPosterGalleryAssetHelper__updateActivePosters__block_invoke_2(uint
       goto LABEL_7;
     }
 
-    v9 = [(NSMapTable *)self->_previewToState objectForKey:v4];
+    v9 = [(NSMapTable *)self->_previewToState objectForKey:previewCopy];
     v5 = v9;
     if (v9)
     {
       if (([v9 willUseLivePreview]& 1) != 0)
       {
-        v10 = [v5 asset];
-        v11 = [v10 assetViewController];
+        asset = [v5 asset];
+        assetViewController = [asset assetViewController];
 
         v12 = PBFLogAssetHelper();
         v13 = v12;
-        if (v11)
+        if (assetViewController)
         {
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
           {
@@ -3534,28 +3534,28 @@ void __51__PBFPosterGalleryAssetHelper__updateActivePosters__block_invoke_2(uint
           if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
           {
             *buf = 134218242;
-            v30 = self;
+            selfCopy2 = self;
             v31 = 2114;
-            v32 = v4;
+            v32 = previewCopy;
             _os_log_impl(&dword_21B526000, v13, OS_LOG_TYPE_INFO, "(%p) _setupLiveDisplayStyleForPreview: %{public}@; setting Up vc", buf, 0x16u);
           }
 
           v13 = +[PBFPosterSnapshotDefinition gallerySnapshotKeyFrameDefinition];
-          v14 = [[PBFPosterAssetViewController alloc] initWithPreview:v4 definition:v13];
+          v14 = [[PBFPosterAssetViewController alloc] initWithPreview:previewCopy definition:v13];
           [(PBFPosterAssetViewController *)v14 setDisplayContext:self->_activeDisplayContext];
-          v15 = [(PBFPosterAssetViewController *)v14 view];
-          [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:v15 forPreview:v4 displayContext:self->_activeDisplayContext];
+          view = [(PBFPosterAssetViewController *)v14 view];
+          [(PBFPosterGalleryAssetHelper *)self _sizeContainerView:view forPreview:previewCopy displayContext:self->_activeDisplayContext];
 
-          v16 = [v4 posterDescriptorLookupInfo];
-          v17 = [v16 posterDescriptorExtension];
-          v18 = [v17 posterExtensionBundleIdentifier];
+          posterDescriptorLookupInfo = [previewCopy posterDescriptorLookupInfo];
+          posterDescriptorExtension = [posterDescriptorLookupInfo posterDescriptorExtension];
+          posterExtensionBundleIdentifier = [posterDescriptorExtension posterExtensionBundleIdentifier];
 
-          v19 = [v16 posterDescriptorPath];
-          v20 = [v19 descriptorIdentifier];
+          posterDescriptorPath = [posterDescriptorLookupInfo posterDescriptorPath];
+          descriptorIdentifier = [posterDescriptorPath descriptorIdentifier];
 
-          v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:livePoster", v18, v20];
-          v22 = [(PBFPosterAssetViewController *)v14 view];
-          [v22 setAccessibilityIdentifier:v21];
+          v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:livePoster", posterExtensionBundleIdentifier, descriptorIdentifier];
+          view2 = [(PBFPosterAssetViewController *)v14 view];
+          [view2 setAccessibilityIdentifier:v21];
 
           WeakRetained = objc_loadWeakRetained(&self->_extensionProvider);
           [(PBFPosterAssetViewController *)v14 setExtensionProvider:WeakRetained];
@@ -3565,14 +3565,14 @@ void __51__PBFPosterGalleryAssetHelper__updateActivePosters__block_invoke_2(uint
 
           [(PBFPosterAssetViewController *)v14 setReusableViewMap:self->_reusableViewMap];
           [(PBFPosterAssetViewController *)v14 setVisible:[v5 isVisible]];
-          v25 = [v5 asset];
-          [v25 setAssetViewController:v14];
+          asset2 = [v5 asset];
+          [asset2 setAssetViewController:v14];
 
-          v26 = [(PBFPosterGalleryAssetHelper *)self delegate];
-          [v26 assetHelper:self prepareForPosterPreview:v4 movingToLive:v14];
+          delegate = [(PBFPosterGalleryAssetHelper *)self delegate];
+          [delegate assetHelper:self prepareForPosterPreview:previewCopy movingToLive:v14];
 
-          v27 = [(PBFPosterGalleryAssetHelper *)self delegate];
-          [v27 assetHelper:self didUpdateAssetsForPosterPreview:v4];
+          delegate2 = [(PBFPosterGalleryAssetHelper *)self delegate];
+          [delegate2 assetHelper:self didUpdateAssetsForPosterPreview:previewCopy];
         }
 
         v8 = 1;
@@ -3605,7 +3605,7 @@ LABEL_22:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v30 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_21B526000, v5, OS_LOG_TYPE_DEFAULT, "(%p) bail _setupLiveDisplayStyleForPreview; invalidated", buf, 0xCu);
   }
 
@@ -3628,7 +3628,7 @@ LABEL_23:
     if (v5)
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_21B526000, v4, OS_LOG_TYPE_DEFAULT, "(%p) bail invalidate; invalidated", &v7, 0xCu);
     }
   }
@@ -3638,7 +3638,7 @@ LABEL_23:
     if (v5)
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_21B526000, v4, OS_LOG_TYPE_DEFAULT, "(%p) invalidate: invalidating...", &v7, 0xCu);
     }
 
@@ -3659,7 +3659,7 @@ LABEL_23:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v19 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_21B526000, v3, OS_LOG_TYPE_DEFAULT, "(%p) cancelling...", buf, 0xCu);
   }
 
@@ -3669,9 +3669,9 @@ LABEL_23:
   v14 = 0u;
   v15 = 0u;
   v4 = [(NSMapTable *)self->_previewToState copy];
-  v5 = [v4 keyEnumerator];
+  keyEnumerator = [v4 keyEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v6)
   {
     v8 = v6;
@@ -3685,7 +3685,7 @@ LABEL_23:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = [(NSMapTable *)self->_previewToState objectForKey:*(*(&v14 + 1) + 8 * v10), v13];
@@ -3693,7 +3693,7 @@ LABEL_23:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v13;
-          v19 = self;
+          selfCopy2 = self;
           v20 = 2114;
           v21 = v11;
           _os_log_impl(&dword_21B526000, v12, OS_LOG_TYPE_DEFAULT, "(%p) cancelling... tearing down %{public}@", buf, 0x16u);
@@ -3704,7 +3704,7 @@ LABEL_23:
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v8);
@@ -3713,60 +3713,60 @@ LABEL_23:
   [(NSMapTable *)self->_previewToState removeAllObjects];
 }
 
-- (void)_teardownLiveViewControllerForState:(id)a3 invalidate:(BOOL)a4
+- (void)_teardownLiveViewControllerForState:(id)state invalidate:(BOOL)invalidate
 {
-  v4 = a4;
+  invalidateCopy = invalidate;
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  stateCopy = state;
   BSDispatchQueueAssertMain();
-  v7 = [v6 asset];
-  v8 = [v7 assetViewController];
+  asset = [stateCopy asset];
+  assetViewController = [asset assetViewController];
 
-  v9 = PBFLogAssetHelper();
-  v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  preview = PBFLogAssetHelper();
+  v10 = os_log_type_enabled(preview, OS_LOG_TYPE_DEFAULT);
+  if (assetViewController)
   {
     if (v10)
     {
       v19 = 134218498;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2114;
-      v22 = v8;
+      v22 = assetViewController;
       v23 = 1024;
-      v24 = v4;
-      _os_log_impl(&dword_21B526000, v9, OS_LOG_TYPE_DEFAULT, "(%p) _teardownLiveViewController; gallery poster vc %{public}@ shouldInvalidate? %{BOOL}u", &v19, 0x1Cu);
+      v24 = invalidateCopy;
+      _os_log_impl(&dword_21B526000, preview, OS_LOG_TYPE_DEFAULT, "(%p) _teardownLiveViewController; gallery poster vc %{public}@ shouldInvalidate? %{BOOL}u", &v19, 0x1Cu);
     }
 
-    v9 = [v6 preview];
-    [(NSMapTable *)self->_visibleStatesWithLivePreviewEnabled removeObjectForKey:v9];
-    [(NSHashTable *)self->_alreadyPlayedLivePosters removeObject:v6];
-    [(NSHashTable *)self->_successfullyPlayedLivePosters removeObject:v6];
-    v11 = [v8 view];
-    [v11 removeFromSuperview];
+    preview = [stateCopy preview];
+    [(NSMapTable *)self->_visibleStatesWithLivePreviewEnabled removeObjectForKey:preview];
+    [(NSHashTable *)self->_alreadyPlayedLivePosters removeObject:stateCopy];
+    [(NSHashTable *)self->_successfullyPlayedLivePosters removeObject:stateCopy];
+    view = [assetViewController view];
+    [view removeFromSuperview];
 
-    [v8 removeFromParentViewController];
-    [v8 invalidate];
-    v12 = [v6 asset];
-    v13 = [v12 assetViewController];
-    [v13 setReusableViewMap:0];
+    [assetViewController removeFromParentViewController];
+    [assetViewController invalidate];
+    asset2 = [stateCopy asset];
+    assetViewController2 = [asset2 assetViewController];
+    [assetViewController2 setReusableViewMap:0];
 
-    v14 = [v6 asset];
-    v15 = [v14 assetViewController];
-    [v15 setComplicationPreviewGenerator:0];
+    asset3 = [stateCopy asset];
+    assetViewController3 = [asset3 assetViewController];
+    [assetViewController3 setComplicationPreviewGenerator:0];
 
-    v16 = [v6 asset];
-    v17 = [v16 assetViewController];
-    [v17 setExtensionProvider:0];
+    asset4 = [stateCopy asset];
+    assetViewController4 = [asset4 assetViewController];
+    [assetViewController4 setExtensionProvider:0];
 
-    v18 = [v6 asset];
-    [v18 setAssetViewController:0];
+    asset5 = [stateCopy asset];
+    [asset5 setAssetViewController:0];
   }
 
   else if (v10)
   {
     v19 = 134217984;
-    v20 = self;
-    _os_log_impl(&dword_21B526000, v9, OS_LOG_TYPE_DEFAULT, "(%p) bail _teardownLiveViewController; no gallery poster vc?", &v19, 0xCu);
+    selfCopy2 = self;
+    _os_log_impl(&dword_21B526000, preview, OS_LOG_TYPE_DEFAULT, "(%p) bail _teardownLiveViewController; no gallery poster vc?", &v19, 0xCu);
   }
 }
 

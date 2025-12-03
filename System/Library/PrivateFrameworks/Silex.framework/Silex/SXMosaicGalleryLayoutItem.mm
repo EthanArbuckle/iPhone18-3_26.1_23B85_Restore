@@ -1,16 +1,16 @@
 @interface SXMosaicGalleryLayoutItem
 - (CGSize)dimensions;
-- (SXMosaicGalleryLayoutItem)initWithDimensions:(CGSize)a3;
+- (SXMosaicGalleryLayoutItem)initWithDimensions:(CGSize)dimensions;
 - (double)aspectRatio;
 - (int)tileType;
 @end
 
 @implementation SXMosaicGalleryLayoutItem
 
-- (SXMosaicGalleryLayoutItem)initWithDimensions:(CGSize)a3
+- (SXMosaicGalleryLayoutItem)initWithDimensions:(CGSize)dimensions
 {
-  height = a3.height;
-  width = a3.width;
+  height = dimensions.height;
+  width = dimensions.width;
   v6.receiver = self;
   v6.super_class = SXMosaicGalleryLayoutItem;
   result = [(SXMosaicGalleryLayoutItem *)&v6 init];

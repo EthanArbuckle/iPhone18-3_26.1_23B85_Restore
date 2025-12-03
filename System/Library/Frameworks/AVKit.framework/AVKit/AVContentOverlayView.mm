@@ -1,7 +1,7 @@
 @interface AVContentOverlayView
 - (AVContentOverlayViewDelegate)delegate;
-- (void)_didRemoveSubview:(id)a3;
-- (void)didAddSubview:(id)a3;
+- (void)_didRemoveSubview:(id)subview;
+- (void)didAddSubview:(id)subview;
 @end
 
 @implementation AVContentOverlayView
@@ -13,22 +13,22 @@
   return WeakRetained;
 }
 
-- (void)_didRemoveSubview:(id)a3
+- (void)_didRemoveSubview:(id)subview
 {
   v5.receiver = self;
   v5.super_class = AVContentOverlayView;
-  [(AVContentOverlayView *)&v5 _didRemoveSubview:a3];
-  v4 = [(AVContentOverlayView *)self delegate];
-  [v4 contentOverlayViewDidAddOrRemoveSubview:self];
+  [(AVContentOverlayView *)&v5 _didRemoveSubview:subview];
+  delegate = [(AVContentOverlayView *)self delegate];
+  [delegate contentOverlayViewDidAddOrRemoveSubview:self];
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   v5.receiver = self;
   v5.super_class = AVContentOverlayView;
-  [(AVContentOverlayView *)&v5 didAddSubview:a3];
-  v4 = [(AVContentOverlayView *)self delegate];
-  [v4 contentOverlayViewDidAddOrRemoveSubview:self];
+  [(AVContentOverlayView *)&v5 didAddSubview:subview];
+  delegate = [(AVContentOverlayView *)self delegate];
+  [delegate contentOverlayViewDidAddOrRemoveSubview:self];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface ULMap
 + (id)emptyMap;
-- (BOOL)_cosineSimilarity_isSameSpaceForLabel:(id)a3;
-- (BOOL)_geo_isSameSpaceForLabel:(id)a3;
-- (BOOL)_image_isSameSpaceForLabel:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ULMap)initWithCoder:(id)a3;
-- (id)_extendProbabilityVectorForLabel:(id)a3 toMatchPredictionContext:(id)a4;
-- (id)copyWithReplacementPredictionContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)_cosineSimilarity_isSameSpaceForLabel:(id)label;
+- (BOOL)_geo_isSameSpaceForLabel:(id)label;
+- (BOOL)_image_isSameSpaceForLabel:(id)label;
+- (BOOL)isEqual:(id)equal;
+- (ULMap)initWithCoder:(id)coder;
+- (id)_extendProbabilityVectorForLabel:(id)label toMatchPredictionContext:(id)context;
+- (id)copyWithReplacementPredictionContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)labelsInSameSpaceForMapItem:(id)a3;
-- (int64_t)averageRSSIOfSameSpaceLabelsForMapItem:(id)a3;
+- (id)labelsInSameSpaceForMapItem:(id)item;
+- (int64_t)averageRSSIOfSameSpaceLabelsForMapItem:(id)item;
 - (unint64_t)hash;
-- (unint64_t)numberOfLabelsInSameSpaceForMapItem:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (unint64_t)numberOfLabelsInSameSpaceForMapItem:(id)item;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULMap
@@ -21,8 +21,8 @@
 + (id)emptyMap
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x277CBEA60] array];
+  v2 = [self alloc];
+  array = [MEMORY[0x277CBEA60] array];
   v4 = +[ULPredictionContext emptyPredictionContext];
   v5 = +[ULLocationOfInterest emptyLocationOfInterest];
   v6 = [[ULServiceSuspendReason alloc] initWithSuspendReasonEnum:4];
@@ -30,72 +30,72 @@
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   v8 = +[ULServiceMetaInfo emptyServiceMetaInfo];
   v9 = +[ULHomeSlamModelData emptyHomeSlamModelData];
-  v10 = [v2 initWithMapItems:v3 predictionContext:v4 locationOfInterest:v5 serviceState:1 serviceSuspendReasons:v7 isMapValid:0 metaInfo:v8 homeSlamModelData:v9];
+  v10 = [v2 initWithMapItems:array predictionContext:v4 locationOfInterest:v5 serviceState:1 serviceSuspendReasons:v7 isMapValid:0 metaInfo:v8 homeSlamModelData:v9];
 
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
 }
 
-- (id)copyWithReplacementPredictionContext:(id)a3
+- (id)copyWithReplacementPredictionContext:(id)context
 {
-  v4 = self;
-  v5 = a3;
-  v6 = [(ULMap *)v4 mapItems];
-  v7 = [(ULMap *)v4 locationOfInterest];
-  v8 = [(ULMap *)v4 serviceState];
-  v9 = [(ULMap *)v4 serviceSuspendReasons];
-  v10 = [(ULMap *)v4 isMapValid];
-  v11 = [(ULMap *)v4 metaInfo];
-  v12 = [(ULMap *)v4 homeSlamModelData];
-  v13 = [(ULMap *)v4 initWithMapItems:v6 predictionContext:v5 locationOfInterest:v7 serviceState:v8 serviceSuspendReasons:v9 isMapValid:v10 metaInfo:v11 homeSlamModelData:v12];
+  selfCopy = self;
+  contextCopy = context;
+  mapItems = [(ULMap *)selfCopy mapItems];
+  locationOfInterest = [(ULMap *)selfCopy locationOfInterest];
+  serviceState = [(ULMap *)selfCopy serviceState];
+  serviceSuspendReasons = [(ULMap *)selfCopy serviceSuspendReasons];
+  isMapValid = [(ULMap *)selfCopy isMapValid];
+  metaInfo = [(ULMap *)selfCopy metaInfo];
+  homeSlamModelData = [(ULMap *)selfCopy homeSlamModelData];
+  v13 = [(ULMap *)selfCopy initWithMapItems:mapItems predictionContext:contextCopy locationOfInterest:locationOfInterest serviceState:serviceState serviceSuspendReasons:serviceSuspendReasons isMapValid:isMapValid metaInfo:metaInfo homeSlamModelData:homeSlamModelData];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(ULMap *)self mapItems];
-  v6 = [(ULMap *)self predictionContext];
-  v7 = [(ULMap *)self locationOfInterest];
-  v8 = [(ULMap *)self serviceState];
-  v9 = [(ULMap *)self serviceSuspendReasons];
-  v10 = [(ULMap *)self isMapValid];
-  v11 = [(ULMap *)self metaInfo];
-  v12 = [(ULMap *)self homeSlamModelData];
-  v13 = [v4 initWithMapItems:v5 predictionContext:v6 locationOfInterest:v7 serviceState:v8 serviceSuspendReasons:v9 isMapValid:v10 metaInfo:v11 homeSlamModelData:v12];
+  mapItems = [(ULMap *)self mapItems];
+  predictionContext = [(ULMap *)self predictionContext];
+  locationOfInterest = [(ULMap *)self locationOfInterest];
+  serviceState = [(ULMap *)self serviceState];
+  serviceSuspendReasons = [(ULMap *)self serviceSuspendReasons];
+  isMapValid = [(ULMap *)self isMapValid];
+  metaInfo = [(ULMap *)self metaInfo];
+  homeSlamModelData = [(ULMap *)self homeSlamModelData];
+  v13 = [v4 initWithMapItems:mapItems predictionContext:predictionContext locationOfInterest:locationOfInterest serviceState:serviceState serviceSuspendReasons:serviceSuspendReasons isMapValid:isMapValid metaInfo:metaInfo homeSlamModelData:homeSlamModelData];
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mapItems = self->_mapItems;
-  v7 = a3;
-  [v7 encodeObject:mapItems forKey:@"mapItems"];
-  [v7 encodeObject:self->_predictionContext forKey:@"predictionContext"];
-  [v7 encodeObject:self->_locationOfInterest forKey:@"locationOfInterest"];
+  coderCopy = coder;
+  [coderCopy encodeObject:mapItems forKey:@"mapItems"];
+  [coderCopy encodeObject:self->_predictionContext forKey:@"predictionContext"];
+  [coderCopy encodeObject:self->_locationOfInterest forKey:@"locationOfInterest"];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_serviceState];
-  [v7 encodeObject:v5 forKey:@"serviceState"];
+  [coderCopy encodeObject:v5 forKey:@"serviceState"];
 
-  [v7 encodeObject:self->_serviceSuspendReasons forKey:@"serviceSuspendReasons"];
+  [coderCopy encodeObject:self->_serviceSuspendReasons forKey:@"serviceSuspendReasons"];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_isMapValid];
-  [v7 encodeObject:v6 forKey:@"isMapValid"];
+  [coderCopy encodeObject:v6 forKey:@"isMapValid"];
 
-  [v7 encodeObject:self->_metaInfo forKey:@"metaInfo"];
-  [v7 encodeObject:self->_homeSlamModelData forKey:@"homeSlamModelData"];
+  [coderCopy encodeObject:self->_metaInfo forKey:@"metaInfo"];
+  [coderCopy encodeObject:self->_homeSlamModelData forKey:@"homeSlamModelData"];
 }
 
-- (ULMap)initWithCoder:(id)a3
+- (ULMap)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = ULMap;
   v5 = [(ULMap *)&v24 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"mapItems"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"mapItems"];
     if (v6)
     {
       v7 = objc_opt_self();
@@ -103,7 +103,7 @@
       mapItems = v5->_mapItems;
       v5->_mapItems = v7;
 
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predictionContext"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predictionContext"];
       if (v6)
       {
         v9 = objc_opt_self();
@@ -111,7 +111,7 @@
         predictionContext = v5->_predictionContext;
         v5->_predictionContext = v9;
 
-        v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationOfInterest"];
+        v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationOfInterest"];
         if (v6)
         {
           v11 = objc_opt_self();
@@ -119,14 +119,14 @@
           locationOfInterest = v5->_locationOfInterest;
           v5->_locationOfInterest = v11;
 
-          v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceState"];
+          v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceState"];
           v6 = v13;
           if (v13)
           {
-            v14 = [(ULMap *)v13 unsignedIntegerValue];
+            unsignedIntegerValue = [(ULMap *)v13 unsignedIntegerValue];
 
-            v5->_serviceState = v14;
-            v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"serviceSuspendReasons"];
+            v5->_serviceState = unsignedIntegerValue;
+            v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"serviceSuspendReasons"];
             if (v6)
             {
               v15 = objc_opt_self();
@@ -134,14 +134,14 @@
               serviceSuspendReasons = v5->_serviceSuspendReasons;
               v5->_serviceSuspendReasons = v15;
 
-              v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isMapValid"];
+              v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isMapValid"];
               v6 = v17;
               if (v17)
               {
-                v18 = [(ULMap *)v17 BOOLValue];
+                bOOLValue = [(ULMap *)v17 BOOLValue];
 
-                v5->_isMapValid = v18;
-                v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metaInfo"];
+                v5->_isMapValid = bOOLValue;
+                v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metaInfo"];
                 if (v6)
                 {
                   v19 = objc_opt_self();
@@ -149,7 +149,7 @@
                   metaInfo = v5->_metaInfo;
                   v5->_metaInfo = v19;
 
-                  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeSlamModelData"];
+                  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeSlamModelData"];
                   if (v6)
                   {
                     v21 = objc_opt_self();
@@ -183,134 +183,134 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"%@: ", v5];
 
-  v7 = [(ULMap *)self mapItems];
-  [v6 appendFormat:@", mapItems: %@", v7];
+  mapItems = [(ULMap *)self mapItems];
+  [v6 appendFormat:@", mapItems: %@", mapItems];
 
-  v8 = [(ULMap *)self predictionContext];
-  [v6 appendFormat:@", predictionContext: %@", v8];
+  predictionContext = [(ULMap *)self predictionContext];
+  [v6 appendFormat:@", predictionContext: %@", predictionContext];
 
-  v9 = [(ULMap *)self locationOfInterest];
-  [v6 appendFormat:@", locationOfInterest: %@", v9];
+  locationOfInterest = [(ULMap *)self locationOfInterest];
+  [v6 appendFormat:@", locationOfInterest: %@", locationOfInterest];
 
   v10 = ULServiceStateToString([(ULMap *)self serviceState]);
   [v6 appendFormat:@", serviceState: %@", v10];
 
-  v11 = [(ULMap *)self serviceSuspendReasons];
-  [v6 appendFormat:@", serviceSuspendReasons: %@", v11];
+  serviceSuspendReasons = [(ULMap *)self serviceSuspendReasons];
+  [v6 appendFormat:@", serviceSuspendReasons: %@", serviceSuspendReasons];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[ULMap isMapValid](self, "isMapValid")}];
   [v6 appendFormat:@", isMapValid: %@", v12];
 
-  v13 = [(ULMap *)self metaInfo];
-  [v6 appendFormat:@", metaInfo: %@", v13];
+  metaInfo = [(ULMap *)self metaInfo];
+  [v6 appendFormat:@", metaInfo: %@", metaInfo];
 
-  v14 = [(ULMap *)self homeSlamModelData];
-  [v6 appendFormat:@", homeSlamModelData: %@", v14];
+  homeSlamModelData = [(ULMap *)self homeSlamModelData];
+  [v6 appendFormat:@", homeSlamModelData: %@", homeSlamModelData];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_19;
   }
 
-  v5 = [(ULMap *)self mapItems];
-  v6 = [v4 mapItems];
-  if ([v5 isEqual:v6])
+  mapItems = [(ULMap *)self mapItems];
+  mapItems2 = [equalCopy mapItems];
+  if ([mapItems isEqual:mapItems2])
   {
   }
 
   else
   {
-    v7 = [(ULMap *)self mapItems];
-    v8 = [v4 mapItems];
+    mapItems3 = [(ULMap *)self mapItems];
+    mapItems4 = [equalCopy mapItems];
 
-    if (v7 != v8)
+    if (mapItems3 != mapItems4)
     {
       goto LABEL_19;
     }
   }
 
-  v9 = [(ULMap *)self predictionContext];
-  v10 = [v4 predictionContext];
-  if ([v9 isEqual:v10])
+  predictionContext = [(ULMap *)self predictionContext];
+  predictionContext2 = [equalCopy predictionContext];
+  if ([predictionContext isEqual:predictionContext2])
   {
   }
 
   else
   {
-    v11 = [(ULMap *)self predictionContext];
-    v12 = [v4 predictionContext];
+    predictionContext3 = [(ULMap *)self predictionContext];
+    predictionContext4 = [equalCopy predictionContext];
 
-    if (v11 != v12)
+    if (predictionContext3 != predictionContext4)
     {
       goto LABEL_19;
     }
   }
 
-  v13 = [(ULMap *)self locationOfInterest];
-  v14 = [v4 locationOfInterest];
-  if ([v13 isEqual:v14])
+  locationOfInterest = [(ULMap *)self locationOfInterest];
+  locationOfInterest2 = [equalCopy locationOfInterest];
+  if ([locationOfInterest isEqual:locationOfInterest2])
   {
   }
 
   else
   {
-    v15 = [(ULMap *)self locationOfInterest];
-    v16 = [v4 locationOfInterest];
+    locationOfInterest3 = [(ULMap *)self locationOfInterest];
+    locationOfInterest4 = [equalCopy locationOfInterest];
 
-    if (v15 != v16)
+    if (locationOfInterest3 != locationOfInterest4)
     {
       goto LABEL_19;
     }
   }
 
-  v17 = [(ULMap *)self serviceState];
-  if (v17 != [v4 serviceState])
+  serviceState = [(ULMap *)self serviceState];
+  if (serviceState != [equalCopy serviceState])
   {
     goto LABEL_19;
   }
 
-  v18 = [(ULMap *)self serviceSuspendReasons];
-  v19 = [v4 serviceSuspendReasons];
-  if ([v18 isEqual:v19])
+  serviceSuspendReasons = [(ULMap *)self serviceSuspendReasons];
+  serviceSuspendReasons2 = [equalCopy serviceSuspendReasons];
+  if ([serviceSuspendReasons isEqual:serviceSuspendReasons2])
   {
   }
 
   else
   {
-    v20 = [(ULMap *)self serviceSuspendReasons];
-    v21 = [v4 serviceSuspendReasons];
+    serviceSuspendReasons3 = [(ULMap *)self serviceSuspendReasons];
+    serviceSuspendReasons4 = [equalCopy serviceSuspendReasons];
 
-    if (v20 != v21)
+    if (serviceSuspendReasons3 != serviceSuspendReasons4)
     {
       goto LABEL_19;
     }
   }
 
-  v22 = [(ULMap *)self isMapValid];
-  if (v22 != [v4 isMapValid])
+  isMapValid = [(ULMap *)self isMapValid];
+  if (isMapValid != [equalCopy isMapValid])
   {
     goto LABEL_19;
   }
 
-  v23 = [(ULMap *)self metaInfo];
-  v24 = [v4 metaInfo];
-  if ([v23 isEqual:v24])
+  metaInfo = [(ULMap *)self metaInfo];
+  metaInfo2 = [equalCopy metaInfo];
+  if ([metaInfo isEqual:metaInfo2])
   {
 
     goto LABEL_21;
   }
 
-  v25 = [(ULMap *)self metaInfo];
-  v26 = [v4 metaInfo];
+  metaInfo3 = [(ULMap *)self metaInfo];
+  metaInfo4 = [equalCopy metaInfo];
 
-  if (v25 != v26)
+  if (metaInfo3 != metaInfo4)
   {
 LABEL_19:
     v27 = 0;
@@ -318,9 +318,9 @@ LABEL_19:
   }
 
 LABEL_21:
-  v29 = [(ULMap *)self homeSlamModelData];
-  v30 = [v4 homeSlamModelData];
-  if ([v29 isEqual:v30])
+  homeSlamModelData = [(ULMap *)self homeSlamModelData];
+  homeSlamModelData2 = [equalCopy homeSlamModelData];
+  if ([homeSlamModelData isEqual:homeSlamModelData2])
   {
 
     v27 = 1;
@@ -328,9 +328,9 @@ LABEL_21:
 
   else
   {
-    v31 = [(ULMap *)self homeSlamModelData];
-    v32 = [v4 homeSlamModelData];
-    v27 = v31 == v32;
+    homeSlamModelData3 = [(ULMap *)self homeSlamModelData];
+    homeSlamModelData4 = [equalCopy homeSlamModelData];
+    v27 = homeSlamModelData3 == homeSlamModelData4;
   }
 
 LABEL_20:
@@ -350,20 +350,20 @@ LABEL_20:
   return v3 ^ v4 ^ v5 ^ serviceState ^ v7 ^ isMapValid ^ v9 ^ [(ULHomeSlamModelData *)self->_homeSlamModelData hash]^ 0x1F;
 }
 
-- (id)labelsInSameSpaceForMapItem:(id)a3
+- (id)labelsInSameSpaceForMapItem:(id)item
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  itemCopy = item;
+  array = [MEMORY[0x277CBEB18] array];
   if ([(ULMap *)self isMapValid])
   {
-    v6 = [(ULMap *)self predictionContext];
-    v7 = [v6 isPredictionValid];
+    predictionContext = [(ULMap *)self predictionContext];
+    isPredictionValid = [predictionContext isPredictionValid];
 
-    if (v7)
+    if (isPredictionValid)
     {
-      v8 = [(ULMap *)self predictionContext];
-      [v8 coordinates];
+      predictionContext2 = [(ULMap *)self predictionContext];
+      [predictionContext2 coordinates];
       v23 = v9;
       v22 = ULCoordinatesNotAvailable;
 
@@ -371,8 +371,8 @@ LABEL_20:
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v10 = [v4 labels];
-      v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      labels = [itemCopy labels];
+      v11 = [labels countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (!v11)
       {
         goto LABEL_17;
@@ -390,7 +390,7 @@ LABEL_20:
         {
           if (*v25 != v15)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(labels);
           }
 
           v17 = *(*(&v24 + 1) + 8 * v16);
@@ -407,7 +407,7 @@ LABEL_20:
             }
 
 LABEL_11:
-            [v5 addObject:v17];
+            [array addObject:v17];
             goto LABEL_12;
           }
 
@@ -421,7 +421,7 @@ LABEL_12:
         }
 
         while (v12 != v16);
-        v18 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v18 = [labels countByEnumeratingWithState:&v24 objects:v28 count:16];
         v12 = v18;
         if (!v18)
         {
@@ -433,33 +433,33 @@ LABEL_17:
     }
   }
 
-  v19 = [v5 copy];
+  v19 = [array copy];
 
   v20 = *MEMORY[0x277D85DE8];
 
   return v19;
 }
 
-- (unint64_t)numberOfLabelsInSameSpaceForMapItem:(id)a3
+- (unint64_t)numberOfLabelsInSameSpaceForMapItem:(id)item
 {
-  v3 = [(ULMap *)self labelsInSameSpaceForMapItem:a3];
+  v3 = [(ULMap *)self labelsInSameSpaceForMapItem:item];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (int64_t)averageRSSIOfSameSpaceLabelsForMapItem:(id)a3
+- (int64_t)averageRSSIOfSameSpaceLabelsForMapItem:(id)item
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 labels];
-  v6 = [v5 firstObject];
+  itemCopy = item;
+  labels = [itemCopy labels];
+  firstObject = [labels firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [(ULMap *)self labelsInSameSpaceForMapItem:v4];
+    v8 = [(ULMap *)self labelsInSameSpaceForMapItem:itemCopy];
     if ([v8 count])
     {
       v22 = 0u;
@@ -519,36 +519,36 @@ LABEL_18:
   return v15;
 }
 
-- (BOOL)_image_isSameSpaceForLabel:(id)a3
+- (BOOL)_image_isSameSpaceForLabel:(id)label
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = [a3 imageIdentifiersVector];
-  v6 = [v4 setWithArray:v5];
+  imageIdentifiersVector = [label imageIdentifiersVector];
+  v6 = [v4 setWithArray:imageIdentifiersVector];
 
   v7 = MEMORY[0x277CBEB98];
-  v8 = [(ULMap *)self predictionContext];
-  v9 = [v8 imageIdentifiersVector];
-  v10 = [v7 setWithArray:v9];
+  predictionContext = [(ULMap *)self predictionContext];
+  imageIdentifiersVector2 = [predictionContext imageIdentifiersVector];
+  v10 = [v7 setWithArray:imageIdentifiersVector2];
 
-  LOBYTE(v8) = [v6 intersectsSet:v10];
-  return v8;
+  LOBYTE(predictionContext) = [v6 intersectsSet:v10];
+  return predictionContext;
 }
 
-- (BOOL)_cosineSimilarity_isSameSpaceForLabel:(id)a3
+- (BOOL)_cosineSimilarity_isSameSpaceForLabel:(id)label
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  labelCopy = label;
   v5 = MEMORY[0x277D28858];
-  v6 = [(ULMap *)self predictionContext];
-  v7 = [v6 probabilityVector];
-  [v5 sumOfVector:v7];
+  predictionContext = [(ULMap *)self predictionContext];
+  probabilityVector = [predictionContext probabilityVector];
+  [v5 sumOfVector:probabilityVector];
   v9 = 1.0 - v8;
 
   v10 = MEMORY[0x277D28858];
-  v11 = [(ULMap *)self predictionContext];
-  v12 = [v11 probabilityVector];
+  predictionContext2 = [(ULMap *)self predictionContext];
+  probabilityVector2 = [predictionContext2 probabilityVector];
   v13 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
-  v14 = [v12 arrayByAddingObject:v13];
+  v14 = [probabilityVector2 arrayByAddingObject:v13];
   [v10 magnitudeOfVector:v14];
   v16 = v15;
 
@@ -559,13 +559,13 @@ LABEL_18:
 
   else
   {
-    v18 = [(ULMap *)self predictionContext];
-    v19 = [(ULMap *)self _extendProbabilityVectorForLabel:v4 toMatchPredictionContext:v18];
+    predictionContext3 = [(ULMap *)self predictionContext];
+    v19 = [(ULMap *)self _extendProbabilityVectorForLabel:labelCopy toMatchPredictionContext:predictionContext3];
 
     v20 = MEMORY[0x277D28878];
-    v21 = [(ULMap *)self predictionContext];
-    v22 = [v21 probabilityVector];
-    [v20 cosineSimilarityBetweenPredictionProbabilities:v22 withPreCalculatedMagnitude:v19 andLabelProbabilities:v16];
+    predictionContext4 = [(ULMap *)self predictionContext];
+    probabilityVector3 = [predictionContext4 probabilityVector];
+    [v20 cosineSimilarityBetweenPredictionProbabilities:probabilityVector3 withPreCalculatedMagnitude:v19 andLabelProbabilities:v16];
     v24 = v23;
 
     if (onceToken_MicroLocation_Default != -1)
@@ -577,17 +577,17 @@ LABEL_18:
     if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_INFO))
     {
       v26 = v25;
-      v27 = [v4 name];
-      v28 = [v4 probabilityVector];
-      v29 = [(ULMap *)self predictionContext];
-      v30 = [v29 probabilityVector];
+      name = [labelCopy name];
+      probabilityVector4 = [labelCopy probabilityVector];
+      predictionContext5 = [(ULMap *)self predictionContext];
+      probabilityVector5 = [predictionContext5 probabilityVector];
       v31 = [MEMORY[0x277CCABB0] numberWithDouble:v24];
       v34 = 138413058;
-      v35 = v27;
+      v35 = name;
       v36 = 2112;
-      v37 = v28;
+      v37 = probabilityVector4;
       v38 = 2112;
-      v39 = v30;
+      v39 = probabilityVector5;
       v40 = 2112;
       v41 = v31;
       _os_log_impl(&dword_258FC9000, v26, OS_LOG_TYPE_INFO, "[ULMap]: _cosineSimilarity_isSameSpaceForLabel: labelName: %@, labelProbabilityVector: %@, predictionContextProbabilityVector: %@, cosineSimilarity: %@", &v34, 0x2Au);
@@ -600,22 +600,22 @@ LABEL_18:
   return v17;
 }
 
-- (BOOL)_geo_isSameSpaceForLabel:(id)a3
+- (BOOL)_geo_isSameSpaceForLabel:(id)label
 {
   v4 = MEMORY[0x277D28878];
-  v5 = a3;
-  v6 = [(ULMap *)self predictionContext];
-  [v6 coordinates];
+  labelCopy = label;
+  predictionContext = [(ULMap *)self predictionContext];
+  [predictionContext coordinates];
   v19 = v7;
-  [v5 coordinates];
+  [labelCopy coordinates];
   [v4 horizontalDistanceSquaredBetweenPredictionCoordinates:v19 andLabelCoordinates:v8];
   v10 = v9;
 
   v11 = MEMORY[0x277D28878];
-  v12 = [(ULMap *)self predictionContext];
-  [v12 coordinates];
+  predictionContext2 = [(ULMap *)self predictionContext];
+  [predictionContext2 coordinates];
   v20 = v13;
-  [v5 coordinates];
+  [labelCopy coordinates];
   v18 = v14;
 
   [v11 absoluteVerticalDistanceBetweenPredictionCoordinates:v20 andLabelCoordinates:v18];
@@ -624,15 +624,15 @@ LABEL_18:
   return v16 < 2.0 && v10 < 16.0;
 }
 
-- (id)_extendProbabilityVectorForLabel:(id)a3 toMatchPredictionContext:(id)a4
+- (id)_extendProbabilityVectorForLabel:(id)label toMatchPredictionContext:(id)context
 {
-  v5 = a4;
-  v6 = [a3 probabilityVector];
-  v7 = [v6 mutableCopy];
+  contextCopy = context;
+  probabilityVector = [label probabilityVector];
+  v7 = [probabilityVector mutableCopy];
 
   v8 = [v7 count];
-  v9 = [v5 probabilityVector];
-  v10 = [v9 count];
+  probabilityVector2 = [contextCopy probabilityVector];
+  v10 = [probabilityVector2 count];
 
   if (v8 < v10)
   {
@@ -640,8 +640,8 @@ LABEL_18:
     {
       [v7 addObject:&unk_286A52AB0];
       v11 = [v7 count];
-      v12 = [v5 probabilityVector];
-      v13 = [v12 count];
+      probabilityVector3 = [contextCopy probabilityVector];
+      v13 = [probabilityVector3 count];
     }
 
     while (v11 < v13);

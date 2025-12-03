@@ -1,16 +1,16 @@
 @interface FCPuzzleTypeController
 - (FCPuzzleTypeController)init;
-- (FCPuzzleTypeController)initWithContentDatabase:(id)a3 context:(id)a4 assetManager:(id)a5 puzzleTypeRecordSource:(id)a6 configurationManager:(id)a7;
-- (id)_cachedPuzzleTypesForPuzzleTypeIDs:(id)a3 fastCacheOnly:(BOOL)a4;
-- (id)_fetchOperationForPuzzleTypeWithIDs:(id)a3;
+- (FCPuzzleTypeController)initWithContentDatabase:(id)database context:(id)context assetManager:(id)manager puzzleTypeRecordSource:(id)source configurationManager:(id)configurationManager;
+- (id)_cachedPuzzleTypesForPuzzleTypeIDs:(id)ds fastCacheOnly:(BOOL)only;
+- (id)_fetchOperationForPuzzleTypeWithIDs:(id)ds;
 - (id)jsonEncodableObject;
-- (id)thumbnailSmallURLWithJSON:(id)a3 publishDate:(id)a4 difficulty:(int64_t)a5;
-- (void)_fetchPuzzleTypeForPuzzleTypeID:(id)a3 cachePolicy:(id)a4 qualityOfService:(int64_t)a5 callbackQueue:(id)a6 completionHandler:(id)a7;
-- (void)_fetchPuzzleTypesForPuzzleTypeIDs:(id)a3 cachePolicy:(id)a4 qualityOfService:(int64_t)a5 callbackQueue:(id)a6 completionHandler:(id)a7;
-- (void)_refreshPuzzleTypesBasedOnAgeForPuzzleTypes:(id)a3;
-- (void)_savePuzzleTypesToCache:(id)a3;
-- (void)fetchThumbnailJSONForPuzzleType:(id)a3 completionHandler:(id)a4;
-- (void)fetchThumbnailUrlForPuzzle:(id)a3 completionHandler:(id)a4;
+- (id)thumbnailSmallURLWithJSON:(id)n publishDate:(id)date difficulty:(int64_t)difficulty;
+- (void)_fetchPuzzleTypeForPuzzleTypeID:(id)d cachePolicy:(id)policy qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)_fetchPuzzleTypesForPuzzleTypeIDs:(id)ds cachePolicy:(id)policy qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)_refreshPuzzleTypesBasedOnAgeForPuzzleTypes:(id)types;
+- (void)_savePuzzleTypesToCache:(id)cache;
+- (void)fetchThumbnailJSONForPuzzleType:(id)type completionHandler:(id)handler;
+- (void)fetchThumbnailUrlForPuzzle:(id)puzzle completionHandler:(id)handler;
 @end
 
 @implementation FCPuzzleTypeController
@@ -41,15 +41,15 @@
   objc_exception_throw(v6);
 }
 
-- (FCPuzzleTypeController)initWithContentDatabase:(id)a3 context:(id)a4 assetManager:(id)a5 puzzleTypeRecordSource:(id)a6 configurationManager:(id)a7
+- (FCPuzzleTypeController)initWithContentDatabase:(id)database context:(id)context assetManager:(id)manager puzzleTypeRecordSource:(id)source configurationManager:(id)configurationManager
 {
   v34 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v14 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  databaseCopy = database;
+  contextCopy = context;
+  managerCopy = manager;
+  sourceCopy = source;
+  configurationManagerCopy = configurationManager;
+  if (!managerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "assetManager != nil"];
     *buf = 136315906;
@@ -62,13 +62,13 @@
     v33 = v23;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v15)
+    if (sourceCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v15)
+  else if (sourceCopy)
   {
     goto LABEL_6;
   }
@@ -94,10 +94,10 @@ LABEL_6:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_assetManager, a5);
-    objc_storeStrong(&v18->_context, a4);
-    objc_storeStrong(&v18->_puzzleTypeRecordSource, a6);
-    objc_storeStrong(&v18->_configurationManager, a7);
+    objc_storeStrong(&v17->_assetManager, manager);
+    objc_storeStrong(&v18->_context, context);
+    objc_storeStrong(&v18->_puzzleTypeRecordSource, source);
+    objc_storeStrong(&v18->_configurationManager, configurationManager);
     v19 = objc_alloc_init(MEMORY[0x1E695DEE0]);
     fastCache = v18->_fastCache;
     v18->_fastCache = v19;
@@ -109,24 +109,24 @@ LABEL_6:
   return v18;
 }
 
-- (void)_fetchPuzzleTypeForPuzzleTypeID:(id)a3 cachePolicy:(id)a4 qualityOfService:(int64_t)a5 callbackQueue:(id)a6 completionHandler:(id)a7
+- (void)_fetchPuzzleTypeForPuzzleTypeID:(id)d cachePolicy:(id)policy qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (v12)
+  dCopy = d;
+  policyCopy = policy;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (dCopy)
   {
-    v24 = v12;
+    v24 = dCopy;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __119__FCPuzzleTypeController__fetchPuzzleTypeForPuzzleTypeID_cachePolicy_qualityOfService_callbackQueue_completionHandler___block_invoke;
     v22[3] = &unk_1E7C379A0;
     v17 = &v23;
-    v23 = v15;
-    [(FCPuzzleTypeController *)self _fetchPuzzleTypesForPuzzleTypeIDs:v16 cachePolicy:v13 qualityOfService:a5 callbackQueue:v14 completionHandler:v22];
+    v23 = handlerCopy;
+    [(FCPuzzleTypeController *)self _fetchPuzzleTypesForPuzzleTypeIDs:v16 cachePolicy:policyCopy qualityOfService:service callbackQueue:queueCopy completionHandler:v22];
 
 LABEL_6:
     goto LABEL_7;
@@ -145,7 +145,7 @@ LABEL_6:
     v32 = v19;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (!v15)
+    if (!handlerCopy)
     {
       goto LABEL_7;
     }
@@ -153,7 +153,7 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  if (v15)
+  if (handlerCopy)
   {
 LABEL_5:
     block[0] = MEMORY[0x1E69E9820];
@@ -161,8 +161,8 @@ LABEL_5:
     block[2] = __119__FCPuzzleTypeController__fetchPuzzleTypeForPuzzleTypeID_cachePolicy_qualityOfService_callbackQueue_completionHandler___block_invoke_2;
     block[3] = &unk_1E7C379C8;
     v17 = &v21;
-    v21 = v15;
-    dispatch_async(v14, block);
+    v21 = handlerCopy;
+    dispatch_async(queueCopy, block);
     goto LABEL_6;
   }
 
@@ -183,16 +183,16 @@ void __119__FCPuzzleTypeController__fetchPuzzleTypeForPuzzleTypeID_cachePolicy_q
   }
 }
 
-- (void)_fetchPuzzleTypesForPuzzleTypeIDs:(id)a3 cachePolicy:(id)a4 qualityOfService:(int64_t)a5 callbackQueue:(id)a6 completionHandler:(id)a7
+- (void)_fetchPuzzleTypesForPuzzleTypeIDs:(id)ds cachePolicy:(id)policy qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler
 {
   v72 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (v12 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  policyCopy = policy;
+  queueCopy3 = queue;
+  handlerCopy = handler;
+  if (dsCopy || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    if (v14)
+    if (queueCopy3)
     {
       goto LABEL_4;
     }
@@ -211,20 +211,20 @@ LABEL_26:
       v71 = v31;
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-      if (v15)
+      if (handlerCopy)
       {
         goto LABEL_28;
       }
     }
 
-    else if (v15)
+    else if (handlerCopy)
     {
 LABEL_28:
       v58 = MEMORY[0x1E69E9820];
       v59 = 3221225472;
       v60 = __121__FCPuzzleTypeController__fetchPuzzleTypesForPuzzleTypeIDs_cachePolicy_qualityOfService_callbackQueue_completionHandler___block_invoke_2;
       v61 = &unk_1E7C379C8;
-      v62 = v15;
+      v62 = handlerCopy;
       (*(v62 + 2))(v62, 0, 0);
       v16 = v62;
       goto LABEL_29;
@@ -259,43 +259,43 @@ LABEL_31:
   v71 = v30;
   _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-  if (!v14)
+  if (!queueCopy3)
   {
     goto LABEL_26;
   }
 
 LABEL_4:
-  if (!v15)
+  if (!handlerCopy)
   {
     goto LABEL_31;
   }
 
-  if (![v12 count])
+  if (![dsCopy count])
   {
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
     v55[2] = __121__FCPuzzleTypeController__fetchPuzzleTypesForPuzzleTypeIDs_cachePolicy_qualityOfService_callbackQueue_completionHandler___block_invoke_3;
     v55[3] = &unk_1E7C37778;
-    v57 = v15;
-    v56 = v14;
+    v57 = handlerCopy;
+    v56 = queueCopy3;
     __121__FCPuzzleTypeController__fetchPuzzleTypesForPuzzleTypeIDs_cachePolicy_qualityOfService_callbackQueue_completionHandler___block_invoke_3(v55);
 
     v16 = v57;
     goto LABEL_29;
   }
 
-  if (v13)
+  if (policyCopy)
   {
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
     v49[2] = __121__FCPuzzleTypeController__fetchPuzzleTypesForPuzzleTypeIDs_cachePolicy_qualityOfService_callbackQueue_completionHandler___block_invoke_5;
     v49[3] = &unk_1E7C448D8;
     v49[4] = self;
-    v50 = v12;
-    v54 = a5;
-    v51 = v13;
-    v52 = v14;
-    v53 = v15;
+    v50 = dsCopy;
+    serviceCopy = service;
+    v51 = policyCopy;
+    v52 = queueCopy3;
+    v53 = handlerCopy;
     __121__FCPuzzleTypeController__fetchPuzzleTypesForPuzzleTypeIDs_cachePolicy_qualityOfService_callbackQueue_completionHandler___block_invoke_5(v49);
 
     v16 = v50;
@@ -304,17 +304,17 @@ LABEL_29:
     goto LABEL_37;
   }
 
-  v35 = a5;
-  v36 = v15;
-  queue = v14;
-  v17 = [MEMORY[0x1E695DF90] dictionary];
-  v18 = [MEMORY[0x1E695DF70] array];
+  serviceCopy2 = service;
+  v36 = handlerCopy;
+  queue = queueCopy3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v38 = v12;
-  v19 = v12;
+  v38 = dsCopy;
+  v19 = dsCopy;
   v20 = [v19 countByEnumeratingWithState:&v45 objects:v63 count:16];
   if (v20)
   {
@@ -330,17 +330,17 @@ LABEL_29:
         }
 
         v24 = *(*(&v45 + 1) + 8 * i);
-        v25 = [(FCPuzzleTypeController *)self fastCache];
-        v26 = [v25 objectForKey:v24];
+        fastCache = [(FCPuzzleTypeController *)self fastCache];
+        v26 = [fastCache objectForKey:v24];
 
         if (v26)
         {
-          [v17 setObject:v26 forKey:v24];
+          [dictionary setObject:v26 forKey:v24];
         }
 
         else
         {
-          [v18 addObject:v24];
+          [array addObject:v24];
         }
       }
 
@@ -350,36 +350,36 @@ LABEL_29:
     while (v21);
   }
 
-  if ([v18 count])
+  if ([array count])
   {
-    v27 = [(FCPuzzleTypeController *)self _fetchOperationForPuzzleTypeWithIDs:v18];
-    [v27 setQualityOfService:v35];
-    v15 = v36;
-    v14 = queue;
-    if (v35 == 9)
+    v27 = [(FCPuzzleTypeController *)self _fetchOperationForPuzzleTypeWithIDs:array];
+    [v27 setQualityOfService:serviceCopy2];
+    handlerCopy = v36;
+    queueCopy3 = queue;
+    if (serviceCopy2 == 9)
     {
       v28 = -1;
     }
 
     else
     {
-      v28 = v35 == 33 || v35 == 25;
+      v28 = serviceCopy2 == 33 || serviceCopy2 == 25;
     }
 
-    v13 = 0;
-    v12 = v38;
+    policyCopy = 0;
+    dsCopy = v38;
     [v27 setRelativePriority:v28];
     [v27 setFetchCompletionQueue:queue];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __121__FCPuzzleTypeController__fetchPuzzleTypesForPuzzleTypeIDs_cachePolicy_qualityOfService_callbackQueue_completionHandler___block_invoke_8;
     v42[3] = &unk_1E7C37B98;
-    v43 = v17;
+    v43 = dictionary;
     v44 = v36;
-    v29 = v17;
+    v29 = dictionary;
     [v27 setFetchCompletionBlock:v42];
-    v33 = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
-    [v33 addOperation:v27];
+    fc_sharedConcurrentQueue = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
+    [fc_sharedConcurrentQueue addOperation:v27];
   }
 
   else
@@ -388,16 +388,16 @@ LABEL_29:
     block[1] = 3221225472;
     block[2] = __121__FCPuzzleTypeController__fetchPuzzleTypesForPuzzleTypeIDs_cachePolicy_qualityOfService_callbackQueue_completionHandler___block_invoke_10;
     block[3] = &unk_1E7C37BC0;
-    v40 = v17;
-    v15 = v36;
+    v40 = dictionary;
+    handlerCopy = v36;
     v41 = v36;
-    v27 = v17;
-    v14 = queue;
+    v27 = dictionary;
+    queueCopy3 = queue;
     dispatch_async(queue, block);
 
     v29 = v40;
-    v13 = 0;
-    v12 = v38;
+    policyCopy = 0;
+    dsCopy = v38;
   }
 
 LABEL_37:
@@ -512,40 +512,40 @@ uint64_t __121__FCPuzzleTypeController__fetchPuzzleTypesForPuzzleTypeIDs_cachePo
   return v3();
 }
 
-- (void)fetchThumbnailUrlForPuzzle:(id)a3 completionHandler:(id)a4
+- (void)fetchThumbnailUrlForPuzzle:(id)puzzle completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  puzzleCopy = puzzle;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v6 puzzleType];
-  v10 = [v9 identifier];
-  v11 = [v8 stringWithFormat:@"thumbnail-images-mapping-json-%@", v10];
+  puzzleType = [puzzleCopy puzzleType];
+  identifier = [puzzleType identifier];
+  v11 = [v8 stringWithFormat:@"thumbnail-images-mapping-json-%@", identifier];
 
-  v12 = [(FCPuzzleTypeController *)self fastCache];
-  v13 = [v12 objectForKey:v11];
+  fastCache = [(FCPuzzleTypeController *)self fastCache];
+  v13 = [fastCache objectForKey:v11];
 
   if (v13)
   {
-    v14 = [v6 publishDate];
-    v15 = -[FCPuzzleTypeController thumbnailSmallURLWithJSON:publishDate:difficulty:](self, "thumbnailSmallURLWithJSON:publishDate:difficulty:", v13, v14, [v6 difficulty]);
+    publishDate = [puzzleCopy publishDate];
+    v15 = -[FCPuzzleTypeController thumbnailSmallURLWithJSON:publishDate:difficulty:](self, "thumbnailSmallURLWithJSON:publishDate:difficulty:", v13, publishDate, [puzzleCopy difficulty]);
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, v15, 0);
+      handlerCopy[2](handlerCopy, v15, 0);
     }
   }
 
   else
   {
-    v16 = [v6 puzzleType];
+    puzzleType2 = [puzzleCopy puzzleType];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __71__FCPuzzleTypeController_fetchThumbnailUrlForPuzzle_completionHandler___block_invoke;
     v17[3] = &unk_1E7C378E8;
     v17[4] = self;
-    v18 = v6;
-    v19 = v7;
-    [(FCPuzzleTypeController *)self fetchThumbnailJSONForPuzzleType:v16 completionHandler:v17];
+    v18 = puzzleCopy;
+    v19 = handlerCopy;
+    [(FCPuzzleTypeController *)self fetchThumbnailJSONForPuzzleType:puzzleType2 completionHandler:v17];
   }
 }
 
@@ -564,57 +564,57 @@ void __71__FCPuzzleTypeController_fetchThumbnailUrlForPuzzle_completionHandler__
   }
 }
 
-- (void)fetchThumbnailJSONForPuzzleType:(id)a3 completionHandler:(id)a4
+- (void)fetchThumbnailJSONForPuzzleType:(id)type completionHandler:(id)handler
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 imageResourceID];
-  if (v8)
+  typeCopy = type;
+  handlerCopy = handler;
+  imageResourceID = [typeCopy imageResourceID];
+  if (imageResourceID)
   {
-    v9 = [(FCPuzzleTypeController *)self configurationManager];
-    v10 = [v9 configuration];
+    configurationManager = [(FCPuzzleTypeController *)self configurationManager];
+    configuration = [configurationManager configuration];
 
-    v11 = [v10 puzzlesConfig];
+    puzzlesConfig = [configuration puzzlesConfig];
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v6 identifier];
-    v14 = [v12 stringWithFormat:@"thumbnail-images-mapping-json-%@", v13];
+    identifier = [typeCopy identifier];
+    v14 = [v12 stringWithFormat:@"thumbnail-images-mapping-json-%@", identifier];
 
-    v15 = [(FCPuzzleTypeController *)self fastCache];
-    v16 = [v15 objectForKey:v14];
+    fastCache = [(FCPuzzleTypeController *)self fastCache];
+    v16 = [fastCache objectForKey:v14];
 
     if (v16)
     {
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7, v16, 0);
+        handlerCopy[2](handlerCopy, v16, 0);
       }
     }
 
     else
     {
       v17 = [FCResourcesFetchOperation alloc];
-      v18 = [(FCPuzzleTypeController *)self context];
-      v33[0] = v8;
+      context = [(FCPuzzleTypeController *)self context];
+      v33[0] = imageResourceID;
       [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
-      v19 = v6;
-      v20 = v7;
-      v21 = v8;
-      v22 = v10;
+      v19 = typeCopy;
+      v20 = handlerCopy;
+      v21 = imageResourceID;
+      v22 = configuration;
       v23 = v14;
-      v25 = v24 = v11;
-      v26 = [(FCResourcesFetchOperation *)v17 initWithContext:v18 resourceIDs:v25 downloadAssets:1];
+      v25 = v24 = puzzlesConfig;
+      v26 = [(FCResourcesFetchOperation *)v17 initWithContext:context resourceIDs:v25 downloadAssets:1];
 
-      v11 = v24;
+      puzzlesConfig = v24;
       v14 = v23;
-      v10 = v22;
-      v8 = v21;
-      v7 = v20;
-      v6 = v19;
+      configuration = v22;
+      imageResourceID = v21;
+      handlerCopy = v20;
+      typeCopy = v19;
       v16 = 0;
 
       [(FCFetchOperation *)v26 setCachePolicy:4];
-      [v11 puzzleTypeThumbnailsCacheLifetime];
+      [puzzlesConfig puzzleTypeThumbnailsCacheLifetime];
       [(FCFetchOperation *)v26 setMaximumCachedAge:?];
       [(FCOperation *)v26 setQualityOfService:25];
       [(FCOperation *)v26 setRelativePriority:0];
@@ -622,7 +622,7 @@ void __71__FCPuzzleTypeController_fetchThumbnailUrlForPuzzle_completionHandler__
       v28[1] = 3221225472;
       v28[2] = __76__FCPuzzleTypeController_fetchThumbnailJSONForPuzzleType_completionHandler___block_invoke_2;
       v28[3] = &unk_1E7C44900;
-      v30 = v7;
+      v30 = handlerCopy;
       v28[4] = self;
       v29 = v14;
       [(FCFetchOperation *)v26 setFetchCompletionBlock:v28];
@@ -636,9 +636,9 @@ void __71__FCPuzzleTypeController_fetchThumbnailUrlForPuzzle_completionHandler__
     v31[1] = 3221225472;
     v31[2] = __76__FCPuzzleTypeController_fetchThumbnailJSONForPuzzleType_completionHandler___block_invoke;
     v31[3] = &unk_1E7C379C8;
-    v32 = v7;
+    v32 = handlerCopy;
     __76__FCPuzzleTypeController_fetchThumbnailJSONForPuzzleType_completionHandler___block_invoke(v31);
-    v10 = v32;
+    configuration = v32;
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -910,18 +910,18 @@ void __76__FCPuzzleTypeController_fetchThumbnailJSONForPuzzleType_completionHand
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)thumbnailSmallURLWithJSON:(id)a3 publishDate:(id)a4 difficulty:(int64_t)a5
+- (id)thumbnailSmallURLWithJSON:(id)n publishDate:(id)date difficulty:(int64_t)difficulty
 {
-  v7 = a3;
-  v8 = a4;
+  nCopy = n;
+  dateCopy = date;
   v9 = objc_alloc(MEMORY[0x1E695DEE8]);
   v10 = [v9 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
   v11 = [MEMORY[0x1E695DFE8] timeZoneWithAbbreviation:@"EST"];
   [v10 setTimeZone:v11];
 
-  v12 = [v10 component:512 fromDate:v8];
+  v12 = [v10 component:512 fromDate:dateCopy];
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"s%ld", v12];
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", a5];
+  difficulty = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", difficulty];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -935,9 +935,9 @@ void __76__FCPuzzleTypeController_fetchThumbnailJSONForPuzzleType_completionHand
   v15 = v13;
   v20 = v15;
   v22 = &v23;
-  v16 = v14;
+  v16 = difficulty;
   v21 = v16;
-  [v7 enumerateKeysAndObjectsUsingBlock:v19];
+  [nCopy enumerateKeysAndObjectsUsingBlock:v19];
   v17 = v24[5];
 
   _Block_object_dispose(&v23, 8);
@@ -971,11 +971,11 @@ uint64_t __75__FCPuzzleTypeController_thumbnailSmallURLWithJSON_publishDate_diff
   return MEMORY[0x1EEE66BB8](v7, v8);
 }
 
-- (id)_cachedPuzzleTypesForPuzzleTypeIDs:(id)a3 fastCacheOnly:(BOOL)a4
+- (id)_cachedPuzzleTypesForPuzzleTypeIDs:(id)ds fastCacheOnly:(BOOL)only
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "puzzleTypeIDs != nil"];
     *buf = 136315906;
@@ -989,13 +989,13 @@ uint64_t __75__FCPuzzleTypeController_thumbnailSmallURLWithJSON_publishDate_diff
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v5;
+  v8 = dsCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
@@ -1011,17 +1011,17 @@ uint64_t __75__FCPuzzleTypeController_thumbnailSmallURLWithJSON_publishDate_diff
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [(FCPuzzleTypeController *)self fastCache];
-        v15 = [v14 objectForKey:v13];
+        fastCache = [(FCPuzzleTypeController *)self fastCache];
+        v15 = [fastCache objectForKey:v13];
 
         if (v15)
         {
-          [v6 setObject:v15 forKey:v13];
+          [dictionary setObject:v15 forKey:v13];
         }
 
         else
         {
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -1031,26 +1031,26 @@ uint64_t __75__FCPuzzleTypeController_thumbnailSmallURLWithJSON_publishDate_diff
     while (v10);
   }
 
-  if ([v7 count] && !a4)
+  if ([array count] && !only)
   {
-    v16 = [(FCPuzzleTypeController *)self puzzleTypeRecordSource];
-    v17 = [v16 cachedRecordsWithIDs:v7];
+    puzzleTypeRecordSource = [(FCPuzzleTypeController *)self puzzleTypeRecordSource];
+    v17 = [puzzleTypeRecordSource cachedRecordsWithIDs:array];
 
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __75__FCPuzzleTypeController__cachedPuzzleTypesForPuzzleTypeIDs_fastCacheOnly___block_invoke;
     v23[3] = &unk_1E7C44928;
     v23[4] = self;
-    v24 = v6;
+    v24 = dictionary;
     [v17 enumerateRecordsAndInterestTokensWithBlock:v23];
   }
 
-  v18 = [v6 allValues];
-  [(FCPuzzleTypeController *)self _refreshPuzzleTypesBasedOnAgeForPuzzleTypes:v18];
+  allValues = [dictionary allValues];
+  [(FCPuzzleTypeController *)self _refreshPuzzleTypesBasedOnAgeForPuzzleTypes:allValues];
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return dictionary;
 }
 
 void __75__FCPuzzleTypeController__cachedPuzzleTypesForPuzzleTypeIDs_fastCacheOnly___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1067,17 +1067,17 @@ void __75__FCPuzzleTypeController__cachedPuzzleTypesForPuzzleTypeIDs_fastCacheOn
   [v10 setObject:v12 forKey:v11];
 }
 
-- (void)_refreshPuzzleTypesBasedOnAgeForPuzzleTypes:(id)a3
+- (void)_refreshPuzzleTypesBasedOnAgeForPuzzleTypes:(id)types
 {
-  v17 = self;
+  selfCopy = self;
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  typesCopy = types;
   v4 = [MEMORY[0x1E695E0F0] mutableCopy];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v3;
+  obj = typesCopy;
   v5 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
@@ -1093,15 +1093,15 @@ void __75__FCPuzzleTypeController__cachedPuzzleTypesForPuzzleTypeIDs_fastCacheOn
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [v9 loadDate];
-        v11 = [v10 dateByAddingTimeInterval:3600.0];
-        v12 = [MEMORY[0x1E695DF00] date];
-        v13 = [v11 fc_isEarlierThan:v12];
+        loadDate = [v9 loadDate];
+        v11 = [loadDate dateByAddingTimeInterval:3600.0];
+        date = [MEMORY[0x1E695DF00] date];
+        v13 = [v11 fc_isEarlierThan:date];
 
         if (v13)
         {
-          v14 = [v9 identifier];
-          [v4 addObject:v14];
+          identifier = [v9 identifier];
+          [v4 addObject:identifier];
         }
       }
 
@@ -1113,7 +1113,7 @@ void __75__FCPuzzleTypeController__cachedPuzzleTypesForPuzzleTypeIDs_fastCacheOn
 
   if ([v4 count])
   {
-    v15 = [(FCPuzzleTypeController *)v17 _fetchOperationForPuzzleTypeWithIDs:v4];
+    v15 = [(FCPuzzleTypeController *)selfCopy _fetchOperationForPuzzleTypeWithIDs:v4];
     [v15 setQualityOfService:17];
     [v15 setRelativePriority:-1];
     [v15 setCachePolicy:1];
@@ -1123,17 +1123,17 @@ void __75__FCPuzzleTypeController__cachedPuzzleTypesForPuzzleTypeIDs_fastCacheOn
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_savePuzzleTypesToCache:(id)a3
+- (void)_savePuzzleTypesToCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(FCPuzzleTypeController *)self fastCache];
+  cacheCopy = cache;
+  fastCache = [(FCPuzzleTypeController *)self fastCache];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__FCPuzzleTypeController__savePuzzleTypesToCache___block_invoke;
   v7[3] = &unk_1E7C44950;
-  v8 = v5;
-  v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  v8 = fastCache;
+  v6 = fastCache;
+  [cacheCopy enumerateObjectsUsingBlock:v7];
 }
 
 void __50__FCPuzzleTypeController__savePuzzleTypesToCache___block_invoke(uint64_t a1, void *a2)
@@ -1146,20 +1146,20 @@ void __50__FCPuzzleTypeController__savePuzzleTypesToCache___block_invoke(uint64_
 
 - (id)jsonEncodableObject
 {
-  v2 = [(FCPuzzleTypeController *)self puzzleTypeRecordSource];
-  v3 = [v2 jsonEncodableObject];
+  puzzleTypeRecordSource = [(FCPuzzleTypeController *)self puzzleTypeRecordSource];
+  jsonEncodableObject = [puzzleTypeRecordSource jsonEncodableObject];
 
-  return v3;
+  return jsonEncodableObject;
 }
 
-- (id)_fetchOperationForPuzzleTypeWithIDs:(id)a3
+- (id)_fetchOperationForPuzzleTypeWithIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = [FCPuzzleTypeFetchOperation alloc];
-  v6 = [(FCPuzzleTypeController *)self puzzleTypeRecordSource];
-  v7 = [(FCPuzzleTypeController *)self assetManager];
-  v8 = [(FCPuzzleTypeController *)self context];
-  v9 = [(FCPuzzleTypeFetchOperation *)v5 initWithPuzzleTypeIDs:v4 puzzleTypeRecordSource:v6 assetManager:v7 context:v8 delegate:self];
+  puzzleTypeRecordSource = [(FCPuzzleTypeController *)self puzzleTypeRecordSource];
+  assetManager = [(FCPuzzleTypeController *)self assetManager];
+  context = [(FCPuzzleTypeController *)self context];
+  v9 = [(FCPuzzleTypeFetchOperation *)v5 initWithPuzzleTypeIDs:dsCopy puzzleTypeRecordSource:puzzleTypeRecordSource assetManager:assetManager context:context delegate:self];
 
   return v9;
 }

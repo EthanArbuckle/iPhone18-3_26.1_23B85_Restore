@@ -1,13 +1,13 @@
 @interface iOSLinkAcceleratorCollectionViewController
-- (_TtC11NotesEditor42iOSLinkAcceleratorCollectionViewController)initWithCoder:(id)a3;
-- (_TtC11NotesEditor42iOSLinkAcceleratorCollectionViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC11NotesEditor42iOSLinkAcceleratorCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (_TtC11NotesEditor42iOSLinkAcceleratorCollectionViewController)initWithCoder:(id)coder;
+- (_TtC11NotesEditor42iOSLinkAcceleratorCollectionViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC11NotesEditor42iOSLinkAcceleratorCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 @end
 
 @implementation iOSLinkAcceleratorCollectionViewController
 
-- (_TtC11NotesEditor42iOSLinkAcceleratorCollectionViewController)initWithCoder:(id)a3
+- (_TtC11NotesEditor42iOSLinkAcceleratorCollectionViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC11NotesEditor42iOSLinkAcceleratorCollectionViewController_sizingCell;
   type metadata accessor for iOSLinkAcceleratorCollectionViewCell(0);
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v5 = sub_21549E83C();
   v6 = *(v5 - 8);
@@ -29,19 +29,19 @@
   v8 = &v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21549E7CC();
   v9 = *((*MEMORY[0x277D85000] & **(&self->super.super.super.super.isa + OBJC_IVAR____TtC11NotesEditor42iOSLinkAcceleratorCollectionViewController_linkAcceleratorViewController)) + 0x120);
-  v10 = self;
+  selfCopy = self;
   v9(v8);
   (*(v6 + 8))(v8, v5);
 }
 
-- (_TtC11NotesEditor42iOSLinkAcceleratorCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC11NotesEditor42iOSLinkAcceleratorCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC11NotesEditor42iOSLinkAcceleratorCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11NotesEditor42iOSLinkAcceleratorCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

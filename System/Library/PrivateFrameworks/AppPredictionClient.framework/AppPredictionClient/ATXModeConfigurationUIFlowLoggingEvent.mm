@@ -1,10 +1,10 @@
 @interface ATXModeConfigurationUIFlowLoggingEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXModeConfigurationUIFlowLoggingEvent)initWithDndModeUUID:(id)a3 modeConfigurationUI:(int)a4 modeConfigurationEntityType:(int)a5 modeConfigurationType:(int64_t)a6 suggestedEntityIdentifiers:(id)a7 candidateEntityIdentifiers:(id)a8 previousEntityIdentifiers:(id)a9 currentEntityIdentifiers:(id)a10 eventDate:(id)a11;
-- (ATXModeConfigurationUIFlowLoggingEvent)initWithProto:(id)a3;
-- (ATXModeConfigurationUIFlowLoggingEvent)initWithProtoData:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXModeConfigurationUIFlowLoggingEvent)initWithDndModeUUID:(id)d modeConfigurationUI:(int)i modeConfigurationEntityType:(int)type modeConfigurationType:(int64_t)configurationType suggestedEntityIdentifiers:(id)identifiers candidateEntityIdentifiers:(id)entityIdentifiers previousEntityIdentifiers:(id)previousEntityIdentifiers currentEntityIdentifiers:(id)self0 eventDate:(id)self1;
+- (ATXModeConfigurationUIFlowLoggingEvent)initWithProto:(id)proto;
+- (ATXModeConfigurationUIFlowLoggingEvent)initWithProtoData:(id)data;
 - (id)encodeAsProto;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)json;
 - (id)jsonRawData;
 - (id)jsonRepresentation;
@@ -13,24 +13,24 @@
 
 @implementation ATXModeConfigurationUIFlowLoggingEvent
 
-- (ATXModeConfigurationUIFlowLoggingEvent)initWithDndModeUUID:(id)a3 modeConfigurationUI:(int)a4 modeConfigurationEntityType:(int)a5 modeConfigurationType:(int64_t)a6 suggestedEntityIdentifiers:(id)a7 candidateEntityIdentifiers:(id)a8 previousEntityIdentifiers:(id)a9 currentEntityIdentifiers:(id)a10 eventDate:(id)a11
+- (ATXModeConfigurationUIFlowLoggingEvent)initWithDndModeUUID:(id)d modeConfigurationUI:(int)i modeConfigurationEntityType:(int)type modeConfigurationType:(int64_t)configurationType suggestedEntityIdentifiers:(id)identifiers candidateEntityIdentifiers:(id)entityIdentifiers previousEntityIdentifiers:(id)previousEntityIdentifiers currentEntityIdentifiers:(id)self0 eventDate:(id)self1
 {
-  v15 = a3;
-  v16 = a7;
-  v28 = a8;
-  v27 = a9;
-  v26 = a10;
-  v17 = a11;
-  if (!v15)
+  dCopy = d;
+  identifiersCopy = identifiers;
+  entityIdentifiersCopy = entityIdentifiers;
+  previousEntityIdentifiersCopy = previousEntityIdentifiers;
+  currentEntityIdentifiersCopy = currentEntityIdentifiers;
+  dateCopy = date;
+  if (!dCopy)
   {
-    v22 = v16;
+    v22 = identifiersCopy;
     v18 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
       [ATXModeConfigurationUIFlowLoggingEvent initWithDndModeUUID:v18 modeConfigurationUI:? modeConfigurationEntityType:? modeConfigurationType:? suggestedEntityIdentifiers:? candidateEntityIdentifiers:? previousEntityIdentifiers:? currentEntityIdentifiers:? eventDate:?];
     }
 
-    v16 = v22;
+    identifiersCopy = v22;
   }
 
   v29.receiver = self;
@@ -39,24 +39,24 @@
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_dndModeUUID, a3);
-    v20->_modeConfigurationEntityType = a5;
-    v20->_modeConfigurationUI = a4;
-    objc_storeStrong(&v20->_suggestedEntityIdentifiers, a7);
-    objc_storeStrong(&v20->_candidateEntityIdentifiers, a8);
-    objc_storeStrong(&v20->_previousEntityIdentifiers, a9);
-    objc_storeStrong(&v20->_currentEntityIdentifiers, a10);
-    objc_storeStrong(&v20->_eventDate, a11);
-    v20->_modeConfigurationType = a6;
+    objc_storeStrong(&v19->_dndModeUUID, d);
+    v20->_modeConfigurationEntityType = type;
+    v20->_modeConfigurationUI = i;
+    objc_storeStrong(&v20->_suggestedEntityIdentifiers, identifiers);
+    objc_storeStrong(&v20->_candidateEntityIdentifiers, entityIdentifiers);
+    objc_storeStrong(&v20->_previousEntityIdentifiers, previousEntityIdentifiers);
+    objc_storeStrong(&v20->_currentEntityIdentifiers, currentEntityIdentifiers);
+    objc_storeStrong(&v20->_eventDate, date);
+    v20->_modeConfigurationType = configurationType;
   }
 
   return v20;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
@@ -65,8 +65,8 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   v15[0] = @"dndModeUUID";
-  v3 = [(NSUUID *)self->_dndModeUUID UUIDString];
-  v16[0] = v3;
+  uUIDString = [(NSUUID *)self->_dndModeUUID UUIDString];
+  v16[0] = uUIDString;
   v15[1] = @"modeConfigurationUI";
   modeConfigurationUI = self->_modeConfigurationUI;
   if (modeConfigurationUI >= 4)
@@ -136,46 +136,46 @@
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXModeConfigurationUIFlowLoggingEvent *)self jsonRawData];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonRawData = [(ATXModeConfigurationUIFlowLoggingEvent *)self jsonRawData];
+  v4 = [v2 dataWithJSONObject:jsonRawData options:1 error:0];
 
   return v4;
 }
 
-- (ATXModeConfigurationUIFlowLoggingEvent)initWithProtoData:(id)a3
+- (ATXModeConfigurationUIFlowLoggingEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBModeConfigurationUIFlowLoggingEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBModeConfigurationUIFlowLoggingEvent alloc] initWithData:dataCopy];
 
     self = [(ATXModeConfigurationUIFlowLoggingEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXModeConfigurationUIFlowLoggingEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXModeConfigurationUIFlowLoggingEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXModeConfigurationUIFlowLoggingEvent)initWithProto:(id)a3
+- (ATXModeConfigurationUIFlowLoggingEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_19:
-    v33 = 0;
+    selfCopy = 0;
     goto LABEL_20;
   }
 
@@ -192,20 +192,20 @@ LABEL_19:
   }
 
   v5 = MEMORY[0x1E696AFB0];
-  v6 = v4;
+  v6 = protoCopy;
   v7 = [v5 alloc];
-  v8 = [v6 dndModeUUID];
-  v9 = [v7 initWithUUIDString:v8];
+  dndModeUUID = [v6 dndModeUUID];
+  v9 = [v7 initWithUUIDString:dndModeUUID];
 
-  v37 = [v6 modeConfigurationUI];
-  v36 = [v6 modeConfigurationEntityType];
-  v10 = [v6 modeConfigurationType];
-  v11 = [v6 suggestedEntityIdentifiers];
-  v12 = v11;
+  modeConfigurationUI = [v6 modeConfigurationUI];
+  modeConfigurationEntityType = [v6 modeConfigurationEntityType];
+  modeConfigurationType = [v6 modeConfigurationType];
+  suggestedEntityIdentifiers = [v6 suggestedEntityIdentifiers];
+  v12 = suggestedEntityIdentifiers;
   v13 = MEMORY[0x1E695E0F0];
-  if (v11)
+  if (suggestedEntityIdentifiers)
   {
-    v14 = v11;
+    v14 = suggestedEntityIdentifiers;
   }
 
   else
@@ -215,11 +215,11 @@ LABEL_19:
 
   v15 = v14;
 
-  v16 = [v6 candidateEntityIdentifiers];
-  v17 = v16;
-  if (v16)
+  candidateEntityIdentifiers = [v6 candidateEntityIdentifiers];
+  v17 = candidateEntityIdentifiers;
+  if (candidateEntityIdentifiers)
   {
-    v18 = v16;
+    v18 = candidateEntityIdentifiers;
   }
 
   else
@@ -229,11 +229,11 @@ LABEL_19:
 
   v19 = v18;
 
-  v20 = [v6 previousEntityIdentifiers];
-  v21 = v20;
-  if (v20)
+  previousEntityIdentifiers = [v6 previousEntityIdentifiers];
+  v21 = previousEntityIdentifiers;
+  if (previousEntityIdentifiers)
   {
-    v22 = v20;
+    v22 = previousEntityIdentifiers;
   }
 
   else
@@ -243,11 +243,11 @@ LABEL_19:
 
   v23 = v22;
 
-  v24 = [v6 currentEntityIdentifiers];
-  v25 = v24;
-  if (v24)
+  currentEntityIdentifiers = [v6 currentEntityIdentifiers];
+  v25 = currentEntityIdentifiers;
+  if (currentEntityIdentifiers)
   {
-    v26 = v24;
+    v26 = currentEntityIdentifiers;
   }
 
   else
@@ -262,20 +262,20 @@ LABEL_19:
   v30 = v29;
 
   v31 = [v28 dateWithTimeIntervalSinceReferenceDate:v30];
-  v32 = [(ATXModeConfigurationUIFlowLoggingEvent *)self initWithDndModeUUID:v9 modeConfigurationUI:v37 modeConfigurationEntityType:v36 modeConfigurationType:v10 suggestedEntityIdentifiers:v15 candidateEntityIdentifiers:v19 previousEntityIdentifiers:v23 currentEntityIdentifiers:v27 eventDate:v31];
+  v32 = [(ATXModeConfigurationUIFlowLoggingEvent *)self initWithDndModeUUID:v9 modeConfigurationUI:modeConfigurationUI modeConfigurationEntityType:modeConfigurationEntityType modeConfigurationType:modeConfigurationType suggestedEntityIdentifiers:v15 candidateEntityIdentifiers:v19 previousEntityIdentifiers:v23 currentEntityIdentifiers:v27 eventDate:v31];
 
   self = v32;
-  v33 = self;
+  selfCopy = self;
 LABEL_20:
 
-  return v33;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(NSUUID *)self->_dndModeUUID UUIDString];
-  [v3 setDndModeUUID:v4];
+  uUIDString = [(NSUUID *)self->_dndModeUUID UUIDString];
+  [v3 setDndModeUUID:uUIDString];
 
   [v3 setModeConfigurationUI:self->_modeConfigurationUI];
   [v3 setModeConfigurationEntityType:self->_modeConfigurationEntityType];
@@ -298,10 +298,10 @@ LABEL_20:
   return v3;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
-  v5 = [[ATXPBModeConfigurationUIFlowLoggingEvent alloc] initFromJSON:v4];
+  nCopy = n;
+  v5 = [[ATXPBModeConfigurationUIFlowLoggingEvent alloc] initFromJSON:nCopy];
 
   v6 = [(ATXModeConfigurationUIFlowLoggingEvent *)self initWithProto:v5];
   return v6;
@@ -309,10 +309,10 @@ LABEL_20:
 
 - (id)jsonRepresentation
 {
-  v2 = [(ATXModeConfigurationUIFlowLoggingEvent *)self proto];
-  v3 = [v2 jsonRepresentation];
+  proto = [(ATXModeConfigurationUIFlowLoggingEvent *)self proto];
+  jsonRepresentation = [proto jsonRepresentation];
 
-  return v3;
+  return jsonRepresentation;
 }
 
 @end

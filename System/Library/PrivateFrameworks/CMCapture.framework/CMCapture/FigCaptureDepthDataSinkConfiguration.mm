@@ -1,22 +1,22 @@
 @interface FigCaptureDepthDataSinkConfiguration
-- (BOOL)isEqual:(id)a3;
-- (FigCaptureDepthDataSinkConfiguration)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FigCaptureDepthDataSinkConfiguration)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (id)description;
 @end
 
 @implementation FigCaptureDepthDataSinkConfiguration
 
-- (FigCaptureDepthDataSinkConfiguration)initWithXPCEncoding:(id)a3
+- (FigCaptureDepthDataSinkConfiguration)initWithXPCEncoding:(id)encoding
 {
   v6.receiver = self;
   v6.super_class = FigCaptureDepthDataSinkConfiguration;
   v4 = [(FigCaptureSinkConfiguration *)&v6 initWithXPCEncoding:?];
   if (v4)
   {
-    *(&v4->super._deferredStartEnabled + 1) = xpc_dictionary_get_BOOL(a3, "discardsLateDepthData");
-    *(&v4->super._deferredStartEnabled + 2) = xpc_dictionary_get_BOOL(a3, "filteringEnabled");
+    *(&v4->super._deferredStartEnabled + 1) = xpc_dictionary_get_BOOL(encoding, "discardsLateDepthData");
+    *(&v4->super._deferredStartEnabled + 2) = xpc_dictionary_get_BOOL(encoding, "filteringEnabled");
   }
 
   return v4;
@@ -26,10 +26,10 @@
 {
   v5.receiver = self;
   v5.super_class = FigCaptureDepthDataSinkConfiguration;
-  v3 = [(FigCaptureSinkConfiguration *)&v5 copyXPCEncoding];
-  xpc_dictionary_set_BOOL(v3, "discardsLateDepthData", [(FigCaptureDepthDataSinkConfiguration *)self discardsLateDepthData]);
-  xpc_dictionary_set_BOOL(v3, "filteringEnabled", [(FigCaptureDepthDataSinkConfiguration *)self filteringEnabled]);
-  return v3;
+  copyXPCEncoding = [(FigCaptureSinkConfiguration *)&v5 copyXPCEncoding];
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "discardsLateDepthData", [(FigCaptureDepthDataSinkConfiguration *)self discardsLateDepthData]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "filteringEnabled", [(FigCaptureDepthDataSinkConfiguration *)self filteringEnabled]);
+  return copyXPCEncoding;
 }
 
 - (id)description
@@ -39,17 +39,17 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ discards:%d filters:%d", -[FigCaptureSinkConfiguration description](&v3, sel_description), -[FigCaptureDepthDataSinkConfiguration discardsLateDepthData](self, "discardsLateDepthData"), -[FigCaptureDepthDataSinkConfiguration filteringEnabled](self, "filteringEnabled")];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = FigCaptureDepthDataSinkConfiguration;
-  v4 = [(FigCaptureSinkConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(FigCaptureSinkConfiguration *)&v6 copyWithZone:zone];
   [v4 setDiscardsLateDepthData:{-[FigCaptureDepthDataSinkConfiguration discardsLateDepthData](self, "discardsLateDepthData")}];
   [v4 setFilteringEnabled:{-[FigCaptureDepthDataSinkConfiguration filteringEnabled](self, "filteringEnabled")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v9.receiver = self;
   v9.super_class = FigCaptureDepthDataSinkConfiguration;
@@ -57,10 +57,10 @@
   if (v5)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = -[FigCaptureDepthDataSinkConfiguration discardsLateDepthData](self, "discardsLateDepthData"), v6 == [a3 discardsLateDepthData]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = -[FigCaptureDepthDataSinkConfiguration discardsLateDepthData](self, "discardsLateDepthData"), v6 == [equal discardsLateDepthData]))
     {
-      v7 = [(FigCaptureDepthDataSinkConfiguration *)self filteringEnabled];
-      LOBYTE(v5) = v7 ^ [a3 filteringEnabled] ^ 1;
+      filteringEnabled = [(FigCaptureDepthDataSinkConfiguration *)self filteringEnabled];
+      LOBYTE(v5) = filteringEnabled ^ [equal filteringEnabled] ^ 1;
     }
 
     else

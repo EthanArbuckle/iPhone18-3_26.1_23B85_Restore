@@ -1,23 +1,23 @@
 @interface CAFGroupEnableNotificationRequest
-- (id)groupRequestValueForRequests:(id)a3;
-- (id)requestForCharacteristic:(id)a3;
-- (id)requestForControl:(id)a3;
-- (void)addControl:(id)a3;
-- (void)completedRequests:(id)a3 withResponse:(id)a4;
+- (id)groupRequestValueForRequests:(id)requests;
+- (id)requestForCharacteristic:(id)characteristic;
+- (id)requestForControl:(id)control;
+- (void)addControl:(id)control;
+- (void)completedRequests:(id)requests withResponse:(id)response;
 @end
 
 @implementation CAFGroupEnableNotificationRequest
 
-- (void)addControl:(id)a3
+- (void)addControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__CAFGroupEnableNotificationRequest_addControl___block_invoke;
   v6[3] = &unk_27890D548;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = controlCopy;
+  v5 = controlCopy;
   [(CAFGroupRequest *)self _lockedPerformBlock:v6];
 }
 
@@ -32,12 +32,12 @@ uint64_t __48__CAFGroupEnableNotificationRequest_addControl___block_invoke(uint6
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)requestForCharacteristic:(id)a3
+- (id)requestForCharacteristic:(id)characteristic
 {
-  v3 = a3;
-  if ([v3 notifies])
+  characteristicCopy = characteristic;
+  if ([characteristicCopy notifies])
   {
-    v4 = [(CAFRequest *)CAFEnableNotificationRequest requestWithCharacteristic:v3];
+    v4 = [(CAFRequest *)CAFEnableNotificationRequest requestWithCharacteristic:characteristicCopy];
   }
 
   else
@@ -48,12 +48,12 @@ uint64_t __48__CAFGroupEnableNotificationRequest_addControl___block_invoke(uint6
   return v4;
 }
 
-- (id)requestForControl:(id)a3
+- (id)requestForControl:(id)control
 {
-  v3 = a3;
-  if ([v3 notifies])
+  controlCopy = control;
+  if ([controlCopy notifies])
   {
-    v4 = [(CAFRequest *)CAFEnableNotificationRequest requestWithControl:v3];
+    v4 = [(CAFRequest *)CAFEnableNotificationRequest requestWithControl:controlCopy];
   }
 
   else
@@ -64,12 +64,12 @@ uint64_t __48__CAFGroupEnableNotificationRequest_addControl___block_invoke(uint6
   return v4;
 }
 
-- (id)groupRequestValueForRequests:(id)a3
+- (id)groupRequestValueForRequests:(id)requests
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  requestsCopy = requests;
   objc_opt_class();
-  v4 = v3;
+  v4 = requestsCopy;
   if (!v4 || (v5 = v4, (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -103,13 +103,13 @@ uint64_t __48__CAFGroupEnableNotificationRequest_addControl___block_invoke(uint6
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 characteristic];
-        v15 = [v14 registrationInstanceIDs];
-        [v7 addObjectsFromArray:v15];
+        characteristic = [v13 characteristic];
+        registrationInstanceIDs = [characteristic registrationInstanceIDs];
+        [v7 addObjectsFromArray:registrationInstanceIDs];
 
-        v16 = [v13 control];
-        v17 = [v16 registrationInstanceIDs];
-        [v7 addObjectsFromArray:v17];
+        control = [v13 control];
+        registrationInstanceIDs2 = [control registrationInstanceIDs];
+        [v7 addObjectsFromArray:registrationInstanceIDs2];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -123,21 +123,21 @@ uint64_t __48__CAFGroupEnableNotificationRequest_addControl___block_invoke(uint6
   return v7;
 }
 
-- (void)completedRequests:(id)a3 withResponse:(id)a4
+- (void)completedRequests:(id)requests withResponse:(id)response
 {
   v63 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 values];
+  requestsCopy = requests;
+  responseCopy = response;
+  values = [responseCopy values];
 
-  if (v7)
+  if (values)
   {
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v43 = v5;
-    obj = v5;
+    v43 = requestsCopy;
+    obj = requestsCopy;
     v46 = [obj countByEnumeratingWithState:&v56 objects:v62 count:16];
     if (!v46)
     {
@@ -161,10 +161,10 @@ uint64_t __48__CAFGroupEnableNotificationRequest_addControl___block_invoke(uint6
         v53 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v10 = [v9 characteristic];
-        v11 = [v10 registrationInstanceIDs];
+        characteristic = [v9 characteristic];
+        registrationInstanceIDs = [characteristic registrationInstanceIDs];
 
-        v12 = [v11 countByEnumeratingWithState:&v52 objects:v61 count:16];
+        v12 = [registrationInstanceIDs countByEnumeratingWithState:&v52 objects:v61 count:16];
         if (v12)
         {
           v13 = v12;
@@ -176,29 +176,29 @@ uint64_t __48__CAFGroupEnableNotificationRequest_addControl___block_invoke(uint6
             {
               if (*v53 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(registrationInstanceIDs);
               }
 
               v16 = *(*(&v52 + 1) + 8 * v15);
-              v17 = [v6 values];
-              v18 = [v17 objectForKeyedSubscript:v16];
+              values2 = [responseCopy values];
+              v18 = [values2 objectForKeyedSubscript:v16];
 
-              v19 = [MEMORY[0x277CBEB68] null];
-              v20 = [v18 isEqual:v19];
+              null = [MEMORY[0x277CBEB68] null];
+              v20 = [v18 isEqual:null];
 
               if (v20)
               {
-                v21 = [v9 characteristic];
-                v22 = v21;
+                characteristic2 = [v9 characteristic];
+                v22 = characteristic2;
                 v23 = v16;
                 v24 = 0;
 LABEL_16:
-                [v21 handleRegistrationWithInstanceID:v23 value:v24 registered:1];
+                [characteristic2 handleRegistrationWithInstanceID:v23 value:v24 registered:1];
                 goto LABEL_17;
               }
 
-              v21 = [v9 characteristic];
-              v22 = v21;
+              characteristic2 = [v9 characteristic];
+              v22 = characteristic2;
               v23 = v16;
               if (v18)
               {
@@ -206,14 +206,14 @@ LABEL_16:
                 goto LABEL_16;
               }
 
-              [v21 handleRegistrationWithInstanceID:v16 registered:0];
+              [characteristic2 handleRegistrationWithInstanceID:v16 registered:0];
 LABEL_17:
 
               ++v15;
             }
 
             while (v13 != v15);
-            v25 = [v11 countByEnumeratingWithState:&v52 objects:v61 count:16];
+            v25 = [registrationInstanceIDs countByEnumeratingWithState:&v52 objects:v61 count:16];
             v13 = v25;
           }
 
@@ -224,10 +224,10 @@ LABEL_17:
         v51 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v26 = [v9 control];
-        v27 = [v26 registrationInstanceIDs];
+        control = [v9 control];
+        registrationInstanceIDs2 = [control registrationInstanceIDs];
 
-        v28 = [v27 countByEnumeratingWithState:&v48 objects:v60 count:16];
+        v28 = [registrationInstanceIDs2 countByEnumeratingWithState:&v48 objects:v60 count:16];
         if (!v28)
         {
           goto LABEL_35;
@@ -242,29 +242,29 @@ LABEL_17:
           {
             if (*v49 != v30)
             {
-              objc_enumerationMutation(v27);
+              objc_enumerationMutation(registrationInstanceIDs2);
             }
 
             v32 = *(*(&v48 + 1) + 8 * v31);
-            v33 = [v6 values];
-            v34 = [v33 objectForKeyedSubscript:v32];
+            values3 = [responseCopy values];
+            v34 = [values3 objectForKeyedSubscript:v32];
 
-            v35 = [MEMORY[0x277CBEB68] null];
-            v36 = [v34 isEqual:v35];
+            null2 = [MEMORY[0x277CBEB68] null];
+            v36 = [v34 isEqual:null2];
 
             if (v36)
             {
-              v37 = [v9 control];
-              v38 = v37;
+              control2 = [v9 control];
+              v38 = control2;
               v39 = v32;
               v40 = 0;
 LABEL_30:
-              [v37 handleRegistrationWithInstanceID:v39 value:v40 registered:1];
+              [control2 handleRegistrationWithInstanceID:v39 value:v40 registered:1];
               goto LABEL_31;
             }
 
-            v37 = [v9 control];
-            v38 = v37;
+            control2 = [v9 control];
+            v38 = control2;
             v39 = v32;
             if (v34)
             {
@@ -272,14 +272,14 @@ LABEL_30:
               goto LABEL_30;
             }
 
-            [v37 handleRegistrationWithInstanceID:v32 registered:0];
+            [control2 handleRegistrationWithInstanceID:v32 registered:0];
 LABEL_31:
 
             ++v31;
           }
 
           while (v29 != v31);
-          v41 = [v27 countByEnumeratingWithState:&v48 objects:v60 count:16];
+          v41 = [registrationInstanceIDs2 countByEnumeratingWithState:&v48 objects:v60 count:16];
           v29 = v41;
         }
 
@@ -295,7 +295,7 @@ LABEL_35:
       {
 LABEL_37:
 
-        v5 = v43;
+        requestsCopy = v43;
         break;
       }
     }

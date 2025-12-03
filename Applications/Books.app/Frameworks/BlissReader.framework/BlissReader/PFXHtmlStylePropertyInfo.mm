@@ -1,6 +1,6 @@
 @interface PFXHtmlStylePropertyInfo
-+ (BOOL)propertyIsInherited:(const char *)a3;
-+ (void)addInfoForProperty:(const char *)a3 isInherited:(BOOL)a4;
++ (BOOL)propertyIsInherited:(const char *)inherited;
++ (void)addInfoForProperty:(const char *)property isInherited:(BOOL)inherited;
 + (void)initialize;
 + (void)propertyInfos;
 @end
@@ -17,43 +17,43 @@
   return &qword_567990;
 }
 
-+ (void)addInfoForProperty:(const char *)a3 isInherited:(BOOL)a4
++ (void)addInfoForProperty:(const char *)property isInherited:(BOOL)inherited
 {
-  v4[0] = a3;
+  v4[0] = property;
   v4[2] = v4;
-  *(sub_1ECA04([a1 propertyInfos], v4) + 40) = a4;
+  *(sub_1ECA04([self propertyInfos], v4) + 40) = inherited;
 }
 
 + (void)initialize
 {
-  [a1 addInfoForProperty:"background" isInherited:0];
-  [a1 addInfoForProperty:"background-color" isInherited:0];
-  [a1 addInfoForProperty:"background-image" isInherited:0];
-  [a1 addInfoForProperty:"background-repeat" isInherited:0];
-  [a1 addInfoForProperty:"border" isInherited:0];
-  [a1 addInfoForProperty:"border-bottom" isInherited:0];
-  [a1 addInfoForProperty:"border-bottom-width" isInherited:0];
-  [a1 addInfoForProperty:"border-color" isInherited:0];
-  [a1 addInfoForProperty:"border-collapse" isInherited:0];
-  [a1 addInfoForProperty:"border-left" isInherited:0];
-  [a1 addInfoForProperty:"border-left-width" isInherited:0];
-  [a1 addInfoForProperty:"border-right" isInherited:0];
-  [a1 addInfoForProperty:"border-right-width" isInherited:0];
-  [a1 addInfoForProperty:"border-style" isInherited:0];
-  [a1 addInfoForProperty:"border-top" isInherited:0];
-  [a1 addInfoForProperty:"border-top-width" isInherited:0];
-  [a1 addInfoForProperty:"border-width" isInherited:0];
-  [a1 addInfoForProperty:"visibility" isInherited:0];
+  [self addInfoForProperty:"background" isInherited:0];
+  [self addInfoForProperty:"background-color" isInherited:0];
+  [self addInfoForProperty:"background-image" isInherited:0];
+  [self addInfoForProperty:"background-repeat" isInherited:0];
+  [self addInfoForProperty:"border" isInherited:0];
+  [self addInfoForProperty:"border-bottom" isInherited:0];
+  [self addInfoForProperty:"border-bottom-width" isInherited:0];
+  [self addInfoForProperty:"border-color" isInherited:0];
+  [self addInfoForProperty:"border-collapse" isInherited:0];
+  [self addInfoForProperty:"border-left" isInherited:0];
+  [self addInfoForProperty:"border-left-width" isInherited:0];
+  [self addInfoForProperty:"border-right" isInherited:0];
+  [self addInfoForProperty:"border-right-width" isInherited:0];
+  [self addInfoForProperty:"border-style" isInherited:0];
+  [self addInfoForProperty:"border-top" isInherited:0];
+  [self addInfoForProperty:"border-top-width" isInherited:0];
+  [self addInfoForProperty:"border-width" isInherited:0];
+  [self addInfoForProperty:"visibility" isInherited:0];
 
-  [a1 addInfoForProperty:"vertical-align" isInherited:0];
+  [self addInfoForProperty:"vertical-align" isInherited:0];
 }
 
-+ (BOOL)propertyIsInherited:(const char *)a3
++ (BOOL)propertyIsInherited:(const char *)inherited
 {
-  v7 = a3;
-  v3 = [a1 propertyInfos];
-  v4 = sub_1EB018(v3, &v7);
-  if (v3 + 8 == v4)
+  inheritedCopy = inherited;
+  propertyInfos = [self propertyInfos];
+  v4 = sub_1EB018(propertyInfos, &inheritedCopy);
+  if (propertyInfos + 8 == v4)
   {
     v5 = 1;
   }

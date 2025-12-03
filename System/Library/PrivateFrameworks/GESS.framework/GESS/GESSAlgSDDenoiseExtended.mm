@@ -1,46 +1,46 @@
 @interface GESSAlgSDDenoiseExtended
-- (BOOL)run:(id)a3;
-- (BOOL)setErrorCallback:(id)a3;
-- (BOOL)setProgressCallback:(id)a3;
+- (BOOL)run:(id)run;
+- (BOOL)setErrorCallback:(id)callback;
+- (BOOL)setProgressCallback:(id)callback;
 - (id).cxx_construct;
 - (id)returnReport;
 @end
 
 @implementation GESSAlgSDDenoiseExtended
 
-- (BOOL)setProgressCallback:(id)a3
+- (BOOL)setProgressCallback:(id)callback
 {
-  v4 = MEMORY[0x24C254FE0](a3, a2);
+  v4 = MEMORY[0x24C254FE0](callback, a2);
   progress_cb = self->_progress_cb;
   self->_progress_cb = v4;
 
   return 1;
 }
 
-- (BOOL)setErrorCallback:(id)a3
+- (BOOL)setErrorCallback:(id)callback
 {
-  v4 = MEMORY[0x24C254FE0](a3, a2);
+  v4 = MEMORY[0x24C254FE0](callback, a2);
   error_cb = self->_error_cb;
   self->_error_cb = v4;
 
   return 1;
 }
 
-- (BOOL)run:(id)a3
+- (BOOL)run:(id)run
 {
-  v3 = self;
+  selfCopy = self;
   v36 = *MEMORY[0x277D85DE8];
-  v24 = self;
-  v4 = a3;
-  if ((objc_msgSend_valid(v4, v5, v6, v7) & 1) != 0 && objc_msgSend_meshType(v4, v8, v9, v10) == 1)
+  selfCopy2 = self;
+  runCopy = run;
+  if ((objc_msgSend_valid(runCopy, v5, v6, v7) & 1) != 0 && objc_msgSend_meshType(runCopy, v8, v9, v10) == 1)
   {
-    v14 = objc_msgSend_meshImpl(v4, v11, v12, v13);
+    v14 = objc_msgSend_meshImpl(runCopy, v11, v12, v13);
     v19 = xmmword_24BFBF8C0;
     v20 = 981668463;
     v21 = 0x1400000005;
     v22 = 1;
     v23 = 5;
-    options = v3->_options;
+    options = selfCopy->_options;
     if (options)
     {
       sub_24BCD2840(options, &v19);
@@ -50,27 +50,27 @@
     v30[3] = 0;
     v31[3] = 0;
     v32[3] = 0;
-    if (v3->_progress_cb)
+    if (selfCopy->_progress_cb)
     {
       v33 = &unk_285F94110;
-      v34 = &v24;
+      v34 = &selfCopy2;
       v35 = &v33;
       sub_24BCA3290(&v33, v29);
       sub_24BC9F00C(&v33);
-      v3 = v24;
+      selfCopy = selfCopy2;
     }
 
-    if (v3->_error_cb)
+    if (selfCopy->_error_cb)
     {
       v33 = &unk_285F94158;
-      v34 = &v24;
+      v34 = &selfCopy2;
       v35 = &v33;
       sub_24BCA4ECC(&v33, v30);
       sub_24BC9F08C(&v33);
     }
 
     v33 = &unk_285F941A0;
-    v34 = &v24;
+    v34 = &selfCopy2;
     v35 = &v33;
     sub_24BCD4734(&v33, v32);
     sub_24BCD3C30(&v33);
@@ -83,7 +83,7 @@
     sub_24BC9F10C(v27);
     sub_24BC9F08C(v26);
     sub_24BC9F00C(v25);
-    v24->_success = v16;
+    selfCopy2->_success = v16;
     sub_24BCD3C30(v32);
     sub_24BC9F10C(v31);
     sub_24BC9F08C(v30);

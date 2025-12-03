@@ -1,7 +1,7 @@
 @interface CircularProgressView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC11MusicCoreUI20CircularProgressView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC11MusicCoreUI20CircularProgressView)initWithFrame:(CGRect)frame;
 - (double)accessibilityProgressValue;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
@@ -20,7 +20,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CircularProgressView.layoutSubviews()();
 }
 
@@ -35,7 +35,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = (self + OBJC_IVAR____TtC11MusicCoreUI20CircularProgressView_preferredSize);
   swift_beginAccess();
@@ -75,7 +75,7 @@
   return result;
 }
 
-- (_TtC11MusicCoreUI20CircularProgressView)initWithFrame:(CGRect)a3
+- (_TtC11MusicCoreUI20CircularProgressView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

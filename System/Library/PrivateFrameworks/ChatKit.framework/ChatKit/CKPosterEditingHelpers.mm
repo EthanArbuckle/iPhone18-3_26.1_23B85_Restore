@@ -1,32 +1,32 @@
 @interface CKPosterEditingHelpers
-+ (id)makeEditingViewControllerConfigurationForPosterContents:(id)a3 conversation:(id)a4;
-+ (int64_t)preferredEditorModalPresentationStyleForTraitCollection:(id)a3;
++ (id)makeEditingViewControllerConfigurationForPosterContents:(id)contents conversation:(id)conversation;
++ (int64_t)preferredEditorModalPresentationStyleForTraitCollection:(id)collection;
 - (_TtC7ChatKit22CKPosterEditingHelpers)init;
 @end
 
 @implementation CKPosterEditingHelpers
 
-+ (int64_t)preferredEditorModalPresentationStyleForTraitCollection:(id)a3
++ (int64_t)preferredEditorModalPresentationStyleForTraitCollection:(id)collection
 {
-  v3 = [a3 userInterfaceIdiom];
-  if ((v3 - 1) > 5)
+  userInterfaceIdiom = [collection userInterfaceIdiom];
+  if ((userInterfaceIdiom - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_190DE6BF0[(v3 - 1)];
+    return qword_190DE6BF0[(userInterfaceIdiom - 1)];
   }
 }
 
-+ (id)makeEditingViewControllerConfigurationForPosterContents:(id)a3 conversation:(id)a4
++ (id)makeEditingViewControllerConfigurationForPosterContents:(id)contents conversation:(id)conversation
 {
   swift_getObjCClassMetadata();
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v6 = a4;
-  v8 = sub_190A01CA0(a3, v6, v7);
+  conversationCopy = conversation;
+  v8 = sub_190A01CA0(contents, conversationCopy, v7);
   swift_unknownObjectRelease();
 
   return v8;

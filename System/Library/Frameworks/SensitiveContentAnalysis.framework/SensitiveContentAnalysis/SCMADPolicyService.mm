@@ -1,18 +1,18 @@
 @interface SCMADPolicyService
-+ (BOOL)checkAvailability:(id *)a3;
-- (SCMADPolicyService)initWithUpdateHandler:(id)a3 error:(id *)a4;
++ (BOOL)checkAvailability:(id *)availability;
+- (SCMADPolicyService)initWithUpdateHandler:(id)handler error:(id *)error;
 @end
 
 @implementation SCMADPolicyService
 
-+ (BOOL)checkAvailability:(id *)a3
++ (BOOL)checkAvailability:(id *)availability
 {
   v4 = objc_alloc(getMADServiceClass());
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
   {
-    if (!a3)
+    if (!availability)
     {
       v9 = 0;
       return v9 & 1;
@@ -44,24 +44,24 @@
   v8 = [v6 alloc];
   v9 = objc_opt_respondsToSelector();
 
-  if (a3 && (v9 & 1) == 0)
+  if (availability && (v9 & 1) == 0)
   {
     v10 = @"Failed to find MADUserSafetyPolicy";
 LABEL_9:
     SCAError(100, v10);
-    *a3 = v9 = 0;
+    *availability = v9 = 0;
   }
 
   return v9 & 1;
 }
 
-- (SCMADPolicyService)initWithUpdateHandler:(id)a3 error:(id *)a4
+- (SCMADPolicyService)initWithUpdateHandler:(id)handler error:(id *)error
 {
-  v6 = a3;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = SCMADPolicyService;
   v7 = [(SCMADPolicyService *)&v16 init];
-  if (!v7 || [objc_opt_class() checkAvailability:a4] && (objc_msgSend(getMADServiceClass(), "service"), v8 = objc_claimAutoreleasedReturnValue(), service = v7->_service, v7->_service = v8, service, v10 = v7->_service, v14[0] = MEMORY[0x1E69E9820], v14[1] = 3221225472, v14[2] = __50__SCMADPolicyService_initWithUpdateHandler_error___block_invoke, v14[3] = &unk_1E7A43C38, v15 = v6, v11 = -[MADService registerUserSafetyPolicyUpdateHandler:error:](v10, "registerUserSafetyPolicyUpdateHandler:error:", v14, a4), v15, v11))
+  if (!v7 || [objc_opt_class() checkAvailability:error] && (objc_msgSend(getMADServiceClass(), "service"), v8 = objc_claimAutoreleasedReturnValue(), service = v7->_service, v7->_service = v8, service, v10 = v7->_service, v14[0] = MEMORY[0x1E69E9820], v14[1] = 3221225472, v14[2] = __50__SCMADPolicyService_initWithUpdateHandler_error___block_invoke, v14[3] = &unk_1E7A43C38, v15 = handlerCopy, v11 = -[MADService registerUserSafetyPolicyUpdateHandler:error:](v10, "registerUserSafetyPolicyUpdateHandler:error:", v14, error), v15, v11))
   {
     v12 = v7;
   }

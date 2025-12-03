@@ -1,17 +1,17 @@
 @interface ATXPrivacyPreservingLocationHash
 + (id)randomData;
 + (id)readDeviceSpecificSalt;
-+ (id)setSaltToUserDefaults:(id)a3 scheme:(id)a4;
-+ (int64_t)preservePrivacyForGeoHash:(int64_t)a3;
-+ (int64_t)sha256HashForGeohash:(int64_t)a3 salt:(id)a4;
++ (id)setSaltToUserDefaults:(id)defaults scheme:(id)scheme;
++ (int64_t)preservePrivacyForGeoHash:(int64_t)hash;
++ (int64_t)sha256HashForGeohash:(int64_t)geohash salt:(id)salt;
 @end
 
 @implementation ATXPrivacyPreservingLocationHash
 
-+ (int64_t)preservePrivacyForGeoHash:(int64_t)a3
++ (int64_t)preservePrivacyForGeoHash:(int64_t)hash
 {
   v4 = +[ATXPrivacyPreservingLocationHash readDeviceSpecificSalt];
-  v5 = [ATXPrivacyPreservingLocationHash dropLastTenBitsOfSHA256Hash:[ATXPrivacyPreservingLocationHash sha256HashForGeohash:a3 salt:v4]];
+  v5 = [ATXPrivacyPreservingLocationHash dropLastTenBitsOfSHA256Hash:[ATXPrivacyPreservingLocationHash sha256HashForGeohash:hash salt:v4]];
 
   return v5;
 }
@@ -35,14 +35,14 @@
   return v4;
 }
 
-+ (id)setSaltToUserDefaults:(id)a3 scheme:(id)a4
++ (id)setSaltToUserDefaults:(id)defaults scheme:(id)scheme
 {
-  v5 = a3;
-  v6 = a4;
+  defaultsCopy = defaults;
+  schemeCopy = scheme;
   v7 = +[ATXPrivacyPreservingLocationHash randomData];
   if (v7)
   {
-    [v5 setObject:v7 forKey:v6];
+    [defaultsCopy setObject:v7 forKey:schemeCopy];
     v8 = v7;
   }
 
@@ -74,16 +74,16 @@
   return v3;
 }
 
-+ (int64_t)sha256HashForGeohash:(int64_t)a3 salt:(id)a4
++ (int64_t)sha256HashForGeohash:(int64_t)geohash salt:(id)salt
 {
   v12 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v4 = a4;
+  geohashCopy = geohash;
+  saltCopy = salt;
   v5 = objc_opt_new();
-  [v5 appendBytes:&v9 length:8];
-  if (v4)
+  [v5 appendBytes:&geohashCopy length:8];
+  if (saltCopy)
   {
-    [v5 appendData:v4];
+    [v5 appendData:saltCopy];
   }
 
   *md = 0u;

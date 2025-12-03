@@ -1,24 +1,24 @@
 @interface SystemDiagnosticLogAgentiOS
-- (BOOL)ASPToolTrace:(id)a3 withTimeout:(double)a4;
-- (BOOL)GEAvailabilityTaskWithDir:(id)a3 withTimeout:(double)a4;
-- (BOOL)_BTPHYTaskWithTimeout:(double)a3;
-- (BOOL)_basebandTSTriggerWithTimeout:(double)a3;
-- (BOOL)_getSysctls:(id)a3 withTimeout:(double)a4;
-- (BOOL)_networkRelayTaskWithTimeout:(double)a3 atDirectory:(id)a4;
-- (BOOL)_proximityTaskWithTimeout:(double)a3;
-- (BOOL)getAccessibilityPreferences:(id)a3 withTimeout:(double)a4;
-- (BOOL)getKeyboardPreferences:(id)a3 withTimeout:(double)a4;
-- (BOOL)springBoardStateDumpTaskWithTimeout:(double)a3;
-- (BOOL)takeStackshotWithFlags:(unsigned int)a3 withTimeout:(double)a4;
-- (id)eSIMSetupTaskWithTimeout:(double)a3;
-- (id)fetchSiriEnrollmentLogsWithTimeout:(double)a3;
+- (BOOL)ASPToolTrace:(id)trace withTimeout:(double)timeout;
+- (BOOL)GEAvailabilityTaskWithDir:(id)dir withTimeout:(double)timeout;
+- (BOOL)_BTPHYTaskWithTimeout:(double)timeout;
+- (BOOL)_basebandTSTriggerWithTimeout:(double)timeout;
+- (BOOL)_getSysctls:(id)sysctls withTimeout:(double)timeout;
+- (BOOL)_networkRelayTaskWithTimeout:(double)timeout atDirectory:(id)directory;
+- (BOOL)_proximityTaskWithTimeout:(double)timeout;
+- (BOOL)getAccessibilityPreferences:(id)preferences withTimeout:(double)timeout;
+- (BOOL)getKeyboardPreferences:(id)preferences withTimeout:(double)timeout;
+- (BOOL)springBoardStateDumpTaskWithTimeout:(double)timeout;
+- (BOOL)takeStackshotWithFlags:(unsigned int)flags withTimeout:(double)timeout;
+- (id)eSIMSetupTaskWithTimeout:(double)timeout;
+- (id)fetchSiriEnrollmentLogsWithTimeout:(double)timeout;
 - (id)getLockdownModeState;
-- (void)processMessage:(id)a3 replyWith:(id)a4;
+- (void)processMessage:(id)message replyWith:(id)with;
 @end
 
 @implementation SystemDiagnosticLogAgentiOS
 
-- (BOOL)_proximityTaskWithTimeout:(double)a3
+- (BOOL)_proximityTaskWithTimeout:(double)timeout
 {
   v15 = 0;
   v16 = &v15;
@@ -27,11 +27,11 @@
   v5 = dlopen(0, 2);
   if (!v5)
   {
-    v10 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "couldn't get handle", buf, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "couldn't get handle", buf, 2u);
     }
 
     goto LABEL_16;
@@ -41,11 +41,11 @@
   v6 = dlsym(v5, "PRCollectLogs");
   if (!v6)
   {
-    v11 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Proximity API not found", buf, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Proximity API not found", buf, 2u);
     }
 
     dlclose(v5);
@@ -54,11 +54,11 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v7 = [(SystemDiagnosticLogAgent *)self logHandle];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  logHandle3 = [(SystemDiagnosticLogAgent *)self logHandle];
+  if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Proximity API found", buf, 2u);
+    _os_log_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_DEFAULT, "Proximity API found", buf, 2u);
   }
 
   v13[0] = _NSConcreteStackBlock;
@@ -67,13 +67,13 @@ LABEL_16:
   v13[3] = &unk_100074878;
   v13[4] = &v15;
   v13[5] = v6;
-  if (![SystemDiagnosticLogAgent _runBlock:v13 withTimeout:a3])
+  if (![SystemDiagnosticLogAgent _runBlock:v13 withTimeout:timeout])
   {
-    v8 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logHandle4 = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Proxmitiy SPI timed out", buf, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle4, OS_LOG_TYPE_DEFAULT, "Proxmitiy SPI timed out", buf, 2u);
     }
   }
 
@@ -84,17 +84,17 @@ LABEL_17:
   return v9 & 1;
 }
 
-- (BOOL)springBoardStateDumpTaskWithTimeout:(double)a3
+- (BOOL)springBoardStateDumpTaskWithTimeout:(double)timeout
 {
   if (objc_opt_class())
   {
-    if ([SystemDiagnosticLogAgent _runBlock:&stru_1000748B8 withTimeout:a3])
+    if ([SystemDiagnosticLogAgent _runBlock:&stru_1000748B8 withTimeout:timeout])
     {
       return 1;
     }
 
-    v6 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_10003B298();
     }
@@ -102,8 +102,8 @@ LABEL_17:
 
   else
   {
-    v6 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_10003B2CC();
     }
@@ -112,7 +112,7 @@ LABEL_17:
   return 0;
 }
 
-- (id)fetchSiriEnrollmentLogsWithTimeout:(double)a3
+- (id)fetchSiriEnrollmentLogsWithTimeout:(double)timeout
 {
   v9 = 0;
   v10 = &v9;
@@ -128,13 +128,13 @@ LABEL_17:
     v8[3] = &unk_1000748E0;
     v8[4] = self;
     v8[5] = &v9;
-    if ([SystemDiagnosticLogAgent _runBlock:v8 withTimeout:a3])
+    if ([SystemDiagnosticLogAgent _runBlock:v8 withTimeout:timeout])
     {
       goto LABEL_8;
     }
 
-    v5 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_10003B300();
     }
@@ -142,8 +142,8 @@ LABEL_17:
 
   else
   {
-    v5 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_10003B334();
     }
@@ -156,7 +156,7 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_BTPHYTaskWithTimeout:(double)a3
+- (BOOL)_BTPHYTaskWithTimeout:(double)timeout
 {
   if (&_CoreCaptureControlCreate)
   {
@@ -170,12 +170,12 @@ LABEL_8:
     v10[3] = &unk_100074908;
     v10[4] = self;
     v10[5] = buf;
-    v4 = [SystemDiagnosticLogAgent _runBlock:v10 withTimeout:a3];
-    v5 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    v4 = [SystemDiagnosticLogAgent _runBlock:v10 withTimeout:timeout];
+    logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v9 = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Finished corecapture BTPHY SPI", v9, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Finished corecapture BTPHY SPI", v9, 2u);
     }
 
     v6 = (v12[24] != 0) & v4;
@@ -184,11 +184,11 @@ LABEL_8:
 
   else
   {
-    v7 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "CoreCapture SPI not available", buf, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "CoreCapture SPI not available", buf, 2u);
     }
 
     return 0;
@@ -197,10 +197,10 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_networkRelayTaskWithTimeout:(double)a3 atDirectory:(id)a4
+- (BOOL)_networkRelayTaskWithTimeout:(double)timeout atDirectory:(id)directory
 {
-  v6 = a4;
-  v7 = v6;
+  directoryCopy = directory;
+  v7 = directoryCopy;
   if (&_NRDiagnosticSaveNetworkRelayStatusToDirectory)
   {
     *buf = 0;
@@ -212,8 +212,8 @@ LABEL_8:
     v18 = sub_1000025E0;
     v19 = &unk_1000748E0;
     v21 = buf;
-    v20 = v6;
-    if ([SystemDiagnosticLogAgent _runBlock:&v16 withTimeout:a3])
+    v20 = directoryCopy;
+    if ([SystemDiagnosticLogAgent _runBlock:&v16 withTimeout:timeout])
     {
       v8 = [(SystemDiagnosticLogAgent *)self logHandle:v16];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -247,11 +247,11 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v13 = [(SystemDiagnosticLogAgent *)self logHandle];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "NetworkRelay SPI not available", buf, 2u);
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "NetworkRelay SPI not available", buf, 2u);
   }
 
   v14 = 0;
@@ -260,7 +260,7 @@ LABEL_12:
   return v14 & 1;
 }
 
-- (id)eSIMSetupTaskWithTimeout:(double)a3
+- (id)eSIMSetupTaskWithTimeout:(double)timeout
 {
   v9 = 0;
   v10 = &v9;
@@ -276,13 +276,13 @@ LABEL_12:
     v7[3] = &unk_100074908;
     v7[4] = self;
     v7[5] = &v9;
-    if ([SystemDiagnosticLogAgent _runBlock:v7 withTimeout:a3])
+    if ([SystemDiagnosticLogAgent _runBlock:v7 withTimeout:timeout])
     {
       goto LABEL_8;
     }
 
-    v4 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_10003B3E0();
     }
@@ -290,11 +290,11 @@ LABEL_12:
 
   else
   {
-    v4 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "eSIM setup SPI not available", buf, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "eSIM setup SPI not available", buf, 2u);
     }
   }
 
@@ -305,17 +305,17 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)_basebandTSTriggerWithTimeout:(double)a3
+- (BOOL)_basebandTSTriggerWithTimeout:(double)timeout
 {
   if (&_PLSysdiagnoseTimeSensitivePhase)
   {
-    if ([SystemDiagnosticLogAgent _runBlock:&stru_100074950 withTimeout:a3])
+    if ([SystemDiagnosticLogAgent _runBlock:&stru_100074950 withTimeout:timeout])
     {
       return 1;
     }
 
-    v5 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 0;
       v6 = "PLSysdiagnoseTimeSensitivePhase timed out.";
@@ -326,24 +326,24 @@ LABEL_8:
 
   else
   {
-    v5 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 0;
       v6 = "PLSysdiagnoseTimeSensitivePhase SPI not available";
       v7 = &v9;
 LABEL_8:
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, v6, v7, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, v6, v7, 2u);
     }
   }
 
   return 0;
 }
 
-- (BOOL)GEAvailabilityTaskWithDir:(id)a3 withTimeout:(double)a4
+- (BOOL)GEAvailabilityTaskWithDir:(id)dir withTimeout:(double)timeout
 {
-  v6 = a3;
-  [v6 stringByAppendingPathComponent:@"GEAvailability.log"];
+  dirCopy = dir;
+  [dirCopy stringByAppendingPathComponent:@"GEAvailability.log"];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -355,18 +355,18 @@ LABEL_8:
   v12[4] = self;
   v7 = v14 = &v15;
   v13 = v7;
-  if ([SystemDiagnosticLogAgent _runBlock:v12 withTimeout:a4]&& (v16[3] & 1) != 0)
+  if ([SystemDiagnosticLogAgent _runBlock:v12 withTimeout:timeout]&& (v16[3] & 1) != 0)
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v11 = 0;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "GEAvailability task SPI not available, timed out or couldn't create the dest file", v11, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "GEAvailability task SPI not available, timed out or couldn't create the dest file", v11, 2u);
     }
 
     v8 = 0;
@@ -376,28 +376,28 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)takeStackshotWithFlags:(unsigned int)a3 withTimeout:(double)a4
+- (BOOL)takeStackshotWithFlags:(unsigned int)flags withTimeout:(double)timeout
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100003004;
   v5[3] = &unk_1000749C8;
   v5[4] = self;
-  v6 = a3;
-  return [SystemDiagnosticLogAgent _runBlock:v5 withTimeout:a4];
+  flagsCopy = flags;
+  return [SystemDiagnosticLogAgent _runBlock:v5 withTimeout:timeout];
 }
 
-- (BOOL)ASPToolTrace:(id)a3 withTimeout:(double)a4
+- (BOOL)ASPToolTrace:(id)trace withTimeout:(double)timeout
 {
-  v6 = [a3 stringByAppendingPathComponent:@"asptool_trace.log"];
-  LOBYTE(self) = [(SystemDiagnosticLogAgent *)self ASPToolGenericWithTimeout:v6 forFile:&stru_100074A08 andBlock:a4];
+  v6 = [trace stringByAppendingPathComponent:@"asptool_trace.log"];
+  LOBYTE(self) = [(SystemDiagnosticLogAgent *)self ASPToolGenericWithTimeout:v6 forFile:&stru_100074A08 andBlock:timeout];
 
   return self;
 }
 
-- (BOOL)getKeyboardPreferences:(id)a3 withTimeout:(double)a4
+- (BOOL)getKeyboardPreferences:(id)preferences withTimeout:(double)timeout
 {
-  v6 = a3;
+  preferencesCopy = preferences;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -419,14 +419,14 @@ LABEL_8:
   v21 = &v29;
   v22 = &v23;
   v20 = &off_100076C28;
-  v7 = [SystemDiagnosticLogAgent _runBlock:v18 withTimeout:a4];
+  v7 = [SystemDiagnosticLogAgent _runBlock:v18 withTimeout:timeout];
   if ((v7 & 1) == 0)
   {
-    v8 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v17 = 0;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Couldn't retrieve the preferences within the required time", v17, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Couldn't retrieve the preferences within the required time", v17, 2u);
     }
   }
 
@@ -445,14 +445,14 @@ LABEL_8:
     v13 = @"Could not retrieve keyboard preferences.";
   }
 
-  v14 = sub_100004F98(v6, @"Keyboard_Preferences.txt", v13);
+  v14 = sub_100004F98(preferencesCopy, @"Keyboard_Preferences.txt", v13);
   if ((v14 & 1) == 0)
   {
-    v15 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       *v17 = 0;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Couldn't write keyboard preferences.", v17, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Couldn't write keyboard preferences.", v17, 2u);
     }
   }
 
@@ -462,9 +462,9 @@ LABEL_8:
   return v7 & v14;
 }
 
-- (BOOL)getAccessibilityPreferences:(id)a3 withTimeout:(double)a4
+- (BOOL)getAccessibilityPreferences:(id)preferences withTimeout:(double)timeout
 {
-  v6 = a3;
+  preferencesCopy = preferences;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -485,14 +485,14 @@ LABEL_8:
   v17 = &off_100076C40;
   v18 = &v26;
   v19 = &v20;
-  v7 = [SystemDiagnosticLogAgent _runBlock:v16 withTimeout:a4];
+  v7 = [SystemDiagnosticLogAgent _runBlock:v16 withTimeout:timeout];
   if ((v7 & 1) == 0)
   {
-    v8 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Could not retrieve accessibility preferences within the required time", buf, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Could not retrieve accessibility preferences within the required time", buf, 2u);
     }
   }
 
@@ -520,7 +520,7 @@ LABEL_8:
     v12 = [(__CFString *)v10 stringByAppendingString:@"Could not retrieve touch accommodations preferences."];
   }
 
-  v13 = sub_100004F98(v6, @"Accessibility_Preferences.txt", v12);
+  v13 = sub_100004F98(preferencesCopy, @"Accessibility_Preferences.txt", v12);
   _Block_object_dispose(&v20, 8);
 
   _Block_object_dispose(&v26, 8);
@@ -535,10 +535,10 @@ LABEL_8:
   if (v3)
   {
     v4 = v3;
-    v5 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      sub_10003B51C(v4, v5);
+      sub_10003B51C(v4, logHandle);
     }
 
     v6 = 0;
@@ -552,7 +552,7 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_getSysctls:(id)a3 withTimeout:(double)a4
+- (BOOL)_getSysctls:(id)sysctls withTimeout:(double)timeout
 {
   v15 = 0;
   v16 = &v15;
@@ -563,14 +563,14 @@ LABEL_8:
   v12[2] = sub_100003A8C;
   v12[3] = &unk_100074A80;
   v12[4] = self;
-  v6 = a3;
-  v13 = v6;
+  sysctlsCopy = sysctls;
+  v13 = sysctlsCopy;
   v14 = &v15;
-  v7 = [SystemDiagnosticLogAgent _runBlock:v12 withTimeout:a4];
+  v7 = [SystemDiagnosticLogAgent _runBlock:v12 withTimeout:timeout];
   if ((v16[3] & 1) == 0)
   {
-    v8 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_10003B594();
     }
@@ -583,8 +583,8 @@ LABEL_8:
 
   else
   {
-    v10 = [(SystemDiagnosticLogAgent *)self logHandle];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    logHandle2 = [(SystemDiagnosticLogAgent *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
     {
       sub_10003B5C8();
     }
@@ -596,22 +596,22 @@ LABEL_8:
   return v9 & 1;
 }
 
-- (void)processMessage:(id)a3 replyWith:(id)a4
+- (void)processMessage:(id)message replyWith:(id)with
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  withCopy = with;
   v40 = -1;
   v38 = 0;
   v39 = 0.0;
   v37 = 0;
-  LODWORD(v8) = [(SystemDiagnosticLogAgent *)self parseLogAgentRequest:v6 outputPath:&v37 timeout:&v39 taskType:&v40 startTimeClockNS:&v38];
+  LODWORD(logHandle) = [(SystemDiagnosticLogAgent *)self parseLogAgentRequest:messageCopy outputPath:&v37 timeout:&v39 taskType:&v40 startTimeClockNS:&v38];
   v9 = v37;
   v10 = v9;
-  if (v8)
+  if (logHandle)
   {
     v11 = 0;
     v12 = 0;
-    LOBYTE(v8) = 0;
+    LOBYTE(logHandle) = 0;
     switch(v40)
     {
       case 1:
@@ -652,29 +652,29 @@ LABEL_8:
         goto LABEL_76;
       case 14:
         v18 = v39;
-        v19 = self;
+        selfCopy2 = self;
         v20 = v10;
         v21 = 1;
         goto LABEL_45;
       case 15:
-        v8 = [(SystemDiagnosticLogAgent *)self coreCaptureConfigTask:v39];
-        if (!v8)
+        logHandle = [(SystemDiagnosticLogAgent *)self coreCaptureConfigTask:v39];
+        if (!logHandle)
         {
           break;
         }
 
-        xpc_dictionary_set_value(v7, "replyDictionary", v8);
+        xpc_dictionary_set_value(withCopy, "replyDictionary", logHandle);
 
         v11 = 0;
         v12 = 0;
         goto LABEL_63;
       case 16:
         v18 = v39;
-        v19 = self;
+        selfCopy2 = self;
         v20 = v10;
         v21 = 0;
 LABEL_45:
-        v13 = [(SystemDiagnosticLogAgent *)v19 coreCaptureTaskWithDir:v20 withTimeout:v21 ofType:v18];
+        v13 = [(SystemDiagnosticLogAgent *)selfCopy2 coreCaptureTaskWithDir:v20 withTimeout:v21 ofType:v18];
         goto LABEL_76;
       case 17:
         v13 = [(SystemDiagnosticLogAgent *)self coreRepairDiagnosticTaskWithDir:v9 withTimeout:v39];
@@ -751,7 +751,7 @@ LABEL_45:
         v14 = [(SystemDiagnosticLogAgentiOS *)self fetchSiriEnrollmentLogsWithTimeout:v39];
 LABEL_52:
         v11 = v14;
-        LOBYTE(v8) = 0;
+        LOBYTE(logHandle) = 0;
         v12 = 0;
         if (v14)
         {
@@ -764,15 +764,15 @@ LABEL_52:
         goto LABEL_76;
       case 49:
         v15 = v39;
-        v16 = self;
+        selfCopy4 = self;
         v17 = 0x8000;
         goto LABEL_47;
       case 50:
         v15 = v39;
-        v16 = self;
+        selfCopy4 = self;
         v17 = 0;
 LABEL_47:
-        v13 = [(SystemDiagnosticLogAgentiOS *)v16 takeStackshotWithFlags:v17 withTimeout:v15];
+        v13 = [(SystemDiagnosticLogAgentiOS *)selfCopy4 takeStackshotWithFlags:v17 withTimeout:v15];
         goto LABEL_76;
       case 51:
         v13 = [(SystemDiagnosticLogAgentiOS *)self _getSysctls:v9 withTimeout:v39];
@@ -782,7 +782,7 @@ LABEL_47:
         goto LABEL_76;
       case 57:
         v12 = [(SystemDiagnosticLogAgent *)self tailspinKeychordTaskWithDir:v9 withTimeout:v39];
-        LOBYTE(v8) = 0;
+        LOBYTE(logHandle) = 0;
         goto LABEL_70;
       case 58:
         v22 = [v9 stringByAppendingPathComponent:@"sysdiagnose_logarchive_timeout_nosymbols.tailspin"];
@@ -799,7 +799,7 @@ LABEL_68:
         if ([(SystemDiagnosticLogAgent *)self tailspinSaveSpiWrapperForReason:v24 forPath:v22 collectAriadne:1 withTimeout:v23])
         {
           v12 = v22;
-          LOBYTE(v8) = 1;
+          LOBYTE(logHandle) = 1;
           v10 = v12;
 LABEL_70:
           if (v12)
@@ -842,10 +842,10 @@ LABEL_53:
                 }
               }
 
-              xpc_dictionary_set_value(v7, "resultPaths", v25);
+              xpc_dictionary_set_value(withCopy, "resultPaths", v25);
 
 LABEL_63:
-              LOBYTE(v8) = 1;
+              LOBYTE(logHandle) = 1;
             }
           }
 
@@ -859,7 +859,7 @@ LABEL_63:
         {
           v11 = 0;
           v12 = 0;
-          LOBYTE(v8) = 0;
+          LOBYTE(logHandle) = 0;
           v10 = v22;
         }
 
@@ -877,21 +877,21 @@ LABEL_63:
         v13 = [(SystemDiagnosticLogAgent *)self unifiedAssetTaskWithDir:v9 withTimeout:v39];
         goto LABEL_76;
       case 66:
-        v13 = [(SystemDiagnosticLogAgent *)self centauriTaskWithDir:v9 withTimeout:v6 withRequest:v39];
+        v13 = [(SystemDiagnosticLogAgent *)self centauriTaskWithDir:v9 withTimeout:messageCopy withRequest:v39];
 LABEL_76:
-        LOBYTE(v8) = v13;
+        LOBYTE(logHandle) = v13;
         break;
       default:
-        v8 = [(SystemDiagnosticLogAgent *)self logHandle];
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+        logHandle = [(SystemDiagnosticLogAgent *)self logHandle];
+        if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Not a valid request type for sysdiagnose_agent", buf, 2u);
+          _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Not a valid request type for sysdiagnose_agent", buf, 2u);
         }
 
         v11 = 0;
         v12 = 0;
-        LOBYTE(v8) = 0;
+        LOBYTE(logHandle) = 0;
         goto LABEL_78;
     }
   }
@@ -899,7 +899,7 @@ LABEL_76:
   v11 = 0;
   v12 = 0;
 LABEL_78:
-  xpc_dictionary_set_BOOL(v7, "result", v8);
+  xpc_dictionary_set_BOOL(withCopy, "result", logHandle);
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface HUBaseIconViewConfiguration
 - (HUBaseIconViewConfiguration)init;
-- (id)copyWithIconDescriptor:(id)a3;
-- (void)setAppearance:(int64_t)a3;
+- (id)copyWithIconDescriptor:(id)descriptor;
+- (void)setAppearance:(int64_t)appearance;
 @end
 
 @implementation HUBaseIconViewConfiguration
 
-- (void)setAppearance:(int64_t)a3
+- (void)setAppearance:(int64_t)appearance
 {
-  v4 = self;
-  BaseIconView.__Configuration.appearance.setter(a3);
+  selfCopy = self;
+  BaseIconView.__Configuration.appearance.setter(appearance);
 }
 
-- (id)copyWithIconDescriptor:(id)a3
+- (id)copyWithIconDescriptor:(id)descriptor
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = BaseIconView.__Configuration.copy(with:)(a3);
+  selfCopy = self;
+  v6 = BaseIconView.__Configuration.copy(with:)(descriptor);
   swift_unknownObjectRelease();
 
   return v6;

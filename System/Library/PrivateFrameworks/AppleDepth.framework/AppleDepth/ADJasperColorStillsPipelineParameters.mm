@@ -1,21 +1,21 @@
 @interface ADJasperColorStillsPipelineParameters
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 @end
 
 @implementation ADJasperColorStillsPipelineParameters
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v30.receiver = self;
   v30.super_class = ADJasperColorStillsPipelineParameters;
-  v5 = [(ADPipelineParameters *)&v30 initForDevice:v4];
+  v5 = [(ADPipelineParameters *)&v30 initForDevice:deviceCopy];
   v6 = v5;
   v7 = v5;
   if (v5)
   {
-    v8 = [v5 deviceName];
-    v9 = [ADDeviceConfiguration getLidarType:v8];
+    deviceName = [v5 deviceName];
+    v9 = [ADDeviceConfiguration getLidarType:deviceName];
 
     v10 = objc_opt_new();
     v11 = v7[4];

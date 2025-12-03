@@ -1,11 +1,11 @@
 @interface TPSTipsAssetPrefetchingManager
 - (TPSTipsAssetPrefetchingManager)init;
-- (void)addFetchOperationWithAssetConfiguration:(id)a3 type:(int64_t)a4 operationName:(id)a5;
-- (void)appendAssetsOperationsForTip:(id)a3;
+- (void)addFetchOperationWithAssetConfiguration:(id)configuration type:(int64_t)type operationName:(id)name;
+- (void)appendAssetsOperationsForTip:(id)tip;
 - (void)cancel;
 - (void)cancelFetch;
 - (void)dealloc;
-- (void)prefetchAssetsFromTip:(id)a3 tips:(id)a4 assetUserInterfaceStyle:(int64_t)a5;
+- (void)prefetchAssetsFromTip:(id)tip tips:(id)tips assetUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation TPSTipsAssetPrefetchingManager
@@ -30,9 +30,9 @@
     serialQueue = v2->_serialQueue;
     v2->_serialQueue = v4;
 
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     sessionItems = v2->_sessionItems;
-    v2->_sessionItems = v6;
+    v2->_sessionItems = array;
 
     v8 = objc_alloc_init(MEMORY[0x277CCABD8]);
     operationQueue = v2->_operationQueue;
@@ -48,13 +48,13 @@
 - (void)cancel
 {
   objc_initWeak(&location, self);
-  v3 = [(TPSTipsAssetPrefetchingManager *)self serialQueue];
+  serialQueue = [(TPSTipsAssetPrefetchingManager *)self serialQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __40__TPSTipsAssetPrefetchingManager_cancel__block_invoke;
   v4[3] = &unk_278451458;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(serialQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -69,28 +69,28 @@ void __40__TPSTipsAssetPrefetchingManager_cancel__block_invoke(uint64_t a1)
 - (void)cancelFetch
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(TPSTipsAssetPrefetchingManager *)self sessionItems];
-  v4 = [v3 count];
+  sessionItems = [(TPSTipsAssetPrefetchingManager *)self sessionItems];
+  v4 = [sessionItems count];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277D71778] data];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    data = [MEMORY[0x277D71778] data];
+    if (os_log_type_enabled(data, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_220B31000, v5, OS_LOG_TYPE_INFO, "Prefetching cancelled", buf, 2u);
+      _os_log_impl(&dword_220B31000, data, OS_LOG_TYPE_INFO, "Prefetching cancelled", buf, 2u);
     }
   }
 
-  v6 = [(TPSTipsAssetPrefetchingManager *)self operationQueue];
-  [v6 cancelAllOperations];
+  operationQueue = [(TPSTipsAssetPrefetchingManager *)self operationQueue];
+  [operationQueue cancelAllOperations];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(TPSTipsAssetPrefetchingManager *)self sessionItems];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  sessionItems2 = [(TPSTipsAssetPrefetchingManager *)self sessionItems];
+  v8 = [sessionItems2 countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -102,41 +102,41 @@ void __40__TPSTipsAssetPrefetchingManager_cancel__block_invoke(uint64_t a1)
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(sessionItems2);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
-        v13 = [MEMORY[0x277D717E0] defaultManager];
-        [v13 cancelSessionItem:v12];
+        defaultManager = [MEMORY[0x277D717E0] defaultManager];
+        [defaultManager cancelSessionItem:v12];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v9 = [sessionItems2 countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)prefetchAssetsFromTip:(id)a3 tips:(id)a4 assetUserInterfaceStyle:(int64_t)a5
+- (void)prefetchAssetsFromTip:(id)tip tips:(id)tips assetUserInterfaceStyle:(int64_t)style
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 identifier];
-  v11 = [(TPSTipsAssetPrefetchingManager *)self currentTip];
-  v12 = [v11 identifier];
-  v13 = [v10 isEqualToString:v12];
+  tipCopy = tip;
+  tipsCopy = tips;
+  identifier = [tipCopy identifier];
+  currentTip = [(TPSTipsAssetPrefetchingManager *)self currentTip];
+  identifier2 = [currentTip identifier];
+  v13 = [identifier isEqualToString:identifier2];
 
-  if (!v13 || [(TPSTipsAssetPrefetchingManager *)self assetUserInterface]!= a5)
+  if (!v13 || [(TPSTipsAssetPrefetchingManager *)self assetUserInterface]!= style)
   {
     [(TPSTipsAssetPrefetchingManager *)self cancel];
-    [(TPSTipsAssetPrefetchingManager *)self setCurrentTip:v8];
-    [(TPSTipsAssetPrefetchingManager *)self setAssetUserInterface:a5];
-    v14 = [v9 count];
-    v15 = [v9 indexOfObject:v8];
+    [(TPSTipsAssetPrefetchingManager *)self setCurrentTip:tipCopy];
+    [(TPSTipsAssetPrefetchingManager *)self setAssetUserInterface:style];
+    v14 = [tipsCopy count];
+    v15 = [tipsCopy indexOfObject:tipCopy];
     if (v15 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v16 = v15;
@@ -144,19 +144,19 @@ void __40__TPSTipsAssetPrefetchingManager_cancel__block_invoke(uint64_t a1)
       if (v16 < v14 - 1)
       {
         v18 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:?];
-        v19 = [v9 objectsAtIndexes:v18];
+        v19 = [tipsCopy objectsAtIndexes:v18];
 
         [v17 addObjectsFromArray:v19];
       }
 
       if (v16)
       {
-        v20 = [v9 subarrayWithRange:{0, v16}];
-        v21 = [v20 reverseObjectEnumerator];
-        v22 = [v21 allObjects];
+        v20 = [tipsCopy subarrayWithRange:{0, v16}];
+        reverseObjectEnumerator = [v20 reverseObjectEnumerator];
+        allObjects = [reverseObjectEnumerator allObjects];
 
-        v23 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(v22, "count") != 0}];
-        v24 = [v22 objectsAtIndexes:v23];
+        v23 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(allObjects, "count") != 0}];
+        v24 = [allObjects objectsAtIndexes:v23];
 
         [v17 addObjectsFromArray:v24];
       }
@@ -192,44 +192,44 @@ void __40__TPSTipsAssetPrefetchingManager_cancel__block_invoke(uint64_t a1)
   }
 }
 
-- (void)appendAssetsOperationsForTip:(id)a3
+- (void)appendAssetsOperationsForTip:(id)tip
 {
   v4 = MEMORY[0x277D71698];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [v5 fullContentAssets];
-  v8 = [v5 language];
-  v9 = [(TPSTipsAssetPrefetchingManager *)self assetUserInterface];
-  v10 = [v5 assetFileInfoManager];
+  tipCopy = tip;
+  sharedInstance = [v4 sharedInstance];
+  fullContentAssets = [tipCopy fullContentAssets];
+  language = [tipCopy language];
+  assetUserInterface = [(TPSTipsAssetPrefetchingManager *)self assetUserInterface];
+  assetFileInfoManager = [tipCopy assetFileInfoManager];
 
-  v11 = [v6 assetConfigurationForAssets:v7 language:v8 userInterfaceStyle:v9 assetFileInfoManager:v10];
+  v11 = [sharedInstance assetConfigurationForAssets:fullContentAssets language:language userInterfaceStyle:assetUserInterface assetFileInfoManager:assetFileInfoManager];
 
   [(TPSTipsAssetPrefetchingManager *)self addFetchOperationWithAssetConfiguration:v11 type:0 operationName:@"image-prefetch"];
   [(TPSTipsAssetPrefetchingManager *)self addFetchOperationWithAssetConfiguration:v11 type:1 operationName:@"video-prefetch"];
 }
 
-- (void)addFetchOperationWithAssetConfiguration:(id)a3 type:(int64_t)a4 operationName:(id)a5
+- (void)addFetchOperationWithAssetConfiguration:(id)configuration type:(int64_t)type operationName:(id)name
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 cacheIdentifierForType:a4];
-  v11 = [MEMORY[0x277D71708] assetPathFromAssetConfiguration:v8 type:a4];
+  configurationCopy = configuration;
+  nameCopy = name;
+  v10 = [configurationCopy cacheIdentifierForType:type];
+  v11 = [MEMORY[0x277D71708] assetPathFromAssetConfiguration:configurationCopy type:type];
   v12 = v11;
   if (v10)
   {
     if (v11)
     {
-      if (!a4 || ([MEMORY[0x277D716A0] sharedInstance], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "dataCacheForIdentifier:", v10), v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14))
+      if (!type || ([MEMORY[0x277D716A0] sharedInstance], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "dataCacheForIdentifier:", v10), v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14))
       {
-        v15 = [MEMORY[0x277D71778] data];
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+        data = [MEMORY[0x277D71778] data];
+        if (os_log_type_enabled(data, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
           v28 = v10;
           v29 = 2112;
           v30 = v12;
-          _os_log_impl(&dword_220B31000, v15, OS_LOG_TYPE_INFO, "Prefetching needed for video with identifier: %@ path %@", buf, 0x16u);
+          _os_log_impl(&dword_220B31000, data, OS_LOG_TYPE_INFO, "Prefetching needed for video with identifier: %@ path %@", buf, 0x16u);
         }
 
         objc_initWeak(buf, self);
@@ -241,10 +241,10 @@ void __40__TPSTipsAssetPrefetchingManager_cancel__block_invoke(uint64_t a1)
         objc_copyWeak(v26, buf);
         v24 = v10;
         v25 = v12;
-        v26[1] = a4;
+        v26[1] = type;
         v17 = [v16 initWithAsyncBlock:v23];
-        [v17 setName:v9];
-        v18 = [(TPSTipsAssetPrefetchingManager *)self serialQueue];
+        [v17 setName:nameCopy];
+        serialQueue = [(TPSTipsAssetPrefetchingManager *)self serialQueue];
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
         v20[2] = __93__TPSTipsAssetPrefetchingManager_addFetchOperationWithAssetConfiguration_type_operationName___block_invoke_5;
@@ -252,7 +252,7 @@ void __40__TPSTipsAssetPrefetchingManager_cancel__block_invoke(uint64_t a1)
         objc_copyWeak(&v22, buf);
         v21 = v17;
         v19 = v17;
-        dispatch_async(v18, v20);
+        dispatch_async(serialQueue, v20);
 
         objc_destroyWeak(&v22);
         objc_destroyWeak(v26);

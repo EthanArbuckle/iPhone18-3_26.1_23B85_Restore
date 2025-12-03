@@ -1,5 +1,5 @@
 @interface ComposeButtonsView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 - (void)updateTransparencyEffects;
 @end
@@ -18,13 +18,13 @@
   [v4 setFrame:?];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_100111DF4(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_100111DF4(event, x, y);
 
   return v10;
 }
@@ -32,7 +32,7 @@
 - (void)updateTransparencyEffects
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7Journal18ComposeButtonsView_blurView);
-  v3 = self;
+  selfCopy = self;
   [v2 setHidden:UIAccessibilityIsReduceTransparencyEnabled()];
 }
 

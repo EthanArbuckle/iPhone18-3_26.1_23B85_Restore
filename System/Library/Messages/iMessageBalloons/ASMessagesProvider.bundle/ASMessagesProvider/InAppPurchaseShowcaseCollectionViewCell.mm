@@ -1,11 +1,11 @@
 @interface InAppPurchaseShowcaseCollectionViewCell
-- (_TtC18ASMessagesProvider39InAppPurchaseShowcaseCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider39InAppPurchaseShowcaseCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation InAppPurchaseShowcaseCollectionViewCell
 
-- (_TtC18ASMessagesProvider39InAppPurchaseShowcaseCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider39InAppPurchaseShowcaseCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider39InAppPurchaseShowcaseCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();

@@ -1,26 +1,26 @@
 @interface HLPDataCacheController
 + (id)sharedInstance;
-- (BOOL)cacheValidForIdentifier:(id)a3 path:(id)a4;
+- (BOOL)cacheValidForIdentifier:(id)identifier path:(id)path;
 - (HLPDataCacheController)init;
-- (HLPDataCacheController)initWithIdentifier:(id)a3 directoryName:(id)a4 maxCacheSize:(unint64_t)a5 URLSessionDataType:(int64_t)a6;
-- (id)cacheFileURLForDataCache:(id)a3;
-- (id)cacheFileURLForIdentifier:(id)a3;
-- (id)dataCacheForIdentifier:(id)a3;
-- (id)dataCacheForPath:(id)a3;
-- (id)formattedDataForPath:(id)a3 identifier:(id)a4 completionHandler:(id)a5;
-- (id)formattedDataForRequest:(id)a3 identifier:(id)a4 completionHandler:(id)a5;
+- (HLPDataCacheController)initWithIdentifier:(id)identifier directoryName:(id)name maxCacheSize:(unint64_t)size URLSessionDataType:(int64_t)type;
+- (id)cacheFileURLForDataCache:(id)cache;
+- (id)cacheFileURLForIdentifier:(id)identifier;
+- (id)dataCacheForIdentifier:(id)identifier;
+- (id)dataCacheForPath:(id)path;
+- (id)formattedDataForPath:(id)path identifier:(id)identifier completionHandler:(id)handler;
+- (id)formattedDataForRequest:(id)request identifier:(id)identifier completionHandler:(id)handler;
 - (id)newDataCache;
-- (id)saveFileURL:(id)a3 identifier:(id)a4 fileSize:(unint64_t)a5 lastModified:(id)a6 dataCache:(id)a7;
-- (void)addDataCache:(id)a3;
+- (id)saveFileURL:(id)l identifier:(id)identifier fileSize:(unint64_t)size lastModified:(id)modified dataCache:(id)cache;
+- (void)addDataCache:(id)cache;
 - (void)cancelAllOriginSessionItems;
 - (void)commonInit;
 - (void)createCacheDirectory;
 - (void)dealloc;
 - (void)reloadDataCache;
 - (void)removeAllDataCache;
-- (void)removeCacheForIdentifier:(id)a3;
-- (void)removeDataCache:(id)a3 updateCache:(BOOL)a4;
-- (void)setLanguageCode:(id)a3;
+- (void)removeCacheForIdentifier:(id)identifier;
+- (void)removeDataCache:(id)cache updateCache:(BOOL)updateCache;
+- (void)setLanguageCode:(id)code;
 - (void)syncCacheImmediately;
 - (void)updateCache;
 - (void)updateCacheDelay;
@@ -66,19 +66,19 @@ uint64_t __40__HLPDataCacheController_sharedInstance__block_invoke()
 
   self->_defaultPriority = *MEMORY[0x277CCA790];
   self->_cacheSize = 0;
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   dataCacheArray = self->_dataCacheArray;
-  self->_dataCacheArray = v5;
+  self->_dataCacheArray = array;
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   dataCacheMap = self->_dataCacheMap;
-  self->_dataCacheMap = v7;
+  self->_dataCacheMap = dictionary;
 
-  v9 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   originFetchItems = self->_originFetchItems;
-  self->_originFetchItems = v9;
+  self->_originFetchItems = array2;
 
-  MEMORY[0x2821F96F8](v9, originFetchItems);
+  MEMORY[0x2821F96F8](array2, originFetchItems);
 }
 
 - (HLPDataCacheController)init
@@ -95,10 +95,10 @@ uint64_t __40__HLPDataCacheController_sharedInstance__block_invoke()
   return v3;
 }
 
-- (HLPDataCacheController)initWithIdentifier:(id)a3 directoryName:(id)a4 maxCacheSize:(unint64_t)a5 URLSessionDataType:(int64_t)a6
+- (HLPDataCacheController)initWithIdentifier:(id)identifier directoryName:(id)name maxCacheSize:(unint64_t)size URLSessionDataType:(int64_t)type
 {
-  v11 = a3;
-  v12 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v30.receiver = self;
   v30.super_class = HLPDataCacheController;
   v13 = [(HLPDataCacheController *)&v30 init];
@@ -106,11 +106,11 @@ uint64_t __40__HLPDataCacheController_sharedInstance__block_invoke()
   if (v13)
   {
     [(HLPDataCacheController *)v13 commonInit];
-    objc_storeStrong(&v14->_identifier, a3);
-    v14->_dataType = a6;
-    v14->_maxDataCacheSize = a5;
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
-    v16 = v15;
+    objc_storeStrong(&v14->_identifier, identifier);
+    v14->_dataType = type;
+    v14->_maxDataCacheSize = size;
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v16 = defaultManager;
     if (!v14->_cacheDirectory)
     {
       if (!kHLPDataCacheAppGroupIdentifier)
@@ -118,7 +118,7 @@ uint64_t __40__HLPDataCacheController_sharedInstance__block_invoke()
         goto LABEL_6;
       }
 
-      v17 = [v15 containerURLForSecurityApplicationGroupIdentifier:?];
+      v17 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:?];
       if (!v17)
       {
         goto LABEL_6;
@@ -127,23 +127,23 @@ uint64_t __40__HLPDataCacheController_sharedInstance__block_invoke()
       v18 = v17;
       v19 = [v17 URLByAppendingPathComponent:@"Library/Caches"];
 
-      v20 = [v19 path];
+      path = [v19 path];
       v21 = objc_alloc(MEMORY[0x277CBEBD0]);
       v22 = [v21 initWithSuiteName:kHLPDataCacheAppGroupIdentifier];
       userDefaults = v14->_userDefaults;
       v14->_userDefaults = v22;
 
-      if (!v20)
+      if (!path)
       {
 LABEL_6:
         v24 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-        v20 = [v24 objectAtIndex:0];
-        v25 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        path = [v24 objectAtIndex:0];
+        standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
         v26 = v14->_userDefaults;
-        v14->_userDefaults = v25;
+        v14->_userDefaults = standardUserDefaults;
       }
 
-      v27 = [v20 stringByAppendingPathComponent:v12];
+      v27 = [path stringByAppendingPathComponent:nameCopy];
       cacheDirectory = v14->_cacheDirectory;
       v14->_cacheDirectory = v27;
     }
@@ -161,17 +161,17 @@ LABEL_6:
   [(HLPDataCacheController *)self cancelAllOriginSessionItems];
 }
 
-- (id)dataCacheForPath:(id)a3
+- (id)dataCacheForPath:(id)path
 {
-  v4 = [a3 lastPathComponent];
-  v5 = [(HLPDataCacheController *)self dataCacheForIdentifier:v4];
+  lastPathComponent = [path lastPathComponent];
+  v5 = [(HLPDataCacheController *)self dataCacheForIdentifier:lastPathComponent];
 
   return v5;
 }
 
-- (id)dataCacheForIdentifier:(id)a3
+- (id)dataCacheForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -185,9 +185,9 @@ LABEL_6:
   v9[2] = __49__HLPDataCacheController_dataCacheForIdentifier___block_invoke;
   v9[3] = &unk_279707128;
   objc_copyWeak(&v12, &location);
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v14;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(dataCacheSerialQueue, v9);
   v7 = v15[5];
 
@@ -210,8 +210,8 @@ void __49__HLPDataCacheController_dataCacheForIdentifier___block_invoke(uint64_t
 
 - (void)createCacheDirectory
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  if (([v3 fileExistsAtPath:self->_cacheDirectory] & 1) == 0)
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (([defaultManager fileExistsAtPath:self->_cacheDirectory] & 1) == 0)
   {
     v13 = 0;
     v14 = &v13;
@@ -228,7 +228,7 @@ void __49__HLPDataCacheController_dataCacheForIdentifier___block_invoke(uint64_t
     v7[1] = 3221225472;
     v7[2] = __46__HLPDataCacheController_createCacheDirectory__block_invoke;
     v7[3] = &unk_279707150;
-    v8 = v3;
+    v8 = defaultManager;
     v9 = &v13;
     objc_copyWeak(&v10, &location);
     [v5 coordinateWritingItemAtURL:v4 options:8 error:&obj byAccessor:v7];
@@ -266,18 +266,18 @@ void __46__HLPDataCacheController_createCacheDirectory__block_invoke(uint64_t a1
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)cacheValidForIdentifier:(id)a3 path:(id)a4
+- (BOOL)cacheValidForIdentifier:(id)identifier path:(id)path
 {
-  v5 = [(HLPDataCacheController *)self dataCacheForIdentifier:a3, a4];
-  v6 = [(HLPDataCacheController *)self cacheFileURLForDataCache:v5];
-  v7 = [v6 path];
-  if (v7)
+  path = [(HLPDataCacheController *)self dataCacheForIdentifier:identifier, path];
+  v6 = [(HLPDataCacheController *)self cacheFileURLForDataCache:path];
+  path2 = [v6 path];
+  if (path2)
   {
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
-    v9 = [v6 path];
-    if ([v8 fileExistsAtPath:v9])
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path3 = [v6 path];
+    if ([defaultManager fileExistsAtPath:path3])
     {
-      v10 = [v5 expired] ^ 1;
+      v10 = [path expired] ^ 1;
     }
 
     else
@@ -294,17 +294,17 @@ void __46__HLPDataCacheController_createCacheDirectory__block_invoke(uint64_t a1
   return v10;
 }
 
-- (id)cacheFileURLForDataCache:(id)a3
+- (id)cacheFileURLForDataCache:(id)cache
 {
-  v4 = [a3 identifier];
-  v5 = [(HLPDataCacheController *)self cacheFileURLForIdentifier:v4];
+  identifier = [cache identifier];
+  v5 = [(HLPDataCacheController *)self cacheFileURLForIdentifier:identifier];
 
   return v5;
 }
 
-- (id)cacheFileURLForIdentifier:(id)a3
+- (id)cacheFileURLForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = [(NSString *)self->_cacheDirectory stringByAppendingPathComponent:?];
     if (v3)
@@ -326,13 +326,13 @@ void __46__HLPDataCacheController_createCacheDirectory__block_invoke(uint64_t a1
   return v4;
 }
 
-- (void)setLanguageCode:(id)a3
+- (void)setLanguageCode:(id)code
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![(NSString *)self->_languageCode isEqualToString:v5])
+  codeCopy = code;
+  if (![(NSString *)self->_languageCode isEqualToString:codeCopy])
   {
-    objc_storeStrong(&self->_languageCode, a3);
+    objc_storeStrong(&self->_languageCode, code);
     objc_initWeak(&location, self);
     v20 = 0;
     v21 = &v20;
@@ -367,8 +367,8 @@ void __46__HLPDataCacheController_createCacheDirectory__block_invoke(uint64_t a1
             objc_enumerationMutation(v7);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * v10) languageCode];
-          v12 = [v11 isEqualToString:v5];
+          languageCode = [*(*(&v14 + 1) + 8 * v10) languageCode];
+          v12 = [languageCode isEqualToString:codeCopy];
 
           if ((v12 & 1) == 0)
           {
@@ -413,7 +413,7 @@ void __42__HLPDataCacheController_setLanguageCode___block_invoke(uint64_t a1)
 - (void)reloadDataCache
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = *a1;
+  v3 = *self;
   v5 = 138412546;
   v6 = v3;
   v7 = 2112;
@@ -567,12 +567,12 @@ void __42__HLPDataCacheController_updateCacheDelay__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)addDataCache:(id)a3
+- (void)addDataCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   objc_initWeak(location, self);
-  v5 = [v4 identifier];
-  v6 = [(HLPDataCacheController *)self dataCacheForIdentifier:v5];
+  identifier = [cacheCopy identifier];
+  v6 = [(HLPDataCacheController *)self dataCacheForIdentifier:identifier];
   if (!v6)
   {
     dataCacheSerialQueue = self->_dataCacheSerialQueue;
@@ -581,13 +581,13 @@ void __42__HLPDataCacheController_updateCacheDelay__block_invoke_2(uint64_t a1)
     block[2] = __39__HLPDataCacheController_addDataCache___block_invoke;
     block[3] = &unk_279706F30;
     objc_copyWeak(&v32, location);
-    v30 = v5;
-    v8 = v4;
+    v30 = identifier;
+    v8 = cacheCopy;
     v31 = v8;
     dispatch_sync(dataCacheSerialQueue, block);
-    v9 = [v8 fileSize];
+    fileSize = [v8 fileSize];
     maxDataCacheSize = self->_maxDataCacheSize;
-    v11 = self->_cacheSize + v9;
+    v11 = self->_cacheSize + fileSize;
     self->_cacheSize = v11;
     if (v11 > maxDataCacheSize && [v8 fileSize] < self->_maxDataCacheSize)
     {
@@ -617,14 +617,14 @@ void __42__HLPDataCacheController_updateCacheDelay__block_invoke_2(uint64_t a1)
         objc_destroyWeak(&v22);
         _Block_object_dispose(&v23, 8);
 
-        v15 = [(HLPDataCacheController *)self cacheSize];
-        if (v15 <= [(HLPDataCacheController *)self maxDataCacheSize])
+        cacheSize = [(HLPDataCacheController *)self cacheSize];
+        if (cacheSize <= [(HLPDataCacheController *)self maxDataCacheSize])
         {
           break;
         }
 
-        v16 = [(HLPDataCacheController *)self dataCacheArray];
-        v17 = [v16 count];
+        dataCacheArray = [(HLPDataCacheController *)self dataCacheArray];
+        v17 = [dataCacheArray count];
 
         if (v17 < 2)
         {
@@ -728,13 +728,13 @@ void __53__HLPDataCacheController_cancelAllOriginSessionItems__block_invoke(uint
 
 - (void)removeAllDataCache
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 enumeratorAtPath:self->_cacheDirectory];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager enumeratorAtPath:self->_cacheDirectory];
   v5 = objc_alloc_init(MEMORY[0x277CCA9E8]);
-  v6 = [v4 nextObject];
-  if (v6)
+  nextObject = [v4 nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    v7 = nextObject;
     v8 = 0;
     do
     {
@@ -747,19 +747,19 @@ void __53__HLPDataCacheController_cancelAllOriginSessionItems__block_invoke(uint
         v20[1] = 3221225472;
         v20[2] = __44__HLPDataCacheController_removeAllDataCache__block_invoke;
         v20[3] = &unk_2797071F0;
-        v21 = v3;
+        v21 = defaultManager;
         [v5 coordinateWritingItemAtURL:v10 options:1 error:&v22 byAccessor:v20];
         v11 = v22;
 
         v8 = v11;
       }
 
-      v12 = [v4 nextObject];
+      nextObject2 = [v4 nextObject];
 
-      v7 = v12;
+      v7 = nextObject2;
     }
 
-    while (v12);
+    while (nextObject2);
   }
 
   else
@@ -801,20 +801,20 @@ void __44__HLPDataCacheController_removeAllDataCache__block_invoke_2(uint64_t a1
   [v4 removeAllObjects];
 }
 
-- (void)removeCacheForIdentifier:(id)a3
+- (void)removeCacheForIdentifier:(id)identifier
 {
-  v4 = [(HLPDataCacheController *)self dataCacheForIdentifier:a3];
+  v4 = [(HLPDataCacheController *)self dataCacheForIdentifier:identifier];
   [(HLPDataCacheController *)self removeDataCache:v4];
 }
 
-- (void)removeDataCache:(id)a3 updateCache:(BOOL)a4
+- (void)removeDataCache:(id)cache updateCache:(BOOL)updateCache
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  updateCacheCopy = updateCache;
+  cacheCopy = cache;
+  v7 = cacheCopy;
+  if (cacheCopy)
   {
-    v8 = [v6 identifier];
+    identifier = [cacheCopy identifier];
     objc_initWeak(location, self);
     v33 = 0;
     v34 = &v33;
@@ -829,18 +829,18 @@ void __44__HLPDataCacheController_removeAllDataCache__block_invoke_2(uint64_t a1
     block[3] = &unk_279707268;
     v31 = &v33;
     objc_copyWeak(&v32, location);
-    v10 = v8;
+    v10 = identifier;
     v30 = v10;
     dispatch_sync(dataCacheSerialQueue, block);
     if (v34[5])
     {
       v11 = [(HLPDataCacheController *)self cacheFileURLForDataCache:v7];
-      v12 = [MEMORY[0x277CCAA00] defaultManager];
-      v13 = [v11 path];
-      if (v13)
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      path = [v11 path];
+      if (path)
       {
-        v14 = [v11 path];
-        v15 = [v12 fileExistsAtPath:v14];
+        path2 = [v11 path];
+        v15 = [defaultManager fileExistsAtPath:path2];
 
         if (v15)
         {
@@ -850,7 +850,7 @@ void __44__HLPDataCacheController_removeAllDataCache__block_invoke_2(uint64_t a1
           v26[1] = 3221225472;
           v26[2] = __54__HLPDataCacheController_removeDataCache_updateCache___block_invoke_2;
           v26[3] = &unk_2797071F0;
-          v27 = v12;
+          v27 = defaultManager;
           [v16 coordinateWritingItemAtURL:v11 options:1 error:&v28 byAccessor:v26];
           v17 = v28;
         }
@@ -877,7 +877,7 @@ void __44__HLPDataCacheController_removeAllDataCache__block_invoke_2(uint64_t a1
     objc_copyWeak(&v22, location);
     v21 = v7;
     dispatch_sync(v19, v20);
-    if (v4)
+    if (updateCacheCopy)
     {
       [(HLPDataCacheController *)self updateCache];
     }
@@ -929,46 +929,46 @@ void __54__HLPDataCacheController_removeDataCache_updateCache___block_invoke_4(u
   return v2;
 }
 
-- (id)saveFileURL:(id)a3 identifier:(id)a4 fileSize:(unint64_t)a5 lastModified:(id)a6 dataCache:(id)a7
+- (id)saveFileURL:(id)l identifier:(id)identifier fileSize:(unint64_t)size lastModified:(id)modified dataCache:(id)cache
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
+  lCopy = l;
+  identifierCopy = identifier;
+  modifiedCopy = modified;
+  cacheCopy = cache;
+  v16 = cacheCopy;
   v17 = 0;
-  if (v12 && v13)
+  if (lCopy && identifierCopy)
   {
-    v41 = a5;
-    v18 = v15;
-    v19 = [v18 lastModified];
-    v20 = [v19 isEqualToString:v14];
+    sizeCopy = size;
+    newDataCache = cacheCopy;
+    lastModified = [newDataCache lastModified];
+    v20 = [lastModified isEqualToString:modifiedCopy];
 
-    v21 = [MEMORY[0x277CCAA00] defaultManager];
-    v22 = [(HLPDataCacheController *)self cacheFileURLForIdentifier:v13];
-    v23 = [v22 path];
-    v44 = v21;
-    if (v23)
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v22 = [(HLPDataCacheController *)self cacheFileURLForIdentifier:identifierCopy];
+    path = [v22 path];
+    v44 = defaultManager;
+    if (path)
     {
-      v24 = v23;
+      v24 = path;
       [v22 path];
       v42 = v20;
-      v25 = v18;
-      v26 = v13;
-      v27 = v12;
-      v28 = self;
-      v29 = v14;
+      v25 = newDataCache;
+      v26 = identifierCopy;
+      v27 = lCopy;
+      selfCopy = self;
+      v29 = modifiedCopy;
       v30 = v16;
       v32 = v31 = v22;
-      v33 = [v21 fileExistsAtPath:v32];
+      v33 = [defaultManager fileExistsAtPath:v32];
 
       v22 = v31;
       v16 = v30;
-      v14 = v29;
-      self = v28;
-      v12 = v27;
-      v13 = v26;
-      v18 = v25;
+      modifiedCopy = v29;
+      self = selfCopy;
+      lCopy = v27;
+      identifierCopy = v26;
+      newDataCache = v25;
 
       if (v42 & v33)
       {
@@ -1008,26 +1008,26 @@ LABEL_17:
     v49 = &v53;
     v17 = v34;
     v47 = v17;
-    v48 = v12;
+    v48 = lCopy;
     v50 = &v59;
     [v43 coordinateWritingItemAtURL:v17 options:1 writingItemAtURL:v17 options:2 error:&obj byAccessor:v45];
     objc_storeStrong(v35, obj);
     v36 = *(v60 + 24);
-    if (v18)
+    if (newDataCache)
     {
       if (*(v60 + 24))
       {
-        -[HLPDataCacheController setCacheSize:](self, "setCacheSize:", -[HLPDataCacheController cacheSize](self, "cacheSize") - [v18 fileSize]);
-        [(HLPDataCacheController *)self setCacheSize:[(HLPDataCacheController *)self cacheSize]+ v41];
+        -[HLPDataCacheController setCacheSize:](self, "setCacheSize:", -[HLPDataCacheController cacheSize](self, "cacheSize") - [newDataCache fileSize]);
+        [(HLPDataCacheController *)self setCacheSize:[(HLPDataCacheController *)self cacheSize]+ sizeCopy];
 LABEL_14:
-        [v18 setLastModified:{v14, v22}];
-        v38 = [MEMORY[0x277CBEAA8] date];
-        [v18 setUpdatedDate:v38];
+        [newDataCache setLastModified:{modifiedCopy, v22}];
+        date = [MEMORY[0x277CBEAA8] date];
+        [newDataCache setUpdatedDate:date];
 
-        [v18 setFileSize:v41];
-        if (v18)
+        [newDataCache setFileSize:sizeCopy];
+        if (newDataCache)
         {
-          [(HLPDataCacheController *)self addDataCache:v18];
+          [(HLPDataCacheController *)self addDataCache:newDataCache];
         }
 
         _Block_object_dispose(&v53, 8);
@@ -1036,20 +1036,20 @@ LABEL_14:
         goto LABEL_17;
       }
 
-      [(HLPDataCacheController *)self removeDataCache:v18];
+      [(HLPDataCacheController *)self removeDataCache:newDataCache];
     }
 
     else if (*(v60 + 24))
     {
-      v18 = [(HLPDataCacheController *)self newDataCache];
-      v37 = [(HLPDataCacheController *)self languageCode];
-      [v18 setLanguageCode:v37];
+      newDataCache = [(HLPDataCacheController *)self newDataCache];
+      languageCode = [(HLPDataCacheController *)self languageCode];
+      [newDataCache setLanguageCode:languageCode];
 
-      [v18 setIdentifier:v13];
+      [newDataCache setIdentifier:identifierCopy];
       goto LABEL_14;
     }
 
-    v18 = 0;
+    newDataCache = 0;
     goto LABEL_14;
   }
 
@@ -1112,55 +1112,55 @@ void __81__HLPDataCacheController_saveFileURL_identifier_fileSize_lastModified_d
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)formattedDataForRequest:(id)a3 identifier:(id)a4 completionHandler:(id)a5
+- (id)formattedDataForRequest:(id)request identifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 URL];
-  v38 = [v11 path];
-  if (!v38)
+  requestCopy = request;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v11 = [requestCopy URL];
+  path = [v11 path];
+  if (!path)
   {
     v13 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"Empty data path" code:-1 userInfo:0];
-    (*(v10 + 2))(v10, 0, 0, 0, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, v13);
 
     v14 = 0;
     goto LABEL_28;
   }
 
-  if (!v9)
+  if (!identifierCopy)
   {
-    v9 = [v38 lastPathComponent];
+    identifierCopy = [path lastPathComponent];
   }
 
   v60 = 0;
   v61 = &v60;
   v62 = 0x2020000000;
   v63 = 1;
-  v37 = v10;
-  if ([v8 cachePolicy] == 1)
+  v37 = handlerCopy;
+  if ([requestCopy cachePolicy] == 1)
   {
     v12 = 0;
   }
 
   else
   {
-    v15 = [(HLPDataCacheController *)self dataCacheForIdentifier:v9];
+    v15 = [(HLPDataCacheController *)self dataCacheForIdentifier:identifierCopy];
     v16 = [(HLPDataCacheController *)self cacheFileURLForDataCache:v15];
-    v17 = [v16 path];
-    if (!v17)
+    path2 = [v16 path];
+    if (!path2)
     {
       goto LABEL_12;
     }
 
-    v18 = [MEMORY[0x277CCAA00] defaultManager];
-    v19 = [v16 path];
-    v20 = [v18 fileExistsAtPath:v19];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path3 = [v16 path];
+    v20 = [defaultManager fileExistsAtPath:path3];
 
     if (v20)
     {
-      v21 = [v15 identifier];
-      v22 = [(HLPDataCacheController *)self cacheFileURLForIdentifier:v21];
+      identifier = [v15 identifier];
+      v22 = [(HLPDataCacheController *)self cacheFileURLForIdentifier:identifier];
 
       if (v22 && [(HLPDataCacheController *)self isURLValid:v22])
       {
@@ -1171,8 +1171,8 @@ void __81__HLPDataCacheController_saveFileURL_identifier_fileSize_lastModified_d
         v58 = v37;
         v55 = v15;
         v59 = &v60;
-        v56 = v38;
-        v57 = self;
+        v56 = path;
+        selfCopy = self;
         [(HLPDataCacheController *)self formattedDataWithFileURL:v22 completionHandler:v54];
 
         v12 = 1;
@@ -1196,7 +1196,7 @@ LABEL_12:
       v22 = v16;
     }
 
-    v10 = v37;
+    handlerCopy = v37;
   }
 
   if ((v61[3] & 1) == 0 && ![(HLPDataCacheController *)self backgroundOriginUpdate])
@@ -1222,17 +1222,17 @@ LABEL_12:
       v41[3] = &unk_279707330;
       objc_copyWeak(&v42, &location);
       v41[4] = &v44;
-      v24 = [v23 newURLSessionItemWithRequest:v8 identifier:v9 completionHandler:v41];
+      v24 = [v23 newURLSessionItemWithRequest:requestCopy identifier:identifierCopy completionHandler:v41];
       v25 = v45[5];
       v45[5] = v24;
 
       dataType = self->_dataType;
-      v27 = [v45[5] sessionTask];
-      [v27 setDataType:dataType];
+      sessionTask = [v45[5] sessionTask];
+      [sessionTask setDataType:dataType];
 
-      v28 = [v45[5] sessionTask];
+      sessionTask2 = [v45[5] sessionTask];
       LODWORD(v29) = *MEMORY[0x277CCA7A0];
-      [v28 setPriority:v29];
+      [sessionTask2 setPriority:v29];
 
       [v23 resumeSessionItem:v45[5]];
       dataCacheSerialQueue = self->_dataCacheSerialQueue;
@@ -1258,15 +1258,15 @@ LABEL_12:
       v50[2] = __79__HLPDataCacheController_formattedDataForRequest_identifier_completionHandler___block_invoke_2;
       v50[3] = &unk_279707308;
       v51 = v37;
-      v14 = [v23 newURLSessionItemWithRequest:v8 identifier:v9 completionHandler:v50];
+      v14 = [v23 newURLSessionItemWithRequest:requestCopy identifier:identifierCopy completionHandler:v50];
       v31 = self->_dataType;
-      v32 = [v14 sessionTask];
-      [v32 setDataType:v31];
+      sessionTask3 = [v14 sessionTask];
+      [sessionTask3 setDataType:v31];
 
       defaultPriority = self->_defaultPriority;
-      v34 = [v14 sessionTask];
+      sessionTask4 = [v14 sessionTask];
       *&v35 = defaultPriority;
-      [v34 setPriority:v35];
+      [sessionTask4 setPriority:v35];
 
       [v23 resumeSessionItem:v14];
     }
@@ -1280,7 +1280,7 @@ LABEL_12:
     v52[1] = 3221225472;
     v52[2] = __79__HLPDataCacheController_formattedDataForRequest_identifier_completionHandler___block_invoke_36;
     v52[3] = &unk_2797072E0;
-    v53 = v10;
+    v53 = handlerCopy;
     [(HLPDataCacheController *)self formattedDataWithFileURL:v11 completionHandler:v52];
     v14 = 0;
     v23 = v53;
@@ -1293,7 +1293,7 @@ LABEL_21:
   v14 = 0;
 LABEL_27:
   _Block_object_dispose(&v60, 8);
-  v10 = v37;
+  handlerCopy = v37;
 LABEL_28:
 
   return v14;
@@ -1360,20 +1360,20 @@ void __79__HLPDataCacheController_formattedDataForRequest_identifier_completionH
   [v2 addObject:*(*(*(a1 + 32) + 8) + 40)];
 }
 
-- (id)formattedDataForPath:(id)a3 identifier:(id)a4 completionHandler:(id)a5
+- (id)formattedDataForPath:(id)path identifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && (v11 = MEMORY[0x277CCAD20], [MEMORY[0x277CBEBC0] URLWithString:v8], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "requestWithURL:", v12), v13 = objc_claimAutoreleasedReturnValue(), v12, v13))
+  pathCopy = path;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (pathCopy && (v11 = MEMORY[0x277CCAD20], [MEMORY[0x277CBEBC0] URLWithString:pathCopy], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "requestWithURL:", v12), v13 = objc_claimAutoreleasedReturnValue(), v12, v13))
   {
-    v14 = [(HLPDataCacheController *)self formattedDataForRequest:v13 identifier:v9 completionHandler:v10];
+    v14 = [(HLPDataCacheController *)self formattedDataForRequest:v13 identifier:identifierCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"Invalid request" code:-1 userInfo:0];
-    (*(v10 + 2))(v10, 0, 0, 0, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, v13);
     v14 = 0;
   }
 

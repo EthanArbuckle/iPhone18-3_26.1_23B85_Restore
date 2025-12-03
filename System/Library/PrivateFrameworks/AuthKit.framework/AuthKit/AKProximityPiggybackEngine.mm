@@ -1,40 +1,40 @@
 @interface AKProximityPiggybackEngine
 - (AKProximityEngineController)controller;
-- (AKProximityPiggybackEngine)initWithPresenceSID:(id)a3;
+- (AKProximityPiggybackEngine)initWithPresenceSID:(id)d;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)prepareWithController:(id)a3 queue:(id)a4;
+- (void)prepareWithController:(id)controller queue:(id)queue;
 @end
 
 @implementation AKProximityPiggybackEngine
 
-- (AKProximityPiggybackEngine)initWithPresenceSID:(id)a3
+- (AKProximityPiggybackEngine)initWithPresenceSID:(id)d
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, d);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = AKProximityPiggybackEngine;
-  v8 = [(AKProximityPiggybackEngine *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(AKProximityPiggybackEngine *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v8->_presenceSID, location[0]);
+    objc_storeStrong(&selfCopy->_presenceSID, location[0]);
   }
 
-  v5 = _objc_retain(v8);
+  v5 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v3 = OS_LOG_TYPE_DEBUG;
@@ -45,38 +45,38 @@
   }
 
   objc_storeStrong(location, 0);
-  [(AKProximityPiggybackEngine *)v5 invalidate];
-  v2.receiver = v5;
+  [(AKProximityPiggybackEngine *)selfCopy invalidate];
+  v2.receiver = selfCopy;
   v2.super_class = AKProximityPiggybackEngine;
   [(AKProximityPiggybackEngine *)&v2 dealloc];
 }
 
-- (void)prepareWithController:(id)a3 queue:(id)a4
+- (void)prepareWithController:(id)controller queue:(id)queue
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  objc_storeWeak(&v7->_controller, location[0]);
-  objc_storeStrong(&v7->_queue, v5);
+  objc_storeStrong(&v5, queue);
+  objc_storeWeak(&selfCopy->_controller, location[0]);
+  objc_storeStrong(&selfCopy->_queue, v5);
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)activate
 {
-  v2 = [(AKProximityPiggybackEngine *)self controller];
-  [(AKProximityEngineController *)v2 proximityEngineDidActivate:self];
-  _objc_release(v2);
+  controller = [(AKProximityPiggybackEngine *)self controller];
+  [(AKProximityEngineController *)controller proximityEngineDidActivate:self];
+  _objc_release(controller);
 }
 
 - (void)invalidate
 {
-  v2 = [(AKProximityPiggybackEngine *)self controller];
-  [(AKProximityEngineController *)v2 proximityEngineDidInvalidate:self];
-  _objc_release(v2);
+  controller = [(AKProximityPiggybackEngine *)self controller];
+  [(AKProximityEngineController *)controller proximityEngineDidInvalidate:self];
+  _objc_release(controller);
 }
 
 - (AKProximityEngineController)controller

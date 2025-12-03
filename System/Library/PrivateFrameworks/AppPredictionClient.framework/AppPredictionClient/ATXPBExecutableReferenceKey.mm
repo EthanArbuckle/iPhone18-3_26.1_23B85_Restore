@@ -5,13 +5,13 @@
 - (BOOL)hasExecutableInfoSuggestion;
 - (BOOL)hasExecutableLinkAction;
 - (BOOL)hasExecutableString;
-- (BOOL)isEqual:(id)a3;
-- (__CFString)executableTypeAsString:(__CFString *)a1;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (__CFString)executableTypeAsString:(__CFString *)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)referencesAtIndex:(id *)a1;
-- (uint64_t)addReferences:(uint64_t)a1;
+- (id)referencesAtIndex:(id *)index;
+- (uint64_t)addReferences:(uint64_t)references;
 - (uint64_t)clearReferences;
 - (uint64_t)executableAction;
 - (uint64_t)executableHeroApp;
@@ -23,15 +23,15 @@
 - (uint64_t)referencesCount;
 - (uint64_t)setExecutableType:(uint64_t)result;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setExecutableAction:(uint64_t)a1;
-- (void)setExecutableHeroApp:(uint64_t)a1;
-- (void)setExecutableInfoSuggestion:(uint64_t)a1;
-- (void)setExecutableLinkAction:(uint64_t)a1;
-- (void)setExecutableString:(uint64_t)a1;
-- (void)setReferences:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setExecutableAction:(uint64_t)action;
+- (void)setExecutableHeroApp:(uint64_t)app;
+- (void)setExecutableInfoSuggestion:(uint64_t)suggestion;
+- (void)setExecutableLinkAction:(uint64_t)action;
+- (void)setExecutableString:(uint64_t)string;
+- (void)setReferences:(uint64_t)references;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBExecutableReferenceKey
@@ -99,8 +99,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBExecutableReferenceKey;
   v4 = [(ATXPBExecutableReferenceKey *)&v8 description];
-  v5 = [(ATXPBExecutableReferenceKey *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBExecutableReferenceKey *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -108,7 +108,7 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   executableType = self->_executableType;
   if (executableType >= 6)
   {
@@ -120,26 +120,26 @@
     v5 = off_1E80C4B80[executableType];
   }
 
-  [v3 setObject:v5 forKey:@"executableType"];
+  [dictionary setObject:v5 forKey:@"executableType"];
 
   executableString = self->_executableString;
   if (executableString)
   {
-    [v3 setObject:executableString forKey:@"executableString"];
+    [dictionary setObject:executableString forKey:@"executableString"];
   }
 
   executableAction = self->_executableAction;
   if (executableAction)
   {
-    v8 = [(ATXPBAction *)executableAction dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"executableAction"];
+    dictionaryRepresentation = [(ATXPBAction *)executableAction dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"executableAction"];
   }
 
   executableHeroApp = self->_executableHeroApp;
   if (executableHeroApp)
   {
-    v10 = [(ATXPBHeroAppPrediction *)executableHeroApp dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"executableHeroApp"];
+    dictionaryRepresentation2 = [(ATXPBHeroAppPrediction *)executableHeroApp dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"executableHeroApp"];
   }
 
   if ([(NSMutableArray *)self->_references count])
@@ -164,8 +164,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation3 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation3];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -174,30 +174,30 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"references"];
+    [dictionary setObject:v11 forKey:@"references"];
   }
 
   executableInfoSuggestion = self->_executableInfoSuggestion;
   if (executableInfoSuggestion)
   {
-    v19 = [(ATXPBInfoSuggestion *)executableInfoSuggestion dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"executableInfoSuggestion"];
+    dictionaryRepresentation4 = [(ATXPBInfoSuggestion *)executableInfoSuggestion dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"executableInfoSuggestion"];
   }
 
   executableLinkAction = self->_executableLinkAction;
   if (executableLinkAction)
   {
-    v21 = [(ATXPBLinkAction *)executableLinkAction dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"executableLinkAction"];
+    dictionaryRepresentation5 = [(ATXPBLinkAction *)executableLinkAction dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"executableLinkAction"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteInt32Field();
   if (self->_executableString)
   {
@@ -256,20 +256,20 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 48) = self->_executableType;
-  v6 = [(NSString *)self->_executableString copyWithZone:a3];
+  v6 = [(NSString *)self->_executableString copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(ATXPBAction *)self->_executableAction copyWithZone:a3];
+  v8 = [(ATXPBAction *)self->_executableAction copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
-  v10 = [(ATXPBHeroAppPrediction *)self->_executableHeroApp copyWithZone:a3];
+  v10 = [(ATXPBHeroAppPrediction *)self->_executableHeroApp copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -293,7 +293,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v23 + 1) + 8 * v16) copyWithZone:{a3, v23}];
+        v17 = [*(*(&v23 + 1) + 8 * v16) copyWithZone:{zone, v23}];
         [(ATXPBExecutableReferenceKey *)v5 addReferences:v17];
 
         ++v16;
@@ -306,24 +306,24 @@
     while (v14);
   }
 
-  v18 = [(ATXPBInfoSuggestion *)self->_executableInfoSuggestion copyWithZone:a3];
+  v18 = [(ATXPBInfoSuggestion *)self->_executableInfoSuggestion copyWithZone:zone];
   v19 = *(v5 + 24);
   *(v5 + 24) = v18;
 
-  v20 = [(ATXPBLinkAction *)self->_executableLinkAction copyWithZone:a3];
+  v20 = [(ATXPBLinkAction *)self->_executableLinkAction copyWithZone:zone];
   v21 = *(v5 + 32);
   *(v5 + 32) = v20;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_executableType == *(v4 + 12) && ((executableString = self->_executableString, !(executableString | v4[5])) || -[NSString isEqual:](executableString, "isEqual:")) && ((executableAction = self->_executableAction, !(executableAction | v4[1])) || -[ATXPBAction isEqual:](executableAction, "isEqual:")) && ((executableHeroApp = self->_executableHeroApp, !(executableHeroApp | v4[2])) || -[ATXPBHeroAppPrediction isEqual:](executableHeroApp, "isEqual:")) && ((references = self->_references, !(references | v4[7])) || -[NSMutableArray isEqual:](references, "isEqual:")) && ((executableInfoSuggestion = self->_executableInfoSuggestion, !(executableInfoSuggestion | v4[3])) || -[ATXPBInfoSuggestion isEqual:](executableInfoSuggestion, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_executableType == *(equalCopy + 12) && ((executableString = self->_executableString, !(executableString | equalCopy[5])) || -[NSString isEqual:](executableString, "isEqual:")) && ((executableAction = self->_executableAction, !(executableAction | equalCopy[1])) || -[ATXPBAction isEqual:](executableAction, "isEqual:")) && ((executableHeroApp = self->_executableHeroApp, !(executableHeroApp | equalCopy[2])) || -[ATXPBHeroAppPrediction isEqual:](executableHeroApp, "isEqual:")) && ((references = self->_references, !(references | equalCopy[7])) || -[NSMutableArray isEqual:](references, "isEqual:")) && ((executableInfoSuggestion = self->_executableInfoSuggestion, !(executableInfoSuggestion | equalCopy[3])) || -[ATXPBInfoSuggestion isEqual:](executableInfoSuggestion, "isEqual:")))
   {
     executableLinkAction = self->_executableLinkAction;
-    if (executableLinkAction | v4[4])
+    if (executableLinkAction | equalCopy[4])
     {
       v11 = [(ATXPBLinkAction *)executableLinkAction isEqual:?];
     }
@@ -353,24 +353,24 @@
   return v8 ^ [(ATXPBLinkAction *)self->_executableLinkAction hash];
 }
 
-- (__CFString)executableTypeAsString:(__CFString *)a1
+- (__CFString)executableTypeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 6)
   {
-    a1 = off_1E80C4B80[a2];
+    string = off_1E80C4B80[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
 - (BOOL)hasExecutableString
@@ -413,21 +413,21 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)addReferences:(uint64_t)a1
+- (uint64_t)addReferences:(uint64_t)references
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (references)
   {
-    v5 = *(a1 + 56);
+    v5 = *(references + 56);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 56);
-      *(a1 + 56) = v6;
+      v7 = *(references + 56);
+      *(references + 56) = v6;
 
-      v5 = *(a1 + 56);
+      v5 = *(references + 56);
     }
 
     v3 = [v5 addObject:v9];
@@ -447,15 +447,15 @@ LABEL_4:
   return result;
 }
 
-- (id)referencesAtIndex:(id *)a1
+- (id)referencesAtIndex:(id *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [a1[7] objectAtIndex:a2];
+    index = [index[7] objectAtIndex:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (BOOL)hasExecutableInfoSuggestion
@@ -478,53 +478,53 @@ LABEL_4:
   return result;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v3 = a2;
-  if (a1)
+  if (to)
   {
-    *(v3 + 12) = *(a1 + 48);
-    v4 = *(a1 + 40);
+    *(v3 + 12) = *(to + 48);
+    v4 = *(to + 40);
     v13 = v3;
     if (v4)
     {
       [(ATXPBExecutableReferenceKey *)v3 setExecutableString:v4];
     }
 
-    v5 = *(a1 + 8);
+    v5 = *(to + 8);
     if (v5)
     {
       [(ATXPBExecutableReferenceKey *)v13 setExecutableAction:v5];
     }
 
-    v6 = *(a1 + 16);
+    v6 = *(to + 16);
     if (v6)
     {
       [(ATXPBExecutableReferenceKey *)v13 setExecutableHeroApp:v6];
     }
 
-    if ([*(a1 + 56) count])
+    if ([*(to + 56) count])
     {
       [v13[7] removeAllObjects];
-      v7 = [*(a1 + 56) count];
+      v7 = [*(to + 56) count];
       if (v7)
       {
         v8 = v7;
         for (i = 0; i != v8; ++i)
         {
-          v10 = [*(a1 + 56) objectAtIndex:i];
+          v10 = [*(to + 56) objectAtIndex:i];
           [(ATXPBExecutableReferenceKey *)v13 addReferences:v10];
         }
       }
     }
 
-    v11 = *(a1 + 24);
+    v11 = *(to + 24);
     if (v11)
     {
       [(ATXPBExecutableReferenceKey *)v13 setExecutableInfoSuggestion:v11];
     }
 
-    v12 = *(a1 + 32);
+    v12 = *(to + 32);
     v3 = v13;
     if (v12)
     {
@@ -534,58 +534,58 @@ LABEL_4:
   }
 }
 
-- (void)setExecutableString:(uint64_t)a1
+- (void)setExecutableString:(uint64_t)string
 {
-  if (a1)
+  if (string)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 40);
+    OUTLINED_FUNCTION_2(string, a2, 40);
   }
 }
 
-- (void)setExecutableAction:(uint64_t)a1
+- (void)setExecutableAction:(uint64_t)action
 {
-  if (a1)
+  if (action)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 8);
+    OUTLINED_FUNCTION_2(action, a2, 8);
   }
 }
 
-- (void)setExecutableHeroApp:(uint64_t)a1
+- (void)setExecutableHeroApp:(uint64_t)app
 {
-  if (a1)
+  if (app)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 16);
+    OUTLINED_FUNCTION_2(app, a2, 16);
   }
 }
 
-- (void)setExecutableInfoSuggestion:(uint64_t)a1
+- (void)setExecutableInfoSuggestion:(uint64_t)suggestion
 {
-  if (a1)
+  if (suggestion)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 24);
+    OUTLINED_FUNCTION_2(suggestion, a2, 24);
   }
 }
 
-- (void)setExecutableLinkAction:(uint64_t)a1
+- (void)setExecutableLinkAction:(uint64_t)action
 {
-  if (a1)
+  if (action)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 32);
+    OUTLINED_FUNCTION_2(action, a2, 32);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (from)
   {
-    *(a1 + 48) = *(v3 + 12);
+    *(from + 48) = *(v3 + 12);
     v5 = v3[5];
     if (v5)
     {
-      objc_storeStrong((a1 + 40), v5);
+      objc_storeStrong((from + 40), v5);
     }
 
     v6 = OUTLINED_FUNCTION_1_18(8);
@@ -636,7 +636,7 @@ LABEL_4:
             objc_enumerationMutation(v12);
           }
 
-          [(ATXPBExecutableReferenceKey *)a1 addReferences:?];
+          [(ATXPBExecutableReferenceKey *)from addReferences:?];
         }
 
         while (v14 != v16);
@@ -696,11 +696,11 @@ LABEL_4:
   return result;
 }
 
-- (void)setReferences:(uint64_t)a1
+- (void)setReferences:(uint64_t)references
 {
-  if (a1)
+  if (references)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 56);
+    OUTLINED_FUNCTION_2(references, a2, 56);
   }
 }
 

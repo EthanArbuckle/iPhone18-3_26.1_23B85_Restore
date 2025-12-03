@@ -1,10 +1,10 @@
 @interface SagaCloudAddPlaylistOperation
-- (SagaCloudAddPlaylistOperation)initWithClientIdentity:(id)a3 playlistGlobalID:(id)a4;
-- (SagaCloudAddPlaylistOperation)initWithCoder:(id)a3;
-- (SagaCloudAddPlaylistOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 playlistGlobalID:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (SagaCloudAddPlaylistOperation)initWithClientIdentity:(id)identity playlistGlobalID:(id)d;
+- (SagaCloudAddPlaylistOperation)initWithCoder:(id)coder;
+- (SagaCloudAddPlaylistOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity playlistGlobalID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 - (void)logCloudAddRequestDescription;
-- (void)processAddedItems:(id)a3;
+- (void)processAddedItems:(id)items;
 - (void)removePendingAddedItemsForPermanentlyFailedOperation;
 @end
 
@@ -19,15 +19,15 @@
   v5 = [NSArray arrayWithObjects:v20 count:2];
   v6 = [ML3AllCompoundPredicate predicateMatchingPredicates:v5];
 
-  v7 = [(CloudLibraryOperation *)self musicLibrary];
-  v8 = [ML3Container anyInLibrary:v7 predicate:v6];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  v8 = [ML3Container anyInLibrary:musicLibrary predicate:v6];
 
   if (v8)
   {
-    v9 = [v8 deleteFromLibrary];
+    deleteFromLibrary = [v8 deleteFromLibrary];
     v10 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     v11 = v10;
-    if (v9)
+    if (deleteFromLibrary)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -69,20 +69,20 @@ LABEL_10:
   }
 }
 
-- (void)processAddedItems:(id)a3
+- (void)processAddedItems:(id)items
 {
-  v4 = a3;
-  [(SagaCloudAddPlaylistOperation *)self setGlobalIDToSagaIDMap:v4];
-  if ([v4 count])
+  itemsCopy = items;
+  [(SagaCloudAddPlaylistOperation *)self setGlobalIDToSagaIDMap:itemsCopy];
+  if ([itemsCopy count])
   {
-    v5 = [(CloudLibraryOperation *)self musicLibrary];
+    musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100108844;
     v6[3] = &unk_1001DEDD0;
     v6[4] = self;
-    v7 = v4;
-    [v5 performDatabaseTransactionWithBlock:v6];
+    v7 = itemsCopy;
+    [musicLibrary performDatabaseTransactionWithBlock:v6];
   }
 }
 
@@ -98,24 +98,24 @@ LABEL_10:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SagaCloudAddPlaylistOperation;
-  v4 = a3;
-  [(CloudLibraryOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:*(&self->super._updateRequired + 1) forKey:{@"SagaCloudAddPlaylistOperationPlaylistGlobalIDKey", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CloudLibraryOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:*(&self->super._updateRequired + 1) forKey:{@"SagaCloudAddPlaylistOperationPlaylistGlobalIDKey", v5.receiver, v5.super_class}];
 }
 
-- (SagaCloudAddPlaylistOperation)initWithCoder:(id)a3
+- (SagaCloudAddPlaylistOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SagaCloudAddPlaylistOperation;
-  v5 = [(CloudLibraryOperation *)&v9 initWithCoder:v4];
+  v5 = [(CloudLibraryOperation *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SagaCloudAddPlaylistOperationPlaylistGlobalIDKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SagaCloudAddPlaylistOperationPlaylistGlobalIDKey"];
     v7 = *(v5 + 89);
     *(v5 + 89) = v6;
   }
@@ -123,27 +123,27 @@ LABEL_10:
   return v5;
 }
 
-- (SagaCloudAddPlaylistOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 playlistGlobalID:(id)a5
+- (SagaCloudAddPlaylistOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity playlistGlobalID:(id)d
 {
-  v9 = a5;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = SagaCloudAddPlaylistOperation;
-  v10 = [(CloudLibraryOperation *)&v13 initWithConfiguration:a3 clientIdentity:a4];
+  v10 = [(CloudLibraryOperation *)&v13 initWithConfiguration:configuration clientIdentity:identity];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong((v10 + 89), a5);
+    objc_storeStrong((v10 + 89), d);
   }
 
   return v11;
 }
 
-- (SagaCloudAddPlaylistOperation)initWithClientIdentity:(id)a3 playlistGlobalID:(id)a4
+- (SagaCloudAddPlaylistOperation)initWithClientIdentity:(id)identity playlistGlobalID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  identityCopy = identity;
   v8 = objc_opt_new();
-  v9 = [(SagaCloudAddPlaylistOperation *)self initWithConfiguration:v8 clientIdentity:v7 playlistGlobalID:v6];
+  v9 = [(SagaCloudAddPlaylistOperation *)self initWithConfiguration:v8 clientIdentity:identityCopy playlistGlobalID:dCopy];
 
   return v9;
 }

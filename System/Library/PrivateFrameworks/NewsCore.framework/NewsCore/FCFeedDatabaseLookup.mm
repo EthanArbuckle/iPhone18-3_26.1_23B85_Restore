@@ -8,12 +8,12 @@
 - (id)description
 {
   v3 = [FCDescription descriptionWithObject:self];
-  v4 = [(FCFeedDatabaseLookup *)self feedID];
-  [v3 addField:@"feedID" value:v4];
+  feedID = [(FCFeedDatabaseLookup *)self feedID];
+  [v3 addField:@"feedID" value:feedID];
 
-  v5 = [(FCFeedDatabaseLookup *)self feedRange];
-  v6 = [v5 dateRange];
-  [v3 addField:@"feedRange" format:{@"%@", v6}];
+  feedRange = [(FCFeedDatabaseLookup *)self feedRange];
+  dateRange = [feedRange dateRange];
+  [v3 addField:@"feedRange" format:{@"%@", dateRange}];
 
   [v3 addField:@"maxCount" format:{@"%lu", -[FCFeedDatabaseLookup maxCount](self, "maxCount")}];
   if ([(FCFeedDatabaseLookup *)self cachedOnly])
@@ -27,20 +27,20 @@
   }
 
   [v3 addField:@"cachedOnly" value:v7];
-  v8 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v8;
+  return descriptionString;
 }
 
 - (BOOL)hasMaxCount
 {
-  v3 = [(FCFeedDatabaseLookup *)self maxCount];
-  if (v3)
+  maxCount = [(FCFeedDatabaseLookup *)self maxCount];
+  if (maxCount)
   {
-    LOBYTE(v3) = [(FCFeedDatabaseLookup *)self maxCount]!= -1;
+    LOBYTE(maxCount) = [(FCFeedDatabaseLookup *)self maxCount]!= -1;
   }
 
-  return v3;
+  return maxCount;
 }
 
 @end

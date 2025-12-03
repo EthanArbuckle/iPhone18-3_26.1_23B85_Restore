@@ -2,17 +2,17 @@
 - (CGAffineTransform)transform;
 - (CGPoint)center;
 - (CGSize)size;
-- (TUIPinningLiveTransform)initWithCenter:(CGPoint)a3 size:(CGSize)a4 transform:(CGAffineTransform *)a5 pinPosition:(unint64_t)a6;
+- (TUIPinningLiveTransform)initWithCenter:(CGPoint)center size:(CGSize)size transform:(CGAffineTransform *)transform pinPosition:(unint64_t)position;
 @end
 
 @implementation TUIPinningLiveTransform
 
-- (TUIPinningLiveTransform)initWithCenter:(CGPoint)a3 size:(CGSize)a4 transform:(CGAffineTransform *)a5 pinPosition:(unint64_t)a6
+- (TUIPinningLiveTransform)initWithCenter:(CGPoint)center size:(CGSize)size transform:(CGAffineTransform *)transform pinPosition:(unint64_t)position
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
+  height = size.height;
+  width = size.width;
+  y = center.y;
+  x = center.x;
   v15.receiver = self;
   v15.super_class = TUIPinningLiveTransform;
   result = [(TUIPinningLiveTransform *)&v15 init];
@@ -22,12 +22,12 @@
     result->_center.y = y;
     result->_size.width = width;
     result->_size.height = height;
-    v13 = *&a5->a;
-    v14 = *&a5->tx;
-    *&result->_transform.c = *&a5->c;
+    v13 = *&transform->a;
+    v14 = *&transform->tx;
+    *&result->_transform.c = *&transform->c;
     *&result->_transform.tx = v14;
     *&result->_transform.a = v13;
-    result->_pinPosition = a6;
+    result->_pinPosition = position;
   }
 
   return result;

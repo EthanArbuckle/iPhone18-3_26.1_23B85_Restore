@@ -1,26 +1,26 @@
 @interface INNumberResolutionResult
-- (id)_intentSlotValueForObject:(id)a3 slotDescription:(id)a4;
-- (id)_vocabularyValueForObject:(id)a3 slotDescription:(id)a4;
+- (id)_intentSlotValueForObject:(id)object slotDescription:(id)description;
+- (id)_vocabularyValueForObject:(id)object slotDescription:(id)description;
 @end
 
 @implementation INNumberResolutionResult
 
-- (id)_vocabularyValueForObject:(id)a3 slotDescription:(id)a4
+- (id)_vocabularyValueForObject:(id)object slotDescription:(id)description
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 description];
-  v8 = [MEMORY[0x1E695DF58] systemLocale];
-  v9 = [v8 groupingSeparator];
-  v10 = [v6 valueType];
+  objectCopy = object;
+  descriptionCopy = description;
+  v7 = [objectCopy description];
+  systemLocale = [MEMORY[0x1E695DF58] systemLocale];
+  groupingSeparator = [systemLocale groupingSeparator];
+  valueType = [descriptionCopy valueType];
 
-  if (v10 == 173)
+  if (valueType == 173)
   {
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 && ([v5 firstObject], v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v11, (isKindOfClass))
+    if (objc_opt_isKindOfClass() & 1) != 0 && ([objectCopy firstObject], v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v11, (isKindOfClass))
     {
-      v13 = [v5 valueForKey:@"stringValue"];
-      v14 = [v13 if_escapedComponentsJoinedByString:v9 forLocale:v8];
+      v13 = [objectCopy valueForKey:@"stringValue"];
+      stringValue = [v13 if_escapedComponentsJoinedByString:groupingSeparator forLocale:systemLocale];
 
       v7 = v13;
     }
@@ -33,10 +33,10 @@
         goto LABEL_8;
       }
 
-      v14 = [v5 stringValue];
+      stringValue = [objectCopy stringValue];
     }
 
-    v7 = v14;
+    v7 = stringValue;
   }
 
 LABEL_8:
@@ -44,18 +44,18 @@ LABEL_8:
   return v7;
 }
 
-- (id)_intentSlotValueForObject:(id)a3 slotDescription:(id)a4
+- (id)_intentSlotValueForObject:(id)object slotDescription:(id)description
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  descriptionCopy = description;
   v7 = objc_alloc_init(_INPBIntentSlotValue);
-  if ([v6 valueType] == 173)
+  if ([descriptionCopy valueType] == 173)
   {
     [(_INPBIntentSlotValue *)v7 setType:1000];
-    if ([v6 valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(v5, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) != 0))
+    if ([descriptionCopy valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(objectCopy, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) != 0))
     {
-      v10 = v5;
+      v10 = objectCopy;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
@@ -93,7 +93,7 @@ LABEL_8:
         goto LABEL_17;
       }
 
-      v10 = INIntentSlotValueTransformToWellnessValue(v5);
+      v10 = INIntentSlotValueTransformToWellnessValue(objectCopy);
       if (v10)
       {
         [(_INPBIntentSlotValue *)v7 addPayloadWellnessValue:v10];

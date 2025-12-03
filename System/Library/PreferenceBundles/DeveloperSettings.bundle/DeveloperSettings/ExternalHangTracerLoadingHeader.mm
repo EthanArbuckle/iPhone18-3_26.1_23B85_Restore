@@ -1,12 +1,12 @@
 @interface ExternalHangTracerLoadingHeader
-- (ExternalHangTracerLoadingHeader)initWithSpecifier:(id)a3;
+- (ExternalHangTracerLoadingHeader)initWithSpecifier:(id)specifier;
 @end
 
 @implementation ExternalHangTracerLoadingHeader
 
-- (ExternalHangTracerLoadingHeader)initWithSpecifier:(id)a3
+- (ExternalHangTracerLoadingHeader)initWithSpecifier:(id)specifier
 {
-  v59 = a3;
+  specifierCopy = specifier;
   v65.receiver = self;
   v65.super_class = ExternalHangTracerLoadingHeader;
   v4 = [(ExternalHangTracerLoadingHeader *)&v65 init];
@@ -23,8 +23,8 @@
     v8 = [UITableViewHeaderFooterView _defaultTextColorForTableViewStyle:1 isSectionHeader:1];
     [(UILabel *)v4->_headerLabel setTextColor:v8];
 
-    v9 = [v59 name];
-    [(UILabel *)v4->_headerLabel setText:v9];
+    name = [specifierCopy name];
+    [(UILabel *)v4->_headerLabel setText:name];
 
     [(UILabel *)v4->_headerLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v4->_headerLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -49,9 +49,9 @@
     v17 = [NSArray arrayWithObjects:v68 count:2];
     v18 = [v16 initWithArrangedSubviews:v17];
 
-    v19 = [(ExternalHangTracerLoadingHeader *)v4 traitCollection];
-    v20 = [v19 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v20);
+    traitCollection = [(ExternalHangTracerLoadingHeader *)v4 traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     [v18 setAxis:IsAccessibilityCategory];
     [v18 setSpacing:8.0];
@@ -62,54 +62,54 @@
     LODWORD(v22) = 1148846080;
     [v18 setContentHuggingPriority:1 forAxis:v22];
     [(ExternalHangTracerLoadingHeader *)v4 addSubview:v18];
-    v23 = [(UIActivityIndicatorView *)v4->_spinnerView centerYAnchor];
-    v24 = [(UILabel *)v4->_headerLabel centerYAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    centerYAnchor = [(UIActivityIndicatorView *)v4->_spinnerView centerYAnchor];
+    centerYAnchor2 = [(UILabel *)v4->_headerLabel centerYAnchor];
+    v25 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     labelAlignmentConstraint = v4->_labelAlignmentConstraint;
     v4->_labelAlignmentConstraint = v25;
 
     [(NSLayoutConstraint *)v4->_labelAlignmentConstraint setActive:!IsAccessibilityCategory];
-    v27 = [(UIActivityIndicatorView *)v4->_spinnerView heightAnchor];
-    v28 = [(UILabel *)v4->_headerLabel heightAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    heightAnchor = [(UIActivityIndicatorView *)v4->_spinnerView heightAnchor];
+    heightAnchor2 = [(UILabel *)v4->_headerLabel heightAnchor];
+    v29 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     labelHeightConstraint = v4->_labelHeightConstraint;
     v4->_labelHeightConstraint = v29;
 
     [(NSLayoutConstraint *)v4->_labelHeightConstraint setActive:!IsAccessibilityCategory];
-    v31 = [v18 heightAnchor];
-    v32 = [(UILabel *)v4->_headerLabel heightAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    heightAnchor3 = [v18 heightAnchor];
+    heightAnchor4 = [(UILabel *)v4->_headerLabel heightAnchor];
+    v33 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
     stackViewConstraint = v4->_stackViewConstraint;
     v4->_stackViewConstraint = v33;
 
     [(NSLayoutConstraint *)v4->_stackViewConstraint setActive:!IsAccessibilityCategory];
-    v58 = [(UIActivityIndicatorView *)v4->_spinnerView widthAnchor];
-    v57 = [v58 constraintGreaterThanOrEqualToConstant:20.0];
+    widthAnchor = [(UIActivityIndicatorView *)v4->_spinnerView widthAnchor];
+    v57 = [widthAnchor constraintGreaterThanOrEqualToConstant:20.0];
     v67[0] = v57;
-    v55 = [v18 leadingAnchor];
-    v56 = [(ExternalHangTracerLoadingHeader *)v4 layoutMarginsGuide];
-    v54 = [v56 leadingAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54 constant:12.0];
+    leadingAnchor = [v18 leadingAnchor];
+    layoutMarginsGuide = [(ExternalHangTracerLoadingHeader *)v4 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v53 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
     v67[1] = v53;
-    v51 = [v18 trailingAnchor];
-    v52 = [(ExternalHangTracerLoadingHeader *)v4 layoutMarginsGuide];
-    v50 = [v52 trailingAnchor];
-    v49 = [v51 constraintLessThanOrEqualToAnchor:v50 constant:-12.0];
+    trailingAnchor = [v18 trailingAnchor];
+    layoutMarginsGuide2 = [(ExternalHangTracerLoadingHeader *)v4 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v49 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-12.0];
     v67[2] = v49;
-    v35 = [v18 topAnchor];
-    v36 = [(ExternalHangTracerLoadingHeader *)v4 topAnchor];
-    v37 = [v59 objectForKeyedSubscript:@"top-margin"];
+    topAnchor = [v18 topAnchor];
+    topAnchor2 = [(ExternalHangTracerLoadingHeader *)v4 topAnchor];
+    v37 = [specifierCopy objectForKeyedSubscript:@"top-margin"];
     [v37 doubleValue];
     if (v38 == 0.0)
     {
       v38 = 10.0;
     }
 
-    v39 = [v35 constraintEqualToAnchor:v36 constant:v38];
+    v39 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v38];
     v67[3] = v39;
-    v40 = [v18 bottomAnchor];
-    v41 = [(ExternalHangTracerLoadingHeader *)v4 bottomAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41 constant:-8.0];
+    bottomAnchor = [v18 bottomAnchor];
+    bottomAnchor2 = [(ExternalHangTracerLoadingHeader *)v4 bottomAnchor];
+    v42 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-8.0];
     v67[4] = v42;
     v43 = [NSArray arrayWithObjects:v67 count:5];
     [NSLayoutConstraint activateConstraints:v43];

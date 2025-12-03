@@ -6,7 +6,7 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_219538FF0();
 
   return v3;

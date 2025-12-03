@@ -1,43 +1,43 @@
 @interface _LTDConfigurationService
 + (id)_queue;
-+ (id)aneConfigurationWithError:(id *)a3;
-+ (id)asrConfigurationWithError:(id *)a3;
-+ (id)assetConfigurationWithError:(id *)a3;
++ (id)aneConfigurationWithError:(id *)error;
++ (id)asrConfigurationWithError:(id *)error;
++ (id)assetConfigurationWithError:(id *)error;
 + (id)cache;
-+ (id)configurationForType:(int64_t)a3 error:(id *)a4;
-+ (id)deserializedPlistContentsOf:(id)a3 error:(id *)a4;
-+ (id)fileNameForType:(int64_t)a3;
-+ (id)offlineConfigurationWithError:(id *)a3;
-+ (id)overlay:(id)a3 with:(id)a4;
-+ (id)preferenceOverridesFor:(int64_t)a3;
-+ (id)siriConfigurationWithError:(id *)a3;
-+ (id)supportedLocalePairsForTask:(int64_t)a3 error:(id *)a4;
-+ (id)textStreamingConfigurationWithError:(id *)a3;
-+ (id)urlForType:(int64_t)a3 source:(int64_t)a4;
-+ (void)aneConfigurationWithCompletion:(id)a3;
-+ (void)asrConfigurationWithCompletion:(id)a3;
-+ (void)assetConfigurationWithCompletion:(id)a3;
-+ (void)configurationForType:(int64_t)a3 completion:(id)a4;
++ (id)configurationForType:(int64_t)type error:(id *)error;
++ (id)deserializedPlistContentsOf:(id)of error:(id *)error;
++ (id)fileNameForType:(int64_t)type;
++ (id)offlineConfigurationWithError:(id *)error;
++ (id)overlay:(id)overlay with:(id)with;
++ (id)preferenceOverridesFor:(int64_t)for;
++ (id)siriConfigurationWithError:(id *)error;
++ (id)supportedLocalePairsForTask:(int64_t)task error:(id *)error;
++ (id)textStreamingConfigurationWithError:(id *)error;
++ (id)urlForType:(int64_t)type source:(int64_t)source;
++ (void)aneConfigurationWithCompletion:(id)completion;
++ (void)asrConfigurationWithCompletion:(id)completion;
++ (void)assetConfigurationWithCompletion:(id)completion;
++ (void)configurationForType:(int64_t)type completion:(id)completion;
 + (void)flushCache;
-+ (void)offlineConfigurationWithCompletion:(id)a3;
-+ (void)siriConfigurationWithCompletion:(id)a3;
-+ (void)supportedIdentifiersForTask:(int64_t)a3 completion:(id)a4;
-+ (void)supportedLocalePairsForTask:(int64_t)a3 completion:(id)a4;
-+ (void)textStreamingConfigurationWithCompletion:(id)a3;
++ (void)offlineConfigurationWithCompletion:(id)completion;
++ (void)siriConfigurationWithCompletion:(id)completion;
++ (void)supportedIdentifiersForTask:(int64_t)task completion:(id)completion;
++ (void)supportedLocalePairsForTask:(int64_t)task completion:(id)completion;
++ (void)textStreamingConfigurationWithCompletion:(id)completion;
 @end
 
 @implementation _LTDConfigurationService
 
-+ (id)fileNameForType:(int64_t)a3
++ (id)fileNameForType:(int64_t)type
 {
-  if (a3 > 9)
+  if (type > 9)
   {
     return &stru_284834138;
   }
 
   else
   {
-    return off_2789B5EC0[a3];
+    return off_2789B5EC0[type];
   }
 }
 
@@ -65,26 +65,26 @@
   return v3;
 }
 
-+ (void)configurationForType:(int64_t)a3 completion:(id)a4
++ (void)configurationForType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a1 _queue];
+  completionCopy = completion;
+  _queue = [self _queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60___LTDConfigurationService_configurationForType_completion___block_invoke;
   block[3] = &unk_2789B5E50;
-  v11 = a1;
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  selfCopy = self;
+  typeCopy = type;
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_async(_queue, block);
 }
 
-+ (id)configurationForType:(int64_t)a3 error:(id *)a4
++ (id)configurationForType:(int64_t)type error:(id *)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v7 = [a1 cache];
-  v8 = [v7 objectForType:a3 error:0];
+  cache = [self cache];
+  v8 = [cache objectForType:type error:0];
   v9 = objc_opt_class();
   v10 = v8;
   if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v11 = [v10 lt_ensureTypesForKeys:v9 values:0], v12 = v10, (v11 & 1) == 0))
@@ -101,20 +101,20 @@
   }
 
   v15 = 0;
-  if (a3 > 6)
+  if (type > 6)
   {
-    if (a3 == 7)
+    if (type == 7)
     {
-      v18 = a1;
+      selfCopy2 = self;
       v19 = 7;
 LABEL_18:
-      v16 = [v18 urlForType:v19 source:0];
+      cache2 = [selfCopy2 urlForType:v19 source:0];
       v15 = 0;
       v17 = 0;
       goto LABEL_23;
     }
 
-    if (a3 == 9)
+    if (type == 9)
     {
       v20 = _LTOSLogAssets();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
@@ -122,16 +122,16 @@ LABEL_18:
         [_LTDConfigurationService configurationForType:v20 error:?];
       }
 
-      v16 = [a1 cache];
-      [v16 removeObjectForType:9];
+      cache2 = [self cache];
+      [cache2 removeObjectForType:9];
       v13 = 0;
       v14 = 0;
       goto LABEL_60;
     }
 
     v17 = 0;
-    v16 = 0;
-    if (a3 == 8)
+    cache2 = 0;
+    if (type == 8)
     {
       goto LABEL_9;
     }
@@ -139,37 +139,37 @@ LABEL_18:
 
   else
   {
-    if ((a3 - 2) < 5)
+    if ((type - 2) < 5)
     {
 LABEL_9:
-      v16 = [a1 urlForType:a3 source:0];
-      v17 = [a1 urlForType:a3 source:1];
+      cache2 = [self urlForType:type source:0];
+      v17 = [self urlForType:type source:1];
       v15 = 0;
       goto LABEL_23;
     }
 
-    if (a3)
+    if (type)
     {
       v17 = 0;
-      v16 = 0;
-      if (a3 != 1)
+      cache2 = 0;
+      if (type != 1)
       {
         goto LABEL_23;
       }
 
-      v18 = a1;
+      selfCopy2 = self;
       v19 = 1;
       goto LABEL_18;
     }
 
-    v16 = [a1 urlForType:1 source:0];
-    v15 = [a1 urlForType:0 source:0];
-    v17 = [a1 urlForType:0 source:1];
+    cache2 = [self urlForType:1 source:0];
+    v15 = [self urlForType:0 source:0];
+    v17 = [self urlForType:0 source:1];
   }
 
 LABEL_23:
-  v21 = [a1 fileNameForType:a3];
-  if (!v16)
+  v21 = [self fileNameForType:type];
+  if (!cache2)
   {
     v13 = 0;
     goto LABEL_33;
@@ -182,7 +182,7 @@ LABEL_23:
   }
 
   v55 = 0;
-  v13 = [a1 deserializedPlistContentsOf:v16 error:&v55];
+  v13 = [self deserializedPlistContentsOf:cache2 error:&v55];
   v23 = v55;
   if (!v23)
   {
@@ -201,11 +201,11 @@ LABEL_33:
 
     v29 = v21;
     v54 = 0;
-    v30 = [a1 deserializedPlistContentsOf:v15 error:{&v54, v49}];
+    v30 = [self deserializedPlistContentsOf:v15 error:{&v54, v49}];
     v31 = v54;
     if (!v31)
     {
-      v34 = [a1 overlay:v13 with:v30];
+      v34 = [self overlay:v13 with:v30];
 
       v13 = v34;
       goto LABEL_41;
@@ -215,13 +215,13 @@ LABEL_33:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       +[_LTDConfigurationService configurationForType:error:];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_41;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
 LABEL_41:
 
@@ -231,8 +231,8 @@ LABEL_42:
       if (!v17)
       {
 LABEL_56:
-        v24 = [a1 preferenceOverridesFor:a3];
-        v44 = [a1 overlay:v13 with:v24];
+        v24 = [self preferenceOverridesFor:type];
+        v44 = [self overlay:v13 with:v24];
 
         v45 = _LTOSLogAssets();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
@@ -240,8 +240,8 @@ LABEL_56:
           +[_LTDConfigurationService configurationForType:error:];
         }
 
-        v46 = [a1 cache];
-        [v46 setObject:v44 forType:a3];
+        cache3 = [self cache];
+        [cache3 setObject:v44 forType:type];
 
         v13 = v44;
         v14 = v13;
@@ -255,11 +255,11 @@ LABEL_56:
       }
 
       v53 = 0;
-      v36 = [a1 deserializedPlistContentsOf:v17 error:&v53];
+      v36 = [self deserializedPlistContentsOf:v17 error:&v53];
       v37 = v53;
       if (!v37)
       {
-        v40 = [a1 overlay:v13 with:v36];
+        v40 = [self overlay:v13 with:v36];
 
         v13 = v40;
 LABEL_55:
@@ -276,12 +276,12 @@ LABEL_55:
         _os_log_impl(&dword_232E53000, v38, OS_LOG_TYPE_INFO, "Failed to retrieve managed configuration %@", buf, 0xCu);
       }
 
-      v39 = [v37 domain];
-      if (v39 == *MEMORY[0x277CCA050])
+      domain = [v37 domain];
+      if (domain == *MEMORY[0x277CCA050])
       {
-        v41 = [v37 code];
+        code = [v37 code];
 
-        if (v41 != 260)
+        if (code != 260)
         {
           goto LABEL_54;
         }
@@ -293,9 +293,9 @@ LABEL_55:
         }
 
         v43 = v42;
-        v39 = [v17 path];
+        domain = [v17 path];
         *buf = 138543362;
-        v57 = v39;
+        v57 = domain;
         _os_log_impl(&dword_232E53000, v43, OS_LOG_TYPE_INFO, "File not installed at: %{public}@", buf, 0xCu);
       }
 
@@ -305,7 +305,7 @@ LABEL_54:
     }
 
     v33 = v31;
-    *a4 = v31;
+    *error = v31;
     goto LABEL_41;
   }
 
@@ -316,14 +316,14 @@ LABEL_54:
     +[_LTDConfigurationService configurationForType:error:];
   }
 
-  if (a4)
+  if (error)
   {
     v26 = v24;
-    *a4 = v24;
+    *error = v24;
   }
 
-  v27 = [a1 cache];
-  [v27 removeObjectForType:a3];
+  cache4 = [self cache];
+  [cache4 removeObjectForType:type];
 
   v14 = 0;
 LABEL_59:
@@ -336,10 +336,10 @@ LABEL_61:
   return v14;
 }
 
-+ (id)urlForType:(int64_t)a3 source:(int64_t)a4
++ (id)urlForType:(int64_t)type source:(int64_t)source
 {
-  v5 = [a1 fileNameForType:a3];
-  if (a4 == 2)
+  v5 = [self fileNameForType:type];
+  if (source == 2)
   {
     v12 = _LTOSLogAssets();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -350,7 +350,7 @@ LABEL_61:
     goto LABEL_11;
   }
 
-  if (a4 == 1)
+  if (source == 1)
   {
     v9 = +[_LTDUAFAssetService _configBundleURL];
     v6 = v9;
@@ -380,7 +380,7 @@ LABEL_61:
     goto LABEL_15;
   }
 
-  if (a4)
+  if (source)
   {
 LABEL_11:
     v7 = 0;
@@ -402,11 +402,11 @@ LABEL_16:
   return v7;
 }
 
-+ (id)preferenceOverridesFor:(int64_t)a3
++ (id)preferenceOverridesFor:(int64_t)for
 {
-  v3 = [a1 fileNameForType:a3];
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [v4 objectForKey:v3];
+  v3 = [self fileNameForType:for];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [standardUserDefaults objectForKey:v3];
   v6 = objc_opt_class();
   v7 = v5;
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v8 = [v7 lt_ensureTypesForKeys:v6 values:0], v9 = v7, (v8 & 1) == 0))
@@ -418,36 +418,36 @@ LABEL_16:
   return v9;
 }
 
-+ (id)overlay:(id)a3 with:(id)a4
++ (id)overlay:(id)overlay with:(id)with
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  overlayCopy = overlay;
+  withCopy = with;
+  if ([withCopy count])
   {
-    v7 = [v5 mutableCopy];
-    [v7 addEntriesFromDictionary:v6];
+    v7 = [overlayCopy mutableCopy];
+    [v7 addEntriesFromDictionary:withCopy];
     v8 = [v7 copy];
   }
 
   else
   {
-    v8 = v5;
+    v8 = overlayCopy;
   }
 
   return v8;
 }
 
-+ (id)deserializedPlistContentsOf:(id)a3 error:(id *)a4
++ (id)deserializedPlistContentsOf:(id)of error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  ofCopy = of;
+  if (!ofCopy)
   {
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid configuration URL: %@", 0];
-    *a4 = [MEMORY[0x277CCA9B8] ltd_errorWithCode:12 description:v8 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] ltd_errorWithCode:12 description:v8 userInfo:0];
     v10 = _LTOSLogAssets();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      [_LTDConfigurationService deserializedPlistContentsOf:a4 error:?];
+      [_LTDConfigurationService deserializedPlistContentsOf:error error:?];
     }
 
     goto LABEL_9;
@@ -459,14 +459,14 @@ LABEL_16:
     +[_LTDConfigurationService deserializedPlistContentsOf:error:];
   }
 
-  v7 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v5 options:0 error:a4];
+  v7 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:ofCopy options:0 error:error];
   v8 = v7;
-  if (*a4)
+  if (*error)
   {
     v9 = _LTOSLogAssets();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [_LTDConfigurationService deserializedPlistContentsOf:a4 error:?];
+      [_LTDConfigurationService deserializedPlistContentsOf:error error:?];
     }
 
 LABEL_9:
@@ -476,24 +476,24 @@ LABEL_9:
 
   if (![v7 length])
   {
-    *a4 = [MEMORY[0x277CCA9B8] ltd_errorWithCode:10 description:@"Failed to read configuration file" userInfo:MEMORY[0x277CBEC10]];
+    *error = [MEMORY[0x277CCA9B8] ltd_errorWithCode:10 description:@"Failed to read configuration file" userInfo:MEMORY[0x277CBEC10]];
     v16 = _LTOSLogAssets();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [_LTDConfigurationService deserializedPlistContentsOf:a4 error:?];
+      [_LTDConfigurationService deserializedPlistContentsOf:error error:?];
     }
 
     goto LABEL_9;
   }
 
-  v13 = [MEMORY[0x277CCAC58] propertyListWithData:v8 options:0 format:0 error:a4];
+  v13 = [MEMORY[0x277CCAC58] propertyListWithData:v8 options:0 format:0 error:error];
   v14 = v13;
-  if (*a4)
+  if (*error)
   {
     v15 = _LTOSLogAssets();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [_LTDConfigurationService deserializedPlistContentsOf:a4 error:?];
+      [_LTDConfigurationService deserializedPlistContentsOf:error error:?];
     }
 
     v11 = 0;
@@ -511,153 +511,153 @@ LABEL_10:
 
 + (void)flushCache
 {
-  v2 = [a1 cache];
-  [v2 removeAllObjects];
+  cache = [self cache];
+  [cache removeAllObjects];
 }
 
-+ (id)asrConfigurationWithError:(id *)a3
++ (id)asrConfigurationWithError:(id *)error
 {
-  v3 = [a1 configurationForType:8 error:0];
+  v3 = [self configurationForType:8 error:0];
   v4 = [[_LTDASRConfigurationModel alloc] initWithDictionary:v3];
 
   return v4;
 }
 
-+ (void)asrConfigurationWithCompletion:(id)a3
++ (void)asrConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _queue];
+  completionCopy = completion;
+  _queue = [self _queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59___LTDConfigurationService_asrConfigurationWithCompletion___block_invoke;
   v7[3] = &unk_2789B5E78;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  selfCopy = self;
+  v6 = completionCopy;
+  dispatch_async(_queue, v7);
 }
 
-+ (id)offlineConfigurationWithError:(id *)a3
++ (id)offlineConfigurationWithError:(id *)error
 {
-  v3 = [a1 configurationForType:2 error:a3];
+  v3 = [self configurationForType:2 error:error];
   v4 = [[_LTDOfflineConfigurationModel alloc] initWithDictionary:v3];
 
   return v4;
 }
 
-+ (void)offlineConfigurationWithCompletion:(id)a3
++ (void)offlineConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _queue];
+  completionCopy = completion;
+  _queue = [self _queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63___LTDConfigurationService_offlineConfigurationWithCompletion___block_invoke;
   v7[3] = &unk_2789B5E78;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  selfCopy = self;
+  v6 = completionCopy;
+  dispatch_async(_queue, v7);
 }
 
-+ (id)siriConfigurationWithError:(id *)a3
++ (id)siriConfigurationWithError:(id *)error
 {
-  v3 = [a1 configurationForType:5 error:a3];
+  v3 = [self configurationForType:5 error:error];
   v4 = [[_LTDSiriConfigurationModel alloc] initWithDictionary:v3];
 
   return v4;
 }
 
-+ (void)siriConfigurationWithCompletion:(id)a3
++ (void)siriConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _queue];
+  completionCopy = completion;
+  _queue = [self _queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60___LTDConfigurationService_siriConfigurationWithCompletion___block_invoke;
   v7[3] = &unk_2789B5E78;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  selfCopy = self;
+  v6 = completionCopy;
+  dispatch_async(_queue, v7);
 }
 
-+ (id)textStreamingConfigurationWithError:(id *)a3
++ (id)textStreamingConfigurationWithError:(id *)error
 {
-  v3 = [a1 configurationForType:0 error:a3];
+  v3 = [self configurationForType:0 error:error];
   v4 = [[_LTDTextStreamingConfigurationModel alloc] initWithDictionary:v3];
 
   return v4;
 }
 
-+ (void)textStreamingConfigurationWithCompletion:(id)a3
++ (void)textStreamingConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _queue];
+  completionCopy = completion;
+  _queue = [self _queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69___LTDConfigurationService_textStreamingConfigurationWithCompletion___block_invoke;
   v7[3] = &unk_2789B5E78;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  selfCopy = self;
+  v6 = completionCopy;
+  dispatch_async(_queue, v7);
 }
 
-+ (id)assetConfigurationWithError:(id *)a3
++ (id)assetConfigurationWithError:(id *)error
 {
-  v3 = [a1 configurationForType:1 error:a3];
+  v3 = [self configurationForType:1 error:error];
   v4 = [[_LTDAssetConfigurationModel alloc] initWithDictionary:v3];
 
   return v4;
 }
 
-+ (void)assetConfigurationWithCompletion:(id)a3
++ (void)assetConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _queue];
+  completionCopy = completion;
+  _queue = [self _queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61___LTDConfigurationService_assetConfigurationWithCompletion___block_invoke;
   v7[3] = &unk_2789B5E78;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  selfCopy = self;
+  v6 = completionCopy;
+  dispatch_async(_queue, v7);
 }
 
-+ (id)aneConfigurationWithError:(id *)a3
++ (id)aneConfigurationWithError:(id *)error
 {
-  v3 = [_LTDConfigurationService configurationForType:7 error:a3];
+  v3 = [_LTDConfigurationService configurationForType:7 error:error];
   v4 = [[_LTDANEConfigurationModel alloc] initWithDictionary:v3];
 
   return v4;
 }
 
-+ (void)aneConfigurationWithCompletion:(id)a3
++ (void)aneConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _queue];
+  completionCopy = completion;
+  _queue = [self _queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59___LTDConfigurationService_aneConfigurationWithCompletion___block_invoke;
   v7[3] = &unk_2789B5E78;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  selfCopy = self;
+  v6 = completionCopy;
+  dispatch_async(_queue, v7);
 }
 
-+ (id)supportedLocalePairsForTask:(int64_t)a3 error:(id *)a4
++ (id)supportedLocalePairsForTask:(int64_t)task error:(id *)error
 {
   v5 = 4;
-  v6 = a3 - 9;
+  v6 = task - 9;
   v7 = 3;
-  if (a3 == 4)
+  if (task == 4)
   {
     v7 = 5;
   }
 
-  if (a3 != 2)
+  if (task != 2)
   {
     v5 = v7;
   }
@@ -679,7 +679,7 @@ LABEL_10:
   if (v8)
   {
     v12 = [[_LTDASRConfigurationModel alloc] initWithDictionary:v10];
-    v13 = [(_LTDASRConfigurationModel *)v12 supportedLocaleIdentifiersForTaskHint:a3];
+    v13 = [(_LTDASRConfigurationModel *)v12 supportedLocaleIdentifiersForTaskHint:task];
     v14 = [MEMORY[0x277CE1B38] pairNamesForLocaleIdentifiers:v13];
   }
 
@@ -722,34 +722,34 @@ LABEL_10:
   return v16;
 }
 
-+ (void)supportedLocalePairsForTask:(int64_t)a3 completion:(id)a4
++ (void)supportedLocalePairsForTask:(int64_t)task completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a1 _queue];
+  completionCopy = completion;
+  _queue = [self _queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67___LTDConfigurationService_supportedLocalePairsForTask_completion___block_invoke;
   block[3] = &unk_2789B5E50;
-  v11 = a1;
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  selfCopy = self;
+  taskCopy = task;
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_async(_queue, block);
 }
 
-+ (void)supportedIdentifiersForTask:(int64_t)a3 completion:(id)a4
++ (void)supportedIdentifiersForTask:(int64_t)task completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a1 _queue];
+  completionCopy = completion;
+  _queue = [self _queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67___LTDConfigurationService_supportedIdentifiersForTask_completion___block_invoke;
   block[3] = &unk_2789B5E50;
-  v11 = a3;
-  v12 = a1;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  taskCopy = task;
+  selfCopy = self;
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_async(_queue, block);
 }
 
 + (void)configurationForType:(os_log_t)log error:.cold.1(os_log_t log)

@@ -1,12 +1,12 @@
 @interface PFLLayoutProvider
-- (PFLLayoutProvider)initWithTimePosition:(unint64_t)a3;
-- (id)generateOrientedLayoutsForFullExtent:(CGRect)a3 layoutConfiguration:(id)a4 layoutRegions:(id)a5 segmentationMatteImage:(id)a6 segmentationClassification:(unint64_t)a7 error:(id *)a8;
+- (PFLLayoutProvider)initWithTimePosition:(unint64_t)position;
+- (id)generateOrientedLayoutsForFullExtent:(CGRect)extent layoutConfiguration:(id)configuration layoutRegions:(id)regions segmentationMatteImage:(id)image segmentationClassification:(unint64_t)classification error:(id *)error;
 - (void)invalidateResults;
 @end
 
 @implementation PFLLayoutProvider
 
-- (PFLLayoutProvider)initWithTimePosition:(unint64_t)a3
+- (PFLLayoutProvider)initWithTimePosition:(unint64_t)position
 {
   v15 = *MEMORY[0x277D85DE8];
   v10.receiver = self;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_timePosition = a3;
+    v4->_timePosition = position;
     v4->_resultsAreValid = 0;
     watchLayout = v4->_watchLayout;
     v4->_watchLayout = 0;
@@ -42,14 +42,14 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (id)generateOrientedLayoutsForFullExtent:(CGRect)a3 layoutConfiguration:(id)a4 layoutRegions:(id)a5 segmentationMatteImage:(id)a6 segmentationClassification:(unint64_t)a7 error:(id *)a8
+- (id)generateOrientedLayoutsForFullExtent:(CGRect)extent layoutConfiguration:(id)configuration layoutRegions:(id)regions segmentationMatteImage:(id)image segmentationClassification:(unint64_t)classification error:(id *)error
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = extent.size.height;
+  width = extent.size.width;
   v180 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  configurationCopy = configuration;
+  regionsCopy = regions;
+  imageCopy = image;
   v16 = pfl_layout_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -62,26 +62,26 @@
   v163 = width;
 
   v17 = MEMORY[0x277CBF740];
-  v18 = v15;
-  v19 = [v17 context];
+  v18 = imageCopy;
+  context = [v17 context];
   [v18 extent];
-  v20 = [v19 createCGImage:v18 fromRect:?];
+  v20 = [context createCGImage:v18 fromRect:?];
 
-  v21 = [v14 faceRegions];
-  v22 = flipYNormalizedRects(v21);
+  faceRegions = [regionsCopy faceRegions];
+  v22 = flipYNormalizedRects(faceRegions);
 
-  v23 = [v14 petRegions];
-  v24 = flipYNormalizedRects(v23);
+  petRegions = [regionsCopy petRegions];
+  v24 = flipYNormalizedRects(petRegions);
 
   v25 = pfl_layout_log();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = v13;
+    v26 = configurationCopy;
     v27 = [v22 count];
     v28 = [v24 count];
     LODWORD(buf[0].a) = 134218496;
     *(&buf[0].a + 4) = v27;
-    v13 = v26;
+    configurationCopy = v26;
     WORD2(buf[0].b) = 2048;
     *(&buf[0].b + 6) = v28;
     HIWORD(buf[0].c) = 2048;
@@ -89,20 +89,20 @@
     _os_log_impl(&dword_22D2ED000, v25, OS_LOG_TYPE_DEFAULT, "PFL:   %ld face rects, %ld pet rects, mask == %p", buf, 0x20u);
   }
 
-  [v13 timeRect];
+  [configurationCopy timeRect];
   v33 = flipYNormalizedRect(v29, v30, v31, v32);
   v164 = v34;
   v165 = v33;
   v36 = v35;
   v38 = v37;
-  [v14 preferredCropRect];
+  [regionsCopy preferredCropRect];
   flipYNormalizedRect(v39, v40, v41, v42);
-  [v14 acceptableCropRect];
+  [regionsCopy acceptableCropRect];
   v47 = flipYNormalizedRect(v43, v44, v45, v46);
   v49 = v48;
   v51 = v50;
   v53 = v52;
-  [v13 screenSize];
+  [configurationCopy screenSize];
   v55 = v54;
   v57 = v56;
   [(PFLLayoutProvider *)self timePosition];
@@ -122,7 +122,7 @@
       _os_log_impl(&dword_22D2ED000, v60, OS_LOG_TYPE_DEFAULT, "PFL: Using backup", buf, 2u);
     }
 
-    [v13 screenSize];
+    [configurationCopy screenSize];
     v159 = v62;
     v160 = v61;
     v63 = *MEMORY[0x277D3B3B8] * 0.5;
@@ -146,7 +146,7 @@
         v68 = v67;
         v148 = v63;
         v153 = v24;
-        v157 = v13;
+        v157 = configurationCopy;
         v69 = 0;
         v70 = *v171;
         v71 = v66;
@@ -211,14 +211,14 @@
             while (v80);
           }
 
-          v13 = v157;
+          configurationCopy = v157;
           v24 = v153;
           v58 = v163;
         }
 
         else
         {
-          v13 = v157;
+          configurationCopy = v157;
           v24 = v153;
         }
 
@@ -282,7 +282,7 @@
       {
         v115 = v114;
         v154 = v24;
-        v158 = v13;
+        v158 = configurationCopy;
         v116 = 0;
         v117 = *v176;
         do
@@ -311,7 +311,7 @@
 
         while (v115);
         v123 = v116 * 0.1;
-        v13 = v158;
+        configurationCopy = v158;
         v24 = v154;
       }
 

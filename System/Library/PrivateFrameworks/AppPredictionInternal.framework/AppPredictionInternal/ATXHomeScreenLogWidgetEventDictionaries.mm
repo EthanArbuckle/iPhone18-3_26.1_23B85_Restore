@@ -1,16 +1,16 @@
 @interface ATXHomeScreenLogWidgetEventDictionaries
 + (id)widgetEventDictionaryAccumulatorSplitByLocationKeys;
 - (ATXHomeScreenLogWidgetEventDictionaries)init;
-- (id)_createNewWidgetEventDictionaryForBundleId:(id)a3 kind:(id)a4 size:(unint64_t)a5;
-- (id)_widgetEventDictionaryForATXHomeScreenWidgetIdentifiable:(id)a3;
-- (id)_widgetEventDictionaryForHomeScreenEvent:(id)a3;
-- (id)_widgetEventDictionaryForWidgetId:(id)a3 widgetKind:(id)a4 widgetSize:(unint64_t)a5;
-- (id)_widgetEventDictionaryKeyWithWidgetId:(id)a3 widgetKind:(id)a4 widgetSize:(unint64_t)a5;
+- (id)_createNewWidgetEventDictionaryForBundleId:(id)id kind:(id)kind size:(unint64_t)size;
+- (id)_widgetEventDictionaryForATXHomeScreenWidgetIdentifiable:(id)identifiable;
+- (id)_widgetEventDictionaryForHomeScreenEvent:(id)event;
+- (id)_widgetEventDictionaryForWidgetId:(id)id widgetKind:(id)kind widgetSize:(unint64_t)size;
+- (id)_widgetEventDictionaryKeyWithWidgetId:(id)id widgetKind:(id)kind widgetSize:(unint64_t)size;
 - (id)dryRunResult;
 - (void)sendToCoreAnalytics;
-- (void)updateUnlockSessionsWithWidgetDwell:(id)a3;
-- (void)updateWidgetLevelSummaryForHomeScreenEvent:(id)a3 lastStackEvent:(id)a4;
-- (void)updateWidgetLevelSummaryForWidgetPseudoTapWithStackShownEvent:(id)a3;
+- (void)updateUnlockSessionsWithWidgetDwell:(id)dwell;
+- (void)updateWidgetLevelSummaryForHomeScreenEvent:(id)event lastStackEvent:(id)stackEvent;
+- (void)updateWidgetLevelSummaryForWidgetPseudoTapWithStackShownEvent:(id)event;
 @end
 
 @implementation ATXHomeScreenLogWidgetEventDictionaries
@@ -56,122 +56,122 @@ void __94__ATXHomeScreenLogWidgetEventDictionaries_widgetEventDictionaryAccumula
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_widgetEventDictionaryKeyWithWidgetId:(id)a3 widgetKind:(id)a4 widgetSize:(unint64_t)a5
+- (id)_widgetEventDictionaryKeyWithWidgetId:(id)id widgetKind:(id)kind widgetSize:(unint64_t)size
 {
-  v6 = [MEMORY[0x277CEB9B0] stringRepresentationForExtensionBundleId:a3 kind:a4];
-  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@:%lu", v6, a5];
+  v6 = [MEMORY[0x277CEB9B0] stringRepresentationForExtensionBundleId:id kind:kind];
+  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@:%lu", v6, size];
 
   return v7;
 }
 
-- (void)updateWidgetLevelSummaryForHomeScreenEvent:(id)a3 lastStackEvent:(id)a4
+- (void)updateWidgetLevelSummaryForHomeScreenEvent:(id)event lastStackEvent:(id)stackEvent
 {
-  v10 = a3;
+  eventCopy = event;
   v5 = [(ATXHomeScreenLogWidgetEventDictionaries *)self _widgetEventDictionaryForHomeScreenEvent:?];
   if (!v5)
   {
     goto LABEL_47;
   }
 
-  v6 = [v10 eventTypeString];
-  if ([v6 isEqualToString:@"Unknown"])
+  eventTypeString = [eventCopy eventTypeString];
+  if ([eventTypeString isEqualToString:@"Unknown"])
   {
     v7 = 0;
   }
 
-  else if ([v6 isEqualToString:@"HomeScreenPageShown"])
+  else if ([eventTypeString isEqualToString:@"HomeScreenPageShown"])
   {
     v7 = 1;
   }
 
-  else if ([v6 isEqualToString:@"HomeScreenDisappeared"])
+  else if ([eventTypeString isEqualToString:@"HomeScreenDisappeared"])
   {
     v7 = 2;
   }
 
-  else if ([v6 isEqualToString:@"StackChanged"])
+  else if ([eventTypeString isEqualToString:@"StackChanged"])
   {
     v7 = 3;
   }
 
-  else if ([v6 isEqualToString:@"WidgetTapped"])
+  else if ([eventTypeString isEqualToString:@"WidgetTapped"])
   {
     v7 = 4;
   }
 
-  else if ([v6 isEqualToString:@"WidgetLongLook"])
+  else if ([eventTypeString isEqualToString:@"WidgetLongLook"])
   {
     v7 = 5;
   }
 
-  else if ([v6 isEqualToString:@"WidgetUserFeedback"])
+  else if ([eventTypeString isEqualToString:@"WidgetUserFeedback"])
   {
     v7 = 6;
   }
 
-  else if ([v6 isEqualToString:@"UserStackConfigChanged"])
+  else if ([eventTypeString isEqualToString:@"UserStackConfigChanged"])
   {
     v7 = 7;
   }
 
-  else if ([v6 isEqualToString:@"DeviceLocked"])
+  else if ([eventTypeString isEqualToString:@"DeviceLocked"])
   {
     v7 = 8;
   }
 
-  else if ([v6 isEqualToString:@"DeviceUnlocked"])
+  else if ([eventTypeString isEqualToString:@"DeviceUnlocked"])
   {
     v7 = 9;
   }
 
-  else if ([v6 isEqualToString:@"PinnedWidgetAdded"])
+  else if ([eventTypeString isEqualToString:@"PinnedWidgetAdded"])
   {
     v7 = 10;
   }
 
-  else if ([v6 isEqualToString:@"PinnedWidgetDeleted"])
+  else if ([eventTypeString isEqualToString:@"PinnedWidgetDeleted"])
   {
     v7 = 11;
   }
 
-  else if ([v6 isEqualToString:@"SpecialPageAppeared"])
+  else if ([eventTypeString isEqualToString:@"SpecialPageAppeared"])
   {
     v7 = 12;
   }
 
-  else if ([v6 isEqualToString:@"SpecialPageDisappeared"])
+  else if ([eventTypeString isEqualToString:@"SpecialPageDisappeared"])
   {
     v7 = 13;
   }
 
-  else if ([v6 isEqualToString:@"StackShown"])
+  else if ([eventTypeString isEqualToString:@"StackShown"])
   {
     v7 = 14;
   }
 
-  else if ([v6 isEqualToString:@"StackDisappeared"])
+  else if ([eventTypeString isEqualToString:@"StackDisappeared"])
   {
     v7 = 15;
   }
 
-  else if ([v6 isEqualToString:@"StackCreated"])
+  else if ([eventTypeString isEqualToString:@"StackCreated"])
   {
     v7 = 16;
   }
 
-  else if ([v6 isEqualToString:@"StackDeleted"])
+  else if ([eventTypeString isEqualToString:@"StackDeleted"])
   {
     v7 = 17;
   }
 
-  else if ([v6 isEqualToString:@"WidgetAddedToStack"])
+  else if ([eventTypeString isEqualToString:@"WidgetAddedToStack"])
   {
     v7 = 18;
   }
 
   else
   {
-    if ([v6 isEqualToString:@"WidgetRemovedFromStack"])
+    if ([eventTypeString isEqualToString:@"WidgetRemovedFromStack"])
     {
 
       [ATXHomeScreenLogUploaderUtilities incrementDictionary:v5 forKey:@"NumberOfInstancesRemovedFromStack"];
@@ -179,17 +179,17 @@ void __94__ATXHomeScreenLogWidgetEventDictionaries_widgetEventDictionaryAccumula
       goto LABEL_41;
     }
 
-    if ([v6 isEqualToString:@"StackVisibilityChanged"])
+    if ([eventTypeString isEqualToString:@"StackVisibilityChanged"])
     {
       v7 = 20;
     }
 
-    else if ([v6 isEqualToString:@"AppAdded"])
+    else if ([eventTypeString isEqualToString:@"AppAdded"])
     {
       v7 = 21;
     }
 
-    else if ([v6 isEqualToString:@"AppRemoved"])
+    else if ([eventTypeString isEqualToString:@"AppRemoved"])
     {
       v7 = 22;
     }
@@ -201,7 +201,7 @@ void __94__ATXHomeScreenLogWidgetEventDictionaries_widgetEventDictionaryAccumula
   }
 
 LABEL_41:
-  if ([v10 stackKind] != 1)
+  if ([eventCopy stackKind] != 1)
   {
     goto LABEL_47;
   }
@@ -221,48 +221,48 @@ LABEL_41:
     v8 = @"NumberOfPinnedWidgetViewsOn";
   }
 
-  v9 = +[ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:withLocation:](ATXHomeScreenLogUploaderUtilities, "keyByConcatenatingAccumulatorKey:withLocation:", v8, [v10 stackLocation]);
+  v9 = +[ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:withLocation:](ATXHomeScreenLogUploaderUtilities, "keyByConcatenatingAccumulatorKey:withLocation:", v8, [eventCopy stackLocation]);
   [ATXHomeScreenLogUploaderUtilities incrementDictionary:v5 forKey:v9];
 
 LABEL_47:
 }
 
-- (id)_widgetEventDictionaryForATXHomeScreenWidgetIdentifiable:(id)a3
+- (id)_widgetEventDictionaryForATXHomeScreenWidgetIdentifiable:(id)identifiable
 {
-  v4 = a3;
-  v5 = [v4 extensionBundleId];
-  v6 = [v4 widgetKind];
-  v7 = [v4 size];
+  identifiableCopy = identifiable;
+  extensionBundleId = [identifiableCopy extensionBundleId];
+  widgetKind = [identifiableCopy widgetKind];
+  v7 = [identifiableCopy size];
 
-  v8 = [(ATXHomeScreenLogWidgetEventDictionaries *)self _widgetEventDictionaryForWidgetId:v5 widgetKind:v6 widgetSize:v7];
+  v8 = [(ATXHomeScreenLogWidgetEventDictionaries *)self _widgetEventDictionaryForWidgetId:extensionBundleId widgetKind:widgetKind widgetSize:v7];
 
   return v8;
 }
 
-- (id)_widgetEventDictionaryForHomeScreenEvent:(id)a3
+- (id)_widgetEventDictionaryForHomeScreenEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 widgetBundleId];
-  v6 = [v4 widgetKind];
-  v7 = [v4 widgetSize];
+  eventCopy = event;
+  widgetBundleId = [eventCopy widgetBundleId];
+  widgetKind = [eventCopy widgetKind];
+  widgetSize = [eventCopy widgetSize];
 
-  v8 = [(ATXHomeScreenLogWidgetEventDictionaries *)self _widgetEventDictionaryForWidgetId:v5 widgetKind:v6 widgetSize:v7];
+  v8 = [(ATXHomeScreenLogWidgetEventDictionaries *)self _widgetEventDictionaryForWidgetId:widgetBundleId widgetKind:widgetKind widgetSize:widgetSize];
 
   return v8;
 }
 
-- (id)_widgetEventDictionaryForWidgetId:(id)a3 widgetKind:(id)a4 widgetSize:(unint64_t)a5
+- (id)_widgetEventDictionaryForWidgetId:(id)id widgetKind:(id)kind widgetSize:(unint64_t)size
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 length] && objc_msgSend(v9, "length"))
+  idCopy = id;
+  kindCopy = kind;
+  if ([idCopy length] && objc_msgSend(kindCopy, "length"))
   {
-    v10 = [(ATXHomeScreenLogWidgetEventDictionaries *)self _widgetEventDictionaryKeyWithWidgetId:v8 widgetKind:v9 widgetSize:a5];
+    v10 = [(ATXHomeScreenLogWidgetEventDictionaries *)self _widgetEventDictionaryKeyWithWidgetId:idCopy widgetKind:kindCopy widgetSize:size];
     v11 = [(NSMutableDictionary *)self->_widgetEventDictionaries objectForKeyedSubscript:v10];
 
     if (!v11)
     {
-      v12 = [(ATXHomeScreenLogWidgetEventDictionaries *)self _createNewWidgetEventDictionaryForBundleId:v8 kind:v9 size:a5];
+      v12 = [(ATXHomeScreenLogWidgetEventDictionaries *)self _createNewWidgetEventDictionaryForBundleId:idCopy kind:kindCopy size:size];
       [(NSMutableDictionary *)self->_widgetEventDictionaries setObject:v12 forKeyedSubscript:v10];
     }
 
@@ -274,7 +274,7 @@ LABEL_47:
     v14 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [ATXHomeScreenLogWidgetEventDictionaries _widgetEventDictionaryForWidgetId:v8 widgetKind:v9 widgetSize:v14];
+      [ATXHomeScreenLogWidgetEventDictionaries _widgetEventDictionaryForWidgetId:idCopy widgetKind:kindCopy widgetSize:v14];
     }
 
     v13 = 0;
@@ -283,14 +283,14 @@ LABEL_47:
   return v13;
 }
 
-- (id)_createNewWidgetEventDictionaryForBundleId:(id)a3 kind:(id)a4 size:(unint64_t)a5
+- (id)_createNewWidgetEventDictionaryForBundleId:(id)id kind:(id)kind size:(unint64_t)size
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  kindCopy = kind;
   v8 = objc_opt_new();
-  v21 = v7;
-  v9 = [MEMORY[0x277CEB9B0] stringRepresentationForExtensionBundleId:v6 kind:v7];
+  v21 = kindCopy;
+  v9 = [MEMORY[0x277CEB9B0] stringRepresentationForExtensionBundleId:idCopy kind:kindCopy];
   [v8 setObject:v9 forKeyedSubscript:@"WidgetBundleIdAndKind"];
 
   v10 = ATXStringForStackLayoutSize();
@@ -301,8 +301,8 @@ LABEL_47:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = [objc_opt_class() widgetEventDictionaryAccumulatorSplitByLocationKeys];
-  v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  widgetEventDictionaryAccumulatorSplitByLocationKeys = [objc_opt_class() widgetEventDictionaryAccumulatorSplitByLocationKeys];
+  v12 = [widgetEventDictionaryAccumulatorSplitByLocationKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
     v13 = v12;
@@ -313,7 +313,7 @@ LABEL_47:
       {
         if (*v23 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(widgetEventDictionaryAccumulatorSplitByLocationKeys);
         }
 
         v16 = 0;
@@ -329,7 +329,7 @@ LABEL_47:
         while (v16 != 6);
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v13 = [widgetEventDictionaryAccumulatorSplitByLocationKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v13);
@@ -340,29 +340,29 @@ LABEL_47:
   return v8;
 }
 
-- (void)updateWidgetLevelSummaryForWidgetPseudoTapWithStackShownEvent:(id)a3
+- (void)updateWidgetLevelSummaryForWidgetPseudoTapWithStackShownEvent:(id)event
 {
-  v6 = a3;
-  if ([v6 stackKind] == 1)
+  eventCopy = event;
+  if ([eventCopy stackKind] == 1)
   {
-    v4 = [(ATXHomeScreenLogWidgetEventDictionaries *)self _widgetEventDictionaryForHomeScreenEvent:v6];
+    v4 = [(ATXHomeScreenLogWidgetEventDictionaries *)self _widgetEventDictionaryForHomeScreenEvent:eventCopy];
     if (v4)
     {
-      v5 = +[ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:withLocation:](ATXHomeScreenLogUploaderUtilities, "keyByConcatenatingAccumulatorKey:withLocation:", @"NumberOfPinnedWidgetPseudoTapsOn", [v6 stackLocation]);
+      v5 = +[ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:withLocation:](ATXHomeScreenLogUploaderUtilities, "keyByConcatenatingAccumulatorKey:withLocation:", @"NumberOfPinnedWidgetPseudoTapsOn", [eventCopy stackLocation]);
       [ATXHomeScreenLogUploaderUtilities incrementDictionary:v4 forKey:v5];
     }
   }
 }
 
-- (void)updateUnlockSessionsWithWidgetDwell:(id)a3
+- (void)updateUnlockSessionsWithWidgetDwell:(id)dwell
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dwellCopy = dwell;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [dwellCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -373,7 +373,7 @@ LABEL_47:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dwellCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -385,7 +385,7 @@ LABEL_47:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [dwellCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);

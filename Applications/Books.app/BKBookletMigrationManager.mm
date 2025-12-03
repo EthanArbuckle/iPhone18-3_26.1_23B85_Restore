@@ -1,19 +1,19 @@
 @interface BKBookletMigrationManager
-- (BKBookletMigrationManager)initWithPurchaseItemMigrationController:(id)a3;
+- (BKBookletMigrationManager)initWithPurchaseItemMigrationController:(id)controller;
 - (BKPurchaseItemMigrationControlling)purchaseItemMigrationController;
-- (BOOL)_shouldRunDownloadFlowState:(id)a3;
+- (BOOL)_shouldRunDownloadFlowState:(id)state;
 - (BOOL)_shouldStart;
 - (id)_downloadFlowState;
-- (id)_fetchOwnedAudiobookAssetIDsIncludeLocalOnly:(BOOL)a3;
+- (id)_fetchOwnedAudiobookAssetIDsIncludeLocalOnly:(BOOL)only;
 - (id)_loadMigrationInfos;
 - (id)_migrationInfo;
-- (void)_persistDownloadFlowState:(id)a3;
-- (void)_persistMigrationInfo:(id)a3;
-- (void)_privacyAcknowledgementChanged:(id)a3;
+- (void)_persistDownloadFlowState:(id)state;
+- (void)_persistMigrationInfo:(id)info;
+- (void)_privacyAcknowledgementChanged:(id)changed;
 - (void)_resetEverythingIfNeeded;
-- (void)_runDownloadFlowFromState:(id)a3;
-- (void)_setDownloadFlowStage:(unint64_t)a3;
-- (void)_setDownloadFlowState:(id)a3 persist:(BOOL)a4;
+- (void)_runDownloadFlowFromState:(id)state;
+- (void)_setDownloadFlowStage:(unint64_t)stage;
+- (void)_setDownloadFlowState:(id)state persist:(BOOL)persist;
 - (void)migrateIfNeeded;
 - (void)wq_checkGDPRPrivacyAcknowledgementBeforeForceReloadPurchaseItems;
 - (void)wq_runDownloadFlowStageForceReloadPurchaseItems;
@@ -40,16 +40,16 @@
   return v4;
 }
 
-- (BKBookletMigrationManager)initWithPurchaseItemMigrationController:(id)a3
+- (BKBookletMigrationManager)initWithPurchaseItemMigrationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = BKBookletMigrationManager;
   v5 = [(BKBookletMigrationManager *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_purchaseItemMigrationController, v4);
+    objc_storeWeak(&v5->_purchaseItemMigrationController, controllerCopy);
     v7 = objc_alloc_init(BKBookletMigrationStore);
     store = v6->_store;
     v6->_store = v7;
@@ -63,9 +63,9 @@
     v6->_migrationDownloadQueue = v11;
 
     [(BKBookletMigrationDownloadQueue *)v6->_migrationDownloadQueue setObserver:v6];
-    v13 = [(BKBookletMigrationManager *)v6 _loadMigrationInfos];
+    _loadMigrationInfos = [(BKBookletMigrationManager *)v6 _loadMigrationInfos];
     migrationInfos = v6->_migrationInfos;
-    v6->_migrationInfos = v13;
+    v6->_migrationInfos = _loadMigrationInfos;
 
     v6->_accessLock._os_unfair_lock_opaque = 0;
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -84,8 +84,8 @@
   [(BKBookletMigrationManager *)self _resetEverythingIfNeeded];
   if ([(BKBookletMigrationManager *)self _shouldStart])
   {
-    v3 = [(BKBookletMigrationManager *)self _downloadFlowState];
-    [(BKBookletMigrationManager *)self _setDownloadFlowState:v3 persist:0];
+    _downloadFlowState = [(BKBookletMigrationManager *)self _downloadFlowState];
+    [(BKBookletMigrationManager *)self _setDownloadFlowState:_downloadFlowState persist:0];
   }
 }
 
@@ -103,13 +103,13 @@
 
     [v3 removeObjectForKey:@"BKBookletMigration.infos"];
     [v3 removeObjectForKey:@"BKBookletMigration.resetEverything"];
-    v5 = [(BKBookletMigrationManager *)self _loadMigrationInfos];
-    [(BKBookletMigrationManager *)self setMigrationInfos:v5];
+    _loadMigrationInfos = [(BKBookletMigrationManager *)self _loadMigrationInfos];
+    [(BKBookletMigrationManager *)self setMigrationInfos:_loadMigrationInfos];
 
     v6 = objc_alloc_init(NSSet);
-    v7 = [(BKBookletMigrationManager *)self store];
+    store = [(BKBookletMigrationManager *)self store];
     v15 = 0;
-    v8 = [v7 removeAllMigrationInfosExcludingStates:v6 error:&v15];
+    v8 = [store removeAllMigrationInfosExcludingStates:v6 error:&v15];
     v9 = v15;
 
     v10 = BKBookletMigrationLog();
@@ -142,19 +142,19 @@ LABEL_9:
 - (id)_migrationInfo
 {
   v3 = +[BUAccountsProvider sharedProvider];
-  v4 = [v3 activeStoreAccount];
-  v5 = [v4 ams_DSID];
-  v6 = [v5 stringValue];
+  activeStoreAccount = [v3 activeStoreAccount];
+  ams_DSID = [activeStoreAccount ams_DSID];
+  stringValue = [ams_DSID stringValue];
 
-  if (!v6 || (-[BKBookletMigrationManager migrationInfos](self, "migrationInfos"), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKeyedSubscript:v6], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  if (!stringValue || (-[BKBookletMigrationManager migrationInfos](self, "migrationInfos"), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKeyedSubscript:stringValue], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
     v8 = objc_alloc_init(NSDictionary);
   }
 
   v9 = [v8 objectForKeyedSubscript:@"stage"];
-  v10 = [v9 unsignedIntValue];
+  unsignedIntValue = [v9 unsignedIntValue];
 
-  if (!v10)
+  if (!unsignedIntValue)
   {
     v11 = objc_alloc_init(NSDictionary);
 
@@ -166,20 +166,20 @@ LABEL_9:
 
 - (id)_downloadFlowState
 {
-  v2 = [(BKBookletMigrationManager *)self _migrationInfo];
-  v3 = [v2 objectForKeyedSubscript:@"stage"];
-  v4 = [v3 unsignedIntValue];
-  v5 = v4;
+  _migrationInfo = [(BKBookletMigrationManager *)self _migrationInfo];
+  v3 = [_migrationInfo objectForKeyedSubscript:@"stage"];
+  unsignedIntValue = [v3 unsignedIntValue];
+  v5 = unsignedIntValue;
 
-  if (v4 > 399)
+  if (unsignedIntValue > 399)
   {
-    if (v4 != 400 && v4 != 800 && v4 != 600)
+    if (unsignedIntValue != 400 && unsignedIntValue != 800 && unsignedIntValue != 600)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v4 && v4 != 200 && v4 != 300)
+  else if (unsignedIntValue && unsignedIntValue != 200 && unsignedIntValue != 300)
   {
 LABEL_11:
     v6 = BKBookletMigrationLog();
@@ -216,22 +216,22 @@ LABEL_14:
   return v7;
 }
 
-- (void)_persistMigrationInfo:(id)a3
+- (void)_persistMigrationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[BUAccountsProvider sharedProvider];
-  v6 = [v5 activeStoreAccount];
-  v7 = [v6 ams_DSID];
-  v8 = [v7 stringValue];
+  activeStoreAccount = [v5 activeStoreAccount];
+  ams_DSID = [activeStoreAccount ams_DSID];
+  stringValue = [ams_DSID stringValue];
 
-  if (v8)
+  if (stringValue)
   {
-    v9 = [(BKBookletMigrationManager *)self migrationInfos];
-    [v9 setObject:v4 forKeyedSubscript:v8];
+    migrationInfos = [(BKBookletMigrationManager *)self migrationInfos];
+    [migrationInfos setObject:infoCopy forKeyedSubscript:stringValue];
 
     v10 = +[NSUserDefaults standardUserDefaults];
-    v11 = [(BKBookletMigrationManager *)self migrationInfos];
-    [v10 setObject:v11 forKey:@"BKBookletMigration.infos"];
+    migrationInfos2 = [(BKBookletMigrationManager *)self migrationInfos];
+    [v10 setObject:migrationInfos2 forKey:@"BKBookletMigration.infos"];
   }
 
   else
@@ -244,18 +244,18 @@ LABEL_14:
   }
 }
 
-- (void)_persistDownloadFlowState:(id)a3
+- (void)_persistDownloadFlowState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = BKBookletMigrationLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = stateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Persisting flow state: %{public}@", buf, 0xCu);
   }
 
-  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 stage]);
+  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [stateCopy stage]);
   v8[1] = @"version";
   v9[0] = v6;
   v9[1] = &off_100A435A8;
@@ -282,10 +282,10 @@ LABEL_8:
   else
   {
     v5 = +[BUAccountsProvider sharedProvider];
-    v6 = [v5 activeStoreAccount];
-    v7 = [v6 ams_DSID];
+    activeStoreAccount = [v5 activeStoreAccount];
+    ams_DSID = [activeStoreAccount ams_DSID];
 
-    if (v7)
+    if (ams_DSID)
     {
       return 1;
     }
@@ -303,66 +303,66 @@ LABEL_8:
   return 0;
 }
 
-- (BOOL)_shouldRunDownloadFlowState:(id)a3
+- (BOOL)_shouldRunDownloadFlowState:(id)state
 {
-  v4 = a3;
-  if ([v4 stage] >= 0xC9)
+  stateCopy = state;
+  if ([stateCopy stage] >= 0xC9)
   {
     v6 = BKBookletMigrationLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = [v4 stage];
+      stage = [stateCopy stage];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "stopping booklet migration download at stage: %lu", &v8, 0xCu);
     }
 
-    v5 = 0;
+    _shouldStart = 0;
   }
 
   else
   {
-    v5 = [(BKBookletMigrationManager *)self _shouldStart];
+    _shouldStart = [(BKBookletMigrationManager *)self _shouldStart];
   }
 
-  return v5;
+  return _shouldStart;
 }
 
-- (void)_setDownloadFlowStage:(unint64_t)a3
+- (void)_setDownloadFlowStage:(unint64_t)stage
 {
-  v4 = [[BKBookletMigrationDownloadFlowState alloc] initWithStage:a3];
+  v4 = [[BKBookletMigrationDownloadFlowState alloc] initWithStage:stage];
   [(BKBookletMigrationManager *)self _setDownloadFlowState:v4 persist:1];
 }
 
-- (void)_setDownloadFlowState:(id)a3 persist:(BOOL)a4
+- (void)_setDownloadFlowState:(id)state persist:(BOOL)persist
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F6518;
   v7[3] = &unk_100A03E80;
-  v8 = self;
-  v6 = a3;
-  v9 = v6;
-  v10 = a4;
-  os_unfair_lock_lock(&v8->_accessLock);
+  selfCopy = self;
+  stateCopy = state;
+  v9 = stateCopy;
+  persistCopy = persist;
+  os_unfair_lock_lock(&selfCopy->_accessLock);
   sub_1000F6518(v7);
   os_unfair_lock_unlock(&self->_accessLock);
-  if ([(BKBookletMigrationManager *)self _shouldRunDownloadFlowState:v6])
+  if ([(BKBookletMigrationManager *)self _shouldRunDownloadFlowState:stateCopy])
   {
-    [(BKBookletMigrationManager *)self _runDownloadFlowFromState:v6];
+    [(BKBookletMigrationManager *)self _runDownloadFlowFromState:stateCopy];
   }
 }
 
-- (void)_runDownloadFlowFromState:(id)a3
+- (void)_runDownloadFlowFromState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F6604;
   v7[3] = &unk_100A03440;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = stateCopy;
+  selfCopy = self;
+  v6 = stateCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -403,7 +403,7 @@ LABEL_8:
   }
 }
 
-- (void)_privacyAcknowledgementChanged:(id)a3
+- (void)_privacyAcknowledgementChanged:(id)changed
 {
   v4 = BKBookletMigrationLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -421,19 +421,19 @@ LABEL_8:
   dispatch_async(workQueue, block);
 }
 
-- (id)_fetchOwnedAudiobookAssetIDsIncludeLocalOnly:(BOOL)a3
+- (id)_fetchOwnedAudiobookAssetIDsIncludeLocalOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   v5 = +[BKLibraryManager defaultManager];
   v6 = [NSMutableArray alloc];
   v7 = +[BKLibraryManager predicateForAllOwnedAudiobooks];
-  v8 = [(BKBookletMigrationManager *)self _predicateForRedownloadableAssets];
-  v9 = [v6 initWithObjects:{v7, v8, 0}];
+  _predicateForRedownloadableAssets = [(BKBookletMigrationManager *)self _predicateForRedownloadableAssets];
+  v9 = [v6 initWithObjects:{v7, _predicateForRedownloadableAssets, 0}];
 
-  if (v3)
+  if (onlyCopy)
   {
-    v10 = [v5 predicateForLocalLibraryAssets];
-    [v9 addObject:v10];
+    predicateForLocalLibraryAssets = [v5 predicateForLocalLibraryAssets];
+    [v9 addObject:predicateForLocalLibraryAssets];
   }
 
   v11 = [NSCompoundPredicate andPredicateWithSubpredicates:v9];
@@ -445,7 +445,7 @@ LABEL_8:
 - (void)wq_runDownloadFlowStageForceReloadPurchaseItems
 {
   dispatch_assert_queue_V2(self->_workQueue);
-  v3 = [(BKBookletMigrationManager *)self purchaseItemMigrationController];
+  purchaseItemMigrationController = [(BKBookletMigrationManager *)self purchaseItemMigrationController];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000F6EE8;
@@ -458,7 +458,7 @@ LABEL_8:
   v22[3] = &unk_100A033C8;
   v22[4] = self;
   v5 = objc_retainBlock(v22);
-  if (v3)
+  if (purchaseItemMigrationController)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -477,7 +477,7 @@ LABEL_8:
       v18[2] = sub_1000F7004;
       v18[3] = &unk_100A03CA0;
       v19 = v4;
-      [v3 reloadPurchaseItemStoreIDs:v7 completion:v18];
+      [purchaseItemMigrationController reloadPurchaseItemStoreIDs:v7 completion:v18];
     }
 
     else
@@ -494,7 +494,7 @@ LABEL_8:
       v20[2] = sub_1000F6FF4;
       v20[3] = &unk_100A03CA0;
       v21 = v5;
-      [v3 updatePurchaseItemsWithCompletion:v20];
+      [purchaseItemMigrationController updatePurchaseItemsWithCompletion:v20];
     }
   }
 
@@ -577,7 +577,7 @@ LABEL_8:
   v7 = v3;
   v25 = v7;
   v8 = objc_retainBlock(v24);
-  v9 = [(BKBookletMigrationManager *)self purchaseItemMigrationController];
+  purchaseItemMigrationController = [(BKBookletMigrationManager *)self purchaseItemMigrationController];
   if (![v6 count])
   {
     v11 = BKBookletMigrationLog();
@@ -590,7 +590,7 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (!v9)
+  if (!purchaseItemMigrationController)
   {
     v11 = BKBookletMigrationLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -612,7 +612,7 @@ LABEL_10:
   v10 = v22 = buf;
   v20 = v10;
   v21 = v8;
-  [v9 fetchReadyPurchaseItemStoreIDs:v10 completion:v19];
+  [purchaseItemMigrationController fetchReadyPurchaseItemStoreIDs:v10 completion:v19];
 
 LABEL_11:
   _Block_object_dispose(buf, 8);
@@ -621,8 +621,8 @@ LABEL_11:
 - (void)wq_runDownloadFlowStageQueued
 {
   dispatch_assert_queue_V2(self->_workQueue);
-  v3 = [(BKBookletMigrationManager *)self migrationDownloadQueue];
-  [v3 reloadFromStore];
+  migrationDownloadQueue = [(BKBookletMigrationManager *)self migrationDownloadQueue];
+  [migrationDownloadQueue reloadFromStore];
 }
 
 - (BKPurchaseItemMigrationControlling)purchaseItemMigrationController

@@ -1,23 +1,23 @@
 @interface AVSampleBufferDisplayLayerPlaybackDelegateAdapter
-+ (id)playbackDelegateAdapterWithDelegate:(id)a3;
-- ($DAC8C9F726BD0D1F2E1B8C1A0D399779)pictureInPictureControllerTimeRangeForPlayback:(SEL)a3;
++ (id)playbackDelegateAdapterWithDelegate:(id)delegate;
+- ($DAC8C9F726BD0D1F2E1B8C1A0D399779)pictureInPictureControllerTimeRangeForPlayback:(SEL)playback;
 - (AVPictureInPictureSampleBufferPlaybackDelegate)playbackDelegate;
-- (BOOL)pictureInPictureControllerIsPlaybackPaused:(id)a3;
-- (void)pictureInPictureController:(id)a3 didTransitionToRenderSize:(id)a4;
-- (void)pictureInPictureController:(id)a3 setPlaying:(BOOL)a4;
-- (void)pictureInPictureController:(id)a3 skipByInterval:(id *)a4 completionHandler:(id)a5;
+- (BOOL)pictureInPictureControllerIsPlaybackPaused:(id)paused;
+- (void)pictureInPictureController:(id)controller didTransitionToRenderSize:(id)size;
+- (void)pictureInPictureController:(id)controller setPlaying:(BOOL)playing;
+- (void)pictureInPictureController:(id)controller skipByInterval:(id *)interval completionHandler:(id)handler;
 @end
 
 @implementation AVSampleBufferDisplayLayerPlaybackDelegateAdapter
 
-+ (id)playbackDelegateAdapterWithDelegate:(id)a3
++ (id)playbackDelegateAdapterWithDelegate:(id)delegate
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___AVSampleBufferDisplayLayerPlaybackDelegateAdapter;
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = objc_msgSendSuper2(&v7, sel_alloc);
   v5 = [v4 init];
-  objc_storeWeak(v5 + 1, v3);
+  objc_storeWeak(v5 + 1, delegateCopy);
 
   return v5;
 }
@@ -29,38 +29,38 @@
   return WeakRetained;
 }
 
-- (void)pictureInPictureController:(id)a3 skipByInterval:(id *)a4 completionHandler:(id)a5
+- (void)pictureInPictureController:(id)controller skipByInterval:(id *)interval completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
-  v11 = *a4;
-  [v10 pictureInPictureController:v9 skipByInterval:&v11 completionHandler:v8];
+  handlerCopy = handler;
+  controllerCopy = controller;
+  playbackDelegate = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
+  v11 = *interval;
+  [playbackDelegate pictureInPictureController:controllerCopy skipByInterval:&v11 completionHandler:handlerCopy];
 }
 
-- (void)pictureInPictureController:(id)a3 didTransitionToRenderSize:(id)a4
+- (void)pictureInPictureController:(id)controller didTransitionToRenderSize:(id)size
 {
-  v6 = a3;
-  v7 = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
-  [v7 pictureInPictureController:v6 didTransitionToRenderSize:a4];
+  controllerCopy = controller;
+  playbackDelegate = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
+  [playbackDelegate pictureInPictureController:controllerCopy didTransitionToRenderSize:size];
 }
 
-- (BOOL)pictureInPictureControllerIsPlaybackPaused:(id)a3
+- (BOOL)pictureInPictureControllerIsPlaybackPaused:(id)paused
 {
-  v4 = a3;
-  v5 = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
+  pausedCopy = paused;
+  playbackDelegate = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
   v6 = objc_opt_respondsToSelector();
 
-  v7 = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
-  v8 = v7;
+  playbackDelegate2 = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
+  v8 = playbackDelegate2;
   if (v6)
   {
-    v9 = [v7 pictureInPictureControllerPlaybackPaused:v4];
+    v9 = [playbackDelegate2 pictureInPictureControllerPlaybackPaused:pausedCopy];
   }
 
   else
   {
-    v9 = [v7 pictureInPictureControllerIsPlaybackPaused:v4];
+    v9 = [playbackDelegate2 pictureInPictureControllerIsPlaybackPaused:pausedCopy];
   }
 
   v10 = v9;
@@ -68,19 +68,19 @@
   return v10;
 }
 
-- ($DAC8C9F726BD0D1F2E1B8C1A0D399779)pictureInPictureControllerTimeRangeForPlayback:(SEL)a3
+- ($DAC8C9F726BD0D1F2E1B8C1A0D399779)pictureInPictureControllerTimeRangeForPlayback:(SEL)playback
 {
   v6 = a4;
-  v7 = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
+  playbackDelegate = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if ((v8 & 1) == 0)
   {
-    v11 = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
-    v10 = v11;
-    if (v11)
+    playbackDelegate2 = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
+    v10 = playbackDelegate2;
+    if (playbackDelegate2)
     {
-      [v11 pictureInPictureControllerTimeRangeForPlayback:v6];
+      [playbackDelegate2 pictureInPictureControllerTimeRangeForPlayback:v6];
       goto LABEL_7;
     }
 
@@ -91,14 +91,14 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v9 = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
-  v10 = v9;
-  if (!v9)
+  playbackDelegate3 = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
+  v10 = playbackDelegate3;
+  if (!playbackDelegate3)
   {
     goto LABEL_6;
   }
 
-  [v9 pictureInPictureControllerPlaybackTimeRange:v6];
+  [playbackDelegate3 pictureInPictureControllerPlaybackTimeRange:v6];
 LABEL_7:
   *&retstr->var0.var0 = v13;
   *&retstr->var0.var3 = v14;
@@ -107,37 +107,37 @@ LABEL_7:
   return result;
 }
 
-- (void)pictureInPictureController:(id)a3 setPlaying:(BOOL)a4
+- (void)pictureInPictureController:(id)controller setPlaying:(BOOL)playing
 {
-  v4 = a4;
-  v12 = a3;
-  v6 = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
+  playingCopy = playing;
+  controllerCopy = controller;
+  playbackDelegate = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
   v7 = objc_opt_respondsToSelector();
 
-  v8 = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
+  playbackDelegate2 = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
   v9 = objc_opt_respondsToSelector();
 
-  v10 = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
-  v11 = v10;
+  playbackDelegate3 = [(AVSampleBufferDisplayLayerPlaybackDelegateAdapter *)self playbackDelegate];
+  v11 = playbackDelegate3;
   if (v7 & 1) != 0 || (v9)
   {
-    if (v4)
+    if (playingCopy)
     {
       if (v7)
       {
-        [v10 pictureInPictureControllerStartPlayback:v12];
+        [playbackDelegate3 pictureInPictureControllerStartPlayback:controllerCopy];
       }
     }
 
     else if (v9)
     {
-      [v10 pictureInPictureControllerStopPlayback:v12];
+      [playbackDelegate3 pictureInPictureControllerStopPlayback:controllerCopy];
     }
   }
 
   else
   {
-    [v10 pictureInPictureController:v12 setPlaying:v4];
+    [playbackDelegate3 pictureInPictureController:controllerCopy setPlaying:playingCopy];
   }
 }
 

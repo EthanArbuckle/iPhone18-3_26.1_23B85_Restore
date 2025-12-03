@@ -1,5 +1,5 @@
 @interface BTAVRCP_Syncifier
-- (BOOL)wait:(double)a3;
+- (BOOL)wait:(double)wait;
 - (BTAVRCP_Syncifier)init;
 - (id)createSwitcher;
 @end
@@ -36,22 +36,22 @@
   return v3;
 }
 
-- (BOOL)wait:(double)a3
+- (BOOL)wait:(double)wait
 {
-  v4 = [NSDate dateWithTimeIntervalSinceNow:a3];
-  v5 = [(BTAVRCP_Syncifier *)self condition];
-  [v5 lock];
+  v4 = [NSDate dateWithTimeIntervalSinceNow:wait];
+  condition = [(BTAVRCP_Syncifier *)self condition];
+  [condition lock];
 
   while (1)
   {
-    v6 = [(BTAVRCP_Syncifier *)self pendingSwitchers];
-    if (!v6)
+    pendingSwitchers = [(BTAVRCP_Syncifier *)self pendingSwitchers];
+    if (!pendingSwitchers)
     {
       break;
     }
 
-    v7 = [(BTAVRCP_Syncifier *)self condition];
-    v8 = [v7 waitUntilDate:v4];
+    condition2 = [(BTAVRCP_Syncifier *)self condition];
+    v8 = [condition2 waitUntilDate:v4];
 
     if ((v8 & 1) == 0)
     {
@@ -60,10 +60,10 @@
     }
   }
 
-  v9 = [(BTAVRCP_Syncifier *)self condition];
-  [v9 unlock];
+  condition3 = [(BTAVRCP_Syncifier *)self condition];
+  [condition3 unlock];
 
-  return v6 == 0;
+  return pendingSwitchers == 0;
 }
 
 @end

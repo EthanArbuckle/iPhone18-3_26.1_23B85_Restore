@@ -6,9 +6,9 @@
 
 - (id)hf_stateDumpBuilderWithContext:()HFDebugging
 {
-  v4 = [HFStateDumpBuilder builderWithObject:a1 context:a3];
-  v5 = [a1 dictionary];
-  [v4 setObject:v5 forKeyedSubscript:@"dictionary"];
+  v4 = [HFStateDumpBuilder builderWithObject:self context:a3];
+  dictionary = [self dictionary];
+  [v4 setObject:dictionary forKeyedSubscript:@"dictionary"];
 
   return v4;
 }

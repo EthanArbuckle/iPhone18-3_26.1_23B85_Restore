@@ -1,12 +1,12 @@
 @interface BLSBacklightSceneUpdateAnimationCompleteAction
-- (BLSBacklightSceneUpdateAnimationCompleteAction)initWithCompletion:(id)a3;
+- (BLSBacklightSceneUpdateAnimationCompleteAction)initWithCompletion:(id)completion;
 @end
 
 @implementation BLSBacklightSceneUpdateAnimationCompleteAction
 
-- (BLSBacklightSceneUpdateAnimationCompleteAction)initWithCompletion:(id)a3
+- (BLSBacklightSceneUpdateAnimationCompleteAction)initWithCompletion:(id)completion
 {
-  v4 = [MEMORY[0x277CF0B60] responderWithHandler:a3];
+  v4 = [MEMORY[0x277CF0B60] responderWithHandler:completion];
   [v4 setQueue:MEMORY[0x277D85CD0]];
   [v4 setTimeout:{dispatch_time(0, 2500000000)}];
   v7.receiver = self;

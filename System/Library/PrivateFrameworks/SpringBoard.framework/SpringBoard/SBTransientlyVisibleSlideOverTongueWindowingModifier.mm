@@ -1,24 +1,24 @@
 @interface SBTransientlyVisibleSlideOverTongueWindowingModifier
-- (SBTransientlyVisibleSlideOverTongueWindowingModifier)initWithTonguePresentationReason:(int64_t)a3;
+- (SBTransientlyVisibleSlideOverTongueWindowingModifier)initWithTonguePresentationReason:(int64_t)reason;
 - (double)_collapseSettlingDuration;
 - (void)_collapseAndPrepareForDismiss;
-- (void)didEdgeProtectSlideOverTongue:(id)a3;
-- (void)gestureWillBegin:(id)a3;
-- (void)timerFired:(id)a3;
-- (void)transitionWillBegin:(id)a3;
+- (void)didEdgeProtectSlideOverTongue:(id)tongue;
+- (void)gestureWillBegin:(id)begin;
+- (void)timerFired:(id)fired;
+- (void)transitionWillBegin:(id)begin;
 - (void)willBegin;
 @end
 
 @implementation SBTransientlyVisibleSlideOverTongueWindowingModifier
 
-- (SBTransientlyVisibleSlideOverTongueWindowingModifier)initWithTonguePresentationReason:(int64_t)a3
+- (SBTransientlyVisibleSlideOverTongueWindowingModifier)initWithTonguePresentationReason:(int64_t)reason
 {
   v5.receiver = self;
   v5.super_class = SBTransientlyVisibleSlideOverTongueWindowingModifier;
   result = [(SBWindowingModifier *)&v5 init];
   if (result)
   {
-    result->_tonguePresentationReason = a3;
+    result->_tonguePresentationReason = reason;
   }
 
   return result;
@@ -55,33 +55,33 @@ BOOL __65__SBTransientlyVisibleSlideOverTongueWindowingModifier_willBegin__block
   return v3;
 }
 
-- (void)gestureWillBegin:(id)a3
+- (void)gestureWillBegin:(id)begin
 {
-  v7 = a3;
-  v4 = [(SBTransientlyVisibleSlideOverTongueWindowingModifier *)self displayItemInSlideOver];
-  if (!v4 || ([v7 isIndirectPanGestureEvent] & 1) == 0 && (!objc_msgSend(v7, "isWindowDragGestureEvent") || (objc_msgSend(v7, "selectedAppLayout"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsItem:", v4), v5, (v6 & 1) == 0)))
+  beginCopy = begin;
+  displayItemInSlideOver = [(SBTransientlyVisibleSlideOverTongueWindowingModifier *)self displayItemInSlideOver];
+  if (!displayItemInSlideOver || ([beginCopy isIndirectPanGestureEvent] & 1) == 0 && (!objc_msgSend(beginCopy, "isWindowDragGestureEvent") || (objc_msgSend(beginCopy, "selectedAppLayout"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsItem:", displayItemInSlideOver), v5, (v6 & 1) == 0)))
   {
     [(SBTransientlyVisibleSlideOverTongueWindowingModifier *)self _collapseAndPrepareForDismiss];
   }
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  v5 = a3;
-  if ([v5 phase] == 1)
+  beginCopy = begin;
+  if ([beginCopy phase] == 1)
   {
-    if (![v5 isRotationTransition] || (v4 = objc_msgSend(v5, "toInterfaceOrientation"), v4 != objc_msgSend(v5, "fromInterfaceOrientation")))
+    if (![beginCopy isRotationTransition] || (v4 = objc_msgSend(beginCopy, "toInterfaceOrientation"), v4 != objc_msgSend(beginCopy, "fromInterfaceOrientation")))
     {
       [(SBTransientlyVisibleSlideOverTongueWindowingModifier *)self _collapseAndPrepareForDismiss];
     }
   }
 }
 
-- (void)didEdgeProtectSlideOverTongue:(id)a3
+- (void)didEdgeProtectSlideOverTongue:(id)tongue
 {
-  v4 = [a3 isTonguePresented];
+  isTonguePresented = [tongue isTonguePresented];
   tonguePresentationReason = self->_tonguePresentationReason;
-  if (v4)
+  if (isTonguePresented)
   {
     if (!tonguePresentationReason)
     {
@@ -105,11 +105,11 @@ BOOL __65__SBTransientlyVisibleSlideOverTongueWindowingModifier_willBegin__block
   }
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
-  v8 = a3;
-  v4 = [v8 reason];
-  if ([v4 isEqualToString:@"SBSlideOverTongueDisappearanceReason"])
+  firedCopy = fired;
+  reason = [firedCopy reason];
+  if ([reason isEqualToString:@"SBSlideOverTongueDisappearanceReason"])
   {
     tonguePresentationReason = self->_tonguePresentationReason;
 
@@ -126,8 +126,8 @@ BOOL __65__SBTransientlyVisibleSlideOverTongueWindowingModifier_willBegin__block
 
   if (self->_finishedReason)
   {
-    v6 = [v8 reason];
-    v7 = [v6 isEqualToString:self->_finishedReason];
+    reason2 = [firedCopy reason];
+    v7 = [reason2 isEqualToString:self->_finishedReason];
 
     if (v7)
     {
@@ -181,22 +181,22 @@ BOOL __85__SBTransientlyVisibleSlideOverTongueWindowingModifier__collapseAndPrep
 
 - (double)_collapseSettlingDuration
 {
-  v3 = [(SBTransientlyVisibleSlideOverTongueWindowingModifier *)self slideOverTongueLayoutElement];
-  v4 = [(SBWindowingModifier *)self animationAttributesForItem:v3];
+  slideOverTongueLayoutElement = [(SBTransientlyVisibleSlideOverTongueWindowingModifier *)self slideOverTongueLayoutElement];
+  v4 = [(SBWindowingModifier *)self animationAttributesForItem:slideOverTongueLayoutElement];
 
-  v5 = [v4 positionSettings];
-  v6 = v5;
-  if (v5)
+  positionSettings = [v4 positionSettings];
+  v6 = positionSettings;
+  if (positionSettings)
   {
-    v7 = v5;
+    layoutSettings = positionSettings;
   }
 
   else
   {
-    v7 = [v4 layoutSettings];
+    layoutSettings = [v4 layoutSettings];
   }
 
-  v8 = v7;
+  v8 = layoutSettings;
 
   [v8 settlingDuration];
   v10 = v9;

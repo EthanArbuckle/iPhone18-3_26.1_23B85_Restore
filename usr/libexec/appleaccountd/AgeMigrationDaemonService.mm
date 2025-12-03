@@ -1,20 +1,20 @@
 @interface AgeMigrationDaemonService
-- (void)clearAgeMigrationFollowUpWithCompletion:(id)a3;
-- (void)clearUserAcknowledgeMisconfiguredAgedPromptWithContext:(AAAgeMisconfiguredPromptContext *)a3 completion:(id)a4;
-- (void)didUserAcknowledgeMisconfiguredAgedPromptWithContext:(AAAgeMisconfiguredPromptContext *)a3 completion:(id)a4;
-- (void)displayMisconfiguredAgePromptWithContext:(AAAgeMisconfiguredPromptContext *)a3 completion:(id)a4;
-- (void)saveUserAcknowledgeMisconfiguredAgedPromptWithContext:(AAAgeMisconfiguredPromptContext *)a3 action:(int)a4 completion:(id)a5;
+- (void)clearAgeMigrationFollowUpWithCompletion:(id)completion;
+- (void)clearUserAcknowledgeMisconfiguredAgedPromptWithContext:(AAAgeMisconfiguredPromptContext *)context completion:(id)completion;
+- (void)didUserAcknowledgeMisconfiguredAgedPromptWithContext:(AAAgeMisconfiguredPromptContext *)context completion:(id)completion;
+- (void)displayMisconfiguredAgePromptWithContext:(AAAgeMisconfiguredPromptContext *)context completion:(id)completion;
+- (void)saveUserAcknowledgeMisconfiguredAgedPromptWithContext:(AAAgeMisconfiguredPromptContext *)context action:(int)action completion:(id)completion;
 @end
 
 @implementation AgeMigrationDaemonService
 
-- (void)clearAgeMigrationFollowUpWithCompletion:(id)a3
+- (void)clearAgeMigrationFollowUpWithCompletion:(id)completion
 {
   v5 = sub_100005814(&qword_1003DABF0, &qword_10033F8A0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -34,15 +34,15 @@
   sub_10016483C(0, 0, v8, &unk_10033E7F0, v13);
 }
 
-- (void)displayMisconfiguredAgePromptWithContext:(AAAgeMisconfiguredPromptContext *)a3 completion:(id)a4
+- (void)displayMisconfiguredAgePromptWithContext:(AAAgeMisconfiguredPromptContext *)context completion:(id)completion
 {
   v7 = sub_100005814(&qword_1003DABF0, &qword_10033F8A0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = context;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -57,20 +57,20 @@
   v15[3] = 0;
   v15[4] = &unk_10033E7C8;
   v15[5] = v14;
-  v16 = a3;
+  contextCopy = context;
 
   sub_10016483C(0, 0, v10, &unk_10033E7D0, v15);
 }
 
-- (void)clearUserAcknowledgeMisconfiguredAgedPromptWithContext:(AAAgeMisconfiguredPromptContext *)a3 completion:(id)a4
+- (void)clearUserAcknowledgeMisconfiguredAgedPromptWithContext:(AAAgeMisconfiguredPromptContext *)context completion:(id)completion
 {
   v7 = sub_100005814(&qword_1003DABF0, &qword_10033F8A0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = context;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -85,20 +85,20 @@
   v15[3] = 0;
   v15[4] = &unk_10033E7A0;
   v15[5] = v14;
-  v16 = a3;
+  contextCopy = context;
 
   sub_10016483C(0, 0, v10, &unk_10033E7A8, v15);
 }
 
-- (void)didUserAcknowledgeMisconfiguredAgedPromptWithContext:(AAAgeMisconfiguredPromptContext *)a3 completion:(id)a4
+- (void)didUserAcknowledgeMisconfiguredAgedPromptWithContext:(AAAgeMisconfiguredPromptContext *)context completion:(id)completion
 {
   v7 = sub_100005814(&qword_1003DABF0, &qword_10033F8A0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = context;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -113,21 +113,21 @@
   v15[3] = 0;
   v15[4] = &unk_10033E780;
   v15[5] = v14;
-  v16 = a3;
+  contextCopy = context;
 
   sub_10016483C(0, 0, v10, &unk_10033E788, v15);
 }
 
-- (void)saveUserAcknowledgeMisconfiguredAgedPromptWithContext:(AAAgeMisconfiguredPromptContext *)a3 action:(int)a4 completion:(id)a5
+- (void)saveUserAcknowledgeMisconfiguredAgedPromptWithContext:(AAAgeMisconfiguredPromptContext *)context action:(int)action completion:(id)completion
 {
   v9 = sub_100005814(&qword_1003DABF0, &qword_10033F8A0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v19 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
-  *(v14 + 16) = a3;
-  *(v14 + 24) = a4;
+  *(v14 + 16) = context;
+  *(v14 + 24) = action;
   *(v14 + 32) = v13;
   *(v14 + 40) = self;
   v15 = type metadata accessor for TaskPriority();
@@ -142,7 +142,7 @@
   v17[3] = 0;
   v17[4] = &unk_10033E760;
   v17[5] = v16;
-  v18 = a3;
+  contextCopy = context;
 
   sub_10016483C(0, 0, v12, &unk_10033F2F0, v17);
 }

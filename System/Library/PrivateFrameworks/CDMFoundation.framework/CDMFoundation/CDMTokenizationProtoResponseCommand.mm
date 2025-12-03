@@ -1,7 +1,7 @@
 @interface CDMTokenizationProtoResponseCommand
-- (CDMTokenizationProtoResponseCommand)initWithPreviousResponses:(id)a3 withPreviousSiriResponse:(id)a4;
-- (CDMTokenizationProtoResponseCommand)initWithResponse:(id)a3;
-- (CDMTokenizationProtoResponseCommand)initWithResponses:(id)a3;
+- (CDMTokenizationProtoResponseCommand)initWithPreviousResponses:(id)responses withPreviousSiriResponse:(id)response;
+- (CDMTokenizationProtoResponseCommand)initWithResponse:(id)response;
+- (CDMTokenizationProtoResponseCommand)initWithResponses:(id)responses;
 - (id)description;
 @end
 
@@ -9,61 +9,61 @@
 
 - (id)description
 {
-  v2 = [(SIRINLUINTERNALTOKENIZERTokenizerResponse *)self->_response dictionaryRepresentation];
-  v3 = [v2 description];
+  dictionaryRepresentation = [(SIRINLUINTERNALTOKENIZERTokenizerResponse *)self->_response dictionaryRepresentation];
+  v3 = [dictionaryRepresentation description];
 
   return v3;
 }
 
-- (CDMTokenizationProtoResponseCommand)initWithPreviousResponses:(id)a3 withPreviousSiriResponse:(id)a4
+- (CDMTokenizationProtoResponseCommand)initWithPreviousResponses:(id)responses withPreviousSiriResponse:(id)response
 {
-  v7 = a3;
-  v8 = a4;
+  responsesCopy = responses;
+  responseCopy = response;
   v13.receiver = self;
   v13.super_class = CDMTokenizationProtoResponseCommand;
   v9 = [(CDMBaseCommand *)&v13 init];
   if (v9)
   {
-    v10 = [v7 firstObject];
+    firstObject = [responsesCopy firstObject];
     response = v9->_response;
-    v9->_response = v10;
+    v9->_response = firstObject;
 
-    objc_storeStrong(&v9->_responses, a3);
-    objc_storeStrong(&v9->_previousSiriResponseTokenResponses, a4);
+    objc_storeStrong(&v9->_responses, responses);
+    objc_storeStrong(&v9->_previousSiriResponseTokenResponses, response);
   }
 
   return v9;
 }
 
-- (CDMTokenizationProtoResponseCommand)initWithResponses:(id)a3
+- (CDMTokenizationProtoResponseCommand)initWithResponses:(id)responses
 {
-  v5 = a3;
+  responsesCopy = responses;
   v10.receiver = self;
   v10.super_class = CDMTokenizationProtoResponseCommand;
   v6 = [(CDMBaseCommand *)&v10 init];
   if (v6)
   {
-    v7 = [v5 firstObject];
+    firstObject = [responsesCopy firstObject];
     response = v6->_response;
-    v6->_response = v7;
+    v6->_response = firstObject;
 
-    objc_storeStrong(&v6->_responses, a3);
+    objc_storeStrong(&v6->_responses, responses);
   }
 
   return v6;
 }
 
-- (CDMTokenizationProtoResponseCommand)initWithResponse:(id)a3
+- (CDMTokenizationProtoResponseCommand)initWithResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   v11.receiver = self;
   v11.super_class = CDMTokenizationProtoResponseCommand;
   v6 = [(CDMBaseCommand *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_response, a3);
-    v8 = [MEMORY[0x1E695DEC8] arrayWithObject:v5];
+    objc_storeStrong(&v6->_response, response);
+    v8 = [MEMORY[0x1E695DEC8] arrayWithObject:responseCopy];
     responses = v7->_responses;
     v7->_responses = v8;
   }

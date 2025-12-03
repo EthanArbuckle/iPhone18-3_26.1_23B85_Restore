@@ -1,23 +1,23 @@
 @interface WFREPBRunRequestResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addOutputData:(id)a3;
-- (void)addVariablesData:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addOutputData:(id)data;
+- (void)addVariablesData:(id)data;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFREPBRunRequestResponse
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(WFREPBRunRequestResponse *)self setRunRequestIdentifier:?];
   }
@@ -26,7 +26,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -54,7 +54,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(v4 + 2);
+  v10 = *(fromCopy + 2);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -78,7 +78,7 @@
     while (v12);
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(WFREPBRunRequestResponse *)self setErrorData:?];
   }
@@ -94,13 +94,13 @@
   return v4 ^ v5 ^ [(NSData *)self->_errorData hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((runRequestIdentifier = self->_runRequestIdentifier, !(runRequestIdentifier | v4[3])) || -[NSString isEqual:](runRequestIdentifier, "isEqual:")) && ((variablesDatas = self->_variablesDatas, !(variablesDatas | v4[4])) || -[NSMutableArray isEqual:](variablesDatas, "isEqual:")) && ((outputDatas = self->_outputDatas, !(outputDatas | v4[2])) || -[NSMutableArray isEqual:](outputDatas, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((runRequestIdentifier = self->_runRequestIdentifier, !(runRequestIdentifier | equalCopy[3])) || -[NSString isEqual:](runRequestIdentifier, "isEqual:")) && ((variablesDatas = self->_variablesDatas, !(variablesDatas | equalCopy[4])) || -[NSMutableArray isEqual:](variablesDatas, "isEqual:")) && ((outputDatas = self->_outputDatas, !(outputDatas | equalCopy[2])) || -[NSMutableArray isEqual:](outputDatas, "isEqual:")))
   {
     errorData = self->_errorData;
-    if (errorData | v4[1])
+    if (errorData | equalCopy[1])
     {
       v9 = [(NSData *)errorData isEqual:?];
     }
@@ -119,11 +119,11 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_runRequestIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_runRequestIdentifier copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -147,7 +147,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v28 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v28 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addVariablesData:v13];
 
         ++v12;
@@ -180,7 +180,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v24 + 1) + 8 * v18) copyWithZone:{a3, v24}];
+        v19 = [*(*(&v24 + 1) + 8 * v18) copyWithZone:{zone, v24}];
         [v5 addOutputData:v19];
 
         ++v18;
@@ -193,7 +193,7 @@
     while (v16);
   }
 
-  v20 = [(NSData *)self->_errorData copyWithZone:a3];
+  v20 = [(NSData *)self->_errorData copyWithZone:zone];
   v21 = v5[1];
   v5[1] = v20;
 
@@ -201,56 +201,56 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
-  [v12 setRunRequestIdentifier:self->_runRequestIdentifier];
+  toCopy = to;
+  [toCopy setRunRequestIdentifier:self->_runRequestIdentifier];
   if ([(WFREPBRunRequestResponse *)self variablesDatasCount])
   {
-    [v12 clearVariablesDatas];
-    v4 = [(WFREPBRunRequestResponse *)self variablesDatasCount];
-    if (v4)
+    [toCopy clearVariablesDatas];
+    variablesDatasCount = [(WFREPBRunRequestResponse *)self variablesDatasCount];
+    if (variablesDatasCount)
     {
-      v5 = v4;
+      v5 = variablesDatasCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(WFREPBRunRequestResponse *)self variablesDataAtIndex:i];
-        [v12 addVariablesData:v7];
+        [toCopy addVariablesData:v7];
       }
     }
   }
 
   if ([(WFREPBRunRequestResponse *)self outputDatasCount])
   {
-    [v12 clearOutputDatas];
-    v8 = [(WFREPBRunRequestResponse *)self outputDatasCount];
-    if (v8)
+    [toCopy clearOutputDatas];
+    outputDatasCount = [(WFREPBRunRequestResponse *)self outputDatasCount];
+    if (outputDatasCount)
     {
-      v9 = v8;
+      v9 = outputDatasCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(WFREPBRunRequestResponse *)self outputDataAtIndex:j];
-        [v12 addOutputData:v11];
+        [toCopy addOutputData:v11];
       }
     }
   }
 
   if (self->_errorData)
   {
-    [v12 setErrorData:?];
+    [toCopy setErrorData:?];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_runRequestIdentifier)
   {
     __assert_rtn("[WFREPBRunRequestResponse writeTo:]", "WFREPBRunRequestResponse.m", 163, "nil != self->_runRequestIdentifier");
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   v25 = 0u;
   v26 = 0u;
@@ -326,12 +326,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   runRequestIdentifier = self->_runRequestIdentifier;
   if (runRequestIdentifier)
   {
-    [v3 setObject:runRequestIdentifier forKey:@"runRequestIdentifier"];
+    [dictionary setObject:runRequestIdentifier forKey:@"runRequestIdentifier"];
   }
 
   variablesDatas = self->_variablesDatas;
@@ -361,46 +361,46 @@
   v8.receiver = self;
   v8.super_class = WFREPBRunRequestResponse;
   v4 = [(WFREPBRunRequestResponse *)&v8 description];
-  v5 = [(WFREPBRunRequestResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFREPBRunRequestResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addOutputData:(id)a3
+- (void)addOutputData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   outputDatas = self->_outputDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!outputDatas)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_outputDatas;
     self->_outputDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     outputDatas = self->_outputDatas;
   }
 
-  [(NSMutableArray *)outputDatas addObject:v4];
+  [(NSMutableArray *)outputDatas addObject:dataCopy];
 }
 
-- (void)addVariablesData:(id)a3
+- (void)addVariablesData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   variablesDatas = self->_variablesDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!variablesDatas)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_variablesDatas;
     self->_variablesDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     variablesDatas = self->_variablesDatas;
   }
 
-  [(NSMutableArray *)variablesDatas addObject:v4];
+  [(NSMutableArray *)variablesDatas addObject:dataCopy];
 }
 
 @end

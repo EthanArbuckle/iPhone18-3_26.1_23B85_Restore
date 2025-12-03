@@ -1,17 +1,17 @@
 @interface EventJoinNetwork
-+ (BOOL)processRecord:(id)a3 bssid:(id)a4 ssid:(id)a5 withPersistentContainer:(id)a6 andRunPostprocessing:(id)a7;
++ (BOOL)processRecord:(id)record bssid:(id)bssid ssid:(id)ssid withPersistentContainer:(id)container andRunPostprocessing:(id)postprocessing;
 @end
 
 @implementation EventJoinNetwork
 
-+ (BOOL)processRecord:(id)a3 bssid:(id)a4 ssid:(id)a5 withPersistentContainer:(id)a6 andRunPostprocessing:(id)a7
++ (BOOL)processRecord:(id)record bssid:(id)bssid ssid:(id)ssid withPersistentContainer:(id)container andRunPostprocessing:(id)postprocessing
 {
   v58 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
+  recordCopy = record;
+  containerCopy = container;
+  postprocessingCopy = postprocessing;
+  ssidCopy = ssid;
+  bssidCopy = bssid;
   v16 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -25,7 +25,7 @@
   v17 = WALogCategoryDeviceStoreHandle();
   if (os_signpost_enabled(v17))
   {
-    if (v13)
+    if (postprocessingCopy)
     {
       v18 = @"andRunPostprocessing";
     }
@@ -41,75 +41,75 @@
   }
 
   v47 = 0;
-  v19 = [UniqueMO getOrCreateBSS:v15 andNetwork:v14 withHasUpdatedNetwork:&v47 on:v12];
+  v19 = [UniqueMO getOrCreateBSS:bssidCopy andNetwork:ssidCopy withHasUpdatedNetwork:&v47 on:containerCopy];
 
   if (v19)
   {
-    [v11 setBss:v19];
-    v20 = [v19 network];
-    [v11 setNetwork:v20];
+    [recordCopy setBss:v19];
+    network = [v19 network];
+    [recordCopy setNetwork:network];
 
-    if (([v11 success] & 1) == 0)
+    if (([recordCopy success] & 1) == 0)
     {
       v21 = [v19 lan];
-      [v11 setLan:v21];
+      [recordCopy setLan:v21];
     }
 
     v22 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v11 date];
-      v24 = [v19 bssid];
-      v25 = [v19 network];
-      v26 = [v25 ssid];
+      date = [recordCopy date];
+      bssid = [v19 bssid];
+      network2 = [v19 network];
+      ssid = [network2 ssid];
       v27 = [v19 lan];
       *buf = 136447490;
       v49 = "+[EventJoinNetwork processRecord:bssid:ssid:withPersistentContainer:andRunPostprocessing:]";
       v50 = 1024;
       *v51 = 44;
       *&v51[4] = 2112;
-      *&v51[6] = v23;
+      *&v51[6] = date;
       v52 = 2112;
-      v53 = v24;
+      v53 = bssid;
       v54 = 2112;
-      v55 = v26;
+      v55 = ssid;
       v56 = 2112;
       v57 = v27;
       _os_log_impl(&dword_1C8460000, v22, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Added Join at [%@] to BSS[%@][%@][%@]", buf, 0x3Au);
     }
 
-    v28 = [v11 date];
-    [v19 setLastSeen:v28];
+    date2 = [recordCopy date];
+    [v19 setLastSeen:date2];
 
-    [v19 setMostRecentChannel:{objc_msgSend(v11, "channel")}];
-    [v19 setMostRecentBand:{objc_msgSend(v11, "band")}];
-    v29 = [v11 apProfileID];
-    [v19 setApProfileID:v29];
+    [v19 setMostRecentChannel:{objc_msgSend(recordCopy, "channel")}];
+    [v19 setMostRecentBand:{objc_msgSend(recordCopy, "band")}];
+    apProfileID = [recordCopy apProfileID];
+    [v19 setApProfileID:apProfileID];
 
-    v30 = [v11 networkIsHome];
-    v31 = [v19 network];
-    [v31 setIsHome:v30];
+    networkIsHome = [recordCopy networkIsHome];
+    network3 = [v19 network];
+    [network3 setIsHome:networkIsHome];
 
-    v32 = [v11 networkIsWork];
-    v33 = [v19 network];
-    [v33 setIsWork:v32];
+    networkIsWork = [recordCopy networkIsWork];
+    network4 = [v19 network];
+    [network4 setIsWork:networkIsWork];
 
-    v34 = [v11 networkAuthFlags];
-    v35 = [v19 network];
-    [v35 setAuthFlags:v34];
+    networkAuthFlags = [recordCopy networkAuthFlags];
+    network5 = [v19 network];
+    [network5 setAuthFlags:networkAuthFlags];
 
-    v36 = ([v11 networkFlags] >> 21) & 1;
-    v37 = [v19 network];
-    [v37 setIsPublic:v36];
+    v36 = ([recordCopy networkFlags] >> 21) & 1;
+    network6 = [v19 network];
+    [network6 setIsPublic:v36];
 
-    v38 = [v19 network];
-    [v12 setHasBandsForMO:v38 forBand:{objc_msgSend(v19, "mostRecentBand")}];
+    network7 = [v19 network];
+    [containerCopy setHasBandsForMO:network7 forBand:{objc_msgSend(v19, "mostRecentBand")}];
 
-    v39 = [LinkChangePolicyHandler processJoinEvent:v11];
-    if (v13)
+    v39 = [LinkChangePolicyHandler processJoinEvent:recordCopy];
+    if (postprocessingCopy)
     {
-      v40 = [v12 viewContext];
-      [v40 processPendingChanges];
+      viewContext = [containerCopy viewContext];
+      [viewContext processPendingChanges];
 
       v41 = WALogCategoryDeviceStoreHandle();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
@@ -119,12 +119,12 @@
         v50 = 1024;
         *v51 = 66;
         *&v51[4] = 2112;
-        *&v51[6] = v11;
+        *&v51[6] = recordCopy;
         _os_log_impl(&dword_1C8460000, v41, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Immediate Postprocessing of %@", buf, 0x1Cu);
       }
 
-      [v13 signalPotentialNewIORChannels];
-      [v13 updateRoamPoliciesForSourceBss:v19 andRoam:0 withReason:@"immediate processing of Join Record"];
+      [postprocessingCopy signalPotentialNewIORChannels];
+      [postprocessingCopy updateRoamPoliciesForSourceBss:v19 andRoam:0 withReason:@"immediate processing of Join Record"];
     }
   }
 
@@ -137,7 +137,7 @@
   if (os_signpost_enabled(v42))
   {
     v43 = @"FAILED";
-    if (v13)
+    if (postprocessingCopy)
     {
       v44 = @"andRunPostprocessing";
     }

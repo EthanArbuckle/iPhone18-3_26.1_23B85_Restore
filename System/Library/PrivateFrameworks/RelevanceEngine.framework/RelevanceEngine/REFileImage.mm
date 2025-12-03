@@ -1,50 +1,50 @@
 @interface REFileImage
-- (BOOL)isEqual:(id)a3;
-- (REFileImage)initWithCoder:(id)a3;
-- (REFileImage)initWithPath:(id)a3 scale:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REFileImage)initWithCoder:(id)coder;
+- (REFileImage)initWithPath:(id)path scale:(double)scale;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REFileImage
 
-- (REFileImage)initWithPath:(id)a3 scale:(double)a4
+- (REFileImage)initWithPath:(id)path scale:(double)scale
 {
-  v6 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = REFileImage;
   v7 = [(REFileImage *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [pathCopy copy];
     path = v7->_path;
     v7->_path = v8;
 
-    v7->_scale = a4;
+    v7->_scale = scale;
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   path = self->_path;
   scale = self->_scale;
 
   return [v4 initWithPath:path scale:scale];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 path];
-    v7 = v6;
-    if (v6 == self->_path || [(NSString *)v6 isEqual:?])
+    v5 = equalCopy;
+    path = [v5 path];
+    v7 = path;
+    if (path == self->_path || [(NSString *)path isEqual:?])
     {
       [v5 scale];
       *&v8 = v8 - self->_scale;
@@ -65,11 +65,11 @@
   return v9;
 }
 
-- (REFileImage)initWithCoder:(id)a3
+- (REFileImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scale"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scale"];
 
   [v6 doubleValue];
   v7 = [(REFileImage *)self initWithPath:v5 scale:?];
@@ -77,13 +77,13 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   path = self->_path;
-  v5 = a3;
-  [v5 encodeObject:path forKey:@"path"];
+  coderCopy = coder;
+  [coderCopy encodeObject:path forKey:@"path"];
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_scale];
-  [v5 encodeObject:v6 forKey:@"scale"];
+  [coderCopy encodeObject:v6 forKey:@"scale"];
 }
 
 @end

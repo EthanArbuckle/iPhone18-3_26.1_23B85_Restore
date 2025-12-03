@@ -1,23 +1,23 @@
 @interface PKPaymentServiceProviderPerformActionResponse
-- (PKPaymentServiceProviderPerformActionResponse)initWithData:(id)a3;
+- (PKPaymentServiceProviderPerformActionResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentServiceProviderPerformActionResponse
 
-- (PKPaymentServiceProviderPerformActionResponse)initWithData:(id)a3
+- (PKPaymentServiceProviderPerformActionResponse)initWithData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PKPaymentServiceProviderPerformActionResponse;
-  v3 = [(PKWebServiceResponse *)&v15 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v15 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = jSONObject;
       v7 = [[PKServiceProviderPurchase alloc] initWithDictionary:v6];
 
       updatedPurchase = v4->_updatedPurchase;

@@ -1,12 +1,12 @@
 @interface ProductReviewsShelfHeaderView
-- (_TtC20ProductPageExtension29ProductReviewsShelfHeaderView)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension29ProductReviewsShelfHeaderView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation ProductReviewsShelfHeaderView
 
-- (_TtC20ProductPageExtension29ProductReviewsShelfHeaderView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension29ProductReviewsShelfHeaderView)initWithCoder:(id)coder
 {
   result = sub_10077156C();
   __break(1u);
@@ -15,13 +15,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005DBD8C();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005DC59C();
 }
 

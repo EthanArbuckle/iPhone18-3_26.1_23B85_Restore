@@ -1,23 +1,23 @@
 @interface CNPostalAddressContactPredicate
-- (BOOL)isEqual:(id)a3;
-- (CNPostalAddressContactPredicate)initWithCoder:(id)a3;
-- (CNPostalAddressContactPredicate)initWithPostalAddress:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNPostalAddressContactPredicate)initWithCoder:(id)coder;
+- (CNPostalAddressContactPredicate)initWithPostalAddress:(id)address;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNPostalAddressContactPredicate
 
-- (CNPostalAddressContactPredicate)initWithPostalAddress:(id)a3
+- (CNPostalAddressContactPredicate)initWithPostalAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v10.receiver = self;
   v10.super_class = CNPostalAddressContactPredicate;
   v5 = [(CNPredicate *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [addressCopy copy];
     postalAddress = v5->_postalAddress;
     v5->_postalAddress = v6;
 
@@ -31,24 +31,24 @@
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContact predicateForContactsMatchingPostalAddress:]"];
-  v5 = [(CNPostalAddressContactPredicate *)self postalAddress];
-  v6 = [v5 dictionaryRepresentation];
-  v7 = [v3 appendName:@"postalAddress" object:v6];
+  postalAddress = [(CNPostalAddressContactPredicate *)self postalAddress];
+  dictionaryRepresentation = [postalAddress dictionaryRepresentation];
+  v7 = [v3 appendName:@"postalAddress" object:dictionaryRepresentation];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (CNPostalAddressContactPredicate)initWithCoder:(id)a3
+- (CNPostalAddressContactPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNPostalAddressContactPredicate;
-  v5 = [(CNPredicate *)&v11 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_postalAddress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_postalAddress"];
     v7 = [v6 copy];
     postalAddress = v5->_postalAddress;
     v5->_postalAddress = v7;
@@ -59,26 +59,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNPostalAddressContactPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_postalAddress forKey:{@"_postalAddress", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_postalAddress forKey:{@"_postalAddress", v5.receiver, v5.super_class}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__CNPostalAddressContactPredicate_isEqual___block_invoke;
   v8[3] = &unk_1E7412228;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = equalCopy;
+  v6 = equalCopy;
   LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v8, 0}];
 
   return self;

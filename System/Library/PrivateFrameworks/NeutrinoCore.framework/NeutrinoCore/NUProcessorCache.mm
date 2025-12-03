@@ -1,17 +1,17 @@
 @interface NUProcessorCache
 - (CIImage)outputImage;
 - (NUProcessorCache)init;
-- (NUProcessorCache)initWithImage:(id)a3;
-- (void)_render:(id)a3;
+- (NUProcessorCache)initWithImage:(id)image;
+- (void)_render:(id)_render;
 @end
 
 @implementation NUProcessorCache
 
-- (void)_render:(id)a3
+- (void)_render:(id)_render
 {
-  v4 = a3;
-  v5 = [(NUProcessorCache *)self inputImage];
-  [v5 extent];
+  _renderCopy = _render;
+  inputImage = [(NUProcessorCache *)self inputImage];
+  [inputImage extent];
   v29.i64[0] = v6;
   v29.i64[1] = v7;
   *v30 = v8;
@@ -20,8 +20,8 @@
   v26 = v41;
   v28 = v40;
 
-  v10 = [v4 metalCommandBuffer];
-  v11 = [v10 device];
+  metalCommandBuffer = [_renderCopy metalCommandBuffer];
+  device = [metalCommandBuffer device];
   textureCacheQueue = self->_textureCacheQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -30,12 +30,12 @@
   v36 = v28;
   v37 = v26;
   block[4] = self;
-  v33 = v11;
-  v34 = v4;
-  v35 = v10;
-  v13 = v10;
-  v14 = v4;
-  v15 = v11;
+  v33 = device;
+  v34 = _renderCopy;
+  v35 = metalCommandBuffer;
+  v13 = metalCommandBuffer;
+  v14 = _renderCopy;
+  v15 = device;
   dispatch_sync(textureCacheQueue, block);
   [v13 encodeWaitForEvent:self->_textureCachedEvent value:1];
   [v14 region];
@@ -61,10 +61,10 @@
   *v30 = 0;
   *&v30[8] = v39;
   v31 = 1;
-  v24 = [v14 metalTexture];
+  metalTexture = [v14 metalTexture];
   v40 = v27;
   v41.i64[0] = 0;
-  [NUCopyKernel copyFromTexture:cachedTexture region:&v29 toTexture:v24 atPoint:&v40 withCommandBuffer:v13];
+  [NUCopyKernel copyFromTexture:cachedTexture region:&v29 toTexture:metalTexture atPoint:&v40 withCommandBuffer:v13];
 }
 
 void __28__NUProcessorCache__render___block_invoke(uint64_t a1)
@@ -171,9 +171,9 @@ void __28__NUProcessorCache__render___block_invoke(uint64_t a1)
 - (CIImage)outputImage
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v3 = [(NUProcessorCache *)self inputImage];
-  v4 = [(NUProcessorCache *)self pixelFormat];
-  v5 = [v4 CIFormat];
+  inputImage = [(NUProcessorCache *)self inputImage];
+  pixelFormat = [(NUProcessorCache *)self pixelFormat];
+  cIFormat = [pixelFormat CIFormat];
 
   v6 = *MEMORY[0x1E695F9D0];
   v29[0] = *MEMORY[0x1E695F9D8];
@@ -181,36 +181,36 @@ void __28__NUProcessorCache__render___block_invoke(uint64_t a1)
   v30[0] = MEMORY[0x1E695E110];
   v30[1] = MEMORY[0x1E695E118];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
-  v8 = [MEMORY[0x1E695F658] emptyImage];
-  v9 = [v3 depthData];
+  emptyImage = [MEMORY[0x1E695F658] emptyImage];
+  depthData = [inputImage depthData];
 
-  if (v9)
+  if (depthData)
   {
     v10 = MEMORY[0x1E695F658];
-    v11 = [v3 depthData];
-    v12 = [v10 imageWithDepthData:v11];
+    depthData2 = [inputImage depthData];
+    v12 = [v10 imageWithDepthData:depthData2];
 
-    v8 = v12;
+    emptyImage = v12;
   }
 
-  [v3 extent];
+  [inputImage extent];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(NUProcessorCache *)self label];
-  v22 = [v3 digest];
+  label = [(NUProcessorCache *)self label];
+  digest = [inputImage digest];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __31__NUProcessorCache_outputImage__block_invoke_2;
   v28[3] = &unk_1E810AA48;
   v28[4] = self;
-  v23 = [v8 imageWithExtent:v21 processorDescription:v22 argumentDigest:0 inputFormat:v5 outputFormat:v7 options:&__block_literal_global_18174 roiCallback:v14 processor:v16, v18, v20, v28];
+  v23 = [emptyImage imageWithExtent:label processorDescription:digest argumentDigest:0 inputFormat:cIFormat outputFormat:v7 options:&__block_literal_global_18174 roiCallback:v14 processor:v16, v18, v20, v28];
 
-  v24 = [(NUProcessorCache *)self pixelFormat];
-  v25 = [v24 numberOfComponents];
+  pixelFormat2 = [(NUProcessorCache *)self pixelFormat];
+  numberOfComponents = [pixelFormat2 numberOfComponents];
 
-  if (v25 == 1)
+  if (numberOfComponents == 1)
   {
     v26 = [v23 _imageByApplyingColorMatrixRed:COERCE_DOUBLE(1065353216) green:COERCE_DOUBLE(1065353216) blue:COERCE_DOUBLE(1065353216) bias:0.0];
 
@@ -220,11 +220,11 @@ void __28__NUProcessorCache__render___block_invoke(uint64_t a1)
   return v23;
 }
 
-- (NUProcessorCache)initWithImage:(id)a3
+- (NUProcessorCache)initWithImage:(id)image
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  imageCopy = image;
+  if (!imageCopy)
   {
     v19 = NUAssertLogger_18155();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -245,8 +245,8 @@ void __28__NUProcessorCache__render___block_invoke(uint64_t a1)
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v37 = v26;
         v38 = 2114;
@@ -257,8 +257,8 @@ void __28__NUProcessorCache__render___block_invoke(uint64_t a1)
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v37 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -267,7 +267,7 @@ void __28__NUProcessorCache__render___block_invoke(uint64_t a1)
     _NUAssertFailHandler("[NUProcessorCache initWithImage:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Performance/NUProcessorCache.m", 43, @"Invalid parameter not satisfying: %s", v31, v32, v33, v34, "image != nil");
   }
 
-  v5 = v4;
+  v5 = imageCopy;
   v35.receiver = self;
   v35.super_class = NUProcessorCache;
   v6 = [(NUProcessorCache *)&v35 init];
@@ -341,8 +341,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -358,8 +358,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

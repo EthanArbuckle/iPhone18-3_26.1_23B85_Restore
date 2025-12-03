@@ -1,55 +1,55 @@
 @interface PILevelsAutoCalculator
-- (id)calculateSettingsForImageHistogram:(id)a3;
-- (id)calculateSettingsForSingleChannelHistogram:(id)a3 suffix:(id)a4;
-- (void)submit:(id)a3;
+- (id)calculateSettingsForImageHistogram:(id)histogram;
+- (id)calculateSettingsForSingleChannelHistogram:(id)histogram suffix:(id)suffix;
+- (void)submit:(id)submit;
 @end
 
 @implementation PILevelsAutoCalculator
 
-- (id)calculateSettingsForSingleChannelHistogram:(id)a3 suffix:(id)a4
+- (id)calculateSettingsForSingleChannelHistogram:(id)histogram suffix:(id)suffix
 {
   v30[10] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  [v6 percentile:0.001];
+  suffixCopy = suffix;
+  histogramCopy = histogram;
+  [histogramCopy percentile:0.001];
   v8 = v7;
-  [v6 percentile:0.999];
+  [histogramCopy percentile:0.999];
   v10 = v9;
 
   v11 = (v8 + v10) * 0.5;
-  v28 = [@"blackSrc" stringByAppendingString:v5];
+  v28 = [@"blackSrc" stringByAppendingString:suffixCopy];
   v29[0] = v28;
   v27 = [MEMORY[0x1E696AD98] numberWithDouble:v8];
   v30[0] = v27;
-  v26 = [@"blackDst" stringByAppendingString:v5];
+  v26 = [@"blackDst" stringByAppendingString:suffixCopy];
   v29[1] = v26;
   v30[1] = &unk_1F471F8E0;
-  v25 = [@"shadowSrc" stringByAppendingString:v5];
+  v25 = [@"shadowSrc" stringByAppendingString:suffixCopy];
   v29[2] = v25;
   v24 = [MEMORY[0x1E696AD98] numberWithDouble:(v8 + v11) * 0.5];
   v30[2] = v24;
-  v23 = [@"shadowDst" stringByAppendingString:v5];
+  v23 = [@"shadowDst" stringByAppendingString:suffixCopy];
   v29[3] = v23;
   v30[3] = &unk_1F471F8F0;
-  v12 = [@"midSrc" stringByAppendingString:v5];
+  v12 = [@"midSrc" stringByAppendingString:suffixCopy];
   v29[4] = v12;
   v13 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
   v30[4] = v13;
-  v14 = [@"midDst" stringByAppendingString:v5];
+  v14 = [@"midDst" stringByAppendingString:suffixCopy];
   v29[5] = v14;
   v30[5] = &unk_1F471F900;
-  v15 = [@"hilightSrc" stringByAppendingString:v5];
+  v15 = [@"hilightSrc" stringByAppendingString:suffixCopy];
   v29[6] = v15;
   v16 = [MEMORY[0x1E696AD98] numberWithDouble:(v10 + v11) * 0.5];
   v30[6] = v16;
-  v17 = [@"hilightDst" stringByAppendingString:v5];
+  v17 = [@"hilightDst" stringByAppendingString:suffixCopy];
   v29[7] = v17;
   v30[7] = &unk_1F471F910;
-  v18 = [@"whiteSrc" stringByAppendingString:v5];
+  v18 = [@"whiteSrc" stringByAppendingString:suffixCopy];
   v29[8] = v18;
   v19 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
   v30[8] = v19;
-  v20 = [@"whiteDst" stringByAppendingString:v5];
+  v20 = [@"whiteDst" stringByAppendingString:suffixCopy];
 
   v29[9] = v20;
   v30[9] = &unk_1F471F920;
@@ -58,10 +58,10 @@
   return v21;
 }
 
-- (id)calculateSettingsForImageHistogram:(id)a3
+- (id)calculateSettingsForImageHistogram:(id)histogram
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  histogramCopy = histogram;
   v4 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -99,8 +99,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v4 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v4 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v26 = specific;
           v27 = 2114;
@@ -127,8 +127,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -144,11 +144,11 @@ LABEL_14:
   }
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  submitCopy = submit;
+  if (!submitCopy)
   {
     v14 = NUAssertLogger_21851();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -170,8 +170,8 @@ LABEL_14:
         v22 = dispatch_get_specific(*v16);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v31 = v22;
         v32 = 2114;
@@ -182,8 +182,8 @@ LABEL_14:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v21;
       _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -192,7 +192,7 @@ LABEL_14:
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = submitCopy;
   v6 = [objc_alloc(MEMORY[0x1E69B3AC8]) initWithRequest:self];
   [v6 setName:@"PILevelsAutoCalculator-histogram"];
   v7 = [PIPipelineFilters stopAtTagIncludeGeometryFilter:@"pre-Levels"];
@@ -203,14 +203,14 @@ LABEL_14:
   [v6 setPipelineFilters:v9];
 
   [v6 setSampleMode:2];
-  v10 = [v6 histogramCalculationColorSpace];
-  v11 = [MEMORY[0x1E69B3A10] itur2100HLGColorSpace];
-  LOBYTE(v9) = [v10 isEqual:v11];
+  histogramCalculationColorSpace = [v6 histogramCalculationColorSpace];
+  itur2100HLGColorSpace = [MEMORY[0x1E69B3A10] itur2100HLGColorSpace];
+  LOBYTE(v9) = [histogramCalculationColorSpace isEqual:itur2100HLGColorSpace];
 
   if ((v9 & 1) == 0)
   {
-    v12 = [MEMORY[0x1E69B3A10] displayP3ColorSpace];
-    [v6 setHistogramCalculationColorSpace:v12];
+    displayP3ColorSpace = [MEMORY[0x1E69B3A10] displayP3ColorSpace];
+    [v6 setHistogramCalculationColorSpace:displayP3ColorSpace];
   }
 
   v27[0] = MEMORY[0x1E69E9820];

@@ -1,7 +1,7 @@
 @interface SBSStereoLeaderInterface
-- (SBSStereoLeaderInterface)initWithTarget:(id)a3;
+- (SBSStereoLeaderInterface)initWithTarget:(id)target;
 - (void)dealloc;
-- (void)isFollower:(id)a3;
+- (void)isFollower:(id)follower;
 @end
 
 @implementation SBSStereoLeaderInterface
@@ -14,18 +14,18 @@
   [(SBSStereoLeaderInterface *)&v3 dealloc];
 }
 
-- (void)isFollower:(id)a3
+- (void)isFollower:(id)follower
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  followerCopy = follower;
+  v5 = followerCopy;
+  if (followerCopy)
   {
     sbProxy = self->_sbProxy;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __39__SBSStereoLeaderInterface_isFollower___block_invoke;
     v7[3] = &unk_279CD5558;
-    v8 = v4;
+    v8 = followerCopy;
     [(SBSImplementer *)sbProxy isDeviceStereoFollower:v7];
   }
 }
@@ -37,22 +37,22 @@ void __39__SBSStereoLeaderInterface_isFollower___block_invoke(uint64_t a1, uint6
   (*(v2 + 16))(v2, v3);
 }
 
-- (SBSStereoLeaderInterface)initWithTarget:(id)a3
+- (SBSStereoLeaderInterface)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v9.receiver = self;
   v9.super_class = SBSStereoLeaderInterface;
   v5 = [(SBSStereoLeaderInterface *)&v9 init];
   if (v5)
   {
-    if ([v4 isEqualToString:@"localhost"])
+    if ([targetCopy isEqualToString:@"localhost"])
     {
       [SBSUtils createProxyConnectionForXPCWithExportedObject:0 connection:&v5->_sbConnection];
     }
 
     else
     {
-      [SBSUtils createProxyConnectionForRapportTarget:v4];
+      [SBSUtils createProxyConnectionForRapportTarget:targetCopy];
     }
     v6 = ;
     sbProxy = v5->_sbProxy;

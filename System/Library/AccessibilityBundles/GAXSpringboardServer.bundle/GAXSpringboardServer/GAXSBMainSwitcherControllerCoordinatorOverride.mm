@@ -1,16 +1,16 @@
 @interface GAXSBMainSwitcherControllerCoordinatorOverride
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_buildAppLayoutCache;
 @end
 
 @implementation GAXSBMainSwitcherControllerCoordinatorOverride
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBMainSwitcherControllerCoordinator" hasInstanceMethod:@"_buildAppLayoutCache" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBMainSwitcherControllerCoordinator" hasInstanceMethod:@"enumerateSwitcherControllersWithBlock:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"SBMainSwitcherControllerCoordinator" hasInstanceVariable:@"_mainSwitcherModel" withType:"SBAppSwitcherModel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBMainSwitcherControllerCoordinator" hasInstanceMethod:@"_buildAppLayoutCache" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBMainSwitcherControllerCoordinator" hasInstanceMethod:@"enumerateSwitcherControllersWithBlock:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"SBMainSwitcherControllerCoordinator" hasInstanceVariable:@"_mainSwitcherModel" withType:"SBAppSwitcherModel"];
 }
 
 - (void)_buildAppLayoutCache
@@ -24,15 +24,15 @@
   if ([v5 isActive])
   {
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 guidedAccessAllowsMultipleWindows];
+    guidedAccessAllowsMultipleWindows = [v6 guidedAccessAllowsMultipleWindows];
 
-    if (v7)
+    if (guidedAccessAllowsMultipleWindows)
     {
       v9 = _NSConcreteStackBlock;
       v10 = 3221225472;
       v11 = sub_132D4;
       v12 = &unk_2C6A8;
-      v13 = self;
+      selfCopy = self;
       AXPerformSafeBlock();
       [v4 _gaxSetShouldLimitAppLayoutsToCurrentApp:1];
     }

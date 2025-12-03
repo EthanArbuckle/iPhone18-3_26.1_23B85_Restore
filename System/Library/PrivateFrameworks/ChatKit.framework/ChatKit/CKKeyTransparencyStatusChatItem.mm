@@ -1,15 +1,15 @@
 @interface CKKeyTransparencyStatusChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (id)loadTranscriptText;
 @end
 
 @implementation CKKeyTransparencyStatusChatItem
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = fits.height;
+  width = fits.width;
+  if (insets)
   {
     v8 = +[CKUIBehavior sharedBehaviors];
     [v8 transcriptBoldTextAlignmentInsets];
@@ -18,10 +18,10 @@
     v14 = v13;
     v16 = v15;
 
-    a4->top = v10;
-    a4->left = v12;
-    a4->bottom = v14;
-    a4->right = v16;
+    insets->top = v10;
+    insets->left = v12;
+    insets->bottom = v14;
+    insets->right = v16;
   }
 
   [CKKeyTransparencyTranscriptCell heightForChatItem:self fittingSize:width, height];
@@ -34,11 +34,11 @@
 
 - (id)loadTranscriptText
 {
-  v3 = [(CKKeyTransparencyStatusChatItem *)self underlyingKTChatItem];
-  v4 = [v3 affectedHandles];
+  underlyingKTChatItem = [(CKKeyTransparencyStatusChatItem *)self underlyingKTChatItem];
+  affectedHandles = [underlyingKTChatItem affectedHandles];
 
-  v5 = [(CKKeyTransparencyStatusChatItem *)self underlyingKTChatItem];
-  v6 = +[CKKeyTransparencyTranscriptUtilities transcriptStringFromHandles:status:](CKKeyTransparencyTranscriptUtilities, "transcriptStringFromHandles:status:", v4, [v5 status]);
+  underlyingKTChatItem2 = [(CKKeyTransparencyStatusChatItem *)self underlyingKTChatItem];
+  v6 = +[CKKeyTransparencyTranscriptUtilities transcriptStringFromHandles:status:](CKKeyTransparencyTranscriptUtilities, "transcriptStringFromHandles:status:", affectedHandles, [underlyingKTChatItem2 status]);
 
   return v6;
 }

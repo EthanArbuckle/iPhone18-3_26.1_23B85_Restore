@@ -1,6 +1,6 @@
 @interface SKGQueryStringBuilder
-+ (id)queryForAttributesAbsent:(id)a3;
-+ (id)queryForAttributesExist:(id)a3;
++ (id)queryForAttributesAbsent:(id)absent;
++ (id)queryForAttributesExist:(id)exist;
 - (SKGQueryStringBuilder)init;
 - (id)and;
 - (id)beginGroup;
@@ -19,9 +19,9 @@
   v2 = [(SKGQueryStringBuilder *)&v27 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     queryComponents = v2->_queryComponents;
-    v2->_queryComponents = v3;
+    v2->_queryComponents = array;
 
     objc_initWeak(&location, v2);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -335,70 +335,70 @@ void *__29__SKGQueryStringBuilder_init__block_invoke_5(uint64_t a1, void *a2, vo
 
 - (id)beginGroup
 {
-  v3 = [(SKGQueryStringBuilder *)self queryComponents];
-  objc_msgSend(v3, "addObject:", @"(");
+  queryComponents = [(SKGQueryStringBuilder *)self queryComponents];
+  objc_msgSend(queryComponents, "addObject:", @"(");
 
   return self;
 }
 
 - (id)endGroup
 {
-  v3 = [(SKGQueryStringBuilder *)self queryComponents];
-  [v3 addObject:@""]);
+  queryComponents = [(SKGQueryStringBuilder *)self queryComponents];
+  [queryComponents addObject:@""]);
 
   return self;
 }
 
 - (id)and
 {
-  v3 = [(SKGQueryStringBuilder *)self queryComponents];
-  [v3 addObject:@"&&"];
+  queryComponents = [(SKGQueryStringBuilder *)self queryComponents];
+  [queryComponents addObject:@"&&"];
 
   return self;
 }
 
 - (id)or
 {
-  v3 = [(SKGQueryStringBuilder *)self queryComponents];
-  [v3 addObject:@"||"];
+  queryComponents = [(SKGQueryStringBuilder *)self queryComponents];
+  [queryComponents addObject:@"||"];
 
   return self;
 }
 
 - (id)not
 {
-  v3 = [(SKGQueryStringBuilder *)self queryComponents];
-  [v3 addObject:@"!"];
+  queryComponents = [(SKGQueryStringBuilder *)self queryComponents];
+  [queryComponents addObject:@"!"];
 
   return self;
 }
 
 - (id)build
 {
-  v2 = [(SKGQueryStringBuilder *)self queryComponents];
-  v3 = [v2 componentsJoinedByString:&stru_2846CE8D8];
+  queryComponents = [(SKGQueryStringBuilder *)self queryComponents];
+  v3 = [queryComponents componentsJoinedByString:&stru_2846CE8D8];
 
   return v3;
 }
 
-+ (id)queryForAttributesExist:(id)a3
++ (id)queryForAttributesExist:(id)exist
 {
-  v3 = a3;
-  v4 = objc_alloc_init(SKGQueryStringBuilder);
-  if ([v3 count])
+  existCopy = exist;
+  endGroup = objc_alloc_init(SKGQueryStringBuilder);
+  if ([existCopy count])
   {
-    v5 = [(SKGQueryStringBuilder *)v4 beginGroup];
+    beginGroup = [(SKGQueryStringBuilder *)endGroup beginGroup];
 
-    if ([v3 count])
+    if ([existCopy count])
     {
       v6 = 0;
       do
       {
-        v7 = [v3 objectAtIndexedSubscript:v6];
-        v8 = [v5 withAttribute];
-        v9 = (v8)[2](v8, v7, @"=", @"*");
+        v7 = [existCopy objectAtIndexedSubscript:v6];
+        withAttribute = [beginGroup withAttribute];
+        v9 = (withAttribute)[2](withAttribute, v7, @"=", @"*");
 
-        if (v6 != [v3 count] - 1)
+        if (v6 != [existCopy count] - 1)
         {
           v10 = [v9 or];
 
@@ -406,48 +406,48 @@ void *__29__SKGQueryStringBuilder_init__block_invoke_5(uint64_t a1, void *a2, vo
         }
 
         ++v6;
-        v5 = v9;
+        beginGroup = v9;
       }
 
-      while (v6 < [v3 count]);
+      while (v6 < [existCopy count]);
     }
 
     else
     {
-      v9 = v5;
+      v9 = beginGroup;
     }
 
-    v4 = [v9 endGroup];
+    endGroup = [v9 endGroup];
 
-    v11 = [(SKGQueryStringBuilder *)v4 build];
+    build = [(SKGQueryStringBuilder *)endGroup build];
   }
 
   else
   {
-    v11 = @"true";
+    build = @"true";
   }
 
-  return v11;
+  return build;
 }
 
-+ (id)queryForAttributesAbsent:(id)a3
++ (id)queryForAttributesAbsent:(id)absent
 {
-  v3 = a3;
-  v4 = objc_alloc_init(SKGQueryStringBuilder);
-  if ([v3 count])
+  absentCopy = absent;
+  endGroup = objc_alloc_init(SKGQueryStringBuilder);
+  if ([absentCopy count])
   {
-    v5 = [(SKGQueryStringBuilder *)v4 beginGroup];
+    beginGroup = [(SKGQueryStringBuilder *)endGroup beginGroup];
 
-    if ([v3 count])
+    if ([absentCopy count])
     {
       v6 = 0;
       do
       {
-        v7 = [v3 objectAtIndexedSubscript:v6];
-        v8 = [v5 withAttribute];
-        v9 = (v8)[2](v8, v7, @"!=", @"*");
+        v7 = [absentCopy objectAtIndexedSubscript:v6];
+        withAttribute = [beginGroup withAttribute];
+        v9 = (withAttribute)[2](withAttribute, v7, @"!=", @"*");
 
-        if (v6 != [v3 count] - 1)
+        if (v6 != [absentCopy count] - 1)
         {
           v10 = [v9 and];
 
@@ -455,28 +455,28 @@ void *__29__SKGQueryStringBuilder_init__block_invoke_5(uint64_t a1, void *a2, vo
         }
 
         ++v6;
-        v5 = v9;
+        beginGroup = v9;
       }
 
-      while (v6 < [v3 count]);
+      while (v6 < [absentCopy count]);
     }
 
     else
     {
-      v9 = v5;
+      v9 = beginGroup;
     }
 
-    v4 = [v9 endGroup];
+    endGroup = [v9 endGroup];
 
-    v11 = [(SKGQueryStringBuilder *)v4 build];
+    build = [(SKGQueryStringBuilder *)endGroup build];
   }
 
   else
   {
-    v11 = @"false";
+    build = @"false";
   }
 
-  return v11;
+  return build;
 }
 
 @end

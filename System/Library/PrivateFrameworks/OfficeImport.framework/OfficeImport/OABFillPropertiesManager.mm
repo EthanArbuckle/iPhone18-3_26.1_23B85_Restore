@@ -6,7 +6,7 @@
 - (EshColor)shadowColor;
 - (EshColor)strokeBgColor;
 - (EshColor)strokeFgColor;
-- (OABFillPropertiesManager)initWithFill:(const EshFill *)a3 shapeType:(int)a4 masterShape:(EshShape *)a5;
+- (OABFillPropertiesManager)initWithFill:(const EshFill *)fill shapeType:(int)type masterShape:(EshShape *)shape;
 - (const)fillGradientColors;
 - (id)fillBlipName;
 - (int)fillAngle;
@@ -320,7 +320,7 @@
   }
 }
 
-- (OABFillPropertiesManager)initWithFill:(const EshFill *)a3 shapeType:(int)a4 masterShape:(EshShape *)a5
+- (OABFillPropertiesManager)initWithFill:(const EshFill *)fill shapeType:(int)type masterShape:(EshShape *)shape
 {
   v13.receiver = self;
   v13.super_class = OABFillPropertiesManager;
@@ -328,11 +328,11 @@
   v9 = v8;
   if (v8)
   {
-    v8->mFill = a3;
-    v8->mShapeType = a4;
-    if (a5)
+    v8->mFill = fill;
+    v8->mShapeType = type;
+    if (shape)
     {
-      v10 = [[OABShapeManager alloc] initWithShape:a5 masterShape:0];
+      v10 = [[OABShapeManager alloc] initWithShape:shape masterShape:0];
     }
 
     else

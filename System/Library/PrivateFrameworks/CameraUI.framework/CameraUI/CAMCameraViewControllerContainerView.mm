@@ -1,21 +1,21 @@
 @interface CAMCameraViewControllerContainerView
-- (CAMCameraViewControllerContainerView)initWithCoder:(id)a3;
-- (CAMCameraViewControllerContainerView)initWithFrame:(CGRect)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
+- (CAMCameraViewControllerContainerView)initWithCoder:(id)coder;
+- (CAMCameraViewControllerContainerView)initWithFrame:(CGRect)frame;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
 - (void)layoutSubviews;
-- (void)setAdditionalContentView:(id)a3;
-- (void)setCustomOverlayView:(id)a3;
-- (void)setViewfinderView:(id)a3;
+- (void)setAdditionalContentView:(id)view;
+- (void)setCustomOverlayView:(id)view;
+- (void)setViewfinderView:(id)view;
 - (void)verifyViewOrdering;
 @end
 
 @implementation CAMCameraViewControllerContainerView
 
-- (CAMCameraViewControllerContainerView)initWithFrame:(CGRect)a3
+- (CAMCameraViewControllerContainerView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CAMCameraViewControllerContainerView;
-  v3 = [(CAMCameraViewControllerContainerView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMCameraViewControllerContainerView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,11 +26,11 @@
   return v4;
 }
 
-- (CAMCameraViewControllerContainerView)initWithCoder:(id)a3
+- (CAMCameraViewControllerContainerView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CAMCameraViewControllerContainerView;
-  v3 = [(CAMCameraViewControllerContainerView *)&v7 initWithCoder:a3];
+  v3 = [(CAMCameraViewControllerContainerView *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -51,7 +51,7 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMCameraViewControllerContainerView *)self viewfinderView];
+  viewfinderView = [(CAMCameraViewControllerContainerView *)self viewfinderView];
   v15.origin.x = v4;
   v15.origin.y = v6;
   v15.size.width = v8;
@@ -62,16 +62,16 @@
   v16.size.width = v8;
   v16.size.height = v10;
   MidY = CGRectGetMidY(v16);
-  [v11 setBounds:{v4, v6, v8, v10}];
-  [v11 setCenter:{MidX, MidY}];
+  [viewfinderView setBounds:{v4, v6, v8, v10}];
+  [viewfinderView setCenter:{MidX, MidY}];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CAMCameraViewControllerContainerView *)self viewfinderView];
-  [v5 systemLayoutSizeFittingSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  viewfinderView = [(CAMCameraViewControllerContainerView *)self viewfinderView];
+  [viewfinderView systemLayoutSizeFittingSize:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -82,73 +82,73 @@
   return result;
 }
 
-- (void)setViewfinderView:(id)a3
+- (void)setViewfinderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   viewfinderView = self->_viewfinderView;
-  if (viewfinderView != v5)
+  if (viewfinderView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)viewfinderView removeFromSuperview];
-    objc_storeStrong(&self->_viewfinderView, a3);
+    objc_storeStrong(&self->_viewfinderView, view);
     viewfinderView = [(CAMCameraViewControllerContainerView *)self verifyViewOrdering];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](viewfinderView, v5);
+  MEMORY[0x1EEE66BB8](viewfinderView, viewCopy);
 }
 
-- (void)setCustomOverlayView:(id)a3
+- (void)setCustomOverlayView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   customOverlayView = self->_customOverlayView;
-  if (customOverlayView != v5)
+  if (customOverlayView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)customOverlayView removeFromSuperview];
-    objc_storeStrong(&self->_customOverlayView, a3);
+    objc_storeStrong(&self->_customOverlayView, view);
     customOverlayView = [(CAMCameraViewControllerContainerView *)self verifyViewOrdering];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](customOverlayView, v5);
+  MEMORY[0x1EEE66BB8](customOverlayView, viewCopy);
 }
 
-- (void)setAdditionalContentView:(id)a3
+- (void)setAdditionalContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   additionalContentView = self->_additionalContentView;
-  if (additionalContentView != v5)
+  if (additionalContentView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)additionalContentView removeFromSuperview];
-    objc_storeStrong(&self->_additionalContentView, a3);
+    objc_storeStrong(&self->_additionalContentView, view);
     additionalContentView = [(CAMCameraViewControllerContainerView *)self verifyViewOrdering];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](additionalContentView, v5);
+  MEMORY[0x1EEE66BB8](additionalContentView, viewCopy);
 }
 
 - (void)verifyViewOrdering
 {
-  v7 = [(CAMCameraViewControllerContainerView *)self viewfinderView];
-  v3 = [(CAMCameraViewControllerContainerView *)self customOverlayView];
-  v4 = [(CAMCameraViewControllerContainerView *)self additionalContentView];
-  v5 = v7;
-  v6 = v4;
-  if (v7)
+  viewfinderView = [(CAMCameraViewControllerContainerView *)self viewfinderView];
+  customOverlayView = [(CAMCameraViewControllerContainerView *)self customOverlayView];
+  additionalContentView = [(CAMCameraViewControllerContainerView *)self additionalContentView];
+  v5 = viewfinderView;
+  v6 = additionalContentView;
+  if (viewfinderView)
   {
-    [(CAMCameraViewControllerContainerView *)self addSubview:v7];
-    [(CAMCameraViewControllerContainerView *)self sendSubviewToBack:v7];
-    v5 = v7;
+    [(CAMCameraViewControllerContainerView *)self addSubview:viewfinderView];
+    [(CAMCameraViewControllerContainerView *)self sendSubviewToBack:viewfinderView];
+    v5 = viewfinderView;
   }
 
-  if (v3)
+  if (customOverlayView)
   {
-    [(CAMCameraViewControllerContainerView *)self addSubview:v3];
-    [(CAMCameraViewControllerContainerView *)self bringSubviewToFront:v3];
-    v5 = v7;
+    [(CAMCameraViewControllerContainerView *)self addSubview:customOverlayView];
+    [(CAMCameraViewControllerContainerView *)self bringSubviewToFront:customOverlayView];
+    v5 = viewfinderView;
   }
 
   if (v5 && v6)
@@ -156,9 +156,9 @@
     [(CAMCameraViewControllerContainerView *)self insertSubview:v6 aboveSubview:v5];
   }
 
-  else if (v3 && v6)
+  else if (customOverlayView && v6)
   {
-    [(CAMCameraViewControllerContainerView *)self insertSubview:v6 belowSubview:v3];
+    [(CAMCameraViewControllerContainerView *)self insertSubview:v6 belowSubview:customOverlayView];
   }
 }
 

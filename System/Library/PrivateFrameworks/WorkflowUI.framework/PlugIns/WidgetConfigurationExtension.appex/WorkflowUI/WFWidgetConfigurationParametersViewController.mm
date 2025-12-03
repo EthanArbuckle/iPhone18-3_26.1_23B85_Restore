@@ -1,21 +1,21 @@
 @interface WFWidgetConfigurationParametersViewController
-- (WFWidgetConfigurationParametersViewController)initWithAction:(id)a3 intentIdentifier:(id)a4 widgetFamily:(int64_t)a5 widgetDisplayName:(id)a6 widgetDescription:(id)a7 widgetConfigurationType:(unint64_t)a8;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (void)applyStylingWithStrokeProvider:(id)a3 fillProvider:(id)a4 cardBackgroundColor:(id)a5;
-- (void)configureCell:(id)a3 forAction:(id)a4 parameter:(id)a5;
+- (WFWidgetConfigurationParametersViewController)initWithAction:(id)action intentIdentifier:(id)identifier widgetFamily:(int64_t)family widgetDisplayName:(id)name widgetDescription:(id)description widgetConfigurationType:(unint64_t)type;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (void)applyStylingWithStrokeProvider:(id)provider fillProvider:(id)fillProvider cardBackgroundColor:(id)color;
+- (void)configureCell:(id)cell forAction:(id)action parameter:(id)parameter;
 - (void)finishEditing;
 - (void)invalidateIntentDescriptionLabelMetrics;
 - (void)loadView;
-- (void)populateConfiguredAppIntentWithCompletion:(id)a3;
-- (void)populateConfiguredCustomIntentWithCompletion:(id)a3;
-- (void)populateConfiguredIntentWithCompletion:(id)a3;
+- (void)populateConfiguredAppIntentWithCompletion:(id)completion;
+- (void)populateConfiguredCustomIntentWithCompletion:(id)completion;
+- (void)populateConfiguredIntentWithCompletion:(id)completion;
 - (void)reloadActionParameterModels;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setFillProvider:(id)a3;
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3;
-- (void)setShowsWidgetDescription:(BOOL)a3;
-- (void)setStrokeProvider:(id)a3;
-- (void)setwidgetDescriptionTallScriptCompensatedSpacing:(double)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setFillProvider:(id)provider;
+- (void)setOverrideUserInterfaceStyle:(int64_t)style;
+- (void)setShowsWidgetDescription:(BOOL)description;
+- (void)setStrokeProvider:(id)provider;
+- (void)setwidgetDescriptionTallScriptCompensatedSpacing:(double)spacing;
 - (void)updateTableHeaderHeight;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
@@ -23,9 +23,9 @@
 
 @implementation WFWidgetConfigurationParametersViewController
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  [a3 contentOffset];
+  [scroll contentOffset];
   if (v4 <= 0.0)
   {
     v5 = 0.0;
@@ -36,8 +36,8 @@
     v5 = 1.0;
   }
 
-  v6 = [(WFWidgetConfigurationParametersViewController *)self scrollDividerView];
-  [v6 alpha];
+  scrollDividerView = [(WFWidgetConfigurationParametersViewController *)self scrollDividerView];
+  [scrollDividerView alpha];
   v8 = v7;
 
   if (v8 != v5)
@@ -54,17 +54,17 @@
 
 - (void)finishEditing
 {
-  v3 = [(WFConfigurationParametersViewController *)self delegate];
+  delegate = [(WFConfigurationParametersViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFConfigurationParametersViewController *)self delegate];
-    [v5 configurationParametersViewControllerDidRequestToClose:self];
+    delegate2 = [(WFConfigurationParametersViewController *)self delegate];
+    [delegate2 configurationParametersViewControllerDidRequestToClose:self];
   }
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
   v6 = [UIFontMetrics metricsForTextStyle:UIFontTextStyleHeadline];
@@ -73,7 +73,7 @@
   v9 = v8;
 
   v10 = 25.0;
-  if (!a4)
+  if (!section)
   {
     v10 = 18.0;
   }
@@ -88,34 +88,34 @@
   v3 = 0.0;
   if ([(WFWidgetConfigurationParametersViewController *)self showsWidgetDescription])
   {
-    v4 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-    [v4 bounds];
+    tableView = [(WFWidgetConfigurationParametersViewController *)self tableView];
+    [tableView bounds];
     v6 = v5;
     height = UILayoutFittingCompressedSize.height;
 
-    v8 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+    widgetDescriptionView = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
     LODWORD(v9) = 1148846080;
     LODWORD(v10) = 1112014848;
-    [v8 systemLayoutSizeFittingSize:v6 withHorizontalFittingPriority:height verticalFittingPriority:{v9, v10}];
+    [widgetDescriptionView systemLayoutSizeFittingSize:v6 withHorizontalFittingPriority:height verticalFittingPriority:{v9, v10}];
     v3 = v11;
   }
 
-  v12 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-  [v12 bounds];
+  widgetDescriptionView2 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+  [widgetDescriptionView2 bounds];
   v13 = CGRectGetHeight(v21);
 
   if (v13 != v3)
   {
-    v14 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-    [v14 bounds];
+    tableView2 = [(WFWidgetConfigurationParametersViewController *)self tableView];
+    [tableView2 bounds];
     v16 = v15;
-    v17 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-    [v17 setFrame:{0.0, 0.0, v16, v3}];
+    widgetDescriptionView3 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+    [widgetDescriptionView3 setFrame:{0.0, 0.0, v16, v3}];
 
-    v19 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-    v18 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-    [v18 frame];
-    [v19 _tableHeaderHeightDidChangeToHeight:CGRectGetHeight(v22)];
+    tableView3 = [(WFWidgetConfigurationParametersViewController *)self tableView];
+    widgetDescriptionView4 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+    [widgetDescriptionView4 frame];
+    [tableView3 _tableHeaderHeightDidChangeToHeight:CGRectGetHeight(v22)];
   }
 }
 
@@ -131,51 +131,51 @@
     v3 = 0.0;
   }
 
-  v4 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-  [v4 bounds];
+  tableView = [(WFWidgetConfigurationParametersViewController *)self tableView];
+  [tableView bounds];
   v6 = v5;
-  v7 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-  [v7 layoutMargins];
+  tableView2 = [(WFWidgetConfigurationParametersViewController *)self tableView];
+  [tableView2 layoutMargins];
   v9 = v8;
-  v10 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-  [v10 layoutMargins];
+  tableView3 = [(WFWidgetConfigurationParametersViewController *)self tableView];
+  [tableView3 layoutMargins];
   v12 = v9 + v11 + 2.0 + 2.0;
 
-  v13 = [(WFConfigurationParametersViewController *)self dataSource];
-  v14 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-  v15 = [v13 tableView:v14 titleForHeaderInSection:0];
+  dataSource = [(WFConfigurationParametersViewController *)self dataSource];
+  tableView4 = [(WFWidgetConfigurationParametersViewController *)self tableView];
+  v15 = [dataSource tableView:tableView4 titleForHeaderInSection:0];
 
-  v16 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-  [v16 directionalLayoutMargins];
+  widgetDescriptionView = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+  [widgetDescriptionView directionalLayoutMargins];
   v18 = v17;
   v20 = v19;
 
-  v21 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-  [v21 directionalLayoutMargins];
+  tableView5 = [(WFWidgetConfigurationParametersViewController *)self tableView];
+  [tableView5 directionalLayoutMargins];
   v23 = v22;
 
   if (v23 < v18)
   {
-    v24 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-    [v24 directionalLayoutMargins];
+    tableView6 = [(WFWidgetConfigurationParametersViewController *)self tableView];
+    [tableView6 directionalLayoutMargins];
     v18 = v25;
   }
 
   v26 = v12 + v3 * 2.0;
-  v27 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-  [v27 directionalLayoutMargins];
+  tableView7 = [(WFWidgetConfigurationParametersViewController *)self tableView];
+  [tableView7 directionalLayoutMargins];
   v29 = v28;
 
   if (v29 < v20)
   {
-    v30 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-    [v30 directionalLayoutMargins];
+    tableView8 = [(WFWidgetConfigurationParametersViewController *)self tableView];
+    [tableView8 directionalLayoutMargins];
     v20 = v31;
   }
 
   v32 = v6 - v26;
-  v33 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-  [v33 layoutMargins];
+  tableView9 = [(WFWidgetConfigurationParametersViewController *)self tableView];
+  [tableView9 layoutMargins];
   v35 = v34;
 
   if (v35 < 8.0)
@@ -193,12 +193,12 @@
     v36 = v35;
   }
 
-  v37 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-  [v37 directionalLayoutMargins];
+  widgetDescriptionView2 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+  [widgetDescriptionView2 directionalLayoutMargins];
   if (v41 == v18 && v38 == v35 && v40 == v20 && v39 == v36)
   {
-    v42 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
-    [v42 preferredMaxLayoutWidth];
+    widgetDescriptionLabel = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
+    [widgetDescriptionLabel preferredMaxLayoutWidth];
     v44 = v43;
 
     if (v44 == v32)
@@ -211,11 +211,11 @@
   {
   }
 
-  v45 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-  [v45 setDirectionalLayoutMargins:{v35, v18, v36, v20}];
+  widgetDescriptionView3 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+  [widgetDescriptionView3 setDirectionalLayoutMargins:{v35, v18, v36, v20}];
 
-  v46 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
-  [v46 setPreferredMaxLayoutWidth:v32];
+  widgetDescriptionLabel2 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
+  [widgetDescriptionLabel2 setPreferredMaxLayoutWidth:v32];
 
   [(WFWidgetConfigurationParametersViewController *)self updateTableHeaderHeight];
 }
@@ -235,29 +235,29 @@
   [(WFConfigurationParametersViewController *)&v10 viewDidLoad];
   if (_UISolariumEnabled())
   {
-    v3 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-    [v3 setEstimatedRowHeight:48.0];
+    tableView = [(WFWidgetConfigurationParametersViewController *)self tableView];
+    [tableView setEstimatedRowHeight:48.0];
   }
 
-  v4 = [(WFWidgetConfigurationParametersViewController *)self widgetDisplayName];
-  v5 = [(WFWidgetConfigurationParametersViewController *)self navigationItem];
-  [v5 setTitle:v4];
+  widgetDisplayName = [(WFWidgetConfigurationParametersViewController *)self widgetDisplayName];
+  navigationItem = [(WFWidgetConfigurationParametersViewController *)self navigationItem];
+  [navigationItem setTitle:widgetDisplayName];
 
   v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"finishEditing"];
-  v7 = [(WFWidgetConfigurationParametersViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:v6];
+  navigationItem2 = [(WFWidgetConfigurationParametersViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v6];
 
   if ([(WFWidgetConfigurationParametersViewController *)self showsWidgetDescription])
   {
-    v8 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-    v9 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-    [v9 setTableHeaderView:v8];
+    widgetDescriptionView = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+    tableView2 = [(WFWidgetConfigurationParametersViewController *)self tableView];
+    [tableView2 setTableHeaderView:widgetDescriptionView];
   }
 
   else
   {
-    v8 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-    [v8 setTableHeaderView:0];
+    widgetDescriptionView = [(WFWidgetConfigurationParametersViewController *)self tableView];
+    [widgetDescriptionView setTableHeaderView:0];
   }
 }
 
@@ -267,78 +267,78 @@
   v62.super_class = WFWidgetConfigurationParametersViewController;
   [(WFConfigurationParametersViewController *)&v62 loadView];
   v3 = +[UIColor clearColor];
-  v4 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-  [v4 setBackgroundColor:v3];
+  tableView = [(WFWidgetConfigurationParametersViewController *)self tableView];
+  [tableView setBackgroundColor:v3];
 
-  v5 = [(WFWidgetConfigurationParametersViewController *)self widgetDescription];
-  v6 = [v5 length];
+  widgetDescription = [(WFWidgetConfigurationParametersViewController *)self widgetDescription];
+  v6 = [widgetDescription length];
 
   if (v6)
   {
     v7 = objc_alloc_init(UILabel);
     [(WFWidgetConfigurationParametersViewController *)self setWidgetDescriptionLabel:v7];
 
-    v8 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    widgetDescriptionLabel = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
+    [widgetDescriptionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v9 = [(WFWidgetConfigurationParametersViewController *)self widgetDescription];
-    v10 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
-    [v10 setText:v9];
+    widgetDescription2 = [(WFWidgetConfigurationParametersViewController *)self widgetDescription];
+    widgetDescriptionLabel2 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
+    [widgetDescriptionLabel2 setText:widgetDescription2];
 
     v11 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    v12 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
-    [v12 setFont:v11];
+    widgetDescriptionLabel3 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
+    [widgetDescriptionLabel3 setFont:v11];
 
     v13 = +[UIColor secondaryLabelColor];
-    v14 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
-    [v14 setTextColor:v13];
+    widgetDescriptionLabel4 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
+    [widgetDescriptionLabel4 setTextColor:v13];
 
-    v15 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
-    [v15 setNumberOfLines:0];
+    widgetDescriptionLabel5 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
+    [widgetDescriptionLabel5 setNumberOfLines:0];
 
-    v16 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
-    [v16 setAdjustsFontForContentSizeCategory:1];
+    widgetDescriptionLabel6 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
+    [widgetDescriptionLabel6 setAdjustsFontForContentSizeCategory:1];
 
     v17 = objc_alloc_init(UIView);
     [(WFWidgetConfigurationParametersViewController *)self setWidgetDescriptionView:v17];
 
-    v18 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-    [v18 setPreservesSuperviewLayoutMargins:1];
+    widgetDescriptionView = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+    [widgetDescriptionView setPreservesSuperviewLayoutMargins:1];
 
-    v19 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-    [v19 layoutMargins];
+    tableView2 = [(WFWidgetConfigurationParametersViewController *)self tableView];
+    [tableView2 layoutMargins];
     v21 = v20;
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    v28 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-    [v28 setLayoutMargins:{v21, v23, v25, v27}];
+    widgetDescriptionView2 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+    [widgetDescriptionView2 setLayoutMargins:{v21, v23, v25, v27}];
 
-    v29 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-    [v29 setMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityMedium];
+    widgetDescriptionView3 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+    [widgetDescriptionView3 setMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityMedium];
 
-    v30 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-    v31 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
-    [v30 addSubview:v31];
+    widgetDescriptionView4 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+    widgetDescriptionLabel7 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
+    [widgetDescriptionView4 addSubview:widgetDescriptionLabel7];
 
-    v32 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
-    v33 = [v32 topAnchor];
-    v34 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-    v35 = [v34 topAnchor];
+    widgetDescriptionLabel8 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
+    topAnchor = [widgetDescriptionLabel8 topAnchor];
+    widgetDescriptionView5 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+    topAnchor2 = [widgetDescriptionView5 topAnchor];
     [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionTallScriptCompensatedSpacing];
-    v36 = [v33 constraintEqualToAnchor:v35 constant:?];
+    v36 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
     widgetDescriptionLabelTopSpacingConstraint = self->_widgetDescriptionLabelTopSpacingConstraint;
     self->_widgetDescriptionLabelTopSpacingConstraint = v36;
 
-    LODWORD(v32) = _UISolariumEnabled();
-    v61 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
-    v38 = [v61 leadingAnchor];
-    v58 = v38;
-    v60 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-    v59 = [v60 layoutMarginsGuide];
-    v39 = [v59 leadingAnchor];
-    v57 = v39;
-    if (v32)
+    LODWORD(widgetDescriptionLabel8) = _UISolariumEnabled();
+    widgetDescriptionLabel9 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
+    leadingAnchor = [widgetDescriptionLabel9 leadingAnchor];
+    v58 = leadingAnchor;
+    widgetDescriptionView6 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+    layoutMarginsGuide = [widgetDescriptionView6 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v57 = leadingAnchor2;
+    if (widgetDescriptionLabel8)
     {
       v40 = 10.0;
     }
@@ -348,23 +348,23 @@
       v40 = 2.0;
     }
 
-    v56 = [v38 constraintEqualToAnchor:v39 constant:v40];
+    v56 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v40];
     v63[0] = v56;
-    v55 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
-    v53 = [v55 trailingAnchor];
-    v54 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-    v52 = [v54 layoutMarginsGuide];
-    v41 = [v52 trailingAnchor];
-    v42 = [v53 constraintEqualToAnchor:v41 constant:-v40];
+    widgetDescriptionLabel10 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
+    trailingAnchor = [widgetDescriptionLabel10 trailingAnchor];
+    widgetDescriptionView7 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+    layoutMarginsGuide2 = [widgetDescriptionView7 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v42 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v40];
     v43 = self->_widgetDescriptionLabelTopSpacingConstraint;
     v63[1] = v42;
     v63[2] = v43;
-    v44 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-    v45 = [v44 layoutMarginsGuide];
-    v46 = [v45 bottomAnchor];
-    v47 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
-    v48 = [v47 bottomAnchor];
-    v49 = [v46 constraintEqualToAnchor:v48 constant:8.0];
+    widgetDescriptionView8 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+    layoutMarginsGuide3 = [widgetDescriptionView8 layoutMarginsGuide];
+    bottomAnchor = [layoutMarginsGuide3 bottomAnchor];
+    widgetDescriptionLabel11 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
+    bottomAnchor2 = [widgetDescriptionLabel11 bottomAnchor];
+    v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:8.0];
     v63[3] = v49;
     v50 = [NSArray arrayWithObjects:v63 count:4];
     [NSLayoutConstraint activateConstraints:v50];
@@ -372,48 +372,48 @@
     [(WFWidgetConfigurationParametersViewController *)self updateTableHeaderHeight];
   }
 
-  v51 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-  [v51 setSectionFooterHeight:0.0];
+  tableView3 = [(WFWidgetConfigurationParametersViewController *)self tableView];
+  [tableView3 setSectionFooterHeight:0.0];
 }
 
-- (void)configureCell:(id)a3 forAction:(id)a4 parameter:(id)a5
+- (void)configureCell:(id)cell forAction:(id)action parameter:(id)parameter
 {
-  v6 = a3;
-  v7 = [(WFWidgetConfigurationParametersViewController *)self cardBackgroundColor];
-  [v6 setCardBackgroundColor:v7];
+  cellCopy = cell;
+  cardBackgroundColor = [(WFWidgetConfigurationParametersViewController *)self cardBackgroundColor];
+  [cellCopy setCardBackgroundColor:cardBackgroundColor];
 
-  v8 = [(WFWidgetConfigurationParametersViewController *)self fillProvider];
-  [v6 setFillProvider:v8];
+  fillProvider = [(WFWidgetConfigurationParametersViewController *)self fillProvider];
+  [cellCopy setFillProvider:fillProvider];
 
-  v9 = [(WFWidgetConfigurationParametersViewController *)self strokeProvider];
-  [v6 setStrokeProvider:v9];
+  strokeProvider = [(WFWidgetConfigurationParametersViewController *)self strokeProvider];
+  [cellCopy setStrokeProvider:strokeProvider];
 }
 
 - (void)reloadActionParameterModels
 {
   if ([(WFWidgetConfigurationParametersViewController *)self isViewLoaded])
   {
-    v3 = [(WFConfigurationParametersViewController *)self dataSource];
-    v4 = [(WFConfigurationParametersViewController *)self action];
+    dataSource = [(WFConfigurationParametersViewController *)self dataSource];
+    action = [(WFConfigurationParametersViewController *)self action];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_1000118D4;
     v5[3] = &unk_10002DA10;
     v5[4] = self;
-    [v3 applyParametersFromAction:v4 animatingDifferences:1 completion:v5];
+    [dataSource applyParametersFromAction:action animatingDifferences:1 completion:v5];
   }
 }
 
-- (void)populateConfiguredAppIntentWithCompletion:(id)a3
+- (void)populateConfiguredAppIntentWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WFConfigurationParametersViewController *)self action];
-  if (v5)
+  completionCopy = completion;
+  action = [(WFConfigurationParametersViewController *)self action];
+  if (action)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = action;
     }
 
     else
@@ -430,42 +430,42 @@
   v7 = v6;
 
   v8 = [INAppIntent alloc];
-  v9 = [v7 fullyQualifiedLinkActionIdentifier];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v7 fullyQualifiedLinkActionIdentifier];
-  v12 = [v11 actionIdentifier];
-  v13 = [(WFConfigurationParametersViewController *)self action];
-  v14 = [v13 serializedParameters];
-  v20 = [v8 initWithAppBundleIdentifier:v10 appIntentIdentifier:v12 serializedParameters:v14];
+  fullyQualifiedLinkActionIdentifier = [v7 fullyQualifiedLinkActionIdentifier];
+  bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
+  fullyQualifiedLinkActionIdentifier2 = [v7 fullyQualifiedLinkActionIdentifier];
+  actionIdentifier = [fullyQualifiedLinkActionIdentifier2 actionIdentifier];
+  action2 = [(WFConfigurationParametersViewController *)self action];
+  serializedParameters = [action2 serializedParameters];
+  v20 = [v8 initWithAppBundleIdentifier:bundleIdentifier appIntentIdentifier:actionIdentifier serializedParameters:serializedParameters];
 
-  v15 = [v7 metadata];
+  metadata = [v7 metadata];
 
-  v16 = [v15 effectiveBundleIdentifiers];
-  v17 = [v16 array];
-  v18 = [v17 if_firstObjectPassingTest:&stru_10002D5C8];
-  v19 = [v18 bundleIdentifier];
-  [v20 _setExtensionBundleId:v19];
+  effectiveBundleIdentifiers = [metadata effectiveBundleIdentifiers];
+  array = [effectiveBundleIdentifiers array];
+  v18 = [array if_firstObjectPassingTest:&stru_10002D5C8];
+  bundleIdentifier2 = [v18 bundleIdentifier];
+  [v20 _setExtensionBundleId:bundleIdentifier2];
 
-  v4[2](v4, v20, 0);
+  completionCopy[2](completionCopy, v20, 0);
 }
 
-- (void)populateConfiguredCustomIntentWithCompletion:(id)a3
+- (void)populateConfiguredCustomIntentWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100011C2C;
   v4[3] = &unk_10002D5A8;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(WFConfigurationParametersViewController *)v5 populateConfiguredActionWithCompletion:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(WFConfigurationParametersViewController *)selfCopy populateConfiguredActionWithCompletion:v4];
 }
 
-- (void)populateConfiguredIntentWithCompletion:(id)a3
+- (void)populateConfiguredIntentWithCompletion:(id)completion
 {
-  v10 = a3;
-  v4 = [(WFConfigurationParametersViewController *)self action];
-  if (v4)
+  completionCopy = completion;
+  action = [(WFConfigurationParametersViewController *)self action];
+  if (action)
   {
     objc_opt_class();
     v5 = objc_opt_isKindOfClass() ^ 1;
@@ -476,10 +476,10 @@
     v5 = 1;
   }
 
-  v6 = [(WFConfigurationParametersViewController *)self action];
-  if (v6)
+  action2 = [(WFConfigurationParametersViewController *)self action];
+  if (action2)
   {
-    v7 = v6;
+    v7 = action2;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -500,7 +500,7 @@
         goto LABEL_15;
       }
 
-      [(WFWidgetConfigurationParametersViewController *)self populateConfiguredAppIntentWithCompletion:v10];
+      [(WFWidgetConfigurationParametersViewController *)self populateConfiguredAppIntentWithCompletion:completionCopy];
       goto LABEL_14;
     }
   }
@@ -515,60 +515,60 @@
     v9 = 0;
   }
 
-  [(WFWidgetConfigurationParametersViewController *)self populateConfiguredCustomIntentWithCompletion:v10];
+  [(WFWidgetConfigurationParametersViewController *)self populateConfiguredCustomIntentWithCompletion:completionCopy];
   v7 = v9;
 LABEL_14:
 
 LABEL_15:
 }
 
-- (void)applyStylingWithStrokeProvider:(id)a3 fillProvider:(id)a4 cardBackgroundColor:(id)a5
+- (void)applyStylingWithStrokeProvider:(id)provider fillProvider:(id)fillProvider cardBackgroundColor:(id)color
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFWidgetConfigurationParametersViewController *)self fillProvider];
-  v12 = v9;
+  providerCopy = provider;
+  fillProviderCopy = fillProvider;
+  colorCopy = color;
+  fillProvider = [(WFWidgetConfigurationParametersViewController *)self fillProvider];
+  v12 = fillProviderCopy;
   v13 = v12;
-  if (v11 == v12)
+  if (fillProvider == v12)
   {
   }
 
   else
   {
-    v14 = v12;
-    v15 = v11;
-    if (!v12 || (v14 = v12, (v15 = v11) == 0))
+    strokeProvider = v12;
+    v15 = fillProvider;
+    if (!v12 || (strokeProvider = v12, (v15 = fillProvider) == 0))
     {
 LABEL_14:
 
 LABEL_15:
 LABEL_16:
-      [(WFWidgetConfigurationParametersViewController *)self setCardBackgroundColor:v10];
-      [(WFWidgetConfigurationParametersViewController *)self setStrokeProvider:v8];
+      [(WFWidgetConfigurationParametersViewController *)self setCardBackgroundColor:colorCopy];
+      [(WFWidgetConfigurationParametersViewController *)self setStrokeProvider:providerCopy];
       [(WFWidgetConfigurationParametersViewController *)self setFillProvider:v13];
-      v20 = [(WFConfigurationParametersViewController *)self action];
-      v21 = [v20 appBundleIdentifier];
-      v22 = [v21 isEqualToString:VCBundleIdentifierPodcasts];
+      action = [(WFConfigurationParametersViewController *)self action];
+      appBundleIdentifier = [action appBundleIdentifier];
+      v22 = [appBundleIdentifier isEqualToString:VCBundleIdentifierPodcasts];
 
       if (v22)
       {
-        v11 = +[UIColor whiteColor];
+        fillProvider = +[UIColor whiteColor];
       }
 
       else
       {
-        v11 = 0;
+        fillProvider = 0;
       }
 
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v23 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-      v24 = [v23 visibleCells];
+      tableView = [(WFWidgetConfigurationParametersViewController *)self tableView];
+      visibleCells = [tableView visibleCells];
 
-      v25 = [v24 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v25 = [visibleCells countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v25)
       {
         v26 = v25;
@@ -579,13 +579,13 @@ LABEL_16:
           {
             if (*v30 != v27)
             {
-              objc_enumerationMutation(v24);
+              objc_enumerationMutation(visibleCells);
             }
 
-            [*(*(&v29 + 1) + 8 * i) applyStylingWithStrokeProvider:v8 fillProvider:v13 cardBackgroundColor:v10 overridingTintColor:v11];
+            [*(*(&v29 + 1) + 8 * i) applyStylingWithStrokeProvider:providerCopy fillProvider:v13 cardBackgroundColor:colorCopy overridingTintColor:fillProvider];
           }
 
-          v26 = [v24 countByEnumeratingWithState:&v29 objects:v33 count:16];
+          v26 = [visibleCells countByEnumeratingWithState:&v29 objects:v33 count:16];
         }
 
         while (v26);
@@ -594,7 +594,7 @@ LABEL_16:
       goto LABEL_27;
     }
 
-    v16 = [v11 isEqual:v12];
+    v16 = [fillProvider isEqual:v12];
 
     if (!v16)
     {
@@ -602,14 +602,14 @@ LABEL_16:
     }
   }
 
-  v14 = [(WFWidgetConfigurationParametersViewController *)self strokeProvider];
-  v17 = v8;
+  strokeProvider = [(WFWidgetConfigurationParametersViewController *)self strokeProvider];
+  v17 = providerCopy;
   v18 = v17;
-  if (v14 != v17)
+  if (strokeProvider != v17)
   {
-    if (v17 && v14)
+    if (v17 && strokeProvider)
     {
-      v19 = [v14 isEqual:v17];
+      v19 = [strokeProvider isEqual:v17];
 
       if (v19)
       {
@@ -619,7 +619,7 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    v15 = v14;
+    v15 = strokeProvider;
     goto LABEL_14;
   }
 
@@ -627,11 +627,11 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)setFillProvider:(id)a3
+- (void)setFillProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   fillProvider = [(WFWidgetConfigurationParametersViewController *)self fillProvider];
-  v6 = v4;
+  v6 = providerCopy;
   v10 = v6;
   if (fillProvider == v6)
   {
@@ -663,65 +663,65 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setStrokeProvider:(id)a3
+- (void)setStrokeProvider:(id)provider
 {
-  v5 = a3;
-  v6 = [(WFWidgetConfigurationParametersViewController *)self strokeProvider];
-  v7 = v5;
+  providerCopy = provider;
+  strokeProvider = [(WFWidgetConfigurationParametersViewController *)self strokeProvider];
+  v7 = providerCopy;
   v12 = v7;
-  if (v6 == v7)
+  if (strokeProvider == v7)
   {
 
-    v9 = v6;
+    strokeProvider3 = strokeProvider;
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  if (!v7 || !v6)
+  if (!v7 || !strokeProvider)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [v6 isEqual:v7];
+  v8 = [strokeProvider isEqual:v7];
 
   if ((v8 & 1) == 0)
   {
 LABEL_8:
-    v10 = [(WFWidgetConfigurationParametersViewController *)self strokeProvider];
-    v11 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
-    [v10 stopAutomaticallyUpdatingView:v11];
+    strokeProvider2 = [(WFWidgetConfigurationParametersViewController *)self strokeProvider];
+    widgetDescriptionLabel = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
+    [strokeProvider2 stopAutomaticallyUpdatingView:widgetDescriptionLabel];
 
-    objc_storeStrong(&self->_strokeProvider, a3);
-    v9 = [(WFWidgetConfigurationParametersViewController *)self strokeProvider];
-    v6 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
-    [v9 automaticallyUpdateView:v6 withStyle:1];
+    objc_storeStrong(&self->_strokeProvider, provider);
+    strokeProvider3 = [(WFWidgetConfigurationParametersViewController *)self strokeProvider];
+    strokeProvider = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabel];
+    [strokeProvider3 automaticallyUpdateView:strokeProvider withStyle:1];
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)setShowsWidgetDescription:(BOOL)a3
+- (void)setShowsWidgetDescription:(BOOL)description
 {
-  if ([(WFWidgetConfigurationParametersViewController *)self showsWidgetDescription]!= a3)
+  if ([(WFWidgetConfigurationParametersViewController *)self showsWidgetDescription]!= description)
   {
-    self->_showsWidgetDescription = a3;
+    self->_showsWidgetDescription = description;
     if ([(WFWidgetConfigurationParametersViewController *)self isViewLoaded])
     {
       [(WFWidgetConfigurationParametersViewController *)self invalidateIntentDescriptionLabelMetrics];
       if ([(WFWidgetConfigurationParametersViewController *)self showsWidgetDescription])
       {
-        v5 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
-        v6 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-        [v6 setTableHeaderView:v5];
+        widgetDescriptionView = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionView];
+        tableView = [(WFWidgetConfigurationParametersViewController *)self tableView];
+        [tableView setTableHeaderView:widgetDescriptionView];
       }
 
       else
       {
-        v5 = [(WFWidgetConfigurationParametersViewController *)self tableView];
-        [v5 setTableHeaderView:0];
+        widgetDescriptionView = [(WFWidgetConfigurationParametersViewController *)self tableView];
+        [widgetDescriptionView setTableHeaderView:0];
       }
 
       [(WFWidgetConfigurationParametersViewController *)self updateTableHeaderHeight];
@@ -729,42 +729,42 @@ LABEL_10:
   }
 }
 
-- (void)setwidgetDescriptionTallScriptCompensatedSpacing:(double)a3
+- (void)setwidgetDescriptionTallScriptCompensatedSpacing:(double)spacing
 {
-  self->_widgetDescriptionTallScriptCompensatedSpacing = a3;
-  v4 = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabelTopSpacingConstraint];
-  [v4 setConstant:a3];
+  self->_widgetDescriptionTallScriptCompensatedSpacing = spacing;
+  widgetDescriptionLabelTopSpacingConstraint = [(WFWidgetConfigurationParametersViewController *)self widgetDescriptionLabelTopSpacingConstraint];
+  [widgetDescriptionLabelTopSpacingConstraint setConstant:spacing];
 }
 
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3
+- (void)setOverrideUserInterfaceStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = WFWidgetConfigurationParametersViewController;
   [(WFWidgetConfigurationParametersViewController *)&v6 setOverrideUserInterfaceStyle:?];
-  v5 = [(WFWidgetConfigurationParametersViewController *)self presentedViewController];
-  [v5 setOverrideUserInterfaceStyle:a3];
+  presentedViewController = [(WFWidgetConfigurationParametersViewController *)self presentedViewController];
+  [presentedViewController setOverrideUserInterfaceStyle:style];
 }
 
-- (WFWidgetConfigurationParametersViewController)initWithAction:(id)a3 intentIdentifier:(id)a4 widgetFamily:(int64_t)a5 widgetDisplayName:(id)a6 widgetDescription:(id)a7 widgetConfigurationType:(unint64_t)a8
+- (WFWidgetConfigurationParametersViewController)initWithAction:(id)action intentIdentifier:(id)identifier widgetFamily:(int64_t)family widgetDisplayName:(id)name widgetDescription:(id)description widgetConfigurationType:(unint64_t)type
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  nameCopy = name;
+  descriptionCopy = description;
   v26.receiver = self;
   v26.super_class = WFWidgetConfigurationParametersViewController;
-  v17 = [(WFConfigurationParametersViewController *)&v26 initWithAction:a3 hiddenParameterKeys:0 footerButtons:&__NSArray0__struct widgetType:a8];
+  v17 = [(WFConfigurationParametersViewController *)&v26 initWithAction:action hiddenParameterKeys:0 footerButtons:&__NSArray0__struct widgetType:type];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [identifierCopy copy];
     intentIdentifier = v17->_intentIdentifier;
     v17->_intentIdentifier = v18;
 
-    v17->_widgetFamily = a5;
-    v20 = [v15 copy];
+    v17->_widgetFamily = family;
+    v20 = [nameCopy copy];
     widgetDisplayName = v17->_widgetDisplayName;
     v17->_widgetDisplayName = v20;
 
-    v22 = [v16 copy];
+    v22 = [descriptionCopy copy];
     widgetDescription = v17->_widgetDescription;
     v17->_widgetDescription = v22;
 

@@ -1,64 +1,64 @@
 @interface PKDataDetectorInteractionHelper
 - (_BYTE)setShouldHideItems:(_BYTE *)result;
-- (double)boundingBoxForHashtagOrMentionWithUUID:(uint64_t)a1;
+- (double)boundingBoxForHashtagOrMentionWithUUID:(uint64_t)d;
 - (id)_accessibilityUserTestingChildren;
 - (id)drawing;
-- (id)initWithView:(void *)a3 parentView:(void *)a4 recognitionController:;
-- (id)inlineViewAtPoint:(double)a3;
+- (id)initWithView:(void *)view parentView:(void *)parentView recognitionController:;
+- (id)inlineViewAtPoint:(double)point;
 - (id)setDelegate:(id *)result;
 - (id)window;
 - (uint64_t)removeDetectionViews;
 - (uint64_t)setDetectionViewsHidden:(uint64_t)result;
 - (uint64_t)updateHashtagsAndMentionsActivationState;
-- (void)_removeViews:(void *)a1 animated:(char)a2;
-- (void)_updateAllPossibleParticipantNameTokens:(uint64_t)a1;
-- (void)foundDataDetectorItems:(uint64_t)a1;
-- (void)foundProofreadingItems:(uint64_t)a1;
-- (void)hashtagViewDidActivateHashtag:(id)a3;
-- (void)hashtagViewDidDeactivateHashtag:(id)a3;
-- (void)hashtagViewWillDeactivateHashtag:(id)a3;
-- (void)layoutInlineViewsDrawingTransform:(id *)a1;
-- (void)mentionViewDidActivateMention:(id)a3 withParticpant:(id)a4;
-- (void)mentionViewDidDeactivateMention:(id)a3;
-- (void)mentionViewWillDeactivateMention:(id)a3;
-- (void)proofreadingView:(id)a3 didReplaceWithString:(id)a4;
-- (void)proofreadingView:(id)a3 willDismissStringsForProofreadingItem:(id)a4;
-- (void)proofreadingView:(id)a3 willPresentStringsForProofreadingItem:(id)a4;
-- (void)registerUndoCommand:(uint64_t)a1;
+- (void)_removeViews:(void *)views animated:(char)animated;
+- (void)_updateAllPossibleParticipantNameTokens:(uint64_t)tokens;
+- (void)foundDataDetectorItems:(uint64_t)items;
+- (void)foundProofreadingItems:(uint64_t)items;
+- (void)hashtagViewDidActivateHashtag:(id)hashtag;
+- (void)hashtagViewDidDeactivateHashtag:(id)hashtag;
+- (void)hashtagViewWillDeactivateHashtag:(id)hashtag;
+- (void)layoutInlineViewsDrawingTransform:(id *)transform;
+- (void)mentionViewDidActivateMention:(id)mention withParticpant:(id)particpant;
+- (void)mentionViewDidDeactivateMention:(id)mention;
+- (void)mentionViewWillDeactivateMention:(id)mention;
+- (void)proofreadingView:(id)view didReplaceWithString:(id)string;
+- (void)proofreadingView:(id)view willDismissStringsForProofreadingItem:(id)item;
+- (void)proofreadingView:(id)view willPresentStringsForProofreadingItem:(id)item;
+- (void)registerUndoCommand:(uint64_t)command;
 - (void)sessionManager;
-- (void)setAdditionalStrokes:(uint64_t)a1;
-- (void)setAttachmentView:(id *)a1;
-- (void)setHashtagAndMentionsDelegate:(uint64_t)a1;
-- (void)setReflowingStrokeIds:(id *)a1;
-- (void)setWantsDataDetection:(uint64_t)a1;
-- (void)setWantsHashtagDetection:(uint64_t)a1;
-- (void)setWantsMentionDetection:(uint64_t)a1;
-- (void)setWantsProofreadingDetection:(uint64_t)a1;
+- (void)setAdditionalStrokes:(uint64_t)strokes;
+- (void)setAttachmentView:(id *)view;
+- (void)setHashtagAndMentionsDelegate:(uint64_t)delegate;
+- (void)setReflowingStrokeIds:(id *)ids;
+- (void)setWantsDataDetection:(uint64_t)detection;
+- (void)setWantsHashtagDetection:(uint64_t)detection;
+- (void)setWantsMentionDetection:(uint64_t)detection;
+- (void)setWantsProofreadingDetection:(uint64_t)detection;
 - (void)updateAllPossibleParticipantNameTokens;
 - (void)updateDetectionViewVisibility;
-- (void)updateDetectionViews:(void *)a3 withItems:(void *)a4 previousItems:;
-- (void)updateMentionResults:(uint64_t)a1;
+- (void)updateDetectionViews:(void *)views withItems:(void *)items previousItems:;
+- (void)updateMentionResults:(uint64_t)results;
 @end
 
 @implementation PKDataDetectorInteractionHelper
 
-- (id)initWithView:(void *)a3 parentView:(void *)a4 recognitionController:
+- (id)initWithView:(void *)view parentView:(void *)parentView recognitionController:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  viewCopy = view;
+  parentViewCopy = parentView;
+  if (self)
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = PKDataDetectorInteractionHelper;
     v10 = objc_msgSendSuper2(&v13, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeWeak(v10 + 4, v7);
-      if (v8)
+      if (viewCopy)
       {
-        v11 = v8;
+        v11 = viewCopy;
       }
 
       else
@@ -66,13 +66,13 @@
         v11 = v7;
       }
 
-      objc_storeWeak(a1 + 5, v11);
-      objc_storeWeak(a1 + 6, v9);
-      [(PKDataDetectorInteractionHelper *)a1 setDetectionViewsHidden:?];
+      objc_storeWeak(self + 5, v11);
+      objc_storeWeak(self + 6, parentViewCopy);
+      [(PKDataDetectorInteractionHelper *)self setDetectionViewsHidden:?];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)setDetectionViewsHidden:(uint64_t)result
@@ -134,19 +134,19 @@
   return result;
 }
 
-- (void)setHashtagAndMentionsDelegate:(uint64_t)a1
+- (void)setHashtagAndMentionsDelegate:(uint64_t)delegate
 {
   v3 = a2;
-  if (a1)
+  if (delegate)
   {
     obj = v3;
-    WeakRetained = objc_loadWeakRetained((a1 + 128));
+    WeakRetained = objc_loadWeakRetained((delegate + 128));
 
     v3 = obj;
     if (WeakRetained != obj)
     {
-      objc_storeWeak((a1 + 128), obj);
-      [(PKDataDetectorInteractionHelper *)a1 updateAllPossibleParticipantNameTokens];
+      objc_storeWeak((delegate + 128), obj);
+      [(PKDataDetectorInteractionHelper *)delegate updateAllPossibleParticipantNameTokens];
       v3 = obj;
     }
   }
@@ -154,16 +154,16 @@
 
 - (void)updateAllPossibleParticipantNameTokens
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 128));
-    *(a1 + 12) = objc_opt_respondsToSelector() & 1;
+    WeakRetained = objc_loadWeakRetained((self + 128));
+    *(self + 12) = objc_opt_respondsToSelector() & 1;
 
-    if (*(a1 + 12) == 1)
+    if (*(self + 12) == 1)
     {
-      objc_initWeak(&location, a1);
-      v3 = objc_loadWeakRetained((a1 + 128));
-      v4 = objc_loadWeakRetained((a1 + 136));
+      objc_initWeak(&location, self);
+      v3 = objc_loadWeakRetained((self + 128));
+      v4 = objc_loadWeakRetained((self + 136));
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __73__PKDataDetectorInteractionHelper_updateAllPossibleParticipantNameTokens__block_invoke;
@@ -177,43 +177,43 @@
 
     else
     {
-      v5 = objc_loadWeakRetained((a1 + 128));
+      v5 = objc_loadWeakRetained((self + 128));
       v6 = objc_opt_respondsToSelector();
 
       if (v6)
       {
-        v7 = objc_loadWeakRetained((a1 + 128));
-        v8 = objc_loadWeakRetained((a1 + 136));
+        v7 = objc_loadWeakRetained((self + 128));
+        v8 = objc_loadWeakRetained((self + 136));
         v9 = [v7 allPossibleParticipantNameTokensForAttachmentView:v8];
 
-        [(PKDataDetectorInteractionHelper *)a1 _updateAllPossibleParticipantNameTokens:v9];
+        [(PKDataDetectorInteractionHelper *)self _updateAllPossibleParticipantNameTokens:v9];
       }
     }
   }
 }
 
-- (void)setAttachmentView:(id *)a1
+- (void)setAttachmentView:(id *)view
 {
   v3 = a2;
-  if (a1)
+  if (view)
   {
     v9 = v3;
-    objc_storeWeak(a1 + 17, v3);
+    objc_storeWeak(view + 17, v3);
     v3 = v9;
     if (v9)
     {
-      if (!a1[18])
+      if (!view[18])
       {
         v4 = objc_alloc(MEMORY[0x1E69DD250]);
-        WeakRetained = objc_loadWeakRetained(a1 + 4);
+        WeakRetained = objc_loadWeakRetained(view + 4);
         [WeakRetained bounds];
         v6 = [v4 initWithFrame:?];
-        v7 = a1[18];
-        a1[18] = v6;
+        v7 = view[18];
+        view[18] = v6;
 
-        [a1[18] setUserInteractionEnabled:0];
-        v8 = objc_loadWeakRetained(a1 + 4);
-        [v8 addSubview:a1[18]];
+        [view[18] setUserInteractionEnabled:0];
+        v8 = objc_loadWeakRetained(view + 4);
+        [v8 addSubview:view[18]];
 
         v3 = v9;
       }
@@ -271,17 +271,17 @@
   return result;
 }
 
-- (id)inlineViewAtPoint:(double)a3
+- (id)inlineViewAtPoint:(double)point
 {
-  v3 = a1;
+  selfCopy = self;
   v53 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v6 = a1[7];
+    v6 = self[7];
     v7 = [v6 countByEnumeratingWithState:&v45 objects:v52 count:16];
     if (v7)
     {
@@ -297,8 +297,8 @@ LABEL_4:
         }
 
         v11 = *(*(&v45 + 1) + 8 * v10);
-        WeakRetained = objc_loadWeakRetained(v3 + 4);
-        [WeakRetained convertPoint:v11 toView:{a2, a3}];
+        WeakRetained = objc_loadWeakRetained(selfCopy + 4);
+        [WeakRetained convertPoint:v11 toView:{a2, point}];
         v13 = [v11 hitTest:?];
 
         if (v13)
@@ -327,7 +327,7 @@ LABEL_10:
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v6 = v3[9];
+      v6 = selfCopy[9];
       v14 = [v6 countByEnumeratingWithState:&v41 objects:v51 count:16];
       if (v14)
       {
@@ -343,8 +343,8 @@ LABEL_12:
           }
 
           v11 = *(*(&v41 + 1) + 8 * v17);
-          v18 = objc_loadWeakRetained(v3 + 4);
-          [v18 convertPoint:v11 toView:{a2, a3}];
+          v18 = objc_loadWeakRetained(selfCopy + 4);
+          [v18 convertPoint:v11 toView:{a2, point}];
           v19 = [v11 hitTest:?];
 
           if (v19)
@@ -373,7 +373,7 @@ LABEL_18:
         v40 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v6 = v3[8];
+        v6 = selfCopy[8];
         v20 = [v6 countByEnumeratingWithState:&v37 objects:v50 count:16];
         if (v20)
         {
@@ -389,8 +389,8 @@ LABEL_20:
             }
 
             v11 = *(*(&v37 + 1) + 8 * v23);
-            v24 = objc_loadWeakRetained(v3 + 4);
-            [v24 convertPoint:v11 toView:{a2, a3}];
+            v24 = objc_loadWeakRetained(selfCopy + 4);
+            [v24 convertPoint:v11 toView:{a2, point}];
             v25 = [v11 hitTest:?];
 
             if (v25)
@@ -419,12 +419,12 @@ LABEL_26:
           v36 = 0u;
           v33 = 0u;
           v34 = 0u;
-          v6 = v3[10];
+          v6 = selfCopy[10];
           v26 = [v6 countByEnumeratingWithState:&v33 objects:v49 count:16];
           if (!v26)
           {
 LABEL_34:
-            v3 = 0;
+            selfCopy = 0;
 LABEL_36:
 
             goto LABEL_37;
@@ -442,8 +442,8 @@ LABEL_28:
             }
 
             v11 = *(*(&v33 + 1) + 8 * v29);
-            v30 = objc_loadWeakRetained(v3 + 4);
-            [v30 convertPoint:v11 toView:{a2, a3, v33}];
+            v30 = objc_loadWeakRetained(selfCopy + 4);
+            [v30 convertPoint:v11 toView:{a2, point, v33}];
             v31 = [v11 hitTest:?];
 
             if (v31)
@@ -466,54 +466,54 @@ LABEL_28:
       }
     }
 
-    v3 = v11;
+    selfCopy = v11;
     goto LABEL_36;
   }
 
 LABEL_37:
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)foundDataDetectorItems:(uint64_t)a1
+- (void)foundDataDetectorItems:(uint64_t)items
 {
-  if (a1)
+  if (items)
   {
-    [(PKDataDetectorInteractionHelper *)a1 updateDetectionViews:a2 withItems:*(a1 + 88) previousItems:?];
+    [(PKDataDetectorInteractionHelper *)items updateDetectionViews:a2 withItems:*(items + 88) previousItems:?];
   }
 }
 
-- (void)updateMentionResults:(uint64_t)a1
+- (void)updateMentionResults:(uint64_t)results
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (results)
   {
     v7 = v3;
-    if (*(a1 + 12) == 1)
+    if (*(results + 12) == 1)
     {
       v5 = [v3 mutableCopy];
-      v6 = *(a1 + 104);
-      *(a1 + 104) = v5;
+      v6 = *(results + 104);
+      *(results + 104) = v5;
     }
 
     else
     {
-      [(PKDataDetectorInteractionHelper *)a1 updateDetectionViews:v3 withItems:*(a1 + 104) previousItems:?];
+      [(PKDataDetectorInteractionHelper *)results updateDetectionViews:v3 withItems:*(results + 104) previousItems:?];
     }
 
     v4 = v7;
   }
 }
 
-- (void)foundProofreadingItems:(uint64_t)a1
+- (void)foundProofreadingItems:(uint64_t)items
 {
   v3 = a2;
-  if (a1)
+  if (items)
   {
-    if (*(a1 + 10))
+    if (*(items + 10))
     {
-      [(PKDataDetectorInteractionHelper *)a1 updateDetectionViews:v3 withItems:*(a1 + 112) previousItems:?];
+      [(PKDataDetectorInteractionHelper *)items updateDetectionViews:v3 withItems:*(items + 112) previousItems:?];
     }
 
     else
@@ -528,37 +528,37 @@ LABEL_37:
   }
 }
 
-- (void)layoutInlineViewsDrawingTransform:(id *)a1
+- (void)layoutInlineViewsDrawingTransform:(id *)transform
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (transform)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    if ([a1[7] count])
+    array = [MEMORY[0x1E695DF70] array];
+    if ([transform[7] count])
     {
-      [v4 addObjectsFromArray:a1[7]];
+      [array addObjectsFromArray:transform[7]];
     }
 
-    if ([a1[9] count])
+    if ([transform[9] count])
     {
-      [v4 addObjectsFromArray:a1[9]];
+      [array addObjectsFromArray:transform[9]];
     }
 
-    if ([a1[8] count])
+    if ([transform[8] count])
     {
-      [v4 addObjectsFromArray:a1[8]];
+      [array addObjectsFromArray:transform[8]];
     }
 
-    if ([a1[10] count])
+    if ([transform[10] count])
     {
-      [v4 addObjectsFromArray:a1[10]];
+      [array addObjectsFromArray:transform[10]];
     }
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v5 = v4;
+    v5 = array;
     v6 = [v5 countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v6)
     {
@@ -650,9 +650,9 @@ LABEL_37:
 
       if (v8)
       {
-        [(PKDataDetectorInteractionHelper *)a1 setDetectionViewsHidden:?];
-        [PKAttachmentView cancelPreviousPerformRequestsWithTarget:a1 selector:sel_revealDetectionViews object:0];
-        [a1 performSelector:sel_revealDetectionViews withObject:0 afterDelay:0.2];
+        [(PKDataDetectorInteractionHelper *)transform setDetectionViewsHidden:?];
+        [PKAttachmentView cancelPreviousPerformRequestsWithTarget:transform selector:sel_revealDetectionViews object:0];
+        [transform performSelector:sel_revealDetectionViews withObject:0 afterDelay:0.2];
       }
     }
 
@@ -676,14 +676,14 @@ LABEL_37:
   return result;
 }
 
-- (void)setAdditionalStrokes:(uint64_t)a1
+- (void)setAdditionalStrokes:(uint64_t)strokes
 {
   v29 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1 && *(a1 + 10) == 1 && *(a1 + 112) && [v3 count])
+  if (strokes && *(strokes + 10) == 1 && *(strokes + 112) && [v3 count])
   {
-    [MEMORY[0x1E695DF70] arrayWithArray:*(a1 + 112)];
+    [MEMORY[0x1E695DF70] arrayWithArray:*(strokes + 112)];
     v23 = v22 = v4;
     v5 = MEMORY[0x1E695DFD8];
     v6 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v4];
@@ -694,8 +694,8 @@ LABEL_37:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v21 = a1;
-    v9 = *(a1 + 80);
+    strokesCopy = strokes;
+    v9 = *(strokes + 80);
     v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v10)
     {
@@ -712,14 +712,14 @@ LABEL_37:
 
           v14 = *(*(&v24 + 1) + 8 * i);
           v15 = MEMORY[0x1E695DFD8];
-          v16 = [v14 proofreadingItem];
-          v17 = [v16 chStrokeIdentifiers];
-          v18 = [v15 setWithArray:v17];
+          proofreadingItem = [v14 proofreadingItem];
+          chStrokeIdentifiers = [proofreadingItem chStrokeIdentifiers];
+          v18 = [v15 setWithArray:chStrokeIdentifiers];
 
           if ([v18 intersectsSet:v8])
           {
-            v19 = [v14 proofreadingItem];
-            [v23 removeObject:v19];
+            proofreadingItem2 = [v14 proofreadingItem];
+            [v23 removeObject:proofreadingItem2];
           }
         }
 
@@ -730,29 +730,29 @@ LABEL_37:
     }
 
     v20 = [v23 count];
-    if (v20 != [*(v21 + 112) count])
+    if (v20 != [*(strokesCopy + 112) count])
     {
-      [(PKDataDetectorInteractionHelper *)v21 updateDetectionViews:v23 withItems:*(v21 + 112) previousItems:?];
+      [(PKDataDetectorInteractionHelper *)strokesCopy updateDetectionViews:v23 withItems:*(strokesCopy + 112) previousItems:?];
     }
 
     v4 = v22;
   }
 }
 
-- (void)updateDetectionViews:(void *)a3 withItems:(void *)a4 previousItems:
+- (void)updateDetectionViews:(void *)views withItems:(void *)items previousItems:
 {
   v171 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v129 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a1)
+  viewsCopy = views;
+  itemsCopy = items;
+  v9 = itemsCopy;
+  if (self)
   {
     if (v7)
     {
-      v125 = v8;
-      v130 = *(a1 + 11);
-      v10 = [MEMORY[0x1E695DF70] array];
+      v125 = itemsCopy;
+      v130 = *(self + 11);
+      array = [MEMORY[0x1E695DF70] array];
       v159 = 0u;
       v160 = 0u;
       v161 = 0u;
@@ -774,29 +774,29 @@ LABEL_37:
             }
 
             v16 = *(*(&v159 + 1) + 8 * i);
-            v17 = [v16 item];
-            v18 = [v129 containsObject:v17];
+            item = [v16 item];
+            v18 = [viewsCopy containsObject:item];
 
             if ((v18 & 1) == 0)
             {
-              [v10 addObject:v16];
-              v19 = [v16 item];
-              [v125 removeObject:v19];
+              [array addObject:v16];
+              item2 = [v16 item];
+              [v125 removeObject:item2];
 
-              v20 = [v16 item];
+              item3 = [v16 item];
               objc_opt_class();
               isKindOfClass = objc_opt_isKindOfClass();
 
               if (isKindOfClass)
               {
                 v22 = +[PKStatisticsManager sharedStatisticsManager];
-                v23 = [v16 item];
-                [(PKStatisticsManager *)v22 recordDataDetectorItemRemove:v23];
+                item4 = [v16 item];
+                [(PKStatisticsManager *)v22 recordDataDetectorItemRemove:item4];
               }
 
               else
               {
-                v24 = [v16 item];
+                item5 = [v16 item];
                 objc_opt_class();
                 v25 = objc_opt_isKindOfClass();
 
@@ -825,7 +825,7 @@ LABEL_37:
       v158 = 0u;
       v155 = 0u;
       v156 = 0u;
-      obj = v10;
+      obj = array;
       v27 = [obj countByEnumeratingWithState:&v155 objects:v169 count:16];
       if (v27)
       {
@@ -842,7 +842,7 @@ LABEL_37:
             }
 
             v31 = *(*(&v155 + 1) + 8 * v30);
-            if (*(a1 + 13) == 1)
+            if (*(self + 13) == 1)
             {
               [*(*(&v155 + 1) + 8 * v30) removeFromSuperview];
             }
@@ -867,13 +867,13 @@ LABEL_37:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v32 = [v31 item];
-                v33 = [v32 active];
+                item6 = [v31 item];
+                active = [item6 active];
 
-                if (v33)
+                if (active)
                 {
-                  [a1 hashtagViewWillDeactivateHashtag:v31];
-                  [a1 hashtagViewDidDeactivateHashtag:v31];
+                  [self hashtagViewWillDeactivateHashtag:v31];
+                  [self hashtagViewDidDeactivateHashtag:v31];
                 }
               }
 
@@ -882,13 +882,13 @@ LABEL_37:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v34 = [v31 item];
-                  v35 = [v34 active];
+                  item7 = [v31 item];
+                  active2 = [item7 active];
 
-                  if (v35)
+                  if (active2)
                   {
-                    [a1 mentionViewWillDeactivateMention:v31];
-                    [a1 mentionViewDidDeactivateMention:v31];
+                    [self mentionViewWillDeactivateMention:v31];
+                    [self mentionViewDidDeactivateMention:v31];
                   }
                 }
               }
@@ -906,10 +906,10 @@ LABEL_37:
       }
 
       [v11 removeObjectsInArray:obj];
-      if (*(a1 + 72) == v11)
+      if (*(self + 72) == v11)
       {
-        WeakRetained = objc_loadWeakRetained((a1 + 128));
-        v38 = objc_loadWeakRetained((a1 + 136));
+        WeakRetained = objc_loadWeakRetained((self + 128));
+        v38 = objc_loadWeakRetained((self + 136));
         v39 = [WeakRetained allConfirmedHashtagsForAttachmentView:v38];
 
         v151 = 0u;
@@ -932,23 +932,23 @@ LABEL_37:
               }
 
               v44 = *(*(&v149 + 1) + 8 * j);
-              v45 = [v44 hashtagItem];
-              v46 = [v45 hashtagUUID];
-              v47 = [v39 containsObject:v46];
+              hashtagItem = [v44 hashtagItem];
+              hashtagUUID = [hashtagItem hashtagUUID];
+              v47 = [v39 containsObject:hashtagUUID];
 
               if ((v47 & 1) == 0)
               {
-                v48 = [v44 item];
-                v49 = [v48 active];
+                item8 = [v44 item];
+                active3 = [item8 active];
 
-                if (v49)
+                if (active3)
                 {
-                  [a1 hashtagViewWillDeactivateHashtag:v44];
-                  v50 = [v44 item];
-                  v51 = [(PKDataDetectorInteractionHelper *)a1 drawing];
-                  [v50 clearActiveInDrawing:v51];
+                  [self hashtagViewWillDeactivateHashtag:v44];
+                  item9 = [v44 item];
+                  drawing = [(PKDataDetectorInteractionHelper *)self drawing];
+                  [item9 clearActiveInDrawing:drawing];
 
-                  [a1 hashtagViewDidDeactivateHashtag:v44];
+                  [self hashtagViewDidDeactivateHashtag:v44];
                 }
               }
             }
@@ -961,14 +961,14 @@ LABEL_37:
       }
 
       [v11 makeObjectsPerformSelector:{sel_setNeedsDisplay, v119}];
-      v52 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       if ([v125 count])
       {
         v147 = 0u;
         v148 = 0u;
         v145 = 0u;
         v146 = 0u;
-        v53 = v129;
+        v53 = viewsCopy;
         v54 = [v53 countByEnumeratingWithState:&v145 objects:v167 count:16];
         if (v54)
         {
@@ -986,7 +986,7 @@ LABEL_37:
               v58 = *(*(&v145 + 1) + 8 * k);
               if (([v125 containsObject:v58] & 1) == 0)
               {
-                [v52 addObject:v58];
+                [array2 addObject:v58];
               }
             }
 
@@ -999,17 +999,17 @@ LABEL_37:
 
       else
       {
-        [v52 addObjectsFromArray:v129];
+        [array2 addObjectsFromArray:viewsCopy];
       }
 
-      [v125 addObjectsFromArray:v52];
-      if ((v130 & 1) == 0 && [v52 count])
+      [v125 addObjectsFromArray:array2];
+      if ((v130 & 1) == 0 && [array2 count])
       {
         v143 = 0u;
         v144 = 0u;
         v141 = 0u;
         v142 = 0u;
-        v59 = v52;
+        v59 = array2;
         v60 = [v59 countByEnumeratingWithState:&v141 objects:v166 count:16];
         if (v60)
         {
@@ -1057,14 +1057,14 @@ LABEL_37:
         }
       }
 
-      if (*(a1 + 56) == v11)
+      if (*(self + 56) == v11)
       {
-        v68 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v129, "count")}];
+        v68 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(viewsCopy, "count")}];
         v137 = 0u;
         v138 = 0u;
         v139 = 0u;
         v140 = 0u;
-        v69 = v129;
+        v69 = viewsCopy;
         v70 = [v69 countByEnumeratingWithState:&v137 objects:v165 count:16];
         if (v70)
         {
@@ -1094,12 +1094,12 @@ LABEL_37:
         v68 = 0;
       }
 
-      v74 = objc_loadWeakRetained((a1 + 40));
+      v74 = objc_loadWeakRetained((self + 40));
       v133 = 0u;
       v134 = 0u;
       v135 = 0u;
       v136 = 0u;
-      v127 = v52;
+      v127 = array2;
       v75 = [v127 countByEnumeratingWithState:&v133 objects:v164 count:16];
       if (v75)
       {
@@ -1119,9 +1119,9 @@ LABEL_37:
             }
 
             v79 = *(*(&v133 + 1) + 8 * v78);
-            v80 = objc_loadWeakRetained((a1 + 40));
+            v80 = objc_loadWeakRetained((self + 40));
 
-            if (*(a1 + 56) == v11)
+            if (*(self + 56) == v11)
             {
               v83 = [[PKDataDetectorView alloc] initWithDataDetectorItem:v79 allItems:v68];
               if (!v83)
@@ -1132,42 +1132,42 @@ LABEL_37:
               goto LABEL_119;
             }
 
-            if (*(a1 + 72) == v11)
+            if (*(self + 72) == v11)
             {
-              v86 = [v79 hashtagUUID];
-              v87 = objc_loadWeakRetained((a1 + 128));
-              v88 = objc_loadWeakRetained((a1 + 136));
-              v89 = [v87 allConfirmedHashtagsForAttachmentView:v88];
-              if ([v89 containsObject:v86])
+              hashtagUUID2 = [v79 hashtagUUID];
+              drawing2 = objc_loadWeakRetained((self + 128));
+              v88 = objc_loadWeakRetained((self + 136));
+              v89 = [drawing2 allConfirmedHashtagsForAttachmentView:v88];
+              if ([v89 containsObject:hashtagUUID2])
               {
 
                 v76 = v124;
                 goto LABEL_113;
               }
 
-              v108 = [v79 active];
+              active4 = [v79 active];
 
               v76 = v124;
-              if (v108)
+              if (active4)
               {
-                v87 = [(PKDataDetectorInteractionHelper *)a1 drawing];
-                [v79 clearActiveInDrawing:v87];
+                drawing2 = [(PKDataDetectorInteractionHelper *)self drawing];
+                [v79 clearActiveInDrawing:drawing2];
 LABEL_113:
               }
 
               v109 = [PKHashtagView alloc];
-              v110 = [(PKDataDetectorInteractionHelper *)a1 drawing];
-              v83 = [(PKHashtagView *)v109 initWithHashtagItem:v79 inDrawing:v110];
+              drawing3 = [(PKDataDetectorInteractionHelper *)self drawing];
+              v83 = [(PKHashtagView *)v109 initWithHashtagItem:v79 inDrawing:drawing3];
 
-              [(PKDataDetectorView *)v83 setDelegate:a1];
+              [(PKDataDetectorView *)v83 setDelegate:self];
               if ((v130 & 1) == 0)
               {
-                v111 = [(PKDataDetectorView *)v83 item];
-                v112 = [v111 active];
+                item10 = [(PKDataDetectorView *)v83 item];
+                active5 = [item10 active];
 
-                if (v112)
+                if (active5)
                 {
-                  [a1 hashtagViewDidActivateHashtag:v83];
+                  [self hashtagViewDidActivateHashtag:v83];
                 }
               }
 
@@ -1176,63 +1176,63 @@ LABEL_113:
               goto LABEL_118;
             }
 
-            if (*(a1 + 64) == v11)
+            if (*(self + 64) == v11)
             {
-              v90 = [v79 mentionResult];
-              v91 = [v90 stringByReplacingCharactersInRange:0 withString:{1, &stru_1F476BD20}];
+              mentionResult = [v79 mentionResult];
+              v91 = [mentionResult stringByReplacingCharactersInRange:0 withString:{1, &stru_1F476BD20}];
 
-              v92 = objc_loadWeakRetained((a1 + 128));
-              v93 = objc_loadWeakRetained((a1 + 136));
+              v92 = objc_loadWeakRetained((self + 128));
+              v93 = objc_loadWeakRetained((self + 136));
               v94 = [v92 attachmentView:v93 participantMatchesForMentionText:v91];
 
               if ([v94 count])
               {
                 v95 = [PKMentionView alloc];
-                v96 = [(PKDataDetectorInteractionHelper *)a1 drawing];
-                v83 = [(PKMentionView *)v95 initWithMentionItem:v79 possibleParticipants:v94 inDrawing:v96];
+                drawing4 = [(PKDataDetectorInteractionHelper *)self drawing];
+                v83 = [(PKMentionView *)v95 initWithMentionItem:v79 possibleParticipants:v94 inDrawing:drawing4];
 
-                [(PKDataDetectorView *)v83 setDelegate:a1];
-                v97 = [(PKDataDetectorView *)v83 mentionItem];
-                LODWORD(v96) = [v97 active];
+                [(PKDataDetectorView *)v83 setDelegate:self];
+                mentionItem = [(PKDataDetectorView *)v83 mentionItem];
+                LODWORD(drawing4) = [mentionItem active];
 
-                if (v96)
+                if (drawing4)
                 {
-                  v98 = objc_loadWeakRetained((a1 + 128));
-                  v99 = objc_loadWeakRetained((a1 + 136));
+                  v98 = objc_loadWeakRetained((self + 128));
+                  v99 = objc_loadWeakRetained((self + 136));
                   v100 = [v98 allConfirmedMentionsForAttachmentView:v99];
 
-                  if (!*(a1 + 120))
+                  if (!*(self + 120))
                   {
                     v101 = [v100 mutableCopy];
-                    v102 = *(a1 + 120);
-                    *(a1 + 120) = v101;
+                    v102 = *(self + 120);
+                    *(self + 120) = v101;
                   }
 
-                  v103 = [(PKDataDetectorView *)v83 mentionItem];
-                  v104 = [v103 mentionUUID];
+                  mentionItem2 = [(PKDataDetectorView *)v83 mentionItem];
+                  mentionUUID = [mentionItem2 mentionUUID];
 
-                  v105 = [v100 objectForKeyedSubscript:v104];
-                  v121 = v104;
-                  if (v105)
+                  mentionItem3 = [v100 objectForKeyedSubscript:mentionUUID];
+                  v121 = mentionUUID;
+                  if (mentionItem3)
                   {
 LABEL_109:
-                    v107 = [v105 color];
-                    [(PKDataDetectorView *)v83 setMentionColor:v107];
+                    color = [mentionItem3 color];
+                    [(PKDataDetectorView *)v83 setMentionColor:color];
                   }
 
                   else
                   {
-                    v106 = [*(a1 + 120) objectForKeyedSubscript:v104];
+                    v106 = [*(self + 120) objectForKeyedSubscript:mentionUUID];
                     if (v106)
                     {
-                      v105 = v106;
-                      [a1 mentionViewDidActivateMention:v83 withParticpant:v106];
+                      mentionItem3 = v106;
+                      [self mentionViewDidActivateMention:v83 withParticpant:v106];
                       goto LABEL_109;
                     }
 
-                    v105 = [(PKDataDetectorView *)v83 mentionItem];
-                    v107 = [(PKDataDetectorInteractionHelper *)a1 drawing];
-                    [v105 clearActiveInDrawing:v107];
+                    mentionItem3 = [(PKDataDetectorView *)v83 mentionItem];
+                    color = [(PKDataDetectorInteractionHelper *)self drawing];
+                    [mentionItem3 clearActiveInDrawing:color];
                   }
 
                   v68 = v122;
@@ -1265,17 +1265,17 @@ LABEL_128:
               goto LABEL_128;
             }
 
-            if (*(a1 + 80) != v11)
+            if (*(self + 80) != v11)
             {
               goto LABEL_123;
             }
 
             v81 = [PKProofreadingView alloc];
-            v82 = [(PKDataDetectorInteractionHelper *)a1 drawing];
-            v83 = [(PKProofreadingView *)v81 initWithProofreadingItem:v79 inDrawing:v82];
+            drawing5 = [(PKDataDetectorInteractionHelper *)self drawing];
+            v83 = [(PKProofreadingView *)v81 initWithProofreadingItem:v79 inDrawing:drawing5];
 
-            [(PKDataDetectorView *)v83 setDelegate:a1];
-            v84 = *(a1 + 144);
+            [(PKDataDetectorView *)v83 setDelegate:self];
+            v84 = *(self + 144);
             if (v84)
             {
               v85 = v84;
@@ -1298,7 +1298,7 @@ LABEL_118:
 LABEL_119:
             [v80 insertSubview:v83 atIndex:0];
             [(PKDataDetectorView *)v83 setAlpha:0.0];
-            if (*(a1 + 13) != 1 || *(a1 + 80) == v11)
+            if (*(self + 13) != 1 || *(self + 80) == v11)
             {
               v113 = MEMORY[0x1E69DD250];
               v131[0] = MEMORY[0x1E69E9820];
@@ -1328,13 +1328,13 @@ LABEL_123:
       v9 = v125;
       if ([v127 count])
       {
-        v115 = objc_loadWeakRetained((a1 + 24));
+        v115 = objc_loadWeakRetained((self + 24));
         v116 = objc_opt_respondsToSelector();
 
         if (v116)
         {
-          v117 = objc_loadWeakRetained((a1 + 24));
-          [v117 dataDetectorInteractionHelperNeedsLayout:a1];
+          v117 = objc_loadWeakRetained((self + 24));
+          [v117 dataDetectorInteractionHelperNeedsLayout:self];
         }
 
         else
@@ -1343,7 +1343,7 @@ LABEL_123:
         }
       }
 
-      v118 = objc_loadWeakRetained((a1 + 32));
+      v118 = objc_loadWeakRetained((self + 32));
       [v118 setNeedsLayout];
     }
 
@@ -1361,7 +1361,7 @@ LABEL_123:
 
 - (void)sessionManager
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  WeakRetained = objc_loadWeakRetained((self + 48));
   v2 = WeakRetained;
   if (WeakRetained)
   {
@@ -1380,52 +1380,52 @@ LABEL_123:
 
 - (id)drawing
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 17);
+    WeakRetained = objc_loadWeakRetained(self + 17);
 
     if (WeakRetained)
     {
-      v3 = v1 + 17;
+      v3 = selfCopy + 17;
     }
 
     else
     {
-      v3 = v1 + 6;
+      v3 = selfCopy + 6;
     }
 
     v4 = objc_loadWeakRetained(v3);
-    v1 = [v4 drawing];
+    selfCopy = [v4 drawing];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)window
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 32));
-  v2 = [WeakRetained window];
+  WeakRetained = objc_loadWeakRetained((self + 32));
+  window = [WeakRetained window];
 
-  return v2;
+  return window;
 }
 
-- (void)setReflowingStrokeIds:(id *)a1
+- (void)setReflowingStrokeIds:(id *)ids
 {
   v31 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (ids)
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    obj = a1[10];
+    obj = ids[10];
     v20 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v20)
     {
       v18 = *v26;
-      v19 = a1;
+      idsCopy = ids;
       do
       {
         for (i = 0; i != v20; ++i)
@@ -1436,10 +1436,10 @@ LABEL_123:
           }
 
           v5 = *(*(&v25 + 1) + 8 * i);
-          v6 = [(PKDataDetectorInteractionHelper *)a1 drawing];
-          v7 = [v5 proofreadingItem];
-          v8 = [v7 chStrokeIdentifiers];
-          v9 = [v6 strokesForCHStrokeIdentifiers:v8];
+          drawing = [(PKDataDetectorInteractionHelper *)ids drawing];
+          proofreadingItem = [v5 proofreadingItem];
+          chStrokeIdentifiers = [proofreadingItem chStrokeIdentifiers];
+          v9 = [drawing strokesForCHStrokeIdentifiers:chStrokeIdentifiers];
 
           v23 = 0u;
           v24 = 0u;
@@ -1460,8 +1460,8 @@ LABEL_123:
                   objc_enumerationMutation(v10);
                 }
 
-                v15 = [*(*(&v21 + 1) + 8 * j) _strokeUUID];
-                v16 = [v3 containsObject:v15];
+                _strokeUUID = [*(*(&v21 + 1) + 8 * j) _strokeUUID];
+                v16 = [v3 containsObject:_strokeUUID];
 
                 if (v16)
                 {
@@ -1480,7 +1480,7 @@ LABEL_123:
             while (v12);
           }
 
-          a1 = v19;
+          ids = idsCopy;
         }
 
         v20 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -1731,14 +1731,14 @@ void __59__PKDataDetectorInteractionHelper_setDetectionViewsHidden___block_invok
   }
 }
 
-- (void)_removeViews:(void *)a1 animated:(char)a2
+- (void)_removeViews:(void *)views animated:(char)animated
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a1 copy];
+  v3 = [views copy];
   v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
@@ -1754,11 +1754,11 @@ void __59__PKDataDetectorInteractionHelper_setDetectionViewsHidden___block_invok
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 superview];
+        superview = [v8 superview];
 
-        if (v9)
+        if (superview)
         {
-          if (a2)
+          if (animated)
           {
             v10[4] = v8;
             v11[0] = MEMORY[0x1E69E9820];
@@ -1787,15 +1787,15 @@ void __59__PKDataDetectorInteractionHelper_setDetectionViewsHidden___block_invok
   }
 }
 
-- (void)setWantsDataDetection:(uint64_t)a1
+- (void)setWantsDataDetection:(uint64_t)detection
 {
-  if (a1 && *(a1 + 9) != a2)
+  if (detection && *(detection + 9) != a2)
   {
-    *(a1 + 9) = a2;
-    v3 = [(PKDataDetectorInteractionHelper *)a1 window];
-    if (v3)
+    *(detection + 9) = a2;
+    window = [(PKDataDetectorInteractionHelper *)detection window];
+    if (window)
     {
-      v4 = *(a1 + 9);
+      v4 = *(detection + 9);
     }
 
     else
@@ -1803,49 +1803,49 @@ void __59__PKDataDetectorInteractionHelper_setDetectionViewsHidden___block_invok
       v4 = 0;
     }
 
-    v5 = [(PKDataDetectorInteractionHelper *)a1 sessionManager];
-    [(PKRecognitionSessionManager *)v5 setWantsDataDetection:v4];
+    sessionManager = [(PKDataDetectorInteractionHelper *)detection sessionManager];
+    [(PKRecognitionSessionManager *)sessionManager setWantsDataDetection:v4];
 
-    v6 = *(a1 + 56);
-    if (*(a1 + 9) == 1)
+    v6 = *(detection + 56);
+    if (*(detection + 9) == 1)
     {
       if (v6)
       {
         return;
       }
 
-      v10 = [MEMORY[0x1E695DF70] array];
-      v11 = *(a1 + 56);
-      *(a1 + 56) = v10;
+      array = [MEMORY[0x1E695DF70] array];
+      v11 = *(detection + 56);
+      *(detection + 56) = array;
 
-      v9 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
     }
 
     else
     {
-      v7 = [(PKDataDetectorInteractionHelper *)a1 window];
-      [PKDataDetectorInteractionHelper _removeViews:v6 animated:v7 != 0];
+      window2 = [(PKDataDetectorInteractionHelper *)detection window];
+      [PKDataDetectorInteractionHelper _removeViews:v6 animated:window2 != 0];
 
-      v8 = *(a1 + 56);
-      *(a1 + 56) = 0;
+      v8 = *(detection + 56);
+      *(detection + 56) = 0;
 
-      v9 = 0;
+      array2 = 0;
     }
 
-    v12 = *(a1 + 88);
-    *(a1 + 88) = v9;
+    v12 = *(detection + 88);
+    *(detection + 88) = array2;
   }
 }
 
-- (void)setWantsHashtagDetection:(uint64_t)a1
+- (void)setWantsHashtagDetection:(uint64_t)detection
 {
-  if (a1 && *(a1 + 14) != a2)
+  if (detection && *(detection + 14) != a2)
   {
-    *(a1 + 14) = a2;
-    v3 = [(PKDataDetectorInteractionHelper *)a1 window];
-    if (v3)
+    *(detection + 14) = a2;
+    window = [(PKDataDetectorInteractionHelper *)detection window];
+    if (window)
     {
-      v4 = *(a1 + 14);
+      v4 = *(detection + 14);
     }
 
     else
@@ -1853,49 +1853,49 @@ void __59__PKDataDetectorInteractionHelper_setDetectionViewsHidden___block_invok
       v4 = 0;
     }
 
-    v5 = [(PKDataDetectorInteractionHelper *)a1 sessionManager];
-    [(PKRecognitionSessionManager *)v5 setWantsHashtagDetection:v4];
+    sessionManager = [(PKDataDetectorInteractionHelper *)detection sessionManager];
+    [(PKRecognitionSessionManager *)sessionManager setWantsHashtagDetection:v4];
 
-    v6 = *(a1 + 72);
-    if (*(a1 + 14) == 1)
+    v6 = *(detection + 72);
+    if (*(detection + 14) == 1)
     {
       if (v6)
       {
         return;
       }
 
-      v10 = [MEMORY[0x1E695DF70] array];
-      v11 = *(a1 + 72);
-      *(a1 + 72) = v10;
+      array = [MEMORY[0x1E695DF70] array];
+      v11 = *(detection + 72);
+      *(detection + 72) = array;
 
-      v9 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
     }
 
     else
     {
-      v7 = [(PKDataDetectorInteractionHelper *)a1 window];
-      [PKDataDetectorInteractionHelper _removeViews:v6 animated:v7 != 0];
+      window2 = [(PKDataDetectorInteractionHelper *)detection window];
+      [PKDataDetectorInteractionHelper _removeViews:v6 animated:window2 != 0];
 
-      v8 = *(a1 + 72);
-      *(a1 + 72) = 0;
+      v8 = *(detection + 72);
+      *(detection + 72) = 0;
 
-      v9 = 0;
+      array2 = 0;
     }
 
-    v12 = *(a1 + 96);
-    *(a1 + 96) = v9;
+    v12 = *(detection + 96);
+    *(detection + 96) = array2;
   }
 }
 
-- (void)setWantsMentionDetection:(uint64_t)a1
+- (void)setWantsMentionDetection:(uint64_t)detection
 {
-  if (a1 && *(a1 + 15) != a2)
+  if (detection && *(detection + 15) != a2)
   {
-    *(a1 + 15) = a2;
-    v3 = [(PKDataDetectorInteractionHelper *)a1 window];
-    if (v3)
+    *(detection + 15) = a2;
+    window = [(PKDataDetectorInteractionHelper *)detection window];
+    if (window)
     {
-      v4 = *(a1 + 15);
+      v4 = *(detection + 15);
     }
 
     else
@@ -1903,49 +1903,49 @@ void __59__PKDataDetectorInteractionHelper_setDetectionViewsHidden___block_invok
       v4 = 0;
     }
 
-    v5 = [(PKDataDetectorInteractionHelper *)a1 sessionManager];
-    [(PKRecognitionSessionManager *)v5 setWantsMentionDetection:v4];
+    sessionManager = [(PKDataDetectorInteractionHelper *)detection sessionManager];
+    [(PKRecognitionSessionManager *)sessionManager setWantsMentionDetection:v4];
 
-    v6 = *(a1 + 64);
-    if (*(a1 + 15) == 1)
+    v6 = *(detection + 64);
+    if (*(detection + 15) == 1)
     {
       if (v6)
       {
         return;
       }
 
-      v10 = [MEMORY[0x1E695DF70] array];
-      v11 = *(a1 + 64);
-      *(a1 + 64) = v10;
+      array = [MEMORY[0x1E695DF70] array];
+      v11 = *(detection + 64);
+      *(detection + 64) = array;
 
-      v9 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
     }
 
     else
     {
-      v7 = [(PKDataDetectorInteractionHelper *)a1 window];
-      [PKDataDetectorInteractionHelper _removeViews:v6 animated:v7 != 0];
+      window2 = [(PKDataDetectorInteractionHelper *)detection window];
+      [PKDataDetectorInteractionHelper _removeViews:v6 animated:window2 != 0];
 
-      v8 = *(a1 + 64);
-      *(a1 + 64) = 0;
+      v8 = *(detection + 64);
+      *(detection + 64) = 0;
 
-      v9 = 0;
+      array2 = 0;
     }
 
-    v12 = *(a1 + 104);
-    *(a1 + 104) = v9;
+    v12 = *(detection + 104);
+    *(detection + 104) = array2;
   }
 }
 
-- (void)setWantsProofreadingDetection:(uint64_t)a1
+- (void)setWantsProofreadingDetection:(uint64_t)detection
 {
-  if (a1 && *(a1 + 10) != a2)
+  if (detection && *(detection + 10) != a2)
   {
-    *(a1 + 10) = a2;
-    v3 = [(PKDataDetectorInteractionHelper *)a1 window];
-    if (v3)
+    *(detection + 10) = a2;
+    window = [(PKDataDetectorInteractionHelper *)detection window];
+    if (window)
     {
-      v4 = *(a1 + 10);
+      v4 = *(detection + 10);
     }
 
     else
@@ -1953,37 +1953,37 @@ void __59__PKDataDetectorInteractionHelper_setDetectionViewsHidden___block_invok
       v4 = 0;
     }
 
-    v5 = [(PKDataDetectorInteractionHelper *)a1 sessionManager];
-    [(PKRecognitionSessionManager *)v5 setWantsProofreadingDetection:v4];
+    sessionManager = [(PKDataDetectorInteractionHelper *)detection sessionManager];
+    [(PKRecognitionSessionManager *)sessionManager setWantsProofreadingDetection:v4];
 
-    v6 = *(a1 + 80);
-    if (*(a1 + 10) == 1)
+    v6 = *(detection + 80);
+    if (*(detection + 10) == 1)
     {
       if (v6)
       {
         return;
       }
 
-      v10 = [MEMORY[0x1E695DF70] array];
-      v11 = *(a1 + 80);
-      *(a1 + 80) = v10;
+      array = [MEMORY[0x1E695DF70] array];
+      v11 = *(detection + 80);
+      *(detection + 80) = array;
 
-      v9 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
     }
 
     else
     {
-      v7 = [(PKDataDetectorInteractionHelper *)a1 window];
-      [PKDataDetectorInteractionHelper _removeViews:v6 animated:v7 != 0];
+      window2 = [(PKDataDetectorInteractionHelper *)detection window];
+      [PKDataDetectorInteractionHelper _removeViews:v6 animated:window2 != 0];
 
-      v8 = *(a1 + 80);
-      *(a1 + 80) = 0;
+      v8 = *(detection + 80);
+      *(detection + 80) = 0;
 
-      v9 = 0;
+      array2 = 0;
     }
 
-    v12 = *(a1 + 112);
-    *(a1 + 112) = v9;
+    v12 = *(detection + 112);
+    *(detection + 112) = array2;
   }
 }
 
@@ -1994,42 +1994,42 @@ void __73__PKDataDetectorInteractionHelper_updateAllPossibleParticipantNameToken
   [(PKDataDetectorInteractionHelper *)WeakRetained _updateAllPossibleParticipantNameTokens:v3];
 }
 
-- (void)_updateAllPossibleParticipantNameTokens:(uint64_t)a1
+- (void)_updateAllPossibleParticipantNameTokens:(uint64_t)tokens
 {
   v8 = a2;
-  if (a1)
+  if (tokens)
   {
-    v3 = [(PKDataDetectorInteractionHelper *)a1 sessionManager];
-    [(PKRecognitionSessionManager *)v3 setMentionSuffixes:v8];
+    sessionManager = [(PKDataDetectorInteractionHelper *)tokens sessionManager];
+    [(PKRecognitionSessionManager *)sessionManager setMentionSuffixes:v8];
 
-    if (*(a1 + 12) == 1)
+    if (*(tokens + 12) == 1)
     {
-      *(a1 + 12) = 0;
-      if ([*(a1 + 104) count])
+      *(tokens + 12) = 0;
+      if ([*(tokens + 104) count])
       {
         v4 = MEMORY[0x1E695DF70];
-        v5 = *(a1 + 104);
-        v6 = [v4 array];
-        v7 = *(a1 + 104);
-        *(a1 + 104) = v6;
+        v5 = *(tokens + 104);
+        array = [v4 array];
+        v7 = *(tokens + 104);
+        *(tokens + 104) = array;
 
-        [(PKDataDetectorInteractionHelper *)a1 updateMentionResults:v5];
+        [(PKDataDetectorInteractionHelper *)tokens updateMentionResults:v5];
       }
     }
   }
 }
 
-- (double)boundingBoxForHashtagOrMentionWithUUID:(uint64_t)a1
+- (double)boundingBoxForHashtagOrMentionWithUUID:(uint64_t)d
 {
   v36 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (d)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v4 = *(a1 + 72);
+    v4 = *(d + 72);
     v5 = [v4 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v5)
     {
@@ -2045,9 +2045,9 @@ void __73__PKDataDetectorInteractionHelper_updateAllPossibleParticipantNameToken
           }
 
           v9 = *(*(&v30 + 1) + 8 * i);
-          v10 = [v9 hashtagItem];
-          v11 = [v10 hashtagUUID];
-          v12 = [v11 isEqual:v3];
+          hashtagItem = [v9 hashtagItem];
+          hashtagUUID = [hashtagItem hashtagUUID];
+          v12 = [hashtagUUID isEqual:v3];
 
           if (v12)
           {
@@ -2072,7 +2072,7 @@ void __73__PKDataDetectorInteractionHelper_updateAllPossibleParticipantNameToken
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v13 = *(a1 + 64);
+    v13 = *(d + 64);
     v14 = [v13 countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v14)
     {
@@ -2088,9 +2088,9 @@ void __73__PKDataDetectorInteractionHelper_updateAllPossibleParticipantNameToken
           }
 
           v18 = *(*(&v26 + 1) + 8 * j);
-          v19 = [v18 mentionItem];
-          v20 = [v19 mentionUUID];
-          v21 = [v20 isEqual:v3];
+          mentionItem = [v18 mentionItem];
+          mentionUUID = [mentionItem mentionUUID];
+          v21 = [mentionUUID isEqual:v3];
 
           if (v21)
           {
@@ -2124,25 +2124,25 @@ LABEL_21:
   return v22;
 }
 
-- (void)registerUndoCommand:(uint64_t)a1
+- (void)registerUndoCommand:(uint64_t)command
 {
   v6 = a2;
-  if (a1)
+  if (command)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
+    WeakRetained = objc_loadWeakRetained((command + 24));
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = objc_loadWeakRetained((a1 + 24));
-      [v5 dataDetectorInteractionHelper:a1 registerUndoCommand:v6];
+      v5 = objc_loadWeakRetained((command + 24));
+      [v5 dataDetectorInteractionHelper:command registerUndoCommand:v6];
     }
   }
 }
 
-- (void)hashtagViewDidActivateHashtag:(id)a3
+- (void)hashtagViewDidActivateHashtag:(id)hashtag
 {
-  v11 = a3;
+  hashtagCopy = hashtag;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_hashtagAndMentionsDelegate);
@@ -2155,11 +2155,11 @@ LABEL_21:
     v5 = 0;
   }
 
-  v6 = [v11 hashtagItem];
-  v7 = [v6 hashtagUUID];
-  v8 = [v11 hashtagItem];
-  v9 = [v8 hashtagResult];
-  [WeakRetained attachmentView:v5 userConfirmedHashtagWithUUID:v7 displayText:v9];
+  hashtagItem = [hashtagCopy hashtagItem];
+  hashtagUUID = [hashtagItem hashtagUUID];
+  hashtagItem2 = [hashtagCopy hashtagItem];
+  hashtagResult = [hashtagItem2 hashtagResult];
+  [WeakRetained attachmentView:v5 userConfirmedHashtagWithUUID:hashtagUUID displayText:hashtagResult];
 
   if (self)
   {
@@ -2172,25 +2172,25 @@ LABEL_21:
   [(PKStatisticsManager *)v10 recordHashtagItemActivate];
 }
 
-- (void)hashtagViewWillDeactivateHashtag:(id)a3
+- (void)hashtagViewWillDeactivateHashtag:(id)hashtag
 {
-  v12 = a3;
+  hashtagCopy = hashtag;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_hashtagAndMentionsDelegate);
     v5 = objc_loadWeakRetained(&self->_attachmentView);
-    v6 = [v12 hashtagItem];
-    v7 = [v6 hashtagUUID];
-    [WeakRetained attachmentView:v5 userDeletedHashtagWithUUID:v7];
+    hashtagItem = [hashtagCopy hashtagItem];
+    hashtagUUID = [hashtagItem hashtagUUID];
+    [WeakRetained attachmentView:v5 userDeletedHashtagWithUUID:hashtagUUID];
 
     v8 = objc_loadWeakRetained(&self->_attachmentView);
   }
 
   else
   {
-    v10 = [v12 hashtagItem];
-    v11 = [v10 hashtagUUID];
-    [0 attachmentView:0 userDeletedHashtagWithUUID:v11];
+    hashtagItem2 = [hashtagCopy hashtagItem];
+    hashtagUUID2 = [hashtagItem2 hashtagUUID];
+    [0 attachmentView:0 userDeletedHashtagWithUUID:hashtagUUID2];
 
     v8 = 0;
   }
@@ -2201,22 +2201,22 @@ LABEL_21:
   [(PKStatisticsManager *)v9 recordHashtagItemDeactivate];
 }
 
-- (void)hashtagViewDidDeactivateHashtag:(id)a3
+- (void)hashtagViewDidDeactivateHashtag:(id)hashtag
 {
   if (self)
   {
     self = objc_loadWeakRetained(&self->_attachmentView);
   }
 
-  v3 = self;
+  selfCopy = self;
   [(PKDataDetectorInteractionHelper *)self drawingDidChangeVisibleStrokes:0];
 }
 
-- (void)mentionViewDidActivateMention:(id)a3 withParticpant:(id)a4
+- (void)mentionViewDidActivateMention:(id)mention withParticpant:(id)particpant
 {
-  v27 = a3;
-  v6 = a4;
-  if (!v6)
+  mentionCopy = mention;
+  particpantCopy = particpant;
+  if (!particpantCopy)
   {
     if (self)
     {
@@ -2231,29 +2231,29 @@ LABEL_21:
     }
 
     v9 = [WeakRetained allConfirmedMentionsForAttachmentView:v8];
-    v10 = [v27 mentionItem];
-    v11 = [v10 mentionUUID];
-    v6 = [v9 objectForKeyedSubscript:v11];
+    mentionItem = [mentionCopy mentionItem];
+    mentionUUID = [mentionItem mentionUUID];
+    particpantCopy = [v9 objectForKeyedSubscript:mentionUUID];
   }
 
   if (self)
   {
     v12 = objc_loadWeakRetained(&self->_hashtagAndMentionsDelegate);
     v13 = objc_loadWeakRetained(&self->_attachmentView);
-    v14 = [v27 mentionItem];
-    v15 = [v14 mentionUUID];
-    v16 = [v6 identifier];
-    [v12 attachmentView:v13 userConfirmedMentionWithUUID:v15 participantIdentifier:v16];
+    mentionItem2 = [mentionCopy mentionItem];
+    mentionUUID2 = [mentionItem2 mentionUUID];
+    identifier = [particpantCopy identifier];
+    [v12 attachmentView:v13 userConfirmedMentionWithUUID:mentionUUID2 participantIdentifier:identifier];
 
     v17 = objc_loadWeakRetained(&self->_attachmentView);
   }
 
   else
   {
-    v24 = [v27 mentionItem];
-    v25 = [v24 mentionUUID];
-    v26 = [v6 identifier];
-    [0 attachmentView:0 userConfirmedMentionWithUUID:v25 participantIdentifier:v26];
+    mentionItem3 = [mentionCopy mentionItem];
+    mentionUUID3 = [mentionItem3 mentionUUID];
+    identifier2 = [particpantCopy identifier];
+    [0 attachmentView:0 userConfirmedMentionWithUUID:mentionUUID3 participantIdentifier:identifier2];
 
     v17 = 0;
   }
@@ -2266,37 +2266,37 @@ LABEL_21:
   mentionUUIDtoParticipant = self->_mentionUUIDtoParticipant;
   if (!mentionUUIDtoParticipant)
   {
-    v20 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v21 = self->_mentionUUIDtoParticipant;
-    self->_mentionUUIDtoParticipant = v20;
+    self->_mentionUUIDtoParticipant = dictionary;
 
     mentionUUIDtoParticipant = self->_mentionUUIDtoParticipant;
   }
 
-  v22 = [v27 mentionItem];
-  v23 = [v22 mentionUUID];
-  [(NSMutableDictionary *)mentionUUIDtoParticipant setObject:v6 forKeyedSubscript:v23];
+  mentionItem4 = [mentionCopy mentionItem];
+  mentionUUID4 = [mentionItem4 mentionUUID];
+  [(NSMutableDictionary *)mentionUUIDtoParticipant setObject:particpantCopy forKeyedSubscript:mentionUUID4];
 }
 
-- (void)mentionViewWillDeactivateMention:(id)a3
+- (void)mentionViewWillDeactivateMention:(id)mention
 {
-  v12 = a3;
+  mentionCopy = mention;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_hashtagAndMentionsDelegate);
     v5 = objc_loadWeakRetained(&self->_attachmentView);
-    v6 = [v12 mentionItem];
-    v7 = [v6 mentionUUID];
-    [WeakRetained attachmentView:v5 userDeletedMentionWithUUID:v7];
+    mentionItem = [mentionCopy mentionItem];
+    mentionUUID = [mentionItem mentionUUID];
+    [WeakRetained attachmentView:v5 userDeletedMentionWithUUID:mentionUUID];
 
     v8 = objc_loadWeakRetained(&self->_attachmentView);
   }
 
   else
   {
-    v10 = [v12 mentionItem];
-    v11 = [v10 mentionUUID];
-    [0 attachmentView:0 userDeletedMentionWithUUID:v11];
+    mentionItem2 = [mentionCopy mentionItem];
+    mentionUUID2 = [mentionItem2 mentionUUID];
+    [0 attachmentView:0 userDeletedMentionWithUUID:mentionUUID2];
 
     v8 = 0;
   }
@@ -2307,26 +2307,26 @@ LABEL_21:
   [(PKStatisticsManager *)v9 recordMentionItemDeactivate];
 }
 
-- (void)mentionViewDidDeactivateMention:(id)a3
+- (void)mentionViewDidDeactivateMention:(id)mention
 {
   if (self)
   {
     self = objc_loadWeakRetained(&self->_attachmentView);
   }
 
-  v3 = self;
+  selfCopy = self;
   [(PKDataDetectorInteractionHelper *)self drawingDidChangeVisibleStrokes:0];
 }
 
-- (void)proofreadingView:(id)a3 didReplaceWithString:(id)a4
+- (void)proofreadingView:(id)view didReplaceWithString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  stringCopy = string;
   v47 = 1;
-  v8 = [(PKDataDetectorInteractionHelper *)&self->super.isa drawing];
-  v9 = [v6 proofreadingItem];
-  v10 = [v9 chStrokeIdentifiers];
-  v11 = [v8 strokesForCHStrokeIdentifiers:v10 didFindAllStrokes:&v47];
+  drawing = [(PKDataDetectorInteractionHelper *)&self->super.isa drawing];
+  proofreadingItem = [viewCopy proofreadingItem];
+  chStrokeIdentifiers = [proofreadingItem chStrokeIdentifiers];
+  v11 = [drawing strokesForCHStrokeIdentifiers:chStrokeIdentifiers didFindAllStrokes:&v47];
 
   if (v47 == 1)
   {
@@ -2407,15 +2407,15 @@ LABEL_21:
     }
 
     objc_initWeak(&location, self);
-    v30 = [v28 delegate];
+    delegate = [v28 delegate];
     v31 = objc_opt_respondsToSelector();
 
     if (v31)
     {
       if (v47 == 1)
       {
-        v32 = [v28 delegate];
-        v33 = [v6 proofreadingItem];
+        delegate2 = [v28 delegate];
+        proofreadingItem2 = [viewCopy proofreadingItem];
         if (self)
         {
           v34 = objc_loadWeakRetained(&self->_attachmentView);
@@ -2426,7 +2426,7 @@ LABEL_21:
           v34 = 0;
         }
 
-        [v32 selectionInteraction:v28 replaceStrokes:v11 withString:v7 proofreadingItem:v33 inBounds:v34 inAttachment:{v18, v20, v22, v24}];
+        [delegate2 selectionInteraction:v28 replaceStrokes:v11 withString:stringCopy proofreadingItem:proofreadingItem2 inBounds:v34 inAttachment:{v18, v20, v22, v24}];
 
         if (self)
         {
@@ -2441,8 +2441,8 @@ LABEL_21:
         v36 = previousProofreadingItems;
         v37 = [(NSMutableArray *)v36 mutableCopy];
 
-        v38 = [v6 proofreadingItem];
-        [v37 removeObjectIdenticalTo:v38];
+        proofreadingItem3 = [viewCopy proofreadingItem];
+        [v37 removeObjectIdenticalTo:proofreadingItem3];
 
         if (self)
         {
@@ -2483,7 +2483,7 @@ LABEL_34:
         objc_copyWeak(&v44, &location);
         v42 = v11;
         v43 = v29;
-        [(PKDataDetectorInteractionHelper *)self replaceStrokes:v42 withString:v7 inBounds:v41 inputScale:v18 completion:v20, v22, v24, v14];
+        [(PKDataDetectorInteractionHelper *)self replaceStrokes:v42 withString:stringCopy inBounds:v41 inputScale:v18 completion:v20, v22, v24, v14];
 
         objc_destroyWeak(&v44);
         goto LABEL_34;
@@ -2555,15 +2555,15 @@ void __73__PKDataDetectorInteractionHelper_proofreadingView_didReplaceWithString
   }
 }
 
-- (void)proofreadingView:(id)a3 willPresentStringsForProofreadingItem:(id)a4
+- (void)proofreadingView:(id)view willPresentStringsForProofreadingItem:(id)item
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  itemCopy = item;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_attachmentView);
-    [WeakRetained proofreadingView:v6 willPresentStringsForProofreadingItem:v7];
+    [WeakRetained proofreadingView:viewCopy willPresentStringsForProofreadingItem:itemCopy];
 
     v18 = 0u;
     v19 = 0u;
@@ -2574,7 +2574,7 @@ void __73__PKDataDetectorInteractionHelper_proofreadingView_didReplaceWithString
 
   else
   {
-    [0 proofreadingView:v6 willPresentStringsForProofreadingItem:v7];
+    [0 proofreadingView:viewCopy willPresentStringsForProofreadingItem:itemCopy];
     proofreadingViews = 0;
     v18 = 0u;
     v19 = 0u;
@@ -2599,7 +2599,7 @@ void __73__PKDataDetectorInteractionHelper_proofreadingView_didReplaceWithString
         }
 
         v15 = *(*(&v16 + 1) + 8 * v14);
-        if (v15 != v6)
+        if (v15 != viewCopy)
         {
           [v15 pushAutoHideSuppressionToken:@"SiblingMenu" forceShow:{0, v16}];
         }
@@ -2615,15 +2615,15 @@ void __73__PKDataDetectorInteractionHelper_proofreadingView_didReplaceWithString
   }
 }
 
-- (void)proofreadingView:(id)a3 willDismissStringsForProofreadingItem:(id)a4
+- (void)proofreadingView:(id)view willDismissStringsForProofreadingItem:(id)item
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  itemCopy = item;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_attachmentView);
-    [WeakRetained proofreadingView:v6 willDismissStringsForProofreadingItem:v7];
+    [WeakRetained proofreadingView:viewCopy willDismissStringsForProofreadingItem:itemCopy];
 
     v18 = 0u;
     v19 = 0u;
@@ -2634,7 +2634,7 @@ void __73__PKDataDetectorInteractionHelper_proofreadingView_didReplaceWithString
 
   else
   {
-    [0 proofreadingView:v6 willDismissStringsForProofreadingItem:v7];
+    [0 proofreadingView:viewCopy willDismissStringsForProofreadingItem:itemCopy];
     proofreadingViews = 0;
     v18 = 0u;
     v19 = 0u;
@@ -2659,7 +2659,7 @@ void __73__PKDataDetectorInteractionHelper_proofreadingView_didReplaceWithString
         }
 
         v15 = *(*(&v16 + 1) + 8 * v14);
-        if (v15 != v6)
+        if (v15 != viewCopy)
         {
           [v15 popAutoHideSuppressionToken:{@"SiblingMenu", v16}];
         }
@@ -2685,8 +2685,8 @@ void __73__PKDataDetectorInteractionHelper_proofreadingView_didReplaceWithString
     {
       v4 = MEMORY[0x1E695DF70];
       v5 = objc_loadWeakRetained(&self->_view);
-      v6 = [v5 _accessibilityUserTestingChildren];
-      WeakRetained = [v4 arrayWithArray:v6];
+      _accessibilityUserTestingChildren = [v5 _accessibilityUserTestingChildren];
+      WeakRetained = [v4 arrayWithArray:_accessibilityUserTestingChildren];
 
       [WeakRetained addObjectsFromArray:self->_dataDetectorViews];
       [WeakRetained addObjectsFromArray:self->_hashtagViews];

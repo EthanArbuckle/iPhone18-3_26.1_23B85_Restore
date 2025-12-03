@@ -2,7 +2,7 @@
 + (id)Navigation;
 + (id)configurationForNavigation;
 + (id)storeConfigurationForNavigation;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)sublibraries;
 + (id)validKeyPaths;
 @end
@@ -12,10 +12,10 @@
 + (id)sublibraries
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v3 = [a1 ShareEta];
-  v8[0] = v3;
-  v4 = [a1 Suggestions];
-  v8[1] = v4;
+  shareEta = [self ShareEta];
+  v8[0] = shareEta;
+  suggestions = [self Suggestions];
+  v8[1] = suggestions;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
 
   v6 = *MEMORY[0x1E69E9840];
@@ -23,19 +23,19 @@
   return v5;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Navigation"])
+  if ([name isEqualToString:@"Navigation"])
   {
-    v4 = [a1 Navigation];
+    navigation = [self Navigation];
   }
 
   else
   {
-    v4 = 0;
+    navigation = 0;
   }
 
-  return v4;
+  return navigation;
 }
 
 + (id)validKeyPaths
@@ -51,13 +51,13 @@
 
 + (id)configurationForNavigation
 {
-  v3 = [a1 storeConfigurationForNavigation];
-  v4 = [a1 syncPolicyForNavigation];
+  storeConfigurationForNavigation = [self storeConfigurationForNavigation];
+  syncPolicyForNavigation = [self syncPolicyForNavigation];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"DF5B3431-F879-414C-94C7-FD334CF966E2"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Maps.Navigation" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Maps.Navigation" eventClass:objc_opt_class() storeConfig:storeConfigurationForNavigation syncPolicy:syncPolicyForNavigation legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -74,7 +74,7 @@
 + (id)Navigation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForNavigation];
+  configurationForNavigation = [self configurationForNavigation];
   v3 = +[BMMapsNavigation columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -86,7 +86,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Maps.Navigation" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Maps.Navigation" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Maps.Navigation" schema:v9 configuration:configurationForNavigation];
 
   v11 = *MEMORY[0x1E69E9840];
 

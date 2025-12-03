@@ -1,13 +1,13 @@
 @interface AKRatchetStateData
-- (AKRatchetStateData)initWithDuration:(double)a3;
+- (AKRatchetStateData)initWithDuration:(double)duration;
 @end
 
 @implementation AKRatchetStateData
 
-- (AKRatchetStateData)initWithDuration:(double)a3
+- (AKRatchetStateData)initWithDuration:(double)duration
 {
   v8 = a2;
-  v7 = a3;
+  durationCopy = duration;
   v9 = 0;
   v6.receiver = self;
   v6.super_class = AKRatchetStateData;
@@ -16,7 +16,7 @@
   objc_storeStrong(&v9, v5);
   if (v5)
   {
-    v9->_duration = v7;
+    v9->_duration = durationCopy;
   }
 
   v4 = MEMORY[0x1E69E5928](v9);

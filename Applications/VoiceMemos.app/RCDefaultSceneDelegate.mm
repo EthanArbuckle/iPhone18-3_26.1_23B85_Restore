@@ -1,49 +1,49 @@
 @interface RCDefaultSceneDelegate
 - (BOOL)_cloudSyncPromptNeedsShowing;
-- (BOOL)_isCoreDataURL:(id)a3;
+- (BOOL)_isCoreDataURL:(id)l;
 - (BOOL)cloudSyncPromptMustShowOrIsShowing;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)modalMustShowOrIsShowing;
 - (BOOL)welcomeMustShowOrIsShowing;
 - (RCDefaultSceneActivationStateDelegate)defaultSceneActivationStateDelegate;
 - (RCDeferredInitializationDelegate)deferredInitializationDelegate;
 - (RCWelcomeViewController)welcomeViewController;
 - (UIAlertController)iCloudSyncConfirmationAlertController;
-- (unint64_t)splitViewControllerSupportedInterfaceOrientations:(id)a3;
+- (unint64_t)splitViewControllerSupportedInterfaceOrientations:(id)orientations;
 - (void)__performDeferredInitialization;
 - (void)_activateApplication;
 - (void)_askUserForPermissionToUseCloudKit;
 - (void)_clearTemporaryAudioFilesOnce;
-- (void)_continueUserActivity:(id)a3;
-- (void)_delayedSelectRecordingWithUUID:(id)a3;
+- (void)_continueUserActivity:(id)activity;
+- (void)_delayedSelectRecordingWithUUID:(id)d;
 - (void)_eraseDeletedRecordingsIfNecessary;
-- (void)_failedToCreateDatabase:(id)a3;
+- (void)_failedToCreateDatabase:(id)database;
 - (void)_handleSceneConnectionActions;
-- (void)_handleWelcomeScreenContinue:(BOOL)a3;
+- (void)_handleWelcomeScreenContinue:(BOOL)continue;
 - (void)_initialViewDidLoad;
-- (void)_openURLContexts:(id)a3;
-- (void)_performActionForShortcutItem:(id)a3;
+- (void)_openURLContexts:(id)contexts;
+- (void)_performActionForShortcutItem:(id)item;
 - (void)_promptForCloudKitIfLoggedInAndTCCUnset;
-- (void)_selectSharedRecording:(id)a3;
+- (void)_selectSharedRecording:(id)recording;
 - (void)_setUpCloudSyncAccessManager;
 - (void)_setUpLocationManager;
-- (void)_showWelcomeScreenWithCompletionBlock:(id)a3;
+- (void)_showWelcomeScreenWithCompletionBlock:(id)block;
 - (void)_startNewRecordingQuickAction;
-- (void)_startPlaybackQuickActionForRecordingWithUniqueID:(id)a3;
+- (void)_startPlaybackQuickActionForRecordingWithUniqueID:(id)d;
 - (void)cloudSyncAvailabilityChanged;
 - (void)dealloc;
 - (void)handleRestyleRequest;
 - (void)performDeferredInitializationJustOnce;
 - (void)playbackMostRecentRecordingFromIntent;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillResignActive:(id)active;
 - (void)showOnboardingScreensIfNeeded;
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4;
-- (void)splitViewController:(id)a3 willHideColumn:(int64_t)a4;
-- (void)splitViewController:(id)a3 willShowColumn:(int64_t)a4;
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6;
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode;
+- (void)splitViewController:(id)controller willHideColumn:(int64_t)column;
+- (void)splitViewController:(id)controller willShowColumn:(int64_t)column;
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection;
 @end
 
 @implementation RCDefaultSceneDelegate
@@ -64,11 +64,11 @@
 - (void)__performDeferredInitialization
 {
   [(RCSplitViewController *)self->_rootSplitViewController registerAppIntentsInteractions];
-  v3 = [(RCDefaultSceneDelegate *)self deferredInitializationDelegate];
-  v4 = v3;
-  if (v3)
+  deferredInitializationDelegate = [(RCDefaultSceneDelegate *)self deferredInitializationDelegate];
+  v4 = deferredInitializationDelegate;
+  if (deferredInitializationDelegate)
   {
-    [v3 performDeferredInitialization];
+    [deferredInitializationDelegate performDeferredInitialization];
   }
 
   v5 = +[VMAudioService sharedInstance];
@@ -100,9 +100,9 @@
 
     if (!v3 && ![(RCDefaultSceneDelegate *)self welcomeScreenHasContinued])
     {
-      v4 = [(RCDefaultSceneDelegate *)self welcomeViewController];
+      welcomeViewController = [(RCDefaultSceneDelegate *)self welcomeViewController];
 
-      if (!v4)
+      if (!welcomeViewController)
       {
         v5[0] = _NSConcreteStackBlock;
         v5[1] = 3221225472;
@@ -171,8 +171,8 @@
     return 1;
   }
 
-  v4 = [(RCDefaultSceneDelegate *)self welcomeViewController];
-  v3 = v4 != 0;
+  welcomeViewController = [(RCDefaultSceneDelegate *)self welcomeViewController];
+  v3 = welcomeViewController != 0;
 
   return v3;
 }
@@ -184,8 +184,8 @@
     return 1;
   }
 
-  v4 = [(RCDefaultSceneDelegate *)self iCloudSyncConfirmationAlertController];
-  v3 = v4 != 0;
+  iCloudSyncConfirmationAlertController = [(RCDefaultSceneDelegate *)self iCloudSyncConfirmationAlertController];
+  v3 = iCloudSyncConfirmationAlertController != 0;
 
   return v3;
 }
@@ -194,23 +194,23 @@
 {
   if (self->_cloudSyncAccessManager)
   {
-    v3 = [(RCDefaultSceneDelegate *)self welcomeScreenHasContinued];
-    if (v3)
+    welcomeScreenHasContinued = [(RCDefaultSceneDelegate *)self welcomeScreenHasContinued];
+    if (welcomeScreenHasContinued)
     {
-      v3 = [(RCCloudSyncAccessManager *)self->_cloudSyncAccessManager cloudSyncIsAvailable];
-      if (v3)
+      welcomeScreenHasContinued = [(RCCloudSyncAccessManager *)self->_cloudSyncAccessManager cloudSyncIsAvailable];
+      if (welcomeScreenHasContinued)
       {
-        LOBYTE(v3) = [(RCCloudSyncAccessManager *)self->_cloudSyncAccessManager tccCloudAccess]== 0;
+        LOBYTE(welcomeScreenHasContinued) = [(RCCloudSyncAccessManager *)self->_cloudSyncAccessManager tccCloudAccess]== 0;
       }
     }
   }
 
   else
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(welcomeScreenHasContinued) = 0;
   }
 
-  return v3;
+  return welcomeScreenHasContinued;
 }
 
 - (UIAlertController)iCloudSyncConfirmationAlertController
@@ -236,14 +236,14 @@
 - (void)_eraseDeletedRecordingsIfNecessary
 {
   v2 = +[RCApplicationContainer sharedContainer];
-  v3 = [v2 newBackgroundModel];
+  newBackgroundModel = [v2 newBackgroundModel];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100019AF4;
   v5[3] = &unk_10028A3B8;
-  v6 = v3;
-  v4 = v3;
+  v6 = newBackgroundModel;
+  v4 = newBackgroundModel;
   [v4 performBlock:v5];
 }
 
@@ -329,26 +329,26 @@
   [(RCDefaultSceneDelegate *)&v3 dealloc];
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v7 = a3;
-  v8 = a5;
+  sceneCopy = scene;
+  optionsCopy = options;
   if ((RCIsBeingUnitTested() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 shortcutItem];
+      shortcutItem = [optionsCopy shortcutItem];
       shortcutItem = self->_shortcutItem;
-      self->_shortcutItem = v9;
+      self->_shortcutItem = shortcutItem;
 
-      v11 = [v8 userActivities];
+      userActivities = [optionsCopy userActivities];
       userActivities = self->_userActivities;
-      self->_userActivities = v11;
+      self->_userActivities = userActivities;
 
-      v13 = [v8 URLContexts];
+      uRLContexts = [optionsCopy URLContexts];
       URLContexts = self->_URLContexts;
-      self->_URLContexts = v13;
+      self->_URLContexts = uRLContexts;
 
       if (self->_shortcutItem || [(NSSet *)self->_userActivities count]|| [(NSSet *)self->_URLContexts count])
       {
@@ -356,19 +356,19 @@
       }
 
       v15 = +[UIApplication sharedApplication];
-      v16 = [v15 delegate];
+      delegate = [v15 delegate];
 
-      if ([v16 conformsToProtocol:&OBJC_PROTOCOL___RCDeferredInitializationDelegate])
+      if ([delegate conformsToProtocol:&OBJC_PROTOCOL___RCDeferredInitializationDelegate])
       {
-        [(RCDefaultSceneDelegate *)self setDeferredInitializationDelegate:v16];
+        [(RCDefaultSceneDelegate *)self setDeferredInitializationDelegate:delegate];
       }
 
-      if ([v16 conformsToProtocol:&OBJC_PROTOCOL___RCDefaultSceneActivationStateDelegate])
+      if ([delegate conformsToProtocol:&OBJC_PROTOCOL___RCDefaultSceneActivationStateDelegate])
       {
-        [(RCDefaultSceneDelegate *)self setDefaultSceneActivationStateDelegate:v16];
+        [(RCDefaultSceneDelegate *)self setDefaultSceneActivationStateDelegate:delegate];
       }
 
-      v17 = v7;
+      v17 = sceneCopy;
       notify_register_dispatch("com.apple.VoiceMemos.internal.settings.WillRemoveAllRecordings", &self->_removeAllRecordingsToken, &_dispatch_main_q, &stru_10028B218);
       notify_register_dispatch("com.apple.VoiceMemos.internal.settings.WillResetDefaults", &self->_resetDefaultsToken, &_dispatch_main_q, &stru_10028B238);
 
@@ -383,15 +383,15 @@
       self->_mainViewController = v20;
 
       [(RCMainViewController *)self->_mainViewController setMainViewControllerDelegate:self];
-      v22 = [(RCMainViewController *)self->_mainViewController mainControllerHelper];
-      [v22 defaultSceneDidConnect:v17];
+      mainControllerHelper = [(RCMainViewController *)self->_mainViewController mainControllerHelper];
+      [mainControllerHelper defaultSceneDidConnect:v17];
 
       v23 = [[UINavigationController alloc] initWithRootViewController:self->_mainViewController];
       primaryNavigationController = self->_primaryNavigationController;
       self->_primaryNavigationController = v23;
 
-      v25 = [(UINavigationController *)self->_primaryNavigationController interactivePopGestureRecognizer];
-      [v25 setDelegate:self];
+      interactivePopGestureRecognizer = [(UINavigationController *)self->_primaryNavigationController interactivePopGestureRecognizer];
+      [interactivePopGestureRecognizer setDelegate:self];
 
       v26 = +[RCRecorderStyleProvider sharedStyleProvider];
       if ([v26 clipUnderlapWhileTransitioning])
@@ -400,18 +400,18 @@
       }
 
       [(UINavigationController *)self->_primaryNavigationController setDelegate:self->_mainViewController];
-      v49 = [(UINavigationController *)self->_primaryNavigationController navigationBar];
+      navigationBar = [(UINavigationController *)self->_primaryNavigationController navigationBar];
       if ([v26 usesLargeTitles])
       {
-        [v49 setPrefersLargeTitles:1];
+        [navigationBar setPrefersLargeTitles:1];
       }
 
       [(RCSplitViewController *)self->_rootSplitViewController setViewController:self->_primaryNavigationController forColumn:0];
       v27 = +[RCRecorderStyleProvider sharedStyleProvider];
-      v28 = [v27 hasPlaybackCard];
+      hasPlaybackCard = [v27 hasPlaybackCard];
 
       v29 = 0;
-      if (v28)
+      if (hasPlaybackCard)
       {
         v29 = [(RCRecordingViewController *)[RCPlaybackViewController alloc] initWithRecordButtonRepository:0 interactionHandler:0];
       }
@@ -442,31 +442,31 @@
       v35 = [[UIWindow alloc] initWithWindowScene:v17];
       [(RCSceneDelegate *)self setWindow:v35];
 
-      v36 = [(RCSceneDelegate *)self window];
-      [v36 setAccessibilityIdentifier:@"Main Window"];
+      window = [(RCSceneDelegate *)self window];
+      [window setAccessibilityIdentifier:@"Main Window"];
 
-      v37 = [(RCSceneDelegate *)self window];
-      v38 = [v26 standardInteractionTintColor];
-      [v37 setTintColor:v38];
+      window2 = [(RCSceneDelegate *)self window];
+      standardInteractionTintColor = [v26 standardInteractionTintColor];
+      [window2 setTintColor:standardInteractionTintColor];
 
       if ([v26 supportsPointerInteractions])
       {
-        v39 = [(RCSceneDelegate *)self window];
-        v40 = [v39 layer];
-        [v40 setHitTestsAsOpaque:1];
+        window3 = [(RCSceneDelegate *)self window];
+        layer = [window3 layer];
+        [layer setHitTestsAsOpaque:1];
       }
 
-      v41 = [(RCSceneDelegate *)self window];
-      [v41 setRootViewController:self->_rootSplitViewController];
+      window4 = [(RCSceneDelegate *)self window];
+      [window4 setRootViewController:self->_rootSplitViewController];
 
-      v42 = [(RCSceneDelegate *)self window];
-      [v42 makeKeyAndVisible];
+      window5 = [(RCSceneDelegate *)self window];
+      [window5 makeKeyAndVisible];
 
       [v26 minimumSceneSize];
       v44 = v43;
       v46 = v45;
-      v47 = [v17 sizeRestrictions];
-      [v47 setMinimumSize:{v44, v46}];
+      sizeRestrictions = [v17 sizeRestrictions];
+      [sizeRestrictions setMinimumSize:{v44, v46}];
 
       [(RCDefaultSceneDelegate *)self performDeferredInitializationJustOnce];
       [(RCDefaultSceneDelegate *)self showOnboardingScreensIfNeeded];
@@ -474,7 +474,7 @@
   }
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   [(RCDefaultSceneDelegate *)self _activateApplication];
   [(RCMainViewController *)self->_mainViewController setIsInForeground:1];
@@ -485,20 +485,20 @@
   }
 
   [(RCDefaultSceneDelegate *)self _handleSceneConnectionActions];
-  v4 = [(RCDefaultSceneDelegate *)self defaultSceneActivationStateDelegate];
-  [v4 defaultSceneDidBecomeActive];
+  defaultSceneActivationStateDelegate = [(RCDefaultSceneDelegate *)self defaultSceneActivationStateDelegate];
+  [defaultSceneActivationStateDelegate defaultSceneDidBecomeActive];
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
   [(RCMainViewController *)self->_mainViewController updateQuickActions];
-  v4 = [(RCDefaultSceneDelegate *)self defaultSceneActivationStateDelegate];
-  [v4 defaultSceneWillResignActive];
+  defaultSceneActivationStateDelegate = [(RCDefaultSceneDelegate *)self defaultSceneActivationStateDelegate];
+  [defaultSceneActivationStateDelegate defaultSceneWillResignActive];
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v7 = a3;
+  backgroundCopy = background;
   if (self->_fatalErrorAlertController)
   {
     exit(0);
@@ -512,38 +512,38 @@
   v5 = +[RCLocationsOfInterestManager defaultManager];
   [v5 stop];
 
-  v6 = [(RCDefaultSceneDelegate *)self defaultSceneActivationStateDelegate];
-  [v6 sceneDidEnterBackground];
+  defaultSceneActivationStateDelegate = [(RCDefaultSceneDelegate *)self defaultSceneActivationStateDelegate];
+  [defaultSceneActivationStateDelegate sceneDidEnterBackground];
 }
 
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  sceneCopy = scene;
+  spaceCopy = space;
+  collectionCopy = collection;
   if ([RCSceneDelegate instancesRespondToSelector:"windowScene:didUpdateCoordinateSpace:interfaceOrientation:traitCollection:"])
   {
     v13.receiver = self;
     v13.super_class = RCDefaultSceneDelegate;
-    [(RCSceneDelegate *)&v13 windowScene:v10 didUpdateCoordinateSpace:v11 interfaceOrientation:a5 traitCollection:v12];
+    [(RCSceneDelegate *)&v13 windowScene:sceneCopy didUpdateCoordinateSpace:spaceCopy interfaceOrientation:orientation traitCollection:collectionCopy];
   }
 
-  if ([v10 interfaceOrientation] != a5)
+  if ([sceneCopy interfaceOrientation] != orientation)
   {
-    -[VMAudioService interfaceOrientationDidUpdate:](self->_audioService, "interfaceOrientationDidUpdate:", [v10 interfaceOrientation]);
+    -[VMAudioService interfaceOrientationDidUpdate:](self->_audioService, "interfaceOrientationDidUpdate:", [sceneCopy interfaceOrientation]);
   }
 }
 
-- (void)_continueUserActivity:(id)a3
+- (void)_continueUserActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   if (![(RCDefaultSceneDelegate *)self modalMustShowOrIsShowing])
   {
     [(RCDefaultSceneDelegate *)self performDeferredInitializationJustOnce];
-    v5 = [v4 activityType];
+    activityType = [activityCopy activityType];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v5 isEqualToString:v7];
+    v8 = [activityType isEqualToString:v7];
 
     if (v8)
     {
@@ -560,7 +560,7 @@
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [v5 isEqualToString:v11];
+      v12 = [activityType isEqualToString:v11];
 
       if (v12)
       {
@@ -575,7 +575,7 @@
 
       else
       {
-        v14 = [v5 isEqualToString:CSSearchableItemActionType];
+        v14 = [activityType isEqualToString:CSSearchableItemActionType];
         v15 = OSLogForCategory();
         v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
         if (v14)
@@ -585,26 +585,26 @@
             sub_1001B7A84();
           }
 
-          v17 = [v4 userInfo];
-          v15 = [v17 objectForKeyedSubscript:CSSearchableItemActivityIdentifier];
+          userInfo = [activityCopy userInfo];
+          v15 = [userInfo objectForKeyedSubscript:CSSearchableItemActivityIdentifier];
 
           v18 = [NSURL URLWithString:v15];
-          v19 = [v18 scheme];
-          if ([v19 isEqualToString:@"x-coredata"])
+          scheme = [v18 scheme];
+          if ([scheme isEqualToString:@"x-coredata"])
           {
             v20 = +[RCApplicationModel sharedApplicationModel];
             v21 = [v20 recordingWithURIRepresentation:v18];
 
             if (v21)
             {
-              v22 = [v21 uuid];
-              [(RCDefaultSceneDelegate *)self _delayedSelectRecordingWithUUID:v22];
+              uuid = [v21 uuid];
+              [(RCDefaultSceneDelegate *)self _delayedSelectRecordingWithUUID:uuid];
             }
 
             else
             {
-              v22 = OSLogForCategory();
-              if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+              uuid = OSLogForCategory();
+              if (os_log_type_enabled(uuid, OS_LOG_TYPE_DEBUG))
               {
                 sub_1001B7B80();
               }
@@ -630,19 +630,19 @@
   }
 }
 
-- (void)_openURLContexts:(id)a3
+- (void)_openURLContexts:(id)contexts
 {
-  v4 = a3;
-  v5 = [(VMAudioService *)self->_audioService recordingController];
+  contextsCopy = contexts;
+  recordingController = [(VMAudioService *)self->_audioService recordingController];
 
-  if (!v5)
+  if (!recordingController)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v21 = v4;
-    obj = v4;
+    v21 = contextsCopy;
+    obj = contextsCopy;
     v6 = [obj countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v6)
     {
@@ -661,10 +661,10 @@
           v10 = [*(*(&v24 + 1) + 8 * v9) URL];
           if ([(RCDefaultSceneDelegate *)self _isCoreDataURL:v10])
           {
-            v11 = [v10 absoluteString];
-            v12 = [v11 stringByRemovingPercentEncoding];
+            absoluteString = [v10 absoluteString];
+            stringByRemovingPercentEncoding = [absoluteString stringByRemovingPercentEncoding];
 
-            v13 = [v12 substringFromIndex:{objc_msgSend(v12, "rangeOfString:options:", @"x-coredata", 1)}];
+            v13 = [stringByRemovingPercentEncoding substringFromIndex:{objc_msgSend(stringByRemovingPercentEncoding, "rangeOfString:options:", @"x-coredata", 1)}];
             if ([v13 length] && (+[NSURL URLWithString:](NSURL, "URLWithString:", v13), (v14 = objc_claimAutoreleasedReturnValue()) != 0))
             {
               v15 = v14;
@@ -695,11 +695,11 @@
               v15 = OSLogForCategory();
               if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
               {
-                v19 = [v10 path];
+                path = [v10 path];
                 *buf = 136315394;
                 v29 = "[RCDefaultSceneDelegate _openURLContexts:]";
                 v30 = 2112;
-                v31 = v19;
+                v31 = path;
                 _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%s -- WARNING: request to open a URL we can't handle: '%@'", buf, 0x16u);
               }
             }
@@ -738,18 +738,18 @@
       while (v7);
     }
 
-    v4 = v21;
+    contextsCopy = v21;
   }
 }
 
-- (void)_performActionForShortcutItem:(id)a3
+- (void)_performActionForShortcutItem:(id)item
 {
-  v12 = a3;
+  itemCopy = item;
   if (![(RCDefaultSceneDelegate *)self modalMustShowOrIsShowing])
   {
     [(RCDefaultSceneDelegate *)self performDeferredInitializationJustOnce];
-    v4 = [v12 type];
-    v5 = [v4 isEqualToString:@"com.apple.VoiceMemos.NewRecording"];
+    type = [itemCopy type];
+    v5 = [type isEqualToString:@"com.apple.VoiceMemos.NewRecording"];
 
     if (v5)
     {
@@ -758,14 +758,14 @@
 
     else
     {
-      v6 = [v12 type];
-      v7 = [v6 isEqualToString:@"com.apple.VoiceMemos.PlayRecording"];
+      type2 = [itemCopy type];
+      v7 = [type2 isEqualToString:@"com.apple.VoiceMemos.PlayRecording"];
 
       if (v7)
       {
         objc_opt_class();
-        v8 = [v12 userInfo];
-        v9 = [v8 objectForKeyedSubscript:@"uniqueID"];
+        userInfo = [itemCopy userInfo];
+        v9 = [userInfo objectForKeyedSubscript:@"uniqueID"];
         if (objc_opt_isKindOfClass())
         {
           v10 = v9;
@@ -784,9 +784,9 @@
   }
 }
 
-- (void)_showWelcomeScreenWithCompletionBlock:(id)a3
+- (void)_showWelcomeScreenWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[RCWelcomeViewController reasonToShow];
   if (v5)
   {
@@ -796,42 +796,42 @@
     v12 = 3221225472;
     v13 = sub_100068918;
     v14 = &unk_10028B288;
-    v15 = v4;
+    v15 = blockCopy;
     v16 = v6;
     v8 = [(RCWelcomeViewController *)v7 initWithCompletionBlock:&v11];
     [(RCWelcomeViewController *)v8 setModalPresentationStyle:2, v11, v12, v13, v14];
     [(RCWelcomeViewController *)v8 setModalInPresentation:1];
-    v9 = [(RCSceneDelegate *)self window];
-    v10 = [v9 rootViewController];
-    [v10 presentViewController:v8 animated:1 completion:0];
+    window = [(RCSceneDelegate *)self window];
+    rootViewController = [window rootViewController];
+    [rootViewController presentViewController:v8 animated:1 completion:0];
 
     [(RCDefaultSceneDelegate *)self setWelcomeViewController:v8];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
-- (void)_handleWelcomeScreenContinue:(BOOL)a3
+- (void)_handleWelcomeScreenContinue:(BOOL)continue
 {
-  v3 = a3;
+  continueCopy = continue;
   if (![(RCDefaultSceneDelegate *)self welcomeScreenHasContinued])
   {
     [(RCDefaultSceneDelegate *)self setWelcomeScreenHasContinued:1];
     [(RCDefaultSceneDelegate *)self setWelcomeViewController:0];
     [(RCDefaultSceneDelegate *)self _setUpCloudSyncAccessManager];
     [(RCDefaultSceneDelegate *)self _setUpLocationManager];
-    if (v3)
+    if (continueCopy)
     {
       if ([(RCCloudSyncAccessManager *)self->_cloudSyncAccessManager cloudSyncIsAvailable])
       {
         v5 = [[MBManager alloc] initWithDelegate:0];
-        v6 = [v5 isBackupEnabled];
+        isBackupEnabled = [v5 isBackupEnabled];
 
         cloudSyncAccessManager = self->_cloudSyncAccessManager;
-        if (v6)
+        if (isBackupEnabled)
         {
           [(RCCloudSyncAccessManager *)cloudSyncAccessManager setTccCloudAccess:2];
         }
@@ -858,65 +858,65 @@
   }
 }
 
-- (unint64_t)splitViewControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)splitViewControllerSupportedInterfaceOrientations:(id)orientations
 {
   v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v4 = [v3 supportedInterfaceOrientations];
+  supportedInterfaceOrientations = [v3 supportedInterfaceOrientations];
 
-  return v4;
+  return supportedInterfaceOrientations;
 }
 
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode
 {
-  v5 = [(RCDefaultSceneDelegate *)self playbackContainerViewController:a3];
-  v6 = [v5 isViewLoaded];
+  v5 = [(RCDefaultSceneDelegate *)self playbackContainerViewController:controller];
+  isViewLoaded = [v5 isViewLoaded];
 
-  if (v6)
+  if (isViewLoaded)
   {
     v7 = UIAccessibilityLayoutChangedNotification;
-    v9 = [(RCDefaultSceneDelegate *)self playbackContainerViewController];
-    v8 = [v9 view];
-    UIAccessibilityPostNotification(v7, v8);
+    playbackContainerViewController = [(RCDefaultSceneDelegate *)self playbackContainerViewController];
+    view = [playbackContainerViewController view];
+    UIAccessibilityPostNotification(v7, view);
   }
 }
 
-- (void)splitViewController:(id)a3 willShowColumn:(int64_t)a4
+- (void)splitViewController:(id)controller willShowColumn:(int64_t)column
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (controllerCopy)
   {
-    [v4 setIsTransitioningBetweenVisibleColumnStates:1];
-    v6 = [v5 transitionCoordinator];
+    [controllerCopy setIsTransitioningBetweenVisibleColumnStates:1];
+    transitionCoordinator = [v5 transitionCoordinator];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100068CD4;
     v7[3] = &unk_10028A488;
     v8 = v5;
-    [v6 animateAlongsideTransition:&stru_10028B330 completion:v7];
+    [transitionCoordinator animateAlongsideTransition:&stru_10028B330 completion:v7];
   }
 }
 
-- (void)splitViewController:(id)a3 willHideColumn:(int64_t)a4
+- (void)splitViewController:(id)controller willHideColumn:(int64_t)column
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (controllerCopy)
   {
-    [v4 setIsTransitioningBetweenVisibleColumnStates:1];
-    v6 = [v5 transitionCoordinator];
+    [controllerCopy setIsTransitioningBetweenVisibleColumnStates:1];
+    transitionCoordinator = [v5 transitionCoordinator];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100068DA8;
     v7[3] = &unk_10028A488;
     v8 = v5;
-    [v6 animateAlongsideTransition:&stru_10028B350 completion:v7];
+    [transitionCoordinator animateAlongsideTransition:&stru_10028B350 completion:v7];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -931,9 +931,9 @@
     if ([(RCCloudSyncAccessManager *)cloudSyncAccessManager cloudSyncIsAvailable])
     {
       v4 = +[UIApplication sharedApplication];
-      v5 = [v4 applicationState];
+      applicationState = [v4 applicationState];
 
-      if (v5)
+      if (applicationState)
       {
         self->_tccAccessChangedWhileInBackground = 1;
       }
@@ -947,12 +947,12 @@
 
     else
     {
-      v6 = [(RCDefaultSceneDelegate *)self iCloudSyncConfirmationAlertController];
-      if (v6)
+      iCloudSyncConfirmationAlertController = [(RCDefaultSceneDelegate *)self iCloudSyncConfirmationAlertController];
+      if (iCloudSyncConfirmationAlertController)
       {
-        v7 = v6;
-        [v6 dismissViewControllerAnimated:1 completion:0];
-        v6 = v7;
+        v7 = iCloudSyncConfirmationAlertController;
+        [iCloudSyncConfirmationAlertController dismissViewControllerAnimated:1 completion:0];
+        iCloudSyncConfirmationAlertController = v7;
       }
     }
   }
@@ -962,20 +962,20 @@
 {
   v4 = +[RCRecorderStyleProvider sharedStyleProvider];
   -[UINavigationController _setClipUnderlapWhileTransitioning:](self->_primaryNavigationController, "_setClipUnderlapWhileTransitioning:", [v4 clipUnderlapWhileTransitioning]);
-  v3 = [(UINavigationController *)self->_primaryNavigationController navigationBar];
-  [v3 setPrefersLargeTitles:{objc_msgSend(v4, "usesLargeTitles")}];
+  navigationBar = [(UINavigationController *)self->_primaryNavigationController navigationBar];
+  [navigationBar setPrefersLargeTitles:{objc_msgSend(v4, "usesLargeTitles")}];
   [(RCMainViewController *)self->_mainViewController restyle];
 }
 
 - (void)playbackMostRecentRecordingFromIntent
 {
   v6 = +[RCApplicationModel sharedApplicationModel];
-  v3 = [v6 mostRecentRecording];
-  v4 = v3;
-  if (v3)
+  mostRecentRecording = [v6 mostRecentRecording];
+  v4 = mostRecentRecording;
+  if (mostRecentRecording)
   {
-    v5 = [v3 uuid];
-    [(RCDefaultSceneDelegate *)self _startPlaybackQuickActionForRecordingWithUniqueID:v5];
+    uuid = [mostRecentRecording uuid];
+    [(RCDefaultSceneDelegate *)self _startPlaybackQuickActionForRecordingWithUniqueID:uuid];
   }
 }
 
@@ -992,12 +992,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_startPlaybackQuickActionForRecordingWithUniqueID:(id)a3
+- (void)_startPlaybackQuickActionForRecordingWithUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = [(VMAudioService *)self->_audioService recordingController];
+  dCopy = d;
+  recordingController = [(VMAudioService *)self->_audioService recordingController];
 
-  if (v4 && !v5)
+  if (dCopy && !recordingController)
   {
     objc_initWeak(&location, self->_mainViewController);
     v6[0] = _NSConcreteStackBlock;
@@ -1005,7 +1005,7 @@
     v6[2] = sub_100069290;
     v6[3] = &unk_10028B0D0;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = dCopy;
     [(RCMainViewController *)self->_mainViewController setForegroundCompletionBlock:v6];
 
     objc_destroyWeak(&v8);
@@ -1026,9 +1026,9 @@
 {
   if (self->_cloudSyncAccessManager)
   {
-    v3 = [(RCDefaultSceneDelegate *)self iCloudSyncConfirmationAlertController];
+    iCloudSyncConfirmationAlertController = [(RCDefaultSceneDelegate *)self iCloudSyncConfirmationAlertController];
 
-    if (!v3)
+    if (!iCloudSyncConfirmationAlertController)
     {
       v4 = +[NSBundle mainBundle];
       v5 = [v4 localizedStringForKey:@"POST_WELCOME_ICLOUD_CONFIRMATION_ALERT_TITLE" value:&stru_100295BB8 table:0];
@@ -1062,7 +1062,7 @@
   }
 }
 
-- (void)_failedToCreateDatabase:(id)a3
+- (void)_failedToCreateDatabase:(id)database
 {
   if (!self->_fatalErrorAlertController)
   {
@@ -1083,31 +1083,31 @@
   }
 }
 
-- (void)_delayedSelectRecordingWithUUID:(id)a3
+- (void)_delayedSelectRecordingWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = dispatch_time(0, 500000000);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100069808;
   v7[3] = &unk_10028A650;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_after(v5, &_dispatch_main_q, v7);
 }
 
-- (void)_selectSharedRecording:(id)a3
+- (void)_selectSharedRecording:(id)recording
 {
-  v4 = [a3 uuid];
+  uuid = [recording uuid];
   +[RCAnalyticsUtilities sendReceivedSharedRecording];
-  [(RCDefaultSceneDelegate *)self _delayedSelectRecordingWithUUID:v4];
+  [(RCDefaultSceneDelegate *)self _delayedSelectRecordingWithUUID:uuid];
 }
 
-- (BOOL)_isCoreDataURL:(id)a3
+- (BOOL)_isCoreDataURL:(id)l
 {
-  v3 = [a3 scheme];
-  v4 = [v3 isEqualToString:@"x-coredata"];
+  scheme = [l scheme];
+  v4 = [scheme isEqualToString:@"x-coredata"];
 
   return v4;
 }

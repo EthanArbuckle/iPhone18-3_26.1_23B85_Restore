@@ -10,25 +10,25 @@
 
 - (uint64_t)containsUnverifiedPersons
 {
-  v1 = [a1 featuresProperties];
-  v2 = [v1 objectForKeyedSubscript:@"containsUnverifiedPersons"];
+  featuresProperties = [self featuresProperties];
+  v2 = [featuresProperties objectForKeyedSubscript:@"containsUnverifiedPersons"];
 
-  v3 = [v2 BOOLValue];
-  return v3;
+  bOOLValue = [v2 BOOLValue];
+  return bOOLValue;
 }
 
 - (id)suggestedPersonLocalIdentifiers
 {
-  v1 = [a1 featuresProperties];
-  v2 = [v1 objectForKeyedSubscript:@"suggestedPersonLocalIdentifiers"];
+  featuresProperties = [self featuresProperties];
+  v2 = [featuresProperties objectForKeyedSubscript:@"suggestedPersonLocalIdentifiers"];
 
   return v2;
 }
 
 - (id)features
 {
-  v1 = [a1 featuresProperties];
-  v2 = [v1 objectForKeyedSubscript:@"features"];
+  featuresProperties = [self featuresProperties];
+  v2 = [featuresProperties objectForKeyedSubscript:@"features"];
 
   v3 = [MEMORY[0x277CBEB98] setWithArray:v2];
 
@@ -37,28 +37,28 @@
 
 - (id)representativeAssets
 {
-  v2 = objc_getAssociatedObject(a1, "PHSuggestionPGSuggestionRepresentativeAssets");
-  if (!v2)
+  fetchedObjects = objc_getAssociatedObject(self, "PHSuggestionPGSuggestionRepresentativeAssets");
+  if (!fetchedObjects)
   {
-    v3 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:a1 options:0];
-    v2 = [v3 fetchedObjects];
-    objc_setAssociatedObject(a1, "PHSuggestionPGSuggestionRepresentativeAssets", v2, 1);
+    v3 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:self options:0];
+    fetchedObjects = [v3 fetchedObjects];
+    objc_setAssociatedObject(self, "PHSuggestionPGSuggestionRepresentativeAssets", fetchedObjects, 1);
   }
 
-  return v2;
+  return fetchedObjects;
 }
 
 - (id)keyAssets
 {
-  v2 = objc_getAssociatedObject(a1, "PHSuggestionPGSuggestionKeyAssets");
-  if (!v2)
+  fetchedObjects = objc_getAssociatedObject(self, "PHSuggestionPGSuggestionKeyAssets");
+  if (!fetchedObjects)
   {
-    v3 = [MEMORY[0x277CD97A8] fetchKeyAssetsInAssetCollection:a1 options:0];
-    v2 = [v3 fetchedObjects];
-    objc_setAssociatedObject(a1, "PHSuggestionPGSuggestionKeyAssets", v2, 1);
+    v3 = [MEMORY[0x277CD97A8] fetchKeyAssetsInAssetCollection:self options:0];
+    fetchedObjects = [v3 fetchedObjects];
+    objc_setAssociatedObject(self, "PHSuggestionPGSuggestionKeyAssets", fetchedObjects, 1);
   }
 
-  return v2;
+  return fetchedObjects;
 }
 
 @end

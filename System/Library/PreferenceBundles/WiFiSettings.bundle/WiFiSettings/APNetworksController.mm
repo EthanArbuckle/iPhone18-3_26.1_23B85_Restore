@@ -1,17 +1,17 @@
 @interface APNetworksController
-- (APNetworksController)initWithNibName:(id)a3 bundle:(id)a4;
+- (APNetworksController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_loadHealthOverrides;
-- (void)_notifyAirPortSettingsVisible:(BOOL)a3;
-- (void)handleURL:(id)a3;
+- (void)_notifyAirPortSettingsVisible:(BOOL)visible;
+- (void)handleURL:(id)l;
 - (void)loadView;
 - (void)willBecomeActive;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 - (void)willResignActive;
 @end
 
 @implementation APNetworksController
 
-- (APNetworksController)initWithNibName:(id)a3 bundle:(id)a4
+- (APNetworksController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = APNetworksController;
@@ -19,8 +19,8 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [(APNetworksController *)v4 navigationItem];
-    [v6 setLargeTitleDisplayMode:2];
+    navigationItem = [(APNetworksController *)v4 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
   }
 
   return v5;
@@ -62,28 +62,28 @@
       v11 = v9;
       if (os_log_type_enabled(v11, v10))
       {
-        v12 = [(WFSettingsKitViewController *)v8 view];
+        view = [(WFSettingsKitViewController *)v8 view];
         *buf = 136315394;
         v51 = "[APNetworksController loadView]";
         v52 = 2112;
-        v53 = v12;
+        v53 = view;
         _os_log_impl(&dword_0, v11, v10, "%s: viewController view %@", buf, 0x16u);
       }
     }
 
     [(APNetworksController *)self addChildViewController:v8];
-    v13 = [(APNetworksController *)self view];
-    v14 = [(WFSettingsKitViewController *)v8 view];
-    [v13 addSubview:v14];
+    view2 = [(APNetworksController *)self view];
+    view3 = [(WFSettingsKitViewController *)v8 view];
+    [view2 addSubview:view3];
 
-    v15 = [(APNetworksController *)self view];
-    [v15 frame];
+    view4 = [(APNetworksController *)self view];
+    [view4 frame];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(WFSettingsKitViewController *)v8 view];
-    [v24 setFrame:{v17, v19, v21, v23}];
+    view5 = [(WFSettingsKitViewController *)v8 view];
+    [view5 setFrame:{v17, v19, v21, v23}];
   }
 
   else
@@ -107,79 +107,79 @@
     self->_airportController = v28;
 
     [(APNetworksController *)self addChildViewController:v27];
-    v30 = [(APNetworksController *)self view];
-    v31 = [(WFAirportViewController *)v27 view];
-    [v30 addSubview:v31];
+    view6 = [(APNetworksController *)self view];
+    view7 = [(WFAirportViewController *)v27 view];
+    [view6 addSubview:view7];
 
-    v32 = [(APNetworksController *)self view];
-    [v32 frame];
+    view8 = [(APNetworksController *)self view];
+    [view8 frame];
     v34 = v33;
     v36 = v35;
     v38 = v37;
     v40 = v39;
-    v41 = [(WFAirportViewController *)v27 view];
+    view9 = [(WFAirportViewController *)v27 view];
 
-    [v41 setFrame:{v34, v36, v38, v40}];
+    [view9 setFrame:{v34, v36, v38, v40}];
     [(APNetworksController *)self _loadHealthOverrides];
-    v42 = [(APNetworksController *)self healthOverrides];
+    healthOverrides = [(APNetworksController *)self healthOverrides];
 
-    if (v42)
+    if (healthOverrides)
     {
-      v43 = [(APNetworksController *)self healthOverrides];
-      v44 = [(APNetworksController *)self airportController];
-      [v44 setHealthRecommendationOverrides:v43];
+      healthOverrides2 = [(APNetworksController *)self healthOverrides];
+      airportController = [(APNetworksController *)self airportController];
+      [airportController setHealthRecommendationOverrides:healthOverrides2];
     }
 
     else
     {
-      v43 = [(APNetworksController *)self airportController];
-      [v43 setHealthRecommendationOverrides:0];
+      healthOverrides2 = [(APNetworksController *)self airportController];
+      [healthOverrides2 setHealthRecommendationOverrides:0];
     }
 
     if (self->_pushDataUsage)
     {
-      v45 = [(APNetworksController *)self airportController];
-      [v45 pushDataUsageViewController];
+      airportController2 = [(APNetworksController *)self airportController];
+      [airportController2 pushDataUsageViewController];
 
       self->_pushDataUsage = 0;
     }
 
-    v46 = [(APNetworksController *)self deferredURL];
+    deferredURL = [(APNetworksController *)self deferredURL];
 
-    if (v46)
+    if (deferredURL)
     {
-      v47 = [(APNetworksController *)self airportController];
-      v48 = [(APNetworksController *)self deferredURL];
-      [v47 handleURL:v48];
+      airportController3 = [(APNetworksController *)self airportController];
+      deferredURL2 = [(APNetworksController *)self deferredURL];
+      [airportController3 handleURL:deferredURL2];
 
       [(APNetworksController *)self setDeferredURL:0];
     }
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v12.receiver = self;
   v12.super_class = APNetworksController;
   [(APNetworksController *)&v12 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
-    v5 = [(APNetworksController *)self parentViewController];
-    v6 = [v5 navigationItem];
-    [v6 setTitleView:0];
+    parentViewController = [(APNetworksController *)self parentViewController];
+    navigationItem = [parentViewController navigationItem];
+    [navigationItem setTitleView:0];
 
-    v7 = [(APNetworksController *)self navigationItem];
-    [v7 setTitleView:0];
+    navigationItem2 = [(APNetworksController *)self navigationItem];
+    [navigationItem2 setTitleView:0];
 
-    v8 = [(APNetworksController *)self navigationItem];
-    [v8 setBackButtonTitle:0];
+    navigationItem3 = [(APNetworksController *)self navigationItem];
+    [navigationItem3 setBackButtonTitle:0];
 
-    v9 = [(APNetworksController *)self parentViewController];
-    v10 = [v9 navigationItem];
-    [v10 setRightBarButtonItem:0];
+    parentViewController2 = [(APNetworksController *)self parentViewController];
+    navigationItem4 = [parentViewController2 navigationItem];
+    [navigationItem4 setRightBarButtonItem:0];
 
-    v11 = [(APNetworksController *)self navigationItem];
-    [v11 setRightBarButtonItem:0];
+    navigationItem5 = [(APNetworksController *)self navigationItem];
+    [navigationItem5 setRightBarButtonItem:0];
   }
 }
 
@@ -208,9 +208,9 @@
   [(APNetworksController *)&v5 willBecomeActive];
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (_os_feature_enabled_impl())
   {
     v5 = WFLogForCategory();
@@ -220,7 +220,7 @@
       *buf = 136315394;
       v38 = "[APNetworksController handleURL:]";
       v39 = 2112;
-      v40 = v4;
+      v40 = lCopy;
       _os_log_impl(&dword_0, v5, v6, "%s:Should call into WSK VC handle URL %@", buf, 0x16u);
     }
 
@@ -228,9 +228,9 @@
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v31 = self;
-    v7 = [(APNetworksController *)self childViewControllers];
-    v8 = [v7 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    selfCopy = self;
+    childViewControllers = [(APNetworksController *)self childViewControllers];
+    v8 = [childViewControllers countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v8)
     {
       v9 = v8;
@@ -241,7 +241,7 @@
         {
           if (*v33 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(childViewControllers);
           }
 
           v12 = *(*(&v32 + 1) + 8 * i);
@@ -261,20 +261,20 @@
               _os_log_impl(&dword_0, v15, v16, "%s: Found VC %@", buf, 0x16u);
             }
 
-            [v12 handleURL:v4];
+            [v12 handleURL:lCopy];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v9 = [childViewControllers countByEnumeratingWithState:&v32 objects:v36 count:16];
       }
 
       while (v9);
     }
 
-    self = v31;
+    self = selfCopy;
   }
 
-  v17 = [v4 objectForKey:@"path"];
+  v17 = [lCopy objectForKey:@"path"];
   v18 = WFLogForCategory();
   v19 = OSLogForWFLogLevel();
   if (WFCurrentLogLevel() && v18 && os_log_type_enabled(v18, v19))
@@ -293,8 +293,8 @@
       self->_pushDataUsage = 1;
       if (self->_viewLoaded)
       {
-        v20 = [(APNetworksController *)self airportController];
-        [v20 pushDataUsageViewController];
+        airportController = [(APNetworksController *)self airportController];
+        [airportController pushDataUsageViewController];
 
         self->_pushDataUsage = 0;
       }
@@ -353,9 +353,9 @@
   }
 }
 
-- (void)_notifyAirPortSettingsVisible:(BOOL)a3
+- (void)_notifyAirPortSettingsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v4 = WFLogForCategory();
   v5 = OSLogForWFLogLevel();
   if (WFCurrentLogLevel() && v4 && os_log_type_enabled(v4, v5))
@@ -363,14 +363,14 @@
     v7 = 136315394;
     v8 = "[APNetworksController _notifyAirPortSettingsVisible:]";
     v9 = 1024;
-    v10 = v3;
+    v10 = visibleCopy;
     _os_log_impl(&dword_0, v4, v5, "%s: air port settings visible: %d", &v7, 0x12u);
   }
 
   v6 = dword_11770;
   if (dword_11770 != -1 || (notify_register_check("com.apple.airportsettingsvisible", &dword_11770), v6 = dword_11770, dword_11770 != -1))
   {
-    notify_set_state(v6, v3);
+    notify_set_state(v6, visibleCopy);
     notify_post("com.apple.airportsettingsvisible");
   }
 }

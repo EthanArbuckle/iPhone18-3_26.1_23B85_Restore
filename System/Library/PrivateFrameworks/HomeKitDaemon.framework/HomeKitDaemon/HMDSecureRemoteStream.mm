@@ -4,30 +4,30 @@
 - (BOOL)isIdle;
 - (BOOL)isOpen;
 - (HMDDevice)peerDevice;
-- (HMDSecureRemoteStream)initWithCurrentDevice:(id)a3 peerDevice:(id)a4 clientMode:(BOOL)a5 sessionID:(id)a6 accountRegistry:(id)a7;
+- (HMDSecureRemoteStream)initWithCurrentDevice:(id)device peerDevice:(id)peerDevice clientMode:(BOOL)mode sessionID:(id)d accountRegistry:(id)registry;
 - (NSDate)lastActivity;
 - (NSNumber)maximumRemoteStreams;
 - (NSString)propertyDescription;
 - (NSString)shortDescription;
 - (id)logIdentifier;
 - (int64_t)qualityOfService;
-- (void)__handleAccountRemovedFromRegistry:(id)a3;
-- (void)__handleDeviceRemovedFromAccount:(id)a3;
-- (void)__handleRemovedIdentity:(id)a3;
-- (void)_closeWithError:(id)a3;
-- (void)_configureWithCompletionQueue:(id)a3 completionHandler:(id)a4;
-- (void)closedWithError:(id)a3;
+- (void)__handleAccountRemovedFromRegistry:(id)registry;
+- (void)__handleDeviceRemovedFromAccount:(id)account;
+- (void)__handleRemovedIdentity:(id)identity;
+- (void)_closeWithError:(id)error;
+- (void)_configureWithCompletionQueue:(id)queue completionHandler:(id)handler;
+- (void)closedWithError:(id)error;
 - (void)dealloc;
-- (void)handleCompletedMessage:(id)a3 options:(id)a4 responsePayload:(id)a5 error:(id)a6 completionHandler:(id)a7;
-- (void)handleSecureMessage:(id)a3 fromDevice:(id)a4 fromTransport:(id)a5;
-- (void)sendMessage:(id)a3 completionHandler:(id)a4;
-- (void)setAuthenticated:(BOOL)a3;
-- (void)setIdle:(BOOL)a3;
-- (void)setMaximumRemoteStreams:(id)a3;
-- (void)setOpen:(BOOL)a3;
-- (void)setPeerDevice:(id)a3;
-- (void)setQualityOfService:(int64_t)a3;
-- (void)startAndInvokeOnQueue:(id)a3 completionHandler:(id)a4;
+- (void)handleCompletedMessage:(id)message options:(id)options responsePayload:(id)payload error:(id)error completionHandler:(id)handler;
+- (void)handleSecureMessage:(id)message fromDevice:(id)device fromTransport:(id)transport;
+- (void)sendMessage:(id)message completionHandler:(id)handler;
+- (void)setAuthenticated:(BOOL)authenticated;
+- (void)setIdle:(BOOL)idle;
+- (void)setMaximumRemoteStreams:(id)streams;
+- (void)setOpen:(BOOL)open;
+- (void)setPeerDevice:(id)device;
+- (void)setQualityOfService:(int64_t)service;
+- (void)startAndInvokeOnQueue:(id)queue completionHandler:(id)handler;
 - (void)stop;
 @end
 
@@ -35,23 +35,23 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDSecureRemoteStream *)self sessionID];
-  v3 = [v2 UUIDString];
+  sessionID = [(HMDSecureRemoteStream *)self sessionID];
+  uUIDString = [sessionID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)__handleDeviceRemovedFromAccount:(id)a3
+- (void)__handleDeviceRemovedFromAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__HMDSecureRemoteStream___handleDeviceRemovedFromAccount___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = accountCopy;
+  selfCopy = self;
+  v6 = accountCopy;
   dispatch_async(queue, v7);
 }
 
@@ -101,17 +101,17 @@ void __58__HMDSecureRemoteStream___handleDeviceRemovedFromAccount___block_invoke
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__handleAccountRemovedFromRegistry:(id)a3
+- (void)__handleAccountRemovedFromRegistry:(id)registry
 {
-  v4 = a3;
+  registryCopy = registry;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__HMDSecureRemoteStream___handleAccountRemovedFromRegistry___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = registryCopy;
+  selfCopy = self;
+  v6 = registryCopy;
   dispatch_async(queue, v7);
 }
 
@@ -162,17 +162,17 @@ void __60__HMDSecureRemoteStream___handleAccountRemovedFromRegistry___block_invo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__handleRemovedIdentity:(id)a3
+- (void)__handleRemovedIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__HMDSecureRemoteStream___handleRemovedIdentity___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identityCopy;
+  selfCopy = self;
+  v6 = identityCopy;
   dispatch_async(queue, v7);
 }
 
@@ -248,23 +248,23 @@ void __49__HMDSecureRemoteStream___handleRemovedIdentity___block_invoke(uint64_t
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSecureMessage:(id)a3 fromDevice:(id)a4 fromTransport:(id)a5
+- (void)handleSecureMessage:(id)message fromDevice:(id)device fromTransport:(id)transport
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  deviceCopy = device;
+  transportCopy = transport;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__HMDSecureRemoteStream_handleSecureMessage_fromDevice_fromTransport___block_invoke;
   v15[3] = &unk_2786891E0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = messageCopy;
+  v17 = transportCopy;
+  v18 = deviceCopy;
+  v12 = deviceCopy;
+  v13 = transportCopy;
+  v14 = messageCopy;
   dispatch_async(queue, v15);
 }
 
@@ -369,29 +369,29 @@ void __70__HMDSecureRemoteStream_handleSecureMessage_fromDevice_fromTransport___
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCompletedMessage:(id)a3 options:(id)a4 responsePayload:(id)a5 error:(id)a6 completionHandler:(id)a7
+- (void)handleCompletedMessage:(id)message options:(id)options responsePayload:(id)payload error:(id)error completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  messageCopy = message;
+  optionsCopy = options;
+  payloadCopy = payload;
+  errorCopy = error;
+  handlerCopy = handler;
   queue = self->_queue;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __96__HMDSecureRemoteStream_handleCompletedMessage_options_responsePayload_error_completionHandler___block_invoke;
   v23[3] = &unk_278688B58;
-  v24 = v14;
-  v25 = self;
-  v26 = v12;
-  v27 = v15;
-  v28 = v13;
-  v29 = v16;
-  v18 = v16;
-  v19 = v13;
-  v20 = v15;
-  v21 = v12;
-  v22 = v14;
+  v24 = payloadCopy;
+  selfCopy = self;
+  v26 = messageCopy;
+  v27 = errorCopy;
+  v28 = optionsCopy;
+  v29 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = optionsCopy;
+  v20 = errorCopy;
+  v21 = messageCopy;
+  v22 = payloadCopy;
   dispatch_async(queue, v23);
 }
 
@@ -507,21 +507,21 @@ void __96__HMDSecureRemoteStream_handleCompletedMessage_options_responsePayload_
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMessage:(id)a3 completionHandler:(id)a4
+- (void)sendMessage:(id)message completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   queue = self->_queue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__HMDSecureRemoteStream_sendMessage_completionHandler___block_invoke;
   v12[3] = &unk_278688B30;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
+  v13 = messageCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
   v16 = a2;
-  v10 = v8;
-  v11 = v7;
+  v10 = handlerCopy;
+  v11 = messageCopy;
   dispatch_async(queue, v12);
 }
 
@@ -698,15 +698,15 @@ void __29__HMDSecureRemoteStream_stop__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_closeWithError:(id)a3
+- (void)_closeWithError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   [(HMDSecureRemoteStream *)self setOpen:0];
   [(HMDSecureRemoteStream *)self setAuthenticated:0];
-  v4 = [(HMFMessageTransport *)self delegate];
-  if ([v4 conformsToProtocol:&unk_283EFF620])
+  delegate = [(HMFMessageTransport *)self delegate];
+  if ([delegate conformsToProtocol:&unk_283EFF620])
   {
-    v5 = v4;
+    v5 = delegate;
   }
 
   else
@@ -718,44 +718,44 @@ void __29__HMDSecureRemoteStream_stop__block_invoke(uint64_t a1)
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 secureRemoteStream:self didCloseWithError:v7];
+    [v6 secureRemoteStream:self didCloseWithError:errorCopy];
   }
 }
 
-- (void)closedWithError:(id)a3
+- (void)closedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__HMDSecureRemoteStream_closedWithError___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_configureWithCompletionQueue:(id)a3 completionHandler:(id)a4
+- (void)_configureWithCompletionQueue:(id)queue completionHandler:(id)handler
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CFEC78] systemStore];
+  queueCopy = queue;
+  handlerCopy = handler;
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
   v48 = 0;
-  v9 = [v8 getLocalPairingIdentity:&v48];
+  v9 = [systemStore getLocalPairingIdentity:&v48];
   v10 = v48;
 
   if (v9)
   {
     v11 = [HMDSecureRemoteStreamInternal alloc];
-    v12 = [(HMDSecureRemoteStream *)self role];
-    v13 = [(HMDSecureRemoteStreamInternal *)v11 initWithType:v12 commitTimeout:hrsCommitTimeoutNanoseconds clientIdleTimeout:hrsIdleClientTimeoutNanoseconds serverIdleTimeout:hrsIdleServertTimeoutNanoseconds sendInternalTimeout:hrsSendInternalRequestTimeoutNanoseconds sendUserTimeout:hrsSendUserRequestTimeoutNanoseconds];
+    role = [(HMDSecureRemoteStream *)self role];
+    v13 = [(HMDSecureRemoteStreamInternal *)v11 initWithType:role commitTimeout:hrsCommitTimeoutNanoseconds clientIdleTimeout:hrsIdleClientTimeoutNanoseconds serverIdleTimeout:hrsIdleServertTimeoutNanoseconds sendInternalTimeout:hrsSendInternalRequestTimeoutNanoseconds sendUserTimeout:hrsSendUserRequestTimeoutNanoseconds];
     [(HMDSecureRemoteStream *)self setRemoteSession:v13];
 
     queue = self->_queue;
-    v15 = [(HMDSecureRemoteStream *)self remoteSession];
-    [v15 setDispatchQueue:queue];
+    remoteSession = [(HMDSecureRemoteStream *)self remoteSession];
+    [remoteSession setDispatchQueue:queue];
 
     objc_initWeak(location, self);
     if ([(HMDSecureRemoteStream *)self role]== 1)
@@ -765,10 +765,10 @@ void __29__HMDSecureRemoteStream_stop__block_invoke(uint64_t a1)
       v41[2] = __73__HMDSecureRemoteStream__configureWithCompletionQueue_completionHandler___block_invoke_2;
       v41[3] = &unk_2786889F0;
       objc_copyWeak(&v44, location);
-      v42 = v6;
-      v43 = v7;
-      v16 = [(HMDSecureRemoteStream *)self remoteSession];
-      [v16 setStartedHandler:v41];
+      v42 = queueCopy;
+      v43 = handlerCopy;
+      remoteSession2 = [(HMDSecureRemoteStream *)self remoteSession];
+      [remoteSession2 setStartedHandler:v41];
 
       objc_destroyWeak(&v44);
     }
@@ -778,53 +778,53 @@ void __29__HMDSecureRemoteStream_stop__block_invoke(uint64_t a1)
     v39[2] = __73__HMDSecureRemoteStream__configureWithCompletionQueue_completionHandler___block_invoke_4;
     v39[3] = &unk_278688A18;
     objc_copyWeak(&v40, location);
-    v17 = [(HMDSecureRemoteStream *)self remoteSession];
-    [v17 setStoppedHandler:v39];
+    remoteSession3 = [(HMDSecureRemoteStream *)self remoteSession];
+    [remoteSession3 setStoppedHandler:v39];
 
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __73__HMDSecureRemoteStream__configureWithCompletionQueue_completionHandler___block_invoke_344;
     v37[3] = &unk_278688A40;
     objc_copyWeak(&v38, location);
-    v18 = [(HMDSecureRemoteStream *)self remoteSession];
-    [v18 setGetLocalIdentityHandler:v37];
+    remoteSession4 = [(HMDSecureRemoteStream *)self remoteSession];
+    [remoteSession4 setGetLocalIdentityHandler:v37];
 
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __73__HMDSecureRemoteStream__configureWithCompletionQueue_completionHandler___block_invoke_348;
     v35[3] = &unk_278688A68;
     objc_copyWeak(&v36, location);
-    v19 = [(HMDSecureRemoteStream *)self remoteSession];
-    [v19 setFindPeerHandler:v35];
+    remoteSession5 = [(HMDSecureRemoteStream *)self remoteSession];
+    [remoteSession5 setFindPeerHandler:v35];
 
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __73__HMDSecureRemoteStream__configureWithCompletionQueue_completionHandler___block_invoke_356;
     v33[3] = &unk_278688AB8;
     objc_copyWeak(&v34, location);
-    v20 = [(HMDSecureRemoteStream *)self remoteSession];
-    [v20 setRequestHandler:v33];
+    remoteSession6 = [(HMDSecureRemoteStream *)self remoteSession];
+    [remoteSession6 setRequestHandler:v33];
 
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __73__HMDSecureRemoteStream__configureWithCompletionQueue_completionHandler___block_invoke_3_366;
     v31[3] = &unk_278688AE0;
     objc_copyWeak(&v32, location);
-    v21 = [(HMDSecureRemoteStream *)self remoteSession];
-    [v21 setTransportSendMessage:v31];
+    remoteSession7 = [(HMDSecureRemoteStream *)self remoteSession];
+    [remoteSession7 setTransportSendMessage:v31];
 
-    v22 = [(HMDSecureRemoteStream *)self remoteSession];
-    [v22 start];
+    remoteSession8 = [(HMDSecureRemoteStream *)self remoteSession];
+    [remoteSession8 start];
 
-    v23 = [(HMDSecureRemoteStream *)self role];
-    if (v7 && v6 && v23 == 2)
+    role2 = [(HMDSecureRemoteStream *)self role];
+    if (handlerCopy && queueCopy && role2 == 2)
     {
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __73__HMDSecureRemoteStream__configureWithCompletionQueue_completionHandler___block_invoke_368;
       v29[3] = &unk_278688B80;
-      v30 = v7;
-      dispatch_async(v6, v29);
+      v30 = handlerCopy;
+      dispatch_async(queueCopy, v29);
     }
 
     objc_destroyWeak(&v32);
@@ -838,7 +838,7 @@ void __29__HMDSecureRemoteStream_stop__block_invoke(uint64_t a1)
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
@@ -851,15 +851,15 @@ void __29__HMDSecureRemoteStream_stop__block_invoke(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v24);
-    if (v6 && v7)
+    if (queueCopy && handlerCopy)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __73__HMDSecureRemoteStream__configureWithCompletionQueue_completionHandler___block_invoke;
       block[3] = &unk_27868A7A0;
       v46 = v10;
-      v47 = v7;
-      dispatch_async(v6, block);
+      v47 = handlerCopy;
+      dispatch_async(queueCopy, block);
     }
   }
 
@@ -1585,20 +1585,20 @@ uint64_t __73__HMDSecureRemoteStream__configureWithCompletionQueue_completionHan
   return (*(a1[6] + 16))(a1[6], v1, a1[5], 0);
 }
 
-- (void)startAndInvokeOnQueue:(id)a3 completionHandler:(id)a4
+- (void)startAndInvokeOnQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HMDSecureRemoteStream_startAndInvokeOnQueue_completionHandler___block_invoke;
   block[3] = &unk_278689F98;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queueCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = queueCopy;
   dispatch_async(queue, block);
 }
 
@@ -1640,10 +1640,10 @@ uint64_t __65__HMDSecureRemoteStream_startAndInvokeOnQueue_completionHandler___b
   return v3;
 }
 
-- (void)setIdle:(BOOL)a3
+- (void)setIdle:(BOOL)idle
 {
-  v3 = a3;
-  if (a3)
+  idleCopy = idle;
+  if (idle)
   {
     obj = 0;
   }
@@ -1655,9 +1655,9 @@ uint64_t __65__HMDSecureRemoteStream_startAndInvokeOnQueue_completionHandler___b
 
   os_unfair_lock_lock_with_options();
   idle = self->_idle;
-  if (idle != v3)
+  if (idle != idleCopy)
   {
-    self->_idle = v3;
+    self->_idle = idleCopy;
   }
 
   if (obj)
@@ -1666,12 +1666,12 @@ uint64_t __65__HMDSecureRemoteStream_startAndInvokeOnQueue_completionHandler___b
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (idle != v3)
+  if (idle != idleCopy)
   {
-    v6 = [(HMFMessageTransport *)self delegate];
-    if ([v6 conformsToProtocol:&unk_283EFF620])
+    delegate = [(HMFMessageTransport *)self delegate];
+    if ([delegate conformsToProtocol:&unk_283EFF620])
     {
-      v7 = v6;
+      v7 = delegate;
     }
 
     else
@@ -1681,7 +1681,7 @@ uint64_t __65__HMDSecureRemoteStream_startAndInvokeOnQueue_completionHandler___b
 
     v8 = v7;
 
-    if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (idleCopy && (objc_opt_respondsToSelector() & 1) != 0)
     {
       [v8 secureRemoteStreamIsIdle:self];
     }
@@ -1696,10 +1696,10 @@ uint64_t __65__HMDSecureRemoteStream_startAndInvokeOnQueue_completionHandler___b
   return idle;
 }
 
-- (void)setAuthenticated:(BOOL)a3
+- (void)setAuthenticated:(BOOL)authenticated
 {
   os_unfair_lock_lock_with_options();
-  self->_authenticated = a3;
+  self->_authenticated = authenticated;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1712,10 +1712,10 @@ uint64_t __65__HMDSecureRemoteStream_startAndInvokeOnQueue_completionHandler___b
   return authenticated;
 }
 
-- (void)setOpen:(BOOL)a3
+- (void)setOpen:(BOOL)open
 {
   os_unfair_lock_lock_with_options();
-  self->_open = a3;
+  self->_open = open;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1728,12 +1728,12 @@ uint64_t __65__HMDSecureRemoteStream_startAndInvokeOnQueue_completionHandler___b
   return open;
 }
 
-- (void)setMaximumRemoteStreams:(id)a3
+- (void)setMaximumRemoteStreams:(id)streams
 {
-  v4 = a3;
+  streamsCopy = streams;
   os_unfair_lock_lock_with_options();
   maximumRemoteStreams = self->_maximumRemoteStreams;
-  self->_maximumRemoteStreams = v4;
+  self->_maximumRemoteStreams = streamsCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1747,10 +1747,10 @@ uint64_t __65__HMDSecureRemoteStream_startAndInvokeOnQueue_completionHandler___b
   return v3;
 }
 
-- (void)setQualityOfService:(int64_t)a3
+- (void)setQualityOfService:(int64_t)service
 {
   os_unfair_lock_lock_with_options();
-  self->_qualityOfService = a3;
+  self->_qualityOfService = service;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1763,26 +1763,26 @@ uint64_t __65__HMDSecureRemoteStream_startAndInvokeOnQueue_completionHandler___b
   return qualityOfService;
 }
 
-- (void)setPeerDevice:(id)a3
+- (void)setPeerDevice:(id)device
 {
-  v10 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock_with_options();
   peerDevice = self->_peerDevice;
-  if (peerDevice != v10)
+  if (peerDevice != deviceCopy)
   {
-    v6 = [(HMDDevice *)peerDevice account];
-    if (v6)
+    account = [(HMDDevice *)peerDevice account];
+    if (account)
     {
-      v7 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v7 removeObserver:self name:@"HMDAccountRemovedDeviceNotification" object:v6];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:@"HMDAccountRemovedDeviceNotification" object:account];
     }
 
-    objc_storeStrong(&self->_peerDevice, a3);
-    v8 = [(HMDDevice *)self->_peerDevice account];
-    if (v8)
+    objc_storeStrong(&self->_peerDevice, device);
+    account2 = [(HMDDevice *)self->_peerDevice account];
+    if (account2)
     {
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 addObserver:self selector:sel___handleDeviceRemovedFromAccount_ name:@"HMDAccountRemovedDeviceNotification" object:v8];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel___handleDeviceRemovedFromAccount_ name:@"HMDAccountRemovedDeviceNotification" object:account2];
     }
   }
 
@@ -1801,15 +1801,15 @@ uint64_t __65__HMDSecureRemoteStream_startAndInvokeOnQueue_completionHandler___b
 - (NSString)propertyDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDSecureRemoteStream *)self sessionID];
-  v5 = [(HMDSecureRemoteStream *)self role];
+  sessionID = [(HMDSecureRemoteStream *)self sessionID];
+  role = [(HMDSecureRemoteStream *)self role];
   v6 = @"unknown";
-  if (v5 == 2)
+  if (role == 2)
   {
     v6 = @"server";
   }
 
-  if (v5 == 1)
+  if (role == 1)
   {
     v6 = @"client";
   }
@@ -1819,8 +1819,8 @@ uint64_t __65__HMDSecureRemoteStream_startAndInvokeOnQueue_completionHandler___b
   v8 = HMFQualityOfServiceToString();
   [(HMDSecureRemoteStream *)self isIdle];
   v9 = HMFBooleanToString();
-  v10 = [(HMDSecureRemoteStream *)self lastActivity];
-  v11 = [v3 stringWithFormat:@", Identifier = %@, Role = %@, QoS = %@, Idle = %@, Last Activity = %@", v4, v7, v8, v9, v10];
+  lastActivity = [(HMDSecureRemoteStream *)self lastActivity];
+  v11 = [v3 stringWithFormat:@", Identifier = %@, Role = %@, QoS = %@, Idle = %@, Last Activity = %@", sessionID, v7, v8, v9, lastActivity];
 
   return v11;
 }
@@ -1828,10 +1828,10 @@ uint64_t __65__HMDSecureRemoteStream_startAndInvokeOnQueue_completionHandler___b
 - (NSString)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDSecureRemoteStream *)self sessionID];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"%@ %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  sessionID = [(HMDSecureRemoteStream *)self sessionID];
+  uUIDString = [sessionID UUIDString];
+  v7 = [v3 stringWithFormat:@"%@ %@", shortDescription, uUIDString];
 
   return v7;
 }
@@ -1844,30 +1844,30 @@ uint64_t __65__HMDSecureRemoteStream_startAndInvokeOnQueue_completionHandler___b
   [(HMDSecureRemoteStream *)&v3 dealloc];
 }
 
-- (HMDSecureRemoteStream)initWithCurrentDevice:(id)a3 peerDevice:(id)a4 clientMode:(BOOL)a5 sessionID:(id)a6 accountRegistry:(id)a7
+- (HMDSecureRemoteStream)initWithCurrentDevice:(id)device peerDevice:(id)peerDevice clientMode:(BOOL)mode sessionID:(id)d accountRegistry:(id)registry
 {
-  v9 = a5;
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  modeCopy = mode;
+  deviceCopy = device;
+  peerDeviceCopy = peerDevice;
+  dCopy = d;
+  registryCopy = registry;
   v32.receiver = self;
   v32.super_class = HMDSecureRemoteStream;
   v17 = [(HMDSecureRemoteStream *)&v32 init];
   if (v17)
   {
-    v30 = v14;
-    v31 = v13;
+    v30 = peerDeviceCopy;
+    v31 = deviceCopy;
     v18 = HMDispatchQueueNameString();
-    v19 = [v18 UTF8String];
+    uTF8String = [v18 UTF8String];
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v21 = dispatch_queue_create(v19, v20);
+    v21 = dispatch_queue_create(uTF8String, v20);
     queue = v17->_queue;
     v17->_queue = v21;
 
-    objc_storeStrong(&v17->_currentDevice, a3);
-    objc_storeStrong(&v17->_peerDevice, a4);
-    if (v9)
+    objc_storeStrong(&v17->_currentDevice, device);
+    objc_storeStrong(&v17->_peerDevice, peerDevice);
+    if (modeCopy)
     {
       v23 = 1;
     }
@@ -1878,25 +1878,25 @@ uint64_t __65__HMDSecureRemoteStream_startAndInvokeOnQueue_completionHandler___b
     }
 
     v17->_role = v23;
-    objc_storeStrong(&v17->_sessionID, a6);
+    objc_storeStrong(&v17->_sessionID, d);
     v17->_idle = 1;
     v17->_qualityOfService = 9;
-    v24 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     lastActivity = v17->_lastActivity;
-    v17->_lastActivity = v24;
+    v17->_lastActivity = distantPast;
 
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v17 selector:sel___handleAccountRemovedFromRegistry_ name:@"HMDAccountRegistryRemovedAccountNotification" object:v16];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v17 selector:sel___handleAccountRemovedFromRegistry_ name:@"HMDAccountRegistryRemovedAccountNotification" object:registryCopy];
 
-    v27 = [(HMDDevice *)v17->_peerDevice account];
-    if (v27)
+    account = [(HMDDevice *)v17->_peerDevice account];
+    if (account)
     {
-      v28 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v28 addObserver:v17 selector:sel___handleDeviceRemovedFromAccount_ name:@"HMDAccountRemovedDeviceNotification" object:v27];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:v17 selector:sel___handleDeviceRemovedFromAccount_ name:@"HMDAccountRemovedDeviceNotification" object:account];
     }
 
-    v14 = v30;
-    v13 = v31;
+    peerDeviceCopy = v30;
+    deviceCopy = v31;
   }
 
   return v17;

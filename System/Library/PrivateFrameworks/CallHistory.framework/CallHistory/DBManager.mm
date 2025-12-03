@@ -1,43 +1,43 @@
 @interface DBManager
-+ (BOOL)deleteDirectoryAtLocation:(id)a3;
-+ (BOOL)destroyDBAtLocation:(id)a3 withModel:(id)a4;
-+ (BOOL)destroyDBAtLocation:(id)a3 withModelAtLocation:(id)a4;
-+ (BOOL)makeDatabaseAtURLClassCDataProtected:(id)a3;
-+ (BOOL)moveDBAtLocation:(id)a3 toLocation:(id)a4 withModel:(id)a5;
-+ (BOOL)moveDBAtLocation:(id)a3 toLocation:(id)a4 withModelAtLocation:(id)a5;
-+ (BOOL)replacePersistentStore:(id)a3 withURL:(id)a4;
-+ (id)entityDescriptionHavingName:(id)a3 forContext:(id)a4;
-+ (id)getManagedObjectModelFromDB:(id)a3 orModelURL:(id)a4 orMetadata:(id)a5;
-+ (id)getPersistentCoordinatorWithModel:(id)a3;
-+ (id)getPropertyValueForKey:(id)a3 forContext:(id)a4;
-+ (id)instanceWithModelURL:(id)a3;
-+ (id)migrationDirectoryFromSourceURL:(id)a3;
-+ (id)migrationStoreURLIn:(id)a3 fromSourceURL:(id)a4 andModelURL:(id)a5;
-+ (id)persistentStoreOptionsWithURL:(id)a3 isEncrypted:(BOOL)a4;
-+ (id)sourceMetadataForDBAtLocation:(id)a3 withOptions:(id)a4;
-+ (int64_t)isDataStoreAtURLInitialized:(id)a3 withModelAtURL:(id)a4;
-+ (int64_t)mapToDBMErrorCode:(id)a3;
-+ (int64_t)versionForDBAtLocation:(id)a3;
-+ (int64_t)versionForManagedObjectModel:(id)a3;
-+ (void)setPropertyValue:(id)a3 forKey:(id)a4 forContext:(id)a5;
++ (BOOL)deleteDirectoryAtLocation:(id)location;
++ (BOOL)destroyDBAtLocation:(id)location withModel:(id)model;
++ (BOOL)destroyDBAtLocation:(id)location withModelAtLocation:(id)atLocation;
++ (BOOL)makeDatabaseAtURLClassCDataProtected:(id)protected;
++ (BOOL)moveDBAtLocation:(id)location toLocation:(id)toLocation withModel:(id)model;
++ (BOOL)moveDBAtLocation:(id)location toLocation:(id)toLocation withModelAtLocation:(id)atLocation;
++ (BOOL)replacePersistentStore:(id)store withURL:(id)l;
++ (id)entityDescriptionHavingName:(id)name forContext:(id)context;
++ (id)getManagedObjectModelFromDB:(id)b orModelURL:(id)l orMetadata:(id)metadata;
++ (id)getPersistentCoordinatorWithModel:(id)model;
++ (id)getPropertyValueForKey:(id)key forContext:(id)context;
++ (id)instanceWithModelURL:(id)l;
++ (id)migrationDirectoryFromSourceURL:(id)l;
++ (id)migrationStoreURLIn:(id)in fromSourceURL:(id)l andModelURL:(id)rL;
++ (id)persistentStoreOptionsWithURL:(id)l isEncrypted:(BOOL)encrypted;
++ (id)sourceMetadataForDBAtLocation:(id)location withOptions:(id)options;
++ (int64_t)isDataStoreAtURLInitialized:(id)initialized withModelAtURL:(id)l;
++ (int64_t)mapToDBMErrorCode:(id)code;
++ (int64_t)versionForDBAtLocation:(id)location;
++ (int64_t)versionForManagedObjectModel:(id)model;
++ (void)setPropertyValue:(id)value forKey:(id)key forContext:(id)context;
 - (DBManager)init;
 - (id)createManagedObjectContext;
-- (void)removeDataStoreAtLocation:(id)a3;
+- (void)removeDataStoreAtLocation:(id)location;
 @end
 
 @implementation DBManager
 
 - (id)createManagedObjectContext
 {
-  v3 = [(DBManager *)self fPersistentStoreCoordinator];
+  fPersistentStoreCoordinator = [(DBManager *)self fPersistentStoreCoordinator];
 
-  if (v3)
+  if (fPersistentStoreCoordinator)
   {
-    v3 = objc_alloc_init(MEMORY[0x1E695D628]);
-    [v3 setPersistentStoreCoordinator:self->fPersistentStoreCoordinator];
+    fPersistentStoreCoordinator = objc_alloc_init(MEMORY[0x1E695D628]);
+    [fPersistentStoreCoordinator setPersistentStoreCoordinator:self->fPersistentStoreCoordinator];
   }
 
-  return v3;
+  return fPersistentStoreCoordinator;
 }
 
 - (DBManager)init
@@ -47,37 +47,37 @@
   return [(CHLogger *)&v3 initWithDomain:"ch.dbm"];
 }
 
-+ (id)persistentStoreOptionsWithURL:(id)a3 isEncrypted:(BOOL)a4
++ (id)persistentStoreOptionsWithURL:(id)l isEncrypted:(BOOL)encrypted
 {
-  v4 = a4;
-  v5 = [CHPersistentStoreDescription persistentStoreDescriptionWithURL:a3];
+  encryptedCopy = encrypted;
+  v5 = [CHPersistentStoreDescription persistentStoreDescriptionWithURL:l];
   v6 = v5;
   v7 = MEMORY[0x1E696A3A8];
-  if (v4)
+  if (encryptedCopy)
   {
     v7 = MEMORY[0x1E696A388];
   }
 
   [v5 setOption:*v7 forKey:*MEMORY[0x1E695D3F8]];
-  v8 = [v6 options];
+  options = [v6 options];
 
-  return v8;
+  return options;
 }
 
-+ (id)getManagedObjectModelFromDB:(id)a3 orModelURL:(id)a4 orMetadata:(id)a5
++ (id)getManagedObjectModelFromDB:(id)b orModelURL:(id)l orMetadata:(id)metadata
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7 && !v8 && !v9)
+  bCopy = b;
+  lCopy = l;
+  metadataCopy = metadata;
+  v10 = metadataCopy;
+  if (!bCopy && !lCopy && !metadataCopy)
   {
     v11 = 0;
     goto LABEL_24;
   }
 
-  if (!v7)
+  if (!bCopy)
   {
     v11 = 0;
     v13 = 0;
@@ -85,15 +85,15 @@
   }
 
   v23 = 0;
-  v11 = [MEMORY[0x1E695D6B8] cachedModelForPersistentStoreWithURL:v7 options:0 error:&v23];
+  v11 = [MEMORY[0x1E695D6B8] cachedModelForPersistentStoreWithURL:bCopy options:0 error:&v23];
   v12 = v23;
   v13 = v12;
   if (!v11 || v12)
   {
 LABEL_10:
-    if (v8)
+    if (lCopy)
     {
-      v14 = [objc_alloc(MEMORY[0x1E695D638]) initWithContentsOfURL:v8];
+      v14 = [objc_alloc(MEMORY[0x1E695D638]) initWithContentsOfURL:lCopy];
 
       v11 = v14;
       if (!v14)
@@ -128,9 +128,9 @@ LABEL_19:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
           *buf = 138544130;
-          v25 = v7;
+          v25 = bCopy;
           v26 = 2114;
-          v27 = v8;
+          v27 = lCopy;
           v28 = 2114;
           v29 = v10;
           v30 = 2114;
@@ -166,12 +166,12 @@ LABEL_24:
   return v11;
 }
 
-+ (id)getPersistentCoordinatorWithModel:(id)a3
++ (id)getPersistentCoordinatorWithModel:(id)model
 {
-  v3 = a3;
-  if (v3)
+  modelCopy = model;
+  if (modelCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695D6C0]) initWithManagedObjectModel:v3];
+    v4 = [objc_alloc(MEMORY[0x1E695D6C0]) initWithManagedObjectModel:modelCopy];
   }
 
   else
@@ -190,31 +190,31 @@ LABEL_24:
   return v4;
 }
 
-+ (int64_t)isDataStoreAtURLInitialized:(id)a3 withModelAtURL:(id)a4
++ (int64_t)isDataStoreAtURLInitialized:(id)initialized withModelAtURL:(id)l
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  initializedCopy = initialized;
+  lCopy = l;
+  v7 = lCopy;
+  if (initializedCopy && lCopy)
   {
     v8 = *MEMORY[0x1E695D4A8];
     v23 = 0;
-    v9 = [MEMORY[0x1E695D6C0] metadataForPersistentStoreOfType:v8 URL:v5 error:&v23];
+    v9 = [MEMORY[0x1E695D6C0] metadataForPersistentStoreOfType:v8 URL:initializedCopy error:&v23];
     v10 = v23;
     v11 = v10;
     if (!v9)
     {
-      v16 = [v10 code];
+      code = [v10 code];
       v17 = +[CHLogServer sharedInstance];
       v13 = [v17 logHandleForDomain:"ch.dbm"];
 
-      if (v16 == 260)
+      if (code == 260)
       {
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v25 = v5;
+          v25 = initializedCopy;
           _os_log_impl(&dword_1C3E90000, v13, OS_LOG_TYPE_DEFAULT, "Data store at path %{public}@ does not exist", buf, 0xCu);
         }
       }
@@ -246,7 +246,7 @@ LABEL_23:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v25 = v5;
+        v25 = initializedCopy;
         _os_log_impl(&dword_1C3E90000, v19, OS_LOG_TYPE_DEFAULT, "Destination store at location %{public}@ is not compatible with newer version, migration required", buf, 0xCu);
       }
 
@@ -284,13 +284,13 @@ LABEL_24:
   return v14;
 }
 
-+ (id)instanceWithModelURL:(id)a3
++ (id)instanceWithModelURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
     v4 = objc_alloc_init(DBManager);
-    v5 = [objc_alloc(MEMORY[0x1E695D638]) initWithContentsOfURL:v3];
+    v5 = [objc_alloc(MEMORY[0x1E695D638]) initWithContentsOfURL:lCopy];
     v6 = [DBManager getPersistentCoordinatorWithModel:v5];
     if (v6)
     {
@@ -328,14 +328,14 @@ LABEL_24:
   return v7;
 }
 
-+ (int64_t)versionForManagedObjectModel:(id)a3
++ (int64_t)versionForManagedObjectModel:(id)model
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [a3 versionIdentifiers];
-  if ([v3 count] == 1)
+  versionIdentifiers = [model versionIdentifiers];
+  if ([versionIdentifiers count] == 1)
   {
-    v4 = [v3 anyObject];
-    v5 = [v4 integerValue];
+    anyObject = [versionIdentifiers anyObject];
+    integerValue = [anyObject integerValue];
   }
 
   else
@@ -347,25 +347,25 @@ LABEL_24:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134218240;
-      v12 = v3;
+      v12 = versionIdentifiers;
       v13 = 2048;
-      v14 = [v3 count];
+      v14 = [versionIdentifiers count];
       _os_log_impl(&dword_1C3E90000, v8, OS_LOG_TYPE_DEFAULT, "Either version indentifier set is nil (%p) or has count not equal to 1 (%lu)", &v11, 0x16u);
     }
 
-    v5 = 0;
+    integerValue = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v5;
+  return integerValue;
 }
 
-+ (id)sourceMetadataForDBAtLocation:(id)a3 withOptions:(id)a4
++ (id)sourceMetadataForDBAtLocation:(id)location withOptions:(id)options
 {
-  v5 = a3;
+  locationCopy = location;
   v6 = *MEMORY[0x1E695D4A8];
   v15 = 0;
-  v7 = [MEMORY[0x1E695D6C0] metadataForPersistentStoreOfType:v6 URL:v5 options:a4 error:&v15];
+  v7 = [MEMORY[0x1E695D6C0] metadataForPersistentStoreOfType:v6 URL:locationCopy options:options error:&v15];
   v8 = v15;
   v9 = v8;
   if (v7)
@@ -399,11 +399,11 @@ LABEL_24:
   return v13;
 }
 
-+ (int64_t)versionForDBAtLocation:(id)a3
++ (int64_t)versionForDBAtLocation:(id)location
 {
-  v3 = a3;
-  v4 = [DBManager sourceMetadataForDBAtLocation:v3 withOptions:0];
-  v5 = [DBManager getManagedObjectModelFromDB:v3 orModelURL:0 orMetadata:v4];
+  locationCopy = location;
+  v4 = [DBManager sourceMetadataForDBAtLocation:locationCopy withOptions:0];
+  v5 = [DBManager getManagedObjectModelFromDB:locationCopy orModelURL:0 orMetadata:v4];
 
   if (v5)
   {
@@ -418,14 +418,14 @@ LABEL_24:
   return v6;
 }
 
-+ (int64_t)mapToDBMErrorCode:(id)a3
++ (int64_t)mapToDBMErrorCode:(id)code
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 code] == 134110 && (objc_msgSend(v4, "userInfo"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  codeCopy = code;
+  v4 = codeCopy;
+  if (codeCopy && [codeCopy code] == 134110 && (objc_msgSend(v4, "userInfo"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E696AA08]];
+    userInfo = [v4 userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
     if (v7)
     {
@@ -454,14 +454,14 @@ LABEL_24:
   return v8;
 }
 
-+ (id)migrationDirectoryFromSourceURL:(id)a3
++ (id)migrationDirectoryFromSourceURL:(id)l
 {
-  v3 = [a3 URLByDeletingLastPathComponent];
-  v4 = [v3 URLByAppendingPathComponent:@"Migration" isDirectory:1];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v4 path];
+  uRLByDeletingLastPathComponent = [l URLByDeletingLastPathComponent];
+  v4 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"Migration" isDirectory:1];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v4 path];
   v12 = 0;
-  [v5 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v12];
+  [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v12];
   v7 = v12;
 
   if (v7)
@@ -485,13 +485,13 @@ LABEL_24:
   return v10;
 }
 
-+ (BOOL)deleteDirectoryAtLocation:(id)a3
++ (BOOL)deleteDirectoryAtLocation:(id)location
 {
   v3 = MEMORY[0x1E696AC08];
-  v4 = a3;
-  v5 = [v3 defaultManager];
+  locationCopy = location;
+  defaultManager = [v3 defaultManager];
   v10 = 0;
-  [v5 removeItemAtURL:v4 error:&v10];
+  [defaultManager removeItemAtURL:locationCopy error:&v10];
 
   v6 = v10;
   if (v6)
@@ -508,22 +508,22 @@ LABEL_24:
   return v6 == 0;
 }
 
-+ (id)migrationStoreURLIn:(id)a3 fromSourceURL:(id)a4 andModelURL:(id)a5
++ (id)migrationStoreURLIn:(id)in fromSourceURL:(id)l andModelURL:(id)rL
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v7 path];
-  v11 = [v10 pathExtension];
+  lCopy = l;
+  rLCopy = rL;
+  inCopy = in;
+  path = [lCopy path];
+  pathExtension = [path pathExtension];
 
-  v12 = [v11 stringByDeletingPathExtension];
-  v13 = [v8 lastPathComponent];
+  stringByDeletingPathExtension = [pathExtension stringByDeletingPathExtension];
+  lastPathComponent = [rLCopy lastPathComponent];
 
-  v14 = [v13 stringByDeletingPathExtension];
+  stringByDeletingPathExtension2 = [lastPathComponent stringByDeletingPathExtension];
 
-  v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@.%@", v12, v14, v11];
-  v16 = [v9 URLByAppendingPathComponent:v15];
+  v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@.%@", stringByDeletingPathExtension, stringByDeletingPathExtension2, pathExtension];
+  v16 = [inCopy URLByAppendingPathComponent:v15];
 
   v17 = +[CHLogServer sharedInstance];
   v18 = [v17 logHandleForDomain:"ch.dbm"];
@@ -533,9 +533,9 @@ LABEL_24:
     *buf = 138543874;
     v22 = v16;
     v23 = 2114;
-    v24 = v7;
+    v24 = lCopy;
     v25 = 2114;
-    v26 = v14;
+    v26 = stringByDeletingPathExtension2;
     _os_log_impl(&dword_1C3E90000, v18, OS_LOG_TYPE_DEFAULT, "Got destinationURL %{public}@ from sourceURL %{public}@ and modelName %{public}@", buf, 0x20u);
   }
 
@@ -544,20 +544,20 @@ LABEL_24:
   return v16;
 }
 
-+ (BOOL)destroyDBAtLocation:(id)a3 withModelAtLocation:(id)a4
++ (BOOL)destroyDBAtLocation:(id)location withModelAtLocation:(id)atLocation
 {
-  v5 = a3;
-  v6 = [DBManager getManagedObjectModelFromDB:v5 orModelURL:a4 orMetadata:0];
-  v7 = [DBManager destroyDBAtLocation:v5 withModel:v6];
+  locationCopy = location;
+  v6 = [DBManager getManagedObjectModelFromDB:locationCopy orModelURL:atLocation orMetadata:0];
+  v7 = [DBManager destroyDBAtLocation:locationCopy withModel:v6];
 
   return v7;
 }
 
-+ (BOOL)destroyDBAtLocation:(id)a3 withModel:(id)a4
++ (BOOL)destroyDBAtLocation:(id)location withModel:(id)model
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [DBManager getPersistentCoordinatorWithModel:v6];
+  locationCopy = location;
+  modelCopy = model;
+  v7 = [DBManager getPersistentCoordinatorWithModel:modelCopy];
   if (v7)
   {
     v8 = MEMORY[0x1E695DF20];
@@ -566,7 +566,7 @@ LABEL_24:
 
     v11 = *MEMORY[0x1E695D4A8];
     v18 = 0;
-    v12 = [v7 _destroyPersistentStoreAtURL:v5 withType:v11 options:v10 error:&v18];
+    v12 = [v7 _destroyPersistentStoreAtURL:locationCopy withType:v11 options:v10 error:&v18];
     v13 = v18;
     if ((v12 & 1) == 0)
     {
@@ -596,23 +596,23 @@ LABEL_24:
   return v12;
 }
 
-+ (BOOL)moveDBAtLocation:(id)a3 toLocation:(id)a4 withModelAtLocation:(id)a5
++ (BOOL)moveDBAtLocation:(id)location toLocation:(id)toLocation withModelAtLocation:(id)atLocation
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [DBManager getManagedObjectModelFromDB:v8 orModelURL:a5 orMetadata:0];
-  v10 = [DBManager moveDBAtLocation:v8 toLocation:v7 withModel:v9];
+  toLocationCopy = toLocation;
+  locationCopy = location;
+  v9 = [DBManager getManagedObjectModelFromDB:locationCopy orModelURL:atLocation orMetadata:0];
+  v10 = [DBManager moveDBAtLocation:locationCopy toLocation:toLocationCopy withModel:v9];
 
   return v10;
 }
 
-+ (BOOL)moveDBAtLocation:(id)a3 toLocation:(id)a4 withModel:(id)a5
++ (BOOL)moveDBAtLocation:(id)location toLocation:(id)toLocation withModel:(id)model
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [DBManager getPersistentCoordinatorWithModel:v9];
+  locationCopy = location;
+  toLocationCopy = toLocation;
+  modelCopy = model;
+  v10 = [DBManager getPersistentCoordinatorWithModel:modelCopy];
   v11 = v10;
   if (!v10)
   {
@@ -630,7 +630,7 @@ LABEL_24:
 
   v12 = *MEMORY[0x1E695D4A8];
   v21 = 0;
-  v13 = [v10 _replacePersistentStoreAtURL:v8 destinationOptions:0 withPersistentStoreFromURL:v7 sourceOptions:0 storeType:v12 error:&v21];
+  v13 = [v10 _replacePersistentStoreAtURL:toLocationCopy destinationOptions:0 withPersistentStoreFromURL:locationCopy sourceOptions:0 storeType:v12 error:&v21];
   v14 = v21;
   if ((v13 & 1) == 0)
   {
@@ -640,9 +640,9 @@ LABEL_24:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v23 = v7;
+      v23 = locationCopy;
       v24 = 2114;
-      v25 = v8;
+      v25 = toLocationCopy;
       v26 = 2114;
       v27 = v14;
       _os_log_error_impl(&dword_1C3E90000, v17, OS_LOG_TYPE_ERROR, "Failed to copy data store src: %{public}@ dst: %{public}@ error: %{public}@", buf, 0x20u);
@@ -661,26 +661,26 @@ LABEL_10:
   return v15;
 }
 
-- (void)removeDataStoreAtLocation:(id)a3
+- (void)removeDataStoreAtLocation:(id)location
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  locationCopy = location;
+  if (locationCopy)
   {
-    v5 = [(DBManager *)self fPersistentStoreCoordinator];
-    v6 = [v5 persistentStoreForURL:v4];
+    fPersistentStoreCoordinator = [(DBManager *)self fPersistentStoreCoordinator];
+    logHandle3 = [fPersistentStoreCoordinator persistentStoreForURL:locationCopy];
 
-    if (v6)
+    if (logHandle3)
     {
-      v7 = [(DBManager *)self fPersistentStoreCoordinator];
+      fPersistentStoreCoordinator2 = [(DBManager *)self fPersistentStoreCoordinator];
       v12 = 0;
-      v8 = [v7 removePersistentStore:v6 error:&v12];
-      v9 = v12;
+      v8 = [fPersistentStoreCoordinator2 removePersistentStore:logHandle3 error:&v12];
+      logHandle2 = v12;
 
       if ((v8 & 1) == 0)
       {
-        v10 = [(CHLogger *)self logHandle];
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+        logHandle = [(CHLogger *)self logHandle];
+        if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
         {
           [DBManager removeDataStoreAtLocation:];
         }
@@ -689,20 +689,20 @@ LABEL_10:
 
     else
     {
-      v9 = [(CHLogger *)self logHandle];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      logHandle2 = [(CHLogger *)self logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v14 = v4;
-        _os_log_impl(&dword_1C3E90000, v9, OS_LOG_TYPE_DEFAULT, "Persistent store at URL %{public}@ is not present", buf, 0xCu);
+        v14 = locationCopy;
+        _os_log_impl(&dword_1C3E90000, logHandle2, OS_LOG_TYPE_DEFAULT, "Persistent store at URL %{public}@ is not present", buf, 0xCu);
       }
     }
   }
 
   else
   {
-    v6 = [(CHLogger *)self logHandle];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    logHandle3 = [(CHLogger *)self logHandle];
+    if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_ERROR))
     {
       [DBManager addDataStoreAtLocation:isEncrypted:];
     }
@@ -711,16 +711,16 @@ LABEL_10:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)entityDescriptionHavingName:(id)a3 forContext:(id)a4
++ (id)entityDescriptionHavingName:(id)name forContext:(id)context
 {
-  v5 = a3;
-  v6 = [a4 persistentStoreCoordinator];
-  v7 = [v6 managedObjectModel];
+  nameCopy = name;
+  persistentStoreCoordinator = [context persistentStoreCoordinator];
+  managedObjectModel = [persistentStoreCoordinator managedObjectModel];
 
-  if (v7)
+  if (managedObjectModel)
   {
-    v8 = [v7 entitiesByName];
-    v9 = [v8 objectForKey:v5];
+    entitiesByName = [managedObjectModel entitiesByName];
+    v9 = [entitiesByName objectForKey:nameCopy];
   }
 
   else
@@ -739,26 +739,26 @@ LABEL_10:
   return v9;
 }
 
-+ (void)setPropertyValue:(id)a3 forKey:(id)a4 forContext:(id)a5
++ (void)setPropertyValue:(id)value forKey:(id)key forContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 persistentStoreCoordinator];
-  v10 = v9;
-  if (v9)
+  valueCopy = value;
+  keyCopy = key;
+  persistentStoreCoordinator = [context persistentStoreCoordinator];
+  v10 = persistentStoreCoordinator;
+  if (persistentStoreCoordinator)
   {
-    v11 = [v9 persistentStores];
-    v12 = [v11 firstObject];
+    persistentStores = [persistentStoreCoordinator persistentStores];
+    firstObject = [persistentStores firstObject];
 
-    if (v12)
+    if (firstObject)
     {
-      v13 = [v10 metadataForPersistentStore:v12];
+      v13 = [v10 metadataForPersistentStore:firstObject];
       v14 = v13;
       if (v13)
       {
         v15 = [v13 mutableCopy];
-        [v15 setObject:v7 forKey:v8];
-        [v10 setMetadata:v15 forPersistentStore:v12];
+        [v15 setObject:valueCopy forKey:keyCopy];
+        [v10 setMetadata:v15 forPersistentStore:firstObject];
       }
 
       else
@@ -788,32 +788,32 @@ LABEL_10:
   else
   {
     v16 = +[CHLogServer sharedInstance];
-    v12 = [v16 logHandleForDomain:"ch.dbm"];
+    firstObject = [v16 logHandleForDomain:"ch.dbm"];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       +[DBManager setPropertyValue:forKey:forContext:];
     }
   }
 }
 
-+ (id)getPropertyValueForKey:(id)a3 forContext:(id)a4
++ (id)getPropertyValueForKey:(id)key forContext:(id)context
 {
-  v5 = a3;
-  v6 = [a4 persistentStoreCoordinator];
-  v7 = v6;
-  if (v6)
+  keyCopy = key;
+  persistentStoreCoordinator = [context persistentStoreCoordinator];
+  v7 = persistentStoreCoordinator;
+  if (persistentStoreCoordinator)
   {
-    v8 = [v6 persistentStores];
-    v9 = [v8 firstObject];
+    persistentStores = [persistentStoreCoordinator persistentStores];
+    firstObject = [persistentStores firstObject];
 
-    if (v9)
+    if (firstObject)
     {
-      v10 = [v7 metadataForPersistentStore:v9];
+      v10 = [v7 metadataForPersistentStore:firstObject];
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 valueForKey:v5];
+        v12 = [v10 valueForKey:keyCopy];
 LABEL_14:
 
         goto LABEL_15;
@@ -844,9 +844,9 @@ LABEL_14:
   }
 
   v13 = +[CHLogServer sharedInstance];
-  v9 = [v13 logHandleForDomain:"ch.dbm"];
+  firstObject = [v13 logHandleForDomain:"ch.dbm"];
 
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
   {
     +[DBManager setPropertyValue:forKey:forContext:];
   }
@@ -857,18 +857,18 @@ LABEL_15:
   return v12;
 }
 
-+ (BOOL)makeDatabaseAtURLClassCDataProtected:(id)a3
++ (BOOL)makeDatabaseAtURLClassCDataProtected:(id)protected
 {
-  v3 = a3;
-  v4 = [DBManager sourceMetadataForDBAtLocation:v3 withOptions:0];
-  v5 = [DBManager getManagedObjectModelFromDB:v3 orModelURL:0 orMetadata:v4];
+  protectedCopy = protected;
+  v4 = [DBManager sourceMetadataForDBAtLocation:protectedCopy withOptions:0];
+  v5 = [DBManager getManagedObjectModelFromDB:protectedCopy orModelURL:0 orMetadata:v4];
   if (v5)
   {
     v6 = objc_alloc_init(DBManager);
     v7 = [objc_alloc(MEMORY[0x1E695D6C0]) initWithManagedObjectModel:v5];
     [(DBManager *)v6 setFPersistentStoreCoordinator:v7];
 
-    v8 = [(DBManager *)v6 addDataStoreAtLocation:v3 isEncrypted:1];
+    v8 = [(DBManager *)v6 addDataStoreAtLocation:protectedCopy isEncrypted:1];
   }
 
   else
@@ -879,15 +879,15 @@ LABEL_15:
   return v8;
 }
 
-+ (BOOL)replacePersistentStore:(id)a3 withURL:(id)a4
++ (BOOL)replacePersistentStore:(id)store withURL:(id)l
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  storeCopy = store;
+  lCopy = l;
   v7 = objc_opt_new();
   v8 = *MEMORY[0x1E695D4A8];
   v15 = 0;
-  v9 = [v7 _replacePersistentStoreAtURL:v5 destinationOptions:0 withPersistentStoreFromURL:v6 sourceOptions:0 storeType:v8 error:&v15];
+  v9 = [v7 _replacePersistentStoreAtURL:storeCopy destinationOptions:0 withPersistentStoreFromURL:lCopy sourceOptions:0 storeType:v8 error:&v15];
   v10 = v15;
   if ((v9 & 1) == 0)
   {
@@ -897,9 +897,9 @@ LABEL_15:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v17 = v5;
+      v17 = storeCopy;
       v18 = 2114;
-      v19 = v6;
+      v19 = lCopy;
       v20 = 2114;
       v21 = v10;
       _os_log_error_impl(&dword_1C3E90000, v12, OS_LOG_TYPE_ERROR, "Could not replace persistent data store at %{public}@ with %{public}@: %{public}@", buf, 0x20u);

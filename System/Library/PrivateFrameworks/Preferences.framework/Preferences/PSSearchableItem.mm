@@ -9,21 +9,21 @@
 - (id)toCSSearchableItem
 {
   v3 = objc_alloc(MEMORY[0x1E6964E90]);
-  v4 = [(PSSearchableItem *)self classIdentifier];
-  v5 = [v3 initWithItemContentType:v4];
+  classIdentifier = [(PSSearchableItem *)self classIdentifier];
+  v5 = [v3 initWithItemContentType:classIdentifier];
 
-  v6 = [(PSSearchableItem *)self name];
-  [v5 setSubject:v6];
+  name = [(PSSearchableItem *)self name];
+  [v5 setSubject:name];
 
-  v7 = [(PSSearchableItem *)self contentDescription];
-  [v5 setContentDescription:v7];
+  contentDescription = [(PSSearchableItem *)self contentDescription];
+  [v5 setContentDescription:contentDescription];
 
-  v8 = [(PSSearchableItem *)self keywords];
-  [v5 setKeywords:v8];
+  keywords = [(PSSearchableItem *)self keywords];
+  [v5 setKeywords:keywords];
 
-  v9 = [(PSSearchableItem *)self category];
+  category = [(PSSearchableItem *)self category];
 
-  if (v9)
+  if (category)
   {
     [(PSSearchableItem *)self category];
   }
@@ -38,20 +38,20 @@
   v11 = [(PSSearchableItem *)self url];
   [v5 setIdentifier:v11];
 
-  v12 = [(PSSearchableItem *)self rankingHint];
-  [v5 setRankingHint:v12];
+  rankingHint = [(PSSearchableItem *)self rankingHint];
+  [v5 setRankingHint:rankingHint];
 
-  v13 = [MEMORY[0x1E696AAE8] mainBundle];
-  v14 = [v13 bundleIdentifier];
-  v15 = [@"com.apple.Preferences" isEqualToString:v14];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v15 = [@"com.apple.Preferences" isEqualToString:bundleIdentifier];
 
   if (v15)
   {
-    v16 = [(PSSearchableItem *)self name];
-    [v5 setTitle:v16];
+    name2 = [(PSSearchableItem *)self name];
+    [v5 setTitle:name2];
 
-    v17 = [(PSSearchableItem *)self contentDescription];
-    [v5 setSubtitle:v17];
+    contentDescription2 = [(PSSearchableItem *)self contentDescription];
+    [v5 setSubtitle:contentDescription2];
   }
 
   v18 = [(PSSearchableItem *)self url];
@@ -63,11 +63,11 @@
     v21 = [(PSSearchableItem *)self url];
     v22 = [v20 initWithString:v21];
 
-    v23 = [v22 pathComponents];
-    v24 = [v22 host];
-    if ([@"com.apple.Settings.Apps" isEqualToString:v24])
+    pathComponents = [v22 pathComponents];
+    host = [v22 host];
+    if ([@"com.apple.Settings.Apps" isEqualToString:host])
     {
-      v25 = [v23 count];
+      v25 = [pathComponents count];
 
       if (v25 < 2)
       {
@@ -76,8 +76,8 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v24 = [v23 objectAtIndexedSubscript:1];
-      [v5 setRelatedAppBundleIdentifier:v24];
+      host = [pathComponents objectAtIndexedSubscript:1];
+      [v5 setRelatedAppBundleIdentifier:host];
     }
 
     goto LABEL_11;
@@ -86,8 +86,8 @@ LABEL_11:
 LABEL_12:
   v26 = objc_alloc(MEMORY[0x1E6964E80]);
   v27 = [(PSSearchableItem *)self url];
-  v28 = [(PSSearchableItem *)self classIdentifier];
-  v29 = [v26 initWithUniqueIdentifier:v27 domainIdentifier:v28 attributeSet:v5];
+  classIdentifier2 = [(PSSearchableItem *)self classIdentifier];
+  v29 = [v26 initWithUniqueIdentifier:v27 domainIdentifier:classIdentifier2 attributeSet:v5];
 
   return v29;
 }
@@ -95,13 +95,13 @@ LABEL_12:
 - (id)toManifestDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(PSSearchableItem *)self name];
-  v5 = [v4 length];
+  name = [(PSSearchableItem *)self name];
+  v5 = [name length];
 
   if (v5)
   {
-    v6 = [(PSSearchableItem *)self name];
-    [v3 setObject:v6 forKeyedSubscript:@"label"];
+    name2 = [(PSSearchableItem *)self name];
+    [v3 setObject:name2 forKeyedSubscript:@"label"];
   }
 
   v7 = [(PSSearchableItem *)self url];
@@ -113,66 +113,66 @@ LABEL_12:
     [v3 setObject:v9 forKeyedSubscript:@"searchURL"];
   }
 
-  v10 = [(PSSearchableItem *)self category];
-  v11 = [v10 length];
+  category = [(PSSearchableItem *)self category];
+  v11 = [category length];
 
   if (v11)
   {
-    v12 = [(PSSearchableItem *)self category];
+    category2 = [(PSSearchableItem *)self category];
   }
 
   else
   {
-    v13 = [(PSSearchableItem *)self identifier];
-    v14 = [v13 length];
+    identifier = [(PSSearchableItem *)self identifier];
+    v14 = [identifier length];
 
     if (!v14)
     {
       goto LABEL_10;
     }
 
-    v12 = [(PSSearchableItem *)self identifier];
+    category2 = [(PSSearchableItem *)self identifier];
   }
 
-  v15 = v12;
-  [v3 setObject:v12 forKeyedSubscript:@"searchSectionID"];
+  v15 = category2;
+  [v3 setObject:category2 forKeyedSubscript:@"searchSectionID"];
 
 LABEL_10:
-  v16 = [(PSSearchableItem *)self keywords];
-  v17 = [v16 count];
+  keywords = [(PSSearchableItem *)self keywords];
+  v17 = [keywords count];
 
   if (v17)
   {
-    v18 = [(PSSearchableItem *)self keywords];
-    v19 = [v18 componentsJoinedByString:{@", "}];
+    keywords2 = [(PSSearchableItem *)self keywords];
+    v19 = [keywords2 componentsJoinedByString:{@", "}];
     [v3 setObject:v19 forKeyedSubscript:@"keywords"];
   }
 
-  v20 = [(PSSearchableItem *)self requiredCapabilities];
-  v21 = [v20 count];
+  requiredCapabilities = [(PSSearchableItem *)self requiredCapabilities];
+  v21 = [requiredCapabilities count];
 
   if (v21)
   {
-    v22 = [(PSSearchableItem *)self requiredCapabilities];
-    [v3 setObject:v22 forKeyedSubscript:@"requiredCapabilities"];
+    requiredCapabilities2 = [(PSSearchableItem *)self requiredCapabilities];
+    [v3 setObject:requiredCapabilities2 forKeyedSubscript:@"requiredCapabilities"];
   }
 
-  v23 = [(PSSearchableItem *)self requiredCapabilitiesOr];
-  v24 = [v23 count];
+  requiredCapabilitiesOr = [(PSSearchableItem *)self requiredCapabilitiesOr];
+  v24 = [requiredCapabilitiesOr count];
 
   if (v24)
   {
-    v25 = [(PSSearchableItem *)self requiredCapabilitiesOr];
-    [v3 setObject:v25 forKeyedSubscript:@"requiredCapabilitiesOr"];
+    requiredCapabilitiesOr2 = [(PSSearchableItem *)self requiredCapabilitiesOr];
+    [v3 setObject:requiredCapabilitiesOr2 forKeyedSubscript:@"requiredCapabilitiesOr"];
   }
 
-  v26 = [(PSSearchableItem *)self contentDescription];
-  v27 = [v26 length];
+  contentDescription = [(PSSearchableItem *)self contentDescription];
+  v27 = [contentDescription length];
 
   if (v27)
   {
-    v28 = [(PSSearchableItem *)self contentDescription];
-    [v3 setObject:v28 forKeyedSubscript:@"contentDescription"];
+    contentDescription2 = [(PSSearchableItem *)self contentDescription];
+    [v3 setObject:contentDescription2 forKeyedSubscript:@"contentDescription"];
   }
 
   v29 = [v3 copy];
@@ -183,22 +183,22 @@ LABEL_10:
 - (id)toAutomationDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(PSSearchableItem *)self name];
-  v5 = [v4 length];
+  name = [(PSSearchableItem *)self name];
+  v5 = [name length];
 
   if (v5)
   {
-    v6 = [(PSSearchableItem *)self name];
-    [v3 setObject:v6 forKeyedSubscript:@"title"];
+    name2 = [(PSSearchableItem *)self name];
+    [v3 setObject:name2 forKeyedSubscript:@"title"];
   }
 
-  v7 = [(PSSearchableItem *)self contentDescription];
-  v8 = [v7 length];
+  contentDescription = [(PSSearchableItem *)self contentDescription];
+  v8 = [contentDescription length];
 
   if (v8)
   {
-    v9 = [(PSSearchableItem *)self contentDescription];
-    [v3 setObject:v9 forKeyedSubscript:@"subtitle"];
+    contentDescription2 = [(PSSearchableItem *)self contentDescription];
+    [v3 setObject:contentDescription2 forKeyedSubscript:@"subtitle"];
   }
 
   v10 = [(PSSearchableItem *)self url];
@@ -210,13 +210,13 @@ LABEL_10:
     [v3 setObject:v12 forKeyedSubscript:@"url"];
   }
 
-  v13 = [(PSSearchableItem *)self keywords];
-  v14 = [v13 count];
+  keywords = [(PSSearchableItem *)self keywords];
+  v14 = [keywords count];
 
   if (v14)
   {
-    v15 = [(PSSearchableItem *)self keywords];
-    v16 = [v15 copy];
+    keywords2 = [(PSSearchableItem *)self keywords];
+    v16 = [keywords2 copy];
     [v3 setObject:v16 forKeyedSubscript:@"keywords"];
   }
 

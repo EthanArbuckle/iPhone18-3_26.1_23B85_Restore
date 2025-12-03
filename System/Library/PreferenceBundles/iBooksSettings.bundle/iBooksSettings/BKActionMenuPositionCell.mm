@@ -1,5 +1,5 @@
 @interface BKActionMenuPositionCell
-- (BKActionMenuPositionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BKActionMenuPositionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (BKImageRadioButtonView)leftView;
 - (BKImageRadioButtonView)rightView;
 - (id)accessibilityElements;
@@ -7,11 +7,11 @@
 
 @implementation BKActionMenuPositionCell
 
-- (BKActionMenuPositionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BKActionMenuPositionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v91.receiver = self;
   v91.super_class = BKActionMenuPositionCell;
-  v4 = [(BKActionMenuPositionCell *)&v91 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(BKActionMenuPositionCell *)&v91 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [BKImageRadioButtonView alloc];
@@ -27,14 +27,14 @@
 
     objc_storeWeak(&v4->_rightView, v12);
     v13 = +[BooksSettings shared];
-    v14 = [v13 menuOnLeft];
+    menuOnLeft = [v13 menuOnLeft];
 
-    [(BKActionMenuPositionCell *)v4 _updateSelection:v14];
-    v15 = [(BKActionMenuPositionCell *)v4 contentView];
-    [v15 addSubview:v8];
+    [(BKActionMenuPositionCell *)v4 _updateSelection:menuOnLeft];
+    contentView = [(BKActionMenuPositionCell *)v4 contentView];
+    [contentView addSubview:v8];
 
-    v16 = [(BKActionMenuPositionCell *)v4 contentView];
-    [v16 addSubview:v12];
+    contentView2 = [(BKActionMenuPositionCell *)v4 contentView];
+    [contentView2 addSubview:v12];
 
     v17 = [[BKViewTapGestureRecognizer alloc] initWithTarget:v4 action:"_setActionMenuOnLeft:"];
     [(BKImageRadioButtonView *)v8 addGestureRecognizer:v17];
@@ -71,14 +71,14 @@
 
           v28 = *(*(&v87 + 1) + 8 * i);
           [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
-          v29 = [(BKActionMenuPositionCell *)v4 backgroundColor];
-          [v28 setBackgroundColor:v29];
+          backgroundColor = [(BKActionMenuPositionCell *)v4 backgroundColor];
+          [v28 setBackgroundColor:backgroundColor];
 
-          v30 = [(BKActionMenuPositionCell *)v4 contentView];
-          [v30 addSubview:v28];
+          contentView3 = [(BKActionMenuPositionCell *)v4 contentView];
+          [contentView3 addSubview:v28];
 
-          v31 = [v28 heightAnchor];
-          v32 = [v31 constraintEqualToConstant:10.0];
+          heightAnchor = [v28 heightAnchor];
+          v32 = [heightAnchor constraintEqualToConstant:10.0];
           [v32 setActive:1];
         }
 
@@ -88,69 +88,69 @@
       while (v25);
     }
 
-    v85 = [(BKImageRadioButtonView *)v8 topAnchor];
-    v86 = [(BKActionMenuPositionCell *)v4 contentView];
-    v84 = [v86 topAnchor];
-    v83 = [v85 constraintEqualToAnchor:v84];
+    topAnchor = [(BKImageRadioButtonView *)v8 topAnchor];
+    contentView4 = [(BKActionMenuPositionCell *)v4 contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v83 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v92[0] = v83;
-    v81 = [(BKImageRadioButtonView *)v8 bottomAnchor];
-    v82 = [(BKActionMenuPositionCell *)v4 contentView];
-    v80 = [v82 bottomAnchor];
-    v79 = [v81 constraintEqualToAnchor:v80];
+    bottomAnchor = [(BKImageRadioButtonView *)v8 bottomAnchor];
+    contentView5 = [(BKActionMenuPositionCell *)v4 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v79 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v92[1] = v79;
-    v77 = [(BKImageRadioButtonView *)v12 topAnchor];
-    v78 = [(BKActionMenuPositionCell *)v4 contentView];
-    v76 = [v78 topAnchor];
-    v75 = [v77 constraintEqualToAnchor:v76];
+    topAnchor3 = [(BKImageRadioButtonView *)v12 topAnchor];
+    contentView6 = [(BKActionMenuPositionCell *)v4 contentView];
+    topAnchor4 = [contentView6 topAnchor];
+    v75 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v92[2] = v75;
-    v73 = [(BKImageRadioButtonView *)v12 bottomAnchor];
-    v74 = [(BKActionMenuPositionCell *)v4 contentView];
-    v72 = [v74 bottomAnchor];
-    v71 = [v73 constraintEqualToAnchor:v72];
+    bottomAnchor3 = [(BKImageRadioButtonView *)v12 bottomAnchor];
+    contentView7 = [(BKActionMenuPositionCell *)v4 contentView];
+    bottomAnchor4 = [contentView7 bottomAnchor];
+    v71 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v92[3] = v71;
     v70 = [v23 objectAtIndexedSubscript:0];
-    v69 = [v70 leftAnchor];
-    v68 = [(BKActionMenuPositionCell *)v4 leftAnchor];
-    v67 = [v69 constraintEqualToAnchor:v68];
+    leftAnchor = [v70 leftAnchor];
+    leftAnchor2 = [(BKActionMenuPositionCell *)v4 leftAnchor];
+    v67 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v92[4] = v67;
-    v65 = [(BKImageRadioButtonView *)v8 leftAnchor];
+    leftAnchor3 = [(BKImageRadioButtonView *)v8 leftAnchor];
     v66 = [v23 objectAtIndexedSubscript:0];
-    v64 = [v66 rightAnchor];
-    v63 = [v65 constraintEqualToAnchor:v64];
+    rightAnchor = [v66 rightAnchor];
+    v63 = [leftAnchor3 constraintEqualToAnchor:rightAnchor];
     v92[5] = v63;
     v62 = [v23 objectAtIndexedSubscript:1];
-    v59 = [v62 leftAnchor];
-    v58 = [(BKImageRadioButtonView *)v8 rightAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58];
+    leftAnchor4 = [v62 leftAnchor];
+    rightAnchor2 = [(BKImageRadioButtonView *)v8 rightAnchor];
+    v57 = [leftAnchor4 constraintEqualToAnchor:rightAnchor2];
     v92[6] = v57;
-    v55 = [(BKImageRadioButtonView *)v12 leftAnchor];
+    leftAnchor5 = [(BKImageRadioButtonView *)v12 leftAnchor];
     v56 = [v23 objectAtIndexedSubscript:1];
-    v54 = [v56 rightAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    rightAnchor3 = [v56 rightAnchor];
+    v53 = [leftAnchor5 constraintEqualToAnchor:rightAnchor3];
     v92[7] = v53;
     v52 = [v23 objectAtIndexedSubscript:2];
-    v51 = [v52 leftAnchor];
-    v50 = [(BKImageRadioButtonView *)v12 rightAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    leftAnchor6 = [v52 leftAnchor];
+    rightAnchor4 = [(BKImageRadioButtonView *)v12 rightAnchor];
+    v49 = [leftAnchor6 constraintEqualToAnchor:rightAnchor4];
     v92[8] = v49;
     v48 = [v23 objectAtIndexedSubscript:2];
-    v47 = [v48 rightAnchor];
-    v46 = [(BKActionMenuPositionCell *)v4 rightAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    rightAnchor5 = [v48 rightAnchor];
+    rightAnchor6 = [(BKActionMenuPositionCell *)v4 rightAnchor];
+    v45 = [rightAnchor5 constraintEqualToAnchor:rightAnchor6];
     v92[9] = v45;
     v44 = [v23 objectAtIndexedSubscript:0];
-    v42 = [v44 widthAnchor];
+    widthAnchor = [v44 widthAnchor];
     v43 = [v23 objectAtIndexedSubscript:1];
-    v33 = [v43 widthAnchor];
-    [v42 constraintEqualToAnchor:v33];
+    widthAnchor2 = [v43 widthAnchor];
+    [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v34 = v61 = v8;
     v92[10] = v34;
     [v23 objectAtIndexedSubscript:1];
     v35 = v60 = v12;
-    v36 = [v35 widthAnchor];
+    widthAnchor3 = [v35 widthAnchor];
     v37 = [v23 objectAtIndexedSubscript:2];
-    v38 = [v37 widthAnchor];
-    v39 = [v36 constraintEqualToAnchor:v38];
+    widthAnchor4 = [v37 widthAnchor];
+    v39 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     v92[11] = v39;
     v40 = [NSArray arrayWithObjects:v92 count:12];
     [NSLayoutConstraint activateConstraints:v40];

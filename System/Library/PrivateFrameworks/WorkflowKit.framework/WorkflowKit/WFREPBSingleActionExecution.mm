@@ -1,24 +1,24 @@
 @interface WFREPBSingleActionExecution
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addInput:(id)a3;
-- (void)addProcessedParameters:(id)a3;
-- (void)addVariables:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addInput:(id)input;
+- (void)addProcessedParameters:(id)parameters;
+- (void)addVariables:(id)variables;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFREPBSingleActionExecution
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(WFREPBSingleActionExecution *)self setActionIdentifier:?];
   }
@@ -27,7 +27,7 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v6)
   {
@@ -55,7 +55,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v11)
   {
@@ -79,7 +79,7 @@
     while (v12);
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(WFREPBSingleActionExecution *)self setSerializedParameters:?];
   }
@@ -88,7 +88,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = *(v4 + 2);
+  v15 = *(fromCopy + 2);
   v16 = [v15 countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v16)
   {
@@ -124,13 +124,13 @@
   return v6 ^ [(NSMutableArray *)self->_inputs hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((actionIdentifier = self->_actionIdentifier, !(actionIdentifier | v4[1])) || -[NSString isEqual:](actionIdentifier, "isEqual:")) && ((variables = self->_variables, !(variables | v4[5])) || -[NSMutableArray isEqual:](variables, "isEqual:")) && ((processedParameters = self->_processedParameters, !(processedParameters | v4[3])) || -[NSMutableArray isEqual:](processedParameters, "isEqual:")) && ((serializedParameters = self->_serializedParameters, !(serializedParameters | v4[4])) || -[NSData isEqual:](serializedParameters, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((actionIdentifier = self->_actionIdentifier, !(actionIdentifier | equalCopy[1])) || -[NSString isEqual:](actionIdentifier, "isEqual:")) && ((variables = self->_variables, !(variables | equalCopy[5])) || -[NSMutableArray isEqual:](variables, "isEqual:")) && ((processedParameters = self->_processedParameters, !(processedParameters | equalCopy[3])) || -[NSMutableArray isEqual:](processedParameters, "isEqual:")) && ((serializedParameters = self->_serializedParameters, !(serializedParameters | equalCopy[4])) || -[NSData isEqual:](serializedParameters, "isEqual:")))
   {
     inputs = self->_inputs;
-    if (inputs | v4[2])
+    if (inputs | equalCopy[2])
     {
       v10 = [(NSMutableArray *)inputs isEqual:?];
     }
@@ -149,11 +149,11 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_actionIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_actionIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -177,7 +177,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v38 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v38 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addVariables:v13];
 
         ++v12;
@@ -210,7 +210,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v34 + 1) + 8 * v18) copyWithZone:a3];
+        v19 = [*(*(&v34 + 1) + 8 * v18) copyWithZone:zone];
         [v5 addProcessedParameters:v19];
 
         ++v18;
@@ -223,7 +223,7 @@
     while (v16);
   }
 
-  v20 = [(NSData *)self->_serializedParameters copyWithZone:a3];
+  v20 = [(NSData *)self->_serializedParameters copyWithZone:zone];
   v21 = v5[4];
   v5[4] = v20;
 
@@ -247,7 +247,7 @@
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v30 + 1) + 8 * v26) copyWithZone:{a3, v30}];
+        v27 = [*(*(&v30 + 1) + 8 * v26) copyWithZone:{zone, v30}];
         [v5 addInput:v27];
 
         ++v26;
@@ -264,71 +264,71 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
-  [v16 setActionIdentifier:self->_actionIdentifier];
+  toCopy = to;
+  [toCopy setActionIdentifier:self->_actionIdentifier];
   if ([(WFREPBSingleActionExecution *)self variablesCount])
   {
-    [v16 clearVariables];
-    v4 = [(WFREPBSingleActionExecution *)self variablesCount];
-    if (v4)
+    [toCopy clearVariables];
+    variablesCount = [(WFREPBSingleActionExecution *)self variablesCount];
+    if (variablesCount)
     {
-      v5 = v4;
+      v5 = variablesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(WFREPBSingleActionExecution *)self variablesAtIndex:i];
-        [v16 addVariables:v7];
+        [toCopy addVariables:v7];
       }
     }
   }
 
   if ([(WFREPBSingleActionExecution *)self processedParametersCount])
   {
-    [v16 clearProcessedParameters];
-    v8 = [(WFREPBSingleActionExecution *)self processedParametersCount];
-    if (v8)
+    [toCopy clearProcessedParameters];
+    processedParametersCount = [(WFREPBSingleActionExecution *)self processedParametersCount];
+    if (processedParametersCount)
     {
-      v9 = v8;
+      v9 = processedParametersCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(WFREPBSingleActionExecution *)self processedParametersAtIndex:j];
-        [v16 addProcessedParameters:v11];
+        [toCopy addProcessedParameters:v11];
       }
     }
   }
 
   if (self->_serializedParameters)
   {
-    [v16 setSerializedParameters:?];
+    [toCopy setSerializedParameters:?];
   }
 
   if ([(WFREPBSingleActionExecution *)self inputsCount])
   {
-    [v16 clearInputs];
-    v12 = [(WFREPBSingleActionExecution *)self inputsCount];
-    if (v12)
+    [toCopy clearInputs];
+    inputsCount = [(WFREPBSingleActionExecution *)self inputsCount];
+    if (inputsCount)
     {
-      v13 = v12;
+      v13 = inputsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(WFREPBSingleActionExecution *)self inputAtIndex:k];
-        [v16 addInput:v15];
+        [toCopy addInput:v15];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_actionIdentifier)
   {
     __assert_rtn("[WFREPBSingleActionExecution writeTo:]", "WFREPBSingleActionExecution.m", 247, "nil != self->_actionIdentifier");
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   v35 = 0u;
   v36 = 0u;
@@ -437,12 +437,12 @@
 - (id)dictionaryRepresentation
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   actionIdentifier = self->_actionIdentifier;
   if (actionIdentifier)
   {
-    [v3 setObject:actionIdentifier forKey:@"actionIdentifier"];
+    [dictionary setObject:actionIdentifier forKey:@"actionIdentifier"];
   }
 
   if ([(NSMutableArray *)self->_variables count])
@@ -467,8 +467,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v38 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v38 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v38 objects:v44 count:16];
@@ -502,8 +502,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v34 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v34 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v34 objects:v43 count:16];
@@ -543,8 +543,8 @@
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v30 + 1) + 8 * k) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation3 = [*(*(&v30 + 1) + 8 * k) dictionaryRepresentation];
+          [v21 addObject:dictionaryRepresentation3];
         }
 
         v24 = [(NSMutableArray *)v22 countByEnumeratingWithState:&v30 objects:v42 count:16];
@@ -567,64 +567,64 @@
   v8.receiver = self;
   v8.super_class = WFREPBSingleActionExecution;
   v4 = [(WFREPBSingleActionExecution *)&v8 description];
-  v5 = [(WFREPBSingleActionExecution *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFREPBSingleActionExecution *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addInput:(id)a3
+- (void)addInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   inputs = self->_inputs;
-  v8 = v4;
+  v8 = inputCopy;
   if (!inputs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_inputs;
     self->_inputs = v6;
 
-    v4 = v8;
+    inputCopy = v8;
     inputs = self->_inputs;
   }
 
-  [(NSMutableArray *)inputs addObject:v4];
+  [(NSMutableArray *)inputs addObject:inputCopy];
 }
 
-- (void)addProcessedParameters:(id)a3
+- (void)addProcessedParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   processedParameters = self->_processedParameters;
-  v8 = v4;
+  v8 = parametersCopy;
   if (!processedParameters)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_processedParameters;
     self->_processedParameters = v6;
 
-    v4 = v8;
+    parametersCopy = v8;
     processedParameters = self->_processedParameters;
   }
 
-  [(NSMutableArray *)processedParameters addObject:v4];
+  [(NSMutableArray *)processedParameters addObject:parametersCopy];
 }
 
-- (void)addVariables:(id)a3
+- (void)addVariables:(id)variables
 {
-  v4 = a3;
+  variablesCopy = variables;
   variables = self->_variables;
-  v8 = v4;
+  v8 = variablesCopy;
   if (!variables)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_variables;
     self->_variables = v6;
 
-    v4 = v8;
+    variablesCopy = v8;
     variables = self->_variables;
   }
 
-  [(NSMutableArray *)variables addObject:v4];
+  [(NSMutableArray *)variables addObject:variablesCopy];
 }
 
 @end

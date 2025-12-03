@@ -19,13 +19,13 @@
 - (id)overrideLabelsByParameter
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(WFLinkEntityAction *)self entityName];
+  entityName = [(WFLinkEntityAction *)self entityName];
 
-  if (v3)
+  if (entityName)
   {
     v8 = @"entities";
-    v4 = [(WFLinkEntityAction *)self entityName];
-    v9[0] = v4;
+    entityName2 = [(WFLinkEntityAction *)self entityName];
+    v9[0] = entityName2;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   }
 

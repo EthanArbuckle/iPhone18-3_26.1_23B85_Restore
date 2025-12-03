@@ -1,7 +1,7 @@
 @interface MusicUIServiceScreenManager
 - (MusicUIServiceScreenManager)init;
-- (void)_screenDidConnect:(id)a3;
-- (void)_screenDidDisconnect:(id)a3;
+- (void)_screenDidConnect:(id)connect;
+- (void)_screenDidDisconnect:(id)disconnect;
 - (void)dealloc;
 @end
 
@@ -33,10 +33,10 @@
   [(MusicUIServiceScreenManager *)&v4 dealloc];
 }
 
-- (void)_screenDidConnect:(id)a3
+- (void)_screenDidConnect:(id)connect
 {
-  v4 = [a3 object];
-  if ([v4 _isCarScreen])
+  object = [connect object];
+  if ([object _isCarScreen])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -44,15 +44,15 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Car screen did connect.", v5, 2u);
     }
 
-    objc_storeStrong(&self->_carScreen, v4);
+    objc_storeStrong(&self->_carScreen, object);
     MRMediaRemotePostBrowsableContentNotification();
   }
 }
 
-- (void)_screenDidDisconnect:(id)a3
+- (void)_screenDidDisconnect:(id)disconnect
 {
-  v4 = [a3 object];
-  if (v4 == self->_carScreen)
+  object = [disconnect object];
+  if (object == self->_carScreen)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {

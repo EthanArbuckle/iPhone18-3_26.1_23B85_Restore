@@ -1,18 +1,18 @@
 @interface CLHidManager
-- (CLHidManager)initWithDelegate:(id)a3 queue:(id)a4;
-- (id)clientDeviceMatchingDict:(id)a3;
-- (id)clientDeviceMatchingHIDDevice:(id)a3;
-- (id)deviceForMatchingDictionary:(id)a3;
-- (id)hidDeviceFromEnumeratedDevicesMatching:(id)a3;
-- (void)activateClientDevice:(id)a3;
+- (CLHidManager)initWithDelegate:(id)delegate queue:(id)queue;
+- (id)clientDeviceMatchingDict:(id)dict;
+- (id)clientDeviceMatchingHIDDevice:(id)device;
+- (id)deviceForMatchingDictionary:(id)dictionary;
+- (id)hidDeviceFromEnumeratedDevicesMatching:(id)matching;
+- (void)activateClientDevice:(id)device;
 - (void)dealloc;
-- (void)sendMonitorUpdateForDevice:(id)a3 added:(BOOL)a4;
-- (void)unregisterForDeviceMatching:(id)a3;
+- (void)sendMonitorUpdateForDevice:(id)device added:(BOOL)added;
+- (void)unregisterForDeviceMatching:(id)matching;
 @end
 
 @implementation CLHidManager
 
-- (CLHidManager)initWithDelegate:(id)a3 queue:(id)a4
+- (CLHidManager)initWithDelegate:(id)delegate queue:(id)queue
 {
   v33 = *MEMORY[0x1E69E9840];
   v28.receiver = self;
@@ -21,8 +21,8 @@
   if (v6)
   {
     *(v6 + 4) = objc_opt_new();
-    *(v6 + 1) = a3;
-    *(v6 + 2) = a4;
+    *(v6 + 1) = delegate;
+    *(v6 + 2) = queue;
     v7 = objc_alloc(MEMORY[0x1E69A2958]);
     v9 = objc_msgSend_initWithOptions_(v7, v8, 8);
     *(v6 + 3) = v9;
@@ -86,27 +86,27 @@
   [(CLHidManager *)&v8 dealloc];
 }
 
-- (void)sendMonitorUpdateForDevice:(id)a3 added:(BOOL)a4
+- (void)sendMonitorUpdateForDevice:(id)device added:(BOOL)added
 {
-  v7 = objc_msgSend_delegateQueue(self, a2, a3);
+  v7 = objc_msgSend_delegateQueue(self, a2, device);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_19B6EE040;
   block[3] = &unk_1E7534FF0;
   block[4] = self;
-  block[5] = a3;
-  v9 = a4;
+  block[5] = device;
+  addedCopy = added;
   dispatch_async(v7, block);
 }
 
-- (id)deviceForMatchingDictionary:(id)a3
+- (id)deviceForMatchingDictionary:(id)dictionary
 {
-  v5 = objc_msgSend_hidDeviceFromEnumeratedDevicesMatching_(self, a2, a3);
-  v8 = objc_msgSend_clientDeviceMatchingDict_(self, v6, a3);
+  v5 = objc_msgSend_hidDeviceFromEnumeratedDevicesMatching_(self, a2, dictionary);
+  v8 = objc_msgSend_clientDeviceMatchingDict_(self, v6, dictionary);
   if (!v8)
   {
     v9 = [CLHidDevice alloc];
-    v8 = objc_msgSend_initWithHidDevice_matchingDict_(v9, v10, v5, a3);
+    v8 = objc_msgSend_initWithHidDevice_matchingDict_(v9, v10, v5, dictionary);
     v13 = objc_msgSend_clientDevices(self, v11, v12);
     objc_msgSend_addObject_(v13, v14, v8);
     objc_msgSend_activateClientDevice_(self, v15, v8);
@@ -120,37 +120,37 @@
   return v8;
 }
 
-- (void)activateClientDevice:(id)a3
+- (void)activateClientDevice:(id)device
 {
-  if (objc_msgSend_hidDevice(a3, a2, a3))
+  if (objc_msgSend_hidDevice(device, a2, device))
   {
-    v7 = objc_msgSend_hidDevice(a3, v5, v6);
+    v7 = objc_msgSend_hidDevice(device, v5, v6);
     v10 = objc_msgSend_delegateQueue(self, v8, v9);
     objc_msgSend_setDispatchQueue_(v7, v11, v10);
-    v14 = objc_msgSend_hidDevice(a3, v12, v13);
+    v14 = objc_msgSend_hidDevice(device, v12, v13);
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = sub_19B6EE2A8;
     v26[3] = &unk_1E7535068;
     v26[4] = self;
-    v26[5] = a3;
+    v26[5] = device;
     v26[6] = self;
     objc_msgSend_setInputReportHandler_(v14, v15, v26);
-    v18 = objc_msgSend_hidDevice(a3, v16, v17);
+    v18 = objc_msgSend_hidDevice(device, v16, v17);
     objc_msgSend_open(v18, v19, v20);
-    v23 = objc_msgSend_hidDevice(a3, v21, v22);
+    v23 = objc_msgSend_hidDevice(device, v21, v22);
     objc_msgSend_activate(v23, v24, v25);
   }
 }
 
-- (id)clientDeviceMatchingDict:(id)a3
+- (id)clientDeviceMatchingDict:(id)dict
 {
   v29 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = objc_msgSend_clientDevices(self, a2, a3);
+  v4 = objc_msgSend_clientDevices(self, a2, dict);
   v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v20, v28, 16);
   if (v6)
   {
@@ -167,7 +167,7 @@
 
         v12 = *(*(&v20 + 1) + 8 * i);
         v13 = objc_msgSend_matching(v12, v7, v8);
-        if (objc_msgSend_isEqual_(v13, v14, a3))
+        if (objc_msgSend_isEqual_(v13, v14, dict))
         {
           if (qword_1ED71C830 != -1)
           {
@@ -178,7 +178,7 @@
           if (os_log_type_enabled(off_1ED71C838, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v27 = a3;
+            dictCopy = dict;
             _os_log_impl(&dword_19B41C000, v15, OS_LOG_TYPE_INFO, "[CLHidManager], matched CLHidDevice for %@", buf, 0xCu);
           }
 
@@ -192,7 +192,7 @@
             }
 
             v24 = 138412290;
-            v25 = a3;
+            dictCopy2 = dict;
             v17 = _os_log_send_and_compose_impl();
             sub_19B6BB7CC("Generic", 1, 0, 2, "[CLHidManager clientDeviceMatchingDict:]", "CoreLocation: %s\n", v17);
             if (v17 != buf)
@@ -221,14 +221,14 @@ LABEL_22:
   return v12;
 }
 
-- (id)hidDeviceFromEnumeratedDevicesMatching:(id)a3
+- (id)hidDeviceFromEnumeratedDevicesMatching:(id)matching
 {
   v43 = *MEMORY[0x1E69E9840];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v4 = objc_msgSend_manager(self, a2, a3);
+  v4 = objc_msgSend_manager(self, a2, matching);
   obj = objc_msgSend_devices(v4, v5, v6);
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v7, &v33, v42, 16);
   if (v8)
@@ -249,7 +249,7 @@ LABEL_4:
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v9, &v29, v41, 16);
+      v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(matching, v9, &v29, v41, 16);
       if (!v14)
       {
         break;
@@ -263,12 +263,12 @@ LABEL_8:
       {
         if (*v30 != v16)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(matching);
         }
 
         v18 = *(*(&v29 + 1) + 8 * v17);
         v19 = objc_msgSend_propertyForKey_(v13, v9, v18);
-        v21 = objc_msgSend_objectForKey_(a3, v20, v18);
+        v21 = objc_msgSend_objectForKey_(matching, v20, v18);
         if (!objc_msgSend_isEqual_(v19, v22, v21))
         {
           break;
@@ -276,7 +276,7 @@ LABEL_8:
 
         if (v15 == ++v17)
         {
-          v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v9, &v29, v41, 16);
+          v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(matching, v9, &v29, v41, 16);
           if (v15)
           {
             goto LABEL_8;
@@ -309,7 +309,7 @@ LABEL_18:
     if (os_log_type_enabled(off_1ED71C838, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v40 = a3;
+      matchingCopy = matching;
       _os_log_impl(&dword_19B41C000, v23, OS_LOG_TYPE_INFO, "[CLHidManager], matched device for %@", buf, 0xCu);
     }
 
@@ -323,7 +323,7 @@ LABEL_18:
       }
 
       v37 = 138412290;
-      v38 = a3;
+      matchingCopy2 = matching;
       v25 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 2, "[CLHidManager hidDeviceFromEnumeratedDevicesMatching:]", "CoreLocation: %s\n", v25);
       if (v25 != buf)
@@ -343,14 +343,14 @@ LABEL_31:
   return v13;
 }
 
-- (id)clientDeviceMatchingHIDDevice:(id)a3
+- (id)clientDeviceMatchingHIDDevice:(id)device
 {
   v39 = *MEMORY[0x1E69E9840];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = objc_msgSend_clientDevices(self, a2, a3);
+  obj = objc_msgSend_clientDevices(self, a2, device);
   v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v4, &v33, v38, 16);
   if (v5)
   {
@@ -389,7 +389,7 @@ LABEL_8:
         }
 
         v17 = *(*(&v29 + 1) + 8 * v16);
-        v18 = objc_msgSend_propertyForKey_(a3, v6, v17);
+        v18 = objc_msgSend_propertyForKey_(device, v6, v17);
         v21 = objc_msgSend_matching(v10, v19, v20);
         v23 = objc_msgSend_objectForKey_(v21, v22, v17);
         if (!objc_msgSend_isEqual_(v18, v24, v23))
@@ -431,11 +431,11 @@ LABEL_19:
   return v10;
 }
 
-- (void)unregisterForDeviceMatching:(id)a3
+- (void)unregisterForDeviceMatching:(id)matching
 {
-  v4 = objc_msgSend_clientDevices(self, a2, a3);
+  v4 = objc_msgSend_clientDevices(self, a2, matching);
 
-  objc_msgSend_removeObject_(v4, v5, a3);
+  objc_msgSend_removeObject_(v4, v5, matching);
 }
 
 @end

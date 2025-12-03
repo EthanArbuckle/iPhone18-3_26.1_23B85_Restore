@@ -1,45 +1,45 @@
 @interface THFlowPageLayout
-- (BOOL)p_isGutterInfoAssigned:(id)a3;
-- (CGPoint)originOfCharacterIndex:(unint64_t)a3;
-- (CGRect)bodyRectForChildLayout:(id)a3;
-- (CGSize)maximumFrameSizeForChild:(id)a3;
-- (THFlowPageLayout)initWithInfo:(id)a3;
+- (BOOL)p_isGutterInfoAssigned:(id)assigned;
+- (CGPoint)originOfCharacterIndex:(unint64_t)index;
+- (CGRect)bodyRectForChildLayout:(id)layout;
+- (CGSize)maximumFrameSizeForChild:(id)child;
+- (THFlowPageLayout)initWithInfo:(id)info;
 - (THModelBodyTextInfo)bodyInfo;
-- (_NSRange)firstLineInRect:(CGRect)a3 fromCharIndex:(unint64_t)a4;
-- (double)p_heightOfGutterDrawablesForBodyLayout:(id)a3;
-- (double)p_placeCompactGutterDrawableLayout:(id)a3 forBody:(id)a4 atOffset:(double)a5;
-- (id)adjustImageGeometry:(id)a3 withLayoutGeometry:(id)a4 forLayout:(id)a5;
-- (id)adjustLayoutGeometry:(id)a3 forLayout:(id)a4;
+- (_NSRange)firstLineInRect:(CGRect)rect fromCharIndex:(unint64_t)index;
+- (double)p_heightOfGutterDrawablesForBodyLayout:(id)layout;
+- (double)p_placeCompactGutterDrawableLayout:(id)layout forBody:(id)body atOffset:(double)offset;
+- (id)adjustImageGeometry:(id)geometry withLayoutGeometry:(id)layoutGeometry forLayout:(id)layout;
+- (id)adjustLayoutGeometry:(id)geometry forLayout:(id)layout;
 - (id)computeLayoutGeometry;
 - (id)gutterDrawableStorage;
-- (id)paragraphStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
+- (id)paragraphStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
 - (id)sortedGutterDrawables;
-- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)a3;
+- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)rect;
 - (void)canvasDidScroll;
 - (void)dealloc;
-- (void)layoutContentAtBodyIndex:(unint64_t)a3 offsetFromTop:(double)a4 padAbove:(double *)a5 padBelow:(double *)a6;
-- (void)layoutContentFromBottom:(double *)a3;
-- (void)layoutContentFromTop:(double *)a3;
-- (void)p_assignGutterInfo:(id)a3 toBodyLayout:(id)a4;
-- (void)p_layoutBodyLayout:(id)a3;
-- (void)p_layoutContentDownwardFromBodyIndex:(unint64_t)a3 amount:(double *)a4;
-- (void)p_layoutContentUpwardFromBodyIndex:(unint64_t)a3 amount:(double *)a4;
+- (void)layoutContentAtBodyIndex:(unint64_t)index offsetFromTop:(double)top padAbove:(double *)above padBelow:(double *)below;
+- (void)layoutContentFromBottom:(double *)bottom;
+- (void)layoutContentFromTop:(double *)top;
+- (void)p_assignGutterInfo:(id)info toBodyLayout:(id)layout;
+- (void)p_layoutBodyLayout:(id)layout;
+- (void)p_layoutContentDownwardFromBodyIndex:(unint64_t)index amount:(double *)amount;
+- (void)p_layoutContentUpwardFromBodyIndex:(unint64_t)index amount:(double *)amount;
 - (void)p_layoutGutterDrawables;
-- (void)p_layoutGutterDrawablesForBodyLayout:(id)a3;
+- (void)p_layoutGutterDrawablesForBodyLayout:(id)layout;
 - (void)p_layoutNextBodyLayout;
-- (void)p_placeGutterDrawableLayout:(id)a3 withPositioning:(id)a4 inColumn:(id)a5 inBody:(id)a6;
+- (void)p_placeGutterDrawableLayout:(id)layout withPositioning:(id)positioning inColumn:(id)column inBody:(id)body;
 - (void)validate;
-- (void)wasAddedToLayoutController:(id)a3;
-- (void)willBeRemovedFromLayoutController:(id)a3;
+- (void)wasAddedToLayoutController:(id)controller;
+- (void)willBeRemovedFromLayoutController:(id)controller;
 @end
 
 @implementation THFlowPageLayout
 
-- (THFlowPageLayout)initWithInfo:(id)a3
+- (THFlowPageLayout)initWithInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = THFlowPageLayout;
-  v3 = [(THPageLayout *)&v6 initWithInfo:a3];
+  v3 = [(THPageLayout *)&v6 initWithInfo:info];
   v4 = v3;
   if (v3)
   {
@@ -86,18 +86,18 @@
   return TSUCheckedDynamicCast();
 }
 
-- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)a3
+- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(THPageLayout *)self bodyLayouts];
-  v8 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  bodyLayouts = [(THPageLayout *)self bodyLayouts];
+  v8 = [(NSArray *)bodyLayouts countByEnumeratingWithState:&v15 objects:v19 count:16];
   v9 = 0x7FFFFFFFFFFFFFFFLL;
   if (v8)
   {
@@ -109,7 +109,7 @@
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(bodyLayouts);
         }
 
         v13 = [*(*(&v15 + 1) + 8 * i) firstCharacterIndexOverlappingPageRect:{x, y, width, height}];
@@ -119,7 +119,7 @@
         }
       }
 
-      v10 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [(NSArray *)bodyLayouts countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v10)
       {
         continue;
@@ -134,12 +134,12 @@
   return v9;
 }
 
-- (CGRect)bodyRectForChildLayout:(id)a3
+- (CGRect)bodyRectForChildLayout:(id)layout
 {
-  v4 = [(THPageLayout *)self pageController];
-  v5 = [a3 bodyIndex];
+  pageController = [(THPageLayout *)self pageController];
+  bodyIndex = [layout bodyIndex];
 
-  [(THPageController *)v4 i_rectForBodyIndex:v5];
+  [(THPageController *)pageController i_rectForBodyIndex:bodyIndex];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -147,7 +147,7 @@
   return result;
 }
 
-- (CGPoint)originOfCharacterIndex:(unint64_t)a3
+- (CGPoint)originOfCharacterIndex:(unint64_t)index
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -172,11 +172,11 @@
 
         v12 = *(*(&v20 + 1) + 8 * i);
         v13 = -[THPageController i_textRangeForBodyIndex:](-[THPageLayout pageController](self, "pageController"), "i_textRangeForBodyIndex:", [v12 bodyIndex]);
-        if (a3 >= v13 && a3 - v13 < v14)
+        if (index >= v13 && index - v13 < v14)
         {
           [(THFlowPageLayout *)self p_layoutBodyLayout:v12];
           [(THFlowPageLayout *)self p_layoutGutterDrawables];
-          [v12 pageOriginOfCharacterIndex:a3];
+          [v12 pageOriginOfCharacterIndex:index];
           x = v16;
           y = v17;
           goto LABEL_13;
@@ -197,51 +197,51 @@ LABEL_13:
   return result;
 }
 
-- (void)layoutContentAtBodyIndex:(unint64_t)a3 offsetFromTop:(double)a4 padAbove:(double *)a5 padBelow:(double *)a6
+- (void)layoutContentAtBodyIndex:(unint64_t)index offsetFromTop:(double)top padAbove:(double *)above padBelow:(double *)below
 {
   if (![(NSMutableArray *)self->super.mBodyLayouts count])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if ([(NSMutableArray *)self->super.mBodyLayouts count]<= a3)
+  if ([(NSMutableArray *)self->super.mBodyLayouts count]<= index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if ([(NSMutableArray *)self->super.mBodyLayouts count]> a3)
+  if ([(NSMutableArray *)self->super.mBodyLayouts count]> index)
   {
-    v11 = [(NSMutableArray *)self->super.mBodyLayouts objectAtIndex:a3];
+    v11 = [(NSMutableArray *)self->super.mBodyLayouts objectAtIndex:index];
     [(THFlowPageLayout *)self p_layoutBodyLayout:v11];
-    *a5 = *a5 - a4;
+    *above = *above - top;
     [v11 textHeight];
-    *a6 = *a6 - (v12 - a4);
-    if (a3)
+    *below = *below - (v12 - top);
+    if (index)
     {
-      [(THFlowPageLayout *)self p_layoutContentUpwardFromBodyIndex:a3 - 1 amount:a5];
+      [(THFlowPageLayout *)self p_layoutContentUpwardFromBodyIndex:index - 1 amount:above];
     }
 
-    v13 = *a5;
-    if (*a5 > 0.0)
+    v13 = *above;
+    if (*above > 0.0)
     {
       [(THPageController *)[(THPageLayout *)self pageController] bodyOffset];
-      v13 = *a5 - v14;
-      *a5 = v13;
+      v13 = *above - v14;
+      *above = v13;
     }
 
-    v15 = a3 + 1;
+    v15 = index + 1;
     if (v15 < [(NSMutableArray *)self->super.mBodyLayouts count])
     {
-      [(THFlowPageLayout *)self p_layoutContentDownwardFromBodyIndex:v15 amount:a6];
+      [(THFlowPageLayout *)self p_layoutContentDownwardFromBodyIndex:v15 amount:below];
     }
   }
 
   [(THFlowPageLayout *)self p_layoutGutterDrawables];
   [(THPageController *)[(THPageLayout *)self pageController] i_gutterOverhang];
-  *a6 = *a6 - v16;
+  *below = *below - v16;
 }
 
-- (void)layoutContentFromBottom:(double *)a3
+- (void)layoutContentFromBottom:(double *)bottom
 {
   if (![(NSMutableArray *)self->super.mBodyLayouts count])
   {
@@ -250,16 +250,16 @@ LABEL_13:
 
   if ([(NSMutableArray *)self->super.mBodyLayouts count])
   {
-    [(THFlowPageLayout *)self p_layoutContentUpwardFromBodyIndex:[(NSMutableArray *)self->super.mBodyLayouts count]- 1 amount:a3];
-    if (*a3 > 0.0)
+    [(THFlowPageLayout *)self p_layoutContentUpwardFromBodyIndex:[(NSMutableArray *)self->super.mBodyLayouts count]- 1 amount:bottom];
+    if (*bottom > 0.0)
     {
       [(THPageController *)[(THPageLayout *)self pageController] bodyOffset];
-      *a3 = *a3 - v5;
+      *bottom = *bottom - v5;
     }
   }
 }
 
-- (void)layoutContentFromTop:(double *)a3
+- (void)layoutContentFromTop:(double *)top
 {
   if (![(NSMutableArray *)self->super.mBodyLayouts count])
   {
@@ -269,26 +269,26 @@ LABEL_13:
   if ([(NSMutableArray *)self->super.mBodyLayouts count])
   {
     [(THPageController *)[(THPageLayout *)self pageController] bodyOffset];
-    *a3 = *a3 - v5;
+    *top = *top - v5;
 
-    [(THFlowPageLayout *)self p_layoutContentDownwardFromBodyIndex:0 amount:a3];
+    [(THFlowPageLayout *)self p_layoutContentDownwardFromBodyIndex:0 amount:top];
   }
 }
 
-- (_NSRange)firstLineInRect:(CGRect)a3 fromCharIndex:(unint64_t)a4
+- (_NSRange)firstLineInRect:(CGRect)rect fromCharIndex:(unint64_t)index
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  indexCopy4 = index;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (![(NSMutableArray *)self->super.mBodyLayouts count])
   {
     v10 = +[TSUAssertionHandler currentHandler];
     v11 = [NSString stringWithUTF8String:"[THFlowPageLayout firstLineInRect:fromCharIndex:]"];
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/THFlowPageLayout.mm"];
     v13 = v11;
-    v4 = a4;
+    indexCopy4 = index;
     [v10 handleFailureInFunction:v13 file:v12 lineNumber:232 description:@"must have body layouts to lookup line ranges"];
   }
 
@@ -328,7 +328,7 @@ LABEL_13:
       v25 = v24;
       v27 = v26;
       v28 = -[THPageController i_textRangeForBodyIndex:](-[THPageLayout pageController](self, "pageController"), "i_textRangeForBodyIndex:", [v19 bodyIndex]);
-      if (v28 + v29 > v4)
+      if (v28 + v29 > indexCopy4)
       {
         v56.origin.x = v21;
         v56.origin.y = v23;
@@ -347,26 +347,26 @@ LABEL_13:
             if (v31)
             {
               v32 = v31;
-              v33 = [v31 range];
-              v34 = v4;
-              if (v33 >= v4)
+              range = [v31 range];
+              range2 = indexCopy4;
+              if (range >= indexCopy4)
               {
-                v34 = [v32 range];
+                range2 = [v32 range];
               }
 
-              v35 = [v32 lineIndexForCharIndex:v34 eol:1];
-              v36 = [v32 countLines];
+              v35 = [v32 lineIndexForCharIndex:range2 eol:1];
+              countLines = [v32 countLines];
               if (v35 == 0x7FFFFFFFFFFFFFFFLL)
               {
                 goto LABEL_19;
               }
 
-              v37 = v36;
-              if (v35 >= v36)
+              v37 = countLines;
+              if (v35 >= countLines)
               {
 LABEL_18:
                 v14 = v46;
-                v4 = a4;
+                indexCopy4 = index;
                 v16 = v49;
 LABEL_19:
                 v17 = v48;
@@ -405,7 +405,7 @@ LABEL_19:
               }
 
               v45 = v40;
-              v4 = a4;
+              indexCopy4 = index;
             }
           }
         }
@@ -527,10 +527,10 @@ LABEL_3:
 
   if (![(NSMutableArray *)mBodyLayouts count])
   {
-    v4 = [(THPageController *)[(THPageLayout *)self pageController] i_bodyCount];
-    if (v4)
+    i_bodyCount = [(THPageController *)[(THPageLayout *)self pageController] i_bodyCount];
+    if (i_bodyCount)
     {
-      v5 = v4;
+      v5 = i_bodyCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(THPageController *)[(THPageLayout *)self pageController] i_infoForBodyIndex:i];
@@ -553,11 +553,11 @@ LABEL_3:
   return v6;
 }
 
-- (void)wasAddedToLayoutController:(id)a3
+- (void)wasAddedToLayoutController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = THFlowPageLayout;
-  [(THPageLayout *)&v4 wasAddedToLayoutController:a3];
+  [(THPageLayout *)&v4 wasAddedToLayoutController:controller];
   if (([-[THFlowPageLayout layoutController](self "layoutController")] & 1) == 0)
   {
     if (self->mLayoutTimer)
@@ -570,11 +570,11 @@ LABEL_3:
   }
 }
 
-- (void)willBeRemovedFromLayoutController:(id)a3
+- (void)willBeRemovedFromLayoutController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = THFlowPageLayout;
-  [(THPageLayout *)&v4 willBeRemovedFromLayoutController:a3];
+  [(THPageLayout *)&v4 willBeRemovedFromLayoutController:controller];
   if (([-[THFlowPageLayout layoutController](self "layoutController")] & 1) == 0)
   {
     [(NSTimer *)self->mLayoutTimer invalidate];
@@ -583,7 +583,7 @@ LABEL_3:
   }
 }
 
-- (id)paragraphStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v4 = [objc_msgSend(-[THFlowPageLayout info](self "info")];
   if ([v4 definesProperty:91] && objc_msgSend(v4, "intValueForProperty:", 91))
@@ -595,27 +595,27 @@ LABEL_3:
   return v4;
 }
 
-- (CGSize)maximumFrameSizeForChild:(id)a3
+- (CGSize)maximumFrameSizeForChild:(id)child
 {
   v5.receiver = self;
   v5.super_class = THFlowPageLayout;
-  [(THFlowPageLayout *)&v5 maximumFrameSizeForChild:a3];
+  [(THFlowPageLayout *)&v5 maximumFrameSizeForChild:child];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (id)adjustLayoutGeometry:(id)a3 forLayout:(id)a4
+- (id)adjustLayoutGeometry:(id)geometry forLayout:(id)layout
 {
   [-[THPageController pagePositionController](-[THPageLayout pageController](self "pageController")];
   v8 = v7;
-  if ([-[THPageController delegate](-[THPageLayout pageController](self "pageController")] && v8 != 768.0 && -[NSArray containsObject:](-[THPageLayout floatingDrawableLayouts](self, "floatingDrawableLayouts"), "containsObject:", a4))
+  if ([-[THPageController delegate](-[THPageLayout pageController](self "pageController")] && v8 != 768.0 && -[NSArray containsObject:](-[THPageLayout floatingDrawableLayouts](self, "floatingDrawableLayouts"), "containsObject:", layout))
   {
     memset(&v14, 0, sizeof(v14));
     CGAffineTransformMakeScale(&v14, v8 / 768.0, v8 / 768.0);
-    if (a3)
+    if (geometry)
     {
-      [a3 transform];
+      [geometry transform];
     }
 
     else
@@ -627,29 +627,29 @@ LABEL_3:
     CGAffineTransformConcat(&v13, &t1, &v11);
     v14 = v13;
     v9 = [TSDLayoutGeometry alloc];
-    [a3 size];
+    [geometry size];
     v13 = v14;
     return [v9 initWithSize:&v13 transform:?];
   }
 
-  return a3;
+  return geometry;
 }
 
-- (id)adjustImageGeometry:(id)a3 withLayoutGeometry:(id)a4 forLayout:(id)a5
+- (id)adjustImageGeometry:(id)geometry withLayoutGeometry:(id)layoutGeometry forLayout:(id)layout
 {
-  v6 = a3;
+  geometryCopy = geometry;
   if ([-[THPageController delegate](-[THPageLayout pageController](self pageController])
   {
-    if ([(NSArray *)[(THPageLayout *)self floatingDrawableLayouts] containsObject:a5])
+    if ([(NSArray *)[(THPageLayout *)self floatingDrawableLayouts] containsObject:layout])
     {
       [-[THPageController pagePositionController](-[THPageLayout pageController](self "pageController")];
       if (v8 != 768.0)
       {
         memset(&v14, 0, sizeof(v14));
         CGAffineTransformMakeScale(&v14, v8 / 768.0, v8 / 768.0);
-        if (v6)
+        if (geometryCopy)
         {
-          [v6 transform];
+          [geometryCopy transform];
         }
 
         else
@@ -661,38 +661,38 @@ LABEL_3:
         CGAffineTransformConcat(&v13, &t1, &v11);
         v14 = v13;
         v9 = [TSDLayoutGeometry alloc];
-        [v6 size];
+        [geometryCopy size];
         v13 = v14;
         return [v9 initWithSize:&v13 transform:?];
       }
     }
   }
 
-  return v6;
+  return geometryCopy;
 }
 
-- (void)p_assignGutterInfo:(id)a3 toBodyLayout:(id)a4
+- (void)p_assignGutterInfo:(id)info toBodyLayout:(id)layout
 {
   if (![(THFlowPageLayout *)self p_isGutterInfoAssigned:?])
   {
-    v7 = [(THFlowPageLayout *)self assignedGutterLayouts];
+    assignedGutterLayouts = [(THFlowPageLayout *)self assignedGutterLayouts];
 
-    [(TSUPointerKeyDictionary *)v7 setObject:a4 forUncopiedKey:a3];
+    [(TSUPointerKeyDictionary *)assignedGutterLayouts setObject:layout forUncopiedKey:info];
   }
 }
 
-- (BOOL)p_isGutterInfoAssigned:(id)a3
+- (BOOL)p_isGutterInfoAssigned:(id)assigned
 {
-  v4 = [(TSUPointerKeyDictionary *)[(THFlowPageLayout *)self assignedGutterLayouts] allKeys];
+  allKeys = [(TSUPointerKeyDictionary *)[(THFlowPageLayout *)self assignedGutterLayouts] allKeys];
 
-  return [v4 tsu_containsObjectIdenticalTo:a3];
+  return [allKeys tsu_containsObjectIdenticalTo:assigned];
 }
 
-- (double)p_heightOfGutterDrawablesForBodyLayout:(id)a3
+- (double)p_heightOfGutterDrawablesForBodyLayout:(id)layout
 {
-  v5 = [(THFlowPageLayout *)self gutterDrawableStorage];
-  v6 = [(THFlowPageLayout *)self sortedGutterDrawables];
-  v7 = -[THPageController i_textRangeForBodyIndex:](-[THPageLayout pageController](self, "pageController"), "i_textRangeForBodyIndex:", [a3 bodyIndex]);
+  gutterDrawableStorage = [(THFlowPageLayout *)self gutterDrawableStorage];
+  sortedGutterDrawables = [(THFlowPageLayout *)self sortedGutterDrawables];
+  v7 = -[THPageController i_textRangeForBodyIndex:](-[THPageLayout pageController](self, "pageController"), "i_textRangeForBodyIndex:", [layout bodyIndex]);
   v9 = v8;
   v10 = 0.0;
   if ([-[THFlowPageLayout info](self "info")])
@@ -701,8 +701,8 @@ LABEL_3:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    obj = v6;
-    v11 = [v6 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    obj = sortedGutterDrawables;
+    v11 = [sortedGutterDrawables countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v11)
     {
       v12 = v11;
@@ -720,21 +720,21 @@ LABEL_3:
           }
 
           v17 = *(*(&v31 + 1) + 8 * v15);
-          v18 = [v5 positioningOfDrawable:v17];
+          v18 = [gutterDrawableStorage positioningOfDrawable:v17];
           if (v18)
           {
-            v19 = [v18 bodyCharIndex];
-            v20 = v7 <= v19 && v13 >= v19;
-            if (v20 || v19 == 0x7FFFFFFFFFFFFFFFLL && (v21 = [a3 bodyIndex], v22 = -[NSMutableArray count](self->super.mBodyLayouts, "count") - 1 == v21, v16 = obj, v22))
+            bodyCharIndex = [v18 bodyCharIndex];
+            v20 = v7 <= bodyCharIndex && v13 >= bodyCharIndex;
+            if (v20 || bodyCharIndex == 0x7FFFFFFFFFFFFFFFLL && (v21 = [layout bodyIndex], v22 = -[NSMutableArray count](self->super.mBodyLayouts, "count") - 1 == v21, v16 = obj, v22))
             {
-              if (![(THFlowPageLayout *)self p_isGutterInfoAssigned:v17]|| [(THFlowPageLayout *)self p_isGutterInfo:v17 assgnedToBodyLayout:a3])
+              if (![(THFlowPageLayout *)self p_isGutterInfoAssigned:v17]|| [(THFlowPageLayout *)self p_isGutterInfo:v17 assgnedToBodyLayout:layout])
               {
                 v23 = [(THPageLayout *)self insertValidatedChildLayoutForInfo:v17];
                 if (v23)
                 {
-                  [(THFlowPageLayout *)self p_offsetForGutterDrawableLayout:v23 forBody:a3 atOffset:v10];
+                  [(THFlowPageLayout *)self p_offsetForGutterDrawableLayout:v23 forBody:layout atOffset:v10];
                   v10 = v24;
-                  [(THFlowPageLayout *)self p_assignGutterInfo:v17 toBodyLayout:a3];
+                  [(THFlowPageLayout *)self p_assignGutterInfo:v17 toBodyLayout:layout];
                 }
 
                 else
@@ -764,30 +764,30 @@ LABEL_3:
   return v10;
 }
 
-- (void)p_layoutBodyLayout:(id)a3
+- (void)p_layoutBodyLayout:(id)layout
 {
-  v5 = [a3 isLaidOut];
-  v6 = -[THPageController i_textRangeForBodyIndex:](-[THPageLayout pageController](self, "pageController"), "i_textRangeForBodyIndex:", [a3 bodyIndex]);
+  isLaidOut = [layout isLaidOut];
+  v6 = -[THPageController i_textRangeForBodyIndex:](-[THPageLayout pageController](self, "pageController"), "i_textRangeForBodyIndex:", [layout bodyIndex]);
   v8 = v7;
   v20.location = [(TSWPLayoutManager *)self->mLayoutManager dirtyRange];
   v21.location = v6;
   v21.length = v8;
-  if (NSIntersectionRange(v20, v21).length || (v5 & 1) == 0)
+  if (NSIntersectionRange(v20, v21).length || (isLaidOut & 1) == 0)
   {
-    [a3 layoutWithLayoutManager:self->mLayoutManager range:{v6, v8}];
-    if ((v5 & 1) == 0)
+    [layout layoutWithLayoutManager:self->mLayoutManager range:{v6, v8}];
+    if ((isLaidOut & 1) == 0)
     {
       v9 = 0.0;
       if ([-[THPageController delegate](-[THPageLayout pageController](self "pageController")])
       {
-        [(THFlowPageLayout *)self p_heightOfGutterDrawablesForBodyLayout:a3];
+        [(THFlowPageLayout *)self p_heightOfGutterDrawablesForBodyLayout:layout];
         v9 = v10;
       }
 
-      v11 = [(THPageLayout *)self pageController];
-      [a3 textHeight];
-      -[THPageController i_setHeight:forBodyIndex:](v11, "i_setHeight:forBodyIndex:", [a3 bodyIndex], v9 + v12);
-      LODWORD(v13) = [a3 bodyIndex];
+      pageController = [(THPageLayout *)self pageController];
+      [layout textHeight];
+      -[THPageController i_setHeight:forBodyIndex:](pageController, "i_setHeight:forBodyIndex:", [layout bodyIndex], v9 + v12);
+      LODWORD(v13) = [layout bodyIndex];
       v14 = [(NSMutableArray *)self->super.mBodyLayouts count];
       if (v14 > v13)
       {
@@ -802,23 +802,23 @@ LABEL_3:
       }
 
       mFirstBodyIndexNeedingGutterLayout = self->mFirstBodyIndexNeedingGutterLayout;
-      if (mFirstBodyIndexNeedingGutterLayout >= [a3 bodyIndex])
+      if (mFirstBodyIndexNeedingGutterLayout >= [layout bodyIndex])
       {
-        v17 = [a3 bodyIndex];
+        bodyIndex = [layout bodyIndex];
       }
 
       else
       {
-        v17 = self->mFirstBodyIndexNeedingGutterLayout;
+        bodyIndex = self->mFirstBodyIndexNeedingGutterLayout;
       }
 
-      self->mFirstBodyIndexNeedingGutterLayout = v17;
+      self->mFirstBodyIndexNeedingGutterLayout = bodyIndex;
     }
 
     [(THFlowPageLayout *)self invalidateFrame];
-    v18 = [(THFlowPageLayout *)self parent];
+    parent = [(THFlowPageLayout *)self parent];
 
-    [v18 invalidateFrame];
+    [parent invalidateFrame];
   }
 }
 
@@ -924,12 +924,12 @@ LABEL_16:
   }
 }
 
-- (void)p_layoutContentUpwardFromBodyIndex:(unint64_t)a3 amount:(double *)a4
+- (void)p_layoutContentUpwardFromBodyIndex:(unint64_t)index amount:(double *)amount
 {
-  if (a3 != -1)
+  if (index != -1)
   {
-    v6 = a3;
-    v7 = *a4;
+    indexCopy = index;
+    v7 = *amount;
     do
     {
       if (v7 <= 0.0)
@@ -937,29 +937,29 @@ LABEL_16:
         break;
       }
 
-      v8 = [(NSMutableArray *)self->super.mBodyLayouts objectAtIndex:v6];
+      v8 = [(NSMutableArray *)self->super.mBodyLayouts objectAtIndex:indexCopy];
       [(THFlowPageLayout *)self p_layoutBodyLayout:v8];
       [v8 textHeight];
-      v7 = *a4 - v9;
-      *a4 = v7;
-      --v6;
+      v7 = *amount - v9;
+      *amount = v7;
+      --indexCopy;
     }
 
-    while (v6 != -1);
+    while (indexCopy != -1);
   }
 
   [(THFlowPageLayout *)self p_layoutGutterDrawables];
   [(THPageController *)[(THPageLayout *)self pageController] i_gutterOverhang];
-  *a4 = *a4 - v10;
+  *amount = *amount - v10;
 }
 
-- (void)p_layoutContentDownwardFromBodyIndex:(unint64_t)a3 amount:(double *)a4
+- (void)p_layoutContentDownwardFromBodyIndex:(unint64_t)index amount:(double *)amount
 {
   v7 = [(NSMutableArray *)self->super.mBodyLayouts count];
-  if (v7 > a3)
+  if (v7 > index)
   {
     v8 = v7;
-    v9 = *a4;
+    v9 = *amount;
     do
     {
       if (v9 <= 0.0)
@@ -967,28 +967,28 @@ LABEL_16:
         break;
       }
 
-      v10 = [(NSMutableArray *)self->super.mBodyLayouts objectAtIndex:a3];
+      v10 = [(NSMutableArray *)self->super.mBodyLayouts objectAtIndex:index];
       [(THFlowPageLayout *)self p_layoutBodyLayout:v10];
       [v10 textHeight];
-      v9 = *a4 - v11;
-      *a4 = v9;
-      ++a3;
+      v9 = *amount - v11;
+      *amount = v9;
+      ++index;
     }
 
-    while (v8 != a3);
+    while (v8 != index);
   }
 
   [(THFlowPageLayout *)self p_layoutGutterDrawables];
   [(THPageController *)[(THPageLayout *)self pageController] i_gutterOverhang];
-  *a4 = *a4 - v12;
+  *amount = *amount - v12;
 }
 
 - (id)gutterDrawableStorage
 {
   v3 = [-[THFlowPageLayout info](self "info")];
-  v4 = [(THPageController *)[(THPageLayout *)self pageController] presentationType];
+  presentationType = [(THPageController *)[(THPageLayout *)self pageController] presentationType];
 
-  return [v3 gutterStorageForPresentationType:v4];
+  return [v3 gutterStorageForPresentationType:presentationType];
 }
 
 - (id)sortedGutterDrawables
@@ -1003,48 +1003,48 @@ LABEL_16:
   return result;
 }
 
-- (void)p_placeGutterDrawableLayout:(id)a3 withPositioning:(id)a4 inColumn:(id)a5 inBody:(id)a6
+- (void)p_placeGutterDrawableLayout:(id)layout withPositioning:(id)positioning inColumn:(id)column inBody:(id)body
 {
-  v11 = [a4 bodyCharIndex];
-  if (a5)
+  bodyCharIndex = [positioning bodyCharIndex];
+  if (column)
   {
-    [a5 topOfLineAtCharIndex:v11];
+    [column topOfLineAtCharIndex:bodyCharIndex];
   }
 
-  v12 = [a3 geometry];
-  [a4 offset];
-  [v12 frame];
+  geometry = [layout geometry];
+  [positioning offset];
+  [geometry frame];
   v14 = v13;
-  -[THPageController i_rectForBodyIndex:](-[THPageLayout pageController](self, "pageController"), "i_rectForBodyIndex:", [a6 bodyIndex]);
-  [a6 bodyIndex];
+  -[THPageController i_rectForBodyIndex:](-[THPageLayout pageController](self, "pageController"), "i_rectForBodyIndex:", [body bodyIndex]);
+  [body bodyIndex];
   TSURound();
 
-  [a3 offsetGeometryBy:{0.0, v15 - v14}];
+  [layout offsetGeometryBy:{0.0, v15 - v14}];
 }
 
-- (double)p_placeCompactGutterDrawableLayout:(id)a3 forBody:(id)a4 atOffset:(double)a5
+- (double)p_placeCompactGutterDrawableLayout:(id)layout forBody:(id)body atOffset:(double)offset
 {
-  [objc_msgSend(a3 "geometry")];
+  [objc_msgSend(layout "geometry")];
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  -[THPageController i_rectForBodyIndex:](-[THPageLayout pageController](self, "pageController"), "i_rectForBodyIndex:", [a4 bodyIndex]);
+  -[THPageController i_rectForBodyIndex:](-[THPageLayout pageController](self, "pageController"), "i_rectForBodyIndex:", [body bodyIndex]);
   v16 = v15;
-  [a4 textHeight];
-  v18 = [[TSDLayoutGeometry alloc] initWithFrame:{v10, v17 + v16 + a5, v12, v14}];
-  [a3 setGeometry:v18];
+  [body textHeight];
+  v18 = [[TSDLayoutGeometry alloc] initWithFrame:{v10, v17 + v16 + offset, v12, v14}];
+  [layout setGeometry:v18];
 
-  return v14 + a5 + 24.0;
+  return v14 + offset + 24.0;
 }
 
-- (void)p_layoutGutterDrawablesForBodyLayout:(id)a3
+- (void)p_layoutGutterDrawablesForBodyLayout:(id)layout
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(THFlowPageLayout *)self sortedGutterDrawables];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  sortedGutterDrawables = [(THFlowPageLayout *)self sortedGutterDrawables];
+  v6 = [sortedGutterDrawables countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1056,16 +1056,16 @@ LABEL_16:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sortedGutterDrawables);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([(THFlowPageLayout *)self p_isGutterInfo:v11 assgnedToBodyLayout:a3])
+        if ([(THFlowPageLayout *)self p_isGutterInfo:v11 assgnedToBodyLayout:layout])
         {
           v12 = [(THPageLayout *)self insertValidatedChildLayoutForInfo:v11];
           if (v12)
           {
-            [(THFlowPageLayout *)self p_placeCompactGutterDrawableLayout:v12 forBody:a3 atOffset:v9];
+            [(THFlowPageLayout *)self p_placeCompactGutterDrawableLayout:v12 forBody:layout atOffset:v9];
             v9 = v13;
           }
 
@@ -1076,7 +1076,7 @@ LABEL_16:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [sortedGutterDrawables countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -1116,26 +1116,26 @@ LABEL_16:
 
     else
     {
-      v7 = [(THFlowPageLayout *)self layoutController];
-      v8 = [(THFlowPageLayout *)self gutterDrawableStorage];
-      v9 = [(THFlowPageLayout *)self sortedGutterDrawables];
+      layoutController = [(THFlowPageLayout *)self layoutController];
+      gutterDrawableStorage = [(THFlowPageLayout *)self gutterDrawableStorage];
+      sortedGutterDrawables = [(THFlowPageLayout *)self sortedGutterDrawables];
       x = CGRectNull.origin.x;
       y = CGRectNull.origin.y;
       width = CGRectNull.size.width;
       height = CGRectNull.size.height;
-      v73 = v9;
-      v74 = [v9 count];
+      v73 = sortedGutterDrawables;
+      v74 = [sortedGutterDrawables count];
       v14 = self->mFirstBodyIndexNeedingGutterLayout;
       v72 = [(NSMutableArray *)self->super.mBodyLayouts count];
       if (v14 < v72)
       {
         v15 = 0;
-        rect_16 = v8;
-        rect_24 = v7;
+        rect_16 = gutterDrawableStorage;
+        rect_24 = layoutController;
         do
         {
           v16 = [(NSMutableArray *)self->super.mBodyLayouts objectAtIndex:v14];
-          v70 = [v16 isLaidOut];
+          isLaidOut = [v16 isLaidOut];
           v17 = (v14 + 1);
           v18 = [(THPageController *)[(THPageLayout *)self pageController] i_textRangeForBodyIndex:v14];
           if (v15 < v74)
@@ -1147,17 +1147,17 @@ LABEL_16:
             do
             {
               v21 = [v73 objectAtIndex:v15];
-              v22 = [v8 positioningOfDrawable:v21];
-              v23 = [v22 bodyCharIndex];
-              if (v23 >= v20)
+              v22 = [gutterDrawableStorage positioningOfDrawable:v21];
+              bodyCharIndex = [v22 bodyCharIndex];
+              if (bodyCharIndex >= v20)
               {
-                v29 = v23;
-                if (v17 != v72 && v23 >= v68)
+                v29 = bodyCharIndex;
+                if (v17 != v72 && bodyCharIndex >= v68)
                 {
                   goto LABEL_35;
                 }
 
-                if (v70)
+                if (isLaidOut)
                 {
                   if ([objc_msgSend(v16 "columns")] != &dword_0 + 1)
                   {
@@ -1166,8 +1166,8 @@ LABEL_16:
                   }
 
                   v30 = [objc_msgSend(v16 "columns")];
-                  v31 = [v30 range];
-                  if (v29 < v31 || v29 - v31 >= v32)
+                  range = [v30 range];
+                  if (v29 < range || v29 - range >= v32)
                   {
                     if (v17 != v72 || (v33 = [v30 range], v29 != &v33[v34]))
                     {
@@ -1228,14 +1228,14 @@ LABEL_16:
                   y = v50;
                   width = v51;
                   height = v52;
-                  v8 = rect_16;
-                  v7 = rect_24;
+                  gutterDrawableStorage = rect_16;
+                  layoutController = rect_24;
                 }
               }
 
               else
               {
-                v24 = [v7 layoutForInfo:v21 childOfLayout:self];
+                v24 = [layoutController layoutForInfo:v21 childOfLayout:self];
                 if (v24)
                 {
                   [v24 frame];
@@ -1255,7 +1255,7 @@ LABEL_35:
             v14 = v64;
           }
 
-          v53 = v70 ^ 1;
+          v53 = isLaidOut ^ 1;
           if (v17 != v72)
           {
             v53 = 1;
@@ -1285,7 +1285,7 @@ LABEL_35:
               v82.size.height = v60;
               if (MaxY > CGRectGetMaxY(v82))
               {
-                v62 = [(THPageLayout *)self pageController];
+                pageController = [(THPageLayout *)self pageController];
                 v83.origin.x = x;
                 v83.origin.y = y;
                 v83.size.width = width;
@@ -1295,7 +1295,7 @@ LABEL_35:
                 v84.origin.y = v56;
                 v84.size.width = v58;
                 v84.size.height = v60;
-                [(THPageController *)v62 i_setGutterOverhang:v63 - CGRectGetMaxY(v84)];
+                [(THPageController *)pageController i_setGutterOverhang:v63 - CGRectGetMaxY(v84)];
               }
             }
           }

@@ -1,16 +1,16 @@
 @interface _UITextInputSessionInsertionAction
-- (int64_t)mergeActionIfPossible:(id)a3;
+- (int64_t)mergeActionIfPossible:(id)possible;
 @end
 
 @implementation _UITextInputSessionInsertionAction
 
-- (int64_t)mergeActionIfPossible:(id)a3
+- (int64_t)mergeActionIfPossible:(id)possible
 {
-  v4 = a3;
-  if ([(_UITextInputSessionAction *)self isMergeableWith:v4])
+  possibleCopy = possible;
+  if ([(_UITextInputSessionAction *)self isMergeableWith:possibleCopy])
   {
-    v5 = [v4 asInsertion];
-    if (!v5)
+    asInsertion = [possibleCopy asInsertion];
+    if (!asInsertion)
     {
       v10 = 0;
 LABEL_13:
@@ -18,35 +18,35 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    -[_UITextInputSessionAction setInsertedTextLengthWithoutTracking:](self, "setInsertedTextLengthWithoutTracking:", [v5 insertedTextLength] + -[_UITextInputSessionAction insertedTextLength](self, "insertedTextLength"));
-    -[_UITextInputSessionAction setInputActionCountFromMergedActions:](self, "setInputActionCountFromMergedActions:", -[_UITextInputSessionAction inputActionCountFromMergedActions](self, "inputActionCountFromMergedActions") + [v5 inputActionCount]);
-    -[_UITextInputSessionInsertionAction setWithAlternativesCount:](self, "setWithAlternativesCount:", -[_UITextInputSessionInsertionAction withAlternativesCount](self, "withAlternativesCount") + [v5 withAlternativesCount]);
-    -[_UITextInputSessionInsertionAction setOptions:](self, "setOptions:", [v5 options] | -[_UITextInputSessionInsertionAction options](self, "options"));
-    -[_UITextInputSessionAction setInsertedEmojiCount:](self, "setInsertedEmojiCount:", -[_UITextInputSessionAction insertedEmojiCount](self, "insertedEmojiCount") + [v5 insertedEmojiCount]);
-    -[_UITextInputSessionAction setInsertedPunctuationCount:](self, "setInsertedPunctuationCount:", -[_UITextInputSessionAction insertedPunctuationCount](self, "insertedPunctuationCount") + [v5 insertedPunctuationCount]);
-    v6 = [(_UITextInputSessionAction *)self largestSingleInsertionLength];
-    v7 = [v5 insertedTextLength];
-    if (v6 <= v7)
+    -[_UITextInputSessionAction setInsertedTextLengthWithoutTracking:](self, "setInsertedTextLengthWithoutTracking:", [asInsertion insertedTextLength] + -[_UITextInputSessionAction insertedTextLength](self, "insertedTextLength"));
+    -[_UITextInputSessionAction setInputActionCountFromMergedActions:](self, "setInputActionCountFromMergedActions:", -[_UITextInputSessionAction inputActionCountFromMergedActions](self, "inputActionCountFromMergedActions") + [asInsertion inputActionCount]);
+    -[_UITextInputSessionInsertionAction setWithAlternativesCount:](self, "setWithAlternativesCount:", -[_UITextInputSessionInsertionAction withAlternativesCount](self, "withAlternativesCount") + [asInsertion withAlternativesCount]);
+    -[_UITextInputSessionInsertionAction setOptions:](self, "setOptions:", [asInsertion options] | -[_UITextInputSessionInsertionAction options](self, "options"));
+    -[_UITextInputSessionAction setInsertedEmojiCount:](self, "setInsertedEmojiCount:", -[_UITextInputSessionAction insertedEmojiCount](self, "insertedEmojiCount") + [asInsertion insertedEmojiCount]);
+    -[_UITextInputSessionAction setInsertedPunctuationCount:](self, "setInsertedPunctuationCount:", -[_UITextInputSessionAction insertedPunctuationCount](self, "insertedPunctuationCount") + [asInsertion insertedPunctuationCount]);
+    largestSingleInsertionLength = [(_UITextInputSessionAction *)self largestSingleInsertionLength];
+    insertedTextLength = [asInsertion insertedTextLength];
+    if (largestSingleInsertionLength <= insertedTextLength)
     {
-      v8 = v7;
+      v8 = insertedTextLength;
     }
 
     else
     {
-      v8 = v6;
+      v8 = largestSingleInsertionLength;
     }
 
     [(_UITextInputSessionAction *)self setLargestSingleInsertionLength:v8];
-    v9 = [v4 language];
-    if (v9)
+    language = [possibleCopy language];
+    if (language)
     {
     }
 
     else
     {
-      v11 = [v4 region];
+      region = [possibleCopy region];
 
-      if (!v11)
+      if (!region)
       {
 LABEL_12:
         v10 = 1;
@@ -54,20 +54,20 @@ LABEL_12:
       }
     }
 
-    v12 = [v4 language];
-    [(_UITextInputSessionAction *)self setLanguage:v12];
+    language2 = [possibleCopy language];
+    [(_UITextInputSessionAction *)self setLanguage:language2];
 
-    v13 = [v4 region];
-    [(_UITextInputSessionAction *)self setRegion:v13];
+    region2 = [possibleCopy region];
+    [(_UITextInputSessionAction *)self setRegion:region2];
 
-    v14 = [v4 keyboardVariant];
-    [(_UITextInputSessionAction *)self setKeyboardVariant:v14];
+    keyboardVariant = [possibleCopy keyboardVariant];
+    [(_UITextInputSessionAction *)self setKeyboardVariant:keyboardVariant];
 
-    v15 = [v4 keyboardLayout];
-    [(_UITextInputSessionAction *)self setKeyboardLayout:v15];
+    keyboardLayout = [possibleCopy keyboardLayout];
+    [(_UITextInputSessionAction *)self setKeyboardLayout:keyboardLayout];
 
-    v16 = [v4 keyboardType];
-    [(_UITextInputSessionAction *)self setKeyboardType:v16];
+    keyboardType = [possibleCopy keyboardType];
+    [(_UITextInputSessionAction *)self setKeyboardType:keyboardType];
 
     goto LABEL_12;
   }

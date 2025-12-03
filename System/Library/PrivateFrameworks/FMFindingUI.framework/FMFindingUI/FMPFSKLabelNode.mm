@@ -1,12 +1,12 @@
 @interface FMPFSKLabelNode
 - (NSString)description;
 - (_TtC11FMFindingUI15FMPFSKLabelNode)init;
-- (_TtC11FMFindingUI15FMPFSKLabelNode)initWithCoder:(id)a3;
+- (_TtC11FMFindingUI15FMPFSKLabelNode)initWithCoder:(id)coder;
 @end
 
 @implementation FMPFSKLabelNode
 
-- (_TtC11FMFindingUI15FMPFSKLabelNode)initWithCoder:(id)a3
+- (_TtC11FMFindingUI15FMPFSKLabelNode)initWithCoder:(id)coder
 {
   result = sub_24A62F444();
   __break(1u);
@@ -15,7 +15,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A5FD548();
 
   v3 = sub_24A62EBE4();

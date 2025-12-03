@@ -1,5 +1,5 @@
 @interface _OSLogChunkBuffer
-- (_OSLogChunkBuffer)initWithChunk:(tracev3_chunk_s *)a3 subchunk:(catalog_subchunk_s *)a4;
+- (_OSLogChunkBuffer)initWithChunk:(tracev3_chunk_s *)chunk subchunk:(catalog_subchunk_s *)subchunk;
 - (void)dealloc;
 @end
 
@@ -17,7 +17,7 @@
   [(_OSLogChunkBuffer *)&v3 dealloc];
 }
 
-- (_OSLogChunkBuffer)initWithChunk:(tracev3_chunk_s *)a3 subchunk:(catalog_subchunk_s *)a4
+- (_OSLogChunkBuffer)initWithChunk:(tracev3_chunk_s *)chunk subchunk:(catalog_subchunk_s *)subchunk
 {
   v11.receiver = self;
   v11.super_class = _OSLogChunkBuffer;
@@ -25,7 +25,7 @@
   if (v6)
   {
     v10 = 0;
-    v7 = _tracev3_chunk_decompress(a3, a4, 0, &v10);
+    v7 = _tracev3_chunk_decompress(chunk, subchunk, 0, &v10);
     v6->_data = v7;
     if (!v7)
     {
@@ -34,7 +34,7 @@
     }
 
     v6->_sz = v10;
-    v6->_allocated = v7 != &a3->var1;
+    v6->_allocated = v7 != &chunk->var1;
   }
 
   v8 = v6;

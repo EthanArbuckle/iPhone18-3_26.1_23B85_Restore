@@ -1,20 +1,20 @@
 @interface MTIntentDonationUtil
-- (BOOL)canContinueIntentWithUserActivityType:(id)a3;
-- (BOOL)continueIntentsUserActivity:(id)a3;
+- (BOOL)canContinueIntentWithUserActivityType:(id)type;
+- (BOOL)continueIntentsUserActivity:(id)activity;
 - (MTIntentDonationUtil)init;
 - (id)defaultPodcastArtworkData;
-- (id)peopleScoresFromMediaData:(id)a3 keyedOnQid:(BOOL)a4;
-- (id)topicScoresFromMediaData:(id)a3;
-- (void)donateEpisodeUuid:(id)a3 stationUuid:(id)a4 isPlaybackFromSiri:(BOOL)a5 completion:(id)a6;
-- (void)donateManifestCurrentItem:(id)a3 playReason:(unint64_t)a4;
-- (void)fetchMediaDataForEpisodeStoreId:(int64_t)a3 podcastStoreId:(int64_t)a4 completion:(id)a5;
-- (void)prepareImageDataForPodcastUuid:(id)a3 completion:(id)a4;
-- (void)prepareIntentForEpisodeUuid:(id)a3 stationUuid:(id)a4 includeImage:(BOOL)a5 includeStorePlatformData:(BOOL)a6 completion:(id)a7;
+- (id)peopleScoresFromMediaData:(id)data keyedOnQid:(BOOL)qid;
+- (id)topicScoresFromMediaData:(id)data;
+- (void)donateEpisodeUuid:(id)uuid stationUuid:(id)stationUuid isPlaybackFromSiri:(BOOL)siri completion:(id)completion;
+- (void)donateManifestCurrentItem:(id)item playReason:(unint64_t)reason;
+- (void)fetchMediaDataForEpisodeStoreId:(int64_t)id podcastStoreId:(int64_t)storeId completion:(id)completion;
+- (void)prepareImageDataForPodcastUuid:(id)uuid completion:(id)completion;
+- (void)prepareIntentForEpisodeUuid:(id)uuid stationUuid:(id)stationUuid includeImage:(BOOL)image includeStorePlatformData:(BOOL)data completion:(id)completion;
 - (void)removeAllDonations;
-- (void)removeDonationForEpisodeUuid:(id)a3;
-- (void)removeDonationForPodcastUuid:(id)a3;
-- (void)removeDonationsForEpisodeUuids:(id)a3;
-- (void)removeDonationsForPodcastUuids:(id)a3;
+- (void)removeDonationForEpisodeUuid:(id)uuid;
+- (void)removeDonationForPodcastUuid:(id)uuid;
+- (void)removeDonationsForEpisodeUuids:(id)uuids;
+- (void)removeDonationsForPodcastUuids:(id)uuids;
 @end
 
 @implementation MTIntentDonationUtil
@@ -63,16 +63,16 @@
   return v2;
 }
 
-- (void)donateManifestCurrentItem:(id)a3 playReason:(unint64_t)a4
+- (void)donateManifestCurrentItem:(id)item playReason:(unint64_t)reason
 {
-  v10 = a3;
-  v6 = [v10 currentItem];
-  v7 = [v6 episode];
+  itemCopy = item;
+  currentItem = [itemCopy currentItem];
+  episode = [currentItem episode];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = 0;
-    if (!v7)
+    playlistUuid = 0;
+    if (!episode)
     {
       goto LABEL_6;
     }
@@ -80,60 +80,60 @@
     goto LABEL_5;
   }
 
-  v8 = [v10 playlistUuid];
-  if (v7)
+  playlistUuid = [itemCopy playlistUuid];
+  if (episode)
   {
 LABEL_5:
-    v9 = [v7 uuid];
-    [(MTIntentDonationUtil *)self donateEpisodeUuid:v9 stationUuid:v8 isPlaybackFromSiri:a4 == 9 completion:0];
+    uuid = [episode uuid];
+    [(MTIntentDonationUtil *)self donateEpisodeUuid:uuid stationUuid:playlistUuid isPlaybackFromSiri:reason == 9 completion:0];
   }
 
 LABEL_6:
 }
 
-- (void)donateEpisodeUuid:(id)a3 stationUuid:(id)a4 isPlaybackFromSiri:(BOOL)a5 completion:(id)a6
+- (void)donateEpisodeUuid:(id)uuid stationUuid:(id)stationUuid isPlaybackFromSiri:(BOOL)siri completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v10 length])
+  uuidCopy = uuid;
+  stationUuidCopy = stationUuid;
+  completionCopy = completion;
+  if ([uuidCopy length])
   {
-    v13 = [(MTIntentDonationUtil *)self donationQueue];
+    donationQueue = [(MTIntentDonationUtil *)self donationQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000B3340;
     block[3] = &unk_1004DB0B8;
     block[4] = self;
-    v15 = v10;
-    v16 = v11;
-    v17 = v12;
-    v18 = a5;
-    dispatch_async(v13, block);
+    v15 = uuidCopy;
+    v16 = stationUuidCopy;
+    v17 = completionCopy;
+    siriCopy = siri;
+    dispatch_async(donationQueue, block);
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    (*(v12 + 2))(v12, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)removeDonationForPodcastUuid:(id)a3
+- (void)removeDonationForPodcastUuid:(id)uuid
 {
-  v4 = a3;
-  if ([v4 length])
+  uuidCopy = uuid;
+  if ([uuidCopy length])
   {
-    [(objc_class *)[(MTIntentDonationUtil *)self interactionClass] deleteInteractionsWithGroupIdentifier:v4 completion:0];
+    [(objc_class *)[(MTIntentDonationUtil *)self interactionClass] deleteInteractionsWithGroupIdentifier:uuidCopy completion:0];
   }
 }
 
-- (void)removeDonationsForPodcastUuids:(id)a3
+- (void)removeDonationsForPodcastUuids:(id)uuids
 {
-  v4 = a3;
+  uuidsCopy = uuids;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [uuidsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -145,7 +145,7 @@ LABEL_6:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uuidsCopy);
         }
 
         [(MTIntentDonationUtil *)self removeDonationForPodcastUuid:*(*(&v9 + 1) + 8 * v8)];
@@ -153,58 +153,58 @@ LABEL_6:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [uuidsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)removeDonationForEpisodeUuid:(id)a3
+- (void)removeDonationForEpisodeUuid:(id)uuid
 {
-  v4 = a3;
-  if ([v4 length])
+  uuidCopy = uuid;
+  if ([uuidCopy length])
   {
-    v5 = [(MTIntentDonationUtil *)self interactionClass];
-    v7 = v4;
+    interactionClass = [(MTIntentDonationUtil *)self interactionClass];
+    v7 = uuidCopy;
     v6 = [NSArray arrayWithObjects:&v7 count:1];
-    [(objc_class *)v5 deleteInteractionsWithIdentifiers:v6 completion:0];
+    [(objc_class *)interactionClass deleteInteractionsWithIdentifiers:v6 completion:0];
   }
 }
 
-- (void)removeDonationsForEpisodeUuids:(id)a3
+- (void)removeDonationsForEpisodeUuids:(id)uuids
 {
-  v4 = a3;
-  [(objc_class *)[(MTIntentDonationUtil *)self interactionClass] deleteInteractionsWithIdentifiers:v4 completion:0];
+  uuidsCopy = uuids;
+  [(objc_class *)[(MTIntentDonationUtil *)self interactionClass] deleteInteractionsWithIdentifiers:uuidsCopy completion:0];
 }
 
 - (void)removeAllDonations
 {
-  v2 = [(MTIntentDonationUtil *)self interactionClass];
+  interactionClass = [(MTIntentDonationUtil *)self interactionClass];
 
-  [(objc_class *)v2 deleteAllInteractionsWithCompletion:0];
+  [(objc_class *)interactionClass deleteAllInteractionsWithCompletion:0];
 }
 
-- (BOOL)canContinueIntentWithUserActivityType:(id)a3
+- (BOOL)canContinueIntentWithUserActivityType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [v3 isEqualToString:v5];
+  v6 = [typeCopy isEqualToString:v5];
 
   return v6;
 }
 
-- (BOOL)continueIntentsUserActivity:(id)a3
+- (BOOL)continueIntentsUserActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityType];
-  LODWORD(self) = [(MTIntentDonationUtil *)self canContinueIntentWithUserActivityType:v5];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  LODWORD(self) = [(MTIntentDonationUtil *)self canContinueIntentWithUserActivityType:activityType];
 
   if (self)
   {
-    v6 = [v4 interaction];
-    v7 = [v6 intent];
+    interaction = [activityCopy interaction];
+    intent = [interaction intent];
 
     objc_opt_class();
     objc_opt_class();
@@ -216,24 +216,24 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v8 = v7;
+    v8 = intent;
     v9 = +[MTDB sharedInstance];
-    v10 = [v9 mainOrPrivateContext];
+    mainOrPrivateContext = [v9 mainOrPrivateContext];
 
-    v11 = [v8 mediaContainer];
-    v12 = [v11 type];
+    mediaContainer = [v8 mediaContainer];
+    type = [mediaContainer type];
 
-    if (v12 == 6)
+    if (type == 6)
     {
-      v18 = [v8 mediaContainer];
-      v19 = [v18 identifier];
+      mediaContainer2 = [v8 mediaContainer];
+      identifier = [mediaContainer2 identifier];
 
-      v20 = [v8 mediaItems];
-      v21 = [v20 firstObject];
-      v22 = [v21 identifier];
+      mediaItems = [v8 mediaItems];
+      firstObject = [mediaItems firstObject];
+      identifier2 = [firstObject identifier];
 
-      v23 = [[MTURLCommandRequest alloc] initWithURLString:v19];
-      v24 = [[MTURLCommandRequest alloc] initWithURLString:v22];
+      v23 = [[MTURLCommandRequest alloc] initWithURLString:identifier];
+      v24 = [[MTURLCommandRequest alloc] initWithURLString:identifier2];
       v46 = 0;
       v47 = &v46;
       v48 = 0x3032000000;
@@ -251,7 +251,7 @@ LABEL_16:
       v30[2] = sub_1000B3ECC;
       v30[3] = &unk_1004DB0E0;
       v34 = &v46;
-      v31 = v10;
+      v31 = mainOrPrivateContext;
       v25 = v23;
       v32 = v25;
       v35 = &v36;
@@ -274,10 +274,10 @@ LABEL_16:
       }
     }
 
-    else if (v12 == 8)
+    else if (type == 8)
     {
-      v13 = [v8 mediaContainer];
-      v14 = [v13 identifier];
+      mediaContainer3 = [v8 mediaContainer];
+      identifier3 = [mediaContainer3 identifier];
 
       v46 = 0;
       v47 = &v46;
@@ -290,8 +290,8 @@ LABEL_16:
       v42[2] = sub_1000B3E7C;
       v42[3] = &unk_1004D9040;
       v45 = &v46;
-      v43 = v10;
-      v15 = v14;
+      v43 = mainOrPrivateContext;
+      v15 = identifier3;
       v44 = v15;
       [v43 performBlockAndWait:v42];
       if (v47[5])
@@ -320,14 +320,14 @@ LABEL_17:
   return v17;
 }
 
-- (void)prepareIntentForEpisodeUuid:(id)a3 stationUuid:(id)a4 includeImage:(BOOL)a5 includeStorePlatformData:(BOOL)a6 completion:(id)a7
+- (void)prepareIntentForEpisodeUuid:(id)uuid stationUuid:(id)stationUuid includeImage:(BOOL)image includeStorePlatformData:(BOOL)data completion:(id)completion
 {
-  v22 = a5;
-  v9 = a3;
-  v10 = a4;
-  v25 = a7;
+  imageCopy = image;
+  uuidCopy = uuid;
+  stationUuidCopy = stationUuid;
+  completionCopy = completion;
   v11 = +[MTDB sharedInstance];
-  v12 = [v11 mainOrPrivateContext];
+  mainOrPrivateContext = [v11 mainOrPrivateContext];
 
   v90[0] = 0;
   v90[1] = v90;
@@ -384,14 +384,14 @@ LABEL_17:
   v68 = 0x3032000000;
   v69 = sub_100008A2C;
   v70 = sub_10003B4EC;
-  v13 = v9;
+  v13 = uuidCopy;
   v71 = v13;
   v64[0] = 0;
   v64[1] = v64;
   v64[2] = 0x3032000000;
   v64[3] = sub_100008A2C;
   v64[4] = sub_10003B4EC;
-  v24 = v10;
+  v24 = stationUuidCopy;
   v65 = v24;
   v62[0] = 0;
   v62[1] = v62;
@@ -401,7 +401,7 @@ LABEL_17:
   v47[1] = 3221225472;
   v47[2] = sub_1000B4690;
   v47[3] = &unk_1004DB108;
-  v14 = v12;
+  v14 = mainOrPrivateContext;
   v48 = v14;
   v15 = v13;
   v49 = v15;
@@ -438,12 +438,12 @@ LABEL_17:
     v44 = v72;
     v45 = v90;
     v46 = v62;
-    v34 = v25;
+    v34 = completionCopy;
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_1000B4CB8;
     v28[3] = &unk_1004DB180;
-    v32 = a6;
+    dataCopy = data;
     v28[4] = self;
     v30 = v87;
     v31 = v78;
@@ -451,7 +451,7 @@ LABEL_17:
     v29 = v17;
     v18 = objc_retainBlock(v28);
     v19 = v18;
-    if (v22)
+    if (imageCopy)
     {
       v20 = v82[5];
       v26[0] = _NSConcreteStackBlock;
@@ -471,9 +471,9 @@ LABEL_17:
     v15 = v16;
   }
 
-  else if (v25)
+  else if (completionCopy)
   {
-    (*(v25 + 2))(v25, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   _Block_object_dispose(v62, 8);
@@ -495,10 +495,10 @@ LABEL_17:
   _Block_object_dispose(v90, 8);
 }
 
-- (void)prepareImageDataForPodcastUuid:(id)a3 completion:(id)a4
+- (void)prepareImageDataForPodcastUuid:(id)uuid completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  uuidCopy = uuid;
   v8 = +[PUIObjCArtworkProvider shared];
   v9 = kMTIntentsArtworkSize;
   v11[0] = _NSConcreteStackBlock;
@@ -506,27 +506,27 @@ LABEL_17:
   v11[2] = sub_1000B4FF8;
   v11[3] = &unk_1004DB1D0;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v8 artworkPathForShow:v7 size:v11 completionHandler:{v9, v9}];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [v8 artworkPathForShow:uuidCopy size:v11 completionHandler:{v9, v9}];
 }
 
-- (void)fetchMediaDataForEpisodeStoreId:(int64_t)a3 podcastStoreId:(int64_t)a4 completion:(id)a5
+- (void)fetchMediaDataForEpisodeStoreId:(int64_t)id podcastStoreId:(int64_t)storeId completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = [NSMutableArray arrayWithCapacity:2];
-  v9 = [MTStoreIdentifier validatedIdNumberFromStoreId:a3];
-  v10 = [v9 stringValue];
+  v9 = [MTStoreIdentifier validatedIdNumberFromStoreId:id];
+  stringValue = [v9 stringValue];
 
-  if ([v10 length])
+  if ([stringValue length])
   {
-    [v8 addObject:v10];
+    [v8 addObject:stringValue];
   }
 
-  v11 = [NSString stringWithFormat:@"%lld", a4];
-  if ([v11 length])
+  storeId = [NSString stringWithFormat:@"%lld", storeId];
+  if ([storeId length])
   {
-    [v8 addObject:v11];
+    [v8 addObject:storeId];
   }
 
   v12 = [[IMContentLookupService alloc] initWithIds:v8];
@@ -536,22 +536,22 @@ LABEL_17:
   v16[1] = 3221225472;
   v16[2] = sub_1000B5224;
   v16[3] = &unk_1004DB1F8;
-  v17 = v10;
-  v18 = v11;
-  v19 = v7;
-  v13 = v7;
-  v14 = v11;
-  v15 = v10;
+  v17 = stringValue;
+  v18 = storeId;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = storeId;
+  v15 = stringValue;
   [v12 request:v16];
 }
 
-- (id)peopleScoresFromMediaData:(id)a3 keyedOnQid:(BOOL)a4
+- (id)peopleScoresFromMediaData:(id)data keyedOnQid:(BOOL)qid
 {
-  v4 = a4;
-  v5 = a3;
-  if ([v5 count] && (objc_msgSend(v5, "objectForKey:", @"credits"), v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) != 0))
+  qidCopy = qid;
+  dataCopy = data;
+  if ([dataCopy count] && (objc_msgSend(dataCopy, "objectForKey:", @"credits"), v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) != 0))
   {
-    v8 = [v5 objectForKey:@"credits"];
+    v8 = [dataCopy objectForKey:@"credits"];
     v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v8 count]);
     v18 = 0u;
     v19 = 0u;
@@ -563,7 +563,7 @@ LABEL_17:
     {
       v12 = v11;
       v13 = *v19;
-      if (v4)
+      if (qidCopy)
       {
         v14 = @"wikiQid";
       }
@@ -605,16 +605,16 @@ LABEL_17:
   return v9;
 }
 
-- (id)topicScoresFromMediaData:(id)a3
+- (id)topicScoresFromMediaData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"topics"];
+  dataCopy = data;
+  v4 = [dataCopy objectForKey:@"topics"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 objectForKey:@"topics"];
+    v6 = [dataCopy objectForKey:@"topics"];
     v20 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v6 count]);
     v21 = 0u;
     v22 = 0u;

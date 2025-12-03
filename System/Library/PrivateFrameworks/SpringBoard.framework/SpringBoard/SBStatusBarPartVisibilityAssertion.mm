@@ -1,26 +1,26 @@
 @interface SBStatusBarPartVisibilityAssertion
-- (SBStatusBarPartVisibilityAssertion)initWithIdentifier:(id)a3 statusBar:(id)a4 forReason:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBStatusBarPartVisibilityAssertion)initWithIdentifier:(id)identifier statusBar:(id)bar forReason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_setStatusBarPartWithIdentifier:(id)a3 hidden:(BOOL)a4 animatedWithDuration:(double)a5;
-- (void)setStatusBarPartWithIdentifier:(id)a3 hidden:(BOOL)a4 animated:(BOOL)a5;
-- (void)setStatusBarPartWithIdentifier:(id)a3 hidden:(BOOL)a4 animatedWithDuration:(double)a5;
+- (void)_setStatusBarPartWithIdentifier:(id)identifier hidden:(BOOL)hidden animatedWithDuration:(double)duration;
+- (void)setStatusBarPartWithIdentifier:(id)identifier hidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setStatusBarPartWithIdentifier:(id)identifier hidden:(BOOL)hidden animatedWithDuration:(double)duration;
 @end
 
 @implementation SBStatusBarPartVisibilityAssertion
 
-- (SBStatusBarPartVisibilityAssertion)initWithIdentifier:(id)a3 statusBar:(id)a4 forReason:(id)a5
+- (SBStatusBarPartVisibilityAssertion)initWithIdentifier:(id)identifier statusBar:(id)bar forReason:(id)reason
 {
-  v9 = a4;
+  barCopy = bar;
   v15.receiver = self;
   v15.super_class = SBStatusBarPartVisibilityAssertion;
-  v10 = [(BSSimpleAssertion *)&v15 initWithIdentifier:a3 forReason:a5 invalidationBlock:&__block_literal_global_79];
+  v10 = [(BSSimpleAssertion *)&v15 initWithIdentifier:identifier forReason:reason invalidationBlock:&__block_literal_global_79];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_statusBar, a4);
+    objc_storeStrong(&v10->_statusBar, bar);
     v12 = [MEMORY[0x277CBEB58] set];
     hiddenParts = v11->_hiddenParts;
     v11->_hiddenParts = v12;
@@ -66,77 +66,77 @@ void __77__SBStatusBarPartVisibilityAssertion_initWithIdentifier_statusBar_forRe
   }
 }
 
-- (void)setStatusBarPartWithIdentifier:(id)a3 hidden:(BOOL)a4 animated:(BOOL)a5
+- (void)setStatusBarPartWithIdentifier:(id)identifier hidden:(BOOL)hidden animated:(BOOL)animated
 {
   v5 = 0.35;
-  if (!a5)
+  if (!animated)
   {
     v5 = 0.0;
   }
 
-  [(SBStatusBarPartVisibilityAssertion *)self setStatusBarPartWithIdentifier:a3 hidden:a4 animatedWithDuration:v5];
+  [(SBStatusBarPartVisibilityAssertion *)self setStatusBarPartWithIdentifier:identifier hidden:hidden animatedWithDuration:v5];
 }
 
-- (void)setStatusBarPartWithIdentifier:(id)a3 hidden:(BOOL)a4 animatedWithDuration:(double)a5
+- (void)setStatusBarPartWithIdentifier:(id)identifier hidden:(BOOL)hidden animatedWithDuration:(double)duration
 {
-  v6 = a4;
-  v10 = a3;
-  if ([(SBStatusBarPartVisibilityAssertion *)self isHidingStatusBarPartWithIdentifier:?]!= v6)
+  hiddenCopy = hidden;
+  identifierCopy = identifier;
+  if ([(SBStatusBarPartVisibilityAssertion *)self isHidingStatusBarPartWithIdentifier:?]!= hiddenCopy)
   {
     hiddenParts = self->_hiddenParts;
-    if (v6)
+    if (hiddenCopy)
     {
-      v9 = [v10 copy];
+      v9 = [identifierCopy copy];
       [(NSMutableSet *)hiddenParts addObject:v9];
     }
 
     else
     {
-      [(NSMutableSet *)self->_hiddenParts removeObject:v10];
+      [(NSMutableSet *)self->_hiddenParts removeObject:identifierCopy];
     }
 
-    [(SBStatusBarPartVisibilityAssertion *)self _setStatusBarPartWithIdentifier:v10 hidden:v6 animatedWithDuration:a5];
+    [(SBStatusBarPartVisibilityAssertion *)self _setStatusBarPartWithIdentifier:identifierCopy hidden:hiddenCopy animatedWithDuration:duration];
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBStatusBarPartVisibilityAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBStatusBarPartVisibilityAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NSMutableSet *)self->_hiddenParts allObjects];
-  v5 = [v4 componentsJoinedByString:{@", "}];
+  allObjects = [(NSMutableSet *)self->_hiddenParts allObjects];
+  v5 = [allObjects componentsJoinedByString:{@", "}];
   [v3 appendString:v5 withName:@"hiddenParts" skipIfEmpty:1];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBStatusBarPartVisibilityAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBStatusBarPartVisibilityAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBStatusBarPartVisibilityAssertion *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBStatusBarPartVisibilityAssertion *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__SBStatusBarPartVisibilityAssertion_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -154,14 +154,14 @@ void __76__SBStatusBarPartVisibilityAssertion_descriptionBuilderWithMultilinePre
   [v5 appendString:v6 withName:@"reason"];
 }
 
-- (void)_setStatusBarPartWithIdentifier:(id)a3 hidden:(BOOL)a4 animatedWithDuration:(double)a5
+- (void)_setStatusBarPartWithIdentifier:(id)identifier hidden:(BOOL)hidden animatedWithDuration:(double)duration
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = v8;
-  if (a5 <= 0.0)
+  hiddenCopy = hidden;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  if (duration <= 0.0)
   {
-    __98__SBStatusBarPartVisibilityAssertion__setStatusBarPartWithIdentifier_hidden_animatedWithDuration___block_invoke(v8, self->_statusBar, v8, v6);
+    __98__SBStatusBarPartVisibilityAssertion__setStatusBarPartWithIdentifier_hidden_animatedWithDuration___block_invoke(identifierCopy, self->_statusBar, identifierCopy, hiddenCopy);
   }
 
   else
@@ -173,9 +173,9 @@ void __76__SBStatusBarPartVisibilityAssertion_descriptionBuilderWithMultilinePre
     v11[3] = &unk_2783B0748;
     v13 = &__block_literal_global_19_0;
     v11[4] = self;
-    v12 = v8;
-    v14 = v6;
-    [v10 animateWithDuration:v11 animations:0 completion:a5];
+    v12 = identifierCopy;
+    v14 = hiddenCopy;
+    [v10 animateWithDuration:v11 animations:0 completion:duration];
   }
 }
 

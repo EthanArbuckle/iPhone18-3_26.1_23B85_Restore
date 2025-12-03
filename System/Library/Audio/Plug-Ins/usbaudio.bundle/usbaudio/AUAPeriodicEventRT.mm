@@ -1,14 +1,14 @@
 @interface AUAPeriodicEventRT
 - (void)dealloc;
-- (void)start:(unint64_t)a3 maxPeriodMach:(unint64_t)a4 eventHandler:(id)a5;
+- (void)start:(unint64_t)start maxPeriodMach:(unint64_t)mach eventHandler:(id)handler;
 - (void)stop;
 @end
 
 @implementation AUAPeriodicEventRT
 
-- (void)start:(unint64_t)a3 maxPeriodMach:(unint64_t)a4 eventHandler:(id)a5
+- (void)start:(unint64_t)start maxPeriodMach:(unint64_t)mach eventHandler:(id)handler
 {
-  a5;
+  handler;
   [(AUAPeriodicEventRT *)self stop];
   operator new();
 }

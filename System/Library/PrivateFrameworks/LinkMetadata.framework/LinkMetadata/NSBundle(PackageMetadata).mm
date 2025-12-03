@@ -6,13 +6,13 @@
 
 - (id)executablePathWithError:()PackageMetadata
 {
-  v5 = [a1 executablePath];
-  v6 = v5;
-  if (a3 && !v5)
+  executablePath = [self executablePath];
+  v6 = executablePath;
+  if (a3 && !executablePath)
   {
     v7 = MEMORY[0x1E696ABC0];
-    v8 = [a1 bundlePath];
-    *a3 = [v7 errorWithErrno:79 forFilePath:v8];
+    bundlePath = [self bundlePath];
+    *a3 = [v7 errorWithErrno:79 forFilePath:bundlePath];
   }
 
   return v6;

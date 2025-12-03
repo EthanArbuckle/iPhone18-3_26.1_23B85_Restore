@@ -1,44 +1,44 @@
 @interface WBSBlockCoalescer
-- (WBSBlockCoalescer)initWithMinimumTimeIntervalBeforeExecution:(double)a3 queue:(id)a4;
+- (WBSBlockCoalescer)initWithMinimumTimeIntervalBeforeExecution:(double)execution queue:(id)queue;
 - (void)_dispatchBlock;
-- (void)scheduleBlock:(id)a3;
+- (void)scheduleBlock:(id)block;
 @end
 
 @implementation WBSBlockCoalescer
 
-- (WBSBlockCoalescer)initWithMinimumTimeIntervalBeforeExecution:(double)a3 queue:(id)a4
+- (WBSBlockCoalescer)initWithMinimumTimeIntervalBeforeExecution:(double)execution queue:(id)queue
 {
-  v6 = a4;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = WBSBlockCoalescer;
   v7 = [(WBSBlockCoalescer *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    v7->_minimumTimeIntervalBeforeExecution = a3;
+    v7->_minimumTimeIntervalBeforeExecution = execution;
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.BlockCoalescer.%p", v7];
     v10 = dispatch_queue_create([v9 UTF8String], 0);
     queue = v8->_queue;
     v8->_queue = v10;
 
-    dispatch_set_target_queue(v8->_queue, v6);
+    dispatch_set_target_queue(v8->_queue, queueCopy);
     v12 = v8;
   }
 
   return v8;
 }
 
-- (void)scheduleBlock:(id)a3
+- (void)scheduleBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__WBSBlockCoalescer_scheduleBlock___block_invoke;
   v7[3] = &unk_1E7CF16B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(queue, v7);
 }
 

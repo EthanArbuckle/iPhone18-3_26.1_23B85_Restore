@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     PropertyWithNSString = JavaLangSystem_getPropertyWithNSString_(@"java.vm.vendor");
     JreStrongAssign(&OrgApacheLuceneUtilConstants_JVM_VENDOR_, PropertyWithNSString);
@@ -37,16 +37,16 @@
     v10 = JavaLangSystem_getPropertyWithNSString_(@"java.vendor");
     JreStrongAssign(&OrgApacheLuceneUtilConstants_JAVA_VENDOR_, v10);
     v11 = new_JavaUtilStringTokenizer_initWithNSString_withNSString_(OrgApacheLuceneUtilConstants_JVM_SPEC_VERSION_, @".");
-    v12 = [(JavaUtilStringTokenizer *)v11 nextToken];
-    dword_100553E38 = JavaLangInteger_parseIntWithNSString_(v12, v13, v14, v15, v16, v17, v18, v19);
-    v20 = [(JavaUtilStringTokenizer *)v11 hasMoreTokens];
-    if (v20)
+    nextToken = [(JavaUtilStringTokenizer *)v11 nextToken];
+    dword_100553E38 = JavaLangInteger_parseIntWithNSString_(nextToken, v13, v14, v15, v16, v17, v18, v19);
+    hasMoreTokens = [(JavaUtilStringTokenizer *)v11 hasMoreTokens];
+    if (hasMoreTokens)
     {
-      v21 = [(JavaUtilStringTokenizer *)v11 nextToken];
-      v20 = JavaLangInteger_parseIntWithNSString_(v21, v22, v23, v24, v25, v26, v27, v28);
+      nextToken2 = [(JavaUtilStringTokenizer *)v11 nextToken];
+      hasMoreTokens = JavaLangInteger_parseIntWithNSString_(nextToken2, v22, v23, v24, v25, v26, v27, v28);
     }
 
-    dword_100553E3C = v20;
+    dword_100553E3C = hasMoreTokens;
     v29 = JavaLangSystem_getPropertyWithNSString_(@"sun.arch.data.model");
     if (v29)
     {

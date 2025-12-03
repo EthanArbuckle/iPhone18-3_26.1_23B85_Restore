@@ -1,10 +1,10 @@
 @interface SBTraitsSwitcherLiveOverlayPolicySpecifier
-- (SBTraitsSwitcherLiveOverlayPolicySpecifier)initWithComponentOrder:(id)a3 arbiter:(id)a4;
+- (SBTraitsSwitcherLiveOverlayPolicySpecifier)initWithComponentOrder:(id)order arbiter:(id)arbiter;
 - (id)_specifierDescription;
-- (void)_updateAcquiredParticipantsPolicies:(id)a3 context:(id)a4;
-- (void)_updateParticipant:(id)a3 withPolicy:(int64_t)a4 context:(id)a5;
-- (void)setNonPrimaryResolutionPolicy:(int64_t)a3;
-- (void)setPrimaryElementResolutionPolicy:(int64_t)a3;
+- (void)_updateAcquiredParticipantsPolicies:(id)policies context:(id)context;
+- (void)_updateParticipant:(id)participant withPolicy:(int64_t)policy context:(id)context;
+- (void)setNonPrimaryResolutionPolicy:(int64_t)policy;
+- (void)setPrimaryElementResolutionPolicy:(int64_t)policy;
 @end
 
 @implementation SBTraitsSwitcherLiveOverlayPolicySpecifier
@@ -36,11 +36,11 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"Switcher primary overlay: %@; non-primary overlays: %@;", v5, v7, v2, v3];
 }
 
-- (SBTraitsSwitcherLiveOverlayPolicySpecifier)initWithComponentOrder:(id)a3 arbiter:(id)a4
+- (SBTraitsSwitcherLiveOverlayPolicySpecifier)initWithComponentOrder:(id)order arbiter:(id)arbiter
 {
   v5.receiver = self;
   v5.super_class = SBTraitsSwitcherLiveOverlayPolicySpecifier;
-  result = [(SBAbstractTraitsSwitcherPolicySpecifier *)&v5 initWithComponentOrder:a3 arbiter:a4];
+  result = [(SBAbstractTraitsSwitcherPolicySpecifier *)&v5 initWithComponentOrder:order arbiter:arbiter];
   if (result)
   {
     result->_primaryElementResolutionPolicy = 1;
@@ -50,33 +50,33 @@
   return result;
 }
 
-- (void)setPrimaryElementResolutionPolicy:(int64_t)a3
+- (void)setPrimaryElementResolutionPolicy:(int64_t)policy
 {
-  if (self->_primaryElementResolutionPolicy != a3)
+  if (self->_primaryElementResolutionPolicy != policy)
   {
-    self->_primaryElementResolutionPolicy = a3;
-    v6 = [(SBAbstractTraitsSwitcherPolicySpecifier *)self _blockBasedPolicySpecifier];
-    v5 = [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self _specifierDescription];
-    [v6 setSpecifierDescription:v5];
+    self->_primaryElementResolutionPolicy = policy;
+    _blockBasedPolicySpecifier = [(SBAbstractTraitsSwitcherPolicySpecifier *)self _blockBasedPolicySpecifier];
+    _specifierDescription = [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self _specifierDescription];
+    [_blockBasedPolicySpecifier setSpecifierDescription:_specifierDescription];
   }
 }
 
-- (void)setNonPrimaryResolutionPolicy:(int64_t)a3
+- (void)setNonPrimaryResolutionPolicy:(int64_t)policy
 {
-  if (self->_nonPrimaryResolutionPolicy != a3)
+  if (self->_nonPrimaryResolutionPolicy != policy)
   {
-    self->_nonPrimaryResolutionPolicy = a3;
-    v6 = [(SBAbstractTraitsSwitcherPolicySpecifier *)self _blockBasedPolicySpecifier];
-    v5 = [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self _specifierDescription];
-    [v6 setSpecifierDescription:v5];
+    self->_nonPrimaryResolutionPolicy = policy;
+    _blockBasedPolicySpecifier = [(SBAbstractTraitsSwitcherPolicySpecifier *)self _blockBasedPolicySpecifier];
+    _specifierDescription = [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self _specifierDescription];
+    [_blockBasedPolicySpecifier setSpecifierDescription:_specifierDescription];
   }
 }
 
-- (void)_updateAcquiredParticipantsPolicies:(id)a3 context:(id)a4
+- (void)_updateAcquiredParticipantsPolicies:(id)policies context:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v18 = a4;
+  policiesCopy = policies;
+  contextCopy = context;
   primaryElementResolutionPolicy = self->_primaryElementResolutionPolicy;
   if (!primaryElementResolutionPolicy)
   {
@@ -93,7 +93,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v7;
+  obj = policiesCopy;
   v9 = [obj countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v9)
   {
@@ -109,14 +109,14 @@
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 role];
-        v15 = [v13 uniqueIdentifier];
-        v16 = [v15 isEqualToString:self->_primaryElementParticipantIdentifier];
+        role = [v13 role];
+        uniqueIdentifier = [v13 uniqueIdentifier];
+        v16 = [uniqueIdentifier isEqualToString:self->_primaryElementParticipantIdentifier];
 
         p_primaryElementResolutionPolicy = &self->_primaryElementResolutionPolicy;
         if ((v16 & 1) == 0)
         {
-          if (![v14 isEqualToString:@"SBTraitsParticipantRoleSwitcherLiveOverlay"])
+          if (![role isEqualToString:@"SBTraitsParticipantRoleSwitcherLiveOverlay"])
           {
             goto LABEL_15;
           }
@@ -126,7 +126,7 @@
 
         if (*p_primaryElementResolutionPolicy != 1)
         {
-          [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self _updateParticipant:v13 withPolicy:*p_primaryElementResolutionPolicy context:v18];
+          [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self _updateParticipant:v13 withPolicy:*p_primaryElementResolutionPolicy context:contextCopy];
         }
 
 LABEL_15:
@@ -139,53 +139,53 @@ LABEL_15:
   }
 }
 
-- (void)_updateParticipant:(id)a3 withPolicy:(int64_t)a4 context:(id)a5
+- (void)_updateParticipant:(id)participant withPolicy:(int64_t)policy context:(id)context
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (a4 <= 3)
+  participantCopy = participant;
+  contextCopy = context;
+  if (policy <= 3)
   {
-    if (a4 == 2)
+    if (policy == 2)
     {
-      v17 = [MEMORY[0x277D734D0] resolutionPolicyInfoIsolation];
+      resolutionPolicyInfoIsolation = [MEMORY[0x277D734D0] resolutionPolicyInfoIsolation];
     }
 
     else
     {
-      if (a4 != 3)
+      if (policy != 3)
       {
         goto LABEL_15;
       }
 
-      v17 = [MEMORY[0x277D734D0] resolutionPolicyInfoForAssociatedParticipantWithRole:@"SBTraitsParticipantRoleSwitcherRaw"];
+      resolutionPolicyInfoIsolation = [MEMORY[0x277D734D0] resolutionPolicyInfoForAssociatedParticipantWithRole:@"SBTraitsParticipantRoleSwitcherRaw"];
     }
 
 LABEL_14:
-    v18 = v17;
-    [v8 setOrientationResolutionPolicyInfo:v17];
+    v18 = resolutionPolicyInfoIsolation;
+    [participantCopy setOrientationResolutionPolicyInfo:resolutionPolicyInfoIsolation];
 
     goto LABEL_15;
   }
 
-  switch(a4)
+  switch(policy)
   {
     case 4:
-      v17 = [MEMORY[0x277D734D0] resolutionPolicyInfoDeviceOrientation];
+      resolutionPolicyInfoIsolation = [MEMORY[0x277D734D0] resolutionPolicyInfoDeviceOrientation];
       goto LABEL_14;
     case 5:
-      v17 = [MEMORY[0x277D734D0] resolutionPolicyInfoForAssociatedParticipantWithUniqueID:self->_primaryElementParticipantIdentifier];
+      resolutionPolicyInfoIsolation = [MEMORY[0x277D734D0] resolutionPolicyInfoForAssociatedParticipantWithUniqueID:self->_primaryElementParticipantIdentifier];
       goto LABEL_14;
     case 6:
       v10 = +[SBOrientationLockManager sharedInstance];
-      v11 = [v10 isUserLocked];
+      isUserLocked = [v10 isUserLocked];
 
-      if (v11)
+      if (isUserLocked)
       {
         v12 = +[SBOrientationLockManager sharedInstance];
-        v13 = [v12 userLockOrientation];
+        userLockOrientation = [v12 userLockOrientation];
 
-        if ((v13 - 3) > 1)
+        if ((userLockOrientation - 3) > 1)
         {
           v21[0] = &unk_2833714F8;
           v21[1] = &unk_283371510;
@@ -212,15 +212,15 @@ LABEL_14:
         }
 
         v20 = [v14 dictionaryWithObjects:v15 forKeys:v16 count:3];
-        v19 = [MEMORY[0x277D734D0] resolutionPolicyInfoDeviceOrientationWithStateTypesBySupportedOrientationMask:v20];
+        resolutionPolicyInfoDeviceOrientation = [MEMORY[0x277D734D0] resolutionPolicyInfoDeviceOrientationWithStateTypesBySupportedOrientationMask:v20];
       }
 
       else
       {
-        v19 = [MEMORY[0x277D734D0] resolutionPolicyInfoDeviceOrientation];
+        resolutionPolicyInfoDeviceOrientation = [MEMORY[0x277D734D0] resolutionPolicyInfoDeviceOrientation];
       }
 
-      [v8 setOrientationResolutionPolicyInfo:v19];
+      [participantCopy setOrientationResolutionPolicyInfo:resolutionPolicyInfoDeviceOrientation];
 
       break;
   }

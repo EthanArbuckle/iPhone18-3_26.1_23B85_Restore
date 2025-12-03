@@ -1,20 +1,20 @@
 @interface IMWatchBackground
-+ (id)payloadDataFor:(id)a3 luminance:(double)a4 isHighKey:(BOOL)a5 extensionIdentfier:(id)a6;
-- (IMWatchBackground)initWithPayloadData:(id)a3;
++ (id)payloadDataFor:(id)for luminance:(double)luminance isHighKey:(BOOL)key extensionIdentfier:(id)identfier;
+- (IMWatchBackground)initWithPayloadData:(id)data;
 @end
 
 @implementation IMWatchBackground
 
-- (IMWatchBackground)initWithPayloadData:(id)a3
+- (IMWatchBackground)initWithPayloadData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v21.receiver = self;
   v21.super_class = IMWatchBackground;
   v5 = [(IMWatchBackground *)&v21 init];
   if (v5)
   {
     v20 = 0;
-    v6 = [MEMORY[0x1E696AE40] propertyListWithData:v4 options:1 format:0 error:&v20];
+    v6 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:1 format:0 error:&v20];
     v7 = v20;
     if (v7)
     {
@@ -53,22 +53,22 @@ LABEL_11:
   return v18;
 }
 
-+ (id)payloadDataFor:(id)a3 luminance:(double)a4 isHighKey:(BOOL)a5 extensionIdentfier:(id)a6
++ (id)payloadDataFor:(id)for luminance:(double)luminance isHighKey:(BOOL)key extensionIdentfier:(id)identfier
 {
-  v7 = a5;
+  keyCopy = key;
   v20[4] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
-  v20[0] = v9;
+  forCopy = for;
+  identfierCopy = identfier;
+  v20[0] = forCopy;
   v19[0] = qword_1EB301070;
   v19[1] = qword_1EB301078;
-  v11 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithDouble:luminance];
   v20[1] = v11;
   v19[2] = qword_1EB301080;
-  v12 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v12 = [MEMORY[0x1E696AD98] numberWithBool:keyCopy];
   v19[3] = qword_1EB301088;
   v20[2] = v12;
-  v20[3] = v10;
+  v20[3] = identfierCopy;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:4];
 
   v18 = 0;

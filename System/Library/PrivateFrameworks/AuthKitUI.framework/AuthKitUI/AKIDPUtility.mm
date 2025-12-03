@@ -1,31 +1,31 @@
 @interface AKIDPUtility
-+ (BOOL)dictionary:(id)a3 containsKeys:(id)a4;
-+ (BOOL)isMicrosoftRequestDictionary:(id)a3;
-+ (id)convertError:(id)a3;
-+ (id)idpURLFromRequest:(id)a3;
-+ (id)microsoftLoginURLFromParameters:(id)a3;
-+ (id)parametersFromRequest:(id)a3;
-+ (id)parametersFromResponseURL:(id)a3 request:(id)a4;
++ (BOOL)dictionary:(id)dictionary containsKeys:(id)keys;
++ (BOOL)isMicrosoftRequestDictionary:(id)dictionary;
++ (id)convertError:(id)error;
++ (id)idpURLFromRequest:(id)request;
++ (id)microsoftLoginURLFromParameters:(id)parameters;
++ (id)parametersFromRequest:(id)request;
++ (id)parametersFromResponseURL:(id)l request:(id)request;
 @end
 
 @implementation AKIDPUtility
 
-+ (id)convertError:(id)a3
++ (id)convertError:(id)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [location[0] domain];
+  objc_storeStrong(location, error);
+  domain = [location[0] domain];
   v7 = getASWebAuthenticationSessionErrorDomain();
   v8 = 0;
-  if ([v6 isEqualToString:?])
+  if ([domain isEqualToString:?])
   {
     v8 = [location[0] code] == 1;
   }
 
   MEMORY[0x277D82BD8](v7);
-  *&v3 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+  *&v3 = MEMORY[0x277D82BD8](domain).n128_u64[0];
   if (v8)
   {
     v10 = [MEMORY[0x277CCA9B8] ak_errorWithCode:{-7003, v3}];
@@ -42,33 +42,33 @@
   return v4;
 }
 
-+ (id)idpURLFromRequest:(id)a3
++ (id)idpURLFromRequest:(id)request
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v13 = objc_alloc(MEMORY[0x277CCACA8]);
-  v14 = [location[0] HTTPBody];
+  hTTPBody = [location[0] HTTPBody];
   v31 = [v13 initWithData:? encoding:?];
-  *&v3 = MEMORY[0x277D82BD8](v14).n128_u64[0];
+  *&v3 = MEMORY[0x277D82BD8](hTTPBody).n128_u64[0];
   v15 = [location[0] URL];
-  v30 = [v15 absoluteString];
+  absoluteString = [v15 absoluteString];
   *&v4 = MEMORY[0x277D82BD8](v15).n128_u64[0];
   v29 = [AKIDPUtility parametersFromRequest:location[0], v4];
   if ([AKIDPUtility isMicrosoftRequestDictionary:v29])
   {
     v11 = [v29 objectForKeyedSubscript:@"SAMLRequest"];
-    v27 = [v11 stringByRemovingPercentEncoding];
+    stringByRemovingPercentEncoding = [v11 stringByRemovingPercentEncoding];
     MEMORY[0x277D82BD8](v11);
-    v26 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v27 options:1];
+    v26 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:stringByRemovingPercentEncoding options:1];
     v25 = [v26 compressedDataUsingAlgorithm:3 error:0];
     v24 = [v25 base64EncodedStringWithOptions:0];
     v12 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:charsToEscape];
-    v23 = [v12 invertedSet];
+    invertedSet = [v12 invertedSet];
     v22 = [v29 objectForKeyedSubscript:{@"RelayState", MEMORY[0x277D82BD8](v12).n128_f64[0]}];
-    v21 = [v24 stringByAddingPercentEncodingWithAllowedCharacters:v23];
-    if ([v30 containsString:@"?"])
+    v21 = [v24 stringByAddingPercentEncodingWithAllowedCharacters:invertedSet];
+    if ([absoluteString containsString:@"?"])
     {
       v5 = MEMORY[0x277D82BE0](urlWithQueryParametersFormatString);
     }
@@ -79,7 +79,7 @@
     }
 
     v20 = v5;
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:v5, v30, @"RelayState", v22, @"SAMLRequest", v21];
+    v19 = [MEMORY[0x277CCACA8] stringWithFormat:v5, absoluteString, @"RelayState", v22, @"SAMLRequest", v21];
     v6 = objc_alloc(MEMORY[0x277CBEBC0]);
     v33 = [v6 initWithString:v19];
     v18 = 1;
@@ -87,16 +87,16 @@
     objc_storeStrong(&v20, 0);
     objc_storeStrong(&v21, 0);
     objc_storeStrong(&v22, 0);
-    objc_storeStrong(&v23, 0);
+    objc_storeStrong(&invertedSet, 0);
     objc_storeStrong(&v24, 0);
     objc_storeStrong(&v25, 0);
     objc_storeStrong(&v26, 0);
-    objc_storeStrong(&v27, 0);
+    objc_storeStrong(&stringByRemovingPercentEncoding, 0);
   }
 
   else
   {
-    v10 = [v30 stringByAppendingString:@"?"];
+    v10 = [absoluteString stringByAppendingString:@"?"];
     v17 = [v10 stringByAppendingString:v31];
     MEMORY[0x277D82BD8](v10);
     v7 = objc_alloc(MEMORY[0x277CBEBC0]);
@@ -108,7 +108,7 @@
   }
 
   objc_storeStrong(&v29, 0);
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&absoluteString, 0);
   objc_storeStrong(&v31, 0);
   objc_storeStrong(location, 0);
   v8 = v33;
@@ -116,38 +116,38 @@
   return v8;
 }
 
-+ (id)parametersFromResponseURL:(id)a3 request:(id)a4
++ (id)parametersFromResponseURL:(id)l request:(id)request
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v9 = [MEMORY[0x277CF02F0] sharedBag];
-  v13 = [v9 acsURL];
-  v4 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+  objc_storeStrong(&v14, request);
+  mEMORY[0x277CF02F0] = [MEMORY[0x277CF02F0] sharedBag];
+  acsURL = [mEMORY[0x277CF02F0] acsURL];
+  v4 = MEMORY[0x277D82BD8](mEMORY[0x277CF02F0]).n128_u64[0];
   v11 = 0;
   v10 = 1;
   if (location[0])
   {
-    v12 = [location[0] query];
+    query = [location[0] query];
     v11 = 1;
     v10 = 1;
-    if (v12)
+    if (query)
     {
       v10 = 1;
       if (v14)
       {
-        v10 = v13 == 0;
+        v10 = acsURL == 0;
       }
     }
   }
 
   if (v11)
   {
-    v4 = MEMORY[0x277D82BD8](v12).n128_u64[0];
+    v4 = MEMORY[0x277D82BD8](query).n128_u64[0];
   }
 
   if (v10)
@@ -158,15 +158,15 @@
   else
   {
     v17[0] = *MEMORY[0x277CF0080];
-    v7 = [location[0] query];
-    v18[0] = v7;
+    query2 = [location[0] query];
+    v18[0] = query2;
     v17[1] = *MEMORY[0x277CF0088];
-    v18[1] = v13;
+    v18[1] = acsURL;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](query2);
   }
 
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&acsURL, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
@@ -175,17 +175,17 @@
   return v5;
 }
 
-+ (id)parametersFromRequest:(id)a3
++ (id)parametersFromRequest:(id)request
 {
   v25 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v10 = objc_alloc(MEMORY[0x277CCACA8]);
-  v11 = [location[0] HTTPBody];
+  hTTPBody = [location[0] HTTPBody];
   v22 = [v10 initWithData:? encoding:?];
-  v21 = [v22 componentsSeparatedByString:{@"&", MEMORY[0x277D82BD8](v11).n128_f64[0]}];
+  v21 = [v22 componentsSeparatedByString:{@"&", MEMORY[0x277D82BD8](hTTPBody).n128_f64[0]}];
   v20 = objc_opt_new();
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](v21);
@@ -241,17 +241,17 @@
   return v5;
 }
 
-+ (id)microsoftLoginURLFromParameters:(id)a3
++ (id)microsoftLoginURLFromParameters:(id)parameters
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, parameters);
   v10 = [location[0] objectForKeyedSubscript:@"SAMLRequest"];
-  v25 = [v10 stringByRemovingPercentEncoding];
+  stringByRemovingPercentEncoding = [v10 stringByRemovingPercentEncoding];
   MEMORY[0x277D82BD8](v10);
   v3 = objc_alloc(MEMORY[0x277CBEA90]);
-  v24 = [v3 initWithBase64EncodedString:v25 options:1];
+  v24 = [v3 initWithBase64EncodedString:stringByRemovingPercentEncoding options:1];
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v23 = [v4 initWithData:v24 encoding:4];
   v21 = [v23 rangeOfString:@"AssertionConsumerServiceURL="];
@@ -280,21 +280,21 @@
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v23, 0);
   objc_storeStrong(&v24, 0);
-  objc_storeStrong(&v25, 0);
+  objc_storeStrong(&stringByRemovingPercentEncoding, 0);
   objc_storeStrong(location, 0);
 
   return v13;
 }
 
-+ (BOOL)dictionary:(id)a3 containsKeys:(id)a4
++ (BOOL)dictionary:(id)dictionary containsKeys:(id)keys
 {
   v21 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, keys);
   memset(__b, 0, sizeof(__b));
   v12 = MEMORY[0x277D82BE0](v17);
   v13 = [v12 countByEnumeratingWithState:__b objects:v20 count:16];
@@ -353,13 +353,13 @@ LABEL_9:
   return v19 & 1;
 }
 
-+ (BOOL)isMicrosoftRequestDictionary:(id)a3
++ (BOOL)isMicrosoftRequestDictionary:(id)dictionary
 {
   v7[2] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v7[0] = @"RelayState";
   v7[1] = @"SAMLRequest";
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];

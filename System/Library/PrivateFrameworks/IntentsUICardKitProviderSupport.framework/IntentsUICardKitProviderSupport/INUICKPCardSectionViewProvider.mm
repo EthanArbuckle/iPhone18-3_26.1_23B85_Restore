@@ -1,26 +1,26 @@
 @interface INUICKPCardSectionViewProvider
-+ (id)_viewConfigurationsFromAllocator:(id)a3;
-+ (void)requestInstanceFromDefaultAllocatorWithCard:(id)a3 delegate:(id)a4 reply:(id)a5;
-+ (void)requestInstanceWithCard:(id)a3 delegate:(id)a4 allocator:(id)a5 reply:(id)a6;
-- (BOOL)vetoDisplayOfCardSection:(id)a3;
++ (id)_viewConfigurationsFromAllocator:(id)allocator;
++ (void)requestInstanceFromDefaultAllocatorWithCard:(id)card delegate:(id)delegate reply:(id)reply;
++ (void)requestInstanceWithCard:(id)card delegate:(id)delegate allocator:(id)allocator reply:(id)reply;
+- (BOOL)vetoDisplayOfCardSection:(id)section;
 - (CRKCardSectionViewProviderDelegate)cardSectionViewProviderDelegate;
-- (double)boundingWidthForViewControllerAllocator:(id)a3;
+- (double)boundingWidthForViewControllerAllocator:(id)allocator;
 @end
 
 @implementation INUICKPCardSectionViewProvider
 
-- (BOOL)vetoDisplayOfCardSection:(id)a3
+- (BOOL)vetoDisplayOfCardSection:(id)section
 {
-  v4 = a3;
-  v5 = [(INUICKPViewControllerAllocating *)self->_allocator redundantInterfaceSections];
-  if (v5)
+  sectionCopy = section;
+  redundantInterfaceSections = [(INUICKPViewControllerAllocating *)self->_allocator redundantInterfaceSections];
+  if (redundantInterfaceSections)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __59__INUICKPCardSectionViewProvider_vetoDisplayOfCardSection___block_invoke;
     v9[3] = &unk_2797EB8C0;
-    v10 = v4;
-    v6 = [v5 indexOfObjectPassingTest:v9];
+    v10 = sectionCopy;
+    v6 = [redundantInterfaceSections indexOfObjectPassingTest:v9];
 
     v7 = v6 != 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -55,38 +55,38 @@ uint64_t __59__INUICKPCardSectionViewProvider_vetoDisplayOfCardSection___block_i
   return v10;
 }
 
-+ (void)requestInstanceFromDefaultAllocatorWithCard:(id)a3 delegate:(id)a4 reply:(id)a5
++ (void)requestInstanceFromDefaultAllocatorWithCard:(id)card delegate:(id)delegate reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  delegateCopy = delegate;
+  cardCopy = card;
   v11 = objc_alloc_init(INUICKPSynchronousRemoteViewControllerAllocator);
   [(INUICKPSynchronousRemoteViewControllerAllocator *)v11 setSynchronousRemoteViewControllerClass:objc_opt_class()];
-  [a1 requestInstanceWithCard:v10 delegate:v9 allocator:v11 reply:v8];
+  [self requestInstanceWithCard:cardCopy delegate:delegateCopy allocator:v11 reply:replyCopy];
 }
 
-+ (void)requestInstanceWithCard:(id)a3 delegate:(id)a4 allocator:(id)a5 reply:(id)a6
++ (void)requestInstanceWithCard:(id)card delegate:(id)delegate allocator:(id)allocator reply:(id)reply
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v10)
+  cardCopy = card;
+  delegateCopy = delegate;
+  allocatorCopy = allocator;
+  replyCopy = reply;
+  v14 = replyCopy;
+  if (cardCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v10 interactions];
-      v16 = [v15 anyObject];
+      interactions = [cardCopy interactions];
+      anyObject = [interactions anyObject];
 
-      if (v12 && v16)
+      if (allocatorCopy && anyObject)
       {
         v17 = objc_alloc_init(objc_opt_class());
-        [v17 setCardSectionViewProviderDelegate:v11];
+        [v17 setCardSectionViewProviderDelegate:delegateCopy];
         if (objc_opt_respondsToSelector())
         {
-          v18 = [v11 cardSectionDisplayRequiresUserConsentForProvider:v17];
+          v18 = [delegateCopy cardSectionDisplayRequiresUserConsentForProvider:v17];
           v19 = *MEMORY[0x277CF93F0];
           if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_INFO))
           {
@@ -94,9 +94,9 @@ uint64_t __59__INUICKPCardSectionViewProvider_vetoDisplayOfCardSection___block_i
             v21 = v19;
             v22 = [v20 numberWithBool:v18];
             *buf = 138412802;
-            v32 = a1;
+            selfCopy = self;
             v33 = 2112;
-            v34 = v11;
+            v34 = delegateCopy;
             v35 = 2112;
             v36 = v22;
             _os_log_impl(&dword_255550000, v21, OS_LOG_TYPE_INFO, "%@ respecting delegate %@ preference to require user consent: %@", buf, 0x20u);
@@ -110,21 +110,21 @@ uint64_t __59__INUICKPCardSectionViewProvider_vetoDisplayOfCardSection___block_i
 
         if (objc_opt_respondsToSelector())
         {
-          [v12 setDelegate:v17];
+          [allocatorCopy setDelegate:v17];
         }
 
-        [v12 setRequiresUserConsent:v18];
-        v23 = INUICKPInterfaceSectionsFromCard(v10);
+        [allocatorCopy setRequiresUserConsent:v18];
+        v23 = INUICKPInterfaceSectionsFromCard(cardCopy);
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __83__INUICKPCardSectionViewProvider_requestInstanceWithCard_delegate_allocator_reply___block_invoke;
         v26[3] = &unk_2797EB8E8;
-        v30 = a1;
-        v27 = v12;
+        selfCopy2 = self;
+        v27 = allocatorCopy;
         v28 = v17;
         v29 = v14;
         v24 = v17;
-        [v27 performAllocationsFromInteraction:v16 initialInterfaceSections:v23 completion:v26];
+        [v27 performAllocationsFromInteraction:anyObject initialInterfaceSections:v23 completion:v26];
 
 LABEL_17:
         goto LABEL_18;
@@ -133,7 +133,7 @@ LABEL_17:
 
     else
     {
-      v16 = 0;
+      anyObject = 0;
     }
 
     if (v14)
@@ -144,9 +144,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (v13)
+  if (replyCopy)
   {
-    (*(v13 + 2))(v13, 0);
+    (*(replyCopy + 2))(replyCopy, 0);
   }
 
 LABEL_18:
@@ -179,9 +179,9 @@ uint64_t __83__INUICKPCardSectionViewProvider_requestInstanceWithCard_delegate_a
   return MEMORY[0x2821F9730]();
 }
 
-- (double)boundingWidthForViewControllerAllocator:(id)a3
+- (double)boundingWidthForViewControllerAllocator:(id)allocator
 {
-  v4 = [(INUICKPCardSectionViewProvider *)self cardSectionViewProviderDelegate];
+  cardSectionViewProviderDelegate = [(INUICKPCardSectionViewProvider *)self cardSectionViewProviderDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -189,23 +189,23 @@ uint64_t __83__INUICKPCardSectionViewProvider_requestInstanceWithCard_delegate_a
     return 0.0;
   }
 
-  v6 = [(INUICKPCardSectionViewProvider *)self cardSectionViewProviderDelegate];
-  [v6 boundingWidthForProvider:self];
+  cardSectionViewProviderDelegate2 = [(INUICKPCardSectionViewProvider *)self cardSectionViewProviderDelegate];
+  [cardSectionViewProviderDelegate2 boundingWidthForProvider:self];
   v8 = v7;
 
   return v8;
 }
 
-+ (id)_viewConfigurationsFromAllocator:(id)a3
++ (id)_viewConfigurationsFromAllocator:(id)allocator
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  allocatorCopy = allocator;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = [v3 allocatedViewControllers];
+  obj = [allocatorCopy allocatedViewControllers];
   v5 = [obj countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v5)
   {
@@ -225,15 +225,15 @@ uint64_t __83__INUICKPCardSectionViewProvider_requestInstanceWithCard_delegate_a
 
         v10 = *(*(&v23 + 1) + 8 * v9);
         v11 = objc_alloc_init(MEMORY[0x277CF93B8]);
-        v12 = [v3 viewControllersByInitialInterfaceSection];
-        v13 = [v12 allKeysForObject:v10];
-        v14 = [v13 firstObject];
+        viewControllersByInitialInterfaceSection = [allocatorCopy viewControllersByInitialInterfaceSection];
+        v13 = [viewControllersByInitialInterfaceSection allKeysForObject:v10];
+        firstObject = [v13 firstObject];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v14 cardSection];
-          [v11 setCardSection:v15];
+          cardSection = [firstObject cardSection];
+          [v11 setCardSection:cardSection];
         }
 
         else
@@ -242,13 +242,13 @@ uint64_t __83__INUICKPCardSectionViewProvider_requestInstanceWithCard_delegate_a
           if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_ERROR))
           {
             *buf = v21;
-            v28 = v14;
+            v28 = firstObject;
             _os_log_error_impl(&dword_255550000, v16, OS_LOG_TYPE_ERROR, "Interface section is not a card interface section\n    Interface section: %@", buf, 0xCu);
           }
         }
 
-        v17 = [v10 view];
-        [v11 setCardSectionView:v17];
+        view = [v10 view];
+        [v11 setCardSectionView:view];
 
         if ([v10 conformsToProtocol:&unk_2867795B8])
         {

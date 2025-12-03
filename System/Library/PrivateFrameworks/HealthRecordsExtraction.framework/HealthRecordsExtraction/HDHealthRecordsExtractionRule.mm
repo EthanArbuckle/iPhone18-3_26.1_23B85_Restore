@@ -1,19 +1,19 @@
 @interface HDHealthRecordsExtractionRule
-+ (id)extractionRuleWithDefinition:(id)a3 error:(id *)a4;
++ (id)extractionRuleWithDefinition:(id)definition error:(id *)error;
 - (HDHealthRecordsExtractionRule)init;
-- (HDHealthRecordsExtractionRule)initWithKeyPath:(id)a3 transforms:(id)a4;
-- (id)definitionBySubstitutingKeyPathWith:(id)a3;
+- (HDHealthRecordsExtractionRule)initWithKeyPath:(id)path transforms:(id)transforms;
+- (id)definitionBySubstitutingKeyPathWith:(id)with;
 @end
 
 @implementation HDHealthRecordsExtractionRule
 
-+ (id)extractionRuleWithDefinition:(id)a3 error:(id *)a4
++ (id)extractionRuleWithDefinition:(id)definition error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 length])
+  definitionCopy = definition;
+  if ([definitionCopy length])
   {
-    v6 = [v5 componentsSeparatedByString:@"|"];
+    v6 = [definitionCopy componentsSeparatedByString:@"|"];
     v7 = [v6 hk_map:&__block_literal_global_3];
 
     if ([v7 count])
@@ -39,7 +39,7 @@
 
             if (![*(*(&v18 + 1) + 8 * i) length])
             {
-              [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"invalid extraction rule"];
+              [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"invalid extraction rule"];
 
               goto LABEL_15;
             }
@@ -55,14 +55,14 @@
         }
       }
 
-      v13 = [v8 firstObject];
+      firstObject = [v8 firstObject];
       v14 = [v8 subarrayWithRange:{1, objc_msgSend(v8, "count") - 1}];
-      v15 = [[HDHealthRecordsExtractionRule alloc] initWithKeyPath:v13 transforms:v14];
+      v15 = [[HDHealthRecordsExtractionRule alloc] initWithKeyPath:firstObject transforms:v14];
     }
 
     else
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 description:@"no key path specified"];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"no key path specified"];
 LABEL_15:
       v15 = 0;
     }
@@ -70,7 +70,7 @@ LABEL_15:
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 description:@"empty extraction rule definition"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"empty extraction rule definition"];
     v15 = 0;
   }
 
@@ -89,10 +89,10 @@ id __68__HDHealthRecordsExtractionRule_extractionRuleWithDefinition_error___bloc
   return v5;
 }
 
-- (id)definitionBySubstitutingKeyPathWith:(id)a3
+- (id)definitionBySubstitutingKeyPathWith:(id)with
 {
-  v5 = a3;
-  if (!v5)
+  withCopy = with;
+  if (!withCopy)
   {
     [(HDHealthRecordsExtractionRule *)a2 definitionBySubstitutingKeyPathWith:?];
   }
@@ -100,12 +100,12 @@ id __68__HDHealthRecordsExtractionRule_extractionRuleWithDefinition_error___bloc
   if ([(NSArray *)self->_transforms count])
   {
     v6 = [(NSArray *)self->_transforms componentsJoinedByString:@" | "];
-    v7 = [v5 stringByAppendingFormat:@" | %@", v6];
+    v7 = [withCopy stringByAppendingFormat:@" | %@", v6];
   }
 
   else
   {
-    v7 = v5;
+    v7 = withCopy;
   }
 
   return v7;
@@ -121,14 +121,14 @@ id __68__HDHealthRecordsExtractionRule_extractionRuleWithDefinition_error___bloc
   return 0;
 }
 
-- (HDHealthRecordsExtractionRule)initWithKeyPath:(id)a3 transforms:(id)a4
+- (HDHealthRecordsExtractionRule)initWithKeyPath:(id)path transforms:(id)transforms
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  pathCopy = path;
+  transformsCopy = transforms;
+  v9 = transformsCopy;
+  if (pathCopy)
   {
-    if (v8)
+    if (transformsCopy)
     {
       goto LABEL_3;
     }
@@ -150,7 +150,7 @@ LABEL_3:
   v10 = [(HDHealthRecordsExtractionRule *)&v16 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [pathCopy copy];
     keyPath = v10->_keyPath;
     v10->_keyPath = v11;
 

@@ -1,5 +1,5 @@
 @interface CALayer
-- (void)_addSublayersToArray:(id)a3;
+- (void)_addSublayersToArray:(id)array;
 - (void)pause;
 - (void)resume;
 @end
@@ -35,15 +35,15 @@
   }
 }
 
-- (void)_addSublayersToArray:(id)a3
+- (void)_addSublayersToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(CALayer *)self sublayers];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  sublayers = [(CALayer *)self sublayers];
+  v6 = [sublayers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -54,21 +54,21 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sublayers);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        [v4 addObject:v10];
-        [v10 _addSublayersToArray:v4];
-        v11 = [v10 mask];
-        if (v11)
+        [arrayCopy addObject:v10];
+        [v10 _addSublayersToArray:arrayCopy];
+        mask = [v10 mask];
+        if (mask)
         {
-          [v4 addObject:v11];
-          [v11 _addSublayersToArray:v4];
+          [arrayCopy addObject:mask];
+          [mask _addSublayersToArray:arrayCopy];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [sublayers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);

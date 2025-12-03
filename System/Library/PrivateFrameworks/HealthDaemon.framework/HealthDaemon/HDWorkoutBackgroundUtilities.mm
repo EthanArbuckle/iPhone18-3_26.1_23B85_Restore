@@ -1,10 +1,10 @@
 @interface HDWorkoutBackgroundUtilities
-+ (BOOL)hasBackgroundPermissionForBundleIdentifier:(id)a3 errorOut:(id *)a4;
++ (BOOL)hasBackgroundPermissionForBundleIdentifier:(id)identifier errorOut:(id *)out;
 @end
 
 @implementation HDWorkoutBackgroundUtilities
 
-+ (BOOL)hasBackgroundPermissionForBundleIdentifier:(id)a3 errorOut:(id *)a4
++ (BOOL)hasBackgroundPermissionForBundleIdentifier:(id)identifier errorOut:(id *)out
 {
   _HKInitializeLogging();
   v4 = *MEMORY[0x277CCC330];

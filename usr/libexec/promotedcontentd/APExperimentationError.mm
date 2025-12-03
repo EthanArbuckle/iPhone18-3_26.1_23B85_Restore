@@ -1,13 +1,13 @@
 @interface APExperimentationError
-+ (void)experimentationErrorWithErrorType:(int64_t)a3 description:(id)a4;
++ (void)experimentationErrorWithErrorType:(int64_t)type description:(id)description;
 - (APExperimentationError)init;
 @end
 
 @implementation APExperimentationError
 
-+ (void)experimentationErrorWithErrorType:(int64_t)a3 description:(id)a4
++ (void)experimentationErrorWithErrorType:(int64_t)type description:(id)description
 {
-  if (a4)
+  if (description)
   {
     v5 = sub_100398F58();
     v7 = v6;
@@ -19,7 +19,7 @@
     v7 = 0;
   }
 
-  _s7Reports20ExperimentationErrorC015experimentationC09errorType11descriptionyAA0bcF0O_SSSgtFZ_0(a3, v5, v7);
+  _s7Reports20ExperimentationErrorC015experimentationC09errorType11descriptionyAA0bcF0O_SSSgtFZ_0(type, v5, v7);
 }
 
 - (APExperimentationError)init

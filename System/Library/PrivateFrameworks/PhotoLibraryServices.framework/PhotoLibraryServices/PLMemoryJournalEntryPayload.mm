@@ -1,13 +1,13 @@
 @interface PLMemoryJournalEntryPayload
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4;
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name;
 + (id)modelProperties;
 + (id)modelPropertiesDescription;
 + (id)nonPersistedModelPropertiesDescription;
 + (id)persistedPropertyNamesForEntityNames;
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5;
-- (BOOL)hasAllAssetsAvailableInManagedObjectContext:(id)a3 includePendingAssetChanges:(BOOL)a4;
-- (BOOL)updateAssetsInMemory:(id)a3 includePendingAssetChanges:(BOOL)a4;
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6;
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property;
+- (BOOL)hasAllAssetsAvailableInManagedObjectContext:(id)context includePendingAssetChanges:(BOOL)changes;
+- (BOOL)updateAssetsInMemory:(id)memory includePendingAssetChanges:(BOOL)changes;
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property;
 - (NSOrderedSet)customUserAssetUUIDs;
 - (NSSet)curatedAssetUUIDs;
 - (NSSet)extendedCuratedAssetUUIDs;
@@ -16,48 +16,48 @@
 - (NSSet)userCuratedAssetUUIDs;
 - (NSSet)userRemovedAssetUUIDs;
 - (NSString)keyAssetUUID;
-- (PLMemoryJournalEntryPayload)initWithUserFeedback:(id)a3 changedKeys:(id)a4;
-- (id)insertMemoryFromDataInManagedObjectContext:(id)a3;
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4;
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5;
-- (void)applyPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6;
+- (PLMemoryJournalEntryPayload)initWithUserFeedback:(id)feedback changedKeys:(id)keys;
+- (id)insertMemoryFromDataInManagedObjectContext:(id)context;
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property;
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder;
+- (void)applyPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update;
 @end
 
 @implementation PLMemoryJournalEntryPayload
 
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v10 isEqualToKey:@"movieAssetState"])
+  valueCopy = value;
+  dictionaryValueCopy = dictionaryValue;
+  propertyCopy = property;
+  if (![propertyCopy isEqualToKey:@"movieAssetState"])
   {
-    if ([v10 isEqualToKey:@"keyAsset"])
+    if ([propertyCopy isEqualToKey:@"keyAsset"])
     {
-      v13 = [v9 isEqualToString:v8];
+      v13 = [dictionaryValueCopy isEqualToString:valueCopy];
 LABEL_6:
       v12 = v13;
       goto LABEL_17;
     }
 
-    if (([v10 isEqualToKey:@"curatedAssets"] & 1) != 0 || (objc_msgSend(v10, "isEqualToKey:", @"extendedCuratedAssets") & 1) != 0 || (objc_msgSend(v10, "isEqualToKey:", @"movieCuratedAssets") & 1) != 0 || (objc_msgSend(v10, "isEqualToKey:", @"userCuratedAssets") & 1) != 0 || (objc_msgSend(v10, "isEqualToKey:", @"userRemovedAssets") & 1) != 0 || objc_msgSend(v10, "isEqualToKey:", @"representativeAssets"))
+    if (([propertyCopy isEqualToKey:@"curatedAssets"] & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToKey:", @"extendedCuratedAssets") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToKey:", @"movieCuratedAssets") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToKey:", @"userCuratedAssets") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToKey:", @"userRemovedAssets") & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToKey:", @"representativeAssets"))
     {
-      v14 = [MEMORY[0x1E695DFD8] setWithArray:v9];
-      v15 = [v14 isEqualToSet:v8];
+      v14 = [MEMORY[0x1E695DFD8] setWithArray:dictionaryValueCopy];
+      v15 = [v14 isEqualToSet:valueCopy];
     }
 
     else
     {
-      if (![v10 isEqualToKey:@"customUserAssets"])
+      if (![propertyCopy isEqualToKey:@"customUserAssets"])
       {
         v17.receiver = self;
         v17.super_class = PLMemoryJournalEntryPayload;
-        v13 = [(PLManagedObjectJournalEntryPayload *)&v17 comparePayloadValue:v8 toObjectDictionaryValue:v9 forPayloadProperty:v10];
+        v13 = [(PLManagedObjectJournalEntryPayload *)&v17 comparePayloadValue:valueCopy toObjectDictionaryValue:dictionaryValueCopy forPayloadProperty:propertyCopy];
         goto LABEL_6;
       }
 
-      v14 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v9];
-      v15 = [v14 isEqualToOrderedSet:v8];
+      v14 = [MEMORY[0x1E695DFB8] orderedSetWithArray:dictionaryValueCopy];
+      v15 = [v14 isEqualToOrderedSet:valueCopy];
     }
 
     v12 = v15;
@@ -68,17 +68,17 @@ LABEL_6:
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
-  v11 = [v9 count];
-  v24 = v11 == [v8 count];
+  v11 = [dictionaryValueCopy count];
+  v24 = v11 == [valueCopy count];
   if (*(v22 + 24) == 1)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __94__PLMemoryJournalEntryPayload_comparePayloadValue_toObjectDictionaryValue_forPayloadProperty___block_invoke;
     v18[3] = &unk_1E756E5F8;
-    v19 = v8;
+    v19 = valueCopy;
     v20 = &v21;
-    [v9 enumerateKeysAndObjectsUsingBlock:v18];
+    [dictionaryValueCopy enumerateKeysAndObjectsUsingBlock:v18];
 
     v12 = *(v22 + 24);
   }
@@ -120,33 +120,33 @@ void __94__PLMemoryJournalEntryPayload_comparePayloadValue_toObjectDictionaryVal
   }
 }
 
-- (void)applyPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6
+- (void)applyPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update
 {
   v51 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v39 = a6;
-  if ([v10 requiresConversion])
+  propertyCopy = property;
+  objectCopy = object;
+  keyCopy = key;
+  updateCopy = update;
+  if ([propertyCopy requiresConversion])
   {
-    v13 = v11;
-    v14 = [v10 key];
+    v13 = objectCopy;
+    v14 = [propertyCopy key];
     v15 = [v14 isEqualToString:@"movieAssetState"];
 
     if (v15)
     {
       payloadAttributes = self->super._payloadAttributes;
-      v17 = [v10 key];
+      v17 = [propertyCopy key];
       v18 = [(NSMutableDictionary *)payloadAttributes objectForKeyedSubscript:v17];
       [v13 setMovieAssetState:v18];
     }
 
-    else if ([v10 isEqualToKey:@"userFeedbacks"])
+    else if ([propertyCopy isEqualToKey:@"userFeedbacks"])
     {
       v37 = v13;
-      v38 = v10;
-      v34 = v11;
-      v36 = self;
+      v38 = propertyCopy;
+      v34 = objectCopy;
+      selfCopy = self;
       v22 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"userFeedbacks"];
       v23 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v46 = 0u;
@@ -172,20 +172,20 @@ void __94__PLMemoryJournalEntryPayload_comparePayloadValue_toObjectDictionaryVal
             v29 = [v28 objectForKeyedSubscript:@"userFeedbackUUID"];
             if (v29)
             {
-              v30 = [v37 managedObjectContext];
-              v31 = [PLUserFeedback insertIntoManagedObjectContext:v30 withUUID:v29];
+              managedObjectContext = [v37 managedObjectContext];
+              v31 = [PLUserFeedback insertIntoManagedObjectContext:managedObjectContext withUUID:v29];
 
-              v32 = [v38 subRelationshipProperties];
+              subRelationshipProperties = [v38 subRelationshipProperties];
               v42[0] = MEMORY[0x1E69E9820];
               v42[1] = 3221225472;
               v42[2] = __98__PLMemoryJournalEntryPayload_applyPayloadProperty_toManagedObject_key_payloadAttributesToUpdate___block_invoke;
               v42[3] = &unk_1E7572828;
-              v42[4] = v36;
+              v42[4] = selfCopy;
               v43 = v31;
-              v44 = v39;
+              v44 = updateCopy;
               v45 = v28;
               v33 = v31;
-              [v32 enumerateKeysAndObjectsUsingBlock:v42];
+              [subRelationshipProperties enumerateKeysAndObjectsUsingBlock:v42];
 
               [v23 addObject:v33];
             }
@@ -200,14 +200,14 @@ void __94__PLMemoryJournalEntryPayload_comparePayloadValue_toObjectDictionaryVal
       v13 = v37;
       [v37 setUserFeedbacks:v23];
 
-      v10 = v38;
-      v11 = v34;
+      propertyCopy = v38;
+      objectCopy = v34;
     }
   }
 
   else
   {
-    v19 = [v10 key];
+    v19 = [propertyCopy key];
     v20 = [v19 isEqualToString:@"viewCount"];
 
     if (v20)
@@ -218,7 +218,7 @@ void __94__PLMemoryJournalEntryPayload_comparePayloadValue_toObjectDictionaryVal
       {
         v41.receiver = self;
         v41.super_class = PLMemoryJournalEntryPayload;
-        [(PLManagedObjectJournalEntryPayload *)&v41 applyPayloadProperty:v10 toManagedObject:v11 key:v12 payloadAttributesToUpdate:v39];
+        [(PLManagedObjectJournalEntryPayload *)&v41 applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy];
       }
     }
 
@@ -226,19 +226,19 @@ void __94__PLMemoryJournalEntryPayload_comparePayloadValue_toObjectDictionaryVal
     {
       v40.receiver = self;
       v40.super_class = PLMemoryJournalEntryPayload;
-      [(PLManagedObjectJournalEntryPayload *)&v40 applyPayloadProperty:v10 toManagedObject:v11 key:v12 payloadAttributesToUpdate:v39];
+      [(PLManagedObjectJournalEntryPayload *)&v40 applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy];
     }
   }
 }
 
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToKey:@"keyAsset"])
+  attributesCopy = attributes;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToKey:@"keyAsset"])
   {
-    v8 = [v7 key];
-    v9 = [v6 objectForKeyedSubscript:v8];
+    v8 = [propertyCopy key];
+    v9 = [attributesCopy objectForKeyedSubscript:v8];
     v10 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:v9];
 LABEL_10:
     v11 = v10;
@@ -246,152 +246,152 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (([v7 isEqualToKey:@"curatedAssets"] & 1) != 0 || (objc_msgSend(v7, "isEqualToKey:", @"extendedCuratedAssets") & 1) != 0 || (objc_msgSend(v7, "isEqualToKey:", @"movieCuratedAssets") & 1) != 0 || (objc_msgSend(v7, "isEqualToKey:", @"userCuratedAssets") & 1) != 0 || (objc_msgSend(v7, "isEqualToKey:", @"userRemovedAssets") & 1) != 0 || objc_msgSend(v7, "isEqualToKey:", @"representativeAssets"))
+  if (([propertyCopy isEqualToKey:@"curatedAssets"] & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToKey:", @"extendedCuratedAssets") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToKey:", @"movieCuratedAssets") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToKey:", @"userCuratedAssets") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToKey:", @"userRemovedAssets") & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToKey:", @"representativeAssets"))
   {
-    v8 = [v7 key];
-    v9 = [v6 objectForKeyedSubscript:v8];
+    v8 = [propertyCopy key];
+    v9 = [attributesCopy objectForKeyedSubscript:v8];
     v10 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:v9];
     goto LABEL_10;
   }
 
-  if ([v7 isEqualToKey:@"customUserAssets"])
+  if ([propertyCopy isEqualToKey:@"customUserAssets"])
   {
-    v8 = [v7 key];
-    v9 = [v6 objectForKeyedSubscript:v8];
+    v8 = [propertyCopy key];
+    v9 = [attributesCopy objectForKeyedSubscript:v8];
     v10 = [(PLManagedObjectJournalEntryPayload *)self orderedSetForUUIDEncodedData:v9];
     goto LABEL_10;
   }
 
   v13.receiver = self;
   v13.super_class = PLMemoryJournalEntryPayload;
-  v11 = [(PLManagedObjectJournalEntryPayload *)&v13 payloadValueFromAttributes:v6 forPayloadProperty:v7];
+  v11 = [(PLManagedObjectJournalEntryPayload *)&v13 payloadValueFromAttributes:attributesCopy forPayloadProperty:propertyCopy];
 LABEL_11:
 
   return v11;
 }
 
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isEqualToString:@"keyAsset"])
+  keyCopy = key;
+  valueCopy = value;
+  builderCopy = builder;
+  if ([keyCopy isEqualToString:@"keyAsset"])
   {
-    v11 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:v9];
+    v11 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:valueCopy];
     v15.receiver = self;
     v15.super_class = PLMemoryJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v15 appendAttributeKey:v8 value:v11 toDescriptionBuilder:v10];
+    [(PLManagedObjectJournalEntryPayload *)&v15 appendAttributeKey:keyCopy value:v11 toDescriptionBuilder:builderCopy];
   }
 
-  else if (([v8 isEqualToString:@"curatedAssets"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"extendedCuratedAssets") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"movieCuratedAssets") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"userCuratedAssets") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"userRemovedAssets") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"representativeAssets"))
+  else if (([keyCopy isEqualToString:@"curatedAssets"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"extendedCuratedAssets") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"movieCuratedAssets") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"userCuratedAssets") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"userRemovedAssets") & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"representativeAssets"))
   {
-    v11 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:v9];
+    v11 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:valueCopy];
     v14.receiver = self;
     v14.super_class = PLMemoryJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v14 appendAttributeKey:v8 value:v11 toDescriptionBuilder:v10];
+    [(PLManagedObjectJournalEntryPayload *)&v14 appendAttributeKey:keyCopy value:v11 toDescriptionBuilder:builderCopy];
   }
 
   else
   {
-    if (![v8 isEqualToString:@"customUserAssets"])
+    if (![keyCopy isEqualToString:@"customUserAssets"])
     {
       v12.receiver = self;
       v12.super_class = PLMemoryJournalEntryPayload;
-      [(PLManagedObjectJournalEntryPayload *)&v12 appendAttributeKey:v8 value:v9 toDescriptionBuilder:v10];
+      [(PLManagedObjectJournalEntryPayload *)&v12 appendAttributeKey:keyCopy value:valueCopy toDescriptionBuilder:builderCopy];
       goto LABEL_11;
     }
 
-    v11 = [(PLManagedObjectJournalEntryPayload *)self orderedSetForUUIDEncodedData:v9];
+    v11 = [(PLManagedObjectJournalEntryPayload *)self orderedSetForUUIDEncodedData:valueCopy];
     v13.receiver = self;
     v13.super_class = PLMemoryJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v13 appendAttributeKey:v8 value:v11 toDescriptionBuilder:v10];
+    [(PLManagedObjectJournalEntryPayload *)&v13 appendAttributeKey:keyCopy value:v11 toDescriptionBuilder:builderCopy];
   }
 
 LABEL_11:
 }
 
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v12;
-  if (![v13 isEqualToKey:@"movieAssetState"])
+  attributesCopy = attributes;
+  nilAttributesCopy = nilAttributes;
+  objectCopy = object;
+  propertyCopy = property;
+  v14 = objectCopy;
+  if (![propertyCopy isEqualToKey:@"movieAssetState"])
   {
-    if ([v13 isEqualToKey:@"keyAsset"])
+    if ([propertyCopy isEqualToKey:@"keyAsset"])
     {
-      v15 = [v14 keyAsset];
-      v16 = [v15 uuid];
-      v17 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:v16];
-      v18 = [v13 key];
-      [v10 setObject:v17 forKeyedSubscript:v18];
+      keyAsset = [v14 keyAsset];
+      uuid = [keyAsset uuid];
+      v17 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:uuid];
+      v18 = [propertyCopy key];
+      [attributesCopy setObject:v17 forKeyedSubscript:v18];
 
       goto LABEL_17;
     }
 
-    if ([v13 isEqualToKey:@"curatedAssets"])
+    if ([propertyCopy isEqualToKey:@"curatedAssets"])
     {
-      v19 = [v14 curatedAssets];
+      curatedAssets = [v14 curatedAssets];
     }
 
-    else if ([v13 isEqualToKey:@"extendedCuratedAssets"])
+    else if ([propertyCopy isEqualToKey:@"extendedCuratedAssets"])
     {
-      v19 = [v14 extendedCuratedAssets];
+      curatedAssets = [v14 extendedCuratedAssets];
     }
 
-    else if ([v13 isEqualToKey:@"movieCuratedAssets"])
+    else if ([propertyCopy isEqualToKey:@"movieCuratedAssets"])
     {
-      v19 = [v14 movieCuratedAssets];
+      curatedAssets = [v14 movieCuratedAssets];
     }
 
-    else if ([v13 isEqualToKey:@"userCuratedAssets"])
+    else if ([propertyCopy isEqualToKey:@"userCuratedAssets"])
     {
-      v19 = [v14 userCuratedAssets];
+      curatedAssets = [v14 userCuratedAssets];
     }
 
-    else if ([v13 isEqualToKey:@"representativeAssets"])
+    else if ([propertyCopy isEqualToKey:@"representativeAssets"])
     {
-      v19 = [v14 representativeAssets];
+      curatedAssets = [v14 representativeAssets];
     }
 
     else
     {
-      if ([v13 isEqualToKey:@"customUserAssets"])
+      if ([propertyCopy isEqualToKey:@"customUserAssets"])
       {
-        v26 = [v14 customUserAssets];
-        v27 = [v13 relatedEntityPropertyNames];
-        v28 = [v27 anyObject];
-        v15 = [v26 valueForKey:v28];
+        customUserAssets = [v14 customUserAssets];
+        relatedEntityPropertyNames = [propertyCopy relatedEntityPropertyNames];
+        anyObject = [relatedEntityPropertyNames anyObject];
+        keyAsset = [customUserAssets valueForKey:anyObject];
 
-        v23 = [(PLManagedObjectJournalEntryPayload *)self encodedDataForUUIDStringOrderedSet:v15];
+        v23 = [(PLManagedObjectJournalEntryPayload *)self encodedDataForUUIDStringOrderedSet:keyAsset];
         goto LABEL_16;
       }
 
-      if (![v13 isEqualToKey:@"userRemovedAssets"])
+      if (![propertyCopy isEqualToKey:@"userRemovedAssets"])
       {
         v24 = 0;
         goto LABEL_18;
       }
 
-      v19 = [v14 userRemovedAssets];
+      curatedAssets = [v14 userRemovedAssets];
     }
 
-    v20 = v19;
-    v21 = [v13 relatedEntityPropertyNames];
-    v22 = [v21 anyObject];
-    v15 = [v20 valueForKey:v22];
+    v20 = curatedAssets;
+    relatedEntityPropertyNames2 = [propertyCopy relatedEntityPropertyNames];
+    anyObject2 = [relatedEntityPropertyNames2 anyObject];
+    keyAsset = [v20 valueForKey:anyObject2];
 
-    v23 = [(PLManagedObjectJournalEntryPayload *)self encodedDataForUUIDStringSet:v15];
+    v23 = [(PLManagedObjectJournalEntryPayload *)self encodedDataForUUIDStringSet:keyAsset];
 LABEL_16:
-    v16 = v23;
-    [(PLManagedObjectJournalEntryPayload *)self updatePayloadAttributes:v10 andNilAttributes:v11 forPayloadProperty:v13 withUUIDStringData:v23];
+    uuid = v23;
+    [(PLManagedObjectJournalEntryPayload *)self updatePayloadAttributes:attributesCopy andNilAttributes:nilAttributesCopy forPayloadProperty:propertyCopy withUUIDStringData:v23];
     goto LABEL_17;
   }
 
-  v15 = [v14 movieAssetState];
-  v16 = [v13 key];
-  [v10 setObject:v15 forKeyedSubscript:v16];
+  keyAsset = [v14 movieAssetState];
+  uuid = [propertyCopy key];
+  [attributesCopy setObject:keyAsset forKeyedSubscript:uuid];
 LABEL_17:
 
   v24 = 1;
@@ -464,44 +464,44 @@ LABEL_18:
   return v4;
 }
 
-- (BOOL)hasAllAssetsAvailableInManagedObjectContext:(id)a3 includePendingAssetChanges:(BOOL)a4
+- (BOOL)hasAllAssetsAvailableInManagedObjectContext:(id)context includePendingAssetChanges:(BOOL)changes
 {
-  v4 = a4;
+  changesCopy = changes;
   v29 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695DFA8];
-  v7 = a3;
+  contextCopy = context;
   v8 = [v6 set];
-  v9 = [(PLMemoryJournalEntryPayload *)self representativeAssetUUIDs];
-  [v8 unionSet:v9];
+  representativeAssetUUIDs = [(PLMemoryJournalEntryPayload *)self representativeAssetUUIDs];
+  [v8 unionSet:representativeAssetUUIDs];
 
-  v10 = [(PLMemoryJournalEntryPayload *)self curatedAssetUUIDs];
-  [v8 unionSet:v10];
+  curatedAssetUUIDs = [(PLMemoryJournalEntryPayload *)self curatedAssetUUIDs];
+  [v8 unionSet:curatedAssetUUIDs];
 
-  v11 = [(PLMemoryJournalEntryPayload *)self extendedCuratedAssetUUIDs];
-  [v8 unionSet:v11];
+  extendedCuratedAssetUUIDs = [(PLMemoryJournalEntryPayload *)self extendedCuratedAssetUUIDs];
+  [v8 unionSet:extendedCuratedAssetUUIDs];
 
-  v12 = [(PLMemoryJournalEntryPayload *)self movieCuratedAssetUUIDs];
-  [v8 unionSet:v12];
+  movieCuratedAssetUUIDs = [(PLMemoryJournalEntryPayload *)self movieCuratedAssetUUIDs];
+  [v8 unionSet:movieCuratedAssetUUIDs];
 
-  v13 = [(PLMemoryJournalEntryPayload *)self userCuratedAssetUUIDs];
-  [v8 unionSet:v13];
+  userCuratedAssetUUIDs = [(PLMemoryJournalEntryPayload *)self userCuratedAssetUUIDs];
+  [v8 unionSet:userCuratedAssetUUIDs];
 
-  v14 = [(PLMemoryJournalEntryPayload *)self userRemovedAssetUUIDs];
-  [v8 unionSet:v14];
+  userRemovedAssetUUIDs = [(PLMemoryJournalEntryPayload *)self userRemovedAssetUUIDs];
+  [v8 unionSet:userRemovedAssetUUIDs];
 
-  v15 = [(PLMemoryJournalEntryPayload *)self customUserAssetUUIDs];
-  v16 = [v15 set];
+  customUserAssetUUIDs = [(PLMemoryJournalEntryPayload *)self customUserAssetUUIDs];
+  v16 = [customUserAssetUUIDs set];
   [v8 unionSet:v16];
 
-  v17 = [(PLMemoryJournalEntryPayload *)self keyAssetUUID];
-  if (v17)
+  keyAssetUUID = [(PLMemoryJournalEntryPayload *)self keyAssetUUID];
+  if (keyAssetUUID)
   {
-    [v8 addObject:v17];
+    [v8 addObject:keyAssetUUID];
   }
 
-  v18 = [v8 allObjects];
+  allObjects = [v8 allObjects];
   v24 = 0;
-  v19 = [PLManagedAsset countForAssetsWithUUIDs:v18 includePendingChanges:v4 inManagedObjectContext:v7 error:&v24];
+  v19 = [PLManagedAsset countForAssetsWithUUIDs:allObjects includePendingChanges:changesCopy inManagedObjectContext:contextCopy error:&v24];
 
   v20 = v24;
   if (v19 == 0x7FFFFFFFFFFFFFFFLL)
@@ -510,7 +510,7 @@ LABEL_18:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
       v28 = v20;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Failed to fetch count for assets in memory metadata %@, %@", buf, 0x16u);
@@ -522,38 +522,38 @@ LABEL_18:
   return v22;
 }
 
-- (BOOL)updateAssetsInMemory:(id)a3 includePendingAssetChanges:(BOOL)a4
+- (BOOL)updateAssetsInMemory:(id)memory includePendingAssetChanges:(BOOL)changes
 {
-  v4 = a4;
-  v6 = a3;
+  changesCopy = changes;
+  memoryCopy = memory;
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v8 = [(PLMemoryJournalEntryPayload *)self curatedAssetUUIDs];
-  [v7 unionSet:v8];
+  curatedAssetUUIDs = [(PLMemoryJournalEntryPayload *)self curatedAssetUUIDs];
+  [v7 unionSet:curatedAssetUUIDs];
 
-  v9 = [(PLMemoryJournalEntryPayload *)self extendedCuratedAssetUUIDs];
-  [v7 unionSet:v9];
+  extendedCuratedAssetUUIDs = [(PLMemoryJournalEntryPayload *)self extendedCuratedAssetUUIDs];
+  [v7 unionSet:extendedCuratedAssetUUIDs];
 
-  v10 = [(PLMemoryJournalEntryPayload *)self movieCuratedAssetUUIDs];
-  [v7 unionSet:v10];
+  movieCuratedAssetUUIDs = [(PLMemoryJournalEntryPayload *)self movieCuratedAssetUUIDs];
+  [v7 unionSet:movieCuratedAssetUUIDs];
 
-  v11 = [(PLMemoryJournalEntryPayload *)self userCuratedAssetUUIDs];
-  [v7 unionSet:v11];
+  userCuratedAssetUUIDs = [(PLMemoryJournalEntryPayload *)self userCuratedAssetUUIDs];
+  [v7 unionSet:userCuratedAssetUUIDs];
 
-  v12 = [(PLMemoryJournalEntryPayload *)self userRemovedAssetUUIDs];
-  [v7 unionSet:v12];
+  userRemovedAssetUUIDs = [(PLMemoryJournalEntryPayload *)self userRemovedAssetUUIDs];
+  [v7 unionSet:userRemovedAssetUUIDs];
 
-  v13 = [(PLMemoryJournalEntryPayload *)self representativeAssetUUIDs];
-  [v7 unionSet:v13];
+  representativeAssetUUIDs = [(PLMemoryJournalEntryPayload *)self representativeAssetUUIDs];
+  [v7 unionSet:representativeAssetUUIDs];
 
-  v14 = [(PLMemoryJournalEntryPayload *)self keyAssetUUID];
+  keyAssetUUID = [(PLMemoryJournalEntryPayload *)self keyAssetUUID];
 
-  if (v14)
+  if (keyAssetUUID)
   {
-    v15 = [(PLMemoryJournalEntryPayload *)self keyAssetUUID];
-    [v7 addObject:v15];
+    keyAssetUUID2 = [(PLMemoryJournalEntryPayload *)self keyAssetUUID];
+    [v7 addObject:keyAssetUUID2];
   }
 
-  if (v4)
+  if (changesCopy)
   {
     v16 = 3;
   }
@@ -563,68 +563,68 @@ LABEL_18:
     v16 = 0;
   }
 
-  v17 = [v7 allObjects];
-  v18 = [v6 managedObjectContext];
+  allObjects = [v7 allObjects];
+  managedObjectContext = [memoryCopy managedObjectContext];
   v64 = v16;
-  v19 = [PLManagedAsset assetsWithUUIDs:v17 options:v16 inManagedObjectContext:v18];
+  v19 = [PLManagedAsset assetsWithUUIDs:allObjects options:v16 inManagedObjectContext:managedObjectContext];
 
   v20 = [v19 count];
   v66 = v20 == [v7 count];
   v21 = MEMORY[0x1E696AE18];
-  v22 = [(PLMemoryJournalEntryPayload *)self curatedAssetUUIDs];
-  v23 = [v21 predicateWithFormat:@"%K in %@", @"uuid", v22];
+  curatedAssetUUIDs2 = [(PLMemoryJournalEntryPayload *)self curatedAssetUUIDs];
+  v23 = [v21 predicateWithFormat:@"%K in %@", @"uuid", curatedAssetUUIDs2];
   v24 = [v19 filteredArrayUsingPredicate:v23];
 
   v65 = v24;
   v25 = [MEMORY[0x1E695DFD8] setWithArray:v24];
-  [v6 setCuratedAssets:v25];
+  [memoryCopy setCuratedAssets:v25];
 
   v26 = MEMORY[0x1E696AE18];
-  v27 = [(PLMemoryJournalEntryPayload *)self extendedCuratedAssetUUIDs];
-  v28 = [v26 predicateWithFormat:@"%K in %@", @"uuid", v27];
+  extendedCuratedAssetUUIDs2 = [(PLMemoryJournalEntryPayload *)self extendedCuratedAssetUUIDs];
+  v28 = [v26 predicateWithFormat:@"%K in %@", @"uuid", extendedCuratedAssetUUIDs2];
   v29 = [v19 filteredArrayUsingPredicate:v28];
 
   v63 = v29;
   v30 = [MEMORY[0x1E695DFD8] setWithArray:v29];
-  [v6 setExtendedCuratedAssets:v30];
+  [memoryCopy setExtendedCuratedAssets:v30];
 
   v31 = MEMORY[0x1E696AE18];
-  v32 = [(PLMemoryJournalEntryPayload *)self movieCuratedAssetUUIDs];
-  v33 = [v31 predicateWithFormat:@"%K in %@", @"uuid", v32];
+  movieCuratedAssetUUIDs2 = [(PLMemoryJournalEntryPayload *)self movieCuratedAssetUUIDs];
+  v33 = [v31 predicateWithFormat:@"%K in %@", @"uuid", movieCuratedAssetUUIDs2];
   v34 = [v19 filteredArrayUsingPredicate:v33];
 
   v62 = v34;
   v35 = [MEMORY[0x1E695DFD8] setWithArray:v34];
-  [v6 setMovieCuratedAssets:v35];
+  [memoryCopy setMovieCuratedAssets:v35];
 
   v36 = MEMORY[0x1E696AE18];
-  v37 = [(PLMemoryJournalEntryPayload *)self userCuratedAssetUUIDs];
-  v38 = [v36 predicateWithFormat:@"%K in %@", @"uuid", v37];
+  userCuratedAssetUUIDs2 = [(PLMemoryJournalEntryPayload *)self userCuratedAssetUUIDs];
+  v38 = [v36 predicateWithFormat:@"%K in %@", @"uuid", userCuratedAssetUUIDs2];
   v39 = [v19 filteredArrayUsingPredicate:v38];
 
   v61 = v39;
   v40 = [MEMORY[0x1E695DFD8] setWithArray:v39];
-  [v6 setUserCuratedAssets:v40];
+  [memoryCopy setUserCuratedAssets:v40];
 
   v41 = MEMORY[0x1E696AE18];
-  v42 = [(PLMemoryJournalEntryPayload *)self representativeAssetUUIDs];
-  v43 = [v41 predicateWithFormat:@"%K in %@", @"uuid", v42];
+  representativeAssetUUIDs2 = [(PLMemoryJournalEntryPayload *)self representativeAssetUUIDs];
+  v43 = [v41 predicateWithFormat:@"%K in %@", @"uuid", representativeAssetUUIDs2];
   v44 = [v19 filteredArrayUsingPredicate:v43];
 
   v45 = [MEMORY[0x1E695DFD8] setWithArray:v44];
-  [v6 setRepresentativeAssets:v45];
+  [memoryCopy setRepresentativeAssets:v45];
 
   v46 = MEMORY[0x1E696AE18];
-  v47 = [(PLMemoryJournalEntryPayload *)self userRemovedAssetUUIDs];
-  v48 = [v46 predicateWithFormat:@"%K in %@", @"uuid", v47];
+  userRemovedAssetUUIDs2 = [(PLMemoryJournalEntryPayload *)self userRemovedAssetUUIDs];
+  v48 = [v46 predicateWithFormat:@"%K in %@", @"uuid", userRemovedAssetUUIDs2];
   v49 = [v19 filteredArrayUsingPredicate:v48];
 
   v50 = [MEMORY[0x1E695DFD8] setWithArray:v49];
-  [v6 setUserRemovedAssets:v50];
+  [memoryCopy setUserRemovedAssets:v50];
 
-  v51 = [(PLMemoryJournalEntryPayload *)self keyAssetUUID];
+  keyAssetUUID3 = [(PLMemoryJournalEntryPayload *)self keyAssetUUID];
 
-  if (v51)
+  if (keyAssetUUID3)
   {
     v71[0] = MEMORY[0x1E69E9820];
     v71[1] = 3221225472;
@@ -640,20 +640,20 @@ LABEL_18:
     else
     {
       v53 = [v19 objectAtIndexedSubscript:v52];
-      [v6 setKeyAsset:v53];
+      [memoryCopy setKeyAsset:v53];
     }
   }
 
-  v54 = [(PLMemoryJournalEntryPayload *)self customUserAssetUUIDs];
+  customUserAssetUUIDs = [(PLMemoryJournalEntryPayload *)self customUserAssetUUIDs];
   v55 = objc_opt_class();
   v67[0] = MEMORY[0x1E69E9820];
   v67[1] = 3221225472;
   v67[2] = __79__PLMemoryJournalEntryPayload_updateAssetsInMemory_includePendingAssetChanges___block_invoke_2;
   v67[3] = &unk_1E756E5D0;
-  v56 = v54;
+  v56 = customUserAssetUUIDs;
   v68 = v56;
   v70 = v64;
-  v57 = v6;
+  v57 = memoryCopy;
   v69 = v57;
   v58 = [v55 sortedObjectsToAddWithUUIDs:v56 uuidKey:@"uuid" andExistingObjects:0 fetchBlock:v67];
   if (v58)
@@ -684,29 +684,29 @@ id __79__PLMemoryJournalEntryPayload_updateAssetsInMemory_includePendingAssetCha
   return v5;
 }
 
-- (PLMemoryJournalEntryPayload)initWithUserFeedback:(id)a3 changedKeys:(id)a4
+- (PLMemoryJournalEntryPayload)initWithUserFeedback:(id)feedback changedKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  feedbackCopy = feedback;
+  keysCopy = keys;
+  if (keysCopy)
   {
     v8 = MEMORY[0x1E695DFD8];
-    v9 = [objc_opt_class() modelProperties];
-    v10 = [v9 objectForKeyedSubscript:@"userFeedbacks"];
-    v11 = [v10 subRelationshipProperties];
-    v12 = [v11 allKeys];
-    v13 = [v8 setWithArray:v12];
+    modelProperties = [objc_opt_class() modelProperties];
+    v10 = [modelProperties objectForKeyedSubscript:@"userFeedbacks"];
+    subRelationshipProperties = [v10 subRelationshipProperties];
+    allKeys = [subRelationshipProperties allKeys];
+    v13 = [v8 setWithArray:allKeys];
 
-    if ([v7 intersectsSet:v13])
+    if ([keysCopy intersectsSet:v13])
     {
-      v14 = [v6 memory];
-      v15 = [v6 payloadID];
-      v16 = [objc_opt_class() payloadVersion];
+      memory = [feedbackCopy memory];
+      payloadID = [feedbackCopy payloadID];
+      payloadVersion = [objc_opt_class() payloadVersion];
       v17 = [MEMORY[0x1E695DFD8] setWithObject:@"userFeedbacks"];
-      v18 = [objc_opt_class() modelProperties];
+      modelProperties2 = [objc_opt_class() modelProperties];
       v21.receiver = self;
       v21.super_class = PLMemoryJournalEntryPayload;
-      v19 = [(PLManagedObjectJournalEntryPayload *)&v21 initWithPayloadID:v15 payloadVersion:v16 managedObject:v14 changedKeys:v17 modelProperties:v18];
+      v19 = [(PLManagedObjectJournalEntryPayload *)&v21 initWithPayloadID:payloadID payloadVersion:payloadVersion managedObject:memory changedKeys:v17 modelProperties:modelProperties2];
     }
 
     else
@@ -725,21 +725,21 @@ id __79__PLMemoryJournalEntryPayload_updateAssetsInMemory_includePendingAssetCha
   return v19;
 }
 
-- (id)insertMemoryFromDataInManagedObjectContext:(id)a3
+- (id)insertMemoryFromDataInManagedObjectContext:(id)context
 {
-  v4 = [(PLManagedObject *)PLMemory insertInManagedObjectContext:a3];
-  v5 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-  v6 = [v5 payloadIDString];
-  [v4 setUuid:v6];
+  v4 = [(PLManagedObject *)PLMemory insertInManagedObjectContext:context];
+  payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+  payloadIDString = [payloadID payloadIDString];
+  [v4 setUuid:payloadIDString];
 
   [(PLManagedObjectJournalEntryPayload *)self applyPayloadToManagedObject:v4 payloadAttributesToUpdate:0];
 
   return v4;
 }
 
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name
 {
-  v4 = [a3 objectForKeyedSubscript:{@"pendingState", a4}];
+  v4 = [dictionary objectForKeyedSubscript:{@"pendingState", name}];
   v5 = [v4 intValue] == 0;
 
   return v5;
@@ -751,7 +751,7 @@ id __79__PLMemoryJournalEntryPayload_updateAssetsInMemory_includePendingAssetCha
   block[1] = 3221225472;
   block[2] = __67__PLMemoryJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_59325 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_59325, block);
@@ -775,7 +775,7 @@ void __67__PLMemoryJournalEntryPayload_persistedPropertyNamesForEntityNames__blo
   block[1] = 3221225472;
   block[2] = __46__PLMemoryJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_59327 != -1)
   {
     dispatch_once(&modelProperties_onceToken_59327, block);

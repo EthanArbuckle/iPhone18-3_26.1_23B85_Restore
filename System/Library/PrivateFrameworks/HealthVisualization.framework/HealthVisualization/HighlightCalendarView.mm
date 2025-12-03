@@ -1,14 +1,14 @@
 @interface HighlightCalendarView
 - (NSArray)accessibilityMonthLabels;
 - (NSArray)accessibilityWeekdayLabels;
-- (_TtC19HealthVisualization21HighlightCalendarView)initWithArrangedSubviewRows:(id)a3;
-- (_TtC19HealthVisualization21HighlightCalendarView)initWithCoder:(id)a3;
-- (_TtC19HealthVisualization21HighlightCalendarView)initWithFrame:(CGRect)a3;
+- (_TtC19HealthVisualization21HighlightCalendarView)initWithArrangedSubviewRows:(id)rows;
+- (_TtC19HealthVisualization21HighlightCalendarView)initWithCoder:(id)coder;
+- (_TtC19HealthVisualization21HighlightCalendarView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation HighlightCalendarView
 
-- (_TtC19HealthVisualization21HighlightCalendarView)initWithCoder:(id)a3
+- (_TtC19HealthVisualization21HighlightCalendarView)initWithCoder:(id)coder
 {
   sub_1D15A4148();
   sub_1D15A4138();
@@ -29,7 +29,7 @@
   return result;
 }
 
-- (_TtC19HealthVisualization21HighlightCalendarView)initWithFrame:(CGRect)a3
+- (_TtC19HealthVisualization21HighlightCalendarView)initWithFrame:(CGRect)frame
 {
   sub_1D15A4148();
   sub_1D15A4138();
@@ -44,7 +44,7 @@
   return result;
 }
 
-- (_TtC19HealthVisualization21HighlightCalendarView)initWithArrangedSubviewRows:(id)a3
+- (_TtC19HealthVisualization21HighlightCalendarView)initWithArrangedSubviewRows:(id)rows
 {
   sub_1D15A4148();
   sub_1D15A4138();

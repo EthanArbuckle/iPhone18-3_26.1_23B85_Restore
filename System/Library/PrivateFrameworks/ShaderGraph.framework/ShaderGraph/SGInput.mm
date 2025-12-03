@@ -1,7 +1,7 @@
 @interface SGInput
 - (SGInput)init;
 - (unint64_t)type;
-- (void)setType:(unint64_t)a3;
+- (void)setType:(unint64_t)type;
 @end
 
 @implementation SGInput
@@ -13,11 +13,11 @@
   return *(self + v3);
 }
 
-- (void)setType:(unint64_t)a3
+- (void)setType:(unint64_t)type
 {
   v5 = OBJC_IVAR___SGInput_type;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (SGInput)init

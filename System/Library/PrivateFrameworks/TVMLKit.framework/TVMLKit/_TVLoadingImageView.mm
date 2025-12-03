@@ -1,20 +1,20 @@
 @interface _TVLoadingImageView
-- (UIEdgeInsets)selectionMarginsForSize:(CGSize)a3;
-- (_TVLoadingImageView)initWithFrame:(CGRect)a3;
+- (UIEdgeInsets)selectionMarginsForSize:(CGSize)size;
+- (_TVLoadingImageView)initWithFrame:(CGRect)frame;
 - (void)_fadeInFadeOut;
 @end
 
 @implementation _TVLoadingImageView
 
-- (_TVLoadingImageView)initWithFrame:(CGRect)a3
+- (_TVLoadingImageView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVLoadingImageView;
-  v3 = [(_TVLoadingImageView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVLoadingImageView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] whiteColor];
-    [(_TVLoadingImageView *)v3 setBackgroundColor:v4];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(_TVLoadingImageView *)v3 setBackgroundColor:whiteColor];
 
     [(_TVLoadingImageView *)v3 setAlpha:0.0];
     [(_TVLoadingImageView *)v3 _fadeInFadeOut];
@@ -43,7 +43,7 @@
   objc_destroyWeak(&location);
 }
 
-- (UIEdgeInsets)selectionMarginsForSize:(CGSize)a3
+- (UIEdgeInsets)selectionMarginsForSize:(CGSize)size
 {
   v3 = *MEMORY[0x277D768C8];
   v4 = *(MEMORY[0x277D768C8] + 8);

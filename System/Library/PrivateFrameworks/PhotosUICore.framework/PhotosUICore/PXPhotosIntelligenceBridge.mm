@@ -1,28 +1,28 @@
 @interface PXPhotosIntelligenceBridge
-+ (id)fetchFeaturedPhotoAssetsWithPhotoLibrary:(id)a3 sharingFilter:(unsigned __int16)a4;
-+ (id)fetchFeaturedPhotoSuggestionsWithPhotoLibrary:(id)a3 sharingFilter:(unsigned __int16)a4 fetchLimit:(int64_t)a5;
++ (id)fetchFeaturedPhotoAssetsWithPhotoLibrary:(id)library sharingFilter:(unsigned __int16)filter;
++ (id)fetchFeaturedPhotoSuggestionsWithPhotoLibrary:(id)library sharingFilter:(unsigned __int16)filter fetchLimit:(int64_t)limit;
 - (PXPhotosIntelligenceBridge)init;
 @end
 
 @implementation PXPhotosIntelligenceBridge
 
-+ (id)fetchFeaturedPhotoSuggestionsWithPhotoLibrary:(id)a3 sharingFilter:(unsigned __int16)a4 fetchLimit:(int64_t)a5
++ (id)fetchFeaturedPhotoSuggestionsWithPhotoLibrary:(id)library sharingFilter:(unsigned __int16)filter fetchLimit:(int64_t)limit
 {
-  v7 = a3;
-  v8 = sub_1A45550C4(v7, a4, a5);
+  libraryCopy = library;
+  v8 = sub_1A45550C4(libraryCopy, filter, limit);
 
   return v8;
 }
 
-+ (id)fetchFeaturedPhotoAssetsWithPhotoLibrary:(id)a3 sharingFilter:(unsigned __int16)a4
++ (id)fetchFeaturedPhotoAssetsWithPhotoLibrary:(id)library sharingFilter:(unsigned __int16)filter
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = sub_1A45550C4(v5, v4, 0);
-  v7 = [v5 librarySpecificFetchOptions];
-  [v7 setSharingFilter_];
-  [v7 setIncludeGuestAssets_];
-  result = [objc_opt_self() fetchKeyAssetForEachSuggestion:v6 options:v7];
+  filterCopy = filter;
+  libraryCopy = library;
+  v6 = sub_1A45550C4(libraryCopy, filterCopy, 0);
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setSharingFilter_];
+  [librarySpecificFetchOptions setIncludeGuestAssets_];
+  result = [objc_opt_self() fetchKeyAssetForEachSuggestion:v6 options:librarySpecificFetchOptions];
   if (result)
   {
     v9 = result;

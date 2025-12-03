@@ -1,25 +1,25 @@
 @interface SLAbsintheSigningSession
 - (BOOL)establish;
-- (SLAbsintheSigningSession)initWithCertURL:(id)a3 sessionURL:(id)a4;
-- (id)_urlEncodedString:(id)a3;
-- (id)signatureForData:(id)a3;
+- (SLAbsintheSigningSession)initWithCertURL:(id)l sessionURL:(id)rL;
+- (id)_urlEncodedString:(id)string;
+- (id)signatureForData:(id)data;
 - (void)dealloc;
 @end
 
 @implementation SLAbsintheSigningSession
 
-- (SLAbsintheSigningSession)initWithCertURL:(id)a3 sessionURL:(id)a4
+- (SLAbsintheSigningSession)initWithCertURL:(id)l sessionURL:(id)rL
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v12.receiver = self;
   v12.super_class = SLAbsintheSigningSession;
   v9 = [(SLAbsintheSigningSession *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_certURL, a3);
-    objc_storeStrong(&v10->_sessionURL, a4);
+    objc_storeStrong(&v9->_certURL, l);
+    objc_storeStrong(&v10->_sessionURL, rL);
   }
 
   return v10;
@@ -57,7 +57,7 @@
   if (!v9)
   {
     v10 = v8;
-    v36 = [v8 localizedDescription];
+    localizedDescription = [v8 localizedDescription];
     _SLLog(v2, 3, @"Could not get Absinthe cert: %@");
 
 LABEL_8:
@@ -80,15 +80,15 @@ LABEL_8:
 
   _SLLog(v2, 7, @"session info request: %p of size %lu");
   v14 = [MEMORY[0x1E695DEF0] dataWithBytes:v54 length:{v53, v54, v53}];
-  v15 = [v14 base64Encoding];
+  base64Encoding = [v14 base64Encoding];
 
   v62 = @"absinthe-operations";
   v60 = @"create-session-info";
   v57[0] = @"id";
   v57[1] = @"request";
   v58[0] = &unk_1F4202A78;
-  v58[1] = v15;
-  v48 = v15;
+  v58[1] = base64Encoding;
+  v48 = base64Encoding;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:v57 count:2];
   v59 = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v59 count:1];
@@ -135,7 +135,7 @@ LABEL_8:
     v42 = v28;
     if (v29 || !v28)
     {
-      v30 = [v29 localizedDescription];
+      localizedDescription2 = [v29 localizedDescription];
       _SLLog(v2, 3, @"Could not connect to session URL: %@");
       v21 = 0;
       v12 = 0;
@@ -145,29 +145,29 @@ LABEL_8:
     else
     {
       v49 = 0;
-      v30 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v28 options:0 error:&v49];
+      localizedDescription2 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v28 options:0 error:&v49];
       v31 = v49;
       v21 = v31;
       v20 = v44;
       if (v31)
       {
-        v32 = [v31 localizedDescription];
+        localizedDescription3 = [v31 localizedDescription];
         _SLLog(v2, 3, @"JSON parsing failed: %@");
         v12 = 0;
       }
 
       else
       {
-        v41 = v30;
-        v39 = [v30 objectForKey:@"absinthe-results"];
+        v41 = localizedDescription2;
+        v39 = [localizedDescription2 objectForKey:@"absinthe-results"];
         v38 = [v39 objectForKey:@"create-session-info"];
-        v33 = [v38 lastObject];
-        v32 = [v33 objectForKey:@"session-info"];
+        lastObject = [v38 lastObject];
+        localizedDescription3 = [lastObject objectForKey:@"session-info"];
 
-        if (v32)
+        if (localizedDescription3)
         {
-          v40 = v32;
-          v34 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64Encoding:v32];
+          v40 = localizedDescription3;
+          v34 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64Encoding:localizedDescription3];
           _SLLog(v2, 7, @"Initialized Absinthe session. Establishing key...");
           nDYmeMqvWb(self->_context, [v34 bytes], objc_msgSend(v34, "length"));
           v12 = v35 == 0;
@@ -176,15 +176,15 @@ LABEL_8:
             _SLLog(v2, 3, @"NACKeyEstablishment failed, status: %d");
           }
 
-          v32 = v40;
-          v30 = v41;
+          localizedDescription3 = v40;
+          localizedDescription2 = v41;
         }
 
         else
         {
           _SLLog(v2, 3, @"Could not get session info from server response.");
           v12 = 0;
-          v30 = v41;
+          localizedDescription2 = v41;
         }
       }
 
@@ -198,18 +198,18 @@ LABEL_9:
   return v12;
 }
 
-- (id)signatureForData:(id)a3
+- (id)signatureForData:(id)data
 {
   if (self->_context)
   {
     v11 = 0;
-    v5 = a3;
+    dataCopy = data;
     _SLLog(v3, 7, @"Signing data.");
     context = self->_context;
-    v7 = [v5 bytes];
-    v8 = [v5 length];
+    bytes = [dataCopy bytes];
+    v8 = [dataCopy length];
 
-    t1BoNctgaUu66(context, v7, v8, &v11);
+    t1BoNctgaUu66(context, bytes, v8, &v11);
     if (v9)
     {
       _SLLog(v3, 3, @"NACSign failed, status: %d");
@@ -219,9 +219,9 @@ LABEL_9:
   return 0;
 }
 
-- (id)_urlEncodedString:(id)a3
+- (id)_urlEncodedString:(id)string
 {
-  v3 = CFURLCreateStringByAddingPercentEscapes(*MEMORY[0x1E695E480], a3, 0, @":/?#[]@!$&‚Äö√Ñ√¥()*+,;='", 0x8000100u);
+  v3 = CFURLCreateStringByAddingPercentEscapes(*MEMORY[0x1E695E480], string, 0, @":/?#[]@!$&‚Äö√Ñ√¥()*+,;='", 0x8000100u);
 
   return v3;
 }

@@ -1,12 +1,12 @@
 @interface SKUIImageView
 + (Class)layerClass;
 - (CGSize)imageSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UITapGestureRecognizer)tapRecognizer;
 - (void)layoutSubviews;
-- (void)setContents:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setPlaceholder:(id)a3;
+- (void)setContents:(id)contents;
+- (void)setImage:(id)image;
+- (void)setPlaceholder:(id)placeholder;
 @end
 
 @implementation SKUIImageView
@@ -58,9 +58,9 @@
   return tapRecognizer;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -75,8 +75,8 @@
 
   v22.receiver = self;
   v22.super_class = SKUIImageView;
-  [(SKUIImageView *)&v22 setImage:v4];
-  if (v4)
+  [(SKUIImageView *)&v22 setImage:imageCopy];
+  if (imageCopy)
   {
     [(SKUIImageView *)self setPlaceholder:0];
   }
@@ -84,8 +84,8 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v4;
-    [v13 cornerRadius];
+    layer2 = imageCopy;
+    [layer2 cornerRadius];
     v15 = fabs(v14);
     if (v15 < 2.22044605e-16)
     {
@@ -95,30 +95,30 @@
 
     else
     {
-      v16 = [v13 cornerType];
-      if (v16 == 1)
+      cornerType = [layer2 cornerType];
+      if (cornerType == 1)
       {
-        [v13 cornerRadius];
+        [layer2 cornerRadius];
         [(SKUIImageView *)self _setCornerRadius:?];
         goto LABEL_15;
       }
 
-      if (v16)
+      if (cornerType)
       {
 LABEL_15:
         [(SKUIImageView *)self setClipsToBounds:v15 >= 2.22044605e-16];
-        v18 = [(SKUIImageView *)self layer];
-        [v13 borderWidth];
+        layer = [(SKUIImageView *)self layer];
+        [layer2 borderWidth];
         matched = SKUIGraphicsMatchViewBorderToStroke(self, v19);
-        [v18 setBorderWidth:?];
-        v21 = [v13 borderColor];
-        [v18 setBorderColor:{objc_msgSend(v21, "CGColor")}];
+        [layer setBorderWidth:?];
+        borderColor = [layer2 borderColor];
+        [layer setBorderColor:{objc_msgSend(borderColor, "CGColor")}];
 
-        [v18 setAllowsEdgeAntialiasing:fabs(matched) >= 2.22044605e-16];
+        [layer setAllowsEdgeAntialiasing:fabs(matched) >= 2.22044605e-16];
         goto LABEL_16;
       }
 
-      [v13 cornerRadius];
+      [layer2 cornerRadius];
     }
 
     [(SKUIImageView *)self _setContinuousCornerRadius:v17];
@@ -128,16 +128,16 @@ LABEL_15:
   [(SKUIImageView *)self _setContinuousCornerRadius:0.0];
   [(SKUIImageView *)self _setCornerRadius:0.0];
   [(SKUIImageView *)self setClipsToBounds:0];
-  v13 = [(SKUIImageView *)self layer];
-  [v13 setBorderWidth:0.0];
-  [v13 setBorderColor:0];
-  [v13 setAllowsEdgeAntialiasing:0];
+  layer2 = [(SKUIImageView *)self layer];
+  [layer2 setBorderWidth:0.0];
+  [layer2 setBorderColor:0];
+  [layer2 setAllowsEdgeAntialiasing:0];
 LABEL_16:
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
-  v5 = a3;
+  placeholderCopy = placeholder;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -150,21 +150,21 @@ LABEL_16:
     }
   }
 
-  if (self->_placeholder != v5)
+  if (self->_placeholder != placeholderCopy)
   {
-    objc_storeStrong(&self->_placeholder, a3);
-    v14 = [(SKUIImageView *)self layer];
-    if (v5)
+    objc_storeStrong(&self->_placeholder, placeholder);
+    layer = [(SKUIImageView *)self layer];
+    if (placeholderCopy)
     {
-      v15 = [(SKUIImagePlaceholder *)v5 borderColor];
-      [v14 setStrokeColor:{objc_msgSend(v15, "CGColor")}];
+      borderColor = [(SKUIImagePlaceholder *)placeholderCopy borderColor];
+      [layer setStrokeColor:{objc_msgSend(borderColor, "CGColor")}];
 
-      [(SKUIImagePlaceholder *)v5 borderWidth];
-      [v14 setLineWidth:{SKUIGraphicsMatchViewBorderToStroke(self, v16)}];
-      v17 = [(SKUIImagePlaceholder *)v5 cornerPathBlock];
-      if (v17)
+      [(SKUIImagePlaceholder *)placeholderCopy borderWidth];
+      [layer setLineWidth:{SKUIGraphicsMatchViewBorderToStroke(self, v16)}];
+      cornerPathBlock = [(SKUIImagePlaceholder *)placeholderCopy cornerPathBlock];
+      if (cornerPathBlock)
       {
-        [(SKUIImageView *)self setCornerPathBlock:v17];
+        [(SKUIImageView *)self setCornerPathBlock:cornerPathBlock];
         self->_lastLayoutSize = *MEMORY[0x277CBF3A8];
         [(SKUIImageView *)self setNeedsLayout];
       }
@@ -172,27 +172,27 @@ LABEL_16:
       else
       {
         [(SKUIImageView *)self setCornerPathBlock:0];
-        [v14 setPath:0];
+        [layer setPath:0];
       }
 
-      v18 = [(SKUIImagePlaceholder *)v5 backgroundColor];
-      [v14 setFillColor:{objc_msgSend(v18, "CGColor")}];
+      backgroundColor = [(SKUIImagePlaceholder *)placeholderCopy backgroundColor];
+      [layer setFillColor:{objc_msgSend(backgroundColor, "CGColor")}];
     }
 
     else
     {
       [(SKUIImageView *)self setCornerPathBlock:0];
-      [v14 setStrokeColor:0];
-      [v14 setLineWidth:0.0];
-      [v14 setPath:0];
-      [v14 setFillColor:0];
+      [layer setStrokeColor:0];
+      [layer setLineWidth:0.0];
+      [layer setPath:0];
+      [layer setFillColor:0];
     }
   }
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -208,7 +208,7 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SKUIImageView *)self setImage:v4];
+    [(SKUIImageView *)self setImage:contentsCopy];
   }
 
   else
@@ -218,7 +218,7 @@ LABEL_16:
     [(SKUIImageView *)self setImage:0];
     if (isKindOfClass)
     {
-      v14 = v4;
+      v14 = contentsCopy;
     }
 
     else
@@ -257,8 +257,8 @@ LABEL_16:
     p_lastLayoutSize = &self->_lastLayoutSize;
     if (self->_lastLayoutSize.width != v13 || self->_lastLayoutSize.height != v14)
     {
-      v21 = [(SKUIImageView *)self layer];
-      [v21 lineWidth];
+      layer = [(SKUIImageView *)self layer];
+      [layer lineWidth];
       UIRoundToViewScale();
       v23 = v22;
 
@@ -268,8 +268,8 @@ LABEL_16:
       v27.size.height = v18;
       v28 = CGRectInset(v27, v23, v23);
       v24 = (*(self->_cornerPathBlock + 2))(v28.origin, *&v28.origin.y, v28.size, *&v28.size.height);
-      v25 = [(SKUIImageView *)self layer];
-      [v25 setPath:{objc_msgSend(v24, "CGPath")}];
+      layer2 = [(SKUIImageView *)self layer];
+      [layer2 setPath:{objc_msgSend(v24, "CGPath")}];
 
       p_lastLayoutSize->width = v17;
       p_lastLayoutSize->height = v18;
@@ -277,10 +277,10 @@ LABEL_16:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -299,8 +299,8 @@ LABEL_16:
   v17 = *(MEMORY[0x277CBF3A8] + 8);
   if (v14 == *MEMORY[0x277CBF3A8] && v15 == v17)
   {
-    v19 = [(SKUIImageView *)self image];
-    [v19 size];
+    image = [(SKUIImageView *)self image];
+    [image size];
     v14 = v20;
     v15 = v21;
   }

@@ -1,19 +1,19 @@
 @interface IMDCollaborationNoticeDispatcher
 + (Class)_SWCollaborationClearNoticeTransmissionMessageClass;
 + (Class)_SWCollaborationNoticeTransmissionMessageClass;
-+ (id)unarchiveNoticeTransmissionEvent:(id)a3;
++ (id)unarchiveNoticeTransmissionEvent:(id)event;
 + (unint64_t)noticeFanoutThreshold;
 - (IMDCollaborationNoticeDispatcher)init;
 - (IMDCollaborationNoticeDispatcherDelegate)delegate;
-- (id)_handlesMinusSenderServiceAccountID:(id)a3;
-- (id)_senderServiceAccountIDFrom:(id)a3;
+- (id)_handlesMinusSenderServiceAccountID:(id)d;
+- (id)_senderServiceAccountIDFrom:(id)from;
 - (id)senderLoginIDs;
 - (void)dealloc;
-- (void)handleIncomingNoticeProtobuf:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)reflectDismissalForNoticeGUIDs:(id)a3;
-- (void)sendClearNotice:(id)a3 toHandles:(id)a4;
-- (void)sendNotice:(id)a3 toHandles:(id)a4 fromHandle:(id)a5;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)handleIncomingNoticeProtobuf:(id)protobuf service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)reflectDismissalForNoticeGUIDs:(id)ds;
+- (void)sendClearNotice:(id)notice toHandles:(id)handles;
+- (void)sendNotice:(id)notice toHandles:(id)handles fromHandle:(id)handle;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
 @end
 
 @implementation IMDCollaborationNoticeDispatcher
@@ -89,19 +89,19 @@
   [(IMDCollaborationNoticeDispatcher *)&v3 dealloc];
 }
 
-- (void)sendNotice:(id)a3 toHandles:(id)a4 fromHandle:(id)a5
+- (void)sendNotice:(id)notice toHandles:(id)handles fromHandle:(id)handle
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IMDCollaborationNoticeDispatcher *)self _handlesMinusSenderServiceAccountID:a4];
+  noticeCopy = notice;
+  handleCopy = handle;
+  v10 = [(IMDCollaborationNoticeDispatcher *)self _handlesMinusSenderServiceAccountID:handles];
   if ([v10 count])
   {
     v11 = +[IMDCollaborationNoticeDispatcher noticeFanoutThreshold];
     if ([v10 count] <= v11)
     {
-      v14 = [(IMDCollaborationNoticeDispatcher *)self rateLimiter];
-      v15 = [v14 shouldSendNotice:v8];
+      rateLimiter = [(IMDCollaborationNoticeDispatcher *)self rateLimiter];
+      v15 = [rateLimiter shouldSendNotice:noticeCopy];
 
       if (v15)
       {
@@ -115,25 +115,25 @@
 
           if (objc_opt_respondsToSelector())
           {
-            v17 = [v8 guidString];
-            [v16 setGuidString:v17];
+            guidString = [noticeCopy guidString];
+            [v16 setGuidString:guidString];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v18 = [v8 eventData];
-            [v16 setHighlightChangeEvent:v18];
+            eventData = [noticeCopy eventData];
+            [v16 setHighlightChangeEvent:eventData];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            [v16 setHighlightChangeEventType:{objc_msgSend(v8, "eventType")}];
+            [v16 setHighlightChangeEventType:{objc_msgSend(noticeCopy, "eventType")}];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v19 = [v8 date];
-            [v19 timeIntervalSince1970];
+            date = [noticeCopy date];
+            [date timeIntervalSince1970];
             [v16 setDateAsTimeIntervalSince1970:?];
           }
 
@@ -145,7 +145,7 @@
               *buf = 138413058;
               v37 = &unk_283F4E630;
               v38 = 2112;
-              v39 = v8;
+              v39 = noticeCopy;
               v40 = 2112;
               v41 = v10;
               v42 = 2112;
@@ -155,14 +155,14 @@
           }
 
           v21 = objc_alloc(MEMORY[0x277D189F0]);
-          v22 = [v16 data];
-          v23 = [v21 initWithProtobufData:v22 type:1 isResponse:0];
+          data = [v16 data];
+          v23 = [v21 initWithProtobufData:data type:1 isResponse:0];
 
-          v24 = [MEMORY[0x277CBEB38] dictionary];
-          v25 = v24;
-          if (v9)
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          v25 = dictionary;
+          if (handleCopy)
           {
-            [v24 setObject:v9 forKey:*MEMORY[0x277D185E0]];
+            [dictionary setObject:handleCopy forKey:*MEMORY[0x277D185E0]];
           }
 
           gelatoService = self->_gelatoService;
@@ -175,8 +175,8 @@
 
           if (v29)
           {
-            v30 = IMLogHandleForCategory();
-            if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+            rateLimiter2 = IMLogHandleForCategory();
+            if (os_log_type_enabled(rateLimiter2, OS_LOG_TYPE_ERROR))
             {
               sub_22B7D2EEC();
             }
@@ -199,8 +199,8 @@
               }
             }
 
-            v30 = [(IMDCollaborationNoticeDispatcher *)self rateLimiter];
-            [v30 didSendNotice:v8];
+            rateLimiter2 = [(IMDCollaborationNoticeDispatcher *)self rateLimiter];
+            [rateLimiter2 didSendNotice:noticeCopy];
           }
         }
 
@@ -222,7 +222,7 @@
           *buf = 136315394;
           v37 = "[IMDCollaborationNoticeDispatcher sendNotice:toHandles:fromHandle:]";
           v38 = 2112;
-          v39 = v8;
+          v39 = noticeCopy;
           _os_log_impl(&dword_22B4CC000, v31, OS_LOG_TYPE_INFO, "%s: Bailing due to rate limiting for notice: %@", buf, 0x16u);
         }
       }
@@ -250,19 +250,19 @@
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendClearNotice:(id)a3 toHandles:(id)a4
+- (void)sendClearNotice:(id)notice toHandles:(id)handles
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMDCollaborationNoticeDispatcher *)self _senderServiceAccountIDFrom:v7];
-  if ([v7 count])
+  noticeCopy = notice;
+  handlesCopy = handles;
+  v8 = [(IMDCollaborationNoticeDispatcher *)self _senderServiceAccountIDFrom:handlesCopy];
+  if ([handlesCopy count])
   {
     v9 = +[IMDCollaborationNoticeDispatcher noticeFanoutThreshold];
-    if ([v7 count] <= v9)
+    if ([handlesCopy count] <= v9)
     {
-      v12 = [(IMDCollaborationNoticeDispatcher *)self clearRateLimiter];
-      v13 = [v12 shouldSendWithNotice:v6];
+      clearRateLimiter = [(IMDCollaborationNoticeDispatcher *)self clearRateLimiter];
+      v13 = [clearRateLimiter shouldSendWithNotice:noticeCopy];
 
       if (v13)
       {
@@ -276,20 +276,20 @@
 
           if (objc_opt_respondsToSelector())
           {
-            v15 = [v6 guidString];
-            [v14 setGuidString:v15];
+            guidString = [noticeCopy guidString];
+            [v14 setGuidString:guidString];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v16 = [v6 collaborationId];
-            [v14 setCollaborationId:v16];
+            collaborationId = [noticeCopy collaborationId];
+            [v14 setCollaborationId:collaborationId];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v17 = [v6 date];
-            [v17 timeIntervalSince1970];
+            date = [noticeCopy date];
+            [date timeIntervalSince1970];
             [v14 setDateAsTimeIntervalSince1970:?];
           }
 
@@ -301,9 +301,9 @@
               *buf = 138413058;
               v33 = &unk_283F4E648;
               v34 = 2112;
-              v35 = v6;
+              v35 = noticeCopy;
               v36 = 2112;
-              v37 = v7;
+              v37 = handlesCopy;
               v38 = 2112;
               v39 = v14;
               _os_log_impl(&dword_22B4CC000, v18, OS_LOG_TYPE_INFO, "Sending notice (command: %@) %@ to %@, message: %@", buf, 0x2Au);
@@ -311,17 +311,17 @@
           }
 
           v19 = objc_alloc(MEMORY[0x277D189F0]);
-          v20 = [v14 data];
-          v21 = [v19 initWithProtobufData:v20 type:2 isResponse:0];
+          data = [v14 data];
+          v21 = [v19 initWithProtobufData:data type:2 isResponse:0];
 
-          v22 = [v21 data];
-          if ([v22 length])
+          data2 = [v21 data];
+          if ([data2 length])
           {
             v23 = MEMORY[0x277CCACA8];
-            v24 = [MEMORY[0x277CCACA8] stringGUID];
-            v25 = [v23 stringWithFormat:@"%@-%@.data", @"ClearCollaborationNotice", v24];
+            stringGUID = [MEMORY[0x277CCACA8] stringGUID];
+            v25 = [v23 stringWithFormat:@"%@-%@.data", @"ClearCollaborationNotice", stringGUID];
 
-            [MEMORY[0x277D1AA18] writeDataPayloadToDisk:v22 fileName:v25];
+            [MEMORY[0x277D1AA18] writeDataPayloadToDisk:data2 fileName:v25];
           }
 
           v26 = [MEMORY[0x277D1AB80] contextWithKnownSender:1];
@@ -330,8 +330,8 @@
           v29[2] = sub_22B584EE8;
           v29[3] = &unk_278704FB8;
           v30 = v8;
-          v31 = self;
-          [IMBlastdoor sendClearNoticeData:v22 senderContext:v26 withCompletionBlock:v29];
+          selfCopy = self;
+          [IMBlastdoor sendClearNoticeData:data2 senderContext:v26 withCompletionBlock:v29];
         }
 
         else
@@ -352,7 +352,7 @@
           *buf = 136315394;
           v33 = "[IMDCollaborationNoticeDispatcher sendClearNotice:toHandles:]";
           v34 = 2112;
-          v35 = v6;
+          v35 = noticeCopy;
           _os_log_impl(&dword_22B4CC000, v27, OS_LOG_TYPE_INFO, "%s: Bailing due to rate limiting for notice: %@", buf, 0x16u);
         }
       }
@@ -363,7 +363,7 @@
       v10 = IMLogHandleForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        sub_22B7D3134(v7, v9);
+        sub_22B7D3134(handlesCopy, v9);
       }
     }
   }
@@ -380,10 +380,10 @@
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reflectDismissalForNoticeGUIDs:(id)a3
+- (void)reflectDismissalForNoticeGUIDs:(id)ds
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -392,7 +392,7 @@
       *buf = 136315394;
       v20 = "[IMDCollaborationNoticeDispatcher reflectDismissalForNoticeGUIDs:]";
       v21 = 2112;
-      v22 = v4;
+      v22 = dsCopy;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "%s: Handling request to reflect notice dismissal for guids: %@", buf, 0x16u);
     }
   }
@@ -400,30 +400,30 @@
   v17[0] = @"at";
   v17[1] = @"g";
   v18[0] = &unk_283F4E660;
-  v18[1] = v4;
+  v18[1] = dsCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
   v15 = *MEMORY[0x277D18570];
   v16 = MEMORY[0x277CBEC38];
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
   v8 = MEMORY[0x277D1AA08];
   gelatoService = self->_gelatoService;
-  v10 = [(IMDCollaborationNoticeDispatcher *)self senderLoginIDs];
+  senderLoginIDs = [(IMDCollaborationNoticeDispatcher *)self senderLoginIDs];
   v13 = 0;
   v14 = 0;
-  [v8 service:gelatoService sendMessage:v6 toDestinations:v10 priority:300 options:v7 identifier:&v14 error:&v13];
+  [v8 service:gelatoService sendMessage:v6 toDestinations:senderLoginIDs priority:300 options:v7 identifier:&v14 error:&v13];
   v11 = v14;
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleIncomingNoticeProtobuf:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)handleIncomingNoticeProtobuf:(id)protobuf service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v28 = a4;
-  v29 = a5;
-  v13 = a6;
-  v14 = a7;
+  protobufCopy = protobuf;
+  serviceCopy = service;
+  accountCopy = account;
+  dCopy = d;
+  contextCopy = context;
   if (IMOSLoggingEnabled())
   {
     v15 = OSLogHandleForIMFoundationCategory();
@@ -432,7 +432,7 @@
       *buf = 136315394;
       v34 = "[IMDCollaborationNoticeDispatcher handleIncomingNoticeProtobuf:service:account:fromID:context:]";
       v35 = 2112;
-      v36 = v13;
+      v36 = dCopy;
       _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "%s: Handling incoming Collaboration Notice from: %@", buf, 0x16u);
     }
   }
@@ -447,14 +447,14 @@
 
     if ([v19 count])
     {
-      v20 = [v12 data];
-      if ([v20 length])
+      data = [protobufCopy data];
+      if ([data length])
       {
         v21 = MEMORY[0x277CCACA8];
-        v22 = [MEMORY[0x277CCACA8] stringGUID];
-        v23 = [v21 stringWithFormat:@"%@-%@.data", @"CollaborationNotice", v22, v28, v29];
+        stringGUID = [MEMORY[0x277CCACA8] stringGUID];
+        accountCopy = [v21 stringWithFormat:@"%@-%@.data", @"CollaborationNotice", stringGUID, serviceCopy, accountCopy];
 
-        [MEMORY[0x277D1AA18] writeDataPayloadToDisk:v20 fileName:v23];
+        [MEMORY[0x277D1AA18] writeDataPayloadToDisk:data fileName:accountCopy];
       }
 
       v24 = +[IMDChatRegistry sharedInstance];
@@ -468,8 +468,8 @@
         v30[2] = sub_22B5857A0;
         v30[3] = &unk_278704FE0;
         v31 = v17;
-        v32 = self;
-        [IMBlastdoor sendCollaborationNoticeData:v20 senderContext:v26 withCompletionBlock:v30];
+        selfCopy = self;
+        [IMBlastdoor sendCollaborationNoticeData:data senderContext:v26 withCompletionBlock:v30];
       }
 
       else
@@ -484,8 +484,8 @@
 
     else
     {
-      v20 = IMLogHandleForCategory();
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      data = IMLogHandleForCategory();
+      if (os_log_type_enabled(data, OS_LOG_TYPE_ERROR))
       {
         sub_22B7D3444();
       }
@@ -504,14 +504,14 @@
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
   if (IMOSLoggingEnabled())
   {
     v17 = OSLogHandleForIMFoundationCategory();
@@ -520,9 +520,9 @@
       *buf = 136315650;
       v26 = "[IMDCollaborationNoticeDispatcher service:account:incomingMessage:fromID:context:]";
       v27 = 2112;
-      v28 = v15;
+      v28 = dCopy;
       v29 = 2112;
-      v30 = v14;
+      v30 = messageCopy;
       _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "%s fromID: %@, message: %@", buf, 0x20u);
     }
   }
@@ -541,7 +541,7 @@
     v24[2] = sub_22B585D60;
     v24[3] = &unk_278705008;
     v24[4] = self;
-    [IMBlastdoor sendCollaborationNoticeActionDictionary:v14 senderContext:v22 withCompletionBlock:v24];
+    [IMBlastdoor sendCollaborationNoticeActionDictionary:messageCopy senderContext:v22 withCompletionBlock:v24];
   }
 
   else
@@ -562,37 +562,37 @@
   v3 = [v2 objectForKey:@"notice-fanout-threshold"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 100;
+    unsignedIntegerValue = 100;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (id)_handlesMinusSenderServiceAccountID:(id)a3
+- (id)_handlesMinusSenderServiceAccountID:(id)d
 {
-  v4 = [a3 mutableCopy];
-  v5 = [(IMDCollaborationNoticeDispatcher *)self senderLoginIDs];
-  [v4 minusSet:v5];
+  v4 = [d mutableCopy];
+  senderLoginIDs = [(IMDCollaborationNoticeDispatcher *)self senderLoginIDs];
+  [v4 minusSet:senderLoginIDs];
 
   v6 = [v4 copy];
 
   return v6;
 }
 
-- (id)_senderServiceAccountIDFrom:(id)a3
+- (id)_senderServiceAccountIDFrom:(id)from
 {
-  v4 = [a3 mutableCopy];
-  v5 = [(IMDCollaborationNoticeDispatcher *)self senderLoginIDs];
-  [v4 intersectSet:v5];
+  v4 = [from mutableCopy];
+  senderLoginIDs = [(IMDCollaborationNoticeDispatcher *)self senderLoginIDs];
+  [v4 intersectSet:senderLoginIDs];
 
-  v6 = [v4 allObjects];
-  v7 = [v6 firstObject];
-  v8 = [v7 mutableCopy];
+  allObjects = [v4 allObjects];
+  firstObject = [allObjects firstObject];
+  v8 = [firstObject mutableCopy];
 
   return v8;
 }
@@ -605,10 +605,10 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(IMDCollaborationNoticeDispatcher *)self gelatoService];
-  v5 = [v4 accounts];
+  gelatoService = [(IMDCollaborationNoticeDispatcher *)self gelatoService];
+  accounts = [gelatoService accounts];
 
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [accounts countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -619,15 +619,15 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accounts);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 loginID];
+        loginID = [v10 loginID];
 
-        if (v11)
+        if (loginID)
         {
-          v12 = [v10 loginID];
+          loginID2 = [v10 loginID];
           v13 = IDSCopyBestGuessIDForID();
 
           v14 = MEMORY[0x231897A70](v13);
@@ -635,7 +635,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [accounts countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -646,13 +646,13 @@
   return v3;
 }
 
-+ (id)unarchiveNoticeTransmissionEvent:(id)a3
++ (id)unarchiveNoticeTransmissionEvent:(id)event
 {
   v16[7] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([sub_22B58647C() eventClassForType:{objc_msgSend(v3, "eventType")}])
+  eventCopy = event;
+  if ([sub_22B58647C() eventClassForType:{objc_msgSend(eventCopy, "eventType")}])
   {
-    v4 = [sub_22B58647C() allowedClasses];
+    allowedClasses = [sub_22B58647C() allowedClasses];
     v16[0] = objc_opt_class();
     v16[1] = objc_opt_class();
     v16[2] = objc_opt_class();
@@ -661,12 +661,12 @@
     v16[5] = objc_opt_class();
     v16[6] = objc_opt_class();
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:7];
-    v6 = [v4 setByAddingObjectsFromArray:v5];
+    v6 = [allowedClasses setByAddingObjectsFromArray:v5];
 
     v7 = MEMORY[0x277CCAAC8];
-    v8 = [v3 eventData];
+    eventData = [eventCopy eventData];
     v15 = 0;
-    v9 = [v7 _strictlyUnarchivedObjectOfClasses:v6 fromData:v8 error:&v15];
+    v9 = [v7 _strictlyUnarchivedObjectOfClasses:v6 fromData:eventData error:&v15];
     v10 = v15;
 
     if (v10 || !v9)
@@ -691,7 +691,7 @@
     v10 = IMLogHandleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_22B7D38A4(v3);
+      sub_22B7D38A4(eventCopy);
     }
 
     v11 = 0;

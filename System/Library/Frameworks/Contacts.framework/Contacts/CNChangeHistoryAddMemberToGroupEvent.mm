@@ -1,29 +1,29 @@
 @interface CNChangeHistoryAddMemberToGroupEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNChangeHistoryAddMemberToGroupEvent)init;
-- (CNChangeHistoryAddMemberToGroupEvent)initWithCoder:(id)a3;
-- (CNChangeHistoryAddMemberToGroupEvent)initWithMember:(id)a3 group:(id)a4;
+- (CNChangeHistoryAddMemberToGroupEvent)initWithCoder:(id)coder;
+- (CNChangeHistoryAddMemberToGroupEvent)initWithMember:(id)member group:(id)group;
 - (id)description;
-- (int64_t)comparisonResultWithinSameClass:(id)a3;
+- (int64_t)comparisonResultWithinSameClass:(id)class;
 - (unint64_t)hash;
-- (void)acceptEventVisitor:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)acceptEventVisitor:(id)visitor;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNChangeHistoryAddMemberToGroupEvent
 
 - (CNChangeHistoryAddMemberToGroupEvent)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNChangeHistoryAddMemberToGroupEvent)initWithMember:(id)a3 group:(id)a4
+- (CNChangeHistoryAddMemberToGroupEvent)initWithMember:(id)member group:(id)group
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  memberCopy = member;
+  groupCopy = group;
+  if (memberCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -41,7 +41,7 @@
   if (!os_log_type_enabled(CNGuardOSLog_cn_once_object_0_3, OS_LOG_TYPE_FAULT))
   {
 LABEL_6:
-    if (v8)
+    if (groupCopy)
     {
       goto LABEL_7;
     }
@@ -50,7 +50,7 @@ LABEL_6:
   else
   {
     [CNChangeHistoryAddMemberToGroupEvent initWithMember:v9 group:?];
-    if (v8)
+    if (groupCopy)
     {
 LABEL_7:
       objc_opt_class();
@@ -79,51 +79,51 @@ LABEL_12:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_member, a3);
-    objc_storeStrong(&v12->_group, a4);
+    objc_storeStrong(&v11->_member, member);
+    objc_storeStrong(&v12->_group, group);
     v13 = v12;
   }
 
   return v12;
 }
 
-- (CNChangeHistoryAddMemberToGroupEvent)initWithCoder:(id)a3
+- (CNChangeHistoryAddMemberToGroupEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_member"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_group"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_member"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_group"];
 
   v7 = [(CNChangeHistoryAddMemberToGroupEvent *)self initWithMember:v5 group:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   member = self->_member;
-  v5 = a3;
-  [v5 encodeObject:member forKey:@"_member"];
-  [v5 encodeObject:self->_group forKey:@"_group"];
+  coderCopy = coder;
+  [coderCopy encodeObject:member forKey:@"_member"];
+  [coderCopy encodeObject:self->_group forKey:@"_group"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __48__CNChangeHistoryAddMemberToGroupEvent_isEqual___block_invoke;
   v15[3] = &unk_1E7412228;
   v15[4] = self;
-  v16 = v4;
+  v16 = equalCopy;
   aBlock = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __48__CNChangeHistoryAddMemberToGroupEvent_isEqual___block_invoke_2;
   v12 = &unk_1E7412228;
-  v13 = self;
+  selfCopy = self;
   v14 = v16;
   v6 = v16;
   v7 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:self memberOfSameClassAndEqualTo:v6 withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:self memberOfSameClassAndEqualTo:v6 withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, selfCopy}];
 
   return self;
 }
@@ -193,41 +193,41 @@ uint64_t __44__CNChangeHistoryAddMemberToGroupEvent_hash__block_invoke_2(uint64_
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNChangeHistoryAddMemberToGroupEvent *)self member];
-  v5 = [v3 appendName:@"member" object:v4];
+  member = [(CNChangeHistoryAddMemberToGroupEvent *)self member];
+  v5 = [v3 appendName:@"member" object:member];
 
-  v6 = [(CNChangeHistoryAddMemberToGroupEvent *)self group];
-  v7 = [v3 appendName:@"group" object:v6];
+  group = [(CNChangeHistoryAddMemberToGroupEvent *)self group];
+  v7 = [v3 appendName:@"group" object:group];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (void)acceptEventVisitor:(id)a3
+- (void)acceptEventVisitor:(id)visitor
 {
-  v4 = a3;
-  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:v4];
+  visitorCopy = visitor;
+  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:visitorCopy];
 
   [(CNSafeChangeHistoryEventVisitorWrapper *)v5 visitAddMemberToGroupEvent:self];
 }
 
-- (int64_t)comparisonResultWithinSameClass:(id)a3
+- (int64_t)comparisonResultWithinSameClass:(id)class
 {
-  v4 = a3;
-  v5 = [(CNChangeHistoryAddMemberToGroupEvent *)self group];
-  v6 = [v5 identifier];
-  v7 = [v4 group];
-  v8 = [v7 identifier];
-  v9 = [v6 compare:v8];
+  classCopy = class;
+  group = [(CNChangeHistoryAddMemberToGroupEvent *)self group];
+  identifier = [group identifier];
+  group2 = [classCopy group];
+  identifier2 = [group2 identifier];
+  v9 = [identifier compare:identifier2];
 
   if (!v9)
   {
-    v10 = [(CNChangeHistoryAddMemberToGroupEvent *)self member];
-    v11 = [v10 identifier];
-    v12 = [v4 member];
-    v13 = [v12 identifier];
-    v9 = [v11 compare:v13];
+    member = [(CNChangeHistoryAddMemberToGroupEvent *)self member];
+    identifier3 = [member identifier];
+    member2 = [classCopy member];
+    identifier4 = [member2 identifier];
+    v9 = [identifier3 compare:identifier4];
   }
 
   return v9;

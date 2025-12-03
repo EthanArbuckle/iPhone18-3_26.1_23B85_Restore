@@ -1,68 +1,68 @@
 @interface IKDSEPrototypeMapping
-+ (id)prototypeMappingFromAppPrototype:(id)a3 dataSourceElement:(id)a4 elementFactory:(id)a5;
-- (IKDSEPrototypeMapping)initWithIdentifier:(id)a3 viewElement:(id)a4 usageIndexes:(id)a5;
++ (id)prototypeMappingFromAppPrototype:(id)prototype dataSourceElement:(id)element elementFactory:(id)factory;
+- (IKDSEPrototypeMapping)initWithIdentifier:(id)identifier viewElement:(id)element usageIndexes:(id)indexes;
 @end
 
 @implementation IKDSEPrototypeMapping
 
-+ (id)prototypeMappingFromAppPrototype:(id)a3 dataSourceElement:(id)a4 elementFactory:(id)a5
++ (id)prototypeMappingFromAppPrototype:(id)prototype dataSourceElement:(id)element elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 dsepm_viewElement];
-  v12 = [v9 updateType];
-  if (!v11 || v12 == 4)
+  prototypeCopy = prototype;
+  elementCopy = element;
+  factoryCopy = factory;
+  dsepm_viewElement = [prototypeCopy dsepm_viewElement];
+  updateType = [elementCopy updateType];
+  if (!dsepm_viewElement || updateType == 4)
   {
-    v13 = [v8 prototype];
-    v14 = [v13 domElement];
+    prototype = [prototypeCopy prototype];
+    domElement = [prototype domElement];
 
-    v15 = [v8 prototype];
-    v16 = [v15 grouping];
+    prototype2 = [prototypeCopy prototype];
+    grouping = [prototype2 grouping];
 
-    if (v16)
+    if (grouping)
     {
       v17 = +[IKAppContext currentAppContext];
-      v18 = [v17 jsContext];
+      jsContext = [v17 jsContext];
 
-      v19 = [v14 cloneNode:1];
-      [v19 _setAliasOf:v14];
+      v19 = [domElement cloneNode:1];
+      [v19 _setAliasOf:domElement];
       v20 = MEMORY[0x277CD4658];
-      v21 = [v8 groupingValues];
-      v22 = [v20 valueWithObject:v21 inContext:v18];
+      groupingValues = [prototypeCopy groupingValues];
+      v22 = [v20 valueWithObject:groupingValues inContext:jsContext];
       [v19 setDataItem:v22];
 
-      v14 = v19;
+      domElement = v19;
     }
 
-    v23 = [v10 elementForDOMElement:v14 parent:v9];
+    v23 = [factoryCopy elementForDOMElement:domElement parent:elementCopy];
 
-    [v8 dsepm_setViewElement:v23];
-    v11 = v23;
+    [prototypeCopy dsepm_setViewElement:v23];
+    dsepm_viewElement = v23;
   }
 
-  v24 = [a1 alloc];
-  v25 = [v8 identifier];
-  v26 = [v8 usageIndexes];
-  v27 = [v24 initWithIdentifier:v25 viewElement:v11 usageIndexes:v26];
+  v24 = [self alloc];
+  identifier = [prototypeCopy identifier];
+  usageIndexes = [prototypeCopy usageIndexes];
+  v27 = [v24 initWithIdentifier:identifier viewElement:dsepm_viewElement usageIndexes:usageIndexes];
 
   return v27;
 }
 
-- (IKDSEPrototypeMapping)initWithIdentifier:(id)a3 viewElement:(id)a4 usageIndexes:(id)a5
+- (IKDSEPrototypeMapping)initWithIdentifier:(id)identifier viewElement:(id)element usageIndexes:(id)indexes
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  elementCopy = element;
+  indexesCopy = indexes;
   v17.receiver = self;
   v17.super_class = IKDSEPrototypeMapping;
   v12 = [(IKDSEPrototypeMapping *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_viewElement, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_viewElement, element);
+    v14 = [indexesCopy copy];
     usageIndexes = v13->_usageIndexes;
     v13->_usageIndexes = v14;
   }

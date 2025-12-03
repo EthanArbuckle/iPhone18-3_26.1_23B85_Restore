@@ -6,15 +6,15 @@
 
 - (id)currentValue
 {
-  v3 = [(HKValueDataProvider *)self value];
-  v4 = [v3 date];
+  value = [(HKValueDataProvider *)self value];
+  date = [value date];
 
-  if (v4)
+  if (date)
   {
     v5 = objc_alloc_init(HKLastUpdatedDayDataProviderCurrentValue);
-    v6 = [(HKValueDataProvider *)self value];
-    v7 = [v6 date];
-    [(HKLastUpdatedDayDataProviderCurrentValue *)v5 setDate:v7];
+    value2 = [(HKValueDataProvider *)self value];
+    date2 = [value2 date];
+    [(HKLastUpdatedDayDataProviderCurrentValue *)v5 setDate:date2];
   }
 
   else

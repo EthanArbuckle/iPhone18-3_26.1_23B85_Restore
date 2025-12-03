@@ -1,5 +1,5 @@
 @interface SafariUIPageControlAccessibility
-- (BOOL)_accessibilityAdjustInDirection:(BOOL)a3;
+- (BOOL)_accessibilityAdjustInDirection:(BOOL)direction;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 - (void)accessibilityDecrement;
@@ -15,23 +15,23 @@
   return *MEMORY[0x29EDC7F60] | [(SafariUIPageControlAccessibility *)&v3 accessibilityTraits];
 }
 
-- (BOOL)_accessibilityAdjustInDirection:(BOOL)a3
+- (BOOL)_accessibilityAdjustInDirection:(BOOL)direction
 {
-  v3 = a3;
+  directionCopy = direction;
   v5 = [(SafariUIPageControlAccessibility *)self safeValueForKey:@"currentPage"];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
   v7 = [(SafariUIPageControlAccessibility *)self safeValueForKey:@"numberOfPages"];
-  v8 = [v7 integerValue];
+  integerValue2 = [v7 integerValue];
 
   v9 = 0;
-  v10 = v6 - 1;
-  if (v3)
+  v10 = integerValue - 1;
+  if (directionCopy)
   {
-    v10 = v6 + 1;
+    v10 = integerValue + 1;
   }
 
-  if ((v10 & 0x8000000000000000) == 0 && v10 < v8)
+  if ((v10 & 0x8000000000000000) == 0 && v10 < integerValue2)
   {
     v12 = 0;
     v13 = &v12;
@@ -76,15 +76,15 @@ void __68__SafariUIPageControlAccessibility__accessibilityAdjustInDirection___bl
   {
     v5.receiver = self;
     v5.super_class = SafariUIPageControlAccessibility;
-    v3 = [(SafariUIPageControlAccessibility *)&v5 accessibilityValue];
+    accessibilityValue = [(SafariUIPageControlAccessibility *)&v5 accessibilityValue];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityValue = 0;
   }
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (void)accessibilityIncrement

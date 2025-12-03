@@ -3,42 +3,42 @@
 - (double)_innerRadius;
 - (double)_outerRadius;
 - (double)_viewCenter;
-- (id)initWithContext:(void *)a3 sliderButtonConfiguration:;
-- (void)_didTapSliderButton:(id)a3;
-- (void)_fadeOutTickAtHead:(void *)a1;
-- (void)_fadeOutTickAtTail:(void *)a1;
-- (void)_hyperInteractorApplyPresentationPoint:(id)a3;
-- (void)_panGestureHandler:(id)a3;
+- (id)initWithContext:(void *)context sliderButtonConfiguration:;
+- (void)_didTapSliderButton:(id)button;
+- (void)_fadeOutTickAtHead:(void *)head;
+- (void)_fadeOutTickAtTail:(void *)tail;
+- (void)_hyperInteractorApplyPresentationPoint:(id)point;
+- (void)_panGestureHandler:(id)handler;
 - (void)_resetUI;
-- (void)handlePencilInteractionDidTap:(int64_t)a3;
-- (void)setSliderButtonAngle:(double)a3;
+- (void)handlePencilInteractionDidTap:(int64_t)tap;
+- (void)setSliderButtonAngle:(double)angle;
 - (void)updateUI;
-- (void)willTransitionToLayout:(id)a3;
+- (void)willTransitionToLayout:(id)layout;
 @end
 
 @implementation PKSqueezePaletteViewExpandedUndoRedoLayout
 
-- (id)initWithContext:(void *)a3 sliderButtonConfiguration:
+- (id)initWithContext:(void *)context sliderButtonConfiguration:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  contextCopy = context;
+  if (self)
   {
-    v18.receiver = a1;
+    v18.receiver = self;
     v18.super_class = PKSqueezePaletteViewExpandedUndoRedoLayout;
     v8 = objc_msgSendSuper2(&v18, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 3, a2);
-      objc_storeStrong(a1 + 11, a3);
+      objc_storeStrong(self + 11, context);
       v9 = objc_alloc(MEMORY[0x1E69DCCF0]);
       v10 = MEMORY[0x1E69DD600];
       v11 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F47C0F80, &unk_1F47C0F98, 0}];
       v12 = [v10 privateConfigurationForTypes:v11];
       v13 = [v9 initWithConfiguration:v12];
-      v14 = a1[18];
-      a1[18] = v13;
+      v14 = self[18];
+      self[18] = v13;
 
       if (v6)
       {
@@ -51,61 +51,61 @@
       }
 
       v16 = v15;
-      [v16 addTarget:a1 action:sel__panGestureHandler_];
+      [v16 addTarget:self action:sel__panGestureHandler_];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_resetUI
 {
   v67[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v58 = [a1 paletteView];
-    if (v58)
+    paletteView = [self paletteView];
+    if (paletteView)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
-      v3 = [(PKSqueezePaletteView *)WeakRetained _undoCount];
+      WeakRetained = objc_loadWeakRetained((self + 16));
+      _undoCount = [(PKSqueezePaletteView *)WeakRetained _undoCount];
 
-      v4 = objc_loadWeakRetained((a1 + 16));
-      v5 = [(PKSqueezePaletteView *)v4 _redoCount];
+      v4 = objc_loadWeakRetained((self + 16));
+      _redoCount = [(PKSqueezePaletteView *)v4 _redoCount];
 
-      *(a1 + 32) = v5 + v3;
-      *(a1 + 40) = v5;
-      *(a1 + 48) = v5;
-      *(a1 + 56) = v5;
-      v54 = [a1 ornamentLayer];
-      if (!v54)
+      *(self + 32) = _redoCount + _undoCount;
+      *(self + 40) = _redoCount;
+      *(self + 48) = _redoCount;
+      *(self + 56) = _redoCount;
+      ornamentLayer = [self ornamentLayer];
+      if (!ornamentLayer)
       {
         v6 = objc_alloc_init(MEMORY[0x1E69794A0]);
         v7 = [objc_alloc(MEMORY[0x1E69DC888]) initWithWhite:1.0 alpha:{1.0, 0}];
-        v54 = v6;
+        ornamentLayer = v6;
         [v6 setFillColor:{objc_msgSend(v7, "CGColor")}];
 
-        v8 = [v58 layer];
-        [v8 addSublayer:v6];
+        layer = [paletteView layer];
+        [layer addSublayer:v6];
 
         [v6 setZPosition:3.0];
-        [a1 setOrnamentLayer:v6];
+        [self setOrnamentLayer:v6];
       }
 
-      v9 = *(a1 + 24);
+      v9 = *(self + 24);
       if (!v9 || (v10 = *(v9 + 8)) == 0)
       {
         PKCrash();
       }
 
       v60 = v10;
-      v11 = [v10 layer];
-      [v11 setZPosition:2.0];
+      layer2 = [v10 layer];
+      [layer2 setZPosition:2.0];
 
       [v60 center];
       v13 = v12;
       v15 = v14;
-      v16 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)a1 _viewCenter];
-      v18 = atan2(v15 - v17, v13 - v16);
+      _viewCenter = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _viewCenter];
+      v18 = atan2(v15 - v17, v13 - _viewCenter);
       v19 = fmod(v18, 6.28318531);
       if (v18 <= 6.28318531 && v18 >= 0.0)
       {
@@ -122,41 +122,41 @@
         v19 = 0.0;
       }
 
-      *(a1 + 64) = v19;
-      *(a1 + 72) = v19;
+      *(self + 64) = v19;
+      *(self + 72) = v19;
       v21 = *(MEMORY[0x1E695EFD0] + 16);
       v64 = *MEMORY[0x1E695EFD0];
       v65 = v21;
       v66 = *(MEMORY[0x1E695EFD0] + 32);
-      [v60 setTransform:{&v64, v54}];
-      v22 = [v60 configuration];
-      v23 = [v22 copy];
-      v24 = *(a1 + 80);
-      *(a1 + 80) = v23;
+      [v60 setTransform:{&v64, ornamentLayer}];
+      configuration = [v60 configuration];
+      v23 = [configuration copy];
+      v24 = *(self + 80);
+      *(self + 80) = v23;
 
-      v25 = [a1 sliderButtonConfiguration];
-      [v60 setConfiguration:v25];
+      sliderButtonConfiguration = [self sliderButtonConfiguration];
+      [v60 setConfiguration:sliderButtonConfiguration];
 
-      v26 = [a1 sliderButtonConstraintCenterX];
-      LODWORD(v25) = v26 == 0;
+      sliderButtonConstraintCenterX = [self sliderButtonConstraintCenterX];
+      LODWORD(sliderButtonConfiguration) = sliderButtonConstraintCenterX == 0;
 
-      if (v25)
+      if (sliderButtonConfiguration)
       {
-        v27 = [v60 centerXAnchor];
-        v28 = [v58 centerXAnchor];
-        v29 = [v27 constraintEqualToAnchor:v28];
-        [a1 setSliderButtonConstraintCenterX:v29];
+        centerXAnchor = [v60 centerXAnchor];
+        centerXAnchor2 = [paletteView centerXAnchor];
+        v29 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+        [self setSliderButtonConstraintCenterX:v29];
 
-        v30 = [v60 centerYAnchor];
-        v31 = [v58 centerYAnchor];
-        v32 = [v30 constraintEqualToAnchor:v31];
-        [a1 setSliderButtonConstraintCenterY:v32];
+        centerYAnchor = [v60 centerYAnchor];
+        centerYAnchor2 = [paletteView centerYAnchor];
+        v32 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+        [self setSliderButtonConstraintCenterY:v32];
 
         v33 = MEMORY[0x1E696ACD8];
-        v34 = [a1 sliderButtonConstraintCenterX];
-        v67[0] = v34;
-        v35 = [a1 sliderButtonConstraintCenterY];
-        v67[1] = v35;
+        sliderButtonConstraintCenterX2 = [self sliderButtonConstraintCenterX];
+        v67[0] = sliderButtonConstraintCenterX2;
+        sliderButtonConstraintCenterY = [self sliderButtonConstraintCenterY];
+        v67[1] = sliderButtonConstraintCenterY;
         v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:2];
         [v33 activateConstraints:v36];
       }
@@ -166,28 +166,28 @@
 
       if (v38)
       {
-        [v60 addTarget:a1 action:sel__didTapSliderButton_ forControlEvents:64];
+        [v60 addTarget:self action:sel__didTapSliderButton_ forControlEvents:64];
       }
 
-      v39 = [a1 panGestureRecognizer];
-      v40 = v39 == 0;
+      panGestureRecognizer = [self panGestureRecognizer];
+      v40 = panGestureRecognizer == 0;
 
       if (v40)
       {
-        v41 = [objc_alloc(MEMORY[0x1E69DCD28]) initWithTarget:a1 action:sel__panGestureHandler_];
+        v41 = [objc_alloc(MEMORY[0x1E69DCD28]) initWithTarget:self action:sel__panGestureHandler_];
         [v60 addGestureRecognizer:v41];
-        [a1 setPanGestureRecognizer:v41];
+        [self setPanGestureRecognizer:v41];
       }
 
       v59 = [objc_alloc(MEMORY[0x1E69DD530]) initWithDimensions:1];
-      [v59 _setDelegate:a1];
-      [a1 setHyperInteractor:v59];
+      [v59 _setDelegate:self];
+      [self setHyperInteractor:v59];
       v57 = [objc_alloc(MEMORY[0x1E69DD520]) initWithDimensions:1];
       [v57 _setMaximumDistance:0.13962634];
       [v59 _setExtender:v57];
       v56 = [objc_alloc(MEMORY[0x1E69DD548]) initWithDimensions:1];
       v42 = objc_opt_new();
-      if (([a1 maxUndoIndex] & 0x8000000000000000) == 0)
+      if (([self maxUndoIndex] & 0x8000000000000000) == 0)
       {
         v43 = -1;
         v44 = MEMORY[0x1E69E9820];
@@ -198,7 +198,7 @@
           *(&v64 + 1) = 3221225472;
           *&v65 = __69__PKSqueezePaletteViewExpandedUndoRedoLayout__installHyperInteractor__block_invoke;
           *(&v65 + 1) = &unk_1E82D6908;
-          *&v66 = a1;
+          *&v66 = self;
           *(&v66 + 1) = v43 + 1;
           [v45 _mutateValue:&v64];
           [v42 addObject:v45];
@@ -206,20 +206,20 @@
           ++v43;
         }
 
-        while (v43 < [a1 maxUndoIndex]);
+        while (v43 < [self maxUndoIndex]);
       }
 
       [v56 _setRegions:v42];
       [v59 _setRegion:v56];
       v46 = [objc_alloc(MEMORY[0x1E69DD528]) initWithDimensions:1];
       [v59 _setAnimator:v46];
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       newValue[0] = MEMORY[0x1E69E9820];
       newValue[1] = 3221225472;
       newValue[2] = __69__PKSqueezePaletteViewExpandedUndoRedoLayout__installHyperInteractor__block_invoke_2;
       newValue[3] = &unk_1E82D69B8;
       objc_copyWeak(&v62, &location);
-      v47 = objc_loadWeakRetained((a1 + 16));
+      v47 = objc_loadWeakRetained((self + 16));
       v49 = v47;
       if (v47)
       {
@@ -229,15 +229,15 @@
       objc_destroyWeak(&v62);
       objc_destroyWeak(&location);
 
-      v50 = *(a1 + 24);
+      v50 = *(self + 24);
       if (v50)
       {
         v51 = *(v50 + 16);
         v52 = v51;
         if (v51 && ([v51 state] == 1 || objc_msgSend(v52, "state") == 2))
         {
-          v53 = [a1 hyperInteractor];
-          [v53 _interactionBegan];
+          hyperInteractor = [self hyperInteractor];
+          [hyperInteractor _interactionBegan];
         }
       }
 
@@ -246,15 +246,15 @@
         v52 = 0;
       }
 
-      [a1 updateUI];
+      [self updateUI];
     }
   }
 }
 
 - (double)_viewCenter
 {
-  v1 = [a1 paletteView];
-  [v1 bounds];
+  paletteView = [self paletteView];
+  [paletteView bounds];
   v3 = v2;
   v5 = v4;
   v7 = v6;
@@ -335,35 +335,35 @@ uint64_t __61__PKSqueezePaletteViewExpandedUndoRedoLayout__layoutSubviews__block
   return result;
 }
 
-- (void)setSliderButtonAngle:(double)a3
+- (void)setSliderButtonAngle:(double)angle
 {
-  self->_sliderButtonAngle = a3;
+  self->_sliderButtonAngle = angle;
   [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self updateUI];
-  v4 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self currentUndoIndex];
+  currentUndoIndex = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self currentUndoIndex];
   [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self sliderButtonAngle];
   v6 = v5;
   [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialSliderButtonAngle];
-  v8 = v7 + (v4 - [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialUndoIndex]+ 1) * -0.34906585;
+  v8 = v7 + (currentUndoIndex - [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialUndoIndex]+ 1) * -0.34906585;
   [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialSliderButtonAngle];
   v10 = v9;
-  v11 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialUndoIndex];
+  initialUndoIndex = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialUndoIndex];
   if (v6 <= v8 + 0.174532925)
   {
-    v13 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex];
-    v12 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
-    if (v4 >= v13)
+    maxUndoIndex = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex];
+    paletteView = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
+    if (currentUndoIndex >= maxUndoIndex)
     {
       goto LABEL_11;
     }
 
-    v20 = v12;
+    v20 = paletteView;
     WeakRetained = objc_loadWeakRetained(&self->_paletteView);
     [(PKSqueezePaletteView *)WeakRetained _didUndo];
 
     [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self setCurrentUndoIndex:[(PKSqueezePaletteViewExpandedUndoRedoLayout *)self currentUndoIndex]+ 1];
     [v20 setNeedsLayout];
-    v15 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self currentUndoIndex];
-    if (v15 != [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex])
+    currentUndoIndex2 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self currentUndoIndex];
+    if (currentUndoIndex2 != [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex])
     {
       goto LABEL_9;
     }
@@ -371,16 +371,16 @@ uint64_t __61__PKSqueezePaletteViewExpandedUndoRedoLayout__layoutSubviews__block
     goto LABEL_6;
   }
 
-  if (v6 < v10 + (v4 + ~v11) * -0.34906585 + -0.174532925)
+  if (v6 < v10 + (currentUndoIndex + ~initialUndoIndex) * -0.34906585 + -0.174532925)
   {
-    v12 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
+    paletteView = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
     goto LABEL_11;
   }
 
-  v12 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
-  if (v4 > 0)
+  paletteView = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
+  if (currentUndoIndex > 0)
   {
-    v20 = v12;
+    v20 = paletteView;
     v17 = objc_loadWeakRetained(&self->_paletteView);
     [(PKSqueezePaletteView *)v17 _didRedo];
 
@@ -396,22 +396,22 @@ LABEL_9:
 LABEL_6:
     v16 = 1026;
 LABEL_10:
-    v18 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self feedbackGenerator];
-    v19 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self senderIDForLastPanGesture];
-    [v18 _privateNotificationOccurred:v16 atLocation:v19 senderID:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    feedbackGenerator = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self feedbackGenerator];
+    senderIDForLastPanGesture = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self senderIDForLastPanGesture];
+    [feedbackGenerator _privateNotificationOccurred:v16 atLocation:senderIDForLastPanGesture senderID:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
 
-    v12 = v20;
+    paletteView = v20;
   }
 
 LABEL_11:
 }
 
-- (void)_didTapSliderButton:(id)a3
+- (void)_didTapSliderButton:(id)button
 {
   if (self)
   {
     context = self->_context;
-    v5 = a3;
+    buttonCopy = button;
     if (context)
     {
       previousLayout = context->_previousLayout;
@@ -421,24 +421,24 @@ LABEL_11:
 
   else
   {
-    v9 = a3;
+    buttonCopy2 = button;
   }
 
   previousLayout = 0;
 LABEL_4:
   v7 = previousLayout;
-  v8 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
-  [(PKSqueezePaletteView *)v8 setCurrentLayout:v7];
+  paletteView = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
+  [(PKSqueezePaletteView *)paletteView setCurrentLayout:v7];
 
-  [a3 removeTarget:self action:sel__didTapSliderButton_ forControlEvents:64];
+  [button removeTarget:self action:sel__didTapSliderButton_ forControlEvents:64];
 }
 
 - (double)_outerRadius
 {
-  v1 = [a1 paletteView];
-  if (v1)
+  paletteView = [self paletteView];
+  if (paletteView)
   {
-    v2 = v1[62];
+    v2 = paletteView[62];
   }
 
   else
@@ -453,10 +453,10 @@ LABEL_4:
 
 - (double)_innerRadius
 {
-  v1 = [a1 paletteView];
-  if (v1)
+  paletteView = [self paletteView];
+  if (paletteView)
   {
-    v2 = v1[62];
+    v2 = paletteView[62];
   }
 
   else
@@ -482,24 +482,24 @@ LABEL_4:
     goto LABEL_60;
   }
 
-  v3 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
-  v4 = [(PKSqueezePaletteView *)v3 _undoCount];
-  v5 = [(PKSqueezePaletteView *)v3 _redoCount];
-  if ([(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex]== v5 + v4)
+  paletteView = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
+  _undoCount = [(PKSqueezePaletteView *)paletteView _undoCount];
+  _redoCount = [(PKSqueezePaletteView *)paletteView _redoCount];
+  if ([(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex]== _redoCount + _undoCount)
   {
-    v6 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self currentUndoIndex];
+    currentUndoIndex = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self currentUndoIndex];
 
-    if (v6 == v5)
+    if (currentUndoIndex == _redoCount)
     {
       [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self setIsUpdateUIRunning:1];
       [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialSliderButtonAngle];
       v8 = v7 + [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self]* -0.34906585;
-      v9 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex];
+      maxUndoIndex = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex];
       [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialSliderButtonAngle];
-      v11 = v10 + (v9 - [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialUndoIndex]) * -0.34906585;
+      v11 = v10 + (maxUndoIndex - [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialUndoIndex]) * -0.34906585;
       [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self sliderButtonAngle];
       v13 = v12;
-      v14 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex];
+      maxUndoIndex2 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex];
       if (v8 >= v13)
       {
         if (v11 <= v13)
@@ -513,7 +513,7 @@ LABEL_4:
           v15 = 0;
           v16 = v8 - (v11 - v13);
           v11 = v13;
-          if (v14 == 17)
+          if (maxUndoIndex2 == 17)
           {
             v13 = v16;
           }
@@ -528,7 +528,7 @@ LABEL_4:
       else
       {
         v15 = 0;
-        if (v14 == 17)
+        if (maxUndoIndex2 == 17)
         {
           v11 = v13 - v8 + v11;
         }
@@ -560,59 +560,59 @@ LABEL_4:
         v15 = 0;
       }
 
-      v21 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
-      [(PKSqueezePaletteView *)v21 updateUIStartAngle:v15 endAngle:v18 clockwise:v19 animated:?];
+      paletteView2 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
+      [(PKSqueezePaletteView *)paletteView2 updateUIStartAngle:v15 endAngle:v18 clockwise:v19 animated:?];
 
-      v22 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self ornamentLayer];
-      if (v22)
+      ornamentLayer = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self ornamentLayer];
+      if (ornamentLayer)
       {
-        v23 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _outerRadius];
-        v24 = v23 - [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _innerRadius];
+        _outerRadius = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _outerRadius];
+        v24 = _outerRadius - [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _innerRadius];
         v25 = [MEMORY[0x1E69DC728] bezierPathWithArcCenter:0 radius:-[PKSqueezePaletteViewExpandedUndoRedoLayout _viewCenter](self) startAngle:? endAngle:? clockwise:?];
-        v26 = [v25 CGPath];
-        [v22 miterLimit];
-        CopyByStrokingPath = CGPathCreateCopyByStrokingPath(v26, 0, v24, (v17 < 6.28318531), kCGLineJoinMiter, v27);
-        v29 = [v25 CGPath];
-        [v22 miterLimit];
-        v31 = CGPathCreateCopyByStrokingPath(v29, 0, v24 + v23 * -0.025, (v17 < 6.28318531), kCGLineJoinMiter, v30);
+        cGPath = [v25 CGPath];
+        [ornamentLayer miterLimit];
+        CopyByStrokingPath = CGPathCreateCopyByStrokingPath(cGPath, 0, v24, (v17 < 6.28318531), kCGLineJoinMiter, v27);
+        cGPath2 = [v25 CGPath];
+        [ornamentLayer miterLimit];
+        v31 = CGPathCreateCopyByStrokingPath(cGPath2, 0, v24 + _outerRadius * -0.025, (v17 < 6.28318531), kCGLineJoinMiter, v30);
         CopyBySubtractingPath = CGPathCreateCopyBySubtractingPath(CopyByStrokingPath, v31, 1);
         CGPathRelease(CopyByStrokingPath);
         CGPathRelease(v31);
         [MEMORY[0x1E6979518] begin];
         [MEMORY[0x1E6979518] setDisableActions:1];
-        [v22 setPath:CopyBySubtractingPath];
+        [ornamentLayer setPath:CopyBySubtractingPath];
         [MEMORY[0x1E6979518] commit];
         CGPathRelease(CopyBySubtractingPath);
       }
 
-      v33 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
+      paletteView3 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
       v34 = MEMORY[0x1E695EFF8];
-      if (v33)
+      if (paletteView3)
       {
-        v35 = v33;
-        v36 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self tickLayers];
-        v37 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex];
+        v35 = paletteView3;
+        tickLayers = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self tickLayers];
+        maxUndoIndex3 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex];
         v38 = 17;
-        if (v37 < 17)
+        if (maxUndoIndex3 < 17)
         {
-          v38 = v37;
+          v38 = maxUndoIndex3;
         }
 
         v39 = v38 + 1;
         [MEMORY[0x1E6979518] begin];
         [MEMORY[0x1E6979518] setDisableActions:1];
-        if ([v36 count] != v39)
+        if ([tickLayers count] != v39)
         {
           [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self setIsTicksFadedOutAtHead:0];
           [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self setIsTicksFadedOutAtTail:0];
-          if (!v36)
+          if (!tickLayers)
           {
-            v36 = objc_opt_new();
+            tickLayers = objc_opt_new();
           }
 
-          [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self setTickLayers:v36];
-          [v36 makeObjectsPerformSelector:sel_removeFromSuperlayer];
-          [v36 removeAllObjects];
+          [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self setTickLayers:tickLayers];
+          [tickLayers makeObjectsPerformSelector:sel_removeFromSuperlayer];
+          [tickLayers removeAllObjects];
           if (v39)
           {
             v40 = v39;
@@ -621,17 +621,17 @@ LABEL_4:
             v42 = v40;
             do
             {
-              v43 = [MEMORY[0x1E69794A0] layer];
+              layer = [MEMORY[0x1E69794A0] layer];
               v44 = [MEMORY[0x1E69DC888] colorWithWhite:0.83 alpha:1.0];
-              [v43 setFillColor:{objc_msgSend(v44, "CGColor")}];
+              [layer setFillColor:{objc_msgSend(v44, "CGColor")}];
 
-              [v43 setAnchorPoint:{0.5, 0.5}];
-              [v43 setZPosition:1.0];
+              [layer setAnchorPoint:{0.5, 0.5}];
+              [layer setZPosition:1.0];
               v45 = v41[69];
-              v46 = [v45 layer];
-              [v46 addSublayer:v43];
+              layer2 = [v45 layer];
+              [layer2 addSublayer:layer];
 
-              [v36 addObject:v43];
+              [tickLayers addObject:layer];
               --v42;
             }
 
@@ -642,15 +642,15 @@ LABEL_4:
           }
         }
 
-        v47 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _viewCenter];
+        _viewCenter = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _viewCenter];
         v100 = v48;
-        v49 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _outerRadius];
-        v50 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _outerRadius];
-        v51 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _innerRadius];
+        _outerRadius2 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _outerRadius];
+        _outerRadius3 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _outerRadius];
+        _innerRadius = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _innerRadius];
         if (v39)
         {
-          v98 = v49 + (v50 - v51) * -0.5;
-          v52 = DKDRoundedRectForScale(0.0, 0.0, v49 * 0.1156, v49 * 0.1156 * 0.18, 1.0);
+          v98 = _outerRadius2 + (_outerRadius3 - _innerRadius) * -0.5;
+          v52 = DKDRoundedRectForScale(0.0, 0.0, _outerRadius2 * 0.1156, _outerRadius2 * 0.1156 * 0.18, 1.0);
           v54 = v53;
           v56 = v55;
           v58 = v57;
@@ -659,21 +659,21 @@ LABEL_4:
           v60 = v34[1];
           do
           {
-            v62 = [v36 objectAtIndex:v59];
+            v62 = [tickLayers objectAtIndex:v59];
             v63 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:v52 cornerRadius:{v54, v56, v58, 2.0}];
             [v62 setPath:{objc_msgSend(v63, "CGPath")}];
 
-            [v62 setPosition:{v47, v100}];
+            [v62 setPosition:{_viewCenter, v100}];
             [v62 setBounds:{v52, v54, v56, v58}];
             [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialSliderButtonAngle];
-            v64 = v47;
+            v64 = _viewCenter;
             v66 = v65 + (v59 - [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialUndoIndex]) * -0.34906585;
             v67 = PKPointOnArc(v61, v60, v98, v66);
             memset(&v103, 0, sizeof(v103));
             CATransform3DMakeTranslation(&v103, v67, v68, 0.0);
             v101 = v103;
             v69 = v66;
-            v47 = v64;
+            _viewCenter = v64;
             CATransform3DRotate(&v102, &v101, v69, 0.0, 0.0, 1.0);
             v103 = v102;
             [v62 setTransform:&v102];
@@ -693,21 +693,21 @@ LABEL_4:
         v71 = context->_sliderButton;
         if (v71)
         {
-          v72 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _outerRadius];
-          v73 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _innerRadius];
-          v74 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _outerRadius];
-          v75 = (v72 - v73) * 0.5 - (v74 - [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _innerRadius]) * 0.88 * 0.5;
-          v76 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _outerRadius];
-          v77 = (v76 - [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _innerRadius]) * 0.88 * 0.5;
+          _outerRadius4 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _outerRadius];
+          _innerRadius2 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _innerRadius];
+          _outerRadius5 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _outerRadius];
+          v75 = (_outerRadius4 - _innerRadius2) * 0.5 - (_outerRadius5 - [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _innerRadius]) * 0.88 * 0.5;
+          _outerRadius6 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _outerRadius];
+          v77 = (_outerRadius6 - [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _innerRadius]) * 0.88 * 0.5;
           v78 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _innerRadius]+ v75 + v77;
           [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self sliderButtonAngle];
           v80 = PKPointOnArc(*v34, v34[1], v78, v79);
           v82 = v81;
-          v83 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self sliderButtonConstraintCenterX];
-          [v83 setConstant:v80];
+          sliderButtonConstraintCenterX = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self sliderButtonConstraintCenterX];
+          [sliderButtonConstraintCenterX setConstant:v80];
 
-          v84 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self sliderButtonConstraintCenterY];
-          [v84 setConstant:v82];
+          sliderButtonConstraintCenterY = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self sliderButtonConstraintCenterY];
+          [sliderButtonConstraintCenterY setConstant:v82];
         }
       }
 
@@ -716,24 +716,24 @@ LABEL_4:
         v71 = 0;
       }
 
-      v85 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex];
-      if (v85 < 18)
+      maxUndoIndex4 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex];
+      if (maxUndoIndex4 < 18)
       {
         goto LABEL_60;
       }
 
-      v86 = v85;
+      v86 = maxUndoIndex4;
       [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self sliderButtonAngle];
       v88 = v87;
       [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialSliderButtonAngle];
       v90 = v89 + [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self]* -0.34906585;
       [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialSliderButtonAngle];
       v92 = v91;
-      v93 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialUndoIndex];
+      initialUndoIndex = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialUndoIndex];
       v94 = v90 + -3.14159265;
       if (v88 > v90 || v88 <= v94 || [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self isTicksFadedOutAtHead])
       {
-        v95 = v92 + (v86 - v93) * -0.34906585 + 3.14159265;
+        v95 = v92 + (v86 - initialUndoIndex) * -0.34906585 + 3.14159265;
         if (v88 > v94 || v88 <= v95 || ![(PKSqueezePaletteViewExpandedUndoRedoLayout *)self isTicksFadedOutAtHead]&& ![(PKSqueezePaletteViewExpandedUndoRedoLayout *)self isTicksFadedOutAtTail])
         {
           if (v88 <= v95 && ![(PKSqueezePaletteViewExpandedUndoRedoLayout *)self isTicksFadedOutAtTail])
@@ -745,17 +745,17 @@ LABEL_4:
           goto LABEL_60;
         }
 
-        v96 = self;
+        selfCopy2 = self;
         v97 = 0;
       }
 
       else
       {
-        v96 = self;
+        selfCopy2 = self;
         v97 = 1;
       }
 
-      [(PKSqueezePaletteViewExpandedUndoRedoLayout *)v96 _fadeOutTickAtHead:v97];
+      [(PKSqueezePaletteViewExpandedUndoRedoLayout *)selfCopy2 _fadeOutTickAtHead:v97];
       [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _fadeOutTickAtTail:?];
 LABEL_60:
 
@@ -771,28 +771,28 @@ LABEL_60:
   [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _resetUI];
 }
 
-- (void)willTransitionToLayout:(id)a3
+- (void)willTransitionToLayout:(id)layout
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self ornamentLayer];
-  [v4 removeFromSuperlayer];
+  ornamentLayer = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self ornamentLayer];
+  [ornamentLayer removeFromSuperlayer];
 
   [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self setOrnamentLayer:0];
-  v5 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self tickLayers];
-  [v5 enumerateObjectsUsingBlock:&__block_literal_global_1];
+  tickLayers = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self tickLayers];
+  [tickLayers enumerateObjectsUsingBlock:&__block_literal_global_1];
 
   [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self setTickLayers:0];
   v6 = MEMORY[0x1E696ACD8];
-  v7 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self sliderButtonConstraintCenterX];
-  v13[0] = v7;
-  v8 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self sliderButtonConstraintCenterY];
-  v13[1] = v8;
+  sliderButtonConstraintCenterX = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self sliderButtonConstraintCenterX];
+  v13[0] = sliderButtonConstraintCenterX;
+  sliderButtonConstraintCenterY = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self sliderButtonConstraintCenterY];
+  v13[1] = sliderButtonConstraintCenterY;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
   [v6 deactivateConstraints:v9];
 
   [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self setSliderButtonConstraintCenterX:0];
   [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self setSliderButtonConstraintCenterY:0];
-  v10 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self originalSliderButtonConfiguration];
+  originalSliderButtonConfiguration = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self originalSliderButtonConfiguration];
   if (self)
   {
     context = self->_context;
@@ -808,12 +808,12 @@ LABEL_60:
   }
 
   v12 = context;
-  [(PKSqueezePaletteViewExpandedUndoRedoLayoutContext *)v12 setConfiguration:v10];
+  [(PKSqueezePaletteViewExpandedUndoRedoLayoutContext *)v12 setConfiguration:originalSliderButtonConfiguration];
 
   [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self setHyperInteractor:0];
 }
 
-- (void)handlePencilInteractionDidTap:(int64_t)a3
+- (void)handlePencilInteractionDidTap:(int64_t)tap
 {
   context = self->_context;
   if (context)
@@ -826,32 +826,32 @@ LABEL_60:
   [(PKSqueezePaletteView *)WeakRetained setCurrentLayout:v6];
 }
 
-- (void)_panGestureHandler:(id)a3
+- (void)_panGestureHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
-  if (v5)
+  handlerCopy = handler;
+  paletteView = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
+  if (paletteView)
   {
-    v6 = [v4 state];
-    v7 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self hyperInteractor];
-    v8 = v7;
-    if ((v6 - 3) < 2)
+    state = [handlerCopy state];
+    hyperInteractor = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self hyperInteractor];
+    v8 = hyperInteractor;
+    if ((state - 3) < 2)
     {
-      v32 = [v7 _projectedPoint];
+      _projectedPoint = [hyperInteractor _projectedPoint];
       if (self)
       {
-        v33 = *v32;
+        v33 = *_projectedPoint;
         [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialSliderButtonAngle];
         v35 = ((v34 + [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self]* -0.34906585 - v33 + 0.174532925) / 0.34906585);
-        v36 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex];
-        if (v36 >= v35)
+        maxUndoIndex = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self maxUndoIndex];
+        if (maxUndoIndex >= v35)
         {
           v37 = v35;
         }
 
         else
         {
-          v37 = v36;
+          v37 = maxUndoIndex;
         }
 
         v38 = v37 & ~(v37 >> 63);
@@ -868,16 +868,16 @@ LABEL_60:
 
     else
     {
-      if (v6 == 2)
+      if (state == 2)
       {
 LABEL_6:
-        [v4 locationInView:v5];
+        [handlerCopy locationInView:paletteView];
         if (self)
         {
           v11 = v9;
           v12 = v10;
-          v13 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _viewCenter];
-          v15 = atan2(v12 - v14, v11 - v13);
+          _viewCenter = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self _viewCenter];
+          v15 = atan2(v12 - v14, v11 - _viewCenter);
           v16 = fmod(v15, 6.28318531);
           if (v15 <= 6.28318531 && v15 >= 0.0)
           {
@@ -931,9 +931,9 @@ LABEL_6:
             v26 = v19;
           }
 
-          v27 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self modelUndoIndex];
+          modelUndoIndex = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self modelUndoIndex];
           [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialSliderButtonAngle];
-          v29 = v26 - (v28 + (v27 - [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialUndoIndex]) * -0.34906585);
+          v29 = v26 - (v28 + (modelUndoIndex - [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self initialUndoIndex]) * -0.34906585);
         }
 
         else
@@ -942,13 +942,13 @@ LABEL_6:
           v29 = 0.0;
         }
 
-        v30 = [v4 _activeEvents];
-        v31 = [v30 anyObject];
+        _activeEvents = [handlerCopy _activeEvents];
+        anyObject = [_activeEvents anyObject];
 
         [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self setSenderIDForLastPanGesture:0];
-        if ([v31 _hidEvent])
+        if ([anyObject _hidEvent])
         {
-          [v31 _hidEvent];
+          [anyObject _hidEvent];
           [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self setSenderIDForLastPanGesture:IOHIDEventGetSenderID()];
         }
 
@@ -962,9 +962,9 @@ LABEL_6:
         goto LABEL_36;
       }
 
-      if (v6 == 1)
+      if (state == 1)
       {
-        [v7 _interactionBegan];
+        [hyperInteractor _interactionBegan];
         goto LABEL_6;
       }
     }
@@ -980,11 +980,11 @@ double __65__PKSqueezePaletteViewExpandedUndoRedoLayout__panGestureHandler___blo
   return result;
 }
 
-- (void)_fadeOutTickAtHead:(void *)a1
+- (void)_fadeOutTickAtHead:(void *)head
 {
-  if ([a1 isTicksFadedOutAtHead] != a2)
+  if ([head isTicksFadedOutAtHead] != a2)
   {
-    [a1 setIsTicksFadedOutAtHead:a2];
+    [head setIsTicksFadedOutAtHead:a2];
     v4 = 1;
     for (i = 17; i != 13; --i)
     {
@@ -999,8 +999,8 @@ double __65__PKSqueezePaletteViewExpandedUndoRedoLayout__panGestureHandler___blo
       }
 
       v7 = [MEMORY[0x1E69DC888] colorWithWhite:0.83 alpha:v6];
-      v8 = [a1 tickLayers];
-      v9 = [v8 objectAtIndex:i];
+      tickLayers = [head tickLayers];
+      v9 = [tickLayers objectAtIndex:i];
       [v9 setFillColor:{objc_msgSend(v7, "CGColor")}];
 
       ++v4;
@@ -1008,13 +1008,13 @@ double __65__PKSqueezePaletteViewExpandedUndoRedoLayout__panGestureHandler___blo
   }
 }
 
-- (void)_fadeOutTickAtTail:(void *)a1
+- (void)_fadeOutTickAtTail:(void *)tail
 {
-  if ([a1 isTicksFadedOutAtTail] != a2)
+  if ([tail isTicksFadedOutAtTail] != a2)
   {
-    [a1 setIsTicksFadedOutAtTail:a2];
-    v4 = [a1 maxUndoIndex];
-    v5 = v4 + 1;
+    [tail setIsTicksFadedOutAtTail:a2];
+    maxUndoIndex = [tail maxUndoIndex];
+    v5 = maxUndoIndex + 1;
     for (i = 1; i != 5; ++i)
     {
       if (a2)
@@ -1028,8 +1028,8 @@ double __65__PKSqueezePaletteViewExpandedUndoRedoLayout__panGestureHandler___blo
       }
 
       v8 = [MEMORY[0x1E69DC888] colorWithWhite:0.83 alpha:v7];
-      v9 = [a1 tickLayers];
-      v10 = [v9 objectAtIndex:i + v4 - 18 * (v5 / 0x12)];
+      tickLayers = [tail tickLayers];
+      v10 = [tickLayers objectAtIndex:i + maxUndoIndex - 18 * (v5 / 0x12)];
       [v10 setFillColor:{objc_msgSend(v8, "CGColor")}];
 
       ++v5;
@@ -1037,18 +1037,18 @@ double __65__PKSqueezePaletteViewExpandedUndoRedoLayout__panGestureHandler___blo
   }
 }
 
-- (void)_hyperInteractorApplyPresentationPoint:(id)a3
+- (void)_hyperInteractorApplyPresentationPoint:(id)point
 {
-  v4 = a3;
-  v5 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self hyperInteractor];
+  pointCopy = point;
+  hyperInteractor = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self hyperInteractor];
 
-  if (v5 == v4)
+  if (hyperInteractor == pointCopy)
   {
-    v6 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
-    [v6 setNeedsLayout];
+    paletteView = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
+    [paletteView setNeedsLayout];
 
-    v7 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
-    [v7 layoutIfNeeded];
+    paletteView2 = [(PKSqueezePaletteViewExpandedUndoRedoLayout *)self paletteView];
+    [paletteView2 layoutIfNeeded];
   }
 }
 

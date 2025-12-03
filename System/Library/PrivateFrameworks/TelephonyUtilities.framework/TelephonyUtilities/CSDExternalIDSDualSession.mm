@@ -1,69 +1,69 @@
 @interface CSDExternalIDSDualSession
 - (unint64_t)initialLinkType;
-- (void)acceptInvitationWithData:(id)a3;
-- (void)sendInvitationWithData:(id)a3;
-- (void)sessionProvider:(id)a3 receivedInvitationAcceptFromID:(id)a4 withData:(id)a5;
+- (void)acceptInvitationWithData:(id)data;
+- (void)sendInvitationWithData:(id)data;
+- (void)sessionProvider:(id)provider receivedInvitationAcceptFromID:(id)d withData:(id)data;
 @end
 
 @implementation CSDExternalIDSDualSession
 
 - (unint64_t)initialLinkType
 {
-  v2 = [(CSDIDSDualSession *)self sessionProvider];
-  v3 = [v2 initialLinkType];
+  sessionProvider = [(CSDIDSDualSession *)self sessionProvider];
+  initialLinkType = [sessionProvider initialLinkType];
 
-  return v3;
+  return initialLinkType;
 }
 
-- (void)sendInvitationWithData:(id)a3
+- (void)sendInvitationWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"non-nil";
-    if (!v4)
+    if (!dataCopy)
     {
       v6 = @"nil";
     }
 
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "self: %@ data: %@", &v7, 0x16u);
   }
 
-  [(CSDIDSDualSession *)self _sendInvitationWithData:v4 declineOnError:0 alwaysSendData:0];
+  [(CSDIDSDualSession *)self _sendInvitationWithData:dataCopy declineOnError:0 alwaysSendData:0];
 }
 
-- (void)acceptInvitationWithData:(id)a3
+- (void)acceptInvitationWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"non-nil";
-    if (!v4)
+    if (!dataCopy)
     {
       v6 = @"nil";
     }
 
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "self: %@ data: %@", &v7, 0x16u);
   }
 
-  [(CSDIDSDualSession *)self _acceptInvitationWithData:v4 alwaysSendData:0];
+  [(CSDIDSDualSession *)self _acceptInvitationWithData:dataCopy alwaysSendData:0];
 }
 
-- (void)sessionProvider:(id)a3 receivedInvitationAcceptFromID:(id)a4 withData:(id)a5
+- (void)sessionProvider:(id)provider receivedInvitationAcceptFromID:(id)d withData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  dCopy = d;
+  dataCopy = data;
   if ([(CSDExternalIDSDualSession *)self receivedInvitationAccept])
   {
     v11 = sub_100004778();
@@ -77,10 +77,10 @@
   else
   {
     [(CSDExternalIDSDualSession *)self setReceivedInvitationAccept:1];
-    [(CSDExternalIDSDualSession *)self setRemoteFromID:v9];
+    [(CSDExternalIDSDualSession *)self setRemoteFromID:dCopy];
     v12.receiver = self;
     v12.super_class = CSDExternalIDSDualSession;
-    [(CSDIDSDualSession *)&v12 sessionProvider:v8 receivedInvitationAcceptFromID:v9 withData:v10];
+    [(CSDIDSDualSession *)&v12 sessionProvider:providerCopy receivedInvitationAcceptFromID:dCopy withData:dataCopy];
   }
 }
 

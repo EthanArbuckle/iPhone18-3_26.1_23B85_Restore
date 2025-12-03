@@ -1,8 +1,8 @@
 @interface CNAssistantCommandPunchOut
-- (CNAssistantCommandPunchOut)punchOutWithServiceHelper:(id)a3;
+- (CNAssistantCommandPunchOut)punchOutWithServiceHelper:(id)helper;
 - (CNContactStore)contactStore;
 - (id)validate;
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation CNAssistantCommandPunchOut
@@ -22,18 +22,18 @@
   return contactStore;
 }
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v13 = a4;
-  v6 = a3;
+  helperCopy = helper;
+  completionCopy = completion;
   v11 = objc_msgSend_validate(self, v7, v8);
   if (!v11)
   {
-    v11 = objc_msgSend_punchOutWithServiceHelper_(self, v9, v13);
+    v11 = objc_msgSend_punchOutWithServiceHelper_(self, v9, helperCopy);
   }
 
   v12 = objc_msgSend_dictionary(v11, v9, v10);
-  v6[2](v6, v12);
+  completionCopy[2](completionCopy, v12);
 }
 
 - (id)validate
@@ -91,9 +91,9 @@ LABEL_12:
   return v25;
 }
 
-- (CNAssistantCommandPunchOut)punchOutWithServiceHelper:(id)a3
+- (CNAssistantCommandPunchOut)punchOutWithServiceHelper:(id)helper
 {
-  v4 = a3;
+  helperCopy = helper;
   v7 = objc_msgSend_domainItem(self, v5, v6);
   v8 = MEMORY[0x277CFBC50];
   v11 = objc_msgSend_identifier(v7, v9, v10);
@@ -113,7 +113,7 @@ LABEL_12:
   v25 = objc_msgSend_stringWithFormat_(v22, v24, @"addressbook://%@", v23);
   v27 = objc_msgSend_URLWithString_(v21, v26, v25);
 
-  LODWORD(v25) = objc_msgSend_openSensitiveURL_(v4, v28, v27);
+  LODWORD(v25) = objc_msgSend_openSensitiveURL_(helperCopy, v28, v27);
   if (v25)
   {
     v29 = objc_alloc_init(MEMORY[0x277D47218]);

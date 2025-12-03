@@ -1,30 +1,30 @@
 @interface WebGeolocation
-- (id)_initWithWebCoreGeolocation:(void *)a3;
+- (id)_initWithWebCoreGeolocation:(void *)geolocation;
 - (void)dealloc;
-- (void)setIsAllowed:(BOOL)a3;
+- (void)setIsAllowed:(BOOL)allowed;
 @end
 
 @implementation WebGeolocation
 
-- (id)_initWithWebCoreGeolocation:(void *)a3
+- (id)_initWithWebCoreGeolocation:(void *)geolocation
 {
   v5.receiver = self;
   v5.super_class = WebGeolocation;
   result = [(WebGeolocation *)&v5 init];
   if (result)
   {
-    ++*(a3 + 10);
-    *(result + 1) = a3;
+    ++*(geolocation + 10);
+    *(result + 1) = geolocation;
   }
 
   return result;
 }
 
-- (void)setIsAllowed:(BOOL)a3
+- (void)setIsAllowed:(BOOL)allowed
 {
   v3 = self->_private;
   v6 = 0;
-  WebCore::Geolocation::setIsAllowed(v3, a3, &v6);
+  WebCore::Geolocation::setIsAllowed(v3, allowed, &v6);
   v5 = v6;
   v6 = 0;
   if (v5)
@@ -43,10 +43,10 @@
   {
     if (*(v2 + 10) == 1)
     {
-      v3 = self;
+      selfCopy = self;
       v4 = MEMORY[0x1CCA64030](self->_private, a2);
       bmalloc::api::tzoneFree(v4, v5);
-      self = v3;
+      self = selfCopy;
     }
 
     else

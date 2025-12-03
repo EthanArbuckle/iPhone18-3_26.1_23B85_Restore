@@ -1,12 +1,12 @@
 @interface MessageListPositionHelper
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
 - (CGRect)_visibleRectInMessageList;
-- (MessageListPositionHelper)initWithCollectionView:(id)a3 dataSource:(id)a4;
+- (MessageListPositionHelper)initWithCollectionView:(id)view dataSource:(id)source;
 - (NSArray)actuallyVisibleItemIDs;
-- (id)_firstVisibleIndexPathForCollectionView:(id)a3;
-- (void)_calculateStartingPositionForCollectionView:(id)a3 dataSource:(id)a4;
+- (id)_firstVisibleIndexPathForCollectionView:(id)view;
+- (void)_calculateStartingPositionForCollectionView:(id)view dataSource:(id)source;
 - (void)recalculateFirstVisibleIndex;
-- (void)setUserIsScrolling:(BOOL)a3;
+- (void)setUserIsScrolling:(BOOL)scrolling;
 @end
 
 @implementation MessageListPositionHelper
@@ -18,50 +18,50 @@ uint64_t ___ef_log_MessageListPositionHelper_block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (MessageListPositionHelper)initWithCollectionView:(id)a3 dataSource:(id)a4
+- (MessageListPositionHelper)initWithCollectionView:(id)view dataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = MessageListPositionHelper;
   v9 = [(MessageListPositionHelper *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_collectionView, a3);
-    objc_storeStrong(&v10->_dataSource, a4);
-    [(MessageListPositionHelper *)v10 _calculateStartingPositionForCollectionView:v7 dataSource:v8];
+    objc_storeStrong(&v9->_collectionView, view);
+    objc_storeStrong(&v10->_dataSource, source);
+    [(MessageListPositionHelper *)v10 _calculateStartingPositionForCollectionView:viewCopy dataSource:sourceCopy];
   }
 
   return v10;
 }
 
-- (void)setUserIsScrolling:(BOOL)a3
+- (void)setUserIsScrolling:(BOOL)scrolling
 {
-  if (self->_userIsScrolling != a3)
+  if (self->_userIsScrolling != scrolling)
   {
-    self->_userIsScrolling = a3;
-    if (!a3)
+    self->_userIsScrolling = scrolling;
+    if (!scrolling)
     {
       [(MessageListPositionHelper *)self recalculateFirstVisibleIndex];
     }
   }
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v41 = *MEMORY[0x277D85DE8];
   if (![(MessageListPositionHelper *)self userIsScrolling])
   {
-    v6 = [(MessageListPositionHelper *)self firstVisibleItemID];
+    firstVisibleItemID = [(MessageListPositionHelper *)self firstVisibleItemID];
 
-    if (v6)
+    if (firstVisibleItemID)
     {
-      v7 = [(MessageListPositionHelper *)self dataSource];
-      v8 = [(MessageListPositionHelper *)self firstVisibleItemID];
-      v9 = [v7 indexPathForItemIdentifier:v8];
+      dataSource = [(MessageListPositionHelper *)self dataSource];
+      firstVisibleItemID2 = [(MessageListPositionHelper *)self firstVisibleItemID];
+      v9 = [dataSource indexPathForItemIdentifier:firstVisibleItemID2];
 
       if (!v9)
       {
@@ -80,15 +80,15 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v10 = [v9 item];
-      v11 = [(MessageListPositionHelper *)self firstVisibleIndex];
-      if (v10 == v11)
+      item = [v9 item];
+      firstVisibleIndex = [(MessageListPositionHelper *)self firstVisibleIndex];
+      if (item == firstVisibleIndex)
       {
         v12 = _ef_log_MessageListPositionHelper();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           v31 = 134217984;
-          v32 = v10;
+          v32 = item;
           v13 = "First visible index (%ld) unchanged. Not adjusting content offset.";
           v14 = v12;
           v15 = 12;
@@ -100,12 +100,12 @@ LABEL_10:
         goto LABEL_19;
       }
 
-      v16 = v11;
-      v17 = [(MessageListPositionHelper *)self collectionView];
-      v12 = v17;
+      v16 = firstVisibleIndex;
+      collectionView = [(MessageListPositionHelper *)self collectionView];
+      v12 = collectionView;
       if (v16 > 2)
       {
-        v23 = [v17 cellForItemAtIndexPath:v9];
+        v23 = [collectionView cellForItemAtIndexPath:v9];
         [v23 frame];
         v25 = v24;
 
@@ -117,7 +117,7 @@ LABEL_10:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           v31 = 134219010;
-          v32 = v10;
+          v32 = item;
           v33 = 2114;
           v34 = v9;
           v35 = 2048;
@@ -135,18 +135,18 @@ LABEL_10:
 
       else
       {
-        if (v10 <= v16)
+        if (item <= v16)
         {
           goto LABEL_19;
         }
 
-        [v17 adjustedContentInset];
+        [collectionView adjustedContentInset];
         y = -v18;
         v19 = _ef_log_MessageListPositionHelper();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           v31 = 134217984;
-          v32 = v10;
+          v32 = item;
           v20 = "Pinning to top - new first visible index %ld";
           v21 = v19;
           v22 = 12;
@@ -172,9 +172,9 @@ LABEL_20:
 
 - (void)recalculateFirstVisibleIndex
 {
-  v4 = [(MessageListPositionHelper *)self collectionView];
-  v3 = [(MessageListPositionHelper *)self dataSource];
-  [(MessageListPositionHelper *)self _calculateStartingPositionForCollectionView:v4 dataSource:v3];
+  collectionView = [(MessageListPositionHelper *)self collectionView];
+  dataSource = [(MessageListPositionHelper *)self dataSource];
+  [(MessageListPositionHelper *)self _calculateStartingPositionForCollectionView:collectionView dataSource:dataSource];
 }
 
 - (NSArray)actuallyVisibleItemIDs
@@ -184,8 +184,8 @@ LABEL_20:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MessageListPositionHelper *)self collectionView];
-  v12 = [(MessageListPositionHelper *)self _sortedIndexPathsForVisibleItemsInCollectionView:v11];
+  collectionView = [(MessageListPositionHelper *)self collectionView];
+  v12 = [(MessageListPositionHelper *)self _sortedIndexPathsForVisibleItemsInCollectionView:collectionView];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -228,19 +228,19 @@ id __51__MessageListPositionHelper_actuallyVisibleItemIDs__block_invoke(uint64_t
 
 - (CGRect)_visibleRectInMessageList
 {
-  v3 = [(MessageListPositionHelper *)self collectionView];
-  [v3 bounds];
+  collectionView = [(MessageListPositionHelper *)self collectionView];
+  [collectionView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(MessageListPositionHelper *)self collectionView];
-  [v12 contentOffset];
+  collectionView2 = [(MessageListPositionHelper *)self collectionView];
+  [collectionView2 contentOffset];
   v14 = v13;
 
-  v15 = [(MessageListPositionHelper *)self collectionView];
-  [v15 adjustedContentInset];
+  collectionView3 = [(MessageListPositionHelper *)self collectionView];
+  [collectionView3 adjustedContentInset];
   v17 = v16;
   v19 = v18;
 
@@ -265,29 +265,29 @@ id __51__MessageListPositionHelper_actuallyVisibleItemIDs__block_invoke(uint64_t
   return result;
 }
 
-- (id)_firstVisibleIndexPathForCollectionView:(id)a3
+- (id)_firstVisibleIndexPathForCollectionView:(id)view
 {
-  v3 = [(MessageListPositionHelper *)self _sortedIndexPathsForVisibleItemsInCollectionView:a3];
-  v4 = [v3 firstObject];
+  v3 = [(MessageListPositionHelper *)self _sortedIndexPathsForVisibleItemsInCollectionView:view];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (void)_calculateStartingPositionForCollectionView:(id)a3 dataSource:(id)a4
+- (void)_calculateStartingPositionForCollectionView:(id)view dataSource:(id)source
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MessageListPositionHelper *)self _firstVisibleIndexPathForCollectionView:v6];
+  viewCopy = view;
+  sourceCopy = source;
+  v8 = [(MessageListPositionHelper *)self _firstVisibleIndexPathForCollectionView:viewCopy];
   if (v8)
   {
-    v9 = [v7 itemIdentifierForIndexPath:v8];
+    v9 = [sourceCopy itemIdentifierForIndexPath:v8];
     [(MessageListPositionHelper *)self setFirstVisibleItemID:v9];
 
     -[MessageListPositionHelper setFirstVisibleIndex:](self, "setFirstVisibleIndex:", [v8 item]);
-    [v6 contentOffset];
+    [viewCopy contentOffset];
     [(MessageListPositionHelper *)self setStartingContentOffset:v10];
-    v11 = [v6 cellForItemAtIndexPath:v8];
+    v11 = [viewCopy cellForItemAtIndexPath:v8];
     [v11 frame];
     [(MessageListPositionHelper *)self setFirstVisibleCellOrigin:v12];
   }
@@ -295,13 +295,13 @@ id __51__MessageListPositionHelper_actuallyVisibleItemIDs__block_invoke(uint64_t
   v13 = _ef_log_MessageListPositionHelper();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [(MessageListPositionHelper *)self firstVisibleItemID];
+    firstVisibleItemID = [(MessageListPositionHelper *)self firstVisibleItemID];
     v15 = 138543874;
     v16 = v8;
     v17 = 2114;
-    v18 = v14;
+    v18 = firstVisibleItemID;
     v19 = 2048;
-    v20 = [(MessageListPositionHelper *)self firstVisibleIndex];
+    firstVisibleIndex = [(MessageListPositionHelper *)self firstVisibleIndex];
     _os_log_impl(&dword_214A5E000, v13, OS_LOG_TYPE_INFO, "Updating starting position for first visible indexpath:%{public}@ itemID:%{public}@ index:%ld", &v15, 0x20u);
   }
 }

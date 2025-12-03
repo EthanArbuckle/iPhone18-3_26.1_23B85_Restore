@@ -141,31 +141,31 @@ void __37__HMDAccessoryTransaction_properties__block_invoke()
 - (id)dependentUUIDs
 {
   v3 = [MEMORY[0x277CBEB58] setWithCapacity:2];
-  v4 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v4)
+  if (parentUUID)
   {
-    v5 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v3 addObject:v5];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v3 addObject:parentUUID2];
   }
 
-  v6 = [(HMDAccessoryTransaction *)self roomUUID];
+  roomUUID = [(HMDAccessoryTransaction *)self roomUUID];
 
-  if (v6)
+  if (roomUUID)
   {
     v7 = objc_alloc(MEMORY[0x277CCAD78]);
-    v8 = [(HMDAccessoryTransaction *)self roomUUID];
-    v9 = [v7 initWithUUIDString:v8];
+    roomUUID2 = [(HMDAccessoryTransaction *)self roomUUID];
+    v9 = [v7 initWithUUIDString:roomUUID2];
     [v3 addObject:v9];
   }
 
-  v10 = [(HMDAccessoryTransaction *)self hostAccessoryUUID];
+  hostAccessoryUUID = [(HMDAccessoryTransaction *)self hostAccessoryUUID];
 
-  if (v10)
+  if (hostAccessoryUUID)
   {
     v11 = objc_alloc(MEMORY[0x277CCAD78]);
-    v12 = [(HMDAccessoryTransaction *)self hostAccessoryUUID];
-    v13 = [v11 initWithUUIDString:v12];
+    hostAccessoryUUID2 = [(HMDAccessoryTransaction *)self hostAccessoryUUID];
+    v13 = [v11 initWithUUIDString:hostAccessoryUUID2];
     [v3 addObject:v13];
   }
 

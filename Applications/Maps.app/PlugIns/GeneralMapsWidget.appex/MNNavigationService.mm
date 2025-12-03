@@ -10,46 +10,46 @@
 
 - (GEOComposedWaypoint)upcomingStop
 {
-  v3 = [(MNNavigationService *)self lastLocation];
+  lastLocation = [(MNNavigationService *)self lastLocation];
 
-  if (v3)
+  if (lastLocation)
   {
-    v4 = [(MNNavigationService *)self lastLocation];
-    v5 = [v4 routeMatch];
-    [v5 leg];
+    lastLocation2 = [(MNNavigationService *)self lastLocation];
+    routeMatch = [lastLocation2 routeMatch];
+    [routeMatch leg];
   }
 
   else
   {
-    v4 = [(MNNavigationService *)self route];
-    v5 = [v4 legs];
-    [v5 firstObject];
+    lastLocation2 = [(MNNavigationService *)self route];
+    routeMatch = [lastLocation2 legs];
+    [routeMatch firstObject];
   }
   v6 = ;
-  v7 = [v6 destination];
+  destination = [v6 destination];
 
-  return v7;
+  return destination;
 }
 
 - (unint64_t)arrivalState
 {
-  v3 = [(MNNavigationService *)self route];
-  v4 = [v3 legIndexForStepIndex:{-[MNNavigationService stepIndex](self, "stepIndex")}];
+  route = [(MNNavigationService *)self route];
+  v4 = [route legIndexForStepIndex:{-[MNNavigationService stepIndex](self, "stepIndex")}];
 
-  v5 = [(MNNavigationService *)self route];
-  v6 = [v5 legs];
-  v7 = [v6 count];
+  route2 = [(MNNavigationService *)self route];
+  legs = [route2 legs];
+  v7 = [legs count];
 
-  v8 = [(MNNavigationService *)self arrivalInfo];
-  v9 = [v8 arrivalState];
+  arrivalInfo = [(MNNavigationService *)self arrivalInfo];
+  arrivalState = [arrivalInfo arrivalState];
 
-  if (v9 > 6)
+  if (arrivalState > 6)
   {
     return 0;
   }
 
   v10 = v7 - 1;
-  if (((1 << v9) & 0x72) != 0)
+  if (((1 << arrivalState) & 0x72) != 0)
   {
     v11 = v4 == v10;
     v12 = 4;
@@ -57,7 +57,7 @@
 
   else
   {
-    if (((1 << v9) & 0xC) == 0)
+    if (((1 << arrivalState) & 0xC) == 0)
     {
       return 1;
     }
@@ -79,35 +79,35 @@
 
 - (BOOL)isArrivedAtEVCharger
 {
-  v3 = [(MNNavigationService *)self arrivalInfo];
-  if (([v3 isInArrivalState] & 1) == 0 && !objc_msgSend(v3, "isInParkingState"))
+  arrivalInfo = [(MNNavigationService *)self arrivalInfo];
+  if (([arrivalInfo isInArrivalState] & 1) == 0 && !objc_msgSend(arrivalInfo, "isInParkingState"))
   {
     goto LABEL_6;
   }
 
-  v4 = [(MNNavigationService *)self route];
-  v5 = [v4 legs];
-  v6 = [v5 count];
-  v7 = [v3 legIndex];
+  route = [(MNNavigationService *)self route];
+  legs = [route legs];
+  v6 = [legs count];
+  legIndex = [arrivalInfo legIndex];
 
-  if (v6 > v7)
+  if (v6 > legIndex)
   {
-    v8 = [(MNNavigationService *)self route];
-    v9 = [v8 legs];
-    v10 = [v9 objectAtIndex:{objc_msgSend(v3, "legIndex")}];
+    route2 = [(MNNavigationService *)self route];
+    legs2 = [route2 legs];
+    v10 = [legs2 objectAtIndex:{objc_msgSend(arrivalInfo, "legIndex")}];
 
-    v11 = [v10 chargingStationInfo];
+    chargingStationInfo = [v10 chargingStationInfo];
 
-    if (v11)
+    if (chargingStationInfo)
     {
       LOBYTE(v12) = 1;
     }
 
     else
     {
-      v13 = [v3 destination];
-      v14 = [v13 chargingInfo];
-      v12 = v14 != 0;
+      destination = [arrivalInfo destination];
+      chargingInfo = [destination chargingInfo];
+      v12 = chargingInfo != 0;
     }
   }
 
@@ -124,71 +124,71 @@ LABEL_6:
 {
   if ([(MNNavigationService *)self isArrivedAtEVCharger])
   {
-    v3 = [(MNNavigationService *)self arrivalInfo];
-    v4 = [v3 destination];
-    v5 = [(MNNavigationService *)self route];
-    v6 = [v5 legs];
-    v7 = [v6 objectAtIndex:{objc_msgSend(v3, "legIndex")}];
+    arrivalInfo = [(MNNavigationService *)self arrivalInfo];
+    destination = [arrivalInfo destination];
+    route = [(MNNavigationService *)self route];
+    legs = [route legs];
+    v7 = [legs objectAtIndex:{objc_msgSend(arrivalInfo, "legIndex")}];
 
-    v8 = [(MNNavigationService *)self route];
-    v9 = [v8 waypointDisplayInfoForWaypoint:v4];
+    route2 = [(MNNavigationService *)self route];
+    v9 = [route2 waypointDisplayInfoForWaypoint:destination];
 
-    v10 = [v7 chargingStationInfo];
+    chargingStationInfo = [v7 chargingStationInfo];
 
-    if (v10)
+    if (chargingStationInfo)
     {
-      v11 = [v9 evChargingInfo];
-      v12 = v11;
-      if (v11)
+      evChargingInfo = [v9 evChargingInfo];
+      v12 = evChargingInfo;
+      if (evChargingInfo)
       {
-        v13 = v11;
+        chargingStationInfo2 = evChargingInfo;
       }
 
       else
       {
-        v13 = [v7 chargingStationInfo];
+        chargingStationInfo2 = [v7 chargingStationInfo];
       }
 
-      v14 = v13;
+      chargingInfo = chargingStationInfo2;
     }
 
     else
     {
-      v14 = [v4 chargingInfo];
+      chargingInfo = [destination chargingInfo];
     }
   }
 
   else
   {
-    v14 = 0;
+    chargingInfo = 0;
   }
 
-  return v14;
+  return chargingInfo;
 }
 
 - (GEOComposedWaypoint)stopAfterCharging
 {
-  v3 = [(MNNavigationService *)self arrivalInfo];
-  v4 = [v3 legIndex];
-  v5 = [(MNNavigationService *)self route];
-  v6 = [v5 legs];
-  v7 = [v6 count];
+  arrivalInfo = [(MNNavigationService *)self arrivalInfo];
+  legIndex = [arrivalInfo legIndex];
+  route = [(MNNavigationService *)self route];
+  legs = [route legs];
+  v7 = [legs count];
 
-  if (v4 >= v7)
+  if (legIndex >= v7)
   {
-    v12 = 0;
+    destination = 0;
   }
 
   else
   {
-    v8 = [(MNNavigationService *)self route];
-    v9 = [v8 legs];
-    v10 = [(MNNavigationService *)self arrivalInfo];
-    v11 = [v9 objectAtIndex:{objc_msgSend(v10, "legIndex") + 1}];
-    v12 = [v11 destination];
+    route2 = [(MNNavigationService *)self route];
+    legs2 = [route2 legs];
+    arrivalInfo2 = [(MNNavigationService *)self arrivalInfo];
+    v11 = [legs2 objectAtIndex:{objc_msgSend(arrivalInfo2, "legIndex") + 1}];
+    destination = [v11 destination];
   }
 
-  return v12;
+  return destination;
 }
 
 @end

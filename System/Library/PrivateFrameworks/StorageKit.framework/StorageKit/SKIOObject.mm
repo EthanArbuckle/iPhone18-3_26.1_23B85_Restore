@@ -1,26 +1,26 @@
 @interface SKIOObject
 - (NSString)ioClassName;
-- (SKIOObject)initWithClassName:(id)a3;
-- (SKIOObject)initWithIOObject:(unsigned int)a3 retain:(BOOL)a4;
-- (SKIOObject)initWithIteratorNext:(id)a3;
-- (SKIOObject)initWithSKIOObject:(id)a3;
-- (SKIOObject)ioObjectWithClassName:(id)a3 iterateParents:(BOOL)a4;
+- (SKIOObject)initWithClassName:(id)name;
+- (SKIOObject)initWithIOObject:(unsigned int)object retain:(BOOL)retain;
+- (SKIOObject)initWithIteratorNext:(id)next;
+- (SKIOObject)initWithSKIOObject:(id)object;
+- (SKIOObject)ioObjectWithClassName:(id)name iterateParents:(BOOL)parents;
 - (id)copyParent;
-- (id)copyParentPropertyWithClass:(Class)a3 key:(id)a4;
+- (id)copyParentPropertyWithClass:(Class)class key:(id)key;
 - (id)copyProperties;
-- (id)copyPropertyWithClass:(Class)a3 key:(id)a4;
+- (id)copyPropertyWithClass:(Class)class key:(id)key;
 - (void)dealloc;
 @end
 
 @implementation SKIOObject
 
-- (SKIOObject)initWithIOObject:(unsigned int)a3 retain:(BOOL)a4
+- (SKIOObject)initWithIOObject:(unsigned int)object retain:(BOOL)retain
 {
-  if (a3)
+  if (object)
   {
-    if (a4)
+    if (retain)
     {
-      IOObjectRetain(a3);
+      IOObjectRetain(object);
     }
 
     v10.receiver = self;
@@ -29,44 +29,44 @@
     v7 = v6;
     if (v6)
     {
-      v6->_ioObj = a3;
+      v6->_ioObj = object;
     }
 
     else
     {
-      IOObjectRelease(a3);
+      IOObjectRelease(object);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (SKIOObject)initWithSKIOObject:(id)a3
+- (SKIOObject)initWithSKIOObject:(id)object
 {
-  v4 = [a3 ioObj];
+  ioObj = [object ioObj];
 
-  return [(SKIOObject *)self initWithIOObject:v4 retain:1];
+  return [(SKIOObject *)self initWithIOObject:ioObj retain:1];
 }
 
-- (SKIOObject)initWithClassName:(id)a3
+- (SKIOObject)initWithClassName:(id)name
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = *MEMORY[0x277CD2898];
-  v6 = IOServiceMatching([v4 UTF8String]);
+  v6 = IOServiceMatching([nameCopy UTF8String]);
   MatchingService = IOServiceGetMatchingService(v5, v6);
   if (MatchingService)
   {
     self = [(SKIOObject *)self initWithIOObject:MatchingService];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -75,22 +75,22 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = nameCopy;
       _os_log_impl(&dword_26BBB8000, v9, OS_LOG_TYPE_ERROR, "Cannot find IO object of class %@", &v12, 0xCu);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v8;
+  return selfCopy;
 }
 
-- (SKIOObject)initWithIteratorNext:(id)a3
+- (SKIOObject)initWithIteratorNext:(id)next
 {
-  v4 = [a3 copyNextObject];
+  copyNextObject = [next copyNextObject];
 
-  return [(SKIOObject *)self initWithIOObject:v4];
+  return [(SKIOObject *)self initWithIOObject:copyNextObject];
 }
 
 - (NSString)ioClassName
@@ -113,13 +113,13 @@
   [(SKIOObject *)&v4 dealloc];
 }
 
-- (SKIOObject)ioObjectWithClassName:(id)a3 iterateParents:(BOOL)a4
+- (SKIOObject)ioObjectWithClassName:(id)name iterateParents:(BOOL)parents
 {
-  v4 = a4;
+  parentsCopy = parents;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 UTF8String];
-  if (v4)
+  nameCopy = name;
+  uTF8String = [nameCopy UTF8String];
+  if (parentsCopy)
   {
     v8 = 3;
   }
@@ -143,7 +143,7 @@
       }
 
       v10 = v11;
-      if (IOObjectConformsTo([(SKIOObject *)v11 ioObj], v7))
+      if (IOObjectConformsTo([(SKIOObject *)v11 ioObj], uTF8String))
       {
         goto LABEL_13;
       }
@@ -153,7 +153,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = v6;
+      v16 = nameCopy;
       _os_log_impl(&dword_26BBB8000, v12, OS_LOG_TYPE_ERROR, "Cannot find %@ entry", &v15, 0xCu);
     }
   }
@@ -166,11 +166,11 @@ LABEL_13:
   return v11;
 }
 
-- (id)copyPropertyWithClass:(Class)a3 key:(id)a4
+- (id)copyPropertyWithClass:(Class)class key:(id)key
 {
-  v5 = a4;
-  v6 = [(SKIOObject *)self ioObj];
-  CFProperty = IORegistryEntryCreateCFProperty(v6, v5, *MEMORY[0x277CBECE8], 0);
+  keyCopy = key;
+  ioObj = [(SKIOObject *)self ioObj];
+  CFProperty = IORegistryEntryCreateCFProperty(ioObj, keyCopy, *MEMORY[0x277CBECE8], 0);
 
   if (CFProperty && (objc_opt_isKindOfClass() & 1) != 0)
   {
@@ -185,11 +185,11 @@ LABEL_13:
   return v8;
 }
 
-- (id)copyParentPropertyWithClass:(Class)a3 key:(id)a4
+- (id)copyParentPropertyWithClass:(Class)class key:(id)key
 {
-  v5 = a4;
-  v6 = [(SKIOObject *)self ioObj];
-  v7 = IORegistryEntrySearchCFProperty(v6, "IOService", v5, *MEMORY[0x277CBECE8], 3u);
+  keyCopy = key;
+  ioObj = [(SKIOObject *)self ioObj];
+  v7 = IORegistryEntrySearchCFProperty(ioObj, "IOService", keyCopy, *MEMORY[0x277CBECE8], 3u);
 
   if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
   {
@@ -207,8 +207,8 @@ LABEL_13:
 - (id)copyProperties
 {
   properties = 0;
-  v2 = [(SKIOObject *)self ioObj];
-  IORegistryEntryCreateCFProperties(v2, &properties, *MEMORY[0x277CBECE8], 0);
+  ioObj = [(SKIOObject *)self ioObj];
+  IORegistryEntryCreateCFProperties(ioObj, &properties, *MEMORY[0x277CBECE8], 0);
   return properties;
 }
 

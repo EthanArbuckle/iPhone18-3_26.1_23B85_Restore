@@ -1,8 +1,8 @@
 @interface MEEncodedOutgoingMessage
-- (BOOL)isEqual:(id)a3;
-- (MEEncodedOutgoingMessage)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MEEncodedOutgoingMessage)initWithCoder:(id)coder;
 - (MEEncodedOutgoingMessage)initWithRawData:(NSData *)rawData isSigned:(BOOL)isSigned isEncrypted:(BOOL)isEncrypted;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MEEncodedOutgoingMessage
@@ -24,30 +24,30 @@
   return v11;
 }
 
-- (MEEncodedOutgoingMessage)initWithCoder:(id)a3
+- (MEEncodedOutgoingMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"EFPropertyKey_isSigned"];
-  v6 = [v4 decodeBoolForKey:@"EFPropertyKey_isEncrypted"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_rawData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"EFPropertyKey_isSigned"];
+  v6 = [coderCopy decodeBoolForKey:@"EFPropertyKey_isEncrypted"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_rawData"];
   v8 = [(MEEncodedOutgoingMessage *)self initWithRawData:v7 isSigned:v5 isEncrypted:v6];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeBool:-[MEEncodedOutgoingMessage isSigned](self forKey:{"isSigned"), @"EFPropertyKey_isSigned"}];
-  [v5 encodeBool:-[MEEncodedOutgoingMessage isEncrypted](self forKey:{"isEncrypted"), @"EFPropertyKey_isEncrypted"}];
-  v4 = [(MEEncodedOutgoingMessage *)self rawData];
-  [v5 encodeObject:v4 forKey:@"EFPropertyKey_rawData"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[MEEncodedOutgoingMessage isSigned](self forKey:{"isSigned"), @"EFPropertyKey_isSigned"}];
+  [coderCopy encodeBool:-[MEEncodedOutgoingMessage isEncrypted](self forKey:{"isEncrypted"), @"EFPropertyKey_isEncrypted"}];
+  rawData = [(MEEncodedOutgoingMessage *)self rawData];
+  [coderCopy encodeObject:rawData forKey:@"EFPropertyKey_rawData"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -57,13 +57,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MEEncodedOutgoingMessage *)self isSigned];
-      if (v6 == [(MEEncodedOutgoingMessage *)v5 isSigned]&& (v7 = [(MEEncodedOutgoingMessage *)self isEncrypted], v7 == [(MEEncodedOutgoingMessage *)v5 isEncrypted]))
+      v5 = equalCopy;
+      isSigned = [(MEEncodedOutgoingMessage *)self isSigned];
+      if (isSigned == [(MEEncodedOutgoingMessage *)v5 isSigned]&& (v7 = [(MEEncodedOutgoingMessage *)self isEncrypted], v7 == [(MEEncodedOutgoingMessage *)v5 isEncrypted]))
       {
-        v9 = [(MEEncodedOutgoingMessage *)self rawData];
-        v10 = [(MEEncodedOutgoingMessage *)v5 rawData];
-        v8 = [v9 isEqual:v10];
+        rawData = [(MEEncodedOutgoingMessage *)self rawData];
+        rawData2 = [(MEEncodedOutgoingMessage *)v5 rawData];
+        v8 = [rawData isEqual:rawData2];
       }
 
       else

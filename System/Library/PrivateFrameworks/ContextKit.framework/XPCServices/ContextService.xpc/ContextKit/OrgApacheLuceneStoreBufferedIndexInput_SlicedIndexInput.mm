@@ -10,9 +10,9 @@
 {
   v6.receiver = self;
   v6.super_class = OrgApacheLuceneStoreBufferedIndexInput_SlicedIndexInput;
-  v3 = [(OrgApacheLuceneStoreBufferedIndexInput *)&v6 clone];
+  clone = [(OrgApacheLuceneStoreBufferedIndexInput *)&v6 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     goto LABEL_5;
   }
@@ -29,10 +29,10 @@ LABEL_5:
     JreThrowNullPointerException();
   }
 
-  JreStrongAssign(v3 + 7, [(OrgApacheLuceneStoreIndexInput *)base clone]);
-  v3[8] = self->fileOffset_;
-  v3[9] = self->length_;
-  return v3;
+  JreStrongAssign(clone + 7, [(OrgApacheLuceneStoreIndexInput *)base clone]);
+  clone[8] = self->fileOffset_;
+  clone[9] = self->length_;
+  return clone;
 }
 
 - (void)close

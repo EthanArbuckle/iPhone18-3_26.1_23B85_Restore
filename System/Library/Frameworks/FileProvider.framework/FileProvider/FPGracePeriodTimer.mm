@@ -1,5 +1,5 @@
 @interface FPGracePeriodTimer
-- (FPGracePeriodTimer)initWithAction:(id)a3 callbackQueue:(id)a4 delay:(double)a5;
+- (FPGracePeriodTimer)initWithAction:(id)action callbackQueue:(id)queue delay:(double)delay;
 - (id)prettyDescription;
 - (void)_createTimer;
 - (void)arm;
@@ -73,11 +73,11 @@
   [(FPGracePeriodTimer *)&v3 dealloc];
 }
 
-- (FPGracePeriodTimer)initWithAction:(id)a3 callbackQueue:(id)a4 delay:(double)a5
+- (FPGracePeriodTimer)initWithAction:(id)action callbackQueue:(id)queue delay:(double)delay
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  actionCopy = action;
+  queueCopy = queue;
+  if (!queueCopy)
   {
     [FPGracePeriodTimer initWithAction:a2 callbackQueue:self delay:?];
   }
@@ -87,12 +87,12 @@
   v11 = [(FPGracePeriodTimer *)&v15 init];
   if (v11)
   {
-    v12 = _Block_copy(v9);
+    v12 = _Block_copy(actionCopy);
     action = v11->_action;
     v11->_action = v12;
 
-    objc_storeStrong(&v11->_callbackQueue, a4);
-    v11->_delay = a5;
+    objc_storeStrong(&v11->_callbackQueue, queue);
+    v11->_delay = delay;
   }
 
   return v11;
@@ -119,12 +119,12 @@ void __34__FPGracePeriodTimer__createTimer__block_invoke(uint64_t a1)
 
 - (id)prettyDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_timer)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_timer)
   {
     v3 = MEMORY[0x1E696AEC0];
-    expectedFiringTimeSinceReferenceDate = v2->_expectedFiringTimeSinceReferenceDate;
+    expectedFiringTimeSinceReferenceDate = selfCopy->_expectedFiringTimeSinceReferenceDate;
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v6 = [v3 stringWithFormat:@"armed, firing in %.1gs", expectedFiringTimeSinceReferenceDate - v5];
   }
@@ -134,7 +134,7 @@ void __34__FPGracePeriodTimer__createTimer__block_invoke(uint64_t a1)
     v6 = @"not running";
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

@@ -1,7 +1,7 @@
 @interface CNOutlineGroupsAndAccountsStyle
-- (id)parentCellConfigurationUpdateHandlerWithText:(id)a3;
-- (id)sectionConfigurationForLayoutEnvironment:(id)a3 withLeadingActionsProvider:(id)a4 withTrailingActionsProvider:(id)a5 hasHeader:(BOOL)a6;
-- (int64_t)buttonBehaviorWithTraitCollection:(id)a3;
+- (id)parentCellConfigurationUpdateHandlerWithText:(id)text;
+- (id)sectionConfigurationForLayoutEnvironment:(id)environment withLeadingActionsProvider:(id)provider withTrailingActionsProvider:(id)actionsProvider hasHeader:(BOOL)header;
+- (int64_t)buttonBehaviorWithTraitCollection:(id)collection;
 @end
 
 @implementation CNOutlineGroupsAndAccountsStyle
@@ -50,16 +50,16 @@ void __65__CNOutlineGroupsAndAccountsStyle_cellConfigurationUpdateHandler__block
   }
 }
 
-- (int64_t)buttonBehaviorWithTraitCollection:(id)a3
+- (int64_t)buttonBehaviorWithTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v5 = [v4 featureFlags];
-  v6 = [v5 isFeatureEnabled:29];
+  collectionCopy = collection;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v6 = [featureFlags isFeatureEnabled:29];
 
   if (v6)
   {
-    if ([v3 _splitViewControllerContext])
+    if ([collectionCopy _splitViewControllerContext])
     {
       v7 = 3;
     }
@@ -78,15 +78,15 @@ void __65__CNOutlineGroupsAndAccountsStyle_cellConfigurationUpdateHandler__block
   return v7;
 }
 
-- (id)parentCellConfigurationUpdateHandlerWithText:(id)a3
+- (id)parentCellConfigurationUpdateHandlerWithText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __80__CNOutlineGroupsAndAccountsStyle_parentCellConfigurationUpdateHandlerWithText___block_invoke;
   aBlock[3] = &unk_1E74E2CC8;
-  v8 = v3;
-  v4 = v3;
+  v8 = textCopy;
+  v4 = textCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -112,18 +112,18 @@ void __80__CNOutlineGroupsAndAccountsStyle_parentCellConfigurationUpdateHandlerW
   [v5 setContentConfiguration:v8];
 }
 
-- (id)sectionConfigurationForLayoutEnvironment:(id)a3 withLeadingActionsProvider:(id)a4 withTrailingActionsProvider:(id)a5 hasHeader:(BOOL)a6
+- (id)sectionConfigurationForLayoutEnvironment:(id)environment withLeadingActionsProvider:(id)provider withTrailingActionsProvider:(id)actionsProvider hasHeader:(BOOL)header
 {
   v8 = MEMORY[0x1E69DD3F8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithAppearanceStyle:3 layoutEnvironment:v11];
+  actionsProviderCopy = actionsProvider;
+  providerCopy = provider;
+  environmentCopy = environment;
+  v12 = [[v8 alloc] initWithAppearanceStyle:3 layoutEnvironment:environmentCopy];
   [v12 setSeparatorStyle:0];
-  [v12 setLeadingSwipeActionsConfigurationProvider:v10];
+  [v12 setLeadingSwipeActionsConfigurationProvider:providerCopy];
 
-  [v12 setTrailingSwipeActionsConfigurationProvider:v9];
-  v13 = [objc_alloc(MEMORY[0x1E69DD3F0]) initWithConfiguration:v12 layoutEnvironment:v11];
+  [v12 setTrailingSwipeActionsConfigurationProvider:actionsProviderCopy];
+  v13 = [objc_alloc(MEMORY[0x1E69DD3F0]) initWithConfiguration:v12 layoutEnvironment:environmentCopy];
 
   return v13;
 }

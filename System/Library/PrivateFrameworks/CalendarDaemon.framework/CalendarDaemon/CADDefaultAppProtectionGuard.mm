@@ -1,6 +1,6 @@
 @interface CADDefaultAppProtectionGuard
 + (id)shared;
-- (void)initiateAuthenticationForApplicationWithBundleIdentifier:(id)a3 onBehalfOfProcessWithAuditToken:(id *)a4 accessGrantedByEntitlement:(BOOL)a5 completion:(id)a6;
+- (void)initiateAuthenticationForApplicationWithBundleIdentifier:(id)identifier onBehalfOfProcessWithAuditToken:(id *)token accessGrantedByEntitlement:(BOOL)entitlement completion:(id)completion;
 @end
 
 @implementation CADDefaultAppProtectionGuard
@@ -24,16 +24,16 @@ uint64_t __38__CADDefaultAppProtectionGuard_shared__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)initiateAuthenticationForApplicationWithBundleIdentifier:(id)a3 onBehalfOfProcessWithAuditToken:(id *)a4 accessGrantedByEntitlement:(BOOL)a5 completion:(id)a6
+- (void)initiateAuthenticationForApplicationWithBundleIdentifier:(id)identifier onBehalfOfProcessWithAuditToken:(id *)token accessGrantedByEntitlement:(BOOL)entitlement completion:(id)completion
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a6;
+  entitlementCopy = entitlement;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
-    v11 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:v9];
-    v12 = [MEMORY[0x277CEBE98] sharedGuard];
-    if (v7)
+    v11 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:identifierCopy];
+    mEMORY[0x277CEBE98] = [MEMORY[0x277CEBE98] sharedGuard];
+    if (entitlementCopy)
     {
       v13 = 2;
     }
@@ -47,16 +47,16 @@ uint64_t __38__CADDefaultAppProtectionGuard_shared__block_invoke()
     v16[1] = 3221225472;
     v16[2] = __159__CADDefaultAppProtectionGuard_initiateAuthenticationForApplicationWithBundleIdentifier_onBehalfOfProcessWithAuditToken_accessGrantedByEntitlement_completion___block_invoke;
     v16[3] = &unk_278519DC8;
-    v17 = v10;
-    v14 = *&a4->var0[4];
-    v15[0] = *a4->var0;
+    v17 = completionCopy;
+    v14 = *&token->var0[4];
+    v15[0] = *token->var0;
     v15[1] = v14;
-    [v12 initiateAuthenticationWithShieldingForSubject:v11 onBehalfOfProcessWithAuditToken:v15 accessGrantReason:v13 completion:v16];
+    [mEMORY[0x277CEBE98] initiateAuthenticationWithShieldingForSubject:v11 onBehalfOfProcessWithAuditToken:v15 accessGrantReason:v13 completion:v16];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 

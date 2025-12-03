@@ -1,34 +1,34 @@
 @interface MSIOSAlbumSharingDaemon
-- (BOOL)XPCNSServiceListener:(id)a3 shouldReceiveNewConnection:(id)a4;
-- (BOOL)isPersonIDAllowedToDownloadAssets:(id)a3;
+- (BOOL)XPCNSServiceListener:(id)listener shouldReceiveNewConnection:(id)connection;
+- (BOOL)isPersonIDAllowedToDownloadAssets:(id)assets;
 - (BOOL)isWaitingForAuth;
 - (MSIOSAlbumSharingDaemon)init;
 - (NSMutableDictionary)personIDToPowerBudgetMap;
-- (id)MSPowerBudgetDidRequestPersistedValues:(id)a3;
-- (id)powerBudgetForPersonID:(id)a3;
-- (void)MSPowerBudget:(id)a3 didRequestStorageOfPersistedValues:(id)a4;
-- (void)XPCNSServiceListener:(id)a3 didReceiveNewConnection:(id)a4;
-- (void)_busyPingTimerDidExpire:(id)a3;
-- (void)_readPowerBudgetParametersForPersonID:(id)a3;
-- (void)_updatePushNotificationTopicsOutListenToProduction:(BOOL *)a3 outListenToDevelopment:(BOOL *)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)didBeginForegroundFocusForPersonID:(id)a3;
-- (void)didDestroyStateMachineForPersonID:(id)a3;
-- (void)didEndForegroundFocusForPersonID:(id)a3;
+- (id)MSPowerBudgetDidRequestPersistedValues:(id)values;
+- (id)powerBudgetForPersonID:(id)d;
+- (void)MSPowerBudget:(id)budget didRequestStorageOfPersistedValues:(id)values;
+- (void)XPCNSServiceListener:(id)listener didReceiveNewConnection:(id)connection;
+- (void)_busyPingTimerDidExpire:(id)expire;
+- (void)_readPowerBudgetParametersForPersonID:(id)d;
+- (void)_updatePushNotificationTopicsOutListenToProduction:(BOOL *)production outListenToDevelopment:(BOOL *)development;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)didBeginForegroundFocusForPersonID:(id)d;
+- (void)didDestroyStateMachineForPersonID:(id)d;
+- (void)didEndForegroundFocusForPersonID:(id)d;
 - (void)didIdle;
-- (void)didReceiveAuthFailureForPersonID:(id)a3;
-- (void)didReceiveAuthSuccessForPersonID:(id)a3;
-- (void)didReceiveGlobalResetSyncForPersonID:(id)a3;
-- (void)didReceivePushNotificationForPersonID:(id)a3;
+- (void)didReceiveAuthFailureForPersonID:(id)d;
+- (void)didReceiveAuthSuccessForPersonID:(id)d;
+- (void)didReceiveGlobalResetSyncForPersonID:(id)d;
+- (void)didReceivePushNotificationForPersonID:(id)d;
 - (void)didUnidle;
-- (void)forgetEverythingAboutPersonID:(id)a3 completionBlock:(id)a4;
-- (void)forgetEverythingCompletionBlock:(id)a3;
-- (void)sendServerSideConfigurationDidChangeNotificationForPersonID:(id)a3;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6;
-- (void)setFocusAlbumGUID:(id)a3 forPersonID:(id)a4;
-- (void)setFocusAssetCollectionGUID:(id)a3 forPersonID:(id)a4;
-- (void)shutDownCompletionBlock:(id)a3;
+- (void)forgetEverythingAboutPersonID:(id)d completionBlock:(id)block;
+- (void)forgetEverythingCompletionBlock:(id)block;
+- (void)sendServerSideConfigurationDidChangeNotificationForPersonID:(id)d;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d;
+- (void)setFocusAlbumGUID:(id)d forPersonID:(id)iD;
+- (void)setFocusAssetCollectionGUID:(id)d forPersonID:(id)iD;
+- (void)shutDownCompletionBlock:(id)block;
 - (void)stabilizedDidIdle;
 - (void)stabilizedDidUnidle;
 - (void)start;
@@ -36,13 +36,13 @@
 
 @implementation MSIOSAlbumSharingDaemon
 
-- (void)forgetEverythingCompletionBlock:(id)a3
+- (void)forgetEverythingCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(MSIOSAlbumSharingDaemon *)self retainBusy];
   v6.receiver = self;
   v6.super_class = MSIOSAlbumSharingDaemon;
-  [(MSIOSAlbumSharingDaemon *)&v6 forgetEverythingCompletionBlock:v4];
+  [(MSIOSAlbumSharingDaemon *)&v6 forgetEverythingCompletionBlock:blockCopy];
 
   v5 = +[MSAuthenticationManager sharedManager];
   [v5 rearmAuthenticationAlert];
@@ -51,14 +51,14 @@
   [(MSIOSAlbumSharingDaemon *)self releaseBusy];
 }
 
-- (void)forgetEverythingAboutPersonID:(id)a3 completionBlock:(id)a4
+- (void)forgetEverythingAboutPersonID:(id)d completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  dCopy = d;
   [(MSIOSAlbumSharingDaemon *)self retainBusy];
   v9.receiver = self;
   v9.super_class = MSIOSAlbumSharingDaemon;
-  [(MSIOSAlbumSharingDaemon *)&v9 forgetEverythingAboutPersonID:v7 completionBlock:v6];
+  [(MSIOSAlbumSharingDaemon *)&v9 forgetEverythingAboutPersonID:dCopy completionBlock:blockCopy];
 
   v8 = +[MSAuthenticationManager sharedManager];
   [v8 rearmAuthenticationAlert];
@@ -70,23 +70,23 @@
 - (BOOL)isWaitingForAuth
 {
   v2 = +[MSAuthenticationManager sharedManager];
-  v3 = [v2 isWaitingForAuth];
+  isWaitingForAuth = [v2 isWaitingForAuth];
 
-  return v3;
+  return isWaitingForAuth;
 }
 
-- (void)didReceiveAuthSuccessForPersonID:(id)a3
+- (void)didReceiveAuthSuccessForPersonID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[MSAuthenticationManager sharedManager];
-  [v4 didEncounterAuthenticationSuccessForPersonID:v3];
+  [v4 didEncounterAuthenticationSuccessForPersonID:dCopy];
 }
 
-- (void)didReceiveAuthFailureForPersonID:(id)a3
+- (void)didReceiveAuthFailureForPersonID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[MSAuthenticationManager sharedManager];
-  [v4 didEncounterAuthenticationFailureForPersonID:v3];
+  [v4 didEncounterAuthenticationFailureForPersonID:dCopy];
 }
 
 - (void)stabilizedDidUnidle
@@ -94,29 +94,29 @@
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "%{public}@: Daemon in unidled state. Sending notification.", &v7, 0xCu);
   }
 
-  v3 = [(MSIOSAlbumSharingDaemon *)self busyPingTimer];
+  busyPingTimer = [(MSIOSAlbumSharingDaemon *)self busyPingTimer];
 
-  if (!v3)
+  if (!busyPingTimer)
   {
     v4 = [NSTimer timerWithTimeInterval:self target:"_busyPingTimerDidExpire:" selector:0 userInfo:1 repeats:3.0];
     [(MSIOSAlbumSharingDaemon *)self setBusyPingTimer:v4];
 
     v5 = +[NSRunLoop currentRunLoop];
-    v6 = [(MSIOSAlbumSharingDaemon *)self busyPingTimer];
-    [v5 addTimer:v6 forMode:NSRunLoopCommonModes];
+    busyPingTimer2 = [(MSIOSAlbumSharingDaemon *)self busyPingTimer];
+    [v5 addTimer:busyPingTimer2 forMode:NSRunLoopCommonModes];
   }
 }
 
-- (void)_busyPingTimerDidExpire:(id)a3
+- (void)_busyPingTimerDidExpire:(id)expire
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     v4 = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "%{public}@: Daemon busy ping timer expired. Sending notification.", &v4, 0xCu);
   }
 }
@@ -126,12 +126,12 @@
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     v4 = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "%{public}@: Daemon stabilized in idle state. Sending notification.", &v4, 0xCu);
   }
 
-  v3 = [(MSIOSAlbumSharingDaemon *)self busyPingTimer];
-  [v3 invalidate];
+  busyPingTimer = [(MSIOSAlbumSharingDaemon *)self busyPingTimer];
+  [busyPingTimer invalidate];
 
   [(MSIOSAlbumSharingDaemon *)self setBusyPingTimer:0];
 }
@@ -156,45 +156,45 @@
   [(MSIOSAlbumSharingDaemon *)&v4 didIdle];
 }
 
-- (void)MSPowerBudget:(id)a3 didRequestStorageOfPersistedValues:(id)a4
+- (void)MSPowerBudget:(id)budget didRequestStorageOfPersistedValues:(id)values
 {
-  v6 = a3;
+  budgetCopy = budget;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100005FD8;
   block[3] = &unk_100018A48;
   block[4] = self;
-  v10 = a4;
-  v11 = v6;
-  v7 = v6;
-  v8 = v10;
+  valuesCopy = values;
+  v11 = budgetCopy;
+  v7 = budgetCopy;
+  v8 = valuesCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)MSPowerBudgetDidRequestPersistedValues:(id)a3
+- (id)MSPowerBudgetDidRequestPersistedValues:(id)values
 {
-  v4 = a3;
-  v5 = [(MSIOSAlbumSharingDaemon *)self powerBudgetPersistedParameters];
+  valuesCopy = values;
+  powerBudgetPersistedParameters = [(MSIOSAlbumSharingDaemon *)self powerBudgetPersistedParameters];
 
-  if (v5)
+  if (powerBudgetPersistedParameters)
   {
-    v6 = [v4 personID];
-    v7 = [(MSIOSAlbumSharingDaemon *)self persistentObjectForKey:@"MSIOSAlbumSharingDaemon.powerBudgetParams" personID:v6];
+    personID = [valuesCopy personID];
+    v7 = [(MSIOSAlbumSharingDaemon *)self persistentObjectForKey:@"MSIOSAlbumSharingDaemon.powerBudgetParams" personID:personID];
     [(MSIOSAlbumSharingDaemon *)self setPowerBudgetPersistedParameters:v7];
   }
 
-  v8 = [(MSIOSAlbumSharingDaemon *)self powerBudgetPersistedParameters];
+  powerBudgetPersistedParameters2 = [(MSIOSAlbumSharingDaemon *)self powerBudgetPersistedParameters];
 
-  return v8;
+  return powerBudgetPersistedParameters2;
 }
 
-- (void)_readPowerBudgetParametersForPersonID:(id)a3
+- (void)_readPowerBudgetParametersForPersonID:(id)d
 {
-  v9 = a3;
+  dCopy = d;
   v4 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:?];
   if (v4)
   {
-    v5 = [(MSIOSAlbumSharingDaemon *)self serverSideConfigurationForPersonID:v9];
+    v5 = [(MSIOSAlbumSharingDaemon *)self serverSideConfigurationForPersonID:dCopy];
     v6 = [v5 objectForKey:kMSASServerSideConfigMaxActiveTimeAfterPushKey];
     [v6 doubleValue];
     [v4 setMaxActiveTimeAfterPush:?];
@@ -209,113 +209,113 @@
   }
 }
 
-- (void)didReceiveGlobalResetSyncForPersonID:(id)a3
+- (void)didReceiveGlobalResetSyncForPersonID:(id)d
 {
-  v3 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:a3];
+  v3 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:d];
   [v3 didReceiveGlobalResetSync];
 }
 
-- (BOOL)isPersonIDAllowedToDownloadAssets:(id)a3
+- (BOOL)isPersonIDAllowedToDownloadAssets:(id)assets
 {
-  v3 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:a3];
-  v4 = [v3 isFileTransferAllowed];
+  v3 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:assets];
+  isFileTransferAllowed = [v3 isFileTransferAllowed];
 
-  return v4;
+  return isFileTransferAllowed;
 }
 
-- (void)setFocusAssetCollectionGUID:(id)a3 forPersonID:(id)a4
+- (void)setFocusAssetCollectionGUID:(id)d forPersonID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:v6];
-  [v8 setFocusAssetCollectionGUID:v7];
+  iDCopy = iD;
+  dCopy = d;
+  v8 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:iDCopy];
+  [v8 setFocusAssetCollectionGUID:dCopy];
 
   v9.receiver = self;
   v9.super_class = MSIOSAlbumSharingDaemon;
-  [(MSIOSAlbumSharingDaemon *)&v9 setFocusAssetCollectionGUID:v7 forPersonID:v6];
+  [(MSIOSAlbumSharingDaemon *)&v9 setFocusAssetCollectionGUID:dCopy forPersonID:iDCopy];
 }
 
-- (void)setFocusAlbumGUID:(id)a3 forPersonID:(id)a4
+- (void)setFocusAlbumGUID:(id)d forPersonID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:v6];
-  [v8 setFocusAlbumGUID:v7];
+  iDCopy = iD;
+  dCopy = d;
+  v8 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:iDCopy];
+  [v8 setFocusAlbumGUID:dCopy];
 
   v9.receiver = self;
   v9.super_class = MSIOSAlbumSharingDaemon;
-  [(MSIOSAlbumSharingDaemon *)&v9 setFocusAlbumGUID:v7 forPersonID:v6];
+  [(MSIOSAlbumSharingDaemon *)&v9 setFocusAlbumGUID:dCopy forPersonID:iDCopy];
 }
 
-- (void)didEndForegroundFocusForPersonID:(id)a3
+- (void)didEndForegroundFocusForPersonID:(id)d
 {
-  v3 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:a3];
+  v3 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:d];
   [v3 didEndForegroundFocus];
 }
 
-- (void)didBeginForegroundFocusForPersonID:(id)a3
+- (void)didBeginForegroundFocusForPersonID:(id)d
 {
-  v4 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:a3];
+  v4 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:d];
   [v4 didBeginForegroundFocus];
 
   [(MSIOSAlbumSharingDaemon *)self retryOutstandingActivities];
 }
 
-- (void)didReceivePushNotificationForPersonID:(id)a3
+- (void)didReceivePushNotificationForPersonID:(id)d
 {
-  v3 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:a3];
+  v3 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:d];
   [v3 didReceivePushNotification];
 }
 
-- (void)didDestroyStateMachineForPersonID:(id)a3
+- (void)didDestroyStateMachineForPersonID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = dCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%{public}@: Destroying power budget object for person ID %@", &v7, 0x16u);
   }
 
-  v5 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:v4];
+  v5 = [(MSIOSAlbumSharingDaemon *)self powerBudgetForPersonID:dCopy];
   [v5 shutDown];
-  v6 = [(MSIOSAlbumSharingDaemon *)self personIDToPowerBudgetMap];
-  [v6 removeObjectForKey:v4];
+  personIDToPowerBudgetMap = [(MSIOSAlbumSharingDaemon *)self personIDToPowerBudgetMap];
+  [personIDToPowerBudgetMap removeObjectForKey:dCopy];
 }
 
-- (id)powerBudgetForPersonID:(id)a3
+- (id)powerBudgetForPersonID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
 LABEL_11:
     v6 = 0;
     goto LABEL_12;
   }
 
-  v5 = [(MSIOSAlbumSharingDaemon *)self personIDToPowerBudgetMap];
-  v6 = [v5 objectForKey:v4];
+  personIDToPowerBudgetMap = [(MSIOSAlbumSharingDaemon *)self personIDToPowerBudgetMap];
+  v6 = [personIDToPowerBudgetMap objectForKey:dCopy];
 
   if (v6)
   {
     goto LABEL_12;
   }
 
-  if (([v4 isEqualToString:&stru_100018FA0] & 1) == 0)
+  if (([dCopy isEqualToString:&stru_100018FA0] & 1) == 0)
   {
     v7 = MSASPlatform();
-    v8 = [v7 personIDEnabledForAlbumSharing:v4];
+    v8 = [v7 personIDEnabledForAlbumSharing:dCopy];
 
     if (!v8)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         v12 = 138543618;
-        v13 = self;
+        selfCopy2 = self;
         v14 = 2112;
-        v15 = v4;
+        v15 = dCopy;
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "%{public}@: Shared Photo Stream is disabled for person ID %@. Not creating power budget.", &v12, 0x16u);
       }
 
@@ -326,23 +326,23 @@ LABEL_11:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = dCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%{public}@: Creating power budget object for person ID %@", &v12, 0x16u);
   }
 
   v6 = objc_alloc_init(MSPowerBudget);
-  v9 = [(MSIOSAlbumSharingDaemon *)self personIDToPowerBudgetMap];
-  [v9 setObject:v6 forKey:v4];
+  personIDToPowerBudgetMap2 = [(MSIOSAlbumSharingDaemon *)self personIDToPowerBudgetMap];
+  [personIDToPowerBudgetMap2 setObject:v6 forKey:dCopy];
 
-  [v6 setPersonID:v4];
+  [v6 setPersonID:dCopy];
   [v6 setDelegate:self];
-  [(MSIOSAlbumSharingDaemon *)self _readPowerBudgetParametersForPersonID:v4];
+  [(MSIOSAlbumSharingDaemon *)self _readPowerBudgetParametersForPersonID:dCopy];
   v10 = +[MSBatteryPowerMonitor defaultMonitor];
-  LODWORD(v9) = [v10 isExternalPowerConnected];
+  LODWORD(personIDToPowerBudgetMap2) = [v10 isExternalPowerConnected];
 
-  if (v9)
+  if (personIDToPowerBudgetMap2)
   {
     [v6 didBeginExternalPower];
   }
@@ -367,45 +367,45 @@ LABEL_12:
   return personIDToPowerBudgetMap;
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   [(MSIOSAlbumSharingDaemon *)self retainBusy];
-  v6 = [v5 topic];
-  v7 = [v5 userInfo];
+  topic = [messageCopy topic];
+  userInfo = [messageCopy userInfo];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v6;
+    selfCopy = topic;
     v14 = 2112;
-    v15 = v7;
+    v15 = userInfo;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Received new push notification topic: %@ userInfo: %@", &v12, 0x16u);
   }
 
-  if ([(MSIOSAlbumSharingDaemon *)v6 isEqualToString:@"com.apple.sharedstreams"])
+  if ([(MSIOSAlbumSharingDaemon *)topic isEqualToString:@"com.apple.sharedstreams"])
   {
-    v8 = [v7 objectForKey:@"r"];
+    personIDListeningToPushNotification = [userInfo objectForKey:@"r"];
 LABEL_7:
-    v11 = v8;
-    [(MSIOSAlbumSharingDaemon *)self pollForSubscriptionUpdatesTriggeredByPushNotificationForPersonID:v8];
+    v11 = personIDListeningToPushNotification;
+    [(MSIOSAlbumSharingDaemon *)self pollForSubscriptionUpdatesTriggeredByPushNotificationForPersonID:personIDListeningToPushNotification];
 
     goto LABEL_10;
   }
 
   v9 = [@"com.apple.icloud-container." stringByAppendingString:@"com.apple.sharedstreams"];
-  v10 = [(MSIOSAlbumSharingDaemon *)v6 isEqualToString:v9];
+  v10 = [(MSIOSAlbumSharingDaemon *)topic isEqualToString:v9];
 
   if (v10)
   {
-    v8 = [(MSIOSAlbumSharingDaemon *)self personIDListeningToPushNotification];
+    personIDListeningToPushNotification = [(MSIOSAlbumSharingDaemon *)self personIDListeningToPushNotification];
     goto LABEL_7;
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     v12 = 138543362;
-    v13 = self;
+    selfCopy = self;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "%{public}@: Received unknown push notification, ignoring", &v12, 0xCu);
   }
 
@@ -413,9 +413,9 @@ LABEL_10:
   [(MSIOSAlbumSharingDaemon *)self releaseBusy];
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v5 = a4;
+  tokenCopy = token;
   [(MSIOSAlbumSharingDaemon *)self retainBusy];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -424,21 +424,21 @@ LABEL_10:
   }
 
   v6 = +[MSMSPlatform thePlatform];
-  [v6 setPushToken:v5];
+  [v6 setPushToken:tokenCopy];
 
   [(MSIOSAlbumSharingDaemon *)self releaseBusy];
 }
 
-- (void)_updatePushNotificationTopicsOutListenToProduction:(BOOL *)a3 outListenToDevelopment:(BOOL *)a4
+- (void)_updatePushNotificationTopicsOutListenToProduction:(BOOL *)production outListenToDevelopment:(BOOL *)development
 {
-  v7 = [(MSIOSAlbumSharingDaemon *)self personIDListeningToPushNotification];
-  if ([v7 length])
+  personIDListeningToPushNotification = [(MSIOSAlbumSharingDaemon *)self personIDListeningToPushNotification];
+  if ([personIDListeningToPushNotification length])
   {
     v8 = MSASPlatform();
-    v9 = [v8 personIDUsesProductionPushEnvironment:v7];
+    v9 = [v8 personIDUsesProductionPushEnvironment:personIDListeningToPushNotification];
 
     v10 = v9 ^ 1;
-    if (!a4)
+    if (!development)
     {
       goto LABEL_4;
     }
@@ -449,7 +449,7 @@ LABEL_10:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v11 = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%{public}@: Not listening to push notifications.", &v11, 0xCu);
   }
 
@@ -457,38 +457,38 @@ LABEL_10:
   [self->_devAPSConnection _setEnabledTopics:0];
   v10 = 0;
   v9 = 0;
-  if (a4)
+  if (development)
   {
 LABEL_3:
-    *a4 = v10;
+    *development = v10;
   }
 
 LABEL_4:
-  if (a3)
+  if (production)
   {
-    *a3 = v9;
+    *production = v9;
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
   v14 = IDSCopyRawAddressForDestination();
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 138544642;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
-    v24 = v12;
+    v24 = messageCopy;
     v25 = 2114;
-    v26 = v10;
+    v26 = serviceCopy;
     v27 = 2112;
-    v28 = v11;
+    v28 = accountCopy;
     v29 = 2112;
-    v30 = v13;
+    v30 = dCopy;
     v31 = 2112;
     v32 = v14;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%{public}@: Received incoming message %@ for service %{public}@ account %@ from %@ (%@)", buf, 0x3Eu);
@@ -498,34 +498,34 @@ LABEL_4:
   block[1] = 3221225472;
   block[2] = sub_100006D7C;
   block[3] = &unk_100018A48;
-  v18 = v12;
+  v18 = messageCopy;
   v19 = v14;
-  v20 = self;
+  selfCopy2 = self;
   v15 = v14;
-  v16 = v12;
+  v16 = messageCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)XPCNSServiceListener:(id)a3 didReceiveNewConnection:(id)a4
+- (void)XPCNSServiceListener:(id)listener didReceiveNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v5;
+    v10 = connectionCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%{public}@ Client connected: %{public}@", &v7, 0x16u);
   }
 
   v6 = objc_alloc_init(MSMSASServiceConnection);
-  [v5 setDelegate:v6];
-  [v5 setContext:v6];
+  [connectionCopy setDelegate:v6];
+  [connectionCopy setContext:v6];
 }
 
-- (BOOL)XPCNSServiceListener:(id)a3 shouldReceiveNewConnection:(id)a4
+- (BOOL)XPCNSServiceListener:(id)listener shouldReceiveNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v19 = 0u;
   v20 = 0u;
   xpc_connection_get_audit_token();
@@ -535,7 +535,7 @@ LABEL_4:
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      pid = xpc_connection_get_pid(v5);
+      pid = xpc_connection_get_pid(connectionCopy);
       token.val[0] = 138543618;
       *&token.val[1] = self;
       LOWORD(token.val[3]) = 1024;
@@ -555,7 +555,7 @@ LABEL_4:
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v17 = xpc_connection_get_pid(v5);
+      v17 = xpc_connection_get_pid(connectionCopy);
       token.val[0] = 138543618;
       *&token.val[1] = self;
       LOWORD(token.val[3]) = 1024;
@@ -600,7 +600,7 @@ LABEL_13:
 LABEL_15:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
-    v16 = xpc_connection_get_pid(v5);
+    v16 = xpc_connection_get_pid(connectionCopy);
     token.val[0] = 138543618;
     *&token.val[1] = self;
     LOWORD(token.val[3]) = 1024;
@@ -614,26 +614,26 @@ LABEL_18:
   return v14;
 }
 
-- (void)shutDownCompletionBlock:(id)a3
+- (void)shutDownCompletionBlock:(id)block
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000B628;
   v4[3] = &unk_100018A20;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  blockCopy = block;
+  v3 = blockCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)sendServerSideConfigurationDidChangeNotificationForPersonID:(id)a3
+- (void)sendServerSideConfigurationDidChangeNotificationForPersonID:(id)d
 {
   v4 = kMSASServerSideConfigDidChangeNotification;
-  v5 = a3;
+  dCopy = d;
   notify_post([v4 UTF8String]);
   v6.receiver = self;
   v6.super_class = MSIOSAlbumSharingDaemon;
-  [(MSIOSAlbumSharingDaemon *)&v6 sendServerSideConfigurationDidChangeNotificationForPersonID:v5];
+  [(MSIOSAlbumSharingDaemon *)&v6 sendServerSideConfigurationDidChangeNotificationForPersonID:dCopy];
 }
 
 - (void)start
@@ -676,7 +676,7 @@ LABEL_18:
     }
 
     *buf = 138543362;
-    v51 = self;
+    selfCopy5 = self;
     v13 = "%{public}@: Listening to prod push notifications.";
     goto LABEL_11;
   }
@@ -690,7 +690,7 @@ LABEL_18:
     }
 
     *buf = 138543362;
-    v51 = self;
+    selfCopy5 = self;
     v13 = "%{public}@: Listening to dev push notifications.";
 LABEL_11:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, v13, buf, 0xCu);
@@ -704,11 +704,11 @@ LABEL_12:
       v15 = [NSArray arrayWithObjects:v54 count:2];
       [(APSConnection *)v12 _setEnabledTopics:v15];
 
-      v16 = [(APSConnection *)v12 publicToken];
+      publicToken = [(APSConnection *)v12 publicToken];
       v17 = +[MSMSPlatform thePlatform];
-      [v17 setPushToken:v16];
+      [v17 setPushToken:publicToken];
 
-      if (v16)
+      if (publicToken)
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
         {
@@ -719,7 +719,7 @@ LABEL_12:
           }
 
           *buf = 138543618;
-          v51 = self;
+          selfCopy5 = self;
           v52 = 2114;
           v53 = v18;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%{public}@: Retrieved push tokens. %{public}@", buf, 0x16u);
@@ -737,7 +737,7 @@ LABEL_12:
           }
 
           *buf = 138543618;
-          v51 = self;
+          selfCopy5 = self;
           v52 = 2112;
           v53 = v19;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%{public}@: Push tokens not available. %@. Waiting...", buf, 0x16u);
@@ -763,7 +763,7 @@ LABEL_12:
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v51 = self;
+          selfCopy5 = self;
           _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "%{public}@: Could not retrieve push token even after waiting for it.", buf, 0xCu);
         }
       }
@@ -849,9 +849,9 @@ LABEL_32:
     [(IDSService *)v2->_idsService addDelegate:v2 queue:&_dispatch_main_q];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
-      v5 = [(IDSService *)v2->_idsService accounts];
+      accounts = [(IDSService *)v2->_idsService accounts];
       *buf = 138412290;
-      v9 = v5;
+      v9 = accounts;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Registered IDS service for %@", buf, 0xCu);
     }
   }

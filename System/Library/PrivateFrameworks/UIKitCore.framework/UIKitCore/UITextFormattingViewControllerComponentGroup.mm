@@ -1,52 +1,52 @@
 @interface UITextFormattingViewControllerComponentGroup
-- (BOOL)isEqual:(id)a3;
-- (UITextFormattingViewControllerComponentGroup)initWithCoder:(id)a3;
-- (UITextFormattingViewControllerComponentGroup)initWithComponents:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (UITextFormattingViewControllerComponentGroup)initWithCoder:(id)coder;
+- (UITextFormattingViewControllerComponentGroup)initWithComponents:(id)components;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UITextFormattingViewControllerComponentGroup
 
-- (UITextFormattingViewControllerComponentGroup)initWithComponents:(id)a3
+- (UITextFormattingViewControllerComponentGroup)initWithComponents:(id)components
 {
-  v5 = a3;
+  componentsCopy = components;
   v11.receiver = self;
   v11.super_class = UITextFormattingViewControllerComponentGroup;
   v6 = [(UITextFormattingViewControllerComponentGroup *)&v11 init];
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-    v8 = [v7 UUIDString];
+    uUIDString = [v7 UUIDString];
     identifier = v6->_identifier;
-    v6->_identifier = v8;
+    v6->_identifier = uUIDString;
 
-    objc_storeStrong(&v6->_components, a3);
+    objc_storeStrong(&v6->_components, components);
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(UITextFormattingViewControllerComponentGroup *)self components];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  components = [(UITextFormattingViewControllerComponentGroup *)self components];
+  v6 = [components copy];
   v7 = v4[1];
   v4[1] = v6;
 
-  v8 = [(UITextFormattingViewControllerComponentGroup *)self identifier];
+  identifier = [(UITextFormattingViewControllerComponentGroup *)self identifier];
   v9 = v4[2];
-  v4[2] = v8;
+  v4[2] = identifier;
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -56,14 +56,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UITextFormattingViewControllerComponentGroup *)self identifier];
-      v7 = [(UITextFormattingViewControllerComponentGroup *)v5 identifier];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      identifier = [(UITextFormattingViewControllerComponentGroup *)self identifier];
+      identifier2 = [(UITextFormattingViewControllerComponentGroup *)v5 identifier];
+      if ([identifier isEqualToString:identifier2])
       {
-        v8 = [(UITextFormattingViewControllerComponentGroup *)self components];
-        v9 = [(UITextFormattingViewControllerComponentGroup *)v5 components];
-        v10 = [v8 isEqualToArray:v9];
+        components = [(UITextFormattingViewControllerComponentGroup *)self components];
+        components2 = [(UITextFormattingViewControllerComponentGroup *)v5 components];
+        v10 = [components isEqualToArray:components2];
       }
 
       else
@@ -83,37 +83,37 @@
 
 - (unint64_t)hash
 {
-  v3 = [(UITextFormattingViewControllerComponentGroup *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(UITextFormattingViewControllerComponentGroup *)self components];
-  v6 = [v5 hash];
+  identifier = [(UITextFormattingViewControllerComponentGroup *)self identifier];
+  v4 = [identifier hash];
+  components = [(UITextFormattingViewControllerComponentGroup *)self components];
+  v6 = [components hash];
 
   return v6 ^ v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UITextFormattingViewControllerComponentGroup *)self identifier];
-  [v4 encodeObject:v5 forKey:@"_Identifier"];
+  coderCopy = coder;
+  identifier = [(UITextFormattingViewControllerComponentGroup *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"_Identifier"];
 
-  v6 = [(UITextFormattingViewControllerComponentGroup *)self components];
-  [v4 encodeObject:v6 forKey:@"_Components"];
+  components = [(UITextFormattingViewControllerComponentGroup *)self components];
+  [coderCopy encodeObject:components forKey:@"_Components"];
 }
 
-- (UITextFormattingViewControllerComponentGroup)initWithCoder:(id)a3
+- (UITextFormattingViewControllerComponentGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UITextFormattingViewControllerComponentGroup *)self init];
   if (v5)
   {
     v6 = _UITextFormattingViewControllerComponentGroupClasses();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"_Identifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_Identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
     v9 = _UITextFormattingViewControllerComponentGroupClasses();
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"_Components"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"_Components"];
     components = v5->_components;
     v5->_components = v10;
   }

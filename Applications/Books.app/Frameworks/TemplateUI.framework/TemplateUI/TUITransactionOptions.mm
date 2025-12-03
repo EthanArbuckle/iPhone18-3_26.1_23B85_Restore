@@ -1,35 +1,35 @@
 @interface TUITransactionOptions
 + (id)defaultImplicitOptions;
 + (id)noAnimationOptions;
-- (BOOL)isCompatibleWithOptions:(id)a3;
-- (TUITransactionOptions)initWithOther:(id)a3;
+- (BOOL)isCompatibleWithOptions:(id)options;
+- (TUITransactionOptions)initWithOther:(id)other;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TUITransactionOptions
 
-- (TUITransactionOptions)initWithOther:(id)a3
+- (TUITransactionOptions)initWithOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   v15.receiver = self;
   v15.super_class = TUITransactionOptions;
   v5 = [(TUITransactionOptions *)&v15 init];
   if (v5)
   {
-    v5->_animate = [v4 animate];
-    [v4 duration];
+    v5->_animate = [otherCopy animate];
+    [otherCopy duration];
     v5->_duration = v6;
-    [v4 syncTimeout];
+    [otherCopy syncTimeout];
     v5->_syncTimeout = v7;
-    v5->_flags = [v4 flags];
-    v8 = [v4 identifier];
-    v9 = [v8 copy];
+    v5->_flags = [otherCopy flags];
+    identifier = [otherCopy identifier];
+    v9 = [identifier copy];
     identifier = v5->_identifier;
     v5->_identifier = v9;
 
-    v11 = [v4 timingProvider];
-    v12 = [v11 copyWithZone:0];
+    timingProvider = [otherCopy timingProvider];
+    v12 = [timingProvider copyWithZone:0];
     timingProvider = v5->_timingProvider;
     v5->_timingProvider = v12;
   }
@@ -37,9 +37,9 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TUIMutableTransactionOptions allocWithZone:a3];
+  v4 = [TUIMutableTransactionOptions allocWithZone:zone];
 
   return [(TUITransactionOptions *)v4 initWithOther:self];
 }
@@ -61,15 +61,15 @@
   return v2;
 }
 
-- (BOOL)isCompatibleWithOptions:(id)a3
+- (BOOL)isCompatibleWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   animate = self->_animate;
-  if (animate == [v4 animate] && (duration = self->_duration, objc_msgSend(v4, "duration"), duration == v7))
+  if (animate == [optionsCopy animate] && (duration = self->_duration, objc_msgSend(optionsCopy, "duration"), duration == v7))
   {
     timingProvider = self->_timingProvider;
-    v9 = [v4 timingProvider];
-    if (timingProvider == v9)
+    timingProvider = [optionsCopy timingProvider];
+    if (timingProvider == timingProvider)
     {
       v12 = 1;
     }
@@ -77,8 +77,8 @@
     else
     {
       v10 = self->_timingProvider;
-      v11 = [v4 timingProvider];
-      v12 = [(UITimingCurveProvider *)v10 isEqual:v11];
+      timingProvider2 = [optionsCopy timingProvider];
+      v12 = [(UITimingCurveProvider *)v10 isEqual:timingProvider2];
     }
   }
 

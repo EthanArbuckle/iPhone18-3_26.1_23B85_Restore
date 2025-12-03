@@ -1,10 +1,10 @@
 @interface CoinButton
-- (_TtC7NewsUI210CoinButton)initWithCoder:(id)a3;
+- (_TtC7NewsUI210CoinButton)initWithCoder:(id)coder;
 @end
 
 @implementation CoinButton
 
-- (_TtC7NewsUI210CoinButton)initWithCoder:(id)a3
+- (_TtC7NewsUI210CoinButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC7NewsUI210CoinButton_linkedToggle) = 0;
   swift_unknownObjectWeakInit();

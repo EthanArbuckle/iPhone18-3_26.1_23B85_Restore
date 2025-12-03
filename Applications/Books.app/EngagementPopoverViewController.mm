@@ -1,55 +1,55 @@
 @interface EngagementPopoverViewController
-- (_TtC5Books31EngagementPopoverViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)engagement:(id)a3 didUpdateRequest:(id)a4 placement:(id)a5 serviceType:(id)a6;
-- (void)messageViewController:(id)a3 didSelectActionWithURL:(id)a4;
-- (void)messageViewControllerDidSelectCancel:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
+- (_TtC5Books31EngagementPopoverViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)engagement:(id)engagement didUpdateRequest:(id)request placement:(id)placement serviceType:(id)type;
+- (void)messageViewController:(id)controller didSelectActionWithURL:(id)l;
+- (void)messageViewControllerDidSelectCancel:(id)cancel;
+- (void)presentationControllerWillDismiss:(id)dismiss;
 @end
 
 @implementation EngagementPopoverViewController
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5Books31EngagementPopoverViewController_popoverVC);
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5Books31EngagementPopoverViewController_popoverVC) = 0;
-  v7 = self;
+  selfCopy = self;
 
-  v4 = v7 + OBJC_IVAR____TtC5Books31EngagementPopoverViewController_currentRequestDisplayed;
-  v5 = *(&v7->super.super.super.isa + OBJC_IVAR____TtC5Books31EngagementPopoverViewController_currentRequestDisplayed);
+  v4 = selfCopy + OBJC_IVAR____TtC5Books31EngagementPopoverViewController_currentRequestDisplayed;
+  v5 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC5Books31EngagementPopoverViewController_currentRequestDisplayed);
   *v4 = 0;
   v4[8] = 0;
 
-  v6 = *(&v7->super.super.super.isa + OBJC_IVAR____TtC5Books31EngagementPopoverViewController_messageViewControllerProvider);
-  *(&v7->super.super.super.isa + OBJC_IVAR____TtC5Books31EngagementPopoverViewController_messageViewControllerProvider) = 0;
+  v6 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC5Books31EngagementPopoverViewController_messageViewControllerProvider);
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC5Books31EngagementPopoverViewController_messageViewControllerProvider) = 0;
 
-  (*(&v7->super.super.super.isa + OBJC_IVAR____TtC5Books31EngagementPopoverViewController_showPopover))(0);
+  (*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC5Books31EngagementPopoverViewController_showPopover))(0);
 }
 
-- (_TtC5Books31EngagementPopoverViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Books31EngagementPopoverViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)engagement:(id)a3 didUpdateRequest:(id)a4 placement:(id)a5 serviceType:(id)a6
+- (void)engagement:(id)engagement didUpdateRequest:(id)request placement:(id)placement serviceType:(id)type
 {
   v9 = sub_1007A2254();
   v11 = v10;
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_10075A100(a4, v9, v11);
+  engagementCopy = engagement;
+  requestCopy = request;
+  selfCopy = self;
+  sub_10075A100(request, v9, v11);
 }
 
-- (void)messageViewControllerDidSelectCancel:(id)a3
+- (void)messageViewControllerDidSelectCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  sub_100759A60(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  sub_100759A60(cancelCopy);
 }
 
-- (void)messageViewController:(id)a3 didSelectActionWithURL:(id)a4
+- (void)messageViewController:(id)controller didSelectActionWithURL:(id)l
 {
   v4 = sub_1007969B4();
   v5 = *(v4 - 8);

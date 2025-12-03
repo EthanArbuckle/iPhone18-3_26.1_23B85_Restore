@@ -1,30 +1,30 @@
 @interface FAInviteLinkMetadataProvider
-- (FAInviteLinkMetadataProvider)initWithContext:(id)a3;
-- (id)_colorForString:(id)a3;
-- (id)_imageNamed:(id)a3;
-- (id)linkMetadataWithImage:(id)a3 icon:(id)a4;
-- (void)fetchImageFromURL:(id)a3 completion:(id)a4;
-- (void)loadImageWithURL:(id)a3 enableTextOverlay:(BOOL)a4 completion:(id)a5;
-- (void)loadMetatadataWithCompletion:(id)a3;
+- (FAInviteLinkMetadataProvider)initWithContext:(id)context;
+- (id)_colorForString:(id)string;
+- (id)_imageNamed:(id)named;
+- (id)linkMetadataWithImage:(id)image icon:(id)icon;
+- (void)fetchImageFromURL:(id)l completion:(id)completion;
+- (void)loadImageWithURL:(id)l enableTextOverlay:(BOOL)overlay completion:(id)completion;
+- (void)loadMetatadataWithCompletion:(id)completion;
 @end
 
 @implementation FAInviteLinkMetadataProvider
 
-- (FAInviteLinkMetadataProvider)initWithContext:(id)a3
+- (FAInviteLinkMetadataProvider)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = FAInviteLinkMetadataProvider;
   v5 = [(FAInviteLinkMetadataProvider *)&v8 init];
   context = v5->_context;
-  v5->_context = v4;
+  v5->_context = contextCopy;
 
   return v5;
 }
 
-- (void)loadMetatadataWithCompletion:(id)a3
+- (void)loadMetatadataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x3032000000;
@@ -52,7 +52,7 @@
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
   dispatch_group_enter(v5);
-  v6 = [(FAInviteContext *)self->_context imageURL];
+  imageURL = [(FAInviteContext *)self->_context imageURL];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __61__FAInviteLinkMetadataProvider_loadMetatadataWithCompletion___block_invoke;
@@ -61,9 +61,9 @@
   v24 = v27;
   v7 = v5;
   v22 = v7;
-  [(FAInviteLinkMetadataProvider *)self loadImageWithURL:v6 enableTextOverlay:1 completion:v21];
+  [(FAInviteLinkMetadataProvider *)self loadImageWithURL:imageURL enableTextOverlay:1 completion:v21];
 
-  v8 = [(FAInviteContext *)self->_context iconURL];
+  iconURL = [(FAInviteContext *)self->_context iconURL];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __61__FAInviteLinkMetadataProvider_loadMetatadataWithCompletion___block_invoke_2;
@@ -72,7 +72,7 @@
   v20 = v25;
   v9 = v7;
   v18 = v9;
-  [(FAInviteLinkMetadataProvider *)self loadImageWithURL:v8 enableTextOverlay:0 completion:v17];
+  [(FAInviteLinkMetadataProvider *)self loadImageWithURL:iconURL enableTextOverlay:0 completion:v17];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -81,10 +81,10 @@
   v13 = v27;
   v14 = v25;
   v11[4] = self;
-  v12 = v4;
+  v12 = completionCopy;
   v15 = v31;
   v16 = v29;
-  v10 = v4;
+  v10 = completionCopy;
   dispatch_group_notify(v9, MEMORY[0x277D85CD0], v11);
 
   _Block_object_dispose(v25, 8);
@@ -156,25 +156,25 @@ void __61__FAInviteLinkMetadataProvider_loadMetatadataWithCompletion___block_inv
   }
 }
 
-- (void)loadImageWithURL:(id)a3 enableTextOverlay:(BOOL)a4 completion:(id)a5
+- (void)loadImageWithURL:(id)l enableTextOverlay:(BOOL)overlay completion:(id)completion
 {
-  v8 = a5;
-  v9 = v8;
-  if (a3)
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (l)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __78__FAInviteLinkMetadataProvider_loadImageWithURL_enableTextOverlay_completion___block_invoke;
     v10[3] = &unk_2782F3F20;
-    v12 = a4;
+    overlayCopy = overlay;
     v10[4] = self;
-    v11 = v8;
-    [(FAInviteLinkMetadataProvider *)self fetchImageFromURL:a3 completion:v10];
+    v11 = completionCopy;
+    [(FAInviteLinkMetadataProvider *)self fetchImageFromURL:l completion:v10];
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -257,28 +257,28 @@ LABEL_19:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchImageFromURL:(id)a3 completion:(id)a4
+- (void)fetchImageFromURL:(id)l completion:(id)completion
 {
   v5 = MEMORY[0x277CECA60];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedImageFetcher];
-  [v8 fetchImageAtURL:v7 completionHandler:v6];
+  completionCopy = completion;
+  lCopy = l;
+  sharedImageFetcher = [v5 sharedImageFetcher];
+  [sharedImageFetcher fetchImageAtURL:lCopy completionHandler:completionCopy];
 }
 
-- (id)_colorForString:(id)a3
+- (id)_colorForString:(id)string
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [MEMORY[0x277CCAC80] scannerWithString:v3];
+    v4 = [MEMORY[0x277CCAC80] scannerWithString:stringCopy];
     v20 = 0;
     v21 = 0;
-    v5 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    [v4 setCharactersToBeSkipped:v5];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    [v4 setCharactersToBeSkipped:whitespaceCharacterSet];
 
-    LODWORD(v5) = objc_msgSend(v4, "scanUpToString:intoString:", @"("), 0;
+    LODWORD(whitespaceCharacterSet) = objc_msgSend(v4, "scanUpToString:intoString:", @"("), 0;
     objc_msgSend(v4, "scanString:intoString:", @"("), 0;
     v6 = [v4 scanInt:&v21 + 4];
     v7 = [v4 scanString:@" intoString:{", 0}];
@@ -287,7 +287,7 @@ LABEL_19:
     v10 = [v4 scanInt:&v20 + 4];
     v11 = [v4 scanString:@" intoString:{", 0}];
     v12 = [v4 scanFloat:&v20];
-    if (v5 && v6 && v7 && v8 && v9 && v10)
+    if (whitespaceCharacterSet && v6 && v7 && v8 && v9 && v10)
     {
       v13 = *&v20;
       if ((v11 & v12) == 0)
@@ -301,14 +301,14 @@ LABEL_19:
     else
     {
       v22[0] = @"black";
-      v15 = [MEMORY[0x277D75348] blackColor];
+      blackColor = [MEMORY[0x277D75348] blackColor];
       v22[1] = @"white";
-      v23[0] = v15;
-      v16 = [MEMORY[0x277D75348] whiteColor];
-      v23[1] = v16;
+      v23[0] = blackColor;
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      v23[1] = whiteColor;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
 
-      v14 = [v17 objectForKeyedSubscript:v3];
+      v14 = [v17 objectForKeyedSubscript:stringCopy];
     }
   }
 
@@ -322,49 +322,49 @@ LABEL_19:
   return v14;
 }
 
-- (id)linkMetadataWithImage:(id)a3 icon:(id)a4
+- (id)linkMetadataWithImage:(id)image icon:(id)icon
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  iconCopy = icon;
   v8 = objc_alloc_init(FAInviteLinkMetadata);
   [(FAInviteLinkMetadata *)v8 setContext:self->_context];
-  if (v6)
+  if (imageCopy)
   {
-    [(FAInviteLinkMetadata *)v8 setImage:v6];
-    if (v7)
+    [(FAInviteLinkMetadata *)v8 setImage:imageCopy];
+    if (iconCopy)
     {
 LABEL_3:
-      [(FAInviteLinkMetadata *)v8 setIcon:v7];
+      [(FAInviteLinkMetadata *)v8 setIcon:iconCopy];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v9 = [(FAInviteLinkMetadataProvider *)self _defaultImage];
-    [(FAInviteLinkMetadata *)v8 setImage:v9];
+    _defaultImage = [(FAInviteLinkMetadataProvider *)self _defaultImage];
+    [(FAInviteLinkMetadata *)v8 setImage:_defaultImage];
 
-    if (v7)
+    if (iconCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v10 = [(FAInviteLinkMetadataProvider *)self _defaultIcon];
-  [(FAInviteLinkMetadata *)v8 setIcon:v10];
+  _defaultIcon = [(FAInviteLinkMetadataProvider *)self _defaultIcon];
+  [(FAInviteLinkMetadata *)v8 setIcon:_defaultIcon];
 
 LABEL_6:
 
   return v8;
 }
 
-- (id)_imageNamed:(id)a3
+- (id)_imageNamed:(id)named
 {
   v3 = MEMORY[0x277D755B8];
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  namedCopy = named;
   v6 = [v4 bundleForClass:objc_opt_class()];
-  v7 = [v3 imageNamed:v5 inBundle:v6];
+  v7 = [v3 imageNamed:namedCopy inBundle:v6];
 
   v8 = [objc_alloc(MEMORY[0x277CD46B0]) initWithPlatformImage:v7];
 

@@ -1,5 +1,5 @@
 @interface AVCatalystGlassStyleSheet
-- (AVCatalystGlassStyleSheet)initWithTraitCollection:(id)a3 shouldUseCompactFullScreenSize:(BOOL)a4;
+- (AVCatalystGlassStyleSheet)initWithTraitCollection:(id)collection shouldUseCompactFullScreenSize:(BOOL)size;
 - (CGSize)audioRoutePickerFullScreenSize;
 - (CGSize)defaultItemFullScreenSize;
 - (CGSize)defaultItemInlineSize;
@@ -197,21 +197,21 @@
 - (void)_loadFontsIfNeeded
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  if (a1 && !a1[19])
+  if (self && !self[19])
   {
-    v2 = [a1 traitCollection];
-    v3 = [v2 userInterfaceIdiom];
+    traitCollection = [self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
     v4 = MEMORY[0x1E69DDD00];
-    if (v3 != 5)
+    if (userInterfaceIdiom != 5)
     {
       v4 = MEMORY[0x1E69DDD10];
     }
 
     v5 = MEMORY[0x1E69DB878];
     v6 = *v4;
-    v7 = [a1 traitCollection];
-    v8 = [v5 preferredFontForTextStyle:v6 compatibleWithTraitCollection:v7];
+    traitCollection2 = [self traitCollection];
+    v8 = [v5 preferredFontForTextStyle:v6 compatibleWithTraitCollection:traitCollection2];
     [v8 pointSize];
     v10 = v9;
 
@@ -225,30 +225,30 @@
     v34[0] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
 
-    v15 = [v11 fontDescriptor];
+    fontDescriptor = [v11 fontDescriptor];
     v16 = [MEMORY[0x1E696AD98] numberWithDouble:{v10, *MEMORY[0x1E69DB8B0], *MEMORY[0x1E69DB8C0], v14}];
     v31[1] = v16;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:2];
-    v18 = [v15 fontDescriptorByAddingAttributes:v17];
+    v18 = [fontDescriptor fontDescriptorByAddingAttributes:v17];
 
     v19 = MEMORY[0x1E69DB878];
     v20 = *MEMORY[0x1E69DDD28];
-    v21 = [a1 traitCollection];
-    v22 = [v19 preferredFontForTextStyle:v20 compatibleWithTraitCollection:v21];
-    v23 = a1[18];
-    a1[18] = v22;
+    traitCollection3 = [self traitCollection];
+    v22 = [v19 preferredFontForTextStyle:v20 compatibleWithTraitCollection:traitCollection3];
+    v23 = self[18];
+    self[18] = v22;
 
     v24 = [MEMORY[0x1E69DB878] systemFontOfSize:v10];
-    v25 = a1[19];
-    a1[19] = v24;
+    v25 = self[19];
+    self[19] = v24;
 
     v26 = [MEMORY[0x1E69DB878] fontWithDescriptor:v18 size:v10];
-    v27 = a1[20];
-    a1[20] = v26;
+    v27 = self[20];
+    self[20] = v26;
 
     v28 = [MEMORY[0x1E69DB878] avkit_nonScalingFontWithTextStyle:*MEMORY[0x1E69DDDC8] weight:*MEMORY[0x1E69DB970]];
-    v29 = a1[35];
-    a1[35] = v28;
+    v29 = self[35];
+    self[35] = v28;
   }
 }
 
@@ -268,24 +268,24 @@
   return scrubberInfoLabelFont;
 }
 
-- (AVCatalystGlassStyleSheet)initWithTraitCollection:(id)a3 shouldUseCompactFullScreenSize:(BOOL)a4
+- (AVCatalystGlassStyleSheet)initWithTraitCollection:(id)collection shouldUseCompactFullScreenSize:(BOOL)size
 {
   v34.receiver = self;
   v34.super_class = AVCatalystGlassStyleSheet;
-  v5 = [(AVMobileControlsStyleSheet *)&v34 initWithTraitCollection:a3];
+  v5 = [(AVMobileControlsStyleSheet *)&v34 initWithTraitCollection:collection];
   v6 = v5;
   if (v5)
   {
-    v7 = [(AVMobileControlsStyleSheet *)v5 traitCollection];
-    v8 = [v7 userInterfaceIdiom];
+    traitCollection = [(AVMobileControlsStyleSheet *)v5 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    v9 = [(AVMobileControlsStyleSheet *)v6 traitCollection];
-    v10 = [v9 userInterfaceIdiom];
+    traitCollection2 = [(AVMobileControlsStyleSheet *)v6 traitCollection];
+    userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-    v11 = [(AVMobileControlsStyleSheet *)v6 traitCollection];
-    v12 = [v11 userInterfaceIdiom];
+    traitCollection3 = [(AVMobileControlsStyleSheet *)v6 traitCollection];
+    userInterfaceIdiom3 = [traitCollection3 userInterfaceIdiom];
 
-    if (v8 == 5)
+    if (userInterfaceIdiom == 5)
     {
       v13 = 0.77;
     }
@@ -298,9 +298,9 @@
     v14 = *(MEMORY[0x1E69DDCE0] + 16);
     *&v6->_fullscreenInsets.top = *MEMORY[0x1E69DDCE0];
     *&v6->_fullscreenInsets.bottom = v14;
-    if (!v12 || v10 == 1)
+    if (!userInterfaceIdiom3 || userInterfaceIdiom2 == 1)
     {
-      v15 = vdup_n_s32(v12 == 0);
+      v15 = vdup_n_s32(userInterfaceIdiom3 == 0);
       v16.i64[0] = v15.u32[0];
       v16.i64[1] = v15.u32[1];
       __asm { FMOV            V2.2D, #27.0 }
@@ -310,14 +310,14 @@
       *&v6->_fullscreenInsets.bottom = v21;
     }
 
-    v6->_shouldUseCompactFullScreenSize = a4;
+    v6->_shouldUseCompactFullScreenSize = size;
     v6->_defaultItemInlineSize.width = v13 * 34.0;
     v6->_defaultItemInlineSize.height = v13 * 34.0;
     v6->_defaultItemFullScreenSize.width = v13 * 34.0;
     v6->_defaultItemFullScreenSize.height = v13 * 34.0;
     v6->_standardPaddingFullScreen = v13 * 11.0;
     v22 = 5.0;
-    if (v8 != 5)
+    if (userInterfaceIdiom != 5)
     {
       v22 = v13 * 11.0;
     }
@@ -346,10 +346,10 @@
     v6->_volumeButtonFullScreenSize.height = v13 * 25.0;
     v6->_minimumProminentPlayButtonDimension = 31.0;
     v6->_maximumProminentPlayButtonDimension = 60.0;
-    v24 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-    [v24 bounds];
+    avkit_mainScreen = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+    [avkit_mainScreen bounds];
     Width = CGRectGetWidth(v35);
-    [v24 bounds];
+    [avkit_mainScreen bounds];
     Height = CGRectGetHeight(v36);
     if (Width >= Height)
     {
@@ -361,16 +361,16 @@
       v27 = Width;
     }
 
-    [v24 bounds];
+    [avkit_mainScreen bounds];
     v28 = CGRectGetWidth(v37);
-    [v24 bounds];
+    [avkit_mainScreen bounds];
     v29 = CGRectGetHeight(v38);
     if (v28 >= v29)
     {
       v29 = v28;
     }
 
-    if (v8 == 5 || v10 == 1)
+    if (userInterfaceIdiom == 5 || userInterfaceIdiom2 == 1)
     {
       v29 = v27;
     }
@@ -394,9 +394,9 @@
     v6->_volumeControlsDirectionalInsets.bottom = 0.0;
     v6->_volumeControlsDirectionalInsets.trailing = v13 * 12.0;
     v6->_defaultPlatterHeight = v13 * 46.0;
-    v31 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     sliderMinValueTrackColor = v6->_sliderMinValueTrackColor;
-    v6->_sliderMinValueTrackColor = v31;
+    v6->_sliderMinValueTrackColor = whiteColor;
   }
 
   return v6;

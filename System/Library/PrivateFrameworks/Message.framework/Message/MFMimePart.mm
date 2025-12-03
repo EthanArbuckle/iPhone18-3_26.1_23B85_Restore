@@ -1,8 +1,8 @@
 @interface MFMimePart
-- (BOOL)_needsSignatureVerification:(void *)a1;
-- (void)_setSMIMEError:(void *)a1;
-- (void)_setSignatureInfo:(void *)a1;
-- (void)_setSigners:(void *)a1;
+- (BOOL)_needsSignatureVerification:(void *)verification;
+- (void)_setSMIMEError:(void *)error;
+- (void)_setSignatureInfo:(void *)info;
+- (void)_setSigners:(void *)signers;
 @end
 
 @implementation MFMimePart
@@ -79,30 +79,30 @@ id __56__MFMimePart_SMIMEDecoding__decodeApplicationPkcs7_mime__block_invoke(uin
   return v15;
 }
 
-- (void)_setSignatureInfo:(void *)a1
+- (void)_setSignatureInfo:(void *)info
 {
   v3 = a2;
-  if (a1)
+  if (info)
   {
-    [a1 _setObjectInOtherIvars:v3 forKey:@"x-apple-smime-signature-info"];
+    [info _setObjectInOtherIvars:v3 forKey:@"x-apple-smime-signature-info"];
   }
 }
 
-- (void)_setSigners:(void *)a1
+- (void)_setSigners:(void *)signers
 {
   v3 = a2;
-  if (a1)
+  if (signers)
   {
-    [a1 _setObjectInOtherIvars:v3 forKey:@"x-apple-smime-signers"];
+    [signers _setObjectInOtherIvars:v3 forKey:@"x-apple-smime-signers"];
   }
 }
 
-- (void)_setSMIMEError:(void *)a1
+- (void)_setSMIMEError:(void *)error
 {
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    [a1 _setObjectInOtherIvars:v3 forKey:@"x-apple-smime-error"];
+    [error _setObjectInOtherIvars:v3 forKey:@"x-apple-smime-error"];
   }
 }
 
@@ -179,12 +179,12 @@ void __107__MFMimePart_SMIMEEncoding___encryptedDataUsingMessageSecurity_composi
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_needsSignatureVerification:(void *)a1
+- (BOOL)_needsSignatureVerification:(void *)verification
 {
-  v2 = a1;
-  if (a1)
+  verificationCopy = verification;
+  if (verification)
   {
-    v4 = [a1 _objectInOtherIvarsForKey:@"x-apple-smime-error"];
+    v4 = [verification _objectInOtherIvarsForKey:@"x-apple-smime-error"];
     *a2 = v4;
     if (v4)
     {
@@ -193,12 +193,12 @@ void __107__MFMimePart_SMIMEEncoding___encryptedDataUsingMessageSecurity_composi
 
     else
     {
-      v5 = [v2 _objectInOtherIvarsForKey:@"x-apple-smime-signers"];
-      v2 = v5 == 0;
+      v5 = [verificationCopy _objectInOtherIvarsForKey:@"x-apple-smime-signers"];
+      verificationCopy = v5 == 0;
     }
   }
 
-  return v2;
+  return verificationCopy;
 }
 
 @end

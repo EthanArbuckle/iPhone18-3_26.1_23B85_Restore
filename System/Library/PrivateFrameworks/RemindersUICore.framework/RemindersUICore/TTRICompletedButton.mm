@@ -1,31 +1,31 @@
 @interface TTRICompletedButton
 - (CGSize)intrinsicContentSize;
-- (_TtC15RemindersUICore19TTRICompletedButton)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore19TTRICompletedButton)initWithFrame:(CGRect)a3;
+- (_TtC15RemindersUICore19TTRICompletedButton)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore19TTRICompletedButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TTRICompletedButton
 
-- (_TtC15RemindersUICore19TTRICompletedButton)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICore19TTRICompletedButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for TTRICompletedButton();
-  v7 = [(TTRIExpandedHitTestButton *)&v9 initWithFrame:x, y, width, height];
+  height = [(TTRIExpandedHitTestButton *)&v9 initWithFrame:x, y, width, height];
   sub_21D25B598();
 
-  return v7;
+  return height;
 }
 
-- (_TtC15RemindersUICore19TTRICompletedButton)initWithCoder:(id)a3
+- (_TtC15RemindersUICore19TTRICompletedButton)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for TTRICompletedButton();
-  v4 = a3;
-  v5 = [(TTRIExpandedHitTestButton *)&v9 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(TTRIExpandedHitTestButton *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -38,7 +38,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21D25B2E4();
   v5 = v4;
 

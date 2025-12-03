@@ -2,7 +2,7 @@
 + (id)Feedback;
 + (id)configurationForFeedback;
 + (id)storeConfigurationForFeedback;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)Feedback
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForFeedback];
+  configurationForFeedback = [self configurationForFeedback];
   v3 = +[BMPhotosAutonamingSuggestionsFeedback columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Photos.AutonamingSuggestions.Feedback" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Photos.AutonamingSuggestions.Feedback" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Photos.AutonamingSuggestions.Feedback" schema:v9 configuration:configurationForFeedback];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -40,30 +40,30 @@
 
 + (id)configurationForFeedback
 {
-  v3 = [a1 storeConfigurationForFeedback];
-  v4 = [a1 syncPolicyForFeedback];
+  storeConfigurationForFeedback = [self storeConfigurationForFeedback];
+  syncPolicyForFeedback = [self syncPolicyForFeedback];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"F555FDC3-716B-44C6-A2B0-60547C5AE858"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Photos.AutonamingSuggestions.Feedback" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobileslideshow" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Photos.AutonamingSuggestions.Feedback" eventClass:objc_opt_class() storeConfig:storeConfigurationForFeedback syncPolicy:syncPolicyForFeedback legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobileslideshow" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Feedback"])
+  if ([name isEqualToString:@"Feedback"])
   {
-    v4 = [a1 Feedback];
+    feedback = [self Feedback];
   }
 
   else
   {
-    v4 = 0;
+    feedback = 0;
   }
 
-  return v4;
+  return feedback;
 }
 
 + (id)validKeyPaths

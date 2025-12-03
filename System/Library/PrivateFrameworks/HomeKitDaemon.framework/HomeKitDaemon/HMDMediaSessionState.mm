@@ -1,31 +1,31 @@
 @interface HMDMediaSessionState
-- (BOOL)isEqual:(id)a3;
-- (HMDMediaSessionState)initWithSessionIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDMediaSessionState)initWithSessionIdentifier:(id)identifier;
 - (NSNumber)muted;
 - (NSNumber)volume;
 - (NSString)description;
 - (NSString)mediaUniqueIdentifier;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (int64_t)playbackState;
 - (int64_t)repeatState;
 - (int64_t)shuffleState;
 - (unint64_t)hash;
 - (unint64_t)sleepWakeState;
-- (void)setMediaUniqueIdentifier:(id)a3;
-- (void)setMuted:(id)a3;
-- (void)setPlaybackState:(int64_t)a3;
-- (void)setRepeatState:(int64_t)a3;
-- (void)setShuffleState:(int64_t)a3;
-- (void)setSleepWakeState:(unint64_t)a3;
-- (void)setVolume:(id)a3;
+- (void)setMediaUniqueIdentifier:(id)identifier;
+- (void)setMuted:(id)muted;
+- (void)setPlaybackState:(int64_t)state;
+- (void)setRepeatState:(int64_t)state;
+- (void)setShuffleState:(int64_t)state;
+- (void)setSleepWakeState:(unint64_t)state;
+- (void)setVolume:(id)volume;
 @end
 
 @implementation HMDMediaSessionState
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(HMDMediaSessionState *)self sessionIdentifier];
+  sessionIdentifier = [(HMDMediaSessionState *)self sessionIdentifier];
   [(HMDMediaSessionState *)self playbackState];
   v6 = playbackStateAsString();
   v7 = [(HMDMediaSessionState *)self shuffleState]- 1;
@@ -50,9 +50,9 @@
     v10 = off_27867B6D0[v9];
   }
 
-  v11 = [(HMDMediaSessionState *)self volume];
-  v12 = [(HMDMediaSessionState *)self mediaUniqueIdentifier];
-  v13 = [v4 stringWithFormat:@"MediaSession state sessionIdentifier: %@, Playback state: %@, Shuffle state: %@, Repeat state: %@, Volume: %@, Media identifier: %@", v5, v6, v8, v10, v11, v12];
+  volume = [(HMDMediaSessionState *)self volume];
+  mediaUniqueIdentifier = [(HMDMediaSessionState *)self mediaUniqueIdentifier];
+  v13 = [v4 stringWithFormat:@"MediaSession state sessionIdentifier: %@, Playback state: %@, Shuffle state: %@, Repeat state: %@, Volume: %@, Media identifier: %@", sessionIdentifier, v6, v8, v10, volume, mediaUniqueIdentifier];
 
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v13 forKey:*MEMORY[0x277D0F170]];
 
@@ -62,7 +62,7 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDMediaSessionState *)self sessionIdentifier];
+  sessionIdentifier = [(HMDMediaSessionState *)self sessionIdentifier];
   [(HMDMediaSessionState *)self playbackState];
   v5 = playbackStateAsString();
   v6 = [(HMDMediaSessionState *)self shuffleState]- 1;
@@ -87,17 +87,17 @@
     v9 = off_27867B6D0[v8];
   }
 
-  v10 = [(HMDMediaSessionState *)self volume];
-  v11 = [(HMDMediaSessionState *)self mediaUniqueIdentifier];
-  v12 = [v3 stringWithFormat:@"[HMDMediaSessionState sessionIdentifier: %@, Playback state: %@, Shuffle state: %@, Repeat state: %@, Volume: %@, Media identifier: %@]", v4, v5, v7, v9, v10, v11];
+  volume = [(HMDMediaSessionState *)self volume];
+  mediaUniqueIdentifier = [(HMDMediaSessionState *)self mediaUniqueIdentifier];
+  v12 = [v3 stringWithFormat:@"[HMDMediaSessionState sessionIdentifier: %@, Playback state: %@, Shuffle state: %@, Repeat state: %@, Volume: %@, Media identifier: %@]", sessionIdentifier, v5, v7, v9, volume, mediaUniqueIdentifier];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v20 = 1;
   }
@@ -107,7 +107,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -121,8 +121,8 @@
       goto LABEL_12;
     }
 
-    v7 = [(HMDMediaSessionState *)self sessionIdentifier];
-    v8 = [(HMDMediaSessionState *)v6 sessionIdentifier];
+    sessionIdentifier = [(HMDMediaSessionState *)self sessionIdentifier];
+    sessionIdentifier2 = [(HMDMediaSessionState *)v6 sessionIdentifier];
     v9 = HMFEqualObjects();
 
     if (!v9)
@@ -130,14 +130,14 @@
       goto LABEL_12;
     }
 
-    v10 = [(HMDMediaSessionState *)self playbackState];
-    if (v10 == [(HMDMediaSessionState *)v6 playbackState]&& (v11 = [(HMDMediaSessionState *)self shuffleState], v11 == [(HMDMediaSessionState *)v6 shuffleState]) && (v12 = [(HMDMediaSessionState *)self repeatState], v12 == [(HMDMediaSessionState *)v6 repeatState]))
+    playbackState = [(HMDMediaSessionState *)self playbackState];
+    if (playbackState == [(HMDMediaSessionState *)v6 playbackState]&& (v11 = [(HMDMediaSessionState *)self shuffleState], v11 == [(HMDMediaSessionState *)v6 shuffleState]) && (v12 = [(HMDMediaSessionState *)self repeatState], v12 == [(HMDMediaSessionState *)v6 repeatState]))
     {
-      v13 = [(HMDMediaSessionState *)self volume];
-      [v13 floatValue];
+      volume = [(HMDMediaSessionState *)self volume];
+      [volume floatValue];
       v15 = v14;
-      v16 = [(HMDMediaSessionState *)v6 volume];
-      [v16 floatValue];
+      volume2 = [(HMDMediaSessionState *)v6 volume];
+      [volume2 floatValue];
       if (vabds_f32(v15, v17) >= *MEMORY[0x277CD1F78])
       {
         v20 = 0;
@@ -145,9 +145,9 @@
 
       else
       {
-        v18 = [(HMDMediaSessionState *)self mediaUniqueIdentifier];
-        v19 = [(HMDMediaSessionState *)v6 mediaUniqueIdentifier];
-        v20 = [v18 isEqual:v19];
+        mediaUniqueIdentifier = [(HMDMediaSessionState *)self mediaUniqueIdentifier];
+        mediaUniqueIdentifier2 = [(HMDMediaSessionState *)v6 mediaUniqueIdentifier];
+        v20 = [mediaUniqueIdentifier isEqual:mediaUniqueIdentifier2];
       }
     }
 
@@ -163,18 +163,18 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v2 = [(HMDMediaSessionState *)self sessionIdentifier];
-  v3 = [v2 hash];
+  sessionIdentifier = [(HMDMediaSessionState *)self sessionIdentifier];
+  v3 = [sessionIdentifier hash];
 
   return v3;
 }
 
-- (void)setSleepWakeState:(unint64_t)a3
+- (void)setSleepWakeState:(unint64_t)state
 {
   os_unfair_lock_lock_with_options();
-  if (self->_sleepWakeState != a3)
+  if (self->_sleepWakeState != state)
   {
-    self->_sleepWakeState = a3;
+    self->_sleepWakeState = state;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -188,13 +188,13 @@ LABEL_12:
   return sleepWakeState;
 }
 
-- (void)setMediaUniqueIdentifier:(id)a3
+- (void)setMediaUniqueIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  if (([v5 isEqualToString:self->_mediaUniqueIdentifier] & 1) == 0)
+  if (([identifierCopy isEqualToString:self->_mediaUniqueIdentifier] & 1) == 0)
   {
-    objc_storeStrong(&self->_mediaUniqueIdentifier, a3);
+    objc_storeStrong(&self->_mediaUniqueIdentifier, identifier);
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -209,13 +209,13 @@ LABEL_12:
   return v3;
 }
 
-- (void)setMuted:(id)a3
+- (void)setMuted:(id)muted
 {
-  v5 = a3;
+  mutedCopy = muted;
   os_unfair_lock_lock_with_options();
-  if (self->_muted != v5)
+  if (self->_muted != mutedCopy)
   {
-    objc_storeStrong(&self->_muted, a3);
+    objc_storeStrong(&self->_muted, muted);
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -230,13 +230,13 @@ LABEL_12:
   return v3;
 }
 
-- (void)setVolume:(id)a3
+- (void)setVolume:(id)volume
 {
-  v5 = a3;
+  volumeCopy = volume;
   os_unfair_lock_lock_with_options();
-  if (self->_volume != v5)
+  if (self->_volume != volumeCopy)
   {
-    objc_storeStrong(&self->_volume, a3);
+    objc_storeStrong(&self->_volume, volume);
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -251,12 +251,12 @@ LABEL_12:
   return v3;
 }
 
-- (void)setRepeatState:(int64_t)a3
+- (void)setRepeatState:(int64_t)state
 {
   os_unfair_lock_lock_with_options();
-  if (self->_repeatState != a3)
+  if (self->_repeatState != state)
   {
-    self->_repeatState = a3;
+    self->_repeatState = state;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -270,12 +270,12 @@ LABEL_12:
   return repeatState;
 }
 
-- (void)setShuffleState:(int64_t)a3
+- (void)setShuffleState:(int64_t)state
 {
   os_unfair_lock_lock_with_options();
-  if (self->_shuffleState != a3)
+  if (self->_shuffleState != state)
   {
-    self->_shuffleState = a3;
+    self->_shuffleState = state;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -289,12 +289,12 @@ LABEL_12:
   return shuffleState;
 }
 
-- (void)setPlaybackState:(int64_t)a3
+- (void)setPlaybackState:(int64_t)state
 {
   os_unfair_lock_lock_with_options();
-  if (self->_playbackState != a3)
+  if (self->_playbackState != state)
   {
-    self->_playbackState = a3;
+    self->_playbackState = state;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -308,12 +308,12 @@ LABEL_12:
   return playbackState;
 }
 
-- (HMDMediaSessionState)initWithSessionIdentifier:(id)a3
+- (HMDMediaSessionState)initWithSessionIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = v4;
+    v5 = identifierCopy;
     v16.receiver = self;
     v16.super_class = HMDMediaSessionState;
     v6 = [(HMDMediaSessionState *)&v16 init];

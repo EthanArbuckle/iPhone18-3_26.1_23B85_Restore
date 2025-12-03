@@ -1,19 +1,19 @@
 @interface PXFooterViewModelController
 + (OS_dispatch_queue)updateQueue;
-+ (id)_updateQueue_viewModelConfigurationWithStatus:(id)a3 counts:(id *)a4 photoLibrary:(id)a5;
++ (id)_updateQueue_viewModelConfigurationWithStatus:(id)status counts:(id *)counts photoLibrary:(id)library;
 + (void)loadAsyncUpdatesImmediately;
 - (PXFooterViewModelController)init;
-- (PXFooterViewModelController)initWithPhotoLibrary:(id)a3 provideLibraryCounts:(BOOL)a4 provideCloudQuotaOffers:(BOOL)a5;
+- (PXFooterViewModelController)initWithPhotoLibrary:(id)library provideLibraryCounts:(BOOL)counts provideCloudQuotaOffers:(BOOL)offers;
 - (PXFooterViewModelControllerDelegate)delegate;
-- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)a3;
+- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)helper;
 - (void)_invalidateFooterViewModel;
-- (void)_mainQueue_finishUpdateWithCPLStatus:(id)a3 viewModelConfiguration:(id)a4;
+- (void)_mainQueue_finishUpdateWithCPLStatus:(id)status viewModelConfiguration:(id)configuration;
 - (void)_prepareCounts;
 - (void)_setNeedsUpdate;
 - (void)_updateFooterViewModel;
 - (void)_updateIfNeeded;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setIsActive:(BOOL)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setIsActive:(BOOL)active;
 @end
 
 @implementation PXFooterViewModelController
@@ -51,94 +51,94 @@ void __42__PXFooterViewModelController_updateQueue__block_invoke()
   return WeakRetained;
 }
 
-- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)a3
+- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)helper
 {
-  v4 = [(PXFooterViewModelController *)self delegate];
-  if (!v4)
+  delegate = [(PXFooterViewModelController *)self delegate];
+  if (!delegate)
   {
     PXAssertGetLog();
   }
 
-  v5 = [v4 presentingViewControllerForFooterViewModelController:self];
+  v5 = [delegate presentingViewControllerForFooterViewModelController:self];
 
   return v5;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXAssetsDataSourceCountsControllerObserverContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXAssetsDataSourceCountsControllerObserverContext == context)
   {
-    if (v6)
+    if (changeCopy)
     {
 LABEL_4:
-      v11 = v9;
+      v11 = observableCopy;
       [(PXFooterViewModelController *)self _invalidateFooterViewModel];
-      v9 = v11;
+      observableCopy = v11;
     }
   }
 
   else
   {
-    if (PXCPLUIStatusProviderObservationContext != a5)
+    if (PXCPLUIStatusProviderObservationContext != context)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXFooterViewModelController.m" lineNumber:356 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXFooterViewModelController.m" lineNumber:356 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((v6 & 0x3FF) != 0)
+    if ((changeCopy & 0x3FF) != 0)
     {
       goto LABEL_4;
     }
   }
 }
 
-- (void)_mainQueue_finishUpdateWithCPLStatus:(id)a3 viewModelConfiguration:(id)a4
+- (void)_mainQueue_finishUpdateWithCPLStatus:(id)status viewModelConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  if ((PXCPLUIStatusHasImportantInformation(v6) & 1) != 0 || [(PXCloudQuotaControllerHelper *)self->_cloudQuotaHelper hasAnyInformationViews])
+  statusCopy = status;
+  configurationCopy = configuration;
+  if ((PXCPLUIStatusHasImportantInformation(statusCopy) & 1) != 0 || [(PXCloudQuotaControllerHelper *)self->_cloudQuotaHelper hasAnyInformationViews])
   {
-    v8 = 1;
+    simulateImportantInformation = 1;
   }
 
   else
   {
     v9 = +[PXFooterSettings sharedInstance];
-    v8 = [v9 simulateImportantInformation];
+    simulateImportantInformation = [v9 simulateImportantInformation];
   }
 
-  if (PXCloudQuotaCanShowInformationView(v6))
+  if (PXCloudQuotaCanShowInformationView(statusCopy))
   {
-    v10 = [(PXCloudQuotaControllerHelper *)self->_cloudQuotaHelper informationView];
-    v11 = [(PXCloudQuotaControllerHelper *)self->_cloudQuotaHelper premiumInformationView];
-    v13 = [v6 pauseReason] == 2 && v10 != 0;
+    informationView = [(PXCloudQuotaControllerHelper *)self->_cloudQuotaHelper informationView];
+    premiumInformationView = [(PXCloudQuotaControllerHelper *)self->_cloudQuotaHelper premiumInformationView];
+    v13 = [statusCopy pauseReason] == 2 && informationView != 0;
   }
 
   else
   {
-    v10 = 0;
-    v11 = 0;
+    informationView = 0;
+    premiumInformationView = 0;
     v13 = 0;
   }
 
-  v14 = [(PXFooterViewModelController *)self footerViewModel];
+  footerViewModel = [(PXFooterViewModelController *)self footerViewModel];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __91__PXFooterViewModelController__mainQueue_finishUpdateWithCPLStatus_viewModelConfiguration___block_invoke;
   v18[3] = &unk_1E772E7D0;
-  v20 = v11;
-  v21 = v7;
-  v22 = v8;
-  v19 = v10;
+  v20 = premiumInformationView;
+  v21 = configurationCopy;
+  v22 = simulateImportantInformation;
+  v19 = informationView;
   v23 = v13;
-  v15 = v11;
-  v16 = v10;
-  v17 = v7;
-  [v14 performChanges:v18];
+  v15 = premiumInformationView;
+  v16 = informationView;
+  v17 = configurationCopy;
+  [footerViewModel performChanges:v18];
 }
 
 void __91__PXFooterViewModelController__mainQueue_finishUpdateWithCPLStatus_viewModelConfiguration___block_invoke(uint64_t a1, void *a2)
@@ -156,8 +156,8 @@ void __91__PXFooterViewModelController__mainQueue_finishUpdateWithCPLStatus_view
 
 - (void)_updateFooterViewModel
 {
-  v3 = [(PXCPLUIStatusProvider *)self->_cplUIStatusProvider status];
-  v4 = [v3 copy];
+  status = [(PXCPLUIStatusProvider *)self->_cplUIStatusProvider status];
+  v4 = [status copy];
 
   v17 = 0uLL;
   v18 = 0;
@@ -215,15 +215,15 @@ void __53__PXFooterViewModelController__updateFooterViewModel__block_invoke_2(ui
 
 - (void)_invalidateFooterViewModel
 {
-  v2 = [(PXFooterViewModelController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateFooterViewModel];
+  updater = [(PXFooterViewModelController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFooterViewModel];
 }
 
 - (void)_prepareCounts
 {
-  v9 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v9 setIncludeAllPhotosSmartAlbum:1];
-  v3 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:1000000205 options:v9];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeAllPhotosSmartAlbum:1];
+  v3 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:1000000205 options:librarySpecificFetchOptions];
   v4 = [[PXPhotosDataSourceConfiguration alloc] initWithCollectionListFetchResult:v3 options:3];
   v5 = [[PXPhotosDataSource alloc] initWithPhotosDataSourceConfiguration:v4];
   v6 = [[PXPhotoKitAssetsDataSourceManager alloc] initWithPhotosDataSource:v5];
@@ -238,37 +238,37 @@ void __53__PXFooterViewModelController__updateFooterViewModel__block_invoke_2(ui
 
 - (void)_setNeedsUpdate
 {
-  v2 = [(PXFooterViewModelController *)self updateCoalescer];
-  [v2 inputEvent];
+  updateCoalescer = [(PXFooterViewModelController *)self updateCoalescer];
+  [updateCoalescer inputEvent];
 }
 
 - (void)_updateIfNeeded
 {
   if ([(PXFooterViewModelController *)self isActive])
   {
-    v3 = [(PXFooterViewModelController *)self updater];
-    [v3 updateIfNeeded];
+    updater = [(PXFooterViewModelController *)self updater];
+    [updater updateIfNeeded];
   }
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  if (self->_isActive != a3)
+  if (self->_isActive != active)
   {
-    self->_isActive = a3;
+    self->_isActive = active;
     [(PXFooterViewModelController *)self _updateIfNeeded];
   }
 }
 
-- (PXFooterViewModelController)initWithPhotoLibrary:(id)a3 provideLibraryCounts:(BOOL)a4 provideCloudQuotaOffers:(BOOL)a5
+- (PXFooterViewModelController)initWithPhotoLibrary:(id)library provideLibraryCounts:(BOOL)counts provideCloudQuotaOffers:(BOOL)offers
 {
-  v5 = a5;
-  v6 = a4;
-  v10 = a3;
-  if (!v10)
+  offersCopy = offers;
+  countsCopy = counts;
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PXFooterViewModelController.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFooterViewModelController.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v29.receiver = self;
@@ -290,8 +290,8 @@ void __53__PXFooterViewModelController__updateFooterViewModel__block_invoke_2(ui
     footerViewModel = v11->_footerViewModel;
     v11->_footerViewModel = v16;
 
-    objc_storeStrong(&v11->_photoLibrary, a3);
-    if (v6)
+    objc_storeStrong(&v11->_photoLibrary, library);
+    if (countsCopy)
     {
       objc_initWeak(&location, v11);
       v18 = +[PXFooterViewModelController updateQueue];
@@ -306,13 +306,13 @@ void __53__PXFooterViewModelController__updateFooterViewModel__block_invoke_2(ui
       objc_destroyWeak(&location);
     }
 
-    v19 = [[PXPhotoKitCPLActionManager alloc] initWithPhotoLibrary:v10];
-    v20 = [[PXCPLUIStatusProvider alloc] initWithPhotoLibrary:v10 actionManager:v19];
+    v19 = [[PXPhotoKitCPLActionManager alloc] initWithPhotoLibrary:libraryCopy];
+    v20 = [[PXCPLUIStatusProvider alloc] initWithPhotoLibrary:libraryCopy actionManager:v19];
     cplUIStatusProvider = v11->_cplUIStatusProvider;
     v11->_cplUIStatusProvider = v20;
 
     [(PXCPLUIStatusProvider *)v11->_cplUIStatusProvider registerChangeObserver:v11 context:PXCPLUIStatusProviderObservationContext];
-    if (v5)
+    if (offersCopy)
     {
       v22 = objc_alloc_init(PXCloudQuotaControllerHelper);
       cloudQuotaHelper = v11->_cloudQuotaHelper;
@@ -344,23 +344,23 @@ void __97__PXFooterViewModelController_initWithPhotoLibrary_provideLibraryCounts
 
 - (PXFooterViewModelController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFooterViewModelController.m" lineNumber:57 description:{@"%s is not available as initializer", "-[PXFooterViewModelController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFooterViewModelController.m" lineNumber:57 description:{@"%s is not available as initializer", "-[PXFooterViewModelController init]"}];
 
   abort();
 }
 
-+ (id)_updateQueue_viewModelConfigurationWithStatus:(id)a3 counts:(id *)a4 photoLibrary:(id)a5
++ (id)_updateQueue_viewModelConfigurationWithStatus:(id)status counts:(id *)counts photoLibrary:(id)library
 {
   v104 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 updateQueue];
-  dispatch_assert_queue_V2(v10);
+  statusCopy = status;
+  libraryCopy = library;
+  updateQueue = [self updateQueue];
+  dispatch_assert_queue_V2(updateQueue);
 
-  var1 = a4->var1;
-  var2 = a4->var2;
-  if (a4->var0 == 0x7FFFFFFFFFFFFFFFLL || var1 == 0x7FFFFFFFFFFFFFFFLL || var2 == 0x7FFFFFFFFFFFFFFFLL)
+  var1 = counts->var1;
+  var2 = counts->var2;
+  if (counts->var0 == 0x7FFFFFFFFFFFFFFFLL || var1 == 0x7FFFFFFFFFFFFFFFLL || var2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v16 = PXLocalizedStringFromTable(@"PXCuratedLibraryLoadingCountsDescription", @"PhotosUICore");
     v15 = 0;
@@ -368,12 +368,12 @@ void __97__PXFooterViewModelController_initWithPhotoLibrary_provideLibraryCounts
 
   else
   {
-    v15 = var1 + a4->var0 + var2;
+    v15 = var1 + counts->var0 + var2;
     v16 = PLLocalizedCountDescription();
   }
 
   v97 = 0;
-  v17 = [v9 hasSyncProgressReturningImportOperations:&v97];
+  v17 = [libraryCopy hasSyncProgressReturningImportOperations:&v97];
 
   if (v17)
   {
@@ -383,7 +383,7 @@ void __97__PXFooterViewModelController_initWithPhotoLibrary_provideLibraryCounts
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v99 = a1;
+      selfCopy5 = self;
       v100 = 2114;
       *v101 = v18;
       *&v101[8] = 2114;
@@ -397,41 +397,41 @@ void __97__PXFooterViewModelController_initWithPhotoLibrary_provideLibraryCounts
     v18 = 0;
   }
 
-  v78 = v8;
-  if (v8)
+  v78 = statusCopy;
+  if (statusCopy)
   {
     if (v16)
     {
-      v21 = [v8 referencedItemsDescription];
+      referencedItemsDescription = [statusCopy referencedItemsDescription];
     }
 
     else
     {
-      v21 = 0;
+      referencedItemsDescription = 0;
     }
 
     v65 = v15;
-    v67 = [v8 stateDescription];
+    stateDescription = [statusCopy stateDescription];
 
-    v68 = [v8 failureDescription];
-    v34 = [v8 internalInformationMessage];
-    v29 = [v8 isPaused];
-    [v8 progress];
+    failureDescription = [statusCopy failureDescription];
+    internalInformationMessage = [statusCopy internalInformationMessage];
+    isPaused = [statusCopy isPaused];
+    [statusCopy progress];
     v33 = v35;
-    v74 = [v8 actionTitle];
-    v72 = [v8 actionConfirmationAlertTitle];
-    v36 = [v8 actionConfirmationAlertSubtitle];
-    v37 = [v8 actionConfirmationAlertButtonTitle];
-    v38 = [v8 action];
-    v70 = v38;
-    if (v38)
+    actionTitle = [statusCopy actionTitle];
+    actionConfirmationAlertTitle = [statusCopy actionConfirmationAlertTitle];
+    actionConfirmationAlertSubtitle = [statusCopy actionConfirmationAlertSubtitle];
+    actionConfirmationAlertButtonTitle = [statusCopy actionConfirmationAlertButtonTitle];
+    action = [statusCopy action];
+    v70 = action;
+    if (action)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __97__PXFooterViewModelController__updateQueue_viewModelConfigurationWithStatus_counts_photoLibrary___block_invoke;
       aBlock[3] = &unk_1E774C2F0;
-      v96 = v38;
-      v95 = v8;
+      v96 = action;
+      v95 = statusCopy;
       v69 = _Block_copy(aBlock);
     }
 
@@ -440,24 +440,24 @@ void __97__PXFooterViewModelController_initWithPhotoLibrary_provideLibraryCounts
       v69 = 0;
     }
 
-    v76 = v34;
-    v71 = v36;
-    if (!v29 || [v8 pauseReason] == 2 || objc_msgSend(v8, "pauseReason") == 1 || !objc_msgSend(v8, "pauseReason"))
+    v76 = internalInformationMessage;
+    v71 = actionConfirmationAlertSubtitle;
+    if (!isPaused || [statusCopy pauseReason] == 2 || objc_msgSend(statusCopy, "pauseReason") == 1 || !objc_msgSend(statusCopy, "pauseReason"))
     {
       v66 = 0;
     }
 
     else
     {
-      v39 = [v8 pauseReason];
-      if (v39 > 0x12)
+      pauseReason = [statusCopy pauseReason];
+      if (pauseReason > 0x12)
       {
         v40 = 0;
       }
 
       else
       {
-        v40 = off_1E7748A00[v39];
+        v40 = off_1E7748A00[pauseReason];
       }
 
       v62 = v40;
@@ -465,7 +465,7 @@ void __97__PXFooterViewModelController_initWithPhotoLibrary_provideLibraryCounts
       if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v99 = a1;
+        selfCopy5 = self;
         v100 = 2114;
         *v101 = v62;
         _os_log_impl(&dword_1A3C1C000, v63, OS_LOG_TYPE_DEFAULT, "%{public}@ Providing badge to status – reason: (%{public}@)", buf, 0x16u);
@@ -475,19 +475,19 @@ void __97__PXFooterViewModelController_initWithPhotoLibrary_provideLibraryCounts
     }
 
     v41 = v97;
-    v42 = [v8 inResetSync];
-    v43 = v42;
-    if ((v41 & 0x10) != 0 || v42)
+    inResetSync = [statusCopy inResetSync];
+    v43 = inResetSync;
+    if ((v41 & 0x10) != 0 || inResetSync)
     {
-      v64 = v21;
-      v44 = a1;
+      v64 = referencedItemsDescription;
+      selfCopy3 = self;
       v45 = v41 & 0x10;
-      v46 = [v8 numberOfPhotoAssets];
-      v47 = [v8 numberOfVideoAssets];
-      v48 = v47 + v46 + [v8 numberOfOtherAssets];
+      numberOfPhotoAssets = [statusCopy numberOfPhotoAssets];
+      numberOfVideoAssets = [statusCopy numberOfVideoAssets];
+      v48 = numberOfVideoAssets + numberOfPhotoAssets + [statusCopy numberOfOtherAssets];
       if (v48 <= v65)
       {
-        a1 = v44;
+        self = selfCopy3;
       }
 
       else
@@ -496,11 +496,11 @@ void __97__PXFooterViewModelController_initWithPhotoLibrary_provideLibraryCounts
 
         v33 = v65 / v48;
         v50 = PLUserStatusUIGetLog();
-        a1 = v44;
+        self = selfCopy3;
         if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138544130;
-          v99 = v44;
+          selfCopy5 = selfCopy3;
           v100 = 1024;
           *v101 = v45 >> 4;
           *&v101[4] = 1024;
@@ -513,7 +513,7 @@ void __97__PXFooterViewModelController_initWithPhotoLibrary_provideLibraryCounts
         v16 = v49;
       }
 
-      v26 = v37;
+      v26 = actionConfirmationAlertButtonTitle;
       v23 = v16;
       if (v45)
       {
@@ -523,17 +523,17 @@ void __97__PXFooterViewModelController_initWithPhotoLibrary_provideLibraryCounts
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v99 = a1;
+          selfCopy5 = self;
           _os_log_impl(&dword_1A3C1C000, v51, OS_LOG_TYPE_DEFAULT, "%{public}@ Providing rebuild placeholder status title", buf, 0xCu);
         }
 
-        v31 = v68;
+        v31 = failureDescription;
       }
 
       else
       {
-        v22 = v67;
-        v31 = v68;
+        v22 = stateDescription;
+        v31 = failureDescription;
       }
 
       v32 = v64;
@@ -541,18 +541,18 @@ void __97__PXFooterViewModelController_initWithPhotoLibrary_provideLibraryCounts
 
     else
     {
-      v32 = v21;
-      v26 = v37;
+      v32 = referencedItemsDescription;
+      v26 = actionConfirmationAlertButtonTitle;
       v23 = v16;
-      v22 = v67;
-      v31 = v68;
+      v22 = stateDescription;
+      v31 = failureDescription;
     }
 
     v52 = PLUserStatusUIGetLog();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544130;
-      v99 = a1;
+      selfCopy5 = self;
       v100 = 2114;
       *v101 = v23;
       *&v101[8] = 2114;
@@ -562,10 +562,10 @@ void __97__PXFooterViewModelController_initWithPhotoLibrary_provideLibraryCounts
       _os_log_impl(&dword_1A3C1C000, v52, OS_LOG_TYPE_DEFAULT, "%{public}@ Did provide CPL status: %{public}@, %{public}@, %{public}@", buf, 0x2Au);
     }
 
-    v28 = v74;
+    v28 = actionTitle;
     v30 = v76;
-    v8 = v71;
-    v27 = v72;
+    statusCopy = v71;
+    v27 = actionConfirmationAlertTitle;
     v24 = v66;
     v25 = v69;
   }
@@ -579,7 +579,7 @@ void __97__PXFooterViewModelController_initWithPhotoLibrary_provideLibraryCounts
     v26 = 0;
     v27 = 0;
     v28 = 0;
-    LOBYTE(v29) = 0;
+    LOBYTE(isPaused) = 0;
     v30 = 0;
     v31 = 0;
     v32 = 0;
@@ -594,19 +594,19 @@ void __97__PXFooterViewModelController_initWithPhotoLibrary_provideLibraryCounts
   v81 = v32;
   v82 = v22;
   v83 = v31;
-  v92 = v29;
+  v92 = isPaused;
   v91 = v33;
   v84 = v30;
   v85 = v28;
   v86 = v27;
-  v87 = v8;
+  v87 = statusCopy;
   v88 = v26;
   v89 = v25;
   v90 = 0;
   v93 = v24;
   v53 = v25;
   v77 = v26;
-  v75 = v8;
+  v75 = statusCopy;
   v73 = v27;
   v54 = v28;
   v55 = v30;

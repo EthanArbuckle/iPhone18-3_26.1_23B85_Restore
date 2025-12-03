@@ -6,8 +6,8 @@
 - (BOOL)includedPath;
 - (BOOL)includedUserManagedAssetsPath;
 - (BOOL)preflightClientAllowed;
-- (MCMCommandRecreateContainerStructure)initWithConcreteContainerIdentity:(id)a3 context:(id)a4 resultPromise:(id)a5;
-- (MCMCommandRecreateContainerStructure)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandRecreateContainerStructure)initWithConcreteContainerIdentity:(id)identity context:(id)context resultPromise:(id)promise;
+- (MCMCommandRecreateContainerStructure)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (MCMConcreteContainerIdentity)concreteContainerIdentity;
 - (void)execute;
 @end
@@ -58,19 +58,19 @@
 {
   v88 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(MCMCommandRecreateContainerStructure *)self concreteContainerIdentity];
-  v75 = self;
-  v5 = [(MCMCommand *)self context];
-  v6 = [v5 containerCache];
+  concreteContainerIdentity = [(MCMCommandRecreateContainerStructure *)self concreteContainerIdentity];
+  selfCopy = self;
+  context = [(MCMCommand *)self context];
+  containerCache = [context containerCache];
   v83 = 0;
-  v7 = [v6 entryForContainerIdentity:v4 error:&v83];
+  v7 = [containerCache entryForContainerIdentity:concreteContainerIdentity error:&v83];
   v8 = v83;
 
   if (v7)
   {
-    v9 = [v7 uuid];
-    v10 = [(MCMError *)v4 uuid];
-    v11 = [v9 isEqual:v10];
+    uuid = [v7 uuid];
+    uuid2 = [(MCMError *)concreteContainerIdentity uuid];
+    v11 = [uuid isEqual:uuid2];
 
     if ((v11 & 1) == 0)
     {
@@ -85,17 +85,17 @@
   v13 = [v7 metadataWithError:&v82];
   v14 = v82;
 
-  v74 = v4;
+  v74 = concreteContainerIdentity;
   if (!v13)
   {
     v21 = [[MCMError alloc] initWithErrorType:21];
 
-    v22 = container_log_handle_for_category();
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    containerPath5 = container_log_handle_for_category();
+    if (os_log_type_enabled(containerPath5, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v85 = v4;
-      _os_log_error_impl(&dword_1DF2C3000, v22, OS_LOG_TYPE_ERROR, "No Container with identity: %@", buf, 0xCu);
+      v85 = concreteContainerIdentity;
+      _os_log_error_impl(&dword_1DF2C3000, containerPath5, OS_LOG_TYPE_ERROR, "No Container with identity: %@", buf, 0xCu);
     }
 
     v23 = 0;
@@ -111,30 +111,30 @@
   if (container_class_supports_data_subdirectory())
   {
     v15 = +[MCMDataProtectionManager defaultManager];
-    v16 = [(MCMCommand *)v75 context];
-    v17 = [v16 clientIdentity];
-    v18 = [v15 desiredDataProtectionClassForMetadata:v13 clientIdentity:v17];
+    context2 = [(MCMCommand *)selfCopy context];
+    clientIdentity = [context2 clientIdentity];
+    v18 = [v15 desiredDataProtectionClassForMetadata:v13 clientIdentity:clientIdentity];
 
-    v19 = [v13 containerPath];
+    containerPath = [v13 containerPath];
     v81 = 0;
-    LOBYTE(v17) = [v19 createDataURLIfNecessaryWithDataProtectionClass:v18 error:&v81];
+    LOBYTE(clientIdentity) = [containerPath createDataURLIfNecessaryWithDataProtectionClass:v18 error:&v81];
     v20 = v81;
 
-    if ((v17 & 1) == 0)
+    if ((clientIdentity & 1) == 0)
     {
       v52 = [MCMError alloc];
-      v53 = [v13 containerPath];
-      v54 = [v53 containerDataURL];
-      v21 = [(MCMError *)v52 initWithNSError:v20 url:v54 defaultErrorType:106];
+      containerPath2 = [v13 containerPath];
+      containerDataURL = [containerPath2 containerDataURL];
+      v21 = [(MCMError *)v52 initWithNSError:v20 url:containerDataURL defaultErrorType:106];
 
-      v22 = container_log_handle_for_category();
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      containerPath5 = container_log_handle_for_category();
+      if (os_log_type_enabled(containerPath5, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
         v85 = v74;
         v86 = 2112;
         v87 = v21;
-        _os_log_error_impl(&dword_1DF2C3000, v22, OS_LOG_TYPE_ERROR, "Could not create container data subdir for %@; error = %@", buf, 0x16u);
+        _os_log_error_impl(&dword_1DF2C3000, containerPath5, OS_LOG_TYPE_ERROR, "Could not create container data subdir for %@; error = %@", buf, 0x16u);
       }
 
       v23 = 0;
@@ -153,27 +153,27 @@
     v71 = 0;
   }
 
-  v26 = [(MCMCommand *)v75 context];
-  v27 = [v26 userIdentityCache];
-  v28 = [v13 userIdentity];
-  v29 = [v27 libraryRepairForUserIdentity:v28];
+  context3 = [(MCMCommand *)selfCopy context];
+  userIdentityCache = [context3 userIdentityCache];
+  userIdentity = [v13 userIdentity];
+  v29 = [userIdentityCache libraryRepairForUserIdentity:userIdentity];
 
-  v30 = [v13 identifier];
-  v31 = [v13 containerClass];
-  v32 = [v13 schemaVersion];
+  identifier = [v13 identifier];
+  containerClass = [v13 containerClass];
+  schemaVersion = [v13 schemaVersion];
   v80 = 0;
-  v33 = [MCMContainerSchema schemaIsUpToDateForIdentifier:v30 containerClass:v31 currentSchemaVersion:v32 latestSchemaVersion:&v80];
+  v33 = [MCMContainerSchema schemaIsUpToDateForIdentifier:identifier containerClass:containerClass currentSchemaVersion:schemaVersion latestSchemaVersion:&v80];
   v24 = v80;
 
   v34 = +[MCMDataProtectionManager defaultManager];
-  v35 = [(MCMCommand *)v75 context];
-  v36 = [v35 clientIdentity];
-  v37 = [v34 desiredDataProtectionClassForMetadata:v13 clientIdentity:v36];
+  context4 = [(MCMCommand *)selfCopy context];
+  clientIdentity2 = [context4 clientIdentity];
+  v37 = [v34 desiredDataProtectionClassForMetadata:v13 clientIdentity:clientIdentity2];
 
-  v38 = [v13 containerPath];
+  containerPath3 = [v13 containerPath];
   v39 = v37;
   v23 = v29;
-  v25 = [MCMContainerSchema containerSchemaWithMetadata:v13 finalContainerPath:v38 dataProtectionClass:v39 libraryRepair:v29];
+  v25 = [MCMContainerSchema containerSchemaWithMetadata:v13 finalContainerPath:containerPath3 dataProtectionClass:v39 libraryRepair:v29];
 
   v79 = v14;
   v40 = [v25 writeSchemaFromVersion:&unk_1F5A76F90 toTargetVersion:v24 error:&v79];
@@ -200,11 +200,11 @@
     if (v43)
     {
       v45 = v23;
-      [(MCMCommand *)v75 context];
+      [(MCMCommand *)selfCopy context];
       v47 = v46 = v41;
-      v48 = [v47 containerCache];
+      containerCache2 = [v47 containerCache];
       v77 = v44;
-      v49 = [v48 addContainerMetadata:v46 error:&v77];
+      v49 = [containerCache2 addContainerMetadata:v46 error:&v77];
       v50 = v77;
 
       if (!v49)
@@ -256,10 +256,10 @@
 
   v72 = v23;
   v57 = +[MCMFileManager defaultManager];
-  v58 = [(MCMError *)v69 containerPath];
-  v59 = [v58 containerRootURL];
+  containerPath4 = [(MCMError *)v69 containerPath];
+  containerRootURL = [containerPath4 containerRootURL];
   v76 = v42;
-  v60 = [v57 standardizeACLsForSystemContainerAtURL:v59 error:&v76];
+  v60 = [v57 standardizeACLsForSystemContainerAtURL:containerRootURL error:&v76];
   v20 = v76;
 
   if (v60)
@@ -274,9 +274,9 @@
 
   v61 = [MCMError alloc];
   v13 = v69;
-  v22 = [(MCMError *)v69 containerPath];
-  v62 = [v22 containerRootURL];
-  v63 = [(MCMError *)v61 initWithNSError:v20 url:v62 defaultErrorType:63];
+  containerPath5 = [(MCMError *)v69 containerPath];
+  containerRootURL2 = [containerPath5 containerRootURL];
+  v63 = [(MCMError *)v61 initWithNSError:v20 url:containerRootURL2 defaultErrorType:63];
 
   v21 = v63;
   v23 = v72;
@@ -305,8 +305,8 @@ LABEL_34:
   }
 
   v66 = v65;
-  v67 = [(MCMCommand *)v75 resultPromise];
-  [v67 completeWithResult:v66];
+  resultPromise = [(MCMCommand *)selfCopy resultPromise];
+  [resultPromise completeWithResult:v66];
 
   objc_autoreleasePoolPop(v3);
   v68 = *MEMORY[0x1E69E9840];
@@ -315,43 +315,43 @@ LABEL_34:
 - (BOOL)preflightClientAllowed
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
-  v4 = [v3 isAllowedToRecreateContainerStructure];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  isAllowedToRecreateContainerStructure = [clientIdentity isAllowedToRecreateContainerStructure];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToRecreateContainerStructure;
 }
 
-- (MCMCommandRecreateContainerStructure)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandRecreateContainerStructure)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = MCMCommandRecreateContainerStructure;
-  v9 = [(MCMCommand *)&v14 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v14 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v10 = [v8 concreteContainerIdentity];
+    concreteContainerIdentity = [messageCopy concreteContainerIdentity];
     concreteContainerIdentity = v9->_concreteContainerIdentity;
-    v9->_concreteContainerIdentity = v10;
+    v9->_concreteContainerIdentity = concreteContainerIdentity;
   }
 
   v12 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (MCMCommandRecreateContainerStructure)initWithConcreteContainerIdentity:(id)a3 context:(id)a4 resultPromise:(id)a5
+- (MCMCommandRecreateContainerStructure)initWithConcreteContainerIdentity:(id)identity context:(id)context resultPromise:(id)promise
 {
   v15 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  identityCopy = identity;
   v14.receiver = self;
   v14.super_class = MCMCommandRecreateContainerStructure;
-  v10 = [(MCMCommand *)&v14 initWithContext:a4 resultPromise:a5];
+  v10 = [(MCMCommand *)&v14 initWithContext:context resultPromise:promise];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_concreteContainerIdentity, a3);
+    objc_storeStrong(&v10->_concreteContainerIdentity, identity);
   }
 
   v12 = *MEMORY[0x1E69E9840];

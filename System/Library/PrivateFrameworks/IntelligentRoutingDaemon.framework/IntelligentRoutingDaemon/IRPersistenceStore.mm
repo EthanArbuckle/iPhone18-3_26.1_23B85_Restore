@@ -1,13 +1,13 @@
 @interface IRPersistenceStore
-- (BOOL)loadWithCoordinator:(id)a3;
-- (IRPersistenceStore)initWithURL:(id)a3;
+- (BOOL)loadWithCoordinator:(id)coordinator;
+- (IRPersistenceStore)initWithURL:(id)l;
 @end
 
 @implementation IRPersistenceStore
 
-- (IRPersistenceStore)initWithURL:(id)a3
+- (IRPersistenceStore)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = IRPersistenceStore;
   v5 = [(IRPersistenceStore *)&v9 init];
@@ -20,7 +20,7 @@
     [(NSPersistentStoreDescription *)v5->_storeDescription setShouldAddStoreAsynchronously:0];
     [(NSPersistentStoreDescription *)v5->_storeDescription setShouldMigrateStoreAutomatically:1];
     [(NSPersistentStoreDescription *)v5->_storeDescription setShouldInferMappingModelAutomatically:1];
-    [(NSPersistentStoreDescription *)v5->_storeDescription setURL:v4];
+    [(NSPersistentStoreDescription *)v5->_storeDescription setURL:lCopy];
     [(NSPersistentStoreDescription *)v5->_storeDescription setType:*MEMORY[0x277CBE2E8]];
     [(NSPersistentStoreDescription *)v5->_storeDescription setOption:*MEMORY[0x277CCA1A0] forKey:*MEMORY[0x277CBE240]];
     [(NSPersistentStoreDescription *)v5->_storeDescription setValue:@"WAL" forPragmaNamed:@"journal_mode"];
@@ -29,9 +29,9 @@
   return v5;
 }
 
-- (BOOL)loadWithCoordinator:(id)a3
+- (BOOL)loadWithCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v10 = 0;
   v11[0] = &v10;
   v11[1] = 0x3032000000;
@@ -44,7 +44,7 @@
   v9[2] = __42__IRPersistenceStore_loadWithCoordinator___block_invoke;
   v9[3] = &unk_2797E1760;
   v9[4] = &v10;
-  [v4 addPersistentStoreWithDescription:storeDescription completionHandler:v9];
+  [coordinatorCopy addPersistentStoreWithDescription:storeDescription completionHandler:v9];
   if (*(v11[0] + 40))
   {
     v6 = *MEMORY[0x277D21260];

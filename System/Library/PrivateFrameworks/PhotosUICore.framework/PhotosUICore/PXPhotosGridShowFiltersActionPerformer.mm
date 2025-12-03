@@ -1,66 +1,66 @@
 @interface PXPhotosGridShowFiltersActionPerformer
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4;
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model;
 - (PXUIFilterController)filterController;
 - (id)activitySystemImageName;
-- (id)contentFilterHiddenTypesForFilterController:(id)a3;
-- (void)filterController:(id)a3 contentFilterStateChanged:(id)a4;
+- (id)contentFilterHiddenTypesForFilterController:(id)controller;
+- (void)filterController:(id)controller contentFilterStateChanged:(id)changed;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotosGridShowFiltersActionPerformer
 
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model
 {
-  v4 = a4;
-  if ([v4 canFilterContent])
+  modelCopy = model;
+  if ([modelCopy canFilterContent])
   {
-    v5 = [v4 dataSourceManager];
-    v6 = [v5 dataSource];
-    v7 = [v6 containerCollection];
-    v8 = [v7 canContainAssets];
+    dataSourceManager = [modelCopy dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
+    containerCollection = [dataSource containerCollection];
+    canContainAssets = [containerCollection canContainAssets];
   }
 
   else
   {
-    v8 = 0;
+    canContainAssets = 0;
   }
 
-  return v8;
+  return canContainAssets;
 }
 
-- (void)filterController:(id)a3 contentFilterStateChanged:(id)a4
+- (void)filterController:(id)controller contentFilterStateChanged:(id)changed
 {
-  v5 = a4;
-  v6 = [(PXActionPerformer *)self delegate];
-  [v6 photosGridActionPerformer:self contentFilterStateChanged:v5];
+  changedCopy = changed;
+  delegate = [(PXActionPerformer *)self delegate];
+  [delegate photosGridActionPerformer:self contentFilterStateChanged:changedCopy];
 }
 
-- (id)contentFilterHiddenTypesForFilterController:(id)a3
+- (id)contentFilterHiddenTypesForFilterController:(id)controller
 {
-  v4 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v5 = [v4 dataSourceManager];
-  v6 = [v5 dataSource];
-  v7 = [v6 containerCollection];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  dataSourceManager = [viewModel dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  containerCollection = [dataSource containerCollection];
 
-  v8 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v9 = [v8 libraryFilterState];
-  v10 = PXContentFilterHiddenTypesForAssetCollection(v7);
+  viewModel2 = [(PXPhotosGridActionPerformer *)self viewModel];
+  libraryFilterState = [viewModel2 libraryFilterState];
+  v10 = PXContentFilterHiddenTypesForAssetCollection(containerCollection);
 
   return v10;
 }
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotosGridShowFiltersActionPerformer *)self filterController];
-  v4 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v5 = [v4 contentFilterState];
-  v6 = [v5 copy];
-  [v3 setContentFilterState:v6];
+  filterController = [(PXPhotosGridShowFiltersActionPerformer *)self filterController];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  contentFilterState = [viewModel contentFilterState];
+  v6 = [contentFilterState copy];
+  [filterController setContentFilterState:v6];
 
-  v7 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v3];
+  v7 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:filterController];
   [v7 setModalPresentationStyle:7];
-  v8 = [v7 popoverPresentationController];
-  [v8 setDelegate:v3];
+  popoverPresentationController = [v7 popoverPresentationController];
+  [popoverPresentationController setDelegate:filterController];
 
   if (![(PXActionPerformer *)self presentViewController:v7])
   {
@@ -70,9 +70,9 @@
 
 - (id)activitySystemImageName
 {
-  v2 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v3 = [v2 contentFilterState];
-  if ([v3 isFiltering])
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  contentFilterState = [viewModel contentFilterState];
+  if ([contentFilterState isFiltering])
   {
     v4 = @"line.horizontal.3.decrease.circle.fill";
   }
@@ -92,39 +92,39 @@
   filterController = self->_filterController;
   if (!filterController)
   {
-    v4 = [(PXPhotosGridActionPerformer *)self viewModel];
-    v5 = [v4 sharedLibraryStatusProvider];
-    v6 = [v4 contentFilterState];
-    v7 = v6;
-    if (v6)
+    viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+    sharedLibraryStatusProvider = [viewModel sharedLibraryStatusProvider];
+    contentFilterState = [viewModel contentFilterState];
+    v7 = contentFilterState;
+    if (contentFilterState)
     {
-      v8 = v6;
+      v8 = contentFilterState;
     }
 
     else
     {
-      v9 = [v5 photoLibrary];
-      v8 = [PXContentFilterState defaultFilterStateForPhotoLibrary:v9];
+      photoLibrary = [sharedLibraryStatusProvider photoLibrary];
+      v8 = [PXContentFilterState defaultFilterStateForPhotoLibrary:photoLibrary];
     }
 
-    v10 = [v4 dataSourceManager];
-    v11 = [v10 dataSource];
-    v12 = [v11 containerCollection];
+    dataSourceManager = [viewModel dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
+    containerCollection = [dataSource containerCollection];
 
-    v13 = PXFilterControllerOptionsForCollection(v12);
-    if ([v4 hidesAssetCountInFooter])
+    v13 = PXFilterControllerOptionsForCollection(containerCollection);
+    if ([viewModel hidesAssetCountInFooter])
     {
       v13 |= 8uLL;
     }
 
     v14 = [PXUIFilterController alloc];
-    v15 = [v4 libraryFilterState];
-    v16 = [(PXUIFilterController *)v14 initWithDelegate:self libraryFilterState:v15 initialContentFilterState:v8 sharedLibraryStatusProvider:v5 filterControllerOptions:v13];
+    libraryFilterState = [viewModel libraryFilterState];
+    v16 = [(PXUIFilterController *)v14 initWithDelegate:self libraryFilterState:libraryFilterState initialContentFilterState:v8 sharedLibraryStatusProvider:sharedLibraryStatusProvider filterControllerOptions:v13];
     v17 = self->_filterController;
     self->_filterController = v16;
 
-    v18 = [v4 dataSourceManager];
-    [(PXUIFilterController *)self->_filterController setDataSourceManager:v18];
+    dataSourceManager2 = [viewModel dataSourceManager];
+    [(PXUIFilterController *)self->_filterController setDataSourceManager:dataSourceManager2];
 
     filterController = self->_filterController;
   }

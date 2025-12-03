@@ -1,14 +1,14 @@
 @interface LoadSessionBlock
-- (LoadSessionBlock)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (LoadSessionBlock)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation LoadSessionBlock
 
-- (LoadSessionBlock)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (LoadSessionBlock)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  return LoadSessionBlock.init(entity:insertInto:)(a3, a4);
+  MEMORY[0x1E69E5928](entity);
+  MEMORY[0x1E69E5928](context);
+  return LoadSessionBlock.init(entity:insertInto:)(entity, context);
 }
 
 @end

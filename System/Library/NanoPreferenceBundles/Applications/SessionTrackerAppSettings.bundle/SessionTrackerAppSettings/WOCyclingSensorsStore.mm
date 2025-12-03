@@ -1,16 +1,16 @@
 @interface WOCyclingSensorsStore
 - (WOCyclingSensorsStore)init;
-- (void)isPowerMeterAvailableWithCompletion:(id)a3;
+- (void)isPowerMeterAvailableWithCompletion:(id)completion;
 @end
 
 @implementation WOCyclingSensorsStore
 
-- (void)isPowerMeterAvailableWithCompletion:(id)a3
+- (void)isPowerMeterAvailableWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   *(swift_allocObject() + 16) = v4;
   v5 = *(&self->super.isa + OBJC_IVAR___WOCyclingSensorsStore_cyclingSensorsStore);
-  v6 = self;
+  selfCopy = self;
   sub_22454();
 }
 

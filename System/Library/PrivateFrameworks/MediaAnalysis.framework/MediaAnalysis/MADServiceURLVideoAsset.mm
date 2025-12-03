@@ -1,22 +1,22 @@
 @interface MADServiceURLVideoAsset
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)stillTime;
-- (MADServiceURLVideoAsset)initWithURL:(id)a3 identifier:(id)a4 clientBundleID:(id)a5 clientTeamID:(id)a6;
+- (MADServiceURLVideoAsset)initWithURL:(id)l identifier:(id)identifier clientBundleID:(id)d clientTeamID:(id)iD;
 @end
 
 @implementation MADServiceURLVideoAsset
 
-- (MADServiceURLVideoAsset)initWithURL:(id)a3 identifier:(id)a4 clientBundleID:(id)a5 clientTeamID:(id)a6
+- (MADServiceURLVideoAsset)initWithURL:(id)l identifier:(id)identifier clientBundleID:(id)d clientTeamID:(id)iD
 {
-  v11 = a3;
-  v12 = a4;
+  lCopy = l;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = MADServiceURLVideoAsset;
-  v13 = [(MADServiceVideoAsset *)&v16 initWithClientBundleID:a5 clientTeamID:a6];
+  v13 = [(MADServiceVideoAsset *)&v16 initWithClientBundleID:d clientTeamID:iD];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_url, a3);
-    objc_storeStrong(&v14->_identifier, a4);
+    objc_storeStrong(&v13->_url, l);
+    objc_storeStrong(&v14->_identifier, identifier);
   }
 
   return v14;

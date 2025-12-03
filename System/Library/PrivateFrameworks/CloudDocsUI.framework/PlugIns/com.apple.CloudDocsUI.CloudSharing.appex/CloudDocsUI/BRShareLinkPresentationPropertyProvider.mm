@@ -1,78 +1,78 @@
 @interface BRShareLinkPresentationPropertyProvider
-- (BRShareLinkPresentationPropertyProvider)initWithDocumentName:(id)a3 appName:(id)a4 bundleIdentifier:(id)a5;
-- (BRShareLinkPresentationPropertyProvider)initWithItemName:(id)a3 appName:(id)a4 bundleIdentifier:(id)a5;
+- (BRShareLinkPresentationPropertyProvider)initWithDocumentName:(id)name appName:(id)appName bundleIdentifier:(id)identifier;
+- (BRShareLinkPresentationPropertyProvider)initWithItemName:(id)name appName:(id)appName bundleIdentifier:(id)identifier;
 - (id)captionBar;
 - (id)icon;
-- (void)_commonInitWithTitle:(id)a3 appName:(id)a4 resolvedAppIdentifier:(id)a5;
+- (void)_commonInitWithTitle:(id)title appName:(id)name resolvedAppIdentifier:(id)identifier;
 @end
 
 @implementation BRShareLinkPresentationPropertyProvider
 
-- (void)_commonInitWithTitle:(id)a3 appName:(id)a4 resolvedAppIdentifier:(id)a5
+- (void)_commonInitWithTitle:(id)title appName:(id)name resolvedAppIdentifier:(id)identifier
 {
-  if (a3)
+  if (title)
   {
-    v9 = a5;
-    v10 = a4;
-    [(BRShareLinkPresentationPropertyProvider *)self setTitle:a3];
-    [(BRShareLinkPresentationPropertyProvider *)self setSubtitle:v10];
+    identifierCopy = identifier;
+    nameCopy = name;
+    [(BRShareLinkPresentationPropertyProvider *)self setTitle:title];
+    [(BRShareLinkPresentationPropertyProvider *)self setSubtitle:nameCopy];
   }
 
   else
   {
-    v11 = a5;
-    v12 = a4;
-    v10 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
-    v13 = [v10 localizedStringForKey:@"Shared from %@" value:@"Shared from %@" table:@"Localizable"];
-    v14 = [NSString localizedStringWithFormat:v13, v12];
+    identifierCopy2 = identifier;
+    nameCopy2 = name;
+    nameCopy = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
+    v13 = [nameCopy localizedStringForKey:@"Shared from %@" value:@"Shared from %@" table:@"Localizable"];
+    nameCopy2 = [NSString localizedStringWithFormat:v13, nameCopy2];
 
-    [(BRShareLinkPresentationPropertyProvider *)self setTitle:v14];
+    [(BRShareLinkPresentationPropertyProvider *)self setTitle:nameCopy2];
   }
 
-  v16 = [LSApplicationProxy applicationProxyForIdentifier:a5];
+  v16 = [LSApplicationProxy applicationProxyForIdentifier:identifier];
 
   v15 = [UIImage _iconForResourceProxy:v16 format:1];
   [(BRShareLinkPresentationPropertyProvider *)self setAppIcon:v15];
 }
 
-- (BRShareLinkPresentationPropertyProvider)initWithDocumentName:(id)a3 appName:(id)a4 bundleIdentifier:(id)a5
+- (BRShareLinkPresentationPropertyProvider)initWithDocumentName:(id)name appName:(id)appName bundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  appNameCopy = appName;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = BRShareLinkPresentationPropertyProvider;
   v11 = [(BRShareLinkPresentationPropertyProvider *)&v15 init];
   if (v11)
   {
-    v12 = [(__CFString *)v10 lowercaseString];
-    v13 = [&off_100050F18 containsObject:v12];
+    lowercaseString = [(__CFString *)identifierCopy lowercaseString];
+    v13 = [&off_100050F18 containsObject:lowercaseString];
 
     if ((v13 & 1) == 0)
     {
 
-      v10 = @"com.apple.iCloudDriveApp";
-      v9 = @"iCloud Drive";
+      identifierCopy = @"com.apple.iCloudDriveApp";
+      appNameCopy = @"iCloud Drive";
     }
 
-    [(BRShareLinkPresentationPropertyProvider *)v11 _commonInitWithTitle:v8 appName:v9 resolvedAppIdentifier:v10];
+    [(BRShareLinkPresentationPropertyProvider *)v11 _commonInitWithTitle:nameCopy appName:appNameCopy resolvedAppIdentifier:identifierCopy];
   }
 
   return v11;
 }
 
-- (BRShareLinkPresentationPropertyProvider)initWithItemName:(id)a3 appName:(id)a4 bundleIdentifier:(id)a5
+- (BRShareLinkPresentationPropertyProvider)initWithItemName:(id)name appName:(id)appName bundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  appNameCopy = appName;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = BRShareLinkPresentationPropertyProvider;
   v11 = [(BRShareLinkPresentationPropertyProvider *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(BRShareLinkPresentationPropertyProvider *)v11 _commonInitWithTitle:v8 appName:v9 resolvedAppIdentifier:v10];
+    [(BRShareLinkPresentationPropertyProvider *)v11 _commonInitWithTitle:nameCopy appName:appNameCopy resolvedAppIdentifier:identifierCopy];
   }
 
   return v12;
@@ -83,13 +83,13 @@
   v3 = objc_alloc_init(LPCaptionBarPresentationProperties);
   title = self->_title;
   v5 = [v3 top];
-  v6 = [v5 leading];
-  [v6 setText:title];
+  leading = [v5 leading];
+  [leading setText:title];
 
   subtitle = self->_subtitle;
-  v8 = [v3 bottom];
-  v9 = [v8 leading];
-  [v9 setText:subtitle];
+  bottom = [v3 bottom];
+  leading2 = [bottom leading];
+  [leading2 setText:subtitle];
 
   return v3;
 }

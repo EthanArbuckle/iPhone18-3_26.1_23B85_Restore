@@ -1,12 +1,12 @@
 @interface EditorialQuoteCollectionViewCell
-- (_TtC8AppStore32EditorialQuoteCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore32EditorialQuoteCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation EditorialQuoteCollectionViewCell
 
-- (_TtC8AppStore32EditorialQuoteCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore32EditorialQuoteCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore32EditorialQuoteCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -18,15 +18,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002804D4();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_100280838(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100280838(change);
 }
 
 @end

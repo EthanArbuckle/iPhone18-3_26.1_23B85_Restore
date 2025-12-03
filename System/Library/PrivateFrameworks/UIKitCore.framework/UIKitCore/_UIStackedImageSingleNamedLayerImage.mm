@@ -8,8 +8,8 @@
 {
   v2 = *MEMORY[0x1E695EFF8];
   v3 = *(MEMORY[0x1E695EFF8] + 8);
-  v4 = [(_UIStackedImageSingleNamedLayerImage *)self imageObj];
-  [v4 size];
+  imageObj = [(_UIStackedImageSingleNamedLayerImage *)self imageObj];
+  [imageObj size];
   v6 = v5;
   v8 = v7;
 

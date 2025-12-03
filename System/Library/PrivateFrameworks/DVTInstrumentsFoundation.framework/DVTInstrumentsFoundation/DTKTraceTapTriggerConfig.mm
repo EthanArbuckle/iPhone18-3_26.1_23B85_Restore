@@ -4,26 +4,26 @@
 - (BOOL)isAllProcesses;
 - (DTKPKDebugCodeSet)kdebugFilter;
 - (DTKTraceTapTriggerConfig)init;
-- (DTKTraceTapTriggerConfig)initWithPlist:(id)a3;
-- (DTKTraceTapTriggerConfig)initWithUUIDString:(id)a3;
+- (DTKTraceTapTriggerConfig)initWithPlist:(id)plist;
+- (DTKTraceTapTriggerConfig)initWithUUIDString:(id)string;
 - (XRRecountConfiguration)recountConfiguration;
 - (int)kind;
 - (unint64_t)callstackFrameDepth;
 - (unint64_t)eventLimitHint;
 - (unint64_t)pmiEventThreshold;
 - (unint64_t)sampleInterval;
-- (void)addAction:(int)a3;
-- (void)enumerateActions:(id)a3;
-- (void)enumeratePIDsInFilter:(id)a3;
-- (void)enumerateThreadStatesToInclude:(id)a3;
-- (void)setCallstackFrameDepth:(unint64_t)a3;
-- (void)setEventLimitHint:(unint64_t)a3;
-- (void)setHasThreadStateFilter:(BOOL)a3;
-- (void)setIsAllProcesses:(BOOL)a3;
-- (void)setKdebugFilter:(id)a3;
-- (void)setPmiEventThreshold:(unint64_t)a3;
-- (void)setRecountConfiguration:(id)a3;
-- (void)setSampleInterval:(unint64_t)a3;
+- (void)addAction:(int)action;
+- (void)enumerateActions:(id)actions;
+- (void)enumeratePIDsInFilter:(id)filter;
+- (void)enumerateThreadStatesToInclude:(id)include;
+- (void)setCallstackFrameDepth:(unint64_t)depth;
+- (void)setEventLimitHint:(unint64_t)hint;
+- (void)setHasThreadStateFilter:(BOOL)filter;
+- (void)setIsAllProcesses:(BOOL)processes;
+- (void)setKdebugFilter:(id)filter;
+- (void)setPmiEventThreshold:(unint64_t)threshold;
+- (void)setRecountConfiguration:(id)configuration;
+- (void)setSampleInterval:(unint64_t)interval;
 @end
 
 @implementation DTKTraceTapTriggerConfig
@@ -62,15 +62,15 @@
   return v2;
 }
 
-- (DTKTraceTapTriggerConfig)initWithPlist:(id)a3
+- (DTKTraceTapTriggerConfig)initWithPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v9.receiver = self;
   v9.super_class = DTKTraceTapTriggerConfig;
   v5 = [(DTKTraceTapTriggerConfig *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [plistCopy mutableCopy];
     dict = v5->_dict;
     v5->_dict = v6;
   }
@@ -78,9 +78,9 @@
   return v5;
 }
 
-- (DTKTraceTapTriggerConfig)initWithUUIDString:(id)a3
+- (DTKTraceTapTriggerConfig)initWithUUIDString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = DTKTraceTapTriggerConfig;
   v5 = [(DTKTraceTapTriggerConfig *)&v9 init];
@@ -90,7 +90,7 @@
     dict = v5->_dict;
     v5->_dict = v6;
 
-    [(NSMutableDictionary *)v5->_dict setObject:v4 forKeyedSubscript:@"uuid"];
+    [(NSMutableDictionary *)v5->_dict setObject:stringCopy forKeyedSubscript:@"uuid"];
   }
 
   return v5;
@@ -99,15 +99,15 @@
 - (int)kind
 {
   v2 = [(NSMutableDictionary *)self->_dict objectForKeyedSubscript:@"tk"];
-  v3 = [v2 intValue];
-  if ((v3 - 1) >= 3)
+  intValue = [v2 intValue];
+  if ((intValue - 1) >= 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = v3;
+    v4 = intValue;
   }
 
   return v4;
@@ -119,34 +119,34 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [v2 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = 1000000;
+    unsignedLongLongValue = 1000000;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)setSampleInterval:(unint64_t)a3
+- (void)setSampleInterval:(unint64_t)interval
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:interval];
   [(NSMutableDictionary *)self->_dict setObject:v4 forKeyedSubscript:@"si"];
 }
 
 - (unint64_t)eventLimitHint
 {
   v2 = [(NSMutableDictionary *)self->_dict objectForKeyedSubscript:@"elh"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setEventLimitHint:(unint64_t)a3
+- (void)setEventLimitHint:(unint64_t)hint
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:hint];
   [(NSMutableDictionary *)self->_dict setObject:v4 forKeyedSubscript:@"elh"];
 }
 
@@ -158,17 +158,17 @@
   return v3;
 }
 
-- (void)setHasThreadStateFilter:(BOOL)a3
+- (void)setHasThreadStateFilter:(BOOL)filter
 {
   dict = self->_dict;
-  if (a3)
+  if (filter)
   {
     v5 = [(NSMutableDictionary *)dict objectForKeyedSubscript:@"tsf"];
 
     if (!v5)
     {
-      v6 = [MEMORY[0x277CBEB18] array];
-      [(NSMutableDictionary *)self->_dict setObject:v6 forKeyedSubscript:@"tsf"];
+      array = [MEMORY[0x277CBEB18] array];
+      [(NSMutableDictionary *)self->_dict setObject:array forKeyedSubscript:@"tsf"];
     }
   }
 
@@ -179,10 +179,10 @@
   }
 }
 
-- (void)enumerateThreadStatesToInclude:(id)a3
+- (void)enumerateThreadStatesToInclude:(id)include
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  includeCopy = include;
   v5 = [(NSMutableDictionary *)self->_dict objectForKey:@"tsf"];
   v6 = v5;
   if (v5)
@@ -205,7 +205,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v4[2](v4, [*(*(&v12 + 1) + 8 * i) intValue]);
+          includeCopy[2](includeCopy, [*(*(&v12 + 1) + 8 * i) intValue]);
         }
 
         v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -217,8 +217,8 @@
 
   else
   {
-    v4[2](v4, 1);
-    v4[2](v4, 0x400000);
+    includeCopy[2](includeCopy, 1);
+    includeCopy[2](includeCopy, 0x400000);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -232,10 +232,10 @@
   return v3;
 }
 
-- (void)setIsAllProcesses:(BOOL)a3
+- (void)setIsAllProcesses:(BOOL)processes
 {
   dict = self->_dict;
-  if (a3)
+  if (processes)
   {
 
     [(NSMutableDictionary *)dict removeObjectForKey:@"pf"];
@@ -247,16 +247,16 @@
 
     if (!v5)
     {
-      v6 = [MEMORY[0x277CBEB18] array];
-      [(NSMutableDictionary *)self->_dict setObject:v6 forKeyedSubscript:@"pf"];
+      array = [MEMORY[0x277CBEB18] array];
+      [(NSMutableDictionary *)self->_dict setObject:array forKeyedSubscript:@"pf"];
     }
   }
 }
 
-- (void)enumeratePIDsInFilter:(id)a3
+- (void)enumeratePIDsInFilter:(id)filter
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  filterCopy = filter;
   v5 = [(NSMutableDictionary *)self->_dict objectForKeyedSubscript:@"pf"];
   v11 = 0u;
   v12 = 0u;
@@ -277,7 +277,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, [*(*(&v11 + 1) + 8 * v9++) intValue]);
+        filterCopy[2](filterCopy, [*(*(&v11 + 1) + 8 * v9++) intValue]);
       }
 
       while (v7 != v9);
@@ -290,12 +290,12 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addAction:(int)a3
+- (void)addAction:(int)action
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  if (a3 <= 3)
+  if (action <= 3)
   {
-    if ((a3 - 2) < 2 || !a3)
+    if ((action - 2) < 2 || !action)
     {
       v8 = MEMORY[0x277CBEA60];
       v4 = [MEMORY[0x277CCABB0] numberWithInt:?];
@@ -303,7 +303,7 @@
       goto LABEL_14;
     }
 
-    if (a3 != 1)
+    if (action != 1)
     {
       goto LABEL_18;
     }
@@ -318,7 +318,7 @@
     goto LABEL_12;
   }
 
-  switch(a3)
+  switch(action)
   {
     case 4:
       v9 = MEMORY[0x277CCABB0];
@@ -365,10 +365,10 @@ LABEL_18:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateActions:(id)a3
+- (void)enumerateActions:(id)actions
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionsCopy = actions;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -394,15 +394,15 @@ LABEL_18:
         {
           v12 = v11;
           v13 = [v10 objectAtIndex:0];
-          v14 = [v13 intValue];
-          if (v14 > 5)
+          intValue = [v13 intValue];
+          if (intValue > 5)
           {
             goto LABEL_20;
           }
 
-          if (v14 <= 1)
+          if (intValue <= 1)
           {
-            if (v14)
+            if (intValue)
             {
               if (v12 >= 3)
               {
@@ -410,7 +410,7 @@ LABEL_18:
                 [v15 intValue];
                 v18 = [v10 objectAtIndex:2];
                 [v18 intValue];
-                v4[2](v4, 1);
+                actionsCopy[2](actionsCopy, 1);
 
 LABEL_17:
               }
@@ -421,9 +421,9 @@ LABEL_20:
             }
           }
 
-          else if ((v14 - 2) >= 2)
+          else if ((intValue - 2) >= 2)
           {
-            if (v14 == 4)
+            if (intValue == 4)
             {
               if (v12 >= 4)
               {
@@ -431,7 +431,7 @@ LABEL_20:
                 v16 = [v10 objectAtIndex:2];
                 v17 = [v10 objectAtIndex:3];
                 [v17 unsignedIntValue];
-                v4[2](v4, 4);
+                actionsCopy[2](actionsCopy, 4);
 
                 goto LABEL_17;
               }
@@ -440,13 +440,13 @@ LABEL_20:
             else if (v12 != 1)
             {
               v20 = [v10 objectAtIndex:1];
-              v4[2](v4, 5);
+              actionsCopy[2](actionsCopy, 5);
             }
 
             goto LABEL_20;
           }
 
-          v4[2](v4, v14);
+          actionsCopy[2](actionsCopy, intValue);
           goto LABEL_20;
         }
       }
@@ -463,14 +463,14 @@ LABEL_20:
 - (unint64_t)pmiEventThreshold
 {
   v2 = [(NSMutableDictionary *)self->_dict objectForKeyedSubscript:@"pmiet"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setPmiEventThreshold:(unint64_t)a3
+- (void)setPmiEventThreshold:(unint64_t)threshold
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:threshold];
   [(NSMutableDictionary *)self->_dict setObject:v4 forKeyedSubscript:@"pmiet"];
 }
 
@@ -502,30 +502,30 @@ LABEL_20:
   return v7;
 }
 
-- (void)setRecountConfiguration:(id)a3
+- (void)setRecountConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 analysisMode];
-  [(NSMutableDictionary *)self->_dict setObject:v5 forKeyedSubscript:@"recount-configuation-analysis-mode"];
+  configurationCopy = configuration;
+  analysisMode = [configurationCopy analysisMode];
+  [(NSMutableDictionary *)self->_dict setObject:analysisMode forKeyedSubscript:@"recount-configuation-analysis-mode"];
 
-  v6 = [v4 countingMode];
+  countingMode = [configurationCopy countingMode];
 
-  [(NSMutableDictionary *)self->_dict setObject:v6 forKeyedSubscript:@"recount-configuration-counting-mode"];
+  [(NSMutableDictionary *)self->_dict setObject:countingMode forKeyedSubscript:@"recount-configuration-counting-mode"];
 }
 
-- (void)setKdebugFilter:(id)a3
+- (void)setKdebugFilter:(id)filter
 {
-  v4 = a3;
-  v7 = [(DTKPKDebugCodeSet *)v4 legacyXML];
-  if (v7)
+  filterCopy = filter;
+  legacyXML = [(DTKPKDebugCodeSet *)filterCopy legacyXML];
+  if (legacyXML)
   {
-    [(NSMutableDictionary *)self->_dict setObject:v7 forKeyedSubscript:@"kdf"];
-    v5 = [(DTKPKDebugCodeSet *)v4 kdebugCodes];
-    [(NSMutableDictionary *)self->_dict setObject:v5 forKeyedSubscript:@"kdf2"];
+    [(NSMutableDictionary *)self->_dict setObject:legacyXML forKeyedSubscript:@"kdf"];
+    kdebugCodes = [(DTKPKDebugCodeSet *)filterCopy kdebugCodes];
+    [(NSMutableDictionary *)self->_dict setObject:kdebugCodes forKeyedSubscript:@"kdf2"];
   }
 
   kdebugFilterSet = self->_kdebugFilterSet;
-  self->_kdebugFilterSet = v4;
+  self->_kdebugFilterSet = filterCopy;
 }
 
 - (DTKPKDebugCodeSet)kdebugFilter
@@ -553,20 +553,20 @@ LABEL_20:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 128;
+    unsignedIntegerValue = 128;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setCallstackFrameDepth:(unint64_t)a3
+- (void)setCallstackFrameDepth:(unint64_t)depth
 {
-  if (a3)
+  if (depth)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
     [(NSMutableDictionary *)self->_dict setObject:v5 forKeyedSubscript:@"csd"];

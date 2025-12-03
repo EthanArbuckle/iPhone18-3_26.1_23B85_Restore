@@ -1,6 +1,6 @@
 @interface HeadphoneBatteryViewController
-- (_TtC20HeadphoneProxService30HeadphoneBatteryViewController)initWithContentView:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC20HeadphoneProxService30HeadphoneBatteryViewController)initWithContentView:(id)view;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -8,20 +8,20 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100081988();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100082670(a3);
+  selfCopy = self;
+  sub_100082670(disappear);
 }
 
-- (_TtC20HeadphoneProxService30HeadphoneBatteryViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService30HeadphoneBatteryViewController)initWithContentView:(id)view
 {
-  v4 = a3;
-  v5 = sub_10008BFE4(a3);
+  viewCopy = view;
+  v5 = sub_10008BFE4(view);
 
   return v5;
 }

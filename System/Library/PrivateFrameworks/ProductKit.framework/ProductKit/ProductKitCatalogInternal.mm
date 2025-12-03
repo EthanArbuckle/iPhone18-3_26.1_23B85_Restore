@@ -1,11 +1,11 @@
 @interface ProductKitCatalogInternal
-+ (BOOL)isProductKitURL:(id)a3;
-- (void)updateCatalogWithCompletionHandler:(id)a3;
++ (BOOL)isProductKitURL:(id)l;
+- (void)updateCatalogWithCompletionHandler:(id)handler;
 @end
 
 @implementation ProductKitCatalogInternal
 
-+ (BOOL)isProductKitURL:(id)a3
++ (BOOL)isProductKitURL:(id)l
 {
   v3 = sub_260E68904();
   v4 = *(v3 - 8);
@@ -18,15 +18,15 @@
   return v8;
 }
 
-- (void)updateCatalogWithCompletionHandler:(id)a3
+- (void)updateCatalogWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
   *(v6 + 16) = sub_260E36E2C;
   *(v6 + 24) = v5;
-  v7 = self;
+  selfCopy = self;
 
   sub_260E62E28(sub_260E36F48, v6);
 }

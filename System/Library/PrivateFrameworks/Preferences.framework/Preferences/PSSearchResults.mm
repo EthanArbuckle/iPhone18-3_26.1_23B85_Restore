@@ -1,21 +1,21 @@
 @interface PSSearchResults
-- (BOOL)removeEntry:(id)a3;
+- (BOOL)removeEntry:(id)entry;
 - (PSSearchResults)init;
-- (id)_initForCopyWithSectionEntries:(id)a3 entriesBySection:(id)a4 explicitlyAddedSectionEntries:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initForCopyWithSectionEntries:(id)entries entriesBySection:(id)section explicitlyAddedSectionEntries:(id)sectionEntries;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)entriesInSectionAtIndex:(unint64_t)a3;
-- (id)entryAtIndexPath:(id)a3;
-- (id)resultsByMergingWithResults:(id)a3;
-- (id)sectionEntryAtIndex:(unint64_t)a3;
-- (unint64_t)numberOfEntriesInSectionAtIndex:(unint64_t)a3;
-- (unint64_t)removeEntries:(id)a3;
+- (id)entriesInSectionAtIndex:(unint64_t)index;
+- (id)entryAtIndexPath:(id)path;
+- (id)resultsByMergingWithResults:(id)results;
+- (id)sectionEntryAtIndex:(unint64_t)index;
+- (unint64_t)numberOfEntriesInSectionAtIndex:(unint64_t)index;
+- (unint64_t)removeEntries:(id)entries;
 - (unint64_t)totalNumberOfEntries;
-- (void)addEntries:(id)a3;
-- (void)addEntry:(id)a3;
-- (void)mergeWithResults:(id)a3;
-- (void)setEntryComparator:(id)a3;
-- (void)setSectionComparator:(id)a3;
+- (void)addEntries:(id)entries;
+- (void)addEntry:(id)entry;
+- (void)mergeWithResults:(id)results;
+- (void)setEntryComparator:(id)comparator;
+- (void)setSectionComparator:(id)comparator;
 - (void)sortResults;
 @end
 
@@ -44,26 +44,26 @@
   return v2;
 }
 
-- (id)_initForCopyWithSectionEntries:(id)a3 entriesBySection:(id)a4 explicitlyAddedSectionEntries:(id)a5
+- (id)_initForCopyWithSectionEntries:(id)entries entriesBySection:(id)section explicitlyAddedSectionEntries:(id)sectionEntries
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  entriesCopy = entries;
+  sectionCopy = section;
+  sectionEntriesCopy = sectionEntries;
   v15.receiver = self;
   v15.super_class = PSSearchResults;
   v12 = [(PSSearchResults *)&v15 init];
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_sectionEntries, a3);
-    objc_storeStrong(p_isa + 2, a5);
-    objc_storeStrong(p_isa + 3, a4);
+    objc_storeStrong(&v12->_sectionEntries, entries);
+    objc_storeStrong(p_isa + 2, sectionEntries);
+    objc_storeStrong(p_isa + 3, section);
   }
 
   return p_isa;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MEMORY[0x1E695DF70] arrayWithArray:self->_sectionEntries];
   v5 = [MEMORY[0x1E695DFA8] setWithSet:self->_explicitlyAddedSectionEntries];
@@ -96,14 +96,14 @@ void __32__PSSearchResults_copyWithZone___block_invoke(uint64_t a1, void *a2, vo
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (void)addEntry:(id)a3
+- (void)addEntry:(id)entry
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (entryCopy)
   {
-    v13 = v4;
-    if ([v4 isSectionEntry])
+    v13 = entryCopy;
+    if ([entryCopy isSectionEntry])
     {
       v6 = [(NSMutableArray *)self->_sectionEntries containsObject:v13];
       v5 = v13;
@@ -118,11 +118,11 @@ void __32__PSSearchResults_copyWithZone___block_invoke(uint64_t a1, void *a2, vo
 
     else
     {
-      v7 = [v13 sectionEntry];
-      if (v7)
+      sectionEntry = [v13 sectionEntry];
+      if (sectionEntry)
       {
         entriesBySection = self->_entriesBySection;
-        v9 = [MEMORY[0x1E696B098] valueWithNonretainedObject:v7];
+        v9 = [MEMORY[0x1E696B098] valueWithNonretainedObject:sectionEntry];
         v10 = [(NSMutableDictionary *)entriesBySection objectForKeyedSubscript:v9];
 
         if (v10)
@@ -135,13 +135,13 @@ void __32__PSSearchResults_copyWithZone___block_invoke(uint64_t a1, void *a2, vo
         {
           v10 = [MEMORY[0x1E695DF70] arrayWithObject:v13];
           v11 = self->_entriesBySection;
-          v12 = [MEMORY[0x1E696B098] valueWithNonretainedObject:v7];
+          v12 = [MEMORY[0x1E696B098] valueWithNonretainedObject:sectionEntry];
           [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:v12];
         }
 
-        if (([(NSMutableArray *)self->_sectionEntries containsObject:v7]& 1) == 0)
+        if (([(NSMutableArray *)self->_sectionEntries containsObject:sectionEntry]& 1) == 0)
         {
-          [(NSMutableArray *)self->_sectionEntries addObject:v7];
+          [(NSMutableArray *)self->_sectionEntries addObject:sectionEntry];
           self->_needsSorting = 1;
         }
       }
@@ -151,15 +151,15 @@ void __32__PSSearchResults_copyWithZone___block_invoke(uint64_t a1, void *a2, vo
   }
 }
 
-- (void)addEntries:(id)a3
+- (void)addEntries:(id)entries
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [entriesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -171,48 +171,48 @@ void __32__PSSearchResults_copyWithZone___block_invoke(uint64_t a1, void *a2, vo
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entriesCopy);
         }
 
         [(PSSearchResults *)self addEntry:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [entriesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)removeEntry:(id)a3
+- (BOOL)removeEntry:(id)entry
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (!entryCopy)
   {
     goto LABEL_4;
   }
 
-  if (![v4 isSectionEntry])
+  if (![entryCopy isSectionEntry])
   {
-    v8 = [v5 sectionEntry];
-    if (v8)
+    sectionEntry = [v5 sectionEntry];
+    if (sectionEntry)
     {
       entriesBySection = self->_entriesBySection;
-      v10 = [MEMORY[0x1E696B098] valueWithNonretainedObject:v8];
+      v10 = [MEMORY[0x1E696B098] valueWithNonretainedObject:sectionEntry];
       v11 = [(NSMutableDictionary *)entriesBySection objectForKeyedSubscript:v10];
 
       if ([v11 count] && (v12 = objc_msgSend(v11, "indexOfObject:", v5), v12 != 0x7FFFFFFFFFFFFFFFLL))
       {
         [v11 removeObjectAtIndex:v12];
-        if (![v11 count] && (-[NSMutableSet containsObject:](self->_explicitlyAddedSectionEntries, "containsObject:", v8) & 1) == 0)
+        if (![v11 count] && (-[NSMutableSet containsObject:](self->_explicitlyAddedSectionEntries, "containsObject:", sectionEntry) & 1) == 0)
         {
           v14 = self->_entriesBySection;
-          v15 = [MEMORY[0x1E696B098] valueWithNonretainedObject:v8];
+          v15 = [MEMORY[0x1E696B098] valueWithNonretainedObject:sectionEntry];
           [(NSMutableDictionary *)v14 removeObjectForKey:v15];
 
-          [(NSMutableArray *)self->_sectionEntries removeObject:v8];
+          [(NSMutableArray *)self->_sectionEntries removeObject:sectionEntry];
         }
 
         v7 = 1;
@@ -236,8 +236,8 @@ void __32__PSSearchResults_copyWithZone___block_invoke(uint64_t a1, void *a2, vo
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = v6;
-    v8 = [(PSSearchResults *)self entriesInSectionAtIndex:v6];
-    if (![v8 count])
+    sectionEntry = [(PSSearchResults *)self entriesInSectionAtIndex:v6];
+    if (![sectionEntry count])
     {
       [(NSMutableArray *)self->_sectionEntries removeObjectAtIndex:v13];
     }
@@ -256,15 +256,15 @@ LABEL_19:
   return v7;
 }
 
-- (unint64_t)removeEntries:(id)a3
+- (unint64_t)removeEntries:(id)entries
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [entriesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -276,13 +276,13 @@ LABEL_19:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entriesCopy);
         }
 
         v7 += [(PSSearchResults *)self removeEntry:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [entriesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -296,14 +296,14 @@ LABEL_19:
   return v7;
 }
 
-- (unint64_t)numberOfEntriesInSectionAtIndex:(unint64_t)a3
+- (unint64_t)numberOfEntriesInSectionAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_sectionEntries count]<= a3)
+  if ([(NSMutableArray *)self->_sectionEntries count]<= index)
   {
     return 0;
   }
 
-  v5 = [(PSSearchResults *)self entriesInSectionAtIndex:a3];
+  v5 = [(PSSearchResults *)self entriesInSectionAtIndex:index];
   v6 = [v5 count];
 
   return v6;
@@ -312,13 +312,13 @@ LABEL_19:
 - (unint64_t)totalNumberOfEntries
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(PSSearchResults *)self numberOfSectionEntries];
+  numberOfSectionEntries = [(PSSearchResults *)self numberOfSectionEntries];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSMutableDictionary *)self->_entriesBySection allValues];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_entriesBySection allValues];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -330,45 +330,45 @@ LABEL_19:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        v3 += [*(*(&v10 + 1) + 8 * v8++) count];
+        numberOfSectionEntries += [*(*(&v10 + 1) + 8 * v8++) count];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return numberOfSectionEntries;
 }
 
-- (id)sectionEntryAtIndex:(unint64_t)a3
+- (id)sectionEntryAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_sectionEntries count]<= a3)
+  if ([(NSMutableArray *)self->_sectionEntries count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_sectionEntries objectAtIndexedSubscript:a3];
+    v5 = [(NSMutableArray *)self->_sectionEntries objectAtIndexedSubscript:index];
   }
 
   return v5;
 }
 
-- (id)entriesInSectionAtIndex:(unint64_t)a3
+- (id)entriesInSectionAtIndex:(unint64_t)index
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v5 = [(NSMutableArray *)self->_sectionEntries count];
   v6 = MEMORY[0x1E695E0F0];
-  if (v5 > a3)
+  if (v5 > index)
   {
-    v7 = [(NSMutableArray *)self->_sectionEntries objectAtIndexedSubscript:a3];
+    v7 = [(NSMutableArray *)self->_sectionEntries objectAtIndexedSubscript:index];
     entriesBySection = self->_entriesBySection;
     v9 = [MEMORY[0x1E696B098] valueWithNonretainedObject:v7];
     v10 = [(NSMutableDictionary *)entriesBySection objectForKeyedSubscript:v9];
@@ -412,20 +412,20 @@ LABEL_19:
   return v6;
 }
 
-- (id)entryAtIndexPath:(id)a3
+- (id)entryAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[PSSearchResults entriesInSectionAtIndex:](self, "entriesInSectionAtIndex:", [v4 section]);
-  v6 = [v4 item];
+  pathCopy = path;
+  v5 = -[PSSearchResults entriesInSectionAtIndex:](self, "entriesInSectionAtIndex:", [pathCopy section]);
+  item = [pathCopy item];
 
-  if (v6 >= [v5 count])
+  if (item >= [v5 count])
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v5 objectAtIndexedSubscript:v6];
+    v7 = [v5 objectAtIndexedSubscript:item];
   }
 
   return v7;
@@ -463,8 +463,8 @@ LABEL_19:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [(NSMutableDictionary *)self->_entriesBySection allValues];
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allValues = [(NSMutableDictionary *)self->_entriesBySection allValues];
+    v8 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -476,14 +476,14 @@ LABEL_19:
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v12 + 1) + 8 * v11++) sortUsingComparator:v6];
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -501,11 +501,11 @@ uint64_t __30__PSSearchResults_sortResults__block_invoke(uint64_t a1, void *a2, 
   return v7;
 }
 
-- (void)setSectionComparator:(id)a3
+- (void)setSectionComparator:(id)comparator
 {
-  if (self->_sectionComparator != a3)
+  if (self->_sectionComparator != comparator)
   {
-    v4 = [a3 copy];
+    v4 = [comparator copy];
     sectionComparator = self->_sectionComparator;
     self->_sectionComparator = v4;
 
@@ -513,11 +513,11 @@ uint64_t __30__PSSearchResults_sortResults__block_invoke(uint64_t a1, void *a2, 
   }
 }
 
-- (void)setEntryComparator:(id)a3
+- (void)setEntryComparator:(id)comparator
 {
-  if (self->_entryComparator != a3)
+  if (self->_entryComparator != comparator)
   {
-    v4 = [a3 copy];
+    v4 = [comparator copy];
     entryComparator = self->_entryComparator;
     self->_entryComparator = v4;
 
@@ -525,24 +525,24 @@ uint64_t __30__PSSearchResults_sortResults__block_invoke(uint64_t a1, void *a2, 
   }
 }
 
-- (void)mergeWithResults:(id)a3
+- (void)mergeWithResults:(id)results
 {
-  if (a3)
+  if (results)
   {
     v4 = MEMORY[0x1E695DFD8];
-    v5 = *(a3 + 1);
-    v6 = a3;
+    v5 = *(results + 1);
+    resultsCopy = results;
     v7 = [v4 setWithArray:v5];
     v8 = [MEMORY[0x1E695DFD8] setWithArray:self->_sectionEntries];
     v9 = [v8 setByAddingObjectsFromSet:v7];
 
     v10 = objc_alloc(MEMORY[0x1E695DF70]);
-    v11 = [v9 allObjects];
-    v12 = [v10 initWithArray:v11];
+    allObjects = [v9 allObjects];
+    v12 = [v10 initWithArray:allObjects];
     sectionEntries = self->_sectionEntries;
     self->_sectionEntries = v12;
 
-    v14 = v6[3];
+    v14 = resultsCopy[3];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __36__PSSearchResults_mergeWithResults___block_invoke;
@@ -550,7 +550,7 @@ uint64_t __30__PSSearchResults_sortResults__block_invoke(uint64_t a1, void *a2, 
     v17[4] = self;
     [v14 enumerateKeysAndObjectsUsingBlock:v17];
     explicitlyAddedSectionEntries = self->_explicitlyAddedSectionEntries;
-    v16 = v6[2];
+    v16 = resultsCopy[2];
 
     [(NSMutableSet *)explicitlyAddedSectionEntries unionSet:v16];
     self->_needsSorting = 1;
@@ -575,11 +575,11 @@ void __36__PSSearchResults_mergeWithResults___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (id)resultsByMergingWithResults:(id)a3
+- (id)resultsByMergingWithResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = [(PSSearchResults *)self copy];
-  [v5 mergeWithResults:v4];
+  [v5 mergeWithResults:resultsCopy];
 
   return v5;
 }

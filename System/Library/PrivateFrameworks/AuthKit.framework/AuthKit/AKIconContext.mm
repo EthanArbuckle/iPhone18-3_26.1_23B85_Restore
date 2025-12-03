@@ -1,7 +1,7 @@
 @interface AKIconContext
 - (AKIconContext)init;
-- (AKIconContext)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AKIconContext)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKIconContext
@@ -27,50 +27,50 @@
   return v3;
 }
 
-- (AKIconContext)initWithCoder:(id)a3
+- (AKIconContext)initWithCoder:(id)coder
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v14;
-  v14 = 0;
-  v14 = [(AKIconContext *)v3 init];
-  objc_storeStrong(&v14, v14);
-  if (v14)
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKIconContext *)v3 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_data"];
-    data = v14->_data;
-    v14->_data = v4;
+    data = selfCopy->_data;
+    selfCopy->_data = v4;
     MEMORY[0x1E69E5920](data);
     v6 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_scale"];
-    scale = v14->_scale;
-    v14->_scale = v6;
+    scale = selfCopy->_scale;
+    selfCopy->_scale = v6;
     MEMORY[0x1E69E5920](scale);
     v8 = [location[0] decodeIntegerForKey:@"_maskingStyle"];
-    v14->_maskingStyle = v8;
+    selfCopy->_maskingStyle = v8;
     v9 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_appName"];
-    appName = v14->_appName;
-    v14->_appName = v9;
+    appName = selfCopy->_appName;
+    selfCopy->_appName = v9;
     MEMORY[0x1E69E5920](appName);
   }
 
-  v12 = MEMORY[0x1E69E5928](v14);
+  v12 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_data forKey:@"_data"];
-  [location[0] encodeObject:v4->_scale forKey:@"_scale"];
-  [location[0] encodeInteger:v4->_maskingStyle forKey:@"_maskingStyle"];
-  [location[0] encodeObject:v4->_appName forKey:@"_appName"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_data forKey:@"_data"];
+  [location[0] encodeObject:selfCopy->_scale forKey:@"_scale"];
+  [location[0] encodeInteger:selfCopy->_maskingStyle forKey:@"_maskingStyle"];
+  [location[0] encodeObject:selfCopy->_appName forKey:@"_appName"];
   objc_storeStrong(location, 0);
 }
 

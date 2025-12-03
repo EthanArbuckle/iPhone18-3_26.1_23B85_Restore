@@ -1,5 +1,5 @@
 @interface PLSearchSuggestionTemplateProvider
-+ (id)templateForRankedGroup:(id)a3;
++ (id)templateForRankedGroup:(id)group;
 - (NSArray)allDateFilters;
 - (NSArray)allTemplates;
 - (NSArray)allTemplatesKeys;
@@ -8,19 +8,19 @@
 - (NSIndexSet)nonIdentifierBasedSupportedSearchEntityTypes;
 - (id)_allDateFilters;
 - (id)_dateOnlyTemplates;
-- (id)dateFilterForSearchSuggestionTemplateDateType:(unint64_t)a3;
-- (id)templatesForSearchIndexCategory:(unint64_t)a3 secondIndexCategory:(unint64_t)a4;
+- (id)dateFilterForSearchSuggestionTemplateDateType:(unint64_t)type;
+- (id)templatesForSearchIndexCategory:(unint64_t)category secondIndexCategory:(unint64_t)indexCategory;
 @end
 
 @implementation PLSearchSuggestionTemplateProvider
 
-+ (id)templateForRankedGroup:(id)a3
++ (id)templateForRankedGroup:(id)group
 {
-  v3 = a3;
-  v4 = [v3 group];
-  v5 = [v4 category];
+  groupCopy = group;
+  group = [groupCopy group];
+  category = [group category];
 
-  if ([v3 isMePerson])
+  if ([groupCopy isMePerson])
   {
     v6 = 17;
   }
@@ -30,23 +30,23 @@
     v6 = 1;
   }
 
-  if (v5 <= 0x531u)
+  if (category <= 0x531u)
   {
-    if (v5 > 0x44Fu)
+    if (category > 0x44Fu)
     {
-      if (v5 == 1104)
+      if (category == 1104)
       {
-        v10 = [v3 group];
-        v7 = [v10 lookupIdentifier];
+        group2 = [groupCopy group];
+        lookupIdentifier = [group2 lookupIdentifier];
 
         v6 |= 8uLL;
         v8 = 2;
         goto LABEL_26;
       }
 
-      if (v5 == 1300)
+      if (category == 1300)
       {
-        v7 = 0;
+        lookupIdentifier = 0;
         v8 = 9;
         goto LABEL_26;
       }
@@ -54,16 +54,16 @@
 
     else
     {
-      if (v5 - 1100 < 2)
+      if (category - 1100 < 2)
       {
-        v7 = 0;
+        lookupIdentifier = 0;
         v8 = 4;
         goto LABEL_26;
       }
 
-      if (v5 == 1103)
+      if (category == 1103)
       {
-        v7 = 0;
+        lookupIdentifier = 0;
         v8 = 3;
         goto LABEL_26;
       }
@@ -72,40 +72,40 @@
     goto LABEL_25;
   }
 
-  if (v5 <= 0x63Fu)
+  if (category <= 0x63Fu)
   {
-    if (v5 == 1330)
+    if (category == 1330)
     {
-      v7 = 0;
+      lookupIdentifier = 0;
       v8 = 7;
       goto LABEL_26;
     }
 
-    if (v5 != 1500)
+    if (category != 1500)
     {
       goto LABEL_25;
     }
 
 LABEL_18:
-    v9 = [v3 group];
-    v7 = [v9 lookupIdentifier];
+    group3 = [groupCopy group];
+    lookupIdentifier = [group3 lookupIdentifier];
 
     v6 |= 8uLL;
     v8 = 8;
     goto LABEL_26;
   }
 
-  switch(v5)
+  switch(category)
   {
     case 0x640u:
-      v11 = [v3 group];
-      v7 = [v11 lookupIdentifier];
+      group4 = [groupCopy group];
+      lookupIdentifier = [group4 lookupIdentifier];
 
       v6 |= 8uLL;
       v8 = 5;
       goto LABEL_26;
     case 0x64Au:
-      v7 = 0;
+      lookupIdentifier = 0;
       v8 = 6;
       goto LABEL_26;
     case 0xA28u:
@@ -113,10 +113,10 @@ LABEL_18:
   }
 
 LABEL_25:
-  v7 = 0;
+  lookupIdentifier = 0;
   v8 = 1;
 LABEL_26:
-  v12 = [[PLSearchSuggestionTemplate alloc] initWithSuggestionTemplateKey:0 firstIndexCategory:v5 secondIndexCategory:0 templateType:v6 templateContentType:v8 templateDateType:0 styleType:1 identifier:v7];
+  v12 = [[PLSearchSuggestionTemplate alloc] initWithSuggestionTemplateKey:0 firstIndexCategory:category secondIndexCategory:0 templateType:v6 templateContentType:v8 templateDateType:0 styleType:1 identifier:lookupIdentifier];
 
   return v12;
 }
@@ -124,13 +124,13 @@ LABEL_26:
 - (id)_dateOnlyTemplates
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(PLSearchSuggestionTemplateProvider *)self allTemplates];
+  allTemplates = [(PLSearchSuggestionTemplateProvider *)self allTemplates];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = allTemplates;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -163,15 +163,15 @@ LABEL_26:
   return v10;
 }
 
-- (id)dateFilterForSearchSuggestionTemplateDateType:(unint64_t)a3
+- (id)dateFilterForSearchSuggestionTemplateDateType:(unint64_t)type
 {
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [PLSearchSuggestionDateUtility dateFilterForSearchSuggestionTemplateDateType:a3 calendar:v4 relativeDate:v5];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [PLSearchSuggestionDateUtility dateFilterForSearchSuggestionTemplateDateType:type calendar:currentCalendar relativeDate:date];
 
   if (v6)
   {
-    v7 = [[PLInitialSuggestionDateFilter alloc] initWithTemplateDateType:a3 psiDateFilter:v6];
+    v7 = [[PLInitialSuggestionDateFilter alloc] initWithTemplateDateType:type psiDateFilter:v6];
   }
 
   else
@@ -211,39 +211,39 @@ void __53__PLSearchSuggestionTemplateProvider__allDateFilters__block_invoke(uint
   }
 }
 
-- (id)templatesForSearchIndexCategory:(unint64_t)a3 secondIndexCategory:(unint64_t)a4
+- (id)templatesForSearchIndexCategory:(unint64_t)category secondIndexCategory:(unint64_t)indexCategory
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!category)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PLSearchSuggestionTemplateProvider.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"firstIndexCategory != PLSearchIndexCategoryNone"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSearchSuggestionTemplateProvider.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"firstIndexCategory != PLSearchIndexCategoryNone"}];
 
-    if (a4)
+    if (indexCategory)
     {
       goto LABEL_3;
     }
 
 LABEL_27:
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PLSearchSuggestionTemplateProvider.m" lineNumber:121 description:{@"Invalid parameter not satisfying: %@", @"secondIndexCategory != PLSearchIndexCategoryNone"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLSearchSuggestionTemplateProvider.m" lineNumber:121 description:{@"Invalid parameter not satisfying: %@", @"secondIndexCategory != PLSearchIndexCategoryNone"}];
 
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!indexCategory)
   {
     goto LABEL_27;
   }
 
 LABEL_3:
-  v8 = [(PLSearchSuggestionTemplateProvider *)self allTemplates];
+  allTemplates = [(PLSearchSuggestionTemplateProvider *)self allTemplates];
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v8;
+  v10 = allTemplates;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v11)
   {
@@ -262,10 +262,10 @@ LABEL_3:
       }
 
       v15 = *(*(&v23 + 1) + 8 * i);
-      v16 = [v15 templateType];
-      if ((~v16 & 3) != 0)
+      templateType = [v15 templateType];
+      if ((~templateType & 3) != 0)
       {
-        if ((v16 & 1) != 0 && ([v15 firstIndexCategory] == a3 || objc_msgSend(v15, "firstIndexCategory") == a4))
+        if ((templateType & 1) != 0 && ([v15 firstIndexCategory] == category || objc_msgSend(v15, "firstIndexCategory") == indexCategory))
         {
           goto LABEL_20;
         }
@@ -273,8 +273,8 @@ LABEL_3:
 
       else
       {
-        v17 = [v15 firstIndexCategory] == a3 && objc_msgSend(v15, "secondIndexCategory") == a4;
-        v18 = [v15 secondIndexCategory] == a3 && objc_msgSend(v15, "firstIndexCategory") == a4;
+        v17 = [v15 firstIndexCategory] == category && objc_msgSend(v15, "secondIndexCategory") == indexCategory;
+        v18 = [v15 secondIndexCategory] == category && objc_msgSend(v15, "firstIndexCategory") == indexCategory;
         if (v17 || v18)
         {
 LABEL_20:
@@ -300,9 +300,9 @@ LABEL_23:
   allDateFilters = self->_allDateFilters;
   if (!allDateFilters)
   {
-    v4 = [(PLSearchSuggestionTemplateProvider *)self _allDateFilters];
+    _allDateFilters = [(PLSearchSuggestionTemplateProvider *)self _allDateFilters];
     v5 = self->_allDateFilters;
-    self->_allDateFilters = v4;
+    self->_allDateFilters = _allDateFilters;
 
     allDateFilters = self->_allDateFilters;
   }
@@ -346,8 +346,8 @@ LABEL_23:
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [(PLSearchSuggestionTemplateProvider *)self allTemplates];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    allTemplates = [(PLSearchSuggestionTemplateProvider *)self allTemplates];
+    v6 = [allTemplates countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -358,12 +358,12 @@ LABEL_23:
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allTemplates);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v10 identifier];
-          v12 = [v11 length];
+          identifier = [v10 identifier];
+          v12 = [identifier length];
 
           if (!v12)
           {
@@ -379,7 +379,7 @@ LABEL_23:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [allTemplates countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v7);
@@ -400,9 +400,9 @@ LABEL_23:
   dateOnlyTemplates = self->_dateOnlyTemplates;
   if (!dateOnlyTemplates)
   {
-    v4 = [(PLSearchSuggestionTemplateProvider *)self _dateOnlyTemplates];
+    _dateOnlyTemplates = [(PLSearchSuggestionTemplateProvider *)self _dateOnlyTemplates];
     v5 = self->_dateOnlyTemplates;
-    self->_dateOnlyTemplates = v4;
+    self->_dateOnlyTemplates = _dateOnlyTemplates;
 
     dateOnlyTemplates = self->_dateOnlyTemplates;
   }
@@ -421,8 +421,8 @@ LABEL_23:
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(PLSearchSuggestionTemplateProvider *)self allTemplates];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allTemplates = [(PLSearchSuggestionTemplateProvider *)self allTemplates];
+    v6 = [allTemplates countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -434,17 +434,17 @@ LABEL_23:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allTemplates);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * v9) suggestionTemplateKey];
-          [v4 addObject:v10];
+          suggestionTemplateKey = [*(*(&v14 + 1) + 8 * v9) suggestionTemplateKey];
+          [v4 addObject:suggestionTemplateKey];
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [allTemplates countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);

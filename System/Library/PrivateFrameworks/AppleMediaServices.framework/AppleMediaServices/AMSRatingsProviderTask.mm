@@ -1,25 +1,25 @@
 @interface AMSRatingsProviderTask
 + (AMSBagKeySet)bagKeySet;
 + (id)createBagForSubProfile;
-+ (id)ratingWithValue:(id)a3 mediaType:(unint64_t)a4 storeFront:(id)a5 clientIdentifier:(id)a6 bag:(id)a7;
-- (AMSRatingsProviderTask)initWithMediaType:(unint64_t)a3 storeFront:(id)a4 clientIdentifier:(id)a5 bag:(id)a6;
++ (id)ratingWithValue:(id)value mediaType:(unint64_t)type storeFront:(id)front clientIdentifier:(id)identifier bag:(id)bag;
+- (AMSRatingsProviderTask)initWithMediaType:(unint64_t)type storeFront:(id)front clientIdentifier:(id)identifier bag:(id)bag;
 - (id)_appQueryItems;
 - (id)_commonQueryItems;
-- (id)_urlForMediaType:(unint64_t)a3 error:(id *)a4;
-- (id)_withQueryItemForType:(unint64_t)a3 regionalRatingSystem:(BOOL)a4;
-- (id)initForAllMediaWithStoreFront:(id)a3 clientIdentifier:(id)a4 useCase:(unint64_t)a5 bag:(id)a6;
-- (id)initForAllMediaWithUnratedRatingsForStoreFront:(id)a3 clientIdentifier:(id)a4 useCase:(unint64_t)a5 bag:(id)a6;
+- (id)_urlForMediaType:(unint64_t)type error:(id *)error;
+- (id)_withQueryItemForType:(unint64_t)type regionalRatingSystem:(BOOL)system;
+- (id)initForAllMediaWithStoreFront:(id)front clientIdentifier:(id)identifier useCase:(unint64_t)case bag:(id)bag;
+- (id)initForAllMediaWithUnratedRatingsForStoreFront:(id)front clientIdentifier:(id)identifier useCase:(unint64_t)case bag:(id)bag;
 - (id)performTask;
-- (id)resultWithCachedData:(id)a3;
+- (id)resultWithCachedData:(id)data;
 @end
 
 @implementation AMSRatingsProviderTask
 
-- (id)initForAllMediaWithStoreFront:(id)a3 clientIdentifier:(id)a4 useCase:(unint64_t)a5 bag:(id)a6
+- (id)initForAllMediaWithStoreFront:(id)front clientIdentifier:(id)identifier useCase:(unint64_t)case bag:(id)bag
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  frontCopy = front;
+  identifierCopy = identifier;
+  bagCopy = bag;
   v17.receiver = self;
   v17.super_class = AMSRatingsProviderTask;
   v14 = [(AMSTask *)&v17 init];
@@ -27,20 +27,20 @@
   if (v14)
   {
     v14->_mediaType = 5;
-    objc_storeStrong(&v14->_storeFront, a3);
-    objc_storeStrong(&v15->_clientIdentifier, a4);
-    v15->_useCase = a5;
-    objc_storeStrong(&v15->_bag, a6);
+    objc_storeStrong(&v14->_storeFront, front);
+    objc_storeStrong(&v15->_clientIdentifier, identifier);
+    v15->_useCase = case;
+    objc_storeStrong(&v15->_bag, bag);
   }
 
   return v15;
 }
 
-- (id)initForAllMediaWithUnratedRatingsForStoreFront:(id)a3 clientIdentifier:(id)a4 useCase:(unint64_t)a5 bag:(id)a6
+- (id)initForAllMediaWithUnratedRatingsForStoreFront:(id)front clientIdentifier:(id)identifier useCase:(unint64_t)case bag:(id)bag
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  frontCopy = front;
+  identifierCopy = identifier;
+  bagCopy = bag;
   v17.receiver = self;
   v17.super_class = AMSRatingsProviderTask;
   v14 = [(AMSTask *)&v17 init];
@@ -48,44 +48,44 @@
   if (v14)
   {
     v14->_mediaType = 6;
-    objc_storeStrong(&v14->_storeFront, a3);
-    objc_storeStrong(&v15->_clientIdentifier, a4);
-    v15->_useCase = a5;
-    objc_storeStrong(&v15->_bag, a6);
+    objc_storeStrong(&v14->_storeFront, front);
+    objc_storeStrong(&v15->_clientIdentifier, identifier);
+    v15->_useCase = case;
+    objc_storeStrong(&v15->_bag, bag);
   }
 
   return v15;
 }
 
-- (AMSRatingsProviderTask)initWithMediaType:(unint64_t)a3 storeFront:(id)a4 clientIdentifier:(id)a5 bag:(id)a6
+- (AMSRatingsProviderTask)initWithMediaType:(unint64_t)type storeFront:(id)front clientIdentifier:(id)identifier bag:(id)bag
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  frontCopy = front;
+  identifierCopy = identifier;
+  bagCopy = bag;
   v17.receiver = self;
   v17.super_class = AMSRatingsProviderTask;
   v14 = [(AMSTask *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_storeFront, a4);
-    v15->_mediaType = a3;
-    objc_storeStrong(&v15->_clientIdentifier, a5);
-    objc_storeStrong(&v15->_bag, a6);
+    objc_storeStrong(&v14->_storeFront, front);
+    v15->_mediaType = type;
+    objc_storeStrong(&v15->_clientIdentifier, identifier);
+    objc_storeStrong(&v15->_bag, bag);
   }
 
   return v15;
 }
 
-- (id)resultWithCachedData:(id)a3
+- (id)resultWithCachedData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     v5 = [AMSRatingsProviderResult alloc];
-    v6 = [(AMSRatingsProviderTask *)self mediaType];
-    v7 = [(AMSRatingsProviderTask *)self storeFront];
-    v8 = [(AMSRatingsProviderResult *)v5 initWithData:v4 mediaType:v6 andStoreFront:v7];
+    mediaType = [(AMSRatingsProviderTask *)self mediaType];
+    storeFront = [(AMSRatingsProviderTask *)self storeFront];
+    v8 = [(AMSRatingsProviderResult *)v5 initWithData:dataCopy mediaType:mediaType andStoreFront:storeFront];
   }
 
   else
@@ -300,25 +300,25 @@ LABEL_23:
   return v37;
 }
 
-+ (id)ratingWithValue:(id)a3 mediaType:(unint64_t)a4 storeFront:(id)a5 clientIdentifier:(id)a6 bag:(id)a7
++ (id)ratingWithValue:(id)value mediaType:(unint64_t)type storeFront:(id)front clientIdentifier:(id)identifier bag:(id)bag
 {
-  v11 = a3;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = [[AMSRatingsProviderTask alloc] initWithMediaType:a4 storeFront:v14 clientIdentifier:v13 bag:v12];
+  valueCopy = value;
+  bagCopy = bag;
+  identifierCopy = identifier;
+  frontCopy = front;
+  v15 = [[AMSRatingsProviderTask alloc] initWithMediaType:type storeFront:frontCopy clientIdentifier:identifierCopy bag:bagCopy];
 
-  v16 = [(AMSRatingsProviderTask *)v15 performTask];
+  performTask = [(AMSRatingsProviderTask *)v15 performTask];
   v17 = objc_alloc_init(AMSMutablePromise);
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __84__AMSRatingsProviderTask_ratingWithValue_mediaType_storeFront_clientIdentifier_bag___block_invoke;
   v23[3] = &unk_1E73BBAE0;
-  v24 = v11;
+  v24 = valueCopy;
   v18 = v17;
   v25 = v18;
-  v19 = v11;
-  [v16 addFinishBlock:v23];
+  v19 = valueCopy;
+  [performTask addFinishBlock:v23];
   v20 = v25;
   v21 = v18;
 
@@ -499,76 +499,76 @@ LABEL_37:
 LABEL_39:
 }
 
-- (id)_urlForMediaType:(unint64_t)a3 error:(id *)a4
+- (id)_urlForMediaType:(unint64_t)type error:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v7 = [(AMSRatingsProviderTask *)self _commonQueryItems];
-  if (a3 <= 2)
+  _commonQueryItems = [(AMSRatingsProviderTask *)self _commonQueryItems];
+  if (type <= 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 0uLL:
-        v13 = [(AMSRatingsProviderTask *)self storeFront];
-        v11 = v13;
+        storeFront = [(AMSRatingsProviderTask *)self storeFront];
+        _appQueryItems = storeFront;
         v14 = @"AMSRatingsProviderVideoURL";
         v15 = @"AMSRatingsProviderVideoAllURL";
         goto LABEL_16;
       case 1uLL:
-        v13 = [(AMSRatingsProviderTask *)self storeFront];
-        v11 = v13;
+        storeFront = [(AMSRatingsProviderTask *)self storeFront];
+        _appQueryItems = storeFront;
         v14 = @"AMSRatingsProviderMusicURL";
         v15 = @"AMSRatingsProviderMusicAllURL";
         goto LABEL_16;
       case 2uLL:
-        v8 = [(AMSRatingsProviderTask *)self storeFront];
+        storeFront2 = [(AMSRatingsProviderTask *)self storeFront];
         v9 = @"AMSRatingsProviderAppsURL";
-        if (!v8)
+        if (!storeFront2)
         {
           v9 = @"AMSRatingsProviderAppsAllURL";
         }
 
         v10 = v9;
 
-        v11 = [(AMSRatingsProviderTask *)self _appQueryItems];
-        v12 = [v7 arrayByAddingObjectsFromArray:v11];
+        _appQueryItems = [(AMSRatingsProviderTask *)self _appQueryItems];
+        v12 = [_commonQueryItems arrayByAddingObjectsFromArray:_appQueryItems];
 
-        v7 = v12;
+        _commonQueryItems = v12;
         goto LABEL_19;
     }
 
     goto LABEL_12;
   }
 
-  if (a3 - 5 < 2)
+  if (type - 5 < 2)
   {
     goto LABEL_12;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
-    v13 = [(AMSRatingsProviderTask *)self storeFront];
-    v11 = v13;
+    storeFront = [(AMSRatingsProviderTask *)self storeFront];
+    _appQueryItems = storeFront;
     v14 = @"AMSRatingsProviderPodcastsURL";
     v15 = @"AMSRatingsProviderPodcastsAllURL";
     goto LABEL_16;
   }
 
-  if (a3 != 4)
+  if (type != 4)
   {
 LABEL_12:
-    v13 = [(AMSRatingsProviderTask *)self storeFront];
-    v11 = v13;
+    storeFront = [(AMSRatingsProviderTask *)self storeFront];
+    _appQueryItems = storeFront;
     v14 = @"AMSRatingsProviderMediaURL";
     v15 = @"AMSRatingsProviderMediaAllURL";
     goto LABEL_16;
   }
 
-  v13 = [(AMSRatingsProviderTask *)self storeFront];
-  v11 = v13;
+  storeFront = [(AMSRatingsProviderTask *)self storeFront];
+  _appQueryItems = storeFront;
   v14 = @"AMSRatingsProviderBooksURL";
   v15 = @"AMSRatingsProviderBooksAllURL";
 LABEL_16:
-  if (!v13)
+  if (!storeFront)
   {
     v14 = v15;
   }
@@ -576,8 +576,8 @@ LABEL_16:
   v10 = v14;
 LABEL_19:
 
-  v16 = [(AMSRatingsProviderTask *)self _withQueryItemForType:a3 regionalRatingSystem:[(AMSRatingsProviderTask *)self regionalRatingSystem]];
-  v17 = [v7 arrayByAddingObjectsFromArray:v16];
+  v16 = [(AMSRatingsProviderTask *)self _withQueryItemForType:type regionalRatingSystem:[(AMSRatingsProviderTask *)self regionalRatingSystem]];
+  v17 = [_commonQueryItems arrayByAddingObjectsFromArray:v16];
 
   v18 = [(AMSRatingsProviderTask *)self bag];
   v19 = [v18 stringForKey:v10];
@@ -595,19 +595,19 @@ LABEL_19:
       v20 = v23;
     }
 
-    v24 = [(AMSRatingsProviderTask *)self storeFront];
-    if (v24)
+    storeFront3 = [(AMSRatingsProviderTask *)self storeFront];
+    if (storeFront3)
     {
-      v25 = v24;
-      v26 = [(AMSRatingsProviderTask *)self storeFront];
-      v27 = [v26 length];
+      v25 = storeFront3;
+      storeFront4 = [(AMSRatingsProviderTask *)self storeFront];
+      v27 = [storeFront4 length];
 
       if (v27)
       {
         v28 = MEMORY[0x1E696AEC0];
         v51 = v21;
-        v29 = [(AMSRatingsProviderTask *)self storeFront];
-        v30 = [v28 stringWithValidatedFormat:v20 validFormatSpecifiers:@"%@" error:&v51, v29];
+        storeFront5 = [(AMSRatingsProviderTask *)self storeFront];
+        v30 = [v28 stringWithValidatedFormat:v20 validFormatSpecifiers:@"%@" error:&v51, storeFront5];
         v31 = v51;
 
         v20 = v30;
@@ -625,12 +625,12 @@ LABEL_19:
       }
 
       v34 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v32 resolvingAgainstBaseURL:0];
-      v35 = [v34 queryItems];
-      v36 = v35;
+      queryItems = [v34 queryItems];
+      v36 = queryItems;
       v37 = MEMORY[0x1E695E0F0];
-      if (v35)
+      if (queryItems)
       {
-        v37 = v35;
+        v37 = queryItems;
       }
 
       v38 = v37;
@@ -651,8 +651,8 @@ LABEL_19:
         v44 = +[AMSLogConfig sharedConfig];
       }
 
-      v45 = [v44 OSLogObject];
-      if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v44 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v46 = objc_opt_class();
         v47 = AMSLogKey();
@@ -663,7 +663,7 @@ LABEL_19:
         v56 = v47;
         v57 = 2112;
         v58 = v48;
-        _os_log_impl(&dword_192869000, v45, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error creating URL from string: %@.", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error creating URL from string: %@.", buf, 0x20u);
       }
 
       AMSError(200, @"Ratings URL string malformed", @"Failed to create URL from bag-provided URL string", 0);
@@ -680,8 +680,8 @@ LABEL_19:
       v34 = +[AMSLogConfig sharedConfig];
     }
 
-    v41 = [v34 OSLogObject];
-    if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v34 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v42 = objc_opt_class();
       v43 = AMSLogKey();
@@ -691,7 +691,7 @@ LABEL_19:
       v56 = v43;
       v57 = 2112;
       v58 = v21;
-      _os_log_impl(&dword_192869000, v41, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error loading URL from bag: %@.", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error loading URL from bag: %@.", buf, 0x20u);
     }
 
     v20 = 0;
@@ -699,10 +699,10 @@ LABEL_19:
   }
 
 LABEL_41:
-  if (a4)
+  if (error)
   {
     v49 = v21;
-    *a4 = v21;
+    *error = v21;
   }
 
   return v33;
@@ -721,17 +721,17 @@ LABEL_41:
   return v2;
 }
 
-- (id)_withQueryItemForType:(unint64_t)a3 regionalRatingSystem:(BOOL)a4
+- (id)_withQueryItemForType:(unint64_t)type regionalRatingSystem:(BOOL)system
 {
-  v4 = a4;
+  systemCopy = system;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = v6;
-  if (v4)
+  if (systemCopy)
   {
     [v6 addObject:@"regionalRatingSystem"];
   }
 
-  if (a3 == 6)
+  if (type == 6)
   {
     [v7 addObject:@"unratedRating"];
   }
@@ -778,9 +778,9 @@ LABEL_41:
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

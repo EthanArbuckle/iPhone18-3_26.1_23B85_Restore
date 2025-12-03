@@ -1,14 +1,14 @@
 @interface SFMDevicePlaySoundHandler
-- (SFMDevicePlaySoundHandler)initWithDictionary:(id)a3;
-- (SFMDevicePlaySoundHandler)initWithDictionary:(id)a3 context:(id)a4;
-- (void)performWithCompletion:(id)a3;
+- (SFMDevicePlaySoundHandler)initWithDictionary:(id)dictionary;
+- (SFMDevicePlaySoundHandler)initWithDictionary:(id)dictionary context:(id)context;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation SFMDevicePlaySoundHandler
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -23,14 +23,14 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1CBC(v7, v6);
   sub_3028(v7);
 }
 
-- (SFMDevicePlaySoundHandler)initWithDictionary:(id)a3
+- (SFMDevicePlaySoundHandler)initWithDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v3 = sub_61C0();
   }
@@ -43,9 +43,9 @@
   return sub_2914(v3);
 }
 
-- (SFMDevicePlaySoundHandler)initWithDictionary:(id)a3 context:(id)a4
+- (SFMDevicePlaySoundHandler)initWithDictionary:(id)dictionary context:(id)context
 {
-  if (a3)
+  if (dictionary)
   {
     v5 = sub_61C0();
   }
@@ -56,7 +56,7 @@
   }
 
   swift_unknownObjectRetain();
-  return sub_2A0C(v5, a4);
+  return sub_2A0C(v5, context);
 }
 
 @end

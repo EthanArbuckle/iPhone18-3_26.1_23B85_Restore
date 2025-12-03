@@ -1,16 +1,16 @@
 @interface SBSHomeScreenServiceNumberOrString
-- (SBSHomeScreenServiceNumberOrString)initWithCoder:(id)a3;
-- (SBSHomeScreenServiceNumberOrString)initWithNumberOrString:(id)a3;
+- (SBSHomeScreenServiceNumberOrString)initWithCoder:(id)coder;
+- (SBSHomeScreenServiceNumberOrString)initWithNumberOrString:(id)string;
 @end
 
 @implementation SBSHomeScreenServiceNumberOrString
 
-- (SBSHomeScreenServiceNumberOrString)initWithNumberOrString:(id)a3
+- (SBSHomeScreenServiceNumberOrString)initWithNumberOrString:(id)string
 {
-  v5 = a3;
-  if (v5)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v6 = objc_opt_self();
+    currentHandler = objc_opt_self();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v7 = objc_opt_self();
@@ -21,8 +21,8 @@
         goto LABEL_6;
       }
 
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"SBSHomeScreenServiceSpecification.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"!numberOrString || [numberOrString isKindOfClass:[NSString self]] || [numberOrString isKindOfClass:[NSNumber self]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBSHomeScreenServiceSpecification.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"!numberOrString || [numberOrString isKindOfClass:[NSString self]] || [numberOrString isKindOfClass:[NSNumber self]]"}];
     }
   }
 
@@ -32,7 +32,7 @@ LABEL_6:
   v9 = [(SBSHomeScreenServiceNumberOrString *)&v13 init];
   if (v9)
   {
-    v10 = [v5 copyWithZone:0];
+    v10 = [stringCopy copyWithZone:0];
     numberOrString = v9->_numberOrString;
     v9->_numberOrString = v10;
   }
@@ -40,14 +40,14 @@ LABEL_6:
   return v9;
 }
 
-- (SBSHomeScreenServiceNumberOrString)initWithCoder:(id)a3
+- (SBSHomeScreenServiceNumberOrString)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_self();
   v7 = objc_opt_self();
   v8 = [v4 setWithObjects:{v6, v7, 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"numberOrString"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"numberOrString"];
 
   v10 = [(SBSHomeScreenServiceNumberOrString *)self initWithNumberOrString:v9];
   return v10;

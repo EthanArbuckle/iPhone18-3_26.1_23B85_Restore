@@ -1,33 +1,33 @@
 @interface _HKQuantitySampleComparisonFilter
-+ (BOOL)areValidTypes:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-+ (BOOL)isSupportedKeyPath:(id)a3;
-+ (BOOL)isValidValue:(id)a3 forKeyPath:(id)a4 operatorType:(unint64_t)a5 dataTypes:(id)a6 error:(id *)a7;
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3;
-+ (id)allowedValueClassesForKeyPath:(id)a3;
-+ (int64_t)enumRepresentationForKeyPath:(id)a3;
-- (BOOL)acceptsDataObject:(id)a3;
-- (int64_t)acceptsDataObjectWithStartTimestamp:(double)a3 endTimestamp:(double)a4 valueInCanonicalUnit:(double)a5;
++ (BOOL)areValidTypes:(id)types forKeyPath:(id)path error:(id *)error;
++ (BOOL)isSupportedKeyPath:(id)path;
++ (BOOL)isValidValue:(id)value forKeyPath:(id)path operatorType:(unint64_t)type dataTypes:(id)types error:(id *)error;
++ (id)allowedDataTypeClassesForKeyPath:(id)path;
++ (id)allowedValueClassesForKeyPath:(id)path;
++ (int64_t)enumRepresentationForKeyPath:(id)path;
+- (BOOL)acceptsDataObject:(id)object;
+- (int64_t)acceptsDataObjectWithStartTimestamp:(double)timestamp endTimestamp:(double)endTimestamp valueInCanonicalUnit:(double)unit;
 @end
 
 @implementation _HKQuantitySampleComparisonFilter
 
-+ (BOOL)isSupportedKeyPath:(id)a3
++ (BOOL)isSupportedKeyPath:(id)path
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"quantity"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"quantity"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"count"];
+    v4 = [pathCopy isEqualToString:@"count"];
   }
 
   return v4;
 }
 
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3
++ (id)allowedDataTypeClassesForKeyPath:(id)path
 {
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
@@ -35,10 +35,10 @@
   return [v3 setWithObject:v4];
 }
 
-+ (id)allowedValueClassesForKeyPath:(id)a3
++ (id)allowedValueClassesForKeyPath:(id)path
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"quantity"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"quantity"])
   {
     v6 = MEMORY[0x1E695DFD8];
 LABEL_5:
@@ -46,14 +46,14 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v5 isEqualToString:@"count"])
+  if ([pathCopy isEqualToString:@"count"])
   {
     v6 = MEMORY[0x1E695DFD8];
     goto LABEL_5;
   }
 
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a2 object:a1 file:@"_HKQuantitySampleComparisonFilter.m" lineNumber:52 description:@"Unreachable code has been executed"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_HKQuantitySampleComparisonFilter.m" lineNumber:52 description:@"Unreachable code has been executed"];
 
   v7 = [MEMORY[0x1E695DFD8] set];
 LABEL_7:
@@ -62,20 +62,20 @@ LABEL_7:
   return v9;
 }
 
-+ (BOOL)areValidTypes:(id)a3 forKeyPath:(id)a4 error:(id *)a5
++ (BOOL)areValidTypes:(id)types forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v12.receiver = a1;
+  typesCopy = types;
+  pathCopy = path;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS____HKQuantitySampleComparisonFilter;
-  if (!objc_msgSendSuper2(&v12, sel_areValidTypes_forKeyPath_error_, v8, v9, a5))
+  if (!objc_msgSendSuper2(&v12, sel_areValidTypes_forKeyPath_error_, typesCopy, pathCopy, error))
   {
     goto LABEL_6;
   }
 
-  if ([v9 isEqualToString:@"quantity"] && objc_msgSend(v8, "count") != 1)
+  if ([pathCopy isEqualToString:@"quantity"] && objc_msgSend(typesCopy, "count") != 1)
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a5 code:3 format:{@"expected 1 sample type but got %ld %@", objc_msgSend(v8, "count"), v8}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"expected 1 sample type but got %ld %@", objc_msgSend(typesCopy, "count"), typesCopy}];
 LABEL_6:
     v10 = 0;
     goto LABEL_7;
@@ -87,24 +87,24 @@ LABEL_7:
   return v10;
 }
 
-+ (BOOL)isValidValue:(id)a3 forKeyPath:(id)a4 operatorType:(unint64_t)a5 dataTypes:(id)a6 error:(id *)a7
++ (BOOL)isValidValue:(id)value forKeyPath:(id)path operatorType:(unint64_t)type dataTypes:(id)types error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v19.receiver = a1;
+  valueCopy = value;
+  pathCopy = path;
+  typesCopy = types;
+  v19.receiver = self;
   v19.super_class = &OBJC_METACLASS____HKQuantitySampleComparisonFilter;
-  if (objc_msgSendSuper2(&v19, sel_isValidValue_forKeyPath_operatorType_dataTypes_error_, v12, v13, a5, v14, a7))
+  if (objc_msgSendSuper2(&v19, sel_isValidValue_forKeyPath_operatorType_dataTypes_error_, valueCopy, pathCopy, type, typesCopy, error))
   {
-    if ([v13 isEqualToString:@"quantity"])
+    if ([pathCopy isEqualToString:@"quantity"])
     {
-      v15 = [v14 anyObject];
-      v16 = [v12 _unit];
-      v17 = [v15 isCompatibleWithUnit:v16];
+      anyObject = [typesCopy anyObject];
+      _unit = [valueCopy _unit];
+      v17 = [anyObject isCompatibleWithUnit:_unit];
 
       if ((v17 & 1) == 0)
       {
-        [MEMORY[0x1E696ABC0] hk_assignError:a7 code:3 format:{@"Invalid quantity %@ for data type %@", v12, v15}];
+        [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"Invalid quantity %@ for data type %@", valueCopy, anyObject}];
       }
     }
 
@@ -122,68 +122,68 @@ LABEL_7:
   return v17;
 }
 
-+ (int64_t)enumRepresentationForKeyPath:(id)a3
++ (int64_t)enumRepresentationForKeyPath:(id)path
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"quantity"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"quantity"])
   {
     v6 = 0;
   }
 
-  else if ([v5 isEqualToString:@"count"])
+  else if ([pathCopy isEqualToString:@"count"])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"_HKQuantitySampleComparisonFilter.m" lineNumber:104 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKQuantitySampleComparisonFilter.m" lineNumber:104 description:@"Unreachable code has been executed"];
 
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS____HKQuantitySampleComparisonFilter;
-    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, v5);
+    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, pathCopy);
   }
 
   return v6;
 }
 
-- (BOOL)acceptsDataObject:(id)a3
+- (BOOL)acceptsDataObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(_HKComparisonFilter *)self keyPathIntegerValue];
-    if (v7 == 1)
+    v6 = objectCopy;
+    keyPathIntegerValue = [(_HKComparisonFilter *)self keyPathIntegerValue];
+    if (keyPathIntegerValue == 1)
     {
-      v15 = [(_HKComparisonFilter *)self value];
-      v16 = [v15 integerValue];
+      value = [(_HKComparisonFilter *)self value];
+      integerValue = [value integerValue];
 
-      v17 = HKCompareIntegers([v6 count], v16);
+      v17 = HKCompareIntegers([v6 count], integerValue);
       v14 = HKComparisonResultMatchesPredicateOperator(v17, [(_HKComparisonFilter *)self operatorType]);
     }
 
-    else if (v7)
+    else if (keyPathIntegerValue)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"_HKQuantitySampleComparisonFilter.m" lineNumber:132 description:@"Unreachable code has been executed"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_HKQuantitySampleComparisonFilter.m" lineNumber:132 description:@"Unreachable code has been executed"];
 
       v14 = 0;
     }
 
     else
     {
-      v8 = [(_HKComparisonFilter *)self value];
-      v9 = [v6 quantityType];
-      v10 = [v8 _unit];
-      v11 = [v9 isCompatibleWithUnit:v10];
+      value2 = [(_HKComparisonFilter *)self value];
+      quantityType = [v6 quantityType];
+      _unit = [value2 _unit];
+      v11 = [quantityType isCompatibleWithUnit:_unit];
 
       if (v11)
       {
-        v12 = [v6 quantity];
-        v13 = [v12 compare:v8];
+        quantity = [v6 quantity];
+        v13 = [quantity compare:value2];
 
         v14 = HKComparisonResultMatchesPredicateOperator(v13, [(_HKComparisonFilter *)self operatorType]);
       }
@@ -203,35 +203,35 @@ LABEL_7:
   return v14;
 }
 
-- (int64_t)acceptsDataObjectWithStartTimestamp:(double)a3 endTimestamp:(double)a4 valueInCanonicalUnit:(double)a5
+- (int64_t)acceptsDataObjectWithStartTimestamp:(double)timestamp endTimestamp:(double)endTimestamp valueInCanonicalUnit:(double)unit
 {
-  v8 = [(_HKComparisonFilter *)self dataTypes:a3];
-  v9 = [v8 anyObject];
+  v8 = [(_HKComparisonFilter *)self dataTypes:timestamp];
+  anyObject = [v8 anyObject];
 
-  v10 = [(_HKComparisonFilter *)self keyPathIntegerValue];
-  if (v10 == 1)
+  keyPathIntegerValue = [(_HKComparisonFilter *)self keyPathIntegerValue];
+  if (keyPathIntegerValue == 1)
   {
-    v16 = [(_HKComparisonFilter *)self value];
-    v17 = [v16 integerValue];
+    value = [(_HKComparisonFilter *)self value];
+    integerValue = [value integerValue];
 
-    v18 = HKCompareIntegers(a5, v17);
+    v18 = HKCompareIntegers(unit, integerValue);
     v15 = HKComparisonResultMatchesPredicateOperator(v18, [(_HKComparisonFilter *)self operatorType]);
   }
 
-  else if (v10)
+  else if (keyPathIntegerValue)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"_HKQuantitySampleComparisonFilter.m" lineNumber:153 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKQuantitySampleComparisonFilter.m" lineNumber:153 description:@"Unreachable code has been executed"];
 
     v15 = 0;
   }
 
   else
   {
-    v11 = [(_HKComparisonFilter *)self value];
-    v12 = [v9 canonicalUnit];
-    [v11 doubleValueForUnit:v12];
-    v14 = HKCompareDoubles(a5, v13);
+    value2 = [(_HKComparisonFilter *)self value];
+    canonicalUnit = [anyObject canonicalUnit];
+    [value2 doubleValueForUnit:canonicalUnit];
+    v14 = HKCompareDoubles(unit, v13);
 
     v15 = HKComparisonResultMatchesPredicateOperator(v14, [(_HKComparisonFilter *)self operatorType]);
   }

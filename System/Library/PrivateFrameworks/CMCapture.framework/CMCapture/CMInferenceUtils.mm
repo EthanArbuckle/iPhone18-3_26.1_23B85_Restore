@@ -1,9 +1,9 @@
 @interface CMInferenceUtils
 + (id)sharedInstance;
 - (CMInferenceUtils)init;
-- (id)_getNetworkPath:(id)a3 isE5:(BOOL)a4 fsNetworks:(id)a5;
-- (id)availableImagingNetworksWithExtension:(id)a3;
-- (id)getNetworkPath:(id)a3 isE5:(BOOL)a4;
+- (id)_getNetworkPath:(id)path isE5:(BOOL)e5 fsNetworks:(id)networks;
+- (id)availableImagingNetworksWithExtension:(id)extension;
+- (id)getNetworkPath:(id)path isE5:(BOOL)e5;
 - (void)init;
 @end
 
@@ -43,9 +43,9 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v3 = [@"/System/Library/ImagingNetworks" stringByStandardizingPath];
+  stringByStandardizingPath = [@"/System/Library/ImagingNetworks" stringByStandardizingPath];
   imagingNetworksPath = v2->_imagingNetworksPath;
-  v2->_imagingNetworksPath = v3;
+  v2->_imagingNetworksPath = stringByStandardizingPath;
 
   v5 = [(CMInferenceUtils *)v2 availableImagingNetworksWithExtension:@".net"];
   networksV1 = v2->_networksV1;
@@ -88,8 +88,8 @@ LABEL_35:
         objc_enumerationMutation(&unk_1F2248940);
       }
 
-      v12 = [*(*(&v35 + 1) + 8 * i) BOOLValue];
-      if (v12)
+      bOOLValue = [*(*(&v35 + 1) + 8 * i) BOOLValue];
+      if (bOOLValue)
       {
         v13 = 32;
       }
@@ -100,7 +100,7 @@ LABEL_35:
       }
 
       v14 = FigCapturePlatformIdentifierString();
-      if (v12 && FigCapturePlatformGetVariant() == 3)
+      if (bOOLValue && FigCapturePlatformGetVariant() == 3)
       {
         v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@G", v14];
 
@@ -193,12 +193,12 @@ LABEL_36:
   return v14;
 }
 
-- (id)_getNetworkPath:(id)a3 isE5:(BOOL)a4 fsNetworks:(id)a5
+- (id)_getNetworkPath:(id)path isE5:(BOOL)e5 fsNetworks:(id)networks
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  e5Copy = e5;
+  pathCopy = path;
+  networksCopy = networks;
+  if (!networksCopy)
   {
     [CMInferenceUtils _getNetworkPath:isE5:fsNetworks:];
 LABEL_53:
@@ -210,7 +210,7 @@ LABEL_53:
   }
 
   v10 = 24;
-  if (v6)
+  if (e5Copy)
   {
     v10 = 32;
   }
@@ -227,30 +227,30 @@ LABEL_53:
     goto LABEL_53;
   }
 
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"^%@$", v8];
+  pathCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"^%@$", pathCopy];
   v60 = 0;
-  v12 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:v11 options:0 error:&v60];
+  v12 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:pathCopy options:0 error:&v60];
   v13 = v60;
   v14 = v13;
   v52 = v12;
   if (v12)
   {
-    v47 = self;
+    selfCopy = self;
     v48 = v13;
-    v49 = v8;
+    v49 = pathCopy;
 
-    v50 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    obj = v9;
+    obj = networksCopy;
     v15 = [obj countByEnumeratingWithState:&v56 objects:v55 count:16];
     if (v15)
     {
       v16 = v15;
       v17 = *v57;
-      if (v6)
+      if (e5Copy)
       {
         v18 = @".E5.espresso.bundle";
       }
@@ -294,7 +294,7 @@ LABEL_53:
 
           if (!v26)
           {
-            [v50 addObject:v20];
+            [array addObject:v20];
           }
         }
 
@@ -304,17 +304,17 @@ LABEL_53:
       while (v16);
     }
 
-    v27 = v50;
-    if ([v50 count])
+    v27 = array;
+    if ([array count])
     {
-      v8 = v49;
-      if ([v50 count] < 2)
+      pathCopy = v49;
+      if ([array count] < 2)
       {
         v31 = MEMORY[0x1E696AEC0];
-        imagingNetworksPath = v47->_imagingNetworksPath;
-        v33 = [v50 firstObject];
-        v34 = [v31 stringWithFormat:@"%@/%s", imagingNetworksPath, objc_msgSend(v33, "UTF8String")];
-        v35 = [v34 stringByStandardizingPath];
+        imagingNetworksPath = selfCopy->_imagingNetworksPath;
+        firstObject = [array firstObject];
+        v34 = [v31 stringWithFormat:@"%@/%s", imagingNetworksPath, objc_msgSend(firstObject, "UTF8String")];
+        stringByStandardizingPath = [v34 stringByStandardizingPath];
 
         v14 = v48;
         goto LABEL_43;
@@ -336,8 +336,8 @@ LABEL_53:
 
       if (v30)
       {
-        [v50 count];
-        v54 = [v50 componentsJoinedByString:{@", "}];
+        [array count];
+        v54 = [array componentsJoinedByString:{@", "}];
         _os_log_send_and_compose_impl();
       }
 
@@ -368,7 +368,7 @@ LABEL_53:
 
     else
     {
-      v8 = v49;
+      pathCopy = v49;
       v14 = v48;
     }
   }
@@ -422,28 +422,28 @@ LABEL_37:
 
   fig_log_call_emit_and_clean_up_after_send_and_compose();
 
-  v35 = 0;
+  stringByStandardizingPath = 0;
 LABEL_43:
 
-  return v35;
+  return stringByStandardizingPath;
 }
 
-- (id)getNetworkPath:(id)a3 isE5:(BOOL)a4
+- (id)getNetworkPath:(id)path isE5:(BOOL)e5
 {
-  v4 = a4;
-  v6 = a3;
-  if (![v6 length])
+  e5Copy = e5;
+  pathCopy = path;
+  if (![pathCopy length])
   {
     goto LABEL_8;
   }
 
   v7 = 8;
-  if (v4)
+  if (e5Copy)
   {
     v7 = 16;
   }
 
-  v8 = [(CMInferenceUtils *)self _getNetworkPath:v6 isE5:v4 fsNetworks:*(&self->super.isa + v7)];
+  v8 = [(CMInferenceUtils *)self _getNetworkPath:pathCopy isE5:e5Copy fsNetworks:*(&self->super.isa + v7)];
   if (!v8)
   {
 LABEL_8:
@@ -457,14 +457,14 @@ LABEL_8:
   return v8;
 }
 
-- (id)availableImagingNetworksWithExtension:(id)a3
+- (id)availableImagingNetworksWithExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   imagingNetworksPath = self->_imagingNetworksPath;
   v22 = 0;
-  v8 = [v6 contentsOfDirectoryAtPath:imagingNetworksPath error:&v22];
+  v8 = [defaultManager contentsOfDirectoryAtPath:imagingNetworksPath error:&v22];
   v9 = v22;
 
   if (v8)
@@ -489,7 +489,7 @@ LABEL_8:
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
-          if ([v15 hasSuffix:v4])
+          if ([v15 hasSuffix:extensionCopy])
           {
             [v5 addObject:v15];
           }

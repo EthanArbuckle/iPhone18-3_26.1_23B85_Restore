@@ -1,24 +1,24 @@
 @interface SBFlashlightActivityElementAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)setFlashlightOn:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)setFlashlightOn:(BOOL)on;
 @end
 
 @implementation SBFlashlightActivityElementAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFlashlightActivityElement" hasInstanceMethod:@"setFlashlightOn:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SBFlashlightActivityElement" hasInstanceVariable:@"_flashlightOn" withType:"BOOL"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFlashlightActivityElement" hasInstanceMethod:@"setFlashlightOn:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SBFlashlightActivityElement" hasInstanceVariable:@"_flashlightOn" withType:"BOOL"];
 }
 
-- (void)setFlashlightOn:(BOOL)a3
+- (void)setFlashlightOn:(BOOL)on
 {
-  v3 = a3;
-  if ([(SBFlashlightActivityElementAccessibility *)self safeBoolForKey:@"flashlightOn"]!= a3)
+  onCopy = on;
+  if ([(SBFlashlightActivityElementAccessibility *)self safeBoolForKey:@"flashlightOn"]!= on)
   {
     v5 = *MEMORY[0x29EDC7EA8];
-    if (v3)
+    if (onCopy)
     {
       v6 = @"flashlight.on.full";
     }
@@ -34,7 +34,7 @@
 
   v8.receiver = self;
   v8.super_class = SBFlashlightActivityElementAccessibility;
-  [(SBFlashlightActivityElementAccessibility *)&v8 setFlashlightOn:v3];
+  [(SBFlashlightActivityElementAccessibility *)&v8 setFlashlightOn:onCopy];
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface HDStatisticsCollectionCalculatorAttenuatedDataSource
-- (BOOL)_attenuationSamplesWindowContainsSample:(id *)a3;
-- (BOOL)_attenuationSamplesWindowContainsSampleStart:(id *)a3;
-- (BOOL)collectionCalculator:(id)a3 queryForInterval:(id)a4 error:(id *)a5 sampleHandler:(id)a6 mergeHandler:(id)a7;
+- (BOOL)_attenuationSamplesWindowContainsSample:(id *)sample;
+- (BOOL)_attenuationSamplesWindowContainsSampleStart:(id *)start;
+- (BOOL)collectionCalculator:(id)calculator queryForInterval:(id)interval error:(id *)error sampleHandler:(id)handler mergeHandler:(id)mergeHandler;
 - (deque<HDQuantitySampleAttenuationEngineSample,)attenuationSamplesWindow;
 - (id).cxx_construct;
-- (id)initForProfile:(id)a3 quantityType:(id)a4 predicate:(id)a5 restrictedSourceEntities:(id)a6 attenuationType:(id)a7;
+- (id)initForProfile:(id)profile quantityType:(id)type predicate:(id)predicate restrictedSourceEntities:(id)entities attenuationType:(id)attenuationType;
 - (queue<HDQuantitySampleAttenuationEngineSample,)_extractAttenuatedSamplesFrom:()queue<HDQuantitySampleAttenuationEngineSample;
-- (void)_appendToAttenuationSamplesWindowUsingSourceSample:(id *)a3 attenuatedSample:(id *)a4;
-- (void)_attenuationSamplesWindowAdvanceToSample:(id *)a3;
+- (void)_appendToAttenuationSamplesWindowUsingSourceSample:(id *)sample attenuatedSample:(id *)attenuatedSample;
+- (void)_attenuationSamplesWindowAdvanceToSample:(id *)sample;
 - (void)setAttenuationSamplesWindow:()deque<HDQuantitySampleAttenuationEngineSample;
 @end
 
 @implementation HDStatisticsCollectionCalculatorAttenuatedDataSource
 
-- (id)initForProfile:(id)a3 quantityType:(id)a4 predicate:(id)a5 restrictedSourceEntities:(id)a6 attenuationType:(id)a7
+- (id)initForProfile:(id)profile quantityType:(id)type predicate:(id)predicate restrictedSourceEntities:(id)entities attenuationType:(id)attenuationType
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  profileCopy = profile;
+  typeCopy = type;
+  predicateCopy = predicate;
+  entitiesCopy = entities;
+  attenuationTypeCopy = attenuationType;
   v23.receiver = self;
   v23.super_class = HDStatisticsCollectionCalculatorAttenuatedDataSource;
-  v17 = [(HDStatisticsCollectionCalculatorDefaultDataSource *)&v23 initForProfile:v12 quantityType:v13 predicate:v14 restrictedSourceEntities:v15];
+  v17 = [(HDStatisticsCollectionCalculatorDefaultDataSource *)&v23 initForProfile:profileCopy quantityType:typeCopy predicate:predicateCopy restrictedSourceEntities:entitiesCopy];
   if (v17)
   {
-    v18 = [[HDQuantitySampleAttenuationProvider alloc] initWithQuantityType:v16 profile:v12];
+    v18 = [[HDQuantitySampleAttenuationProvider alloc] initWithQuantityType:attenuationTypeCopy profile:profileCopy];
     v19 = v17[12];
     v17[12] = v18;
 
@@ -37,26 +37,26 @@
   return v17;
 }
 
-- (BOOL)collectionCalculator:(id)a3 queryForInterval:(id)a4 error:(id *)a5 sampleHandler:(id)a6 mergeHandler:(id)a7
+- (BOOL)collectionCalculator:(id)calculator queryForInterval:(id)interval error:(id *)error sampleHandler:(id)handler mergeHandler:(id)mergeHandler
 {
-  v12 = a6;
-  v13 = a7;
+  handlerCopy = handler;
+  mergeHandlerCopy = mergeHandler;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __127__HDStatisticsCollectionCalculatorAttenuatedDataSource_collectionCalculator_queryForInterval_error_sampleHandler_mergeHandler___block_invoke;
   v28[3] = &unk_27862EA28;
   v28[4] = self;
-  v14 = v12;
+  v14 = handlerCopy;
   v29 = v14;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __127__HDStatisticsCollectionCalculatorAttenuatedDataSource_collectionCalculator_queryForInterval_error_sampleHandler_mergeHandler___block_invoke_2;
   v26[3] = &unk_278623948;
-  v15 = v13;
+  v15 = mergeHandlerCopy;
   v27 = v15;
   v25.receiver = self;
   v25.super_class = HDStatisticsCollectionCalculatorAttenuatedDataSource;
-  if ([(HDStatisticsCollectionCalculatorDefaultDataSource *)&v25 collectionCalculator:a3 queryForInterval:a4 error:a5 sampleHandler:v28 mergeHandler:v26])
+  if ([(HDStatisticsCollectionCalculatorDefaultDataSource *)&v25 collectionCalculator:calculator queryForInterval:interval error:error sampleHandler:v28 mergeHandler:v26])
   {
     attenuationEngine = self->_attenuationEngine;
     v24 = 0;
@@ -69,10 +69,10 @@
       v21 = v20;
       if (v20)
       {
-        if (a5)
+        if (error)
         {
           v22 = v20;
-          *a5 = v21;
+          *error = v21;
         }
 
         else
@@ -260,25 +260,25 @@ uint64_t __127__HDStatisticsCollectionCalculatorAttenuatedDataSource_collectionC
   return v16;
 }
 
-- (void)_appendToAttenuationSamplesWindowUsingSourceSample:(id *)a3 attenuatedSample:(id *)a4
+- (void)_appendToAttenuationSamplesWindowUsingSourceSample:(id *)sample attenuatedSample:(id *)attenuatedSample
 {
-  v4 = *&a4->var0;
-  v5 = a3->var2 - a4->var2;
+  v4 = *&attenuatedSample->var0;
+  v5 = sample->var2 - attenuatedSample->var2;
   v6 = xmmword_22916A740;
   std::deque<HDQuantitySampleAttenuationEngineSample>::push_back(&self->_attenuationSamplesWindow.__map_.__first_, &v4);
 }
 
-- (BOOL)_attenuationSamplesWindowContainsSample:(id *)a3
+- (BOOL)_attenuationSamplesWindowContainsSample:(id *)sample
 {
   size = self->_attenuationSamplesWindow.__size_;
-  result = size && (begin = self->_attenuationSamplesWindow.__map_.__begin_, start = self->_attenuationSamplesWindow.__start_, *(begin[start / 0x66] + 5 * (start % 0x66)) <= a3->var0) && *(begin[(size + start - 1) / 0x66] + 5 * ((size + start - 1) % 0x66) + 1) >= a3->var1;
+  result = size && (begin = self->_attenuationSamplesWindow.__map_.__begin_, start = self->_attenuationSamplesWindow.__start_, *(begin[start / 0x66] + 5 * (start % 0x66)) <= sample->var0) && *(begin[(size + start - 1) / 0x66] + 5 * ((size + start - 1) % 0x66) + 1) >= sample->var1;
   return result;
 }
 
-- (BOOL)_attenuationSamplesWindowContainsSampleStart:(id *)a3
+- (BOOL)_attenuationSamplesWindowContainsSampleStart:(id *)start
 {
   size = self->_attenuationSamplesWindow.__size_;
-  result = size && (begin = self->_attenuationSamplesWindow.__map_.__begin_, start = self->_attenuationSamplesWindow.__start_, *(begin[start / 0x66] + 5 * (start % 0x66)) <= a3->var0) && (v6 = *(begin[(size + start - 1) / 0x66] + 5 * ((size + start - 1) % 0x66) + 1), v6 < a3->var1) && a3->var0 < v6;
+  result = size && (begin = self->_attenuationSamplesWindow.__map_.__begin_, start = self->_attenuationSamplesWindow.__start_, *(begin[start / 0x66] + 5 * (start % 0x66)) <= start->var0) && (v6 = *(begin[(size + start - 1) / 0x66] + 5 * ((size + start - 1) % 0x66) + 1), v6 < start->var1) && start->var0 < v6;
   return result;
 }
 
@@ -363,7 +363,7 @@ uint64_t __127__HDStatisticsCollectionCalculatorAttenuatedDataSource_collectionC
   return self;
 }
 
-- (void)_attenuationSamplesWindowAdvanceToSample:(id *)a3
+- (void)_attenuationSamplesWindowAdvanceToSample:(id *)sample
 {
   p_attenuationSamplesWindow = &self->_attenuationSamplesWindow;
   size = self->_attenuationSamplesWindow.__size_;
@@ -372,8 +372,8 @@ uint64_t __127__HDStatisticsCollectionCalculatorAttenuatedDataSource_collectionC
     begin = self->_attenuationSamplesWindow.__map_.__begin_;
     start = self->_attenuationSamplesWindow.__start_;
     v8 = (begin[start / 0x66] + 40 * (start % 0x66));
-    var0 = a3->var0;
-    if (*v8 > a3->var0 || *(begin[(size + start - 1) / 0x66] + 5 * ((size + start - 1) % 0x66) + 1) <= var0)
+    var0 = sample->var0;
+    if (*v8 > sample->var0 || *(begin[(size + start - 1) / 0x66] + 5 * ((size + start - 1) % 0x66) + 1) <= var0)
     {
       end = self->_attenuationSamplesWindow.__map_.__end_;
       self->_attenuationSamplesWindow.__size_ = 0;
@@ -414,7 +414,7 @@ uint64_t __127__HDStatisticsCollectionCalculatorAttenuatedDataSource_collectionC
     {
       do
       {
-        if (*(begin[start / 0x66] + 5 * (start % 0x66) + 1) > a3->var0)
+        if (*(begin[start / 0x66] + 5 * (start % 0x66) + 1) > sample->var0)
         {
           break;
         }

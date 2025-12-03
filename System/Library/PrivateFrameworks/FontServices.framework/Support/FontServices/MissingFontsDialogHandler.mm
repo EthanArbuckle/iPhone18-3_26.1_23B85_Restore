@@ -1,24 +1,24 @@
 @interface MissingFontsDialogHandler
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (MissingFontsDialogHandler)initWithFontServicesDaemon:(id)a3 completionHandler:(id)a4;
-- (void)doneWithMissingFonts:(id)a3;
-- (void)showDialogWithUserInfo:(id)a3 sceneID:(id)a4 appID:(id)a5;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (MissingFontsDialogHandler)initWithFontServicesDaemon:(id)daemon completionHandler:(id)handler;
+- (void)doneWithMissingFonts:(id)fonts;
+- (void)showDialogWithUserInfo:(id)info sceneID:(id)d appID:(id)iD;
 @end
 
 @implementation MissingFontsDialogHandler
 
-- (MissingFontsDialogHandler)initWithFontServicesDaemon:(id)a3 completionHandler:(id)a4
+- (MissingFontsDialogHandler)initWithFontServicesDaemon:(id)daemon completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  daemonCopy = daemon;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = MissingFontsDialogHandler;
   v9 = [(MissingFontsDialogHandler *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_daemon, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_daemon, daemon);
+    v11 = objc_retainBlock(handlerCopy);
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v11;
   }
@@ -26,23 +26,23 @@
   return v10;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___FontInstallViewServiceProtocol];
-  [v5 setExportedInterface:v6];
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedInterface:v6];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)doneWithMissingFonts:(id)a3
+- (void)doneWithMissingFonts:(id)fonts
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, a3);
+    completionHandler[2](completionHandler, fonts);
   }
 
   [(NSXPCListener *)self->_listener invalidate];
@@ -50,20 +50,20 @@
   self->_listener = 0;
 }
 
-- (void)showDialogWithUserInfo:(id)a3 sceneID:(id)a4 appID:(id)a5
+- (void)showDialogWithUserInfo:(id)info sceneID:(id)d appID:(id)iD
 {
-  v6 = a3;
+  infoCopy = info;
   v13 = [[SBSRemoteAlertDefinition alloc] initWithServiceName:@"com.apple.FontInstallViewService" viewControllerClassName:@"FontInstallMissingController"];
   v7 = objc_alloc_init(SBSRemoteAlertConfigurationContext);
   v8 = +[NSXPCListener anonymousListener];
   [v8 setDelegate:self];
-  v9 = [v8 endpoint];
-  v10 = [v9 _endpoint];
-  [v7 setXpcEndpoint:v10];
+  endpoint = [v8 endpoint];
+  _endpoint = [endpoint _endpoint];
+  [v7 setXpcEndpoint:_endpoint];
 
   v11 = [SBSRemoteAlertHandle newHandleWithDefinition:v13 configurationContext:v7];
   v12 = objc_alloc_init(SBSRemoteAlertActivationContext);
-  [v12 setUserInfo:v6];
+  [v12 setUserInfo:infoCopy];
 
   [(MissingFontsDialogHandler *)self setListener:v8];
   [v8 resume];

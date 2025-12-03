@@ -1,31 +1,31 @@
 @interface PreparePurchaseTask
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation PreparePurchaseTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (+[_TtC9appstored13RestoreKeeper activeRestoreSupportEnabled])
   {
     v5 = +[_TtC9appstored13RestoreKeeper shared];
-    v6 = [*(&self->super._finished + 1) bundleID];
-    v7 = [*(&self->super._finished + 1) logKey];
-    v8 = [v5 restoringCoordinatorForBundleID:v6 logKey:v7];
+    bundleID = [*(&self->super._finished + 1) bundleID];
+    logKey = [*(&self->super._finished + 1) logKey];
+    bundleID13 = [v5 restoringCoordinatorForBundleID:bundleID logKey:logKey];
 
-    if (v8)
+    if (bundleID13)
     {
       v9 = +[_TtC9appstored13RestoreKeeper shared];
-      v10 = [*(&self->super._finished + 1) isUserInitiated];
-      v11 = [*(&self->super._finished + 1) logKey];
+      isUserInitiated = [*(&self->super._finished + 1) isUserInitiated];
+      logKey2 = [*(&self->super._finished + 1) logKey];
       v161[0] = _NSConcreteStackBlock;
       v161[1] = 3221225472;
       v161[2] = sub_1003337AC;
       v161[3] = &unk_10051B2D0;
       v161[4] = self;
-      v162 = v4;
-      [v9 handleActiveRestoreWithCoordinator:v8 userInitiated:v10 logKey:v11 completionHandler:v161];
+      v162 = handlerCopy;
+      [v9 handleActiveRestoreWithCoordinator:bundleID13 userInitiated:isUserInitiated logKey:logKey2 completionHandler:v161];
 
       goto LABEL_157;
     }
@@ -38,12 +38,12 @@
 
   v16 = *(&self->super._finished + 1);
   objc_opt_self();
-  v17 = [v16 itemID];
+  itemID = [v16 itemID];
 
-  if (v17)
+  if (itemID)
   {
-    v18 = [v16 itemID];
-    v19 = [ApplicationProxy proxyForItemID:v18];
+    itemID2 = [v16 itemID];
+    v19 = [ApplicationProxy proxyForItemID:itemID2];
 
     if (v19)
     {
@@ -51,16 +51,16 @@
     }
   }
 
-  v20 = [v16 bundleID];
+  bundleID2 = [v16 bundleID];
 
-  if (!v20)
+  if (!bundleID2)
   {
     v19 = 0;
     goto LABEL_161;
   }
 
-  v21 = [v16 bundleID];
-  v19 = [ApplicationProxy proxyForBundleID:v21];
+  bundleID3 = [v16 bundleID];
+  v19 = [ApplicationProxy proxyForBundleID:bundleID3];
 
   if (!v19)
   {
@@ -93,29 +93,29 @@ LABEL_19:
     v24 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v16 logKey];
-      v26 = [v16 bundleID];
+      logKey3 = [v16 logKey];
+      bundleID4 = [v16 bundleID];
       *buf = 138412546;
-      v164 = v25;
+      v164 = logKey3;
       v165 = 2114;
-      v166 = v26;
+      v166 = bundleID4;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "[%@][%{public}@] Allowing parallel placeholder because this is a recovery from expired asset url", buf, 0x16u);
     }
 
     if ((v23 & 1) == 0)
     {
 LABEL_23:
-      v27 = [v16 bundleID];
+      bundleID5 = [v16 bundleID];
 
-      if (!v27)
+      if (!bundleID5)
       {
-        v28 = [v19[15] bundleIdentifier];
-        [v16 setBundleID:v28];
+        bundleIdentifier = [v19[15] bundleIdentifier];
+        [v16 setBundleID:bundleIdentifier];
       }
 
-      v29 = [v16 bundleURL];
+      bundleURL = [v16 bundleURL];
 
-      if (!v29)
+      if (!bundleURL)
       {
         v30 = [v19[15] URL];
         [v16 setBundleURL:v30];
@@ -126,9 +126,9 @@ LABEL_23:
       v156 = v31;
       if (objc_opt_isKindOfClass())
       {
-        v32 = [v16 buyParams];
-        v33 = [v156 stringValue];
-        [v32 setParameter:v33 forKey:AMSBuyParamPropertyInstalledSoftwareRating];
+        buyParams = [v16 buyParams];
+        stringValue = [v156 stringValue];
+        [buyParams setParameter:stringValue forKey:AMSBuyParamPropertyInstalledSoftwareRating];
       }
 
       v34 = sub_1003D2BDC(v19);
@@ -137,9 +137,9 @@ LABEL_23:
         v35 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {
-          v36 = [v16 logKey];
+          logKey4 = [v16 logKey];
           *buf = 138412290;
-          v164 = v36;
+          v164 = logKey4;
           _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "[%@] Preparing purchase for Arcade app.", buf, 0xCu);
         }
       }
@@ -148,12 +148,12 @@ LABEL_23:
       v37 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
-        v38 = [v16 logKey];
-        v39 = [v16 bundleID];
+        logKey5 = [v16 logKey];
+        bundleID6 = [v16 bundleID];
         *buf = 138412546;
-        v164 = v38;
+        v164 = logKey5;
         v165 = 2114;
-        v166 = v39;
+        v166 = bundleID6;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "[%@][%{public}@] Installed app found. Setting coordinator intent to IXCoordinatorIntentUpdating", buf, 0x16u);
       }
 
@@ -192,34 +192,34 @@ LABEL_23:
 
       if ([v19[15] applicationHasMIDBasedSINF])
       {
-        v51 = [v19[15] iTunesMetadata];
-        v52 = [v51 storeItemIdentifier];
+        iTunesMetadata = [v19[15] iTunesMetadata];
+        storeItemIdentifier = [iTunesMetadata storeItemIdentifier];
 
-        if ([UpdatesManager isTVProviderApp:v52])
+        if ([UpdatesManager isTVProviderApp:storeItemIdentifier])
         {
           [v16 setPurchaseType:2];
           [v16 setLogCode:@"PTV"];
           [v16 setMetricsType:&off_100548070];
           [v16 setMachineBased:1];
           [v16 setTVProvider:1];
-          v53 = [v16 buyParams];
-          v54 = [v53 parameterForKey:AMSBuyParamPropertyAppExtVrsId];
+          buyParams2 = [v16 buyParams];
+          v54 = [buyParams2 parameterForKey:AMSBuyParamPropertyAppExtVrsId];
 
-          v55 = [v16 buyParams];
+          buyParams3 = [v16 buyParams];
           v56 = AMSBuyParamPropertyExternalVersionId;
-          v57 = [v55 parameterForKey:AMSBuyParamPropertyExternalVersionId];
+          v57 = [buyParams3 parameterForKey:AMSBuyParamPropertyExternalVersionId];
 
           if (!v57 && v54)
           {
-            v58 = [v16 buyParams];
-            [v58 setParameter:v54 forKey:v56];
+            buyParams4 = [v16 buyParams];
+            [buyParams4 setParameter:v54 forKey:v56];
           }
 
           [v16 updateGeneratedProperties];
         }
       }
 
-      v59 = [v19[15] appStoreToolsBuildVersion];
+      appStoreToolsBuildVersion = [v19[15] appStoreToolsBuildVersion];
       v60 = [v16 bag];
       v61 = [v60 arrayOfStringsForKey:@"invalid-build-tools/delta-incompatible-versions"];
       v62 = v61;
@@ -231,20 +231,20 @@ LABEL_23:
 
       v64 = v63;
 
-      v65 = [v64 containsObject:v59];
+      v65 = [v64 containsObject:appStoreToolsBuildVersion];
       if ((v65 & 1) == 0)
       {
-        v66 = [v19[15] iTunesMetadata];
-        v67 = [v66 versionIdentifier];
+        iTunesMetadata2 = [v19[15] iTunesMetadata];
+        versionIdentifier = [iTunesMetadata2 versionIdentifier];
 
-        v68 = [NSNumber numberWithLongLong:v67];
+        v68 = [NSNumber numberWithLongLong:versionIdentifier];
         [v16 setInstalledExternalVersionID:v68];
 
         v69 = sub_1003D30CC(v19);
         [v16 setInstalledVariantID:v69];
       }
 
-      v8 = v19;
+      bundleID13 = v19;
       v70 = v16;
       objc_opt_self();
       if ([v19[15] applicationHasMIDBasedSINF])
@@ -252,25 +252,25 @@ LABEL_23:
         v71 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
         {
-          v72 = [v70 logKey];
-          sub_1003D0F60(v8);
-          v74 = v73 = v59;
+          logKey6 = [v70 logKey];
+          sub_1003D0F60(bundleID13);
+          v74 = v73 = appStoreToolsBuildVersion;
           *buf = 138412546;
-          v164 = v72;
+          v164 = logKey6;
           v165 = 2114;
           v166 = v74;
           _os_log_error_impl(&_mh_execute_header, v71, OS_LOG_TYPE_ERROR, "[%@] Will not update purchase for MID-based app with bundleID: %{public}@", buf, 0x16u);
 
-          v59 = v73;
+          appStoreToolsBuildVersion = v73;
         }
 
         goto LABEL_111;
       }
 
       v71 = +[ActiveAccountObserver activeAccount];
-      v75 = [v71 ams_DSID];
-      v76 = v75;
-      if (!v75)
+      ams_DSID = [v71 ams_DSID];
+      v76 = ams_DSID;
+      if (!ams_DSID)
       {
 LABEL_110:
 
@@ -278,9 +278,9 @@ LABEL_111:
         goto LABEL_112;
       }
 
-      v154 = v75;
-      v155 = sub_1003D2360(v8);
-      v153 = v59;
+      v154 = ams_DSID;
+      v155 = sub_1003D2360(bundleID13);
+      v153 = appStoreToolsBuildVersion;
       if (v155)
       {
         if ([v70 purchaseType] == 4 || objc_msgSend(v70, "purchaseType") == 1)
@@ -289,31 +289,31 @@ LABEL_111:
           [v70 logKey];
           v79 = v150 = v70;
           v80 = [v78 oneAccountDSIDWithLogKey:v79 refetchIfNeeded:1];
-          v81 = [v80 unsignedLongLongValue];
+          unsignedLongLongValue = [v80 unsignedLongLongValue];
 
-          v59 = v153;
+          appStoreToolsBuildVersion = v153;
           v70 = v150;
 
-          v82 = [v155 unsignedLongLongValue];
-          if (v82)
+          unsignedLongLongValue2 = [v155 unsignedLongLongValue];
+          if (unsignedLongLongValue2)
           {
-            if (v81 && v82 == v81)
+            if (unsignedLongLongValue && unsignedLongLongValue2 == unsignedLongLongValue)
             {
               v83 = ASDLogHandleForCategory();
               if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
               {
-                v84 = [v150 logKey];
-                v85 = [v71 ams_DSID];
-                v86 = [v85 longLongValue];
+                logKey7 = [v150 logKey];
+                ams_DSID2 = [v71 ams_DSID];
+                longLongValue = [ams_DSID2 longLongValue];
                 *buf = 138412802;
-                v164 = v84;
+                v164 = logKey7;
                 v165 = 2048;
-                v166 = v81;
+                v166 = unsignedLongLongValue;
                 v167 = 2048;
-                v168 = v86;
+                v168 = longLongValue;
                 _os_log_impl(&_mh_execute_header, v83, OS_LOG_TYPE_DEFAULT, "[%@] Migrating update from accountID: %lld to active accountID: %lld", buf, 0x20u);
 
-                v59 = v153;
+                appStoreToolsBuildVersion = v153;
               }
 
               v70 = v150;
@@ -328,22 +328,22 @@ LABEL_108:
         v76 = v154;
         if ([v154 isEqual:v155])
         {
-          v87 = v59;
+          v87 = appStoreToolsBuildVersion;
           [v70 setAccount:v71];
           v88 = ASDLogHandleForCategory();
           if (os_log_type_enabled(v88, OS_LOG_TYPE_DEFAULT))
           {
-            v89 = [v70 logKey];
+            logKey8 = [v70 logKey];
             *buf = 138412290;
-            v164 = v89;
+            v164 = logKey8;
             _os_log_impl(&_mh_execute_header, v88, OS_LOG_TYPE_DEFAULT, "[%@] Using active account that matches the purchaser.", buf, 0xCu);
           }
 
-          v59 = v87;
+          appStoreToolsBuildVersion = v87;
           goto LABEL_108;
         }
 
-        v90 = sub_1003D2234(v8);
+        v90 = sub_1003D2234(bundleID13);
         if (v90)
         {
           if ([v154 isEqual:v90])
@@ -351,16 +351,16 @@ LABEL_108:
             v151 = v90;
             [v70 setAccount:v71];
             [v70 setOriginalPurchaserDSID:v155];
-            v91 = [v70 buyParams];
-            [v91 setParameter:v155 forKey:AMSBuyParamPropertyOwnerDsid];
+            buyParams5 = [v70 buyParams];
+            [buyParams5 setParameter:v155 forKey:AMSBuyParamPropertyOwnerDsid];
 
             v92 = ASDLogHandleForCategory();
             v149 = v92;
             if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
             {
-              v148 = [v70 logKey];
+              logKey9 = [v70 logKey];
               *buf = 138412290;
-              v164 = v148;
+              v164 = logKey9;
               _os_log_impl(&_mh_execute_header, v92, OS_LOG_TYPE_DEFAULT, "[%@] Using active account that matches the downloader.", buf, 0xCu);
             }
 
@@ -382,19 +382,19 @@ LABEL_109:
           {
             [v70 setAccount:v71];
             [v70 setOriginalPurchaserDSID:v155];
-            v95 = [v70 buyParams];
-            [v95 setParameter:v155 forKey:AMSBuyParamPropertyOwnerDsid];
+            buyParams6 = [v70 buyParams];
+            [buyParams6 setParameter:v155 forKey:AMSBuyParamPropertyOwnerDsid];
 
             v96 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
             {
-              v97 = [v70 logKey];
+              logKey10 = [v70 logKey];
               *buf = 138412290;
-              v164 = v97;
+              v164 = logKey10;
               _os_log_impl(&_mh_execute_header, v96, OS_LOG_TYPE_DEFAULT, "[%@] Using active account that has a qualifying family account.", buf, 0xCu);
             }
 
-            v59 = v153;
+            appStoreToolsBuildVersion = v153;
             goto LABEL_97;
           }
 
@@ -408,14 +408,14 @@ LABEL_109:
             v101 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v101, OS_LOG_TYPE_DEFAULT))
             {
-              v102 = [v100 logKey];
+              logKey11 = [v100 logKey];
               *buf = 138412290;
-              v164 = v102;
+              v164 = logKey11;
               _os_log_impl(&_mh_execute_header, v101, OS_LOG_TYPE_DEFAULT, "[%@] Using non-active account that matches the purchaser.", buf, 0xCu);
             }
 
             v70 = v100;
-            v59 = v153;
+            appStoreToolsBuildVersion = v153;
             v76 = v154;
             goto LABEL_97;
           }
@@ -425,16 +425,16 @@ LABEL_109:
       }
 
       v103 = v70;
-      v104 = sub_1003D2888(v8, v77);
+      v104 = sub_1003D2888(bundleID13, v77);
       if (v104 && (sub_100305A84(ACAccount, v104), (v105 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v106 = v105;
         v107 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v107, OS_LOG_TYPE_DEFAULT))
         {
-          v152 = [v103 logKey];
+          logKey12 = [v103 logKey];
           *buf = 138412290;
-          v164 = v152;
+          v164 = logKey12;
           _os_log_impl(&_mh_execute_header, v107, OS_LOG_TYPE_DEFAULT, "[%@] Using unknown account that matches the store metadata.", buf, 0xCu);
         }
 
@@ -446,14 +446,14 @@ LABEL_109:
         v106 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v106, OS_LOG_TYPE_ERROR))
         {
-          v147 = [v103 logKey];
+          logKey13 = [v103 logKey];
           *buf = 138412290;
-          v164 = v147;
+          v164 = logKey13;
           _os_log_error_impl(&_mh_execute_header, v106, OS_LOG_TYPE_ERROR, "[%@] No matching account found.", buf, 0xCu);
         }
       }
 
-      v59 = v153;
+      appStoreToolsBuildVersion = v153;
       v70 = v103;
       goto LABEL_108;
     }
@@ -469,12 +469,12 @@ LABEL_109:
   {
     if (v43)
     {
-      v44 = [v16 logKey];
-      v45 = [v16 bundleID];
+      logKey14 = [v16 logKey];
+      bundleID7 = [v16 bundleID];
       *buf = 138412546;
-      v164 = v44;
+      v164 = logKey14;
       v165 = 2114;
-      v166 = v45;
+      v166 = bundleID7;
       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "[%@][%{public}@] Placeholder for app found. Setting coordinator intent to lib_IXCoordinatorIntentPromoting", buf, 0x16u);
     }
 
@@ -485,12 +485,12 @@ LABEL_109:
   {
     if (v43)
     {
-      v46 = [v16 logKey];
-      v47 = [v16 bundleID];
+      logKey15 = [v16 logKey];
+      bundleID8 = [v16 bundleID];
       *buf = 138412546;
-      v164 = v46;
+      v164 = logKey15;
       v165 = 2114;
-      v166 = v47;
+      v166 = bundleID8;
       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "[%@][%{public}@] No installed app found. Defaulting coordinator intent to IXCoordinatorIntentInitiating", buf, 0x16u);
     }
 
@@ -500,39 +500,39 @@ LABEL_109:
       v48 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
       {
-        v49 = [v16 logKey];
-        v50 = [v16 bundleID];
+        logKey16 = [v16 logKey];
+        bundleID9 = [v16 bundleID];
         *buf = 138412546;
-        v164 = v49;
+        v164 = logKey16;
         v165 = 2114;
-        v166 = v50;
+        v166 = bundleID9;
         _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "[%@][%{public}@] Can't find fully installed app/placeholder during recovery from expired asset url", buf, 0x16u);
       }
     }
   }
 
-  v8 = 0;
+  bundleID13 = 0;
 LABEL_112:
 
   if ([*(&self->super._finished + 1) purchaseType] != 4 || objc_msgSend(*(&self->super._finished + 1), "coordinatorIntent") != 1)
   {
-    if (v8)
+    if (bundleID13)
     {
-      if (sub_10040C5B4(v8[15]))
+      if (sub_10040C5B4(bundleID13[15]))
       {
         v13 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          v14 = [*(&self->super._finished + 1) logKey];
+          logKey17 = [*(&self->super._finished + 1) logKey];
           *buf = 138412290;
-          v164 = v14;
+          v164 = logKey17;
           v15 = "[%@] Cannot overwrite an app from a different distributor";
           goto LABEL_159;
         }
 
 LABEL_120:
 
-        sub_10033382C(self, v8);
+        sub_10033382C(self, bundleID13);
         Property = [*(&self->super._finished + 1) itemResponse];
         v112 = Property;
         if (Property)
@@ -541,7 +541,7 @@ LABEL_120:
         }
 
         v113 = Property;
-        (*(v4 + 2))(v4, v113);
+        (*(handlerCopy + 2))(handlerCopy, v113);
 
         goto LABEL_157;
       }
@@ -549,8 +549,8 @@ LABEL_120:
 LABEL_123:
       if (![*(&self->super._finished + 1) coordinatorImportance])
       {
-        v114 = [*(&self->super._finished + 1) isDiscretionary];
-        if (v114)
+        isDiscretionary = [*(&self->super._finished + 1) isDiscretionary];
+        if (isDiscretionary)
         {
           v115 = 4;
         }
@@ -560,7 +560,7 @@ LABEL_123:
           v115 = 3;
         }
 
-        if (v114)
+        if (isDiscretionary)
         {
           v116 = -2;
         }
@@ -574,28 +574,28 @@ LABEL_123:
         [*(&self->super._finished + 1) setPriority:v116];
       }
 
-      v117 = [*(&self->super._finished + 1) bundleID];
+      bundleID10 = [*(&self->super._finished + 1) bundleID];
 
-      if (v117)
+      if (bundleID10)
       {
-        v118 = [*(&self->super._finished + 1) bundleID];
-        v119 = [*(&self->super._finished + 1) coordinatorIntent];
-        v120 = [*(&self->super._finished + 1) coordinatorImportance];
+        bundleID11 = [*(&self->super._finished + 1) bundleID];
+        coordinatorIntent = [*(&self->super._finished + 1) coordinatorIntent];
+        coordinatorImportance = [*(&self->super._finished + 1) coordinatorImportance];
         v160 = 0;
-        v121 = sub_100247FE0(IXAppInstallCoordinator, v118, v119, v120, 1, &v160);
+        v121 = sub_100247FE0(IXAppInstallCoordinator, bundleID11, coordinatorIntent, coordinatorImportance, 1, &v160);
         v122 = v160;
         [*(&self->super._finished + 1) setCoordinator:v121];
 
-        v123 = [*(&self->super._finished + 1) coordinator];
+        coordinator = [*(&self->super._finished + 1) coordinator];
 
-        if (!v123)
+        if (!coordinator)
         {
           v124 = ASDLogHandleForCategory();
           if (os_log_type_enabled(v124, OS_LOG_TYPE_ERROR))
           {
-            v145 = [*(&self->super._finished + 1) logKey];
+            logKey18 = [*(&self->super._finished + 1) logKey];
             *buf = 138412546;
-            v164 = v145;
+            v164 = logKey18;
             v165 = 2114;
             v166 = v122;
             _os_log_error_impl(&_mh_execute_header, v124, OS_LOG_TYPE_ERROR, "[%@] Cannot create coordinator for purchase: %{public}@", buf, 0x16u);
@@ -604,7 +604,7 @@ LABEL_123:
           v125 = ASDErrorWithSafeUserInfo();
 
           sub_100331F10(self, v125);
-          (*(v4 + 2))(v4, v125);
+          (*(handlerCopy + 2))(handlerCopy, v125);
 
           goto LABEL_157;
         }
@@ -615,23 +615,23 @@ LABEL_123:
         v122 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v122, OS_LOG_TYPE_ERROR))
         {
-          v144 = [*(&self->super._finished + 1) logKey];
+          logKey19 = [*(&self->super._finished + 1) logKey];
           *buf = 138412290;
-          v164 = v144;
+          v164 = logKey19;
           _os_log_error_impl(&_mh_execute_header, v122, OS_LOG_TYPE_ERROR, "[%@] Cannot create coordinator for purchase without bundle identifier", buf, 0xCu);
         }
       }
 
       if (([*(&self->super._finished + 1) isRemoteInstall] & 1) == 0)
       {
-        v126 = [*(&self->super._finished + 1) bundleID];
-        v127 = [ApplicationProxy proxyForBundleID:v126];
+        bundleID12 = [*(&self->super._finished + 1) bundleID];
+        v127 = [ApplicationProxy proxyForBundleID:bundleID12];
 
         sub_1002DFF54(*(&self->super._finished + 1), v127);
       }
 
-      v128 = [*(&self->super._finished + 1) account];
-      if (!v128)
+      account = [*(&self->super._finished + 1) account];
+      if (!account)
       {
         if ([*(&self->super._finished + 1) isMachineBased])
         {
@@ -641,9 +641,9 @@ LABEL_144:
             v130 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v130, OS_LOG_TYPE_DEFAULT))
             {
-              v131 = [*(&self->super._finished + 1) logKey];
+              logKey20 = [*(&self->super._finished + 1) logKey];
               *buf = 138412290;
-              v164 = v131;
+              v164 = logKey20;
               _os_log_impl(&_mh_execute_header, v130, OS_LOG_TYPE_DEFAULT, "[%@] Requesting universal variant, not adding thinning headers", buf, 0xCu);
             }
           }
@@ -659,19 +659,19 @@ LABEL_144:
             v133 = sub_1003A575C(InstallAttributionManager, v132);
 
             v134 = sub_1003A4EE0();
-            v135 = [*(&self->super._finished + 1) itemID];
+            itemID3 = [*(&self->super._finished + 1) itemID];
             if (v133)
             {
-              v136 = sub_1003ABB80(v134, v135);
+              v136 = sub_1003ABB80(v134, itemID3);
 
-              v137 = [*(&self->super._finished + 1) buyParams];
-              [v137 setParameter:v136 forKey:@"ad-network"];
+              buyParams7 = [*(&self->super._finished + 1) buyParams];
+              [buyParams7 setParameter:v136 forKey:@"ad-network"];
             }
 
             else
             {
               v138 = [*(&self->super._finished + 1) bag];
-              v136 = sub_1003A7C64(v134, v135, v138);
+              v136 = sub_1003A7C64(v134, itemID3, v138);
 
               v139 = objc_opt_new();
               v140 = [*(&self->super._finished + 1) bag];
@@ -681,52 +681,52 @@ LABEL_144:
               v157[1] = 3221225472;
               v157[2] = sub_1003338E8;
               v157[3] = &unk_100523900;
-              v137 = v139;
-              v158 = v137;
+              buyParams7 = v139;
+              v158 = buyParams7;
               v159 = v138;
               [v136 enumerateObjectsUsingBlock:v157];
-              v141 = [*(&self->super._finished + 1) buyParams];
-              [v141 setParameter:v137 forKey:@"ad-networks"];
+              buyParams8 = [*(&self->super._finished + 1) buyParams];
+              [buyParams8 setParameter:buyParams7 forKey:@"ad-networks"];
 
               v142 = ASDLogHandleForCategory();
               if (os_log_type_enabled(v142, OS_LOG_TYPE_DEFAULT))
               {
-                v143 = [*(&self->super._finished + 1) logKey];
+                logKey21 = [*(&self->super._finished + 1) logKey];
                 *buf = 138412290;
-                v164 = v143;
+                v164 = logKey21;
                 _os_log_impl(&_mh_execute_header, v142, OS_LOG_TYPE_DEFAULT, "[%@] Set params for install validation", buf, 0xCu);
               }
             }
           }
 
-          (*(v4 + 2))(v4, 0);
+          (*(handlerCopy + 2))(handlerCopy, 0);
           goto LABEL_157;
         }
 
-        v128 = +[ACAccountStore ams_sharedAccountStore];
-        v129 = [v128 ams_activeiTunesAccount];
-        [*(&self->super._finished + 1) setAccount:v129];
+        account = +[ACAccountStore ams_sharedAccountStore];
+        ams_activeiTunesAccount = [account ams_activeiTunesAccount];
+        [*(&self->super._finished + 1) setAccount:ams_activeiTunesAccount];
       }
 
       goto LABEL_144;
     }
 
 LABEL_5:
-    v8 = [*(&self->super._finished + 1) bundleID];
+    bundleID13 = [*(&self->super._finished + 1) bundleID];
 
-    if (v8)
+    if (bundleID13)
     {
-      v12 = [*(&self->super._finished + 1) bundleID];
-      v8 = [ApplicationProxy proxyForBundleID:v12];
+      bundleID14 = [*(&self->super._finished + 1) bundleID];
+      bundleID13 = [ApplicationProxy proxyForBundleID:bundleID14];
 
-      if (v8 && sub_10040C5B4(v8[15]))
+      if (bundleID13 && sub_10040C5B4(bundleID13[15]))
       {
         v13 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          v14 = [*(&self->super._finished + 1) logKey];
+          logKey17 = [*(&self->super._finished + 1) logKey];
           *buf = 138412290;
-          v164 = v14;
+          v164 = logKey17;
           v15 = "[%@] Cannot overwrite an app placeholder from a different distributor";
 LABEL_159:
           _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, v15, buf, 0xCu);
@@ -737,7 +737,7 @@ LABEL_159:
         goto LABEL_120;
       }
 
-      v8 = 0;
+      bundleID13 = 0;
     }
 
     goto LABEL_123;
@@ -746,15 +746,15 @@ LABEL_159:
   v108 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
   {
-    v146 = [*(&self->super._finished + 1) logKey];
+    logKey22 = [*(&self->super._finished + 1) logKey];
     *buf = 138412290;
-    v164 = v146;
+    v164 = logKey22;
     _os_log_error_impl(&_mh_execute_header, v108, OS_LOG_TYPE_ERROR, "[%@] Can not update an app that is uninstalled", buf, 0xCu);
   }
 
   v109 = ASDErrorWithDescription();
   sub_100331F10(self, v109);
-  (*(v4 + 2))(v4, v109);
+  (*(handlerCopy + 2))(handlerCopy, v109);
 
 LABEL_157:
 }

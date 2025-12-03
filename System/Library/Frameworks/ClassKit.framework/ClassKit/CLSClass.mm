@@ -1,10 +1,10 @@
 @interface CLSClass
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (CLSClass)initWithDatabaseRow:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (CLSClass)initWithDatabaseRow:(id)row;
 - (NSArray)immutableColumnNames;
 - (NSArray)searchableColumnNames;
-- (void)bindTo:(id)a3;
-- (void)setExpiration:(double)a3;
+- (void)bindTo:(id)to;
+- (void)setExpiration:(double)expiration;
 @end
 
 @implementation CLSClass
@@ -26,110 +26,110 @@
   return v2;
 }
 
-- (CLSClass)initWithDatabaseRow:(id)a3
+- (CLSClass)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSClass *)self _init];
-  v6 = v5;
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSClass *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"className");
+    [_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"className");
     [v6 setClassName:v7];
 
-    v8 = sub_10016D778(v4, @"source");
+    v8 = sub_10016D778(rowCopy, @"source");
     [v6 setSource:{objc_msgSend(v8, "intValue")}];
 
-    v9 = sub_10016D778(v4, @"customClassName");
+    v9 = sub_10016D778(rowCopy, @"customClassName");
     [v6 setCustomClassName:v9];
 
-    v10 = sub_10016D778(v4, @"locationID");
+    v10 = sub_10016D778(rowCopy, @"locationID");
     [v6 setLocationID:v10];
 
-    v11 = sub_10016D778(v4, @"iconID");
+    v11 = sub_10016D778(rowCopy, @"iconID");
     [v6 setIconID:v11];
 
-    v12 = sub_10016D778(v4, @"searchText");
+    v12 = sub_10016D778(rowCopy, @"searchText");
     [v6 setSearchText:v12];
 
-    v13 = sub_10016D778(v4, @"isEditable");
+    v13 = sub_10016D778(rowCopy, @"isEditable");
     [v6 setIsEditable:{objc_msgSend(v13, "BOOLValue")}];
 
-    v14 = sub_10016D778(v4, @"originatingSource");
+    v14 = sub_10016D778(rowCopy, @"originatingSource");
     [v6 setOriginatingSource:{objc_msgSend(v14, "intValue")}];
 
-    v15 = sub_10016D778(v4, @"tempObjectID");
+    v15 = sub_10016D778(rowCopy, @"tempObjectID");
     [v6 setTempObjectID:v15];
   }
 
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v15.receiver = self;
   v15.super_class = CLSClass;
-  v4 = a3;
-  [(CLSClass *)&v15 bindTo:v4];
+  toCopy = to;
+  [(CLSClass *)&v15 bindTo:toCopy];
   v16 = @"appIdentifier";
   v5 = [NSArray arrayWithObjects:&v16 count:1, v15.receiver, v15.super_class];
-  sub_1000983A8(v4, v5);
+  sub_1000983A8(toCopy, v5);
 
-  v6 = [(CLSClass *)self className];
-  sub_1000982FC(v4, v6, @"className");
+  className = [(CLSClass *)self className];
+  sub_1000982FC(toCopy, className, @"className");
 
-  v7 = [(CLSClass *)self customClassName];
-  sub_1000982FC(v4, v7, @"customClassName");
+  customClassName = [(CLSClass *)self customClassName];
+  sub_1000982FC(toCopy, customClassName, @"customClassName");
 
   v8 = [NSNumber numberWithInteger:[(CLSClass *)self source]];
-  sub_1000982FC(v4, v8, @"source");
+  sub_1000982FC(toCopy, v8, @"source");
 
-  v9 = [(CLSClass *)self locationID];
-  sub_1000982FC(v4, v9, @"locationID");
+  locationID = [(CLSClass *)self locationID];
+  sub_1000982FC(toCopy, locationID, @"locationID");
 
-  v10 = [(CLSClass *)self iconID];
-  sub_1000982FC(v4, v10, @"iconID");
+  iconID = [(CLSClass *)self iconID];
+  sub_1000982FC(toCopy, iconID, @"iconID");
 
-  v11 = [(CLSClass *)self searchText];
-  sub_1000982FC(v4, v11, @"searchText");
+  searchText = [(CLSClass *)self searchText];
+  sub_1000982FC(toCopy, searchText, @"searchText");
 
   v12 = [NSNumber numberWithBool:[(CLSClass *)self isEditable]];
-  sub_1000982FC(v4, v12, @"isEditable");
+  sub_1000982FC(toCopy, v12, @"isEditable");
 
   v13 = [NSNumber numberWithInteger:[(CLSClass *)self originatingSource]];
-  sub_1000982FC(v4, v13, @"originatingSource");
+  sub_1000982FC(toCopy, v13, @"originatingSource");
 
-  v14 = [(CLSClass *)self tempObjectID];
-  sub_1000982FC(v4, v14, @"tempObjectID");
+  tempObjectID = [(CLSClass *)self tempObjectID];
+  sub_1000982FC(toCopy, tempObjectID, @"tempObjectID");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (a3 == 2)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (version == 2)
   {
 LABEL_19:
     if (sub_1000B9298(v8, @"create table CLSClass_temp (\n    objectID            text not null,\n    dateCreated         real not null,\n    dateLastModified    real not null,\n    className           text not null,\n    source              integer,\n    customClassName     text,\n    iconID              text,\n    locationID          text,\n    isEditable          integer,\n    searchText          text,\n    tempObjectID        text,\n    dateExpires         real,\n    originatingSource   integer\n)\n", 0, 0, 0) && sub_1000B9298(v8, @"insert into CLSClass_temp select objectID, dateCreated, dateLastModified, className, source, customClassName, iconID, locationID, isEditable, searchText, tempObjectID, dateExpires, originatingSource from CLSClass", 0, 0, 0) && sub_1000B9298(v8, @"drop table CLSClass", 0, 0, 0) && sub_1000B9298(v8, @"create unique index if not exists CLSClass_objectID on CLSClass_temp (objectID)", 0, 0, 0) && sub_1000B9298(v8, @"create index if not exists CLSClass_searchText on CLSClass_temp (searchText)", 0, 0, 0) && sub_1000B9298(v8, @"create index if not exists CLSClass_locationID on CLSClass_temp (locationID)", 0, 0, 0) && sub_1000B9298(v8, @"create index if not exists CLSClass_dateExpires on CLSClass_temp (dateExpires)", 0, 0, 0) && sub_1000B9298(v8, @"alter table CLSClass_temp rename to CLSClass", 0, 0, 0))
     {
-      a3 = 3;
+      version = 3;
       goto LABEL_28;
     }
 
     goto LABEL_29;
   }
 
-  if (a3 != 1)
+  if (version != 1)
   {
-    if (a3)
+    if (version)
     {
 LABEL_28:
-      *a4 = a3;
+      *finalVersion = version;
       v15 = 1;
       goto LABEL_30;
     }
 
-    if (!sub_1000B9298(v7, @"create table CLSClass(   objectID            text not null,    dateCreated         real not null,    dateLastModified    real not null,    className           text not null)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSClass_objectID on CLSClass (objectID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table CLSClass(   objectID            text not null,    dateCreated         real not null,    dateLastModified    real not null,    className           text not null)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSClass_objectID on CLSClass (objectID)", 0, 0, 0))
     {
 LABEL_29:
       v15 = 0;
@@ -159,11 +159,11 @@ LABEL_30:
   return v15;
 }
 
-- (void)setExpiration:(double)a3
+- (void)setExpiration:(double)expiration
 {
   v3.receiver = self;
   v3.super_class = CLSClass;
-  [(CLSClass *)&v3 setExpiration:a3];
+  [(CLSClass *)&v3 setExpiration:expiration];
 }
 
 @end

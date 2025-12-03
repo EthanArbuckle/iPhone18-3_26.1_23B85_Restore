@@ -1,24 +1,24 @@
 @interface CSPageControl
-+ (CGRect)suggestedFrameForPageBounds:(CGRect)a3;
-+ (CGRect)suggestedFrameForPageBounds:(CGRect)a3 desiredSize:(CGSize)a4;
++ (CGRect)suggestedFrameForPageBounds:(CGRect)bounds;
++ (CGRect)suggestedFrameForPageBounds:(CGRect)bounds desiredSize:(CGSize)size;
 + (CGSize)defaultSize;
-- (CGSize)sizeForNumberOfPages:(int64_t)a3;
-- (CSPageControl)initWithFrame:(CGRect)a3;
+- (CGSize)sizeForNumberOfPages:(int64_t)pages;
+- (CSPageControl)initWithFrame:(CGRect)frame;
 - (id)_cameraIndicator;
 - (id)_pageIndicatorColor;
 - (void)_rebuildIndicators;
 - (void)_updateForLegibility;
-- (void)setCameraPageIndex:(unint64_t)a3;
-- (void)setLegibilitySettings:(id)a3;
+- (void)setCameraPageIndex:(unint64_t)index;
+- (void)setLegibilitySettings:(id)settings;
 @end
 
 @implementation CSPageControl
 
-- (CSPageControl)initWithFrame:(CGRect)a3
+- (CSPageControl)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CSPageControl;
-  v3 = [(UIPageControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIPageControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,11 +31,11 @@
   return v4;
 }
 
-- (CGSize)sizeForNumberOfPages:(int64_t)a3
+- (CGSize)sizeForNumberOfPages:(int64_t)pages
 {
   v5.receiver = self;
   v5.super_class = CSPageControl;
-  [(UIPageControl *)&v5 sizeForNumberOfPages:a3];
+  [(UIPageControl *)&v5 sizeForNumberOfPages:pages];
   v4 = 10.0;
   result.height = v4;
   result.width = v3;
@@ -66,15 +66,15 @@ void __28__CSPageControl_defaultSize__block_invoke()
   defaultSize___DefaultSize_1 = 0x4028000000000000;
 }
 
-+ (CGRect)suggestedFrameForPageBounds:(CGRect)a3
++ (CGRect)suggestedFrameForPageBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [a1 defaultSize];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [self defaultSize];
 
-  [a1 suggestedFrameForPageBounds:x desiredSize:{y, width, height, v8, v9}];
+  [self suggestedFrameForPageBounds:x desiredSize:{y, width, height, v8, v9}];
   result.size.height = v13;
   result.size.width = v12;
   result.origin.y = v11;
@@ -82,16 +82,16 @@ void __28__CSPageControl_defaultSize__block_invoke()
   return result;
 }
 
-+ (CGRect)suggestedFrameForPageBounds:(CGRect)a3 desiredSize:(CGSize)a4
++ (CGRect)suggestedFrameForPageBounds:(CGRect)bounds desiredSize:(CGSize)size
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (([*MEMORY[0x277D76620] activeInterfaceOrientation] - 1) <= 1)
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    [v8 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    [currentDevice userInterfaceIdiom];
   }
 
   v14.origin.x = x;
@@ -114,21 +114,21 @@ void __28__CSPageControl_defaultSize__block_invoke()
   return result;
 }
 
-- (void)setCameraPageIndex:(unint64_t)a3
+- (void)setCameraPageIndex:(unint64_t)index
 {
-  if (self->_cameraPageIndex != a3)
+  if (self->_cameraPageIndex != index)
   {
-    self->_cameraPageIndex = a3;
+    self->_cameraPageIndex = index;
     [(CSPageControl *)self _rebuildIndicators];
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   if (([(_UILegibilitySettings *)self->_sbLegibilitySettings sb_isEqualToLegibilitySettings:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_sbLegibilitySettings, a3);
+    objc_storeStrong(&self->_sbLegibilitySettings, settings);
     [(CSPageControl *)self _updateForLegibility];
   }
 }
@@ -139,8 +139,8 @@ void __28__CSPageControl_defaultSize__block_invoke()
   [(UIPageControl *)self setPreferredIndicatorImage:0];
   if (self->_cameraPageIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [(CSPageControl *)self _cameraIndicator];
-    [(UIPageControl *)self setIndicatorImage:v3 forPage:self->_cameraPageIndex];
+    _cameraIndicator = [(CSPageControl *)self _cameraIndicator];
+    [(UIPageControl *)self setIndicatorImage:_cameraIndicator forPage:self->_cameraPageIndex];
   }
 
   [(CSPageControl *)self _updateForLegibility];
@@ -148,11 +148,11 @@ void __28__CSPageControl_defaultSize__block_invoke()
 
 - (void)_updateForLegibility
 {
-  v3 = [(CSPageControl *)self _pageIndicatorColor];
-  [(UIPageControl *)self setPageIndicatorTintColor:v3];
+  _pageIndicatorColor = [(CSPageControl *)self _pageIndicatorColor];
+  [(UIPageControl *)self setPageIndicatorTintColor:_pageIndicatorColor];
 
-  v4 = [(CSPageControl *)self _currentPageIndicatorColor];
-  [(UIPageControl *)self setCurrentPageIndicatorTintColor:v4];
+  _currentPageIndicatorColor = [(CSPageControl *)self _currentPageIndicatorColor];
+  [(UIPageControl *)self setCurrentPageIndicatorTintColor:_currentPageIndicatorColor];
 }
 
 - (id)_cameraIndicator
@@ -166,8 +166,8 @@ void __28__CSPageControl_defaultSize__block_invoke()
 
 - (id)_pageIndicatorColor
 {
-  v2 = [(_UILegibilitySettings *)self->_sbLegibilitySettings primaryColor];
-  v3 = [v2 colorWithAlphaComponent:0.45];
+  primaryColor = [(_UILegibilitySettings *)self->_sbLegibilitySettings primaryColor];
+  v3 = [primaryColor colorWithAlphaComponent:0.45];
 
   return v3;
 }

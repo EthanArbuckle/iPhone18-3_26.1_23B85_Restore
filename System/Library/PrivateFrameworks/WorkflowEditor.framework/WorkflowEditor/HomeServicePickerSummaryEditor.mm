@@ -1,35 +1,35 @@
 @interface HomeServicePickerSummaryEditor
-- (id)stateByReplacingVariableFromCurrentState:(id)a3 withVariable:(id)a4;
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4;
-- (void)cancelEditingWithCompletionHandler:(id)a3;
+- (id)stateByReplacingVariableFromCurrentState:(id)state withVariable:(id)variable;
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor;
+- (void)cancelEditingWithCompletionHandler:(id)handler;
 @end
 
 @implementation HomeServicePickerSummaryEditor
 
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2744931C4(v6, v7);
+  identifierCopy = identifier;
+  anchorCopy = anchor;
+  selfCopy = self;
+  sub_2744931C4(identifierCopy, anchorCopy);
 }
 
-- (void)cancelEditingWithCompletionHandler:(id)a3
+- (void)cancelEditingWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_2745EA34C(&unk_27464FF98, v5);
 }
 
-- (id)stateByReplacingVariableFromCurrentState:(id)a3 withVariable:(id)a4
+- (id)stateByReplacingVariableFromCurrentState:(id)state withVariable:(id)variable
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  stateCopy = state;
+  variableCopy = variable;
+  selfCopy = self;
   v9 = sub_2744937D4();
 
   return v9;

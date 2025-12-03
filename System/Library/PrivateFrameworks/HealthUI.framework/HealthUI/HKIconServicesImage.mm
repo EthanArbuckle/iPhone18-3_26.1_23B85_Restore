@@ -1,19 +1,19 @@
 @interface HKIconServicesImage
-+ (id)createImageFromIcon:(id)a3 withDescriptor:(id)a4;
-+ (void)fetchIconForBundleIdentifier:(id)a3 imageDescriptor:(id)a4 completion:(id)a5;
-+ (void)fetchIconForUTTypeIdentifier:(id)a3 imageDescriptor:(id)a4 completion:(id)a5;
++ (id)createImageFromIcon:(id)icon withDescriptor:(id)descriptor;
++ (void)fetchIconForBundleIdentifier:(id)identifier imageDescriptor:(id)descriptor completion:(id)completion;
++ (void)fetchIconForUTTypeIdentifier:(id)identifier imageDescriptor:(id)descriptor completion:(id)completion;
 @end
 
 @implementation HKIconServicesImage
 
-+ (id)createImageFromIcon:(id)a3 withDescriptor:(id)a4
++ (id)createImageFromIcon:(id)icon withDescriptor:(id)descriptor
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  iconCopy = icon;
+  descriptorCopy = descriptor;
+  v7 = descriptorCopy;
+  if (descriptorCopy)
   {
-    v8 = v6;
+    v8 = descriptorCopy;
   }
 
   else
@@ -22,14 +22,14 @@
   }
 
   v9 = v8;
-  v10 = [v5 prepareImageForDescriptor:v8];
+  v10 = [iconCopy prepareImageForDescriptor:v8];
   v11 = v10;
   if (v10)
   {
     v12 = MEMORY[0x1E69DCAB8];
-    v13 = [v10 CGImage];
+    cGImage = [v10 CGImage];
     [v11 scale];
-    v14 = [v12 imageWithCGImage:v13 scale:0 orientation:?];
+    v14 = [v12 imageWithCGImage:cGImage scale:0 orientation:?];
   }
 
   else
@@ -40,23 +40,23 @@
   return v14;
 }
 
-+ (void)fetchIconForUTTypeIdentifier:(id)a3 imageDescriptor:(id)a4 completion:(id)a5
++ (void)fetchIconForUTTypeIdentifier:(id)identifier imageDescriptor:(id)descriptor completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   v11 = dispatch_get_global_queue(25, 0);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__HKIconServicesImage_fetchIconForUTTypeIdentifier_imageDescriptor_completion___block_invoke;
   v15[3] = &unk_1E81B7AB0;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v19 = a1;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = descriptorCopy;
+  v18 = completionCopy;
+  selfCopy = self;
+  v12 = completionCopy;
+  v13 = descriptorCopy;
+  v14 = identifierCopy;
   dispatch_async(v11, v15);
 }
 
@@ -86,23 +86,23 @@ uint64_t __79__HKIconServicesImage_fetchIconForUTTypeIdentifier_imageDescriptor_
   return result;
 }
 
-+ (void)fetchIconForBundleIdentifier:(id)a3 imageDescriptor:(id)a4 completion:(id)a5
++ (void)fetchIconForBundleIdentifier:(id)identifier imageDescriptor:(id)descriptor completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   v11 = dispatch_get_global_queue(25, 0);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__HKIconServicesImage_fetchIconForBundleIdentifier_imageDescriptor_completion___block_invoke;
   v15[3] = &unk_1E81B7AB0;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v19 = a1;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = descriptorCopy;
+  v18 = completionCopy;
+  selfCopy = self;
+  v12 = completionCopy;
+  v13 = descriptorCopy;
+  v14 = identifierCopy;
   dispatch_async(v11, v15);
 }
 

@@ -1,5 +1,5 @@
 @interface PXPhotosGridShowFiltersMenuActionPerformer
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4;
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model;
 - (NSMutableArray)filterMenuItems;
 - (NSMutableArray)viewOptionsMenuItems;
 - (id)_allFilterActionTypes;
@@ -13,23 +13,23 @@
 
 @implementation PXPhotosGridShowFiltersMenuActionPerformer
 
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model
 {
-  v4 = a4;
-  if ([v4 canFilterContent])
+  modelCopy = model;
+  if ([modelCopy canFilterContent])
   {
-    v5 = [v4 dataSourceManager];
-    v6 = [v5 dataSource];
-    v7 = [v6 containerCollection];
+    dataSourceManager = [modelCopy dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
+    containerCollection = [dataSource containerCollection];
 
-    if ([v7 px_isAllPhotosSmartAlbum])
+    if ([containerCollection px_isAllPhotosSmartAlbum])
     {
       LOBYTE(v8) = 0;
     }
 
     else
     {
-      v8 = [v7 px_isRecentsSmartAlbum] ^ 1;
+      v8 = [containerCollection px_isRecentsSmartAlbum] ^ 1;
     }
   }
 
@@ -44,107 +44,107 @@
 - (id)menuElement
 {
   v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3];
-  v5 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v6 = [v5 viewOptionsModel];
-  v7 = [v6 sortOrderMenu];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  viewOptionsModel = [viewModel viewOptionsModel];
+  sortOrderMenu = [viewOptionsModel sortOrderMenu];
 
-  if (v7)
+  if (sortOrderMenu)
   {
-    v8 = [v7 children];
+    children = [sortOrderMenu children];
     goto LABEL_14;
   }
 
-  v9 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v10 = [v9 assetCollectionActionManager];
-  v11 = [v10 standardActionForActionType:*off_1E7721DA8];
+  viewModel2 = [(PXPhotosGridActionPerformer *)self viewModel];
+  assetCollectionActionManager = [viewModel2 assetCollectionActionManager];
+  v11 = [assetCollectionActionManager standardActionForActionType:*off_1E7721DA8];
 
   v12 = v11;
   if (!v12)
   {
-    v17 = [(PXPhotosGridActionPerformer *)self viewModel];
-    v18 = [v17 assetCollectionActionManager];
-    v19 = [v18 standardActionForActionType:*off_1E7721C88];
+    viewModel3 = [(PXPhotosGridActionPerformer *)self viewModel];
+    assetCollectionActionManager2 = [viewModel3 assetCollectionActionManager];
+    v19 = [assetCollectionActionManager2 standardActionForActionType:*off_1E7721C88];
 
     v20 = v19;
     if (v20)
     {
-      v13 = v20;
+      currentHandler2 = v20;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v15 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v21 = objc_opt_class();
-        v16 = NSStringFromClass(v21);
-        v22 = [v13 px_descriptionForAssertionMessage];
-        [v15 handleFailureInMethod:a2 object:self file:@"PXPhotosGridShowFiltersMenuActionPerformer.m" lineNumber:272 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"action", v16, v22}];
+        px_descriptionForAssertionMessage2 = NSStringFromClass(v21);
+        px_descriptionForAssertionMessage = [currentHandler2 px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridShowFiltersMenuActionPerformer.m" lineNumber:272 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"action", px_descriptionForAssertionMessage2, px_descriptionForAssertionMessage}];
 LABEL_33:
 
-        v7 = v13;
+        sortOrderMenu = currentHandler2;
         goto LABEL_34;
       }
     }
 
     else
     {
-      v23 = [(PXPhotosGridActionPerformer *)self viewModel];
-      v24 = [v23 gridActionManager];
-      v25 = [v24 standardActionForActionType:*off_1E77220C8];
+      viewModel4 = [(PXPhotosGridActionPerformer *)self viewModel];
+      gridActionManager = [viewModel4 gridActionManager];
+      v25 = [gridActionManager standardActionForActionType:*off_1E77220C8];
 
-      v13 = v25;
-      if (!v13)
+      currentHandler2 = v25;
+      if (!currentHandler2)
       {
-        v7 = 0;
+        sortOrderMenu = 0;
         goto LABEL_12;
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v15 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v47 = objc_opt_class();
-        v16 = NSStringFromClass(v47);
-        v22 = [v13 px_descriptionForAssertionMessage];
-        [v15 handleFailureInMethod:a2 object:self file:@"PXPhotosGridShowFiltersMenuActionPerformer.m" lineNumber:276 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"action", v16, v22}];
+        px_descriptionForAssertionMessage2 = NSStringFromClass(v47);
+        px_descriptionForAssertionMessage = [currentHandler2 px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridShowFiltersMenuActionPerformer.m" lineNumber:276 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"action", px_descriptionForAssertionMessage2, px_descriptionForAssertionMessage}];
         goto LABEL_33;
       }
     }
 
-    v7 = v13;
+    sortOrderMenu = currentHandler2;
 LABEL_12:
 
     goto LABEL_13;
   }
 
   objc_opt_class();
-  v7 = v12;
+  sortOrderMenu = v12;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
-    v15 = NSStringFromClass(v14);
-    v16 = [v12 px_descriptionForAssertionMessage];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXPhotosGridShowFiltersMenuActionPerformer.m" lineNumber:269 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"action", v15, v16}];
-    v7 = v12;
+    currentHandler = NSStringFromClass(v14);
+    px_descriptionForAssertionMessage2 = [v12 px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotosGridShowFiltersMenuActionPerformer.m" lineNumber:269 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"action", currentHandler, px_descriptionForAssertionMessage2}];
+    sortOrderMenu = v12;
 LABEL_34:
 
     goto LABEL_12;
   }
 
 LABEL_13:
-  v8 = [v7 children];
+  children = [sortOrderMenu children];
 
 LABEL_14:
-  if ([v8 count])
+  if ([children count])
   {
-    v26 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F1741150 image:0 identifier:0 options:1 children:v8];
-    v27 = [v26 displayPreferences];
-    [v27 setMaximumNumberOfTitleLines:3];
+    v26 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F1741150 image:0 identifier:0 options:1 children:children];
+    displayPreferences = [v26 displayPreferences];
+    [displayPreferences setMaximumNumberOfTitleLines:3];
 
     [v4 addObject:v26];
   }
 
-  v28 = [(PXPhotosGridShowFiltersMenuActionPerformer *)self filterInlineMenuItems];
-  v29 = [v28 mutableCopy];
+  filterInlineMenuItems = [(PXPhotosGridShowFiltersMenuActionPerformer *)self filterInlineMenuItems];
+  v29 = [filterInlineMenuItems mutableCopy];
 
   if ([v29 count])
   {
@@ -161,32 +161,32 @@ LABEL_14:
     [v4 addObject:v30];
   }
 
-  v31 = [(PXPhotosGridShowFiltersMenuActionPerformer *)self viewOptionsMenuItems];
-  if ([v31 count])
+  viewOptionsMenuItems = [(PXPhotosGridShowFiltersMenuActionPerformer *)self viewOptionsMenuItems];
+  if ([viewOptionsMenuItems count])
   {
-    v32 = [(PXPhotosGridShowFiltersMenuActionPerformer *)self filterMenuItems];
-    if ([v32 count])
+    filterMenuItems = [(PXPhotosGridShowFiltersMenuActionPerformer *)self filterMenuItems];
+    if ([filterMenuItems count])
     {
       v33 = 0;
     }
 
     else
     {
-      v33 = [v8 count] == 0;
+      v33 = [children count] == 0;
     }
 
     v34 = MEMORY[0x1E69DCC60];
     v35 = PXLocalizedStringFromTable(@"PXContentViewOptionsMenuTitle", @"PhotosUICore");
-    v36 = [v34 menuWithTitle:v35 image:0 identifier:@"com.apple.photos.menu.contentFilterViewOptionsSubmenu" options:v33 children:v31];
+    v36 = [v34 menuWithTitle:v35 image:0 identifier:@"com.apple.photos.menu.contentFilterViewOptionsSubmenu" options:v33 children:viewOptionsMenuItems];
 
-    v37 = [(PXPhotosGridShowFiltersMenuActionPerformer *)self viewOptionsMenuSubtitle];
-    [v36 setSubtitle:v37];
+    viewOptionsMenuSubtitle = [(PXPhotosGridShowFiltersMenuActionPerformer *)self viewOptionsMenuSubtitle];
+    [v36 setSubtitle:viewOptionsMenuSubtitle];
 
     [v4 addObject:v36];
   }
 
-  v38 = [(PXPhotosGridShowFiltersMenuActionPerformer *)self feedbackMenuItems];
-  v39 = [v38 mutableCopy];
+  feedbackMenuItems = [(PXPhotosGridShowFiltersMenuActionPerformer *)self feedbackMenuItems];
+  v39 = [feedbackMenuItems mutableCopy];
 
   if ([v39 count])
   {
@@ -196,8 +196,8 @@ LABEL_14:
 
   v41 = [(PXPhotosGridShowFiltersMenuActionPerformer *)self localizedTitleForUseCase:1];
   v42 = MEMORY[0x1E69DCAB8];
-  v43 = [(PXPhotosGridShowFiltersMenuActionPerformer *)self activitySystemImageName];
-  v44 = [v42 systemImageNamed:v43];
+  activitySystemImageName = [(PXPhotosGridShowFiltersMenuActionPerformer *)self activitySystemImageName];
+  v44 = [v42 systemImageNamed:activitySystemImageName];
 
   v45 = [MEMORY[0x1E69DCC60] menuWithTitle:v41 image:v44 identifier:0 options:0 children:v4];
 
@@ -207,41 +207,41 @@ LABEL_14:
 - (id)feedbackMenuItems
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v4 = [v3 contentFilterState];
-  v5 = [v4 isSearchResultsFilterButton];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  contentFilterState = [viewModel contentFilterState];
+  isSearchResultsFilterButton = [contentFilterState isSearchResultsFilterButton];
 
-  if (!v5)
+  if (!isSearchResultsFilterButton)
   {
     v13 = MEMORY[0x1E695E0F0];
     goto LABEL_10;
   }
 
-  v6 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v7 = [v6 gridActionManager];
+  viewModel2 = [(PXPhotosGridActionPerformer *)self viewModel];
+  gridActionManager = [viewModel2 gridActionManager];
 
-  v8 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v9 = [v8 viewOptionsModel];
-  v10 = [v9 centralizedFeedbackMode];
+  viewModel3 = [(PXPhotosGridActionPerformer *)self viewModel];
+  viewOptionsModel = [viewModel3 viewOptionsModel];
+  centralizedFeedbackMode = [viewOptionsModel centralizedFeedbackMode];
 
-  if (v10 == 2)
+  if (centralizedFeedbackMode == 2)
   {
-    v11 = [v7 standardActionForActionType:*off_1E77221B8];
+    v11 = [gridActionManager standardActionForActionType:*off_1E77221B8];
     v15 = v11;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
   }
 
   else
   {
-    if (v10 != 1)
+    if (centralizedFeedbackMode != 1)
     {
       v13 = MEMORY[0x1E695E0F0];
       goto LABEL_9;
     }
 
-    v11 = [v7 standardActionForActionType:*off_1E77221C8];
+    v11 = [gridActionManager standardActionForActionType:*off_1E77221C8];
     v16[0] = v11;
-    v12 = [v7 standardActionForActionType:*off_1E77221C0];
+    v12 = [gridActionManager standardActionForActionType:*off_1E77221C0];
     v16[1] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
   }
@@ -254,9 +254,9 @@ LABEL_10:
 
 - (id)viewOptionsMenuSubtitle
 {
-  v2 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v3 = [v2 contentFilterState];
-  v4 = [v3 isContentFilterActive:2];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  contentFilterState = [viewModel contentFilterState];
+  v4 = [contentFilterState isContentFilterActive:2];
 
   if (v4)
   {
@@ -278,15 +278,15 @@ LABEL_10:
     dispatch_once(&viewOptionsMenuItems_onceToken_67609, &__block_literal_global_207_67610);
   }
 
-  v3 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v4 = [v3 gridActionManager];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  gridActionManager = [viewModel gridActionManager];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__PXPhotosGridShowFiltersMenuActionPerformer_viewOptionsMenuItems__block_invoke_2;
   aBlock[3] = &unk_1E7734840;
-  aBlock[4] = v4;
-  v5 = v4;
+  aBlock[4] = gridActionManager;
+  v5 = gridActionManager;
   _Block_copy(aBlock);
   PXMap();
 }
@@ -317,16 +317,16 @@ void __66__PXPhotosGridShowFiltersMenuActionPerformer_viewOptionsMenuItems__bloc
 - (id)filterMenuSubtitle
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotosGridShowFiltersMenuActionPerformer *)self _allFilterActionTypes];
-  v4 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v5 = [v4 gridActionManager];
+  _allFilterActionTypes = [(PXPhotosGridShowFiltersMenuActionPerformer *)self _allFilterActionTypes];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  gridActionManager = [viewModel gridActionManager];
 
   v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = v3;
+  v7 = _allFilterActionTypes;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v8)
   {
@@ -346,15 +346,15 @@ void __66__PXPhotosGridShowFiltersMenuActionPerformer_viewOptionsMenuItems__bloc
 
         if (*(*(&v29 + 1) + 8 * v12) != v11)
         {
-          v13 = [v5 actionPerformerForActionType:?];
+          v13 = [gridActionManager actionPerformerForActionType:?];
           v14 = v13;
           if (v13)
           {
             v15 = [v13 localizedTitleForUseCase:0];
-            v16 = [v14 menuElementState];
+            menuElementState = [v14 menuElementState];
             if (v15)
             {
-              v17 = v16 == 1;
+              v17 = menuElementState == 1;
             }
 
             else
@@ -370,14 +370,14 @@ void __66__PXPhotosGridShowFiltersMenuActionPerformer_viewOptionsMenuItems__bloc
                 v18 = v11;
                 v19 = v10;
                 v20 = v9;
-                v21 = v5;
+                v21 = gridActionManager;
                 v22 = v7;
                 v24 = v23 = v6;
                 [v23 appendString:v24];
 
                 v6 = v23;
                 v7 = v22;
-                v5 = v21;
+                gridActionManager = v21;
                 v9 = v20;
                 v10 = v19;
                 v11 = v18;
@@ -433,40 +433,40 @@ LABEL_25:
 - (id)filterInlineMenuItems
 {
   v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-  v4 = [(PXPhotosGridShowFiltersMenuActionPerformer *)self filterMenuItems];
-  if ([v4 count])
+  filterMenuItems = [(PXPhotosGridShowFiltersMenuActionPerformer *)self filterMenuItems];
+  if ([filterMenuItems count])
   {
     v5 = MEMORY[0x1E69DCC60];
     v6 = PXLocalizedStringFromTable(@"PXFilterMenuTitle", @"PhotosUICore");
-    v7 = [v5 menuWithTitle:v6 image:0 identifier:@"com.apple.photos.menu.contentFilterSubmenu" options:0 children:v4];
+    v7 = [v5 menuWithTitle:v6 image:0 identifier:@"com.apple.photos.menu.contentFilterSubmenu" options:0 children:filterMenuItems];
 
-    v8 = [(PXPhotosGridShowFiltersMenuActionPerformer *)self filterMenuSubtitle];
-    [v7 setSubtitle:v8];
+    filterMenuSubtitle = [(PXPhotosGridShowFiltersMenuActionPerformer *)self filterMenuSubtitle];
+    [v7 setSubtitle:filterMenuSubtitle];
 
     [v3 addObject:v7];
   }
 
-  v9 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v10 = [v9 contentFilterState];
-  v11 = [v10 isFiltering];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  contentFilterState = [viewModel contentFilterState];
+  isFiltering = [contentFilterState isFiltering];
 
-  if (v11)
+  if (isFiltering)
   {
-    v12 = [(PXPhotosGridActionPerformer *)self viewModel];
-    v13 = [v12 gridActionManager];
+    viewModel2 = [(PXPhotosGridActionPerformer *)self viewModel];
+    gridActionManager = [viewModel2 gridActionManager];
 
     v14 = *off_1E77220C0;
-    v15 = [v13 actionPerformerForActionType:*off_1E77220C0];
-    v16 = [(PXActionPerformer *)self sender];
-    [v15 setSender:v16];
+    v15 = [gridActionManager actionPerformerForActionType:*off_1E77220C0];
+    sender = [(PXActionPerformer *)self sender];
+    [v15 setSender:sender];
 
-    v17 = [v13 canPerformActionType:v14];
+    v17 = [gridActionManager canPerformActionType:v14];
     if (v15 && v17)
     {
-      v18 = [v15 menuElement];
-      if (v18)
+      menuElement = [v15 menuElement];
+      if (menuElement)
       {
-        [v3 addObject:v18];
+        [v3 addObject:menuElement];
       }
     }
   }
@@ -482,14 +482,14 @@ LABEL_25:
     dispatch_once(&filterMenuItems_onceToken_67628, &__block_literal_global_189);
   }
 
-  v3 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v4 = [v3 gridActionManager];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  gridActionManager = [viewModel gridActionManager];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__PXPhotosGridShowFiltersMenuActionPerformer_filterMenuItems__block_invoke_2;
   aBlock[3] = &unk_1E7734810;
-  aBlock[4] = v4;
+  aBlock[4] = gridActionManager;
   aBlock[5] = self;
   v5 = _Block_copy(aBlock);
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
@@ -612,9 +612,9 @@ void __67__PXPhotosGridShowFiltersMenuActionPerformer__allFilterActionTypes__blo
 
 - (id)activitySystemImageName
 {
-  v2 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v3 = [v2 contentFilterState];
-  v4 = PXContentFilterImageNameForFilterStateAndCustomDefaultImageName(v3, 0);
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  contentFilterState = [viewModel contentFilterState];
+  v4 = PXContentFilterImageNameForFilterStateAndCustomDefaultImageName(contentFilterState, 0);
 
   return v4;
 }

@@ -1,60 +1,60 @@
 @interface MTIDCloudKitStore
-+ (BOOL)updateRecord:(id)a3 isSpanRecord:(BOOL)a4 scheme:(id)a5 expectedKey:(id)a6 expiration:(id)a7 reset:(BOOL)a8;
-+ (id)keyOfReferenceDate:(id)a3;
++ (BOOL)updateRecord:(id)record isSpanRecord:(BOOL)spanRecord scheme:(id)scheme expectedKey:(id)key expiration:(id)expiration reset:(BOOL)reset;
++ (id)keyOfReferenceDate:(id)date;
 + (id)recordZoneID;
-+ (id)referenceDateOfRecord:(id)a3;
-+ (id)referenceRecordIDForScheme:(id)a3 dsId:(id)a4;
-+ (id)spanRecordIDForScheme:(id)a3 referenceRecordID:(id)a4 serialNumber:(unint64_t)a5;
-- (MTIDCloudKitStore)initWithContainerIdentifer:(id)a3 enableSync:(BOOL)a4;
++ (id)referenceDateOfRecord:(id)record;
++ (id)referenceRecordIDForScheme:(id)scheme dsId:(id)id;
++ (id)spanRecordIDForScheme:(id)scheme referenceRecordID:(id)d serialNumber:(unint64_t)number;
+- (MTIDCloudKitStore)initWithContainerIdentifer:(id)identifer enableSync:(BOOL)sync;
 - (MTIDSyncEngine)syncEngine;
 - (id)debugInfo;
-- (id)maintainSchemes:(id)a3 options:(id)a4;
-- (id)promiseForRecordWithID:(id)a3 timeout:(double)a4 qualityOfService:(int64_t)a5 existingOnly:(BOOL)a6 updateRecordMaybe:(id)a7;
-- (id)recordWithID:(id)a3;
-- (id)recordWithID:(id)a3 qualityOfService:(int64_t)a4 updateRecordMaybe:(id)a5 error:(id *)a6;
-- (id)resetSchemes:(id)a3 options:(id)a4;
-- (id)secretForScheme:(id)a3 options:(id)a4;
-- (id)syncForSchemes:(id)a3 options:(id)a4;
-- (void)_generateFutureRecordsForScheme:(id)a3 referenceRecord:(id)a4;
-- (void)accountDidChangeWithUserRecordID:(id)a3;
+- (id)maintainSchemes:(id)schemes options:(id)options;
+- (id)promiseForRecordWithID:(id)d timeout:(double)timeout qualityOfService:(int64_t)service existingOnly:(BOOL)only updateRecordMaybe:(id)maybe;
+- (id)recordWithID:(id)d;
+- (id)recordWithID:(id)d qualityOfService:(int64_t)service updateRecordMaybe:(id)maybe error:(id *)error;
+- (id)resetSchemes:(id)schemes options:(id)options;
+- (id)secretForScheme:(id)scheme options:(id)options;
+- (id)syncForSchemes:(id)schemes options:(id)options;
+- (void)_generateFutureRecordsForScheme:(id)scheme referenceRecord:(id)record;
+- (void)accountDidChangeWithUserRecordID:(id)d;
 - (void)clearLocalData;
-- (void)cloudKitLocalDB:(id)a3 didChangeRecord:(id)a4;
+- (void)cloudKitLocalDB:(id)b didChangeRecord:(id)record;
 - (void)fetchChangesIfNeeded;
-- (void)generateFutureRecordsForScheme:(id)a3 referenceRecord:(id)a4;
-- (void)recordWasDeleted:(id)a3;
-- (void)recordWasFailedToSave:(id)a3;
-- (void)recordWasFetched:(id)a3;
-- (void)recordWasSaved:(id)a3;
-- (void)syncEngineDidStartWithError:(id)a3;
+- (void)generateFutureRecordsForScheme:(id)scheme referenceRecord:(id)record;
+- (void)recordWasDeleted:(id)deleted;
+- (void)recordWasFailedToSave:(id)save;
+- (void)recordWasFetched:(id)fetched;
+- (void)recordWasSaved:(id)saved;
+- (void)syncEngineDidStartWithError:(id)error;
 @end
 
 @implementation MTIDCloudKitStore
 
-- (MTIDCloudKitStore)initWithContainerIdentifer:(id)a3 enableSync:(BOOL)a4
+- (MTIDCloudKitStore)initWithContainerIdentifer:(id)identifer enableSync:(BOOL)sync
 {
-  v4 = a4;
+  syncCopy = sync;
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identiferCopy = identifer;
   v24.receiver = self;
   v24.super_class = MTIDCloudKitStore;
   v7 = [(MTIDCloudKitStore *)&v24 init];
   v8 = v7;
   if (v7)
   {
-    [(MTIDCloudKitStore *)v7 setContainerIdentifier:v6];
-    if (v4)
+    [(MTIDCloudKitStore *)v7 setContainerIdentifier:identiferCopy];
+    if (syncCopy)
     {
       v9 = +[MTFrameworkEnvironment sharedEnvironment];
       v10 = [v9 valueForEntitlement:@"com.apple.developer.icloud-container-identifiers"];
 
-      -[MTIDCloudKitStore setCanSyncBetweenDevices:](v8, "setCanSyncBetweenDevices:", [v10 containsObject:v6]);
+      -[MTIDCloudKitStore setCanSyncBetweenDevices:](v8, "setCanSyncBetweenDevices:", [v10 containsObject:identiferCopy]);
       if (![(MTIDCloudKitStore *)v8 canSyncBetweenDevices])
       {
         v11 = MTMetricsKitOSLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v26 = v6;
+          v26 = identiferCopy;
           v27 = 2112;
           v28 = @"com.apple.developer.icloud-container-identifiers";
           _os_log_impl(&dword_258F4B000, v11, OS_LOG_TYPE_ERROR, "MetricsKit: The application is missing container %@ in %@ entitlement.", buf, 0x16u);
@@ -67,28 +67,28 @@
       [(MTIDCloudKitStore *)v8 setCanSyncBetweenDevices:0];
     }
 
-    v12 = [v6 stringByAppendingString:@".accessqueue"];
+    v12 = [identiferCopy stringByAppendingString:@".accessqueue"];
     v13 = dispatch_queue_create([v12 UTF8String], 0);
     [(MTIDCloudKitStore *)v8 setAccessQueue:v13];
 
     v14 = [MTIDCloudKitLocalDB alloc];
     v15 = +[MTIDCloudKitStore recordZoneID];
-    v16 = [(MTIDCloudKitLocalDB *)v14 initWithContainerIdentifier:v6 recordType:@"MT_IDSecret" recordZoneID:v15];
+    v16 = [(MTIDCloudKitLocalDB *)v14 initWithContainerIdentifier:identiferCopy recordType:@"MT_IDSecret" recordZoneID:v15];
 
     [(MTIDCloudKitLocalDB *)v16 setDelegate:v8];
     [(MTIDCloudKitStore *)v8 setLocalDB:v16];
-    v17 = [MEMORY[0x277CBEB38] dictionary];
-    [(MTIDCloudKitStore *)v8 setGeneratedDates:v17];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(MTIDCloudKitStore *)v8 setGeneratedDates:dictionary];
 
     if ([(MTIDCloudKitStore *)v8 canSyncBetweenDevices])
     {
-      v18 = [(MTIDCloudKitStore *)v8 syncEngine];
-      [v18 start];
+      syncEngine = [(MTIDCloudKitStore *)v8 syncEngine];
+      [syncEngine start];
     }
 
     v19 = [MTIDCloudKitPromiseManager alloc];
-    v20 = [(MTIDCloudKitStore *)v8 accessQueue];
-    v21 = [(MTIDCloudKitPromiseManager *)v19 initWithCallbackQueue:v20];
+    accessQueue = [(MTIDCloudKitStore *)v8 accessQueue];
+    v21 = [(MTIDCloudKitPromiseManager *)v19 initWithCallbackQueue:accessQueue];
     [(MTIDCloudKitStore *)v8 setPromiseManager:v21];
   }
 
@@ -101,10 +101,10 @@
   if (!self->_syncEngine && [(MTIDCloudKitStore *)self canSyncBetweenDevices])
   {
     v3 = [MTIDSyncEngine alloc];
-    v4 = [(MTIDCloudKitStore *)self containerIdentifier];
+    containerIdentifier = [(MTIDCloudKitStore *)self containerIdentifier];
     v5 = +[MTIDCloudKitStore recordZoneID];
-    v6 = [(MTIDCloudKitStore *)self accessQueue];
-    v7 = [(MTIDSyncEngine *)v3 initWithContainerIdentifier:v4 zoneID:v5 queue:v6 delegate:self];
+    accessQueue = [(MTIDCloudKitStore *)self accessQueue];
+    v7 = [(MTIDSyncEngine *)v3 initWithContainerIdentifier:containerIdentifier zoneID:v5 queue:accessQueue delegate:self];
     syncEngine = self->_syncEngine;
     self->_syncEngine = v7;
   }
@@ -114,22 +114,22 @@
   return v9;
 }
 
-- (void)generateFutureRecordsForScheme:(id)a3 referenceRecord:(id)a4
+- (void)generateFutureRecordsForScheme:(id)scheme referenceRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 lifespan] && -[MTIDCloudKitStore canSyncBetweenDevices](self, "canSyncBetweenDevices"))
+  schemeCopy = scheme;
+  recordCopy = record;
+  if ([schemeCopy lifespan] && -[MTIDCloudKitStore canSyncBetweenDevices](self, "canSyncBetweenDevices"))
   {
     objc_initWeak(&location, self);
-    v8 = [(MTIDCloudKitStore *)self accessQueue];
+    accessQueue = [(MTIDCloudKitStore *)self accessQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __68__MTIDCloudKitStore_generateFutureRecordsForScheme_referenceRecord___block_invoke;
     v9[3] = &unk_2798CDBD0;
     objc_copyWeak(&v12, &location);
-    v10 = v6;
-    v11 = v7;
-    dispatch_async(v8, v9);
+    v10 = schemeCopy;
+    v11 = recordCopy;
+    dispatch_async(accessQueue, v9);
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -142,58 +142,58 @@ void __68__MTIDCloudKitStore_generateFutureRecordsForScheme_referenceRecord___bl
   [WeakRetained _generateFutureRecordsForScheme:*(a1 + 32) referenceRecord:*(a1 + 40)];
 }
 
-- (void)_generateFutureRecordsForScheme:(id)a3 referenceRecord:(id)a4
+- (void)_generateFutureRecordsForScheme:(id)scheme referenceRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
+  schemeCopy = scheme;
+  recordCopy = record;
   v8 = 0x2798CC000uLL;
-  v9 = [MTIDCloudKitStore referenceDateOfRecord:v7];
+  v9 = [MTIDCloudKitStore referenceDateOfRecord:recordCopy];
   if (!v9)
   {
-    v24 = self;
+    selfCopy = self;
     v37 = 0;
-    v17 = 0;
-    v20 = [v6 storagePoolSize] - 1;
+    serialNumber = 0;
+    v20 = [schemeCopy storagePoolSize] - 1;
 LABEL_10:
     v25 = 0;
-    v26 = v24;
+    v26 = selfCopy;
     do
     {
       v27 = v25;
       v28 = *(v8 + 2968);
-      v29 = [v7 recordID];
-      [v28 spanRecordIDForScheme:v6 referenceRecordID:v29 serialNumber:v17];
+      recordID = [recordCopy recordID];
+      [v28 spanRecordIDForScheme:schemeCopy referenceRecordID:recordID serialNumber:serialNumber];
       v31 = v30 = v8;
 
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
       v39[2] = __69__MTIDCloudKitStore__generateFutureRecordsForScheme_referenceRecord___block_invoke;
       v39[3] = &unk_2798CDBF8;
-      v40 = v7;
-      v42 = v17;
-      v41 = v6;
+      v40 = recordCopy;
+      v42 = serialNumber;
+      v41 = schemeCopy;
       v38 = v27;
       v32 = [(MTIDCloudKitStore *)v26 recordWithID:v31 qualityOfService:-1 updateRecordMaybe:v39 error:&v38];
       v25 = v38;
 
       v8 = v30;
-      ++v17;
+      ++serialNumber;
     }
 
-    while (v17 <= v20);
+    while (serialNumber <= v20);
 
     v9 = v37;
     goto LABEL_13;
   }
 
   v10 = +[MTFrameworkEnvironment sharedEnvironment];
-  v11 = [v10 date];
+  date = [v10 date];
 
-  [v6 maxFutureTimeInterval];
-  v12 = [v11 dateByAddingTimeInterval:?];
-  v13 = [(MTIDCloudKitStore *)self generatedDates];
-  v14 = [v6 idNamespace];
-  v15 = [v13 objectForKeyedSubscript:v14];
+  [schemeCopy maxFutureTimeInterval];
+  v12 = [date dateByAddingTimeInterval:?];
+  generatedDates = [(MTIDCloudKitStore *)self generatedDates];
+  idNamespace = [schemeCopy idNamespace];
+  v15 = [generatedDates objectForKeyedSubscript:idNamespace];
 
   if (v15 && [v12 compare:v15] == -1)
   {
@@ -202,31 +202,31 @@ LABEL_10:
   }
 
   v36 = v15;
-  v35 = [MTIDSpan spanForScheme:v6 date:v11 referenceDate:v9];
-  v16 = [MTIDSpan spanForScheme:v6 date:v12 referenceDate:v9];
-  v17 = [v35 serialNumber];
-  v18 = [v16 serialNumber];
-  v19 = [v6 storagePoolSize];
-  if (v18 >= v17 + v19 - 2)
+  v35 = [MTIDSpan spanForScheme:schemeCopy date:date referenceDate:v9];
+  v16 = [MTIDSpan spanForScheme:schemeCopy date:v12 referenceDate:v9];
+  serialNumber = [v35 serialNumber];
+  serialNumber2 = [v16 serialNumber];
+  storagePoolSize = [schemeCopy storagePoolSize];
+  if (serialNumber2 >= serialNumber + storagePoolSize - 2)
   {
-    v20 = v17 + v19 - 2;
+    v20 = serialNumber + storagePoolSize - 2;
   }
 
   else
   {
-    v20 = v18;
+    v20 = serialNumber2;
   }
 
-  v21 = [v16 endDate];
+  endDate = [v16 endDate];
   [(MTIDCloudKitStore *)self generatedDates];
-  v22 = v34 = v11;
-  [v6 idNamespace];
+  v22 = v34 = date;
+  [schemeCopy idNamespace];
   v23 = v33 = self;
-  [v22 setObject:v21 forKeyedSubscript:v23];
+  [v22 setObject:endDate forKeyedSubscript:v23];
 
-  if (v17 <= v20)
+  if (serialNumber <= v20)
   {
-    v24 = v33;
+    selfCopy = v33;
     v37 = v9;
     v8 = 0x2798CC000;
     goto LABEL_10;
@@ -246,27 +246,27 @@ BOOL __69__MTIDCloudKitStore__generateFutureRecordsForScheme_referenceRecord___b
   return v7;
 }
 
-- (id)recordWithID:(id)a3 qualityOfService:(int64_t)a4 updateRecordMaybe:(id)a5 error:(id *)a6
+- (id)recordWithID:(id)d qualityOfService:(int64_t)service updateRecordMaybe:(id)maybe error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = [(MTIDCloudKitStore *)self accessQueue];
-  dispatch_assert_queue_V2(v12);
+  dCopy = d;
+  maybeCopy = maybe;
+  accessQueue = [(MTIDCloudKitStore *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v13 = [(MTIDCloudKitStore *)self localDB];
+  localDB = [(MTIDCloudKitStore *)self localDB];
   v27 = 0;
-  v14 = [v13 recordWithID:v10 error:&v27];
+  v14 = [localDB recordWithID:dCopy error:&v27];
   v15 = v27;
   if (v15)
   {
     v16 = v15;
-    if (a6)
+    if (error)
     {
 LABEL_3:
       v17 = v16;
       v18 = 0;
-      *a6 = v16;
+      *error = v16;
       goto LABEL_14;
     }
 
@@ -276,11 +276,11 @@ LABEL_3:
   if (!v14)
   {
     v19 = objc_alloc(MEMORY[0x277CBC5A0]);
-    v20 = [v13 recordType];
-    v14 = [v19 initWithRecordType:v20 recordID:v10];
+    recordType = [localDB recordType];
+    v14 = [v19 initWithRecordType:recordType recordID:dCopy];
   }
 
-  if (!v11[2](v11, v14))
+  if (!maybeCopy[2](maybeCopy, v14))
   {
     v16 = 0;
 LABEL_11:
@@ -290,22 +290,22 @@ LABEL_11:
   }
 
   v26 = 0;
-  v21 = [v13 writeRecord:v14 error:&v26];
+  v21 = [localDB writeRecord:v14 error:&v26];
   v16 = v26;
   if (v21)
   {
     if ([(MTIDCloudKitStore *)self canSyncBetweenDevices])
     {
-      v22 = [(MTIDCloudKitStore *)self syncEngine];
-      v28[0] = v10;
+      syncEngine = [(MTIDCloudKitStore *)self syncEngine];
+      v28[0] = dCopy;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
-      [v22 saveRecordsWithIDs:v23 qualityOfService:a4];
+      [syncEngine saveRecordsWithIDs:v23 qualityOfService:service];
     }
 
     goto LABEL_11;
   }
 
-  if (a6)
+  if (error)
   {
     goto LABEL_3;
   }
@@ -319,27 +319,27 @@ LABEL_14:
   return v18;
 }
 
-- (id)promiseForRecordWithID:(id)a3 timeout:(double)a4 qualityOfService:(int64_t)a5 existingOnly:(BOOL)a6 updateRecordMaybe:(id)a7
+- (id)promiseForRecordWithID:(id)d timeout:(double)timeout qualityOfService:(int64_t)service existingOnly:(BOOL)only updateRecordMaybe:(id)maybe
 {
-  v12 = a3;
-  v13 = a7;
+  dCopy = d;
+  maybeCopy = maybe;
   v14 = objc_alloc_init(MTPromise);
-  v15 = [(MTIDCloudKitStore *)self accessQueue];
+  accessQueue = [(MTIDCloudKitStore *)self accessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __100__MTIDCloudKitStore_promiseForRecordWithID_timeout_qualityOfService_existingOnly_updateRecordMaybe___block_invoke;
   block[3] = &unk_2798CDC48;
   block[4] = self;
-  v23 = v12;
-  v25 = v13;
-  v26 = a5;
+  v23 = dCopy;
+  v25 = maybeCopy;
+  serviceCopy = service;
   v16 = v14;
   v24 = v16;
-  v27 = a4;
-  v28 = a6;
-  v17 = v13;
-  v18 = v12;
-  dispatch_async(v15, block);
+  timeoutCopy = timeout;
+  onlyCopy = only;
+  v17 = maybeCopy;
+  v18 = dCopy;
+  dispatch_async(accessQueue, block);
 
   v19 = v24;
   v20 = v16;
@@ -411,22 +411,22 @@ void __100__MTIDCloudKitStore_promiseForRecordWithID_timeout_qualityOfService_ex
   return v3;
 }
 
-+ (id)referenceRecordIDForScheme:(id)a3 dsId:(id)a4
++ (id)referenceRecordIDForScheme:(id)scheme dsId:(id)id
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 idNamespace];
-  v8 = [v6 idType];
+  idCopy = id;
+  schemeCopy = scheme;
+  idNamespace = [schemeCopy idNamespace];
+  idType = [schemeCopy idType];
 
-  if (v5 && v8 == 2)
+  if (idCopy && idType == 2)
   {
-    v9 = [v7 stringByAppendingFormat:@"_%llx", objc_msgSend(v5, "unsignedLongLongValue")];
+    v9 = [idNamespace stringByAppendingFormat:@"_%llx", objc_msgSend(idCopy, "unsignedLongLongValue")];
 
-    v7 = v9;
+    idNamespace = v9;
   }
 
-  v10 = [v7 mt_SHA1Base62String];
-  v11 = [@"MT_ID" stringByAppendingString:v10];
+  mt_SHA1Base62String = [idNamespace mt_SHA1Base62String];
+  v11 = [@"MT_ID" stringByAppendingString:mt_SHA1Base62String];
 
   v12 = objc_alloc(MEMORY[0x277CBC5D0]);
   v13 = +[MTIDCloudKitStore recordZoneID];
@@ -435,9 +435,9 @@ void __100__MTIDCloudKitStore_promiseForRecordWithID_timeout_qualityOfService_ex
   return v14;
 }
 
-+ (id)referenceDateOfRecord:(id)a3
++ (id)referenceDateOfRecord:(id)record
 {
-  v3 = [a3 objectForKeyedSubscript:@"secretKey"];
+  v3 = [record objectForKeyedSubscript:@"secretKey"];
   v4 = v3;
   if (v3)
   {
@@ -453,12 +453,12 @@ void __100__MTIDCloudKitStore_promiseForRecordWithID_timeout_qualityOfService_ex
   return v5;
 }
 
-+ (id)keyOfReferenceDate:(id)a3
++ (id)keyOfReferenceDate:(id)date
 {
-  if (a3)
+  if (date)
   {
     v4 = MEMORY[0x277CCACA8];
-    [a3 timeIntervalSince1970];
+    [date timeIntervalSince1970];
     v6 = [v4 stringWithFormat:@"%lld", v5];
   }
 
@@ -470,41 +470,41 @@ void __100__MTIDCloudKitStore_promiseForRecordWithID_timeout_qualityOfService_ex
   return v6;
 }
 
-+ (id)spanRecordIDForScheme:(id)a3 referenceRecordID:(id)a4 serialNumber:(unint64_t)a5
++ (id)spanRecordIDForScheme:(id)scheme referenceRecordID:(id)d serialNumber:(unint64_t)number
 {
   v8 = MEMORY[0x277CCACA8];
-  v9 = a3;
-  v10 = [a4 recordName];
-  v11 = [v9 storagePoolSize];
+  schemeCopy = scheme;
+  recordName = [d recordName];
+  storagePoolSize = [schemeCopy storagePoolSize];
 
-  v12 = [v8 stringWithFormat:@"%@_%02lx", v10, a5 % v11];
+  v12 = [v8 stringWithFormat:@"%@_%02lx", recordName, number % storagePoolSize];
 
   v13 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v14 = [a1 recordZoneID];
-  v15 = [v13 initWithRecordName:v12 zoneID:v14];
+  recordZoneID = [self recordZoneID];
+  v15 = [v13 initWithRecordName:v12 zoneID:recordZoneID];
 
   return v15;
 }
 
-+ (BOOL)updateRecord:(id)a3 isSpanRecord:(BOOL)a4 scheme:(id)a5 expectedKey:(id)a6 expiration:(id)a7 reset:(BOOL)a8
++ (BOOL)updateRecord:(id)record isSpanRecord:(BOOL)spanRecord scheme:(id)scheme expectedKey:(id)key expiration:(id)expiration reset:(BOOL)reset
 {
-  v8 = a8;
-  v12 = a4;
+  resetCopy = reset;
+  spanRecordCopy = spanRecord;
   v39 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v32 = a7;
-  v16 = [v13 objectForKeyedSubscript:@"namespace"];
-  v17 = [v13 objectForKeyedSubscript:@"secretKey"];
-  v18 = [v14 idNamespace];
+  recordCopy = record;
+  schemeCopy = scheme;
+  keyCopy = key;
+  expirationCopy = expiration;
+  v16 = [recordCopy objectForKeyedSubscript:@"namespace"];
+  v17 = [recordCopy objectForKeyedSubscript:@"secretKey"];
+  idNamespace = [schemeCopy idNamespace];
   v31 = v16;
-  LODWORD(v16) = [v16 isEqualToString:v18];
+  LODWORD(v16) = [v16 isEqualToString:idNamespace];
 
   v19 = v16 ^ 1;
-  if (v12 && (v19 & 1) == 0)
+  if (spanRecordCopy && (v19 & 1) == 0)
   {
-    if ([v17 isEqualToString:v15] && !v8)
+    if ([v17 isEqualToString:keyCopy] && !resetCopy)
     {
       goto LABEL_5;
     }
@@ -513,31 +513,31 @@ LABEL_14:
     v24 = MTMetricsKitOSLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [v14 idNamespace];
+      idNamespace2 = [schemeCopy idNamespace];
       *buf = 138412802;
-      v34 = v13;
+      v34 = recordCopy;
       v35 = 2112;
-      v36 = v25;
+      v36 = idNamespace2;
       v37 = 2112;
-      v38 = v15;
+      v38 = keyCopy;
       _os_log_impl(&dword_258F4B000, v24, OS_LOG_TYPE_DEBUG, "MetricsKit: Updating record %@ for namespace %@ key %@", buf, 0x20u);
     }
 
-    v26 = [v14 idNamespace];
-    [v13 setObject:v26 forKeyedSubscript:@"namespace"];
+    idNamespace3 = [schemeCopy idNamespace];
+    [recordCopy setObject:idNamespace3 forKeyedSubscript:@"namespace"];
 
-    [v13 setObject:v15 forKeyedSubscript:@"secretKey"];
-    v22 = v32;
-    [v13 setObject:v32 forKeyedSubscript:@"expiration"];
-    v27 = [MEMORY[0x277CCAD78] UUID];
-    v28 = [v27 UUIDString];
-    [v13 mt_setSecretValue:v28];
+    [recordCopy setObject:keyCopy forKeyedSubscript:@"secretKey"];
+    v22 = expirationCopy;
+    [recordCopy setObject:expirationCopy forKeyedSubscript:@"expiration"];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [recordCopy mt_setSecretValue:uUIDString];
 
-    [v13 mt_setSynchronized:0];
+    [recordCopy mt_setSynchronized:0];
     goto LABEL_17;
   }
 
-  if ((v19 | v8) == 1)
+  if ((v19 | resetCopy) == 1)
   {
     goto LABEL_14;
   }
@@ -551,24 +551,24 @@ LABEL_5:
 
   else
   {
-    v21 = !v12;
+    v21 = !spanRecordCopy;
   }
 
-  if (!v15)
+  if (!keyCopy)
   {
-    v22 = v32;
+    v22 = expirationCopy;
     goto LABEL_18;
   }
 
-  v22 = v32;
+  v22 = expirationCopy;
   if (v21)
   {
-    [v13 setObject:v15 forKeyedSubscript:@"secretKey"];
+    [recordCopy setObject:keyCopy forKeyedSubscript:@"secretKey"];
     v23 = MTMetricsKitOSLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v34 = v13;
+      v34 = recordCopy;
       _os_log_impl(&dword_258F4B000, v23, OS_LOG_TYPE_DEBUG, "MetricsKit: Updating reference record %@ with current date", buf, 0xCu);
     }
 
@@ -617,30 +617,30 @@ BOOL __100__MTIDCloudKitStore_spanRecordForScheme_span_timeout_existingOnly_qual
 
 - (void)fetchChangesIfNeeded
 {
-  v3 = [(MTIDCloudKitStore *)self localDB];
-  v4 = [v3 needsFetchRecords];
+  localDB = [(MTIDCloudKitStore *)self localDB];
+  needsFetchRecords = [localDB needsFetchRecords];
 
-  if (v4)
+  if (needsFetchRecords)
   {
-    v5 = [(MTIDCloudKitStore *)self localDB];
-    [v5 setNeedsFetchRecords:0];
+    localDB2 = [(MTIDCloudKitStore *)self localDB];
+    [localDB2 setNeedsFetchRecords:0];
 
-    v6 = [(MTIDCloudKitStore *)self syncEngine];
-    [v6 fetchAllRecords];
+    syncEngine = [(MTIDCloudKitStore *)self syncEngine];
+    [syncEngine fetchAllRecords];
   }
 }
 
-- (id)syncForSchemes:(id)a3 options:(id)a4
+- (id)syncForSchemes:(id)schemes options:(id)options
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a4 objectForKeyedSubscript:@"dsId"];
+  schemesCopy = schemes;
+  v7 = [options objectForKeyedSubscript:@"dsId"];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v6;
+  v9 = schemesCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -671,12 +671,12 @@ BOOL __100__MTIDCloudKitStore_spanRecordForScheme_span_timeout_existingOnly_qual
     while (v11);
   }
 
-  v16 = [(MTIDCloudKitStore *)self syncEngine];
+  syncEngine = [(MTIDCloudKitStore *)self syncEngine];
 
-  if (v16)
+  if (syncEngine)
   {
-    v17 = [(MTIDCloudKitStore *)self syncEngine];
-    v18 = [v17 fetchRecordWithIDs:v8];
+    syncEngine2 = [(MTIDCloudKitStore *)self syncEngine];
+    v18 = [syncEngine2 fetchRecordWithIDs:v8];
 
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -803,25 +803,25 @@ LABEL_21:
   return v25;
 }
 
-- (void)accountDidChangeWithUserRecordID:(id)a3
+- (void)accountDidChangeWithUserRecordID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTIDCloudKitStore *)self accessQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  accessQueue = [(MTIDCloudKitStore *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v6 = [(MTIDCloudKitStore *)self localDB];
-  v7 = [v4 recordName];
-  v8 = [v6 setUserRecordIDName:v7];
+  localDB = [(MTIDCloudKitStore *)self localDB];
+  recordName = [dCopy recordName];
+  v8 = [localDB setUserRecordIDName:recordName];
 
   if (v8)
   {
     v9 = MTMetricsKitOSLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [v4 recordName];
+      recordName2 = [dCopy recordName];
       v12 = 138412290;
-      v13 = v10;
+      v13 = recordName2;
       _os_log_impl(&dword_258F4B000, v9, OS_LOG_TYPE_DEBUG, "MetricsKit: Updated user record with ID %@", &v12, 0xCu);
     }
 
@@ -831,27 +831,27 @@ LABEL_21:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncEngineDidStartWithError:(id)a3
+- (void)syncEngineDidStartWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTIDCloudKitStore *)self accessQueue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  accessQueue = [(MTIDCloudKitStore *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  if (v4)
+  if (errorCopy)
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [v4 domain];
-    v8 = [v6 stringWithFormat:@"%@-%ld", v7, objc_msgSend(v4, "code")];
+    domain = [errorCopy domain];
+    pendingRecordIDs = [v6 stringWithFormat:@"%@-%ld", domain, objc_msgSend(errorCopy, "code")];
 
-    v9 = [(MTIDCloudKitStore *)self localDB];
-    [v9 setSyncStatusCode:v8];
+    localDB = [(MTIDCloudKitStore *)self localDB];
+    [localDB setSyncStatusCode:pendingRecordIDs];
 
     v10 = MTMetricsKitOSLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v20 = v4;
+      v20 = errorCopy;
       v11 = "MetricsKit: Error starting sync engine: %@";
       v12 = v10;
       v13 = OS_LOG_TYPE_ERROR;
@@ -863,23 +863,23 @@ LABEL_9:
 
   else
   {
-    v15 = [(MTIDCloudKitStore *)self localDB];
-    [v15 setSyncStatusCode:@"Ready"];
+    localDB2 = [(MTIDCloudKitStore *)self localDB];
+    [localDB2 setSyncStatusCode:@"Ready"];
 
     [(MTIDCloudKitStore *)self fetchChangesIfNeeded];
-    v16 = [(MTIDCloudKitStore *)self localDB];
-    v8 = [v16 pendingRecordIDs];
+    localDB3 = [(MTIDCloudKitStore *)self localDB];
+    pendingRecordIDs = [localDB3 pendingRecordIDs];
 
-    if ([v8 count])
+    if ([pendingRecordIDs count])
     {
-      v17 = [(MTIDCloudKitStore *)self syncEngine];
-      [v17 saveRecordsWithIDs:v8 qualityOfService:25];
+      syncEngine = [(MTIDCloudKitStore *)self syncEngine];
+      [syncEngine saveRecordsWithIDs:pendingRecordIDs qualityOfService:25];
 
       v10 = MTMetricsKitOSLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         *buf = 67109120;
-        LODWORD(v20) = [v8 count];
+        LODWORD(v20) = [pendingRecordIDs count];
         v11 = "MetricsKit: Started sync engine with %d unsynchronized records";
         v12 = v10;
         v13 = OS_LOG_TYPE_DEBUG;
@@ -906,13 +906,13 @@ LABEL_9:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)recordWithID:(id)a3
+- (id)recordWithID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTIDCloudKitStore *)self localDB];
+  dCopy = d;
+  localDB = [(MTIDCloudKitStore *)self localDB];
   v12 = 0;
-  v6 = [v5 recordWithID:v4 error:&v12];
+  v6 = [localDB recordWithID:dCopy error:&v12];
   v7 = v12;
 
   if (!v6)
@@ -920,9 +920,9 @@ LABEL_9:
     v8 = MTMetricsKitOSLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v4 recordName];
+      recordName = [dCopy recordName];
       *buf = 138412546;
-      v14 = v9;
+      v14 = recordName;
       v15 = 2112;
       v16 = v7;
       _os_log_impl(&dword_258F4B000, v8, OS_LOG_TYPE_ERROR, "MetricsKit: Failed to read local record data with ID %@ error %@", buf, 0x16u);
@@ -934,19 +934,19 @@ LABEL_9:
   return v6;
 }
 
-- (void)recordWasSaved:(id)a3
+- (void)recordWasSaved:(id)saved
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 recordType];
-  v6 = [v5 isEqualToString:@"MT_IDSecret"];
+  savedCopy = saved;
+  recordType = [savedCopy recordType];
+  v6 = [recordType isEqualToString:@"MT_IDSecret"];
 
   if (v6)
   {
-    [v4 mt_setSynchronized:1];
-    v7 = [(MTIDCloudKitStore *)self localDB];
+    [savedCopy mt_setSynchronized:1];
+    localDB = [(MTIDCloudKitStore *)self localDB];
     v14 = 0;
-    v8 = [v7 writeRecord:v4 error:&v14];
+    v8 = [localDB writeRecord:savedCopy error:&v14];
     v9 = v14;
 
     if ((v8 & 1) == 0)
@@ -954,10 +954,10 @@ LABEL_9:
       v10 = MTMetricsKitOSLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [v4 recordID];
-        v12 = [v11 recordName];
+        recordID = [savedCopy recordID];
+        recordName = [recordID recordName];
         *buf = 138412546;
-        v16 = v12;
+        v16 = recordName;
         v17 = 2112;
         v18 = v9;
         _os_log_impl(&dword_258F4B000, v10, OS_LOG_TYPE_ERROR, "MetricsKit: Failed to save local record data with ID %@ error %@", buf, 0x16u);
@@ -968,39 +968,39 @@ LABEL_9:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordWasFailedToSave:(id)a3
+- (void)recordWasFailedToSave:(id)save
 {
-  v7 = a3;
-  v4 = [v7 recordType];
-  v5 = [v4 isEqualToString:@"MT_IDSecret"];
+  saveCopy = save;
+  recordType = [saveCopy recordType];
+  v5 = [recordType isEqualToString:@"MT_IDSecret"];
 
   if (v5)
   {
-    v6 = [(MTIDCloudKitStore *)self promiseManager];
-    [v6 finishPromisesOfRecord:v7];
+    promiseManager = [(MTIDCloudKitStore *)self promiseManager];
+    [promiseManager finishPromisesOfRecord:saveCopy];
   }
 }
 
-- (void)recordWasFetched:(id)a3
+- (void)recordWasFetched:(id)fetched
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 recordType];
-  v6 = [v5 isEqualToString:@"MT_IDSecret"];
+  fetchedCopy = fetched;
+  recordType = [fetchedCopy recordType];
+  v6 = [recordType isEqualToString:@"MT_IDSecret"];
 
   if (v6)
   {
-    v7 = [v4 recordID];
-    v8 = [v7 recordName];
-    v9 = [v8 hasPrefix:@"MT_ID"];
+    recordID = [fetchedCopy recordID];
+    recordName = [recordID recordName];
+    v9 = [recordName hasPrefix:@"MT_ID"];
 
     if (v9)
     {
-      [v4 mt_setSynchronized:1];
-      v10 = [(MTIDCloudKitStore *)self localDB];
+      [fetchedCopy mt_setSynchronized:1];
+      localDB = [(MTIDCloudKitStore *)self localDB];
       v17 = 0;
-      v11 = [v10 writeRecord:v4 error:&v17];
-      v12 = v17;
+      v11 = [localDB writeRecord:fetchedCopy error:&v17];
+      syncEngine = v17;
 
       if (v11)
       {
@@ -1009,30 +1009,30 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v13 = MTMetricsKitOSLog();
-      if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      recordID3 = MTMetricsKitOSLog();
+      if (!os_log_type_enabled(recordID3, OS_LOG_TYPE_ERROR))
       {
 LABEL_8:
 
         goto LABEL_9;
       }
 
-      v14 = [v4 recordID];
-      v15 = [v14 recordName];
+      recordID2 = [fetchedCopy recordID];
+      recordName2 = [recordID2 recordName];
       *buf = 138412546;
-      v20 = v15;
+      v20 = recordName2;
       v21 = 2112;
-      v22 = v12;
-      _os_log_impl(&dword_258F4B000, v13, OS_LOG_TYPE_ERROR, "MetricsKit: Failed to save local record data with ID %@ error %@", buf, 0x16u);
+      v22 = syncEngine;
+      _os_log_impl(&dword_258F4B000, recordID3, OS_LOG_TYPE_ERROR, "MetricsKit: Failed to save local record data with ID %@ error %@", buf, 0x16u);
     }
 
     else
     {
-      v12 = [(MTIDCloudKitStore *)self syncEngine];
-      v13 = [v4 recordID];
-      v18 = v13;
-      v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
-      [v12 deleteRecordsWithIDs:v14];
+      syncEngine = [(MTIDCloudKitStore *)self syncEngine];
+      recordID3 = [fetchedCopy recordID];
+      v18 = recordID3;
+      recordID2 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
+      [syncEngine deleteRecordsWithIDs:recordID2];
     }
 
     goto LABEL_8;
@@ -1043,13 +1043,13 @@ LABEL_10:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordWasDeleted:(id)a3
+- (void)recordWasDeleted:(id)deleted
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTIDCloudKitStore *)self localDB];
+  deletedCopy = deleted;
+  localDB = [(MTIDCloudKitStore *)self localDB];
   v11 = 0;
-  v6 = [v5 deleteRecordWithID:v4 error:&v11];
+  v6 = [localDB deleteRecordWithID:deletedCopy error:&v11];
   v7 = v11;
 
   if ((v6 & 1) == 0)
@@ -1057,9 +1057,9 @@ LABEL_10:
     v8 = MTMetricsKitOSLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v4 recordName];
+      recordName = [deletedCopy recordName];
       *buf = 138412546;
-      v13 = v9;
+      v13 = recordName;
       v14 = 2112;
       v15 = v7;
       _os_log_impl(&dword_258F4B000, v8, OS_LOG_TYPE_ERROR, "MetricsKit: Failed to delete local record data with ID %@ error %@", buf, 0x16u);
@@ -1069,48 +1069,48 @@ LABEL_10:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cloudKitLocalDB:(id)a3 didChangeRecord:(id)a4
+- (void)cloudKitLocalDB:(id)b didChangeRecord:(id)record
 {
-  v7 = a4;
-  if ([v7 mt_isSynchronized])
+  recordCopy = record;
+  if ([recordCopy mt_isSynchronized])
   {
-    v5 = [(MTIDCloudKitStore *)self promiseManager];
-    [v5 finishPromisesOfRecord:v7];
+    promiseManager = [(MTIDCloudKitStore *)self promiseManager];
+    [promiseManager finishPromisesOfRecord:recordCopy];
 
-    v6 = [v7 objectForKeyedSubscript:@"namespace"];
+    v6 = [recordCopy objectForKeyedSubscript:@"namespace"];
     [MTInterprocessChangeNotifier notify:v6];
   }
 }
 
-- (id)secretForScheme:(id)a3 options:(id)a4
+- (id)secretForScheme:(id)scheme options:(id)options
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"appBundleID"];
-  v9 = [(MTIDCloudKitStore *)self syncEngine];
-  [v9 setApplicationBundleIdentifierOverrideForNetworkAttribution:v8];
+  schemeCopy = scheme;
+  optionsCopy = options;
+  v8 = [optionsCopy objectForKeyedSubscript:@"appBundleID"];
+  syncEngine = [(MTIDCloudKitStore *)self syncEngine];
+  [syncEngine setApplicationBundleIdentifierOverrideForNetworkAttribution:v8];
 
-  v10 = [v7 objectForKeyedSubscript:@"date"];
+  v10 = [optionsCopy objectForKeyedSubscript:@"date"];
   v11 = v10;
   if (v10)
   {
-    v12 = v10;
+    date = v10;
   }
 
   else
   {
     v13 = +[MTFrameworkEnvironment sharedEnvironment];
-    v12 = [v13 date];
+    date = [v13 date];
   }
 
-  v35 = [v7 objectForKeyedSubscript:@"dsId"];
-  v14 = [v7 objectForKeyedSubscript:@"reset"];
-  v15 = [v14 BOOLValue];
+  v35 = [optionsCopy objectForKeyedSubscript:@"dsId"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"reset"];
+  bOOLValue = [v14 BOOLValue];
 
-  v16 = [v7 objectForKeyedSubscript:@"syncWaitTime"];
-  v17 = [v7 objectForKeyedSubscript:@"existingOnly"];
-  v18 = [v17 BOOLValue];
+  v16 = [optionsCopy objectForKeyedSubscript:@"syncWaitTime"];
+  v17 = [optionsCopy objectForKeyedSubscript:@"existingOnly"];
+  bOOLValue2 = [v17 BOOLValue];
 
   if (v16)
   {
@@ -1126,17 +1126,17 @@ LABEL_10:
   v21 = MTMetricsKitOSLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
-    v22 = [v6 idNamespace];
+    idNamespace = [schemeCopy idNamespace];
     v23 = @"NO";
     *buf = 138413058;
-    *&buf[4] = v22;
-    if (v18)
+    *&buf[4] = idNamespace;
+    if (bOOLValue2)
     {
       v23 = @"YES";
     }
 
     *&buf[12] = 2112;
-    *&buf[14] = v12;
+    *&buf[14] = date;
     *&buf[22] = 2112;
     v45 = v23;
     LOWORD(v46) = 2048;
@@ -1144,15 +1144,15 @@ LABEL_10:
     _os_log_impl(&dword_258F4B000, v21, OS_LOG_TYPE_INFO, "MetricsKit: Secret requested for scheme %@, date: %@, existingOnly: %@, timeout: %f", buf, 0x2Au);
   }
 
-  if (!v18)
+  if (!bOOLValue2)
   {
     goto LABEL_14;
   }
 
-  v24 = [MTIDCloudKitStore referenceRecordIDForScheme:v6 dsId:v35];
-  v25 = [(MTIDCloudKitStore *)self localDB];
+  v24 = [MTIDCloudKitStore referenceRecordIDForScheme:schemeCopy dsId:v35];
+  localDB = [(MTIDCloudKitStore *)self localDB];
   v43 = 0;
-  v26 = [v25 recordWithID:v24 error:&v43];
+  v26 = [localDB recordWithID:v24 error:&v43];
   v34 = v43;
 
   if (v26)
@@ -1165,17 +1165,17 @@ LABEL_14:
     v45 = __Block_byref_object_copy_;
     *&v46 = __Block_byref_object_dispose_;
     *(&v46 + 1) = 0;
-    v27 = [(MTIDCloudKitStore *)self referenceRecordForScheme:v6 dsId:v35 date:v12 reset:v15 timeout:v18 existingOnly:25 qualityOfService:v20];
+    v27 = [(MTIDCloudKitStore *)self referenceRecordForScheme:schemeCopy dsId:v35 date:date reset:bOOLValue timeout:bOOLValue2 existingOnly:25 qualityOfService:v20];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __45__MTIDCloudKitStore_secretForScheme_options___block_invoke;
     v36[3] = &unk_2798CDCE8;
-    v37 = v6;
-    v39 = self;
+    v37 = schemeCopy;
+    selfCopy = self;
     v40 = buf;
-    v38 = v12;
+    v38 = date;
     v41 = v20;
-    v42 = v18;
+    v42 = bOOLValue2;
     v28 = [v27 thenWithBlock:v36];
 
     _Block_object_dispose(buf, 8);
@@ -1186,9 +1186,9 @@ LABEL_14:
   v32 = MTMetricsKitOSLog();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
   {
-    v33 = [v6 idNamespace];
+    idNamespace2 = [schemeCopy idNamespace];
     *buf = 138412290;
-    *&buf[4] = v33;
+    *&buf[4] = idNamespace2;
     _os_log_impl(&dword_258F4B000, v32, OS_LOG_TYPE_INFO, "MetricsKit: Secret doesn't exist, returning empty secret for scheme %@", buf, 0xCu);
   }
 
@@ -1347,22 +1347,22 @@ id __45__MTIDCloudKitStore_secretForScheme_options___block_invoke_70(uint64_t a1
   return v19;
 }
 
-- (id)resetSchemes:(id)a3 options:(id)a4
+- (id)resetSchemes:(id)schemes options:(id)options
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"appBundleID"];
-  v9 = [(MTIDCloudKitStore *)self syncEngine];
-  [v9 setApplicationBundleIdentifierOverrideForNetworkAttribution:v8];
+  schemesCopy = schemes;
+  optionsCopy = options;
+  v8 = [optionsCopy objectForKeyedSubscript:@"appBundleID"];
+  syncEngine = [(MTIDCloudKitStore *)self syncEngine];
+  [syncEngine setApplicationBundleIdentifierOverrideForNetworkAttribution:v8];
 
-  v10 = [v7 objectForKeyedSubscript:@"dsId"];
-  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v10 = [optionsCopy objectForKeyedSubscript:@"dsId"];
+  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(schemesCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = v6;
+  v12 = schemesCopy;
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
   {
@@ -1395,14 +1395,14 @@ id __45__MTIDCloudKitStore_secretForScheme_options___block_invoke_70(uint64_t a1
   return v19;
 }
 
-- (id)maintainSchemes:(id)a3 options:(id)a4
+- (id)maintainSchemes:(id)schemes options:(id)options
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"appBundleID"];
-  v9 = [(MTIDCloudKitStore *)self syncEngine];
-  [v9 setApplicationBundleIdentifierOverrideForNetworkAttribution:v8];
+  schemesCopy = schemes;
+  optionsCopy = options;
+  v8 = [optionsCopy objectForKeyedSubscript:@"appBundleID"];
+  syncEngine = [(MTIDCloudKitStore *)self syncEngine];
+  [syncEngine setApplicationBundleIdentifierOverrideForNetworkAttribution:v8];
 
   if ([(MTIDCloudKitStore *)self canSyncBetweenDevices])
   {
@@ -1410,22 +1410,22 @@ id __45__MTIDCloudKitStore_secretForScheme_options___block_invoke_70(uint64_t a1
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 67109120;
-      v23 = [v6 count];
+      v23 = [schemesCopy count];
       _os_log_impl(&dword_258F4B000, v10, OS_LOG_TYPE_DEBUG, "MetricsKit: Performing maintenance on %d ID schemes", buf, 8u);
     }
 
     v11 = objc_alloc_init(MTPromise);
-    v12 = [(MTIDCloudKitStore *)self accessQueue];
+    accessQueue = [(MTIDCloudKitStore *)self accessQueue];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __45__MTIDCloudKitStore_maintainSchemes_options___block_invoke;
     v18[3] = &unk_2798CDD80;
     v18[4] = self;
-    v19 = v7;
-    v20 = v6;
+    v19 = optionsCopy;
+    v20 = schemesCopy;
     v13 = v11;
     v21 = v13;
-    dispatch_async(v12, v18);
+    dispatch_async(accessQueue, v18);
 
     v14 = v21;
     v15 = v13;
@@ -1541,22 +1541,22 @@ uint64_t __45__MTIDCloudKitStore_maintainSchemes_options___block_invoke_3(uint64
 
 - (void)clearLocalData
 {
-  v2 = [(MTIDCloudKitStore *)self localDB];
-  [v2 clearData];
+  localDB = [(MTIDCloudKitStore *)self localDB];
+  [localDB clearData];
 }
 
 - (id)debugInfo
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v3 = [(MTIDCloudKitStore *)self localDB];
-  v4 = [v3 allRecords];
+  localDB = [(MTIDCloudKitStore *)self localDB];
+  allRecords = [localDB allRecords];
 
   v12[0] = @"container";
-  v5 = [(MTIDCloudKitStore *)self containerIdentifier];
-  v6 = v5;
-  if (v5)
+  containerIdentifier = [(MTIDCloudKitStore *)self containerIdentifier];
+  v6 = containerIdentifier;
+  if (containerIdentifier)
   {
-    v7 = v5;
+    v7 = containerIdentifier;
   }
 
   else
@@ -1566,7 +1566,7 @@ uint64_t __45__MTIDCloudKitStore_maintainSchemes_options___block_invoke_3(uint64
 
   v12[1] = @"secrets";
   v13[0] = v7;
-  v8 = [v4 mt_map:&__block_literal_global_86];
+  v8 = [allRecords mt_map:&__block_literal_global_86];
   v13[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 

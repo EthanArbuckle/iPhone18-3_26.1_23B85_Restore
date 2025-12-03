@@ -1,15 +1,15 @@
 @interface MapsSuggestionsLowVisitsImprover
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsLowVisitsImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (!entryCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -28,7 +28,7 @@
     goto LABEL_13;
   }
 
-  [v3 weight];
+  [entryCopy weight];
   if (v5 > 0.00001)
   {
 LABEL_13:
@@ -36,9 +36,9 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v6 = [v4 type];
+  type = [v4 type];
   v7 = 0;
-  if (v6 <= 4 && ((1 << v6) & 0x16) != 0)
+  if (type <= 4 && ((1 << type) & 0x16) != 0)
   {
     if ([v4 containsKey:@"MapsSuggestionsCoreRoutineVisitsCountKey"])
     {

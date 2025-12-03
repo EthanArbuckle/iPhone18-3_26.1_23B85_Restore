@@ -1,6 +1,6 @@
 @interface GESSMaterial
 - (GESSMaterial)init;
-- (id)initFromMtlFilePath:(id)a3;
+- (id)initFromMtlFilePath:(id)path;
 @end
 
 @implementation GESSMaterial
@@ -25,11 +25,11 @@
   return v2;
 }
 
-- (id)initFromMtlFilePath:(id)a3
+- (id)initFromMtlFilePath:(id)path
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v8 = objc_msgSend_absoluteString(v4, v5, v6, v7);
+  pathCopy = path;
+  v8 = objc_msgSend_absoluteString(pathCopy, v5, v6, v7);
   v9 = v8;
   v13 = objc_msgSend_UTF8String(v9, v10, v11, v12);
   sub_24BC836D4(&v34, v13);
@@ -55,7 +55,7 @@
     }
 
 LABEL_8:
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -82,12 +82,12 @@ LABEL_3:
     }
 
     self = v21;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v26 = 0;
+    selfCopy = 0;
   }
 
 LABEL_11:
@@ -102,7 +102,7 @@ LABEL_11:
   }
 
   v27 = *MEMORY[0x277D85DE8];
-  return v26;
+  return selfCopy;
 }
 
 @end

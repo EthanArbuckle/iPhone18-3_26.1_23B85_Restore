@@ -1,5 +1,5 @@
 @interface THWWeakRef
-+ (id)weakRefWithObject:(id)a3;
++ (id)weakRefWithObject:(id)object;
 - (void)dealloc;
 @end
 
@@ -13,11 +13,11 @@
   [(THWWeakRef *)&v3 dealloc];
 }
 
-+ (id)weakRefWithObject:(id)a3
++ (id)weakRefWithObject:(id)object
 {
-  v4 = objc_alloc_init(a1);
-  objc_storeWeak(v4 + 1, a3);
-  v4[2] = a3;
+  v4 = objc_alloc_init(self);
+  objc_storeWeak(v4 + 1, object);
+  v4[2] = object;
 
   return v4;
 }

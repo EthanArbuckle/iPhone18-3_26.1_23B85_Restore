@@ -1,28 +1,28 @@
 @interface VCPVideoHumanActionAnalyzer
-- (CGRect)scaleRect:(CGRect)a3 scaleX:(float)a4 scaleY:(float)a5;
-- (VCPVideoHumanActionAnalyzer)initWithTimeOfInterest:(id)a3 phFaces:(id)a4;
-- (float)intersectionOverUnion:(CGRect)a3 rect:(CGRect)a4;
-- (float)normDistance:(id)a3 point2:(id)a4;
+- (CGRect)scaleRect:(CGRect)rect scaleX:(float)x scaleY:(float)y;
+- (VCPVideoHumanActionAnalyzer)initWithTimeOfInterest:(id)interest phFaces:(id)faces;
+- (float)intersectionOverUnion:(CGRect)union rect:(CGRect)rect;
+- (float)normDistance:(id)distance point2:(id)point2;
 - (id).cxx_construct;
-- (id)associatePerson:(CGRect)a3 withPHFaces:(id)a4;
-- (id)clipResults:(id *)a3;
+- (id)associatePerson:(CGRect)person withPHFaces:(id)faces;
+- (id)clipResults:(id *)results;
 - (id)privateResults;
 - (id)results;
-- (int)analyzeFrame:(__CVBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5 frameStats:(id)a6 flags:(unint64_t *)a7;
-- (int)finishAnalysisPass:(id *)a3;
-- (int)processPersons:(id)a3 humanBounds:(id)a4 dominantPersonIdx:(int)a5 frame:(__CVBuffer *)a6 timestamp:(id *)a7 duration:(id *)a8 frameStats:(id)a9;
-- (void)addActiveResults:(id *)a3;
+- (int)analyzeFrame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration frameStats:(id)stats flags:(unint64_t *)flags;
+- (int)finishAnalysisPass:(id *)pass;
+- (int)processPersons:(id)persons humanBounds:(id)bounds dominantPersonIdx:(int)idx frame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration frameStats:(id)stats;
+- (void)addActiveResults:(id *)results;
 - (void)computeActionScore;
-- (void)computeVar:(int)a3 index2:(int)a4 interVar:(float *)a5 intraVar:(float *)a6;
+- (void)computeVar:(int)var index2:(int)index2 interVar:(float *)interVar intraVar:(float *)intraVar;
 @end
 
 @implementation VCPVideoHumanActionAnalyzer
 
-- (VCPVideoHumanActionAnalyzer)initWithTimeOfInterest:(id)a3 phFaces:(id)a4
+- (VCPVideoHumanActionAnalyzer)initWithTimeOfInterest:(id)interest phFaces:(id)faces
 {
   v50 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  interestCopy = interest;
+  facesCopy = faces;
   v48.receiver = self;
   v48.super_class = VCPVideoHumanActionAnalyzer;
   v9 = [(VCPVideoHumanActionAnalyzer *)&v48 init];
@@ -38,25 +38,25 @@
     v15 = *(MEMORY[0x1E6960C80] + 16);
     *(v9 + 1) = *MEMORY[0x1E6960C80];
     *(v9 + 4) = v15;
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = *(v9 + 8);
-    *(v9 + 8) = v16;
+    *(v9 + 8) = array;
 
-    v18 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v19 = *(v9 + 16);
-    *(v9 + 16) = v18;
+    *(v9 + 16) = array2;
 
-    v20 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v21 = *(v9 + 17);
-    *(v9 + 17) = v20;
+    *(v9 + 17) = array3;
 
-    v22 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v23 = *(v9 + 18);
-    *(v9 + 18) = v22;
+    *(v9 + 18) = array4;
 
-    v24 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     v25 = *(v9 + 19);
-    *(v9 + 19) = v24;
+    *(v9 + 19) = array5;
 
     *(v9 + 18) = 0;
     v26 = MEMORY[0x1E6960C70];
@@ -87,16 +87,16 @@
     *(v9 + 34) = 0;
 
     v9[280] = 0;
-    objc_storeStrong(v9 + 36, a3);
-    v35 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(v9 + 36, interest);
+    array6 = [MEMORY[0x1E695DF70] array];
     v36 = *(v9 + 37);
-    *(v9 + 37) = v35;
+    *(v9 + 37) = array6;
 
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v37 = v8;
+    v37 = facesCopy;
     v38 = [v37 countByEnumeratingWithState:&v44 objects:v49 count:16];
     if (v38)
     {
@@ -135,42 +135,42 @@
   return v42;
 }
 
-- (float)normDistance:(id)a3 point2:(id)a4
+- (float)normDistance:(id)distance point2:(id)point2
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectAtIndexedSubscript:0];
+  distanceCopy = distance;
+  point2Copy = point2;
+  v7 = [distanceCopy objectAtIndexedSubscript:0];
   [v7 floatValue];
   v9 = v8;
-  v10 = [v6 objectAtIndexedSubscript:0];
+  v10 = [point2Copy objectAtIndexedSubscript:0];
   [v10 floatValue];
   v12 = v11;
-  v13 = [v5 objectAtIndexedSubscript:0];
+  v13 = [distanceCopy objectAtIndexedSubscript:0];
   [v13 floatValue];
   v15 = v14;
-  v16 = [v6 objectAtIndexedSubscript:0];
+  v16 = [point2Copy objectAtIndexedSubscript:0];
   [v16 floatValue];
   v18 = v17;
-  v19 = [v5 objectAtIndexedSubscript:1];
+  v19 = [distanceCopy objectAtIndexedSubscript:1];
   [v19 floatValue];
   v21 = v20;
-  v22 = [v6 objectAtIndexedSubscript:1];
+  v22 = [point2Copy objectAtIndexedSubscript:1];
   [v22 floatValue];
   v24 = v23;
-  v25 = [v5 objectAtIndexedSubscript:1];
+  v25 = [distanceCopy objectAtIndexedSubscript:1];
   [v25 floatValue];
   v27 = v26;
-  v28 = [v6 objectAtIndexedSubscript:1];
+  v28 = [point2Copy objectAtIndexedSubscript:1];
   [v28 floatValue];
   v30 = sqrtf(((v21 - v24) * (v27 - v29)) + ((v9 - v12) * (v15 - v18)));
 
   return v30;
 }
 
-- (void)computeVar:(int)a3 index2:(int)a4 interVar:(float *)a5 intraVar:(float *)a6
+- (void)computeVar:(int)var index2:(int)index2 interVar:(float *)interVar intraVar:(float *)intraVar
 {
   v80 = *MEMORY[0x1E69E9840];
-  if (a5 && a6)
+  if (interVar && intraVar)
   {
     v77 = 0u;
     v78 = 0u;
@@ -181,7 +181,7 @@
     if (v8)
     {
       v9 = *v76;
-      v74 = a4;
+      index2Copy = index2;
       v72 = 0.0;
       v67 = 0.0;
       v70 = 0.0;
@@ -203,7 +203,7 @@
           v12 = *(*(&v75 + 1) + 8 * i);
           if ([v12 count])
           {
-            v13 = [v12 objectAtIndexedSubscript:a3];
+            v13 = [v12 objectAtIndexedSubscript:var];
             v14 = [v13 objectAtIndexedSubscript:2];
             [v14 floatValue];
             if (v15 <= 0.1)
@@ -212,56 +212,56 @@
 
             else
             {
-              v16 = [v12 objectAtIndexedSubscript:v74];
+              v16 = [v12 objectAtIndexedSubscript:index2Copy];
               v17 = [v16 objectAtIndexedSubscript:2];
               [v17 floatValue];
               v19 = v18 > 0.1;
 
               if (v19)
               {
-                v20 = [v12 objectAtIndexedSubscript:a3];
+                v20 = [v12 objectAtIndexedSubscript:var];
                 v21 = [v20 objectAtIndexedSubscript:0];
                 [v21 floatValue];
                 v64 = v22;
 
-                v23 = [v12 objectAtIndexedSubscript:a3];
+                v23 = [v12 objectAtIndexedSubscript:var];
                 v24 = [v23 objectAtIndexedSubscript:0];
                 [v24 floatValue];
                 v26 = v25;
-                v27 = [v12 objectAtIndexedSubscript:a3];
+                v27 = [v12 objectAtIndexedSubscript:var];
                 v28 = [v27 objectAtIndexedSubscript:0];
                 v63 = v26;
                 [v28 floatValue];
                 v62 = v29;
 
-                v30 = [v12 objectAtIndexedSubscript:a3];
+                v30 = [v12 objectAtIndexedSubscript:var];
                 v31 = [v30 objectAtIndexedSubscript:1];
                 [v31 floatValue];
                 v33 = v32;
 
-                v34 = [v12 objectAtIndexedSubscript:a3];
+                v34 = [v12 objectAtIndexedSubscript:var];
                 v35 = [v34 objectAtIndexedSubscript:1];
                 [v35 floatValue];
                 v37 = v36;
-                v38 = [v12 objectAtIndexedSubscript:a3];
+                v38 = [v12 objectAtIndexedSubscript:var];
                 v39 = [v38 objectAtIndexedSubscript:1];
                 [v39 floatValue];
                 v41 = v40;
 
-                v42 = [v12 objectAtIndexedSubscript:a3];
+                v42 = [v12 objectAtIndexedSubscript:var];
                 v43 = [v42 objectAtIndexedSubscript:0];
                 [v43 floatValue];
                 v45 = v44;
-                v46 = [v12 objectAtIndexedSubscript:v74];
+                v46 = [v12 objectAtIndexedSubscript:index2Copy];
                 v47 = [v46 objectAtIndexedSubscript:0];
                 [v47 floatValue];
                 v49 = v48;
 
-                v50 = [v12 objectAtIndexedSubscript:a3];
+                v50 = [v12 objectAtIndexedSubscript:var];
                 v51 = [v50 objectAtIndexedSubscript:1];
                 [v51 floatValue];
                 v53 = v52;
-                v54 = [v12 objectAtIndexedSubscript:v74];
+                v54 = [v12 objectAtIndexedSubscript:index2Copy];
                 v55 = [v54 objectAtIndexedSubscript:1];
                 [v55 floatValue];
                 v57 = v56;
@@ -301,8 +301,8 @@
       v59 = 0.0;
     }
 
-    *a5 = v59;
-    *a6 = v58;
+    *interVar = v59;
+    *intraVar = v58;
   }
 }
 
@@ -447,14 +447,14 @@ LABEL_25:
   self->_actionScoreRelative = fminf(v37 * v36, 1.0);
 }
 
-- (CGRect)scaleRect:(CGRect)a3 scaleX:(float)a4 scaleY:(float)a5
+- (CGRect)scaleRect:(CGRect)rect scaleX:(float)x scaleY:(float)y
 {
-  v5 = a4;
-  v6 = a3.origin.x * v5;
-  v7 = a5;
-  v8 = a3.origin.y * v7;
-  v9 = a3.size.width * v5;
-  v10 = a3.size.height * v7;
+  xCopy = x;
+  v6 = rect.origin.x * xCopy;
+  yCopy = y;
+  v8 = rect.origin.y * yCopy;
+  v9 = rect.size.width * xCopy;
+  v10 = rect.size.height * yCopy;
   result.size.height = v10;
   result.size.width = v9;
   result.origin.y = v8;
@@ -462,17 +462,17 @@ LABEL_25:
   return result;
 }
 
-- (float)intersectionOverUnion:(CGRect)a3 rect:(CGRect)a4
+- (float)intersectionOverUnion:(CGRect)union rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  v15 = CGRectIntersection(a3, a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = union.size.height;
+  v9 = union.size.width;
+  v10 = union.origin.y;
+  v11 = union.origin.x;
+  v15 = CGRectIntersection(union, rect);
   v13 = v15.size.height;
   v14 = v15.size.width;
   v15.origin.x = v11;
@@ -487,14 +487,14 @@ LABEL_25:
   return v14 * v13 / (v16.size.width * v16.size.height + 0.00999999978);
 }
 
-- (id)associatePerson:(CGRect)a3 withPHFaces:(id)a4
+- (id)associatePerson:(CGRect)person withPHFaces:(id)faces
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = person.size.height;
+  width = person.size.width;
+  y = person.origin.y;
+  x = person.origin.x;
   v47 = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  facesCopy = faces;
   v49.origin.x = x;
   v49.origin.y = y;
   v49.size.width = width;
@@ -578,23 +578,23 @@ LABEL_25:
   return v14;
 }
 
-- (int)processPersons:(id)a3 humanBounds:(id)a4 dominantPersonIdx:(int)a5 frame:(__CVBuffer *)a6 timestamp:(id *)a7 duration:(id *)a8 frameStats:(id)a9
+- (int)processPersons:(id)persons humanBounds:(id)bounds dominantPersonIdx:(int)idx frame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration frameStats:(id)stats
 {
   v158 = *MEMORY[0x1E69E9840];
-  v138 = a3;
-  v139 = a4;
-  v140 = a9;
-  Width = CVPixelBufferGetWidth(a6);
-  Height = CVPixelBufferGetHeight(a6);
-  var3 = a7->var3;
-  *(&self->_humanPoseScore + 1) = *&a7->var0;
+  personsCopy = persons;
+  boundsCopy = bounds;
+  statsCopy = stats;
+  Width = CVPixelBufferGetWidth(frame);
+  Height = CVPixelBufferGetHeight(frame);
+  var3 = timestamp->var3;
+  *(&self->_humanPoseScore + 1) = *&timestamp->var0;
   *&self->_lastHumanTimestamp.flags = var3;
-  v141 = [v138 objectAtIndexedSubscript:a5];
-  v17 = [v138 objectAtIndexedSubscript:0];
-  [v138 setObject:v17 atIndexedSubscript:a5];
+  v141 = [personsCopy objectAtIndexedSubscript:idx];
+  v17 = [personsCopy objectAtIndexedSubscript:0];
+  [personsCopy setObject:v17 atIndexedSubscript:idx];
 
-  [v138 setObject:v141 atIndexedSubscript:0];
-  v18 = [v139 objectAtIndexedSubscript:a5];
+  [personsCopy setObject:v141 atIndexedSubscript:0];
+  v18 = [boundsCopy objectAtIndexedSubscript:idx];
   p_humanRect = &self->_humanRect;
   self->_humanRect = NSRectFromString(v18);
 
@@ -602,13 +602,13 @@ LABEL_25:
   y = self->_humanRect.origin.y;
   v23 = self->_humanRect.size.width;
   v22 = self->_humanRect.size.height;
-  [v140 faceArea];
+  [statsCopy faceArea];
   if (v24 <= 0.2 && (v25 = x + v23 * 0.5, v26 = y + v22 * 0.5, fmax(self->_humanRect.size.width, self->_humanRect.size.height) >= fminf(fabsf(v25 + -0.5), fabsf(v26 + -0.5))))
   {
     v27 = [v141 count];
     v28 = &OBJC_IVAR___VCPVideoMetaFocusSegment__focusStatus;
-    v136 = a7;
-    v137 = self;
+    timestampCopy = timestamp;
+    selfCopy = self;
     v135 = &self->_humanRect;
     if (v27)
     {
@@ -619,7 +619,7 @@ LABEL_25:
       v29 = v141;
       v30 = [v29 countByEnumeratingWithState:&v143 objects:v157 count:16];
       v133 = Width;
-      v134 = a6;
+      frameCopy = frame;
       v132 = Height;
       if (v30)
       {
@@ -706,23 +706,23 @@ LABEL_25:
 
       LODWORD(v55) = 1036831949;
       v54 = [VCPHuman flagsFromKeypoints:v29 withMinConfidence:v55];
-      a7 = v136;
-      self = v137;
+      timestamp = timestampCopy;
+      self = selfCopy;
       v28 = &OBJC_IVAR___VCPVideoMetaFocusSegment__focusStatus;
       if ((v54 & 0x100000) != 0)
       {
-        v137->_humanPoseScore = v137->_humanPoseScore + 0.5;
+        selfCopy->_humanPoseScore = selfCopy->_humanPoseScore + 0.5;
       }
 
       p_humanRect = v135;
       if ((v54 & 0x200000) != 0)
       {
-        v137->_humanPoseScore = v137->_humanPoseScore + 0.5;
+        selfCopy->_humanPoseScore = selfCopy->_humanPoseScore + 0.5;
       }
 
       if (v52)
       {
-        v56 = v137->_actionScoreAbsolute * 0.3;
+        v56 = selfCopy->_actionScoreAbsolute * 0.3;
         if (v56 > 0.15)
         {
           v56 = 0.15;
@@ -753,7 +753,7 @@ LABEL_25:
           v57 = (v132 / v133) * v57;
         }
 
-        v61 = v137->_crop.size.width;
+        v61 = selfCopy->_crop.size.width;
         v62 = (v61 * 0.8) * 0.5;
         if (v57 < v62)
         {
@@ -762,7 +762,7 @@ LABEL_25:
 
         v63 = (v36 + v37) * 0.5;
         v64 = (v35 + v34) * 0.5;
-        v65 = v137->_crop.size.height;
+        v65 = selfCopy->_crop.size.height;
         v66 = (v65 * 0.8) * 0.5;
         if (v60 >= v66)
         {
@@ -798,24 +798,24 @@ LABEL_25:
           v70 = v64 + v66;
         }
 
-        v137->_crop.origin.x = v67;
-        v137->_crop.origin.y = v68;
-        v137->_crop.size.width = (v71 - v67);
-        v137->_crop.size.height = (v70 - v68);
-        [VCPVideoHumanActionAnalyzer scaleRect:v137 scaleX:"scaleRect:scaleX:scaleY:" scaleY:?];
+        selfCopy->_crop.origin.x = v67;
+        selfCopy->_crop.origin.y = v68;
+        selfCopy->_crop.size.width = (v71 - v67);
+        selfCopy->_crop.size.height = (v70 - v68);
+        [VCPVideoHumanActionAnalyzer scaleRect:selfCopy scaleX:"scaleRect:scaleX:scaleY:" scaleY:?];
         v73 = v72;
         v75 = v74;
         v77 = v76;
         v79 = v78;
         v80 = [VCPVideoObjectTracker alloc];
-        time = *v136;
-        v81 = [(VCPVideoObjectTracker *)v80 initWithObjectBounds:v134 inFrame:&time timestamp:v73, v75, v77, v79];
-        tracker = v137->_tracker;
-        v137->_tracker = v81;
+        time = *timestampCopy;
+        v81 = [(VCPVideoObjectTracker *)v80 initWithObjectBounds:frameCopy inFrame:&time timestamp:v73, v75, v77, v79];
+        tracker = selfCopy->_tracker;
+        selfCopy->_tracker = v81;
 
         v53 = 1;
-        a7 = v136;
-        self = v137;
+        timestamp = timestampCopy;
+        self = selfCopy;
         p_humanRect = v135;
         v28 = &OBJC_IVAR___VCPVideoMetaFocusSegment__focusStatus;
       }
@@ -835,7 +835,7 @@ LABEL_25:
     v83 = fmin(fmax(p_humanRect->size.width, p_humanRect->size.height), 0.5);
     v84 = v28[321];
     *(&self->super.super.isa + v84) = *(&self->super.super.isa + v84) * (v83 + 0.5);
-    [v140 setHumanPoseScore:?];
+    [statsCopy setHumanPoseScore:?];
     if ([(NSMutableArray *)self->_bodyArray count]>= 7)
     {
       [(NSMutableArray *)self->_bodyArray removeObjectAtIndex:0];
@@ -846,12 +846,12 @@ LABEL_25:
     {
       v155[0] = @"humanKeypoints";
       v155[1] = @"humanBounds";
-      v156[0] = v138;
-      v156[1] = v139;
+      v156[0] = personsCopy;
+      v156[1] = boundsCopy;
       v85 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v156 forKeys:v155 count:2];
       keyPersonResults = self->_keyPersonResults;
       v153[0] = @"start";
-      time = *a7;
+      time = *timestamp;
       v87 = CMTimeCopyAsDictionary(&time, 0);
       v154[0] = v87;
       v153[1] = @"duration";
@@ -867,8 +867,8 @@ LABEL_25:
       v90 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v154 forKeys:v153 count:4];
       [(NSMutableArray *)keyPersonResults addObject:v90];
 
-      a7 = v136;
-      self = v137;
+      timestamp = timestampCopy;
+      self = selfCopy;
     }
 
     if ([(NSMutableArray *)self->_bodyArray count]>= 7)
@@ -889,9 +889,9 @@ LABEL_25:
 
       self->_scoreRelativeMax = *&v91;
       *&v91 = self->_actionScoreRelative;
-      [v140 setHumanActionScore:v91];
+      [statsCopy setHumanActionScore:v91];
       v92 = (&self->_endTime.epoch + 4);
-      time = *a7;
+      time = *timestamp;
       rhs = *(&self->_endTime.epoch + 4);
       CMTimeSubtract(&v142, &time, &rhs);
       Seconds = CMTimeGetSeconds(&v142);
@@ -913,38 +913,38 @@ LABEL_25:
         v100 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v152 forKeys:v151 count:3];
         v101 = [v94 dictionaryWithDictionary:v100];
 
-        v102 = v137;
-        if (v137->_timeOfInterest)
+        v102 = selfCopy;
+        if (selfCopy->_timeOfInterest)
         {
-          v103 = [(NSMutableArray *)v137->_phFaces count];
-          v102 = v137;
+          v103 = [(NSMutableArray *)selfCopy->_phFaces count];
+          v102 = selfCopy;
           if (v103)
           {
-            [(NSNumber *)v137->_timeOfInterest floatValue];
+            [(NSNumber *)selfCopy->_timeOfInterest floatValue];
             v105 = v104;
-            time = *v136;
+            time = *timestampCopy;
             v106 = CMTimeGetSeconds(&time);
             v107 = v105;
-            v102 = v137;
+            v102 = selfCopy;
             if (v106 > v107)
             {
               *&time.value = *v92;
               time.epoch = *&self->_startTime.flags;
               v108 = CMTimeGetSeconds(&time);
-              v102 = v137;
+              v102 = selfCopy;
               if (v108 < v107)
               {
-                v109 = [(VCPVideoHumanActionAnalyzer *)v137 associatePerson:v137->_phFaces withPHFaces:v135->origin.x, v135->origin.y, v135->size.width, v135->size.height];
+                v109 = [(VCPVideoHumanActionAnalyzer *)selfCopy associatePerson:selfCopy->_phFaces withPHFaces:v135->origin.x, v135->origin.y, v135->size.width, v135->size.height];
                 v110 = v109;
                 if (v109)
                 {
-                  v111 = [v109 localIdentifier];
-                  v112 = v111 == 0;
+                  localIdentifier = [v109 localIdentifier];
+                  v112 = localIdentifier == 0;
 
                   if (!v112)
                   {
-                    v113 = [v110 localIdentifier];
-                    [v101 setObject:v113 forKeyedSubscript:@"faceIdentifier"];
+                    localIdentifier2 = [v110 localIdentifier];
+                    [v101 setObject:localIdentifier2 forKeyedSubscript:@"faceIdentifier"];
 
                     [v110 bodyCenterX];
                     v115 = v114;
@@ -966,7 +966,7 @@ LABEL_25:
                   }
                 }
 
-                v102 = v137;
+                v102 = selfCopy;
               }
             }
           }
@@ -979,7 +979,7 @@ LABEL_25:
         v127 = CMTimeCopyAsDictionary(&time, 0);
         v150[0] = v127;
         v149[1] = @"duration";
-        time = *v136;
+        time = *timestampCopy;
         *&rhs.value = *v92;
         rhs.epoch = *&self->_startTime.flags;
         CMTimeSubtract(&v142, &time, &rhs);
@@ -991,15 +991,15 @@ LABEL_25:
         v129 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v150 forKeys:v149 count:3];
         [(NSMutableArray *)actionResults addObject:v129];
 
-        v130 = *&v136->var0;
-        *&self->_startTime.flags = v136->var3;
+        v130 = *&timestampCopy->var0;
+        *&self->_startTime.flags = timestampCopy->var3;
         *v92 = v130;
-        v137->_scoreAbsoluteMax = 0.0;
-        v137->_scoreRelativeMax = 0.0;
+        selfCopy->_scoreAbsoluteMax = 0.0;
+        selfCopy->_scoreRelativeMax = 0.0;
       }
     }
 
-    [v140 setFrameProcessedByHumanAnalyzer:1];
+    [statsCopy setFrameProcessedByHumanAnalyzer:1];
   }
 
   else
@@ -1011,7 +1011,7 @@ LABEL_25:
   return 0;
 }
 
-- (void)addActiveResults:(id *)a3
+- (void)addActiveResults:(id *)results
 {
   v33 = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->_activePoseResults count])
@@ -1023,7 +1023,7 @@ LABEL_25:
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v20 = self;
+      selfCopy = self;
       obj = self->_activePoseResults;
       v6 = [(NSMutableArray *)obj countByEnumeratingWithState:&v22 objects:v32 count:16];
       if (v6)
@@ -1050,13 +1050,13 @@ LABEL_25:
             v31[1] = v11;
             v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2];
 
-            poseResults = v20->_poseResults;
+            poseResults = selfCopy->_poseResults;
             v28[0] = @"start";
             time = *p_timeLastProcessFullFrame;
             v14 = CMTimeCopyAsDictionary(&time, 0);
             v29[0] = v14;
             v28[1] = @"duration";
-            time = *a3;
+            time = *results;
             rhs = *p_timeLastProcessFullFrame;
             CMTimeSubtract(&v21, &time, &rhs);
             time = v21;
@@ -1080,31 +1080,31 @@ LABEL_25:
   }
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5 frameStats:(id)a6 flags:(unint64_t *)a7
+- (int)analyzeFrame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration frameStats:(id)stats flags:(unint64_t *)flags
 {
   v154 = *MEMORY[0x1E69E9840];
-  v114 = a6;
+  statsCopy = stats;
   v148 = 0;
-  v113 = [MEMORY[0x1E695DF70] array];
-  v111 = [MEMORY[0x1E695DF70] array];
-  v107 = a5;
-  v130 = self;
-  Width = CVPixelBufferGetWidth(a3);
-  cf = a3;
-  Height = CVPixelBufferGetHeight(a3);
-  *&v12 = v130->_humanPoseScore;
-  [v114 setHumanPoseScore:v12];
-  *&v13 = v130->_actionScoreRelative;
-  [v114 setHumanActionScore:v13];
-  [v114 setFrameProcessedByHumanAnalyzer:1];
-  lhs = *a4;
-  rhs = v130->_timeLastProcess;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  durationCopy = duration;
+  selfCopy = self;
+  Width = CVPixelBufferGetWidth(frame);
+  cf = frame;
+  Height = CVPixelBufferGetHeight(frame);
+  *&v12 = selfCopy->_humanPoseScore;
+  [statsCopy setHumanPoseScore:v12];
+  *&v13 = selfCopy->_actionScoreRelative;
+  [statsCopy setHumanActionScore:v13];
+  [statsCopy setFrameProcessedByHumanAnalyzer:1];
+  lhs = *timestamp;
+  rhs = selfCopy->_timeLastProcess;
   CMTimeSubtract(&time, &lhs, &rhs);
   if (CMTimeGetSeconds(&time) < 0.150000006)
   {
-    if (!CGRectIsEmpty(v130->_crop))
+    if (!CGRectIsEmpty(selfCopy->_crop))
     {
-      tracker = v130->_tracker;
+      tracker = selfCopy->_tracker;
       if (tracker)
       {
         v15 = [(VCPVideoObjectTracker *)tracker trackObjectInFrame:cf];
@@ -1113,16 +1113,16 @@ LABEL_25:
           goto LABEL_14;
         }
 
-        [(VCPVideoObjectTracker *)v130->_tracker objectBounds];
-        [VCPVideoHumanActionAnalyzer scaleRect:v130 scaleX:"scaleRect:scaleX:scaleY:" scaleY:?];
-        v130->_crop.origin.x = v16;
-        v130->_crop.origin.y = v17;
-        v130->_crop.size.width = v18;
-        v130->_crop.size.height = v19;
+        [(VCPVideoObjectTracker *)selfCopy->_tracker objectBounds];
+        [VCPVideoHumanActionAnalyzer scaleRect:selfCopy scaleX:"scaleRect:scaleX:scaleY:" scaleY:?];
+        selfCopy->_crop.origin.x = v16;
+        selfCopy->_crop.origin.y = v17;
+        selfCopy->_crop.size.width = v18;
+        selfCopy->_crop.size.height = v19;
       }
     }
 
-    if (![v114 frameProcessedByFaceDetector])
+    if (![statsCopy frameProcessedByFaceDetector])
     {
       v30 = 0;
       v31 = 0;
@@ -1131,36 +1131,36 @@ LABEL_25:
     }
   }
 
-  v20 = v130->_tracker;
-  v130->_tracker = 0;
+  v20 = selfCopy->_tracker;
+  selfCopy->_tracker = 0;
 
-  v21 = *&a4->var0;
-  v130->_timeLastProcess.epoch = a4->var3;
-  *&v130->_timeLastProcess.value = v21;
-  v130->_humanPoseScore = 0.0;
-  v130->_actionScoreAbsolute = 0.0;
-  v106 = (&v130->_endTime.epoch + 4);
-  if ((v130->_startTime.timescale & 1) == 0)
+  v21 = *&timestamp->var0;
+  selfCopy->_timeLastProcess.epoch = timestamp->var3;
+  *&selfCopy->_timeLastProcess.value = v21;
+  selfCopy->_humanPoseScore = 0.0;
+  selfCopy->_actionScoreAbsolute = 0.0;
+  v106 = (&selfCopy->_endTime.epoch + 4);
+  if ((selfCopy->_startTime.timescale & 1) == 0)
   {
-    v22 = *&a4->var0;
-    *&v130->_startTime.flags = a4->var3;
+    v22 = *&timestamp->var0;
+    *&selfCopy->_startTime.flags = timestamp->var3;
     *v106 = v22;
   }
 
-  p_x = &v130->_crop.origin.x;
-  v24 = v130->_crop.size.width;
-  v25 = v130->_crop.size.height;
+  p_x = &selfCopy->_crop.origin.x;
+  v24 = selfCopy->_crop.size.width;
+  v25 = selfCopy->_crop.size.height;
   if (fmin(v24, v25) < 0.100000001)
   {
     v26 = *(MEMORY[0x1E695F058] + 16);
     *p_x = *MEMORY[0x1E695F058];
-    v130->_crop.size = v26;
-    v24 = v130->_crop.size.width;
-    v25 = v130->_crop.size.height;
+    selfCopy->_crop.size = v26;
+    v24 = selfCopy->_crop.size.width;
+    v25 = selfCopy->_crop.size.height;
   }
 
   v27 = *p_x;
-  y = v130->_crop.origin.y;
+  y = selfCopy->_crop.origin.y;
   if (CGRectIsEmpty(*(&v24 - 2)))
   {
     v148 = CFRetain(cf);
@@ -1168,11 +1168,11 @@ LABEL_25:
   }
 
   v155.origin.x = *p_x;
-  v155.size.width = v130->_crop.size.width;
-  v155.size.height = v130->_crop.size.height;
-  v29 = 1.0 - v155.size.height - v130->_crop.origin.y;
+  v155.size.width = selfCopy->_crop.size.width;
+  v155.size.height = selfCopy->_crop.size.height;
+  v29 = 1.0 - v155.size.height - selfCopy->_crop.origin.y;
   v155.origin.y = fmaxf(v29, 0.0);
-  v15 = Scaler::ScaleCropped(&v130->_scaler, v155, cf, &v148, Width, Height, 875704422);
+  v15 = Scaler::ScaleCropped(&selfCopy->_scaler, v155, cf, &v148, Width, Height, 875704422);
   if (v15)
   {
 LABEL_14:
@@ -1182,22 +1182,22 @@ LABEL_14:
   }
 
 LABEL_15:
-  v32 = v130;
-  if (v130->_lastHumanTimestamp.timescale)
+  v32 = selfCopy;
+  if (selfCopy->_lastHumanTimestamp.timescale)
   {
-    lhs = *a4;
-    rhs = *(&v130->_humanPoseScore + 1);
+    lhs = *timestamp;
+    rhs = *(&selfCopy->_humanPoseScore + 1);
     CMTimeSubtract(&time, &lhs, &rhs);
     Seconds = CMTimeGetSeconds(&time);
-    v32 = v130;
-    p_tracking = &v130->_tracking;
-    v130->_tracking = Seconds < 1.0;
+    v32 = selfCopy;
+    p_tracking = &selfCopy->_tracking;
+    selfCopy->_tracking = Seconds < 1.0;
     if (Seconds < 1.0)
     {
-      [(VCPImageHumanPoseAnalyzer *)v130->_poseAnalyzer setTrackingMode:1];
-      poseAnalyzer = v130->_poseAnalyzer;
+      [(VCPImageHumanPoseAnalyzer *)selfCopy->_poseAnalyzer setTrackingMode:1];
+      poseAnalyzer = selfCopy->_poseAnalyzer;
       v146 = 0;
-      v15 = [(VCPImageHumanPoseAnalyzer *)poseAnalyzer analyzePixelBuffer:v148 flags:a7 results:&v146 cancel:&__block_literal_global_99];
+      v15 = [(VCPImageHumanPoseAnalyzer *)poseAnalyzer analyzePixelBuffer:v148 flags:flags results:&v146 cancel:&__block_literal_global_99];
       v36 = v146;
       v109 = v36;
       if (v15)
@@ -1233,7 +1233,7 @@ LABEL_15:
             v129 = [v63 objectForKeyedSubscript:@"attributes"];
             v131 = [v129 objectForKeyedSubscript:@"humanKeypoints"];
             v64 = [v63 objectForKeyedSubscript:@"flags"];
-            v125 = [v64 unsignedIntegerValue];
+            unsignedIntegerValue = [v64 unsignedIntegerValue];
 
             v65 = [v129 objectForKeyedSubscript:@"humanBounds"];
             v158 = NSRectFromString(v65);
@@ -1247,23 +1247,23 @@ LABEL_15:
             v123 = v71;
 
             v72 = fmax(v68, v69);
-            if (v72 >= 0.1 && (v72 >= 0.2 || (v125 & 0x100000) != 0))
+            if (v72 >= 0.1 && (v72 >= 0.2 || (unsignedIntegerValue & 0x100000) != 0))
             {
               if (v131)
               {
                 v159.origin.x = *p_x;
-                v159.origin.y = v130->_crop.origin.y;
-                v159.size.width = v130->_crop.size.width;
-                v159.size.height = v130->_crop.size.height;
+                v159.origin.y = selfCopy->_crop.origin.y;
+                v159.size.width = selfCopy->_crop.size.width;
+                v159.size.height = selfCopy->_crop.size.height;
                 v74 = 0.0;
                 if (CGRectIsEmpty(v159))
                 {
-                  v75 = v131;
+                  array3 = v131;
                 }
 
                 else
                 {
-                  v75 = [MEMORY[0x1E695DF70] array];
+                  array3 = [MEMORY[0x1E695DF70] array];
                   v140 = 0u;
                   v141 = 0u;
                   v138 = 0u;
@@ -1288,14 +1288,14 @@ LABEL_15:
                         v82 = *p_x;
                         v83 = [v79 objectAtIndexedSubscript:0];
                         [v83 floatValue];
-                        v85 = [v81 numberWithDouble:v82 + v84 * v130->_crop.size.width];
+                        v85 = [v81 numberWithDouble:v82 + v84 * selfCopy->_crop.size.width];
                         [v80 setObject:v85 atIndexedSubscript:0];
 
                         v86 = MEMORY[0x1E696AD98];
-                        v87 = v130->_crop.origin.y;
+                        v87 = selfCopy->_crop.origin.y;
                         v88 = [v79 objectAtIndexedSubscript:1];
                         [v88 floatValue];
-                        v90 = [v86 numberWithDouble:v87 + v89 * v130->_crop.size.height];
+                        v90 = [v86 numberWithDouble:v87 + v89 * selfCopy->_crop.size.height];
                         [v80 setObject:v90 atIndexedSubscript:1];
 
                         v91 = [v79 objectAtIndexedSubscript:2];
@@ -1306,7 +1306,7 @@ LABEL_15:
                         v94 = [MEMORY[0x1E696AD98] numberWithFloat:v93];
                         [v80 setObject:v94 atIndexedSubscript:2];
 
-                        [v75 addObject:v80];
+                        [array3 addObject:v80];
                         if (*&v87 > 0.1)
                         {
                           v74 = v74 + 1.0;
@@ -1319,10 +1319,10 @@ LABEL_15:
                     while (v76);
                   }
 
-                  v131 = v75;
+                  v131 = array3;
                 }
 
-                [v113 addObject:v75];
+                [array addObject:array3];
               }
 
               else
@@ -1343,15 +1343,15 @@ LABEL_15:
               else
               {
                 v161.origin.x = *p_x;
-                v161.origin.y = v130->_crop.origin.y;
-                v161.size.width = v130->_crop.size.width;
-                v161.size.height = v130->_crop.size.height;
+                v161.origin.y = selfCopy->_crop.origin.y;
+                v161.size.width = selfCopy->_crop.size.width;
+                v161.size.height = selfCopy->_crop.size.height;
                 if (!CGRectIsEmpty(v161))
                 {
-                  v96 = v130->_crop.size.width;
-                  v97 = v130->_crop.size.height;
+                  v96 = selfCopy->_crop.size.width;
+                  v97 = selfCopy->_crop.size.height;
                   x = *p_x + x * v96;
-                  v67 = v130->_crop.origin.y + v67 * v97;
+                  v67 = selfCopy->_crop.origin.y + v67 * v97;
                   v68 = v68 * v96;
                   v69 = v69 * v97;
                 }
@@ -1361,17 +1361,17 @@ LABEL_15:
                 v162.size.width = v68;
                 v162.size.height = v69;
                 v98 = NSStringFromRect(v162);
-                [v111 addObject:v98];
+                [array2 addObject:v98];
 
-                if (!CGRectIsEmpty(v130->_humanRect))
+                if (!CGRectIsEmpty(selfCopy->_humanRect))
                 {
-                  [(VCPVideoHumanActionAnalyzer *)v130 intersectionOverUnion:v130->_humanRect.origin.x rect:v130->_humanRect.origin.y, v130->_humanRect.size.width, v130->_humanRect.size.height, x, v67, v68, v69];
+                  [(VCPVideoHumanActionAnalyzer *)selfCopy intersectionOverUnion:selfCopy->_humanRect.origin.x rect:selfCopy->_humanRect.origin.y, selfCopy->_humanRect.size.width, selfCopy->_humanRect.size.height, x, v67, v68, v69];
                   v74 = v99 + 0.1;
                 }
 
                 v95 = objc_alloc_init(VCPHuman);
 
-                [(VCPHuman *)v95 setFlags:v125];
+                [(VCPHuman *)v95 setFlags:unsignedIntegerValue];
                 LODWORD(v100) = v123;
                 [(VCPHuman *)v95 setConfidence:v100];
                 [(VCPHuman *)v95 setBounds:x, v67, v68, v69];
@@ -1409,15 +1409,15 @@ LABEL_15:
         v119 = 0;
       }
 
-      v104 = [v111 count];
-      if (v104 != [v113 count])
+      v104 = [array2 count];
+      if (v104 != [array count])
       {
         v15 = -50;
         goto LABEL_48;
       }
 
       v33 = 1;
-      v32 = v130;
+      v32 = selfCopy;
     }
 
     else
@@ -1435,41 +1435,41 @@ LABEL_15:
     v118 = 0;
     v119 = 0;
     v109 = 0;
-    p_tracking = &v130->_tracking;
-    v130->_tracking = 0;
+    p_tracking = &selfCopy->_tracking;
+    selfCopy->_tracking = 0;
   }
 
   p_timeLastProcessFullFrame = &v32->_timeLastProcessFullFrame;
-  lhs = *a4;
+  lhs = *timestamp;
   rhs = v32->_timeLastProcessFullFrame;
   CMTimeSubtract(&time, &lhs, &rhs);
   if (CMTimeGetSeconds(&time) < 1.0)
   {
 LABEL_43:
-    if ([v113 count])
+    if ([array count])
     {
-      lhs = *a4;
-      rhs = *v107;
-      v15 = [(VCPVideoHumanActionAnalyzer *)v130 processPersons:v113 humanBounds:v111 dominantPersonIdx:v118 frame:cf timestamp:&lhs duration:&rhs frameStats:v114];
+      lhs = *timestamp;
+      rhs = *durationCopy;
+      v15 = [(VCPVideoHumanActionAnalyzer *)selfCopy processPersons:array humanBounds:array2 dominantPersonIdx:v118 frame:cf timestamp:&lhs duration:&rhs frameStats:statsCopy];
     }
 
     else
     {
       v57 = MEMORY[0x1E695F058];
       v58 = *(MEMORY[0x1E695F058] + 16);
-      v130->_humanRect.origin = *MEMORY[0x1E695F058];
-      v130->_humanRect.size = v58;
+      selfCopy->_humanRect.origin = *MEMORY[0x1E695F058];
+      selfCopy->_humanRect.size = v58;
       if (!*p_tracking)
       {
         v59 = v57[1];
         *p_x = *v57;
-        v130->_crop.size = v59;
+        selfCopy->_crop.size = v59;
       }
 
-      [(NSMutableArray *)v130->_bodyArray removeAllObjects];
+      [(NSMutableArray *)selfCopy->_bodyArray removeAllObjects];
       v15 = 0;
-      v60 = *&a4->var0;
-      *&v130->_startTime.flags = a4->var3;
+      v60 = *&timestamp->var0;
+      *&selfCopy->_startTime.flags = timestamp->var3;
       *v106 = v60;
     }
 
@@ -1478,37 +1478,37 @@ LABEL_43:
 
   v121 = p_timeLastProcessFullFrame;
   v156.origin.x = *p_x;
-  v156.origin.y = v130->_crop.origin.y;
-  v156.size.width = v130->_crop.size.width;
-  v156.size.height = v130->_crop.size.height;
+  v156.origin.y = selfCopy->_crop.origin.y;
+  v156.size.width = selfCopy->_crop.size.width;
+  v156.size.height = selfCopy->_crop.size.height;
   if ((v33 & CGRectIsEmpty(v156)) == 1)
   {
     v38 = v109;
 LABEL_27:
-    lhs = *a4;
-    [(VCPVideoHumanActionAnalyzer *)v130 addActiveResults:&lhs];
-    [(NSMutableArray *)v130->_activePoseResults removeAllObjects];
+    lhs = *timestamp;
+    [(VCPVideoHumanActionAnalyzer *)selfCopy addActiveResults:&lhs];
+    [(NSMutableArray *)selfCopy->_activePoseResults removeAllObjects];
     v41 = [v38 objectForKeyedSubscript:?];
     v124 = v38;
     v42 = [v41 count];
-    if (v42 <= [v111 count] && objc_msgSend(v111, "count") == 1)
+    if (v42 <= [array2 count] && objc_msgSend(array2, "count") == 1)
     {
 
       if (v119)
       {
-        [(NSMutableArray *)v130->_activePoseResults addObject:v119];
+        [(NSMutableArray *)selfCopy->_activePoseResults addObject:v119];
 LABEL_40:
-        v53 = *&a4->var0;
-        v121->epoch = a4->var3;
+        v53 = *&timestamp->var0;
+        v121->epoch = timestamp->var3;
         *&v121->value = v53;
         v54 = [v38 objectForKeyedSubscript:@"HumanPoseResults"];
         v55 = [v54 count] == 0;
 
         if (!v55)
         {
-          v56 = *&a4->var0;
-          *&v130->_lastHumanTimestamp.flags = a4->var3;
-          *(&v130->_humanPoseScore + 1) = v56;
+          v56 = *&timestamp->var0;
+          *&selfCopy->_lastHumanTimestamp.flags = timestamp->var3;
+          *(&selfCopy->_humanPoseScore + 1) = v56;
         }
 
         goto LABEL_43;
@@ -1541,10 +1541,10 @@ LABEL_40:
           v46 = *(*(&v133 + 1) + 8 * j);
           v47 = [v46 objectForKeyedSubscript:@"attributes"];
           v48 = [v46 objectForKeyedSubscript:@"flags"];
-          v49 = [v48 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v48 unsignedIntegerValue];
 
           v50 = objc_alloc_init(VCPHuman);
-          [(VCPHuman *)v50 setFlags:v49];
+          [(VCPHuman *)v50 setFlags:unsignedIntegerValue2];
           v51 = [v47 objectForKeyedSubscript:@"humanBounds"];
           v157 = NSRectFromString(v51);
           [(VCPHuman *)v50 setBounds:v157.origin.x, v157.origin.y, v157.size.width, v157.size.height];
@@ -1553,7 +1553,7 @@ LABEL_40:
           [v52 floatValue];
           [(VCPHuman *)v50 setConfidence:?];
 
-          [(NSMutableArray *)v130->_activePoseResults addObject:v50];
+          [(NSMutableArray *)selfCopy->_activePoseResults addObject:v50];
         }
 
         v43 = obj;
@@ -1567,9 +1567,9 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  v39 = v130->_poseAnalyzer;
+  v39 = selfCopy->_poseAnalyzer;
   v137 = 0;
-  v15 = [(VCPImageHumanPoseAnalyzer *)v39 analyzePixelBuffer:cf flags:a7 results:&v137 cancel:&__block_literal_global_345_1];
+  v15 = [(VCPImageHumanPoseAnalyzer *)v39 analyzePixelBuffer:cf flags:flags results:&v137 cancel:&__block_literal_global_345_1];
   v40 = v137;
   v38 = v40;
   if (!v15)
@@ -1590,19 +1590,19 @@ LABEL_50:
   return v15;
 }
 
-- (int)finishAnalysisPass:(id *)a3
+- (int)finishAnalysisPass:(id *)pass
 {
-  var1 = a3->var1;
+  var1 = pass->var1;
   [(VCPVideoHumanActionAnalyzer *)self addActiveResults:&var1];
   [(NSMutableArray *)self->_activePoseResults removeAllObjects];
   return 0;
 }
 
-- (id)clipResults:(id *)a3
+- (id)clipResults:(id *)results
 {
   v56 = *MEMORY[0x1E69E9840];
-  v34 = [MEMORY[0x1E695DF70] array];
-  v33 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
@@ -1625,10 +1625,10 @@ LABEL_50:
         v6 = *(*(&v41 + 1) + 8 * i);
         memset(&v40, 0, sizeof(v40));
         CMTimeRangeMakeFromDictionary(&v40, v6);
-        v7 = *&a3->var0.var3;
-        *&range.start.value = *&a3->var0.var0;
+        v7 = *&results->var0.var3;
+        *&range.start.value = *&results->var0.var0;
         *&range.start.epoch = v7;
-        *&range.duration.timescale = *&a3->var1.var1;
+        *&range.duration.timescale = *&results->var1.var1;
         memset(&v39, 0, sizeof(v39));
         otherRange = v40;
         CMTimeRangeGetIntersection(&v39, &range, &otherRange);
@@ -1657,7 +1657,7 @@ LABEL_50:
         v11 = [v10 objectForKeyedSubscript:@"humanScore"];
         v54[2] = v11;
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:v53 count:3];
-        [v34 addObject:v12];
+        [array addObject:v12];
 
         v51[0] = @"start";
         *&range.start.value = *&v39.start.value;
@@ -1673,7 +1673,7 @@ LABEL_50:
         v16 = [v15 objectForKeyedSubscript:@"absoluteScore"];
         v52[2] = v16;
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:v51 count:3];
-        [v33 addObject:v17];
+        [array2 addObject:v17];
       }
 
       v4 = [(NSMutableArray *)obj countByEnumeratingWithState:&v41 objects:v55 count:16];
@@ -1683,10 +1683,10 @@ LABEL_50:
   }
 
   memset(&range, 0, 24);
-  v18 = *&a3->var0.var3;
-  *&v40.start.value = *&a3->var0.var0;
+  v18 = *&results->var0.var3;
+  *&v40.start.value = *&results->var0.var0;
   *&v40.start.epoch = v18;
-  *&v40.duration.timescale = *&a3->var1.var1;
+  *&v40.duration.timescale = *&results->var1.var1;
   CMTimeRangeGetEnd(&otherRange.start, &v40);
   *&v40.start.value = *&otherRange.start.value;
   v40.start.epoch = otherRange.start.epoch;
@@ -1708,7 +1708,7 @@ LABEL_50:
   v22 = [MEMORY[0x1E696AD98] numberWithFloat:v21];
   v50[2] = v22;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:v49 count:3];
-  [v34 addObject:v23];
+  [array addObject:v23];
 
   v47[0] = @"start";
   *&v40.start.value = *(&self->_endTime.epoch + 4);
@@ -1725,12 +1725,12 @@ LABEL_50:
   v27 = [MEMORY[0x1E696AD98] numberWithFloat:v26];
   v48[2] = v27;
   v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:3];
-  [v33 addObject:v28];
+  [array2 addObject:v28];
 
   v45[0] = @"HumanActionResults";
   v45[1] = @"HumanPoseResults";
-  v46[0] = v33;
-  v46[1] = v34;
+  v46[0] = array2;
+  v46[1] = array;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:2];
 
   return v29;
@@ -1738,18 +1738,18 @@ LABEL_50:
 
 - (id)results
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_poseResults count])
   {
-    [v3 setObject:self->_poseResults forKeyedSubscript:@"HumanPoseResults"];
+    [dictionary setObject:self->_poseResults forKeyedSubscript:@"HumanPoseResults"];
   }
 
   if ([(NSMutableArray *)self->_actionResults count])
   {
-    [v3 setObject:self->_actionResults forKeyedSubscript:@"HumanActionResults"];
+    [dictionary setObject:self->_actionResults forKeyedSubscript:@"HumanActionResults"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)privateResults

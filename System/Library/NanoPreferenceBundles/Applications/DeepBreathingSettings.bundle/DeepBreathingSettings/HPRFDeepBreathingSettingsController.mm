@@ -1,12 +1,12 @@
 @interface HPRFDeepBreathingSettingsController
 - (HPRFDeepBreathingSettingsController)init;
 - (id)applicationGroupSpecifiers;
-- (id)getMuteForToday:(id)a3;
+- (id)getMuteForToday:(id)today;
 - (id)localizedPaneTitle;
 - (id)notificationApplicationSpecifiers;
-- (void)_mutePreferencesDidChange:(id)a3;
+- (void)_mutePreferencesDidChange:(id)change;
 - (void)dealloc;
-- (void)setMuteForToday:(id)a3;
+- (void)setMuteForToday:(id)today;
 - (void)viewDidLoad;
 @end
 
@@ -20,8 +20,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(HPRFDeepBreathingSettingsController *)v2 localizedPaneTitle];
-    [(HPRFDeepBreathingSettingsController *)v3 setTitle:v4];
+    localizedPaneTitle = [(HPRFDeepBreathingSettingsController *)v2 localizedPaneTitle];
+    [(HPRFDeepBreathingSettingsController *)v3 setTitle:localizedPaneTitle];
   }
 
   return v3;
@@ -47,17 +47,17 @@
   [(HPRFDeepBreathingSettingsController *)&v4 dealloc];
 }
 
-- (void)_mutePreferencesDidChange:(id)a3
+- (void)_mutePreferencesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   _HKInitializeLogging();
   v5 = HKLogDeepBreathing;
   if (os_log_type_enabled(HKLogDeepBreathing, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 name];
+    name = [changeCopy name];
     v8 = 138412290;
-    v9 = v7;
+    v9 = name;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Did receive %@; reloading specifiers", &v8, 0xCu);
   }
 
@@ -88,7 +88,7 @@
   return v4;
 }
 
-- (id)getMuteForToday:(id)a3
+- (id)getMuteForToday:(id)today
 {
   v3 = +[BPSNotificationMuteSettingsManager sharedNotificationMuteSettingsManager];
   v4 = [v3 isMutedForTodaySectionIdentifier:@"com.apple.DeepBreathing"];
@@ -96,9 +96,9 @@
   return [NSNumber numberWithBool:v4];
 }
 
-- (void)setMuteForToday:(id)a3
+- (void)setMuteForToday:(id)today
 {
-  v3 = [a3 BOOLValue];
+  bOOLValue = [today BOOLValue];
   v4 = [NSSet alloc];
   v9 = @"com.apple.DeepBreathing";
   v5 = [NSArray arrayWithObjects:&v9 count:1];
@@ -106,7 +106,7 @@
 
   v7 = +[BPSNotificationMuteSettingsManager sharedNotificationMuteSettingsManager];
   v8 = v7;
-  if (v3)
+  if (bOOLValue)
   {
     [v7 addSectionIdentifiers:v6];
   }

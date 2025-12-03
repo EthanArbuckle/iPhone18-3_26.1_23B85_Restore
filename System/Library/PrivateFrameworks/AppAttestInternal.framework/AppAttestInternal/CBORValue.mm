@@ -1,37 +1,37 @@
 @interface CBORValue
-- (unint64_t)getNumUintBytes:(unint64_t)a3;
-- (void)encodeStartItems:(unint64_t)a3 output:(id)a4;
+- (unint64_t)getNumUintBytes:(unint64_t)bytes;
+- (void)encodeStartItems:(unint64_t)items output:(id)output;
 @end
 
 @implementation CBORValue
 
-- (void)encodeStartItems:(unint64_t)a3 output:(id)a4
+- (void)encodeStartItems:(unint64_t)items output:(id)output
 {
-  v6 = a4;
-  [(CBORValue *)self setUint:[(CBORValue *)self fieldValue] item2:a3 output:v6];
+  outputCopy = output;
+  [(CBORValue *)self setUint:[(CBORValue *)self fieldValue] item2:items output:outputCopy];
 }
 
-- (unint64_t)getNumUintBytes:(unint64_t)a3
+- (unint64_t)getNumUintBytes:(unint64_t)bytes
 {
   v3 = 1;
   v4 = 2;
   v5 = 8;
-  if (!HIDWORD(a3))
+  if (!HIDWORD(bytes))
   {
     v5 = 4;
   }
 
-  if (a3 >= 0x10000)
+  if (bytes >= 0x10000)
   {
     v4 = v5;
   }
 
-  if (a3 >= 0x100)
+  if (bytes >= 0x100)
   {
     v3 = v4;
   }
 
-  if (a3 >= 0x18)
+  if (bytes >= 0x18)
   {
     return v3;
   }

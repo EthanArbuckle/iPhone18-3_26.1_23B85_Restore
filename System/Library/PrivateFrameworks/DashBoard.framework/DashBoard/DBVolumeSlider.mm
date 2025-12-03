@@ -1,23 +1,23 @@
 @interface DBVolumeSlider
-- (_TtC9DashBoard14DBVolumeSlider)initWithFrame:(CGRect)a3;
+- (_TtC9DashBoard14DBVolumeSlider)initWithFrame:(CGRect)frame;
 - (double)continuousSliderCornerRadius;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutElasticContentViews;
 - (void)minusViewTapped;
 - (void)plusViewTapped;
-- (void)setContinuousSliderCornerRadius:(double)a3;
-- (void)setValue:(float)a3 animated:(BOOL)a4;
+- (void)setContinuousSliderCornerRadius:(double)radius;
+- (void)setValue:(float)value animated:(BOOL)animated;
 @end
 
 @implementation DBVolumeSlider
 
-- (void)setValue:(float)a3 animated:(BOOL)a4
+- (void)setValue:(float)value animated:(BOOL)animated
 {
-  v6 = self;
-  sub_2483033B0(a4, a3);
+  selfCopy = self;
+  sub_2483033B0(animated, value);
 }
 
-- (_TtC9DashBoard14DBVolumeSlider)initWithFrame:(CGRect)a3
+- (_TtC9DashBoard14DBVolumeSlider)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -26,13 +26,13 @@
 
 - (void)plusViewTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_2483063C0("Audio notification + view tapped", 1);
 }
 
 - (void)minusViewTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_2483063C0("Audio notification - view tapped", 0);
 }
 
@@ -44,30 +44,30 @@
   return result;
 }
 
-- (void)setContinuousSliderCornerRadius:(double)a3
+- (void)setContinuousSliderCornerRadius:(double)radius
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for DBVolumeSlider();
   v4 = v6.receiver;
-  [(CCUIBaseSliderView *)&v6 setContinuousSliderCornerRadius:a3];
-  v5 = [v4 elasticContentView];
+  [(CCUIBaseSliderView *)&v6 setContinuousSliderCornerRadius:radius];
+  elasticContentView = [v4 elasticContentView];
   [v4 continuousSliderCornerRadius];
-  [v5 _setContinuousCornerRadius_];
+  [elasticContentView _setContinuousCornerRadius_];
 }
 
 - (void)layoutElasticContentViews
 {
-  v2 = self;
+  selfCopy = self;
   sub_248306764();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_248306C58(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_248306C58(event, x, y);
 
   return v10;
 }

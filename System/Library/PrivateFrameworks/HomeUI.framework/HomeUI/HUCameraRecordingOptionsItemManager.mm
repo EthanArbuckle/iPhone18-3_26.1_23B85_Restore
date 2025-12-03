@@ -1,18 +1,18 @@
 @interface HUCameraRecordingOptionsItemManager
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (void)cameraRecordingSettingsModule:(id)a3 didUpdateItem:(id)a4;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (void)cameraRecordingSettingsModule:(id)module didUpdateItem:(id)item;
 @end
 
 @implementation HUCameraRecordingOptionsItemManager
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   objc_opt_class();
-  v4 = [(HFItemManager *)self sourceItem];
+  sourceItem = [(HFItemManager *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = sourceItem;
   }
 
   else
@@ -24,61 +24,61 @@
 
   if (v6)
   {
-    v7 = [v6 profile];
-    if ([v7 hf_supportsRecordingEvents])
+    profile = [v6 profile];
+    if ([profile hf_supportsRecordingEvents])
     {
-      v8 = [(HUCameraRecordingOptionsItemManager *)self cameraRecordingItemModule];
+      cameraRecordingItemModule = [(HUCameraRecordingOptionsItemManager *)self cameraRecordingItemModule];
 
-      if (v8)
+      if (cameraRecordingItemModule)
       {
         goto LABEL_9;
       }
 
       v9 = [HUCameraRecordingSettingsModule alloc];
       v10 = MEMORY[0x277CBEB98];
-      v11 = [v6 profile];
-      v12 = [v10 setWithObject:v11];
+      profile2 = [v6 profile];
+      v12 = [v10 setWithObject:profile2];
       v13 = [(HUCameraRecordingSettingsModule *)v9 initWithItemUpdater:self cameraProfiles:v12 displayStyle:[(HUCameraRecordingOptionsItemManager *)self displayStyle]];
       [(HUCameraRecordingOptionsItemManager *)self setCameraRecordingItemModule:v13];
 
-      v7 = [(HUCameraRecordingOptionsItemManager *)self cameraRecordingItemModule];
-      [v7 setDelegate:self];
+      profile = [(HUCameraRecordingOptionsItemManager *)self cameraRecordingItemModule];
+      [profile setDelegate:self];
     }
   }
 
 LABEL_9:
-  v14 = [(HUCameraRecordingOptionsItemManager *)self cameraRecordingItemModule];
-  v15 = [v14 itemProviders];
-  v16 = [v15 allObjects];
+  cameraRecordingItemModule2 = [(HUCameraRecordingOptionsItemManager *)self cameraRecordingItemModule];
+  itemProviders = [cameraRecordingItemModule2 itemProviders];
+  allObjects = [itemProviders allObjects];
 
-  return v16;
+  return allObjects;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
-  v5 = [(HUCameraRecordingOptionsItemManager *)self cameraRecordingItemModule];
-  v6 = [v5 buildSectionsWithDisplayedItems:v4];
+  itemsCopy = items;
+  cameraRecordingItemModule = [(HUCameraRecordingOptionsItemManager *)self cameraRecordingItemModule];
+  v6 = [cameraRecordingItemModule buildSectionsWithDisplayedItems:itemsCopy];
 
   return v6;
 }
 
-- (void)cameraRecordingSettingsModule:(id)a3 didUpdateItem:(id)a4
+- (void)cameraRecordingSettingsModule:(id)module didUpdateItem:(id)item
 {
-  v7 = a3;
-  v8 = a4;
+  moduleCopy = module;
+  itemCopy = item;
   v9 = MEMORY[0x277CBEB98];
-  v10 = [(HFItemManager *)self sourceItem];
-  v11 = [v9 setWithObject:v10];
+  sourceItem = [(HFItemManager *)self sourceItem];
+  v11 = [v9 setWithObject:sourceItem];
   v12 = [(HFItemManager *)self updateResultsForItems:v11 senderSelector:a2];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __83__HUCameraRecordingOptionsItemManager_cameraRecordingSettingsModule_didUpdateItem___block_invoke;
   v16[3] = &unk_277DBE550;
-  v17 = v7;
-  v18 = v8;
-  v13 = v8;
-  v14 = v7;
+  v17 = moduleCopy;
+  v18 = itemCopy;
+  v13 = itemCopy;
+  v14 = moduleCopy;
   v15 = [v12 addCompletionBlock:v16];
 }
 

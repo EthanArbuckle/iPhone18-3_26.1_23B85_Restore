@@ -1,16 +1,16 @@
 @interface ICDRequest
 + (id)request;
-- (ICDRequest)initWithAction:(id)a3;
-- (id)_HTTPMethodStringForICDRequestMethod:(int64_t)a3;
+- (ICDRequest)initWithAction:(id)action;
+- (id)_HTTPMethodStringForICDRequestMethod:(int64_t)method;
 - (id)description;
-- (void)setValue:(id)a3 forArgument:(id)a4;
+- (void)setValue:(id)value forArgument:(id)argument;
 @end
 
 @implementation ICDRequest
 
-- (id)_HTTPMethodStringForICDRequestMethod:(int64_t)a3
+- (id)_HTTPMethodStringForICDRequestMethod:(int64_t)method
 {
-  if (a3 == 1)
+  if (method == 1)
   {
     return @"POST";
   }
@@ -21,10 +21,10 @@
   }
 }
 
-- (void)setValue:(id)a3 forArgument:(id)a4
+- (void)setValue:(id)value forArgument:(id)argument
 {
-  v10 = a3;
-  v6 = a4;
+  valueCopy = value;
+  argumentCopy = argument;
   arguments = self->_arguments;
   if (!arguments)
   {
@@ -35,7 +35,7 @@
     arguments = self->_arguments;
   }
 
-  [(NSDictionary *)arguments setObject:v10 forKey:v6];
+  [(NSDictionary *)arguments setObject:valueCopy forKey:argumentCopy];
 }
 
 - (id)description
@@ -49,15 +49,15 @@
   return v5;
 }
 
-- (ICDRequest)initWithAction:(id)a3
+- (ICDRequest)initWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v9.receiver = self;
   v9.super_class = ICDRequest;
   v5 = [(ICDRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [actionCopy copy];
     v7 = *(v5 + 3);
     *(v5 + 3) = v6;
 

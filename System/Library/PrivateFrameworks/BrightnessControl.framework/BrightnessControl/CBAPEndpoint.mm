@@ -1,16 +1,16 @@
 @interface CBAPEndpoint
-- (BOOL)setProperty:(id)a3 property:(id)a4;
-- (CBAPEndpoint)initWithServiceName:(id)a3 role:(id)a4;
-- (id)copyProperty:(id)a3;
-- (unsigned)findDCPServiceWithName:(id)a3 role:(id)a4;
+- (BOOL)setProperty:(id)property property:(id)a4;
+- (CBAPEndpoint)initWithServiceName:(id)name role:(id)role;
+- (id)copyProperty:(id)property;
+- (unsigned)findDCPServiceWithName:(id)name role:(id)role;
 - (void)dealloc;
 @end
 
 @implementation CBAPEndpoint
 
-- (CBAPEndpoint)initWithServiceName:(id)a3 role:(id)a4
+- (CBAPEndpoint)initWithServiceName:(id)name role:(id)role
 {
-  if ([a3 isEqualToString:&stru_283740FA8])
+  if ([name isEqualToString:&stru_283740FA8])
   {
     return 0;
   }
@@ -19,7 +19,7 @@
   v15.super_class = CBAPEndpoint;
   v7 = [(CBAPEndpoint *)&v15 init];
   v8 = v7;
-  if (!v7 || (v9 = [(CBAPEndpoint *)v7 findDCPServiceWithName:a3 role:a4], (v8->_service = v9) == 0))
+  if (!v7 || (v9 = [(CBAPEndpoint *)v7 findDCPServiceWithName:name role:role], (v8->_service = v9) == 0))
   {
 LABEL_14:
 
@@ -56,7 +56,7 @@ LABEL_14:
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      [CBAPEndpoint initWithServiceName:a3 role:?];
+      [CBAPEndpoint initWithServiceName:name role:?];
     }
 
     goto LABEL_14;
@@ -103,7 +103,7 @@ LABEL_14:
   [(CBAPEndpoint *)&v7 dealloc];
 }
 
-- (BOOL)setProperty:(id)a3 property:(id)a4
+- (BOOL)setProperty:(id)property property:(id)a4
 {
   v29 = *MEMORY[0x277D85DE8];
   logHandle = self->_logHandle;
@@ -123,19 +123,19 @@ LABEL_14:
     v23 = 2080;
     v24 = "[CBAPEndpoint setProperty:property:]";
     v25 = 2080;
-    v26 = [a3 UTF8String];
+    uTF8String = [property UTF8String];
     v27 = 2112;
     v28 = a4;
     _os_log_impl(&dword_223D10000, logHandle, OS_LOG_TYPE_DEFAULT, "%s:%s called for key: %s, property: %@", &v21, 0x2Au);
   }
 
   v8 = 0;
-  if (a3 && a4)
+  if (property && a4)
   {
-    v9 = [a3 lengthOfBytesUsingEncoding:4];
+    v9 = [property lengthOfBytesUsingEncoding:4];
     if (v9 >= 0x40)
     {
-      [a3 UTF8String];
+      [property UTF8String];
       __strlcpy_chk();
       inited = self->_logHandle;
       if (!inited)
@@ -149,7 +149,7 @@ LABEL_14:
 
       if (os_log_type_enabled(inited, OS_LOG_TYPE_DEBUG))
       {
-        [(CBAPEndpoint *)a3 setProperty:inited property:?];
+        [(CBAPEndpoint *)property setProperty:inited property:?];
       }
     }
 
@@ -162,7 +162,7 @@ LABEL_14:
         v13 = v9 + [(__CFData *)v12 length];
         v14 = malloc_type_malloc(v13 + 5, 0x100004052888210uLL);
         *v14 = v9 + 1;
-        strlcpy(v14 + 4, [a3 UTF8String], 0x40uLL);
+        strlcpy(v14 + 4, [property UTF8String], 0x40uLL);
         memcpy(&v14[*v14 + 4], [(__CFData *)v12 bytes], [(__CFData *)v12 length]);
         v8 = [(CBAPEndpoint *)self enqueueCommandSync:67 inputBuffer:v14 inputBufferSize:v13 + 5 responseObj:0 options:0];
         free(v14);
@@ -182,14 +182,14 @@ LABEL_14:
 
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v19 = [a3 UTF8String];
+        uTF8String2 = [property UTF8String];
         v20 = [(__CFData *)v12 length];
         v21 = 136315650;
-        v22 = v19;
+        v22 = uTF8String2;
         v23 = 2048;
         v24 = (486 - v9);
         v25 = 2048;
-        v26 = v20;
+        uTF8String = v20;
         _os_log_error_impl(&dword_223D10000, v16, OS_LOG_TYPE_ERROR, "Data for setting property %s is too long, max payload %lu, needed size %lu\n", &v21, 0x20u);
       }
     }
@@ -208,7 +208,7 @@ LABEL_14:
 
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [CBAPEndpoint setProperty:a3 property:?];
+        [CBAPEndpoint setProperty:property property:?];
       }
     }
 
@@ -220,7 +220,7 @@ LABEL_29:
   return v8;
 }
 
-- (id)copyProperty:(id)a3
+- (id)copyProperty:(id)property
 {
   v13 = *MEMORY[0x277D85DE8];
   logHandle = self->_logHandle;
@@ -240,16 +240,16 @@ LABEL_29:
     *&buf[12] = 2080;
     *&buf[14] = "[CBAPEndpoint copyProperty:]";
     *&buf[22] = 2080;
-    *&buf[24] = [a3 UTF8String];
+    *&buf[24] = [property UTF8String];
     _os_log_impl(&dword_223D10000, logHandle, OS_LOG_TYPE_DEFAULT, "%s:%s called for key: %s", buf, 0x20u);
   }
 
-  if ([a3 lengthOfBytesUsingEncoding:4] < 0x40)
+  if ([property lengthOfBytesUsingEncoding:4] < 0x40)
   {
     v11 = 0u;
     v12 = 0u;
     memset(buf, 0, sizeof(buf));
-    [a3 UTF8String];
+    [property UTF8String];
     __strlcpy_chk();
     v9 = 0;
     if ([(CBAPEndpoint *)self enqueueCommandSync:66 inputBuffer:buf inputBufferSize:64 responseObj:&v9 options:0])
@@ -277,7 +277,7 @@ LABEL_29:
 
     if (os_log_type_enabled(inited, OS_LOG_TYPE_ERROR))
     {
-      [CBAPEndpoint copyProperty:a3];
+      [CBAPEndpoint copyProperty:property];
     }
 
     result = 0;
@@ -287,17 +287,17 @@ LABEL_29:
   return result;
 }
 
-- (unsigned)findDCPServiceWithName:(id)a3 role:(id)a4
+- (unsigned)findDCPServiceWithName:(id)name role:(id)role
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v7 = IOServiceMatching("AFKEndpointInterface");
-  v16 = a4;
+  roleCopy = role;
   v17[0] = @"IOPropertyMatch";
   v15 = @"role";
-  v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
+  v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&roleCopy forKeys:&v15 count:1];
   v17[1] = @"IONameMatch";
   v18[0] = v8;
-  v18[1] = a3;
+  v18[1] = name;
   -[__CFDictionary addEntriesFromDictionary:](v7, "addEntriesFromDictionary:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2]);
   existing = 0;
   if (IOServiceGetMatchingServices(*MEMORY[0x277CD2898], v7, &existing))
@@ -333,7 +333,7 @@ LABEL_11:
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      [CBAPEndpoint findDCPServiceWithName:a3 role:?];
+      [CBAPEndpoint findDCPServiceWithName:name role:?];
     }
 
     goto LABEL_11;

@@ -1,12 +1,12 @@
 @interface DBSmartWidgetSource
 + (NSArray)registeredSources;
 + (void)load;
-+ (void)registerSource:(Class)a3;
-- (DBSmartWidgetSource)initWithDelegate:(id)a3 resourceProvider:(id)a4;
++ (void)registerSource:(Class)source;
+- (DBSmartWidgetSource)initWithDelegate:(id)delegate resourceProvider:(id)provider;
 - (DBSmartWidgetSourceDelegate)delegate;
 - (NSArray)predictions;
 - (id)description;
-- (void)handleEvent:(id)a3;
+- (void)handleEvent:(id)event;
 - (void)refreshDisabled;
 - (void)refreshPredictions;
 @end
@@ -42,27 +42,27 @@ void __41__DBSmartWidgetSource_refreshPredictions__block_invoke_15(uint64_t a1)
     v6 = @"NO";
   }
 
-  v7 = [(DBSmartWidgetSource *)self lastRefresh];
-  v8 = [DBDateFormatter formattedDateTimeStamp:v7];
-  v9 = [(DBSmartWidgetSource *)self predictions];
-  v10 = [v3 stringWithFormat:@"<%@: %p disabled=%@ lastRefresh=%@ predictions.count=%lu>", v5, self, v6, v8, objc_msgSend(v9, "count")];
+  lastRefresh = [(DBSmartWidgetSource *)self lastRefresh];
+  v8 = [DBDateFormatter formattedDateTimeStamp:lastRefresh];
+  predictions = [(DBSmartWidgetSource *)self predictions];
+  v10 = [v3 stringWithFormat:@"<%@: %p disabled=%@ lastRefresh=%@ predictions.count=%lu>", v5, self, v6, v8, objc_msgSend(predictions, "count")];
 
   return v10;
 }
 
 - (NSArray)predictions
 {
-  v2 = [(DBSmartWidgetSource *)self currentPredictions];
-  v3 = [v2 allValues];
+  currentPredictions = [(DBSmartWidgetSource *)self currentPredictions];
+  allValues = [currentPredictions allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (void)refreshPredictions
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_248146000, a2, OS_LOG_TYPE_DEBUG, "start %{public}@", &v2, 0xCu);
 }
 
@@ -194,7 +194,7 @@ void __41__DBSmartWidgetSource_refreshPredictions__block_invoke_cold_1(uint64_t 
   }
 }
 
-+ (void)registerSource:(Class)a3
++ (void)registerSource:(Class)source
 {
   if (registerSource__onceToken != -1)
   {
@@ -203,7 +203,7 @@ void __41__DBSmartWidgetSource_refreshPredictions__block_invoke_cold_1(uint64_t 
 
   obj = _registeredSources;
   objc_sync_enter(obj);
-  [_registeredSources addObject:a3];
+  [_registeredSources addObject:source];
   objc_sync_exit(obj);
 }
 
@@ -226,16 +226,16 @@ uint64_t __38__DBSmartWidgetSource_registerSource___block_invoke()
   return v3;
 }
 
-- (DBSmartWidgetSource)initWithDelegate:(id)a3 resourceProvider:(id)a4
+- (DBSmartWidgetSource)initWithDelegate:(id)delegate resourceProvider:(id)provider
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = DBSmartWidgetSource;
   v6 = [(DBSmartWidgetSource *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_delegate, v5);
+    objc_storeWeak(&v6->_delegate, delegateCopy);
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
     v9 = MEMORY[0x277CCACA8];
     v10 = objc_opt_class();
@@ -254,35 +254,35 @@ uint64_t __38__DBSmartWidgetSource_registerSource___block_invoke()
 
 - (void)refreshDisabled
 {
-  v3 = [(DBSmartWidgetSource *)self disabled];
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  disabled = [(DBSmartWidgetSource *)self disabled];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [objc_opt_class() sourceName];
-  v7 = [v5 stringWithFormat:@"CARSmartWidgetDisablePrediction_%@", v6];
-  v9 = [v4 objectForKey:v7];
+  sourceName = [objc_opt_class() sourceName];
+  v7 = [v5 stringWithFormat:@"CARSmartWidgetDisablePrediction_%@", sourceName];
+  v9 = [standardUserDefaults objectForKey:v7];
 
   if (v9)
   {
-    v8 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v8 = [(DBSmartWidgetSource *)self defaultsDisabled];
+    bOOLValue = [(DBSmartWidgetSource *)self defaultsDisabled];
   }
 
-  [(DBSmartWidgetSource *)self setDisabled:v8];
-  if (v3 != [(DBSmartWidgetSource *)self disabled])
+  [(DBSmartWidgetSource *)self setDisabled:bOOLValue];
+  if (disabled != [(DBSmartWidgetSource *)self disabled])
   {
     [(DBSmartWidgetSource *)self refreshPredictions];
   }
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(DBSmartWidgetSource *)self delegate];
-  [v5 handleEvent:v4];
+  eventCopy = event;
+  delegate = [(DBSmartWidgetSource *)self delegate];
+  [delegate handleEvent:eventCopy];
 }
 
 @end

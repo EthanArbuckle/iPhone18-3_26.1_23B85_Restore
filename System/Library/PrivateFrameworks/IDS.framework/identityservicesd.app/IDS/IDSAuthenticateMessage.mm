@@ -3,10 +3,10 @@
 - (IDSAuthenticateMessage)init;
 - (id)additionalMessageHeaders;
 - (id)bagKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSAuthenticateMessage
@@ -20,8 +20,8 @@
   {
     IMGetConferenceSettings();
     v3 = 0;
-    v4 = [v3 lastObject];
-    [(IDSAuthenticateMessage *)v2 setTopic:v4];
+    lastObject = [v3 lastObject];
+    [(IDSAuthenticateMessage *)v2 setTopic:lastObject];
 
     [(IDSAuthenticateMessage *)v2 setWantsResponse:1];
   }
@@ -29,36 +29,36 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = IDSAuthenticateMessage;
-  v4 = [(IDSAuthenticateMessage *)&v12 copyWithZone:a3];
-  v5 = [(IDSAuthenticateMessage *)self realm];
-  [v4 setRealm:v5];
+  v4 = [(IDSAuthenticateMessage *)&v12 copyWithZone:zone];
+  realm = [(IDSAuthenticateMessage *)self realm];
+  [v4 setRealm:realm];
 
   v6 = [(IDSAuthenticateMessage *)self csr];
   [v4 setCsr:v6];
 
-  v7 = [(IDSAuthenticateMessage *)self userID];
-  [v4 setUserID:v7];
+  userID = [(IDSAuthenticateMessage *)self userID];
+  [v4 setUserID:userID];
 
-  v8 = [(IDSAuthenticateMessage *)self authenticationInfo];
-  [v4 setAuthenticationInfo:v8];
+  authenticationInfo = [(IDSAuthenticateMessage *)self authenticationInfo];
+  [v4 setAuthenticationInfo:authenticationInfo];
 
-  v9 = [(IDSAuthenticateMessage *)self responseUserID];
-  [v4 setResponseUserID:v9];
+  responseUserID = [(IDSAuthenticateMessage *)self responseUserID];
+  [v4 setResponseUserID:responseUserID];
 
-  v10 = [(IDSAuthenticateMessage *)self responseCertificate];
-  [v4 setResponseCertificate:v10];
+  responseCertificate = [(IDSAuthenticateMessage *)self responseCertificate];
+  [v4 setResponseCertificate:responseCertificate];
 
   return v4;
 }
 
 - (id)bagKey
 {
-  v2 = [(IDSAuthenticateMessage *)self realm];
-  v3 = [NSString stringWithFormat:@"id-authenticate-%@", v2];
+  realm = [(IDSAuthenticateMessage *)self realm];
+  v3 = [NSString stringWithFormat:@"id-authenticate-%@", realm];
 
   return v3;
 }
@@ -77,8 +77,8 @@
 {
   v9.receiver = self;
   v9.super_class = IDSAuthenticateMessage;
-  v3 = [(IDSAuthenticateMessage *)&v9 messageBody];
-  Mutable = [v3 mutableCopy];
+  messageBody = [(IDSAuthenticateMessage *)&v9 messageBody];
+  Mutable = [messageBody mutableCopy];
 
   if (!Mutable)
   {
@@ -96,10 +96,10 @@
     sub_100917BB0();
   }
 
-  v6 = [(IDSAuthenticateMessage *)self userID];
-  if (v6)
+  userID = [(IDSAuthenticateMessage *)self userID];
+  if (userID)
   {
-    CFDictionarySetValue(Mutable, @"realm-user-id", v6);
+    CFDictionarySetValue(Mutable, @"realm-user-id", userID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -107,10 +107,10 @@
     sub_100917C38();
   }
 
-  v7 = [(IDSAuthenticateMessage *)self authenticationInfo];
-  if (v7)
+  authenticationInfo = [(IDSAuthenticateMessage *)self authenticationInfo];
+  if (authenticationInfo)
   {
-    CFDictionarySetValue(Mutable, @"authentication-data", v7);
+    CFDictionarySetValue(Mutable, @"authentication-data", authenticationInfo);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -125,8 +125,8 @@
 {
   v11.receiver = self;
   v11.super_class = IDSAuthenticateMessage;
-  v3 = [(IDSAuthenticateMessage *)&v11 additionalMessageHeaders];
-  Mutable = [v3 mutableCopy];
+  additionalMessageHeaders = [(IDSAuthenticateMessage *)&v11 additionalMessageHeaders];
+  Mutable = [additionalMessageHeaders mutableCopy];
 
   if (!Mutable)
   {
@@ -134,11 +134,11 @@
   }
 
   v5 = _IDSIDProtocolVersionNumber();
-  v6 = [v5 stringValue];
+  stringValue = [v5 stringValue];
 
-  if (v6)
+  if (stringValue)
   {
-    CFDictionarySetValue(Mutable, @"x-protocol-version", v6);
+    CFDictionarySetValue(Mutable, @"x-protocol-version", stringValue);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -146,18 +146,18 @@
     sub_100917D48();
   }
 
-  v7 = [(IDSAuthenticateMessage *)self dsAuthID];
-  if (v7)
+  dsAuthID = [(IDSAuthenticateMessage *)self dsAuthID];
+  if (dsAuthID)
   {
-    CFDictionarySetValue(Mutable, @"x-ds-client-id", v7);
+    CFDictionarySetValue(Mutable, @"x-ds-client-id", dsAuthID);
   }
 
-  v8 = [(IDSAuthenticateMessage *)self pushToken];
-  v9 = [v8 _FTStringFromBaseData];
+  pushToken = [(IDSAuthenticateMessage *)self pushToken];
+  _FTStringFromBaseData = [pushToken _FTStringFromBaseData];
 
-  if (v9)
+  if (_FTStringFromBaseData)
   {
-    CFDictionarySetValue(Mutable, @"x-push-token", v9);
+    CFDictionarySetValue(Mutable, @"x-push-token", _FTStringFromBaseData);
   }
 
   return Mutable;
@@ -165,22 +165,22 @@
 
 - (BOOL)allowsServerProvidedLenientAnisetteTimeout
 {
-  v2 = [(IDSAuthenticateMessage *)self realm];
-  v3 = [v2 isEqualToString:@"phone-number"];
+  realm = [(IDSAuthenticateMessage *)self realm];
+  v3 = [realm isEqualToString:@"phone-number"];
 
   return v3;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"cert"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"cert"];
   [(IDSAuthenticateMessage *)self setResponseCertificate:v5];
 
-  v6 = [v4 objectForKey:@"user-id"];
+  v6 = [dictionaryCopy objectForKey:@"user-id"];
   [(IDSAuthenticateMessage *)self setResponseUserID:v6];
 
-  v7 = [v4 objectForKey:@"alert"];
+  v7 = [dictionaryCopy objectForKey:@"alert"];
 
   [(IDSAuthenticateMessage *)self setResponseAlertInfo:v7];
 }

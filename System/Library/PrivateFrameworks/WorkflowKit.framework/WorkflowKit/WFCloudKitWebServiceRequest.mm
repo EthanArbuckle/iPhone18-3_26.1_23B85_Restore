@@ -1,30 +1,30 @@
 @interface WFCloudKitWebServiceRequest
-- (WFCloudKitWebServiceRequest)initWithContainer:(id)a3 database:(id)a4;
+- (WFCloudKitWebServiceRequest)initWithContainer:(id)container database:(id)database;
 - (id)cloudKitAPIToken;
 - (id)cloudKitEnvironment;
 - (id)databaseName;
-- (id)extractRecordDictFromRecordIfNecessary:(id)a3 recordType:(id)a4;
-- (id)fetchProxiedRecordWithIdentifier:(id)a3 possibleItemTypes:(id)a4 completionHandler:(id)a5;
-- (id)fetchRecordsWithItemType:(Class)a3 filter:(id)a4 cacheKey:(id)a5 completionHandler:(id)a6;
-- (id)getJSONFromURL:(id)a3 headers:(id)a4 completionHandler:(id)a5;
-- (id)pathComponentsForType:(unint64_t)a3 parameters:(id)a4;
-- (id)postJSON:(id)a3 toURL:(id)a4 cacheKey:(id)a5 completionHandler:(id)a6;
-- (id)queryWithItemType:(Class)a3 filter:(id)a4;
-- (id)recordsFromQueryResponse:(id)a3;
-- (id)urlForType:(unint64_t)a3 parameters:(id)a4;
-- (void)parseRecord:(id)a3 intoItem:(id)a4 allKeys:(BOOL)a5;
+- (id)extractRecordDictFromRecordIfNecessary:(id)necessary recordType:(id)type;
+- (id)fetchProxiedRecordWithIdentifier:(id)identifier possibleItemTypes:(id)types completionHandler:(id)handler;
+- (id)fetchRecordsWithItemType:(Class)type filter:(id)filter cacheKey:(id)key completionHandler:(id)handler;
+- (id)getJSONFromURL:(id)l headers:(id)headers completionHandler:(id)handler;
+- (id)pathComponentsForType:(unint64_t)type parameters:(id)parameters;
+- (id)postJSON:(id)n toURL:(id)l cacheKey:(id)key completionHandler:(id)handler;
+- (id)queryWithItemType:(Class)type filter:(id)filter;
+- (id)recordsFromQueryResponse:(id)response;
+- (id)urlForType:(unint64_t)type parameters:(id)parameters;
+- (void)parseRecord:(id)record intoItem:(id)item allKeys:(BOOL)keys;
 @end
 
 @implementation WFCloudKitWebServiceRequest
 
-- (void)parseRecord:(id)a3 intoItem:(id)a4 allKeys:(BOOL)a5
+- (void)parseRecord:(id)record intoItem:(id)item allKeys:(BOOL)keys
 {
-  v7 = a4;
+  itemCopy = item;
   v8 = MEMORY[0x1E696ADC8];
-  v9 = a3;
-  v10 = [v8 currentQueue];
-  v11 = [objc_opt_class() recordType];
-  v12 = [(WFCloudKitWebServiceRequest *)self extractRecordDictFromRecordIfNecessary:v9 recordType:v11];
+  recordCopy = record;
+  currentQueue = [v8 currentQueue];
+  recordType = [objc_opt_class() recordType];
+  v12 = [(WFCloudKitWebServiceRequest *)self extractRecordDictFromRecordIfNecessary:recordCopy recordType:recordType];
 
   v13 = [v12 objectForKeyedSubscript:@"fields"];
   v14 = objc_opt_class();
@@ -32,17 +32,17 @@
 
   if (v15)
   {
-    v16 = v7;
-    v17 = [objc_opt_class() properties];
+    v16 = itemCopy;
+    properties = [objc_opt_class() properties];
     v52[0] = MEMORY[0x1E69E9820];
     v52[1] = 3221225472;
     v52[2] = __60__WFCloudKitWebServiceRequest_parseRecord_intoItem_allKeys___block_invoke;
     v52[3] = &unk_1E837AEC0;
-    v18 = v17;
+    v18 = properties;
     v53 = v18;
     v19 = v16;
     v54 = v19;
-    v55 = v10;
+    v55 = currentQueue;
     v56 = v19;
     [v15 enumerateKeysAndObjectsUsingBlock:v52];
     v20 = [v12 objectForKeyedSubscript:@"recordName"];
@@ -58,7 +58,7 @@
     {
       v46 = v22;
       v47 = v18;
-      v49 = v10;
+      v49 = currentQueue;
       v24 = [v12 objectForKeyedSubscript:@"created"];
       v25 = objc_opt_class();
       v26 = WFEnforceClass_47426(v24, v25);
@@ -72,7 +72,7 @@
       v31 = objc_opt_class();
       v32 = WFEnforceClass_47426(v30, v31);
 
-      v48 = v11;
+      v48 = recordType;
       v45 = v32;
       if (v32)
       {
@@ -107,8 +107,8 @@
       v44 = WFEnforceClass_47426(v42, v43);
 
       [v19 setCreatedAt:v35 modifiedAt:v41 createdBy:v44];
-      v11 = v48;
-      v10 = v49;
+      recordType = v48;
+      currentQueue = v49;
       v22 = v46;
       v18 = v47;
     }
@@ -191,10 +191,10 @@ LABEL_14:
 LABEL_15:
 }
 
-- (id)extractRecordDictFromRecordIfNecessary:(id)a3 recordType:(id)a4
+- (id)extractRecordDictFromRecordIfNecessary:(id)necessary recordType:(id)type
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:a4];
+  necessaryCopy = necessary;
+  v6 = [necessaryCopy objectForKeyedSubscript:type];
   v7 = [v6 objectForKeyedSubscript:@"record"];
   v8 = objc_opt_class();
   v9 = WFEnforceClass_47426(v7, v8);
@@ -206,7 +206,7 @@ LABEL_15:
 
   else
   {
-    v10 = v5;
+    v10 = necessaryCopy;
   }
 
   v11 = v10;
@@ -214,11 +214,11 @@ LABEL_15:
   return v11;
 }
 
-- (id)recordsFromQueryResponse:(id)a3
+- (id)recordsFromQueryResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = objc_opt_class();
-  v5 = WFEnforceClass_47426(v3, v4);
+  v5 = WFEnforceClass_47426(responseCopy, v4);
 
   if (v5)
   {
@@ -235,15 +235,15 @@ LABEL_15:
   return v8;
 }
 
-- (id)urlForType:(unint64_t)a3 parameters:(id)a4
+- (id)urlForType:(unint64_t)type parameters:(id)parameters
 {
   v31[5] = *MEMORY[0x1E69E9840];
-  v7 = [(WFCloudKitWebServiceRequest *)self pathComponentsForType:a3 parameters:a4];
-  v8 = [(WFCloudKitWebServiceRequest *)self webServiceForRequestType:a3];
+  v7 = [(WFCloudKitWebServiceRequest *)self pathComponentsForType:type parameters:parameters];
+  v8 = [(WFCloudKitWebServiceRequest *)self webServiceForRequestType:type];
   if (v8 == 1)
   {
-    v20 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-    v21 = [v20 stringForKey:@"WFWebServiceProxyDevelopmentHostnameKey"];
+    systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+    v21 = [systemShortcutsUserDefaults stringForKey:@"WFWebServiceProxyDevelopmentHostnameKey"];
 
     v14 = [&unk_1F4A9B698 arrayByAddingObjectsFromArray:v7];
 
@@ -256,19 +256,19 @@ LABEL_15:
   {
     v31[0] = @"database";
     v31[1] = @"1";
-    v9 = [(WFCloudKitWebServiceRequest *)self container];
-    v10 = [v9 containerIdentifier];
-    v31[2] = v10;
-    v11 = [(WFCloudKitWebServiceRequest *)self cloudKitEnvironment];
-    v31[3] = v11;
-    v12 = [(WFCloudKitWebServiceRequest *)self databaseName];
-    v31[4] = v12;
+    container = [(WFCloudKitWebServiceRequest *)self container];
+    containerIdentifier = [container containerIdentifier];
+    v31[2] = containerIdentifier;
+    cloudKitEnvironment = [(WFCloudKitWebServiceRequest *)self cloudKitEnvironment];
+    v31[3] = cloudKitEnvironment;
+    databaseName = [(WFCloudKitWebServiceRequest *)self databaseName];
+    v31[4] = databaseName;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:5];
     v14 = [v13 arrayByAddingObjectsFromArray:v7];
 
     v15 = MEMORY[0x1E696AF60];
-    v16 = [(WFCloudKitWebServiceRequest *)self cloudKitAPIToken];
-    v17 = [v15 queryItemWithName:@"ckAPIToken" value:v16];
+    cloudKitAPIToken = [(WFCloudKitWebServiceRequest *)self cloudKitAPIToken];
+    v17 = [v15 queryItemWithName:@"ckAPIToken" value:cloudKitAPIToken];
     v30 = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
 
@@ -278,8 +278,8 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"WFCloudKitWebServiceRequest.m" lineNumber:389 description:@"baseURL not provided for request type"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"WFCloudKitWebServiceRequest.m" lineNumber:389 description:@"baseURL not provided for request type"];
 
   v18 = 0;
   v19 = 0;
@@ -293,8 +293,8 @@ LABEL_7:
   v26 = [v23 URL];
   if (!v26)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"WFCloudKitWebServiceRequest.m" lineNumber:395 description:{@"Could not create URL for web service request of type: %lu", a3}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFCloudKitWebServiceRequest.m" lineNumber:395 description:{@"Could not create URL for web service request of type: %lu", type}];
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -304,9 +304,9 @@ LABEL_7:
 
 - (id)cloudKitAPIToken
 {
-  v2 = [(WFCloudKitWebServiceRequest *)self container];
-  v3 = [v2 containerIdentifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E6997148]];
+  container = [(WFCloudKitWebServiceRequest *)self container];
+  containerIdentifier = [container containerIdentifier];
+  v4 = [containerIdentifier isEqualToString:*MEMORY[0x1E6997148]];
 
   if (v4)
   {
@@ -321,11 +321,11 @@ LABEL_7:
 
 - (id)cloudKitEnvironment
 {
-  v2 = [MEMORY[0x1E6996CA8] sharedContext];
-  v3 = [v2 applicationBundle];
-  v4 = [v3 wf_entitlements];
+  mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
+  applicationBundle = [mEMORY[0x1E6996CA8] applicationBundle];
+  wf_entitlements = [applicationBundle wf_entitlements];
 
-  v5 = [v4 objectForKeyedSubscript:@"com.apple.developer.icloud-container-environment"];
+  v5 = [wf_entitlements objectForKeyedSubscript:@"com.apple.developer.icloud-container-environment"];
   v6 = objc_opt_class();
   v7 = WFEnforceClass_47426(v5, v6);
 
@@ -339,24 +339,24 @@ LABEL_7:
     v8 = @"development";
   }
 
-  v9 = [(__CFString *)v8 lowercaseString];
+  lowercaseString = [(__CFString *)v8 lowercaseString];
 
-  return v9;
+  return lowercaseString;
 }
 
-- (id)pathComponentsForType:(unint64_t)a3 parameters:(id)a4
+- (id)pathComponentsForType:(unint64_t)type parameters:(id)parameters
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  if (a3 == 1)
+  if (type == 1)
   {
-    v6 = [a4 objectForKeyedSubscript:@"WFCloudKitURLParameterIdentifier"];
+    v6 = [parameters objectForKeyedSubscript:@"WFCloudKitURLParameterIdentifier"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_47426(v6, v7);
 
     if (!v8)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"WFCloudKitWebServiceRequest.m" lineNumber:319 description:{@"Missing %@ for proxied record lookup", @"WFCloudKitURLParameterIdentifier"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"WFCloudKitWebServiceRequest.m" lineNumber:319 description:{@"Missing %@ for proxied record lookup", @"WFCloudKitURLParameterIdentifier"}];
     }
 
     v13[0] = @"records";
@@ -376,16 +376,16 @@ LABEL_7:
 
 - (id)databaseName
 {
-  v2 = [(WFCloudKitWebServiceRequest *)self database];
-  v3 = [v2 databaseScope];
+  database = [(WFCloudKitWebServiceRequest *)self database];
+  databaseScope = [database databaseScope];
 
   v4 = @"public";
-  if (v3 == 3)
+  if (databaseScope == 3)
   {
     v4 = @"shared";
   }
 
-  if (v3 == 2)
+  if (databaseScope == 2)
   {
     return @"private";
   }
@@ -396,12 +396,12 @@ LABEL_7:
   }
 }
 
-- (id)getJSONFromURL:(id)a3 headers:(id)a4 completionHandler:(id)a5
+- (id)getJSONFromURL:(id)l headers:(id)headers completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E696AD68];
-  v9 = a4;
-  v10 = [v8 requestWithURL:a3];
+  headersCopy = headers;
+  v10 = [v8 requestWithURL:l];
   [v10 setHTTPMethod:@"GET"];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -409,16 +409,16 @@ LABEL_7:
   v21[3] = &unk_1E837B748;
   v22 = v10;
   v11 = v10;
-  [v9 enumerateKeysAndObjectsUsingBlock:v21];
+  [headersCopy enumerateKeysAndObjectsUsingBlock:v21];
 
-  v12 = [MEMORY[0x1E696AF78] wf_sharedSession];
+  wf_sharedSession = [MEMORY[0x1E696AF78] wf_sharedSession];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __72__WFCloudKitWebServiceRequest_getJSONFromURL_headers_completionHandler___block_invoke_2;
   v19 = &unk_1E837AE90;
-  v20 = v7;
-  v13 = v7;
-  v14 = [v12 dataTaskWithRequest:v11 completionHandler:&v16];
+  v20 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = [wf_sharedSession dataTaskWithRequest:v11 completionHandler:&v16];
 
   [v14 resume];
 
@@ -473,34 +473,34 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)postJSON:(id)a3 toURL:(id)a4 cacheKey:(id)a5 completionHandler:(id)a6
+- (id)postJSON:(id)n toURL:(id)l cacheKey:(id)key completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  lCopy = l;
+  keyCopy = key;
+  handlerCopy = handler;
   v23 = 0;
-  v12 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a3 options:0 error:&v23];
+  v12 = [MEMORY[0x1E696ACB0] dataWithJSONObject:n options:0 error:&v23];
   v13 = v23;
   if (v13)
   {
-    v11[2](v11, 0, v13);
+    handlerCopy[2](handlerCopy, 0, v13);
     v14 = 0;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E696AD68] requestWithURL:v9];
+    v15 = [MEMORY[0x1E696AD68] requestWithURL:lCopy];
     [v15 setHTTPMethod:@"POST"];
     [v15 setHTTPBody:v12];
     [v15 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [v15 setValue:v10 forHTTPHeaderField:@"X-Apple-Cache-Key"];
-    v16 = [MEMORY[0x1E696AF78] wf_sharedSession];
+    [v15 setValue:keyCopy forHTTPHeaderField:@"X-Apple-Cache-Key"];
+    wf_sharedSession = [MEMORY[0x1E696AF78] wf_sharedSession];
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __73__WFCloudKitWebServiceRequest_postJSON_toURL_cacheKey_completionHandler___block_invoke;
     v21 = &unk_1E837AE90;
-    v22 = v11;
-    v14 = [v16 dataTaskWithRequest:v15 completionHandler:&v18];
+    v22 = handlerCopy;
+    v14 = [wf_sharedSession dataTaskWithRequest:v15 completionHandler:&v18];
 
     [v14 resume];
   }
@@ -556,18 +556,18 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)queryWithItemType:(Class)a3 filter:(id)a4
+- (id)queryWithItemType:(Class)type filter:(id)filter
 {
   v13[6] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(objc_class *)a3 recordType];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.*", v6];
-  v8 = [v5 stringRepresentationWithRecordType:v6];
+  filterCopy = filter;
+  recordType = [(objc_class *)type recordType];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.*", recordType];
+  v8 = [filterCopy stringRepresentationWithRecordType:recordType];
 
   v13[0] = @"SELECT";
   v13[1] = v7;
   v13[2] = @"FROM";
-  v13[3] = v6;
+  v13[3] = recordType;
   v13[4] = @"WHERE";
   v13[5] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:6];
@@ -578,15 +578,15 @@ LABEL_13:
   return v10;
 }
 
-- (id)fetchProxiedRecordWithIdentifier:(id)a3 possibleItemTypes:(id)a4 completionHandler:(id)a5
+- (id)fetchProxiedRecordWithIdentifier:(id)identifier possibleItemTypes:(id)types completionHandler:(id)handler
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  typesCopy = types;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v12 = objc_opt_new();
   v32 = @"WFCloudKitURLParameterIdentifier";
-  v33[0] = v11;
+  v33[0] = identifierCopy;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
   v14 = [(WFCloudKitWebServiceRequest *)self urlForType:1 parameters:v13];
 
@@ -594,14 +594,14 @@ LABEL_13:
   v24 = 3221225472;
   v25 = __100__WFCloudKitWebServiceRequest_fetchProxiedRecordWithIdentifier_possibleItemTypes_completionHandler___block_invoke;
   v26 = &unk_1E837AE68;
-  v30 = v10;
+  v30 = handlerCopy;
   v31 = a2;
-  v27 = v9;
-  v28 = self;
+  v27 = typesCopy;
+  selfCopy = self;
   v15 = v12;
   v29 = v15;
-  v16 = v9;
-  v17 = v10;
+  v16 = typesCopy;
+  v17 = handlerCopy;
   v18 = [(WFCloudKitWebServiceRequest *)self getJSONFromURL:v14 headers:0 completionHandler:&v23];
   [v15 setDataTask:{v18, v23, v24, v25, v26}];
 
@@ -748,21 +748,21 @@ void __100__WFCloudKitWebServiceRequest_fetchProxiedRecordWithIdentifier_possibl
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (id)fetchRecordsWithItemType:(Class)a3 filter:(id)a4 cacheKey:(id)a5 completionHandler:(id)a6
+- (id)fetchRecordsWithItemType:(Class)type filter:(id)filter cacheKey:(id)key completionHandler:(id)handler
 {
   v41 = *MEMORY[0x1E69E9840];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  if (([(objc_class *)a3 conformsToProtocol:&unk_1F4AB1E68]& 1) == 0)
+  handlerCopy = handler;
+  keyCopy = key;
+  filterCopy = filter;
+  if (([(objc_class *)type conformsToProtocol:&unk_1F4AB1E68]& 1) == 0)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"WFCloudKitWebServiceRequest.m" lineNumber:83 description:@"itemType passed to WFCloudKitServiceRequest must conform to WFCloudKitItem protocol"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCloudKitWebServiceRequest.m" lineNumber:83 description:@"itemType passed to WFCloudKitServiceRequest must conform to WFCloudKitItem protocol"];
   }
 
   v14 = objc_opt_new();
   v15 = [(WFCloudKitWebServiceRequest *)self urlForType:0 parameters:0];
-  v16 = [(WFCloudKitWebServiceRequest *)self queryWithItemType:a3 filter:v13];
+  v16 = [(WFCloudKitWebServiceRequest *)self queryWithItemType:type filter:filterCopy];
 
   v17 = getWFCloudKitWSLogObject();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -785,15 +785,15 @@ void __100__WFCloudKitWebServiceRequest_fetchProxiedRecordWithIdentifier_possibl
   v28 = 3221225472;
   v29 = __90__WFCloudKitWebServiceRequest_fetchRecordsWithItemType_filter_cacheKey_completionHandler___block_invoke;
   v30 = &unk_1E837AE40;
-  v33 = v11;
-  v34 = a3;
-  v31 = self;
+  v33 = handlerCopy;
+  typeCopy = type;
+  selfCopy = self;
   v19 = v14;
   v32 = v19;
-  v20 = v11;
-  v21 = [(WFCloudKitWebServiceRequest *)self postJSON:v18 toURL:v15 cacheKey:v12 completionHandler:&v27];
+  v20 = handlerCopy;
+  v21 = [(WFCloudKitWebServiceRequest *)self postJSON:v18 toURL:v15 cacheKey:keyCopy completionHandler:&v27];
 
-  [v19 setDataTask:{v21, v27, v28, v29, v30, v31}];
+  [v19 setDataTask:{v21, v27, v28, v29, v30, selfCopy}];
   v22 = v32;
   v23 = v19;
 
@@ -924,18 +924,18 @@ id __90__WFCloudKitWebServiceRequest_fetchRecordsWithItemType_filter_cacheKey_co
   return v6;
 }
 
-- (WFCloudKitWebServiceRequest)initWithContainer:(id)a3 database:(id)a4
+- (WFCloudKitWebServiceRequest)initWithContainer:(id)container database:(id)database
 {
-  v7 = a3;
-  v8 = a4;
+  containerCopy = container;
+  databaseCopy = database;
   v13.receiver = self;
   v13.super_class = WFCloudKitWebServiceRequest;
   v9 = [(WFCloudKitWebServiceRequest *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_container, a3);
-    objc_storeStrong(&v10->_database, a4);
+    objc_storeStrong(&v9->_container, container);
+    objc_storeStrong(&v10->_database, database);
     v11 = v10;
   }
 

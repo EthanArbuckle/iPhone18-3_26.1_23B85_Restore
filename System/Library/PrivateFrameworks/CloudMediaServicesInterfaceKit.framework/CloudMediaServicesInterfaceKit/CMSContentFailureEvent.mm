@@ -1,21 +1,21 @@
 @interface CMSContentFailureEvent
-- (CMSContentFailureEvent)initWithServiceID:(id)a3 sessionIdentifier:(id)a4 errorCode:(int64_t)a5 doesServiceSupportPlaybackFailureRecovery:(BOOL)a6;
+- (CMSContentFailureEvent)initWithServiceID:(id)d sessionIdentifier:(id)identifier errorCode:(int64_t)code doesServiceSupportPlaybackFailureRecovery:(BOOL)recovery;
 - (id)encoded;
 @end
 
 @implementation CMSContentFailureEvent
 
-- (CMSContentFailureEvent)initWithServiceID:(id)a3 sessionIdentifier:(id)a4 errorCode:(int64_t)a5 doesServiceSupportPlaybackFailureRecovery:(BOOL)a6
+- (CMSContentFailureEvent)initWithServiceID:(id)d sessionIdentifier:(id)identifier errorCode:(int64_t)code doesServiceSupportPlaybackFailureRecovery:(BOOL)recovery
 {
   v11.receiver = self;
   v11.super_class = CMSContentFailureEvent;
-  v8 = [(CMSBaseContentFailureEvent *)&v11 initWithServiceID:a3 sessionIdentifier:a4];
+  v8 = [(CMSBaseContentFailureEvent *)&v11 initWithServiceID:d sessionIdentifier:identifier];
   v9 = v8;
   if (v8)
   {
     [(CMSBaseContentFailureEvent *)v8 setEventName:@"com.apple.cloudmediaservices.contentFailure"];
-    v9->_errorCode = a5;
-    v9->_doesServiceSupportPlaybackFailureRecovery = a6;
+    v9->_errorCode = code;
+    v9->_doesServiceSupportPlaybackFailureRecovery = recovery;
     v9->_didReachMaxRetries = 0;
   }
 
@@ -26,8 +26,8 @@
 {
   v9.receiver = self;
   v9.super_class = CMSContentFailureEvent;
-  v3 = [(CMSBaseContentFailureEvent *)&v9 encoded];
-  v4 = [v3 mutableCopy];
+  encoded = [(CMSBaseContentFailureEvent *)&v9 encoded];
+  v4 = [encoded mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_errorCode];
   [v4 setObject:v5 forKeyedSubscript:@"errorCode"];

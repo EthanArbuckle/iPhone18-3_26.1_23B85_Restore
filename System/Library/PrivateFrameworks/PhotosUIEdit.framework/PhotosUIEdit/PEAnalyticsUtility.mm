@@ -1,20 +1,20 @@
 @interface PEAnalyticsUtility
 + (id)adjustmentValueBucketizerFormatter;
-+ (id)analyticPayloadForCompositionController:(id)a3;
-+ (id)analyticPayloadForCopyEditsSettings:(id)a3;
-+ (id)diffFromAdjustmentController:(id)a3 toAdjustmentController:(id)a4;
-+ (id)diffKeysFromInitialComposition:(id)a3 toFinalComposition:(id)a4;
-+ (id)semanticStyleCapturedCastForItem:(id)a3;
-+ (id)semanticStylesIdentifierForItem:(id)a3;
-+ (void)reportAnalyticsForChangeFrom:(id)a3 to:(id)a4 actionType:(unint64_t)a5;
++ (id)analyticPayloadForCompositionController:(id)controller;
++ (id)analyticPayloadForCopyEditsSettings:(id)settings;
++ (id)diffFromAdjustmentController:(id)controller toAdjustmentController:(id)adjustmentController;
++ (id)diffKeysFromInitialComposition:(id)composition toFinalComposition:(id)finalComposition;
++ (id)semanticStyleCapturedCastForItem:(id)item;
++ (id)semanticStylesIdentifierForItem:(id)item;
++ (void)reportAnalyticsForChangeFrom:(id)from to:(id)to actionType:(unint64_t)type;
 @end
 
 @implementation PEAnalyticsUtility
 
-+ (id)analyticPayloadForCopyEditsSettings:(id)a3
++ (id)analyticPayloadForCopyEditsSettings:(id)settings
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  settingsCopy = settings;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v17 = 0u;
   v18 = 0u;
@@ -36,11 +36,11 @@
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 identifier];
+        identifier = [v9 identifier];
         v11 = @"PECopyEditsSettingIdentifierCinematic";
-        if ((v10 - 1) <= 8)
+        if ((identifier - 1) <= 8)
         {
-          v11 = off_279A30190[v10 - 1];
+          v11 = off_279A30190[identifier - 1];
         }
 
         v12 = v11;
@@ -81,41 +81,41 @@ BOOL __58__PEAnalyticsUtility_analyticPayloadForCopyEditsSettings___block_invoke
   return v4 == v5;
 }
 
-+ (void)reportAnalyticsForChangeFrom:(id)a3 to:(id)a4 actionType:(unint64_t)a5
++ (void)reportAnalyticsForChangeFrom:(id)from to:(id)to actionType:(unint64_t)type
 {
-  if (a5 > 2)
+  if (type > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_279A30128[a5];
+    v5 = off_279A30128[type];
   }
 
-  v7 = [PEAnalyticsUtility diffKeysFromInitialComposition:a3 toFinalComposition:a4];
+  v7 = [PEAnalyticsUtility diffKeysFromInitialComposition:from toFinalComposition:to];
   if ([v7 count])
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    [v6 setObject:v5 forKeyedSubscript:@"actionType"];
-    [v6 addEntriesFromDictionary:v7];
-    [MEMORY[0x277CF6EC0] sendEvent:@"com.apple.photos.CPAnalytics.edit.editAction" withPayload:v6];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:v5 forKeyedSubscript:@"actionType"];
+    [dictionary addEntriesFromDictionary:v7];
+    [MEMORY[0x277CF6EC0] sendEvent:@"com.apple.photos.CPAnalytics.edit.editAction" withPayload:dictionary];
   }
 }
 
-+ (id)semanticStyleCapturedCastForItem:(id)a3
++ (id)semanticStyleCapturedCastForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 fetchSmartStyleExtendedProperties];
-    v5 = [v4 originalSmartStyleCast];
-    v6 = [v5 intValue];
+    fetchSmartStyleExtendedProperties = [itemCopy fetchSmartStyleExtendedProperties];
+    originalSmartStyleCast = [fetchSmartStyleExtendedProperties originalSmartStyleCast];
+    intValue = [originalSmartStyleCast intValue];
 
-    if (v6)
+    if (intValue)
     {
-      v7 = [PEAdjustmentUtilities semanticStyleCastForPHAdjustmentStyleCast:v6];
+      v7 = [PEAdjustmentUtilities semanticStyleCastForPHAdjustmentStyleCast:intValue];
     }
 
     else
@@ -132,21 +132,21 @@ BOOL __58__PEAnalyticsUtility_analyticPayloadForCopyEditsSettings___block_invoke
   return v7;
 }
 
-+ (id)semanticStylesIdentifierForItem:(id)a3
++ (id)semanticStylesIdentifierForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = itemCopy;
     [v4 fetchPropertySetsIfNeeded];
-    v5 = [v4 photosInfoPanelExtendedProperties];
-    v6 = [v5 semanticStylePreset];
+    photosInfoPanelExtendedProperties = [v4 photosInfoPanelExtendedProperties];
+    semanticStylePreset = [photosInfoPanelExtendedProperties semanticStylePreset];
 
-    if (v6)
+    if (semanticStylePreset)
     {
-      v7 = [v6 integerValue];
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"sem_style_%ld", v7];
+      integerValue = [semanticStylePreset integerValue];
+      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"sem_style_%ld", integerValue];
     }
 
     else
@@ -175,30 +175,30 @@ BOOL __58__PEAnalyticsUtility_analyticPayloadForCopyEditsSettings___block_invoke
   return v2;
 }
 
-+ (id)diffFromAdjustmentController:(id)a3 toAdjustmentController:(id)a4
++ (id)diffFromAdjustmentController:(id)controller toAdjustmentController:(id)adjustmentController
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  adjustmentControllerCopy = adjustmentController;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     v27 = v8;
-    v29 = v5;
-    v9 = [v5 analyticsPayload];
-    v28 = v6;
-    v10 = [v6 analyticsPayload];
-    v11 = [v9 allKeys];
-    v12 = [v11 mutableCopy];
+    v29 = controllerCopy;
+    analyticsPayload = [controllerCopy analyticsPayload];
+    v28 = adjustmentControllerCopy;
+    analyticsPayload2 = [adjustmentControllerCopy analyticsPayload];
+    allKeys = [analyticsPayload allKeys];
+    v12 = [allKeys mutableCopy];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v31 = v10;
-    obj = [v10 allKeys];
+    v31 = analyticsPayload2;
+    obj = [analyticsPayload2 allKeys];
     v13 = [obj countByEnumeratingWithState:&v33 objects:v39 count:16];
     if (v13)
     {
@@ -215,14 +215,14 @@ BOOL __58__PEAnalyticsUtility_analyticPayloadForCopyEditsSettings___block_invoke
 
           v17 = *(*(&v33 + 1) + 8 * i);
           [v12 removeObject:v17];
-          v18 = [v9 objectForKeyedSubscript:v17];
+          v18 = [analyticsPayload objectForKeyedSubscript:v17];
 
           v19 = v7;
           if (v18)
           {
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
-            v21 = [v9 objectForKeyedSubscript:v17];
+            v21 = [analyticsPayload objectForKeyedSubscript:v17];
             v22 = [v31 objectForKeyedSubscript:v17];
             v23 = (isKindOfClass & 1) != 0 ? [v21 isEqualToString:v22] : objc_msgSend(v21, "isEqual:", v22);
             v24 = v23;
@@ -253,8 +253,8 @@ BOOL __58__PEAnalyticsUtility_analyticPayloadForCopyEditsSettings___block_invoke
     v38[2] = v27;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:3];
 
-    v6 = v28;
-    v5 = v29;
+    adjustmentControllerCopy = v28;
+    controllerCopy = v29;
   }
 
   else
@@ -265,21 +265,21 @@ BOOL __58__PEAnalyticsUtility_analyticPayloadForCopyEditsSettings___block_invoke
   return v25;
 }
 
-+ (id)analyticPayloadForCompositionController:(id)a3
++ (id)analyticPayloadForCompositionController:(id)controller
 {
   v94[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 adjustmentValueBucketizerFormatter];
+  controllerCopy = controller;
+  adjustmentValueBucketizerFormatter = [self adjustmentValueBucketizerFormatter];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [v4 smartToneAdjustmentController];
-  v8 = [v4 smartColorAdjustmentController];
-  v92 = v8;
-  if ([v7 isAuto] && objc_msgSend(v8, "isAuto"))
+  smartToneAdjustmentController = [controllerCopy smartToneAdjustmentController];
+  smartColorAdjustmentController = [controllerCopy smartColorAdjustmentController];
+  v92 = smartColorAdjustmentController;
+  if ([smartToneAdjustmentController isAuto] && objc_msgSend(smartColorAdjustmentController, "isAuto"))
   {
     [v6 setObject:@"1" forKeyedSubscript:@"auto-enhance"];
-    [v7 inputLight];
+    [smartToneAdjustmentController inputLight];
     v10 = v9;
-    [v7 inputLightDefault];
+    [smartToneAdjustmentController inputLightDefault];
     if (vabdd_f64(v10, v11) <= 0.001)
     {
       [v6 addEntriesFromDictionary:&unk_28706EFC8];
@@ -288,181 +288,181 @@ BOOL __58__PEAnalyticsUtility_analyticPayloadForCopyEditsSettings___block_invoke
 
     v93 = @"auto-enhance_intensity";
     v12 = MEMORY[0x277CCABB0];
-    [v7 inputLight];
-    v13 = [v12 numberWithDouble:?];
-    v14 = [v5 stringFromNumber:v13];
-    v94[0] = v14;
+    [smartToneAdjustmentController inputLight];
+    analyticsPayload = [v12 numberWithDouble:?];
+    analyticsPayload2 = [adjustmentValueBucketizerFormatter stringFromNumber:analyticsPayload];
+    v94[0] = analyticsPayload2;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v94 forKeys:&v93 count:1];
     [v6 addEntriesFromDictionary:v15];
   }
 
   else
   {
-    v13 = [v7 analyticsPayload];
-    v14 = [v8 analyticsPayload];
-    [v6 addEntriesFromDictionary:v13];
-    [v6 addEntriesFromDictionary:v14];
+    analyticsPayload = [smartToneAdjustmentController analyticsPayload];
+    analyticsPayload2 = [smartColorAdjustmentController analyticsPayload];
+    [v6 addEntriesFromDictionary:analyticsPayload];
+    [v6 addEntriesFromDictionary:analyticsPayload2];
   }
 
 LABEL_7:
-  v16 = [v4 smartBWAdjustmentController];
-  v17 = [v16 analyticsPayload];
+  smartBWAdjustmentController = [controllerCopy smartBWAdjustmentController];
+  analyticsPayload3 = [smartBWAdjustmentController analyticsPayload];
 
-  v18 = [v4 whiteBalanceAdjustmentController];
-  v19 = [v18 analyticsPayload];
+  whiteBalanceAdjustmentController = [controllerCopy whiteBalanceAdjustmentController];
+  analyticsPayload4 = [whiteBalanceAdjustmentController analyticsPayload];
 
-  v20 = [v4 cropAdjustmentController];
-  v21 = [v20 analyticsPayload];
+  cropAdjustmentController = [controllerCopy cropAdjustmentController];
+  analyticsPayload5 = [cropAdjustmentController analyticsPayload];
 
-  v91 = v17;
-  [v6 addEntriesFromDictionary:v17];
-  v90 = v19;
-  [v6 addEntriesFromDictionary:v19];
-  v89 = v21;
-  [v6 addEntriesFromDictionary:v21];
-  v22 = [v4 inpaintAdjustmentController];
-  v23 = [v22 analyticsPayload];
+  v91 = analyticsPayload3;
+  [v6 addEntriesFromDictionary:analyticsPayload3];
+  v90 = analyticsPayload4;
+  [v6 addEntriesFromDictionary:analyticsPayload4];
+  v89 = analyticsPayload5;
+  [v6 addEntriesFromDictionary:analyticsPayload5];
+  inpaintAdjustmentController = [controllerCopy inpaintAdjustmentController];
+  analyticsPayload6 = [inpaintAdjustmentController analyticsPayload];
 
-  v88 = v23;
-  [v6 addEntriesFromDictionary:v23];
-  v24 = [v4 semanticStyleAdjustmentController];
-  v25 = [v24 analyticsPayload];
+  v88 = analyticsPayload6;
+  [v6 addEntriesFromDictionary:analyticsPayload6];
+  semanticStyleAdjustmentController = [controllerCopy semanticStyleAdjustmentController];
+  analyticsPayload7 = [semanticStyleAdjustmentController analyticsPayload];
 
-  [v6 addEntriesFromDictionary:v25];
-  v26 = [v4 sharpenAdjustmentController];
-  LODWORD(v23) = [v26 enabled];
+  [v6 addEntriesFromDictionary:analyticsPayload7];
+  sharpenAdjustmentController = [controllerCopy sharpenAdjustmentController];
+  LODWORD(analyticsPayload6) = [sharpenAdjustmentController enabled];
 
-  if (v23)
+  if (analyticsPayload6)
   {
-    v27 = [v4 sharpenAdjustmentController];
-    v28 = [MEMORY[0x277D3A978] intensityKey];
-    v29 = [v27 valueForUndefinedKey:v28];
+    sharpenAdjustmentController2 = [controllerCopy sharpenAdjustmentController];
+    intensityKey = [MEMORY[0x277D3A978] intensityKey];
+    v29 = [sharpenAdjustmentController2 valueForUndefinedKey:intensityKey];
     [v29 doubleValue];
     v31 = v30;
 
     if (v31 != 0.0)
     {
       v32 = [MEMORY[0x277CCABB0] numberWithDouble:v31];
-      v33 = [v5 stringFromNumber:v32];
+      v33 = [adjustmentValueBucketizerFormatter stringFromNumber:v32];
       [v6 setObject:v33 forKeyedSubscript:@"sharpness"];
     }
   }
 
-  v34 = [v4 definitionAdjustmentController];
-  v35 = [v34 enabled];
+  definitionAdjustmentController = [controllerCopy definitionAdjustmentController];
+  enabled = [definitionAdjustmentController enabled];
 
-  if (v35)
+  if (enabled)
   {
-    v36 = [v4 definitionAdjustmentController];
-    v37 = [MEMORY[0x277D3A8C0] intensityKey];
-    v38 = [v36 valueForUndefinedKey:v37];
+    definitionAdjustmentController2 = [controllerCopy definitionAdjustmentController];
+    intensityKey2 = [MEMORY[0x277D3A8C0] intensityKey];
+    v38 = [definitionAdjustmentController2 valueForUndefinedKey:intensityKey2];
     [v38 doubleValue];
     v40 = v39;
 
     if (v40 != 0.0)
     {
       v41 = [MEMORY[0x277CCABB0] numberWithDouble:v40];
-      v42 = [v5 stringFromNumber:v41];
+      v42 = [adjustmentValueBucketizerFormatter stringFromNumber:v41];
       [v6 setObject:v42 forKeyedSubscript:@"definition"];
     }
   }
 
-  v43 = [v4 noiseReductionAdjustmentController];
-  v44 = [v43 enabled];
+  noiseReductionAdjustmentController = [controllerCopy noiseReductionAdjustmentController];
+  enabled2 = [noiseReductionAdjustmentController enabled];
 
-  if (v44)
+  if (enabled2)
   {
-    v45 = [v4 noiseReductionAdjustmentController];
-    v46 = [MEMORY[0x277D3A910] amountKey];
-    v47 = [v45 valueForUndefinedKey:v46];
+    noiseReductionAdjustmentController2 = [controllerCopy noiseReductionAdjustmentController];
+    amountKey = [MEMORY[0x277D3A910] amountKey];
+    v47 = [noiseReductionAdjustmentController2 valueForUndefinedKey:amountKey];
     [v47 doubleValue];
     v49 = v48;
 
     if (v49 != 0.0)
     {
       v50 = [MEMORY[0x277CCABB0] numberWithDouble:v49];
-      v51 = [v5 stringFromNumber:v50];
+      v51 = [adjustmentValueBucketizerFormatter stringFromNumber:v50];
       [v6 setObject:v51 forKeyedSubscript:@"noise_reduction"];
     }
   }
 
-  v52 = [v4 vignetteAdjustmentController];
-  v53 = [v52 enabled];
+  vignetteAdjustmentController = [controllerCopy vignetteAdjustmentController];
+  enabled3 = [vignetteAdjustmentController enabled];
 
-  if (v53)
+  if (enabled3)
   {
-    v54 = [v4 vignetteAdjustmentController];
-    [v54 intensity];
+    vignetteAdjustmentController2 = [controllerCopy vignetteAdjustmentController];
+    [vignetteAdjustmentController2 intensity];
     v56 = v55;
 
     if (v56 != 0.0)
     {
       v57 = [MEMORY[0x277CCABB0] numberWithDouble:v56];
-      v58 = [v5 stringFromNumber:v57];
+      v58 = [adjustmentValueBucketizerFormatter stringFromNumber:v57];
       [v6 setObject:v58 forKeyedSubscript:@"vignette"];
     }
   }
 
-  v59 = v5;
-  v60 = [v4 slomoAdjustmentController];
+  v59 = adjustmentValueBucketizerFormatter;
+  slomoAdjustmentController = [controllerCopy slomoAdjustmentController];
 
-  if (v60)
+  if (slomoAdjustmentController)
   {
-    v61 = [v4 slomoAdjustmentController];
-    [v61 rate];
+    slomoAdjustmentController2 = [controllerCopy slomoAdjustmentController];
+    [slomoAdjustmentController2 rate];
     v63 = v62;
 
     v64 = [MEMORY[0x277CCABB0] numberWithDouble:v63];
     [v6 setObject:v64 forKeyedSubscript:@"slomo"];
   }
 
-  v65 = [v4 cinematicAudioAdjustmentController];
-  v66 = [v65 analyticsPayload];
+  cinematicAudioAdjustmentController = [controllerCopy cinematicAudioAdjustmentController];
+  analyticsPayload8 = [cinematicAudioAdjustmentController analyticsPayload];
 
-  [v6 addEntriesFromDictionary:v66];
-  v67 = [v4 semanticStyleAdjustmentController];
-  v68 = [v67 analyticsPayload];
+  [v6 addEntriesFromDictionary:analyticsPayload8];
+  semanticStyleAdjustmentController2 = [controllerCopy semanticStyleAdjustmentController];
+  analyticsPayload9 = [semanticStyleAdjustmentController2 analyticsPayload];
 
-  [v6 addEntriesFromDictionary:v68];
-  v69 = [v4 effect3DAdjustmentController];
-  v70 = [v69 enabled];
+  [v6 addEntriesFromDictionary:analyticsPayload9];
+  effect3DAdjustmentController = [controllerCopy effect3DAdjustmentController];
+  enabled4 = [effect3DAdjustmentController enabled];
 
-  if (v70)
+  if (enabled4)
   {
-    v71 = [v4 effect3DAdjustmentController];
-    v72 = [v71 kind];
+    effect3DAdjustmentController2 = [controllerCopy effect3DAdjustmentController];
+    kind = [effect3DAdjustmentController2 kind];
 
-    if (v72 && ([v72 isEqualToString:&stru_2870659C0] & 1) == 0)
+    if (kind && ([kind isEqualToString:&stru_2870659C0] & 1) == 0)
     {
-      [v6 setObject:v72 forKeyedSubscript:@"filter"];
+      [v6 setObject:kind forKeyedSubscript:@"filter"];
     }
 
-    v73 = [v4 effect3DAdjustmentController];
+    effect3DAdjustmentController3 = [controllerCopy effect3DAdjustmentController];
   }
 
   else
   {
-    v74 = [v4 effectAdjustmentController];
-    v75 = [v74 enabled];
+    effectAdjustmentController = [controllerCopy effectAdjustmentController];
+    enabled5 = [effectAdjustmentController enabled];
 
-    if (!v75)
+    if (!enabled5)
     {
       goto LABEL_34;
     }
 
-    v76 = [v4 effectAdjustmentController];
-    v72 = [v76 kind];
+    effectAdjustmentController2 = [controllerCopy effectAdjustmentController];
+    kind = [effectAdjustmentController2 kind];
 
-    if (v72 && ([v72 isEqualToString:&stru_2870659C0] & 1) == 0)
+    if (kind && ([kind isEqualToString:&stru_2870659C0] & 1) == 0)
     {
-      [v6 setObject:v72 forKeyedSubscript:@"filter"];
+      [v6 setObject:kind forKeyedSubscript:@"filter"];
     }
 
-    v73 = [v4 effectAdjustmentController];
+    effect3DAdjustmentController3 = [controllerCopy effectAdjustmentController];
   }
 
-  v77 = v73;
-  [v73 intensity];
+  v77 = effect3DAdjustmentController3;
+  [effect3DAdjustmentController3 intensity];
   v79 = v78;
 
   if (v79 != 0.0)
@@ -473,46 +473,46 @@ LABEL_7:
   }
 
 LABEL_34:
-  v82 = [v4 portraitAdjustmentController];
-  v83 = [v82 enabled];
+  portraitAdjustmentController = [controllerCopy portraitAdjustmentController];
+  enabled6 = [portraitAdjustmentController enabled];
 
-  if (v83)
+  if (enabled6)
   {
-    v84 = [v4 portraitAdjustmentController];
-    v85 = [v84 kind];
+    portraitAdjustmentController2 = [controllerCopy portraitAdjustmentController];
+    kind2 = [portraitAdjustmentController2 kind];
 
-    if (v85 && ([v85 isEqualToString:&stru_2870659C0] & 1) == 0)
+    if (kind2 && ([kind2 isEqualToString:&stru_2870659C0] & 1) == 0)
     {
-      [v6 setObject:v85 forKeyedSubscript:@"portrait_effect"];
+      [v6 setObject:kind2 forKeyedSubscript:@"portrait_effect"];
     }
   }
 
-  [v4 userOrientation];
+  [controllerCopy userOrientation];
   v86 = NUOrientationName();
   [v6 setObject:v86 forKeyedSubscript:@"user_orientation"];
 
   return v6;
 }
 
-+ (id)diffKeysFromInitialComposition:(id)a3 toFinalComposition:(id)a4
++ (id)diffKeysFromInitialComposition:(id)composition toFinalComposition:(id)finalComposition
 {
   v137[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  compositionCopy = composition;
+  finalCompositionCopy = finalComposition;
   v7 = objc_alloc(MEMORY[0x277D3A870]);
-  v8 = [v6 copy];
+  v8 = [finalCompositionCopy copy];
   v109 = [v7 initWithComposition:v8];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v116 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v12 = [objc_alloc(MEMORY[0x277D3A870]) initWithComposition:v5];
-  v13 = [v12 semanticStyleAdjustmentController];
+  v12 = [objc_alloc(MEMORY[0x277D3A870]) initWithComposition:compositionCopy];
+  semanticStyleAdjustmentController = [v12 semanticStyleAdjustmentController];
 
   v14 = 0x277CBE000uLL;
   v108 = v12;
-  if (v13)
+  if (semanticStyleAdjustmentController)
   {
     v15 = MEMORY[0x277D3AC20];
     v16 = *MEMORY[0x277D3AB10];
@@ -523,15 +523,15 @@ LABEL_34:
     if (v15)
     {
       [v12 removeAdjustmentWithKey:v16];
-      v18 = [v12 composition];
+      composition = [v12 composition];
 
-      v5 = v18;
+      compositionCopy = composition;
     }
   }
 
-  v117 = [v109 composition];
+  composition2 = [v109 composition];
   v110 = [PEAutoAdjustmentController isAutoEnhanceEnabledForCompositionController:v109];
-  [v109 differingAdjustmentsWithComposition:v5];
+  [v109 differingAdjustmentsWithComposition:compositionCopy];
   v130 = 0u;
   v131 = 0u;
   v132 = 0u;
@@ -542,7 +542,7 @@ LABEL_34:
     v114 = v10;
     v115 = v11;
     v105 = v9;
-    v106 = v6;
+    v106 = finalCompositionCopy;
     v107 = 0;
     v118 = 0;
     v119 = *v131;
@@ -589,7 +589,7 @@ LABEL_34:
           if ((v28 & 1) != 0 || (v30 = [v23 isEqualToString:v125], v29 = 0x277D3A9A0, v30))
           {
             v31 = objc_alloc(*v29);
-            v32 = [v5 objectForKeyedSubscript:v23];
+            v32 = [compositionCopy objectForKeyedSubscript:v23];
             v33 = [v31 initWithAdjustment:v32];
           }
 
@@ -603,13 +603,13 @@ LABEL_34:
           if (v46 & 1) != 0 || (v48 = [v23 isEqualToString:v124], v47 = 0x277D3A9B0, (v48) || (v49 = objc_msgSend(v23, "isEqualToString:", v123), v47 = 0x277D3A8B0, (v49) || (v50 = objc_msgSend(v23, "isEqualToString:", v122), v47 = 0x277D3A8C8, (v50) || (v51 = objc_msgSend(v23, "isEqualToString:", v120), v47 = 0x277D3A8F0, v51))
           {
             v52 = objc_alloc(*v47);
-            v53 = [v5 objectForKeyedSubscript:v23];
+            v53 = [compositionCopy objectForKeyedSubscript:v23];
             v54 = [v52 initWithAdjustment:v53];
 
             v33 = v54;
           }
 
-          v55 = [a1 diffFromAdjustmentController:v33 toAdjustmentController:v27];
+          v55 = [self diffFromAdjustmentController:v33 toAdjustmentController:v27];
           v56 = [v55 objectForKeyedSubscript:kDiffAddedKey];
           [v115 addObjectsFromArray:v56];
 
@@ -641,19 +641,19 @@ LABEL_35:
           goto LABEL_63;
         }
 
-        v34 = [v5 objectForKeyedSubscript:v23];
-        if (v34 && (v35 = v34, [v117 objectForKeyedSubscript:v23], v36 = objc_claimAutoreleasedReturnValue(), v36, v35, v36))
+        v34 = [compositionCopy objectForKeyedSubscript:v23];
+        if (v34 && (v35 = v34, [composition2 objectForKeyedSubscript:v23], v36 = objc_claimAutoreleasedReturnValue(), v36, v35, v36))
         {
-          v37 = [v5 objectForKeyedSubscript:v23];
+          v37 = [compositionCopy objectForKeyedSubscript:v23];
           v38 = [v37 valueForKey:@"enabled"];
           if ([v38 BOOLValue])
           {
-            v39 = [v117 objectForKeyedSubscript:v23];
+            v39 = [composition2 objectForKeyedSubscript:v23];
             v40 = [v39 valueForKey:@"enabled"];
-            v41 = [v40 BOOLValue];
+            bOOLValue = [v40 BOOLValue];
 
             v20 = v109;
-            if (v41)
+            if (bOOLValue)
             {
               [v114 addObject:v23];
 LABEL_62:
@@ -666,13 +666,13 @@ LABEL_62:
           {
           }
 
-          v61 = [v5 objectForKeyedSubscript:v23];
+          v61 = [compositionCopy objectForKeyedSubscript:v23];
           v62 = [v61 valueForKey:@"enabled"];
           if (([v62 BOOLValue] & 1) == 0)
           {
 
 LABEL_46:
-            v68 = [v5 objectForKeyedSubscript:v23];
+            v68 = [compositionCopy objectForKeyedSubscript:v23];
             v69 = [v68 valueForKey:@"enabled"];
             if ([v69 BOOLValue])
             {
@@ -680,11 +680,11 @@ LABEL_46:
               goto LABEL_51;
             }
 
-            v70 = [v117 objectForKeyedSubscript:v23];
+            v70 = [composition2 objectForKeyedSubscript:v23];
             v71 = [v70 valueForKey:@"enabled"];
-            v72 = [v71 BOOLValue];
+            bOOLValue2 = [v71 BOOLValue];
 
-            if (v72)
+            if (bOOLValue2)
             {
               [v115 addObject:v23];
               v20 = v109;
@@ -692,26 +692,26 @@ LABEL_46:
             }
 
 LABEL_51:
-            v73 = [v5 objectForKeyedSubscript:v23];
+            v73 = [compositionCopy objectForKeyedSubscript:v23];
             v74 = [v73 valueForKey:@"value"];
             if (v74)
             {
               v75 = v74;
-              v76 = [v117 objectForKeyedSubscript:v23];
+              v76 = [composition2 objectForKeyedSubscript:v23];
               v77 = [v76 valueForKey:@"value"];
 
               if (v77)
               {
-                v78 = [v5 objectForKeyedSubscript:v23];
+                v78 = [compositionCopy objectForKeyedSubscript:v23];
                 v79 = [v78 valueForKey:@"value"];
-                v80 = [v79 stringValue];
+                stringValue = [v79 stringValue];
 
-                v81 = [v117 objectForKeyedSubscript:v23];
+                v81 = [composition2 objectForKeyedSubscript:v23];
                 v82 = [v81 valueForKey:@"value"];
-                v83 = [v82 stringValue];
+                stringValue2 = [v82 stringValue];
 
                 v20 = v109;
-                if (([v80 isEqualToString:v83] & 1) == 0)
+                if (([stringValue isEqualToString:stringValue2] & 1) == 0)
                 {
                   [v114 addObject:v23];
                 }
@@ -725,23 +725,23 @@ LABEL_61:
             {
             }
 
-            v80 = [v5 objectForKeyedSubscript:v23];
-            v84 = [v80 valueForKey:@"rate"];
+            stringValue = [compositionCopy objectForKeyedSubscript:v23];
+            v84 = [stringValue valueForKey:@"rate"];
             v20 = v109;
             if (v84)
             {
               v85 = v84;
-              v86 = [v117 objectForKeyedSubscript:v23];
+              v86 = [composition2 objectForKeyedSubscript:v23];
               v87 = [v86 valueForKey:@"rate"];
 
               if (v87)
               {
-                v88 = [v5 objectForKeyedSubscript:v23];
+                v88 = [compositionCopy objectForKeyedSubscript:v23];
                 v89 = [v88 valueForKey:@"rate"];
                 [v89 floatValue];
                 v91 = v90;
 
-                v92 = [v117 objectForKeyedSubscript:v23];
+                v92 = [composition2 objectForKeyedSubscript:v23];
                 v93 = [v92 valueForKey:@"rate"];
                 [v93 floatValue];
                 v95 = v94;
@@ -763,11 +763,11 @@ LABEL_43:
             goto LABEL_61;
           }
 
-          v63 = [v117 objectForKeyedSubscript:v23];
+          v63 = [composition2 objectForKeyedSubscript:v23];
           v64 = [v63 valueForKey:@"enabled"];
-          v65 = [v64 BOOLValue];
+          bOOLValue3 = [v64 BOOLValue];
 
-          if (v65)
+          if (bOOLValue3)
           {
             goto LABEL_46;
           }
@@ -779,13 +779,13 @@ LABEL_43:
 
         else
         {
-          v42 = [v5 objectForKeyedSubscript:v23];
-          if (!v42 || (v43 = v42, [v117 objectForKeyedSubscript:v23], v44 = objc_claimAutoreleasedReturnValue(), v44, v43, v44))
+          v42 = [compositionCopy objectForKeyedSubscript:v23];
+          if (!v42 || (v43 = v42, [composition2 objectForKeyedSubscript:v23], v44 = objc_claimAutoreleasedReturnValue(), v44, v43, v44))
           {
-            v45 = [v5 objectForKeyedSubscript:v23];
+            v45 = [compositionCopy objectForKeyedSubscript:v23];
             if (!v45)
             {
-              v66 = [v117 objectForKeyedSubscript:v23];
+              v66 = [composition2 objectForKeyedSubscript:v23];
 
               v14 = v24;
               if (v66)
@@ -814,7 +814,7 @@ LABEL_63:
       if (!v121)
       {
         v9 = v105;
-        v6 = v106;
+        finalCompositionCopy = v106;
         v10 = v114;
         v11 = v115;
         if (v107)

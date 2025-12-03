@@ -1,12 +1,12 @@
 @interface CKCDPCodeServiceRequestOperationGroup
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKCDPCodeServiceRequestOperationGroup
@@ -54,82 +54,82 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_operationId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_operationGroupId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_operationGroupName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     operationGroupQuantity = self->_operationGroupQuantity;
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   operationId = self->_operationId;
-  v9 = v4;
+  v9 = toCopy;
   if (operationId)
   {
-    objc_msgSend_setOperationId_(v4, v5, operationId);
-    v4 = v9;
+    objc_msgSend_setOperationId_(toCopy, v5, operationId);
+    toCopy = v9;
   }
 
   operationGroupId = self->_operationGroupId;
   if (operationGroupId)
   {
     objc_msgSend_setOperationGroupId_(v9, v5, operationGroupId);
-    v4 = v9;
+    toCopy = v9;
   }
 
   operationGroupName = self->_operationGroupName;
   if (operationGroupName)
   {
     objc_msgSend_setOperationGroupName_(v9, v5, operationGroupName);
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_operationGroupQuantity;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = self->_operationGroupQuantity;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_operationId, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_operationId, v11, zone);
   v13 = *(v10 + 32);
   *(v10 + 32) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_operationGroupId, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_operationGroupId, v14, zone);
   v16 = *(v10 + 16);
   *(v10 + 16) = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_operationGroupName, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_operationGroupName, v17, zone);
   v19 = *(v10 + 24);
   *(v10 + 24) = v18;
 
@@ -142,17 +142,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_12;
   }
 
   operationId = self->_operationId;
-  v9 = v4[4];
+  v9 = equalCopy[4];
   if (operationId | v9)
   {
     if (!objc_msgSend_isEqual_(operationId, v7, v9))
@@ -162,7 +162,7 @@
   }
 
   operationGroupId = self->_operationGroupId;
-  v11 = v4[2];
+  v11 = equalCopy[2];
   if (operationGroupId | v11)
   {
     if (!objc_msgSend_isEqual_(operationGroupId, v7, v11))
@@ -172,7 +172,7 @@
   }
 
   operationGroupName = self->_operationGroupName;
-  v13 = v4[3];
+  v13 = equalCopy[3];
   if (operationGroupName | v13)
   {
     if (!objc_msgSend_isEqual_(operationGroupName, v7, v13))
@@ -181,10 +181,10 @@
     }
   }
 
-  v14 = (v4[5] & 1) == 0;
+  v14 = (equalCopy[5] & 1) == 0;
   if (*&self->_has)
   {
-    if ((v4[5] & 1) != 0 && self->_operationGroupQuantity == v4[1])
+    if ((equalCopy[5] & 1) != 0 && self->_operationGroupQuantity == equalCopy[1])
     {
       v14 = 1;
       goto LABEL_13;
@@ -217,34 +217,34 @@ LABEL_13:
   return v7 ^ v4 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4[4];
-  v9 = v4;
+  fromCopy = from;
+  v6 = fromCopy[4];
+  v9 = fromCopy;
   if (v6)
   {
     objc_msgSend_setOperationId_(self, v5, v6);
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  v7 = v4[2];
+  v7 = fromCopy[2];
   if (v7)
   {
     objc_msgSend_setOperationGroupId_(self, v5, v7);
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  v8 = v4[3];
+  v8 = fromCopy[3];
   if (v8)
   {
     objc_msgSend_setOperationGroupName_(self, v5, v8);
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
-    self->_operationGroupQuantity = v4[1];
+    self->_operationGroupQuantity = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

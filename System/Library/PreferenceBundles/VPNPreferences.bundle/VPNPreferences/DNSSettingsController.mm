@@ -1,12 +1,12 @@
 @interface DNSSettingsController
 - (DNSSettingsController)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)disableAllDNSSettings;
 - (void)showDNSSettingsPrivacyPage;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)toggleDNSSettingsForSpecifier:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)toggleDNSSettingsForSpecifier:(id)specifier;
 @end
 
 @implementation DNSSettingsController
@@ -82,8 +82,8 @@
   [v9 setProperties:v12];
 
   [v3 addObject:v9];
-  v13 = [(DNSSettingsController *)self perAppSpecifiers];
-  LOBYTE(v11) = [v13 count] == 0;
+  perAppSpecifiers = [(DNSSettingsController *)self perAppSpecifiers];
+  LOBYTE(v11) = [perAppSpecifiers count] == 0;
 
   if ((v11 & 1) == 0)
   {
@@ -92,8 +92,8 @@
     v16 = [PSSpecifier groupSpecifierWithName:v15];
     [v3 addObject:v16];
 
-    v17 = [(DNSSettingsController *)self perAppSpecifiers];
-    [v3 addObjectsFromArray:v17];
+    perAppSpecifiers2 = [(DNSSettingsController *)self perAppSpecifiers];
+    [v3 addObjectsFromArray:perAppSpecifiers2];
   }
 
   v18 = [NSBundle bundleForClass:objc_opt_class()];
@@ -123,12 +123,12 @@
     [v23 setProperty:@"Ethernet" forKey:PSBundleIconPathKey];
     [v23 setupIconImageWithBundle:v25];
     [(DNSSettingsController *)self setAutomaticDNSSettingsSpecifier:v23];
-    v26 = [(DNSSettingsController *)self automaticDNSSettingsSpecifier];
-    [v3 addObject:v26];
+    automaticDNSSettingsSpecifier = [(DNSSettingsController *)self automaticDNSSettingsSpecifier];
+    [v3 addObject:automaticDNSSettingsSpecifier];
   }
 
-  v27 = [(DNSSettingsController *)self currentDNSSettingsSpecifiers];
-  [v3 addObjectsFromArray:v27];
+  currentDNSSettingsSpecifiers = [(DNSSettingsController *)self currentDNSSettingsSpecifiers];
+  [v3 addObjectsFromArray:currentDNSSettingsSpecifiers];
 
   v28 = OBJC_IVAR___PSListController__specifiers;
   v29 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
@@ -171,23 +171,23 @@
   _Block_object_dispose(&v5, 8);
 }
 
-- (void)toggleDNSSettingsForSpecifier:(id)a3
+- (void)toggleDNSSettingsForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"vpn-service-id"];
-  v6 = [v4 propertyForKey:@"service-grade"];
-  v7 = [v6 unsignedIntegerValue];
+  specifierCopy = specifier;
+  v5 = [specifierCopy propertyForKey:@"vpn-service-id"];
+  v6 = [specifierCopy propertyForKey:@"service-grade"];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
   v8 = +[VPNConnectionStore sharedInstance];
-  v9 = [v8 optionsForServiceID:v5 withGrade:v7];
+  v9 = [v8 optionsForServiceID:v5 withGrade:unsignedIntegerValue];
 
   v10 = [v9 objectForKeyedSubscript:@"dnsProhibitDisablement"];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if ((v11 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v12 = +[VPNConnectionStore sharedInstance];
-    v13 = [v12 isEnabledWithServiceID:v5 withGrade:v7];
+    v13 = [v12 isEnabledWithServiceID:v5 withGrade:unsignedIntegerValue];
 
     v24 = 0;
     v25 = &v24;
@@ -208,7 +208,7 @@
       if (*(v25 + 24) == 1)
       {
         v16 = [VPNConnectionStore sharedInstance:v18];
-        [v16 enable:0 serviceID:v15 withGrade:v7];
+        [v16 enable:0 serviceID:v15 withGrade:unsignedIntegerValue];
 LABEL_11:
 
         [(DNSSettingsController *)self reloadSpecifiers];
@@ -220,14 +220,14 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if (v7 == (&dword_4 + 1))
+    if (unsignedIntegerValue == (&dword_4 + 1))
     {
       v17 = [(DNSSettingsController *)self hasDNSSettingsProhibitDisablement:v18];
     }
 
     else
     {
-      if (v7 != &dword_4)
+      if (unsignedIntegerValue != &dword_4)
       {
         goto LABEL_10;
       }
@@ -242,84 +242,84 @@ LABEL_12:
 
 LABEL_10:
     v16 = [VPNConnectionStore sharedInstance:v18];
-    [v16 enable:1 serviceID:v15 withGrade:v7];
+    [v16 enable:1 serviceID:v15 withGrade:unsignedIntegerValue];
     goto LABEL_11;
   }
 
 LABEL_13:
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DNSSettingsController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(DNSSettingsController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [(DNSSettingsController *)self automaticDNSSettingsSpecifier];
+  automaticDNSSettingsSpecifier = [(DNSSettingsController *)self automaticDNSSettingsSpecifier];
 
-  if (v9 == v10)
+  if (v9 == automaticDNSSettingsSpecifier)
   {
     [(DNSSettingsController *)self disableAllDNSSettings];
-    v16 = self;
-    v13 = &v16;
+    selfCopy = self;
+    v13 = &selfCopy;
   }
 
   else
   {
-    v11 = [(DNSSettingsController *)self currentDNSSettingsSpecifiers];
-    v12 = [v11 containsObject:v9];
+    currentDNSSettingsSpecifiers = [(DNSSettingsController *)self currentDNSSettingsSpecifiers];
+    v12 = [currentDNSSettingsSpecifiers containsObject:v9];
 
     if (v12)
     {
       [(DNSSettingsController *)self toggleDNSSettingsForSpecifier:v9];
-      v15 = self;
-      v13 = &v15;
+      selfCopy2 = self;
+      v13 = &selfCopy2;
     }
 
     else
     {
-      v14 = self;
-      v13 = &v14;
+      selfCopy3 = self;
+      v13 = &selfCopy3;
     }
   }
 
   v13[1] = DNSSettingsController;
-  objc_msgSendSuper2(v13, "tableView:didSelectRowAtIndexPath:", v6, v7, v14);
+  objc_msgSendSuper2(v13, "tableView:didSelectRowAtIndexPath:", viewCopy, pathCopy, selfCopy3);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v22.receiver = self;
   v22.super_class = DNSSettingsController;
-  v6 = a4;
-  v7 = [(DNSSettingsController *)&v22 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(DNSSettingsController *)self indexForIndexPath:v6, v22.receiver, v22.super_class];
+  pathCopy = path;
+  v7 = [(DNSSettingsController *)&v22 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(DNSSettingsController *)self indexForIndexPath:pathCopy, v22.receiver, v22.super_class];
 
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [(DNSSettingsController *)self automaticDNSSettingsSpecifier];
+  automaticDNSSettingsSpecifier = [(DNSSettingsController *)self automaticDNSSettingsSpecifier];
 
-  if (v9 != v10)
+  if (v9 != automaticDNSSettingsSpecifier)
   {
-    v11 = [v9 userInfo];
-    v12 = [v11 objectForKeyedSubscript:@"vpn-organization"];
+    userInfo = [v9 userInfo];
+    v12 = [userInfo objectForKeyedSubscript:@"vpn-organization"];
 
     if ([v12 length])
     {
-      v13 = [v7 detailTextLabel];
-      [v13 setText:v12];
+      detailTextLabel = [v7 detailTextLabel];
+      [detailTextLabel setText:v12];
       v14 = +[UIColor secondaryLabelColor];
-      [v13 setTextColor:v14];
+      [detailTextLabel setTextColor:v14];
     }
   }
 
-  v15 = [v9 userInfo];
-  v16 = v15;
-  if (v15)
+  userInfo2 = [v9 userInfo];
+  v16 = userInfo2;
+  if (userInfo2)
   {
-    v17 = [v15 objectForKey:@"service-grade"];
-    v18 = [v17 unsignedIntegerValue];
+    v17 = [userInfo2 objectForKey:@"service-grade"];
+    unsignedIntegerValue = [v17 unsignedIntegerValue];
 
-    if (v18 == &dword_4 + 1)
+    if (unsignedIntegerValue == &dword_4 + 1)
     {
       if (objc_opt_respondsToSelector())
       {

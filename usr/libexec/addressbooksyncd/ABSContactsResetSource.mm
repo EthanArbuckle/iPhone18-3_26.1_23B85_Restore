@@ -1,50 +1,50 @@
 @interface ABSContactsResetSource
-- (ABSContactsResetSource)initWithKeys:(id)a3 store:(id)a4;
-- (ABSContactsResetSource)initWithKeys:(id)a3 store:(id)a4 lmaData:(id)a5;
+- (ABSContactsResetSource)initWithKeys:(id)keys store:(id)store;
+- (ABSContactsResetSource)initWithKeys:(id)keys store:(id)store lmaData:(id)data;
 - (double)progress;
-- (void)enumerateContactsAdd:(id)a3 remove:(id)a4 lmaAdd:(id)a5;
+- (void)enumerateContactsAdd:(id)add remove:(id)remove lmaAdd:(id)lmaAdd;
 @end
 
 @implementation ABSContactsResetSource
 
-- (ABSContactsResetSource)initWithKeys:(id)a3 store:(id)a4
+- (ABSContactsResetSource)initWithKeys:(id)keys store:(id)store
 {
-  v6 = a4;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = ABSContactsResetSource;
-  v7 = [(ABSContactsSource *)&v10 initWithKeys:a3 store:v6];
+  v7 = [(ABSContactsSource *)&v10 initWithKeys:keys store:storeCopy];
   if (v7)
   {
-    v8 = [v6 currentHistoryToken];
-    [(ABSContactsSource *)v7 setHistoryAnchor:v8];
+    currentHistoryToken = [storeCopy currentHistoryToken];
+    [(ABSContactsSource *)v7 setHistoryAnchor:currentHistoryToken];
   }
 
   return v7;
 }
 
-- (ABSContactsResetSource)initWithKeys:(id)a3 store:(id)a4 lmaData:(id)a5
+- (ABSContactsResetSource)initWithKeys:(id)keys store:(id)store lmaData:(id)data
 {
-  v8 = a5;
-  v9 = [(ABSContactsResetSource *)self initWithKeys:a3 store:a4];
+  dataCopy = data;
+  v9 = [(ABSContactsResetSource *)self initWithKeys:keys store:store];
   v10 = v9;
   if (v9)
   {
-    [(ABSContactsResetSource *)v9 setLmaData:v8];
+    [(ABSContactsResetSource *)v9 setLmaData:dataCopy];
   }
 
   return v10;
 }
 
-- (void)enumerateContactsAdd:(id)a3 remove:(id)a4 lmaAdd:(id)a5
+- (void)enumerateContactsAdd:(id)add remove:(id)remove lmaAdd:(id)lmaAdd
 {
-  v8 = a3;
-  v35 = a4;
-  v36 = a5;
-  v9 = [(ABSContactsSource *)self store];
+  addCopy = add;
+  removeCopy = remove;
+  lmaAddCopy = lmaAdd;
+  store = [(ABSContactsSource *)self store];
   v52 = 0;
-  v10 = [v9 unifiedContactCountWithError:&v52];
+  v10 = [store unifiedContactCountWithError:&v52];
   v11 = v52;
-  v12 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
   if ([(ABSContactsResetSource *)self shouldRunPartialResetSync])
   {
@@ -53,16 +53,16 @@
 
   else
   {
-    v13 = v12;
+    v13 = integerValue;
   }
 
   v14 = *(qword_100071D00 + 8);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [(ABSContactsResetSource *)self shouldRunPartialResetSync];
+    shouldRunPartialResetSync = [(ABSContactsResetSource *)self shouldRunPartialResetSync];
     *buf = 67109120;
-    *&buf[4] = v16;
+    *&buf[4] = shouldRunPartialResetSync;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Running partial reset sync = %d", buf, 8u);
   }
 
@@ -104,7 +104,7 @@
           v45[1] = 3221225472;
           v45[2] = sub_10000892C;
           v45[3] = &unk_10005CE68;
-          v46 = v8;
+          v46 = addCopy;
           v47 = &v48;
           v45[4] = self;
           v19 = objc_retainBlock(v45);
@@ -153,20 +153,20 @@
           {
             v23 = [CNContact predicateForPreferredNameInRange:*(v59 + 3), 50];
             v27 = [CNContactFetchRequest alloc];
-            v28 = [(ABSContactsSource *)self keysToFetch];
-            v24 = [v27 initWithKeysToFetch:v28];
+            keysToFetch = [(ABSContactsSource *)self keysToFetch];
+            v24 = [v27 initWithKeysToFetch:keysToFetch];
 
             [v24 setSortOrder:3];
             [v24 setPredicate:v23];
             [v24 setUnifyResults:1];
-            v29 = [(ABSContactsSource *)self store];
+            store2 = [(ABSContactsSource *)self store];
             v39 = 0;
             v37[0] = _NSConcreteStackBlock;
             v37[1] = 3221225472;
             v37[2] = sub_100008C8C;
             v37[3] = &unk_10005CEB8;
             v38 = v19;
-            [v29 enumerateContactsAndMatchInfoWithFetchRequest:v24 error:&v39 usingBlock:v37];
+            [store2 enumerateContactsAndMatchInfoWithFetchRequest:v24 error:&v39 usingBlock:v37];
             v22 = v39;
 
             if (v22)
@@ -195,13 +195,13 @@
       [(ABSContactsResetSource *)self setCountRecip:0.0];
     }
 
-    v31 = [(ABSContactsResetSource *)self lmaData];
-    v32 = v31 == 0;
+    lmaData = [(ABSContactsResetSource *)self lmaData];
+    v32 = lmaData == 0;
 
     if (!v32)
     {
-      v33 = [(ABSContactsResetSource *)self lmaData];
-      v36[2](v36, v33);
+      lmaData2 = [(ABSContactsResetSource *)self lmaData];
+      lmaAddCopy[2](lmaAddCopy, lmaData2);
     }
   }
 }

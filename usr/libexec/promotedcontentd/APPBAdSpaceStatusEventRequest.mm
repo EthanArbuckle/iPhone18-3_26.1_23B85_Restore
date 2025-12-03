@@ -1,22 +1,22 @@
 @interface APPBAdSpaceStatusEventRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)statusCodeAsString:(int)a3;
-- (int)StringAsStatusCode:(id)a3;
+- (id)statusCodeAsString:(int)string;
+- (int)StringAsStatusCode:(id)code;
 - (int)statusCode;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAdReused:(BOOL)a3;
-- (void)setHasFirstMessage:(BOOL)a3;
-- (void)setHasScreenfuls:(BOOL)a3;
-- (void)setHasSlotPosition:(BOOL)a3;
-- (void)setHasStatusCode:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAdReused:(BOOL)reused;
+- (void)setHasFirstMessage:(BOOL)message;
+- (void)setHasScreenfuls:(BOOL)screenfuls;
+- (void)setHasSlotPosition:(BOOL)position;
+- (void)setHasStatusCode:(BOOL)code;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAdSpaceStatusEventRequest
@@ -33,9 +33,9 @@
   return v3;
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasScreenfuls:(BOOL)a3
+- (void)setHasScreenfuls:(BOOL)screenfuls
 {
-  if (a3)
+  if (screenfuls)
   {
     v3 = 4;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasFirstMessage:(BOOL)a3
+- (void)setHasFirstMessage:(BOOL)message
 {
-  if (a3)
+  if (message)
   {
     v3 = 64;
   }
@@ -91,9 +91,9 @@
   }
 }
 
-- (void)setHasStatusCode:(BOOL)a3
+- (void)setHasStatusCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 16;
   }
@@ -106,11 +106,11 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (id)statusCodeAsString:(int)a3
+- (id)statusCodeAsString:(int)string
 {
-  if (a3 > 359)
+  if (string > 359)
   {
-    switch(a3)
+    switch(string)
     {
       case 3000:
         v4 = @"ADStatusCodeNoError";
@@ -169,12 +169,12 @@
 
         break;
       default:
-        if (a3 == 360)
+        if (string == 360)
         {
           v4 = @"ADStatusCodeNoAdDueToSubscriptionStatus";
         }
 
-        else if (a3 == 370)
+        else if (string == 370)
         {
           v4 = @"ADStatusCodeNoAdDueToPolicyRequirement";
         }
@@ -182,7 +182,7 @@
         else
         {
 LABEL_66:
-          v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+          v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
 LABEL_67:
         }
 
@@ -193,7 +193,7 @@ LABEL_67:
   else
   {
     v4 = @"ADStatusCodeUnknown";
-    switch(a3)
+    switch(string)
     {
       case 0:
         goto LABEL_67;
@@ -265,165 +265,165 @@ LABEL_67:
   return v4;
 }
 
-- (int)StringAsStatusCode:(id)a3
+- (int)StringAsStatusCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ADStatusCodeUnknown"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"ADStatusCodeUnknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeServerFailure"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeServerFailure"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeLoadingThrottled"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeLoadingThrottled"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeInventoryUnavailable"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeInventoryUnavailable"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeConfigurationError"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeConfigurationError"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeBannerVisibleWithoutContent"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeBannerVisibleWithoutContent"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeApplicationInactive"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeApplicationInactive"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAdUnloaded"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAdUnloaded"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAssetLoadFailure"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAssetLoadFailure"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAdResponseValidateFailure"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAdResponseValidateFailure"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAdAssetLoadPending"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAdAssetLoadPending"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeWaitingForResponse"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeWaitingForResponse"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeNoAdDueToGlobalExclusion"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeNoAdDueToGlobalExclusion"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeNoAdDueToPolicyExclusion"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeNoAdDueToPolicyExclusion"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeBatchLimitExceeded"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeBatchLimitExceeded"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAdsDisabledInIssue"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAdsDisabledInIssue"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeNoAdDueToSubscriptionStatus"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeNoAdDueToSubscriptionStatus"])
   {
     v4 = 360;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeNoAdDueToPolicyRequirement"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeNoAdDueToPolicyRequirement"])
   {
     v4 = 370;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeNoError"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeNoError"])
   {
     v4 = 3000;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAdNotAvailable"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAdNotAvailable"])
   {
     v4 = 3001;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeSpacedTooCloseToAnAd"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeSpacedTooCloseToAnAd"])
   {
     v4 = 3002;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodePlacedInFirstScreenful"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodePlacedInFirstScreenful"])
   {
     v4 = 3003;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAdLoadedTooLate"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAdLoadedTooLate"])
   {
     v4 = 3004;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAdUnloadedExceedingContainer"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAdUnloadedExceedingContainer"])
   {
     v4 = 3005;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAdUnloadedMedusaResizing"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAdUnloadedMedusaResizing"])
   {
     v4 = 3006;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAdGlobalCategoryBlacklisted"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAdGlobalCategoryBlacklisted"])
   {
     v4 = 3007;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAdGlobalKeywordBlacklisted"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAdGlobalKeywordBlacklisted"])
   {
     v4 = 3008;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAdCampaignCategoryBlacklisted"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAdCampaignCategoryBlacklisted"])
   {
     v4 = 3009;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAdCampaignKeywordBlacklisted"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAdCampaignKeywordBlacklisted"])
   {
     v4 = 3010;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAdMetadataError"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAdMetadataError"])
   {
     v4 = 3011;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAdArticleLoadError"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAdArticleLoadError"])
   {
     v4 = 3012;
   }
 
-  else if ([v3 isEqualToString:@"ADStatusCodeAdVideoLoadError"])
+  else if ([codeCopy isEqualToString:@"ADStatusCodeAdVideoLoadError"])
   {
     v4 = 3013;
   }
@@ -436,9 +436,9 @@ LABEL_67:
   return v4;
 }
 
-- (void)setHasAdReused:(BOOL)a3
+- (void)setHasAdReused:(BOOL)reused
 {
-  if (a3)
+  if (reused)
   {
     v3 = 32;
   }
@@ -451,9 +451,9 @@ LABEL_67:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasSlotPosition:(BOOL)a3
+- (void)setHasSlotPosition:(BOOL)position
 {
-  if (a3)
+  if (position)
   {
     v3 = 8;
   }
@@ -471,8 +471,8 @@ LABEL_67:
   v7.receiver = self;
   v7.super_class = APPBAdSpaceStatusEventRequest;
   v3 = [(APPBAdSpaceStatusEventRequest *)&v7 description];
-  v4 = [(APPBAdSpaceStatusEventRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAdSpaceStatusEventRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -584,62 +584,62 @@ LABEL_21:
     switch(v17)
     {
       case 0:
-        v16 = @"ADStatusCodeNoError";
+        statusCode = @"ADStatusCodeNoError";
         break;
       case 1:
-        v16 = @"ADStatusCodeAdNotAvailable";
+        statusCode = @"ADStatusCodeAdNotAvailable";
         break;
       case 2:
-        v16 = @"ADStatusCodeSpacedTooCloseToAnAd";
+        statusCode = @"ADStatusCodeSpacedTooCloseToAnAd";
         break;
       case 3:
-        v16 = @"ADStatusCodePlacedInFirstScreenful";
+        statusCode = @"ADStatusCodePlacedInFirstScreenful";
         break;
       case 4:
-        v16 = @"ADStatusCodeAdLoadedTooLate";
+        statusCode = @"ADStatusCodeAdLoadedTooLate";
         break;
       case 5:
-        v16 = @"ADStatusCodeAdUnloadedExceedingContainer";
+        statusCode = @"ADStatusCodeAdUnloadedExceedingContainer";
         break;
       case 6:
-        v16 = @"ADStatusCodeAdUnloadedMedusaResizing";
+        statusCode = @"ADStatusCodeAdUnloadedMedusaResizing";
         break;
       case 7:
-        v16 = @"ADStatusCodeAdGlobalCategoryBlacklisted";
+        statusCode = @"ADStatusCodeAdGlobalCategoryBlacklisted";
         break;
       case 8:
-        v16 = @"ADStatusCodeAdGlobalKeywordBlacklisted";
+        statusCode = @"ADStatusCodeAdGlobalKeywordBlacklisted";
         break;
       case 9:
-        v16 = @"ADStatusCodeAdCampaignCategoryBlacklisted";
+        statusCode = @"ADStatusCodeAdCampaignCategoryBlacklisted";
         break;
       case 10:
-        v16 = @"ADStatusCodeAdCampaignKeywordBlacklisted";
+        statusCode = @"ADStatusCodeAdCampaignKeywordBlacklisted";
         break;
       case 11:
-        v16 = @"ADStatusCodeAdMetadataError";
+        statusCode = @"ADStatusCodeAdMetadataError";
         break;
       case 12:
-        v16 = @"ADStatusCodeAdArticleLoadError";
+        statusCode = @"ADStatusCodeAdArticleLoadError";
         break;
       case 13:
-        v16 = @"ADStatusCodeAdVideoLoadError";
+        statusCode = @"ADStatusCodeAdVideoLoadError";
         break;
       default:
         if (statusCode == 360)
         {
-          v16 = @"ADStatusCodeNoAdDueToSubscriptionStatus";
+          statusCode = @"ADStatusCodeNoAdDueToSubscriptionStatus";
         }
 
         else if (statusCode == 370)
         {
-          v16 = @"ADStatusCodeNoAdDueToPolicyRequirement";
+          statusCode = @"ADStatusCodeNoAdDueToPolicyRequirement";
         }
 
         else
         {
 LABEL_46:
-          v16 = [NSString stringWithFormat:@"(unknown: %i)", statusCode];
+          statusCode = [NSString stringWithFormat:@"(unknown: %i)", statusCode];
         }
 
         break;
@@ -648,62 +648,62 @@ LABEL_46:
 
   else
   {
-    v16 = @"ADStatusCodeUnknown";
+    statusCode = @"ADStatusCodeUnknown";
     switch(statusCode)
     {
       case 0:
         break;
       case 1:
-        v16 = @"ADStatusCodeServerFailure";
+        statusCode = @"ADStatusCodeServerFailure";
         break;
       case 2:
-        v16 = @"ADStatusCodeLoadingThrottled";
+        statusCode = @"ADStatusCodeLoadingThrottled";
         break;
       case 3:
-        v16 = @"ADStatusCodeInventoryUnavailable";
+        statusCode = @"ADStatusCodeInventoryUnavailable";
         break;
       case 4:
-        v16 = @"ADStatusCodeConfigurationError";
+        statusCode = @"ADStatusCodeConfigurationError";
         break;
       case 5:
-        v16 = @"ADStatusCodeBannerVisibleWithoutContent";
+        statusCode = @"ADStatusCodeBannerVisibleWithoutContent";
         break;
       case 6:
-        v16 = @"ADStatusCodeApplicationInactive";
+        statusCode = @"ADStatusCodeApplicationInactive";
         break;
       case 7:
-        v16 = @"ADStatusCodeAdUnloaded";
+        statusCode = @"ADStatusCodeAdUnloaded";
         break;
       case 8:
-        v16 = @"ADStatusCodeAssetLoadFailure";
+        statusCode = @"ADStatusCodeAssetLoadFailure";
         break;
       case 9:
-        v16 = @"ADStatusCodeAdResponseValidateFailure";
+        statusCode = @"ADStatusCodeAdResponseValidateFailure";
         break;
       case 10:
-        v16 = @"ADStatusCodeAdAssetLoadPending";
+        statusCode = @"ADStatusCodeAdAssetLoadPending";
         break;
       case 11:
-        v16 = @"ADStatusCodeWaitingForResponse";
+        statusCode = @"ADStatusCodeWaitingForResponse";
         break;
       case 12:
-        v16 = @"ADStatusCodeNoAdDueToGlobalExclusion";
+        statusCode = @"ADStatusCodeNoAdDueToGlobalExclusion";
         break;
       case 13:
-        v16 = @"ADStatusCodeNoAdDueToPolicyExclusion";
+        statusCode = @"ADStatusCodeNoAdDueToPolicyExclusion";
         break;
       case 14:
-        v16 = @"ADStatusCodeBatchLimitExceeded";
+        statusCode = @"ADStatusCodeBatchLimitExceeded";
         break;
       case 15:
-        v16 = @"ADStatusCodeAdsDisabledInIssue";
+        statusCode = @"ADStatusCodeAdsDisabledInIssue";
         break;
       default:
         goto LABEL_46;
     }
   }
 
-  [v4 setObject:v16 forKey:@"statusCode"];
+  [v4 setObject:statusCode forKey:@"statusCode"];
 
 LABEL_59:
   osVersionAndBuild = self->_osVersionAndBuild;
@@ -745,45 +745,45 @@ LABEL_59:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_adServerResponseIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_adOriginIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_anonymousDemandiAdID)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_contentiAdID)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_iAdID)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -803,7 +803,7 @@ LABEL_13:
   }
 
   PBDataWriterWriteDoubleField();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -818,7 +818,7 @@ LABEL_14:
 
 LABEL_34:
   PBDataWriterWriteInt32Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -833,91 +833,91 @@ LABEL_15:
 
 LABEL_35:
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_16:
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_17:
   if (self->_osVersionAndBuild)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dPID)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_contextJSON)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_adServerResponseIdentifier)
   {
-    [v4 setAdServerResponseIdentifier:?];
-    v4 = v6;
+    [toCopy setAdServerResponseIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_adOriginIdentifier)
   {
     [v6 setAdOriginIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_anonymousDemandiAdID)
   {
     [v6 setAnonymousDemandiAdID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_contentiAdID)
   {
     [v6 setContentiAdID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_iAdID)
   {
     [v6 setIAdID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_timestamp;
-    *(v4 + 112) |= 2u;
+    *(toCopy + 2) = *&self->_timestamp;
+    *(toCopy + 112) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -936,8 +936,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(v4 + 1) = *&self->_responseTime;
-  *(v4 + 112) |= 1u;
+  *(toCopy + 1) = *&self->_responseTime;
+  *(toCopy + 112) |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -951,8 +951,8 @@ LABEL_14:
   }
 
 LABEL_34:
-  *(v4 + 24) = self->_screenfuls;
-  *(v4 + 112) |= 4u;
+  *(toCopy + 24) = self->_screenfuls;
+  *(toCopy + 112) |= 4u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -966,73 +966,73 @@ LABEL_15:
   }
 
 LABEL_35:
-  *(v4 + 109) = self->_firstMessage;
-  *(v4 + 112) |= 0x40u;
+  *(toCopy + 109) = self->_firstMessage;
+  *(toCopy + 112) |= 0x40u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_16:
-    *(v4 + 26) = self->_statusCode;
-    *(v4 + 112) |= 0x10u;
+    *(toCopy + 26) = self->_statusCode;
+    *(toCopy + 112) |= 0x10u;
   }
 
 LABEL_17:
   if (self->_osVersionAndBuild)
   {
     [v6 setOsVersionAndBuild:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dPID)
   {
     [v6 setDPID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundleID)
   {
     [v6 setBundleID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    *(v4 + 108) = self->_adReused;
-    *(v4 + 112) |= 0x20u;
+    *(toCopy + 108) = self->_adReused;
+    *(toCopy + 112) |= 0x20u;
   }
 
   if (self->_contextJSON)
   {
     [v6 setContextJSON:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 25) = self->_slotPosition;
-    *(v4 + 112) |= 8u;
+    *(toCopy + 25) = self->_slotPosition;
+    *(toCopy + 112) |= 8u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_adServerResponseIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_adServerResponseIdentifier copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_adOriginIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_adOriginIdentifier copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSData *)self->_anonymousDemandiAdID copyWithZone:a3];
+  v10 = [(NSData *)self->_anonymousDemandiAdID copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(NSData *)self->_contentiAdID copyWithZone:a3];
+  v12 = [(NSData *)self->_contentiAdID copyWithZone:zone];
   v13 = v5[7];
   v5[7] = v12;
 
-  v14 = [(NSData *)self->_iAdID copyWithZone:a3];
+  v14 = [(NSData *)self->_iAdID copyWithZone:zone];
   v15 = v5[10];
   v5[10] = v14;
 
@@ -1099,15 +1099,15 @@ LABEL_6:
   }
 
 LABEL_7:
-  v17 = [(NSString *)self->_osVersionAndBuild copyWithZone:a3];
+  v17 = [(NSString *)self->_osVersionAndBuild copyWithZone:zone];
   v18 = v5[11];
   v5[11] = v17;
 
-  v19 = [(NSData *)self->_dPID copyWithZone:a3];
+  v19 = [(NSData *)self->_dPID copyWithZone:zone];
   v20 = v5[9];
   v5[9] = v19;
 
-  v21 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v21 = [(NSString *)self->_bundleID copyWithZone:zone];
   v22 = v5[6];
   v5[6] = v21;
 
@@ -1117,7 +1117,7 @@ LABEL_7:
     *(v5 + 112) |= 0x20u;
   }
 
-  v23 = [(NSString *)self->_contextJSON copyWithZone:a3];
+  v23 = [(NSString *)self->_contextJSON copyWithZone:zone];
   v24 = v5[8];
   v5[8] = v23;
 
@@ -1130,16 +1130,16 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_52;
   }
 
   adServerResponseIdentifier = self->_adServerResponseIdentifier;
-  if (adServerResponseIdentifier | *(v4 + 4))
+  if (adServerResponseIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)adServerResponseIdentifier isEqual:?])
     {
@@ -1148,7 +1148,7 @@ LABEL_7:
   }
 
   adOriginIdentifier = self->_adOriginIdentifier;
-  if (adOriginIdentifier | *(v4 + 3))
+  if (adOriginIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)adOriginIdentifier isEqual:?])
     {
@@ -1157,7 +1157,7 @@ LABEL_7:
   }
 
   anonymousDemandiAdID = self->_anonymousDemandiAdID;
-  if (anonymousDemandiAdID | *(v4 + 5))
+  if (anonymousDemandiAdID | *(equalCopy + 5))
   {
     if (![(NSData *)anonymousDemandiAdID isEqual:?])
     {
@@ -1166,7 +1166,7 @@ LABEL_7:
   }
 
   contentiAdID = self->_contentiAdID;
-  if (contentiAdID | *(v4 + 7))
+  if (contentiAdID | *(equalCopy + 7))
   {
     if (![(NSData *)contentiAdID isEqual:?])
     {
@@ -1175,7 +1175,7 @@ LABEL_7:
   }
 
   iAdID = self->_iAdID;
-  if (iAdID | *(v4 + 10))
+  if (iAdID | *(equalCopy + 10))
   {
     if (![(NSData *)iAdID isEqual:?])
     {
@@ -1185,90 +1185,90 @@ LABEL_7:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 112) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 112) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_52;
     }
   }
 
-  else if ((*(v4 + 112) & 2) != 0)
+  else if ((*(equalCopy + 112) & 2) != 0)
   {
     goto LABEL_52;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 112) & 1) == 0 || self->_responseTime != *(v4 + 1))
+    if ((*(equalCopy + 112) & 1) == 0 || self->_responseTime != *(equalCopy + 1))
     {
       goto LABEL_52;
     }
   }
 
-  else if (*(v4 + 112))
+  else if (*(equalCopy + 112))
   {
     goto LABEL_52;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 112) & 4) == 0 || self->_screenfuls != *(v4 + 24))
+    if ((*(equalCopy + 112) & 4) == 0 || self->_screenfuls != *(equalCopy + 24))
     {
       goto LABEL_52;
     }
   }
 
-  else if ((*(v4 + 112) & 4) != 0)
+  else if ((*(equalCopy + 112) & 4) != 0)
   {
     goto LABEL_52;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 112) & 0x40) == 0)
+    if ((*(equalCopy + 112) & 0x40) == 0)
     {
       goto LABEL_52;
     }
 
     if (self->_firstMessage)
     {
-      if ((*(v4 + 109) & 1) == 0)
+      if ((*(equalCopy + 109) & 1) == 0)
       {
         goto LABEL_52;
       }
     }
 
-    else if (*(v4 + 109))
+    else if (*(equalCopy + 109))
     {
       goto LABEL_52;
     }
   }
 
-  else if ((*(v4 + 112) & 0x40) != 0)
+  else if ((*(equalCopy + 112) & 0x40) != 0)
   {
     goto LABEL_52;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 112) & 0x10) == 0 || self->_statusCode != *(v4 + 26))
+    if ((*(equalCopy + 112) & 0x10) == 0 || self->_statusCode != *(equalCopy + 26))
     {
       goto LABEL_52;
     }
   }
 
-  else if ((*(v4 + 112) & 0x10) != 0)
+  else if ((*(equalCopy + 112) & 0x10) != 0)
   {
     goto LABEL_52;
   }
 
   osVersionAndBuild = self->_osVersionAndBuild;
-  if (osVersionAndBuild | *(v4 + 11) && ![(NSString *)osVersionAndBuild isEqual:?])
+  if (osVersionAndBuild | *(equalCopy + 11) && ![(NSString *)osVersionAndBuild isEqual:?])
   {
     goto LABEL_52;
   }
 
   dPID = self->_dPID;
-  if (dPID | *(v4 + 9))
+  if (dPID | *(equalCopy + 9))
   {
     if (![(NSData *)dPID isEqual:?])
     {
@@ -1277,7 +1277,7 @@ LABEL_7:
   }
 
   bundleID = self->_bundleID;
-  if (bundleID | *(v4 + 6))
+  if (bundleID | *(equalCopy + 6))
   {
     if (![(NSString *)bundleID isEqual:?])
     {
@@ -1288,32 +1288,32 @@ LABEL_7:
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 112) & 0x20) == 0)
+    if ((*(equalCopy + 112) & 0x20) == 0)
     {
       goto LABEL_52;
     }
 
     if (self->_adReused)
     {
-      if ((*(v4 + 108) & 1) == 0)
+      if ((*(equalCopy + 108) & 1) == 0)
       {
         goto LABEL_52;
       }
     }
 
-    else if (*(v4 + 108))
+    else if (*(equalCopy + 108))
     {
       goto LABEL_52;
     }
   }
 
-  else if ((*(v4 + 112) & 0x20) != 0)
+  else if ((*(equalCopy + 112) & 0x20) != 0)
   {
     goto LABEL_52;
   }
 
   contextJSON = self->_contextJSON;
-  if (!(contextJSON | *(v4 + 8)))
+  if (!(contextJSON | *(equalCopy + 8)))
   {
     goto LABEL_49;
   }
@@ -1329,7 +1329,7 @@ LABEL_52:
 LABEL_49:
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 112) & 8) != 0 && self->_slotPosition == *(v4 + 25))
+    if ((*(equalCopy + 112) & 8) != 0 && self->_slotPosition == *(equalCopy + 25))
     {
       v15 = 1;
       goto LABEL_53;
@@ -1338,7 +1338,7 @@ LABEL_49:
     goto LABEL_52;
   }
 
-  v15 = (*(v4 + 112) & 8) == 0;
+  v15 = (*(equalCopy + 112) & 8) == 0;
 LABEL_53:
 
   return v15;
@@ -1481,46 +1481,46 @@ LABEL_24:
   return v26 ^ v27 ^ v25 ^ v24 ^ v23 ^ v5 ^ v9 ^ v22 ^ v21 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(APPBAdSpaceStatusEventRequest *)self setAdServerResponseIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(APPBAdSpaceStatusEventRequest *)self setAdOriginIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(APPBAdSpaceStatusEventRequest *)self setAnonymousDemandiAdID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(APPBAdSpaceStatusEventRequest *)self setContentiAdID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(APPBAdSpaceStatusEventRequest *)self setIAdID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 112);
+  v5 = *(fromCopy + 112);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(v4 + 2);
+    self->_timestamp = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 112);
+    v5 = *(fromCopy + 112);
     if ((v5 & 1) == 0)
     {
 LABEL_13:
@@ -1533,14 +1533,14 @@ LABEL_13:
     }
   }
 
-  else if ((*(v4 + 112) & 1) == 0)
+  else if ((*(fromCopy + 112) & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  self->_responseTime = *(v4 + 1);
+  self->_responseTime = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 112);
+  v5 = *(fromCopy + 112);
   if ((v5 & 4) == 0)
   {
 LABEL_14:
@@ -1553,9 +1553,9 @@ LABEL_14:
   }
 
 LABEL_34:
-  self->_screenfuls = *(v4 + 24);
+  self->_screenfuls = *(fromCopy + 24);
   *&self->_has |= 4u;
-  v5 = *(v4 + 112);
+  v5 = *(fromCopy + 112);
   if ((v5 & 0x40) == 0)
   {
 LABEL_15:
@@ -1568,49 +1568,49 @@ LABEL_15:
   }
 
 LABEL_35:
-  self->_firstMessage = *(v4 + 109);
+  self->_firstMessage = *(fromCopy + 109);
   *&self->_has |= 0x40u;
-  if ((*(v4 + 112) & 0x10) != 0)
+  if ((*(fromCopy + 112) & 0x10) != 0)
   {
 LABEL_16:
-    self->_statusCode = *(v4 + 26);
+    self->_statusCode = *(fromCopy + 26);
     *&self->_has |= 0x10u;
   }
 
 LABEL_17:
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(APPBAdSpaceStatusEventRequest *)self setOsVersionAndBuild:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(APPBAdSpaceStatusEventRequest *)self setDPID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(APPBAdSpaceStatusEventRequest *)self setBundleID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 112) & 0x20) != 0)
+  if ((*(fromCopy + 112) & 0x20) != 0)
   {
-    self->_adReused = *(v4 + 108);
+    self->_adReused = *(fromCopy + 108);
     *&self->_has |= 0x20u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(APPBAdSpaceStatusEventRequest *)self setContextJSON:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 112) & 8) != 0)
+  if ((*(fromCopy + 112) & 8) != 0)
   {
-    self->_slotPosition = *(v4 + 25);
+    self->_slotPosition = *(fromCopy + 25);
     *&self->_has |= 8u;
   }
 }

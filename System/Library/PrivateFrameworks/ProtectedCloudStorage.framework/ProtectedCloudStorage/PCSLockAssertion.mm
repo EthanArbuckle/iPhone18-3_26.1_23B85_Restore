@@ -1,24 +1,24 @@
 @interface PCSLockAssertion
 - (BOOL)holdAssertion;
-- (id)initAssertion:(id)a3 manager:(id)a4;
+- (id)initAssertion:(id)assertion manager:(id)manager;
 - (void)dealloc;
 - (void)dropAssertion;
 @end
 
 @implementation PCSLockAssertion
 
-- (id)initAssertion:(id)a3 manager:(id)a4
+- (id)initAssertion:(id)assertion manager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  assertionCopy = assertion;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = PCSLockAssertion;
   v9 = [(PCSLockAssertion *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(p_isa + 3, a4);
+    objc_storeStrong(&v9->_name, assertion);
+    objc_storeStrong(p_isa + 3, manager);
   }
 
   return p_isa;
@@ -26,20 +26,20 @@
 
 - (BOOL)holdAssertion
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_held)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_held)
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [(PCSLockManager *)v2->_manager holdAssertion:v2];
-    v2->_held = v3;
+    v3 = [(PCSLockManager *)selfCopy->_manager holdAssertion:selfCopy];
+    selfCopy->_held = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

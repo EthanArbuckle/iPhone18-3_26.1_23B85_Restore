@@ -1,16 +1,16 @@
 @interface TRIEagerExitManager
-- (TRIEagerExitManager)initWithExitCooldown:(double)a3 monitoringTaskQueue:(id)a4;
+- (TRIEagerExitManager)initWithExitCooldown:(double)cooldown monitoringTaskQueue:(id)queue;
 - (TRITaskQueuing)taskQueue;
 - (void)dealloc;
 - (void)exitTrialdCleanly;
-- (void)handleTaskQueueEmptyNotificationWithCooldown:(double)a3;
+- (void)handleTaskQueueEmptyNotificationWithCooldown:(double)cooldown;
 @end
 
 @implementation TRIEagerExitManager
 
-- (TRIEagerExitManager)initWithExitCooldown:(double)a3 monitoringTaskQueue:(id)a4
+- (TRIEagerExitManager)initWithExitCooldown:(double)cooldown monitoringTaskQueue:(id)queue
 {
-  v6 = a4;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = TRIEagerExitManager;
   v7 = [(TRIEagerExitManager *)&v17 init];
@@ -20,7 +20,7 @@
     eagerExitQueue = v7->_eagerExitQueue;
     v7->_eagerExitQueue = v8;
 
-    objc_storeWeak(&v7->_taskQueue, v6);
+    objc_storeWeak(&v7->_taskQueue, queueCopy);
     objc_initWeak(&location, v7);
     v10 = v7->_eagerExitQueue;
     v13[0] = MEMORY[0x277D85DD0];
@@ -28,8 +28,8 @@
     v13[2] = __64__TRIEagerExitManager_initWithExitCooldown_monitoringTaskQueue___block_invoke;
     v13[3] = &unk_279DE5478;
     objc_copyWeak(v14, &location);
-    v15 = a3 == 0.0;
-    v14[1] = *&a3;
+    v15 = cooldown == 0.0;
+    v14[1] = *&cooldown;
     notify_register_dispatch("com.apple.trial.TaskQueueComplete", &v7->_token, v10, v13);
     v11 = v7;
     objc_destroyWeak(v14);
@@ -54,7 +54,7 @@ void __64__TRIEagerExitManager_initWithExitCooldown_monitoringTaskQueue___block_
   }
 }
 
-- (void)handleTaskQueueEmptyNotificationWithCooldown:(double)a3
+- (void)handleTaskQueueEmptyNotificationWithCooldown:(double)cooldown
 {
   v15 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_eagerExitQueue);
@@ -62,7 +62,7 @@ void __64__TRIEagerExitManager_initWithExitCooldown_monitoringTaskQueue___block_
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v14 = a3;
+    cooldownCopy = cooldown;
     _os_log_impl(&dword_26F567000, v5, OS_LOG_TYPE_DEFAULT, "Task queue empty notification received. Counting down towards an eager exit (~%f seconds).", buf, 0xCu);
   }
 
@@ -88,7 +88,7 @@ void __64__TRIEagerExitManager_initWithExitCooldown_monitoringTaskQueue___block_
     v8 = self->_eagerExitSource;
     self->_eagerExitSource = v7;
 
-    dispatch_source_set_timer(self->_eagerExitSource, [MEMORY[0x277D425A0] dispatchTimeWithSecondsFromNow:a3], 0xFFFFFFFFFFFFFFFFLL, 0x2540BE400uLL);
+    dispatch_source_set_timer(self->_eagerExitSource, [MEMORY[0x277D425A0] dispatchTimeWithSecondsFromNow:cooldown], 0xFFFFFFFFFFFFFFFFLL, 0x2540BE400uLL);
     objc_initWeak(buf, self);
     v9 = self->_eagerExitSource;
     v11[0] = MEMORY[0x277D85DD0];
@@ -96,7 +96,7 @@ void __64__TRIEagerExitManager_initWithExitCooldown_monitoringTaskQueue___block_
     v11[2] = __68__TRIEagerExitManager_handleTaskQueueEmptyNotificationWithCooldown___block_invoke;
     v11[3] = &unk_279DE54A0;
     objc_copyWeak(v12, buf);
-    v12[1] = *&a3;
+    v12[1] = *&cooldown;
     dispatch_source_set_event_handler(v9, v11);
     dispatch_activate(self->_eagerExitSource);
     objc_destroyWeak(v12);

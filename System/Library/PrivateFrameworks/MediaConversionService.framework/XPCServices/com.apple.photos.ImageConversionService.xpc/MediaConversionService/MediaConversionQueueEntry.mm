@@ -1,20 +1,20 @@
 @interface MediaConversionQueueEntry
 - (BOOL)allRequestsAreBackground;
 - (BOOL)allRequestsAreOptional;
-- (BOOL)allRequestsHaveRequestPriority:(int64_t)a3;
-- (BOOL)clientRequestIsDuplicate:(id)a3 identicalDestination:(BOOL *)a4;
-- (MediaConversionQueueEntry)initWithIdentifier:(id)a3 initialConversionOptions:(id)a4;
+- (BOOL)allRequestsHaveRequestPriority:(int64_t)priority;
+- (BOOL)clientRequestIsDuplicate:(id)duplicate identicalDestination:(BOOL *)destination;
+- (MediaConversionQueueEntry)initWithIdentifier:(id)identifier initialConversionOptions:(id)options;
 - (NSArray)clientRequestsSnapshot;
 - (id)anyDestinationURLCollection;
-- (id)clientRequestForIdentifier:(id)a3;
+- (id)clientRequestForIdentifier:(id)identifier;
 - (id)description;
-- (id)removeAndReturnClientRequestWithIdentifier:(id)a3 remainingRequestCount:(int64_t *)a4;
-- (id)requestIdentifiersForConnectionIdentifier:(id)a3;
-- (int64_t)compareProcessingOrderToEntry:(id)a3;
-- (void)addClientRequest:(id)a3;
+- (id)removeAndReturnClientRequestWithIdentifier:(id)identifier remainingRequestCount:(int64_t *)count;
+- (id)requestIdentifiersForConnectionIdentifier:(id)identifier;
+- (int64_t)compareProcessingOrderToEntry:(id)entry;
+- (void)addClientRequest:(id)request;
 - (void)dealloc;
-- (void)videoConversionTask:(id)a3 didUpdateFractionCompleted:(double)a4;
-- (void)withLockEnumerateClientRequests:(id)a3;
+- (void)videoConversionTask:(id)task didUpdateFractionCompleted:(double)completed;
+- (void)withLockEnumerateClientRequests:(id)requests;
 @end
 
 @implementation MediaConversionQueueEntry
@@ -53,7 +53,7 @@
   return v2;
 }
 
-- (BOOL)allRequestsHaveRequestPriority:(int64_t)a3
+- (BOOL)allRequestsHaveRequestPriority:(int64_t)priority
 {
   v6 = 0;
   v7 = &v6;
@@ -64,37 +64,37 @@
   v5[2] = sub_10000EFC4;
   v5[3] = &unk_10003D738;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = priority;
   [(MediaConversionQueueEntry *)self withLockEnumerateClientRequests:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (int64_t)compareProcessingOrderToEntry:(id)a3
+- (int64_t)compareProcessingOrderToEntry:(id)entry
 {
-  v5 = a3;
-  if (!v5)
+  entryCopy = entry;
+  if (!entryCopy)
   {
     v17 = +[NSAssertionHandler currentHandler];
     [v17 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceSharedUtilitiesServiceSide.m" lineNumber:300 description:{@"Invalid parameter not satisfying: %@", @"otherEntry"}];
   }
 
-  v6 = [(MediaConversionQueueEntry *)self clientRequestsSnapshot];
-  v7 = [v6 sortedArrayUsingComparator:&stru_10003D710];
+  clientRequestsSnapshot = [(MediaConversionQueueEntry *)self clientRequestsSnapshot];
+  v7 = [clientRequestsSnapshot sortedArrayUsingComparator:&stru_10003D710];
 
-  v8 = [v5 clientRequestsSnapshot];
-  v9 = [v8 sortedArrayUsingComparator:&stru_10003D710];
+  clientRequestsSnapshot2 = [entryCopy clientRequestsSnapshot];
+  v9 = [clientRequestsSnapshot2 sortedArrayUsingComparator:&stru_10003D710];
 
-  v10 = [v7 firstObject];
-  v11 = [v9 firstObject];
-  v12 = v11;
+  firstObject = [v7 firstObject];
+  firstObject2 = [v9 firstObject];
+  v12 = firstObject2;
   v13 = 0;
-  if (v10 && v11)
+  if (firstObject && firstObject2)
   {
-    v14 = [v10 requestTracker];
-    v15 = [v12 requestTracker];
-    v13 = [v14 compare:v15];
+    requestTracker = [firstObject requestTracker];
+    requestTracker2 = [v12 requestTracker];
+    v13 = [requestTracker compare:requestTracker2];
   }
 
   return v13;
@@ -109,15 +109,15 @@
   return v3;
 }
 
-- (void)videoConversionTask:(id)a3 didUpdateFractionCompleted:(double)a4
+- (void)videoConversionTask:(id)task didUpdateFractionCompleted:(double)completed
 {
-  v6 = a3;
+  taskCopy = task;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(MediaConversionQueueEntry *)self clientRequestsSnapshot];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  clientRequestsSnapshot = [(MediaConversionQueueEntry *)self clientRequestsSnapshot];
+  v8 = [clientRequestsSnapshot countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -129,32 +129,32 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(clientRequestsSnapshot);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) videoConversionTask:v6 didUpdateFractionCompleted:a4];
+        [*(*(&v12 + 1) + 8 * v11) videoConversionTask:taskCopy didUpdateFractionCompleted:completed];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [clientRequestsSnapshot countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (id)requestIdentifiersForConnectionIdentifier:(id)a3
+- (id)requestIdentifiersForConnectionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   +[NSMutableArray array];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000F44C;
   v10[3] = &unk_10003D6D0;
-  v5 = v11 = v4;
+  v5 = v11 = identifierCopy;
   v12 = v5;
-  v6 = v4;
+  v6 = identifierCopy;
   [(MediaConversionQueueEntry *)self withLockEnumerateClientRequests:v10];
   v7 = v12;
   v8 = v5;
@@ -182,7 +182,7 @@
   return v2;
 }
 
-- (id)clientRequestForIdentifier:(id)a3
+- (id)clientRequestForIdentifier:(id)identifier
 {
   v10 = 0;
   v11 = &v10;
@@ -194,8 +194,8 @@
   v7[1] = 3221225472;
   v7[2] = sub_10000F7A0;
   v7[3] = &unk_10003D680;
-  v4 = a3;
-  v8 = v4;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
   v9 = &v10;
   [(MediaConversionQueueEntry *)self withLockEnumerateClientRequests:v7];
   v5 = v11[5];
@@ -205,9 +205,9 @@
   return v5;
 }
 
-- (id)removeAndReturnClientRequestWithIdentifier:(id)a3 remainingRequestCount:(int64_t *)a4
+- (id)removeAndReturnClientRequestWithIdentifier:(id)identifier remainingRequestCount:(int64_t *)count
 {
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_queueEntryStateLock);
   v19 = 0u;
   v20 = 0u;
@@ -229,8 +229,8 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 identifier];
-        v14 = [v13 isEqualToString:v6];
+        identifier = [v12 identifier];
+        v14 = [identifier isEqualToString:identifierCopy];
 
         if (v14)
         {
@@ -239,7 +239,7 @@
           if (v15)
           {
             [(NSMutableArray *)self->_clientRequests removeObject:v15];
-            *a4 = [(NSMutableArray *)self->_clientRequests count];
+            *count = [(NSMutableArray *)self->_clientRequests count];
           }
 
           goto LABEL_12;
@@ -263,17 +263,17 @@ LABEL_12:
   return v15;
 }
 
-- (BOOL)clientRequestIsDuplicate:(id)a3 identicalDestination:(BOOL *)a4
+- (BOOL)clientRequestIsDuplicate:(id)duplicate identicalDestination:(BOOL *)destination
 {
-  v6 = a3;
+  duplicateCopy = duplicate;
   os_unfair_lock_lock(&self->_queueEntryStateLock);
-  v7 = [(NSMutableArray *)self->_clientRequests firstObject];
-  v8 = v7;
-  if (v7)
+  firstObject = [(NSMutableArray *)self->_clientRequests firstObject];
+  v8 = firstObject;
+  if (firstObject)
   {
-    v9 = [v7 requestTracker];
-    v10 = [v6 requestTracker];
-    v11 = [v9 isDuplicateOfRequestWithRequestTracker:v10 identicalDestinationURL:a4];
+    requestTracker = [firstObject requestTracker];
+    requestTracker2 = [duplicateCopy requestTracker];
+    v11 = [requestTracker isDuplicateOfRequestWithRequestTracker:requestTracker2 identicalDestinationURL:destination];
   }
 
   else
@@ -286,33 +286,33 @@ LABEL_12:
   return v11;
 }
 
-- (void)withLockEnumerateClientRequests:(id)a3
+- (void)withLockEnumerateClientRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   os_unfair_lock_lock(&self->_queueEntryStateLock);
   clientRequests = self->_clientRequests;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000FB70;
   v7[3] = &unk_10003D618;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestsCopy;
+  v6 = requestsCopy;
   [(NSMutableArray *)clientRequests enumerateObjectsUsingBlock:v7];
   os_unfair_lock_unlock(&self->_queueEntryStateLock);
 }
 
-- (void)addClientRequest:(id)a3
+- (void)addClientRequest:(id)request
 {
-  v6 = a3;
-  if (!v6)
+  requestCopy = request;
+  if (!requestCopy)
   {
     v5 = +[NSAssertionHandler currentHandler];
     [v5 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceSharedUtilitiesServiceSide.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"clientRequest"}];
   }
 
   os_unfair_lock_lock(&self->_queueEntryStateLock);
-  [(NSMutableArray *)self->_clientRequests addObject:v6];
-  [v6 setRequestQueueEntry:self];
+  [(NSMutableArray *)self->_clientRequests addObject:requestCopy];
+  [requestCopy setRequestQueueEntry:self];
   os_unfair_lock_unlock(&self->_queueEntryStateLock);
 }
 
@@ -354,10 +354,10 @@ LABEL_12:
   [(MediaConversionQueueEntry *)&v8 dealloc];
 }
 
-- (MediaConversionQueueEntry)initWithIdentifier:(id)a3 initialConversionOptions:(id)a4
+- (MediaConversionQueueEntry)initWithIdentifier:(id)identifier initialConversionOptions:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v16.receiver = self;
   v16.super_class = MediaConversionQueueEntry;
   v9 = [(MediaConversionQueueEntry *)&v16 init];
@@ -368,10 +368,10 @@ LABEL_12:
     v9->_clientRequests = v10;
 
     v9->_queueEntryStateLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v9->_initialRequestConversionOptions, a4);
-    v12 = [NSString stringWithFormat:@"com.apple.photos.media-conversion.queue-entry-%@", v7];
-    [v12 UTF8String];
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v9->_initialRequestConversionOptions, options);
+    identifierCopy = [NSString stringWithFormat:@"com.apple.photos.media-conversion.queue-entry-%@", identifierCopy];
+    [identifierCopy UTF8String];
     v13 = os_transaction_create();
     transaction = v9->_transaction;
     v9->_transaction = v13;

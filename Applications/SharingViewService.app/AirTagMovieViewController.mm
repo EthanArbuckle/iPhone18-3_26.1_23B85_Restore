@@ -1,17 +1,17 @@
 @interface AirTagMovieViewController
-- (_TtC18SharingViewService25AirTagMovieViewController)initWithContentView:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (_TtC18SharingViewService25AirTagMovieViewController)initWithContentView:(id)view;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AirTagMovieViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100099604(a3);
+  selfCopy = self;
+  sub_100099604(appear);
 }
 
-- (_TtC18SharingViewService25AirTagMovieViewController)initWithContentView:(id)a3
+- (_TtC18SharingViewService25AirTagMovieViewController)initWithContentView:(id)view
 {
   v5 = &self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC18SharingViewService25AirTagMovieViewController_movie];
   *v5 = 0;
@@ -20,7 +20,7 @@
   swift_unknownObjectWeakInit();
   v7.receiver = self;
   v7.super_class = type metadata accessor for AirTagMovieViewController();
-  return [(AirTagMovieViewController *)&v7 initWithContentView:a3];
+  return [(AirTagMovieViewController *)&v7 initWithContentView:view];
 }
 
 @end

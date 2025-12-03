@@ -1,40 +1,40 @@
 @interface MTXPCConnectionListenerProvider
-+ (MTXPCConnectionListenerProvider)providerWithConnectionInfo:(id)a3 errorHandler:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (MTXPCConnectionListenerProvider)initWithConnectionInfo:(id)a3 errorHandler:(id)a4;
++ (MTXPCConnectionListenerProvider)providerWithConnectionInfo:(id)info errorHandler:(id)handler;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (MTXPCConnectionListenerProvider)initWithConnectionInfo:(id)info errorHandler:(id)handler;
 - (NSArray)connectedClients;
 - (NSString)description;
 - (id)_connectedClients;
-- (id)_currentClientForConnection:(id)a3;
+- (id)_currentClientForConnection:(id)connection;
 - (id)currentClient;
 - (void)_didInterruptConnection;
-- (void)_didInvalidateConnection:(id)a3;
-- (void)_performBlockOnClientInfos:(id)a3 excludingClient:(id)a4;
-- (void)addClientConnection:(id)a3 clientLink:(id)a4;
+- (void)_didInvalidateConnection:(id)connection;
+- (void)_performBlockOnClientInfos:(id)infos excludingClient:(id)client;
+- (void)addClientConnection:(id)connection clientLink:(id)link;
 - (void)dealloc;
-- (void)performBlockOnAllClients:(id)a3 excludingClient:(id)a4;
-- (void)performBlockOnClientInfos:(id)a3 excludeCurrent:(BOOL)a4;
-- (void)performBlockOnCurrentClient:(id)a3;
-- (void)removeClientConnection:(id)a3;
+- (void)performBlockOnAllClients:(id)clients excludingClient:(id)client;
+- (void)performBlockOnClientInfos:(id)infos excludeCurrent:(BOOL)current;
+- (void)performBlockOnCurrentClient:(id)client;
+- (void)removeClientConnection:(id)connection;
 - (void)startListening;
 @end
 
 @implementation MTXPCConnectionListenerProvider
 
-+ (MTXPCConnectionListenerProvider)providerWithConnectionInfo:(id)a3 errorHandler:(id)a4
++ (MTXPCConnectionListenerProvider)providerWithConnectionInfo:(id)info errorHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithConnectionInfo:v6 errorHandler:v5];
+  handlerCopy = handler;
+  infoCopy = info;
+  v7 = [objc_alloc(objc_opt_class()) initWithConnectionInfo:infoCopy errorHandler:handlerCopy];
 
   return v7;
 }
 
-- (MTXPCConnectionListenerProvider)initWithConnectionInfo:(id)a3 errorHandler:(id)a4
+- (MTXPCConnectionListenerProvider)initWithConnectionInfo:(id)info errorHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  infoCopy = info;
+  handlerCopy = handler;
+  if (!infoCopy)
   {
     [MTXPCConnectionListenerProvider initWithConnectionInfo:a2 errorHandler:self];
   }
@@ -48,19 +48,19 @@
     serializer = v10->_serializer;
     v10->_serializer = v11;
 
-    objc_storeStrong(&v10->_info, a3);
+    objc_storeStrong(&v10->_info, info);
     v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     clients = v10->_clients;
     v10->_clients = v13;
 
-    v15 = [v9 copy];
+    v15 = [handlerCopy copy];
     errorHandler = v10->_errorHandler;
     v10->_errorHandler = v15;
 
     v17 = objc_alloc(MEMORY[0x1E696B0D8]);
-    v18 = [(MTXPCConnectionListenerProvider *)v10 info];
-    v19 = [v18 machServiceName];
-    v20 = [v17 initWithMachServiceName:v19];
+    info = [(MTXPCConnectionListenerProvider *)v10 info];
+    machServiceName = [info machServiceName];
+    v20 = [v17 initWithMachServiceName:machServiceName];
     connectionListener = v10->_connectionListener;
     v10->_connectionListener = v20;
 
@@ -77,92 +77,92 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ resuming connection", &v11, 0xCu);
   }
 
   [(NSXPCListener *)self->_connectionListener resume];
-  v4 = [(MTXPCConnectionInfo *)self->_info lifecycleNotification];
+  lifecycleNotification = [(MTXPCConnectionInfo *)self->_info lifecycleNotification];
 
-  if (v4)
+  if (lifecycleNotification)
   {
     v5 = MTLogForCategory(2);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(MTXPCConnectionInfo *)self->_info lifecycleNotification];
+      lifecycleNotification2 = [(MTXPCConnectionInfo *)self->_info lifecycleNotification];
       v11 = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
-      v14 = v6;
+      v14 = lifecycleNotification2;
       _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "Listener %{public}@ posting lifecycle darwin notification %{public}@", &v11, 0x16u);
     }
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    v8 = [(MTXPCConnectionListenerProvider *)self info];
-    v9 = [v8 lifecycleNotification];
-    CFNotificationCenterPostNotification(DarwinNotifyCenter, v9, 0, 0, 1u);
+    info = [(MTXPCConnectionListenerProvider *)self info];
+    lifecycleNotification3 = [info lifecycleNotification];
+    CFNotificationCenterPostNotification(DarwinNotifyCenter, lifecycleNotification3, 0, 0, 1u);
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTXPCConnectionListenerProvider *)self info];
-  v9 = [v8 requiredEntitlement];
-  if (!v9)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  info = [(MTXPCConnectionListenerProvider *)self info];
+  requiredEntitlement = [info requiredEntitlement];
+  if (!requiredEntitlement)
   {
 
     goto LABEL_7;
   }
 
-  v10 = v9;
-  v11 = [(MTXPCConnectionListenerProvider *)self info];
-  v12 = [v11 requiredEntitlement];
-  v13 = [v7 valueForEntitlement:v12];
-  v14 = [v13 BOOLValue];
+  v10 = requiredEntitlement;
+  info2 = [(MTXPCConnectionListenerProvider *)self info];
+  requiredEntitlement2 = [info2 requiredEntitlement];
+  v13 = [connectionCopy valueForEntitlement:requiredEntitlement2];
+  bOOLValue = [v13 BOOLValue];
 
-  if (v14)
+  if (bOOLValue)
   {
 LABEL_7:
-    v17 = [(MTXPCConnectionListenerProvider *)self info];
-    v18 = [v17 exportedObjectInterface];
-    [v7 setExportedInterface:v18];
+    info3 = [(MTXPCConnectionListenerProvider *)self info];
+    exportedObjectInterface = [info3 exportedObjectInterface];
+    [connectionCopy setExportedInterface:exportedObjectInterface];
 
-    v19 = [(MTXPCConnectionListenerProvider *)self info];
-    v20 = [v19 exportedObject];
-    [v7 setExportedObject:v20];
+    info4 = [(MTXPCConnectionListenerProvider *)self info];
+    exportedObject = [info4 exportedObject];
+    [connectionCopy setExportedObject:exportedObject];
 
-    v21 = [(MTXPCConnectionListenerProvider *)self info];
-    v22 = [v21 remoteObjectInterface];
-    [v7 setRemoteObjectInterface:v22];
+    info5 = [(MTXPCConnectionListenerProvider *)self info];
+    remoteObjectInterface = [info5 remoteObjectInterface];
+    [connectionCopy setRemoteObjectInterface:remoteObjectInterface];
 
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v7);
+    objc_initWeak(&from, connectionCopy);
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __70__MTXPCConnectionListenerProvider_listener_shouldAcceptNewConnection___block_invoke;
     v30[3] = &unk_1E7B0F878;
     objc_copyWeak(&v31, &location);
     objc_copyWeak(&v32, &from);
-    v23 = [v7 remoteObjectProxyWithErrorHandler:v30];
+    v23 = [connectionCopy remoteObjectProxyWithErrorHandler:v30];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __70__MTXPCConnectionListenerProvider_listener_shouldAcceptNewConnection___block_invoke_2;
     v27[3] = &unk_1E7B0F8A0;
     objc_copyWeak(&v28, &location);
     objc_copyWeak(&v29, &from);
-    [v7 setInvalidationHandler:v27];
+    [connectionCopy setInvalidationHandler:v27];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __70__MTXPCConnectionListenerProvider_listener_shouldAcceptNewConnection___block_invoke_17;
     v25[3] = &unk_1E7B0CF70;
     objc_copyWeak(&v26, &location);
-    [v7 setInterruptionHandler:v25];
-    [(MTXPCConnectionListenerProvider *)self addClientConnection:v7 clientLink:v23];
-    [v7 resume];
+    [connectionCopy setInterruptionHandler:v25];
+    [(MTXPCConnectionListenerProvider *)self addClientConnection:connectionCopy clientLink:v23];
+    [connectionCopy resume];
     objc_destroyWeak(&v26);
     objc_destroyWeak(&v29);
     objc_destroyWeak(&v28);
@@ -178,7 +178,7 @@ LABEL_7:
   v15 = MTLogForCategory(2);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    [MTXPCConnectionListenerProvider listener:v7 shouldAcceptNewConnection:v15];
+    [MTXPCConnectionListenerProvider listener:connectionCopy shouldAcceptNewConnection:v15];
   }
 
   v16 = 0;
@@ -245,49 +245,49 @@ void __70__MTXPCConnectionListenerProvider_listener_shouldAcceptNewConnection___
 - (void)_didInterruptConnection
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [a1 info];
-  v8 = [v1 machServiceName];
+  info = [self info];
+  machServiceName = [info machServiceName];
   OUTLINED_FUNCTION_2_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_didInvalidateConnection:(id)a3
+- (void)_didInvalidateConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = MTLogForCategory(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [MTXPCConnectionListenerProvider _didInvalidateConnection:?];
   }
 
-  [(MTXPCConnectionListenerProvider *)self removeClientConnection:v4];
-  v6 = [(MTXPCConnectionListenerProvider *)self errorHandler];
+  [(MTXPCConnectionListenerProvider *)self removeClientConnection:connectionCopy];
+  errorHandler = [(MTXPCConnectionListenerProvider *)self errorHandler];
 
-  if (v6)
+  if (errorHandler)
   {
-    v7 = [(MTXPCConnectionListenerProvider *)self errorHandler];
+    errorHandler2 = [(MTXPCConnectionListenerProvider *)self errorHandler];
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4099 userInfo:0];
-    (v7)[2](v7, v8);
+    (errorHandler2)[2](errorHandler2, v8);
   }
 }
 
-- (void)addClientConnection:(id)a3 clientLink:(id)a4
+- (void)addClientConnection:(id)connection clientLink:(id)link
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTXPCConnectionListenerProvider *)self serializer];
+  connectionCopy = connection;
+  linkCopy = link;
+  serializer = [(MTXPCConnectionListenerProvider *)self serializer];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__MTXPCConnectionListenerProvider_addClientConnection_clientLink___block_invoke;
   v11[3] = &unk_1E7B0C9A0;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
-  [v8 performBlock:v11];
+  v12 = linkCopy;
+  v13 = connectionCopy;
+  selfCopy = self;
+  v9 = connectionCopy;
+  v10 = linkCopy;
+  [serializer performBlock:v11];
 }
 
 void __66__MTXPCConnectionListenerProvider_addClientConnection_clientLink___block_invoke(uint64_t a1)
@@ -354,18 +354,18 @@ void __66__MTXPCConnectionListenerProvider_addClientConnection_clientLink___bloc
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeClientConnection:(id)a3
+- (void)removeClientConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(MTXPCConnectionListenerProvider *)self serializer];
+  connectionCopy = connection;
+  serializer = [(MTXPCConnectionListenerProvider *)self serializer];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__MTXPCConnectionListenerProvider_removeClientConnection___block_invoke;
   v7[3] = &unk_1E7B0C928;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = connectionCopy;
+  v6 = connectionCopy;
+  [serializer performBlock:v7];
 }
 
 void __58__MTXPCConnectionListenerProvider_removeClientConnection___block_invoke(uint64_t a1)
@@ -452,7 +452,7 @@ LABEL_13:
   v15 = __Block_byref_object_dispose__14;
   v16 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(MTXPCConnectionListenerProvider *)self serializer];
+  serializer = [(MTXPCConnectionListenerProvider *)self serializer];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__MTXPCConnectionListenerProvider_connectedClients__block_invoke;
@@ -461,7 +461,7 @@ LABEL_13:
   v8[4] = self;
   v5 = v3;
   v9 = v5;
-  [v4 performBlock:v8];
+  [serializer performBlock:v8];
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v6 = v12[5];
@@ -485,10 +485,10 @@ intptr_t __51__MTXPCConnectionListenerProvider_connectedClients__block_invoke(ui
 
 - (id)_connectedClients
 {
-  v2 = [(MTXPCConnectionListenerProvider *)self clients];
-  v3 = [v2 allObjects];
+  clients = [(MTXPCConnectionListenerProvider *)self clients];
+  allObjects = [clients allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (id)currentClient
@@ -499,20 +499,20 @@ intptr_t __51__MTXPCConnectionListenerProvider_connectedClients__block_invoke(ui
   v17 = __Block_byref_object_copy__14;
   v18 = __Block_byref_object_dispose__14;
   v19 = 0;
-  v3 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   v4 = dispatch_semaphore_create(0);
-  v5 = [(MTXPCConnectionListenerProvider *)self serializer];
+  serializer = [(MTXPCConnectionListenerProvider *)self serializer];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __48__MTXPCConnectionListenerProvider_currentClient__block_invoke;
   v10[3] = &unk_1E7B0F8C8;
   v13 = &v14;
   v10[4] = self;
-  v6 = v3;
+  v6 = currentConnection;
   v11 = v6;
   v7 = v4;
   v12 = v7;
-  [v5 performBlock:v10];
+  [serializer performBlock:v10];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v8 = v15[5];
@@ -534,18 +534,18 @@ intptr_t __48__MTXPCConnectionListenerProvider_currentClient__block_invoke(uint6
   return dispatch_semaphore_signal(v5);
 }
 
-- (id)_currentClientForConnection:(id)a3
+- (id)_currentClientForConnection:(id)connection
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(MTXPCConnectionListenerProvider *)self _connectedClients];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    _connectedClients = [(MTXPCConnectionListenerProvider *)self _connectedClients];
+    v6 = [_connectedClients countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = *v14;
@@ -555,20 +555,20 @@ intptr_t __48__MTXPCConnectionListenerProvider_currentClient__block_invoke(uint6
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_connectedClients);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 connection];
+          connection = [v9 connection];
 
-          if (v10 == v4)
+          if (connection == connectionCopy)
           {
             v6 = v9;
             goto LABEL_12;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [_connectedClients countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v6)
         {
           continue;
@@ -591,21 +591,21 @@ LABEL_12:
   return v6;
 }
 
-- (void)performBlockOnCurrentClient:(id)a3
+- (void)performBlockOnCurrentClient:(id)client
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
-  v6 = [(MTXPCConnectionListenerProvider *)self serializer];
+  clientCopy = client;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  serializer = [(MTXPCConnectionListenerProvider *)self serializer];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__MTXPCConnectionListenerProvider_performBlockOnCurrentClient___block_invoke;
   v9[3] = &unk_1E7B0C5D8;
   v9[4] = self;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
-  [v6 performBlock:v9];
+  v10 = currentConnection;
+  v11 = clientCopy;
+  v7 = clientCopy;
+  v8 = currentConnection;
+  [serializer performBlock:v9];
 }
 
 void __63__MTXPCConnectionListenerProvider_performBlockOnCurrentClient___block_invoke(uint64_t a1)
@@ -623,22 +623,22 @@ void __77__MTXPCConnectionListenerProvider_performBlockOnAllClients_excludingCur
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)performBlockOnClientInfos:(id)a3 excludeCurrent:(BOOL)a4
+- (void)performBlockOnClientInfos:(id)infos excludeCurrent:(BOOL)current
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696B0B8] currentConnection];
-  v8 = [(MTXPCConnectionListenerProvider *)self serializer];
+  infosCopy = infos;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  serializer = [(MTXPCConnectionListenerProvider *)self serializer];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __76__MTXPCConnectionListenerProvider_performBlockOnClientInfos_excludeCurrent___block_invoke;
   v11[3] = &unk_1E7B0F918;
-  v14 = a4;
+  currentCopy = current;
   v11[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  [v8 performBlock:v11];
+  v12 = currentConnection;
+  v13 = infosCopy;
+  v9 = infosCopy;
+  v10 = currentConnection;
+  [serializer performBlock:v11];
 }
 
 void __76__MTXPCConnectionListenerProvider_performBlockOnClientInfos_excludeCurrent___block_invoke(uint64_t a1)
@@ -657,21 +657,21 @@ void __76__MTXPCConnectionListenerProvider_performBlockOnClientInfos_excludeCurr
   [*(a1 + 32) _performBlockOnClientInfos:*(a1 + 48) excludingClient:v2];
 }
 
-- (void)performBlockOnAllClients:(id)a3 excludingClient:(id)a4
+- (void)performBlockOnAllClients:(id)clients excludingClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTXPCConnectionListenerProvider *)self serializer];
+  clientsCopy = clients;
+  clientCopy = client;
+  serializer = [(MTXPCConnectionListenerProvider *)self serializer];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __76__MTXPCConnectionListenerProvider_performBlockOnAllClients_excludingClient___block_invoke;
   v11[3] = &unk_1E7B0D8B8;
-  v12 = v7;
-  v13 = v6;
+  v12 = clientCopy;
+  v13 = clientsCopy;
   v11[4] = self;
-  v9 = v7;
-  v10 = v6;
-  [v8 performBlock:v11];
+  v9 = clientCopy;
+  v10 = clientsCopy;
+  [serializer performBlock:v11];
 }
 
 void __76__MTXPCConnectionListenerProvider_performBlockOnAllClients_excludingClient___block_invoke(uint64_t a1)
@@ -692,17 +692,17 @@ void __76__MTXPCConnectionListenerProvider_performBlockOnAllClients_excludingCli
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)_performBlockOnClientInfos:(id)a3 excludingClient:(id)a4
+- (void)_performBlockOnClientInfos:(id)infos excludingClient:(id)client
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  infosCopy = infos;
+  clientCopy = client;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(MTXPCConnectionListenerProvider *)self _connectedClients];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _connectedClients = [(MTXPCConnectionListenerProvider *)self _connectedClients];
+  v9 = [_connectedClients countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -714,20 +714,20 @@ void __76__MTXPCConnectionListenerProvider_performBlockOnAllClients_excludingCli
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_connectedClients);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
-        if (!v7 || ([*(*(&v15 + 1) + 8 * v12) isEqual:v7] & 1) == 0)
+        if (!clientCopy || ([*(*(&v15 + 1) + 8 * v12) isEqual:clientCopy] & 1) == 0)
         {
-          v6[2](v6, v13);
+          infosCopy[2](infosCopy, v13);
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [_connectedClients countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -740,9 +740,9 @@ void __76__MTXPCConnectionListenerProvider_performBlockOnAllClients_excludingCli
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MTXPCConnectionListenerProvider *)self info];
-  v6 = [v5 machServiceName];
-  v7 = [v3 stringWithFormat:@"<%@:%p %@>", v4, self, v6];
+  info = [(MTXPCConnectionListenerProvider *)self info];
+  machServiceName = [info machServiceName];
+  v7 = [v3 stringWithFormat:@"<%@:%p %@>", v4, self, machServiceName];
 
   return v7;
 }

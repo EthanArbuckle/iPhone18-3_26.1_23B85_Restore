@@ -1,11 +1,11 @@
 @interface DUDocumentHTMLData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)htmlString;
 - (_TtC21DocumentUnderstanding19DUDocumentEmailData)documentEmailData;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDocumentEmailData:(id)a3;
-- (void)setHtmlString:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDocumentEmailData:(id)data;
+- (void)setHtmlString:(id)string;
 @end
 
 @implementation DUDocumentHTMLData
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (void)setHtmlString:(id)a3
+- (void)setHtmlString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = sub_232CE9D50();
     v6 = v5;
@@ -40,7 +40,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_232B38DD8(v4, v6);
 }
 
@@ -51,23 +51,23 @@
   return v2;
 }
 
-- (void)setDocumentEmailData:(id)a3
+- (void)setDocumentEmailData:(id)data
 {
-  v5 = a3;
-  v6 = self;
-  sub_232B38F94(a3);
+  dataCopy = data;
+  selfCopy = self;
+  sub_232B38F94(data);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_232B39150(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_232B39150(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_232B393CC(v6);
 
   sub_232B203C8(v6, v6[3]);
@@ -76,11 +76,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_232CEA420();
     swift_unknownObjectRelease();
@@ -89,7 +89,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_232B39A64(v8);

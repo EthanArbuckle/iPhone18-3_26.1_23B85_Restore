@@ -1,17 +1,17 @@
 @interface SpotlightSettingsUtilities
-+ (BOOL)isAppWithBundleIDPresent:(id)a3;
++ (BOOL)isAppWithBundleIDPresent:(id)present;
 + (void)logSearchPreferencesModificationState;
-+ (void)updateSearchPreferencesModificationForKeys:(id)a3;
++ (void)updateSearchPreferencesModificationForKeys:(id)keys;
 @end
 
 @implementation SpotlightSettingsUtilities
 
-+ (BOOL)isAppWithBundleIDPresent:(id)a3
++ (BOOL)isAppWithBundleIDPresent:(id)present
 {
   v3 = MEMORY[0x277CC1E70];
-  v4 = a3;
+  presentCopy = present;
   v9 = 0;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:1 error:&v9];
+  v5 = [[v3 alloc] initWithBundleIdentifier:presentCopy allowPlaceholder:1 error:&v9];
 
   if (v9)
   {
@@ -20,10 +20,10 @@
 
   else
   {
-    v7 = [v5 applicationState];
-    if ([v7 isInstalled])
+    applicationState = [v5 applicationState];
+    if ([applicationState isInstalled])
     {
-      v6 = [v7 isPlaceholder] ^ 1;
+      v6 = [applicationState isPlaceholder] ^ 1;
     }
 
     else
@@ -58,10 +58,10 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)updateSearchPreferencesModificationForKeys:(id)a3
++ (void)updateSearchPreferencesModificationForKeys:(id)keys
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keysCopy = keys;
   v4 = CFPreferencesCopyAppValue(@"SBSearchPreferencesModification", @"com.apple.spotlightui");
   v5 = [v4 mutableCopy];
 
@@ -74,13 +74,13 @@
   v18 = [v6 description];
 
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v17 = [v7 bundleIdentifier];
+  bundleIdentifier = [v7 bundleIdentifier];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v3;
+  obj = keysCopy;
   v8 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -100,7 +100,7 @@
         [v5 setObject:v18 forKey:v13];
 
         v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v12, @"_SOURCE"];
-        [v5 setObject:v17 forKey:v14];
+        [v5 setObject:bundleIdentifier forKey:v14];
       }
 
       v9 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];

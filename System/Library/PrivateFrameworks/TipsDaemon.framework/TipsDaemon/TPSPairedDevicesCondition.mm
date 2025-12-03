@@ -22,17 +22,17 @@
 - (id)targetingValidations
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(TPSCondition *)self values];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  values = [(TPSCondition *)self values];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(values, "count")}];
 
-  v6 = [(TPSCondition *)self values];
+  values2 = [(TPSCondition *)self values];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__TPSPairedDevicesCondition_targetingValidations__block_invoke;
   v9[3] = &unk_2789B0920;
   v7 = v5;
   v10 = v7;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [values2 enumerateObjectsUsingBlock:v9];
 
   return v7;
 }

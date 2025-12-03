@@ -1,15 +1,15 @@
 @interface ArcadeAIDAAccountManagerDelegate
 - (_TtC11AppStoreKitP33_5D4CA4A6926ADB88808A5F6B54A2A73432ArcadeAIDAAccountManagerDelegate)init;
-- (id)accountsForAccountManager:(id)a3;
+- (id)accountsForAccountManager:(id)manager;
 @end
 
 @implementation ArcadeAIDAAccountManagerDelegate
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E1712F84(v4);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_1E1712F84(managerCopy);
 
   type metadata accessor for AIDAServiceType(0);
   sub_1E13006E4(0, &unk_1ECEB8490);

@@ -2,8 +2,8 @@
 + (BOOL)isZoomGreyFeatureOn;
 + (id)_pairedDevice;
 + (id)defaultCustomizeGestures;
-+ (id)nameForAction:(unint64_t)a3;
-+ (id)symbolNameForAction:(unint64_t)a3;
++ (id)nameForAction:(unint64_t)action;
++ (id)symbolNameForAction:(unint64_t)action;
 @end
 
 @implementation ZoomServicesGreyCommandInfo
@@ -25,50 +25,50 @@
   return v2;
 }
 
-+ (id)nameForAction:(unint64_t)a3
++ (id)nameForAction:(unint64_t)action
 {
-  if (a3 > 3)
+  if (action > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_27A6466D0[a3];
+    return off_27A6466D0[action];
   }
 }
 
-+ (id)symbolNameForAction:(unint64_t)a3
++ (id)symbolNameForAction:(unint64_t)action
 {
-  if (a3 > 3)
+  if (action > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_27A6466F0[a3];
+    return off_27A6466F0[action];
   }
 }
 
 + (BOOL)isZoomGreyFeatureOn
 {
   v2 = _os_feature_enabled_impl();
-  v3 = [objc_opt_class() _pairedDevice];
+  _pairedDevice = [objc_opt_class() _pairedDevice];
   v4 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"1FD8E157-2B7C-45B6-B939-FFB8BE14E27F"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [_pairedDevice supportsCapability:v4];
 
   return v2 & v5;
 }
 
 + (id)_pairedDevice
 {
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-  v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+  v4 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+  firstObject = [v4 firstObject];
 
-  v6 = [v5 valueForProperty:*MEMORY[0x277D2BB30]];
+  v6 = [firstObject valueForProperty:*MEMORY[0x277D2BB30]];
   if ([v6 BOOLValue])
   {
     v7 = 0;
@@ -76,7 +76,7 @@
 
   else
   {
-    v7 = v5;
+    v7 = firstObject;
   }
 
   v8 = v7;

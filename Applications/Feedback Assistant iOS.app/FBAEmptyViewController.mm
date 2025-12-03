@@ -11,12 +11,12 @@
   v7.super_class = FBAEmptyViewController;
   [(FBAEmptyViewController *)&v7 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(FBAEmptyViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(FBAEmptyViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = +[UIColor secondaryLabelColor];
-  v6 = [(FBAEmptyViewController *)self contentUnavailableLabel];
-  [v6 setTextColor:v5];
+  contentUnavailableLabel = [(FBAEmptyViewController *)self contentUnavailableLabel];
+  [contentUnavailableLabel setTextColor:v5];
 }
 
 - (UILabel)contentUnavailableLabel

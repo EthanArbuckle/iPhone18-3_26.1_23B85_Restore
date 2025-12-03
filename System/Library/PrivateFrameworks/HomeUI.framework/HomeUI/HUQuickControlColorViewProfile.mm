@@ -1,6 +1,6 @@
 @interface HUQuickControlColorViewProfile
 - (HUQuickControlColorViewProfile)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUQuickControlColorViewProfile
@@ -21,16 +21,16 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = HUQuickControlColorViewProfile;
-  v4 = [(HUQuickControlViewProfile *)&v7 copyWithZone:a3];
+  v4 = [(HUQuickControlViewProfile *)&v7 copyWithZone:zone];
   [v4 setSupportsRGBColor:{-[HUQuickControlColorViewProfile supportsRGBColor](self, "supportsRGBColor")}];
   [v4 setSupportsNaturalLighting:{-[HUQuickControlColorViewProfile supportsNaturalLighting](self, "supportsNaturalLighting")}];
   [v4 setNaturalLightingEnabled:{-[HUQuickControlColorViewProfile naturalLightingEnabled](self, "naturalLightingEnabled")}];
-  v5 = [(HUQuickControlColorViewProfile *)self colorProfile];
-  [v4 setColorProfile:v5];
+  colorProfile = [(HUQuickControlColorViewProfile *)self colorProfile];
+  [v4 setColorProfile:colorProfile];
 
   [v4 setMode:{-[HUQuickControlColorViewProfile mode](self, "mode")}];
   return v4;

@@ -1,14 +1,14 @@
 @interface AVCaptureDeferredPhotoProcessingRequest
-- (AVCaptureDeferredPhotoProcessingRequest)initWithPhotoProxy:(id)a3 delegate:(id)a4 delegateQueue:(id)a5 qosClass:(unsigned int)a6;
+- (AVCaptureDeferredPhotoProcessingRequest)initWithPhotoProxy:(id)proxy delegate:(id)delegate delegateQueue:(id)queue qosClass:(unsigned int)class;
 - (id)description;
-- (void)addDelegate:(id)a3;
-- (void)addProxy:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)addProxy:(id)proxy;
 - (void)dealloc;
 @end
 
 @implementation AVCaptureDeferredPhotoProcessingRequest
 
-- (AVCaptureDeferredPhotoProcessingRequest)initWithPhotoProxy:(id)a3 delegate:(id)a4 delegateQueue:(id)a5 qosClass:(unsigned int)a6
+- (AVCaptureDeferredPhotoProcessingRequest)initWithPhotoProxy:(id)proxy delegate:(id)delegate delegateQueue:(id)queue qosClass:(unsigned int)class
 {
   v13.receiver = self;
   v13.super_class = AVCaptureDeferredPhotoProcessingRequest;
@@ -16,13 +16,13 @@
   if (v10)
   {
     v10->_delegatesStorage = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v10->_delegateQueue = a5;
-    [(AVCaptureDeferredPhotoProcessingRequest *)v10 addDelegate:a4];
-    v10->_photoProxies = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a3, 0}];
+    v10->_delegateQueue = queue;
+    [(AVCaptureDeferredPhotoProcessingRequest *)v10 addDelegate:delegate];
+    v10->_photoProxies = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{proxy, 0}];
     v10->_expectedPhotoCount = 1;
-    v10->_originalDeferredPhotoIdentifier = [objc_msgSend(a3 "deferredPhotoIdentifier")];
-    v10->_qosClass = a6;
-    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"AVCaptureDeferredPhotoProcessor-%@", objc_msgSend(a3, "deferredPhotoIdentifier")];
+    v10->_originalDeferredPhotoIdentifier = [objc_msgSend(proxy "deferredPhotoIdentifier")];
+    v10->_qosClass = class;
+    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"AVCaptureDeferredPhotoProcessor-%@", objc_msgSend(proxy, "deferredPhotoIdentifier")];
     [v11 cStringUsingEncoding:4];
     v10->_transaction = FigOSTransactionCreate();
   }
@@ -37,14 +37,14 @@
   [(AVCaptureDeferredPhotoProcessingRequest *)&v3 dealloc];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
   v5 = objc_alloc_init(MEMORY[0x1E69881A0]);
-  [v5 setDelegate:a3 queue:self->_delegateQueue];
+  [v5 setDelegate:delegate queue:self->_delegateQueue];
   [(NSMutableArray *)self->_delegatesStorage addObject:v5];
 }
 
-- (void)addProxy:(id)a3
+- (void)addProxy:(id)proxy
 {
   v13 = 0u;
   v14 = 0u;
@@ -86,7 +86,7 @@ LABEL_3:
   else
   {
 LABEL_9:
-    [(NSMutableArray *)self->_photoProxies addObject:a3];
+    [(NSMutableArray *)self->_photoProxies addObject:proxy];
     ++self->_expectedPhotoCount;
   }
 }

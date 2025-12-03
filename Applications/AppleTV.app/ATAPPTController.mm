@@ -1,13 +1,13 @@
 @interface ATAPPTController
 + (id)sharedInstance;
-- (BOOL)_canHandleTest:(id)a3;
+- (BOOL)_canHandleTest:(id)test;
 - (OS_dispatch_queue)workQueue;
 - (id)_init;
 - (void)_registerTests;
-- (void)_runTest:(id)a3 app:(id)a4;
-- (void)_scrollHalfTheScreenHeightIn:(id)a3;
-- (void)_waitForSearchShelfsToLoadInTabBarController:(id)a3;
-- (void)waitForApplicationToLoadNotification:(id)a3;
+- (void)_runTest:(id)test app:(id)app;
+- (void)_scrollHalfTheScreenHeightIn:(id)in;
+- (void)_waitForSearchShelfsToLoadInTabBarController:(id)controller;
+- (void)waitForApplicationToLoadNotification:(id)notification;
 @end
 
 @implementation ATAPPTController
@@ -56,16 +56,16 @@
   return workQueue;
 }
 
-- (void)_waitForSearchShelfsToLoadInTabBarController:(id)a3
+- (void)_waitForSearchShelfsToLoadInTabBarController:(id)controller
 {
-  v17 = a3;
-  v3 = [v17 valueForKeyPath:@"tabBar.items.title"];
+  controllerCopy = controller;
+  v3 = [controllerCopy valueForKeyPath:@"tabBar.items.title"];
   v4 = [v3 indexOfObject:VUITabBarItemIdentifierKeySearch];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
-    v6 = [v17 viewControllers];
-    v7 = [v6 objectAtIndex:v5];
+    viewControllers = [controllerCopy viewControllers];
+    v7 = [viewControllers objectAtIndex:v5];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -78,19 +78,19 @@
       v8 = 0;
     }
 
-    v9 = [v8 childViewControllers];
-    v10 = [v9 firstObject];
+    childViewControllers = [v8 childViewControllers];
+    firstObject = [childViewControllers firstObject];
 
-    v11 = [v10 childViewControllers];
-    v12 = [v11 firstObject];
+    childViewControllers2 = [firstObject childViewControllers];
+    firstObject2 = [childViewControllers2 firstObject];
 
-    v13 = [v12 childViewControllers];
-    v14 = [v13 firstObject];
+    childViewControllers3 = [firstObject2 childViewControllers];
+    firstObject3 = [childViewControllers3 firstObject];
 
     while (1)
     {
-      v15 = [v14 childViewControllers];
-      v16 = [v15 count];
+      childViewControllers4 = [firstObject3 childViewControllers];
+      v16 = [childViewControllers4 count];
 
       if (v16)
       {
@@ -102,17 +102,17 @@
   }
 }
 
-- (void)_scrollHalfTheScreenHeightIn:(id)a3
+- (void)_scrollHalfTheScreenHeightIn:(id)in
 {
   v3 = +[ATAPPTUtilities topMostController];
-  v4 = [v3 view];
-  v5 = [ATAPPTUtilities findScrollViewInView:v4 desiredScrollViewClass:NSClassFromString(@"VideosUI.StackCollectionView")];
+  view = [v3 view];
+  v5 = [ATAPPTUtilities findScrollViewInView:view desiredScrollViewClass:NSClassFromString(@"VideosUI.StackCollectionView")];
 
   [v5 contentOffset];
   v7 = v6;
   v9 = v8;
-  v10 = [UIApp keyWindow];
-  [v10 frame];
+  keyWindow = [UIApp keyWindow];
+  [keyWindow frame];
   v12 = v9 + v11 * 0.5;
 
   if (+[NSThread isMainThread])
@@ -135,28 +135,28 @@
   sleep(2u);
 }
 
-- (BOOL)_canHandleTest:(id)a3
+- (BOOL)_canHandleTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(ATAPPTController *)self testsManifest];
-  v6 = [v5 allKeys];
+  testsManifest = [(ATAPPTController *)self testsManifest];
+  allKeys = [testsManifest allKeys];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000459C;
   v9[3] = &unk_10001CD48;
-  v7 = v4;
+  v7 = testCopy;
   v10 = v7;
   v11 = &v12;
-  [v6 enumerateObjectsUsingBlock:v9];
-  LOBYTE(v5) = *(v13 + 24);
+  [allKeys enumerateObjectsUsingBlock:v9];
+  LOBYTE(testsManifest) = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);
-  return v5;
+  return testsManifest;
 }
 
 - (void)_registerTests
@@ -206,7 +206,7 @@
   self->_testsManifest = v7;
 }
 
-- (void)waitForApplicationToLoadNotification:(id)a3
+- (void)waitForApplicationToLoadNotification:(id)notification
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:_VUITVAppNavigationDidDisplayViewControllerNotification object:0];
@@ -214,33 +214,33 @@
   os_unfair_lock_lock(&self->_appLoadedLock);
   self->_appLoaded = 1;
   os_unfair_lock_unlock(&self->_appLoadedLock);
-  v5 = [(ATAPPTController *)self applicationLoadCompletion];
-  if (v5)
+  applicationLoadCompletion = [(ATAPPTController *)self applicationLoadCompletion];
+  if (applicationLoadCompletion)
   {
-    v6 = v5;
+    v6 = applicationLoadCompletion;
     [(ATAPPTController *)self setApplicationLoadCompletion:0];
     v6[2](v6);
-    v5 = v6;
+    applicationLoadCompletion = v6;
   }
 }
 
-- (void)_runTest:(id)a3 app:(id)a4
+- (void)_runTest:(id)test app:(id)app
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(ATAPPTController *)self _canHandleTest:v6])
+  testCopy = test;
+  appCopy = app;
+  if ([(ATAPPTController *)self _canHandleTest:testCopy])
   {
     objc_initWeak(&location, self);
-    v8 = [(ATAPPTController *)self workQueue];
+    workQueue = [(ATAPPTController *)self workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100005418;
     block[3] = &unk_10001D0E0;
-    v10 = v6;
-    v11 = v7;
-    v12 = self;
+    v10 = testCopy;
+    v11 = appCopy;
+    selfCopy = self;
     objc_copyWeak(&v13, &location);
-    dispatch_async(v8, block);
+    dispatch_async(workQueue, block);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);

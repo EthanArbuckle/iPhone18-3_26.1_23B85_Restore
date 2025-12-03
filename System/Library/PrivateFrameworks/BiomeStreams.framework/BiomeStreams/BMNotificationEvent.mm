@@ -1,10 +1,10 @@
 @interface BMNotificationEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMNotificationEvent)initWithDKEvent:(id)a3;
-- (BMNotificationEvent)initWithProto:(id)a3;
-- (BMNotificationEvent)initWithProtoData:(id)a3;
-- (BMNotificationEvent)initWithUniqueID:(id)a3 absoluteTimestamp:(double)a4 usageType:(unint64_t)a5 bundleID:(id)a6 notificationID:(id)a7 deviceID:(id)a8 title:(id)a9 subtitle:(id)a10 badge:(unint64_t)a11 threadID:(id)a12 categoryID:(id)a13 sectionID:(id)a14 contactIDs:(id)a15 isGroupMessage:(BOOL)a16;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMNotificationEvent)initWithDKEvent:(id)event;
+- (BMNotificationEvent)initWithProto:(id)proto;
+- (BMNotificationEvent)initWithProtoData:(id)data;
+- (BMNotificationEvent)initWithUniqueID:(id)d absoluteTimestamp:(double)timestamp usageType:(unint64_t)type bundleID:(id)iD notificationID:(id)notificationID deviceID:(id)deviceID title:(id)title subtitle:(id)self0 badge:(unint64_t)self1 threadID:(id)self2 categoryID:(id)self3 sectionID:(id)self4 contactIDs:(id)self5 isGroupMessage:(BOOL)self6;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -12,29 +12,29 @@
 
 @implementation BMNotificationEvent
 
-- (BMNotificationEvent)initWithUniqueID:(id)a3 absoluteTimestamp:(double)a4 usageType:(unint64_t)a5 bundleID:(id)a6 notificationID:(id)a7 deviceID:(id)a8 title:(id)a9 subtitle:(id)a10 badge:(unint64_t)a11 threadID:(id)a12 categoryID:(id)a13 sectionID:(id)a14 contactIDs:(id)a15 isGroupMessage:(BOOL)a16
+- (BMNotificationEvent)initWithUniqueID:(id)d absoluteTimestamp:(double)timestamp usageType:(unint64_t)type bundleID:(id)iD notificationID:(id)notificationID deviceID:(id)deviceID title:(id)title subtitle:(id)self0 badge:(unint64_t)self1 threadID:(id)self2 categoryID:(id)self3 sectionID:(id)self4 contactIDs:(id)self5 isGroupMessage:(BOOL)self6
 {
-  v54 = a3;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v55 = a9;
-  v24 = a10;
-  v25 = v22;
-  v26 = a12;
-  v27 = a13;
-  v28 = a14;
-  v29 = a15;
+  dCopy = d;
+  iDCopy = iD;
+  notificationIDCopy = notificationID;
+  deviceIDCopy = deviceID;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  v25 = notificationIDCopy;
+  threadIDCopy = threadID;
+  categoryIDCopy = categoryID;
+  sectionIDCopy = sectionID;
+  dsCopy = ds;
   v56.receiver = self;
   v56.super_class = BMNotificationEvent;
   v30 = [(BMEventBase *)&v56 init];
   v31 = v30;
   if (v30)
   {
-    objc_storeStrong(&v30->_uniqueID, a3);
-    v31->_absoluteTimestamp = a4;
-    v31->_usageType = a5;
-    v32 = [v21 copy];
+    objc_storeStrong(&v30->_uniqueID, d);
+    v31->_absoluteTimestamp = timestamp;
+    v31->_usageType = type;
+    v32 = [iDCopy copy];
     bundleID = v31->_bundleID;
     v31->_bundleID = v32;
 
@@ -42,63 +42,63 @@
     notificationID = v31->_notificationID;
     v31->_notificationID = v34;
 
-    v36 = [v23 copy];
+    v36 = [deviceIDCopy copy];
     deviceID = v31->_deviceID;
     v31->_deviceID = v36;
 
-    v38 = [v55 copy];
+    v38 = [titleCopy copy];
     title = v31->_title;
     v31->_title = v38;
 
-    v40 = [v24 copy];
+    v40 = [subtitleCopy copy];
     subtitle = v31->_subtitle;
     v31->_subtitle = v40;
 
-    v31->_badge = a11;
-    v42 = [v26 copy];
+    v31->_badge = badge;
+    v42 = [threadIDCopy copy];
     threadID = v31->_threadID;
     v31->_threadID = v42;
 
-    v44 = [v27 copy];
+    v44 = [categoryIDCopy copy];
     categoryID = v31->_categoryID;
     v31->_categoryID = v44;
 
-    v46 = [v28 copy];
+    v46 = [sectionIDCopy copy];
     sectionID = v31->_sectionID;
     v31->_sectionID = v46;
 
-    v48 = [v29 copy];
+    v48 = [dsCopy copy];
     contactIDs = v31->_contactIDs;
     v31->_contactIDs = v48;
 
-    v31->_isGroupMessage = a16;
+    v31->_isGroupMessage = message;
   }
 
   return v31;
 }
 
-- (BMNotificationEvent)initWithDKEvent:(id)a3
+- (BMNotificationEvent)initWithDKEvent:(id)event
 {
-  v4 = a3;
-  v23 = [v4 source];
-  v19 = [v23 itemID];
-  v22 = [v4 startDate];
-  [v22 timeIntervalSinceReferenceDate];
+  eventCopy = event;
+  source = [eventCopy source];
+  itemID = [source itemID];
+  startDate = [eventCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v6 = v5;
-  v21 = [v4 value];
-  v20 = [v21 stringValue];
-  v7 = BMNotificationEventUsageTypeFromDKIdentifierValue(v20);
-  v8 = [v4 metadata];
-  v9 = [get_DKNotificationUsageMetadataKeyClass() bundleID];
-  v10 = [v8 objectForKeyedSubscript:v9];
-  v11 = [v4 metadata];
-  v12 = [get_DKNotificationUsageMetadataKeyClass() identifier];
-  v13 = [v11 objectForKeyedSubscript:v12];
-  v14 = [v4 source];
+  value = [eventCopy value];
+  stringValue = [value stringValue];
+  v7 = BMNotificationEventUsageTypeFromDKIdentifierValue(stringValue);
+  metadata = [eventCopy metadata];
+  bundleID = [get_DKNotificationUsageMetadataKeyClass() bundleID];
+  v10 = [metadata objectForKeyedSubscript:bundleID];
+  metadata2 = [eventCopy metadata];
+  identifier = [get_DKNotificationUsageMetadataKeyClass() identifier];
+  v13 = [metadata2 objectForKeyedSubscript:identifier];
+  source2 = [eventCopy source];
 
-  v15 = [v14 deviceID];
+  deviceID = [source2 deviceID];
   LOBYTE(v18) = 0;
-  v16 = [(BMNotificationEvent *)self initWithUniqueID:v19 absoluteTimestamp:v7 usageType:v10 bundleID:v13 notificationID:v15 deviceID:0 title:v6 subtitle:0 badge:0 threadID:0 categoryID:0 sectionID:0 contactIDs:0 isGroupMessage:v18];
+  v16 = [(BMNotificationEvent *)self initWithUniqueID:itemID absoluteTimestamp:v7 usageType:v10 bundleID:v13 notificationID:deviceID deviceID:0 title:v6 subtitle:0 badge:0 threadID:0 categoryID:0 sectionID:0 contactIDs:0 isGroupMessage:v18];
 
   return v16;
 }
@@ -110,29 +110,29 @@
   return v2;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMNotificationEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMNotificationEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMNotificationEvent)initWithProto:(id)a3
+- (BMNotificationEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -148,49 +148,49 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v22 = [v5 uniqueID];
+  v5 = protoCopy;
+  uniqueID = [v5 uniqueID];
   [v5 absoluteTimestamp];
   v7 = v6;
-  v24 = [v5 usageType];
-  v23 = [v5 bundleID];
-  v21 = [v5 notificationID];
-  v20 = [v5 deviceID];
-  v19 = [v5 title];
-  v18 = [v5 subtitle];
-  v8 = [v5 badge];
-  v17 = [v5 threadID];
-  v9 = [v5 categoryID];
-  v10 = [v5 sectionID];
-  v11 = [v5 contactIDs];
-  v12 = [v5 isGroupMessage];
+  usageType = [v5 usageType];
+  bundleID = [v5 bundleID];
+  notificationID = [v5 notificationID];
+  deviceID = [v5 deviceID];
+  title = [v5 title];
+  subtitle = [v5 subtitle];
+  badge = [v5 badge];
+  threadID = [v5 threadID];
+  categoryID = [v5 categoryID];
+  sectionID = [v5 sectionID];
+  contactIDs = [v5 contactIDs];
+  isGroupMessage = [v5 isGroupMessage];
 
-  LOBYTE(v16) = v12;
-  self = [(BMNotificationEvent *)self initWithUniqueID:v22 absoluteTimestamp:v24 usageType:v23 bundleID:v21 notificationID:v20 deviceID:v19 title:v7 subtitle:v18 badge:v8 threadID:v17 categoryID:v9 sectionID:v10 contactIDs:v11 isGroupMessage:v16];
+  LOBYTE(v16) = isGroupMessage;
+  self = [(BMNotificationEvent *)self initWithUniqueID:uniqueID absoluteTimestamp:usageType usageType:bundleID bundleID:notificationID notificationID:deviceID deviceID:title title:v7 subtitle:subtitle badge:badge threadID:threadID categoryID:categoryID sectionID:sectionID contactIDs:contactIDs isGroupMessage:v16];
 
-  v13 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v13;
+  return selfCopy;
 }
 
-- (BMNotificationEvent)initWithProtoData:(id)a3
+- (BMNotificationEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBNotificationEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBNotificationEvent alloc] initWithData:dataCopy];
 
     self = [(BMNotificationEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -232,9 +232,9 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -242,26 +242,26 @@ LABEL_8:
     goto LABEL_54;
   }
 
-  v7 = v6;
+  v7 = equalCopy;
   v8 = v7;
   uniqueID = self->_uniqueID;
   v10 = uniqueID;
   if (!uniqueID)
   {
-    v11 = [v7 uniqueID];
-    if (!v11)
+    uniqueID = [v7 uniqueID];
+    if (!uniqueID)
     {
       v80 = 0;
       v12 = 0;
       goto LABEL_10;
     }
 
-    v80 = v11;
+    v80 = uniqueID;
     v10 = self->_uniqueID;
   }
 
-  v3 = [v8 uniqueID];
-  if (([(NSString *)v10 isEqual:v3]& 1) == 0)
+  uniqueID2 = [v8 uniqueID];
+  if (([(NSString *)v10 isEqual:uniqueID2]& 1) == 0)
   {
 
     v13 = 0;
@@ -274,8 +274,8 @@ LABEL_10:
   v15 = bundleID;
   if (!bundleID)
   {
-    v16 = [v8 bundleID];
-    if (!v16)
+    bundleID = [v8 bundleID];
+    if (!bundleID)
     {
       v17 = v12;
       v77 = 0;
@@ -283,12 +283,12 @@ LABEL_10:
       goto LABEL_17;
     }
 
-    v77 = v16;
+    v77 = bundleID;
     v15 = self->_bundleID;
   }
 
-  v4 = [v8 bundleID];
-  if (([(NSString *)v15 isEqual:v4]& 1) == 0)
+  bundleID2 = [v8 bundleID];
+  if (([(NSString *)v15 isEqual:bundleID2]& 1) == 0)
   {
 
     v13 = 0;
@@ -302,63 +302,63 @@ LABEL_17:
   v78 = notificationID;
   if (!notificationID)
   {
-    v19 = [v8 notificationID];
-    if (!v19)
+    notificationID = [v8 notificationID];
+    if (!notificationID)
     {
       v73 = 0;
       v75 = 0;
       goto LABEL_24;
     }
 
-    v73 = v19;
+    v73 = notificationID;
     notificationID = self->_notificationID;
   }
 
-  v20 = [v8 notificationID];
-  if (![(NSString *)notificationID isEqual:v20])
+  notificationID2 = [v8 notificationID];
+  if (![(NSString *)notificationID isEqual:notificationID2])
   {
     v13 = 0;
     v12 = v17;
     goto LABEL_44;
   }
 
-  v76 = v20;
+  v76 = notificationID2;
   v75 = 1;
 LABEL_24:
   deviceID = self->_deviceID;
   v74 = deviceID;
   if (!deviceID)
   {
-    v22 = [v8 deviceID];
-    if (!v22)
+    deviceID = [v8 deviceID];
+    if (!deviceID)
     {
       v71 = 0;
       v72 = 0;
       goto LABEL_31;
     }
 
-    v71 = v22;
+    v71 = deviceID;
     deviceID = self->_deviceID;
   }
 
-  v23 = [v8 deviceID];
-  if (([(NSString *)deviceID isEqual:v23]& 1) == 0)
+  deviceID2 = [v8 deviceID];
+  if (([(NSString *)deviceID isEqual:deviceID2]& 1) == 0)
   {
 
     v13 = 0;
     v12 = v17;
-    v20 = v76;
+    notificationID2 = v76;
     goto LABEL_42;
   }
 
-  v70 = v23;
+  v70 = deviceID2;
   v72 = 1;
 LABEL_31:
   v12 = v17;
-  v20 = v76;
+  notificationID2 = v76;
   absoluteTimestamp = self->_absoluteTimestamp;
   [v8 absoluteTimestamp];
-  if (absoluteTimestamp != v25 || (usageType = self->_usageType, v27 = usageType == [v8 usageType], v20 = v76, !v27))
+  if (absoluteTimestamp != v25 || (usageType = self->_usageType, v27 = usageType == [v8 usageType], notificationID2 = v76, !v27))
   {
     v13 = 0;
     goto LABEL_40;
@@ -369,24 +369,24 @@ LABEL_31:
   v29 = title;
   if (!title)
   {
-    v30 = [v8 title];
-    if (!v30)
+    title = [v8 title];
+    if (!title)
     {
       v64 = 0;
       v67 = 0;
       goto LABEL_63;
     }
 
-    v64 = v30;
+    v64 = title;
     v29 = self->_title;
   }
 
-  v68 = [v8 title];
+  title2 = [v8 title];
   if (![(NSString *)v29 isEqual:?])
   {
     v13 = 0;
     v12 = v69;
-    v20 = v76;
+    notificationID2 = v76;
     goto LABEL_115;
   }
 
@@ -396,24 +396,24 @@ LABEL_63:
   v66 = subtitle;
   if (!subtitle)
   {
-    v33 = [v8 subtitle];
-    if (!v33)
+    subtitle = [v8 subtitle];
+    if (!subtitle)
     {
       v60 = 0;
       v63 = 0;
       goto LABEL_70;
     }
 
-    v60 = v33;
+    v60 = subtitle;
     subtitle = self->_subtitle;
   }
 
-  v65 = [v8 subtitle];
+  subtitle2 = [v8 subtitle];
   if (![(NSString *)subtitle isEqual:?])
   {
     v13 = 0;
     v12 = v69;
-    v20 = v76;
+    notificationID2 = v76;
     goto LABEL_112;
   }
 
@@ -423,24 +423,24 @@ LABEL_70:
   v62 = threadID;
   if (!threadID)
   {
-    v35 = [v8 threadID];
-    if (!v35)
+    threadID = [v8 threadID];
+    if (!threadID)
     {
       v56 = 0;
       v58 = 0;
       goto LABEL_77;
     }
 
-    v56 = v35;
+    v56 = threadID;
     threadID = self->_threadID;
   }
 
-  v61 = [v8 threadID];
+  threadID2 = [v8 threadID];
   if (![(NSString *)threadID isEqual:?])
   {
     v13 = 0;
     v12 = v69;
-    v20 = v76;
+    notificationID2 = v76;
     goto LABEL_109;
   }
 
@@ -450,24 +450,24 @@ LABEL_77:
   v59 = categoryID;
   if (!categoryID)
   {
-    v37 = [v8 categoryID];
-    if (!v37)
+    categoryID = [v8 categoryID];
+    if (!categoryID)
     {
       v52 = 0;
       v55 = 0;
       goto LABEL_84;
     }
 
-    v52 = v37;
+    v52 = categoryID;
     categoryID = self->_categoryID;
   }
 
-  v57 = [v8 categoryID];
+  categoryID2 = [v8 categoryID];
   if (![(NSString *)categoryID isEqual:?])
   {
     v13 = 0;
     v12 = v69;
-    v20 = v76;
+    notificationID2 = v76;
     goto LABEL_106;
   }
 
@@ -477,24 +477,24 @@ LABEL_84:
   v54 = sectionID;
   if (!sectionID)
   {
-    v39 = [v8 sectionID];
-    if (!v39)
+    sectionID = [v8 sectionID];
+    if (!sectionID)
     {
       v49 = 0;
       v51 = 0;
       goto LABEL_91;
     }
 
-    v49 = v39;
+    v49 = sectionID;
     sectionID = self->_sectionID;
   }
 
-  v53 = [v8 sectionID];
+  sectionID2 = [v8 sectionID];
   if (![(NSString *)sectionID isEqual:?])
   {
     v13 = 0;
     v12 = v69;
-    v20 = v76;
+    notificationID2 = v76;
     goto LABEL_103;
   }
 
@@ -504,22 +504,22 @@ LABEL_91:
   v50 = contactIDs;
   if (!contactIDs)
   {
-    v41 = [v8 contactIDs];
-    if (!v41)
+    contactIDs = [v8 contactIDs];
+    if (!contactIDs)
     {
       v48 = 0;
       v45 = 0;
       goto LABEL_98;
     }
 
-    v48 = v41;
+    v48 = contactIDs;
     contactIDs = self->_contactIDs;
   }
 
-  v42 = [v8 contactIDs];
+  contactIDs2 = [v8 contactIDs];
   v43 = contactIDs;
-  v44 = v42;
-  if (([(NSArray *)v43 isEqual:v42]& 1) == 0)
+  v44 = contactIDs2;
+  if (([(NSArray *)v43 isEqual:contactIDs2]& 1) == 0)
   {
     v13 = 0;
     v12 = v69;
@@ -541,7 +541,7 @@ LABEL_98:
 LABEL_100:
 
 LABEL_101:
-  v20 = v76;
+  notificationID2 = v76;
   if (v50)
   {
     if (!v51)

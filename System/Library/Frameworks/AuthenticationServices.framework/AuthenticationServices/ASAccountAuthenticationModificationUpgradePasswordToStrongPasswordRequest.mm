@@ -1,6 +1,6 @@
 @interface ASAccountAuthenticationModificationUpgradePasswordToStrongPasswordRequest
 - (ASAccountAuthenticationModificationUpgradePasswordToStrongPasswordRequest)initWithUser:(NSString *)user serviceIdentifier:(ASCredentialServiceIdentifier *)serviceIdentifier userInfo:(NSDictionary *)userInfo;
-- (ASAccountAuthenticationModificationUpgradePasswordToStrongPasswordRequest)initWithUser:(id)a3 password:(id)a4 extension:(id)a5 serviceIdentifier:(id)a6 userInfo:(id)a7;
+- (ASAccountAuthenticationModificationUpgradePasswordToStrongPasswordRequest)initWithUser:(id)user password:(id)password extension:(id)extension serviceIdentifier:(id)identifier userInfo:(id)info;
 @end
 
 @implementation ASAccountAuthenticationModificationUpgradePasswordToStrongPasswordRequest
@@ -30,29 +30,29 @@
   return v11;
 }
 
-- (ASAccountAuthenticationModificationUpgradePasswordToStrongPasswordRequest)initWithUser:(id)a3 password:(id)a4 extension:(id)a5 serviceIdentifier:(id)a6 userInfo:(id)a7
+- (ASAccountAuthenticationModificationUpgradePasswordToStrongPasswordRequest)initWithUser:(id)user password:(id)password extension:(id)extension serviceIdentifier:(id)identifier userInfo:(id)info
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  userCopy = user;
+  passwordCopy = password;
+  extensionCopy = extension;
+  identifierCopy = identifier;
+  infoCopy = info;
   v26.receiver = self;
   v26.super_class = ASAccountAuthenticationModificationUpgradePasswordToStrongPasswordRequest;
   v17 = [(ASAccountAuthenticationModificationUpgradePasswordToStrongPasswordRequest *)&v26 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [userCopy copy];
     user = v17->_user;
     v17->_user = v18;
 
-    v20 = [v13 copy];
+    v20 = [passwordCopy copy];
     password = v17->_password;
     v17->_password = v20;
 
-    objc_storeStrong(&v17->_extension, a5);
-    objc_storeStrong(&v17->_serviceIdentifier, a6);
-    v22 = [v16 copy];
+    objc_storeStrong(&v17->_extension, extension);
+    objc_storeStrong(&v17->_serviceIdentifier, identifier);
+    v22 = [infoCopy copy];
     userInfo = v17->_userInfo;
     v17->_userInfo = v22;
 

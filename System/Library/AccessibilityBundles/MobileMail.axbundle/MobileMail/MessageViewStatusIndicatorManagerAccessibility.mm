@@ -1,16 +1,16 @@
 @interface MessageViewStatusIndicatorManagerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)updateImageViews;
 @end
 
 @implementation MessageViewStatusIndicatorManagerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MessageViewStatusIndicatorManager" hasInstanceMethod:@"updateImageViews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MessageViewStatusIndicatorManager" hasInstanceMethod:@"statusIndicatorImageViews" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MessageViewStatusIndicatorManager" hasInstanceMethod:@"updateImageViews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MessageViewStatusIndicatorManager" hasInstanceMethod:@"statusIndicatorImageViews" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

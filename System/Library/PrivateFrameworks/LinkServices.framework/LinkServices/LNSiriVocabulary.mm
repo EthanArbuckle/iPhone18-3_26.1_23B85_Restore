@@ -1,33 +1,33 @@
 @interface LNSiriVocabulary
-+ (id)vocabularyForBundleIdentifier:(id)a3;
-- (LNSiriVocabulary)initWithBundleIdentifier:(id)a3 donatorClient:(id)a4 picker:(id)a5;
-- (void)corpusContentsChanged:(id)a3 completionHandler:(id)a4;
-- (void)donateWithCompletionHandler:(id)a3;
-- (void)setCorporaByPriority:(id)a3 completionHandler:(id)a4;
++ (id)vocabularyForBundleIdentifier:(id)identifier;
+- (LNSiriVocabulary)initWithBundleIdentifier:(id)identifier donatorClient:(id)client picker:(id)picker;
+- (void)corpusContentsChanged:(id)changed completionHandler:(id)handler;
+- (void)donateWithCompletionHandler:(id)handler;
+- (void)setCorporaByPriority:(id)priority completionHandler:(id)handler;
 @end
 
 @implementation LNSiriVocabulary
 
-- (void)corpusContentsChanged:(id)a3 completionHandler:(id)a4
+- (void)corpusContentsChanged:(id)changed completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   if (+[LNFeatureFlags isVocabularyDonationEnabled])
   {
-    [(LNSiriVocabulary *)self donateWithCompletionHandler:v5];
+    [(LNSiriVocabulary *)self donateWithCompletionHandler:handlerCopy];
   }
 }
 
-- (void)donateWithCompletionHandler:(id)a3
+- (void)donateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __48__LNSiriVocabulary_donateWithCompletionHandler___block_invoke;
   v10 = &unk_1E74B1930;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(queue, &v7);
   [(LNDebouncer *)self->_debouncer trigger:v7];
 }
@@ -43,11 +43,11 @@ void __48__LNSiriVocabulary_donateWithCompletionHandler___block_invoke(uint64_t 
   }
 }
 
-- (void)setCorporaByPriority:(id)a3 completionHandler:(id)a4
+- (void)setCorporaByPriority:(id)priority completionHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  priorityCopy = priority;
+  handlerCopy = handler;
   if (+[LNFeatureFlags isVocabularyDonationEnabled])
   {
     corpora = self->_corpora;
@@ -84,7 +84,7 @@ void __48__LNSiriVocabulary_donateWithCompletionHandler___block_invoke(uint64_t 
       }
     }
 
-    v14 = [v6 copy];
+    v14 = [priorityCopy copy];
     v15 = self->_corpora;
     self->_corpora = v14;
 
@@ -118,29 +118,29 @@ void __48__LNSiriVocabulary_donateWithCompletionHandler___block_invoke(uint64_t 
       while (v18);
     }
 
-    [(LNSiriVocabulary *)self donateWithCompletionHandler:v7];
+    [(LNSiriVocabulary *)self donateWithCompletionHandler:handlerCopy];
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (LNSiriVocabulary)initWithBundleIdentifier:(id)a3 donatorClient:(id)a4 picker:(id)a5
+- (LNSiriVocabulary)initWithBundleIdentifier:(id)identifier donatorClient:(id)client picker:(id)picker
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  identifierCopy = identifier;
+  clientCopy = client;
+  pickerCopy = picker;
+  if (identifierCopy)
   {
-    if (v10)
+    if (clientCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"LNSiriVocabulary.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"client"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNSiriVocabulary.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"client"}];
 
-    if (v11)
+    if (pickerCopy)
     {
       goto LABEL_4;
     }
@@ -148,23 +148,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v30 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v30 handleFailureInMethod:a2 object:self file:@"LNSiriVocabulary.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNSiriVocabulary.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
 
-  if (!v10)
+  if (!clientCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (pickerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v32 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v32 handleFailureInMethod:a2 object:self file:@"LNSiriVocabulary.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"picker"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNSiriVocabulary.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"picker"}];
 
 LABEL_4:
   v39.receiver = self;
@@ -172,12 +172,12 @@ LABEL_4:
   v12 = [(LNSiriVocabulary *)&v39 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     bundleIdentifier = v12->_bundleIdentifier;
     v12->_bundleIdentifier = v13;
 
-    objc_storeStrong(&v12->_donatorClient, a4);
-    objc_storeStrong(&v12->_vocabularyPicker, a5);
+    objc_storeStrong(&v12->_donatorClient, client);
+    objc_storeStrong(&v12->_vocabularyPicker, picker);
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = dispatch_queue_attr_make_with_qos_class(v15, QOS_CLASS_USER_INITIATED, 0);
 
@@ -284,13 +284,13 @@ uint64_t __66__LNSiriVocabulary_initWithBundleIdentifier_donatorClient_picker___
   return result;
 }
 
-+ (id)vocabularyForBundleIdentifier:(id)a3
++ (id)vocabularyForBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"LNSiriVocabulary.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNSiriVocabulary.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
   if (vocabularyForBundleIdentifier__onceToken != -1)
@@ -299,19 +299,19 @@ uint64_t __66__LNSiriVocabulary_initWithBundleIdentifier_donatorClient_picker___
   }
 
   v6 = vocabularyForBundleIdentifier__value;
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:identifierCopy];
 
   if (!v7)
   {
     v8 = [LNSiriVocabulary alloc];
-    v9 = [[LNKoaClient alloc] initForBundleIdentifier:v5];
+    v9 = [[LNKoaClient alloc] initForBundleIdentifier:identifierCopy];
     v10 = objc_opt_new();
-    v11 = [(LNSiriVocabulary *)v8 initWithBundleIdentifier:v5 donatorClient:v9 picker:v10];
+    v11 = [(LNSiriVocabulary *)v8 initWithBundleIdentifier:identifierCopy donatorClient:v9 picker:v10];
 
-    [v6 setObject:v11 forKey:v5];
+    [v6 setObject:v11 forKey:identifierCopy];
   }
 
-  v12 = [v6 objectForKey:v5];
+  v12 = [v6 objectForKey:identifierCopy];
 
   return v12;
 }

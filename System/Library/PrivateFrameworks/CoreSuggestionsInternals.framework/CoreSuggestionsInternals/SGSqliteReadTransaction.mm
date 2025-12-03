@@ -1,19 +1,19 @@
 @interface SGSqliteReadTransaction
-- (SGSqliteReadTransaction)initWithHandle:(id)a3;
+- (SGSqliteReadTransaction)initWithHandle:(id)handle;
 @end
 
 @implementation SGSqliteReadTransaction
 
-- (SGSqliteReadTransaction)initWithHandle:(id)a3
+- (SGSqliteReadTransaction)initWithHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v9.receiver = self;
   v9.super_class = SGSqliteReadTransaction;
   v6 = [(SGSqliteReadTransaction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_db, a3);
+    objc_storeStrong(&v6->_db, handle);
   }
 
   return v7;

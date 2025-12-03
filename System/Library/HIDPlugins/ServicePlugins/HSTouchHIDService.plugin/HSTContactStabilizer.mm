@@ -1,16 +1,16 @@
 @interface HSTContactStabilizer
-- (BOOL)handleHSDecode:(void *)a3;
-- (BOOL)handleHSEncode:(void *)a3;
-- (HSTContactStabilizer)initWithConfig:(const HSTContactStabilizerConfig *)a3;
+- (BOOL)handleHSDecode:(void *)decode;
+- (BOOL)handleHSEncode:(void *)encode;
+- (HSTContactStabilizer)initWithConfig:(const HSTContactStabilizerConfig *)config;
 - (id).cxx_construct;
-- (void)_handleContactFrame:(id)a3;
-- (void)_handleResetEvent:(id)a3;
-- (void)handleConsume:(id)a3;
+- (void)_handleContactFrame:(id)frame;
+- (void)_handleResetEvent:(id)event;
+- (void)handleConsume:(id)consume;
 @end
 
 @implementation HSTContactStabilizer
 
-- (HSTContactStabilizer)initWithConfig:(const HSTContactStabilizerConfig *)a3
+- (HSTContactStabilizer)initWithConfig:(const HSTContactStabilizerConfig *)config
 {
   v27.receiver = self;
   v27.super_class = HSTContactStabilizer;
@@ -19,11 +19,11 @@
   if (v4)
   {
     v6 = v4 + 120;
-    *(v4 + 120) = *&a3->excessiveEccentricity.min;
-    v8 = *&a3->unstableDeltaRadius.gain;
-    v7 = *&a3->endLongtermZAreaInit;
-    v9 = *&a3->excessiveMinorRadius.min;
-    *(v4 + 46) = a3->hysteresisRadius;
+    *(v4 + 120) = *&config->excessiveEccentricity.min;
+    v8 = *&config->unstableDeltaRadius.gain;
+    v7 = *&config->endLongtermZAreaInit;
+    v9 = *&config->excessiveMinorRadius.min;
+    *(v4 + 46) = config->hysteresisRadius;
     *(v4 + 152) = v8;
     *(v4 + 168) = v7;
     *(v4 + 136) = v9;
@@ -132,10 +132,10 @@
   return v5;
 }
 
-- (void)_handleContactFrame:(id)a3
+- (void)_handleContactFrame:(id)frame
 {
-  v5 = a3;
-  if (!v5)
+  frameCopy = frame;
+  if (!frameCopy)
   {
     v31 = +[NSAssertionHandler currentHandler];
     [v31 handleFailureInMethod:a2 object:self file:@"HSTContactStabilizer.mm" lineNumber:613 description:{@"Invalid parameter not satisfying: %@", @"frame"}];
@@ -143,14 +143,14 @@
 
   self->_stats->contacts.__end_ = self->_stats->contacts.__begin_;
   self->_stats->hysteresisRadius = self->_config.hysteresisRadius;
-  v6 = v5[6];
-  v35 = v5[7];
+  v6 = frameCopy[6];
+  v35 = frameCopy[7];
   if (v6 == v35)
   {
 LABEL_20:
     v37.receiver = self;
     v37.super_class = HSTContactStabilizer;
-    [(HSStage *)&v37 handleConsume:v5];
+    [(HSStage *)&v37 handleConsume:frameCopy];
     stats = self->_stats;
     v36.receiver = self;
     v36.super_class = HSTContactStabilizer;
@@ -160,16 +160,16 @@ LABEL_20:
   else
   {
     v7 = 0x924924924924924;
-    v33 = v5;
+    v33 = frameCopy;
     p_stabilizers = &self->_stabilizers;
     v8 = 0x6DB6DB6DB6DB6DB7;
-    v32 = self;
+    selfCopy = self;
     while (0x8E38E38E38E38E39 * ((p_stabilizers->__end_ - p_stabilizers->__begin_) >> 4) > v6->contactID)
     {
       v9 = v8;
       v10 = v7;
       v11 = p_stabilizers->__begin_ + 144 * v6->contactID;
-      ContactStabilizer::update(v11, v5[4], v6);
+      ContactStabilizer::update(v11, frameCopy[4], v6);
       v12 = self->_stats;
       contactID = v6->contactID;
       position = v6->position;
@@ -229,8 +229,8 @@ LABEL_20:
           operator delete(v29);
         }
 
-        self = v32;
-        v5 = v33;
+        self = selfCopy;
+        frameCopy = v33;
         v7 = v10;
         v8 = v9;
       }
@@ -242,8 +242,8 @@ LABEL_20:
         *(end + 12) = v16;
         v19 = end + 28;
         *(end + 20) = v15;
-        self = v32;
-        v5 = v33;
+        self = selfCopy;
+        frameCopy = v33;
       }
 
       v12->contacts.__end_ = v19;
@@ -256,9 +256,9 @@ LABEL_20:
   }
 }
 
-- (void)_handleResetEvent:(id)a3
+- (void)_handleResetEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   begin = self->_stabilizers.__begin_;
   for (i = self->_stabilizers.__end_; begin != i; begin = (begin + 144))
   {
@@ -286,16 +286,16 @@ LABEL_20:
 
   v7.receiver = self;
   v7.super_class = HSTContactStabilizer;
-  [(HSStage *)&v7 handleConsume:v4];
+  [(HSStage *)&v7 handleConsume:eventCopy];
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = consumeCopy;
   }
 
   else
@@ -305,12 +305,12 @@ LABEL_20:
 
   if (v5)
   {
-    [(HSTContactStabilizer *)self _handleContactFrame:v4];
+    [(HSTContactStabilizer *)self _handleContactFrame:consumeCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = consumeCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -336,32 +336,32 @@ LABEL_20:
   }
 }
 
-- (BOOL)handleHSEncode:(void *)a3
+- (BOOL)handleHSEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v11 = *(a3 + 17);
+    *&v11 = *(encode + 17);
     DWORD2(v11) = 4;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v11);
-    HSUtil::Encoder::_writeTokenValue32(a3, 0xEBu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v11);
+    HSUtil::Encoder::_writeTokenValue32(encode, 0xEBu, 0);
   }
 
-  HSUtil::Encoder::encodeCodable<HSTContactStabilizerConfig>(a3, HSUtil::CoderKey::Literal<(char)99,(char)111,(char)110,(char)102,(char)105,(char)103>::Key, &self->_config);
-  HSUtil::Encoder::encodeArrayStart(a3, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)97,(char)98,(char)105,(char)108,(char)105,(char)122,(char)101,(char)114,(char)115>::Key, 4);
+  HSUtil::Encoder::encodeCodable<HSTContactStabilizerConfig>(encode, HSUtil::CoderKey::Literal<(char)99,(char)111,(char)110,(char)102,(char)105,(char)103>::Key, &self->_config);
+  HSUtil::Encoder::encodeArrayStart(encode, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)97,(char)98,(char)105,(char)108,(char)105,(char)122,(char)101,(char)114,(char)115>::Key, 4);
   p_stabilizers = &self->_stabilizers;
   begin = self->_stabilizers.__begin_;
   end = p_stabilizers->__end_;
-  v8 = *a3;
+  v8 = *encode;
   while (begin != end)
   {
     if (!v8)
     {
-      v9 = ContactStabilizer::encode(begin, a3);
-      v8 = *a3;
-      if (!*a3 && (v9 & 1) == 0)
+      v9 = ContactStabilizer::encode(begin, encode);
+      v8 = *encode;
+      if (!*encode && (v9 & 1) == 0)
       {
         v8 = 10;
-        *a3 = 10;
+        *encode = 10;
       }
     }
 
@@ -370,17 +370,17 @@ LABEL_20:
 
   if (!v8)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
-    if (!*a3)
+    HSUtil::Encoder::_encodeContainerStop(encode);
+    if (!*encode)
     {
-      HSUtil::Encoder::_encodeContainerStop(a3);
+      HSUtil::Encoder::_encodeContainerStop(encode);
     }
   }
 
   return 1;
 }
 
-- (BOOL)handleHSDecode:(void *)a3
+- (BOOL)handleHSDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -389,8 +389,8 @@ LABEL_20:
   v19 = v5;
   v20 = v5;
   v18 = v5;
-  HSUtil::Decoder::decodeMap(a3, &v18);
-  if (*a3)
+  HSUtil::Decoder::decodeMap(decode, &v18);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTContactStabilizer.mm", __b);

@@ -1,20 +1,20 @@
 @interface STUIStatusBarNavigationItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (STUIStatusBarNavigationItemAccessibility)init;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation STUIStatusBarNavigationItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarNavigationItem" hasInstanceMethod:@"nameView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarNavigationItem" hasInstanceMethod:@"applyUpdate:toDisplayItem:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"STUIStatusBarItemUpdate" hasInstanceMethod:@"data" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STStatusBarData" hasInstanceMethod:@"backNavigationEntry" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STStatusBarDataStringEntry" hasInstanceMethod:@"stringValue" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarNavigationItem" hasInstanceMethod:@"nameView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarNavigationItem" hasInstanceMethod:@"applyUpdate:toDisplayItem:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarItemUpdate" hasInstanceMethod:@"data" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STStatusBarData" hasInstanceMethod:@"backNavigationEntry" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STStatusBarDataStringEntry" hasInstanceMethod:@"stringValue" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -28,13 +28,13 @@
   [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | *MEMORY[0x29EDC7580]];
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
   v16.receiver = self;
   v16.super_class = STUIStatusBarNavigationItemAccessibility;
-  v6 = a3;
-  v7 = [(STUIStatusBarNavigationItemAccessibility *)&v16 applyUpdate:v6 toDisplayItem:a4];
-  v8 = [v6 safeValueForKey:@"data"];
+  updateCopy = update;
+  v7 = [(STUIStatusBarNavigationItemAccessibility *)&v16 applyUpdate:updateCopy toDisplayItem:item];
+  v8 = [updateCopy safeValueForKey:@"data"];
 
   v9 = [v8 safeValueForKey:@"backNavigationEntry"];
   v10 = [v9 safeStringForKey:@"stringValue"];

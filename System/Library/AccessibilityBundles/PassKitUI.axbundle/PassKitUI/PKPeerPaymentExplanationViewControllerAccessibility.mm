@@ -1,17 +1,17 @@
 @interface PKPeerPaymentExplanationViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPeerPaymentExplanationViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKExplanationViewController" hasInstanceMethod:@"explanationView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPeerPaymentExplanationViewController" isKindOfClass:@"PKExplanationViewController"];
-  [v3 validateClass:@"PKExplanationView" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKExplanationViewController" hasInstanceMethod:@"explanationView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPeerPaymentExplanationViewController" isKindOfClass:@"PKExplanationViewController"];
+  [validationsCopy validateClass:@"PKExplanationView" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

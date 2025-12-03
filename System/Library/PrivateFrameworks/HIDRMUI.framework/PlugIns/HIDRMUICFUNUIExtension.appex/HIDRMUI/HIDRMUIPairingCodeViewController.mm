@@ -1,7 +1,7 @@
 @interface HIDRMUIPairingCodeViewController
-+ (id)createDigitViewArrayFromPairingCodeDigitArray:(id)a3;
-- (void)configureWithCompletion:(id)a3;
-- (void)handleNotification:(id)a3;
++ (id)createDigitViewArrayFromPairingCodeDigitArray:(id)array;
+- (void)configureWithCompletion:(id)completion;
+- (void)handleNotification:(id)notification;
 - (void)invalidate;
 - (void)loadView;
 - (void)viewDidLayoutSubviews;
@@ -10,15 +10,15 @@
 
 @implementation HIDRMUIPairingCodeViewController
 
-+ (id)createDigitViewArrayFromPairingCodeDigitArray:(id)a3
++ (id)createDigitViewArrayFromPairingCodeDigitArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_alloc_init(NSMutableArray);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v3;
+  obj = arrayCopy;
   v5 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -72,27 +72,27 @@
   v77.receiver = self;
   v77.super_class = HIDRMUIPairingCodeViewController;
   [(HIDRMUIPairingCodeViewController *)&v77 viewDidLoad];
-  v3 = [(HIDRMUIPairingCodeViewController *)self extensionContext];
-  NSLog(@"self.extensionContext: %@", v3);
+  extensionContext = [(HIDRMUIPairingCodeViewController *)self extensionContext];
+  NSLog(@"self.extensionContext: %@", extensionContext);
 
-  v4 = [(HIDRMUIPairingCodeViewController *)self extensionContext];
-  v5 = [v4 inputItems];
-  NSLog(@"self.extensionContext.inputItems: %@", v5);
+  extensionContext2 = [(HIDRMUIPairingCodeViewController *)self extensionContext];
+  inputItems = [extensionContext2 inputItems];
+  NSLog(@"self.extensionContext.inputItems: %@", inputItems);
 
-  v6 = [(HIDRMUIPairingCodeViewController *)self extensionContext];
-  v7 = [v6 inputItems];
-  v8 = [v7 firstObject];
+  extensionContext3 = [(HIDRMUIPairingCodeViewController *)self extensionContext];
+  inputItems2 = [extensionContext3 inputItems];
+  firstObject = [inputItems2 firstObject];
 
-  v9 = [v8 userInfo];
-  NSLog(@"extensionItem.userInfo: %@", v9);
+  userInfo = [firstObject userInfo];
+  NSLog(@"extensionItem.userInfo: %@", userInfo);
 
-  v76 = v8;
-  v10 = [v8 userInfo];
-  v11 = [v10 objectForKeyedSubscript:@"HIDRMUINotificationPairingCodeDigits"];
+  v76 = firstObject;
+  userInfo2 = [firstObject userInfo];
+  v11 = [userInfo2 objectForKeyedSubscript:@"HIDRMUINotificationPairingCodeDigits"];
 
   v12 = objc_alloc_init(UIView);
-  v13 = [(HIDRMUIPairingCodeViewController *)self view];
-  [v13 addSubview:v12];
+  view = [(HIDRMUIPairingCodeViewController *)self view];
+  [view addSubview:v12];
 
   v14 = [UIStackView alloc];
   v75 = v11;
@@ -100,68 +100,68 @@
   v16 = [v14 initWithArrangedSubviews:v15];
   [(HIDRMUIPairingCodeViewController *)self setStackView:v16];
 
-  v17 = [(HIDRMUIPairingCodeViewController *)self stackView];
-  [v17 setAxis:0];
+  stackView = [(HIDRMUIPairingCodeViewController *)self stackView];
+  [stackView setAxis:0];
 
-  v18 = [(HIDRMUIPairingCodeViewController *)self stackView];
-  [v18 setDistribution:1];
+  stackView2 = [(HIDRMUIPairingCodeViewController *)self stackView];
+  [stackView2 setDistribution:1];
 
-  v19 = [(HIDRMUIPairingCodeViewController *)self stackView];
-  [v19 setAlignment:3];
+  stackView3 = [(HIDRMUIPairingCodeViewController *)self stackView];
+  [stackView3 setAlignment:3];
 
-  v20 = [(HIDRMUIPairingCodeViewController *)self stackView];
-  [v20 setSpacing:12.0];
+  stackView4 = [(HIDRMUIPairingCodeViewController *)self stackView];
+  [stackView4 setSpacing:12.0];
 
-  v21 = [(HIDRMUIPairingCodeViewController *)self stackView];
-  [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackView5 = [(HIDRMUIPairingCodeViewController *)self stackView];
+  [stackView5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v22 = [(HIDRMUIPairingCodeViewController *)self stackView];
-  v23 = [v22 layer];
-  [v23 setDisableUpdateMask:{objc_msgSend(v23, "disableUpdateMask") | 0x10}];
+  stackView6 = [(HIDRMUIPairingCodeViewController *)self stackView];
+  layer = [stackView6 layer];
+  [layer setDisableUpdateMask:{objc_msgSend(layer, "disableUpdateMask") | 0x10}];
 
-  v24 = [(HIDRMUIPairingCodeViewController *)self stackView];
-  [v12 addSubview:v24];
+  stackView7 = [(HIDRMUIPairingCodeViewController *)self stackView];
+  [v12 addSubview:stackView7];
 
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v74 = [(HIDRMUIPairingCodeViewController *)self stackView];
-  v73 = [v74 leadingAnchor];
-  v72 = [v12 leadingAnchor];
-  v71 = [v73 constraintEqualToAnchor:v72 constant:20.0];
+  stackView8 = [(HIDRMUIPairingCodeViewController *)self stackView];
+  leadingAnchor = [stackView8 leadingAnchor];
+  leadingAnchor2 = [v12 leadingAnchor];
+  v71 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   v78[0] = v71;
-  v70 = [(HIDRMUIPairingCodeViewController *)self stackView];
-  v69 = [v70 trailingAnchor];
-  v68 = [v12 trailingAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68 constant:-20.0];
+  stackView9 = [(HIDRMUIPairingCodeViewController *)self stackView];
+  trailingAnchor = [stackView9 trailingAnchor];
+  trailingAnchor2 = [v12 trailingAnchor];
+  v67 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
   v78[1] = v67;
-  v66 = [(HIDRMUIPairingCodeViewController *)self stackView];
-  v65 = [v66 topAnchor];
-  v64 = [v12 topAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64];
+  stackView10 = [(HIDRMUIPairingCodeViewController *)self stackView];
+  topAnchor = [stackView10 topAnchor];
+  topAnchor2 = [v12 topAnchor];
+  v63 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v78[2] = v63;
-  v62 = [(HIDRMUIPairingCodeViewController *)self stackView];
-  v61 = [v62 bottomAnchor];
-  v60 = [v12 bottomAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60];
+  stackView11 = [(HIDRMUIPairingCodeViewController *)self stackView];
+  bottomAnchor = [stackView11 bottomAnchor];
+  bottomAnchor2 = [v12 bottomAnchor];
+  v59 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v78[3] = v59;
-  v57 = [v12 centerXAnchor];
-  v58 = [(HIDRMUIPairingCodeViewController *)self view];
-  v56 = [v58 centerXAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  centerXAnchor = [v12 centerXAnchor];
+  view2 = [(HIDRMUIPairingCodeViewController *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v55 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v78[4] = v55;
-  v53 = [v12 topAnchor];
-  v54 = [(HIDRMUIPairingCodeViewController *)self view];
-  v52 = [v54 topAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  topAnchor3 = [v12 topAnchor];
+  view3 = [(HIDRMUIPairingCodeViewController *)self view];
+  topAnchor4 = [view3 topAnchor];
+  v51 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v78[5] = v51;
-  v50 = [(HIDRMUIPairingCodeViewController *)self view];
-  v25 = [v50 heightAnchor];
-  v26 = [v12 heightAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26 constant:30.0];
+  view4 = [(HIDRMUIPairingCodeViewController *)self view];
+  heightAnchor = [view4 heightAnchor];
+  heightAnchor2 = [v12 heightAnchor];
+  v27 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:30.0];
   v78[6] = v27;
-  v28 = [(HIDRMUIPairingCodeViewController *)self view];
-  v29 = [v28 widthAnchor];
-  v30 = [v12 widthAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  view5 = [(HIDRMUIPairingCodeViewController *)self view];
+  widthAnchor = [view5 widthAnchor];
+  widthAnchor2 = [v12 widthAnchor];
+  v31 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v78[7] = v31;
   v32 = [NSArray arrayWithObjects:v78 count:8];
   [NSLayoutConstraint activateConstraints:v32];
@@ -170,32 +170,32 @@
   if ([(HIDRMUIPairingCodeViewController *)self debugViews])
   {
     v34 = +[UIColor purpleColor];
-    v35 = [v34 CGColor];
-    v36 = [(HIDRMUIPairingCodeViewController *)self view];
-    v37 = [v36 layer];
-    [v37 setBorderColor:v35];
+    cGColor = [v34 CGColor];
+    view6 = [(HIDRMUIPairingCodeViewController *)self view];
+    layer2 = [view6 layer];
+    [layer2 setBorderColor:cGColor];
 
-    v38 = [(HIDRMUIPairingCodeViewController *)self view];
-    v39 = [v38 layer];
-    [v39 setBorderWidth:2.0];
+    view7 = [(HIDRMUIPairingCodeViewController *)self view];
+    layer3 = [view7 layer];
+    [layer3 setBorderWidth:2.0];
 
     v40 = +[UIColor blueColor];
-    v41 = [v40 CGColor];
-    v42 = [v33 layer];
-    [v42 setBorderColor:v41];
+    cGColor2 = [v40 CGColor];
+    layer4 = [v33 layer];
+    [layer4 setBorderColor:cGColor2];
 
-    v43 = [v33 layer];
-    [v43 setBorderWidth:2.0];
+    layer5 = [v33 layer];
+    [layer5 setBorderWidth:2.0];
 
     v44 = +[UIColor greenColor];
-    v45 = [v44 CGColor];
-    v46 = [(HIDRMUIPairingCodeViewController *)self stackView];
-    v47 = [v46 layer];
-    [v47 setBorderColor:v45];
+    cGColor3 = [v44 CGColor];
+    stackView12 = [(HIDRMUIPairingCodeViewController *)self stackView];
+    layer6 = [stackView12 layer];
+    [layer6 setBorderColor:cGColor3];
 
-    v48 = [(HIDRMUIPairingCodeViewController *)self stackView];
-    v49 = [v48 layer];
-    [v49 setBorderWidth:2.0];
+    stackView13 = [(HIDRMUIPairingCodeViewController *)self stackView];
+    layer7 = [stackView13 layer];
+    [layer7 setBorderWidth:2.0];
   }
 }
 
@@ -204,8 +204,8 @@
   v9.receiver = self;
   v9.super_class = HIDRMUIPairingCodeViewController;
   [(HIDRMUIPairingCodeViewController *)&v9 viewDidLayoutSubviews];
-  v3 = [(HIDRMUIPairingCodeViewController *)self view];
-  [v3 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+  view = [(HIDRMUIPairingCodeViewController *)self view];
+  [view systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
   v5 = v4;
   v7 = v6;
 
@@ -216,14 +216,14 @@
   NSLog(@"fittingSize: %@", v8);
 }
 
-- (void)configureWithCompletion:(id)a3
+- (void)configureWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   NSLog(@"configureWithCompletion...");
   v4 = +[NSDistributedNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"handleNotification:" name:@"HIDRMUINotificationPairingCodeViewController" object:0];
 
-  v5[2]();
+  completionCopy[2]();
 }
 
 - (void)invalidate
@@ -233,12 +233,12 @@
   [v3 removeObserver:self];
 }
 
-- (void)handleNotification:(id)a3
+- (void)handleNotification:(id)notification
 {
-  v4 = a3;
-  NSLog(@"handleNotification... (notification: %@)", v4);
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"HIDRMUINotificationMessage"];
+  notificationCopy = notification;
+  NSLog(@"handleNotification... (notification: %@)", notificationCopy);
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"HIDRMUINotificationMessage"];
 
   if (v6)
   {
@@ -248,10 +248,10 @@
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v7 = [(HIDRMUIPairingCodeViewController *)self stackView];
-      v8 = [v7 arrangedSubviews];
+      stackView = [(HIDRMUIPairingCodeViewController *)self stackView];
+      arrangedSubviews = [stackView arrangedSubviews];
 
-      v9 = [v8 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v9 = [arrangedSubviews countByEnumeratingWithState:&v38 objects:v42 count:16];
       if (v9)
       {
         v10 = v9;
@@ -262,7 +262,7 @@
           {
             if (*v39 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(arrangedSubviews);
             }
 
             v13 = *(*(&v38 + 1) + 8 * i);
@@ -274,7 +274,7 @@
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v38 objects:v42 count:16];
+          v10 = [arrangedSubviews countByEnumeratingWithState:&v38 objects:v42 count:16];
           if (v10)
           {
             continue;
@@ -289,38 +289,38 @@
 
     if ([v6 isEqual:@"HIDRMUINotificationMessagePairingFailure"])
     {
-      v8 = [CABasicAnimation animationWithKeyPath:@"position"];
-      [v8 setDuration:0.1];
+      arrangedSubviews = [CABasicAnimation animationWithKeyPath:@"position"];
+      [arrangedSubviews setDuration:0.1];
       LODWORD(v15) = 2.0;
-      [v8 setRepeatCount:v15];
-      [v8 setAutoreverses:1];
-      v16 = [(HIDRMUIPairingCodeViewController *)self stackView];
-      [v16 center];
+      [arrangedSubviews setRepeatCount:v15];
+      [arrangedSubviews setAutoreverses:1];
+      stackView2 = [(HIDRMUIPairingCodeViewController *)self stackView];
+      [stackView2 center];
       v18 = v17 + -20.0;
-      v19 = [(HIDRMUIPairingCodeViewController *)self stackView];
-      [v19 center];
+      stackView3 = [(HIDRMUIPairingCodeViewController *)self stackView];
+      [stackView3 center];
       v20 = [NSValue valueWithCGPoint:v18];
-      [v8 setFromValue:v20];
+      [arrangedSubviews setFromValue:v20];
 
-      v21 = [(HIDRMUIPairingCodeViewController *)self stackView];
-      [v21 center];
+      stackView4 = [(HIDRMUIPairingCodeViewController *)self stackView];
+      [stackView4 center];
       v23 = v22 + 20.0;
-      v24 = [(HIDRMUIPairingCodeViewController *)self stackView];
-      [v24 center];
+      stackView5 = [(HIDRMUIPairingCodeViewController *)self stackView];
+      [stackView5 center];
       v25 = [NSValue valueWithCGPoint:v23];
-      [v8 setToValue:v25];
+      [arrangedSubviews setToValue:v25];
 
-      v26 = [(HIDRMUIPairingCodeViewController *)self stackView];
-      v27 = [v26 layer];
-      [v27 addAnimation:v8 forKey:@"position"];
+      stackView6 = [(HIDRMUIPairingCodeViewController *)self stackView];
+      layer = [stackView6 layer];
+      [layer addAnimation:arrangedSubviews forKey:@"position"];
 
-      [v8 duration];
+      [arrangedSubviews duration];
       v29 = v28;
-      [v8 repeatCount];
+      [arrangedSubviews repeatCount];
       v31 = v29 * v30;
-      v32 = [v8 autoreverses];
+      autoreverses = [arrangedSubviews autoreverses];
       v33 = 1.0;
-      if (v32)
+      if (autoreverses)
       {
         v33 = 2.0;
       }
@@ -337,7 +337,7 @@
       block[2] = sub_100001CA4;
       block[3] = &unk_1000041A0;
       block[4] = self;
-      v37 = v4;
+      v37 = notificationCopy;
       dispatch_after(v35, &_dispatch_main_q, block);
 
 LABEL_19:

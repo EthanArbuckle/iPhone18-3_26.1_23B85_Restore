@@ -1,19 +1,19 @@
 @interface _UISearchAtomBackgroundView
-- (_UISearchAtomBackgroundView)initWithFrame:(CGRect)a3;
-- (void)_transitionFromBlurEffect:(id)a3 toBlurEffect:(id)a4;
+- (_UISearchAtomBackgroundView)initWithFrame:(CGRect)frame;
+- (void)_transitionFromBlurEffect:(id)effect toBlurEffect:(id)blurEffect;
 - (void)_updateSelectionStyleMask;
 - (void)layoutSubviews;
-- (void)setBlurEffect:(id)a3;
-- (void)setSelectionStyle:(int64_t)a3;
+- (void)setBlurEffect:(id)effect;
+- (void)setSelectionStyle:(int64_t)style;
 @end
 
 @implementation _UISearchAtomBackgroundView
 
-- (_UISearchAtomBackgroundView)initWithFrame:(CGRect)a3
+- (_UISearchAtomBackgroundView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UISearchAtomBackgroundView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -33,31 +33,31 @@
   [(UIView *)self->_visualEffectView setFrame:?];
 }
 
-- (void)setSelectionStyle:(int64_t)a3
+- (void)setSelectionStyle:(int64_t)style
 {
-  if (self->_selectionStyle != a3)
+  if (self->_selectionStyle != style)
   {
-    self->_selectionStyle = a3;
+    self->_selectionStyle = style;
     [(_UISearchAtomBackgroundView *)self _updateSelectionStyleMask];
 
     [(UIView *)self setNeedsDisplay];
   }
 }
 
-- (void)setBlurEffect:(id)a3
+- (void)setBlurEffect:(id)effect
 {
-  v4 = a3;
-  [(_UISearchAtomBackgroundView *)self _transitionFromBlurEffect:self->_blurEffect toBlurEffect:v4];
+  effectCopy = effect;
+  [(_UISearchAtomBackgroundView *)self _transitionFromBlurEffect:self->_blurEffect toBlurEffect:effectCopy];
   blurEffect = self->_blurEffect;
-  self->_blurEffect = v4;
+  self->_blurEffect = effectCopy;
 }
 
-- (void)_transitionFromBlurEffect:(id)a3 toBlurEffect:(id)a4
+- (void)_transitionFromBlurEffect:(id)effect toBlurEffect:(id)blurEffect
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 && v7)
+  effectCopy = effect;
+  blurEffectCopy = blurEffect;
+  v8 = blurEffectCopy;
+  if (!effectCopy && blurEffectCopy)
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -67,8 +67,8 @@
     [UIView performWithoutAnimation:v20];
   }
 
-  [(UIVisualEffectView *)self->_visualEffectView setEffect:v6];
-  if (v6 && !v8)
+  [(UIVisualEffectView *)self->_visualEffectView setEffect:effectCopy];
+  if (effectCopy && !v8)
   {
     v9 = self->_visualEffectView;
     visualEffectView = self->_visualEffectView;
@@ -79,9 +79,9 @@
     v14 = 3221225472;
     v15 = __70___UISearchAtomBackgroundView__transitionFromBlurEffect_toBlurEffect___block_invoke_2;
     v16 = &unk_1E711EDC0;
-    v17 = self;
+    selfCopy = self;
     v18 = v9;
-    v19 = v6;
+    v19 = effectCopy;
     v11 = v9;
     v12 = _Block_copy(&v13);
     if (![UIView _isInAnimationBlockWithAnimationsEnabled:v13]|| ![UIView _addCompletionWithPosition:v12])
@@ -127,16 +127,16 @@ LABEL_10:
 LABEL_11:
   v4 = 0;
 LABEL_12:
-  v5 = [(UIView *)self layer];
-  [v5 setMaskedCorners:v4];
+  layer = [(UIView *)self layer];
+  [layer setMaskedCorners:v4];
 
   visualEffectView = self->_visualEffectView;
-  v11 = [(UIView *)self layer];
-  [v11 cornerRadius];
+  layer2 = [(UIView *)self layer];
+  [layer2 cornerRadius];
   v8 = v7;
-  v9 = [(UIView *)self layer];
-  v10 = [v9 cornerCurve];
-  [(UIVisualEffectView *)visualEffectView _setCornerRadius:v10 == *MEMORY[0x1E69796E8] continuous:v4 maskedCorners:v8];
+  layer3 = [(UIView *)self layer];
+  cornerCurve = [layer3 cornerCurve];
+  [(UIVisualEffectView *)visualEffectView _setCornerRadius:cornerCurve == *MEMORY[0x1E69796E8] continuous:v4 maskedCorners:v8];
 }
 
 @end

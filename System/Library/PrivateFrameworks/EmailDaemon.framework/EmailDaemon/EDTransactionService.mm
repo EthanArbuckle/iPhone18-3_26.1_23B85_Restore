@@ -1,16 +1,16 @@
 @interface EDTransactionService
 - (BOOL)hasPendingTransactions;
-- (EDTransactionService)initWithServiceName:(id)a3;
+- (EDTransactionService)initWithServiceName:(id)name;
 - (id)startTransaction;
-- (void)endTransaction:(id)a3;
+- (void)endTransaction:(id)transaction;
 - (void)resetPendingTransactions;
 @end
 
 @implementation EDTransactionService
 
-- (EDTransactionService)initWithServiceName:(id)a3
+- (EDTransactionService)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = EDTransactionService;
   v5 = [(EDTransactionService *)&v17 init];
@@ -19,13 +19,13 @@
     v6 = MEMORY[0x1E696AEC0];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v6 stringWithFormat:@"%@-%@", v8, v4];
+    nameCopy = [v6 stringWithFormat:@"%@-%@", v8, nameCopy];
     serviceName = v5->_serviceName;
-    v5->_serviceName = v9;
+    v5->_serviceName = nameCopy;
 
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [(EDTransactionService *)v5 serviceName];
-    v13 = [v11 stringWithFormat:@"com.apple.mail.NNMKCrashDetectionService.%@", v12];
+    serviceName = [(EDTransactionService *)v5 serviceName];
+    v13 = [v11 stringWithFormat:@"com.apple.mail.NNMKCrashDetectionService.%@", serviceName];
 
     v14 = dispatch_queue_create([v13 UTF8String], 0);
     serialQueue = v5->_serialQueue;
@@ -84,17 +84,17 @@ void __40__EDTransactionService_startTransaction__block_invoke(uint64_t a1)
   [v11 synchronize];
 }
 
-- (void)endTransaction:(id)a3
+- (void)endTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__EDTransactionService_endTransaction___block_invoke;
   v7[3] = &unk_1E8250128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = transactionCopy;
+  v6 = transactionCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -159,23 +159,23 @@ void __39__EDTransactionService_endTransaction___block_invoke(uint64_t a1)
 
 - (BOOL)hasPendingTransactions
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(EDTransactionService *)self serialQueue];
+  serialQueue = [(EDTransactionService *)self serialQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __46__EDTransactionService_hasPendingTransactions__block_invoke;
   v5[3] = &unk_1E8258F68;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(serialQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __46__EDTransactionService_hasPendingTransactions__block_invoke(uint64_t a1)
@@ -189,13 +189,13 @@ void __46__EDTransactionService_hasPendingTransactions__block_invoke(uint64_t a1
 
 - (void)resetPendingTransactions
 {
-  v3 = [(EDTransactionService *)self serialQueue];
+  serialQueue = [(EDTransactionService *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__EDTransactionService_resetPendingTransactions__block_invoke;
   block[3] = &unk_1E8250260;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(serialQueue, block);
 }
 
 void __48__EDTransactionService_resetPendingTransactions__block_invoke(uint64_t a1)

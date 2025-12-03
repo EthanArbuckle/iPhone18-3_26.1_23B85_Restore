@@ -1,16 +1,16 @@
 @interface APECMetricSampler
-+ (BOOL)_shouldSample:(id)a3;
++ (BOOL)_shouldSample:(id)sample;
 - (APECMetricSampler)init;
-- (BOOL)_hasSession:(id)a3 purpose:(int64_t)a4;
-- (BOOL)isSampleRateExpired:(id)a3 purpose:(int64_t)a4;
-- (BOOL)sampleEvent:(int64_t)a3;
-- (double)sampleSessionStartTimeFromPurpose:(id)a3 purpose:(int64_t)a4;
+- (BOOL)_hasSession:(id)session purpose:(int64_t)purpose;
+- (BOOL)isSampleRateExpired:(id)expired purpose:(int64_t)purpose;
+- (BOOL)sampleEvent:(int64_t)event;
+- (double)sampleSessionStartTimeFromPurpose:(id)purpose purpose:(int64_t)a4;
 - (id)_loadAllSampleRates;
 - (id)_loadSampleSessionsfromStorage;
-- (id)_samplePeriodFromConfig:(int64_t)a3;
-- (id)_sampleRateFromConfig:(int64_t)a3;
-- (void)_updateRateAndTime:(id)a3 rate:(id)a4 purpose:(int64_t)a5;
-- (void)_updateSampleSessionStorage:(id)a3;
+- (id)_samplePeriodFromConfig:(int64_t)config;
+- (id)_sampleRateFromConfig:(int64_t)config;
+- (void)_updateRateAndTime:(id)time rate:(id)rate purpose:(int64_t)purpose;
+- (void)_updateSampleSessionStorage:(id)storage;
 @end
 
 @implementation APECMetricSampler
@@ -23,9 +23,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(APECMetricSampler *)v2 _loadAllSampleRates];
+    _loadAllSampleRates = [(APECMetricSampler *)v2 _loadAllSampleRates];
     samplingSettings = v3->_samplingSettings;
-    v3->_samplingSettings = v4;
+    v3->_samplingSettings = _loadAllSampleRates;
   }
 
   return v3;
@@ -39,16 +39,16 @@
   return v3;
 }
 
-- (void)_updateSampleSessionStorage:(id)a3
+- (void)_updateSampleSessionStorage:(id)storage
 {
-  v3 = a3;
+  storageCopy = storage;
   v4 = [[APSettingsStorageKeychain alloc] initWithDefaultValues:0];
-  [v4 setValue:v3 forKey:@"com.apple.ap.APECSampleSettings"];
+  [v4 setValue:storageCopy forKey:@"com.apple.ap.APECSampleSettings"];
 }
 
-- (id)_sampleRateFromConfig:(int64_t)a3
+- (id)_sampleRateFromConfig:(int64_t)config
 {
-  if (!a3)
+  if (!config)
   {
     v4 = 0;
     goto LABEL_6;
@@ -59,25 +59,25 @@
   if (!v3)
   {
 LABEL_6:
-    v5 = 0;
+    samplePercentage = 0;
     goto LABEL_7;
   }
 
-  v5 = [v3 samplePercentage];
+  samplePercentage = [v3 samplePercentage];
 
-  if (v5)
+  if (samplePercentage)
   {
-    v5 = [v4 samplePercentage];
+    samplePercentage = [v4 samplePercentage];
   }
 
 LABEL_7:
 
-  return v5;
+  return samplePercentage;
 }
 
-- (id)_samplePeriodFromConfig:(int64_t)a3
+- (id)_samplePeriodFromConfig:(int64_t)config
 {
-  if (!a3)
+  if (!config)
   {
     v4 = 0;
     goto LABEL_6;
@@ -88,26 +88,26 @@ LABEL_7:
   if (!v3)
   {
 LABEL_6:
-    v5 = 0;
+    samplePeriod = 0;
     goto LABEL_7;
   }
 
-  v5 = [v3 samplePeriod];
+  samplePeriod = [v3 samplePeriod];
 
-  if (v5)
+  if (samplePeriod)
   {
-    v5 = [v4 samplePeriod];
+    samplePeriod = [v4 samplePeriod];
   }
 
 LABEL_7:
 
-  return v5;
+  return samplePeriod;
 }
 
 - (id)_loadAllSampleRates
 {
-  v3 = [(APECMetricSampler *)self _loadSampleSessionsfromStorage];
-  v4 = [v3 mutableCopy];
+  _loadSampleSessionsfromStorage = [(APECMetricSampler *)self _loadSampleSessionsfromStorage];
+  v4 = [_loadSampleSessionsfromStorage mutableCopy];
 
   if (!v4)
   {
@@ -153,24 +153,24 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)_hasSession:(id)a3 purpose:(int64_t)a4
+- (BOOL)_hasSession:(id)session purpose:(int64_t)purpose
 {
-  v5 = a3;
-  v6 = [NSNumber numberWithInteger:a4];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  sessionCopy = session;
+  v6 = [NSNumber numberWithInteger:purpose];
+  v7 = [sessionCopy objectForKeyedSubscript:v6];
 
   return v7 != 0;
 }
 
-- (void)_updateRateAndTime:(id)a3 rate:(id)a4 purpose:(int64_t)a5
+- (void)_updateRateAndTime:(id)time rate:(id)rate purpose:(int64_t)purpose
 {
-  v7 = a3;
-  v8 = a4;
+  timeCopy = time;
+  rateCopy = rate;
   v9 = +[NSDate date];
   [v9 timeIntervalSince1970];
   v11 = v10;
 
-  v12 = [APECMetricSampler _shouldSample:v8];
+  v12 = [APECMetricSampler _shouldSample:rateCopy];
   v13 = APLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -185,32 +185,32 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Device should sample metrics (%@)", &v25, 0xCu);
   }
 
-  v15 = [NSNumber numberWithInteger:a5];
-  v16 = [v7 objectForKeyedSubscript:v15];
+  v15 = [NSNumber numberWithInteger:purpose];
+  v16 = [timeCopy objectForKeyedSubscript:v15];
 
   if (!v16)
   {
     v17 = [&__NSDictionary0__struct mutableCopy];
-    v18 = [NSNumber numberWithInteger:a5];
-    [v7 setObject:v17 forKey:v18];
+    v18 = [NSNumber numberWithInteger:purpose];
+    [timeCopy setObject:v17 forKey:v18];
   }
 
   v19 = [NSNumber numberWithBool:v12];
-  v20 = [NSNumber numberWithInteger:a5];
-  v21 = [v7 objectForKeyedSubscript:v20];
+  v20 = [NSNumber numberWithInteger:purpose];
+  v21 = [timeCopy objectForKeyedSubscript:v20];
   [v21 setObject:v19 forKeyedSubscript:@"Sample"];
 
   v22 = [NSNumber numberWithDouble:v11];
-  v23 = [NSNumber numberWithInteger:a5];
-  v24 = [v7 objectForKeyedSubscript:v23];
+  v23 = [NSNumber numberWithInteger:purpose];
+  v24 = [timeCopy objectForKeyedSubscript:v23];
   [v24 setObject:v22 forKeyedSubscript:@"TimeInterval"];
 }
 
-- (double)sampleSessionStartTimeFromPurpose:(id)a3 purpose:(int64_t)a4
+- (double)sampleSessionStartTimeFromPurpose:(id)purpose purpose:(int64_t)a4
 {
-  v5 = a3;
+  purposeCopy = purpose;
   v6 = [NSNumber numberWithInteger:a4];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [purposeCopy objectForKeyedSubscript:v6];
 
   v8 = [v7 objectForKeyedSubscript:@"TimeInterval"];
 
@@ -220,47 +220,47 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)isSampleRateExpired:(id)a3 purpose:(int64_t)a4
+- (BOOL)isSampleRateExpired:(id)expired purpose:(int64_t)purpose
 {
-  v6 = a3;
+  expiredCopy = expired;
   v7 = +[NSDate date];
   [v7 timeIntervalSince1970];
   v9 = v8;
 
-  [(APECMetricSampler *)self sampleSessionStartTimeFromPurpose:v6 purpose:a4];
+  [(APECMetricSampler *)self sampleSessionStartTimeFromPurpose:expiredCopy purpose:purpose];
   v11 = v10;
 
-  v12 = [(APECMetricSampler *)self _samplePeriodFromConfig:a4];
+  v12 = [(APECMetricSampler *)self _samplePeriodFromConfig:purpose];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 intValue];
+    intValue = [v12 intValue];
   }
 
   else
   {
-    v14 = 604800.0;
+    intValue = 604800.0;
   }
 
-  v15 = v9 - v11 > v14;
+  v15 = v9 - v11 > intValue;
 
   return v15;
 }
 
-- (BOOL)sampleEvent:(int64_t)a3
+- (BOOL)sampleEvent:(int64_t)event
 {
-  v4 = [(APECMetricSampler *)self samplingSettings];
-  v5 = [NSNumber numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  samplingSettings = [(APECMetricSampler *)self samplingSettings];
+  v5 = [NSNumber numberWithInteger:event];
+  v6 = [samplingSettings objectForKeyedSubscript:v5];
   v7 = [v6 objectForKeyedSubscript:@"Sample"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-+ (BOOL)_shouldSample:(id)a3
++ (BOOL)_shouldSample:(id)sample
 {
-  v3 = a3;
+  sampleCopy = sample;
   v4 = arc4random_uniform(0x186A0u);
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -270,8 +270,8 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "sample random number (%u)", v8, 8u);
   }
 
-  v6 = [v3 unsignedIntValue];
-  return v4 <= v6;
+  unsignedIntValue = [sampleCopy unsignedIntValue];
+  return v4 <= unsignedIntValue;
 }
 
 @end

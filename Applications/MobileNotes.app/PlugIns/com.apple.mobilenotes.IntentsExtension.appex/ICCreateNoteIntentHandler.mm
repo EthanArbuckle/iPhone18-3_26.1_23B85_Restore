@@ -2,11 +2,11 @@
 - (ICCreateNoteIntentHandler)init;
 - (ICNAEventReporter)eventReporter;
 - (void)dealloc;
-- (void)handleCreateNote:(id)a3 completion:(id)a4;
-- (void)provideGroupNameOptionsForCreateNote:(id)a3 withCompletion:(id)a4;
-- (void)resolveContentForCreateNote:(id)a3 withCompletion:(id)a4;
-- (void)resolveGroupNameForCreateNote:(id)a3 withCompletion:(id)a4;
-- (void)resolveTitleForCreateNote:(id)a3 withCompletion:(id)a4;
+- (void)handleCreateNote:(id)note completion:(id)completion;
+- (void)provideGroupNameOptionsForCreateNote:(id)note withCompletion:(id)completion;
+- (void)resolveContentForCreateNote:(id)note withCompletion:(id)completion;
+- (void)resolveGroupNameForCreateNote:(id)note withCompletion:(id)completion;
+- (void)resolveTitleForCreateNote:(id)note withCompletion:(id)completion;
 @end
 
 @implementation ICCreateNoteIntentHandler
@@ -16,8 +16,8 @@
   v6.receiver = self;
   v6.super_class = ICCreateNoteIntentHandler;
   v2 = [(ICBaseIntentHandler *)&v6 init];
-  v3 = [(ICBaseIntentHandler *)v2 noteContext];
-  [v3 enableHTMLContextChangeLogging];
+  noteContext = [(ICBaseIntentHandler *)v2 noteContext];
+  [noteContext enableHTMLContextChangeLogging];
 
   v4 = +[ICNAController sharedController];
   [v4 startAppSession];
@@ -50,14 +50,14 @@
   return v6;
 }
 
-- (void)provideGroupNameOptionsForCreateNote:(id)a3 withCompletion:(id)a4
+- (void)provideGroupNameOptionsForCreateNote:(id)note withCompletion:(id)completion
 {
-  v28 = a4;
-  v5 = [(ICBaseIntentHandler *)self noteContext];
-  v6 = [v5 modernManagedObjectContext];
-  v7 = [(ICBaseIntentHandler *)self noteContext];
-  v8 = [v7 htmlManagedObjectContext];
-  v9 = [NotesAssistantUtilities folderOptionsForModernContext:v6 htmlContext:v8];
+  completionCopy = completion;
+  noteContext = [(ICBaseIntentHandler *)self noteContext];
+  modernManagedObjectContext = [noteContext modernManagedObjectContext];
+  noteContext2 = [(ICBaseIntentHandler *)self noteContext];
+  htmlManagedObjectContext = [noteContext2 htmlManagedObjectContext];
+  v9 = [NotesAssistantUtilities folderOptionsForModernContext:modernManagedObjectContext htmlContext:htmlManagedObjectContext];
 
   v10 = +[NSMutableArray array];
   v30 = 0u;
@@ -80,29 +80,29 @@
         }
 
         v15 = *(*(&v30 + 1) + 8 * i);
-        v16 = [v15 managedObjectID];
-        v17 = [v16 URIRepresentation];
+        managedObjectID = [v15 managedObjectID];
+        uRIRepresentation = [managedObjectID URIRepresentation];
 
-        v18 = [v15 accountIdentifier];
+        accountIdentifier = [v15 accountIdentifier];
 
-        if (v18)
+        if (accountIdentifier)
         {
-          v19 = [[NSURLComponents alloc] initWithURL:v17 resolvingAgainstBaseURL:0];
-          v20 = [v15 accountIdentifier];
-          v21 = [NSURLQueryItem queryItemWithName:@"accountIdentifier" value:v20];
+          v19 = [[NSURLComponents alloc] initWithURL:uRIRepresentation resolvingAgainstBaseURL:0];
+          accountIdentifier2 = [v15 accountIdentifier];
+          v21 = [NSURLQueryItem queryItemWithName:@"accountIdentifier" value:accountIdentifier2];
           v34 = v21;
           v22 = [NSArray arrayWithObjects:&v34 count:1];
           [v19 setQueryItems:v22];
 
           v23 = [v19 URL];
 
-          v17 = v23;
+          uRIRepresentation = v23;
         }
 
         v24 = [INSpeakableString alloc];
-        v25 = [v17 absoluteString];
-        v26 = [v15 fullTitle];
-        v27 = [v24 initWithVocabularyIdentifier:v25 spokenPhrase:v26 pronunciationHint:0];
+        absoluteString = [uRIRepresentation absoluteString];
+        fullTitle = [v15 fullTitle];
+        v27 = [v24 initWithVocabularyIdentifier:absoluteString spokenPhrase:fullTitle pronunciationHint:0];
 
         [v10 addObject:v27];
       }
@@ -113,19 +113,19 @@
     while (v12);
   }
 
-  v28[2](v28, v10, 0);
+  completionCopy[2](completionCopy, v10, 0);
 }
 
-- (void)resolveTitleForCreateNote:(id)a3 withCompletion:(id)a4
+- (void)resolveTitleForCreateNote:(id)note withCompletion:(id)completion
 {
-  v5 = a4;
-  v9 = [a3 title];
-  v6 = [v9 spokenPhrase];
-  v7 = [v6 length];
+  completionCopy = completion;
+  title = [note title];
+  spokenPhrase = [title spokenPhrase];
+  v7 = [spokenPhrase length];
 
   if (v7)
   {
-    [INSpeakableStringResolutionResult successWithResolvedString:v9];
+    [INSpeakableStringResolutionResult successWithResolvedString:title];
   }
 
   else
@@ -133,28 +133,28 @@
     +[INSpeakableStringResolutionResult notRequired];
   }
   v8 = ;
-  v5[2](v5, v8);
+  completionCopy[2](completionCopy, v8);
 }
 
-- (void)resolveContentForCreateNote:(id)a3 withCompletion:(id)a4
+- (void)resolveContentForCreateNote:(id)note withCompletion:(id)completion
 {
-  v14 = a4;
-  v5 = a3;
-  v6 = [v5 title];
-  v7 = [v5 content];
+  completionCopy = completion;
+  noteCopy = note;
+  title = [noteCopy title];
+  content = [noteCopy content];
 
   objc_opt_class();
   v8 = ICDynamicCast();
-  v9 = [v6 spokenPhrase];
-  v10 = [v9 length];
+  spokenPhrase = [title spokenPhrase];
+  v10 = [spokenPhrase length];
 
-  v11 = [v8 text];
-  v12 = [v11 length];
+  text = [v8 text];
+  v12 = [text length];
 
   if (v12)
   {
     v13 = [INNoteContentResolutionResult successWithResolvedNoteContent:v8];
-    v14[2](v14, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
   else
@@ -169,55 +169,55 @@
       +[INNoteContentResolutionResult needsValue];
     }
     v13 = ;
-    v14[2](v14, v13);
+    completionCopy[2](completionCopy, v13);
   }
 }
 
-- (void)resolveGroupNameForCreateNote:(id)a3 withCompletion:(id)a4
+- (void)resolveGroupNameForCreateNote:(id)note withCompletion:(id)completion
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v9 groupName];
+  noteCopy = note;
+  completionCopy = completion;
+  groupName = [noteCopy groupName];
 
-  if (v6)
+  if (groupName)
   {
-    v7 = [v9 groupName];
-    v8 = [INSpeakableStringResolutionResult successWithResolvedString:v7];
-    v5[2](v5, v8);
+    groupName2 = [noteCopy groupName];
+    v8 = [INSpeakableStringResolutionResult successWithResolvedString:groupName2];
+    completionCopy[2](completionCopy, v8);
 
-    v5 = v8;
+    completionCopy = v8;
   }
 
   else
   {
-    v7 = +[INSpeakableStringResolutionResult notRequired];
-    v5[2](v5, v7);
+    groupName2 = +[INSpeakableStringResolutionResult notRequired];
+    completionCopy[2](completionCopy, groupName2);
   }
 }
 
-- (void)handleCreateNote:(id)a3 completion:(id)a4
+- (void)handleCreateNote:(id)note completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  noteCopy = note;
+  completionCopy = completion;
   v8 = +[ICNAController sharedController];
   v9 = [NSURL URLWithString:kICNAIntentsExtensionReferralURL];
   [v8 startSessionWithReferralURL:v9 referralApplication:0];
 
   objc_opt_class();
-  v10 = [v6 content];
+  content = [noteCopy content];
   v11 = ICDynamicCast();
-  v12 = [v11 text];
+  text = [v11 text];
 
-  v13 = [v6 groupName];
+  groupName = [noteCopy groupName];
 
-  if (v13)
+  if (groupName)
   {
-    v14 = [v6 groupName];
-    v15 = [(ICBaseIntentHandler *)self noteContext];
-    v16 = [v15 modernManagedObjectContext];
-    v17 = [(ICBaseIntentHandler *)self noteContext];
-    v18 = [v17 htmlManagedObjectContext];
-    v34 = [NotesAssistantUtilities folderForGroupName:v14 withNoteContext:v16 htmlNoteContext:v18];
+    groupName2 = [noteCopy groupName];
+    noteContext = [(ICBaseIntentHandler *)self noteContext];
+    modernManagedObjectContext = [noteContext modernManagedObjectContext];
+    noteContext2 = [(ICBaseIntentHandler *)self noteContext];
+    htmlManagedObjectContext = [noteContext2 htmlManagedObjectContext];
+    v34 = [NotesAssistantUtilities folderForGroupName:groupName2 withNoteContext:modernManagedObjectContext htmlNoteContext:htmlManagedObjectContext];
   }
 
   else
@@ -226,12 +226,12 @@
   }
 
   v19 = [ICCreateNoteAction alloc];
-  v20 = [(ICBaseIntentHandler *)self noteContext];
-  v21 = [v19 initWithNoteContext:v20];
+  noteContext3 = [(ICBaseIntentHandler *)self noteContext];
+  v21 = [v19 initWithNoteContext:noteContext3];
 
-  if (v12)
+  if (text)
   {
-    v22 = [[NSAttributedString alloc] initWithString:v12];
+    v22 = [[NSAttributedString alloc] initWithString:text];
   }
 
   else
@@ -239,10 +239,10 @@
     v22 = 0;
   }
 
-  v23 = [v6 title];
-  v24 = [v23 spokenPhrase];
+  title = [noteCopy title];
+  spokenPhrase = [title spokenPhrase];
   v44 = 0;
-  v25 = [v21 performWithTitle:v24 contents:v22 pinned:0 container:v34 error:&v44];
+  v25 = [v21 performWithTitle:spokenPhrase contents:v22 pinned:0 container:v34 error:&v44];
   v26 = v44;
 
   v38 = 0;
@@ -253,7 +253,7 @@
   v43 = 0;
   if (v25)
   {
-    v27 = [v25 managedObjectContext];
+    managedObjectContext = [v25 managedObjectContext];
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_100003E2C;
@@ -262,7 +262,7 @@
     v28 = v25;
     v36 = v28;
     v37 = &v38;
-    [v27 performBlockAndWait:v35];
+    [managedObjectContext performBlockAndWait:v35];
 
     if ([v28 isModernNote])
     {
@@ -287,7 +287,7 @@
     v39[5] = v31;
   }
 
-  v7[2](v7, v39[5]);
+  completionCopy[2](completionCopy, v39[5]);
   v33 = +[ICNAController sharedController];
   [v33 endSessionSynchronously:0 endReason:7];
 

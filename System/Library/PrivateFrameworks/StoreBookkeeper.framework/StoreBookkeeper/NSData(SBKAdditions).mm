@@ -26,19 +26,19 @@
 - (id)_SBKDataByDeflatingWithNoZipHeaderWithCompression:()SBKAdditions
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a1;
-  if ([v4 length] >= 0xFFFFFFFF)
+  selfCopy = self;
+  if ([selfCopy length] >= 0xFFFFFFFF)
   {
-    NSLog(&cfstr_ErrorUnableToZ.isa, [v4 length] / 1000000000.0);
+    NSLog(&cfstr_ErrorUnableToZ.isa, [selfCopy length] / 1000000000.0);
     v5 = 0;
     goto LABEL_23;
   }
 
-  v6 = [v4 bytes];
-  v7 = [v4 length];
+  bytes = [selfCopy bytes];
+  v7 = [selfCopy length];
   v8 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:(v7 >> 1) + 1];
   v5 = 0;
-  if (v6 && v7)
+  if (bytes && v7)
   {
     memset(&strm, 0, sizeof(strm));
     if (a3 == 1)
@@ -71,7 +71,7 @@
     else
     {
       strm.avail_in = v7;
-      strm.next_in = v6;
+      strm.next_in = bytes;
       do
       {
         if (!strm.avail_out)
@@ -138,18 +138,18 @@ LABEL_23:
 - (id)_SBKDataByInflatingWithNoZipHeader
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = a1;
-  if ([v1 length] >> 32)
+  selfCopy = self;
+  if ([selfCopy length] >> 32)
   {
-    NSLog(&cfstr_ErrorUnableToZ.isa, [v1 length] / 1000000000.0);
+    NSLog(&cfstr_ErrorUnableToZ.isa, [selfCopy length] / 1000000000.0);
 LABEL_3:
     v2 = 0;
     goto LABEL_11;
   }
 
   memset(&strm.avail_in, 0, 104);
-  strm.avail_in = [v1 length];
-  strm.next_in = [v1 bytes];
+  strm.avail_in = [selfCopy length];
+  strm.next_in = [selfCopy bytes];
   v2 = 0;
   if (!inflateInit2_(&strm, -15, "1.2.12", 112))
   {
@@ -393,9 +393,9 @@ LABEL_47:
   if (*v58 != 2000)
   {
 LABEL_52:
-    v55 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v56 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-    [v55 handleFailureInFunction:v56 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+    [currentHandler handleFailureInFunction:v56 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
     v52 = &stru_287C9CB50;
     goto LABEL_49;
@@ -445,7 +445,7 @@ LABEL_49:
 + (id)SBKStringFromDigestData:()SBKAdditions
 {
   v3 = a3;
-  v4 = [v3 bytes];
+  bytes = [v3 bytes];
   v5 = [v3 length];
   v6 = 2 * v5;
   v7 = malloc_type_calloc(2 * v5, 1uLL, 0x100004077774924uLL);
@@ -454,8 +454,8 @@ LABEL_49:
     v8 = v7 + 1;
     do
     {
-      *(v8 - 1) = MSVFastHexStringFromBytes_hexCharacters[*v4 >> 4];
-      v9 = *v4++;
+      *(v8 - 1) = MSVFastHexStringFromBytes_hexCharacters[*bytes >> 4];
+      v9 = *bytes++;
       *v8 = MSVFastHexStringFromBytes_hexCharacters[v9 & 0xF];
       v8 += 2;
       --v5;

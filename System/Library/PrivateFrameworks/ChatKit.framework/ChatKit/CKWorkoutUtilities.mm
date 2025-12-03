@@ -1,13 +1,13 @@
 @interface CKWorkoutUtilities
-+ (BOOL)_presentWorkoutRemoteViewServiceOnHostViewController:(id)a3 withWorkoutData:(id)a4;
-+ (void)_launchWorkoutPreviewWithWorkoutData:(id)a3;
++ (BOOL)_presentWorkoutRemoteViewServiceOnHostViewController:(id)controller withWorkoutData:(id)data;
++ (void)_launchWorkoutPreviewWithWorkoutData:(id)data;
 @end
 
 @implementation CKWorkoutUtilities
 
-+ (void)_launchWorkoutPreviewWithWorkoutData:(id)a3
++ (void)_launchWorkoutPreviewWithWorkoutData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2050000000;
@@ -26,8 +26,8 @@
 
   v5 = v4;
   _Block_object_dispose(&v8, 8);
-  v6 = [v4 sharedInstance];
-  [v6 presentWorkoutCompositionData:v3 completion:&__block_literal_global_31];
+  sharedInstance = [v4 sharedInstance];
+  [sharedInstance presentWorkoutCompositionData:dataCopy completion:&__block_literal_global_31];
 }
 
 void __59__CKWorkoutUtilities__launchWorkoutPreviewWithWorkoutData___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -43,10 +43,10 @@ void __59__CKWorkoutUtilities__launchWorkoutPreviewWithWorkoutData___block_invok
   }
 }
 
-+ (BOOL)_presentWorkoutRemoteViewServiceOnHostViewController:(id)a3 withWorkoutData:(id)a4
++ (BOOL)_presentWorkoutRemoteViewServiceOnHostViewController:(id)controller withWorkoutData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  dataCopy = data;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2050000000;
@@ -78,10 +78,10 @@ void __59__CKWorkoutUtilities__launchWorkoutPreviewWithWorkoutData___block_invok
   v14[2] = __91__CKWorkoutUtilities__presentWorkoutRemoteViewServiceOnHostViewController_withWorkoutData___block_invoke;
   v14[3] = &unk_1E72EB8D0;
   v15 = v9;
-  v16 = v5;
-  v11 = v5;
+  v16 = controllerCopy;
+  v11 = controllerCopy;
   v12 = v9;
-  [v12 presentRemoteViewControllerOnHostController:v11 workoutPlanData:v6 dismissHandler:v14 completionHandler:&__block_literal_global_36];
+  [v12 presentRemoteViewControllerOnHostController:v11 workoutPlanData:dataCopy dismissHandler:v14 completionHandler:&__block_literal_global_36];
 
   return 1;
 }

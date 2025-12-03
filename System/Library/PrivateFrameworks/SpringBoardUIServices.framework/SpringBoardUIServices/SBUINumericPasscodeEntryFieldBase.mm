@@ -1,11 +1,11 @@
 @interface SBUINumericPasscodeEntryFieldBase
 - (BOOL)resignFirstResponder;
-- (BOOL)shouldInsertPasscodeText:(id)a3;
-- (SBUINumericPasscodeEntryFieldBase)initWithDefaultSizeAndLightStyle:(BOOL)a3;
-- (void)_appendString:(id)a3;
+- (BOOL)shouldInsertPasscodeText:(id)text;
+- (SBUINumericPasscodeEntryFieldBase)initWithDefaultSizeAndLightStyle:(BOOL)style;
+- (void)_appendString:(id)string;
 - (void)_deleteLastCharacter;
-- (void)_reallyAppendString:(id)a3;
-- (void)setAllowsNewlineAcceptance:(BOOL)a3;
+- (void)_reallyAppendString:(id)string;
+- (void)setAllowsNewlineAcceptance:(BOOL)acceptance;
 @end
 
 @implementation SBUINumericPasscodeEntryFieldBase
@@ -22,11 +22,11 @@
   return [(SBUIPasscodeEntryField *)&v4 resignFirstResponder];
 }
 
-- (SBUINumericPasscodeEntryFieldBase)initWithDefaultSizeAndLightStyle:(BOOL)a3
+- (SBUINumericPasscodeEntryFieldBase)initWithDefaultSizeAndLightStyle:(BOOL)style
 {
   v9.receiver = self;
   v9.super_class = SBUINumericPasscodeEntryFieldBase;
-  v3 = [(SBUIPasscodeEntryField *)&v9 initWithDefaultSizeAndLightStyle:a3];
+  v3 = [(SBUIPasscodeEntryField *)&v9 initWithDefaultSizeAndLightStyle:style];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696AD48]);
@@ -34,8 +34,8 @@
     v3->_numericTrimmingSet = v4;
 
     v6 = v3->_numericTrimmingSet;
-    v7 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-    [(NSMutableCharacterSet *)v6 formUnionWithCharacterSet:v7];
+    decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+    [(NSMutableCharacterSet *)v6 formUnionWithCharacterSet:decimalDigitCharacterSet];
 
     v3->_allowsNewlineAcceptance = 0;
     v3->_maxNumbersAllowed = -1;
@@ -45,34 +45,34 @@
   return v3;
 }
 
-- (void)setAllowsNewlineAcceptance:(BOOL)a3
+- (void)setAllowsNewlineAcceptance:(BOOL)acceptance
 {
-  if (self->_allowsNewlineAcceptance != a3)
+  if (self->_allowsNewlineAcceptance != acceptance)
   {
-    self->_allowsNewlineAcceptance = a3;
+    self->_allowsNewlineAcceptance = acceptance;
     numericTrimmingSet = self->_numericTrimmingSet;
-    if (a3)
+    if (acceptance)
     {
-      v5 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
       [(NSMutableCharacterSet *)numericTrimmingSet formUnionWithCharacterSet:?];
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+      newlineCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
       [(NSMutableCharacterSet *)numericTrimmingSet formIntersectionWithCharacterSet:?];
     }
   }
 }
 
-- (BOOL)shouldInsertPasscodeText:(id)a3
+- (BOOL)shouldInsertPasscodeText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v7.receiver = self;
   v7.super_class = SBUINumericPasscodeEntryFieldBase;
-  if ([(SBUIPasscodeEntryField *)&v7 shouldInsertPasscodeText:v4])
+  if ([(SBUIPasscodeEntryField *)&v7 shouldInsertPasscodeText:textCopy])
   {
-    v5 = [v4 isSingleCharacterAndMemberOfSet:self->_numericTrimmingSet];
+    v5 = [textCopy isSingleCharacterAndMemberOfSet:self->_numericTrimmingSet];
   }
 
   else
@@ -85,28 +85,28 @@
 
 - (void)_deleteLastCharacter
 {
-  v5 = [(SBUIPasscodeEntryField *)self _textField];
-  v3 = [v5 text];
-  if ([v3 length])
+  _textField = [(SBUIPasscodeEntryField *)self _textField];
+  text = [_textField text];
+  if ([text length])
   {
-    v4 = [v3 _stringByTrimmingLastCharacter];
-    [v5 setText:v4];
+    _stringByTrimmingLastCharacter = [text _stringByTrimmingLastCharacter];
+    [_textField setText:_stringByTrimmingLastCharacter];
 
     [(SBUIPasscodeEntryField *)self notePasscodeFieldTextDidChange];
   }
 }
 
-- (void)_appendString:(id)a3
+- (void)_appendString:(id)string
 {
-  v9 = a3;
-  v4 = [(SBUIPasscodeEntryField *)self stringValue];
-  v5 = [v4 length];
+  stringCopy = string;
+  stringValue = [(SBUIPasscodeEntryField *)self stringValue];
+  v5 = [stringValue length];
 
   if (![(SBUINumericPasscodeEntryFieldBase *)self _hasMaxDigitsSpecified])
   {
-    if (!v5 || ![v9 isNewline] || !-[SBUINumericPasscodeEntryFieldBase allowsNewlineAcceptance](self, "allowsNewlineAcceptance"))
+    if (!v5 || ![stringCopy isNewline] || !-[SBUINumericPasscodeEntryFieldBase allowsNewlineAcceptance](self, "allowsNewlineAcceptance"))
     {
-      [(SBUINumericPasscodeEntryFieldBase *)self _reallyAppendString:v9];
+      [(SBUINumericPasscodeEntryFieldBase *)self _reallyAppendString:stringCopy];
       goto LABEL_12;
     }
 
@@ -115,15 +115,15 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if ([v9 length] + v5 <= self->_maxNumbersAllowed)
+  if ([stringCopy length] + v5 <= self->_maxNumbersAllowed)
   {
-    [(SBUINumericPasscodeEntryFieldBase *)self _reallyAppendString:v9];
+    [(SBUINumericPasscodeEntryFieldBase *)self _reallyAppendString:stringCopy];
   }
 
   if (self->_autoAcceptWhenMaxNumbersMet)
   {
-    v6 = [(SBUIPasscodeEntryField *)self stringValue];
-    v7 = [v6 length];
+    stringValue2 = [(SBUIPasscodeEntryField *)self stringValue];
+    v7 = [stringValue2 length];
     maxNumbersAllowed = self->_maxNumbersAllowed;
 
     if (v7 >= maxNumbersAllowed)
@@ -135,23 +135,23 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)_reallyAppendString:(id)a3
+- (void)_reallyAppendString:(id)string
 {
-  v8 = a3;
-  v4 = [(SBUIPasscodeEntryField *)self _textField];
-  v5 = [v4 text];
-  if (v5)
+  stringCopy = string;
+  _textField = [(SBUIPasscodeEntryField *)self _textField];
+  text = [_textField text];
+  if (text)
   {
-    v6 = v5;
-    v7 = [v5 stringByAppendingString:v8];
+    v6 = text;
+    v7 = [text stringByAppendingString:stringCopy];
   }
 
   else
   {
-    v7 = v8;
+    v7 = stringCopy;
   }
 
-  [v4 setText:v7];
+  [_textField setText:v7];
   [(SBUIPasscodeEntryField *)self notePasscodeFieldTextDidChange];
 }
 

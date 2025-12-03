@@ -1,27 +1,27 @@
 @interface CSDMessagingConversationLinkGeneratorDescriptor
-+ (CSDMessagingConversationLinkGeneratorDescriptor)generatorDescriptorWithCSDConversationLinkGeneratorDescriptor:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (CSDMessagingConversationLinkGeneratorDescriptor)generatorDescriptorWithCSDConversationLinkGeneratorDescriptor:(id)descriptor;
+- (BOOL)isEqual:(id)equal;
 - (CSDConversationLinkGeneratorDescriptor)csdConversationLinkGeneratorDescriptor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingConversationLinkGeneratorDescriptor
 
-+ (CSDMessagingConversationLinkGeneratorDescriptor)generatorDescriptorWithCSDConversationLinkGeneratorDescriptor:(id)a3
++ (CSDMessagingConversationLinkGeneratorDescriptor)generatorDescriptorWithCSDConversationLinkGeneratorDescriptor:(id)descriptor
 {
-  v3 = a3;
+  descriptorCopy = descriptor;
   v4 = objc_alloc_init(CSDMessagingConversationLinkGeneratorDescriptor);
-  v5 = [v3 identifier];
-  [(CSDMessagingConversationLinkGeneratorDescriptor *)v4 setGeneratorID:v5];
+  identifier = [descriptorCopy identifier];
+  [(CSDMessagingConversationLinkGeneratorDescriptor *)v4 setGeneratorID:identifier];
 
-  v6 = [v3 version];
-  [(CSDMessagingConversationLinkGeneratorDescriptor *)v4 setGeneratorVersion:v6];
+  version = [descriptorCopy version];
+  [(CSDMessagingConversationLinkGeneratorDescriptor *)v4 setGeneratorVersion:version];
 
   return v4;
 }
@@ -29,8 +29,8 @@
 - (CSDConversationLinkGeneratorDescriptor)csdConversationLinkGeneratorDescriptor
 {
   v3 = [CSDConversationLinkGeneratorDescriptor alloc];
-  v4 = [(CSDMessagingConversationLinkGeneratorDescriptor *)self generatorID];
-  v5 = [(CSDConversationLinkGeneratorDescriptor *)v3 initWithIdentifier:v4 version:[(CSDMessagingConversationLinkGeneratorDescriptor *)self generatorVersion]];
+  generatorID = [(CSDMessagingConversationLinkGeneratorDescriptor *)self generatorID];
+  v5 = [(CSDConversationLinkGeneratorDescriptor *)v3 initWithIdentifier:generatorID version:[(CSDMessagingConversationLinkGeneratorDescriptor *)self generatorVersion]];
 
   return v5;
 }
@@ -40,8 +40,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingConversationLinkGeneratorDescriptor;
   v3 = [(CSDMessagingConversationLinkGeneratorDescriptor *)&v7 description];
-  v4 = [(CSDMessagingConversationLinkGeneratorDescriptor *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingConversationLinkGeneratorDescriptor *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -65,45 +65,45 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_generatorID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     generatorVersion = self->_generatorVersion;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_generatorID)
   {
-    v5 = v4;
-    [v4 setGeneratorID:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setGeneratorID:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_generatorVersion;
-    *(v4 + 20) |= 1u;
+    *(toCopy + 4) = self->_generatorVersion;
+    *(toCopy + 20) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_generatorID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_generatorID copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -116,16 +116,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   generatorID = self->_generatorID;
-  if (generatorID | *(v4 + 1))
+  if (generatorID | *(equalCopy + 1))
   {
     if (![(NSString *)generatorID isEqual:?])
     {
@@ -133,10 +133,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) != 0 && self->_generatorVersion == *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) != 0 && self->_generatorVersion == *(equalCopy + 4))
     {
       v6 = 1;
       goto LABEL_9;
@@ -167,19 +167,19 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(CSDMessagingConversationLinkGeneratorDescriptor *)self setGeneratorID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
-    self->_generatorVersion = v4[4];
+    self->_generatorVersion = fromCopy[4];
     *&self->_has |= 1u;
   }
 }

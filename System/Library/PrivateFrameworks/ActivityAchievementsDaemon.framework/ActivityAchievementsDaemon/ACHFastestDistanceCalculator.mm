@@ -1,33 +1,33 @@
 @interface ACHFastestDistanceCalculator
 - (ACHFastestDistanceCalculator)init;
-- (ACHFastestDistanceCalculator)initWithHealthStore:(id)a3;
-- (id)fastestDistancesFor:(id)a3;
-- (id)quantityTypeIdentifierForDistance:(id)a3;
+- (ACHFastestDistanceCalculator)initWithHealthStore:(id)store;
+- (id)fastestDistancesFor:(id)for;
+- (id)quantityTypeIdentifierForDistance:(id)distance;
 @end
 
 @implementation ACHFastestDistanceCalculator
 
-- (ACHFastestDistanceCalculator)initWithHealthStore:(id)a3
+- (ACHFastestDistanceCalculator)initWithHealthStore:(id)store
 {
-  *(&self->super.isa + OBJC_IVAR___ACHFastestDistanceCalculator_healthStore) = a3;
+  *(&self->super.isa + OBJC_IVAR___ACHFastestDistanceCalculator_healthStore) = store;
   v5.receiver = self;
   v5.super_class = ACHFastestDistanceCalculator;
-  v3 = a3;
+  storeCopy = store;
   return [(ACHFastestDistanceCalculator *)&v5 init];
 }
 
-- (id)quantityTypeIdentifierForDistance:(id)a3
+- (id)quantityTypeIdentifierForDistance:(id)distance
 {
-  v3 = a3;
-  v4 = [v3 workoutActivityType];
-  if (v4 == 37)
+  distanceCopy = distance;
+  workoutActivityType = [distanceCopy workoutActivityType];
+  if (workoutActivityType == 37)
   {
     v5 = MEMORY[0x277CCCB40];
   }
 
   else
   {
-    if (v4 != 71)
+    if (workoutActivityType != 71)
     {
       result = sub_221E57060();
       __break(1u);
@@ -43,11 +43,11 @@
   return v6;
 }
 
-- (id)fastestDistancesFor:(id)a3
+- (id)fastestDistancesFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  ACHFastestDistanceCalculator.fastestDistances(for:)(v6, v4);
+  forCopy = for;
+  selfCopy = self;
+  ACHFastestDistanceCalculator.fastestDistances(for:)(v6, forCopy);
   v8 = v7;
 
   return v8;

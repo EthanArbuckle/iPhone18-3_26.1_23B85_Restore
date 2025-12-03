@@ -1,6 +1,6 @@
 @interface MDMDEPPushTokenManager
-- (BOOL)_queue_isSyncNeededWithAppToken:(id)a3 eligibleForMigration:(BOOL)a4 shouldForce:(BOOL)a5;
-- (MDMDEPPushTokenManager)initWithPushServiceManager:(id)a3 networkMonitor:(id)a4;
+- (BOOL)_queue_isSyncNeededWithAppToken:(id)token eligibleForMigration:(BOOL)migration shouldForce:(BOOL)force;
+- (MDMDEPPushTokenManager)initWithPushServiceManager:(id)manager networkMonitor:(id)monitor;
 - (id)_noPushTokenError;
 - (id)_queue_deadlineToSync;
 - (id)_queue_lastPushTokenHash;
@@ -11,29 +11,29 @@
 - (void)_migrationEligibilityChanged;
 - (void)_queue_retryPushTokenSync;
 - (void)_queue_scheduleAppTokenSync;
-- (void)_queue_scheduleMandatoryDEPPushTokenSyncWithDelay:(double)a3 reason:(id)a4 isRetry:(BOOL)a5;
-- (void)_queue_setDeadlineToSync:(id)a3;
-- (void)_queue_setLastPushTokenHash:(id)a3;
-- (void)_queue_setLastSyncedEligibility:(id)a3;
-- (void)_queue_setLastestPushTokenHashToSync:(id)a3;
+- (void)_queue_scheduleMandatoryDEPPushTokenSyncWithDelay:(double)delay reason:(id)reason isRetry:(BOOL)retry;
+- (void)_queue_setDeadlineToSync:(id)sync;
+- (void)_queue_setLastPushTokenHash:(id)hash;
+- (void)_queue_setLastSyncedEligibility:(id)eligibility;
+- (void)_queue_setLastestPushTokenHashToSync:(id)sync;
 - (void)_queue_startMonitoringDEPPushTokenChange;
-- (void)_queue_syncPushTokenShouldForce:(BOOL)a3 shouldScheduleRetry:(BOOL)a4 reason:(id)a5 backgroundTask:(id)a6 completionHandler:(id)a7;
-- (void)pushServiceManager:(id)a3 didReceiveAppToken:(id)a4 forTopic:(id)a5 environment:(unint64_t)a6;
-- (void)pushServiceManager:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5 environment:(unint64_t)a6;
-- (void)pushServiceManager:(id)a3 didReceivePublicToken:(id)a4 forEnvironment:(unint64_t)a5;
-- (void)scheduleMandatoryDEPPushTokenSyncWithRandomDelay:(BOOL)a3;
+- (void)_queue_syncPushTokenShouldForce:(BOOL)force shouldScheduleRetry:(BOOL)retry reason:(id)reason backgroundTask:(id)task completionHandler:(id)handler;
+- (void)pushServiceManager:(id)manager didReceiveAppToken:(id)token forTopic:(id)topic environment:(unint64_t)environment;
+- (void)pushServiceManager:(id)manager didReceiveMessageForTopic:(id)topic userInfo:(id)info environment:(unint64_t)environment;
+- (void)pushServiceManager:(id)manager didReceivePublicToken:(id)token forEnvironment:(unint64_t)environment;
+- (void)scheduleMandatoryDEPPushTokenSyncWithRandomDelay:(BOOL)delay;
 - (void)schedulePeriodicMandatoryDEPPushTokenSync;
-- (void)startMonitoringDEPPushTokenChangeShouldForce:(BOOL)a3;
-- (void)syncDEPPushTokenWithDelay:(double)a3 completion:(id)a4;
+- (void)startMonitoringDEPPushTokenChangeShouldForce:(BOOL)force;
+- (void)syncDEPPushTokenWithDelay:(double)delay completion:(id)completion;
 @end
 
 @implementation MDMDEPPushTokenManager
 
-- (MDMDEPPushTokenManager)initWithPushServiceManager:(id)a3 networkMonitor:(id)a4
+- (MDMDEPPushTokenManager)initWithPushServiceManager:(id)manager networkMonitor:(id)monitor
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  monitorCopy = monitor;
   v29.receiver = self;
   v29.super_class = MDMDEPPushTokenManager;
   v9 = [(MDMDEPPushTokenManager *)&v29 init];
@@ -43,8 +43,8 @@
     workerQueue = v9->_workerQueue;
     v9->_workerQueue = v10;
 
-    objc_storeStrong(&v9->_pushServiceManager, a3);
-    objc_storeStrong(&v9->_networkMonitor, a4);
+    objc_storeStrong(&v9->_pushServiceManager, manager);
+    objc_storeStrong(&v9->_networkMonitor, monitor);
     v9->_syncInterval = 300.0;
     v12 = objc_alloc(MEMORY[0x277D03568]);
     v13 = MDMDEPTokenSyncPropertiesFilePath();
@@ -58,38 +58,38 @@
     syncActivityPlist = v9->_syncActivityPlist;
     v9->_syncActivityPlist = v18;
 
-    v20 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v21 = MDMDEPPushServiceDirectory();
-    v22 = [v20 fileExistsAtPath:v21];
+    v22 = [defaultManager fileExistsAtPath:v21];
 
     if ((v22 & 1) == 0)
     {
-      v23 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v24 = MDMDEPPushServiceDirectory();
       v30 = *MEMORY[0x277CCA180];
       v31[0] = &unk_2868503B0;
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
-      [v23 createDirectoryAtPath:v24 withIntermediateDirectories:1 attributes:v25 error:0];
+      [defaultManager2 createDirectoryAtPath:v24 withIntermediateDirectories:1 attributes:v25 error:0];
     }
 
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v9 selector:sel__migrationEligibilityChanged name:*MEMORY[0x277D24600] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__migrationEligibilityChanged name:*MEMORY[0x277D24600] object:0];
   }
 
   v27 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (void)startMonitoringDEPPushTokenChangeShouldForce:(BOOL)a3
+- (void)startMonitoringDEPPushTokenChangeShouldForce:(BOOL)force
 {
-  v5 = [(MDMDEPPushTokenManager *)self workerQueue];
+  workerQueue = [(MDMDEPPushTokenManager *)self workerQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__MDMDEPPushTokenManager_startMonitoringDEPPushTokenChangeShouldForce___block_invoke;
   v6[3] = &unk_27982BB18;
-  v7 = a3;
+  forceCopy = force;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(workerQueue, v6);
 }
 
 void __71__MDMDEPPushTokenManager_startMonitoringDEPPushTokenChangeShouldForce___block_invoke(uint64_t a1)
@@ -122,14 +122,14 @@ void __71__MDMDEPPushTokenManager_startMonitoringDEPPushTokenChangeShouldForce__
   v10 = __Block_byref_object_copy__2;
   v11 = __Block_byref_object_dispose__2;
   v12 = 0;
-  v3 = [(MDMDEPPushTokenManager *)self workerQueue];
+  workerQueue = [(MDMDEPPushTokenManager *)self workerQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__MDMDEPPushTokenManager_depPushToken__block_invoke;
   v6[3] = &unk_27982BB40;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(workerQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -147,19 +147,19 @@ uint64_t __38__MDMDEPPushTokenManager_depPushToken__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)syncDEPPushTokenWithDelay:(double)a3 completion:(id)a4
+- (void)syncDEPPushTokenWithDelay:(double)delay completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(MDMDEPPushTokenManager *)self workerQueue];
+  completionCopy = completion;
+  workerQueue = [(MDMDEPPushTokenManager *)self workerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__MDMDEPPushTokenManager_syncDEPPushTokenWithDelay_completion___block_invoke;
   block[3] = &unk_27982BB68;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  delayCopy = delay;
+  v8 = completionCopy;
+  dispatch_async(workerQueue, block);
 }
 
 uint64_t __63__MDMDEPPushTokenManager_syncDEPPushTokenWithDelay_completion___block_invoke(uint64_t a1)
@@ -171,37 +171,37 @@ uint64_t __63__MDMDEPPushTokenManager_syncDEPPushTokenWithDelay_completion___blo
   return [v2 _queue_retryPushTokenSyncAfterInterval:1 shouldForce:0 shouldScheduleRetry:1 shouldCallCompletion:@"syncDEPPushTokenWithDelay:completion: called" reason:v3];
 }
 
-- (void)scheduleMandatoryDEPPushTokenSyncWithRandomDelay:(BOOL)a3
+- (void)scheduleMandatoryDEPPushTokenSyncWithRandomDelay:(BOOL)delay
 {
   v4 = 0;
-  if (a3)
+  if (delay)
   {
     [(MDMDEPPushTokenManager *)self _randomDelay];
     v4 = v5;
   }
 
-  v6 = [(MDMDEPPushTokenManager *)self workerQueue];
+  workerQueue = [(MDMDEPPushTokenManager *)self workerQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__MDMDEPPushTokenManager_scheduleMandatoryDEPPushTokenSyncWithRandomDelay___block_invoke;
   v7[3] = &unk_27982BB90;
   v7[4] = self;
   v7[5] = v4;
-  dispatch_async(v6, v7);
+  dispatch_async(workerQueue, v7);
 }
 
 - (void)schedulePeriodicMandatoryDEPPushTokenSync
 {
   [MEMORY[0x277D03500] depPushTokenPeriodicSyncIntervalWithDefaultValue:604800.0];
   v4 = v3;
-  v5 = [(MDMDEPPushTokenManager *)self workerQueue];
+  workerQueue = [(MDMDEPPushTokenManager *)self workerQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__MDMDEPPushTokenManager_schedulePeriodicMandatoryDEPPushTokenSync__block_invoke;
   v6[3] = &unk_27982BB90;
   v6[5] = v4;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(workerQueue, v6);
 }
 
 uint64_t __67__MDMDEPPushTokenManager_schedulePeriodicMandatoryDEPPushTokenSync__block_invoke(uint64_t a1)
@@ -233,35 +233,35 @@ uint64_t __67__MDMDEPPushTokenManager_schedulePeriodicMandatoryDEPPushTokenSync_
     }
 
     [(MDMDEPPushTokenManager *)self setIsMonitoringTokenChanges:1];
-    v4 = [(MDMDEPPushTokenManager *)self pushServiceManager];
-    [v4 addPushServiceObserver:self];
+    pushServiceManager = [(MDMDEPPushTokenManager *)self pushServiceManager];
+    [pushServiceManager addPushServiceObserver:self];
 
-    v5 = [(MDMDEPPushTokenManager *)self pushServiceManager];
-    [v5 startListeningForDEPPushMessage];
+    pushServiceManager2 = [(MDMDEPPushTokenManager *)self pushServiceManager];
+    [pushServiceManager2 startListeningForDEPPushMessage];
 
-    v6 = [(MDMDEPPushTokenManager *)self pushServiceManager];
-    [v6 requestAppTokenForTopic:0x2868486F0 environment:0];
+    pushServiceManager3 = [(MDMDEPPushTokenManager *)self pushServiceManager];
+    [pushServiceManager3 requestAppTokenForTopic:0x2868486F0 environment:0];
   }
 }
 
-- (void)_queue_syncPushTokenShouldForce:(BOOL)a3 shouldScheduleRetry:(BOOL)a4 reason:(id)a5 backgroundTask:(id)a6 completionHandler:(id)a7
+- (void)_queue_syncPushTokenShouldForce:(BOOL)force shouldScheduleRetry:(BOOL)retry reason:(id)reason backgroundTask:(id)task completionHandler:(id)handler
 {
-  v11 = a6;
-  v12 = a7;
-  v13 = [(MDMDEPPushTokenManager *)self appToken];
-  if ([v13 length])
+  taskCopy = task;
+  handlerCopy = handler;
+  appToken = [(MDMDEPPushTokenManager *)self appToken];
+  if ([appToken length])
   {
-    v14 = [(MDMDEPPushTokenManager *)self networkMonitor];
+    networkMonitor = [(MDMDEPPushTokenManager *)self networkMonitor];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __118__MDMDEPPushTokenManager__queue_syncPushTokenShouldForce_shouldScheduleRetry_reason_backgroundTask_completionHandler___block_invoke;
     v17[3] = &unk_27982BC08;
     v17[4] = self;
-    v20 = a3;
-    v19 = v12;
-    v18 = v11;
-    v21 = a4;
-    [v14 waitForNetworkWithCompletionHandler:v17];
+    forceCopy = force;
+    v19 = handlerCopy;
+    v18 = taskCopy;
+    retryCopy = retry;
+    [networkMonitor waitForNetworkWithCompletionHandler:v17];
   }
 
   else
@@ -273,10 +273,10 @@ uint64_t __67__MDMDEPPushTokenManager_schedulePeriodicMandatoryDEPPushTokenSync_
       _os_log_impl(&dword_2561F5000, v15, OS_LOG_TYPE_ERROR, "MDMDEPPushTokenManager: Push token is not available.", buf, 2u);
     }
 
-    v16 = [(MDMDEPPushTokenManager *)self _noPushTokenError];
-    (*(v12 + 2))(v12, 0, 0, v16);
+    _noPushTokenError = [(MDMDEPPushTokenManager *)self _noPushTokenError];
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, _noPushTokenError);
 
-    [v11 setCompleted];
+    [taskCopy setCompleted];
   }
 }
 
@@ -476,21 +476,21 @@ uint64_t __118__MDMDEPPushTokenManager__queue_syncPushTokenShouldForce_shouldSch
   return result;
 }
 
-- (void)_queue_scheduleMandatoryDEPPushTokenSyncWithDelay:(double)a3 reason:(id)a4 isRetry:(BOOL)a5
+- (void)_queue_scheduleMandatoryDEPPushTokenSyncWithDelay:(double)delay reason:(id)reason isRetry:(BOOL)retry
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  reasonCopy = reason;
   if ([(MDMDEPPushTokenManager *)self isMonitoringTokenChanges])
   {
     v9 = [objc_alloc(MEMORY[0x277D03558]) initWithReason:@"Schedule mandatory DEP push token sync"];
-    v10 = fmax(a3, 0.0);
-    if (!a5)
+    v10 = fmax(delay, 0.0);
+    if (!retry)
     {
-      v11 = [(MDMDEPPushTokenManager *)self _queue_deadlineToSync];
-      v12 = v11;
-      if (v11)
+      _queue_deadlineToSync = [(MDMDEPPushTokenManager *)self _queue_deadlineToSync];
+      v12 = _queue_deadlineToSync;
+      if (_queue_deadlineToSync)
       {
-        [v11 timeIntervalSinceNow];
+        [_queue_deadlineToSync timeIntervalSinceNow];
         v14 = fmax(v13, 0.0);
       }
 
@@ -516,7 +516,7 @@ uint64_t __118__MDMDEPPushTokenManager__queue_syncPushTokenShouldForce_shouldSch
     v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v10];
     [(MDMDEPPushTokenManager *)self _queue_setDeadlineToSync:v16];
 
-    [(MDMDEPPushTokenManager *)self _queue_retryPushTokenSyncAfterInterval:1 shouldForce:1 shouldScheduleRetry:0 shouldCallCompletion:v8 reason:v10];
+    [(MDMDEPPushTokenManager *)self _queue_retryPushTokenSyncAfterInterval:1 shouldForce:1 shouldScheduleRetry:0 shouldCallCompletion:reasonCopy reason:v10];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -524,9 +524,9 @@ uint64_t __118__MDMDEPPushTokenManager__queue_syncPushTokenShouldForce_shouldSch
 
 - (void)_queue_scheduleAppTokenSync
 {
-  v3 = [(MDMDEPPushTokenManager *)self _queue_lastPushTokenHash];
-  v4 = [(MDMDEPPushTokenManager *)self _queue_deadlineToSync];
-  if (v4)
+  _queue_lastPushTokenHash = [(MDMDEPPushTokenManager *)self _queue_lastPushTokenHash];
+  _queue_deadlineToSync = [(MDMDEPPushTokenManager *)self _queue_deadlineToSync];
+  if (_queue_deadlineToSync)
   {
     v5 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -535,11 +535,11 @@ uint64_t __118__MDMDEPPushTokenManager__queue_syncPushTokenShouldForce_shouldSch
       _os_log_impl(&dword_2561F5000, v5, OS_LOG_TYPE_DEBUG, "MDMDEPPushTokenManager: _scheduleAppTokenSync schedule forced sync due to deadline", buf, 2u);
     }
 
-    [v4 timeIntervalSinceNow];
+    [_queue_deadlineToSync timeIntervalSinceNow];
     v7 = fmax(v6, 0.0);
   }
 
-  else if (v3)
+  else if (_queue_lastPushTokenHash)
   {
     [(MDMDEPPushTokenManager *)self schedulePeriodicMandatoryDEPPushTokenSync];
     v7 = 0.0;
@@ -559,7 +559,7 @@ uint64_t __118__MDMDEPPushTokenManager__queue_syncPushTokenShouldForce_shouldSch
     [(MDMDEPPushTokenManager *)self _queue_setDeadlineToSync:0];
   }
 
-  [(MDMDEPPushTokenManager *)self _queue_retryPushTokenSyncAfterInterval:v4 != 0 shouldForce:1 shouldScheduleRetry:0 shouldCallCompletion:@"Push token received" reason:v7];
+  [(MDMDEPPushTokenManager *)self _queue_retryPushTokenSyncAfterInterval:_queue_deadlineToSync != 0 shouldForce:1 shouldScheduleRetry:0 shouldCallCompletion:@"Push token received" reason:v7];
 }
 
 - (void)_queue_retryPushTokenSync
@@ -620,23 +620,23 @@ void __125__MDMDEPPushTokenManager__queue_retryPushTokenSyncAfterInterval_should
   }
 }
 
-- (BOOL)_queue_isSyncNeededWithAppToken:(id)a3 eligibleForMigration:(BOOL)a4 shouldForce:(BOOL)a5
+- (BOOL)_queue_isSyncNeededWithAppToken:(id)token eligibleForMigration:(BOOL)migration shouldForce:(BOOL)force
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(MDMDEPPushTokenManager *)self _queue_lastPushTokenHash];
-  v10 = [v8 DMCSHA256Hash];
+  migrationCopy = migration;
+  tokenCopy = token;
+  _queue_lastPushTokenHash = [(MDMDEPPushTokenManager *)self _queue_lastPushTokenHash];
+  dMCSHA256Hash = [tokenCopy DMCSHA256Hash];
 
-  v11 = [v10 isEqualToData:v9];
-  v12 = [(MDMDEPPushTokenManager *)self _queue_lastSyncedEligibility];
-  v13 = v12;
-  if (v12)
+  v11 = [dMCSHA256Hash isEqualToData:_queue_lastPushTokenHash];
+  _queue_lastSyncedEligibility = [(MDMDEPPushTokenManager *)self _queue_lastSyncedEligibility];
+  v13 = _queue_lastSyncedEligibility;
+  if (_queue_lastSyncedEligibility)
   {
-    v14 = [v12 BOOLValue];
+    bOOLValue = [_queue_lastSyncedEligibility BOOLValue];
     v15 = 1;
     if (v11)
     {
-      if (((v14 ^ v6) & 1) == 0 && !a5)
+      if (((bOOLValue ^ migrationCopy) & 1) == 0 && !force)
       {
         v16 = *(DMCLogObjects() + 8);
         v15 = 0;
@@ -672,13 +672,13 @@ void __125__MDMDEPPushTokenManager__queue_retryPushTokenSyncAfterInterval_should
 
 - (void)_migrationEligibilityChanged
 {
-  v3 = [(MDMDEPPushTokenManager *)self workerQueue];
+  workerQueue = [(MDMDEPPushTokenManager *)self workerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__MDMDEPPushTokenManager__migrationEligibilityChanged__block_invoke;
   block[3] = &unk_27982BA78;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workerQueue, block);
 }
 
 uint64_t __54__MDMDEPPushTokenManager__migrationEligibilityChanged__block_invoke(uint64_t a1)
@@ -696,9 +696,9 @@ uint64_t __54__MDMDEPPushTokenManager__migrationEligibilityChanged__block_invoke
 - (id)_queue_lastPushTokenHash
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [(MDMDEPPushTokenManager *)self syncInfoPlist];
+  syncInfoPlist = [(MDMDEPPushTokenManager *)self syncInfoPlist];
   v8 = 0;
-  v3 = [v2 retrieveValueForKey:@"LastPushTokenHash" error:&v8];
+  v3 = [syncInfoPlist retrieveValueForKey:@"LastPushTokenHash" error:&v8];
   v4 = v8;
 
   if (v4)
@@ -717,13 +717,13 @@ uint64_t __54__MDMDEPPushTokenManager__migrationEligibilityChanged__block_invoke
   return v3;
 }
 
-- (void)_queue_setLastPushTokenHash:(id)a3
+- (void)_queue_setLastPushTokenHash:(id)hash
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MDMDEPPushTokenManager *)self syncInfoPlist];
+  hashCopy = hash;
+  syncInfoPlist = [(MDMDEPPushTokenManager *)self syncInfoPlist];
   v9 = 0;
-  [v5 saveValue:v4 forKey:@"LastPushTokenHash" error:&v9];
+  [syncInfoPlist saveValue:hashCopy forKey:@"LastPushTokenHash" error:&v9];
 
   v6 = v9;
   if (v6)
@@ -740,13 +740,13 @@ uint64_t __54__MDMDEPPushTokenManager__migrationEligibilityChanged__block_invoke
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setDeadlineToSync:(id)a3
+- (void)_queue_setDeadlineToSync:(id)sync
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MDMDEPPushTokenManager *)self syncInfoPlist];
+  syncCopy = sync;
+  syncInfoPlist = [(MDMDEPPushTokenManager *)self syncInfoPlist];
   v9 = 0;
-  [v5 saveValue:v4 forKey:@"DeadlineToSync" error:&v9];
+  [syncInfoPlist saveValue:syncCopy forKey:@"DeadlineToSync" error:&v9];
 
   v6 = v9;
   if (v6)
@@ -766,9 +766,9 @@ uint64_t __54__MDMDEPPushTokenManager__migrationEligibilityChanged__block_invoke
 - (id)_queue_deadlineToSync
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [(MDMDEPPushTokenManager *)self syncInfoPlist];
+  syncInfoPlist = [(MDMDEPPushTokenManager *)self syncInfoPlist];
   v8 = 0;
-  v3 = [v2 retrieveValueForKey:@"DeadlineToSync" error:&v8];
+  v3 = [syncInfoPlist retrieveValueForKey:@"DeadlineToSync" error:&v8];
   v4 = v8;
 
   if (v4)
@@ -787,13 +787,13 @@ uint64_t __54__MDMDEPPushTokenManager__migrationEligibilityChanged__block_invoke
   return v3;
 }
 
-- (void)_queue_setLastSyncedEligibility:(id)a3
+- (void)_queue_setLastSyncedEligibility:(id)eligibility
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MDMDEPPushTokenManager *)self syncInfoPlist];
+  eligibilityCopy = eligibility;
+  syncInfoPlist = [(MDMDEPPushTokenManager *)self syncInfoPlist];
   v9 = 0;
-  [v5 saveValue:v4 forKey:@"LastSyncedEligibility" error:&v9];
+  [syncInfoPlist saveValue:eligibilityCopy forKey:@"LastSyncedEligibility" error:&v9];
 
   v6 = v9;
   if (v6)
@@ -813,9 +813,9 @@ uint64_t __54__MDMDEPPushTokenManager__migrationEligibilityChanged__block_invoke
 - (id)_queue_lastSyncedEligibility
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [(MDMDEPPushTokenManager *)self syncInfoPlist];
+  syncInfoPlist = [(MDMDEPPushTokenManager *)self syncInfoPlist];
   v8 = 0;
-  v3 = [v2 retrieveValueForKey:@"LastSyncedEligibility" error:&v8];
+  v3 = [syncInfoPlist retrieveValueForKey:@"LastSyncedEligibility" error:&v8];
   v4 = v8;
 
   if (v4)
@@ -834,16 +834,16 @@ uint64_t __54__MDMDEPPushTokenManager__migrationEligibilityChanged__block_invoke
   return v3;
 }
 
-- (void)_queue_setLastestPushTokenHashToSync:(id)a3
+- (void)_queue_setLastestPushTokenHashToSync:(id)sync
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MDMDEPPushTokenManager *)self syncActivityPlist];
-  v6 = v5;
-  if (v4)
+  syncCopy = sync;
+  syncActivityPlist = [(MDMDEPPushTokenManager *)self syncActivityPlist];
+  v6 = syncActivityPlist;
+  if (syncCopy)
   {
     v15 = @"LatestPushTokenHashToSync";
-    v16[0] = v4;
+    v16[0] = syncCopy;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v11 = 0;
     [v6 saveKeyValuePairs:v7 error:&v11];
@@ -853,7 +853,7 @@ uint64_t __54__MDMDEPPushTokenManager__migrationEligibilityChanged__block_invoke
   else
   {
     v12 = 0;
-    [v5 clearAllKeyValueStorageWithError:&v12];
+    [syncActivityPlist clearAllKeyValueStorageWithError:&v12];
     v8 = v12;
   }
 
@@ -874,9 +874,9 @@ uint64_t __54__MDMDEPPushTokenManager__migrationEligibilityChanged__block_invoke
 - (id)_queue_lastestPushTokenHashToSync
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [(MDMDEPPushTokenManager *)self syncActivityPlist];
+  syncActivityPlist = [(MDMDEPPushTokenManager *)self syncActivityPlist];
   v8 = 0;
-  v3 = [v2 retrieveValueForKey:@"LatestPushTokenHashToSync" error:&v8];
+  v3 = [syncActivityPlist retrieveValueForKey:@"LatestPushTokenHashToSync" error:&v8];
   v4 = v8;
 
   if (v4)
@@ -905,13 +905,13 @@ uint64_t __54__MDMDEPPushTokenManager__migrationEligibilityChanged__block_invoke
   return v5;
 }
 
-- (void)pushServiceManager:(id)a3 didReceiveAppToken:(id)a4 forTopic:(id)a5 environment:(unint64_t)a6
+- (void)pushServiceManager:(id)manager didReceiveAppToken:(id)token forTopic:(id)topic environment:(unint64_t)environment
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!a6 && [v10 isEqualToString:0x2868486F0])
+  tokenCopy = token;
+  topicCopy = topic;
+  v11 = topicCopy;
+  if (!environment && [topicCopy isEqualToString:0x2868486F0])
   {
     v12 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -919,18 +919,18 @@ uint64_t __54__MDMDEPPushTokenManager__migrationEligibilityChanged__block_invoke
       *buf = 138543618;
       v18 = v11;
       v19 = 2114;
-      v20 = v9;
+      v20 = tokenCopy;
       _os_log_impl(&dword_2561F5000, v12, OS_LOG_TYPE_DEFAULT, "MDMDEPPushTokenManager: Received app token for topic: %{public}@, appToken: %{public}@", buf, 0x16u);
     }
 
-    v13 = [(MDMDEPPushTokenManager *)self workerQueue];
+    workerQueue = [(MDMDEPPushTokenManager *)self workerQueue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __85__MDMDEPPushTokenManager_pushServiceManager_didReceiveAppToken_forTopic_environment___block_invoke;
     v15[3] = &unk_27982BAC8;
     v15[4] = self;
-    v16 = v9;
-    dispatch_async(v13, v15);
+    v16 = tokenCopy;
+    dispatch_async(workerQueue, v15);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -950,19 +950,19 @@ void __85__MDMDEPPushTokenManager_pushServiceManager_didReceiveAppToken_forTopic
   }
 }
 
-- (void)pushServiceManager:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5 environment:(unint64_t)a6
+- (void)pushServiceManager:(id)manager didReceiveMessageForTopic:(id)topic userInfo:(id)info environment:(unint64_t)environment
 {
-  if (!a6 && [a4 isEqualToString:0x2868486F0])
+  if (!environment && [topic isEqualToString:0x2868486F0])
   {
 
     [(MDMDEPPushTokenManager *)self _depPushReceived];
   }
 }
 
-- (void)pushServiceManager:(id)a3 didReceivePublicToken:(id)a4 forEnvironment:(unint64_t)a5
+- (void)pushServiceManager:(id)manager didReceivePublicToken:(id)token forEnvironment:(unint64_t)environment
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (!a5)
+  if (!environment)
   {
     v6 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -972,8 +972,8 @@ void __85__MDMDEPPushTokenManager_pushServiceManager_didReceiveAppToken_forTopic
       _os_log_impl(&dword_2561F5000, v6, OS_LOG_TYPE_DEBUG, "MDMDEPPushTokenManager: %s", &v9, 0xCu);
     }
 
-    v7 = [(MDMDEPPushTokenManager *)self pushServiceManager];
-    [v7 requestAppTokenForTopic:0x2868486F0 environment:0];
+    pushServiceManager = [(MDMDEPPushTokenManager *)self pushServiceManager];
+    [pushServiceManager requestAppTokenForTopic:0x2868486F0 environment:0];
   }
 
   v8 = *MEMORY[0x277D85DE8];

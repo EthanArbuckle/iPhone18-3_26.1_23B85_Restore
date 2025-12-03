@@ -1,12 +1,12 @@
 @interface ActivityManagerDebugRecentActionItem
-- (ActivityManagerDebugRecentActionItem)initWithString:(id)a3;
+- (ActivityManagerDebugRecentActionItem)initWithString:(id)string;
 @end
 
 @implementation ActivityManagerDebugRecentActionItem
 
-- (ActivityManagerDebugRecentActionItem)initWithString:(id)a3
+- (ActivityManagerDebugRecentActionItem)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = ActivityManagerDebugRecentActionItem;
   v5 = [(ActivityManagerDebugRecentActionItem *)&v9 init];
@@ -15,7 +15,7 @@
     v6 = +[NSDate date];
     [(ActivityManagerDebugRecentActionItem *)v5 setWhen:v6];
 
-    v7 = [v4 copy];
+    v7 = [stringCopy copy];
     [(ActivityManagerDebugRecentActionItem *)v5 setStr:v7];
   }
 

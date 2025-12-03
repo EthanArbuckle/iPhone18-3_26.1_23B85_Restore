@@ -1,10 +1,10 @@
 @interface _UISheetPresentationMetrics
 + (id)_defaultMetrics;
-- (BOOL)shouldScaleDownBehindDescendantsForContainer:(id)a3 withBounds:(CGRect)a4;
-- (CGSize)defaultFormSheetSizeForScreenSize:(CGSize)a3;
-- (CGSize)formSheetSizeForViewController:(id)a3 windowSize:(CGSize)a4 screenSize:(CGSize)a5;
+- (BOOL)shouldScaleDownBehindDescendantsForContainer:(id)container withBounds:(CGRect)bounds;
+- (CGSize)defaultFormSheetSizeForScreenSize:(CGSize)size;
+- (CGSize)formSheetSizeForViewController:(id)controller windowSize:(CGSize)size screenSize:(CGSize)screenSize;
 - (id)_init;
-- (id)transitionSpringParametersHighSpeed:(BOOL)a3;
+- (id)transitionSpringParametersHighSpeed:(BOOL)speed;
 @end
 
 @implementation _UISheetPresentationMetrics
@@ -28,16 +28,16 @@
   return [(_UISheetPresentationMetrics *)&v3 init];
 }
 
-- (id)transitionSpringParametersHighSpeed:(BOOL)a3
+- (id)transitionSpringParametersHighSpeed:(BOOL)speed
 {
-  v3 = a3;
+  speedCopy = speed;
   if (qword_1ED49C098 != -1)
   {
     dispatch_once(&qword_1ED49C098, &__block_literal_global_3_11);
   }
 
   v4 = 2;
-  if (v3)
+  if (speedCopy)
   {
     v4 = 3;
   }
@@ -47,14 +47,14 @@
   return v5;
 }
 
-- (CGSize)formSheetSizeForViewController:(id)a3 windowSize:(CGSize)a4 screenSize:(CGSize)a5
+- (CGSize)formSheetSizeForViewController:(id)controller windowSize:(CGSize)size screenSize:(CGSize)screenSize
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.height;
-  v8 = a4.width;
-  v10 = a3;
-  [v10 preferredContentSize];
+  height = screenSize.height;
+  width = screenSize.width;
+  v7 = size.height;
+  v8 = size.width;
+  controllerCopy = controller;
+  [controllerCopy preferredContentSize];
   v12 = v11;
   v14 = v13;
   [(_UISheetPresentationMetrics *)self defaultFormSheetSizeForScreenSize:width, height];
@@ -62,7 +62,7 @@
   v18 = v16;
   if (v12 <= 0.0 || v14 <= 0.0)
   {
-    if (v15 <= 0.0 || v16 <= 0.0 || (_UISheetPresentationControllerStylesSheetsAsCards(v10) & 1) == 0 && (v17 >= v8 || v18 >= v7))
+    if (v15 <= 0.0 || v16 <= 0.0 || (_UISheetPresentationControllerStylesSheetsAsCards(controllerCopy) & 1) == 0 && (v17 >= v8 || v18 >= v7))
     {
       v17 = v8;
       v18 = v7;
@@ -82,14 +82,14 @@
   return result;
 }
 
-- (CGSize)defaultFormSheetSizeForScreenSize:(CGSize)a3
+- (CGSize)defaultFormSheetSizeForScreenSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [objc_opt_self() mainScreen];
-  v6 = [v5 _wantsWideContentMargins];
+  height = size.height;
+  width = size.width;
+  mainScreen = [objc_opt_self() mainScreen];
+  _wantsWideContentMargins = [mainScreen _wantsWideContentMargins];
 
-  if (v6)
+  if (_wantsWideContentMargins)
   {
     v7 = 394.0;
     v8 = 414.0;
@@ -122,12 +122,12 @@
   return result;
 }
 
-- (BOOL)shouldScaleDownBehindDescendantsForContainer:(id)a3 withBounds:(CGRect)a4
+- (BOOL)shouldScaleDownBehindDescendantsForContainer:(id)container withBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  v5 = [a3 window];
-  v6 = [v5 screen];
-  [v6 bounds];
+  height = bounds.size.height;
+  window = [container window];
+  screen = [window screen];
+  [screen bounds];
   v8 = height == v7;
 
   return v8;

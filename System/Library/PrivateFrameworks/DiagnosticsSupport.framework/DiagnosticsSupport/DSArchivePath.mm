@@ -1,22 +1,22 @@
 @interface DSArchivePath
-- (DSArchivePath)initWithSource:(id)a3 prefix:(id)a4 root:(BOOL)a5;
+- (DSArchivePath)initWithSource:(id)source prefix:(id)prefix root:(BOOL)root;
 @end
 
 @implementation DSArchivePath
 
-- (DSArchivePath)initWithSource:(id)a3 prefix:(id)a4 root:(BOOL)a5
+- (DSArchivePath)initWithSource:(id)source prefix:(id)prefix root:(BOOL)root
 {
-  v9 = a3;
-  v10 = a4;
+  sourceCopy = source;
+  prefixCopy = prefix;
   v14.receiver = self;
   v14.super_class = DSArchivePath;
   v11 = [(DSArchivePath *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sourceUrl, a3);
-    objc_storeStrong(&v12->_prefix, a4);
-    v12->_root = a5;
+    objc_storeStrong(&v11->_sourceUrl, source);
+    objc_storeStrong(&v12->_prefix, prefix);
+    v12->_root = root;
   }
 
   return v12;

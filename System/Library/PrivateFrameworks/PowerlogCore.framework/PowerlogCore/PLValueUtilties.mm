@@ -1,17 +1,17 @@
 @interface PLValueUtilties
-+ (BOOL)isFormater:(signed __int16)a3 validForObject:(id)a4;
-+ (BOOL)isNil:(id)a3;
-+ (id)formattedStringForDate:(id)a3;
-+ (int64_t)compare:(id)a3 with:(id)a4;
-+ (signed)formatterFromDataType:(id)a3;
++ (BOOL)isFormater:(signed __int16)formater validForObject:(id)object;
++ (BOOL)isNil:(id)nil;
++ (id)formattedStringForDate:(id)date;
++ (int64_t)compare:(id)compare with:(id)with;
++ (signed)formatterFromDataType:(id)type;
 + (void)resetTimestampFormaterTimezone;
 @end
 
 @implementation PLValueUtilties
 
-+ (id)formattedStringForDate:(id)a3
++ (id)formattedStringForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   objc_sync_enter(@"kSharedTimestampFormater");
   v4 = timestampFormatter;
   if (!timestampFormatter)
@@ -20,25 +20,25 @@
     v4 = timestampFormatter;
   }
 
-  v5 = [v4 stringFromDate:v3];
+  v5 = [v4 stringFromDate:dateCopy];
   objc_sync_exit(@"kSharedTimestampFormater");
 
   return v5;
 }
 
-+ (signed)formatterFromDataType:(id)a3
++ (signed)formatterFromDataType:(id)type
 {
   v3 = formatterFromDataType__onceToken;
-  v4 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     +[PLValueUtilties formatterFromDataType:];
   }
 
-  v5 = [formatterFromDataType__PPSPBDatatypeToPLVFormater objectForKeyedSubscript:v4];
+  v5 = [formatterFromDataType__PPSPBDatatypeToPLVFormater objectForKeyedSubscript:typeCopy];
 
-  v6 = [v5 shortValue];
-  return v6;
+  shortValue = [v5 shortValue];
+  return shortValue;
 }
 
 void __41__PLValueUtilties_formatterFromDataType___block_invoke()
@@ -83,25 +83,25 @@ void __41__PLValueUtilties_formatterFromDataType___block_invoke()
   [v5 setCalendar:v6];
 
   v7 = timestampFormatter;
-  v8 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  [v7 setTimeZone:v8];
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+  [v7 setTimeZone:systemTimeZone];
 
   [timestampFormatter setDateFormat:@"MM/dd/yy HH:mm:ss.SSS"];
 
   objc_sync_exit(@"kSharedTimestampFormater");
 }
 
-+ (BOOL)isFormater:(signed __int16)a3 validForObject:(id)a4
++ (BOOL)isFormater:(signed __int16)formater validForObject:(id)object
 {
-  v5 = a4;
-  if (!v5)
+  objectCopy = object;
+  if (!objectCopy)
   {
     goto LABEL_5;
   }
 
-  v6 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v6 == v5)
+  if (null == objectCopy)
   {
     goto LABEL_5;
   }
@@ -109,9 +109,9 @@ void __41__PLValueUtilties_formatterFromDataType___block_invoke()
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a3 <= 3u)
+    if (formater <= 3u)
     {
-      if (a3 <= 2u)
+      if (formater <= 2u)
       {
 LABEL_15:
         objc_opt_class();
@@ -122,9 +122,9 @@ LABEL_17:
       }
     }
 
-    else if (a3 >= 8u)
+    else if (formater >= 8u)
     {
-      if (a3 != 8)
+      if (formater != 8)
       {
         goto LABEL_14;
       }
@@ -136,7 +136,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (a3 - 3 >= 5)
+  if (formater - 3 >= 5)
   {
 LABEL_14:
     v7 = 0;
@@ -150,13 +150,13 @@ LABEL_6:
   return v7 & 1;
 }
 
-+ (int64_t)compare:(id)a3 with:(id)a4
++ (int64_t)compare:(id)compare with:(id)with
 {
-  v5 = a3;
-  v6 = a4;
-  if (![PLValueUtilties isNil:v5]&& ![PLValueUtilties isNil:v6]&& ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_respondsToSelector() & 1) != 0))
+  compareCopy = compare;
+  withCopy = with;
+  if (![PLValueUtilties isNil:compareCopy]&& ![PLValueUtilties isNil:withCopy]&& ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_respondsToSelector() & 1) != 0))
   {
-    v7 = [v5 compare:v6];
+    v7 = [compareCopy compare:withCopy];
   }
 
   else
@@ -167,17 +167,17 @@ LABEL_6:
   return v7;
 }
 
-+ (BOOL)isNil:(id)a3
++ (BOOL)isNil:(id)nil
 {
-  if (!a3)
+  if (!nil)
   {
     return 1;
   }
 
   v3 = MEMORY[0x1E695DFB0];
-  v4 = a3;
-  v5 = [v3 null];
-  v6 = v5 == v4;
+  nilCopy = nil;
+  null = [v3 null];
+  v6 = null == nilCopy;
 
   return v6;
 }

@@ -1,45 +1,45 @@
 @interface CRLConnectionLineKnobTracker
 - (BOOL)didChangeGeometry;
 - (BOOL)p_connectedToCenter;
-- (BOOL)p_isValidConnectionDestination:(id)a3;
-- (BOOL)p_shouldIncludeCardinalMagnet:(unint64_t)a3 forLayout:(id)a4;
+- (BOOL)p_isValidConnectionDestination:(id)destination;
+- (BOOL)p_shouldIncludeCardinalMagnet:(unint64_t)magnet forLayout:(id)layout;
 - (BOOL)shouldHideOtherKnobs;
-- (CGPoint)p_getMagnetPositionAdjustedToParentForLayout:(id)a3 withOriginalMagnetPosition:(CGPoint)a4;
+- (CGPoint)p_getMagnetPositionAdjustedToParentForLayout:(id)layout withOriginalMagnetPosition:(CGPoint)position;
 - (CGPoint)p_getSnappedMagnetNormalizedPosition;
-- (CRLConnectionLineKnobTracker)initWithRep:(id)a3 knob:(id)a4;
+- (CRLConnectionLineKnobTracker)initWithRep:(id)rep knob:(id)knob;
 - (double)p_getMagnetSnappingDistance;
 - (id)connectionLineLayout;
-- (id)p_findLayoutWithNearestMagnetInRect:(CGRect)a3 nearestMagnet:(unint64_t *)a4;
+- (id)p_findLayoutWithNearestMagnetInRect:(CGRect)rect nearestMagnet:(unint64_t *)magnet;
 - (unint64_t)p_getSnappedMagnetType;
 - (void)beginMovingKnob;
 - (void)endMovingKnob;
-- (void)moveKnobToCanvasPosition:(CGPoint)a3;
-- (void)moveKnobToRepPosition:(CGPoint)a3;
+- (void)moveKnobToCanvasPosition:(CGPoint)position;
+- (void)moveKnobToRepPosition:(CGPoint)position;
 - (void)p_createFloatingOrEdgeMagnetAtKnob;
 - (void)p_keepSnappedMagnetOnCenter;
-- (void)p_retrieveMagnetPositionsForLayout:(id)a3;
+- (void)p_retrieveMagnetPositionsForLayout:(id)layout;
 - (void)p_retrieveMagnetsForLayoutsNearKnob;
-- (void)p_setUserAdjustedShapeControlKnob:(BOOL)a3;
+- (void)p_setUserAdjustedShapeControlKnob:(BOOL)knob;
 - (void)p_snapToCenterIfLayoutHasConnectionWithoutMagnet;
 - (void)p_snapToNearestMagnetFromKnob;
 - (void)p_updateConnection;
 - (void)p_updateLayout;
-- (void)p_updateMagnetPositionsForConnectionLineLayout:(id)a3 withinLayout:(id)a4;
+- (void)p_updateMagnetPositionsForConnectionLineLayout:(id)layout withinLayout:(id)withinLayout;
 - (void)p_updateMagnetRenderables;
 - (void)p_updateRoutingProperties;
 - (void)p_validateLayout;
-- (void)willBeginDynamicOperationForReps:(id)a3;
+- (void)willBeginDynamicOperationForReps:(id)reps;
 @end
 
 @implementation CRLConnectionLineKnobTracker
 
-- (CRLConnectionLineKnobTracker)initWithRep:(id)a3 knob:(id)a4
+- (CRLConnectionLineKnobTracker)initWithRep:(id)rep knob:(id)knob
 {
-  v6 = a3;
-  v7 = a4;
+  repCopy = rep;
+  knobCopy = knob;
   v31.receiver = self;
   v31.super_class = CRLConnectionLineKnobTracker;
-  v8 = [(CRLCanvasKnobTracker *)&v31 initWithRep:v6 knob:v7];
+  v8 = [(CRLCanvasKnobTracker *)&v31 initWithRep:repCopy knob:knobCopy];
   v9 = v8;
   if (v8)
   {
@@ -51,11 +51,11 @@
     v9->mKnobMoved = 1;
     v9->mShouldSnapToMagnets = 1;
     v11 = objc_opt_class();
-    v12 = [v6 layout];
-    v13 = sub_100013F00(v11, v12);
+    layout = [repCopy layout];
+    v13 = sub_100013F00(v11, layout);
 
     p_x = &v9->mOriginalKnobCenterNaturalSpace.x;
-    if ([v7 tag] == 11)
+    if ([knobCopy tag] == 11)
     {
       [v13 unclippedHeadPoint];
       *p_x = v15;
@@ -89,15 +89,15 @@
   return v9;
 }
 
-- (void)willBeginDynamicOperationForReps:(id)a3
+- (void)willBeginDynamicOperationForReps:(id)reps
 {
   v6 = [(CRLCanvasKnobTracker *)self icc];
   if ([v6 shouldSupportedDynamicOperationsEnqueueCommandsInRealTime])
   {
     v4 = [(CRLCanvasKnobTracker *)self rep];
-    v5 = [v4 allowsSupportedDynamicOperationsToBeRealTime];
+    allowsSupportedDynamicOperationsToBeRealTime = [v4 allowsSupportedDynamicOperationsToBeRealTime];
 
-    if (v5)
+    if (allowsSupportedDynamicOperationsToBeRealTime)
     {
       self->mIsEnqueueingCommandsInRealTime = 1;
     }
@@ -115,37 +115,37 @@
   [(CRLCanvasKnobTracker *)&v35 beginMovingKnob];
   v3 = objc_opt_class();
   v4 = [(CRLCanvasKnobTracker *)self rep];
-  v5 = [v4 layout];
-  v6 = sub_100013F00(v3, v5);
+  layout = [v4 layout];
+  v6 = sub_100013F00(v3, layout);
 
-  v7 = [v6 connectedFrom];
+  connectedFrom = [v6 connectedFrom];
   mOriginalConnectedFrom = self->mOriginalConnectedFrom;
-  self->mOriginalConnectedFrom = v7;
+  self->mOriginalConnectedFrom = connectedFrom;
 
-  v9 = [v6 connectedTo];
+  connectedTo = [v6 connectedTo];
   mOriginalConnectedTo = self->mOriginalConnectedTo;
-  self->mOriginalConnectedTo = v9;
+  self->mOriginalConnectedTo = connectedTo;
 
   v11 = [(CRLCanvasKnobTracker *)self rep];
   v12 = objc_opt_class();
-  v13 = [v11 dynamicMoveSmartShapeKnobDidBegin];
-  v14 = sub_100013F00(v12, v13);
+  dynamicMoveSmartShapeKnobDidBegin = [v11 dynamicMoveSmartShapeKnobDidBegin];
+  v14 = sub_100013F00(v12, dynamicMoveSmartShapeKnobDidBegin);
   mResizingLayout = self->mResizingLayout;
   self->mResizingLayout = v14;
 
   v16 = [(CRLCanvasKnobTracker *)self rep];
   self->mKnobsVisible = [v16 shouldCreateKnobs];
 
-  v17 = [(CRLCanvasKnobTracker *)self knob];
-  if ([v17 tag] == 11 && self->mOriginalConnectedTo)
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  if ([knob tag] == 11 && self->mOriginalConnectedTo)
   {
     self->mInitialSnap = 1;
   }
 
   else
   {
-    v18 = [(CRLCanvasKnobTracker *)self knob];
-    v19 = [v18 tag] == 10 && self->mOriginalConnectedFrom != 0;
+    knob2 = [(CRLCanvasKnobTracker *)self knob];
+    v19 = [knob2 tag] == 10 && self->mOriginalConnectedFrom != 0;
     self->mInitialSnap = v19;
   }
 
@@ -177,30 +177,30 @@
   if (self->mIsEnqueueingCommandsInRealTime)
   {
     v22 = [(CRLCanvasKnobTracker *)self rep];
-    v23 = [v22 interactiveCanvasController];
-    v24 = [v23 commandController];
+    interactiveCanvasController = [v22 interactiveCanvasController];
+    commandController = [interactiveCanvasController commandController];
 
     v25 = [(CRLCanvasKnobTracker *)self rep];
-    v26 = [v25 interactiveCanvasController];
-    v27 = [v26 editorController];
-    v28 = [v27 selectionPath];
+    interactiveCanvasController2 = [v25 interactiveCanvasController];
+    editorController = [interactiveCanvasController2 editorController];
+    selectionPath = [editorController selectionPath];
 
-    v29 = [[CRLCommandSelectionBehavior alloc] initWithForwardSelectionPath:v28 reverseSelectionPath:v28];
-    [v24 openGroupWithSelectionBehavior:v29];
+    v29 = [[CRLCommandSelectionBehavior alloc] initWithForwardSelectionPath:selectionPath reverseSelectionPath:selectionPath];
+    [commandController openGroupWithSelectionBehavior:v29];
     v30 = +[NSBundle mainBundle];
     v31 = [v30 localizedStringForKey:@"Move" value:0 table:@"UndoStrings"];
-    [v24 setCurrentGroupActionString:v31];
+    [commandController setCurrentGroupActionString:v31];
 
-    [v24 enableRealTimeSyncProgressiveEnqueuingInCurrentGroup];
+    [commandController enableRealTimeSyncProgressiveEnqueuingInCurrentGroup];
   }
 }
 
-- (void)moveKnobToCanvasPosition:(CGPoint)a3
+- (void)moveKnobToCanvasPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v4 = [(CRLCanvasKnobTracker *)self knob];
-  self->mKnobTag = [v4 tag];
+  y = position.y;
+  x = position.x;
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  self->mKnobTag = [knob tag];
 
   mKnobTag = self->mKnobTag;
   if (mKnobTag - 10 >= 2)
@@ -208,8 +208,8 @@
     if (mKnobTag == 12)
     {
       v13 = [(CRLCanvasKnobTracker *)self rep];
-      v14 = [(CRLCanvasKnobTracker *)self knob];
-      [v14 position];
+      knob2 = [(CRLCanvasKnobTracker *)self knob];
+      [knob2 position];
       [v13 convertNaturalPointToUnscaledCanvas:?];
       v16 = v15;
       v18 = v17;
@@ -263,9 +263,9 @@
 
   mKnobsVisible = self->mKnobsVisible;
   v20 = [(CRLCanvasKnobTracker *)self rep];
-  v21 = [v20 shouldCreateKnobs];
+  shouldCreateKnobs = [v20 shouldCreateKnobs];
 
-  if (mKnobsVisible != v21)
+  if (mKnobsVisible != shouldCreateKnobs)
   {
     v22 = [(CRLCanvasKnobTracker *)self rep];
     self->mKnobsVisible = [v22 shouldCreateKnobs];
@@ -302,11 +302,11 @@
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [v8 geometry];
-    v2 = v17;
-    if (v17)
+    geometry = [v8 geometry];
+    convexHullPath = geometry;
+    if (geometry)
     {
-      [v17 transform];
+      [geometry transform];
     }
 
     else
@@ -332,17 +332,17 @@
     v39.size.height = height;
     if (CGRectContainsPoint(v39, v36))
     {
-      v2 = [v8 convexHullPath];
-      if (!v2)
+      convexHullPath = [v8 convexHullPath];
+      if (!convexHullPath)
       {
         goto LABEL_11;
       }
 
-      v22 = [v8 geometry];
-      v23 = v22;
-      if (v22)
+      geometry2 = [v8 geometry];
+      v23 = geometry2;
+      if (geometry2)
       {
-        [v22 transform];
+        [geometry2 transform];
       }
 
       else
@@ -351,7 +351,7 @@
       }
 
       CGAffineTransformInvert(&v34, &v33);
-      v24 = [v2 containsPoint:{vaddq_f64(*&v34.tx, vmlaq_n_f64(vmulq_n_f64(*&v34.c, self->mKnobPosition.y), *&v34.a, p_mKnobPosition->x))}];
+      v24 = [convexHullPath containsPoint:{vaddq_f64(*&v34.tx, vmlaq_n_f64(vmulq_n_f64(*&v34.c, self->mKnobPosition.y), *&v34.a, p_mKnobPosition->x))}];
 
       if (v24)
       {
@@ -366,15 +366,15 @@ LABEL_11:
     mKnobTag = self->mKnobTag;
     if (mKnobTag == 10)
     {
-      v2 = [(CRLConnectionLineKnobTracker *)self connectionLineLayout];
-      v26 = [v2 connectedFrom];
-      if (v26)
+      convexHullPath = [(CRLConnectionLineKnobTracker *)self connectionLineLayout];
+      connectedFrom = [convexHullPath connectedFrom];
+      if (connectedFrom)
       {
 
 LABEL_24:
         v29 = self->mKnobTag;
         v30 = [(CRLConnectionLineKnobTracker *)self connectionLineLayout:*&v33.a];
-        v2 = v30;
+        convexHullPath = v30;
         if (v29 == 10)
         {
           [v30 connectedFrom];
@@ -405,13 +405,13 @@ LABEL_28:
     }
 
     v27 = [(CRLConnectionLineKnobTracker *)self connectionLineLayout:*&v33.a];
-    v28 = [v27 connectedTo];
+    connectedTo = [v27 connectedTo];
 
     if (mKnobTag == 10)
     {
     }
 
-    if (v28)
+    if (connectedTo)
     {
       goto LABEL_24;
     }
@@ -425,8 +425,8 @@ LABEL_29:
 {
   v3 = objc_opt_class();
   v4 = [(CRLCanvasKnobTracker *)self rep];
-  v5 = [v4 layout];
-  v6 = sub_100013F00(v3, v5);
+  layout = [v4 layout];
+  v6 = sub_100013F00(v3, layout);
 
   v35 = 0;
   [v6 headPoint];
@@ -479,16 +479,16 @@ LABEL_29:
   [v6 setTailNearestMagnetTypeForRouting:v35];
 }
 
-- (id)p_findLayoutWithNearestMagnetInRect:(CGRect)a3 nearestMagnet:(unint64_t *)a4
+- (id)p_findLayoutWithNearestMagnetInRect:(CGRect)rect nearestMagnet:(unint64_t *)magnet
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = [(CRLCanvasKnobTracker *)self icc];
-  v11 = [v10 canvas];
-  v12 = [v11 layoutController];
-  v13 = [v12 layoutsInRect:{x, y, width, height}];
+  canvas = [v10 canvas];
+  layoutController = [canvas layoutController];
+  v13 = [layoutController layoutsInRect:{x, y, width, height}];
 
   v14 = [(CRLCanvasKnobTracker *)self icc];
   v39[0] = _NSConcreteStackBlock;
@@ -500,10 +500,10 @@ LABEL_29:
 
   if (v15)
   {
-    v16 = [v15 repForSelecting];
-    v17 = [v16 layout];
+    repForSelecting = [v15 repForSelecting];
+    layout = [repForSelecting layout];
     mLayoutUnderKnob = self->mLayoutUnderKnob;
-    self->mLayoutUnderKnob = v17;
+    self->mLayoutUnderKnob = layout;
 
     v19 = self->mLayoutUnderKnob;
   }
@@ -549,7 +549,7 @@ LABEL_29:
                 v30 = v29;
                 v31 = v25;
 
-                *a4 = j;
+                *magnet = j;
                 v23 = v30;
                 v19 = v31;
               }
@@ -575,38 +575,38 @@ LABEL_29:
   return v19;
 }
 
-- (void)p_retrieveMagnetPositionsForLayout:(id)a3
+- (void)p_retrieveMagnetPositionsForLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   mMagnets = self->mMagnets;
   v6 = [CRLConnectionLineMagnetInfo alloc];
-  [v4 getCardinalPositionWithParentTransformFromType:1];
-  v7 = [(CRLConnectionLineMagnetInfo *)v6 initWithType:1 position:v4 layout:0 connected:?];
+  [layoutCopy getCardinalPositionWithParentTransformFromType:1];
+  v7 = [(CRLConnectionLineMagnetInfo *)v6 initWithType:1 position:layoutCopy layout:0 connected:?];
   [(NSMutableSet *)mMagnets addObject:v7];
 
   for (i = 2; i != 6; ++i)
   {
-    [v4 getCardinalPositionWithParentTransformFromType:i];
+    [layoutCopy getCardinalPositionWithParentTransformFromType:i];
     v10 = v9;
     v12 = v11;
-    if ([(CRLConnectionLineKnobTracker *)self p_shouldIncludeCardinalMagnet:i forLayout:v4])
+    if ([(CRLConnectionLineKnobTracker *)self p_shouldIncludeCardinalMagnet:i forLayout:layoutCopy])
     {
       v13 = self->mMagnets;
-      v14 = [[CRLConnectionLineMagnetInfo alloc] initWithType:i position:v4 layout:0 connected:v10, v12];
+      v14 = [[CRLConnectionLineMagnetInfo alloc] initWithType:i position:layoutCopy layout:0 connected:v10, v12];
       [(NSMutableSet *)v13 addObject:v14];
     }
   }
 
-  v15 = [v4 connectedLayouts];
+  connectedLayouts = [layoutCopy connectedLayouts];
 
-  if (v15)
+  if (connectedLayouts)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v16 = [v4 connectedLayouts];
-    v17 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    connectedLayouts2 = [layoutCopy connectedLayouts];
+    v17 = [connectedLayouts2 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v17)
     {
       v18 = v17;
@@ -618,23 +618,23 @@ LABEL_29:
         {
           if (*v25 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(connectedLayouts2);
           }
 
           v21 = *(*(&v24 + 1) + 8 * v20);
           v22 = [(CRLCanvasKnobTracker *)self rep];
-          v23 = [v22 layout];
+          layout = [v22 layout];
 
-          if (v21 != v23)
+          if (v21 != layout)
           {
-            [(CRLConnectionLineKnobTracker *)self p_updateMagnetPositionsForConnectionLineLayout:v21 withinLayout:v4];
+            [(CRLConnectionLineKnobTracker *)self p_updateMagnetPositionsForConnectionLineLayout:v21 withinLayout:layoutCopy];
           }
 
           v20 = v20 + 1;
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v18 = [connectedLayouts2 countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v18);
@@ -642,18 +642,18 @@ LABEL_29:
   }
 }
 
-- (BOOL)p_shouldIncludeCardinalMagnet:(unint64_t)a3 forLayout:(id)a4
+- (BOOL)p_shouldIncludeCardinalMagnet:(unint64_t)magnet forLayout:(id)layout
 {
-  v5 = a4;
-  [v5 getCardinalPositionWithParentTransformFromType:a3];
+  layoutCopy = layout;
+  [layoutCopy getCardinalPositionWithParentTransformFromType:magnet];
   v7 = v6;
   v9 = v8;
   v10 = 0;
   for (i = 1; i != 6; ++i)
   {
-    if (a3 != i)
+    if (magnet != i)
     {
-      [v5 getCardinalPositionWithParentTransformFromType:i];
+      [layoutCopy getCardinalPositionWithParentTransformFromType:i];
       if (sub_100120090(v7, v9, v12, v13) < 10.0)
       {
         break;
@@ -666,56 +666,56 @@ LABEL_29:
   return v10;
 }
 
-- (void)p_updateMagnetPositionsForConnectionLineLayout:(id)a3 withinLayout:(id)a4
+- (void)p_updateMagnetPositionsForConnectionLineLayout:(id)layout withinLayout:(id)withinLayout
 {
-  v29 = a3;
-  v6 = a4;
-  if ([v29 headMagnetType])
+  layoutCopy = layout;
+  withinLayoutCopy = withinLayout;
+  if ([layoutCopy headMagnetType])
   {
-    v7 = [v29 connectedTo];
+    connectedTo = [layoutCopy connectedTo];
 
-    if (v7)
+    if (connectedTo)
     {
-      v8 = [v29 connectedTo];
+      connectedTo2 = [layoutCopy connectedTo];
 
-      if (v8 == v6)
+      if (connectedTo2 == withinLayoutCopy)
       {
-        v9 = [v29 connectedTo];
-        [v29 headMagnetCanvasPosition];
-        [(CRLConnectionLineKnobTracker *)self p_getMagnetPositionAdjustedToParentForLayout:v9 withOriginalMagnetPosition:?];
+        connectedTo3 = [layoutCopy connectedTo];
+        [layoutCopy headMagnetCanvasPosition];
+        [(CRLConnectionLineKnobTracker *)self p_getMagnetPositionAdjustedToParentForLayout:connectedTo3 withOriginalMagnetPosition:?];
         v11 = v10;
         v13 = v12;
 
         v14 = [CRLConnectionLineMagnetInfo alloc];
-        v15 = [v29 headMagnetType];
-        v16 = [v29 connectedTo];
-        v17 = [(CRLConnectionLineMagnetInfo *)v14 initWithType:v15 position:v16 layout:1 connected:v11, v13];
+        headMagnetType = [layoutCopy headMagnetType];
+        connectedTo4 = [layoutCopy connectedTo];
+        v17 = [(CRLConnectionLineMagnetInfo *)v14 initWithType:headMagnetType position:connectedTo4 layout:1 connected:v11, v13];
 
         [(NSMutableSet *)self->mMagnets addObject:v17];
       }
     }
   }
 
-  if ([v29 tailMagnetType])
+  if ([layoutCopy tailMagnetType])
   {
-    v18 = [v29 connectedFrom];
+    connectedFrom = [layoutCopy connectedFrom];
 
-    if (v18)
+    if (connectedFrom)
     {
-      v19 = [v29 connectedFrom];
+      connectedFrom2 = [layoutCopy connectedFrom];
 
-      if (v19 == v6)
+      if (connectedFrom2 == withinLayoutCopy)
       {
-        v20 = [v29 connectedFrom];
-        [v29 tailMagnetCanvasPosition];
-        [(CRLConnectionLineKnobTracker *)self p_getMagnetPositionAdjustedToParentForLayout:v20 withOriginalMagnetPosition:?];
+        connectedFrom3 = [layoutCopy connectedFrom];
+        [layoutCopy tailMagnetCanvasPosition];
+        [(CRLConnectionLineKnobTracker *)self p_getMagnetPositionAdjustedToParentForLayout:connectedFrom3 withOriginalMagnetPosition:?];
         v22 = v21;
         v24 = v23;
 
         v25 = [CRLConnectionLineMagnetInfo alloc];
-        v26 = [v29 tailMagnetType];
-        v27 = [v29 connectedFrom];
-        v28 = [(CRLConnectionLineMagnetInfo *)v25 initWithType:v26 position:v27 layout:1 connected:v22, v24];
+        tailMagnetType = [layoutCopy tailMagnetType];
+        connectedFrom4 = [layoutCopy connectedFrom];
+        v28 = [(CRLConnectionLineMagnetInfo *)v25 initWithType:tailMagnetType position:connectedFrom4 layout:1 connected:v22, v24];
 
         [(NSMutableSet *)self->mMagnets addObject:v28];
       }
@@ -723,23 +723,23 @@ LABEL_29:
   }
 }
 
-- (CGPoint)p_getMagnetPositionAdjustedToParentForLayout:(id)a3 withOriginalMagnetPosition:(CGPoint)a4
+- (CGPoint)p_getMagnetPositionAdjustedToParentForLayout:(id)layout withOriginalMagnetPosition:(CGPoint)position
 {
-  v12 = *&a4.y;
-  v13 = a4;
-  v4 = a3;
+  v12 = *&position.y;
+  positionCopy = position;
+  layoutCopy = layout;
   v15 = 0u;
   v16 = 0u;
   v14 = 0u;
-  v5 = [v4 parent];
-  if (v5)
+  parent = [layoutCopy parent];
+  if (parent)
   {
-    v6 = [v4 parent];
-    v7 = [v6 geometryInRoot];
-    v8 = v7;
-    if (v7)
+    parent2 = [layoutCopy parent];
+    geometryInRoot = [parent2 geometryInRoot];
+    v8 = geometryInRoot;
+    if (geometryInRoot)
     {
-      [v7 transform];
+      [geometryInRoot transform];
     }
 
     else
@@ -757,7 +757,7 @@ LABEL_29:
     v16 = *&CGAffineTransformIdentity.tx;
   }
 
-  v11 = vaddq_f64(v16, vmlaq_n_f64(vmulq_n_f64(v15, *&v12), v14, v13.x));
+  v11 = vaddq_f64(v16, vmlaq_n_f64(vmulq_n_f64(v15, *&v12), v14, positionCopy.x));
   v10 = v11.f64[1];
   v9 = v11.f64[0];
   result.y = v10;
@@ -791,11 +791,11 @@ LABEL_29:
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v12 layout];
+        layout = [v12 layout];
         v14 = [(CRLCanvasKnobTracker *)self rep];
-        v15 = [v14 layout];
+        layout2 = [v14 layout];
 
-        if (v13 != v15)
+        if (layout != layout2)
         {
           [v12 position];
           v18 = sub_100120090(self->mKnobPosition.x, self->mKnobPosition.y, v16, v17);
@@ -837,16 +837,16 @@ LABEL_29:
 {
   v3 = objc_opt_class();
   v4 = [(CRLCanvasKnobTracker *)self rep];
-  v5 = [v4 layout];
-  v13 = sub_100014370(v3, v5);
+  layout = [v4 layout];
+  v13 = sub_100014370(v3, layout);
 
   mKnobTag = self->mKnobTag;
   if (mKnobTag == 11)
   {
     if (![v13 headMagnetType])
     {
-      v8 = [v13 connectedTo];
-      if (v8)
+      connectedTo = [v13 connectedTo];
+      if (connectedTo)
       {
 
         goto LABEL_10;
@@ -858,9 +858,9 @@ LABEL_29:
 
   if (mKnobTag == 10 && ![v13 tailMagnetType])
   {
-    v7 = [v13 connectedFrom];
+    connectedFrom = [v13 connectedFrom];
 
-    if (v7)
+    if (connectedFrom)
     {
 LABEL_10:
       if (self->mKnobTag == 11)
@@ -888,8 +888,8 @@ LABEL_10:
   if (self->mShouldSnapToMagnets)
   {
     v3 = [(CRLCanvasKnobTracker *)self rep];
-    v4 = [v3 interactiveCanvasController];
-    [v4 viewScale];
+    interactiveCanvasController = [v3 interactiveCanvasController];
+    [interactiveCanvasController viewScale];
     v2 = 10.0 / v5 * 2.5;
   }
 
@@ -932,7 +932,7 @@ LABEL_10:
 - (void)p_updateConnection
 {
   v3 = [(CRLCanvasKnobTracker *)self rep];
-  v4 = [v3 layout];
+  layout = [v3 layout];
 
   if (!self->mSnappedMagnet)
   {
@@ -941,15 +941,15 @@ LABEL_10:
       goto LABEL_27;
     }
 
-    v6 = [(CRLCanvasKnobTracker *)self knob];
-    if ([v6 tag] == 11)
+    knob = [(CRLCanvasKnobTracker *)self knob];
+    if ([knob tag] == 11)
     {
-      v7 = [v4 connectedTo];
+      connectedTo = [layout connectedTo];
 
-      if (v7)
+      if (connectedTo)
       {
-        [v4 setConnectedTo:0];
-        [v4 setHeadMagnetType:0];
+        [layout setConnectedTo:0];
+        [layout setHeadMagnetType:0];
 LABEL_25:
         mConnectedRepForHighlighting = self->mConnectedRepForHighlighting;
         self->mConnectedRepForHighlighting = 0;
@@ -961,15 +961,15 @@ LABEL_25:
     {
     }
 
-    v18 = [(CRLCanvasKnobTracker *)self knob];
-    if ([v18 tag] == 10)
+    knob2 = [(CRLCanvasKnobTracker *)self knob];
+    if ([knob2 tag] == 10)
     {
-      v19 = [v4 connectedFrom];
+      connectedFrom = [layout connectedFrom];
 
-      if (v19)
+      if (connectedFrom)
       {
-        [v4 setConnectedFrom:0];
-        [v4 setTailMagnetType:0];
+        [layout setConnectedFrom:0];
+        [layout setTailMagnetType:0];
       }
     }
 
@@ -980,22 +980,22 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v5 = [(CRLCanvasKnobTracker *)self knob];
-  if ([v5 tag] == 11)
+  knob3 = [(CRLCanvasKnobTracker *)self knob];
+  if ([knob3 tag] == 11)
   {
-    [v4 connectedTo];
+    [layout connectedTo];
   }
 
   else
   {
-    [v4 connectedFrom];
+    [layout connectedFrom];
   }
   mConnectedRepForHighlighting = ;
 
   if (mConnectedRepForHighlighting)
   {
-    v5 = [(CRLCanvasKnobTracker *)self icc];
-    v9 = [v5 repForLayout:mConnectedRepForHighlighting];
+    knob3 = [(CRLCanvasKnobTracker *)self icc];
+    v9 = [knob3 repForLayout:mConnectedRepForHighlighting];
   }
 
   else
@@ -1008,35 +1008,35 @@ LABEL_25:
   {
   }
 
-  v10 = [(CRLCanvasKnobTracker *)self knob];
-  v11 = [v10 tag];
+  knob4 = [(CRLCanvasKnobTracker *)self knob];
+  v11 = [knob4 tag];
 
-  v12 = [(CRLConnectionLineMagnetInfo *)self->mSnappedMagnet layout];
+  layout2 = [(CRLConnectionLineMagnetInfo *)self->mSnappedMagnet layout];
   if (v11 == 11)
   {
-    v13 = [v4 connectedTo];
+    connectedTo2 = [layout connectedTo];
 
-    if (v12 != v13)
+    if (layout2 != connectedTo2)
     {
-      v14 = [(CRLConnectionLineMagnetInfo *)self->mSnappedMagnet layout];
-      [v4 setConnectedTo:v14];
+      layout3 = [(CRLConnectionLineMagnetInfo *)self->mSnappedMagnet layout];
+      [layout setConnectedTo:layout3];
 LABEL_19:
 
       mConnectedRepForHighlighting = [(CRLCanvasKnobTracker *)self rep];
-      v16 = [mConnectedRepForHighlighting interactiveCanvasController];
-      v17 = [v16 dynamicOperationController];
-      [v17 invalidateGuides];
+      interactiveCanvasController = [mConnectedRepForHighlighting interactiveCanvasController];
+      dynamicOperationController = [interactiveCanvasController dynamicOperationController];
+      [dynamicOperationController invalidateGuides];
     }
   }
 
   else
   {
-    v15 = [v4 connectedFrom];
+    connectedFrom2 = [layout connectedFrom];
 
-    if (v12 != v15)
+    if (layout2 != connectedFrom2)
     {
-      v14 = [(CRLConnectionLineMagnetInfo *)self->mSnappedMagnet layout];
-      [v4 setConnectedFrom:v14];
+      layout3 = [(CRLConnectionLineMagnetInfo *)self->mSnappedMagnet layout];
+      [layout setConnectedFrom:layout3];
       goto LABEL_19;
     }
   }
@@ -1044,17 +1044,17 @@ LABEL_19:
 LABEL_26:
 
 LABEL_27:
-  v20 = [(CRLCanvasKnobTracker *)self knob];
-  v21 = [v20 tag];
+  knob5 = [(CRLCanvasKnobTracker *)self knob];
+  v21 = [knob5 tag];
 
   if (v21 == 11)
   {
-    [v4 connectedFrom];
+    [layout connectedFrom];
   }
 
   else
   {
-    [v4 connectedTo];
+    [layout connectedTo];
   }
   v22 = ;
   v23 = [(CRLCanvasKnobTracker *)self icc];
@@ -1064,54 +1064,54 @@ LABEL_27:
   v69[3] = &unk_1018572B8;
   v24 = v22;
   v70 = v24;
-  v71 = self;
+  selfCopy = self;
   v25 = [v23 hitRep:v69 passingTest:{self->mKnobPosition.x, self->mKnobPosition.y}];
-  v26 = [v25 repForSelecting];
+  repForSelecting = [v25 repForSelecting];
 
   v27 = [(CRLCanvasKnobTracker *)self rep];
-  v28 = [v27 interactiveCanvasController];
+  interactiveCanvasController2 = [v27 interactiveCanvasController];
 
-  v29 = [v28 freehandDrawingToolkit];
+  freehandDrawingToolkit = [interactiveCanvasController2 freehandDrawingToolkit];
   v30 = objc_opt_class();
-  v31 = [(CRLCanvasRep *)v26 info];
-  v32 = sub_100014370(v30, v31);
+  info = [(CRLCanvasRep *)repForSelecting info];
+  v32 = sub_100014370(v30, info);
 
-  if (v32 && [v29 isLassoSelectionForMixedTypeEnabledInDrawingMode])
+  if (v32 && [freehandDrawingToolkit isLassoSelectionForMixedTypeEnabledInDrawingMode])
   {
-    v33 = [(CRLCanvasRep *)v26 info];
-    v34 = sub_100125F34(v33);
+    info2 = [(CRLCanvasRep *)repForSelecting info];
+    v34 = sub_100125F34(info2);
 
-    v35 = [v28 repForInfo:v34];
+    v35 = [interactiveCanvasController2 repForInfo:v34];
 
-    v26 = v35;
+    repForSelecting = v35;
   }
 
-  if ((!v26 || self->mConnectedRepForHighlighting != v26) && self->mIsEnqueueingCommandsInRealTime)
+  if ((!repForSelecting || self->mConnectedRepForHighlighting != repForSelecting) && self->mIsEnqueueingCommandsInRealTime)
   {
-    v68 = [v4 connectionLineInfo];
-    v67 = [v28 commandController];
-    v36 = [(CRLCanvasKnobTracker *)self knob];
-    v37 = [v36 tag];
+    connectionLineInfo = [layout connectionLineInfo];
+    commandController = [interactiveCanvasController2 commandController];
+    knob6 = [(CRLCanvasKnobTracker *)self knob];
+    v37 = [knob6 tag];
 
     if (v37 == 10)
     {
-      v38 = [v4 pathSource];
-      v39 = [v38 copy];
+      pathSource = [layout pathSource];
+      v39 = [pathSource copy];
 
       v40 = [CRLConnectionLineMagnet alloc];
-      v41 = [(CRLConnectionLineKnobTracker *)self p_getSnappedMagnetType];
+      p_getSnappedMagnetType = [(CRLConnectionLineKnobTracker *)self p_getSnappedMagnetType];
       [(CRLConnectionLineKnobTracker *)self p_getSnappedMagnetNormalizedPosition];
-      v42 = [(CRLConnectionLineMagnet *)v40 initWithType:v41 normalizedPosition:?];
+      v42 = [(CRLConnectionLineMagnet *)v40 initWithType:p_getSnappedMagnetType normalizedPosition:?];
       [v39 setTailMagnet:v42];
 
       v43 = objc_opt_class();
-      v44 = [v4 connectedFrom];
-      v45 = [v44 info];
-      v46 = sub_100014370(v43, v45);
+      connectedFrom3 = [layout connectedFrom];
+      info3 = [connectedFrom3 info];
+      v46 = sub_100014370(v43, info3);
 
       v47 = [_TtC8Freeform37CRLCommandSetConnectionLineConnection alloc];
-      v48 = v68;
-      v49 = v68;
+      v48 = connectionLineInfo;
+      v49 = connectionLineInfo;
       v66 = v46;
       v50 = v46;
       v51 = 0;
@@ -1119,34 +1119,34 @@ LABEL_27:
 
     else
     {
-      v52 = [(CRLCanvasKnobTracker *)self knob];
-      v53 = [v52 tag];
+      knob7 = [(CRLCanvasKnobTracker *)self knob];
+      v53 = [knob7 tag];
 
       v54 = v53 == 11;
-      v55 = v67;
-      v48 = v68;
+      v55 = commandController;
+      v48 = connectionLineInfo;
       if (!v54)
       {
         goto LABEL_42;
       }
 
-      v56 = [v4 pathSource];
-      v39 = [v56 copy];
+      pathSource2 = [layout pathSource];
+      v39 = [pathSource2 copy];
 
       v57 = [CRLConnectionLineMagnet alloc];
-      v58 = [(CRLConnectionLineKnobTracker *)self p_getSnappedMagnetType];
+      p_getSnappedMagnetType2 = [(CRLConnectionLineKnobTracker *)self p_getSnappedMagnetType];
       [(CRLConnectionLineKnobTracker *)self p_getSnappedMagnetNormalizedPosition];
-      v59 = [(CRLConnectionLineMagnet *)v57 initWithType:v58 normalizedPosition:?];
+      v59 = [(CRLConnectionLineMagnet *)v57 initWithType:p_getSnappedMagnetType2 normalizedPosition:?];
       [v39 setHeadMagnet:v59];
 
       v60 = objc_opt_class();
-      v61 = [v4 connectedTo];
-      v62 = [v61 info];
-      v63 = sub_100014370(v60, v62);
+      connectedTo3 = [layout connectedTo];
+      info4 = [connectedTo3 info];
+      v63 = sub_100014370(v60, info4);
 
-      v48 = v68;
+      v48 = connectionLineInfo;
       v47 = [_TtC8Freeform37CRLCommandSetConnectionLineConnection alloc];
-      v49 = v68;
+      v49 = connectionLineInfo;
       v66 = v63;
       v50 = v63;
       v51 = 1;
@@ -1154,8 +1154,8 @@ LABEL_27:
 
     v64 = v39;
     v65 = [(CRLCommandSetConnectionLineConnection *)v47 initWithConnectionLine:v49 connectedItem:v50 chirality:v51 pathSource:v39];
-    v55 = v67;
-    [v67 enqueueCommand:v65];
+    v55 = commandController;
+    [commandController enqueueCommand:v65];
 
 LABEL_42:
   }
@@ -1180,11 +1180,11 @@ LABEL_42:
     [(CRLConnectionLineMagnetInfo *)mSnappedMagnet position];
     v18 = v5;
     v19 = v4;
-    v6 = [(CRLConnectionLineMagnetInfo *)self->mSnappedMagnet layout];
-    v7 = v6;
-    if (v6)
+    layout = [(CRLConnectionLineMagnetInfo *)self->mSnappedMagnet layout];
+    v7 = layout;
+    if (layout)
     {
-      [v6 pureTransformInRoot];
+      [layout pureTransformInRoot];
     }
 
     else
@@ -1195,9 +1195,9 @@ LABEL_42:
     CGAffineTransformInvert(&v22, &v21);
     v20 = vaddq_f64(*&v22.tx, vmlaq_n_f64(vmulq_n_f64(*&v22.c, v18), *&v22.a, v19));
 
-    v10 = [(CRLConnectionLineMagnetInfo *)self->mSnappedMagnet layout];
-    v11 = [v10 pureGeometry];
-    [v11 size];
+    layout2 = [(CRLConnectionLineMagnetInfo *)self->mSnappedMagnet layout];
+    pureGeometry = [layout2 pureGeometry];
+    [pureGeometry size];
     v12 = sub_10011ECB4();
     v9 = sub_100121720(v20.f64[0], v20.f64[1], v12, v13, v14);
     v8 = v15;
@@ -1219,7 +1219,7 @@ LABEL_42:
 - (void)p_updateMagnetRenderables
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v25 = self;
+  selfCopy = self;
   v26 = objc_alloc_init(NSMutableArray);
   v31 = 0u;
   v32 = 0u;
@@ -1241,9 +1241,9 @@ LABEL_42:
         }
 
         v9 = *(*(&v31 + 1) + 8 * i);
-        v10 = [v9 connected];
+        connected = [v9 connected];
         [v9 position];
-        if (v10)
+        if (connected)
         {
           v30 = v11;
           v13 = &v30;
@@ -1269,7 +1269,7 @@ LABEL_42:
   }
 
   v16 = objc_alloc_init(NSMutableArray);
-  mSnappedMagnet = v25->mSnappedMagnet;
+  mSnappedMagnet = selfCopy->mSnappedMagnet;
   if (mSnappedMagnet)
   {
     [(CRLConnectionLineMagnetInfo *)mSnappedMagnet position];
@@ -1278,41 +1278,41 @@ LABEL_42:
     v20 = [NSValue valueWithBytes:v28 objCType:"{CGPoint=dd}"];
     [v16 addObject:v20];
 
-    [(CRLConnectionLineMagnetInfo *)v25->mSnappedMagnet position];
+    [(CRLConnectionLineMagnetInfo *)selfCopy->mSnappedMagnet position];
     v27[0] = v21;
     v27[1] = v22;
     v23 = [NSValue valueWithBytes:v27 objCType:"{CGPoint=dd}"];
     [v3 addObject:v23];
   }
 
-  v24 = [(CRLCanvasKnobTracker *)v25 rep];
+  v24 = [(CRLCanvasKnobTracker *)selfCopy rep];
   [v24 updateMagnetRenderables:v3 withEmptyMagnets:v26 withHighlightedMagnets:v16 includeClippedPortions:1];
 }
 
 - (void)p_updateLayout
 {
-  v3 = [(CRLConnectionLineKnobTracker *)self connectionLineLayout];
-  v34 = v3;
+  connectionLineLayout = [(CRLConnectionLineKnobTracker *)self connectionLineLayout];
+  v34 = connectionLineLayout;
   if (!self->mSnappedMagnet)
   {
-    [v3 setDrawClippedHeadPortion:0];
+    [connectionLineLayout setDrawClippedHeadPortion:0];
     [v34 setDrawClippedTailPortion:0];
-    v5 = [(CRLCanvasKnobTracker *)self knob];
-    v6 = [v5 renderable];
+    knob = [(CRLCanvasKnobTracker *)self knob];
+    renderable = [knob renderable];
     LODWORD(v7) = 1.0;
-    [v6 setOpacity:v7];
+    [renderable setOpacity:v7];
 
     goto LABEL_54;
   }
 
-  v4 = [(CRLConnectionLineKnobTracker *)self p_connectedToCenter];
-  if (self->mKnobMoved || !v4)
+  p_connectedToCenter = [(CRLConnectionLineKnobTracker *)self p_connectedToCenter];
+  if (self->mKnobMoved || !p_connectedToCenter)
   {
     [(CRLConnectionLineMagnetInfo *)self->mSnappedMagnet position];
     v9 = v8;
     v11 = v10;
-    v12 = [v34 connectedTo];
-    if (v12)
+    connectedTo = [v34 connectedTo];
+    if (connectedTo)
     {
       mKnobTag = self->mKnobTag;
 
@@ -1323,8 +1323,8 @@ LABEL_42:
       }
     }
 
-    v14 = [v34 connectedFrom];
-    if (v14)
+    connectedFrom = [v34 connectedFrom];
+    if (connectedFrom)
     {
       v15 = self->mKnobTag;
 
@@ -1392,12 +1392,12 @@ LABEL_27:
   [v34 setClipTail:v19];
   if ([v34 clipHead] && self->mKnobTag == 11)
   {
-    v20 = [v34 pureGeometry];
-    [v20 size];
+    pureGeometry = [v34 pureGeometry];
+    [pureGeometry size];
     if (v21 == 0.0 || fabs(v21) < 0.00999999978)
     {
-      v22 = [v34 pureGeometry];
-      [v22 size];
+      pureGeometry2 = [v34 pureGeometry];
+      [pureGeometry2 size];
       v24 = fabs(v23) >= 0.00999999978 && v23 != 0.0;
       [v34 setDrawClippedHeadPortion:v24];
     }
@@ -1415,12 +1415,12 @@ LABEL_27:
 
   if ([v34 clipTail] && self->mKnobTag == 10)
   {
-    v25 = [v34 pureGeometry];
-    [v25 size];
+    pureGeometry3 = [v34 pureGeometry];
+    [pureGeometry3 size];
     if (v26 == 0.0 || fabs(v26) < 0.00999999978)
     {
-      v27 = [v34 pureGeometry];
-      [v27 size];
+      pureGeometry4 = [v34 pureGeometry];
+      [pureGeometry4 size];
       v29 = fabs(v28) >= 0.00999999978 && v28 != 0.0;
       [v34 setDrawClippedTailPortion:v29];
     }
@@ -1450,10 +1450,10 @@ LABEL_27:
     }
   }
 
-  v31 = [(CRLCanvasKnobTracker *)self knob];
-  v32 = [v31 renderable];
+  knob2 = [(CRLCanvasKnobTracker *)self knob];
+  renderable2 = [knob2 renderable];
   *&v33 = v30;
-  [v32 setOpacity:v33];
+  [renderable2 setOpacity:v33];
 
   [v34 setMagnetsAdjusted:1];
 LABEL_54:
@@ -1461,32 +1461,32 @@ LABEL_54:
 
 - (void)p_keepSnappedMagnetOnCenter
 {
-  v31 = [(CRLConnectionLineKnobTracker *)self connectionLineLayout];
+  connectionLineLayout = [(CRLConnectionLineKnobTracker *)self connectionLineLayout];
   v3 = objc_opt_class();
-  v4 = [v31 info];
-  v5 = sub_100014370(v3, v4);
+  info = [connectionLineLayout info];
+  v5 = sub_100014370(v3, info);
 
-  v6 = [v5 connectionLinePathSource];
+  connectionLinePathSource = [v5 connectionLinePathSource];
   if (!self->mKnobMoved)
   {
-    v7 = [v31 connectedTo];
-    if (v7 && self->mKnobTag == 11 && ([v6 headMagnet], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+    connectedTo = [connectionLineLayout connectedTo];
+    if (connectedTo && self->mKnobTag == 11 && ([connectionLinePathSource headMagnet], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v9 = v8;
-      v10 = [v6 headMagnet];
-      v11 = [v10 magnetType];
+      headMagnet = [connectionLinePathSource headMagnet];
+      magnetType = [headMagnet magnetType];
 
-      if (v11 == 1)
+      if (magnetType == 1)
       {
         v12 = [CRLConnectionLineMagnetInfo alloc];
-        v13 = [v31 connectedTo];
-        [v13 getCardinalPositionWithParentTransformFromType:1];
+        connectedTo2 = [connectionLineLayout connectedTo];
+        [connectedTo2 getCardinalPositionWithParentTransformFromType:1];
         v15 = v14;
         v17 = v16;
-        v18 = [v31 connectedTo];
+        connectedTo3 = [connectionLineLayout connectedTo];
 LABEL_14:
-        v26 = v18;
-        v27 = [(CRLConnectionLineMagnetInfo *)v12 initWithType:1 position:v18 layout:1 connected:v15, v17];
+        v26 = connectedTo3;
+        v27 = [(CRLConnectionLineMagnetInfo *)v12 initWithType:1 position:connectedTo3 layout:1 connected:v15, v17];
         mSnappedMagnet = self->mSnappedMagnet;
         self->mSnappedMagnet = v27;
 
@@ -1507,29 +1507,29 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  v19 = [v31 connectedFrom];
-  if (v19)
+  connectedFrom = [connectionLineLayout connectedFrom];
+  if (connectedFrom)
   {
     if (self->mKnobTag == 10)
     {
-      v20 = [v6 tailMagnet];
-      if (v20)
+      tailMagnet = [connectionLinePathSource tailMagnet];
+      if (tailMagnet)
       {
-        v21 = v20;
-        v22 = [v6 tailMagnet];
-        v23 = [v22 magnetType];
+        v21 = tailMagnet;
+        tailMagnet2 = [connectionLinePathSource tailMagnet];
+        magnetType2 = [tailMagnet2 magnetType];
 
-        if (v23 != 1)
+        if (magnetType2 != 1)
         {
           goto LABEL_16;
         }
 
         v12 = [CRLConnectionLineMagnetInfo alloc];
-        v13 = [v31 connectedFrom];
-        [v13 getCardinalPositionWithParentTransformFromType:1];
+        connectedTo2 = [connectionLineLayout connectedFrom];
+        [connectedTo2 getCardinalPositionWithParentTransformFromType:1];
         v15 = v24;
         v17 = v25;
-        v18 = [v31 connectedFrom];
+        connectedTo3 = [connectionLineLayout connectedFrom];
         goto LABEL_14;
       }
     }
@@ -1541,12 +1541,12 @@ LABEL_16:
 - (BOOL)p_connectedToCenter
 {
   v4 = objc_opt_class();
-  v5 = [(CRLConnectionLineKnobTracker *)self connectionLineLayout];
-  v6 = [v5 info];
-  v7 = sub_100014370(v4, v6);
+  connectionLineLayout = [(CRLConnectionLineKnobTracker *)self connectionLineLayout];
+  info = [connectionLineLayout info];
+  v7 = sub_100014370(v4, info);
 
-  v8 = [v7 connectionLinePathSource];
-  v9 = v8;
+  connectionLinePathSource = [v7 connectionLinePathSource];
+  v9 = connectionLinePathSource;
   mKnobTag = self->mKnobTag;
   if (mKnobTag != 11)
   {
@@ -1560,12 +1560,12 @@ LABEL_16:
     goto LABEL_8;
   }
 
-  v6 = [v8 headMagnet];
-  v11 = v6 != 0;
-  if (v6)
+  info = [connectionLinePathSource headMagnet];
+  v11 = info != 0;
+  if (info)
   {
-    v2 = [v9 headMagnet];
-    if ([v2 magnetType] == 1)
+    headMagnet = [v9 headMagnet];
+    if ([headMagnet magnetType] == 1)
     {
       v12 = 1;
 LABEL_14:
@@ -1577,12 +1577,12 @@ LABEL_14:
   if (self->mKnobTag == 10)
   {
 LABEL_8:
-    v13 = [v9 tailMagnet];
-    if (v13)
+    tailMagnet = [v9 tailMagnet];
+    if (tailMagnet)
     {
-      v14 = v13;
-      v15 = [v9 tailMagnet];
-      v12 = [v15 magnetType] == 1;
+      v14 = tailMagnet;
+      tailMagnet2 = [v9 tailMagnet];
+      v12 = [tailMagnet2 magnetType] == 1;
 
       if (!v11)
       {
@@ -1609,7 +1609,7 @@ LABEL_11:
   }
 
   v12 = 0;
-  if (v6)
+  if (info)
   {
     goto LABEL_14;
   }
@@ -1620,24 +1620,24 @@ LABEL_16:
   return v12;
 }
 
-- (void)p_setUserAdjustedShapeControlKnob:(BOOL)a3
+- (void)p_setUserAdjustedShapeControlKnob:(BOOL)knob
 {
-  v3 = a3;
+  knobCopy = knob;
   v5 = objc_opt_class();
   v6 = [(CRLCanvasKnobTracker *)self rep];
-  v7 = [v6 layout];
-  v8 = sub_100014370(v5, v7);
+  layout = [v6 layout];
+  v8 = sub_100014370(v5, layout);
 
   if ([v8 connectionType] == 2)
   {
-    [v8 setUserDidSetControlPoint:v3];
+    [v8 setUserDidSetControlPoint:knobCopy];
   }
 }
 
-- (void)moveKnobToRepPosition:(CGPoint)a3
+- (void)moveKnobToRepPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v6 = [(CRLCanvasKnobTracker *)self rep];
   if ([(CRLConnectionLineKnobTracker *)self snapEnabled])
   {
@@ -1665,12 +1665,12 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  v9 = [v6 interactiveCanvasController];
-  v10 = [v9 guideController];
+  interactiveCanvasController = [v6 interactiveCanvasController];
+  guideController = [interactiveCanvasController guideController];
 
   if (v7 && !self->mBeganAlignmentOperation && [v6 wantsGuidesWhileResizing])
   {
-    [v10 beginAlignmentOperationForRep:v6];
+    [guideController beginAlignmentOperationForRep:v6];
     self->mBeganAlignmentOperation = 1;
   }
 
@@ -1680,9 +1680,9 @@ LABEL_16:
   self->mNewKnobCenterNaturalSpace.x = v111;
   self->mNewKnobCenterNaturalSpace.y = v12;
   v114 = v12;
-  v13 = [(CRLConnectionLineKnobTracker *)self resizeFromCenter];
+  resizeFromCenter = [(CRLConnectionLineKnobTracker *)self resizeFromCenter];
   v14 = &OBJC_IVAR___CRLConnectionLineKnobTracker_mOriginalFixedPointNaturalSpace;
-  if (v13)
+  if (resizeFromCenter)
   {
     v14 = &OBJC_IVAR___CRLConnectionLineKnobTracker_mOriginalMiddlePointNaturalSpace;
   }
@@ -1695,12 +1695,12 @@ LABEL_16:
   v19 = -1;
   do
   {
-    v20 = [v6 layout];
-    v21 = [v20 originalGeometry];
-    v22 = v21;
-    if (v21)
+    layout = [v6 layout];
+    originalGeometry = [layout originalGeometry];
+    v22 = originalGeometry;
+    if (originalGeometry)
     {
-      [v21 transform];
+      [originalGeometry transform];
     }
 
     else
@@ -1745,34 +1745,34 @@ LABEL_25:
   p_mNewKnobCenterNaturalSpace->x = sub_10011F31C(v111, v114, p_mOriginalPathToBoundsOrigin->x);
   self->mNewKnobCenterNaturalSpace.y = v34;
   v35 = [(CRLCanvasKnobTracker *)self rep];
-  v36 = [v35 interactiveCanvasController];
-  v37 = [v36 isCanvasBackgroundAlignmentSnappingEnabled];
+  interactiveCanvasController2 = [v35 interactiveCanvasController];
+  isCanvasBackgroundAlignmentSnappingEnabled = [interactiveCanvasController2 isCanvasBackgroundAlignmentSnappingEnabled];
 
-  if (v37)
+  if (isCanvasBackgroundAlignmentSnappingEnabled)
   {
-    v118 = v10;
+    v118 = guideController;
     v38 = [(CRLCanvasKnobTracker *)self rep];
-    v39 = [v38 interactiveCanvasController];
-    v40 = [v39 canvasBackground];
+    interactiveCanvasController3 = [v38 interactiveCanvasController];
+    canvasBackground = [interactiveCanvasController3 canvasBackground];
 
-    v115 = v40;
-    v41 = [v40 alignmentProvider];
+    v115 = canvasBackground;
+    alignmentProvider = [canvasBackground alignmentProvider];
     v42 = objc_opt_class();
-    v43 = [v6 layout];
-    v44 = sub_100013F00(v42, v43);
+    layout2 = [v6 layout];
+    v44 = sub_100013F00(v42, layout2);
 
-    v45 = [v44 connectedPathSource];
-    v46 = [v45 type];
+    connectedPathSource = [v44 connectedPathSource];
+    type = [connectedPathSource type];
 
-    if (!v41 || (self->mKnobTag & 0xFFFFFFFFFFFFFFFELL) != 0xA && v46 != 1)
+    if (!alignmentProvider || (self->mKnobTag & 0xFFFFFFFFFFFFFFFELL) != 0xA && type != 1)
     {
       v47 = 0;
-      v10 = v118;
+      guideController = v118;
       goto LABEL_53;
     }
 
     v110 = vaddq_f64(*&self->mOriginalTransformInRoot.tx, vmlaq_n_f64(vmulq_n_f64(*&self->mOriginalTransformInRoot.c, self->mNewKnobCenterNaturalSpace.y), *&self->mOriginalTransformInRoot.a, p_mNewKnobCenterNaturalSpace->x));
-    [v41 alignmentPointForPoint:?];
+    [alignmentProvider alignmentPointForPoint:?];
     v49 = v48;
     v51 = v50;
     v52 = *&self->mOriginalTransformInRoot.c;
@@ -1790,9 +1790,9 @@ LABEL_25:
     v54 = sub_10011F31C(v110.f64[0], v110.f64[1], v112.f64[0]);
     v56 = v55;
     v57 = [(CRLCanvasKnobTracker *)self rep];
-    v58 = [v57 interactiveCanvasController];
-    [v58 viewScale];
-    [v41 snapDistanceForViewScale:?];
+    interactiveCanvasController4 = [v57 interactiveCanvasController];
+    [interactiveCanvasController4 viewScale];
+    [alignmentProvider snapDistanceForViewScale:?];
     v60 = v59;
 
     v61 = sub_100120090(v112.f64[0], v112.f64[1], v49, v51);
@@ -1823,7 +1823,7 @@ LABEL_25:
 
       v69 = 0.0;
 LABEL_51:
-      v10 = v118;
+      guideController = v118;
       v71 = sub_10011F340(v70, v69, v61);
       v119 = sub_10011F334(v71, v72, v112.f64[0]);
       v113 = v73;
@@ -1840,7 +1840,7 @@ LABEL_51:
     {
       v67 = tx + v51 * c + a * v49;
       v68 = ty + v51 * d + b * v49;
-      v10 = v118;
+      guideController = v118;
     }
 
     p_mNewKnobCenterNaturalSpace->x = v67;
@@ -1903,14 +1903,14 @@ LABEL_53:
     }
 
     v87 = [(CRLCanvasKnobTracker *)self rep];
-    v88 = [v87 wantsGuidesWhileResizing];
+    wantsGuidesWhileResizing = [v87 wantsGuidesWhileResizing];
 
-    if (v88)
+    if (wantsGuidesWhileResizing)
     {
-      v89 = [(CRLConnectionLineKnobTracker *)self resizeFromCenter];
+      resizeFromCenter2 = [(CRLConnectionLineKnobTracker *)self resizeFromCenter];
       v91 = CGPointZero.x;
       v90 = CGPointZero.y;
-      [v10 snapRectToGuides:v86 forKnobTag:v89 ^ 1 snapSize:0 snapWithBackgroundAlignmentProvider:0 isLine:v76 startPoint:v77 endPoint:{width, height, CGPointZero.x, v90, CGPointZero.x, v90}];
+      [guideController snapRectToGuides:v86 forKnobTag:resizeFromCenter2 ^ 1 snapSize:0 snapWithBackgroundAlignmentProvider:0 isLine:v76 startPoint:v77 endPoint:{width, height, CGPointZero.x, v90, CGPointZero.x, v90}];
       v93 = v92;
       v95 = v94;
     }
@@ -2046,18 +2046,18 @@ LABEL_11:
 {
   v3 = objc_opt_class();
   v4 = [(CRLCanvasKnobTracker *)self rep];
-  v5 = [v4 layout];
-  v6 = sub_100013F00(v3, v5);
+  layout = [v4 layout];
+  v6 = sub_100013F00(v3, layout);
 
   v7 = objc_opt_class();
-  v8 = [v6 connectedFrom];
-  v9 = [v8 info];
-  v10 = sub_100014370(v7, v9);
+  connectedFrom = [v6 connectedFrom];
+  info = [connectedFrom info];
+  v10 = sub_100014370(v7, info);
 
   v11 = objc_opt_class();
-  v12 = [v6 connectedTo];
-  v13 = [v12 info];
-  v14 = sub_100014370(v11, v13);
+  connectedTo = [v6 connectedTo];
+  info2 = [connectedTo info];
+  v14 = sub_100014370(v11, info2);
 
   if (v10)
   {
@@ -2084,42 +2084,42 @@ LABEL_11:
   v5 = sub_100013F00(v3, v4);
 
   v6 = objc_opt_class();
-  v7 = [v5 layout];
-  v8 = sub_100013F00(v6, v7);
+  layout = [v5 layout];
+  v8 = sub_100013F00(v6, layout);
 
   v9 = [(CRLCanvasKnobTracker *)self rep];
-  v10 = [v9 interactiveCanvasController];
+  interactiveCanvasController = [v9 interactiveCanvasController];
 
-  v11 = [v10 commandController];
+  commandController = [interactiveCanvasController commandController];
   mConnectedRepForHighlighting = self->mConnectedRepForHighlighting;
   self->mConnectedRepForHighlighting = 0;
 
   if (!self->mIsEnqueueingCommandsInRealTime)
   {
     v13 = [CRLCanvasCommandSelectionBehavior alloc];
-    v14 = [v10 canvasEditor];
-    v15 = [(CRLCanvasCommandSelectionBehavior *)v13 initWithCanvasEditor:v14];
+    canvasEditor = [interactiveCanvasController canvasEditor];
+    v15 = [(CRLCanvasCommandSelectionBehavior *)v13 initWithCanvasEditor:canvasEditor];
 
-    [v11 openGroupWithSelectionBehavior:v15];
+    [commandController openGroupWithSelectionBehavior:v15];
   }
 
   [v5 updateMagnetRenderables:&__NSArray0__struct withEmptyMagnets:&__NSArray0__struct withHighlightedMagnets:&__NSArray0__struct includeClippedPortions:0];
   [v5 dynamicMoveSmartShapeKnobDidEndWithTracker:self];
   [v8 setControlKnobPositionChangedFromRouting:0];
-  v16 = [(CRLCanvasKnobTracker *)self knob];
-  v17 = [v16 renderable];
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  renderable = [knob renderable];
   LODWORD(v18) = 1.0;
-  [v17 setOpacity:v18];
+  [renderable setOpacity:v18];
 
   mOriginalConnectedFrom = self->mOriginalConnectedFrom;
-  v20 = [v8 connectedFrom];
-  v21 = v20;
-  if (mOriginalConnectedFrom == v20)
+  connectedFrom = [v8 connectedFrom];
+  v21 = connectedFrom;
+  if (mOriginalConnectedFrom == connectedFrom)
   {
     mOriginalConnectedTo = self->mOriginalConnectedTo;
-    v23 = [v8 connectedTo];
+    connectedTo = [v8 connectedTo];
 
-    if (mOriginalConnectedTo == v23)
+    if (mOriginalConnectedTo == connectedTo)
     {
       v24 = 0;
       if (!self->mKnobMoved)
@@ -2137,26 +2137,26 @@ LABEL_11:
 
   v24 = 1;
 LABEL_7:
-  v54 = v10;
+  v54 = interactiveCanvasController;
   v56 = v5;
-  v53 = [v8 connectionLineInfo];
+  connectionLineInfo = [v8 connectionLineInfo];
   v25 = objc_opt_class();
-  v26 = [v8 connectedFrom];
-  v27 = [v26 info];
-  v55 = sub_100014370(v25, v27);
+  connectedFrom2 = [v8 connectedFrom];
+  info = [connectedFrom2 info];
+  v55 = sub_100014370(v25, info);
 
   v28 = objc_opt_class();
-  v29 = [v8 connectedTo];
-  v30 = [v29 info];
-  v31 = sub_100014370(v28, v30);
+  connectedTo2 = [v8 connectedTo];
+  info2 = [connectedTo2 info];
+  v31 = sub_100014370(v28, info2);
 
   v32 = objc_opt_class();
-  v33 = [(CRLCanvasLayout *)self->mOriginalConnectedFrom info];
-  v34 = sub_100014370(v32, v33);
+  info3 = [(CRLCanvasLayout *)self->mOriginalConnectedFrom info];
+  v34 = sub_100014370(v32, info3);
 
   v35 = objc_opt_class();
-  v36 = [(CRLCanvasLayout *)self->mOriginalConnectedTo info];
-  v37 = sub_100014370(v35, v36);
+  info4 = [(CRLCanvasLayout *)self->mOriginalConnectedTo info];
+  v37 = sub_100014370(v35, info4);
 
   v52 = v34;
   if (v24)
@@ -2169,37 +2169,37 @@ LABEL_7:
     [v56 actionStringForDrag];
   }
   v38 = ;
-  [v11 setCurrentGroupActionString:v38];
-  v39 = [v8 pathSource];
-  v40 = [v39 copy];
+  [commandController setCurrentGroupActionString:v38];
+  pathSource = [v8 pathSource];
+  v40 = [pathSource copy];
 
   v41 = [CRLConnectionLineMagnet alloc];
-  v42 = [v8 headMagnetType];
+  headMagnetType = [v8 headMagnetType];
   [v8 headMagnetNormalizedPosition];
-  v43 = [(CRLConnectionLineMagnet *)v41 initWithType:v42 normalizedPosition:?];
+  v43 = [(CRLConnectionLineMagnet *)v41 initWithType:headMagnetType normalizedPosition:?];
   [v40 setHeadMagnet:v43];
 
   v44 = [CRLConnectionLineMagnet alloc];
-  v45 = [v8 tailMagnetType];
+  tailMagnetType = [v8 tailMagnetType];
   [v8 tailMagnetNormalizedPosition];
-  v46 = [(CRLConnectionLineMagnet *)v44 initWithType:v45 normalizedPosition:?];
+  v46 = [(CRLConnectionLineMagnet *)v44 initWithType:tailMagnetType normalizedPosition:?];
   [v40 setTailMagnet:v46];
 
-  v47 = [[_TtC8Freeform37CRLCommandSetConnectionLineConnection alloc] initWithConnectionLine:v53 connectedItem:v55 chirality:0 pathSource:v40];
-  v48 = [[_TtC8Freeform37CRLCommandSetConnectionLineConnection alloc] initWithConnectionLine:v53 connectedItem:v31 chirality:1 pathSource:v40];
-  [v11 enqueueCommand:v47];
-  [v11 enqueueCommand:v48];
+  v47 = [[_TtC8Freeform37CRLCommandSetConnectionLineConnection alloc] initWithConnectionLine:connectionLineInfo connectedItem:v55 chirality:0 pathSource:v40];
+  v48 = [[_TtC8Freeform37CRLCommandSetConnectionLineConnection alloc] initWithConnectionLine:connectionLineInfo connectedItem:v31 chirality:1 pathSource:v40];
+  [commandController enqueueCommand:v47];
+  [commandController enqueueCommand:v48];
   [v8 setMagnetsAdjusted:0];
 
   v5 = v56;
-  v10 = v54;
+  interactiveCanvasController = v54;
 LABEL_11:
-  [v11 closeGroup];
+  [commandController closeGroup];
   if (self->mBeganAlignmentOperation)
   {
-    v49 = [v5 interactiveCanvasController];
-    v50 = [v49 guideController];
-    [v50 endAlignmentOperation];
+    interactiveCanvasController2 = [v5 interactiveCanvasController];
+    guideController = [interactiveCanvasController2 guideController];
+    [guideController endAlignmentOperation];
   }
 
   if (v24)
@@ -2217,11 +2217,11 @@ LABEL_11:
   v5 = sub_100013F00(v3, v4);
 
   v6 = objc_opt_class();
-  v7 = [v5 layout];
-  v8 = sub_100013F00(v6, v7);
+  layout = [v5 layout];
+  v8 = sub_100013F00(v6, layout);
 
-  v9 = [v8 connectedPathSource];
-  v10 = [v9 type] != 1;
+  connectedPathSource = [v8 connectedPathSource];
+  v10 = [connectedPathSource type] != 1;
 
   return v10;
 }
@@ -2229,25 +2229,25 @@ LABEL_11:
 - (void)p_validateLayout
 {
   v2 = [(CRLCanvasKnobTracker *)self rep];
-  v4 = [v2 layout];
+  layout = [v2 layout];
 
-  v3 = [v4 layoutController];
-  [v3 validateLayoutWithDependencies:v4];
+  layoutController = [layout layoutController];
+  [layoutController validateLayoutWithDependencies:layout];
 }
 
 - (id)connectionLineLayout
 {
   v2 = [(CRLCanvasKnobTracker *)self rep];
-  v3 = [v2 layout];
+  layout = [v2 layout];
 
-  return v3;
+  return layout;
 }
 
-- (BOOL)p_isValidConnectionDestination:(id)a3
+- (BOOL)p_isValidConnectionDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(CRLConnectionLineKnobTracker *)self connectionLineLayout];
-  LOBYTE(self) = [v5 isValidConnectionDestination:v4 forLineEnd:self->mKnobTag];
+  destinationCopy = destination;
+  connectionLineLayout = [(CRLConnectionLineKnobTracker *)self connectionLineLayout];
+  LOBYTE(self) = [connectionLineLayout isValidConnectionDestination:destinationCopy forLineEnd:self->mKnobTag];
 
   return self;
 }

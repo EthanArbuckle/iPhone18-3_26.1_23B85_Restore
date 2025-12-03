@@ -1,5 +1,5 @@
 @interface WFCoherenceDatabaseCollectionsResult
-- (WFCoherenceDatabaseCollectionsResult)initWithDatabase:(id)a3 libraryQuery:(id)a4;
+- (WFCoherenceDatabaseCollectionsResult)initWithDatabase:(id)database libraryQuery:(id)query;
 - (id)description;
 @end
 
@@ -10,20 +10,20 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFCoherenceDatabaseCollectionsResult *)self libraryQuery];
-  v7 = [v3 stringWithFormat:@"<%@: %p, query: %@>", v5, self, v6];
+  libraryQuery = [(WFCoherenceDatabaseCollectionsResult *)self libraryQuery];
+  v7 = [v3 stringWithFormat:@"<%@: %p, query: %@>", v5, self, libraryQuery];
 
   return v7;
 }
 
-- (WFCoherenceDatabaseCollectionsResult)initWithDatabase:(id)a3 libraryQuery:(id)a4
+- (WFCoherenceDatabaseCollectionsResult)initWithDatabase:(id)database libraryQuery:(id)query
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  databaseCopy = database;
+  queryCopy = query;
+  v9 = queryCopy;
+  if (databaseCopy)
   {
-    if (v8)
+    if (queryCopy)
     {
       goto LABEL_3;
     }
@@ -31,8 +31,8 @@
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFDatabaseResult.m" lineNumber:404 description:{@"Invalid parameter not satisfying: %@", @"database"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabaseResult.m" lineNumber:404 description:{@"Invalid parameter not satisfying: %@", @"database"}];
 
     if (v9)
     {
@@ -40,20 +40,20 @@
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"WFDatabaseResult.m" lineNumber:405 description:{@"Invalid parameter not satisfying: %@", @"query"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFDatabaseResult.m" lineNumber:405 description:{@"Invalid parameter not satisfying: %@", @"query"}];
 
 LABEL_3:
   v16.receiver = self;
   v16.super_class = WFCoherenceDatabaseCollectionsResult;
-  v10 = [(WFDatabaseResult *)&v16 _init];
-  v11 = v10;
-  if (v10)
+  _init = [(WFDatabaseResult *)&v16 _init];
+  v11 = _init;
+  if (_init)
   {
-    WFDatabaseResultCommonInit(v10);
-    [(WFDatabaseResult *)v11 setDatabase:v7];
-    objc_storeStrong(&v11->_libraryQuery, a4);
-    [v7 startObservingChangesForResult:v11];
+    WFDatabaseResultCommonInit(_init);
+    [(WFDatabaseResult *)v11 setDatabase:databaseCopy];
+    objc_storeStrong(&v11->_libraryQuery, query);
+    [databaseCopy startObservingChangesForResult:v11];
     v12 = v11;
   }
 

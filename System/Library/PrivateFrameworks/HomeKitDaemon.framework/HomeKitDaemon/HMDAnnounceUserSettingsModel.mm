@@ -1,31 +1,31 @@
 @interface HMDAnnounceUserSettingsModel
 + (id)modelIDNamespace;
 + (id)properties;
-- (HMDAnnounceUserSettingsModel)initWithUserUUID:(id)a3;
-- (id)modelIDForUser:(id)a3;
+- (HMDAnnounceUserSettingsModel)initWithUserUUID:(id)d;
+- (id)modelIDForUser:(id)user;
 @end
 
 @implementation HMDAnnounceUserSettingsModel
 
-- (HMDAnnounceUserSettingsModel)initWithUserUUID:(id)a3
+- (HMDAnnounceUserSettingsModel)initWithUserUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [HMDAnnounceUserSettingsModel alloc];
-  v6 = [(HMDAnnounceUserSettingsModel *)self modelIDForUser:v4];
-  v7 = [(HMDBackingStoreModelObject *)v5 initWithUUID:v6 parentUUID:v4];
+  v6 = [(HMDAnnounceUserSettingsModel *)self modelIDForUser:dCopy];
+  v7 = [(HMDBackingStoreModelObject *)v5 initWithUUID:v6 parentUUID:dCopy];
 
   return v7;
 }
 
-- (id)modelIDForUser:(id)a3
+- (id)modelIDForUser:(id)user
 {
   v3 = MEMORY[0x277CCAD78];
-  v4 = a3;
+  userCopy = user;
   v5 = [v3 alloc];
   v6 = +[HMDAnnounceUserSettingsModel modelIDNamespace];
-  v7 = [v4 UUIDString];
+  uUIDString = [userCopy UUIDString];
 
-  v8 = [v7 dataUsingEncoding:4];
+  v8 = [uUIDString dataUsingEncoding:4];
   v9 = [v5 initWithNamespace:v6 data:v8];
 
   return v9;

@@ -4,8 +4,8 @@
 + (id)locationConsumerValidValueList;
 + (id)reverseDeviceFilterMapping;
 + (id)reverseLocationConsumerMapping;
-+ (id)stringForDeviceFilter:(unint64_t)a3;
-+ (id)stringForLocationConsumer:(unint64_t)a3;
++ (id)stringForDeviceFilter:(unint64_t)filter;
++ (id)stringForLocationConsumer:(unint64_t)consumer;
 @end
 
 @implementation PPEnumTypes
@@ -34,7 +34,7 @@
   for (i = 0; i != 4; ++i)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
-    v6 = [a1 stringForLocationConsumer:i];
+    v6 = [self stringForLocationConsumer:i];
     [v3 setObject:v5 forKeyedSubscript:v6];
   }
 
@@ -46,7 +46,7 @@
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
   for (i = 0; i != 4; ++i)
   {
-    v5 = [a1 stringForLocationConsumer:i];
+    v5 = [self stringForLocationConsumer:i];
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
     [v3 setObject:v5 forKeyedSubscript:v6];
   }
@@ -60,7 +60,7 @@
   for (i = 0; i != 3; ++i)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
-    v6 = [a1 stringForDeviceFilter:i];
+    v6 = [self stringForDeviceFilter:i];
     [v3 setObject:v5 forKeyedSubscript:v6];
   }
 
@@ -72,7 +72,7 @@
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
   for (i = 0; i != 3; ++i)
   {
-    v5 = [a1 stringForDeviceFilter:i];
+    v5 = [self stringForDeviceFilter:i];
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
     [v3 setObject:v5 forKeyedSubscript:v6];
   }
@@ -80,10 +80,10 @@
   return v3;
 }
 
-+ (id)stringForLocationConsumer:(unint64_t)a3
++ (id)stringForLocationConsumer:(unint64_t)consumer
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 >= 5)
+  if (consumer >= 5)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -91,31 +91,31 @@
       *buf = 138412546;
       v12 = v10;
       v13 = 2048;
-      v14 = a3;
+      consumerCopy = consumer;
       _os_log_error_impl(&dword_1A7FD3000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ called with invalid PPLocationConsumer value of %lu", buf, 0x16u);
     }
 
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D930];
     v8 = NSStringFromSelector(a2);
-    [v6 raise:v7 format:{@"%@ called with invalid PPLocationConsumer value of %lu", v8, a3}];
+    [v6 raise:v7 format:{@"%@ called with invalid PPLocationConsumer value of %lu", v8, consumer}];
 
     result = @"invalid";
   }
 
   else
   {
-    result = off_1E77F6CB8[a3];
+    result = off_1E77F6CB8[consumer];
   }
 
   v9 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-+ (id)stringForDeviceFilter:(unint64_t)a3
++ (id)stringForDeviceFilter:(unint64_t)filter
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 >= 3)
+  if (filter >= 3)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -123,21 +123,21 @@
       *buf = 138412546;
       v12 = v10;
       v13 = 2048;
-      v14 = a3;
+      filterCopy = filter;
       _os_log_error_impl(&dword_1A7FD3000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ called with invalid PPDeviceFilter value of %lu", buf, 0x16u);
     }
 
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D930];
     v8 = NSStringFromSelector(a2);
-    [v6 raise:v7 format:{@"%@ called with invalid PPDeviceFilter value of %lu", v8, a3}];
+    [v6 raise:v7 format:{@"%@ called with invalid PPDeviceFilter value of %lu", v8, filter}];
 
     result = @"invalid";
   }
 
   else
   {
-    result = off_1E77F6CA0[a3];
+    result = off_1E77F6CA0[filter];
   }
 
   v9 = *MEMORY[0x1E69E9840];

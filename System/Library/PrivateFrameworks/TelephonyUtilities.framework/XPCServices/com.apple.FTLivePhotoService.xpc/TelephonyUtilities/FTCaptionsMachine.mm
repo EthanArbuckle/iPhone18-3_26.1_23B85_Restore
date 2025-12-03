@@ -1,6 +1,6 @@
 @interface FTCaptionsMachine
 + (double)machTimeScale;
-+ (int)createWebVTTTextSampleBuffer:(__CFString *)a3 startTime:(id *)a4 duration:(id *)a5 sampleBufferOut:(opaqueCMSampleBuffer *)a6;
++ (int)createWebVTTTextSampleBuffer:(__CFString *)buffer startTime:(id *)time duration:(id *)duration sampleBufferOut:(opaqueCMSampleBuffer *)out;
 @end
 
 @implementation FTCaptionsMachine
@@ -15,27 +15,27 @@
   return *&qword_100059C48;
 }
 
-+ (int)createWebVTTTextSampleBuffer:(__CFString *)a3 startTime:(id *)a4 duration:(id *)a5 sampleBufferOut:(opaqueCMSampleBuffer *)a6
++ (int)createWebVTTTextSampleBuffer:(__CFString *)buffer startTime:(id *)time duration:(id *)duration sampleBufferOut:(opaqueCMSampleBuffer *)out
 {
   formatDescriptionOut = 0;
   v29 = 0;
   CMFormatDescriptionCreate(kCFAllocatorDefault, 0x74657874u, 0x77767474u, 0, &formatDescriptionOut);
-  sampleTimingArray.duration = *a5;
-  sampleTimingArray.presentationTimeStamp = *a4;
+  sampleTimingArray.duration = *duration;
+  sampleTimingArray.presentationTimeStamp = *time;
   sampleTimingArray.decodeTimeStamp = kCMTimeInvalid;
   blockBufferOut = 0;
   sampleSizeArray = 0;
-  if (a3)
+  if (buffer)
   {
-    Length = CFStringGetLength(a3);
+    Length = CFStringGetLength(buffer);
     *time = 0;
     v31.location = 0;
     v31.length = Length;
-    CFStringGetBytes(a3, v31, 0x8000100u, 0, 0, 0, 0, time);
+    CFStringGetBytes(buffer, v31, 0x8000100u, 0, 0, 0, 0, time);
     v11 = malloc_type_malloc(*time, 0x4F46AA9BuLL);
     v32.location = 0;
     v32.length = Length;
-    CFStringGetBytes(a3, v32, 0x8000100u, 0, 0, v11, *time, time);
+    CFStringGetBytes(buffer, v32, 0x8000100u, 0, 0, v11, *time, time);
     v12 = *time + 16;
     v13 = bswap32(*time + 8);
     v14 = malloc_type_malloc(v12, 0x78B79547uLL);
@@ -58,11 +58,11 @@
   if (v15)
   {
     v16 = v15;
-    *time = *&a4->var0;
-    *&time[16] = a4->var3;
+    *time = *&time->var0;
+    *&time[16] = time->var3;
     v17 = CMTimeCopyDescription(kCFAllocatorDefault, time);
-    *time = *&a4->var0;
-    *&time[16] = a4->var3;
+    *time = *&time->var0;
+    *&time[16] = time->var3;
     v18 = CMTimeCopyDescription(kCFAllocatorDefault, time);
     v19 = FTDefaultLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -87,11 +87,11 @@ LABEL_8:
   v16 = CMSampleBufferCreate(kCFAllocatorDefault, blockBufferOut, 1u, 0, 0, formatDescriptionOut, 1, 1, &sampleTimingArray, 1, &sampleSizeArray, &v29);
   if (v16)
   {
-    *time = *&a4->var0;
-    *&time[16] = a4->var3;
+    *time = *&time->var0;
+    *&time[16] = time->var3;
     v22 = CMTimeCopyDescription(kCFAllocatorDefault, time);
-    *time = *&a4->var0;
-    *&time[16] = a4->var3;
+    *time = *&time->var0;
+    *&time[16] = time->var3;
     v23 = CMTimeCopyDescription(kCFAllocatorDefault, time);
     v24 = FTDefaultLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -116,7 +116,7 @@ LABEL_8:
 
   else
   {
-    *a6 = v29;
+    *out = v29;
     v29 = 0;
   }
 

@@ -1,14 +1,14 @@
 @interface _BPSCollectInner
-- (id)receiveNewValue:(id)a3;
+- (id)receiveNewValue:(id)value;
 @end
 
 @implementation _BPSCollectInner
 
-- (id)receiveNewValue:(id)a3
+- (id)receiveNewValue:(id)value
 {
-  v4 = a3;
-  v5 = [(BPSReduceProducer *)self result];
-  [v5 addObject:v4];
+  valueCopy = value;
+  result = [(BPSReduceProducer *)self result];
+  [result addObject:valueCopy];
 
   return [BPSPartialCompletion withState:1];
 }

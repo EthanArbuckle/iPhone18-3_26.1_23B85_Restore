@@ -7,7 +7,7 @@
 + (objc_class)_intents_resolutionResultClass
 {
   v1 = MEMORY[0x1E696AEC0];
-  v2 = NSStringFromClass([a1 transformedValueClass]);
+  v2 = NSStringFromClass([self transformedValueClass]);
   v3 = [v2 substringFromIndex:2];
   v4 = [v1 stringWithFormat:@"IN%@ResolutionResult", v3];
 

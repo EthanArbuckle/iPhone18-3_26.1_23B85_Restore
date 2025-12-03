@@ -3,36 +3,36 @@
 - (SPParsecDatastore)init;
 - (SSPlistDataReader)cannedCEPValues;
 - (SSPlistDataReader)cepDictionary;
-- (double)computeTimeout:(double)a3;
+- (double)computeTimeout:(double)timeout;
 - (double)searchTimeOut;
 - (double)suggestionTimeOut;
-- (double)timeOut:(BOOL)a3;
+- (double)timeOut:(BOOL)out;
 - (id)createResultObject;
 - (id)feedbackListeners;
-- (id)performQuery:(id)a3;
+- (id)performQuery:(id)query;
 - (void)activate;
 - (void)checkParsecState;
 - (void)deactivate;
-- (void)getFTEStringsWithReply:(id)a3;
+- (void)getFTEStringsWithReply:(id)reply;
 - (void)preheat;
-- (void)sessionReceivedBagWithEnabledDomains:(id)a3;
-- (void)setParsecFeedbackAllowed:(BOOL)a3;
-- (void)setParsecState:(BOOL)a3;
+- (void)sessionReceivedBagWithEnabledDomains:(id)domains;
+- (void)setParsecFeedbackAllowed:(BOOL)allowed;
+- (void)setParsecState:(BOOL)state;
 - (void)setupSearchSession;
-- (void)updateCorrectionDict:(id)a3;
-- (void)updateParsecBeyondTimeoutCount:(BOOL)a3;
+- (void)updateCorrectionDict:(id)dict;
+- (void)updateParsecBeyondTimeoutCount:(BOOL)count;
 @end
 
 @implementation SPParsecDatastore
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SPLogInit();
-    v3 = [NSBundle bundleForClass:a1];
-    v4 = [v3 infoDictionary];
-    v8 = [v4 objectForKeyedSubscript:@"CFBundleVersion"];
+    v3 = [NSBundle bundleForClass:self];
+    infoDictionary = [v3 infoDictionary];
+    v8 = [infoDictionary objectForKeyedSubscript:@"CFBundleVersion"];
 
     v5 = [NSString stringWithFormat:@"Spotlight/%@", v8];
     v6 = qword_1000A8930;
@@ -51,10 +51,10 @@
   }
 }
 
-- (void)updateParsecBeyondTimeoutCount:(BOOL)a3
+- (void)updateParsecBeyondTimeoutCount:(BOOL)count
 {
   ++self->_parsecBeyondTimeoutRequestCount;
-  if (a3)
+  if (count)
   {
     self->_withinThreshold = 1;
   }
@@ -98,8 +98,8 @@
   objc_sync_enter(obj);
   if (obj->_parsecEnabled && !obj->_session && (v2 = [[PRSSearchSession alloc] initWithClient:obj clientQueue:obj->_queue], session = obj->_session, obj->_session = v2, session, (v4 = obj->_session) != 0))
   {
-    v5 = [(PRSSearchSession *)v4 listener];
-    [(SPParsecFeedbackProxy *)obj->_listener setListener:v5];
+    listener = [(PRSSearchSession *)v4 listener];
+    [(SPParsecFeedbackProxy *)obj->_listener setListener:listener];
 
     [(PRSSearchSession *)obj->_session setParsecFeedbackAllowed:byte_1000A8939];
     objc_sync_exit(obj);
@@ -118,17 +118,17 @@
   v5 = SPGetDisabledDomainSet();
   self->_parsecEnabled = [v5 containsObject:@"DOMAIN_PARSEC"] ^ 1;
   v3 = +[MCProfileConnection sharedConnection];
-  v4 = [v3 isSpotlightInternetResultsAllowed];
+  isSpotlightInternetResultsAllowed = [v3 isSpotlightInternetResultsAllowed];
 
-  if ((v4 & 1) == 0)
+  if ((isSpotlightInternetResultsAllowed & 1) == 0)
   {
     self->_parsecEnabled = 0;
   }
 }
 
-- (id)performQuery:(id)a3
+- (id)performQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = si_tracing_current_span();
   v46 = *v5;
   v48 = *(v5 + 16);
@@ -143,9 +143,9 @@
   *(v5 + 28) = 102;
   *(v5 + 32) = "[SPParsecDatastore performQuery:]";
   si_tracing_log_span_begin();
-  if (([v4 isPeopleSearch] & 1) != 0 || objc_msgSend(v4, "isScopedAppSearch"))
+  if (([queryCopy isPeopleSearch] & 1) != 0 || objc_msgSend(queryCopy, "isScopedAppSearch"))
   {
-    if ([v4 isPeopleSearch])
+    if ([queryCopy isPeopleSearch])
     {
       v10 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
       v11 = "people";
@@ -157,19 +157,19 @@
       v11 = "appscoped";
     }
 
-    sub_100017E38(v4, v11, "parsec", v10);
+    sub_100017E38(queryCopy, v11, "parsec", v10);
     v12 = 0;
     goto LABEL_40;
   }
 
-  [v4 externalID];
+  [queryCopy externalID];
   kdebug_trace();
   v13 = SPLogForSPLogCategoryTelemetry();
-  v14 = [v4 externalID];
-  if (v14 && os_signpost_enabled(v13))
+  externalID = [queryCopy externalID];
+  if (externalID && os_signpost_enabled(v13))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v13, OS_SIGNPOST_INTERVAL_BEGIN, v14, "parsecLatency", " enableTelemetry=YES ", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v13, OS_SIGNPOST_INTERVAL_BEGIN, externalID, "parsecLatency", " enableTelemetry=YES ", buf, 2u);
   }
 
   v15 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
@@ -196,21 +196,21 @@
     [(SPParsecDatastore *)self preheat];
   }
 
-  v19 = [v4 queryContext];
+  queryContext = [queryCopy queryContext];
   v20 = PRSLogCategoryDefault();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     v21 = objc_opt_class();
-    v22 = [v19 searchString];
+    searchString = [queryContext searchString];
     *buf = 138412546;
     v53 = v21;
     v54 = 2112;
-    v55 = v22;
+    v55 = searchString;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%@ Perform query %@", buf, 0x16u);
   }
 
-  v23 = [v19 disabledDomains];
-  v24 = [v23 containsObject:&off_100098AF8];
+  disabledDomains = [queryContext disabledDomains];
+  v24 = [disabledDomains containsObject:&off_100098AF8];
 
   if (v24)
   {
@@ -219,19 +219,19 @@
 
   else
   {
-    v25 = [[SPParsecQueryTask alloc] initWithStore:self resultPipe:v4 queue:self->_queue visibleApps:self->_setOfVisibleApps hiddenApps:self->_setOfHiddenApps];
+    v25 = [[SPParsecQueryTask alloc] initWithStore:self resultPipe:queryCopy queue:self->_queue visibleApps:self->_setOfVisibleApps hiddenApps:self->_setOfHiddenApps];
     [(SPParsecQueryTask *)v25 setStartTime:v15];
     pthread_mutex_lock(&v25->_mutex);
     if (byte_1000A8938 == 1)
     {
       pthread_mutex_unlock(&v25->_mutex);
-      v42 = [v19 searchString];
-      v43 = [(SPParsecQueryTask *)v25 unarchiveWithQuery:v42];
+      searchString2 = [queryContext searchString];
+      v43 = [(SPParsecQueryTask *)v25 unarchiveWithQuery:searchString2];
       v44 = qword_1000A8940;
       qword_1000A8940 = v43;
 
-      v45 = [qword_1000A8940 query];
-      [(SPParsecQueryTask *)v25 setParsecQuery:v45];
+      query = [qword_1000A8940 query];
+      [(SPParsecQueryTask *)v25 setParsecQuery:query];
 
       [(SPParsecQueryTask *)v25 resumeWithArchive:qword_1000A8940];
       goto LABEL_39;
@@ -244,24 +244,24 @@
         [(SPParsecDatastore *)self setupSearchSession];
         if (!self->_session)
         {
-          sub_100017E38(v4, "failed", "parsec", v15);
+          sub_100017E38(queryCopy, "failed", "parsec", v15);
         }
       }
 
-      v26 = [v19 searchEntities];
-      if ([v26 count])
+      searchEntities = [queryContext searchEntities];
+      if ([searchEntities count])
       {
-        v27 = [v19 searchEntities];
-        v28 = [v27 lastObject];
-        v29 = [v28 currentSearchString];
+        searchEntities2 = [queryContext searchEntities];
+        lastObject = [searchEntities2 lastObject];
+        currentSearchString = [lastObject currentSearchString];
       }
 
       else
       {
-        v29 = [v19 searchString];
+        currentSearchString = [queryContext searchString];
       }
 
-      v30 = -[PRSSearchSession queryTaskWithString:externalId:handler:queryContext:queryIdent:](self->_session, "queryTaskWithString:externalId:handler:queryContext:queryIdent:", v29, [v4 externalID], v25, v19, objc_msgSend(v4, "queryIdent"));
+      v30 = -[PRSSearchSession queryTaskWithString:externalId:handler:queryContext:queryIdent:](self->_session, "queryTaskWithString:externalId:handler:queryContext:queryIdent:", currentSearchString, [queryCopy externalID], v25, queryContext, objc_msgSend(queryCopy, "queryIdent"));
       if (v30)
       {
         v31 = SPLogForSPLogCategoryDefault();
@@ -284,15 +284,15 @@
 
         [v30 setParsecState:self->_parsecEnabled];
         [(SPParsecQueryTask *)v25 setParsecQuery:v30];
-        [v30 setRepresentedObject:v4];
+        [v30 setRepresentedObject:queryCopy];
       }
     }
 
     pthread_mutex_unlock(&v25->_mutex);
   }
 
-  v34 = [(SPParsecDatastore *)self session];
-  [v34 searchRenderTimeout];
+  session = [(SPParsecDatastore *)self session];
+  [session searchRenderTimeout];
   [(SPParsecQueryTask *)v25 resumeWithTimeout:?];
 
 LABEL_39:
@@ -327,14 +327,14 @@ LABEL_40:
   }
 
   self->_sessionStartTime = CFAbsoluteTimeGetCurrent();
-  v4 = [(SDNetworkQualityInquiry *)self->_networkConditions getNetworkQuality];
-  self->_quality = v4;
-  if (self->_lastKnownQuality != v4)
+  getNetworkQuality = [(SDNetworkQualityInquiry *)self->_networkConditions getNetworkQuality];
+  self->_quality = getNetworkQuality;
+  if (self->_lastKnownQuality != getNetworkQuality)
   {
     self->_parsecBeyondTimeoutRequestCount = 0;
   }
 
-  self->_lastKnownQuality = v4;
+  self->_lastKnownQuality = getNetworkQuality;
   session = self->_session;
   if (!session)
   {
@@ -363,8 +363,8 @@ LABEL_40:
 
 - (void)deactivate
 {
-  v3 = [(SPParsecDatastore *)self session];
-  [v3 deactivate];
+  session = [(SPParsecDatastore *)self session];
+  [session deactivate];
   self->_activated = 0;
   atomic_fetch_add(dword_1000A8900, 0xFFFFFFFF);
   self->_sessionStartTime = 0.0;
@@ -387,7 +387,7 @@ LABEL_40:
   }
 }
 
-- (double)computeTimeout:(double)a3
+- (double)computeTimeout:(double)timeout
 {
   quality = self->_quality;
   if ((quality & 0xFFFFFFFFFFFFFFFELL) != 2 || self->_parsecBeyondTimeoutRequestCount < 4 || self->_lastKnownQuality != quality)
@@ -411,7 +411,7 @@ LABEL_40:
   v9 = os_log_type_enabled(v6, v8);
   if (withinThreshold)
   {
-    a3 = a3 + 0.05;
+    timeout = timeout + 0.05;
     if (v9)
     {
       v14 = 0;
@@ -424,7 +424,7 @@ LABEL_12:
 
   else
   {
-    a3 = a3 * 0.5;
+    timeout = timeout * 0.5;
     if (v9)
     {
       v13 = 0;
@@ -436,9 +436,9 @@ LABEL_12:
 
 LABEL_14:
   result = 0.2;
-  if (a3 > 0.0)
+  if (timeout > 0.0)
   {
-    return a3;
+    return timeout;
   }
 
   return result;
@@ -446,11 +446,11 @@ LABEL_14:
 
 - (double)searchTimeOut
 {
-  v3 = [(SPParsecDatastore *)self session];
-  if (v3)
+  session = [(SPParsecDatastore *)self session];
+  if (session)
   {
-    v4 = [(SPParsecDatastore *)self session];
-    [v4 searchRenderTimeout];
+    session2 = [(SPParsecDatastore *)self session];
+    [session2 searchRenderTimeout];
     v6 = v5;
   }
 
@@ -465,17 +465,17 @@ LABEL_14:
 
 - (double)suggestionTimeOut
 {
-  v3 = [(SPParsecDatastore *)self session];
-  [v3 suggestionsRenderTimeout];
+  session = [(SPParsecDatastore *)self session];
+  [session suggestionsRenderTimeout];
   v5 = v4;
 
   [(SPParsecDatastore *)self computeTimeout:v5];
   return result;
 }
 
-- (double)timeOut:(BOOL)a3
+- (double)timeOut:(BOOL)out
 {
-  if (a3)
+  if (out)
   {
     [(SPParsecDatastore *)self suggestionTimeOut];
   }
@@ -488,44 +488,44 @@ LABEL_14:
   return result;
 }
 
-- (void)sessionReceivedBagWithEnabledDomains:(id)a3
+- (void)sessionReceivedBagWithEnabledDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   v5 = SPLogForSPLogCategoryDefault();
   v6 = gSPLogInfoAsDefault;
   if (os_log_type_enabled(v5, ((gSPLogInfoAsDefault & 1) == 0)))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = domainsCopy;
     _os_log_impl(&_mh_execute_header, v5, ((v6 & 1) == 0), "Received bag with enabled domains: %@", &v12, 0xCu);
   }
 
-  [v4 count];
+  [domainsCopy count];
   SPSetInternetDomainsAvailable();
   v7 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.searchd"];
   v8 = [v7 BOOLForKey:@"disableAsTypedSuggestion"];
-  v9 = [(SPParsecDatastore *)self session];
-  v10 = [v9 disableAsTypedSuggestion];
+  session = [(SPParsecDatastore *)self session];
+  disableAsTypedSuggestion = [session disableAsTypedSuggestion];
 
-  if (v8 != v10)
+  if (v8 != disableAsTypedSuggestion)
   {
-    v11 = [(SPParsecDatastore *)self session];
-    [v7 setBool:objc_msgSend(v11 forKey:{"disableAsTypedSuggestion"), @"disableAsTypedSuggestion"}];
+    session2 = [(SPParsecDatastore *)self session];
+    [v7 setBool:objc_msgSend(session2 forKey:{"disableAsTypedSuggestion"), @"disableAsTypedSuggestion"}];
 
     [v7 synchronize];
   }
 }
 
-- (void)updateCorrectionDict:(id)a3
+- (void)updateCorrectionDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = +[SPCorrectionHandler sharedHandler];
-  [v4 updateWithFileHandle:v3];
+  [v4 updateWithFileHandle:dictCopy];
 }
 
-- (void)getFTEStringsWithReply:(id)a3
+- (void)getFTEStringsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   session = self->_session;
   if (session)
   {
@@ -560,7 +560,7 @@ LABEL_8:
     v10[2] = sub_10005FC50;
     v10[3] = &unk_100093CA8;
     v10[4] = self;
-    v11 = v4;
+    v11 = replyCopy;
     [(PRSSearchSession *)session getFTEStringsWithReply:v10];
   }
 
@@ -572,7 +572,7 @@ LABEL_8:
       sub_100063DEC(v9);
     }
 
-    (*(v4 + 2))(v4, 0, 0, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, 0);
   }
 }
 
@@ -588,9 +588,9 @@ LABEL_8:
     p_session = &self->_session;
   }
 
-  v3 = [(PRSSearchSession *)*p_session cannedCEPValues];
+  cannedCEPValues = [(PRSSearchSession *)*p_session cannedCEPValues];
 
-  return v3;
+  return cannedCEPValues;
 }
 
 - (SSPlistDataReader)cepDictionary
@@ -605,9 +605,9 @@ LABEL_8:
     p_session = &self->_session;
   }
 
-  v3 = [(PRSSearchSession *)*p_session cepDictionary];
+  cepDictionary = [(PRSSearchSession *)*p_session cepDictionary];
 
-  return v3;
+  return cepDictionary;
 }
 
 - (id)feedbackListeners
@@ -641,21 +641,21 @@ LABEL_8:
   return v6;
 }
 
-- (void)setParsecState:(BOOL)a3
+- (void)setParsecState:(BOOL)state
 {
-  self->_parsecEnabled = a3;
+  self->_parsecEnabled = state;
   v4 = +[MCProfileConnection sharedConnection];
-  v5 = [v4 isSpotlightInternetResultsAllowed];
+  isSpotlightInternetResultsAllowed = [v4 isSpotlightInternetResultsAllowed];
 
-  if ((v5 & 1) == 0)
+  if ((isSpotlightInternetResultsAllowed & 1) == 0)
   {
     self->_parsecEnabled = 0;
   }
 }
 
-- (void)setParsecFeedbackAllowed:(BOOL)a3
+- (void)setParsecFeedbackAllowed:(BOOL)allowed
 {
-  v3 = a3;
+  allowedCopy = allowed;
   v5 = SPLogForSPLogCategoryDefault();
   v6 = v5;
   if (gSPLogDebugAsDefault)
@@ -671,7 +671,7 @@ LABEL_8:
   if (os_log_type_enabled(v5, v7))
   {
     v18 = 67109120;
-    LODWORD(v19) = v3;
+    LODWORD(v19) = allowedCopy;
     _os_log_impl(&_mh_execute_header, v6, v7, "[FEEDBACK-DEBUG] (SPParsecDatastore setParsecFeedbackAllowed) allowed: %d, ", &v18, 8u);
   }
 
@@ -689,19 +689,19 @@ LABEL_8:
 
   if (os_log_type_enabled(v8, v10))
   {
-    v11 = [(SPParsecDatastore *)self session];
+    session = [(SPParsecDatastore *)self session];
     v18 = 138412290;
-    v19 = v11;
+    v19 = session;
     _os_log_impl(&_mh_execute_header, v9, v10, "[FEEDBACK-DEBUG] (SPParsecDatastore setParsecFeedbackAllowed) self.session: %@, ", &v18, 0xCu);
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13 = SPLogForSPLogCategoryDefault();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = "allowed";
-    if (!v3)
+    if (!allowedCopy)
     {
       v14 = "forbidden";
     }
@@ -711,15 +711,15 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Parsec feedback %s", &v18, 0xCu);
   }
 
-  v15 = xpc_BOOL_create(v3);
+  v15 = xpc_BOOL_create(allowedCopy);
   v16 = sub_100060020("allowed", v15);
   analytics_send_event();
 
-  byte_1000A8939 = v3;
-  v17 = [(SPParsecDatastore *)v12 session];
-  [v17 setParsecFeedbackAllowed:byte_1000A8939];
+  byte_1000A8939 = allowedCopy;
+  session2 = [(SPParsecDatastore *)selfCopy session];
+  [session2 setParsecFeedbackAllowed:byte_1000A8939];
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
   +[SPFeedbackSender updateFeedbackListeners];
 }
 

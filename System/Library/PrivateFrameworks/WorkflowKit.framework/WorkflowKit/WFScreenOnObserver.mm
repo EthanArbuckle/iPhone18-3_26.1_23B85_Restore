@@ -2,7 +2,7 @@
 - (WFScreenOnObserver)init;
 - (WFScreenOnObserverDelegate)delegate;
 - (void)start;
-- (void)stateChanged:(BOOL)a3;
+- (void)stateChanged:(BOOL)changed;
 @end
 
 @implementation WFScreenOnObserver
@@ -14,24 +14,24 @@
   return WeakRetained;
 }
 
-- (void)stateChanged:(BOOL)a3
+- (void)stateChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [(WFScreenOnObserver *)self screenOn];
+  screenOn = [(WFScreenOnObserver *)self screenOn];
   v6 = getWFWFScreenOnObserverLogObject();
-  v7 = v6;
-  if (v5 == v3)
+  delegate = v6;
+  if (screenOn == changedCopy)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 136315650;
       v10 = "[WFScreenOnObserver stateChanged:]";
       v11 = 1024;
-      v12 = v5;
+      v12 = screenOn;
       v13 = 1024;
-      v14 = v3;
-      _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_DEFAULT, "%s previous state (%i) and new state (%i) match, not notifying", &v9, 0x18u);
+      v14 = changedCopy;
+      _os_log_impl(&dword_1CA256000, delegate, OS_LOG_TYPE_DEFAULT, "%s previous state (%i) and new state (%i) match, not notifying", &v9, 0x18u);
     }
   }
 
@@ -42,15 +42,15 @@
       v9 = 136315650;
       v10 = "[WFScreenOnObserver stateChanged:]";
       v11 = 1024;
-      v12 = v5;
+      v12 = screenOn;
       v13 = 1024;
-      v14 = v3;
-      _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_INFO, "%s screen on state transitioned from %i to %i", &v9, 0x18u);
+      v14 = changedCopy;
+      _os_log_impl(&dword_1CA256000, delegate, OS_LOG_TYPE_INFO, "%s screen on state transitioned from %i to %i", &v9, 0x18u);
     }
 
-    self->_screenOn = v3;
-    v7 = [(WFScreenOnObserver *)self delegate];
-    [v7 screenOnStateDidChange:self];
+    self->_screenOn = changedCopy;
+    delegate = [(WFScreenOnObserver *)self delegate];
+    [delegate screenOnStateDidChange:self];
   }
 
   v8 = *MEMORY[0x1E69E9840];

@@ -1,16 +1,16 @@
 @interface AMSUIImageLoader
 + (id)defaultLoader;
 - (AMSUIImageLoader)init;
-- (BOOL)_isURLBundleResource:(id)a3;
-- (BOOL)_isURLEngagementContent:(id)a3;
-- (BOOL)_isURLSystemImage:(id)a3;
-- (id)_fetchImageFromCacheWithURL:(id)a3;
-- (id)_fetchImageWithURL:(id)a3 searchBundles:(id)a4 atPriority:(int64_t)a5;
-- (id)_makeOperationForImageWithURL:(id)a3 searchBundles:(id)a4 error:(id *)a5;
-- (id)_makeSystemImageFetchOperationForSystemURL:(id)a3 error:(id *)a4;
-- (id)_performLowLatencyOperation:(id)a3;
-- (id)fetchImageWithURL:(id)a3 searchBundles:(id)a4;
-- (void)_cacheImage:(id)a3 withURL:(id)a4;
+- (BOOL)_isURLBundleResource:(id)resource;
+- (BOOL)_isURLEngagementContent:(id)content;
+- (BOOL)_isURLSystemImage:(id)image;
+- (id)_fetchImageFromCacheWithURL:(id)l;
+- (id)_fetchImageWithURL:(id)l searchBundles:(id)bundles atPriority:(int64_t)priority;
+- (id)_makeOperationForImageWithURL:(id)l searchBundles:(id)bundles error:(id *)error;
+- (id)_makeSystemImageFetchOperationForSystemURL:(id)l error:(id *)error;
+- (id)_performLowLatencyOperation:(id)operation;
+- (id)fetchImageWithURL:(id)l searchBundles:(id)bundles;
+- (void)_cacheImage:(id)image withURL:(id)l;
 @end
 
 @implementation AMSUIImageLoader
@@ -31,8 +31,8 @@
     v2->_imageCache = v5;
 
     v7 = MEMORY[0x1E696AF78];
-    v8 = [MEMORY[0x1E696AF80] ams_imageConfiguration];
-    v9 = [v7 sessionWithConfiguration:v8];
+    ams_imageConfiguration = [MEMORY[0x1E696AF80] ams_imageConfiguration];
+    v9 = [v7 sessionWithConfiguration:ams_imageConfiguration];
     urlSession = v2->_urlSession;
     v2->_urlSession = v9;
 
@@ -40,14 +40,14 @@
     workQueue = v2->_workQueue;
     v2->_workQueue = v11;
 
-    v13 = [(AMSUIImageLoader *)v2 fetchQueue];
-    [v13 setName:@"com.apple.AppleMediaServicesUI.ImageLoader.fetchQueue"];
+    fetchQueue = [(AMSUIImageLoader *)v2 fetchQueue];
+    [fetchQueue setName:@"com.apple.AppleMediaServicesUI.ImageLoader.fetchQueue"];
 
-    v14 = [(AMSUIImageLoader *)v2 fetchQueue];
-    [v14 setMaxConcurrentOperationCount:4];
+    fetchQueue2 = [(AMSUIImageLoader *)v2 fetchQueue];
+    [fetchQueue2 setMaxConcurrentOperationCount:4];
 
-    v15 = [(AMSUIImageLoader *)v2 fetchQueue];
-    [v15 setQualityOfService:9];
+    fetchQueue3 = [(AMSUIImageLoader *)v2 fetchQueue];
+    [fetchQueue3 setQualityOfService:9];
   }
 
   return v2;
@@ -72,23 +72,23 @@ uint64_t __33__AMSUIImageLoader_defaultLoader__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)fetchImageWithURL:(id)a3 searchBundles:(id)a4
+- (id)fetchImageWithURL:(id)l searchBundles:(id)bundles
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (bundles)
   {
-    v6 = a3;
-    v7 = [(AMSUIImageLoader *)self _fetchImageWithURL:v6 searchBundles:a4 atPriority:0];
+    lCopy = l;
+    v7 = [(AMSUIImageLoader *)self _fetchImageWithURL:lCopy searchBundles:bundles atPriority:0];
   }
 
   else
   {
     v8 = MEMORY[0x1E696AAE8];
-    v9 = a3;
-    v10 = [v8 mainBundle];
-    v14[0] = v10;
+    lCopy2 = l;
+    mainBundle = [v8 mainBundle];
+    v14[0] = mainBundle;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-    v7 = [(AMSUIImageLoader *)self _fetchImageWithURL:v9 searchBundles:v11 atPriority:0];
+    v7 = [(AMSUIImageLoader *)self _fetchImageWithURL:lCopy2 searchBundles:v11 atPriority:0];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -96,25 +96,25 @@ uint64_t __33__AMSUIImageLoader_defaultLoader__block_invoke()
   return v7;
 }
 
-- (id)_fetchImageWithURL:(id)a3 searchBundles:(id)a4 atPriority:(int64_t)a5
+- (id)_fetchImageWithURL:(id)l searchBundles:(id)bundles atPriority:(int64_t)priority
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  bundlesCopy = bundles;
   v10 = objc_alloc_init(MEMORY[0x1E698CAD0]);
-  v11 = [(AMSUIImageLoader *)self workQueue];
+  workQueue = [(AMSUIImageLoader *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__AMSUIImageLoader__fetchImageWithURL_searchBundles_atPriority___block_invoke;
   block[3] = &unk_1E7F24E80;
   block[4] = self;
-  v19 = v8;
+  v19 = lCopy;
   v12 = v10;
-  v21 = v9;
-  v22 = a5;
+  v21 = bundlesCopy;
+  priorityCopy = priority;
   v20 = v12;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v13 = bundlesCopy;
+  v14 = lCopy;
+  dispatch_async(workQueue, block);
 
   v15 = v21;
   v16 = v12;
@@ -242,47 +242,47 @@ void __64__AMSUIImageLoader__fetchImageWithURL_searchBundles_atPriority___block_
   [WeakRetained _cacheImage:*(a1 + 32) withURL:*(a1 + 40)];
 }
 
-- (id)_performLowLatencyOperation:(id)a3
+- (id)_performLowLatencyOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(AMSUIImageLoader *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  operationCopy = operation;
+  workQueue = [(AMSUIImageLoader *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_alloc_init(MEMORY[0x1E698CAD0]);
-  [v4 setOperationPromise:v6];
-  [v4 main];
+  [operationCopy setOperationPromise:v6];
+  [operationCopy main];
 
   return v6;
 }
 
-- (BOOL)_isURLBundleResource:(id)a3
+- (BOOL)_isURLBundleResource:(id)resource
 {
-  v3 = [a3 scheme];
-  v4 = [v3 isEqualToString:@"resource"];
+  scheme = [resource scheme];
+  v4 = [scheme isEqualToString:@"resource"];
 
   return v4;
 }
 
-- (BOOL)_isURLEngagementContent:(id)a3
+- (BOOL)_isURLEngagementContent:(id)content
 {
-  v3 = [a3 scheme];
-  v4 = [v3 isEqualToString:@"amsc"];
+  scheme = [content scheme];
+  v4 = [scheme isEqualToString:@"amsc"];
 
   return v4;
 }
 
-- (id)_makeSystemImageFetchOperationForSystemURL:(id)a3 error:(id *)a4
+- (id)_makeSystemImageFetchOperationForSystemURL:(id)l error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(AMSUIImageLoader *)self _isURLSystemImage:v6])
+  lCopy = l;
+  if ([(AMSUIImageLoader *)self _isURLSystemImage:lCopy])
   {
-    v7 = [v6 host];
-    v8 = [v7 stringByRemovingPercentEncoding];
+    host = [lCopy host];
+    stringByRemovingPercentEncoding = [host stringByRemovingPercentEncoding];
 
-    if (v8)
+    if (stringByRemovingPercentEncoding)
     {
-      v9 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v6 resolvingAgainstBaseURL:0];
+      v9 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:lCopy resolvingAgainstBaseURL:0];
       v10 = v9;
       if (v9)
       {
@@ -290,8 +290,8 @@ void __64__AMSUIImageLoader__fetchImageWithURL_searchBundles_atPriority___block_
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v11 = [v9 queryItems];
-        v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        queryItems = [v9 queryItems];
+        v12 = [queryItems countByEnumeratingWithState:&v26 objects:v30 count:16];
         if (v12)
         {
           v13 = v12;
@@ -303,25 +303,25 @@ void __64__AMSUIImageLoader__fetchImageWithURL_searchBundles_atPriority___block_
             {
               if (*v27 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(queryItems);
               }
 
               v16 = *(*(&v26 + 1) + 8 * i);
-              v17 = [v16 name];
-              v18 = [v17 isEqualToString:@"variableValue"];
+              name = [v16 name];
+              v18 = [name isEqualToString:@"variableValue"];
 
               if (v18)
               {
                 v21 = objc_alloc(MEMORY[0x1E696AD98]);
-                v22 = [v16 value];
-                [v22 doubleValue];
+                value = [v16 value];
+                [value doubleValue];
                 v19 = [v21 initWithDouble:?];
 
                 goto LABEL_17;
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+            v13 = [queryItems countByEnumeratingWithState:&v26 objects:v30 count:16];
             if (v13)
             {
               continue;
@@ -346,13 +346,13 @@ LABEL_17:
         v19 = 0;
       }
 
-      v20 = [[AMSUISystemImageFetchOperation alloc] initWithSystemImageName:v8 variableValue:v19 compatibleWithTraitCollection:0];
+      v20 = [[AMSUISystemImageFetchOperation alloc] initWithSystemImageName:stringByRemovingPercentEncoding variableValue:v19 compatibleWithTraitCollection:0];
     }
 
-    else if (a4)
+    else if (error)
     {
       AMSError();
-      *a4 = v20 = 0;
+      *error = v20 = 0;
     }
 
     else
@@ -371,20 +371,20 @@ LABEL_17:
   return v20;
 }
 
-- (id)_makeOperationForImageWithURL:(id)a3 searchBundles:(id)a4 error:(id *)a5
+- (id)_makeOperationForImageWithURL:(id)l searchBundles:(id)bundles error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(AMSUIImageLoader *)self _isURLEngagementContent:v8])
+  lCopy = l;
+  bundlesCopy = bundles;
+  if ([(AMSUIImageLoader *)self _isURLEngagementContent:lCopy])
   {
-    v10 = [[AMSUIContentImageFetchOperation alloc] initWithURL:v8];
+    v10 = [[AMSUIContentImageFetchOperation alloc] initWithURL:lCopy];
     objc_initWeak(&location, self);
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __70__AMSUIImageLoader__makeOperationForImageWithURL_searchBundles_error___block_invoke;
     v22[3] = &unk_1E7F24EA8;
     objc_copyWeak(&v24, &location);
-    v23 = v9;
+    v23 = bundlesCopy;
     [(AMSUIContentImageFetchOperation *)v10 setFallbackBlock:v22];
 
     objc_destroyWeak(&v24);
@@ -392,23 +392,23 @@ LABEL_17:
     goto LABEL_14;
   }
 
-  if ([(AMSUIImageLoader *)self _isURLSystemImage:v8])
+  if ([(AMSUIImageLoader *)self _isURLSystemImage:lCopy])
   {
-    v10 = [(AMSUIImageLoader *)self _makeSystemImageFetchOperationForSystemURL:v8 error:a5];
+    v10 = [(AMSUIImageLoader *)self _makeSystemImageFetchOperationForSystemURL:lCopy error:error];
     goto LABEL_14;
   }
 
-  if ([(AMSUIImageLoader *)self _isURLBundleResource:v8])
+  if ([(AMSUIImageLoader *)self _isURLBundleResource:lCopy])
   {
-    v11 = [v8 host];
-    v12 = [v11 stringByRemovingPercentEncoding];
+    host = [lCopy host];
+    stringByRemovingPercentEncoding = [host stringByRemovingPercentEncoding];
 
-    if (!v12)
+    if (!stringByRemovingPercentEncoding)
     {
-      if (a5)
+      if (error)
       {
         AMSError();
-        *a5 = v10 = 0;
+        *error = v10 = 0;
       }
 
       else
@@ -419,7 +419,7 @@ LABEL_17:
       goto LABEL_13;
     }
 
-    v13 = [[AMSUIBundleImageFetchOperation alloc] initWithImageName:v12 searchBundles:v9 compatibleWithTraitCollection:0];
+    v13 = [[AMSUIBundleImageFetchOperation alloc] initWithImageName:stringByRemovingPercentEncoding searchBundles:bundlesCopy compatibleWithTraitCollection:0];
 LABEL_12:
     v10 = v13;
 LABEL_13:
@@ -427,31 +427,31 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v14 = [v8 scheme];
-  if ([v14 isEqualToString:@"http"])
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:@"http"])
   {
 
 LABEL_11:
     v17 = [AMSUINetworkImageFetchOperation alloc];
-    v12 = [(AMSUIImageLoader *)self urlSession];
-    v13 = [(AMSUINetworkImageFetchOperation *)v17 initWithURL:v8 URLSession:v12];
+    stringByRemovingPercentEncoding = [(AMSUIImageLoader *)self urlSession];
+    v13 = [(AMSUINetworkImageFetchOperation *)v17 initWithURL:lCopy URLSession:stringByRemovingPercentEncoding];
     goto LABEL_12;
   }
 
-  v15 = [v8 scheme];
-  v16 = [v15 isEqualToString:@"https"];
+  scheme2 = [lCopy scheme];
+  v16 = [scheme2 isEqualToString:@"https"];
 
   if (v16)
   {
     goto LABEL_11;
   }
 
-  if (a5)
+  if (error)
   {
     v19 = MEMORY[0x1E696AEC0];
-    v20 = [v8 scheme];
-    v21 = [v19 stringWithFormat:@"%@ scheme is unsupported", v20];
-    *a5 = AMSError();
+    scheme3 = [lCopy scheme];
+    v21 = [v19 stringWithFormat:@"%@ scheme is unsupported", scheme3];
+    *error = AMSError();
   }
 
   v10 = 0;
@@ -469,22 +469,22 @@ id __70__AMSUIImageLoader__makeOperationForImageWithURL_searchBundles_error___bl
   return v5;
 }
 
-- (void)_cacheImage:(id)a3 withURL:(id)a4
+- (void)_cacheImage:(id)image withURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AMSUIImageLoader *)self imageCache];
-  [v8 setObject:v7 forKey:v6];
+  lCopy = l;
+  imageCopy = image;
+  imageCache = [(AMSUIImageLoader *)self imageCache];
+  [imageCache setObject:imageCopy forKey:lCopy];
 }
 
-- (id)_fetchImageFromCacheWithURL:(id)a3
+- (id)_fetchImageFromCacheWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(AMSUIImageLoader *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  lCopy = l;
+  workQueue = [(AMSUIImageLoader *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(AMSUIImageLoader *)self imageCache];
-  v7 = [v6 objectForKey:v4];
+  imageCache = [(AMSUIImageLoader *)self imageCache];
+  v7 = [imageCache objectForKey:lCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -500,10 +500,10 @@ id __70__AMSUIImageLoader__makeOperationForImageWithURL_searchBundles_error___bl
   return v8;
 }
 
-- (BOOL)_isURLSystemImage:(id)a3
+- (BOOL)_isURLSystemImage:(id)image
 {
-  v3 = [a3 scheme];
-  v4 = [v3 isEqualToString:@"systemimage"];
+  scheme = [image scheme];
+  v4 = [scheme isEqualToString:@"systemimage"];
 
   return v4;
 }

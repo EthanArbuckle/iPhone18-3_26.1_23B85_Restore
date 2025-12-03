@@ -1,53 +1,53 @@
 @interface MCDBrowsableContentTableViewController
 - (BOOL)_shouldLimitLists;
-- (MCDBrowsableContentTableViewController)initWithContainer:(id)a3;
-- (MCDBrowsableContentTableViewController)initWithContainer:(id)a3 tabbedBrowsing:(BOOL)a4;
+- (MCDBrowsableContentTableViewController)initWithContainer:(id)container;
+- (MCDBrowsableContentTableViewController)initWithContainer:(id)container tabbedBrowsing:(BOOL)browsing;
 - (NSString)description;
 - (id)contentScrollView;
 - (id)preferredFocusEnvironments;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_appRegisteredForContent:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_appRegisteredForContent:(id)content;
 - (void)_clearLoadingActivity;
-- (void)_configureCell:(id)a3 forIndexPath:(id)a4;
-- (void)_displayErrorAlertController:(id)a3;
+- (void)_configureCell:(id)cell forIndexPath:(id)path;
+- (void)_displayErrorAlertController:(id)controller;
 - (void)_displayLoadingActivity;
-- (void)_limitedUIChanged:(id)a3;
-- (void)_nowPlayingButtonTapped:(id)a3;
-- (void)_playbackStateChanged:(id)a3;
-- (void)_pushToNowPlaying:(BOOL)a3;
-- (void)_replacePlaceholderViewWithView:(id)a3;
+- (void)_limitedUIChanged:(id)changed;
+- (void)_nowPlayingButtonTapped:(id)tapped;
+- (void)_playbackStateChanged:(id)changed;
+- (void)_pushToNowPlaying:(BOOL)playing;
+- (void)_replacePlaceholderViewWithView:(id)view;
 - (void)_showLoadingScreen;
 - (void)_showTimeoutScreen;
 - (void)_updateNowPlayingButtonVisibility;
-- (void)container:(id)a3 didInvalidateIndicies:(id)a4;
-- (void)containerDidChangeCount:(id)a3;
+- (void)container:(id)container didInvalidateIndicies:(id)indicies;
+- (void)containerDidChangeCount:(id)count;
 - (void)dealloc;
-- (void)errorViewDidTapButton:(id)a3;
+- (void)errorViewDidTapButton:(id)button;
 - (void)reloadTable;
-- (void)reloadWithCompletion:(id)a3;
-- (void)tableView:(id)a3 didFocusRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)reloadWithCompletion:(id)completion;
+- (void)tableView:(id)view didFocusRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation MCDBrowsableContentTableViewController
 
-- (MCDBrowsableContentTableViewController)initWithContainer:(id)a3
+- (MCDBrowsableContentTableViewController)initWithContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v23.receiver = self;
   v23.super_class = MCDBrowsableContentTableViewController;
   v6 = [(MCDBrowsableContentTableViewController *)&v23 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_container, a3);
+    objc_storeStrong(&v6->_container, container);
     [(MCDPCContainer *)v7->_container setDelegate:v7];
-    v8 = [(MCDPCContainer *)v7->_container title];
-    [(MCDBrowsableContentTableViewController *)v7 setTitle:v8];
+    title = [(MCDPCContainer *)v7->_container title];
+    [(MCDBrowsableContentTableViewController *)v7 setTitle:title];
 
     v9 = objc_alloc_init(MEMORY[0x277D75F60]);
     dataSource = v7->_dataSource;
@@ -55,19 +55,19 @@
 
     [(_UIFilteredDataSource *)v7->_dataSource setTableDataSource:v7];
     [(_UIFilteredDataSource *)v7->_dataSource setFilterType:0];
-    v11 = [v5 model];
-    [v11 setImageSize:{48.0, 48.0}];
+    model = [containerCopy model];
+    [model setImageSize:{48.0, 48.0}];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v13 = objc_alloc_init(MEMORY[0x277CF89F8]);
     carSessionStatus = v7->_carSessionStatus;
     v7->_carSessionStatus = v13;
 
     [(CARSessionStatus *)v7->_carSessionStatus addSessionObserver:v7];
-    [v12 addObserver:v7 selector:sel__limitedUIChanged_ name:*MEMORY[0x277CF8928] object:0];
-    [v12 addObserver:v7 selector:sel__nowPlayingDidChange_ name:@"MCDContentItemsChangedNotification" object:0];
-    v15 = [v5 indexPath];
-    v16 = [v15 length];
+    [defaultCenter addObserver:v7 selector:sel__limitedUIChanged_ name:*MEMORY[0x277CF8928] object:0];
+    [defaultCenter addObserver:v7 selector:sel__nowPlayingDidChange_ name:@"MCDContentItemsChangedNotification" object:0];
+    indexPath = [containerCopy indexPath];
+    v16 = [indexPath length];
 
     if (v16)
     {
@@ -76,11 +76,11 @@
 
     else
     {
-      [v12 addObserver:v7 selector:sel__appRegisteredForContent_ name:@"appReadyToFetch" object:0];
+      [defaultCenter addObserver:v7 selector:sel__appRegisteredForContent_ name:@"appReadyToFetch" object:0];
     }
 
-    v17 = [v5 indexPath];
-    v18 = [v17 length];
+    indexPath2 = [containerCopy indexPath];
+    v18 = [indexPath2 length];
 
     if (v18)
     {
@@ -89,32 +89,32 @@
 
     else
     {
-      [v12 addObserver:v7 selector:sel__appRegisteredForContent_ name:@"appReadyToFetch" object:0];
+      [defaultCenter addObserver:v7 selector:sel__appRegisteredForContent_ name:@"appReadyToFetch" object:0];
     }
 
     v19 = dispatch_queue_create("MCDBrowsableContentViewControllerQueue", 0);
     serialQueue = v7->_serialQueue;
     v7->_serialQueue = v19;
 
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:v7 selector:sel__playbackStateChanged_ name:@"MCDPlaybackStateChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__playbackStateChanged_ name:@"MCDPlaybackStateChangedNotification" object:0];
   }
 
   return v7;
 }
 
-- (MCDBrowsableContentTableViewController)initWithContainer:(id)a3 tabbedBrowsing:(BOOL)a4
+- (MCDBrowsableContentTableViewController)initWithContainer:(id)container tabbedBrowsing:(BOOL)browsing
 {
-  result = [(MCDBrowsableContentTableViewController *)self initWithContainer:a3];
-  result->_hasTabbedBrowsing = a4;
+  result = [(MCDBrowsableContentTableViewController *)self initWithContainer:container];
+  result->_hasTabbedBrowsing = browsing;
   return result;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
-  [v3 removeObserver:self name:*MEMORY[0x277CF8928] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CF8928] object:0];
   [(UITableView *)self->_tableView setDataSource:0];
   [(UITableView *)self->_tableView setDelegate:0];
   nowPlayingButton = self->_nowPlayingButton;
@@ -136,9 +136,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MCDBrowsableContentTableViewController *)self container];
-  v7 = [v6 indexPath];
-  v8 = _MCDStringFromIndexPath(v7);
+  container = [(MCDBrowsableContentTableViewController *)self container];
+  indexPath = [container indexPath];
+  v8 = _MCDStringFromIndexPath(indexPath);
   v9 = [v3 stringWithFormat:@"<%@: %p [%@]>", v5, self, v8];
 
   return v9;
@@ -149,14 +149,14 @@
   v15.receiver = self;
   v15.super_class = MCDBrowsableContentTableViewController;
   [(MCDBrowsableContentTableViewController *)&v15 viewDidLoad];
-  v3 = [(MCDBrowsableContentTableViewController *)self navigationController];
-  v4 = [v3 viewControllers];
-  self->_isRootTableViewController = [v4 count] < 2;
+  navigationController = [(MCDBrowsableContentTableViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  self->_isRootTableViewController = [viewControllers count] < 2;
 
-  v5 = [(MCDBrowsableContentTableViewController *)self view];
+  view = [(MCDBrowsableContentTableViewController *)self view];
   MCD_tableView = self->_MCD_tableView;
-  self->_MCD_tableView = v5;
-  v7 = v5;
+  self->_MCD_tableView = view;
+  v7 = view;
 
   [(UIView *)v7 bounds];
   v12 = [[_MCDBrowsableTableView alloc] initWithFrame:v8, v9, v10, v11];
@@ -194,8 +194,8 @@ void __56__MCDBrowsableContentTableViewController_viewDidAppear___block_invoke(u
   v13.receiver = self;
   v13.super_class = MCDBrowsableContentTableViewController;
   [(MCDBrowsableContentTableViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [(MCDBrowsableContentTableViewController *)self view];
-  [v3 frame];
+  view = [(MCDBrowsableContentTableViewController *)self view];
+  [view frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -273,13 +273,13 @@ void __60__MCDBrowsableContentTableViewController__showLoadingScreen__block_invo
     v5 = MEMORY[0x277CCACA8];
     v6 = MCDCarDisplayBundle();
     v7 = [v6 localizedStringForKey:@"Unable to connect to “%@.”" value:&stru_286C2B080 table:@"MusicCarDisplayUI"];
-    v8 = [(MCDBrowsableContentTableViewController *)self container];
-    v9 = [v8 appTitle];
-    v10 = [v5 localizedStringWithFormat:v7, v9];
+    container = [(MCDBrowsableContentTableViewController *)self container];
+    appTitle = [container appTitle];
+    v10 = [v5 localizedStringWithFormat:v7, appTitle];
 
     v11 = [[MCDErrorLoadingView alloc] initWithTitle:v10 buttonText:0];
-    v12 = [(MCDBrowsableContentTableViewController *)self view];
-    [v12 frame];
+    view = [(MCDBrowsableContentTableViewController *)self view];
+    [view frame];
     [(MCDErrorLoadingView *)v11 setFrame:?];
 
     [(MCDErrorLoadingView *)v11 setDelegate:self];
@@ -287,25 +287,25 @@ void __60__MCDBrowsableContentTableViewController__showLoadingScreen__block_invo
   }
 }
 
-- (void)_replacePlaceholderViewWithView:(id)a3
+- (void)_replacePlaceholderViewWithView:(id)view
 {
-  v28 = a3;
-  v4 = [(MCDBrowsableContentTableViewController *)self placeholderView];
-  v5 = [v4 superview];
+  viewCopy = view;
+  placeholderView = [(MCDBrowsableContentTableViewController *)self placeholderView];
+  superview = [placeholderView superview];
 
-  if (v5)
+  if (superview)
   {
-    v6 = [(MCDBrowsableContentTableViewController *)self placeholderView];
-    [v6 removeFromSuperview];
+    placeholderView2 = [(MCDBrowsableContentTableViewController *)self placeholderView];
+    [placeholderView2 removeFromSuperview];
   }
 
-  [(MCDBrowsableContentTableViewController *)self setPlaceholderView:v28];
-  v7 = [(MCDBrowsableContentTableViewController *)self placeholderView];
-  [(UITableView *)self->_tableView setScrollEnabled:v7 == 0];
+  [(MCDBrowsableContentTableViewController *)self setPlaceholderView:viewCopy];
+  placeholderView3 = [(MCDBrowsableContentTableViewController *)self placeholderView];
+  [(UITableView *)self->_tableView setScrollEnabled:placeholderView3 == 0];
 
-  v8 = [(MCDBrowsableContentTableViewController *)self placeholderView];
+  placeholderView4 = [(MCDBrowsableContentTableViewController *)self placeholderView];
 
-  if (v8)
+  if (placeholderView4)
   {
     [(UITableView *)self->_tableView frame];
     v10 = v9;
@@ -317,16 +317,16 @@ void __60__MCDBrowsableContentTableViewController__showLoadingScreen__block_invo
     v20 = v12 + v19;
     v22 = v14 - (v17 + v21);
     v24 = v16 - (v19 + v23);
-    v25 = [(MCDBrowsableContentTableViewController *)self placeholderView];
-    [v25 setFrame:{v18, v20, v22, v24}];
+    placeholderView5 = [(MCDBrowsableContentTableViewController *)self placeholderView];
+    [placeholderView5 setFrame:{v18, v20, v22, v24}];
 
-    v26 = [(UITableView *)self->_tableView superview];
-    v27 = [(MCDBrowsableContentTableViewController *)self placeholderView];
-    [v26 addSubview:v27];
+    superview2 = [(UITableView *)self->_tableView superview];
+    placeholderView6 = [(MCDBrowsableContentTableViewController *)self placeholderView];
+    [superview2 addSubview:placeholderView6];
   }
 }
 
-- (void)errorViewDidTapButton:(id)a3
+- (void)errorViewDidTapButton:(id)button
 {
   container = self->_container;
   v5 = MCDGeneralLogging();
@@ -350,29 +350,29 @@ void __60__MCDBrowsableContentTableViewController__showLoadingScreen__block_invo
       _os_log_impl(&dword_25AD8E000, v5, OS_LOG_TYPE_DEFAULT, "Retrying full refresh, showing loading screen", v8, 2u);
     }
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"didInvalidate" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"didInvalidate" object:0];
   }
 
   [(MCDBrowsableContentTableViewController *)self _showLoadingScreen];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = MCDBrowsableContentTableViewController;
-  [(MCDBrowsableContentTableViewController *)&v9 traitCollectionDidChange:a3];
-  v4 = [(MCDBrowsableContentTableViewController *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom] == 3;
+  [(MCDBrowsableContentTableViewController *)&v9 traitCollectionDidChange:change];
+  traitCollection = [(MCDBrowsableContentTableViewController *)self traitCollection];
+  v5 = [traitCollection userInterfaceIdiom] == 3;
 
   if (self->_hasCarScreen != v5)
   {
     self->_hasCarScreen = v5;
-    v6 = [(MCDBrowsableContentTableViewController *)self view];
-    [v6 layoutIfNeeded];
+    view = [(MCDBrowsableContentTableViewController *)self view];
+    [view layoutIfNeeded];
 
-    v7 = [(MCDBrowsableContentTableViewController *)self navigationItem];
-    [v7 setRightBarButtonItem:0];
+    navigationItem = [(MCDBrowsableContentTableViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:0];
 
     nowPlayingButton = self->_nowPlayingButton;
     self->_nowPlayingButton = 0;
@@ -402,40 +402,40 @@ void __60__MCDBrowsableContentTableViewController__showLoadingScreen__block_invo
   if (self->_tableView)
   {
     v6[0] = self->_tableView;
-    v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
+    preferredFocusEnvironments = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = MCDBrowsableContentTableViewController;
-    v2 = [(MCDBrowsableContentTableViewController *)&v5 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(MCDBrowsableContentTableViewController *)&v5 preferredFocusEnvironments];
   }
 
   v3 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return preferredFocusEnvironments;
 }
 
-- (void)_configureCell:(id)a3 forIndexPath:(id)a4
+- (void)_configureCell:(id)cell forIndexPath:(id)path
 {
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
-  v9 = [(MCDBrowsableContentTableViewController *)self container];
-  v10 = [v9 cachedItemForIndex:v8];
+  cellCopy = cell;
+  pathCopy = path;
+  v8 = [pathCopy row];
+  container = [(MCDBrowsableContentTableViewController *)self container];
+  v10 = [container cachedItemForIndex:v8];
 
-  [v6 setAccessoryView:0];
-  v11 = [(UITableView *)self->_tableView indexPathForSelectedRow];
-  v12 = v11;
-  v45 = v11;
-  if (v11)
+  [cellCopy setAccessoryView:0];
+  indexPathForSelectedRow = [(UITableView *)self->_tableView indexPathForSelectedRow];
+  v12 = indexPathForSelectedRow;
+  v45 = indexPathForSelectedRow;
+  if (indexPathForSelectedRow)
   {
-    if ([v11 compare:v7])
+    if ([indexPathForSelectedRow compare:pathCopy])
     {
-      v13 = [(MCDBrowsableContentTableViewController *)self selectedIndexPath];
-      LODWORD(v12) = [v12 isEqual:v13];
+      selectedIndexPath = [(MCDBrowsableContentTableViewController *)self selectedIndexPath];
+      LODWORD(v12) = [v12 isEqual:selectedIndexPath];
     }
 
     else
@@ -444,7 +444,7 @@ void __60__MCDBrowsableContentTableViewController__showLoadingScreen__block_invo
     }
   }
 
-  v14 = [(MCDPCContainer *)self->_container showCurrentlyPlayingIndex];
+  showCurrentlyPlayingIndex = [(MCDPCContainer *)self->_container showCurrentlyPlayingIndex];
   if (![(MCDBrowsableContentTableViewController *)self currentlyPlayingApp])
   {
     v47 = 0;
@@ -454,14 +454,14 @@ void __60__MCDBrowsableContentTableViewController__showLoadingScreen__block_invo
     }
 
 LABEL_12:
-    [v6 setSelected:0];
+    [cellCopy setSelected:0];
     goto LABEL_13;
   }
 
-  v15 = [v10 currentlyPlaying];
-  if (v14 == v8)
+  currentlyPlaying = [v10 currentlyPlaying];
+  if (showCurrentlyPlayingIndex == v8)
   {
-    v16 = v15;
+    v16 = currentlyPlaying;
   }
 
   else
@@ -476,39 +476,39 @@ LABEL_12:
   }
 
 LABEL_13:
-  v48 = v6;
-  v46 = v7;
+  v48 = cellCopy;
+  v46 = pathCopy;
   v44 = v12;
   if ([v10 isCloudItem] && objc_msgSend(v10, "isPlayable"))
   {
-    v17 = [MEMORY[0x277CF9190] accessoryWithCloudIcon];
+    accessoryWithCloudIcon = [MEMORY[0x277CF9190] accessoryWithCloudIcon];
 LABEL_18:
-    v18 = v17;
+    v18 = accessoryWithCloudIcon;
     goto LABEL_20;
   }
 
   if ([v10 isContainer])
   {
-    v17 = [MEMORY[0x277CF9190] accessoryWithDisclosureIndicator];
+    accessoryWithCloudIcon = [MEMORY[0x277CF9190] accessoryWithDisclosureIndicator];
     goto LABEL_18;
   }
 
   v18 = 0;
 LABEL_20:
-  v19 = [(MCDBrowsableContentTableViewController *)self container];
-  v20 = [v19 model];
-  v21 = [v20 playableContentPlaybackManager];
-  v22 = [v21 playerState];
+  container2 = [(MCDBrowsableContentTableViewController *)self container];
+  model = [container2 model];
+  playableContentPlaybackManager = [model playableContentPlaybackManager];
+  playerState = [playableContentPlaybackManager playerState];
 
   v23 = MEMORY[0x277CF9198];
-  v24 = [v10 title];
-  v25 = [v10 subtitle];
-  v26 = [v10 artworkImage];
-  v27 = [v10 isExplicitItem];
-  v28 = [(MCDPCContainer *)self->_container showPlaybackProgress];
+  title = [v10 title];
+  subtitle = [v10 subtitle];
+  artworkImage = [v10 artworkImage];
+  isExplicitItem = [v10 isExplicitItem];
+  showPlaybackProgress = [(MCDPCContainer *)self->_container showPlaybackProgress];
   [v10 playbackProgress];
   v30 = v29;
-  if (v22 == 2)
+  if (playerState == 2)
   {
     v31 = v47;
   }
@@ -521,45 +521,45 @@ LABEL_20:
   *(&v43 + 3) = 257;
   BYTE2(v43) = v47;
   BYTE1(v43) = v31;
-  LOBYTE(v43) = v28;
-  v32 = [v23 configurationWithText:v24 detailText:v25 image:v26 showExplicit:v27 accessory:v18 showActivityIndicator:v44 showPlaybackProgress:v30 playbackProgress:v43 activePlayback:? isPlaying:? playingIndicatorLeadingSide:? isEnabled:?];
+  LOBYTE(v43) = showPlaybackProgress;
+  v32 = [v23 configurationWithText:title detailText:subtitle image:artworkImage showExplicit:isExplicitItem accessory:v18 showActivityIndicator:v44 showPlaybackProgress:v30 playbackProgress:v43 activePlayback:? isPlaying:? playingIndicatorLeadingSide:? isEnabled:?];
 
   v33 = v48;
   [v48 applyConfiguration:v32];
   v34 = MCDGeneralLogging();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
-    v35 = [v10 title];
-    v36 = [v10 subtitle];
-    v37 = [v10 isExplicitItem];
+    title2 = [v10 title];
+    subtitle2 = [v10 subtitle];
+    isExplicitItem2 = [v10 isExplicitItem];
     if ([v10 isCloudItem])
     {
-      v38 = [v10 isPlayable];
+      isPlayable = [v10 isPlayable];
     }
 
     else
     {
-      v38 = 0;
+      isPlayable = 0;
     }
 
-    v39 = [(MCDPCContainer *)self->_container showPlaybackProgress];
+    showPlaybackProgress2 = [(MCDPCContainer *)self->_container showPlaybackProgress];
     [v10 playbackProgress];
     *buf = 138545154;
-    v50 = v35;
+    v50 = title2;
     v51 = 2114;
-    v52 = v36;
+    v52 = subtitle2;
     v53 = 1026;
-    v54 = v37;
+    v54 = isExplicitItem2;
     v55 = 1026;
-    v56 = v38;
+    v56 = isPlayable;
     v57 = 1026;
-    v58 = v39;
+    v58 = showPlaybackProgress2;
     v59 = 2050;
     v60 = v40;
     v61 = 1026;
     v62 = v47;
     v63 = 1026;
-    v64 = [v10 isContainer];
+    isContainer = [v10 isContainer];
     _os_log_impl(&dword_25AD8E000, v34, OS_LOG_TYPE_DEFAULT, "Cell displayed: title: %{public}@, subtitle: %{public}@, showExplicit: %{public}d, showCloud: %{public}d, shouldShowPlaybackProgress: %{public}d, playbackProgress: %{public}f, currentlyPlaying: %{public}d, isContainer: %{public}d", buf, 0x3Eu);
 
     v33 = v48;
@@ -567,14 +567,14 @@ LABEL_20:
 
   if ([v10 isContainer])
   {
-    v41 = [(MCDBrowsableContentTableViewController *)self container];
-    [v41 beginLoadingItem:v10 completion:0];
+    container3 = [(MCDBrowsableContentTableViewController *)self container];
+    [container3 beginLoadingItem:v10 completion:0];
   }
 
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   count = 12;
   if (self->_count < 12)
@@ -593,24 +593,24 @@ LABEL_20:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = MEMORY[0x277CF9188];
-  v7 = a4;
-  v8 = [v6 cellForTableView:a3];
-  [(MCDBrowsableContentTableViewController *)self _configureCell:v8 forIndexPath:v7];
+  pathCopy = path;
+  v8 = [v6 cellForTableView:view];
+  [(MCDBrowsableContentTableViewController *)self _configureCell:v8 forIndexPath:pathCopy];
 
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[MCDPCContainer cachedItemForIndex:](self->_container, "cachedItemForIndex:", [v7 row]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[MCDPCContainer cachedItemForIndex:](self->_container, "cachedItemForIndex:", [pathCopy row]);
   if (([v8 isContainer] & 1) == 0 && !objc_msgSend(v8, "isPlayable"))
   {
-    v13 = v7;
+    v13 = pathCopy;
     goto LABEL_14;
   }
 
@@ -624,10 +624,10 @@ LABEL_20:
   v10 = [v9 timerWithInterval:0 repeats:v24 block:20.0];
   [(MCDBrowsableContentTableViewController *)self setLoadingTimer:v10];
 
-  [(MCDBrowsableContentTableViewController *)self setSelectedIndexPath:v7];
-  v11 = [(MCDBrowsableContentTableViewController *)self container];
-  v12 = [v11 indexPath];
-  v13 = [v12 indexPathByAddingIndex:{objc_msgSend(v7, "row")}];
+  [(MCDBrowsableContentTableViewController *)self setSelectedIndexPath:pathCopy];
+  container = [(MCDBrowsableContentTableViewController *)self container];
+  indexPath = [container indexPath];
+  v13 = [indexPath indexPathByAddingIndex:{objc_msgSend(pathCopy, "row")}];
 
   if ([v8 isPlayable])
   {
@@ -638,25 +638,25 @@ LABEL_20:
       _os_log_impl(&dword_25AD8E000, v14, OS_LOG_TYPE_DEFAULT, "Selected playable content, preparing to play back", buf, 2u);
     }
 
-    v15 = [(MCDBrowsableContentTableViewController *)self container];
-    v16 = [v15 model];
+    container2 = [(MCDBrowsableContentTableViewController *)self container];
+    model = [container2 model];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __76__MCDBrowsableContentTableViewController_tableView_didSelectRowAtIndexPath___block_invoke_77;
     v22[3] = &unk_279923AE0;
     v22[4] = self;
-    [(MCDBrowsableContentTableViewController *)v16 initiatePlaybackAtIndexPath:v13 completion:v22];
+    [(MCDBrowsableContentTableViewController *)model initiatePlaybackAtIndexPath:v13 completion:v22];
   }
 
   else
   {
     if (![v8 isContainer])
     {
-      v15 = MCDGeneralLogging();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      container2 = MCDGeneralLogging();
+      if (os_log_type_enabled(container2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_25AD8E000, v15, OS_LOG_TYPE_DEFAULT, "Selected neither a container nor a playable cell", buf, 2u);
+        _os_log_impl(&dword_25AD8E000, container2, OS_LOG_TYPE_DEFAULT, "Selected neither a container nor a playable cell", buf, 2u);
       }
 
       goto LABEL_12;
@@ -669,18 +669,18 @@ LABEL_20:
       _os_log_impl(&dword_25AD8E000, v17, OS_LOG_TYPE_DEFAULT, "Selected container, preparing to push to container", buf, 2u);
     }
 
-    v18 = [(MCDBrowsableContentTableViewController *)self container];
-    v15 = [v18 containerAtIndex:{objc_msgSend(v13, "indexAtPosition:", objc_msgSend(v13, "length") - 1)}];
+    container3 = [(MCDBrowsableContentTableViewController *)self container];
+    container2 = [container3 containerAtIndex:{objc_msgSend(v13, "indexAtPosition:", objc_msgSend(v13, "length") - 1)}];
 
-    v19 = [[MCDBrowsableContentTableViewController alloc] initWithContainer:v15 tabbedBrowsing:self->_hasTabbedBrowsing];
+    v19 = [[MCDBrowsableContentTableViewController alloc] initWithContainer:container2 tabbedBrowsing:self->_hasTabbedBrowsing];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __76__MCDBrowsableContentTableViewController_tableView_didSelectRowAtIndexPath___block_invoke_80;
     v20[3] = &unk_279923AB8;
     v20[4] = self;
-    v16 = v19;
-    v21 = v16;
-    [(MCDBrowsableContentTableViewController *)v16 reloadWithCompletion:v20];
+    model = v19;
+    v21 = model;
+    [(MCDBrowsableContentTableViewController *)model reloadWithCompletion:v20];
   }
 
 LABEL_12:
@@ -821,30 +821,30 @@ uint64_t __76__MCDBrowsableContentTableViewController_tableView_didSelectRowAtIn
   return [*(a1 + 32) showViewController:*(a1 + 40) sender:*(a1 + 32)];
 }
 
-- (void)tableView:(id)a3 didFocusRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didFocusRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v9 indexPathForSelectedRow];
-  v7 = [v6 compare:v5];
+  viewCopy = view;
+  pathCopy = path;
+  indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
+  v7 = [indexPathForSelectedRow compare:pathCopy];
 
   if (v7)
   {
-    v8 = [v9 cellForRowAtIndexPath:v6];
+    v8 = [viewCopy cellForRowAtIndexPath:indexPathForSelectedRow];
     [v8 setSelected:0];
   }
 }
 
-- (void)_displayErrorAlertController:(id)a3
+- (void)_displayErrorAlertController:(id)controller
 {
-  v4 = a3;
-  v5 = [(MCDBrowsableContentTableViewController *)self alertController];
+  controllerCopy = controller;
+  alertController = [(MCDBrowsableContentTableViewController *)self alertController];
 
-  if (!v5)
+  if (!alertController)
   {
     v6 = MEMORY[0x277D75110];
-    v7 = [v4 localizedDescription];
-    v8 = [v6 alertControllerWithTitle:0 message:v7 preferredStyle:1];
+    localizedDescription = [controllerCopy localizedDescription];
+    v8 = [v6 alertControllerWithTitle:0 message:localizedDescription preferredStyle:1];
     [(MCDBrowsableContentTableViewController *)self setAlertController:v8];
 
     v9 = MEMORY[0x277D750F8];
@@ -852,16 +852,16 @@ uint64_t __76__MCDBrowsableContentTableViewController_tableView_didSelectRowAtIn
     v11 = [v10 localizedStringForKey:@"OK" value:&stru_286C2B080 table:@"MusicCarDisplayUI"];
     v12 = [v9 actionWithTitle:v11 style:1 handler:0];
 
-    v13 = [(MCDBrowsableContentTableViewController *)self alertController];
-    [v13 addAction:v12];
+    alertController2 = [(MCDBrowsableContentTableViewController *)self alertController];
+    [alertController2 addAction:v12];
 
-    v14 = [(MCDBrowsableContentTableViewController *)self alertController];
+    alertController3 = [(MCDBrowsableContentTableViewController *)self alertController];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __71__MCDBrowsableContentTableViewController__displayErrorAlertController___block_invoke;
     v15[3] = &unk_279923B08;
     v15[4] = self;
-    [(MCDBrowsableContentTableViewController *)self presentViewController:v14 animated:1 completion:v15];
+    [(MCDBrowsableContentTableViewController *)self presentViewController:alertController3 animated:1 completion:v15];
   }
 }
 
@@ -873,19 +873,19 @@ uint64_t __71__MCDBrowsableContentTableViewController__displayErrorAlertControll
   return [v2 setAlertController:0];
 }
 
-- (void)container:(id)a3 didInvalidateIndicies:(id)a4
+- (void)container:(id)container didInvalidateIndicies:(id)indicies
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  indiciesCopy = indicies;
   v8 = MCDGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 identifier];
+    identifier = [containerCopy identifier];
     *buf = 138543618;
-    v19 = v9;
+    v19 = identifier;
     v20 = 2114;
-    v21 = v7;
+    v21 = indiciesCopy;
     _os_log_impl(&dword_25AD8E000, v8, OS_LOG_TYPE_DEFAULT, "Some content have invalidated, preparing to reload table view: %{public}@, indicies: %{public}@", buf, 0x16u);
   }
 
@@ -897,9 +897,9 @@ uint64_t __71__MCDBrowsableContentTableViewController__displayErrorAlertControll
   v14[3] = &unk_279923B58;
   objc_copyWeak(&v17, buf);
   v14[4] = self;
-  v11 = v7;
+  v11 = indiciesCopy;
   v15 = v11;
-  v12 = v6;
+  v12 = containerCopy;
   v16 = v12;
   [v10 addOperation:v14 cancelAllOperations:0];
 
@@ -1010,7 +1010,7 @@ void __74__MCDBrowsableContentTableViewController_container_didInvalidateIndicie
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)containerDidChangeCount:(id)a3
+- (void)containerDidChangeCount:(id)count
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1069,8 +1069,8 @@ LABEL_10:
 {
   v6[1] = *MEMORY[0x277D85DE8];
   tableView = self->_tableView;
-  v3 = [(MCDBrowsableContentTableViewController *)self selectedIndexPath];
-  v6[0] = v3;
+  selectedIndexPath = [(MCDBrowsableContentTableViewController *)self selectedIndexPath];
+  v6[0] = selectedIndexPath;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
   [(UITableView *)tableView reloadRowsAtIndexPaths:v4 withRowAnimation:5];
 
@@ -1082,33 +1082,33 @@ LABEL_10:
   v9[1] = *MEMORY[0x277D85DE8];
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__displayLoadingActivity object:0];
   tableView = self->_tableView;
-  v4 = [(MCDBrowsableContentTableViewController *)self selectedIndexPath];
-  [(UITableView *)tableView deselectRowAtIndexPath:v4 animated:1];
+  selectedIndexPath = [(MCDBrowsableContentTableViewController *)self selectedIndexPath];
+  [(UITableView *)tableView deselectRowAtIndexPath:selectedIndexPath animated:1];
 
   v5 = self->_tableView;
-  v6 = [(MCDBrowsableContentTableViewController *)self selectedIndexPath];
-  v9[0] = v6;
+  selectedIndexPath2 = [(MCDBrowsableContentTableViewController *)self selectedIndexPath];
+  v9[0] = selectedIndexPath2;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   [(UITableView *)v5 reloadRowsAtIndexPaths:v7 withRowAnimation:5];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_playbackStateChanged:(id)a3
+- (void)_playbackStateChanged:(id)changed
 {
-  v4 = [(MCDBrowsableContentTableViewController *)self container];
-  v5 = [v4 model];
-  v6 = [v5 playableContentPlaybackManager];
-  v7 = [v6 playerState] == 2;
+  container = [(MCDBrowsableContentTableViewController *)self container];
+  model = [container model];
+  playableContentPlaybackManager = [model playableContentPlaybackManager];
+  v7 = [playableContentPlaybackManager playerState] == 2;
 
-  v8 = [(UITableView *)self->_tableView visibleCells];
+  visibleCells = [(UITableView *)self->_tableView visibleCells];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__MCDBrowsableContentTableViewController__playbackStateChanged___block_invoke;
   v9[3] = &unk_279923B80;
   v9[4] = self;
   v10 = v7;
-  [v8 enumerateObjectsUsingBlock:v9];
+  [visibleCells enumerateObjectsUsingBlock:v9];
 }
 
 void __64__MCDBrowsableContentTableViewController__playbackStateChanged___block_invoke(uint64_t a1, void *a2)
@@ -1131,10 +1131,10 @@ void __64__MCDBrowsableContentTableViewController__playbackStateChanged___block_
   }
 }
 
-- (void)reloadWithCompletion:(id)a3
+- (void)reloadWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   if (MCDIndexPathIsRootForContainer(self->_container))
   {
@@ -1163,9 +1163,9 @@ void __64__MCDBrowsableContentTableViewController__playbackStateChanged___block_
     v9 = MCDGeneralLogging();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(MCDPCContainer *)self->_container identifier];
+      identifier = [(MCDPCContainer *)self->_container identifier];
       *buf = 138543362;
-      v21 = v10;
+      v21 = identifier;
       _os_log_impl(&dword_25AD8E000, v9, OS_LOG_TYPE_DEFAULT, "Fetching content for non-root container: %{public}@", buf, 0xCu);
     }
   }
@@ -1179,7 +1179,7 @@ void __64__MCDBrowsableContentTableViewController__playbackStateChanged___block_
     v14[3] = &unk_279923BA8;
     objc_copyWeak(&v16, &location);
     v14[4] = self;
-    v15 = v4;
+    v15 = completionCopy;
     [(MCDPCContainer *)container refreshWithCompletion:v14];
 
     objc_destroyWeak(&v16);
@@ -1194,9 +1194,9 @@ void __64__MCDBrowsableContentTableViewController__playbackStateChanged___block_
       _os_log_impl(&dword_25AD8E000, v12, OS_LOG_TYPE_DEFAULT, "No container available to refresh.", buf, 2u);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      dispatch_async(MEMORY[0x277D85CD0], v4);
+      dispatch_async(MEMORY[0x277D85CD0], completionCopy);
     }
   }
 
@@ -1329,18 +1329,18 @@ LABEL_13:
 
 - (void)_updateNowPlayingButtonVisibility
 {
-  v3 = [(MCDPCContainer *)self->_container model];
-  v4 = [v3 playableContentPlaybackManager];
-  v5 = [v4 currentPlayingSong];
-  if (v5)
+  model = [(MCDPCContainer *)self->_container model];
+  playableContentPlaybackManager = [model playableContentPlaybackManager];
+  currentPlayingSong = [playableContentPlaybackManager currentPlayingSong];
+  if (currentPlayingSong)
   {
-    v6 = v5;
-    v7 = [(MCDPCContainer *)self->_container model];
-    v8 = [v7 isCurrentPlayingApp];
+    v6 = currentPlayingSong;
+    model2 = [(MCDPCContainer *)self->_container model];
+    isCurrentPlayingApp = [model2 isCurrentPlayingApp];
 
-    [(MCDBrowsableContentTableViewController *)self setCurrentlyPlayingApp:v8];
+    [(MCDBrowsableContentTableViewController *)self setCurrentlyPlayingApp:isCurrentPlayingApp];
     [(MCDBrowsableContentTableViewController *)self reloadTable];
-    if (v8 && self->_hasCarScreen)
+    if (isCurrentPlayingApp && self->_hasCarScreen)
     {
       if (!self->_nowPlayingButton)
       {
@@ -1349,8 +1349,8 @@ LABEL_13:
         self->_nowPlayingButton = v9;
 
         v11 = self->_nowPlayingButton;
-        v12 = [(MCDBrowsableContentTableViewController *)self navigationItem];
-        [v12 setRightBarButtonItem:v11];
+        navigationItem = [(MCDBrowsableContentTableViewController *)self navigationItem];
+        [navigationItem setRightBarButtonItem:v11];
       }
 
       if (self->_hasNoBrowsableContent && !self->_didPushToNowPlayingAtLaunch)
@@ -1380,11 +1380,11 @@ LABEL_13:
   v13 = self->_nowPlayingButton;
   self->_nowPlayingButton = 0;
 
-  v14 = [(MCDBrowsableContentTableViewController *)self navigationItem];
-  [v14 setRightBarButtonItem:0];
+  navigationItem2 = [(MCDBrowsableContentTableViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:0];
 }
 
-- (void)_nowPlayingButtonTapped:(id)a3
+- (void)_nowPlayingButtonTapped:(id)tapped
 {
   v4 = MCDGeneralLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1396,14 +1396,14 @@ LABEL_13:
   [(MCDBrowsableContentTableViewController *)self _pushToNowPlaying:1];
 }
 
-- (void)_pushToNowPlaying:(BOOL)a3
+- (void)_pushToNowPlaying:(BOOL)playing
 {
   v4 = [MCDNowPlayingViewController alloc];
-  v5 = [(MCDPCContainer *)self->_container model];
-  v6 = [v5 bundleID];
-  v7 = [(MCDPCContainer *)self->_container model];
-  v8 = [v7 appTitle];
-  v9 = [(MCDNowPlayingViewController *)v4 initWithPlayableBundleID:v6 appName:v8];
+  model = [(MCDPCContainer *)self->_container model];
+  bundleID = [model bundleID];
+  model2 = [(MCDPCContainer *)self->_container model];
+  appTitle = [model2 appTitle];
+  v9 = [(MCDNowPlayingViewController *)v4 initWithPlayableBundleID:bundleID appName:appTitle];
 
   [(MCDNowPlayingViewController *)v9 setShowNavigationBar:self->_isRootTableViewController];
   v10 = MCDGeneralLogging();
@@ -1423,9 +1423,9 @@ LABEL_13:
   dispatch_async(MEMORY[0x277D85CD0], v12);
 }
 
-- (void)_appRegisteredForContent:(id)a3
+- (void)_appRegisteredForContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   objc_initWeak(&location, self);
   v5 = +[MCDMediaRemoteSerialQueueManager sharedInstance];
   v7 = MEMORY[0x277D85DD0];
@@ -1435,8 +1435,8 @@ LABEL_13:
   objc_copyWeak(&v11, &location);
   [v5 addOperation:&v7 cancelAllOperations:1];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:@"appReadyToFetch" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"appReadyToFetch" object:0];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -1483,12 +1483,12 @@ uint64_t __67__MCDBrowsableContentTableViewController__appRegisteredForContent__
 
 - (BOOL)_shouldLimitLists
 {
-  v2 = [(CARSessionStatus *)self->_carSessionStatus currentSession];
-  v3 = [v2 limitUserInterfaces];
-  if ([v3 BOOLValue])
+  currentSession = [(CARSessionStatus *)self->_carSessionStatus currentSession];
+  limitUserInterfaces = [currentSession limitUserInterfaces];
+  if ([limitUserInterfaces BOOLValue])
   {
-    v4 = [v2 configuration];
-    v5 = ([v4 limitableUserInterfaces] >> 3) & 1;
+    configuration = [currentSession configuration];
+    v5 = ([configuration limitableUserInterfaces] >> 3) & 1;
   }
 
   else
@@ -1499,7 +1499,7 @@ uint64_t __67__MCDBrowsableContentTableViewController__appRegisteredForContent__
   return v5;
 }
 
-- (void)_limitedUIChanged:(id)a3
+- (void)_limitedUIChanged:(id)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

@@ -1,24 +1,24 @@
 @interface PaperDocumentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)axInsertFormFieldsIntoHierarchy;
-- (void)axRemoveFormFieldFromHierarchy:(id)a3;
+- (void)axRemoveFormFieldFromHierarchy:(id)hierarchy;
 @end
 
 @implementation PaperDocumentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PaperKit.PaperDocumentView"];
-  [v3 validateClass:@"PDFView"];
-  [v3 validateClass:@"PaperKit.PaperDocumentView" hasSwiftField:@"pdfView" withSwiftType:"Optional<PDFView>"];
-  [v3 validateClass:@"PaperKit.PaperDocumentView" hasInstanceMethod:@"axDetectedFormElements" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PaperKit.PaperDocumentView" hasInstanceMethod:@"axCurrentPageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PaperKit.PaperDocumentView" hasInstanceMethod:@"axTapOnShapeView:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PaperKit.PaperDocumentView"];
+  [validationsCopy validateClass:@"PDFView"];
+  [validationsCopy validateClass:@"PaperKit.PaperDocumentView" hasSwiftField:@"pdfView" withSwiftType:"Optional<PDFView>"];
+  [validationsCopy validateClass:@"PaperKit.PaperDocumentView" hasInstanceMethod:@"axDetectedFormElements" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PaperKit.PaperDocumentView" hasInstanceMethod:@"axCurrentPageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PaperKit.PaperDocumentView" hasInstanceMethod:@"axTapOnShapeView:" withFullSignature:{"v", "@", 0}];
   if (NSClassFromString(&cfstr_Pdfpageviewacc.isa))
   {
-    [v3 validateClass:@"PDFPageViewAccessibility" hasInstanceMethod:@"_accessibilityInsertAnnotation:" withFullSignature:{"B", "@", 0}];
-    [v3 validateClass:@"PDFPageViewAccessibility" hasInstanceMethod:@"_accessibilityRemoveAnnotation:" withFullSignature:{"B", "@", 0}];
+    [validationsCopy validateClass:@"PDFPageViewAccessibility" hasInstanceMethod:@"_accessibilityInsertAnnotation:" withFullSignature:{"B", "@", 0}];
+    [validationsCopy validateClass:@"PDFPageViewAccessibility" hasInstanceMethod:@"_accessibilityRemoveAnnotation:" withFullSignature:{"B", "@", 0}];
   }
 }
 
@@ -41,7 +41,7 @@
   v28 = 3221225472;
   v29 = __65__PaperDocumentViewAccessibility_axInsertFormFieldsIntoHierarchy__block_invoke;
   v30 = &unk_29F2E1470;
-  v31 = self;
+  selfCopy = self;
   v32 = v40;
   val = self;
   v33 = &v34;
@@ -66,7 +66,7 @@
         }
 
         v6 = *(*(&v23 + 1) + 8 * i);
-        v7 = [v6 accessibilityContainer];
+        accessibilityContainer = [v6 accessibilityContainer];
         NSClassFromString(&cfstr_PaperkitFormfi.isa);
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -97,8 +97,8 @@
             objc_copyWeak(&v15, from);
             objc_copyWeak(&v16, &location);
             [v6 setAccessibilityActivateBlock:v14];
-            v10 = [v6 accessibilityTraits];
-            [v6 setAccessibilityTraits:*MEMORY[0x29EDC7598] | v10];
+            accessibilityTraits = [v6 accessibilityTraits];
+            [v6 setAccessibilityTraits:*MEMORY[0x29EDC7598] | accessibilityTraits];
             objc_destroyWeak(&v16);
             objc_destroyWeak(&v15);
             objc_destroyWeak(from);
@@ -158,7 +158,7 @@ void __65__PaperDocumentViewAccessibility_axInsertFormFieldsIntoHierarchy__block
   [WeakRetained axTapOnShapeView:v2];
 }
 
-- (void)axRemoveFormFieldFromHierarchy:(id)a3
+- (void)axRemoveFormFieldFromHierarchy:(id)hierarchy
 {
   v4[0] = 0;
   v4[1] = v4;
@@ -166,7 +166,7 @@ void __65__PaperDocumentViewAccessibility_axInsertFormFieldsIntoHierarchy__block
   v4[3] = __Block_byref_object_copy_;
   v4[4] = __Block_byref_object_dispose_;
   v5 = 0;
-  v3 = a3;
+  hierarchyCopy = hierarchy;
   AXPerformSafeBlock();
 
   _Block_object_dispose(v4, 8);

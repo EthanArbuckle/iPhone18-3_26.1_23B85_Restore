@@ -2,11 +2,11 @@
 + (id)sharedStateManager;
 - (ACXGizmoStateManager)init;
 - (id)stateForActivePairedDevice;
-- (id)stateForDevice:(id)a3;
-- (id)stateForPairingID:(id)a3;
+- (id)stateForDevice:(id)device;
+- (id)stateForPairingID:(id)d;
 - (void)noteDatabaseRebuild;
-- (void)noteNewApps:(id)a3 updatedApps:(id)a4 removedApps:(id)a5 transitioningAppBundleIDs:(id)a6;
-- (void)noteTrustObtainedForApps:(id)a3 trustRemovedForApps:(id)a4;
+- (void)noteNewApps:(id)apps updatedApps:(id)updatedApps removedApps:(id)removedApps transitioningAppBundleIDs:(id)ds;
+- (void)noteTrustObtainedForApps:(id)apps trustRemovedForApps:(id)forApps;
 @end
 
 @implementation ACXGizmoStateManager
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_10001A6B8;
   block[3] = &unk_10008CBE8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000A4800 != -1)
   {
     dispatch_once(&qword_1000A4800, block);
@@ -48,11 +48,11 @@
   return v2;
 }
 
-- (id)stateForDevice:(id)a3
+- (id)stateForDevice:(id)device
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  deviceCopy = device;
+  v5 = deviceCopy;
+  if (deviceCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -60,18 +60,18 @@
     v18 = sub_10001A904;
     v19 = sub_10001A914;
     v20 = 0;
-    v6 = [v4 pairingID];
-    v7 = [(ACXGizmoStateManager *)self internalQueue];
+    pairingID = [deviceCopy pairingID];
+    internalQueue = [(ACXGizmoStateManager *)self internalQueue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10001A91C;
     v11[3] = &unk_10008D4E8;
     v14 = &v15;
     v11[4] = self;
-    v12 = v6;
+    v12 = pairingID;
     v13 = v5;
-    v8 = v6;
-    dispatch_sync(v7, v11);
+    v8 = pairingID;
+    dispatch_sync(internalQueue, v11);
 
     v9 = v16[5];
     _Block_object_dispose(&v15, 8);
@@ -85,11 +85,11 @@
   return v9;
 }
 
-- (id)stateForPairingID:(id)a3
+- (id)stateForPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[ACXDeviceManager sharedManager];
-  v6 = [v5 deviceForPairingID:v4];
+  v6 = [v5 deviceForPairingID:dCopy];
 
   v7 = [(ACXGizmoStateManager *)self stateForDevice:v6];
 
@@ -99,26 +99,26 @@
 - (id)stateForActivePairedDevice
 {
   v3 = +[ACXDeviceManager sharedManager];
-  v4 = [v3 currentActivePairedDevice];
-  v5 = [(ACXGizmoStateManager *)self stateForDevice:v4];
+  currentActivePairedDevice = [v3 currentActivePairedDevice];
+  v5 = [(ACXGizmoStateManager *)self stateForDevice:currentActivePairedDevice];
 
   return v5;
 }
 
-- (void)noteNewApps:(id)a3 updatedApps:(id)a4 removedApps:(id)a5 transitioningAppBundleIDs:(id)a6
+- (void)noteNewApps:(id)apps updatedApps:(id)updatedApps removedApps:(id)removedApps transitioningAppBundleIDs:(id)ds
 {
-  v46 = a3;
-  v52 = a4;
-  v45 = a5;
-  v49 = a6;
+  appsCopy = apps;
+  updatedAppsCopy = updatedApps;
+  removedAppsCopy = removedApps;
+  dsCopy = ds;
   v10 = +[ACXDeviceManager sharedManager];
-  v11 = [v10 allDevices];
+  allDevices = [v10 allDevices];
 
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = v11;
+  obj = allDevices;
   v12 = [obj countByEnumeratingWithState:&v64 objects:v70 count:16];
   if (v12)
   {
@@ -126,7 +126,7 @@
     v14 = *v65;
     v42 = v55;
     v43 = *v65;
-    v44 = self;
+    selfCopy = self;
     do
     {
       v15 = 0;
@@ -139,7 +139,7 @@
         }
 
         v16 = *(*(&v64 + 1) + 8 * v15);
-        v17 = [(ACXGizmoStateManager *)self stateForDevice:v16, v41, v42];
+        v17 = [(ACXGizmoStateManager *)self stateForDevice:v16, bundleIdentifier2, v42];
         if ([v16 isActivePairedDevice])
         {
           v50 = v16;
@@ -150,7 +150,7 @@
           v61 = 0u;
           v62 = 0u;
           v63 = 0u;
-          v19 = v46;
+          v19 = appsCopy;
           v20 = [v19 countByEnumeratingWithState:&v60 objects:v69 count:16];
           if (v20)
           {
@@ -166,14 +166,14 @@
                 }
 
                 v24 = *(*(&v60 + 1) + 8 * i);
-                v25 = [v24 bundleIdentifier];
-                v26 = [v17 watchKitAppExecutableHashForBundleID:v25];
+                bundleIdentifier = [v24 bundleIdentifier];
+                v26 = [v17 watchKitAppExecutableHashForBundleID:bundleIdentifier];
 
-                v27 = [v24 watchKitAppExecutableHash];
-                v28 = v27;
+                watchKitAppExecutableHash = [v24 watchKitAppExecutableHash];
+                v28 = watchKitAppExecutableHash;
                 if (v26)
                 {
-                  v29 = v27 == 0;
+                  v29 = watchKitAppExecutableHash == 0;
                 }
 
                 else
@@ -181,14 +181,14 @@
                   v29 = 1;
                 }
 
-                if (v29 || ![v26 isEqualToString:v27])
+                if (v29 || ![v26 isEqualToString:watchKitAppExecutableHash])
                 {
                   [v53 addObject:v24];
                 }
 
                 else if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
                 {
-                  v41 = [v24 bundleIdentifier];
+                  bundleIdentifier2 = [v24 bundleIdentifier];
                   MOLogWrite();
                 }
               }
@@ -203,7 +203,7 @@
           v59 = 0u;
           v56 = 0u;
           v57 = 0u;
-          v30 = v52;
+          v30 = updatedAppsCopy;
           v31 = [v30 countByEnumeratingWithState:&v56 objects:v68 count:16];
           if (v31)
           {
@@ -219,14 +219,14 @@
                 }
 
                 v35 = *(*(&v56 + 1) + 8 * j);
-                v36 = [v35 bundleIdentifier];
-                v37 = [v17 watchKitAppExecutableHashForBundleID:v36];
+                bundleIdentifier3 = [v35 bundleIdentifier];
+                v37 = [v17 watchKitAppExecutableHashForBundleID:bundleIdentifier3];
 
-                v38 = [v35 watchKitAppExecutableHash];
-                v39 = v38;
+                watchKitAppExecutableHash2 = [v35 watchKitAppExecutableHash];
+                v39 = watchKitAppExecutableHash2;
                 if (v37)
                 {
-                  v40 = v38 == 0;
+                  v40 = watchKitAppExecutableHash2 == 0;
                 }
 
                 else
@@ -234,14 +234,14 @@
                   v40 = 1;
                 }
 
-                if (v40 || ![v37 isEqualToString:v38])
+                if (v40 || ![v37 isEqualToString:watchKitAppExecutableHash2])
                 {
                   [v18 addObject:v35];
                 }
 
                 else if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
                 {
-                  v41 = [v35 bundleIdentifier];
+                  bundleIdentifier2 = [v35 bundleIdentifier];
                   MOLogWrite();
                 }
               }
@@ -257,17 +257,17 @@
           v55[0] = sub_10001B00C;
           v55[1] = &unk_10008CD40;
           v55[2] = v50;
-          [v17 noteNewApps:v53 updatedApps:v18 removedApps:v45 transitioningAppBundleIDs:v49 completion:v54];
+          [v17 noteNewApps:v53 updatedApps:v18 removedApps:removedAppsCopy transitioningAppBundleIDs:dsCopy completion:v54];
 
           v14 = v43;
-          self = v44;
+          self = selfCopy;
           v13 = v47;
           v15 = v51;
         }
 
-        else if ([v52 count])
+        else if ([updatedAppsCopy count])
         {
-          [v17 noteNewApps:0 updatedApps:v52 removedApps:0 transitioningAppBundleIDs:v49 completion:0];
+          [v17 noteNewApps:0 updatedApps:updatedAppsCopy removedApps:0 transitioningAppBundleIDs:dsCopy completion:0];
         }
 
         v15 = v15 + 1;
@@ -281,21 +281,21 @@
   }
 }
 
-- (void)noteTrustObtainedForApps:(id)a3 trustRemovedForApps:(id)a4
+- (void)noteTrustObtainedForApps:(id)apps trustRemovedForApps:(id)forApps
 {
-  v6 = a4;
-  v7 = a3;
+  forAppsCopy = forApps;
+  appsCopy = apps;
   v8 = +[ACXDeviceManager sharedManager];
-  v9 = [v8 currentActivePairedDevice];
+  currentActivePairedDevice = [v8 currentActivePairedDevice];
 
-  v10 = [(ACXGizmoStateManager *)self stateForDevice:v9];
+  v10 = [(ACXGizmoStateManager *)self stateForDevice:currentActivePairedDevice];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10001B184;
   v12[3] = &unk_10008CD40;
-  v13 = v9;
-  v11 = v9;
-  [v10 noteTrustAddedApps:v7 trustRemovedApps:v6 completion:v12];
+  v13 = currentActivePairedDevice;
+  v11 = currentActivePairedDevice;
+  [v10 noteTrustAddedApps:appsCopy trustRemovedApps:forAppsCopy completion:v12];
 }
 
 - (void)noteDatabaseRebuild
@@ -307,9 +307,9 @@
 
   notify_post([@"com.apple.sockpuppet.applications.updated" UTF8String]);
   v2 = +[ACXCompanionSyncConnectionManager sharedConnectionManager];
-  v3 = [v2 connectionForActivePairedDevice];
+  connectionForActivePairedDevice = [v2 connectionForActivePairedDevice];
 
-  [v3 performReunionSyncWithReason:@"database updated"];
+  [connectionForActivePairedDevice performReunionSyncWithReason:@"database updated"];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface WatchdogExitReasonHelper
-+ (id)descriptionFromCode:(int)a3;
++ (id)descriptionFromCode:(int)code;
 - (_TtC11OSAnalytics24WatchdogExitReasonHelper)init;
 @end
 
 @implementation WatchdogExitReasonHelper
 
-+ (id)descriptionFromCode:(int)a3
++ (id)descriptionFromCode:(int)code
 {
-  _s11OSAnalytics24WatchdogExitReasonHelperC19descriptionFromCodeySSSgs5Int32VFZ_0(a3);
+  _s11OSAnalytics24WatchdogExitReasonHelperC19descriptionFromCodeySSSgs5Int32VFZ_0(code);
   if (v3)
   {
     v4 = sub_1AE53FB44();

@@ -1,75 +1,75 @@
 @interface STTelephonyStatusDomainDataDiff
-+ (id)diffFromData:(id)a3 toData:(id)a4;
++ (id)diffFromData:(id)data toData:(id)toData;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isOrthogonalToDiff:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isOrthogonalToDiff:(id)diff;
 - (STTelephonyStatusDomainDataDiff)init;
-- (STTelephonyStatusDomainDataDiff)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingToData:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffByApplyingDiff:(id)a3;
+- (STTelephonyStatusDomainDataDiff)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingToData:(id)data;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffByApplyingDiff:(id)diff;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)applyToMutableData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithSIMOneInfoDiff:(void *)a3 SIMTwoInfoDiff:(void *)a4 changes:;
+- (void)applyToMutableData:(id)data;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithSIMOneInfoDiff:(void *)diff SIMTwoInfoDiff:(void *)infoDiff changes:;
 @end
 
 @implementation STTelephonyStatusDomainDataDiff
 
-+ (id)diffFromData:(id)a3 toData:(id)a4
++ (id)diffFromData:(id)data toData:(id)toData
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 SIMOneInfo];
-  v8 = [v6 SIMOneInfo];
-  v9 = [STTelephonyStatusDomainSIMInfoDiff diffFromInfo:v7 toInfo:v8];
+  dataCopy = data;
+  toDataCopy = toData;
+  sIMOneInfo = [dataCopy SIMOneInfo];
+  sIMOneInfo2 = [toDataCopy SIMOneInfo];
+  v9 = [STTelephonyStatusDomainSIMInfoDiff diffFromInfo:sIMOneInfo toInfo:sIMOneInfo2];
 
-  v10 = [v5 SIMTwoInfo];
-  v11 = [v6 SIMTwoInfo];
-  v12 = [STTelephonyStatusDomainSIMInfoDiff diffFromInfo:v10 toInfo:v11];
+  sIMTwoInfo = [dataCopy SIMTwoInfo];
+  sIMTwoInfo2 = [toDataCopy SIMTwoInfo];
+  v12 = [STTelephonyStatusDomainSIMInfoDiff diffFromInfo:sIMTwoInfo toInfo:sIMTwoInfo2];
 
   v13 = objc_alloc_init(MEMORY[0x1E698E700]);
-  LODWORD(v11) = [v6 isCellularRadioCapabilityEnabled];
-  if (v11 != [v5 isCellularRadioCapabilityEnabled])
+  LODWORD(sIMTwoInfo2) = [toDataCopy isCellularRadioCapabilityEnabled];
+  if (sIMTwoInfo2 != [dataCopy isCellularRadioCapabilityEnabled])
   {
     [v13 setFlag:BSSettingFlagForBool() forSetting:0];
   }
 
-  v14 = [v6 isDualSIMEnabled];
-  if (v14 != [v5 isDualSIMEnabled])
+  isDualSIMEnabled = [toDataCopy isDualSIMEnabled];
+  if (isDualSIMEnabled != [dataCopy isDualSIMEnabled])
   {
     [v13 setFlag:BSSettingFlagForBool() forSetting:1];
   }
 
-  v15 = [v6 isRadioModuleDead];
-  if (v15 != [v5 isRadioModuleDead])
+  isRadioModuleDead = [toDataCopy isRadioModuleDead];
+  if (isRadioModuleDead != [dataCopy isRadioModuleDead])
   {
     [v13 setFlag:BSSettingFlagForBool() forSetting:2];
   }
 
-  v16 = [v6 isUsingStewieForSOS];
-  if (v16 != [v5 isUsingStewieForSOS])
+  isUsingStewieForSOS = [toDataCopy isUsingStewieForSOS];
+  if (isUsingStewieForSOS != [dataCopy isUsingStewieForSOS])
   {
     [v13 setFlag:BSSettingFlagForBool() forSetting:3];
   }
 
-  v17 = [v6 isInactiveSOSEnabled];
-  if (v17 != [v5 isInactiveSOSEnabled])
+  isInactiveSOSEnabled = [toDataCopy isInactiveSOSEnabled];
+  if (isInactiveSOSEnabled != [dataCopy isInactiveSOSEnabled])
   {
     [v13 setFlag:BSSettingFlagForBool() forSetting:4];
   }
 
-  v18 = [v6 isUsingStewieConnection];
-  if (v18 != [v5 isUsingStewieConnection])
+  isUsingStewieConnection = [toDataCopy isUsingStewieConnection];
+  if (isUsingStewieConnection != [dataCopy isUsingStewieConnection])
   {
     [v13 setFlag:BSSettingFlagForBool() forSetting:5];
   }
 
-  v19 = [v6 isUsingStewieConnectionOverInternet];
-  if (v19 != [v5 isUsingStewieConnectionOverInternet])
+  isUsingStewieConnectionOverInternet = [toDataCopy isUsingStewieConnectionOverInternet];
+  if (isUsingStewieConnectionOverInternet != [dataCopy isUsingStewieConnectionOverInternet])
   {
     [v13 setFlag:BSSettingFlagForBool() forSetting:6];
   }
@@ -79,33 +79,33 @@
   return v20;
 }
 
-- (void)initWithSIMOneInfoDiff:(void *)a3 SIMTwoInfoDiff:(void *)a4 changes:
+- (void)initWithSIMOneInfoDiff:(void *)diff SIMTwoInfoDiff:(void *)infoDiff changes:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  diffCopy = diff;
+  infoDiffCopy = infoDiff;
+  if (self)
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = STTelephonyStatusDomainDataDiff;
-    a1 = objc_msgSendSuper2(&v17, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v17, sel_init);
+    if (self)
     {
       v10 = [v7 copy];
-      v11 = a1[1];
-      a1[1] = v10;
+      v11 = self[1];
+      self[1] = v10;
 
-      v12 = [v8 copy];
-      v13 = a1[2];
-      a1[2] = v12;
+      v12 = [diffCopy copy];
+      v13 = self[2];
+      self[2] = v12;
 
-      v14 = [v9 copy];
-      v15 = a1[3];
-      a1[3] = v14;
+      v14 = [infoDiffCopy copy];
+      v15 = self[3];
+      self[3] = v14;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (STTelephonyStatusDomainDataDiff)init
@@ -117,17 +117,17 @@
   return v5;
 }
 
-- (id)dataByApplyingToData:(id)a3
+- (id)dataByApplyingToData:(id)data
 {
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   [(STTelephonyStatusDomainDataDiff *)self applyToMutableData:v4];
 
   return v4;
 }
 
-- (void)applyToMutableData:(id)a3
+- (void)applyToMutableData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self)
   {
     v5 = self->_SIMOneInfoDiff;
@@ -139,7 +139,7 @@
       v15[2] = __54__STTelephonyStatusDomainDataDiff_applyToMutableData___block_invoke;
       v15[3] = &unk_1E85DEEE0;
       v16 = v5;
-      [v4 updateSIMOneInfoWithBlock:v15];
+      [dataCopy updateSIMOneInfoWithBlock:v15];
     }
 
     v7 = self->_SIMTwoInfoDiff;
@@ -151,7 +151,7 @@
       v13[2] = __54__STTelephonyStatusDomainDataDiff_applyToMutableData___block_invoke_2;
       v13[3] = &unk_1E85DEEE0;
       v14 = v7;
-      [v4 updateSIMTwoInfoWithBlock:v13];
+      [dataCopy updateSIMTwoInfoWithBlock:v13];
     }
 
     self = self->_changes;
@@ -167,10 +167,10 @@
   v11[1] = 3221225472;
   v11[2] = __54__STTelephonyStatusDomainDataDiff_applyToMutableData___block_invoke_3;
   v11[3] = &unk_1E85DDF78;
-  v12 = v4;
-  v9 = v4;
-  v10 = self;
-  [(STTelephonyStatusDomainDataDiff *)v10 enumerateFlagsWithBlock:v11];
+  v12 = dataCopy;
+  v9 = dataCopy;
+  selfCopy = self;
+  [(STTelephonyStatusDomainDataDiff *)selfCopy enumerateFlagsWithBlock:v11];
 }
 
 uint64_t __54__STTelephonyStatusDomainDataDiff_applyToMutableData___block_invoke_3(uint64_t result, uint64_t a2)
@@ -281,30 +281,30 @@ uint64_t __54__STTelephonyStatusDomainDataDiff_applyToMutableData___block_invoke
         changes = 0;
       }
 
-      v8 = [(BSSettings *)changes isEmpty];
+      isEmpty = [(BSSettings *)changes isEmpty];
     }
 
     else
     {
-      v8 = 0;
+      isEmpty = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    isEmpty = 0;
   }
 
-  return v8;
+  return isEmpty;
 }
 
-- (id)diffByApplyingDiff:(id)a3
+- (id)diffByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = diffCopy;
     v6 = v5;
     if (self)
     {
@@ -390,26 +390,26 @@ LABEL_14:
   return v19;
 }
 
-- (BOOL)isOrthogonalToDiff:(id)a3
+- (BOOL)isOrthogonalToDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   if ([(STTelephonyStatusDomainDataDiff *)self isEmpty])
   {
-    v5 = 1;
+    isEmpty = 1;
   }
 
   else
   {
-    v5 = [v4 isEmpty];
+    isEmpty = [diffCopy isEmpty];
   }
 
-  return v5;
+  return isEmpty;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   if (self)
   {
     SIMOneInfoDiff = self->_SIMOneInfoDiff;
@@ -424,7 +424,7 @@ LABEL_14:
   v20[1] = 3221225472;
   v20[2] = __43__STTelephonyStatusDomainDataDiff_isEqual___block_invoke;
   v20[3] = &unk_1E85DDCD8;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
   v8 = [v5 appendObject:SIMOneInfoDiff counterpart:v20];
   if (self)
@@ -505,17 +505,17 @@ id __43__STTelephonyStatusDomainDataDiff_isEqual___block_invoke_3(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = v3;
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = builder;
   if (self)
   {
-    v5 = [v3 appendObject:self->_SIMOneInfoDiff];
+    v5 = [builder appendObject:self->_SIMOneInfoDiff];
     SIMTwoInfoDiff = self->_SIMTwoInfoDiff;
   }
 
   else
   {
-    v12 = [v3 appendObject:0];
+    v12 = [builder appendObject:0];
     SIMTwoInfoDiff = 0;
   }
 
@@ -536,32 +536,32 @@ id __43__STTelephonyStatusDomainDataDiff_isEqual___block_invoke_3(uint64_t a1)
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   if (self)
   {
-    [v5 encodeObject:self->_SIMOneInfoDiff forKey:@"SIMOneInfoDiff"];
-    [v5 encodeObject:self->_SIMTwoInfoDiff forKey:@"SIMTwoInfoDiff"];
+    [coderCopy encodeObject:self->_SIMOneInfoDiff forKey:@"SIMOneInfoDiff"];
+    [coderCopy encodeObject:self->_SIMTwoInfoDiff forKey:@"SIMTwoInfoDiff"];
     changes = self->_changes;
   }
 
   else
   {
-    [v5 encodeObject:0 forKey:@"SIMOneInfoDiff"];
-    [v5 encodeObject:0 forKey:@"SIMTwoInfoDiff"];
+    [coderCopy encodeObject:0 forKey:@"SIMOneInfoDiff"];
+    [coderCopy encodeObject:0 forKey:@"SIMTwoInfoDiff"];
     changes = 0;
   }
 
-  [v5 encodeObject:changes forKey:@"changes"];
+  [coderCopy encodeObject:changes forKey:@"changes"];
 }
 
-- (STTelephonyStatusDomainDataDiff)initWithCoder:(id)a3
+- (STTelephonyStatusDomainDataDiff)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SIMOneInfoDiff"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SIMTwoInfoDiff"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SIMOneInfoDiff"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SIMTwoInfoDiff"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
 
   v8 = [(STTelephonyStatusDomainDataDiff *)self initWithSIMOneInfoDiff:v5 SIMTwoInfoDiff:v6 changes:v7];
   return v8;
@@ -569,43 +569,43 @@ id __43__STTelephonyStatusDomainDataDiff_isEqual___block_invoke_3(uint64_t a1)
 
 - (id)succinctDescription
 {
-  v2 = [(STTelephonyStatusDomainDataDiff *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STTelephonyStatusDomainDataDiff *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STTelephonyStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STTelephonyStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STTelephonyStatusDomainDataDiff *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STTelephonyStatusDomainDataDiff *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __83__STTelephonyStatusDomainDataDiff__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v11 = v7;
-    v12 = a1;
+    selfCopy = self;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
 
     v8 = v7;

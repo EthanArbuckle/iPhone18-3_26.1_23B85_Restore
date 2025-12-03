@@ -1,33 +1,33 @@
 @interface SBFluidSwitcherPortaledSceneLiveContentOverlay
 - (CGSize)referenceSize;
-- (SBFluidSwitcherPortaledSceneLiveContentOverlay)initWithSceneHandle:(id)a3 referenceSize:(CGSize)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6 livePortalView:(id)a7;
+- (SBFluidSwitcherPortaledSceneLiveContentOverlay)initWithSceneHandle:(id)handle referenceSize:(CGSize)size contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation livePortalView:(id)view;
 - (SBSwitcherLiveContentOverlayDelegate)delegate;
 - (UIRectCornerRadii)cornerRadii;
-- (id)sceneViewPresentationIdentifier:(id)a3;
-- (void)sizeObservingView:(id)a3 didChangeSize:(CGSize)a4;
+- (id)sceneViewPresentationIdentifier:(id)identifier;
+- (void)sizeObservingView:(id)view didChangeSize:(CGSize)size;
 @end
 
 @implementation SBFluidSwitcherPortaledSceneLiveContentOverlay
 
-- (SBFluidSwitcherPortaledSceneLiveContentOverlay)initWithSceneHandle:(id)a3 referenceSize:(CGSize)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6 livePortalView:(id)a7
+- (SBFluidSwitcherPortaledSceneLiveContentOverlay)initWithSceneHandle:(id)handle referenceSize:(CGSize)size contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation livePortalView:(id)view
 {
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
-  v15 = a7;
+  height = size.height;
+  width = size.width;
+  handleCopy = handle;
+  viewCopy = view;
   v24.receiver = self;
   v24.super_class = SBFluidSwitcherPortaledSceneLiveContentOverlay;
   v16 = [(SBFluidSwitcherPortaledSceneLiveContentOverlay *)&v24 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_sceneHandle, a3);
+    objc_storeStrong(&v16->_sceneHandle, handle);
     v17->_referenceSize.width = width;
     v17->_referenceSize.height = height;
-    v17->_contentOrientation = a5;
-    v17->_containerOrientation = a6;
-    objc_storeStrong(&v17->_livePortalView, a7);
-    v18 = [v14 newSceneViewWithReferenceSize:a5 contentOrientation:a6 containerOrientation:v17 hostRequester:{width, height}];
+    v17->_contentOrientation = orientation;
+    v17->_containerOrientation = containerOrientation;
+    objc_storeStrong(&v17->_livePortalView, view);
+    v18 = [handleCopy newSceneViewWithReferenceSize:orientation contentOrientation:containerOrientation containerOrientation:v17 hostRequester:{width, height}];
     sceneView = v17->_sceneView;
     v17->_sceneView = v18;
 
@@ -47,16 +47,16 @@
   return v17;
 }
 
-- (id)sceneViewPresentationIdentifier:(id)a3
+- (id)sceneViewPresentationIdentifier:(id)identifier
 {
   v3 = objc_opt_class();
 
   return NSStringFromClass(v3);
 }
 
-- (void)sizeObservingView:(id)a3 didChangeSize:(CGSize)a4
+- (void)sizeObservingView:(id)view didChangeSize:(CGSize)size
 {
-  if ([a3 isEqual:{self->_sizeObservingView, a4.width, a4.height}])
+  if ([view isEqual:{self->_sizeObservingView, size.width, size.height}])
   {
     sceneView = self->_sceneView;
     [(SBUISizeObservingView *)self->_sizeObservingView bounds];

@@ -1,132 +1,132 @@
 @interface SOSAccount
-+ (id)accountFromDER:(const char *)a3 end:(const char *)a4 factory:(SOSDataSourceFactory *)a5 error:(id *)a6;
-+ (id)accountFromData:(id)a3 factory:(SOSDataSourceFactory *)a4 error:(id *)a5;
++ (id)accountFromDER:(const char *)r end:(const char *)end factory:(SOSDataSourceFactory *)factory error:(id *)error;
++ (id)accountFromData:(id)data factory:(SOSDataSourceFactory *)factory error:(id *)error;
 + (id)urlForSOSAccountSettings;
 + (unsigned)ghostBustGetRampSettings;
-+ (void)performOnQuietAccountQueue:(id)a3;
++ (void)performOnQuietAccountQueue:(id)queue;
 - (BOOL)SOSMonitorModeSOSIsActive;
-- (BOOL)_onQueueEnsureInBackupRings:(__CFString *)a3;
+- (BOOL)_onQueueEnsureInBackupRings:(__CFString *)rings;
 - (BOOL)ensureFactoryCircles;
 - (BOOL)ghostBustCheckDate;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isInCircle:(__CFError *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isInCircle:(__CFError *)circle;
 - (BOOL)sosEvaluateIfNeeded;
-- (BOOL)syncWaitAndFlush:(id)a3 flowID:(id)a4 deviceSessionID:(id)a5 canSendMetrics:(BOOL)a6 error:(__CFError *)a7;
+- (BOOL)syncWaitAndFlush:(id)flush flowID:(id)d deviceSessionID:(id)iD canSendMetrics:(BOOL)metrics error:(__CFError *)error;
 - (NSString)peerID;
-- (SOSAccount)initWithGestalt:(__CFDictionary *)a3 factory:(SOSDataSourceFactory *)a4;
+- (SOSAccount)initWithGestalt:(__CFDictionary *)gestalt factory:(SOSDataSourceFactory *)factory;
 - (__OpaqueSOSFullPeerInfo)fullPeerInfo;
 - (__OpaqueSOSPeerInfo)peerInfo;
 - (id)SOSMonitorModeSOSIsActiveDescription;
-- (id)_onqueueNextStateMachineTransition:(id)a3 flags:(id)a4 pendingFlags:(id)a5;
+- (id)_onqueueNextStateMachineTransition:(id)transition flags:(id)flags pendingFlags:(id)pendingFlags;
 - (id)accountStatusInternal;
-- (id)encodedData:(id *)a3;
+- (id)encodedData:(id *)data;
 - (id)ghostBustGetDate;
 - (id)performBackup;
 - (id)performRingUpdate;
-- (int)getCircleStatus:(__CFError *)a3;
-- (int)getPublicKeyStatusForKey:(int)a3 error:(id *)a4;
+- (int)getCircleStatus:(__CFError *)status;
+- (int)getPublicKeyStatusForKey:(int)key error:(id *)error;
 - (void)SOSMonitorModeDisableSOS;
 - (void)SOSMonitorModeEnableSOS;
-- (void)SOSMonitorModeSOSIsActiveWithCallback:(id)a3;
+- (void)SOSMonitorModeSOSIsActiveWithCallback:(id)callback;
 - (void)_onQueueRecordRetiredPeersInCircle;
-- (void)accountStatus:(id)a3;
+- (void)accountStatus:(id)status;
 - (void)addBackupFlag;
 - (void)addRingUpdateFlag;
-- (void)assertStashedAccountCredential:(id)a3;
-- (void)circleHash:(id)a3;
-- (void)circleJoiningBlob:(id)a3 flowID:(id)a4 deviceSessionID:(id)a5 canSendMetrics:(BOOL)a6 applicant:(id)a7 complete:(id)a8;
+- (void)assertStashedAccountCredential:(id)credential;
+- (void)circleHash:(id)hash;
+- (void)circleJoiningBlob:(id)blob flowID:(id)d deviceSessionID:(id)iD canSendMetrics:(BOOL)metrics applicant:(id)applicant complete:(id)complete;
 - (void)dealloc;
 - (void)ensureOctagonPeerKeys;
 - (void)flattenToSaveBlock;
-- (void)getWatchdogParameters:(id)a3;
-- (void)ghostBust:(unsigned int)a3 complete:(id)a4;
+- (void)getWatchdogParameters:(id)parameters;
+- (void)ghostBust:(unsigned int)bust complete:(id)complete;
 - (void)ghostBustFollowup;
-- (void)ghostBustInfo:(id)a3;
+- (void)ghostBustInfo:(id)info;
 - (void)ghostBustSchedule;
-- (void)iCloudIdentityStatus:(id)a3;
-- (void)iCloudIdentityStatus_internal:(id)a3;
-- (void)importInitialSyncCredentials:(id)a3 complete:(id)a4;
-- (void)initialSyncCredentials:(unsigned int)a3 altDSID:(id)a4 flowID:(id)a5 deviceSessionID:(id)a6 canSendMetrics:(BOOL)a7 complete:(id)a8;
-- (void)joinCircleWithBlob:(id)a3 altDSID:(id)a4 flowID:(id)a5 deviceSessionID:(id)a6 canSendMetrics:(BOOL)a7 version:(int)a8 complete:(id)a9;
-- (void)kvsPerformanceCounters:(id)a3;
-- (void)myPeerInfo:(id)a3 flowID:(id)a4 deviceSessionID:(id)a5 canSendMetrics:(BOOL)a6 complete:(id)a7;
-- (void)performTransaction:(BOOL)a3 action:(id)a4;
-- (void)rateLimitingPerformanceCounters:(id)a3;
-- (void)removeV0Peers:(id)a3;
-- (void)rpcTriggerBackup:(id)a3 complete:(id)a4;
-- (void)rpcTriggerRingUpdate:(id)a3;
-- (void)rpcTriggerSync:(id)a3 complete:(id)a4;
-- (void)setAccountKey:(__SecKey *)a3;
-- (void)setAccountPrivateKey:(__SecKey *)a3;
-- (void)setBypass:(BOOL)a3 reply:(id)a4;
-- (void)setPeerPublicKey:(__SecKey *)a3;
-- (void)setPreviousAccountKey:(__SecKey *)a3;
-- (void)setPublicKeyStatus:(int)a3 forKey:(int)a4;
-- (void)setWatchdogParmeters:(id)a3 complete:(id)a4;
+- (void)iCloudIdentityStatus:(id)status;
+- (void)iCloudIdentityStatus_internal:(id)status_internal;
+- (void)importInitialSyncCredentials:(id)credentials complete:(id)complete;
+- (void)initialSyncCredentials:(unsigned int)credentials altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID canSendMetrics:(BOOL)metrics complete:(id)complete;
+- (void)joinCircleWithBlob:(id)blob altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID canSendMetrics:(BOOL)metrics version:(int)version complete:(id)complete;
+- (void)kvsPerformanceCounters:(id)counters;
+- (void)myPeerInfo:(id)info flowID:(id)d deviceSessionID:(id)iD canSendMetrics:(BOOL)metrics complete:(id)complete;
+- (void)performTransaction:(BOOL)transaction action:(id)action;
+- (void)rateLimitingPerformanceCounters:(id)counters;
+- (void)removeV0Peers:(id)peers;
+- (void)rpcTriggerBackup:(id)backup complete:(id)complete;
+- (void)rpcTriggerRingUpdate:(id)update;
+- (void)rpcTriggerSync:(id)sync complete:(id)complete;
+- (void)setAccountKey:(__SecKey *)key;
+- (void)setAccountPrivateKey:(__SecKey *)key;
+- (void)setBypass:(BOOL)bypass reply:(id)reply;
+- (void)setPeerPublicKey:(__SecKey *)key;
+- (void)setPreviousAccountKey:(__SecKey *)key;
+- (void)setPublicKeyStatus:(int)status forKey:(int)key;
+- (void)setWatchdogParmeters:(id)parmeters complete:(id)complete;
 - (void)setupStateMachine;
 - (void)sosEnableValidityCheck;
 - (void)startStateMachine;
-- (void)stashAccountCredential:(id)a3 altDSID:(id)a4 flowID:(id)a5 deviceSessionID:(id)a6 canSendMetrics:(BOOL)a7 complete:(id)a8;
-- (void)stashedCredentialPublicKey:(id)a3;
-- (void)triggerBackupForPeers:(id)a3;
+- (void)stashAccountCredential:(id)credential altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID canSendMetrics:(BOOL)metrics complete:(id)complete;
+- (void)stashedCredentialPublicKey:(id)key;
+- (void)triggerBackupForPeers:(id)peers;
 - (void)triggerRingUpdate;
-- (void)triggerRingUpdateNow:(id)a3;
-- (void)userPublicKey:(id)a3;
+- (void)triggerRingUpdateNow:(id)now;
+- (void)userPublicKey:(id)key;
 @end
 
 @implementation SOSAccount
 
-- (id)_onqueueNextStateMachineTransition:(id)a3 flags:(id)a4 pendingFlags:(id)a5
+- (id)_onqueueNextStateMachineTransition:(id)transition flags:(id)flags pendingFlags:(id)pendingFlags
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(SOSAccount *)self stateMachineQueue];
-  dispatch_assert_queue_V2(v9);
+  transitionCopy = transition;
+  flagsCopy = flags;
+  stateMachineQueue = [(SOSAccount *)self stateMachineQueue];
+  dispatch_assert_queue_V2(stateMachineQueue);
 
   v10 = sub_100006274("sos-sm");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = v7;
+    v17 = transitionCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = flagsCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Entering state: %@ [flags: %@]", &v16, 0x16u);
   }
 
-  if ([v7 isEqualToString:@"ready"])
+  if ([transitionCopy isEqualToString:@"ready"])
   {
-    if ([v8 _onqueueContains:@"trigger_backup"])
+    if ([flagsCopy _onqueueContains:@"trigger_backup"])
     {
-      [v8 _onqueueRemoveFlag:@"trigger_backup"];
+      [flagsCopy _onqueueRemoveFlag:@"trigger_backup"];
       v11 = @"perform-backup-flag";
       v12 = @"perform_backup";
 LABEL_11:
-      v13 = [OctagonStateTransitionOperation named:v11 entering:v12];
+      performRingUpdate = [OctagonStateTransitionOperation named:v11 entering:v12];
       goto LABEL_12;
     }
 
-    if ([v8 _onqueueContains:@"trigger_ring_update"])
+    if ([flagsCopy _onqueueContains:@"trigger_ring_update"])
     {
-      [v8 _onqueueRemoveFlag:@"trigger_ring_update"];
+      [flagsCopy _onqueueRemoveFlag:@"trigger_ring_update"];
       v11 = @"perform-ring-update-flag";
       v12 = @"perform_ring_update";
       goto LABEL_11;
     }
   }
 
-  else if (([v7 isEqualToString:@"error"] & 1) == 0)
+  else if (([transitionCopy isEqualToString:@"error"] & 1) == 0)
   {
-    if ([v7 isEqualToString:@"perform_ring_update"])
+    if ([transitionCopy isEqualToString:@"perform_ring_update"])
     {
-      v13 = [(SOSAccount *)self performRingUpdate];
+      performRingUpdate = [(SOSAccount *)self performRingUpdate];
 LABEL_12:
-      v14 = v13;
+      v14 = performRingUpdate;
       goto LABEL_16;
     }
 
-    if ([v7 isEqualToString:@"perform_backup"])
+    if ([transitionCopy isEqualToString:@"perform_backup"])
     {
-      v13 = [(SOSAccount *)self performBackup];
+      performRingUpdate = [(SOSAccount *)self performBackup];
       goto LABEL_12;
     }
   }
@@ -172,29 +172,29 @@ LABEL_16:
   if (![(SOSAccount *)self consolidateKeyInterest])
   {
     objc_initWeak(&location, self);
-    v3 = [(SOSAccount *)self stateMachineQueue];
+    stateMachineQueue = [(SOSAccount *)self stateMachineQueue];
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_100204E44;
     v4[3] = &unk_1003452E8;
     objc_copyWeak(&v5, &location);
-    dispatch_async(v3, v4);
+    dispatch_async(stateMachineQueue, v4);
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)triggerRingUpdateNow:(id)a3
+- (void)triggerRingUpdateNow:(id)now
 {
-  v4 = a3;
+  nowCopy = now;
   [(SOSAccount *)self setForceSyncForRecoveryRing:1];
-  v5 = [(SOSAccount *)self stateMachine];
-  if ([v5 isPaused])
+  stateMachine = [(SOSAccount *)self stateMachine];
+  if ([stateMachine isPaused])
   {
-    v6 = [(SOSAccount *)self stateMachine];
-    v7 = [v6 currentState];
-    v8 = [v7 isEqualToString:@"ready"];
+    stateMachine2 = [(SOSAccount *)self stateMachine];
+    currentState = [stateMachine2 currentState];
+    v8 = [currentState isEqualToString:@"ready"];
 
     if (v8)
     {
@@ -206,8 +206,8 @@ LABEL_16:
   {
   }
 
-  v9 = [(SOSAccount *)self stateMachine];
-  v10 = [v9 waitForState:@"ready" wait:10000000000];
+  stateMachine3 = [(SOSAccount *)self stateMachine];
+  v10 = [stateMachine3 waitForState:@"ready" wait:10000000000];
 
 LABEL_6:
   v22 = @"perform_ring_update";
@@ -219,35 +219,35 @@ LABEL_6:
   v13 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
   v14 = [OctagonStateTransitionPath pathFromDictionary:v13];
 
-  v15 = [(SOSAccount *)self stateMachine];
+  stateMachine4 = [(SOSAccount *)self stateMachine];
   v19 = @"ready";
   v16 = [NSArray arrayWithObjects:&v19 count:1];
   v17 = [NSSet setWithArray:v16];
-  v18 = [v15 doWatchedStateMachineRPC:@"rpc-perform-rings" sourceStates:v17 path:v14 reply:v4];
+  v18 = [stateMachine4 doWatchedStateMachineRPC:@"rpc-perform-rings" sourceStates:v17 path:v14 reply:nowCopy];
 }
 
-- (void)triggerBackupForPeers:(id)a3
+- (void)triggerBackupForPeers:(id)peers
 {
-  v4 = a3;
+  peersCopy = peers;
   v5 = +[NSMutableSet set];
   v6 = v5;
-  if (v4)
+  if (peersCopy)
   {
-    [v5 addObjectsFromArray:v4];
+    [v5 addObjectsFromArray:peersCopy];
   }
 
   objc_initWeak(&location, self);
-  v7 = [(SOSAccount *)self stateMachineQueue];
+  stateMachineQueue = [(SOSAccount *)self stateMachineQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1002052E4;
   v10[3] = &unk_100345310;
   objc_copyWeak(&v13, &location);
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = peersCopy;
+  v8 = peersCopy;
   v9 = v6;
-  dispatch_async(v7, v10);
+  dispatch_async(stateMachineQueue, v10);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -256,28 +256,28 @@ LABEL_6:
 - (void)addRingUpdateFlag
 {
   v4 = [[OctagonPendingFlag alloc] initWithFlag:@"trigger_ring_update" conditions:1];
-  v3 = [(SOSAccount *)self stateMachine];
-  [v3 handlePendingFlag:v4];
+  stateMachine = [(SOSAccount *)self stateMachine];
+  [stateMachine handlePendingFlag:v4];
 }
 
 - (void)addBackupFlag
 {
   v4 = [[OctagonPendingFlag alloc] initWithFlag:@"trigger_backup" conditions:1];
-  v3 = [(SOSAccount *)self stateMachine];
-  [v3 handlePendingFlag:v4];
+  stateMachine = [(SOSAccount *)self stateMachine];
+  [stateMachine handlePendingFlag:v4];
 }
 
 - (void)setupStateMachine
 {
   objc_initWeak(&location, self);
   v4 = [CKKSPBFileStorage alloc];
-  v5 = [objc_opt_class() urlForSOSAccountSettings];
-  v6 = [(CKKSPBFileStorage *)v4 initWithStoragePath:v5 storageClass:objc_opt_class()];
+  urlForSOSAccountSettings = [objc_opt_class() urlForSOSAccountSettings];
+  v6 = [(CKKSPBFileStorage *)v4 initWithStoragePath:urlForSOSAccountSettings storageClass:objc_opt_class()];
   [(SOSAccount *)self setAccountConfiguration:v6];
 
-  v7 = [(SOSAccount *)self stateMachine];
+  stateMachine = [(SOSAccount *)self stateMachine];
 
-  if (v7)
+  if (stateMachine)
   {
     v23 = +[NSAssertionHandler currentHandler];
     [v23 handleFailureInMethod:a2 object:self file:@"SOSAccount.m" lineNumber:3371 description:@"can't bootstrap more than once"];
@@ -299,9 +299,9 @@ LABEL_6:
   }
 
   v11 = qword_10039E358;
-  v12 = [(SOSAccount *)self stateMachineQueue];
+  stateMachineQueue = [(SOSAccount *)self stateMachineQueue];
   v13 = +[CKKSLockStateTracker globalTracker];
-  v14 = [(OctagonStateMachine *)v9 initWithName:@"sosaccount" states:v10 flags:v11 initialState:@"ready" queue:v12 stateEngine:self unexpectedStateErrorDomain:@"com.apple.security.sosaccount.state" lockStateTracker:v13 reachabilityTracker:0];
+  v14 = [(OctagonStateMachine *)v9 initWithName:@"sosaccount" states:v10 flags:v11 initialState:@"ready" queue:stateMachineQueue stateEngine:self unexpectedStateErrorDomain:@"com.apple.security.sosaccount.state" lockStateTracker:v13 reachabilityTracker:0];
   [(SOSAccount *)self setStateMachine:v14];
 
   v15 = [CKKSNearFutureScheduler alloc];
@@ -322,18 +322,18 @@ LABEL_6:
   v18 = [(CKKSNearFutureScheduler *)v17 initWithName:@"performRingUpdates" initialDelay:1000000000 exponentialBackoff:10000000000 maximumDelay:1 keepProcessAlive:0 dependencyDescriptionCode:v24 block:2.0];
   [(SOSAccount *)self setPerformRingUpdates:v18];
 
-  v19 = [(SOSAccount *)self accountConfiguration];
-  v20 = [v19 storage];
+  accountConfiguration = [(SOSAccount *)self accountConfiguration];
+  storage = [accountConfiguration storage];
 
-  v21 = [v20 pendingBackupPeers];
-  v22 = [v21 count];
+  pendingBackupPeers = [storage pendingBackupPeers];
+  v22 = [pendingBackupPeers count];
 
   if (v22)
   {
     [(SOSAccount *)self addBackupFlag];
   }
 
-  if ([v20 ringUpdateFlag])
+  if ([storage ringUpdateFlag])
   {
     [(SOSAccount *)self addRingUpdateFlag];
   }
@@ -345,8 +345,8 @@ LABEL_6:
 
 - (void)_onQueueRecordRetiredPeersInCircle
 {
-  v3 = [(SOSAccount *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SOSAccount *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(SOSAccount *)self isInCircle:0])
   {
@@ -354,17 +354,17 @@ LABEL_6:
     v12 = &v11;
     v13 = 0x2020000000;
     v14 = 0;
-    v4 = [(SOSAccount *)self trust];
-    v5 = [(SOSAccount *)self circle_transport];
+    trust = [(SOSAccount *)self trust];
+    circle_transport = [(SOSAccount *)self circle_transport];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100205CD4;
     v7[3] = &unk_1003451A0;
-    v6 = v4;
+    v6 = trust;
     v8 = v6;
-    v9 = self;
+    selfCopy = self;
     v10 = &v11;
-    [v6 modifyCircle:v5 err:0 action:v7];
+    [v6 modifyCircle:circle_transport err:0 action:v7];
 
     if (*(v12 + 24) == 1)
     {
@@ -375,16 +375,16 @@ LABEL_6:
   }
 }
 
-- (int)getPublicKeyStatusForKey:(int)a3 error:(id *)a4
+- (int)getPublicKeyStatusForKey:(int)key error:(id *)error
 {
   valuePtr = -1;
   v5 = @"kSOSBackupKeyStatus";
-  if (a3 != 1)
+  if (key != 1)
   {
     v5 = 0;
   }
 
-  if (a3 == 2)
+  if (key == 2)
   {
     v6 = @"kSOSRecoveryKeyStatus";
   }
@@ -400,7 +400,7 @@ LABEL_6:
     if (v9)
     {
       CFNumberGetValue(v9, kCFNumberCFIndexType, &valuePtr);
-      if (a3 == 1)
+      if (key == 1)
       {
         [(SOSAccount *)self peerInfo];
         if ((SOSPeerInfoHasBackupKey() & 1) == 0)
@@ -409,7 +409,7 @@ LABEL_6:
         }
       }
 
-      else if (a3 == 2)
+      else if (key == 2)
       {
         v10 = sub_10022BC48(kCFAllocatorDefault, self, 0);
         if (!v10)
@@ -425,22 +425,22 @@ LABEL_51:
     }
 
     valuePtr = 0;
-    if (a3 != 1)
+    if (key != 1)
     {
-      if (a3 != 2)
+      if (key != 2)
       {
         valuePtr = -1;
-        if (a4)
+        if (error)
         {
-          *a4 = [NSError errorWithDomain:kSOSErrorDomain code:9 userInfo:0];
+          *error = [NSError errorWithDomain:kSOSErrorDomain code:9 userInfo:0];
         }
 
         return valuePtr;
       }
 
-      v12 = self;
+      selfCopy = self;
       cf = 0;
-      v13 = sub_10022BC48(kCFAllocatorDefault, v12, 0);
+      v13 = sub_10022BC48(kCFAllocatorDefault, selfCopy, 0);
       if (!v13)
       {
 
@@ -449,8 +449,8 @@ LABEL_51:
 
       v14 = v13;
       v15 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%@-tomb", kSOSViewiCloudIdentity);
-      v16 = [(SOSAccount *)v12 trust];
-      v17 = [v16 copyRing:v15 err:&cf];
+      trust = [(SOSAccount *)selfCopy trust];
+      v17 = [trust copyRing:v15 err:&cf];
 
       if (v15)
       {
@@ -508,7 +508,7 @@ LABEL_51:
           }
 
 LABEL_49:
-          v10 = sub_10022BC48(kCFAllocatorDefault, v12, 0);
+          v10 = sub_10022BC48(kCFAllocatorDefault, selfCopy, 0);
           if (!v10)
           {
             return valuePtr;
@@ -527,9 +527,9 @@ LABEL_49:
       return 2;
     }
 
-    v24 = self;
-    v25 = v24;
-    if (!v24 || ((v26 = kSOSViewiCloudIdentity, v27 = [(SOSAccount *)v24 peerInfo], v26) ? (v28 = v27 == 0) : (v28 = 1), v28))
+    selfCopy2 = self;
+    v25 = selfCopy2;
+    if (!selfCopy2 || ((v26 = kSOSViewiCloudIdentity, v27 = [(SOSAccount *)selfCopy2 peerInfo], v26) ? (v28 = v27 == 0) : (v28 = 1), v28))
     {
       sub_1000103CC(-50, 0, @"NULL account/peerInfo or viewName parameter");
 
@@ -596,25 +596,25 @@ LABEL_55:
     goto LABEL_41;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [NSError errorWithDomain:kSOSErrorDomain code:9 userInfo:0];
+    *error = [NSError errorWithDomain:kSOSErrorDomain code:9 userInfo:0];
   }
 
   return -1;
 }
 
-- (void)setPublicKeyStatus:(int)a3 forKey:(int)a4
+- (void)setPublicKeyStatus:(int)status forKey:(int)key
 {
-  valuePtr = a3;
+  valuePtr = status;
   v6 = CFNumberCreate(kCFAllocatorDefault, kCFNumberCFIndexType, &valuePtr);
   v7 = @"kSOSBackupKeyStatus";
-  if (a4 != 1)
+  if (key != 1)
   {
     v7 = 0;
   }
 
-  if (a4 == 2)
+  if (key == 2)
   {
     v8 = @"kSOSRecoveryKeyStatus";
   }
@@ -635,19 +635,19 @@ LABEL_55:
   }
 }
 
-- (BOOL)_onQueueEnsureInBackupRings:(__CFString *)a3
+- (BOOL)_onQueueEnsureInBackupRings:(__CFString *)rings
 {
-  v5 = [(SOSAccount *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(SOSAccount *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = self;
-  if (!v6 || !a3)
+  selfCopy = self;
+  if (!selfCopy || !rings)
   {
     sub_1000103CC(-50, 0, @"NULL account or viewName parameter");
     goto LABEL_27;
   }
 
-  v7 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%@-tomb", a3);
+  v7 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%@-tomb", rings);
   if (!v7)
   {
 LABEL_27:
@@ -656,7 +656,7 @@ LABEL_27:
   }
 
   v8 = v7;
-  v9 = sub_10021C248(v6, v7);
+  v9 = sub_10021C248(selfCopy, v7);
   if (!v9)
   {
     CFRelease(v8);
@@ -664,13 +664,13 @@ LABEL_27:
   }
 
   v10 = v9;
-  v11 = sub_10022BC48(kCFAllocatorDefault, v6, 0);
+  v11 = sub_10022BC48(kCFAllocatorDefault, selfCopy, 0);
   v12 = sub_10022BA3C(v10);
   Mutable = CFSetCreateMutable(kCFAllocatorDefault, 0, &kCFTypeSetCallBacks);
   MutableForSOSPeerInfosByID = CFSetCreateMutableForSOSPeerInfosByID();
-  v15 = [(SOSAccount *)v6 trust];
-  [v15 trustedCircle];
-  [(SOSAccount *)v6 accountKey];
+  trust = [(SOSAccount *)selfCopy trust];
+  [trust trustedCircle];
+  [(SOSAccount *)selfCopy accountKey];
   v21[6] = _NSConcreteStackBlock;
   v21[7] = 3221225472;
   v21[8] = sub_100213BC4;
@@ -737,9 +737,9 @@ LABEL_24:
     v21[1] = 3221225472;
     v21[2] = sub_100206858;
     v21[3] = &unk_100345528;
-    v21[4] = v6;
-    v21[5] = a3;
-    return sub_100212DD4(v6, a3, 0, v21);
+    v21[4] = selfCopy;
+    v21[5] = rings;
+    return sub_100212DD4(selfCopy, rings, 0, v21);
   }
 
   if (v19)
@@ -750,7 +750,7 @@ LABEL_24:
   return 0;
 }
 
-- (BOOL)isInCircle:(__CFError *)a3
+- (BOOL)isInCircle:(__CFError *)circle
 {
   v3 = [(SOSAccount *)self getCircleStatus:?];
   if (v3)
@@ -761,10 +761,10 @@ LABEL_24:
   return v3 == 0;
 }
 
-- (int)getCircleStatus:(__CFError *)a3
+- (int)getCircleStatus:(__CFError *)status
 {
-  v5 = [(SOSAccount *)self trust];
-  v6 = [v5 getCircleStatusOnly:a3];
+  trust = [(SOSAccount *)self trust];
+  v6 = [trust getCircleStatusOnly:status];
 
   if (sub_100218428(self))
   {
@@ -772,12 +772,12 @@ LABEL_24:
   }
 
   result = -1;
-  if (a3 && !v6)
+  if (status && !v6)
   {
-    v8 = *a3;
-    if (*a3)
+    v8 = *status;
+    if (*status)
     {
-      *a3 = 0;
+      *status = 0;
       CFRelease(v8);
     }
 
@@ -790,15 +790,15 @@ LABEL_24:
 
 - (void)flattenToSaveBlock
 {
-  v3 = [(SOSAccount *)self saveBlock];
+  saveBlock = [(SOSAccount *)self saveBlock];
 
-  if (v3)
+  if (saveBlock)
   {
     v7 = 0;
     v4 = [(SOSAccount *)self encodedData:&v7];
     v5 = v7;
-    v6 = [(SOSAccount *)self saveBlock];
-    (v6)[2](v6, v4, v5);
+    saveBlock2 = [(SOSAccount *)self saveBlock];
+    (saveBlock2)[2](saveBlock2, v4, v5);
   }
 }
 
@@ -883,15 +883,15 @@ LABEL_30:
     return [(SOSAccount *)self SOSMonitorModeSOSIsActive];
   }
 
-  v9 = [(SOSAccount *)self trust];
-  [v9 trustedCircle];
+  trust = [(SOSAccount *)self trust];
+  [trust trustedCircle];
   [(SOSAccount *)self accountKey];
   IsLegacy = SOSCircleIsLegacy();
 
-  v11 = [(SOSAccount *)self SOSMonitorModeSOSIsActive];
+  sOSMonitorModeSOSIsActive = [(SOSAccount *)self SOSMonitorModeSOSIsActive];
   if (!IsLegacy)
   {
-    if (!v11)
+    if (!sOSMonitorModeSOSIsActive)
     {
       return [(SOSAccount *)self SOSMonitorModeSOSIsActive];
     }
@@ -908,7 +908,7 @@ LABEL_30:
     goto LABEL_29;
   }
 
-  if ((v11 & 1) == 0)
+  if ((sOSMonitorModeSOSIsActive & 1) == 0)
   {
     v12 = sub_100006274("SOSMonitorMode");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -943,16 +943,16 @@ LABEL_30:
 - (BOOL)SOSMonitorModeSOSIsActive
 {
   [(SOSAccount *)self sosEnableValidityCheck];
-  v3 = [(SOSAccount *)self settings];
-  v4 = [v3 BOOLForKey:@"SOSEnabled"];
+  settings = [(SOSAccount *)self settings];
+  v4 = [settings BOOLForKey:@"SOSEnabled"];
 
   return v4;
 }
 
-- (void)SOSMonitorModeSOSIsActiveWithCallback:(id)a3
+- (void)SOSMonitorModeSOSIsActiveWithCallback:(id)callback
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, [(SOSAccount *)self SOSMonitorModeSOSIsActive]);
+  callbackCopy = callback;
+  (*(callback + 2))(callbackCopy, [(SOSAccount *)self SOSMonitorModeSOSIsActive]);
 }
 
 - (void)SOSMonitorModeEnableSOS
@@ -964,8 +964,8 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Setting SOS to active", v5, 2u);
   }
 
-  v4 = [(SOSAccount *)self settings];
-  [v4 setBool:1 forKey:@"SOSEnabled"];
+  settings = [(SOSAccount *)self settings];
+  [settings setBool:1 forKey:@"SOSEnabled"];
 }
 
 - (void)SOSMonitorModeDisableSOS
@@ -977,14 +977,14 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Disabling SOS from monitor mode", v5, 2u);
   }
 
-  v4 = [(SOSAccount *)self settings];
-  [v4 setBool:0 forKey:@"SOSEnabled"];
+  settings = [(SOSAccount *)self settings];
+  [settings setBool:0 forKey:@"SOSEnabled"];
 }
 
 - (void)sosEnableValidityCheck
 {
-  v3 = [(SOSAccount *)self settings];
-  v4 = [v3 objectForKey:@"SOSEnabled"];
+  settings = [(SOSAccount *)self settings];
+  v4 = [settings objectForKey:@"SOSEnabled"];
 
   if (!v4)
   {
@@ -1002,30 +1002,30 @@ LABEL_30:
   }
 }
 
-- (void)removeV0Peers:(id)a3
+- (void)removeV0Peers:(id)peers
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100207154;
   v5[3] = &unk_100347260;
-  v6 = a3;
-  v4 = v6;
+  peersCopy = peers;
+  v4 = peersCopy;
   [(SOSAccount *)self performTransaction:v5];
 }
 
-- (void)setWatchdogParmeters:(id)a3 complete:(id)a4
+- (void)setWatchdogParmeters:(id)parmeters complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  parmetersCopy = parmeters;
+  completeCopy = complete;
   v7 = NSClassFromString(@"SecdWatchdog");
   if (v7)
   {
-    v8 = [(objc_class *)v7 watchdog];
+    watchdog = [(objc_class *)v7 watchdog];
     v11 = 0;
-    [v8 setWatchdogParameters:v5 error:&v11];
+    [watchdog setWatchdogParameters:parmetersCopy error:&v11];
     v9 = v11;
 
-    v6[2](v6, v9);
+    completeCopy[2](completeCopy, v9);
   }
 
   else
@@ -1034,22 +1034,22 @@ LABEL_30:
     v13 = @"failed to lookup SecdWatchdog class from ObjC runtime";
     v10 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v9 = [NSError errorWithDomain:@"com.apple.securityd.watchdog" code:1 userInfo:v10];
-    v6[2](v6, v9);
+    completeCopy[2](completeCopy, v9);
 
-    v6 = v10;
+    completeCopy = v10;
   }
 }
 
-- (void)getWatchdogParameters:(id)a3
+- (void)getWatchdogParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = NSClassFromString(@"SecdWatchdog");
   if (v4)
   {
-    v5 = [(objc_class *)v4 watchdog];
-    v8 = [v5 watchdogParameters];
+    watchdog = [(objc_class *)v4 watchdog];
+    watchdogParameters = [watchdog watchdogParameters];
 
-    v3[2](v3, v8, 0);
+    parametersCopy[2](parametersCopy, watchdogParameters, 0);
   }
 
   else
@@ -1058,38 +1058,38 @@ LABEL_30:
     v10 = @"failed to lookup SecdWatchdog class from ObjC runtime";
     v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v7 = [NSError errorWithDomain:@"com.apple.securityd.watchdog" code:1 userInfo:v6];
-    (v3)[2](v3, 0, v7);
+    (parametersCopy)[2](parametersCopy, 0, v7);
   }
 }
 
-- (void)rpcTriggerRingUpdate:(id)a3
+- (void)rpcTriggerRingUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   [(SOSAccount *)self triggerRingUpdate];
-  v4[2](v4, 0);
+  updateCopy[2](updateCopy, 0);
 }
 
-- (void)rpcTriggerBackup:(id)a3 complete:(id)a4
+- (void)rpcTriggerBackup:(id)backup complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 count])
+  backupCopy = backup;
+  completeCopy = complete;
+  if (![backupCopy count])
   {
-    v8 = [(SOSAccount *)self kvs_message_transport];
-    v9 = [v8 SOSTransportMessageGetEngine];
+    kvs_message_transport = [(SOSAccount *)self kvs_message_transport];
+    sOSTransportMessageGetEngine = [kvs_message_transport SOSTransportMessageGetEngine];
 
-    v10 = sub_100150DB4(v9);
-    v6 = v10;
+    v10 = sub_100150DB4(sOSTransportMessageGetEngine);
+    backupCopy = v10;
   }
 
-  [(SOSAccount *)self triggerBackupForPeers:v6];
-  v7[2](v7, 0);
+  [(SOSAccount *)self triggerBackupForPeers:backupCopy];
+  completeCopy[2](completeCopy, 0);
 }
 
-- (void)rpcTriggerSync:(id)a3 complete:(id)a4
+- (void)rpcTriggerSync:(id)sync complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  syncCopy = sync;
+  completeCopy = complete;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -1102,7 +1102,7 @@ LABEL_30:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v6;
+    v25 = syncCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "trigger a forced sync for %@", buf, 0xCu);
   }
 
@@ -1112,12 +1112,12 @@ LABEL_30:
   v12[2] = sub_100207840;
   v12[3] = &unk_100345070;
   v12[4] = self;
-  v10 = v6;
+  v10 = syncCopy;
   v13 = v10;
   v14 = &v20;
   v15 = &v16;
   sub_100089884(0, v9 + 3, v12);
-  v7[2](v7, *(v17 + 24), v21[3]);
+  completeCopy[2](completeCopy, *(v17 + 24), v21[3]);
   v11 = v21[3];
   if (v11)
   {
@@ -1129,18 +1129,18 @@ LABEL_30:
   _Block_object_dispose(&v20, 8);
 }
 
-- (void)importInitialSyncCredentials:(id)a3 complete:(id)a4
+- (void)importInitialSyncCredentials:(id)credentials complete:(id)complete
 {
   cf = 0;
-  v5 = a4;
+  completeCopy = complete;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 0x40000000;
   v9[2] = sub_10018AAF4;
   v9[3] = &unk_100342A18;
   v9[4] = &cf;
-  v9[5] = a3;
+  v9[5] = credentials;
   v6 = sub_100008A70(1, 1, 0, &cf, v9);
-  v5[2](v5, v6, cf);
+  completeCopy[2](completeCopy, v6, cf);
 
   v7 = cf;
   if (cf)
@@ -1150,23 +1150,23 @@ LABEL_30:
   }
 }
 
-- (void)initialSyncCredentials:(unsigned int)a3 altDSID:(id)a4 flowID:(id)a5 deviceSessionID:(id)a6 canSendMetrics:(BOOL)a7 complete:(id)a8
+- (void)initialSyncCredentials:(unsigned int)credentials altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID canSendMetrics:(BOOL)metrics complete:(id)complete
 {
-  v12 = a3;
+  credentialsCopy = credentials;
   cf = 0;
-  v13 = a8;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
+  completeCopy = complete;
+  sessionIDCopy = sessionID;
+  iDCopy = iD;
+  dCopy = d;
   v17 = [AAFAnalyticsEventSecurity alloc];
   v18 = kSecurityRTCEventNameAcceptorFetchesInitialSyncData;
   sub_10020802C();
-  LOBYTE(v38) = a7;
-  v20 = [v17 initWithKeychainCircleMetrics:0 altDSID:v16 flowID:v15 deviceSessionID:v14 eventName:v18 testsAreEnabled:v19 canSendMetrics:v38 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
+  LOBYTE(v38) = metrics;
+  v20 = [v17 initWithKeychainCircleMetrics:0 altDSID:dCopy flowID:iDCopy deviceSessionID:sessionIDCopy eventName:v18 testsAreEnabled:v19 canSendMetrics:v38 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
 
   Mutable = CFArrayCreateMutable(0, 0, &kCFTypeArrayCallBacks);
   Count = 0;
-  if (v12)
+  if (credentialsCopy)
   {
     v23 = sub_100007604(@"inet", &qword_10039E0A0, &unk_10039E098);
     if ((sub_10018A644(Mutable, 0, @"com.apple.security.ckks", 0, v23, &cf) & 1) == 0)
@@ -1188,10 +1188,10 @@ LABEL_30:
     Count = CFArrayGetCount(Mutable);
   }
 
-  if ((v12 & 2) == 0)
+  if ((credentialsCopy & 2) == 0)
   {
     v24 = 0;
-    if ((v12 & 8) != 0)
+    if ((credentialsCopy & 8) != 0)
     {
       goto LABEL_11;
     }
@@ -1217,7 +1217,7 @@ LABEL_10:
   }
 
   v26 = sub_100007604(@"inet", &qword_10039E0A0, &unk_10039E098);
-  if ((sub_10018A644(Mutable, (v12 & 4) == 0, @"com.apple.ProtectedCloudStorage", 0, v26, &cf) & 1) == 0)
+  if ((sub_10018A644(Mutable, (credentialsCopy & 4) == 0, @"com.apple.ProtectedCloudStorage", 0, v26, &cf) & 1) == 0)
   {
     v36 = sub_100006274("SecError");
     if (!os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -1232,7 +1232,7 @@ LABEL_10:
   }
 
   v24 = CFArrayGetCount(Mutable) - Count;
-  if ((v12 & 8) == 0)
+  if ((credentialsCopy & 8) == 0)
   {
     goto LABEL_10;
   }
@@ -1301,7 +1301,7 @@ LABEL_15:
 
   [v20 addMetrics:v34];
   [v20 sendMetricWithResult:cf == 0 error:?];
-  v13[2](v13, Mutable, cf);
+  completeCopy[2](completeCopy, Mutable, cf);
 
   v35 = cf;
   if (cf)
@@ -1311,13 +1311,13 @@ LABEL_15:
   }
 }
 
-- (void)joinCircleWithBlob:(id)a3 altDSID:(id)a4 flowID:(id)a5 deviceSessionID:(id)a6 canSendMetrics:(BOOL)a7 version:(int)a8 complete:(id)a9
+- (void)joinCircleWithBlob:(id)blob altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID canSendMetrics:(BOOL)metrics version:(int)version complete:(id)complete
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a9;
+  blobCopy = blob;
+  dCopy = d;
+  iDCopy = iD;
+  sessionIDCopy = sessionID;
+  completeCopy = complete;
   v57 = 0;
   v58 = &v57;
   v59 = 0x2020000000;
@@ -1330,25 +1330,25 @@ LABEL_15:
   v42 = 3221225472;
   v43 = sub_100208788;
   v44 = &unk_100345020;
-  v40 = v16;
+  v40 = dCopy;
   v45 = v40;
-  v20 = v17;
+  v20 = iDCopy;
   v46 = v20;
-  v21 = v18;
-  v52 = a7;
+  v21 = sessionIDCopy;
+  metricsCopy = metrics;
   v47 = v21;
   v49 = &v53;
-  v22 = v15;
-  v51 = a8;
+  v22 = blobCopy;
+  versionCopy = version;
   v48 = v22;
   v50 = &v57;
   [(SOSAccount *)self performTransaction:&v41];
-  v23 = [(SOSAccount *)self trust];
-  v24 = [v23 isInCircleOnly:0];
+  trust = [(SOSAccount *)self trust];
+  v24 = [trust isInCircleOnly:0];
 
   if (v58[3])
   {
-    v25 = [objc_opt_class() logger];
+    logger = [objc_opt_class() logger];
     v26 = v58[3];
     v61[0] = @"SOSEnabled";
     v27 = [OTSOSActualAdapter sosEnabled]_0();
@@ -1370,8 +1370,8 @@ LABEL_15:
 
     v62[2] = v29;
     v61[3] = @"CircleContainsLegacy";
-    v30 = [(SOSAccount *)self trust];
-    [v30 trustedCircle];
+    trust2 = [(SOSAccount *)self trust];
+    [trust2 trustedCircle];
     [(SOSAccount *)self accountKey];
     IsLegacy = SOSCircleIsLegacy();
     v32 = @"does_not_contain_legacy";
@@ -1382,7 +1382,7 @@ LABEL_15:
 
     v62[3] = v32;
     v33 = [NSDictionary dictionaryWithObjects:v62 forKeys:v61 count:4];
-    [v25 logResultForEvent:@"SOSDeferralEventPairing" hardFailure:0 result:v26 withAttributes:v33];
+    [logger logResultForEvent:@"SOSDeferralEventPairing" hardFailure:0 result:v26 withAttributes:v33];
   }
 
   else
@@ -1407,8 +1407,8 @@ LABEL_15:
       v35 = @"not_in_circle";
     }
 
-    v36 = [(SOSAccount *)self trust];
-    [v36 trustedCircle];
+    trust3 = [(SOSAccount *)self trust];
+    [trust3 trustedCircle];
     [(SOSAccount *)self accountKey];
     v37 = SOSCircleIsLegacy();
     v38 = @"does_not_contain_legacy";
@@ -1417,13 +1417,13 @@ LABEL_15:
       v38 = @"contains_legacy";
     }
 
-    v25 = [NSString stringWithFormat:@"%@-%@-%@-%@", v34, @"Pairing", v35, v38, v40, v41, v42, v43, v44, v45, v46, v47];
+    logger = [NSString stringWithFormat:@"%@-%@-%@-%@", v34, @"Pairing", v35, v38, v40, v41, v42, v43, v44, v45, v46, v47];
 
-    v30 = [objc_opt_class() logger];
-    [v30 logSuccessForEventNamed:v25];
+    trust2 = [objc_opt_class() logger];
+    [trust2 logSuccessForEventNamed:logger];
   }
 
-  v19[2](v19, *(v54 + 24), v58[3]);
+  completeCopy[2](completeCopy, *(v54 + 24), v58[3]);
   v39 = v58[3];
   if (v39)
   {
@@ -1435,18 +1435,18 @@ LABEL_15:
   _Block_object_dispose(&v57, 8);
 }
 
-- (void)circleJoiningBlob:(id)a3 flowID:(id)a4 deviceSessionID:(id)a5 canSendMetrics:(BOOL)a6 applicant:(id)a7 complete:(id)a8
+- (void)circleJoiningBlob:(id)blob flowID:(id)d deviceSessionID:(id)iD canSendMetrics:(BOOL)metrics applicant:(id)applicant complete:(id)complete
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  blobCopy = blob;
+  dCopy = d;
+  iDCopy = iD;
+  applicantCopy = applicant;
+  completeCopy = complete;
   v19 = [AAFAnalyticsEventSecurity alloc];
   v20 = kSecurityRTCEventNameCreateSOSCircleBlob;
   sub_10020802C();
-  LOBYTE(v26) = a6;
-  v22 = [v19 initWithKeychainCircleMetrics:0 altDSID:v14 flowID:v15 deviceSessionID:v16 eventName:v20 testsAreEnabled:v21 canSendMetrics:v26 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
+  LOBYTE(v26) = metrics;
+  v22 = [v19 initWithKeychainCircleMetrics:0 altDSID:blobCopy flowID:dCopy deviceSessionID:iDCopy eventName:v20 testsAreEnabled:v21 canSendMetrics:v26 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -1466,16 +1466,16 @@ LABEL_15:
     v27[3] = &unk_100344FF8;
     v27[4] = self;
     v31 = &v35;
-    v28 = v14;
-    v29 = v15;
-    v34 = a6;
-    v30 = v16;
+    v28 = blobCopy;
+    v29 = dCopy;
+    metricsCopy = metrics;
+    v30 = iDCopy;
     v32 = &v41;
     v33 = v23;
     sub_1000898F4(0, v27);
     CFRelease(v23);
     [v22 sendMetricWithResult:v36[5] != 0 error:v42[3]];
-    v18[2](v18, v36[5], v42[3]);
+    completeCopy[2](completeCopy, v36[5], v42[3]);
     v24 = v42[3];
     if (v24)
     {
@@ -1487,7 +1487,7 @@ LABEL_15:
   else
   {
     [v22 sendMetricWithResult:0 error:v42[3]];
-    v18[2](v18, 0, v42[3]);
+    completeCopy[2](completeCopy, 0, v42[3]);
     v25 = v42[3];
     if (v25)
     {
@@ -1501,26 +1501,26 @@ LABEL_15:
   _Block_object_dispose(&v41, 8);
 }
 
-- (void)accountStatus:(id)a3
+- (void)accountStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(SOSAccount *)self accountStatusInternal];
+  statusCopy = status;
+  accountStatusInternal = [(SOSAccount *)self accountStatusInternal];
   v10 = 0;
-  v6 = [NSJSONSerialization dataWithJSONObject:v5 options:3 error:&v10];
+  v6 = [NSJSONSerialization dataWithJSONObject:accountStatusInternal options:3 error:&v10];
   v7 = v10;
   if (!v6)
   {
     v8 = sub_100006274("accountLogState");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 localizedDescription];
+      localizedDescription = [v7 localizedDescription];
       *buf = 138412290;
-      v12 = v9;
+      v12 = localizedDescription;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Error during accountStatus JSONification: %@", buf, 0xCu);
     }
   }
 
-  v4[2](v4, v6, v7);
+  statusCopy[2](statusCopy, v6, v7);
 }
 
 - (id)accountStatusInternal
@@ -1529,11 +1529,11 @@ LABEL_15:
   v4 = sub_100209CB8(self);
   [v3 setObject:v4 forKeyedSubscript:@"AccountHeader"];
 
-  v5 = [(SOSAccount *)self trust];
-  v6 = [v5 trustedCircle];
+  trust = [(SOSAccount *)self trust];
+  trustedCircle = [trust trustedCircle];
 
   [(SOSAccount *)self peerID];
-  if (v6)
+  if (trustedCircle)
   {
     [(SOSAccount *)self accountKey];
     v7 = SOSCircleCopyStateString();
@@ -1564,27 +1564,27 @@ LABEL_15:
   return v3;
 }
 
-- (void)iCloudIdentityStatus:(id)a3
+- (void)iCloudIdentityStatus:(id)status
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10020A148;
   v5[3] = &unk_100344F58;
-  v6 = a3;
-  v4 = v6;
+  statusCopy = status;
+  v4 = statusCopy;
   [(SOSAccount *)self iCloudIdentityStatus_internal:v5];
 }
 
-- (void)iCloudIdentityStatus_internal:(id)a3
+- (void)iCloudIdentityStatus_internal:(id)status_internal
 {
-  v4 = a3;
+  status_internalCopy = status_internal;
   v37 = 0;
   v5 = objc_opt_new();
   if ([(SOSAccount *)self isInCircle:&v37])
   {
     v6 = objc_alloc_init(NSMutableSet);
-    v7 = [(SOSAccount *)self trust];
-    [v7 trustedCircle];
+    trust = [(SOSAccount *)self trust];
+    [trust trustedCircle];
     v32 = _NSConcreteStackBlock;
     v33 = 3221225472;
     v34 = sub_10020A7B8;
@@ -1680,31 +1680,31 @@ LABEL_15:
       [v21 minusSet:v9];
     }
 
-    v22 = [v19 allObjects];
-    [v5 setObject:v22 forKeyedSubscript:@"completeIdentity"];
+    allObjects = [v19 allObjects];
+    [v5 setObject:allObjects forKeyedSubscript:@"completeIdentity"];
 
-    v23 = [v20 allObjects];
-    [v5 setObject:v23 forKeyedSubscript:@"keyOnly"];
+    allObjects2 = [v20 allObjects];
+    [v5 setObject:allObjects2 forKeyedSubscript:@"keyOnly"];
 
-    v24 = [v21 allObjects];
-    [v5 setObject:v24 forKeyedSubscript:@"peerOnly"];
+    allObjects3 = [v21 allObjects];
+    [v5 setObject:allObjects3 forKeyedSubscript:@"peerOnly"];
 
-    v4[2](v4, v5, 0);
+    status_internalCopy[2](status_internalCopy, v5, 0);
   }
 
   else
   {
-    v4[2](v4, v5, v37);
+    status_internalCopy[2](status_internalCopy, v5, v37);
   }
 }
 
-- (void)ghostBustInfo:(id)a3
+- (void)ghostBustInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_opt_new();
   v6 = +[SOSAccount ghostBustGetRampSettings];
-  v7 = [(SOSAccount *)self ghostBustGetDate];
-  v8 = [v7 description];
+  ghostBustGetDate = [(SOSAccount *)self ghostBustGetDate];
+  v8 = [ghostBustGetDate description];
 
   if (v6)
   {
@@ -1748,19 +1748,19 @@ LABEL_15:
     v14 = sub_100006274("ghostbust");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v13 localizedDescription];
+      localizedDescription = [v13 localizedDescription];
       *buf = 138412290;
-      v18 = v15;
+      v18 = localizedDescription;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Error during ghostBustInfo JSONification: %@", buf, 0xCu);
     }
   }
 
-  v4[2](v4, v12, v13);
+  infoCopy[2](infoCopy, v12, v13);
 }
 
-- (void)ghostBust:(unsigned int)a3 complete:(id)a4
+- (void)ghostBust:(unsigned int)bust complete:(id)complete
 {
-  v6 = a4;
+  completeCopy = complete;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
@@ -1778,14 +1778,14 @@ LABEL_15:
     v9 = v12;
     v7[4] = self;
     v10 = v13;
-    v11 = a3;
-    v8 = v6;
+    bustCopy = bust;
+    v8 = completeCopy;
     [SOSAuthKitHelpers activeMIDs:v7];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completeCopy + 2))(completeCopy, 0, 0);
   }
 
   _Block_object_dispose(v12, 8);
@@ -1794,37 +1794,37 @@ LABEL_15:
 
 - (void)ghostBustSchedule
 {
-  v3 = [(SOSAccount *)self ghostBustGetDate];
-  if (!v3)
+  ghostBustGetDate = [(SOSAccount *)self ghostBustGetDate];
+  if (!ghostBustGetDate)
   {
     [(SOSAccount *)self ghostBustFollowup];
-    v3 = 0;
+    ghostBustGetDate = 0;
   }
 }
 
 - (void)ghostBustFollowup
 {
-  v3 = [(SOSAccount *)self settings];
+  settings = [(SOSAccount *)self settings];
 
-  if (!v3)
+  if (!settings)
   {
     v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.security.sosaccount"];
     [(SOSAccount *)self setSettings:v4];
   }
 
   v6 = SOSCreateRandomDateBetweenNowPlus();
-  v5 = [(SOSAccount *)self settings];
-  [v5 setValue:v6 forKey:@"ghostbustdate"];
+  settings2 = [(SOSAccount *)self settings];
+  [settings2 setValue:v6 forKey:@"ghostbustdate"];
 }
 
 - (BOOL)ghostBustCheckDate
 {
-  v2 = [(SOSAccount *)self ghostBustGetDate];
-  v3 = v2;
+  ghostBustGetDate = [(SOSAccount *)self ghostBustGetDate];
+  v3 = ghostBustGetDate;
   v5 = 0;
-  if (v2)
+  if (ghostBustGetDate)
   {
-    [v2 timeIntervalSinceNow];
+    [ghostBustGetDate timeIntervalSinceNow];
     if (v4 <= 0.0)
     {
       v5 = 1;
@@ -1836,23 +1836,23 @@ LABEL_15:
 
 - (id)ghostBustGetDate
 {
-  v3 = [(SOSAccount *)self settings];
+  settings = [(SOSAccount *)self settings];
 
-  if (!v3)
+  if (!settings)
   {
     v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.security.sosaccount"];
     [(SOSAccount *)self setSettings:v4];
   }
 
-  v5 = [(SOSAccount *)self settings];
-  v6 = [v5 valueForKey:@"ghostbustdate"];
+  settings2 = [(SOSAccount *)self settings];
+  v6 = [settings2 valueForKey:@"ghostbustdate"];
 
   return v6;
 }
 
-- (void)circleHash:(id)a3
+- (void)circleHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   v13 = 0;
   v7 = 0;
   v8 = &v7;
@@ -1867,7 +1867,7 @@ LABEL_15:
   v6[4] = self;
   v6[5] = &v7;
   sub_100089884(0, &v13, v6);
-  v4[2](v4, v8[5], v13);
+  hashCopy[2](hashCopy, v8[5], v13);
   v5 = v13;
   if (v13)
   {
@@ -1878,17 +1878,17 @@ LABEL_15:
   _Block_object_dispose(&v7, 8);
 }
 
-- (void)myPeerInfo:(id)a3 flowID:(id)a4 deviceSessionID:(id)a5 canSendMetrics:(BOOL)a6 complete:(id)a7
+- (void)myPeerInfo:(id)info flowID:(id)d deviceSessionID:(id)iD canSendMetrics:(BOOL)metrics complete:(id)complete
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  infoCopy = info;
+  dCopy = d;
+  iDCopy = iD;
+  completeCopy = complete;
   v16 = [AAFAnalyticsEventSecurity alloc];
   v17 = kSecurityRTCEventNameCreatesSOSApplication;
   sub_10020802C();
-  LOBYTE(v21) = a6;
-  v19 = [v16 initWithKeychainCircleMetrics:0 altDSID:v12 flowID:v13 deviceSessionID:v14 eventName:v17 testsAreEnabled:v18 canSendMetrics:v21 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
+  LOBYTE(v21) = metrics;
+  v19 = [v16 initWithKeychainCircleMetrics:0 altDSID:infoCopy flowID:dCopy deviceSessionID:iDCopy eventName:v17 testsAreEnabled:v18 canSendMetrics:v21 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -1907,7 +1907,7 @@ LABEL_15:
   v22[5] = &v23;
   [(SOSAccount *)self performTransaction:v22];
   [v19 sendMetricWithResult:v24[5] != 0 error:v30[3]];
-  v15[2](v15, v24[5], v30[3]);
+  completeCopy[2](completeCopy, v24[5], v30[3]);
   v20 = v30[3];
   if (v20)
   {
@@ -1920,26 +1920,26 @@ LABEL_15:
   _Block_object_dispose(&v29, 8);
 }
 
-- (void)stashAccountCredential:(id)a3 altDSID:(id)a4 flowID:(id)a5 deviceSessionID:(id)a6 canSendMetrics:(BOOL)a7 complete:(id)a8
+- (void)stashAccountCredential:(id)credential altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID canSendMetrics:(BOOL)metrics complete:(id)complete
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
-  v17 = v13;
-  v18 = v14;
-  v19 = v15;
-  v20 = v16;
-  v21 = v12;
+  credentialCopy = credential;
+  dCopy = d;
+  iDCopy = iD;
+  sessionIDCopy = sessionID;
+  completeCopy = complete;
+  v17 = dCopy;
+  v18 = iDCopy;
+  v19 = sessionIDCopy;
+  v20 = completeCopy;
+  v21 = credentialCopy;
   SOSDoWithCredentialsWhileUnlocked();
 }
 
-- (BOOL)syncWaitAndFlush:(id)a3 flowID:(id)a4 deviceSessionID:(id)a5 canSendMetrics:(BOOL)a6 error:(__CFError *)a7
+- (BOOL)syncWaitAndFlush:(id)flush flowID:(id)d deviceSessionID:(id)iD canSendMetrics:(BOOL)metrics error:(__CFError *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  flushCopy = flush;
+  dCopy = d;
+  iDCopy = iD;
   v14 = sub_100006274("pairing");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -1950,8 +1950,8 @@ LABEL_15:
   v15 = [AAFAnalyticsEventSecurity alloc];
   sub_10020802C();
   v16 = kSecurityRTCEventCategoryAccountDataAccessRecovery;
-  LOBYTE(v33) = a6;
-  v18 = [v15 initWithKeychainCircleMetrics:0 altDSID:v11 flowID:v12 deviceSessionID:v13 eventName:kSecurityRTCEventNameKVSSyncAndWait testsAreEnabled:v17 canSendMetrics:v33 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
+  LOBYTE(v33) = metrics;
+  v18 = [v15 initWithKeychainCircleMetrics:0 altDSID:flushCopy flowID:dCopy deviceSessionID:iDCopy eventName:kSecurityRTCEventNameKVSSyncAndWait testsAreEnabled:v17 canSendMetrics:v33 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
   v19 = dispatch_semaphore_create(0);
   v35 = 0;
   v36 = &v35;
@@ -1969,7 +1969,7 @@ LABEL_15:
   v40 = sub_10020CE50;
   v41 = &unk_1003472B0;
   v43 = &v35;
-  v44 = a7;
+  errorCopy = error;
   v42 = v19;
   v21 = v19;
   _os_activity_initiate(&_mh_execute_header, "CloudCircle EFRESH", OS_ACTIVITY_FLAG_DEFAULT, &buf);
@@ -1981,8 +1981,8 @@ LABEL_15:
     [v18 sendMetricWithResult:1 error:0];
     v23 = [AAFAnalyticsEventSecurity alloc];
     sub_10020802C();
-    LOBYTE(v34) = a6;
-    v25 = [v23 initWithKeychainCircleMetrics:0 altDSID:v11 flowID:v12 deviceSessionID:v13 eventName:kSecurityRTCEventNameFlush testsAreEnabled:v24 canSendMetrics:v34 category:v16];
+    LOBYTE(v34) = metrics;
+    v25 = [v23 initWithKeychainCircleMetrics:0 altDSID:flushCopy flowID:dCopy deviceSessionID:iDCopy eventName:kSecurityRTCEventNameFlush testsAreEnabled:v24 canSendMetrics:v34 category:v16];
     v26 = sub_10020C374();
     if (v26)
     {
@@ -2000,9 +2000,9 @@ LABEL_15:
       v30 = sub_100006274("pairing");
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        if (a7)
+        if (error)
         {
-          v31 = *a7;
+          v31 = *error;
         }
 
         else
@@ -2015,7 +2015,7 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "failed flush: %@", &buf, 0xCu);
       }
 
-      [v25 sendMetricWithResult:0 error:*a7];
+      [v25 sendMetricWithResult:0 error:*error];
     }
   }
 
@@ -2024,9 +2024,9 @@ LABEL_15:
     v28 = sub_100006274("pairing");
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      if (a7)
+      if (error)
       {
-        v29 = *a7;
+        v29 = *error;
       }
 
       else
@@ -2039,104 +2039,104 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "failed sync and wait: %@", &buf, 0xCu);
     }
 
-    [v18 sendMetricWithResult:0 error:*a7];
+    [v18 sendMetricWithResult:0 error:*error];
     v26 = 0;
   }
 
   return v26;
 }
 
-- (void)assertStashedAccountCredential:(id)a3
+- (void)assertStashedAccountCredential:(id)credential
 {
-  v4 = a3;
-  v5 = [(SOSAccount *)self queue];
+  credentialCopy = credential;
+  queue = [(SOSAccount *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10020D184;
   v7[3] = &unk_100344DC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = credentialCopy;
+  v6 = credentialCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)stashedCredentialPublicKey:(id)a3
+- (void)stashedCredentialPublicKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SOSAccount *)self queue];
+  keyCopy = key;
+  queue = [(SOSAccount *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10020D298;
   v7[3] = &unk_100344DC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = keyCopy;
+  v6 = keyCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)rateLimitingPerformanceCounters:(id)a3
+- (void)rateLimitingPerformanceCounters:(id)counters
 {
-  v5 = a3;
+  countersCopy = counters;
   if (sub_10020649C(self, @"RateLimitCounters"))
   {
-    v5[2]();
+    countersCopy[2]();
   }
 
   else
   {
     v4 = +[NSDictionary dictionary];
-    (v5[2])(v5, v4);
+    (countersCopy[2])(countersCopy, v4);
   }
 }
 
-- (void)setBypass:(BOOL)a3 reply:(id)a4
+- (void)setBypass:(BOOL)bypass reply:(id)reply
 {
-  v6 = a4;
-  v7 = [(SOSAccount *)self queue];
+  replyCopy = reply;
+  queue = [(SOSAccount *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10020D48C;
   block[3] = &unk_100345960;
-  v11 = a3;
+  bypassCopy = bypass;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = replyCopy;
+  v8 = replyCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)kvsPerformanceCounters:(id)a3
+- (void)kvsPerformanceCounters:(id)counters
 {
-  v3 = a3;
+  countersCopy = counters;
   v4 = dispatch_get_global_queue(-2, 0);
-  v6 = v3;
-  v5 = v3;
+  v6 = countersCopy;
+  v5 = countersCopy;
   SOSCloudKeychainRequestPerfCounters();
 }
 
-- (void)userPublicKey:(id)a3
+- (void)userPublicKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SOSAccount *)self queue];
+  keyCopy = key;
+  queue = [(SOSAccount *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10020D64C;
   v7[3] = &unk_100344DC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = keyCopy;
+  v6 = keyCopy;
+  dispatch_async(queue, v7);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SOSAccount *)self gestalt];
-    v7 = [v5 gestalt];
-    if (![v6 isEqual:v7])
+    v5 = equalCopy;
+    gestalt = [(SOSAccount *)self gestalt];
+    gestalt2 = [v5 gestalt];
+    if (![gestalt isEqual:gestalt2])
     {
       v19 = 0;
 LABEL_19:
@@ -2144,38 +2144,38 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v8 = [(SOSAccount *)self trust];
-    v9 = [v8 trustedCircle];
-    v10 = [v5 trust];
-    v11 = [v10 trustedCircle];
-    if (v9 && v11)
+    trust = [(SOSAccount *)self trust];
+    trustedCircle = [trust trustedCircle];
+    trust2 = [v5 trust];
+    trustedCircle2 = [trust2 trustedCircle];
+    if (trustedCircle && trustedCircle2)
     {
-      if (CFEqual(v9, v11))
+      if (CFEqual(trustedCircle, trustedCircle2))
       {
 LABEL_6:
-        v12 = [(SOSAccount *)self trust];
-        v13 = [v12 expansion];
-        v22 = [v5 trust];
-        v14 = [v22 expansion];
-        v23 = v13;
-        if ([v13 isEqual:v14])
+        trust3 = [(SOSAccount *)self trust];
+        expansion = [trust3 expansion];
+        trust4 = [v5 trust];
+        expansion2 = [trust4 expansion];
+        v23 = expansion;
+        if ([expansion isEqual:expansion2])
         {
-          v21 = v12;
-          v15 = [(SOSAccount *)self trust];
-          v16 = [v15 fullPeerInfo];
-          v17 = [v5 trust];
-          v18 = [v17 fullPeerInfo];
-          if (v16 && v18)
+          v21 = trust3;
+          trust5 = [(SOSAccount *)self trust];
+          fullPeerInfo = [trust5 fullPeerInfo];
+          trust6 = [v5 trust];
+          fullPeerInfo2 = [trust6 fullPeerInfo];
+          if (fullPeerInfo && fullPeerInfo2)
           {
-            v19 = CFEqual(v16, v18) != 0;
+            v19 = CFEqual(fullPeerInfo, fullPeerInfo2) != 0;
           }
 
           else
           {
-            v19 = v16 == v18;
+            v19 = fullPeerInfo == fullPeerInfo2;
           }
 
-          v12 = v21;
+          trust3 = v21;
         }
 
         else
@@ -2187,7 +2187,7 @@ LABEL_6:
       }
     }
 
-    else if (v9 == v11)
+    else if (trustedCircle == trustedCircle2)
     {
       goto LABEL_6;
     }
@@ -2206,11 +2206,11 @@ LABEL_20:
 
 - (void)startStateMachine
 {
-  v2 = [(SOSAccount *)self stateMachine];
-  [v2 startOperation];
+  stateMachine = [(SOSAccount *)self stateMachine];
+  [stateMachine startOperation];
 }
 
-- (SOSAccount)initWithGestalt:(__CFDictionary *)a3 factory:(SOSDataSourceFactory *)a4
+- (SOSAccount)initWithGestalt:(__CFDictionary *)gestalt factory:(SOSDataSourceFactory *)factory
 {
   v35.receiver = self;
   v35.super_class = SOSAccount;
@@ -2221,7 +2221,7 @@ LABEL_20:
     v8 = *(v6 + 12);
     *(v6 + 12) = v7;
 
-    v9 = [[NSDictionary alloc] initWithDictionary:a3];
+    v9 = [[NSDictionary alloc] initWithDictionary:gestalt];
     v10 = *(v6 + 8);
     *(v6 + 8) = v9;
 
@@ -2237,7 +2237,7 @@ LABEL_20:
     v6[8] = 0;
     *(v6 + 5) = 0;
     v17 = *(v6 + 15);
-    *(v6 + 14) = a4;
+    *(v6 + 14) = factory;
     *(v6 + 15) = 0;
 
     v18 = *(v6 + 13);
@@ -2306,9 +2306,9 @@ LABEL_20:
   v3 = +[CKKSLockStateTracker globalTracker];
   if (v3 && ([v3 isLocked] & 1) == 0)
   {
-    v4 = [(SOSAccount *)self trust];
-    v5 = [(SOSAccount *)self circle_transport];
-    [v4 ensureOctagonPeerKeys:v5];
+    trust = [(SOSAccount *)self trust];
+    circle_transport = [(SOSAccount *)self circle_transport];
+    [trust ensureOctagonPeerKeys:circle_transport];
   }
 
   _objc_release_x1();
@@ -2321,54 +2321,54 @@ LABEL_20:
     v3 = (*[(SOSAccount *)self factory])();
     if (!v3)
     {
-      LOBYTE(v8) = 0;
+      LOBYTE(key_transport3) = 0;
 LABEL_19:
 
-      return v8;
+      return key_transport3;
     }
 
-    v4 = self;
-    v5 = [(SOSAccount *)v4 trust];
-    v6 = [v5 trustedCircle];
-    if (v6)
+    selfCopy = self;
+    trust = [(SOSAccount *)selfCopy trust];
+    trustedCircle = [trust trustedCircle];
+    if (trustedCircle)
     {
-      v7 = v6;
-      CFRetain(v6);
+      v7 = trustedCircle;
+      CFRetain(trustedCircle);
     }
 
     else
     {
       v7 = SOSCircleCreate();
-      [(SOSAccount *)v4 setKey_interests_need_updating:1];
-      [v5 setTrustedCircle:v7];
-      [(SOSAccount *)v4 sosEvaluateIfNeeded];
+      [(SOSAccount *)selfCopy setKey_interests_need_updating:1];
+      [trust setTrustedCircle:v7];
+      [(SOSAccount *)selfCopy sosEvaluateIfNeeded];
 
       if (!v7)
       {
 LABEL_9:
-        v9 = v4;
-        v10 = [(SOSAccount *)v9 key_transport];
+        v9 = selfCopy;
+        key_transport = [(SOSAccount *)v9 key_transport];
 
-        if (v10)
+        if (key_transport)
         {
-          v11 = [(SOSAccount *)v9 key_transport];
-          sub_100236194(v11);
+          key_transport2 = [(SOSAccount *)v9 key_transport];
+          sub_100236194(key_transport2);
         }
 
-        v12 = [(SOSAccount *)v9 circle_transport];
+        circle_transport = [(SOSAccount *)v9 circle_transport];
 
-        if (v12)
+        if (circle_transport)
         {
-          v13 = [(SOSAccount *)v9 circle_transport];
-          sub_1002360F8(v13);
+          circle_transport2 = [(SOSAccount *)v9 circle_transport];
+          sub_1002360F8(circle_transport2);
         }
 
-        v14 = [(SOSAccount *)v9 kvs_message_transport];
+        kvs_message_transport = [(SOSAccount *)v9 kvs_message_transport];
 
-        if (v14)
+        if (kvs_message_transport)
         {
-          v15 = [(SOSAccount *)v9 kvs_message_transport];
-          sub_100236018(v15);
+          kvs_message_transport2 = [(SOSAccount *)v9 kvs_message_transport];
+          sub_100236018(kvs_message_transport2);
         }
 
         v16 = [[CKKeyParameter alloc] initWithAccount:v9];
@@ -2377,19 +2377,19 @@ LABEL_9:
         v17 = [[SOSKVSCircleStorageTransport alloc] initWithAccount:v9 andCircleName:v3];
         [(SOSAccount *)v9 setCircle_transport:v17];
 
-        v8 = [(SOSAccount *)v9 key_transport];
+        key_transport3 = [(SOSAccount *)v9 key_transport];
 
-        if (v8)
+        if (key_transport3)
         {
-          v8 = [(SOSAccount *)v9 circle_transport];
+          key_transport3 = [(SOSAccount *)v9 circle_transport];
 
-          if (v8)
+          if (key_transport3)
           {
-            v8 = [[SOSMessageKVS alloc] initWithAccount:v9 andName:v3];
-            [(SOSAccount *)v9 setKvs_message_transport:v8];
+            key_transport3 = [[SOSMessageKVS alloc] initWithAccount:v9 andName:v3];
+            [(SOSAccount *)v9 setKvs_message_transport:key_transport3];
 
-            v18 = [(SOSAccount *)v9 kvs_message_transport];
-            LOBYTE(v8) = v18 != 0;
+            kvs_message_transport3 = [(SOSAccount *)v9 kvs_message_transport];
+            LOBYTE(key_transport3) = kvs_message_transport3 != 0;
           }
         }
 
@@ -2401,87 +2401,87 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  LOBYTE(v8) = 0;
-  return v8;
+  LOBYTE(key_transport3) = 0;
+  return key_transport3;
 }
 
 - (NSString)peerID
 {
-  v2 = [(SOSAccount *)self trust];
-  v3 = [v2 peerID];
+  trust = [(SOSAccount *)self trust];
+  peerID = [trust peerID];
 
-  return v3;
+  return peerID;
 }
 
 - (__OpaqueSOSFullPeerInfo)fullPeerInfo
 {
-  v2 = [(SOSAccount *)self trust];
-  v3 = [v2 fullPeerInfo];
+  trust = [(SOSAccount *)self trust];
+  fullPeerInfo = [trust fullPeerInfo];
 
-  return v3;
+  return fullPeerInfo;
 }
 
 - (__OpaqueSOSPeerInfo)peerInfo
 {
-  v2 = [(SOSAccount *)self trust];
-  v3 = [v2 peerInfo];
+  trust = [(SOSAccount *)self trust];
+  peerInfo = [trust peerInfo];
 
-  return v3;
+  return peerInfo;
 }
 
-- (void)setPeerPublicKey:(__SecKey *)a3
+- (void)setPeerPublicKey:(__SecKey *)key
 {
   peerPublicKey = self->_peerPublicKey;
-  if (peerPublicKey != a3)
+  if (peerPublicKey != key)
   {
-    if (!a3 || (CFRetain(a3), (peerPublicKey = self->_peerPublicKey) != 0))
+    if (!key || (CFRetain(key), (peerPublicKey = self->_peerPublicKey) != 0))
     {
       CFRelease(peerPublicKey);
     }
 
-    self->_peerPublicKey = a3;
+    self->_peerPublicKey = key;
   }
 }
 
-- (void)setPreviousAccountKey:(__SecKey *)a3
+- (void)setPreviousAccountKey:(__SecKey *)key
 {
   previousAccountKey = self->_previousAccountKey;
-  if (previousAccountKey != a3)
+  if (previousAccountKey != key)
   {
-    if (!a3 || (CFRetain(a3), (previousAccountKey = self->_previousAccountKey) != 0))
+    if (!key || (CFRetain(key), (previousAccountKey = self->_previousAccountKey) != 0))
     {
       CFRelease(previousAccountKey);
     }
 
-    self->_previousAccountKey = a3;
+    self->_previousAccountKey = key;
   }
 }
 
-- (void)setAccountPrivateKey:(__SecKey *)a3
+- (void)setAccountPrivateKey:(__SecKey *)key
 {
   accountPrivateKey = self->_accountPrivateKey;
-  if (accountPrivateKey != a3)
+  if (accountPrivateKey != key)
   {
-    if (!a3 || (CFRetain(a3), (accountPrivateKey = self->_accountPrivateKey) != 0))
+    if (!key || (CFRetain(key), (accountPrivateKey = self->_accountPrivateKey) != 0))
     {
       CFRelease(accountPrivateKey);
     }
 
-    self->_accountPrivateKey = a3;
+    self->_accountPrivateKey = key;
   }
 }
 
-- (void)setAccountKey:(__SecKey *)a3
+- (void)setAccountKey:(__SecKey *)key
 {
   accountKey = self->_accountKey;
-  if (accountKey != a3)
+  if (accountKey != key)
   {
-    if (!a3 || (CFRetain(a3), (accountKey = self->_accountKey) != 0))
+    if (!key || (CFRetain(key), (accountKey = self->_accountKey) != 0))
     {
       CFRelease(accountKey);
     }
 
-    self->_accountKey = a3;
+    self->_accountKey = key;
   }
 }
 
@@ -2531,14 +2531,14 @@ LABEL_9:
       CFRelease(octagonEncryptionFullKeyRef);
     }
 
-    v9 = [(SOSAccount *)self performBackups];
-    [v9 cancel];
+    performBackups = [(SOSAccount *)self performBackups];
+    [performBackups cancel];
 
-    v10 = [(SOSAccount *)self performRingUpdates];
-    [v10 cancel];
+    performRingUpdates = [(SOSAccount *)self performRingUpdates];
+    [performRingUpdates cancel];
 
-    v11 = [(SOSAccount *)self stateMachine];
-    [v11 haltOperation];
+    stateMachine = [(SOSAccount *)self stateMachine];
+    [stateMachine haltOperation];
   }
 
   v12.receiver = self;
@@ -2581,10 +2581,10 @@ LABEL_9:
   return v4 | v5;
 }
 
-- (id)encodedData:(id *)a3
+- (id)encodedData:(id *)data
 {
-  v5 = [(SOSAccount *)self trust];
-  v6 = [v5 getDEREncodedSize:self err:a3];
+  trust = [(SOSAccount *)self trust];
+  v6 = [trust getDEREncodedSize:self err:data];
 
   if (v6)
   {
@@ -2593,7 +2593,7 @@ LABEL_9:
     v9[2] = sub_10021B1B0;
     v9[3] = &unk_100345888;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = data;
     v7 = [NSMutableData dataWithSpace:v6 DEREncode:v9];
   }
 
@@ -2605,31 +2605,31 @@ LABEL_9:
   return v7;
 }
 
-+ (id)accountFromData:(id)a3 factory:(SOSDataSourceFactory *)a4 error:(id *)a5
++ (id)accountFromData:(id)data factory:(SOSDataSourceFactory *)factory error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 length];
-  v10 = [v8 bytes];
+  dataCopy = data;
+  v9 = [dataCopy length];
+  bytes = [dataCopy bytes];
 
-  v13 = v10;
-  v11 = [a1 accountFromDER:&v13 end:&v9[v10] factory:a4 error:a5];
+  v13 = bytes;
+  v11 = [self accountFromDER:&v13 end:&v9[bytes] factory:factory error:error];
 
   return v11;
 }
 
-+ (id)accountFromDER:(const char *)a3 end:(const char *)a4 factory:(SOSDataSourceFactory *)a5 error:(id *)a6
++ (id)accountFromDER:(const char *)r end:(const char *)end factory:(SOSDataSourceFactory *)factory error:(id *)error
 {
   v84 = 0;
   v87 = 0xAAAAAAAAAAAAAAAALL;
   v88 = 0;
-  v9 = *a3;
-  *a3 = ccder_decode_constructed_tl();
+  v9 = *r;
+  *r = ccder_decode_constructed_tl();
   v10 = ccder_decode_uint64();
-  *a3 = v10;
+  *r = v10;
   if (!v10)
   {
     SOSCreateError();
-    if (!a6)
+    if (!error)
     {
       goto LABEL_30;
     }
@@ -2642,35 +2642,35 @@ LABEL_9:
     v57 = v87;
     *buf = 0;
     *v99 = 0;
-    v58 = (a5->var0)(a5);
+    v58 = (factory->var0)(factory);
     v98 = 0;
-    v59 = sub_100006D24(kCFAllocatorDefault, &v98, &v84, *a3, v87);
-    *a3 = v59;
+    v59 = sub_100006D24(kCFAllocatorDefault, &v98, &v84, *r, v87);
+    *r = v59;
     if (!v59)
     {
       goto LABEL_94;
     }
 
     v60 = v98;
-    v61 = sub_10020EB50(v98, a5);
+    v61 = sub_10020EB50(v98, factory);
     if (v60)
     {
       CFRelease(v60);
     }
 
-    v62 = [v61 trust];
-    *a3 = sub_100018424(kCFAllocatorDefault, buf, &v84, *a3, v57);
+    trust = [v61 trust];
+    *r = sub_100018424(kCFAllocatorDefault, buf, &v84, *r, v57);
     v98 = 5;
-    *a3 = ccder_decode_uint64();
-    [v62 setDepartureCode:v98];
+    *r = ccder_decode_uint64();
+    [trust setDepartureCode:v98];
     v97 = -86;
-    *a3 = sub_100087D38(&v97, *a3);
+    *r = sub_100087D38(&v97, *r);
     [v61 setAccountKeyIsTrusted:v97];
     v95 = 0;
     v96 = 0;
-    v63 = *a3;
-    *a3 = sub_100216DF4();
-    *a3 = sub_100216DF4();
+    v63 = *r;
+    *r = sub_100216DF4();
+    *r = sub_100216DF4();
     [v61 setAccountKey:v96];
     [v61 setPreviousAccountKey:v95];
     v64 = v96;
@@ -2688,13 +2688,13 @@ LABEL_9:
     }
 
     v94 = 0;
-    v66 = *a3;
-    *a3 = der_decode_data_or_null();
+    v66 = *r;
+    *r = der_decode_data_or_null();
     v67 = v94;
     [v61 setAccountKeyDerivationParameters:v94];
 
-    v68 = sub_100006D24(kCFAllocatorDefault, v99, &v84, *a3, v57);
-    *a3 = v68;
+    v68 = sub_100006D24(kCFAllocatorDefault, v99, &v84, *r, v57);
+    *r = v68;
     if (v68 == v57)
     {
       Mutable = CFSetCreateMutable(kCFAllocatorDefault, 0, &kCFTypeSetCallBacks);
@@ -2704,7 +2704,7 @@ LABEL_9:
       context[3] = &unk_1003469D0;
       context[4] = Mutable;
       CFDictionaryApplyFunction(*v99, sub_10021C22C, context);
-      [v62 setRetirees:Mutable];
+      [trust setRetirees:Mutable];
       if (Mutable)
       {
         CFRelease(Mutable);
@@ -2713,7 +2713,7 @@ LABEL_9:
       v56 = *buf;
       if (*buf)
       {
-        if (*a3)
+        if (*r)
         {
           cf[0] = _NSConcreteStackBlock;
           cf[1] = 3221225472;
@@ -2721,7 +2721,7 @@ LABEL_9:
           cf[3] = &unk_100347768;
           v91 = &v84;
           v92 = v58;
-          v90 = v62;
+          v90 = trust;
           v102.length = CFArrayGetCount(v56);
           v102.location = 0;
           CFArrayApplyFunction(v56, v102, sub_10021C214, cf);
@@ -2751,13 +2751,13 @@ LABEL_9:
     else
     {
       v56 = 0;
-      *a3 = 0;
+      *r = 0;
     }
 
     if (!v56)
     {
 LABEL_94:
-      if (a6)
+      if (error)
       {
         goto LABEL_95;
       }
@@ -2775,27 +2775,27 @@ LABEL_94:
       v11 = v87;
       cf[0] = 0;
       v12 = sub_100006D24(kCFAllocatorDefault, cf, &v84, v10, v87);
-      *a3 = v12;
+      *r = v12;
       v13 = cf[0];
       if (v12)
       {
-        v14 = sub_10020EB50(cf[0], a5);
+        v14 = sub_10020EB50(cf[0], factory);
         if (v13)
         {
           CFRelease(v13);
         }
 
-        v15 = [v14 trust];
+        trust2 = [v14 trust];
         v16 = SOSCircleCreateFromDER();
-        [v15 setTrustedCircle:v16];
+        [trust2 setTrustedCircle:v16];
         if (v16)
         {
           CFRelease(v16);
         }
 
         cf[0] = 0;
-        *a3 = sub_100216C58(cf, &v84, *a3);
-        [v15 setFullPeerInfo:cf[0]];
+        *r = sub_100216C58(cf, &v84, *r);
+        [trust2 setFullPeerInfo:cf[0]];
         v17 = cf[0];
         if (cf[0])
         {
@@ -2804,15 +2804,15 @@ LABEL_94:
         }
 
         cf[0] = 5;
-        v18 = *a3;
-        *a3 = ccder_decode_uint64();
-        [v15 setDepartureCode:LODWORD(cf[0])];
+        v18 = *r;
+        *r = ccder_decode_uint64();
+        [trust2 setDepartureCode:LODWORD(cf[0])];
         LOBYTE(v98) = -86;
-        *a3 = sub_100087D38(&v98, *a3);
+        *r = sub_100087D38(&v98, *r);
         [v14 setAccountKeyIsTrusted:v98];
         context[0] = 0;
-        v19 = *a3;
-        *a3 = sub_100216DF4();
+        v19 = *r;
+        *r = sub_100216DF4();
         [v14 setAccountKey:context[0]];
         v20 = context[0];
         if (context[0])
@@ -2822,8 +2822,8 @@ LABEL_94:
         }
 
         context[0] = 0;
-        v21 = *a3;
-        *a3 = sub_100216DF4();
+        v21 = *r;
+        *r = sub_100216DF4();
         [v14 setPreviousAccountKey:context[0]];
         v22 = context[0];
         if (context[0])
@@ -2833,21 +2833,21 @@ LABEL_94:
         }
 
         context[0] = 0xAAAAAAAAAAAAAAAALL;
-        v23 = *a3;
-        *a3 = der_decode_data_or_null();
+        v23 = *r;
+        *r = der_decode_data_or_null();
         v24 = context[0];
         [v14 setAccountKeyDerivationParameters:context[0]];
 
         v25 = SOSPeerInfoSetCreateFromArrayDER();
-        [v15 setRetirees:v25];
+        [trust2 setRetirees:v25];
         if (v25)
         {
           CFRelease(v25);
         }
 
         context[0] = 0;
-        v26 = *a3;
-        v27 = sub_10000B738(kCFAllocatorDefault, context, 0, *a3, v11);
+        v26 = *r;
+        v27 = sub_10000B738(kCFAllocatorDefault, context, 0, *r, v11);
         if (v27)
         {
           v28 = v27;
@@ -2858,12 +2858,12 @@ LABEL_94:
           v28 = v26;
         }
 
-        *a3 = v28;
+        *r = v28;
         if (v28 != v11)
         {
           *buf = 0;
           v29 = sub_100006D24(kCFAllocatorDefault, buf, &v84, v28, v11);
-          *a3 = v29;
+          *r = v29;
           if (!v29)
           {
             v71 = sub_100006274("persistence");
@@ -2891,7 +2891,7 @@ LABEL_94:
           v30 = *buf;
           if (*buf)
           {
-            [v15 setExpansion:*buf];
+            [trust2 setExpansion:*buf];
             CFRelease(v30);
           }
         }
@@ -2922,7 +2922,7 @@ LABEL_94:
           }
         }
 
-        if (*a3 && *a3 == v11)
+        if (*r && *r == v11)
         {
           v56 = v14;
 LABEL_90:
@@ -2942,7 +2942,7 @@ LABEL_89:
       }
 
       CFRelease(cf[0]);
-      if (!a6)
+      if (!error)
       {
         goto LABEL_30;
       }
@@ -2951,7 +2951,7 @@ LABEL_89:
     else
     {
       SOSCreateErrorWithFormat();
-      if (!a6)
+      if (!error)
       {
         goto LABEL_30;
       }
@@ -2959,37 +2959,37 @@ LABEL_89:
 
 LABEL_95:
     v35 = 0;
-    *a6 = v84;
+    *error = v84;
     goto LABEL_96;
   }
 
   v37 = v87;
   cf[0] = 0;
   v38 = sub_100006D24(kCFAllocatorDefault, cf, &v84, v10, v87);
-  *a3 = v38;
+  *r = v38;
   if (!v38)
   {
     goto LABEL_94;
   }
 
   v39 = cf[0];
-  v14 = sub_10020EB50(cf[0], a5);
+  v14 = sub_10020EB50(cf[0], factory);
   if (v39)
   {
     CFRelease(v39);
   }
 
-  v40 = [v14 trust];
+  trust3 = [v14 trust];
   v41 = SOSCircleCreateFromDER();
-  [v40 setTrustedCircle:v41];
+  [trust3 setTrustedCircle:v41];
   if (v41)
   {
     CFRelease(v41);
   }
 
   cf[0] = 0;
-  *a3 = sub_100216C58(cf, &v84, *a3);
-  [v40 setFullPeerInfo:cf[0]];
+  *r = sub_100216C58(cf, &v84, *r);
+  [trust3 setFullPeerInfo:cf[0]];
   v42 = cf[0];
   if (cf[0])
   {
@@ -2998,15 +2998,15 @@ LABEL_95:
   }
 
   cf[0] = 5;
-  v43 = *a3;
+  v43 = *r;
   v44 = ccder_decode_uint64();
-  *a3 = v44;
+  *r = v44;
   buf[0] = -86;
-  *a3 = sub_100087D38(buf, v44);
+  *r = sub_100087D38(buf, v44);
   [v14 setAccountKeyIsTrusted:buf[0]];
   context[0] = 0;
-  v45 = *a3;
-  *a3 = sub_100216DF4();
+  v45 = *r;
+  *r = sub_100216DF4();
   [v14 setAccountKey:context[0]];
   v46 = context[0];
   if (context[0])
@@ -3016,8 +3016,8 @@ LABEL_95:
   }
 
   context[0] = 0;
-  v47 = *a3;
-  *a3 = sub_100216DF4();
+  v47 = *r;
+  *r = sub_100216DF4();
   [v14 setPreviousAccountKey:context[0]];
   v48 = context[0];
   if (context[0])
@@ -3027,15 +3027,15 @@ LABEL_95:
   }
 
   context[0] = 0;
-  v49 = *a3;
-  *a3 = der_decode_data_or_null();
+  v49 = *r;
+  *r = der_decode_data_or_null();
   v50 = context[0];
   [v14 setAccountKeyDerivationParameters:context[0]];
 
-  [v40 setRetirees:SOSPeerInfoSetCreateFromArrayDER()];
+  [trust3 setRetirees:SOSPeerInfoSetCreateFromArrayDER()];
   context[0] = 0;
-  v51 = *a3;
-  v52 = sub_10000B738(kCFAllocatorDefault, context, 0, *a3, v37);
+  v51 = *r;
+  v52 = sub_10000B738(kCFAllocatorDefault, context, 0, *r, v37);
   if (v52)
   {
     v53 = v52;
@@ -3046,15 +3046,15 @@ LABEL_95:
     v53 = v51;
   }
 
-  *a3 = v53;
+  *r = v53;
   v54 = context[0];
   if (context[0])
   {
     [v14 setBackup_key:context[0]];
   }
 
-  [v40 setDepartureCode:LODWORD(cf[0])];
-  if (*a3 && *a3 == v37)
+  [trust3 setDepartureCode:LODWORD(cf[0])];
+  if (*r && *r == v37)
   {
     v55 = v14;
   }
@@ -3074,7 +3074,7 @@ LABEL_91:
   }
 
 LABEL_92:
-  if (*a3 != v87)
+  if (*r != v87)
   {
 LABEL_93:
     SOSCreateError();
@@ -3087,11 +3087,11 @@ LABEL_93:
 LABEL_103:
     if (([(__CFArray *)v56 ensureFactoryCircles]& 1) != 0)
     {
-      v75 = [(__CFArray *)v56 peerInfo];
-      if (v75)
+      peerInfo = [(__CFArray *)v56 peerInfo];
+      if (peerInfo)
       {
-        v76 = v75;
-        CFRetain(v75);
+        v76 = peerInfo;
+        CFRetain(peerInfo);
         if (([(__CFArray *)v56 isInCircle:0]& 1) == 0)
         {
           sub_100221828(v56);
@@ -3135,14 +3135,14 @@ LABEL_103:
     goto LABEL_103;
   }
 
-  v80 = [(__CFArray *)v56 key_transport];
-  sub_100236194(v80);
+  key_transport = [(__CFArray *)v56 key_transport];
+  sub_100236194(key_transport);
 
-  v81 = [(__CFArray *)v56 circle_transport];
-  sub_1002360F8(v81);
+  circle_transport = [(__CFArray *)v56 circle_transport];
+  sub_1002360F8(circle_transport);
 
-  v82 = [(__CFArray *)v56 kvs_message_transport];
-  sub_100236018(v82);
+  kvs_message_transport = [(__CFArray *)v56 kvs_message_transport];
+  sub_100236018(kvs_message_transport);
 
   v83 = sub_100006274("account");
   if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
@@ -3151,7 +3151,7 @@ LABEL_103:
     _os_log_impl(&_mh_execute_header, v83, OS_LOG_TYPE_DEFAULT, "No private key associated with my_identity, resetting", cf, 2u);
   }
 
-  if (a6)
+  if (error)
   {
     goto LABEL_95;
   }
@@ -3171,32 +3171,32 @@ LABEL_96:
   return v35;
 }
 
-- (void)performTransaction:(BOOL)a3 action:(id)a4
+- (void)performTransaction:(BOOL)transaction action:(id)action
 {
-  v6 = a4;
+  actionCopy = action;
   off_10039D610();
   if (*v7 == 1)
   {
-    [(SOSAccount *)self performTransaction_Locked:1 action:v6];
+    [(SOSAccount *)self performTransaction_Locked:1 action:actionCopy];
   }
 
   else
   {
-    v8 = [(SOSAccount *)self queue];
+    queue = [(SOSAccount *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10021EA14;
     block[3] = &unk_100345960;
     block[4] = self;
-    v11 = a3;
-    v10 = v6;
-    dispatch_sync(v8, block);
+    transactionCopy = transaction;
+    v10 = actionCopy;
+    dispatch_sync(queue, block);
   }
 }
 
-+ (void)performOnQuietAccountQueue:(id)a3
++ (void)performOnQuietAccountQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v4 = sub_100243B3C(1);
   if (v4)
   {
@@ -3204,7 +3204,7 @@ LABEL_96:
     v6[1] = 3221225472;
     v6[2] = sub_10021EC64;
     v6[3] = &unk_100347260;
-    v7 = v3;
+    v7 = queueCopy;
     [v4 performTransaction:1 action:v6];
   }
 
@@ -3218,7 +3218,7 @@ LABEL_96:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "UID: %d - No account; running block on local thread", buf, 8u);
     }
 
-    v3[2](v3);
+    queueCopy[2](queueCopy);
   }
 }
 

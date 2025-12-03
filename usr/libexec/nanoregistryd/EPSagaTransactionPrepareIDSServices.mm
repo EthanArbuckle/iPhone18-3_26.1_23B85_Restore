@@ -3,17 +3,17 @@
 - (void)_addTimeout;
 - (void)_invalidateTimer;
 - (void)_transactionCompleted;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionPrepareIDSServices
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_routingSlip, a3);
-  v9 = [v8 serviceFromClass:objc_opt_class()];
+  entryCopy = entry;
+  registryCopy = registry;
+  objc_storeStrong(&self->_routingSlip, entry);
+  v9 = [registryCopy serviceFromClass:objc_opt_class()];
   [v9 invalidateIDSChannels];
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
@@ -34,8 +34,8 @@
   {
     [(EPSagaTransactionPrepareIDSServices *)self _invalidateTimer];
     self->_transactionCompleted = 1;
-    v4 = [(EPSagaTransactionPrepareIDSServices *)self delegate];
-    [v4 transactionDidComplete:self];
+    delegate = [(EPSagaTransactionPrepareIDSServices *)self delegate];
+    [delegate transactionDidComplete:self];
   }
 }
 
@@ -81,8 +81,8 @@
     }
 
     objc_initWeak(buf, self);
-    v11 = [(EPRoutingSlipEntry *)self->_routingSlip queue];
-    v12 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v11);
+    queue = [(EPRoutingSlipEntry *)self->_routingSlip queue];
+    v12 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
     v13 = self->_currentTimer;
     self->_currentTimer = v12;
 

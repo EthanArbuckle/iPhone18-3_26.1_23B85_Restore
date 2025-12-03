@@ -9,7 +9,7 @@
   v8 = a5;
   v9 = a4;
   v10 = a3;
-  v11 = [[a1 alloc] initWithImage:v10];
+  v11 = [[self alloc] initWithImage:v10];
 
   [v11 setBackgroundColor:v8];
   [v11 setClipsToBounds:1];

@@ -1,7 +1,7 @@
 @interface TranslationBackdropVibrantBlurLayer
 - (_TtC13TranslationUIP33_CF4489C12E47B589A5779A16E606AB3135TranslationBackdropVibrantBlurLayer)init;
-- (_TtC13TranslationUIP33_CF4489C12E47B589A5779A16E606AB3135TranslationBackdropVibrantBlurLayer)initWithCoder:(id)a3;
-- (_TtC13TranslationUIP33_CF4489C12E47B589A5779A16E606AB3135TranslationBackdropVibrantBlurLayer)initWithLayer:(id)a3;
+- (_TtC13TranslationUIP33_CF4489C12E47B589A5779A16E606AB3135TranslationBackdropVibrantBlurLayer)initWithCoder:(id)coder;
+- (_TtC13TranslationUIP33_CF4489C12E47B589A5779A16E606AB3135TranslationBackdropVibrantBlurLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -9,8 +9,8 @@
 
 - (void)layoutSublayers
 {
-  v11 = self;
-  [(TranslationBackdropVibrantBlurLayer *)v11 bounds];
+  selfCopy = self;
+  [(TranslationBackdropVibrantBlurLayer *)selfCopy bounds];
   v3 = v2;
   v5 = v4;
   v7 = v6;
@@ -18,7 +18,7 @@
   v10 = objc_opt_self();
   [v10 begin];
   [v10 setDisableActions_];
-  [*(&v11->super.super.isa + OBJC_IVAR____TtC13TranslationUIP33_CF4489C12E47B589A5779A16E606AB3135TranslationBackdropVibrantBlurLayer_backdropLayer) setFrame_];
+  [*(&selfCopy->super.super.isa + OBJC_IVAR____TtC13TranslationUIP33_CF4489C12E47B589A5779A16E606AB3135TranslationBackdropVibrantBlurLayer_backdropLayer) setFrame_];
   [v10 commit];
 }
 
@@ -32,7 +32,7 @@
   return [(TranslationBackdropVibrantBlurLayer *)&v6 init];
 }
 
-- (_TtC13TranslationUIP33_CF4489C12E47B589A5779A16E606AB3135TranslationBackdropVibrantBlurLayer)initWithLayer:(id)a3
+- (_TtC13TranslationUIP33_CF4489C12E47B589A5779A16E606AB3135TranslationBackdropVibrantBlurLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
@@ -50,16 +50,16 @@
   return v7;
 }
 
-- (_TtC13TranslationUIP33_CF4489C12E47B589A5779A16E606AB3135TranslationBackdropVibrantBlurLayer)initWithCoder:(id)a3
+- (_TtC13TranslationUIP33_CF4489C12E47B589A5779A16E606AB3135TranslationBackdropVibrantBlurLayer)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtC13TranslationUIP33_CF4489C12E47B589A5779A16E606AB3135TranslationBackdropVibrantBlurLayer_backdropLayer;
   v7 = objc_allocWithZone(MEMORY[0x277CD9E08]);
-  v8 = a3;
+  coderCopy = coder;
   *(&self->super.super.isa + v6) = [v7 init];
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v9 = [(TranslationBackdropVibrantBlurLayer *)&v11 initWithCoder:v8];
+  v9 = [(TranslationBackdropVibrantBlurLayer *)&v11 initWithCoder:coderCopy];
 
   if (v9)
   {

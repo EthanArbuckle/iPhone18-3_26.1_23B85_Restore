@@ -1,27 +1,27 @@
 @interface PowerUISleepBasedPredictor
-+ (BOOL)shouldUseSleepPredictorWithLog:(id)a3;
-- (PowerUISleepBasedPredictor)initWithLog:(id)a3;
-- (id)predictFullChargeDateWithBatteryLevel:(unint64_t)a3;
++ (BOOL)shouldUseSleepPredictorWithLog:(id)log;
+- (PowerUISleepBasedPredictor)initWithLog:(id)log;
+- (id)predictFullChargeDateWithBatteryLevel:(unint64_t)level;
 @end
 
 @implementation PowerUISleepBasedPredictor
 
-- (PowerUISleepBasedPredictor)initWithLog:(id)a3
+- (PowerUISleepBasedPredictor)initWithLog:(id)log
 {
-  v5 = a3;
+  logCopy = log;
   v9.receiver = self;
   v9.super_class = PowerUISleepBasedPredictor;
   v6 = [(PowerUISleepBasedPredictor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_log, a3);
+    objc_storeStrong(&v6->_log, log);
   }
 
   return v7;
 }
 
-- (id)predictFullChargeDateWithBatteryLevel:(unint64_t)a3
+- (id)predictFullChargeDateWithBatteryLevel:(unint64_t)level
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = [objc_alloc(MEMORY[0x277D62528]) initWithIdentifier:@"com.apple.das.smartcharging"];
@@ -29,13 +29,13 @@
   if (v5)
   {
     v6 = [v4 currentSleepScheduleStateWithError:0];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [v4 nextEventDueAfterDate:v7 error:0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v8 = [v4 nextEventDueAfterDate:date error:0];
 
     if (v6 == 3)
     {
-      v9 = [v8 dueDate];
-      [v9 timeIntervalSinceNow];
+      dueDate = [v8 dueDate];
+      [dueDate timeIntervalSinceNow];
       v11 = v10;
 
       log = self->_log;
@@ -52,18 +52,18 @@
       v8 = v14;
     }
 
-    v15 = [v8 dueDate];
-    v16 = v15;
-    if (v15)
+    dueDate2 = [v8 dueDate];
+    v16 = dueDate2;
+    if (dueDate2)
     {
-      v17 = [v15 dateByAddingTimeInterval:-1800.0];
+      distantPast = [dueDate2 dateByAddingTimeInterval:-1800.0];
       v18 = self->_log;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v23 = 138412546;
         v24 = *&v16;
         v25 = 2112;
-        v26 = v17;
+        v26 = distantPast;
         _os_log_impl(&dword_21B766000, v18, OS_LOG_TYPE_DEFAULT, "Wake up time set to: %@ - Target (adjusted) deadline: %@", &v23, 0x16u);
       }
     }
@@ -76,7 +76,7 @@
         [PowerUISleepBasedPredictor predictFullChargeDateWithBatteryLevel:v20];
       }
 
-      v17 = [MEMORY[0x277CBEAA8] distantPast];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
     }
   }
 
@@ -88,30 +88,30 @@
       [PowerUISleepBasedPredictor predictFullChargeDateWithBatteryLevel:v19];
     }
 
-    v17 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return distantPast;
 }
 
-+ (BOOL)shouldUseSleepPredictorWithLog:(id)a3
++ (BOOL)shouldUseSleepPredictorWithLog:(id)log
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  logCopy = log;
   v4 = [objc_alloc(MEMORY[0x277D62528]) initWithIdentifier:@"com.apple.das.smartcharging"];
   v15 = 0;
   v5 = [v4 currentSleepScheduleWithError:&v15];
   v6 = v15;
   if (!v5)
   {
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(logCopy, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
       v17 = v6;
       v10 = "No sleep schedule found, use regular model. Error: %@";
-      v11 = v3;
+      v11 = logCopy;
       v12 = 12;
 LABEL_9:
       _os_log_impl(&dword_21B766000, v11, OS_LOG_TYPE_INFO, v10, buf, v12);
@@ -123,14 +123,14 @@ LABEL_10:
   }
 
   v7 = [v4 currentSleepScheduleStateWithError:0] & 0xFFFFFFFFFFFFFFFELL;
-  v8 = os_log_type_enabled(v3, OS_LOG_TYPE_INFO);
+  v8 = os_log_type_enabled(logCopy, OS_LOG_TYPE_INFO);
   if (v7 != 2)
   {
     if (v8)
     {
       *buf = 0;
       v10 = "Not in winddown or sleep schedule, use regular model.";
-      v11 = v3;
+      v11 = logCopy;
       v12 = 2;
       goto LABEL_9;
     }
@@ -142,7 +142,7 @@ LABEL_10:
   {
     *buf = 0;
     v9 = 1;
-    _os_log_impl(&dword_21B766000, v3, OS_LOG_TYPE_INFO, "In winddown or sleep schedule, use sleep schedule for OBC.", buf, 2u);
+    _os_log_impl(&dword_21B766000, logCopy, OS_LOG_TYPE_INFO, "In winddown or sleep schedule, use sleep schedule for OBC.", buf, 2u);
   }
 
   else

@@ -1,8 +1,8 @@
 @interface CKUploadRequestManagerResponseActionThrottler
 - (CKUploadRequestManagerResponseActionThrottler)init;
-- (double)throttleTimeForCount:(int64_t)a3 isRetry:(BOOL)a4;
-- (unint64_t)totalThrottleCountForAction:(int64_t)a3;
-- (void)gateResponseAction:(int64_t)a3 isRetry:(BOOL)a4;
+- (double)throttleTimeForCount:(int64_t)count isRetry:(BOOL)retry;
+- (unint64_t)totalThrottleCountForAction:(int64_t)action;
+- (void)gateResponseAction:(int64_t)action isRetry:(BOOL)retry;
 @end
 
 @implementation CKUploadRequestManagerResponseActionThrottler
@@ -27,18 +27,18 @@
   return v4;
 }
 
-- (void)gateResponseAction:(int64_t)a3 isRetry:(BOOL)a4
+- (void)gateResponseAction:(int64_t)action isRetry:(BOOL)retry
 {
   v6 = objc_opt_class();
   objc_msgSend_currentTime(v6, v7, v8);
 
-  MEMORY[0x1EEE66B58](self, sel_gateResponseAction_isRetry_currentTime_, a3);
+  MEMORY[0x1EEE66B58](self, sel_gateResponseAction_isRetry_currentTime_, action);
 }
 
-- (double)throttleTimeForCount:(int64_t)a3 isRetry:(BOOL)a4
+- (double)throttleTimeForCount:(int64_t)count isRetry:(BOOL)retry
 {
-  v4 = a4;
-  v8 = a3 - objc_msgSend_minimumThrottleCount(self, a2, a3);
+  retryCopy = retry;
+  v8 = count - objc_msgSend_minimumThrottleCount(self, a2, count);
   if (v8 < 0)
   {
     v17 = 0.0;
@@ -69,7 +69,7 @@
   }
 
   result = v17;
-  if (v4)
+  if (retryCopy)
   {
     objc_msgSend_minimumRetryTime(self, v6, v7, v17);
   }
@@ -82,16 +82,16 @@
   return result;
 }
 
-- (unint64_t)totalThrottleCountForAction:(int64_t)a3
+- (unint64_t)totalThrottleCountForAction:(int64_t)action
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_responseActionToMetadata(v4, v5, v6);
-  v9 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v8, a3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_responseActionToMetadata(selfCopy, v5, v6);
+  v9 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v8, action);
   v11 = objc_msgSend_objectForKeyedSubscript_(v7, v10, v9);
   v14 = objc_msgSend_totalThrottleCount(v11, v12, v13);
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   return v14;
 }
 

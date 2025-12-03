@@ -1,62 +1,62 @@
 @interface HMDMediaPlaybackActionEvent
-- (BOOL)shouldTriggerMicroLocationLocalizationScanForLogEventObserver:(id)a3;
-- (BOOL)shouldTriggerMicroLocationRecordingScanForLogEventObserver:(id)a3;
-- (HMDMediaPlaybackActionEvent)initWithIsPlaybackArchivePresent:(BOOL)a3 playbackStateNumber:(id)a4 volumeNumber:(id)a5 sourceNumber:(id)a6 sourceClientName:(id)a7 accessories:(id)a8;
+- (BOOL)shouldTriggerMicroLocationLocalizationScanForLogEventObserver:(id)observer;
+- (BOOL)shouldTriggerMicroLocationRecordingScanForLogEventObserver:(id)observer;
+- (HMDMediaPlaybackActionEvent)initWithIsPlaybackArchivePresent:(BOOL)present playbackStateNumber:(id)number volumeNumber:(id)volumeNumber sourceNumber:(id)sourceNumber sourceClientName:(id)name accessories:(id)accessories;
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)playbackStateString;
 - (NSString)sourceString;
-- (id)biomeEventsRepresentationForLogObserver:(id)a3;
-- (id)microLocationMetadataForLogEventObserver:(id)a3;
+- (id)biomeEventsRepresentationForLogObserver:(id)observer;
+- (id)microLocationMetadataForLogEventObserver:(id)observer;
 @end
 
 @implementation HMDMediaPlaybackActionEvent
 
-- (id)biomeEventsRepresentationForLogObserver:(id)a3
+- (id)biomeEventsRepresentationForLogObserver:(id)observer
 {
   v101 = *MEMORY[0x277D85DE8];
-  v72 = a3;
-  v89 = self;
-  v4 = [(HMDMediaPlaybackActionEvent *)self accessories];
-  v5 = [v4 na_firstObjectPassingTest:&__block_literal_global_709];
-  v6 = [v5 home];
+  observerCopy = observer;
+  selfCopy = self;
+  accessories = [(HMDMediaPlaybackActionEvent *)self accessories];
+  v5 = [accessories na_firstObjectPassingTest:&__block_literal_global_709];
+  home = [v5 home];
 
-  v83 = v6;
-  if (v6)
+  v83 = home;
+  if (home)
   {
-    if (v89)
+    if (selfCopy)
     {
       v7 = MEMORY[0x277CCA970];
-      v8 = v6;
+      v8 = home;
       v9 = [v7 alloc];
-      v10 = [(HMMDatedLogEvent *)v89 startDate];
-      v11 = [(HMMDatedLogEvent *)v89 endDate];
-      v12 = [v9 initWithStartDate:v10 endDate:v11];
+      startDate = [(HMMDatedLogEvent *)selfCopy startDate];
+      endDate = [(HMMDatedLogEvent *)selfCopy endDate];
+      v12 = [v9 initWithStartDate:startDate endDate:endDate];
 
       v13 = objc_alloc(MEMORY[0x277CF1980]);
-      v14 = [v8 spiClientIdentifier];
-      v15 = [v14 UUIDString];
-      v16 = [v8 atHomeLevel];
+      spiClientIdentifier = [v8 spiClientIdentifier];
+      uUIDString = [spiClientIdentifier UUIDString];
+      atHomeLevel = [v8 atHomeLevel];
 
-      v17 = (v16 & 0xFFFFFFFFFFFFFFFELL) == 2;
-      v18 = [(HMDMediaPlaybackActionEvent *)v89 sourceNumber];
-      v19 = HMDRequestSourceAsString([v18 unsignedIntegerValue]);
-      v20 = [(HMDMediaPlaybackActionEvent *)v89 sourceClientName];
-      v21 = [(HMDMediaPlaybackActionEvent *)v89 clientMetricIdentifier];
-      if (v21)
+      v17 = (atHomeLevel & 0xFFFFFFFFFFFFFFFELL) == 2;
+      sourceNumber = [(HMDMediaPlaybackActionEvent *)selfCopy sourceNumber];
+      v19 = HMDRequestSourceAsString([sourceNumber unsignedIntegerValue]);
+      sourceClientName = [(HMDMediaPlaybackActionEvent *)selfCopy sourceClientName];
+      clientMetricIdentifier = [(HMDMediaPlaybackActionEvent *)selfCopy clientMetricIdentifier];
+      if (clientMetricIdentifier)
       {
-        v74 = [v13 initWithDateInterval:v12 homeUniqueIdentifier:v15 homeOccupancy:v17 source:v19 clientName:v20 eventCorrelationIdentifier:v21];
+        v74 = [v13 initWithDateInterval:v12 homeUniqueIdentifier:uUIDString homeOccupancy:v17 source:v19 clientName:sourceClientName eventCorrelationIdentifier:clientMetricIdentifier];
       }
 
       else
       {
-        v27 = [MEMORY[0x277CCAD78] UUID];
-        [v27 UUIDString];
-        v87 = v14;
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        [uUID UUIDString];
+        v87 = spiClientIdentifier;
         v29 = v28 = v12;
-        v74 = [v13 initWithDateInterval:v28 homeUniqueIdentifier:v15 homeOccupancy:v17 source:v19 clientName:v20 eventCorrelationIdentifier:v29];
+        v74 = [v13 initWithDateInterval:v28 homeUniqueIdentifier:uUIDString homeOccupancy:v17 source:v19 clientName:sourceClientName eventCorrelationIdentifier:v29];
 
         v12 = v28;
-        v14 = v87;
+        spiClientIdentifier = v87;
       }
     }
 
@@ -66,14 +66,14 @@
     }
 
     v30 = MEMORY[0x277CBEB18];
-    v31 = [(HMDMediaPlaybackActionEvent *)v89 accessories];
-    v73 = [v30 arrayWithCapacity:{objc_msgSend(v31, "count")}];
+    accessories2 = [(HMDMediaPlaybackActionEvent *)selfCopy accessories];
+    v73 = [v30 arrayWithCapacity:{objc_msgSend(accessories2, "count")}];
 
     v94 = 0u;
     v95 = 0u;
     v92 = 0u;
     v93 = 0u;
-    obj = [(HMDMediaPlaybackActionEvent *)v89 accessories];
+    obj = [(HMDMediaPlaybackActionEvent *)selfCopy accessories];
     v88 = [obj countByEnumeratingWithState:&v92 objects:v100 count:16];
     if (v88)
     {
@@ -89,61 +89,61 @@
           }
 
           v34 = *(*(&v92 + 1) + 8 * i);
-          v35 = [v34 room];
-          if (v35)
+          room = [v34 room];
+          if (room)
           {
-            v36 = [v34 accessoryProfiles];
-            v37 = [v36 na_firstObjectPassingTest:&__block_literal_global_77];
+            accessoryProfiles = [v34 accessoryProfiles];
+            v37 = [accessoryProfiles na_firstObjectPassingTest:&__block_literal_global_77];
 
             if (v37)
             {
-              v38 = [v83 zones];
+              zones = [v83 zones];
               v90[0] = MEMORY[0x277D85DD0];
               v90[1] = 3221225472;
               v90[2] = __85__HMDMediaPlaybackActionEvent_BiomeLogging__biomeEventsRepresentationForLogObserver___block_invoke_79;
               v90[3] = &unk_27972E2D8;
-              v86 = v35;
-              v39 = v35;
+              v86 = room;
+              v39 = room;
               v91 = v39;
-              v40 = [v38 na_filter:v90];
+              v40 = [zones na_filter:v90];
 
               v84 = [v40 na_map:&__block_literal_global_83];
               v41 = [v40 na_map:&__block_literal_global_85];
               v42 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-              v43 = [(HMDMediaPlaybackActionEvent *)v89 playbackStateNumber];
-              v44 = [v43 integerValue];
+              playbackStateNumber = [(HMDMediaPlaybackActionEvent *)selfCopy playbackStateNumber];
+              integerValue = [playbackStateNumber integerValue];
 
-              if (v44)
+              if (integerValue)
               {
-                v45 = [(HMDMediaPlaybackActionEvent *)v89 playbackStateNumber];
-                [v42 setObject:v45 forKeyedSubscript:@"playback-state"];
+                playbackStateNumber2 = [(HMDMediaPlaybackActionEvent *)selfCopy playbackStateNumber];
+                [v42 setObject:playbackStateNumber2 forKeyedSubscript:@"playback-state"];
               }
 
               v85 = v40;
-              v46 = [(HMDMediaPlaybackActionEvent *)v89 volumeNumber];
+              volumeNumber = [(HMDMediaPlaybackActionEvent *)selfCopy volumeNumber];
 
-              if (v46)
+              if (volumeNumber)
               {
-                v47 = [(HMDMediaPlaybackActionEvent *)v89 volumeNumber];
-                [v42 setObject:v47 forKeyedSubscript:@"volume"];
+                volumeNumber2 = [(HMDMediaPlaybackActionEvent *)selfCopy volumeNumber];
+                [v42 setObject:volumeNumber2 forKeyedSubscript:@"volume"];
               }
 
               if ([v42 count])
               {
                 v77 = objc_alloc(MEMORY[0x277CF1988]);
-                v79 = [v34 spiClientIdentifier];
-                v76 = [v79 UUIDString];
+                spiClientIdentifier2 = [v34 spiClientIdentifier];
+                uUIDString2 = [spiClientIdentifier2 UUIDString];
                 v48 = [v42 copy];
                 [v37 mediaRouteID];
                 v49 = v80 = v42;
-                v78 = [v39 spiClientIdentifier];
-                [v78 UUIDString];
+                spiClientIdentifier3 = [v39 spiClientIdentifier];
+                [spiClientIdentifier3 UUIDString];
                 v50 = v81 = v37;
-                v51 = [v34 name];
-                v52 = [v39 name];
-                v53 = [v83 name];
+                name = [v34 name];
+                name2 = [v39 name];
+                name3 = [v83 name];
                 v54 = v84;
-                v55 = [v77 initWithBase:v74 accessoryUniqueIdentifier:v76 accessoryStateString:MEMORY[0x277CBEC10] accessoryStateNumber:v48 accessoryStateData:MEMORY[0x277CBEC10] accessoryMediaRouteIdentifier:v49 zoneUniqueIdentifiers:v84 roomUniqueIdentifier:v50 accessoryName:v51 roomName:v52 zoneNames:v41 homeName:v53];
+                v55 = [v77 initWithBase:v74 accessoryUniqueIdentifier:uUIDString2 accessoryStateString:MEMORY[0x277CBEC10] accessoryStateNumber:v48 accessoryStateData:MEMORY[0x277CBEC10] accessoryMediaRouteIdentifier:v49 zoneUniqueIdentifiers:v84 roomUniqueIdentifier:v50 accessoryName:name roomName:name2 zoneNames:v41 homeName:name3];
                 [v73 addObject:v55];
 
                 v37 = v81;
@@ -156,7 +156,7 @@
               else
               {
                 v66 = objc_autoreleasePoolPush();
-                v67 = v89;
+                v67 = selfCopy;
                 v68 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
                 {
@@ -174,25 +174,25 @@
                 v56 = v40;
               }
 
-              v35 = v86;
+              room = v86;
             }
 
             else
             {
               v61 = objc_autoreleasePoolPush();
-              v62 = v89;
+              v62 = selfCopy;
               v63 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
               {
                 HMFGetLogIdentifier();
-                v65 = v64 = v35;
+                v65 = v64 = room;
                 *buf = 138543618;
                 v97 = v65;
                 v98 = 2112;
                 v99 = v34;
                 _os_log_impl(&dword_2531F8000, v63, OS_LOG_TYPE_ERROR, "%{public}@Unable to log event metadata to biome, no media profile for media accessory: %@", buf, 0x16u);
 
-                v35 = v64;
+                room = v64;
                 v37 = 0;
               }
 
@@ -203,7 +203,7 @@
           else
           {
             v57 = objc_autoreleasePoolPush();
-            v58 = v89;
+            v58 = selfCopy;
             v59 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
             {
@@ -214,7 +214,7 @@
               v99 = v34;
               _os_log_impl(&dword_2531F8000, v59, OS_LOG_TYPE_ERROR, "%{public}@Unable to log media event metadata to biome, no room for accessory: %@", buf, 0x16u);
 
-              v35 = 0;
+              room = 0;
             }
 
             objc_autoreleasePoolPop(v57);
@@ -233,7 +233,7 @@
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v89;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -287,15 +287,15 @@ BOOL __85__HMDMediaPlaybackActionEvent_BiomeLogging__biomeEventsRepresentationFo
   return v3;
 }
 
-- (BOOL)shouldTriggerMicroLocationRecordingScanForLogEventObserver:(id)a3
+- (BOOL)shouldTriggerMicroLocationRecordingScanForLogEventObserver:(id)observer
 {
-  v4 = [(HMDMediaPlaybackActionEvent *)self numAccessoriesInHome];
-  v5 = [(HMDMediaPlaybackActionEvent *)self numNonEmptyScenesInHome];
-  v6 = [(HMDMediaPlaybackActionEvent *)self sourceNumber];
-  v7 = [v6 unsignedIntegerValue];
-  if (v5 + v4 > 3)
+  numAccessoriesInHome = [(HMDMediaPlaybackActionEvent *)self numAccessoriesInHome];
+  numNonEmptyScenesInHome = [(HMDMediaPlaybackActionEvent *)self numNonEmptyScenesInHome];
+  sourceNumber = [(HMDMediaPlaybackActionEvent *)self sourceNumber];
+  unsignedIntegerValue = [sourceNumber unsignedIntegerValue];
+  if (numNonEmptyScenesInHome + numAccessoriesInHome > 3)
   {
-    v8 = (v7 < 7) & ((0x18u >> v7) ^ 1);
+    v8 = (unsignedIntegerValue < 7) & ((0x18u >> unsignedIntegerValue) ^ 1);
   }
 
   else
@@ -306,15 +306,15 @@ BOOL __85__HMDMediaPlaybackActionEvent_BiomeLogging__biomeEventsRepresentationFo
   return v8;
 }
 
-- (BOOL)shouldTriggerMicroLocationLocalizationScanForLogEventObserver:(id)a3
+- (BOOL)shouldTriggerMicroLocationLocalizationScanForLogEventObserver:(id)observer
 {
-  v4 = [(HMDMediaPlaybackActionEvent *)self numAccessoriesInHome];
-  v5 = [(HMDMediaPlaybackActionEvent *)self numNonEmptyScenesInHome];
-  v6 = [(HMDMediaPlaybackActionEvent *)self sourceNumber];
-  v7 = [v6 unsignedIntegerValue];
-  if (v5 + v4 > 3)
+  numAccessoriesInHome = [(HMDMediaPlaybackActionEvent *)self numAccessoriesInHome];
+  numNonEmptyScenesInHome = [(HMDMediaPlaybackActionEvent *)self numNonEmptyScenesInHome];
+  sourceNumber = [(HMDMediaPlaybackActionEvent *)self sourceNumber];
+  unsignedIntegerValue = [sourceNumber unsignedIntegerValue];
+  if (numNonEmptyScenesInHome + numAccessoriesInHome > 3)
   {
-    v8 = (v7 < 7) & ((0x18u >> v7) ^ 1);
+    v8 = (unsignedIntegerValue < 7) & ((0x18u >> unsignedIntegerValue) ^ 1);
   }
 
   else
@@ -325,28 +325,28 @@ BOOL __85__HMDMediaPlaybackActionEvent_BiomeLogging__biomeEventsRepresentationFo
   return v8;
 }
 
-- (id)microLocationMetadataForLogEventObserver:(id)a3
+- (id)microLocationMetadataForLogEventObserver:(id)observer
 {
-  v4 = [(HMDMediaPlaybackActionEvent *)self accessories];
-  v5 = [v4 firstObject];
+  accessories = [(HMDMediaPlaybackActionEvent *)self accessories];
+  firstObject = [accessories firstObject];
 
-  v6 = [(HMDMediaPlaybackActionEvent *)self playbackStateNumber];
-  v7 = [v6 integerValue];
+  playbackStateNumber = [(HMDMediaPlaybackActionEvent *)self playbackStateNumber];
+  integerValue = [playbackStateNumber integerValue];
 
-  if (v7)
+  if (integerValue)
   {
-    v8 = [(HMDMediaPlaybackActionEvent *)self playbackStateString];
+    playbackStateString = [(HMDMediaPlaybackActionEvent *)self playbackStateString];
     v9 = @"playback-state";
   }
 
   else
   {
-    v10 = [(HMDMediaPlaybackActionEvent *)self volumeNumber];
+    volumeNumber = [(HMDMediaPlaybackActionEvent *)self volumeNumber];
 
-    if (v10)
+    if (volumeNumber)
     {
-      v11 = [(HMDMediaPlaybackActionEvent *)self volumeNumber];
-      v8 = [v11 stringValue];
+      volumeNumber2 = [(HMDMediaPlaybackActionEvent *)self volumeNumber];
+      playbackStateString = [volumeNumber2 stringValue];
 
       v9 = @"volume";
     }
@@ -354,74 +354,74 @@ BOOL __85__HMDMediaPlaybackActionEvent_BiomeLogging__biomeEventsRepresentationFo
     else
     {
       v9 = @"media";
-      v8 = @"unknown";
+      playbackStateString = @"unknown";
     }
   }
 
   v12 = MEMORY[0x277D28780];
-  v13 = [v5 spiClientIdentifier];
-  v14 = [v13 UUIDString];
-  v15 = [(HMDMediaPlaybackActionEvent *)self sourceString];
-  v16 = [v5 room];
-  v17 = [v16 spiClientIdentifier];
-  v18 = [v17 UUIDString];
-  v19 = [v12 metadataForHomekitAccessoryControlEventWithUUID:v14 stateString:v8 serviceUUID:v9 serviceType:v9 characteristicType:v9 serviceGroupUUID:&stru_286509E58 source:v15 roomUUID:v18];
+  spiClientIdentifier = [firstObject spiClientIdentifier];
+  uUIDString = [spiClientIdentifier UUIDString];
+  sourceString = [(HMDMediaPlaybackActionEvent *)self sourceString];
+  room = [firstObject room];
+  spiClientIdentifier2 = [room spiClientIdentifier];
+  uUIDString2 = [spiClientIdentifier2 UUIDString];
+  v19 = [v12 metadataForHomekitAccessoryControlEventWithUUID:uUIDString stateString:playbackStateString serviceUUID:v9 serviceType:v9 characteristicType:v9 serviceGroupUUID:&stru_286509E58 source:sourceString roomUUID:uUIDString2];
 
   return v19;
 }
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDMediaPlaybackActionEvent isPlaybackArchivePresent](self, "isPlaybackArchivePresent")}];
-  [v3 setObject:v4 forKeyedSubscript:@"playbackArchivePresent"];
+  [dictionary setObject:v4 forKeyedSubscript:@"playbackArchivePresent"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDMediaPlaybackActionEvent numberOfMediaProfiles](self, "numberOfMediaProfiles")}];
-  [v3 setObject:v5 forKeyedSubscript:@"numberOfMediaProfiles"];
+  [dictionary setObject:v5 forKeyedSubscript:@"numberOfMediaProfiles"];
 
   v6 = +[HMDLogEventHistograms highVolumeHistogram];
   v7 = [v6 intervalIndexForValue:{-[HMMLogEvent durationMilliseconds](self, "durationMilliseconds")}];
-  [v3 setObject:v7 forKeyedSubscript:@"duration"];
+  [dictionary setObject:v7 forKeyedSubscript:@"duration"];
 
-  v8 = [(HMDMediaPlaybackActionEvent *)self volumeNumber];
-  if (v8)
+  volumeNumber = [(HMDMediaPlaybackActionEvent *)self volumeNumber];
+  if (volumeNumber)
   {
     v9 = +[HMDLogEventHistograms lowVolumeHistogram];
-    v10 = [(HMDMediaPlaybackActionEvent *)self volumeNumber];
-    v11 = [v9 intervalIndexForValue:{objc_msgSend(v10, "unsignedIntegerValue")}];
-    [v3 setObject:v11 forKeyedSubscript:@"volume"];
+    volumeNumber2 = [(HMDMediaPlaybackActionEvent *)self volumeNumber];
+    v11 = [v9 intervalIndexForValue:{objc_msgSend(volumeNumber2, "unsignedIntegerValue")}];
+    [dictionary setObject:v11 forKeyedSubscript:@"volume"];
   }
 
   else
   {
-    [v3 setObject:&unk_286628AC8 forKeyedSubscript:@"volume"];
+    [dictionary setObject:&unk_286628AC8 forKeyedSubscript:@"volume"];
   }
 
-  v12 = [(HMDMediaPlaybackActionEvent *)self playbackStateString];
-  [v3 setObject:v12 forKeyedSubscript:@"playbackState"];
+  playbackStateString = [(HMDMediaPlaybackActionEvent *)self playbackStateString];
+  [dictionary setObject:playbackStateString forKeyedSubscript:@"playbackState"];
 
-  v13 = [(HMDMediaPlaybackActionEvent *)self sourceString];
-  [v3 setObject:v13 forKeyedSubscript:@"actionSource"];
+  sourceString = [(HMDMediaPlaybackActionEvent *)self sourceString];
+  [dictionary setObject:sourceString forKeyedSubscript:@"actionSource"];
 
-  return v3;
+  return dictionary;
 }
 
 - (NSString)sourceString
 {
-  v2 = [(HMDMediaPlaybackActionEvent *)self sourceNumber];
-  v3 = HMDRequestSourceAsString([v2 unsignedIntegerValue]);
+  sourceNumber = [(HMDMediaPlaybackActionEvent *)self sourceNumber];
+  v3 = HMDRequestSourceAsString([sourceNumber unsignedIntegerValue]);
 
   return v3;
 }
 
 - (NSString)playbackStateString
 {
-  v3 = [(HMDMediaPlaybackActionEvent *)self playbackStateNumber];
+  playbackStateNumber = [(HMDMediaPlaybackActionEvent *)self playbackStateNumber];
 
-  if (v3)
+  if (playbackStateNumber)
   {
-    v4 = [(HMDMediaPlaybackActionEvent *)self playbackStateNumber];
-    [v4 integerValue];
+    playbackStateNumber2 = [(HMDMediaPlaybackActionEvent *)self playbackStateNumber];
+    [playbackStateNumber2 integerValue];
     v5 = playbackStateAsString();
   }
 
@@ -433,32 +433,32 @@ BOOL __85__HMDMediaPlaybackActionEvent_BiomeLogging__biomeEventsRepresentationFo
   return v5;
 }
 
-- (HMDMediaPlaybackActionEvent)initWithIsPlaybackArchivePresent:(BOOL)a3 playbackStateNumber:(id)a4 volumeNumber:(id)a5 sourceNumber:(id)a6 sourceClientName:(id)a7 accessories:(id)a8
+- (HMDMediaPlaybackActionEvent)initWithIsPlaybackArchivePresent:(BOOL)present playbackStateNumber:(id)number volumeNumber:(id)volumeNumber sourceNumber:(id)sourceNumber sourceClientName:(id)name accessories:(id)accessories
 {
-  v15 = a4;
-  v31 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  numberCopy = number;
+  volumeNumberCopy = volumeNumber;
+  sourceNumberCopy = sourceNumber;
+  nameCopy = name;
+  accessoriesCopy = accessories;
   v32.receiver = self;
   v32.super_class = HMDMediaPlaybackActionEvent;
   v19 = [(HMMDatedLogEvent *)&v32 init];
   if (v19)
   {
     [MEMORY[0x277D0F770] currentActivity];
-    v20 = v30 = v15;
-    v21 = [v20 clientMetricIdentifier];
+    v20 = v30 = numberCopy;
+    clientMetricIdentifier = [v20 clientMetricIdentifier];
     clientMetricIdentifier = v19->_clientMetricIdentifier;
-    v19->_clientMetricIdentifier = v21;
+    v19->_clientMetricIdentifier = clientMetricIdentifier;
 
-    v19->_isPlaybackArchivePresent = a3;
-    v19->_numberOfMediaProfiles = [v18 count];
-    objc_storeStrong(&v19->_playbackStateNumber, a4);
-    objc_storeStrong(&v19->_volumeNumber, a5);
-    objc_storeStrong(&v19->_sourceNumber, a6);
-    if (v17)
+    v19->_isPlaybackArchivePresent = present;
+    v19->_numberOfMediaProfiles = [accessoriesCopy count];
+    objc_storeStrong(&v19->_playbackStateNumber, number);
+    objc_storeStrong(&v19->_volumeNumber, volumeNumber);
+    objc_storeStrong(&v19->_sourceNumber, sourceNumber);
+    if (nameCopy)
     {
-      v23 = v17;
+      v23 = nameCopy;
     }
 
     else
@@ -467,18 +467,18 @@ BOOL __85__HMDMediaPlaybackActionEvent_BiomeLogging__biomeEventsRepresentationFo
     }
 
     objc_storeStrong(&v19->_sourceClientName, v23);
-    objc_storeStrong(&v19->_accessories, a8);
-    v24 = [v18 firstObject];
-    v25 = [v24 home];
+    objc_storeStrong(&v19->_accessories, accessories);
+    firstObject = [accessoriesCopy firstObject];
+    home = [firstObject home];
 
-    v26 = [v25 accessories];
-    v19->_numAccessoriesInHome = [v26 count];
+    accessories = [home accessories];
+    v19->_numAccessoriesInHome = [accessories count];
 
-    v27 = [v25 actionSets];
-    v28 = [v27 na_filter:&__block_literal_global_100394];
+    actionSets = [home actionSets];
+    v28 = [actionSets na_filter:&__block_literal_global_100394];
     v19->_numNonEmptyScenesInHome = [v28 count];
 
-    v15 = v30;
+    numberCopy = v30;
   }
 
   return v19;

@@ -1,38 +1,38 @@
 @interface PUEditingExtensionUndoAdapter
-- (PUEditingExtensionUndoAdapter)initWithButtonHost:(id)a3;
-- (void)_registerForUndoManagerNotifications:(id)a3;
-- (void)_unregisterForUndoManagerNotifications:(id)a3;
+- (PUEditingExtensionUndoAdapter)initWithButtonHost:(id)host;
+- (void)_registerForUndoManagerNotifications:(id)notifications;
+- (void)_unregisterForUndoManagerNotifications:(id)notifications;
 - (void)_updateButtonState;
-- (void)setUndoManager:(id)a3;
+- (void)setUndoManager:(id)manager;
 @end
 
 @implementation PUEditingExtensionUndoAdapter
 
 - (void)_updateButtonState
 {
-  v4 = [(PUEditingExtensionUndoAdapter *)self buttonHost];
-  v3 = [(PUEditingExtensionUndoAdapter *)self undoManager];
-  [v4 setUndoEnabled:objc_msgSend(v3 redoEnabled:{"canUndo"), objc_msgSend(v3, "canRedo")}];
+  buttonHost = [(PUEditingExtensionUndoAdapter *)self buttonHost];
+  undoManager = [(PUEditingExtensionUndoAdapter *)self undoManager];
+  [buttonHost setUndoEnabled:objc_msgSend(undoManager redoEnabled:{"canUndo"), objc_msgSend(undoManager, "canRedo")}];
 }
 
-- (void)_unregisterForUndoManagerNotifications:(id)a3
+- (void)_unregisterForUndoManagerNotifications:(id)notifications
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x1E696AA18] object:v5];
-  [v6 removeObserver:self name:*MEMORY[0x1E696AA30] object:v5];
-  [v6 removeObserver:self name:*MEMORY[0x1E696AA28] object:v5];
+  notificationsCopy = notifications;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696AA18] object:notificationsCopy];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696AA30] object:notificationsCopy];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696AA28] object:notificationsCopy];
 }
 
-- (void)_registerForUndoManagerNotifications:(id)a3
+- (void)_registerForUndoManagerNotifications:(id)notifications
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 addObserver:self selector:sel__updateButtonState name:*MEMORY[0x1E696AA18] object:v5];
-  [v6 addObserver:self selector:sel__updateButtonState name:*MEMORY[0x1E696AA30] object:v5];
-  [v6 addObserver:self selector:sel__updateButtonState name:*MEMORY[0x1E696AA28] object:v5];
+  notificationsCopy = notifications;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateButtonState name:*MEMORY[0x1E696AA18] object:notificationsCopy];
+  [defaultCenter addObserver:self selector:sel__updateButtonState name:*MEMORY[0x1E696AA30] object:notificationsCopy];
+  [defaultCenter addObserver:self selector:sel__updateButtonState name:*MEMORY[0x1E696AA28] object:notificationsCopy];
 }
 
 void __44__PUEditingExtensionUndoAdapter_performRedo__block_invoke(uint64_t a1)
@@ -47,45 +47,45 @@ void __44__PUEditingExtensionUndoAdapter_performUndo__block_invoke(uint64_t a1)
   [v1 undo];
 }
 
-- (void)setUndoManager:(id)a3
+- (void)setUndoManager:(id)manager
 {
-  v5 = a3;
-  v6 = v5;
+  managerCopy = manager;
+  v6 = managerCopy;
   undoManager = self->_undoManager;
-  if (undoManager != v5)
+  if (undoManager != managerCopy)
   {
-    v9 = v5;
+    v9 = managerCopy;
     if (undoManager)
     {
       [(PUEditingExtensionUndoAdapter *)self _unregisterForUndoManagerNotifications:?];
     }
 
-    objc_storeStrong(&self->_undoManager, a3);
-    v8 = [(PUEditingExtensionUndoAdapter *)self buttonHost];
-    [v8 setShowUndoRedo:v9 != 0];
+    objc_storeStrong(&self->_undoManager, manager);
+    buttonHost = [(PUEditingExtensionUndoAdapter *)self buttonHost];
+    [buttonHost setShowUndoRedo:v9 != 0];
 
-    v5 = [(PUEditingExtensionUndoAdapter *)self _updateButtonState];
+    managerCopy = [(PUEditingExtensionUndoAdapter *)self _updateButtonState];
     v6 = v9;
     if (v9)
     {
-      v5 = [(PUEditingExtensionUndoAdapter *)self _registerForUndoManagerNotifications:v9];
+      managerCopy = [(PUEditingExtensionUndoAdapter *)self _registerForUndoManagerNotifications:v9];
       v6 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](managerCopy, v6);
 }
 
-- (PUEditingExtensionUndoAdapter)initWithButtonHost:(id)a3
+- (PUEditingExtensionUndoAdapter)initWithButtonHost:(id)host
 {
-  v5 = a3;
+  hostCopy = host;
   v9.receiver = self;
   v9.super_class = PUEditingExtensionUndoAdapter;
   v6 = [(PUEditingExtensionUndoAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_buttonHost, a3);
+    objc_storeStrong(&v6->_buttonHost, host);
   }
 
   return v7;

@@ -1,21 +1,21 @@
 @interface BSKeyedSettings
-- (BOOL)BOOLForKey:(id)a3;
-- (BSKeyedSettings)initWithCoder:(id)a3;
-- (BSKeyedSettings)initWithSettings:(id)a3;
-- (BSKeyedSettings)initWithXPCDictionary:(id)a3;
-- (id)_keyForSetting:(id *)a1;
+- (BOOL)BOOLForKey:(id)key;
+- (BSKeyedSettings)initWithCoder:(id)coder;
+- (BSKeyedSettings)initWithSettings:(id)settings;
+- (BSKeyedSettings)initWithXPCDictionary:(id)dictionary;
+- (id)_keyForSetting:(id *)setting;
 - (id)_sortedSettingsForDescription;
 - (id)allKeys;
-- (id)objectForKey:(id)a3;
-- (int64_t)flagForKey:(id)a3;
-- (uint64_t)_settingForKey:(int)a3 saveKey:;
-- (void)_addDecodedKeys:(id *)a1;
-- (void)_applyToSettings:(id)a3 preserveDiffs:(BOOL)a4;
+- (id)objectForKey:(id)key;
+- (int64_t)flagForKey:(id)key;
+- (uint64_t)_settingForKey:(int)key saveKey:;
+- (void)_addDecodedKeys:(id *)keys;
+- (void)_applyToSettings:(id)settings preserveDiffs:(BOOL)diffs;
 - (void)_removeAllSettings;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)enumerateKeyedFlagsWithBlock:(id)a3;
-- (void)enumerateKeyedObjectsWithBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)enumerateKeyedFlagsWithBlock:(id)block;
+- (void)enumerateKeyedObjectsWithBlock:(id)block;
 @end
 
 @implementation BSKeyedSettings
@@ -23,16 +23,16 @@
 - (id)allKeys
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(BSIntegerMap *)self->_keyMap allValues];
-  v4 = [v2 setWithArray:v3];
+  allValues = [(BSIntegerMap *)self->_keyMap allValues];
+  v4 = [v2 setWithArray:allValues];
 
   return v4;
 }
 
 - (id)_sortedSettingsForDescription
 {
-  v3 = [(BSIntegerMap *)self->_keyMap allValues];
-  v4 = [v3 mutableCopy];
+  allValues = [(BSIntegerMap *)self->_keyMap allValues];
+  v4 = [allValues mutableCopy];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -91,11 +91,11 @@ id __48__BSKeyedSettings__sortedSettingsForDescription__block_invoke_2(uint64_t 
   return v4;
 }
 
-- (BSKeyedSettings)initWithSettings:(id)a3
+- (BSKeyedSettings)initWithSettings:(id)settings
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  settingsCopy = settings;
+  if (settingsCopy)
   {
     NSClassFromString(&cfstr_Bskeyedsetting.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -111,7 +111,7 @@ id __48__BSKeyedSettings__sortedSettingsForDescription__block_invoke_2(uint64_t 
         v22 = 2114;
         v23 = v17;
         v24 = 2048;
-        v25 = self;
+        selfCopy = self;
         v26 = 2114;
         v27 = @"BSKeyedSettings.m";
         v28 = 1024;
@@ -130,16 +130,16 @@ id __48__BSKeyedSettings__sortedSettingsForDescription__block_invoke_2(uint64_t 
 
   v19.receiver = self;
   v19.super_class = BSKeyedSettings;
-  v6 = [(BSSettings *)&v19 initWithSettings:v5];
+  v6 = [(BSSettings *)&v19 initWithSettings:settingsCopy];
   if (v6)
   {
-    if (v5)
+    if (settingsCopy)
     {
-      v7 = [v5[4] mutableCopy];
+      v7 = [settingsCopy[4] mutableCopy];
       keys = v6->_keys;
       v6->_keys = v7;
 
-      v9 = [v5[5] mutableCopy];
+      v9 = [settingsCopy[5] mutableCopy];
     }
 
     else
@@ -158,10 +158,10 @@ id __48__BSKeyedSettings__sortedSettingsForDescription__block_invoke_2(uint64_t 
   return v6;
 }
 
-- (int64_t)flagForKey:(id)a3
+- (int64_t)flagForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BSKeyedSettings *)self _settingForKey:v4 saveKey:0];
+  keyCopy = key;
+  v5 = [(BSKeyedSettings *)self _settingForKey:keyCopy saveKey:0];
   v8.receiver = self;
   v8.super_class = BSKeyedSettings;
   v6 = [(BSSettings *)&v8 flagForSetting:v5];
@@ -169,17 +169,17 @@ id __48__BSKeyedSettings__sortedSettingsForDescription__block_invoke_2(uint64_t 
   return v6;
 }
 
-- (uint64_t)_settingForKey:(int)a3 saveKey:
+- (uint64_t)_settingForKey:(int)key saveKey:
 {
   v43 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v7 = [v5 hash];
-    if (a3)
+    if (key)
     {
-      v8 = [*(a1 + 40) objectForKey:v7];
+      v8 = [*(self + 40) objectForKey:v7];
       if (v8)
       {
         if (([v6 isEqualToString:v8] & 1) == 0)
@@ -195,7 +195,7 @@ id __48__BSKeyedSettings__sortedSettingsForDescription__block_invoke_2(uint64_t 
             v14 = v33 = 2114;
             v34 = v14;
             v35 = 2048;
-            v36 = a1;
+            selfCopy4 = self;
             v37 = 2114;
             v38 = @"BSKeyedSettings.m";
             v39 = 1024;
@@ -216,7 +216,7 @@ id __48__BSKeyedSettings__sortedSettingsForDescription__block_invoke_2(uint64_t 
 
       else
       {
-        if (!*(a1 + 32))
+        if (!*(self + 32))
         {
           v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_keys != nil"];
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -229,7 +229,7 @@ id __48__BSKeyedSettings__sortedSettingsForDescription__block_invoke_2(uint64_t 
             v19 = v33 = 2114;
             v34 = v19;
             v35 = 2048;
-            v36 = a1;
+            selfCopy4 = self;
             v37 = 2114;
             v38 = @"BSKeyedSettings.m";
             v39 = 1024;
@@ -245,7 +245,7 @@ id __48__BSKeyedSettings__sortedSettingsForDescription__block_invoke_2(uint64_t 
           JUMPOUT(0x18FF8431CLL);
         }
 
-        if (!*(a1 + 40))
+        if (!*(self + 40))
         {
           v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_keyMap != nil"];
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -258,7 +258,7 @@ id __48__BSKeyedSettings__sortedSettingsForDescription__block_invoke_2(uint64_t 
             v24 = v33 = 2114;
             v34 = v24;
             v35 = 2048;
-            v36 = a1;
+            selfCopy4 = self;
             v37 = 2114;
             v38 = @"BSKeyedSettings.m";
             v39 = 1024;
@@ -287,7 +287,7 @@ id __48__BSKeyedSettings__sortedSettingsForDescription__block_invoke_2(uint64_t 
             v29 = v33 = 2114;
             v34 = v29;
             v35 = 2048;
-            v36 = a1;
+            selfCopy4 = self;
             v37 = 2114;
             v38 = @"BSKeyedSettings.m";
             v39 = 1024;
@@ -305,8 +305,8 @@ id __48__BSKeyedSettings__sortedSettingsForDescription__block_invoke_2(uint64_t 
 
         v9 = [v6 copy];
 
-        [*(a1 + 32) addObject:v9];
-        [*(a1 + 40) setObject:v9 forKey:v7];
+        [*(self + 32) addObject:v9];
+        [*(self + 40) setObject:v9 forKey:v7];
       }
 
       v6 = v9;
@@ -321,10 +321,10 @@ id __48__BSKeyedSettings__sortedSettingsForDescription__block_invoke_2(uint64_t 
   return v7;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BSKeyedSettings *)self _settingForKey:v4 saveKey:0];
+  keyCopy = key;
+  v5 = [(BSKeyedSettings *)self _settingForKey:keyCopy saveKey:0];
   v7.receiver = self;
   v7.super_class = BSKeyedSettings;
   LOBYTE(self) = [(BSSettings *)&v7 BOOLForSetting:v5];
@@ -332,10 +332,10 @@ id __48__BSKeyedSettings__sortedSettingsForDescription__block_invoke_2(uint64_t 
   return self;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BSKeyedSettings *)self _settingForKey:v4 saveKey:0];
+  keyCopy = key;
+  v5 = [(BSKeyedSettings *)self _settingForKey:keyCopy saveKey:0];
   v8.receiver = self;
   v8.super_class = BSKeyedSettings;
   v6 = [(BSSettings *)&v8 objectForSetting:v5];
@@ -343,18 +343,18 @@ id __48__BSKeyedSettings__sortedSettingsForDescription__block_invoke_2(uint64_t 
   return v6;
 }
 
-- (void)enumerateKeyedFlagsWithBlock:(id)a3
+- (void)enumerateKeyedFlagsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __48__BSKeyedSettings_enumerateKeyedFlagsWithBlock___block_invoke;
     v6[3] = &unk_1E72CC268;
     v6[4] = self;
-    v7 = v4;
+    v7 = blockCopy;
     [(BSSettings *)self _enumerateSettingsForFlagsWithBlock:v6];
   }
 }
@@ -368,29 +368,29 @@ void __48__BSKeyedSettings_enumerateKeyedFlagsWithBlock___block_invoke(uint64_t 
   }
 }
 
-- (id)_keyForSetting:(id *)a1
+- (id)_keyForSetting:(id *)setting
 {
-  if (a1)
+  if (setting)
   {
-    a1 = [a1[5] objectForKey:a2];
+    setting = [setting[5] objectForKey:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return setting;
 }
 
-- (void)enumerateKeyedObjectsWithBlock:(id)a3
+- (void)enumerateKeyedObjectsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __50__BSKeyedSettings_enumerateKeyedObjectsWithBlock___block_invoke;
     v6[3] = &unk_1E72CC268;
     v6[4] = self;
-    v7 = v4;
+    v7 = blockCopy;
     [(BSSettings *)self _enumerateSettingsForObjectsWithBlock:v6];
   }
 }
@@ -409,22 +409,22 @@ void __50__BSKeyedSettings_enumerateKeyedObjectsWithBlock___block_invoke(uint64_
   }
 }
 
-- (void)_applyToSettings:(id)a3 preserveDiffs:(BOOL)a4
+- (void)_applyToSettings:(id)settings preserveDiffs:(BOOL)diffs
 {
-  v4 = a4;
+  diffsCopy = diffs;
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  settingsCopy = settings;
+  if (settingsCopy)
   {
     v15.receiver = self;
     v15.super_class = BSKeyedSettings;
-    [(BSSettings *)&v15 _applyToSettings:v6 preserveDiffs:v4];
+    [(BSSettings *)&v15 _applyToSettings:settingsCopy preserveDiffs:diffsCopy];
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v7 = [(BSKeyedSettings *)self allKeys];
-    v8 = [v7 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    allKeys = [(BSKeyedSettings *)self allKeys];
+    v8 = [allKeys countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v8)
     {
       v9 = *v12;
@@ -435,14 +435,14 @@ void __50__BSKeyedSettings_enumerateKeyedObjectsWithBlock___block_invoke(uint64_
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allKeys);
           }
 
-          [(BSKeyedSettings *)v6 _settingForKey:1 saveKey:?];
+          [(BSKeyedSettings *)settingsCopy _settingForKey:1 saveKey:?];
         }
 
         while (v8 != v10);
-        v8 = [v7 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v11 objects:v16 count:16];
       }
 
       while (v8);
@@ -459,11 +459,11 @@ void __50__BSKeyedSettings_enumerateKeyedObjectsWithBlock___block_invoke(uint64_
   [(NSMutableSet *)self->_keys removeAllObjects];
 }
 
-- (void)_addDecodedKeys:(id *)a1
+- (void)_addDecodedKeys:(id *)keys
 {
   v33 = *MEMORY[0x1E69E9840];
   v15 = a2;
-  if (!a1[4] || !a1[5])
+  if (!keys[4] || !keys[5])
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_keys && _keyMap", v15];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -476,7 +476,7 @@ void __50__BSKeyedSettings_enumerateKeyedObjectsWithBlock___block_invoke(uint64_
       v23 = 2114;
       v24 = v13;
       v25 = 2048;
-      v26 = a1;
+      keysCopy = keys;
       v27 = 2114;
       v28 = @"BSKeyedSettings.m";
       v29 = 1024;
@@ -512,10 +512,10 @@ void __50__BSKeyedSettings_enumerateKeyedObjectsWithBlock___block_invoke(uint64_
 
         v7 = *(*(&v16 + 1) + 8 * i);
         v8 = [v7 hash];
-        if ([(BSSettings *)a1 _hasValueForSetting:v8])
+        if ([(BSSettings *)keys _hasValueForSetting:v8])
         {
-          [a1[4] addObject:v7];
-          [a1[5] setObject:v7 forKey:v8];
+          [keys[4] addObject:v7];
+          [keys[5] setObject:v7 forKey:v8];
         }
 
         else
@@ -539,57 +539,57 @@ void __50__BSKeyedSettings_enumerateKeyedObjectsWithBlock___block_invoke(uint64_
   }
 }
 
-- (BSKeyedSettings)initWithXPCDictionary:(id)a3
+- (BSKeyedSettings)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = BSKeyedSettings;
-  v5 = [(BSSettings *)&v8 initWithXPCDictionary:v4];
+  v5 = [(BSSettings *)&v8 initWithXPCDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = BSCreateDeserializedCFValueFromXPCDictionaryWithKey(v4, "BSKeys");
+    v6 = BSCreateDeserializedCFValueFromXPCDictionaryWithKey(dictionaryCopy, "BSKeys");
     [(BSKeyedSettings *)&v5->super.super.isa _addDecodedKeys:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v6.receiver = self;
   v6.super_class = BSKeyedSettings;
-  [(BSSettings *)&v6 encodeWithXPCDictionary:v4];
-  v5 = [(NSMutableSet *)self->_keys allObjects];
-  if ([v5 count])
+  [(BSSettings *)&v6 encodeWithXPCDictionary:dictionaryCopy];
+  allObjects = [(NSMutableSet *)self->_keys allObjects];
+  if ([allObjects count])
   {
-    BSSerializeCFValueToXPCDictionaryWithKey(v5, v4, "BSKeys");
+    BSSerializeCFValueToXPCDictionaryWithKey(allObjects, dictionaryCopy, "BSKeys");
   }
 }
 
-- (BSKeyedSettings)initWithCoder:(id)a3
+- (BSKeyedSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = BSKeyedSettings;
-  v5 = [(BSSettings *)&v8 initWithCoder:v4];
+  v5 = [(BSSettings *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"BSKeys"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"BSKeys"];
     [(BSKeyedSettings *)&v5->super.super.isa _addDecodedKeys:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = BSKeyedSettings;
-  [(BSSettings *)&v6 encodeWithCoder:v4];
-  v5 = [(NSMutableSet *)self->_keys allObjects];
-  [v4 encodeObject:v5 forKey:@"BSKeys"];
+  [(BSSettings *)&v6 encodeWithCoder:coderCopy];
+  allObjects = [(NSMutableSet *)self->_keys allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"BSKeys"];
 }
 
 @end

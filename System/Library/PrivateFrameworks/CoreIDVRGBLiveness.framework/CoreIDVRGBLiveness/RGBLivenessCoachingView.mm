@@ -1,12 +1,12 @@
 @interface RGBLivenessCoachingView
-- (_TtC18CoreIDVRGBLiveness23RGBLivenessCoachingView)initWithCoder:(id)a3;
-- (_TtC18CoreIDVRGBLiveness23RGBLivenessCoachingView)initWithFrame:(CGRect)a3;
+- (_TtC18CoreIDVRGBLiveness23RGBLivenessCoachingView)initWithCoder:(id)coder;
+- (_TtC18CoreIDVRGBLiveness23RGBLivenessCoachingView)initWithFrame:(CGRect)frame;
 - (void)didFinishVideoPlayBack;
 @end
 
 @implementation RGBLivenessCoachingView
 
-- (_TtC18CoreIDVRGBLiveness23RGBLivenessCoachingView)initWithCoder:(id)a3
+- (_TtC18CoreIDVRGBLiveness23RGBLivenessCoachingView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC18CoreIDVRGBLiveness23RGBLivenessCoachingView_completion);
   *v3 = 0;
@@ -19,11 +19,11 @@
 
 - (void)didFinishVideoPlayBack
 {
-  v2 = self;
+  selfCopy = self;
   sub_24572CA18();
 }
 
-- (_TtC18CoreIDVRGBLiveness23RGBLivenessCoachingView)initWithFrame:(CGRect)a3
+- (_TtC18CoreIDVRGBLiveness23RGBLivenessCoachingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

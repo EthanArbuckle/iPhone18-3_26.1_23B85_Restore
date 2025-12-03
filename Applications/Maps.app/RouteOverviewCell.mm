@@ -8,12 +8,12 @@
 + (id)primaryLabelFontProvider;
 + (id)secondaryLabelFontProvider;
 - (BOOL)isGoButtonProgressVisible;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (DirectionsElevationGraphView)elevationGraphView;
 - (MapsThemeMultiPartLabel)routeDescriptionLabel;
 - (RouteAdvisoriesView)advisoriesView;
-- (RouteOverviewCell)initWithCoder:(id)a3;
-- (RouteOverviewCell)initWithFrame:(CGRect)a3;
+- (RouteOverviewCell)initWithCoder:(id)coder;
+- (RouteOverviewCell)initWithFrame:(CGRect)frame;
 - (RouteOverviewCellDelegate)delegate;
 - (TransitArtworkListView)artworkList;
 - (UIButton)detailsButton;
@@ -24,37 +24,37 @@
 - (int64_t)_resolvedGrouping;
 - (void)_createSubviews;
 - (void)_didTapAutomaticSharingButton;
-- (void)_didTapDetailsButton:(id)a3;
-- (void)_didTapPrimaryActionButton:(id)a3;
-- (void)_doubleTap:(id)a3;
+- (void)_didTapDetailsButton:(id)button;
+- (void)_didTapPrimaryActionButton:(id)button;
+- (void)_doubleTap:(id)tap;
 - (void)_reloadElevationChart;
 - (void)_resetBookButtonTitle;
-- (void)_setDetailsButtonRotated:(BOOL)a3 animated:(BOOL)a4;
+- (void)_setDetailsButtonRotated:(BOOL)rotated animated:(BOOL)animated;
 - (void)_setupConstraints;
 - (void)_updateButtonVisibility;
 - (void)_updateColorsForSelection;
-- (void)_updateConstraintsForArtworkListVisible:(BOOL)a3 elevationGraphViewVisible:(BOOL)a4 advisoriesViewVisible:(BOOL)a5 tertiaryLabelVisible:(BOOL)a6 detailsButtonVisible:(BOOL)a7;
+- (void)_updateConstraintsForArtworkListVisible:(BOOL)visible elevationGraphViewVisible:(BOOL)viewVisible advisoriesViewVisible:(BOOL)advisoriesViewVisible tertiaryLabelVisible:(BOOL)labelVisible detailsButtonVisible:(BOOL)buttonVisible;
 - (void)_updateGoButtonWidthConstraint;
 - (void)_updateStepsButtonWidthConstraint;
 - (void)customInit;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)prepareForReuse;
-- (void)setAdvisoriesViewVisible:(BOOL)a3;
-- (void)setArtworkListVisible:(BOOL)a3;
-- (void)setBookButtonTitle:(id)a3;
-- (void)setButtonVisibility:(unint64_t)a3;
-- (void)setDetailsButtonRotated:(BOOL)a3 animated:(BOOL)a4;
-- (void)setDetailsButtonVisible:(BOOL)a3;
-- (void)setElevationGraphViewVisible:(BOOL)a3;
-- (void)setGoButtonProgress:(double)a3;
-- (void)setGoButtonProgressVisible:(BOOL)a3;
-- (void)setHasSelectedStep:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setOverrideCellGrouping:(int64_t)a3;
-- (void)setPrimaryLabelCompanionImage:(id)a3;
-- (void)setRouteDescritptionLabelVisible:(BOOL)a3;
-- (void)setSelectionBackgroundVisible:(BOOL)a3;
-- (void)setTertiaryLabelVisible:(BOOL)a3;
+- (void)setAdvisoriesViewVisible:(BOOL)visible;
+- (void)setArtworkListVisible:(BOOL)visible;
+- (void)setBookButtonTitle:(id)title;
+- (void)setButtonVisibility:(unint64_t)visibility;
+- (void)setDetailsButtonRotated:(BOOL)rotated animated:(BOOL)animated;
+- (void)setDetailsButtonVisible:(BOOL)visible;
+- (void)setElevationGraphViewVisible:(BOOL)visible;
+- (void)setGoButtonProgress:(double)progress;
+- (void)setGoButtonProgressVisible:(BOOL)visible;
+- (void)setHasSelectedStep:(BOOL)step;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setOverrideCellGrouping:(int64_t)grouping;
+- (void)setPrimaryLabelCompanionImage:(id)image;
+- (void)setRouteDescritptionLabelVisible:(BOOL)visible;
+- (void)setSelectionBackgroundVisible:(BOOL)visible;
+- (void)setTertiaryLabelVisible:(BOOL)visible;
 - (void)updateConstraints;
 - (void)updateTheme;
 @end
@@ -78,32 +78,32 @@
 
 - (void)_didTapAutomaticSharingButton
 {
-  v3 = [(RouteOverviewCell *)self delegate];
+  delegate = [(RouteOverviewCell *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(RouteOverviewCell *)self delegate];
-    [v5 didTapAutomaticSharingButtonForRouteOverviewCell:self];
+    delegate2 = [(RouteOverviewCell *)self delegate];
+    [delegate2 didTapAutomaticSharingButtonForRouteOverviewCell:self];
   }
 }
 
-- (void)_didTapDetailsButton:(id)a3
+- (void)_didTapDetailsButton:(id)button
 {
-  v4 = [(RouteOverviewCell *)self delegate];
+  delegate = [(RouteOverviewCell *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(RouteOverviewCell *)self delegate];
-    [v6 didTapDetailsButtonForRouteOverviewCell:self];
+    delegate2 = [(RouteOverviewCell *)self delegate];
+    [delegate2 didTapDetailsButtonForRouteOverviewCell:self];
   }
 }
 
-- (void)_didTapPrimaryActionButton:(id)a3
+- (void)_didTapPrimaryActionButton:(id)button
 {
-  v4 = [(RouteOverviewCell *)self delegate];
-  [v4 didTapRideBookingActionForRouteOverviewCell:self];
+  delegate = [(RouteOverviewCell *)self delegate];
+  [delegate didTapRideBookingActionForRouteOverviewCell:self];
 }
 
 - (void)_updateColorsForSelection
@@ -120,8 +120,8 @@
     [(MapsThemeMultiPartLabel *)self->_secondaryLabel setTextColor:v5];
 
     v6 = +[UIColor systemWhiteColor];
-    v7 = [(RouteOverviewCell *)self routeDescriptionLabel];
-    [v7 setTextColor:v6];
+    routeDescriptionLabel = [(RouteOverviewCell *)self routeDescriptionLabel];
+    [routeDescriptionLabel setTextColor:v6];
 
     v8 = +[UIColor systemWhiteColor];
     [(UILabel *)self->_tertiaryLabel setTextColor:v8];
@@ -167,46 +167,46 @@
   }
 }
 
-- (void)_updateConstraintsForArtworkListVisible:(BOOL)a3 elevationGraphViewVisible:(BOOL)a4 advisoriesViewVisible:(BOOL)a5 tertiaryLabelVisible:(BOOL)a6 detailsButtonVisible:(BOOL)a7
+- (void)_updateConstraintsForArtworkListVisible:(BOOL)visible elevationGraphViewVisible:(BOOL)viewVisible advisoriesViewVisible:(BOOL)advisoriesViewVisible tertiaryLabelVisible:(BOOL)labelVisible detailsButtonVisible:(BOOL)buttonVisible
 {
-  v160 = a5;
-  v161 = a7;
-  v7 = a6;
-  v159 = a4;
-  v8 = a3;
-  v10 = [(RouteOverviewCell *)self tertiaryLabelConstraints];
-  [NSLayoutConstraint deactivateConstraints:v10];
+  advisoriesViewVisibleCopy = advisoriesViewVisible;
+  buttonVisibleCopy = buttonVisible;
+  labelVisibleCopy = labelVisible;
+  viewVisibleCopy = viewVisible;
+  visibleCopy = visible;
+  tertiaryLabelConstraints = [(RouteOverviewCell *)self tertiaryLabelConstraints];
+  [NSLayoutConstraint deactivateConstraints:tertiaryLabelConstraints];
 
-  v11 = [(RouteOverviewCell *)self artworkListConstraints];
-  [NSLayoutConstraint deactivateConstraints:v11];
+  artworkListConstraints = [(RouteOverviewCell *)self artworkListConstraints];
+  [NSLayoutConstraint deactivateConstraints:artworkListConstraints];
 
-  v12 = [(RouteOverviewCell *)self elevationGraphViewConstraints];
-  [NSLayoutConstraint deactivateConstraints:v12];
+  elevationGraphViewConstraints = [(RouteOverviewCell *)self elevationGraphViewConstraints];
+  [NSLayoutConstraint deactivateConstraints:elevationGraphViewConstraints];
 
-  v13 = [(RouteOverviewCell *)self detailsButtonConstraints];
-  [NSLayoutConstraint deactivateConstraints:v13];
+  detailsButtonConstraints = [(RouteOverviewCell *)self detailsButtonConstraints];
+  [NSLayoutConstraint deactivateConstraints:detailsButtonConstraints];
 
-  v14 = [(RouteOverviewCell *)self advisoriesViewConstraints];
-  [NSLayoutConstraint deactivateConstraints:v14];
+  advisoriesViewConstraints = [(RouteOverviewCell *)self advisoriesViewConstraints];
+  [NSLayoutConstraint deactivateConstraints:advisoriesViewConstraints];
 
-  v15 = [(RouteOverviewCell *)self routeDescriptionLabelConstraints];
-  [NSLayoutConstraint deactivateConstraints:v15];
+  routeDescriptionLabelConstraints = [(RouteOverviewCell *)self routeDescriptionLabelConstraints];
+  [NSLayoutConstraint deactivateConstraints:routeDescriptionLabelConstraints];
 
-  v16 = [(RouteOverviewCell *)self contentBottomConstraint];
-  [v16 setActive:0];
+  contentBottomConstraint = [(RouteOverviewCell *)self contentBottomConstraint];
+  [contentBottomConstraint setActive:0];
 
   v162 = +[NSMutableArray array];
   v17 = sub_10000FA08(self);
-  v18 = [(RouteOverviewCell *)self secondaryLabel];
-  v19 = v18;
+  secondaryLabel = [(RouteOverviewCell *)self secondaryLabel];
+  v19 = secondaryLabel;
   if (v17 == 5)
   {
-    [v18 lastBaselineAnchor];
+    [secondaryLabel lastBaselineAnchor];
   }
 
   else
   {
-    [v18 bottomAnchor];
+    [secondaryLabel bottomAnchor];
   }
   v20 = ;
 
@@ -223,78 +223,78 @@
     }
 
     v22 = +[NSMutableArray array];
-    v23 = [(RouteOverviewCell *)self routeDescriptionLabel];
-    v24 = [v23 leadingAnchor];
-    v25 = [(RouteOverviewCell *)self contentGuide];
-    v26 = [v25 leadingAnchor];
-    v27 = [v24 constraintEqualToAnchor:v26];
+    routeDescriptionLabel = [(RouteOverviewCell *)self routeDescriptionLabel];
+    leadingAnchor = [routeDescriptionLabel leadingAnchor];
+    contentGuide = [(RouteOverviewCell *)self contentGuide];
+    leadingAnchor2 = [contentGuide leadingAnchor];
+    v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v22 addObject:v27];
 
-    v28 = [(RouteOverviewCell *)self routeDescriptionLabel];
-    v29 = [v28 trailingAnchor];
-    v30 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
-    v31 = [v30 leadingAnchor];
-    v32 = [v29 constraintEqualToAnchor:v31];
+    routeDescriptionLabel2 = [(RouteOverviewCell *)self routeDescriptionLabel];
+    trailingAnchor = [routeDescriptionLabel2 trailingAnchor];
+    labelTrailingToGoButtonLeadingLayoutGuide = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
+    leadingAnchor3 = [labelTrailingToGoButtonLeadingLayoutGuide leadingAnchor];
+    v32 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3];
     [v22 addObject:v32];
 
-    v33 = [(RouteOverviewCell *)self routeDescriptionLabel];
-    v34 = [v33 topAnchor];
-    v35 = [v34 constraintEqualToAnchor:v20];
+    routeDescriptionLabel3 = [(RouteOverviewCell *)self routeDescriptionLabel];
+    topAnchor = [routeDescriptionLabel3 topAnchor];
+    v35 = [topAnchor constraintEqualToAnchor:v20];
     v36 = [DynamicTypeWizard autoscaledConstraint:v35 constant:&stru_10165D908 withFontProvider:v21];
     [v22 addObject:v36];
 
     v37 = sub_10000FA08(self);
-    v38 = [(RouteOverviewCell *)self routeDescriptionLabel];
-    v39 = v38;
+    routeDescriptionLabel4 = [(RouteOverviewCell *)self routeDescriptionLabel];
+    v39 = routeDescriptionLabel4;
     if (v37 == 5)
     {
-      [v38 lastBaselineAnchor];
+      [routeDescriptionLabel4 lastBaselineAnchor];
     }
 
     else
     {
-      [v38 bottomAnchor];
+      [routeDescriptionLabel4 bottomAnchor];
     }
     v41 = ;
 
     [(RouteOverviewCell *)self setRouteDescriptionLabelConstraints:v22];
-    v42 = [(RouteOverviewCell *)self routeDescriptionLabelConstraints];
-    [v162 addObjectsFromArray:v42];
+    routeDescriptionLabelConstraints2 = [(RouteOverviewCell *)self routeDescriptionLabelConstraints];
+    [v162 addObjectsFromArray:routeDescriptionLabelConstraints2];
 
     v20 = v41;
-    if (v7)
+    if (labelVisibleCopy)
     {
 LABEL_15:
       v43 = +[NSMutableArray array];
-      v44 = [(RouteOverviewCell *)self tertiaryLabel];
-      v45 = [v44 leadingAnchor];
-      v46 = [(RouteOverviewCell *)self contentGuide];
-      v47 = [v46 leadingAnchor];
-      v48 = [v45 constraintEqualToAnchor:v47];
+      tertiaryLabel = [(RouteOverviewCell *)self tertiaryLabel];
+      leadingAnchor4 = [tertiaryLabel leadingAnchor];
+      contentGuide2 = [(RouteOverviewCell *)self contentGuide];
+      leadingAnchor5 = [contentGuide2 leadingAnchor];
+      v48 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
       [v43 addObject:v48];
 
-      v49 = [(RouteOverviewCell *)self tertiaryLabel];
-      v50 = [v49 trailingAnchor];
-      v51 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
-      v52 = [v51 leadingAnchor];
-      v53 = [v50 constraintEqualToAnchor:v52];
+      tertiaryLabel2 = [(RouteOverviewCell *)self tertiaryLabel];
+      trailingAnchor2 = [tertiaryLabel2 trailingAnchor];
+      labelTrailingToGoButtonLeadingLayoutGuide2 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
+      leadingAnchor6 = [labelTrailingToGoButtonLeadingLayoutGuide2 leadingAnchor];
+      v53 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor6];
       [v43 addObject:v53];
 
-      v54 = [(RouteOverviewCell *)self tertiaryLabel];
-      v55 = [v54 topAnchor];
-      v56 = [v55 constraintEqualToAnchor:v20];
+      tertiaryLabel3 = [(RouteOverviewCell *)self tertiaryLabel];
+      topAnchor2 = [tertiaryLabel3 topAnchor];
+      v56 = [topAnchor2 constraintEqualToAnchor:v20];
       v57 = [DynamicTypeWizard autoscaledConstraint:v56 constant:&stru_10165D908 withFontProvider:0.0];
       [v43 addObject:v57];
 
-      v58 = [(RouteOverviewCell *)self tertiaryLabel];
-      v59 = [v58 bottomAnchor];
+      tertiaryLabel4 = [(RouteOverviewCell *)self tertiaryLabel];
+      bottomAnchor = [tertiaryLabel4 bottomAnchor];
 
       [(RouteOverviewCell *)self setTertiaryLabelConstraints:v43];
-      v60 = [(RouteOverviewCell *)self tertiaryLabelConstraints];
-      [v162 addObjectsFromArray:v60];
+      tertiaryLabelConstraints2 = [(RouteOverviewCell *)self tertiaryLabelConstraints];
+      [v162 addObjectsFromArray:tertiaryLabelConstraints2];
 
-      v20 = v59;
-      if (v8)
+      v20 = bottomAnchor;
+      if (visibleCopy)
       {
         goto LABEL_16;
       }
@@ -309,14 +309,14 @@ LABEL_12:
   else
   {
     [(RouteOverviewCell *)self setRouteDescriptionLabelConstraints:0];
-    if (v7)
+    if (labelVisibleCopy)
     {
       goto LABEL_15;
     }
   }
 
   [(RouteOverviewCell *)self setTertiaryLabelConstraints:0];
-  if (!v8)
+  if (!visibleCopy)
   {
     goto LABEL_12;
   }
@@ -324,81 +324,81 @@ LABEL_12:
 LABEL_16:
   v40 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
   v61 = +[NSMutableArray array];
-  v62 = [(RouteOverviewCell *)self artworkList];
-  v63 = [v62 leadingAnchor];
-  v64 = [(RouteOverviewCell *)self contentGuide];
-  v65 = [v64 leadingAnchor];
-  v66 = [v63 constraintEqualToAnchor:v65];
+  artworkList = [(RouteOverviewCell *)self artworkList];
+  leadingAnchor7 = [artworkList leadingAnchor];
+  contentGuide3 = [(RouteOverviewCell *)self contentGuide];
+  leadingAnchor8 = [contentGuide3 leadingAnchor];
+  v66 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   [v61 addObject:v66];
 
-  v67 = [(RouteOverviewCell *)self artworkList];
-  v68 = [v67 trailingAnchor];
-  v69 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
-  v70 = [v69 leadingAnchor];
-  v71 = [v68 constraintEqualToAnchor:v70];
+  artworkList2 = [(RouteOverviewCell *)self artworkList];
+  trailingAnchor3 = [artworkList2 trailingAnchor];
+  labelTrailingToGoButtonLeadingLayoutGuide3 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
+  leadingAnchor9 = [labelTrailingToGoButtonLeadingLayoutGuide3 leadingAnchor];
+  v71 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor9];
   [v61 addObject:v71];
 
-  v72 = [(RouteOverviewCell *)self artworkList];
-  v73 = [v72 topAnchor];
-  v74 = [v73 constraintEqualToAnchor:v20 constant:10.0];
+  artworkList3 = [(RouteOverviewCell *)self artworkList];
+  topAnchor3 = [artworkList3 topAnchor];
+  v74 = [topAnchor3 constraintEqualToAnchor:v20 constant:10.0];
   [v61 addObject:v74];
 
-  v75 = [(RouteOverviewCell *)self artworkList];
-  v76 = [v75 bottomAnchor];
+  artworkList4 = [(RouteOverviewCell *)self artworkList];
+  bottomAnchor2 = [artworkList4 bottomAnchor];
 
   [(RouteOverviewCell *)self setArtworkListConstraints:v61];
-  v77 = [(RouteOverviewCell *)self artworkListConstraints];
-  [v162 addObjectsFromArray:v77];
+  artworkListConstraints2 = [(RouteOverviewCell *)self artworkListConstraints];
+  [v162 addObjectsFromArray:artworkListConstraints2];
 
-  v20 = v76;
+  v20 = bottomAnchor2;
 LABEL_17:
-  if (v159)
+  if (viewVisibleCopy)
   {
-    v78 = [v40[297] array];
-    v79 = [(RouteOverviewCell *)self elevationGraphView];
-    v80 = [v79 leadingAnchor];
-    v81 = [(RouteOverviewCell *)self contentGuide];
-    v82 = [v81 leadingAnchor];
-    v83 = [v80 constraintEqualToAnchor:v82];
-    [v78 addObject:v83];
+    array = [v40[297] array];
+    elevationGraphView = [(RouteOverviewCell *)self elevationGraphView];
+    leadingAnchor10 = [elevationGraphView leadingAnchor];
+    contentGuide4 = [(RouteOverviewCell *)self contentGuide];
+    leadingAnchor11 = [contentGuide4 leadingAnchor];
+    v83 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
+    [array addObject:v83];
 
     v84 = sub_10000FA08(self);
-    v85 = [(RouteOverviewCell *)self elevationGraphView];
-    v86 = v85;
+    elevationGraphView2 = [(RouteOverviewCell *)self elevationGraphView];
+    v86 = elevationGraphView2;
     if (v84 == 5)
     {
-      v87 = [v85 trailingAnchor];
-      v88 = [(RouteOverviewCell *)self contentGuide];
-      v89 = [v88 trailingAnchor];
-      v90 = [v87 constraintEqualToAnchor:v89];
-      [v78 addObject:v90];
+      trailingAnchor4 = [elevationGraphView2 trailingAnchor];
+      contentGuide5 = [(RouteOverviewCell *)self contentGuide];
+      trailingAnchor5 = [contentGuide5 trailingAnchor];
+      v90 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
+      [array addObject:v90];
     }
 
     else
     {
-      v87 = [v85 widthAnchor];
-      v88 = [v87 constraintEqualToConstant:80.0];
-      [v78 addObject:v88];
+      trailingAnchor4 = [elevationGraphView2 widthAnchor];
+      contentGuide5 = [trailingAnchor4 constraintEqualToConstant:80.0];
+      [array addObject:contentGuide5];
     }
 
-    v91 = [(RouteOverviewCell *)self elevationGraphView];
-    v92 = [v91 topAnchor];
-    v93 = [v92 constraintEqualToAnchor:v20 constant:10.0];
-    [v78 addObject:v93];
+    elevationGraphView3 = [(RouteOverviewCell *)self elevationGraphView];
+    topAnchor4 = [elevationGraphView3 topAnchor];
+    v93 = [topAnchor4 constraintEqualToAnchor:v20 constant:10.0];
+    [array addObject:v93];
 
-    v94 = [(RouteOverviewCell *)self elevationGraphView];
-    v95 = [v94 heightAnchor];
-    v96 = [v95 constraintEqualToConstant:25.0];
-    [v78 addObject:v96];
+    elevationGraphView4 = [(RouteOverviewCell *)self elevationGraphView];
+    heightAnchor = [elevationGraphView4 heightAnchor];
+    v96 = [heightAnchor constraintEqualToConstant:25.0];
+    [array addObject:v96];
 
-    v97 = [(RouteOverviewCell *)self elevationGraphView];
-    v98 = [v97 bottomAnchor];
+    elevationGraphView5 = [(RouteOverviewCell *)self elevationGraphView];
+    bottomAnchor3 = [elevationGraphView5 bottomAnchor];
 
-    [(RouteOverviewCell *)self setElevationGraphViewConstraints:v78];
-    v99 = [(RouteOverviewCell *)self elevationGraphViewConstraints];
-    [v162 addObjectsFromArray:v99];
+    [(RouteOverviewCell *)self setElevationGraphViewConstraints:array];
+    elevationGraphViewConstraints2 = [(RouteOverviewCell *)self elevationGraphViewConstraints];
+    [v162 addObjectsFromArray:elevationGraphViewConstraints2];
 
-    v20 = v98;
+    v20 = bottomAnchor3;
   }
 
   else
@@ -406,35 +406,35 @@ LABEL_17:
     [(RouteOverviewCell *)self setElevationGraphViewConstraints:0];
   }
 
-  if (v160)
+  if (advisoriesViewVisibleCopy)
   {
-    v100 = [v40[297] array];
-    v101 = [(RouteOverviewCell *)self advisoriesView];
-    v102 = [v101 leadingAnchor];
-    v103 = [(RouteOverviewCell *)self contentGuide];
-    v104 = [v103 leadingAnchor];
-    v105 = [v102 constraintEqualToAnchor:v104];
-    [v100 addObject:v105];
+    array2 = [v40[297] array];
+    advisoriesView = [(RouteOverviewCell *)self advisoriesView];
+    leadingAnchor12 = [advisoriesView leadingAnchor];
+    contentGuide6 = [(RouteOverviewCell *)self contentGuide];
+    leadingAnchor13 = [contentGuide6 leadingAnchor];
+    v105 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13];
+    [array2 addObject:v105];
 
-    v106 = [(RouteOverviewCell *)self traitCollection];
-    v107 = [v106 userInterfaceIdiom];
+    traitCollection = [(RouteOverviewCell *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    v108 = [(RouteOverviewCell *)self advisoriesView];
-    v109 = [v108 trailingAnchor];
-    if (v107 == 5)
+    advisoriesView2 = [(RouteOverviewCell *)self advisoriesView];
+    trailingAnchor6 = [advisoriesView2 trailingAnchor];
+    if (userInterfaceIdiom == 5)
     {
-      v110 = [(RouteOverviewCell *)self contentGuide];
-      [v110 trailingAnchor];
+      contentGuide7 = [(RouteOverviewCell *)self contentGuide];
+      [contentGuide7 trailingAnchor];
     }
 
     else
     {
-      v110 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
-      [v110 leadingAnchor];
+      contentGuide7 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
+      [contentGuide7 leadingAnchor];
     }
     v111 = ;
-    v112 = [v109 constraintEqualToAnchor:v111];
-    [v100 addObject:v112];
+    v112 = [trailingAnchor6 constraintEqualToAnchor:v111];
+    [array2 addObject:v112];
 
     if (sub_10000FA08(self) == 5)
     {
@@ -446,19 +446,19 @@ LABEL_17:
       v113 = 6.0;
     }
 
-    v114 = [(RouteOverviewCell *)self advisoriesView];
-    v115 = [v114 topAnchor];
-    v116 = [v115 constraintEqualToAnchor:v20 constant:v113];
-    [v100 addObject:v116];
+    advisoriesView3 = [(RouteOverviewCell *)self advisoriesView];
+    topAnchor5 = [advisoriesView3 topAnchor];
+    v116 = [topAnchor5 constraintEqualToAnchor:v20 constant:v113];
+    [array2 addObject:v116];
 
-    v117 = [(RouteOverviewCell *)self advisoriesView];
-    v118 = [v117 bottomAnchor];
+    advisoriesView4 = [(RouteOverviewCell *)self advisoriesView];
+    bottomAnchor4 = [advisoriesView4 bottomAnchor];
 
-    [(RouteOverviewCell *)self setAdvisoriesViewConstraints:v100];
-    v119 = [(RouteOverviewCell *)self advisoriesViewConstraints];
-    [v162 addObjectsFromArray:v119];
+    [(RouteOverviewCell *)self setAdvisoriesViewConstraints:array2];
+    advisoriesViewConstraints2 = [(RouteOverviewCell *)self advisoriesViewConstraints];
+    [v162 addObjectsFromArray:advisoriesViewConstraints2];
 
-    v20 = v118;
+    v20 = bottomAnchor4;
   }
 
   else
@@ -466,70 +466,70 @@ LABEL_17:
     [(RouteOverviewCell *)self setAdvisoriesViewConstraints:0];
   }
 
-  if (v161)
+  if (buttonVisibleCopy)
   {
-    v120 = [v40[297] array];
-    v121 = [(RouteOverviewCell *)self traitCollection];
-    v122 = [v121 userInterfaceIdiom];
+    array3 = [v40[297] array];
+    traitCollection2 = [(RouteOverviewCell *)self traitCollection];
+    userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-    v123 = [(RouteOverviewCell *)self detailsButton];
-    v124 = [v123 leadingAnchor];
-    if (v122 == 5)
+    detailsButton = [(RouteOverviewCell *)self detailsButton];
+    leadingAnchor14 = [detailsButton leadingAnchor];
+    if (userInterfaceIdiom2 == 5)
     {
-      v125 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
-      v126 = [v125 leadingAnchor];
-      v127 = [v124 constraintGreaterThanOrEqualToAnchor:v126];
-      [v120 addObject:v127];
+      labelTrailingToGoButtonLeadingLayoutGuide4 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
+      leadingAnchor15 = [labelTrailingToGoButtonLeadingLayoutGuide4 leadingAnchor];
+      v127 = [leadingAnchor14 constraintGreaterThanOrEqualToAnchor:leadingAnchor15];
+      [array3 addObject:v127];
 
-      v128 = [(RouteOverviewCell *)self detailsButton];
-      v129 = [v128 trailingAnchor];
-      v130 = [(RouteOverviewCell *)self contentGuide];
-      v131 = [v130 trailingAnchor];
-      v132 = [v129 constraintEqualToAnchor:v131];
-      [v120 addObject:v132];
+      detailsButton2 = [(RouteOverviewCell *)self detailsButton];
+      trailingAnchor7 = [detailsButton2 trailingAnchor];
+      contentGuide8 = [(RouteOverviewCell *)self contentGuide];
+      trailingAnchor8 = [contentGuide8 trailingAnchor];
+      v132 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
+      [array3 addObject:v132];
 
-      v133 = [(RouteOverviewCell *)self detailsButton];
-      v134 = [v133 firstBaselineAnchor];
-      v135 = [(UILabel *)self->_primaryLabel firstBaselineAnchor];
-      v136 = [v134 constraintEqualToAnchor:v135];
-      [v120 addObject:v136];
+      detailsButton3 = [(RouteOverviewCell *)self detailsButton];
+      firstBaselineAnchor = [detailsButton3 firstBaselineAnchor];
+      firstBaselineAnchor2 = [(UILabel *)self->_primaryLabel firstBaselineAnchor];
+      v136 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
+      [array3 addObject:v136];
     }
 
     else
     {
-      v137 = [(RouteOverviewCell *)self contentGuide];
-      v138 = [v137 leadingAnchor];
-      v139 = [v124 constraintEqualToAnchor:v138];
-      [v120 addObject:v139];
+      contentGuide9 = [(RouteOverviewCell *)self contentGuide];
+      leadingAnchor16 = [contentGuide9 leadingAnchor];
+      v139 = [leadingAnchor14 constraintEqualToAnchor:leadingAnchor16];
+      [array3 addObject:v139];
 
-      v140 = [(RouteOverviewCell *)self detailsButton];
-      v141 = [v140 trailingAnchor];
-      v142 = [(RouteOverviewCell *)self contentGuide];
-      v143 = [v142 trailingAnchor];
-      v144 = [v141 constraintLessThanOrEqualToAnchor:v143];
-      [v120 addObject:v144];
+      detailsButton4 = [(RouteOverviewCell *)self detailsButton];
+      trailingAnchor9 = [detailsButton4 trailingAnchor];
+      contentGuide10 = [(RouteOverviewCell *)self contentGuide];
+      trailingAnchor10 = [contentGuide10 trailingAnchor];
+      v144 = [trailingAnchor9 constraintLessThanOrEqualToAnchor:trailingAnchor10];
+      [array3 addObject:v144];
 
-      v145 = [(RouteOverviewCell *)self detailsButton];
-      v146 = [v145 topAnchor];
-      v147 = [(RouteOverviewCell *)self goButton];
-      v148 = [v147 bottomAnchor];
-      v149 = [v146 constraintGreaterThanOrEqualToAnchor:v148];
-      [v120 addObject:v149];
+      detailsButton5 = [(RouteOverviewCell *)self detailsButton];
+      topAnchor6 = [detailsButton5 topAnchor];
+      goButton = [(RouteOverviewCell *)self goButton];
+      bottomAnchor5 = [goButton bottomAnchor];
+      v149 = [topAnchor6 constraintGreaterThanOrEqualToAnchor:bottomAnchor5];
+      [array3 addObject:v149];
 
-      v150 = [(RouteOverviewCell *)self detailsButton];
-      v151 = [v150 firstBaselineAnchor];
-      v152 = [v151 constraintGreaterThanOrEqualToAnchor:v20];
+      detailsButton6 = [(RouteOverviewCell *)self detailsButton];
+      firstBaselineAnchor3 = [detailsButton6 firstBaselineAnchor];
+      v152 = [firstBaselineAnchor3 constraintGreaterThanOrEqualToAnchor:v20];
       v153 = [DynamicTypeWizard autoscaledConstraint:v152 constant:&stru_10165D908 withFontProvider:32.0];
-      [v120 addObject:v153];
+      [array3 addObject:v153];
 
-      v133 = [(RouteOverviewCell *)self detailsButton];
-      [v133 lastBaselineAnchor];
-      v20 = v134 = v20;
+      detailsButton3 = [(RouteOverviewCell *)self detailsButton];
+      [detailsButton3 lastBaselineAnchor];
+      v20 = firstBaselineAnchor = v20;
     }
 
-    [(RouteOverviewCell *)self setDetailsButtonConstraints:v120];
-    v154 = [(RouteOverviewCell *)self detailsButtonConstraints];
-    [v162 addObjectsFromArray:v154];
+    [(RouteOverviewCell *)self setDetailsButtonConstraints:array3];
+    detailsButtonConstraints2 = [(RouteOverviewCell *)self detailsButtonConstraints];
+    [v162 addObjectsFromArray:detailsButtonConstraints2];
   }
 
   else
@@ -537,13 +537,13 @@ LABEL_17:
     [(RouteOverviewCell *)self setDetailsButtonConstraints:0];
   }
 
-  v155 = [(RouteOverviewCell *)self contentGuide];
-  v156 = [v155 bottomAnchor];
-  v157 = [v156 constraintEqualToAnchor:v20];
+  contentGuide11 = [(RouteOverviewCell *)self contentGuide];
+  bottomAnchor6 = [contentGuide11 bottomAnchor];
+  v157 = [bottomAnchor6 constraintEqualToAnchor:v20];
   [(RouteOverviewCell *)self setContentBottomConstraint:v157];
 
-  v158 = [(RouteOverviewCell *)self contentBottomConstraint];
-  [v162 addObject:v158];
+  contentBottomConstraint2 = [(RouteOverviewCell *)self contentBottomConstraint];
+  [v162 addObject:contentBottomConstraint2];
 
   [NSLayoutConstraint activateConstraints:v162];
 }
@@ -556,10 +556,10 @@ LABEL_17:
   [(RouteOverviewCell *)self _updateConstraintsForArtworkListVisible:[(RouteOverviewCell *)self isArtworkListVisible] elevationGraphViewVisible:[(RouteOverviewCell *)self isElevationGraphViewVisible] advisoriesViewVisible:[(RouteOverviewCell *)self isAdvisoriesViewVisible] tertiaryLabelVisible:[(RouteOverviewCell *)self isTertiaryLabelVisible] detailsButtonVisible:[(RouteOverviewCell *)self isDetailsButtonVisible]];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(RouteOverviewCell *)self isArtworkListVisible])
   {
     [(RouteOverviewCell *)self bounds];
@@ -569,8 +569,8 @@ LABEL_17:
   [(RouteOverviewCell *)self layoutIfNeeded];
   v14.receiver = self;
   v14.super_class = RouteOverviewCell;
-  *&v10 = a4;
-  *&v11 = a5;
+  *&v10 = priority;
+  *&v11 = fittingPriority;
   [(RouteOverviewCell *)&v14 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v10, v11];
   result.height = v13;
   result.width = v12;
@@ -586,23 +586,23 @@ LABEL_17:
   return v3;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v7 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = RouteOverviewCell;
-  [(RouteOverviewCell *)&v12 didUpdateFocusInContext:v7 withAnimationCoordinator:a4];
-  v8 = [v7 previouslyFocusedView];
-  if (v8 == self || ([v7 nextFocusedView], v9 = objc_claimAutoreleasedReturnValue(), v4 = v9, v9 == self))
+  [(RouteOverviewCell *)&v12 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
+  if (previouslyFocusedView == self || ([contextCopy nextFocusedView], v9 = objc_claimAutoreleasedReturnValue(), v4 = v9, v9 == self))
   {
-    v10 = [v7 previouslyFocusedView];
-    v11 = [v7 nextFocusedView];
+    previouslyFocusedView2 = [contextCopy previouslyFocusedView];
+    nextFocusedView = [contextCopy nextFocusedView];
 
-    if (v8 != self)
+    if (previouslyFocusedView != self)
     {
     }
 
-    if (v10 != v11)
+    if (previouslyFocusedView2 != nextFocusedView)
     {
       [(RouteOverviewCell *)self _updateColorsForSelection];
     }
@@ -613,53 +613,53 @@ LABEL_17:
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = RouteOverviewCell;
-  [(RouteOverviewCell *)&v4 setHighlighted:a3];
+  [(RouteOverviewCell *)&v4 setHighlighted:highlighted];
   [(RouteOverviewCell *)self _updateColorsForSelection];
 }
 
-- (void)setOverrideCellGrouping:(int64_t)a3
+- (void)setOverrideCellGrouping:(int64_t)grouping
 {
-  if (self->_overrideCellGrouping != a3)
+  if (self->_overrideCellGrouping != grouping)
   {
-    self->_overrideCellGrouping = a3;
-    v5 = [(RouteOverviewCell *)self _resolvedGrouping];
+    self->_overrideCellGrouping = grouping;
+    _resolvedGrouping = [(RouteOverviewCell *)self _resolvedGrouping];
 
-    [(RouteOverviewCell *)self _setBackgroundViewConfigurationGrouping:v5];
+    [(RouteOverviewCell *)self _setBackgroundViewConfigurationGrouping:_resolvedGrouping];
   }
 }
 
-- (void)setSelectionBackgroundVisible:(BOOL)a3
+- (void)setSelectionBackgroundVisible:(BOOL)visible
 {
-  if (self->_selectionBackgroundVisible != a3)
+  if (self->_selectionBackgroundVisible != visible)
   {
-    self->_selectionBackgroundVisible = a3;
+    self->_selectionBackgroundVisible = visible;
     [(RouteOverviewCell *)self _updateColorsForSelection];
 
     [(RouteOverviewCell *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (void)setHasSelectedStep:(BOOL)a3
+- (void)setHasSelectedStep:(BOOL)step
 {
-  if (self->_hasSelectedStep != a3)
+  if (self->_hasSelectedStep != step)
   {
-    self->_hasSelectedStep = a3;
+    self->_hasSelectedStep = step;
     [(RouteOverviewCell *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (void)setDetailsButtonVisible:(BOOL)a3
+- (void)setDetailsButtonVisible:(BOOL)visible
 {
-  if (self->_detailsButtonVisible != a3)
+  if (self->_detailsButtonVisible != visible)
   {
-    v4 = a3;
-    self->_detailsButtonVisible = a3;
+    visibleCopy = visible;
+    self->_detailsButtonVisible = visible;
     [(UITapGestureRecognizer *)self->_doubleTapGestureRecognizer setEnabled:?];
-    [(UIButton *)self->_detailsButton setHidden:!v4];
+    [(UIButton *)self->_detailsButton setHidden:!visibleCopy];
 
     [(RouteOverviewCell *)self setNeedsUpdateConstraints];
   }
@@ -685,14 +685,14 @@ LABEL_17:
       dispatch_once(&qword_10195FA38, &stru_101661948);
     }
 
-    v3 = [(MapsProgressBarButton *)self->_goButton titleLabel];
-    v4 = [v3 text];
+    titleLabel = [(MapsProgressBarButton *)self->_goButton titleLabel];
+    text = [titleLabel text];
 
-    v5 = [objc_opt_class() goButtonFontProvider];
-    v6 = v5[2]();
+    goButtonFontProvider = [objc_opt_class() goButtonFontProvider];
+    v6 = goButtonFontProvider[2]();
 
     [v6 pointSize];
-    v8 = [NSString stringWithFormat:@"%@%f", v4, v7];
+    v8 = [NSString stringWithFormat:@"%@%f", text, v7];
     v9 = [qword_10195FA30 objectForKey:v8];
     v10 = v9;
     if (v9)
@@ -707,7 +707,7 @@ LABEL_17:
       v13 = +[UIFont system20Bold];
       v21 = v13;
       v14 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-      [v4 sizeWithAttributes:v14];
+      [text sizeWithAttributes:v14];
       v16 = v15;
 
       v12 = fmax(fmin(v16 + 12.0, 72.0), 64.0);
@@ -716,18 +716,18 @@ LABEL_17:
       [v17 setObject:v18 forKey:v8];
     }
 
-    v19 = [(RouteOverviewCell *)self goButtonWidthConstraint];
-    [v19 setConstant:v12];
+    goButtonWidthConstraint = [(RouteOverviewCell *)self goButtonWidthConstraint];
+    [goButtonWidthConstraint setConstant:v12];
   }
 }
 
 - (void)_resetBookButtonTitle
 {
-  v5 = [(RouteOverviewCell *)self bookButton];
+  bookButton = [(RouteOverviewCell *)self bookButton];
   v2 = +[NSBundle mainBundle];
   v3 = [v2 localizedStringForKey:@"Book [Route Planning]" value:@"localized string not found" table:0];
-  v4 = [v3 localizedUppercaseString];
-  [v5 setTitle:v4 forState:0];
+  localizedUppercaseString = [v3 localizedUppercaseString];
+  [bookButton setTitle:localizedUppercaseString forState:0];
 }
 
 - (void)_reloadElevationChart
@@ -736,55 +736,55 @@ LABEL_17:
   elevationGraphView = self->_elevationGraphView;
   self->_elevationGraphView = 0;
 
-  v4 = [(RouteOverviewCell *)self contentView];
-  v5 = [(RouteOverviewCell *)self elevationGraphView];
-  [v4 addSubview:v5];
+  contentView = [(RouteOverviewCell *)self contentView];
+  elevationGraphView = [(RouteOverviewCell *)self elevationGraphView];
+  [contentView addSubview:elevationGraphView];
 
-  LOBYTE(v5) = self->_elevationGraphViewVisible;
-  v6 = [(RouteOverviewCell *)self elevationGraphView];
-  [v6 setHidden:(v5 & 1) == 0];
+  LOBYTE(elevationGraphView) = self->_elevationGraphViewVisible;
+  elevationGraphView2 = [(RouteOverviewCell *)self elevationGraphView];
+  [elevationGraphView2 setHidden:(elevationGraphView & 1) == 0];
 
   [(RouteOverviewCell *)self setNeedsUpdateConstraints];
 }
 
-- (void)setGoButtonProgressVisible:(BOOL)a3
+- (void)setGoButtonProgressVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(RouteOverviewCell *)self goButton];
-  [v4 setProgressionHidden:!v3];
+  visibleCopy = visible;
+  goButton = [(RouteOverviewCell *)self goButton];
+  [goButton setProgressionHidden:!visibleCopy];
 }
 
-- (void)setGoButtonProgress:(double)a3
+- (void)setGoButtonProgress:(double)progress
 {
-  v4 = [(RouteOverviewCell *)self goButton];
-  [v4 setProgress:a3];
+  goButton = [(RouteOverviewCell *)self goButton];
+  [goButton setProgress:progress];
 }
 
 - (BOOL)isGoButtonProgressVisible
 {
-  v2 = [(RouteOverviewCell *)self goButton];
-  v3 = [v2 progressionHidden];
+  goButton = [(RouteOverviewCell *)self goButton];
+  progressionHidden = [goButton progressionHidden];
 
-  return v3 ^ 1;
+  return progressionHidden ^ 1;
 }
 
 - (double)goButtonProgress
 {
-  v2 = [(RouteOverviewCell *)self goButton];
-  [v2 progress];
+  goButton = [(RouteOverviewCell *)self goButton];
+  [goButton progress];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBookButtonTitle:(id)a3
+- (void)setBookButtonTitle:(id)title
 {
-  v6 = a3;
-  if ([v6 length])
+  titleCopy = title;
+  if ([titleCopy length])
   {
-    v4 = [(RouteOverviewCell *)self bookButton];
-    v5 = [v6 localizedUppercaseString];
-    [v4 setTitle:v5 forState:0];
+    bookButton = [(RouteOverviewCell *)self bookButton];
+    localizedUppercaseString = [titleCopy localizedUppercaseString];
+    [bookButton setTitle:localizedUppercaseString forState:0];
   }
 
   else
@@ -800,30 +800,30 @@ LABEL_17:
   {
     if (buttonVisibility == 2)
     {
-      v29 = [(RouteOverviewCell *)self noButtonLeadingConstraint];
-      [v29 setActive:0];
+      noButtonLeadingConstraint = [(RouteOverviewCell *)self noButtonLeadingConstraint];
+      [noButtonLeadingConstraint setActive:0];
 
-      v30 = [(RouteOverviewCell *)self goButtonLeadingConstraint];
-      [v30 setActive:0];
+      goButtonLeadingConstraint = [(RouteOverviewCell *)self goButtonLeadingConstraint];
+      [goButtonLeadingConstraint setActive:0];
 
-      v31 = [(RouteOverviewCell *)self stepsButtonLeadingConstraint];
-      [v31 setActive:0];
+      stepsButtonLeadingConstraint = [(RouteOverviewCell *)self stepsButtonLeadingConstraint];
+      [stepsButtonLeadingConstraint setActive:0];
 
-      v32 = [(RouteOverviewCell *)self bookButtonLeadingConstraint];
+      bookButtonLeadingConstraint = [(RouteOverviewCell *)self bookButtonLeadingConstraint];
       v6 = 1;
-      [v32 setActive:1];
+      [bookButtonLeadingConstraint setActive:1];
 
-      v33 = [(RouteOverviewCell *)self goButtonWidthConstraint];
-      [v33 setConstant:0.0];
+      goButtonWidthConstraint = [(RouteOverviewCell *)self goButtonWidthConstraint];
+      [goButtonWidthConstraint setConstant:0.0];
 
-      v34 = [(RouteOverviewCell *)self goButton];
-      [v34 setHidden:1];
+      goButton = [(RouteOverviewCell *)self goButton];
+      [goButton setHidden:1];
 
-      v35 = [(RouteOverviewCell *)self stepsButton];
-      [v35 setHidden:1];
+      stepsButton = [(RouteOverviewCell *)self stepsButton];
+      [stepsButton setHidden:1];
 
-      v36 = [(RouteOverviewCell *)self bookButton];
-      [v36 setHidden:0];
+      bookButton = [(RouteOverviewCell *)self bookButton];
+      [bookButton setHidden:0];
     }
 
     else
@@ -833,27 +833,27 @@ LABEL_17:
         return;
       }
 
-      v12 = [(RouteOverviewCell *)self goButton];
+      goButton2 = [(RouteOverviewCell *)self goButton];
       v6 = 1;
-      [v12 setHidden:1];
+      [goButton2 setHidden:1];
 
-      v13 = [(RouteOverviewCell *)self stepsButton];
-      [v13 setHidden:0];
+      stepsButton2 = [(RouteOverviewCell *)self stepsButton];
+      [stepsButton2 setHidden:0];
 
-      v14 = [(RouteOverviewCell *)self bookButton];
-      [v14 setHidden:1];
+      bookButton2 = [(RouteOverviewCell *)self bookButton];
+      [bookButton2 setHidden:1];
 
-      v15 = [(RouteOverviewCell *)self noButtonLeadingConstraint];
-      [v15 setActive:0];
+      noButtonLeadingConstraint2 = [(RouteOverviewCell *)self noButtonLeadingConstraint];
+      [noButtonLeadingConstraint2 setActive:0];
 
-      v16 = [(RouteOverviewCell *)self goButtonLeadingConstraint];
-      [v16 setActive:0];
+      goButtonLeadingConstraint2 = [(RouteOverviewCell *)self goButtonLeadingConstraint];
+      [goButtonLeadingConstraint2 setActive:0];
 
-      v17 = [(RouteOverviewCell *)self stepsButtonLeadingConstraint];
-      [v17 setActive:1];
+      stepsButtonLeadingConstraint2 = [(RouteOverviewCell *)self stepsButtonLeadingConstraint];
+      [stepsButtonLeadingConstraint2 setActive:1];
 
-      v18 = [(RouteOverviewCell *)self bookButtonLeadingConstraint];
-      [v18 setActive:0];
+      bookButtonLeadingConstraint2 = [(RouteOverviewCell *)self bookButtonLeadingConstraint];
+      [bookButtonLeadingConstraint2 setActive:0];
 
       [(RouteOverviewCell *)self _updateGoButtonWidthConstraint];
       [(RouteOverviewCell *)self _updateStepsButtonWidthConstraint];
@@ -867,168 +867,168 @@ LABEL_17:
       return;
     }
 
-    v4 = [(RouteOverviewCell *)self goButton];
-    [v4 setHidden:0];
+    goButton3 = [(RouteOverviewCell *)self goButton];
+    [goButton3 setHidden:0];
 
-    v5 = [(RouteOverviewCell *)self stepsButton];
+    stepsButton3 = [(RouteOverviewCell *)self stepsButton];
     v6 = 1;
-    [v5 setHidden:1];
+    [stepsButton3 setHidden:1];
 
-    v7 = [(RouteOverviewCell *)self bookButton];
-    [v7 setHidden:1];
+    bookButton3 = [(RouteOverviewCell *)self bookButton];
+    [bookButton3 setHidden:1];
 
-    v8 = [(RouteOverviewCell *)self noButtonLeadingConstraint];
-    [v8 setActive:0];
+    noButtonLeadingConstraint3 = [(RouteOverviewCell *)self noButtonLeadingConstraint];
+    [noButtonLeadingConstraint3 setActive:0];
 
-    v9 = [(RouteOverviewCell *)self goButtonLeadingConstraint];
-    [v9 setActive:1];
+    goButtonLeadingConstraint3 = [(RouteOverviewCell *)self goButtonLeadingConstraint];
+    [goButtonLeadingConstraint3 setActive:1];
 
-    v10 = [(RouteOverviewCell *)self stepsButtonLeadingConstraint];
-    [v10 setActive:0];
+    stepsButtonLeadingConstraint3 = [(RouteOverviewCell *)self stepsButtonLeadingConstraint];
+    [stepsButtonLeadingConstraint3 setActive:0];
 
-    v11 = [(RouteOverviewCell *)self bookButtonLeadingConstraint];
-    [v11 setActive:0];
+    bookButtonLeadingConstraint3 = [(RouteOverviewCell *)self bookButtonLeadingConstraint];
+    [bookButtonLeadingConstraint3 setActive:0];
 
     [(RouteOverviewCell *)self _updateGoButtonWidthConstraint];
   }
 
   else
   {
-    v19 = [(RouteOverviewCell *)self goButton];
-    [v19 setHidden:1];
+    goButton4 = [(RouteOverviewCell *)self goButton];
+    [goButton4 setHidden:1];
 
-    v20 = [(RouteOverviewCell *)self stepsButton];
-    [v20 setHidden:1];
+    stepsButton4 = [(RouteOverviewCell *)self stepsButton];
+    [stepsButton4 setHidden:1];
 
-    v21 = [(RouteOverviewCell *)self bookButton];
-    [v21 setHidden:1];
+    bookButton4 = [(RouteOverviewCell *)self bookButton];
+    [bookButton4 setHidden:1];
 
-    v22 = [(RouteOverviewCell *)self noButtonLeadingConstraint];
-    [v22 setActive:1];
+    noButtonLeadingConstraint4 = [(RouteOverviewCell *)self noButtonLeadingConstraint];
+    [noButtonLeadingConstraint4 setActive:1];
 
-    v23 = [(RouteOverviewCell *)self goButtonLeadingConstraint];
-    [v23 setActive:0];
+    goButtonLeadingConstraint4 = [(RouteOverviewCell *)self goButtonLeadingConstraint];
+    [goButtonLeadingConstraint4 setActive:0];
 
-    v24 = [(RouteOverviewCell *)self stepsButtonLeadingConstraint];
-    [v24 setActive:0];
+    stepsButtonLeadingConstraint4 = [(RouteOverviewCell *)self stepsButtonLeadingConstraint];
+    [stepsButtonLeadingConstraint4 setActive:0];
 
-    v25 = [(RouteOverviewCell *)self bookButtonLeadingConstraint];
-    [v25 setActive:0];
+    bookButtonLeadingConstraint4 = [(RouteOverviewCell *)self bookButtonLeadingConstraint];
+    [bookButtonLeadingConstraint4 setActive:0];
 
-    v26 = [(RouteOverviewCell *)self goButtonWidthConstraint];
-    [v26 setConstant:0.0];
+    goButtonWidthConstraint2 = [(RouteOverviewCell *)self goButtonWidthConstraint];
+    [goButtonWidthConstraint2 setConstant:0.0];
 
-    v27 = [(RouteOverviewCell *)self stepsButtonMinWidthConstraint];
-    [v27 setConstant:0.0];
+    stepsButtonMinWidthConstraint = [(RouteOverviewCell *)self stepsButtonMinWidthConstraint];
+    [stepsButtonMinWidthConstraint setConstant:0.0];
 
-    v28 = [(RouteOverviewCell *)self stepsButtonMaxWidthConstraint];
-    [v28 setConstant:0.0];
+    stepsButtonMaxWidthConstraint = [(RouteOverviewCell *)self stepsButtonMaxWidthConstraint];
+    [stepsButtonMaxWidthConstraint setConstant:0.0];
 
     v6 = 0;
   }
 
-  v37 = [(RouteOverviewCell *)self labelTrailingToPrimaryButtonLeadingPaddingConstraint];
-  [v37 setActive:v6];
+  labelTrailingToPrimaryButtonLeadingPaddingConstraint = [(RouteOverviewCell *)self labelTrailingToPrimaryButtonLeadingPaddingConstraint];
+  [labelTrailingToPrimaryButtonLeadingPaddingConstraint setActive:v6];
 }
 
-- (void)setButtonVisibility:(unint64_t)a3
+- (void)setButtonVisibility:(unint64_t)visibility
 {
-  v5 = [(RouteOverviewCell *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(RouteOverviewCell *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v7 = 0;
+    visibilityCopy = 0;
   }
 
   else
   {
-    v7 = a3;
+    visibilityCopy = visibility;
   }
 
-  if (self->_buttonVisibility != v7)
+  if (self->_buttonVisibility != visibilityCopy)
   {
-    self->_buttonVisibility = v7;
+    self->_buttonVisibility = visibilityCopy;
 
     [(RouteOverviewCell *)self _updateButtonVisibility];
   }
 }
 
-- (void)setAdvisoriesViewVisible:(BOOL)a3
+- (void)setAdvisoriesViewVisible:(BOOL)visible
 {
-  if (self->_advisoriesViewVisible != a3)
+  if (self->_advisoriesViewVisible != visible)
   {
-    self->_advisoriesViewVisible = a3;
-    [(RouteAdvisoriesView *)self->_advisoriesView setHidden:!a3];
+    self->_advisoriesViewVisible = visible;
+    [(RouteAdvisoriesView *)self->_advisoriesView setHidden:!visible];
 
     [(RouteOverviewCell *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setElevationGraphViewVisible:(BOOL)a3
+- (void)setElevationGraphViewVisible:(BOOL)visible
 {
-  if (self->_elevationGraphViewVisible != a3)
+  if (self->_elevationGraphViewVisible != visible)
   {
-    self->_elevationGraphViewVisible = a3;
-    [(DirectionsElevationGraphView *)self->_elevationGraphView setHidden:!a3];
+    self->_elevationGraphViewVisible = visible;
+    [(DirectionsElevationGraphView *)self->_elevationGraphView setHidden:!visible];
 
     [(RouteOverviewCell *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setArtworkListVisible:(BOOL)a3
+- (void)setArtworkListVisible:(BOOL)visible
 {
-  if (self->_artworkListVisible != a3)
+  if (self->_artworkListVisible != visible)
   {
-    self->_artworkListVisible = a3;
-    [(TransitArtworkListView *)self->_artworkList setHidden:!a3];
+    self->_artworkListVisible = visible;
+    [(TransitArtworkListView *)self->_artworkList setHidden:!visible];
 
     [(RouteOverviewCell *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setRouteDescritptionLabelVisible:(BOOL)a3
+- (void)setRouteDescritptionLabelVisible:(BOOL)visible
 {
-  if (self->_routeDescritptionLabelVisible != a3)
+  if (self->_routeDescritptionLabelVisible != visible)
   {
-    self->_routeDescritptionLabelVisible = a3;
-    [(MapsThemeMultiPartLabel *)self->_routeDescriptionLabel setHidden:!a3];
+    self->_routeDescritptionLabelVisible = visible;
+    [(MapsThemeMultiPartLabel *)self->_routeDescriptionLabel setHidden:!visible];
 
     [(RouteOverviewCell *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setTertiaryLabelVisible:(BOOL)a3
+- (void)setTertiaryLabelVisible:(BOOL)visible
 {
-  if (self->_tertiaryLabelVisible != a3)
+  if (self->_tertiaryLabelVisible != visible)
   {
-    self->_tertiaryLabelVisible = a3;
-    [(UILabel *)self->_tertiaryLabel setHidden:!a3];
+    self->_tertiaryLabelVisible = visible;
+    [(UILabel *)self->_tertiaryLabel setHidden:!visible];
 
     [(RouteOverviewCell *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)_setDetailsButtonRotated:(BOOL)a3 animated:(BOOL)a4
+- (void)_setDetailsButtonRotated:(BOOL)rotated animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  self->_detailsButtonRotated = a3;
+  animatedCopy = animated;
+  rotatedCopy = rotated;
+  self->_detailsButtonRotated = rotated;
   [(RouteOverviewCell *)self _setBackgroundViewConfigurationGrouping:[(RouteOverviewCell *)self _resolvedGrouping]];
-  v7 = [(RouteOverviewCell *)self traitCollection];
-  v8 = [v7 layoutDirection];
+  traitCollection = [(RouteOverviewCell *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
   memset(&v15, 0, sizeof(v15));
-  if (v5)
+  if (rotatedCopy)
   {
-    CGAffineTransformMakeRotation(&v15, dbl_101212BC0[v8 == 0]);
-    if (!v4)
+    CGAffineTransformMakeRotation(&v15, dbl_101212BC0[layoutDirection == 0]);
+    if (!animatedCopy)
     {
 LABEL_3:
       v12 = v15;
-      v9 = [(RouteOverviewCell *)self detailsButton];
+      detailsButton = [(RouteOverviewCell *)self detailsButton];
       v11 = v12;
-      [v9 setTransform:&v11];
+      [detailsButton setTransform:&v11];
 
       return;
     }
@@ -1040,7 +1040,7 @@ LABEL_3:
     *&v15.a = *&CGAffineTransformIdentity.a;
     *&v15.c = v10;
     *&v15.tx = *&CGAffineTransformIdentity.tx;
-    if (!v4)
+    if (!animatedCopy)
     {
       goto LABEL_3;
     }
@@ -1055,13 +1055,13 @@ LABEL_3:
   [UIView animateWithDuration:v13 animations:0.1];
 }
 
-- (void)setDetailsButtonRotated:(BOOL)a3 animated:(BOOL)a4
+- (void)setDetailsButtonRotated:(BOOL)rotated animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3)
+  animatedCopy = animated;
+  if (rotated)
   {
-    v6 = [(RouteOverviewCell *)self traitCollection];
-    v7 = [v6 userInterfaceIdiom] == 5;
+    traitCollection = [(RouteOverviewCell *)self traitCollection];
+    v7 = [traitCollection userInterfaceIdiom] == 5;
   }
 
   else
@@ -1072,7 +1072,7 @@ LABEL_3:
   if (self->_detailsButtonRotated != v7)
   {
 
-    [(RouteOverviewCell *)self _setDetailsButtonRotated:v7 animated:v4];
+    [(RouteOverviewCell *)self _setDetailsButtonRotated:v7 animated:animatedCopy];
   }
 }
 
@@ -1118,17 +1118,17 @@ LABEL_3:
       v7 = self->_detailsButton;
       self->_detailsButton = v6;
 
-      v8 = [(UIButton *)self->_detailsButton titleLabel];
-      [v8 setAdjustsFontSizeToFitWidth:1];
+      titleLabel = [(UIButton *)self->_detailsButton titleLabel];
+      [titleLabel setAdjustsFontSizeToFitWidth:1];
 
-      v9 = [(UIButton *)self->_detailsButton titleLabel];
-      [v9 setMinimumScaleFactor:0.600000024];
+      titleLabel2 = [(UIButton *)self->_detailsButton titleLabel];
+      [titleLabel2 setMinimumScaleFactor:0.600000024];
 
-      v10 = [(UIButton *)self->_detailsButton titleLabel];
-      [v10 setLineBreakMode:4];
+      titleLabel3 = [(UIButton *)self->_detailsButton titleLabel];
+      [titleLabel3 setLineBreakMode:4];
 
-      v11 = [(UIButton *)self->_detailsButton titleLabel];
-      [DynamicTypeWizard autorefreshLabel:v11 withFontProvider:&stru_10165D908];
+      titleLabel4 = [(UIButton *)self->_detailsButton titleLabel];
+      [DynamicTypeWizard autorefreshLabel:titleLabel4 withFontProvider:&stru_10165D908];
 
       v12 = self->_detailsButton;
       v13 = +[NSBundle mainBundle];
@@ -1181,8 +1181,8 @@ LABEL_3:
   if (!elevationGraphView)
   {
     v4 = [DirectionsElevationGraphConfiguration alloc];
-    v5 = [(RouteOverviewCell *)self traitCollection];
-    v6 = -[DirectionsElevationGraphConfiguration initWithUseType:userInterfaceIdiom:](v4, "initWithUseType:userInterfaceIdiom:", 1, [v5 userInterfaceIdiom]);
+    traitCollection = [(RouteOverviewCell *)self traitCollection];
+    v6 = -[DirectionsElevationGraphConfiguration initWithUseType:userInterfaceIdiom:](v4, "initWithUseType:userInterfaceIdiom:", 1, [traitCollection userInterfaceIdiom]);
 
     v7 = [[DirectionsElevationGraphView alloc] initWithConfiguration:v6];
     [(DirectionsElevationGraphView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -1261,11 +1261,11 @@ LABEL_3:
     [(MapsThemeMultiPartLabel *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MapsThemeMultiPartLabel *)v4 setNumberOfLines:0];
     [(MapsThemeMultiPartLabel *)v4 setUserInteractionEnabled:0];
-    v5 = [objc_opt_class() secondaryLabelFontProvider];
-    [DynamicTypeWizard autorefreshLabel:v4 withFontProvider:v5];
+    secondaryLabelFontProvider = [objc_opt_class() secondaryLabelFontProvider];
+    [DynamicTypeWizard autorefreshLabel:v4 withFontProvider:secondaryLabelFontProvider];
 
-    v6 = [(RouteOverviewCell *)self contentView];
-    [v6 addSubview:v4];
+    contentView = [(RouteOverviewCell *)self contentView];
+    [contentView addSubview:v4];
 
     v7 = self->_routeDescriptionLabel;
     self->_routeDescriptionLabel = v4;
@@ -1296,15 +1296,15 @@ LABEL_3:
   }
 }
 
-- (void)_doubleTap:(id)a3
+- (void)_doubleTap:(id)tap
 {
-  v4 = [(RouteOverviewCell *)self delegate];
+  delegate = [(RouteOverviewCell *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(RouteOverviewCell *)self delegate];
-    [v6 didTapDetailsButtonForRouteOverviewCell:self];
+    delegate2 = [(RouteOverviewCell *)self delegate];
+    [delegate2 didTapDetailsButtonForRouteOverviewCell:self];
   }
 }
 
@@ -1316,103 +1316,103 @@ LABEL_3:
   v4 = objc_alloc_init(UILayoutGuide);
   [(RouteOverviewCell *)self setLabelTrailingToGoButtonLeadingLayoutGuide:v4];
 
-  v5 = [(RouteOverviewCell *)self contentView];
-  v6 = [(RouteOverviewCell *)self contentGuide];
-  [v5 addLayoutGuide:v6];
+  contentView = [(RouteOverviewCell *)self contentView];
+  contentGuide = [(RouteOverviewCell *)self contentGuide];
+  [contentView addLayoutGuide:contentGuide];
 
-  v7 = [(RouteOverviewCell *)self contentView];
-  v8 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
-  [v7 addLayoutGuide:v8];
+  contentView2 = [(RouteOverviewCell *)self contentView];
+  labelTrailingToGoButtonLeadingLayoutGuide = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
+  [contentView2 addLayoutGuide:labelTrailingToGoButtonLeadingLayoutGuide];
 
-  v9 = [(RouteOverviewCell *)self primaryLabel];
+  primaryLabel = [(RouteOverviewCell *)self primaryLabel];
   LODWORD(v10) = 1148846080;
-  [v9 setContentHuggingPriority:1 forAxis:v10];
+  [primaryLabel setContentHuggingPriority:1 forAxis:v10];
 
-  v11 = [(RouteOverviewCell *)self primaryLabel];
+  primaryLabel2 = [(RouteOverviewCell *)self primaryLabel];
   LODWORD(v12) = 1148846080;
-  [v11 setContentCompressionResistancePriority:1 forAxis:v12];
+  [primaryLabel2 setContentCompressionResistancePriority:1 forAxis:v12];
 
-  v13 = [(RouteOverviewCell *)self secondaryLabel];
+  secondaryLabel = [(RouteOverviewCell *)self secondaryLabel];
   LODWORD(v14) = 1148846080;
-  [v13 setContentHuggingPriority:1 forAxis:v14];
+  [secondaryLabel setContentHuggingPriority:1 forAxis:v14];
 
-  v15 = [(RouteOverviewCell *)self secondaryLabel];
+  secondaryLabel2 = [(RouteOverviewCell *)self secondaryLabel];
   LODWORD(v16) = 1148846080;
-  [v15 setContentCompressionResistancePriority:1 forAxis:v16];
+  [secondaryLabel2 setContentCompressionResistancePriority:1 forAxis:v16];
 
-  v17 = [(RouteOverviewCell *)self routeDescriptionLabel];
+  routeDescriptionLabel = [(RouteOverviewCell *)self routeDescriptionLabel];
   LODWORD(v18) = 1148846080;
-  [v17 setContentHuggingPriority:1 forAxis:v18];
+  [routeDescriptionLabel setContentHuggingPriority:1 forAxis:v18];
 
-  v19 = [(RouteOverviewCell *)self routeDescriptionLabel];
+  routeDescriptionLabel2 = [(RouteOverviewCell *)self routeDescriptionLabel];
   LODWORD(v20) = 1148846080;
-  [v19 setContentCompressionResistancePriority:1 forAxis:v20];
+  [routeDescriptionLabel2 setContentCompressionResistancePriority:1 forAxis:v20];
 
-  v21 = [(RouteOverviewCell *)self secondaryLabel];
-  v22 = [v21 topAnchor];
-  v23 = [(RouteOverviewCell *)self primaryLabel];
-  v24 = [v23 bottomAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
-  v26 = [objc_opt_class() secondaryLabelFontProvider];
-  v27 = [DynamicTypeWizard autoscaledConstraint:v25 constant:v26 withFontProvider:0.0];
+  secondaryLabel3 = [(RouteOverviewCell *)self secondaryLabel];
+  topAnchor = [secondaryLabel3 topAnchor];
+  primaryLabel3 = [(RouteOverviewCell *)self primaryLabel];
+  bottomAnchor = [primaryLabel3 bottomAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:bottomAnchor];
+  secondaryLabelFontProvider = [objc_opt_class() secondaryLabelFontProvider];
+  v27 = [DynamicTypeWizard autoscaledConstraint:v25 constant:secondaryLabelFontProvider withFontProvider:0.0];
   [(RouteOverviewCell *)self setPrimaryToSecondaryLabelConstraint:v27];
 
-  v28 = [(RouteOverviewCell *)self goButton];
+  goButton = [(RouteOverviewCell *)self goButton];
   LODWORD(v29) = 1148846080;
-  [v28 setContentCompressionResistancePriority:0 forAxis:v29];
+  [goButton setContentCompressionResistancePriority:0 forAxis:v29];
 
-  v30 = [(RouteOverviewCell *)self goButton];
+  goButton2 = [(RouteOverviewCell *)self goButton];
   LODWORD(v31) = 1148846080;
-  [v30 setContentHuggingPriority:0 forAxis:v31];
+  [goButton2 setContentHuggingPriority:0 forAxis:v31];
 
-  v32 = [(RouteOverviewCell *)self goButton];
-  v33 = [v32 trailingAnchor];
-  v34 = [(RouteOverviewCell *)self contentGuide];
-  v35 = [v34 trailingAnchor];
-  v207 = [v33 constraintEqualToAnchor:v35];
+  goButton3 = [(RouteOverviewCell *)self goButton];
+  trailingAnchor = [goButton3 trailingAnchor];
+  contentGuide2 = [(RouteOverviewCell *)self contentGuide];
+  trailingAnchor2 = [contentGuide2 trailingAnchor];
+  v207 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   LODWORD(v36) = 1148829696;
   [v207 setPriority:v36];
-  v37 = [(RouteOverviewCell *)self stepsButton];
+  stepsButton = [(RouteOverviewCell *)self stepsButton];
   LODWORD(v38) = 1148846080;
-  [v37 setContentCompressionResistancePriority:0 forAxis:v38];
+  [stepsButton setContentCompressionResistancePriority:0 forAxis:v38];
 
-  v39 = [(RouteOverviewCell *)self stepsButton];
+  stepsButton2 = [(RouteOverviewCell *)self stepsButton];
   LODWORD(v40) = 1148846080;
-  [v39 setContentHuggingPriority:0 forAxis:v40];
+  [stepsButton2 setContentHuggingPriority:0 forAxis:v40];
 
-  v41 = [(RouteOverviewCell *)self stepsButton];
-  v42 = [v41 trailingAnchor];
-  v43 = [(RouteOverviewCell *)self contentGuide];
-  v44 = [v43 trailingAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44];
+  stepsButton3 = [(RouteOverviewCell *)self stepsButton];
+  trailingAnchor3 = [stepsButton3 trailingAnchor];
+  contentGuide3 = [(RouteOverviewCell *)self contentGuide];
+  trailingAnchor4 = [contentGuide3 trailingAnchor];
+  v45 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
   v46 = v45;
   v180 = v45;
   LODWORD(v47) = 1148829696;
   [v45 setPriority:v47];
-  v48 = [(RouteOverviewCell *)self bookButton];
+  bookButton = [(RouteOverviewCell *)self bookButton];
   LODWORD(v49) = 1148846080;
-  [v48 setContentCompressionResistancePriority:0 forAxis:v49];
+  [bookButton setContentCompressionResistancePriority:0 forAxis:v49];
 
-  v50 = [(RouteOverviewCell *)self bookButton];
+  bookButton2 = [(RouteOverviewCell *)self bookButton];
   LODWORD(v51) = 1148846080;
-  [v50 setContentHuggingPriority:0 forAxis:v51];
+  [bookButton2 setContentHuggingPriority:0 forAxis:v51];
 
-  v52 = [(RouteOverviewCell *)self bookButton];
-  v53 = [v52 trailingAnchor];
-  v54 = [(RouteOverviewCell *)self contentGuide];
-  v55 = [v54 trailingAnchor];
-  v56 = [v53 constraintEqualToAnchor:v55];
+  bookButton3 = [(RouteOverviewCell *)self bookButton];
+  trailingAnchor5 = [bookButton3 trailingAnchor];
+  contentGuide4 = [(RouteOverviewCell *)self contentGuide];
+  trailingAnchor6 = [contentGuide4 trailingAnchor];
+  v56 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
 
   v57 = v56;
   v179 = v56;
   LODWORD(v58) = 1148829696;
   [v56 setPriority:v58];
-  v59 = [(RouteOverviewCell *)self contentView];
-  v60 = [v59 heightAnchor];
+  contentView3 = [(RouteOverviewCell *)self contentView];
+  heightAnchor = [contentView3 heightAnchor];
   [objc_opt_class() minimumHeight];
-  v61 = [v60 constraintGreaterThanOrEqualToConstant:?];
+  v61 = [heightAnchor constraintGreaterThanOrEqualToConstant:?];
   minimumHeightConstraint = self->_minimumHeightConstraint;
   self->_minimumHeightConstraint = v61;
 
@@ -1420,203 +1420,203 @@ LABEL_3:
   [(NSLayoutConstraint *)self->_minimumHeightConstraint setPriority:v63];
   [objc_opt_class() horizontalContentInset];
   v65 = v64;
-  v66 = [(RouteOverviewCell *)self contentGuide];
-  v67 = [v66 leadingAnchor];
-  v68 = [(RouteOverviewCell *)self contentView];
-  v69 = [v68 leadingAnchor];
-  v199 = [v67 constraintEqualToAnchor:v69 constant:v65];
+  contentGuide5 = [(RouteOverviewCell *)self contentGuide];
+  leadingAnchor = [contentGuide5 leadingAnchor];
+  contentView4 = [(RouteOverviewCell *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v199 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v65];
 
-  v70 = [(RouteOverviewCell *)self contentGuide];
-  v71 = [v70 trailingAnchor];
-  v72 = [(RouteOverviewCell *)self contentView];
-  v73 = [v72 trailingAnchor];
-  v198 = [v71 constraintEqualToAnchor:v73 constant:-v65];
+  contentGuide6 = [(RouteOverviewCell *)self contentGuide];
+  trailingAnchor7 = [contentGuide6 trailingAnchor];
+  contentView5 = [(RouteOverviewCell *)self contentView];
+  trailingAnchor8 = [contentView5 trailingAnchor];
+  v198 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-v65];
 
-  v74 = [(RouteOverviewCell *)self contentGuide];
-  v75 = [v74 topAnchor];
-  v76 = [(RouteOverviewCell *)self primaryLabel];
-  v77 = [v76 topAnchor];
-  v78 = [v75 constraintEqualToAnchor:v77];
+  contentGuide7 = [(RouteOverviewCell *)self contentGuide];
+  topAnchor2 = [contentGuide7 topAnchor];
+  primaryLabel4 = [(RouteOverviewCell *)self primaryLabel];
+  topAnchor3 = [primaryLabel4 topAnchor];
+  v78 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   [(RouteOverviewCell *)self setContentTopConstraint:v78];
 
-  v79 = [(RouteOverviewCell *)self contentGuide];
-  v80 = [v79 bottomAnchor];
-  v81 = [(RouteOverviewCell *)self secondaryLabel];
-  v82 = [v81 lastBaselineAnchor];
-  v83 = [v80 constraintEqualToAnchor:v82];
+  contentGuide8 = [(RouteOverviewCell *)self contentGuide];
+  bottomAnchor2 = [contentGuide8 bottomAnchor];
+  secondaryLabel4 = [(RouteOverviewCell *)self secondaryLabel];
+  lastBaselineAnchor = [secondaryLabel4 lastBaselineAnchor];
+  v83 = [bottomAnchor2 constraintEqualToAnchor:lastBaselineAnchor];
   [(RouteOverviewCell *)self setContentBottomConstraint:v83];
 
-  v84 = [(RouteOverviewCell *)self goButton];
-  v85 = [v84 widthAnchor];
-  v86 = [v85 constraintEqualToConstant:64.0];
+  goButton4 = [(RouteOverviewCell *)self goButton];
+  widthAnchor = [goButton4 widthAnchor];
+  v86 = [widthAnchor constraintEqualToConstant:64.0];
   [(RouteOverviewCell *)self setGoButtonWidthConstraint:v86];
 
-  v87 = [(RouteOverviewCell *)self goButton];
-  v88 = [v87 heightAnchor];
-  v89 = [v88 constraintEqualToConstant:64.0];
+  goButton5 = [(RouteOverviewCell *)self goButton];
+  heightAnchor2 = [goButton5 heightAnchor];
+  v89 = [heightAnchor2 constraintEqualToConstant:64.0];
   [(RouteOverviewCell *)self setGoButtonHeightConstraint:v89];
 
   [(RouteOverviewCell *)self _updateGoButtonWidthConstraint];
-  v90 = [(RouteOverviewCell *)self stepsButton];
-  v91 = [v90 widthAnchor];
-  v92 = [v91 constraintGreaterThanOrEqualToConstant:64.0];
+  stepsButton4 = [(RouteOverviewCell *)self stepsButton];
+  widthAnchor2 = [stepsButton4 widthAnchor];
+  v92 = [widthAnchor2 constraintGreaterThanOrEqualToConstant:64.0];
   [(RouteOverviewCell *)self setStepsButtonMinWidthConstraint:v92];
 
-  v93 = [(RouteOverviewCell *)self stepsButton];
-  v94 = [v93 widthAnchor];
-  v95 = [v94 constraintLessThanOrEqualToConstant:80.0];
+  stepsButton5 = [(RouteOverviewCell *)self stepsButton];
+  widthAnchor3 = [stepsButton5 widthAnchor];
+  v95 = [widthAnchor3 constraintLessThanOrEqualToConstant:80.0];
   [(RouteOverviewCell *)self setStepsButtonMaxWidthConstraint:v95];
 
-  v96 = [(RouteOverviewCell *)self stepsButton];
-  v97 = [v96 heightAnchor];
-  v98 = [v97 constraintEqualToConstant:64.0];
+  stepsButton6 = [(RouteOverviewCell *)self stepsButton];
+  heightAnchor3 = [stepsButton6 heightAnchor];
+  v98 = [heightAnchor3 constraintEqualToConstant:64.0];
   [(RouteOverviewCell *)self setStepsButtonHeightConstraint:v98];
 
-  v99 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
-  v100 = [v99 widthAnchor];
-  v101 = [v100 constraintEqualToConstant:15.0];
+  labelTrailingToGoButtonLeadingLayoutGuide2 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
+  widthAnchor4 = [labelTrailingToGoButtonLeadingLayoutGuide2 widthAnchor];
+  v101 = [widthAnchor4 constraintEqualToConstant:15.0];
   [(RouteOverviewCell *)self setLabelTrailingToPrimaryButtonLeadingPaddingConstraint:v101];
 
-  v102 = [(RouteOverviewCell *)self primaryLabelCompanionImageView];
-  v103 = [v102 widthAnchor];
-  v104 = [v103 constraintEqualToConstant:0.0];
+  primaryLabelCompanionImageView = [(RouteOverviewCell *)self primaryLabelCompanionImageView];
+  widthAnchor5 = [primaryLabelCompanionImageView widthAnchor];
+  v104 = [widthAnchor5 constraintEqualToConstant:0.0];
   [(RouteOverviewCell *)self setPrimaryCompanionImageWidthConstraint:v104];
 
-  v105 = [(RouteOverviewCell *)self primaryLabel];
-  v106 = [v105 leadingAnchor];
-  v107 = [(RouteOverviewCell *)self primaryLabelCompanionImageView];
-  v108 = [v107 trailingAnchor];
-  v109 = [v106 constraintEqualToAnchor:v108];
+  primaryLabel5 = [(RouteOverviewCell *)self primaryLabel];
+  leadingAnchor3 = [primaryLabel5 leadingAnchor];
+  primaryLabelCompanionImageView2 = [(RouteOverviewCell *)self primaryLabelCompanionImageView];
+  trailingAnchor9 = [primaryLabelCompanionImageView2 trailingAnchor];
+  v109 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor9];
   [(RouteOverviewCell *)self setPrimaryCompanionImageToLabelPaddingConstraint:v109];
 
-  v110 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
-  v111 = [v110 trailingAnchor];
-  v112 = [(RouteOverviewCell *)self goButton];
-  v113 = [v112 trailingAnchor];
-  v114 = [v111 constraintEqualToAnchor:v113];
+  labelTrailingToGoButtonLeadingLayoutGuide3 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
+  trailingAnchor10 = [labelTrailingToGoButtonLeadingLayoutGuide3 trailingAnchor];
+  goButton6 = [(RouteOverviewCell *)self goButton];
+  trailingAnchor11 = [goButton6 trailingAnchor];
+  v114 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11];
   [(RouteOverviewCell *)self setNoButtonLeadingConstraint:v114];
 
-  v115 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
-  v116 = [v115 trailingAnchor];
-  v117 = [(RouteOverviewCell *)self goButton];
-  v118 = [v117 leadingAnchor];
-  v119 = [v116 constraintEqualToAnchor:v118];
+  labelTrailingToGoButtonLeadingLayoutGuide4 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
+  trailingAnchor12 = [labelTrailingToGoButtonLeadingLayoutGuide4 trailingAnchor];
+  goButton7 = [(RouteOverviewCell *)self goButton];
+  leadingAnchor4 = [goButton7 leadingAnchor];
+  v119 = [trailingAnchor12 constraintEqualToAnchor:leadingAnchor4];
   [(RouteOverviewCell *)self setGoButtonLeadingConstraint:v119];
 
-  v120 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
-  v121 = [v120 trailingAnchor];
-  v122 = [(RouteOverviewCell *)self stepsButton];
-  v123 = [v122 leadingAnchor];
-  v124 = [v121 constraintEqualToAnchor:v123];
+  labelTrailingToGoButtonLeadingLayoutGuide5 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
+  trailingAnchor13 = [labelTrailingToGoButtonLeadingLayoutGuide5 trailingAnchor];
+  stepsButton7 = [(RouteOverviewCell *)self stepsButton];
+  leadingAnchor5 = [stepsButton7 leadingAnchor];
+  v124 = [trailingAnchor13 constraintEqualToAnchor:leadingAnchor5];
   [(RouteOverviewCell *)self setStepsButtonLeadingConstraint:v124];
 
-  v125 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
-  v126 = [v125 trailingAnchor];
-  v127 = [(RouteOverviewCell *)self bookButton];
-  v128 = [v127 leadingAnchor];
-  v129 = [v126 constraintEqualToAnchor:v128];
+  labelTrailingToGoButtonLeadingLayoutGuide6 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
+  trailingAnchor14 = [labelTrailingToGoButtonLeadingLayoutGuide6 trailingAnchor];
+  bookButton4 = [(RouteOverviewCell *)self bookButton];
+  leadingAnchor6 = [bookButton4 leadingAnchor];
+  v129 = [trailingAnchor14 constraintEqualToAnchor:leadingAnchor6];
   [(RouteOverviewCell *)self setBookButtonLeadingConstraint:v129];
 
   [objc_opt_class() minimumVerticalPadding];
   v131 = v130;
-  v206 = [(RouteOverviewCell *)self minimumHeightConstraint];
-  v208[0] = v206;
-  v205 = [(RouteOverviewCell *)self contentGuide];
-  v203 = [v205 topAnchor];
-  v204 = [(RouteOverviewCell *)self contentView];
-  v202 = [v204 topAnchor];
-  v201 = [v203 constraintGreaterThanOrEqualToAnchor:v202 constant:v131];
+  minimumHeightConstraint = [(RouteOverviewCell *)self minimumHeightConstraint];
+  v208[0] = minimumHeightConstraint;
+  contentGuide9 = [(RouteOverviewCell *)self contentGuide];
+  topAnchor4 = [contentGuide9 topAnchor];
+  contentView6 = [(RouteOverviewCell *)self contentView];
+  topAnchor5 = [contentView6 topAnchor];
+  v201 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:topAnchor5 constant:v131];
   v208[1] = v201;
-  v200 = [(RouteOverviewCell *)self contentView];
-  v196 = [v200 bottomAnchor];
-  v197 = [(RouteOverviewCell *)self contentGuide];
-  v195 = [v197 bottomAnchor];
-  v194 = [v196 constraintGreaterThanOrEqualToAnchor:v195 constant:v131];
+  contentView7 = [(RouteOverviewCell *)self contentView];
+  bottomAnchor3 = [contentView7 bottomAnchor];
+  contentGuide10 = [(RouteOverviewCell *)self contentGuide];
+  bottomAnchor4 = [contentGuide10 bottomAnchor];
+  v194 = [bottomAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor4 constant:v131];
   v208[2] = v194;
-  v193 = [(RouteOverviewCell *)self contentGuide];
-  v191 = [v193 centerYAnchor];
-  v192 = [(RouteOverviewCell *)self contentView];
-  v190 = [v192 centerYAnchor];
-  v189 = [v191 constraintEqualToAnchor:v190];
+  contentGuide11 = [(RouteOverviewCell *)self contentGuide];
+  centerYAnchor = [contentGuide11 centerYAnchor];
+  contentView8 = [(RouteOverviewCell *)self contentView];
+  centerYAnchor2 = [contentView8 centerYAnchor];
+  v189 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v208[3] = v189;
   v208[4] = v199;
   v208[5] = v198;
-  v188 = [(RouteOverviewCell *)self contentTopConstraint];
-  v208[6] = v188;
-  v187 = [(RouteOverviewCell *)self contentBottomConstraint];
-  v208[7] = v187;
-  v186 = [(RouteOverviewCell *)self primaryCompanionImageWidthConstraint];
-  v208[8] = v186;
-  v185 = [(RouteOverviewCell *)self primaryLabelCompanionImageView];
-  v183 = [v185 leadingAnchor];
-  v184 = [(RouteOverviewCell *)self contentGuide];
-  v182 = [v184 leadingAnchor];
-  v181 = [v183 constraintEqualToAnchor:v182];
+  contentTopConstraint = [(RouteOverviewCell *)self contentTopConstraint];
+  v208[6] = contentTopConstraint;
+  contentBottomConstraint = [(RouteOverviewCell *)self contentBottomConstraint];
+  v208[7] = contentBottomConstraint;
+  primaryCompanionImageWidthConstraint = [(RouteOverviewCell *)self primaryCompanionImageWidthConstraint];
+  v208[8] = primaryCompanionImageWidthConstraint;
+  primaryLabelCompanionImageView3 = [(RouteOverviewCell *)self primaryLabelCompanionImageView];
+  leadingAnchor7 = [primaryLabelCompanionImageView3 leadingAnchor];
+  contentGuide12 = [(RouteOverviewCell *)self contentGuide];
+  leadingAnchor8 = [contentGuide12 leadingAnchor];
+  v181 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v208[9] = v181;
-  v178 = [(RouteOverviewCell *)self primaryCompanionImageToLabelPaddingConstraint];
-  v208[10] = v178;
-  v177 = [(RouteOverviewCell *)self primaryLabel];
-  v175 = [v177 trailingAnchor];
-  v176 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
-  v174 = [v176 leadingAnchor];
-  v173 = [v175 constraintEqualToAnchor:v174];
+  primaryCompanionImageToLabelPaddingConstraint = [(RouteOverviewCell *)self primaryCompanionImageToLabelPaddingConstraint];
+  v208[10] = primaryCompanionImageToLabelPaddingConstraint;
+  primaryLabel6 = [(RouteOverviewCell *)self primaryLabel];
+  trailingAnchor15 = [primaryLabel6 trailingAnchor];
+  labelTrailingToGoButtonLeadingLayoutGuide7 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
+  leadingAnchor9 = [labelTrailingToGoButtonLeadingLayoutGuide7 leadingAnchor];
+  v173 = [trailingAnchor15 constraintEqualToAnchor:leadingAnchor9];
   v208[11] = v173;
-  v172 = [(RouteOverviewCell *)self primaryLabelCompanionImageView];
-  v170 = [v172 centerYAnchor];
-  v171 = [(RouteOverviewCell *)self primaryLabel];
-  v169 = [v171 centerYAnchor];
-  v168 = [v170 constraintEqualToAnchor:v169];
+  primaryLabelCompanionImageView4 = [(RouteOverviewCell *)self primaryLabelCompanionImageView];
+  centerYAnchor3 = [primaryLabelCompanionImageView4 centerYAnchor];
+  primaryLabel7 = [(RouteOverviewCell *)self primaryLabel];
+  centerYAnchor4 = [primaryLabel7 centerYAnchor];
+  v168 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v208[12] = v168;
-  v167 = [(RouteOverviewCell *)self secondaryLabel];
-  v165 = [v167 leadingAnchor];
-  v166 = [(RouteOverviewCell *)self contentGuide];
-  v164 = [v166 leadingAnchor];
-  v163 = [v165 constraintEqualToAnchor:v164];
+  secondaryLabel5 = [(RouteOverviewCell *)self secondaryLabel];
+  leadingAnchor10 = [secondaryLabel5 leadingAnchor];
+  contentGuide13 = [(RouteOverviewCell *)self contentGuide];
+  leadingAnchor11 = [contentGuide13 leadingAnchor];
+  v163 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
   v208[13] = v163;
-  v162 = [(RouteOverviewCell *)self secondaryLabel];
-  v159 = [v162 trailingAnchor];
-  v160 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
-  v158 = [v160 leadingAnchor];
-  v157 = [v159 constraintEqualToAnchor:v158];
+  secondaryLabel6 = [(RouteOverviewCell *)self secondaryLabel];
+  trailingAnchor16 = [secondaryLabel6 trailingAnchor];
+  labelTrailingToGoButtonLeadingLayoutGuide8 = [(RouteOverviewCell *)self labelTrailingToGoButtonLeadingLayoutGuide];
+  leadingAnchor12 = [labelTrailingToGoButtonLeadingLayoutGuide8 leadingAnchor];
+  v157 = [trailingAnchor16 constraintEqualToAnchor:leadingAnchor12];
   v208[14] = v157;
-  v156 = [(RouteOverviewCell *)self primaryToSecondaryLabelConstraint];
-  v208[15] = v156;
+  primaryToSecondaryLabelConstraint = [(RouteOverviewCell *)self primaryToSecondaryLabelConstraint];
+  v208[15] = primaryToSecondaryLabelConstraint;
   v208[16] = v207;
   v208[17] = v46;
   v208[18] = v57;
-  v155 = [(RouteOverviewCell *)self goButton];
-  v153 = [v155 centerYAnchor];
-  v154 = [(RouteOverviewCell *)self contentGuide];
-  v152 = [v154 centerYAnchor];
-  v151 = [v153 constraintEqualToAnchor:v152];
+  goButton8 = [(RouteOverviewCell *)self goButton];
+  centerYAnchor5 = [goButton8 centerYAnchor];
+  contentGuide14 = [(RouteOverviewCell *)self contentGuide];
+  centerYAnchor6 = [contentGuide14 centerYAnchor];
+  v151 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v208[19] = v151;
-  v150 = [(RouteOverviewCell *)self stepsButton];
-  v148 = [v150 centerYAnchor];
-  v149 = [(RouteOverviewCell *)self contentGuide];
-  v147 = [v149 centerYAnchor];
-  v146 = [v148 constraintEqualToAnchor:v147];
+  stepsButton8 = [(RouteOverviewCell *)self stepsButton];
+  centerYAnchor7 = [stepsButton8 centerYAnchor];
+  contentGuide15 = [(RouteOverviewCell *)self contentGuide];
+  centerYAnchor8 = [contentGuide15 centerYAnchor];
+  v146 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
   v208[20] = v146;
-  v145 = [(RouteOverviewCell *)self bookButton];
-  v143 = [v145 centerYAnchor];
-  v144 = [(RouteOverviewCell *)self contentGuide];
-  v142 = [v144 centerYAnchor];
-  v132 = [v143 constraintEqualToAnchor:v142];
+  bookButton5 = [(RouteOverviewCell *)self bookButton];
+  centerYAnchor9 = [bookButton5 centerYAnchor];
+  contentGuide16 = [(RouteOverviewCell *)self contentGuide];
+  centerYAnchor10 = [contentGuide16 centerYAnchor];
+  v132 = [centerYAnchor9 constraintEqualToAnchor:centerYAnchor10];
   v208[21] = v132;
-  v133 = [(RouteOverviewCell *)self goButtonWidthConstraint];
-  v208[22] = v133;
-  v134 = [(RouteOverviewCell *)self labelTrailingToPrimaryButtonLeadingPaddingConstraint];
-  v208[23] = v134;
-  v135 = [(RouteOverviewCell *)self goButtonHeightConstraint];
-  v208[24] = v135;
-  v136 = [(RouteOverviewCell *)self stepsButtonMinWidthConstraint];
-  v208[25] = v136;
-  v137 = [(RouteOverviewCell *)self stepsButtonMaxWidthConstraint];
-  v208[26] = v137;
-  v138 = [(RouteOverviewCell *)self stepsButtonHeightConstraint];
-  v208[27] = v138;
-  v139 = [(RouteOverviewCell *)self bookButton];
-  v140 = [v139 heightAnchor];
-  v141 = [v140 constraintGreaterThanOrEqualToConstant:40.0];
+  goButtonWidthConstraint = [(RouteOverviewCell *)self goButtonWidthConstraint];
+  v208[22] = goButtonWidthConstraint;
+  labelTrailingToPrimaryButtonLeadingPaddingConstraint = [(RouteOverviewCell *)self labelTrailingToPrimaryButtonLeadingPaddingConstraint];
+  v208[23] = labelTrailingToPrimaryButtonLeadingPaddingConstraint;
+  goButtonHeightConstraint = [(RouteOverviewCell *)self goButtonHeightConstraint];
+  v208[24] = goButtonHeightConstraint;
+  stepsButtonMinWidthConstraint = [(RouteOverviewCell *)self stepsButtonMinWidthConstraint];
+  v208[25] = stepsButtonMinWidthConstraint;
+  stepsButtonMaxWidthConstraint = [(RouteOverviewCell *)self stepsButtonMaxWidthConstraint];
+  v208[26] = stepsButtonMaxWidthConstraint;
+  stepsButtonHeightConstraint = [(RouteOverviewCell *)self stepsButtonHeightConstraint];
+  v208[27] = stepsButtonHeightConstraint;
+  bookButton6 = [(RouteOverviewCell *)self bookButton];
+  heightAnchor4 = [bookButton6 heightAnchor];
+  v141 = [heightAnchor4 constraintGreaterThanOrEqualToConstant:40.0];
   v208[28] = v141;
   v161 = [NSArray arrayWithObjects:v208 count:29];
 
@@ -1628,53 +1628,53 @@ LABEL_3:
   v22.receiver = self;
   v22.super_class = RouteOverviewCell;
   [(MapsThemeCollectionViewListCell *)&v22 updateTheme];
-  v3 = [(RouteOverviewCell *)self theme];
+  theme = [(RouteOverviewCell *)self theme];
   goButton = self->_goButton;
-  v5 = [v3 greenButtonBackgroundColor:0];
+  v5 = [theme greenButtonBackgroundColor:0];
   [(BackgroundColorButton *)goButton setBackgroundColor:v5 forState:0];
 
   v6 = self->_goButton;
-  v7 = [v3 greenButtonBackgroundColor:1];
+  v7 = [theme greenButtonBackgroundColor:1];
   [(BackgroundColorButton *)v6 setBackgroundColor:v7 forState:1];
 
   v8 = self->_goButton;
-  v9 = [v3 greenButtonTitleColor:0];
+  v9 = [theme greenButtonTitleColor:0];
   [(MapsProgressBarButton *)v8 setTitleColor:v9 forState:0];
 
   v10 = self->_goButton;
-  v11 = [v3 greenButtonTitleColor:1];
+  v11 = [theme greenButtonTitleColor:1];
   [(MapsProgressBarButton *)v10 setTitleColor:v11 forState:1];
 
   bookButton = self->_bookButton;
-  v13 = [v3 blueButtonBackgroundColor:0];
+  v13 = [theme blueButtonBackgroundColor:0];
   [(BackgroundColorButton *)bookButton setBackgroundColor:v13 forState:0];
 
   v14 = self->_bookButton;
-  v15 = [v3 blueButtonBackgroundColor:1];
+  v15 = [theme blueButtonBackgroundColor:1];
   [(BackgroundColorButton *)v14 setBackgroundColor:v15 forState:1];
 
   v16 = self->_bookButton;
-  v17 = [v3 blueButtonTitleColor:0];
+  v17 = [theme blueButtonTitleColor:0];
   [(BackgroundColorButton *)v16 setTitleColor:v17 forState:0];
 
   v18 = self->_bookButton;
-  v19 = [v3 blueButtonTitleColor:1];
+  v19 = [theme blueButtonTitleColor:1];
   [(BackgroundColorButton *)v18 setTitleColor:v19 forState:1];
 
   detailsButton = self->_detailsButton;
-  v21 = [v3 keyColor];
-  [(UIButton *)detailsButton setTitleColor:v21 forState:0];
+  keyColor = [theme keyColor];
+  [(UIButton *)detailsButton setTitleColor:keyColor forState:0];
 }
 
-- (void)setPrimaryLabelCompanionImage:(id)a3
+- (void)setPrimaryLabelCompanionImage:(id)image
 {
-  v4 = a3;
-  v5 = [(RouteOverviewCell *)self primaryLabelCompanionImageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  primaryLabelCompanionImageView = [(RouteOverviewCell *)self primaryLabelCompanionImageView];
+  [primaryLabelCompanionImageView setImage:imageCopy];
 
-  v6 = [(RouteOverviewCell *)self primaryLabelCompanionImageView];
-  v7 = v6;
-  if (v4)
+  primaryLabelCompanionImageView2 = [(RouteOverviewCell *)self primaryLabelCompanionImageView];
+  v7 = primaryLabelCompanionImageView2;
+  if (imageCopy)
   {
     v8 = 8.0;
   }
@@ -1684,7 +1684,7 @@ LABEL_3:
     v8 = 0.0;
   }
 
-  if (v4)
+  if (imageCopy)
   {
     v9 = 20.0;
   }
@@ -1694,21 +1694,21 @@ LABEL_3:
     v9 = 0.0;
   }
 
-  [v6 setHidden:v4 == 0];
+  [primaryLabelCompanionImageView2 setHidden:imageCopy == 0];
 
-  v10 = [(RouteOverviewCell *)self primaryCompanionImageToLabelPaddingConstraint];
-  [v10 setConstant:v8];
+  primaryCompanionImageToLabelPaddingConstraint = [(RouteOverviewCell *)self primaryCompanionImageToLabelPaddingConstraint];
+  [primaryCompanionImageToLabelPaddingConstraint setConstant:v8];
 
-  v11 = [(RouteOverviewCell *)self primaryCompanionImageWidthConstraint];
-  [v11 setConstant:v9];
+  primaryCompanionImageWidthConstraint = [(RouteOverviewCell *)self primaryCompanionImageWidthConstraint];
+  [primaryCompanionImageWidthConstraint setConstant:v9];
 }
 
 - (UIImage)primaryLabelCompanionImage
 {
-  v2 = [(RouteOverviewCell *)self primaryLabelCompanionImageView];
-  v3 = [v2 image];
+  primaryLabelCompanionImageView = [(RouteOverviewCell *)self primaryLabelCompanionImageView];
+  image = [primaryLabelCompanionImageView image];
 
-  return v3;
+  return image;
 }
 
 - (void)_createSubviews
@@ -1717,16 +1717,16 @@ LABEL_3:
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   v59 = v3;
   [v3 setNumberOfLines:0];
-  v4 = [objc_opt_class() primaryLabelFontProvider];
-  [DynamicTypeWizard autorefreshLabel:v3 withFontProvider:v4];
+  primaryLabelFontProvider = [objc_opt_class() primaryLabelFontProvider];
+  [DynamicTypeWizard autorefreshLabel:v3 withFontProvider:primaryLabelFontProvider];
 
   objc_storeStrong(&self->_primaryLabel, v3);
   v5 = +[UIColor labelColor];
   [(UILabel *)self->_primaryLabel setTextColor:v5];
 
   [(UILabel *)self->_primaryLabel setAccessibilityIdentifier:@"PrimaryLabel"];
-  v6 = [(RouteOverviewCell *)self contentView];
-  [v6 addSubview:self->_primaryLabel];
+  contentView = [(RouteOverviewCell *)self contentView];
+  [contentView addSubview:self->_primaryLabel];
 
   v7 = objc_alloc_init(AutolayoutImageView);
   [(AutolayoutImageView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -1734,18 +1734,18 @@ LABEL_3:
   v58 = v7;
   objc_storeStrong(&self->_primaryLabelCompanionImageView, v7);
   [(UIImageView *)self->_primaryLabelCompanionImageView setAccessibilityIdentifier:@"PrimaryLabelCompanionImageView"];
-  v8 = [(RouteOverviewCell *)self contentView];
-  [v8 addSubview:self->_primaryLabelCompanionImageView];
+  contentView2 = [(RouteOverviewCell *)self contentView];
+  [contentView2 addSubview:self->_primaryLabelCompanionImageView];
 
   v9 = objc_alloc_init(MapsThemeMultiPartLabel);
   [(MapsThemeMultiPartLabel *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MapsThemeMultiPartLabel *)v9 setNumberOfLines:0];
   [(MapsThemeMultiPartLabel *)v9 setUserInteractionEnabled:0];
-  v10 = [objc_opt_class() secondaryLabelFontProvider];
-  [DynamicTypeWizard autorefreshLabel:v9 withFontProvider:v10];
+  secondaryLabelFontProvider = [objc_opt_class() secondaryLabelFontProvider];
+  [DynamicTypeWizard autorefreshLabel:v9 withFontProvider:secondaryLabelFontProvider];
 
-  v11 = [(RouteOverviewCell *)self contentView];
-  [v11 addSubview:v9];
+  contentView3 = [(RouteOverviewCell *)self contentView];
+  [contentView3 addSubview:v9];
 
   objc_storeStrong(&self->_secondaryLabel, v9);
   v12 = +[UIColor secondaryLabelColor];
@@ -1757,34 +1757,34 @@ LABEL_3:
   [v13 setClipsToBounds:1];
   [v13 _setContinuousCornerRadius:12.0];
   [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v14 = [v13 titleLabel];
-  [v14 setAdjustsFontSizeToFitWidth:1];
+  titleLabel = [v13 titleLabel];
+  [titleLabel setAdjustsFontSizeToFitWidth:1];
 
-  v15 = [v13 titleLabel];
-  [v15 setMinimumScaleFactor:0.474999994];
+  titleLabel2 = [v13 titleLabel];
+  [titleLabel2 setMinimumScaleFactor:0.474999994];
 
-  v16 = [v13 titleLabel];
-  [v16 setAllowsDefaultTighteningForTruncation:1];
+  titleLabel3 = [v13 titleLabel];
+  [titleLabel3 setAllowsDefaultTighteningForTruncation:1];
 
-  v17 = [v13 titleLabel];
-  [v17 setLineBreakMode:2];
+  titleLabel4 = [v13 titleLabel];
+  [titleLabel4 setLineBreakMode:2];
 
   [v13 setFillStyle:0];
   v18 = +[NSBundle mainBundle];
   v19 = [v18 localizedStringForKey:@"GO [Route Planning]" value:@"localized string not found" table:0];
   [v13 setTitle:v19 forState:0];
 
-  v20 = [v13 titleLabel];
-  v21 = [objc_opt_class() goButtonFontProvider];
-  [DynamicTypeWizard autorefreshLabel:v20 withFontProvider:v21];
+  titleLabel5 = [v13 titleLabel];
+  goButtonFontProvider = [objc_opt_class() goButtonFontProvider];
+  [DynamicTypeWizard autorefreshLabel:titleLabel5 withFontProvider:goButtonFontProvider];
 
   [DynamicTypeWizard makeObject:self performSelector:"_updateGoButtonWidthConstraint" whenSizeCategoryChangesWithOrder:2];
   [v13 setContentEdgeInsets:{0.0, 6.0, 0.0, 6.0}];
   [v13 addTarget:self action:? forControlEvents:?];
   [v13 setHidden:self->_buttonVisibility != 1];
   [v13 setAccessibilityIdentifier:@"GoButton"];
-  v22 = [(RouteOverviewCell *)self contentView];
-  [v22 addSubview:v13];
+  contentView4 = [(RouteOverviewCell *)self contentView];
+  [contentView4 addSubview:v13];
 
   objc_storeStrong(&self->_goButton, v13);
   v60 = +[UIBackgroundConfiguration clearConfiguration];
@@ -1824,62 +1824,62 @@ LABEL_3:
   [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v34 setHidden:self->_buttonVisibility != 3];
   [v34 setAccessibilityIdentifier:@"StepsButton"];
-  v35 = [(RouteOverviewCell *)self contentView];
-  [v35 addSubview:v34];
+  contentView5 = [(RouteOverviewCell *)self contentView];
+  [contentView5 addSubview:v34];
 
   objc_storeStrong(&self->_stepsButton, v34);
   v36 = [BackgroundColorButton buttonWithType:0];
   [v36 setClipsToBounds:1];
-  v37 = [v36 layer];
-  [v37 setCornerRadius:8.0];
+  layer = [v36 layer];
+  [layer setCornerRadius:8.0];
 
   [v36 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(RouteOverviewCell *)self _resetBookButtonTitle];
-  v38 = [v36 titleLabel];
-  [DynamicTypeWizard autorefreshLabel:v38 withFontProvider:&stru_10165DAA8];
+  titleLabel6 = [v36 titleLabel];
+  [DynamicTypeWizard autorefreshLabel:titleLabel6 withFontProvider:&stru_10165DAA8];
 
   [v36 setContentEdgeInsets:{0.0, 11.0, 0.0, 11.0}];
   [v36 addTarget:self action:"_didTapPrimaryActionButton:" forControlEvents:64];
   [v36 setHidden:self->_buttonVisibility != 2];
   [v36 setAccessibilityIdentifier:@"BookButton"];
-  v39 = [(RouteOverviewCell *)self contentView];
-  [v39 addSubview:v36];
+  contentView6 = [(RouteOverviewCell *)self contentView];
+  [contentView6 addSubview:v36];
 
   objc_storeStrong(&self->_bookButton, v36);
-  v40 = [(RouteOverviewCell *)self contentView];
-  [v40 setAccessibilityIdentifier:@"RouteOverviewCellContent"];
+  contentView7 = [(RouteOverviewCell *)self contentView];
+  [contentView7 setAccessibilityIdentifier:@"RouteOverviewCellContent"];
 
-  v41 = [(RouteOverviewCell *)self contentView];
-  v42 = [(RouteOverviewCell *)self advisoriesView];
-  [v41 addSubview:v42];
+  contentView8 = [(RouteOverviewCell *)self contentView];
+  advisoriesView = [(RouteOverviewCell *)self advisoriesView];
+  [contentView8 addSubview:advisoriesView];
 
-  v43 = [(RouteOverviewCell *)self contentView];
-  v44 = [(RouteOverviewCell *)self artworkList];
-  [v43 addSubview:v44];
+  contentView9 = [(RouteOverviewCell *)self contentView];
+  artworkList = [(RouteOverviewCell *)self artworkList];
+  [contentView9 addSubview:artworkList];
 
-  v45 = [(RouteOverviewCell *)self contentView];
-  v46 = [(RouteOverviewCell *)self detailsButton];
-  [v45 addSubview:v46];
+  contentView10 = [(RouteOverviewCell *)self contentView];
+  detailsButton = [(RouteOverviewCell *)self detailsButton];
+  [contentView10 addSubview:detailsButton];
 
-  v47 = [(RouteOverviewCell *)self contentView];
-  v48 = [(RouteOverviewCell *)self tertiaryLabel];
-  [v47 addSubview:v48];
+  contentView11 = [(RouteOverviewCell *)self contentView];
+  tertiaryLabel = [(RouteOverviewCell *)self tertiaryLabel];
+  [contentView11 addSubview:tertiaryLabel];
 
-  v49 = [(RouteOverviewCell *)self contentView];
-  v50 = [(RouteOverviewCell *)self routeDescriptionLabel];
-  [v49 addSubview:v50];
+  contentView12 = [(RouteOverviewCell *)self contentView];
+  routeDescriptionLabel = [(RouteOverviewCell *)self routeDescriptionLabel];
+  [contentView12 addSubview:routeDescriptionLabel];
 
-  v51 = [(RouteOverviewCell *)self contentView];
-  v52 = [(RouteOverviewCell *)self elevationGraphView];
-  [v51 addSubview:v52];
+  contentView13 = [(RouteOverviewCell *)self contentView];
+  elevationGraphView = [(RouteOverviewCell *)self elevationGraphView];
+  [contentView13 addSubview:elevationGraphView];
 
   [(DirectionsElevationGraphView *)self->_elevationGraphView setHidden:1];
   [(UILabel *)self->_tertiaryLabel setHidden:1];
   [(UIButton *)self->_detailsButton setHidden:1];
   [(TransitArtworkListView *)self->_artworkList setHidden:1];
   [(RouteAdvisoriesView *)self->_advisoriesView setHidden:1];
-  v53 = [(RouteOverviewCell *)self routeDescriptionLabel];
-  [v53 setHidden:1];
+  routeDescriptionLabel2 = [(RouteOverviewCell *)self routeDescriptionLabel];
+  [routeDescriptionLabel2 setHidden:1];
 
   if (sub_10000FA08(self) == 5)
   {
@@ -1890,8 +1890,8 @@ LABEL_3:
     [(MapsThemeMultiPartLabel *)self->_secondaryLabel setHighlightedTextColor:v55];
 
     v56 = +[UIColor systemWhiteColor];
-    v57 = [(RouteOverviewCell *)self routeDescriptionLabel];
-    [v57 setHighlightedTextColor:v56];
+    routeDescriptionLabel3 = [(RouteOverviewCell *)self routeDescriptionLabel];
+    [routeDescriptionLabel3 setHighlightedTextColor:v56];
   }
 
   [(RouteOverviewCell *)self _updateColorsForSelection];
@@ -1925,8 +1925,8 @@ LABEL_3:
   [(RouteOverviewCell *)self setBackgroundColor:v6];
 
   v7 = +[UIColor clearColor];
-  v8 = [(RouteOverviewCell *)self contentView];
-  [v8 setBackgroundColor:v7];
+  contentView = [(RouteOverviewCell *)self contentView];
+  [contentView setBackgroundColor:v7];
 
   objc_initWeak(&location, self);
   v11 = _NSConcreteStackBlock;
@@ -1946,11 +1946,11 @@ LABEL_3:
   objc_destroyWeak(&location);
 }
 
-- (RouteOverviewCell)initWithCoder:(id)a3
+- (RouteOverviewCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = RouteOverviewCell;
-  v3 = [(RouteOverviewCell *)&v7 initWithCoder:a3];
+  v3 = [(RouteOverviewCell *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -1961,11 +1961,11 @@ LABEL_3:
   return v4;
 }
 
-- (RouteOverviewCell)initWithFrame:(CGRect)a3
+- (RouteOverviewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = RouteOverviewCell;
-  v3 = [(RouteOverviewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RouteOverviewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

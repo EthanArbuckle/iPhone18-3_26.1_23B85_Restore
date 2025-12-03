@@ -6,7 +6,7 @@
 - (BOOL)_hasBeenUnlockedSinceBoot;
 - (MTDeviceListener)init;
 - (id)gatherDiagnostics;
-- (void)handleNotification:(id)a3 ofType:(int64_t)a4 completion:(id)a5;
+- (void)handleNotification:(id)notification ofType:(int64_t)type completion:(id)completion;
 - (void)printDiagnostics;
 @end
 
@@ -48,29 +48,29 @@ uint64_t __40__MTDeviceListener_sharedDeviceListener__block_invoke()
   return v2;
 }
 
-- (void)handleNotification:(id)a3 ofType:(int64_t)a4 completion:(id)a5
+- (void)handleNotification:(id)notification ofType:(int64_t)type completion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a5;
+  completionCopy = completion;
   v7 = MTLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ received notification", buf, 0xCu);
   }
 
-  v8 = [(MTDeviceListener *)self workScheduler];
+  workScheduler = [(MTDeviceListener *)self workScheduler];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__MTDeviceListener_handleNotification_ofType_completion___block_invoke;
   v10[3] = &unk_1E7B0C9D8;
   v10[4] = self;
-  [v8 performBlock:v10];
+  [workScheduler performBlock:v10];
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -135,10 +135,10 @@ void __57__MTDeviceListener_handleNotification_ofType_completion___block_invoke_
 
 + (BOOL)hasBeenUnlockedSinceBoot
 {
-  v2 = [a1 sharedDeviceListener];
-  v3 = [v2 _hasBeenUnlockedSinceBoot];
+  sharedDeviceListener = [self sharedDeviceListener];
+  _hasBeenUnlockedSinceBoot = [sharedDeviceListener _hasBeenUnlockedSinceBoot];
 
-  return v3;
+  return _hasBeenUnlockedSinceBoot;
 }
 
 - (BOOL)_hasBeenUnlockedSinceBoot
@@ -148,7 +148,7 @@ void __57__MTDeviceListener_handleNotification_ofType_completion___block_invoke_
   v12 = 0x2020000000;
   v13 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(MTDeviceListener *)self workScheduler];
+  workScheduler = [(MTDeviceListener *)self workScheduler];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__MTDeviceListener__hasBeenUnlockedSinceBoot__block_invoke;
@@ -157,13 +157,13 @@ void __57__MTDeviceListener_handleNotification_ofType_completion___block_invoke_
   v9 = &v10;
   v5 = v3;
   v8 = v5;
-  [v4 performBlock:v7];
+  [workScheduler performBlock:v7];
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
-  LOBYTE(v4) = *(v11 + 24);
+  LOBYTE(workScheduler) = *(v11 + 24);
 
   _Block_object_dispose(&v10, 8);
-  return v4;
+  return workScheduler;
 }
 
 intptr_t __45__MTDeviceListener__hasBeenUnlockedSinceBoot__block_invoke(uint64_t a1)
@@ -244,9 +244,9 @@ intptr_t __45__MTDeviceListener__hasBeenUnlockedSinceBoot__block_invoke(uint64_t
   v3 = MTLogForCategory(6);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [objc_opt_class() hasBeenUnlockedSinceBoot];
+    hasBeenUnlockedSinceBoot = [objc_opt_class() hasBeenUnlockedSinceBoot];
     v6[0] = 67240192;
-    v6[1] = v4;
+    v6[1] = hasBeenUnlockedSinceBoot;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "Unlocked since boot: %{public}d", v6, 8u);
   }
 
@@ -257,9 +257,9 @@ intptr_t __45__MTDeviceListener__hasBeenUnlockedSinceBoot__block_invoke(uint64_t
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"Unlocked since boot";
-  v2 = [objc_opt_class() hasBeenUnlockedSinceBoot];
+  hasBeenUnlockedSinceBoot = [objc_opt_class() hasBeenUnlockedSinceBoot];
   v3 = @"NO";
-  if (v2)
+  if (hasBeenUnlockedSinceBoot)
   {
     v3 = @"YES";
   }
@@ -273,9 +273,9 @@ intptr_t __45__MTDeviceListener__hasBeenUnlockedSinceBoot__block_invoke(uint64_t
 
 + (void)_latestKeyBagValueForHasBeenUnlockedSinceBoot
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"int MTDeviceUnlockedSinceBoot(void)"];
-  [v0 handleFailureInFunction:v1 file:@"MTDeviceListener.m" lineNumber:21 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"MTDeviceListener.m" lineNumber:21 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

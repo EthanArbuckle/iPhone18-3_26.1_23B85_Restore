@@ -2,33 +2,33 @@
 - (SFSession)session;
 - (SUICVoicePreviewingDelegate)delegate;
 - (void)_updatePowerOutputLevel;
-- (void)previewVoice:(id)a3 completion:(id)a4;
+- (void)previewVoice:(id)voice completion:(id)completion;
 @end
 
 @implementation HomePodSetupSiriVoicePreviewer
 
-- (void)previewVoice:(id)a3 completion:(id)a4
+- (void)previewVoice:(id)voice completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  voiceCopy = voice;
+  completionCopy = completion;
   v9 = +[NSMutableDictionary dictionary];
-  v10 = [v7 languageCode];
-  if (v10)
+  languageCode = [voiceCopy languageCode];
+  if (languageCode)
   {
-    [v9 setObject:v10 forKeyedSubscript:@"siriVL"];
+    [v9 setObject:languageCode forKeyedSubscript:@"siriVL"];
   }
 
-  v11 = [v7 name];
+  name = [voiceCopy name];
 
-  if (v11)
+  if (name)
   {
-    [v9 setObject:v11 forKeyedSubscript:@"siriVN"];
+    [v9 setObject:name forKeyedSubscript:@"siriVN"];
   }
 
-  v12 = [v7 gender];
-  if (v12)
+  gender = [voiceCopy gender];
+  if (gender)
   {
-    v13 = [NSNumber numberWithInteger:v12];
+    v13 = [NSNumber numberWithInteger:gender];
     [v9 setObject:v13 forKeyedSubscript:@"siriVG"];
   }
 
@@ -39,7 +39,7 @@
     self->_powerLevelUpdaterTimer = v14;
   }
 
-  objc_storeStrong(&self->_voicePreviewing, a3);
+  objc_storeStrong(&self->_voicePreviewing, voice);
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_session);
   v19[0] = _NSConcreteStackBlock;
@@ -47,9 +47,9 @@
   v19[2] = sub_1000086F8;
   v19[3] = &unk_1000EDCB8;
   objc_copyWeak(&v22, &location);
-  v17 = v7;
+  v17 = voiceCopy;
   v20 = v17;
-  v18 = v8;
+  v18 = completionCopy;
   v21 = v18;
   [WeakRetained sendRequestID:@"_pvoice" options:&off_1000F3BE8 request:v9 responseHandler:v19];
 
@@ -73,9 +73,9 @@
     v3 = -60.0;
   }
 
-  v6 = [(HomePodSetupSiriVoicePreviewer *)self delegate];
+  delegate = [(HomePodSetupSiriVoicePreviewer *)self delegate];
   *&v5 = v3;
-  [v6 voicePreviewerAudioOutputDidChangePowerLevel:v5];
+  [delegate voicePreviewerAudioOutputDidChangePowerLevel:v5];
 }
 
 - (SUICVoicePreviewingDelegate)delegate

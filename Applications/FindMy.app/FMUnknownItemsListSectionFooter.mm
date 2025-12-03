@@ -1,11 +1,11 @@
 @interface FMUnknownItemsListSectionFooter
-- (_TtC6FindMy31FMUnknownItemsListSectionFooter)initWithCoder:(id)a3;
-- (_TtC6FindMy31FMUnknownItemsListSectionFooter)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy31FMUnknownItemsListSectionFooter)initWithCoder:(id)coder;
+- (_TtC6FindMy31FMUnknownItemsListSectionFooter)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FMUnknownItemsListSectionFooter
 
-- (_TtC6FindMy31FMUnknownItemsListSectionFooter)initWithCoder:(id)a3
+- (_TtC6FindMy31FMUnknownItemsListSectionFooter)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6FindMy31FMUnknownItemsListSectionFooter_label;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(UILabel) init];
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC6FindMy31FMUnknownItemsListSectionFooter)initWithFrame:(CGRect)a3
+- (_TtC6FindMy31FMUnknownItemsListSectionFooter)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

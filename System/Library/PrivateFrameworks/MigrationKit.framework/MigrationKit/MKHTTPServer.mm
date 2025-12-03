@@ -1,9 +1,9 @@
 @interface MKHTTPServer
 - (MKHTTPServer)init;
 - (MKHTTPServerDelegate)delegate;
-- (void)connection:(id)a3 didReceiveData:(id)a4;
-- (void)listener:(id)a3 didOpen:(int64_t)a4;
-- (void)listenerDidCancel:(id)a3;
+- (void)connection:(id)connection didReceiveData:(id)data;
+- (void)listener:(id)listener didOpen:(int64_t)open;
+- (void)listenerDidCancel:(id)cancel;
 - (void)run;
 @end
 
@@ -45,59 +45,59 @@
   [(MKListener *)v5 listen];
 }
 
-- (void)listener:(id)a3 didOpen:(int64_t)a4
+- (void)listener:(id)listener didOpen:(int64_t)open
 {
-  [(MKHTTPServer *)self setPort:a4];
+  [(MKHTTPServer *)self setPort:open];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained server:self didOpen:a4];
+  [WeakRetained server:self didOpen:open];
 }
 
-- (void)listenerDidCancel:(id)a3
+- (void)listenerDidCancel:(id)cancel
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained serverDidCancel:self];
 }
 
-- (void)connection:(id)a3 didReceiveData:(id)a4
+- (void)connection:(id)connection didReceiveData:(id)data
 {
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v56 = a4;
+  connectionCopy = connection;
+  dataCopy = data;
   v53 = objc_alloc_init(MKTime);
   v7 = self->_requests;
   objc_sync_enter(v7);
   requests = self->_requests;
-  v9 = [v6 identifier];
-  v10 = [(NSMutableDictionary *)requests objectForKey:v9];
+  identifier = [connectionCopy identifier];
+  v10 = [(NSMutableDictionary *)requests objectForKey:identifier];
 
   objc_sync_exit(v7);
   if (v10)
   {
-    [v10 appendData:v56];
+    [v10 appendData:dataCopy];
     v11 = v10;
   }
 
   else
   {
     parser = self->_parser;
-    v13 = [v6 hostname];
-    v14 = [(MKHTTPParser *)parser parse:v56 hostname:v13];
+    hostname = [connectionCopy hostname];
+    v14 = [(MKHTTPParser *)parser parse:dataCopy hostname:hostname];
 
     v11 = v14;
   }
 
   v58 = v11;
-  v59 = [v11 headers];
+  headers = [v11 headers];
   v15 = objc_alloc_init(MKHTTPResponse);
-  v55 = [v59 method];
-  v54 = [v59 path];
-  v57 = [v58 body];
-  v52 = [v59 isClosed];
-  v16 = [v59 contentLength];
-  v17 = [v57 length];
-  v18 = [v59 transferEncoding];
-  v19 = v18;
-  if (v16 <= v17 && (v18 & 1) == 0)
+  method = [headers method];
+  path = [headers path];
+  body = [v58 body];
+  isClosed = [headers isClosed];
+  contentLength = [headers contentLength];
+  v17 = [body length];
+  transferEncoding = [headers transferEncoding];
+  v19 = transferEncoding;
+  if (contentLength <= v17 && (transferEncoding & 1) == 0)
   {
     goto LABEL_6;
   }
@@ -107,15 +107,15 @@
     v33 = self->_requests;
     objc_sync_enter(v33);
     v34 = self->_requests;
-    v35 = [v6 identifier];
-    [(NSMutableDictionary *)v34 setObject:v58 forKey:v35];
+    identifier2 = [connectionCopy identifier];
+    [(NSMutableDictionary *)v34 setObject:v58 forKey:identifier2];
 
     objc_sync_exit(v33);
   }
 
-  if (v16 > v17)
+  if (contentLength > v17)
   {
-    [(MKListener *)self->_listener readData:v6];
+    [(MKListener *)self->_listener readData:connectionCopy];
     goto LABEL_28;
   }
 
@@ -126,10 +126,10 @@
 
   v65 = 0;
   v64 = 0;
-  v49 = [(MKHTTPParser *)self->_parser chunk:v57 offset:&v65 done:&v64];
+  v49 = [(MKHTTPParser *)self->_parser chunk:body offset:&v65 done:&v64];
   [v58 setChunkedTransferCompleted:v64];
-  v50 = [v58 chunk];
-  [v58 setChunkOffset:{objc_msgSend(v58, "chunkOffset") + objc_msgSend(v50, "length")}];
+  chunk = [v58 chunk];
+  [v58 setChunkOffset:{objc_msgSend(v58, "chunkOffset") + objc_msgSend(chunk, "length")}];
 
   [v58 setChunk:v49];
   if (v65)
@@ -144,18 +144,18 @@ LABEL_6:
     v20 = self->_requests;
     objc_sync_enter(v20);
     v21 = self->_requests;
-    v22 = [v6 identifier];
-    [(NSMutableDictionary *)v21 removeObjectForKey:v22];
+    identifier3 = [connectionCopy identifier];
+    [(NSMutableDictionary *)v21 removeObjectForKey:identifier3];
 
     objc_sync_exit(v20);
-    v23 = [(MKHTTPResponse *)v15 headers];
-    [v23 close:v52];
+    headers2 = [(MKHTTPResponse *)v15 headers];
+    [headers2 close:isClosed];
 
-    v24 = [(MKHTTPRequestMultiplexer *)self routerForMethod:v55 path:v54];
-    v25 = [v59 boundary];
-    LODWORD(v22) = v25 == 0;
+    v24 = [(MKHTTPRequestMultiplexer *)self routerForMethod:method path:path];
+    boundary = [headers boundary];
+    LODWORD(identifier3) = boundary == 0;
 
-    if (v22)
+    if (identifier3)
     {
       [v24 server:self didReceiveRequest:v58 response:v15];
     }
@@ -163,8 +163,8 @@ LABEL_6:
     else
     {
       v26 = self->_parser;
-      v27 = [v59 boundary];
-      v28 = [(MKHTTPParser *)v26 parts:v57 boundary:v27 container:v58];
+      boundary2 = [headers boundary];
+      v28 = [(MKHTTPParser *)v26 parts:body boundary:boundary2 container:v58];
 
       v62 = 0u;
       v63 = 0u;
@@ -194,46 +194,46 @@ LABEL_6:
       }
     }
 
-    v36 = [(MKHTTPResponse *)v15 headers];
-    v37 = [v36 serverTiming];
+    headers3 = [(MKHTTPResponse *)v15 headers];
+    serverTiming = [headers3 serverTiming];
     [(MKTime *)v53 elapsedTimeInSeconds];
     v39 = v38;
-    [v37 response];
-    [v37 setResponse:v39 + v40];
+    [serverTiming response];
+    [serverTiming setResponse:v39 + v40];
 
-    v41 = [(MKHTTPResponse *)v15 bodyStream];
+    bodyStream = [(MKHTTPResponse *)v15 bodyStream];
     listener = self->_listener;
-    v43 = [(MKHTTPResponse *)v15 responseData];
-    if (v41)
+    responseData = [(MKHTTPResponse *)v15 responseData];
+    if (bodyStream)
     {
-      [(MKListener *)listener sendData:v43 throughConnection:v6 close:0];
+      [(MKListener *)listener sendData:responseData throughConnection:connectionCopy close:0];
 
-      [v41 open];
-      v44 = [v41 read:objc_msgSend(v6 maxLength:{"buffer"), objc_msgSend(v6, "bufferSize")}];
+      [bodyStream open];
+      v44 = [bodyStream read:objc_msgSend(connectionCopy maxLength:{"buffer"), objc_msgSend(connectionCopy, "bufferSize")}];
       if (v44 >= 1)
       {
         v45 = 0;
         do
         {
-          v46 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:objc_msgSend(v6 length:"buffer") freeWhenDone:{v44, 0}];
+          v46 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:objc_msgSend(connectionCopy length:"buffer") freeWhenDone:{v44, 0}];
 
-          [(MKListener *)self->_listener sendData:v46 throughConnection:v6 close:0];
-          v44 = [v41 read:objc_msgSend(v6 maxLength:{"buffer"), objc_msgSend(v6, "bufferSize")}];
+          [(MKListener *)self->_listener sendData:v46 throughConnection:connectionCopy close:0];
+          v44 = [bodyStream read:objc_msgSend(connectionCopy maxLength:{"buffer"), objc_msgSend(connectionCopy, "bufferSize")}];
           v45 = v46;
         }
 
         while (v44 > 0);
       }
 
-      [v41 close];
+      [bodyStream close];
       v47 = self->_listener;
-      v43 = objc_alloc_init(MEMORY[0x277CBEA90]);
-      [(MKListener *)v47 sendData:v43 throughConnection:v6 close:v52];
+      responseData = objc_alloc_init(MEMORY[0x277CBEA90]);
+      [(MKListener *)v47 sendData:responseData throughConnection:connectionCopy close:isClosed];
     }
 
     else
     {
-      [(MKListener *)listener sendData:v43 throughConnection:v6 close:v52];
+      [(MKListener *)listener sendData:responseData throughConnection:connectionCopy close:isClosed];
     }
 
     goto LABEL_28;
@@ -241,11 +241,11 @@ LABEL_6:
 
   if ([v49 length])
   {
-    v51 = [(MKHTTPRequestMultiplexer *)self routerForMethod:v55 path:v54];
+    v51 = [(MKHTTPRequestMultiplexer *)self routerForMethod:method path:path];
     [v51 server:self didReceiveRequest:v58 response:v15];
   }
 
-  [(MKListener *)self->_listener readData:v6];
+  [(MKListener *)self->_listener readData:connectionCopy];
 
 LABEL_28:
   v48 = *MEMORY[0x277D85DE8];

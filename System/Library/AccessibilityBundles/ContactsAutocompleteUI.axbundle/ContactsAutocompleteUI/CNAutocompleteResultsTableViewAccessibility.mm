@@ -1,14 +1,14 @@
 @interface CNAutocompleteResultsTableViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation CNAutocompleteResultsTableViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNAutocompleteResultsTableView" isKindOfClass:@"UITableView"];
-  [v3 validateClass:@"UITableView" hasInstanceMethod:@"selectRowAtIndexPath:animated:scrollPosition:" withFullSignature:{"v", "@", "B", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNAutocompleteResultsTableView" isKindOfClass:@"UITableView"];
+  [validationsCopy validateClass:@"UITableView" hasInstanceMethod:@"selectRowAtIndexPath:animated:scrollPosition:" withFullSignature:{"v", "@", "B", "q", 0}];
 }
 
 @end

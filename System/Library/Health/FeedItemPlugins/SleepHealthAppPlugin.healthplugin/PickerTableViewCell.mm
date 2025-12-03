@@ -1,15 +1,15 @@
 @interface PickerTableViewCell
-- (_TtC20SleepHealthAppPlugin19PickerTableViewCell)initWithCoder:(id)a3;
-- (_TtC20SleepHealthAppPlugin19PickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)numberOfComponentsInPickerView:(id)a3;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (_TtC20SleepHealthAppPlugin19PickerTableViewCell)initWithCoder:(id)coder;
+- (_TtC20SleepHealthAppPlugin19PickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)numberOfComponentsInPickerView:(id)view;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation PickerTableViewCell
 
-- (_TtC20SleepHealthAppPlugin19PickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC20SleepHealthAppPlugin19PickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -19,7 +19,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (identifier)
   {
     v5 = sub_29E7541D8();
   }
@@ -35,7 +35,7 @@
   return v7;
 }
 
-- (_TtC20SleepHealthAppPlugin19PickerTableViewCell)initWithCoder:(id)a3
+- (_TtC20SleepHealthAppPlugin19PickerTableViewCell)initWithCoder:(id)coder
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -55,7 +55,7 @@
   return result;
 }
 
-- (int64_t)numberOfComponentsInPickerView:(id)a3
+- (int64_t)numberOfComponentsInPickerView:(id)view
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -68,7 +68,7 @@
   return 1;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -83,7 +83,7 @@
   return v5;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -93,7 +93,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  sub_29E740024(a4);
+  sub_29E740024(row);
   if (v6)
   {
     v7 = sub_29E754198();
@@ -108,7 +108,7 @@
   return v7;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -124,7 +124,7 @@
     v7 = *(v6 + 1);
     swift_getObjectType();
     v8 = *(v7 + 8);
-    v9 = self;
+    selfCopy = self;
     v8();
 
     sub_29E751758();

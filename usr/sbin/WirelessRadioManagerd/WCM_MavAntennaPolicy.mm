@@ -1,23 +1,23 @@
 @interface WCM_MavAntennaPolicy
 - (WCM_MavAntennaPolicy)init;
-- (id)createAntennaBlockingClientXpcArray:(id)a3 client_id:(int)a4 convBand:(unsigned __int8)a5;
-- (id)createConditionIdXpcElement:(unsigned int)a3 mav_antenna_block_client_id:(unsigned int)a4 cellular_band:(unsigned int)a5 cellular_frequency_upper:(unsigned int)a6 cellular_frequency_lower:(unsigned int)a7 cellular_ant_mitigation:(unsigned int)a8;
-- (id)createFaceIDPowerTableXpcElement:(unsigned int)a3 ant:(unsigned int)a4 target_power_dbm:(unsigned int)a5;
+- (id)createAntennaBlockingClientXpcArray:(id)array client_id:(int)client_id convBand:(unsigned __int8)band;
+- (id)createConditionIdXpcElement:(unsigned int)element mav_antenna_block_client_id:(unsigned int)mav_antenna_block_client_id cellular_band:(unsigned int)cellular_band cellular_frequency_upper:(unsigned int)cellular_frequency_upper cellular_frequency_lower:(unsigned int)cellular_frequency_lower cellular_ant_mitigation:(unsigned int)cellular_ant_mitigation;
+- (id)createFaceIDPowerTableXpcElement:(unsigned int)element ant:(unsigned int)ant target_power_dbm:(unsigned int)target_power_dbm;
 - (id)createHardcodedFcamClientMappings;
 - (id)createHardcodedFidClientMappings;
 - (id)createHardcodedJpgRegClientMappings;
 - (id)createHardcodedRc1ClientMappings;
 - (id)createHardcodedWifiClientMappings;
-- (id)createPowerTableXpcElement:(unsigned int)a3 ant:(unsigned int)a4 target_power_dbm:(unsigned int)a5 condition_id:(unsigned int)a6 entry_num:(unsigned int)a7;
-- (id)createSubframePowerBackOffTableXpcElement:(id)a3 condition_id:(unsigned int)a4;
-- (id)createXpcClientObjectWithClientId:(int)a3 blockVoice:(BOOL)a4 timeMultipler:(unint64_t)a5 antennaBandMappings:(id)a6;
-- (id)getFaceIDConfigDictionarySKUBased:(id)a3;
+- (id)createPowerTableXpcElement:(unsigned int)element ant:(unsigned int)ant target_power_dbm:(unsigned int)target_power_dbm condition_id:(unsigned int)condition_id entry_num:(unsigned int)entry_num;
+- (id)createSubframePowerBackOffTableXpcElement:(id)element condition_id:(unsigned int)condition_id;
+- (id)createXpcClientObjectWithClientId:(int)id blockVoice:(BOOL)voice timeMultipler:(unint64_t)multipler antennaBandMappings:(id)mappings;
+- (id)getFaceIDConfigDictionarySKUBased:(id)based;
 - (id)getFaceIDPlatformPlistName;
 - (id)getPlatformCidPlistName;
 - (id)getPlatformPlistName;
-- (int)convertBandToEurBandId:(id)a3;
-- (int)getMavClientIdforAntClient:(id)a3;
-- (void)addXpcBandEntriesWithAnt:(unint64_t)a3 bandsToAddSet:(id)a4 bandArray:(id)a5;
+- (int)convertBandToEurBandId:(id)id;
+- (int)getMavClientIdforAntClient:(id)client;
+- (void)addXpcBandEntriesWithAnt:(unint64_t)ant bandsToAddSet:(id)set bandArray:(id)array;
 - (void)createFaceIDpowerTablefromPlist;
 - (void)initSfPboffParams;
 - (void)sendFaceIDPowerTables;
@@ -318,11 +318,11 @@ LABEL_44:
   }
 }
 
-- (id)getFaceIDConfigDictionarySKUBased:(id)a3
+- (id)getFaceIDConfigDictionarySKUBased:(id)based
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  basedCopy = based;
+  v5 = basedCopy;
+  if (!basedCopy)
   {
     goto LABEL_10;
   }
@@ -362,7 +362,7 @@ LABEL_10:
 
   v7 = @"B";
 LABEL_13:
-  v8 = [v4 objectForKey:v7];
+  v8 = [basedCopy objectForKey:v7];
 LABEL_14:
 
   return v8;
@@ -380,10 +380,10 @@ LABEL_14:
   return 0;
 }
 
-- (int)getMavClientIdforAntClient:(id)a3
+- (int)getMavClientIdforAntClient:(id)client
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"wifi_client"])
+  clientCopy = client;
+  if ([clientCopy isEqualToString:@"wifi_client"])
   {
     v5 = 0;
 LABEL_18:
@@ -391,50 +391,50 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ([v4 isEqualToString:@"rc3_client"])
+  if ([clientCopy isEqualToString:@"rc3_client"])
   {
     v5 = 1;
     goto LABEL_18;
   }
 
-  if ([v4 isEqualToString:@"rc1_client"])
+  if ([clientCopy isEqualToString:@"rc1_client"])
   {
     v5 = 2;
     goto LABEL_18;
   }
 
-  if ([v4 isEqualToString:@"fid_client"])
+  if ([clientCopy isEqualToString:@"fid_client"])
   {
     v5 = 3;
     goto LABEL_18;
   }
 
-  if ([v4 isEqualToString:@"rcam_t_client"])
+  if ([clientCopy isEqualToString:@"rcam_t_client"])
   {
     v5 = 4;
     goto LABEL_18;
   }
 
-  if ([v4 isEqualToString:@"rcam_w_client"])
+  if ([clientCopy isEqualToString:@"rcam_w_client"])
   {
     v5 = 5;
     goto LABEL_18;
   }
 
-  if ([v4 isEqualToString:@"e85_u_client0"])
+  if ([clientCopy isEqualToString:@"e85_u_client0"])
   {
     v5 = 6;
     goto LABEL_18;
   }
 
-  if ([v4 isEqualToString:@"e85_d_client0"])
+  if ([clientCopy isEqualToString:@"e85_d_client0"])
   {
     v5 = 7;
     goto LABEL_18;
   }
 
   v5 = -1;
-  if (v4)
+  if (clientCopy)
   {
     goto LABEL_18;
   }
@@ -458,11 +458,11 @@ LABEL_19:
 
 - (void)createFaceIDpowerTablefromPlist
 {
-  v3 = [(WCM_MavAntennaPolicy *)self getFaceIDPlatformPlistName];
-  v4 = v3;
-  if (v3)
+  getFaceIDPlatformPlistName = [(WCM_MavAntennaPolicy *)self getFaceIDPlatformPlistName];
+  v4 = getFaceIDPlatformPlistName;
+  if (getFaceIDPlatformPlistName)
   {
-    v5 = sub_10009D018(v3, @"plist");
+    v5 = sub_10009D018(getFaceIDPlatformPlistName, @"plist");
     if (v5)
     {
       v39 = 0;
@@ -510,15 +510,15 @@ LABEL_19:
                   if (v17)
                   {
                     v18 = [*(*(&v35 + 1) + 8 * i) objectForKey:@"band"];
-                    v19 = [v18 unsignedIntValue];
+                    unsignedIntValue = [v18 unsignedIntValue];
 
                     v20 = [v17 objectForKey:@"target_power"];
-                    v21 = [v20 unsignedIntValue];
+                    unsignedIntValue2 = [v20 unsignedIntValue];
 
                     v22 = [v17 objectForKey:@"antenna_num"];
-                    v23 = [v22 unsignedIntValue];
+                    unsignedIntValue3 = [v22 unsignedIntValue];
 
-                    v24 = [(WCM_MavAntennaPolicy *)self createFaceIDPowerTableXpcElement:v19 ant:v23 target_power_dbm:v21];
+                    v24 = [(WCM_MavAntennaPolicy *)self createFaceIDPowerTableXpcElement:unsignedIntValue ant:unsignedIntValue3 target_power_dbm:unsignedIntValue2];
 
                     if (v24)
                     {
@@ -599,14 +599,14 @@ LABEL_19:
   xdict = xpc_dictionary_create(0, 0, 0);
   if (xdict)
   {
-    v3 = [(WCM_MavAntennaPolicy *)self mMavFaceIdPtConfig];
+    mMavFaceIdPtConfig = [(WCM_MavAntennaPolicy *)self mMavFaceIdPtConfig];
 
-    if (v3)
+    if (mMavFaceIdPtConfig)
     {
       v4 = +[WCM_PolicyManager singleton];
-      v5 = [v4 cellularController];
+      cellularController = [v4 cellularController];
 
-      if (v5)
+      if (cellularController)
       {
         [WCM_Logging logLevel:4 message:@"sendFaceIDPowerTables"];
         v6 = xpc_array_create(0, 0);
@@ -614,8 +614,8 @@ LABEL_19:
         if (v7)
         {
           v8 = v7;
-          v9 = [(WCM_MavAntennaPolicy *)self mMavFaceIdPtConfig];
-          v10 = xpc_copy(v9);
+          mMavFaceIdPtConfig2 = [(WCM_MavAntennaPolicy *)self mMavFaceIdPtConfig];
+          v10 = xpc_copy(mMavFaceIdPtConfig2);
 
           count = xpc_array_get_count(v10);
           if (count >= 1)
@@ -630,7 +630,7 @@ LABEL_19:
               if (v12 == v14 || (v14 & 7) == 0)
               {
                 xpc_dictionary_set_value(xdict, "kWCMCellularTransparentMessageInformationSet", v6);
-                [v5 sendMessage:1223 withArgs:xdict];
+                [cellularController sendMessage:1223 withArgs:xdict];
                 v16 = xpc_array_create(0, 0);
 
                 v6 = v16;
@@ -688,29 +688,29 @@ LABEL_35:
     v6 = xpc_dictionary_create(0, 0, 0);
     if (v6)
     {
-      v7 = [(WCM_MavAntennaPolicy *)self mEurekaConfig];
-      if (v7)
+      mEurekaConfig = [(WCM_MavAntennaPolicy *)self mEurekaConfig];
+      if (mEurekaConfig)
       {
-        v8 = v7;
-        v9 = [(WCM_MavAntennaPolicy *)self mMavCiConfig];
-        if (v9)
+        v8 = mEurekaConfig;
+        mMavCiConfig = [(WCM_MavAntennaPolicy *)self mMavCiConfig];
+        if (mMavCiConfig)
         {
-          v10 = v9;
-          v11 = [(WCM_MavAntennaPolicy *)self mMavPtConfig];
+          v10 = mMavCiConfig;
+          mMavPtConfig = [(WCM_MavAntennaPolicy *)self mMavPtConfig];
 
-          if (v11)
+          if (mMavPtConfig)
           {
             v12 = +[WCM_PolicyManager singleton];
-            v13 = [v12 cellularController];
+            cellularController = [v12 cellularController];
 
-            if (v13)
+            if (cellularController)
             {
               v14 = xpc_dictionary_create(0, 0, 0);
-              v15 = [(WCM_MavAntennaPolicy *)self mEurekaConfig];
-              v16 = xpc_copy(v15);
+              mEurekaConfig2 = [(WCM_MavAntennaPolicy *)self mEurekaConfig];
+              v16 = xpc_copy(mEurekaConfig2);
 
               xpc_dictionary_set_value(v4, "kWCMCellularSetAntBlocking_ClientInformationSet", v16);
-              [v13 sendMessage:1224 withArgs:v4];
+              [cellularController sendMessage:1224 withArgs:v4];
               v17 = xpc_dictionary_create(0, 0, 0);
               if (v17)
               {
@@ -722,13 +722,13 @@ LABEL_35:
                 xpc_array_append_value(v19, v18);
                 v41 = v19;
                 xpc_dictionary_set_value(v17, "kWCMCellularTransparentMessageInformationSet", v19);
-                v46 = v13;
+                v46 = cellularController;
                 v43 = v17;
-                [v13 sendMessage:1223 withArgs:v17];
+                [cellularController sendMessage:1223 withArgs:v17];
                 [WCM_Logging logLevel:4 message:@"Sending CID config params"];
                 v20 = xpc_array_create(0, 0);
-                v21 = [(WCM_MavAntennaPolicy *)self mMavCiConfig];
-                v22 = xpc_copy(v21);
+                mMavCiConfig2 = [(WCM_MavAntennaPolicy *)self mMavCiConfig];
+                v22 = xpc_copy(mMavCiConfig2);
 
                 v23 = xpc_array_create(0, 0);
                 if (xpc_array_get_count(v22))
@@ -755,8 +755,8 @@ LABEL_35:
 
                 [WCM_Logging logLevel:4 message:@"Sending CID Pboff params"];
                 v27 = xpc_array_create(0, 0);
-                v28 = [(WCM_MavAntennaPolicy *)self mMavPtConfig];
-                v29 = xpc_copy(v28);
+                mMavPtConfig2 = [(WCM_MavAntennaPolicy *)self mMavPtConfig];
+                v29 = xpc_copy(mMavPtConfig2);
 
                 v30 = xpc_array_create(0, 0);
                 if (xpc_array_get_count(v29))
@@ -783,8 +783,8 @@ LABEL_35:
 
                 [WCM_Logging logLevel:4 message:@"Sending SF Pboff params"];
                 v34 = xpc_array_create(0, 0);
-                v35 = [(WCM_MavAntennaPolicy *)self mMavSfPboffConfig];
-                v36 = xpc_copy(v35);
+                mMavSfPboffConfig = [(WCM_MavAntennaPolicy *)self mMavSfPboffConfig];
+                v36 = xpc_copy(mMavSfPboffConfig);
 
                 v37 = xpc_array_create(0, 0);
                 if (xpc_array_get_count(v36))
@@ -812,7 +812,7 @@ LABEL_35:
                 [(WCM_MavAntennaPolicy *)self sendFaceIDPowerTables];
 
                 v6 = v45;
-                v13 = v46;
+                cellularController = v46;
                 v17 = v43;
                 v16 = v44;
               }
@@ -843,27 +843,27 @@ LABEL_34:
 LABEL_37:
 }
 
-- (id)createAntennaBlockingClientXpcArray:(id)a3 client_id:(int)a4 convBand:(unsigned __int8)a5
+- (id)createAntennaBlockingClientXpcArray:(id)array client_id:(int)client_id convBand:(unsigned __int8)band
 {
-  v5 = a5;
-  v8 = a3;
+  bandCopy = band;
+  arrayCopy = array;
   v9 = +[NSMutableDictionary dictionary];
-  if (v8)
+  if (arrayCopy)
   {
-    v10 = [v8 objectForKey:@"Block_Voice"];
-    v11 = [v10 BOOLValue];
+    v10 = [arrayCopy objectForKey:@"Block_Voice"];
+    bOOLValue = [v10 BOOLValue];
 
-    v12 = [v8 objectForKey:@"Duration_Granularity"];
-    v13 = [v12 unsignedIntValue];
+    v12 = [arrayCopy objectForKey:@"Duration_Granularity"];
+    unsignedIntValue = [v12 unsignedIntValue];
 
-    v14 = [v8 objectForKey:@"Policy"];
+    v14 = [arrayCopy objectForKey:@"Policy"];
     if (v14)
     {
-      v36 = v11;
-      v37 = v8;
+      v36 = bOOLValue;
+      v37 = arrayCopy;
       v50 = 0u;
       v51 = 0u;
-      v35 = v13;
+      v35 = unsignedIntValue;
       v48 = 0u;
       v49 = 0u;
       v15 = v14;
@@ -877,7 +877,7 @@ LABEL_37:
       v42 = *v49;
       v39 = v9;
       obj = v15;
-      v38 = v5;
+      v38 = bandCopy;
       while (1)
       {
         for (i = 0; i != v43; i = i + 1)
@@ -891,11 +891,11 @@ LABEL_37:
           v19 = *(*(&v48 + 1) + 8 * i);
           v20 = +[NSMutableSet set];
           v21 = [v19 objectForKey:@"Cellular_Ant"];
-          v22 = [v21 unsignedIntValue];
+          unsignedIntValue2 = [v21 unsignedIntValue];
 
           v16 = [v19 objectForKey:@"Cellular_Band_Array"];
 
-          if (v5 != 1)
+          if (bandCopy != 1)
           {
             if (!v16)
             {
@@ -903,18 +903,18 @@ LABEL_37:
             }
 
             v30 = +[NSMutableSet set];
-            v31 = [NSNumber numberWithUnsignedLongLong:v22];
+            v31 = [NSNumber numberWithUnsignedLongLong:unsignedIntValue2];
             [v9 setObject:v30 forKeyedSubscript:v31];
 
             v29 = v16;
 LABEL_20:
-            v32 = [NSNumber numberWithUnsignedLongLong:v22];
+            v32 = [NSNumber numberWithUnsignedLongLong:unsignedIntValue2];
             [v9 setObject:v29 forKeyedSubscript:v32];
 
             goto LABEL_21;
           }
 
-          v41 = v22;
+          v41 = unsignedIntValue2;
           v46 = 0u;
           v47 = 0u;
           v44 = 0u;
@@ -946,8 +946,8 @@ LABEL_20:
 
           v29 = v20;
           v9 = v39;
-          v5 = v38;
-          v22 = v41;
+          bandCopy = v38;
+          unsignedIntValue2 = v41;
           if (v20)
           {
             goto LABEL_20;
@@ -962,8 +962,8 @@ LABEL_21:
         {
 LABEL_23:
 
-          v33 = [(WCM_MavAntennaPolicy *)self createXpcClientObjectWithClientId:a4 blockVoice:v36 timeMultipler:v35 antennaBandMappings:v9];
-          v8 = v37;
+          v33 = [(WCM_MavAntennaPolicy *)self createXpcClientObjectWithClientId:client_id blockVoice:v36 timeMultipler:v35 antennaBandMappings:v9];
+          arrayCopy = v37;
           goto LABEL_25;
         }
       }
@@ -978,10 +978,10 @@ LABEL_25:
   return v33;
 }
 
-- (void)addXpcBandEntriesWithAnt:(unint64_t)a3 bandsToAddSet:(id)a4 bandArray:(id)a5
+- (void)addXpcBandEntriesWithAnt:(unint64_t)ant bandsToAddSet:(id)set bandArray:(id)array
 {
-  v7 = a4;
-  v8 = a5;
+  setCopy = set;
+  arrayCopy = array;
   v9 = xpc_array_create(0, 0);
   if (v9)
   {
@@ -989,7 +989,7 @@ LABEL_25:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = v7;
+    v10 = setCopy;
     v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
@@ -1023,23 +1023,23 @@ LABEL_25:
     if (v16)
     {
       xpc_dictionary_set_value(v16, "kWCMCellularSetAntBlocking_BandInfoSet_BandList", v9);
-      xpc_dictionary_set_uint64(v17, "kWCMCellularSetAntBlocking_BandInfoSet_AntNum", a3);
-      xpc_array_append_value(v8, v17);
+      xpc_dictionary_set_uint64(v17, "kWCMCellularSetAntBlocking_BandInfoSet_AntNum", ant);
+      xpc_array_append_value(arrayCopy, v17);
     }
   }
 }
 
-- (id)createXpcClientObjectWithClientId:(int)a3 blockVoice:(BOOL)a4 timeMultipler:(unint64_t)a5 antennaBandMappings:(id)a6
+- (id)createXpcClientObjectWithClientId:(int)id blockVoice:(BOOL)voice timeMultipler:(unint64_t)multipler antennaBandMappings:(id)mappings
 {
-  v10 = a6;
+  mappingsCopy = mappings;
   v11 = xpc_dictionary_create(0, 0, 0);
   if (v11)
   {
-    v12 = xpc_uint64_create(a3);
+    v12 = xpc_uint64_create(id);
     xpc_dictionary_set_value(v11, "kWCMCellularSetAntBlocking_ClientId", v12);
-    v13 = xpc_BOOL_create(a4);
+    v13 = xpc_BOOL_create(voice);
     xpc_dictionary_set_value(v11, "kWCMCellularSetAntBlocking_BlockVoice", v13);
-    v14 = xpc_uint64_create(a5);
+    v14 = xpc_uint64_create(multipler);
     xpc_dictionary_set_value(v11, "kWCMCellularSetAntBlocking_TimeMultiplier", v14);
     v15 = xpc_array_create(0, 0);
     if (v15)
@@ -1050,8 +1050,8 @@ LABEL_25:
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v28 = v10;
-      v16 = v10;
+      v28 = mappingsCopy;
+      v16 = mappingsCopy;
       v17 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v17)
       {
@@ -1067,9 +1067,9 @@ LABEL_25:
             }
 
             v21 = *(*(&v29 + 1) + 8 * i);
-            v22 = [v21 unsignedLongValue];
+            unsignedLongValue = [v21 unsignedLongValue];
             v23 = [v16 objectForKeyedSubscript:v21];
-            [(WCM_MavAntennaPolicy *)self addXpcBandEntriesWithAnt:v22 bandsToAddSet:v23 bandArray:v15];
+            [(WCM_MavAntennaPolicy *)self addXpcBandEntriesWithAnt:unsignedLongValue bandsToAddSet:v23 bandArray:v15];
           }
 
           v18 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -1081,7 +1081,7 @@ LABEL_25:
       xpc_dictionary_set_value(v11, "kWCMCellularSetAntBlocking_BandInformationSet", v15);
       v24 = v11;
       v12 = v27;
-      v10 = v28;
+      mappingsCopy = v28;
       v13 = v26;
     }
 
@@ -1102,8 +1102,8 @@ LABEL_25:
 - (id)createHardcodedWifiClientMappings
 {
   v2 = +[WCM_PolicyManager singleton];
-  v3 = [v2 activeCoexFeatures];
-  v4 = [v3 containsObject:@"BB22_N79_DYNAMIC_ANTENNA_BLOCKING"];
+  activeCoexFeatures = [v2 activeCoexFeatures];
+  v4 = [activeCoexFeatures containsObject:@"BB22_N79_DYNAMIC_ANTENNA_BLOCKING"];
 
   if ((v4 & 1) == 0)
   {
@@ -1113,11 +1113,11 @@ LABEL_25:
 
   [WCM_Logging logLevel:4 message:@"cellular controller createHardcodedWifiClientMappings"];
   v5 = +[WCM_PolicyManager singleton];
-  v6 = [v5 platformManager];
-  v7 = [v6 wrmPlatformId];
+  platformManager = [v5 platformManager];
+  wrmPlatformId = [platformManager wrmPlatformId];
 
   v8 = +[NSMutableDictionary dictionary];
-  if (v7 - 13 <= 3)
+  if (wrmPlatformId - 13 <= 3)
   {
     v9 = +[NSMutableSet set];
     v10 = [NSNumber numberWithUnsignedLongLong:8];
@@ -1127,7 +1127,7 @@ LABEL_25:
     v12 = [v8 objectForKeyedSubscript:v11];
     [v12 addObject:&off_100271148];
 
-    if (v7 == 14)
+    if (wrmPlatformId == 14)
     {
       v13 = +[NSMutableSet set];
       v14 = [NSNumber numberWithUnsignedLongLong:3];
@@ -1151,7 +1151,7 @@ LABEL_13:
     }
   }
 
-  if ((v7 & 0xFFFFFFFD) == 0xD)
+  if ((wrmPlatformId & 0xFFFFFFFD) == 0xD)
   {
     v23 = +[NSMutableSet set];
     v24 = [NSNumber numberWithUnsignedLongLong:3];
@@ -1162,7 +1162,7 @@ LABEL_13:
     [v26 addObject:&off_1002711A8];
   }
 
-  if (v7 == 146)
+  if (wrmPlatformId == 146)
   {
     v29 = +[NSMutableSet set];
     v30 = [NSNumber numberWithUnsignedLongLong:4];
@@ -1175,7 +1175,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (v7 == 144)
+  if (wrmPlatformId == 144)
   {
     v27 = +[NSMutableSet set];
     v28 = [NSNumber numberWithUnsignedLongLong:6];
@@ -1188,7 +1188,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (v7 != 16)
+  if (wrmPlatformId != 16)
   {
     goto LABEL_15;
   }
@@ -1206,8 +1206,8 @@ LABEL_15:
 - (id)createHardcodedRc1ClientMappings
 {
   v2 = +[WCM_PolicyManager singleton];
-  v3 = [v2 activeCoexFeatures];
-  v4 = [v3 containsObject:@"BB22_N79_DYNAMIC_ANTENNA_BLOCKING"];
+  activeCoexFeatures = [v2 activeCoexFeatures];
+  v4 = [activeCoexFeatures containsObject:@"BB22_N79_DYNAMIC_ANTENNA_BLOCKING"];
 
   if ((v4 & 1) == 0)
   {
@@ -1217,11 +1217,11 @@ LABEL_15:
 
   [WCM_Logging logLevel:4 message:@"cellular controller createHardcodedRc1ClientMappings"];
   v5 = +[WCM_PolicyManager singleton];
-  v6 = [v5 platformManager];
-  v7 = [v6 wrmPlatformId];
+  platformManager = [v5 platformManager];
+  wrmPlatformId = [platformManager wrmPlatformId];
 
   v8 = +[NSMutableDictionary dictionary];
-  if (v7 - 13 <= 3)
+  if (wrmPlatformId - 13 <= 3)
   {
     v9 = +[NSMutableSet set];
     v10 = [NSNumber numberWithUnsignedLongLong:8];
@@ -1231,7 +1231,7 @@ LABEL_15:
     v12 = [v8 objectForKeyedSubscript:v11];
     [v12 addObject:&off_100271148];
 
-    if (v7 == 14)
+    if (wrmPlatformId == 14)
     {
       v13 = +[NSMutableSet set];
       v14 = [NSNumber numberWithUnsignedLongLong:2];
@@ -1251,7 +1251,7 @@ LABEL_10:
     }
   }
 
-  switch(v7)
+  switch(wrmPlatformId)
   {
     case 0xFu:
       v20 = +[NSMutableSet set];
@@ -1291,8 +1291,8 @@ LABEL_12:
 - (id)createHardcodedFcamClientMappings
 {
   v2 = +[WCM_PolicyManager singleton];
-  v3 = [v2 activeCoexFeatures];
-  v4 = [v3 containsObject:@"BB22_N79_DYNAMIC_ANTENNA_BLOCKING"];
+  activeCoexFeatures = [v2 activeCoexFeatures];
+  v4 = [activeCoexFeatures containsObject:@"BB22_N79_DYNAMIC_ANTENNA_BLOCKING"];
 
   if ((v4 & 1) == 0)
   {
@@ -1302,15 +1302,15 @@ LABEL_12:
 
   [WCM_Logging logLevel:4 message:@"cellular controller createHardcodedFcamClientMappings"];
   v5 = +[WCM_PolicyManager singleton];
-  v6 = [v5 platformManager];
-  v7 = [v6 wrmPlatformId];
+  platformManager = [v5 platformManager];
+  wrmPlatformId = [platformManager wrmPlatformId];
 
   v8 = +[NSMutableDictionary dictionary];
-  if (v7 <= 15)
+  if (wrmPlatformId <= 15)
   {
-    if (v7 != 13 && v7 != 14)
+    if (wrmPlatformId != 13 && wrmPlatformId != 14)
     {
-      if (v7 != 15)
+      if (wrmPlatformId != 15)
       {
         goto LABEL_13;
       }
@@ -1325,7 +1325,7 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (v7 == 16)
+  if (wrmPlatformId == 16)
   {
 LABEL_11:
     v16 = +[NSMutableSet set];
@@ -1339,7 +1339,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v7 == 19 || v7 == 20)
+  if (wrmPlatformId == 19 || wrmPlatformId == 20)
   {
     v12 = +[NSMutableSet set];
     v13 = [NSNumber numberWithUnsignedLongLong:8];
@@ -1368,8 +1368,8 @@ LABEL_13:
 - (id)createHardcodedFidClientMappings
 {
   v2 = +[WCM_PolicyManager singleton];
-  v3 = [v2 activeCoexFeatures];
-  v4 = [v3 containsObject:@"BB22_N79_DYNAMIC_ANTENNA_BLOCKING"];
+  activeCoexFeatures = [v2 activeCoexFeatures];
+  v4 = [activeCoexFeatures containsObject:@"BB22_N79_DYNAMIC_ANTENNA_BLOCKING"];
 
   if ((v4 & 1) == 0)
   {
@@ -1379,11 +1379,11 @@ LABEL_13:
 
   [WCM_Logging logLevel:4 message:@"cellular controller createHardcodedFidClientMappings"];
   v5 = +[WCM_PolicyManager singleton];
-  v6 = [v5 platformManager];
-  v7 = [v6 wrmPlatformId];
+  platformManager = [v5 platformManager];
+  wrmPlatformId = [platformManager wrmPlatformId];
 
   v8 = +[NSMutableDictionary dictionary];
-  if (v7 == 20 || v7 == 13)
+  if (wrmPlatformId == 20 || wrmPlatformId == 13)
   {
     v10 = +[NSMutableSet set];
     v11 = [NSNumber numberWithUnsignedLongLong:2];
@@ -1404,8 +1404,8 @@ LABEL_13:
 - (id)createHardcodedJpgRegClientMappings
 {
   v2 = +[WCM_PolicyManager singleton];
-  v3 = [v2 activeCoexFeatures];
-  v4 = [v3 containsObject:@"BB22_N79_DYNAMIC_ANTENNA_BLOCKING"];
+  activeCoexFeatures = [v2 activeCoexFeatures];
+  v4 = [activeCoexFeatures containsObject:@"BB22_N79_DYNAMIC_ANTENNA_BLOCKING"];
 
   if ((v4 & 1) == 0)
   {
@@ -1415,11 +1415,11 @@ LABEL_13:
 
   [WCM_Logging logLevel:4 message:@"cellular controller createHardcodedJpgRegClientMappings"];
   v5 = +[WCM_PolicyManager singleton];
-  v6 = [v5 platformManager];
-  v7 = [v6 wrmPlatformId];
+  platformManager = [v5 platformManager];
+  wrmPlatformId = [platformManager wrmPlatformId];
 
   v8 = +[NSMutableDictionary dictionary];
-  if (v7 == 146)
+  if (wrmPlatformId == 146)
   {
     v9 = +[NSMutableSet set];
     v10 = [NSNumber numberWithUnsignedLongLong:6];
@@ -1437,21 +1437,21 @@ LABEL_13:
   return v8;
 }
 
-- (id)createConditionIdXpcElement:(unsigned int)a3 mav_antenna_block_client_id:(unsigned int)a4 cellular_band:(unsigned int)a5 cellular_frequency_upper:(unsigned int)a6 cellular_frequency_lower:(unsigned int)a7 cellular_ant_mitigation:(unsigned int)a8
+- (id)createConditionIdXpcElement:(unsigned int)element mav_antenna_block_client_id:(unsigned int)mav_antenna_block_client_id cellular_band:(unsigned int)cellular_band cellular_frequency_upper:(unsigned int)cellular_frequency_upper cellular_frequency_lower:(unsigned int)cellular_frequency_lower cellular_ant_mitigation:(unsigned int)cellular_ant_mitigation
 {
-  v28 = a8;
+  cellular_ant_mitigationCopy = cellular_ant_mitigation;
   v13 = xpc_array_create(0, 0);
   v14 = xpc_dictionary_create(0, 0, 0);
   v15 = xpc_uint64_create(0xAuLL);
-  v26 = 1000 * a6;
-  v27 = 1000 * a7;
-  v16 = xpc_uint64_create(a3);
+  v26 = 1000 * cellular_frequency_upper;
+  v27 = 1000 * cellular_frequency_lower;
+  v16 = xpc_uint64_create(element);
   xpc_array_append_value(v13, v16);
 
-  v17 = xpc_uint64_create(a4);
+  v17 = xpc_uint64_create(mav_antenna_block_client_id);
   xpc_array_append_value(v13, v17);
 
-  v18 = xpc_uint64_create(a5);
+  v18 = xpc_uint64_create(cellular_band);
   xpc_array_append_value(v13, v18);
 
   for (i = 0; i != 4; ++i)
@@ -1468,7 +1468,7 @@ LABEL_13:
 
   for (k = 0; k != 4; ++k)
   {
-    v24 = xpc_uint64_create(*(&v28 + k));
+    v24 = xpc_uint64_create(*(&cellular_ant_mitigationCopy + k));
     xpc_array_append_value(v13, v24);
   }
 
@@ -1478,27 +1478,27 @@ LABEL_13:
   return v14;
 }
 
-- (id)createPowerTableXpcElement:(unsigned int)a3 ant:(unsigned int)a4 target_power_dbm:(unsigned int)a5 condition_id:(unsigned int)a6 entry_num:(unsigned int)a7
+- (id)createPowerTableXpcElement:(unsigned int)element ant:(unsigned int)ant target_power_dbm:(unsigned int)target_power_dbm condition_id:(unsigned int)condition_id entry_num:(unsigned int)entry_num
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
+  entry_numCopy = entry_num;
+  condition_idCopy = condition_id;
+  target_power_dbmCopy = target_power_dbm;
   v12 = xpc_array_create(0, 0);
   v13 = xpc_dictionary_create(0, 0, 0);
   v14 = xpc_uint64_create(0xBuLL);
-  v15 = xpc_uint64_create(a3);
+  v15 = xpc_uint64_create(element);
   xpc_array_append_value(v12, v15);
 
-  v16 = xpc_uint64_create(a4);
+  v16 = xpc_uint64_create(ant);
   xpc_array_append_value(v12, v16);
 
-  v17 = xpc_uint64_create(2 * ((5 * v9) & 0x7Fu));
+  v17 = xpc_uint64_create(2 * ((5 * target_power_dbmCopy) & 0x7Fu));
   xpc_array_append_value(v12, v17);
 
-  v18 = xpc_uint64_create(v8);
+  v18 = xpc_uint64_create(condition_idCopy);
   xpc_array_append_value(v12, v18);
 
-  v19 = xpc_uint64_create(v7);
+  v19 = xpc_uint64_create(entry_numCopy);
   xpc_array_append_value(v12, v19);
 
   xpc_dictionary_set_value(v13, "kWCMCellularTransparentMessage_Type", v14);
@@ -1507,18 +1507,18 @@ LABEL_13:
   return v13;
 }
 
-- (id)createFaceIDPowerTableXpcElement:(unsigned int)a3 ant:(unsigned int)a4 target_power_dbm:(unsigned int)a5
+- (id)createFaceIDPowerTableXpcElement:(unsigned int)element ant:(unsigned int)ant target_power_dbm:(unsigned int)target_power_dbm
 {
   v8 = xpc_array_create(0, 0);
   v9 = xpc_dictionary_create(0, 0, 0);
   v10 = xpc_uint64_create(0xDuLL);
-  v11 = xpc_uint64_create(a3);
+  v11 = xpc_uint64_create(element);
   xpc_array_append_value(v8, v11);
 
-  v12 = xpc_uint64_create(a4);
+  v12 = xpc_uint64_create(ant);
   xpc_array_append_value(v8, v12);
 
-  v13 = xpc_uint64_create(a5);
+  v13 = xpc_uint64_create(target_power_dbm);
   xpc_array_append_value(v8, v13);
 
   xpc_dictionary_set_value(v9, "kWCMCellularTransparentMessage_Type", v10);
@@ -1527,17 +1527,17 @@ LABEL_13:
   return v9;
 }
 
-- (id)createSubframePowerBackOffTableXpcElement:(id)a3 condition_id:(unsigned int)a4
+- (id)createSubframePowerBackOffTableXpcElement:(id)element condition_id:(unsigned int)condition_id
 {
-  v4 = a4;
-  v6 = a3;
+  condition_idCopy = condition_id;
+  elementCopy = element;
   v7 = xpc_array_create(0, 0);
   v8 = xpc_dictionary_create(0, 0, 0);
   v9 = xpc_uint64_create(0xCuLL);
-  v10 = xpc_uint64_create(v4);
+  v10 = xpc_uint64_create(condition_idCopy);
   xpc_array_append_value(v7, v10);
 
-  LOBYTE(v10) = [(WCM_MavAntennaPolicy *)self convertBandToEurBandId:v6];
+  LOBYTE(v10) = [(WCM_MavAntennaPolicy *)self convertBandToEurBandId:elementCopy];
   v11 = xpc_uint64_create(v10);
   xpc_array_append_value(v7, v11);
 
@@ -1547,198 +1547,198 @@ LABEL_13:
   return v8;
 }
 
-- (int)convertBandToEurBandId:(id)a3
+- (int)convertBandToEurBandId:(id)id
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"n79"])
+  idCopy = id;
+  if ([idCopy isEqualToString:@"n79"])
   {
     v4 = 202;
   }
 
-  else if ([v3 isEqualToString:@"n1"])
+  else if ([idCopy isEqualToString:@"n1"])
   {
     v4 = 182;
   }
 
-  else if ([v3 isEqualToString:@"n77"])
+  else if ([idCopy isEqualToString:@"n77"])
   {
     v4 = 200;
   }
 
-  else if ([v3 isEqualToString:@"n78"])
+  else if ([idCopy isEqualToString:@"n78"])
   {
     v4 = 201;
   }
 
-  else if ([v3 isEqualToString:@"b1"])
+  else if ([idCopy isEqualToString:@"b1"])
   {
     v4 = 120;
   }
 
-  else if ([v3 isEqualToString:@"b38"])
+  else if ([idCopy isEqualToString:@"b38"])
   {
     v4 = 157;
   }
 
   else
   {
-    if ([v3 isEqualToString:@"b3"])
+    if ([idCopy isEqualToString:@"b3"])
     {
       goto LABEL_14;
     }
 
-    if ([v3 isEqualToString:@"n38"])
+    if ([idCopy isEqualToString:@"n38"])
     {
       goto LABEL_16;
     }
 
-    if ([v3 isEqualToString:@"b25"])
+    if ([idCopy isEqualToString:@"b25"])
     {
       v4 = 144;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"b7"])
+    if ([idCopy isEqualToString:@"b7"])
     {
       v4 = 126;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"n7"])
+    if ([idCopy isEqualToString:@"n7"])
     {
       v4 = 186;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"b40"])
+    if ([idCopy isEqualToString:@"b40"])
     {
       v4 = 159;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"b4"])
+    if ([idCopy isEqualToString:@"b4"])
     {
       v4 = 123;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"b42"])
+    if ([idCopy isEqualToString:@"b42"])
     {
       v4 = 161;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"n40"])
+    if ([idCopy isEqualToString:@"n40"])
     {
       v4 = 219;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"n38"])
+    if ([idCopy isEqualToString:@"n38"])
     {
 LABEL_16:
       v4 = 190;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"n41"])
+    if ([idCopy isEqualToString:@"n41"])
     {
       v4 = 191;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"b41"])
+    if ([idCopy isEqualToString:@"b41"])
     {
       v4 = 160;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"n48"])
+    if ([idCopy isEqualToString:@"n48"])
     {
       v4 = 222;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"b48"])
+    if ([idCopy isEqualToString:@"b48"])
     {
       v4 = 178;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"n30"])
+    if ([idCopy isEqualToString:@"n30"])
     {
       v4 = 227;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"b30"])
+    if ([idCopy isEqualToString:@"b30"])
     {
       v4 = 149;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"n66"])
+    if ([idCopy isEqualToString:@"n66"])
     {
       v4 = 194;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"b66"])
+    if ([idCopy isEqualToString:@"b66"])
     {
       v4 = 168;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"n3"])
+    if ([idCopy isEqualToString:@"n3"])
     {
       v4 = 184;
       goto LABEL_31;
     }
 
-    if ([v3 isEqualToString:@"b3"])
+    if ([idCopy isEqualToString:@"b3"])
     {
 LABEL_14:
       v4 = 122;
     }
 
-    else if ([v3 isEqualToString:@"n70"])
+    else if ([idCopy isEqualToString:@"n70"])
     {
       v4 = 195;
     }
 
-    else if ([v3 isEqualToString:@"b34"])
+    else if ([idCopy isEqualToString:@"b34"])
     {
       v4 = 153;
     }
 
-    else if ([v3 isEqualToString:@"b2"])
+    else if ([idCopy isEqualToString:@"b2"])
     {
       v4 = 121;
     }
 
-    else if ([v3 isEqualToString:@"n2"])
+    else if ([idCopy isEqualToString:@"n2"])
     {
       v4 = 183;
     }
 
-    else if ([v3 isEqualToString:@"b5"])
+    else if ([idCopy isEqualToString:@"b5"])
     {
       v4 = 124;
     }
 
-    else if ([v3 isEqualToString:@"n18"])
+    else if ([idCopy isEqualToString:@"n18"])
     {
       v4 = 225;
     }
 
-    else if ([v3 isEqualToString:@"b18"])
+    else if ([idCopy isEqualToString:@"b18"])
     {
       v4 = 137;
     }
 
     else
     {
-      [WCM_Logging logLevel:0 message:@"MavAntPolicy Plist Error: Unrecognized band in plist, rectify %@", v3];
+      [WCM_Logging logLevel:0 message:@"MavAntPolicy Plist Error: Unrecognized band in plist, rectify %@", idCopy];
       v4 = 244;
     }
   }

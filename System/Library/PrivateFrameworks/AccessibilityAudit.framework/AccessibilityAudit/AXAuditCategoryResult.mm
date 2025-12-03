@@ -7,8 +7,8 @@
 - (id)issueSummaryStrings;
 - (id)log;
 - (int64_t)issueCount;
-- (void)addCaseResult:(id)a3;
-- (void)appendLog:(id)a3;
+- (void)addCaseResult:(id)result;
+- (void)appendLog:(id)log;
 @end
 
 @implementation AXAuditCategoryResult
@@ -32,45 +32,45 @@
   return v2;
 }
 
-- (void)addCaseResult:(id)a3
+- (void)addCaseResult:(id)result
 {
-  if (a3)
+  if (result)
   {
-    v5 = a3;
-    v4 = [(AXAuditCategoryResult *)self _mutableCases];
-    [v4 addObject:v5];
+    resultCopy = result;
+    _mutableCases = [(AXAuditCategoryResult *)self _mutableCases];
+    [_mutableCases addObject:resultCopy];
 
-    [v5 setResult:self];
+    [resultCopy setResult:self];
   }
 }
 
 - (NSArray)caseResults
 {
-  v2 = [(AXAuditCategoryResult *)self _mutableCases];
-  v3 = [v2 copy];
+  _mutableCases = [(AXAuditCategoryResult *)self _mutableCases];
+  v3 = [_mutableCases copy];
 
   return v3;
 }
 
-- (void)appendLog:(id)a3
+- (void)appendLog:(id)log
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v10];
+  logCopy = log;
+  v6 = [[v4 alloc] initWithFormat:logCopy arguments:&v10];
 
-  v7 = [v6 axAuditStringForLog];
+  axAuditStringForLog = [v6 axAuditStringForLog];
 
-  v8 = [(AXAuditCategoryResult *)self delegate];
-  [v8 auditCategoryResult:self didAppendLogWithMessage:v7];
+  delegate = [(AXAuditCategoryResult *)self delegate];
+  [delegate auditCategoryResult:self didAppendLogWithMessage:axAuditStringForLog];
 
-  v9 = [(AXAuditCategoryResult *)self _mutableLog];
-  [v9 appendString:v7];
+  _mutableLog = [(AXAuditCategoryResult *)self _mutableLog];
+  [_mutableLog appendString:axAuditStringForLog];
 }
 
 - (id)log
 {
-  v2 = [(AXAuditCategoryResult *)self _mutableLog];
-  v3 = [v2 copy];
+  _mutableLog = [(AXAuditCategoryResult *)self _mutableLog];
+  v3 = [_mutableLog copy];
 
   return v3;
 }
@@ -82,8 +82,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(AXAuditCategoryResult *)self _mutableCases];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _mutableCases = [(AXAuditCategoryResult *)self _mutableCases];
+  v3 = [_mutableCases countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -95,14 +95,14 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_mutableCases);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) auditIssues];
-        v5 += [v8 count];
+        auditIssues = [*(*(&v11 + 1) + 8 * i) auditIssues];
+        v5 += [auditIssues count];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [_mutableCases countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -120,13 +120,13 @@
 - (id)allIssues
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [(AXAuditCategoryResult *)self _mutableCases];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  _mutableCases = [(AXAuditCategoryResult *)self _mutableCases];
+  v5 = [_mutableCases countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -137,7 +137,7 @@
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_mutableCases);
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
@@ -145,8 +145,8 @@
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v10 = [v9 auditIssues];
-        v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        auditIssues = [v9 auditIssues];
+        v11 = [auditIssues countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v11)
         {
           v12 = v11;
@@ -157,26 +157,26 @@
             {
               if (*v19 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(auditIssues);
               }
 
-              [v3 addObject:*(*(&v18 + 1) + 8 * j)];
+              [array addObject:*(*(&v18 + 1) + 8 * j)];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v12 = [auditIssues countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v12);
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v6 = [_mutableCases countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v6);
   }
 
-  v15 = [v3 copy];
+  v15 = [array copy];
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
@@ -185,13 +185,13 @@
 - (id)issueSummaryStrings
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [(AXAuditCategoryResult *)self _mutableCases];
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  _mutableCases = [(AXAuditCategoryResult *)self _mutableCases];
+  v5 = [_mutableCases countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -202,7 +202,7 @@
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_mutableCases);
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
@@ -210,8 +210,8 @@
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v10 = [v9 auditIssues];
-        v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        auditIssues = [v9 auditIssues];
+        v11 = [auditIssues countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v11)
         {
           v12 = v11;
@@ -222,30 +222,30 @@
             {
               if (*v20 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(auditIssues);
               }
 
-              v15 = [*(*(&v19 + 1) + 8 * j) foundLogMessage];
-              if ([v15 length])
+              foundLogMessage = [*(*(&v19 + 1) + 8 * j) foundLogMessage];
+              if ([foundLogMessage length])
               {
-                [v3 addObject:v15];
+                [array addObject:foundLogMessage];
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v12 = [auditIssues countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v12);
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v6 = [_mutableCases countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v6);
   }
 
-  v16 = [v3 copy];
+  v16 = [array copy];
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
@@ -259,8 +259,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(AXAuditCategoryResult *)self issueSummaryStrings];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  issueSummaryStrings = [(AXAuditCategoryResult *)self issueSummaryStrings];
+  v5 = [issueSummaryStrings countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -271,13 +271,13 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(issueSummaryStrings);
         }
 
         [v3 appendFormat:@"%@\n", *(*(&v14 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [issueSummaryStrings countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);

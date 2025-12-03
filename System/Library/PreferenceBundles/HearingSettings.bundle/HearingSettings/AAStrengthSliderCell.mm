@@ -1,22 +1,22 @@
 @interface AAStrengthSliderCell
 + (id)valueLabels;
-- (AAStrengthSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AAStrengthSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)sliderValue;
 - (id)accessibilityValue;
 @end
 
 @implementation AAStrengthSliderCell
 
-- (AAStrengthSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AAStrengthSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = AAStrengthSliderCell;
-  v4 = [(HearingSettingsValueSliderCell *)&v8 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(HearingSettingsValueSliderCell *)&v8 initWithStyle:1 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(HearingSettingsValueSliderCell *)v4 slider];
-    [v6 setLocksToSegment:1];
+    slider = [(HearingSettingsValueSliderCell *)v4 slider];
+    [slider setLocksToSegment:1];
   }
 
   return v5;
@@ -29,12 +29,12 @@
   [(HearingSettingsValueSliderCell *)&v8 sliderValue];
   v3 = v2;
   v4 = +[PASettings sharedInstance];
-  v5 = [v4 personalMediaConfiguration];
-  v6 = [v5 level];
+  personalMediaConfiguration = [v4 personalMediaConfiguration];
+  level = [personalMediaConfiguration level];
 
-  if ((v6 - 1) <= 2)
+  if ((level - 1) <= 2)
   {
-    return dbl_370A8[(v6 - 1)];
+    return dbl_370A8[(level - 1)];
   }
 
   return v3;
@@ -56,8 +56,8 @@
 - (id)accessibilityValue
 {
   v2 = +[PASettings sharedInstance];
-  v3 = [v2 personalMediaConfiguration];
-  [v3 level];
+  personalMediaConfiguration = [v2 personalMediaConfiguration];
+  [personalMediaConfiguration level];
 
   return paDescriptionForLevel();
 }

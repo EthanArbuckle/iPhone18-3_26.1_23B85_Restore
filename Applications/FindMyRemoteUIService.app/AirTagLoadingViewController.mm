@@ -1,13 +1,13 @@
 @interface AirTagLoadingViewController
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AirTagLoadingViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100005DE0(a3);
+  selfCopy = self;
+  sub_100005DE0(appear);
 }
 
 @end

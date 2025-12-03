@@ -1,58 +1,58 @@
 @interface CKMacToolbarController
-- (BOOL)_shouldDisAllowTouchesToPassForProviderType:(int64_t)a3;
-- (BOOL)_updateFrameWithPreferredHeightsForFrame:(CGRect)a3;
-- (BOOL)macToolbarView:(id)a3 shouldAllowTouchesForPoint:(CGPoint)a4 andEvent:(id)a5;
-- (CKMacToolbarController)initWithScene:(id)a3 connectingToSession:(id)a4 inStandaloneWindow:(BOOL)a5;
+- (BOOL)_shouldDisAllowTouchesToPassForProviderType:(int64_t)type;
+- (BOOL)_updateFrameWithPreferredHeightsForFrame:(CGRect)frame;
+- (BOOL)macToolbarView:(id)view shouldAllowTouchesForPoint:(CGPoint)point andEvent:(id)event;
+- (CKMacToolbarController)initWithScene:(id)scene connectingToSession:(id)session inStandaloneWindow:(BOOL)window;
 - (CKMacToolbarDelegate)delegate;
 - (NSString)sceneSessionIdentifier;
 - (UIView)inspectorProvidedVirtualView;
 - (UIView)primaryProvidedVirtualView;
 - (UIView)secondaryProvidedVirtualView;
 - (UIWindowScene)windowScene;
-- (double)_getPreferredHeightForProviderType:(int64_t)a3 withDefaultHeight:(double)a4;
-- (id)_cachedVirtualViewForProviderType:(int64_t)a3;
-- (id)_providerForType:(int64_t)a3;
-- (id)_virtualBackgroundViewForProviderType:(int64_t)a3;
-- (int64_t)_providerTypeForPointInsideVirtualView:(CGPoint)a3 withEvent:(id)a4;
-- (void)_setVirtualView:(id)a3 forProviderType:(int64_t)a4;
+- (double)_getPreferredHeightForProviderType:(int64_t)type withDefaultHeight:(double)height;
+- (id)_cachedVirtualViewForProviderType:(int64_t)type;
+- (id)_providerForType:(int64_t)type;
+- (id)_virtualBackgroundViewForProviderType:(int64_t)type;
+- (int64_t)_providerTypeForPointInsideVirtualView:(CGPoint)view withEvent:(id)event;
+- (void)_setVirtualView:(id)view forProviderType:(int64_t)type;
 - (void)_sizeMetricsDidChange;
-- (void)_updateBackgroundViewsRefreshingViewHeights:(BOOL)a3;
-- (void)_updateVirtualViewForProviderType:(int64_t)a3;
+- (void)_updateBackgroundViewsRefreshingViewHeights:(BOOL)heights;
+- (void)_updateVirtualViewForProviderType:(int64_t)type;
 - (void)loadView;
-- (void)removeItemProvider:(id)a3;
+- (void)removeItemProvider:(id)provider;
 - (void)removeItemProviders;
-- (void)removeVirtualViewForProvider:(id)a3;
-- (void)setInspectorItemProvider:(id)a3;
-- (void)setIsShowingInspector:(BOOL)a3;
-- (void)setPrimaryItemProvider:(id)a3;
-- (void)setSecondaryItemProvider:(id)a3;
-- (void)setShouldDrawPrimaryBlur:(BOOL)a3;
-- (void)setShouldDrawSecondaryBlur:(BOOL)a3;
-- (void)updateDividersForSidebarPosition:(double)a3 inspectorPosition:(double)a4;
-- (void)updateVirtualViewForProvider:(id)a3;
-- (void)updateWithFrame:(CGRect)a3;
+- (void)removeVirtualViewForProvider:(id)provider;
+- (void)setInspectorItemProvider:(id)provider;
+- (void)setIsShowingInspector:(BOOL)inspector;
+- (void)setPrimaryItemProvider:(id)provider;
+- (void)setSecondaryItemProvider:(id)provider;
+- (void)setShouldDrawPrimaryBlur:(BOOL)blur;
+- (void)setShouldDrawSecondaryBlur:(BOOL)blur;
+- (void)updateDividersForSidebarPosition:(double)position inspectorPosition:(double)inspectorPosition;
+- (void)updateVirtualViewForProvider:(id)provider;
+- (void)updateWithFrame:(CGRect)frame;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation CKMacToolbarController
 
-- (CKMacToolbarController)initWithScene:(id)a3 connectingToSession:(id)a4 inStandaloneWindow:(BOOL)a5
+- (CKMacToolbarController)initWithScene:(id)scene connectingToSession:(id)session inStandaloneWindow:(BOOL)window
 {
-  v8 = a3;
-  v9 = a4;
+  sceneCopy = scene;
+  sessionCopy = session;
   v14.receiver = self;
   v14.super_class = CKMacToolbarController;
   v10 = [(CKMacToolbarController *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_windowScene, v8);
-    v12 = [v9 persistentIdentifier];
-    objc_storeWeak(&v11->_sceneSessionIdentifier, v12);
+    objc_storeWeak(&v10->_windowScene, sceneCopy);
+    persistentIdentifier = [sessionCopy persistentIdentifier];
+    objc_storeWeak(&v11->_sceneSessionIdentifier, persistentIdentifier);
 
     v11->_shouldDrawPrimaryBlur = 1;
     v11->_shouldDrawSecondaryBlur = 1;
-    v11->_isInStandaloneWindow = a5;
+    v11->_isInStandaloneWindow = window;
   }
 
   return v11;
@@ -76,14 +76,14 @@
     v7 = objc_alloc_init(CKMacToolbarView);
     [(CKMacToolbarView *)v7 setDelegate:self];
     [(CKMacToolbarController *)self setView:v7];
-    v8 = [(CKMacToolbarController *)self view];
-    [v8 addSubview:self->_primaryVirtualBackgroundView];
+    view = [(CKMacToolbarController *)self view];
+    [view addSubview:self->_primaryVirtualBackgroundView];
 
-    v9 = [(CKMacToolbarController *)self view];
-    [v9 addSubview:self->_secondaryVirtualBackgroundView];
+    view2 = [(CKMacToolbarController *)self view];
+    [view2 addSubview:self->_secondaryVirtualBackgroundView];
 
-    v10 = [(CKMacToolbarController *)self view];
-    [v10 setBackgroundColor:0];
+    view3 = [(CKMacToolbarController *)self view];
+    [view3 setBackgroundColor:0];
   }
 }
 
@@ -96,32 +96,32 @@
   [(CKMacToolbarController *)self _updateVirtualViewForProviderType:3];
 }
 
-- (double)_getPreferredHeightForProviderType:(int64_t)a3 withDefaultHeight:(double)a4
+- (double)_getPreferredHeightForProviderType:(int64_t)type withDefaultHeight:(double)height
 {
-  v5 = [(CKMacToolbarController *)self _providerForType:a3];
+  v5 = [(CKMacToolbarController *)self _providerForType:type];
   if (objc_opt_respondsToSelector())
   {
     [v5 virtualToolbarPreferredHeight];
-    a4 = v6;
+    height = v6;
   }
 
-  return a4;
+  return height;
 }
 
-- (void)_updateBackgroundViewsRefreshingViewHeights:(BOOL)a3
+- (void)_updateBackgroundViewsRefreshingViewHeights:(BOOL)heights
 {
-  if (a3)
+  if (heights)
   {
-    v4 = [(CKMacToolbarController *)self view];
-    [v4 frame];
+    view = [(CKMacToolbarController *)self view];
+    [view frame];
     [(CKMacToolbarController *)self _updateFrameWithPreferredHeightsForFrame:?];
   }
 
-  v5 = [(CKMacToolbarController *)self view];
-  v6 = [v5 _shouldReverseLayoutDirection];
+  view2 = [(CKMacToolbarController *)self view];
+  _shouldReverseLayoutDirection = [view2 _shouldReverseLayoutDirection];
 
-  v7 = [(CKMacToolbarController *)self view];
-  [v7 frame];
+  view3 = [(CKMacToolbarController *)self view];
+  [view3 frame];
   v9 = v8;
 
   v10 = +[CKUIBehavior sharedBehaviors];
@@ -155,7 +155,7 @@
   }
 
   [(CKMacToolbarController *)self splitViewDividerXPosition];
-  if (v6)
+  if (_shouldReverseLayoutDirection)
   {
     v21 = v9;
     if (v20 > 0.0)
@@ -217,12 +217,12 @@
   [(UIView *)secondaryVirtualBackgroundView setHidden:v30];
 }
 
-- (BOOL)_updateFrameWithPreferredHeightsForFrame:(CGRect)a3
+- (BOOL)_updateFrameWithPreferredHeightsForFrame:(CGRect)frame
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [CKUIBehavior sharedBehaviors:a3.origin.x];
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v7 = [CKUIBehavior sharedBehaviors:frame.origin.x];
   [v7 macAppKitToolbarHeight];
   v9 = v8;
 
@@ -256,8 +256,8 @@
 
   [(CKMacToolbarController *)self setPreferredPrimaryHeight:v12];
   [(CKMacToolbarController *)self setPreferredSecondaryHeight:v14];
-  v19 = [(CKMacToolbarController *)self view];
-  [v19 frame];
+  view = [(CKMacToolbarController *)self view];
+  [view frame];
   v24.origin.x = x;
   v24.origin.y = y;
   v24.size.width = width;
@@ -266,8 +266,8 @@
 
   if (!v20)
   {
-    v21 = [(CKMacToolbarController *)self view];
-    [v21 setFrame:{x, y, width, v16}];
+    view2 = [(CKMacToolbarController *)self view];
+    [view2 setFrame:{x, y, width, v16}];
 
     return 1;
   }
@@ -275,11 +275,11 @@
   return v10;
 }
 
-- (void)setShouldDrawPrimaryBlur:(BOOL)a3
+- (void)setShouldDrawPrimaryBlur:(BOOL)blur
 {
-  if (self->_shouldDrawPrimaryBlur != a3)
+  if (self->_shouldDrawPrimaryBlur != blur)
   {
-    self->_shouldDrawPrimaryBlur = a3;
+    self->_shouldDrawPrimaryBlur = blur;
     if ([(CKMacToolbarController *)self isViewLoaded])
     {
 
@@ -288,11 +288,11 @@
   }
 }
 
-- (void)setShouldDrawSecondaryBlur:(BOOL)a3
+- (void)setShouldDrawSecondaryBlur:(BOOL)blur
 {
-  if (self->_shouldDrawSecondaryBlur != a3)
+  if (self->_shouldDrawSecondaryBlur != blur)
   {
-    self->_shouldDrawSecondaryBlur = a3;
+    self->_shouldDrawSecondaryBlur = blur;
     if ([(CKMacToolbarController *)self isViewLoaded])
     {
 
@@ -301,18 +301,18 @@
   }
 }
 
-- (void)setIsShowingInspector:(BOOL)a3
+- (void)setIsShowingInspector:(BOOL)inspector
 {
-  if (self->_isShowingInspector != a3)
+  if (self->_isShowingInspector != inspector)
   {
-    self->_isShowingInspector = a3;
+    self->_isShowingInspector = inspector;
     [(CKMacToolbarController *)self reloadToolbarItems];
   }
 }
 
-- (void)updateWithFrame:(CGRect)a3
+- (void)updateWithFrame:(CGRect)frame
 {
-  if ([(CKMacToolbarController *)self _updateFrameWithPreferredHeightsForFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height])
+  if ([(CKMacToolbarController *)self _updateFrameWithPreferredHeightsForFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height])
   {
     [(CKMacToolbarController *)self _updateBackgroundViewsRefreshingViewHeights:0];
     [(CKMacToolbarController *)self _updateVirtualViewForProviderType:1];
@@ -325,31 +325,31 @@
 
 - (void)_sizeMetricsDidChange
 {
-  v3 = [(CKMacToolbarController *)self primaryItemProvider];
+  primaryItemProvider = [(CKMacToolbarController *)self primaryItemProvider];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CKMacToolbarController *)self primaryItemProvider];
-    [v5 toolbarSizeMetricsDidChange];
+    primaryItemProvider2 = [(CKMacToolbarController *)self primaryItemProvider];
+    [primaryItemProvider2 toolbarSizeMetricsDidChange];
   }
 
-  v6 = [(CKMacToolbarController *)self secondaryItemProvider];
+  secondaryItemProvider = [(CKMacToolbarController *)self secondaryItemProvider];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CKMacToolbarController *)self secondaryItemProvider];
-    [v8 toolbarSizeMetricsDidChange];
+    secondaryItemProvider2 = [(CKMacToolbarController *)self secondaryItemProvider];
+    [secondaryItemProvider2 toolbarSizeMetricsDidChange];
   }
 
-  v9 = [(CKMacToolbarController *)self inspectorItemProvider];
+  inspectorItemProvider = [(CKMacToolbarController *)self inspectorItemProvider];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(CKMacToolbarController *)self inspectorItemProvider];
-    [v11 toolbarSizeMetricsDidChange];
+    inspectorItemProvider2 = [(CKMacToolbarController *)self inspectorItemProvider];
+    [inspectorItemProvider2 toolbarSizeMetricsDidChange];
   }
 }
 
@@ -362,14 +362,14 @@
   [(CKMacToolbarController *)self reloadToolbarItems];
 }
 
-- (void)updateDividersForSidebarPosition:(double)a3 inspectorPosition:(double)a4
+- (void)updateDividersForSidebarPosition:(double)position inspectorPosition:(double)inspectorPosition
 {
-  v7 = CKFloatApproximatelyEqualToFloatWithTolerance(a3, self->_splitViewDividerXPosition, 0.00000999999975);
-  v8 = CKFloatApproximatelyEqualToFloatWithTolerance(a4, self->_inspectorDividerXPosition, 0.00000999999975);
+  v7 = CKFloatApproximatelyEqualToFloatWithTolerance(position, self->_splitViewDividerXPosition, 0.00000999999975);
+  v8 = CKFloatApproximatelyEqualToFloatWithTolerance(inspectorPosition, self->_inspectorDividerXPosition, 0.00000999999975);
   if (!v7 || !v8)
   {
-    self->_splitViewDividerXPosition = a3;
-    self->_inspectorDividerXPosition = a4;
+    self->_splitViewDividerXPosition = position;
+    self->_inspectorDividerXPosition = inspectorPosition;
     [(CKMacToolbarController *)self _updateBackgroundViewsRefreshingViewHeights:0];
     [(CKMacToolbarController *)self _updateVirtualViewForProviderType:1];
     [(CKMacToolbarController *)self _updateVirtualViewForProviderType:2];
@@ -379,19 +379,19 @@
   }
 }
 
-- (void)setPrimaryItemProvider:(id)a3
+- (void)setPrimaryItemProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   primaryItemProvider = self->_primaryItemProvider;
-  v7 = v5;
-  if (primaryItemProvider != v5)
+  v7 = providerCopy;
+  if (primaryItemProvider != providerCopy)
   {
     if (primaryItemProvider)
     {
       [(CKMacToolbarItemProvider *)primaryItemProvider providerWillBeRemovedFromToolbarController:self];
     }
 
-    objc_storeStrong(&self->_primaryItemProvider, a3);
+    objc_storeStrong(&self->_primaryItemProvider, provider);
     [(CKMacToolbarController *)self _updateBackgroundViewsRefreshingViewHeights:1];
     [(CKMacToolbarController *)self _updateVirtualViewForProviderType:1];
     if (self->_primaryItemProvider)
@@ -401,19 +401,19 @@
   }
 }
 
-- (void)setSecondaryItemProvider:(id)a3
+- (void)setSecondaryItemProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   secondaryItemProvider = self->_secondaryItemProvider;
-  v7 = v5;
-  if (secondaryItemProvider != v5)
+  v7 = providerCopy;
+  if (secondaryItemProvider != providerCopy)
   {
     if (secondaryItemProvider)
     {
       [(CKMacToolbarItemProvider *)secondaryItemProvider providerWillBeRemovedFromToolbarController:self];
     }
 
-    objc_storeStrong(&self->_secondaryItemProvider, a3);
+    objc_storeStrong(&self->_secondaryItemProvider, provider);
     [(CKMacToolbarController *)self _updateBackgroundViewsRefreshingViewHeights:1];
     [(CKMacToolbarController *)self _updateVirtualViewForProviderType:2];
     if (self->_secondaryItemProvider)
@@ -423,19 +423,19 @@
   }
 }
 
-- (void)setInspectorItemProvider:(id)a3
+- (void)setInspectorItemProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   inspectorItemProvider = self->_inspectorItemProvider;
-  v7 = v5;
-  if (inspectorItemProvider != v5)
+  v7 = providerCopy;
+  if (inspectorItemProvider != providerCopy)
   {
     if (inspectorItemProvider)
     {
       [(CKMacToolbarItemProvider *)inspectorItemProvider providerWillBeRemovedFromToolbarController:self];
     }
 
-    objc_storeStrong(&self->_inspectorItemProvider, a3);
+    objc_storeStrong(&self->_inspectorItemProvider, provider);
     [(CKMacToolbarController *)self _updateBackgroundViewsRefreshingViewHeights:1];
     [(CKMacToolbarController *)self _updateVirtualViewForProviderType:3];
     if (self->_inspectorItemProvider)
@@ -445,75 +445,75 @@
   }
 }
 
-- (void)removeVirtualViewForProvider:(id)a3
+- (void)removeVirtualViewForProvider:(id)provider
 {
-  v11 = a3;
-  v4 = [(CKMacToolbarController *)self primaryItemProvider];
+  providerCopy = provider;
+  primaryItemProvider = [(CKMacToolbarController *)self primaryItemProvider];
 
-  if (v4 == v11)
+  if (primaryItemProvider == providerCopy)
   {
-    v7 = [(CKMacToolbarController *)self primaryProvidedVirtualView];
+    primaryProvidedVirtualView = [(CKMacToolbarController *)self primaryProvidedVirtualView];
   }
 
   else
   {
-    v5 = [(CKMacToolbarController *)self secondaryItemProvider];
+    secondaryItemProvider = [(CKMacToolbarController *)self secondaryItemProvider];
 
-    v6 = v11;
-    if (v5 != v11)
+    v6 = providerCopy;
+    if (secondaryItemProvider != providerCopy)
     {
       goto LABEL_9;
     }
 
-    v7 = [(CKMacToolbarController *)self secondaryProvidedVirtualView];
+    primaryProvidedVirtualView = [(CKMacToolbarController *)self secondaryProvidedVirtualView];
   }
 
-  v8 = v7;
-  v6 = v11;
+  v8 = primaryProvidedVirtualView;
+  v6 = providerCopy;
   if (v8)
   {
-    v9 = [v8 superview];
-    v10 = [(CKMacToolbarController *)self view];
+    superview = [v8 superview];
+    view = [(CKMacToolbarController *)self view];
 
-    if (v9 == v10)
+    if (superview == view)
     {
       [v8 removeFromSuperview];
     }
 
-    v6 = v11;
+    v6 = providerCopy;
   }
 
 LABEL_9:
 }
 
-- (void)removeItemProvider:(id)a3
+- (void)removeItemProvider:(id)provider
 {
-  v4 = a3;
-  if (v4)
+  providerCopy = provider;
+  if (providerCopy)
   {
-    v8 = v4;
-    v5 = [(CKMacToolbarController *)self primaryItemProvider];
+    v8 = providerCopy;
+    primaryItemProvider = [(CKMacToolbarController *)self primaryItemProvider];
 
-    if (v5 == v8)
+    if (primaryItemProvider == v8)
     {
       [(CKMacToolbarController *)self setPrimaryItemProvider:0];
     }
 
     else
     {
-      v6 = [(CKMacToolbarController *)self secondaryItemProvider];
+      secondaryItemProvider = [(CKMacToolbarController *)self secondaryItemProvider];
 
-      if (v6 == v8)
+      if (secondaryItemProvider == v8)
       {
         [(CKMacToolbarController *)self setSecondaryItemProvider:0];
       }
 
       else
       {
-        v7 = [(CKMacToolbarController *)self inspectorItemProvider];
+        inspectorItemProvider = [(CKMacToolbarController *)self inspectorItemProvider];
 
-        v4 = v8;
-        if (v7 != v8)
+        providerCopy = v8;
+        if (inspectorItemProvider != v8)
         {
           goto LABEL_9;
         }
@@ -522,37 +522,37 @@ LABEL_9:
       }
     }
 
-    v4 = v8;
+    providerCopy = v8;
   }
 
 LABEL_9:
 }
 
-- (void)updateVirtualViewForProvider:(id)a3
+- (void)updateVirtualViewForProvider:(id)provider
 {
-  v9 = a3;
-  v4 = [(CKMacToolbarController *)self primaryItemProvider];
+  providerCopy = provider;
+  primaryItemProvider = [(CKMacToolbarController *)self primaryItemProvider];
 
-  if (v4 == v9)
+  if (primaryItemProvider == providerCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v5 = [(CKMacToolbarController *)self secondaryItemProvider];
+    secondaryItemProvider = [(CKMacToolbarController *)self secondaryItemProvider];
 
-    if (v5 == v9)
+    if (secondaryItemProvider == providerCopy)
     {
       v8 = 2;
     }
 
     else
     {
-      v6 = [(CKMacToolbarController *)self inspectorItemProvider];
+      inspectorItemProvider = [(CKMacToolbarController *)self inspectorItemProvider];
 
-      v7 = v9;
-      if (v6 != v9)
+      v7 = providerCopy;
+      if (inspectorItemProvider != providerCopy)
       {
         goto LABEL_8;
       }
@@ -563,45 +563,45 @@ LABEL_9:
 
   [(CKMacToolbarController *)self _updateBackgroundViewsRefreshingViewHeights:1];
   [(CKMacToolbarController *)self _updateVirtualViewForProviderType:v8];
-  v7 = v9;
+  v7 = providerCopy;
 LABEL_8:
 }
 
-- (void)_updateVirtualViewForProviderType:(int64_t)a3
+- (void)_updateVirtualViewForProviderType:(int64_t)type
 {
   v34 = [(CKMacToolbarController *)self _providerForType:?];
-  v5 = [(CKMacToolbarController *)self _cachedVirtualViewForProviderType:a3];
+  v5 = [(CKMacToolbarController *)self _cachedVirtualViewForProviderType:type];
   if (v34 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [v34 virtualView];
+    virtualView = [v34 virtualView];
   }
 
   else
   {
-    v6 = 0;
+    virtualView = 0;
   }
 
-  if (v6 != v5)
+  if (virtualView != v5)
   {
-    v7 = [v5 superview];
-    v8 = [(CKMacToolbarController *)self view];
+    superview = [v5 superview];
+    view = [(CKMacToolbarController *)self view];
 
-    if (v7 == v8)
+    if (superview == view)
     {
       [v5 removeFromSuperview];
     }
 
-    [(CKMacToolbarController *)self _setVirtualView:v6 forProviderType:a3];
+    [(CKMacToolbarController *)self _setVirtualView:virtualView forProviderType:type];
   }
 
-  if (v34 && v6)
+  if (v34 && virtualView)
   {
-    [v6 frame];
+    [virtualView frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(CKMacToolbarController *)self _virtualBackgroundViewForProviderType:a3];
+    v17 = [(CKMacToolbarController *)self _virtualBackgroundViewForProviderType:type];
     [v17 frame];
     v19 = v18;
     v21 = v20;
@@ -616,13 +616,13 @@ LABEL_8:
       v25 = v25 - (v27 + v29);
     }
 
-    v30 = [v6 superview];
-    v31 = [(CKMacToolbarController *)self view];
+    superview2 = [virtualView superview];
+    view2 = [(CKMacToolbarController *)self view];
 
-    if (v30 != v31)
+    if (superview2 != view2)
     {
-      v32 = [(CKMacToolbarController *)self view];
-      [v32 addSubview:v6];
+      view3 = [(CKMacToolbarController *)self view];
+      [view3 addSubview:virtualView];
     }
 
     v36.origin.x = v10;
@@ -635,129 +635,129 @@ LABEL_8:
     v37.size.height = v25;
     if (!CGRectEqualToRect(v36, v37))
     {
-      [v6 setFrame:{v19, v21, v23, v25}];
-      [v6 setNeedsLayout];
-      [v6 layoutIfNeeded];
+      [virtualView setFrame:{v19, v21, v23, v25}];
+      [virtualView setNeedsLayout];
+      [virtualView layoutIfNeeded];
     }
 
-    v33 = [(CKMacToolbarController *)self view];
-    [v33 bringSubviewToFront:v6];
+    view4 = [(CKMacToolbarController *)self view];
+    [view4 bringSubviewToFront:virtualView];
   }
 }
 
-- (id)_providerForType:(int64_t)a3
+- (id)_providerForType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 3:
-      v3 = [(CKMacToolbarController *)self inspectorItemProvider];
+      inspectorItemProvider = [(CKMacToolbarController *)self inspectorItemProvider];
       break;
     case 2:
-      v3 = [(CKMacToolbarController *)self secondaryItemProvider];
+      inspectorItemProvider = [(CKMacToolbarController *)self secondaryItemProvider];
       break;
     case 1:
-      v3 = [(CKMacToolbarController *)self primaryItemProvider];
+      inspectorItemProvider = [(CKMacToolbarController *)self primaryItemProvider];
       break;
     default:
-      v3 = 0;
+      inspectorItemProvider = 0;
       break;
   }
 
-  return v3;
+  return inspectorItemProvider;
 }
 
-- (id)_cachedVirtualViewForProviderType:(int64_t)a3
+- (id)_cachedVirtualViewForProviderType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 3:
-      v3 = [(CKMacToolbarController *)self inspectorProvidedVirtualView];
+      inspectorProvidedVirtualView = [(CKMacToolbarController *)self inspectorProvidedVirtualView];
       break;
     case 2:
-      v3 = [(CKMacToolbarController *)self secondaryProvidedVirtualView];
+      inspectorProvidedVirtualView = [(CKMacToolbarController *)self secondaryProvidedVirtualView];
       break;
     case 1:
-      v3 = [(CKMacToolbarController *)self primaryProvidedVirtualView];
+      inspectorProvidedVirtualView = [(CKMacToolbarController *)self primaryProvidedVirtualView];
       break;
     default:
-      v3 = 0;
+      inspectorProvidedVirtualView = 0;
       break;
   }
 
-  return v3;
+  return inspectorProvidedVirtualView;
 }
 
-- (id)_virtualBackgroundViewForProviderType:(int64_t)a3
+- (id)_virtualBackgroundViewForProviderType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
-    v3 = [(CKMacToolbarController *)self secondaryVirtualBackgroundView];
+    secondaryVirtualBackgroundView = [(CKMacToolbarController *)self secondaryVirtualBackgroundView];
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
-    v3 = [(CKMacToolbarController *)self primaryVirtualBackgroundView];
+    secondaryVirtualBackgroundView = [(CKMacToolbarController *)self primaryVirtualBackgroundView];
   }
 
   else
   {
-    v3 = 0;
+    secondaryVirtualBackgroundView = 0;
   }
 
-  return v3;
+  return secondaryVirtualBackgroundView;
 }
 
-- (void)_setVirtualView:(id)a3 forProviderType:(int64_t)a4
+- (void)_setVirtualView:(id)view forProviderType:(int64_t)type
 {
-  v6 = a3;
-  switch(a4)
+  viewCopy = view;
+  switch(type)
   {
     case 3:
-      v7 = v6;
-      [(CKMacToolbarController *)self setInspectorProvidedVirtualView:v6];
+      v7 = viewCopy;
+      [(CKMacToolbarController *)self setInspectorProvidedVirtualView:viewCopy];
       break;
     case 2:
-      v7 = v6;
-      [(CKMacToolbarController *)self setSecondaryProvidedVirtualView:v6];
+      v7 = viewCopy;
+      [(CKMacToolbarController *)self setSecondaryProvidedVirtualView:viewCopy];
       break;
     case 1:
-      v7 = v6;
-      [(CKMacToolbarController *)self setPrimaryProvidedVirtualView:v6];
+      v7 = viewCopy;
+      [(CKMacToolbarController *)self setPrimaryProvidedVirtualView:viewCopy];
       break;
     default:
       goto LABEL_8;
   }
 
-  v6 = v7;
+  viewCopy = v7;
 LABEL_8:
 }
 
-- (BOOL)_shouldDisAllowTouchesToPassForProviderType:(int64_t)a3
+- (BOOL)_shouldDisAllowTouchesToPassForProviderType:(int64_t)type
 {
-  v3 = [(CKMacToolbarController *)self _providerForType:a3];
+  v3 = [(CKMacToolbarController *)self _providerForType:type];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 itemProviderDisablesTouches];
+    itemProviderDisablesTouches = [v3 itemProviderDisablesTouches];
   }
 
   else
   {
-    v4 = 1;
+    itemProviderDisablesTouches = 1;
   }
 
-  return v4;
+  return itemProviderDisablesTouches;
 }
 
-- (int64_t)_providerTypeForPointInsideVirtualView:(CGPoint)a3 withEvent:(id)a4
+- (int64_t)_providerTypeForPointInsideVirtualView:(CGPoint)view withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CKMacToolbarController *)self primaryProvidedVirtualView];
-  v9 = [(CKMacToolbarController *)self view];
-  v10 = [(CKMacToolbarController *)self primaryProvidedVirtualView];
-  [v9 convertPoint:v10 toView:{x, y}];
-  v11 = [v8 pointInside:v7 withEvent:?];
+  y = view.y;
+  x = view.x;
+  eventCopy = event;
+  primaryProvidedVirtualView = [(CKMacToolbarController *)self primaryProvidedVirtualView];
+  view = [(CKMacToolbarController *)self view];
+  primaryProvidedVirtualView2 = [(CKMacToolbarController *)self primaryProvidedVirtualView];
+  [view convertPoint:primaryProvidedVirtualView2 toView:{x, y}];
+  v11 = [primaryProvidedVirtualView pointInside:eventCopy withEvent:?];
 
   if (v11)
   {
@@ -766,11 +766,11 @@ LABEL_8:
 
   else
   {
-    v13 = [(CKMacToolbarController *)self secondaryProvidedVirtualView];
-    v14 = [(CKMacToolbarController *)self view];
-    v15 = [(CKMacToolbarController *)self secondaryProvidedVirtualView];
-    [v14 convertPoint:v15 toView:{x, y}];
-    v16 = [v13 pointInside:v7 withEvent:?];
+    secondaryProvidedVirtualView = [(CKMacToolbarController *)self secondaryProvidedVirtualView];
+    view2 = [(CKMacToolbarController *)self view];
+    secondaryProvidedVirtualView2 = [(CKMacToolbarController *)self secondaryProvidedVirtualView];
+    [view2 convertPoint:secondaryProvidedVirtualView2 toView:{x, y}];
+    v16 = [secondaryProvidedVirtualView pointInside:eventCopy withEvent:?];
 
     if (v16)
     {
@@ -779,11 +779,11 @@ LABEL_8:
 
     else
     {
-      v17 = [(CKMacToolbarController *)self inspectorProvidedVirtualView];
-      v18 = [(CKMacToolbarController *)self view];
-      v19 = [(CKMacToolbarController *)self inspectorProvidedVirtualView];
-      [v18 convertPoint:v19 toView:{x, y}];
-      v20 = [v17 pointInside:v7 withEvent:?];
+      inspectorProvidedVirtualView = [(CKMacToolbarController *)self inspectorProvidedVirtualView];
+      view3 = [(CKMacToolbarController *)self view];
+      inspectorProvidedVirtualView2 = [(CKMacToolbarController *)self inspectorProvidedVirtualView];
+      [view3 convertPoint:inspectorProvidedVirtualView2 toView:{x, y}];
+      v20 = [inspectorProvidedVirtualView pointInside:eventCopy withEvent:?];
 
       if (v20)
       {
@@ -800,17 +800,17 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)macToolbarView:(id)a3 shouldAllowTouchesForPoint:(CGPoint)a4 andEvent:(id)a5
+- (BOOL)macToolbarView:(id)view shouldAllowTouchesForPoint:(CGPoint)point andEvent:(id)event
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(CKMacToolbarController *)self view];
+  y = point.y;
+  x = point.x;
+  eventCopy = event;
+  viewCopy = view;
+  view = [(CKMacToolbarController *)self view];
 
-  if (v11 == v10)
+  if (view == viewCopy)
   {
-    v12 = ![(CKMacToolbarController *)self _shouldDisAllowTouchesToPassForProviderType:[(CKMacToolbarController *)self _providerTypeForPointInsideVirtualView:v9 withEvent:x, y]];
+    v12 = ![(CKMacToolbarController *)self _shouldDisAllowTouchesToPassForProviderType:[(CKMacToolbarController *)self _providerTypeForPointInsideVirtualView:eventCopy withEvent:x, y]];
   }
 
   else

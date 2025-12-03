@@ -1,7 +1,7 @@
 @interface _UIForceClickInteractionDriver
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)hasExceededAllowableMovement;
-- (CGPoint)locationInCoordinateSpace:(id)a3;
+- (CGPoint)locationInCoordinateSpace:(id)space;
 - (UIView)view;
 - (_UIClickInteractionDriverDelegate)delegate;
 - (_UIForceClickInteractionDriver)init;
@@ -9,10 +9,10 @@
 - (double)touchDuration;
 - (double)touchForce;
 - (unint64_t)inputPrecision;
-- (void)_handleGestureRecognizer:(id)a3;
+- (void)_handleGestureRecognizer:(id)recognizer;
 - (void)cancelInteraction;
-- (void)setAllowableMovement:(double)a3;
-- (void)setView:(id)a3;
+- (void)setAllowableMovement:(double)movement;
+- (void)setView:(id)view;
 @end
 
 @implementation _UIForceClickInteractionDriver
@@ -40,23 +40,23 @@
 
 - (double)touchForce
 {
-  v2 = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
-  [v2 touchForce];
+  gestureRecognizer = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
+  [gestureRecognizer touchForce];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setAllowableMovement:(double)a3
+- (void)setAllowableMovement:(double)movement
 {
-  v4 = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
-  [v4 setAllowableMovement:a3];
+  gestureRecognizer = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
+  [gestureRecognizer setAllowableMovement:movement];
 }
 
 - (double)allowableMovement
 {
-  v2 = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
-  [v2 allowableMovement];
+  gestureRecognizer = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
+  [gestureRecognizer allowableMovement];
   v4 = v3;
 
   return v4;
@@ -64,8 +64,8 @@
 
 - (double)touchDuration
 {
-  v2 = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
-  [v2 touchDuration];
+  gestureRecognizer = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
+  [gestureRecognizer touchDuration];
   v4 = v3;
 
   return v4;
@@ -73,30 +73,30 @@
 
 - (BOOL)hasExceededAllowableMovement
 {
-  v2 = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
-  v3 = [v2 hasExceededAllowableMovement];
+  gestureRecognizer = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
+  hasExceededAllowableMovement = [gestureRecognizer hasExceededAllowableMovement];
 
-  return v3;
+  return hasExceededAllowableMovement;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
-    v6 = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
-    v7 = [v6 view];
-    [v7 removeGestureRecognizer:v6];
+    gestureRecognizer = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
+    view = [gestureRecognizer view];
+    [view removeGestureRecognizer:gestureRecognizer];
 
     v8 = objc_storeWeak(&self->_view, obj);
     if (obj)
     {
       self->_currentState = 1;
       v9 = objc_loadWeakRetained(&self->_view);
-      [v9 addGestureRecognizer:v6];
+      [v9 addGestureRecognizer:gestureRecognizer];
     }
 
     v5 = obj;
@@ -105,25 +105,25 @@
 
 - (void)cancelInteraction
 {
-  v3 = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
-  [v3 setEnabled:0];
+  gestureRecognizer = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
+  [gestureRecognizer setEnabled:0];
 
-  v4 = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
-  [v4 setEnabled:1];
+  gestureRecognizer2 = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
+  [gestureRecognizer2 setEnabled:1];
 }
 
-- (CGPoint)locationInCoordinateSpace:(id)a3
+- (CGPoint)locationInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(_UIForceClickInteractionDriver *)self view];
-  if (v5)
+  spaceCopy = space;
+  view = [(_UIForceClickInteractionDriver *)self view];
+  if (view)
   {
-    v6 = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
-    [v6 locationInView:v5];
+    gestureRecognizer = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
+    [gestureRecognizer locationInView:view];
     v8 = v7;
     v10 = v9;
 
-    [v5 convertPoint:v4 toCoordinateSpace:{v8, v10}];
+    [view convertPoint:spaceCopy toCoordinateSpace:{v8, v10}];
     v12 = v11;
     v14 = v13;
   }
@@ -143,10 +143,10 @@
 
 - (unint64_t)inputPrecision
 {
-  v2 = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
-  if (v2)
+  gestureRecognizer = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
+  if (gestureRecognizer)
   {
-    v3 = v2[24];
+    v3 = gestureRecognizer[24];
   }
 
   else
@@ -157,16 +157,16 @@
   return v3;
 }
 
-- (void)_handleGestureRecognizer:(id)a3
+- (void)_handleGestureRecognizer:(id)recognizer
 {
   p_currentState = &self->_currentState;
   currentState = self->_currentState;
   [(_UIForceClickInteractionDriver *)self touchForce];
   v7 = v6;
-  v8 = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
-  v9 = [v8 state];
+  gestureRecognizer = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
+  state = [gestureRecognizer state];
 
-  if ((v9 - 4) < 2)
+  if ((state - 4) < 2)
   {
 LABEL_7:
     v11 = self->_currentState;
@@ -176,7 +176,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v9 == 3)
+  if (state == 3)
   {
     if (currentState == 3)
     {
@@ -186,15 +186,15 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  if (v9 == 1)
+  if (state == 1)
   {
-    v10 = [(_UIForceClickInteractionDriver *)self delegate];
+    delegate = [(_UIForceClickInteractionDriver *)self delegate];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __59___UIForceClickInteractionDriver__handleGestureRecognizer___block_invoke;
     v16[3] = &unk_1E7105EF8;
     v16[4] = self;
-    [v10 clickDriver:self shouldBegin:v16];
+    [delegate clickDriver:self shouldBegin:v16];
 
     goto LABEL_9;
   }
@@ -219,56 +219,56 @@ LABEL_8:
 LABEL_9:
   if (*p_currentState == 2)
   {
-    v13 = [(_UIForceClickInteractionDriver *)self delegate];
+    delegate2 = [(_UIForceClickInteractionDriver *)self delegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(_UIForceClickInteractionDriver *)self delegate];
-      [v15 clickDriver:self didUpdateHighlightProgress:v7 / 2.6 + 0.0];
+      delegate3 = [(_UIForceClickInteractionDriver *)self delegate];
+      [delegate3 clickDriver:self didUpdateHighlightProgress:v7 / 2.6 + 0.0];
     }
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  gestureRecognizer = [(_UIForceClickInteractionDriver *)self gestureRecognizer];
 
-  if (v8 != v6)
+  if (gestureRecognizer != recognizerCopy)
   {
     goto LABEL_2;
   }
 
-  v10 = [v7 name];
-  v11 = [v6 name];
-  v12 = [v10 isEqualToString:v11];
+  name = [gestureRecognizerCopy name];
+  name2 = [recognizerCopy name];
+  v12 = [name isEqualToString:name2];
 
   if (v12)
   {
-    v13 = [v6 view];
-    v14 = [v7 view];
-    if (v13 == v14)
+    view = [recognizerCopy view];
+    view2 = [gestureRecognizerCopy view];
+    if (view == view2)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = [v13 isDescendantOfView:v14];
+      v9 = [view isDescendantOfView:view2];
     }
 
     goto LABEL_10;
   }
 
-  v15 = [(_UIForceClickInteractionDriver *)self delegate];
+  delegate = [(_UIForceClickInteractionDriver *)self delegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v13 = [(_UIForceClickInteractionDriver *)self delegate];
-    v9 = [v13 clickDriver:self shouldDelayGestureRecognizer:v7];
+    view = [(_UIForceClickInteractionDriver *)self delegate];
+    v9 = [view clickDriver:self shouldDelayGestureRecognizer:gestureRecognizerCopy];
 LABEL_10:
 
     goto LABEL_11;

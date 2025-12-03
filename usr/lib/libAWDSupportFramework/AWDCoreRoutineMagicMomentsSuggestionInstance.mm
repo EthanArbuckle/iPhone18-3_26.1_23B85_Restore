@@ -1,17 +1,17 @@
 @interface AWDCoreRoutineMagicMomentsSuggestionInstance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSuggestions:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addSuggestions:(id)suggestions;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConfidence:(BOOL)a3;
-- (void)setHasDurationSinceLastSuggestion:(BOOL)a3;
-- (void)setHasReposponceTime:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasConfidence:(BOOL)confidence;
+- (void)setHasDurationSinceLastSuggestion:(BOOL)suggestion;
+- (void)setHasReposponceTime:(BOOL)time;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineMagicMomentsSuggestionInstance
@@ -25,9 +25,9 @@
   [(AWDCoreRoutineMagicMomentsSuggestionInstance *)&v3 dealloc];
 }
 
-- (void)setHasConfidence:(BOOL)a3
+- (void)setHasConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 2;
   }
@@ -40,7 +40,7 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addSuggestions:(id)a3
+- (void)addSuggestions:(id)suggestions
 {
   suggestions = self->_suggestions;
   if (!suggestions)
@@ -49,12 +49,12 @@
     self->_suggestions = suggestions;
   }
 
-  [(NSMutableArray *)suggestions addObject:a3];
+  [(NSMutableArray *)suggestions addObject:suggestions];
 }
 
-- (void)setHasReposponceTime:(BOOL)a3
+- (void)setHasReposponceTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 8;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDurationSinceLastSuggestion:(BOOL)a3
+- (void)setHasDurationSinceLastSuggestion:(BOOL)suggestion
 {
-  if (a3)
+  if (suggestion)
   {
     v3 = 4;
   }
@@ -92,21 +92,21 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   suggestionId = self->_suggestionId;
   if (suggestionId)
   {
-    [v3 setObject:suggestionId forKey:@"suggestionId"];
+    [dictionary setObject:suggestionId forKey:@"suggestionId"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_confidence), @"confidence"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_confidence), @"confidence"}];
   }
 
   if ([(NSMutableArray *)self->_suggestions count])
@@ -140,26 +140,26 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"suggestions"];
+    [dictionary setObject:v5 forKey:@"suggestions"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_reposponceTime), @"reposponceTime"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_reposponceTime), @"reposponceTime"}];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_durationSinceLastSuggestion), @"durationSinceLastSuggestion"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_durationSinceLastSuggestion), @"durationSinceLastSuggestion"}];
   }
 
   v12 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x29EDCA608];
   if (*&self->_has)
@@ -225,35 +225,35 @@
   v15 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 48) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 48) |= 1u;
   }
 
   if (self->_suggestionId)
   {
-    [a3 setSuggestionId:?];
+    [to setSuggestionId:?];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 4) = self->_confidence;
-    *(a3 + 48) |= 2u;
+    *(to + 4) = self->_confidence;
+    *(to + 48) |= 2u;
   }
 
   if ([(AWDCoreRoutineMagicMomentsSuggestionInstance *)self suggestionsCount])
   {
-    [a3 clearSuggestions];
-    v5 = [(AWDCoreRoutineMagicMomentsSuggestionInstance *)self suggestionsCount];
-    if (v5)
+    [to clearSuggestions];
+    suggestionsCount = [(AWDCoreRoutineMagicMomentsSuggestionInstance *)self suggestionsCount];
+    if (suggestionsCount)
     {
-      v6 = v5;
+      v6 = suggestionsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addSuggestions:{-[AWDCoreRoutineMagicMomentsSuggestionInstance suggestionsAtIndex:](self, "suggestionsAtIndex:", i)}];
+        [to addSuggestions:{-[AWDCoreRoutineMagicMomentsSuggestionInstance suggestionsAtIndex:](self, "suggestionsAtIndex:", i)}];
       }
     }
   }
@@ -261,22 +261,22 @@
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(a3 + 6) = self->_reposponceTime;
-    *(a3 + 48) |= 8u;
+    *(to + 6) = self->_reposponceTime;
+    *(to + 48) |= 8u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(a3 + 5) = self->_durationSinceLastSuggestion;
-    *(a3 + 48) |= 4u;
+    *(to + 5) = self->_durationSinceLastSuggestion;
+    *(to + 48) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -284,7 +284,7 @@
     *(v5 + 48) |= 1u;
   }
 
-  *(v6 + 32) = [(NSString *)self->_suggestionId copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_suggestionId copyWithZone:zone];
   if ((*&self->_has & 2) != 0)
   {
     *(v6 + 16) = self->_confidence;
@@ -310,7 +310,7 @@
           objc_enumerationMutation(suggestions);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addSuggestions:v12];
       }
 
@@ -338,22 +338,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 48);
+    v7 = *(equal + 48);
     if (has)
     {
-      if ((*(a3 + 48) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 48) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_27;
       }
     }
 
-    else if (*(a3 + 48))
+    else if (*(equal + 48))
     {
 LABEL_27:
       LOBYTE(v5) = 0;
@@ -361,7 +361,7 @@ LABEL_27:
     }
 
     suggestionId = self->_suggestionId;
-    if (suggestionId | *(a3 + 4))
+    if (suggestionId | *(equal + 4))
     {
       v5 = [(NSString *)suggestionId isEqual:?];
       if (!v5)
@@ -372,22 +372,22 @@ LABEL_27:
       has = self->_has;
     }
 
-    v9 = *(a3 + 48);
+    v9 = *(equal + 48);
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 48) & 2) == 0 || self->_confidence != *(a3 + 4))
+      if ((*(equal + 48) & 2) == 0 || self->_confidence != *(equal + 4))
       {
         goto LABEL_27;
       }
     }
 
-    else if ((*(a3 + 48) & 2) != 0)
+    else if ((*(equal + 48) & 2) != 0)
     {
       goto LABEL_27;
     }
 
     suggestions = self->_suggestions;
-    if (suggestions | *(a3 + 5))
+    if (suggestions | *(equal + 5))
     {
       v5 = [(NSMutableArray *)suggestions isEqual:?];
       if (!v5)
@@ -400,21 +400,21 @@ LABEL_27:
 
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 48) & 8) == 0 || self->_reposponceTime != *(a3 + 6))
+      if ((*(equal + 48) & 8) == 0 || self->_reposponceTime != *(equal + 6))
       {
         goto LABEL_27;
       }
     }
 
-    else if ((*(a3 + 48) & 8) != 0)
+    else if ((*(equal + 48) & 8) != 0)
     {
       goto LABEL_27;
     }
 
-    LOBYTE(v5) = (*(a3 + 48) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 48) & 4) == 0;
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 48) & 4) == 0 || self->_durationSinceLastSuggestion != *(a3 + 5))
+      if ((*(equal + 48) & 4) == 0 || self->_durationSinceLastSuggestion != *(equal + 5))
       {
         goto LABEL_27;
       }
@@ -474,23 +474,23 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 48))
+  if (*(from + 48))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDCoreRoutineMagicMomentsSuggestionInstance *)self setSuggestionId:?];
   }
 
-  if ((*(a3 + 48) & 2) != 0)
+  if ((*(from + 48) & 2) != 0)
   {
-    self->_confidence = *(a3 + 4);
+    self->_confidence = *(from + 4);
     *&self->_has |= 2u;
   }
 
@@ -498,7 +498,7 @@ LABEL_9:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = *(a3 + 5);
+  v5 = *(from + 5);
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -522,17 +522,17 @@ LABEL_9:
     while (v7);
   }
 
-  v10 = *(a3 + 48);
+  v10 = *(from + 48);
   if ((v10 & 8) != 0)
   {
-    self->_reposponceTime = *(a3 + 6);
+    self->_reposponceTime = *(from + 6);
     *&self->_has |= 8u;
-    v10 = *(a3 + 48);
+    v10 = *(from + 48);
   }
 
   if ((v10 & 4) != 0)
   {
-    self->_durationSinceLastSuggestion = *(a3 + 5);
+    self->_durationSinceLastSuggestion = *(from + 5);
     *&self->_has |= 4u;
   }
 

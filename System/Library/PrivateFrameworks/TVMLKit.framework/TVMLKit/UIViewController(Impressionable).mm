@@ -7,30 +7,30 @@
 - (id)tv_impressionableElementsForDocument:()Impressionable
 {
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [a1 impressionableElementsContainedInDocument:v4];
-    [v5 addObjectsFromArray:v6];
+    view = [self impressionableElementsContainedInDocument:v4];
+    [array addObjectsFromArray:view];
   }
 
-  else if ([a1 isViewLoaded])
+  else if ([self isViewLoaded])
   {
-    v6 = [a1 view];
-    v7 = [v6 tv_impressionableElementsForDocument:v4 parentViewController:a1];
-    [v5 addObjectsFromArray:v7];
+    view = [self view];
+    v7 = [view tv_impressionableElementsForDocument:v4 parentViewController:self];
+    [array addObjectsFromArray:v7];
   }
 
   else
   {
-    v6 = [a1 tv_associatedIKViewElement];
-    if (v6)
+    view = [self tv_associatedIKViewElement];
+    if (view)
     {
-      [v5 addObject:v6];
+      [array addObject:view];
     }
   }
 
-  v8 = [v5 copy];
+  v8 = [array copy];
 
   return v8;
 }

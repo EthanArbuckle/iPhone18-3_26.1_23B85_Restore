@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_UnTrashSharedDuplicates
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_UnTrashSharedDuplicates
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v132 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v88 = 0;
   v89 = &v88;
   v90 = 0x2020000000;
@@ -28,7 +28,7 @@
   [v8 setFetchBatchSize:1];
   v10 = v83 + 5;
   obj = v83[5];
-  v74 = [v5 executeFetchRequest:v8 error:&obj];
+  v74 = [contextCopy executeFetchRequest:v8 error:&obj];
   objc_storeStrong(v10, obj);
   if ([v74 count])
   {
@@ -52,7 +52,7 @@
     [v13 setFetchBatchSize:100];
     v18 = v83 + 5;
     v80 = v83[5];
-    v19 = [v5 executeFetchRequest:v13 error:&v80];
+    v19 = [contextCopy executeFetchRequest:v13 error:&v80];
     objc_storeStrong(v18, v80);
     *&v96 = 0;
     *(&v96 + 1) = &v96;
@@ -79,7 +79,7 @@
     v79 = &v88;
     v70 = v20;
     v76 = v70;
-    v21 = [v5 enumerateWithIncrementalSaveUsingObjects:v19 withBlock:v75];
+    v21 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v19 withBlock:v75];
     v22 = v21;
     v23 = v89[3];
     if (v23 == 2 || !v21)
@@ -94,8 +94,8 @@
           goto LABEL_32;
         }
 
-        v35 = [(PLModelMigrationActionCore *)self logger];
-        v36 = v35 == 0;
+        logger = [(PLModelMigrationActionCore *)self logger];
+        v36 = logger == 0;
 
         if (!v36)
         {
@@ -158,10 +158,10 @@ LABEL_33:
           [(PLModelMigrationActionCore *)self finalizeProgress];
           v65 = v89[3];
           v66 = v83[5];
-          if (v65 != 1 && a4)
+          if (v65 != 1 && error)
           {
             v66 = v66;
-            *a4 = v66;
+            *error = v66;
           }
 
           v57 = v89[3];
@@ -203,8 +203,8 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v46 = [(PLModelMigrationActionCore *)self logger];
-    v47 = v46 == 0;
+    logger2 = [(PLModelMigrationActionCore *)self logger];
+    v47 = logger2 == 0;
 
     if (!v47)
     {
@@ -284,8 +284,8 @@ LABEL_31:
 
   if (v25)
   {
-    v26 = [(PLModelMigrationActionCore *)self logger];
-    v27 = v26 == 0;
+    logger3 = [(PLModelMigrationActionCore *)self logger];
+    v27 = logger3 == 0;
 
     if (v27)
     {

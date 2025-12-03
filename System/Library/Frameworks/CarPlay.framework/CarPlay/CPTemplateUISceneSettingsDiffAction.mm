@@ -1,35 +1,35 @@
 @interface CPTemplateUISceneSettingsDiffAction
-- (CPTemplateUISceneSettingsDiffAction)initWithInspectors:(id)a3;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (CPTemplateUISceneSettingsDiffAction)initWithInspectors:(id)inspectors;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation CPTemplateUISceneSettingsDiffAction
 
-- (CPTemplateUISceneSettingsDiffAction)initWithInspectors:(id)a3
+- (CPTemplateUISceneSettingsDiffAction)initWithInspectors:(id)inspectors
 {
-  v5 = a3;
+  inspectorsCopy = inspectors;
   v9.receiver = self;
   v9.super_class = CPTemplateUISceneSettingsDiffAction;
   v6 = [(CPTemplateUISceneSettingsDiffAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_inspectors, a3);
+    objc_storeStrong(&v6->_inspectors, inspectors);
   }
 
   return v7;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a5;
+  diffCopy = diff;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [(CPTemplateUISceneSettingsDiffAction *)self inspectors];
-  v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  inspectors = [(CPTemplateUISceneSettingsDiffAction *)self inspectors];
+  v11 = [inspectors countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -41,14 +41,14 @@
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(inspectors);
         }
 
-        [*(*(&v16 + 1) + 8 * v14++) inspectDiff:v9 withContext:0];
+        [*(*(&v16 + 1) + 8 * v14++) inspectDiff:diffCopy withContext:0];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v12 = [inspectors countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v12);

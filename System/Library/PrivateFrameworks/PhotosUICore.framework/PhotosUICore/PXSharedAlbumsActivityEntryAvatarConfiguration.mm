@@ -1,8 +1,8 @@
 @interface PXSharedAlbumsActivityEntryAvatarConfiguration
-+ (id)avatarForAssetContributorInAlbumWithAlbumGUID:(id)a3 contributedAsset:(id)a4;
-+ (id)avatarFromOwnerOfPendingSharedAlbumWithGUID:(id)a3 withPhotoLibrary:(id)a4 plPhotoLibrary:(id)a5;
-+ (id)avatarFromParticipantWithID:(id)a3 withPhotoLibrary:(id)a4 plPhotoLibrary:(id)a5;
-- (PXSharedAlbumsActivityEntryAvatarConfiguration)initWithEmail:(id)a3 phone:(id)a4 firstName:(id)a5 lastName:(id)a6;
++ (id)avatarForAssetContributorInAlbumWithAlbumGUID:(id)d contributedAsset:(id)asset;
++ (id)avatarFromOwnerOfPendingSharedAlbumWithGUID:(id)d withPhotoLibrary:(id)library plPhotoLibrary:(id)photoLibrary;
++ (id)avatarFromParticipantWithID:(id)d withPhotoLibrary:(id)library plPhotoLibrary:(id)photoLibrary;
+- (PXSharedAlbumsActivityEntryAvatarConfiguration)initWithEmail:(id)email phone:(id)phone firstName:(id)name lastName:(id)lastName;
 - (id)fullName;
 @end
 
@@ -10,37 +10,37 @@
 
 - (id)fullName
 {
-  v3 = [(PXSharedAlbumsActivityEntryAvatarConfiguration *)self firstName];
-  v4 = [(PXSharedAlbumsActivityEntryAvatarConfiguration *)self lastName];
+  firstName = [(PXSharedAlbumsActivityEntryAvatarConfiguration *)self firstName];
+  lastName = [(PXSharedAlbumsActivityEntryAvatarConfiguration *)self lastName];
   v5 = PLLocalizedNameWithFirstAndLastName();
 
   return v5;
 }
 
-- (PXSharedAlbumsActivityEntryAvatarConfiguration)initWithEmail:(id)a3 phone:(id)a4 firstName:(id)a5 lastName:(id)a6
+- (PXSharedAlbumsActivityEntryAvatarConfiguration)initWithEmail:(id)email phone:(id)phone firstName:(id)name lastName:(id)lastName
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  emailCopy = email;
+  phoneCopy = phone;
+  nameCopy = name;
+  lastNameCopy = lastName;
   v24.receiver = self;
   v24.super_class = PXSharedAlbumsActivityEntryAvatarConfiguration;
   v14 = [(PXSharedAlbumsActivityEntryAvatarConfiguration *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [emailCopy copy];
     email = v14->_email;
     v14->_email = v15;
 
-    v17 = [v11 copy];
+    v17 = [phoneCopy copy];
     phone = v14->_phone;
     v14->_phone = v17;
 
-    v19 = [v12 copy];
+    v19 = [nameCopy copy];
     firstName = v14->_firstName;
     v14->_firstName = v19;
 
-    v21 = [v13 copy];
+    v21 = [lastNameCopy copy];
     lastName = v14->_lastName;
     v14->_lastName = v21;
   }
@@ -48,17 +48,17 @@
   return v14;
 }
 
-+ (id)avatarForAssetContributorInAlbumWithAlbumGUID:(id)a3 contributedAsset:(id)a4
++ (id)avatarForAssetContributorInAlbumWithAlbumGUID:(id)d contributedAsset:(id)asset
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a4;
-  v5 = [v4 cloudOwnerEmail];
-  v6 = [v4 cloudOwnerFirstName];
-  v7 = [v4 cloudOwnerLastName];
-  v8 = v7;
-  if (v6)
+  assetCopy = asset;
+  cloudOwnerEmail = [assetCopy cloudOwnerEmail];
+  cloudOwnerFirstName = [assetCopy cloudOwnerFirstName];
+  cloudOwnerLastName = [assetCopy cloudOwnerLastName];
+  v8 = cloudOwnerLastName;
+  if (cloudOwnerFirstName)
   {
-    if (v7)
+    if (cloudOwnerLastName)
     {
       goto LABEL_10;
     }
@@ -69,11 +69,11 @@
   v9 = PLSharingGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v10 = [v4 uuid];
+    uuid = [assetCopy uuid];
     v15 = 138543618;
-    v16 = v10;
+    v16 = uuid;
     v17 = 2112;
-    v18 = v4;
+    v18 = assetCopy;
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_ERROR, "Empty/missing firstName for asset [%{public}@]: %@", &v15, 0x16u);
   }
 
@@ -83,74 +83,74 @@ LABEL_7:
     v11 = PLSharingGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v4 uuid];
+      uuid2 = [assetCopy uuid];
       v15 = 138543618;
-      v16 = v12;
+      v16 = uuid2;
       v17 = 2112;
-      v18 = v4;
+      v18 = assetCopy;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_ERROR, "Empty/missing lastName for asset [%{public}@]: %@", &v15, 0x16u);
     }
   }
 
 LABEL_10:
-  v13 = [[PXSharedAlbumsActivityEntryAvatarConfiguration alloc] initWithEmail:v5 phone:0 firstName:v6 lastName:v8];
+  v13 = [[PXSharedAlbumsActivityEntryAvatarConfiguration alloc] initWithEmail:cloudOwnerEmail phone:0 firstName:cloudOwnerFirstName lastName:v8];
 
   return v13;
 }
 
-+ (id)avatarFromParticipantWithID:(id)a3 withPhotoLibrary:(id)a4 plPhotoLibrary:(id)a5
++ (id)avatarFromParticipantWithID:(id)d withPhotoLibrary:(id)library plPhotoLibrary:(id)photoLibrary
 {
   v24 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E6978AC0];
-  v23 = a3;
+  dCopy = d;
   v7 = MEMORY[0x1E695DEC8];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 arrayWithObjects:&v23 count:1];
-  v11 = [v8 librarySpecificFetchOptions];
+  libraryCopy = library;
+  dCopy2 = d;
+  v10 = [v7 arrayWithObjects:&dCopy count:1];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
 
-  v12 = [v6 fetchParticipantsWithParticipantIDs:v10 options:v11];
-  v13 = [v12 firstObject];
+  v12 = [v6 fetchParticipantsWithParticipantIDs:v10 options:librarySpecificFetchOptions];
+  firstObject = [v12 firstObject];
 
   v14 = [PXSharedAlbumsActivityEntryAvatarConfiguration alloc];
-  v15 = [v13 emailAddress];
-  v16 = [v13 phoneNumber];
-  v17 = [v13 nameComponents];
-  v18 = [v17 givenName];
-  v19 = [v13 nameComponents];
-  v20 = [v19 familyName];
-  v21 = [(PXSharedAlbumsActivityEntryAvatarConfiguration *)v14 initWithEmail:v15 phone:v16 firstName:v18 lastName:v20];
+  emailAddress = [firstObject emailAddress];
+  phoneNumber = [firstObject phoneNumber];
+  nameComponents = [firstObject nameComponents];
+  givenName = [nameComponents givenName];
+  nameComponents2 = [firstObject nameComponents];
+  familyName = [nameComponents2 familyName];
+  v21 = [(PXSharedAlbumsActivityEntryAvatarConfiguration *)v14 initWithEmail:emailAddress phone:phoneNumber firstName:givenName lastName:familyName];
 
   return v21;
 }
 
-+ (id)avatarFromOwnerOfPendingSharedAlbumWithGUID:(id)a3 withPhotoLibrary:(id)a4 plPhotoLibrary:(id)a5
++ (id)avatarFromOwnerOfPendingSharedAlbumWithGUID:(id)d withPhotoLibrary:(id)library plPhotoLibrary:(id)photoLibrary
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 librarySpecificFetchOptions];
-  [v8 setIncludePendingShares:1];
+  libraryCopy = library;
+  dCopy = d;
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludePendingShares:1];
   v9 = MEMORY[0x1E6978770];
-  v26[0] = v7;
+  v26[0] = dCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-  v11 = [v9 fetchCollectionSharesWithScopeIdentifiers:v10 options:v8];
-  v12 = [v11 firstObject];
+  v11 = [v9 fetchCollectionSharesWithScopeIdentifiers:v10 options:librarySpecificFetchOptions];
+  firstObject = [v11 firstObject];
 
   v13 = MEMORY[0x1E6978AC0];
-  v14 = [v6 librarySpecificFetchOptions];
+  librarySpecificFetchOptions2 = [libraryCopy librarySpecificFetchOptions];
 
-  v15 = [v13 fetchOwnerParticipantInShare:v12 options:v14];
-  v16 = [v15 firstObject];
+  v15 = [v13 fetchOwnerParticipantInShare:firstObject options:librarySpecificFetchOptions2];
+  firstObject2 = [v15 firstObject];
 
   v17 = [PXSharedAlbumsActivityEntryAvatarConfiguration alloc];
-  v18 = [v16 emailAddress];
-  v19 = [v16 phoneNumber];
-  v20 = [v16 nameComponents];
-  v21 = [v20 givenName];
-  v22 = [v16 nameComponents];
-  v23 = [v22 familyName];
-  v24 = [(PXSharedAlbumsActivityEntryAvatarConfiguration *)v17 initWithEmail:v18 phone:v19 firstName:v21 lastName:v23];
+  emailAddress = [firstObject2 emailAddress];
+  phoneNumber = [firstObject2 phoneNumber];
+  nameComponents = [firstObject2 nameComponents];
+  givenName = [nameComponents givenName];
+  nameComponents2 = [firstObject2 nameComponents];
+  familyName = [nameComponents2 familyName];
+  v24 = [(PXSharedAlbumsActivityEntryAvatarConfiguration *)v17 initWithEmail:emailAddress phone:phoneNumber firstName:givenName lastName:familyName];
 
   return v24;
 }

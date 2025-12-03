@@ -2,21 +2,21 @@
 + (BOOL)isExternalEditingSupported;
 - (PRUISExternallyHostedPosterEditingService)init;
 - (PRUISExternallyHostedPosterEditingServiceDelegate)delegate;
-- (id)_serviceInterfaceWithError:(id *)a3;
-- (void)beginEditingWithRequest:(id)a3 completion:(id)a4;
+- (id)_serviceInterfaceWithError:(id *)error;
+- (void)beginEditingWithRequest:(id)request completion:(id)completion;
 - (void)dealloc;
-- (void)didEndEditingWithResponse:(id)a3;
+- (void)didEndEditingWithResponse:(id)response;
 - (void)init;
-- (void)sendRequestDismissalActionWithRequest:(id)a3;
-- (void)willEndEditingWithResponse:(id)a3;
+- (void)sendRequestDismissalActionWithRequest:(id)request;
+- (void)willEndEditingWithResponse:(id)response;
 @end
 
 @implementation PRUISExternallyHostedPosterEditingService
 
 + (BOOL)isExternalEditingSupported
 {
-  v2 = [MEMORY[0x1E698E730] sharedInstance];
-  v3 = [v2 deviceClass] == 2;
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  v3 = [mEMORY[0x1E698E730] deviceClass] == 2;
 
   return v3;
 }
@@ -30,8 +30,8 @@
   {
     v3 = PRUISExternallyHostedPosterEditingServiceInterface();
     v4 = MEMORY[0x1E698F498];
-    v5 = [v3 identifier];
-    v6 = [v4 endpointForMachName:@"com.apple.posterboardui.services" service:v5 instance:0];
+    identifier = [v3 identifier];
+    v6 = [v4 endpointForMachName:@"com.apple.posterboardui.services" service:identifier instance:0];
 
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
@@ -130,35 +130,35 @@ void __49__PRUISExternallyHostedPosterEditingService_init__block_invoke_4(uint64
   [(PRUISExternallyHostedPosterEditingService *)&v3 dealloc];
 }
 
-- (void)willEndEditingWithResponse:(id)a3
+- (void)willEndEditingWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = v4;
-  v5 = v4;
+  v8 = responseCopy;
+  v5 = responseCopy;
   v6 = WeakRetained;
   BSDispatchMain();
 }
 
-- (void)didEndEditingWithResponse:(id)a3
+- (void)didEndEditingWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = v4;
-  v5 = v4;
+  v8 = responseCopy;
+  v5 = responseCopy;
   v6 = WeakRetained;
   BSDispatchMain();
 }
 
-- (void)beginEditingWithRequest:(id)a3 completion:(id)a4
+- (void)beginEditingWithRequest:(id)request completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  requestCopy = request;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (requestCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -183,7 +183,7 @@ LABEL_3:
     [PRUISExternallyHostedPosterEditingService beginEditingWithRequest:completion:];
   }
 
-  v12 = v7;
+  v12 = requestCopy;
   v20 = 0;
   v13 = [(PRUISExternallyHostedPosterEditingService *)self _serviceInterfaceWithError:&v20];
   v14 = v20;
@@ -213,7 +213,7 @@ LABEL_3:
       *buf = 138543874;
       v22 = v16;
       v23 = 2114;
-      v24 = self;
+      selfCopy = self;
       v25 = 2114;
       v26 = v14;
       _os_log_error_impl(&dword_1CAE63000, v15, OS_LOG_TYPE_ERROR, "calling %{public}@ on %{public}@, error: %{public}@", buf, 0x20u);
@@ -233,11 +233,11 @@ void __80__PRUISExternallyHostedPosterEditingService_beginEditingWithRequest_com
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)sendRequestDismissalActionWithRequest:(id)a3
+- (void)sendRequestDismissalActionWithRequest:(id)request
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  requestCopy = request;
+  if (!requestCopy)
   {
     [PRUISExternallyHostedPosterEditingService sendRequestDismissalActionWithRequest:];
   }
@@ -250,7 +250,7 @@ void __80__PRUISExternallyHostedPosterEditingService_beginEditingWithRequest_com
     [PRUISExternallyHostedPosterEditingService sendRequestDismissalActionWithRequest:];
   }
 
-  v8 = v5;
+  v8 = requestCopy;
   v13 = 0;
   v9 = [(PRUISExternallyHostedPosterEditingService *)self _serviceInterfaceWithError:&v13];
   v10 = v13;
@@ -268,7 +268,7 @@ void __80__PRUISExternallyHostedPosterEditingService_beginEditingWithRequest_com
       *buf = 138543874;
       v15 = v12;
       v16 = 2114;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = v10;
       _os_log_error_impl(&dword_1CAE63000, v11, OS_LOG_TYPE_ERROR, "calling %{public}@ on %{public}@, error: %{public}@", buf, 0x20u);
@@ -276,7 +276,7 @@ void __80__PRUISExternallyHostedPosterEditingService_beginEditingWithRequest_com
   }
 }
 
-- (id)_serviceInterfaceWithError:(id *)a3
+- (id)_serviceInterfaceWithError:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
   p_serviceConnection = &self->_serviceConnection;
@@ -295,12 +295,12 @@ void __80__PRUISExternallyHostedPosterEditingService_beginEditingWithRequest_com
       [PRUISExternallyHostedPosterEditingService _serviceInterfaceWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v10 = MEMORY[0x1E696ABC0];
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      *a3 = [v10 errorWithDomain:v12 code:1 userInfo:0];
+      *error = [v10 errorWithDomain:v12 code:1 userInfo:0];
     }
   }
 
@@ -318,7 +318,7 @@ void __80__PRUISExternallyHostedPosterEditingService_beginEditingWithRequest_com
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = 138543618;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2048;
   v6 = a2;
   _os_log_error_impl(&dword_1CAE63000, log, OS_LOG_TYPE_ERROR, "%{public}@:%p> failed to lookup endpoint", &v3, 0x16u);

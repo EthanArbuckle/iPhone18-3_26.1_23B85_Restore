@@ -1,18 +1,18 @@
 @interface GKComposeHeaderField
 - (CGRect)valueFrame;
-- (GKComposeHeaderField)initWithFrame:(CGRect)a3;
+- (GKComposeHeaderField)initWithFrame:(CGRect)frame;
 - (id)valueText;
-- (void)setMaxLineCount:(unint64_t)a3;
-- (void)setValueText:(id)a3;
+- (void)setMaxLineCount:(unint64_t)count;
+- (void)setValueText:(id)text;
 @end
 
 @implementation GKComposeHeaderField
 
-- (GKComposeHeaderField)initWithFrame:(CGRect)a3
+- (GKComposeHeaderField)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = GKComposeHeaderField;
-  v3 = [(GKBaseComposeHeaderField *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKBaseComposeHeaderField *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(GKLabel);
@@ -36,21 +36,21 @@
 
 - (id)valueText
 {
-  v2 = [(GKComposeHeaderField *)self valueLabel];
-  v3 = [v2 attributedText];
-  v4 = [v3 string];
+  valueLabel = [(GKComposeHeaderField *)self valueLabel];
+  attributedText = [valueLabel attributedText];
+  string = [attributedText string];
 
-  return v4;
+  return string;
 }
 
-- (void)setValueText:(id)a3
+- (void)setValueText:(id)text
 {
-  v4 = a3;
-  if (v4)
+  textCopy = text;
+  if (textCopy)
   {
-    v5 = v4;
-    v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v15 = [v5 stringByTrimmingCharactersInSet:v6];
+    v5 = textCopy;
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v15 = [v5 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   }
 
   else
@@ -58,14 +58,14 @@
     v15 = &stru_28612D290;
   }
 
-  v7 = [MEMORY[0x277D0C8B0] textStyle];
-  v8 = [v7 composeFields];
-  v9 = [v8 emphasized];
+  textStyle = [MEMORY[0x277D0C8B0] textStyle];
+  composeFields = [textStyle composeFields];
+  emphasized = [composeFields emphasized];
 
-  v10 = [MEMORY[0x277D75128] sharedApplication];
-  LODWORD(v8) = [v10 userInterfaceLayoutDirection] == 1;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  LODWORD(composeFields) = [mEMORY[0x277D75128] userInterfaceLayoutDirection] == 1;
 
-  v11 = [v9 alignment:2 * v8 lineBreakMode:4];
+  v11 = [emphasized alignment:2 * composeFields lineBreakMode:4];
 
   v12 = [(__CFString *)v15 _gkAttributedStringByApplyingStyle:v11];
   v13 = [v12 length];
@@ -83,21 +83,21 @@
   [(GKComposeHeaderField *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setMaxLineCount:(unint64_t)a3
+- (void)setMaxLineCount:(unint64_t)count
 {
-  if ([(GKBaseComposeHeaderField *)self maxLineCount]!= a3)
+  if ([(GKBaseComposeHeaderField *)self maxLineCount]!= count)
   {
     v5.receiver = self;
     v5.super_class = GKComposeHeaderField;
-    [(GKBaseComposeHeaderField *)&v5 setMaxLineCount:a3];
-    [(GKLabel *)self->_valueLabel setNumberOfLines:a3];
+    [(GKBaseComposeHeaderField *)&v5 setMaxLineCount:count];
+    [(GKLabel *)self->_valueLabel setNumberOfLines:count];
   }
 }
 
 - (CGRect)valueFrame
 {
-  v3 = [(GKComposeHeaderField *)self superview];
-  [v3 layoutIfNeeded];
+  superview = [(GKComposeHeaderField *)self superview];
+  [superview layoutIfNeeded];
 
   valueLabel = self->_valueLabel;
 

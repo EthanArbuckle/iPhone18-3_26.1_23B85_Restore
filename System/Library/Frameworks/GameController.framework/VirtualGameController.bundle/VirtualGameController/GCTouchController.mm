@@ -1,20 +1,20 @@
 @interface GCTouchController
-- (GCTouchController)initWithConfiguration:(id)a3;
-- (void)setPosition:(CGPoint)a3 forDirectionPadElement:(id)a4;
-- (void)setValue:(double)a3 forButtonElement:(id)a4;
+- (GCTouchController)initWithConfiguration:(id)configuration;
+- (void)setPosition:(CGPoint)position forDirectionPadElement:(id)element;
+- (void)setValue:(double)value forButtonElement:(id)element;
 @end
 
 @implementation GCTouchController
 
-- (GCTouchController)initWithConfiguration:(id)a3
+- (GCTouchController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_opt_new();
   [v5 setProductCategory:@"Touch Controller"];
-  v6 = [v4 isHidden];
+  isHidden = [configurationCopy isHidden];
   v7 = GCCurrentProcessLinkedOnAfter();
   v8 = @"Apple Touch Controller";
-  if (v6)
+  if (isHidden)
   {
     v8 = @"Touch Controller";
   }
@@ -32,15 +32,15 @@
   [v5 setVendorName:v9];
   if (GCCurrentProcessLinkedOnAfter())
   {
-    v10 = [NSSet setWithObjects:GCInputButtonA, GCInputButtonB, GCInputButtonX, GCInputButtonY, GCInputLeftShoulder, GCInputRightShoulder, GCInputLeftBumper, GCInputRightBumper, GCInputLeftTrigger, GCInputRightTrigger, GCInputLeftThumbstickButton, GCInputRightThumbstickButton, GCInputBackLeftPrimaryButton, GCInputBackLeftSecondaryButton, GCInputBackRightPrimaryButton, GCInputBackRightSecondaryButton, GCInputXboxPaddleOne, GCInputXboxPaddleTwo, GCInputXboxPaddleThree, GCInputXboxPaddleFour, GCInputButtonMenu, GCInputButtonOptions, GCInputButtonShare, GCInputDirectionPad, GCInputLeftThumbstick, GCInputRightThumbstick, 0, GCInputButtonX, GCInputButtonB, GCInputButtonA, NSSet];
-    v11 = [v4 elements];
+    nSSet = [NSSet setWithObjects:GCInputButtonA, GCInputButtonB, GCInputButtonX, GCInputButtonY, GCInputLeftShoulder, GCInputRightShoulder, GCInputLeftBumper, GCInputRightBumper, GCInputLeftTrigger, GCInputRightTrigger, GCInputLeftThumbstickButton, GCInputRightThumbstickButton, GCInputBackLeftPrimaryButton, GCInputBackLeftSecondaryButton, GCInputBackRightPrimaryButton, GCInputBackRightSecondaryButton, GCInputXboxPaddleOne, GCInputXboxPaddleTwo, GCInputXboxPaddleThree, GCInputXboxPaddleFour, GCInputButtonMenu, GCInputButtonOptions, GCInputButtonShare, GCInputDirectionPad, GCInputLeftThumbstick, GCInputRightThumbstick, 0, GCInputButtonX, GCInputButtonB, GCInputButtonA, NSSet];
+    elements = [configurationCopy elements];
     v67[0] = _NSConcreteStackBlock;
     v67[1] = 3221225472;
     v67[2] = __43__GCTouchController_initWithConfiguration___block_invoke;
     v67[3] = &unk_10518;
-    v12 = v10;
+    v12 = nSSet;
     v68 = v12;
-    v13 = [v11 objectsPassingTest:v67];
+    v13 = [elements objectsPassingTest:v67];
 
     if ([v13 count])
     {
@@ -114,93 +114,93 @@
 
   while (v14 != 108);
   LOBYTE(v49) = 1;
-  v21 = v6 ^ 1;
-  BYTE1(v49) = v6 ^ 1;
+  v21 = isHidden ^ 1;
+  BYTE1(v49) = isHidden ^ 1;
   BYTE8(v53[0]) = 1;
-  BYTE9(v53[0]) = v6 ^ 1;
+  BYTE9(v53[0]) = isHidden ^ 1;
   LOBYTE(v54[0]) = 1;
-  BYTE1(v54[0]) = v6 ^ 1;
+  BYTE1(v54[0]) = isHidden ^ 1;
   BYTE8(v54[4]) = 1;
-  BYTE9(v54[4]) = v6 ^ 1;
+  BYTE9(v54[4]) = isHidden ^ 1;
   v56[144] = 1;
-  v56[145] = v6 ^ 1;
+  v56[145] = isHidden ^ 1;
   v56[216] = 1;
-  v56[217] = v6 ^ 1;
+  v56[217] = isHidden ^ 1;
   v56[0] = 1;
-  v56[1] = v6 ^ 1;
+  v56[1] = isHidden ^ 1;
   v56[72] = 1;
-  v56[73] = v6 ^ 1;
-  v22 = [v4 elements];
-  v56[648] = [v22 containsObject:GCInputLeftBumper];
+  v56[73] = isHidden ^ 1;
+  elements2 = [configurationCopy elements];
+  v56[648] = [elements2 containsObject:GCInputLeftBumper];
 
   v56[649] = v21;
-  v23 = [v4 elements];
-  v56[720] = [v23 containsObject:GCInputRightBumper];
+  elements3 = [configurationCopy elements];
+  v56[720] = [elements3 containsObject:GCInputRightBumper];
 
   v56[721] = v21;
   v56[504] = 1;
   v56[505] = v21;
-  v24 = [v4 elements];
-  v56[576] = [v24 containsObject:GCInputButtonOptions];
+  elements4 = [configurationCopy elements];
+  v56[576] = [elements4 containsObject:GCInputButtonOptions];
 
   v56[577] = v21;
-  v25 = [v4 elements];
-  v65 = [v25 containsObject:GCInputButtonShare];
+  elements5 = [configurationCopy elements];
+  v65 = [elements5 containsObject:GCInputButtonShare];
 
   v66 = v65;
   BYTE8(v48[0]) = 1;
   BYTE9(v48[0]) = v21;
   LOWORD(v55[0]) = 1;
   WORD4(v55[4]) = 1;
-  v26 = [v4 elements];
-  if ([v26 containsObject:GCInputBackLeftPrimaryButton])
+  elements6 = [configurationCopy elements];
+  if ([elements6 containsObject:GCInputBackLeftPrimaryButton])
   {
     v57 = 1;
   }
 
   else
   {
-    v27 = [v4 elements];
-    v57 = [v27 containsObject:GCInputXboxPaddleThree];
+    elements7 = [configurationCopy elements];
+    v57 = [elements7 containsObject:GCInputXboxPaddleThree];
   }
 
   v58 = v21;
-  v28 = [v4 elements];
-  if ([v28 containsObject:GCInputBackLeftSecondaryButton])
+  elements8 = [configurationCopy elements];
+  if ([elements8 containsObject:GCInputBackLeftSecondaryButton])
   {
     v59 = 1;
   }
 
   else
   {
-    v29 = [v4 elements];
-    v59 = [v29 containsObject:GCInputXboxPaddleFour];
+    elements9 = [configurationCopy elements];
+    v59 = [elements9 containsObject:GCInputXboxPaddleFour];
   }
 
   v60 = v21;
-  v30 = [v4 elements];
-  if ([v30 containsObject:GCInputBackRightPrimaryButton])
+  elements10 = [configurationCopy elements];
+  if ([elements10 containsObject:GCInputBackRightPrimaryButton])
   {
     v61 = 1;
   }
 
   else
   {
-    v31 = [v4 elements];
-    v61 = [v31 containsObject:GCInputXboxPaddleOne];
+    elements11 = [configurationCopy elements];
+    v61 = [elements11 containsObject:GCInputXboxPaddleOne];
   }
 
   v62 = v21;
-  v32 = [v4 elements];
-  if ([v32 containsObject:GCInputBackRightSecondaryButton])
+  elements12 = [configurationCopy elements];
+  if ([elements12 containsObject:GCInputBackRightSecondaryButton])
   {
     v63 = 1;
   }
 
   else
   {
-    v33 = [v4 elements];
-    v63 = [v33 containsObject:GCInputXboxPaddleTwo];
+    elements13 = [configurationCopy elements];
+    v63 = [elements13 containsObject:GCInputXboxPaddleTwo];
   }
 
   v64 = v21;
@@ -228,139 +228,139 @@
   return v37;
 }
 
-- (void)setValue:(double)a3 forButtonElement:(id)a4
+- (void)setValue:(double)value forButtonElement:(id)element
 {
-  v26 = a4;
-  if ([v26 isEqualToString:GCInputButtonA])
+  elementCopy = element;
+  if ([elementCopy isEqualToString:GCInputButtonA])
   {
-    *&v6 = a3;
+    *&v6 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonAValue:v6];
   }
 
-  else if ([v26 isEqualToString:GCInputButtonB])
+  else if ([elementCopy isEqualToString:GCInputButtonB])
   {
-    *&v7 = a3;
+    *&v7 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonBValue:v7];
   }
 
-  else if ([v26 isEqualToString:GCInputButtonX])
+  else if ([elementCopy isEqualToString:GCInputButtonX])
   {
-    *&v8 = a3;
+    *&v8 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonXValue:v8];
   }
 
-  else if ([v26 isEqualToString:GCInputButtonY])
+  else if ([elementCopy isEqualToString:GCInputButtonY])
   {
-    *&v9 = a3;
+    *&v9 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonYValue:v9];
   }
 
-  else if ([v26 isEqualToString:GCInputLeftShoulder])
+  else if ([elementCopy isEqualToString:GCInputLeftShoulder])
   {
-    *&v10 = a3;
+    *&v10 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonLeftShoulder:v10];
   }
 
-  else if ([v26 isEqualToString:GCInputRightShoulder])
+  else if ([elementCopy isEqualToString:GCInputRightShoulder])
   {
-    *&v11 = a3;
+    *&v11 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonRightShoulder:v11];
   }
 
-  else if ([v26 isEqualToString:GCInputLeftBumper])
+  else if ([elementCopy isEqualToString:GCInputLeftBumper])
   {
-    *&v12 = a3;
+    *&v12 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonLeftBumper:v12];
   }
 
-  else if ([v26 isEqualToString:GCInputRightBumper])
+  else if ([elementCopy isEqualToString:GCInputRightBumper])
   {
-    *&v13 = a3;
+    *&v13 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonRightBumper:v13];
   }
 
-  else if ([v26 isEqualToString:GCInputLeftTrigger])
+  else if ([elementCopy isEqualToString:GCInputLeftTrigger])
   {
-    *&v14 = a3;
+    *&v14 = value;
     [(_GCGamepadEventImpl *)self->_event setLeftTrigger:v14];
   }
 
-  else if ([v26 isEqualToString:GCInputRightTrigger])
+  else if ([elementCopy isEqualToString:GCInputRightTrigger])
   {
-    *&v15 = a3;
+    *&v15 = value;
     [(_GCGamepadEventImpl *)self->_event setRightTrigger:v15];
   }
 
-  else if ([v26 isEqualToString:GCInputLeftThumbstickButton])
+  else if ([elementCopy isEqualToString:GCInputLeftThumbstickButton])
   {
-    *&v16 = a3;
+    *&v16 = value;
     [(_GCGamepadEventImpl *)self->_event setLeftThumbstickButton:v16];
   }
 
-  else if ([v26 isEqualToString:GCInputRightThumbstickButton])
+  else if ([elementCopy isEqualToString:GCInputRightThumbstickButton])
   {
-    *&v17 = a3;
+    *&v17 = value;
     [(_GCGamepadEventImpl *)self->_event setRightThumbstickButton:v17];
   }
 
-  else if ([v26 isEqualToString:GCInputButtonMenu])
+  else if ([elementCopy isEqualToString:GCInputButtonMenu])
   {
-    *&v18 = a3;
+    *&v18 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonMenu:v18];
   }
 
-  else if ([v26 isEqualToString:GCInputButtonOptions])
+  else if ([elementCopy isEqualToString:GCInputButtonOptions])
   {
-    *&v19 = a3;
+    *&v19 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonOptions:v19];
   }
 
-  else if ([v26 isEqualToString:GCInputButtonShare])
+  else if ([elementCopy isEqualToString:GCInputButtonShare])
   {
-    *&v20 = a3;
+    *&v20 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonSpecial15:v20];
   }
 
-  else if (([v26 isEqualToString:GCInputBackLeftPrimaryButton] & 1) != 0 || objc_msgSend(v26, "isEqualToString:", GCInputXboxPaddleThree))
+  else if (([elementCopy isEqualToString:GCInputBackLeftPrimaryButton] & 1) != 0 || objc_msgSend(elementCopy, "isEqualToString:", GCInputXboxPaddleThree))
   {
-    *&v21 = a3;
+    *&v21 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonBackLeftPrimary:v21];
   }
 
-  else if (([v26 isEqualToString:GCInputBackLeftSecondaryButton] & 1) != 0 || objc_msgSend(v26, "isEqualToString:", GCInputXboxPaddleFour))
+  else if (([elementCopy isEqualToString:GCInputBackLeftSecondaryButton] & 1) != 0 || objc_msgSend(elementCopy, "isEqualToString:", GCInputXboxPaddleFour))
   {
-    *&v22 = a3;
+    *&v22 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonBackLeftSecondary:v22];
   }
 
-  else if (([v26 isEqualToString:GCInputBackRightPrimaryButton] & 1) != 0 || objc_msgSend(v26, "isEqualToString:", GCInputXboxPaddleOne))
+  else if (([elementCopy isEqualToString:GCInputBackRightPrimaryButton] & 1) != 0 || objc_msgSend(elementCopy, "isEqualToString:", GCInputXboxPaddleOne))
   {
-    *&v23 = a3;
+    *&v23 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonBackRightPrimary:v23];
   }
 
   else
   {
-    if (([v26 isEqualToString:GCInputBackRightSecondaryButton] & 1) == 0 && !objc_msgSend(v26, "isEqualToString:", GCInputXboxPaddleTwo))
+    if (([elementCopy isEqualToString:GCInputBackRightSecondaryButton] & 1) == 0 && !objc_msgSend(elementCopy, "isEqualToString:", GCInputXboxPaddleTwo))
     {
-      [NSString stringWithFormat:@"*** Unknown button element '%@'.", v26];
+      [NSString stringWithFormat:@"*** Unknown button element '%@'.", elementCopy];
       v25 = [NSException exceptionWithName:NSInvalidArgumentException reason:objc_claimAutoreleasedReturnValue() userInfo:0];
       objc_exception_throw(v25);
     }
 
-    *&v24 = a3;
+    *&v24 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonBackRightSecondary:v24];
   }
 
   [(GCExtendedGamepad *)self->_extendedGamepad handleGamepadEvent:self->_event];
 }
 
-- (void)setPosition:(CGPoint)a3 forDirectionPadElement:(id)a4
+- (void)setPosition:(CGPoint)position forDirectionPadElement:(id)element
 {
-  x = a3.x;
-  y = a3.y;
-  v20 = a4;
-  if ([v20 isEqualToString:GCInputLeftThumbstick])
+  x = position.x;
+  y = position.y;
+  elementCopy = element;
+  if ([elementCopy isEqualToString:GCInputLeftThumbstick])
   {
     *&v7 = fmaxf(y, 0.0);
     [(_GCGamepadEventImpl *)self->_event setLeftThumbstickUp:v7];
@@ -382,7 +382,7 @@
     [(_GCGamepadEventImpl *)self->_event setLeftThumbstickLeft:v10];
   }
 
-  else if ([v20 isEqualToString:GCInputDirectionPad])
+  else if ([elementCopy isEqualToString:GCInputDirectionPad])
   {
     *&v11 = fmaxf(y, 0.0);
     [(_GCGamepadEventImpl *)self->_event setDpadUpValue:v11];
@@ -406,9 +406,9 @@
 
   else
   {
-    if (![v20 isEqualToString:GCInputRightThumbstick])
+    if (![elementCopy isEqualToString:GCInputRightThumbstick])
     {
-      [NSString stringWithFormat:@"*** Unknown direction pad element '%@'.", v20];
+      [NSString stringWithFormat:@"*** Unknown direction pad element '%@'.", elementCopy];
       v19 = [NSException exceptionWithName:NSInvalidArgumentException reason:objc_claimAutoreleasedReturnValue() userInfo:0];
       objc_exception_throw(v19);
     }

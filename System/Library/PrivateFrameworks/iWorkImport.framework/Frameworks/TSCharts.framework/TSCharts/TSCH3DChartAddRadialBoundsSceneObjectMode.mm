@@ -1,13 +1,13 @@
 @interface TSCH3DChartAddRadialBoundsSceneObjectMode
-- (void)getBounds:(id)a3;
+- (void)getBounds:(id)bounds;
 @end
 
 @implementation TSCH3DChartAddRadialBoundsSceneObjectMode
 
-- (void)getBounds:(id)a3
+- (void)getBounds:(id)bounds
 {
-  v4 = a3;
-  v9 = objc_msgSend_scene(v4, v5, v6, v7, v8);
+  boundsCopy = bounds;
+  v9 = objc_msgSend_scene(boundsCopy, v5, v6, v7, v8);
   v14 = objc_msgSend_elementsSceneFromScene_(self, v10, v11, v12, v13, v9);
 
   v19 = objc_msgSend_clone(v14, v15, v16, v17, v18);
@@ -56,7 +56,7 @@
   v97 = 0;
   v98 = 0;
   __p = 0;
-  if (objc_msgSend_hasObjectBoundsForScene_pipeline_returningObjectBounds_(self, v45, 2.84809454e-306, -1.40444743e306, v46, v19, v4, &v91))
+  if (objc_msgSend_hasObjectBoundsForScene_pipeline_returningObjectBounds_(self, v45, 2.84809454e-306, -1.40444743e306, v46, v19, boundsCopy, &v91))
   {
     v51 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v47, v48, v49, v50, v14);
     v56 = v51;
@@ -110,7 +110,7 @@
     }
 
     sub_27618F9F8(&v89, v87, v88);
-    v72 = objc_msgSend_processor(v4, v68, v69, v70, v71);
+    v72 = objc_msgSend_processor(boundsCopy, v68, v69, v70, v71);
     v73 = sub_2761BFF34(v88);
     objc_msgSend_geometry_(v72, v74, v75, v76, v77, v73);
 

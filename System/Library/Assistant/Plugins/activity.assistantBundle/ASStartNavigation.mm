@@ -1,34 +1,34 @@
 @interface ASStartNavigation
-- (ASStartNavigation)startNavigationWithCompletion:(id)a3;
+- (ASStartNavigation)startNavigationWithCompletion:(id)completion;
 @end
 
 @implementation ASStartNavigation
 
-- (ASStartNavigation)startNavigationWithCompletion:(id)a3
+- (ASStartNavigation)startNavigationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ASStartNavigation *)self destination];
-  v6 = [v5 mapItem];
+  completionCopy = completion;
+  destination = [(ASStartNavigation *)self destination];
+  mapItem = [destination mapItem];
 
-  v7 = [(ASStartNavigation *)self origin];
-  v8 = [v7 mapItem];
+  origin = [(ASStartNavigation *)self origin];
+  mapItem2 = [origin mapItem];
 
-  v9 = [(ASStartNavigation *)self directionsType];
-  if ([v9 isEqualToString:SALocalSearchDirectionsTypeWalkingValue])
+  directionsType = [(ASStartNavigation *)self directionsType];
+  if ([directionsType isEqualToString:SALocalSearchDirectionsTypeWalkingValue])
   {
     v10 = &MKLaunchOptionsDirectionsModeWalking;
   }
 
   else
   {
-    v11 = [v9 isEqualToString:SALocalSearchDirectionsTypeByPublicTransitValue];
+    v11 = [directionsType isEqualToString:SALocalSearchDirectionsTypeByPublicTransitValue];
     v12 = MKLaunchOptionsDirectionsModeTransit;
     if (v11)
     {
       goto LABEL_9;
     }
 
-    if (![v9 isEqualToString:MKLaunchOptionsDirectionsModeTransit])
+    if (![directionsType isEqualToString:MKLaunchOptionsDirectionsModeTransit])
     {
       v13 = AFSiriLogContextService;
       if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEFAULT))
@@ -36,7 +36,7 @@
         *buf = 136315394;
         v26 = "__MKDirectionsModeForString";
         v27 = 2112;
-        v28 = v9;
+        v28 = directionsType;
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%s Unsupported directions type %@, defaulting to driving", buf, 0x16u);
       }
     }
@@ -48,20 +48,20 @@
 LABEL_9:
   v14 = v12;
 
-  if (!v6)
+  if (!mapItem)
   {
     v15 = [NSString stringWithFormat:@"Invalid ace command %@, no destination", self];
     v18 = AFSiriLogContextService;
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_ERROR))
     {
       sub_7284(v15, v18);
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_18;
       }
     }
 
-    else if (!v4)
+    else if (!completionCopy)
     {
       goto LABEL_18;
     }
@@ -70,26 +70,26 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  if (!v8)
+  if (!mapItem2)
   {
-    v8 = +[MKMapItem mapItemForCurrentLocation];
+    mapItem2 = +[MKMapItem mapItemForCurrentLocation];
   }
 
-  v24[0] = v8;
-  v24[1] = v6;
+  v24[0] = mapItem2;
+  v24[1] = mapItem;
   v15 = [NSArray arrayWithObjects:v24 count:2];
   v22 = MKLaunchOptionsDirectionsModeKey;
   v23 = v14;
   v16 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
   [MKMapItem openMapsWithItems:v15 launchOptions:v16];
 
-  if (v4)
+  if (completionCopy)
   {
     v17 = objc_alloc_init(SACommandSucceeded);
 LABEL_17:
     v19 = v17;
-    v20 = [v17 dictionary];
-    v4[2](v4, v20);
+    dictionary = [v17 dictionary];
+    completionCopy[2](completionCopy, dictionary);
   }
 
 LABEL_18:

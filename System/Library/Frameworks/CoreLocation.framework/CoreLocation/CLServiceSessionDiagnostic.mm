@@ -1,19 +1,19 @@
 @interface CLServiceSessionDiagnostic
 - (BOOL)authorizationDenied;
-- (CLServiceSessionDiagnostic)initWithDiagnostics:(unint64_t)a3;
+- (CLServiceSessionDiagnostic)initWithDiagnostics:(unint64_t)diagnostics;
 - (void)dealloc;
 @end
 
 @implementation CLServiceSessionDiagnostic
 
-- (CLServiceSessionDiagnostic)initWithDiagnostics:(unint64_t)a3
+- (CLServiceSessionDiagnostic)initWithDiagnostics:(unint64_t)diagnostics
 {
   v5.receiver = self;
   v5.super_class = CLServiceSessionDiagnostic;
   result = [(CLServiceSessionDiagnostic *)&v5 init];
   if (result)
   {
-    result->_diagnostics = a3;
+    result->_diagnostics = diagnostics;
   }
 
   return result;

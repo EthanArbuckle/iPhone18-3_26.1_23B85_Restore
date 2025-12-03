@@ -88,8 +88,8 @@
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:5];
   v19 = [v27 sectionWithRows:v18 title:@"Production Limits"];
   v60[1] = v19;
-  v20 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v60[2] = v20;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v60[2] = px_restoreDefaultsSection;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:3];
   v32 = [v31 moduleWithTitle:@"Concrete Timeline" contents:v21];
 

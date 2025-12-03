@@ -1,69 +1,69 @@
 @interface MechanismUI
 - (BOOL)_checkCallerForeground;
-- (BOOL)_checkUiEventValid:(int64_t)a3;
-- (BOOL)_deviceIsInBioLockoutWithError:(id *)a3;
+- (BOOL)_checkUiEventValid:(int64_t)valid;
+- (BOOL)_deviceIsInBioLockoutWithError:(id *)error;
 - (BOOL)_fallbackButtonWouldBeVisibleInBiometryUI;
-- (BOOL)_shouldRestartRemoteUIBeforePresentingDestinationController:(int64_t)a3 withSourceController:(int64_t)a4;
+- (BOOL)_shouldRestartRemoteUIBeforePresentingDestinationController:(int64_t)controller withSourceController:(int64_t)sourceController;
 - (BOOL)clientIsUsingCAPI;
-- (BOOL)fallbackToIdentifier:(int64_t)a3;
+- (BOOL)fallbackToIdentifier:(int64_t)identifier;
 - (BOOL)passcodeShouldBeFirstMechanism;
 - (BOOL)passphraseShouldBeFirstMechanism;
-- (MechanismUI)initWithNonUiMechanism:(id)a3 eventProcessing:(id)a4 policy:(int64_t)a5 internalInfo:(id)a6 request:(id)a7;
-- (id)_hostedSceneConfigurationForRemoteUIController:(int64_t)a3 endpoint:(id)a4;
-- (id)_nameForRemoteUIController:(int64_t)a3;
+- (MechanismUI)initWithNonUiMechanism:(id)mechanism eventProcessing:(id)processing policy:(int64_t)policy internalInfo:(id)info request:(id)request;
+- (id)_hostedSceneConfigurationForRemoteUIController:(int64_t)controller endpoint:(id)endpoint;
+- (id)_nameForRemoteUIController:(int64_t)controller;
 - (id)_prepareInternalInfoForRemoteController;
 - (int64_t)_scheduleMechanisms;
-- (void)_activateListener:(id)a3;
-- (void)_connectNonUiMechanism:(id)a3 withRemoteUi:(id)a4;
+- (void)_activateListener:(id)listener;
+- (void)_connectNonUiMechanism:(id)mechanism withRemoteUi:(id)ui;
 - (void)_invalidateListeners;
-- (void)_restartRemoteUIBeforePresentationIfNeededForDestinationController:(int64_t)a3 withSourceController:(int64_t)a4 completionHandler:(id)a5;
-- (void)_setupMechanismForHostingController:(id)a3 listener:(id)a4;
-- (void)_setupMechanismForRemoteViewController:(id)a3;
+- (void)_restartRemoteUIBeforePresentationIfNeededForDestinationController:(int64_t)controller withSourceController:(int64_t)sourceController completionHandler:(id)handler;
+- (void)_setupMechanismForHostingController:(id)controller listener:(id)listener;
+- (void)_setupMechanismForRemoteViewController:(id)controller;
 - (void)_showUI;
 - (void)_startBackgroundMechanism;
-- (void)_terminateBackgroundMechanismWithResult:(id)a3 error:(id)a4;
-- (void)_transitionToController:(int64_t)a3 internalInfo:(id)a4;
-- (void)authMethodWithReply:(id)a3;
-- (void)companionStateChanged:(id)a3 newState:(BOOL)a4;
-- (void)connectRemoteUI:(id)a3 requestID:(id)a4 reply:(id)a5;
+- (void)_terminateBackgroundMechanismWithResult:(id)result error:(id)error;
+- (void)_transitionToController:(int64_t)controller internalInfo:(id)info;
+- (void)authMethodWithReply:(id)reply;
+- (void)companionStateChanged:(id)changed newState:(BOOL)state;
+- (void)connectRemoteUI:(id)i requestID:(id)d reply:(id)reply;
 - (void)dealloc;
 - (void)disconnectRemoteUI;
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5;
-- (void)externalizedContextWithReply:(id)a3;
-- (void)finishRunWithResult:(id)a3 error:(id)a4;
-- (void)internalInfoWithReply:(id)a3;
-- (void)runWithHints:(id)a3 eventsDelegate:(id)a4 reply:(id)a5;
-- (void)subMechanismCanRestart:(id)a3;
-- (void)uiEvent:(int64_t)a3 options:(id)a4;
-- (void)uiFailureWithError:(id)a3;
-- (void)uiSuccessWithResult:(id)a3;
+- (void)event:(int64_t)event params:(id)params reply:(id)reply;
+- (void)externalizedContextWithReply:(id)reply;
+- (void)finishRunWithResult:(id)result error:(id)error;
+- (void)internalInfoWithReply:(id)reply;
+- (void)runWithHints:(id)hints eventsDelegate:(id)delegate reply:(id)reply;
+- (void)subMechanismCanRestart:(id)restart;
+- (void)uiEvent:(int64_t)event options:(id)options;
+- (void)uiFailureWithError:(id)error;
+- (void)uiSuccessWithResult:(id)result;
 - (void)willFinish;
 @end
 
 @implementation MechanismUI
 
-- (MechanismUI)initWithNonUiMechanism:(id)a3 eventProcessing:(id)a4 policy:(int64_t)a5 internalInfo:(id)a6 request:(id)a7
+- (MechanismUI)initWithNonUiMechanism:(id)mechanism eventProcessing:(id)processing policy:(int64_t)policy internalInfo:(id)info request:(id)request
 {
-  v13 = a3;
-  v25 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v13 cachedExternalizationDelegate];
+  mechanismCopy = mechanism;
+  processingCopy = processing;
+  infoCopy = info;
+  requestCopy = request;
+  cachedExternalizationDelegate = [mechanismCopy cachedExternalizationDelegate];
   v26.receiver = self;
   v26.super_class = MechanismUI;
-  v17 = [(MechanismBase *)&v26 initWithEventIdentifier:0 remoteViewController:0 cachedExternalizationDelegate:v16 request:v15];
+  v17 = [(MechanismBase *)&v26 initWithEventIdentifier:0 remoteViewController:0 cachedExternalizationDelegate:cachedExternalizationDelegate request:requestCopy];
 
   if (v17)
   {
-    objc_storeStrong(&v17->_nonUiMechanism, a3);
+    objc_storeStrong(&v17->_nonUiMechanism, mechanism);
     [(MechanismBase *)v17->_nonUiMechanism setParent:v17];
     v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
     continueMechanisms = v17->_continueMechanisms;
     v17->_continueMechanisms = v18;
 
-    objc_storeStrong(&v17->_eventProcessing, a4);
-    v17->_policy = a5;
-    objc_storeStrong(&v17->_internalInfo, a6);
+    objc_storeStrong(&v17->_eventProcessing, processing);
+    v17->_policy = policy;
+    objc_storeStrong(&v17->_internalInfo, info);
     v20 = [(NSDictionary *)v17->_internalInfo objectForKey:@"Options"];
     policyOptions = v17->_policyOptions;
     v17->_policyOptions = v20;
@@ -85,24 +85,24 @@
   [(MechanismUI *)&v3 dealloc];
 }
 
-- (void)runWithHints:(id)a3 eventsDelegate:(id)a4 reply:(id)a5
+- (void)runWithHints:(id)hints eventsDelegate:(id)delegate reply:(id)reply
 {
   v6.receiver = self;
   v6.super_class = MechanismUI;
-  [(MechanismBase *)&v6 runWithHints:a3 eventsDelegate:a4 reply:a5];
+  [(MechanismBase *)&v6 runWithHints:hints eventsDelegate:delegate reply:reply];
   [(MechanismUI *)self _showUI];
 }
 
-- (void)finishRunWithResult:(id)a3 error:(id)a4
+- (void)finishRunWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  [(MechanismUI *)self _terminateBackgroundMechanismWithResult:v6 error:v7];
-  if (v6)
+  resultCopy = result;
+  errorCopy = error;
+  [(MechanismUI *)self _terminateBackgroundMechanismWithResult:resultCopy error:errorCopy];
+  if (resultCopy)
   {
     if ([(NSMutableArray *)self->_continueMechanisms count])
     {
-      v8 = [v6 objectForKeyedSubscript:@"Result"];
+      v8 = [resultCopy objectForKeyedSubscript:@"Result"];
       [(MechanismBase *)self yieldPartialResult:v8];
 
       v9 = [(NSMutableArray *)self->_continueMechanisms objectAtIndexedSubscript:0];
@@ -118,18 +118,18 @@ LABEL_11:
     }
 
 LABEL_20:
-    [(MechanismPearl *)self->_preservedPearlMechanism cancelByParent:self onSuccess:v6 != 0];
-    if ([MEMORY[0x277CD47F0] error:v7 hasCode:-4 subcode:12])
+    [(MechanismPearl *)self->_preservedPearlMechanism cancelByParent:self onSuccess:resultCopy != 0];
+    if ([MEMORY[0x277CD47F0] error:errorCopy hasCode:-4 subcode:12])
     {
       v29 = [(NSDictionary *)self->_policyOptions objectForKeyedSubscript:&unk_284B78780];
-      v30 = [v29 BOOLValue];
+      bOOLValue = [v29 BOOLValue];
 
-      if ((v30 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         if ([(MechanismUI *)self _fallbackButtonWouldBeVisibleInBiometryUI])
         {
-          v31 = [(MechanismBase *)self request];
-          v32 = [v31 log];
+          request = [(MechanismBase *)self request];
+          v32 = [request log];
 
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
           {
@@ -137,21 +137,21 @@ LABEL_20:
           }
 
           v40 = MEMORY[0x277CD47F0];
-          v41 = [v7 userInfo];
-          v42 = [v40 errorWithCode:-3 userInfo:v41];
+          userInfo = [errorCopy userInfo];
+          v42 = [v40 errorWithCode:-3 userInfo:userInfo];
 
-          v7 = v42;
+          errorCopy = v42;
         }
       }
     }
 
-    v43 = [(MechanismBase *)self request];
-    v44 = [v43 analytics];
-    [v44 authenticationResult:objc_msgSend(v7 event:{"code"), -[MechanismBase eventIdentifier](self->_nonUiMechanism, "eventIdentifier")}];
+    request2 = [(MechanismBase *)self request];
+    analytics = [request2 analytics];
+    [analytics authenticationResult:objc_msgSend(errorCopy event:{"code"), -[MechanismBase eventIdentifier](self->_nonUiMechanism, "eventIdentifier")}];
 
     v45.receiver = self;
     v45.super_class = MechanismUI;
-    [(MechanismBase *)&v45 finishRunWithResult:v6 error:v7];
+    [(MechanismBase *)&v45 finishRunWithResult:resultCopy error:errorCopy];
     goto LABEL_27;
   }
 
@@ -163,7 +163,7 @@ LABEL_20:
   fallbackReason = self->_fallbackReason;
   self->_fallbackReason = 0;
 
-  if (([MEMORY[0x277CD47F0] error:v7 hasCode:-1] & 1) != 0 || (objc_msgSend(MEMORY[0x277CD47F0], "error:hasCode:", v7, -1018) & 1) != 0 || (objc_msgSend(MEMORY[0x277CD47F0], "error:hasCode:", v7, -8) & 1) != 0 || (objc_msgSend(MEMORY[0x277CD47F0], "error:hasCode:", v7, -3) & 1) != 0 || objc_msgSend(MEMORY[0x277CD47F0], "error:hasCode:subcode:", v7, -4, 18))
+  if (([MEMORY[0x277CD47F0] error:errorCopy hasCode:-1] & 1) != 0 || (objc_msgSend(MEMORY[0x277CD47F0], "error:hasCode:", errorCopy, -1018) & 1) != 0 || (objc_msgSend(MEMORY[0x277CD47F0], "error:hasCode:", errorCopy, -8) & 1) != 0 || (objc_msgSend(MEMORY[0x277CD47F0], "error:hasCode:", errorCopy, -3) & 1) != 0 || objc_msgSend(MEMORY[0x277CD47F0], "error:hasCode:subcode:", errorCopy, -4, 18))
   {
     objc_storeStrong(&self->_nonUiMechanism, self->_fallbackMechanism);
     fallbackMechanism = self->_fallbackMechanism;
@@ -172,13 +172,13 @@ LABEL_20:
     goto LABEL_11;
   }
 
-  if (([MEMORY[0x277CD47F0] error:v7 hasCode:-4 subcode:12] & 1) == 0 && (objc_msgSend(MEMORY[0x277CD47F0], "error:hasCode:subcode:", v7, -4, 14) & 1) == 0 && !objc_msgSend(MEMORY[0x277CD47F0], "error:hasCode:subcode:", v7, -4, 13))
+  if (([MEMORY[0x277CD47F0] error:errorCopy hasCode:-4 subcode:12] & 1) == 0 && (objc_msgSend(MEMORY[0x277CD47F0], "error:hasCode:subcode:", errorCopy, -4, 14) & 1) == 0 && !objc_msgSend(MEMORY[0x277CD47F0], "error:hasCode:subcode:", errorCopy, -4, 13))
   {
     goto LABEL_20;
   }
 
-  v14 = [(MechanismBase *)self request];
-  v15 = [v14 log];
+  request3 = [(MechanismBase *)self request];
+  v15 = [request3 log];
 
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -189,9 +189,9 @@ LABEL_20:
   v16 = self->_fallbackMechanism;
   self->_fallbackMechanism = 0;
 
-  objc_storeStrong(&self->_fallbackReason, a4);
-  v17 = [(MechanismBase *)self request];
-  v18 = [v17 log];
+  objc_storeStrong(&self->_fallbackReason, error);
+  request4 = [(MechanismBase *)self request];
+  v18 = [request4 log];
 
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
@@ -270,18 +270,18 @@ uint64_t __41__MechanismUI_finishRunWithResult_error___block_invoke(uint64_t a1)
 - (void)willFinish
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(MechanismBase *)self request];
-  v4 = [v3 log];
+  request = [(MechanismBase *)self request];
+  v4 = [request log];
 
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_238B95000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ willFinish", &v8, 0xCu);
   }
 
-  v5 = [(MechanismUI *)self notificationCenter];
-  [v5 postNotificationUIDidDisappear];
+  notificationCenter = [(MechanismUI *)self notificationCenter];
+  [notificationCenter postNotificationUIDidDisappear];
 
   v6 = +[RemoteUIManager sharedInstance];
   [v6 dismissRemoteUI:self->_remoteUI uiMechanism:self uiDisappeared:self->_uiDisappeared shouldIdle:0 reply:&__block_literal_global_0];
@@ -289,47 +289,47 @@ uint64_t __41__MechanismUI_finishRunWithResult_error___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_terminateBackgroundMechanismWithResult:(id)a3 error:(id)a4
+- (void)_terminateBackgroundMechanismWithResult:(id)result error:(id)error
 {
   backgroundMechanism = self->_backgroundMechanism;
   self->_backgroundMechanism = 0;
   v7 = backgroundMechanism;
-  v8 = a4;
-  v9 = a3;
+  errorCopy = error;
+  resultCopy = result;
 
-  [(MechanismBase *)v7 finishRunWithResult:v9 error:v8];
+  [(MechanismBase *)v7 finishRunWithResult:resultCopy error:errorCopy];
 }
 
-- (void)connectRemoteUI:(id)a3 requestID:(id)a4 reply:(id)a5
+- (void)connectRemoteUI:(id)i requestID:(id)d reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v10)
+  iCopy = i;
+  dCopy = d;
+  replyCopy = reply;
+  if (dCopy)
   {
     v12 = MEMORY[0x277CCABB0];
-    v13 = [(MechanismBase *)self request];
-    v14 = [v12 numberWithUnsignedInt:{objc_msgSend(v13, "identifier")}];
-    v15 = [v14 isEqual:v10];
+    request = [(MechanismBase *)self request];
+    v14 = [v12 numberWithUnsignedInt:{objc_msgSend(request, "identifier")}];
+    v15 = [v14 isEqual:dCopy];
 
     if ((v15 & 1) == 0)
     {
       v20 = MEMORY[0x277CCACA8];
       v21 = MEMORY[0x277CCABB0];
-      v22 = [(MechanismBase *)self request];
-      v23 = [v21 numberWithUnsignedInt:{objc_msgSend(v22, "identifier")}];
-      v18 = [v20 stringWithFormat:@"Request mismatch: %@ != %@", v23, v10];
+      request2 = [(MechanismBase *)self request];
+      v23 = [v21 numberWithUnsignedInt:{objc_msgSend(request2, "identifier")}];
+      dCopy = [v20 stringWithFormat:@"Request mismatch: %@ != %@", v23, dCopy];
 
-      v24 = [MEMORY[0x277D24060] errorWithCode:*MEMORY[0x277D23E88] subcode:*MEMORY[0x277D23EC8] debugDescription:v18];
-      v25 = [(MechanismBase *)self request];
-      v26 = [v25 log];
+      backoffCounter = [MEMORY[0x277D24060] errorWithCode:*MEMORY[0x277D23E88] subcode:*MEMORY[0x277D23EC8] debugDescription:dCopy];
+      request3 = [(MechanismBase *)self request];
+      v26 = [request3 log];
 
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        [MechanismUI connectRemoteUI:v24 requestID:v26 reply:?];
+        [MechanismUI connectRemoteUI:backoffCounter requestID:v26 reply:?];
       }
 
-      (*(v11 + 2))(v11, 0, 0, v24);
+      (*(replyCopy + 2))(replyCopy, 0, 0, backoffCounter);
       goto LABEL_9;
     }
   }
@@ -337,39 +337,39 @@ uint64_t __41__MechanismUI_finishRunWithResult_error___block_invoke(uint64_t a1)
   remoteUI = self->_remoteUI;
   if (!remoteUI)
   {
-    objc_storeStrong(&self->_remoteUI, a3);
+    objc_storeStrong(&self->_remoteUI, i);
     [(MechanismUI *)self _connectNonUiMechanism:self->_backgroundMechanism withRemoteUi:self->_remoteUI];
-    v18 = +[MechanismContext sharedInstance];
-    v24 = [v18 backoffCounter];
-    (*(v11 + 2))(v11, self, v24, 0);
+    dCopy = +[MechanismContext sharedInstance];
+    backoffCounter = [dCopy backoffCounter];
+    (*(replyCopy + 2))(replyCopy, self, backoffCounter, 0);
 LABEL_9:
 
     goto LABEL_10;
   }
 
   v17 = MEMORY[0x277CD47F0];
-  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ already connected while %@ attempted to connect.", remoteUI, v9];
-  v19 = [v17 internalErrorWithMessage:v18];
-  (*(v11 + 2))(v11, 0, 0, v19);
+  dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ already connected while %@ attempted to connect.", remoteUI, iCopy];
+  v19 = [v17 internalErrorWithMessage:dCopy];
+  (*(replyCopy + 2))(replyCopy, 0, 0, v19);
 
 LABEL_10:
 }
 
 - (void)disconnectRemoteUI
 {
-  v3 = [(MechanismUI *)self notificationCenter];
-  [v3 postNotificationUIDidDisappear];
+  notificationCenter = [(MechanismUI *)self notificationCenter];
+  [notificationCenter postNotificationUIDidDisappear];
 
   remoteUI = self->_remoteUI;
   self->_remoteUI = 0;
 }
 
-- (void)_connectNonUiMechanism:(id)a3 withRemoteUi:(id)a4
+- (void)_connectNonUiMechanism:(id)mechanism withRemoteUi:(id)ui
 {
-  v9 = a3;
-  if ([v9 requiresUiWithEventProcessing:self->_eventProcessing])
+  mechanismCopy = mechanism;
+  if ([mechanismCopy requiresUiWithEventProcessing:self->_eventProcessing])
   {
-    v5 = [v9 findMechanismWithEventIdentifier:1];
+    v5 = [mechanismCopy findMechanismWithEventIdentifier:1];
     if (v5)
     {
       v6 = v5;
@@ -377,10 +377,10 @@ LABEL_10:
 
     else
     {
-      v6 = [v9 findMechanismWithEventIdentifier:7];
+      v6 = [mechanismCopy findMechanismWithEventIdentifier:7];
       if (!v6)
       {
-        v7 = [v9 findMechanismWithEventIdentifier:12];
+        v7 = [mechanismCopy findMechanismWithEventIdentifier:12];
         v8 = v7;
         if (v7)
         {
@@ -404,10 +404,10 @@ LABEL_6:
 
   if (!v3)
   {
-    v4 = [(MechanismBase *)self request];
-    v5 = [v4 isPurposeApplePay];
+    request = [(MechanismBase *)self request];
+    isPurposeApplePay = [request isPurposeApplePay];
 
-    if ((v5 & 1) == 0)
+    if ((isPurposeApplePay & 1) == 0)
     {
       v8 = [(NSDictionary *)self->_internalInfo objectForKey:@"CallerId"];
       if (v8)
@@ -451,35 +451,35 @@ LABEL_13:
   return 1;
 }
 
-- (void)uiEvent:(int64_t)a3 options:(id)a4
+- (void)uiEvent:(int64_t)event options:(id)options
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(MechanismBase *)self request];
-  v8 = [v7 log];
+  optionsCopy = options;
+  request = [(MechanismBase *)self request];
+  v8 = [request log];
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromRemoteUIEventAndOptions();
     *buf = 138543874;
-    v42 = self;
+    selfCopy = self;
     v43 = 1024;
-    v44 = a3;
+    eventCopy = event;
     v45 = 2112;
     v46 = v9;
     _os_log_impl(&dword_238B95000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ has received UI event %d (%@)", buf, 0x1Cu);
   }
 
-  if ([(MechanismUI *)self _checkUiEventValid:a3])
+  if ([(MechanismUI *)self _checkUiEventValid:event])
   {
-    [(MechanismBase *)self->_backgroundMechanism handleUIEvent:a3 params:v6];
+    [(MechanismBase *)self->_backgroundMechanism handleUIEvent:event params:optionsCopy];
   }
 
-  if (a3 > 6)
+  if (event > 6)
   {
-    if (a3 <= 8)
+    if (event <= 8)
     {
-      if (a3 == 7)
+      if (event == 7)
       {
         if (!self->_preservedPearlMechanism)
         {
@@ -488,41 +488,41 @@ LABEL_13:
 
         self->_matchCanceledByPasscodeUi = 1;
         preservedPearlMechanism = self->_preservedPearlMechanism;
-        v27 = [MEMORY[0x277CD47F0] errorWithCode:-2 message:@"User started typing passcode."];
-        [(MechanismPearl *)preservedPearlMechanism failAuthenticationWithError:v27];
+        preCompanion = [MEMORY[0x277CD47F0] errorWithCode:-2 message:@"User started typing passcode."];
+        [(MechanismPearl *)preservedPearlMechanism failAuthenticationWithError:preCompanion];
         goto LABEL_42;
       }
 
-      v14 = [(MechanismBase *)self request];
-      v15 = [v14 isRecoveringFromBiolockout];
+      request2 = [(MechanismBase *)self request];
+      isRecoveringFromBiolockout = [request2 isRecoveringFromBiolockout];
 
-      if ((v15 & 1) == 0)
+      if ((isRecoveringFromBiolockout & 1) == 0)
       {
-        v16 = [MEMORY[0x277D240B8] sharedInstance];
-        v17 = [v6 objectForKeyedSubscript:@"uptime"];
-        [v16 updatePasscodeSuccessAgeWithUptime:v17];
+        mEMORY[0x277D240B8] = [MEMORY[0x277D240B8] sharedInstance];
+        v17 = [optionsCopy objectForKeyedSubscript:@"uptime"];
+        [mEMORY[0x277D240B8] updatePasscodeSuccessAgeWithUptime:v17];
       }
     }
 
-    else if (a3 != 9)
+    else if (event != 9)
     {
-      if (a3 == 10)
+      if (event == 10)
       {
-        v35 = [(MechanismBase *)self request];
-        v36 = [v35 log];
+        request3 = [(MechanismBase *)self request];
+        v36 = [request3 log];
 
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
           backgroundMechanism = self->_backgroundMechanism;
           *buf = 138543362;
-          v42 = backgroundMechanism;
+          selfCopy = backgroundMechanism;
           _os_log_impl(&dword_238B95000, v36, OS_LOG_TYPE_DEFAULT, "Pausing %{public}@ to allow auth cancelation in Wallet", buf, 0xCu);
         }
 
         [(MechanismBase *)self->_backgroundMechanism pause:1 forEvent:[(MechanismBase *)self->_backgroundMechanism eventIdentifier] error:0];
       }
 
-      else if (a3 == 14)
+      else if (event == 14)
       {
         [(MechanismBase *)self succeedAuthenticationWithDefaultResult];
       }
@@ -532,26 +532,26 @@ LABEL_13:
 
     nonUiMechanism = self->_nonUiMechanism;
     v39 = &unk_284B787C8;
-    v19 = a3 == 8;
-    v20 = a3 != 8;
+    v19 = event == 8;
+    v20 = event != 8;
     v21 = v19;
     v22 = [MEMORY[0x277CCABB0] numberWithInt:{v21, v39}];
     v40 = v22;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
     [(MechanismBase *)nonUiMechanism noResponseEventWithParams:v23];
 
-    v10 = [(MechanismBase *)self request];
-    v24 = [v10 analytics];
-    [v24 authenticationAttempt:v20 event:2];
+    request4 = [(MechanismBase *)self request];
+    analytics = [request4 analytics];
+    [analytics authenticationAttempt:v20 event:2];
 
     goto LABEL_28;
   }
 
-  if (a3 <= 1)
+  if (event <= 1)
   {
-    if (a3)
+    if (event)
     {
-      if (a3 != 1)
+      if (event != 1)
       {
         goto LABEL_46;
       }
@@ -568,9 +568,9 @@ LABEL_13:
       goto LABEL_41;
     }
 
-    v25 = [(MechanismBase *)self request];
-    v26 = [v25 analytics];
-    [v26 authenticationStartedForEvent:{-[MechanismBase eventIdentifier](self->_nonUiMechanism, "eventIdentifier")}];
+    request5 = [(MechanismBase *)self request];
+    analytics2 = [request5 analytics];
+    [analytics2 authenticationStartedForEvent:{-[MechanismBase eventIdentifier](self->_nonUiMechanism, "eventIdentifier")}];
 
     self->_uiDisappeared = 0;
     self->_ignoreUiDisappear = 0;
@@ -580,8 +580,8 @@ LABEL_13:
     }
 
     [(MechanismUI *)self _startBackgroundMechanism];
-    v27 = [(MechanismPearl *)self->_preservedPearlMechanism preCompanion];
-    if (([v27 isCredentialValid] & 1) != 0 || (-[MechanismBase policyOptions](self, "policyOptions"), v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v28, "objectForKeyedSubscript:", &unk_284B787B0), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "BOOLValue"), v29, v28, v30))
+    preCompanion = [(MechanismPearl *)self->_preservedPearlMechanism preCompanion];
+    if (([preCompanion isCredentialValid] & 1) != 0 || (-[MechanismBase policyOptions](self, "policyOptions"), v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v28, "objectForKeyedSubscript:", &unk_284B787B0), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "BOOLValue"), v29, v28, v30))
     {
       [(MechanismPearl *)self->_preservedPearlMechanism restartWithEventIdentifier:7 lastAttempt:1];
     }
@@ -591,29 +591,29 @@ LABEL_42:
     goto LABEL_46;
   }
 
-  if (a3 == 2)
+  if (event == 2)
   {
     if (![(MechanismUI *)self _checkUiEventValid:2])
     {
       goto LABEL_46;
     }
 
-    v27 = [MEMORY[0x277CD47F0] errorWithCode:-2 message:@"Canceled by user."];
-    v32 = [v6 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    preCompanion = [MEMORY[0x277CD47F0] errorWithCode:-2 message:@"Canceled by user."];
+    v32 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
     v33 = v32;
     if (v32)
     {
       v34 = v32;
 
-      v27 = v34;
+      preCompanion = v34;
     }
 
-    [(MechanismUI *)self finishRunWithResult:0 error:v27];
+    [(MechanismUI *)self finishRunWithResult:0 error:preCompanion];
 
     goto LABEL_42;
   }
 
-  if (a3 == 3)
+  if (event == 3)
   {
     if (![(MechanismUI *)self _checkUiEventValid:3])
     {
@@ -624,15 +624,15 @@ LABEL_42:
     v12 = @"Fallback authentication mechanism selected.";
     v13 = -3;
 LABEL_41:
-    v27 = [v11 errorWithCode:v13 message:v12];
-    [(MechanismUI *)self finishRunWithResult:0 error:v27];
+    preCompanion = [v11 errorWithCode:v13 message:v12];
+    [(MechanismUI *)self finishRunWithResult:0 error:preCompanion];
     goto LABEL_42;
   }
 
-  if (a3 == 6 && [(MechanismUI *)self _checkUiEventValid:6])
+  if (event == 6 && [(MechanismUI *)self _checkUiEventValid:6])
   {
-    v10 = [(MechanismUI *)self findMechanismToRetryWithEventIdentifier:7];
-    [v10 restartWithEventIdentifier:7 lastAttempt:0];
+    request4 = [(MechanismUI *)self findMechanismToRetryWithEventIdentifier:7];
+    [request4 restartWithEventIdentifier:7 lastAttempt:0];
 LABEL_28:
   }
 
@@ -641,20 +641,20 @@ LABEL_46:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_checkUiEventValid:(int64_t)a3
+- (BOOL)_checkUiEventValid:(int64_t)valid
 {
   v10 = *MEMORY[0x277D85DE8];
   uiTransitioning = self->_uiTransitioning;
   if (uiTransitioning)
   {
-    v4 = a3;
-    v5 = [(MechanismBase *)self request];
-    v6 = [v5 log];
+    validCopy = valid;
+    request = [(MechanismBase *)self request];
+    v6 = [request log];
 
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9[0] = 67109120;
-      v9[1] = v4;
+      v9[1] = validCopy;
       _os_log_impl(&dword_238B95000, v6, OS_LOG_TYPE_DEFAULT, "Ignoring event %d, because UI is transitioning.", v9, 8u);
     }
   }
@@ -663,101 +663,101 @@ LABEL_46:
   return !uiTransitioning;
 }
 
-- (void)uiSuccessWithResult:(id)a3
+- (void)uiSuccessWithResult:(id)result
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MechanismBase *)self request];
-  v6 = [v5 log];
+  resultCopy = result;
+  request = [(MechanismBase *)self request];
+  v6 = [request log];
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138543362;
-    v24 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_238B95000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ has received UI success", &v23, 0xCu);
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"Result"];
+  v7 = [resultCopy objectForKeyedSubscript:@"Result"];
   [(MechanismBase *)self yieldPartialResult:v7];
 
-  v8 = [(MechanismBase *)self->_backgroundMechanism preCompanion];
-  if ([v8 eventIdentifier] != 5)
+  preCompanion = [(MechanismBase *)self->_backgroundMechanism preCompanion];
+  if ([preCompanion eventIdentifier] != 5)
   {
     goto LABEL_7;
   }
 
-  v9 = [(MechanismBase *)self policyOptions];
-  v10 = [v9 objectForKeyedSubscript:&unk_284B787B0];
-  v11 = [v10 BOOLValue];
+  policyOptions = [(MechanismBase *)self policyOptions];
+  v10 = [policyOptions objectForKeyedSubscript:&unk_284B787B0];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
-    v12 = [(MechanismBase *)self->_backgroundMechanism preCompanion];
-    v13 = [v12 checkCredentialValid];
+    preCompanion2 = [(MechanismBase *)self->_backgroundMechanism preCompanion];
+    checkCredentialValid = [preCompanion2 checkCredentialValid];
 
-    if ((v13 & 1) == 0)
+    if ((checkCredentialValid & 1) == 0)
     {
-      v8 = [MEMORY[0x277CD47F0] errorWithCode:-1023 message:@"Double press is required."];
-      [(MechanismBase *)self failAuthenticationWithError:v8];
+      preCompanion = [MEMORY[0x277CD47F0] errorWithCode:-1023 message:@"Double press is required."];
+      [(MechanismBase *)self failAuthenticationWithError:preCompanion];
 LABEL_7:
     }
   }
 
-  v14 = [(MechanismBase *)self->_backgroundMechanism postCompanion];
+  postCompanion = [(MechanismBase *)self->_backgroundMechanism postCompanion];
 
-  if (v14)
+  if (postCompanion)
   {
     self->_ignoreUiDisappear = 1;
-    v15 = [(MechanismBase *)self request];
-    v16 = [v15 log];
+    request2 = [(MechanismBase *)self request];
+    v16 = [request2 log];
 
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       backgroundMechanism = self->_backgroundMechanism;
-      v18 = [(MechanismBase *)backgroundMechanism postCompanion];
+      postCompanion2 = [(MechanismBase *)backgroundMechanism postCompanion];
       v23 = 138412802;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2112;
       v26 = backgroundMechanism;
       v27 = 2112;
-      v28 = v18;
+      v28 = postCompanion2;
       _os_log_impl(&dword_238B95000, v16, OS_LOG_TYPE_DEFAULT, "%@ will continue with %@ post-companion %@", &v23, 0x20u);
     }
 
-    v19 = [(MechanismBase *)self->_backgroundMechanism postCompanion];
-    v20 = [(MechanismBase *)self->_backgroundMechanism internalOptions];
-    v21 = [(MechanismBase *)self->_backgroundMechanism eventsDelegate];
-    [v19 runWithHints:v20 eventsDelegate:v21 reply:&__block_literal_global_69];
+    postCompanion3 = [(MechanismBase *)self->_backgroundMechanism postCompanion];
+    internalOptions = [(MechanismBase *)self->_backgroundMechanism internalOptions];
+    eventsDelegate = [(MechanismBase *)self->_backgroundMechanism eventsDelegate];
+    [postCompanion3 runWithHints:internalOptions eventsDelegate:eventsDelegate reply:&__block_literal_global_69];
   }
 
   else
   {
-    [(MechanismUI *)self finishRunWithResult:v4 error:0];
+    [(MechanismUI *)self finishRunWithResult:resultCopy error:0];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uiFailureWithError:(id)a3
+- (void)uiFailureWithError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MechanismBase *)self request];
-  v6 = [v5 log];
+  errorCopy = error;
+  request = [(MechanismBase *)self request];
+  v6 = [request log];
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v4;
+    v13 = errorCopy;
     _os_log_impl(&dword_238B95000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ has received UI failure: %{public}@", &v10, 0x16u);
   }
 
   if (self->_fallbackReason)
   {
-    v7 = [(MechanismBase *)self request];
-    v8 = [v7 log];
+    request2 = [(MechanismBase *)self request];
+    v8 = [request2 log];
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -770,42 +770,42 @@ LABEL_7:
 
   else
   {
-    [(MechanismUI *)self finishRunWithResult:0 error:v4];
+    [(MechanismUI *)self finishRunWithResult:0 error:errorCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)internalInfoWithReply:(id)a3
+- (void)internalInfoWithReply:(id)reply
 {
   internalInfo = self->_internalInfo;
   additionalControllerInternalInfo = self->_additionalControllerInternalInfo;
-  v5 = a3;
+  replyCopy = reply;
   v6 = [(NSDictionary *)internalInfo dictionaryByMergingWith:additionalControllerInternalInfo];
-  v5[2](v5, v6);
+  replyCopy[2](replyCopy, v6);
 }
 
-- (void)externalizedContextWithReply:(id)a3
+- (void)externalizedContextWithReply:(id)reply
 {
   nonUiMechanism = self->_nonUiMechanism;
-  v4 = a3;
-  v5 = [(MechanismBase *)nonUiMechanism cachedExternalizationDelegate];
-  [v5 externalizedContextWithReply:v4];
+  replyCopy = reply;
+  cachedExternalizationDelegate = [(MechanismBase *)nonUiMechanism cachedExternalizationDelegate];
+  [cachedExternalizationDelegate externalizedContextWithReply:replyCopy];
 }
 
-- (void)authMethodWithReply:(id)a3
+- (void)authMethodWithReply:(id)reply
 {
   v4 = MEMORY[0x277CD47F0];
-  v5 = a3;
+  replyCopy = reply;
   v6 = [v4 internalErrorWithMessage:@"No auth blob on mechanism."];
-  (*(a3 + 2))(v5, 0, v6);
+  (*(reply + 2))(replyCopy, 0, v6);
 }
 
 - (void)_showUI
 {
   v70 = *MEMORY[0x277D85DE8];
-  v3 = [(MechanismUI *)self _scheduleMechanisms];
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ will run %@ on background and connect with remote controller %d", self, self->_backgroundMechanism, v3];
+  _scheduleMechanisms = [(MechanismUI *)self _scheduleMechanisms];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ will run %@ on background and connect with remote controller %d", self, self->_backgroundMechanism, _scheduleMechanisms];
   if ([(NSMutableArray *)self->_continueMechanisms count])
   {
     v5 = [(MechanismUI *)v4 stringByAppendingFormat:@", then continue with %@", self->_continueMechanisms];
@@ -820,13 +820,13 @@ LABEL_7:
     v4 = v6;
   }
 
-  v7 = [(MechanismBase *)self request];
-  v8 = [v7 log];
+  request = [(MechanismBase *)self request];
+  v8 = [request log];
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v67 = v4;
+    selfCopy = v4;
     _os_log_impl(&dword_238B95000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
@@ -835,21 +835,21 @@ LABEL_7:
   preservedPearlMechanism = self->_preservedPearlMechanism;
   if (preservedPearlMechanism)
   {
-    v10 = [(MechanismPearl *)preservedPearlMechanism biolockout];
-    v11 = [(MechanismPearl *)self->_preservedPearlMechanism preCompanion];
-    v12 = v11;
-    if ((v10 & 1) == 0)
+    biolockout = [(MechanismPearl *)preservedPearlMechanism biolockout];
+    preCompanion = [(MechanismPearl *)self->_preservedPearlMechanism preCompanion];
+    preCompanion2 = preCompanion;
+    if ((biolockout & 1) == 0)
     {
-      if (([v11 isCredentialValid] & 1) != 0 || (-[MechanismBase policyOptions](self, "policyOptions"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "objectForKeyedSubscript:", &unk_284B787B0), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "BOOLValue"), v14, v13, v15))
+      if (([preCompanion isCredentialValid] & 1) != 0 || (-[MechanismBase policyOptions](self, "policyOptions"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "objectForKeyedSubscript:", &unk_284B787B0), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "BOOLValue"), v14, v13, v15))
       {
-        v16 = [(MechanismBase *)self request];
-        v17 = [v16 log];
+        request2 = [(MechanismBase *)self request];
+        v17 = [request2 log];
 
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           v18 = self->_preservedPearlMechanism;
           *buf = 138543618;
-          v67 = self;
+          selfCopy = self;
           v68 = 2114;
           v69 = v18;
           _os_log_impl(&dword_238B95000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ will preserve and retry %{public}@ as the small glyph on top of the passcode screen", buf, 0x16u);
@@ -864,22 +864,22 @@ LABEL_7:
 
   else
   {
-    v12 = [0 preCompanion];
+    preCompanion2 = [0 preCompanion];
   }
 
   backgroundMechanism = self->_backgroundMechanism;
   if (backgroundMechanism)
   {
-    v52 = v3;
-    v53 = v12;
-    v22 = [(MechanismBase *)self internalOptions];
-    v23 = [v22 objectForKeyedSubscript:@"AuditToken"];
-    v24 = [(MechanismBase *)self internalOptions];
-    v25 = [v24 objectForKeyedSubscript:@"Options"];
+    v52 = _scheduleMechanisms;
+    v53 = preCompanion2;
+    internalOptions = [(MechanismBase *)self internalOptions];
+    v23 = [internalOptions objectForKeyedSubscript:@"AuditToken"];
+    internalOptions2 = [(MechanismBase *)self internalOptions];
+    v25 = [internalOptions2 objectForKeyedSubscript:@"Options"];
     v26 = [v25 objectForKey:&unk_284B787E0];
     v27 = self->_fallbackMechanism != 0;
-    v28 = [(MechanismBase *)self policyOptions];
-    v29 = [v28 objectForKeyedSubscript:&unk_284B787F8];
+    policyOptions = [(MechanismBase *)self policyOptions];
+    v29 = [policyOptions objectForKeyedSubscript:&unk_284B787F8];
     v61 = 0;
     LODWORD(v27) = [(MechanismBase *)backgroundMechanism isTCCAllowedWithAuditTokenData:v23 optionAuditTokenData:v26 forcePrompt:v27 auditTokenUsage:v29 error:&v61];
     backgroundMechanism = v61;
@@ -888,13 +888,13 @@ LABEL_7:
     {
       [(MechanismBase *)self failAuthenticationWithError:backgroundMechanism];
       v37 = v54;
-      v12 = v53;
+      preCompanion2 = v53;
       goto LABEL_41;
     }
 
-    v3 = v52;
+    _scheduleMechanisms = v52;
     v30 = self->_backgroundMechanism;
-    v12 = v53;
+    preCompanion2 = v53;
   }
 
   else
@@ -907,12 +907,12 @@ LABEL_7:
     v31 = self->_fallbackMechanism != 0;
     v32 = self->_backgroundMechanism;
     [(MechanismBase *)v32 setHasFallback:v31];
-    [(MechanismBase *)v32 setHasUI:v3 != 0];
+    [(MechanismBase *)v32 setHasUI:_scheduleMechanisms != 0];
   }
 
   if ([(MechanismBase *)self->_backgroundMechanism eventIdentifier]== 1)
   {
-    [(MechanismBase *)self->_backgroundMechanism setHasUI:v3 != 0];
+    [(MechanismBase *)self->_backgroundMechanism setHasUI:_scheduleMechanisms != 0];
   }
 
   fallbackReason = self->_fallbackReason;
@@ -929,7 +929,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (v3 != 2 || ![(NSMutableArray *)self->_continueMechanisms count])
+  if (_scheduleMechanisms != 2 || ![(NSMutableArray *)self->_continueMechanisms count])
   {
     goto LABEL_32;
   }
@@ -944,8 +944,8 @@ LABEL_25:
     v62[1] = @"ContinueEvent";
     v63[0] = v39;
     v40 = MEMORY[0x277CCABB0];
-    v41 = [(NSMutableArray *)self->_continueMechanisms firstObject];
-    v42 = [v40 numberWithInteger:{objc_msgSend(v41, "eventIdentifier")}];
+    firstObject = [(NSMutableArray *)self->_continueMechanisms firstObject];
+    v42 = [v40 numberWithInteger:{objc_msgSend(firstObject, "eventIdentifier")}];
     v63[1] = v42;
     v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v63 forKeys:v62 count:2];
 
@@ -969,7 +969,7 @@ LABEL_32:
   v47 = self->_backgroundMechanism;
   if (v46)
   {
-    v48 = [(MechanismBase *)v47 remoteViewController];
+    remoteViewController = [(MechanismBase *)v47 remoteViewController];
     v49 = +[RemoteUIManager sharedInstance];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
@@ -977,8 +977,8 @@ LABEL_32:
     v56[3] = &unk_278A629E0;
     v56[4] = self;
     v57 = v45;
-    v58 = v48;
-    [v49 anonymousListenerForHostedController:v48 mechanism:self reply:v56];
+    v58 = remoteViewController;
+    [v49 anonymousListenerForHostedController:remoteViewController mechanism:self reply:v56];
   }
 
   else if ([(MechanismBase *)v47 requiresRemoteViewControllerUiWithEventProcessing:self->_eventProcessing])
@@ -994,7 +994,7 @@ LABEL_32:
     v55[2] = __22__MechanismUI__showUI__block_invoke_5;
     v55[3] = &unk_278A62990;
     v55[4] = self;
-    v55[5] = v3;
+    v55[5] = _scheduleMechanisms;
     v50 = MEMORY[0x23EE73C30](v55);
     if ([(MechanismBase *)self->_backgroundMechanism precedesUI])
     {
@@ -1181,13 +1181,13 @@ uint64_t __22__MechanismUI__showUI__block_invoke_107(uint64_t a1)
   return v15;
 }
 
-- (void)_restartRemoteUIBeforePresentationIfNeededForDestinationController:(int64_t)a3 withSourceController:(int64_t)a4 completionHandler:(id)a5
+- (void)_restartRemoteUIBeforePresentationIfNeededForDestinationController:(int64_t)controller withSourceController:(int64_t)sourceController completionHandler:(id)handler
 {
-  v8 = a5;
-  if ([(MechanismUI *)self _shouldRestartRemoteUIBeforePresentingDestinationController:a3 withSourceController:a4])
+  handlerCopy = handler;
+  if ([(MechanismUI *)self _shouldRestartRemoteUIBeforePresentingDestinationController:controller withSourceController:sourceController])
   {
-    v9 = [(MechanismBase *)self request];
-    v10 = [v9 log];
+    request = [(MechanismBase *)self request];
+    v10 = [request log];
 
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -1202,13 +1202,13 @@ uint64_t __22__MechanismUI__showUI__block_invoke_107(uint64_t a1)
     v13[2] = __121__MechanismUI__restartRemoteUIBeforePresentationIfNeededForDestinationController_withSourceController_completionHandler___block_invoke;
     v13[3] = &unk_278A62A30;
     v13[4] = self;
-    v14 = v8;
+    v14 = handlerCopy;
     [v11 dismissRemoteUI:remoteUI uiMechanism:self uiDisappeared:0 shouldIdle:0 reply:v13];
   }
 
   else
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -1223,9 +1223,9 @@ uint64_t __121__MechanismUI__restartRemoteUIBeforePresentationIfNeededForDestina
   return v4();
 }
 
-- (BOOL)_shouldRestartRemoteUIBeforePresentingDestinationController:(int64_t)a3 withSourceController:(int64_t)a4
+- (BOOL)_shouldRestartRemoteUIBeforePresentingDestinationController:(int64_t)controller withSourceController:(int64_t)sourceController
 {
-  if (a3 != 2 || a4 != 1 || !self->_remoteUI || !objc_opt_class())
+  if (controller != 2 || sourceController != 1 || !self->_remoteUI || !objc_opt_class())
   {
     return 0;
   }
@@ -1240,7 +1240,7 @@ uint64_t __121__MechanismUI__restartRemoteUIBeforePresentationIfNeededForDestina
   v9 = *MEMORY[0x277D85DE8];
   v3 = *a2;
   v5 = 138412546;
-  v6 = a1;
+  selfCopy = self;
   v7 = 2112;
   v8 = v3;
   _os_log_debug_impl(&dword_238B95000, log, OS_LOG_TYPE_DEBUG, "%@ is starting %@ on background", &v5, 0x16u);
@@ -1376,9 +1376,9 @@ uint64_t __40__MechanismUI__startBackgroundMechanism__block_invoke_121(void *a1)
   return v6();
 }
 
-- (void)_transitionToController:(int64_t)a3 internalInfo:(id)a4
+- (void)_transitionToController:(int64_t)controller internalInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   if ([(MechanismUI *)self _checkCallerForeground])
   {
     if (self->_remoteUI)
@@ -1390,7 +1390,7 @@ uint64_t __40__MechanismUI__startBackgroundMechanism__block_invoke_121(void *a1)
       v10[2] = __52__MechanismUI__transitionToController_internalInfo___block_invoke_4;
       v10[3] = &unk_278A62968;
       v10[4] = self;
-      [(LACRemoteUI *)remoteUI transitionToController:a3 internalInfo:v6 completionHandler:v10];
+      [(LACRemoteUI *)remoteUI transitionToController:controller internalInfo:infoCopy completionHandler:v10];
     }
 
     else
@@ -1407,8 +1407,8 @@ uint64_t __40__MechanismUI__startBackgroundMechanism__block_invoke_121(void *a1)
       v11[2] = __52__MechanismUI__transitionToController_internalInfo___block_invoke_2;
       v11[3] = &unk_278A62AF8;
       v11[4] = self;
-      v13 = a3;
-      v12 = v6;
+      controllerCopy = controller;
+      v12 = infoCopy;
       [v8 showUIWithParams:v9 reply:v11];
     }
   }
@@ -1467,55 +1467,55 @@ uint64_t __52__MechanismUI__transitionToController_internalInfo___block_invoke_4
   return result;
 }
 
-- (id)_nameForRemoteUIController:(int64_t)a3
+- (id)_nameForRemoteUIController:(int64_t)controller
 {
-  if ((a3 - 2) > 2)
+  if ((controller - 2) > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_278A62B40[a3 - 2];
+    return off_278A62B40[controller - 2];
   }
 }
 
-- (id)_hostedSceneConfigurationForRemoteUIController:(int64_t)a3 endpoint:(id)a4
+- (id)_hostedSceneConfigurationForRemoteUIController:(int64_t)controller endpoint:(id)endpoint
 {
-  v6 = a4;
-  if ((a3 - 2) > 2)
+  endpointCopy = endpoint;
+  if ((controller - 2) > 2)
   {
     v12 = 0;
   }
 
   else
   {
-    v7 = **(&unk_278A62B58 + a3 - 2);
+    v7 = **(&unk_278A62B58 + controller - 2);
     v8 = objc_alloc(MEMORY[0x277D23FF0]);
     v9 = MEMORY[0x277CCABB0];
-    v10 = [(MechanismBase *)self request];
-    v11 = [v9 numberWithUnsignedInt:{objc_msgSend(v10, "identifier")}];
-    v12 = [v8 initWithAngelIdentifier:@"com.apple.LocalAuthenticationUIService" sceneIdentifier:v7 endpoint:v6 requestId:v11];
+    request = [(MechanismBase *)self request];
+    v11 = [v9 numberWithUnsignedInt:{objc_msgSend(request, "identifier")}];
+    v12 = [v8 initWithAngelIdentifier:@"com.apple.LocalAuthenticationUIService" sceneIdentifier:v7 endpoint:endpointCopy requestId:v11];
   }
 
   return v12;
 }
 
-- (void)_setupMechanismForRemoteViewController:(id)a3
+- (void)_setupMechanismForRemoteViewController:(id)controller
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MechanismBase *)self request];
-  v6 = [v5 log];
+  controllerCopy = controller;
+  request = [(MechanismBase *)self request];
+  v6 = [request log];
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = v4;
+    v16 = controllerCopy;
     _os_log_impl(&dword_238B95000, v6, OS_LOG_TYPE_DEFAULT, "RemoteViewController requested by: %{public}@", buf, 0xCu);
   }
 
-  v7 = -[MechanismUI _nameForRemoteUIController:](self, "_nameForRemoteUIController:", [v4 remoteViewController]);
+  v7 = -[MechanismUI _nameForRemoteUIController:](self, "_nameForRemoteUIController:", [controllerCopy remoteViewController]);
   v8 = v7;
   if (v7)
   {
@@ -1524,13 +1524,13 @@ uint64_t __52__MechanismUI__transitionToController_internalInfo___block_invoke_4
     v14[0] = @"com.apple.CoreAuthUI";
     v14[1] = v7;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
-    [v4 setActivationParams:v9];
+    [controllerCopy setActivationParams:v9];
   }
 
   else
   {
     v10 = MEMORY[0x277CD47F0];
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"default UI for event %d", objc_msgSend(v4, "eventIdentifier")];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"default UI for event %d", objc_msgSend(controllerCopy, "eventIdentifier")];
     v11 = [v10 errorPlatformDoesNotSupportAction:v9];
     [(MechanismBase *)self failAuthenticationWithError:v11];
   }
@@ -1538,39 +1538,39 @@ uint64_t __52__MechanismUI__transitionToController_internalInfo___block_invoke_4
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setupMechanismForHostingController:(id)a3 listener:(id)a4
+- (void)_setupMechanismForHostingController:(id)controller listener:(id)listener
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MechanismBase *)self request];
-  v9 = [v8 log];
+  controllerCopy = controller;
+  listenerCopy = listener;
+  request = [(MechanismBase *)self request];
+  v9 = [request log];
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v6;
+    v21 = controllerCopy;
     _os_log_impl(&dword_238B95000, v9, OS_LOG_TYPE_DEFAULT, "Hosted scene requested by: %{public}@", buf, 0xCu);
   }
 
-  v10 = [v6 remoteViewController];
-  v11 = [v7 endpoint];
-  v12 = [(MechanismUI *)self _hostedSceneConfigurationForRemoteUIController:v10 endpoint:v11];
+  remoteViewController = [controllerCopy remoteViewController];
+  endpoint = [listenerCopy endpoint];
+  v12 = [(MechanismUI *)self _hostedSceneConfigurationForRemoteUIController:remoteViewController endpoint:endpoint];
 
   if (v12)
   {
     v18 = &unk_284B78840;
     v19 = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-    [v6 setActivationParams:v13];
+    [controllerCopy setActivationParams:v13];
 
-    [(MechanismUI *)self _activateListener:v7];
+    [(MechanismUI *)self _activateListener:listenerCopy];
   }
 
   else
   {
     v14 = MEMORY[0x277CD47F0];
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"default UI for event %d", objc_msgSend(v6, "eventIdentifier")];
+    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"default UI for event %d", objc_msgSend(controllerCopy, "eventIdentifier")];
     v16 = [v14 errorPlatformDoesNotSupportAction:v15];
     [(MechanismBase *)self failAuthenticationWithError:v16];
   }
@@ -1578,32 +1578,32 @@ uint64_t __52__MechanismUI__transitionToController_internalInfo___block_invoke_4
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subMechanismCanRestart:(id)a3
+- (void)subMechanismCanRestart:(id)restart
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MechanismBase *)self request];
-  v6 = [v5 log];
+  restartCopy = restart;
+  request = [(MechanismBase *)self request];
+  v6 = [request log];
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v4;
+    v12 = restartCopy;
     _os_log_impl(&dword_238B95000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ will restart %{public}@", &v9, 0x16u);
   }
 
   retryMechanism = self->_retryMechanism;
-  self->_retryMechanism = v4;
+  self->_retryMechanism = restartCopy;
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)companionStateChanged:(id)a3 newState:(BOOL)a4
+- (void)companionStateChanged:(id)changed newState:(BOOL)state
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (state)
   {
     v10 = @"Result";
     v8[0] = &unk_284B78858;
@@ -1619,26 +1619,26 @@ uint64_t __52__MechanismUI__transitionToController_internalInfo___block_invoke_4
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)fallbackToIdentifier:(int64_t)a3
+- (BOOL)fallbackToIdentifier:(int64_t)identifier
 {
-  v5 = [(MechanismBase *)self->_fallbackMechanism eventIdentifier];
-  if (v5 == a3)
+  eventIdentifier = [(MechanismBase *)self->_fallbackMechanism eventIdentifier];
+  if (eventIdentifier == identifier)
   {
     objc_storeStrong(&self->_nonUiMechanism, self->_fallbackMechanism);
     fallbackMechanism = self->_fallbackMechanism;
     self->_fallbackMechanism = 0;
 
-    v7 = [(MechanismBase *)self->_backgroundMechanism silentFailure];
-    if (v7)
+    silentFailure = [(MechanismBase *)self->_backgroundMechanism silentFailure];
+    if (silentFailure)
     {
-      objc_storeStrong(&self->_fallbackReason, v7);
+      objc_storeStrong(&self->_fallbackReason, silentFailure);
     }
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __36__MechanismUI_fallbackToIdentifier___block_invoke;
     v15[3] = &unk_278A62B20;
-    v8 = v7;
+    v8 = silentFailure;
     v16 = v8;
     v9 = __36__MechanismUI_fallbackToIdentifier___block_invoke(v15);
     if ([(MechanismBase *)self->_backgroundMechanism eventIdentifier]== 7)
@@ -1653,8 +1653,8 @@ uint64_t __52__MechanismUI__transitionToController_internalInfo___block_invoke_4
         {
           objc_storeStrong(&self->_preservedPearlMechanism, backgroundMechanism);
           [(MechanismPearl *)self->_preservedPearlMechanism setEventsDelegate:self];
-          v13 = [(MechanismPearl *)self->_preservedPearlMechanism preCompanion];
-          [v13 setEventsDelegate:self];
+          preCompanion = [(MechanismPearl *)self->_preservedPearlMechanism preCompanion];
+          [preCompanion setEventsDelegate:self];
         }
 
         else
@@ -1672,7 +1672,7 @@ uint64_t __52__MechanismUI__transitionToController_internalInfo___block_invoke_4
     [(MechanismUI *)self _showUI];
   }
 
-  return v5 == a3;
+  return eventIdentifier == identifier;
 }
 
 BOOL __36__MechanismUI_fallbackToIdentifier___block_invoke(uint64_t a1)
@@ -1700,13 +1700,13 @@ BOOL __36__MechanismUI_fallbackToIdentifier___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5
+- (void)event:(int64_t)event params:(id)params reply:(id)reply
 {
-  v19 = a4;
-  v8 = a5;
-  if (a3 == 5)
+  paramsCopy = params;
+  replyCopy = reply;
+  if (event == 5)
   {
-    v15 = [v19 objectForKeyedSubscript:&unk_284B788A0];
+    v15 = [paramsCopy objectForKeyedSubscript:&unk_284B788A0];
     v10 = v15;
     if (v15)
     {
@@ -1722,24 +1722,24 @@ BOOL __36__MechanismUI_fallbackToIdentifier___block_invoke(uint64_t a1)
       }
 
       [(LACRemoteUI *)remoteUI mechanismEvent:v17 reply:&__block_literal_global_171];
-      v18 = [(MechanismBase *)self eventsDelegate];
-      [v18 event:5 params:v19 reply:&__block_literal_global_174];
+      eventsDelegate = [(MechanismBase *)self eventsDelegate];
+      [eventsDelegate event:5 params:paramsCopy reply:&__block_literal_global_174];
     }
 
     goto LABEL_16;
   }
 
-  if (a3 != 7)
+  if (event != 7)
   {
     goto LABEL_17;
   }
 
-  v9 = [v19 objectForKeyedSubscript:&unk_284B78888];
+  v9 = [paramsCopy objectForKeyedSubscript:&unk_284B78888];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 integerValue];
-    switch(v11)
+    integerValue = [v9 integerValue];
+    switch(integerValue)
     {
       case 3:
         v12 = self->_remoteUI;
@@ -1769,17 +1769,17 @@ LABEL_17:
 - (BOOL)clientIsUsingCAPI
 {
   v2 = [(NSDictionary *)self->_internalInfo objectForKeyedSubscript:@"CApiOrigin"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)passphraseShouldBeFirstMechanism
 {
   v2 = [(NSDictionary *)self->_policyOptions objectForKey:&unk_284B788B8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)passcodeShouldBeFirstMechanism
@@ -1792,37 +1792,37 @@ LABEL_17:
   policyOptions = self->_policyOptions;
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:*MEMORY[0x277D23FA8]];
   v6 = [(NSDictionary *)policyOptions objectForKey:v5];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)_deviceIsInBioLockoutWithError:(id *)a3
+- (BOOL)_deviceIsInBioLockoutWithError:(id *)error
 {
-  v5 = [MEMORY[0x277D24010] sharedInstance];
+  mEMORY[0x277D24010] = [MEMORY[0x277D24010] sharedInstance];
   v6 = [(NSDictionary *)self->_internalInfo objectForKeyedSubscript:@"UserId"];
-  v7 = [(MechanismBase *)self request];
-  LOBYTE(a3) = [v5 isLockedOutForUser:v6 request:v7 error:a3];
+  request = [(MechanismBase *)self request];
+  LOBYTE(error) = [mEMORY[0x277D24010] isLockedOutForUser:v6 request:request error:error];
 
-  return a3;
+  return error;
 }
 
-- (void)_activateListener:(id)a3
+- (void)_activateListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   anonymousListeners = self->_anonymousListeners;
-  v8 = v4;
+  v8 = listenerCopy;
   if (!anonymousListeners)
   {
     v6 = objc_opt_new();
     v7 = self->_anonymousListeners;
     self->_anonymousListeners = v6;
 
-    v4 = v8;
+    listenerCopy = v8;
     anonymousListeners = self->_anonymousListeners;
   }
 
-  [(NSMutableArray *)anonymousListeners addObject:v4];
+  [(NSMutableArray *)anonymousListeners addObject:listenerCopy];
   [v8 activate];
 }
 

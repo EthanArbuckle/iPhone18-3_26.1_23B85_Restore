@@ -1,33 +1,33 @@
 @interface BackupStatusRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addMessages:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMessages:(id)messages;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BackupStatusRequest
 
-- (void)addMessages:(id)a3
+- (void)addMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   messages = self->_messages;
-  v8 = v4;
+  v8 = messagesCopy;
   if (!messages)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_messages;
     self->_messages = v6;
 
-    v4 = v8;
+    messagesCopy = v8;
     messages = self->_messages;
   }
 
-  [(NSMutableArray *)messages addObject:v4];
+  [(NSMutableArray *)messages addObject:messagesCopy];
 }
 
 - (NSString)description
@@ -35,8 +35,8 @@
   v7.receiver = self;
   v7.super_class = BackupStatusRequest;
   v3 = [(BackupStatusRequest *)&v7 description];
-  v4 = [(BackupStatusRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(BackupStatusRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -66,8 +66,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -82,14 +82,14 @@
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -100,18 +100,18 @@
       while (1)
       {
         LOBYTE(v17[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v17 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v17 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v17[0] & 0x7F) << v6;
@@ -128,9 +128,9 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -141,7 +141,7 @@ LABEL_15:
         [(BackupStatusRequest *)self addMessages:v14];
         v17[0] = 0;
         v17[1] = 0;
-        if (!PBReaderPlaceMark() || !BackupStatusMessageReadFrom(v14, a3))
+        if (!PBReaderPlaceMark() || !BackupStatusMessageReadFrom(v14, from))
         {
 
           return 0;
@@ -155,18 +155,18 @@ LABEL_15:
         return 0;
       }
 
-      v15 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v15 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -200,28 +200,28 @@ LABEL_15:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(BackupStatusRequest *)self messagesCount])
   {
-    [v8 clearMessages];
-    v4 = [(BackupStatusRequest *)self messagesCount];
-    if (v4)
+    [toCopy clearMessages];
+    messagesCount = [(BackupStatusRequest *)self messagesCount];
+    if (messagesCount)
     {
-      v5 = v4;
+      v5 = messagesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BackupStatusRequest *)self messagesAtIndex:i];
-        [v8 addMessages:v7];
+        [toCopy addMessages:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -242,7 +242,7 @@ LABEL_15:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addMessages:v11];
 
         v10 = v10 + 1;
@@ -258,13 +258,13 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     messages = self->_messages;
-    if (messages | v4[1])
+    if (messages | equalCopy[1])
     {
       v6 = [(NSMutableArray *)messages isEqual:?];
     }
@@ -283,13 +283,13 @@ LABEL_15:
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {

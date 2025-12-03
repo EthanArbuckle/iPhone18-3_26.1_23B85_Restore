@@ -1,28 +1,28 @@
 @interface PTChoiceRow
 - (BOOL)isEncodable;
-- (BOOL)isEqual:(id)a3;
-- (PTChoiceRow)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PTChoiceRow)initWithCoder:(id)coder;
 - (PTChoiceRowDataSource)dataSource;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)indexPathForValue:(id)a3;
-- (id)possibleValues:(id)a3 titles:(id)a4;
-- (id)shortTitleForRow:(int64_t)a3 inSection:(int64_t)a4;
-- (id)titleForRow:(int64_t)a3 inSection:(int64_t)a4;
-- (id)titleForSection:(int64_t)a3;
-- (id)valueForRow:(int64_t)a3 inSection:(int64_t)a4;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)indexPathForValue:(id)value;
+- (id)possibleValues:(id)values titles:(id)titles;
+- (id)shortTitleForRow:(int64_t)row inSection:(int64_t)section;
+- (id)titleForRow:(int64_t)row inSection:(int64_t)section;
+- (id)titleForSection:(int64_t)section;
+- (id)valueForRow:(int64_t)row inSection:(int64_t)section;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PTChoiceRow
 
-- (id)possibleValues:(id)a3 titles:(id)a4
+- (id)possibleValues:(id)values titles:(id)titles
 {
-  v6 = a4;
-  [(PTChoiceRow *)self setPossibleValues:a3];
-  [(PTChoiceRow *)self setPossibleTitles:v6];
+  titlesCopy = titles;
+  [(PTChoiceRow *)self setPossibleValues:values];
+  [(PTChoiceRow *)self setPossibleTitles:titlesCopy];
 
   return self;
 }
@@ -44,13 +44,13 @@
   return v5;
 }
 
-- (id)titleForSection:(int64_t)a3
+- (id)titleForSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_dataSource);
-    v7 = [v6 choiceRow:self titleForSection:a3];
+    v7 = [v6 choiceRow:self titleForSection:section];
   }
 
   else
@@ -61,13 +61,13 @@
   return v7;
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_dataSource);
-    v7 = [v6 choiceRow:self numberOfRowsInSection:a3];
+    v7 = [v6 choiceRow:self numberOfRowsInSection:section];
   }
 
   else
@@ -78,60 +78,60 @@
   return v7;
 }
 
-- (id)valueForRow:(int64_t)a3 inSection:(int64_t)a4
+- (id)valueForRow:(int64_t)row inSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (WeakRetained)
   {
     v8 = objc_loadWeakRetained(&self->_dataSource);
-    v9 = [v8 choiceRow:self valueForRow:a3 inSection:a4];
+    v9 = [v8 choiceRow:self valueForRow:row inSection:section];
   }
 
   else
   {
-    v9 = [(NSArray *)self->_possibleValues objectAtIndex:a3];
+    v9 = [(NSArray *)self->_possibleValues objectAtIndex:row];
   }
 
   return v9;
 }
 
-- (id)titleForRow:(int64_t)a3 inSection:(int64_t)a4
+- (id)titleForRow:(int64_t)row inSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (WeakRetained)
   {
     v8 = objc_loadWeakRetained(&self->_dataSource);
-    v9 = [v8 choiceRow:self titleForRow:a3 inSection:a4];
+    v9 = [v8 choiceRow:self titleForRow:row inSection:section];
   }
 
   else
   {
-    v9 = [(NSArray *)self->_possibleTitles objectAtIndex:a3];
+    v9 = [(NSArray *)self->_possibleTitles objectAtIndex:row];
   }
 
   return v9;
 }
 
-- (id)shortTitleForRow:(int64_t)a3 inSection:(int64_t)a4
+- (id)shortTitleForRow:(int64_t)row inSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (WeakRetained)
   {
     v8 = objc_loadWeakRetained(&self->_dataSource);
-    v9 = [v8 choiceRow:self shortTitleForRow:a3 inSection:a4];
+    v9 = [v8 choiceRow:self shortTitleForRow:row inSection:section];
   }
 
   else
   {
-    v9 = [(NSArray *)self->_possibleShortTitles objectAtIndex:a3];
+    v9 = [(NSArray *)self->_possibleShortTitles objectAtIndex:row];
   }
 
   return v9;
 }
 
-- (id)indexPathForValue:(id)a3
+- (id)indexPathForValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   if ([(PTChoiceRow *)self numberOfSections]< 1)
   {
 LABEL_8:
@@ -154,7 +154,7 @@ LABEL_7:
     while (1)
     {
       v7 = [(PTChoiceRow *)self valueForRow:v6 inSection:v5];
-      if ([v4 isEqual:v7])
+      if ([valueCopy isEqual:v7])
       {
         break;
       }
@@ -171,10 +171,10 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -183,7 +183,7 @@ LABEL_7:
   {
     v7.receiver = self;
     v7.super_class = PTChoiceRow;
-    if ([(PTRow *)&v7 isEqual:v4]&& BSEqualObjects() && BSEqualObjects())
+    if ([(PTRow *)&v7 isEqual:equalCopy]&& BSEqualObjects() && BSEqualObjects())
     {
       v5 = BSEqualObjects();
     }
@@ -199,17 +199,17 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
+  builder = [MEMORY[0x277CF0C40] builder];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __19__PTChoiceRow_hash__block_invoke;
   v10[3] = &unk_27835ECA8;
   v10[4] = self;
-  v4 = [v3 appendHashingBlocks:{v10, 0}];
-  v5 = [v3 appendObject:self->_possibleValues];
-  v6 = [v3 appendObject:self->_possibleTitles];
-  v7 = [v3 appendObject:self->_possibleShortTitles];
-  v8 = [v3 hash];
+  v4 = [builder appendHashingBlocks:{v10, 0}];
+  v5 = [builder appendObject:self->_possibleValues];
+  v6 = [builder appendObject:self->_possibleTitles];
+  v7 = [builder appendObject:self->_possibleShortTitles];
+  v8 = [builder hash];
 
   return v8;
 }
@@ -221,49 +221,49 @@ id __19__PTChoiceRow_hash__block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v2, sel_hash);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PTChoiceRow;
-  v4 = [(PTRow *)&v6 copyWithZone:a3];
+  v4 = [(PTRow *)&v6 copyWithZone:zone];
   [v4 setPossibleValues:self->_possibleValues];
   [v4 setPossibleTitles:self->_possibleTitles];
   [v4 setPossibleShortTitles:self->_possibleShortTitles];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PTChoiceRow;
-  v4 = a3;
-  [(PTRow *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_possibleValues forKey:{@"values", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_possibleTitles forKey:@"titles"];
-  [v4 encodeObject:self->_possibleShortTitles forKey:@"shortTitles"];
+  coderCopy = coder;
+  [(PTRow *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_possibleValues forKey:{@"values", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_possibleTitles forKey:@"titles"];
+  [coderCopy encodeObject:self->_possibleShortTitles forKey:@"shortTitles"];
 }
 
-- (PTChoiceRow)initWithCoder:(id)a3
+- (PTChoiceRow)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = PTChoiceRow;
-  v5 = [(PTRow *)&v20 initWithCoder:v4];
+  v5 = [(PTRow *)&v20 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
     v9 = PTPlistableClasses();
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"values"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"values"];
     possibleValues = v5->_possibleValues;
     v5->_possibleValues = v10;
 
-    v12 = [v4 decodeObjectOfClasses:v8 forKey:@"titles"];
+    v12 = [coderCopy decodeObjectOfClasses:v8 forKey:@"titles"];
     possibleTitles = v5->_possibleTitles;
     v5->_possibleTitles = v12;
 
-    v14 = [v4 decodeObjectOfClasses:v8 forKey:@"shortTitles"];
+    v14 = [coderCopy decodeObjectOfClasses:v8 forKey:@"shortTitles"];
     possibleShortTitles = v5->_possibleShortTitles;
     v5->_possibleShortTitles = v14;
 
@@ -303,13 +303,13 @@ id __19__PTChoiceRow_hash__block_invoke(uint64_t a1)
 {
   v5.receiver = self;
   v5.super_class = PTChoiceRow;
-  v3 = [(PTRow *)&v5 isEncodable];
-  if (v3)
+  isEncodable = [(PTRow *)&v5 isEncodable];
+  if (isEncodable)
   {
-    LOBYTE(v3) = PTObjectIsRecursivelyPlistable(self->_possibleValues);
+    LOBYTE(isEncodable) = PTObjectIsRecursivelyPlistable(self->_possibleValues);
   }
 
-  return v3;
+  return isEncodable;
 }
 
 - (PTChoiceRowDataSource)dataSource

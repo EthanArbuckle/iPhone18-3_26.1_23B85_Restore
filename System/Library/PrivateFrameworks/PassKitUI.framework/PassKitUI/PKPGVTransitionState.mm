@@ -1,19 +1,19 @@
 @interface PKPGVTransitionState
-+ (PKPGVTransitionState)_createWithSourceLayoutState:(void *)a3 inReferenceView:;
-+ (PKPGVTransitionState)createWithSourceLayoutState:(void *)a3 inReferenceView:;
-- (PKPGVTransitionState)_stateWithDestinationLayoutState:(PKPGVTransitionState *)a1;
++ (PKPGVTransitionState)_createWithSourceLayoutState:(void *)state inReferenceView:;
++ (PKPGVTransitionState)createWithSourceLayoutState:(void *)state inReferenceView:;
+- (PKPGVTransitionState)_stateWithDestinationLayoutState:(PKPGVTransitionState *)state;
 @end
 
 @implementation PKPGVTransitionState
 
-+ (PKPGVTransitionState)_createWithSourceLayoutState:(void *)a3 inReferenceView:
++ (PKPGVTransitionState)_createWithSourceLayoutState:(void *)state inReferenceView:
 {
-  v5 = a3;
+  stateCopy = state;
   v6 = a2;
   objc_opt_self();
   v7 = [PKPGVTransitionState alloc];
   v8 = v6;
-  result = v5;
+  result = stateCopy;
   v10 = result;
   if (!v7)
   {
@@ -28,7 +28,7 @@
     v7 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_referenceView, a3);
+      objc_storeStrong(&v11->_referenceView, state);
       objc_storeStrong(&v7->_sourceLayoutState, a2);
       objc_storeStrong(&v7->_destinationLayoutState, a2);
     }
@@ -42,32 +42,32 @@ LABEL_6:
   return result;
 }
 
-+ (PKPGVTransitionState)createWithSourceLayoutState:(void *)a3 inReferenceView:
++ (PKPGVTransitionState)createWithSourceLayoutState:(void *)state inReferenceView:
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = a2;
   v6 = objc_opt_self();
-  v7 = [(PKPGVTransitionState *)v6 _createWithSourceLayoutState:v5 inReferenceView:v4];
+  v7 = [(PKPGVTransitionState *)v6 _createWithSourceLayoutState:v5 inReferenceView:stateCopy];
 
   return v7;
 }
 
-- (PKPGVTransitionState)_stateWithDestinationLayoutState:(PKPGVTransitionState *)a1
+- (PKPGVTransitionState)_stateWithDestinationLayoutState:(PKPGVTransitionState *)state
 {
   result = a2;
   v5 = result;
-  if (!a1)
+  if (!state)
   {
     goto LABEL_4;
   }
 
   if (result)
   {
-    a1 = [PKPGVTransitionState _createWithSourceLayoutState:a1->_referenceView inReferenceView:?];
-    objc_storeStrong(&a1->_destinationLayoutState, a2);
+    state = [PKPGVTransitionState _createWithSourceLayoutState:state->_referenceView inReferenceView:?];
+    objc_storeStrong(&state->_destinationLayoutState, a2);
 LABEL_4:
 
-    return a1;
+    return state;
   }
 
   __break(1u);

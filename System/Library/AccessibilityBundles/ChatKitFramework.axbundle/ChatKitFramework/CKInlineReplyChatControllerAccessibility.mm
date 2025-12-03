@@ -1,27 +1,27 @@
 @interface CKInlineReplyChatControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_animateIn:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_animateIn:(BOOL)in;
 @end
 
 @implementation CKInlineReplyChatControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKInlineReplyChatController" hasInstanceMethod:@"_animateOut" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CKInlineReplyChatController" hasInstanceMethod:@"_animateIn:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CKInlineReplyChatController" isKindOfClass:@"CKCoreChatController"];
-  [v3 validateClass:@"CKCoreChatController" hasInstanceMethod:@"collectionViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKInlineReplyCollectionViewController" isKindOfClass:@"CKTranscriptCollectionViewController"];
-  [v3 validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKInlineReplyChatController" hasInstanceMethod:@"_animateOut" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CKInlineReplyChatController" hasInstanceMethod:@"_animateIn:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CKInlineReplyChatController" isKindOfClass:@"CKCoreChatController"];
+  [validationsCopy validateClass:@"CKCoreChatController" hasInstanceMethod:@"collectionViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKInlineReplyCollectionViewController" isKindOfClass:@"CKTranscriptCollectionViewController"];
+  [validationsCopy validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
 }
 
-- (void)_animateIn:(BOOL)a3
+- (void)_animateIn:(BOOL)in
 {
   v15[1] = *MEMORY[0x29EDCA608];
   v14.receiver = self;
   v14.super_class = CKInlineReplyChatControllerAccessibility;
-  [(CKInlineReplyChatControllerAccessibility *)&v14 _animateIn:a3];
+  [(CKInlineReplyChatControllerAccessibility *)&v14 _animateIn:in];
   v4 = [(CKInlineReplyChatControllerAccessibility *)self safeValueForKeyPath:@"collectionViewController.collectionView"];
   if (v4)
   {

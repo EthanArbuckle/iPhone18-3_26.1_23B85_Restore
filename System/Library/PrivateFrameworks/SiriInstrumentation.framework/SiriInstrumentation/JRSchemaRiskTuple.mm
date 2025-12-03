@@ -1,27 +1,27 @@
 @interface JRSchemaRiskTuple
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaRiskTuple)initWithDictionary:(id)a3;
-- (JRSchemaRiskTuple)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaRiskTuple)initWithDictionary:(id)dictionary;
+- (JRSchemaRiskTuple)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (unsigned)risksAtIndex:(unint64_t)a3;
-- (void)addRisks:(unsigned int)a3;
-- (void)writeTo:(id)a3;
+- (unsigned)risksAtIndex:(unint64_t)index;
+- (void)addRisks:(unsigned int)risks;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaRiskTuple
 
-- (JRSchemaRiskTuple)initWithDictionary:(id)a3
+- (JRSchemaRiskTuple)initWithDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = JRSchemaRiskTuple;
   v5 = [(JRSchemaRiskTuple *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"risks"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"risks"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,30 +69,30 @@
   return v5;
 }
 
-- (JRSchemaRiskTuple)initWithJSON:(id)a3
+- (JRSchemaRiskTuple)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaRiskTuple *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaRiskTuple *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaRiskTuple *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -105,31 +105,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_risks count])
   {
-    v4 = [(JRSchemaRiskTuple *)self risks];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"risks"];
+    risks = [(JRSchemaRiskTuple *)self risks];
+    v5 = [risks copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"risks"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(JRSchemaRiskTuple *)self risks];
-    v6 = [v4 risks];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    risks = [(JRSchemaRiskTuple *)self risks];
+    risks2 = [equalCopy risks];
+    v7 = risks2;
+    if ((risks != 0) != (risks2 == 0))
     {
-      v8 = [(JRSchemaRiskTuple *)self risks];
-      if (!v8)
+      risks3 = [(JRSchemaRiskTuple *)self risks];
+      if (!risks3)
       {
 
 LABEL_10:
@@ -137,10 +137,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(JRSchemaRiskTuple *)self risks];
-      v11 = [v4 risks];
-      v12 = [v10 isEqual:v11];
+      v9 = risks3;
+      risks4 = [(JRSchemaRiskTuple *)self risks];
+      risks5 = [equalCopy risks];
+      v12 = [risks4 isEqual:risks5];
 
       if (v12)
       {
@@ -159,10 +159,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -196,23 +196,23 @@ LABEL_8:
   }
 }
 
-- (unsigned)risksAtIndex:(unint64_t)a3
+- (unsigned)risksAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_risks objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_risks objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addRisks:(unsigned int)a3
+- (void)addRisks:(unsigned int)risks
 {
-  v3 = *&a3;
+  v3 = *&risks;
   risks = self->_risks;
   if (!risks)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_risks;
-    self->_risks = v6;
+    self->_risks = array;
 
     risks = self->_risks;
   }

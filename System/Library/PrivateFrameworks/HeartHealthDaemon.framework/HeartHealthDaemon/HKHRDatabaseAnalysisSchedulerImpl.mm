@@ -1,69 +1,69 @@
 @interface HKHRDatabaseAnalysisSchedulerImpl
-- (BOOL)_enterStateIfPossible:(unint64_t)a3;
+- (BOOL)_enterStateIfPossible:(unint64_t)possible;
 - (HKHRDatabaseAnalysisSchedulerDelegate)delegate;
-- (HKHRDatabaseAnalysisSchedulerImpl)initWithProfile:(id)a3 identifier:(id)a4 loggingCategory:(id)a5 maximumDelay:(double)a6 retryDelay:(double)a7 breadcrumbManager:(id)a8;
-- (HKHRDatabaseAnalysisSchedulerImpl)initWithProfile:(id)a3 identifier:(id)a4 loggingCategory:(id)a5 maximumDelay:(double)a6 retryDelay:(double)a7 breadcrumbManager:(id)a8 gatedActivityFactory:(id)a9 persistentStateDefaults:(id)a10 operation:(id)a11;
+- (HKHRDatabaseAnalysisSchedulerImpl)initWithProfile:(id)profile identifier:(id)identifier loggingCategory:(id)category maximumDelay:(double)delay retryDelay:(double)retryDelay breadcrumbManager:(id)manager;
+- (HKHRDatabaseAnalysisSchedulerImpl)initWithProfile:(id)profile identifier:(id)identifier loggingCategory:(id)category maximumDelay:(double)delay retryDelay:(double)retryDelay breadcrumbManager:(id)manager gatedActivityFactory:(id)factory persistentStateDefaults:(id)self0 operation:(id)self1;
 - (id)_activityCompletion;
 - (id)_gatedActivity;
 - (void)_maybeRetryLater;
-- (void)_requestGatedActivityRunWithDelay:(double)a3;
+- (void)_requestGatedActivityRunWithDelay:(double)delay;
 - (void)_resetRetryCounter;
-- (void)_runActivity:(id)a3 withCompletion:(id)a4;
-- (void)_setActivityCompletion:(id)a3;
-- (void)daemonReady:(id)a3;
+- (void)_runActivity:(id)activity withCompletion:(id)completion;
+- (void)_setActivityCompletion:(id)completion;
+- (void)daemonReady:(id)ready;
 - (void)forceAnalysis;
-- (void)performWorkForOperation:(id)a3 profile:(id)a4 databaseAccessibilityAssertion:(id)a5 completion:(id)a6;
+- (void)performWorkForOperation:(id)operation profile:(id)profile databaseAccessibilityAssertion:(id)assertion completion:(id)completion;
 - (void)scheduleAnalysis;
 @end
 
 @implementation HKHRDatabaseAnalysisSchedulerImpl
 
-- (HKHRDatabaseAnalysisSchedulerImpl)initWithProfile:(id)a3 identifier:(id)a4 loggingCategory:(id)a5 maximumDelay:(double)a6 retryDelay:(double)a7 breadcrumbManager:(id)a8
+- (HKHRDatabaseAnalysisSchedulerImpl)initWithProfile:(id)profile identifier:(id)identifier loggingCategory:(id)category maximumDelay:(double)delay retryDelay:(double)retryDelay breadcrumbManager:(id)manager
 {
-  v14 = a8;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [[HKHRDatabaseAnalysisSchedulerGatedActivityFactoryImpl alloc] initWithIdentifier:v16 loggingCategory:v15];
-  v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v20 = [objc_alloc(MEMORY[0x277D10800]) initWithProfile:v17 debugIdentifier:@"HKHRDatabaseAnalysisSchedulerOperation" delegate:self];
-  v21 = [(HKHRDatabaseAnalysisSchedulerImpl *)self initWithProfile:v17 identifier:v16 loggingCategory:v15 maximumDelay:v14 retryDelay:v18 breadcrumbManager:v19 gatedActivityFactory:a6 persistentStateDefaults:a7 operation:v20];
+  managerCopy = manager;
+  categoryCopy = category;
+  identifierCopy = identifier;
+  profileCopy = profile;
+  v18 = [[HKHRDatabaseAnalysisSchedulerGatedActivityFactoryImpl alloc] initWithIdentifier:identifierCopy loggingCategory:categoryCopy];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v20 = [objc_alloc(MEMORY[0x277D10800]) initWithProfile:profileCopy debugIdentifier:@"HKHRDatabaseAnalysisSchedulerOperation" delegate:self];
+  v21 = [(HKHRDatabaseAnalysisSchedulerImpl *)self initWithProfile:profileCopy identifier:identifierCopy loggingCategory:categoryCopy maximumDelay:managerCopy retryDelay:v18 breadcrumbManager:standardUserDefaults gatedActivityFactory:delay persistentStateDefaults:retryDelay operation:v20];
 
   return v21;
 }
 
-- (HKHRDatabaseAnalysisSchedulerImpl)initWithProfile:(id)a3 identifier:(id)a4 loggingCategory:(id)a5 maximumDelay:(double)a6 retryDelay:(double)a7 breadcrumbManager:(id)a8 gatedActivityFactory:(id)a9 persistentStateDefaults:(id)a10 operation:(id)a11
+- (HKHRDatabaseAnalysisSchedulerImpl)initWithProfile:(id)profile identifier:(id)identifier loggingCategory:(id)category maximumDelay:(double)delay retryDelay:(double)retryDelay breadcrumbManager:(id)manager gatedActivityFactory:(id)factory persistentStateDefaults:(id)self0 operation:(id)self1
 {
-  v19 = a3;
-  v20 = a4;
-  v32 = a5;
-  v31 = a8;
-  v30 = a9;
-  v21 = a10;
-  v22 = a11;
+  profileCopy = profile;
+  identifierCopy = identifier;
+  categoryCopy = category;
+  managerCopy = manager;
+  factoryCopy = factory;
+  defaultsCopy = defaults;
+  operationCopy = operation;
   v33.receiver = self;
   v33.super_class = HKHRDatabaseAnalysisSchedulerImpl;
   v23 = [(HKHRDatabaseAnalysisSchedulerImpl *)&v33 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeWeak(&v23->_profile, v19);
-    v25 = [v20 copy];
+    objc_storeWeak(&v23->_profile, profileCopy);
+    v25 = [identifierCopy copy];
     identifier = v24->_identifier;
     v24->_identifier = v25;
 
-    objc_storeStrong(&v24->_loggingCategory, a5);
-    v24->_maximumDelay = a6;
-    v24->_retryDelay = a7;
-    objc_storeStrong(&v24->_breadcrumbManager, a8);
-    objc_storeStrong(&v24->_gatedActivityFactory, a9);
+    objc_storeStrong(&v24->_loggingCategory, category);
+    v24->_maximumDelay = delay;
+    v24->_retryDelay = retryDelay;
+    objc_storeStrong(&v24->_breadcrumbManager, manager);
+    objc_storeStrong(&v24->_gatedActivityFactory, factory);
     v24->_lock._os_unfair_lock_opaque = 0;
     v24->_state = 0;
-    objc_storeStrong(&v24->_persistentStateDefaults, a10);
-    objc_storeStrong(&v24->_operation, a11);
+    objc_storeStrong(&v24->_persistentStateDefaults, defaults);
+    objc_storeStrong(&v24->_operation, operation);
     WeakRetained = objc_loadWeakRetained(&v24->_profile);
-    v28 = [WeakRetained daemon];
-    [v28 registerDaemonReadyObserver:v24 queue:0];
+    daemon = [WeakRetained daemon];
+    [daemon registerDaemonReadyObserver:v24 queue:0];
   }
 
   return v24;
@@ -78,7 +78,7 @@
   {
     identifier = self->_identifier;
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
     v9 = identifier;
     _os_log_impl(&dword_229486000, loggingCategory, OS_LOG_TYPE_DEFAULT, "[%{public}@:%{public}@] Told to schedule analysis", &v6, 0x16u);
@@ -97,19 +97,19 @@
   {
     identifier = self->_identifier;
     *buf = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
     v11 = identifier;
     _os_log_impl(&dword_229486000, loggingCategory, OS_LOG_TYPE_DEFAULT, "[%{public}@:%{public}@] Told to force analysis", buf, 0x16u);
   }
 
-  v5 = [(HKHRDatabaseAnalysisSchedulerImpl *)self _gatedActivity];
+  _gatedActivity = [(HKHRDatabaseAnalysisSchedulerImpl *)self _gatedActivity];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__HKHRDatabaseAnalysisSchedulerImpl_forceAnalysis__block_invoke;
   v7[3] = &unk_27865FFB8;
   v7[4] = self;
-  [v5 runUngatedWithCompletion:v7];
+  [_gatedActivity runUngatedWithCompletion:v7];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -147,11 +147,11 @@ void __50__HKHRDatabaseAnalysisSchedulerImpl_forceAnalysis__block_invoke(uint64_
   return v3;
 }
 
-- (void)_setActivityCompletion:(id)a3
+- (void)_setActivityCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
-  v5 = MEMORY[0x22AACDB50](v4);
+  v5 = MEMORY[0x22AACDB50](completionCopy);
 
   lock_activityCompletion = self->_lock_activityCompletion;
   self->_lock_activityCompletion = v5;
@@ -169,17 +169,17 @@ void __50__HKHRDatabaseAnalysisSchedulerImpl_forceAnalysis__block_invoke(uint64_
   return v4;
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   _HKInitializeLogging();
   loggingCategory = self->_loggingCategory;
   if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_DEFAULT))
   {
     identifier = self->_identifier;
     *buf = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = identifier;
     _os_log_impl(&dword_229486000, loggingCategory, OS_LOG_TYPE_DEFAULT, "[%{public}@:%{public}@] Daemon ready", buf, 0x16u);
@@ -224,16 +224,16 @@ void __49__HKHRDatabaseAnalysisSchedulerImpl_daemonReady___block_invoke(uint64_t
   [WeakRetained _runActivity:v7 withCompletion:v6];
 }
 
-- (void)_requestGatedActivityRunWithDelay:(double)a3
+- (void)_requestGatedActivityRunWithDelay:(double)delay
 {
-  v5 = [(HKHRDatabaseAnalysisSchedulerImpl *)self _gatedActivity];
+  _gatedActivity = [(HKHRDatabaseAnalysisSchedulerImpl *)self _gatedActivity];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__HKHRDatabaseAnalysisSchedulerImpl__requestGatedActivityRunWithDelay___block_invoke;
   v6[3] = &unk_278660008;
   v6[4] = self;
-  *&v6[5] = a3;
-  [v5 requestRunWithMaximumDelay:v6 completion:a3];
+  *&v6[5] = delay;
+  [_gatedActivity requestRunWithMaximumDelay:v6 completion:delay];
 }
 
 void __71__HKHRDatabaseAnalysisSchedulerImpl__requestGatedActivityRunWithDelay___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -266,24 +266,24 @@ void __71__HKHRDatabaseAnalysisSchedulerImpl__requestGatedActivityRunWithDelay__
 - (void)_maybeRetryLater
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HKHRDatabaseAnalysisSchedulerImpl *)self retryCountKey];
-  v4 = [(NSUserDefaults *)self->_persistentStateDefaults hk_keyExists:v3];
+  retryCountKey = [(HKHRDatabaseAnalysisSchedulerImpl *)self retryCountKey];
+  v4 = [(NSUserDefaults *)self->_persistentStateDefaults hk_keyExists:retryCountKey];
   persistentStateDefaults = self->_persistentStateDefaults;
   if (v4)
   {
-    v6 = [(NSUserDefaults *)persistentStateDefaults integerForKey:v3];
+    v6 = [(NSUserDefaults *)persistentStateDefaults integerForKey:retryCountKey];
     v7 = v6 + 1;
-    [(NSUserDefaults *)self->_persistentStateDefaults setInteger:v6 + 1 forKey:v3];
+    [(NSUserDefaults *)self->_persistentStateDefaults setInteger:v6 + 1 forKey:retryCountKey];
     if (v6 >= 4)
     {
-      [(NSUserDefaults *)self->_persistentStateDefaults removeObjectForKey:v3];
+      [(NSUserDefaults *)self->_persistentStateDefaults removeObjectForKey:retryCountKey];
       _HKInitializeLogging();
       loggingCategory = self->_loggingCategory;
       if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_DEFAULT))
       {
         identifier = self->_identifier;
         v15 = 138543874;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2114;
         v18 = identifier;
         v19 = 2050;
@@ -298,7 +298,7 @@ void __71__HKHRDatabaseAnalysisSchedulerImpl__requestGatedActivityRunWithDelay__
   else
   {
     v7 = 1;
-    [(NSUserDefaults *)persistentStateDefaults setInteger:1 forKey:v3];
+    [(NSUserDefaults *)persistentStateDefaults setInteger:1 forKey:retryCountKey];
   }
 
   [(HKHRDatabaseAnalysisSchedulerImpl *)self _retryDelayGivenRetryCount:v7];
@@ -309,7 +309,7 @@ void __71__HKHRDatabaseAnalysisSchedulerImpl__requestGatedActivityRunWithDelay__
   {
     v13 = self->_identifier;
     v15 = 138544130;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2114;
     v18 = v13;
     v19 = 2050;
@@ -326,7 +326,7 @@ LABEL_9:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_enterStateIfPossible:(unint64_t)a3
+- (BOOL)_enterStateIfPossible:(unint64_t)possible
 {
   v30 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -336,7 +336,7 @@ LABEL_9:
   {
     if (state != 2)
     {
-      if (state == 3 && a3 != 1)
+      if (state == 3 && possible != 1)
       {
         goto LABEL_20;
       }
@@ -344,7 +344,7 @@ LABEL_9:
       goto LABEL_14;
     }
 
-    if (((a3 - 1) & 0xFFFFFFFFFFFFFFFDLL) == 0)
+    if (((possible - 1) & 0xFFFFFFFFFFFFFFFDLL) == 0)
     {
       goto LABEL_14;
     }
@@ -365,18 +365,18 @@ LABEL_20:
       }
 
       identifier = self->_identifier;
-      if (a3 - 1 > 2)
+      if (possible - 1 > 2)
       {
         v20 = @"WaitingForDaemonReady";
       }
 
       else
       {
-        v20 = off_278660050[a3 - 1];
+        v20 = off_278660050[possible - 1];
       }
 
       v22 = 138544130;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2114;
       v25 = identifier;
       v26 = 2114;
@@ -393,7 +393,7 @@ LABEL_20:
 
   if (!state)
   {
-    if (a3 == 1)
+    if (possible == 1)
     {
       goto LABEL_14;
     }
@@ -401,7 +401,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (state == 1 && a3 != 2)
+  if (state == 1 && possible != 2)
   {
     goto LABEL_20;
   }
@@ -422,18 +422,18 @@ LABEL_14:
     }
 
     v13 = self->_identifier;
-    if (a3 - 1 > 2)
+    if (possible - 1 > 2)
     {
       v14 = @"WaitingForDaemonReady";
     }
 
     else
     {
-      v14 = off_278660050[a3 - 1];
+      v14 = off_278660050[possible - 1];
     }
 
     v22 = 138544130;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2114;
     v25 = v13;
     v26 = 2114;
@@ -444,7 +444,7 @@ LABEL_14:
     _os_log_impl(&dword_229486000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@:%{public}@] State will change from %{public}@ to %{public}@", &v22, 0x2Au);
   }
 
-  self->_state = a3;
+  self->_state = possible;
   v12 = 1;
 LABEL_28:
   os_unfair_lock_unlock(&self->_lock);
@@ -455,18 +455,18 @@ LABEL_28:
 - (void)_resetRetryCounter
 {
   persistentStateDefaults = self->_persistentStateDefaults;
-  v3 = [(HKHRDatabaseAnalysisSchedulerImpl *)self retryCountKey];
-  [(NSUserDefaults *)persistentStateDefaults removeObjectForKey:v3];
+  retryCountKey = [(HKHRDatabaseAnalysisSchedulerImpl *)self retryCountKey];
+  [(NSUserDefaults *)persistentStateDefaults removeObjectForKey:retryCountKey];
 }
 
-- (void)_runActivity:(id)a3 withCompletion:(id)a4
+- (void)_runActivity:(id)activity withCompletion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   breadcrumbManager = self->_breadcrumbManager;
-  v8 = a3;
+  activityCopy = activity;
   [(HDHRAFibBurdenSevenDayAnalysisBreadcrumbManaging *)breadcrumbManager dropBreadcrumb:1];
-  LODWORD(breadcrumbManager) = [v8 shouldDefer];
+  LODWORD(breadcrumbManager) = [activityCopy shouldDefer];
 
   if (breadcrumbManager)
   {
@@ -476,19 +476,19 @@ LABEL_28:
     {
       identifier = self->_identifier;
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = identifier;
       _os_log_impl(&dword_229486000, loggingCategory, OS_LOG_TYPE_DEFAULT, "[%{public}@:%{public}@] Activity run but immediately deferred, deferring", buf, 0x16u);
     }
 
     [(HDHRAFibBurdenSevenDayAnalysisBreadcrumbManaging *)self->_breadcrumbManager dropAnalysisResultBreadcrumbWithContext:@"XPC activity deferred before maintenance"];
-    v6[2](v6, 2, 0);
+    completionCopy[2](completionCopy, 2, 0);
   }
 
   else if ([(HKHRDatabaseAnalysisSchedulerImpl *)self _enterStateIfPossible:2])
   {
-    [(HKHRDatabaseAnalysisSchedulerImpl *)self _setActivityCompletion:v6];
+    [(HKHRDatabaseAnalysisSchedulerImpl *)self _setActivityCompletion:completionCopy];
     operation = self->_operation;
     v15 = 0;
     v12 = [(HDProtectedDataOperation *)operation requestWorkWithPriority:2 error:&v15];
@@ -502,7 +502,7 @@ LABEL_28:
       }
 
       [(HKHRDatabaseAnalysisSchedulerImpl *)self _setActivityCompletion:0];
-      (v6)[2](v6, 1, v13);
+      (completionCopy)[2](completionCopy, 1, v13);
     }
   }
 
@@ -515,28 +515,28 @@ LABEL_28:
     }
 
     [(HDHRAFibBurdenSevenDayAnalysisBreadcrumbManaging *)self->_breadcrumbManager dropAnalysisResultBreadcrumbWithContext:@"Unable to transition to waiting for maintenance operation"];
-    v6[2](v6, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
     [(HKHRDatabaseAnalysisSchedulerImpl *)self _maybeRetryLater];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performWorkForOperation:(id)a3 profile:(id)a4 databaseAccessibilityAssertion:(id)a5 completion:(id)a6
+- (void)performWorkForOperation:(id)operation profile:(id)profile databaseAccessibilityAssertion:(id)assertion completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a6;
+  assertionCopy = assertion;
+  completionCopy = completion;
   [(HDHRAFibBurdenSevenDayAnalysisBreadcrumbManaging *)self->_breadcrumbManager dropBreadcrumb:2];
-  v10 = [(HKHRDatabaseAnalysisSchedulerImpl *)self _activityCompletion];
+  _activityCompletion = [(HKHRDatabaseAnalysisSchedulerImpl *)self _activityCompletion];
 
-  if (v10)
+  if (_activityCompletion)
   {
-    v11 = [(HKHRDatabaseAnalysisSchedulerImpl *)self _activityCompletion];
-    v12 = [(HKHRDatabaseAnalysisSchedulerImpl *)self _gatedActivity];
-    v13 = [v12 shouldDefer];
+    _activityCompletion2 = [(HKHRDatabaseAnalysisSchedulerImpl *)self _activityCompletion];
+    _gatedActivity = [(HKHRDatabaseAnalysisSchedulerImpl *)self _gatedActivity];
+    shouldDefer = [_gatedActivity shouldDefer];
 
-    if (v13)
+    if (shouldDefer)
     {
       _HKInitializeLogging();
       loggingCategory = self->_loggingCategory;
@@ -544,7 +544,7 @@ LABEL_28:
       {
         identifier = self->_identifier;
         *buf = 138543618;
-        v30 = self;
+        selfCopy4 = self;
         v31 = 2114;
         v32 = identifier;
         _os_log_impl(&dword_229486000, loggingCategory, OS_LOG_TYPE_DEFAULT, "[%{public}@:%{public}@] Activity run but deferred after maintenance operation, deferring", buf, 0x16u);
@@ -552,15 +552,15 @@ LABEL_28:
 
       [(HKHRDatabaseAnalysisSchedulerImpl *)self _enterStateIfPossible:1];
       [(HDHRAFibBurdenSevenDayAnalysisBreadcrumbManaging *)self->_breadcrumbManager dropAnalysisResultBreadcrumbWithContext:@"XPC activity deferred after maintenance"];
-      v11[2](v11, 2, 0);
+      _activityCompletion2[2](_activityCompletion2, 2, 0);
       [(HKHRDatabaseAnalysisSchedulerImpl *)self _setActivityCompletion:0];
     }
 
     else
     {
-      if (v8)
+      if (assertionCopy)
       {
-        if ([v8 state] == 3)
+        if ([assertionCopy state] == 3)
         {
           _HKInitializeLogging();
           v18 = self->_loggingCategory;
@@ -568,7 +568,7 @@ LABEL_28:
           {
             v19 = self->_identifier;
             *buf = 138543618;
-            v30 = self;
+            selfCopy4 = self;
             v31 = 2114;
             v32 = v19;
             _os_log_impl(&dword_229486000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@:%{public}@] Activity run but assertion invalidated, attempting retry later", buf, 0x16u);
@@ -589,8 +589,8 @@ LABEL_28:
             v26[2] = __111__HKHRDatabaseAnalysisSchedulerImpl_performWorkForOperation_profile_databaseAccessibilityAssertion_completion___block_invoke;
             v26[3] = &unk_278660030;
             v26[4] = self;
-            v27 = v11;
-            v28 = v9;
+            v27 = _activityCompletion2;
+            v28 = completionCopy;
             [WeakRetained analysisSchedulerDidFire:self completion:v26];
 
 LABEL_24:
@@ -617,7 +617,7 @@ LABEL_24:
         {
           v23 = self->_identifier;
           *buf = 138543618;
-          v30 = self;
+          selfCopy4 = self;
           v31 = 2114;
           v32 = v23;
           _os_log_impl(&dword_229486000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@:%{public}@] Activity run but assertion returned nil, attempting retry later", buf, 0x16u);
@@ -629,12 +629,12 @@ LABEL_24:
       }
 
       [(HDHRAFibBurdenSevenDayAnalysisBreadcrumbManaging *)breadcrumbManager dropAnalysisResultBreadcrumbWithContext:v21];
-      v11[2](v11, 1, 0);
+      _activityCompletion2[2](_activityCompletion2, 1, 0);
       [(HKHRDatabaseAnalysisSchedulerImpl *)self _setActivityCompletion:0];
       [(HKHRDatabaseAnalysisSchedulerImpl *)self _maybeRetryLater];
     }
 
-    v9[2](v9);
+    completionCopy[2](completionCopy);
     goto LABEL_24;
   }
 
@@ -644,7 +644,7 @@ LABEL_24:
   {
     v17 = self->_identifier;
     *buf = 138543618;
-    v30 = self;
+    selfCopy4 = self;
     v31 = 2114;
     v32 = v17;
     _os_log_impl(&dword_229486000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@:%{public}@] Activity closure missing, attempting retry later", buf, 0x16u);
@@ -653,7 +653,7 @@ LABEL_24:
   [(HKHRDatabaseAnalysisSchedulerImpl *)self _enterStateIfPossible:1];
   [(HDHRAFibBurdenSevenDayAnalysisBreadcrumbManaging *)self->_breadcrumbManager dropAnalysisResultBreadcrumbWithContext:@"Activity closure found nil. Fail to return activity result state"];
   [(HKHRDatabaseAnalysisSchedulerImpl *)self _maybeRetryLater];
-  v9[2](v9);
+  completionCopy[2](completionCopy);
 LABEL_25:
 
   v25 = *MEMORY[0x277D85DE8];

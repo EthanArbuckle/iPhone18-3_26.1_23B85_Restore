@@ -5,39 +5,39 @@
 - (CGPoint)baseEffectiveScaleScalarMagnitude;
 - (CGVector)baseEffectiveTranslation;
 - (NSSet)stretchSources;
-- (id)addStretchSourceWithParameters:(CCUIStretchParameters)a3 primaryAxis:(int64_t)a4;
-- (id)addStretchSourceWithParameters:(CCUIStretchParameters)a3 primaryAxis:(int64_t)a4 stretchTransformer:(id)a5;
-- (void)applyStretchForChangedSource:(id)a3;
-- (void)applyStretchTo:(id)a3 applyScale:(BOOL)a4 applyTranslation:(BOOL)a5;
-- (void)beginApplyingStretchToStretchable:(id)a3;
-- (void)endApplyingStretchToStretchable:(id)a3;
+- (id)addStretchSourceWithParameters:(CCUIStretchParameters)parameters primaryAxis:(int64_t)axis;
+- (id)addStretchSourceWithParameters:(CCUIStretchParameters)parameters primaryAxis:(int64_t)axis stretchTransformer:(id)transformer;
+- (void)applyStretchForChangedSource:(id)source;
+- (void)applyStretchTo:(id)to applyScale:(BOOL)scale applyTranslation:(BOOL)translation;
+- (void)beginApplyingStretchToStretchable:(id)stretchable;
+- (void)endApplyingStretchToStretchable:(id)stretchable;
 - (void)evaluateBaseStretch;
-- (void)removeStretchSource:(id)a3;
-- (void)setStretchSources:(id)a3;
-- (void)setStretchables:(id)a3;
-- (void)setTransformersByStretchSource:(id)a3;
-- (void)updateStretchForChangedSource:(id)a3;
+- (void)removeStretchSource:(id)source;
+- (void)setStretchSources:(id)sources;
+- (void)setStretchables:(id)stretchables;
+- (void)setTransformersByStretchSource:(id)source;
+- (void)updateStretchForChangedSource:(id)source;
 @end
 
 @implementation CCUIStretchApplier
 
-- (id)addStretchSourceWithParameters:(CCUIStretchParameters)a3 primaryAxis:(int64_t)a4
+- (id)addStretchSourceWithParameters:(CCUIStretchParameters)parameters primaryAxis:(int64_t)axis
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v8 = self;
-  v9 = CCUIStretchApplier.addStretchSource(parameters:primaryAxis:stretchTransformer:)(a4, 0, 0, var0, var1, var2);
+  var2 = parameters.var2;
+  var1 = parameters.var1;
+  var0 = parameters.var0;
+  selfCopy = self;
+  v9 = CCUIStretchApplier.addStretchSource(parameters:primaryAxis:stretchTransformer:)(axis, 0, 0, var0, var1, var2);
 
   return v9;
 }
 
-- (id)addStretchSourceWithParameters:(CCUIStretchParameters)a3 primaryAxis:(int64_t)a4 stretchTransformer:(id)a5
+- (id)addStretchSourceWithParameters:(CCUIStretchParameters)parameters primaryAxis:(int64_t)axis stretchTransformer:(id)transformer
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v10 = _Block_copy(a5);
+  var2 = parameters.var2;
+  var1 = parameters.var1;
+  var0 = parameters.var0;
+  v10 = _Block_copy(transformer);
   if (v10)
   {
     v11 = v10;
@@ -46,46 +46,46 @@
     v13 = swift_allocObject();
     *(v13 + 16) = sub_21EA58B04;
     *(v13 + 24) = v12;
-    v14 = self;
+    selfCopy = self;
 
-    v15 = CCUIStretchApplier.addStretchSource(parameters:primaryAxis:stretchTransformer:)(a4, sub_21EA58B68, v13, var0, var1, var2);
+    v15 = CCUIStretchApplier.addStretchSource(parameters:primaryAxis:stretchTransformer:)(axis, sub_21EA58B68, v13, var0, var1, var2);
 
-    v16 = v15;
+    var2 = v15;
   }
 
   else
   {
-    v16 = [(CCUIStretchApplier *)self addStretchSourceWithParameters:a4 primaryAxis:var0, var1, var2];
+    var2 = [(CCUIStretchApplier *)self addStretchSourceWithParameters:axis primaryAxis:var0, var1, var2];
   }
 
-  return v16;
+  return var2;
 }
 
-- (void)beginApplyingStretchToStretchable:(id)a3
+- (void)beginApplyingStretchToStretchable:(id)stretchable
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  v5 = [(CCUIStretchApplier *)v6 stretchables];
-  [v5 addObject_];
+  selfCopy = self;
+  stretchables = [(CCUIStretchApplier *)selfCopy stretchables];
+  [stretchables addObject_];
 
-  [(CCUIStretchApplier *)v6 applyStretchTo:a3 applyScale:1 applyTranslation:1];
+  [(CCUIStretchApplier *)selfCopy applyStretchTo:stretchable applyScale:1 applyTranslation:1];
   swift_unknownObjectRelease();
 }
 
-- (void)endApplyingStretchToStretchable:(id)a3
+- (void)endApplyingStretchToStretchable:(id)stretchable
 {
   swift_unknownObjectRetain();
-  v8 = self;
-  v5 = [(CCUIStretchApplier *)v8 stretchables];
-  v6 = [v5 containsObject_];
+  selfCopy = self;
+  stretchables = [(CCUIStretchApplier *)selfCopy stretchables];
+  containsObject_ = [stretchables containsObject_];
 
-  if (v6)
+  if (containsObject_)
   {
-    v7 = [(CCUIStretchApplier *)v8 stretchables];
-    [v7 removeObject_];
+    stretchables2 = [(CCUIStretchApplier *)selfCopy stretchables];
+    [stretchables2 removeObject_];
 
-    [(CCUIStretchApplier *)v8 applyWithScale:a3 to:1.0, 1.0];
-    [(CCUIStretchApplier *)v8 applyWithTranslation:a3 to:0.0, 0.0];
+    [(CCUIStretchApplier *)selfCopy applyWithScale:stretchable to:1.0, 1.0];
+    [(CCUIStretchApplier *)selfCopy applyWithTranslation:stretchable to:0.0, 0.0];
   }
 
   swift_unknownObjectRelease();
@@ -139,63 +139,63 @@
   return v2;
 }
 
-- (void)setStretchSources:(id)a3
+- (void)setStretchSources:(id)sources
 {
   _s14_StretchSourceCMa();
   sub_21EA58A64();
   *(self + OBJC_IVAR___CCUIStretchApplier_stretchSources) = sub_21EAA8F60();
 }
 
-- (void)setTransformersByStretchSource:(id)a3
+- (void)setTransformersByStretchSource:(id)source
 {
   v4 = *(self + OBJC_IVAR___CCUIStretchApplier_transformersByStretchSource);
-  *(self + OBJC_IVAR___CCUIStretchApplier_transformersByStretchSource) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CCUIStretchApplier_transformersByStretchSource) = source;
+  sourceCopy = source;
 }
 
-- (void)setStretchables:(id)a3
+- (void)setStretchables:(id)stretchables
 {
   v4 = *(self + OBJC_IVAR___CCUIStretchApplier_stretchables);
-  *(self + OBJC_IVAR___CCUIStretchApplier_stretchables) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CCUIStretchApplier_stretchables) = stretchables;
+  stretchablesCopy = stretchables;
 }
 
-- (void)updateStretchForChangedSource:(id)a3
+- (void)updateStretchForChangedSource:(id)source
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  [(CCUIStretchApplier *)v5 evaluateBaseStretch];
-  [(CCUIStretchApplier *)v5 applyStretchForChangedSource:a3];
+  selfCopy = self;
+  [(CCUIStretchApplier *)selfCopy evaluateBaseStretch];
+  [(CCUIStretchApplier *)selfCopy applyStretchForChangedSource:source];
   swift_unknownObjectRelease();
 }
 
 - (void)evaluateBaseStretch
 {
-  v2 = self;
+  selfCopy = self;
   sub_21EA5492C();
 }
 
-- (void)applyStretchForChangedSource:(id)a3
+- (void)applyStretchForChangedSource:(id)source
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_21EA54C9C(a3);
+  selfCopy = self;
+  sub_21EA54C9C(source);
   swift_unknownObjectRelease();
 }
 
-- (void)applyStretchTo:(id)a3 applyScale:(BOOL)a4 applyTranslation:(BOOL)a5
+- (void)applyStretchTo:(id)to applyScale:(BOOL)scale applyTranslation:(BOOL)translation
 {
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_21EA54ED4(a3, a4, a5);
+  selfCopy = self;
+  sub_21EA54ED4(to, scale, translation);
   swift_unknownObjectRelease();
 }
 
-- (void)removeStretchSource:(id)a3
+- (void)removeStretchSource:(id)source
 {
-  v4 = a3;
-  v5 = self;
-  sub_21EA55400(v4);
+  sourceCopy = source;
+  selfCopy = self;
+  sub_21EA55400(sourceCopy);
 }
 
 - (CCUIStretchApplier)init

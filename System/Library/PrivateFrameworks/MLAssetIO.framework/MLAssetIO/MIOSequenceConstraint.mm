@@ -1,6 +1,6 @@
 @interface MIOSequenceConstraint
-- (BOOL)isEqual:(id)a3;
-- (MIOSequenceConstraint)initWithSpecification:(const void *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MIOSequenceConstraint)initWithSpecification:(const void *)specification;
 - (NSString)description;
 - (_MIORange)countRange;
 - (unint64_t)hash;
@@ -8,7 +8,7 @@
 
 @implementation MIOSequenceConstraint
 
-- (MIOSequenceConstraint)initWithSpecification:(const void *)a3
+- (MIOSequenceConstraint)initWithSpecification:(const void *)specification
 {
   v23.receiver = self;
   v23.super_class = MIOSequenceConstraint;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    CoreML::Specification::SequenceFeatureType::CopyFrom((v4 + 8), a3);
+    CoreML::Specification::SequenceFeatureType::CopyFrom((v4 + 8), specification);
     CoreML::Specification::FeatureDescription::FeatureDescription(&v19, 0, 0);
     v6 = (v20 & 0xFFFFFFFFFFFFFFFCLL);
     if (v20)
@@ -25,7 +25,7 @@
     }
 
     google::protobuf::internal::ArenaStringPtr::Set<google::protobuf::internal::ArenaStringPtr::EmptyDefault>(&v21, "values", v6);
-    v7 = *(a3 + 9);
+    v7 = *(specification + 9);
     if (v7 == 1)
     {
       v8 = v22;
@@ -109,19 +109,19 @@ LABEL_23:
 
 - (NSString)description
 {
-  v3 = [(MIOSequenceConstraint *)self countRange];
+  countRange = [(MIOSequenceConstraint *)self countRange];
   v5 = v4;
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(MIOSequenceConstraint *)self valueDescription];
-  v8 = [v6 stringWithFormat:@"MIOSequenceConstraint { countRange: [%zd, %zd], valueDescription: %@ }", v3, v5, v7];
+  valueDescription = [(MIOSequenceConstraint *)self valueDescription];
+  v8 = [v6 stringWithFormat:@"MIOSequenceConstraint { countRange: [%zd, %zd], valueDescription: %@ }", countRange, v5, valueDescription];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -131,15 +131,15 @@ LABEL_23:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIOSequenceConstraint *)self countRange];
+      v5 = equalCopy;
+      countRange = [(MIOSequenceConstraint *)self countRange];
       v8 = v7;
-      v9 = [(MIOSequenceConstraint *)v5 countRange];
-      if (MIOEqualRanges(v6, v8, v9, v10))
+      countRange2 = [(MIOSequenceConstraint *)v5 countRange];
+      if (MIOEqualRanges(countRange, v8, countRange2, v10))
       {
-        v11 = [(MIOSequenceConstraint *)self valueDescription];
-        v12 = [(MIOSequenceConstraint *)v5 valueDescription];
-        v13 = [v11 isEqual:v12];
+        valueDescription = [(MIOSequenceConstraint *)self valueDescription];
+        valueDescription2 = [(MIOSequenceConstraint *)v5 valueDescription];
+        v13 = [valueDescription isEqual:valueDescription2];
       }
 
       else
@@ -159,13 +159,13 @@ LABEL_23:
 
 - (unint64_t)hash
 {
-  v3 = [(MIOSequenceConstraint *)self countRange];
+  countRange = [(MIOSequenceConstraint *)self countRange];
   [(MIOSequenceConstraint *)self countRange];
   v5 = v4;
-  v6 = [(MIOSequenceConstraint *)self valueDescription];
-  v7 = [v6 hash];
+  valueDescription = [(MIOSequenceConstraint *)self valueDescription];
+  v7 = [valueDescription hash];
 
-  return v5 ^ v3 ^ v7;
+  return v5 ^ countRange ^ v7;
 }
 
 - (_MIORange)countRange

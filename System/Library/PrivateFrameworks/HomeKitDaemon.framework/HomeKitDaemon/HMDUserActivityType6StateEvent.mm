@@ -1,5 +1,5 @@
 @interface HMDUserActivityType6StateEvent
-- (HMDUserActivityType6StateEvent)initWithState:(unint64_t)a3 stateEnd:(id)a4 changedTimestamp:(id)a5 withReason:(unint64_t)a6;
+- (HMDUserActivityType6StateEvent)initWithState:(unint64_t)state stateEnd:(id)end changedTimestamp:(id)timestamp withReason:(unint64_t)reason;
 - (id)attributeDescriptions;
 @end
 
@@ -13,12 +13,12 @@
   v5 = [v3 initWithName:@"State" value:v4];
   v18[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDUserActivityType6StateEvent *)self stateEnd];
-  v8 = [v6 initWithName:@"State End" value:v7];
+  stateEnd = [(HMDUserActivityType6StateEvent *)self stateEnd];
+  v8 = [v6 initWithName:@"State End" value:stateEnd];
   v18[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(HMDUserActivityType6StateEvent *)self changedTimestamp];
-  v11 = [v9 initWithName:@"Changed Timestamp" value:v10];
+  changedTimestamp = [(HMDUserActivityType6StateEvent *)self changedTimestamp];
+  v11 = [v9 initWithName:@"Changed Timestamp" value:changedTimestamp];
   v18[2] = v11;
   v12 = objc_alloc(MEMORY[0x277D0F778]);
   v13 = HMDUserActivityStateDetectorUpdateReasonAsString([(HMDUserActivityType6StateEvent *)self reason]);
@@ -31,20 +31,20 @@
   return v15;
 }
 
-- (HMDUserActivityType6StateEvent)initWithState:(unint64_t)a3 stateEnd:(id)a4 changedTimestamp:(id)a5 withReason:(unint64_t)a6
+- (HMDUserActivityType6StateEvent)initWithState:(unint64_t)state stateEnd:(id)end changedTimestamp:(id)timestamp withReason:(unint64_t)reason
 {
-  v11 = a4;
-  v12 = a5;
+  endCopy = end;
+  timestampCopy = timestamp;
   v16.receiver = self;
   v16.super_class = HMDUserActivityType6StateEvent;
   v13 = [(HMDUserActivityType6StateEvent *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_state = a3;
-    objc_storeStrong(&v13->_stateEnd, a4);
-    objc_storeStrong(&v14->_changedTimestamp, a5);
-    v14->_reason = a6;
+    v13->_state = state;
+    objc_storeStrong(&v13->_stateEnd, end);
+    objc_storeStrong(&v14->_changedTimestamp, timestamp);
+    v14->_reason = reason;
   }
 
   return v14;

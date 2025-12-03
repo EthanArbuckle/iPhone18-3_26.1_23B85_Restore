@@ -1,5 +1,5 @@
 @interface PXPhotoKitCollectionListRearrangeActionPerformer
-- (PXPhotoKitCollectionListRearrangeActionPerformer)initWithActionType:(id)a3 collectionList:(id)a4 parameters:(id)a5;
+- (PXPhotoKitCollectionListRearrangeActionPerformer)initWithActionType:(id)type collectionList:(id)list parameters:(id)parameters;
 - (void)performBackgroundTask;
 @end
 
@@ -8,41 +8,41 @@
 - (void)performBackgroundTask
 {
   v3 = [PXRearrangeCollectionListAction alloc];
-  v4 = [(PXPhotoKitCollectionListActionPerformer *)self collectionList];
-  v5 = [(PXRearrangeCollectionListAction *)v3 initWithCollectionList:v4 movedCollections:self->_sourceCollections targetCollection:self->_targetCollection];
+  collectionList = [(PXPhotoKitCollectionListActionPerformer *)self collectionList];
+  v5 = [(PXRearrangeCollectionListAction *)v3 initWithCollectionList:collectionList movedCollections:self->_sourceCollections targetCollection:self->_targetCollection];
 
-  v6 = [(PXActionPerformer *)self undoManager];
+  undoManager = [(PXActionPerformer *)self undoManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__PXPhotoKitCollectionListRearrangeActionPerformer_performBackgroundTask__block_invoke;
   v7[3] = &unk_1E774C5C0;
   v7[4] = self;
-  [(PXAction *)v5 executeWithUndoManager:v6 completionHandler:v7];
+  [(PXAction *)v5 executeWithUndoManager:undoManager completionHandler:v7];
 }
 
-- (PXPhotoKitCollectionListRearrangeActionPerformer)initWithActionType:(id)a3 collectionList:(id)a4 parameters:(id)a5
+- (PXPhotoKitCollectionListRearrangeActionPerformer)initWithActionType:(id)type collectionList:(id)list parameters:(id)parameters
 {
-  v9 = a5;
+  parametersCopy = parameters;
   v20.receiver = self;
   v20.super_class = PXPhotoKitCollectionListRearrangeActionPerformer;
-  v10 = [(PXPhotoKitCollectionListActionPerformer *)&v20 initWithActionType:a3 collectionList:a4 parameters:v9];
+  v10 = [(PXPhotoKitCollectionListActionPerformer *)&v20 initWithActionType:type collectionList:list parameters:parametersCopy];
   if (v10)
   {
-    v11 = [v9 objectForKeyedSubscript:*off_1E77219C8];
+    v11 = [parametersCopy objectForKeyedSubscript:*off_1E77219C8];
     sourceCollections = v10->_sourceCollections;
     v10->_sourceCollections = v11;
 
-    v13 = [v9 objectForKeyedSubscript:*off_1E77219D0];
+    v13 = [parametersCopy objectForKeyedSubscript:*off_1E77219D0];
     if (v13)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v16 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v17 = objc_opt_class();
         v18 = NSStringFromClass(v17);
-        v19 = [(PHCollection *)v13 px_descriptionForAssertionMessage];
-        [v16 handleFailureInMethod:a2 object:v10 file:@"PXPhotoKitCollectionListRearrangeActionPerformer.m" lineNumber:29 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"parameters[PXActionParameterKeyTargetObject]", v18, v19}];
+        px_descriptionForAssertionMessage = [(PHCollection *)v13 px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:v10 file:@"PXPhotoKitCollectionListRearrangeActionPerformer.m" lineNumber:29 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"parameters[PXActionParameterKeyTargetObject]", v18, px_descriptionForAssertionMessage}];
       }
     }
 

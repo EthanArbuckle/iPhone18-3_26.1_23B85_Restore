@@ -1,23 +1,23 @@
 @interface NPDCompanionPaymentPassDatabase
-- (NPDCompanionPaymentPassDatabase)initWithDevice:(id)a3 outstandingDeletionStore:(id)a4;
+- (NPDCompanionPaymentPassDatabase)initWithDevice:(id)device outstandingDeletionStore:(id)store;
 - (NSSet)uniqueIDs;
 - (PKCatalog)catalog;
-- (id)_paymentPassFromURL:(id)a3;
-- (id)_paymentPassWithUniqueID:(id)a3;
-- (id)paymentPassWithUniqueID:(id)a3;
+- (id)_paymentPassFromURL:(id)l;
+- (id)_paymentPassWithUniqueID:(id)d;
+- (id)paymentPassWithUniqueID:(id)d;
 - (void)_postPaymentPassDatabaseChanged;
-- (void)_savePaymentLockedPassAtURL:(id)a3 withUniqueID:(id)a4 completion:(id)a5;
-- (void)removePaymentPassWithUniqueID:(id)a3 completion:(id)a4;
-- (void)savePaymentPass:(id)a3 requireExisting:(BOOL)a4 requireNewer:(BOOL)a5 completion:(id)a6;
-- (void)setCatalog:(id)a3 fromWatch:(BOOL)a4;
+- (void)_savePaymentLockedPassAtURL:(id)l withUniqueID:(id)d completion:(id)completion;
+- (void)removePaymentPassWithUniqueID:(id)d completion:(id)completion;
+- (void)savePaymentPass:(id)pass requireExisting:(BOOL)existing requireNewer:(BOOL)newer completion:(id)completion;
+- (void)setCatalog:(id)catalog fromWatch:(BOOL)watch;
 @end
 
 @implementation NPDCompanionPaymentPassDatabase
 
-- (NPDCompanionPaymentPassDatabase)initWithDevice:(id)a3 outstandingDeletionStore:(id)a4
+- (NPDCompanionPaymentPassDatabase)initWithDevice:(id)device outstandingDeletionStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  storeCopy = store;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -27,7 +27,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v6;
+      v22 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Notice: Companion payment pass database initializing with device: %@", buf, 0xCu);
     }
   }
@@ -38,7 +38,7 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_outstandingDeletionStore, a4);
+    objc_storeStrong(&v11->_outstandingDeletionStore, store);
     v13 = NPKPaymentPassDirectoryPathForDevice();
     paymentPassDirectoryPath = v12->_paymentPassDirectoryPath;
     v12->_paymentPassDirectoryPath = v13;
@@ -57,10 +57,10 @@
   return v12;
 }
 
-- (void)savePaymentPass:(id)a3 requireExisting:(BOOL)a4 requireNewer:(BOOL)a5 completion:(id)a6
+- (void)savePaymentPass:(id)pass requireExisting:(BOOL)existing requireNewer:(BOOL)newer completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  passCopy = pass;
+  completionCopy = completion;
   v12 = pk_General_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
 
@@ -70,41 +70,41 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v10;
+      v24 = passCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Notice: Companion payment pass database saving payment pass: %@", buf, 0xCu);
     }
   }
 
-  v15 = [(NPDCompanionPaymentPassDatabase *)self queue];
+  queue = [(NPDCompanionPaymentPassDatabase *)self queue];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100003C78;
   v18[3] = &unk_100070E58;
   v18[4] = self;
-  v19 = v10;
-  v21 = a4;
-  v20 = v11;
-  v22 = a5;
-  v16 = v11;
-  v17 = v10;
-  dispatch_async(v15, v18);
+  v19 = passCopy;
+  existingCopy = existing;
+  v20 = completionCopy;
+  newerCopy = newer;
+  v16 = completionCopy;
+  v17 = passCopy;
+  dispatch_async(queue, v18);
 }
 
-- (void)removePaymentPassWithUniqueID:(id)a3 completion:(id)a4
+- (void)removePaymentPassWithUniqueID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPDCompanionPaymentPassDatabase *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(NPDCompanionPaymentPassDatabase *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100004410;
   block[3] = &unk_100070EE0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
 - (NSSet)uniqueIDs
@@ -115,19 +115,19 @@
   v13 = sub_100004AFC;
   v14 = sub_100004B0C;
   v15 = 0;
-  v3 = [(NPDCompanionPaymentPassDatabase *)self queue];
+  queue = [(NPDCompanionPaymentPassDatabase *)self queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100004B14;
   v9[3] = &unk_100070F08;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v3, v9);
+  dispatch_sync(queue, v9);
 
   v4 = pk_Payment_log();
-  LODWORD(v3) = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
+  LODWORD(queue) = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
-  if (v3)
+  if (queue)
   {
     v5 = pk_Payment_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -145,30 +145,30 @@
   return v7;
 }
 
-- (id)paymentPassWithUniqueID:(id)a3
+- (id)paymentPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = sub_100004AFC;
   v19 = sub_100004B0C;
   v20 = 0;
-  v5 = [(NPDCompanionPaymentPassDatabase *)self queue];
+  queue = [(NPDCompanionPaymentPassDatabase *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100004F70;
   block[3] = &unk_100070F30;
   v14 = &v15;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v13 = v6;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   v7 = pk_Payment_log();
-  LODWORD(v5) = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
+  LODWORD(queue) = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
-  if (v5)
+  if (queue)
   {
     v8 = pk_Payment_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -189,9 +189,9 @@
   return v10;
 }
 
-- (void)setCatalog:(id)a3 fromWatch:(BOOL)a4
+- (void)setCatalog:(id)catalog fromWatch:(BOOL)watch
 {
-  v6 = a3;
+  catalogCopy = catalog;
   v7 = NPKSecureArchiveObject();
   catalogPath = self->_catalogPath;
   v16 = 0;
@@ -214,15 +214,15 @@
     }
   }
 
-  if (v6)
+  if (catalogCopy)
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100005154;
     v13[3] = &unk_100070F70;
     v13[4] = self;
-    v14 = v6;
-    v15 = a4;
+    v14 = catalogCopy;
+    watchCopy = watch;
     dispatch_async(&_dispatch_main_q, v13);
   }
 }
@@ -261,7 +261,7 @@
   return v8;
 }
 
-- (id)_paymentPassWithUniqueID:(id)a3
+- (id)_paymentPassWithUniqueID:(id)d
 {
   v4 = NPKStorePathForPaymentPassWithUniqueID();
   v5 = [NSURL fileURLWithPath:v4];
@@ -270,26 +270,26 @@
   return v6;
 }
 
-- (void)_savePaymentLockedPassAtURL:(id)a3 withUniqueID:(id)a4 completion:(id)a5
+- (void)_savePaymentLockedPassAtURL:(id)l withUniqueID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NPDCompanionPaymentPassDatabase *)self paymentPassDirectoryPath];
-  v34 = v9;
-  v12 = [v9 stringByAppendingPathExtension:PKRawPassExtension];
-  v13 = [v11 stringByAppendingPathComponent:v12];
+  lCopy = l;
+  dCopy = d;
+  completionCopy = completion;
+  paymentPassDirectoryPath = [(NPDCompanionPaymentPassDatabase *)self paymentPassDirectoryPath];
+  v34 = dCopy;
+  v12 = [dCopy stringByAppendingPathExtension:PKRawPassExtension];
+  v13 = [paymentPassDirectoryPath stringByAppendingPathComponent:v12];
   v14 = [NSURL fileURLWithPath:v13];
 
   v15 = +[NSFileManager defaultManager];
-  v16 = [(NPDCompanionPaymentPassDatabase *)self paymentPassDirectoryPath];
-  [v15 createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:0];
+  paymentPassDirectoryPath2 = [(NPDCompanionPaymentPassDatabase *)self paymentPassDirectoryPath];
+  [v15 createDirectoryAtPath:paymentPassDirectoryPath2 withIntermediateDirectories:1 attributes:0 error:0];
 
   v17 = PKTemporaryItemURLWithExtension();
   v18 = [v15 moveItemAtURL:v14 toURL:v17 error:0];
   [v15 removeItemAtURL:v14 error:0];
   v42 = 0;
-  v19 = [v15 copyItemAtURL:v8 toURL:v14 error:&v42];
+  v19 = [v15 copyItemAtURL:lCopy toURL:v14 error:&v42];
   v33 = v42;
   if (v19)
   {
@@ -303,7 +303,7 @@
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v44 = v8;
+        v44 = lCopy;
         v45 = 2112;
         v46 = v14;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Notice: Successfully copied payment pass from %@ to %@", buf, 0x16u);
@@ -317,7 +317,7 @@
     }
 
     v24 = v23;
-    v25 = [(NPDCompanionPaymentPassDatabase *)self _paymentPassFromURL:v8];
+    v25 = [(NPDCompanionPaymentPassDatabase *)self _paymentPassFromURL:lCopy];
     if (v25)
     {
       block[0] = _NSConcreteStackBlock;
@@ -325,7 +325,7 @@
       block[2] = sub_1000058CC;
       block[3] = &unk_100070FA8;
       v39 = v24;
-      v40 = self;
+      selfCopy = self;
       v41 = v25;
       dispatch_async(&_dispatch_main_q, block);
     }
@@ -347,7 +347,7 @@ LABEL_11:
       *buf = 138413058;
       v44 = v34;
       v45 = 2112;
-      v46 = v8;
+      v46 = lCopy;
       v47 = 2112;
       v48 = v14;
       v49 = 2112;
@@ -387,29 +387,29 @@ LABEL_11:
   }
 
 LABEL_22:
-  if (v10)
+  if (completionCopy)
   {
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_10000598C;
     v35[3] = &unk_100070FD0;
-    v36 = v10;
+    v36 = completionCopy;
     v37 = v19;
     dispatch_async(&_dispatch_main_q, v35);
   }
 }
 
-- (id)_paymentPassFromURL:(id)a3
+- (id)_paymentPassFromURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  path = [lCopy path];
+  v6 = [v4 fileExistsAtPath:path];
 
   if (v6)
   {
     v32 = 0;
-    v7 = [[PKFileDataAccessor alloc] initWithFileURL:v3 error:&v32];
+    v7 = [[PKFileDataAccessor alloc] initWithFileURL:lCopy error:&v32];
     v8 = v32;
     v9 = v8;
     if (!v7 || v8)
@@ -453,8 +453,8 @@ LABEL_22:
           v11 = NPKPairedDeviceSecureElementIdentifiers();
           if ([v11 count])
           {
-            v12 = [v10 secureElementPass];
-            [v12 updateDevicePaymentApplicationsWithSecureElementIdentifiers:v11];
+            secureElementPass = [v10 secureElementPass];
+            [secureElementPass updateDevicePaymentApplicationsWithSecureElementIdentifiers:v11];
 
             v13 = pk_General_log();
             v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
@@ -464,11 +464,11 @@ LABEL_22:
               v15 = pk_General_log();
               if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
               {
-                v16 = [v10 uniqueID];
+                uniqueID = [v10 uniqueID];
                 *buf = 138412802;
-                v34 = v16;
+                v34 = uniqueID;
                 v35 = 2112;
-                v36 = v3;
+                v36 = lCopy;
                 v37 = 2112;
                 v38 = v11;
                 _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Debug: Read payment pass with unique ID %@ from URL %@ and called updateDevicePaymentApplicationsWithSecureElementIdentifiers with %@", buf, 0x20u);
@@ -493,7 +493,7 @@ LABEL_22:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v34 = v3;
+            v34 = lCopy;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Error: Pass at URL %@ was not a payment pass", buf, 0xCu);
           }
         }
@@ -521,7 +521,7 @@ LABEL_34:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v34 = v3;
+          v34 = lCopy;
           v35 = 2112;
           v36 = v9;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Error: Could not initialize pass at URL %@ error %@", buf, 0x16u);
@@ -541,7 +541,7 @@ LABEL_25:
       }
 
       *buf = 138412546;
-      v34 = v3;
+      v34 = lCopy;
       v35 = 2112;
       v36 = v9;
       v22 = "Error: Unable to create a pass from this pass URL! %@. Error: %@";
@@ -565,7 +565,7 @@ LABEL_25:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v34 = v3;
+    v34 = lCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: No payment pass at URL %@", buf, 0xCu);
   }
 

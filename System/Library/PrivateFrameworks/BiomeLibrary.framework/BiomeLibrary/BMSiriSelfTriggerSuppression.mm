@@ -1,15 +1,15 @@
 @interface BMSiriSelfTriggerSuppression
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriSelfTriggerSuppression)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriSelfTriggerSuppression)initWithNumSelfTriggersDetectedDuringEvent:(id)a3 durationOfSelfTriggerEventInSec:(id)a4 audioSource:(int)a5 isBluetoothSpeakerActive:(id)a6 isBuiltInSpeakerActive:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriSelfTriggerSuppression)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriSelfTriggerSuppression)initWithNumSelfTriggersDetectedDuringEvent:(id)event durationOfSelfTriggerEventInSec:(id)sec audioSource:(int)source isBluetoothSpeakerActive:(id)active isBuiltInSpeakerActive:(id)speakerActive;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriSelfTriggerSuppression
@@ -34,13 +34,13 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMSiriSelfTriggerSuppression hasNumSelfTriggersDetectedDuringEvent](self, "hasNumSelfTriggersDetectedDuringEvent") || [v5 hasNumSelfTriggersDetectedDuringEvent])
     {
       if (![(BMSiriSelfTriggerSuppression *)self hasNumSelfTriggersDetectedDuringEvent])
@@ -53,8 +53,8 @@
         goto LABEL_24;
       }
 
-      v6 = [(BMSiriSelfTriggerSuppression *)self numSelfTriggersDetectedDuringEvent];
-      if (v6 != [v5 numSelfTriggersDetectedDuringEvent])
+      numSelfTriggersDetectedDuringEvent = [(BMSiriSelfTriggerSuppression *)self numSelfTriggersDetectedDuringEvent];
+      if (numSelfTriggersDetectedDuringEvent != [v5 numSelfTriggersDetectedDuringEvent])
       {
         goto LABEL_24;
       }
@@ -81,8 +81,8 @@
       }
     }
 
-    v10 = [(BMSiriSelfTriggerSuppression *)self audioSource];
-    if (v10 != [v5 audioSource])
+    audioSource = [(BMSiriSelfTriggerSuppression *)self audioSource];
+    if (audioSource != [v5 audioSource])
     {
       goto LABEL_24;
     }
@@ -99,8 +99,8 @@
         goto LABEL_24;
       }
 
-      v11 = [(BMSiriSelfTriggerSuppression *)self isBluetoothSpeakerActive];
-      if (v11 != [v5 isBluetoothSpeakerActive])
+      isBluetoothSpeakerActive = [(BMSiriSelfTriggerSuppression *)self isBluetoothSpeakerActive];
+      if (isBluetoothSpeakerActive != [v5 isBluetoothSpeakerActive])
       {
         goto LABEL_24;
       }
@@ -114,8 +114,8 @@
 
     if (-[BMSiriSelfTriggerSuppression hasIsBuiltInSpeakerActive](self, "hasIsBuiltInSpeakerActive") && [v5 hasIsBuiltInSpeakerActive])
     {
-      v12 = [(BMSiriSelfTriggerSuppression *)self isBuiltInSpeakerActive];
-      v13 = v12 ^ [v5 isBuiltInSpeakerActive] ^ 1;
+      isBuiltInSpeakerActive = [(BMSiriSelfTriggerSuppression *)self isBuiltInSpeakerActive];
+      v13 = isBuiltInSpeakerActive ^ [v5 isBuiltInSpeakerActive] ^ 1;
     }
 
     else
@@ -184,45 +184,45 @@ LABEL_26:
 
   v18 = v3;
   v20[0] = @"numSelfTriggersDetectedDuringEvent";
-  v10 = v3;
+  null = v3;
   if (!v3)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21[0] = v10;
+  v21[0] = null;
   v20[1] = @"durationOfSelfTriggerEventInSec";
-  v11 = v6;
+  null2 = v6;
   if (!v6)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21[1] = v11;
+  v21[1] = null2;
   v20[2] = @"audioSource";
-  v12 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21[2] = v12;
+  v21[2] = null3;
   v20[3] = @"isBluetoothSpeakerActive";
-  v13 = v8;
+  null4 = v8;
   if (!v8)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21[3] = v13;
+  v21[3] = null4;
   v20[4] = @"isBuiltInSpeakerActive";
-  v14 = v9;
+  null5 = v9;
   if (!v9)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21[4] = v14;
+  v21[4] = null5;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:{5, v18}];
   if (v9)
   {
@@ -277,23 +277,23 @@ LABEL_28:
   return v15;
 }
 
-- (BMSiriSelfTriggerSuppression)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriSelfTriggerSuppression)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"numSelfTriggersDetectedDuringEvent"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"numSelfTriggersDetectedDuringEvent"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"durationOfSelfTriggerEventInSec"];
-    v33 = a4;
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"durationOfSelfTriggerEventInSec"];
+    errorCopy = error;
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v37 = 0;
           v14 = 0;
@@ -306,7 +306,7 @@ LABEL_4:
         v35 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"durationOfSelfTriggerEventInSec"];
         v45 = v35;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-        v10 = v17 = a4;
+        v10 = v17 = error;
         v37 = 0;
         v14 = 0;
         *v17 = [v15 initWithDomain:v16 code:2 userInfo:v10];
@@ -321,7 +321,7 @@ LABEL_4:
       v37 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"audioSource"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"audioSource"];
     v34 = v8;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -336,7 +336,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v33)
+          if (!errorCopy)
           {
             v35 = 0;
             v14 = 0;
@@ -352,7 +352,7 @@ LABEL_4:
           v29 = [v36 initWithDomain:v28 code:2 userInfo:v18];
           v35 = 0;
           v14 = 0;
-          *v33 = v29;
+          *errorCopy = v29;
 LABEL_31:
 
           v8 = v34;
@@ -372,13 +372,13 @@ LABEL_32:
       v35 = 0;
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"isBluetoothSpeakerActive"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"isBluetoothSpeakerActive"];
     if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v33)
+        if (!errorCopy)
         {
           v19 = 0;
           v14 = 0;
@@ -394,7 +394,7 @@ LABEL_32:
         v25 = [v31 initWithDomain:v24 code:2 userInfo:v20];
         v19 = 0;
         v14 = 0;
-        *v33 = v25;
+        *errorCopy = v25;
         goto LABEL_30;
       }
 
@@ -406,13 +406,13 @@ LABEL_32:
       v19 = 0;
     }
 
-    v20 = [v6 objectForKeyedSubscript:@"isBuiltInSpeakerActive"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"isBuiltInSpeakerActive"];
     if (v20 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v33)
+        if (errorCopy)
         {
           v32 = objc_alloc(MEMORY[0x1E696ABC0]);
           v30 = *MEMORY[0x1E698F240];
@@ -420,7 +420,7 @@ LABEL_32:
           v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isBuiltInSpeakerActive"];
           v39 = v26;
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-          *v33 = [v32 initWithDomain:v30 code:2 userInfo:v27];
+          *errorCopy = [v32 initWithDomain:v30 code:2 userInfo:v27];
         }
 
         v21 = 0;
@@ -450,7 +450,7 @@ LABEL_30:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v14 = 0;
@@ -465,7 +465,7 @@ LABEL_30:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:&v46 count:1];
   v8 = 0;
   v14 = 0;
-  *a4 = [v12 initWithDomain:v13 code:2 userInfo:v9];
+  *error = [v12 initWithDomain:v13 code:2 userInfo:v9];
 LABEL_33:
 
 LABEL_34:
@@ -477,14 +477,14 @@ LABEL_34:
 {
   v3 = objc_opt_new();
   [(BMSiriSelfTriggerSuppression *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_hasNumSelfTriggersDetectedDuringEvent)
   {
     numSelfTriggersDetectedDuringEvent = self->_numSelfTriggersDetectedDuringEvent;
@@ -512,9 +512,9 @@ LABEL_34:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v50.receiver = self;
   v50.super_class = BMSiriSelfTriggerSuppression;
   v5 = [(BMEventBase *)&v50 init];
@@ -523,12 +523,12 @@ LABEL_34:
     goto LABEL_83;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -539,18 +539,18 @@ LABEL_34:
       while (1)
       {
         LOBYTE(v51) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v51) & 0x7F) << v7;
@@ -568,9 +568,9 @@ LABEL_34:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -587,18 +587,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v51) = 0;
-            v41 = [v4 position] + 1;
-            if (v41 >= [v4 position] && (v42 = objc_msgSend(v4, "position") + 1, v42 <= objc_msgSend(v4, "length")))
+            v41 = [fromCopy position] + 1;
+            if (v41 >= [fromCopy position] && (v42 = objc_msgSend(fromCopy, "position") + 1, v42 <= objc_msgSend(fromCopy, "length")))
             {
-              v43 = [v4 data];
-              [v43 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v40 |= (LOBYTE(v51) & 0x7F) << v38;
@@ -616,7 +616,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v44 = 0;
           }
@@ -645,18 +645,18 @@ LABEL_63:
 
           v5->_hasDurationOfSelfTriggerEventInSec = 1;
           v51 = 0.0;
-          v23 = [v4 position] + 8;
-          if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 8, v24 <= objc_msgSend(v4, "length")))
+          v23 = [fromCopy position] + 8;
+          if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 8, v24 <= objc_msgSend(fromCopy, "length")))
           {
-            v46 = [v4 data];
-            [v46 getBytes:&v51 range:{objc_msgSend(v4, "position"), 8}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v5->_durationOfSelfTriggerEventInSec = v51;
@@ -674,18 +674,18 @@ LABEL_63:
           while (1)
           {
             LOBYTE(v51) = 0;
-            v28 = [v4 position] + 1;
-            if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+            v28 = [fromCopy position] + 1;
+            if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
             {
-              v30 = [v4 data];
-              [v30 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v27 |= (LOBYTE(v51) & 0x7F) << v25;
@@ -703,7 +703,7 @@ LABEL_63:
             }
           }
 
-          v31 = (v27 != 0) & ~[v4 hasError];
+          v31 = (v27 != 0) & ~[fromCopy hasError];
 LABEL_66:
           v45 = 20;
           goto LABEL_69;
@@ -718,18 +718,18 @@ LABEL_66:
           while (1)
           {
             LOBYTE(v51) = 0;
-            v35 = [v4 position] + 1;
-            if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+            v35 = [fromCopy position] + 1;
+            if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
             {
-              v37 = [v4 data];
-              [v37 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v34 |= (LOBYTE(v51) & 0x7F) << v32;
@@ -747,7 +747,7 @@ LABEL_66:
             }
           }
 
-          v31 = (v34 != 0) & ~[v4 hasError];
+          v31 = (v34 != 0) & ~[fromCopy hasError];
 LABEL_68:
           v45 = 18;
 LABEL_69:
@@ -766,18 +766,18 @@ LABEL_69:
         while (1)
         {
           LOBYTE(v51) = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v51 range:{objc_msgSend(v4, "position"), 1}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (LOBYTE(v51) & 0x7F) << v16;
@@ -793,7 +793,7 @@ LABEL_69:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 2)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 2)
         {
 LABEL_76:
           LODWORD(v18) = 0;
@@ -803,13 +803,13 @@ LABEL_76:
       }
 
 LABEL_80:
-      v47 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v47 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_82:
     v48 = 0;
@@ -839,35 +839,35 @@ LABEL_83:
   return v10;
 }
 
-- (BMSiriSelfTriggerSuppression)initWithNumSelfTriggersDetectedDuringEvent:(id)a3 durationOfSelfTriggerEventInSec:(id)a4 audioSource:(int)a5 isBluetoothSpeakerActive:(id)a6 isBuiltInSpeakerActive:(id)a7
+- (BMSiriSelfTriggerSuppression)initWithNumSelfTriggersDetectedDuringEvent:(id)event durationOfSelfTriggerEventInSec:(id)sec audioSource:(int)source isBluetoothSpeakerActive:(id)active isBuiltInSpeakerActive:(id)speakerActive
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  eventCopy = event;
+  secCopy = sec;
+  activeCopy = active;
+  speakerActiveCopy = speakerActive;
   v20.receiver = self;
   v20.super_class = BMSiriSelfTriggerSuppression;
   v16 = [(BMEventBase *)&v20 init];
   if (v16)
   {
     v16->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v12)
+    if (eventCopy)
     {
       v16->_hasNumSelfTriggersDetectedDuringEvent = 1;
-      v17 = [v12 unsignedIntValue];
+      unsignedIntValue = [eventCopy unsignedIntValue];
     }
 
     else
     {
-      v17 = 0;
+      unsignedIntValue = 0;
       v16->_hasNumSelfTriggersDetectedDuringEvent = 0;
     }
 
-    v16->_numSelfTriggersDetectedDuringEvent = v17;
-    if (v13)
+    v16->_numSelfTriggersDetectedDuringEvent = unsignedIntValue;
+    if (secCopy)
     {
       v16->_hasDurationOfSelfTriggerEventInSec = 1;
-      [v13 doubleValue];
+      [secCopy doubleValue];
     }
 
     else
@@ -877,11 +877,11 @@ LABEL_83:
     }
 
     v16->_durationOfSelfTriggerEventInSec = v18;
-    v16->_audioSource = a5;
-    if (v14)
+    v16->_audioSource = source;
+    if (activeCopy)
     {
       v16->_hasIsBluetoothSpeakerActive = 1;
-      v16->_isBluetoothSpeakerActive = [v14 BOOLValue];
+      v16->_isBluetoothSpeakerActive = [activeCopy BOOLValue];
     }
 
     else
@@ -890,10 +890,10 @@ LABEL_83:
       v16->_isBluetoothSpeakerActive = 0;
     }
 
-    if (v15)
+    if (speakerActiveCopy)
     {
       v16->_hasIsBuiltInSpeakerActive = 1;
-      v16->_isBuiltInSpeakerActive = [v15 BOOLValue];
+      v16->_isBuiltInSpeakerActive = [speakerActiveCopy BOOLValue];
     }
 
     else
@@ -925,9 +925,9 @@ LABEL_83:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -935,8 +935,8 @@ LABEL_83:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriSelfTriggerSuppression alloc] initByReadFrom:v7];
     v4 = v8;

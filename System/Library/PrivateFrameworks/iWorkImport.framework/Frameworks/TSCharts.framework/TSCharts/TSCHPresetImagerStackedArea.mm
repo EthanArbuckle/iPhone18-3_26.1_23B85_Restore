@@ -1,14 +1,14 @@
 @interface TSCHPresetImagerStackedArea
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8;
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache;
 @end
 
 @implementation TSCHPresetImagerStackedArea
 
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache
 {
-  width = a4.width;
+  width = size.width;
   v82[10] = *MEMORY[0x277D85DE8];
-  v11 = objc_msgSend_seriesStyles(a6, a2, a4.width, a4.height, a5);
+  v11 = objc_msgSend_seriesStyles(preset, a2, size.width, size.height, scale);
   v16 = objc_msgSend_objectAtIndexedSubscript_(v11, v12, v13, v14, v15, 0);
   if (objc_msgSend_count(v11, v17, v18, v19, v20) <= 1)
   {
@@ -52,7 +52,7 @@
   v48 = objc_msgSend_p_strokeFromStyle_specific_default_(self, v46, v80, v45, v47, v30, 1497, 0);
   v53 = objc_msgSend_p_objectFromStyle_specific_default_(self, v49, v50, v51, v52, v30, 1408, 1411);
   hasAllResourcesForFill = objc_msgSend_tsch_hasAllResourcesForFill_(MEMORY[0x277D80248], v54, v55, v56, v57, v53);
-  objc_msgSend_p_drawAreaInContext_points_pointsCount_stroke_fill_(self, v59, v60, v61, v62, a3, v79, 8, v48, v53);
+  objc_msgSend_p_drawAreaInContext_points_pointsCount_stroke_fill_(self, v59, v60, v61, v62, context, v79, 8, v48, v53);
 
   v67 = objc_msgSend_p_strokeFromStyle_specific_default_(self, v63, v64, v65, v66, v16, 1497, 0);
   v73 = objc_msgSend_p_objectFromStyle_specific_default_(self, v68, v69, v70, v71, v16, 1408, 1411);
@@ -62,11 +62,11 @@
     v77 = objc_msgSend_tsch_hasAllResourcesForFill_(MEMORY[0x277D80248], v72, v74, v75, v76, v73);
   }
 
-  objc_msgSend_p_drawAreaInContext_points_pointsCount_stroke_fill_(self, v72, v74, v75, v76, a3, v82, 5, v67, v73);
+  objc_msgSend_p_drawAreaInContext_points_pointsCount_stroke_fill_(self, v72, v74, v75, v76, context, v82, 5, v67, v73);
 
-  if (a8)
+  if (cache)
   {
-    *a8 = v77;
+    *cache = v77;
   }
 }
 

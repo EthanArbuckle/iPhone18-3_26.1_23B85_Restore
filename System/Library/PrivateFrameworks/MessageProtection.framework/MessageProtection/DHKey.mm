@@ -1,6 +1,6 @@
 @interface DHKey
 - (id)description;
-- (id)keyAgreementWithPublicKey:(id)a3 error:(id *)a4;
+- (id)keyAgreementWithPublicKey:(id)key error:(id *)error;
 - (id)publicKey;
 @end
 
@@ -9,11 +9,11 @@
 - (id)publicKey
 {
   v2 = [(FullKey *)self key];
-  v3 = [v2 publicKey];
+  publicKey = [v2 publicKey];
 
-  if (v3)
+  if (publicKey)
   {
-    v4 = [[DHPublicKey alloc] initWithKey:v3];
+    v4 = [[DHPublicKey alloc] initWithKey:publicKey];
   }
 
   else
@@ -24,13 +24,13 @@
   return v4;
 }
 
-- (id)keyAgreementWithPublicKey:(id)a3 error:(id *)a4
+- (id)keyAgreementWithPublicKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = [(FullKey *)self key];
-  v8 = [v6 key];
+  v8 = [keyCopy key];
 
-  v9 = [v7 keyAgreement:v8 error:a4];
+  v9 = [v7 keyAgreement:v8 error:error];
 
   return v9;
 }
@@ -38,9 +38,9 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(DHKey *)self publicKey];
-  v4 = [v3 dataRepresentation];
-  v5 = [v2 stringWithFormat:@"DHKey with public data representation: %@", v4];
+  publicKey = [(DHKey *)self publicKey];
+  dataRepresentation = [publicKey dataRepresentation];
+  v5 = [v2 stringWithFormat:@"DHKey with public data representation: %@", dataRepresentation];
 
   return v5;
 }

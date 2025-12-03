@@ -2,20 +2,20 @@
 + (id)sharedInstance;
 + (id)userModelDataStorePath;
 + (void)registerScheduledEventsActivity;
-- (BOOL)cachedSettingsBoolForKey:(id)a3 userModel:(id)a4;
-- (BOOL)inputModeIdentifierIsValid:(id)a3;
+- (BOOL)cachedSettingsBoolForKey:(id)key userModel:(id)model;
+- (BOOL)inputModeIdentifierIsValid:(id)valid;
 - (CHPKPersistentAnalyticsController)init;
 - (CHPKPersistentAnalyticsSessionDelegate)sessionDelegate;
-- (id)newContextForAnalyticsWithUserModel:(id)a3 language:(id)a4;
+- (id)newContextForAnalyticsWithUserModel:(id)model language:(id)language;
 - (id)settingsDictionary;
 - (void)didBeginInputSession;
-- (void)didEndInputSessionUsingScribbleWithInputMode:(id)a3;
-- (void)didEndInputSessionWithInputMode:(id)a3;
-- (void)didEndPKCanvasSession:(id)a3 withInputMode:(id)a4;
+- (void)didEndInputSessionUsingScribbleWithInputMode:(id)mode;
+- (void)didEndInputSessionWithInputMode:(id)mode;
+- (void)didEndPKCanvasSession:(id)session withInputMode:(id)mode;
 - (void)dispatchDailyUsageEvents;
-- (void)dispatchLifecycleEventForFeature:(id)a3 denominatorKey:(id)a4 inputModeIdentifier:(id)a5 values:(id)a6 sinceDate:(id)a7;
+- (void)dispatchLifecycleEventForFeature:(id)feature denominatorKey:(id)key inputModeIdentifier:(id)identifier values:(id)values sinceDate:(id)date;
 - (void)dispatchLifecycleEvents;
-- (void)dispatchScheduledEventsWithCompletionBlock:(id)a3;
+- (void)dispatchScheduledEventsWithCompletionBlock:(id)block;
 - (void)dispatchSettingsEvents;
 @end
 
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = sub_100002A68;
   block[3] = &unk_1000247B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10002AC58 == -1)
   {
     v2 = qword_10002AC50;
@@ -56,8 +56,8 @@
     queue = v2->_queue;
     v2->_queue = v5;
 
-    v7 = [objc_opt_class() userModelDataStorePath];
-    v8 = [TIUserModelDataStore initializeDataStoreAtPath:v7];
+    userModelDataStorePath = [objc_opt_class() userModelDataStorePath];
+    v8 = [TIUserModelDataStore initializeDataStoreAtPath:userModelDataStorePath];
     dataStore = v2->_dataStore;
     v2->_dataStore = v8;
   }
@@ -121,7 +121,7 @@
   handler[1] = 3221225472;
   handler[2] = sub_100002E4C;
   handler[3] = &unk_100024848;
-  handler[4] = a1;
+  handler[4] = self;
   xpc_activity_register([@"com.apple.handwritingd.analytics.scheduledEventsActivity" UTF8String], XPC_ACTIVITY_CHECK_IN, handler);
 }
 
@@ -146,14 +146,14 @@
   v25 = v4;
   [v3 enumerateKeysAndObjectsUsingBlock:v24];
   v5 = +[CHTextInputProtoSettings sharedSettings];
-  v22 = [v5 isScribbleActive];
+  isScribbleActive = [v5 isScribbleActive];
 
   v6 = +[NSUserDefaults standardUserDefaults];
   v7 = [v6 objectForKey:@"AppleLiveTextEnabled" inDomain:NSGlobalDomain];
 
   if (v7)
   {
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
@@ -163,7 +163,7 @@
     v10 = [NSArray arrayWithObjects:&v29 count:1];
     v11 = [NSLocale matchedLanguagesFromAvailableLanguages:&off_1000260C0 forPreferredLanguages:v10];
 
-    v8 = [v11 count] != 0;
+    bOOLValue = [v11 count] != 0;
   }
 
   v12 = +[NSLocale _deviceLanguage];
@@ -173,13 +173,13 @@
 
   v15 = [v14 count] != 0;
   v16 = [v2 integerForKey:@"PKLastSeenWhatsNewVersionKey"] > 1;
-  v17 = [NSNumber numberWithBool:v22];
+  v17 = [NSNumber numberWithBool:isScribbleActive];
   [v4 setObject:v17 forKey:@"ApplePencilTextInputActive"];
 
   v18 = [NSNumber numberWithBool:v16];
   [v4 setObject:v18 forKey:@"PencilAttachedForCurrentWhatsNewVersion"];
 
-  v19 = [NSNumber numberWithBool:v8];
+  v19 = [NSNumber numberWithBool:bOOLValue];
   [v4 setObject:v19 forKey:@"LiveTextEnabledKey"];
 
   v20 = [NSNumber numberWithBool:v15];
@@ -188,18 +188,18 @@
   return v4;
 }
 
-- (BOOL)cachedSettingsBoolForKey:(id)a3 userModel:(id)a4
+- (BOOL)cachedSettingsBoolForKey:(id)key userModel:(id)model
 {
-  v5 = a3;
-  v6 = [a4 cachedSettingsDictionary];
-  v7 = [v6 objectForKey:v5];
+  keyCopy = key;
+  cachedSettingsDictionary = [model cachedSettingsDictionary];
+  v7 = [cachedSettingsDictionary objectForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
 
-    return v8;
+    return bOOLValue;
   }
 
   else
@@ -209,33 +209,33 @@
   }
 }
 
-- (id)newContextForAnalyticsWithUserModel:(id)a3 language:(id)a4
+- (id)newContextForAnalyticsWithUserModel:(id)model language:(id)language
 {
-  v6 = a4;
-  v7 = a3;
+  languageCopy = language;
+  modelCopy = model;
   v8 = [CHPKAnalyticsMetricsContext alloc];
   v9 = TIInputModeGetLanguage();
   v10 = TIInputModeGetRegion();
 
   v11 = [(CHPKAnalyticsMetricsContext *)v8 initWithInputLanguage:v9 inputRegion:v10];
-  [(CHPKAnalyticsMetricsContext *)v11 setFingerDrawingEnabled:[(CHPKPersistentAnalyticsController *)self cachedSettingsBoolForKey:@"UIPencilOnlyDrawWithPencilKey" userModel:v7]];
-  v12 = [(CHPKPersistentAnalyticsController *)self cachedSettingsBoolForKey:@"ApplePencilTextInputEnabled" userModel:v7];
+  [(CHPKAnalyticsMetricsContext *)v11 setFingerDrawingEnabled:[(CHPKPersistentAnalyticsController *)self cachedSettingsBoolForKey:@"UIPencilOnlyDrawWithPencilKey" userModel:modelCopy]];
+  v12 = [(CHPKPersistentAnalyticsController *)self cachedSettingsBoolForKey:@"ApplePencilTextInputEnabled" userModel:modelCopy];
 
   [(CHPKAnalyticsMetricsContext *)v11 setScribbleEnabled:v12];
   return v11;
 }
 
-- (void)dispatchScheduledEventsWithCompletionBlock:(id)a3
+- (void)dispatchScheduledEventsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100003AC4;
   v7[3] = &unk_100024898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(queue, v7);
 }
 
@@ -263,7 +263,7 @@
   v36[6] = &off_100025EE8;
   v3 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:7];
   v4 = [v3 mutableCopy];
-  v17 = self;
+  selfCopy = self;
   [(TIUserModelDataStore *)self->_dataStore getAllKnownInputModes];
   v29 = 0u;
   v30 = 0u;
@@ -284,14 +284,14 @@
         }
 
         v19 = v5;
-        v7 = [[TIUserModel alloc] initWithInputMode:*(*(&v29 + 1) + 8 * v5) userModelDataStore:v17->_dataStore];
-        [v7 setConfigurationDelegate:v17];
+        v7 = [[TIUserModel alloc] initWithInputMode:*(*(&v29 + 1) + 8 * v5) userModelDataStore:selfCopy->_dataStore];
+        [v7 setConfigurationDelegate:selfCopy];
         v27 = 0u;
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v8 = [v7 contexts];
-        v9 = [v8 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        contexts = [v7 contexts];
+        v9 = [contexts countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v9)
         {
           v10 = v9;
@@ -302,7 +302,7 @@
             {
               if (*v26 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(contexts);
               }
 
               v13 = [v7 valuesFromContext:*(*(&v25 + 1) + 8 * i)];
@@ -317,7 +317,7 @@
               [v3 enumerateKeysAndObjectsUsingBlock:v21];
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v10 = [contexts countByEnumeratingWithState:&v25 objects:v33 count:16];
           }
 
           while (v10);
@@ -366,12 +366,12 @@
         v5 = *(*(&v25 + 1) + 8 * v4);
         v6 = [[TIUserModel alloc] initWithInputMode:v5 userModelDataStore:self->_dataStore];
         [v6 setConfigurationDelegate:self];
-        v7 = [v6 contexts];
+        contexts = [v6 contexts];
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v8 = [v7 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v8 = [contexts countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v8)
         {
           v9 = v8;
@@ -383,7 +383,7 @@
             {
               if (*v22 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(contexts);
               }
 
               v12 = [v6 valuesFromContext:*(*(&v21 + 1) + 8 * v11)];
@@ -402,7 +402,7 @@
             }
 
             while (v9 != v11);
-            v9 = [v7 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v9 = [contexts countByEnumeratingWithState:&v21 objects:v29 count:16];
           }
 
           while (v9);
@@ -419,9 +419,9 @@
   }
 }
 
-- (void)dispatchLifecycleEventForFeature:(id)a3 denominatorKey:(id)a4 inputModeIdentifier:(id)a5 values:(id)a6 sinceDate:(id)a7
+- (void)dispatchLifecycleEventForFeature:(id)feature denominatorKey:(id)key inputModeIdentifier:(id)identifier values:(id)values sinceDate:(id)date
 {
-  v11 = a5;
+  identifierCopy = identifier;
   v30[0] = kFeatureUsageStateInactive;
   v30[1] = kFeatureUsageStateActiveVeryLow;
   v30[2] = kFeatureUsageStateActiveLow;
@@ -429,14 +429,14 @@
   v30[4] = kFeatureUsageStateActiveHigh;
   v30[5] = kFeatureUsageStateActiveVeryHigh;
   v30[6] = kFeatureUsageStateActiveUnusuallyHigh;
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
+  dateCopy = date;
+  valuesCopy = values;
+  keyCopy = key;
+  featureCopy = feature;
   v16 = [NSArray arrayWithObjects:v30 count:7];
-  v17 = [v13 aggregatedCountFromTransientCounterWithName:v14 forNumberOfDays:kFeatureUsageQueryTimeFrame fromLoadedDate:v12];
+  v17 = [valuesCopy aggregatedCountFromTransientCounterWithName:keyCopy forNumberOfDays:kFeatureUsageQueryTimeFrame fromLoadedDate:dateCopy];
 
-  v18 = [v13 aggregatedCountFromTransientCounterWithName:v15 forNumberOfDays:kFeatureUsageQueryTimeFrame fromLoadedDate:v12];
+  v18 = [valuesCopy aggregatedCountFromTransientCounterWithName:featureCopy forNumberOfDays:kFeatureUsageQueryTimeFrame fromLoadedDate:dateCopy];
 
   v19 = kFeatureUsageStateInsufficientData;
   if (([v17 integerValue] & 0x8000000000000000) == 0)
@@ -451,16 +451,16 @@
   }
 
   v25 = [@"com.apple.pencilkit." stringByAppendingString:@"scheduled.inputMode.scribbleUsage"];
-  v28 = v11;
+  v28 = identifierCopy;
   v29 = v19;
   v26 = v19;
-  v27 = v11;
+  v27 = identifierCopy;
   AnalyticsSendEventLazy();
 }
 
-- (BOOL)inputModeIdentifierIsValid:(id)a3
+- (BOOL)inputModeIdentifierIsValid:(id)valid
 {
-  v3 = [NSLocale localeWithLocaleIdentifier:a3];
+  v3 = [NSLocale localeWithLocaleIdentifier:valid];
   v4 = [CHRecognitionSession isLocaleSupported:v3];
 
   return v4;
@@ -468,61 +468,61 @@
 
 - (void)didBeginInputSession
 {
-  v2 = [(CHPKPersistentAnalyticsController *)self sessionDelegate];
-  [v2 sessionDidBegin];
+  sessionDelegate = [(CHPKPersistentAnalyticsController *)self sessionDelegate];
+  [sessionDelegate sessionDidBegin];
 }
 
-- (void)didEndInputSessionWithInputMode:(id)a3
+- (void)didEndInputSessionWithInputMode:(id)mode
 {
-  v7 = a3;
-  v4 = [(CHPKPersistentAnalyticsController *)self sessionDelegate];
-  [v4 sessionDidEnd];
+  modeCopy = mode;
+  sessionDelegate = [(CHPKPersistentAnalyticsController *)self sessionDelegate];
+  [sessionDelegate sessionDidEnd];
 
-  if ([(CHPKPersistentAnalyticsController *)self inputModeIdentifierIsValid:v7])
+  if ([(CHPKPersistentAnalyticsController *)self inputModeIdentifierIsValid:modeCopy])
   {
-    v5 = [[TIUserModel alloc] initWithInputMode:v7 userModelDataStore:self->_dataStore];
+    v5 = [[TIUserModel alloc] initWithInputMode:modeCopy userModelDataStore:self->_dataStore];
     [v5 setConfigurationDelegate:self];
     if ([(CHPKPersistentAnalyticsController *)self cachedSettingsBoolForKey:@"PencilAttachedForCurrentWhatsNewVersion" userModel:v5])
     {
-      v6 = [(CHPKPersistentAnalyticsController *)self newContextForAnalyticsWithUserModel:v5 language:v7];
+      v6 = [(CHPKPersistentAnalyticsController *)self newContextForAnalyticsWithUserModel:v5 language:modeCopy];
       [v5 addIntegerToTransientCounter:1 forKey:@"totalSessions" andCandidateLength:0 andContext:v6];
     }
   }
 }
 
-- (void)didEndInputSessionUsingScribbleWithInputMode:(id)a3
+- (void)didEndInputSessionUsingScribbleWithInputMode:(id)mode
 {
-  v7 = a3;
-  v4 = [(CHPKPersistentAnalyticsController *)self sessionDelegate];
-  [v4 sessionDidEnd];
+  modeCopy = mode;
+  sessionDelegate = [(CHPKPersistentAnalyticsController *)self sessionDelegate];
+  [sessionDelegate sessionDidEnd];
 
-  if ([(CHPKPersistentAnalyticsController *)self inputModeIdentifierIsValid:v7])
+  if ([(CHPKPersistentAnalyticsController *)self inputModeIdentifierIsValid:modeCopy])
   {
-    v5 = [[TIUserModel alloc] initWithInputMode:v7 userModelDataStore:self->_dataStore];
+    v5 = [[TIUserModel alloc] initWithInputMode:modeCopy userModelDataStore:self->_dataStore];
     [v5 setConfigurationDelegate:self];
     if ([(CHPKPersistentAnalyticsController *)self cachedSettingsBoolForKey:@"PencilAttachedForCurrentWhatsNewVersion" userModel:v5])
     {
-      v6 = [(CHPKPersistentAnalyticsController *)self newContextForAnalyticsWithUserModel:v5 language:v7];
+      v6 = [(CHPKPersistentAnalyticsController *)self newContextForAnalyticsWithUserModel:v5 language:modeCopy];
       [v5 addIntegerToTransientCounter:1 forKey:@"scribbledInSession" andCandidateLength:0 andContext:v6];
       [v5 addIntegerToTransientCounter:1 forKey:@"totalSessions" andCandidateLength:0 andContext:v6];
     }
   }
 }
 
-- (void)didEndPKCanvasSession:(id)a3 withInputMode:(id)a4
+- (void)didEndPKCanvasSession:(id)session withInputMode:(id)mode
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[TIUserModel alloc] initWithInputMode:v7 userModelDataStore:self->_dataStore];
+  sessionCopy = session;
+  modeCopy = mode;
+  v8 = [[TIUserModel alloc] initWithInputMode:modeCopy userModelDataStore:self->_dataStore];
   [v8 setConfigurationDelegate:self];
-  v18 = v7;
-  v9 = [(CHPKPersistentAnalyticsController *)self newContextForAnalyticsWithUserModel:v8 language:v7];
+  v18 = modeCopy;
+  v9 = [(CHPKPersistentAnalyticsController *)self newContextForAnalyticsWithUserModel:v8 language:modeCopy];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [v6 allKeys];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allKeys = [sessionCopy allKeys];
+  v11 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -533,20 +533,20 @@
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        v16 = [v6 objectForKeyedSubscript:v15];
-        v17 = [v16 intValue];
+        v16 = [sessionCopy objectForKeyedSubscript:v15];
+        intValue = [v16 intValue];
 
-        if (v17 >= 1)
+        if (intValue >= 1)
         {
           [v8 addIntegerToTransientCounter:1 forKey:v15 andCandidateLength:0 andContext:v9];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v12);

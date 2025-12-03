@@ -1,6 +1,6 @@
 @interface STSPluginLoader
 - (STSPluginLoader)init;
-- (id)pluginWithName:(id)a3;
+- (id)pluginWithName:(id)name;
 @end
 
 @implementation STSPluginLoader
@@ -20,20 +20,20 @@
   return v2;
 }
 
-- (id)pluginWithName:(id)a3
+- (id)pluginWithName:(id)name
 {
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v5 = [v4 builtInPlugInsURL];
-  v6 = [v5 URLByAppendingPathComponent:@"SearchToShareAppKitHelpers.bundle"];
+  builtInPlugInsURL = [v4 builtInPlugInsURL];
+  v6 = [builtInPlugInsURL URLByAppendingPathComponent:@"SearchToShareAppKitHelpers.bundle"];
 
-  v7 = [v4 resourceURL];
-  v8 = [v7 URLByAppendingPathComponent:@"SearchToShareAppKitHelpers.bundle"];
+  resourceURL = [v4 resourceURL];
+  v8 = [resourceURL URLByAppendingPathComponent:@"SearchToShareAppKitHelpers.bundle"];
 
   if (v6)
   {
     pluginCache = self->_pluginCache;
-    v10 = [v6 absoluteString];
-    v11 = [(NSCache *)pluginCache objectForKey:v10];
+    absoluteString = [v6 absoluteString];
+    v11 = [(NSCache *)pluginCache objectForKey:absoluteString];
 
     if (v11)
     {
@@ -48,8 +48,8 @@
       {
         v16 = v15;
         v17 = self->_pluginCache;
-        v18 = [v6 absoluteString];
-        [(NSCache *)v17 setObject:v16 forKey:v18];
+        absoluteString2 = [v6 absoluteString];
+        [(NSCache *)v17 setObject:v16 forKey:absoluteString2];
 
         v12 = v16;
       }

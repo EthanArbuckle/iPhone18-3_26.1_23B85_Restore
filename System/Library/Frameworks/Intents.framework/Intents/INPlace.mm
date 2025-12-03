@@ -1,13 +1,13 @@
 @interface INPlace
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INPlace)initWithCoder:(id)a3;
-- (INPlace)initWithPlaceType:(id)a3 placeSubType:(id)a4 placeDescriptors:(id)a5 personalPlaceType:(int64_t)a6;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INPlace)initWithCoder:(id)coder;
+- (INPlace)initWithPlaceType:(id)type placeSubType:(id)subType placeDescriptors:(id)descriptors personalPlaceType:(int64_t)placeType;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INPlace
@@ -17,31 +17,31 @@
   v14[4] = *MEMORY[0x1E69E9840];
   v13[0] = @"placeType";
   placeType = self->_placeType;
-  v4 = placeType;
+  null = placeType;
   if (!placeType)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[0] = v4;
+  v14[0] = null;
   v13[1] = @"placeSubType";
   placeSubType = self->_placeSubType;
-  v6 = placeSubType;
+  null2 = placeSubType;
   if (!placeSubType)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[1] = v6;
+  v14[1] = null2;
   v13[2] = @"placeDescriptors";
   placeDescriptors = self->_placeDescriptors;
-  v8 = placeDescriptors;
+  null3 = placeDescriptors;
   if (!placeDescriptors)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[2] = v8;
+  v14[2] = null3;
   v13[3] = @"personalPlaceType";
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:self->_personalPlaceType];
   v14[3] = v9;
@@ -83,33 +83,33 @@ LABEL_10:
   return v10;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INPlace;
   v6 = [(INPlace *)&v11 description];
-  v7 = [(INPlace *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INPlace *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_placeType];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"placeType"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_placeType];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"placeType"];
 
-  v9 = [v6 encodeObject:self->_placeSubType];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"placeSubType"];
+  v9 = [encoderCopy encodeObject:self->_placeSubType];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"placeSubType"];
 
-  v10 = [v6 encodeObject:self->_placeDescriptors];
+  v10 = [encoderCopy encodeObject:self->_placeDescriptors];
 
-  [v7 if_setObjectIfNonNil:v10 forKey:@"placeDescriptors"];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"placeDescriptors"];
   personalPlaceType = self->_personalPlaceType;
   v12 = @"unknown";
   if (personalPlaceType == 2)
@@ -128,45 +128,45 @@ LABEL_10:
   }
 
   v14 = v13;
-  [v7 if_setObjectIfNonNil:v14 forKey:@"personalPlaceType"];
+  [dictionary if_setObjectIfNonNil:v14 forKey:@"personalPlaceType"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   placeType = self->_placeType;
-  v5 = a3;
-  [v5 encodeObject:placeType forKey:@"placeType"];
-  [v5 encodeObject:self->_placeSubType forKey:@"placeSubType"];
-  [v5 encodeObject:self->_placeDescriptors forKey:@"placeDescriptors"];
-  [v5 encodeInteger:self->_personalPlaceType forKey:@"personalPlaceType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:placeType forKey:@"placeType"];
+  [coderCopy encodeObject:self->_placeSubType forKey:@"placeSubType"];
+  [coderCopy encodeObject:self->_placeDescriptors forKey:@"placeDescriptors"];
+  [coderCopy encodeInteger:self->_personalPlaceType forKey:@"personalPlaceType"];
 }
 
-- (INPlace)initWithCoder:(id)a3
+- (INPlace)initWithCoder:(id)coder
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placeType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placeSubType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeSubType"];
   v7 = MEMORY[0x1E695DFD8];
   v15[0] = objc_opt_class();
   v15[1] = objc_opt_class();
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   v9 = [v7 setWithArray:v8];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"placeDescriptors"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"placeDescriptors"];
 
-  v11 = [v4 decodeIntegerForKey:@"personalPlaceType"];
+  v11 = [coderCopy decodeIntegerForKey:@"personalPlaceType"];
   v12 = [(INPlace *)self initWithPlaceType:v5 placeSubType:v6 placeDescriptors:v10 personalPlaceType:v11];
 
   v13 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -176,7 +176,7 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       placeType = self->_placeType;
       v9 = (placeType == v5->_placeType || [(NSString *)placeType isEqual:?]) && ((placeSubType = self->_placeSubType, placeSubType == v5->_placeSubType) || [(NSString *)placeSubType isEqual:?]) && ((placeDescriptors = self->_placeDescriptors, placeDescriptors == v5->_placeDescriptors) || [(NSArray *)placeDescriptors isEqual:?]) && self->_personalPlaceType == v5->_personalPlaceType;
     }
@@ -201,57 +201,57 @@ LABEL_10:
   return v5 ^ v7;
 }
 
-- (INPlace)initWithPlaceType:(id)a3 placeSubType:(id)a4 placeDescriptors:(id)a5 personalPlaceType:(int64_t)a6
+- (INPlace)initWithPlaceType:(id)type placeSubType:(id)subType placeDescriptors:(id)descriptors personalPlaceType:(int64_t)placeType
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  typeCopy = type;
+  subTypeCopy = subType;
+  descriptorsCopy = descriptors;
   v21.receiver = self;
   v21.super_class = INPlace;
   v13 = [(INPlace *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [typeCopy copy];
     placeType = v13->_placeType;
     v13->_placeType = v14;
 
-    v16 = [v11 copy];
+    v16 = [subTypeCopy copy];
     placeSubType = v13->_placeSubType;
     v13->_placeSubType = v16;
 
-    v18 = [v12 copy];
+    v18 = [descriptorsCopy copy];
     placeDescriptors = v13->_placeDescriptors;
     v13->_placeDescriptors = v18;
 
-    v13->_personalPlaceType = a6;
+    v13->_personalPlaceType = placeType;
   }
 
   return v13;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"placeType"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"placeType"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
     v12 = objc_opt_class();
-    v13 = [v8 objectForKeyedSubscript:@"placeSubType"];
-    v14 = [v7 decodeObjectOfClass:v12 from:v13];
+    v13 = [fromCopy objectForKeyedSubscript:@"placeSubType"];
+    v14 = [decoderCopy decodeObjectOfClass:v12 from:v13];
 
     v15 = objc_opt_class();
-    v16 = [v8 objectForKeyedSubscript:@"placeDescriptors"];
-    v17 = [v7 decodeObjectsOfClass:v15 from:v16];
+    v16 = [fromCopy objectForKeyedSubscript:@"placeDescriptors"];
+    v17 = [decoderCopy decodeObjectsOfClass:v15 from:v16];
 
-    v18 = [v8 objectForKeyedSubscript:@"personalPlaceType"];
+    v18 = [fromCopy objectForKeyedSubscript:@"personalPlaceType"];
     v19 = INPersonalPlaceTypeWithString(v18);
 
-    v20 = [[a1 alloc] initWithPlaceType:v11 placeSubType:v14 placeDescriptors:v17 personalPlaceType:v19];
+    v20 = [[self alloc] initWithPlaceType:v11 placeSubType:v14 placeDescriptors:v17 personalPlaceType:v19];
   }
 
   else

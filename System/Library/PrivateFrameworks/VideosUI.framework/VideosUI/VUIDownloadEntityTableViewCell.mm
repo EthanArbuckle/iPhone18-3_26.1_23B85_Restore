@@ -1,71 +1,71 @@
 @interface VUIDownloadEntityTableViewCell
-+ (id)_generateMetaDataHeaderFirstLabelForDownloadEntity:(id)a3;
-+ (void)configureVUIDownloadEntityTableViewCell:(id)a3 withDownloadEntity:(id)a4 forMetrics:(BOOL)a5;
-- (CGSize)_layoutForCategoryAccessibility:(CGSize)a3 metricsOnly:(BOOL)a4;
-- (CGSize)_layoutForCompact:(CGSize)a3 metricsOnly:(BOOL)a4;
-- (CGSize)_layoutWithSize:(CGSize)a3 metricsOnly:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VUIDownloadEntityTableViewCell)initWithFrame:(CGRect)a3;
++ (id)_generateMetaDataHeaderFirstLabelForDownloadEntity:(id)entity;
++ (void)configureVUIDownloadEntityTableViewCell:(id)cell withDownloadEntity:(id)entity forMetrics:(BOOL)metrics;
+- (CGSize)_layoutForCategoryAccessibility:(CGSize)accessibility metricsOnly:(BOOL)only;
+- (CGSize)_layoutForCompact:(CGSize)compact metricsOnly:(BOOL)only;
+- (CGSize)_layoutWithSize:(CGSize)size metricsOnly:(BOOL)only;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VUIDownloadEntityTableViewCell)initWithFrame:(CGRect)frame;
 - (VUIDownloadEntityTableViewCellDelegate)delegate;
 - (double)_imageHeightForCurrentSizeClass;
 - (double)_verticalPaddingForCurrentSizeClass;
 - (id)_episodePlaceholderImage;
-- (void)_addDownloadButtonIfRequired:(id)a3;
-- (void)_addMetaDataLabelsIfRequired:(id)a3;
+- (void)_addDownloadButtonIfRequired:(id)required;
+- (void)_addMetaDataLabelsIfRequired:(id)required;
 - (void)_configureViewElementsForAX;
 - (void)_removeDownloadButtonIfRequired;
-- (void)downloadEntity:(id)a3 numberOfItemsDidChange:(unint64_t)a4;
-- (void)downloadEntity:(id)a3 numberOfItemsDownloadingDidChange:(id)a4;
+- (void)downloadEntity:(id)entity numberOfItemsDidChange:(unint64_t)change;
+- (void)downloadEntity:(id)entity numberOfItemsDownloadingDidChange:(id)change;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBottomSeparatorView:(id)a3;
-- (void)setDotSeparatorLabel:(id)a3;
-- (void)setDownloadEntity:(id)a3;
-- (void)setEpisodeImageView:(id)a3;
-- (void)setMetaDataHeaderFirstLabel:(id)a3;
-- (void)setMetaDataHeaderSecondLabel:(id)a3;
-- (void)setPosterImageView:(id)a3;
-- (void)setRightImageView:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTitleLabel:(id)a3;
-- (void)setTopSeparatorView:(id)a3;
-- (void)willTransitionToState:(unint64_t)a3;
+- (void)setBottomSeparatorView:(id)view;
+- (void)setDotSeparatorLabel:(id)label;
+- (void)setDownloadEntity:(id)entity;
+- (void)setEpisodeImageView:(id)view;
+- (void)setMetaDataHeaderFirstLabel:(id)label;
+- (void)setMetaDataHeaderSecondLabel:(id)label;
+- (void)setPosterImageView:(id)view;
+- (void)setRightImageView:(id)view;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setTitleLabel:(id)label;
+- (void)setTopSeparatorView:(id)view;
+- (void)willTransitionToState:(unint64_t)state;
 @end
 
 @implementation VUIDownloadEntityTableViewCell
 
-+ (void)configureVUIDownloadEntityTableViewCell:(id)a3 withDownloadEntity:(id)a4 forMetrics:(BOOL)a5
++ (void)configureVUIDownloadEntityTableViewCell:(id)cell withDownloadEntity:(id)entity forMetrics:(BOOL)metrics
 {
-  v73 = a3;
-  v7 = a4;
-  [v73 setDownloadEntity:v7];
+  cellCopy = cell;
+  entityCopy = entity;
+  [cellCopy setDownloadEntity:entityCopy];
   [VUIUtilities imageCornerRadiusWithStyle:1];
   v9 = v8;
   v10 = 0.0;
-  if (!a5)
+  if (!metrics)
   {
-    [v7 setDelegate:v73];
-    [v73 _imageHeightForCurrentSizeClass];
+    [entityCopy setDelegate:cellCopy];
+    [cellCopy _imageHeightForCurrentSizeClass];
     v10 = v11;
   }
 
-  v12 = [v7 title];
+  title = [entityCopy title];
 
-  if (v12)
+  if (title)
   {
     v13 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v13 setTextStyle:20];
     [(VUITextLayout *)v13 setFontWeight:0];
-    v14 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-    [(VUITextLayout *)v13 setColor:v14];
+    vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+    [(VUITextLayout *)v13 setColor:vui_primaryTextColor];
 
     [(VUITextLayout *)v13 setAllowsTextAlignmentOverride:1];
     [(VUITextLayout *)v13 setNumberOfLines:2];
-    v15 = [v7 title];
-    v16 = v15;
-    if (v15)
+    title2 = [entityCopy title];
+    v16 = title2;
+    if (title2)
     {
-      v17 = v15;
+      v17 = title2;
     }
 
     else
@@ -73,50 +73,50 @@
       v17 = &stru_1F5DB25C0;
     }
 
-    v18 = [v73 titleLabel];
-    v12 = [VUILabel labelWithString:v17 textLayout:v13 existingLabel:v18];
+    titleLabel = [cellCopy titleLabel];
+    title = [VUILabel labelWithString:v17 textLayout:v13 existingLabel:titleLabel];
   }
 
-  [v73 setTitleLabel:v12];
-  v19 = [v7 mediaEntities];
-  v20 = [v19 firstObject];
+  [cellCopy setTitleLabel:title];
+  mediaEntities = [entityCopy mediaEntities];
+  firstObject = [mediaEntities firstObject];
 
-  if ([v7 downloadType])
+  if ([entityCopy downloadType])
   {
-    if ([v7 downloadType] == 1)
+    if ([entityCopy downloadType] == 1)
     {
-      if (!a5)
+      if (!metrics)
       {
-        v21 = [VUIMediaEntityImageLoadParamsFactory imageLoadParamsWithMediaEntity:v20 imageType:0];
-        v22 = [v73 posterImageView];
-        if (v22)
+        v21 = [VUIMediaEntityImageLoadParamsFactory imageLoadParamsWithMediaEntity:firstObject imageType:0];
+        posterImageView = [cellCopy posterImageView];
+        if (posterImageView)
         {
-          v23 = [v73 posterImageView];
+          posterImageView2 = [cellCopy posterImageView];
         }
 
         else
         {
-          v23 = objc_alloc_init(MEMORY[0x1E69DF740]);
+          posterImageView2 = objc_alloc_init(MEMORY[0x1E69DF740]);
         }
 
-        v41 = v23;
+        v41 = posterImageView2;
 
         [v41 setUserInteractionEnabled:0];
-        v42 = [MEMORY[0x1E69DC888] vui_imageHighlightColor];
-        [v41 _setFocusedColor:v42];
+        vui_imageHighlightColor = [MEMORY[0x1E69DC888] vui_imageHighlightColor];
+        [v41 _setFocusedColor:vui_imageHighlightColor];
 
-        v43 = [v73 _episodePlaceholderImage];
-        [v41 setPlaceholderImage:v43];
+        _episodePlaceholderImage = [cellCopy _episodePlaceholderImage];
+        [v41 setPlaceholderImage:_episodePlaceholderImage];
 
         if (v21)
         {
           v44 = MEMORY[0x1E69DF728];
-          v45 = [MEMORY[0x1E69DC888] vui_imageBorderColor];
-          v46 = [v44 decoratorWithOutlineColor:v45 outlineWidths:{1.0, 1.0, 1.0, 1.0}];
+          vui_imageBorderColor = [MEMORY[0x1E69DC888] vui_imageBorderColor];
+          v46 = [v44 decoratorWithOutlineColor:vui_imageBorderColor outlineWidths:{1.0, 1.0, 1.0, 1.0}];
 
           v47 = objc_alloc(MEMORY[0x1E69DF730]);
-          v48 = [v20 mediaLibrary];
-          v49 = [v47 initWithObject:v21 imageLoader:v48 groupType:0];
+          mediaLibrary = [firstObject mediaLibrary];
+          v49 = [v47 initWithObject:v21 imageLoader:mediaLibrary groupType:0];
 
           [v46 setScaleToSize:{v10 * 1.77777778, v10}];
           [MEMORY[0x1E69DF6D0] radiiFromRadius:v9];
@@ -127,66 +127,66 @@
           [v41 setCornerRadius:?];
         }
 
-        [v73 setPosterImageView:v41];
+        [cellCopy setPosterImageView:v41];
       }
 
-      [v73 _addMetaDataLabelsIfRequired:v7];
+      [cellCopy _addMetaDataLabelsIfRequired:entityCopy];
       v50 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.forward"];
       v51 = [VUIVideosImageView alloc];
       v52 = [(VUIVideosImageView *)v51 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-      v53 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-      v54 = [v50 imageWithTintColor:v53 renderingMode:1];
+      vui_secondaryTextColor = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+      v54 = [v50 imageWithTintColor:vui_secondaryTextColor renderingMode:1];
       [(VUIVideosImageView *)v52 setImage:v54];
 
-      v55 = [MEMORY[0x1E69DC888] whiteColor];
-      v56 = [v50 imageWithTintColor:v55 renderingMode:1];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      v56 = [v50 imageWithTintColor:whiteColor renderingMode:1];
       [(VUIVideosImageView *)v52 setHighlightOrSelectedImage:v56];
 
-      [v73 setRightImageView:v52];
+      [cellCopy setRightImageView:v52];
 LABEL_33:
 
       goto LABEL_37;
     }
 
-    if ([v7 downloadType] != 3)
+    if ([entityCopy downloadType] != 3)
     {
-      if ([v7 downloadType] != 2)
+      if ([entityCopy downloadType] != 2)
       {
         goto LABEL_37;
       }
 
-      if (!a5)
+      if (!metrics)
       {
-        v29 = [VUIMediaEntityImageLoadParamsFactory imageLoadParamsWithMediaEntity:v20 imageType:0];
-        v30 = [v73 posterImageView];
-        if (v30)
+        v29 = [VUIMediaEntityImageLoadParamsFactory imageLoadParamsWithMediaEntity:firstObject imageType:0];
+        posterImageView3 = [cellCopy posterImageView];
+        if (posterImageView3)
         {
-          v31 = [v73 posterImageView];
+          posterImageView4 = [cellCopy posterImageView];
         }
 
         else
         {
-          v31 = objc_alloc_init(MEMORY[0x1E69DF740]);
+          posterImageView4 = objc_alloc_init(MEMORY[0x1E69DF740]);
         }
 
-        v58 = v31;
+        v58 = posterImageView4;
 
         [v58 setUserInteractionEnabled:0];
-        v59 = [MEMORY[0x1E69DC888] vui_imageHighlightColor];
-        [v58 _setFocusedColor:v59];
+        vui_imageHighlightColor2 = [MEMORY[0x1E69DC888] vui_imageHighlightColor];
+        [v58 _setFocusedColor:vui_imageHighlightColor2];
 
-        v60 = [v73 _episodePlaceholderImage];
-        [v58 setPlaceholderImage:v60];
+        _episodePlaceholderImage2 = [cellCopy _episodePlaceholderImage];
+        [v58 setPlaceholderImage:_episodePlaceholderImage2];
 
         if (v29)
         {
           v61 = MEMORY[0x1E69DF728];
-          v62 = [MEMORY[0x1E69DC888] vui_imageBorderColor];
-          v63 = [v61 decoratorWithOutlineColor:v62 outlineWidths:{1.0, 1.0, 1.0, 1.0}];
+          vui_imageBorderColor2 = [MEMORY[0x1E69DC888] vui_imageBorderColor];
+          v63 = [v61 decoratorWithOutlineColor:vui_imageBorderColor2 outlineWidths:{1.0, 1.0, 1.0, 1.0}];
 
           v64 = objc_alloc(MEMORY[0x1E69DF730]);
-          v65 = [v20 mediaLibrary];
-          v66 = [v64 initWithObject:v29 imageLoader:v65 groupType:0];
+          mediaLibrary2 = [firstObject mediaLibrary];
+          v66 = [v64 initWithObject:v29 imageLoader:mediaLibrary2 groupType:0];
 
           [v63 setScaleToSize:{v10 * 1.77777778, v10}];
           [MEMORY[0x1E69DF6D0] radiiFromRadius:v9];
@@ -197,81 +197,81 @@ LABEL_33:
           [v58 setCornerRadius:?];
         }
 
-        [v73 setPosterImageView:v58];
+        [cellCopy setPosterImageView:v58];
       }
 
-      v50 = [VUIDownloadEntityTableViewCell _generateMetaDataHeaderFirstLabelForDownloadEntity:v7];
+      v50 = [VUIDownloadEntityTableViewCell _generateMetaDataHeaderFirstLabelForDownloadEntity:entityCopy];
       v52 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.forward"];
       v67 = [VUIVideosImageView alloc];
       v68 = [(VUIVideosImageView *)v67 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-      v69 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-      v70 = [(VUIVideosImageView *)v52 imageWithTintColor:v69 renderingMode:1];
+      vui_secondaryTextColor2 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+      v70 = [(VUIVideosImageView *)v52 imageWithTintColor:vui_secondaryTextColor2 renderingMode:1];
       [(VUIVideosImageView *)v68 setImage:v70];
 
-      v71 = [MEMORY[0x1E69DC888] whiteColor];
-      v72 = [(VUIVideosImageView *)v52 imageWithTintColor:v71 renderingMode:1];
+      whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+      v72 = [(VUIVideosImageView *)v52 imageWithTintColor:whiteColor2 renderingMode:1];
       [(VUIVideosImageView *)v68 setHighlightOrSelectedImage:v72];
 
-      [v73 setRightImageView:v68];
-      [v73 setMetaDataHeaderFirstLabel:v50];
-      [v73 setMetaDataHeaderSecondLabel:0];
-      [v73 setDotSeparatorLabel:0];
+      [cellCopy setRightImageView:v68];
+      [cellCopy setMetaDataHeaderFirstLabel:v50];
+      [cellCopy setMetaDataHeaderSecondLabel:0];
+      [cellCopy setDotSeparatorLabel:0];
 
       goto LABEL_33;
     }
 
-    if (!a5)
+    if (!metrics)
     {
-      v27 = [v73 episodeImageView];
-      if (v27)
+      episodeImageView = [cellCopy episodeImageView];
+      if (episodeImageView)
       {
-        v28 = [v73 episodeImageView];
+        episodeImageView2 = [cellCopy episodeImageView];
       }
 
       else
       {
-        v28 = [[VUILibraryEpisodeFrameView alloc] initWithFrame:0.0, 0.0, v10 * 1.77777778, v10];
+        episodeImageView2 = [[VUILibraryEpisodeFrameView alloc] initWithFrame:0.0, 0.0, v10 * 1.77777778, v10];
       }
 
-      v57 = v28;
+      v57 = episodeImageView2;
 
-      [VUILibraryEpisodeFrameView configureEpisodeFrameView:v57 withMedia:v20 layout:0 imageSize:v10 * 1.77777778, v10];
-      [v73 setEpisodeImageView:v57];
+      [VUILibraryEpisodeFrameView configureEpisodeFrameView:v57 withMedia:firstObject layout:0 imageSize:v10 * 1.77777778, v10];
+      [cellCopy setEpisodeImageView:v57];
     }
   }
 
-  else if (!a5)
+  else if (!metrics)
   {
-    v24 = [VUIMediaEntityImageLoadParamsFactory imageLoadParamsWithMediaEntity:v20 imageType:0];
-    v25 = [v73 posterImageView];
-    if (v25)
+    v24 = [VUIMediaEntityImageLoadParamsFactory imageLoadParamsWithMediaEntity:firstObject imageType:0];
+    posterImageView5 = [cellCopy posterImageView];
+    if (posterImageView5)
     {
-      v26 = [v73 posterImageView];
+      posterImageView6 = [cellCopy posterImageView];
     }
 
     else
     {
-      v26 = objc_alloc_init(MEMORY[0x1E69DF740]);
+      posterImageView6 = objc_alloc_init(MEMORY[0x1E69DF740]);
     }
 
-    v32 = v26;
+    v32 = posterImageView6;
 
     [v32 setUserInteractionEnabled:0];
-    v33 = [MEMORY[0x1E69DC888] vui_imageHighlightColor];
-    [v32 _setFocusedColor:v33];
+    vui_imageHighlightColor3 = [MEMORY[0x1E69DC888] vui_imageHighlightColor];
+    [v32 _setFocusedColor:vui_imageHighlightColor3];
 
-    v34 = [v73 _episodePlaceholderImage];
-    [v32 setPlaceholderImage:v34];
+    _episodePlaceholderImage3 = [cellCopy _episodePlaceholderImage];
+    [v32 setPlaceholderImage:_episodePlaceholderImage3];
 
     if (v24)
     {
       v35 = MEMORY[0x1E69DF728];
-      v36 = [MEMORY[0x1E69DC888] vui_imageBorderColor];
-      v37 = [v35 decoratorWithOutlineColor:v36 outlineWidths:{1.0, 1.0, 1.0, 1.0}];
+      vui_imageBorderColor3 = [MEMORY[0x1E69DC888] vui_imageBorderColor];
+      v37 = [v35 decoratorWithOutlineColor:vui_imageBorderColor3 outlineWidths:{1.0, 1.0, 1.0, 1.0}];
 
       v38 = objc_alloc(MEMORY[0x1E69DF730]);
-      v39 = [v20 mediaLibrary];
-      v40 = [v38 initWithObject:v24 imageLoader:v39 groupType:0];
+      mediaLibrary3 = [firstObject mediaLibrary];
+      v40 = [v38 initWithObject:v24 imageLoader:mediaLibrary3 groupType:0];
 
       [v37 setScaleToSize:{v10 * 1.77777778, v10}];
       [MEMORY[0x1E69DF6D0] radiiFromRadius:v9];
@@ -282,20 +282,20 @@ LABEL_33:
       [v32 setCornerRadius:?];
     }
 
-    [v73 setPosterImageView:v32];
+    [cellCopy setPosterImageView:v32];
   }
 
-  [v73 _addMetaDataLabelsIfRequired:v7];
-  [v73 _addDownloadButtonIfRequired:v20];
+  [cellCopy _addMetaDataLabelsIfRequired:entityCopy];
+  [cellCopy _addDownloadButtonIfRequired:firstObject];
 LABEL_37:
 }
 
-- (VUIDownloadEntityTableViewCell)initWithFrame:(CGRect)a3
+- (VUIDownloadEntityTableViewCell)initWithFrame:(CGRect)frame
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = VUIDownloadEntityTableViewCell;
-  v3 = [(VUIDownloadEntityTableViewCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIDownloadEntityTableViewCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     objc_initWeak(&location, v3);
@@ -334,226 +334,226 @@ void __48__VUIDownloadEntityTableViewCell_initWithFrame___block_invoke(uint64_t 
   [(VUIDownloadEntityTableViewCell *)self setMetaDataHeaderFirstLabel:0];
   [(VUIDownloadEntityTableViewCell *)self setMetaDataHeaderSecondLabel:0];
   [(VUIDownloadEntityTableViewCell *)self setDotSeparatorLabel:0];
-  v3 = [(VUIDownloadEntityTableViewCell *)self downloadEntity];
-  [v3 setDelegate:0];
+  downloadEntity = [(VUIDownloadEntityTableViewCell *)self downloadEntity];
+  [downloadEntity setDelegate:0];
 
   downloadEntity = self->_downloadEntity;
   self->_downloadEntity = 0;
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v9.receiver = self;
   v9.super_class = VUIDownloadEntityTableViewCell;
-  [(VUIDownloadEntityTableViewCell *)&v9 setSelected:a3 animated:a4];
+  [(VUIDownloadEntityTableViewCell *)&v9 setSelected:selected animated:animated];
   if ([(VUIDownloadEntityTableViewCell *)self isEditing])
   {
-    v5 = [(VUIDownloadEntityTableViewCell *)self topSeparatorView];
+    topSeparatorView = [(VUIDownloadEntityTableViewCell *)self topSeparatorView];
     v6 = [MEMORY[0x1E69DC888] colorWithRed:0.78 green:0.78 blue:0.8 alpha:1.0];
-    [v5 setBackgroundColor:v6];
+    [topSeparatorView setBackgroundColor:v6];
 
-    v7 = [(VUIDownloadEntityTableViewCell *)self bottomSeparatorView];
+    bottomSeparatorView = [(VUIDownloadEntityTableViewCell *)self bottomSeparatorView];
     v8 = [MEMORY[0x1E69DC888] colorWithRed:0.78 green:0.78 blue:0.8 alpha:1.0];
-    [v7 setBackgroundColor:v8];
+    [bottomSeparatorView setBackgroundColor:v8];
   }
 }
 
-- (void)setTitleLabel:(id)a3
+- (void)setTitleLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   titleLabel = self->_titleLabel;
-  if (titleLabel != v5)
+  if (titleLabel != labelCopy)
   {
-    v8 = v5;
+    v8 = labelCopy;
     [(VUILabel *)titleLabel removeFromSuperview];
-    objc_storeStrong(&self->_titleLabel, a3);
+    objc_storeStrong(&self->_titleLabel, label);
     if (self->_titleLabel)
     {
-      v7 = [(VUIDownloadEntityTableViewCell *)self contentView];
-      [v7 addSubview:self->_titleLabel];
+      contentView = [(VUIDownloadEntityTableViewCell *)self contentView];
+      [contentView addSubview:self->_titleLabel];
     }
 
     [(VUIDownloadEntityTableViewCell *)self setNeedsLayout];
-    v5 = v8;
+    labelCopy = v8;
   }
 }
 
-- (void)setPosterImageView:(id)a3
+- (void)setPosterImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   posterImageView = self->_posterImageView;
-  if (posterImageView != v5)
+  if (posterImageView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(VUIImageView *)posterImageView removeFromSuperview];
     [(VUIImageView *)v8 setUserInteractionEnabled:0];
-    objc_storeStrong(&self->_posterImageView, a3);
+    objc_storeStrong(&self->_posterImageView, view);
     if (self->_posterImageView)
     {
-      v7 = [(VUIDownloadEntityTableViewCell *)self contentView];
-      [v7 addSubview:self->_posterImageView];
+      contentView = [(VUIDownloadEntityTableViewCell *)self contentView];
+      [contentView addSubview:self->_posterImageView];
     }
 
     [(VUIDownloadEntityTableViewCell *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setMetaDataHeaderFirstLabel:(id)a3
+- (void)setMetaDataHeaderFirstLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   metaDataHeaderFirstLabel = self->_metaDataHeaderFirstLabel;
-  if (metaDataHeaderFirstLabel != v5)
+  if (metaDataHeaderFirstLabel != labelCopy)
   {
-    v8 = v5;
+    v8 = labelCopy;
     [(VUILabel *)metaDataHeaderFirstLabel removeFromSuperview];
-    objc_storeStrong(&self->_metaDataHeaderFirstLabel, a3);
+    objc_storeStrong(&self->_metaDataHeaderFirstLabel, label);
     if (self->_metaDataHeaderFirstLabel)
     {
-      v7 = [(VUIDownloadEntityTableViewCell *)self contentView];
-      [v7 addSubview:self->_metaDataHeaderFirstLabel];
+      contentView = [(VUIDownloadEntityTableViewCell *)self contentView];
+      [contentView addSubview:self->_metaDataHeaderFirstLabel];
     }
 
     [(VUIDownloadEntityTableViewCell *)self setNeedsLayout];
-    v5 = v8;
+    labelCopy = v8;
   }
 }
 
-- (void)setMetaDataHeaderSecondLabel:(id)a3
+- (void)setMetaDataHeaderSecondLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   metaDataHeaderSecondLabel = self->_metaDataHeaderSecondLabel;
-  if (metaDataHeaderSecondLabel != v5)
+  if (metaDataHeaderSecondLabel != labelCopy)
   {
-    v8 = v5;
+    v8 = labelCopy;
     [(VUILabel *)metaDataHeaderSecondLabel removeFromSuperview];
-    objc_storeStrong(&self->_metaDataHeaderSecondLabel, a3);
+    objc_storeStrong(&self->_metaDataHeaderSecondLabel, label);
     if (self->_metaDataHeaderSecondLabel)
     {
-      v7 = [(VUIDownloadEntityTableViewCell *)self contentView];
-      [v7 addSubview:self->_metaDataHeaderSecondLabel];
+      contentView = [(VUIDownloadEntityTableViewCell *)self contentView];
+      [contentView addSubview:self->_metaDataHeaderSecondLabel];
     }
 
     [(VUIDownloadEntityTableViewCell *)self setNeedsLayout];
-    v5 = v8;
+    labelCopy = v8;
   }
 }
 
-- (void)setEpisodeImageView:(id)a3
+- (void)setEpisodeImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   episodeImageView = self->_episodeImageView;
-  if (episodeImageView != v5)
+  if (episodeImageView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(VUILibraryEpisodeFrameView *)episodeImageView removeFromSuperview];
     [(VUILibraryEpisodeFrameView *)v8 setUserInteractionEnabled:0];
-    objc_storeStrong(&self->_episodeImageView, a3);
+    objc_storeStrong(&self->_episodeImageView, view);
     if (self->_episodeImageView)
     {
-      v7 = [(VUIDownloadEntityTableViewCell *)self contentView];
-      [v7 addSubview:self->_episodeImageView];
+      contentView = [(VUIDownloadEntityTableViewCell *)self contentView];
+      [contentView addSubview:self->_episodeImageView];
     }
 
     [(VUIDownloadEntityTableViewCell *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setDotSeparatorLabel:(id)a3
+- (void)setDotSeparatorLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   dotSeparatorLabel = self->_dotSeparatorLabel;
-  if (dotSeparatorLabel != v5)
+  if (dotSeparatorLabel != labelCopy)
   {
-    v8 = v5;
+    v8 = labelCopy;
     [(VUILabel *)dotSeparatorLabel removeFromSuperview];
-    objc_storeStrong(&self->_dotSeparatorLabel, a3);
+    objc_storeStrong(&self->_dotSeparatorLabel, label);
     if (self->_dotSeparatorLabel)
     {
-      v7 = [(VUIDownloadEntityTableViewCell *)self contentView];
-      [v7 addSubview:self->_dotSeparatorLabel];
+      contentView = [(VUIDownloadEntityTableViewCell *)self contentView];
+      [contentView addSubview:self->_dotSeparatorLabel];
     }
 
     [(VUIDownloadEntityTableViewCell *)self setNeedsLayout];
-    v5 = v8;
+    labelCopy = v8;
   }
 }
 
-- (void)setRightImageView:(id)a3
+- (void)setRightImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   rightImageView = self->_rightImageView;
-  if (rightImageView != v5)
+  if (rightImageView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(VUIVideosImageView *)rightImageView removeFromSuperview];
-    objc_storeStrong(&self->_rightImageView, a3);
+    objc_storeStrong(&self->_rightImageView, view);
     if (self->_rightImageView)
     {
-      v7 = [(VUIDownloadEntityTableViewCell *)self contentView];
-      [v7 addSubview:self->_rightImageView];
+      contentView = [(VUIDownloadEntityTableViewCell *)self contentView];
+      [contentView addSubview:self->_rightImageView];
     }
 
     [(VUIDownloadEntityTableViewCell *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setTopSeparatorView:(id)a3
+- (void)setTopSeparatorView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   topSeparatorView = self->_topSeparatorView;
-  if (topSeparatorView != v5)
+  if (topSeparatorView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(VUISeparatorView *)topSeparatorView removeFromSuperview];
-    objc_storeStrong(&self->_topSeparatorView, a3);
+    objc_storeStrong(&self->_topSeparatorView, view);
     if (self->_topSeparatorView)
     {
-      v7 = [(VUIDownloadEntityTableViewCell *)self contentView];
-      [v7 addSubview:self->_topSeparatorView];
+      contentView = [(VUIDownloadEntityTableViewCell *)self contentView];
+      [contentView addSubview:self->_topSeparatorView];
     }
 
     [(VUIDownloadEntityTableViewCell *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setBottomSeparatorView:(id)a3
+- (void)setBottomSeparatorView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   bottomSeparatorView = self->_bottomSeparatorView;
-  if (bottomSeparatorView != v5)
+  if (bottomSeparatorView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(VUISeparatorView *)bottomSeparatorView removeFromSuperview];
-    objc_storeStrong(&self->_bottomSeparatorView, a3);
+    objc_storeStrong(&self->_bottomSeparatorView, view);
     if (self->_bottomSeparatorView)
     {
-      v7 = [(VUIDownloadEntityTableViewCell *)self contentView];
-      [v7 addSubview:self->_bottomSeparatorView];
+      contentView = [(VUIDownloadEntityTableViewCell *)self contentView];
+      [contentView addSubview:self->_bottomSeparatorView];
     }
 
     [(VUIDownloadEntityTableViewCell *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setDownloadEntity:(id)a3
+- (void)setDownloadEntity:(id)entity
 {
-  v5 = a3;
+  entityCopy = entity;
   downloadEntity = self->_downloadEntity;
-  if (downloadEntity != v5)
+  if (downloadEntity != entityCopy)
   {
-    v7 = v5;
+    v7 = entityCopy;
     [(VUIDownloadEntity *)downloadEntity setDelegate:0];
-    objc_storeStrong(&self->_downloadEntity, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_downloadEntity, entity);
+    entityCopy = v7;
   }
 }
 
-- (void)willTransitionToState:(unint64_t)a3
+- (void)willTransitionToState:(unint64_t)state
 {
   v12.receiver = self;
   v12.super_class = VUIDownloadEntityTableViewCell;
@@ -562,8 +562,8 @@ void __48__VUIDownloadEntityTableViewCell_initWithFrame___block_invoke(uint64_t 
   v7 = 3221225472;
   v8 = __56__VUIDownloadEntityTableViewCell_willTransitionToState___block_invoke;
   v9 = &unk_1E872ECA0;
-  v10 = self;
-  v11 = a3 == 1;
+  selfCopy = self;
+  v11 = state == 1;
   v5 = _Block_copy(&v6);
   [MEMORY[0x1E69DD250] animateWithDuration:v5 animations:0 completion:{0.300000012, v6, v7, v8, v9}];
 }
@@ -574,9 +574,9 @@ void __56__VUIDownloadEntityTableViewCell_willTransitionToState___block_invoke(u
   [v2 setHidden:*(a1 + 40)];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(VUIDownloadEntityTableViewCell *)self _layoutWithSize:1 metricsOnly:a3.width, a3.height];
+  [(VUIDownloadEntityTableViewCell *)self _layoutWithSize:1 metricsOnly:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -593,39 +593,39 @@ void __56__VUIDownloadEntityTableViewCell_willTransitionToState___block_invoke(u
   [(VUIDownloadEntityTableViewCell *)self _layoutWithSize:0 metricsOnly:Width, CGRectGetHeight(v6)];
 }
 
-- (void)downloadEntity:(id)a3 numberOfItemsDownloadingDidChange:(id)a4
+- (void)downloadEntity:(id)entity numberOfItemsDownloadingDidChange:(id)change
 {
-  v5 = [VUIDownloadEntityTableViewCell _generateMetaDataHeaderFirstLabelForDownloadEntity:a3, a4];
-  [(VUIDownloadEntityTableViewCell *)self setMetaDataHeaderFirstLabel:v5];
+  change = [VUIDownloadEntityTableViewCell _generateMetaDataHeaderFirstLabelForDownloadEntity:entity, change];
+  [(VUIDownloadEntityTableViewCell *)self setMetaDataHeaderFirstLabel:change];
   [(VUIDownloadEntityTableViewCell *)self setNeedsLayout];
 }
 
-- (void)downloadEntity:(id)a3 numberOfItemsDidChange:(unint64_t)a4
+- (void)downloadEntity:(id)entity numberOfItemsDidChange:(unint64_t)change
 {
-  v5 = [VUIDownloadEntityTableViewCell _generateMetaDataHeaderFirstLabelForDownloadEntity:a3, a4];
-  [(VUIDownloadEntityTableViewCell *)self setMetaDataHeaderFirstLabel:v5];
+  change = [VUIDownloadEntityTableViewCell _generateMetaDataHeaderFirstLabelForDownloadEntity:entity, change];
+  [(VUIDownloadEntityTableViewCell *)self setMetaDataHeaderFirstLabel:change];
   [(VUIDownloadEntityTableViewCell *)self setNeedsLayout];
 }
 
-- (CGSize)_layoutWithSize:(CGSize)a3 metricsOnly:(BOOL)a4
+- (CGSize)_layoutWithSize:(CGSize)size metricsOnly:(BOOL)only
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  onlyCopy = only;
+  height = size.height;
+  width = size.width;
   [(VUIDownloadEntityTableViewCell *)self _configureViewElementsForAX];
-  v8 = [(VUIDownloadEntityTableViewCell *)self traitCollection];
-  v9 = [v8 isAXEnabled];
+  traitCollection = [(VUIDownloadEntityTableViewCell *)self traitCollection];
+  isAXEnabled = [traitCollection isAXEnabled];
 
-  if (v9)
+  if (isAXEnabled)
   {
 
-    [(VUIDownloadEntityTableViewCell *)self _layoutForCategoryAccessibility:v4 metricsOnly:width, height];
+    [(VUIDownloadEntityTableViewCell *)self _layoutForCategoryAccessibility:onlyCopy metricsOnly:width, height];
   }
 
   else
   {
 
-    [(VUIDownloadEntityTableViewCell *)self _layoutForCompact:v4 metricsOnly:width, height];
+    [(VUIDownloadEntityTableViewCell *)self _layoutForCompact:onlyCopy metricsOnly:width, height];
   }
 
   result.height = v11;
@@ -633,17 +633,17 @@ void __56__VUIDownloadEntityTableViewCell_willTransitionToState___block_invoke(u
   return result;
 }
 
-- (CGSize)_layoutForCategoryAccessibility:(CGSize)a3 metricsOnly:(BOOL)a4
+- (CGSize)_layoutForCategoryAccessibility:(CGSize)accessibility metricsOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
+  height = accessibility.height;
+  width = accessibility.width;
   [MEMORY[0x1E69DD2E8] vui_paddingForWindowWidth:?];
   v171 = v8;
   v10 = v9;
   [(VUIDownloadEntityTableViewCell *)self _imageHeightForCurrentSizeClass];
   v169 = v11;
-  v12 = [(VUIVideosImageView *)self->_rightImageView image];
-  [v12 size];
+  image = [(VUIVideosImageView *)self->_rightImageView image];
+  [image size];
   v14 = v13;
   v16 = v15;
 
@@ -665,35 +665,35 @@ void __56__VUIDownloadEntityTableViewCell_willTransitionToState___block_invoke(u
   v25 = v24;
   v27 = v26;
   [(VUIDownloadButton *)self->_downloadButton sizeToFit];
-  v28 = [(VUIDownloadEntityTableViewCell *)self traitCollection];
-  [VUIUtilities scaleContentSizeValue:v28 forTraitCollection:8.0];
+  traitCollection = [(VUIDownloadEntityTableViewCell *)self traitCollection];
+  [VUIUtilities scaleContentSizeValue:traitCollection forTraitCollection:8.0];
   v170 = v29;
 
-  v30 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderFirstLabel];
+  metaDataHeaderFirstLabel = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderFirstLabel];
 
-  if (v30)
+  if (metaDataHeaderFirstLabel)
   {
-    v31 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderFirstLabel];
+    metaDataHeaderFirstLabel2 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderFirstLabel];
   }
 
   else
   {
-    v32 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderSecondLabel];
+    metaDataHeaderSecondLabel = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderSecondLabel];
 
-    if (!v32)
+    if (!metaDataHeaderSecondLabel)
     {
       goto LABEL_9;
     }
 
-    v31 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderSecondLabel];
+    metaDataHeaderFirstLabel2 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderSecondLabel];
   }
 
-  v32 = v31;
+  metaDataHeaderSecondLabel = metaDataHeaderFirstLabel2;
 LABEL_9:
   v160 = *v17;
-  [(VUILabel *)self->_titleLabel topMarginToLabel:v32 withBaselineMargin:21.0];
+  [(VUILabel *)self->_titleLabel topMarginToLabel:metaDataHeaderSecondLabel withBaselineMargin:21.0];
   v163 = v33;
-  if (!a4)
+  if (!only)
   {
     v147 = v25;
     v149 = v16;
@@ -706,8 +706,8 @@ LABEL_9:
     v37 = *(MEMORY[0x1E695F058] + 16);
     v36 = *(MEMORY[0x1E695F058] + 24);
     topSeparatorView = self->_topSeparatorView;
-    v39 = [(VUIDownloadEntityTableViewCell *)self contentView];
-    [v39 bounds];
+    contentView = [(VUIDownloadEntityTableViewCell *)self contentView];
+    [contentView bounds];
     [(VUIBaseView *)topSeparatorView sizeThatFits:CGRectGetWidth(v173) - v171, 1.79769313e308];
     v41 = v40;
     v154 = v42;
@@ -719,10 +719,10 @@ LABEL_9:
     v174.size.width = v169 * 1.77777778;
     v174.size.height = v169;
     MaxY = CGRectGetMaxY(v174);
-    v44 = [(VUIDownloadEntityTableViewCell *)self titleLabel];
+    titleLabel = [(VUIDownloadEntityTableViewCell *)self titleLabel];
 
     v162 = v35;
-    if (v44)
+    if (titleLabel)
     {
       v35 = v163 + MaxY;
       v45 = v171;
@@ -745,10 +745,10 @@ LABEL_9:
 
     v156 = v35;
     v167 = v46;
-    v47 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderFirstLabel];
+    metaDataHeaderFirstLabel3 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderFirstLabel];
 
     v142 = v41;
-    if (v47)
+    if (metaDataHeaderFirstLabel3)
     {
       v176.origin.x = v171;
       v176.origin.y = v161;
@@ -770,14 +770,14 @@ LABEL_9:
       v139 = v34;
     }
 
-    v51 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderSecondLabel];
+    metaDataHeaderSecondLabel2 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderSecondLabel];
 
     v52 = v36;
     v53 = v37;
     v54 = v50;
     v55 = v34;
     v56 = v50;
-    if (v51)
+    if (metaDataHeaderSecondLabel2)
     {
       v52 = v135;
       v53 = v147;
@@ -825,8 +825,8 @@ LABEL_9:
       v37 = CGRectGetWidth(v179);
       [(VUIDownloadButton *)self->_downloadButton frame];
       v36 = CGRectGetHeight(v180);
-      v63 = [(VUIDownloadEntityTableViewCell *)self contentView];
-      [v63 bounds];
+      contentView2 = [(VUIDownloadEntityTableViewCell *)self contentView];
+      [contentView2 bounds];
       v34 = CGRectGetMaxX(v181) - (v157 + v37);
       v182.origin.y = v170;
       v182.origin.x = v171;
@@ -840,8 +840,8 @@ LABEL_9:
     v159 = v34;
     v158 = v37;
     bottomSeparatorView = self->_bottomSeparatorView;
-    v65 = [(VUIDownloadEntityTableViewCell *)self contentView];
-    [v65 bounds];
+    contentView3 = [(VUIDownloadEntityTableViewCell *)self contentView];
+    [contentView3 bounds];
     [(VUIBaseView *)bottomSeparatorView sizeThatFits:CGRectGetWidth(v183) - v171, 1.79769313e308];
     v67 = v66;
     v69 = v68;
@@ -851,16 +851,16 @@ LABEL_9:
     v184.origin.y = v170;
     v184.size.width = v169 * 1.77777778;
     v138 = CGRectGetMaxX(v184) + 16.0;
-    v70 = [(VUIDownloadEntityTableViewCell *)self contentView];
-    [v70 bounds];
+    contentView4 = [(VUIDownloadEntityTableViewCell *)self contentView];
+    [contentView4 bounds];
     v137 = CGRectGetHeight(v185) - v69;
 
-    v71 = [(VUIDownloadEntityTableViewCell *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(VUIDownloadEntityTableViewCell *)self effectiveUserInterfaceLayoutDirection];
     v72 = 0.0;
-    if (v71 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
-      v73 = [(VUIDownloadEntityTableViewCell *)self contentView];
-      [v73 bounds];
+      contentView5 = [(VUIDownloadEntityTableViewCell *)self contentView];
+      [contentView5 bounds];
 
       VUIRectWithFlippedOriginRelativeToBoundingRect();
       v126 = v74;
@@ -945,24 +945,24 @@ LABEL_9:
   }
 
   v117 = v169 + 0.0;
-  v118 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderFirstLabel];
+  metaDataHeaderFirstLabel4 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderFirstLabel];
 
-  if (v118)
+  if (metaDataHeaderFirstLabel4)
   {
     v117 = v117 + v164;
   }
 
-  v119 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderSecondLabel];
+  metaDataHeaderSecondLabel3 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderSecondLabel];
 
-  if (v119)
+  if (metaDataHeaderSecondLabel3)
   {
     v117 = v27 + v117;
   }
 
-  v120 = [(VUIDownloadEntityTableViewCell *)self titleLabel];
+  titleLabel2 = [(VUIDownloadEntityTableViewCell *)self titleLabel];
 
   v121 = v21 + v163 + v117;
-  if (!v120)
+  if (!titleLabel2)
   {
     v121 = v117;
   }
@@ -976,10 +976,10 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)_layoutForCompact:(CGSize)a3 metricsOnly:(BOOL)a4
+- (CGSize)_layoutForCompact:(CGSize)compact metricsOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
+  height = compact.height;
+  width = compact.width;
   [MEMORY[0x1E69DD2E8] vui_paddingForWindowWidth:?];
   v9 = v8;
   v11 = v10;
@@ -987,8 +987,8 @@ LABEL_9:
   v13 = v12;
   [(VUIDownloadEntityTableViewCell *)self _verticalPaddingForCurrentSizeClass];
   v192 = v14;
-  v15 = [(VUIVideosImageView *)self->_rightImageView image];
-  [v15 size];
+  image = [(VUIVideosImageView *)self->_rightImageView image];
+  [image size];
   v17 = v16;
   v19 = v18;
 
@@ -1055,7 +1055,7 @@ LABEL_9:
   }
 
   v39 = v25 + v38 + v36;
-  if (!a4)
+  if (!only)
   {
     v163 = v29;
     v187 = v23;
@@ -1068,24 +1068,24 @@ LABEL_9:
     v41 = *(MEMORY[0x1E695F058] + 16);
     v151 = *(MEMORY[0x1E695F058] + 24);
     topSeparatorView = self->_topSeparatorView;
-    v43 = [(VUIDownloadEntityTableViewCell *)self contentView];
-    [v43 bounds];
+    contentView = [(VUIDownloadEntityTableViewCell *)self contentView];
+    [contentView bounds];
     [(VUIBaseView *)topSeparatorView sizeThatFits:CGRectGetWidth(v198) - v9, 1.79769313e308];
     v177 = v44;
     v179 = v45;
 
-    v46 = [(VUIDownloadEntityTableViewCell *)self contentView];
-    [v46 bounds];
+    contentView2 = [(VUIDownloadEntityTableViewCell *)self contentView];
+    [contentView2 bounds];
     v47 = CGRectGetMidY(v199) - v13 * 0.5;
 
-    v48 = [(VUIDownloadEntityTableViewCell *)self contentView];
-    [v48 bounds];
+    contentView3 = [(VUIDownloadEntityTableViewCell *)self contentView];
+    [contentView3 bounds];
     v49 = CGRectGetMidY(v200) - v13 * 0.5;
 
-    v50 = [(VUIDownloadEntityTableViewCell *)self posterImageView];
+    posterImageView = [(VUIDownloadEntityTableViewCell *)self posterImageView];
     v175 = v49;
     v176 = v47;
-    if (v50)
+    if (posterImageView)
     {
       v51 = v47;
     }
@@ -1100,10 +1100,10 @@ LABEL_9:
     v201.size.width = v13 * 1.77777778;
     v201.size.height = v13;
     v52 = v173 + CGRectGetMinY(v201);
-    v53 = [(VUIDownloadEntityTableViewCell *)self titleLabel];
+    titleLabel = [(VUIDownloadEntityTableViewCell *)self titleLabel];
 
     v156 = v40;
-    if (v53)
+    if (titleLabel)
     {
       v202.origin.x = v9;
       v202.origin.y = v51;
@@ -1245,8 +1245,8 @@ LABEL_9:
         v78 = v195;
       }
 
-      v79 = [(VUIDownloadEntityTableViewCell *)self contentView];
-      [v79 bounds];
+      contentView4 = [(VUIDownloadEntityTableViewCell *)self contentView];
+      [contentView4 bounds];
       v186 = CGRectGetMidY(v210) + v159 * -0.5;
 
       v73 = v159;
@@ -1263,19 +1263,19 @@ LABEL_9:
       v41 = CGRectGetWidth(v211);
       [(VUIDownloadButton *)self->_downloadButton frame];
       v54 = CGRectGetHeight(v212);
-      v81 = [(VUIDownloadEntityTableViewCell *)self contentView];
-      [v81 bounds];
+      contentView5 = [(VUIDownloadEntityTableViewCell *)self contentView];
+      [contentView5 bounds];
       v188 = CGRectGetMaxX(v213) - (v181 + v41);
-      v82 = [(VUIDownloadEntityTableViewCell *)self contentView];
-      [v82 bounds];
+      contentView6 = [(VUIDownloadEntityTableViewCell *)self contentView];
+      [contentView6 bounds];
       v67 = CGRectGetMidY(v214) + v54 * -0.5;
     }
 
     v182 = v75;
     v184 = v41;
     bottomSeparatorView = self->_bottomSeparatorView;
-    v84 = [(VUIDownloadEntityTableViewCell *)self contentView];
-    [v84 bounds];
+    contentView7 = [(VUIDownloadEntityTableViewCell *)self contentView];
+    [contentView7 bounds];
     [(VUIBaseView *)bottomSeparatorView sizeThatFits:CGRectGetWidth(v215) - v76, 1.79769313e308];
     v155 = v85;
     v87 = v86;
@@ -1285,17 +1285,17 @@ LABEL_9:
     v216.size.width = v72;
     v216.size.height = v13;
     recta = CGRectGetMaxX(v216) + 16.0;
-    v88 = [(VUIDownloadEntityTableViewCell *)self contentView];
-    [v88 bounds];
+    contentView8 = [(VUIDownloadEntityTableViewCell *)self contentView];
+    [contentView8 bounds];
     v157 = v87;
     v152 = CGRectGetHeight(v217) - v87;
 
-    v89 = [(VUIDownloadEntityTableViewCell *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(VUIDownloadEntityTableViewCell *)self effectiveUserInterfaceLayoutDirection];
     v90 = 0.0;
-    if (v89 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
-      v91 = [(VUIDownloadEntityTableViewCell *)self contentView];
-      [v91 bounds];
+      contentView9 = [(VUIDownloadEntityTableViewCell *)self contentView];
+      [contentView9 bounds];
 
       VUIRectWithFlippedOriginRelativeToBoundingRect();
       v142 = v92;
@@ -1400,32 +1400,32 @@ LABEL_9:
 
 - (void)_configureViewElementsForAX
 {
-  v3 = [(VUIDownloadEntityTableViewCell *)self traitCollection];
-  v4 = [v3 isAXEnabled];
+  traitCollection = [(VUIDownloadEntityTableViewCell *)self traitCollection];
+  isAXEnabled = [traitCollection isAXEnabled];
 
-  v5 = [(VUIDownloadEntityTableViewCell *)self dotSeparatorLabel];
-  [v5 setHidden:v4];
+  dotSeparatorLabel = [(VUIDownloadEntityTableViewCell *)self dotSeparatorLabel];
+  [dotSeparatorLabel setHidden:isAXEnabled];
 }
 
-- (void)_addMetaDataLabelsIfRequired:(id)a3
+- (void)_addMetaDataLabelsIfRequired:(id)required
 {
-  v64 = a3;
-  v4 = [v64 mediaEntities];
-  v5 = [v4 firstObject];
+  requiredCopy = required;
+  mediaEntities = [requiredCopy mediaEntities];
+  firstObject = [mediaEntities firstObject];
 
-  if (![v64 downloadType])
+  if (![requiredCopy downloadType])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = v5;
-      v16 = [v15 rentalExpirationDate];
-      v17 = [v15 downloadExpirationDate];
-      v18 = [v15 availabilityEndDate];
-      v19 = [v15 assetController];
+      v15 = firstObject;
+      rentalExpirationDate = [v15 rentalExpirationDate];
+      downloadExpirationDate = [v15 downloadExpirationDate];
+      availabilityEndDate = [v15 availabilityEndDate];
+      assetController = [v15 assetController];
 
-      v20 = [v19 state];
-      v10 = +[VUIRentalExpirationLabel labelForRentalExpirationDate:downloadExpirationDate:contentAvailabilityDate:downloadStatus:](VUIRentalExpirationLabel, "labelForRentalExpirationDate:downloadExpirationDate:contentAvailabilityDate:downloadStatus:", v16, v17, v18, [v20 status]);
+      state = [assetController state];
+      v10 = +[VUIRentalExpirationLabel labelForRentalExpirationDate:downloadExpirationDate:contentAvailabilityDate:downloadStatus:](VUIRentalExpirationLabel, "labelForRentalExpirationDate:downloadExpirationDate:contentAvailabilityDate:downloadStatus:", rentalExpirationDate, downloadExpirationDate, availabilityEndDate, [state status]);
 
       if (v10)
       {
@@ -1433,21 +1433,21 @@ LABEL_9:
       }
     }
 
-    v11 = [v64 duration];
-    if (v11)
+    duration = [requiredCopy duration];
+    if (duration)
     {
       v21 = [MEMORY[0x1E696B0A0] valueTransformerForName:*MEMORY[0x1E69DF858]];
-      v22 = [v21 transformedValue:v11];
+      v22 = [v21 transformedValue:duration];
 
       v23 = objc_alloc_init(VUITextLayout);
       [(VUITextLayout *)v23 setTextStyle:21];
       [(VUITextLayout *)v23 setFontWeight:0];
       [(VUITextLayout *)v23 setNumberOfLines:1];
-      v24 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-      [(VUITextLayout *)v23 setColor:v24];
+      vui_secondaryTextColor = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+      [(VUITextLayout *)v23 setColor:vui_secondaryTextColor];
 
-      v25 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderFirstLabel];
-      v10 = [VUILabel labelWithString:v22 textLayout:v23 existingLabel:v25];
+      metaDataHeaderFirstLabel = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderFirstLabel];
+      v10 = [VUILabel labelWithString:v22 textLayout:v23 existingLabel:metaDataHeaderFirstLabel];
     }
 
     else
@@ -1456,32 +1456,32 @@ LABEL_9:
     }
 
     [(VUIDownloadEntityTableViewCell *)self setMetaDataHeaderFirstLabel:v10];
-    v35 = [v64 releaseYear];
-    v14 = [v35 stringValue];
+    releaseYear = [requiredCopy releaseYear];
+    stringValue = [releaseYear stringValue];
 
-    if (v14)
+    if (stringValue)
     {
       v36 = objc_alloc_init(VUITextLayout);
       [(VUITextLayout *)v36 setTextStyle:21];
       [(VUITextLayout *)v36 setFontWeight:0];
       [(VUITextLayout *)v36 setNumberOfLines:1];
-      v37 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-      [(VUITextLayout *)v36 setColor:v37];
+      vui_secondaryTextColor2 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+      [(VUITextLayout *)v36 setColor:vui_secondaryTextColor2];
 
-      v38 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderSecondLabel];
-      v39 = [VUILabel labelWithString:v14 textLayout:v36 existingLabel:v38];
+      metaDataHeaderSecondLabel = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderSecondLabel];
+      v39 = [VUILabel labelWithString:stringValue textLayout:v36 existingLabel:metaDataHeaderSecondLabel];
 
       [(VUIDownloadEntityTableViewCell *)self setMetaDataHeaderSecondLabel:v39];
-      if (v11)
+      if (duration)
       {
         v40 = objc_alloc_init(VUITextLayout);
         [(VUITextLayout *)v40 setTextStyle:22];
-        v41 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-        [(VUITextLayout *)v40 setColor:v41];
+        vui_secondaryTextColor3 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+        [(VUITextLayout *)v40 setColor:vui_secondaryTextColor3];
 
         [(VUITextLayout *)v40 setNumberOfLines:1];
-        v42 = [(VUIDownloadEntityTableViewCell *)self dotSeparatorLabel];
-        v43 = [VUILabel labelWithString:@"·" textLayout:v40 existingLabel:v42];
+        dotSeparatorLabel = [(VUIDownloadEntityTableViewCell *)self dotSeparatorLabel];
+        v43 = [VUILabel labelWithString:@"·" textLayout:v40 existingLabel:dotSeparatorLabel];
 
 LABEL_20:
         [(VUIDownloadEntityTableViewCell *)self setDotSeparatorLabel:v43];
@@ -1500,62 +1500,62 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if ([v64 downloadType] == 1)
+  if ([requiredCopy downloadType] == 1)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = +[VUILocalizationManager sharedInstance];
     v8 = [v7 localizedStringForKey:@"NUMBER_OF_EPISODES"];
-    v9 = [v64 numberOfMediaItems];
-    v10 = [v6 localizedStringWithValidatedFormat:v8 validFormatSpecifiers:@"%d" error:0, objc_msgSend(v9, "intValue")];
+    numberOfMediaItems = [requiredCopy numberOfMediaItems];
+    v10 = [v6 localizedStringWithValidatedFormat:v8 validFormatSpecifiers:@"%d" error:0, objc_msgSend(numberOfMediaItems, "intValue")];
 
-    v11 = objc_alloc_init(VUITextLayout);
-    [(VUITextLayout *)v11 setTextStyle:21];
-    [(VUITextLayout *)v11 setFontWeight:0];
-    [(VUITextLayout *)v11 setNumberOfLines:0];
-    v12 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-    [(VUITextLayout *)v11 setColor:v12];
+    duration = objc_alloc_init(VUITextLayout);
+    [(VUITextLayout *)duration setTextStyle:21];
+    [(VUITextLayout *)duration setFontWeight:0];
+    [(VUITextLayout *)duration setNumberOfLines:0];
+    vui_secondaryTextColor4 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+    [(VUITextLayout *)duration setColor:vui_secondaryTextColor4];
 
-    v13 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderFirstLabel];
-    v14 = [VUILabel labelWithString:v10 textLayout:v11 existingLabel:v13];
+    metaDataHeaderFirstLabel2 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderFirstLabel];
+    stringValue = [VUILabel labelWithString:v10 textLayout:duration existingLabel:metaDataHeaderFirstLabel2];
 
-    [(VUIDownloadEntityTableViewCell *)self setMetaDataHeaderFirstLabel:v14];
+    [(VUIDownloadEntityTableViewCell *)self setMetaDataHeaderFirstLabel:stringValue];
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  if ([v64 downloadType] != 3)
+  if ([requiredCopy downloadType] != 3)
   {
     goto LABEL_23;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (v26 = v5, [v26 rentalExpirationDate], v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "downloadExpirationDate"), v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "availabilityEndDate"), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "assetController"), v30 = objc_claimAutoreleasedReturnValue(), v26, objc_msgSend(v30, "state"), v31 = objc_claimAutoreleasedReturnValue(), +[VUIRentalExpirationLabel labelForRentalExpirationDate:downloadExpirationDate:contentAvailabilityDate:downloadStatus:](VUIRentalExpirationLabel, "labelForRentalExpirationDate:downloadExpirationDate:contentAvailabilityDate:downloadStatus:", v27, v28, v29, objc_msgSend(v31, "status")), v10 = objc_claimAutoreleasedReturnValue(), v31, v30, v29, v28, v27, !v10))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (v26 = firstObject, [v26 rentalExpirationDate], v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "downloadExpirationDate"), v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "availabilityEndDate"), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "assetController"), v30 = objc_claimAutoreleasedReturnValue(), v26, objc_msgSend(v30, "state"), v31 = objc_claimAutoreleasedReturnValue(), +[VUIRentalExpirationLabel labelForRentalExpirationDate:downloadExpirationDate:contentAvailabilityDate:downloadStatus:](VUIRentalExpirationLabel, "labelForRentalExpirationDate:downloadExpirationDate:contentAvailabilityDate:downloadStatus:", v27, v28, v29, objc_msgSend(v31, "status")), v10 = objc_claimAutoreleasedReturnValue(), v31, v30, v29, v28, v27, !v10))
   {
     v32 = +[VUILocalizationManager sharedInstance];
     v10 = [v32 localizedStringForKey:@"EPISODE_NUMBER"];
 
-    v33 = [v64 fractionalEpisodeNumber];
+    fractionalEpisodeNumber = [requiredCopy fractionalEpisodeNumber];
 
-    if (v33)
+    if (fractionalEpisodeNumber)
     {
-      v34 = [v64 fractionalEpisodeNumber];
+      fractionalEpisodeNumber2 = [requiredCopy fractionalEpisodeNumber];
     }
 
     else
     {
-      v44 = [v64 episodeNumber];
+      episodeNumber = [requiredCopy episodeNumber];
 
-      if (!v44)
+      if (!episodeNumber)
       {
         v45 = 0;
         goto LABEL_29;
       }
 
-      v34 = [v64 episodeNumber];
+      fractionalEpisodeNumber2 = [requiredCopy episodeNumber];
     }
 
-    v45 = v34;
+    v45 = fractionalEpisodeNumber2;
 LABEL_29:
     v46 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:0, v45];
     if (v45)
@@ -1564,11 +1564,11 @@ LABEL_29:
       [(VUITextLayout *)v47 setTextStyle:21];
       [(VUITextLayout *)v47 setFontWeight:0];
       [(VUITextLayout *)v47 setNumberOfLines:0];
-      v48 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-      [(VUITextLayout *)v47 setColor:v48];
+      vui_secondaryTextColor5 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+      [(VUITextLayout *)v47 setColor:vui_secondaryTextColor5];
 
-      v49 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderFirstLabel];
-      v50 = [VUILabel labelWithString:v46 textLayout:v47 existingLabel:v49];
+      metaDataHeaderFirstLabel3 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderFirstLabel];
+      v50 = [VUILabel labelWithString:v46 textLayout:v47 existingLabel:metaDataHeaderFirstLabel3];
     }
 
     else
@@ -1577,23 +1577,23 @@ LABEL_29:
     }
 
     [(VUIDownloadEntityTableViewCell *)self setMetaDataHeaderFirstLabel:v50];
-    v51 = [v64 duration];
-    if (v51)
+    duration2 = [requiredCopy duration];
+    if (duration2)
     {
       v62 = v45;
       v52 = [MEMORY[0x1E696B0A0] valueTransformerForName:*MEMORY[0x1E69DF858]];
-      [v52 transformedValue:v51];
+      [v52 transformedValue:duration2];
       v53 = v63 = v46;
 
       v54 = objc_alloc_init(VUITextLayout);
       [(VUITextLayout *)v54 setTextStyle:21];
       [(VUITextLayout *)v54 setFontWeight:0];
       [(VUITextLayout *)v54 setNumberOfLines:1];
-      v55 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-      [(VUITextLayout *)v54 setColor:v55];
+      vui_secondaryTextColor6 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+      [(VUITextLayout *)v54 setColor:vui_secondaryTextColor6];
 
-      v56 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderSecondLabel];
-      v57 = [VUILabel labelWithString:v53 textLayout:v54 existingLabel:v56];
+      metaDataHeaderSecondLabel2 = [(VUIDownloadEntityTableViewCell *)self metaDataHeaderSecondLabel];
+      v57 = [VUILabel labelWithString:v53 textLayout:v54 existingLabel:metaDataHeaderSecondLabel2];
 
       v46 = v63;
       [(VUIDownloadEntityTableViewCell *)self setMetaDataHeaderSecondLabel:v57];
@@ -1601,12 +1601,12 @@ LABEL_29:
       {
         v58 = objc_alloc_init(VUITextLayout);
         [(VUITextLayout *)v58 setTextStyle:22];
-        v59 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-        [(VUITextLayout *)v58 setColor:v59];
+        vui_secondaryTextColor7 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+        [(VUITextLayout *)v58 setColor:vui_secondaryTextColor7];
 
         [(VUITextLayout *)v58 setNumberOfLines:1];
-        v60 = [(VUIDownloadEntityTableViewCell *)self dotSeparatorLabel];
-        v61 = [VUILabel labelWithString:@"·" textLayout:v58 existingLabel:v60];
+        dotSeparatorLabel2 = [(VUIDownloadEntityTableViewCell *)self dotSeparatorLabel];
+        v61 = [VUILabel labelWithString:@"·" textLayout:v58 existingLabel:dotSeparatorLabel2];
 
         v46 = v63;
       }
@@ -1641,24 +1641,24 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)_addDownloadButtonIfRequired:(id)a3
+- (void)_addDownloadButtonIfRequired:(id)required
 {
-  v4 = a3;
-  v5 = [v4 assetController];
+  requiredCopy = required;
+  assetController = [requiredCopy assetController];
 
-  if (v5)
+  if (assetController)
   {
-    v6 = [(VUIDownloadEntityTableViewCell *)self downloadButton];
-    if (v6)
+    downloadButton = [(VUIDownloadEntityTableViewCell *)self downloadButton];
+    if (downloadButton)
     {
-      v7 = v6;
-      v8 = [v4 assetController];
-      [(VUIDownloadButton *)v7 updateWithAssetController:v8];
+      v7 = downloadButton;
+      assetController2 = [requiredCopy assetController];
+      [(VUIDownloadButton *)v7 updateWithAssetController:assetController2];
     }
 
     else
     {
-      v7 = [[VUIDownloadButton alloc] initWithMediaEntity:v4 type:9];
+      v7 = [[VUIDownloadButton alloc] initWithMediaEntity:requiredCopy type:9];
       [(VUIDownloadButton *)v7 setUsesDefaultConfiguration:1];
       objc_initWeak(&location, self);
       v10 = MEMORY[0x1E69E9820];
@@ -1702,22 +1702,22 @@ void __63__VUIDownloadEntityTableViewCell__addDownloadButtonIfRequired___block_i
 
 - (void)_removeDownloadButtonIfRequired
 {
-  v3 = [(VUIDownloadEntityTableViewCell *)self downloadButton];
-  if (v3)
+  downloadButton = [(VUIDownloadEntityTableViewCell *)self downloadButton];
+  if (downloadButton)
   {
-    v4 = v3;
-    [v3 removeFromSuperview];
+    v4 = downloadButton;
+    [downloadButton removeFromSuperview];
     [(VUIDownloadEntityTableViewCell *)self setDownloadButton:0];
     [(VUIDownloadEntityTableViewCell *)self setPreviousDownloadState:0];
-    v3 = v4;
+    downloadButton = v4;
   }
 }
 
 - (id)_episodePlaceholderImage
 {
-  v2 = [(VUIDownloadEntityTableViewCell *)self contentView];
-  v3 = [v2 traitCollection];
-  v4 = +[VUIUtilities placeholderImageResourceName:](VUIUtilities, "placeholderImageResourceName:", [v3 userInterfaceStyle]);
+  contentView = [(VUIDownloadEntityTableViewCell *)self contentView];
+  traitCollection = [contentView traitCollection];
+  v4 = +[VUIUtilities placeholderImageResourceName:](VUIUtilities, "placeholderImageResourceName:", [traitCollection userInterfaceStyle]);
   v5 = [VUIImageResourceMap imageForResourceName:v4];
 
   return v5;
@@ -1725,9 +1725,9 @@ void __63__VUIDownloadEntityTableViewCell__addDownloadButtonIfRequired___block_i
 
 - (double)_imageHeightForCurrentSizeClass
 {
-  v2 = [MEMORY[0x1E69DD2E8] vui_currentSizeClass];
+  vui_currentSizeClass = [MEMORY[0x1E69DD2E8] vui_currentSizeClass];
   result = 54.0;
-  if ((v2 - 3) < 3)
+  if ((vui_currentSizeClass - 3) < 3)
   {
     return 72.0;
   }
@@ -1737,9 +1737,9 @@ void __63__VUIDownloadEntityTableViewCell__addDownloadButtonIfRequired___block_i
 
 - (double)_verticalPaddingForCurrentSizeClass
 {
-  v2 = [MEMORY[0x1E69DD2E8] vui_currentSizeClass];
+  vui_currentSizeClass = [MEMORY[0x1E69DD2E8] vui_currentSizeClass];
   result = 8.0;
-  if ((v2 - 3) < 3)
+  if ((vui_currentSizeClass - 3) < 3)
   {
     return 12.0;
   }
@@ -1747,21 +1747,21 @@ void __63__VUIDownloadEntityTableViewCell__addDownloadButtonIfRequired___block_i
   return result;
 }
 
-+ (id)_generateMetaDataHeaderFirstLabelForDownloadEntity:(id)a3
++ (id)_generateMetaDataHeaderFirstLabelForDownloadEntity:(id)entity
 {
-  v3 = a3;
-  v4 = [v3 numberOfMediaItemsDownloading];
-  v5 = [v4 intValue];
+  entityCopy = entity;
+  numberOfMediaItemsDownloading = [entityCopy numberOfMediaItemsDownloading];
+  intValue = [numberOfMediaItemsDownloading intValue];
 
   v6 = MEMORY[0x1E696AEC0];
   v7 = +[VUILocalizationManager sharedInstance];
   v8 = v7;
-  if (v5 < 1)
+  if (intValue < 1)
   {
     v13 = [v7 localizedStringForKey:@"NUMBER_OF_EPISODES"];
-    v14 = [v3 numberOfMediaItems];
+    numberOfMediaItems = [entityCopy numberOfMediaItems];
 
-    v11 = [v6 localizedStringWithValidatedFormat:v13 validFormatSpecifiers:@"%d" error:0, objc_msgSend(v14, "intValue")];
+    v11 = [v6 localizedStringWithValidatedFormat:v13 validFormatSpecifiers:@"%d" error:0, objc_msgSend(numberOfMediaItems, "intValue")];
 
     v12 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v12 setTextStyle:21];
@@ -1773,9 +1773,9 @@ void __63__VUIDownloadEntityTableViewCell__addDownloadButtonIfRequired___block_i
   else
   {
     v9 = [v7 localizedStringForKey:@"DOWNLOADING_NUMBER_OF_EPISODES"];
-    v10 = [v3 numberOfMediaItemsDownloading];
+    numberOfMediaItemsDownloading2 = [entityCopy numberOfMediaItemsDownloading];
 
-    v11 = [v6 localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%d" error:0, objc_msgSend(v10, "intValue")];
+    v11 = [v6 localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%d" error:0, objc_msgSend(numberOfMediaItemsDownloading2, "intValue")];
 
     v12 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v12 setTextStyle:21];

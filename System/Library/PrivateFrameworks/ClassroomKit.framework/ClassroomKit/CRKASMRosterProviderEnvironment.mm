@@ -1,76 +1,76 @@
 @interface CRKASMRosterProviderEnvironment
-- (BOOL)isEqual:(id)a3;
-- (CRKASMRosterProviderEnvironment)initWithConfiguration:(id)a3;
-- (CRKASMRosterProviderEnvironment)initWithConfiguration:(id)a3 certificateVendor:(id)a4 userFactory:(id)a5;
-- (id)identityVendorForUserIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CRKASMRosterProviderEnvironment)initWithConfiguration:(id)configuration;
+- (CRKASMRosterProviderEnvironment)initWithConfiguration:(id)configuration certificateVendor:(id)vendor userFactory:(id)factory;
+- (id)identityVendorForUserIdentifier:(id)identifier;
 - (unint64_t)hash;
 @end
 
 @implementation CRKASMRosterProviderEnvironment
 
-- (CRKASMRosterProviderEnvironment)initWithConfiguration:(id)a3
+- (CRKASMRosterProviderEnvironment)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [CRKASMCertificateVendor alloc];
-  v6 = [v4 credentialStore];
-  v7 = [(CRKASMCertificateVendor *)v5 initWithCredentialStore:v6];
+  credentialStore = [configurationCopy credentialStore];
+  v7 = [(CRKASMCertificateVendor *)v5 initWithCredentialStore:credentialStore];
 
-  v8 = [[CRKASMUserFactory alloc] initWithConfiguration:v4 certificateVendor:v7];
-  v9 = [(CRKASMRosterProviderEnvironment *)self initWithConfiguration:v4 certificateVendor:v7 userFactory:v8];
+  v8 = [[CRKASMUserFactory alloc] initWithConfiguration:configurationCopy certificateVendor:v7];
+  v9 = [(CRKASMRosterProviderEnvironment *)self initWithConfiguration:configurationCopy certificateVendor:v7 userFactory:v8];
 
   return v9;
 }
 
-- (CRKASMRosterProviderEnvironment)initWithConfiguration:(id)a3 certificateVendor:(id)a4 userFactory:(id)a5
+- (CRKASMRosterProviderEnvironment)initWithConfiguration:(id)configuration certificateVendor:(id)vendor userFactory:(id)factory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  vendorCopy = vendor;
+  factoryCopy = factory;
   v15.receiver = self;
   v15.super_class = CRKASMRosterProviderEnvironment;
   v12 = [(CRKASMRosterProviderEnvironment *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_configuration, a3);
-    objc_storeStrong(&v13->_certificateVendor, a4);
-    objc_storeStrong(&v13->_userFactory, a5);
+    objc_storeStrong(&v12->_configuration, configuration);
+    objc_storeStrong(&v13->_certificateVendor, vendor);
+    objc_storeStrong(&v13->_userFactory, factory);
   }
 
   return v13;
 }
 
-- (id)identityVendorForUserIdentifier:(id)a3
+- (id)identityVendorForUserIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [CRKASMIdentityVendor alloc];
-  v6 = [(CRKASMRosterProviderEnvironment *)self configuration];
-  v7 = [v6 userCommonNamePrefix];
-  v8 = [(CRKASMRosterProviderEnvironment *)self configuration];
-  v9 = [v8 credentialStore];
-  v10 = [(CRKASMIdentityVendor *)v5 initWithUserIdentifier:v4 commonNamePrefix:v7 credentialStore:v9];
+  configuration = [(CRKASMRosterProviderEnvironment *)self configuration];
+  userCommonNamePrefix = [configuration userCommonNamePrefix];
+  configuration2 = [(CRKASMRosterProviderEnvironment *)self configuration];
+  credentialStore = [configuration2 credentialStore];
+  v10 = [(CRKASMIdentityVendor *)v5 initWithUserIdentifier:identifierCopy commonNamePrefix:userCommonNamePrefix credentialStore:credentialStore];
 
   return v10;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(CRKASMRosterProviderEnvironment *)self configuration];
-  v4 = [v3 hash];
-  v5 = [(CRKASMRosterProviderEnvironment *)self certificateVendor];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CRKASMRosterProviderEnvironment *)self userFactory];
-  v8 = [v7 hash];
+  configuration = [(CRKASMRosterProviderEnvironment *)self configuration];
+  v4 = [configuration hash];
+  certificateVendor = [(CRKASMRosterProviderEnvironment *)self certificateVendor];
+  v6 = [certificateVendor hash] ^ v4;
+  userFactory = [(CRKASMRosterProviderEnvironment *)self userFactory];
+  v8 = [userFactory hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [CFSTR(""configuration certificateVendor];
-  v6 = [v5 mutableCopy];
+  equalCopy = equal;
+  certificateVendor = [CFSTR(""configuration certificateVendor];
+  v6 = [certificateVendor mutableCopy];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -80,10 +80,10 @@
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -112,7 +112,7 @@
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKASMRosterProviderEnvironment *)v8 valueForKey:v16];
+          v18 = [(CRKASMRosterProviderEnvironment *)selfCopy valueForKey:v16];
           v19 = [(CRKASMRosterProviderEnvironment *)v17 valueForKey:v16];
 
           if (v18 | v19)

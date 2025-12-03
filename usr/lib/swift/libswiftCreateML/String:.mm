@@ -7,8 +7,8 @@
 
 - (id)NSObject
 {
-  v1 = *(a1 + 32);
-  v2 = *(a1 + 40);
+  v1 = *(self + 32);
+  v2 = *(self + 40);
 
   v3 = v1(v2);
 
@@ -25,12 +25,12 @@
 
 - (uint64_t)Double
 {
-  result = *a1;
-  if (!*a1)
+  result = *self;
+  if (!*self)
   {
     v6 = __swift_instantiateConcreteTypeFromMangledNameAbstract(a2);
     result = swift_getWitnessTable(a4, v6);
-    *a1 = result;
+    *self = result;
   }
 
   return result;

@@ -2,30 +2,30 @@
 + (id)logCategory;
 - (BOOL)_currentDeviceHasDeviceAddress;
 - (BOOL)_statusBusy;
-- (HMDAppleMediaDeviceAssociationController)initWithHome:(id)a3 accessory:(id)a4 dataSource:(id)a5;
-- (HMDAppleMediaDeviceAssociationController)initWithQueue:(id)a3 homeUUID:(id)a4 accessoryUUID:(id)a5 residentSyncManager:(id)a6 backingStore:(id)a7 notificationCenter:(id)a8 dataSource:(id)a9;
+- (HMDAppleMediaDeviceAssociationController)initWithHome:(id)home accessory:(id)accessory dataSource:(id)source;
+- (HMDAppleMediaDeviceAssociationController)initWithQueue:(id)queue homeUUID:(id)d accessoryUUID:(id)iD residentSyncManager:(id)manager backingStore:(id)store notificationCenter:(id)center dataSource:(id)source;
 - (HMFTimerProvider)timerProvider;
 - (double)nextInterval;
-- (id)_deviceAssociationInfoFromProtoData:(id)a3;
+- (id)_deviceAssociationInfoFromProtoData:(id)data;
 - (id)logIdentifier;
-- (id)mkfAppleMediaAccessoryWithModelIdentifier:(id)a3;
-- (void)_handleAppleAccountManagerResolvedNotification:(id)a3;
-- (void)_handleDeviceUpdatedNotification:(id)a3;
-- (void)_handleHMDAppleMediaDeviceAssociationPushMessage:(id)a3;
-- (void)_handlePrimaryChange:(id)a3;
+- (id)mkfAppleMediaAccessoryWithModelIdentifier:(id)identifier;
+- (void)_handleAppleAccountManagerResolvedNotification:(id)notification;
+- (void)_handleDeviceUpdatedNotification:(id)notification;
+- (void)_handleHMDAppleMediaDeviceAssociationPushMessage:(id)message;
+- (void)_handlePrimaryChange:(id)change;
 - (void)_handlePrimaryResidentDeviceAddressUpdate;
 - (void)_process;
 - (void)_pushDeviceAddress;
 - (void)_pushDeviceAddressIfNeeded;
-- (void)_registerForMessages:(id)a3 messageDispatcher:(id)a4;
-- (void)_registerForNotifications:(id)a3;
-- (void)_setStatusBusy:(BOOL)a3;
-- (void)_shouldPushDeviceAddressWithCompletion:(id)a3;
+- (void)_registerForMessages:(id)messages messageDispatcher:(id)dispatcher;
+- (void)_registerForNotifications:(id)notifications;
+- (void)_setStatusBusy:(BOOL)busy;
+- (void)_shouldPushDeviceAddressWithCompletion:(id)completion;
 - (void)_startRetryTimer;
-- (void)_updateIdsAddressWithAccessoryUUID:(id)a3 idsIdentifier:(id)a4 idsDestination:(id)a5 completion:(id)a6;
-- (void)configureWithHome:(id)a3 messageDispatcher:(id)a4;
+- (void)_updateIdsAddressWithAccessoryUUID:(id)d idsIdentifier:(id)identifier idsDestination:(id)destination completion:(id)completion;
+- (void)configureWithHome:(id)home messageDispatcher:(id)dispatcher;
 - (void)handleTransactionObjectUpdated;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDAppleMediaDeviceAssociationController
@@ -39,24 +39,24 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAppleMediaDeviceAssociationController *)self homeUUID];
-  v3 = [v2 UUIDString];
+  homeUUID = [(HMDAppleMediaDeviceAssociationController *)self homeUUID];
+  uUIDString = [homeUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (id)mkfAppleMediaAccessoryWithModelIdentifier:(id)a3
+- (id)mkfAppleMediaAccessoryWithModelIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = v4;
-    v6 = [(HMDAppleMediaDeviceAssociationController *)self mkfAppleMediaModelFinder];
+    v5 = identifierCopy;
+    mkfAppleMediaModelFinder = [(HMDAppleMediaDeviceAssociationController *)self mkfAppleMediaModelFinder];
 
-    if (v6)
+    if (mkfAppleMediaModelFinder)
     {
-      v7 = [(HMDAppleMediaDeviceAssociationController *)self mkfAppleMediaModelFinder];
-      v8 = (v7)[2](v7, v5);
+      mkfAppleMediaModelFinder2 = [(HMDAppleMediaDeviceAssociationController *)self mkfAppleMediaModelFinder];
+      v8 = (mkfAppleMediaModelFinder2)[2](mkfAppleMediaModelFinder2, v5);
     }
 
     else
@@ -82,8 +82,8 @@
   [v3 doubleValue];
   v5 = v4;
 
-  v6 = [(HMDAppleMediaDeviceAssociationController *)self timerIntervalIndex];
-  if (v6 < [&unk_283E757B8 count] - 1)
+  timerIntervalIndex = [(HMDAppleMediaDeviceAssociationController *)self timerIntervalIndex];
+  if (timerIntervalIndex < [&unk_283E757B8 count] - 1)
   {
     [(HMDAppleMediaDeviceAssociationController *)self setTimerIntervalIndex:[(HMDAppleMediaDeviceAssociationController *)self timerIntervalIndex]+ 1];
   }
@@ -91,17 +91,17 @@
   return v5;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAppleMediaDeviceAssociationController *)self backoffTimer];
+  fireCopy = fire;
+  backoffTimer = [(HMDAppleMediaDeviceAssociationController *)self backoffTimer];
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = v8;
-  if (v5 == v4)
+  if (backoffTimer == fireCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -112,17 +112,17 @@
     }
 
     objc_autoreleasePoolPop(v6);
-    v12 = [(HMDAppleMediaDeviceAssociationController *)v7 backoffTimer];
-    [v12 cancel];
+    backoffTimer2 = [(HMDAppleMediaDeviceAssociationController *)selfCopy backoffTimer];
+    [backoffTimer2 cancel];
 
-    [(HMDAppleMediaDeviceAssociationController *)v7 setBackoffTimer:0];
-    v13 = [(HMDAppleMediaDeviceAssociationController *)v7 queue];
+    [(HMDAppleMediaDeviceAssociationController *)selfCopy setBackoffTimer:0];
+    queue = [(HMDAppleMediaDeviceAssociationController *)selfCopy queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __57__HMDAppleMediaDeviceAssociationController_timerDidFire___block_invoke;
     block[3] = &unk_27868A728;
-    block[4] = v7;
-    dispatch_async(v13, block);
+    block[4] = selfCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -141,10 +141,10 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setStatusBusy:(BOOL)a3
+- (void)_setStatusBusy:(BOOL)busy
 {
   os_unfair_lock_lock_with_options();
-  self->_busy = a3;
+  self->_busy = busy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -157,30 +157,30 @@
   return busy;
 }
 
-- (id)_deviceAssociationInfoFromProtoData:(id)a3
+- (id)_deviceAssociationInfoFromProtoData:(id)data
 {
-  v4 = a3;
-  v5 = [(HMDAppleMediaDeviceAssociationController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dataCopy = data;
+  queue = [(HMDAppleMediaDeviceAssociationController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [[HMDDeviceAssociationInfoProto alloc] initWithProtoData:v4];
+  v6 = [[HMDDeviceAssociationInfoProto alloc] initWithProtoData:dataCopy];
   if (v6)
   {
-    v7 = [(HMDDeviceAssociationInfoProto *)v6 accessoryUUID];
-    if (!v7)
+    accessoryUUID = [(HMDDeviceAssociationInfoProto *)v6 accessoryUUID];
+    if (!accessoryUUID)
     {
       goto LABEL_8;
     }
 
-    v8 = [(HMDDeviceAssociationInfoProto *)v6 idsIdentifier];
-    if (v8)
+    idsIdentifier = [(HMDDeviceAssociationInfoProto *)v6 idsIdentifier];
+    if (idsIdentifier)
     {
-      v9 = v8;
-      v10 = [(HMDDeviceAssociationInfoProto *)v6 idsDestination];
+      v9 = idsIdentifier;
+      idsDestination = [(HMDDeviceAssociationInfoProto *)v6 idsDestination];
 
-      if (v10)
+      if (idsDestination)
       {
-        v7 = v6;
+        accessoryUUID = v6;
         goto LABEL_8;
       }
     }
@@ -190,24 +190,24 @@
     }
   }
 
-  v7 = 0;
+  accessoryUUID = 0;
 LABEL_8:
 
-  return v7;
+  return accessoryUUID;
 }
 
-- (void)_handleHMDAppleMediaDeviceAssociationPushMessage:(id)a3
+- (void)_handleHMDAppleMediaDeviceAssociationPushMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(HMDAppleMediaDeviceAssociationController *)self queue];
+  messageCopy = message;
+  queue = [(HMDAppleMediaDeviceAssociationController *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __93__HMDAppleMediaDeviceAssociationController__handleHMDAppleMediaDeviceAssociationPushMessage___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
+  dispatch_async(queue, v7);
 }
 
 void __93__HMDAppleMediaDeviceAssociationController__handleHMDAppleMediaDeviceAssociationPushMessage___block_invoke(uint64_t a1)
@@ -367,29 +367,29 @@ void __93__HMDAppleMediaDeviceAssociationController__handleHMDAppleMediaDeviceAs
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateIdsAddressWithAccessoryUUID:(id)a3 idsIdentifier:(id)a4 idsDestination:(id)a5 completion:(id)a6
+- (void)_updateIdsAddressWithAccessoryUUID:(id)d idsIdentifier:(id)identifier idsDestination:(id)destination completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  identifierCopy = identifier;
+  destinationCopy = destination;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v14 = [(HMDAppleMediaDeviceAssociationController *)self backingStore];
-  v15 = [v14 context];
+  backingStore = [(HMDAppleMediaDeviceAssociationController *)self backingStore];
+  context = [backingStore context];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __119__HMDAppleMediaDeviceAssociationController__updateIdsAddressWithAccessoryUUID_idsIdentifier_idsDestination_completion___block_invoke;
   v20[3] = &unk_2786860E8;
   objc_copyWeak(&v25, &location);
-  v16 = v10;
+  v16 = dCopy;
   v21 = v16;
-  v17 = v13;
+  v17 = completionCopy;
   v24 = v17;
-  v18 = v11;
+  v18 = identifierCopy;
   v22 = v18;
-  v19 = v12;
+  v19 = destinationCopy;
   v23 = v19;
-  [v15 performBlock:v20];
+  [context performBlock:v20];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
@@ -474,15 +474,15 @@ LABEL_10:
 - (void)_handlePrimaryResidentDeviceAddressUpdate
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAppleMediaDeviceAssociationController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDAppleMediaDeviceAssociationController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(HMDAppleMediaDeviceAssociationController *)self _statusBusy];
+  _statusBusy = [(HMDAppleMediaDeviceAssociationController *)self _statusBusy];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (_statusBusy)
   {
     if (v8)
     {
@@ -506,19 +506,19 @@ LABEL_10:
     }
 
     objc_autoreleasePoolPop(v5);
-    [(HMDAppleMediaDeviceAssociationController *)v6 _setStatusBusy:1];
-    v11 = [(HMDAppleMediaDeviceAssociationController *)v6 dataSource];
-    v12 = [v11 currentDevice];
-    v13 = [v12 deviceAddress];
-    v14 = [(HMDAppleMediaDeviceAssociationController *)v6 accessoryUUID];
-    v15 = [v13 idsIdentifier];
-    v16 = [v13 idsDestination];
+    [(HMDAppleMediaDeviceAssociationController *)selfCopy _setStatusBusy:1];
+    dataSource = [(HMDAppleMediaDeviceAssociationController *)selfCopy dataSource];
+    currentDevice = [dataSource currentDevice];
+    deviceAddress = [currentDevice deviceAddress];
+    accessoryUUID = [(HMDAppleMediaDeviceAssociationController *)selfCopy accessoryUUID];
+    idsIdentifier = [deviceAddress idsIdentifier];
+    idsDestination = [deviceAddress idsDestination];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __85__HMDAppleMediaDeviceAssociationController__handlePrimaryResidentDeviceAddressUpdate__block_invoke;
     v18[3] = &unk_27868A250;
-    v18[4] = v6;
-    [(HMDAppleMediaDeviceAssociationController *)v6 _updateIdsAddressWithAccessoryUUID:v14 idsIdentifier:v15 idsDestination:v16 completion:v18];
+    v18[4] = selfCopy;
+    [(HMDAppleMediaDeviceAssociationController *)selfCopy _updateIdsAddressWithAccessoryUUID:accessoryUUID idsIdentifier:idsIdentifier idsDestination:idsDestination completion:v18];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -585,17 +585,17 @@ uint64_t __85__HMDAppleMediaDeviceAssociationController__handlePrimaryResidentDe
 - (void)_startRetryTimer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAppleMediaDeviceAssociationController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDAppleMediaDeviceAssociationController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(HMDAppleMediaDeviceAssociationController *)self backoffTimer];
-  [v4 cancel];
+  backoffTimer = [(HMDAppleMediaDeviceAssociationController *)self backoffTimer];
+  [backoffTimer cancel];
 
   [(HMDAppleMediaDeviceAssociationController *)self setBackoffTimer:0];
   [(HMDAppleMediaDeviceAssociationController *)self nextInterval];
   v6 = v5;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -608,18 +608,18 @@ uint64_t __85__HMDAppleMediaDeviceAssociationController__handlePrimaryResidentDe
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(HMDAppleMediaDeviceAssociationController *)v8 timerWithTimeInterval:8 options:v6];
-  [(HMDAppleMediaDeviceAssociationController *)v8 setBackoffTimer:v11];
+  v11 = [(HMDAppleMediaDeviceAssociationController *)selfCopy timerWithTimeInterval:8 options:v6];
+  [(HMDAppleMediaDeviceAssociationController *)selfCopy setBackoffTimer:v11];
 
-  v12 = [(HMDAppleMediaDeviceAssociationController *)v8 backoffTimer];
-  [v12 setDelegate:v8];
+  backoffTimer2 = [(HMDAppleMediaDeviceAssociationController *)selfCopy backoffTimer];
+  [backoffTimer2 setDelegate:selfCopy];
 
-  v13 = [(HMDAppleMediaDeviceAssociationController *)v8 queue];
-  v14 = [(HMDAppleMediaDeviceAssociationController *)v8 backoffTimer];
-  [v14 setDelegateQueue:v13];
+  queue2 = [(HMDAppleMediaDeviceAssociationController *)selfCopy queue];
+  backoffTimer3 = [(HMDAppleMediaDeviceAssociationController *)selfCopy backoffTimer];
+  [backoffTimer3 setDelegateQueue:queue2];
 
-  v15 = [(HMDAppleMediaDeviceAssociationController *)v8 backoffTimer];
-  [v15 resume];
+  backoffTimer4 = [(HMDAppleMediaDeviceAssociationController *)selfCopy backoffTimer];
+  [backoffTimer4 resume];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -627,23 +627,23 @@ uint64_t __85__HMDAppleMediaDeviceAssociationController__handlePrimaryResidentDe
 - (void)_pushDeviceAddress
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAppleMediaDeviceAssociationController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDAppleMediaDeviceAssociationController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(HMDAppleMediaDeviceAssociationController *)self dataSource];
-  if ([v4 isCurrentDeviceConfirmedPrimary])
+  dataSource = [(HMDAppleMediaDeviceAssociationController *)self dataSource];
+  if ([dataSource isCurrentDeviceConfirmedPrimary])
   {
     [(HMDAppleMediaDeviceAssociationController *)self _handlePrimaryResidentDeviceAddressUpdate];
   }
 
   else
   {
-    v5 = [(HMDAppleMediaDeviceAssociationController *)self _statusBusy];
+    _statusBusy = [(HMDAppleMediaDeviceAssociationController *)self _statusBusy];
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-    if (v5)
+    if (_statusBusy)
     {
       if (v9)
       {
@@ -661,31 +661,31 @@ uint64_t __85__HMDAppleMediaDeviceAssociationController__handlePrimaryResidentDe
       if (v9)
       {
         v11 = HMFGetLogIdentifier();
-        v12 = [(HMDAppleMediaDeviceAssociationController *)v7 messageTargetUUID];
+        messageTargetUUID = [(HMDAppleMediaDeviceAssociationController *)selfCopy messageTargetUUID];
         *buf = 138543618;
         v37 = v11;
         v38 = 2112;
-        v39 = v12;
+        v39 = messageTargetUUID;
         _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Sending remote message with target: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v6);
-      [(HMDAppleMediaDeviceAssociationController *)v7 _setStatusBusy:1];
-      v13 = [v4 currentDevice];
-      v14 = [v13 deviceAddress];
+      [(HMDAppleMediaDeviceAssociationController *)selfCopy _setStatusBusy:1];
+      currentDevice = [dataSource currentDevice];
+      deviceAddress = [currentDevice deviceAddress];
       v15 = objc_alloc(MEMORY[0x277D0F820]);
-      v16 = [(HMDAppleMediaDeviceAssociationController *)v7 messageTargetUUID];
-      v17 = [v15 initWithTarget:v16];
+      messageTargetUUID2 = [(HMDAppleMediaDeviceAssociationController *)selfCopy messageTargetUUID];
+      v17 = [v15 initWithTarget:messageTargetUUID2];
 
       v18 = [HMDDeviceAssociationInfoProto alloc];
-      v19 = [(HMDAppleMediaDeviceAssociationController *)v7 accessoryUUID];
-      v20 = [v14 idsIdentifier];
-      v21 = [v14 idsDestination];
-      v22 = [(HMDDeviceAssociationInfoProto *)v18 initWithAccessoryUUID:v19 idsIdentifier:v20 idsDestination:v21];
+      accessoryUUID = [(HMDAppleMediaDeviceAssociationController *)selfCopy accessoryUUID];
+      idsIdentifier = [deviceAddress idsIdentifier];
+      idsDestination = [deviceAddress idsDestination];
+      v22 = [(HMDDeviceAssociationInfoProto *)v18 initWithAccessoryUUID:accessoryUUID idsIdentifier:idsIdentifier idsDestination:idsDestination];
 
       v34 = @"HMDAppleMediaDeviceAssociationInfoProtoKey";
-      v23 = [(HMDDeviceAssociationInfoProto *)v22 protoData];
-      v35 = v23;
+      protoData = [(HMDDeviceAssociationInfoProto *)v22 protoData];
+      v35 = protoData;
       v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
 
       v25 = [objc_alloc(MEMORY[0x277D0F848]) initWithName:@"HMDAM.p" destination:v17 payload:v24];
@@ -696,12 +696,12 @@ uint64_t __85__HMDAppleMediaDeviceAssociationController__handlePrimaryResidentDe
       v30 = __62__HMDAppleMediaDeviceAssociationController__pushDeviceAddress__block_invoke;
       v31 = &unk_278687F40;
       objc_copyWeak(&v33, buf);
-      v32 = v7;
+      v32 = selfCopy;
       [v25 setResponseHandler:&v28];
-      v26 = [(HMDAppleMediaDeviceAssociationController *)v7 residentSyncManager:v28];
+      v26 = [(HMDAppleMediaDeviceAssociationController *)selfCopy residentSyncManager:v28];
       [v26 performResidentRequest:v25 options:0];
 
-      [(HMDAppleMediaDeviceAssociationController *)v7 _startRetryTimer];
+      [(HMDAppleMediaDeviceAssociationController *)selfCopy _startRetryTimer];
       objc_destroyWeak(&v33);
       objc_destroyWeak(buf);
     }
@@ -778,17 +778,17 @@ LABEL_10:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_shouldPushDeviceAddressWithCompletion:(id)a3
+- (void)_shouldPushDeviceAddressWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAppleMediaDeviceAssociationController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(HMDAppleMediaDeviceAssociationController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(HMDAppleMediaDeviceAssociationController *)self _statusBusy])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -799,27 +799,27 @@ LABEL_10:
     }
 
     objc_autoreleasePoolPop(v6);
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v10 = [(HMDAppleMediaDeviceAssociationController *)self dataSource];
-    v11 = [v10 currentDevice];
+    dataSource = [(HMDAppleMediaDeviceAssociationController *)self dataSource];
+    currentDevice = [dataSource currentDevice];
 
-    if (v11 && ([v11 deviceAddress], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+    if (currentDevice && ([currentDevice deviceAddress], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
     {
       objc_initWeak(buf, self);
-      v13 = [(HMDAppleMediaDeviceAssociationController *)self backingStore];
-      v14 = [v13 context];
+      backingStore = [(HMDAppleMediaDeviceAssociationController *)self backingStore];
+      context = [backingStore context];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __83__HMDAppleMediaDeviceAssociationController__shouldPushDeviceAddressWithCompletion___block_invoke;
       v20[3] = &unk_278687BF8;
       objc_copyWeak(&v23, buf);
-      v22 = v4;
-      v21 = v11;
-      [v14 performBlock:v20];
+      v22 = completionCopy;
+      v21 = currentDevice;
+      [context performBlock:v20];
 
       objc_destroyWeak(&v23);
       objc_destroyWeak(buf);
@@ -828,7 +828,7 @@ LABEL_10:
     else
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy2 = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
@@ -839,7 +839,7 @@ LABEL_10:
       }
 
       objc_autoreleasePoolPop(v15);
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -969,8 +969,8 @@ LABEL_20:
 
 - (void)_pushDeviceAddressIfNeeded
 {
-  v3 = [(HMDAppleMediaDeviceAssociationController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDAppleMediaDeviceAssociationController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x277D85DD0];
@@ -1008,21 +1008,21 @@ uint64_t __70__HMDAppleMediaDeviceAssociationController__pushDeviceAddressIfNeed
 
 - (BOOL)_currentDeviceHasDeviceAddress
 {
-  v2 = [(HMDAppleMediaDeviceAssociationController *)self dataSource];
-  v3 = [v2 currentDevice];
+  dataSource = [(HMDAppleMediaDeviceAssociationController *)self dataSource];
+  currentDevice = [dataSource currentDevice];
 
-  if (v3)
+  if (currentDevice)
   {
-    v4 = [v3 deviceAddress];
-    if (v4)
+    deviceAddress = [currentDevice deviceAddress];
+    if (deviceAddress)
     {
-      v5 = [v3 deviceAddress];
-      v6 = [v5 idsIdentifier];
-      if (v6)
+      deviceAddress2 = [currentDevice deviceAddress];
+      idsIdentifier = [deviceAddress2 idsIdentifier];
+      if (idsIdentifier)
       {
-        v7 = [v3 deviceAddress];
-        v8 = [v7 idsDestination];
-        v9 = v8 != 0;
+        deviceAddress3 = [currentDevice deviceAddress];
+        idsDestination = [deviceAddress3 idsDestination];
+        v9 = idsDestination != 0;
       }
 
       else
@@ -1048,16 +1048,16 @@ uint64_t __70__HMDAppleMediaDeviceAssociationController__pushDeviceAddressIfNeed
 - (void)_process
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAppleMediaDeviceAssociationController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDAppleMediaDeviceAssociationController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(HMDAppleMediaDeviceAssociationController *)self dataSource];
-  v5 = [v4 homeHasConfirmedPrimaryResident];
+  dataSource = [(HMDAppleMediaDeviceAssociationController *)self dataSource];
+  homeHasConfirmedPrimaryResident = [dataSource homeHasConfirmedPrimaryResident];
 
-  if ((v5 & 1) == 0)
+  if ((homeHasConfirmedPrimaryResident & 1) == 0)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -1079,7 +1079,7 @@ LABEL_11:
   if (![(HMDAppleMediaDeviceAssociationController *)self _currentDeviceHasDeviceAddress])
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -1098,32 +1098,32 @@ LABEL_11:
   [(HMDAppleMediaDeviceAssociationController *)self _pushDeviceAddressIfNeeded];
 }
 
-- (void)_handlePrimaryChange:(id)a3
+- (void)_handlePrimaryChange:(id)change
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 name];
+    name = [changeCopy name];
     *buf = 138543618;
     v14 = v8;
     v15 = 2112;
-    v16 = v9;
+    v16 = name;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Handle notification: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [(HMDAppleMediaDeviceAssociationController *)v6 queue];
+  queue = [(HMDAppleMediaDeviceAssociationController *)selfCopy queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HMDAppleMediaDeviceAssociationController__handlePrimaryChange___block_invoke;
   block[3] = &unk_27868A728;
-  block[4] = v6;
-  dispatch_async(v10, block);
+  block[4] = selfCopy;
+  dispatch_async(queue, block);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -1132,7 +1132,7 @@ LABEL_11:
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1143,41 +1143,41 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDAppleMediaDeviceAssociationController *)v4 queue];
+  queue = [(HMDAppleMediaDeviceAssociationController *)selfCopy queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__HMDAppleMediaDeviceAssociationController_handleTransactionObjectUpdated__block_invoke;
   block[3] = &unk_27868A728;
-  block[4] = v4;
-  dispatch_async(v7, block);
+  block[4] = selfCopy;
+  dispatch_async(queue, block);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDeviceUpdatedNotification:(id)a3
+- (void)_handleDeviceUpdatedNotification:(id)notification
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138543618;
     v26 = v8;
     v27 = 2112;
-    v28 = v9;
+    v28 = name;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Handle notification: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [v4 object];
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = object;
   }
 
   else
@@ -1187,24 +1187,24 @@ LABEL_11:
 
   v12 = v11;
 
-  v13 = [(HMDAppleMediaDeviceAssociationController *)v6 dataSource];
-  v14 = [v13 currentDevice];
+  dataSource = [(HMDAppleMediaDeviceAssociationController *)selfCopy dataSource];
+  currentDevice = [dataSource currentDevice];
 
-  if (v12 && v14 && ([v14 identifier], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "identifier"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "hmf_isEqualToUUID:", v16), v16, v15, (v17 & 1) != 0))
+  if (v12 && currentDevice && ([currentDevice identifier], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "identifier"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "hmf_isEqualToUUID:", v16), v16, v15, (v17 & 1) != 0))
   {
-    v18 = [(HMDAppleMediaDeviceAssociationController *)v6 queue];
+    queue = [(HMDAppleMediaDeviceAssociationController *)selfCopy queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __77__HMDAppleMediaDeviceAssociationController__handleDeviceUpdatedNotification___block_invoke;
     block[3] = &unk_27868A728;
-    block[4] = v6;
-    dispatch_async(v18, block);
+    block[4] = selfCopy;
+    dispatch_async(queue, block);
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v6;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -1220,42 +1220,42 @@ LABEL_11:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAppleAccountManagerResolvedNotification:(id)a3
+- (void)_handleAppleAccountManagerResolvedNotification:(id)notification
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138543618;
     v14 = v8;
     v15 = 2112;
-    v16 = v9;
+    v16 = name;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Handle notification: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [(HMDAppleMediaDeviceAssociationController *)v6 queue];
+  queue = [(HMDAppleMediaDeviceAssociationController *)selfCopy queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91__HMDAppleMediaDeviceAssociationController__handleAppleAccountManagerResolvedNotification___block_invoke;
   block[3] = &unk_27868A728;
-  block[4] = v6;
-  dispatch_async(v10, block);
+  block[4] = selfCopy;
+  dispatch_async(queue, block);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerForNotifications:(id)a3
+- (void)_registerForNotifications:(id)notifications
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationsCopy = notifications;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1266,35 +1266,35 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDAppleMediaDeviceAssociationController *)v6 notificationCenter];
-  [v9 removeObserver:v6 name:@"HMDAppleAccountManagerResolved" object:0];
+  notificationCenter = [(HMDAppleMediaDeviceAssociationController *)selfCopy notificationCenter];
+  [notificationCenter removeObserver:selfCopy name:@"HMDAppleAccountManagerResolved" object:0];
 
-  v10 = [(HMDAppleMediaDeviceAssociationController *)v6 notificationCenter];
-  [v10 addObserver:v6 selector:sel__handleAppleAccountManagerResolvedNotification_ name:@"HMDAppleAccountManagerResolved" object:0];
+  notificationCenter2 = [(HMDAppleMediaDeviceAssociationController *)selfCopy notificationCenter];
+  [notificationCenter2 addObserver:selfCopy selector:sel__handleAppleAccountManagerResolvedNotification_ name:@"HMDAppleAccountManagerResolved" object:0];
 
-  v11 = [(HMDAppleMediaDeviceAssociationController *)v6 notificationCenter];
-  [v11 removeObserver:v6 name:@"HMDDeviceUpdatedNotification" object:0];
+  notificationCenter3 = [(HMDAppleMediaDeviceAssociationController *)selfCopy notificationCenter];
+  [notificationCenter3 removeObserver:selfCopy name:@"HMDDeviceUpdatedNotification" object:0];
 
-  v12 = [(HMDAppleMediaDeviceAssociationController *)v6 notificationCenter];
-  [v12 addObserver:v6 selector:sel__handleDeviceUpdatedNotification_ name:@"HMDDeviceUpdatedNotification" object:0];
+  notificationCenter4 = [(HMDAppleMediaDeviceAssociationController *)selfCopy notificationCenter];
+  [notificationCenter4 addObserver:selfCopy selector:sel__handleDeviceUpdatedNotification_ name:@"HMDDeviceUpdatedNotification" object:0];
 
-  v13 = [(HMDAppleMediaDeviceAssociationController *)v6 notificationCenter];
-  [v13 removeObserver:v6 name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:0];
+  notificationCenter5 = [(HMDAppleMediaDeviceAssociationController *)selfCopy notificationCenter];
+  [notificationCenter5 removeObserver:selfCopy name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:0];
 
-  v14 = [(HMDAppleMediaDeviceAssociationController *)v6 notificationCenter];
-  v15 = [v4 residentDeviceManager];
-  [v14 addObserver:v6 selector:sel__handlePrimaryChange_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:v15];
+  notificationCenter6 = [(HMDAppleMediaDeviceAssociationController *)selfCopy notificationCenter];
+  residentDeviceManager = [notificationsCopy residentDeviceManager];
+  [notificationCenter6 addObserver:selfCopy selector:sel__handlePrimaryChange_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:residentDeviceManager];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerForMessages:(id)a3 messageDispatcher:(id)a4
+- (void)_registerForMessages:(id)messages messageDispatcher:(id)dispatcher
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  dispatcherCopy = dispatcher;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1311,167 +1311,167 @@ LABEL_11:
   [v12 setRoles:{objc_msgSend(v12, "roles") | 8}];
   v13 = [HMDConfigurationMessagePolicy policyWithOperationTypes:2];
   v17[0] = v13;
-  v14 = [HMDUserMessagePolicy userMessagePolicyWithHome:v6 userPrivilege:3 remoteAccessRequired:0];
+  v14 = [HMDUserMessagePolicy userMessagePolicyWithHome:messagesCopy userPrivilege:3 remoteAccessRequired:0];
   v17[1] = v14;
   v17[2] = v12;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:3];
 
-  [v7 registerForMessage:@"HMDAM.p" receiver:v9 policies:v15 selector:sel__handleHMDAppleMediaDeviceAssociationPushMessage_];
+  [dispatcherCopy registerForMessage:@"HMDAM.p" receiver:selfCopy policies:v15 selector:sel__handleHMDAppleMediaDeviceAssociationPushMessage_];
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithHome:(id)a3 messageDispatcher:(id)a4
+- (void)configureWithHome:(id)home messageDispatcher:(id)dispatcher
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  homeCopy = home;
+  dispatcherCopy = dispatcher;
+  if (!homeCopy)
   {
     _HMFPreconditionFailure();
 LABEL_7:
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = dispatcherCopy;
+  if (!dispatcherCopy)
   {
     goto LABEL_7;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [(HMDAppleMediaDeviceAssociationController *)v10 homeUUID];
-    v14 = [(HMDAppleMediaDeviceAssociationController *)v10 accessoryUUID];
+    homeUUID = [(HMDAppleMediaDeviceAssociationController *)selfCopy homeUUID];
+    accessoryUUID = [(HMDAppleMediaDeviceAssociationController *)selfCopy accessoryUUID];
     *buf = 138543874;
     v19 = v12;
     v20 = 2112;
-    v21 = v13;
+    v21 = homeUUID;
     v22 = 2112;
-    v23 = v14;
+    v23 = accessoryUUID;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Configuring with home: %@ accessory: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  [(HMDAppleMediaDeviceAssociationController *)v10 _registerForMessages:v6 messageDispatcher:v8];
-  [(HMDAppleMediaDeviceAssociationController *)v10 _registerForNotifications:v6];
-  v15 = [(HMDAppleMediaDeviceAssociationController *)v10 queue];
+  [(HMDAppleMediaDeviceAssociationController *)selfCopy _registerForMessages:homeCopy messageDispatcher:v8];
+  [(HMDAppleMediaDeviceAssociationController *)selfCopy _registerForNotifications:homeCopy];
+  queue = [(HMDAppleMediaDeviceAssociationController *)selfCopy queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__HMDAppleMediaDeviceAssociationController_configureWithHome_messageDispatcher___block_invoke;
   block[3] = &unk_27868A728;
-  block[4] = v10;
-  dispatch_async(v15, block);
+  block[4] = selfCopy;
+  dispatch_async(queue, block);
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAppleMediaDeviceAssociationController)initWithQueue:(id)a3 homeUUID:(id)a4 accessoryUUID:(id)a5 residentSyncManager:(id)a6 backingStore:(id)a7 notificationCenter:(id)a8 dataSource:(id)a9
+- (HMDAppleMediaDeviceAssociationController)initWithQueue:(id)queue homeUUID:(id)d accessoryUUID:(id)iD residentSyncManager:(id)manager backingStore:(id)store notificationCenter:(id)center dataSource:(id)source
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v16 = a8;
-  v17 = a9;
+  queueCopy = queue;
+  dCopy = d;
+  iDCopy = iD;
+  managerCopy = manager;
+  storeCopy = store;
+  centerCopy = center;
+  sourceCopy = source;
   v26.receiver = self;
   v26.super_class = HMDAppleMediaDeviceAssociationController;
   v18 = [(HMDAppleMediaDeviceAssociationController *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_queue, a3);
-    objc_storeStrong(&v19->_homeUUID, a4);
-    objc_storeStrong(&v19->_accessoryUUID, a5);
-    objc_storeStrong(&v19->_residentSyncManager, a6);
-    objc_storeStrong(&v19->_backingStore, a7);
-    objc_storeStrong(&v19->_notificationCenter, a8);
-    objc_storeStrong(&v19->_dataSource, a9);
+    objc_storeStrong(&v18->_queue, queue);
+    objc_storeStrong(&v19->_homeUUID, d);
+    objc_storeStrong(&v19->_accessoryUUID, iD);
+    objc_storeStrong(&v19->_residentSyncManager, manager);
+    objc_storeStrong(&v19->_backingStore, store);
+    objc_storeStrong(&v19->_notificationCenter, center);
+    objc_storeStrong(&v19->_dataSource, source);
   }
 
   return v19;
 }
 
-- (HMDAppleMediaDeviceAssociationController)initWithHome:(id)a3 accessory:(id)a4 dataSource:(id)a5
+- (HMDAppleMediaDeviceAssociationController)initWithHome:(id)home accessory:(id)accessory dataSource:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  homeCopy = home;
+  accessoryCopy = accessory;
+  sourceCopy = source;
+  if (!homeCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v11 = v10;
-  v12 = [v8 workQueue];
+  v11 = sourceCopy;
+  workQueue = [homeCopy workQueue];
 
-  if (!v12)
+  if (!workQueue)
   {
 LABEL_11:
     _HMFPreconditionFailure();
     goto LABEL_12;
   }
 
-  v13 = [v8 uuid];
+  uuid = [homeCopy uuid];
 
-  if (!v13)
+  if (!uuid)
   {
 LABEL_12:
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  v14 = [v8 residentSyncManager];
+  residentSyncManager = [homeCopy residentSyncManager];
 
-  if (!v14)
+  if (!residentSyncManager)
   {
 LABEL_13:
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  v15 = [v8 backingStore];
+  backingStore = [homeCopy backingStore];
 
-  if (!v15)
+  if (!backingStore)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  v16 = [v8 backingStore];
-  v17 = [v16 context];
+  backingStore2 = [homeCopy backingStore];
+  context = [backingStore2 context];
 
-  if (!v17)
+  if (!context)
   {
 LABEL_15:
     _HMFPreconditionFailure();
     goto LABEL_16;
   }
 
-  if (!v9)
+  if (!accessoryCopy)
   {
 LABEL_16:
     _HMFPreconditionFailure();
     goto LABEL_17;
   }
 
-  v18 = [v9 uuid];
+  uuid2 = [accessoryCopy uuid];
 
-  if (v18)
+  if (uuid2)
   {
-    v19 = [v8 workQueue];
-    v20 = [v8 uuid];
-    v21 = [v9 uuid];
-    v22 = [v8 residentSyncManager];
-    v23 = [v8 backingStore];
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    v25 = [(HMDAppleMediaDeviceAssociationController *)self initWithQueue:v19 homeUUID:v20 accessoryUUID:v21 residentSyncManager:v22 backingStore:v23 notificationCenter:v24 dataSource:v11];
+    workQueue2 = [homeCopy workQueue];
+    uuid3 = [homeCopy uuid];
+    uuid4 = [accessoryCopy uuid];
+    residentSyncManager2 = [homeCopy residentSyncManager];
+    backingStore3 = [homeCopy backingStore];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v25 = [(HMDAppleMediaDeviceAssociationController *)self initWithQueue:workQueue2 homeUUID:uuid3 accessoryUUID:uuid4 residentSyncManager:residentSyncManager2 backingStore:backingStore3 notificationCenter:defaultCenter dataSource:v11];
 
     return v25;
   }

@@ -1,15 +1,15 @@
 @interface LabelWithAccessoryView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC18ControlCenterUIKit22LabelWithAccessoryView)initWithCoder:(id)a3;
-- (_TtC18ControlCenterUIKit22LabelWithAccessoryView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC18ControlCenterUIKit22LabelWithAccessoryView)initWithCoder:(id)coder;
+- (_TtC18ControlCenterUIKit22LabelWithAccessoryView)initWithFrame:(CGRect)frame;
 - (double)gaussianBlurRadius;
 - (void)layoutSubviews;
-- (void)setGaussianBlurRadius:(double)a3;
+- (void)setGaussianBlurRadius:(double)radius;
 @end
 
 @implementation LabelWithAccessoryView
 
-- (_TtC18ControlCenterUIKit22LabelWithAccessoryView)initWithCoder:(id)a3
+- (_TtC18ControlCenterUIKit22LabelWithAccessoryView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ControlCenterUIKit22LabelWithAccessoryView_accessoryImage) = 0;
   result = sub_1D16CC694();
@@ -19,20 +19,20 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D16B2B1C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ControlCenterUIKit22LabelWithAccessoryView_accessoryLabel);
-  v6 = self;
+  selfCopy = self;
   [v5 bounds];
   v8 = v7;
   v10 = v9;
-  [*(&v6->super.super.super.isa + OBJC_IVAR____TtC18ControlCenterUIKit22LabelWithAccessoryView_textLabel) sizeThatFits_];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC18ControlCenterUIKit22LabelWithAccessoryView_textLabel) sizeThatFits_];
   v12 = v11;
   v14 = v13;
 
@@ -52,7 +52,7 @@
   return result;
 }
 
-- (_TtC18ControlCenterUIKit22LabelWithAccessoryView)initWithFrame:(CGRect)a3
+- (_TtC18ControlCenterUIKit22LabelWithAccessoryView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -62,10 +62,10 @@
 - (double)gaussianBlurRadius
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ControlCenterUIKit22LabelWithAccessoryView_textLabel);
-  v3 = self;
+  selfCopy = self;
   [v2 gaussianBlurRadius];
   v5 = v4;
-  v6 = *(&v3->super.super.super.isa + OBJC_IVAR____TtC18ControlCenterUIKit22LabelWithAccessoryView_accessoryLabel);
+  v6 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC18ControlCenterUIKit22LabelWithAccessoryView_accessoryLabel);
   [v6 gaussianBlurRadius];
   v8 = v7;
 
@@ -80,12 +80,12 @@
   }
 }
 
-- (void)setGaussianBlurRadius:(double)a3
+- (void)setGaussianBlurRadius:(double)radius
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ControlCenterUIKit22LabelWithAccessoryView_textLabel);
-  v6 = self;
+  selfCopy = self;
   [v4 setGaussianBlurRadius_];
-  v5 = *(&v6->super.super.super.isa + OBJC_IVAR____TtC18ControlCenterUIKit22LabelWithAccessoryView_accessoryLabel);
+  v5 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC18ControlCenterUIKit22LabelWithAccessoryView_accessoryLabel);
   [v5 setGaussianBlurRadius_];
 }
 

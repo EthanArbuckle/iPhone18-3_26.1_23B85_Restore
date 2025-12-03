@@ -1,25 +1,25 @@
 @interface SADSchemaSADTrialRollout
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SADSchemaSADTrialRollout)initWithDictionary:(id)a3;
-- (SADSchemaSADTrialRollout)initWithJSON:(id)a3;
+- (SADSchemaSADTrialRollout)initWithDictionary:(id)dictionary;
+- (SADSchemaSADTrialRollout)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SADSchemaSADTrialRollout
 
-- (SADSchemaSADTrialRollout)initWithDictionary:(id)a3
+- (SADSchemaSADTrialRollout)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SADSchemaSADTrialRollout;
   v5 = [(SADSchemaSADTrialRollout *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"rolloutId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"rolloutId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,14 +27,14 @@
       [(SADSchemaSADTrialRollout *)v5 setRolloutId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"deployment"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"deployment"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SADSchemaSADTrialRollout setDeployment:](v5, "setDeployment:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"factorPack"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"factorPack"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (SADSchemaSADTrialRollout)initWithJSON:(id)a3
+- (SADSchemaSADTrialRollout)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SADSchemaSADTrialRollout *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SADSchemaSADTrialRollout *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SADSchemaSADTrialRollout *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,30 +84,30 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SADSchemaSADTrialRollout deployment](self, "deployment")}];
-    [v3 setObject:v4 forKeyedSubscript:@"deployment"];
+    [dictionary setObject:v4 forKeyedSubscript:@"deployment"];
   }
 
   if (self->_factorPack)
   {
-    v5 = [(SADSchemaSADTrialRollout *)self factorPack];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"factorPack"];
+    factorPack = [(SADSchemaSADTrialRollout *)self factorPack];
+    v6 = [factorPack copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"factorPack"];
   }
 
   if (self->_rolloutId)
   {
-    v7 = [(SADSchemaSADTrialRollout *)self rolloutId];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"rolloutId"];
+    rolloutId = [(SADSchemaSADTrialRollout *)self rolloutId];
+    v8 = [rolloutId copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"rolloutId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -126,28 +126,28 @@
   return v4 ^ v3 ^ [(NSString *)self->_factorPack hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(SADSchemaSADTrialRollout *)self rolloutId];
-  v6 = [v4 rolloutId];
-  if ((v5 != 0) == (v6 == 0))
+  rolloutId = [(SADSchemaSADTrialRollout *)self rolloutId];
+  rolloutId2 = [equalCopy rolloutId];
+  if ((rolloutId != 0) == (rolloutId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(SADSchemaSADTrialRollout *)self rolloutId];
-  if (v7)
+  rolloutId3 = [(SADSchemaSADTrialRollout *)self rolloutId];
+  if (rolloutId3)
   {
-    v8 = v7;
-    v9 = [(SADSchemaSADTrialRollout *)self rolloutId];
-    v10 = [v4 rolloutId];
-    v11 = [v9 isEqual:v10];
+    v8 = rolloutId3;
+    rolloutId4 = [(SADSchemaSADTrialRollout *)self rolloutId];
+    rolloutId5 = [equalCopy rolloutId];
+    v11 = [rolloutId4 isEqual:rolloutId5];
 
     if (!v11)
     {
@@ -159,7 +159,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -167,18 +167,18 @@
   if (*&self->_has)
   {
     deployment = self->_deployment;
-    if (deployment != [v4 deployment])
+    if (deployment != [equalCopy deployment])
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(SADSchemaSADTrialRollout *)self factorPack];
-  v6 = [v4 factorPack];
-  if ((v5 != 0) != (v6 == 0))
+  rolloutId = [(SADSchemaSADTrialRollout *)self factorPack];
+  rolloutId2 = [equalCopy factorPack];
+  if ((rolloutId != 0) != (rolloutId2 == 0))
   {
-    v13 = [(SADSchemaSADTrialRollout *)self factorPack];
-    if (!v13)
+    factorPack = [(SADSchemaSADTrialRollout *)self factorPack];
+    if (!factorPack)
     {
 
 LABEL_18:
@@ -186,10 +186,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(SADSchemaSADTrialRollout *)self factorPack];
-    v16 = [v4 factorPack];
-    v17 = [v15 isEqual:v16];
+    v14 = factorPack;
+    factorPack2 = [(SADSchemaSADTrialRollout *)self factorPack];
+    factorPack3 = [equalCopy factorPack];
+    v17 = [factorPack2 isEqual:factorPack3];
 
     if (v17)
     {
@@ -209,12 +209,12 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(SADSchemaSADTrialRollout *)self rolloutId];
+  toCopy = to;
+  rolloutId = [(SADSchemaSADTrialRollout *)self rolloutId];
 
-  if (v4)
+  if (rolloutId)
   {
     PBDataWriterWriteStringField();
   }
@@ -224,13 +224,13 @@ LABEL_16:
     PBDataWriterWriteUint32Field();
   }
 
-  v5 = [(SADSchemaSADTrialRollout *)self factorPack];
+  factorPack = [(SADSchemaSADTrialRollout *)self factorPack];
 
-  v6 = v7;
-  if (v5)
+  v6 = toCopy;
+  if (factorPack)
   {
     PBDataWriterWriteStringField();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 

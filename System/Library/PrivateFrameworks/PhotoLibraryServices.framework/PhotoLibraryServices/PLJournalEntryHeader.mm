@@ -1,35 +1,35 @@
 @interface PLJournalEntryHeader
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)entryTypeAsString:(int)a3;
-- (int)StringAsEntryType:(id)a3;
+- (id)entryTypeAsString:(int)string;
+- (int)StringAsEntryType:(id)type;
 - (int)entryType;
 - (unint64_t)hash;
-- (void)addNilProperties:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEntryType:(BOOL)a3;
-- (void)setHasPayloadCRC:(BOOL)a3;
-- (void)setHasPayloadVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addNilProperties:(id)properties;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEntryType:(BOOL)type;
+- (void)setHasPayloadCRC:(BOOL)c;
+- (void)setHasPayloadVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLJournalEntryHeader
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if ((v4[15] & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[15] & 2) != 0)
   {
-    self->_entryType = v4[4];
+    self->_entryType = fromCopy[4];
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PLJournalEntryHeader *)self setPayloadUUID:?];
   }
@@ -153,23 +153,23 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(NSMutableArray *)self->_nilProperties hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_entryType != *(v4 + 4))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_entryType != *(equalCopy + 4))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
 LABEL_28:
     v8 = 0;
@@ -177,13 +177,13 @@ LABEL_28:
   }
 
   payloadUUID = self->_payloadUUID;
-  if (payloadUUID | *(v4 + 6) && ![(NSData *)payloadUUID isEqual:?])
+  if (payloadUUID | *(equalCopy + 6) && ![(NSData *)payloadUUID isEqual:?])
   {
     goto LABEL_28;
   }
 
   payloadID = self->_payloadID;
-  if (payloadID | *(v4 + 5))
+  if (payloadID | *(equalCopy + 5))
   {
     if (![(NSString *)payloadID isEqual:?])
     {
@@ -193,45 +193,45 @@ LABEL_28:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 60) & 8) == 0 || self->_payloadVersion != *(v4 + 14))
+    if ((*(equalCopy + 60) & 8) == 0 || self->_payloadVersion != *(equalCopy + 14))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 60) & 8) != 0)
+  else if ((*(equalCopy + 60) & 8) != 0)
   {
     goto LABEL_28;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_payloadLength != *(v4 + 1))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_payloadLength != *(equalCopy + 1))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 60) & 4) == 0 || self->_payloadCRC != *(v4 + 8))
+    if ((*(equalCopy + 60) & 4) == 0 || self->_payloadCRC != *(equalCopy + 8))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 60) & 4) != 0)
+  else if ((*(equalCopy + 60) & 4) != 0)
   {
     goto LABEL_28;
   }
 
   nilProperties = self->_nilProperties;
-  if (nilProperties | *(v4 + 3))
+  if (nilProperties | *(equalCopy + 3))
   {
     v8 = [(NSMutableArray *)nilProperties isEqual:?];
   }
@@ -246,10 +246,10 @@ LABEL_29:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -257,11 +257,11 @@ LABEL_29:
     *(v5 + 60) |= 2u;
   }
 
-  v7 = [(NSData *)self->_payloadUUID copyWithZone:a3];
+  v7 = [(NSData *)self->_payloadUUID copyWithZone:zone];
   v8 = *(v6 + 48);
   *(v6 + 48) = v7;
 
-  v9 = [(NSString *)self->_payloadID copyWithZone:a3];
+  v9 = [(NSString *)self->_payloadID copyWithZone:zone];
   v10 = *(v6 + 40);
   *(v6 + 40) = v9;
 
@@ -317,7 +317,7 @@ LABEL_7:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{a3, v19}];
+        v17 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{zone, v19}];
         [v6 addNilProperties:v17];
       }
 
@@ -330,26 +330,26 @@ LABEL_7:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[4] = self->_entryType;
-    *(v4 + 60) |= 2u;
+    toCopy[4] = self->_entryType;
+    *(toCopy + 60) |= 2u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_payloadUUID)
   {
-    [v4 setPayloadUUID:?];
-    v4 = v10;
+    [toCopy setPayloadUUID:?];
+    toCopy = v10;
   }
 
   if (self->_payloadID)
   {
     [v10 setPayloadID:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -361,8 +361,8 @@ LABEL_7:
     }
 
 LABEL_19:
-    *(v4 + 1) = self->_payloadLength;
-    *(v4 + 60) |= 1u;
+    *(toCopy + 1) = self->_payloadLength;
+    *(toCopy + 60) |= 1u;
     if ((*&self->_has & 4) == 0)
     {
       goto LABEL_11;
@@ -371,8 +371,8 @@ LABEL_19:
     goto LABEL_10;
   }
 
-  v4[14] = self->_payloadVersion;
-  *(v4 + 60) |= 8u;
+  toCopy[14] = self->_payloadVersion;
+  *(toCopy + 60) |= 8u;
   has = self->_has;
   if (has)
   {
@@ -383,18 +383,18 @@ LABEL_9:
   if ((has & 4) != 0)
   {
 LABEL_10:
-    v4[8] = self->_payloadCRC;
-    *(v4 + 60) |= 4u;
+    toCopy[8] = self->_payloadCRC;
+    *(toCopy + 60) |= 4u;
   }
 
 LABEL_11:
   if ([(PLJournalEntryHeader *)self nilPropertiesCount])
   {
     [v10 clearNilProperties];
-    v6 = [(PLJournalEntryHeader *)self nilPropertiesCount];
-    if (v6)
+    nilPropertiesCount = [(PLJournalEntryHeader *)self nilPropertiesCount];
+    if (nilPropertiesCount)
     {
-      v7 = v6;
+      v7 = nilPropertiesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PLJournalEntryHeader *)self nilPropertiesAtIndex:i];
@@ -404,10 +404,10 @@ LABEL_11:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
@@ -484,7 +484,7 @@ LABEL_11:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     entryType = self->_entryType;
@@ -498,26 +498,26 @@ LABEL_11:
       v5 = off_1E7578930[entryType];
     }
 
-    [v3 setObject:v5 forKey:@"entryType"];
+    [dictionary setObject:v5 forKey:@"entryType"];
   }
 
   payloadUUID = self->_payloadUUID;
   if (payloadUUID)
   {
-    [v3 setObject:payloadUUID forKey:@"payloadUUID"];
+    [dictionary setObject:payloadUUID forKey:@"payloadUUID"];
   }
 
   payloadID = self->_payloadID;
   if (payloadID)
   {
-    [v3 setObject:payloadID forKey:@"payloadID"];
+    [dictionary setObject:payloadID forKey:@"payloadID"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_payloadVersion];
-    [v3 setObject:v12 forKey:@"payloadVersion"];
+    [dictionary setObject:v12 forKey:@"payloadVersion"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -538,23 +538,23 @@ LABEL_12:
   }
 
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_payloadLength];
-  [v3 setObject:v13 forKey:@"payloadLength"];
+  [dictionary setObject:v13 forKey:@"payloadLength"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_13:
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_payloadCRC];
-    [v3 setObject:v9 forKey:@"payloadCRC"];
+    [dictionary setObject:v9 forKey:@"payloadCRC"];
   }
 
 LABEL_14:
   nilProperties = self->_nilProperties;
   if (nilProperties)
   {
-    [v3 setObject:nilProperties forKey:@"nilProperties"];
+    [dictionary setObject:nilProperties forKey:@"nilProperties"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -563,33 +563,33 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = PLJournalEntryHeader;
   v4 = [(PLJournalEntryHeader *)&v8 description];
-  v5 = [(PLJournalEntryHeader *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PLJournalEntryHeader *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addNilProperties:(id)a3
+- (void)addNilProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   nilProperties = self->_nilProperties;
-  v8 = v4;
+  v8 = propertiesCopy;
   if (!nilProperties)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_nilProperties;
     self->_nilProperties = v6;
 
-    v4 = v8;
+    propertiesCopy = v8;
     nilProperties = self->_nilProperties;
   }
 
-  [(NSMutableArray *)nilProperties addObject:v4];
+  [(NSMutableArray *)nilProperties addObject:propertiesCopy];
 }
 
-- (void)setHasPayloadCRC:(BOOL)a3
+- (void)setHasPayloadCRC:(BOOL)c
 {
-  if (a3)
+  if (c)
   {
     v3 = 4;
   }
@@ -602,9 +602,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPayloadVersion:(BOOL)a3
+- (void)setHasPayloadVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -617,20 +617,20 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsEntryType:(id)a3
+- (int)StringAsEntryType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Insert"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Insert"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Update"])
+  else if ([typeCopy isEqualToString:@"Update"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Delete"])
+  else if ([typeCopy isEqualToString:@"Delete"])
   {
     v4 = 2;
   }
@@ -643,24 +643,24 @@ LABEL_14:
   return v4;
 }
 
-- (id)entryTypeAsString:(int)a3
+- (id)entryTypeAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E7578930[a3];
+    v4 = off_1E7578930[string];
   }
 
   return v4;
 }
 
-- (void)setHasEntryType:(BOOL)a3
+- (void)setHasEntryType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

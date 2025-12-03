@@ -6,18 +6,18 @@
 
 - (__CFString)rem_nonNilSummary
 {
-  v2 = [a1 summary];
-  if (v2)
+  summary = [self summary];
+  if (summary)
   {
-    v3 = [a1 summary];
+    summary2 = [self summary];
   }
 
   else
   {
-    v3 = &stru_1F0D67F00;
+    summary2 = &stru_1F0D67F00;
   }
 
-  return v3;
+  return summary2;
 }
 
 @end

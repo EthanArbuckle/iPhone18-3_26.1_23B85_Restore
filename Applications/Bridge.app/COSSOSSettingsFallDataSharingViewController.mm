@@ -1,16 +1,16 @@
 @interface COSSOSSettingsFallDataSharingViewController
 + (id)_TCCInfoItems;
-+ (id)_displayNameForWatchBundleID:(id)a3;
++ (id)_displayNameForWatchBundleID:(id)d;
 + (id)fallDetectionAppIDs;
 - (COSSOSSettingsFallDataSharingViewController)init;
 - (id)_generateTCCItems;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (void)_fetchAppIcons;
-- (void)_fetchIconForBundleID:(id)a3 atIndex:(unint64_t)a4;
-- (void)_togglePrivacySettingForIndexPath:(id)a3;
+- (void)_fetchIconForBundleID:(id)d atIndex:(unint64_t)index;
+- (void)_togglePrivacySettingForIndexPath:(id)path;
 - (void)dealloc;
-- (void)switchCellDidChangeValue:(id)a3;
+- (void)switchCellDidChangeValue:(id)value;
 - (void)viewDidLoad;
 @end
 
@@ -32,9 +32,9 @@
     v24 = 0u;
     v25 = 0u;
     v5 = +[COSSettingsListController installedWatchkitApps];
-    v6 = [v5 allValues];
+    allValues = [v5 allValues];
 
-    v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    v7 = [allValues countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v7)
     {
       v8 = v7;
@@ -45,35 +45,35 @@
         {
           if (*v25 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
           v11 = *(*(&v24 + 1) + 8 * i);
-          v12 = [v11 companionAppBundleID];
-          if (v12)
+          companionAppBundleID = [v11 companionAppBundleID];
+          if (companionAppBundleID)
           {
-            v13 = v12;
-            v14 = [v11 bundleIdentifier];
+            v13 = companionAppBundleID;
+            bundleIdentifier = [v11 bundleIdentifier];
 
-            if (v14)
+            if (bundleIdentifier)
             {
-              v15 = [v11 bundleIdentifier];
+              bundleIdentifier2 = [v11 bundleIdentifier];
               v16 = v2->_companionBundleIDToWatchBundleID;
-              v17 = [v11 companionAppBundleID];
-              [(NSMutableDictionary *)v16 setObject:v15 forKeyedSubscript:v17];
+              companionAppBundleID2 = [v11 companionAppBundleID];
+              [(NSMutableDictionary *)v16 setObject:bundleIdentifier2 forKeyedSubscript:companionAppBundleID2];
             }
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v8);
     }
 
-    v18 = [(COSSOSSettingsFallDataSharingViewController *)v2 _generateTCCItems];
+    _generateTCCItems = [(COSSOSSettingsFallDataSharingViewController *)v2 _generateTCCItems];
     items = v2->_items;
-    v2->_items = v18;
+    v2->_items = _generateTCCItems;
 
     v20 = objc_alloc_init(NSCache);
     imageCache = v2->_imageCache;
@@ -109,9 +109,9 @@
   v22 = 0u;
   v23 = 0u;
   v7 = +[COSSettingsListController installedWatchkitApps];
-  v8 = [v7 allValues];
+  allValues = [v7 allValues];
 
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v9 = [allValues countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
@@ -122,28 +122,28 @@
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 bundleIdentifier];
+        bundleIdentifier = [v13 bundleIdentifier];
 
-        if (v14)
+        if (bundleIdentifier)
         {
-          v15 = [v13 bundleIdentifier];
-          [v6 addObject:v15];
+          bundleIdentifier2 = [v13 bundleIdentifier];
+          [v6 addObject:bundleIdentifier2];
         }
 
-        v16 = [v13 companionAppBundleID];
+        companionAppBundleID = [v13 companionAppBundleID];
 
-        if (v16)
+        if (companionAppBundleID)
         {
-          v17 = [v13 companionAppBundleID];
-          [v6 addObject:v17];
+          companionAppBundleID2 = [v13 companionAppBundleID];
+          [v6 addObject:companionAppBundleID2];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
@@ -209,7 +209,7 @@
 {
   v53 = +[NSMutableArray array];
   v3 = +[NSMutableSet set];
-  v52 = self;
+  selfCopy = self;
   [objc_opt_class() _TCCInfoItems];
   v62 = 0u;
   v63 = 0u;
@@ -242,7 +242,7 @@
         {
           v12 = CFBundleGetInfoDictionary(v11);
           v13 = CFBundleGetIdentifier(v11);
-          v14 = [(NSMutableDictionary *)v52->_companionBundleIDToWatchBundleID objectForKeyedSubscript:v13];
+          v14 = [(NSMutableDictionary *)selfCopy->_companionBundleIDToWatchBundleID objectForKeyedSubscript:v13];
           if (v14)
           {
             v15 = v6;
@@ -386,20 +386,20 @@
     {
       v4 = [(NSArray *)self->_items objectAtIndexedSubscript:v3];
       companionBundleIDToWatchBundleID = self->_companionBundleIDToWatchBundleID;
-      v6 = [v4 bundleID];
-      v7 = [(NSMutableDictionary *)companionBundleIDToWatchBundleID objectForKeyedSubscript:v6];
+      bundleID = [v4 bundleID];
+      v7 = [(NSMutableDictionary *)companionBundleIDToWatchBundleID objectForKeyedSubscript:bundleID];
       v8 = v7;
       if (v7)
       {
-        v9 = v7;
+        bundleID2 = v7;
       }
 
       else
       {
-        v9 = [v4 bundleID];
+        bundleID2 = [v4 bundleID];
       }
 
-      v10 = v9;
+      v10 = bundleID2;
 
       [(COSSOSSettingsFallDataSharingViewController *)self _fetchIconForBundleID:v10 atIndex:v3];
       ++v3;
@@ -409,12 +409,12 @@
   }
 }
 
-- (void)_fetchIconForBundleID:(id)a3 atIndex:(unint64_t)a4
+- (void)_fetchIconForBundleID:(id)d atIndex:(unint64_t)index
 {
-  v6 = a3;
+  dCopy = d;
   v7 = +[UIScreen mainScreen];
-  v8 = [v7 traitCollection];
-  [v8 displayScale];
+  traitCollection = [v7 traitCollection];
+  [traitCollection displayScale];
   if (v9 <= 2.0)
   {
     v10 = 47;
@@ -431,22 +431,22 @@
   v13[2] = sub_100047158;
   v13[3] = &unk_100269210;
   v13[4] = self;
-  v14 = v6;
-  v15 = a4;
-  v12 = v6;
+  v14 = dCopy;
+  indexCopy = index;
+  v12 = dCopy;
   [v11 getIconForBundleID:v12 iconVariant:v10 block:v13 timeout:-1.0];
 }
 
-+ (id)_displayNameForWatchBundleID:(id)a3
++ (id)_displayNameForWatchBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = kCFBundleNameKey;
   v5 = _kCFBundleDisplayNameKey;
   v6 = [NSSet setWithObjects:v4, v5, 0];
   v7 = +[ACXDeviceConnection sharedDeviceConnection];
   v8 = +[NSLocale preferredLanguages];
   v40 = 0;
-  v9 = [v7 copyLocalizedValuesFromAllDevicesForInfoPlistKeys:v6 forAppWithBundleID:v3 fetchingFirstMatchingLocalizationInList:v8 error:&v40];
+  v9 = [v7 copyLocalizedValuesFromAllDevicesForInfoPlistKeys:v6 forAppWithBundleID:dCopy fetchingFirstMatchingLocalizationInList:v8 error:&v40];
   v10 = v40;
 
   if (v10)
@@ -455,7 +455,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v44 = v3;
+      v44 = dCopy;
       v45 = 2112;
       v46 = v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Error fetching app name for %@, error %@", buf, 0x16u);
@@ -467,7 +467,7 @@
   else
   {
     v30 = v6;
-    v31 = v3;
+    v31 = dCopy;
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
@@ -557,7 +557,7 @@ LABEL_25:
 
 LABEL_26:
     v6 = v30;
-    v3 = v31;
+    dCopy = v31;
     v9 = v29;
   }
 
@@ -573,16 +573,16 @@ LABEL_26:
   v4 = [v3 localizedStringForKey:@"SOS_FALL_DETECTION_DATA_SHARING" value:&stru_10026E598 table:@"SOSSettings"];
   [(COSSOSSettingsFallDataSharingViewController *)self setTitle:v4];
 
-  v5 = [(COSSOSSettingsFallDataSharingViewController *)self tableView];
-  [v5 _setSectionHeaderFooterPadding:12.0];
+  tableView = [(COSSOSSettingsFallDataSharingViewController *)self tableView];
+  [tableView _setSectionHeaderFooterPadding:12.0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[_COSSOSSwitchTableViewCell reuseID];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8];
 
   if (!v9)
   {
@@ -593,52 +593,52 @@ LABEL_26:
 
   [(_COSSOSSwitchTableViewCell *)v9 setDelegate:self];
   items = self->_items;
-  v13 = [v6 item];
+  item = [pathCopy item];
 
-  v14 = [(NSArray *)items objectAtIndexedSubscript:v13];
+  v14 = [(NSArray *)items objectAtIndexedSubscript:item];
   v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v14 enabled]);
   [(_COSSOSSwitchTableViewCell *)v9 setValue:v15];
 
-  v16 = [v14 displayName];
-  v17 = [(_COSSOSSwitchTableViewCell *)v9 titleLabel];
-  [v17 setText:v16];
+  displayName = [v14 displayName];
+  titleLabel = [(_COSSOSSwitchTableViewCell *)v9 titleLabel];
+  [titleLabel setText:displayName];
 
   companionBundleIDToWatchBundleID = self->_companionBundleIDToWatchBundleID;
-  v19 = [v14 bundleID];
-  v20 = [(NSMutableDictionary *)companionBundleIDToWatchBundleID objectForKeyedSubscript:v19];
+  bundleID = [v14 bundleID];
+  v20 = [(NSMutableDictionary *)companionBundleIDToWatchBundleID objectForKeyedSubscript:bundleID];
   v21 = v20;
   if (v20)
   {
-    v22 = v20;
+    bundleID2 = v20;
   }
 
   else
   {
-    v22 = [v14 bundleID];
+    bundleID2 = [v14 bundleID];
   }
 
-  v23 = v22;
+  v23 = bundleID2;
 
   v24 = [(NSCache *)self->_imageCache objectForKey:v23];
   v25 = v24;
   if (v24)
   {
-    v26 = v24;
+    blankIcon = v24;
   }
 
   else
   {
-    v26 = [(_COSSOSSwitchTableViewCell *)v9 blankIcon];
+    blankIcon = [(_COSSOSSwitchTableViewCell *)v9 blankIcon];
   }
 
-  v27 = v26;
+  v27 = blankIcon;
 
   [(_COSSOSSwitchTableViewCell *)v9 setIcon:v27];
 
   return v9;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v4 = objc_alloc_init(UITableViewHeaderFooterView);
   v5 = +[UIListContentConfiguration plainFooterConfiguration];
@@ -647,15 +647,15 @@ LABEL_26:
   [v5 setText:v7];
 
   v8 = PreferencesTableViewFooterFont();
-  v9 = [v5 textProperties];
-  [v9 setFont:v8];
+  textProperties = [v5 textProperties];
+  [textProperties setFont:v8];
 
-  v10 = [v5 textProperties];
-  [v10 setNumberOfLines:0];
+  textProperties2 = [v5 textProperties];
+  [textProperties2 setNumberOfLines:0];
 
   v11 = PreferencesTableViewFooterColor();
-  v12 = [v5 textProperties];
-  [v12 setColor:v11];
+  textProperties3 = [v5 textProperties];
+  [textProperties3 setColor:v11];
 
   [v4 setContentConfiguration:v5];
   v13 = +[UIBackgroundConfiguration clearConfiguration];
@@ -664,36 +664,36 @@ LABEL_26:
   return v4;
 }
 
-- (void)switchCellDidChangeValue:(id)a3
+- (void)switchCellDidChangeValue:(id)value
 {
-  v4 = a3;
-  v5 = [(COSSOSSettingsFallDataSharingViewController *)self tableView];
-  v6 = [v5 indexPathForCell:v4];
+  valueCopy = value;
+  tableView = [(COSSOSSettingsFallDataSharingViewController *)self tableView];
+  v6 = [tableView indexPathForCell:valueCopy];
 
   [(COSSOSSettingsFallDataSharingViewController *)self _togglePrivacySettingForIndexPath:v6];
 }
 
-- (void)_togglePrivacySettingForIndexPath:(id)a3
+- (void)_togglePrivacySettingForIndexPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     items = self->_items;
-    v5 = a3;
-    v12 = -[NSArray objectAtIndexedSubscript:](items, "objectAtIndexedSubscript:", [v5 item]);
-    v6 = [v12 enabled];
-    v7 = [v12 bundleID];
+    pathCopy = path;
+    v12 = -[NSArray objectAtIndexedSubscript:](items, "objectAtIndexedSubscript:", [pathCopy item]);
+    enabled = [v12 enabled];
+    bundleID = [v12 bundleID];
     v8 = TCCAccessSetForBundleId();
 
     if (v8)
     {
-      [v12 setEnabled:v6 ^ 1];
-      v6 = (v6 ^ 1);
+      [v12 setEnabled:enabled ^ 1];
+      enabled = (enabled ^ 1);
     }
 
-    v9 = [(COSSOSSettingsFallDataSharingViewController *)self tableView];
-    v10 = [v9 cellForRowAtIndexPath:v5];
+    tableView = [(COSSOSSettingsFallDataSharingViewController *)self tableView];
+    v10 = [tableView cellForRowAtIndexPath:pathCopy];
 
-    v11 = [NSNumber numberWithUnsignedChar:v6];
+    v11 = [NSNumber numberWithUnsignedChar:enabled];
     [v10 setValue:v11];
   }
 }

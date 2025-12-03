@@ -1,47 +1,47 @@
 @interface PKFlightStep
-- (BOOL)isEqual:(id)a3;
-- (PKFlightStep)initWithAirport:(id)a3 terminal:(id)a4 gate:(id)a5 baggageClaim:(id)a6 status:(unint64_t)a7 scheduledGateTime:(id)a8 currentGateTime:(id)a9 scheduledRunwayTime:(id)a10 currentRunwayTime:(id)a11 gateBufferMinutes:(id)a12 runwayBufferMinutes:(id)a13;
-- (PKFlightStep)initWithCoder:(id)a3;
-- (PKFlightStep)initWithMockFlightStepDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKFlightStep)initWithAirport:(id)airport terminal:(id)terminal gate:(id)gate baggageClaim:(id)claim status:(unint64_t)status scheduledGateTime:(id)time currentGateTime:(id)gateTime scheduledRunwayTime:(id)self0 currentRunwayTime:(id)self1 gateBufferMinutes:(id)self2 runwayBufferMinutes:(id)self3;
+- (PKFlightStep)initWithCoder:(id)coder;
+- (PKFlightStep)initWithMockFlightStepDictionary:(id)dictionary;
 - (id)asDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFlightStep
 
-- (PKFlightStep)initWithAirport:(id)a3 terminal:(id)a4 gate:(id)a5 baggageClaim:(id)a6 status:(unint64_t)a7 scheduledGateTime:(id)a8 currentGateTime:(id)a9 scheduledRunwayTime:(id)a10 currentRunwayTime:(id)a11 gateBufferMinutes:(id)a12 runwayBufferMinutes:(id)a13
+- (PKFlightStep)initWithAirport:(id)airport terminal:(id)terminal gate:(id)gate baggageClaim:(id)claim status:(unint64_t)status scheduledGateTime:(id)time currentGateTime:(id)gateTime scheduledRunwayTime:(id)self0 currentRunwayTime:(id)self1 gateBufferMinutes:(id)self2 runwayBufferMinutes:(id)self3
 {
-  v33 = a3;
-  obj = a4;
-  v32 = a4;
-  v31 = a5;
-  v30 = a6;
-  v29 = a8;
-  v28 = a9;
-  v27 = a10;
-  v26 = a11;
-  v18 = a12;
-  v19 = a13;
+  airportCopy = airport;
+  obj = terminal;
+  terminalCopy = terminal;
+  gateCopy = gate;
+  claimCopy = claim;
+  timeCopy = time;
+  gateTimeCopy = gateTime;
+  runwayTimeCopy = runwayTime;
+  currentRunwayTimeCopy = currentRunwayTime;
+  minutesCopy = minutes;
+  bufferMinutesCopy = bufferMinutes;
   v34.receiver = self;
   v34.super_class = PKFlightStep;
   v20 = [(PKFlightStep *)&v34 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_airport, a3);
+    objc_storeStrong(&v20->_airport, airport);
     objc_storeStrong(&v21->_terminal, obj);
-    objc_storeStrong(&v21->_gate, a5);
-    objc_storeStrong(&v21->_baggageClaim, a6);
-    v21->_status = a7;
-    objc_storeStrong(&v21->_scheduledGateTime, a8);
-    objc_storeStrong(&v21->_currentGateTime, a9);
-    objc_storeStrong(&v21->_scheduledRunwayTime, a10);
-    objc_storeStrong(&v21->_currentRunwayTime, a11);
-    objc_storeStrong(&v21->_gateBufferMinutes, a12);
-    objc_storeStrong(&v21->_runwayBufferMinutes, a13);
+    objc_storeStrong(&v21->_gate, gate);
+    objc_storeStrong(&v21->_baggageClaim, claim);
+    v21->_status = status;
+    objc_storeStrong(&v21->_scheduledGateTime, time);
+    objc_storeStrong(&v21->_currentGateTime, gateTime);
+    objc_storeStrong(&v21->_scheduledRunwayTime, runwayTime);
+    objc_storeStrong(&v21->_currentRunwayTime, currentRunwayTime);
+    objc_storeStrong(&v21->_gateBufferMinutes, minutes);
+    objc_storeStrong(&v21->_runwayBufferMinutes, bufferMinutes);
   }
 
   if (![(PKFlightStep *)v21 isValid])
@@ -53,15 +53,15 @@
   return v21;
 }
 
-- (PKFlightStep)initWithMockFlightStepDictionary:(id)a3
+- (PKFlightStep)initWithMockFlightStepDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = PKFlightStep;
   v5 = [(PKFlightStep *)&v29 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"airport"];
+    v6 = [dictionaryCopy objectForKey:@"airport"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,42 +70,42 @@
       v5->_airport = v7;
     }
 
-    v9 = [v4 PKStringForKey:@"terminal"];
+    v9 = [dictionaryCopy PKStringForKey:@"terminal"];
     terminal = v5->_terminal;
     v5->_terminal = v9;
 
-    v11 = [v4 PKStringForKey:@"gate"];
+    v11 = [dictionaryCopy PKStringForKey:@"gate"];
     gate = v5->_gate;
     v5->_gate = v11;
 
-    v13 = [v4 PKStringForKey:@"baggageClaim"];
+    v13 = [dictionaryCopy PKStringForKey:@"baggageClaim"];
     baggageClaim = v5->_baggageClaim;
     v5->_baggageClaim = v13;
 
-    v15 = [v4 PKStringForKey:@"status"];
+    v15 = [dictionaryCopy PKStringForKey:@"status"];
     v5->_status = PKFlightStatusFromString(v15);
 
-    v16 = [v4 PKDateForKey:@"scheduledGateTime"];
+    v16 = [dictionaryCopy PKDateForKey:@"scheduledGateTime"];
     scheduledGateTime = v5->_scheduledGateTime;
     v5->_scheduledGateTime = v16;
 
-    v18 = [v4 PKDateForKey:@"currentGateTime"];
+    v18 = [dictionaryCopy PKDateForKey:@"currentGateTime"];
     currentGateTime = v5->_currentGateTime;
     v5->_currentGateTime = v18;
 
-    v20 = [v4 PKDateForKey:@"scheduledRunwayTime"];
+    v20 = [dictionaryCopy PKDateForKey:@"scheduledRunwayTime"];
     scheduledRunwayTime = v5->_scheduledRunwayTime;
     v5->_scheduledRunwayTime = v20;
 
-    v22 = [v4 PKDateForKey:@"currentRunwayTime"];
+    v22 = [dictionaryCopy PKDateForKey:@"currentRunwayTime"];
     currentRunwayTime = v5->_currentRunwayTime;
     v5->_currentRunwayTime = v22;
 
-    v24 = [v4 PKNumberForKey:@"gateBuffer"];
+    v24 = [dictionaryCopy PKNumberForKey:@"gateBuffer"];
     gateBufferMinutes = v5->_gateBufferMinutes;
     v5->_gateBufferMinutes = v24;
 
-    v26 = [v4 PKNumberForKey:@"runwayBuffer"];
+    v26 = [dictionaryCopy PKNumberForKey:@"runwayBuffer"];
     runwayBufferMinutes = v5->_runwayBufferMinutes;
     v5->_runwayBufferMinutes = v26;
   }
@@ -122,8 +122,8 @@
 - (id)asDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PKAirport *)self->_airport asDictionary];
-  [v3 setObject:v4 forKeyedSubscript:@"airport"];
+  asDictionary = [(PKAirport *)self->_airport asDictionary];
+  [v3 setObject:asDictionary forKeyedSubscript:@"airport"];
 
   [v3 setObject:self->_terminal forKeyedSubscript:@"terminal"];
   [v3 setObject:self->_gate forKeyedSubscript:@"gate"];
@@ -150,54 +150,54 @@
   return v10;
 }
 
-- (PKFlightStep)initWithCoder:(id)a3
+- (PKFlightStep)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = PKFlightStep;
   v5 = [(PKFlightStep *)&v28 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"airport"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"airport"];
     airport = v5->_airport;
     v5->_airport = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"terminal"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"terminal"];
     terminal = v5->_terminal;
     v5->_terminal = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gate"];
     gate = v5->_gate;
     v5->_gate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baggageClaim"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baggageClaim"];
     baggageClaim = v5->_baggageClaim;
     v5->_baggageClaim = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"status"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"status"];
     v5->_status = [v14 unsignedIntegerValue];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scheduledGateTime"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scheduledGateTime"];
     scheduledGateTime = v5->_scheduledGateTime;
     v5->_scheduledGateTime = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentGateTime"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentGateTime"];
     currentGateTime = v5->_currentGateTime;
     v5->_currentGateTime = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scheduledRunwayTime"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scheduledRunwayTime"];
     scheduledRunwayTime = v5->_scheduledRunwayTime;
     v5->_scheduledRunwayTime = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentRunwayTime"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentRunwayTime"];
     currentRunwayTime = v5->_currentRunwayTime;
     v5->_currentRunwayTime = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gateBuffer"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gateBuffer"];
     gateBufferMinutes = v5->_gateBufferMinutes;
     v5->_gateBufferMinutes = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"runwayBuffer"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"runwayBuffer"];
     runwayBufferMinutes = v5->_runwayBufferMinutes;
     v5->_runwayBufferMinutes = v25;
   }
@@ -205,23 +205,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   airport = self->_airport;
-  v6 = a3;
-  [v6 encodeObject:airport forKey:@"airport"];
-  [v6 encodeObject:self->_terminal forKey:@"terminal"];
-  [v6 encodeObject:self->_gate forKey:@"gate"];
-  [v6 encodeObject:self->_baggageClaim forKey:@"baggageClaim"];
+  coderCopy = coder;
+  [coderCopy encodeObject:airport forKey:@"airport"];
+  [coderCopy encodeObject:self->_terminal forKey:@"terminal"];
+  [coderCopy encodeObject:self->_gate forKey:@"gate"];
+  [coderCopy encodeObject:self->_baggageClaim forKey:@"baggageClaim"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_status];
-  [v6 encodeObject:v5 forKey:@"status"];
+  [coderCopy encodeObject:v5 forKey:@"status"];
 
-  [v6 encodeObject:self->_scheduledGateTime forKey:@"scheduledGateTime"];
-  [v6 encodeObject:self->_currentGateTime forKey:@"currentGateTime"];
-  [v6 encodeObject:self->_scheduledRunwayTime forKey:@"scheduledRunwayTime"];
-  [v6 encodeObject:self->_currentRunwayTime forKey:@"currentRunwayTime"];
-  [v6 encodeObject:self->_gateBufferMinutes forKey:@"gateBuffer"];
-  [v6 encodeObject:self->_runwayBufferMinutes forKey:@"runwayBuffer"];
+  [coderCopy encodeObject:self->_scheduledGateTime forKey:@"scheduledGateTime"];
+  [coderCopy encodeObject:self->_currentGateTime forKey:@"currentGateTime"];
+  [coderCopy encodeObject:self->_scheduledRunwayTime forKey:@"scheduledRunwayTime"];
+  [coderCopy encodeObject:self->_currentRunwayTime forKey:@"currentRunwayTime"];
+  [coderCopy encodeObject:self->_gateBufferMinutes forKey:@"gateBuffer"];
+  [coderCopy encodeObject:self->_runwayBufferMinutes forKey:@"runwayBuffer"];
 }
 
 - (id)description
@@ -244,18 +244,18 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -469,47 +469,47 @@ LABEL_31:
   return self->_status - v3 + 32 * v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKFlightStep allocWithZone:](PKFlightStep init];
-  v6 = [(PKAirport *)self->_airport copyWithZone:a3];
+  v6 = [(PKAirport *)self->_airport copyWithZone:zone];
   airport = v5->_airport;
   v5->_airport = v6;
 
-  v8 = [(NSString *)self->_terminal copyWithZone:a3];
+  v8 = [(NSString *)self->_terminal copyWithZone:zone];
   terminal = v5->_terminal;
   v5->_terminal = v8;
 
-  v10 = [(NSString *)self->_gate copyWithZone:a3];
+  v10 = [(NSString *)self->_gate copyWithZone:zone];
   gate = v5->_gate;
   v5->_gate = v10;
 
-  v12 = [(NSString *)self->_baggageClaim copyWithZone:a3];
+  v12 = [(NSString *)self->_baggageClaim copyWithZone:zone];
   baggageClaim = v5->_baggageClaim;
   v5->_baggageClaim = v12;
 
   v5->_status = self->_status;
-  v14 = [(NSDate *)self->_scheduledGateTime copyWithZone:a3];
+  v14 = [(NSDate *)self->_scheduledGateTime copyWithZone:zone];
   scheduledGateTime = v5->_scheduledGateTime;
   v5->_scheduledGateTime = v14;
 
-  v16 = [(NSDate *)self->_currentGateTime copyWithZone:a3];
+  v16 = [(NSDate *)self->_currentGateTime copyWithZone:zone];
   currentGateTime = v5->_currentGateTime;
   v5->_currentGateTime = v16;
 
-  v18 = [(NSDate *)self->_scheduledRunwayTime copyWithZone:a3];
+  v18 = [(NSDate *)self->_scheduledRunwayTime copyWithZone:zone];
   scheduledRunwayTime = v5->_scheduledRunwayTime;
   v5->_scheduledRunwayTime = v18;
 
-  v20 = [(NSDate *)self->_currentGateTime copyWithZone:a3];
+  v20 = [(NSDate *)self->_currentGateTime copyWithZone:zone];
   v21 = v5->_currentGateTime;
   v5->_currentGateTime = v20;
 
-  v22 = [(NSNumber *)self->_gateBufferMinutes copyWithZone:a3];
+  v22 = [(NSNumber *)self->_gateBufferMinutes copyWithZone:zone];
   gateBufferMinutes = v5->_gateBufferMinutes;
   v5->_gateBufferMinutes = v22;
 
-  v24 = [(NSNumber *)self->_runwayBufferMinutes copyWithZone:a3];
+  v24 = [(NSNumber *)self->_runwayBufferMinutes copyWithZone:zone];
   runwayBufferMinutes = v5->_runwayBufferMinutes;
   v5->_runwayBufferMinutes = v24;
 

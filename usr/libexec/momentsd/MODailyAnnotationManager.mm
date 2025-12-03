@@ -1,28 +1,28 @@
 @interface MODailyAnnotationManager
-- (MODailyAnnotationManager)initWithUniverse:(id)a3;
-- (id)annotateBaseEvents:(id)a3 dateInterval:(id)a4;
-- (id)getBaseEvents:(id)a3;
-- (id)groupedEvents:(id)a3 keyFunc:(id)a4;
-- (void)_performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5;
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5;
+- (MODailyAnnotationManager)initWithUniverse:(id)universe;
+- (id)annotateBaseEvents:(id)events dateInterval:(id)interval;
+- (id)getBaseEvents:(id)events;
+- (id)groupedEvents:(id)events keyFunc:(id)func;
+- (void)_performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler;
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler;
 @end
 
 @implementation MODailyAnnotationManager
 
-- (MODailyAnnotationManager)initWithUniverse:(id)a3
+- (MODailyAnnotationManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
-  objc_storeStrong(&self->fUniverse, a3);
+  universeCopy = universe;
+  objc_storeStrong(&self->fUniverse, universe);
   v14.receiver = self;
   v14.super_class = MODailyAnnotationManager;
-  v6 = [(MOAnnotationManager *)&v14 initWithUniverse:v5];
+  v6 = [(MOAnnotationManager *)&v14 initWithUniverse:universeCopy];
   if (v6)
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create(v9, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
     queue = v6->_queue;
     v6->_queue = v11;
   }
@@ -30,30 +30,30 @@
   return v6;
 }
 
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MODailyAnnotationManager *)self queue];
+  eventsCopy = events;
+  patternEventsCopy = patternEvents;
+  handlerCopy = handler;
+  queue = [(MODailyAnnotationManager *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __82__MODailyAnnotationManager_performAnnotationWithEvents_withPatternEvents_handler___block_invoke;
   v15[3] = &unk_1003361C0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = eventsCopy;
+  v17 = patternEventsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = patternEventsCopy;
+  v14 = eventsCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)_performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5
+- (void)_performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler
 {
-  v7 = a5;
-  v8 = [(MODailyAnnotationManager *)self getBaseEvents:a3];
+  handlerCopy = handler;
+  v8 = [(MODailyAnnotationManager *)self getBaseEvents:events];
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -79,14 +79,14 @@
     v14 = v17;
     [v13 enumerateKeysAndObjectsUsingBlock:v16];
     v15 = [v14 copy];
-    v7[2](v7, v15, 0);
+    handlerCopy[2](handlerCopy, v15, 0);
 
     v8 = v12;
   }
 
   else
   {
-    v7[2](v7, &__NSArray0__struct, 0);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
   }
 }
 
@@ -180,16 +180,16 @@ void __83__MODailyAnnotationManager__performAnnotationWithEvents_withPatternEven
   }
 }
 
-- (id)groupedEvents:(id)a3 keyFunc:(id)a4
+- (id)groupedEvents:(id)events keyFunc:(id)func
 {
-  v5 = a3;
-  v6 = a4;
+  eventsCopy = events;
+  funcCopy = func;
   v7 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = eventsCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -205,7 +205,7 @@ void __83__MODailyAnnotationManager__performAnnotationWithEvents_withPatternEven
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = v6[2](v6, v13);
+        v14 = funcCopy[2](funcCopy, v13);
         v15 = [v7 objectForKey:{v14, v18}];
         if (!v15)
         {
@@ -227,7 +227,7 @@ void __83__MODailyAnnotationManager__performAnnotationWithEvents_withPatternEven
   return v16;
 }
 
-- (id)getBaseEvents:(id)a3
+- (id)getBaseEvents:(id)events
 {
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -241,7 +241,7 @@ void __83__MODailyAnnotationManager__performAnnotationWithEvents_withPatternEven
   return 0;
 }
 
-- (id)annotateBaseEvents:(id)a3 dateInterval:(id)a4
+- (id)annotateBaseEvents:(id)events dateInterval:(id)interval
 {
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))

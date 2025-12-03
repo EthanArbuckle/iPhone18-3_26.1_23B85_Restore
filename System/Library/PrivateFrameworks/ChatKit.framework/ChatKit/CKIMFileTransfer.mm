@@ -1,5 +1,5 @@
 @interface CKIMFileTransfer
-+ (id)makeHardLink:(id)a3;
++ (id)makeHardLink:(id)link;
 - (BOOL)fileIsAnimated;
 - (BOOL)hasFinalizedAnimatedFlag;
 - (BOOL)hideAttachment;
@@ -17,9 +17,9 @@
 - (BOOL)isScreenshot;
 - (BOOL)isSticker;
 - (BOOL)isThumbnail;
-- (CKIMFileTransfer)initWithFileURL:(id)a3 transcoderUserInfo:(id)a4 attributionInfo:(id)a5 adaptiveImageGlyphContentIdentifier:(id)a6 adaptiveImageGlyphContentDescription:(id)a7 hideAttachment:(BOOL)a8 isScreenshot:(BOOL)a9;
-- (CKIMFileTransfer)initWithStickerFileURL:(id)a3 transferUserInfo:(id)a4 attributionInfo:(id)a5 animatedImageCacheURL:(id)a6 adaptiveImageGlyphContentIdentifier:(id)a7 adaptiveImageGlyphContentDescription:(id)a8;
-- (CKIMFileTransfer)initWithTransferGUID:(id)a3 imMessage:(id)a4;
+- (CKIMFileTransfer)initWithFileURL:(id)l transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo adaptiveImageGlyphContentIdentifier:(id)identifier adaptiveImageGlyphContentDescription:(id)description hideAttachment:(BOOL)attachment isScreenshot:(BOOL)screenshot;
+- (CKIMFileTransfer)initWithStickerFileURL:(id)l transferUserInfo:(id)info attributionInfo:(id)attributionInfo animatedImageCacheURL:(id)rL adaptiveImageGlyphContentIdentifier:(id)identifier adaptiveImageGlyphContentDescription:(id)description;
+- (CKIMFileTransfer)initWithTransferGUID:(id)d imMessage:(id)message;
 - (IMMessage)IMMessage;
 - (NSDictionary)attributionInfo;
 - (NSDictionary)stickerUserInfo;
@@ -43,14 +43,14 @@
 - (unint64_t)currentBytes;
 - (unint64_t)totalBytes;
 - (void)_faultInAnimatedFlagImmediately;
-- (void)_reloadTransferAndDetermineIfUpdated:(BOOL *)a3;
-- (void)attachmentRestored:(id)a3;
+- (void)_reloadTransferAndDetermineIfUpdated:(BOOL *)updated;
+- (void)attachmentRestored:(id)restored;
 - (void)dealloc;
-- (void)fetchHighQualityFile:(id)a3;
+- (void)fetchHighQualityFile:(id)file;
 - (void)mediaObjectRemoved;
-- (void)setHasFinalizedAnimatedFlag:(BOOL)a3;
-- (void)setIMMessage:(id)a3;
-- (void)transferUpdated:(id)a3;
+- (void)setHasFinalizedAnimatedFlag:(BOOL)flag;
+- (void)setIMMessage:(id)message;
+- (void)transferUpdated:(id)updated;
 @end
 
 @implementation CKIMFileTransfer
@@ -78,9 +78,9 @@
   }
 
   v5 = self->_guid;
-  v6 = [(CKIMFileTransfer *)self imFileTransferCenter];
-  v7 = [(CKIMFileTransfer *)self fileManager];
-  v8 = [v6 transferForGUID:v5];
+  imFileTransferCenter = [(CKIMFileTransfer *)self imFileTransferCenter];
+  fileManager = [(CKIMFileTransfer *)self fileManager];
+  v8 = [imFileTransferCenter transferForGUID:v5];
   v9 = v8;
   if (self->_linkFileURL && ([v8 isSticker] & 1) == 0)
   {
@@ -99,11 +99,11 @@
       }
     }
 
-    [v7 removeItemAtURL:self->_linkFileURL error:{0, v14}];
+    [fileManager removeItemAtURL:self->_linkFileURL error:{0, v14}];
   }
 
-  v13 = [(CKIMFileTransfer *)self notificationCenter];
-  [v13 removeObserver:self];
+  notificationCenter = [(CKIMFileTransfer *)self notificationCenter];
+  [notificationCenter removeObserver:self];
 
   v15.receiver = self;
   v15.super_class = CKIMFileTransfer;
@@ -114,9 +114,9 @@
 {
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v3 = [(CKIMFileTransfer *)self imFileTransferCenter];
-    v4 = [(CKIMFileTransfer *)self guid];
-    v5 = [v3 transferForGUID:v4];
+    imFileTransferCenter = [(CKIMFileTransfer *)self imFileTransferCenter];
+    guid = [(CKIMFileTransfer *)self guid];
+    v5 = [imFileTransferCenter transferForGUID:guid];
 
     v23 = [v5 description];
     v21 = [(IMMessage *)self->_imMessage description];
@@ -157,23 +157,23 @@
   v24.receiver = self;
   v24.super_class = CKIMFileTransfer;
   v8 = [(CKIMFileTransfer *)&v24 description];
-  v17 = [(CKIMFileTransfer *)self isFileURLFinalized];
-  v16 = [(CKIMFileTransfer *)self isFileDataReady];
-  v9 = [(CKIMFileTransfer *)self isRestoring];
-  v10 = [(CKIMFileTransfer *)self error];
-  v11 = [(CKIMFileTransfer *)self fileURL];
-  v12 = [(CKIMFileTransfer *)self linkFileURL];
-  v13 = [(CKIMFileTransfer *)self filename];
-  v14 = [(CKIMFileTransfer *)self transcoderUserInfo];
-  v19 = [v18 stringWithFormat:@"[%@ [%@] isFileURLFinalized:%d isFileDataReady:%d isDownloadable:%@ isDownloading:%@ isRestoring:%d error:%@ fileURL:%@ linkFileURL:%@ filename:%@ transcoderUserInfo:%@ currentBytes:%llu totalBytes:%llu imMessage:%@]", v8, v23, v17, v16, v22, v20, v9, v10, v11, v12, v13, v14, -[CKIMFileTransfer currentBytes](self, "currentBytes"), -[CKIMFileTransfer totalBytes](self, "totalBytes"), v21];
+  isFileURLFinalized = [(CKIMFileTransfer *)self isFileURLFinalized];
+  isFileDataReady = [(CKIMFileTransfer *)self isFileDataReady];
+  isRestoring = [(CKIMFileTransfer *)self isRestoring];
+  error = [(CKIMFileTransfer *)self error];
+  fileURL = [(CKIMFileTransfer *)self fileURL];
+  linkFileURL = [(CKIMFileTransfer *)self linkFileURL];
+  filename = [(CKIMFileTransfer *)self filename];
+  transcoderUserInfo = [(CKIMFileTransfer *)self transcoderUserInfo];
+  v19 = [v18 stringWithFormat:@"[%@ [%@] isFileURLFinalized:%d isFileDataReady:%d isDownloadable:%@ isDownloading:%@ isRestoring:%d error:%@ fileURL:%@ linkFileURL:%@ filename:%@ transcoderUserInfo:%@ currentBytes:%llu totalBytes:%llu imMessage:%@]", v8, v23, isFileURLFinalized, isFileDataReady, v22, v20, isRestoring, error, fileURL, linkFileURL, filename, transcoderUserInfo, -[CKIMFileTransfer currentBytes](self, "currentBytes"), -[CKIMFileTransfer totalBytes](self, "totalBytes"), v21];
 
   return v19;
 }
 
-- (CKIMFileTransfer)initWithTransferGUID:(id)a3 imMessage:(id)a4
+- (CKIMFileTransfer)initWithTransferGUID:(id)d imMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  messageCopy = message;
   v34.receiver = self;
   v34.super_class = CKIMFileTransfer;
   v8 = [(CKIMFileTransfer *)&v34 init];
@@ -182,7 +182,7 @@
     goto LABEL_26;
   }
 
-  v9 = [v6 copy];
+  v9 = [dCopy copy];
   guid = v8->_guid;
   v8->_guid = v9;
 
@@ -191,28 +191,28 @@
   isolationQueue = v8->_isolationQueue;
   v8->_isolationQueue = v11;
 
-  v13 = [(CKIMFileTransfer *)v8 imFileTransferCenter];
-  v14 = [(CKIMFileTransfer *)v8 guid];
-  v15 = [v13 transferForGUID:v14];
+  imFileTransferCenter = [(CKIMFileTransfer *)v8 imFileTransferCenter];
+  guid = [(CKIMFileTransfer *)v8 guid];
+  v15 = [imFileTransferCenter transferForGUID:guid];
 
-  v16 = [v15 transferState];
-  v17 = !CKFileTransferIsFileURLFinalized(v16) || [(CKIMFileTransfer *)v8 isDownloadingFromRemoteIntent];
-  if ([v7 isFromMe])
+  transferState = [v15 transferState];
+  v17 = !CKFileTransferIsFileURLFinalized(transferState) || [(CKIMFileTransfer *)v8 isDownloadingFromRemoteIntent];
+  if ([messageCopy isFromMe])
   {
-    v18 = [v7 isSent];
+    isSent = [messageCopy isSent];
   }
 
   else
   {
-    v18 = 1;
+    isSent = 1;
   }
 
-  if ([v7 isFromMe])
+  if ([messageCopy isFromMe])
   {
-    v19 = [v7 isDelivered];
-    if (v16 == 3)
+    isDelivered = [messageCopy isDelivered];
+    if (transferState == 3)
     {
-      v20 = v19;
+      v20 = isDelivered;
     }
 
     else
@@ -226,64 +226,64 @@
     v20 = 0;
   }
 
-  v21 = [v15 thumbnailExistsAtLocalPath];
+  thumbnailExistsAtLocalPath = [v15 thumbnailExistsAtLocalPath];
   if (CKIsRunningForDevelopmentOnSimulator() || CKIsRunningUITests())
   {
-    v22 = [v15 localURL];
-    v23 = [v22 copy];
+    localURL = [v15 localURL];
+    v23 = [localURL copy];
 LABEL_16:
     v24 = 200;
     goto LABEL_17;
   }
 
-  if (v20 & 1 | (((v17 | v18) & 1) == 0))
+  if (v20 & 1 | (((v17 | isSent) & 1) == 0))
   {
-    v22 = [v15 localURL];
-    v23 = [CKIMFileTransfer makeHardLink:v22];
+    localURL = [v15 localURL];
+    v23 = [CKIMFileTransfer makeHardLink:localURL];
     goto LABEL_16;
   }
 
-  if (!v21)
+  if (!thumbnailExistsAtLocalPath)
   {
     goto LABEL_18;
   }
 
-  v22 = [v15 localURL];
-  v23 = [CKIMFileTransfer makeHardLink:v22];
+  localURL = [v15 localURL];
+  v23 = [CKIMFileTransfer makeHardLink:localURL];
   v24 = 40;
 LABEL_17:
   v25 = *(&v8->super.isa + v24);
   *(&v8->super.isa + v24) = v23;
 
 LABEL_18:
-  v26 = [(CKIMFileTransfer *)v8 attributionInfo];
-  v27 = v26;
-  if (v26)
+  attributionInfo = [(CKIMFileTransfer *)v8 attributionInfo];
+  v27 = attributionInfo;
+  if (attributionInfo)
   {
-    v28 = v26;
+    attributionInfo2 = attributionInfo;
   }
 
   else
   {
-    v28 = [v15 attributionInfo];
+    attributionInfo2 = [v15 attributionInfo];
   }
 
-  v29 = v28;
+  v29 = attributionInfo2;
 
   [(CKIMFileTransfer *)v8 setAttributionInfo:v29];
   [v15 setAttributionInfo:v29];
-  [(CKIMFileTransfer *)v8 setIMMessage:v7];
+  [(CKIMFileTransfer *)v8 setIMMessage:messageCopy];
   [(CKIMFileTransfer *)v8 reloadTransfer];
-  v30 = [(CKIMFileTransfer *)v8 notificationCenter];
-  [v30 addObserver:v8 selector:sel_transferUpdated_ name:*MEMORY[0x1E69A5998] object:0];
-  v31 = [(CKIMFileTransfer *)v8 syncController];
-  if ([v31 isRestoring])
+  notificationCenter = [(CKIMFileTransfer *)v8 notificationCenter];
+  [notificationCenter addObserver:v8 selector:sel_transferUpdated_ name:*MEMORY[0x1E69A5998] object:0];
+  syncController = [(CKIMFileTransfer *)v8 syncController];
+  if ([syncController isRestoring])
   {
-    v32 = [(CKIMFileTransfer *)v8 isRestoring];
+    isRestoring = [(CKIMFileTransfer *)v8 isRestoring];
 
-    if (v32)
+    if (isRestoring)
     {
-      [v30 addObserver:v8 selector:sel_attachmentRestored_ name:@"com.apple.ChatKit.attachmentRestoredNotification" object:0];
+      [notificationCenter addObserver:v8 selector:sel_attachmentRestored_ name:@"com.apple.ChatKit.attachmentRestoredNotification" object:0];
     }
   }
 
@@ -295,17 +295,17 @@ LABEL_26:
   return v8;
 }
 
-- (CKIMFileTransfer)initWithFileURL:(id)a3 transcoderUserInfo:(id)a4 attributionInfo:(id)a5 adaptiveImageGlyphContentIdentifier:(id)a6 adaptiveImageGlyphContentDescription:(id)a7 hideAttachment:(BOOL)a8 isScreenshot:(BOOL)a9
+- (CKIMFileTransfer)initWithFileURL:(id)l transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo adaptiveImageGlyphContentIdentifier:(id)identifier adaptiveImageGlyphContentDescription:(id)description hideAttachment:(BOOL)attachment isScreenshot:(BOOL)screenshot
 {
-  v9 = a8;
+  attachmentCopy = attachment;
   v44 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v39 = a4;
-  v16 = a5;
-  v38 = a6;
-  v37 = a7;
-  v17 = [v15 lastPathComponent];
-  v18 = [CKIMFileTransfer linkFileURLWithFilename:v17];
+  lCopy = l;
+  infoCopy = info;
+  attributionInfoCopy = attributionInfo;
+  identifierCopy = identifier;
+  descriptionCopy = description;
+  lastPathComponent = [lCopy lastPathComponent];
+  v18 = [CKIMFileTransfer linkFileURLWithFilename:lastPathComponent];
 
   if (IMOSLoggingEnabled())
   {
@@ -314,7 +314,7 @@ LABEL_26:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v41 = v15;
+      v41 = lCopy;
       v42 = 2112;
       v43 = v18;
       _os_log_impl(&dword_19020E000, v19, OS_LOG_TYPE_DEBUG, "Create CKFileTransfer's hard link for %@ at %@.", buf, 0x16u);
@@ -323,38 +323,38 @@ LABEL_26:
 
   if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
   {
-    v33 = v15;
+    v33 = lCopy;
     v35 = v18;
     _CKLog();
   }
 
   v20 = [(CKIMFileTransfer *)self fileManager:v33];
-  v21 = [v18 URLByDeletingLastPathComponent];
-  [v20 createDirectoryAtURL:v21 withIntermediateDirectories:1 attributes:0 error:0];
+  uRLByDeletingLastPathComponent = [v18 URLByDeletingLastPathComponent];
+  [v20 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
-  [v20 copyItemAtURL:v15 toURL:v18 error:0];
-  v22 = [(CKIMFileTransfer *)self imFileTransferCenter];
-  v23 = [v22 createNewOutgoingTransferWithLocalFileURL:v15];
-  v24 = [v22 transferForGUID:v23];
-  [v24 setTranscoderUserInfo:v39];
+  [v20 copyItemAtURL:lCopy toURL:v18 error:0];
+  imFileTransferCenter = [(CKIMFileTransfer *)self imFileTransferCenter];
+  v23 = [imFileTransferCenter createNewOutgoingTransferWithLocalFileURL:lCopy];
+  v24 = [imFileTransferCenter transferForGUID:v23];
+  [v24 setTranscoderUserInfo:infoCopy];
   if (IMOSLoggingEnabled())
   {
     v25 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v41 = v16;
+      v41 = attributionInfoCopy;
       v42 = 2112;
       v43 = v23;
       _os_log_impl(&dword_19020E000, v25, OS_LOG_TYPE_INFO, "set attributionInfo %@ for guid %@", buf, 0x16u);
     }
   }
 
-  [v24 setAttributionInfo:v16];
-  [v24 setAdaptiveImageGlyphContentIdentifier:v38];
-  [v24 setAdaptiveImageGlyphContentDescription:v37];
-  [v24 setHideAttachment:v9];
-  [v24 setIsScreenshot:a9];
+  [v24 setAttributionInfo:attributionInfoCopy];
+  [v24 setAdaptiveImageGlyphContentIdentifier:identifierCopy];
+  [v24 setAdaptiveImageGlyphContentDescription:descriptionCopy];
+  [v24 setHideAttachment:attachmentCopy];
+  [v24 setIsScreenshot:screenshot];
   if (IMOSLoggingEnabled())
   {
     CKLogCStringForType(46);
@@ -364,7 +364,7 @@ LABEL_26:
       *buf = 138412546;
       v41 = v23;
       v42 = 2112;
-      v43 = v15;
+      v43 = lCopy;
       _os_log_impl(&dword_19020E000, v26, OS_LOG_TYPE_DEBUG, "Generate IM guid %@ for %@.", buf, 0x16u);
     }
   }
@@ -372,12 +372,12 @@ LABEL_26:
   if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
   {
     v34 = v23;
-    v36 = v15;
+    v36 = lCopy;
     _CKLog();
   }
 
-  [v22 registerTransferWithDaemon:{v23, v34, v36}];
-  v27 = [v16 copy];
+  [imFileTransferCenter registerTransferWithDaemon:{v23, v34, v36}];
+  v27 = [attributionInfoCopy copy];
   attributionInfo = self->_attributionInfo;
   self->_attributionInfo = v27;
 
@@ -394,23 +394,23 @@ LABEL_26:
   return v29;
 }
 
-- (CKIMFileTransfer)initWithStickerFileURL:(id)a3 transferUserInfo:(id)a4 attributionInfo:(id)a5 animatedImageCacheURL:(id)a6 adaptiveImageGlyphContentIdentifier:(id)a7 adaptiveImageGlyphContentDescription:(id)a8
+- (CKIMFileTransfer)initWithStickerFileURL:(id)l transferUserInfo:(id)info attributionInfo:(id)attributionInfo animatedImageCacheURL:(id)rL adaptiveImageGlyphContentIdentifier:(id)identifier adaptiveImageGlyphContentDescription:(id)description
 {
   v32 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v27 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(CKIMFileTransfer *)self imFileTransferCenter];
-  v20 = [v19 createNewOutgoingTransferWithLocalFileURL:v14];
-  v21 = [v19 transferForGUID:v20];
-  [v21 setStickerUserInfo:v15];
+  lCopy = l;
+  infoCopy = info;
+  attributionInfoCopy = attributionInfo;
+  rLCopy = rL;
+  identifierCopy = identifier;
+  descriptionCopy = description;
+  imFileTransferCenter = [(CKIMFileTransfer *)self imFileTransferCenter];
+  v20 = [imFileTransferCenter createNewOutgoingTransferWithLocalFileURL:lCopy];
+  v21 = [imFileTransferCenter transferForGUID:v20];
+  [v21 setStickerUserInfo:infoCopy];
   [v21 setIsSticker:1];
-  [v21 setAdaptiveImageGlyphContentIdentifier:v17];
-  [v21 setAdaptiveImageGlyphContentDescription:v18];
-  [v21 setAttributionInfo:v16];
+  [v21 setAdaptiveImageGlyphContentIdentifier:identifierCopy];
+  [v21 setAdaptiveImageGlyphContentDescription:descriptionCopy];
+  [v21 setAttributionInfo:attributionInfoCopy];
   v22 = [(CKIMFileTransfer *)self initWithTransferGUID:v20 imMessage:0];
   if (IMOSLoggingEnabled())
   {
@@ -420,19 +420,19 @@ LABEL_26:
       *buf = 138412546;
       v29 = v20;
       v30 = 2112;
-      v31 = v14;
+      v31 = lCopy;
       _os_log_impl(&dword_19020E000, v23, OS_LOG_TYPE_INFO, "Generated file guid %@ for fileURL %@", buf, 0x16u);
     }
   }
 
   if (v22)
   {
-    v24 = [v14 copy];
+    v24 = [lCopy copy];
     linkFileURL = v22->_linkFileURL;
     v22->_linkFileURL = v24;
 
-    [(CKIMFileTransfer *)v22 setAttributionInfo:v16];
-    [(CKIMFileTransfer *)v22 setAnimatedImageCacheURL:v27];
+    [(CKIMFileTransfer *)v22 setAttributionInfo:attributionInfoCopy];
+    [(CKIMFileTransfer *)v22 setAnimatedImageCacheURL:rLCopy];
     [(CKIMFileTransfer *)v22 reloadTransfer];
   }
 
@@ -445,8 +445,8 @@ LABEL_26:
   {
     v3 = MEMORY[0x1E695DF30];
     v4 = *MEMORY[0x1E695D930];
-    v5 = [(CKIMFileTransfer *)self guid];
-    [v3 raise:v4 format:{@"Tried to access -[CKFileTransfer message] (%@) off of mainThread.", v5}];
+    guid = [(CKIMFileTransfer *)self guid];
+    [v3 raise:v4 format:{@"Tried to access -[CKFileTransfer message] (%@) off of mainThread.", guid}];
   }
 
   imMessage = self->_imMessage;
@@ -454,19 +454,19 @@ LABEL_26:
   return imMessage;
 }
 
-- (void)setIMMessage:(id)a3
+- (void)setIMMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D930];
-    v7 = [(CKIMFileTransfer *)self guid];
-    [v5 raise:v6 format:{@"Tried to change -[CKFileTransfer message] (%@) off of mainThread.", v7}];
+    guid = [(CKIMFileTransfer *)self guid];
+    [v5 raise:v6 format:{@"Tried to change -[CKFileTransfer message] (%@) off of mainThread.", guid}];
   }
 
   imMessage = self->_imMessage;
-  self->_imMessage = v4;
+  self->_imMessage = messageCopy;
 }
 
 - (NSString)guid
@@ -1062,60 +1062,60 @@ void __28__CKIMFileTransfer_shareURL__block_invoke(uint64_t a1)
 
 - (id)_transfer
 {
-  v3 = [(CKIMFileTransfer *)self imFileTransferCenter];
-  v4 = [(CKIMFileTransfer *)self guid];
-  v5 = [v3 transferForGUID:v4];
+  imFileTransferCenter = [(CKIMFileTransfer *)self imFileTransferCenter];
+  guid = [(CKIMFileTransfer *)self guid];
+  v5 = [imFileTransferCenter transferForGUID:guid];
 
   return v5;
 }
 
 - (BOOL)isThumbnail
 {
-  v2 = [(CKIMFileTransfer *)self _transfer];
-  v3 = [v2 transferState] == 9;
+  _transfer = [(CKIMFileTransfer *)self _transfer];
+  v3 = [_transfer transferState] == 9;
 
   return v3;
 }
 
 - (BOOL)isDownloadable
 {
-  v2 = [(CKIMFileTransfer *)self _transfer];
-  v3 = [v2 _isMissingAndDownloadable];
+  _transfer = [(CKIMFileTransfer *)self _transfer];
+  _isMissingAndDownloadable = [_transfer _isMissingAndDownloadable];
 
-  return v3;
+  return _isMissingAndDownloadable;
 }
 
 - (BOOL)isDownloading
 {
-  v3 = [(CKIMFileTransfer *)self isFileDataReady];
-  v4 = [(CKIMFileTransfer *)self transferState];
-  v5 = [(CKIMFileTransfer *)self guid];
-  IsDownloading = CKFileTransferIsDownloading(v3, v4, v5);
+  isFileDataReady = [(CKIMFileTransfer *)self isFileDataReady];
+  transferState = [(CKIMFileTransfer *)self transferState];
+  guid = [(CKIMFileTransfer *)self guid];
+  IsDownloading = CKFileTransferIsDownloading(isFileDataReady, transferState, guid);
 
   return IsDownloading;
 }
 
 - (BOOL)isReset
 {
-  v2 = [(CKIMFileTransfer *)self transferState];
+  transferState = [(CKIMFileTransfer *)self transferState];
 
-  return CKFileTransferIsReset(v2);
+  return CKFileTransferIsReset(transferState);
 }
 
 - (NSString)originalFilename
 {
-  v2 = [(CKIMFileTransfer *)self _transfer];
-  v3 = [v2 originalFilename];
+  _transfer = [(CKIMFileTransfer *)self _transfer];
+  originalFilename = [_transfer originalFilename];
 
-  return v3;
+  return originalFilename;
 }
 
 - (int64_t)previewGenerationState
 {
-  v2 = [(CKIMFileTransfer *)self _transfer];
-  v3 = [v2 previewGenerationState];
+  _transfer = [(CKIMFileTransfer *)self _transfer];
+  previewGenerationState = [_transfer previewGenerationState];
 
-  return v3;
+  return previewGenerationState;
 }
 
 - (void)mediaObjectRemoved
@@ -1124,41 +1124,41 @@ void __28__CKIMFileTransfer_shareURL__block_invoke(uint64_t a1)
   {
     v10 = v2;
     v11 = v3;
-    v5 = [(CKIMFileTransfer *)self notificationCenter];
+    notificationCenter = [(CKIMFileTransfer *)self notificationCenter];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __38__CKIMFileTransfer_mediaObjectRemoved__block_invoke;
     v7[3] = &unk_1E72EB8D0;
-    v8 = v5;
-    v9 = self;
-    v6 = v5;
+    v8 = notificationCenter;
+    selfCopy = self;
+    v6 = notificationCenter;
     dispatch_async(MEMORY[0x1E69E96A0], v7);
   }
 }
 
-- (void)setHasFinalizedAnimatedFlag:(BOOL)a3
+- (void)setHasFinalizedAnimatedFlag:(BOOL)flag
 {
-  v5 = [(CKIMFileTransfer *)self isolationQueue];
+  isolationQueue = [(CKIMFileTransfer *)self isolationQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__CKIMFileTransfer_setHasFinalizedAnimatedFlag___block_invoke;
   v6[3] = &unk_1E72ED8D8;
   v6[4] = self;
-  v7 = a3;
-  dispatch_barrier_sync(v5, v6);
+  flagCopy = flag;
+  dispatch_barrier_sync(isolationQueue, v6);
 }
 
 - (void)_faultInAnimatedFlagImmediately
 {
-  v3 = [(CKIMFileTransfer *)self filename];
+  filename = [(CKIMFileTransfer *)self filename];
   v4 = IMUTITypeForFilename();
 
-  v5 = [(CKIMFileTransfer *)self fileURL];
-  if (v5 && IMUTTypeIsSupportedAnimatedImage())
+  fileURL = [(CKIMFileTransfer *)self fileURL];
+  if (fileURL && IMUTTypeIsSupportedAnimatedImage())
   {
     v6 = MEMORY[0x1E69A80C0];
-    v7 = [(CKIMFileTransfer *)self fileURL];
-    v8 = [v6 imageIsAnimatedSequenceAtFileURL:v7];
+    fileURL2 = [(CKIMFileTransfer *)self fileURL];
+    v8 = [v6 imageIsAnimatedSequenceAtFileURL:fileURL2];
   }
 
   else
@@ -1166,14 +1166,14 @@ void __28__CKIMFileTransfer_shareURL__block_invoke(uint64_t a1)
     v8 = 0;
   }
 
-  v9 = [(CKIMFileTransfer *)self isolationQueue];
+  isolationQueue = [(CKIMFileTransfer *)self isolationQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__CKIMFileTransfer__faultInAnimatedFlagImmediately__block_invoke;
   v10[3] = &unk_1E72ED8D8;
   v10[4] = self;
   v11 = v8;
-  dispatch_barrier_sync(v9, v10);
+  dispatch_barrier_sync(isolationQueue, v10);
 }
 
 uint64_t __51__CKIMFileTransfer__faultInAnimatedFlagImmediately__block_invoke(uint64_t result)
@@ -1194,14 +1194,14 @@ uint64_t __51__CKIMFileTransfer__faultInAnimatedFlagImmediately__block_invoke(ui
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(CKIMFileTransfer *)self isolationQueue];
+  isolationQueue = [(CKIMFileTransfer *)self isolationQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__CKIMFileTransfer_fileIsAnimated__block_invoke;
   v6[3] = &unk_1E72F1660;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(isolationQueue, v6);
 
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -1210,8 +1210,8 @@ uint64_t __51__CKIMFileTransfer__faultInAnimatedFlagImmediately__block_invoke(ui
 
 - (BOOL)isAdaptiveImageGlyph
 {
-  v2 = [(CKIMFileTransfer *)self adaptiveImageGlyphContentIdentifier];
-  v3 = [v2 length] != 0;
+  adaptiveImageGlyphContentIdentifier = [(CKIMFileTransfer *)self adaptiveImageGlyphContentIdentifier];
+  v3 = [adaptiveImageGlyphContentIdentifier length] != 0;
 
   return v3;
 }
@@ -1222,8 +1222,8 @@ uint64_t __51__CKIMFileTransfer__faultInAnimatedFlagImmediately__block_invoke(ui
   if (!isIrisAssetNumber)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(CKIMFileTransfer *)self irisVideoPath];
-    v6 = [v4 numberWithBool:v5 != 0];
+    irisVideoPath = [(CKIMFileTransfer *)self irisVideoPath];
+    v6 = [v4 numberWithBool:irisVideoPath != 0];
     v7 = self->_isIrisAssetNumber;
     self->_isIrisAssetNumber = v6;
 
@@ -1238,8 +1238,8 @@ uint64_t __51__CKIMFileTransfer__faultInAnimatedFlagImmediately__block_invoke(ui
   irisVideoPath = self->_irisVideoPath;
   if (!irisVideoPath)
   {
-    v4 = [(CKIMFileTransfer *)self fileURL];
-    v5 = [CKLivePhotoBundleUtilities calculateLivePhotoVideoPath:v4];
+    fileURL = [(CKIMFileTransfer *)self fileURL];
+    v5 = [CKLivePhotoBundleUtilities calculateLivePhotoVideoPath:fileURL];
     v6 = self->_irisVideoPath;
     self->_irisVideoPath = v5;
 
@@ -1249,14 +1249,14 @@ uint64_t __51__CKIMFileTransfer__faultInAnimatedFlagImmediately__block_invoke(ui
   return irisVideoPath;
 }
 
-- (void)_reloadTransferAndDetermineIfUpdated:(BOOL *)a3
+- (void)_reloadTransferAndDetermineIfUpdated:(BOOL *)updated
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v4 = MEMORY[0x1E695DF30];
     v5 = *MEMORY[0x1E695D930];
-    v6 = [(CKIMFileTransfer *)self guid];
-    [v4 raise:v5 format:{@"Tried to access IMFileTransfer %@ off of mainThread.", v6}];
+    guid = [(CKIMFileTransfer *)self guid];
+    [v4 raise:v5 format:{@"Tried to access IMFileTransfer %@ off of mainThread.", guid}];
   }
 
   v260 = 0;
@@ -1375,7 +1375,7 @@ uint64_t __51__CKIMFileTransfer__faultInAnimatedFlagImmediately__block_invoke(ui
   v153 = __Block_byref_object_copy__70;
   v154 = __Block_byref_object_dispose__70;
   v155 = 0;
-  v7 = [(CKIMFileTransfer *)self isolationQueue];
+  isolationQueue = [(CKIMFileTransfer *)self isolationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__CKIMFileTransfer__reloadTransferAndDetermineIfUpdated___block_invoke;
@@ -1405,45 +1405,45 @@ uint64_t __51__CKIMFileTransfer__faultInAnimatedFlagImmediately__block_invoke(ui
   block[26] = &v160;
   block[27] = &v156;
   block[28] = &v150;
-  dispatch_barrier_sync(v7, block);
+  dispatch_barrier_sync(isolationQueue, block);
 
-  v8 = [(CKIMFileTransfer *)self imFileTransferCenter];
-  v9 = [(CKIMFileTransfer *)self guid];
-  v10 = [v8 transferForGUID:v9];
+  imFileTransferCenter = [(CKIMFileTransfer *)self imFileTransferCenter];
+  guid2 = [(CKIMFileTransfer *)self guid];
+  v10 = [imFileTransferCenter transferForGUID:guid2];
 
-  v11 = [(CKIMFileTransfer *)self IMMessage];
-  v122 = [v10 filename];
-  v12 = [v10 transcoderUserInfo];
-  v120 = [v10 stickerUserInfo];
-  v118 = [v10 totalBytes];
-  v116 = [v10 currentBytes];
-  v115 = [v10 isSticker];
-  v114 = [v10 adaptiveImageGlyphContentIdentifier];
-  v113 = [v10 adaptiveImageGlyphContentDescription];
-  v112 = [v10 commSafetySensitive];
+  iMMessage = [(CKIMFileTransfer *)self IMMessage];
+  filename = [v10 filename];
+  transcoderUserInfo = [v10 transcoderUserInfo];
+  stickerUserInfo = [v10 stickerUserInfo];
+  totalBytes = [v10 totalBytes];
+  currentBytes = [v10 currentBytes];
+  isSticker = [v10 isSticker];
+  adaptiveImageGlyphContentIdentifier = [v10 adaptiveImageGlyphContentIdentifier];
+  adaptiveImageGlyphContentDescription = [v10 adaptiveImageGlyphContentDescription];
+  commSafetySensitive = [v10 commSafetySensitive];
   if (v10)
   {
-    v13 = [v10 transferState];
+    transferState = [v10 transferState];
   }
 
   else
   {
-    v13 = 6;
+    transferState = 6;
   }
 
-  v111 = [v10 attributionInfo];
-  v110 = [v10 hideAttachment];
-  v109 = [v10 isDirectory];
-  v108 = [v10 isFromMomentShare];
-  v107 = v11;
-  if (CKFileTransferIsFileURLFinalized(v13) && ![(CKIMFileTransfer *)self isDownloadingFromRemoteIntent])
+  attributionInfo = [v10 attributionInfo];
+  hideAttachment = [v10 hideAttachment];
+  isDirectory = [v10 isDirectory];
+  isFromMomentShare = [v10 isFromMomentShare];
+  v107 = iMMessage;
+  if (CKFileTransferIsFileURLFinalized(transferState) && ![(CKIMFileTransfer *)self isDownloadingFromRemoteIntent])
   {
-    v14 = [v10 localURL];
-    if (v14)
+    localURL = [v10 localURL];
+    if (localURL)
     {
-      v20 = [(CKIMFileTransfer *)self fileManager];
-      v21 = [(NSURL *)v14 path];
-      v17 = [v20 fileExistsAtPath:v21];
+      fileManager = [(CKIMFileTransfer *)self fileManager];
+      path = [(NSURL *)localURL path];
+      v17 = [fileManager fileExistsAtPath:path];
     }
 
     else
@@ -1451,13 +1451,13 @@ uint64_t __51__CKIMFileTransfer__faultInAnimatedFlagImmediately__block_invoke(ui
       v17 = 0;
     }
 
-    v22 = [(CKIMFileTransfer *)self syncController];
-    v23 = [v22 isRestoring];
+    syncController = [(CKIMFileTransfer *)self syncController];
+    isRestoring = [syncController isRestoring];
 
-    v19 = CKFileTransferRestoring(v17, v13 != 0, v23);
-    if ([v11 isFromMe])
+    v19 = CKFileTransferRestoring(v17, transferState != 0, isRestoring);
+    if ([iMMessage isFromMe])
     {
-      v24 = [v11 isSent] ^ 1;
+      v24 = [iMMessage isSent] ^ 1;
       if (!v17)
       {
         goto LABEL_19;
@@ -1475,16 +1475,16 @@ LABEL_19:
       }
     }
 
-    v17 = (v13 != 6) | v24;
+    v17 = (transferState != 6) | v24;
     goto LABEL_19;
   }
 
-  v14 = self->_linkFileURL;
-  if (v14)
+  localURL = self->_linkFileURL;
+  if (localURL)
   {
-    v15 = [(CKIMFileTransfer *)self fileManager];
-    v16 = [(NSURL *)v14 path];
-    v17 = [v15 fileExistsAtPath:v16];
+    fileManager2 = [(CKIMFileTransfer *)self fileManager];
+    path2 = [(NSURL *)localURL path];
+    v17 = [fileManager2 fileExistsAtPath:path2];
 
     v18 = 0;
     v19 = 0;
@@ -1498,14 +1498,14 @@ LABEL_19:
   }
 
 LABEL_20:
-  v125 = self;
-  if (v10 && (v13 & 0xFFFFFFFFFFFFFFFELL) == 6)
+  selfCopy = self;
+  if (v10 && (transferState & 0xFFFFFFFFFFFFFFFELL) == 6)
   {
     v25 = MEMORY[0x1E696ABC0];
-    v26 = [v10 error];
+    error = [v10 error];
     v27 = IMFileTransferErrorDomain;
 LABEL_31:
-    v30 = [v25 errorWithDomain:*v27 code:v26 userInfo:0];
+    v30 = [v25 errorWithDomain:*v27 code:error userInfo:0];
     goto LABEL_32;
   }
 
@@ -1519,19 +1519,19 @@ LABEL_31:
 
   else
   {
-    v28 = [(CKIMFileTransfer *)self guid];
-    if (CKFileTransferIsDownloading(0, v13, v28))
+    guid3 = [(CKIMFileTransfer *)self guid];
+    if (CKFileTransferIsDownloading(0, transferState, guid3))
     {
     }
 
     else
     {
-      v29 = [v10 _isMissingAndDownloadable];
+      _isMissingAndDownloadable = [v10 _isMissingAndDownloadable];
 
-      if ((v29 & 1) == 0)
+      if ((_isMissingAndDownloadable & 1) == 0)
       {
 LABEL_30:
-        v26 = 0;
+        error = 0;
         v25 = MEMORY[0x1E696ABC0];
         v27 = CKFileTransferErrorDomain;
         goto LABEL_31;
@@ -1547,38 +1547,38 @@ LABEL_32:
   v127[2] = __57__CKIMFileTransfer__reloadTransferAndDetermineIfUpdated___block_invoke_2;
   v127[3] = &unk_1E72F7580;
   v127[4] = self;
-  v32 = v14;
+  v32 = localURL;
   v128 = v32;
-  v123 = v122;
+  v123 = filename;
   v129 = v123;
   v105 = v30;
   v130 = v105;
-  v106 = v12;
+  v106 = transcoderUserInfo;
   v131 = v106;
-  v121 = v120;
+  v121 = stickerUserInfo;
   v132 = v121;
-  v137 = v116;
-  v138 = v118;
-  v141 = v115;
-  v119 = v114;
+  v137 = currentBytes;
+  v138 = totalBytes;
+  v141 = isSticker;
+  v119 = adaptiveImageGlyphContentIdentifier;
   v133 = v119;
-  v117 = v113;
+  v117 = adaptiveImageGlyphContentDescription;
   v134 = v117;
-  v139 = v112;
-  v140 = v13;
+  v139 = commSafetySensitive;
+  v140 = transferState;
   v142 = v17 & 1;
   v143 = v18;
-  v144 = v13 == 8;
+  v144 = transferState == 8;
   v145 = v19;
-  v33 = v111;
+  v33 = attributionInfo;
   v135 = v33;
-  v146 = v110;
-  v147 = v109;
-  v148 = v108;
+  v146 = hideAttachment;
+  v147 = isDirectory;
+  v148 = isFromMomentShare;
   v34 = v10;
   v136 = v34;
   ck_dispatch_isolated(isolationQueue, v127);
-  v35 = a3;
+  updatedCopy3 = updated;
   v36 = v261[5];
   if (v36 != v32 && ([(NSURL *)v36 isEqual:v32]& 1) == 0)
   {
@@ -1592,20 +1592,20 @@ LABEL_32:
     dispatch_async(v37, v126);
   }
 
-  if (a3)
+  if (updated)
   {
     v38 = v261[5];
-    v39 = [(CKIMFileTransfer *)v125 fileURL];
-    v40 = v39;
-    if (v38 == v39)
+    fileURL = [(CKIMFileTransfer *)selfCopy fileURL];
+    v40 = fileURL;
+    if (v38 == fileURL)
     {
     }
 
     else
     {
       v41 = v261[5];
-      v42 = [(CKIMFileTransfer *)v125 fileURL];
-      LODWORD(v41) = [v41 isEqual:v42];
+      fileURL2 = [(CKIMFileTransfer *)selfCopy fileURL];
+      LODWORD(v41) = [v41 isEqual:fileURL2];
 
       if (!v41)
       {
@@ -1614,17 +1614,17 @@ LABEL_32:
     }
 
     v43 = v255[5];
-    v44 = [(CKIMFileTransfer *)v125 filename];
-    v45 = v44;
-    if (v43 == v44)
+    filename2 = [(CKIMFileTransfer *)selfCopy filename];
+    v45 = filename2;
+    if (v43 == filename2)
     {
     }
 
     else
     {
       v46 = v255[5];
-      v47 = [(CKIMFileTransfer *)v125 filename];
-      LODWORD(v46) = [v46 isEqualToString:v47];
+      filename3 = [(CKIMFileTransfer *)selfCopy filename];
+      LODWORD(v46) = [v46 isEqualToString:filename3];
 
       if (!v46)
       {
@@ -1633,17 +1633,17 @@ LABEL_32:
     }
 
     v48 = v249[5];
-    v49 = [(CKIMFileTransfer *)v125 error];
-    v50 = v49;
-    if (v48 == v49)
+    error2 = [(CKIMFileTransfer *)selfCopy error];
+    v50 = error2;
+    if (v48 == error2)
     {
     }
 
     else
     {
       v51 = v249[5];
-      v52 = [(CKIMFileTransfer *)v125 error];
-      LODWORD(v51) = [v51 isEqual:v52];
+      error3 = [(CKIMFileTransfer *)selfCopy error];
+      LODWORD(v51) = [v51 isEqual:error3];
 
       if (!v51)
       {
@@ -1652,17 +1652,17 @@ LABEL_32:
     }
 
     v53 = v243[5];
-    v54 = [(CKIMFileTransfer *)v125 transcoderUserInfo];
-    v55 = v54;
-    if (v53 == v54)
+    transcoderUserInfo2 = [(CKIMFileTransfer *)selfCopy transcoderUserInfo];
+    v55 = transcoderUserInfo2;
+    if (v53 == transcoderUserInfo2)
     {
     }
 
     else
     {
       v56 = v243[5];
-      v57 = [(CKIMFileTransfer *)v125 transcoderUserInfo];
-      LODWORD(v56) = [v56 isEqualToDictionary:v57];
+      transcoderUserInfo3 = [(CKIMFileTransfer *)selfCopy transcoderUserInfo];
+      LODWORD(v56) = [v56 isEqualToDictionary:transcoderUserInfo3];
 
       if (!v56)
       {
@@ -1671,21 +1671,21 @@ LABEL_32:
     }
 
     v58 = v237[5];
-    v59 = [(CKIMFileTransfer *)v125 stickerUserInfo];
-    v60 = v59;
-    if (v58 == v59)
+    stickerUserInfo2 = [(CKIMFileTransfer *)selfCopy stickerUserInfo];
+    v60 = stickerUserInfo2;
+    if (v58 == stickerUserInfo2)
     {
 
-      v63 = v125;
+      v63 = selfCopy;
     }
 
     else
     {
       v61 = v237[5];
-      v62 = [(CKIMFileTransfer *)v125 stickerUserInfo];
-      LODWORD(v61) = [v61 isEqualToDictionary:v62];
+      stickerUserInfo3 = [(CKIMFileTransfer *)selfCopy stickerUserInfo];
+      LODWORD(v61) = [v61 isEqualToDictionary:stickerUserInfo3];
 
-      v63 = v125;
+      v63 = selfCopy;
       if (!v61)
       {
         goto LABEL_75;
@@ -1699,29 +1699,29 @@ LABEL_32:
     }
 
     v65 = v229[3];
-    if (v65 != [(CKIMFileTransfer *)v125 totalBytes])
+    if (v65 != [(CKIMFileTransfer *)selfCopy totalBytes])
     {
       goto LABEL_75;
     }
 
     v66 = *(v225 + 24);
-    if (v66 != [(CKIMFileTransfer *)v125 isSticker])
+    if (v66 != [(CKIMFileTransfer *)selfCopy isSticker])
     {
       goto LABEL_75;
     }
 
     v67 = v219[5];
-    v68 = [(CKIMFileTransfer *)v125 adaptiveImageGlyphContentIdentifier];
-    v69 = v68;
-    if (v67 == v68)
+    adaptiveImageGlyphContentIdentifier2 = [(CKIMFileTransfer *)selfCopy adaptiveImageGlyphContentIdentifier];
+    v69 = adaptiveImageGlyphContentIdentifier2;
+    if (v67 == adaptiveImageGlyphContentIdentifier2)
     {
     }
 
     else
     {
       v70 = v219[5];
-      v71 = [(CKIMFileTransfer *)v125 adaptiveImageGlyphContentIdentifier];
-      LODWORD(v70) = [v70 isEqualToString:v71];
+      adaptiveImageGlyphContentIdentifier3 = [(CKIMFileTransfer *)selfCopy adaptiveImageGlyphContentIdentifier];
+      LODWORD(v70) = [v70 isEqualToString:adaptiveImageGlyphContentIdentifier3];
 
       if (!v70)
       {
@@ -1730,21 +1730,21 @@ LABEL_32:
     }
 
     v72 = v213[5];
-    v73 = [(CKIMFileTransfer *)v125 adaptiveImageGlyphContentDescription];
-    v74 = v73;
-    if (v72 == v73)
+    adaptiveImageGlyphContentDescription2 = [(CKIMFileTransfer *)selfCopy adaptiveImageGlyphContentDescription];
+    v74 = adaptiveImageGlyphContentDescription2;
+    if (v72 == adaptiveImageGlyphContentDescription2)
     {
 
-      v77 = v125;
+      v77 = selfCopy;
     }
 
     else
     {
       v75 = v213[5];
-      v76 = [(CKIMFileTransfer *)v125 adaptiveImageGlyphContentDescription];
-      LODWORD(v75) = [v75 isEqualToString:v76];
+      adaptiveImageGlyphContentDescription3 = [(CKIMFileTransfer *)selfCopy adaptiveImageGlyphContentDescription];
+      LODWORD(v75) = [v75 isEqualToString:adaptiveImageGlyphContentDescription3];
 
-      v77 = v125;
+      v77 = selfCopy;
       if (!v75)
       {
         goto LABEL_75;
@@ -1758,79 +1758,79 @@ LABEL_32:
     }
 
     v79 = *(v201 + 24);
-    if (v79 != [(CKIMFileTransfer *)v125 isFileDataReady])
+    if (v79 != [(CKIMFileTransfer *)selfCopy isFileDataReady])
     {
       goto LABEL_75;
     }
 
     v80 = *(v197 + 24);
-    if (v80 != [(CKIMFileTransfer *)v125 isFileURLFinalized])
+    if (v80 != [(CKIMFileTransfer *)selfCopy isFileURLFinalized])
     {
       goto LABEL_75;
     }
 
     v81 = *(v193 + 24);
-    if (v81 != [(CKIMFileTransfer *)v125 isRejected])
+    if (v81 != [(CKIMFileTransfer *)selfCopy isRejected])
     {
       goto LABEL_75;
     }
 
     v82 = *(v189 + 24);
-    if (v82 != [(CKIMFileTransfer *)v125 isRestoring])
+    if (v82 != [(CKIMFileTransfer *)selfCopy isRestoring])
     {
       goto LABEL_75;
     }
 
     v83 = v185[3];
-    if (v83 != [(CKIMFileTransfer *)v125 transferState])
+    if (v83 != [(CKIMFileTransfer *)selfCopy transferState])
     {
       goto LABEL_75;
     }
 
     v84 = v179[5];
-    v85 = [(CKIMFileTransfer *)v125 attributionInfo];
-    v86 = v85;
-    if (v84 == v85)
+    attributionInfo2 = [(CKIMFileTransfer *)selfCopy attributionInfo];
+    v86 = attributionInfo2;
+    if (v84 == attributionInfo2)
     {
     }
 
     else
     {
       v87 = v179[5];
-      v88 = [(CKIMFileTransfer *)v125 attributionInfo];
-      LODWORD(v87) = [v87 isEqualToDictionary:v88];
+      attributionInfo3 = [(CKIMFileTransfer *)selfCopy attributionInfo];
+      LODWORD(v87) = [v87 isEqualToDictionary:attributionInfo3];
 
       if (!v87)
       {
 LABEL_75:
         v89 = 1;
 LABEL_76:
-        *v35 = v89;
+        *updatedCopy3 = v89;
         goto LABEL_77;
       }
     }
 
     v90 = *(v175 + 24);
-    if (v90 == [(CKIMFileTransfer *)v125 hideAttachment])
+    if (v90 == [(CKIMFileTransfer *)selfCopy hideAttachment])
     {
       v91 = *(v171 + 24);
-      if (v91 == [(CKIMFileTransfer *)v125 isDirectory])
+      if (v91 == [(CKIMFileTransfer *)selfCopy isDirectory])
       {
         v92 = *(v167 + 24);
-        if (v92 == [(CKIMFileTransfer *)v125 isFromMomentShare])
+        if (v92 == [(CKIMFileTransfer *)selfCopy isFromMomentShare])
         {
           v93 = v161[5];
-          v94 = [(CKIMFileTransfer *)v125 shareURL];
-          v95 = v94;
-          if (v93 == v94)
+          shareURL = [(CKIMFileTransfer *)selfCopy shareURL];
+          v95 = shareURL;
+          if (v93 == shareURL)
           {
           }
 
           else
           {
             v96 = v161[5];
-            v97 = [(CKIMFileTransfer *)v125 shareURL];
-            LODWORD(v96) = [v96 isEqual:v97];
+            shareURL2 = [(CKIMFileTransfer *)selfCopy shareURL];
+            LODWORD(v96) = [v96 isEqual:shareURL2];
 
             if (!v96)
             {
@@ -1839,20 +1839,20 @@ LABEL_76:
           }
 
           v98 = *(v157 + 24);
-          if (v98 == [(CKIMFileTransfer *)v125 isScreenshot])
+          if (v98 == [(CKIMFileTransfer *)selfCopy isScreenshot])
           {
             v99 = v151[5];
-            v100 = [(CKIMFileTransfer *)v125 audioTranscriptionText];
-            v101 = v100;
-            if (v99 == v100)
+            audioTranscriptionText = [(CKIMFileTransfer *)selfCopy audioTranscriptionText];
+            v101 = audioTranscriptionText;
+            if (v99 == audioTranscriptionText)
             {
             }
 
             else
             {
               v102 = v151[5];
-              v103 = [(CKIMFileTransfer *)v125 audioTranscriptionText];
-              LODWORD(v102) = [v102 isEqualToString:v103];
+              audioTranscriptionText2 = [(CKIMFileTransfer *)selfCopy audioTranscriptionText];
+              LODWORD(v102) = [v102 isEqualToString:audioTranscriptionText2];
 
               if (!v102)
               {
@@ -1861,8 +1861,8 @@ LABEL_76:
             }
 
             v104 = v205[3];
-            v35 = a3;
-            v89 = v104 != [(CKIMFileTransfer *)v125 updateReason];
+            updatedCopy3 = updated;
+            v89 = v104 != [(CKIMFileTransfer *)selfCopy updateReason];
             goto LABEL_76;
           }
         }
@@ -1871,7 +1871,7 @@ LABEL_76:
 
 LABEL_89:
     v89 = 1;
-    v35 = a3;
+    updatedCopy3 = updated;
     goto LABEL_76;
   }
 
@@ -2031,22 +2031,22 @@ uint64_t __57__CKIMFileTransfer__reloadTransferAndDetermineIfUpdated___block_inv
   return result;
 }
 
-- (void)transferUpdated:(id)a3
+- (void)transferUpdated:(id)updated
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [MEMORY[0x1E69A5B80] sharedInstance];
-  v7 = [(CKIMFileTransfer *)self guid];
-  v8 = [v6 transferForGUID:v7];
+  updatedCopy = updated;
+  object = [updatedCopy object];
+  mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+  guid = [(CKIMFileTransfer *)self guid];
+  v8 = [mEMORY[0x1E69A5B80] transferForGUID:guid];
 
-  if (v8 == v5)
+  if (v8 == object)
   {
-    v9 = [(CKIMFileTransfer *)self isFileURLFinalized];
-    v10 = [(CKIMFileTransfer *)self isDownloading];
+    isFileURLFinalized = [(CKIMFileTransfer *)self isFileURLFinalized];
+    isDownloading = [(CKIMFileTransfer *)self isDownloading];
     v18 = 0;
     [(CKIMFileTransfer *)self _reloadTransferAndDetermineIfUpdated:&v18];
-    v11 = [(CKIMFileTransfer *)self notificationCenter];
+    notificationCenter = [(CKIMFileTransfer *)self notificationCenter];
     if (v18 == 1)
     {
       if (IMOSLoggingEnabled())
@@ -2055,17 +2055,17 @@ uint64_t __57__CKIMFileTransfer__reloadTransferAndDetermineIfUpdated___block_inv
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v20 = self;
+          selfCopy = self;
           _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "Updated state for transfer: %@", buf, 0xCu);
         }
       }
 
-      [v11 postNotificationName:@"CKFileTransferUpdatedNotification" object:self];
+      [notificationCenter postNotificationName:@"CKFileTransferUpdatedNotification" object:self];
     }
 
-    v13 = [(CKIMFileTransfer *)self isFileURLFinalized];
-    v14 = [(CKIMFileTransfer *)self isDownloading];
-    if (!v9 && v13 || v10 && !v14)
+    isFileURLFinalized2 = [(CKIMFileTransfer *)self isFileURLFinalized];
+    isDownloading2 = [(CKIMFileTransfer *)self isDownloading];
+    if (!isFileURLFinalized && isFileURLFinalized2 || isDownloading && !isDownloading2)
     {
       [(CKIMFileTransfer *)self remoteIntentTransferFinished];
       if (IMOSLoggingEnabled())
@@ -2074,32 +2074,32 @@ uint64_t __57__CKIMFileTransfer__reloadTransferAndDetermineIfUpdated___block_inv
         v15 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
-          v16 = [(CKIMFileTransfer *)self guid];
+          guid2 = [(CKIMFileTransfer *)self guid];
           *buf = 138412290;
-          v20 = v16;
+          selfCopy = guid2;
           _os_log_impl(&dword_19020E000, v15, OS_LOG_TYPE_DEBUG, "Transfer %@ finished.", buf, 0xCu);
         }
       }
 
       if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
       {
-        v17 = [(CKIMFileTransfer *)self guid];
+        guid3 = [(CKIMFileTransfer *)self guid];
         _CKLog();
       }
 
-      [v11 postNotificationName:@"CKFileTransferFinishedNotification" object:{self, v17}];
+      [notificationCenter postNotificationName:@"CKFileTransferFinishedNotification" object:{self, guid3}];
     }
   }
 }
 
-- (void)fetchHighQualityFile:(id)a3
+- (void)fetchHighQualityFile:(id)file
 {
-  v4 = a3;
-  v5 = [(CKIMFileTransfer *)self imFileTransferCenter];
-  if (v5)
+  fileCopy = file;
+  imFileTransferCenter = [(CKIMFileTransfer *)self imFileTransferCenter];
+  if (imFileTransferCenter)
   {
-    v6 = [(CKIMFileTransfer *)self guid];
-    v7 = [v5 transferForGUID:v6];
+    guid = [(CKIMFileTransfer *)self guid];
+    v7 = [imFileTransferCenter transferForGUID:guid];
 
     if (v7)
     {
@@ -2107,19 +2107,19 @@ uint64_t __57__CKIMFileTransfer__reloadTransferAndDetermineIfUpdated___block_inv
       v8[1] = 3221225472;
       v8[2] = __41__CKIMFileTransfer_fetchHighQualityFile___block_invoke;
       v8[3] = &unk_1E72F75A8;
-      v9 = v4;
-      [v5 fetchHighQualityVariantForTransfer:v7 completion:v8];
+      v9 = fileCopy;
+      [imFileTransferCenter fetchHighQualityVariantForTransfer:v7 completion:v8];
     }
 
-    else if (v4)
+    else if (fileCopy)
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(fileCopy + 2))(fileCopy, 0, 0);
     }
   }
 
-  else if (v4)
+  else if (fileCopy)
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(fileCopy + 2))(fileCopy, 0, 0);
   }
 }
 
@@ -2146,10 +2146,10 @@ void __41__CKIMFileTransfer_fetchHighQualityFile___block_invoke(uint64_t a1, cha
   }
 }
 
-- (void)attachmentRestored:(id)a3
+- (void)attachmentRestored:(id)restored
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  restoredCopy = restored;
   if ([(CKIMFileTransfer *)self isRestoring])
   {
     [(CKIMFileTransfer *)self reloadTransfer];
@@ -2161,39 +2161,39 @@ void __41__CKIMFileTransfer_fetchHighQualityFile___block_invoke(uint64_t a1, cha
         v5 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
         {
-          v6 = [(CKIMFileTransfer *)self guid];
+          guid = [(CKIMFileTransfer *)self guid];
           *buf = 138412290;
-          v10 = v6;
+          v10 = guid;
           _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_DEBUG, "Transfer %@ restored.", buf, 0xCu);
         }
       }
 
       if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
       {
-        v8 = [(CKIMFileTransfer *)self guid];
+        guid2 = [(CKIMFileTransfer *)self guid];
         _CKLog();
       }
 
-      v7 = [(CKIMFileTransfer *)self notificationCenter];
-      [v7 removeObserver:self name:@"com.apple.ChatKit.attachmentRestoredNotification" object:0];
-      [v7 postNotificationName:@"CKFileTransferRestoredNotification" object:self];
+      notificationCenter = [(CKIMFileTransfer *)self notificationCenter];
+      [notificationCenter removeObserver:self name:@"com.apple.ChatKit.attachmentRestoredNotification" object:0];
+      [notificationCenter postNotificationName:@"CKFileTransferRestoredNotification" object:self];
     }
   }
 }
 
-+ (id)makeHardLink:(id)a3
++ (id)makeHardLink:(id)link
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  linkCopy = link;
+  v5 = linkCopy;
+  if (linkCopy)
   {
-    v6 = [v4 lastPathComponent];
+    lastPathComponent = [linkCopy lastPathComponent];
 
-    if (v6)
+    if (lastPathComponent)
     {
-      v7 = [v5 lastPathComponent];
-      v6 = [a1 linkFileURLWithFilename:v7];
+      lastPathComponent2 = [v5 lastPathComponent];
+      lastPathComponent = [self linkFileURLWithFilename:lastPathComponent2];
 
       if (IMOSLoggingEnabled())
       {
@@ -2203,25 +2203,25 @@ void __41__CKIMFileTransfer_fetchHighQualityFile___block_invoke(uint64_t a1, cha
           v12 = 138412546;
           v13 = v5;
           v14 = 2112;
-          v15 = v6;
+          v15 = lastPathComponent;
           _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "Create CKFileTransfer's hard link for %@ at %@.", &v12, 0x16u);
         }
       }
 
-      v9 = [a1 fileManager];
-      v10 = [v6 URLByDeletingLastPathComponent];
-      [v9 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:0];
+      fileManager = [self fileManager];
+      uRLByDeletingLastPathComponent = [lastPathComponent URLByDeletingLastPathComponent];
+      [fileManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
-      [v9 copyItemAtURL:v5 toURL:v6 error:0];
+      [fileManager copyItemAtURL:v5 toURL:lastPathComponent error:0];
     }
   }
 
   else
   {
-    v6 = 0;
+    lastPathComponent = 0;
   }
 
-  return v6;
+  return lastPathComponent;
 }
 
 @end

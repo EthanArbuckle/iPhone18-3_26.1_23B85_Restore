@@ -19,7 +19,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_33 = v2;
     acceptsTopLevelLeaves___haveChecked_33 = 1;
   }
@@ -36,7 +36,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_33 = v2;
     parsingLeafNode___haveChecked_33 = 1;
   }
@@ -53,7 +53,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_33 = v2;
     parsingWithSubItems___haveChecked_33 = 1;
   }
@@ -70,7 +70,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_33 = v2;
     frontingBasicTypes___haveChecked_33 = 1;
   }
@@ -87,7 +87,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_33 = v2;
     notifyOfUnknownTokens___haveChecked_33 = 1;
   }
@@ -98,7 +98,7 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -121,7 +121,7 @@
     v5 = [v22 dictionaryWithObjectsAndKeys:{v21, v20, v19, v23, v6, v7, v13, v14, 0}];
 
     v15 = +[ASItem parseRuleCache];
-    v16 = NSStringFromClass(a1);
+    v16 = NSStringFromClass(self);
     [v15 setObject:v5 forKey:v16];
   }
 
@@ -133,11 +133,11 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ASPingItem *)self heartBeatInterval];
-  v7 = [(ASPingItem *)self maxFolders];
-  v8 = [(ASPingItem *)self status];
-  v9 = [(ASPingItem *)self folders];
-  v10 = [v3 stringWithFormat:@"<%@: HBI: %@ MaxFolders: %@ Status: %@ Folders: %@>", v5, v6, v7, v8, v9];
+  heartBeatInterval = [(ASPingItem *)self heartBeatInterval];
+  maxFolders = [(ASPingItem *)self maxFolders];
+  status = [(ASPingItem *)self status];
+  folders = [(ASPingItem *)self folders];
+  v10 = [v3 stringWithFormat:@"<%@: HBI: %@ MaxFolders: %@ Status: %@ Folders: %@>", v5, heartBeatInterval, maxFolders, status, folders];
 
   return v10;
 }

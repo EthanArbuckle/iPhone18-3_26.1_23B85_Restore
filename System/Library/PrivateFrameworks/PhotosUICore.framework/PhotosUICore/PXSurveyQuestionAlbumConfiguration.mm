@@ -1,19 +1,19 @@
 @interface PXSurveyQuestionAlbumConfiguration
-- (BOOL)needsDisplayRefreshForChange:(id)a3;
-- (BOOL)needsQuestionInvalidationForChange:(id)a3;
+- (BOOL)needsDisplayRefreshForChange:(id)change;
+- (BOOL)needsQuestionInvalidationForChange:(id)change;
 - (CGRect)contentRectForOneUp;
 - (PXSurveyQuestionAlbumConfiguration)init;
-- (PXSurveyQuestionAlbumConfiguration)initWithTitle:(id)a3 album:(id)a4;
+- (PXSurveyQuestionAlbumConfiguration)initWithTitle:(id)title album:(id)album;
 - (UIView)contentView;
 - (id)_getTitleSubtitleLabelSpec;
 - (void)_handleDidSelectAlbumView;
 - (void)dealloc;
-- (void)layoutContentViewInRect:(CGRect)a3;
+- (void)layoutContentViewInRect:(CGRect)rect;
 @end
 
 @implementation PXSurveyQuestionAlbumConfiguration
 
-- (BOOL)needsDisplayRefreshForChange:(id)a3
+- (BOOL)needsDisplayRefreshForChange:(id)change
 {
   v24[1] = *MEMORY[0x1E69E9840];
   album = self->_album;
@@ -22,47 +22,47 @@
     return 0;
   }
 
-  v5 = [(PHAssetCollection *)album title];
-  v6 = [(PHAssetCollection *)self->_album photoLibrary];
-  v7 = [v6 librarySpecificFetchOptions];
+  title = [(PHAssetCollection *)album title];
+  photoLibrary = [(PHAssetCollection *)self->_album photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v8 = MEMORY[0x1E6978650];
-  v9 = [(PHAssetCollection *)self->_album localIdentifier];
-  v24[0] = v9;
+  localIdentifier = [(PHAssetCollection *)self->_album localIdentifier];
+  v24[0] = localIdentifier;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-  v11 = [v8 fetchAssetCollectionsWithLocalIdentifiers:v10 options:v7];
-  v12 = [v11 firstObject];
-  v13 = [v12 title];
+  v11 = [v8 fetchAssetCollectionsWithLocalIdentifiers:v10 options:librarySpecificFetchOptions];
+  firstObject = [v11 firstObject];
+  title2 = [firstObject title];
 
-  if (v5 && ![v5 isEqualToString:v13])
+  if (title && ![title isEqualToString:title2])
   {
     v16 = 1;
   }
 
   else
   {
-    v14 = [(PHAssetCollection *)self->_album photoLibrary];
-    v15 = [v14 librarySpecificFetchOptions];
+    photoLibrary2 = [(PHAssetCollection *)self->_album photoLibrary];
+    librarySpecificFetchOptions2 = [photoLibrary2 librarySpecificFetchOptions];
 
     v23 = *MEMORY[0x1E6978C68];
     v16 = 1;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
-    [v15 setFetchPropertySets:v17];
+    [librarySpecificFetchOptions2 setFetchPropertySets:v17];
 
-    v18 = [MEMORY[0x1E6978630] fetchKeyAssetsInAssetCollection:self->_album options:v15];
+    v18 = [MEMORY[0x1E6978630] fetchKeyAssetsInAssetCollection:self->_album options:librarySpecificFetchOptions2];
     v19 = [v18 containsObject:self->_keyAsset];
     if (!self->_keyAsset || v19)
     {
-      v20 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:self->_album options:v15];
-      v21 = [(PHAssetCollection *)self->_album approximateCount];
-      v16 = v21 != [v20 count];
+      v20 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:self->_album options:librarySpecificFetchOptions2];
+      approximateCount = [(PHAssetCollection *)self->_album approximateCount];
+      v16 = approximateCount != [v20 count];
     }
   }
 
   return v16;
 }
 
-- (BOOL)needsQuestionInvalidationForChange:(id)a3
+- (BOOL)needsQuestionInvalidationForChange:(id)change
 {
   v12[1] = *MEMORY[0x1E69E9840];
   album = self->_album;
@@ -71,7 +71,7 @@
     return 0;
   }
 
-  v5 = [a3 changeDetailsForObject:album];
+  v5 = [change changeDetailsForObject:album];
   if ([v5 objectWasDeleted])
   {
     v6 = 1;
@@ -79,14 +79,14 @@
 
   else
   {
-    v7 = [(PHAssetCollection *)self->_album photoLibrary];
-    v8 = [v7 librarySpecificFetchOptions];
+    photoLibrary = [(PHAssetCollection *)self->_album photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
     v12[0] = *MEMORY[0x1E6978C68];
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    [v8 setFetchPropertySets:v9];
+    [librarySpecificFetchOptions setFetchPropertySets:v9];
 
-    v10 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:self->_album options:v8];
+    v10 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:self->_album options:librarySpecificFetchOptions];
     v6 = [v10 count] == 0;
   }
 
@@ -97,20 +97,20 @@
 {
   v3 = MEMORY[0x1E6978630];
   album = self->_album;
-  v5 = [(PHAssetCollection *)album photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
-  v13 = [v3 fetchAssetsInAssetCollection:album options:v6];
+  photoLibrary = [(PHAssetCollection *)album photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  v13 = [v3 fetchAssetsInAssetCollection:album options:librarySpecificFetchOptions];
 
   v7 = [PXPhotosDetailsContext photosDetailsContextForAssetCollection:self->_album assets:v13 viewSourceOrigin:7];
   v8 = [[PXPhotosDetailsUIViewController alloc] initWithContext:v7 options:0];
-  v9 = [(PXSurveyQuestionAlbumConfiguration *)self handlers];
-  v10 = [v9 pushViewControllerHandler];
+  handlers = [(PXSurveyQuestionAlbumConfiguration *)self handlers];
+  pushViewControllerHandler = [handlers pushViewControllerHandler];
 
-  if (v10)
+  if (pushViewControllerHandler)
   {
-    v11 = [(PXSurveyQuestionAlbumConfiguration *)self handlers];
-    v12 = [v11 pushViewControllerHandler];
-    (v12)[2](v12, v8, self->_album);
+    handlers2 = [(PXSurveyQuestionAlbumConfiguration *)self handlers];
+    pushViewControllerHandler2 = [handlers2 pushViewControllerHandler];
+    (pushViewControllerHandler2)[2](pushViewControllerHandler2, v8, self->_album);
   }
 }
 
@@ -152,12 +152,12 @@
   return result;
 }
 
-- (void)layoutContentViewInRect:(CGRect)a3
+- (void)layoutContentViewInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(PXDisplayAssetContentView *)self->_contentView setFrame:?];
   label = self->_label;
 
@@ -180,8 +180,8 @@
     label = self->_label;
     self->_label = v7;
 
-    v9 = [(PHAssetCollection *)self->_album title];
-    [(PXTitleSubtitleUILabel *)self->_label setTitleText:v9];
+    title = [(PHAssetCollection *)self->_album title];
+    [(PXTitleSubtitleUILabel *)self->_label setTitleText:title];
 
     v10 = MEMORY[0x1E696ADA0];
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PHAssetCollection approximateCount](self->_album, "approximateCount")}];
@@ -190,8 +190,8 @@
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@)", v12];
     [(PXTitleSubtitleUILabel *)self->_label setSubtitleText:v13];
 
-    v14 = [(PXSurveyQuestionAlbumConfiguration *)self _getTitleSubtitleLabelSpec];
-    [(PXTitleSubtitleUILabel *)self->_label setSpec:v14];
+    _getTitleSubtitleLabelSpec = [(PXSurveyQuestionAlbumConfiguration *)self _getTitleSubtitleLabelSpec];
+    [(PXTitleSubtitleUILabel *)self->_label setSpec:_getTitleSubtitleLabelSpec];
 
     [(PXDisplayAssetContentView *)self->_contentView addSubview:self->_label];
     v15 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleDidSelectAlbumView];
@@ -224,31 +224,31 @@
 
 - (PXSurveyQuestionAlbumConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionAlbumConfiguration.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXSurveyQuestionAlbumConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionAlbumConfiguration.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXSurveyQuestionAlbumConfiguration init]"}];
 
   abort();
 }
 
-- (PXSurveyQuestionAlbumConfiguration)initWithTitle:(id)a3 album:(id)a4
+- (PXSurveyQuestionAlbumConfiguration)initWithTitle:(id)title album:(id)album
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  albumCopy = album;
   v18.receiver = self;
   v18.super_class = PXSurveyQuestionAlbumConfiguration;
   v9 = [(PXSurveyQuestionAlbumConfiguration *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
-    objc_storeStrong(&v10->_album, a4);
+    objc_storeStrong(&v9->_title, title);
+    objc_storeStrong(&v10->_album, album);
     v11 = MEMORY[0x1E6978630];
-    v12 = [(PHAssetCollection *)v10->_album photoLibrary];
-    v13 = [v12 librarySpecificFetchOptions];
-    v14 = [v11 fetchKeyAssetsInAssetCollection:v8 options:v13];
-    v15 = [v14 firstObject];
+    photoLibrary = [(PHAssetCollection *)v10->_album photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    v14 = [v11 fetchKeyAssetsInAssetCollection:albumCopy options:librarySpecificFetchOptions];
+    firstObject = [v14 firstObject];
     keyAsset = v10->_keyAsset;
-    v10->_keyAsset = v15;
+    v10->_keyAsset = firstObject;
 
     v10->_isStale = 0;
   }

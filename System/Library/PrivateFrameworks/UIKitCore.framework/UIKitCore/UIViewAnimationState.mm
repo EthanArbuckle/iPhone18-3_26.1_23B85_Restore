@@ -1,57 +1,57 @@
 @interface UIViewAnimationState
-+ (id)originalAnimationForKeyPath:(id)a3 inLayer:(id)a4;
-+ (void)_addConstraintPendingAnimation:(id)a3 container:(id)a4;
-+ (void)_addSystemPostAnimationAction:(id)a3;
-+ (void)_addViewForConstraintBasedAnimation:(id)a3;
++ (id)originalAnimationForKeyPath:(id)path inLayer:(id)layer;
++ (void)_addConstraintPendingAnimation:(id)animation container:(id)container;
++ (void)_addSystemPostAnimationAction:(id)action;
++ (void)_addViewForConstraintBasedAnimation:(id)animation;
 + (void)_flushUpdates;
 + (void)popAnimationState;
-+ (void)pushViewAnimationState:(int)a3 options:(uint64_t)a4 context:;
-- (BOOL)_addCompletion:(id)a3;
-- (BOOL)_addCompletionWithPosition:(id)a3;
++ (void)pushViewAnimationState:(int)state options:(uint64_t)options context:;
+- (BOOL)_addCompletion:(id)completion;
+- (BOOL)_addCompletionWithPosition:(id)position;
 - (BOOL)_allowsHitTesting;
 - (BOOL)_allowsUserInteraction;
 - (BOOL)_allowsUserInteractionToCutOffEndOfAnimation;
-- (BOOL)_hasDeferredAnimationForView:(id)a3 key:(id)a4;
-- (BOOL)_shouldAnimateAdditivelyForKey:(id)a3 onLayer:(id)a4 forView:(id)a5;
-- (BOOL)_shouldStartFromCurrentStateForLayer:(id)a3 key:(id)a4 forView:(id)a5;
+- (BOOL)_hasDeferredAnimationForView:(id)view key:(id)key;
+- (BOOL)_shouldAnimateAdditivelyForKey:(id)key onLayer:(id)layer forView:(id)view;
+- (BOOL)_shouldStartFromCurrentStateForLayer:(id)layer key:(id)key forView:(id)view;
 - (CAFrameRateRange)preferredFrameRateRange;
 - (UIViewAnimationState)init;
 - (double)_canonicalTrackedUnpacedFractionComplete;
 - (double)_elapsedTimeForCanonicallyTrackedAnimation;
-- (double)_unpacedFractionCompleteForAnimation:(id)a3 inLayer:(id)a4 duration:(double)a5;
-- (id)_canonicalTrackedLayerAnimationInLayer:(id *)a3;
-- (id)_createDeferredAnimationForKey:(id)a3 ignoringKeyFrames:(BOOL)a4;
-- (id)_deferredAnimationForView:(id)a3 key:(id)a4 ignoringKeyFrames:(BOOL)a5;
-- (id)_outerPropertyAnimator:(BOOL)a3;
-- (id)_updateAnimationFrameWithAnimationProperties:(id)a3;
-- (id)actionForLayer:(id)a3 forKey:(id)a4 forView:(id)a5;
-- (id)animationForLayer:(id)a3 forKey:(id)a4 forView:(id)a5;
+- (double)_unpacedFractionCompleteForAnimation:(id)animation inLayer:(id)layer duration:(double)duration;
+- (id)_canonicalTrackedLayerAnimationInLayer:(id *)layer;
+- (id)_createDeferredAnimationForKey:(id)key ignoringKeyFrames:(BOOL)frames;
+- (id)_deferredAnimationForView:(id)view key:(id)key ignoringKeyFrames:(BOOL)frames;
+- (id)_outerPropertyAnimator:(BOOL)animator;
+- (id)_updateAnimationFrameWithAnimationProperties:(id)properties;
+- (id)actionForLayer:(id)layer forKey:(id)key forView:(id)view;
+- (id)animationForLayer:(id)layer forKey:(id)key forView:(id)view;
 - (uint64_t)_requestsFlushUpdatesByDefault;
-- (void)_acceptEarlyAnimationCutoff:(id)a3;
-- (void)_addAnimationStateForTracking:(id)a3;
+- (void)_acceptEarlyAnimationCutoff:(id)cutoff;
+- (void)_addAnimationStateForTracking:(id)tracking;
 - (void)_finalizeDeferredAnimations;
 - (void)_incrementDidEndCount;
-- (void)_performWithCompletionCallbacksDisabledOnPop:(id)a3;
+- (void)_performWithCompletionCallbacksDisabledOnPop:(id)pop;
 - (void)_prepareForViewAnimationAfterPush;
-- (void)_removeAnimationStateFromTrackingMap:(BOOL)a3 disableTrackingIfNeeded:(BOOL)a4;
+- (void)_removeAnimationStateFromTrackingMap:(BOOL)map disableTrackingIfNeeded:(BOOL)needed;
 - (void)_runAlongsideAnimations;
 - (void)_runConstraintBasedLayoutAnimations;
-- (void)_setAlongsideAnimations:(id)a3;
-- (void)_setFinishedPosition:(int64_t)a3;
-- (void)_trackAnimation:(id)a3 nonAdditiveAnimation:(id)a4 withAnimationKey:(id)a5 forKeyPath:(id)a6 inLayer:(id)a7;
-- (void)_trackObject:(id)a3 withAnimationPropertyName:(id)a4 inLayer:(id)a5;
-- (void)_transferAnimationToTrackingAnimator:(id)a3;
-- (void)_transformIntoAdditiveAnimationAndNoteOriginal:(id)a3 inLayer:(id)a4 animationKey:(id)a5;
-- (void)_untrackAnimationsWithIdentifier:(id)a3 keyPath:(id)a4 inLayer:(id)a5 removeFromLayer:(BOOL)a6;
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)configureAnimation:(id)a3 forLayer:(id)a4 forKey:(id)a5;
+- (void)_setAlongsideAnimations:(id)animations;
+- (void)_setFinishedPosition:(int64_t)position;
+- (void)_trackAnimation:(id)animation nonAdditiveAnimation:(id)additiveAnimation withAnimationKey:(id)key forKeyPath:(id)path inLayer:(id)layer;
+- (void)_trackObject:(id)object withAnimationPropertyName:(id)name inLayer:(id)layer;
+- (void)_transferAnimationToTrackingAnimator:(id)animator;
+- (void)_transformIntoAdditiveAnimationAndNoteOriginal:(id)original inLayer:(id)layer animationKey:(id)key;
+- (void)_untrackAnimationsWithIdentifier:(id)identifier keyPath:(id)path inLayer:(id)layer removeFromLayer:(BOOL)fromLayer;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)configureAnimation:(id)animation forLayer:(id)layer forKey:(id)key;
 - (void)pop;
-- (void)pushWithViewAnimationID:(int)a3 options:(uint64_t)a4 context:;
-- (void)sendDelegateAnimationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)sendDelegateDidStopManually:(BOOL)a3;
-- (void)setAnimationAttributes:(id)a3 skipDelegateAssignment:(BOOL)a4 customCurve:(id)a5;
-- (void)setupWithDuration:(double)a3 delay:(double)a4 view:(id)a5 options:(unint64_t)a6 factory:(id)a7 parentState:(id)a8 start:(id)a9 completion:(id)a10;
+- (void)pushWithViewAnimationID:(int)d options:(uint64_t)options context:;
+- (void)sendDelegateAnimationDidStop:(id)stop finished:(BOOL)finished;
+- (void)sendDelegateDidStopManually:(BOOL)manually;
+- (void)setAnimationAttributes:(id)attributes skipDelegateAssignment:(BOOL)assignment customCurve:(id)curve;
+- (void)setupWithDuration:(double)duration delay:(double)delay view:(id)view options:(unint64_t)options factory:(id)factory parentState:(id)state start:(id)start completion:(id)self0;
 @end
 
 @implementation UIViewAnimationState
@@ -190,18 +190,18 @@
       do
       {
         v6 = [(NSMutableArray *)self->_viewsPendingConstraintBasedAnimation objectAtIndex:v4];
-        v7 = [v6 layer];
-        v8 = [v7 context];
-        if (v8)
+        layer = [v6 layer];
+        context = [layer context];
+        if (context)
         {
           v9 = 0;
         }
 
         else
         {
-          v10 = [v6 _layoutEngine];
-          v11 = [v10 delegate];
-          v9 = v11 == 0;
+          _layoutEngine = [v6 _layoutEngine];
+          delegate = [_layoutEngine delegate];
+          v9 = delegate == 0;
         }
 
         if ([v6 _is_needsLayout])
@@ -220,8 +220,8 @@
             v27 = 0u;
             v24 = 0u;
             v25 = 0u;
-            v14 = [v6 _mutableLayoutArrangements];
-            v12 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            _mutableLayoutArrangements = [v6 _mutableLayoutArrangements];
+            v12 = [_mutableLayoutArrangements countByEnumeratingWithState:&v24 objects:v32 count:16];
             if (v12)
             {
               v15 = v5;
@@ -232,7 +232,7 @@
                 {
                   if (*v25 != v16)
                   {
-                    objc_enumerationMutation(v14);
+                    objc_enumerationMutation(_mutableLayoutArrangements);
                   }
 
                   if ([*(*(&v24 + 1) + 8 * i) _awaitingAnimationLayoutPass])
@@ -242,7 +242,7 @@
                   }
                 }
 
-                v12 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
+                v12 = [_mutableLayoutArrangements countByEnumeratingWithState:&v24 objects:v32 count:16];
                 if (v12)
                 {
                   continue;
@@ -264,7 +264,7 @@ LABEL_20:
           v19[2] = __59__UIViewAnimationState__runConstraintBasedLayoutAnimations__block_invoke;
           v19[3] = v5;
           v20 = v6;
-          v21 = self;
+          selfCopy = self;
           v22 = &v28;
           v23 = v3;
           [v20 _withUnsatisfiableConstraintsLoggingSuspendedIfEngineDelegateExists:v19];
@@ -346,14 +346,14 @@ LABEL_20:
 
 - (void)pop
 {
-  v2 = self;
+  selfCopy = self;
   [(UIViewAnimationState *)self _runAlongsideAnimations];
-  [(UIViewAnimationState *)v2 _finalizeDeferredAnimations];
-  transitionView = v2->_transitionView;
+  [(UIViewAnimationState *)selfCopy _finalizeDeferredAnimations];
+  transitionView = selfCopy->_transitionView;
   if (transitionView)
   {
     v4 = 0;
-    transition = v2->_transition;
+    transition = selfCopy->_transition;
     v6 = @"pageCurl";
     if (transition <= 100)
     {
@@ -433,75 +433,75 @@ LABEL_26:
         }
 
 LABEL_33:
-        v7 = [MEMORY[0x1E6979538] animation];
-        [v7 setType:v6];
-        [v7 setSubtype:v4];
-        [(UIViewAnimationState *)v2 setAnimationAttributes:v7 skipDelegateAssignment:0];
-        frameInterval = v2->_frameInterval;
+        animation = [MEMORY[0x1E6979538] animation];
+        [animation setType:v6];
+        [animation setSubtype:v4];
+        [(UIViewAnimationState *)selfCopy setAnimationAttributes:animation skipDelegateAssignment:0];
+        frameInterval = selfCopy->_frameInterval;
         if (frameInterval > 0.0)
         {
-          [v7 setFrameInterval:v2->_frameInterval];
+          [animation setFrameInterval:selfCopy->_frameInterval];
         }
 
-        if (CAFrameRateRangeIsEqualToRange(v2->_preferredFrameRateRange, *MEMORY[0x1E69792B8]))
+        if (CAFrameRateRangeIsEqualToRange(selfCopy->_preferredFrameRateRange, *MEMORY[0x1E69792B8]))
         {
           if (frameInterval > 0.0)
           {
 LABEL_40:
-            if ((*(v2 + 172) & 4) != 0)
+            if ((*(selfCopy + 172) & 4) != 0)
             {
-              [v7 setTransitionFlags:3];
+              [animation setTransitionFlags:3];
             }
 
-            if (v2->_transitionOptions)
+            if (selfCopy->_transitionOptions)
             {
-              [v7 setOptions:?];
+              [animation setOptions:?];
             }
 
-            v13 = v2->_transitionView;
-            if (v2->_useBackingOutermostLayerForTransition)
+            v13 = selfCopy->_transitionView;
+            if (selfCopy->_useBackingOutermostLayerForTransition)
             {
-              v14 = [(UIView *)v13 _backing_outermostLayer];
+              _backing_outermostLayer = [(UIView *)v13 _backing_outermostLayer];
             }
 
             else
             {
-              v14 = v13->_layer;
+              _backing_outermostLayer = v13->_layer;
             }
 
-            v15 = v14;
-            if ([UIView _shouldTrackActionWithAnimator:v7])
+            v15 = _backing_outermostLayer;
+            if ([UIView _shouldTrackActionWithAnimator:animation])
             {
-              v16 = [UIViewPropertyAnimator _trackNonAdditiveAnimationWithAnimator:v7 forLayer:v15 forKey:@"transition"];
+              v16 = [UIViewPropertyAnimator _trackNonAdditiveAnimationWithAnimator:animation forLayer:v15 forKey:@"transition"];
             }
 
-            [(CALayer *)v15 addAnimation:v7 forKey:0];
+            [(CALayer *)v15 addAnimation:animation forKey:0];
             if (+[UIView _isAnimationTracking])
             {
-              [(UIViewAnimationState *)v2 _trackAnimation:v7 withAnimationKey:@"transition" forKeyPath:@"transition" inLayer:v15];
+              [(UIViewAnimationState *)selfCopy _trackAnimation:animation withAnimationKey:@"transition" forKeyPath:@"transition" inLayer:v15];
             }
 
-            transitionView = v2->_transitionView;
+            transitionView = selfCopy->_transitionView;
             goto LABEL_52;
           }
 
           LODWORD(v10) = 1123024896;
           LODWORD(v9) = 30.0;
           LODWORD(v11) = 1123024896;
-          [v7 setPreferredFrameRateRange:{v9, v10, v11}];
+          [animation setPreferredFrameRateRange:{v9, v10, v11}];
           updateReason = 1048609;
         }
 
         else
         {
-          *&v9 = v2->_preferredFrameRateRange.minimum;
-          *&v10 = v2->_preferredFrameRateRange.maximum;
-          *&v11 = v2->_preferredFrameRateRange.preferred;
-          [v7 setPreferredFrameRateRange:{v9, v10, v11}];
-          updateReason = v2->_updateReason;
+          *&v9 = selfCopy->_preferredFrameRateRange.minimum;
+          *&v10 = selfCopy->_preferredFrameRateRange.maximum;
+          *&v11 = selfCopy->_preferredFrameRateRange.preferred;
+          [animation setPreferredFrameRateRange:{v9, v10, v11}];
+          updateReason = selfCopy->_updateReason;
         }
 
-        [v7 setHighFrameRateReason:updateReason];
+        [animation setHighFrameRateReason:updateReason];
         goto LABEL_40;
       }
 
@@ -537,19 +537,19 @@ LABEL_40:
     }
 
 LABEL_52:
-    v2->_transitionView = 0;
+    selfCopy->_transitionView = 0;
   }
 
-  filterView = v2->_filterView;
+  filterView = selfCopy->_filterView;
   if (filterView)
   {
-    filter = v2->_filter;
+    filter = selfCopy->_filter;
     if ((filter & 0xFFFFFFFE) == 0xC8)
     {
       if (filter == 200)
       {
         [(UIView *)filterView bounds];
-        filterValue = v2->_filterValue;
+        filterValue = selfCopy->_filterValue;
         _UIViewCurlUpTransitionToTime(&filterValue, v19, v20);
         v22 = v21;
         v23 = objc_alloc(MEMORY[0x1E6979378]);
@@ -569,12 +569,12 @@ LABEL_52:
         [v24 setValue:v30 forKey:@"inputTime"];
 
         v31 = [MEMORY[0x1E695DEC8] arrayWithObject:v24];
-        v32 = [(UIView *)v2->_filterView layer];
-        [v32 setFilters:v31];
+        layer = [(UIView *)selfCopy->_filterView layer];
+        [layer setFilters:v31];
       }
 
       v33 = [MEMORY[0x1E6979318] animationWithKeyPath:@"filters.curl.inputTime"];
-      [(UIViewAnimationState *)v2 setAnimationAttributes:v33];
+      [(UIViewAnimationState *)selfCopy setAnimationAttributes:v33];
       [v33 setFillMode:*MEMORY[0x1E69797F0]];
       if (filter == 200)
       {
@@ -582,43 +582,43 @@ LABEL_52:
         [v33 setFromValue:v34];
 
         [v33 setToValue:0];
-        v35 = [(UIView *)v2->_filterView layer];
-        [v35 addAnimation:v33 forKey:0];
+        layer2 = [(UIView *)selfCopy->_filterView layer];
+        [layer2 addAnimation:v33 forKey:0];
       }
 
       else
       {
         [v33 setFromValue:0];
         [v33 setToValue:0];
-        v36 = [(UIView *)v2->_filterView layer];
-        [v36 addAnimation:v33 forKey:0];
+        layer3 = [(UIView *)selfCopy->_filterView layer];
+        [layer3 addAnimation:v33 forKey:0];
 
-        v37 = [(UIView *)v2->_filterView layer];
+        layer4 = [(UIView *)selfCopy->_filterView layer];
         v38 = [MEMORY[0x1E696AD98] numberWithFloat:0.0];
-        [v37 setValue:v38 forKeyPath:@"filters.curl.inputTime"];
+        [layer4 setValue:v38 forKeyPath:@"filters.curl.inputTime"];
 
-        [(UIView *)v2->_filterView performSelector:sel__clearAnimationFilters withObject:0 afterDelay:v2->_delay + v2->_duration];
+        [(UIView *)selfCopy->_filterView performSelector:sel__clearAnimationFilters withObject:0 afterDelay:selfCopy->_delay + selfCopy->_duration];
       }
 
-      filterView = v2->_filterView;
+      filterView = selfCopy->_filterView;
     }
 
-    v2->_filterView = 0;
+    selfCopy->_filterView = 0;
   }
 
-  [(UIViewAnimationState *)v2 _runConstraintBasedLayoutAnimations];
+  [(UIViewAnimationState *)selfCopy _runConstraintBasedLayoutAnimations];
   do
   {
-    flushUpdates = v2->_flushUpdates;
+    flushUpdates = selfCopy->_flushUpdates;
     if (flushUpdates)
     {
       break;
     }
 
-    v2 = v2->_nextState;
+    selfCopy = selfCopy->_nextState;
   }
 
-  while (v2);
+  while (selfCopy);
   v40 = _UIInternalPreferenceUsesDefault(&_UIInternalPreference_AnimationsFlushUpdates, @"AnimationsFlushUpdates", _UIInternalPreferenceUpdateInteger);
   v41 = qword_1ED48B798;
   if (v40)
@@ -704,8 +704,8 @@ LABEL_52:
   v10 = 0;
   v3 = [(UIViewAnimationState *)self _canonicalTrackedLayerAnimationInLayer:&v10];
   v4 = v10;
-  v5 = [v3 beginTimeMode];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E6979588]];
+  beginTimeMode = [v3 beginTimeMode];
+  v6 = [beginTimeMode isEqualToString:*MEMORY[0x1E6979588]];
 
   v7 = -1.0;
   if (v6)
@@ -777,30 +777,30 @@ LABEL_52:
   }
 }
 
-- (void)pushWithViewAnimationID:(int)a3 options:(uint64_t)a4 context:
+- (void)pushWithViewAnimationID:(int)d options:(uint64_t)options context:
 {
   v7 = a2;
   v8 = v7;
-  if (a1)
+  if (self)
   {
     v21 = v7;
     v9 = [v7 copy];
-    v10 = *(a1 + 16);
-    *(a1 + 16) = v9;
+    v10 = *(self + 16);
+    *(self + 16) = v9;
 
-    *(a1 + 24) = a4;
-    *(a1 + 40) = 0x3FC999999999999ALL;
-    if ((a3 & 0x10000000) != 0)
+    *(self + 24) = options;
+    *(self + 40) = 0x3FC999999999999ALL;
+    if ((d & 0x10000000) != 0)
     {
       v12 = 1;
-      *(a1 + 232) = 1;
+      *(self + 232) = 1;
     }
 
     else
     {
-      v11 = [(UIViewAnimationState *)a1 _requestsFlushUpdatesByDefault];
-      *(a1 + 232) = v11;
-      if (v11)
+      _requestsFlushUpdatesByDefault = [(UIViewAnimationState *)self _requestsFlushUpdatesByDefault];
+      *(self + 232) = _requestsFlushUpdatesByDefault;
+      if (_requestsFlushUpdatesByDefault)
       {
         v12 = 1;
       }
@@ -856,7 +856,7 @@ LABEL_52:
         v17 = *(__currentViewAnimationState + 172) & 0x20;
       }
 
-      *(a1 + 172) = *(a1 + 172) & 0xDF | v17;
+      *(self + 172) = *(self + 172) & 0xDF | v17;
 
       v18 = __currentViewAnimationState;
     }
@@ -866,8 +866,8 @@ LABEL_52:
       v18 = 0;
     }
 
-    objc_storeStrong((a1 + 8), v18);
-    objc_storeStrong(&__currentViewAnimationState, a1);
+    objc_storeStrong((self + 8), v18);
+    objc_storeStrong(&__currentViewAnimationState, self);
     v8 = v21;
     if (__animate == 1)
     {
@@ -875,35 +875,35 @@ LABEL_52:
       v8 = v21;
       if ((v20 & 1) == 0)
       {
-        [a1 _prepareForViewAnimationAfterPush];
+        [self _prepareForViewAnimationAfterPush];
         v8 = v21;
       }
     }
   }
 }
 
-+ (void)pushViewAnimationState:(int)a3 options:(uint64_t)a4 context:
++ (void)pushViewAnimationState:(int)state options:(uint64_t)options context:
 {
   v8 = a2;
   v6 = objc_alloc_init(objc_opt_self());
   v7 = v6;
   if (v6)
   {
-    [(UIViewAnimationState *)v6 pushWithViewAnimationID:v8 options:a3 context:a4];
+    [(UIViewAnimationState *)v6 pushWithViewAnimationID:v8 options:state context:options];
   }
 }
 
-- (void)_performWithCompletionCallbacksDisabledOnPop:(id)a3
+- (void)_performWithCompletionCallbacksDisabledOnPop:(id)pop
 {
   v4 = *(self + 173);
   *(self + 173) = v4 | 1;
-  (*(a3 + 2))(a3, a2);
+  (*(pop + 2))(pop, a2);
   *(self + 173) = *(self + 173) & 0xFE | v4 & 1;
 }
 
-- (void)_transferAnimationToTrackingAnimator:(id)a3
+- (void)_transferAnimationToTrackingAnimator:(id)animator
 {
-  v5 = a3;
+  animatorCopy = animator;
   v6 = dyld_program_sdk_at_least();
   WeakRetained = objc_loadWeakRetained(&self->_propertyAnimator);
 
@@ -911,8 +911,8 @@ LABEL_52:
   {
     if (!WeakRetained)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"UIView.m" lineNumber:1197 description:@"Attempting to transfer an animation to an animation state that does not belong to a property animator."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIView.m" lineNumber:1197 description:@"Attempting to transfer an animation to an animation state that does not belong to a property animator."];
     }
   }
 
@@ -927,19 +927,19 @@ LABEL_52:
   }
 
   v9 = dyld_program_sdk_at_least();
-  v10 = [v5 delegate];
+  delegate = [animatorCopy delegate];
   nextState = self->_nextState;
 
   if (v9)
   {
-    if (v10 != nextState)
+    if (delegate != nextState)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"UIView.m" lineNumber:1198 description:@"Attempting to transfer an animation to an animation state that is not a direct child of the animation's animation state."];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIView.m" lineNumber:1198 description:@"Attempting to transfer an animation to an animation state that is not a direct child of the animation's animation state."];
     }
   }
 
-  else if (v10 != nextState)
+  else if (delegate != nextState)
   {
     v17 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1EA994730) + 8);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -968,41 +968,41 @@ LABEL_52:
     objc_storeStrong(&self->_retainedSelf, self);
   }
 
-  [v5 setDelegate:self];
-  [v5 setRemovedOnCompletion:0];
+  [animatorCopy setDelegate:self];
+  [animatorCopy setRemovedOnCompletion:0];
   ++self->_didEndCount;
 }
 
-- (void)configureAnimation:(id)a3 forLayer:(id)a4 forKey:(id)a5
+- (void)configureAnimation:(id)animation forLayer:(id)layer forKey:(id)key
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = a5;
-  if ([v8 isEqualToString:@"contents"])
+  animationCopy = animation;
+  layerCopy = layer;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"contents"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v7 implicitAnimationForKeyPath:v8];
+      v9 = [layerCopy implicitAnimationForKeyPath:keyCopy];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v9 fromValue];
-        [v11 setFromValue:v10];
+        fromValue = [v9 fromValue];
+        [animationCopy setFromValue:fromValue];
       }
     }
   }
 }
 
-- (BOOL)_shouldStartFromCurrentStateForLayer:(id)a3 key:(id)a4 forView:(id)a5
+- (BOOL)_shouldStartFromCurrentStateForLayer:(id)layer key:(id)key forView:(id)view
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  layerCopy = layer;
+  keyCopy = key;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_propertyAnimator);
   if (WeakRetained)
   {
-    v5 = [v9 animationForKey:v10];
+    v5 = [layerCopy animationForKey:keyCopy];
     if (!v5)
     {
       LOBYTE(v13) = 0;
@@ -1010,9 +1010,9 @@ LABEL_52:
     }
   }
 
-  if ((*(self + 172) & 2) != 0 && [v9 hasBeenCommitted])
+  if ((*(self + 172) & 2) != 0 && [layerCopy hasBeenCommitted])
   {
-    v13 = ![(UIViewAnimationState *)self _shouldAnimateAdditivelyForKey:v10 onLayer:v9 forView:v11];
+    v13 = ![(UIViewAnimationState *)self _shouldAnimateAdditivelyForKey:keyCopy onLayer:layerCopy forView:viewCopy];
     v14 = v13;
     if (!WeakRetained)
     {
@@ -1036,13 +1036,13 @@ LABEL_10:
   return v14;
 }
 
-- (id)animationForLayer:(id)a3 forKey:(id)a4 forView:(id)a5
+- (id)animationForLayer:(id)layer forKey:(id)key forView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10 && (*(v10 + 91) & 2) != 0)
+  layerCopy = layer;
+  keyCopy = key;
+  viewCopy = view;
+  v11 = viewCopy;
+  if (viewCopy && (*(viewCopy + 91) & 2) != 0)
   {
     v17 = 0;
     goto LABEL_36;
@@ -1052,13 +1052,13 @@ LABEL_10:
   animationFactory = self->_animationFactory;
   if (animationFactory)
   {
-    v14 = [(_UIBasicAnimationFactory *)animationFactory _basicAnimationForView:v11 withKeyPath:v9];
+    v14 = [(_UIBasicAnimationFactory *)animationFactory _basicAnimationForView:v11 withKeyPath:keyCopy];
     WeakRetained = objc_loadWeakRetained(&self->_propertyAnimator);
     if (WeakRetained)
     {
-      v16 = [v14 timingFunction];
+      timingFunction = [v14 timingFunction];
 
-      v12 = v16;
+      v12 = timingFunction;
     }
 
     else if (!v12)
@@ -1077,7 +1077,7 @@ LABEL_10:
 
     if (self->_animationFactoryMakesPerAnimationCustomCurves)
     {
-      v22 = [(_UIBasicAnimationFactory *)self->_animationFactory _timingFunctionForAnimationInView:v11 withKeyPath:v9];
+      v22 = [(_UIBasicAnimationFactory *)self->_animationFactory _timingFunctionForAnimationInView:v11 withKeyPath:keyCopy];
 
       v12 = v22;
     }
@@ -1092,7 +1092,7 @@ LABEL_10:
   {
     if (self->_curve != 7)
     {
-      if (![(UIViewAnimationState *)self _shouldStartFromCurrentStateForLayer:v8 key:v9 forView:v11])
+      if (![(UIViewAnimationState *)self _shouldStartFromCurrentStateForLayer:layerCopy key:keyCopy forView:v11])
       {
         goto LABEL_30;
       }
@@ -1101,10 +1101,10 @@ LABEL_10:
     }
 
     _UILoadDefaultSpringParameters();
-    v14 = [UIViewSpringAnimationState defaultSpringAnimationForKey:v9 mass:*&_UIViewDefaultSpringMass stiffness:*&_UIViewDefaultSpringStiffness damping:*&_UIViewDefaultSpringDamping velocity:0.0];
+    v14 = [UIViewSpringAnimationState defaultSpringAnimationForKey:keyCopy mass:*&_UIViewDefaultSpringMass stiffness:*&_UIViewDefaultSpringStiffness damping:*&_UIViewDefaultSpringDamping velocity:0.0];
   }
 
-  v23 = [(UIViewAnimationState *)self _shouldStartFromCurrentStateForLayer:v8 key:v9 forView:v11];
+  v23 = [(UIViewAnimationState *)self _shouldStartFromCurrentStateForLayer:layerCopy key:keyCopy forView:v11];
   if (v14)
   {
     if (!v23)
@@ -1112,18 +1112,18 @@ LABEL_10:
       goto LABEL_23;
     }
 
-    v24 = [v8 implicitAnimationForKeyPath:v9];
+    v24 = [layerCopy implicitAnimationForKeyPath:keyCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = [v24 fromValue];
-      [v14 setFromValue:v25];
+      fromValue = [v24 fromValue];
+      [v14 setFromValue:fromValue];
     }
 
     if (!v24)
     {
 LABEL_23:
-      v26 = [v8 valueForKeyPath:v9];
+      v26 = [layerCopy valueForKeyPath:keyCopy];
       [v14 setFromValue:v26];
 
       v24 = 0;
@@ -1139,15 +1139,15 @@ LABEL_23:
 LABEL_30:
     if (v11)
     {
-      [v11 _basicAnimationWithKeyPath:v9];
+      [v11 _basicAnimationWithKeyPath:keyCopy];
     }
 
     else
     {
-      [(UIViewAnimationState *)self _defaultAnimationForKey:v9];
+      [(UIViewAnimationState *)self _defaultAnimationForKey:keyCopy];
     }
     v17 = ;
-    v24 = [v8 valueForKeyPath:v9];
+    v24 = [layerCopy valueForKeyPath:keyCopy];
     [v17 setFromValue:v24];
     v27 = 0;
 LABEL_34:
@@ -1156,7 +1156,7 @@ LABEL_34:
   }
 
 LABEL_28:
-  v28 = [v8 implicitAnimationForKeyPath:v9];
+  v28 = [layerCopy implicitAnimationForKeyPath:keyCopy];
   v17 = [v28 copy];
 
   if (!v17)
@@ -1166,7 +1166,7 @@ LABEL_28:
 
   v27 = 0;
 LABEL_35:
-  [(UIViewAnimationState *)self configureAnimation:v17 forLayer:v8 forKey:v9];
+  [(UIViewAnimationState *)self configureAnimation:v17 forLayer:layerCopy forKey:keyCopy];
   [(UIViewAnimationState *)self setAnimationAttributes:v17 skipDelegateAssignment:0 customCurve:v12];
 
 LABEL_36:
@@ -1174,24 +1174,24 @@ LABEL_36:
   return v17;
 }
 
-- (BOOL)_shouldAnimateAdditivelyForKey:(id)a3 onLayer:(id)a4 forView:(id)a5
+- (BOOL)_shouldAnimateAdditivelyForKey:(id)key onLayer:(id)layer forView:(id)view
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  layerCopy = layer;
+  viewCopy = view;
   if (!self->_disallowAdditiveAnimations)
   {
-    v12 = _normalizedAnimationKey(v8);
+    v12 = _normalizedAnimationKey(keyCopy);
     v13 = v12;
-    if (v10)
+    if (viewCopy)
     {
-      isAdditivelyAnimatableKeyForLayer = [v10 _shouldAnimatePropertyAdditivelyWithKey:v12];
+      isAdditivelyAnimatableKeyForLayer = [viewCopy _shouldAnimatePropertyAdditivelyWithKey:v12];
     }
 
     else
     {
-      isAdditivelyAnimatableKeyForLayer = _isAdditivelyAnimatableKeyForLayer(v12, v9);
+      isAdditivelyAnimatableKeyForLayer = _isAdditivelyAnimatableKeyForLayer(v12, layerCopy);
     }
 
     v15 = isAdditivelyAnimatableKeyForLayer;
@@ -1206,7 +1206,7 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      v17 = [(_UIBasicAnimationFactory *)self->_animationFactory _shouldAnimateAdditivelyForView:v10 withKeyPath:v8];
+      v17 = [(_UIBasicAnimationFactory *)self->_animationFactory _shouldAnimateAdditivelyForView:viewCopy withKeyPath:keyCopy];
     }
 
     else
@@ -1221,13 +1221,13 @@ LABEL_33:
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v18 = [v9 animationKeys];
-      v19 = [v18 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      animationKeys = [layerCopy animationKeys];
+      v19 = [animationKeys countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v19)
       {
         v20 = v19;
         v29 = v13;
-        v30 = v10;
+        v30 = viewCopy;
         v21 = *v32;
         while (2)
         {
@@ -1235,16 +1235,16 @@ LABEL_33:
           {
             if (*v32 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(animationKeys);
             }
 
-            v23 = [v9 animationForKey:{*(*(&v31 + 1) + 8 * i), v29, v30}];
+            v23 = [layerCopy animationForKey:{*(*(&v31 + 1) + 8 * i), v29, v30}];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
               v24 = v23;
-              v25 = [v24 keyPath];
-              if ([v25 isEqualToString:v8])
+              keyPath = [v24 keyPath];
+              if ([keyPath isEqualToString:keyCopy])
               {
                 if (![v24 isAdditive])
                 {
@@ -1269,7 +1269,7 @@ LABEL_30:
             }
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v31 objects:v35 count:16];
+          v20 = [animationKeys countByEnumeratingWithState:&v31 objects:v35 count:16];
           if (v20)
           {
             continue;
@@ -1281,7 +1281,7 @@ LABEL_30:
         v11 = 1;
 LABEL_31:
         v13 = v29;
-        v10 = v30;
+        viewCopy = v30;
       }
 
       else
@@ -1299,23 +1299,23 @@ LABEL_34:
   return v11;
 }
 
-- (void)_transformIntoAdditiveAnimationAndNoteOriginal:(id)a3 inLayer:(id)a4 animationKey:(id)a5
+- (void)_transformIntoAdditiveAnimationAndNoteOriginal:(id)original inLayer:(id)layer animationKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([v8 isAdditive] & 1) == 0 && !self->_disallowAdditiveAnimations)
+  originalCopy = original;
+  layerCopy = layer;
+  keyCopy = key;
+  if (([originalCopy isAdditive] & 1) == 0 && !self->_disallowAdditiveAnimations)
   {
-    v11 = [v8 keyPath];
-    v12 = [v9 delegate];
+    keyPath = [originalCopy keyPath];
+    delegate = [layerCopy delegate];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v9 delegate];
+      delegate2 = [layerCopy delegate];
 
-      if (v13)
+      if (delegate2)
       {
-        if (([v13 _shouldAnimatePropertyAdditivelyWithKey:v11] & 1) == 0)
+        if (([delegate2 _shouldAnimatePropertyAdditivelyWithKey:keyPath] & 1) == 0)
         {
           goto LABEL_23;
         }
@@ -1328,8 +1328,8 @@ LABEL_34:
     {
     }
 
-    v13 = 0;
-    if (!_isAdditivelyAnimatableKeyForLayer(v11, v9))
+    delegate2 = 0;
+    if (!_isAdditivelyAnimatableKeyForLayer(keyPath, layerCopy))
     {
 LABEL_23:
 
@@ -1337,25 +1337,25 @@ LABEL_23:
     }
 
 LABEL_9:
-    v14 = [v8 toValue];
-    v15 = v14;
-    if (v14)
+    toValue = [originalCopy toValue];
+    v15 = toValue;
+    if (toValue)
     {
-      v16 = v14;
+      v16 = toValue;
     }
 
     else
     {
-      v17 = [v8 keyPath];
-      v16 = [v9 valueForKeyPath:v17];
+      keyPath2 = [originalCopy keyPath];
+      v16 = [layerCopy valueForKeyPath:keyPath2];
     }
 
-    v18 = [v8 fromValue];
-    v19 = [v8 toValue];
+    fromValue = [originalCopy fromValue];
+    toValue2 = [originalCopy toValue];
 
-    if (v19)
+    if (toValue2)
     {
-      if ([v10 hasPrefix:@"position"])
+      if ([keyCopy hasPrefix:@"position"])
       {
         [v16 CGPointValue];
       }
@@ -1364,14 +1364,14 @@ LABEL_9:
       v31[1] = 3221225472;
       v31[2] = __92__UIViewAnimationState__transformIntoAdditiveAnimationAndNoteOriginal_inLayer_animationKey___block_invoke;
       v31[3] = &unk_1E70F6228;
-      v32 = v9;
+      v32 = layerCopy;
       v33 = v16;
-      v34 = v8;
+      v34 = originalCopy;
       [UIView performWithoutAnimation:v31];
     }
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ![v10 hasPrefix:@"position"])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ![keyCopy hasPrefix:@"position"])
     {
       goto LABEL_22;
     }
@@ -1379,19 +1379,19 @@ LABEL_9:
     [v16 CGPointValue];
     v21 = v20;
     v23 = v22;
-    [v18 CGPointValue];
+    [fromValue CGPointValue];
     v25 = v24;
     v27 = v26;
-    if (([v10 hasSuffix:@".x"] & 1) == 0)
+    if (([keyCopy hasSuffix:@".x"] & 1) == 0)
     {
-      if (![v10 hasSuffix:@".y"])
+      if (![keyCopy hasSuffix:@".y"])
       {
 LABEL_22:
-        v29 = [v18 CA_addValue:v16 multipliedBy:0xFFFFFFFFLL];
-        [v8 setAdditive:1];
-        [v8 setFromValue:v29];
+        v29 = [fromValue CA_addValue:v16 multipliedBy:0xFFFFFFFFLL];
+        [originalCopy setAdditive:1];
+        [originalCopy setFromValue:v29];
         v30 = [v16 CA_addValue:v16 multipliedBy:0xFFFFFFFFLL];
-        [v8 setToValue:v30];
+        [originalCopy setToValue:v30];
 
         goto LABEL_23;
       }
@@ -1417,18 +1417,18 @@ void __92__UIViewAnimationState__transformIntoAdditiveAnimationAndNoteOriginal_i
   [v1 setValue:v2 forKeyPath:v3];
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4 forView:(id)a5
+- (id)actionForLayer:(id)layer forKey:(id)key forView:(id)view
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"cornerRadius"])
+  layerCopy = layer;
+  keyCopy = key;
+  viewCopy = view;
+  if ([keyCopy isEqualToString:@"cornerRadius"])
   {
-    [v8 cornerRadius];
+    [layerCopy cornerRadius];
   }
 
-  v11 = [(UIViewAnimationState *)self animationForLayer:v8 forKey:v9 forView:v10];
+  v11 = [(UIViewAnimationState *)self animationForLayer:layerCopy forKey:keyCopy forView:viewCopy];
   if (!v11)
   {
     v18 = 0;
@@ -1436,7 +1436,7 @@ void __92__UIViewAnimationState__transformIntoAdditiveAnimationAndNoteOriginal_i
   }
 
   v12 = [(UIViewAnimationState *)self _outerPropertyAnimator:1];
-  v13 = [(UIViewAnimationState *)self _shouldAnimateAdditivelyForKey:v9 onLayer:v8 forView:v10];
+  v13 = [(UIViewAnimationState *)self _shouldAnimateAdditivelyForKey:keyCopy onLayer:layerCopy forView:viewCopy];
   v14 = v13;
   if (v12)
   {
@@ -1444,11 +1444,11 @@ void __92__UIViewAnimationState__transformIntoAdditiveAnimationAndNoteOriginal_i
     if ((objc_opt_isKindOfClass() & 1) != 0 && (([v11 isAdditive] | v14) & 1) == 0)
     {
       memset(v21, 0, 24);
-      v15 = [v12 _previousAnimatorForKeyPath:v9 inLayer:v8 compoundKeys:v21];
+      v15 = [v12 _previousAnimatorForKeyPath:keyCopy inLayer:layerCopy compoundKeys:v21];
       v16 = v15;
       if (v15 && v15 != v12)
       {
-        [v15 _untrackPropertyAnimationsForKeys:v21 inLayer:v8];
+        [v15 _untrackPropertyAnimationsForKeys:v21 inLayer:layerCopy];
       }
 
       for (i = 2; i != -1; --i)
@@ -1468,7 +1468,7 @@ void __92__UIViewAnimationState__transformIntoAdditiveAnimationAndNoteOriginal_i
     goto LABEL_17;
   }
 
-  v19 = [[_UIViewAdditiveAnimationAction alloc] initWithPendingAnimation:v11 withAnimationObject:v12 forView:v10];
+  v19 = [[_UIViewAdditiveAnimationAction alloc] initWithPendingAnimation:v11 withAnimationObject:v12 forView:viewCopy];
 LABEL_17:
   v18 = v19;
 
@@ -1477,7 +1477,7 @@ LABEL_18:
   return v18;
 }
 
-- (id)_canonicalTrackedLayerAnimationInLayer:(id *)a3
+- (id)_canonicalTrackedLayerAnimationInLayer:(id *)layer
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
@@ -1498,10 +1498,10 @@ LABEL_18:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v15 + 1) + 8 * i) _trackedAnimations];
-        if ([v8 count])
+        _trackedAnimations = [*(*(&v15 + 1) + 8 * i) _trackedAnimations];
+        if ([_trackedAnimations count])
         {
-          v9 = [v8 objectAtIndex:0];
+          v9 = [_trackedAnimations objectAtIndex:0];
           if (v9)
           {
             v10 = v9;
@@ -1513,7 +1513,7 @@ LABEL_18:
               if (v12)
               {
                 v13 = v12;
-                *a3 = v12;
+                *layer = v12;
               }
 
               goto LABEL_16;
@@ -1537,39 +1537,39 @@ LABEL_16:
   return v5;
 }
 
-- (double)_unpacedFractionCompleteForAnimation:(id)a3 inLayer:(id)a4 duration:(double)a5
+- (double)_unpacedFractionCompleteForAnimation:(id)animation inLayer:(id)layer duration:(double)duration
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  animationCopy = animation;
+  layerCopy = layer;
+  v9 = layerCopy;
   v10 = -1.0;
-  if (v7)
+  if (animationCopy)
   {
-    if ([v8 hasBeenCommitted])
+    if ([layerCopy hasBeenCommitted])
     {
-      v11 = [v7 beginTimeMode];
-      v12 = [v11 isEqualToString:*MEMORY[0x1E6979588]];
+      beginTimeMode = [animationCopy beginTimeMode];
+      v12 = [beginTimeMode isEqualToString:*MEMORY[0x1E6979588]];
 
       v10 = 0.0;
       if (v12)
       {
-        if (a5 == 0.0)
+        if (duration == 0.0)
         {
-          [v7 duration];
-          a5 = v13;
+          [animationCopy duration];
+          duration = v13;
         }
 
         [v9 convertTime:0 fromLayer:CACurrentMediaTime()];
         v15 = v14;
-        [v7 beginTime];
+        [animationCopy beginTime];
         v17 = v15 - v16;
-        [v7 speed];
+        [animationCopy speed];
         v19 = v17 * fabsf(v18);
-        [v7 timeOffset];
+        [animationCopy timeOffset];
         v21 = v19 - v20;
         if (v21 > 0.0)
         {
-          v22 = v21 / a5;
+          v22 = v21 / duration;
           if (v22 <= 1.0)
           {
             v10 = v22;
@@ -1600,8 +1600,8 @@ LABEL_16:
     {
       if ([v3 hasBeenCommitted])
       {
-        v6 = [v2 beginTimeMode];
-        v7 = [v6 isEqualToString:*MEMORY[0x1E6979588]];
+        beginTimeMode = [v2 beginTimeMode];
+        v7 = [beginTimeMode isEqualToString:*MEMORY[0x1E6979588]];
 
         if (v7)
         {
@@ -1621,13 +1621,13 @@ LABEL_16:
   return v5;
 }
 
-- (id)_outerPropertyAnimator:(BOOL)a3
+- (id)_outerPropertyAnimator:(BOOL)animator
 {
-  v3 = a3;
-  v4 = self;
-  if (v4)
+  animatorCopy = animator;
+  selfCopy = self;
+  if (selfCopy)
   {
-    p_isa = &v4->super.isa;
+    p_isa = &selfCopy->super.isa;
     WeakRetained = 0;
     while (1)
     {
@@ -1636,7 +1636,7 @@ LABEL_16:
 
       if (WeakRetained)
       {
-        if (!v3 || ([WeakRetained isInterruptible] & 1) != 0)
+        if (!animatorCopy || ([WeakRetained isInterruptible] & 1) != 0)
         {
           break;
         }
@@ -1662,15 +1662,15 @@ LABEL_16:
   return WeakRetained;
 }
 
-- (void)setupWithDuration:(double)a3 delay:(double)a4 view:(id)a5 options:(unint64_t)a6 factory:(id)a7 parentState:(id)a8 start:(id)a9 completion:(id)a10
+- (void)setupWithDuration:(double)duration delay:(double)delay view:(id)view options:(unint64_t)options factory:(id)factory parentState:(id)state start:(id)start completion:(id)self0
 {
-  v51 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v52 = a10;
-  v22 = WORD1(a6) & 7;
-  if (!v20 || (v20[239] & 1) != 0)
+  viewCopy = view;
+  factoryCopy = factory;
+  stateCopy = state;
+  startCopy = start;
+  completionCopy = completion;
+  v22 = WORD1(options) & 7;
+  if (!stateCopy || (stateCopy[239] & 1) != 0)
   {
     WeakRetained = 0;
     v24 = 0;
@@ -1683,10 +1683,10 @@ LABEL_16:
   {
     WeakRetained = 0;
 LABEL_37:
-    if ((a6 & 0x20) == 0 && (*(self + 172) & 0x80000000) == 0)
+    if ((options & 0x20) == 0 && (*(self + 172) & 0x80000000) == 0)
     {
-      a3 = *(v20 + 5);
-      if ((a6 & 0x40) != 0)
+      duration = *(stateCopy + 5);
+      if ((options & 0x40) != 0)
       {
         goto LABEL_68;
       }
@@ -1697,8 +1697,8 @@ LABEL_37:
 
   else
   {
-    v50 = v21;
-    v37 = v20;
+    v50 = startCopy;
+    v37 = stateCopy;
     v38 = v37;
     while (1)
     {
@@ -1723,7 +1723,7 @@ LABEL_37:
 LABEL_54:
         if (*(self + 172) < 0)
         {
-          v21 = v50;
+          startCopy = v50;
           goto LABEL_37;
         }
 
@@ -1732,19 +1732,19 @@ LABEL_54:
       }
     }
 
-    *(self + 172) = *(self + 172) & 0x7F | (((a6 & 0x2008) != 0) << 7);
-    v41 = [WeakRetained _optionsForNestedLegacyAnimation:a6];
-    a6 = v41;
+    *(self + 172) = *(self + 172) & 0x7F | (((options & 0x2008) != 0) << 7);
+    v41 = [WeakRetained _optionsForNestedLegacyAnimation:options];
+    options = v41;
     if ((v41 & 0x20) != 0)
     {
       goto LABEL_54;
     }
 
-    a3 = v37[5] - a4;
-    a4 = v37[6] + a4;
+    duration = v37[5] - delay;
+    delay = v37[6] + delay;
     if (*(self + 172) < 0)
     {
-      v21 = v50;
+      startCopy = v50;
       if ((v41 & 0x40) == 0)
       {
         goto LABEL_63;
@@ -1773,29 +1773,29 @@ LABEL_56:
 
     if (([v43 isInterruptible] & 1) == 0)
     {
-      v45 = [v43 _viewAnimationState];
-      [v45 _incrementDidEndCount];
+      _viewAnimationState = [v43 _viewAnimationState];
+      [_viewAnimationState _incrementDidEndCount];
     }
 
-    v21 = v50;
+    startCopy = v50;
     if ((v49 & 1) == 0)
     {
       goto LABEL_37;
     }
   }
 
-  if ((a6 & 0x40) != 0)
+  if ((options & 0x40) != 0)
   {
     goto LABEL_68;
   }
 
 LABEL_63:
-  v22 = *(v20 + 22);
+  v22 = *(stateCopy + 22);
   if (v22 == 6)
   {
-    v24 = *(v20 + 25);
+    v24 = *(stateCopy + 25);
     v22 = 6;
-    if ((a6 & 0x200) != 0)
+    if ((options & 0x200) != 0)
     {
       goto LABEL_70;
     }
@@ -1805,34 +1805,34 @@ LABEL_63:
 
 LABEL_68:
   v24 = 0;
-  if ((a6 & 0x200) == 0)
+  if ((options & 0x200) == 0)
   {
 LABEL_69:
-    v46 = *(v20 + 24);
+    v46 = *(stateCopy + 24);
 
-    v19 = v46;
+    factoryCopy = v46;
   }
 
 LABEL_70:
-  v47 = *(v20 + 7);
+  v47 = *(stateCopy + 7);
   if (v47 > 0.0)
   {
     self->_frameInterval = v47;
   }
 
-  if (!CAFrameRateRangeIsEqualToRange(*(v20 + 64), *MEMORY[0x1E69792B8]))
+  if (!CAFrameRateRangeIsEqualToRange(*(stateCopy + 64), *MEMORY[0x1E69792B8]))
   {
-    v48 = *(v20 + 8);
-    self->_preferredFrameRateRange.preferred = *(v20 + 18);
+    v48 = *(stateCopy + 8);
+    self->_preferredFrameRateRange.preferred = *(stateCopy + 18);
     *&self->_preferredFrameRateRange.minimum = v48;
-    self->_updateReason = *(v20 + 19);
+    self->_updateReason = *(stateCopy + 19);
   }
 
 LABEL_4:
-  self->_duration = a3;
-  self->_delay = a4;
+  self->_duration = duration;
+  self->_delay = delay;
   v25 = 3.4028e38;
-  if ((a6 & 8) == 0)
+  if ((options & 8) == 0)
   {
     v25 = 0.0;
   }
@@ -1840,24 +1840,24 @@ LABEL_4:
   self->_repeatCount = v25;
   v26 = *(self + 172) & 0xE5;
   self->_curve = v22;
-  *(self + 172) = ((a6 & 0xFE) >> 1) & 0xA | (16 * (a6 & 1)) | v26;
-  if ((a6 & 0x10000000) != 0)
+  *(self + 172) = ((options & 0xFE) >> 1) & 0xA | (16 * (options & 1)) | v26;
+  if ((options & 0x10000000) != 0)
   {
-    v27 = 1;
+    _requestsFlushUpdatesByDefault = 1;
   }
 
   else
   {
-    v27 = [(UIViewAnimationState *)self _requestsFlushUpdatesByDefault];
+    _requestsFlushUpdatesByDefault = [(UIViewAnimationState *)self _requestsFlushUpdatesByDefault];
   }
 
-  v28 = a6 >> 1;
-  self->_flushUpdates = v27;
-  self->_transition = (a6 >> 20) & 7;
-  objc_storeStrong(&self->_transitionView, a5);
-  *(self + 172) = (*(self + 172) & 0xFB | (a6 >> 5) & 4) ^ 4;
-  objc_storeStrong(&self->_animationFactory, v19);
-  v29 = BYTE3(a6) & 0xF;
+  v28 = options >> 1;
+  self->_flushUpdates = _requestsFlushUpdatesByDefault;
+  self->_transition = (options >> 20) & 7;
+  objc_storeStrong(&self->_transitionView, view);
+  *(self + 172) = (*(self + 172) & 0xFB | (options >> 5) & 4) ^ 4;
+  objc_storeStrong(&self->_animationFactory, factoryCopy);
+  v29 = BYTE3(options) & 0xF;
   if (v29)
   {
     v30 = 1.0 / (240.0 / (v29 + 1));
@@ -1867,37 +1867,37 @@ LABEL_4:
     }
   }
 
-  v31 = v52;
-  if (v20 && (v20[239] & 1) == 0)
+  v31 = completionCopy;
+  if (stateCopy && (stateCopy[239] & 1) == 0)
   {
-    if (v20[236])
+    if (stateCopy[236])
     {
-      v32 = a6 | 0x400;
+      optionsCopy = options | 0x400;
     }
 
     else
     {
-      v32 = a6;
+      optionsCopy = options;
     }
 
-    if (v20[237])
+    if (stateCopy[237])
     {
-      a6 = v32 | 0x1000;
+      options = optionsCopy | 0x1000;
     }
 
     else
     {
-      a6 = v32;
+      options = optionsCopy;
     }
 
-    v28 = a6 >> 1;
+    v28 = options >> 1;
   }
 
   self->_allowUserInteraction = v28 & 1;
-  self->_allowUserInteractionToCutOffEndOfAnimation = (a6 & 0x400) != 0;
-  self->_disallowAdditiveAnimations = (a6 & 0x800) != 0;
-  self->_allowsHitTesting = (a6 & 0x1000) != 0;
-  v33 = [UIViewAnimationBlockDelegate animationBlockDelegateWithDuration:a6 options:v21 start:v52 completion:a3];
+  self->_allowUserInteractionToCutOffEndOfAnimation = (options & 0x400) != 0;
+  self->_disallowAdditiveAnimations = (options & 0x800) != 0;
+  self->_allowsHitTesting = (options & 0x1000) != 0;
+  v33 = [UIViewAnimationBlockDelegate animationBlockDelegateWithDuration:options options:startCopy start:completionCopy completion:duration];
   [v33 set_animationState:self];
   objc_storeStrong(&self->_delegate, v33);
   self->_willStartSelector = sel__willBeginBlockAnimation_context_;
@@ -1907,18 +1907,18 @@ LABEL_4:
     objc_storeStrong(&self->_customCurve, v24);
   }
 
-  if (v22 == 6 && v19)
+  if (v22 == 6 && factoryCopy)
   {
     if (!self->_customCurve && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v34 = v21;
-      v35 = [(_UIBasicAnimationFactory *)self->_animationFactory _timingFunctionForAnimation];
-      if (v35)
+      v34 = startCopy;
+      _timingFunctionForAnimation = [(_UIBasicAnimationFactory *)self->_animationFactory _timingFunctionForAnimation];
+      if (_timingFunctionForAnimation)
       {
-        objc_storeStrong(&self->_customCurve, v35);
+        objc_storeStrong(&self->_customCurve, _timingFunctionForAnimation);
       }
 
-      v21 = v34;
+      startCopy = v34;
     }
 
     if (objc_opt_respondsToSelector())
@@ -1926,12 +1926,12 @@ LABEL_4:
       self->_animationFactoryMakesPerAnimationCustomCurves = 1;
     }
 
-    v31 = v52;
+    v31 = completionCopy;
     if (!self->_customCurve)
     {
-      if (v20)
+      if (stateCopy)
       {
-        v36 = *(v20 + 11);
+        v36 = *(stateCopy + 11);
       }
 
       else
@@ -1944,13 +1944,13 @@ LABEL_4:
   }
 }
 
-+ (void)_addConstraintPendingAnimation:(id)a3 container:(id)a4
++ (void)_addConstraintPendingAnimation:(id)animation container:(id)container
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11 && v6)
+  animationCopy = animation;
+  containerCopy = container;
+  if (animationCopy && containerCopy)
   {
-    [a1 _addViewForConstraintBasedAnimation:v6];
+    [self _addViewForConstraintBasedAnimation:containerCopy];
     v7 = qword_1EA994738;
     if (!qword_1EA994738)
     {
@@ -1961,25 +1961,25 @@ LABEL_4:
       v7 = qword_1EA994738;
     }
 
-    v10 = [v7 objectForKey:v6];
+    v10 = [v7 objectForKey:containerCopy];
     if (!v10)
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      [qword_1EA994738 setObject:v10 forKey:v6];
+      [qword_1EA994738 setObject:v10 forKey:containerCopy];
     }
 
-    [v10 addObject:v11];
+    [v10 addObject:animationCopy];
   }
 }
 
-+ (void)_addViewForConstraintBasedAnimation:(id)a3
++ (void)_addViewForConstraintBasedAnimation:(id)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   if (__currentViewAnimationState)
   {
-    v10 = v3;
-    v4 = [v3 _window];
-    if (v4)
+    v10 = animationCopy;
+    _window = [animationCopy _window];
+    if (_window)
     {
       v5 = *(__currentViewAnimationState + 264);
       if (!v5)
@@ -2035,15 +2035,15 @@ LABEL_11:
 
 LABEL_16:
 
-    v3 = v10;
+    animationCopy = v10;
   }
 }
 
-+ (void)_addSystemPostAnimationAction:(id)a3
++ (void)_addSystemPostAnimationAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   v4 = __currentViewAnimationState;
-  v11 = v3;
+  v11 = actionCopy;
   if (__currentViewAnimationState)
   {
     v4 = *(__currentViewAnimationState + 32);
@@ -2072,74 +2072,74 @@ LABEL_16:
   }
 }
 
-- (id)_createDeferredAnimationForKey:(id)a3 ignoringKeyFrames:(BOOL)a4
+- (id)_createDeferredAnimationForKey:(id)key ignoringKeyFrames:(BOOL)frames
 {
   v4 = objc_alloc_init(_UIViewDeferredBasicAnimation);
 
   return v4;
 }
 
-- (id)_deferredAnimationForView:(id)a3 key:(id)a4 ignoringKeyFrames:(BOOL)a5
+- (id)_deferredAnimationForView:(id)view key:(id)key ignoringKeyFrames:(BOOL)frames
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  framesCopy = frames;
+  viewCopy = view;
+  keyCopy = key;
   viewToDeferredAnimationsMap = self->_viewToDeferredAnimationsMap;
   if (!viewToDeferredAnimationsMap)
   {
-    v11 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v12 = self->_viewToDeferredAnimationsMap;
-    self->_viewToDeferredAnimationsMap = v11;
+    self->_viewToDeferredAnimationsMap = strongToStrongObjectsMapTable;
 
     viewToDeferredAnimationsMap = self->_viewToDeferredAnimationsMap;
   }
 
-  v13 = [(NSMapTable *)viewToDeferredAnimationsMap objectForKey:v8];
+  v13 = [(NSMapTable *)viewToDeferredAnimationsMap objectForKey:viewCopy];
   if (!v13)
   {
     v13 = objc_opt_new();
-    [(NSMapTable *)self->_viewToDeferredAnimationsMap setObject:v13 forKey:v8];
+    [(NSMapTable *)self->_viewToDeferredAnimationsMap setObject:v13 forKey:viewCopy];
   }
 
-  v14 = [v13 objectForKeyedSubscript:v9];
+  v14 = [v13 objectForKeyedSubscript:keyCopy];
   if (!v14)
   {
-    v14 = [(UIViewAnimationState *)self _createDeferredAnimationForKey:v9 ignoringKeyFrames:v5];
-    [v14 setKey:v9];
+    v14 = [(UIViewAnimationState *)self _createDeferredAnimationForKey:keyCopy ignoringKeyFrames:framesCopy];
+    [v14 setKey:keyCopy];
     [v14 setDuration:self->_duration];
-    v15 = [v8 _initialValueForKey:v9];
+    v15 = [viewCopy _initialValueForKey:keyCopy];
     [v14 setInitialValue:v15];
 
     [v14 setRepeatCount:self->_repeatCount];
     [v14 setAutoreverses:(*(self + 172) >> 3) & 1];
-    [v13 setObject:v14 forKeyedSubscript:v9];
+    [v13 setObject:v14 forKeyedSubscript:keyCopy];
   }
 
   return v14;
 }
 
-- (BOOL)_hasDeferredAnimationForView:(id)a3 key:(id)a4
+- (BOOL)_hasDeferredAnimationForView:(id)view key:(id)key
 {
   viewToDeferredAnimationsMap = self->_viewToDeferredAnimationsMap;
-  v6 = a4;
-  v7 = [(NSMapTable *)viewToDeferredAnimationsMap objectForKey:a3];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  v7 = [(NSMapTable *)viewToDeferredAnimationsMap objectForKey:view];
+  v8 = [v7 objectForKeyedSubscript:keyCopy];
 
   return v8 != 0;
 }
 
-- (id)_updateAnimationFrameWithAnimationProperties:(id)a3
+- (id)_updateAnimationFrameWithAnimationProperties:(id)properties
 {
-  v4 = a3;
-  if (!v4)
+  propertiesCopy = properties;
+  if (!propertiesCopy)
   {
-    v4 = objc_alloc_init(_UIViewAnimationFrame);
+    propertiesCopy = objc_alloc_init(_UIViewAnimationFrame);
   }
 
-  [(_UIViewAnimationFrame *)v4 setStartTime:0.0];
-  [(_UIViewAnimationFrame *)v4 setDuration:self->_duration];
+  [(_UIViewAnimationFrame *)propertiesCopy setStartTime:0.0];
+  [(_UIViewAnimationFrame *)propertiesCopy setDuration:self->_duration];
 
-  return v4;
+  return propertiesCopy;
 }
 
 void __59__UIViewAnimationState__runConstraintBasedLayoutAnimations__block_invoke(uint64_t a1)
@@ -2282,16 +2282,16 @@ void __59__UIViewAnimationState__runConstraintBasedLayoutAnimations__block_invok
   [v13 layoutIfNeeded];
 }
 
-- (void)_setAlongsideAnimations:(id)a3
+- (void)_setAlongsideAnimations:(id)animations
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(animations);
   alongsideAnimations = self->_alongsideAnimations;
   self->_alongsideAnimations = v4;
 }
 
-- (BOOL)_addCompletionWithPosition:(id)a3
+- (BOOL)_addCompletionWithPosition:(id)position
 {
-  v4 = a3;
+  positionCopy = position;
   addedCompletions = self->_addedCompletions;
   if (!addedCompletions)
   {
@@ -2302,31 +2302,31 @@ void __59__UIViewAnimationState__runConstraintBasedLayoutAnimations__block_invok
     addedCompletions = self->_addedCompletions;
   }
 
-  v8 = [v4 copy];
+  v8 = [positionCopy copy];
   [(NSMutableArray *)addedCompletions addObject:v8];
 
   return 1;
 }
 
-- (BOOL)_addCompletion:(id)a3
+- (BOOL)_addCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__UIViewAnimationState__addCompletion___block_invoke;
   v7[3] = &unk_1E712AF10;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   LOBYTE(self) = [(UIViewAnimationState *)self _addCompletionWithPosition:v7];
 
   return self;
 }
 
-- (void)setAnimationAttributes:(id)a3 skipDelegateAssignment:(BOOL)a4 customCurve:(id)a5
+- (void)setAnimationAttributes:(id)attributes skipDelegateAssignment:(BOOL)assignment customCurve:(id)curve
 {
-  v41 = a3;
-  v8 = a5;
-  if (!v41)
+  attributesCopy = attributes;
+  curveCopy = curve;
+  if (!attributesCopy)
   {
     goto LABEL_41;
   }
@@ -2345,7 +2345,7 @@ void __59__UIViewAnimationState__runConstraintBasedLayoutAnimations__block_invok
   {
 
     v12 = 0;
-    v8 = 0;
+    curveCopy = 0;
     duration = *&_UIViewDefaultSpringDuration;
     curve = 3;
   }
@@ -2353,15 +2353,15 @@ void __59__UIViewAnimationState__runConstraintBasedLayoutAnimations__block_invok
   else if (v10 != 1.0 && duration > 0.001)
   {
     v14 = [UIViewPropertyAnimator _getPropertyAnimationForState:self];
-    v15 = v41;
+    v15 = attributesCopy;
     if (v14)
     {
       [v14 _drag];
       v11 = 1.0;
       v17 = 1.0 / v16;
       *&v17 = v17;
-      [v41 setSpeed:v17];
-      v15 = v41;
+      [attributesCopy setSpeed:v17];
+      v15 = attributesCopy;
     }
 
     v18 = v15;
@@ -2391,7 +2391,7 @@ void __59__UIViewAnimationState__runConstraintBasedLayoutAnimations__block_invok
   frameInterval = self->_frameInterval;
   if (frameInterval > 0.0)
   {
-    [v41 setFrameInterval:self->_frameInterval];
+    [attributesCopy setFrameInterval:self->_frameInterval];
   }
 
   if (!CAFrameRateRangeIsEqualToRange(self->_preferredFrameRateRange, *MEMORY[0x1E69792B8]))
@@ -2399,52 +2399,52 @@ void __59__UIViewAnimationState__runConstraintBasedLayoutAnimations__block_invok
     *&v27 = self->_preferredFrameRateRange.minimum;
     *&v28 = self->_preferredFrameRateRange.maximum;
     *&v29 = self->_preferredFrameRateRange.preferred;
-    [v41 setPreferredFrameRateRange:{v27, v28, v29}];
+    [attributesCopy setPreferredFrameRateRange:{v27, v28, v29}];
     updateReason = self->_updateReason;
     goto LABEL_23;
   }
 
-  v30 = v41;
+  v30 = attributesCopy;
   if (frameInterval <= 0.0)
   {
     LODWORD(v28) = 1123024896;
     LODWORD(v27) = 30.0;
     LODWORD(v29) = 1123024896;
-    [v41 setPreferredFrameRateRange:{v27, v28, v29}];
+    [attributesCopy setPreferredFrameRateRange:{v27, v28, v29}];
     updateReason = 1048609;
 LABEL_23:
-    [v41 setHighFrameRateReason:updateReason];
-    v30 = v41;
+    [attributesCopy setHighFrameRateReason:updateReason];
+    v30 = attributesCopy;
   }
 
   [v30 setDuration:duration];
-  v36 = v8;
-  if (v8 || (v36 = v12) != 0)
+  v36 = curveCopy;
+  if (curveCopy || (v36 = v12) != 0)
   {
-    [v41 setTimingFunction:v36];
+    [attributesCopy setTimingFunction:v36];
   }
 
   else
   {
     v40 = _UIGetAnimationCurveSpline(curve, v32, v33, v34, v35);
-    [v41 setTimingFunction:v40];
+    [attributesCopy setTimingFunction:v40];
   }
 
   delay = self->_delay;
   start = self->_start;
   if (delay > 0.0 && start == 0.0)
   {
-    [v41 setBeginTime:v11 * delay];
-    [v41 setBeginTimeMode:*MEMORY[0x1E69795C0]];
+    [attributesCopy setBeginTime:v11 * delay];
+    [attributesCopy setBeginTimeMode:*MEMORY[0x1E69795C0]];
 LABEL_32:
-    v39 = v41;
+    v39 = attributesCopy;
     goto LABEL_33;
   }
 
-  v39 = v41;
+  v39 = attributesCopy;
   if (start > 0.0)
   {
-    [v41 setBeginTime:v11 * delay + start];
+    [attributesCopy setBeginTime:v11 * delay + start];
     goto LABEL_32;
   }
 
@@ -2452,17 +2452,17 @@ LABEL_33:
   [v39 setFillMode:*MEMORY[0x1E69797E0]];
   if (self->_repeatCount > 0.0)
   {
-    [v41 setRepeatCount:?];
+    [attributesCopy setRepeatCount:?];
   }
 
   if ((*(self + 172) & 8) != 0)
   {
-    [v41 setAutoreverses:1];
+    [attributesCopy setAutoreverses:1];
   }
 
-  if (!a4)
+  if (!assignment)
   {
-    [v41 setDelegate:self];
+    [attributesCopy setDelegate:self];
     [(UIViewAnimationState *)self _incrementDidEndCount];
     if (self->_didEndCount == 1)
     {
@@ -2473,15 +2473,15 @@ LABEL_33:
 LABEL_41:
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   if ((*(self + 172) & 1) == 0 && !self->_animationDidStopSent && !self->_animationDidStopForced)
   {
     *(self + 172) |= 1u;
     if (self->_delegate)
     {
-      v10 = v4;
+      v10 = startCopy;
       context = self->_context;
       if (!self->_willStartSelector)
       {
@@ -2493,7 +2493,7 @@ LABEL_41:
         else
         {
           v8 = objc_opt_respondsToSelector();
-          v4 = v10;
+          startCopy = v10;
           if ((v8 & 1) == 0)
           {
             goto LABEL_16;
@@ -2503,12 +2503,12 @@ LABEL_41:
         }
 
 LABEL_15:
-        v4 = v10;
+        startCopy = v10;
         goto LABEL_16;
       }
 
       v6 = objc_opt_respondsToSelector();
-      v4 = v10;
+      startCopy = v10;
       if (v6)
       {
         if (self->_willStartSelector)
@@ -2533,18 +2533,18 @@ LABEL_16:
     nextState = self->_nextState;
     if (nextState)
     {
-      v11 = v4;
-      [(UIViewAnimationState *)nextState animationDidStart:v4];
-      v4 = v11;
+      v11 = startCopy;
+      [(UIViewAnimationState *)nextState animationDidStart:startCopy];
+      startCopy = v11;
     }
   }
 }
 
-- (void)sendDelegateAnimationDidStop:(id)a3 finished:(BOOL)a4
+- (void)sendDelegateAnimationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  stopCopy = stop;
   if (self->_delegate)
   {
     if (self->_didEndSelector)
@@ -2575,7 +2575,7 @@ LABEL_16:
     {
 LABEL_7:
       animationID = self->_animationID;
-      v11 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+      v11 = [MEMORY[0x1E696AD98] numberWithBool:finishedCopy];
       [delegate didEndSelector];
 
       goto LABEL_20;
@@ -2586,7 +2586,7 @@ LABEL_7:
     if (v12)
     {
       v14 = self->_animationID;
-      v15 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+      v15 = [MEMORY[0x1E696AD98] numberWithBool:finishedCopy];
       [v13 performSelector:sel_animationDidStop_finished_ withObject:v14 withObject:v15];
     }
 
@@ -2676,18 +2676,18 @@ LABEL_20:
   [v31 postNotificationName:@"UIViewAnimationDidStopInternalNotification" object:self userInfo:v30];
 }
 
-- (void)sendDelegateDidStopManually:(BOOL)a3
+- (void)sendDelegateDidStopManually:(BOOL)manually
 {
   if (!self->_animationDidStopSent && !self->_animationDidStopForced)
   {
-    v4 = a3;
+    manuallyCopy = manually;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [self->_delegate _setForcingImmediateCompletion:1];
     }
 
-    [(UIViewAnimationState *)self sendDelegateAnimationDidStop:0 finished:v4];
+    [(UIViewAnimationState *)self sendDelegateAnimationDidStop:0 finished:manuallyCopy];
     self->_animationDidStopForced = 1;
     if (self->_belongsToTrackingAnimator)
     {
@@ -2695,16 +2695,16 @@ LABEL_20:
       if (nextState)
       {
 
-        [(UIViewAnimationState *)nextState sendDelegateDidStopManually:v4];
+        [(UIViewAnimationState *)nextState sendDelegateDidStopManually:manuallyCopy];
       }
     }
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v14 = a3;
+  finishedCopy = finished;
+  stopCopy = stop;
   belongsToTrackingAnimator = self->_belongsToTrackingAnimator;
   v7 = self->_nextState;
   if (!self->_animationDidStopSent)
@@ -2718,13 +2718,13 @@ LABEL_20:
         self->_animationDidStopSent = 1;
         if (!self->_animationDidStopForced)
         {
-          [(UIViewAnimationState *)self sendDelegateAnimationDidStop:v14 finished:v4];
+          [(UIViewAnimationState *)self sendDelegateAnimationDidStop:stopCopy finished:finishedCopy];
         }
 
         if (v8 && (*(self + 172) & 0x80000000) == 0 && ([v8 isInterruptible] & 1) == 0)
         {
-          v10 = [v8 _viewAnimationState];
-          [v10 _animationDidStopWithNilAnimationFinished:v4];
+          _viewAnimationState = [v8 _viewAnimationState];
+          [_viewAnimationState _animationDidStopWithNilAnimationFinished:finishedCopy];
         }
 
         delegate = self->_delegate;
@@ -2743,7 +2743,7 @@ LABEL_20:
 
         if (WeakRetained)
         {
-          [(UIViewAnimationState *)self sendDelegateAnimationDidStop:v14 finished:v4];
+          [(UIViewAnimationState *)self sendDelegateAnimationDidStop:stopCopy finished:finishedCopy];
         }
       }
     }
@@ -2751,13 +2751,13 @@ LABEL_20:
 
   if (belongsToTrackingAnimator && v7 != 0)
   {
-    [(UIViewAnimationState *)v7 animationDidStop:v14 finished:v4];
+    [(UIViewAnimationState *)v7 animationDidStop:stopCopy finished:finishedCopy];
   }
 }
 
-- (void)_setFinishedPosition:(int64_t)a3
+- (void)_setFinishedPosition:(int64_t)position
 {
-  self->_finishedPosition = a3;
+  self->_finishedPosition = position;
   if (self->_belongsToTrackingAnimator)
   {
     nextState = self->_nextState;
@@ -2780,10 +2780,10 @@ LABEL_20:
   return [delegate _allowsHitTesting];
 }
 
-- (void)_acceptEarlyAnimationCutoff:(id)a3
+- (void)_acceptEarlyAnimationCutoff:(id)cutoff
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cutoffCopy = cutoff;
   if (!self->_animationDidStopSent && self->_allowUserInteractionToCutOffEndOfAnimation)
   {
     self->_animationDidStopSent = 1;
@@ -2808,7 +2808,7 @@ LABEL_20:
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v37 + 1) + 8 * i) _acceptEarlyAnimationCutoff:v4];
+          [*(*(&v37 + 1) + 8 * i) _acceptEarlyAnimationCutoff:cutoffCopy];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v37 objects:v43 count:16];
@@ -2822,11 +2822,11 @@ LABEL_20:
       nextState = self->_nextState;
       if (nextState)
       {
-        [(UIViewAnimationState *)nextState _acceptEarlyAnimationCutoff:v4];
+        [(UIViewAnimationState *)nextState _acceptEarlyAnimationCutoff:cutoffCopy];
       }
     }
 
-    [qword_1EA994718 objectForKeyedSubscript:{self->_uuid, v4}];
+    [qword_1EA994718 objectForKeyedSubscript:{self->_uuid, cutoffCopy}];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -2849,9 +2849,9 @@ LABEL_20:
           v30 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v14 = self;
-          v15 = [(UIViewAnimationState *)self _trackedAnimations];
-          v16 = [v15 countByEnumeratingWithState:&v29 objects:v41 count:16];
+          selfCopy = self;
+          _trackedAnimations = [(UIViewAnimationState *)self _trackedAnimations];
+          v16 = [_trackedAnimations countByEnumeratingWithState:&v29 objects:v41 count:16];
           if (v16)
           {
             v17 = v16;
@@ -2862,7 +2862,7 @@ LABEL_20:
               {
                 if (*v30 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(_trackedAnimations);
                 }
 
                 v20 = *(*(&v29 + 1) + 8 * k);
@@ -2871,14 +2871,14 @@ LABEL_20:
                 [v22 removeAnimationForKey:v21];
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v29 objects:v41 count:16];
+              v17 = [_trackedAnimations countByEnumeratingWithState:&v29 objects:v41 count:16];
             }
 
             while (v17);
           }
 
           [v13 _incrementDidEndCount];
-          self = v14;
+          self = selfCopy;
         }
 
         v28 = [obj countByEnumeratingWithState:&v33 objects:v42 count:16];
@@ -2887,7 +2887,7 @@ LABEL_20:
       while (v28);
     }
 
-    v4 = v25;
+    cutoffCopy = v25;
     [(UIViewAnimationState *)self sendDelegateAnimationDidStop:v25 finished:1];
     delegate = self->_delegate;
     self->_delegate = 0;
@@ -2900,13 +2900,13 @@ LABEL_20:
   }
 }
 
-- (void)_untrackAnimationsWithIdentifier:(id)a3 keyPath:(id)a4 inLayer:(id)a5 removeFromLayer:(BOOL)a6
+- (void)_untrackAnimationsWithIdentifier:(id)identifier keyPath:(id)path inLayer:(id)layer removeFromLayer:(BOOL)fromLayer
 {
-  v29 = a6;
+  fromLayerCopy = fromLayer;
   v42 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v10 = a4;
-  v31 = a5;
+  identifierCopy = identifier;
+  pathCopy = path;
+  layerCopy = layer;
   [qword_1EA994718 objectForKeyedSubscript:self->_uuid];
   v36 = 0u;
   v37 = 0u;
@@ -2927,13 +2927,13 @@ LABEL_20:
         }
 
         v28 = v11;
-        v12 = [*(*(&v36 + 1) + 8 * v11) _trackedAnimations];
+        _trackedAnimations = [*(*(&v36 + 1) + 8 * v11) _trackedAnimations];
         v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v13 = v12;
+        v13 = _trackedAnimations;
         v14 = [v13 countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (v14)
         {
@@ -2953,18 +2953,18 @@ LABEL_20:
               isKindOfClass = objc_opt_isKindOfClass();
               if (isKindOfClass)
               {
-                v20 = [v18 keyPath];
-                if ([v20 isEqualToString:v10])
+                keyPath = [v18 keyPath];
+                if ([keyPath isEqualToString:pathCopy])
                 {
 
 LABEL_22:
                   v6 = objc_getAssociatedObject(v18, &unk_1EA9946CC);
-                  if (v6 == v31)
+                  if (v6 == layerCopy)
                   {
                     v23 = objc_getAssociatedObject(v18, &unk_1EA9946CB);
-                    if (v29)
+                    if (fromLayerCopy)
                     {
-                      [v31 removeAnimationForKey:v23];
+                      [layerCopy removeAnimationForKey:v23];
                     }
 
                     objc_setAssociatedObject(v18, &unk_1EA9946CB, 0, 1);
@@ -2974,21 +2974,21 @@ LABEL_22:
 
 LABEL_26:
 
-                  v6 = v20;
+                  v6 = keyPath;
                   continue;
                 }
 
-                v6 = v20;
+                v6 = keyPath;
               }
 
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v21 = [v10 isEqualToString:@"transition"];
+                v21 = [pathCopy isEqualToString:@"transition"];
                 v22 = v21;
                 if ((isKindOfClass & 1) == 0)
                 {
-                  v20 = v6;
+                  keyPath = v6;
                   if (!v21)
                   {
                     continue;
@@ -2997,7 +2997,7 @@ LABEL_26:
                   goto LABEL_22;
                 }
 
-                v20 = v6;
+                keyPath = v6;
                 if (v22)
                 {
                   goto LABEL_22;
@@ -3006,7 +3006,7 @@ LABEL_26:
 
               else
               {
-                v20 = v6;
+                keyPath = v6;
                 if (isKindOfClass)
                 {
                   goto LABEL_26;
@@ -3036,13 +3036,13 @@ LABEL_26:
   }
 }
 
-- (void)_removeAnimationStateFromTrackingMap:(BOOL)a3 disableTrackingIfNeeded:(BOOL)a4
+- (void)_removeAnimationStateFromTrackingMap:(BOOL)map disableTrackingIfNeeded:(BOOL)needed
 {
-  v4 = a3;
+  mapCopy = map;
   v21 = *MEMORY[0x1E69E9840];
   if (self->_uuid)
   {
-    v15 = a4;
+    neededCopy = needed;
     v6 = [qword_1EA994718 objectForKey:?];
     v16 = 0u;
     v17 = 0u;
@@ -3077,10 +3077,10 @@ LABEL_26:
     }
 
     [(NSMutableArray *)self->_trackedAnimations removeAllObjects];
-    if (v4)
+    if (mapCopy)
     {
       [v6 removeObject:self];
-      if (v15 && ![v6 count])
+      if (neededCopy && ![v6 count])
       {
         [UIView _disableAnimationTracking:self->_uuid clearTrackedAnimations:0];
       }
@@ -3091,33 +3091,33 @@ LABEL_26:
   }
 }
 
-- (void)_addAnimationStateForTracking:(id)a3
+- (void)_addAnimationStateForTracking:(id)tracking
 {
-  v4 = a3;
-  v6 = [qword_1EA994718 objectForKey:v4];
+  trackingCopy = tracking;
+  v6 = [qword_1EA994718 objectForKey:trackingCopy];
   [v6 addObject:self];
   uuid = self->_uuid;
-  self->_uuid = v4;
+  self->_uuid = trackingCopy;
 }
 
-- (void)_trackObject:(id)a3 withAnimationPropertyName:(id)a4 inLayer:(id)a5
+- (void)_trackObject:(id)object withAnimationPropertyName:(id)name inLayer:(id)layer
 {
-  v8 = a4;
-  object = a3;
-  objc_setAssociatedObject(object, &unk_1EA9946CC, a5, 1);
-  objc_setAssociatedObject(object, &unk_1EA9946CB, v8, 1);
+  nameCopy = name;
+  object = object;
+  objc_setAssociatedObject(object, &unk_1EA9946CC, layer, 1);
+  objc_setAssociatedObject(object, &unk_1EA9946CB, nameCopy, 1);
 
   [(NSMutableArray *)self->_trackedAnimations addObject:object];
 }
 
-+ (id)originalAnimationForKeyPath:(id)a3 inLayer:(id)a4
++ (id)originalAnimationForKeyPath:(id)path inLayer:(id)layer
 {
-  v5 = a3;
-  v6 = objc_getAssociatedObject(a4, &unk_1EA9946C9);
+  pathCopy = path;
+  v6 = objc_getAssociatedObject(layer, &unk_1EA9946C9);
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 objectForKeyedSubscript:v5];
+    v8 = [v6 objectForKeyedSubscript:pathCopy];
   }
 
   else
@@ -3128,19 +3128,19 @@ LABEL_26:
   return v8;
 }
 
-- (void)_trackAnimation:(id)a3 nonAdditiveAnimation:(id)a4 withAnimationKey:(id)a5 forKeyPath:(id)a6 inLayer:(id)a7
+- (void)_trackAnimation:(id)animation nonAdditiveAnimation:(id)additiveAnimation withAnimationKey:(id)key forKeyPath:(id)path inLayer:(id)layer
 {
-  v59 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  animationCopy = animation;
+  additiveAnimationCopy = additiveAnimation;
+  keyCopy = key;
+  pathCopy = path;
+  layerCopy = layer;
   if ([(UIViewAnimationState *)self _isTrackingEnabled])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      if (!v13 || !v14)
+      if (!keyCopy || !pathCopy)
       {
         goto LABEL_58;
       }
@@ -3151,19 +3151,19 @@ LABEL_10:
       isKindOfClass = objc_opt_isKindOfClass();
       if (!v17 || (v19 = isKindOfClass, objc_opt_class(), ((objc_opt_isKindOfClass() | v19) & 1) == 0))
       {
-        if (v12)
+        if (additiveAnimationCopy)
         {
-          v24 = objc_getAssociatedObject(v15, &unk_1EA9946C9);
+          v24 = objc_getAssociatedObject(layerCopy, &unk_1EA9946C9);
           if (!v24)
           {
             v24 = objc_opt_new();
-            objc_setAssociatedObject(v15, &unk_1EA9946C9, v24, 1);
+            objc_setAssociatedObject(layerCopy, &unk_1EA9946C9, v24, 1);
           }
 
-          [v24 setObject:v12 forKeyedSubscript:v14];
+          [v24 setObject:additiveAnimationCopy forKeyedSubscript:pathCopy];
         }
 
-        v22 = v12;
+        v22 = additiveAnimationCopy;
         if (!v17)
         {
           goto LABEL_57;
@@ -3172,7 +3172,7 @@ LABEL_10:
         goto LABEL_54;
       }
 
-      v20 = [v17 _originalFromValueForKey:v14 inLayer:v15];
+      fromValue = [v17 _originalFromValueForKey:pathCopy inLayer:layerCopy];
       if (v19)
       {
         v21 = 0;
@@ -3180,21 +3180,21 @@ LABEL_10:
 
       else
       {
-        v21 = v59;
+        v21 = animationCopy;
       }
 
       v22 = v21;
 
-      if (v20)
+      if (fromValue)
       {
         if (v22 && [v22 isAdditive])
         {
-          v23 = [v15 animationForKey:v14];
+          v23 = [layerCopy animationForKey:pathCopy];
           if (!v23)
           {
-            if ([v14 hasPrefix:@"position"])
+            if ([pathCopy hasPrefix:@"position"])
             {
-              v23 = [v15 animationForKey:@"position.x"];
+              v23 = [layerCopy animationForKey:@"position.x"];
             }
 
             else
@@ -3203,12 +3203,12 @@ LABEL_10:
             }
           }
 
-          v36 = [v23 beginTimeMode];
-          v37 = [v36 isEqualToString:*MEMORY[0x1E6979588]];
+          beginTimeMode = [v23 beginTimeMode];
+          v37 = [beginTimeMode isEqualToString:*MEMORY[0x1E6979588]];
 
           if (v37)
           {
-            [v15 convertTime:0 fromLayer:CACurrentMediaTime()];
+            [layerCopy convertTime:0 fromLayer:CACurrentMediaTime()];
             v39 = v38;
             v40 = v58;
             [v58 beginTime];
@@ -3234,34 +3234,34 @@ LABEL_10:
             v40 = v58;
           }
 
-          [v17 _setAdditiveOffset:v13 forKey:v15 inLayer:v48];
+          [v17 _setAdditiveOffset:keyCopy forKey:layerCopy inLayer:v48];
         }
 
         goto LABEL_53;
       }
 
-      if ([v13 hasPrefix:@"UIPacingAnimationForAnimatorsKey"])
+      if ([keyCopy hasPrefix:@"UIPacingAnimationForAnimatorsKey"])
       {
-        v20 = 0;
+        fromValue = 0;
         goto LABEL_53;
       }
 
       if (v19)
       {
-        v25 = [v59 values];
-        v20 = [v25 objectAtIndex:0];
+        values = [animationCopy values];
+        fromValue = [values objectAtIndex:0];
       }
 
       else
       {
-        if (([v59 isAdditive] & 1) == 0)
+        if (([animationCopy isAdditive] & 1) == 0)
         {
-          v20 = [v59 fromValue];
+          fromValue = [animationCopy fromValue];
 LABEL_35:
-          [v17 _setOriginalFromValue:v20 forKey:v14 inLayer:v15];
+          [v17 _setOriginalFromValue:fromValue forKey:pathCopy inLayer:layerCopy];
           if ([v17 state] == 1)
           {
-            [v59 beginTime];
+            [animationCopy beginTime];
             v28 = v27;
             if (([v17 _isStarting] & 1) != 0 || (objc_msgSend(v17, "isRunning") & 1) == 0 && (objc_msgSend(v17, "fractionComplete"), v32 <= 0.001))
             {
@@ -3289,7 +3289,7 @@ LABEL_35:
               v30 = v34;
             }
 
-            [v31 _setAdditiveOffset:v13 forKey:v15 inLayer:v30];
+            [v31 _setAdditiveOffset:keyCopy forKey:layerCopy inLayer:v30];
           }
 
 LABEL_53:
@@ -3304,26 +3304,26 @@ LABEL_54:
             v55 = [MEMORY[0x1E696AD98] numberWithFloat:v54];
             [v53 setToValue:v55];
 
-            [v17 _setOriginalFromValue:v52 forKey:@"uiFractionalProgress" inLayer:v15];
-            v56 = [v17 _viewAnimationState];
-            [v56 setAnimationAttributes:v53 skipDelegateAssignment:0 customCurve:0];
+            [v17 _setOriginalFromValue:v52 forKey:@"uiFractionalProgress" inLayer:layerCopy];
+            _viewAnimationState = [v17 _viewAnimationState];
+            [_viewAnimationState setAnimationAttributes:v53 skipDelegateAssignment:0 customCurve:0];
             [v53 setRemovedOnCompletion:0];
-            v57 = UniqueAnimationKeyForLayer(v15, @"UIPacingAnimationForAnimatorsKey", 0);
-            [v15 addAnimation:v53 forKey:v57];
+            v57 = UniqueAnimationKeyForLayer(layerCopy, @"UIPacingAnimationForAnimatorsKey", 0);
+            [layerCopy addAnimation:v53 forKey:v57];
             [v17 _setAddedPacingAnimation:1 animationKey:v57];
-            [v56 _trackObject:v53 withAnimationPropertyName:v57 inLayer:v15];
+            [_viewAnimationState _trackObject:v53 withAnimationPropertyName:v57 inLayer:layerCopy];
           }
 
-          v12 = v22;
+          additiveAnimationCopy = v22;
 LABEL_57:
-          [(UIViewAnimationState *)self _trackObject:v59 withAnimationPropertyName:v13 inLayer:v15];
+          [(UIViewAnimationState *)self _trackObject:animationCopy withAnimationPropertyName:keyCopy inLayer:layerCopy];
 
           goto LABEL_58;
         }
 
-        v25 = [v15 valueForKeyPath:v14];
-        v26 = [v59 fromValue];
-        v20 = [v25 CA_addValue:v26 multipliedBy:1];
+        values = [layerCopy valueForKeyPath:pathCopy];
+        fromValue2 = [animationCopy fromValue];
+        fromValue = [values CA_addValue:fromValue2 multipliedBy:1];
       }
 
       goto LABEL_35;
@@ -3331,7 +3331,7 @@ LABEL_57:
 
     objc_opt_class();
     v16 = objc_opt_isKindOfClass();
-    if (v13 && v14 && (v16 & 1) != 0)
+    if (keyCopy && pathCopy && (v16 & 1) != 0)
     {
       goto LABEL_10;
     }

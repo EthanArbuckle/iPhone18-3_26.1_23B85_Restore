@@ -1,17 +1,17 @@
 @interface CFPrefsSuiteSearchListSource
-- (void)handleChangeNotificationForDomainIdentifier:(__CFString *)a3 isRemote:(BOOL)a4;
+- (void)handleChangeNotificationForDomainIdentifier:(__CFString *)identifier isRemote:(BOOL)remote;
 @end
 
 @implementation CFPrefsSuiteSearchListSource
 
-- (void)handleChangeNotificationForDomainIdentifier:(__CFString *)a3 isRemote:(BOOL)a4
+- (void)handleChangeNotificationForDomainIdentifier:(__CFString *)identifier isRemote:(BOOL)remote
 {
   v7 = *MEMORY[0x1E69E9840];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __85__CFPrefsSuiteSearchListSource_handleChangeNotificationForDomainIdentifier_isRemote___block_invoke;
   v5[3] = &__block_descriptor_33_e8_v16__0_8l;
-  v6 = a4;
+  remoteCopy = remote;
   [(CFPrefsSource *)self forEachObserver:v5];
   v4 = *MEMORY[0x1E69E9840];
 }

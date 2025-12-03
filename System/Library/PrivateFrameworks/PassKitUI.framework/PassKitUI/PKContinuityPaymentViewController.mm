@@ -1,122 +1,122 @@
 @interface PKContinuityPaymentViewController
 - (BOOL)_updateActiveConstraints;
-- (BOOL)paymentAuthorizationStateMachine:(id)a3 didTransitionFromState:(unint64_t)a4 toState:(unint64_t)a5 withParam:(id)a6;
-- (BOOL)paymentPass:(id *)a3 paymentApplication:(id *)a4 fromAID:(id)a5 selectedPaymentMethodType:(unint64_t)a6;
-- (CGRect)_physicalButtonRectForCoordinateSpace:(id)a3;
-- (PKContinuityPaymentViewController)initWithRemotePaymentRequest:(id)a3;
+- (BOOL)paymentAuthorizationStateMachine:(id)machine didTransitionFromState:(unint64_t)state toState:(unint64_t)toState withParam:(id)param;
+- (BOOL)paymentPass:(id *)pass paymentApplication:(id *)application fromAID:(id)d selectedPaymentMethodType:(unint64_t)type;
+- (CGRect)_physicalButtonRectForCoordinateSpace:(id)space;
+- (PKContinuityPaymentViewController)initWithRemotePaymentRequest:(id)request;
 - (PKPaymentAuthorizationHostProtocol)delegate;
-- (id)_evaluationRequestWithHasInitialAuthenticatorState:(BOOL)a3 initialAuthenticatorState:(unint64_t)a4;
-- (id)_formattedDateRangeWithStartDate:(id)a3 endDate:(id)a4;
+- (id)_evaluationRequestWithHasInitialAuthenticatorState:(BOOL)state initialAuthenticatorState:(unint64_t)authenticatorState;
+- (id)_formattedDateRangeWithStartDate:(id)date endDate:(id)endDate;
 - (int64_t)_authenticatorPolicy;
-- (int64_t)_progressStateForAuthenticationWithBiometricFailure:(BOOL)a3;
+- (int64_t)_progressStateForAuthenticationWithBiometricFailure:(BOOL)failure;
 - (void)_cancelPassphrasePressed;
 - (void)_didCancel;
-- (void)_didFailWithError:(id)a3;
-- (void)_didFailWithFatalError:(id)a3;
-- (void)_didSucceedWithAuthorizationStateParam:(id)a3;
-- (void)_invalidPaymentDataWithParam:(id)a3;
+- (void)_didFailWithError:(id)error;
+- (void)_didFailWithFatalError:(id)error;
+- (void)_didSucceedWithAuthorizationStateParam:(id)param;
+- (void)_invalidPaymentDataWithParam:(id)param;
 - (void)_layoutAnimated;
-- (void)_processClientCallback:(id)a3;
+- (void)_processClientCallback:(id)callback;
 - (void)_resetAndScheduleTimeout;
-- (void)_resumeAuthenticationWithPreviousError:(id)a3;
-- (void)_setAuthenticating:(BOOL)a3;
-- (void)_setPasscodeViewController:(id)a3;
-- (void)_setPassphraseViewController:(id)a3;
-- (void)_setUserIntentRequired:(BOOL)a3;
-- (void)_startEvaluationWithHasInitialAuthenticatorState:(BOOL)a3 initialAuthenticatorState:(unint64_t)a4;
+- (void)_resumeAuthenticationWithPreviousError:(id)error;
+- (void)_setAuthenticating:(BOOL)authenticating;
+- (void)_setPasscodeViewController:(id)controller;
+- (void)_setPassphraseViewController:(id)controller;
+- (void)_setUserIntentRequired:(BOOL)required;
+- (void)_startEvaluationWithHasInitialAuthenticatorState:(BOOL)state initialAuthenticatorState:(unint64_t)authenticatorState;
 - (void)_suspendAuthentication;
 - (void)_timeoutFired;
 - (void)_updateCardView;
 - (void)_updateCoachingState;
-- (void)_updateFootnoteLabelWithTotalSummaryItem:(id)a3;
-- (void)_updatePendingTransaction:(id)a3 withAuthorizationStateParam:(id)a4;
-- (void)_updatePriceLabelWithTotalSummaryItem:(id)a3;
-- (void)_updateProgressStateIfAuthenticatingWithBiometricFailure:(BOOL)a3;
+- (void)_updateFootnoteLabelWithTotalSummaryItem:(id)item;
+- (void)_updatePendingTransaction:(id)transaction withAuthorizationStateParam:(id)param;
+- (void)_updatePriceLabelWithTotalSummaryItem:(id)item;
+- (void)_updateProgressStateIfAuthenticatingWithBiometricFailure:(BOOL)failure;
 - (void)_updateUserIntentRequired;
 - (void)_updateUserIntentStyle;
-- (void)authenticator:(id)a3 didTransitionToCoachingState:(int64_t)a4;
-- (void)authenticator:(id)a3 didTransitionToEvaluationStateWithEvent:(id)a4;
-- (void)authorizationFooterViewDidChangeConstraints:(id)a3;
-- (void)authorizationFooterViewPasscodeButtonPressed:(id)a3;
-- (void)cancelPressed:(id)a3;
+- (void)authenticator:(id)authenticator didTransitionToCoachingState:(int64_t)state;
+- (void)authenticator:(id)authenticator didTransitionToEvaluationStateWithEvent:(id)event;
+- (void)authorizationFooterViewDidChangeConstraints:(id)constraints;
+- (void)authorizationFooterViewPasscodeButtonPressed:(id)pressed;
+- (void)cancelPressed:(id)pressed;
 - (void)dealloc;
 - (void)dismissPasscodeViewController;
 - (void)dismissPassphraseViewController;
 - (void)invalidate;
 - (void)loadView;
-- (void)presentPasscodeViewController:(id)a3 completionHandler:(id)a4 reply:(id)a5;
-- (void)presentPassphraseViewController:(id)a3 completionHandler:(id)a4 reply:(id)a5;
-- (void)setProgressState:(int64_t)a3 string:(id)a4 animated:(BOOL)a5 withCompletion:(id)a6;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updatePaymentWithClientUpdate:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)presentPasscodeViewController:(id)controller completionHandler:(id)handler reply:(id)reply;
+- (void)presentPassphraseViewController:(id)controller completionHandler:(id)handler reply:(id)reply;
+- (void)setProgressState:(int64_t)state string:(id)string animated:(BOOL)animated withCompletion:(id)completion;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updatePaymentWithClientUpdate:(id)update;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PKContinuityPaymentViewController
 
-- (PKContinuityPaymentViewController)initWithRemotePaymentRequest:(id)a3
+- (PKContinuityPaymentViewController)initWithRemotePaymentRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v40.receiver = self;
   v40.super_class = PKContinuityPaymentViewController;
   v6 = [(PKContinuityPaymentViewController *)&v40 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_remoteRequest, a3);
+    objc_storeStrong(&v6->_remoteRequest, request);
     v8 = objc_alloc_init(MEMORY[0x1E69BC740]);
     authenticator = v7->_authenticator;
     v7->_authenticator = v8;
 
     [(PKAuthenticator *)v7->_authenticator setDelegate:v7];
-    v10 = [MEMORY[0x1E69B8EF8] sharedService];
-    v11 = [v10 context];
-    v12 = [v11 configuration];
-    v13 = [v12 contactFormatConfiguration];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    context = [mEMORY[0x1E69B8EF8] context];
+    configuration = [context configuration];
+    contactFormatConfiguration = [configuration contactFormatConfiguration];
 
-    v14 = [objc_alloc(MEMORY[0x1E69B8730]) initWithConfiguration:v13];
+    v14 = [objc_alloc(MEMORY[0x1E69B8730]) initWithConfiguration:contactFormatConfiguration];
     v15 = objc_alloc_init(MEMORY[0x1E69B8B88]);
     stateMachine = v7->_stateMachine;
     v7->_stateMachine = v15;
 
     [(PKPaymentAuthorizationStateMachine *)v7->_stateMachine setDelegate:v7];
     v17 = objc_alloc_init(MEMORY[0x1E69B8B68]);
-    v18 = [MEMORY[0x1E69B9000] sharedInstance];
-    [v17 setPeerPaymentService:v18];
+    mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
+    [v17 setPeerPaymentService:mEMORY[0x1E69B9000]];
 
-    v19 = [(PKRemotePaymentRequest *)v7->_remoteRequest paymentRequest];
-    [v17 setPaymentRequest:v19];
+    paymentRequest = [(PKRemotePaymentRequest *)v7->_remoteRequest paymentRequest];
+    [v17 setPaymentRequest:paymentRequest];
 
-    v20 = [(PKRemotePaymentRequest *)v7->_remoteRequest device];
-    [v17 setRemoteDevice:v20];
+    device = [(PKRemotePaymentRequest *)v7->_remoteRequest device];
+    [v17 setRemoteDevice:device];
 
     [v17 setContactFormatValidator:v14];
     [(PKPaymentAuthorizationStateMachine *)v7->_stateMachine setModel:v17];
     v21 = v7->_stateMachine;
-    v22 = [MEMORY[0x1E69B8EF8] sharedService];
-    [(PKPaymentAuthorizationStateMachine *)v21 setPaymentWebService:v22];
+    mEMORY[0x1E69B8EF8]2 = [MEMORY[0x1E69B8EF8] sharedService];
+    [(PKPaymentAuthorizationStateMachine *)v21 setPaymentWebService:mEMORY[0x1E69B8EF8]2];
 
     v23 = v7->_stateMachine;
-    v24 = [MEMORY[0x1E69B8DB8] paymentService];
-    [(PKPaymentAuthorizationStateMachine *)v23 setPaymentService:v24];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
+    [(PKPaymentAuthorizationStateMachine *)v23 setPaymentService:paymentService];
 
     v25 = v7->_stateMachine;
     v26 = objc_alloc_init(MEMORY[0x1E69B8538]);
     [(PKPaymentAuthorizationStateMachine *)v25 setAggregateDictionary:v26];
 
-    v27 = [(PKRemotePaymentRequest *)v7->_remoteRequest selectedApplicationIdentifier];
-    if (v27)
+    selectedApplicationIdentifier = [(PKRemotePaymentRequest *)v7->_remoteRequest selectedApplicationIdentifier];
+    if (selectedApplicationIdentifier)
     {
-      v28 = v27;
+      v28 = selectedApplicationIdentifier;
       v38 = 0;
       v39 = 0;
-      v29 = [(PKRemotePaymentRequest *)v7->_remoteRequest selectedApplicationIdentifier];
-      v30 = [(PKContinuityPaymentViewController *)v7 paymentPass:&v39 paymentApplication:&v38 fromAID:v29 selectedPaymentMethodType:[(PKRemotePaymentRequest *)v7->_remoteRequest selectedPaymentMethodType]];
+      selectedApplicationIdentifier2 = [(PKRemotePaymentRequest *)v7->_remoteRequest selectedApplicationIdentifier];
+      v30 = [(PKContinuityPaymentViewController *)v7 paymentPass:&v39 paymentApplication:&v38 fromAID:selectedApplicationIdentifier2 selectedPaymentMethodType:[(PKRemotePaymentRequest *)v7->_remoteRequest selectedPaymentMethodType]];
       v31 = v39;
       v32 = v38;
 
@@ -133,16 +133,16 @@
       v31 = 0;
     }
 
-    v33 = [(PKContinuityPaymentViewController *)v7 navigationItem];
+    navigationItem = [(PKContinuityPaymentViewController *)v7 navigationItem];
     v34 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
     [v34 configureWithTransparentBackground];
-    [v33 setStandardAppearance:v34];
+    [navigationItem setStandardAppearance:v34];
     v35 = +[PKPaymentAuthorizationNavigationBar applePayBarButtonItem];
-    [v33 setLeftBarButtonItem:v35 animated:0];
+    [navigationItem setLeftBarButtonItem:v35 animated:0];
 
-    [v33 setLeftItemsSupplementBackButton:1];
+    [navigationItem setLeftItemsSupplementBackButton:1];
     v36 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v7 action:sel_cancelPressed_];
-    [v33 setRightBarButtonItem:v36 animated:0];
+    [navigationItem setRightBarButtonItem:v36 animated:0];
   }
 
   return v7;
@@ -187,10 +187,10 @@
   [(UIView *)self->_compactRegion setTranslatesAutoresizingMaskIntoConstraints:0];
   if (PKUserIntentIsAvailable())
   {
-    v13 = [(PKContinuityPaymentViewController *)self traitCollection];
-    v14 = [v13 userInterfaceStyle];
+    traitCollection = [(PKContinuityPaymentViewController *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v14 == 2)
+    if (userInterfaceStyle == 2)
     {
       v15 = 1;
     }
@@ -205,12 +205,12 @@
     self->_physicalButtonView = v16;
 
     v18 = PKLocalizedPearlString(&cfstr_InAppPaymentPu_12.isa);
-    v19 = [(PKRemotePaymentRequest *)self->_remoteRequest paymentRequest];
-    v20 = [v19 confirmationStyle];
+    paymentRequest = [(PKRemotePaymentRequest *)self->_remoteRequest paymentRequest];
+    confirmationStyle = [paymentRequest confirmationStyle];
 
-    if (v20 <= 8)
+    if (confirmationStyle <= 8)
     {
-      v21 = PKLocalizedPearlString(&off_1E8012878[v20]->isa);
+      v21 = PKLocalizedPearlString(&off_1E8012878[confirmationStyle]->isa);
 
       v18 = v21;
     }
@@ -230,25 +230,25 @@
 
   [(UILabel *)self->_requestingDeviceLabel setTextAlignment:1];
   v26 = self->_requestingDeviceLabel;
-  v27 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)v26 setBackgroundColor:v27];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)v26 setBackgroundColor:clearColor];
 
   v28 = self->_requestingDeviceLabel;
-  v29 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)v28 setTextColor:v29];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)v28 setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_requestingDeviceLabel setAlpha:0.42];
   [(UILabel *)self->_requestingDeviceLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v30 = [(PKRemotePaymentRequest *)self->_remoteRequest device];
-  v31 = [v30 deviceName];
+  device = [(PKRemotePaymentRequest *)self->_remoteRequest device];
+  deviceName = [device deviceName];
 
-  v32 = [(PKRemotePaymentRequest *)self->_remoteRequest paymentRequest];
-  v33 = [v32 paymentSummaryItems];
-  v34 = [v33 lastObject];
-  v35 = [v34 label];
+  paymentRequest2 = [(PKRemotePaymentRequest *)self->_remoteRequest paymentRequest];
+  paymentSummaryItems = [paymentRequest2 paymentSummaryItems];
+  lastObject = [paymentSummaryItems lastObject];
+  label = [lastObject label];
 
   v36 = self->_requestingDeviceLabel;
-  v37 = PKLocalizedPaymentString(&cfstr_ContinuityPaym.isa, &stru_1F3BD5BF0.isa, v31);
+  v37 = PKLocalizedPaymentString(&cfstr_ContinuityPaym.isa, &stru_1F3BD5BF0.isa, deviceName);
   [(UILabel *)v36 setText:v37];
 
   v38 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -261,15 +261,15 @@
 
   [(UILabel *)self->_requestingSiteLabel setTextAlignment:1];
   v42 = self->_requestingSiteLabel;
-  v43 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)v42 setBackgroundColor:v43];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)v42 setBackgroundColor:clearColor2];
 
   [(UILabel *)self->_requestingSiteLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v100 = v35;
-  [(UILabel *)self->_requestingSiteLabel setText:v35];
+  v100 = label;
+  [(UILabel *)self->_requestingSiteLabel setText:label];
   v44 = self->_requestingSiteLabel;
-  v45 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)v44 setTextColor:v45];
+  secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)v44 setTextColor:secondaryLabelColor2];
 
   v46 = objc_alloc_init(MEMORY[0x1E69DD250]);
   priceView = self->_priceView;
@@ -298,8 +298,8 @@
 
   [(UILabel *)self->_priceLabel setTextAlignment:1];
   v54 = self->_priceLabel;
-  v55 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)v54 setBackgroundColor:v55];
+  clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)v54 setBackgroundColor:clearColor3];
 
   [(UILabel *)self->_priceLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_priceView addSubview:self->_priceLabel];
@@ -313,41 +313,41 @@
 
   [(UILabel *)self->_footnoteLabel setTextAlignment:1];
   v60 = self->_footnoteLabel;
-  v61 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)v60 setBackgroundColor:v61];
+  clearColor4 = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)v60 setBackgroundColor:clearColor4];
 
   v62 = self->_footnoteLabel;
-  v63 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)v62 setTextColor:v63];
+  secondaryLabelColor3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)v62 setTextColor:secondaryLabelColor3];
 
   [(UILabel *)self->_footnoteLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_footnoteLabel setAlpha:0.8];
-  v64 = [(PKRemotePaymentRequest *)self->_remoteRequest paymentRequest];
-  v65 = [v64 paymentSummaryItems];
-  v66 = [v65 lastObject];
+  paymentRequest3 = [(PKRemotePaymentRequest *)self->_remoteRequest paymentRequest];
+  paymentSummaryItems2 = [paymentRequest3 paymentSummaryItems];
+  lastObject2 = [paymentSummaryItems2 lastObject];
 
-  [(PKContinuityPaymentViewController *)self _updatePriceLabelWithTotalSummaryItem:v66];
-  v99 = v66;
-  [(PKContinuityPaymentViewController *)self _updateFootnoteLabelWithTotalSummaryItem:v66];
-  v67 = [(PKRemotePaymentRequest *)self->_remoteRequest paymentRequest];
-  v68 = [v67 thumbnailURLs];
-  v69 = [v68 firstObject];
+  [(PKContinuityPaymentViewController *)self _updatePriceLabelWithTotalSummaryItem:lastObject2];
+  v99 = lastObject2;
+  [(PKContinuityPaymentViewController *)self _updateFootnoteLabelWithTotalSummaryItem:lastObject2];
+  paymentRequest4 = [(PKRemotePaymentRequest *)self->_remoteRequest paymentRequest];
+  thumbnailURLs = [paymentRequest4 thumbnailURLs];
+  firstObject = [thumbnailURLs firstObject];
 
-  v70 = [(PKRemotePaymentRequest *)self->_remoteRequest device];
-  v71 = [v70 modelIdentifier];
+  device2 = [(PKRemotePaymentRequest *)self->_remoteRequest device];
+  modelIdentifier = [device2 modelIdentifier];
 
   v72 = [PKContinuityPaymentFaviconView alloc];
   v73 = *MEMORY[0x1E695F058];
   v74 = *(MEMORY[0x1E695F058] + 8);
   v75 = *(MEMORY[0x1E695F058] + 16);
   v76 = *(MEMORY[0x1E695F058] + 24);
-  v77 = [(PKContinuityPaymentFaviconView *)v72 initWithFrame:v69 imageURL:v71 modelIdentifier:v100 merchantName:*MEMORY[0x1E695F058], v74, v75, v76];
+  v77 = [(PKContinuityPaymentFaviconView *)v72 initWithFrame:firstObject imageURL:modelIdentifier modelIdentifier:v100 merchantName:*MEMORY[0x1E695F058], v74, v75, v76];
   faviconImage = self->_faviconImage;
   self->_faviconImage = v77;
 
   v79 = self->_faviconImage;
-  v80 = [MEMORY[0x1E69DC888] clearColor];
-  [(PKContinuityPaymentFaviconView *)v79 setBackgroundColor:v80];
+  clearColor5 = [MEMORY[0x1E69DC888] clearColor];
+  [(PKContinuityPaymentFaviconView *)v79 setBackgroundColor:clearColor5];
 
   [(PKContinuityPaymentFaviconView *)self->_faviconImage setTranslatesAutoresizingMaskIntoConstraints:0];
   v81 = objc_alloc(MEMORY[0x1E69DCF90]);
@@ -366,8 +366,8 @@
   [(UIStackView *)self->_summaryContainerView setAxis:1];
   [(UIStackView *)self->_summaryContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
   v87 = [PKPaymentAuthorizationLayout alloc];
-  v88 = [(PKRemotePaymentRequest *)self->_remoteRequest paymentRequest];
-  v89 = [(PKPaymentAuthorizationLayout *)v87 initWithStyle:0 paymentRequest:v88];
+  paymentRequest5 = [(PKRemotePaymentRequest *)self->_remoteRequest paymentRequest];
+  v89 = [(PKPaymentAuthorizationLayout *)v87 initWithStyle:0 paymentRequest:paymentRequest5];
 
   v90 = [[PKPaymentAuthorizationFooterView alloc] initWithFrame:v89 layout:v73, v74, v75, v76];
   authorizationView = self->_authorizationView;
@@ -386,22 +386,22 @@
   self->_cardView = v92;
 
   [(PKContinuityPaymentViewController *)self _updateCardView];
-  v94 = [(PKContinuityPaymentViewController *)self view];
-  v95 = [MEMORY[0x1E69DC888] clearColor];
-  [v94 setBackgroundColor:v95];
+  view = [(PKContinuityPaymentViewController *)self view];
+  clearColor6 = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor6];
 
-  [v94 addSubview:self->_backdropView];
-  [v94 addSubview:self->_dimmingBackgroundView];
-  [v94 addSubview:self->_compactRegion];
+  [view addSubview:self->_backdropView];
+  [view addSubview:self->_dimmingBackgroundView];
+  [view addSubview:self->_compactRegion];
   if (self->_physicalButtonView)
   {
-    [v94 addSubview:?];
+    [view addSubview:?];
   }
 
-  [v94 addSubview:self->_requestingDeviceLabel];
-  [v94 addSubview:self->_summaryContainerView];
-  [v94 addSubview:self->_authorizationView];
-  [v94 addSubview:self->_cardView];
+  [view addSubview:self->_requestingDeviceLabel];
+  [view addSubview:self->_summaryContainerView];
+  [view addSubview:self->_authorizationView];
+  [view addSubview:self->_cardView];
   if (PKPearlIsAvailable())
   {
     v96 = 3;
@@ -415,31 +415,31 @@
   [(PKContinuityPaymentViewController *)self setProgressState:v96 string:0 animated:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKContinuityPaymentViewController;
-  [(PKContinuityPaymentViewController *)&v4 viewWillAppear:a3];
+  [(PKContinuityPaymentViewController *)&v4 viewWillAppear:appear];
   if (!self->_viewAppeared)
   {
     self->_viewAppeared = 1;
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKContinuityPaymentViewController;
-  [(PKContinuityPaymentViewController *)&v4 viewDidAppear:a3];
+  [(PKContinuityPaymentViewController *)&v4 viewDidAppear:appear];
   UIAccessibilityPostNotification(*MEMORY[0x1E69DD930], self->_authorizationView);
   [(PKContinuityPaymentViewController *)self _resetAndScheduleTimeout];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKContinuityPaymentViewController;
-  [(PKContinuityPaymentViewController *)&v4 viewWillDisappear:a3];
+  [(PKContinuityPaymentViewController *)&v4 viewWillDisappear:disappear];
   [(NSTimer *)self->_timeoutTimer invalidate];
 }
 
@@ -449,50 +449,50 @@
   v65.receiver = self;
   v65.super_class = PKContinuityPaymentViewController;
   [(PKContinuityPaymentViewController *)&v65 viewDidLoad];
-  v3 = [(PKContinuityPaymentViewController *)self view];
-  v4 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_backdropView attribute:1 relatedBy:0 toItem:v3 attribute:1 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v4];
+  view = [(PKContinuityPaymentViewController *)self view];
+  v4 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_backdropView attribute:1 relatedBy:0 toItem:view attribute:1 multiplier:1.0 constant:0.0];
+  [(UIView *)view addConstraint:v4];
 
-  v5 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_backdropView attribute:2 relatedBy:0 toItem:v3 attribute:2 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v5];
+  v5 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_backdropView attribute:2 relatedBy:0 toItem:view attribute:2 multiplier:1.0 constant:0.0];
+  [(UIView *)view addConstraint:v5];
 
-  v6 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_backdropView attribute:3 relatedBy:0 toItem:v3 attribute:3 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v6];
+  v6 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_backdropView attribute:3 relatedBy:0 toItem:view attribute:3 multiplier:1.0 constant:0.0];
+  [(UIView *)view addConstraint:v6];
 
-  v7 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_backdropView attribute:4 relatedBy:0 toItem:v3 attribute:4 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v7];
+  v7 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_backdropView attribute:4 relatedBy:0 toItem:view attribute:4 multiplier:1.0 constant:0.0];
+  [(UIView *)view addConstraint:v7];
 
-  v8 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_dimmingBackgroundView attribute:1 relatedBy:0 toItem:v3 attribute:1 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v8];
+  v8 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_dimmingBackgroundView attribute:1 relatedBy:0 toItem:view attribute:1 multiplier:1.0 constant:0.0];
+  [(UIView *)view addConstraint:v8];
 
-  v9 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_dimmingBackgroundView attribute:2 relatedBy:0 toItem:v3 attribute:2 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v9];
+  v9 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_dimmingBackgroundView attribute:2 relatedBy:0 toItem:view attribute:2 multiplier:1.0 constant:0.0];
+  [(UIView *)view addConstraint:v9];
 
-  v10 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_dimmingBackgroundView attribute:3 relatedBy:0 toItem:v3 attribute:3 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v10];
+  v10 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_dimmingBackgroundView attribute:3 relatedBy:0 toItem:view attribute:3 multiplier:1.0 constant:0.0];
+  [(UIView *)view addConstraint:v10];
 
   v11 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_compactRegion attribute:1 relatedBy:0 toItem:self->_dimmingBackgroundView attribute:1 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v11];
+  [(UIView *)view addConstraint:v11];
 
   v12 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_compactRegion attribute:2 relatedBy:0 toItem:self->_dimmingBackgroundView attribute:2 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v12];
+  [(UIView *)view addConstraint:v12];
 
   v13 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_compactRegion attribute:7 relatedBy:0 toItem:self->_dimmingBackgroundView attribute:7 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v13];
+  [(UIView *)view addConstraint:v13];
 
   v14 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_compactRegion attribute:4 relatedBy:0 toItem:self->_dimmingBackgroundView attribute:4 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v14];
+  [(UIView *)view addConstraint:v14];
 
   if (self->_physicalButtonView)
   {
-    v15 = [(UIView *)v3 coordinateSpace];
-    [(PKContinuityPaymentViewController *)self _physicalButtonRectForCoordinateSpace:v15];
+    coordinateSpace = [(UIView *)view coordinateSpace];
+    [(PKContinuityPaymentViewController *)self _physicalButtonRectForCoordinateSpace:coordinateSpace];
     MaxY = CGRectGetMaxY(v68);
 
     v17 = MEMORY[0x1E696ACD8];
     compactRegion = self->_compactRegion;
     v19 = 1.0;
-    dimmingBackgroundView = v3;
+    dimmingBackgroundView = view;
     v21 = MaxY;
   }
 
@@ -506,22 +506,22 @@
   }
 
   v22 = [v17 constraintWithItem:compactRegion attribute:3 relatedBy:0 toItem:dimmingBackgroundView attribute:3 multiplier:v19 constant:v21];
-  [(UIView *)v3 addConstraint:v22];
+  [(UIView *)view addConstraint:v22];
 
-  v23 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_requestingDeviceLabel attribute:9 relatedBy:0 toItem:v3 attribute:9 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v23];
+  v23 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_requestingDeviceLabel attribute:9 relatedBy:0 toItem:view attribute:9 multiplier:1.0 constant:0.0];
+  [(UIView *)view addConstraint:v23];
 
   v24 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_requestingDeviceLabel attribute:4 relatedBy:0 toItem:self->_dimmingBackgroundView attribute:4 multiplier:1.0 constant:-16.0];
-  [(UIView *)v3 addConstraint:v24];
+  [(UIView *)view addConstraint:v24];
 
-  v25 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_requestingDeviceLabel attribute:1 relatedBy:0 toItem:v3 attribute:1 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v25];
+  v25 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_requestingDeviceLabel attribute:1 relatedBy:0 toItem:view attribute:1 multiplier:1.0 constant:0.0];
+  [(UIView *)view addConstraint:v25];
 
-  v26 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_requestingDeviceLabel attribute:2 relatedBy:0 toItem:v3 attribute:2 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v26];
+  v26 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_requestingDeviceLabel attribute:2 relatedBy:0 toItem:view attribute:2 multiplier:1.0 constant:0.0];
+  [(UIView *)view addConstraint:v26];
 
   v27 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_summaryContainerView attribute:7 relatedBy:0 toItem:self->_dimmingBackgroundView attribute:7 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v27];
+  [(UIView *)view addConstraint:v27];
 
   v28 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_summaryContainerView attribute:9 relatedBy:0 toItem:self->_dimmingBackgroundView attribute:9 multiplier:1.0 constant:0.0];
   v67[0] = v28;
@@ -571,29 +571,29 @@
   v51 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_faviconImage attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:150.0];
   [(UIStackView *)v50 addConstraint:v51];
 
-  v52 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_cardView attribute:1 relatedBy:0 toItem:v3 attribute:1 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v52];
+  v52 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_cardView attribute:1 relatedBy:0 toItem:view attribute:1 multiplier:1.0 constant:0.0];
+  [(UIView *)view addConstraint:v52];
 
-  v53 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_cardView attribute:2 relatedBy:0 toItem:v3 attribute:2 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v53];
+  v53 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_cardView attribute:2 relatedBy:0 toItem:view attribute:2 multiplier:1.0 constant:0.0];
+  [(UIView *)view addConstraint:v53];
 
   v54 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_cardView attribute:3 relatedBy:0 toItem:self->_dimmingBackgroundView attribute:4 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v54];
+  [(UIView *)view addConstraint:v54];
 
   v55 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_cardView attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:56.0];
-  [(UIView *)v3 addConstraint:v55];
+  [(UIView *)view addConstraint:v55];
 
-  v56 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_authorizationView attribute:7 relatedBy:0 toItem:v3 attribute:7 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v56];
+  v56 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_authorizationView attribute:7 relatedBy:0 toItem:view attribute:7 multiplier:1.0 constant:0.0];
+  [(UIView *)view addConstraint:v56];
 
   v57 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_authorizationView attribute:3 relatedBy:0 toItem:self->_cardView attribute:4 multiplier:1.0 constant:0.0];
-  [(UIView *)v3 addConstraint:v57];
+  [(UIView *)view addConstraint:v57];
 
-  v58 = [(PKPaymentAuthorizationFooterView *)self->_authorizationView bottomAnchor];
-  v59 = [(UIView *)v3 safeAreaLayoutGuide];
-  v60 = [v59 bottomAnchor];
-  v61 = [v58 constraintEqualToAnchor:v60];
-  [(UIView *)v3 addConstraint:v61];
+  bottomAnchor = [(PKPaymentAuthorizationFooterView *)self->_authorizationView bottomAnchor];
+  safeAreaLayoutGuide = [(UIView *)view safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v61 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [(UIView *)view addConstraint:v61];
 
   IsAvailable = PKPearlIsAvailable();
   v63 = 257.0;
@@ -603,7 +603,7 @@
   }
 
   v64 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_authorizationView attribute:4 relatedBy:-1 toItem:self->_cardView attribute:3 multiplier:1.0 constant:v63];
-  [(UIView *)v3 addConstraint:v64];
+  [(UIView *)view addConstraint:v64];
 
   [(PKContinuityPaymentViewController *)self _updateActiveConstraints];
   [(PKPaymentAuthorizationStateMachine *)self->_stateMachine start];
@@ -611,9 +611,9 @@
 
 - (BOOL)_updateActiveConstraints
 {
-  v3 = [(PKPaymentAuthorizationFooterView *)self->_authorizationView isOffscreen];
+  isOffscreen = [(PKPaymentAuthorizationFooterView *)self->_authorizationView isOffscreen];
   v4 = 18;
-  if (v3)
+  if (isOffscreen)
   {
     v4 = 19;
   }
@@ -642,11 +642,11 @@
 
 - (void)_layoutAnimated
 {
-  v3 = [(PKContinuityPaymentViewController *)self viewIfLoaded];
-  v4 = v3;
-  if (v3)
+  viewIfLoaded = [(PKContinuityPaymentViewController *)self viewIfLoaded];
+  v4 = viewIfLoaded;
+  if (viewIfLoaded)
   {
-    [v3 setNeedsLayout];
+    [viewIfLoaded setNeedsLayout];
     if (self->_viewAppeared)
     {
       v5 = MEMORY[0x1E69DD250];
@@ -677,11 +677,11 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   if ([(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts]&& PKUserIntentIsAvailable())
   {
     v9[0] = MEMORY[0x1E69E9820];
@@ -689,21 +689,21 @@
     v9[2] = __88__PKContinuityPaymentViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
     v9[3] = &unk_1E80127E0;
     v9[4] = self;
-    [v7 animateAlongsideTransition:v9 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v9 completion:0];
   }
 
   v8.receiver = self;
   v8.super_class = PKContinuityPaymentViewController;
-  [(PKContinuityPaymentViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(PKContinuityPaymentViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = PKContinuityPaymentViewController;
-  [(PKContinuityPaymentViewController *)&v6 traitCollectionDidChange:a3];
-  v4 = [(PKContinuityPaymentViewController *)self traitCollection];
-  if ([v4 userInterfaceStyle] == 2)
+  [(PKContinuityPaymentViewController *)&v6 traitCollectionDidChange:change];
+  traitCollection = [(PKContinuityPaymentViewController *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 2)
   {
     v5 = 1;
   }
@@ -716,57 +716,57 @@
   [(LAUIPhysicalButtonView *)self->_physicalButtonView setStyle:v5];
 }
 
-- (void)setProgressState:(int64_t)a3 string:(id)a4 animated:(BOOL)a5 withCompletion:(id)a6
+- (void)setProgressState:(int64_t)state string:(id)string animated:(BOOL)animated withCompletion:(id)completion
 {
-  [(PKPaymentAuthorizationFooterView *)self->_authorizationView setState:a3 string:a4 animated:a5 withCompletion:a6];
+  [(PKPaymentAuthorizationFooterView *)self->_authorizationView setState:state string:string animated:animated withCompletion:completion];
 
   [(PKContinuityPaymentViewController *)self _updateUserIntentRequired];
 }
 
-- (void)_setAuthenticating:(BOOL)a3
+- (void)_setAuthenticating:(BOOL)authenticating
 {
-  if (self->_authenticating != a3)
+  if (self->_authenticating != authenticating)
   {
-    self->_authenticating = a3;
+    self->_authenticating = authenticating;
     [(PKContinuityPaymentViewController *)self _updateUserIntentRequired];
 
     [(PKContinuityPaymentViewController *)self _updateCoachingState];
   }
 }
 
-- (void)_setPasscodeViewController:(id)a3
+- (void)_setPasscodeViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_passcodeViewController != v5)
+  controllerCopy = controller;
+  if (self->_passcodeViewController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_passcodeViewController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_passcodeViewController, controller);
     [(PKContinuityPaymentViewController *)self _updateUserIntentRequired];
     [(PKContinuityPaymentViewController *)self _updateCoachingState];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
-- (void)_setPassphraseViewController:(id)a3
+- (void)_setPassphraseViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_passphraseViewController != v5)
+  controllerCopy = controller;
+  if (self->_passphraseViewController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_passphraseViewController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_passphraseViewController, controller);
     [(PKContinuityPaymentViewController *)self _updateUserIntentRequired];
     [(PKContinuityPaymentViewController *)self _updateCoachingState];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
 - (void)_updateUserIntentStyle
 {
-  v3 = [MEMORY[0x1E69BC740] userIntentStyle];
-  if (self->_userIntentStyle != v3)
+  userIntentStyle = [MEMORY[0x1E69BC740] userIntentStyle];
+  if (self->_userIntentStyle != userIntentStyle)
   {
-    v4 = v3;
-    self->_userIntentStyle = v3;
+    v4 = userIntentStyle;
+    self->_userIntentStyle = userIntentStyle;
     authorizationView = self->_authorizationView;
 
     [(PKPaymentAuthorizationFooterView *)authorizationView setUserIntentStyle:v4];
@@ -800,18 +800,18 @@
   }
 }
 
-- (void)_updateProgressStateIfAuthenticatingWithBiometricFailure:(BOOL)a3
+- (void)_updateProgressStateIfAuthenticatingWithBiometricFailure:(BOOL)failure
 {
   if (self->_authenticating)
   {
-    v3 = a3;
+    failureCopy = failure;
     v5 = [(PKContinuityPaymentViewController *)self _progressStateForAuthenticationWithBiometricFailure:?];
     if ([(PKPaymentAuthorizationFooterView *)self->_authorizationView state]!= v5)
     {
       [(PKContinuityPaymentViewController *)self setProgressState:v5 string:0 animated:1];
     }
 
-    if (v3)
+    if (failureCopy)
     {
 
       [(PKContinuityPaymentViewController *)self setProgressState:9 string:0 animated:1];
@@ -819,26 +819,26 @@
   }
 }
 
-- (void)_setUserIntentRequired:(BOOL)a3
+- (void)_setUserIntentRequired:(BOOL)required
 {
-  if (self->_userIntentRequired != a3)
+  if (self->_userIntentRequired != required)
   {
     v8 = v3;
-    self->_userIntentRequired = a3;
+    self->_userIntentRequired = required;
     [(LAUIPhysicalButtonView *)self->_physicalButtonView setAnimating:v4, v8, v5];
 
     [(PKContinuityPaymentViewController *)self _updateActiveConstraints];
   }
 }
 
-- (void)cancelPressed:(id)a3
+- (void)cancelPressed:(id)pressed
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "PKContinuityPaymentViewController (%{public}p): User cancelled payment", &v5, 0xCu);
   }
 
@@ -882,8 +882,8 @@
 
 - (void)_updateCardView
 {
-  v3 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
-  v4 = [v3 pass];
+  model = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
+  pass = [model pass];
 
   PKPassFrontFaceContentSize();
   PKFloatRoundToPixel();
@@ -894,41 +894,41 @@
   v32[2] = __52__PKContinuityPaymentViewController__updateCardView__block_invoke;
   v32[3] = &unk_1E8010A38;
   v32[4] = self;
-  [v7 snapshotWithPass:v4 size:v32 completion:{41.0, v6}];
+  [v7 snapshotWithPass:pass size:v32 completion:{41.0, v6}];
 
-  v8 = [v4 hasAssociatedPeerPaymentAccount];
-  if (!v8)
+  hasAssociatedPeerPaymentAccount = [pass hasAssociatedPeerPaymentAccount];
+  if (!hasAssociatedPeerPaymentAccount)
   {
-    v19 = [v4 localizedDescription];
-    v14 = [v19 pk_uppercaseStringForPreferredLocale];
+    localizedDescription = [pass localizedDescription];
+    pk_uppercaseStringForPreferredLocale = [localizedDescription pk_uppercaseStringForPreferredLocale];
 
-    v20 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
-    v9 = [v20 acceptedPaymentApplicationsForPass:v4];
+    model2 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
+    peerPaymentBalance = [model2 acceptedPaymentApplicationsForPass:pass];
 
-    v21 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
-    v16 = [v21 unavailablePaymentApplicationsForPass:v4];
+    model3 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
+    v16 = [model3 unavailablePaymentApplicationsForPass:pass];
 
-    v22 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
-    v17 = [v22 paymentApplication];
+    model4 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
+    paymentApplication = [model4 paymentApplication];
 
-    if (v17)
+    if (paymentApplication)
     {
-      v23 = [v17 displayName];
-      if (!v23 || ![v9 count])
+      displayName = [paymentApplication displayName];
+      if (!displayName || ![peerPaymentBalance count])
       {
         goto LABEL_9;
       }
 
-      v24 = [v9 count];
+      v24 = [peerPaymentBalance count];
       v25 = [v16 count] + v24;
 
       if (v25 >= 2)
       {
         v26 = MEMORY[0x1E696AEC0];
-        v23 = [v17 displayName];
-        v27 = [v26 stringWithFormat:@"%@ - %@", v14, v23];
+        displayName = [paymentApplication displayName];
+        v27 = [v26 stringWithFormat:@"%@ - %@", pk_uppercaseStringForPreferredLocale, displayName];
 
-        v14 = v27;
+        pk_uppercaseStringForPreferredLocale = v27;
 LABEL_9:
       }
     }
@@ -942,36 +942,36 @@ LABEL_9:
       v31 = v29;
     }
 
-    v18 = v31;
+    pk_uppercaseStringForPreferredLocale3 = v31;
 
     goto LABEL_13;
   }
 
-  v9 = [v4 peerPaymentBalance];
+  peerPaymentBalance = [pass peerPaymentBalance];
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [v4 localizedDescription];
-  v12 = [v11 pk_uppercaseStringForPreferredLocale];
-  v13 = [v9 minimalFormattedStringValue];
-  v14 = [v10 stringWithFormat:@"%@ - %@", v12, v13];
+  localizedDescription2 = [pass localizedDescription];
+  pk_uppercaseStringForPreferredLocale2 = [localizedDescription2 pk_uppercaseStringForPreferredLocale];
+  minimalFormattedStringValue = [peerPaymentBalance minimalFormattedStringValue];
+  pk_uppercaseStringForPreferredLocale = [v10 stringWithFormat:@"%@ - %@", pk_uppercaseStringForPreferredLocale2, minimalFormattedStringValue];
 
-  v15 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
-  v16 = [v15 itemForType:3];
+  model5 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
+  v16 = [model5 itemForType:3];
 
   if ([v16 status] != 5)
   {
-    v8 = 0;
-    v18 = 0;
+    hasAssociatedPeerPaymentAccount = 0;
+    pk_uppercaseStringForPreferredLocale3 = 0;
     goto LABEL_15;
   }
 
-  v17 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr.isa);
-  v18 = [v17 pk_uppercaseStringForPreferredLocale];
+  paymentApplication = PKLocalizedPaymentString(&cfstr_InAppPaymentEr.isa);
+  pk_uppercaseStringForPreferredLocale3 = [paymentApplication pk_uppercaseStringForPreferredLocale];
 LABEL_13:
 
 LABEL_15:
-  [(PKContinuityPaymentCardSummaryView *)self->_cardView setCardDescription:v14];
-  [(PKContinuityPaymentCardSummaryView *)self->_cardView setSubtitle:v18];
-  [(PKContinuityPaymentCardSummaryView *)self->_cardView setShowsAlert:v8];
+  [(PKContinuityPaymentCardSummaryView *)self->_cardView setCardDescription:pk_uppercaseStringForPreferredLocale];
+  [(PKContinuityPaymentCardSummaryView *)self->_cardView setSubtitle:pk_uppercaseStringForPreferredLocale3];
+  [(PKContinuityPaymentCardSummaryView *)self->_cardView setShowsAlert:hasAssociatedPeerPaymentAccount];
   [(PKContinuityPaymentCardSummaryView *)self->_cardView setNeedsLayout];
 }
 
@@ -994,19 +994,19 @@ void __52__PKContinuityPaymentViewController__updateCardView__block_invoke_2(uin
   [v2 setImage:*(a1 + 40)];
 }
 
-- (void)_updatePriceLabelWithTotalSummaryItem:(id)a3
+- (void)_updatePriceLabelWithTotalSummaryItem:(id)item
 {
-  v10 = a3;
-  v4 = [(PKRemotePaymentRequest *)self->_remoteRequest paymentRequest];
-  v5 = [v4 currencyCode];
+  itemCopy = item;
+  paymentRequest = [(PKRemotePaymentRequest *)self->_remoteRequest paymentRequest];
+  currencyCode = [paymentRequest currencyCode];
 
-  v6 = [v10 amount];
+  amount = [itemCopy amount];
   v7 = PKFormattedCurrencyStringFromNumber();
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v10;
+    v8 = itemCopy;
     [v8 intervalCount];
     [v8 intervalUnit];
 
@@ -1018,16 +1018,16 @@ void __52__PKContinuityPaymentViewController__updateCardView__block_invoke_2(uin
   [(UILabel *)self->_priceLabel setText:v7];
 }
 
-- (void)_updateFootnoteLabelWithTotalSummaryItem:(id)a3
+- (void)_updateFootnoteLabelWithTotalSummaryItem:(id)item
 {
-  v9 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v9;
-    v5 = [v4 startDate];
-    v6 = [v4 endDate];
-    v7 = [(PKContinuityPaymentViewController *)self _formattedDateRangeWithStartDate:v5 endDate:v6];
+    deferredDate = itemCopy;
+    startDate = [deferredDate startDate];
+    endDate = [deferredDate endDate];
+    v7 = [(PKContinuityPaymentViewController *)self _formattedDateRangeWithStartDate:startDate endDate:endDate];
 
     if (!v7)
     {
@@ -1047,7 +1047,7 @@ void __52__PKContinuityPaymentViewController__updateCardView__block_invoke_2(uin
       goto LABEL_10;
     }
 
-    v4 = [v9 deferredDate];
+    deferredDate = [itemCopy deferredDate];
     v7 = PKMediumDateString();
     PKLocalizedPaymentString(&cfstr_InAppPaymentOn.isa, &stru_1F3BD5BF0.isa, v7);
   }
@@ -1059,13 +1059,13 @@ LABEL_10:
   [(UILabel *)self->_footnoteLabel setHidden:v8 == 0];
 }
 
-- (id)_formattedDateRangeWithStartDate:(id)a3 endDate:(id)a4
+- (id)_formattedDateRangeWithStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dateCopy = date;
+  endDateCopy = endDate;
+  if (endDateCopy)
   {
-    if (v5)
+    if (dateCopy)
     {
       v7 = PKDateRangeStringFromDateToDate();
 LABEL_6:
@@ -1073,13 +1073,13 @@ LABEL_6:
       goto LABEL_9;
     }
 
-    v9 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v8 = PKDateRangeStringFromDateToDate();
   }
 
   else
   {
-    if (v5)
+    if (dateCopy)
     {
       v7 = PKMediumDateString();
       goto LABEL_6;
@@ -1093,9 +1093,9 @@ LABEL_9:
   return v8;
 }
 
-- (void)updatePaymentWithClientUpdate:(id)a3
+- (void)updatePaymentWithClientUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   [(PKPaymentAuthorizationStateMachine *)self->_stateMachine state];
   if (PKPaymentAuthorizationStateIsTerminal())
   {
@@ -1114,7 +1114,7 @@ LABEL_9:
     v6[2] = __67__PKContinuityPaymentViewController_updatePaymentWithClientUpdate___block_invoke;
     v6[3] = &unk_1E8010A10;
     v6[4] = self;
-    v7 = v4;
+    v7 = updateCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v6);
   }
 }
@@ -1207,14 +1207,14 @@ LABEL_14:
   [v2 setAutomaticReloadPaymentRequest:v24];
 }
 
-- (CGRect)_physicalButtonRectForCoordinateSpace:(id)a3
+- (CGRect)_physicalButtonRectForCoordinateSpace:(id)space
 {
   v3 = MEMORY[0x1E69DCEB0];
-  v4 = a3;
-  v5 = [v3 mainScreen];
-  v6 = [v5 fixedCoordinateSpace];
+  spaceCopy = space;
+  mainScreen = [v3 mainScreen];
+  fixedCoordinateSpace = [mainScreen fixedCoordinateSpace];
 
-  [v6 bounds];
+  [fixedCoordinateSpace bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -1225,7 +1225,7 @@ LABEL_14:
   v20.n128_f64[0] = v12 * v19;
   v22.n128_f64[0] = v14 * v21;
   PKRectRoundToPixel(v16, v18, v20, v22, v23);
-  [v4 convertRect:v6 fromCoordinateSpace:?];
+  [spaceCopy convertRect:fixedCoordinateSpace fromCoordinateSpace:?];
   v25 = v24;
   v27 = v26;
   v29 = v28;
@@ -1250,44 +1250,44 @@ LABEL_14:
   [(PKAuthenticator *)authenticator invalidate];
 }
 
-- (BOOL)paymentAuthorizationStateMachine:(id)a3 didTransitionFromState:(unint64_t)a4 toState:(unint64_t)a5 withParam:(id)a6
+- (BOOL)paymentAuthorizationStateMachine:(id)machine didTransitionFromState:(unint64_t)state toState:(unint64_t)toState withParam:(id)param
 {
-  v9 = a3;
-  v10 = a6;
-  if (a5 <= 8)
+  machineCopy = machine;
+  paramCopy = param;
+  if (toState <= 8)
   {
-    if (a5 > 5)
+    if (toState > 5)
     {
-      if (a5 == 6)
+      if (toState == 6)
       {
         [(PKContinuityPaymentViewController *)self _suspendAuthentication];
       }
 
-      else if (a5 == 7)
+      else if (toState == 7)
       {
-        [(PKContinuityPaymentViewController *)self _processClientCallback:v10];
+        [(PKContinuityPaymentViewController *)self _processClientCallback:paramCopy];
       }
     }
 
-    else if (a5 == 3)
+    else if (toState == 3)
     {
-      [(PKContinuityPaymentViewController *)self _invalidPaymentDataWithParam:v10];
+      [(PKContinuityPaymentViewController *)self _invalidPaymentDataWithParam:paramCopy];
     }
 
-    else if (a5 == 5)
+    else if (toState == 5)
     {
-      [(PKContinuityPaymentViewController *)self _resumeAuthenticationWithPreviousError:v10];
+      [(PKContinuityPaymentViewController *)self _resumeAuthenticationWithPreviousError:paramCopy];
     }
   }
 
-  else if (a5 <= 13)
+  else if (toState <= 13)
   {
-    if (a5 == 9)
+    if (toState == 9)
     {
       [(PKContinuityPaymentViewController *)self setProgressState:11 string:0 animated:1];
     }
 
-    else if (a5 == 13)
+    else if (toState == 13)
     {
       [(PKContinuityPaymentViewController *)self _didCancel];
     }
@@ -1295,16 +1295,16 @@ LABEL_14:
 
   else
   {
-    switch(a5)
+    switch(toState)
     {
       case 0xEuLL:
-        [(PKContinuityPaymentViewController *)self _didFailWithError:v10];
+        [(PKContinuityPaymentViewController *)self _didFailWithError:paramCopy];
         break;
       case 0xFuLL:
-        [(PKContinuityPaymentViewController *)self _didFailWithFatalError:v10];
+        [(PKContinuityPaymentViewController *)self _didFailWithFatalError:paramCopy];
         break;
       case 0x10uLL:
-        [(PKContinuityPaymentViewController *)self _didSucceedWithAuthorizationStateParam:v10];
+        [(PKContinuityPaymentViewController *)self _didSucceedWithAuthorizationStateParam:paramCopy];
         break;
     }
   }
@@ -1312,69 +1312,69 @@ LABEL_14:
   return 1;
 }
 
-- (void)_processClientCallback:(id)a3
+- (void)_processClientCallback:(id)callback
 {
-  v19 = a3;
+  callbackCopy = callback;
   [(PKContinuityPaymentViewController *)self _suspendAuthentication];
-  v4 = [v19 kind];
-  if (v4 <= 2)
+  kind = [callbackCopy kind];
+  if (kind <= 2)
   {
-    if (v4 == 1)
+    if (kind == 1)
     {
       v13 = objc_alloc(MEMORY[0x1E69B8D90]);
-      v14 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
-      v15 = [v14 paymentSummaryItems];
-      v5 = [v13 initWithPaymentSummaryItems:v15];
+      model = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
+      paymentSummaryItems = [model paymentSummaryItems];
+      delegate = [v13 initWithPaymentSummaryItems:paymentSummaryItems];
 
-      v16 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
-      v17 = [v16 paymentRequest];
-      v18 = [v17 availableShippingMethods];
-      [v5 setAvailableShippingMethods:v18];
+      model2 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
+      paymentRequest = [model2 paymentRequest];
+      availableShippingMethods = [paymentRequest availableShippingMethods];
+      [delegate setAvailableShippingMethods:availableShippingMethods];
 
-      [(PKPaymentAuthorizationStateMachine *)self->_stateMachine didReceiveShippingContactCompleteWithUpdate:v5];
+      [(PKPaymentAuthorizationStateMachine *)self->_stateMachine didReceiveShippingContactCompleteWithUpdate:delegate];
     }
 
     else
     {
-      if (v4 != 2)
+      if (kind != 2)
       {
         goto LABEL_13;
       }
 
-      v5 = objc_alloc_init(MEMORY[0x1E69B8D98]);
-      [v5 setStatus:0];
-      v7 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
-      v8 = [v7 paymentSummaryItems];
-      [v5 setPaymentSummaryItems:v8];
+      delegate = objc_alloc_init(MEMORY[0x1E69B8D98]);
+      [delegate setStatus:0];
+      model3 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
+      paymentSummaryItems2 = [model3 paymentSummaryItems];
+      [delegate setPaymentSummaryItems:paymentSummaryItems2];
 
-      [(PKPaymentAuthorizationStateMachine *)self->_stateMachine didReceiveShippingMethodCompleteWithUpdate:v5];
+      [(PKPaymentAuthorizationStateMachine *)self->_stateMachine didReceiveShippingMethodCompleteWithUpdate:delegate];
     }
   }
 
   else
   {
-    switch(v4)
+    switch(kind)
     {
       case 3:
-        v5 = objc_alloc_init(MEMORY[0x1E69B8D88]);
-        v9 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
-        v10 = [v9 paymentSummaryItems];
-        [v5 setPaymentSummaryItems:v10];
+        delegate = objc_alloc_init(MEMORY[0x1E69B8D88]);
+        model4 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
+        paymentSummaryItems3 = [model4 paymentSummaryItems];
+        [delegate setPaymentSummaryItems:paymentSummaryItems3];
 
-        [(PKPaymentAuthorizationStateMachine *)self->_stateMachine didReceivePaymentMethodCompleteWithUpdate:v5];
+        [(PKPaymentAuthorizationStateMachine *)self->_stateMachine didReceivePaymentMethodCompleteWithUpdate:delegate];
         break;
       case 10:
-        v5 = objc_alloc_init(MEMORY[0x1E69B8D78]);
-        v11 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
-        v12 = [v11 paymentSummaryItems];
-        [v5 setPaymentSummaryItems:v12];
+        delegate = objc_alloc_init(MEMORY[0x1E69B8D78]);
+        model5 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
+        paymentSummaryItems4 = [model5 paymentSummaryItems];
+        [delegate setPaymentSummaryItems:paymentSummaryItems4];
 
-        [(PKPaymentAuthorizationStateMachine *)self->_stateMachine didReceiveCouponCodeCompleteWithUpdate:v5];
+        [(PKPaymentAuthorizationStateMachine *)self->_stateMachine didReceiveCouponCodeCompleteWithUpdate:delegate];
         break;
       case 5:
-        v5 = [(PKContinuityPaymentViewController *)self delegate];
-        v6 = [v19 payment];
-        [v5 authorizationDidAuthorizePayment:v6];
+        delegate = [(PKContinuityPaymentViewController *)self delegate];
+        payment = [callbackCopy payment];
+        [delegate authorizationDidAuthorizePayment:payment];
 
         break;
       default:
@@ -1385,10 +1385,10 @@ LABEL_14:
 LABEL_13:
 }
 
-- (void)_resumeAuthenticationWithPreviousError:(id)a3
+- (void)_resumeAuthenticationWithPreviousError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [a3 error];
+  error = [error error];
   v5 = [MEMORY[0x1E69BC740] currentStateForPolicy:{-[PKContinuityPaymentViewController _authenticatorPolicy](self, "_authenticatorPolicy")}];
   v6 = v5;
   if (v5)
@@ -1421,7 +1421,7 @@ LABEL_13:
       v8 = [(PKContinuityPaymentViewController *)self _progressStateForAuthenticationWithBiometricFailure:0];
     }
 
-    if (v4)
+    if (error)
     {
       v9 = PKLocalizedPaymentString(&cfstr_InAppPaymentTr.isa);
     }
@@ -1441,7 +1441,7 @@ LABEL_13:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134349056;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "PKContinuityPaymentViewController (%{public}p): Unable to evaluate policy; cancelling payment", &v10, 0xCu);
     }
 
@@ -1459,15 +1459,15 @@ LABEL_13:
   }
 }
 
-- (void)_startEvaluationWithHasInitialAuthenticatorState:(BOOL)a3 initialAuthenticatorState:(unint64_t)a4
+- (void)_startEvaluationWithHasInitialAuthenticatorState:(BOOL)state initialAuthenticatorState:(unint64_t)authenticatorState
 {
   if (!self->_authenticating)
   {
-    v5 = a3;
+    stateCopy = state;
     [(PKContinuityPaymentViewController *)self _setAuthenticating:1];
     objc_initWeak(&location, self);
     authenticator = self->_authenticator;
-    v8 = [(PKContinuityPaymentViewController *)self _evaluationRequestWithHasInitialAuthenticatorState:v5 initialAuthenticatorState:a4];
+    v8 = [(PKContinuityPaymentViewController *)self _evaluationRequestWithHasInitialAuthenticatorState:stateCopy initialAuthenticatorState:authenticatorState];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __112__PKContinuityPaymentViewController__startEvaluationWithHasInitialAuthenticatorState_initialAuthenticatorState___block_invoke;
@@ -1647,8 +1647,8 @@ LABEL_24:
 
 - (int64_t)_authenticatorPolicy
 {
-  v2 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
-  if ([v2 pinRequired])
+  model = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
+  if ([model pinRequired])
   {
     v3 = 3;
   }
@@ -1661,29 +1661,29 @@ LABEL_24:
   return v3;
 }
 
-- (id)_evaluationRequestWithHasInitialAuthenticatorState:(BOOL)a3 initialAuthenticatorState:(unint64_t)a4
+- (id)_evaluationRequestWithHasInitialAuthenticatorState:(BOOL)state initialAuthenticatorState:(unint64_t)authenticatorState
 {
-  v5 = a3;
+  stateCopy = state;
   v22 = *MEMORY[0x1E69E9840];
-  v7 = [(PKContinuityPaymentViewController *)self _authenticatorPolicy];
-  v8 = [objc_alloc(MEMORY[0x1E69BC748]) initWithPolicy:v7];
+  _authenticatorPolicy = [(PKContinuityPaymentViewController *)self _authenticatorPolicy];
+  v8 = [objc_alloc(MEMORY[0x1E69BC748]) initWithPolicy:_authenticatorPolicy];
   v9 = v8;
-  if (v5)
+  if (stateCopy)
   {
-    [v8 setInitialAuthenticatorState:a4];
+    [v8 setInitialAuthenticatorState:authenticatorState];
   }
 
   v10 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    if (v7 > 0xA)
+    if (_authenticatorPolicy > 0xA)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = off_1E80128C0[v7];
+      v11 = off_1E80128C0[_authenticatorPolicy];
     }
 
     *buf = 138412290;
@@ -1691,15 +1691,15 @@ LABEL_24:
     _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "New authenticator policy is %@", buf, 0xCu);
   }
 
-  v12 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
-  v13 = [v12 pinRequired];
+  model = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
+  pinRequired = [model pinRequired];
 
-  if (v13)
+  if (pinRequired)
   {
-    v14 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
-    v15 = [v14 pass];
-    v16 = [v15 localizedDescription];
-    v17 = PKLocalizedPaymentString(&cfstr_InAppPaymentPi.isa, &stru_1F3BD5BF0.isa, v16);
+    model2 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
+    pass = [model2 pass];
+    localizedDescription = [pass localizedDescription];
+    v17 = PKLocalizedPaymentString(&cfstr_InAppPaymentPi.isa, &stru_1F3BD5BF0.isa, localizedDescription);
 
     [v9 setPINTitle:v17];
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:*MEMORY[0x1E69BB820]];
@@ -1709,13 +1709,13 @@ LABEL_24:
   return v9;
 }
 
-- (void)_didSucceedWithAuthorizationStateParam:(id)a3
+- (void)_didSucceedWithAuthorizationStateParam:(id)param
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v14 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
-  v5 = [MEMORY[0x1E69B8DB8] paymentService];
-  [v14 pendingTransactions];
+  paramCopy = param;
+  model = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
+  paymentService = [MEMORY[0x1E69B8DB8] paymentService];
+  [model pendingTransactions];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -1734,13 +1734,13 @@ LABEL_24:
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        [(PKContinuityPaymentViewController *)self _updatePendingTransaction:v9 withAuthorizationStateParam:v4];
-        v10 = [v9 transaction];
-        v11 = [v9 paymentApplication];
-        v12 = [v9 pass];
-        v13 = [v12 uniqueID];
+        [(PKContinuityPaymentViewController *)self _updatePendingTransaction:v9 withAuthorizationStateParam:paramCopy];
+        transaction = [v9 transaction];
+        paymentApplication = [v9 paymentApplication];
+        pass = [v9 pass];
+        uniqueID = [pass uniqueID];
 
-        [v5 insertOrUpdatePaymentTransaction:v10 forPassUniqueIdentifier:v13 paymentApplication:v11 completion:0];
+        [paymentService insertOrUpdatePaymentTransaction:transaction forPassUniqueIdentifier:uniqueID paymentApplication:paymentApplication completion:0];
       }
 
       v6 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -1785,62 +1785,62 @@ void __76__PKContinuityPaymentViewController__didSucceedWithAuthorizationStatePa
   }
 }
 
-- (void)_updatePendingTransaction:(id)a3 withAuthorizationStateParam:(id)a4
+- (void)_updatePendingTransaction:(id)transaction withAuthorizationStateParam:(id)param
 {
-  v15 = a3;
-  v5 = a4;
-  v6 = [v15 paymentApplication];
-  v7 = [v6 dpanIdentifier];
+  transactionCopy = transaction;
+  paramCopy = param;
+  paymentApplication = [transactionCopy paymentApplication];
+  dpanIdentifier = [paymentApplication dpanIdentifier];
 
-  v8 = [v5 peerPaymentTransactionMetadata];
+  peerPaymentTransactionMetadata = [paramCopy peerPaymentTransactionMetadata];
 
-  if (v8)
+  if (peerPaymentTransactionMetadata)
   {
-    v9 = [v8 dpanIdentifier];
-    v10 = [v9 isEqual:v7];
+    dpanIdentifier2 = [peerPaymentTransactionMetadata dpanIdentifier];
+    v10 = [dpanIdentifier2 isEqual:dpanIdentifier];
 
     if (v10)
     {
-      v11 = [v15 transaction];
-      v12 = [v8 serviceIdentifier];
-      [v11 setServiceIdentifier:v12];
+      transaction = [transactionCopy transaction];
+      serviceIdentifier = [peerPaymentTransactionMetadata serviceIdentifier];
+      [transaction setServiceIdentifier:serviceIdentifier];
 
-      v13 = [v8 requestDeviceScoreIdentifier];
-      [v11 setRequestDeviceScoreIdentifier:v13];
+      requestDeviceScoreIdentifier = [peerPaymentTransactionMetadata requestDeviceScoreIdentifier];
+      [transaction setRequestDeviceScoreIdentifier:requestDeviceScoreIdentifier];
 
-      v14 = [v8 sendDeviceScoreIdentifier];
-      [v11 setSendDeviceScoreIdentifier:v14];
+      sendDeviceScoreIdentifier = [peerPaymentTransactionMetadata sendDeviceScoreIdentifier];
+      [transaction setSendDeviceScoreIdentifier:sendDeviceScoreIdentifier];
     }
   }
 }
 
-- (void)_didFailWithError:(id)a3
+- (void)_didFailWithError:(id)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 error];
+  errorCopy = error;
+  error = [errorCopy error];
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v5;
+    v29 = error;
     _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "In-app payment failed, error: %@", buf, 0xCu);
   }
 
-  v7 = [v5 domain];
-  if ([v7 isEqualToString:*MEMORY[0x1E69BBBC8]])
+  domain = [error domain];
+  if ([domain isEqualToString:*MEMORY[0x1E69BBBC8]])
   {
-    v8 = [v5 code] == -2007;
+    v8 = [error code] == -2007;
 
     if (v8)
     {
-      v9 = [v5 userInfo];
-      v10 = [v9 objectForKey:*MEMORY[0x1E696AA08]];
+      userInfo = [error userInfo];
+      v10 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
-      v11 = [v10 domain];
-      v12 = [v10 code];
-      v13 = [v11 isEqualToString:*MEMORY[0x1E69BC300]];
-      if (v12 == 2)
+      domain2 = [v10 domain];
+      code = [v10 code];
+      v13 = [domain2 isEqualToString:*MEMORY[0x1E69BC300]];
+      if (code == 2)
       {
         v14 = v13;
       }
@@ -1864,8 +1864,8 @@ void __76__PKContinuityPaymentViewController__didSucceedWithAuthorizationStatePa
 
       else
       {
-        v24 = [v11 isEqualToString:*MEMORY[0x1E69BC6F0]];
-        if (v12 == 4)
+        v24 = [domain2 isEqualToString:*MEMORY[0x1E69BC6F0]];
+        if (code == 4)
         {
           v25 = v24;
         }
@@ -1901,11 +1901,11 @@ LABEL_23:
 
   [(PKContinuityPaymentViewController *)self _suspendAuthentication];
 LABEL_12:
-  v20 = [v5 localizedFailureReason];
-  v21 = v20;
-  if (v20)
+  localizedFailureReason = [error localizedFailureReason];
+  v21 = localizedFailureReason;
+  if (localizedFailureReason)
   {
-    v22 = v20;
+    v22 = localizedFailureReason;
   }
 
   else
@@ -1950,30 +1950,30 @@ void __55__PKContinuityPaymentViewController__didFailWithError___block_invoke_2(
   }
 }
 
-- (void)_didFailWithFatalError:(id)a3
+- (void)_didFailWithFatalError:(id)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v22 = a3;
+  errorCopy = error;
   [(PKContinuityPaymentViewController *)self _suspendAuthentication];
   val = self;
-  v4 = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
-  v23 = [v4 pass];
+  model = [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
+  pass = [model pass];
 
-  if (([v23 hasAssociatedPeerPaymentAccount] & 1) != 0 || (objc_msgSend(v23, "associatedAccountServiceAccountIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (([pass hasAssociatedPeerPaymentAccount] & 1) != 0 || (objc_msgSend(pass, "associatedAccountServiceAccountIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(PKPaymentAuthorizationStateMachine *)val->_stateMachine model];
-    v7 = [v6 mode];
+    model2 = [(PKPaymentAuthorizationStateMachine *)val->_stateMachine model];
+    mode = [model2 mode];
 
-    if (v7 == 1)
+    if (mode == 1)
     {
-      v21 = [(PKPaymentAuthorizationStateMachine *)val->_stateMachine model];
-      v8 = [MEMORY[0x1E69B8DB8] paymentService];
-      v9 = [v21 pendingTransactions];
+      model3 = [(PKPaymentAuthorizationStateMachine *)val->_stateMachine model];
+      paymentService = [MEMORY[0x1E69B8DB8] paymentService];
+      pendingTransactions = [model3 pendingTransactions];
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v10 = [v9 countByEnumeratingWithState:&v28 objects:v38 count:16];
+      v10 = [pendingTransactions countByEnumeratingWithState:&v28 objects:v38 count:16];
       if (v10)
       {
         v11 = *v29;
@@ -1983,31 +1983,31 @@ void __55__PKContinuityPaymentViewController__didFailWithError___block_invoke_2(
           {
             if (*v29 != v11)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(pendingTransactions);
             }
 
             v13 = *(*(&v28 + 1) + 8 * i);
-            v14 = [v13 transaction];
-            v15 = [v13 paymentApplication];
-            v16 = [v13 pass];
-            v17 = [v16 uniqueID];
+            transaction = [v13 transaction];
+            paymentApplication = [v13 paymentApplication];
+            pass2 = [v13 pass];
+            uniqueID = [pass2 uniqueID];
 
             v18 = PKLogFacilityTypeGetObject();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412802;
-              v33 = v14;
+              v33 = transaction;
               v34 = 2112;
-              v35 = v17;
+              v35 = uniqueID;
               v36 = 2112;
-              v37 = v15;
+              v37 = paymentApplication;
               _os_log_impl(&dword_1BD026000, v18, OS_LOG_TYPE_DEFAULT, "Inserting transaction: %@ for pass: %@ paymentApplication: %@", buf, 0x20u);
             }
 
-            [v8 insertOrUpdatePaymentTransaction:v14 forPassUniqueIdentifier:v17 paymentApplication:v15 completion:0];
+            [paymentService insertOrUpdatePaymentTransaction:transaction forPassUniqueIdentifier:uniqueID paymentApplication:paymentApplication completion:0];
           }
 
-          v10 = [v9 countByEnumeratingWithState:&v28 objects:v38 count:16];
+          v10 = [pendingTransactions countByEnumeratingWithState:&v28 objects:v38 count:16];
         }
 
         while (v10);
@@ -2022,7 +2022,7 @@ void __55__PKContinuityPaymentViewController__didFailWithError___block_invoke_2(
   v25[2] = __60__PKContinuityPaymentViewController__didFailWithFatalError___block_invoke;
   v25[3] = &unk_1E80113B0;
   objc_copyWeak(&v27, buf);
-  v20 = v22;
+  v20 = errorCopy;
   v26 = v20;
   [(PKContinuityPaymentViewController *)val setProgressState:13 string:v19 animated:1 withCompletion:v25];
 
@@ -2061,25 +2061,25 @@ void __60__PKContinuityPaymentViewController__didFailWithFatalError___block_invo
 - (void)_didCancel
 {
   [(PKContinuityPaymentViewController *)self _suspendAuthentication];
-  v3 = [(PKContinuityPaymentViewController *)self delegate];
-  [v3 authorizationDidFinishWithError:0];
+  delegate = [(PKContinuityPaymentViewController *)self delegate];
+  [delegate authorizationDidFinishWithError:0];
 }
 
-- (void)_invalidPaymentDataWithParam:(id)a3
+- (void)_invalidPaymentDataWithParam:(id)param
 {
-  v4 = a3;
+  paramCopy = param;
   [(PKContinuityPaymentViewController *)self _suspendAuthentication];
-  v5 = [v4 dataType] != 3 || objc_msgSend(v4, "status") != 5;
+  v5 = [paramCopy dataType] != 3 || objc_msgSend(paramCopy, "status") != 5;
   objc_initWeak(&location, self);
-  v6 = [v4 error];
-  v7 = [v6 localizedFailureReason];
+  error = [paramCopy error];
+  localizedFailureReason = [error localizedFailureReason];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__PKContinuityPaymentViewController__invalidPaymentDataWithParam___block_invoke;
   v8[3] = &unk_1E8012858;
   v10 = v5;
   objc_copyWeak(&v9, &location);
-  [(PKContinuityPaymentViewController *)self setProgressState:13 string:v7 animated:1 withCompletion:v8];
+  [(PKContinuityPaymentViewController *)self setProgressState:13 string:localizedFailureReason animated:1 withCompletion:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -2114,23 +2114,23 @@ void __66__PKContinuityPaymentViewController__invalidPaymentDataWithParam___bloc
   }
 }
 
-- (BOOL)paymentPass:(id *)a3 paymentApplication:(id *)a4 fromAID:(id)a5 selectedPaymentMethodType:(unint64_t)a6
+- (BOOL)paymentPass:(id *)pass paymentApplication:(id *)application fromAID:(id)d selectedPaymentMethodType:(unint64_t)type
 {
   v46 = *MEMORY[0x1E69E9840];
-  v9 = a5;
+  dCopy = d;
   [(PKPaymentAuthorizationStateMachine *)self->_stateMachine model];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v35 = v43 = 0u;
-  v10 = [v35 acceptedPasses];
-  v31 = [v10 countByEnumeratingWithState:&v40 objects:v45 count:16];
+  acceptedPasses = [v35 acceptedPasses];
+  v31 = [acceptedPasses countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v31)
   {
     v11 = *v41;
-    v34 = v10;
+    v34 = acceptedPasses;
     v29 = *v41;
-    v30 = a4;
+    applicationCopy = application;
     do
     {
       v12 = 0;
@@ -2138,14 +2138,14 @@ void __66__PKContinuityPaymentViewController__invalidPaymentDataWithParam___bloc
       {
         if (*v41 != v11)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(acceptedPasses);
         }
 
         v32 = v12;
         v13 = *(*(&v40 + 1) + 8 * v12);
-        v14 = [v13 deviceInAppPaymentApplications];
-        v15 = [v14 allObjects];
-        v16 = [v13 sortedPaymentApplications:v15 ascending:1];
+        deviceInAppPaymentApplications = [v13 deviceInAppPaymentApplications];
+        allObjects = [deviceInAppPaymentApplications allObjects];
+        v16 = [v13 sortedPaymentApplications:allObjects ascending:1];
 
         v38 = 0u;
         v39 = 0u;
@@ -2167,26 +2167,26 @@ void __66__PKContinuityPaymentViewController__invalidPaymentDataWithParam___bloc
               }
 
               v22 = *(*(&v36 + 1) + 8 * i);
-              v23 = [v22 applicationIdentifier];
-              if ([v23 isEqualToString:v9])
+              applicationIdentifier = [v22 applicationIdentifier];
+              if ([applicationIdentifier isEqualToString:dCopy])
               {
-                if (!a6)
+                if (!type)
                 {
 
 LABEL_23:
                   v26 = v13;
-                  *a3 = v13;
+                  *pass = v13;
                   v27 = v22;
-                  *v30 = v22;
+                  *applicationCopy = v22;
 
                   v25 = 1;
-                  v10 = v34;
+                  acceptedPasses = v34;
                   goto LABEL_24;
                 }
 
-                v24 = [v22 paymentType];
+                paymentType = [v22 paymentType];
 
-                if (v24 == a6)
+                if (paymentType == type)
                 {
                   goto LABEL_23;
                 }
@@ -2208,7 +2208,7 @@ LABEL_23:
         }
 
         v12 = v32 + 1;
-        v10 = v34;
+        acceptedPasses = v34;
         v11 = v29;
       }
 
@@ -2230,9 +2230,9 @@ LABEL_24:
   return v25;
 }
 
-- (int64_t)_progressStateForAuthenticationWithBiometricFailure:(BOOL)a3
+- (int64_t)_progressStateForAuthenticationWithBiometricFailure:(BOOL)failure
 {
-  result = PKPaymentProgressStateBaseStateForAuthenticatorEvaluationState(self->_internalAuthenticationEvaluationState, [(PKPaymentAuthorizationFooterView *)self->_authorizationView state], self->_idleStateIsPasscode, a3);
+  result = PKPaymentProgressStateBaseStateForAuthenticatorEvaluationState(self->_internalAuthenticationEvaluationState, [(PKPaymentAuthorizationFooterView *)self->_authorizationView state], self->_idleStateIsPasscode, failure);
   internalAuthenticationEvaluationState = self->_internalAuthenticationEvaluationState;
   if (internalAuthenticationEvaluationState == 2)
   {
@@ -2273,10 +2273,10 @@ LABEL_4:
   }
 }
 
-- (void)authenticator:(id)a3 didTransitionToEvaluationStateWithEvent:(id)a4
+- (void)authenticator:(id)authenticator didTransitionToEvaluationStateWithEvent:(id)event
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = event.var1;
+  var0 = event.var0;
   if (PKPearlIsAvailable())
   {
     v7 = var1 == 1 || (self->_internalAuthenticationEvaluationState - 1) < 2;
@@ -2293,44 +2293,44 @@ LABEL_4:
   [(PKContinuityPaymentViewController *)self _updateProgressStateIfAuthenticatingWithBiometricFailure:var1 == 1];
 }
 
-- (void)authenticator:(id)a3 didTransitionToCoachingState:(int64_t)a4
+- (void)authenticator:(id)authenticator didTransitionToCoachingState:(int64_t)state
 {
-  if (self->_internalCoachingState != a4)
+  if (self->_internalCoachingState != state)
   {
-    self->_internalCoachingState = a4;
+    self->_internalCoachingState = state;
     [(PKContinuityPaymentViewController *)self _updateCoachingState];
   }
 }
 
-- (void)presentPasscodeViewController:(id)a3 completionHandler:(id)a4 reply:(id)a5
+- (void)presentPasscodeViewController:(id)controller completionHandler:(id)handler reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  replyCopy = reply;
   if (self->_passcodeViewController)
   {
-    if (v9)
+    if (handlerCopy)
     {
-      v9[2](v9, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
   }
 
   else if ([(PKPaymentAuthorizationStateMachine *)self->_stateMachine state]== 5)
   {
-    [(PKContinuityPaymentViewController *)self _setPasscodeViewController:v8];
+    [(PKContinuityPaymentViewController *)self _setPasscodeViewController:controllerCopy];
     [(UIViewController *)self->_passcodeViewController setModalPresentationStyle:5];
     passcodeViewController = self->_passcodeViewController;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __91__PKContinuityPaymentViewController_presentPasscodeViewController_completionHandler_reply___block_invoke;
     v12[3] = &unk_1E8010B50;
-    v13 = v9;
+    v13 = handlerCopy;
     [(PKContinuityPaymentViewController *)self presentViewController:passcodeViewController animated:1 completion:v12];
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    v9[2](v9, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
@@ -2350,37 +2350,37 @@ uint64_t __91__PKContinuityPaymentViewController_presentPasscodeViewController_c
   passcodeViewController = self->_passcodeViewController;
   if (passcodeViewController)
   {
-    v4 = [(UIViewController *)passcodeViewController presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(UIViewController *)passcodeViewController presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
     [(PKContinuityPaymentViewController *)self _setPasscodeViewController:0];
   }
 }
 
-- (void)presentPassphraseViewController:(id)a3 completionHandler:(id)a4 reply:(id)a5
+- (void)presentPassphraseViewController:(id)controller completionHandler:(id)handler reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  replyCopy = reply;
   if (self->_passphraseViewController)
   {
-    if (v9)
+    if (handlerCopy)
     {
-      v9[2](v9, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
   }
 
   else
   {
-    v11 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v8];
+    v11 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:controllerCopy];
     [v11 setModalPresentationStyle:6];
-    v12 = [v11 view];
-    v13 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [v12 setBackgroundColor:v13];
+    view = [v11 view];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [view setBackgroundColor:systemBackgroundColor];
 
     v14 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelPassphrasePressed];
-    v15 = [v8 navigationItem];
-    [v15 setRightBarButtonItem:v14];
+    navigationItem = [controllerCopy navigationItem];
+    [navigationItem setRightBarButtonItem:v14];
 
     [(PKContinuityPaymentViewController *)self _setPassphraseViewController:v11];
     passphraseViewController = self->_passphraseViewController;
@@ -2388,7 +2388,7 @@ uint64_t __91__PKContinuityPaymentViewController_presentPasscodeViewController_c
     v17[1] = 3221225472;
     v17[2] = __93__PKContinuityPaymentViewController_presentPassphraseViewController_completionHandler_reply___block_invoke;
     v17[3] = &unk_1E8010B50;
-    v18 = v9;
+    v18 = handlerCopy;
     [(PKContinuityPaymentViewController *)self presentViewController:passphraseViewController animated:1 completion:v17];
   }
 }
@@ -2412,15 +2412,15 @@ uint64_t __93__PKContinuityPaymentViewController_presentPassphraseViewController
     passphraseViewController = self->_passphraseViewController;
     if (passphraseViewController)
     {
-      v4 = [(UIViewController *)passphraseViewController presentingViewController];
-      [v4 dismissViewControllerAnimated:1 completion:0];
+      presentingViewController = [(UIViewController *)passphraseViewController presentingViewController];
+      [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
       [(PKContinuityPaymentViewController *)self _setPassphraseViewController:0];
     }
   }
 }
 
-- (void)authorizationFooterViewPasscodeButtonPressed:(id)a3
+- (void)authorizationFooterViewPasscodeButtonPressed:(id)pressed
 {
   if ([(PKPaymentAuthorizationStateMachine *)self->_stateMachine state]== 5)
   {
@@ -2439,7 +2439,7 @@ uint64_t __93__PKContinuityPaymentViewController_presentPassphraseViewController
   }
 }
 
-- (void)authorizationFooterViewDidChangeConstraints:(id)a3
+- (void)authorizationFooterViewDidChangeConstraints:(id)constraints
 {
   if (self->_viewAppeared && ![(PKContinuityPaymentViewController *)self _updateActiveConstraints])
   {

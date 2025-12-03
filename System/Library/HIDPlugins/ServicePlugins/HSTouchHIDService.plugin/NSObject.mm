@@ -1,18 +1,18 @@
 @interface NSObject
-- (id)HSProxy_conformsToProtocol:(id)a3;
-- (id)HSProxy_isKindOfClass:(id)a3;
-- (id)HSProxy_respondsToSelector:(id)a3;
+- (id)HSProxy_conformsToProtocol:(id)protocol;
+- (id)HSProxy_isKindOfClass:(id)class;
+- (id)HSProxy_respondsToSelector:(id)selector;
 @end
 
 @implementation NSObject
 
-- (id)HSProxy_isKindOfClass:(id)a3
+- (id)HSProxy_isKindOfClass:(id)class
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  classCopy = class;
+  v4 = classCopy;
+  if (classCopy)
   {
-    NSClassFromString(v3);
+    NSClassFromString(classCopy);
     v5 = [NSNumber numberWithBool:objc_opt_isKindOfClass() & 1];
   }
 
@@ -30,13 +30,13 @@
   return v5;
 }
 
-- (id)HSProxy_respondsToSelector:(id)a3
+- (id)HSProxy_respondsToSelector:(id)selector
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  selectorCopy = selector;
+  v4 = selectorCopy;
+  if (selectorCopy)
   {
-    NSSelectorFromString(v3);
+    NSSelectorFromString(selectorCopy);
     v5 = [NSNumber numberWithBool:objc_opt_respondsToSelector() & 1];
   }
 
@@ -54,13 +54,13 @@
   return v5;
 }
 
-- (id)HSProxy_conformsToProtocol:(id)a3
+- (id)HSProxy_conformsToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  protocolCopy = protocol;
+  v5 = protocolCopy;
+  if (protocolCopy)
   {
-    v6 = NSProtocolFromString(v4);
+    v6 = NSProtocolFromString(protocolCopy);
     v7 = [NSNumber numberWithBool:[self conformsToProtocol:v6]];
   }
 

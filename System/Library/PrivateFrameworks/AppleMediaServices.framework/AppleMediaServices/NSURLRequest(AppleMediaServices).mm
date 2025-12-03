@@ -7,16 +7,16 @@
 
 - (uint64_t)ams_requestIsBagLoad
 {
-  v1 = [a1 URL];
-  v2 = [v1 ams_isBagLoadURL];
+  v1 = [self URL];
+  ams_isBagLoadURL = [v1 ams_isBagLoadURL];
 
-  return v2;
+  return ams_isBagLoadURL;
 }
 
 - (id)ams_cookies
 {
   v25 = *MEMORY[0x1E69E9840];
-  v18 = [a1 valueForHTTPHeaderField:@"Cookie"];
+  v18 = [self valueForHTTPHeaderField:@"Cookie"];
   v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v1 = [v18 componentsSeparatedByString:@""];;
   v20 = 0u;
@@ -38,8 +38,8 @@
         }
 
         v6 = *(*(&v20 + 1) + 8 * i);
-        v7 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-        v8 = [v6 stringByTrimmingCharactersInSet:v7];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+        v8 = [v6 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         v9 = [v8 rangeOfString:@"="];
         if (v9 != 0x7FFFFFFFFFFFFFFFLL)

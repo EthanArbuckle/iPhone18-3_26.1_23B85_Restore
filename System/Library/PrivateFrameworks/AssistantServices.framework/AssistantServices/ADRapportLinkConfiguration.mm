@@ -1,46 +1,46 @@
 @interface ADRapportLinkConfiguration
-+ (id)newWithBuilder:(id)a3;
-- (ADRapportLinkConfiguration)initWithBuilder:(id)a3;
-- (ADRapportLinkConfiguration)initWithCoder:(id)a3;
-- (ADRapportLinkConfiguration)initWithDiscoveryOptions:(id)a3 transportOptions:(id)a4 connectionOptions:(id)a5 enablesProximityTracking:(int64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (ADRapportLinkConfiguration)initWithBuilder:(id)builder;
+- (ADRapportLinkConfiguration)initWithCoder:(id)coder;
+- (ADRapportLinkConfiguration)initWithDiscoveryOptions:(id)options transportOptions:(id)transportOptions connectionOptions:(id)connectionOptions enablesProximityTracking:(int64_t)tracking;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ADRapportLinkConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   discoveryOptions = self->_discoveryOptions;
-  v5 = a3;
-  [v5 encodeObject:discoveryOptions forKey:@"ADRapportLinkConfiguration::discoveryOptions"];
-  [v5 encodeObject:self->_transportOptions forKey:@"ADRapportLinkConfiguration::transportOptions"];
-  [v5 encodeObject:self->_connectionOptions forKey:@"ADRapportLinkConfiguration::connectionOptions"];
+  coderCopy = coder;
+  [coderCopy encodeObject:discoveryOptions forKey:@"ADRapportLinkConfiguration::discoveryOptions"];
+  [coderCopy encodeObject:self->_transportOptions forKey:@"ADRapportLinkConfiguration::transportOptions"];
+  [coderCopy encodeObject:self->_connectionOptions forKey:@"ADRapportLinkConfiguration::connectionOptions"];
   v6 = [NSNumber numberWithInteger:self->_enablesProximityTracking];
-  [v5 encodeObject:v6 forKey:@"ADRapportLinkConfiguration::enablesProximityTracking"];
+  [coderCopy encodeObject:v6 forKey:@"ADRapportLinkConfiguration::enablesProximityTracking"];
 }
 
-- (ADRapportLinkConfiguration)initWithCoder:(id)a3
+- (ADRapportLinkConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkConfiguration::discoveryOptions"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkConfiguration::transportOptions"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkConfiguration::connectionOptions"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkConfiguration::enablesProximityTracking"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkConfiguration::discoveryOptions"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkConfiguration::transportOptions"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkConfiguration::connectionOptions"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkConfiguration::enablesProximityTracking"];
 
-  v9 = [v8 integerValue];
-  v10 = [(ADRapportLinkConfiguration *)self initWithDiscoveryOptions:v5 transportOptions:v6 connectionOptions:v7 enablesProximityTracking:v9];
+  integerValue = [v8 integerValue];
+  v10 = [(ADRapportLinkConfiguration *)self initWithDiscoveryOptions:v5 transportOptions:v6 connectionOptions:v7 enablesProximityTracking:integerValue];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -50,21 +50,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       enablesProximityTracking = self->_enablesProximityTracking;
       if (enablesProximityTracking == [(ADRapportLinkConfiguration *)v5 enablesProximityTracking])
       {
-        v7 = [(ADRapportLinkConfiguration *)v5 discoveryOptions];
+        discoveryOptions = [(ADRapportLinkConfiguration *)v5 discoveryOptions];
         discoveryOptions = self->_discoveryOptions;
-        if (discoveryOptions == v7 || [(ADRapportLinkDiscoveryOptions *)discoveryOptions isEqual:v7])
+        if (discoveryOptions == discoveryOptions || [(ADRapportLinkDiscoveryOptions *)discoveryOptions isEqual:discoveryOptions])
         {
-          v9 = [(ADRapportLinkConfiguration *)v5 transportOptions];
+          transportOptions = [(ADRapportLinkConfiguration *)v5 transportOptions];
           transportOptions = self->_transportOptions;
-          if (transportOptions == v9 || [(ADRapportLinkTransportOptions *)transportOptions isEqual:v9])
+          if (transportOptions == transportOptions || [(ADRapportLinkTransportOptions *)transportOptions isEqual:transportOptions])
           {
-            v11 = [(ADRapportLinkConfiguration *)v5 connectionOptions];
+            connectionOptions = [(ADRapportLinkConfiguration *)v5 connectionOptions];
             connectionOptions = self->_connectionOptions;
-            v13 = connectionOptions == v11 || [(ADRapportLinkConnectionOptions *)connectionOptions isEqual:v11];
+            v13 = connectionOptions == connectionOptions || [(ADRapportLinkConnectionOptions *)connectionOptions isEqual:connectionOptions];
           }
 
           else
@@ -105,7 +105,7 @@
   return v5 ^ v7;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = [NSString alloc];
   v8.receiver = self;
@@ -116,49 +116,49 @@
   return v6;
 }
 
-- (ADRapportLinkConfiguration)initWithDiscoveryOptions:(id)a3 transportOptions:(id)a4 connectionOptions:(id)a5 enablesProximityTracking:(int64_t)a6
+- (ADRapportLinkConfiguration)initWithDiscoveryOptions:(id)options transportOptions:(id)transportOptions connectionOptions:(id)connectionOptions enablesProximityTracking:(int64_t)tracking
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001C86F8;
   v15[3] = &unk_100515818;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v10 = v18;
-  v11 = v17;
-  v12 = v16;
+  optionsCopy = options;
+  transportOptionsCopy = transportOptions;
+  connectionOptionsCopy = connectionOptions;
+  trackingCopy = tracking;
+  v10 = connectionOptionsCopy;
+  v11 = transportOptionsCopy;
+  v12 = optionsCopy;
   v13 = [(ADRapportLinkConfiguration *)self initWithBuilder:v15];
 
   return v13;
 }
 
-- (ADRapportLinkConfiguration)initWithBuilder:(id)a3
+- (ADRapportLinkConfiguration)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v18.receiver = self;
   v18.super_class = ADRapportLinkConfiguration;
   v5 = [(ADRapportLinkConfiguration *)&v18 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_ADRapportLinkConfigurationMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_ADRapportLinkConfigurationMutation *)v7 isDirty])
     {
-      v8 = [(_ADRapportLinkConfigurationMutation *)v7 getDiscoveryOptions];
-      v9 = [v8 copy];
+      getDiscoveryOptions = [(_ADRapportLinkConfigurationMutation *)v7 getDiscoveryOptions];
+      v9 = [getDiscoveryOptions copy];
       discoveryOptions = v6->_discoveryOptions;
       v6->_discoveryOptions = v9;
 
-      v11 = [(_ADRapportLinkConfigurationMutation *)v7 getTransportOptions];
-      v12 = [v11 copy];
+      getTransportOptions = [(_ADRapportLinkConfigurationMutation *)v7 getTransportOptions];
+      v12 = [getTransportOptions copy];
       transportOptions = v6->_transportOptions;
       v6->_transportOptions = v12;
 
-      v14 = [(_ADRapportLinkConfigurationMutation *)v7 getConnectionOptions];
-      v15 = [v14 copy];
+      getConnectionOptions = [(_ADRapportLinkConfigurationMutation *)v7 getConnectionOptions];
+      v15 = [getConnectionOptions copy];
       connectionOptions = v6->_connectionOptions;
       v6->_connectionOptions = v15;
 
@@ -169,36 +169,36 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_ADRapportLinkConfigurationMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_ADRapportLinkConfigurationMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(ADRapportLinkConfiguration);
-      v7 = [(_ADRapportLinkConfigurationMutation *)v5 getDiscoveryOptions];
-      v8 = [v7 copy];
+      getDiscoveryOptions = [(_ADRapportLinkConfigurationMutation *)v5 getDiscoveryOptions];
+      v8 = [getDiscoveryOptions copy];
       discoveryOptions = v6->_discoveryOptions;
       v6->_discoveryOptions = v8;
 
-      v10 = [(_ADRapportLinkConfigurationMutation *)v5 getTransportOptions];
-      v11 = [v10 copy];
+      getTransportOptions = [(_ADRapportLinkConfigurationMutation *)v5 getTransportOptions];
+      v11 = [getTransportOptions copy];
       transportOptions = v6->_transportOptions;
       v6->_transportOptions = v11;
 
-      v13 = [(_ADRapportLinkConfigurationMutation *)v5 getConnectionOptions];
-      v14 = [v13 copy];
+      getConnectionOptions = [(_ADRapportLinkConfigurationMutation *)v5 getConnectionOptions];
+      v14 = [getConnectionOptions copy];
       connectionOptions = v6->_connectionOptions;
       v6->_connectionOptions = v14;
 

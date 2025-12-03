@@ -1,16 +1,16 @@
 @interface SBTransitionSwitcherModifier
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (SBTransitionSwitcherModifier)initWithTransitionID:(id)a3;
-- (double)visibleMarginForItemContainerAtIndex:(unint64_t)a3;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (SBTransitionSwitcherModifier)initWithTransitionID:(id)d;
+- (double)visibleMarginForItemContainerAtIndex:(unint64_t)index;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)appLayoutsToResignActive;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleRemovalEvent:(id)a3;
-- (id)handleScrollEvent:(id)a3;
-- (id)handleTimerEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)handleGestureEvent:(id)event;
+- (id)handleRemovalEvent:(id)event;
+- (id)handleScrollEvent:(id)event;
+- (id)handleTimerEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 - (id)interruptAndEndTransition;
 - (id)keyboardSuppressionMode;
 - (id)transitionDidEnd;
@@ -21,10 +21,10 @@
 
 - (id)transitionWillBegin
 {
-  v3 = [(SBTransitionSwitcherModifier *)self asyncRenderingDisabled];
-  self->_wantsResignActiveAndAsyncRenderingAssertions &= !v3;
+  asyncRenderingDisabled = [(SBTransitionSwitcherModifier *)self asyncRenderingDisabled];
+  self->_wantsResignActiveAndAsyncRenderingAssertions &= !asyncRenderingDisabled;
   v14 = 0.0;
-  if (v3 || ![(SBTransitionSwitcherModifier *)self shouldAsyncRenderUntilDelay:&v14])
+  if (asyncRenderingDisabled || ![(SBTransitionSwitcherModifier *)self shouldAsyncRenderUntilDelay:&v14])
   {
     v7 = 0;
   }
@@ -72,8 +72,8 @@ BOOL __51__SBTransitionSwitcherModifier_transitionWillBegin__block_invoke(uint64
   {
     v2 = MEMORY[0x277CBEAC0];
     v3 = MEMORY[0x277CBEB98];
-    v4 = [(SBTransitionSwitcherModifier *)self appLayouts];
-    v5 = [v3 setWithArray:v4];
+    appLayouts = [(SBTransitionSwitcherModifier *)self appLayouts];
+    v5 = [v3 setWithArray:appLayouts];
     v6 = [v2 dictionaryWithObject:v5 forKey:&unk_283370448];
   }
 
@@ -81,8 +81,8 @@ BOOL __51__SBTransitionSwitcherModifier_transitionWillBegin__block_invoke(uint64
   {
     v16.receiver = self;
     v16.super_class = SBTransitionSwitcherModifier;
-    v7 = [(SBTransitionSwitcherModifier *)&v16 appLayoutsToResignActive];
-    v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+    appLayoutsToResignActive = [(SBTransitionSwitcherModifier *)&v16 appLayoutsToResignActive];
+    v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(appLayoutsToResignActive, "count")}];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __56__SBTransitionSwitcherModifier_appLayoutsToResignActive__block_invoke;
@@ -91,7 +91,7 @@ BOOL __51__SBTransitionSwitcherModifier_transitionWillBegin__block_invoke(uint64
     v9 = v8;
     v14 = v9;
     v15 = &unk_283370478;
-    [v7 bs_each:v12];
+    [appLayoutsToResignActive bs_each:v12];
     v10 = v15;
     v6 = v9;
   }
@@ -103,17 +103,17 @@ BOOL __51__SBTransitionSwitcherModifier_transitionWillBegin__block_invoke(uint64
 {
   if (self->_wantsResignActiveAndAsyncRenderingAssertions)
   {
-    v2 = +[SBSwitcherKeyboardSuppressionMode suppressionModeForAllScenes];
+    keyboardSuppressionMode = +[SBSwitcherKeyboardSuppressionMode suppressionModeForAllScenes];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = SBTransitionSwitcherModifier;
-    v2 = [(SBTransitionSwitcherModifier *)&v4 keyboardSuppressionMode];
+    keyboardSuppressionMode = [(SBTransitionSwitcherModifier *)&v4 keyboardSuppressionMode];
   }
 
-  return v2;
+  return keyboardSuppressionMode;
 }
 
 - (id)transitionDidEnd
@@ -132,20 +132,20 @@ BOOL __51__SBTransitionSwitcherModifier_transitionWillBegin__block_invoke(uint64
   return v3;
 }
 
-- (SBTransitionSwitcherModifier)initWithTransitionID:(id)a3
+- (SBTransitionSwitcherModifier)initWithTransitionID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = SBTransitionSwitcherModifier;
   v7 = [(SBSwitcherModifier *)&v9 init];
   if (v7)
   {
-    if (!v6)
+    if (!dCopy)
     {
       [(SBTransitionSwitcherModifier *)a2 initWithTransitionID:v7];
     }
 
-    objc_storeStrong(&v7->_transitionID, a3);
+    objc_storeStrong(&v7->_transitionID, d);
     v7->_transitionPhase = 0;
     v7->_wantsResignActiveAndAsyncRenderingAssertions = 1;
   }
@@ -157,7 +157,7 @@ BOOL __51__SBTransitionSwitcherModifier_transitionWillBegin__block_invoke(uint64
 {
   if (self->_transitionPhase == 3)
   {
-    v3 = 0;
+    transitionDidEnd = 0;
   }
 
   else
@@ -165,18 +165,18 @@ BOOL __51__SBTransitionSwitcherModifier_transitionWillBegin__block_invoke(uint64
     self->_isInterrupted = 1;
     self->_transitionPhase = 3;
     [(SBChainableModifier *)self setState:1];
-    v3 = [(SBTransitionSwitcherModifier *)self transitionDidEnd];
+    transitionDidEnd = [(SBTransitionSwitcherModifier *)self transitionDidEnd];
   }
 
-  return v3;
+  return transitionDidEnd;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   v37 = *MEMORY[0x277D85DE8];
   v34.receiver = self;
   v34.super_class = SBTransitionSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v34 adjustedAppLayoutsForAppLayouts:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v34 adjustedAppLayoutsForAppLayouts:layouts];
   if ([(NSArray *)self->_appLayoutsToEnsureExist count])
   {
     v20 = v4;
@@ -284,11 +284,11 @@ uint64_t __64__SBTransitionSwitcherModifier_adjustedAppLayoutsForAppLayouts___bl
   return v5 ^ 1u;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v6.receiver = self;
   v6.super_class = SBTransitionSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v6 animationAttributesForLayoutElement:a3];
+  v3 = [(SBTransitionSwitcherModifier *)&v6 animationAttributesForLayoutElement:element];
   v4 = [v3 mutableCopy];
 
   [v4 setUpdateMode:3];
@@ -296,9 +296,9 @@ uint64_t __64__SBTransitionSwitcherModifier_adjustedAppLayoutsForAppLayouts___bl
   return v4;
 }
 
-- (double)visibleMarginForItemContainerAtIndex:(unint64_t)a3
+- (double)visibleMarginForItemContainerAtIndex:(unint64_t)index
 {
-  [(SBTransitionSwitcherModifier *)self frameForIndex:a3];
+  [(SBTransitionSwitcherModifier *)self frameForIndex:index];
 
   return CGRectGetWidth(*&v3);
 }
@@ -317,75 +317,75 @@ void __56__SBTransitionSwitcherModifier_appLayoutsToResignActive__block_invoke(u
   [*(a1 + 40) setObject:v8 forKey:*(a1 + v7)];
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
   v4.receiver = self;
   v4.super_class = SBTransitionSwitcherModifier;
-  return ([(SBTransitionSwitcherModifier *)&v4 asyncRenderingAttributesForAppLayout:a3]& 0xFF01 | self->_wantsResignActiveAndAsyncRenderingAssertions);
+  return ([(SBTransitionSwitcherModifier *)&v4 asyncRenderingAttributesForAppLayout:layout]& 0xFF01 | self->_wantsResignActiveAndAsyncRenderingAssertions);
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = SBTransitionSwitcherModifier;
-  v4 = [(SBChainableModifier *)&v7 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBChainableModifier *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = SBStringFromTransitionPhase(self->_transitionPhase);
   [v4 appendString:v5 withName:@"phase"];
 
   return v4;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v27.receiver = self;
   v27.super_class = SBTransitionSwitcherModifier;
-  v6 = [(SBSwitcherModifier *)&v27 handleTransitionEvent:v5];
-  if ([v5 toEnvironmentMode] == 2)
+  v6 = [(SBSwitcherModifier *)&v27 handleTransitionEvent:eventCopy];
+  if ([eventCopy toEnvironmentMode] == 2)
   {
-    v7 = 1;
+    toFloatingSwitcherVisible = 1;
   }
 
   else
   {
-    v7 = [v5 toFloatingSwitcherVisible];
+    toFloatingSwitcherVisible = [eventCopy toFloatingSwitcherVisible];
   }
 
-  self->_isTransitioningToSwitcher = v7;
-  v8 = [(SBTransitionSwitcherModifier *)self appLayoutsToEnsureExistForMainTransitionEvent:v5];
+  self->_isTransitioningToSwitcher = toFloatingSwitcherVisible;
+  v8 = [(SBTransitionSwitcherModifier *)self appLayoutsToEnsureExistForMainTransitionEvent:eventCopy];
   appLayoutsToEnsureExist = self->_appLayoutsToEnsureExist;
   self->_appLayoutsToEnsureExist = v8;
 
-  v10 = [v5 phase];
-  v11 = [v5 transitionID];
-  v12 = [v11 isEqual:self->_transitionID];
+  phase = [eventCopy phase];
+  transitionID = [eventCopy transitionID];
+  v12 = [transitionID isEqual:self->_transitionID];
 
   if (v12)
   {
-    if (v10 <= self->_transitionPhase)
+    if (phase <= self->_transitionPhase)
     {
-      [(SBTransitionSwitcherModifier *)v10 handleTransitionEvent:a2, self];
+      [(SBTransitionSwitcherModifier *)phase handleTransitionEvent:a2, self];
     }
 
-    self->_transitionPhase = v10;
-    if (v10 == 3 && [v5 isAnimated])
+    self->_transitionPhase = phase;
+    if (phase == 3 && [eventCopy isAnimated])
     {
-      v13 = [v5 fromAppLayout];
-      v14 = [v5 toAppLayout];
+      fromAppLayout = [eventCopy fromAppLayout];
+      toAppLayout = [eventCopy toAppLayout];
 
-      v15 = [v5 fromEnvironmentMode];
-      v16 = [v5 toEnvironmentMode];
-      v17 = [v5 toAppLayout];
-      v18 = v17;
-      if (!v17 || v13 == v14 && v15 == v16)
+      fromEnvironmentMode = [eventCopy fromEnvironmentMode];
+      toEnvironmentMode = [eventCopy toEnvironmentMode];
+      toAppLayout2 = [eventCopy toAppLayout];
+      v18 = toAppLayout2;
+      if (!toAppLayout2 || fromAppLayout == toAppLayout && fromEnvironmentMode == toEnvironmentMode)
       {
       }
 
       else
       {
-        v24 = [v5 toEnvironmentMode];
+        toEnvironmentMode2 = [eventCopy toEnvironmentMode];
 
-        if (v24 == 3)
+        if (toEnvironmentMode2 == 3)
         {
           v25 = [[SBPreemptAnimationSwitcherEventResponse alloc] initWithOptions:2];
           v26 = SBAppendSwitcherModifierResponse(v25, v6);
@@ -412,20 +412,20 @@ void __56__SBTransitionSwitcherModifier_appLayoutsToResignActive__block_invoke(u
   switch(transitionPhase)
   {
     case 3uLL:
-      v20 = [(SBTransitionSwitcherModifier *)self transitionDidEnd];
+      transitionDidEnd = [(SBTransitionSwitcherModifier *)self transitionDidEnd];
       break;
     case 2uLL:
-      v20 = [(SBTransitionSwitcherModifier *)self transitionWillUpdate];
+      transitionDidEnd = [(SBTransitionSwitcherModifier *)self transitionWillUpdate];
       break;
     case 1uLL:
-      v20 = [(SBTransitionSwitcherModifier *)self transitionWillBegin];
+      transitionDidEnd = [(SBTransitionSwitcherModifier *)self transitionWillBegin];
       break;
     default:
       goto LABEL_23;
   }
 
-  v21 = v20;
-  v22 = SBAppendSwitcherModifierResponse(v20, v6);
+  v21 = transitionDidEnd;
+  v22 = SBAppendSwitcherModifierResponse(transitionDidEnd, v6);
 
   v6 = v22;
 LABEL_23:
@@ -433,21 +433,21 @@ LABEL_23:
   return v6;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBTransitionSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v10 handleGestureEvent:v4];
-  v6 = [v4 phase];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v10 handleGestureEvent:eventCopy];
+  phase = [eventCopy phase];
 
-  if (v6)
+  if (phase)
   {
     self->_isInterrupted = 1;
     self->_transitionPhase = 3;
     [(SBChainableModifier *)self setState:1];
-    v7 = [(SBTransitionSwitcherModifier *)self transitionDidEnd];
-    v8 = SBAppendSwitcherModifierResponse(v7, v5);
+    transitionDidEnd = [(SBTransitionSwitcherModifier *)self transitionDidEnd];
+    v8 = SBAppendSwitcherModifierResponse(transitionDidEnd, v5);
 
     v5 = v8;
   }
@@ -455,18 +455,18 @@ LABEL_23:
   return v5;
 }
 
-- (id)handleScrollEvent:(id)a3
+- (id)handleScrollEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = SBTransitionSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v11 handleScrollEvent:v4];
-  v6 = [v4 isUserInitiated];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v11 handleScrollEvent:eventCopy];
+  isUserInitiated = [eventCopy isUserInitiated];
 
-  if (v6 && self->_isTransitioningToSwitcher)
+  if (isUserInitiated && self->_isTransitioningToSwitcher)
   {
-    v7 = [(SBTransitionSwitcherModifier *)self interruptAndEndTransition];
-    v8 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v7 toResponse:v5];
+    interruptAndEndTransition = [(SBTransitionSwitcherModifier *)self interruptAndEndTransition];
+    v8 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:interruptAndEndTransition toResponse:v5];
 
     v9 = [[SBPreemptAnimationSwitcherEventResponse alloc] initWithOptions:1];
     v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v9 toResponse:v8];
@@ -475,16 +475,16 @@ LABEL_23:
   return v5;
 }
 
-- (id)handleRemovalEvent:(id)a3
+- (id)handleRemovalEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = SBTransitionSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v9 handleRemovalEvent:v4];
-  if ([v4 phase] == 1 && -[SBTransitionSwitcherModifier shouldInterruptForRemovalEvent:](self, "shouldInterruptForRemovalEvent:", v4))
+  v5 = [(SBSwitcherModifier *)&v9 handleRemovalEvent:eventCopy];
+  if ([eventCopy phase] == 1 && -[SBTransitionSwitcherModifier shouldInterruptForRemovalEvent:](self, "shouldInterruptForRemovalEvent:", eventCopy))
   {
-    v6 = [(SBTransitionSwitcherModifier *)self interruptAndEndTransition];
-    v7 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v6 toResponse:v5];
+    interruptAndEndTransition = [(SBTransitionSwitcherModifier *)self interruptAndEndTransition];
+    v7 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:interruptAndEndTransition toResponse:v5];
 
     v5 = v7;
   }
@@ -492,16 +492,16 @@ LABEL_23:
   return v5;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBTransitionSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v8 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v8 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  LODWORD(v4) = [v6 isEqualToString:@"kSBTransitionModifierInvalidateAsyncRenderingReason"];
-  if (v4)
+  LODWORD(eventCopy) = [reason isEqualToString:@"kSBTransitionModifierInvalidateAsyncRenderingReason"];
+  if (eventCopy)
   {
     self->_wantsResignActiveAndAsyncRenderingAssertions = 0;
   }

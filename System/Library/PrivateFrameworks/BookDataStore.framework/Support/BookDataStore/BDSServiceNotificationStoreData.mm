@@ -1,40 +1,40 @@
 @interface BDSServiceNotificationStoreData
-- (BDSServiceNotificationStoreData)initWithCoder:(id)a3;
-- (BDSServiceNotificationStoreData)initWithNotificationInfos:(id)a3 changeToken:(int64_t)a4;
+- (BDSServiceNotificationStoreData)initWithCoder:(id)coder;
+- (BDSServiceNotificationStoreData)initWithNotificationInfos:(id)infos changeToken:(int64_t)token;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSServiceNotificationStoreData
 
-- (BDSServiceNotificationStoreData)initWithNotificationInfos:(id)a3 changeToken:(int64_t)a4
+- (BDSServiceNotificationStoreData)initWithNotificationInfos:(id)infos changeToken:(int64_t)token
 {
-  v7 = a3;
+  infosCopy = infos;
   v11.receiver = self;
   v11.super_class = BDSServiceNotificationStoreData;
   v8 = [(BDSServiceNotificationStoreData *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_notificationInfos, a3);
-    v9->_changeToken = a4;
+    objc_storeStrong(&v8->_notificationInfos, infos);
+    v9->_changeToken = token;
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(BDSServiceNotificationStoreData *)self notificationInfos];
-  [v5 encodeObject:v4 forKey:@"notificationInfos"];
+  coderCopy = coder;
+  notificationInfos = [(BDSServiceNotificationStoreData *)self notificationInfos];
+  [coderCopy encodeObject:notificationInfos forKey:@"notificationInfos"];
 
-  [v5 encodeInteger:-[BDSServiceNotificationStoreData changeToken](self forKey:{"changeToken"), @"changeToken"}];
+  [coderCopy encodeInteger:-[BDSServiceNotificationStoreData changeToken](self forKey:{"changeToken"), @"changeToken"}];
 }
 
-- (BDSServiceNotificationStoreData)initWithCoder:(id)a3
+- (BDSServiceNotificationStoreData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = BDSServiceNotificationStoreData;
   v5 = [(BDSServiceNotificationStoreData *)&v11 init];
@@ -42,11 +42,11 @@
   {
     v6 = objc_opt_class();
     v7 = [NSSet setWithObjects:v6, objc_opt_class(), 0];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"notificationInfos"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"notificationInfos"];
     notificationInfos = v5->_notificationInfos;
     v5->_notificationInfos = v8;
 
-    v5->_changeToken = [v4 decodeIntegerForKey:@"changeToken"];
+    v5->_changeToken = [coderCopy decodeIntegerForKey:@"changeToken"];
   }
 
   return v5;
@@ -56,8 +56,8 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BDSServiceNotificationStoreData *)self notificationInfos];
-  v6 = [NSString stringWithFormat:@"<%@:%p notificationInfos=%@ changeToken=%ld>", v4, self, v5, [(BDSServiceNotificationStoreData *)self changeToken]];
+  notificationInfos = [(BDSServiceNotificationStoreData *)self notificationInfos];
+  v6 = [NSString stringWithFormat:@"<%@:%p notificationInfos=%@ changeToken=%ld>", v4, self, notificationInfos, [(BDSServiceNotificationStoreData *)self changeToken]];
 
   return v6;
 }

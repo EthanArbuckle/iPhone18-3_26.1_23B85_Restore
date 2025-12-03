@@ -1,7 +1,7 @@
 @interface CESRSpeechProfileAdminFactory
 + (id)sharedAdminFactory;
 - (CESRSpeechProfileAdminFactory)init;
-- (CESRSpeechProfileAdminFactory)initWithServiceProvider:(id)a3;
+- (CESRSpeechProfileAdminFactory)initWithServiceProvider:(id)provider;
 - (id)admin;
 @end
 
@@ -10,8 +10,8 @@
 - (id)admin
 {
   v3 = [CESRSpeechProfileAdmin alloc];
-  v4 = [(CESRSpeechProfileAdminServiceProvider *)self->_serviceProvider adminService];
-  v5 = [(CESRSpeechProfileAdmin *)v3 initWithAdminService:v4 queue:self->_queue];
+  adminService = [(CESRSpeechProfileAdminServiceProvider *)self->_serviceProvider adminService];
+  v5 = [(CESRSpeechProfileAdmin *)v3 initWithAdminService:adminService queue:self->_queue];
 
   return v5;
 }
@@ -22,10 +22,10 @@
   objc_exception_throw(v2);
 }
 
-- (CESRSpeechProfileAdminFactory)initWithServiceProvider:(id)a3
+- (CESRSpeechProfileAdminFactory)initWithServiceProvider:(id)provider
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = CESRSpeechProfileAdminFactory;
   v6 = [(CESRSpeechProfileAdminFactory *)&v15 init];
@@ -35,7 +35,7 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v6->_serviceProvider, a3);
+  objc_storeStrong(&v6->_serviceProvider, provider);
   if (v7->_serviceProvider)
   {
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);

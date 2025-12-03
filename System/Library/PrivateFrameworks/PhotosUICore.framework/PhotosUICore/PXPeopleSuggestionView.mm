@@ -2,14 +2,14 @@
 - (CGRect)_scaledFaceRect;
 - (CGRect)faceRect;
 - (PXPeopleSuggestionView)init;
-- (PXPeopleSuggestionView)initWithFrame:(CGRect)a3;
+- (PXPeopleSuggestionView)initWithFrame:(CGRect)frame;
 - (double)_faceScale;
-- (void)_updateDateFieldWithSuggestion:(id)a3;
-- (void)_updateSpotlightAnimated:(BOOL)a3;
-- (void)_updateSuggestionImageWithAnimatedSpotlight:(BOOL)a3 withCompletion:(id)a4;
+- (void)_updateDateFieldWithSuggestion:(id)suggestion;
+- (void)_updateSpotlightAnimated:(BOOL)animated;
+- (void)_updateSuggestionImageWithAnimatedSpotlight:(BOOL)spotlight withCompletion:(id)completion;
 - (void)commonInit;
 - (void)layoutSubviews;
-- (void)setSuggestion:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5;
+- (void)setSuggestion:(id)suggestion animated:(BOOL)animated withCompletion:(id)completion;
 - (void)viewScaleDidChange;
 @end
 
@@ -30,13 +30,13 @@
 
 - (double)_faceScale
 {
-  v3 = [(PXPeopleSuggestionView *)self imageView];
-  v4 = [v3 image];
-  [v4 size];
+  imageView = [(PXPeopleSuggestionView *)self imageView];
+  image = [imageView image];
+  [image size];
   v6 = v5;
 
-  v7 = [(PXPeopleSuggestionView *)self imageView];
-  [v7 bounds];
+  imageView2 = [(PXPeopleSuggestionView *)self imageView];
+  [imageView2 bounds];
   v9 = v8;
 
   return v9 / v6;
@@ -58,32 +58,32 @@
   return result;
 }
 
-- (void)_updateDateFieldWithSuggestion:(id)a3
+- (void)_updateDateFieldWithSuggestion:(id)suggestion
 {
-  v10 = a3;
+  suggestionCopy = suggestion;
   v4 = +[PXPeopleUISettings sharedInstance];
-  v5 = [v4 displayReviewMorePhotosDate];
+  displayReviewMorePhotosDate = [v4 displayReviewMorePhotosDate];
 
-  if (v10 && v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (suggestionCopy && displayReviewMorePhotosDate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [v10 px_keyPhotoDate];
-    v7 = [(PXPeopleSuggestionView *)self dateFormatter];
-    v8 = [v7 stringFromDate:v6];
+    px_keyPhotoDate = [suggestionCopy px_keyPhotoDate];
+    dateFormatter = [(PXPeopleSuggestionView *)self dateFormatter];
+    v8 = [dateFormatter stringFromDate:px_keyPhotoDate];
 
-    v9 = [(PXPeopleSuggestionView *)self dateLabel];
-    [v9 setText:v8];
+    dateLabel = [(PXPeopleSuggestionView *)self dateLabel];
+    [dateLabel setText:v8];
   }
 
   else
   {
-    v6 = [(PXPeopleSuggestionView *)self dateLabel];
-    [v6 setText:&stru_1F1741150];
+    px_keyPhotoDate = [(PXPeopleSuggestionView *)self dateLabel];
+    [px_keyPhotoDate setText:&stru_1F1741150];
   }
 }
 
-- (void)_updateSpotlightAnimated:(BOOL)a3
+- (void)_updateSpotlightAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(PXPeopleSuggestionView *)self faceRect];
   v56.origin.x = v5;
   v56.origin.y = v6;
@@ -91,8 +91,8 @@
   v56.size.height = v8;
   if (!CGRectEqualToRect(*MEMORY[0x1E695F058], v56))
   {
-    v9 = [(PXPeopleSuggestionView *)self spotlightLayer];
-    [v9 bounds];
+    spotlightLayer = [(PXPeopleSuggestionView *)self spotlightLayer];
+    [spotlightLayer bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -112,9 +112,9 @@
       v27 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{v11 - v15 * 0.5, v13 - v17 * 0.5, v15 + v15, v17 + v17}];
       [v26 appendPath:v27];
 
-      [v9 setPath:{objc_msgSend(v26, "CGPath")}];
-      v28 = [(PXPeopleSuggestionView *)self dimView];
-      [v28 setAlpha:1.0];
+      [spotlightLayer setPath:{objc_msgSend(v26, "CGPath")}];
+      dimView = [(PXPeopleSuggestionView *)self dimView];
+      [dimView setAlpha:1.0];
     }
 
     v53.origin.x = v19;
@@ -149,13 +149,13 @@
     v40 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{x, y, v37, v38}];
     [v39 appendPath:v40];
 
-    v41 = [v39 CGPath];
+    cGPath = [v39 CGPath];
     [MEMORY[0x1E6979518] begin];
     v42 = [MEMORY[0x1E6979318] animationWithKeyPath:@"path"];
-    [v42 setFromValue:{objc_msgSend(v9, "path")}];
-    [v42 setToValue:v41];
+    [v42 setFromValue:{objc_msgSend(spotlightLayer, "path")}];
+    [v42 setToValue:cGPath];
     v43 = 0.33;
-    if (!v3)
+    if (!animatedCopy)
     {
       v43 = 0.0;
     }
@@ -165,8 +165,8 @@
     [v42 setTimingFunction:v44];
 
     [v42 setRemovedOnCompletion:0];
-    [v9 addAnimation:v42 forKey:@"path"];
-    [v9 setPath:v41];
+    [spotlightLayer addAnimation:v42 forKey:@"path"];
+    [spotlightLayer setPath:cGPath];
     objc_initWeak(&location, self);
     v45 = MEMORY[0x1E6979518];
     v50[0] = MEMORY[0x1E69E9820];
@@ -187,11 +187,11 @@ void __51__PXPeopleSuggestionView__updateSpotlightAnimated___block_invoke(uint64
   [WeakRetained setValidSpotlight:1];
 }
 
-- (void)_updateSuggestionImageWithAnimatedSpotlight:(BOOL)a3 withCompletion:(id)a4
+- (void)_updateSuggestionImageWithAnimatedSpotlight:(BOOL)spotlight withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PXPeopleSuggestionView *)self superview];
-  [v7 frame];
+  completionCopy = completion;
+  superview = [(PXPeopleSuggestionView *)self superview];
+  [superview frame];
   v9 = v8;
   v11 = v10;
 
@@ -202,42 +202,42 @@ void __51__PXPeopleSuggestionView__updateSpotlightAnimated___block_invoke(uint64
 
   [(PXSmartScaleView *)self displayScale];
   v13 = v12;
-  v14 = [(PXPeopleSuggestionView *)self imageView];
+  imageView = [(PXPeopleSuggestionView *)self imageView];
   objc_initWeak(&location, self);
-  v15 = [(PXPeopleSuggestionView *)self suggestion];
+  suggestion = [(PXPeopleSuggestionView *)self suggestion];
   objc_opt_class();
   v16 = v13 * v11;
   if (objc_opt_isKindOfClass())
   {
-    v17 = [[PXPeopleFaceCropFetchOptions alloc] initWithPerson:v15 targetSize:v16 displayScale:v16, v13];
+    v17 = [[PXPeopleFaceCropFetchOptions alloc] initWithPerson:suggestion targetSize:v16 displayScale:v16, v13];
   }
 
   else
   {
-    v18 = v15;
+    v18 = suggestion;
     v19 = [PXPeopleFaceCropFetchOptions alloc];
-    v20 = [v18 person];
-    v21 = [v18 keyFace];
-    v17 = [(PXPeopleFaceCropFetchOptions *)v19 initWithPerson:v20 face:v21 targetSize:v16 displayScale:v16, v13];
+    person = [v18 person];
+    keyFace = [v18 keyFace];
+    v17 = [(PXPeopleFaceCropFetchOptions *)v19 initWithPerson:person face:keyFace targetSize:v16 displayScale:v16, v13];
   }
 
   [(PXPeopleFaceCropFetchOptions *)v17 setWantsSmallFaceRect:1];
   [(PXPeopleFaceCropFetchOptions *)v17 setCropFactor:1];
   [(PXPeopleFaceCropFetchOptions *)v17 setCornerStyle:0];
   [(PXPeopleFaceCropFetchOptions *)v17 setShouldCacheResult:0];
-  v22 = [(PXPeopleSuggestionView *)self imageRequest];
+  imageRequest = [(PXPeopleSuggestionView *)self imageRequest];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __85__PXPeopleSuggestionView__updateSuggestionImageWithAnimatedSpotlight_withCompletion___block_invoke;
   v25[3] = &unk_1E7745638;
-  v23 = v6;
+  v23 = completionCopy;
   v28 = v23;
   objc_copyWeak(&v29, &location);
-  v24 = v14;
+  v24 = imageView;
   v26 = v24;
-  v27 = self;
-  v30 = a3;
-  [v22 requestFaceCropWithOptions:v17 timeout:v25 resultHandler:1.0];
+  selfCopy = self;
+  spotlightCopy = spotlight;
+  [imageRequest requestFaceCropWithOptions:v17 timeout:v25 resultHandler:1.0];
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&location);
@@ -326,12 +326,12 @@ void __85__PXPeopleSuggestionView__updateSuggestionImageWithAnimatedSpotlight_wi
   }
 }
 
-- (void)setSuggestion:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5
+- (void)setSuggestion:(id)suggestion animated:(BOOL)animated withCompletion:(id)completion
 {
-  LODWORD(v6) = a4;
-  v9 = a3;
-  v10 = a5;
-  if (self->_suggestion == v9)
+  LODWORD(v6) = animated;
+  suggestionCopy = suggestion;
+  completionCopy = completion;
+  if (self->_suggestion == suggestionCopy)
   {
     if (v6)
     {
@@ -343,7 +343,7 @@ void __85__PXPeopleSuggestionView__updateSuggestionImageWithAnimatedSpotlight_wi
       if (CGRectEqualToRect(*MEMORY[0x1E695F058], v47))
       {
         [(PXPeopleSuggestionView *)self setNeedsSpotlightUpdate:1];
-        if (!v10)
+        if (!completionCopy)
         {
           goto LABEL_14;
         }
@@ -352,37 +352,37 @@ void __85__PXPeopleSuggestionView__updateSuggestionImageWithAnimatedSpotlight_wi
       else
       {
         [(PXPeopleSuggestionView *)self _updateSpotlightAnimated:1];
-        if (!v10)
+        if (!completionCopy)
         {
           goto LABEL_14;
         }
       }
 
-      v10[2](v10, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
   else
   {
-    v11 = [(PXPeopleSuggestionView *)self imageRequest];
-    [v11 cancel];
+    imageRequest = [(PXPeopleSuggestionView *)self imageRequest];
+    [imageRequest cancel];
 
-    objc_storeStrong(&self->_suggestion, a3);
-    v12 = [(PXPeopleSuggestionView *)self imageView];
+    objc_storeStrong(&self->_suggestion, suggestion);
+    imageView = [(PXPeopleSuggestionView *)self imageView];
     v13 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-    [v12 frame];
+    [imageView frame];
     [v13 setFrame:?];
     [v13 setContentMode:1];
     [v13 setClipsToBounds:1];
     [v13 setAccessibilityIgnoresInvertColors:1];
     [v13 setAlpha:0.0];
-    v14 = [(PXPeopleSuggestionView *)self suggestionView];
-    v15 = [(PXPeopleSuggestionView *)self imageView];
-    [v14 insertSubview:v13 aboveSubview:v15];
+    suggestionView = [(PXPeopleSuggestionView *)self suggestionView];
+    imageView2 = [(PXPeopleSuggestionView *)self imageView];
+    [suggestionView insertSubview:v13 aboveSubview:imageView2];
 
     [(PXPeopleSuggestionView *)self setImageView:v13];
-    v16 = [(PXPeopleSuggestionView *)self superview];
-    [v16 frame];
+    superview = [(PXPeopleSuggestionView *)self superview];
+    [superview frame];
     v18 = v17;
     v20 = v19;
 
@@ -393,40 +393,40 @@ void __85__PXPeopleSuggestionView__updateSuggestionImageWithAnimatedSpotlight_wi
 
     [(PXSmartScaleView *)self displayScale];
     v22 = v21;
-    v23 = [[PXPersonImageRequest alloc] initWithPerson:v9];
+    v23 = [[PXPersonImageRequest alloc] initWithPerson:suggestionCopy];
     [(PXPeopleSuggestionView *)self setImageRequest:v23];
     if (PFOSVariantHasInternalUI())
     {
-      [(PXPeopleSuggestionView *)self _updateDateFieldWithSuggestion:v9];
+      [(PXPeopleSuggestionView *)self _updateDateFieldWithSuggestion:suggestionCopy];
     }
 
     v24 = v22 * v20;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = [[PXPeopleFaceCropFetchOptions alloc] initWithPerson:v9 targetSize:v24 displayScale:v24, v22];
+      v25 = [[PXPeopleFaceCropFetchOptions alloc] initWithPerson:suggestionCopy targetSize:v24 displayScale:v24, v22];
     }
 
     else
     {
-      v30 = v9;
-      v40 = v9;
+      v30 = suggestionCopy;
+      v40 = suggestionCopy;
       v31 = v23;
-      v32 = v10;
+      v32 = completionCopy;
       v33 = v6;
       v6 = v30;
       v34 = [PXPeopleFaceCropFetchOptions alloc];
-      v35 = [(PXPerson *)v6 person];
+      person = [(PXPerson *)v6 person];
       [(PXPerson *)v6 keyFace];
-      v37 = v36 = v12;
+      v37 = v36 = imageView;
 
       LOBYTE(v6) = v33;
-      v10 = v32;
+      completionCopy = v32;
       v23 = v31;
-      v9 = v40;
-      v25 = [(PXPeopleFaceCropFetchOptions *)v34 initWithPerson:v35 face:v37 targetSize:v24 displayScale:v24, v22];
+      suggestionCopy = v40;
+      v25 = [(PXPeopleFaceCropFetchOptions *)v34 initWithPerson:person face:v37 targetSize:v24 displayScale:v24, v22];
 
-      v12 = v36;
+      imageView = v36;
     }
 
     [(PXPeopleFaceCropFetchOptions *)v25 setWantsSmallFaceRect:1, v40];
@@ -438,11 +438,11 @@ void __85__PXPeopleSuggestionView__updateSuggestionImageWithAnimatedSpotlight_wi
     v41[2] = __64__PXPeopleSuggestionView_setSuggestion_animated_withCompletion___block_invoke;
     v41[3] = &unk_1E77455E8;
     v42 = v13;
-    v43 = v12;
-    v44 = self;
-    v45 = v10;
+    v43 = imageView;
+    selfCopy = self;
+    v45 = completionCopy;
     v46 = v6;
-    v38 = v12;
+    v38 = imageView;
     v39 = v13;
     [(PXPersonImageRequest *)v23 requestFaceCropWithOptions:v25 timeout:v41 resultHandler:1.0];
   }
@@ -585,21 +585,21 @@ void __64__PXPeopleSuggestionView_setSuggestion_animated_withCompletion___block_
   v14 = floorf(*&MidY);
   *&MidY = v9;
   v15 = floorf(*&MidY);
-  v16 = [(PXPeopleSuggestionView *)self suggestionView];
-  [v16 setFrame:{v13, v14, v15, v15}];
-  [v16 bounds];
+  suggestionView = [(PXPeopleSuggestionView *)self suggestionView];
+  [suggestionView setFrame:{v13, v14, v15, v15}];
+  [suggestionView bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(PXPeopleSuggestionView *)self imageView];
-  [v25 setFrame:{v18, v20, v22, v24}];
+  imageView = [(PXPeopleSuggestionView *)self imageView];
+  [imageView setFrame:{v18, v20, v22, v24}];
 
-  v26 = [(PXPeopleSuggestionView *)self dimView];
-  [v26 setFrame:{v18, v20, v22, v24}];
+  dimView = [(PXPeopleSuggestionView *)self dimView];
+  [dimView setFrame:{v18, v20, v22, v24}];
 
-  v27 = [(PXPeopleSuggestionView *)self spotlightLayer];
-  [v27 setFrame:{v18, v20, v22, v24}];
+  spotlightLayer = [(PXPeopleSuggestionView *)self spotlightLayer];
+  [spotlightLayer setFrame:{v18, v20, v22, v24}];
 
   if (PFOSVariantHasInternalUI())
   {
@@ -616,11 +616,11 @@ void __64__PXPeopleSuggestionView_setSuggestion_animated_withCompletion___block_
   }
 }
 
-- (PXPeopleSuggestionView)initWithFrame:(CGRect)a3
+- (PXPeopleSuggestionView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXPeopleSuggestionView;
-  v3 = [(PXPeopleSuggestionView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXPeopleSuggestionView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -668,15 +668,15 @@ void __64__PXPeopleSuggestionView_setSuggestion_animated_withCompletion___block_
   [v17 setAccessibilityIgnoresInvertColors:1];
   [(PXPeopleSuggestionView *)self setDimView:v17];
   [(UIView *)self->_suggestionView addSubview:v17];
-  v8 = [MEMORY[0x1E69794A0] layer];
-  [v8 setFillRule:*MEMORY[0x1E69797F8]];
-  v9 = [MEMORY[0x1E69DC888] blackColor];
-  [v8 setFillColor:{objc_msgSend(v9, "CGColor")}];
+  layer = [MEMORY[0x1E69794A0] layer];
+  [layer setFillRule:*MEMORY[0x1E69797F8]];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [layer setFillColor:{objc_msgSend(blackColor, "CGColor")}];
 
-  v10 = [v17 layer];
-  [v10 setMask:v8];
+  layer2 = [v17 layer];
+  [layer2 setMask:layer];
 
-  [(PXPeopleSuggestionView *)self setSpotlightLayer:v8];
+  [(PXPeopleSuggestionView *)self setSpotlightLayer:layer];
   self->_validSpotlight = 0;
   if (PFOSVariantHasInternalUI())
   {
@@ -692,8 +692,8 @@ void __64__PXPeopleSuggestionView_setSuggestion_animated_withCompletion___block_
     dateLabel = self->_dateLabel;
     self->_dateLabel = v14;
 
-    v16 = [MEMORY[0x1E69DC888] redColor];
-    [(UILabel *)self->_dateLabel setTextColor:v16];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    [(UILabel *)self->_dateLabel setTextColor:redColor];
 
     [(PXPeopleSuggestionView *)self addSubview:self->_dateLabel];
   }

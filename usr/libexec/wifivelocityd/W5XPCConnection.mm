@@ -5,55 +5,55 @@
 - (NSArray)eventIDs;
 - (NSSet)faultEventMonitoringPeers;
 - (NSURL)additionalLog;
-- (W5XPCConnection)initWithXPCConnection:(id)a3;
-- (id)__activeRequestWithUUID:(id)a3;
-- (void)__logMessage:(id)a3 timestamped:(BOOL)a4;
-- (void)associateToNetworkOnPeer:(id)a3 scanResult:(id)a4 configuration:(id)a5 reply:(id)a6;
-- (void)cancelAllRequestsAndReply:(id)a3;
-- (void)cancelRequestWithUUID:(id)a3 OnPeer:(id)a4 OfType:(int64_t)a5 reply:(id)a6;
-- (void)cancelRequestWithUUID:(id)a3 reply:(id)a4;
-- (void)collectLogs:(id)a3 configuration:(id)a4 uuid:(id)a5 reply:(id)a6;
-- (void)collectLogsDiagnosticMode:(id)a3 uuid:(id)a4 reply:(id)a5;
+- (W5XPCConnection)initWithXPCConnection:(id)connection;
+- (id)__activeRequestWithUUID:(id)d;
+- (void)__logMessage:(id)message timestamped:(BOOL)timestamped;
+- (void)associateToNetworkOnPeer:(id)peer scanResult:(id)result configuration:(id)configuration reply:(id)reply;
+- (void)cancelAllRequestsAndReply:(id)reply;
+- (void)cancelRequestWithUUID:(id)d OnPeer:(id)peer OfType:(int64_t)type reply:(id)reply;
+- (void)cancelRequestWithUUID:(id)d reply:(id)reply;
+- (void)collectLogs:(id)logs configuration:(id)configuration uuid:(id)uuid reply:(id)reply;
+- (void)collectLogsDiagnosticMode:(id)mode uuid:(id)uuid reply:(id)reply;
 - (void)dealloc;
-- (void)listFilesFromPeer:(id)a3 remoteDirPath:(id)a4 reply:(id)a5;
-- (void)log:(id)a3 timestamp:(BOOL)a4 reply:(id)a5;
-- (void)queryDatabaseForPeer:(id)a3 fetch:(id)a4 reply:(id)a5;
-- (void)queryDebugConfigurationForPeer:(id)a3 reply:(id)a4;
-- (void)queryDiagnosticsModeForPeer:(id)a3 info:(id)a4 reply:(id)a5;
-- (void)queryFaultEventCacheForPeer:(id)a3 reply:(id)a4;
-- (void)queryLocalPeerAndReply:(id)a3;
-- (void)queryRegisteredDiagnosticsPeersWithReply:(id)a3;
-- (void)queryStatusForPeer:(id)a3 reply:(id)a4;
-- (void)registerRemoteDiagnosticEventsForPeer:(id)a3 configuration:(id)a4 reply:(id)a5;
-- (void)requestFileFromPeer:(id)a3 remoteFilePath:(id)a4 reply:(id)a5;
-- (void)runDiagnostics:(id)a3 configuration:(id)a4 uuid:(id)a5 reply:(id)a6;
-- (void)runDiagnosticsForPeer:(id)a3 diagnostics:(id)a4 configuration:(id)a5 uuid:(id)a6 reply:(id)a7;
-- (void)runWiFiPerformanceLoggingWithConfiguration:(id)a3 uuid:(id)a4 reply:(id)a5;
-- (void)runWiFiSnifferOnChannels:(id)a3 duration:(double)a4 peer:(id)a5 uuid:(id)a6 reply:(id)a7;
-- (void)runWiFiSnifferWithTCPDumpOnChannels:(id)a3 duration:(double)a4 peer:(id)a5 uuid:(id)a6 reply:(id)a7;
-- (void)setDebugConfiguration:(id)a3 peer:(id)a4 reply:(id)a5;
-- (void)startDiagnosticsModeWithConfiguration:(id)a3 reply:(id)a4;
-- (void)startMonitoringEvents:(id)a3 reply:(id)a4;
-- (void)startMonitoringFaultEventsForPeer:(id)a3 reply:(id)a4;
-- (void)startNetworkDiscoveryOnPeer:(id)a3 configuration:(id)a4 reply:(id)a5;
-- (void)startPeerDiscoveryWithConfiguration:(id)a3 uuid:(id)a4 reply:(id)a5;
-- (void)stopDiagnosticsModeWithUUID:(id)a3 info:(id)a4 reply:(id)a5;
-- (void)stopMonitoringEvents:(id)a3 reply:(id)a4;
-- (void)stopMonitoringFaultEventsForPeer:(id)a3 reply:(id)a4;
-- (void)stopPeerDiscoveryWithUUID:(id)a3 reply:(id)a4;
-- (void)submitFaultEvent:(id)a3 reply:(id)a4;
-- (void)unregisterRemoteDiagnosticEventsForPeer:(id)a3 configuration:(id)a4 reply:(id)a5;
+- (void)listFilesFromPeer:(id)peer remoteDirPath:(id)path reply:(id)reply;
+- (void)log:(id)log timestamp:(BOOL)timestamp reply:(id)reply;
+- (void)queryDatabaseForPeer:(id)peer fetch:(id)fetch reply:(id)reply;
+- (void)queryDebugConfigurationForPeer:(id)peer reply:(id)reply;
+- (void)queryDiagnosticsModeForPeer:(id)peer info:(id)info reply:(id)reply;
+- (void)queryFaultEventCacheForPeer:(id)peer reply:(id)reply;
+- (void)queryLocalPeerAndReply:(id)reply;
+- (void)queryRegisteredDiagnosticsPeersWithReply:(id)reply;
+- (void)queryStatusForPeer:(id)peer reply:(id)reply;
+- (void)registerRemoteDiagnosticEventsForPeer:(id)peer configuration:(id)configuration reply:(id)reply;
+- (void)requestFileFromPeer:(id)peer remoteFilePath:(id)path reply:(id)reply;
+- (void)runDiagnostics:(id)diagnostics configuration:(id)configuration uuid:(id)uuid reply:(id)reply;
+- (void)runDiagnosticsForPeer:(id)peer diagnostics:(id)diagnostics configuration:(id)configuration uuid:(id)uuid reply:(id)reply;
+- (void)runWiFiPerformanceLoggingWithConfiguration:(id)configuration uuid:(id)uuid reply:(id)reply;
+- (void)runWiFiSnifferOnChannels:(id)channels duration:(double)duration peer:(id)peer uuid:(id)uuid reply:(id)reply;
+- (void)runWiFiSnifferWithTCPDumpOnChannels:(id)channels duration:(double)duration peer:(id)peer uuid:(id)uuid reply:(id)reply;
+- (void)setDebugConfiguration:(id)configuration peer:(id)peer reply:(id)reply;
+- (void)startDiagnosticsModeWithConfiguration:(id)configuration reply:(id)reply;
+- (void)startMonitoringEvents:(id)events reply:(id)reply;
+- (void)startMonitoringFaultEventsForPeer:(id)peer reply:(id)reply;
+- (void)startNetworkDiscoveryOnPeer:(id)peer configuration:(id)configuration reply:(id)reply;
+- (void)startPeerDiscoveryWithConfiguration:(id)configuration uuid:(id)uuid reply:(id)reply;
+- (void)stopDiagnosticsModeWithUUID:(id)d info:(id)info reply:(id)reply;
+- (void)stopMonitoringEvents:(id)events reply:(id)reply;
+- (void)stopMonitoringFaultEventsForPeer:(id)peer reply:(id)reply;
+- (void)stopPeerDiscoveryWithUUID:(id)d reply:(id)reply;
+- (void)submitFaultEvent:(id)event reply:(id)reply;
+- (void)unregisterRemoteDiagnosticEventsForPeer:(id)peer configuration:(id)configuration reply:(id)reply;
 @end
 
 @implementation W5XPCConnection
 
-- (W5XPCConnection)initWithXPCConnection:(id)a3
+- (W5XPCConnection)initWithXPCConnection:(id)connection
 {
   v16.receiver = self;
   v16.super_class = W5XPCConnection;
   v4 = [(W5XPCConnection *)&v16 init];
   v5 = v4;
-  if (!a3)
+  if (!connection)
   {
     goto LABEL_12;
   }
@@ -63,10 +63,10 @@
     goto LABEL_12;
   }
 
-  v6 = a3;
-  v5->_connection = v6;
+  connectionCopy = connection;
+  v5->_connection = connectionCopy;
   bzero(buffer, 0x1000uLL);
-  if (proc_pidpath([(NSXPCConnection *)v6 processIdentifier], buffer, 0x1000u) < 1)
+  if (proc_pidpath([(NSXPCConnection *)connectionCopy processIdentifier], buffer, 0x1000u) < 1)
   {
     goto LABEL_12;
   }
@@ -245,7 +245,7 @@ LABEL_12:
   return v3;
 }
 
-- (id)__activeRequestWithUUID:(id)a3
+- (id)__activeRequestWithUUID:(id)d
 {
   v11 = 0u;
   v12 = 0u;
@@ -268,7 +268,7 @@ LABEL_12:
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        if ([a3 isEqual:{objc_msgSend(v9, "uuid")}])
+        if ([d isEqual:{objc_msgSend(v9, "uuid")}])
         {
           v5 = [v9 copy];
           return v5;
@@ -292,9 +292,9 @@ LABEL_12:
   return v5;
 }
 
-- (void)__logMessage:(id)a3 timestamped:(BOOL)a4
+- (void)__logMessage:(id)message timestamped:(BOOL)timestamped
 {
-  v4 = a4;
+  timestampedCopy = timestamped;
   if (self->_additionalLogURL)
   {
     fileHandle = self->_fileHandle;
@@ -323,46 +323,46 @@ LABEL_12:
   }
 
   [(NSFileHandle *)fileHandle seekToEndOfFile];
-  if (v4)
+  if (timestampedCopy)
   {
-    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ %@\n", [(NSDateFormatter *)self->_formatter stringFromDate:+[NSDate date]], a3);
+    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ %@\n", [(NSDateFormatter *)self->_formatter stringFromDate:+[NSDate date]], message);
   }
 
   else
   {
-    v9 = [NSString stringWithFormat:@"%@\n", a3, v10];
+    v9 = [NSString stringWithFormat:@"%@\n", message, v10];
   }
 
   [(NSFileHandle *)self->_fileHandle writeData:[(NSString *)v9 dataUsingEncoding:4]];
 }
 
-- (void)startMonitoringEvents:(id)a3 reply:(id)a4
+- (void)startMonitoringEvents:(id)events reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000859C4;
   block[3] = &unk_1000E1CC0;
-  block[4] = a3;
+  block[4] = events;
   block[5] = self;
-  block[6] = a4;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)stopMonitoringEvents:(id)a3 reply:(id)a4
+- (void)stopMonitoringEvents:(id)events reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100085B74;
   block[3] = &unk_1000E1CC0;
-  block[4] = a3;
+  block[4] = events;
   block[5] = self;
-  block[6] = a4;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)queryLocalPeerAndReply:(id)a3
+- (void)queryLocalPeerAndReply:(id)reply
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -370,11 +370,11 @@ LABEL_12:
   v4[2] = sub_100085D20;
   v4[3] = &unk_1000E1C70;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reply;
   dispatch_async(queue, v4);
 }
 
-- (void)queryStatusForPeer:(id)a3 reply:(id)a4
+- (void)queryStatusForPeer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -382,12 +382,12 @@ LABEL_12:
   block[2] = sub_100085DE0;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = peer;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)queryDatabaseForPeer:(id)a3 fetch:(id)a4 reply:(id)a5
+- (void)queryDatabaseForPeer:(id)peer fetch:(id)fetch reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -395,13 +395,13 @@ LABEL_12:
   v6[2] = sub_100085EA4;
   v6[3] = &unk_1000E20B8;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = peer;
+  v6[6] = fetch;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)requestFileFromPeer:(id)a3 remoteFilePath:(id)a4 reply:(id)a5
+- (void)requestFileFromPeer:(id)peer remoteFilePath:(id)path reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -409,13 +409,13 @@ LABEL_12:
   v6[2] = sub_100085F68;
   v6[3] = &unk_1000E20B8;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = peer;
+  v6[6] = path;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)listFilesFromPeer:(id)a3 remoteDirPath:(id)a4 reply:(id)a5
+- (void)listFilesFromPeer:(id)peer remoteDirPath:(id)path reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -423,13 +423,13 @@ LABEL_12:
   v6[2] = sub_10008602C;
   v6[3] = &unk_1000E20B8;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = peer;
+  v6[6] = path;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)queryDebugConfigurationForPeer:(id)a3 reply:(id)a4
+- (void)queryDebugConfigurationForPeer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -437,12 +437,12 @@ LABEL_12:
   block[2] = sub_1000860F0;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = peer;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)setDebugConfiguration:(id)a3 peer:(id)a4 reply:(id)a5
+- (void)setDebugConfiguration:(id)configuration peer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -450,44 +450,44 @@ LABEL_12:
   v6[2] = sub_1000861B4;
   v6[3] = &unk_1000E20B8;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = configuration;
+  v6[6] = peer;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)runDiagnostics:(id)a3 configuration:(id)a4 uuid:(id)a5 reply:(id)a6
+- (void)runDiagnostics:(id)diagnostics configuration:(id)configuration uuid:(id)uuid reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10008627C;
   block[3] = &unk_1000E2220;
-  block[4] = a5;
-  block[5] = a4;
+  block[4] = uuid;
+  block[5] = configuration;
   block[6] = self;
-  block[7] = a3;
-  block[8] = a6;
+  block[7] = diagnostics;
+  block[8] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)runDiagnosticsForPeer:(id)a3 diagnostics:(id)a4 configuration:(id)a5 uuid:(id)a6 reply:(id)a7
+- (void)runDiagnosticsForPeer:(id)peer diagnostics:(id)diagnostics configuration:(id)configuration uuid:(id)uuid reply:(id)reply
 {
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10008650C;
   v8[3] = &unk_1000E21D0;
-  v8[4] = a6;
-  v8[5] = a5;
+  v8[4] = uuid;
+  v8[5] = configuration;
   v8[6] = self;
-  v8[7] = a3;
-  v8[8] = a4;
-  v8[9] = a7;
+  v8[7] = peer;
+  v8[8] = diagnostics;
+  v8[9] = reply;
   dispatch_async(queue, v8);
 }
 
-- (void)registerRemoteDiagnosticEventsForPeer:(id)a3 configuration:(id)a4 reply:(id)a5
+- (void)registerRemoteDiagnosticEventsForPeer:(id)peer configuration:(id)configuration reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -495,13 +495,13 @@ LABEL_12:
   v6[2] = sub_100086798;
   v6[3] = &unk_1000E20B8;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = peer;
+  v6[6] = configuration;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)unregisterRemoteDiagnosticEventsForPeer:(id)a3 configuration:(id)a4 reply:(id)a5
+- (void)unregisterRemoteDiagnosticEventsForPeer:(id)peer configuration:(id)configuration reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -509,13 +509,13 @@ LABEL_12:
   v6[2] = sub_10008685C;
   v6[3] = &unk_1000E20B8;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = peer;
+  v6[6] = configuration;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)queryRegisteredDiagnosticsPeersWithReply:(id)a3
+- (void)queryRegisteredDiagnosticsPeersWithReply:(id)reply
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -523,11 +523,11 @@ LABEL_12:
   v4[2] = sub_10008691C;
   v4[3] = &unk_1000E1C70;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reply;
   dispatch_async(queue, v4);
 }
 
-- (void)startDiagnosticsModeWithConfiguration:(id)a3 reply:(id)a4
+- (void)startDiagnosticsModeWithConfiguration:(id)configuration reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -535,12 +535,12 @@ LABEL_12:
   block[2] = sub_1000869DC;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = configuration;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)stopDiagnosticsModeWithUUID:(id)a3 info:(id)a4 reply:(id)a5
+- (void)stopDiagnosticsModeWithUUID:(id)d info:(id)info reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -548,13 +548,13 @@ LABEL_12:
   v6[2] = sub_100086AA0;
   v6[3] = &unk_1000E20B8;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = d;
+  v6[6] = info;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)queryDiagnosticsModeForPeer:(id)a3 info:(id)a4 reply:(id)a5
+- (void)queryDiagnosticsModeForPeer:(id)peer info:(id)info reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -562,56 +562,56 @@ LABEL_12:
   v6[2] = sub_100086B64;
   v6[3] = &unk_1000E20B8;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = peer;
+  v6[6] = info;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)collectLogs:(id)a3 configuration:(id)a4 uuid:(id)a5 reply:(id)a6
+- (void)collectLogs:(id)logs configuration:(id)configuration uuid:(id)uuid reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100086C2C;
   block[3] = &unk_1000E2220;
-  block[4] = a5;
-  block[5] = a4;
+  block[4] = uuid;
+  block[5] = configuration;
   block[6] = self;
-  block[7] = a3;
-  block[8] = a6;
+  block[7] = logs;
+  block[8] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)collectLogsDiagnosticMode:(id)a3 uuid:(id)a4 reply:(id)a5
+- (void)collectLogsDiagnosticMode:(id)mode uuid:(id)uuid reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100086EBC;
   v6[3] = &unk_1000E20B8;
-  v6[4] = a4;
-  v6[5] = a3;
+  v6[4] = uuid;
+  v6[5] = mode;
   v6[6] = self;
-  v6[7] = a5;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)startPeerDiscoveryWithConfiguration:(id)a3 uuid:(id)a4 reply:(id)a5
+- (void)startPeerDiscoveryWithConfiguration:(id)configuration uuid:(id)uuid reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10008714C;
   v6[3] = &unk_1000E20B8;
-  v6[4] = a4;
+  v6[4] = uuid;
   v6[5] = self;
-  v6[6] = a3;
-  v6[7] = a5;
+  v6[6] = configuration;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)stopPeerDiscoveryWithUUID:(id)a3 reply:(id)a4
+- (void)stopPeerDiscoveryWithUUID:(id)d reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -619,12 +619,12 @@ LABEL_12:
   block[2] = sub_100087394;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = d;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)startNetworkDiscoveryOnPeer:(id)a3 configuration:(id)a4 reply:(id)a5
+- (void)startNetworkDiscoveryOnPeer:(id)peer configuration:(id)configuration reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -632,13 +632,13 @@ LABEL_12:
   v6[2] = sub_100087458;
   v6[3] = &unk_1000E20B8;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = peer;
+  v6[6] = configuration;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)associateToNetworkOnPeer:(id)a3 scanResult:(id)a4 configuration:(id)a5 reply:(id)a6
+- (void)associateToNetworkOnPeer:(id)peer scanResult:(id)result configuration:(id)configuration reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -646,60 +646,60 @@ LABEL_12:
   block[2] = sub_100087520;
   block[3] = &unk_1000E2220;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  block[7] = a5;
-  block[8] = a6;
+  block[5] = peer;
+  block[6] = result;
+  block[7] = configuration;
+  block[8] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)runWiFiSnifferOnChannels:(id)a3 duration:(double)a4 peer:(id)a5 uuid:(id)a6 reply:(id)a7
+- (void)runWiFiSnifferOnChannels:(id)channels duration:(double)duration peer:(id)peer uuid:(id)uuid reply:(id)reply
 {
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000875F0;
   v8[3] = &unk_1000E32E0;
-  v8[4] = a6;
-  v8[5] = a5;
+  v8[4] = uuid;
+  v8[5] = peer;
   v8[6] = self;
-  v8[7] = a3;
-  *&v8[9] = a4;
-  v8[8] = a7;
+  v8[7] = channels;
+  *&v8[9] = duration;
+  v8[8] = reply;
   dispatch_async(queue, v8);
 }
 
-- (void)runWiFiSnifferWithTCPDumpOnChannels:(id)a3 duration:(double)a4 peer:(id)a5 uuid:(id)a6 reply:(id)a7
+- (void)runWiFiSnifferWithTCPDumpOnChannels:(id)channels duration:(double)duration peer:(id)peer uuid:(id)uuid reply:(id)reply
 {
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100087868;
   v8[3] = &unk_1000E32E0;
-  v8[4] = a6;
-  v8[5] = a5;
+  v8[4] = uuid;
+  v8[5] = peer;
   v8[6] = self;
-  v8[7] = a3;
-  *&v8[9] = a4;
-  v8[8] = a7;
+  v8[7] = channels;
+  *&v8[9] = duration;
+  v8[8] = reply;
   dispatch_async(queue, v8);
 }
 
-- (void)runWiFiPerformanceLoggingWithConfiguration:(id)a3 uuid:(id)a4 reply:(id)a5
+- (void)runWiFiPerformanceLoggingWithConfiguration:(id)configuration uuid:(id)uuid reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100087AD0;
   v6[3] = &unk_1000E20B8;
-  v6[4] = a4;
-  v6[5] = a3;
+  v6[4] = uuid;
+  v6[5] = configuration;
   v6[6] = self;
-  v6[7] = a5;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)cancelRequestWithUUID:(id)a3 reply:(id)a4
+- (void)cancelRequestWithUUID:(id)d reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -707,12 +707,12 @@ LABEL_12:
   block[2] = sub_100087D3C;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = d;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)cancelAllRequestsAndReply:(id)a3
+- (void)cancelAllRequestsAndReply:(id)reply
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -720,26 +720,26 @@ LABEL_12:
   v4[2] = sub_100087F3C;
   v4[3] = &unk_1000E1C70;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reply;
   dispatch_async(queue, v4);
 }
 
-- (void)cancelRequestWithUUID:(id)a3 OnPeer:(id)a4 OfType:(int64_t)a5 reply:(id)a6
+- (void)cancelRequestWithUUID:(id)d OnPeer:(id)peer OfType:(int64_t)type reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000881A8;
   block[3] = &unk_1000E3330;
-  block[7] = a6;
-  block[8] = a5;
+  block[7] = reply;
+  block[8] = type;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = d;
+  block[6] = peer;
   dispatch_async(queue, block);
 }
 
-- (void)log:(id)a3 timestamp:(BOOL)a4 reply:(id)a5
+- (void)log:(id)log timestamp:(BOOL)timestamp reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -747,13 +747,13 @@ LABEL_12:
   v6[2] = sub_100088298;
   v6[3] = &unk_1000E3358;
   v6[4] = self;
-  v6[5] = a3;
-  v7 = a4;
-  v6[6] = a5;
+  v6[5] = log;
+  timestampCopy = timestamp;
+  v6[6] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)startMonitoringFaultEventsForPeer:(id)a3 reply:(id)a4
+- (void)startMonitoringFaultEventsForPeer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -761,25 +761,25 @@ LABEL_12:
   block[2] = sub_100088370;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = peer;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)stopMonitoringFaultEventsForPeer:(id)a3 reply:(id)a4
+- (void)stopMonitoringFaultEventsForPeer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100088498;
   block[3] = &unk_1000E1CC0;
-  block[4] = a3;
+  block[4] = peer;
   block[5] = self;
-  block[6] = a4;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)submitFaultEvent:(id)a3 reply:(id)a4
+- (void)submitFaultEvent:(id)event reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -787,12 +787,12 @@ LABEL_12:
   block[2] = sub_100088584;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = event;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)queryFaultEventCacheForPeer:(id)a3 reply:(id)a4
+- (void)queryFaultEventCacheForPeer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -800,8 +800,8 @@ LABEL_12:
   block[2] = sub_100088648;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = peer;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 

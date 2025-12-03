@@ -1,15 +1,15 @@
 @interface PHStatusBarGradientView
-- (PHStatusBarGradientView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (PHStatusBarGradientView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation PHStatusBarGradientView
 
-- (PHStatusBarGradientView)initWithFrame:(CGRect)a3
+- (PHStatusBarGradientView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PHStatusBarGradientView;
-  v3 = [(PHStatusBarGradientView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHStatusBarGradientView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,7 +21,7 @@
   return v4;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   v7 = xmmword_1002F9048;

@@ -1,29 +1,29 @@
 @interface ACLSNetworkUtilities
 + (BOOL)hasUsefulUSBEthernetInterface;
-+ (BOOL)isAutomaticConfigMethod4:(id)a3;
-+ (BOOL)isDigestedIdentifier:(id)a3 equalToCleartextIdentifier:(id)a4 tag:(unsigned int)a5;
-+ (BOOL)isShareableInaddr4:(const in_addr *)a3;
-+ (BOOL)isShareableInaddr6:(const in6_addr *)a3;
-+ (BOOL)isUsefulInaddr6:(const in6_addr *)a3;
-+ (BOOL)isWiredNetworkInterfaceType:(id)a3;
-+ (BOOL)makeLocalAddresses:(id *)a3 andGatewayIdentifiers:(id *)a4 tag:(unsigned int)a5;
-+ (double)speedFromEthernetMediaSubType:(id)a3;
++ (BOOL)isAutomaticConfigMethod4:(id)method4;
++ (BOOL)isDigestedIdentifier:(id)identifier equalToCleartextIdentifier:(id)cleartextIdentifier tag:(unsigned int)tag;
++ (BOOL)isShareableInaddr4:(const in_addr *)inaddr4;
++ (BOOL)isShareableInaddr6:(const in6_addr *)inaddr6;
++ (BOOL)isUsefulInaddr6:(const in6_addr *)inaddr6;
++ (BOOL)isWiredNetworkInterfaceType:(id)type;
++ (BOOL)makeLocalAddresses:(id *)addresses andGatewayIdentifiers:(id *)identifiers tag:(unsigned int)tag;
++ (double)speedFromEthernetMediaSubType:(id)type;
 + (id)allActiveNetworkInterfaces;
-+ (id)createNetworkInterface:(__SCNetworkInterface *)a3 service:(__SCNetworkService *)a4 configInfo:(id)a5;
-+ (id)digestIdentifier:(id)a3 tag:(unsigned int)a4;
-+ (id)netmask4ContainingStartAddress:(id)a3 endAddress:(id)a4;
-+ (id)serviceIDFromKey:(id)a3;
-+ (id)stringFromInaddr4:(const in_addr *)a3;
-+ (id)stringFromInaddr6:(const in6_addr *)a3;
-+ (id)stringFromSockaddrDL:(const sockaddr_dl *)a3;
-+ (id)stringFromSockaddrStorage:(const sockaddr_storage *)a3;
++ (id)createNetworkInterface:(__SCNetworkInterface *)interface service:(__SCNetworkService *)service configInfo:(id)info;
++ (id)digestIdentifier:(id)identifier tag:(unsigned int)tag;
++ (id)netmask4ContainingStartAddress:(id)address endAddress:(id)endAddress;
++ (id)serviceIDFromKey:(id)key;
++ (id)stringFromInaddr4:(const in_addr *)inaddr4;
++ (id)stringFromInaddr6:(const in6_addr *)inaddr6;
++ (id)stringFromSockaddrDL:(const sockaddr_dl *)l;
++ (id)stringFromSockaddrStorage:(const sockaddr_storage *)storage;
 @end
 
 @implementation ACLSNetworkUtilities
 
 + (BOOL)hasUsefulUSBEthernetInterface
 {
-  [a1 allActiveNetworkInterfaces];
+  [self allActiveNetworkInterfaces];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
@@ -64,14 +64,14 @@ LABEL_12:
   return v3;
 }
 
-+ (id)netmask4ContainingStartAddress:(id)a3 endAddress:(id)a4
++ (id)netmask4ContainingStartAddress:(id)address endAddress:(id)endAddress
 {
-  v5 = a4;
+  endAddressCopy = endAddress;
   v17[0] = 0;
   v17[1] = 0;
   v16[0] = 0;
   v16[1] = 0;
-  if (inet_pton(2, [a3 UTF8String], v17 + 4) < 1 || inet_pton(2, objc_msgSend(v5, "UTF8String"), v16 + 4) < 1)
+  if (inet_pton(2, [address UTF8String], v17 + 4) < 1 || inet_pton(2, objc_msgSend(endAddressCopy, "UTF8String"), v16 + 4) < 1)
   {
     goto LABEL_8;
   }
@@ -252,14 +252,14 @@ LABEL_17:
                   v30 = [v29 objectForKey:kSCPropNetIPv4ConfigMethod];
                   [v12 appendFormat:@", 4m %@", v30];
                   v68 = v29;
-                  if ([a1 isManualConfigMethod4:v30])
+                  if ([self isManualConfigMethod4:v30])
                   {
                     v66 = v30;
-                    BSDName = [a1 createNetworkInterface:Interface service:v10 configInfo:v29];
+                    BSDName = [self createNetworkInterface:Interface service:v10 configInfo:v29];
                     goto LABEL_67;
                   }
 
-                  if (![a1 isAutomaticConfigMethod4:v30] || (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(0, kSCDynamicStoreDomainState, kSCCompAnyRegex, kSCEntNetIPv4), objc_msgSend(v12, "appendFormat:", @", 4g %@", NetworkServiceEntity), !NetworkServiceEntity))
+                  if (![self isAutomaticConfigMethod4:v30] || (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(0, kSCDynamicStoreDomainState, kSCCompAnyRegex, kSCEntNetIPv4), objc_msgSend(v12, "appendFormat:", @", 4g %@", NetworkServiceEntity), !NetworkServiceEntity))
                   {
 
                     v27 = v70;
@@ -284,7 +284,7 @@ LABEL_17:
                   v35 = v34;
                   obj = v33;
                   cf = NetworkServiceEntity;
-                  v83 = a1;
+                  selfCopy = self;
                   BSDName = 0;
                   v78 = *v92;
                   do
@@ -297,7 +297,7 @@ LABEL_17:
                       }
 
                       v37 = *(*(&v91 + 1) + 8 * i);
-                      v38 = [v83 serviceIDFromKey:v37];
+                      v38 = [selfCopy serviceIDFromKey:v37];
                       if ([v38 isEqualToString:v86])
                       {
                         v39 = SCDynamicStoreCopyValue(store, v37);
@@ -313,7 +313,7 @@ LABEL_17:
                         }
 
                         [v12 appendFormat:@", 4d %d", v41];
-                        v42 = [v83 createNetworkInterface:Interface service:v82 configInfo:v40];
+                        v42 = [selfCopy createNetworkInterface:Interface service:v82 configInfo:v40];
 
                         if (!v42)
                         {
@@ -331,7 +331,7 @@ LABEL_17:
                   while (v35);
                   v43 = obj;
 
-                  a1 = v83;
+                  self = selfCopy;
                   NetworkServiceEntity = cf;
                   if (!BSDName)
                   {
@@ -384,15 +384,15 @@ LABEL_70:
 
                     v48 = [v47 objectForKey:kSCPropNetIPv6ConfigMethod];
                     [v12 appendFormat:@", 6m %@", v48];
-                    if ([a1 isManualConfigMethod6:v48])
+                    if ([self isManualConfigMethod6:v48])
                     {
                       v69 = v48;
                       v71 = v47;
-                      BSDName = [a1 createNetworkInterface:Interface service:v10 configInfo:v47];
+                      BSDName = [self createNetworkInterface:Interface service:v10 configInfo:v47];
                       goto LABEL_99;
                     }
 
-                    if (![a1 isAutomaticConfigMethod6:v48] || (v49 = SCDynamicStoreKeyCreateNetworkServiceEntity(0, kSCDynamicStoreDomainState, kSCCompAnyRegex, kSCEntNetIPv6), objc_msgSend(v12, "appendFormat:", @", 6g %@", v49), !v49))
+                    if (![self isAutomaticConfigMethod6:v48] || (v49 = SCDynamicStoreKeyCreateNetworkServiceEntity(0, kSCDynamicStoreDomainState, kSCCompAnyRegex, kSCEntNetIPv6), objc_msgSend(v12, "appendFormat:", @", 6g %@", v49), !v49))
                     {
 
                       goto LABEL_100;
@@ -429,7 +429,7 @@ LABEL_70:
                         }
 
                         v53 = *(*(&v87 + 1) + 8 * j);
-                        v54 = [a1 serviceIDFromKey:v53];
+                        v54 = [self serviceIDFromKey:v53];
                         if ([v54 isEqualToString:v86])
                         {
                           v55 = SCDynamicStoreCopyValue(store, v53);
@@ -445,8 +445,8 @@ LABEL_70:
                           }
 
                           [v12 appendFormat:@", 6d %d", v57];
-                          v58 = a1;
-                          v59 = [a1 createNetworkInterface:Interface service:v82 configInfo:v56];
+                          selfCopy2 = self;
+                          v59 = [self createNetworkInterface:Interface service:v82 configInfo:v56];
 
                           if (!v59)
                           {
@@ -454,7 +454,7 @@ LABEL_70:
                           }
 
                           BSDName = v59;
-                          a1 = v58;
+                          self = selfCopy2;
                           v5 = v75;
                         }
                       }
@@ -590,14 +590,14 @@ LABEL_104:
   return v3;
 }
 
-+ (double)speedFromEthernetMediaSubType:(id)a3
++ (double)speedFromEthernetMediaSubType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 UTF8String];
-  if (v4)
+  typeCopy = type;
+  uTF8String = [typeCopy UTF8String];
+  if (uTF8String)
   {
     v10 = 0;
-    v5 = strtod(v4, &v10);
+    v5 = strtod(uTF8String, &v10);
     v6 = v5;
     v7 = v5 <= 0.0 || v10 == 0;
     if (!v7 && *v10 == 71)
@@ -608,23 +608,23 @@ LABEL_104:
 
   else
   {
-    [v3 doubleValue];
+    [typeCopy doubleValue];
     v6 = v8;
   }
 
   return v6;
 }
 
-+ (id)createNetworkInterface:(__SCNetworkInterface *)a3 service:(__SCNetworkService *)a4 configInfo:(id)a5
++ (id)createNetworkInterface:(__SCNetworkInterface *)interface service:(__SCNetworkService *)service configInfo:(id)info
 {
-  v8 = a5;
+  infoCopy = info;
   v9 = objc_opt_new();
-  [v9 setBsdName:SCNetworkInterfaceGetBSDName(a3)];
-  [v9 setDeviceID:SCNetworkServiceGetServiceID(a4)];
-  [v9 setUserReadable:SCNetworkInterfaceGetLocalizedDisplayName(a3)];
-  [v9 setInterfaceType:SCNetworkInterfaceGetInterfaceType(a3)];
-  v10 = [v9 interfaceType];
-  [v9 setWired:{objc_msgSend(a1, "isWiredNetworkInterfaceType:", v10)}];
+  [v9 setBsdName:SCNetworkInterfaceGetBSDName(interface)];
+  [v9 setDeviceID:SCNetworkServiceGetServiceID(service)];
+  [v9 setUserReadable:SCNetworkInterfaceGetLocalizedDisplayName(interface)];
+  [v9 setInterfaceType:SCNetworkInterfaceGetInterfaceType(interface)];
+  interfaceType = [v9 interfaceType];
+  [v9 setWired:{objc_msgSend(self, "isWiredNetworkInterfaceType:", interfaceType)}];
 
   [v9 setLocationID:&off_1000375C8];
   [v9 setIsNCM:0];
@@ -673,59 +673,59 @@ LABEL_104:
   if ([v9 wired])
   {
     *mainPort = 0;
-    SCNetworkInterfaceCopyMediaOptions(a3, 0, mainPort, 0, 1u);
+    SCNetworkInterfaceCopyMediaOptions(interface, 0, mainPort, 0, 1u);
     if (*mainPort)
     {
       v20 = CFDictionaryGetValue(*mainPort, kSCPropNetEthernetMediaSubType);
-      [a1 speedFromEthernetMediaSubType:v20];
+      [self speedFromEthernetMediaSubType:v20];
       [v9 setSpeed:?];
       CFRelease(*mainPort);
     }
   }
 
-  v21 = [v8 objectForKey:kSCPropNetIPv4Addresses];
-  v22 = [v21 lastObject];
+  v21 = [infoCopy objectForKey:kSCPropNetIPv4Addresses];
+  lastObject = [v21 lastObject];
 
-  v23 = [v8 objectForKey:kSCPropNetIPv4SubnetMasks];
-  v24 = [v23 lastObject];
+  v23 = [infoCopy objectForKey:kSCPropNetIPv4SubnetMasks];
+  lastObject2 = [v23 lastObject];
 
-  v25 = [v8 objectForKey:kSCPropNetIPv6Addresses];
-  v26 = [v25 lastObject];
+  v25 = [infoCopy objectForKey:kSCPropNetIPv6Addresses];
+  lastObject3 = [v25 lastObject];
 
-  v27 = [v8 objectForKey:kSCPropNetIPv6PrefixLength];
+  v27 = [infoCopy objectForKey:kSCPropNetIPv6PrefixLength];
 
-  v28 = [v27 lastObject];
+  lastObject4 = [v27 lastObject];
 
   [v9 setShareable:0];
   [v9 setUseful:0];
-  if ([v22 length] && objc_msgSend(v24, "length"))
+  if ([lastObject length] && objc_msgSend(lastObject2, "length"))
   {
     *mainPort = 0;
     v33[0] = 0;
-    if (inet_pton(2, [v22 UTF8String], &mainPort[1]) < 1)
+    if (inet_pton(2, [lastObject UTF8String], &mainPort[1]) < 1)
     {
       goto LABEL_24;
     }
 
-    [v9 setIpAddress:v22];
-    [v9 setShareable:{objc_msgSend(a1, "isShareableSockaddr4:", mainPort)}];
-    v29 = [a1 isUsefulSockaddr4:mainPort];
+    [v9 setIpAddress:lastObject];
+    [v9 setShareable:{objc_msgSend(self, "isShareableSockaddr4:", mainPort)}];
+    v29 = [self isUsefulSockaddr4:mainPort];
     goto LABEL_23;
   }
 
-  if ([v26 length])
+  if ([lastObject3 length])
   {
-    if (v28)
+    if (lastObject4)
     {
       *mainPort = 0;
       v33[0] = 0;
       v34 = 0;
       v33[1] = 0;
-      if (inet_pton(30, [v26 UTF8String], v33) >= 1)
+      if (inet_pton(30, [lastObject3 UTF8String], v33) >= 1)
       {
-        [v9 setIpAddress:v26];
-        [v9 setShareable:{objc_msgSend(a1, "isShareableSockaddr6:", mainPort)}];
-        v29 = [a1 isUsefulSockaddr6:mainPort];
+        [v9 setIpAddress:lastObject3];
+        [v9 setShareable:{objc_msgSend(self, "isShareableSockaddr6:", mainPort)}];
+        v29 = [self isUsefulSockaddr6:mainPort];
 LABEL_23:
         [v9 setUseful:v29];
       }
@@ -737,14 +737,14 @@ LABEL_24:
   return v9;
 }
 
-+ (BOOL)isShareableInaddr4:(const in_addr *)a3
++ (BOOL)isShareableInaddr4:(const in_addr *)inaddr4
 {
-  if (a3->s_addr == 10)
+  if (inaddr4->s_addr == 10)
   {
     return 1;
   }
 
-  v3 = bswap32(a3->s_addr);
+  v3 = bswap32(inaddr4->s_addr);
   if (v3 >> 20 == 2753)
   {
     return 1;
@@ -754,59 +754,59 @@ LABEL_24:
   return v5 == -1062731776 || v5 == -1442971648;
 }
 
-+ (BOOL)isShareableInaddr6:(const in6_addr *)a3
++ (BOOL)isShareableInaddr6:(const in6_addr *)inaddr6
 {
-  if (a3->__u6_addr32[0] || a3->__u6_addr32[1])
+  if (inaddr6->__u6_addr32[0] || inaddr6->__u6_addr32[1])
   {
     return 1;
   }
 
-  if (!a3->__u6_addr32[2] && !a3->__u6_addr32[3])
+  if (!inaddr6->__u6_addr32[2] && !inaddr6->__u6_addr32[3])
   {
     return 0;
   }
 
-  if (a3->__u6_addr32[2])
+  if (inaddr6->__u6_addr32[2])
   {
     return 1;
   }
 
-  return a3->__u6_addr32[3] != 0x1000000;
+  return inaddr6->__u6_addr32[3] != 0x1000000;
 }
 
-+ (BOOL)isUsefulInaddr6:(const in6_addr *)a3
++ (BOOL)isUsefulInaddr6:(const in6_addr *)inaddr6
 {
-  if (a3->__u6_addr32[0])
+  if (inaddr6->__u6_addr32[0])
   {
-    return a3->__u6_addr32[0] != 254 || (a3->__u6_addr32[0] & 0xC000) != 0x8000;
+    return inaddr6->__u6_addr32[0] != 254 || (inaddr6->__u6_addr32[0] & 0xC000) != 0x8000;
   }
 
   else
   {
-    return a3->__u6_addr32[1] || (a3->__u6_addr32[2] || a3->__u6_addr32[3]) && (a3->__u6_addr32[2] || a3->__u6_addr32[3] != 0x1000000);
+    return inaddr6->__u6_addr32[1] || (inaddr6->__u6_addr32[2] || inaddr6->__u6_addr32[3]) && (inaddr6->__u6_addr32[2] || inaddr6->__u6_addr32[3] != 0x1000000);
   }
 }
 
-+ (BOOL)isAutomaticConfigMethod4:(id)a3
++ (BOOL)isAutomaticConfigMethod4:(id)method4
 {
-  v3 = a3;
+  method4Copy = method4;
   v4 = [NSSet setWithObjects:kSCValNetIPv4ConfigMethodDHCP, kSCValNetIPv4ConfigMethodINFORM, kSCValNetIPv4ConfigMethodBOOTP, kSCValNetIPv4ConfigMethodPPP, 0];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:method4Copy];
 
   return v5;
 }
 
-+ (BOOL)isWiredNetworkInterfaceType:(id)a3
++ (BOOL)isWiredNetworkInterfaceType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v8[0] = kSCNetworkInterfaceTypeBond;
   v8[1] = kSCNetworkInterfaceTypeEthernet;
   v8[2] = kSCNetworkInterfaceTypeFireWire;
   v4 = [NSArray arrayWithObjects:v8 count:3];
   v5 = v4;
-  if (v3)
+  if (typeCopy)
   {
-    v6 = [v4 containsObject:v3];
+    v6 = [v4 containsObject:typeCopy];
   }
 
   else
@@ -817,9 +817,9 @@ LABEL_24:
   return v6;
 }
 
-+ (id)serviceIDFromKey:(id)a3
++ (id)serviceIDFromKey:(id)key
 {
-  v3 = [NSScanner scannerWithString:a3];
+  v3 = [NSScanner scannerWithString:key];
   v4 = [NSCharacterSet characterSetWithCharactersInString:@"/"];
   if ([v3 scanUpToString:@"/Network/Service/" intoString:0] && objc_msgSend(v3, "scanString:intoString:", @"/Network/Service/", 0))
   {
@@ -839,11 +839,11 @@ LABEL_6:
   return v7;
 }
 
-+ (id)stringFromInaddr4:(const in_addr *)a3
++ (id)stringFromInaddr4:(const in_addr *)inaddr4
 {
   *v5 = 0;
   v6 = 0;
-  v3 = inet_ntop(2, a3, v5, 0x10u);
+  v3 = inet_ntop(2, inaddr4, v5, 0x10u);
   if (v3)
   {
     v3 = [NSString stringWithUTF8String:v5];
@@ -852,10 +852,10 @@ LABEL_6:
   return v3;
 }
 
-+ (id)stringFromInaddr6:(const in6_addr *)a3
++ (id)stringFromInaddr6:(const in6_addr *)inaddr6
 {
   memset(v5, 0, 46);
-  v3 = inet_ntop(30, a3, v5, 0x2Eu);
+  v3 = inet_ntop(30, inaddr6, v5, 0x2Eu);
   if (v3)
   {
     v3 = [NSString stringWithUTF8String:v5];
@@ -864,20 +864,20 @@ LABEL_6:
   return v3;
 }
 
-+ (id)stringFromSockaddrDL:(const sockaddr_dl *)a3
++ (id)stringFromSockaddrDL:(const sockaddr_dl *)l
 {
-  if (a3->sdl_type == 6 && a3->sdl_alen == 6)
+  if (l->sdl_type == 6 && l->sdl_alen == 6)
   {
-    v4 = [a1 stringFromMacAddr:&a3->sdl_data[a3->sdl_nlen]];
+    v4 = [self stringFromMacAddr:&l->sdl_data[l->sdl_nlen]];
   }
 
   else
   {
-    v5 = [NSMutableString stringWithFormat:@"<type=%#x>", a3->sdl_type];
+    v5 = [NSMutableString stringWithFormat:@"<type=%#x>", l->sdl_type];
     v4 = v5;
-    if (a3->sdl_nlen)
+    if (l->sdl_nlen)
     {
-      [v5 appendFormat:@"%.*s", a3->sdl_nlen, a3->sdl_data];
+      [v5 appendFormat:@"%.*s", l->sdl_nlen, l->sdl_data];
     }
 
     else
@@ -885,10 +885,10 @@ LABEL_6:
       [v5 appendString:@"<unknown>"];
     }
 
-    if (a3->sdl_alen)
+    if (l->sdl_alen)
     {
       v6 = 0;
-      v7 = &a3->sdl_data[a3->sdl_nlen];
+      v7 = &l->sdl_data[l->sdl_nlen];
       v8 = @":";
       do
       {
@@ -897,36 +897,36 @@ LABEL_6:
         v8 = @"-";
       }
 
-      while (v6 < a3->sdl_alen);
+      while (v6 < l->sdl_alen);
     }
   }
 
   return v4;
 }
 
-+ (id)stringFromSockaddrStorage:(const sockaddr_storage *)a3
++ (id)stringFromSockaddrStorage:(const sockaddr_storage *)storage
 {
-  ss_family = a3->ss_family;
+  ss_family = storage->ss_family;
   if (ss_family == 30)
   {
-    v4 = [a1 stringFromSockaddr6:?];
+    v4 = [self stringFromSockaddr6:?];
   }
 
   else if (ss_family == 18)
   {
-    v4 = [a1 stringFromSockaddrDL:?];
+    v4 = [self stringFromSockaddrDL:?];
   }
 
   else
   {
     if (ss_family == 2)
     {
-      [a1 stringFromSockaddr4:?];
+      [self stringFromSockaddr4:?];
     }
 
     else
     {
-      [NSString stringWithFormat:@"(family=%u)", a3->ss_family];
+      [NSString stringWithFormat:@"(family=%u)", storage->ss_family];
     }
     v4 = ;
   }
@@ -934,12 +934,12 @@ LABEL_6:
   return v4;
 }
 
-+ (BOOL)makeLocalAddresses:(id *)a3 andGatewayIdentifiers:(id *)a4 tag:(unsigned int)a5
++ (BOOL)makeLocalAddresses:(id *)addresses andGatewayIdentifiers:(id *)identifiers tag:(unsigned int)tag
 {
   v9 = gLogHandle;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    sub_10001FB78(a5, v9);
+    sub_10001FB78(tag, v9);
   }
 
   *v129 = xmmword_100026E10;
@@ -965,10 +965,10 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v105 = a1;
-  v96 = a3;
-  v97 = a4;
-  v101 = a5;
+  selfCopy = self;
+  addressesCopy = addresses;
+  identifiersCopy = identifiers;
+  tagCopy = tag;
   v102 = 0;
   v22 = 0;
   v98 = 0;
@@ -997,7 +997,7 @@ LABEL_6:
         v59 = v40;
         v60 = currentQueueName();
         LODWORD(buf[0]) = 67109635;
-        HIDWORD(buf[0]) = v101;
+        HIDWORD(buf[0]) = tagCopy;
         LOWORD(buf[1]) = 2080;
         *(&buf[1] + 2) = v60;
         WORD1(buf[2]) = 2113;
@@ -1036,7 +1036,7 @@ LABEL_43:
       {
         v32 = off_100034AA8[v29];
         v33 = *v27;
-        v34 = [v105 stringFromSockaddrStorage:&buf[v28]];
+        v34 = [selfCopy stringFromSockaddrStorage:&buf[v28]];
         [v24 appendFormat:@", %s=[%u]%@", v32, v33, v34];
       }
 
@@ -1064,7 +1064,7 @@ LABEL_47:
     {
       v46 = currentQueueName();
       *v108 = 67109635;
-      v109 = v101;
+      v109 = tagCopy;
       v110 = 2080;
       v111 = v46;
       v112 = 2113;
@@ -1146,9 +1146,9 @@ LABEL_61:
         {
           v61 = currentQueueName();
           v62 = *v43;
-          v63 = [v105 stringFromSockaddrStorage:v43 + 136];
+          v63 = [selfCopy stringFromSockaddrStorage:v43 + 136];
           *v108 = 67110147;
-          v109 = v101;
+          v109 = tagCopy;
           v110 = 2080;
           v111 = v61;
           v112 = 2048;
@@ -1201,7 +1201,7 @@ LABEL_61:
         {
           v64 = currentQueueName();
           *v108 = 67109378;
-          v109 = v101;
+          v109 = tagCopy;
           v110 = 2080;
           v111 = v64;
           _os_log_error_impl(&_mh_execute_header, v47, OS_LOG_TYPE_ERROR, "#%08x [%s] makeLocalAddresses: denied access to MAC address", v108, 0x12u);
@@ -1262,9 +1262,9 @@ LABEL_97:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
       v57 = currentQueueName();
-      v58 = [v105 stringFromMacAddr:v54 + 264];
+      v58 = [selfCopy stringFromMacAddr:v54 + 264];
       *v108 = 67109891;
-      v109 = v101;
+      v109 = tagCopy;
       v110 = 2080;
       v111 = v57;
       v112 = 1024;
@@ -1294,7 +1294,7 @@ LABEL_98:
     v106 = 0;
   }
 
-  v65 = v105;
+  v65 = selfCopy;
   if (os_log_type_enabled(gLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v66 = v106;
@@ -1320,7 +1320,7 @@ LABEL_98:
           v71 = [v65 stringFromSockaddrStorage:buf];
           v72 = [NSMutableString stringWithFormat:@"ifa_name=%s, ifa_flags=%#x, ifa_addr=%@", ifa_name, ifa_flags, v71];
 
-          v65 = v105;
+          v65 = selfCopy;
           if (v66->ifa_netmask)
           {
             v120 = 0u;
@@ -1331,7 +1331,7 @@ LABEL_98:
             memset(buf, 0, sizeof(buf));
             v73 = v66->ifa_netmask->sa_len;
             __memcpy_chk();
-            v74 = [v105 stringFromSockaddrStorage:buf];
+            v74 = [selfCopy stringFromSockaddrStorage:buf];
             [v72 appendFormat:@", ifa_netmask=%@", v74];
           }
 
@@ -1345,7 +1345,7 @@ LABEL_98:
             memset(buf, 0, sizeof(buf));
             v75 = v66->ifa_dstaddr->sa_len;
             __memcpy_chk();
-            v76 = [v105 stringFromSockaddrStorage:buf];
+            v76 = [selfCopy stringFromSockaddrStorage:buf];
             [v72 appendFormat:@", ifa_dstaddr=%@", v76];
           }
 
@@ -1354,7 +1354,7 @@ LABEL_98:
           {
             v78 = currentQueueName();
             *v108 = 67109634;
-            v109 = v101;
+            v109 = tagCopy;
             v110 = 2080;
             v111 = v78;
             v112 = 2112;
@@ -1430,7 +1430,7 @@ LABEL_98:
           buf[1] = 0;
           v84 = ifa_addr->sa_len;
           __memcpy_chk();
-          if ([v105 isUsefulSockaddr4:buf])
+          if ([selfCopy isUsefulSockaddr4:buf])
           {
             break;
           }
@@ -1439,7 +1439,7 @@ LABEL_98:
         goto LABEL_134;
       }
 
-      if (ifa_addr->sa_len != 28 || (memset(buf, 0, 28), v85 = v80->ifa_addr->sa_len, __memcpy_chk(), ![v105 isUsefulSockaddr6:buf]))
+      if (ifa_addr->sa_len != 28 || (memset(buf, 0, 28), v85 = v80->ifa_addr->sa_len, __memcpy_chk(), ![selfCopy isUsefulSockaddr6:buf]))
       {
 LABEL_134:
         v80 = v80->ifa_next;
@@ -1460,9 +1460,9 @@ LABEL_134:
     if (os_log_type_enabled(v86, OS_LOG_TYPE_DEBUG))
     {
       v99 = currentQueueName();
-      v87 = [v105 stringFromSockaddrStorage:v79 + 8];
+      v87 = [selfCopy stringFromSockaddrStorage:v79 + 8];
       LODWORD(buf[0]) = 67109890;
-      HIDWORD(buf[0]) = v101;
+      HIDWORD(buf[0]) = tagCopy;
       LOWORD(buf[1]) = 2080;
       *(&buf[1] + 2) = v99;
       WORD1(buf[2]) = 1024;
@@ -1473,7 +1473,7 @@ LABEL_134:
     }
 
 LABEL_135:
-    v65 = v105;
+    v65 = selfCopy;
 LABEL_136:
     v79 += 272;
     if (v79 < v104)
@@ -1497,9 +1497,9 @@ LABEL_166:
     v12 = 0;
     v11 = 0;
     v10 = 0;
-    a5 = v101;
-    a3 = v96;
-    a4 = v97;
+    tag = tagCopy;
+    addresses = addressesCopy;
+    identifiers = identifiersCopy;
     goto LABEL_167;
   }
 
@@ -1558,7 +1558,7 @@ LABEL_161:
         v93 = [NSMutableSet setWithCapacity:v103];
 
         v13 = v93;
-        v65 = v105;
+        v65 = selfCopy;
       }
 
       [v12 addObject:v92];
@@ -1577,9 +1577,9 @@ LABEL_162:
     break;
   }
 
-  a5 = v101;
-  a3 = v96;
-  a4 = v97;
+  tag = tagCopy;
+  addresses = addressesCopy;
+  identifiers = identifiersCopy;
   if (v11)
   {
     if (v10)
@@ -1603,14 +1603,14 @@ LABEL_8:
   }
 
 LABEL_9:
-  if (a3)
+  if (addresses)
   {
-    *a3 = [v10 copy];
+    *addresses = [v10 copy];
   }
 
-  if (a4)
+  if (identifiers)
   {
-    *a4 = [v12 copy];
+    *identifiers = [v12 copy];
   }
 
   v17 = gLogHandle;
@@ -1619,7 +1619,7 @@ LABEL_9:
     v18 = currentQueueName();
     v19 = [v12 count];
     LODWORD(buf[0]) = 67110147;
-    HIDWORD(buf[0]) = a5;
+    HIDWORD(buf[0]) = tag;
     LOWORD(buf[1]) = 2080;
     *(&buf[1] + 2) = v18;
     WORD1(buf[2]) = 2112;
@@ -1644,11 +1644,11 @@ LABEL_9:
   return v20;
 }
 
-+ (id)digestIdentifier:(id)a3 tag:(unsigned int)a4
++ (id)digestIdentifier:(id)identifier tag:(unsigned int)tag
 {
-  v5 = a3;
+  identifierCopy = identifier;
   arc4random_buf(__buf, 0x20uLL);
-  CCHmac(2u, [v5 UTF8String], objc_msgSend(v5, "length"), __buf, 0x20uLL, macOut);
+  CCHmac(2u, [identifierCopy UTF8String], objc_msgSend(identifierCopy, "length"), __buf, 0x20uLL, macOut);
   v6 = [NSData dataWithBytes:macOut length:32];
   v7 = [NSData dataWithBytes:__buf length:32];
   v8 = gLogHandle;
@@ -1656,23 +1656,23 @@ LABEL_9:
   {
     log = v8;
     *buf = 67111171;
-    v15 = a4;
+    tagCopy = tag;
     v16 = 2080;
     v17 = currentQueueName();
     v18 = 2113;
-    v19 = v5;
+    v19 = identifierCopy;
     v20 = 2112;
     v21 = @"digest";
     v22 = 1040;
     v23 = [v6 length];
     v24 = 2096;
-    v25 = [v6 bytes];
+    bytes = [v6 bytes];
     v26 = 2112;
     v27 = @"key";
     v28 = 1040;
     v29 = [v7 length];
     v30 = 2096;
-    v31 = [v7 bytes];
+    bytes2 = [v7 bytes];
     _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "#%08x [%s] digestIdentifier:%{private}@ -> %@=%.*P, %@=%.*P", buf, 0x50u);
   }
 
@@ -1685,16 +1685,16 @@ LABEL_9:
   return v9;
 }
 
-+ (BOOL)isDigestedIdentifier:(id)a3 equalToCleartextIdentifier:(id)a4 tag:(unsigned int)a5
++ (BOOL)isDigestedIdentifier:(id)identifier equalToCleartextIdentifier:(id)cleartextIdentifier tag:(unsigned int)tag
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 objectForKey:@"digest"];
-  v10 = [v8 objectForKey:@"key"];
+  cleartextIdentifierCopy = cleartextIdentifier;
+  identifierCopy = identifier;
+  v9 = [identifierCopy objectForKey:@"digest"];
+  v10 = [identifierCopy objectForKey:@"key"];
 
   if ([v9 length] == 32 && objc_msgSend(v10, "length") == 32)
   {
-    CCHmac(2u, [v7 UTF8String], objc_msgSend(v7, "length"), objc_msgSend(v10, "bytes"), objc_msgSend(v10, "length"), macOut);
+    CCHmac(2u, [cleartextIdentifierCopy UTF8String], objc_msgSend(cleartextIdentifierCopy, "length"), objc_msgSend(v10, "bytes"), objc_msgSend(v10, "length"), macOut);
     [v9 bytes];
     v11 = cc_cmp_safe();
     v12 = v11 == 0;
@@ -1703,7 +1703,7 @@ LABEL_9:
     {
       log = v13;
       *buf = 67111427;
-      v17 = a5;
+      tagCopy = tag;
       v18 = 2080;
       v19 = currentQueueName();
       v20 = 2112;
@@ -1711,15 +1711,15 @@ LABEL_9:
       v22 = 1040;
       v23 = [v9 length];
       v24 = 2096;
-      v25 = [v9 bytes];
+      bytes = [v9 bytes];
       v26 = 2112;
       v27 = @"key";
       v28 = 1040;
       v29 = [v10 length];
       v30 = 2096;
-      v31 = [v10 bytes];
+      bytes2 = [v10 bytes];
       v32 = 2113;
-      v33 = v7;
+      v33 = cleartextIdentifierCopy;
       v34 = 1024;
       v35 = v11 == 0;
       _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "#%08x [%s] isDigestedIdentifier:%@=%.*P,%@=%.*P equalToCleartextIdentifier:%{private}@ -> %{BOOL}d", buf, 0x56u);

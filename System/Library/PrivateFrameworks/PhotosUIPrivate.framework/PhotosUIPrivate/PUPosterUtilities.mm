@@ -1,30 +1,30 @@
 @interface PUPosterUtilities
-+ (int64_t)mediaIndexWithSeed:(int64_t)a3 mediaCount:(int64_t)a4;
++ (int64_t)mediaIndexWithSeed:(int64_t)seed mediaCount:(int64_t)count;
 @end
 
 @implementation PUPosterUtilities
 
-+ (int64_t)mediaIndexWithSeed:(int64_t)a3 mediaCount:(int64_t)a4
++ (int64_t)mediaIndexWithSeed:(int64_t)seed mediaCount:(int64_t)count
 {
-  if (a4 < 1)
+  if (count < 1)
   {
     return 0;
   }
 
   if (PXPreferencesGetBool())
   {
-    return a3 % a4;
+    return seed % count;
   }
 
-  if (!a3)
+  if (!seed)
   {
     return 0;
   }
 
-  v7 = a3 / a4;
-  v8 = a3 / a4 == 0;
+  v7 = seed / count;
+  v8 = seed / count == 0;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v8 < a4)
+  if (v8 < count)
   {
     do
     {
@@ -34,33 +34,33 @@
       ++v8;
     }
 
-    while (a4 != v8);
+    while (count != v8);
   }
 
-  v11 = [objc_alloc(MEMORY[0x1E69C0838]) initWithSeed:a3 / a4];
+  v11 = [objc_alloc(MEMORY[0x1E69C0838]) initWithSeed:seed / count];
   v12 = PFShuffledArrayWithRandomNumberGenerator();
   v13 = [v12 mutableCopy];
 
-  v14 = a3 % [v13 count];
-  if (a4 >= 3 && v7 && v14 < 2)
+  v14 = seed % [v13 count];
+  if (count >= 3 && v7 && v14 < 2)
   {
     v15 = [objc_alloc(MEMORY[0x1E69C0838]) initWithSeed:v7 - 1];
     v16 = PFShuffledArrayWithRandomNumberGenerator();
-    v17 = [v16 lastObject];
-    v18 = [v17 integerValue];
-    v19 = [v13 firstObject];
-    v20 = [v19 integerValue];
+    lastObject = [v16 lastObject];
+    integerValue = [lastObject integerValue];
+    firstObject = [v13 firstObject];
+    integerValue2 = [firstObject integerValue];
 
-    if (v18 == v20)
+    if (integerValue == integerValue2)
     {
       [v13 exchangeObjectAtIndex:0 withObjectAtIndex:1];
     }
   }
 
   v21 = [v13 objectAtIndexedSubscript:v14];
-  v22 = [v21 integerValue];
+  integerValue3 = [v21 integerValue];
 
-  return v22;
+  return integerValue3;
 }
 
 @end

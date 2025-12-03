@@ -6,9 +6,9 @@
 - (id)detailedDescription;
 - (optional<double>)elevationInProjectedPostion;
 - (optional<std::pair<geo::Mercator3<double>,)currentSnappedSegment;
-- (void)_updateCourseAndPositionFromRouteMatch:(id)a3;
+- (void)_updateCourseAndPositionFromRouteMatch:(id)match;
 - (void)dealloc;
-- (void)projectFromLocation:(id)a3 routeMatch:(id)a4 speedMultiplier:(double)a5 routeLine:(id)a6;
+- (void)projectFromLocation:(id)location routeMatch:(id)match speedMultiplier:(double)multiplier routeLine:(id)line;
 - (void)reset;
 @end
 
@@ -124,17 +124,17 @@
   return result;
 }
 
-- (void)projectFromLocation:(id)a3 routeMatch:(id)a4 speedMultiplier:(double)a5 routeLine:(id)a6
+- (void)projectFromLocation:(id)location routeMatch:(id)match speedMultiplier:(double)multiplier routeLine:(id)line
 {
   v64 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v11 && [v11 isGoodMatch] && ((objc_msgSend(v11, "shouldProjectLocationAlongRoute") & 1) != 0 || self->_alwaysUseGoodRouteMatch))
+  locationCopy = location;
+  matchCopy = match;
+  lineCopy = line;
+  if (matchCopy && [matchCopy isGoodMatch] && ((objc_msgSend(matchCopy, "shouldProjectLocationAlongRoute") & 1) != 0 || self->_alwaysUseGoodRouteMatch))
   {
-    [v11 locationCoordinate];
+    [matchCopy locationCoordinate];
     v14 = v13;
-    [v11 locationCoordinate];
+    [matchCopy locationCoordinate];
     v53 = v15;
     v16 = tan(v14 * 0.00872664626 + 0.785398163);
     v17 = log(v16);
@@ -144,13 +144,13 @@
 
     *self->_projectedPosition._e = vmlaq_f64(_Q1, xmmword_1B33B0700, v18);
     self->_projectedPosition._e[2] = 0.0;
-    [v11 matchedCourse];
+    [matchCopy matchedCourse];
     self->_projectedCourse = v24;
-    [v10 speed];
+    [locationCopy speed];
     v26 = v25;
-    if (v10)
+    if (locationCopy)
     {
-      [v10 clientLocation];
+      [locationCopy clientLocation];
       v27 = v63;
     }
 
@@ -160,23 +160,23 @@
     }
 
     v41 = v26 - v27;
-    if (v41 <= 6.7 || (v42 = fmin(v41, 38.0) * 0.0823045267 * (fmin(v41, 31.0) + -6.7) / a5, v42 <= 0.0))
+    if (v41 <= 6.7 || (v42 = fmin(v41, 38.0) * 0.0823045267 * (fmin(v41, 31.0) + -6.7) / multiplier, v42 <= 0.0))
     {
-      if (!self->_projectedRouteMatch || ![v11 routeMatchBehind:?] || (objc_msgSend(v11, "locationCoordinate"), -[GEORouteMatch locationCoordinate](self->_projectedRouteMatch, "locationCoordinate"), GEOCalculateDistance(), v47 >= 10.0))
+      if (!self->_projectedRouteMatch || ![matchCopy routeMatchBehind:?] || (objc_msgSend(matchCopy, "locationCoordinate"), -[GEORouteMatch locationCoordinate](self->_projectedRouteMatch, "locationCoordinate"), GEOCalculateDistance(), v47 >= 10.0))
       {
-        [(VKPuckAnimatorLocationProjector *)self setProjectedRouteMatch:v11, v53];
+        [(VKPuckAnimatorLocationProjector *)self setProjectedRouteMatch:matchCopy, v53];
       }
     }
 
     else
     {
       BOOL = GEOConfigGetBOOL();
-      v44 = [v11 route];
-      v45 = [v44 routeMatchAtDistance:v11 from:0 stopAtEndOfTunnel:BOOL ^ 1u stopAtEndOfManeuver:0 date:v42];
+      route = [matchCopy route];
+      v45 = [route routeMatchAtDistance:matchCopy from:0 stopAtEndOfTunnel:BOOL ^ 1u stopAtEndOfManeuver:0 date:v42];
 
       if (v45)
       {
-        if (self->_projectedRouteMatch && self->_routeMatch && ([v11 routeMatchBehind:?] & 1) == 0 && objc_msgSend(v45, "routeMatchBehind:", self->_projectedRouteMatch))
+        if (self->_projectedRouteMatch && self->_routeMatch && ([matchCopy routeMatchBehind:?] & 1) == 0 && objc_msgSend(v45, "routeMatchBehind:", self->_projectedRouteMatch))
         {
           v46 = self->_projectedRouteMatch;
 
@@ -188,16 +188,16 @@
 
       else
       {
-        [(VKPuckAnimatorLocationProjector *)self setProjectedRouteMatch:v11];
+        [(VKPuckAnimatorLocationProjector *)self setProjectedRouteMatch:matchCopy];
       }
     }
 
     if (GEOPolylineCoordinateIsValid())
     {
-      v48 = [(VKPuckAnimatorLocationProjector *)self projectedRouteMatch];
-      v49 = [v48 routeCoordinate];
+      projectedRouteMatch = [(VKPuckAnimatorLocationProjector *)self projectedRouteMatch];
+      routeCoordinate = [projectedRouteMatch routeCoordinate];
       index = self->_maxTravelledCoordinate.index;
-      v51 = index > v49 || index == v49 && self->_maxTravelledCoordinate.offset >= *(&v49 + 1);
+      v51 = index > routeCoordinate || index == routeCoordinate && self->_maxTravelledCoordinate.offset >= *(&routeCoordinate + 1);
       self->_isProjectedPositionBehind = v51;
 
       if (self->_isProjectedPositionBehind)
@@ -211,12 +211,12 @@
       self->_isProjectedPositionBehind = 0;
     }
 
-    v52 = [(VKPuckAnimatorLocationProjector *)self projectedRouteMatch];
-    self->_maxTravelledCoordinate = [v52 routeCoordinate];
+    projectedRouteMatch2 = [(VKPuckAnimatorLocationProjector *)self projectedRouteMatch];
+    self->_maxTravelledCoordinate = [projectedRouteMatch2 routeCoordinate];
 
 LABEL_40:
-    [(VKPuckAnimatorLocationProjector *)self setRouteMatch:v11, v53];
-    [(VKPuckAnimatorLocationProjector *)self _updateCourseAndPositionFromRouteMatch:v12];
+    [(VKPuckAnimatorLocationProjector *)self setRouteMatch:matchCopy, v53];
+    [(VKPuckAnimatorLocationProjector *)self _updateCourseAndPositionFromRouteMatch:lineCopy];
     goto LABEL_41;
   }
 
@@ -225,9 +225,9 @@ LABEL_40:
   v28 = MEMORY[0x1E69A1918];
   self->_maxTravelledCoordinate = *MEMORY[0x1E69A1918];
   self->_isProjectedPositionBehind = 1;
-  [v10 coordinate];
+  [locationCopy coordinate];
   v30 = v29;
-  [v10 coordinate];
+  [locationCopy coordinate];
   v54 = v31;
   v32 = tan(v30 * 0.00872664626 + 0.785398163);
   v33 = log(v32);
@@ -242,10 +242,10 @@ LABEL_40:
     self->_elevationInProjectedPosition.__engaged_ = 0;
   }
 
-  [v10 course];
+  [locationCopy course];
   self->_projectedCourse = v36;
   self->_projectedCoordinate = *v28;
-  if (v11)
+  if (matchCopy)
   {
     if (GEOGetVectorKitVKPuckAnimatorLocationProjectorLog(void)::onceToken != -1)
     {
@@ -255,17 +255,17 @@ LABEL_40:
     v37 = GEOGetVectorKitVKPuckAnimatorLocationProjectorLog(void)::log;
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
-      [v11 locationCoordinate3D];
+      [matchCopy locationCoordinate3D];
       v39 = v38;
-      [v11 locationCoordinate3D];
+      [matchCopy locationCoordinate3D];
       *buf = 134284289;
       v56 = v39;
       v57 = 2049;
       v58 = v40;
       v59 = 1024;
-      v60 = [v11 isGoodMatch];
+      isGoodMatch = [matchCopy isGoodMatch];
       v61 = 1024;
-      v62 = [v11 shouldProjectLocationAlongRoute];
+      shouldProjectLocationAlongRoute = [matchCopy shouldProjectLocationAlongRoute];
       _os_log_impl(&dword_1B2754000, v37, OS_LOG_TYPE_INFO, "[RouteSnapping] Route was matched at %{private}f, %{private}f but was poor quality, so no snapping occurred. routeMatch.isGoodMatch %d, routeMatch.shouldProjectLocationAlongRoute %d", buf, 0x22u);
     }
   }
@@ -273,15 +273,15 @@ LABEL_40:
 LABEL_41:
 }
 
-- (void)_updateCourseAndPositionFromRouteMatch:(id)a3
+- (void)_updateCourseAndPositionFromRouteMatch:(id)match
 {
-  v4 = a3;
-  if (v4)
+  matchCopy = match;
+  if (matchCopy)
   {
     v5 = +[VKDebugSettings sharedSettings];
     if ([v5 enablePuckRouteLineSnapping])
     {
-      [v4 snapRouteMatch:self->_projectedRouteMatch];
+      [matchCopy snapRouteMatch:self->_projectedRouteMatch];
     }
 
     else
@@ -321,8 +321,8 @@ LABEL_41:
     LOBYTE(v23) = 0;
   }
 
-  v6 = [(GEORouteMatch *)self->_projectedRouteMatch route];
-  [v6 pointWithAltitudeCorrectionAtRouteCoordinate:{-[GEORouteMatch routeCoordinate](self->_projectedRouteMatch, "routeCoordinate")}];
+  route = [(GEORouteMatch *)self->_projectedRouteMatch route];
+  [route pointWithAltitudeCorrectionAtRouteCoordinate:{-[GEORouteMatch routeCoordinate](self->_projectedRouteMatch, "routeCoordinate")}];
   self->_elevationInProjectedPosition.var0.__val_ = v7;
   self->_elevationInProjectedPosition.__engaged_ = 1;
 

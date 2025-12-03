@@ -1,12 +1,12 @@
 @interface _HKSPDefaultScheduleProvider
-- (void)hksp_suggestedSleepScheduleWithCompletion:(id)a3;
+- (void)hksp_suggestedSleepScheduleWithCompletion:(id)completion;
 @end
 
 @implementation _HKSPDefaultScheduleProvider
 
-- (void)hksp_suggestedSleepScheduleWithCompletion:(id)a3
+- (void)hksp_suggestedSleepScheduleWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v9 = objc_alloc_init(HKSPMutableSleepSchedule);
   [(HKSPMutableSleepSchedule *)v9 setEnabled:1];
   [(HKSPMutableSleepSchedule *)v9 setSleepDurationGoal:28800.0];
@@ -25,7 +25,7 @@
   [(HKSPMutableSleepScheduleOccurrence *)v4 setAlarmConfiguration:v7];
   [(HKSPMutableSleepSchedule *)v9 saveOccurrence:v4];
   v8 = [(HKSPMutableSleepSchedule *)v9 copy];
-  v3[2](v3, v8, 0);
+  completionCopy[2](completionCopy, v8, 0);
 }
 
 @end

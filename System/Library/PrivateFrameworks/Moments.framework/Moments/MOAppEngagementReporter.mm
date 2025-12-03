@@ -1,8 +1,8 @@
 @interface MOAppEngagementReporter
 + (id)sharedInstance;
 - (MOAppEngagementReporter)init;
-- (id)makeNewConnectionWithInterfaceFor:(id)a3;
-- (void)didAppEntryUpdateUsingSuggestions:(id)a3 onEvent:(unint64_t)a4 duringInterval:(id)a5 withInfo:(id)a6;
+- (id)makeNewConnectionWithInterfaceFor:(id)for;
+- (void)didAppEntryUpdateUsingSuggestions:(id)suggestions onEvent:(unint64_t)event duringInterval:(id)interval withInfo:(id)info;
 @end
 
 @implementation MOAppEngagementReporter
@@ -48,12 +48,12 @@ uint64_t __41__MOAppEngagementReporter_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)didAppEntryUpdateUsingSuggestions:(id)a3 onEvent:(unint64_t)a4 duringInterval:(id)a5 withInfo:(id)a6
+- (void)didAppEntryUpdateUsingSuggestions:(id)suggestions onEvent:(unint64_t)event duringInterval:(id)interval withInfo:(id)info
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (![v11 count])
+  suggestionsCopy = suggestions;
+  intervalCopy = interval;
+  infoCopy = info;
+  if (![suggestionsCopy count])
   {
     v14 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -61,11 +61,11 @@ uint64_t __41__MOAppEngagementReporter_sharedInstance__block_invoke()
       [MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:];
     }
 
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"MOAppEngagementReporter.m" lineNumber:50 description:{@"MOAppEngagementReporter:didAppEntryUpdateUsingSuggestions: missing suggestionIdentifiers (in %s:%d)", "-[MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:]", 50}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MOAppEngagementReporter.m" lineNumber:50 description:{@"MOAppEngagementReporter:didAppEntryUpdateUsingSuggestions: missing suggestionIdentifiers (in %s:%d)", "-[MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:]", 50}];
   }
 
-  if ([v11 count] > 0xA)
+  if ([suggestionsCopy count] > 0xA)
   {
     v16 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -73,13 +73,13 @@ uint64_t __41__MOAppEngagementReporter_sharedInstance__block_invoke()
       [MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:];
     }
 
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"MOAppEngagementReporter.m" lineNumber:51 description:{@"MOAppEngagementReporter:didAppEntryUpdateUsingSuggestions: suggestionIdentifiers count should be up to kMOMaxAppEntrySuggestionsCount (in %s:%d)", "-[MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:]", 51}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MOAppEngagementReporter.m" lineNumber:51 description:{@"MOAppEngagementReporter:didAppEntryUpdateUsingSuggestions: suggestionIdentifiers count should be up to kMOMaxAppEntrySuggestionsCount (in %s:%d)", "-[MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:]", 51}];
   }
 
-  v18 = [v12 startDate];
+  startDate = [intervalCopy startDate];
   v19 = [MEMORY[0x277CBEAA8] now];
-  v20 = [v18 compare:v19];
+  v20 = [startDate compare:v19];
 
   if (v20 == 1)
   {
@@ -89,8 +89,8 @@ uint64_t __41__MOAppEngagementReporter_sharedInstance__block_invoke()
       [MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:];
     }
 
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"MOAppEngagementReporter.m" lineNumber:52 description:{@"MOAppEngagementReporter:didAppEntryUpdateUsingSuggestions: can't update entries in the future (in %s:%d)", "-[MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:]", 52}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"MOAppEngagementReporter.m" lineNumber:52 description:{@"MOAppEngagementReporter:didAppEntryUpdateUsingSuggestions: can't update entries in the future (in %s:%d)", "-[MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:]", 52}];
   }
 
   v23 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
@@ -99,9 +99,9 @@ uint64_t __41__MOAppEngagementReporter_sharedInstance__block_invoke()
     [MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:v23 onEvent:? duringInterval:? withInfo:?];
   }
 
-  if (a4 - 3 >= 2)
+  if (event - 3 >= 2)
   {
-    if (a4 - 1 > 1)
+    if (event - 1 > 1)
     {
       v30 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -109,12 +109,12 @@ uint64_t __41__MOAppEngagementReporter_sharedInstance__block_invoke()
         [MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:];
       }
 
-      v29 = [MEMORY[0x277CCA890] currentHandler];
-      [v29 handleFailureInMethod:a2 object:self file:@"MOAppEngagementReporter.m" lineNumber:67 description:{@"MOAppEngagementReporter:didAppEntryUpdateUsingSuggestions: Unexpected update event (in %s:%d)", "-[MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:]", 67}];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:self file:@"MOAppEngagementReporter.m" lineNumber:67 description:{@"MOAppEngagementReporter:didAppEntryUpdateUsingSuggestions: Unexpected update event (in %s:%d)", "-[MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:]", 67}];
       goto LABEL_28;
     }
 
-    v24 = [v13 objectForKeyedSubscript:@"entryAddedCharacters"];
+    v24 = [infoCopy objectForKeyedSubscript:@"entryAddedCharacters"];
 
     if (!v24)
     {
@@ -124,11 +124,11 @@ uint64_t __41__MOAppEngagementReporter_sharedInstance__block_invoke()
         [MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:];
       }
 
-      v26 = [MEMORY[0x277CCA890] currentHandler];
-      [v26 handleFailureInMethod:a2 object:self file:@"MOAppEngagementReporter.m" lineNumber:59 description:{@"MOAppEngagementReporter:didAppEntryUpdateUsingSuggestions: Missing .addedCharacters key (in %s:%d)", "-[MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:]", 59}];
+      currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler5 handleFailureInMethod:a2 object:self file:@"MOAppEngagementReporter.m" lineNumber:59 description:{@"MOAppEngagementReporter:didAppEntryUpdateUsingSuggestions: Missing .addedCharacters key (in %s:%d)", "-[MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:]", 59}];
     }
 
-    v27 = [v13 objectForKeyedSubscript:@"entryTotalCharacters"];
+    v27 = [infoCopy objectForKeyedSubscript:@"entryTotalCharacters"];
 
     if (!v27)
     {
@@ -138,8 +138,8 @@ uint64_t __41__MOAppEngagementReporter_sharedInstance__block_invoke()
         [MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:];
       }
 
-      v29 = [MEMORY[0x277CCA890] currentHandler];
-      [v29 handleFailureInMethod:a2 object:self file:@"MOAppEngagementReporter.m" lineNumber:60 description:{@"MOAppEngagementReporter:didAppEntryUpdateUsingSuggestions: Missing .totalCharacters key (in %s:%d)", "-[MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:]", 60}];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:self file:@"MOAppEngagementReporter.m" lineNumber:60 description:{@"MOAppEngagementReporter:didAppEntryUpdateUsingSuggestions: Missing .totalCharacters key (in %s:%d)", "-[MOAppEngagementReporter didAppEntryUpdateUsingSuggestions:onEvent:duringInterval:withInfo:]", 60}];
 LABEL_28:
     }
   }
@@ -149,13 +149,13 @@ LABEL_28:
   v35[1] = 3221225472;
   v35[2] = __93__MOAppEngagementReporter_didAppEntryUpdateUsingSuggestions_onEvent_duringInterval_withInfo___block_invoke;
   v35[3] = &unk_2787730F0;
-  v36 = v11;
-  v37 = v12;
-  v38 = v13;
-  v39 = a4;
-  v32 = v13;
-  v33 = v12;
-  v34 = v11;
+  v36 = suggestionsCopy;
+  v37 = intervalCopy;
+  v38 = infoCopy;
+  eventCopy = event;
+  v32 = infoCopy;
+  v33 = intervalCopy;
+  v34 = suggestionsCopy;
   [(MOConnectionManager *)connectionManager postAsyncProxyUsingBlock:v35 onError:&__block_literal_global_29];
 }
 
@@ -169,7 +169,7 @@ void __93__MOAppEngagementReporter_didAppEntryUpdateUsingSuggestions_onEvent_dur
   }
 }
 
-- (id)makeNewConnectionWithInterfaceFor:(id)a3
+- (id)makeNewConnectionWithInterfaceFor:(id)for
 {
   v3 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.momentsd" options:0];
   v4 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284110360];

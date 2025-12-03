@@ -1,26 +1,26 @@
 @interface STKEmojiAndStickerCollectionViewController
 - (STKEmojiAndStickerCollectionViewConfiguration)configuration;
-- (STKEmojiAndStickerCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (STKEmojiAndStickerCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (STKEmojiAndStickerCollectionViewControllerDelegate)delegate;
-- (id)transitionerForConnectingHostingController:(id)a3;
-- (void)didBeingDrag:(BOOL)a3;
-- (void)didPinch:(double)a3;
-- (void)didSelectCreate:(id)a3 queryString:(id)a4;
-- (void)didSelectEditWithStickerIdentifer:(id)a3 sourceRect:(CGRect)a4;
-- (void)didSelectEmoji:(id)a3;
-- (void)didSelectEmoji:(id)a3 dismiss:(BOOL)a4;
+- (id)transitionerForConnectingHostingController:(id)controller;
+- (void)didBeingDrag:(BOOL)drag;
+- (void)didPinch:(double)pinch;
+- (void)didSelectCreate:(id)create queryString:(id)string;
+- (void)didSelectEditWithStickerIdentifer:(id)identifer sourceRect:(CGRect)rect;
+- (void)didSelectEmoji:(id)emoji;
+- (void)didSelectEmoji:(id)emoji dismiss:(BOOL)dismiss;
 - (void)didSelectPresentPicker;
-- (void)didSelectShareWithSticker:(id)a3 sourceRect:(CGRect)a4;
-- (void)didSelectSticker:(id)a3;
-- (void)didSelectSticker:(id)a3 dismiss:(BOOL)a4;
-- (void)didSelectUnicodeCharacter:(id)a3;
-- (void)emojiGenerationRemoteController:(id)a3 didGenerateEmoji:(id)a4 shouldInsert:(BOOL)a5;
-- (void)emojiGenerationRemoteControllerDidCancel:(id)a3;
-- (void)handleKeyEvent:(id)a3;
-- (void)searchWithQuery:(id)a3;
-- (void)setConfiguration:(id)a3;
+- (void)didSelectShareWithSticker:(id)sticker sourceRect:(CGRect)rect;
+- (void)didSelectSticker:(id)sticker;
+- (void)didSelectSticker:(id)sticker dismiss:(BOOL)dismiss;
+- (void)didSelectUnicodeCharacter:(id)character;
+- (void)emojiGenerationRemoteController:(id)controller didGenerateEmoji:(id)emoji shouldInsert:(BOOL)insert;
+- (void)emojiGenerationRemoteControllerDidCancel:(id)cancel;
+- (void)handleKeyEvent:(id)event;
+- (void)searchWithQuery:(id)query;
+- (void)setConfiguration:(id)configuration;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation STKEmojiAndStickerCollectionViewController
@@ -40,76 +40,76 @@
   return *(self + v3);
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v5 = OBJC_IVAR___STKEmojiAndStickerCollectionViewController_configuration;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = configuration;
+  configurationCopy = configuration;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   EmojiAndStickerCollectionViewController.viewDidLoad()();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = self;
+  selfCopy = self;
   _s10StickerKit08EmojiAndA24CollectionViewControllerC15viewIsAppearingyySbF_0();
 }
 
-- (void)searchWithQuery:(id)a3
+- (void)searchWithQuery:(id)query
 {
-  v4 = a3;
-  v5 = self;
-  EmojiAndStickerCollectionViewController.search(withQuery:)(v4);
+  queryCopy = query;
+  selfCopy = self;
+  EmojiAndStickerCollectionViewController.search(withQuery:)(queryCopy);
 }
 
-- (void)handleKeyEvent:(id)a3
+- (void)handleKeyEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  EmojiAndStickerCollectionViewController.handleKeyEvent(_:)(v4);
+  eventCopy = event;
+  selfCopy = self;
+  EmojiAndStickerCollectionViewController.handleKeyEvent(_:)(eventCopy);
 }
 
-- (void)didSelectEmoji:(id)a3
+- (void)didSelectEmoji:(id)emoji
 {
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v5 = Strong;
-    v6 = a3;
+    emojiCopy = emoji;
     [v5 didSelectEmoji_];
 
     swift_unknownObjectRelease();
   }
 }
 
-- (void)didSelectEmoji:(id)a3 dismiss:(BOOL)a4
+- (void)didSelectEmoji:(id)emoji dismiss:(BOOL)dismiss
 {
   v6 = sub_19A7AB014();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
-  EmojiAndStickerCollectionViewController.didSelectEmoji(_:dismiss:)(v10, a4);
+  EmojiAndStickerCollectionViewController.didSelectEmoji(_:dismiss:)(v10, dismiss);
 }
 
-- (void)didSelectUnicodeCharacter:(id)a3
+- (void)didSelectUnicodeCharacter:(id)character
 {
   v4 = sub_19A7AB014();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   EmojiAndStickerCollectionViewController.didSelectUnicodeCharacter(_:)(v8);
 }
 
-- (void)didSelectSticker:(id)a3
+- (void)didSelectSticker:(id)sticker
 {
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
@@ -120,19 +120,19 @@
   }
 }
 
-- (void)didSelectSticker:(id)a3 dismiss:(BOOL)a4
+- (void)didSelectSticker:(id)sticker dismiss:(BOOL)dismiss
 {
-  v6 = a3;
-  v7 = self;
-  EmojiAndStickerCollectionViewController.didSelectSticker(_:dismiss:)(v6, a4);
+  stickerCopy = sticker;
+  selfCopy = self;
+  EmojiAndStickerCollectionViewController.didSelectSticker(_:dismiss:)(stickerCopy, dismiss);
 }
 
-- (void)didSelectEditWithStickerIdentifer:(id)a3 sourceRect:(CGRect)a4
+- (void)didSelectEditWithStickerIdentifer:(id)identifer sourceRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = sub_19A7A8F64();
   v10 = *(v9 - 8);
   MEMORY[0x1EEE9AC00](v9);
@@ -143,7 +143,7 @@
   if (Strong)
   {
     v14 = Strong;
-    v15 = self;
+    selfCopy = self;
     v16 = sub_19A7A8F24();
     [v14 didSelectEditWithStickerIdentifer:v16 sourceRect:{x, y, width, height}];
 
@@ -164,12 +164,12 @@
   }
 }
 
-- (void)didSelectCreate:(id)a3 queryString:(id)a4
+- (void)didSelectCreate:(id)create queryString:(id)string
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAFCD800);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v15 - v8;
-  if (a3)
+  if (create)
   {
     sub_19A7A8F44();
     v10 = sub_19A7A8F64();
@@ -182,10 +182,10 @@
     (*(*(v11 - 8) + 56))(v9, 1, 1, v11);
   }
 
-  if (a4)
+  if (string)
   {
     v12 = sub_19A7AB014();
-    a4 = v13;
+    string = v13;
   }
 
   else
@@ -193,56 +193,56 @@
     v12 = 0;
   }
 
-  v14 = self;
-  EmojiAndStickerCollectionViewController.didSelectCreate(_:queryString:)(v9, v12, a4);
+  selfCopy = self;
+  EmojiAndStickerCollectionViewController.didSelectCreate(_:queryString:)(v9, v12, string);
 
   sub_19A5F2B54(v9, &qword_1EAFCD800);
 }
 
-- (void)didPinch:(double)a3
+- (void)didPinch:(double)pinch
 {
-  v4 = a3 < 1.0;
+  v4 = pinch < 1.0;
   v5 = objc_opt_self();
   if (v4 != [v5 isFloating])
   {
 
-    [v5 setFloating:a3 < 1.0 positionedAtDefaultOffsetAnimated:0];
+    [v5 setFloating:pinch < 1.0 positionedAtDefaultOffsetAnimated:0];
   }
 }
 
-- (void)didBeingDrag:(BOOL)a3
+- (void)didBeingDrag:(BOOL)drag
 {
-  if (a3)
+  if (drag)
   {
     v4 = objc_opt_self();
-    v7 = self;
-    v5 = [v4 defaultCenter];
+    selfCopy = self;
+    defaultCenter = [v4 defaultCenter];
     v6 = sub_19A7AAFE4();
-    [v5 postNotificationName:v6 object:v7];
+    [defaultCenter postNotificationName:v6 object:selfCopy];
   }
 }
 
-- (void)didSelectShareWithSticker:(id)a3 sourceRect:(CGRect)a4
+- (void)didSelectShareWithSticker:(id)sticker sourceRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v10 - 8);
   v12 = &v20 - v11;
   v13 = sub_19A7AB394();
   (*(*(v13 - 8) + 56))(v12, 1, 1, v13);
   sub_19A7AB354();
-  v14 = a3;
-  v15 = self;
-  v16 = v14;
+  stickerCopy = sticker;
+  selfCopy = self;
+  v16 = stickerCopy;
   v17 = sub_19A7AB344();
   v18 = swift_allocObject();
   v19 = MEMORY[0x1E69E85E0];
   *(v18 + 2) = v17;
   *(v18 + 3) = v19;
-  *(v18 + 4) = v15;
+  *(v18 + 4) = selfCopy;
   v18[5] = x;
   v18[6] = y;
   v18[7] = width;
@@ -251,7 +251,7 @@
   sub_19A6816F0(0, 0, v12, &unk_19A7BDA28, v18);
 }
 
-- (id)transitionerForConnectingHostingController:(id)a3
+- (id)transitionerForConnectingHostingController:(id)controller
 {
   v5[4] = sub_19A6D26D4;
   v5[5] = 0;
@@ -264,9 +264,9 @@
   return v3;
 }
 
-- (STKEmojiAndStickerCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (STKEmojiAndStickerCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_19A7AB014();
     v7 = v6;
@@ -278,25 +278,25 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return EmojiAndStickerCollectionViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return EmojiAndStickerCollectionViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (void)emojiGenerationRemoteController:(id)a3 didGenerateEmoji:(id)a4 shouldInsert:(BOOL)a5
+- (void)emojiGenerationRemoteController:(id)controller didGenerateEmoji:(id)emoji shouldInsert:(BOOL)insert
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  EmojiAndStickerCollectionViewController.emojiGenerationRemoteController(_:didGenerateEmoji:shouldInsert:)(v8, v9, a5);
+  controllerCopy = controller;
+  emojiCopy = emoji;
+  selfCopy = self;
+  EmojiAndStickerCollectionViewController.emojiGenerationRemoteController(_:didGenerateEmoji:shouldInsert:)(controllerCopy, emojiCopy, insert);
 }
 
-- (void)emojiGenerationRemoteControllerDidCancel:(id)a3
+- (void)emojiGenerationRemoteControllerDidCancel:(id)cancel
 {
   v5 = objc_opt_self();
-  v6 = a3;
-  v7 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   [v5 setRestoresToEmojiInputMode];
-  sub_19A70255C(v6, 0, 0, 0, 0);
+  sub_19A70255C(cancelCopy, 0, 0, 0, 0);
 }
 
 @end

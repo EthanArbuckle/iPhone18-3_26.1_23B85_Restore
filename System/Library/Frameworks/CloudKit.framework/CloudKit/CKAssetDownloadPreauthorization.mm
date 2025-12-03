@@ -1,30 +1,30 @@
 @interface CKAssetDownloadPreauthorization
-- (BOOL)isEqual:(id)a3;
-- (CKAssetDownloadPreauthorization)initWithResponseUUID:(id)a3 contentResponseHeaders:(id)a4 contentResponseBody:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (CKAssetDownloadPreauthorization)initWithResponseUUID:(id)d contentResponseHeaders:(id)headers contentResponseBody:(id)body;
 - (unint64_t)hash;
 @end
 
 @implementation CKAssetDownloadPreauthorization
 
-- (CKAssetDownloadPreauthorization)initWithResponseUUID:(id)a3 contentResponseHeaders:(id)a4 contentResponseBody:(id)a5
+- (CKAssetDownloadPreauthorization)initWithResponseUUID:(id)d contentResponseHeaders:(id)headers contentResponseBody:(id)body
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  v12 = 0;
-  if (v8 && v9 && v10)
+  dCopy = d;
+  headersCopy = headers;
+  bodyCopy = body;
+  v11 = bodyCopy;
+  selfCopy = 0;
+  if (dCopy && headersCopy && bodyCopy)
   {
     v27.receiver = self;
     v27.super_class = CKAssetDownloadPreauthorization;
     v15 = [(CKAssetDownloadPreauthorization *)&v27 init];
     if (v15)
     {
-      v16 = objc_msgSend_copy(v8, v13, v14);
+      v16 = objc_msgSend_copy(dCopy, v13, v14);
       responseUUID = v15->_responseUUID;
       v15->_responseUUID = v16;
 
-      v20 = objc_msgSend_CKDeepCopy(v9, v18, v19);
+      v20 = objc_msgSend_CKDeepCopy(headersCopy, v18, v19);
       contentResponseHeaders = v15->_contentResponseHeaders;
       v15->_contentResponseHeaders = v20;
 
@@ -34,16 +34,16 @@
     }
 
     self = v15;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     isEqualToString = 1;
   }
@@ -52,9 +52,9 @@
   {
     v14.receiver = self;
     v14.super_class = CKAssetDownloadPreauthorization;
-    if ([(CKAssetDownloadPreauthorization *)&v14 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(CKAssetDownloadPreauthorization *)&v14 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = objc_msgSend_responseUUID(v4, v5, v6);
+      v7 = objc_msgSend_responseUUID(equalCopy, v5, v6);
       v10 = objc_msgSend_responseUUID(self, v8, v9);
       isEqualToString = objc_msgSend_isEqualToString_(v7, v11, v10);
     }

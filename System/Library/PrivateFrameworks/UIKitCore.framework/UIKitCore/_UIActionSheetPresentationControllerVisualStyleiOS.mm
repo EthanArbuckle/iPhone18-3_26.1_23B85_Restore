@@ -1,5 +1,5 @@
 @interface _UIActionSheetPresentationControllerVisualStyleiOS
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3;
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view;
 - (_UIActionSheetPresentationControllerVisualStyleiOS)init;
 @end
 
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view
 {
-  v3 = _UIActionSheetPresentationControllerContentInsetsAdjustedForSafeAreaWithStandardContentInsets(a3, 8.0, 8.0, 8.0, 8.0);
+  v3 = _UIActionSheetPresentationControllerContentInsetsAdjustedForSafeAreaWithStandardContentInsets(view, 8.0, 8.0, 8.0, 8.0);
   result.right = v6;
   result.bottom = v5;
   result.left = v4;

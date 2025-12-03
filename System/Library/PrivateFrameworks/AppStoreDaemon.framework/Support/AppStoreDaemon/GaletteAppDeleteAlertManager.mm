@@ -1,22 +1,22 @@
 @interface GaletteAppDeleteAlertManager
-+ (id)_galetteAppForBundleID:(id)a3;
-+ (void)_appDeleteAlertIsEnabledWithReply:(id)a3;
-+ (void)_cleanupAfterUninstallingBundleID:(id)a3;
-+ (void)_showUninstallAlertForApp:(id)a3 bundleID:(id)a4;
-+ (void)handleInstalledAppsWithBundleIDs:(id)a3;
-+ (void)handleUninstalledAppsWithBundleIDs:(id)a3;
++ (id)_galetteAppForBundleID:(id)d;
++ (void)_appDeleteAlertIsEnabledWithReply:(id)reply;
++ (void)_cleanupAfterUninstallingBundleID:(id)d;
++ (void)_showUninstallAlertForApp:(id)app bundleID:(id)d;
++ (void)handleInstalledAppsWithBundleIDs:(id)ds;
++ (void)handleUninstalledAppsWithBundleIDs:(id)ds;
 @end
 
 @implementation GaletteAppDeleteAlertManager
 
-+ (void)handleInstalledAppsWithBundleIDs:(id)a3
++ (void)handleInstalledAppsWithBundleIDs:(id)ds
 {
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  dsCopy = ds;
+  v5 = [dsCopy countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v5)
   {
     v7 = v5;
@@ -29,11 +29,11 @@
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dsCopy);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [a1 _galetteAppForBundleID:{v10, v17}];
+        v11 = [self _galetteAppForBundleID:{v10, v17}];
         v12 = v11;
         if (!v11 || ![v11 mode])
         {
@@ -63,7 +63,7 @@
         [v15 modifyUsingTransaction:v18];
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v7 = [dsCopy countByEnumeratingWithState:&v21 objects:v29 count:16];
       if (v7)
       {
         continue;
@@ -76,13 +76,13 @@
 LABEL_14:
 }
 
-+ (void)handleUninstalledAppsWithBundleIDs:(id)a3
++ (void)handleUninstalledAppsWithBundleIDs:(id)ds
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = a3;
+  obj = ds;
   v4 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
@@ -125,9 +125,9 @@ LABEL_14:
         v11[2] = sub_10040A0F4;
         v11[3] = &unk_100528858;
         v11[5] = &v13;
-        v11[6] = a1;
+        v11[6] = self;
         v11[4] = v7;
-        [a1 _appDeleteAlertIsEnabledWithReply:v11];
+        [self _appDeleteAlertIsEnabledWithReply:v11];
         _Block_object_dispose(&v13, 8);
       }
 
@@ -144,24 +144,24 @@ LABEL_14:
 LABEL_12:
 }
 
-+ (void)_showUninstallAlertForApp:(id)a3 bundleID:(id)a4
++ (void)_showUninstallAlertForApp:(id)app bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  dCopy = d;
   v8 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = sub_100256C00([v6 mode]);
+    v9 = sub_100256C00([appCopy mode]);
     *buf = 138543618;
     v28 = v9;
     v29 = 2114;
-    v30 = v7;
+    v30 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Will show uninstall alert for %{public}@ for %{public}@", buf, 0x16u);
   }
 
   v10 = ASDLocalizedString();
-  v11 = [v6 name];
-  v12 = [NSString stringWithFormat:v10, v11];
+  name = [appCopy name];
+  v12 = [NSString stringWithFormat:v10, name];
 
   v13 = ASDLocalizedString();
   v14 = ASDLocalizedString();
@@ -172,23 +172,23 @@ LABEL_12:
   [v15 setButtonActions:v17];
 
   v18 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v15];
-  v19 = [v18 present];
+  present = [v18 present];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10040A4C8;
   v22[3] = &unk_100527828;
-  v23 = v6;
-  v24 = v7;
-  v25 = a1;
-  v20 = v7;
-  v21 = v6;
-  [v19 addFinishBlock:v22];
+  v23 = appCopy;
+  v24 = dCopy;
+  selfCopy = self;
+  v20 = dCopy;
+  v21 = appCopy;
+  [present addFinishBlock:v22];
 }
 
-+ (void)_cleanupAfterUninstallingBundleID:(id)a3
++ (void)_cleanupAfterUninstallingBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 _galetteAppForBundleID:v4];
+  dCopy = d;
+  v5 = [self _galetteAppForBundleID:dCopy];
   v6 = v5;
   if (v5 && [v5 mode])
   {
@@ -199,7 +199,7 @@ LABEL_12:
       *buf = 138543618;
       v13 = v8;
       v14 = 2114;
-      v15 = v4;
+      v15 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Detected another app with %{public}@, will not remove persisted record for %{public}@", buf, 0x16u);
     }
   }
@@ -211,18 +211,18 @@ LABEL_12:
     v10[1] = 3221225472;
     v10[2] = sub_10040A7B8;
     v10[3] = &unk_100524748;
-    v11 = v4;
+    v11 = dCopy;
     [v9 modifyUsingTransaction:v10];
 
     v7 = v11;
   }
 }
 
-+ (id)_galetteAppForBundleID:(id)a3
++ (id)_galetteAppForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v16 = 0;
-  v4 = [LSBundleRecord bundleRecordWithBundleIdentifier:v3 allowPlaceholder:1 error:&v16];
+  v4 = [LSBundleRecord bundleRecordWithBundleIdentifier:dCopy allowPlaceholder:1 error:&v16];
   v5 = v16;
   if (v5)
   {
@@ -236,37 +236,37 @@ LABEL_12:
 
   if (v6)
   {
-    v7 = ASDLogHandleForCategory();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    entitlements = ASDLogHandleForCategory();
+    if (os_log_type_enabled(entitlements, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v18 = v3;
+      v18 = dCopy;
       v19 = 2114;
       v20 = v5;
-      _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to lookup bundle record for %{public}@, will assume no entitlements: %{public}@", buf, 0x16u);
+      _os_log_error_impl(&_mh_execute_header, entitlements, OS_LOG_TYPE_ERROR, "Failed to lookup bundle record for %{public}@, will assume no entitlements: %{public}@", buf, 0x16u);
     }
   }
 
   else
   {
-    v7 = [v4 entitlements];
-    v8 = [v7 objectForKey:@"com.apple.developer.storekit.external-purchase-link" ofClass:objc_opt_class()];
-    v9 = [v8 BOOLValue];
+    entitlements = [v4 entitlements];
+    v8 = [entitlements objectForKey:@"com.apple.developer.storekit.external-purchase-link" ofClass:objc_opt_class()];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
       v10 = 1;
 LABEL_12:
-      v13 = [v4 localizedName];
-      v14 = [GaletteAppMemoryEntity appWithBundleID:v3 mode:v10 name:v13];
+      localizedName = [v4 localizedName];
+      v14 = [GaletteAppMemoryEntity appWithBundleID:dCopy mode:v10 name:localizedName];
 
       goto LABEL_14;
     }
 
-    v11 = [v7 objectForKey:@"com.apple.developer.storekit.external-purchase" ofClass:objc_opt_class()];
-    v12 = [v11 BOOLValue];
+    v11 = [entitlements objectForKey:@"com.apple.developer.storekit.external-purchase" ofClass:objc_opt_class()];
+    bOOLValue2 = [v11 BOOLValue];
 
-    if (v12)
+    if (bOOLValue2)
     {
       v10 = 2;
       goto LABEL_12;
@@ -279,16 +279,16 @@ LABEL_14:
   return v14;
 }
 
-+ (void)_appDeleteAlertIsEnabledWithReply:(id)a3
++ (void)_appDeleteAlertIsEnabledWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[BagService appstoredService];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10040AB30;
   v6[3] = &unk_100528880;
-  v7 = v3;
-  v5 = v3;
+  v7 = replyCopy;
+  v5 = replyCopy;
   [v4 bagWithTimeout:v6 completionHandler:0.5];
 }
 

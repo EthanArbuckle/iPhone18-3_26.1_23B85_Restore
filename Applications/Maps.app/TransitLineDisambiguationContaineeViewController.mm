@@ -1,27 +1,27 @@
 @interface TransitLineDisambiguationContaineeViewController
-- (_TtC4Maps48TransitLineDisambiguationContaineeViewController)initWithCoder:(id)a3;
-- (_TtC4Maps48TransitLineDisambiguationContaineeViewController)initWithLabelMarker:(id)a3;
-- (_TtC4Maps48TransitLineDisambiguationContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps48TransitLineDisambiguationContaineeViewController)initWithCoder:(id)coder;
+- (_TtC4Maps48TransitLineDisambiguationContaineeViewController)initWithLabelMarker:(id)marker;
+- (_TtC4Maps48TransitLineDisambiguationContaineeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)onLineSelection;
 - (id)onRefinementError;
-- (void)handleDismissAction:(id)a3;
-- (void)setLabelMarker:(id)a3;
-- (void)setOnLineSelection:(id)a3;
-- (void)setOnRefinementError:(id)a3;
+- (void)handleDismissAction:(id)action;
+- (void)setLabelMarker:(id)marker;
+- (void)setOnLineSelection:(id)selection;
+- (void)setOnRefinementError:(id)error;
 - (void)shouldDismissForHorizontalSwipe_nonUIKitCardsOnly;
 - (void)viewDidLoad;
 @end
 
 @implementation TransitLineDisambiguationContaineeViewController
 
-- (void)setLabelMarker:(id)a3
+- (void)setLabelMarker:(id)marker
 {
   v5 = *(self + OBJC_IVAR____TtC4Maps48TransitLineDisambiguationContaineeViewController_labelMarker);
-  *(self + OBJC_IVAR____TtC4Maps48TransitLineDisambiguationContaineeViewController_labelMarker) = a3;
-  v6 = a3;
-  v7 = self;
+  *(self + OBJC_IVAR____TtC4Maps48TransitLineDisambiguationContaineeViewController_labelMarker) = marker;
+  markerCopy = marker;
+  selfCopy = self;
 
-  sub_10041A8F4(a3);
+  sub_10041A8F4(marker);
 }
 
 - (id)onLineSelection
@@ -46,9 +46,9 @@
   return v3;
 }
 
-- (void)setOnLineSelection:(id)a3
+- (void)setOnLineSelection:(id)selection
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(selection);
   if (v4)
   {
     v5 = v4;
@@ -66,7 +66,7 @@
   v8 = *(self + OBJC_IVAR____TtC4Maps48TransitLineDisambiguationContaineeViewController_onLineSelection);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_1000588AC(v8);
 }
 
@@ -92,9 +92,9 @@
   return v3;
 }
 
-- (void)setOnRefinementError:(id)a3
+- (void)setOnRefinementError:(id)error
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(error);
   if (v4)
   {
     v5 = v4;
@@ -112,19 +112,19 @@
   v8 = *(self + OBJC_IVAR____TtC4Maps48TransitLineDisambiguationContaineeViewController_onRefinementError);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_1000588AC(v8);
 }
 
-- (_TtC4Maps48TransitLineDisambiguationContaineeViewController)initWithLabelMarker:(id)a3
+- (_TtC4Maps48TransitLineDisambiguationContaineeViewController)initWithLabelMarker:(id)marker
 {
-  v4 = a3;
-  v5 = sub_100133C78(a3);
+  markerCopy = marker;
+  v5 = sub_100133C78(marker);
 
   return v5;
 }
 
-- (_TtC4Maps48TransitLineDisambiguationContaineeViewController)initWithCoder:(id)a3
+- (_TtC4Maps48TransitLineDisambiguationContaineeViewController)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR____TtC4Maps48TransitLineDisambiguationContaineeViewController_labelMarker) = 0;
   v3 = (self + OBJC_IVAR____TtC4Maps48TransitLineDisambiguationContaineeViewController_onLineSelection);
@@ -140,26 +140,26 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100132E44();
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  v6 = [objc_opt_self() sharedService];
-  if (v6)
+  sharedService = [objc_opt_self() sharedService];
+  if (sharedService)
   {
-    v7 = v6;
-    [v6 captureUserAction:4 onTarget:638 eventValue:0];
+    v7 = sharedService;
+    [sharedService captureUserAction:4 onTarget:638 eventValue:0];
 
     sub_10005E838(v10, v10[3]);
     v8 = _bridgeAnythingToObjectiveC<A>(_:)();
-    v9.receiver = v5;
+    v9.receiver = selfCopy;
     v9.super_class = ObjectType;
     [(ContaineeViewController *)&v9 handleDismissAction:v8];
     swift_unknownObjectRelease();
@@ -177,16 +177,16 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 sharedService];
-  if (v6)
+  selfCopy = self;
+  sharedService = [v4 sharedService];
+  if (sharedService)
   {
-    v7 = v6;
-    [v6 captureUserAction:4 onTarget:638 eventValue:0];
+    v7 = sharedService;
+    [sharedService captureUserAction:4 onTarget:638 eventValue:0];
 
-    v8.receiver = v5;
+    v8.receiver = selfCopy;
     v8.super_class = ObjectType;
-    [(ContaineeViewController *)&v8 handleDismissAction:v5];
+    [(ContaineeViewController *)&v8 handleDismissAction:selfCopy];
   }
 
   else
@@ -195,7 +195,7 @@
   }
 }
 
-- (_TtC4Maps48TransitLineDisambiguationContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps48TransitLineDisambiguationContaineeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

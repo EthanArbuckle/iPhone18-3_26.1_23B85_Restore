@@ -1,13 +1,13 @@
 @interface ATXHeuristicEarlyEventAlarm
-- (BOOL)_willAlarm:(id)a3 fireFrom:(double)a4 to:(double)a5;
-- (BOOL)isEventInterestingForSettingAlarm:(id)a3;
-- (BOOL)shouldShowSuggestionForEarlyEvent:(id)a3 alarms:(id)a4 environment:(id)a5;
-- (double)_timestampByOffsettingDays:(double)a3 dayOffset:(int64_t)a4;
-- (double)_timestampByOffsettingStartOfTodayByNumberOfDays:(int64_t)a3;
-- (double)_timestampWithHour:(unint64_t)a3 minute:(unint64_t)a4 atDayOfTimestamp:(double)a5;
-- (id)_enabledAlarmsFromTS:(double)a3 toTS:(double)a4 environment:(id)a5;
-- (id)_usualAlarmTimeOfDayDataSourceWithEnvironment:(id)a3;
-- (id)heuristicResultWithEnvironment:(id)a3;
+- (BOOL)_willAlarm:(id)alarm fireFrom:(double)from to:(double)to;
+- (BOOL)isEventInterestingForSettingAlarm:(id)alarm;
+- (BOOL)shouldShowSuggestionForEarlyEvent:(id)event alarms:(id)alarms environment:(id)environment;
+- (double)_timestampByOffsettingDays:(double)days dayOffset:(int64_t)offset;
+- (double)_timestampByOffsettingStartOfTodayByNumberOfDays:(int64_t)days;
+- (double)_timestampWithHour:(unint64_t)hour minute:(unint64_t)minute atDayOfTimestamp:(double)timestamp;
+- (id)_enabledAlarmsFromTS:(double)s toTS:(double)tS environment:(id)environment;
+- (id)_usualAlarmTimeOfDayDataSourceWithEnvironment:(id)environment;
+- (id)heuristicResultWithEnvironment:(id)environment;
 - (id)permanentRefreshTriggers;
 @end
 
@@ -29,13 +29,13 @@
   return v8;
 }
 
-- (id)heuristicResultWithEnvironment:(id)a3
+- (id)heuristicResultWithEnvironment:(id)environment
 {
   v144 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  environmentCopy = environment;
   v5 = [ATXExtraordinaryEventsDataSource alloc];
-  v6 = [v4 heuristicDevice];
-  v7 = [(ATXExtraordinaryEventsDataSource *)v5 initWithDevice:v6];
+  heuristicDevice = [environmentCopy heuristicDevice];
+  v7 = [(ATXExtraordinaryEventsDataSource *)v5 initWithDevice:heuristicDevice];
 
   v125 = 0;
   v126 = &v125;
@@ -145,15 +145,15 @@ LABEL_9:
     [(ATXHeuristicEarlyEventAlarm *)self _timestampByOffsettingDays:-1 dayOffset:?];
     [(ATXHeuristicEarlyEventAlarm *)self _timestampAtDayOfTimestamp:0 hour:0 minute:?];
     v25 = v24;
-    v26 = [(ATXHeuristicEarlyEventAlarm *)self _usualAlarmTimeOfDayDataSourceWithEnvironment:v4];
+    v26 = [(ATXHeuristicEarlyEventAlarm *)self _usualAlarmTimeOfDayDataSourceWithEnvironment:environmentCopy];
     v105 = v26;
     if (v26 && [v26 integerValue])
     {
-      v27 = [v105 integerValue];
-      v28 = [v105 integerValue];
+      integerValue = [v105 integerValue];
+      integerValue2 = [v105 integerValue];
       v29 = __atxlog_handle_context_heuristic();
-      v30 = v27 / 3600;
-      v31 = ((v28 - 3600 * v30) / 60.0);
+      v30 = integerValue / 3600;
+      v31 = ((integerValue2 - 3600 * v30) / 60.0);
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
@@ -195,8 +195,8 @@ LABEL_9:
         v33 = v42;
       }
 
-      v43 = [MEMORY[0x277CBEAA8] date];
-      [v43 timeIntervalSinceReferenceDate];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceReferenceDate];
       v45 = v44;
 
       v46 = v33 + -3600.0;
@@ -401,38 +401,38 @@ void __62__ATXHeuristicEarlyEventAlarm_heuristicResultWithEnvironment___block_in
   *(v9 + 40) = v6;
 }
 
-- (BOOL)isEventInterestingForSettingAlarm:(id)a3
+- (BOOL)isEventInterestingForSettingAlarm:(id)alarm
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"isAllDay"];
+  alarmCopy = alarm;
+  v4 = [alarmCopy objectForKeyedSubscript:@"isAllDay"];
 
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"isAllDay"];
-    v6 = [v5 BOOLValue];
+    v5 = [alarmCopy objectForKeyedSubscript:@"isAllDay"];
+    bOOLValue = [v5 BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
       goto LABEL_7;
     }
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"nlEventCalendar"];
+  v7 = [alarmCopy objectForKeyedSubscript:@"nlEventCalendar"];
 
   if (v7)
   {
-    v8 = [v3 objectForKeyedSubscript:@"nlEventCalendar"];
-    v9 = [v8 BOOLValue];
+    v8 = [alarmCopy objectForKeyedSubscript:@"nlEventCalendar"];
+    bOOLValue2 = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue2)
     {
       goto LABEL_7;
     }
   }
 
-  v10 = [v3 objectForKeyedSubscript:@"eventTitle"];
+  v10 = [alarmCopy objectForKeyedSubscript:@"eventTitle"];
 
-  if (v10 && ([v3 objectForKeyedSubscript:@"eventTitle"], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", @"[Placeholder Item]"), v11, (v12 & 1) != 0))
+  if (v10 && ([alarmCopy objectForKeyedSubscript:@"eventTitle"], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", @"[Placeholder Item]"), v11, (v12 & 1) != 0))
   {
 LABEL_7:
     v13 = 0;
@@ -446,22 +446,22 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)shouldShowSuggestionForEarlyEvent:(id)a3 alarms:(id)a4 environment:(id)a5
+- (BOOL)shouldShowSuggestionForEarlyEvent:(id)event alarms:(id)alarms environment:(id)environment
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 objectForKeyedSubscript:@"startDateTimestamp"];
+  alarmsCopy = alarms;
+  environmentCopy = environment;
+  v10 = [event objectForKeyedSubscript:@"startDateTimestamp"];
   [v10 doubleValue];
   v12 = v11;
   [(ATXHeuristicEarlyEventAlarm *)self _timestampByOffsettingStartOfTodayByNumberOfDays:1];
   v14 = v13;
   v15 = v12 + -3540.0;
-  v16 = [(ATXHeuristicEarlyEventAlarm *)self _enabledAlarmsFromTS:v9 toTS:v13 environment:v15];
+  v16 = [(ATXHeuristicEarlyEventAlarm *)self _enabledAlarmsFromTS:environmentCopy toTS:v13 environment:v15];
   if ([v16 count])
   {
     v32 = v10;
-    v33 = v9;
+    v33 = environmentCopy;
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
@@ -521,7 +521,7 @@ LABEL_7:
           }
 
           v28 = [*(*(&v34 + 1) + 8 * j) copy];
-          [v8 addObject:v28];
+          [alarmsCopy addObject:v28];
         }
 
         v25 = [v17 countByEnumeratingWithState:&v34 objects:v43 count:16];
@@ -533,7 +533,7 @@ LABEL_7:
     v29 = 1;
 LABEL_23:
     v10 = v32;
-    v9 = v33;
+    environmentCopy = v33;
   }
 
   else
@@ -552,19 +552,19 @@ LABEL_23:
   return v29;
 }
 
-- (BOOL)_willAlarm:(id)a3 fireFrom:(double)a4 to:(double)a5
+- (BOOL)_willAlarm:(id)alarm fireFrom:(double)from to:(double)to
 {
   v7 = MEMORY[0x277CBEAA8];
-  v8 = a3;
-  v9 = [v7 dateWithTimeIntervalSinceReferenceDate:a4];
-  v10 = [v8 objectForKeyedSubscript:@"MTAlarm"];
+  alarmCopy = alarm;
+  v9 = [v7 dateWithTimeIntervalSinceReferenceDate:from];
+  v10 = [alarmCopy objectForKeyedSubscript:@"MTAlarm"];
 
   v11 = [v10 nextFireDateAfterDate:v9];
   v12 = v11;
   if (v11)
   {
     [v11 timeIntervalSinceReferenceDate];
-    v14 = v13 < a5;
+    v14 = v13 < to;
   }
 
   else
@@ -575,12 +575,12 @@ LABEL_23:
   return v14;
 }
 
-- (id)_enabledAlarmsFromTS:(double)a3 toTS:(double)a4 environment:(id)a5
+- (id)_enabledAlarmsFromTS:(double)s toTS:(double)tS environment:(id)environment
 {
-  v7 = a5;
+  environmentCopy = environment;
   v8 = [ATXAlarmsDataSource alloc];
-  v9 = [v7 heuristicDevice];
-  v10 = [(ATXAlarmsDataSource *)v8 initWithDevice:v9];
+  heuristicDevice = [environmentCopy heuristicDevice];
+  v10 = [(ATXAlarmsDataSource *)v8 initWithDevice:heuristicDevice];
 
   v30 = 0;
   v31 = &v30;
@@ -594,8 +594,8 @@ LABEL_23:
   v27 = __Block_byref_object_copy__4;
   v28 = __Block_byref_object_dispose__4;
   v29 = 0;
-  v11 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:a3];
-  v12 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:a4];
+  v11 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:s];
+  v12 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:tS];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __69__ATXHeuristicEarlyEventAlarm__enabledAlarmsFromTS_toTS_environment___block_invoke;
@@ -639,12 +639,12 @@ void __69__ATXHeuristicEarlyEventAlarm__enabledAlarmsFromTS_toTS_environment___b
   *(v9 + 40) = v6;
 }
 
-- (id)_usualAlarmTimeOfDayDataSourceWithEnvironment:(id)a3
+- (id)_usualAlarmTimeOfDayDataSourceWithEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   v4 = [ATXSetAlarmTimeOfDayDataSource alloc];
-  v5 = [v3 heuristicDevice];
-  v6 = [(ATXSetAlarmTimeOfDayDataSource *)v4 initWithDevice:v5];
+  heuristicDevice = [environmentCopy heuristicDevice];
+  v6 = [(ATXSetAlarmTimeOfDayDataSource *)v4 initWithDevice:heuristicDevice];
 
   v24 = 0;
   v25 = &v24;
@@ -702,15 +702,15 @@ void __77__ATXHeuristicEarlyEventAlarm__usualAlarmTimeOfDayDataSourceWithEnviron
   *(v9 + 40) = v6;
 }
 
-- (double)_timestampByOffsettingStartOfTodayByNumberOfDays:(int64_t)a3
+- (double)_timestampByOffsettingStartOfTodayByNumberOfDays:(int64_t)days
 {
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v4 startOfDayForDate:v5];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [currentCalendar startOfDayForDate:date];
 
-  if (a3)
+  if (days)
   {
-    v7 = [v4 dateByAddingUnit:16 value:a3 toDate:v6 options:0];
+    v7 = [currentCalendar dateByAddingUnit:16 value:days toDate:v6 options:0];
     [v7 timeIntervalSinceReferenceDate];
     v9 = v8;
   }
@@ -724,25 +724,25 @@ void __77__ATXHeuristicEarlyEventAlarm__usualAlarmTimeOfDayDataSourceWithEnviron
   return v9;
 }
 
-- (double)_timestampWithHour:(unint64_t)a3 minute:(unint64_t)a4 atDayOfTimestamp:(double)a5
+- (double)_timestampWithHour:(unint64_t)hour minute:(unint64_t)minute atDayOfTimestamp:(double)timestamp
 {
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:a5];
-  v10 = [v8 components:28 fromDate:v9];
-  [v10 setHour:a3];
-  [v10 setMinute:a4];
-  v11 = [v8 dateFromComponents:v10];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:timestamp];
+  v10 = [currentCalendar components:28 fromDate:v9];
+  [v10 setHour:hour];
+  [v10 setMinute:minute];
+  v11 = [currentCalendar dateFromComponents:v10];
   [v11 timeIntervalSinceReferenceDate];
   v13 = v12;
 
   return v13;
 }
 
-- (double)_timestampByOffsettingDays:(double)a3 dayOffset:(int64_t)a4
+- (double)_timestampByOffsettingDays:(double)days dayOffset:(int64_t)offset
 {
-  v5 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:a3];
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v7 = [v6 dateByAddingUnit:16 value:a4 toDate:v5 options:0];
+  v5 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:days];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v7 = [currentCalendar dateByAddingUnit:16 value:offset toDate:v5 options:0];
   [v7 timeIntervalSinceReferenceDate];
   v9 = v8;
 

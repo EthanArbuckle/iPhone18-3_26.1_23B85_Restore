@@ -1,16 +1,16 @@
 @interface SKUILockupItemCollectionViewCell
-- (SKUILockupItemCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)configureForItem:(id)a3 clientContext:(id)a4;
+- (SKUILockupItemCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)configureForItem:(id)item clientContext:(id)context;
 @end
 
 @implementation SKUILockupItemCollectionViewCell
 
-- (SKUILockupItemCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUILockupItemCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUILockupItemCollectionViewCell initWithFrame:];
@@ -18,76 +18,76 @@
 
   v12.receiver = self;
   v12.super_class = SKUILockupItemCollectionViewCell;
-  v8 = [(SKUICollectionViewCell *)&v12 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUICollectionViewCell *)&v12 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v9 = [[SKUILockupItemCellLayout alloc] initWithCollectionViewCell:v8];
-    layout = v8->_layout;
-    v8->_layout = v9;
+    v9 = [[SKUILockupItemCellLayout alloc] initWithCollectionViewCell:height];
+    layout = height->_layout;
+    height->_layout = v9;
   }
 
-  return v8;
+  return height;
 }
 
-- (void)configureForItem:(id)a3 clientContext:(id)a4
+- (void)configureForItem:(id)item clientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  contextCopy = context;
   layout = self->_layout;
-  v9 = [v6 artistName];
-  [(SKUILockupItemCellLayout *)layout setArtistName:v9];
+  artistName = [itemCopy artistName];
+  [(SKUILockupItemCellLayout *)layout setArtistName:artistName];
 
   v10 = self->_layout;
-  v11 = [v6 categoryName];
-  [(SKUILockupItemCellLayout *)v10 setCategoryString:v11];
+  categoryName = [itemCopy categoryName];
+  [(SKUILockupItemCellLayout *)v10 setCategoryString:categoryName];
 
   v12 = self->_layout;
-  v13 = SKUILockupItemCountString(v6, v7);
+  v13 = SKUILockupItemCountString(itemCopy, contextCopy);
   [(SKUILockupItemCellLayout *)v12 setItemCountString:v13];
 
-  -[SKUILockupItemCellLayout setNumberOfUserRatings:](self->_layout, "setNumberOfUserRatings:", [v6 numberOfUserRatings]);
+  -[SKUILockupItemCellLayout setNumberOfUserRatings:](self->_layout, "setNumberOfUserRatings:", [itemCopy numberOfUserRatings]);
   v14 = self->_layout;
-  v15 = [v6 title];
-  [(SKUILockupItemCellLayout *)v14 setTitle:v15];
+  title = [itemCopy title];
+  [(SKUILockupItemCellLayout *)v14 setTitle:title];
 
   v16 = self->_layout;
-  [v6 userRating];
+  [itemCopy userRating];
   *&v18 = v17 / 5.0;
   [(SKUILockupItemCellLayout *)v16 setUserRating:v18];
   v19 = self->_layout;
-  v20 = [v6 editorialBadge];
-  [(SKUILockupItemCellLayout *)v19 setEditorialBadgeString:v20];
+  editorialBadge = [itemCopy editorialBadge];
+  [(SKUILockupItemCellLayout *)v19 setEditorialBadgeString:editorialBadge];
 
-  if ([v6 itemKind] == 12)
+  if ([itemCopy itemKind] == 12)
   {
     v21 = self->_layout;
-    v22 = [v6 primaryItemOffer];
-    [(SKUIItemCellLayout *)v21 setItemOffer:v22];
+    primaryItemOffer = [itemCopy primaryItemOffer];
+    [(SKUIItemCellLayout *)v21 setItemOffer:primaryItemOffer];
 
-    v23 = [(SKUIItemCellLayout *)self->_layout itemOfferButton];
-    [v23 setUniversal:{SKUIItemDeviceFamilyIsUniversal(objc_msgSend(v6, "deviceFamilies"))}];
+    itemOfferButton = [(SKUIItemCellLayout *)self->_layout itemOfferButton];
+    [itemOfferButton setUniversal:{SKUIItemDeviceFamilyIsUniversal(objc_msgSend(itemCopy, "deviceFamilies"))}];
 
-    if ([v6 hasInAppPurchases])
+    if ([itemCopy hasInAppPurchases])
     {
-      v24 = [v7 valueForConfigurationKey:@"inappnote"];
+      itemOfferButton2 = [contextCopy valueForConfigurationKey:@"inappnote"];
     }
 
     else
     {
-      v24 = 0;
+      itemOfferButton2 = 0;
     }
 
-    [(SKUIItemCellLayout *)self->_layout setItemOfferNoticeString:v24];
+    [(SKUIItemCellLayout *)self->_layout setItemOfferNoticeString:itemOfferButton2];
   }
 
   else
   {
-    if (v6 && !configureForItem_clientContext__sViewOffer)
+    if (itemCopy && !configureForItem_clientContext__sViewOffer)
     {
       v25 = [SKUIItemOffer alloc];
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"VIEW_BUTTON"];
+        [contextCopy localizedStringForKey:@"VIEW_BUTTON"];
       }
 
       else
@@ -102,13 +102,13 @@
 
     [(SKUIItemCellLayout *)self->_layout setItemOffer:?];
     [(SKUIItemCellLayout *)self->_layout setItemOfferNoticeString:0];
-    v24 = [(SKUIItemCellLayout *)self->_layout itemOfferButton];
-    [v24 setUniversal:0];
+    itemOfferButton2 = [(SKUIItemCellLayout *)self->_layout itemOfferButton];
+    [itemOfferButton2 setUniversal:0];
   }
 
   v29.receiver = self;
   v29.super_class = SKUILockupItemCollectionViewCell;
-  [(SKUIItemCollectionViewCell *)&v29 configureForItem:v6 clientContext:v7];
+  [(SKUIItemCollectionViewCell *)&v29 configureForItem:itemCopy clientContext:contextCopy];
 }
 
 - (void)initWithFrame:.cold.1()

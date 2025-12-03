@@ -1,30 +1,30 @@
 @interface IDSGroupServerKeyElectionStore
-- (void)storeItem:(id)a3 withCompletion:(id)a4;
+- (void)storeItem:(id)item withCompletion:(id)completion;
 @end
 
 @implementation IDSGroupServerKeyElectionStore
 
-- (void)storeItem:(id)a3 withCompletion:(id)a4
+- (void)storeItem:(id)item withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 newPg];
+  itemCopy = item;
+  completionCopy = completion;
+  [itemCopy newPg];
   v7 = SecKeyCopySubjectPublicKeyInfo();
   v8 = objc_alloc_init(IDSGroupServer);
-  v9 = [v5 accountBlob];
-  v10 = [v5 signature];
-  v11 = [v5 forwardingTicket];
-  v12 = [v5 ENID];
-  v13 = [v5 parentVersion];
+  accountBlob = [itemCopy accountBlob];
+  signature = [itemCopy signature];
+  forwardingTicket = [itemCopy forwardingTicket];
+  eNID = [itemCopy ENID];
+  parentVersion = [itemCopy parentVersion];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1006B7228;
   v16[3] = &unk_100BE4578;
-  v17 = v5;
-  v18 = v6;
-  v14 = v5;
-  v15 = v6;
-  [(IDSGroupServer *)v8 publishGroupForKey:v7 data:v9 signature:v10 forwardingSig:v11 ENID:v12 version:v13 completion:v16];
+  v17 = itemCopy;
+  v18 = completionCopy;
+  v14 = itemCopy;
+  v15 = completionCopy;
+  [(IDSGroupServer *)v8 publishGroupForKey:v7 data:accountBlob signature:signature forwardingSig:forwardingTicket ENID:eNID version:parentVersion completion:v16];
 }
 
 @end

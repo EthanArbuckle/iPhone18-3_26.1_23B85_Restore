@@ -1,17 +1,17 @@
 @interface TranscriptViewContextProvider
-- (void)didChangeHostViewWidth:(double)a3;
+- (void)didChangeHostViewWidth:(double)width;
 @end
 
 @implementation TranscriptViewContextProvider
 
-- (void)didChangeHostViewWidth:(double)a3
+- (void)didChangeHostViewWidth:(double)width
 {
   v3 = *&self->context[16];
   v11[0] = *self->context;
   v11[1] = v3;
   *&v13 = *&self->context[16];
   v12 = v11[0];
-  *(&v13 + 1) = a3;
+  *(&v13 + 1) = width;
   v14 = v11[0];
   v15 = v3;
   v16[0] = v11[0];

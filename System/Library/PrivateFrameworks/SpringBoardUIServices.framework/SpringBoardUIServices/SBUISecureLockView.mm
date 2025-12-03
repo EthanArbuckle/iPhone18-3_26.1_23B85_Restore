@@ -1,17 +1,17 @@
 @interface SBUISecureLockView
-- (BOOL)transitionToState:(int64_t)a3;
-- (SBUISecureLockView)initWithDesiredState:(int64_t)a3;
+- (BOOL)transitionToState:(int64_t)state;
+- (SBUISecureLockView)initWithDesiredState:(int64_t)state;
 - (id)_flipBookType;
-- (id)_secureFlipBookLayerStateFromIconViewState:(int64_t)a3;
-- (int64_t)_startingPointForDesiredState:(int64_t)a3;
-- (void)_tick:(id)a3;
+- (id)_secureFlipBookLayerStateFromIconViewState:(int64_t)state;
+- (int64_t)_startingPointForDesiredState:(int64_t)state;
+- (void)_tick:(id)_tick;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
 
 @implementation SBUISecureLockView
 
-- (SBUISecureLockView)initWithDesiredState:(int64_t)a3
+- (SBUISecureLockView)initWithDesiredState:(int64_t)state
 {
   v16.receiver = self;
   v16.super_class = SBUISecureLockView;
@@ -20,22 +20,22 @@
   if (v4)
   {
     v6 = MEMORY[0x1E6979498];
-    v7 = [(SBUISecureLockView *)v4 _flipBookType];
-    v8 = [v6 secureFlipBookWithType:v7];
+    _flipBookType = [(SBUISecureLockView *)v4 _flipBookType];
+    v8 = [v6 secureFlipBookWithType:_flipBookType];
     secureFlipBookLayer = v5->_secureFlipBookLayer;
     v5->_secureFlipBookLayer = v8;
 
-    [(SBUISecureLockView *)v5 transitionToState:[(SBUISecureLockView *)v5 _startingPointForDesiredState:a3]];
-    v10 = [(SBUISecureLockView *)v5 layer];
-    [v10 addSublayer:v5->_secureFlipBookLayer];
+    [(SBUISecureLockView *)v5 transitionToState:[(SBUISecureLockView *)v5 _startingPointForDesiredState:state]];
+    layer = [(SBUISecureLockView *)v5 layer];
+    [layer addSublayer:v5->_secureFlipBookLayer];
 
     v11 = [MEMORY[0x1E6979330] displayLinkWithTarget:v5 selector:sel__tick_];
     displayLink = v5->_displayLink;
     v5->_displayLink = v11;
 
     v13 = v5->_displayLink;
-    v14 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [(CADisplayLink *)v13 addToRunLoop:v14 forMode:*MEMORY[0x1E695DA28]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [(CADisplayLink *)v13 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
   }
 
   return v5;
@@ -58,13 +58,13 @@
   [(CASecureFlipBookLayer *)self->_secureFlipBookLayer setFrame:?];
 }
 
-- (BOOL)transitionToState:(int64_t)a3
+- (BOOL)transitionToState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    v6 = [(CASecureFlipBookLayer *)self->_secureFlipBookLayer currentState];
-    v7 = [(SBUISecureLockView *)self _secureFlipBookLayerStateFromIconViewState:a3];
+    self->_state = state;
+    currentState = [(CASecureFlipBookLayer *)self->_secureFlipBookLayer currentState];
+    v7 = [(SBUISecureLockView *)self _secureFlipBookLayerStateFromIconViewState:state];
     if (v7)
     {
       if ([(CASecureFlipBookLayer *)self->_secureFlipBookLayer canTransitionToState:v7])
@@ -89,7 +89,7 @@ LABEL_13:
         v8 = SBLogLockScreenBiometricFaceIDCoaching();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          [(SBUISecureLockView *)v6 transitionToState:v7, v8];
+          [(SBUISecureLockView *)currentState transitionToState:v7, v8];
         }
       }
     }
@@ -101,7 +101,7 @@ LABEL_13:
   return 0;
 }
 
-- (void)_tick:(id)a3
+- (void)_tick:(id)_tick
 {
   secureFlipBookLayer = self->_secureFlipBookLayer;
   [(CADisplayLink *)self->_displayLink targetTimestamp];
@@ -127,22 +127,22 @@ LABEL_13:
   return v2;
 }
 
-- (id)_secureFlipBookLayerStateFromIconViewState:(int64_t)a3
+- (id)_secureFlipBookLayerStateFromIconViewState:(int64_t)state
 {
-  if ((a3 - 1) > 6)
+  if ((state - 1) > 6)
   {
     return @"Sleep State";
   }
 
   else
   {
-    return off_1E789F7A8[a3 - 1];
+    return off_1E789F7A8[state - 1];
   }
 }
 
-- (int64_t)_startingPointForDesiredState:(int64_t)a3
+- (int64_t)_startingPointForDesiredState:(int64_t)state
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 6)
+  if ((state & 0xFFFFFFFFFFFFFFFELL) == 6)
   {
     return 5;
   }

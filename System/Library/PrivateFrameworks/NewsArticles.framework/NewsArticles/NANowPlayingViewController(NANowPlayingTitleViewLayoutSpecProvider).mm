@@ -6,9 +6,9 @@
 
 - (double)publisherLogoHeight
 {
-  v2 = [(NANowPlayingViewController *)self view];
-  v3 = [v2 window];
-  [NANowPlayingLayoutSpec publisherLogoHeightInView:v3];
+  view = [(NANowPlayingViewController *)self view];
+  window = [view window];
+  [NANowPlayingLayoutSpec publisherLogoHeightInView:window];
   v5 = v4;
 
   return v5;

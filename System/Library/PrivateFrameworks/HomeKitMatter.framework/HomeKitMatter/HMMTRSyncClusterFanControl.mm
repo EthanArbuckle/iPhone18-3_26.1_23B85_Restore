@@ -1,11 +1,11 @@
 @interface HMMTRSyncClusterFanControl
 + (id)logCategory;
-- (id)readAttributePluginFanModeWithParams:(id)a3;
-- (id)readAttributePluginRockSettingWithParams:(id)a3;
-- (void)updatedValuePluginFanModeForAttributeReport:(id)a3 responseHandler:(id)a4;
-- (void)updatedValuePluginRockSettingForAttributeReport:(id)a3 responseHandler:(id)a4;
-- (void)writeAttributePluginFanModeWithValue:(id)a3 expectedValueInterval:(id)a4;
-- (void)writeAttributePluginRockSettingWithValue:(id)a3 expectedValueInterval:(id)a4;
+- (id)readAttributePluginFanModeWithParams:(id)params;
+- (id)readAttributePluginRockSettingWithParams:(id)params;
+- (void)updatedValuePluginFanModeForAttributeReport:(id)report responseHandler:(id)handler;
+- (void)updatedValuePluginRockSettingForAttributeReport:(id)report responseHandler:(id)handler;
+- (void)writeAttributePluginFanModeWithValue:(id)value expectedValueInterval:(id)interval;
+- (void)writeAttributePluginRockSettingWithValue:(id)value expectedValueInterval:(id)interval;
 @end
 
 @implementation HMMTRSyncClusterFanControl
@@ -32,12 +32,12 @@ uint64_t __41__HMMTRSyncClusterFanControl_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (void)updatedValuePluginFanModeForAttributeReport:(id)a3 responseHandler:(id)a4
+- (void)updatedValuePluginFanModeForAttributeReport:(id)report responseHandler:(id)handler
 {
   v93 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
+  reportCopy = report;
+  handlerCopy = handler;
+  v8 = [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -51,7 +51,7 @@ uint64_t __41__HMMTRSyncClusterFanControl_logCategory__block_invoke()
 
   v10 = v9;
 
-  v11 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD5128]];
+  v11 = [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD5128]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -66,22 +66,22 @@ uint64_t __41__HMMTRSyncClusterFanControl_logCategory__block_invoke()
   v13 = v12;
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
   v18 = MEMORY[0x277CD50D8];
   if (v17)
   {
     HMFGetLogIdentifier();
-    v19 = v74 = v15;
+    v19 = v74 = selfCopy;
     [v10 endpoint];
-    v20 = v77 = v7;
+    v20 = v77 = handlerCopy;
     [v10 cluster];
     v21 = v80 = v13;
-    v22 = [v10 attribute];
+    attribute = [v10 attribute];
     v23 = v10;
     v24 = *v18;
-    v25 = [v6 objectForKeyedSubscript:*v18];
+    v25 = [reportCopy objectForKeyedSubscript:*v18];
     *buf = 138544386;
     v84 = v19;
     v85 = 2112;
@@ -89,15 +89,15 @@ uint64_t __41__HMMTRSyncClusterFanControl_logCategory__block_invoke()
     v87 = 2112;
     v88 = v21;
     v89 = 2112;
-    v90 = v22;
+    v90 = attribute;
     v91 = 2112;
     v92 = v25;
     _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Handling Attribute report endpoint:%@ cluster:%@ attribute:%@ value:%@", buf, 0x34u);
 
     v13 = v80;
-    v7 = v77;
+    handlerCopy = v77;
 
-    v15 = v74;
+    selfCopy = v74;
   }
 
   else
@@ -107,10 +107,10 @@ uint64_t __41__HMMTRSyncClusterFanControl_logCategory__block_invoke()
   }
 
   objc_autoreleasePoolPop(v14);
-  v26 = [v6 objectForKeyedSubscript:v24];
+  v26 = [reportCopy objectForKeyedSubscript:v24];
   if (v26)
   {
-    v27 = v6;
+    v27 = reportCopy;
   }
 
   else
@@ -120,13 +120,13 @@ uint64_t __41__HMMTRSyncClusterFanControl_logCategory__block_invoke()
 
   v28 = v27;
 
-  v29 = [v23 cluster];
-  v30 = [v29 isEqualToNumber:&unk_283EE90C0];
+  cluster = [v23 cluster];
+  v30 = [cluster isEqualToNumber:&unk_283EE90C0];
 
   if (v30)
   {
-    v31 = [v23 attribute];
-    v32 = [v31 isEqualToNumber:&unk_283EE9150];
+    attribute2 = [v23 attribute];
+    v32 = [attribute2 isEqualToNumber:&unk_283EE9150];
 
     if (v32)
     {
@@ -136,39 +136,39 @@ uint64_t __41__HMMTRSyncClusterFanControl_logCategory__block_invoke()
       {
         if (![v33 isEqualToNumber:&unk_283EE90F0])
         {
-          v56 = [v34 unsignedIntValue];
-          if ((v56 - 1) >= 3)
+          unsignedIntValue = [v34 unsignedIntValue];
+          if ((unsignedIntValue - 1) >= 3)
           {
-            if (v56)
+            if (unsignedIntValue)
             {
               v69 = [MEMORY[0x277CCA9B8] hapErrorWithCode:12];
-              v7[2](v7, 0, v69);
+              handlerCopy[2](handlerCopy, 0, v69);
 
               goto LABEL_59;
             }
 
-            v57 = v7[2];
+            v57 = handlerCopy[2];
             v58 = &unk_283EE9090;
           }
 
           else
           {
-            v57 = v7[2];
+            v57 = handlerCopy[2];
             v58 = &unk_283EE9108;
           }
 
-          v57(v7, v58, 0);
+          v57(handlerCopy, v58, 0);
           goto LABEL_59;
         }
 
         v75 = v23;
         v35 = objc_alloc_init(MEMORY[0x277CD54D8]);
-        v36 = [(MTRClusterFanControl *)v15 readAttributePercentCurrentWithParams:v35];
-        v37 = v15;
+        v36 = [(MTRClusterFanControl *)selfCopy readAttributePercentCurrentWithParams:v35];
+        v37 = selfCopy;
         v38 = v36;
         if (!v36)
         {
-          v78 = v7;
+          v78 = handlerCopy;
           v82 = v13;
           v59 = objc_autoreleasePoolPush();
           v60 = v37;
@@ -176,17 +176,17 @@ uint64_t __41__HMMTRSyncClusterFanControl_logCategory__block_invoke()
           if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
           {
             v62 = HMFGetLogIdentifier();
-            v63 = [v75 endpoint];
+            endpoint = [v75 endpoint];
             *buf = 138543618;
             v84 = v62;
             v85 = 2112;
-            v86 = v63;
+            v86 = endpoint;
             _os_log_impl(&dword_22AEAE000, v61, OS_LOG_TYPE_ERROR, "%{public}@An error occurred while trying to read PercentCurrent attribute on endpoint %@. Cannot update CurrentAirPurifierState.", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v59);
           v41 = [MEMORY[0x277CCA9B8] hapErrorWithCode:11];
-          v7 = v78;
+          handlerCopy = v78;
           v78[2](v78, 0, v41);
           v13 = v82;
           goto LABEL_47;
@@ -218,7 +218,7 @@ uint64_t __41__HMMTRSyncClusterFanControl_logCategory__block_invoke()
             v42 = &unk_283EE9078;
           }
 
-          (v7)[2](v7, v42, 0);
+          (handlerCopy)[2](handlerCopy, v42, 0);
 LABEL_47:
 
           v23 = v75;
@@ -231,14 +231,14 @@ LABEL_66:
       }
 
 LABEL_37:
-      v7[2](v7, 0, v13);
+      handlerCopy[2](handlerCopy, 0, v13);
 LABEL_59:
 
       goto LABEL_60;
     }
 
-    v43 = [v23 attribute];
-    v44 = [v43 isEqualToNumber:&unk_283EE9168];
+    attribute3 = [v23 attribute];
+    v44 = [attribute3 isEqualToNumber:&unk_283EE9168];
 
     if (v44)
     {
@@ -251,29 +251,29 @@ LABEL_59:
       v81 = v13;
       v76 = v23;
       v45 = objc_alloc_init(MEMORY[0x277CD54D8]);
-      v46 = [(MTRClusterFanControl *)v15 readAttributeFanModeWithParams:v45];
-      v47 = v15;
+      v46 = [(MTRClusterFanControl *)selfCopy readAttributeFanModeWithParams:v45];
+      v47 = selfCopy;
       v48 = v46;
       if (!v46)
       {
-        v79 = v7;
+        v79 = handlerCopy;
         v64 = objc_autoreleasePoolPush();
         v65 = v47;
         v66 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
         {
           v67 = HMFGetLogIdentifier();
-          v68 = [v76 endpoint];
+          endpoint2 = [v76 endpoint];
           *buf = 138543618;
           v84 = v67;
           v85 = 2112;
-          v86 = v68;
+          v86 = endpoint2;
           _os_log_impl(&dword_22AEAE000, v66, OS_LOG_TYPE_ERROR, "%{public}@An error occurred while trying to read FanMode attribute on endpoint %@. Cannot update CurrentAirPurifierState.", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v64);
         v51 = [MEMORY[0x277CCA9B8] hapErrorWithCode:11];
-        v7 = v79;
+        handlerCopy = v79;
         v79[2](v79, 0, v51);
         goto LABEL_58;
       }
@@ -303,17 +303,17 @@ LABEL_59:
       {
         if (v53)
         {
-          v54 = v7[2];
+          v54 = handlerCopy[2];
           v55 = &unk_283EE9078;
         }
 
         else
         {
           v70 = [v51 isEqualToNumber:&unk_283EE9120];
-          v54 = v7[2];
+          v54 = handlerCopy[2];
           if (!v70)
           {
-            v71 = v7;
+            v71 = handlerCopy;
             v55 = 0;
             goto LABEL_57;
           }
@@ -329,22 +329,22 @@ LABEL_59:
           if ([v51 isEqualToNumber:&unk_283EE9120])
           {
             v73 = [MEMORY[0x277CCA9B8] hapErrorWithCode:12];
-            v7[2](v7, 0, v73);
+            handlerCopy[2](handlerCopy, 0, v73);
           }
 
           else
           {
-            (v7)[2](v7, &unk_283EE9108, 0);
+            (handlerCopy)[2](handlerCopy, &unk_283EE9108, 0);
           }
 
           goto LABEL_58;
         }
 
-        v54 = v7[2];
+        v54 = handlerCopy[2];
         v55 = &unk_283EE9108;
       }
 
-      v71 = v7;
+      v71 = handlerCopy;
 LABEL_57:
       v54(v71, v55, 0);
 LABEL_58:
@@ -355,19 +355,19 @@ LABEL_58:
     }
   }
 
-  v7[2](v7, 0, v13);
+  handlerCopy[2](handlerCopy, 0, v13);
 LABEL_60:
 
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeAttributePluginFanModeWithValue:(id)a3 expectedValueInterval:(id)a4
+- (void)writeAttributePluginFanModeWithValue:(id)value expectedValueInterval:(id)interval
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  intervalCopy = interval;
   v8 = *MEMORY[0x277CD51A0];
-  v9 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
+  v9 = [valueCopy objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -386,19 +386,19 @@ LABEL_60:
     _HMFPreconditionFailure();
   }
 
-  v12 = [v11 unsignedIntValue];
-  if (v12 > 2)
+  unsignedIntValue = [v11 unsignedIntValue];
+  if (unsignedIntValue > 2)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = qword_2786F0C60[v12];
+    v13 = qword_2786F0C60[unsignedIntValue];
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -413,17 +413,17 @@ LABEL_60:
   }
 
   objc_autoreleasePoolPop(v14);
-  v18 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v6];
+  v18 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:valueCopy];
   [v18 setValue:v13 forKey:v8];
-  [(MTRClusterFanControl *)v15 writeAttributeFanModeWithValue:v18 expectedValueInterval:v7];
+  [(MTRClusterFanControl *)selfCopy writeAttributeFanModeWithValue:v18 expectedValueInterval:intervalCopy];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readAttributePluginFanModeWithParams:(id)a3
+- (id)readAttributePluginFanModeWithParams:(id)params
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  paramsCopy = params;
   v5 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v6 = [(MTRClusterFanControl *)self readAttributeFanModeWithParams:v5];
   v7 = v6;
@@ -447,7 +447,7 @@ LABEL_60:
     if (v11)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
@@ -462,10 +462,10 @@ LABEL_60:
       objc_autoreleasePoolPop(v12);
       if (![v11 isEqualToNumber:&unk_283EE90F0])
       {
-        v32 = [v11 unsignedIntValue];
-        if ((v32 - 1) >= 3)
+        unsignedIntValue = [v11 unsignedIntValue];
+        if ((unsignedIntValue - 1) >= 3)
         {
-          if (v32)
+          if (unsignedIntValue)
           {
             v31 = 0;
             goto LABEL_31;
@@ -499,12 +499,12 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      v16 = [(MTRClusterFanControl *)v13 readAttributePercentCurrentWithParams:v5];
+      v16 = [(MTRClusterFanControl *)selfCopy readAttributePercentCurrentWithParams:v5];
       v17 = v16;
       if (!v16)
       {
         v38 = objc_autoreleasePoolPush();
-        v39 = v13;
+        v39 = selfCopy;
         v40 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
@@ -535,10 +535,10 @@ LABEL_31:
 
       if (v20)
       {
-        v21 = [v20 unsignedIntValue];
+        unsignedIntValue2 = [v20 unsignedIntValue];
         v22 = *MEMORY[0x277CD5188];
         v23 = *MEMORY[0x277CD5198];
-        if (v21)
+        if (unsignedIntValue2)
         {
           v54[0] = *MEMORY[0x277CD5188];
           v54[1] = v8;
@@ -576,7 +576,7 @@ LABEL_30:
   }
 
   v27 = objc_autoreleasePoolPush();
-  v28 = self;
+  selfCopy2 = self;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
@@ -595,12 +595,12 @@ LABEL_32:
   return v31;
 }
 
-- (void)updatedValuePluginRockSettingForAttributeReport:(id)a3 responseHandler:(id)a4
+- (void)updatedValuePluginRockSettingForAttributeReport:(id)report responseHandler:(id)handler
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
+  reportCopy = report;
+  handlerCopy = handler;
+  v8 = [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -614,7 +614,7 @@ LABEL_32:
 
   v10 = v9;
 
-  v11 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD5128]];
+  v11 = [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD5128]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -629,15 +629,15 @@ LABEL_32:
   v49 = v12;
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     HMFGetLogIdentifier();
-    v17 = v16 = v6;
+    v17 = v16 = reportCopy;
     [v10 endpoint];
-    v18 = v47 = v7;
-    v19 = [v10 cluster];
+    v18 = v47 = handlerCopy;
+    cluster = [v10 cluster];
     [v10 attribute];
     v20 = v46 = v13;
     v21 = *MEMORY[0x277CD50D8];
@@ -647,7 +647,7 @@ LABEL_32:
     v52 = 2112;
     v53 = v18;
     v54 = 2112;
-    v55 = v19;
+    v55 = cluster;
     v56 = 2112;
     v57 = v20;
     v58 = 2112;
@@ -655,9 +655,9 @@ LABEL_32:
     _os_log_impl(&dword_22AEAE000, v15, OS_LOG_TYPE_DEBUG, "%{public}@Handling Attribute report endpoint:%@ cluster:%@ attribute:%@ value:%@", buf, 0x34u);
 
     v13 = v46;
-    v7 = v47;
+    handlerCopy = v47;
 
-    v6 = v16;
+    reportCopy = v16;
   }
 
   else
@@ -666,10 +666,10 @@ LABEL_32:
   }
 
   objc_autoreleasePoolPop(v13);
-  v23 = [v6 objectForKeyedSubscript:v21];
+  v23 = [reportCopy objectForKeyedSubscript:v21];
   if (v23)
   {
-    v24 = v6;
+    v24 = reportCopy;
   }
 
   else
@@ -679,18 +679,18 @@ LABEL_32:
 
   v25 = v24;
 
-  v26 = [v10 cluster];
-  if (([v26 isEqualToNumber:&unk_283EE90C0] & 1) == 0)
+  cluster2 = [v10 cluster];
+  if (([cluster2 isEqualToNumber:&unk_283EE90C0] & 1) == 0)
   {
 
 LABEL_19:
     v31 = v49;
-    v7[2](v7, 0, v49);
+    handlerCopy[2](handlerCopy, 0, v49);
     goto LABEL_20;
   }
 
-  v27 = [v10 attribute];
-  v28 = [v27 isEqualToNumber:&unk_283EE90D8];
+  attribute = [v10 attribute];
+  v28 = [attribute isEqualToNumber:&unk_283EE90D8];
 
   if (!v28)
   {
@@ -707,14 +707,14 @@ LABEL_19:
   if ([v29 isEqualToNumber:&unk_283EE90A8])
   {
     v31 = v49;
-    (v7)[2](v7, &unk_283EE9090, v49);
+    (handlerCopy)[2](handlerCopy, &unk_283EE9090, v49);
   }
 
   else
   {
-    v33 = v6;
+    v33 = reportCopy;
     v34 = objc_alloc_init(MEMORY[0x277CD54D8]);
-    v35 = [(MTRClusterFanControl *)v14 readAttributeRockSupportWithParams:v34];
+    v35 = [(MTRClusterFanControl *)selfCopy readAttributeRockSupportWithParams:v34];
     v36 = v35;
     if (v35)
     {
@@ -737,8 +737,8 @@ LABEL_19:
         _HMFPreconditionFailure();
       }
 
-      v40 = [v39 unsignedIntValue];
-      if (([v30 unsignedIntValue] & v40) != 0)
+      unsignedIntValue = [v39 unsignedIntValue];
+      if (([v30 unsignedIntValue] & unsignedIntValue) != 0)
       {
         v41 = &unk_283EE9078;
       }
@@ -749,14 +749,14 @@ LABEL_19:
       }
 
       v31 = v49;
-      (v7)[2](v7, v41, v49);
+      (handlerCopy)[2](handlerCopy, v41, v49);
     }
 
     else
     {
-      v48 = v7;
+      v48 = handlerCopy;
       v42 = objc_autoreleasePoolPush();
-      v43 = v14;
+      v43 = selfCopy;
       v44 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
       {
@@ -768,12 +768,12 @@ LABEL_19:
 
       objc_autoreleasePoolPop(v42);
       v39 = [MEMORY[0x277CCA9B8] hapErrorWithCode:11];
-      v7 = v48;
+      handlerCopy = v48;
       v48[2](v48, 0, v39);
       v31 = v49;
     }
 
-    v6 = v33;
+    reportCopy = v33;
   }
 
 LABEL_20:
@@ -781,13 +781,13 @@ LABEL_20:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeAttributePluginRockSettingWithValue:(id)a3 expectedValueInterval:(id)a4
+- (void)writeAttributePluginRockSettingWithValue:(id)value expectedValueInterval:(id)interval
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  intervalCopy = interval;
   v8 = *MEMORY[0x277CD51A0];
-  v9 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
+  v9 = [valueCopy objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -810,7 +810,7 @@ LABEL_20:
   if ([v11 isEqualToNumber:&unk_283EE9090])
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -821,9 +821,9 @@ LABEL_20:
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v6];
+    v16 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:valueCopy];
     [v16 setValue:&unk_283EE90A8 forKey:v8];
-    [(MTRClusterFanControl *)v13 writeAttributeRockSettingWithValue:v16 expectedValueInterval:v7];
+    [(MTRClusterFanControl *)selfCopy writeAttributeRockSettingWithValue:v16 expectedValueInterval:intervalCopy];
 
     goto LABEL_25;
   }
@@ -836,7 +836,7 @@ LABEL_20:
     if (!v18)
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = self;
+      selfCopy2 = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -866,9 +866,9 @@ LABEL_20:
 
     if (v22)
     {
-      v23 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v6];
+      v23 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:valueCopy];
       context = objc_autoreleasePoolPush();
-      v24 = self;
+      selfCopy3 = self;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
@@ -885,7 +885,7 @@ LABEL_20:
 
       objc_autoreleasePoolPop(context);
       [v23 setValue:v22 forKey:v8];
-      [(MTRClusterFanControl *)v24 writeAttributeRockSettingWithValue:v23 expectedValueInterval:v7];
+      [(MTRClusterFanControl *)selfCopy3 writeAttributeRockSettingWithValue:v23 expectedValueInterval:intervalCopy];
 
 LABEL_24:
       goto LABEL_25;
@@ -896,7 +896,7 @@ LABEL_27:
   }
 
   v27 = objc_autoreleasePoolPush();
-  v28 = self;
+  selfCopy4 = self;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
@@ -914,10 +914,10 @@ LABEL_25:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readAttributePluginRockSettingWithParams:(id)a3
+- (id)readAttributePluginRockSettingWithParams:(id)params
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  paramsCopy = params;
   v5 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v6 = [(MTRClusterFanControl *)self readAttributeRockSupportWithParams:v5];
   v7 = v6;
@@ -960,11 +960,11 @@ LABEL_25:
 
         if (v16)
         {
-          v17 = [v11 unsignedIntegerValue];
-          v18 = [v16 unsignedIntegerValue];
+          unsignedIntegerValue = [v11 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v16 unsignedIntegerValue];
           v19 = *MEMORY[0x277CD5188];
           v20 = *MEMORY[0x277CD5198];
-          if ((v18 & v17) != 0)
+          if ((unsignedIntegerValue2 & unsignedIntegerValue) != 0)
           {
             v49[0] = *MEMORY[0x277CD5188];
             v49[1] = v8;
@@ -992,7 +992,7 @@ LABEL_25:
         else
         {
           context = objc_autoreleasePoolPush();
-          v39 = self;
+          selfCopy = self;
           v40 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
           {
@@ -1014,7 +1014,7 @@ LABEL_25:
       else
       {
         v35 = objc_autoreleasePoolPush();
-        v36 = self;
+        selfCopy2 = self;
         v37 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
@@ -1032,7 +1032,7 @@ LABEL_25:
     else
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = self;
+      selfCopy3 = self;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
@@ -1054,7 +1054,7 @@ LABEL_25:
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy4 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {

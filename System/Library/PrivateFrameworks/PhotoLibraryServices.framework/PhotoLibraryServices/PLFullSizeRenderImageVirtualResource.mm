@@ -1,23 +1,23 @@
 @interface PLFullSizeRenderImageVirtualResource
-- (PLFullSizeRenderImageVirtualResource)initWithAsset:(id)a3;
+- (PLFullSizeRenderImageVirtualResource)initWithAsset:(id)asset;
 @end
 
 @implementation PLFullSizeRenderImageVirtualResource
 
-- (PLFullSizeRenderImageVirtualResource)initWithAsset:(id)a3
+- (PLFullSizeRenderImageVirtualResource)initWithAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v9.receiver = self;
   v9.super_class = PLFullSizeRenderImageVirtualResource;
-  v5 = [(PLVirtualResource *)&v9 initWithAsset:v4 resourceType:0 version:2 recipeID:65938];
+  v5 = [(PLVirtualResource *)&v9 initWithAsset:assetCopy resourceType:0 version:2 recipeID:65938];
   if (v5)
   {
-    v6 = [v4 fileTypeForFullsizeRenderImage];
-    v7 = [PLUniformTypeIdentifier utiWithIdentifier:v6];
+    fileTypeForFullsizeRenderImage = [assetCopy fileTypeForFullsizeRenderImage];
+    v7 = [PLUniformTypeIdentifier utiWithIdentifier:fileTypeForFullsizeRenderImage];
 
     [(PLVirtualResource *)v5 setUniformTypeIdentifier:v7];
-    -[PLVirtualResource setUnorientedWidth:](v5, "setUnorientedWidth:", [v4 width]);
-    -[PLVirtualResource setUnorientedHeight:](v5, "setUnorientedHeight:", [v4 height]);
+    -[PLVirtualResource setUnorientedWidth:](v5, "setUnorientedWidth:", [assetCopy width]);
+    -[PLVirtualResource setUnorientedHeight:](v5, "setUnorientedHeight:", [assetCopy height]);
   }
 
   return v5;

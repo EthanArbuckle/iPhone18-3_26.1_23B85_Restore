@@ -1,11 +1,11 @@
 @interface TSPCryptoReadChannel
 - (TSPCryptoReadChannel)init;
-- (TSPCryptoReadChannel)initWithReadChannel:(id)a3 decryptionKey:(id)a4 blockInfos:(id)a5;
-- (void)_readBlocksWithHandler:(id)a3;
+- (TSPCryptoReadChannel)initWithReadChannel:(id)channel decryptionKey:(id)key blockInfos:(id)infos;
+- (void)_readBlocksWithHandler:(id)handler;
 - (void)_resetCryptor;
 - (void)close;
 - (void)dealloc;
-- (void)readWithHandler:(id)a3;
+- (void)readWithHandler:(id)handler;
 @end
 
 @implementation TSPCryptoReadChannel
@@ -44,11 +44,11 @@
   objc_exception_throw(v7);
 }
 
-- (TSPCryptoReadChannel)initWithReadChannel:(id)a3 decryptionKey:(id)a4 blockInfos:(id)a5
+- (TSPCryptoReadChannel)initWithReadChannel:(id)channel decryptionKey:(id)key blockInfos:(id)infos
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  channelCopy = channel;
+  keyCopy = key;
+  infosCopy = infos;
   v25.receiver = self;
   v25.super_class = TSPCryptoReadChannel;
   v12 = [(TSPCryptoReadChannel *)&v25 init];
@@ -58,7 +58,7 @@
     goto LABEL_27;
   }
 
-  if (!v9)
+  if (!channelCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -78,8 +78,8 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  objc_storeStrong(&v12->_readChannel, a3);
-  if (!v10)
+  objc_storeStrong(&v12->_readChannel, channel);
+  if (!keyCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -99,8 +99,8 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  objc_storeStrong(&v12->_decryptionKey, a4);
-  v18 = [v11 copy];
+  objc_storeStrong(&v12->_decryptionKey, key);
+  v18 = [infosCopy copy];
   blockInfos = v12->_blockInfos;
   v12->_blockInfos = v18;
 
@@ -181,21 +181,21 @@ LABEL_27:
   self->_readChannel = 0;
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10001193C;
   v4[3] = &unk_1001C5F68;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(TSPCryptoReadChannel *)v5 _readBlocksWithHandler:v4];
+  selfCopy = self;
+  handlerCopy = handler;
+  v3 = handlerCopy;
+  [(TSPCryptoReadChannel *)selfCopy _readBlocksWithHandler:v4];
 }
 
-- (void)_readBlocksWithHandler:(id)a3
+- (void)_readBlocksWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   readChannel = self->_readChannel;
   if (!readChannel)
   {
@@ -227,7 +227,7 @@ LABEL_27:
   v9[2] = sub_100012F6C;
   v9[3] = &unk_1001C5FB0;
   v11 = v12;
-  v8 = v4;
+  v8 = handlerCopy;
   v9[4] = self;
   v10 = v8;
   [(TSUStreamReadChannel *)readChannel readWithHandler:v9];

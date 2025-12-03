@@ -1,15 +1,15 @@
 @interface NLGazetteer
 + (BOOL)writeGazetteerForDictionary:(NSDictionary *)dictionary language:(NLLanguage)language toURL:(NSURL *)url error:(NSError *)error;
-+ (BOOL)writeGazetteerMLModelForDictionary:(id)a3 language:(id)a4 toURL:(id)a5 options:(id)a6 error:(id *)a7;
++ (BOOL)writeGazetteerMLModelForDictionary:(id)dictionary language:(id)language toURL:(id)l options:(id)options error:(id *)error;
 + (NLGazetteer)gazetteerWithContentsOfURL:(NSURL *)url error:(NSError *)error;
-+ (NLGazetteer)gazetteerWithData:(id)a3 error:(id *)a4;
-+ (NLGazetteer)gazetteerWithMLModel:(id)a3 error:(id *)a4;
-- (BOOL)writeMLModelToURL:(id)a3 options:(id)a4 error:(id *)a5;
++ (NLGazetteer)gazetteerWithData:(id)data error:(id *)error;
++ (NLGazetteer)gazetteerWithMLModel:(id)model error:(id *)error;
+- (BOOL)writeMLModelToURL:(id)l options:(id)options error:(id *)error;
 - (NLGazetteer)initWithContentsOfURL:(NSURL *)url error:(NSError *)error;
 - (NLGazetteer)initWithData:(NSData *)data error:(NSError *)error;
 - (NLGazetteer)initWithDictionary:(NSDictionary *)dictionary language:(NLLanguage)language error:(NSError *)error;
-- (NLGazetteer)initWithMLModel:(id)a3 error:(id *)a4;
-- (NLGazetteer)initWithNLModel:(id)a3 error:(id *)p_isa;
+- (NLGazetteer)initWithMLModel:(id)model error:(id *)error;
+- (NLGazetteer)initWithNLModel:(id)model error:(id *)p_isa;
 - (NSData)data;
 - (NSString)labelForString:(NSString *)string;
 - (id)labels;
@@ -27,18 +27,18 @@
   return v6;
 }
 
-+ (NLGazetteer)gazetteerWithData:(id)a3 error:(id *)a4
++ (NLGazetteer)gazetteerWithData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(objc_opt_class()) initWithData:v5 error:a4];
+  dataCopy = data;
+  v6 = [objc_alloc(objc_opt_class()) initWithData:dataCopy error:error];
 
   return v6;
 }
 
-+ (NLGazetteer)gazetteerWithMLModel:(id)a3 error:(id *)a4
++ (NLGazetteer)gazetteerWithMLModel:(id)model error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(objc_opt_class()) initWithMLModel:v5 error:a4];
+  modelCopy = model;
+  v6 = [objc_alloc(objc_opt_class()) initWithMLModel:modelCopy error:error];
 
   return v6;
 }
@@ -47,11 +47,11 @@
 {
   v35[1] = *MEMORY[0x1E69E9840];
   v6 = url;
-  v7 = [(NSURL *)v6 path];
-  v8 = [v7 pathExtension];
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  path = [(NSURL *)v6 path];
+  pathExtension = [path pathExtension];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v27 = 0;
-  if (([v9 fileExistsAtPath:v7 isDirectory:&v27] & 1) == 0)
+  if (([defaultManager fileExistsAtPath:path isDirectory:&v27] & 1) == 0)
   {
     if (!error)
     {
@@ -72,7 +72,7 @@
     goto LABEL_3;
   }
 
-  if ([v8 isEqualToString:@"mlmodel"])
+  if ([pathExtension isEqualToString:@"mlmodel"])
   {
     if (!error)
     {
@@ -166,7 +166,7 @@ LABEL_10:
     }
 
     self = v10;
-    v11 = self;
+    selfCopy2 = self;
   }
 
   else
@@ -183,35 +183,35 @@ LABEL_10:
       v15 = v14;
       self = [(NLGazetteer *)self initWithNLModel:v14 error:error];
 
-      v11 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      v11 = 0;
+      selfCopy2 = 0;
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy2;
 }
 
-- (NLGazetteer)initWithNLModel:(id)a3 error:(id *)p_isa
+- (NLGazetteer)initWithNLModel:(id)model error:(id *)p_isa
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 gazetteer];
-  v9 = [v8 _gazetteerRef];
+  modelCopy = model;
+  gazetteer = [modelCopy gazetteer];
+  _gazetteerRef = [gazetteer _gazetteerRef];
 
-  if (v9)
+  if (_gazetteerRef)
   {
     v15.receiver = self;
     v15.super_class = NLGazetteer;
     v10 = [(NLGazetteer *)&v15 init];
     if (v10)
     {
-      v10->_gazetteer = CFRetain(v9);
-      objc_storeStrong(&v10->_nlModel, a3);
+      v10->_gazetteer = CFRetain(_gazetteerRef);
+      objc_storeStrong(&v10->_nlModel, model);
     }
 
     self = v10;
@@ -233,21 +233,21 @@ LABEL_10:
   return p_isa;
 }
 
-- (NLGazetteer)initWithMLModel:(id)a3 error:(id *)a4
+- (NLGazetteer)initWithMLModel:(id)model error:(id *)error
 {
-  v6 = [NLModel modelWithMLModel:a3 error:?];
+  v6 = [NLModel modelWithMLModel:model error:?];
   if (v6)
   {
-    self = [(NLGazetteer *)self initWithNLModel:v6 error:a4];
-    v7 = self;
+    self = [(NLGazetteer *)self initWithNLModel:v6 error:error];
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
   return v8;
 }
@@ -336,8 +336,8 @@ LABEL_10:
 
   if (v12)
   {
-    v13 = [v12 data];
-    v14 = [v13 writeToURL:v9 options:1 error:error];
+    data = [v12 data];
+    v14 = [data writeToURL:v9 options:1 error:error];
   }
 
   else
@@ -350,9 +350,9 @@ LABEL_10:
 
 - (id)modelDescription
 {
-  v2 = [(NLGazetteer *)self labels];
-  v3 = v2;
-  if (v2 && [v2 count])
+  labels = [(NLGazetteer *)self labels];
+  v3 = labels;
+  if (labels && [labels count])
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = [v3 componentsJoinedByString:{@", "}];
@@ -367,36 +367,36 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)writeMLModelToURL:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)writeMLModelToURL:(id)l options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  optionsCopy = options;
   v10 = MEMORY[0x1E695DF20];
-  v11 = [(NLGazetteer *)self language];
-  v12 = [v10 dictionaryWithObjectsAndKeys:{v11, @"Language", 0}];
-  v13 = [NLModelConfiguration defaultModelConfigurationForType:0 options:v12 error:a5];
+  language = [(NLGazetteer *)self language];
+  v12 = [v10 dictionaryWithObjectsAndKeys:{language, @"Language", 0}];
+  v13 = [NLModelConfiguration defaultModelConfigurationForType:0 options:v12 error:error];
 
   v14 = [[NLModelImplG alloc] initWithGazetteer:self];
   v15 = [[NLModel alloc] initWithConfiguration:v13 modelImpl:v14];
   if (v15)
   {
-    v16 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v9];
+    v16 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:optionsCopy];
     v17 = *MEMORY[0x1E695FDB8];
     v18 = [v16 objectForKey:*MEMORY[0x1E695FDB8]];
 
     if (!v18)
     {
-      v19 = [(NLGazetteer *)self modelDescription];
-      [v16 setObject:v19 forKey:v17];
+      modelDescription = [(NLGazetteer *)self modelDescription];
+      [v16 setObject:modelDescription forKey:v17];
     }
 
-    v20 = [(NLModel *)v15 writeMLModelToURL:v8 options:v16 error:a5];
+    v20 = [(NLModel *)v15 writeMLModelToURL:lCopy options:v16 error:error];
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"NLNaturalLanguageErrorDomain" code:6 userInfo:0];
-    *a5 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -407,17 +407,17 @@ LABEL_10:
   return v20;
 }
 
-+ (BOOL)writeGazetteerMLModelForDictionary:(id)a3 language:(id)a4 toURL:(id)a5 options:(id)a6 error:(id *)a7
++ (BOOL)writeGazetteerMLModelForDictionary:(id)dictionary language:(id)language toURL:(id)l options:(id)options error:(id *)error
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [objc_alloc(objc_opt_class()) initWithDictionary:v14 language:v13 error:a7];
+  lCopy = l;
+  optionsCopy = options;
+  languageCopy = language;
+  dictionaryCopy = dictionary;
+  v15 = [objc_alloc(objc_opt_class()) initWithDictionary:dictionaryCopy language:languageCopy error:error];
 
   if (v15)
   {
-    v16 = [v15 writeMLModelToURL:v11 options:v12 error:a7];
+    v16 = [v15 writeMLModelToURL:lCopy options:optionsCopy error:error];
   }
 
   else

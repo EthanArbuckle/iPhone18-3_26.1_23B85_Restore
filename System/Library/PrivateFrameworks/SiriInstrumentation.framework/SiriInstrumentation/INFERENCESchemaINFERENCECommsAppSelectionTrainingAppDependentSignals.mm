@@ -1,50 +1,50 @@
 @interface INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppTimeSpentAffinityScore:(BOOL)a3;
-- (void)setHasAppTimeSpentInSec:(BOOL)a3;
-- (void)setHasIsDefaultApp:(BOOL)a3;
-- (void)setHasIsFirstPartyApp:(BOOL)a3;
-- (void)setHasIsForegroundApp:(BOOL)a3;
-- (void)setHasIsRequestByHandleType:(BOOL)a3;
-- (void)setHasIsRequestByLabel:(BOOL)a3;
-- (void)setHasIsResolvedContactInApp:(BOOL)a3;
-- (void)setHasTimeSinceAppContactLastLaunchedInSec:(BOOL)a3;
-- (void)setHasTimeSinceAppLastLaunchedInSec:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppTimeSpentAffinityScore:(BOOL)score;
+- (void)setHasAppTimeSpentInSec:(BOOL)sec;
+- (void)setHasIsDefaultApp:(BOOL)app;
+- (void)setHasIsFirstPartyApp:(BOOL)app;
+- (void)setHasIsForegroundApp:(BOOL)app;
+- (void)setHasIsRequestByHandleType:(BOOL)type;
+- (void)setHasIsRequestByLabel:(BOOL)label;
+- (void)setHasIsResolvedContactInApp:(BOOL)app;
+- (void)setHasTimeSinceAppContactLastLaunchedInSec:(BOOL)sec;
+- (void)setHasTimeSinceAppLastLaunchedInSec:(BOOL)sec;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals
 
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals;
   v5 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)&v32 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isResolvedApp"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isResolvedApp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals setIsResolvedApp:](v5, "setIsResolvedApp:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isResolvedContactInApp"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isResolvedContactInApp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals setIsResolvedContactInApp:](v5, "setIsResolvedContactInApp:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"appTimeSpentAffinityScore"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"appTimeSpentAffinityScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)v5 setAppTimeSpentAffinityScore:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isForegroundApp"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isForegroundApp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,7 +61,7 @@
 
     v30 = v7;
     v31 = v6;
-    v10 = [v4 objectForKeyedSubscript:@"timeSinceAppLastLaunchedInSec"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceAppLastLaunchedInSec"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,7 +69,7 @@
     }
 
     v27 = v10;
-    v11 = [v4 objectForKeyedSubscript:@"messageSignals"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"messageSignals"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,7 +77,7 @@
       [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)v5 setMessageSignals:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"phoneCallSignals"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"phoneCallSignals"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@
       [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)v5 setPhoneCallSignals:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"contactDependentSignals"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"contactDependentSignals"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -93,7 +93,7 @@
       [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)v5 setContactDependentSignals:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"isFirstPartyApp"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"isFirstPartyApp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,7 +101,7 @@
     }
 
     v29 = v8;
-    v18 = [v4 objectForKeyedSubscript:@"appTimeSpentInSec"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"appTimeSpentInSec"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,7 +109,7 @@
     }
 
     v28 = v9;
-    v19 = [v4 objectForKeyedSubscript:@"timeSinceAppContactLastLaunchedInSec"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceAppContactLastLaunchedInSec"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,7 +117,7 @@
     }
 
     v26 = v11;
-    v20 = [v4 objectForKeyedSubscript:@"isDefaultApp"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"isDefaultApp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -125,14 +125,14 @@
     }
 
     v21 = v13;
-    v22 = [v4 objectForKeyedSubscript:@"isRequestByLabel"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"isRequestByLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals setIsRequestByLabel:](v5, "setIsRequestByLabel:", [v22 BOOLValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"isRequestByHandleType"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"isRequestByHandleType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -145,30 +145,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -181,14 +181,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isRequestByHandleType + 1);
   if ((v4 & 4) != 0)
   {
     v5 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self appTimeSpentAffinityScore];
     v6 = [v5 numberWithFloat:?];
-    [v3 setObject:v6 forKeyedSubscript:@"appTimeSpentAffinityScore"];
+    [dictionary setObject:v6 forKeyedSubscript:@"appTimeSpentAffinityScore"];
 
     v4 = *(&self->_isRequestByHandleType + 1);
   }
@@ -196,22 +196,22 @@
   if ((v4 & 0x40) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals appTimeSpentInSec](self, "appTimeSpentInSec")}];
-    [v3 setObject:v7 forKeyedSubscript:@"appTimeSpentInSec"];
+    [dictionary setObject:v7 forKeyedSubscript:@"appTimeSpentInSec"];
   }
 
   if (self->_contactDependentSignals)
   {
-    v8 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self contactDependentSignals];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    contactDependentSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self contactDependentSignals];
+    dictionaryRepresentation = [contactDependentSignals dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"contactDependentSignals"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"contactDependentSignals"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"contactDependentSignals"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"contactDependentSignals"];
     }
   }
 
@@ -219,7 +219,7 @@
   if ((v11 & 0x100) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals isDefaultApp](self, "isDefaultApp")}];
-    [v3 setObject:v15 forKeyedSubscript:@"isDefaultApp"];
+    [dictionary setObject:v15 forKeyedSubscript:@"isDefaultApp"];
 
     v11 = *(&self->_isRequestByHandleType + 1);
     if ((v11 & 0x20) == 0)
@@ -240,7 +240,7 @@ LABEL_12:
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals isFirstPartyApp](self, "isFirstPartyApp")}];
-  [v3 setObject:v16 forKeyedSubscript:@"isFirstPartyApp"];
+  [dictionary setObject:v16 forKeyedSubscript:@"isFirstPartyApp"];
 
   v11 = *(&self->_isRequestByHandleType + 1);
   if ((v11 & 8) == 0)
@@ -256,7 +256,7 @@ LABEL_13:
 
 LABEL_23:
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals isForegroundApp](self, "isForegroundApp")}];
-  [v3 setObject:v17 forKeyedSubscript:@"isForegroundApp"];
+  [dictionary setObject:v17 forKeyedSubscript:@"isForegroundApp"];
 
   v11 = *(&self->_isRequestByHandleType + 1);
   if ((v11 & 0x400) == 0)
@@ -272,7 +272,7 @@ LABEL_14:
 
 LABEL_24:
   v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals isRequestByHandleType](self, "isRequestByHandleType")}];
-  [v3 setObject:v18 forKeyedSubscript:@"isRequestByHandleType"];
+  [dictionary setObject:v18 forKeyedSubscript:@"isRequestByHandleType"];
 
   v11 = *(&self->_isRequestByHandleType + 1);
   if ((v11 & 0x200) == 0)
@@ -288,7 +288,7 @@ LABEL_15:
 
 LABEL_25:
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals isRequestByLabel](self, "isRequestByLabel")}];
-  [v3 setObject:v19 forKeyedSubscript:@"isRequestByLabel"];
+  [dictionary setObject:v19 forKeyedSubscript:@"isRequestByLabel"];
 
   v11 = *(&self->_isRequestByHandleType + 1);
   if ((v11 & 1) == 0)
@@ -304,45 +304,45 @@ LABEL_16:
 
 LABEL_26:
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals isResolvedApp](self, "isResolvedApp")}];
-  [v3 setObject:v20 forKeyedSubscript:@"isResolvedApp"];
+  [dictionary setObject:v20 forKeyedSubscript:@"isResolvedApp"];
 
   if ((*(&self->_isRequestByHandleType + 1) & 2) != 0)
   {
 LABEL_17:
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals isResolvedContactInApp](self, "isResolvedContactInApp")}];
-    [v3 setObject:v12 forKeyedSubscript:@"isResolvedContactInApp"];
+    [dictionary setObject:v12 forKeyedSubscript:@"isResolvedContactInApp"];
   }
 
 LABEL_18:
   if (self->_messageSignals)
   {
-    v13 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self messageSignals];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    messageSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self messageSignals];
+    dictionaryRepresentation2 = [messageSignals dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"messageSignals"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"messageSignals"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"messageSignals"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"messageSignals"];
     }
   }
 
   if (self->_phoneCallSignals)
   {
-    v22 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self phoneCallSignals];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    phoneCallSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self phoneCallSignals];
+    dictionaryRepresentation3 = [phoneCallSignals dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"phoneCallSignals"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"phoneCallSignals"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"phoneCallSignals"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"phoneCallSignals"];
     }
   }
 
@@ -350,7 +350,7 @@ LABEL_18:
   if ((v25 & 0x80) != 0)
   {
     v26 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals timeSinceAppContactLastLaunchedInSec](self, "timeSinceAppContactLastLaunchedInSec")}];
-    [v3 setObject:v26 forKeyedSubscript:@"timeSinceAppContactLastLaunchedInSec"];
+    [dictionary setObject:v26 forKeyedSubscript:@"timeSinceAppContactLastLaunchedInSec"];
 
     v25 = *(&self->_isRequestByHandleType + 1);
   }
@@ -358,12 +358,12 @@ LABEL_18:
   if ((v25 & 0x10) != 0)
   {
     v27 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals timeSinceAppLastLaunchedInSec](self, "timeSinceAppLastLaunchedInSec")}];
-    [v3 setObject:v27 forKeyedSubscript:@"timeSinceAppLastLaunchedInSec"];
+    [dictionary setObject:v27 forKeyedSubscript:@"timeSinceAppLastLaunchedInSec"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -540,16 +540,16 @@ LABEL_23:
   return v7 ^ v6 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   v5 = *(&self->_isRequestByHandleType + 1);
-  v6 = *(v4 + 71);
+  v6 = *(equalCopy + 71);
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_36;
@@ -558,13 +558,13 @@ LABEL_23:
   if (v5)
   {
     isResolvedApp = self->_isResolvedApp;
-    if (isResolvedApp != [v4 isResolvedApp])
+    if (isResolvedApp != [equalCopy isResolvedApp])
     {
       goto LABEL_36;
     }
 
     v5 = *(&self->_isRequestByHandleType + 1);
-    v6 = *(v4 + 71);
+    v6 = *(equalCopy + 71);
   }
 
   v8 = (v5 >> 1) & 1;
@@ -573,13 +573,13 @@ LABEL_23:
     if (v8)
     {
       isResolvedContactInApp = self->_isResolvedContactInApp;
-      if (isResolvedContactInApp != [v4 isResolvedContactInApp])
+      if (isResolvedContactInApp != [equalCopy isResolvedContactInApp])
       {
         goto LABEL_36;
       }
 
       v5 = *(&self->_isRequestByHandleType + 1);
-      v6 = *(v4 + 71);
+      v6 = *(equalCopy + 71);
     }
 
     v10 = (v5 >> 2) & 1;
@@ -588,14 +588,14 @@ LABEL_23:
       if (v10)
       {
         appTimeSpentAffinityScore = self->_appTimeSpentAffinityScore;
-        [v4 appTimeSpentAffinityScore];
+        [equalCopy appTimeSpentAffinityScore];
         if (appTimeSpentAffinityScore != v12)
         {
           goto LABEL_36;
         }
 
         v5 = *(&self->_isRequestByHandleType + 1);
-        v6 = *(v4 + 71);
+        v6 = *(equalCopy + 71);
       }
 
       v13 = (v5 >> 3) & 1;
@@ -604,13 +604,13 @@ LABEL_23:
         if (v13)
         {
           isForegroundApp = self->_isForegroundApp;
-          if (isForegroundApp != [v4 isForegroundApp])
+          if (isForegroundApp != [equalCopy isForegroundApp])
           {
             goto LABEL_36;
           }
 
           v5 = *(&self->_isRequestByHandleType + 1);
-          v6 = *(v4 + 71);
+          v6 = *(equalCopy + 71);
         }
 
         v15 = (v5 >> 4) & 1;
@@ -622,26 +622,26 @@ LABEL_23:
         if (v15)
         {
           timeSinceAppLastLaunchedInSec = self->_timeSinceAppLastLaunchedInSec;
-          if (timeSinceAppLastLaunchedInSec != [v4 timeSinceAppLastLaunchedInSec])
+          if (timeSinceAppLastLaunchedInSec != [equalCopy timeSinceAppLastLaunchedInSec])
           {
             goto LABEL_36;
           }
         }
 
-        v17 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self messageSignals];
-        v18 = [v4 messageSignals];
-        if ((v17 != 0) == (v18 == 0))
+        messageSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self messageSignals];
+        messageSignals2 = [equalCopy messageSignals];
+        if ((messageSignals != 0) == (messageSignals2 == 0))
         {
           goto LABEL_35;
         }
 
-        v19 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self messageSignals];
-        if (v19)
+        messageSignals3 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self messageSignals];
+        if (messageSignals3)
         {
-          v20 = v19;
-          v21 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self messageSignals];
-          v22 = [v4 messageSignals];
-          v23 = [v21 isEqual:v22];
+          v20 = messageSignals3;
+          messageSignals4 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self messageSignals];
+          messageSignals5 = [equalCopy messageSignals];
+          v23 = [messageSignals4 isEqual:messageSignals5];
 
           if (!v23)
           {
@@ -653,20 +653,20 @@ LABEL_23:
         {
         }
 
-        v17 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self phoneCallSignals];
-        v18 = [v4 phoneCallSignals];
-        if ((v17 != 0) == (v18 == 0))
+        messageSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self phoneCallSignals];
+        messageSignals2 = [equalCopy phoneCallSignals];
+        if ((messageSignals != 0) == (messageSignals2 == 0))
         {
           goto LABEL_35;
         }
 
-        v24 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self phoneCallSignals];
-        if (v24)
+        phoneCallSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self phoneCallSignals];
+        if (phoneCallSignals)
         {
-          v25 = v24;
-          v26 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self phoneCallSignals];
-          v27 = [v4 phoneCallSignals];
-          v28 = [v26 isEqual:v27];
+          v25 = phoneCallSignals;
+          phoneCallSignals2 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self phoneCallSignals];
+          phoneCallSignals3 = [equalCopy phoneCallSignals];
+          v28 = [phoneCallSignals2 isEqual:phoneCallSignals3];
 
           if (!v28)
           {
@@ -678,22 +678,22 @@ LABEL_23:
         {
         }
 
-        v17 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self contactDependentSignals];
-        v18 = [v4 contactDependentSignals];
-        if ((v17 != 0) == (v18 == 0))
+        messageSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self contactDependentSignals];
+        messageSignals2 = [equalCopy contactDependentSignals];
+        if ((messageSignals != 0) == (messageSignals2 == 0))
         {
 LABEL_35:
 
           goto LABEL_36;
         }
 
-        v29 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self contactDependentSignals];
-        if (v29)
+        contactDependentSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self contactDependentSignals];
+        if (contactDependentSignals)
         {
-          v30 = v29;
-          v31 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self contactDependentSignals];
-          v32 = [v4 contactDependentSignals];
-          v33 = [v31 isEqual:v32];
+          v30 = contactDependentSignals;
+          contactDependentSignals2 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self contactDependentSignals];
+          contactDependentSignals3 = [equalCopy contactDependentSignals];
+          v33 = [contactDependentSignals2 isEqual:contactDependentSignals3];
 
           if (!v33)
           {
@@ -707,19 +707,19 @@ LABEL_35:
 
         v36 = *(&self->_isRequestByHandleType + 1);
         v37 = (v36 >> 5) & 1;
-        v38 = *(v4 + 71);
+        v38 = *(equalCopy + 71);
         if (v37 == ((v38 >> 5) & 1))
         {
           if (v37)
           {
             isFirstPartyApp = self->_isFirstPartyApp;
-            if (isFirstPartyApp != [v4 isFirstPartyApp])
+            if (isFirstPartyApp != [equalCopy isFirstPartyApp])
             {
               goto LABEL_36;
             }
 
             v36 = *(&self->_isRequestByHandleType + 1);
-            v38 = *(v4 + 71);
+            v38 = *(equalCopy + 71);
           }
 
           v40 = (v36 >> 6) & 1;
@@ -728,13 +728,13 @@ LABEL_35:
             if (v40)
             {
               appTimeSpentInSec = self->_appTimeSpentInSec;
-              if (appTimeSpentInSec != [v4 appTimeSpentInSec])
+              if (appTimeSpentInSec != [equalCopy appTimeSpentInSec])
               {
                 goto LABEL_36;
               }
 
               v36 = *(&self->_isRequestByHandleType + 1);
-              v38 = *(v4 + 71);
+              v38 = *(equalCopy + 71);
             }
 
             v42 = (v36 >> 7) & 1;
@@ -743,13 +743,13 @@ LABEL_35:
               if (v42)
               {
                 timeSinceAppContactLastLaunchedInSec = self->_timeSinceAppContactLastLaunchedInSec;
-                if (timeSinceAppContactLastLaunchedInSec != [v4 timeSinceAppContactLastLaunchedInSec])
+                if (timeSinceAppContactLastLaunchedInSec != [equalCopy timeSinceAppContactLastLaunchedInSec])
                 {
                   goto LABEL_36;
                 }
 
                 v36 = *(&self->_isRequestByHandleType + 1);
-                v38 = *(v4 + 71);
+                v38 = *(equalCopy + 71);
               }
 
               v44 = (v36 >> 8) & 1;
@@ -758,13 +758,13 @@ LABEL_35:
                 if (v44)
                 {
                   isDefaultApp = self->_isDefaultApp;
-                  if (isDefaultApp != [v4 isDefaultApp])
+                  if (isDefaultApp != [equalCopy isDefaultApp])
                   {
                     goto LABEL_36;
                   }
 
                   v36 = *(&self->_isRequestByHandleType + 1);
-                  v38 = *(v4 + 71);
+                  v38 = *(equalCopy + 71);
                 }
 
                 v46 = (v36 >> 9) & 1;
@@ -773,19 +773,19 @@ LABEL_35:
                   if (v46)
                   {
                     isRequestByLabel = self->_isRequestByLabel;
-                    if (isRequestByLabel != [v4 isRequestByLabel])
+                    if (isRequestByLabel != [equalCopy isRequestByLabel])
                     {
                       goto LABEL_36;
                     }
 
                     v36 = *(&self->_isRequestByHandleType + 1);
-                    v38 = *(v4 + 71);
+                    v38 = *(equalCopy + 71);
                   }
 
                   v48 = (v36 >> 10) & 1;
                   if (v48 == ((v38 >> 10) & 1))
                   {
-                    if (!v48 || (isRequestByHandleType = self->_isRequestByHandleType, isRequestByHandleType == [v4 isRequestByHandleType]))
+                    if (!v48 || (isRequestByHandleType = self->_isRequestByHandleType, isRequestByHandleType == [equalCopy isRequestByHandleType]))
                     {
                       v34 = 1;
                       goto LABEL_37;
@@ -807,9 +807,9 @@ LABEL_37:
   return v34;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   v4 = *(&self->_isRequestByHandleType + 1);
   if (v4)
   {
@@ -868,27 +868,27 @@ LABEL_6:
   }
 
 LABEL_7:
-  v5 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self messageSignals];
+  messageSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self messageSignals];
 
-  if (v5)
+  if (messageSignals)
   {
-    v6 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self messageSignals];
+    messageSignals2 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self messageSignals];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self phoneCallSignals];
+  phoneCallSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self phoneCallSignals];
 
-  if (v7)
+  if (phoneCallSignals)
   {
-    v8 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self phoneCallSignals];
+    phoneCallSignals2 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self phoneCallSignals];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self contactDependentSignals];
+  contactDependentSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self contactDependentSignals];
 
-  if (v9)
+  if (contactDependentSignals)
   {
-    v10 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self contactDependentSignals];
+    contactDependentSignals2 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self contactDependentSignals];
     PBDataWriterWriteSubmessage();
   }
 
@@ -966,9 +966,9 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)setHasIsRequestByHandleType:(BOOL)a3
+- (void)setHasIsRequestByHandleType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 1024;
   }
@@ -981,9 +981,9 @@ LABEL_20:
   *(&self->_isRequestByHandleType + 1) = *(&self->_isRequestByHandleType + 1) & 0xFBFF | v3;
 }
 
-- (void)setHasIsRequestByLabel:(BOOL)a3
+- (void)setHasIsRequestByLabel:(BOOL)label
 {
-  if (a3)
+  if (label)
   {
     v3 = 512;
   }
@@ -996,9 +996,9 @@ LABEL_20:
   *(&self->_isRequestByHandleType + 1) = *(&self->_isRequestByHandleType + 1) & 0xFDFF | v3;
 }
 
-- (void)setHasIsDefaultApp:(BOOL)a3
+- (void)setHasIsDefaultApp:(BOOL)app
 {
-  if (a3)
+  if (app)
   {
     v3 = 256;
   }
@@ -1011,9 +1011,9 @@ LABEL_20:
   *(&self->_isRequestByHandleType + 1) = *(&self->_isRequestByHandleType + 1) & 0xFEFF | v3;
 }
 
-- (void)setHasTimeSinceAppContactLastLaunchedInSec:(BOOL)a3
+- (void)setHasTimeSinceAppContactLastLaunchedInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 128;
   }
@@ -1026,9 +1026,9 @@ LABEL_20:
   *(&self->_isRequestByHandleType + 1) = *(&self->_isRequestByHandleType + 1) & 0xFF7F | v3;
 }
 
-- (void)setHasAppTimeSpentInSec:(BOOL)a3
+- (void)setHasAppTimeSpentInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 64;
   }
@@ -1041,9 +1041,9 @@ LABEL_20:
   *(&self->_isRequestByHandleType + 1) = *(&self->_isRequestByHandleType + 1) & 0xFFBF | v3;
 }
 
-- (void)setHasIsFirstPartyApp:(BOOL)a3
+- (void)setHasIsFirstPartyApp:(BOOL)app
 {
-  if (a3)
+  if (app)
   {
     v3 = 32;
   }
@@ -1056,9 +1056,9 @@ LABEL_20:
   *(&self->_isRequestByHandleType + 1) = *(&self->_isRequestByHandleType + 1) & 0xFFDF | v3;
 }
 
-- (void)setHasTimeSinceAppLastLaunchedInSec:(BOOL)a3
+- (void)setHasTimeSinceAppLastLaunchedInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 16;
   }
@@ -1071,9 +1071,9 @@ LABEL_20:
   *(&self->_isRequestByHandleType + 1) = *(&self->_isRequestByHandleType + 1) & 0xFFEF | v3;
 }
 
-- (void)setHasIsForegroundApp:(BOOL)a3
+- (void)setHasIsForegroundApp:(BOOL)app
 {
-  if (a3)
+  if (app)
   {
     v3 = 8;
   }
@@ -1086,9 +1086,9 @@ LABEL_20:
   *(&self->_isRequestByHandleType + 1) = *(&self->_isRequestByHandleType + 1) & 0xFFF7 | v3;
 }
 
-- (void)setHasAppTimeSpentAffinityScore:(BOOL)a3
+- (void)setHasAppTimeSpentAffinityScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 4;
   }
@@ -1101,9 +1101,9 @@ LABEL_20:
   *(&self->_isRequestByHandleType + 1) = *(&self->_isRequestByHandleType + 1) & 0xFFFB | v3;
 }
 
-- (void)setHasIsResolvedContactInApp:(BOOL)a3
+- (void)setHasIsResolvedContactInApp:(BOOL)app
 {
-  if (a3)
+  if (app)
   {
     v3 = 2;
   }
@@ -1116,35 +1116,35 @@ LABEL_20:
   *(&self->_isRequestByHandleType + 1) = *(&self->_isRequestByHandleType + 1) & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self messageSignals];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  messageSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self messageSignals];
+  v7 = [messageSignals applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self deleteMessageSignals];
   }
 
-  v9 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self phoneCallSignals];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  phoneCallSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self phoneCallSignals];
+  v10 = [phoneCallSignals applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self deletePhoneCallSignals];
   }
 
-  v12 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self contactDependentSignals];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  contactDependentSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self contactDependentSignals];
+  v13 = [contactDependentSignals applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentSignals *)self deleteContactDependentSignals];
   }

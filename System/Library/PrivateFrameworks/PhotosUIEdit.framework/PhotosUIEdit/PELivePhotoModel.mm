@@ -1,15 +1,15 @@
 @interface PELivePhotoModel
 - (BOOL)_hasLegacyIrisConflicts;
 - (BOOL)hasUnsavedChanges;
-- (PELivePhotoModel)initWithAsset:(id)a3 compositionController:(id)a4;
-- (PELivePhotoModel)initWithLivePhotoVisibilityState:(unsigned __int16)a3 hasAdjustments:(BOOL)a4 compositionController:(id)a5;
+- (PELivePhotoModel)initWithAsset:(id)asset compositionController:(id)controller;
+- (PELivePhotoModel)initWithLivePhotoVisibilityState:(unsigned __int16)state hasAdjustments:(BOOL)adjustments compositionController:(id)controller;
 - (PELivePhotoModelChangeDelegate)changeDelegate;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setHidden:(BOOL)a3 explicit:(BOOL)a4 supportable:(BOOL)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setHidden:(BOOL)hidden explicit:(BOOL)explicit supportable:(BOOL)supportable;
 - (void)_updateAutoDisableStateIfNeeded;
 - (void)dealloc;
-- (void)setIgnoresUpdates:(BOOL)a3;
-- (void)setVideoEnabled:(BOOL)a3;
+- (void)setIgnoresUpdates:(BOOL)updates;
+- (void)setVideoEnabled:(BOOL)enabled;
 @end
 
 @implementation PELivePhotoModel
@@ -21,9 +21,9 @@
   return WeakRetained;
 }
 
-- (void)_setHidden:(BOOL)a3 explicit:(BOOL)a4 supportable:(BOOL)a5
+- (void)_setHidden:(BOOL)hidden explicit:(BOOL)explicit supportable:(BOOL)supportable
 {
-  if (a3 && a4)
+  if (hidden && explicit)
   {
     v6 = 4;
   }
@@ -33,7 +33,7 @@
     v6 = 0;
   }
 
-  if (a5)
+  if (supportable)
   {
     v7 = 8;
   }
@@ -43,41 +43,41 @@
     v7 = 0;
   }
 
-  [(PELivePhotoModel *)self setEditingVisibility:v7 | a3 | v6 | 2u];
+  [(PELivePhotoModel *)self setEditingVisibility:v7 | hidden | v6 | 2u];
   IsPlayable = PHVideoComplementVisibilityStateIsPlayable();
   if (self->_videoEnabled != IsPlayable)
   {
     v9 = IsPlayable;
     self->_videoEnabled = IsPlayable;
-    v10 = [(PELivePhotoModel *)self changeDelegate];
+    changeDelegate = [(PELivePhotoModel *)self changeDelegate];
 
-    if (v10)
+    if (changeDelegate)
     {
-      v11 = [(PELivePhotoModel *)self changeDelegate];
-      [v11 livePhotoModel:self videoEnabledDidChange:v9];
+      changeDelegate2 = [(PELivePhotoModel *)self changeDelegate];
+      [changeDelegate2 livePhotoModel:self videoEnabledDidChange:v9];
     }
   }
 }
 
 - (BOOL)_hasLegacyIrisConflicts
 {
-  v2 = [(PELivePhotoModel *)self compositionController];
-  v3 = [v2 adjustmentConstants];
+  compositionController = [(PELivePhotoModel *)self compositionController];
+  adjustmentConstants = [compositionController adjustmentConstants];
   v4 = MEMORY[0x277D3A938];
-  v5 = [MEMORY[0x277D3A938] newComposition];
-  v6 = [v4 newCompositionControllerWithComposition:v5];
+  newComposition = [MEMORY[0x277D3A938] newComposition];
+  v6 = [v4 newCompositionControllerWithComposition:newComposition];
 
-  v7 = [v6 availableKeys];
-  v8 = [v7 mutableCopy];
+  availableKeys = [v6 availableKeys];
+  v8 = [availableKeys mutableCopy];
 
-  v9 = [v3 PIRedEyeAdjustmentKey];
-  [v8 removeObject:v9];
+  pIRedEyeAdjustmentKey = [adjustmentConstants PIRedEyeAdjustmentKey];
+  [v8 removeObject:pIRedEyeAdjustmentKey];
 
-  v10 = [v3 PIAutoEnhanceAdjustmentKey];
-  [v8 removeObject:v10];
+  pIAutoEnhanceAdjustmentKey = [adjustmentConstants PIAutoEnhanceAdjustmentKey];
+  [v8 removeObject:pIAutoEnhanceAdjustmentKey];
 
-  v11 = [v6 composition];
-  v12 = [v2 isEqual:v11 forKeys:v8 visualChangesOnly:1];
+  composition = [v6 composition];
+  v12 = [compositionController isEqual:composition forKeys:v8 visualChangesOnly:1];
 
   return v12 ^ 1;
 }
@@ -93,12 +93,12 @@
   }
 }
 
-- (void)setIgnoresUpdates:(BOOL)a3
+- (void)setIgnoresUpdates:(BOOL)updates
 {
-  if (self->_ignoresUpdates != a3)
+  if (self->_ignoresUpdates != updates)
   {
-    self->_ignoresUpdates = a3;
-    if (!a3)
+    self->_ignoresUpdates = updates;
+    if (!updates)
     {
       [(PELivePhotoModel *)self _updateAutoDisableStateIfNeeded];
     }
@@ -117,38 +117,38 @@
 
   else
   {
-    v5 = [(PELivePhotoModel *)self assetVisibility];
-    return ((v5 ^ [(PELivePhotoModel *)self editingVisibility]) >> 2) & 1;
+    assetVisibility = [(PELivePhotoModel *)self assetVisibility];
+    return ((assetVisibility ^ [(PELivePhotoModel *)self editingVisibility]) >> 2) & 1;
   }
 
   return v4;
 }
 
-- (void)setVideoEnabled:(BOOL)a3
+- (void)setVideoEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(PELivePhotoModel *)self editingVisibility];
   HasFullEditingSupport = PHVideoComplementVisibilityStateHasFullEditingSupport();
 
-  [(PELivePhotoModel *)self _setHidden:!v3 explicit:1 supportable:HasFullEditingSupport];
+  [(PELivePhotoModel *)self _setHidden:!enabledCopy explicit:1 supportable:HasFullEditingSupport];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PELivePhotoModel;
   [(PELivePhotoModel *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PELivePhotoModel allocWithZone:a3];
-  v5 = [(PELivePhotoModel *)self asset];
-  v6 = [(PELivePhotoModel *)self compositionController];
-  v7 = [(PELivePhotoModel *)v4 initWithAsset:v5 compositionController:v6];
+  v4 = [PELivePhotoModel allocWithZone:zone];
+  asset = [(PELivePhotoModel *)self asset];
+  compositionController = [(PELivePhotoModel *)self compositionController];
+  v7 = [(PELivePhotoModel *)v4 initWithAsset:asset compositionController:compositionController];
 
   *(v7 + 12) = self->_editingVisibility;
   *(v7 + 14) = self->_assetVisibility;
@@ -157,44 +157,44 @@
   return v7;
 }
 
-- (PELivePhotoModel)initWithLivePhotoVisibilityState:(unsigned __int16)a3 hasAdjustments:(BOOL)a4 compositionController:(id)a5
+- (PELivePhotoModel)initWithLivePhotoVisibilityState:(unsigned __int16)state hasAdjustments:(BOOL)adjustments compositionController:(id)controller
 {
-  v9 = a5;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = PELivePhotoModel;
   v10 = [(PELivePhotoModel *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    v10->_assetVisibility = a3;
-    v10->_assetHasAdjustments = a4;
+    v10->_assetVisibility = state;
+    v10->_assetHasAdjustments = adjustments;
     IsHidden = PHVideoComplementVisibilityStateIsHidden();
     [(PELivePhotoModel *)v11 _setHidden:IsHidden explicit:PHVideoComplementVisibilityStateIsExplicit() supportable:1];
-    objc_storeStrong(&v11->_compositionController, a5);
+    objc_storeStrong(&v11->_compositionController, controller);
   }
 
   return v11;
 }
 
-- (PELivePhotoModel)initWithAsset:(id)a3 compositionController:(id)a4
+- (PELivePhotoModel)initWithAsset:(id)asset compositionController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isLivePhoto])
+  assetCopy = asset;
+  controllerCopy = controller;
+  if ([assetCopy isLivePhoto])
   {
-    v9 = [v7 livePhotoVisibilityState];
+    livePhotoVisibilityState = [assetCopy livePhotoVisibilityState];
   }
 
   else
   {
-    v9 = 0;
+    livePhotoVisibilityState = 0;
   }
 
-  v10 = -[PELivePhotoModel initWithLivePhotoVisibilityState:hasAdjustments:compositionController:](self, "initWithLivePhotoVisibilityState:hasAdjustments:compositionController:", v9, [v7 isAdjusted], v8);
+  v10 = -[PELivePhotoModel initWithLivePhotoVisibilityState:hasAdjustments:compositionController:](self, "initWithLivePhotoVisibilityState:hasAdjustments:compositionController:", livePhotoVisibilityState, [assetCopy isAdjusted], controllerCopy);
 
   if (v10)
   {
-    objc_storeStrong(&v10->_asset, a3);
+    objc_storeStrong(&v10->_asset, asset);
   }
 
   return v10;

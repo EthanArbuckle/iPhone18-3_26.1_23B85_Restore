@@ -1,59 +1,59 @@
 @interface WGWidgetListEditViewController
-- (BOOL)_isNewItem:(id)a3;
+- (BOOL)_isNewItem:(id)item;
 - (BOOL)showsFavoritesSection;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (WGWidgetListEditViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (WGWidgetListEditViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (WGWidgetListEditViewControllerDataSource)dataSource;
 - (WGWidgetListEditViewControllerDelegate)delegate;
-- (id)_enabledItemIdentifiersForGroupID:(id)a3;
-- (id)_groupKeyForSectionAtIndex:(unint64_t)a3;
-- (id)_indexPathForItemWithIdentifier:(id)a3;
-- (id)_itemIdentifierForIndexPath:(id)a3;
-- (id)_itemIdentifiersInSection:(unint64_t)a3;
+- (id)_enabledItemIdentifiersForGroupID:(id)d;
+- (id)_groupKeyForSectionAtIndex:(unint64_t)index;
+- (id)_indexPathForItemWithIdentifier:(id)identifier;
+- (id)_itemIdentifierForIndexPath:(id)path;
+- (id)_itemIdentifiersInSection:(unint64_t)section;
 - (id)_widgetListEditViewTableHeaderView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)_compareItemWithIdentifier:(id)a3 andItemWithIdentifierConsideringIsNew:(id)a4;
-- (int64_t)_indexOfLastEnabledWidgetInSection:(unint64_t)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)_compareItemWithIdentifier:(id)identifier andItemWithIdentifierConsideringIsNew:(id)new;
+- (int64_t)_indexOfLastEnabledWidgetInSection:(unint64_t)section;
 - (int64_t)_layoutMode;
 - (int64_t)disabledWidgetsSection;
 - (int64_t)favoritesSection;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (int64_t)todaySection;
-- (unint64_t)_indexForInsertingItemWithIdentifier:(id)a3 intoArray:(id)a4;
-- (unint64_t)_sectionIndexForGroupKey:(id)a3;
+- (unint64_t)_indexForInsertingItemWithIdentifier:(id)identifier intoArray:(id)array;
+- (unint64_t)_sectionIndexForGroupKey:(id)key;
 - (void)_acknowledgeItemsAndResetNewWidgetsCount;
-- (void)_acknowledgeItemsSavingItemState:(BOOL)a3;
-- (void)_disableItemAtIndexPath:(id)a3 inTableView:(id)a4;
-- (void)_dismissDueToInterfaceActionAndAcknowledgeItemsSavingItemState:(BOOL)a3;
-- (void)_enableItemAtIndexPath:(id)a3 inTableView:(id)a4;
+- (void)_acknowledgeItemsSavingItemState:(BOOL)state;
+- (void)_disableItemAtIndexPath:(id)path inTableView:(id)view;
+- (void)_dismissDueToInterfaceActionAndAcknowledgeItemsSavingItemState:(BOOL)state;
+- (void)_enableItemAtIndexPath:(id)path inTableView:(id)view;
 - (void)_loadItems;
 - (void)_saveItemArrangement;
 - (void)_saveItemState;
-- (void)pinSwitchChanaged:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setDataSource:(id)a3;
-- (void)setWidgetsPinned:(BOOL)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)pinSwitchChanaged:(id)chanaged;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setDataSource:(id)source;
+- (void)setWidgetsPinned:(BOOL)pinned;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation WGWidgetListEditViewController
 
-- (WGWidgetListEditViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WGWidgetListEditViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v14.receiver = self;
   v14.super_class = WGWidgetListEditViewController;
@@ -71,12 +71,12 @@
     v4->_tableViewController = v7;
 
     v9 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v4 action:sel__cancelWidgetListEditView];
-    v10 = [(UITableViewController *)v4->_tableViewController navigationItem];
-    [v10 setLeftBarButtonItem:v9];
+    navigationItem = [(UITableViewController *)v4->_tableViewController navigationItem];
+    [navigationItem setLeftBarButtonItem:v9];
 
     v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v4 action:sel__dismissWidgetListEditView];
-    v12 = [(UITableViewController *)v4->_tableViewController navigationItem];
-    [v12 setRightBarButtonItem:v11];
+    navigationItem2 = [(UITableViewController *)v4->_tableViewController navigationItem];
+    [navigationItem2 setRightBarButtonItem:v11];
 
     [(UITableViewController *)v4->_tableViewController setEditing:1 animated:0];
     [(UINavigationController *)v4->_navigationController pushViewController:v4->_tableViewController animated:0];
@@ -85,9 +85,9 @@
   return v4;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v6 = obj;
@@ -123,11 +123,11 @@
       }
     }
 
-    v5 = [(WGWidgetListEditViewController *)self _loadItems];
+    _loadItems = [(WGWidgetListEditViewController *)self _loadItems];
     v6 = obj;
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](_loadItems, v6);
 }
 
 - (void)viewDidLoad
@@ -135,54 +135,54 @@
   v17.receiver = self;
   v17.super_class = WGWidgetListEditViewController;
   [(WGWidgetListEditViewController *)&v17 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] _systemGroupBackgroundColor];
-  v4 = [(WGWidgetListEditViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  _systemGroupBackgroundColor = [MEMORY[0x277D75348] _systemGroupBackgroundColor];
+  view = [(WGWidgetListEditViewController *)self view];
+  [view setBackgroundColor:_systemGroupBackgroundColor];
 
-  v5 = [(WGWidgetListEditViewController *)self _layoutMode];
-  v6 = [(UITableViewController *)self->_tableViewController tableView];
-  [v6 setDataSource:self];
-  [v6 setDelegate:self];
-  [v6 registerClass:objc_opt_class() forCellReuseIdentifier:@"WidgetCell"];
-  [v6 registerClass:objc_opt_class() forCellReuseIdentifier:@"PinCell"];
-  [v6 registerClass:objc_opt_class() forCellReuseIdentifier:@"EmptyFavoritesCell"];
-  [v6 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"WidgetHeader"];
-  [v6 setBackgroundView:0];
-  [v6 setBackgroundColor:v3];
-  [v6 setShowsHorizontalScrollIndicator:0];
-  v7 = 0;
-  v8 = v5 & 0xFFFFFFFFFFFFFFFELL;
-  if ((v5 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  _layoutMode = [(WGWidgetListEditViewController *)self _layoutMode];
+  tableView = [(UITableViewController *)self->_tableViewController tableView];
+  [tableView setDataSource:self];
+  [tableView setDelegate:self];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"WidgetCell"];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"PinCell"];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"EmptyFavoritesCell"];
+  [tableView registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"WidgetHeader"];
+  [tableView setBackgroundView:0];
+  [tableView setBackgroundColor:_systemGroupBackgroundColor];
+  [tableView setShowsHorizontalScrollIndicator:0];
+  showsVerticalScrollIndicator = 0;
+  v8 = _layoutMode & 0xFFFFFFFFFFFFFFFELL;
+  if ((_layoutMode & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
-    v7 = [v6 showsVerticalScrollIndicator];
+    showsVerticalScrollIndicator = [tableView showsVerticalScrollIndicator];
   }
 
-  [v6 setShowsVerticalScrollIndicator:v7];
-  [v6 _setDrawsSeparatorAtTopOfSections:1];
+  [tableView setShowsVerticalScrollIndicator:showsVerticalScrollIndicator];
+  [tableView _setDrawsSeparatorAtTopOfSections:1];
   [MEMORY[0x277CD9378] widgetRowHeight];
-  [v6 setEstimatedRowHeight:?];
+  [tableView setEstimatedRowHeight:?];
   v9 = [[WGWidgetListEditViewTableHeaderView alloc] initWithReuseIdentifier:@"WidgetTableHeader" forTodayView:self->_showsFavorites];
-  [v6 setTableHeaderView:v9];
-  v10 = [(UINavigationController *)self->_navigationController view];
-  [v10 setBackgroundColor:v3];
+  [tableView setTableHeaderView:v9];
+  view2 = [(UINavigationController *)self->_navigationController view];
+  [view2 setBackgroundColor:_systemGroupBackgroundColor];
 
   if (v8 == 2)
   {
-    v11 = [(UINavigationController *)self->_navigationController view];
-    v12 = [v11 layer];
-    [v12 setCornerRadius:8.0];
+    view3 = [(UINavigationController *)self->_navigationController view];
+    layer = [view3 layer];
+    [layer setCornerRadius:8.0];
   }
 
-  v13 = [(WGWidgetListEditViewController *)self view];
-  v14 = [(UINavigationController *)self->_navigationController view];
-  [v13 addSubview:v14];
+  view4 = [(WGWidgetListEditViewController *)self view];
+  view5 = [(UINavigationController *)self->_navigationController view];
+  [view4 addSubview:view5];
 
-  v15 = [(UINavigationController *)self->_navigationController navigationBar];
-  v16 = [MEMORY[0x277D75348] _systemGroupBackgroundColor];
-  [v15 setBarTintColor:v16];
+  navigationBar = [(UINavigationController *)self->_navigationController navigationBar];
+  _systemGroupBackgroundColor2 = [MEMORY[0x277D75348] _systemGroupBackgroundColor];
+  [navigationBar setBarTintColor:_systemGroupBackgroundColor2];
 
-  [v15 setTranslucent:0];
-  [v15 _setHidesShadow:1];
+  [navigationBar setTranslucent:0];
+  [navigationBar _setHidesShadow:1];
 }
 
 - (int64_t)_layoutMode
@@ -206,58 +206,58 @@
   v65.receiver = self;
   v65.super_class = WGWidgetListEditViewController;
   [(WGWidgetListEditViewController *)&v65 viewWillLayoutSubviews];
-  v3 = [(WGWidgetListEditViewController *)self _layoutMode];
-  v4 = [(UINavigationController *)self->_navigationController navigationBar];
-  [v4 frame];
+  _layoutMode = [(WGWidgetListEditViewController *)self _layoutMode];
+  navigationBar = [(UINavigationController *)self->_navigationController navigationBar];
+  [navigationBar frame];
   x = v66.origin.x;
   width = v66.size.width;
   MaxY = CGRectGetMaxY(v66);
-  v8 = [(UINavigationController *)self->_navigationController navigationBar];
-  v9 = [v8 _backgroundView];
+  navigationBar2 = [(UINavigationController *)self->_navigationController navigationBar];
+  _backgroundView = [navigationBar2 _backgroundView];
 
-  v10 = [v9 superview];
-  v11 = [v4 superview];
-  [v10 convertRect:v11 fromView:{x, 0.0, width, MaxY}];
+  superview = [_backgroundView superview];
+  superview2 = [navigationBar superview];
+  [superview convertRect:superview2 fromView:{x, 0.0, width, MaxY}];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  [v9 setFrame:{v13, v15, v17, v19}];
-  v20 = [(UITableViewController *)self->_tableViewController tableView];
-  [v20 setRowHeight:*MEMORY[0x277D76F30]];
-  v21 = [v20 tableHeaderView];
-  [v20 setTableHeaderView:0];
-  [v21 frame];
+  [_backgroundView setFrame:{v13, v15, v17, v19}];
+  tableView = [(UITableViewController *)self->_tableViewController tableView];
+  [tableView setRowHeight:*MEMORY[0x277D76F30]];
+  tableHeaderView = [tableView tableHeaderView];
+  [tableView setTableHeaderView:0];
+  [tableHeaderView frame];
   if (CGRectEqualToRect(v67, *MEMORY[0x277CBF3A0]))
   {
-    v22 = [(WGWidgetListEditViewController *)self view];
-    [v22 bounds];
-    [v21 setFrame:{0.0, 0.0}];
+    view = [(WGWidgetListEditViewController *)self view];
+    [view bounds];
+    [tableHeaderView setFrame:{0.0, 0.0}];
   }
 
-  [v21 sizeToFit];
-  [v20 setTableHeaderView:v21];
-  if ((v3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  [tableHeaderView sizeToFit];
+  [tableView setTableHeaderView:tableHeaderView];
+  if ((_layoutMode & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v23 = [(WGWidgetListEditViewController *)self view];
-    [v23 bounds];
+    view2 = [(WGWidgetListEditViewController *)self view];
+    [view2 bounds];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
 
-    v32 = [MEMORY[0x277D759A0] mainScreen];
-    [v32 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
     CGRectGetHeight(v68);
-    v33 = [MEMORY[0x277D759A0] mainScreen];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
     UIRoundToScreenScale();
     v35 = v34;
 
-    v36 = [MEMORY[0x277D75418] currentDevice];
-    v37 = [v36 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v37 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v38 = 16.0;
     }
@@ -277,8 +277,8 @@
     v70.size.width = v35;
     v70.size.height = v31;
     CGRectGetMinY(v70);
-    v39 = [MEMORY[0x277D759A0] mainScreen];
-    [v39 scale];
+    mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen3 scale];
     v64 = v40;
     UIRectCenteredXInRectScale();
     v42 = v41;
@@ -286,96 +286,96 @@
     v46 = v45;
     v48 = v47;
 
-    v49 = [(UINavigationController *)self->_navigationController view];
-    [v49 setFrame:{v42, v44, v46, v48}];
+    view3 = [(UINavigationController *)self->_navigationController view];
+    [view3 setFrame:{v42, v44, v46, v48}];
 
-    v50 = [(UITableViewController *)self->_tableViewController tableView];
-    [v50 contentInset];
+    tableView2 = [(UITableViewController *)self->_tableViewController tableView];
+    [tableView2 contentInset];
     v52 = v51;
     v54 = v53;
     v56 = v55;
     v58 = v57;
 
-    v59 = [MEMORY[0x277D75418] currentDevice];
-    v60 = [v59 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
     v61 = 30.0;
-    if ((v60 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       v61 = 8.0;
     }
 
     v62 = v56 + v61;
-    v63 = [(UITableViewController *)self->_tableViewController tableView];
-    [v63 setContentInset:{v52, v54, v62, v58}];
+    tableView3 = [(UITableViewController *)self->_tableViewController tableView];
+    [tableView3 setContentInset:{v52, v54, v62, v58}];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = WGWidgetListEditViewController;
-  [(WGWidgetListEditViewController *)&v4 viewWillAppear:a3];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"WGWidgetListEditViewControllerWillAppear" object:0];
+  [(WGWidgetListEditViewController *)&v4 viewWillAppear:appear];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"WGWidgetListEditViewControllerWillAppear" object:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = WGWidgetListEditViewController;
-  [(WGWidgetListEditViewController *)&v4 viewDidAppear:a3];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"WGWidgetListEditViewControllerDidAppear" object:0];
+  [(WGWidgetListEditViewController *)&v4 viewDidAppear:appear];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"WGWidgetListEditViewControllerDidAppear" object:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = WGWidgetListEditViewController;
-  [(WGWidgetListEditViewController *)&v4 viewWillDisappear:a3];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"WGWidgetListEditViewControllerWillDisappear" object:0];
+  [(WGWidgetListEditViewController *)&v4 viewWillDisappear:disappear];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"WGWidgetListEditViewControllerWillDisappear" object:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = WGWidgetListEditViewController;
-  [(WGWidgetListEditViewController *)&v5 viewDidDisappear:a3];
+  [(WGWidgetListEditViewController *)&v5 viewDidDisappear:disappear];
   if (!self->_dismissingDueToInterfaceAction)
   {
     [(WGWidgetListEditViewController *)self _acknowledgeItemsSavingItemState:0];
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"WGWidgetListEditViewControllerDidDisappear" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"WGWidgetListEditViewControllerDidDisappear" object:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained widgetEditListViewController:self traitCollectionDidChange:v4];
+    [WeakRetained widgetEditListViewController:self traitCollectionDidChange:changeCopy];
   }
 
   v6.receiver = self;
   v6.super_class = WGWidgetListEditViewController;
-  [(WGWidgetListEditViewController *)&v6 traitCollectionDidChange:v4];
+  [(WGWidgetListEditViewController *)&v6 traitCollectionDidChange:changeCopy];
 }
 
 - (BOOL)showsFavoritesSection
 {
-  v3 = [(WGWidgetListEditViewController *)self showsFavorites];
-  if (v3)
+  showsFavorites = [(WGWidgetListEditViewController *)self showsFavorites];
+  if (showsFavorites)
   {
 
-    LOBYTE(v3) = [(WGWidgetListEditViewController *)self areWidgetsPinned];
+    LOBYTE(showsFavorites) = [(WGWidgetListEditViewController *)self areWidgetsPinned];
   }
 
-  return v3;
+  return showsFavorites;
 }
 
 - (int64_t)todaySection
@@ -405,23 +405,23 @@
   return v4 + [(WGWidgetListEditViewController *)self showsFavoritesSection];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = [(WGWidgetListEditViewController *)self showsPinSection];
-  v5 = [(WGWidgetListEditViewController *)self showsFavoritesSection];
+  showsPinSection = [(WGWidgetListEditViewController *)self showsPinSection];
+  showsFavoritesSection = [(WGWidgetListEditViewController *)self showsFavoritesSection];
   v6 = [(NSArray *)self->_groupIDs count];
   v7 = 1;
-  if (v4)
+  if (showsPinSection)
   {
     v7 = 2;
   }
 
-  return v7 + v5 + v6;
+  return v7 + showsFavoritesSection + v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ([(WGWidgetListEditViewController *)self todaySection]== a4)
+  if ([(WGWidgetListEditViewController *)self todaySection]== section)
   {
     v6 = 1008;
 LABEL_3:
@@ -430,11 +430,11 @@ LABEL_3:
     return [v7 count];
   }
 
-  if ([(WGWidgetListEditViewController *)self favoritesSection]!= a4)
+  if ([(WGWidgetListEditViewController *)self favoritesSection]!= section)
   {
-    if ([(WGWidgetListEditViewController *)self disabledWidgetsSection]!= a4)
+    if ([(WGWidgetListEditViewController *)self disabledWidgetsSection]!= section)
     {
-      return [(WGWidgetListEditViewController *)self pinSection]== a4;
+      return [(WGWidgetListEditViewController *)self pinSection]== section;
     }
 
     v6 = 1024;
@@ -450,35 +450,35 @@ LABEL_3:
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 == [(WGWidgetListEditViewController *)self pinSection])
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == [(WGWidgetListEditViewController *)self pinSection])
   {
-    v9 = [v6 dequeueReusableCellWithIdentifier:@"PinCell" forIndexPath:v7];
-    v10 = [v9 pinSwitch];
-    [v10 setOn:{-[WGWidgetListEditViewController areWidgetsPinned](self, "areWidgetsPinned")}];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:@"PinCell" forIndexPath:pathCopy];
+    pinSwitch = [v9 pinSwitch];
+    [pinSwitch setOn:{-[WGWidgetListEditViewController areWidgetsPinned](self, "areWidgetsPinned")}];
 
-    v11 = [v9 pinSwitch];
-    [v11 addTarget:self action:sel_pinSwitchChanaged_ forControlEvents:4096];
+    pinSwitch2 = [v9 pinSwitch];
+    [pinSwitch2 addTarget:self action:sel_pinSwitchChanaged_ forControlEvents:4096];
 
     [v9 startAnimating];
   }
 
   else
   {
-    v12 = [v7 section];
-    if (v12 == [(WGWidgetListEditViewController *)self favoritesSection]&& ![(NSMutableArray *)self->_favoriteItemIDs count])
+    section2 = [pathCopy section];
+    if (section2 == [(WGWidgetListEditViewController *)self favoritesSection]&& ![(NSMutableArray *)self->_favoriteItemIDs count])
     {
-      v9 = [v6 dequeueReusableCellWithIdentifier:@"EmptyFavoritesCell" forIndexPath:v7];
+      v9 = [viewCopy dequeueReusableCellWithIdentifier:@"EmptyFavoritesCell" forIndexPath:pathCopy];
     }
 
     else
     {
-      v9 = [v6 dequeueReusableCellWithIdentifier:@"WidgetCell" forIndexPath:v7];
-      v13 = [(WGWidgetListEditViewController *)self _itemIdentifierForIndexPath:v7];
+      v9 = [viewCopy dequeueReusableCellWithIdentifier:@"WidgetCell" forIndexPath:pathCopy];
+      v13 = [(WGWidgetListEditViewController *)self _itemIdentifierForIndexPath:pathCopy];
       [v9 setEditing:{-[UITableViewController isEditing](self->_tableViewController, "isEditing")}];
       WeakRetained = objc_loadWeakRetained(&self->_dataSource);
       if (objc_opt_respondsToSelector())
@@ -492,12 +492,12 @@ LABEL_3:
       }
 
       v16 = v15;
-      v17 = [v9 textLabel];
-      [v17 setText:v16];
+      textLabel = [v9 textLabel];
+      [textLabel setText:v16];
 
-      v18 = [v9 textLabel];
+      textLabel2 = [v9 textLabel];
       LODWORD(v19) = 1057803469;
-      [v18 _setHyphenationFactor:v19];
+      [textLabel2 _setHyphenationFactor:v19];
 
       if (objc_opt_respondsToSelector())
       {
@@ -507,7 +507,7 @@ LABEL_3:
         v24 = __66__WGWidgetListEditViewController_tableView_cellForRowAtIndexPath___block_invoke;
         v25 = &unk_279ED0A90;
         objc_copyWeak(&v28, &location);
-        v26 = v6;
+        v26 = viewCopy;
         v27 = v13;
         [WeakRetained widgetListEditViewController:self requestsIconForItemWithIdentifier:v27 withHandler:&v22];
 
@@ -515,9 +515,9 @@ LABEL_3:
         objc_destroyWeak(&location);
       }
 
-      [v9 setWidgetEnabled:{objc_msgSend(v7, "section", v22, v23, v24, v25) != -[WGWidgetListEditViewController disabledWidgetsSection](self, "disabledWidgetsSection")}];
-      v20 = [v7 section];
-      if (v20 == [(WGWidgetListEditViewController *)self disabledWidgetsSection])
+      [v9 setWidgetEnabled:{objc_msgSend(pathCopy, "section", v22, v23, v24, v25) != -[WGWidgetListEditViewController disabledWidgetsSection](self, "disabledWidgetsSection")}];
+      section3 = [pathCopy section];
+      if (section3 == [(WGWidgetListEditViewController *)self disabledWidgetsSection])
       {
         [v9 setShowsDot:{-[WGWidgetListEditViewController _isNewItem:](self, "_isNewItem:", v13)}];
       }
@@ -595,9 +595,9 @@ void __66__WGWidgetListEditViewController_tableView_cellForRowAtIndexPath___bloc
   [v1 pl_performCrossFadeIfNecessary];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if ([(WGWidgetListEditViewController *)self disabledWidgetsSection]== a4)
+  if ([(WGWidgetListEditViewController *)self disabledWidgetsSection]== section)
   {
     v6 = _os_feature_enabled_impl();
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -617,7 +617,7 @@ void __66__WGWidgetListEditViewController_tableView_cellForRowAtIndexPath___bloc
 
   if ([(WGWidgetListEditViewController *)self showsFavoritesSection])
   {
-    if ([(WGWidgetListEditViewController *)self todaySection]== a4)
+    if ([(WGWidgetListEditViewController *)self todaySection]== section)
     {
       v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v8 = v7;
@@ -628,7 +628,7 @@ LABEL_10:
       goto LABEL_12;
     }
 
-    if ([(WGWidgetListEditViewController *)self favoritesSection]== a4)
+    if ([(WGWidgetListEditViewController *)self favoritesSection]== section)
     {
       v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v8 = v7;
@@ -643,19 +643,19 @@ LABEL_12:
   return v10;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v4 = [a3 dequeueReusableHeaderFooterViewWithIdentifier:{@"WidgetHeader", a4}];
-  v5 = [v4 textLabel];
-  v6 = [MEMORY[0x277D75348] _secondaryLabelColor];
-  [v5 setTextColor:v6];
+  v4 = [view dequeueReusableHeaderFooterViewWithIdentifier:{@"WidgetHeader", section}];
+  textLabel = [v4 textLabel];
+  _secondaryLabelColor = [MEMORY[0x277D75348] _secondaryLabelColor];
+  [textLabel setTextColor:_secondaryLabelColor];
 
   return v4;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if ([(WGWidgetListEditViewController *)self favoritesSection]== a4)
+  if ([(WGWidgetListEditViewController *)self favoritesSection]== section)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:@"WIDGETS_EDIT_FAVORITES_DESCRIPTION" value:&stru_2883435D8 table:@"Widgets"];
@@ -669,45 +669,45 @@ LABEL_12:
   return v5;
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 section];
-  if (v9 == [(WGWidgetListEditViewController *)self favoritesSection])
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  section = [indexPathCopy section];
+  if (section == [(WGWidgetListEditViewController *)self favoritesSection])
   {
-    v10 = v8;
+    v10 = indexPathCopy;
     if ([(NSMutableArray *)self->_favoriteItemIDs count])
     {
       goto LABEL_18;
     }
 
     v11 = MEMORY[0x277CCAA70];
-    v12 = [(WGWidgetListEditViewController *)self favoritesSection];
+    favoritesSection = [(WGWidgetListEditViewController *)self favoritesSection];
     v13 = v11;
     v14 = 1;
     goto LABEL_15;
   }
 
-  if (v9 != [(WGWidgetListEditViewController *)self disabledWidgetsSection])
+  if (section != [(WGWidgetListEditViewController *)self disabledWidgetsSection])
   {
-    if (v9 == [(WGWidgetListEditViewController *)self pinSection])
+    if (section == [(WGWidgetListEditViewController *)self pinSection])
     {
-      v17 = v7;
+      v17 = pathCopy;
 LABEL_16:
       v10 = v17;
-      v15 = v8;
+      v15 = indexPathCopy;
       goto LABEL_17;
     }
 
-    v18 = -[WGWidgetListEditViewController _indexOfFirstEnabledWidgetInSection:](self, "_indexOfFirstEnabledWidgetInSection:", [v8 section]);
-    if ([v8 row] >= v18)
+    v18 = -[WGWidgetListEditViewController _indexOfFirstEnabledWidgetInSection:](self, "_indexOfFirstEnabledWidgetInSection:", [indexPathCopy section]);
+    if ([indexPathCopy row] >= v18)
     {
-      v20 = -[WGWidgetListEditViewController _indexOfLastEnabledWidgetInSection:](self, "_indexOfLastEnabledWidgetInSection:", [v8 section]);
-      v21 = [v7 section];
-      v22 = v20 - (v21 == [v8 section]);
-      v10 = v8;
-      if ([v8 row] <= v22)
+      v20 = -[WGWidgetListEditViewController _indexOfLastEnabledWidgetInSection:](self, "_indexOfLastEnabledWidgetInSection:", [indexPathCopy section]);
+      section2 = [pathCopy section];
+      v22 = v20 - (section2 == [indexPathCopy section]);
+      v10 = indexPathCopy;
+      if ([indexPathCopy row] <= v22)
       {
         goto LABEL_18;
       }
@@ -723,7 +723,7 @@ LABEL_16:
       }
 
       v24 = MEMORY[0x277CCAA70];
-      v12 = [v8 section];
+      favoritesSection = [indexPathCopy section];
       v13 = v24;
       v14 = v23;
     }
@@ -731,17 +731,17 @@ LABEL_16:
     else
     {
       v19 = MEMORY[0x277CCAA70];
-      v12 = [v8 section];
+      favoritesSection = [indexPathCopy section];
       v13 = v19;
       v14 = v18;
     }
 
 LABEL_15:
-    v17 = [v13 indexPathForRow:v14 inSection:v12];
+    v17 = [v13 indexPathForRow:v14 inSection:favoritesSection];
     goto LABEL_16;
   }
 
-  v15 = [(WGWidgetListEditViewController *)self _itemIdentifierForIndexPath:v7];
+  v15 = [(WGWidgetListEditViewController *)self _itemIdentifierForIndexPath:pathCopy];
   v16 = [(WGWidgetListEditViewController *)self _indexForInsertingItemWithIdentifier:v15 intoArray:self->_disabledItemIDs];
   v10 = [MEMORY[0x277CCAA70] indexPathForRow:v16 inSection:{-[WGWidgetListEditViewController disabledWidgetsSection](self, "disabledWidgetsSection")}];
 
@@ -751,38 +751,38 @@ LABEL_18:
   return v10;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v16 = [(WGWidgetListEditViewController *)self _itemIdentifierForIndexPath:v9];
-  v11 = [v9 section];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  viewCopy = view;
+  v16 = [(WGWidgetListEditViewController *)self _itemIdentifierForIndexPath:pathCopy];
+  section = [pathCopy section];
 
-  v12 = [(WGWidgetListEditViewController *)self _itemIdentifiersInSection:v11];
-  v13 = -[WGWidgetListEditViewController _itemIdentifiersInSection:](self, "_itemIdentifiersInSection:", [v8 section]);
+  v12 = [(WGWidgetListEditViewController *)self _itemIdentifiersInSection:section];
+  v13 = -[WGWidgetListEditViewController _itemIdentifiersInSection:](self, "_itemIdentifiersInSection:", [indexPathCopy section]);
   [v12 removeObject:v16];
-  v14 = [v8 row];
-  v15 = [v8 section];
+  v14 = [indexPathCopy row];
+  section2 = [indexPathCopy section];
 
-  if (v15 == -[WGWidgetListEditViewController favoritesSection](self, "favoritesSection") && ![v13 count])
+  if (section2 == -[WGWidgetListEditViewController favoritesSection](self, "favoritesSection") && ![v13 count])
   {
     v14 = 0;
   }
 
   [v13 insertObject:v16 atIndex:v14];
-  [v10 reloadData];
+  [viewCopy reloadData];
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
+  pathCopy = path;
+  section = [pathCopy section];
   v7 = 0;
-  if (v6 != [(WGWidgetListEditViewController *)self pinSection])
+  if (section != [(WGWidgetListEditViewController *)self pinSection])
   {
-    v8 = [v5 section];
-    if (v8 != [(WGWidgetListEditViewController *)self favoritesSection]|| [(NSMutableArray *)self->_favoriteItemIDs count])
+    section2 = [pathCopy section];
+    if (section2 != [(WGWidgetListEditViewController *)self favoritesSection]|| [(NSMutableArray *)self->_favoriteItemIDs count])
     {
       v7 = 1;
     }
@@ -791,23 +791,23 @@ LABEL_18:
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  if (v6 == [(WGWidgetListEditViewController *)self disabledWidgetsSection])
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == [(WGWidgetListEditViewController *)self disabledWidgetsSection])
   {
     v7 = 2;
   }
 
   else
   {
-    v8 = [v5 section];
+    section2 = [pathCopy section];
     v7 = 0;
-    if (v8 != [(WGWidgetListEditViewController *)self pinSection])
+    if (section2 != [(WGWidgetListEditViewController *)self pinSection])
     {
-      v9 = [v5 section];
-      if (v9 != [(WGWidgetListEditViewController *)self favoritesSection]|| [(NSMutableArray *)self->_favoriteItemIDs count])
+      section3 = [pathCopy section];
+      if (section3 != [(WGWidgetListEditViewController *)self favoritesSection]|| [(NSMutableArray *)self->_favoriteItemIDs count])
       {
         v7 = 1;
       }
@@ -817,7 +817,7 @@ LABEL_18:
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"WIDGETS_EDIT_REMOVE" value:&stru_2883435D8 table:@"Widgets"];
@@ -825,45 +825,45 @@ LABEL_18:
   return v5;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v8 = a5;
-  if (v8)
+  viewCopy = view;
+  pathCopy = path;
+  if (pathCopy)
   {
-    if (a4 == 1)
+    if (style == 1)
     {
-      [(WGWidgetListEditViewController *)self _disableItemAtIndexPath:v8 inTableView:v9];
+      [(WGWidgetListEditViewController *)self _disableItemAtIndexPath:pathCopy inTableView:viewCopy];
     }
 
-    else if (a4 == 2)
+    else if (style == 2)
     {
-      [(WGWidgetListEditViewController *)self _enableItemAtIndexPath:v8 inTableView:v9];
+      [(WGWidgetListEditViewController *)self _enableItemAtIndexPath:pathCopy inTableView:viewCopy];
     }
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v11 = a3;
+  scrollCopy = scroll;
   if (self->_contentMinY == 0.0)
   {
-    v4 = [(WGWidgetListEditViewController *)self _widgetListEditViewTableHeaderView];
-    [v4 contentMinY];
+    _widgetListEditViewTableHeaderView = [(WGWidgetListEditViewController *)self _widgetListEditViewTableHeaderView];
+    [_widgetListEditViewTableHeaderView contentMinY];
     self->_contentMinY = v5;
   }
 
-  v6 = [(UINavigationController *)self->_navigationController navigationBar];
+  navigationBar = [(UINavigationController *)self->_navigationController navigationBar];
   contentMinY = self->_contentMinY;
-  [v11 contentOffset];
+  [scrollCopy contentOffset];
   v9 = v8;
-  [v11 contentInset];
-  [v6 _setHidesShadow:contentMinY > v9 + v10];
+  [scrollCopy contentInset];
+  [navigationBar _setHidesShadow:contentMinY > v9 + v10];
 }
 
-- (void)_acknowledgeItemsSavingItemState:(BOOL)a3
+- (void)_acknowledgeItemsSavingItemState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     [(WGWidgetListEditViewController *)self _saveItemState];
 
@@ -877,10 +877,10 @@ LABEL_18:
   }
 }
 
-- (void)_dismissDueToInterfaceActionAndAcknowledgeItemsSavingItemState:(BOOL)a3
+- (void)_dismissDueToInterfaceActionAndAcknowledgeItemsSavingItemState:(BOOL)state
 {
   self->_dismissingDueToInterfaceAction = 1;
-  [(WGWidgetListEditViewController *)self _acknowledgeItemsSavingItemState:a3];
+  [(WGWidgetListEditViewController *)self _acknowledgeItemsSavingItemState:state];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -902,17 +902,17 @@ void __97__WGWidgetListEditViewController__dismissDueToInterfaceActionAndAcknowl
   [WeakRetained _setDismissingDueToInterfaceAction:0];
 }
 
-- (id)_enabledItemIdentifiersForGroupID:(id)a3
+- (id)_enabledItemIdentifiersForGroupID:(id)d
 {
-  v4 = a3;
-  if ([v4 isEqual:@"TodayGroup"])
+  dCopy = d;
+  if ([dCopy isEqual:@"TodayGroup"])
   {
     v5 = &OBJC_IVAR___WGWidgetListEditViewController__enabledTodayItemIDs;
   }
 
   else
   {
-    if (![v4 isEqual:@"FavoriteGroup"])
+    if (![dCopy isEqual:@"FavoriteGroup"])
     {
       v6 = 0;
       goto LABEL_7;
@@ -932,7 +932,7 @@ LABEL_7:
 {
   v57 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
@@ -956,7 +956,7 @@ LABEL_7:
         v11 = [WeakRetained widgetListEditViewController:self itemIdentifiersForGroup:v10];
         if (v11)
         {
-          [v4 setObject:v11 forKey:v10];
+          [dictionary setObject:v11 forKey:v10];
         }
       }
 
@@ -967,7 +967,7 @@ LABEL_7:
   }
 
   v12 = [WeakRetained disabledInterfaceItemIdentifiersForWidgetListEditViewController:self];
-  [v4 setObject:v12 forKey:@"Disabled"];
+  [dictionary setObject:v12 forKey:@"Disabled"];
 
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
   enabledTodayItemIDs = self->_enabledTodayItemIDs;
@@ -991,14 +991,14 @@ LABEL_7:
     v19 = 0;
   }
 
-  v39 = [(WGWidgetListEditViewController *)self showsFavorites];
+  showsFavorites = [(WGWidgetListEditViewController *)self showsFavorites];
   v40 = WeakRetained;
   v38 = [WeakRetained areWidgetsPinnedForWidgetListEditViewController:self];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v4;
+  obj = dictionary;
   v35 = [obj countByEnumeratingWithState:&v46 objects:v55 count:16];
   if (v35)
   {
@@ -1038,7 +1038,7 @@ LABEL_7:
               v28 = *(*(&v42 + 1) + 8 * j);
               if (([v21 isEqualToString:@"FavoriteGroup"] & 1) == 0 && ((v19 & 1) != 0 || (WGIsWidgetWithBundleIdentifierInternal(v28) & 1) == 0))
               {
-                if (!v39 || ![v40 widgetListEditViewController:self isItemWithIdentifierFavorited:v28] || (-[NSMutableArray addObject:](self->_favoriteItemIDs, "addObject:", v28), (v38 & 1) == 0))
+                if (!showsFavorites || ![v40 widgetListEditViewController:self isItemWithIdentifierFavorited:v28] || (-[NSMutableArray addObject:](self->_favoriteItemIDs, "addObject:", v28), (v38 & 1) == 0))
                 {
                   v29 = [v40 widgetListEditViewController:self isItemWithIdentifierEnabled:v28];
                   v30 = v22;
@@ -1137,13 +1137,13 @@ LABEL_7:
 - (void)_acknowledgeItemsAndResetNewWidgetsCount
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __74__WGWidgetListEditViewController__acknowledgeItemsAndResetNewWidgetsCount__block_invoke;
   v12 = &unk_279ED0B08;
-  v13 = v3;
-  v4 = v3;
+  v13 = array;
+  v4 = array;
   v5 = MEMORY[0x2743E8C10](&v9);
   (v5)[2](v5, self->_enabledTodayItemIDs);
   (v5)[2](v5, self->_favoriteItemIDs);
@@ -1154,8 +1154,8 @@ LABEL_7:
   v14 = @"WGNewWidgetsCountKey";
   v15[0] = &unk_28834F130;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 postNotificationName:@"WGAvailableWidgetsUpdatedNotification" object:self userInfo:v7];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"WGAvailableWidgetsUpdatedNotification" object:self userInfo:v7];
 }
 
 void __74__WGWidgetListEditViewController__acknowledgeItemsAndResetNewWidgetsCount__block_invoke(uint64_t a1, void *a2)
@@ -1215,24 +1215,24 @@ void __74__WGWidgetListEditViewController__acknowledgeItemsAndResetNewWidgetsCou
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(WGWidgetListEditViewController *)self areWidgetsPinned];
-    if (v5 != [(WGWidgetListEditViewController *)self wereWidgetsPinnedOriginally])
+    areWidgetsPinned = [(WGWidgetListEditViewController *)self areWidgetsPinned];
+    if (areWidgetsPinned != [(WGWidgetListEditViewController *)self wereWidgetsPinnedOriginally])
     {
-      [WeakRetained widgetListEditViewController:self didChangeWidgetsPinning:v5];
+      [WeakRetained widgetListEditViewController:self didChangeWidgetsPinning:areWidgetsPinned];
     }
   }
 
   [(WGWidgetListEditViewController *)self _acknowledgeItemsAndResetNewWidgetsCount];
 }
 
-- (id)_groupKeyForSectionAtIndex:(unint64_t)a3
+- (id)_groupKeyForSectionAtIndex:(unint64_t)index
 {
-  if ([(WGWidgetListEditViewController *)self todaySection]== a3)
+  if ([(WGWidgetListEditViewController *)self todaySection]== index)
   {
     v5 = @"TodayGroup";
   }
 
-  else if ([(WGWidgetListEditViewController *)self favoritesSection]== a3)
+  else if ([(WGWidgetListEditViewController *)self favoritesSection]== index)
   {
     v5 = @"FavoriteGroup";
   }
@@ -1245,19 +1245,19 @@ void __74__WGWidgetListEditViewController__acknowledgeItemsAndResetNewWidgetsCou
   return v5;
 }
 
-- (unint64_t)_sectionIndexForGroupKey:(id)a3
+- (unint64_t)_sectionIndexForGroupKey:(id)key
 {
-  v4 = a3;
-  if (![v4 length])
+  keyCopy = key;
+  if (![keyCopy length])
   {
     goto LABEL_7;
   }
 
-  if (![v4 isEqual:@"TodayGroup"])
+  if (![keyCopy isEqual:@"TodayGroup"])
   {
-    if ([v4 isEqual:@"FavoriteGroup"])
+    if ([keyCopy isEqual:@"FavoriteGroup"])
     {
-      v5 = [(WGWidgetListEditViewController *)self favoritesSection];
+      favoritesSection = [(WGWidgetListEditViewController *)self favoritesSection];
       goto LABEL_6;
     }
 
@@ -1266,17 +1266,17 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v5 = [(WGWidgetListEditViewController *)self todaySection];
+  favoritesSection = [(WGWidgetListEditViewController *)self todaySection];
 LABEL_6:
-  v6 = v5;
+  v6 = favoritesSection;
 LABEL_8:
 
   return v6;
 }
 
-- (id)_itemIdentifiersInSection:(unint64_t)a3
+- (id)_itemIdentifiersInSection:(unint64_t)section
 {
-  if ([(WGWidgetListEditViewController *)self todaySection]== a3)
+  if ([(WGWidgetListEditViewController *)self todaySection]== section)
   {
     v5 = &OBJC_IVAR___WGWidgetListEditViewController__enabledTodayItemIDs;
 LABEL_7:
@@ -1284,13 +1284,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([(WGWidgetListEditViewController *)self favoritesSection]== a3)
+  if ([(WGWidgetListEditViewController *)self favoritesSection]== section)
   {
     v5 = &OBJC_IVAR___WGWidgetListEditViewController__favoriteItemIDs;
     goto LABEL_7;
   }
 
-  if ([(WGWidgetListEditViewController *)self disabledWidgetsSection]== a3)
+  if ([(WGWidgetListEditViewController *)self disabledWidgetsSection]== section)
   {
     v5 = &OBJC_IVAR___WGWidgetListEditViewController__disabledItemIDs;
     goto LABEL_7;
@@ -1302,9 +1302,9 @@ LABEL_8:
   return v6;
 }
 
-- (id)_indexPathForItemWithIdentifier:(id)a3
+- (id)_indexPathForItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = 0;
   v16 = 0;
   v17 = &v16;
@@ -1314,8 +1314,8 @@ LABEL_8:
   v21 = 0;
   do
   {
-    v6 = [(UITableViewController *)self->_tableViewController tableView];
-    v7 = [(WGWidgetListEditViewController *)self numberOfSectionsInTableView:v6];
+    tableView = [(UITableViewController *)self->_tableViewController tableView];
+    v7 = [(WGWidgetListEditViewController *)self numberOfSectionsInTableView:tableView];
 
     if (v5 >= v7)
     {
@@ -1327,7 +1327,7 @@ LABEL_8:
     v12[1] = 3221225472;
     v12[2] = __66__WGWidgetListEditViewController__indexPathForItemWithIdentifier___block_invoke;
     v12[3] = &unk_279ED0B30;
-    v13 = v4;
+    v13 = identifierCopy;
     v14 = &v16;
     v15 = v5;
     [v8 enumerateObjectsUsingBlock:v12];
@@ -1356,36 +1356,36 @@ void __66__WGWidgetListEditViewController__indexPathForItemWithIdentifier___bloc
   }
 }
 
-- (void)_enableItemAtIndexPath:(id)a3 inTableView:(id)a4
+- (void)_enableItemAtIndexPath:(id)path inTableView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WGWidgetListEditViewController *)self _itemIdentifierForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(WGWidgetListEditViewController *)self _itemIdentifierForIndexPath:pathCopy];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v10 = [WeakRetained widgetListEditViewController:self defaultGroupForItemWithIdentifier:v8];
 
-  v11 = [(WGWidgetListEditViewController *)self _sectionIndexForGroupKey:v10];
-  if (v11 == 0x7FFFFFFFFFFFFFFFLL)
+  todaySection = [(WGWidgetListEditViewController *)self _sectionIndexForGroupKey:v10];
+  if (todaySection == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [(WGWidgetListEditViewController *)self todaySection];
+    todaySection = [(WGWidgetListEditViewController *)self todaySection];
   }
 
-  v12 = [(WGWidgetListEditViewController *)self _indexOfLastEnabledWidgetInSection:v11];
+  v12 = [(WGWidgetListEditViewController *)self _indexOfLastEnabledWidgetInSection:todaySection];
   [(NSMutableArray *)self->_disabledItemIDs removeObject:v8];
-  v13 = [(WGWidgetListEditViewController *)self _itemIdentifiersInSection:v11];
+  v13 = [(WGWidgetListEditViewController *)self _itemIdentifiersInSection:todaySection];
   [v13 insertObject:v8 atIndex:v12 + 1];
 
-  v14 = [MEMORY[0x277CCAA70] indexPathForRow:v12 + 1 inSection:v11];
+  v14 = [MEMORY[0x277CCAA70] indexPathForRow:v12 + 1 inSection:todaySection];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __69__WGWidgetListEditViewController__enableItemAtIndexPath_inTableView___block_invoke;
   v18[3] = &unk_279ED0B58;
-  v19 = v7;
-  v20 = v6;
+  v19 = viewCopy;
+  v20 = pathCopy;
   v21 = v14;
   v15 = v14;
-  v16 = v6;
-  v17 = v7;
+  v16 = pathCopy;
+  v17 = viewCopy;
   [v17 performBatchUpdates:v18 completion:0];
 }
 
@@ -1403,11 +1403,11 @@ void __69__WGWidgetListEditViewController__enableItemAtIndexPath_inTableView___b
   [v4 insertRowsAtIndexPaths:v5 withRowAnimation:100];
 }
 
-- (void)_disableItemAtIndexPath:(id)a3 inTableView:(id)a4
+- (void)_disableItemAtIndexPath:(id)path inTableView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WGWidgetListEditViewController *)self _itemIdentifierForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(WGWidgetListEditViewController *)self _itemIdentifierForIndexPath:pathCopy];
   v9 = [(WGWidgetListEditViewController *)self _indexForInsertingItemWithIdentifier:v8 intoArray:self->_disabledItemIDs];
   [(NSMutableArray *)self->_enabledTodayItemIDs removeObject:v8];
   [(NSMutableArray *)self->_favoriteItemIDs removeObject:v8];
@@ -1417,13 +1417,13 @@ void __69__WGWidgetListEditViewController__enableItemAtIndexPath_inTableView___b
   v14[1] = 3221225472;
   v14[2] = __70__WGWidgetListEditViewController__disableItemAtIndexPath_inTableView___block_invoke;
   v14[3] = &unk_279ED0B80;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
+  v15 = pathCopy;
+  selfCopy = self;
+  v17 = viewCopy;
   v18 = v10;
   v11 = v10;
-  v12 = v7;
-  v13 = v6;
+  v12 = viewCopy;
+  v13 = pathCopy;
   [v12 performBatchUpdates:v14 completion:0];
 }
 
@@ -1453,11 +1453,11 @@ void __70__WGWidgetListEditViewController__disableItemAtIndexPath_inTableView___
   [v5 insertRowsAtIndexPaths:v6 withRowAnimation:100];
 }
 
-- (id)_itemIdentifierForIndexPath:(id)a3
+- (id)_itemIdentifierForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[WGWidgetListEditViewController _itemIdentifiersInSection:](self, "_itemIdentifiersInSection:", [v4 section]);
-  v6 = [v4 row];
+  pathCopy = path;
+  v5 = -[WGWidgetListEditViewController _itemIdentifiersInSection:](self, "_itemIdentifiersInSection:", [pathCopy section]);
+  v6 = [pathCopy row];
   if (v6 >= [v5 count])
   {
     v7 = 0;
@@ -1465,69 +1465,69 @@ void __70__WGWidgetListEditViewController__disableItemAtIndexPath_inTableView___
 
   else
   {
-    v7 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    v7 = [v5 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   return v7;
 }
 
-- (unint64_t)_indexForInsertingItemWithIdentifier:(id)a3 intoArray:(id)a4
+- (unint64_t)_indexForInsertingItemWithIdentifier:(id)identifier intoArray:(id)array
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 count];
+  arrayCopy = array;
+  identifierCopy = identifier;
+  v8 = [arrayCopy count];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__WGWidgetListEditViewController__indexForInsertingItemWithIdentifier_intoArray___block_invoke;
   v11[3] = &unk_279ED0BA8;
   v11[4] = self;
-  v9 = [v6 indexOfObject:v7 inSortedRange:0 options:v8 usingComparator:{1024, v11}];
+  v9 = [arrayCopy indexOfObject:identifierCopy inSortedRange:0 options:v8 usingComparator:{1024, v11}];
 
   return v9;
 }
 
-- (int64_t)_indexOfLastEnabledWidgetInSection:(unint64_t)a3
+- (int64_t)_indexOfLastEnabledWidgetInSection:(unint64_t)section
 {
-  v3 = [(WGWidgetListEditViewController *)self _itemIdentifiersInSection:a3];
+  v3 = [(WGWidgetListEditViewController *)self _itemIdentifiersInSection:section];
   v4 = [v3 count] - 1;
 
   return v4;
 }
 
-- (BOOL)_isNewItem:(id)a3
+- (BOOL)_isNewItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  LOBYTE(self) = [WeakRetained widgetListEditViewController:self isItemWithIdentifierNew:v4];
+  LOBYTE(self) = [WeakRetained widgetListEditViewController:self isItemWithIdentifierNew:itemCopy];
 
   return self;
 }
 
-- (int64_t)_compareItemWithIdentifier:(id)a3 andItemWithIdentifierConsideringIsNew:(id)a4
+- (int64_t)_compareItemWithIdentifier:(id)identifier andItemWithIdentifierConsideringIsNew:(id)new
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WGWidgetListEditViewController *)self _isNewItem:v6];
-  if (v8 == [(WGWidgetListEditViewController *)self _isNewItem:v7])
+  identifierCopy = identifier;
+  newCopy = new;
+  v8 = [(WGWidgetListEditViewController *)self _isNewItem:identifierCopy];
+  if (v8 == [(WGWidgetListEditViewController *)self _isNewItem:newCopy])
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     if (objc_opt_respondsToSelector())
     {
-      v11 = [WeakRetained widgetListEditViewController:self displayNameForItemWithIdentifier:v6];
-      v12 = [WeakRetained widgetListEditViewController:self displayNameForItemWithIdentifier:v7];
+      v11 = [WeakRetained widgetListEditViewController:self displayNameForItemWithIdentifier:identifierCopy];
+      v12 = [WeakRetained widgetListEditViewController:self displayNameForItemWithIdentifier:newCopy];
     }
 
     else
     {
-      v11 = v6;
-      v12 = v7;
+      v11 = identifierCopy;
+      v12 = newCopy;
     }
 
     v13 = v12;
     v9 = [v11 localizedStandardCompare:v12];
   }
 
-  else if ([(WGWidgetListEditViewController *)self _isNewItem:v6])
+  else if ([(WGWidgetListEditViewController *)self _isNewItem:identifierCopy])
   {
     v9 = -1;
   }
@@ -1542,13 +1542,13 @@ void __70__WGWidgetListEditViewController__disableItemAtIndexPath_inTableView___
 
 - (id)_widgetListEditViewTableHeaderView
 {
-  v2 = [(UITableViewController *)self->_tableViewController tableView];
-  v3 = [v2 tableHeaderView];
+  tableView = [(UITableViewController *)self->_tableViewController tableView];
+  tableHeaderView = [tableView tableHeaderView];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = tableHeaderView;
   }
 
   else
@@ -1561,29 +1561,29 @@ void __70__WGWidgetListEditViewController__disableItemAtIndexPath_inTableView___
   return v4;
 }
 
-- (void)pinSwitchChanaged:(id)a3
+- (void)pinSwitchChanaged:(id)chanaged
 {
-  v4 = [a3 isOn];
+  isOn = [chanaged isOn];
 
-  [(WGWidgetListEditViewController *)self setWidgetsPinned:v4];
+  [(WGWidgetListEditViewController *)self setWidgetsPinned:isOn];
 }
 
-- (void)setWidgetsPinned:(BOOL)a3
+- (void)setWidgetsPinned:(BOOL)pinned
 {
-  if (self->_widgetsPinned != a3)
+  if (self->_widgetsPinned != pinned)
   {
-    v3 = a3;
-    v5 = [(WGWidgetListEditViewController *)self todaySection];
-    self->_widgetsPinned = v3;
-    v6 = [(WGWidgetListEditViewController *)self todaySection];
-    if (v3)
+    pinnedCopy = pinned;
+    todaySection = [(WGWidgetListEditViewController *)self todaySection];
+    self->_widgetsPinned = pinnedCopy;
+    todaySection2 = [(WGWidgetListEditViewController *)self todaySection];
+    if (pinnedCopy)
     {
-      v7 = v5;
+      v7 = todaySection;
     }
 
     else
     {
-      v7 = v6;
+      v7 = todaySection2;
     }
 
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1599,7 +1599,7 @@ void __70__WGWidgetListEditViewController__disableItemAtIndexPath_inTableView___
     }
 
     enabledTodayItemIDs = self->_enabledTodayItemIDs;
-    if (v3)
+    if (pinnedCopy)
     {
       [(NSMutableArray *)enabledTodayItemIDs removeObjectsInArray:self->_favoriteItemIDs];
     }
@@ -1609,16 +1609,16 @@ void __70__WGWidgetListEditViewController__disableItemAtIndexPath_inTableView___
       [(NSMutableArray *)enabledTodayItemIDs replaceObjectsInRange:0 withObjectsFromArray:0, self->_favoriteItemIDs];
     }
 
-    v14 = [(UITableViewController *)self->_tableViewController tableView];
+    tableView = [(UITableViewController *)self->_tableViewController tableView];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __51__WGWidgetListEditViewController_setWidgetsPinned___block_invoke;
     v17[3] = &unk_279ED0BD0;
-    v20 = v3;
-    v18 = v14;
+    v20 = pinnedCopy;
+    v18 = tableView;
     v19 = v8;
     v15 = v8;
-    v16 = v14;
+    v16 = tableView;
     [v16 performBatchUpdates:v17 completion:0];
   }
 }

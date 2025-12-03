@@ -1,92 +1,92 @@
 @interface NqmlStringGenerator
 - (_TtC12GameStoreKitP33_E5F5E586AE13EFB872781773A0CDC19F19NqmlStringGenerator)init;
-- (void)parser:(id)a3 didEndElement:(unint64_t)a4;
-- (void)parser:(id)a3 didEndListOfStyle:(unint64_t)a4;
-- (void)parser:(id)a3 didFindCharacters:(id)a4;
-- (void)parser:(id)a3 didStartElement:(unint64_t)a4 attributes:(id)a5;
-- (void)parser:(id)a3 didStartListOfStyle:(unint64_t)a4;
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4;
-- (void)parserDidEndDocument:(id)a3;
-- (void)parserDidEndListElement:(id)a3;
-- (void)parserDidFindNewline:(id)a3;
-- (void)parserDidStartDocument:(id)a3;
-- (void)parserDidStartListElement:(id)a3;
+- (void)parser:(id)parser didEndElement:(unint64_t)element;
+- (void)parser:(id)parser didEndListOfStyle:(unint64_t)style;
+- (void)parser:(id)parser didFindCharacters:(id)characters;
+- (void)parser:(id)parser didStartElement:(unint64_t)element attributes:(id)attributes;
+- (void)parser:(id)parser didStartListOfStyle:(unint64_t)style;
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred;
+- (void)parserDidEndDocument:(id)document;
+- (void)parserDidEndListElement:(id)element;
+- (void)parserDidFindNewline:(id)newline;
+- (void)parserDidStartDocument:(id)document;
+- (void)parserDidStartListElement:(id)element;
 @end
 
 @implementation NqmlStringGenerator
 
-- (void)parserDidStartDocument:(id)a3
+- (void)parserDidStartDocument:(id)document
 {
-  v4 = a3;
-  v5 = self;
+  documentCopy = document;
+  selfCopy = self;
   sub_24E909010();
 }
 
-- (void)parserDidEndDocument:(id)a3
+- (void)parserDidEndDocument:(id)document
 {
-  v4 = a3;
-  v5 = self;
+  documentCopy = document;
+  selfCopy = self;
   sub_24E909164();
 }
 
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  parserCopy = parser;
+  occurredCopy = occurred;
+  selfCopy = self;
   sub_24E90920C();
 }
 
-- (void)parser:(id)a3 didStartElement:(unint64_t)a4 attributes:(id)a5
+- (void)parser:(id)parser didStartElement:(unint64_t)element attributes:(id)attributes
 {
   type metadata accessor for NqmlAttributeName(0);
   sub_24E909FA4(&qword_27F2126A0, type metadata accessor for NqmlAttributeName);
   v8 = sub_24F92AE38();
-  v9 = a3;
-  v10 = self;
-  sub_24E9093EC(a4, v8);
+  parserCopy = parser;
+  selfCopy = self;
+  sub_24E9093EC(element, v8);
 }
 
-- (void)parser:(id)a3 didEndElement:(unint64_t)a4
+- (void)parser:(id)parser didEndElement:(unint64_t)element
 {
-  v6 = a3;
-  v7 = self;
-  sub_24E9097FC(a4);
+  parserCopy = parser;
+  selfCopy = self;
+  sub_24E9097FC(element);
 }
 
-- (void)parser:(id)a3 didFindCharacters:(id)a4
+- (void)parser:(id)parser didFindCharacters:(id)characters
 {
   sub_24F92B0D8();
-  v6 = a3;
-  v7 = self;
+  parserCopy = parser;
+  selfCopy = self;
   sub_24E9098D8();
 }
 
-- (void)parserDidFindNewline:(id)a3
+- (void)parserDidFindNewline:(id)newline
 {
-  v3 = self;
+  selfCopy = self;
   sub_24E907C20();
 }
 
-- (void)parser:(id)a3 didStartListOfStyle:(unint64_t)a4
+- (void)parser:(id)parser didStartListOfStyle:(unint64_t)style
 {
-  v6 = a3;
-  v7 = self;
-  sub_24E909ACC(a4);
+  parserCopy = parser;
+  selfCopy = self;
+  sub_24E909ACC(style);
 }
 
-- (void)parserDidStartListElement:(id)a3
+- (void)parserDidStartListElement:(id)element
 {
-  v4 = a3;
-  v5 = self;
+  elementCopy = element;
+  selfCopy = self;
   sub_24E909C78();
 }
 
-- (void)parserDidEndListElement:(id)a3
+- (void)parserDidEndListElement:(id)element
 {
-  v7 = self;
+  selfCopy = self;
   sub_24E907C20();
-  v3 = *(&v7->super.isa + OBJC_IVAR____TtC12GameStoreKitP33_E5F5E586AE13EFB872781773A0CDC19F19NqmlStringGenerator_orderedListTracker);
+  v3 = *(&selfCopy->super.isa + OBJC_IVAR____TtC12GameStoreKitP33_E5F5E586AE13EFB872781773A0CDC19F19NqmlStringGenerator_orderedListTracker);
   if (v3)
   {
     v4 = *(v3 + 16);
@@ -102,10 +102,10 @@
   }
 }
 
-- (void)parser:(id)a3 didEndListOfStyle:(unint64_t)a4
+- (void)parser:(id)parser didEndListOfStyle:(unint64_t)style
 {
-  v5 = a3;
-  v6 = self;
+  parserCopy = parser;
+  selfCopy = self;
   sub_24E909EBC();
 }
 

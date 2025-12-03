@@ -1,19 +1,19 @@
 @interface KNLiveVideoSourceSymbolDrawingHelper
-+ (id)fontWithPointSize:(double)a3;
-- (CGSize)boundsSizeForPointSize:(double)a3;
++ (id)fontWithPointSize:(double)size;
+- (CGSize)boundsSizeForPointSize:(double)size;
 - (NSString)abbreviationText;
 - (_TtC16KeynoteQuicklook36KNLiveVideoSourceSymbolDrawingHelper)init;
-- (_TtC16KeynoteQuicklook36KNLiveVideoSourceSymbolDrawingHelper)initWithAbbreviationText:(id)a3 imageIdentifier:(int64_t)a4 tintColorIdentifier:(int64_t)a5;
-- (void)drawIn:(CGRect)a3 context:(CGContext *)a4 includeBackground:(BOOL)a5;
-- (void)drawWithPointSize:(double)a3 centeredIn:(CGRect)a4 context:(CGContext *)a5 includeBackground:(BOOL)a6;
-- (void)setLastDrawnAbbreviationFont:(id)a3;
+- (_TtC16KeynoteQuicklook36KNLiveVideoSourceSymbolDrawingHelper)initWithAbbreviationText:(id)text imageIdentifier:(int64_t)identifier tintColorIdentifier:(int64_t)colorIdentifier;
+- (void)drawIn:(CGRect)in context:(CGContext *)context includeBackground:(BOOL)background;
+- (void)drawWithPointSize:(double)size centeredIn:(CGRect)in context:(CGContext *)context includeBackground:(BOOL)background;
+- (void)setLastDrawnAbbreviationFont:(id)font;
 @end
 
 @implementation KNLiveVideoSourceSymbolDrawingHelper
 
-- (_TtC16KeynoteQuicklook36KNLiveVideoSourceSymbolDrawingHelper)initWithAbbreviationText:(id)a3 imageIdentifier:(int64_t)a4 tintColorIdentifier:(int64_t)a5
+- (_TtC16KeynoteQuicklook36KNLiveVideoSourceSymbolDrawingHelper)initWithAbbreviationText:(id)text imageIdentifier:(int64_t)identifier tintColorIdentifier:(int64_t)colorIdentifier
 {
-  if (a3)
+  if (text)
   {
     v7 = sub_275E611E8();
   }
@@ -24,7 +24,7 @@
     v8 = 0;
   }
 
-  return sub_275E57410(v7, v8, a4, a5);
+  return sub_275E57410(v7, v8, identifier, colorIdentifier);
 }
 
 - (NSString)abbreviationText
@@ -43,21 +43,21 @@
   return v2;
 }
 
-- (void)drawIn:(CGRect)a3 context:(CGContext *)a4 includeBackground:(BOOL)a5
+- (void)drawIn:(CGRect)in context:(CGContext *)context includeBackground:(BOOL)background
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = self;
-  sub_275E575F8(v11, a5, x, y, width, height);
+  height = in.size.height;
+  width = in.size.width;
+  y = in.origin.y;
+  x = in.origin.x;
+  contextCopy = context;
+  selfCopy = self;
+  sub_275E575F8(contextCopy, background, x, y, width, height);
 }
 
-- (CGSize)boundsSizeForPointSize:(double)a3
+- (CGSize)boundsSizeForPointSize:(double)size
 {
-  v4 = self;
-  v5 = sub_275E588A0(a3);
+  selfCopy = self;
+  v5 = sub_275E588A0(size);
   v7 = v6;
 
   v8 = v5;
@@ -67,49 +67,49 @@
   return result;
 }
 
-- (void)drawWithPointSize:(double)a3 centeredIn:(CGRect)a4 context:(CGContext *)a5 includeBackground:(BOOL)a6
+- (void)drawWithPointSize:(double)size centeredIn:(CGRect)in context:(CGContext *)context includeBackground:(BOOL)background
 {
-  v6 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v16 = a5;
-  v13 = self;
-  if (v6)
+  backgroundCopy = background;
+  height = in.size.height;
+  width = in.size.width;
+  y = in.origin.y;
+  x = in.origin.x;
+  contextCopy = context;
+  selfCopy = self;
+  if (backgroundCopy)
   {
-    sub_275E579C4(v16, x, y, width, height);
+    sub_275E579C4(contextCopy, x, y, width, height);
   }
 
-  v14 = *(v13 + OBJC_IVAR____TtC16KeynoteQuicklook36KNLiveVideoSourceSymbolDrawingHelper_abbreviationText + 8);
+  v14 = *(selfCopy + OBJC_IVAR____TtC16KeynoteQuicklook36KNLiveVideoSourceSymbolDrawingHelper_abbreviationText + 8);
   if (v14)
   {
-    sub_275E57DEC(*(v13 + OBJC_IVAR____TtC16KeynoteQuicklook36KNLiveVideoSourceSymbolDrawingHelper_abbreviationText), v14, *&a3, 0, v16, x, y, width, height);
-    v15 = v13;
+    sub_275E57DEC(*(selfCopy + OBJC_IVAR____TtC16KeynoteQuicklook36KNLiveVideoSourceSymbolDrawingHelper_abbreviationText), v14, *&size, 0, contextCopy, x, y, width, height);
+    v15 = selfCopy;
   }
 
   else
   {
-    if (*(v13 + OBJC_IVAR____TtC16KeynoteQuicklook36KNLiveVideoSourceSymbolDrawingHelper_drawsInvisibleText) != 1)
+    if (*(selfCopy + OBJC_IVAR____TtC16KeynoteQuicklook36KNLiveVideoSourceSymbolDrawingHelper_drawsInvisibleText) != 1)
     {
-      sub_275E582D0(*&a3, 0, v16, x, y, width, height);
+      sub_275E582D0(*&size, 0, contextCopy, x, y, width, height);
     }
 
-    v15 = v16;
-    v16 = v13;
+    v15 = contextCopy;
+    contextCopy = selfCopy;
   }
 }
 
-- (void)setLastDrawnAbbreviationFont:(id)a3
+- (void)setLastDrawnAbbreviationFont:(id)font
 {
   v4 = *(self + OBJC_IVAR____TtC16KeynoteQuicklook36KNLiveVideoSourceSymbolDrawingHelper_lastDrawnAbbreviationFont);
-  *(self + OBJC_IVAR____TtC16KeynoteQuicklook36KNLiveVideoSourceSymbolDrawingHelper_lastDrawnAbbreviationFont) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC16KeynoteQuicklook36KNLiveVideoSourceSymbolDrawingHelper_lastDrawnAbbreviationFont) = font;
+  fontCopy = font;
 }
 
-+ (id)fontWithPointSize:(double)a3
++ (id)fontWithPointSize:(double)size
 {
-  v3 = sub_275E58F20(a3);
+  v3 = sub_275E58F20(size);
 
   return v3;
 }

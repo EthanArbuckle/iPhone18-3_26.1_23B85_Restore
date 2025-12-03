@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneSearchBooleanScorer_OrCollector
 - (void)__javaClone;
-- (void)collectWithInt:(int)a3;
+- (void)collectWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneSearchBooleanScorer_OrCollector
 
-- (void)collectWithInt:(int)a3
+- (void)collectWithInt:(int)int
 {
   v5 = *(objc_loadWeak(&self->this$0_) + 2);
   if (!v5)
@@ -13,8 +13,8 @@
     goto LABEL_8;
   }
 
-  v6 = a3 & 0x7FF;
-  v7 = (a3 >> 6) & 0x1F;
+  v6 = int & 0x7FF;
+  v7 = (int >> 6) & 0x1F;
   v8 = *(v5 + 8);
   if (v7 >= v8)
   {

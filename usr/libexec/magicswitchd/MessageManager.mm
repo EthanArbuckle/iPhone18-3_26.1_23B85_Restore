@@ -1,20 +1,20 @@
 @interface MessageManager
-- (MessageManager)initWithDelegate:(id)a3 pipe:(id)a4;
+- (MessageManager)initWithDelegate:(id)delegate pipe:(id)pipe;
 - (MessageManagerDelegate)delegate;
 - (void)dealloc;
 - (void)invalidate;
 - (void)readIncomingMessages;
 - (void)setupReadWriteSources;
-- (void)writeMessage:(unsigned __int8)a3;
+- (void)writeMessage:(unsigned __int8)message;
 - (void)writePendingMessages;
 @end
 
 @implementation MessageManager
 
-- (MessageManager)initWithDelegate:(id)a3 pipe:(id)a4
+- (MessageManager)initWithDelegate:(id)delegate pipe:(id)pipe
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  pipeCopy = pipe;
   v11.receiver = self;
   v11.super_class = MessageManager;
   v8 = [(MessageManager *)&v11 init];
@@ -26,12 +26,12 @@
       *buf = 134218242;
       v13 = v8;
       v14 = 2112;
-      v15 = v7;
+      v15 = pipeCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "MessageManager --- Initializing (%p); pipe: (%@)", buf, 0x16u);
     }
 
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v8->_pipe, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v8->_pipe, pipe);
     v8->_socket = sub_10000AA94(v8->_pipe);
     [(MessageManager *)v8 setupReadWriteSources];
   }
@@ -59,7 +59,7 @@
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134217984;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "MessageManager --- Invalidating (%p)", &v9, 0xCu);
     }
 
@@ -110,8 +110,8 @@
   else
   {
     v4 = +[MagicSwitchEnabler sharedInstance];
-    v5 = [v4 workQueue];
-    v6 = dispatch_source_create(&_dispatch_source_type_read, socket, 0, v5);
+    workQueue = [v4 workQueue];
+    v6 = dispatch_source_create(&_dispatch_source_type_read, socket, 0, workQueue);
 
     if (v6)
     {
@@ -125,8 +125,8 @@
       objc_storeStrong(&self->_readSource, v6);
       v7 = self->_socket;
       v8 = +[MagicSwitchEnabler sharedInstance];
-      v9 = [v8 workQueue];
-      v10 = dispatch_source_create(&_dispatch_source_type_write, v7, 0, v9);
+      workQueue2 = [v8 workQueue];
+      v10 = dispatch_source_create(&_dispatch_source_type_write, v7, 0, workQueue2);
 
       if (v10)
       {
@@ -242,9 +242,9 @@ LABEL_12:
   }
 }
 
-- (void)writeMessage:(unsigned __int8)a3
+- (void)writeMessage:(unsigned __int8)message
 {
-  __buf = a3;
+  __buf = message;
   if (self->_invalidated)
   {
     v4 = qword_100021420;

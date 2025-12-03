@@ -1,17 +1,17 @@
 @interface ZhuGeService
-- (id)isCallerEntitledforInternalKey:(id)a3 withError:(id *)a4;
-- (id)isCallerEntitledforKey:(id)a3 withError:(id *)a4;
+- (id)isCallerEntitledforInternalKey:(id)key withError:(id *)error;
+- (id)isCallerEntitledforKey:(id)key withError:(id *)error;
 - (void)assertCallerEntitledForInternalService;
 - (void)assertCallerEntitledForService;
 - (void)initData;
-- (void)setBulkInternalKeys:(id)a3 getValuesAndError:(id)a4;
-- (void)setBulkInternalMGKeys:(id)a3 getValuesAndError:(id)a4;
-- (void)setBulkKeys:(id)a3 getValuesAndError:(id)a4;
-- (void)setBulkMGKeys:(id)a3 getValuesAndError:(id)a4;
-- (void)setInternalKey:(id)a3 andOptions:(id)a4 andPreferences:(id)a5 getValueAndError:(id)a6;
-- (void)setInternalMGKey:(id)a3 getValueAndError:(id)a4;
-- (void)setKey:(id)a3 andOptions:(id)a4 andPreferences:(id)a5 getValueAndError:(id)a6;
-- (void)setMGKey:(id)a3 getValueAndError:(id)a4;
+- (void)setBulkInternalKeys:(id)keys getValuesAndError:(id)error;
+- (void)setBulkInternalMGKeys:(id)keys getValuesAndError:(id)error;
+- (void)setBulkKeys:(id)keys getValuesAndError:(id)error;
+- (void)setBulkMGKeys:(id)keys getValuesAndError:(id)error;
+- (void)setInternalKey:(id)key andOptions:(id)options andPreferences:(id)preferences getValueAndError:(id)error;
+- (void)setInternalMGKey:(id)key getValueAndError:(id)error;
+- (void)setKey:(id)key andOptions:(id)options andPreferences:(id)preferences getValueAndError:(id)error;
+- (void)setMGKey:(id)key getValueAndError:(id)error;
 @end
 
 @implementation ZhuGeService
@@ -44,25 +44,25 @@
   if ((byte_100019FC0 & 1) == 0)
   {
     v2 = +[(ZhuGeSingletonService *)ZhuGeLockerService];
-    v3 = [v2 xpcConnection];
-    v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 processIdentifier]);
+    xpcConnection = [v2 xpcConnection];
+    v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [xpcConnection processIdentifier]);
     ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService assertCallerEntitledForService]", 133, @"Failed to validate ZhuGe service entitlement for pid %@!", v5, v6, v7, v4);
 
     v8 = +[(ZhuGeSingletonService *)ZhuGeLockerService];
-    v9 = [v8 xpcConnection];
-    [v9 invalidate];
+    xpcConnection2 = [v8 xpcConnection];
+    [xpcConnection2 invalidate];
   }
 }
 
-- (id)isCallerEntitledforKey:(id)a3 withError:(id *)a4
+- (id)isCallerEntitledforKey:(id)key withError:(id *)error
 {
-  v9 = a3;
+  keyCopy = key;
   if (qword_100019FC8 != -1)
   {
     sub_1000098E4();
   }
 
-  if (!v9)
+  if (!keyCopy)
   {
     ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforKey:withError:]", 158, @"key pointer is nil!", v6, v7, v8, v45);
     v18 = [NSError errorWithZhuGeErrorCode:45 underlyingError:0];
@@ -70,27 +70,27 @@
     v16 = 0;
     v17 = 0;
 LABEL_7:
-    *a4 = v18;
+    *error = v18;
     goto LABEL_8;
   }
 
-  v10 = [qword_100019FD0 getCacheForKey:v9];
+  v10 = [qword_100019FD0 getCacheForKey:keyCopy];
   v11 = qword_100019FD8;
   qword_100019FD8 = v10;
 
   if (qword_100019FD8)
   {
-    ZhuGeLog(262400, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforKey:withError:]", 166, @"Get entitlement validation result for key %@ from cache", v12, v13, v14, v9);
+    ZhuGeLog(262400, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforKey:withError:]", 166, @"Get entitlement validation result for key %@ from cache", v12, v13, v14, keyCopy);
     v15 = 0;
     v16 = 0;
     v17 = 0;
     goto LABEL_8;
   }
 
-  v22 = [(ZhuGeService *)self supportAssistantClass];
-  v23 = [(ZhuGeService *)self armoryClassName];
+  supportAssistantClass = [(ZhuGeService *)self supportAssistantClass];
+  armoryClassName = [(ZhuGeService *)self armoryClassName];
   v48 = 0;
-  v15 = [(objc_class *)v22 getSharedInstanceByName:v23 withError:&v48];
+  v15 = [(objc_class *)supportAssistantClass getSharedInstanceByName:armoryClassName withError:&v48];
   v17 = v48;
 
   if (!v15)
@@ -101,17 +101,17 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v27 = [v15 helper];
+  helper = [v15 helper];
   v47 = v17;
-  v16 = [v27 getConfigOfKey:v9 withError:&v47];
+  v16 = [helper getConfigOfKey:keyCopy withError:&v47];
   v28 = v47;
 
   if (v16)
   {
     v32 = +[(ZhuGeSingletonService *)ZhuGeLockerService];
-    v33 = [v32 xpcConnection];
+    xpcConnection = [v32 xpcConnection];
     v34 = [v16 objectForKeyedSubscript:@"ENTITLEMENT"];
-    v35 = isXPCConnectionEntitled(v33, v34);
+    v35 = isXPCConnectionEntitled(xpcConnection, v34);
 
     if (v35)
     {
@@ -119,27 +119,27 @@ LABEL_7:
       qword_100019FD8 = &__kCFBooleanTrue;
 
       v46 = v28;
-      v40 = [qword_100019FD0 setCache:qword_100019FD8 forKey:v9 withError:&v46];
+      v40 = [qword_100019FD0 setCache:qword_100019FD8 forKey:keyCopy withError:&v46];
       v17 = v46;
 
       if ((v40 & 1) == 0)
       {
-        ZhuGeLog(262656, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforKey:withError:]", 195, @"Failed to cache entitlement validation result for key %@, error: %@!", v41, v42, v43, v9);
+        ZhuGeLog(262656, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforKey:withError:]", 195, @"Failed to cache entitlement validation result for key %@, error: %@!", v41, v42, v43, keyCopy);
       }
     }
 
     else
     {
-      ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforKey:withError:]", 186, @"Current XPC connection is not entitled for key %@!", v36, v37, v38, v9);
+      ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforKey:withError:]", 186, @"Current XPC connection is not entitled for key %@!", v36, v37, v38, keyCopy);
       v17 = [NSError errorWithZhuGeErrorCode:68 underlyingError:0];
     }
   }
 
   else
   {
-    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforKey:withError:]", 180, @"Failed to get configuration for key %@!", v29, v30, v31, v9);
+    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforKey:withError:]", 180, @"Failed to get configuration for key %@!", v29, v30, v31, keyCopy);
     v44 = v28;
-    *a4 = v28;
+    *error = v28;
     v17 = v28;
   }
 
@@ -160,33 +160,33 @@ LABEL_8:
   if ((byte_100019FE8 & 1) == 0)
   {
     v2 = +[(ZhuGeSingletonService *)ZhuGeLockerService];
-    v3 = [v2 xpcConnection];
-    v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 processIdentifier]);
+    xpcConnection = [v2 xpcConnection];
+    v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [xpcConnection processIdentifier]);
     ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService assertCallerEntitledForInternalService]", 216, @"Failed to validate ZhuGe internal service entitlement for pid %@!", v5, v6, v7, v4);
 
     v9 = +[(ZhuGeSingletonService *)ZhuGeLockerService];
-    v8 = [v9 xpcConnection];
-    [v8 invalidate];
+    xpcConnection2 = [v9 xpcConnection];
+    [xpcConnection2 invalidate];
   }
 }
 
-- (id)isCallerEntitledforInternalKey:(id)a3 withError:(id *)a4
+- (id)isCallerEntitledforInternalKey:(id)key withError:(id *)error
 {
-  v8 = a3;
+  keyCopy = key;
   if (qword_100019FF0 != -1)
   {
     sub_10000990C();
   }
 
-  if (v8)
+  if (keyCopy)
   {
-    v9 = [qword_100019FF8 getCacheForKey:v8];
+    v9 = [qword_100019FF8 getCacheForKey:keyCopy];
     v10 = qword_10001A000;
     qword_10001A000 = v9;
 
     if (qword_10001A000)
     {
-      ZhuGeLog(262400, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforInternalKey:withError:]", 249, @"Get entitlement validation result for internal key %@ from cache", v11, v12, v13, v8);
+      ZhuGeLog(262400, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforInternalKey:withError:]", 249, @"Get entitlement validation result for internal key %@ from cache", v11, v12, v13, keyCopy);
       v14 = 0;
       v15 = 0;
       v16 = 0;
@@ -199,17 +199,17 @@ LABEL_8:
       v16 = v45;
       if (v14)
       {
-        v23 = [v14 helper];
+        helper = [v14 helper];
         v44 = v16;
-        v15 = [v23 getConfigOfKey:v8 withError:&v44];
+        v15 = [helper getConfigOfKey:keyCopy withError:&v44];
         v24 = v44;
 
         if (v15)
         {
           v28 = +[(ZhuGeSingletonService *)ZhuGeLockerService];
-          v29 = [v28 xpcConnection];
+          xpcConnection = [v28 xpcConnection];
           v30 = [v15 objectForKeyedSubscript:@"ENTITLEMENT"];
-          v31 = isXPCConnectionEntitled(v29, v30);
+          v31 = isXPCConnectionEntitled(xpcConnection, v30);
 
           if (v31)
           {
@@ -217,27 +217,27 @@ LABEL_8:
             qword_10001A000 = &__kCFBooleanTrue;
 
             v43 = v24;
-            v36 = [qword_100019FF8 setCache:qword_10001A000 forKey:v8 withError:&v43];
+            v36 = [qword_100019FF8 setCache:qword_10001A000 forKey:keyCopy withError:&v43];
             v16 = v43;
 
             if ((v36 & 1) == 0)
             {
-              ZhuGeLog(262656, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforInternalKey:withError:]", 278, @"Failed to cache entitlement validation result for internal key %@, error: %@!", v37, v38, v39, v8);
+              ZhuGeLog(262656, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforInternalKey:withError:]", 278, @"Failed to cache entitlement validation result for internal key %@, error: %@!", v37, v38, v39, keyCopy);
             }
           }
 
           else
           {
-            ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforInternalKey:withError:]", 269, @"Current XPC connection is not entitled for internal key %@!", v32, v33, v34, v8);
+            ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforInternalKey:withError:]", 269, @"Current XPC connection is not entitled for internal key %@!", v32, v33, v34, keyCopy);
             v16 = [NSError errorWithZhuGeErrorCode:68 underlyingError:0];
           }
         }
 
         else
         {
-          ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforInternalKey:withError:]", 263, @"Failed to get configuration for internal key %@!", v25, v26, v27, v8);
+          ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforInternalKey:withError:]", 263, @"Failed to get configuration for internal key %@!", v25, v26, v27, keyCopy);
           v41 = v24;
-          *a4 = v24;
+          *error = v24;
           v16 = v24;
         }
       }
@@ -247,7 +247,7 @@ LABEL_8:
         ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService isCallerEntitledforInternalKey:withError:]", 256, @"Failed to get the internal dylib shared instance!", v20, v21, v22, v42);
         v40 = v16;
         v15 = 0;
-        *a4 = v16;
+        *error = v16;
       }
     }
   }
@@ -258,7 +258,7 @@ LABEL_8:
     [NSError errorWithZhuGeErrorCode:45 underlyingError:0];
     v14 = 0;
     v15 = 0;
-    *a4 = v16 = 0;
+    *error = v16 = 0;
   }
 
   v17 = qword_10001A000;
@@ -267,14 +267,14 @@ LABEL_8:
   return v17;
 }
 
-- (void)setKey:(id)a3 andOptions:(id)a4 andPreferences:(id)a5 getValueAndError:(id)a6
+- (void)setKey:(id)key andOptions:(id)options andPreferences:(id)preferences getValueAndError:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  optionsCopy = options;
+  preferencesCopy = preferences;
+  errorCopy = error;
   [(ZhuGeService *)self assertCallerEntitledForService];
-  if (!v10)
+  if (!keyCopy)
   {
     ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setKey:andOptions:andPreferences:getValueAndError:]", 302, @"key pointer is nil!", v14, v15, v16, v33);
     v21 = [NSError errorWithZhuGeErrorCode:45 underlyingError:0];
@@ -285,31 +285,31 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setKey:andOptions:andPreferences:getValueAndError:]", 307, @"Received key: %@", v14, v15, v16, v10);
+  ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setKey:andOptions:andPreferences:getValueAndError:]", 307, @"Received key: %@", v14, v15, v16, keyCopy);
   v37 = 0;
-  v17 = [(ZhuGeService *)self isCallerEntitledforKey:v10 withError:&v37];
+  v17 = [(ZhuGeService *)self isCallerEntitledforKey:keyCopy withError:&v37];
   v21 = v37;
   if (!v17)
   {
-    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setKey:andOptions:andPreferences:getValueAndError:]", 311, @"The caller is not entitled for key %@!", v18, v19, v20, v10);
+    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setKey:andOptions:andPreferences:getValueAndError:]", 311, @"The caller is not entitled for key %@!", v18, v19, v20, keyCopy);
     goto LABEL_8;
   }
 
-  v22 = [(ZhuGeService *)self supportAssistantClass];
-  v23 = [(ZhuGeService *)self armoryClassName];
+  supportAssistantClass = [(ZhuGeService *)self supportAssistantClass];
+  armoryClassName = [(ZhuGeService *)self armoryClassName];
   v36 = v21;
-  v24 = [(objc_class *)v22 getSharedInstanceByName:v23 withError:&v36];
+  v24 = [(objc_class *)supportAssistantClass getSharedInstanceByName:armoryClassName withError:&v36];
   v25 = v36;
 
   if (v24)
   {
     v35 = v25;
-    v29 = [v24 queryKey:v10 andOptions:v11 andPreferences:v12 withError:&v35];
+    v29 = [v24 queryKey:keyCopy andOptions:optionsCopy andPreferences:preferencesCopy withError:&v35];
     v21 = v35;
 
     if (!v29)
     {
-      ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setKey:andOptions:andPreferences:getValueAndError:]", 336, @"%@ query failed!", v30, v31, v32, v10);
+      ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setKey:andOptions:andPreferences:getValueAndError:]", 336, @"%@ query failed!", v30, v31, v32, keyCopy);
     }
   }
 
@@ -321,24 +321,24 @@ LABEL_8:
   }
 
 LABEL_9:
-  v13[2](v13, v29, v21);
+  errorCopy[2](errorCopy, v29, v21);
 }
 
-- (void)setBulkKeys:(id)a3 getValuesAndError:(id)a4
+- (void)setBulkKeys:(id)keys getValuesAndError:(id)error
 {
-  v6 = a3;
-  v37 = a4;
+  keysCopy = keys;
+  errorCopy = error;
   [(ZhuGeService *)self assertCallerEntitledForService];
-  v36 = v6;
-  if (v6)
+  v36 = keysCopy;
+  if (keysCopy)
   {
     ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setBulkKeys:getValuesAndError:]", 359, @"Begin: bulk query keys", v7, v8, v9, v32);
-    v39 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+    v39 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(keysCopy, "count")}];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v10 = v6;
+    v10 = keysCopy;
     v11 = [v10 countByEnumeratingWithState:&v53 objects:v61 count:16];
     if (v11)
     {
@@ -371,7 +371,7 @@ LABEL_9:
           v44 = sub_1000082A0;
           v45 = sub_1000082B0;
           v46 = 0;
-          v34 = [(ZhuGeService *)self domainString];
+          domainString = [(ZhuGeService *)self domainString];
           ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setBulkKeys:getValuesAndError:]", 370, @"In bulk query, query key: %@ in %@entrusted way", v18, v19, v20, v13);
 
           v40[0] = _NSConcreteStackBlock;
@@ -423,15 +423,15 @@ LABEL_9:
   }
 
   ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setBulkKeys:getValuesAndError:]", 390, @"End: bulk query keys", v27, v28, v29, v33);
-  v37[2](v37, v30, v31);
+  errorCopy[2](errorCopy, v30, v31);
 }
 
-- (void)setInternalKey:(id)a3 andOptions:(id)a4 andPreferences:(id)a5 getValueAndError:(id)a6
+- (void)setInternalKey:(id)key andOptions:(id)options andPreferences:(id)preferences getValueAndError:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  optionsCopy = options;
+  preferencesCopy = preferences;
+  errorCopy = error;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -445,7 +445,7 @@ LABEL_9:
   v37 = sub_1000082B0;
   v38 = 0;
   [(ZhuGeService *)self assertCallerEntitledForInternalService];
-  if (!v10)
+  if (!keyCopy)
   {
     ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setInternalKey:andOptions:andPreferences:getValueAndError:]", 409, @"key pointer is nil!", v14, v15, v16, v29);
     v27 = [NSError errorWithZhuGeErrorCode:45 underlyingError:0];
@@ -458,14 +458,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setInternalKey:andOptions:andPreferences:getValueAndError:]", 414, @"Received internal key: %@", v14, v15, v16, v10);
+  ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setInternalKey:andOptions:andPreferences:getValueAndError:]", 414, @"Received internal key: %@", v14, v15, v16, keyCopy);
   v17 = v40;
   obj = v40[5];
-  v18 = [(ZhuGeService *)self isCallerEntitledforInternalKey:v10 withError:&obj];
+  v18 = [(ZhuGeService *)self isCallerEntitledforInternalKey:keyCopy withError:&obj];
   objc_storeStrong(v17 + 5, obj);
   if (!v18)
   {
-    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setInternalKey:andOptions:andPreferences:getValueAndError:]", 418, @"The caller is not entitled for internal key %@!", v19, v20, v21, v10);
+    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setInternalKey:andOptions:andPreferences:getValueAndError:]", 418, @"The caller is not entitled for internal key %@!", v19, v20, v21, keyCopy);
     goto LABEL_7;
   }
 
@@ -481,26 +481,26 @@ LABEL_7:
     v30[3] = &unk_100014770;
     v30[4] = &v33;
     v30[5] = &v39;
-    [v23 setKey:v10 andOptions:v11 andPreferences:v12 getValueAndError:v30];
+    [v23 setKey:keyCopy andOptions:optionsCopy andPreferences:preferencesCopy getValueAndError:v30];
   }
 
   else
   {
-    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setInternalKey:andOptions:andPreferences:getValueAndError:]", 425, @"Failed to get internal service proxy for internal key %@!", v24, v25, v26, v10);
+    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setInternalKey:andOptions:andPreferences:getValueAndError:]", 425, @"Failed to get internal service proxy for internal key %@!", v24, v25, v26, keyCopy);
     v23 = 0;
   }
 
 LABEL_8:
-  v13[2](v13, v34[5], v40[5]);
+  errorCopy[2](errorCopy, v34[5], v40[5]);
   _Block_object_dispose(&v33, 8);
 
   _Block_object_dispose(&v39, 8);
 }
 
-- (void)setBulkInternalKeys:(id)a3 getValuesAndError:(id)a4
+- (void)setBulkInternalKeys:(id)keys getValuesAndError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  errorCopy = error;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -514,7 +514,7 @@ LABEL_8:
   v29 = sub_1000082B0;
   v30 = 0;
   [(ZhuGeService *)self assertCallerEntitledForInternalService];
-  if (!v6)
+  if (!keysCopy)
   {
     ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setBulkInternalKeys:getValuesAndError:]", 449, @"keysDict pointer is nil!", v8, v9, v10, v21);
     v19 = [NSError errorWithZhuGeErrorCode:45 underlyingError:0];
@@ -543,7 +543,7 @@ LABEL_7:
   v23[3] = &unk_100014798;
   v23[4] = &v25;
   v23[5] = &v31;
-  [v12 setBulkKeys:v6 getValuesAndError:v23];
+  [v12 setBulkKeys:keysCopy getValuesAndError:v23];
   if (!v26[5])
   {
     ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setBulkInternalKeys:getValuesAndError:]", 469, @"In bulk query, failed to query internal keys!", v16, v17, v18, v22);
@@ -551,26 +551,26 @@ LABEL_7:
 
 LABEL_8:
   ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setBulkInternalKeys:getValuesAndError:]", 474, @"End: bulk query internal keys", v16, v17, v18, v22);
-  v7[2](v7, v26[5], v32[5]);
+  errorCopy[2](errorCopy, v26[5], v32[5]);
   _Block_object_dispose(&v25, 8);
 
   _Block_object_dispose(&v31, 8);
 }
 
-- (void)setMGKey:(id)a3 getValueAndError:(id)a4
+- (void)setMGKey:(id)key getValueAndError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  errorCopy = error;
   [(ZhuGeService *)self assertCallerEntitledForService];
-  if (v6)
+  if (keyCopy)
   {
-    ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setMGKey:getValueAndError:]", 493, @"Trying MG key %@", v8, v9, v10, v6);
+    ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setMGKey:getValueAndError:]", 493, @"Trying MG key %@", v8, v9, v10, keyCopy);
     v17 = 0;
-    v11 = MGQuery(v6, &v17);
+    v11 = MGQuery(keyCopy, &v17);
     v15 = v17;
     if (!v11)
     {
-      ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setMGKey:getValueAndError:]", 498, @"%@ query failed!", v12, v13, v14, v6);
+      ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setMGKey:getValueAndError:]", 498, @"%@ query failed!", v12, v13, v14, keyCopy);
     }
   }
 
@@ -581,24 +581,24 @@ LABEL_8:
     v11 = 0;
   }
 
-  v7[2](v7, v11, v15);
+  errorCopy[2](errorCopy, v11, v15);
 }
 
-- (void)setBulkMGKeys:(id)a3 getValuesAndError:(id)a4
+- (void)setBulkMGKeys:(id)keys getValuesAndError:(id)error
 {
-  v6 = a3;
-  v33 = a4;
+  keysCopy = keys;
+  errorCopy = error;
   [(ZhuGeService *)self assertCallerEntitledForService];
-  v32 = v6;
-  if (v6)
+  v32 = keysCopy;
+  if (keysCopy)
   {
     ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setBulkMGKeys:getValuesAndError:]", 522, @"Begin: bulk query MG keys", v7, v8, v9, v28);
-    v35 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+    v35 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(keysCopy, "count")}];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    obj = v6;
+    obj = keysCopy;
     v10 = [obj countByEnumeratingWithState:&v49 objects:v57 count:16];
     if (v10)
     {
@@ -625,7 +625,7 @@ LABEL_8:
           v40 = sub_1000082A0;
           v41 = sub_1000082B0;
           v42 = 0;
-          v30 = [(ZhuGeService *)self domainString];
+          domainString = [(ZhuGeService *)self domainString];
           ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setBulkMGKeys:getValuesAndError:]", 531, @"In bulk query, query key: %@ from %@entrusted MG", v14, v15, v16, v13);
 
           v36[0] = _NSConcreteStackBlock;
@@ -677,13 +677,13 @@ LABEL_8:
   }
 
   ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setBulkMGKeys:getValuesAndError:]", 551, @"End: bulk query MG keys", v23, v24, v25, v29);
-  v33[2](v33, v26, v27);
+  errorCopy[2](errorCopy, v26, v27);
 }
 
-- (void)setInternalMGKey:(id)a3 getValueAndError:(id)a4
+- (void)setInternalMGKey:(id)key getValueAndError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  errorCopy = error;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -697,7 +697,7 @@ LABEL_8:
   v25 = sub_1000082B0;
   v26 = 0;
   [(ZhuGeService *)self assertCallerEntitledForInternalService];
-  if (!v6)
+  if (!keyCopy)
   {
     ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setInternalMGKey:getValueAndError:]", 566, @"key pointer is nil!", v8, v9, v10, v18);
     v16 = [NSError errorWithZhuGeErrorCode:45 underlyingError:0];
@@ -709,14 +709,14 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setInternalMGKey:getValueAndError:]", 571, @"Trying internal MG key %@", v8, v9, v10, v6);
+  ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setInternalMGKey:getValueAndError:]", 571, @"Trying internal MG key %@", v8, v9, v10, keyCopy);
   v11 = v28;
   obj = v28[5];
   v12 = [ZhuGeInternalSupportAssistant getXpcProxyWithError:&obj];
   objc_storeStrong(v11 + 5, obj);
   if (!v12)
   {
-    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setInternalMGKey:getValueAndError:]", 576, @"Failed to get internal service proxy for internal MG key %@!", v13, v14, v15, v6);
+    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setInternalMGKey:getValueAndError:]", 576, @"Failed to get internal service proxy for internal MG key %@!", v13, v14, v15, keyCopy);
     goto LABEL_6;
   }
 
@@ -726,18 +726,18 @@ LABEL_6:
   v19[3] = &unk_100014770;
   v19[4] = &v21;
   v19[5] = &v27;
-  [v12 setMGKey:v6 getValueAndError:v19];
+  [v12 setMGKey:keyCopy getValueAndError:v19];
 LABEL_7:
-  v7[2](v7, v22[5], v28[5]);
+  errorCopy[2](errorCopy, v22[5], v28[5]);
   _Block_object_dispose(&v21, 8);
 
   _Block_object_dispose(&v27, 8);
 }
 
-- (void)setBulkInternalMGKeys:(id)a3 getValuesAndError:(id)a4
+- (void)setBulkInternalMGKeys:(id)keys getValuesAndError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  errorCopy = error;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -751,7 +751,7 @@ LABEL_7:
   v29 = sub_1000082B0;
   v30 = 0;
   [(ZhuGeService *)self assertCallerEntitledForInternalService];
-  if (!v6)
+  if (!keysCopy)
   {
     ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setBulkInternalMGKeys:getValuesAndError:]", 600, @"keysList pointer is nil!", v8, v9, v10, v21);
     v19 = [NSError errorWithZhuGeErrorCode:45 underlyingError:0];
@@ -780,7 +780,7 @@ LABEL_7:
   v23[3] = &unk_100014798;
   v23[4] = &v25;
   v23[5] = &v31;
-  [v12 setBulkMGKeys:v6 getValuesAndError:v23];
+  [v12 setBulkMGKeys:keysCopy getValuesAndError:v23];
   if (!v26[5])
   {
     ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setBulkInternalMGKeys:getValuesAndError:]", 620, @"In bulk query, failed to query internal MG keys!", v16, v17, v18, v22);
@@ -788,7 +788,7 @@ LABEL_7:
 
 LABEL_8:
   ZhuGeLog(524544, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeSupport/ZhuGeService/ZhuGeService.m", "[ZhuGeService setBulkInternalMGKeys:getValuesAndError:]", 625, @"End: bulk query internal MG keys", v16, v17, v18, v22);
-  v7[2](v7, v26[5], v32[5]);
+  errorCopy[2](errorCopy, v26[5], v32[5]);
   _Block_object_dispose(&v25, 8);
 
   _Block_object_dispose(&v31, 8);

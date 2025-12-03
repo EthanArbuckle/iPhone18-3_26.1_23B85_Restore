@@ -1,16 +1,16 @@
 @interface OrgLukhnosPortmobileUtilObjects
-+ (BOOL)equalsWithId:(id)a3 withId:(id)a4;
-+ (id)toStringWithId:(id)a3;
-+ (int)hashCodeWithId:(id)a3;
++ (BOOL)equalsWithId:(id)id withId:(id)withId;
++ (id)toStringWithId:(id)id;
++ (int)hashCodeWithId:(id)id;
 @end
 
 @implementation OrgLukhnosPortmobileUtilObjects
 
-+ (int)hashCodeWithId:(id)a3
++ (int)hashCodeWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    return [a3 hash];
+    return [id hash];
   }
 
   else
@@ -19,11 +19,11 @@
   }
 }
 
-+ (id)toStringWithId:(id)a3
++ (id)toStringWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    return [a3 description];
+    return [id description];
   }
 
   else
@@ -32,14 +32,14 @@
   }
 }
 
-+ (BOOL)equalsWithId:(id)a3 withId:(id)a4
++ (BOOL)equalsWithId:(id)id withId:(id)withId
 {
-  result = (a3 | a4) == 0;
-  if (a3)
+  result = (id | withId) == 0;
+  if (id)
   {
-    if (a4)
+    if (withId)
     {
-      return [a3 isEqual:a4];
+      return [id isEqual:withId];
     }
   }
 

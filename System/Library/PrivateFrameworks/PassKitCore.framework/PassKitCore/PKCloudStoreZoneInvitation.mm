@@ -1,35 +1,35 @@
 @interface PKCloudStoreZoneInvitation
-+ (id)cloudStoreZoneInvitationWithProtobuf:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCloudStoreZoneInvitation:(id)a3;
-- (PKCloudStoreZoneInvitation)initWithCoder:(id)a3;
++ (id)cloudStoreZoneInvitationWithProtobuf:(id)protobuf;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCloudStoreZoneInvitation:(id)invitation;
+- (PKCloudStoreZoneInvitation)initWithCoder:(id)coder;
 - (id)description;
 - (id)protobuf;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudStoreZoneInvitation
 
-+ (id)cloudStoreZoneInvitationWithProtobuf:(id)a3
++ (id)cloudStoreZoneInvitationWithProtobuf:(id)protobuf
 {
-  v3 = a3;
+  protobufCopy = protobuf;
   v4 = objc_alloc_init(PKCloudStoreZoneInvitation);
   v5 = MEMORY[0x1E695DFF8];
-  v6 = [v3 shareURL];
-  v7 = [v5 URLWithString:v6];
+  shareURL = [protobufCopy shareURL];
+  v7 = [v5 URLWithString:shareURL];
   [(PKCloudStoreZoneInvitation *)v4 setShareURL:v7];
 
-  v8 = [v3 shareInvitationToken];
-  [(PKCloudStoreZoneInvitation *)v4 setShareInvitationToken:v8];
+  shareInvitationToken = [protobufCopy shareInvitationToken];
+  [(PKCloudStoreZoneInvitation *)v4 setShareInvitationToken:shareInvitationToken];
 
-  v9 = [v3 containerIdentifier];
-  [(PKCloudStoreZoneInvitation *)v4 setContainerIdentifier:v9];
+  containerIdentifier = [protobufCopy containerIdentifier];
+  [(PKCloudStoreZoneInvitation *)v4 setContainerIdentifier:containerIdentifier];
 
-  v10 = [v3 zoneName];
-  [(PKCloudStoreZoneInvitation *)v4 setZoneName:v10];
+  zoneName = [protobufCopy zoneName];
+  [(PKCloudStoreZoneInvitation *)v4 setZoneName:zoneName];
 
   v11 = MEMORY[0x1E695DF00];
-  [v3 dateCreated];
+  [protobufCopy dateCreated];
   v13 = v12;
 
   v14 = [v11 dateWithTimeIntervalSinceReferenceDate:v13];
@@ -41,51 +41,51 @@
 - (id)protobuf
 {
   v3 = objc_alloc_init(PKProtobufCloudStoreZoneInvitation);
-  v4 = [(PKCloudStoreZoneInvitation *)self shareURL];
-  v5 = [v4 absoluteString];
-  [(PKProtobufCloudStoreZoneInvitation *)v3 setShareURL:v5];
+  shareURL = [(PKCloudStoreZoneInvitation *)self shareURL];
+  absoluteString = [shareURL absoluteString];
+  [(PKProtobufCloudStoreZoneInvitation *)v3 setShareURL:absoluteString];
 
-  v6 = [(PKCloudStoreZoneInvitation *)self shareInvitationToken];
-  [(PKProtobufCloudStoreZoneInvitation *)v3 setShareInvitationToken:v6];
+  shareInvitationToken = [(PKCloudStoreZoneInvitation *)self shareInvitationToken];
+  [(PKProtobufCloudStoreZoneInvitation *)v3 setShareInvitationToken:shareInvitationToken];
 
-  v7 = [(PKCloudStoreZoneInvitation *)self containerIdentifier];
-  [(PKProtobufCloudStoreZoneInvitation *)v3 setContainerIdentifier:v7];
+  containerIdentifier = [(PKCloudStoreZoneInvitation *)self containerIdentifier];
+  [(PKProtobufCloudStoreZoneInvitation *)v3 setContainerIdentifier:containerIdentifier];
 
-  v8 = [(PKCloudStoreZoneInvitation *)self zoneName];
-  [(PKProtobufCloudStoreZoneInvitation *)v3 setZoneName:v8];
+  zoneName = [(PKCloudStoreZoneInvitation *)self zoneName];
+  [(PKProtobufCloudStoreZoneInvitation *)v3 setZoneName:zoneName];
 
-  v9 = [(PKCloudStoreZoneInvitation *)self dateCreated];
-  [v9 timeIntervalSinceReferenceDate];
+  dateCreated = [(PKCloudStoreZoneInvitation *)self dateCreated];
+  [dateCreated timeIntervalSinceReferenceDate];
   [(PKProtobufCloudStoreZoneInvitation *)v3 setDateCreated:?];
 
   return v3;
 }
 
-- (PKCloudStoreZoneInvitation)initWithCoder:(id)a3
+- (PKCloudStoreZoneInvitation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKCloudStoreZoneInvitation;
   v5 = [(PKCloudStoreZoneInvitation *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shareURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shareURL"];
     shareURL = v5->_shareURL;
     v5->_shareURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shareInvitationToken"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shareInvitationToken"];
     shareInvitationToken = v5->_shareInvitationToken;
     v5->_shareInvitationToken = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerIdentifier"];
     containerIdentifier = v5->_containerIdentifier;
     v5->_containerIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
     zoneName = v5->_zoneName;
     v5->_zoneName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateCreated"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateCreated"];
     dateCreated = v5->_dateCreated;
     v5->_dateCreated = v14;
   }
@@ -93,39 +93,39 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   shareURL = self->_shareURL;
-  v5 = a3;
-  [v5 encodeObject:shareURL forKey:@"shareURL"];
-  [v5 encodeObject:self->_shareInvitationToken forKey:@"shareInvitationToken"];
-  [v5 encodeObject:self->_containerIdentifier forKey:@"containerIdentifier"];
-  [v5 encodeObject:self->_zoneName forKey:@"zoneName"];
-  [v5 encodeObject:self->_dateCreated forKey:@"dateCreated"];
+  coderCopy = coder;
+  [coderCopy encodeObject:shareURL forKey:@"shareURL"];
+  [coderCopy encodeObject:self->_shareInvitationToken forKey:@"shareInvitationToken"];
+  [coderCopy encodeObject:self->_containerIdentifier forKey:@"containerIdentifier"];
+  [coderCopy encodeObject:self->_zoneName forKey:@"zoneName"];
+  [coderCopy encodeObject:self->_dateCreated forKey:@"dateCreated"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCloudStoreZoneInvitation *)self isEqualToCloudStoreZoneInvitation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCloudStoreZoneInvitation *)self isEqualToCloudStoreZoneInvitation:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToCloudStoreZoneInvitation:(id)a3
+- (BOOL)isEqualToCloudStoreZoneInvitation:(id)invitation
 {
-  v4 = a3;
+  invitationCopy = invitation;
   shareURL = self->_shareURL;
-  v6 = v4[1];
+  v6 = invitationCopy[1];
   if (shareURL)
   {
     v7 = v6 == 0;
@@ -150,7 +150,7 @@
   }
 
   shareInvitationToken = self->_shareInvitationToken;
-  v9 = v4[2];
+  v9 = invitationCopy[2];
   if (shareInvitationToken && v9)
   {
     if (([(NSData *)shareInvitationToken isEqual:?]& 1) == 0)
@@ -165,7 +165,7 @@
   }
 
   containerIdentifier = self->_containerIdentifier;
-  v11 = v4[3];
+  v11 = invitationCopy[3];
   if (containerIdentifier && v11)
   {
     if (([(NSString *)containerIdentifier isEqual:?]& 1) == 0)
@@ -180,7 +180,7 @@
   }
 
   zoneName = self->_zoneName;
-  v13 = v4[4];
+  v13 = invitationCopy[4];
   if (!zoneName || !v13)
   {
     if (zoneName == v13)
@@ -200,7 +200,7 @@ LABEL_26:
 
 LABEL_22:
   dateCreated = self->_dateCreated;
-  v15 = v4[5];
+  v15 = invitationCopy[5];
   if (dateCreated && v15)
   {
     v16 = [(NSDate *)dateCreated isEqual:?];

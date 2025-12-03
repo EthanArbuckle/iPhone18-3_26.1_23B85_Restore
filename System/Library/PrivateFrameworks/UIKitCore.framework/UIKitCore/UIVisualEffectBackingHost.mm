@@ -1,30 +1,30 @@
 @interface UIVisualEffectBackingHost
 - (BOOL)_hasDeferredAnimations;
 - (UIView)view;
-- (id)_effectDescriptorForEffects:(id)a3 usage:(int64_t)a4;
-- (id)_initialValueForKey:(id)a3;
+- (id)_effectDescriptorForEffects:(id)effects usage:(int64_t)usage;
+- (id)_initialValueForKey:(id)key;
 - (id)_mergedTraitCollection;
-- (id)initForView:(id)a3;
+- (id)initForView:(id)view;
 - (void)_configureEffects;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
 - (void)_ensureBackgroundHost;
 - (void)_ensureContentHost;
-- (void)_generateBackgroundEffects:(id)a3 contentEffects:(id)a4;
-- (void)_generateDeferredAnimations:(id)a3;
+- (void)_generateBackgroundEffects:(id)effects contentEffects:(id)contentEffects;
+- (void)_generateDeferredAnimations:(id)animations;
 - (void)_registerNotifications;
-- (void)_setCaptureGroupName:(id)a3;
+- (void)_setCaptureGroupName:(id)name;
 - (void)_unregisterNotifications;
-- (void)_updateContentViewVibrancyTraitOverride:(id)a3;
-- (void)_updateEffectForAccessibilityChanges:(id)a3;
-- (void)_updateEnvironmentAndFlagUpdatesIfNecessary:(id)a3;
+- (void)_updateContentViewVibrancyTraitOverride:(id)override;
+- (void)_updateEffectForAccessibilityChanges:(id)changes;
+- (void)_updateEnvironmentAndFlagUpdatesIfNecessary:(id)necessary;
 - (void)_updateSubviews;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)invalidateCaptureGroupName;
-- (void)setBackgroundEffects:(id)a3;
-- (void)setContentEffects:(id)a3;
-- (void)setVisualEffect:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBackgroundEffects:(id)effects;
+- (void)setContentEffects:(id)effects;
+- (void)setVisualEffect:(id)effect;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UIVisualEffectBackingHost
@@ -32,9 +32,9 @@
 - (id)_mergedTraitCollection
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v3 = [WeakRetained traitCollection];
+  traitCollection = [WeakRetained traitCollection];
 
-  return v3;
+  return traitCollection;
 }
 
 - (void)_configureEffects
@@ -44,15 +44,15 @@
     return;
   }
 
-  v4 = self;
-  ++v4->_reentrantCount;
-  v17 = v4;
-  v5 = [(_UIVisualEffectEnvironment *)v4->_environment traitCollection];
+  selfCopy = self;
+  ++selfCopy->_reentrantCount;
+  v17 = selfCopy;
+  traitCollection = [(_UIVisualEffectEnvironment *)selfCopy->_environment traitCollection];
 
-  if (!v5)
+  if (!traitCollection)
   {
-    v6 = [(UIVisualEffectBackingHost *)v17 _mergedTraitCollection];
-    [(_UIVisualEffectEnvironment *)v17->_environment setTraitCollection:v6];
+    _mergedTraitCollection = [(UIVisualEffectBackingHost *)v17 _mergedTraitCollection];
+    [(_UIVisualEffectEnvironment *)v17->_environment setTraitCollection:_mergedTraitCollection];
   }
 
   if (*&self->_flags)
@@ -63,16 +63,16 @@
     if ((*&self->_flags & 8) == 0)
     {
       captureGroup = v17->_captureGroup;
-      v12 = [(_UIVisualEffectHost *)v17->_backgroundHost contentView];
-      [v12 setCaptureGroup:captureGroup];
+      contentView = [(_UIVisualEffectHost *)v17->_backgroundHost contentView];
+      [contentView setCaptureGroup:captureGroup];
     }
 
     v7 = v17->_backgroundHost;
     *&self->_flags &= ~1u;
-    v13 = [v8 layerHitTestsAsOpaque];
+    layerHitTestsAsOpaque = [v8 layerHitTestsAsOpaque];
     WeakRetained = objc_loadWeakRetained(&v17->_view);
-    v15 = [WeakRetained layer];
-    [v15 setHitTestsAsOpaque:v13];
+    layer = [WeakRetained layer];
+    [layer setHitTestsAsOpaque:layerHitTestsAsOpaque];
 
     if ((*&self->_flags & 2) != 0)
     {
@@ -108,8 +108,8 @@ LABEL_12:
 
 - (void)_registerNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__updateEffectForAccessibilityChanges_ name:@"UIAccessibilityReduceTransparencyStatusDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateEffectForAccessibilityChanges_ name:@"UIAccessibilityReduceTransparencyStatusDidChangeNotification" object:0];
 }
 
 - (void)invalidateCaptureGroupName
@@ -125,8 +125,8 @@ LABEL_12:
   {
     v4 = MEMORY[0x1E696AEC0];
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v5 = [v4 stringWithFormat:@"%p", WeakRetained];
-    [(_UIVisualEffectViewBackdropCaptureGroup *)self->_captureGroup setGroupName:v5];
+    weakRetained = [v4 stringWithFormat:@"%p", WeakRetained];
+    [(_UIVisualEffectViewBackdropCaptureGroup *)self->_captureGroup setGroupName:weakRetained];
   }
 }
 
@@ -151,15 +151,15 @@ LABEL_12:
 - (void)_updateSubviews
 {
   v3 = MEMORY[0x1E695DFA8];
-  v4 = [(UIVisualEffectBackingHost *)self visualEffectSubviews];
-  v5 = [v3 setWithArray:v4];
+  visualEffectSubviews = [(UIVisualEffectBackingHost *)self visualEffectSubviews];
+  v5 = [v3 setWithArray:visualEffectSubviews];
 
-  v6 = [(_UIVisualEffectHost *)self->_backgroundHost views];
-  v7 = [(_UIVisualEffectHost *)self->_contentHost views];
-  v8 = v7;
-  if (v6)
+  views = [(_UIVisualEffectHost *)self->_backgroundHost views];
+  views2 = [(_UIVisualEffectHost *)self->_contentHost views];
+  v8 = views2;
+  if (views)
   {
-    v9 = v7 == 0;
+    v9 = views2 == 0;
   }
 
   else
@@ -169,14 +169,14 @@ LABEL_12:
 
   if (v9)
   {
-    if (v6)
+    if (views)
     {
-      v10 = v6;
+      v10 = views;
     }
 
     else
     {
-      v10 = v7;
+      v10 = views2;
     }
 
     v11 = v10;
@@ -184,7 +184,7 @@ LABEL_12:
 
   else
   {
-    v11 = [v6 arrayByAddingObjectsFromArray:v7];
+    v11 = [views arrayByAddingObjectsFromArray:views2];
   }
 
   v12 = v11;
@@ -336,8 +336,8 @@ void __44__UIVisualEffectBackingHost__updateSubviews__block_invoke(uint64_t a1)
 
 - (void)_unregisterNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIAccessibilityReduceTransparencyStatusDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIAccessibilityReduceTransparencyStatusDidChangeNotification" object:0];
 }
 
 - (void)_ensureBackgroundHost
@@ -377,24 +377,24 @@ void __44__UIVisualEffectBackingHost__updateSubviews__block_invoke(uint64_t a1)
   }
 }
 
-- (id)initForView:(id)a3
+- (id)initForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v18.receiver = self;
   v18.super_class = UIVisualEffectBackingHost;
   v5 = [(UIVisualEffectBackingHost *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_view, v4);
+    objc_storeWeak(&v5->_view, viewCopy);
     v7 = [[_UIVisualEffectEnvironment alloc] initWithHost:v6];
     environment = v6->_environment;
     v6->_environment = v7;
 
     [(_UIVisualEffectEnvironment *)v6->_environment setBlurQuality:0];
     WeakRetained = objc_loadWeakRetained(&v6->_view);
-    v10 = [WeakRetained traitCollection];
-    v11 = [v10 userInterfaceIdiom] != 3 && _AXSEnhanceBackgroundContrastEnabled() != 0;
+    traitCollection = [WeakRetained traitCollection];
+    v11 = [traitCollection userInterfaceIdiom] != 3 && _AXSEnhanceBackgroundContrastEnabled() != 0;
     [(_UIVisualEffectEnvironment *)v6->_environment setReducedTransperancy:v11];
 
     v12 = objc_alloc_init(_UIVisualEffectViewBackdropCaptureGroup);
@@ -415,18 +415,18 @@ void __44__UIVisualEffectBackingHost__updateSubviews__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)_setCaptureGroupName:(id)a3
+- (void)_setCaptureGroupName:(id)name
 {
-  objc_storeStrong(&self->_captureGroupName, a3);
+  objc_storeStrong(&self->_captureGroupName, name);
 
   [(UIVisualEffectBackingHost *)self invalidateCaptureGroupName];
 }
 
-- (void)setBackgroundEffects:(id)a3
+- (void)setBackgroundEffects:(id)effects
 {
-  v4 = a3;
+  effectsCopy = effects;
   v5 = self->_backgroundEffects;
-  v6 = v4;
+  v6 = effectsCopy;
   v12 = v6;
   if (v5 == v6)
   {
@@ -472,9 +472,9 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)setVisualEffect:(id)a3
+- (void)setVisualEffect:(id)effect
 {
-  v4 = [a3 copy];
+  v4 = [effect copy];
   visualEffect = self->_visualEffect;
   self->_visualEffect = v4;
 
@@ -485,9 +485,9 @@ LABEL_12:
   [(UIVisualEffectBackingHost *)self setBackgroundEffects:v7];
 }
 
-- (void)setContentEffects:(id)a3
+- (void)setContentEffects:(id)effects
 {
-  v13 = a3;
+  effectsCopy = effects;
   contentEffects = self->_contentEffects;
   v5 = MEMORY[0x1E695E0F0];
   if (!contentEffects)
@@ -496,9 +496,9 @@ LABEL_12:
   }
 
   v6 = contentEffects;
-  if (v13)
+  if (effectsCopy)
   {
-    v7 = v13;
+    v7 = effectsCopy;
   }
 
   else
@@ -529,18 +529,18 @@ LABEL_12:
   }
 }
 
-- (void)_updateEnvironmentAndFlagUpdatesIfNecessary:(id)a3
+- (void)_updateEnvironmentAndFlagUpdatesIfNecessary:(id)necessary
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  necessaryCopy = necessary;
   v5 = [(_UIVisualEffectEnvironment *)self->_environment copy];
-  v4[2](v4);
+  necessaryCopy[2](necessaryCopy);
   flags = self->_flags;
   if ((~*&flags & 3) != 0)
   {
-    v8 = [(_UIVisualEffectEnvironment *)self->_environment traitCollection];
-    v9 = [v5 traitCollection];
-    v7 = [v8 changedTraitsFromTraitCollection:v9];
+    traitCollection = [(_UIVisualEffectEnvironment *)self->_environment traitCollection];
+    traitCollection2 = [v5 traitCollection];
+    v7 = [traitCollection changedTraitsFromTraitCollection:traitCollection2];
 
     *&flags = self->_flags;
     if (*&flags)
@@ -640,7 +640,7 @@ LABEL_27:
   }
 }
 
-- (void)_updateEffectForAccessibilityChanges:(id)a3
+- (void)_updateEffectForAccessibilityChanges:(id)changes
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -664,9 +664,9 @@ uint64_t __66__UIVisualEffectBackingHost__updateEffectForAccessibilityChanges___
   return [v6 setReducedMotion:v5];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [(_UIVisualEffectEnvironment *)self->_environment traitCollection];
+  traitCollection = [(_UIVisualEffectEnvironment *)self->_environment traitCollection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54__UIVisualEffectBackingHost_traitCollectionDidChange___block_invoke;
@@ -711,33 +711,33 @@ void __54__UIVisualEffectBackingHost_traitCollectionDidChange___block_invoke(uin
   [*(*(a1 + 32) + 64) setReducedTransperancy:v4];
 }
 
-- (void)_generateDeferredAnimations:(id)a3
+- (void)_generateDeferredAnimations:(id)animations
 {
   environment = self->_environment;
-  v6 = a3;
-  v7 = [(_UIVisualEffectEnvironment *)environment traitCollection];
+  animationsCopy = animations;
+  traitCollection = [(_UIVisualEffectEnvironment *)environment traitCollection];
 
-  if (!v7)
+  if (!traitCollection)
   {
-    v8 = [(UIVisualEffectBackingHost *)self _mergedTraitCollection];
-    [(_UIVisualEffectEnvironment *)self->_environment setTraitCollection:v8];
+    _mergedTraitCollection = [(UIVisualEffectBackingHost *)self _mergedTraitCollection];
+    [(_UIVisualEffectEnvironment *)self->_environment setTraitCollection:_mergedTraitCollection];
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"backgroundEffects"];
-  v9 = [v6 objectForKeyedSubscript:@"contentEffects"];
-  v10 = [v6 objectForKeyedSubscript:@"effect"];
+  v15 = [animationsCopy objectForKeyedSubscript:@"backgroundEffects"];
+  v9 = [animationsCopy objectForKeyedSubscript:@"contentEffects"];
+  v10 = [animationsCopy objectForKeyedSubscript:@"effect"];
 
   if (v15 || v9 || v10)
   {
-    v11 = [v15 animationFrames];
-    if ([v11 count] >= 3)
+    animationFrames = [v15 animationFrames];
+    if ([animationFrames count] >= 3)
     {
     }
 
     else
     {
-      v12 = [v9 animationFrames];
-      v13 = [v12 count];
+      animationFrames2 = [v9 animationFrames];
+      v13 = [animationFrames2 count];
 
       if (v13 <= 2)
       {
@@ -746,43 +746,43 @@ void __54__UIVisualEffectBackingHost_traitCollectionDidChange___block_invoke(uin
       }
     }
 
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UIVisualEffectBackingHost.m" lineNumber:415 description:@"This should not exist."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIVisualEffectBackingHost.m" lineNumber:415 description:@"This should not exist."];
   }
 
 LABEL_11:
 }
 
-- (void)_generateBackgroundEffects:(id)a3 contentEffects:(id)a4
+- (void)_generateBackgroundEffects:(id)effects contentEffects:(id)contentEffects
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = v8;
-  ++v8->_reentrantCount;
-  if (v6)
+  effectsCopy = effects;
+  contentEffectsCopy = contentEffects;
+  selfCopy = self;
+  v9 = selfCopy;
+  ++selfCopy->_reentrantCount;
+  if (effectsCopy)
   {
-    [(UIVisualEffectBackingHost *)v8 _ensureBackgroundHost];
-    v10 = [v6 animationFrames];
-    v11 = [v10 lastObject];
-    v12 = [v11 value];
+    [(UIVisualEffectBackingHost *)selfCopy _ensureBackgroundHost];
+    animationFrames = [effectsCopy animationFrames];
+    lastObject = [animationFrames lastObject];
+    value = [lastObject value];
 
-    v13 = [(UIVisualEffectBackingHost *)v9 _effectDescriptorForEffects:v12 usage:1];
+    v13 = [(UIVisualEffectBackingHost *)v9 _effectDescriptorForEffects:value usage:1];
     [(_UIVisualEffectHost *)v9->_backgroundHost setPrimaryCaptureGroup:v9->_captureGroup];
     if ((*&v9->_flags & 8) == 0)
     {
       captureGroup = v9->_captureGroup;
-      v15 = [(_UIVisualEffectHost *)v9->_backgroundHost contentView];
-      [v15 setCaptureGroup:captureGroup];
+      contentView = [(_UIVisualEffectHost *)v9->_backgroundHost contentView];
+      [contentView setCaptureGroup:captureGroup];
     }
 
     v16 = v9->_backgroundHost;
-    v17 = [v13 layerHitTestsAsOpaque];
+    layerHitTestsAsOpaque = [v13 layerHitTestsAsOpaque];
     WeakRetained = objc_loadWeakRetained(&v9->_view);
-    v19 = [WeakRetained layer];
-    [v19 setHitTestsAsOpaque:v17];
+    layer = [WeakRetained layer];
+    [layer setHitTestsAsOpaque:layerHitTestsAsOpaque];
 
-    if (v7)
+    if (contentEffectsCopy)
     {
       goto LABEL_5;
     }
@@ -792,14 +792,14 @@ LABEL_11:
   {
     v13 = 0;
     v16 = 0;
-    if (v7)
+    if (contentEffectsCopy)
     {
 LABEL_5:
       [(UIVisualEffectBackingHost *)v9 _ensureContentHost];
-      v20 = [v7 animationFrames];
-      v21 = [v20 lastObject];
-      v22 = [v21 value];
-      v23 = [(UIVisualEffectBackingHost *)v9 _effectDescriptorForEffects:v22 usage:2];
+      animationFrames2 = [contentEffectsCopy animationFrames];
+      lastObject2 = [animationFrames2 lastObject];
+      value2 = [lastObject2 value];
+      v23 = [(UIVisualEffectBackingHost *)v9 _effectDescriptorForEffects:value2 usage:2];
 
       v24 = v9->_contentHost;
       goto LABEL_8;
@@ -823,44 +823,44 @@ LABEL_8:
   if (v27 == v9)
   {
     [(UIVisualEffectBackingHost *)v9 _updateSubviews];
-    if (v6)
+    if (effectsCopy)
     {
-      v28 = [v6 animationFrames];
-      v29 = [v28 count] - 1;
+      animationFrames3 = [effectsCopy animationFrames];
+      v29 = [animationFrames3 count] - 1;
       v48[0] = MEMORY[0x1E69E9820];
       v48[1] = 3221225472;
       v48[2] = __71__UIVisualEffectBackingHost__generateBackgroundEffects_contentEffects___block_invoke;
       v48[3] = &unk_1E70F6EC0;
       v49 = v16;
-      [v6 animateFrameAtIndex:v29 animations:v48];
+      [effectsCopy animateFrameAtIndex:v29 animations:v48];
     }
 
-    if (v7)
+    if (contentEffectsCopy)
     {
-      v30 = [v7 animationFrames];
-      v31 = [v30 count] - 1;
+      animationFrames4 = [contentEffectsCopy animationFrames];
+      v31 = [animationFrames4 count] - 1;
       v46[0] = MEMORY[0x1E69E9820];
       v46[1] = 3221225472;
       v46[2] = __71__UIVisualEffectBackingHost__generateBackgroundEffects_contentEffects___block_invoke_2;
       v46[3] = &unk_1E70F6EC0;
       v47 = v24;
-      [v7 animateFrameAtIndex:v31 animations:v46];
+      [contentEffectsCopy animateFrameAtIndex:v31 animations:v46];
     }
 
-    v32 = [(_UIVisualEffectHost *)v16 transitionEffectDescriptor];
-    v33 = [(_UIVisualEffectHost *)v24 transitionEffectDescriptor];
+    transitionEffectDescriptor = [(_UIVisualEffectHost *)v16 transitionEffectDescriptor];
+    transitionEffectDescriptor2 = [(_UIVisualEffectHost *)v24 transitionEffectDescriptor];
     objc_initWeak(&location, v9);
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __71__UIVisualEffectBackingHost__generateBackgroundEffects_contentEffects___block_invoke_3;
     v36[3] = &unk_1E710B768;
     objc_copyWeak(&v44, &location);
-    v37 = v6;
-    v38 = v7;
-    v34 = v32;
+    v37 = effectsCopy;
+    v38 = contentEffectsCopy;
+    v34 = transitionEffectDescriptor;
     v39 = v34;
     v40 = v16;
-    v35 = v33;
+    v35 = transitionEffectDescriptor2;
     v41 = v35;
     v42 = v24;
     v43 = v9;
@@ -933,10 +933,10 @@ LABEL_17:
   [(UIView *)v14 _backing_unwrapIfPossible];
 }
 
-- (id)_initialValueForKey:(id)a3
+- (id)_initialValueForKey:(id)key
 {
-  v4 = a3;
-  if ([@"backgroundEffects" isEqualToString:v4])
+  keyCopy = key;
+  if ([@"backgroundEffects" isEqualToString:keyCopy])
   {
     v5 = 40;
 LABEL_5:
@@ -944,7 +944,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([@"contentEffects" isEqualToString:v4])
+  if ([@"contentEffects" isEqualToString:keyCopy])
   {
     v5 = 32;
     goto LABEL_5;
@@ -956,16 +956,16 @@ LABEL_7:
   return v6;
 }
 
-- (id)_effectDescriptorForEffects:(id)a3 usage:(int64_t)a4
+- (id)_effectDescriptorForEffects:(id)effects usage:(int64_t)usage
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  effectsCopy = effects;
   v7 = objc_alloc_init(_UIVisualEffectDescriptor);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v6;
+  v8 = effectsCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -980,7 +980,7 @@ LABEL_7:
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v14 + 1) + 8 * i) _updateEffectDescriptor:v7 forEnvironment:self->_environment usage:{a4, v14}];
+        [*(*(&v14 + 1) + 8 * i) _updateEffectDescriptor:v7 forEnvironment:self->_environment usage:{usage, v14}];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -992,14 +992,14 @@ LABEL_7:
   return v7;
 }
 
-- (void)_updateContentViewVibrancyTraitOverride:(id)a3
+- (void)_updateContentViewVibrancyTraitOverride:(id)override
 {
   backgroundHost = self->_backgroundHost;
-  v7 = a3;
-  v4 = [(_UIVisualEffectHost *)backgroundHost currentEffectDescriptor];
-  v5 = [v4 allowsVibrancyInContent];
+  overrideCopy = override;
+  currentEffectDescriptor = [(_UIVisualEffectHost *)backgroundHost currentEffectDescriptor];
+  allowsVibrancyInContent = [currentEffectDescriptor allowsVibrancyInContent];
 
-  if (v5)
+  if (allowsVibrancyInContent)
   {
     v6 = 1;
   }
@@ -1009,17 +1009,17 @@ LABEL_7:
     v6 = -1;
   }
 
-  [v7 _setOverrideVibrancyTrait:v6];
+  [overrideCopy _setOverrideVibrancyTrait:v6];
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
-  v11 = self;
-  contentHost = v11->_contentHost;
-  WeakRetained = objc_loadWeakRetained(&v11->_view);
-  [(_UIVisualEffectHost *)contentHost _view:WeakRetained willMoveToWindow:a4];
+  selfCopy = self;
+  contentHost = selfCopy->_contentHost;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_view);
+  [(_UIVisualEffectHost *)contentHost _view:WeakRetained willMoveToWindow:toWindow];
 
-  v7 = objc_loadWeakRetained(&v11->_view);
+  v7 = objc_loadWeakRetained(&selfCopy->_view);
   v8 = v7[22];
   if (v8)
   {
@@ -1028,11 +1028,11 @@ LABEL_7:
 
   v9 = v8;
 
-  v10 = v11;
-  if (v9 == v11)
+  v10 = selfCopy;
+  if (v9 == selfCopy)
   {
-    [(UIVisualEffectBackingHost *)v11 didMoveToWindow];
-    v10 = v11;
+    [(UIVisualEffectBackingHost *)selfCopy didMoveToWindow];
+    v10 = selfCopy;
   }
 }
 

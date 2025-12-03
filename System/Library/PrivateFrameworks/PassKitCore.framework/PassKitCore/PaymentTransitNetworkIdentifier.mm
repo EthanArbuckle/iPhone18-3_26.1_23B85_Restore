@@ -1,24 +1,24 @@
 @interface PaymentTransitNetworkIdentifier
-+ (BOOL)passExistsInDatabase:(id)a3 forTransitNetworks:(id)a4 isTransitCard:(unint64_t)a5 expired:(unint64_t)a6;
-+ (id)_predicateForPaymentApplication:(id)a3;
-+ (id)_predicateForPaymentApplicationPID:(int64_t)a3;
-+ (id)associationPropertyForEntityClass:(Class)a3;
-+ (id)insertTransitNetworkIdentifiers:(id)a3 withPaymentApplication:(id)a4 inDatabase:(id)a5;
++ (BOOL)passExistsInDatabase:(id)database forTransitNetworks:(id)networks isTransitCard:(unint64_t)card expired:(unint64_t)expired;
++ (id)_predicateForPaymentApplication:(id)application;
++ (id)_predicateForPaymentApplicationPID:(int64_t)d;
++ (id)associationPropertyForEntityClass:(Class)class;
++ (id)insertTransitNetworkIdentifiers:(id)identifiers withPaymentApplication:(id)application inDatabase:(id)database;
 + (id)predicateForNotExpired;
-+ (id)predicateForPaymentCardType:(int64_t)a3;
-+ (id)transitNetworkIdentifiersInDatabase:(id)a3 forPaymentApplicationPID:(int64_t)a4;
-+ (id)transitNetworkIdentifiersInDatabase:(id)a3 forPredicate:(id)a4;
-+ (id)transitNetworksInDatabase:(id)a3 forPassesMatchingTransitType:(unint64_t)a4 expired:(unint64_t)a5;
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4;
-+ (void)deleteEntitiesInDatabase:(id)a3 forPaymentApplication:(id)a4;
-- (PaymentTransitNetworkIdentifier)initWithTransitNetworkIdentifier:(id)a3 networkOrder:(int64_t)a4 forPaymentApplication:(id)a5 database:(id)a6;
++ (id)predicateForPaymentCardType:(int64_t)type;
++ (id)transitNetworkIdentifiersInDatabase:(id)database forPaymentApplicationPID:(int64_t)d;
++ (id)transitNetworkIdentifiersInDatabase:(id)database forPredicate:(id)predicate;
++ (id)transitNetworksInDatabase:(id)database forPassesMatchingTransitType:(unint64_t)type expired:(unint64_t)expired;
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins;
++ (void)deleteEntitiesInDatabase:(id)database forPaymentApplication:(id)application;
+- (PaymentTransitNetworkIdentifier)initWithTransitNetworkIdentifier:(id)identifier networkOrder:(int64_t)order forPaymentApplication:(id)application database:(id)database;
 @end
 
 @implementation PaymentTransitNetworkIdentifier
 
-+ (id)associationPropertyForEntityClass:(Class)a3
++ (id)associationPropertyForEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"payment_application_pid";
   }
@@ -29,10 +29,10 @@
   }
 }
 
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins
 {
-  v5 = a3;
-  v6 = a4;
+  propertyCopy = property;
+  joinsCopy = joins;
   v13[0] = @"payment_application_pid";
   v13[1] = @"payment_application.pass_pid";
   v7 = [NSArray arrayWithObjects:v13 count:2];
@@ -40,51 +40,51 @@
   v8 = [NSArray arrayWithObjects:&v12 count:1];
   v11 = @"pass_annotations.sorting_state";
   v9 = [NSArray arrayWithObjects:&v11 count:1];
-  if ([v7 containsObject:v5])
+  if ([v7 containsObject:propertyCopy])
   {
     v10 = @"JOIN payment_application ON payment_application.pid = payment_application_pid";
   }
 
   else
   {
-    if (![v8 containsObject:v5])
+    if (![v8 containsObject:propertyCopy])
     {
       goto LABEL_6;
     }
 
-    [v6 addObject:@"JOIN payment_application ON payment_application.pid = payment_application_pid"];
+    [joinsCopy addObject:@"JOIN payment_application ON payment_application.pid = payment_application_pid"];
     v10 = @"JOIN pass ON pass.pid = payment_application.pass_pid";
   }
 
-  [v6 addObject:v10];
+  [joinsCopy addObject:v10];
 LABEL_6:
-  if ([v9 containsObject:v5])
+  if ([v9 containsObject:propertyCopy])
   {
-    [v6 addObject:@"JOIN payment_application ON payment_application.pid = payment_application_pid"];
-    [v6 addObject:@"JOIN pass ON pass.pid = payment_application.pass_pid"];
-    [v6 addObject:@"JOIN pass_annotations ON pass_annotations.pass_pid = pass.pid"];
+    [joinsCopy addObject:@"JOIN payment_application ON payment_application.pid = payment_application_pid"];
+    [joinsCopy addObject:@"JOIN pass ON pass.pid = payment_application.pass_pid"];
+    [joinsCopy addObject:@"JOIN pass_annotations ON pass_annotations.pass_pid = pass.pid"];
   }
 }
 
-+ (id)transitNetworkIdentifiersInDatabase:(id)a3 forPaymentApplicationPID:(int64_t)a4
++ (id)transitNetworkIdentifiersInDatabase:(id)database forPaymentApplicationPID:(int64_t)d
 {
-  v6 = a3;
-  v7 = [a1 _predicateForPaymentApplicationPID:a4];
-  v8 = [a1 transitNetworkIdentifiersInDatabase:v6 forPredicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPaymentApplicationPID:d];
+  v8 = [self transitNetworkIdentifiersInDatabase:databaseCopy forPredicate:v7];
 
   return v8;
 }
 
-+ (id)transitNetworkIdentifiersInDatabase:(id)a3 forPredicate:(id)a4
++ (id)transitNetworkIdentifiersInDatabase:(id)database forPredicate:(id)predicate
 {
-  v6 = a4;
-  v7 = a3;
+  predicateCopy = predicate;
+  databaseCopy = database;
   v8 = objc_alloc_init(NSMutableArray);
   v21 = @"identifier";
   v9 = [NSArray arrayWithObjects:&v21 count:1];
   v20 = @"network_order";
   v10 = [NSArray arrayWithObjects:&v20 count:1];
-  v11 = [a1 queryWithDatabase:v7 predicate:v6 orderingProperties:v10];
+  v11 = [self queryWithDatabase:databaseCopy predicate:predicateCopy orderingProperties:v10];
 
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
@@ -106,11 +106,11 @@ LABEL_6:
   return v13;
 }
 
-+ (id)transitNetworksInDatabase:(id)a3 forPassesMatchingTransitType:(unint64_t)a4 expired:(unint64_t)a5
++ (id)transitNetworksInDatabase:(id)database forPassesMatchingTransitType:(unint64_t)type expired:(unint64_t)expired
 {
-  v8 = a3;
+  databaseCopy = database;
   v9 = [[NSMutableArray alloc] initWithCapacity:2];
-  if (a4 == 2)
+  if (type == 2)
   {
     v10 = [PaymentTransitNetworkIdentifier predicateForPaymentCardType:2];
     v11 = [SQLiteCompoundPredicate negatedPredicate:v10];
@@ -119,116 +119,116 @@ LABEL_6:
 
   else
   {
-    if (a4 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
 
-    v10 = [a1 predicateForPaymentCardType:2];
+    v10 = [self predicateForPaymentCardType:2];
     [v9 addObject:v10];
   }
 
 LABEL_6:
-  if (a5 == 2)
+  if (expired == 2)
   {
-    v12 = [a1 predicateForNotExpired];
-    [v9 addObject:v12];
+    predicateForNotExpired = [self predicateForNotExpired];
+    [v9 addObject:predicateForNotExpired];
   }
 
   else
   {
-    if (a5 != 1)
+    if (expired != 1)
     {
       goto LABEL_11;
     }
 
-    v12 = [a1 predicateForNotExpired];
-    v13 = [SQLiteCompoundPredicate negatedPredicate:v12];
+    predicateForNotExpired = [self predicateForNotExpired];
+    v13 = [SQLiteCompoundPredicate negatedPredicate:predicateForNotExpired];
     [v9 addObject:v13];
   }
 
 LABEL_11:
   v14 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v9];
-  v15 = [PaymentTransitNetworkIdentifier transitNetworkIdentifiersInDatabase:v8 forPredicate:v14];
+  v15 = [PaymentTransitNetworkIdentifier transitNetworkIdentifiersInDatabase:databaseCopy forPredicate:v14];
 
   return v15;
 }
 
-+ (BOOL)passExistsInDatabase:(id)a3 forTransitNetworks:(id)a4 isTransitCard:(unint64_t)a5 expired:(unint64_t)a6
++ (BOOL)passExistsInDatabase:(id)database forTransitNetworks:(id)networks isTransitCard:(unint64_t)card expired:(unint64_t)expired
 {
-  v10 = a4;
-  v11 = a3;
+  networksCopy = networks;
+  databaseCopy = database;
   v12 = [[NSMutableArray alloc] initWithCapacity:3];
-  v13 = [a1 predicateForTransitNetworkIdentifiers:v10];
+  v13 = [self predicateForTransitNetworkIdentifiers:networksCopy];
 
   [v12 addObject:v13];
-  if (a5 == 2)
+  if (card == 2)
   {
-    v14 = [a1 predicateForPaymentCardType:2];
+    v14 = [self predicateForPaymentCardType:2];
     v15 = [SQLiteCompoundPredicate negatedPredicate:v14];
     [v12 addObject:v15];
   }
 
   else
   {
-    if (a5 != 1)
+    if (card != 1)
     {
       goto LABEL_6;
     }
 
-    v14 = [a1 predicateForPaymentCardType:2];
+    v14 = [self predicateForPaymentCardType:2];
     [v12 addObject:v14];
   }
 
 LABEL_6:
-  if (a6 == 2)
+  if (expired == 2)
   {
-    v16 = [a1 predicateForNotExpired];
-    [v12 addObject:v16];
+    predicateForNotExpired = [self predicateForNotExpired];
+    [v12 addObject:predicateForNotExpired];
     goto LABEL_10;
   }
 
-  if (a6 == 1)
+  if (expired == 1)
   {
-    v16 = [a1 predicateForNotExpired];
-    v17 = [SQLiteCompoundPredicate negatedPredicate:v16];
+    predicateForNotExpired = [self predicateForNotExpired];
+    v17 = [SQLiteCompoundPredicate negatedPredicate:predicateForNotExpired];
     [v12 addObject:v17];
 
 LABEL_10:
   }
 
   v18 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v12];
-  v19 = [a1 queryWithDatabase:v11 predicate:v18];
+  v19 = [self queryWithDatabase:databaseCopy predicate:v18];
 
   v20 = [v19 countOfEntities] != 0;
   return v20;
 }
 
-+ (void)deleteEntitiesInDatabase:(id)a3 forPaymentApplication:(id)a4
++ (void)deleteEntitiesInDatabase:(id)database forPaymentApplication:(id)application
 {
-  v6 = a3;
-  v8 = [a1 _predicateForPaymentApplication:a4];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForPaymentApplication:application];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (id)insertTransitNetworkIdentifiers:(id)a3 withPaymentApplication:(id)a4 inDatabase:(id)a5
++ (id)insertTransitNetworkIdentifiers:(id)identifiers withPaymentApplication:(id)application inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  identifiersCopy = identifiers;
+  applicationCopy = application;
+  databaseCopy = database;
+  if ([identifiersCopy count])
   {
-    v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+    v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000E228C;
     v16[3] = &unk_100844490;
-    v17 = v8;
-    v21 = a1;
-    v18 = v9;
-    v19 = v10;
+    v17 = identifiersCopy;
+    selfCopy = self;
+    v18 = applicationCopy;
+    v19 = databaseCopy;
     v20 = v11;
     v12 = v11;
     sub_1005D4424(v19, v16);
@@ -253,23 +253,23 @@ LABEL_10:
   return v14;
 }
 
-- (PaymentTransitNetworkIdentifier)initWithTransitNetworkIdentifier:(id)a3 networkOrder:(int64_t)a4 forPaymentApplication:(id)a5 database:(id)a6
+- (PaymentTransitNetworkIdentifier)initWithTransitNetworkIdentifier:(id)identifier networkOrder:(int64_t)order forPaymentApplication:(id)application database:(id)database
 {
-  if (a5)
+  if (application)
   {
-    v10 = a6;
-    v11 = a5;
-    v12 = a3;
+    databaseCopy = database;
+    applicationCopy = application;
+    identifierCopy = identifier;
     v13 = objc_alloc_init(NSMutableDictionary);
     v14 = +[NSNull null];
-    v15 = [v11 persistentID];
+    persistentID = [applicationCopy persistentID];
 
-    v16 = [NSNumber numberWithLongLong:v15];
+    v16 = [NSNumber numberWithLongLong:persistentID];
     [v13 setObject:v16 forKeyedSubscript:@"payment_application_pid"];
 
-    if (v12)
+    if (identifierCopy)
     {
-      v17 = v12;
+      v17 = identifierCopy;
     }
 
     else
@@ -279,28 +279,28 @@ LABEL_10:
 
     [v13 setObject:v17 forKeyedSubscript:@"identifier"];
 
-    v18 = [NSNumber numberWithInteger:a4];
+    v18 = [NSNumber numberWithInteger:order];
     [v13 setObject:v18 forKeyedSubscript:@"network_order"];
 
-    v19 = [(SQLiteEntity *)self initWithPropertyValues:v13 inDatabase:v10];
+    v19 = [(SQLiteEntity *)self initWithPropertyValues:v13 inDatabase:databaseCopy];
     self = v19;
 
-    v20 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-+ (id)_predicateForPaymentApplication:(id)a3
++ (id)_predicateForPaymentApplication:(id)application
 {
-  if (a3)
+  if (application)
   {
-    [a1 _predicateForPaymentApplicationPID:{objc_msgSend(a3, "persistentID")}];
+    [self _predicateForPaymentApplicationPID:{objc_msgSend(application, "persistentID")}];
   }
 
   else
@@ -312,17 +312,17 @@ LABEL_10:
   return v3;
 }
 
-+ (id)_predicateForPaymentApplicationPID:(int64_t)a3
++ (id)_predicateForPaymentApplicationPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_application_pid" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)predicateForPaymentCardType:(int64_t)a3
++ (id)predicateForPaymentCardType:(int64_t)type
 {
-  v3 = [NSNumber numberWithInteger:a3];
+  v3 = [NSNumber numberWithInteger:type];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"pass.card_type" equalToValue:v3];
 
   return v4;

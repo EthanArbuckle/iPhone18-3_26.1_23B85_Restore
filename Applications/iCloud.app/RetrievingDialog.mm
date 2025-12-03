@@ -8,9 +8,9 @@
 - (void)_timeoutMinPeriod;
 - (void)abort;
 - (void)dealloc;
-- (void)dismissDialog:(id)a3;
+- (void)dismissDialog:(id)dialog;
 - (void)schedule;
-- (void)setRetrievingNotification:(__CFUserNotification *)a3;
+- (void)setRetrievingNotification:(__CFUserNotification *)notification;
 @end
 
 @implementation RetrievingDialog
@@ -31,28 +31,28 @@
 - (void)_dismiss
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v3 = [(RetrievingDialog *)self retrievingNotification];
-  if (v3)
+  retrievingNotification = [(RetrievingDialog *)self retrievingNotification];
+  if (retrievingNotification)
   {
-    CFUserNotificationCancel(v3);
+    CFUserNotificationCancel(retrievingNotification);
     [(RetrievingDialog *)self setRetrievingNotification:0];
   }
 
   [(RetrievingDialog *)self setState:5];
 }
 
-- (void)setRetrievingNotification:(__CFUserNotification *)a3
+- (void)setRetrievingNotification:(__CFUserNotification *)notification
 {
   retrievingNotification = self->_retrievingNotification;
-  if (retrievingNotification != a3)
+  if (retrievingNotification != notification)
   {
-    if (a3)
+    if (notification)
     {
-      CFRetain(a3);
+      CFRetain(notification);
       retrievingNotification = self->_retrievingNotification;
     }
 
-    self->_retrievingNotification = a3;
+    self->_retrievingNotification = notification;
     if (retrievingNotification)
     {
 
@@ -74,12 +74,12 @@
 - (void)_timeoutMinPeriod
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v4 = [(RetrievingDialog *)self state];
-  if (v4 <= 2)
+  state = [(RetrievingDialog *)self state];
+  if (state <= 2)
   {
-    if (v4 >= 2)
+    if (state >= 2)
     {
-      if (v4 == 2)
+      if (state == 2)
       {
 
         [(RetrievingDialog *)self setState:4];
@@ -91,9 +91,9 @@
     goto LABEL_9;
   }
 
-  if (v4 != 3)
+  if (state != 3)
   {
-    if (v4 != 4)
+    if (state != 4)
     {
       return;
     }
@@ -147,22 +147,22 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (void)dismissDialog:(id)a3
+- (void)dismissDialog:(id)dialog
 {
   [(RetrievingDialog *)self _dismiss];
-  v4 = [(RetrievingDialog *)self delegate];
-  [v4 retrievingDialogCancelled];
+  delegate = [(RetrievingDialog *)self delegate];
+  [delegate retrievingDialogCancelled];
 }
 
 - (void)_displayIfRequired
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v4 = [(RetrievingDialog *)self state];
-  if (v4 > 1)
+  state = [(RetrievingDialog *)self state];
+  if (state > 1)
   {
-    if ((v4 - 2) >= 3)
+    if ((state - 2) >= 3)
     {
-      if (v4 == 5)
+      if (state == 5)
       {
         if (ck_log_initialization_predicate != -1)
         {
@@ -173,7 +173,7 @@ LABEL_9:
         if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
         {
           *buf = 134217984;
-          v11 = self;
+          selfCopy2 = self;
           v6 = "Not displaying the retrieving dialog: %p as it got aborted";
 LABEL_21:
           _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, v6, buf, 0xCu);
@@ -191,20 +191,20 @@ LABEL_14:
     return;
   }
 
-  if (!v4)
+  if (!state)
   {
     goto LABEL_14;
   }
 
-  if (v4 != 1)
+  if (state != 1)
   {
     return;
   }
 
-  v7 = [(RetrievingDialog *)self delegate];
-  v8 = [v7 retrievingDialogShouldDisplay];
+  delegate = [(RetrievingDialog *)self delegate];
+  retrievingDialogShouldDisplay = [delegate retrievingDialogShouldDisplay];
 
-  if (v8)
+  if (retrievingDialogShouldDisplay)
   {
 
     [(RetrievingDialog *)self _display];
@@ -221,7 +221,7 @@ LABEL_14:
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v11 = self;
+      selfCopy2 = self;
       v6 = "Not displaying the retrieving dialog: %p as the delegate didn't want it";
       goto LABEL_21;
     }

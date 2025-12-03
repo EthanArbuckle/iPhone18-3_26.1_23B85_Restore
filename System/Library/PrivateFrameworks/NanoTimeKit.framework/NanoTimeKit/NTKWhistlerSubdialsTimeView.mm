@@ -3,24 +3,24 @@
 - (CGSize)_minuteTickSize;
 - (NSArray)fontScaleFactorForNumberSystemOverrides;
 - (NTKWhistlerAnalogColorPalette)palette;
-- (NTKWhistlerSubdialsTimeView)initWithFrame:(CGRect)a3 style:(unint64_t)a4 andDevice:(id)a5;
+- (NTKWhistlerSubdialsTimeView)initWithFrame:(CGRect)frame style:(unint64_t)style andDevice:(id)device;
 - (double)_minuteTickInset;
 - (id)_digitalLabelFont;
-- (id)_digitalTimeLabelColorForColorPalette:(id)a3;
-- (id)_hourMinuteHandStrokeColorForColorPalette:(id)a3;
-- (id)_secondHandColorForColorPalette:(id)a3;
+- (id)_digitalTimeLabelColorForColorPalette:(id)palette;
+- (id)_hourMinuteHandStrokeColorForColorPalette:(id)palette;
+- (id)_secondHandColorForColorPalette:(id)palette;
 - (unint64_t)_hourTickCount;
 - (unint64_t)_minuteTickCount;
-- (void)setForcedNumberSystemForDigitalTimeLabel:(unint64_t)a3;
+- (void)setForcedNumberSystemForDigitalTimeLabel:(unint64_t)label;
 @end
 
 @implementation NTKWhistlerSubdialsTimeView
 
-- (NTKWhistlerSubdialsTimeView)initWithFrame:(CGRect)a3 style:(unint64_t)a4 andDevice:(id)a5
+- (NTKWhistlerSubdialsTimeView)initWithFrame:(CGRect)frame style:(unint64_t)style andDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = NTKWhistlerSubdialsTimeView;
-  return [(NTKDualTimeView *)&v6 initWithFrame:a4 style:a5 andDevice:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(NTKDualTimeView *)&v6 initWithFrame:style style:device andDevice:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 - (NTKWhistlerAnalogColorPalette)palette
@@ -29,8 +29,8 @@
   if (!palette)
   {
     v4 = [NTKWhistlerAnalogColorPalette alloc];
-    v5 = [(NTKDualTimeView *)self device];
-    v6 = [(NTKWhistlerAnalogColorPalette *)v4 initWithDevice:v5];
+    device = [(NTKDualTimeView *)self device];
+    v6 = [(NTKWhistlerAnalogColorPalette *)v4 initWithDevice:device];
     v7 = self->_palette;
     self->_palette = v6;
 
@@ -42,8 +42,8 @@
 
 - (double)_minuteTickInset
 {
-  v2 = [(NTKDualTimeView *)self device];
-  ___LayoutConstants_block_invoke_31(v2, v5);
+  device = [(NTKDualTimeView *)self device];
+  ___LayoutConstants_block_invoke_31(device, v5);
   v3 = v5[0];
 
   return v3;
@@ -55,8 +55,8 @@
   v6 = 0u;
   v7 = 0u;
   v5 = 0u;
-  v2 = [(NTKDualTimeView *)self device];
-  ___LayoutConstants_block_invoke_31(v2, &v5);
+  device = [(NTKDualTimeView *)self device];
+  ___LayoutConstants_block_invoke_31(device, &v5);
 
   v3 = *(&v5 + 1);
   v4 = *&v6;
@@ -82,8 +82,8 @@
 
 - (unint64_t)_hourTickCount
 {
-  v2 = [(NTKDualTimeView *)self device];
-  ___LayoutConstants_block_invoke_31(v2, v5);
+  device = [(NTKDualTimeView *)self device];
+  ___LayoutConstants_block_invoke_31(device, v5);
   v3 = v6;
 
   return v3;
@@ -91,19 +91,19 @@
 
 - (unint64_t)_minuteTickCount
 {
-  v2 = [(NTKDualTimeView *)self device];
-  ___LayoutConstants_block_invoke_31(v2, v5);
+  device = [(NTKDualTimeView *)self device];
+  ___LayoutConstants_block_invoke_31(device, v5);
   v3 = v6;
 
   return v3;
 }
 
-- (id)_hourMinuteHandStrokeColorForColorPalette:(id)a3
+- (id)_hourMinuteHandStrokeColorForColorPalette:(id)palette
 {
-  v3 = [(NTKDualTimeView *)self colorPalette];
-  v4 = [v3 isWhiteColor];
+  colorPalette = [(NTKDualTimeView *)self colorPalette];
+  isWhiteColor = [colorPalette isWhiteColor];
 
-  if (v4)
+  if (isWhiteColor)
   {
     [MEMORY[0x277D75348] blackColor];
   }
@@ -117,53 +117,53 @@
   return v5;
 }
 
-- (id)_secondHandColorForColorPalette:(id)a3
+- (id)_secondHandColorForColorPalette:(id)palette
 {
-  v4 = [(NTKDualTimeView *)self colorPalette];
-  if ([v4 isMulticolor])
+  colorPalette = [(NTKDualTimeView *)self colorPalette];
+  if ([colorPalette isMulticolor])
   {
     goto LABEL_4;
   }
 
-  v5 = [(NTKDualTimeView *)self colorPalette];
-  if ([v5 isWhiteColor])
+  colorPalette2 = [(NTKDualTimeView *)self colorPalette];
+  if ([colorPalette2 isWhiteColor])
   {
 
 LABEL_4:
 LABEL_5:
-    v6 = [MEMORY[0x277D75348] systemRedColor];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
     goto LABEL_6;
   }
 
-  v8 = [(NTKDualTimeView *)self colorPalette];
-  v9 = [v8 isBlackColor];
+  colorPalette3 = [(NTKDualTimeView *)self colorPalette];
+  isBlackColor = [colorPalette3 isBlackColor];
 
-  if (v9)
+  if (isBlackColor)
   {
     goto LABEL_5;
   }
 
-  v10 = [(NTKDualTimeView *)self colorPalette];
-  v6 = [v10 primaryColor];
+  colorPalette4 = [(NTKDualTimeView *)self colorPalette];
+  systemRedColor = [colorPalette4 primaryColor];
 
 LABEL_6:
 
-  return v6;
+  return systemRedColor;
 }
 
-- (id)_digitalTimeLabelColorForColorPalette:(id)a3
+- (id)_digitalTimeLabelColorForColorPalette:(id)palette
 {
-  v4 = a3;
-  v5 = [(NTKWhistlerSubdialsTimeView *)self palette];
-  v6 = [v5 hourTicksColorForColorPalette:v4];
+  paletteCopy = palette;
+  palette = [(NTKWhistlerSubdialsTimeView *)self palette];
+  v6 = [palette hourTicksColorForColorPalette:paletteCopy];
 
   return v6;
 }
 
 - (id)_digitalLabelFont
 {
-  v3 = [(NTKDualTimeView *)self device];
-  v4 = NTKShowIndicScriptNumerals(v3);
+  device = [(NTKDualTimeView *)self device];
+  v4 = NTKShowIndicScriptNumerals(device);
 
   if (v4)
   {
@@ -171,35 +171,35 @@ LABEL_6:
     v6 = v5;
     if (self->_numberSystem != -1)
     {
-      v7 = [(NTKWhistlerSubdialsTimeView *)self fontScaleFactorForNumberSystemOverrides];
-      v8 = [v7 objectAtIndexedSubscript:self->_numberSystem];
+      fontScaleFactorForNumberSystemOverrides = [(NTKWhistlerSubdialsTimeView *)self fontScaleFactorForNumberSystemOverrides];
+      v8 = [fontScaleFactorForNumberSystemOverrides objectAtIndexedSubscript:self->_numberSystem];
       [v8 doubleValue];
 
-      v9 = [(NTKDualTimeView *)self device];
+      device2 = [(NTKDualTimeView *)self device];
       CLKRoundForDevice();
       v6 = v10;
     }
 
     v11 = [NTKSFCompactFont numericFontOfSize:v6 weight:*MEMORY[0x277D74418]];
-    v12 = [v11 CLKFontWithAlternativePunctuation];
+    cLKFontWithAlternativePunctuation = [v11 CLKFontWithAlternativePunctuation];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = NTKWhistlerSubdialsTimeView;
-    v12 = [(NTKDualTimeView *)&v14 _digitalLabelFont];
+    cLKFontWithAlternativePunctuation = [(NTKDualTimeView *)&v14 _digitalLabelFont];
   }
 
-  return v12;
+  return cLKFontWithAlternativePunctuation;
 }
 
-- (void)setForcedNumberSystemForDigitalTimeLabel:(unint64_t)a3
+- (void)setForcedNumberSystemForDigitalTimeLabel:(unint64_t)label
 {
   v5.receiver = self;
   v5.super_class = NTKWhistlerSubdialsTimeView;
   [(NTKDualTimeView *)&v5 setForcedNumberSystemForDigitalTimeLabel:?];
-  self->_numberSystem = a3;
+  self->_numberSystem = label;
   [(NTKDualTimeView *)self _refreshDigitalTimeLabel];
 }
 

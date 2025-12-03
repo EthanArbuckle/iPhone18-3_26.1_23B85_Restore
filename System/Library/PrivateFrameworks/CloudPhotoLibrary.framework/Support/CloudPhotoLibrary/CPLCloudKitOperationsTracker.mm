@@ -1,25 +1,25 @@
 @interface CPLCloudKitOperationsTracker
-- (BOOL)isOperationBlocked:(id)a3;
+- (BOOL)isOperationBlocked:(id)blocked;
 - (CPLCloudKitOperationsTracker)init;
-- (id)_bundleIdentifiersFromCKOperation:(id)a3;
-- (id)_contextForOperation:(id)a3;
+- (id)_bundleIdentifiersFromCKOperation:(id)operation;
+- (id)_contextForOperation:(id)operation;
 - (id)_pendingTaskStatus;
 - (id)status;
 - (id)statusDictionary;
 - (void)_emitLogForCurrentTasks;
-- (void)cancelAllOperationsWithCompletionHandler:(id)a3;
-- (void)cancelBlockedTasksIncludingBackground:(BOOL)a3;
-- (void)operation:(id)a3 updateContextWithBlock:(id)a4;
-- (void)operation:(id)a3 updateProgress:(double)a4;
-- (void)operationDidFinish:(id)a3;
-- (void)operationDidProgressOneBatch:(id)a3;
-- (void)operationHasBeenCancelled:(id)a3;
-- (void)operationWillStart:(id)a3 forTask:(id)a4 withContext:(id)a5;
-- (void)operationWillStart:(id)a3 forTask:(id)a4 withContext:(id)a5 bundleIdentifiers:(id)a6;
-- (void)taskDidFinish:(id)a3;
-- (void)taskHasBeenCancelled:(id)a3;
-- (void)taskWillStart:(id)a3;
-- (void)waitForAllTasksToFinishWithCompletionHandler:(id)a3;
+- (void)cancelAllOperationsWithCompletionHandler:(id)handler;
+- (void)cancelBlockedTasksIncludingBackground:(BOOL)background;
+- (void)operation:(id)operation updateContextWithBlock:(id)block;
+- (void)operation:(id)operation updateProgress:(double)progress;
+- (void)operationDidFinish:(id)finish;
+- (void)operationDidProgressOneBatch:(id)batch;
+- (void)operationHasBeenCancelled:(id)cancelled;
+- (void)operationWillStart:(id)start forTask:(id)task withContext:(id)context;
+- (void)operationWillStart:(id)start forTask:(id)task withContext:(id)context bundleIdentifiers:(id)identifiers;
+- (void)taskDidFinish:(id)finish;
+- (void)taskHasBeenCancelled:(id)cancelled;
+- (void)taskWillStart:(id)start;
+- (void)waitForAllTasksToFinishWithCompletionHandler:(id)handler;
 @end
 
 @implementation CPLCloudKitOperationsTracker
@@ -34,9 +34,9 @@
     v5 = sub_100004B38();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(CPLCloudKitOperationsTracker *)self _pendingTaskStatus];
+      _pendingTaskStatus = [(CPLCloudKitOperationsTracker *)self _pendingTaskStatus];
       v7 = 138412290;
-      v8 = v6;
+      v8 = _pendingTaskStatus;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@", &v7, 0xCu);
     }
   }
@@ -90,14 +90,14 @@
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v17 + 1) + 8 * i) trackingContext];
-          v10 = [v9 statusPerOperationType];
+          trackingContext = [*(*(&v17 + 1) + 8 * i) trackingContext];
+          statusPerOperationType = [trackingContext statusPerOperationType];
           v15[0] = _NSConcreteStackBlock;
           v15[1] = 3221225472;
           v15[2] = sub_1000558AC;
           v15[3] = &unk_100273EC0;
           v16 = v3;
-          [v10 enumerateKeysAndObjectsUsingBlock:v15];
+          [statusPerOperationType enumerateKeysAndObjectsUsingBlock:v15];
         }
 
         v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -123,18 +123,18 @@
   return v11;
 }
 
-- (void)taskWillStart:(id)a3
+- (void)taskWillStart:(id)start
 {
-  v5 = a3;
+  startCopy = start;
   v6 = +[NSDate date];
-  [(CPLCloudKitOperationCounter *)self->_operationCounter beginTask:v5];
+  [(CPLCloudKitOperationCounter *)self->_operationCounter beginTask:startCopy];
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100055B2C;
   v13[3] = &unk_100271D68;
-  v14 = v5;
-  v15 = self;
+  v14 = startCopy;
+  selfCopy = self;
   v16 = v6;
   v17 = a2;
   v8 = v13;
@@ -145,72 +145,72 @@
   v19 = v8;
   v9 = queue;
   v10 = v6;
-  v11 = v5;
+  v11 = startCopy;
   v12 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v9, v12);
 }
 
-- (id)_bundleIdentifiersFromCKOperation:(id)a3
+- (id)_bundleIdentifiersFromCKOperation:(id)operation
 {
-  v3 = a3;
+  operationCopy = operation;
   v4 = [[NSMutableSet alloc] initWithCapacity:2];
-  v5 = [v3 configuration];
-  v6 = [v5 applicationBundleIdentifierOverrideForNetworkAttribution];
+  configuration = [operationCopy configuration];
+  applicationBundleIdentifierOverrideForNetworkAttribution = [configuration applicationBundleIdentifierOverrideForNetworkAttribution];
 
-  if (v6)
+  if (applicationBundleIdentifierOverrideForNetworkAttribution)
   {
-    [v4 addObject:v6];
+    [v4 addObject:applicationBundleIdentifierOverrideForNetworkAttribution];
   }
 
-  v7 = [v3 configuration];
-  v8 = [v7 applicationBundleIdentifierOverrideForContainerAccess];
+  configuration2 = [operationCopy configuration];
+  applicationBundleIdentifierOverrideForContainerAccess = [configuration2 applicationBundleIdentifierOverrideForContainerAccess];
 
-  if (v8)
+  if (applicationBundleIdentifierOverrideForContainerAccess)
   {
-    [v4 addObject:v8];
+    [v4 addObject:applicationBundleIdentifierOverrideForContainerAccess];
   }
 
-  v9 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v9;
+  return allObjects;
 }
 
-- (void)operationWillStart:(id)a3 forTask:(id)a4 withContext:(id)a5
+- (void)operationWillStart:(id)start forTask:(id)task withContext:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CPLCloudKitOperationsTracker *)self _bundleIdentifiersFromCKOperation:v10];
-  [(CPLCloudKitOperationsTracker *)self operationWillStart:v10 forTask:v9 withContext:v8 bundleIdentifiers:v11];
+  contextCopy = context;
+  taskCopy = task;
+  startCopy = start;
+  v11 = [(CPLCloudKitOperationsTracker *)self _bundleIdentifiersFromCKOperation:startCopy];
+  [(CPLCloudKitOperationsTracker *)self operationWillStart:startCopy forTask:taskCopy withContext:contextCopy bundleIdentifiers:v11];
 }
 
-- (void)operationWillStart:(id)a3 forTask:(id)a4 withContext:(id)a5 bundleIdentifiers:(id)a6
+- (void)operationWillStart:(id)start forTask:(id)task withContext:(id)context bundleIdentifiers:(id)identifiers
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v11 resolvedConfiguration];
+  startCopy = start;
+  taskCopy = task;
+  contextCopy = context;
+  identifiersCopy = identifiers;
+  resolvedConfiguration = [startCopy resolvedConfiguration];
   v16 = +[NSDate date];
-  [v11 cpl_setTask:v12];
-  if (!v13)
+  [startCopy cpl_setTask:taskCopy];
+  if (!contextCopy)
   {
-    v13 = objc_alloc_init(CPLCloudKitOperationContext);
+    contextCopy = objc_alloc_init(CPLCloudKitOperationContext);
   }
 
-  [(CPLCloudKitOperationContext *)v13 setOperation:v11];
-  [(CPLCloudKitOperationContext *)v13 setBundleIdentifiers:v14];
-  [(CPLCloudKitOperationContext *)v13 setStartDate:v16];
+  [(CPLCloudKitOperationContext *)contextCopy setOperation:startCopy];
+  [(CPLCloudKitOperationContext *)contextCopy setBundleIdentifiers:identifiersCopy];
+  [(CPLCloudKitOperationContext *)contextCopy setStartDate:v16];
   queue = self->_queue;
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100055F4C;
   v25[3] = &unk_100274B00;
-  v26 = v12;
-  v27 = v11;
-  v28 = self;
-  v29 = v14;
-  v30 = v13;
+  v26 = taskCopy;
+  v27 = startCopy;
+  selfCopy = self;
+  v29 = identifiersCopy;
+  v30 = contextCopy;
   v31 = a2;
   v18 = v25;
   block[0] = _NSConcreteStackBlock;
@@ -219,33 +219,33 @@
   block[3] = &unk_100271E98;
   v33 = v18;
   v19 = queue;
-  v20 = v13;
-  v21 = v14;
-  v22 = v11;
-  v23 = v12;
+  v20 = contextCopy;
+  v21 = identifiersCopy;
+  v22 = startCopy;
+  v23 = taskCopy;
   v24 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v19, v24);
 }
 
-- (id)_contextForOperation:(id)a3
+- (id)_contextForOperation:(id)operation
 {
-  v5 = a3;
-  v6 = [v5 cpl_task];
-  if (!v6)
+  operationCopy = operation;
+  cpl_task = [operationCopy cpl_task];
+  if (!cpl_task)
   {
-    sub_10019D060(a2, self, v5);
+    sub_10019D060(a2, self, operationCopy);
   }
 
-  v7 = v6;
-  v8 = [v6 trackingContext];
-  v9 = [v8 contextForOperation:v5];
+  v7 = cpl_task;
+  trackingContext = [cpl_task trackingContext];
+  v9 = [trackingContext contextForOperation:operationCopy];
 
   return v9;
 }
 
-- (void)operationDidProgressOneBatch:(id)a3
+- (void)operationDidProgressOneBatch:(id)batch
 {
-  v5 = a3;
+  batchCopy = batch;
   v6 = +[NSDate date];
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
@@ -253,7 +253,7 @@
   v13[2] = sub_10005626C;
   v13[3] = &unk_100271D68;
   v13[4] = self;
-  v14 = v5;
+  v14 = batchCopy;
   v15 = v6;
   v16 = a2;
   v8 = v13;
@@ -264,14 +264,14 @@
   v18 = v8;
   v9 = queue;
   v10 = v6;
-  v11 = v5;
+  v11 = batchCopy;
   v12 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v9, v12);
 }
 
-- (BOOL)isOperationBlocked:(id)a3
+- (BOOL)isOperationBlocked:(id)blocked
 {
-  v5 = a3;
+  blockedCopy = blocked;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -282,10 +282,10 @@
   v9[2] = sub_1000563C0;
   v9[3] = &unk_100273628;
   v9[4] = self;
-  v10 = v5;
+  v10 = blockedCopy;
   v11 = &v13;
   v12 = a2;
-  v7 = v5;
+  v7 = blockedCopy;
   dispatch_sync(queue, v9);
   LOBYTE(self) = *(v14 + 24);
 
@@ -293,14 +293,14 @@
   return self;
 }
 
-- (void)operation:(id)a3 updateProgress:(double)a4
+- (void)operation:(id)operation updateProgress:(double)progress
 {
-  v7 = a3;
-  v8 = v7;
-  v9 = 100.0;
-  if (a4 <= 100.0)
+  operationCopy = operation;
+  v8 = operationCopy;
+  progressCopy = 100.0;
+  if (progress <= 100.0)
   {
-    v9 = a4;
+    progressCopy = progress;
   }
 
   queue = self->_queue;
@@ -309,9 +309,9 @@
   v15[2] = sub_100056584;
   v15[3] = &unk_1002733A0;
   v15[4] = self;
-  v16 = v7;
+  v16 = operationCopy;
   v17 = a2;
-  v18 = fmax(v9, 0.0);
+  v18 = fmax(progressCopy, 0.0);
   v11 = v15;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -324,11 +324,11 @@
   dispatch_async(v12, v14);
 }
 
-- (void)operation:(id)a3 updateContextWithBlock:(id)a4
+- (void)operation:(id)operation updateContextWithBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   queue = self->_queue;
-  v7 = v5;
+  v7 = blockCopy;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000029F0;
@@ -339,31 +339,31 @@
   dispatch_async(v8, v9);
 }
 
-- (void)operationDidFinish:(id)a3
+- (void)operationDidFinish:(id)finish
 {
-  v5 = a3;
+  finishCopy = finish;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100056768;
   block[3] = &unk_1002733C8;
-  v10 = self;
+  selfCopy = self;
   v11 = a2;
-  v9 = v5;
-  v7 = v5;
+  v9 = finishCopy;
+  v7 = finishCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)operationHasBeenCancelled:(id)a3
+- (void)operationHasBeenCancelled:(id)cancelled
 {
-  v5 = a3;
+  cancelledCopy = cancelled;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100056A08;
   v11[3] = &unk_1002733C8;
   v11[4] = self;
-  v12 = v5;
+  v12 = cancelledCopy;
   v13 = a2;
   v7 = v11;
   block[0] = _NSConcreteStackBlock;
@@ -372,22 +372,22 @@
   block[3] = &unk_100271E98;
   v15 = v7;
   v8 = queue;
-  v9 = v5;
+  v9 = cancelledCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
 
-- (void)taskHasBeenCancelled:(id)a3
+- (void)taskHasBeenCancelled:(id)cancelled
 {
-  v5 = a3;
+  cancelledCopy = cancelled;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100056BAC;
   v11[3] = &unk_1002733C8;
-  v13 = self;
+  selfCopy = self;
   v14 = a2;
-  v12 = v5;
+  v12 = cancelledCopy;
   v7 = v11;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -395,22 +395,22 @@
   block[3] = &unk_100271E98;
   v16 = v7;
   v8 = queue;
-  v9 = v5;
+  v9 = cancelledCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
 
-- (void)taskDidFinish:(id)a3
+- (void)taskDidFinish:(id)finish
 {
-  v5 = a3;
+  finishCopy = finish;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100056D3C;
   v11[3] = &unk_1002733C8;
-  v13 = self;
+  selfCopy = self;
   v14 = a2;
-  v12 = v5;
+  v12 = finishCopy;
   v7 = v11;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -418,21 +418,21 @@
   block[3] = &unk_100271E98;
   v16 = v7;
   v8 = queue;
-  v9 = v5;
+  v9 = finishCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
 
-- (void)cancelAllOperationsWithCompletionHandler:(id)a3
+- (void)cancelAllOperationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100057008;
   v10[3] = &unk_1002723C8;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -440,12 +440,12 @@
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
 
-- (void)cancelBlockedTasksIncludingBackground:(BOOL)a3
+- (void)cancelBlockedTasksIncludingBackground:(BOOL)background
 {
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
@@ -453,7 +453,7 @@
   v7[2] = sub_100057188;
   v7[3] = &unk_100274B28;
   v7[4] = self;
-  v8 = a3;
+  backgroundCopy = background;
   v4 = v7;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -509,16 +509,16 @@
   return v3;
 }
 
-- (void)waitForAllTasksToFinishWithCompletionHandler:(id)a3
+- (void)waitForAllTasksToFinishWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000578FC;
   v10[3] = &unk_1002723C8;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -526,7 +526,7 @@
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }

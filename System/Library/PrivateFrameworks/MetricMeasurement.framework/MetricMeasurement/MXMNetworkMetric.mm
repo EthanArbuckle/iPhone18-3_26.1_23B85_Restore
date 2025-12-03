@@ -1,8 +1,8 @@
 @interface MXMNetworkMetric
 + (MXMNetworkMetric)currentProcess;
-- (MXMNetworkMetric)initWithBundleIdentifier:(id)a3;
-- (MXMNetworkMetric)initWithIdentifier:(id)a3 filter:(id)a4;
-- (MXMNetworkMetric)initWithProcessName:(id)a3;
+- (MXMNetworkMetric)initWithBundleIdentifier:(id)identifier;
+- (MXMNetworkMetric)initWithIdentifier:(id)identifier filter:(id)filter;
+- (MXMNetworkMetric)initWithProcessName:(id)name;
 - (NSNumber)processIdentifier;
 - (NSString)processName;
 - (id)_constructProbe;
@@ -12,48 +12,48 @@
 
 + (MXMNetworkMetric)currentProcess
 {
-  v2 = [[a1 alloc] initWithProcessIdentifier:getpid()];
+  v2 = [[self alloc] initWithProcessIdentifier:getpid()];
 
   return v2;
 }
 
-- (MXMNetworkMetric)initWithProcessName:(id)a3
+- (MXMNetworkMetric)initWithProcessName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    v4 = a3;
+    nameCopy = name;
     v5 = [MXMSampleTagFilter alloc];
     v6 = +[MXMUtilizationSampleTag network];
     v7 = [(MXMSampleTagFilter *)v5 initWithTag:v6 allowDescendents:1];
 
-    v8 = [[MXMSampleAttributeFilter alloc] initWithAttributeName:@"Process Name" stringValue:v4];
+    v8 = [[MXMSampleAttributeFilter alloc] initWithAttributeName:@"Process Name" stringValue:nameCopy];
     v9 = [MXMSampleFilter filterWithAttributeFilter:v8 tagFilter:v7];
     self = [(MXMNetworkMetric *)self initWithIdentifier:@"com.apple.metricmeasurement.metric.network" filter:v9];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (MXMNetworkMetric)initWithBundleIdentifier:(id)a3
+- (MXMNetworkMetric)initWithBundleIdentifier:(id)identifier
 {
-  v4 = [MXMMachUtils _processNameWithBundleIdentifier:a3];
+  v4 = [MXMMachUtils _processNameWithBundleIdentifier:identifier];
   v5 = [(MXMNetworkMetric *)self initWithProcessName:v4];
 
   return v5;
 }
 
-- (MXMNetworkMetric)initWithIdentifier:(id)a3 filter:(id)a4
+- (MXMNetworkMetric)initWithIdentifier:(id)identifier filter:(id)filter
 {
   v7.receiver = self;
   v7.super_class = MXMNetworkMetric;
-  v4 = [(MXMMetric *)&v7 initWithIdentifier:a3 filter:a4];
+  v4 = [(MXMMetric *)&v7 initWithIdentifier:identifier filter:filter];
   v5 = v4;
   if (v4)
   {
@@ -65,20 +65,20 @@
 
 - (NSString)processName
 {
-  v2 = [(MXMMetric *)self filter];
-  v3 = [v2 attributeFilterWithName:@"Process Name"];
-  v4 = [v3 stringValue];
+  filter = [(MXMMetric *)self filter];
+  v3 = [filter attributeFilterWithName:@"Process Name"];
+  stringValue = [v3 stringValue];
 
-  return v4;
+  return stringValue;
 }
 
 - (NSNumber)processIdentifier
 {
-  v2 = [(MXMMetric *)self filter];
-  v3 = [v2 attributeFilterWithName:@"Process Identifier"];
-  v4 = [v3 numericValue];
+  filter = [(MXMMetric *)self filter];
+  v3 = [filter attributeFilterWithName:@"Process Identifier"];
+  numericValue = [v3 numericValue];
 
-  return v4;
+  return numericValue;
 }
 
 - (id)_constructProbe

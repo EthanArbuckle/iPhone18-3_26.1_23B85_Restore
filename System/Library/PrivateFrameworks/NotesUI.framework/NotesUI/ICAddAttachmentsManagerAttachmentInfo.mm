@@ -1,39 +1,39 @@
 @interface ICAddAttachmentsManagerAttachmentInfo
 - (BOOL)isPhoto;
 - (BOOL)isVideo;
-- (ICAddAttachmentsManagerAttachmentInfo)initWithFileURL:(id)a3;
-- (id)attachmentIfExistsForAccount:(id)a3;
+- (ICAddAttachmentsManagerAttachmentInfo)initWithFileURL:(id)l;
+- (id)attachmentIfExistsForAccount:(id)account;
 - (id)description;
 - (unint64_t)mediaSize;
 - (void)deleteTemporaryImageFileIfNecessary;
-- (void)setMediaURL:(id)a3;
+- (void)setMediaURL:(id)l;
 @end
 
 @implementation ICAddAttachmentsManagerAttachmentInfo
 
-- (ICAddAttachmentsManagerAttachmentInfo)initWithFileURL:(id)a3
+- (ICAddAttachmentsManagerAttachmentInfo)initWithFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = ICAddAttachmentsManagerAttachmentInfo;
   v5 = [(ICAddAttachmentsManagerAttachmentInfo *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICAddAttachmentsManagerAttachmentInfo *)v5 setMediaURL:v4];
+    [(ICAddAttachmentsManagerAttachmentInfo *)v5 setMediaURL:lCopy];
   }
 
   return v6;
 }
 
-- (void)setMediaURL:(id)a3
+- (void)setMediaURL:(id)l
 {
-  v5 = a3;
-  objc_storeStrong(&self->_mediaURL, a3);
+  lCopy = l;
+  objc_storeStrong(&self->_mediaURL, l);
   v33 = 0;
   v6 = *MEMORY[0x1E695DC10];
   v32 = 0;
-  v7 = [v5 getResourceValue:&v33 forKey:v6 error:&v32];
+  v7 = [lCopy getResourceValue:&v33 forKey:v6 error:&v32];
   v8 = v33;
   if (v7)
   {
@@ -45,17 +45,17 @@
   {
     v10 = MEMORY[0x1E696AF20];
     v11 = v32;
-    v9 = [[v10 alloc] initWithURL:v5 resolvingAgainstBaseURL:0];
+    v9 = [[v10 alloc] initWithURL:lCopy resolvingAgainstBaseURL:0];
 
-    v12 = [v9 path];
-    v13 = [v12 lastPathComponent];
-    [(ICAddAttachmentsManagerAttachmentInfo *)self setTitle:v13];
+    path = [v9 path];
+    lastPathComponent = [path lastPathComponent];
+    [(ICAddAttachmentsManagerAttachmentInfo *)self setTitle:lastPathComponent];
   }
 
   v31 = 0;
   v14 = *MEMORY[0x1E695DC68];
   v30 = 0;
-  v15 = [v5 getResourceValue:&v31 forKey:v14 error:&v30];
+  v15 = [lCopy getResourceValue:&v31 forKey:v14 error:&v30];
   v16 = v31;
   v17 = v30;
   v18 = v17;
@@ -69,8 +69,8 @@
     NSLog(&cfstr_ErrorReadingAt.isa, v17);
   }
 
-  v19 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaUTI];
-  if (![v19 length])
+  mediaUTI = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaUTI];
+  if (![mediaUTI length])
   {
 LABEL_13:
 
@@ -78,18 +78,18 @@ LABEL_13:
   }
 
   v20 = MEMORY[0x1E6982C40];
-  v21 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaUTI];
-  v22 = [v20 typeWithIdentifier:v21];
+  mediaUTI2 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaUTI];
+  v22 = [v20 typeWithIdentifier:mediaUTI2];
   v23 = [v22 conformsToType:*MEMORY[0x1E6982F10]];
 
   if (v23)
   {
     v24 = objc_alloc(MEMORY[0x1E6978028]);
-    v25 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaURL];
-    v19 = [v24 initWithURL:v25];
+    mediaURL = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaURL];
+    mediaUTI = [v24 initWithURL:mediaURL];
 
-    v26 = [v19 documentAttributes];
-    v27 = [v26 objectForKeyedSubscript:*MEMORY[0x1E6978110]];
+    documentAttributes = [mediaUTI documentAttributes];
+    v27 = [documentAttributes objectForKeyedSubscript:*MEMORY[0x1E6978110]];
 
     if ([v27 length])
     {
@@ -98,9 +98,9 @@ LABEL_13:
 
     else
     {
-      v28 = [(ICAddAttachmentsManagerAttachmentInfo *)self title];
-      v29 = [v28 stringByDeletingPathExtension];
-      [(ICAddAttachmentsManagerAttachmentInfo *)self setTitle:v29];
+      title = [(ICAddAttachmentsManagerAttachmentInfo *)self title];
+      stringByDeletingPathExtension = [title stringByDeletingPathExtension];
+      [(ICAddAttachmentsManagerAttachmentInfo *)self setTitle:stringByDeletingPathExtension];
     }
 
     goto LABEL_13;
@@ -109,42 +109,42 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)attachmentIfExistsForAccount:(id)a3
+- (id)attachmentIfExistsForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(ICAddAttachmentsManagerAttachmentInfo *)self attachment];
-  v6 = v5;
-  if (v5)
+  accountCopy = account;
+  attachment = [(ICAddAttachmentsManagerAttachmentInfo *)self attachment];
+  v6 = attachment;
+  if (attachment)
   {
-    v7 = [v5 note];
-    v8 = [v7 account];
+    note = [attachment note];
+    account = [note account];
 
     v9 = v6;
-    if (v8 != v4)
+    if (account != accountCopy)
     {
       v10 = MEMORY[0x1E69B7680];
-      v11 = [MEMORY[0x1E696AFB0] UUID];
-      v12 = [v11 UUIDString];
-      v13 = [v4 managedObjectContext];
-      v9 = [v10 newObjectWithIdentifier:v12 context:v13];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      managedObjectContext = [accountCopy managedObjectContext];
+      v9 = [v10 newObjectWithIdentifier:uUIDString context:managedObjectContext];
 
-      v14 = [v4 persistentStore];
-      [v9 assignToPersistentStore:v14];
+      persistentStore = [accountCopy persistentStore];
+      [v9 assignToPersistentStore:persistentStore];
 
-      v15 = [v6 typeUTI];
-      [v9 setTypeUTI:v15];
+      typeUTI = [v6 typeUTI];
+      [v9 setTypeUTI:typeUTI];
 
-      v16 = [v6 urlString];
-      [v9 setUrlString:v16];
+      urlString = [v6 urlString];
+      [v9 setUrlString:urlString];
 
-      v17 = [v6 title];
-      [v9 setTitle:v17];
+      title = [v6 title];
+      [v9 setTitle:title];
 
-      v18 = [v6 creationDate];
-      [v9 setCreationDate:v18];
+      creationDate = [v6 creationDate];
+      [v9 setCreationDate:creationDate];
 
-      v19 = [v6 modificationDate];
-      [v9 setModificationDate:v19];
+      modificationDate = [v6 modificationDate];
+      [v9 setModificationDate:modificationDate];
 
       [v9 updateChangeCountWithReason:@"Created attachment"];
     }
@@ -160,43 +160,43 @@ LABEL_14:
 
 - (unint64_t)mediaSize
 {
-  v3 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaData];
+  mediaData = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaData];
 
-  if (v3)
+  if (mediaData)
   {
-    v4 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaData];
-    v5 = [v4 length];
+    mediaData2 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaData];
+    v5 = [mediaData2 length];
 
     return v5;
   }
 
   else
   {
-    v7 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaURL];
+    mediaURL = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaURL];
     v14 = 0;
     v8 = *MEMORY[0x1E695DB50];
     v13 = 0;
-    v9 = [v7 getResourceValue:&v14 forKey:v8 error:&v13];
+    v9 = [mediaURL getResourceValue:&v14 forKey:v8 error:&v13];
     v10 = v14;
     v11 = v13;
 
-    v12 = 0;
+    unsignedLongLongValue = 0;
     if (v9)
     {
-      v12 = [v10 unsignedLongLongValue];
+      unsignedLongLongValue = [v10 unsignedLongLongValue];
     }
 
-    return v12;
+    return unsignedLongLongValue;
   }
 }
 
 - (BOOL)isPhoto
 {
-  v4 = [(ICAddAttachmentsManagerAttachmentInfo *)self attachment];
-  if (v4)
+  attachment = [(ICAddAttachmentsManagerAttachmentInfo *)self attachment];
+  if (attachment)
   {
-    v2 = [(ICAddAttachmentsManagerAttachmentInfo *)self attachment];
-    if ([v2 attachmentType] == 3)
+    attachment2 = [(ICAddAttachmentsManagerAttachmentInfo *)self attachment];
+    if ([attachment2 attachmentType] == 3)
     {
       v5 = 1;
 LABEL_8:
@@ -206,19 +206,19 @@ LABEL_8:
   }
 
   v6 = MEMORY[0x1E69B7680];
-  v7 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaUTI];
-  if ([v6 typeUTIIsImage:v7])
+  mediaUTI = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaUTI];
+  if ([v6 typeUTIIsImage:mediaUTI])
   {
     v5 = 1;
   }
 
   else
   {
-    v8 = [(ICAddAttachmentsManagerAttachmentInfo *)self image];
-    v5 = v8 != 0;
+    image = [(ICAddAttachmentsManagerAttachmentInfo *)self image];
+    v5 = image != 0;
   }
 
-  if (v4)
+  if (attachment)
   {
     goto LABEL_8;
   }
@@ -230,11 +230,11 @@ LABEL_9:
 
 - (BOOL)isVideo
 {
-  v4 = [(ICAddAttachmentsManagerAttachmentInfo *)self attachment];
-  if (v4)
+  attachment = [(ICAddAttachmentsManagerAttachmentInfo *)self attachment];
+  if (attachment)
   {
-    v2 = [(ICAddAttachmentsManagerAttachmentInfo *)self attachment];
-    if ([v2 attachmentType] == 5)
+    attachment2 = [(ICAddAttachmentsManagerAttachmentInfo *)self attachment];
+    if ([attachment2 attachmentType] == 5)
     {
       v5 = 1;
 LABEL_5:
@@ -244,10 +244,10 @@ LABEL_5:
   }
 
   v6 = MEMORY[0x1E69B7680];
-  v7 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaUTI];
-  v5 = [v6 typeUTIIsPlayableMovie:v7];
+  mediaUTI = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaUTI];
+  v5 = [v6 typeUTIIsPlayableMovie:mediaUTI];
 
-  if (v4)
+  if (attachment)
   {
     goto LABEL_5;
   }
@@ -262,79 +262,79 @@ LABEL_6:
   v33.receiver = self;
   v33.super_class = ICAddAttachmentsManagerAttachmentInfo;
   v3 = [(ICAddAttachmentsManagerAttachmentInfo *)&v33 description];
-  v4 = [(ICAddAttachmentsManagerAttachmentInfo *)self attachment];
+  attachment = [(ICAddAttachmentsManagerAttachmentInfo *)self attachment];
 
-  if (v4)
+  if (attachment)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(ICAddAttachmentsManagerAttachmentInfo *)self attachment];
-    v7 = [v5 stringWithFormat:@"%@ attachment:%@", v3, v6];
+    attachment2 = [(ICAddAttachmentsManagerAttachmentInfo *)self attachment];
+    v7 = [v5 stringWithFormat:@"%@ attachment:%@", v3, attachment2];
 
     v3 = v7;
   }
 
-  v8 = [(ICAddAttachmentsManagerAttachmentInfo *)self title];
+  title = [(ICAddAttachmentsManagerAttachmentInfo *)self title];
 
-  if (v8)
+  if (title)
   {
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [(ICAddAttachmentsManagerAttachmentInfo *)self title];
-    v11 = [v9 stringWithFormat:@"%@ title:%@", v3, v10];
+    title2 = [(ICAddAttachmentsManagerAttachmentInfo *)self title];
+    v11 = [v9 stringWithFormat:@"%@ title:%@", v3, title2];
 
     v3 = v11;
   }
 
-  v12 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaURL];
+  mediaURL = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaURL];
 
-  if (v12)
+  if (mediaURL)
   {
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaURL];
-    v15 = [v13 stringWithFormat:@"%@ mediaURL:%@", v3, v14];
+    mediaURL2 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaURL];
+    v15 = [v13 stringWithFormat:@"%@ mediaURL:%@", v3, mediaURL2];
 
     v3 = v15;
   }
 
-  v16 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaUTI];
+  mediaUTI = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaUTI];
 
-  if (v16)
+  if (mediaUTI)
   {
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaUTI];
-    v19 = [v17 stringWithFormat:@"%@ mediaUTI:%@", v3, v18];
+    mediaUTI2 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaUTI];
+    v19 = [v17 stringWithFormat:@"%@ mediaUTI:%@", v3, mediaUTI2];
 
     v3 = v19;
   }
 
-  v20 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaData];
+  mediaData = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaData];
 
-  if (v20)
+  if (mediaData)
   {
     v21 = MEMORY[0x1E696AEC0];
-    v22 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaData];
-    v23 = [v21 stringWithFormat:@"%@ mediaData:%@", v3, v22];
+    mediaData2 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaData];
+    v23 = [v21 stringWithFormat:@"%@ mediaData:%@", v3, mediaData2];
 
     v3 = v23;
   }
 
-  v24 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaFilenameExtension];
+  mediaFilenameExtension = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaFilenameExtension];
 
-  if (v24)
+  if (mediaFilenameExtension)
   {
     v25 = MEMORY[0x1E696AEC0];
-    v26 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaFilenameExtension];
-    v27 = [v25 stringWithFormat:@"%@ mediaFilenameExtension:%@", v3, v26];
+    mediaFilenameExtension2 = [(ICAddAttachmentsManagerAttachmentInfo *)self mediaFilenameExtension];
+    v27 = [v25 stringWithFormat:@"%@ mediaFilenameExtension:%@", v3, mediaFilenameExtension2];
 
     v3 = v27;
   }
 
-  v28 = [(ICAddAttachmentsManagerAttachmentInfo *)self image];
+  image = [(ICAddAttachmentsManagerAttachmentInfo *)self image];
 
-  if (v28)
+  if (image)
   {
     v29 = MEMORY[0x1E696AEC0];
-    v30 = [(ICAddAttachmentsManagerAttachmentInfo *)self image];
-    v31 = [v29 stringWithFormat:@"%@ attachment:%@", v3, v30];
+    image2 = [(ICAddAttachmentsManagerAttachmentInfo *)self image];
+    v31 = [v29 stringWithFormat:@"%@ attachment:%@", v3, image2];
 
     v3 = v31;
   }
@@ -345,9 +345,9 @@ LABEL_6:
 - (void)deleteTemporaryImageFileIfNecessary
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = [a1 mediaURL];
+  mediaURL = [self mediaURL];
   v6 = 138412546;
-  v7 = v5;
+  v7 = mediaURL;
   v8 = 2112;
   v9 = a2;
   _os_log_error_impl(&dword_1D4171000, a3, OS_LOG_TYPE_ERROR, "Failed to delete temporary image file at %@. Error: %@", &v6, 0x16u);

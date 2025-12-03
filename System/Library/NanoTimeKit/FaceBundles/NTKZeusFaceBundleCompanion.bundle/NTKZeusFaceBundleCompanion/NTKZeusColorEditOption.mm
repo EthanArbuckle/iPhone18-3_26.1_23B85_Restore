@@ -1,10 +1,10 @@
 @interface NTKZeusColorEditOption
-+ (id)__orderedValuesForDevice:(id)a3;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)colorNameForColorValue:(unint64_t)a3;
-+ (unint64_t)colorCodeForColorName:(id)a3;
-- (BOOL)optionExistsInDevice:(id)a3;
++ (id)__orderedValuesForDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)colorNameForColorValue:(unint64_t)value;
++ (unint64_t)colorCodeForColorName:(id)name;
+- (BOOL)optionExistsInDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 - (id)pigmentEditOption;
@@ -12,11 +12,11 @@
 
 @implementation NTKZeusColorEditOption
 
-- (BOOL)optionExistsInDevice:(id)a3
+- (BOOL)optionExistsInDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 pdrDeviceVersion];
-  if (v5 >> 17 <= 2)
+  deviceCopy = device;
+  pdrDeviceVersion = [deviceCopy pdrDeviceVersion];
+  if (pdrDeviceVersion >> 17 <= 2)
   {
     if (qword_58698 != -1)
     {
@@ -32,7 +32,7 @@
     }
   }
 
-  if (([v4 supportsPDRCapability:753405533] & 1) == 0)
+  if (([deviceCopy supportsPDRCapability:753405533] & 1) == 0)
   {
     if (qword_586A8 != -1)
     {
@@ -48,7 +48,7 @@
     }
   }
 
-  if (([v4 supportsPDRCapability:2919474315] & 1) == 0)
+  if (([deviceCopy supportsPDRCapability:2919474315] & 1) == 0)
   {
     if (qword_586B8 != -1)
     {
@@ -64,7 +64,7 @@
     }
   }
 
-  if (([v4 supportsPDRCapability:3356802055] & 1) == 0)
+  if (([deviceCopy supportsPDRCapability:3356802055] & 1) == 0)
   {
     if (qword_586C8 != -1)
     {
@@ -80,7 +80,7 @@
     }
   }
 
-  if (v5 >> 9 <= 0x280)
+  if (pdrDeviceVersion >> 9 <= 0x280)
   {
     if (qword_58688 != -1)
     {
@@ -95,7 +95,7 @@
       goto LABEL_33;
     }
 
-    if (HIWORD(v5) <= 4u)
+    if (HIWORD(pdrDeviceVersion) <= 4u)
     {
       v16 = sub_7A8C();
       v17 = [v16 containsIndex:{-[NTKZeusColorEditOption _value](self, "_value")}];
@@ -107,27 +107,27 @@
     }
   }
 
-  v18 = [(NTKZeusColorEditOption *)self device];
-  if (NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues() & 1) != 0 || ([v4 isExplorer])
+  device = [(NTKZeusColorEditOption *)self device];
+  if (NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues() & 1) != 0 || ([deviceCopy isExplorer])
   {
   }
 
   else
   {
-    v22 = [(NTKZeusColorEditOption *)self color];
+    color = [(NTKZeusColorEditOption *)self color];
 
-    if (v22 == 104)
+    if (color == 104)
     {
       goto LABEL_33;
     }
   }
 
-  v19 = [(NTKZeusColorEditOption *)self device];
-  if ((!NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues() || [v4 deviceCategory] == &dword_0 + 1) && (objc_msgSend(v4, "isZeusBlack") & 1) == 0)
+  device2 = [(NTKZeusColorEditOption *)self device];
+  if ((!NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues() || [deviceCopy deviceCategory] == &dword_0 + 1) && (objc_msgSend(deviceCopy, "isZeusBlack") & 1) == 0)
   {
-    v20 = [(NTKZeusColorEditOption *)self color];
+    color2 = [(NTKZeusColorEditOption *)self color];
 
-    if (v20 != 3009)
+    if (color2 != 3009)
     {
       goto LABEL_31;
     }
@@ -144,40 +144,40 @@ LABEL_34:
   return v21;
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_7B54;
   v5[3] = &unk_44BE0;
-  v5[4] = a1;
-  v3 = sub_7B54(v5, a3);
+  v5[4] = self;
+  v3 = sub_7B54(v5, device);
 
   return v3;
 }
 
-+ (id)__orderedValuesForDevice:(id)a3
++ (id)__orderedValuesForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = objc_opt_new();
   [v4 addObject:&off_47118];
-  if ((NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues() & 1) != 0 || [v3 isExplorer])
+  if ((NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues() & 1) != 0 || [deviceCopy isExplorer])
   {
     [v4 addObject:&off_47130];
   }
 
-  if (NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues() && [v3 deviceCategory] != &dword_0 + 1 || objc_msgSend(v3, "isZeusBlack"))
+  if (NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues() && [deviceCopy deviceCategory] != &dword_0 + 1 || objc_msgSend(deviceCopy, "isZeusBlack"))
   {
     [v4 addObject:&off_47148];
   }
 
-  if ([v3 deviceCategory] != &dword_0 + 1)
+  if ([deviceCopy deviceCategory] != &dword_0 + 1)
   {
     [v4 addObject:&off_47160];
   }
 
   [v4 addObjectsFromArray:&off_47EC0];
-  if ([v3 deviceCategory] != &dword_0 + 1)
+  if ([deviceCopy deviceCategory] != &dword_0 + 1)
   {
     [v4 addObjectsFromArray:&off_47ED8];
   }
@@ -185,17 +185,17 @@ LABEL_34:
   return v4;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  v5 = a4;
-  if (a3 - 3000 < 0x13 && ((0x7FFDFu >> (a3 + 72)) & 1) != 0)
+  deviceCopy = device;
+  if (value - 3000 < 0x13 && ((0x7FFDFu >> (value + 72)) & 1) != 0)
   {
-    v6 = off_44CE0[a3 - 3000];
+    v6 = off_44CE0[value - 3000];
   }
 
   else
   {
-    v6 = [NTKFaceColorEditOption _snapshotKeyForValue:a3 forDevice:v5];
+    v6 = [NTKFaceColorEditOption _snapshotKeyForValue:value forDevice:deviceCopy];
   }
 
   return v6;
@@ -203,10 +203,10 @@ LABEL_34:
 
 - (id)localizedName
 {
-  v2 = [(NTKZeusColorEditOption *)self pigmentEditOption];
-  v3 = [v2 localizedName];
+  pigmentEditOption = [(NTKZeusColorEditOption *)self pigmentEditOption];
+  localizedName = [pigmentEditOption localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (id)_valueToFaceBundleStringDict
@@ -229,24 +229,24 @@ LABEL_34:
   return v3;
 }
 
-+ (id)colorNameForColorValue:(unint64_t)a3
++ (id)colorNameForColorValue:(unint64_t)value
 {
   v3 = 0;
-  if (a3 <= 2999)
+  if (value <= 2999)
   {
     v4 = @"orangeDial";
     v5 = @"rougeHands";
-    if (a3 != 104)
+    if (value != 104)
     {
       v5 = 0;
     }
 
-    if (a3 != 102)
+    if (value != 102)
     {
       v4 = v5;
     }
 
-    if (a3 == 7)
+    if (value == 7)
     {
       v3 = @"orange";
     }
@@ -259,7 +259,7 @@ LABEL_34:
 
   else
   {
-    switch(a3)
+    switch(value)
     {
       case 0xBB8uLL:
       case 0xBB9uLL:
@@ -313,9 +313,9 @@ LABEL_34:
   return v3;
 }
 
-+ (unint64_t)colorCodeForColorName:(id)a3
++ (unint64_t)colorCodeForColorName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [&off_47EF0 mutableCopy];
   v6 = 3000;
   do
@@ -337,7 +337,7 @@ LABEL_34:
   {
     v10 = v9;
     v11 = *v19;
-    v12 = &dword_4 + 3;
+    integerValue = &dword_4 + 3;
     while (2)
     {
       for (i = 0; i != v10; i = i + 1)
@@ -348,12 +348,12 @@ LABEL_34:
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [a1 colorNameForColorValue:{objc_msgSend(v14, "integerValue", v18)}];
-        v16 = [v15 isEqualToString:v4];
+        v15 = [self colorNameForColorValue:{objc_msgSend(v14, "integerValue", v18)}];
+        v16 = [v15 isEqualToString:nameCopy];
 
         if (v16)
         {
-          v12 = [v14 integerValue];
+          integerValue = [v14 integerValue];
           goto LABEL_14;
         }
       }
@@ -370,12 +370,12 @@ LABEL_34:
 
   else
   {
-    v12 = &dword_4 + 3;
+    integerValue = &dword_4 + 3;
   }
 
 LABEL_14:
 
-  return v12;
+  return integerValue;
 }
 
 @end

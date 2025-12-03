@@ -1,13 +1,13 @@
 @interface EMKLayoutManager
-- (BOOL)convertGlyphIndex:(unint64_t)a3 toAttributeRelativeGlyphIndex:(unint64_t *)a4 numberOfAttributedGlyphs:(unint64_t *)a5;
+- (BOOL)convertGlyphIndex:(unint64_t)index toAttributeRelativeGlyphIndex:(unint64_t *)glyphIndex numberOfAttributedGlyphs:(unint64_t *)glyphs;
 - (BOOL)isEmojiAnimationActive;
 - (EMKLayoutManager)init;
-- (void)drawAttributedGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4;
-- (void)drawGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4;
-- (void)processEditingForTextStorage:(id)a3 edited:(unint64_t)a4 range:(_NSRange)a5 changeInLength:(int64_t)a6 invalidatedRange:(_NSRange)a7;
-- (void)setEmojiConversionEnabled:(BOOL)a3;
-- (void)setEmojiConversionLanguages:(id)a3;
-- (void)showCGGlyphs:(const unsigned __int16 *)a3 positions:(const CGPoint *)a4 count:(unint64_t)a5 font:(id)a6 matrix:(CGAffineTransform *)a7 attributes:(id)a8 inContext:(CGContext *)a9;
+- (void)drawAttributedGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point;
+- (void)drawGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point;
+- (void)processEditingForTextStorage:(id)storage edited:(unint64_t)edited range:(_NSRange)range changeInLength:(int64_t)length invalidatedRange:(_NSRange)invalidatedRange;
+- (void)setEmojiConversionEnabled:(BOOL)enabled;
+- (void)setEmojiConversionLanguages:(id)languages;
+- (void)showCGGlyphs:(const unsigned __int16 *)glyphs positions:(const CGPoint *)positions count:(unint64_t)count font:(id)font matrix:(CGAffineTransform *)matrix attributes:(id)attributes inContext:(CGContext *)context;
 - (void)startOrStopTimer;
 @end
 
@@ -54,29 +54,29 @@
   return v2;
 }
 
-- (BOOL)convertGlyphIndex:(unint64_t)a3 toAttributeRelativeGlyphIndex:(unint64_t *)a4 numberOfAttributedGlyphs:(unint64_t *)a5
+- (BOOL)convertGlyphIndex:(unint64_t)index toAttributeRelativeGlyphIndex:(unint64_t *)glyphIndex numberOfAttributedGlyphs:(unint64_t *)glyphs
 {
-  v9 = [(EMKLayoutManager *)self numberOfGlyphs];
-  if (!v9)
+  numberOfGlyphs = [(EMKLayoutManager *)self numberOfGlyphs];
+  if (!numberOfGlyphs)
   {
-    return v9 != 0;
+    return numberOfGlyphs != 0;
   }
 
   glyphIndexTable = self->_glyphIndexTable;
   if (!glyphIndexTable)
   {
-    v25 = a3;
+    indexCopy = index;
     v11 = [(NSMutableAttributedString *)self->_attributes length];
     v26 = 0;
     v27 = 0;
-    v12 = [MEMORY[0x277CBEB28] dataWithLength:8 * v9 + 8];
+    v12 = [MEMORY[0x277CBEB28] dataWithLength:8 * numberOfGlyphs + 8];
     v13 = self->_glyphIndexTable;
     self->_glyphIndexTable = v12;
 
-    v14 = [(NSMutableData *)self->_glyphIndexTable mutableBytes];
+    mutableBytes = [(NSMutableData *)self->_glyphIndexTable mutableBytes];
     if (v11)
     {
-      v24 = a4;
+      glyphIndexCopy = glyphIndex;
       v15 = 0;
       v16 = 0;
       do
@@ -86,7 +86,7 @@
         v20 = v18 + v19;
         if (v18 < v18 + v19)
         {
-          v21 = &v14[v18];
+          v21 = &mutableBytes[v18];
           do
           {
             *v21++ = v16;
@@ -101,8 +101,8 @@
       }
 
       while (v27 + v26 < v11);
-      a4 = v24;
-      if (v20 > v9)
+      glyphIndex = glyphIndexCopy;
+      if (v20 > numberOfGlyphs)
       {
         goto LABEL_13;
       }
@@ -116,27 +116,27 @@
 
     do
     {
-      v14[v20++] = v16;
+      mutableBytes[v20++] = v16;
     }
 
-    while (v20 <= v9);
+    while (v20 <= numberOfGlyphs);
 LABEL_13:
     glyphIndexTable = self->_glyphIndexTable;
-    a3 = v25;
+    index = indexCopy;
   }
 
-  v22 = [(NSMutableData *)glyphIndexTable mutableBytes];
-  if (a4)
+  mutableBytes2 = [(NSMutableData *)glyphIndexTable mutableBytes];
+  if (glyphIndex)
   {
-    *a4 = *(v22 + 8 * a3);
+    *glyphIndex = *(mutableBytes2 + 8 * index);
   }
 
-  if (a5)
+  if (glyphs)
   {
-    *a5 = *(v22 + 8 * v9);
+    *glyphs = *(mutableBytes2 + 8 * numberOfGlyphs);
   }
 
-  return v9 != 0;
+  return numberOfGlyphs != 0;
 }
 
 - (void)startOrStopTimer
@@ -157,8 +157,8 @@ LABEL_13:
     v3 = @"EMKStopTimerNotificationName";
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:v3 object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:v3 object:self];
 }
 
 - (BOOL)isEmojiAnimationActive
@@ -175,44 +175,44 @@ LABEL_13:
   {
     if (v6)
     {
-      v5 = [(EMKGlyphRippler *)self->_rippler currentTimeIndex];
-      return ![(EMKGlyphRippler *)self->_rippler finishedForGlyphIndex:v6 - 1 numberOfGlyphs:v6 timeIndex:v5];
+      currentTimeIndex = [(EMKGlyphRippler *)self->_rippler currentTimeIndex];
+      return ![(EMKGlyphRippler *)self->_rippler finishedForGlyphIndex:v6 - 1 numberOfGlyphs:v6 timeIndex:currentTimeIndex];
     }
   }
 
   return result;
 }
 
-- (void)setEmojiConversionEnabled:(BOOL)a3
+- (void)setEmojiConversionEnabled:(BOOL)enabled
 {
-  if (self->_emojiConversionEnabled && !a3)
+  if (self->_emojiConversionEnabled && !enabled)
   {
     v5 = [(NSMutableAttributedString *)self->_attributes length];
     attributes = self->_attributes;
     v7 = [MEMORY[0x277CCA898] emptyAttributedStringOfLength_emk:v5];
     [(NSMutableAttributedString *)attributes replaceCharactersInRange:0 withAttributedString:v5, v7];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 postNotificationName:@"EMKEmojiConversionDisabledNotificationName" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"EMKEmojiConversionDisabledNotificationName" object:self];
   }
 
-  self->_emojiConversionEnabled = a3;
+  self->_emojiConversionEnabled = enabled;
 }
 
-- (void)setEmojiConversionLanguages:(id)a3
+- (void)setEmojiConversionLanguages:(id)languages
 {
-  self->_emojiConversionLanguages = [a3 copy];
+  self->_emojiConversionLanguages = [languages copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)drawAttributedGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4
+- (void)drawAttributedGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  length = a3.length;
-  location = a3.location;
-  v9 = [(EMKLayoutManager *)self characterRangeForGlyphRange:a3.location actualGlyphRange:a3.length, 0];
+  y = point.y;
+  x = point.x;
+  length = range.length;
+  location = range.location;
+  v9 = [(EMKLayoutManager *)self characterRangeForGlyphRange:range.location actualGlyphRange:range.length, 0];
   v11 = v10;
   v40 = v9;
   v41 = 0;
@@ -247,20 +247,20 @@ LABEL_13:
           {
             if (location <= v17 && v17 < v34)
             {
-              v19 = [(EMKGlyphRippler *)self->_rippler currentTimeIndex];
+              currentTimeIndex = [(EMKGlyphRippler *)self->_rippler currentTimeIndex];
               v38 = 0;
               v39 = 0;
               [(EMKLayoutManager *)self convertGlyphIndex:v17 toAttributeRelativeGlyphIndex:&v39 numberOfAttributedGlyphs:&v38];
-              v20 = [(EMKGlyphRippler *)self->_rippler currentColorForGlyphIndex:v39 numberOfGlyphs:v38 timeIndex:v19];
+              v20 = [(EMKGlyphRippler *)self->_rippler currentColorForGlyphIndex:v39 numberOfGlyphs:v38 timeIndex:currentTimeIndex];
               currentColor = self->_currentColor;
               self->_currentColor = v20;
 
-              [(EMKGlyphRippler *)self->_rippler currentScaleForGlyphIndex:v39 numberOfGlyphs:v38 timeIndex:v19];
+              [(EMKGlyphRippler *)self->_rippler currentScaleForGlyphIndex:v39 numberOfGlyphs:v38 timeIndex:currentTimeIndex];
               self->_currentScale = v22;
-              [(EMKGlyphRippler *)self->_rippler currentOffsetForGlyphIndex:v39 numberOfGlyphs:v38 timeIndex:v19];
+              [(EMKGlyphRippler *)self->_rippler currentOffsetForGlyphIndex:v39 numberOfGlyphs:v38 timeIndex:currentTimeIndex];
               self->_currentOffset.width = v23;
               self->_currentOffset.height = v24;
-              v25 = [(EMKGlyphRippler *)self->_rippler currentShadowColorForGlyphIndex:v39 numberOfGlyphs:v38 timeIndex:v19];
+              v25 = [(EMKGlyphRippler *)self->_rippler currentShadowColorForGlyphIndex:v39 numberOfGlyphs:v38 timeIndex:currentTimeIndex];
               currentShadowColor = self->_currentShadowColor;
               self->_currentShadowColor = v25;
 
@@ -309,12 +309,12 @@ LABEL_13:
   }
 }
 
-- (void)drawGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4
+- (void)drawGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point
 {
   if (self->_emojiConversionEnabled && self->_emojiConversionActive)
   {
 
-    [(EMKLayoutManager *)self drawAttributedGlyphsForGlyphRange:a3.location atPoint:a3.length, a4.x, a4.y];
+    [(EMKLayoutManager *)self drawAttributedGlyphsForGlyphRange:range.location atPoint:range.length, point.x, point.y];
   }
 
   else
@@ -323,21 +323,21 @@ LABEL_13:
     v8 = v5;
     v6.receiver = self;
     v6.super_class = EMKLayoutManager;
-    [(EMKLayoutManager *)&v6 drawGlyphsForGlyphRange:a3.location atPoint:a3.length, a4.x, a4.y];
+    [(EMKLayoutManager *)&v6 drawGlyphsForGlyphRange:range.location atPoint:range.length, point.x, point.y];
   }
 }
 
-- (void)showCGGlyphs:(const unsigned __int16 *)a3 positions:(const CGPoint *)a4 count:(unint64_t)a5 font:(id)a6 matrix:(CGAffineTransform *)a7 attributes:(id)a8 inContext:(CGContext *)a9
+- (void)showCGGlyphs:(const unsigned __int16 *)glyphs positions:(const CGPoint *)positions count:(unint64_t)count font:(id)font matrix:(CGAffineTransform *)matrix attributes:(id)attributes inContext:(CGContext *)context
 {
-  v14 = a6;
-  v15 = a8;
+  fontCopy = font;
+  attributesCopy = attributes;
   if (self->_currentColor)
   {
-    [v14 pointSize];
+    [fontCopy pointSize];
     v17 = v16;
     v19 = v16 <= 22.0 && self->_currentShadowColor != 0;
     v28 = v19;
-    if (a5)
+    if (count)
     {
       if (self->_currentScale == 1.0 && self->_currentOffset.width == 0.0 && self->_currentOffset.height == 0.0)
       {
@@ -346,14 +346,14 @@ LABEL_13:
 
       else
       {
-        v20 = malloc_type_calloc(a5, 0x10uLL, 0x1000040451B5BE8uLL);
+        v20 = malloc_type_calloc(count, 0x10uLL, 0x1000040451B5BE8uLL);
         if (v20)
         {
-          CGContextSetFontSize(a9, v17 * self->_currentScale);
-          BoundingRectsForGlyphs = CTFontGetBoundingRectsForGlyphs(v14, kCTFontOrientationDefault, a3, 0, a5);
+          CGContextSetFontSize(context, v17 * self->_currentScale);
+          BoundingRectsForGlyphs = CTFontGetBoundingRectsForGlyphs(fontCopy, kCTFontOrientationDefault, glyphs, 0, count);
           p_y = &v20->y;
-          v22 = &a4->y;
-          v23 = a5;
+          v22 = &positions->y;
+          countCopy = count;
           do
           {
             v24 = *v22 - self->_currentOffset.height;
@@ -361,11 +361,11 @@ LABEL_13:
             *p_y = v24;
             p_y += 2;
             v22 += 2;
-            --v23;
+            --countCopy;
           }
 
-          while (v23);
-          a4 = v20;
+          while (countCopy);
+          positions = v20;
         }
       }
     }
@@ -378,10 +378,10 @@ LABEL_13:
     [(UIColor *)self->_currentColor set];
     if (v28)
     {
-      v26 = [(UIColor *)self->_currentShadowColor CGColor];
+      cGColor = [(UIColor *)self->_currentShadowColor CGColor];
       v32.width = 0.25;
       v32.height = 0.0;
-      CGContextSetShadowWithColor(a9, v32, 0.0, v26);
+      CGContextSetShadowWithColor(context, v32, 0.0, cGColor);
       v25 = 1;
     }
 
@@ -399,14 +399,14 @@ LABEL_13:
 
   v31.receiver = self;
   v31.super_class = EMKLayoutManager;
-  v27 = *&a7->c;
-  v30[0] = *&a7->a;
+  v27 = *&matrix->c;
+  v30[0] = *&matrix->a;
   v30[1] = v27;
-  v30[2] = *&a7->tx;
-  [(EMKLayoutManager *)&v31 showCGGlyphs:a3 positions:a4 count:a5 font:v14 matrix:v30 attributes:v15 inContext:a9];
+  v30[2] = *&matrix->tx;
+  [(EMKLayoutManager *)&v31 showCGGlyphs:glyphs positions:positions count:count font:fontCopy matrix:v30 attributes:attributesCopy inContext:context];
   if (v25)
   {
-    CGContextSetShadowWithColor(a9, *MEMORY[0x277CBF3A8], 0.0, 0);
+    CGContextSetShadowWithColor(context, *MEMORY[0x277CBF3A8], 0.0, 0);
   }
 
   if (v20)
@@ -415,25 +415,25 @@ LABEL_13:
   }
 }
 
-- (void)processEditingForTextStorage:(id)a3 edited:(unint64_t)a4 range:(_NSRange)a5 changeInLength:(int64_t)a6 invalidatedRange:(_NSRange)a7
+- (void)processEditingForTextStorage:(id)storage edited:(unint64_t)edited range:(_NSRange)range changeInLength:(int64_t)length invalidatedRange:(_NSRange)invalidatedRange
 {
-  length = a5.length;
-  v9 = a4;
+  length = range.length;
+  editedCopy = edited;
   v50 = *MEMORY[0x277D85DE8];
   v47 = 0;
   v48 = 0;
   v46.receiver = self;
   v46.super_class = EMKLayoutManager;
-  location = a5.location;
-  v36 = a3;
-  [EMKLayoutManager processEditingForTextStorage:sel_processEditingForTextStorage_edited_range_changeInLength_invalidatedRange_ edited:a7.location range:a7.length changeInLength:? invalidatedRange:?];
-  if ((v9 & 2) != 0)
+  location = range.location;
+  storageCopy = storage;
+  [EMKLayoutManager processEditingForTextStorage:sel_processEditingForTextStorage_edited_range_changeInLength_invalidatedRange_ edited:invalidatedRange.location range:invalidatedRange.length changeInLength:? invalidatedRange:?];
+  if ((editedCopy & 2) != 0)
   {
     attributes = self->_attributes;
     v12 = [MEMORY[0x277CCA898] emptyAttributedStringOfLength_emk:length];
-    [(NSMutableAttributedString *)attributes replaceCharactersInRange:location withAttributedString:length - a6, v12];
+    [(NSMutableAttributedString *)attributes replaceCharactersInRange:location withAttributedString:length - length, v12];
 
-    v13 = [v36 length];
+    v13 = [storageCopy length];
     v14 = [(NSMutableAttributedString *)self->_attributes length];
     v33 = 0;
     v15 = location;
@@ -452,16 +452,16 @@ LABEL_28:
       if (v18)
       {
         v19 = v18;
-        v20 = [(NSMutableAttributedString *)self->_attributes attribute:@"EMKEmojiTokenList" atIndex:location - 1 longestEffectiveRange:&v47 inRange:0, location];
+        location = [(NSMutableAttributedString *)self->_attributes attribute:@"EMKEmojiTokenList" atIndex:location - 1 longestEffectiveRange:&v47 inRange:0, location];
         v15 = v19;
         v21 = v47;
-        v22 = v16 - v47;
+        lengthCopy2 = v16 - v47;
       }
 
       else
       {
         v15 = 0;
-        v22 = length;
+        lengthCopy2 = length;
         v21 = location;
       }
     }
@@ -469,7 +469,7 @@ LABEL_28:
     else
     {
       v21 = 0;
-      v22 = length;
+      lengthCopy2 = length;
     }
 
     v23 = v17 > v16;
@@ -482,8 +482,8 @@ LABEL_28:
       if (v33)
       {
         v26 = [(NSMutableAttributedString *)self->_attributes attribute:@"EMKEmojiTokenList" atIndex:v16 longestEffectiveRange:&v47 inRange:v16, v24];
-        v22 = v47 - v21 + v48;
-        if (!v22)
+        lengthCopy2 = v47 - v21 + v48;
+        if (!lengthCopy2)
         {
           goto LABEL_18;
         }
@@ -492,7 +492,7 @@ LABEL_28:
       else
       {
         v33 = 0;
-        if (!v22)
+        if (!lengthCopy2)
         {
           goto LABEL_18;
         }
@@ -502,7 +502,7 @@ LABEL_28:
     else
     {
       v33 = v15;
-      if (!v22)
+      if (!lengthCopy2)
       {
 LABEL_18:
         if (self->_emojiConversionEnabled)
@@ -531,7 +531,7 @@ LABEL_21:
               v40 = 0x2020000000;
               v41 = 0;
               enumerator = self->_enumerator;
-              v32 = [v36 string];
+              string = [storageCopy string];
               v37[0] = MEMORY[0x277D85DD0];
               v37[1] = 3221225472;
               v37[2] = __94__EMKLayoutManager_processEditingForTextStorage_edited_range_changeInLength_invalidatedRange___block_invoke;
@@ -539,7 +539,7 @@ LABEL_21:
               v37[4] = self;
               v37[5] = v30;
               v37[6] = &v38;
-              [(EMKTextEnumerator *)enumerator enumerateEmojiSignifiersInString:v32 touchingRange:location language:length usingBlock:v30, v37];
+              [(EMKTextEnumerator *)enumerator enumerateEmojiSignifiersInString:string touchingRange:location language:length usingBlock:v30, v37];
 
               LOBYTE(v30) = *(v39 + 24);
               _Block_object_dispose(&v38, 8);
@@ -566,7 +566,7 @@ LABEL_21:
       }
     }
 
-    [(NSMutableAttributedString *)self->_attributes removeAttribute:@"EMKEmojiTokenList" range:v21, v22];
+    [(NSMutableAttributedString *)self->_attributes removeAttribute:@"EMKEmojiTokenList" range:v21, lengthCopy2];
     goto LABEL_18;
   }
 

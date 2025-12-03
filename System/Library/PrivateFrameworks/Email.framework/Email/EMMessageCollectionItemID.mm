@@ -1,12 +1,12 @@
 @interface EMMessageCollectionItemID
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (EMMessageCollectionItemID)init;
-- (EMMessageCollectionItemID)initWithCoder:(id)a3;
-- (EMMessageCollectionItemID)initWithGlobalMessageID:(int64_t)a3;
+- (EMMessageCollectionItemID)initWithCoder:(id)coder;
+- (EMMessageCollectionItemID)initWithGlobalMessageID:(int64_t)d;
 - (NSString)description;
 - (id)cachedSelf;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMMessageCollectionItemID
@@ -27,9 +27,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(EMMessageCollectionItemID *)self globalMessageID];
+  globalMessageID = [(EMMessageCollectionItemID *)self globalMessageID];
 
-  return MEMORY[0x1EEE02BA8](v2);
+  return MEMORY[0x1EEE02BA8](globalMessageID);
 }
 
 void __52__EMMessageCollectionItemID_EFCacheable__cachedSelf__block_invoke()
@@ -47,7 +47,7 @@ void __52__EMMessageCollectionItemID_EFCacheable__cachedSelf__block_invoke()
   return [(EMMessageCollectionItemID *)&v3 init];
 }
 
-- (EMMessageCollectionItemID)initWithGlobalMessageID:(int64_t)a3
+- (EMMessageCollectionItemID)initWithGlobalMessageID:(int64_t)d
 {
   v8.receiver = self;
   v8.super_class = EMMessageCollectionItemID;
@@ -55,27 +55,27 @@ void __52__EMMessageCollectionItemID_EFCacheable__cachedSelf__block_invoke()
   v5 = v4;
   if (v4)
   {
-    v4->_globalMessageID = a3;
+    v4->_globalMessageID = d;
   }
 
-  v6 = [(EMMessageCollectionItemID *)v4 cachedSelf];
+  cachedSelf = [(EMMessageCollectionItemID *)v4 cachedSelf];
 
-  return v6;
+  return cachedSelf;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if (([(EMMessageCollectionItemID *)v4 isMemberOfClass:objc_opt_class()]& 1) != 0)
+  else if (([(EMMessageCollectionItemID *)equalCopy isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
-    v5 = v4;
-    v6 = [(EMMessageCollectionItemID *)self globalMessageID];
-    v7 = v6 == [(EMMessageCollectionItemID *)v5 globalMessageID];
+    v5 = equalCopy;
+    globalMessageID = [(EMMessageCollectionItemID *)self globalMessageID];
+    v7 = globalMessageID == [(EMMessageCollectionItemID *)v5 globalMessageID];
   }
 
   else
@@ -93,11 +93,11 @@ void __52__EMMessageCollectionItemID_EFCacheable__cachedSelf__block_invoke()
   return v2;
 }
 
-- (EMMessageCollectionItemID)initWithCoder:(id)a3
+- (EMMessageCollectionItemID)initWithCoder:(id)coder
 {
-  v8 = a3;
-  v3 = v8;
-  v4 = self;
+  coderCopy = coder;
+  v3 = coderCopy;
+  selfCopy = self;
   v5 = EFDecodeCacheableInstance();
 
   return v5;
@@ -116,10 +116,10 @@ id __43__EMMessageCollectionItemID_initWithCoder___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v3 = v4;
+  coderCopy = coder;
+  v3 = coderCopy;
   EFEncodeCacheableInstance();
 }
 

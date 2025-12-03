@@ -1,25 +1,25 @@
 @interface CastleIMAPAccount
-+ (id)newChildAccountWithParentAccount:(id)a3 error:(id *)a4;
++ (id)newChildAccountWithParentAccount:(id)account error:(id *)error;
 - (BOOL)canAttemptPushRegistration;
 - (BOOL)canReceiveNewMailNotifications;
-- (BOOL)checkAndSetDefaultEmailAddress:(id)a3;
-- (BOOL)isEnabledForDataclass:(id)a3;
-- (BOOL)isEquivalentTo:(id)a3 hostname:(id)a4 username:(id)a5;
-- (BOOL)shouldFetchRemoteLinksWithDateReceived:(id)a3;
+- (BOOL)checkAndSetDefaultEmailAddress:(id)address;
+- (BOOL)isEnabledForDataclass:(id)dataclass;
+- (BOOL)isEquivalentTo:(id)to hostname:(id)hostname username:(id)username;
+- (BOOL)shouldFetchRemoteLinksWithDateReceived:(id)received;
 - (BOOL)shouldRegisterForPush;
 - (BOOL)usesSSL;
-- (CastleIMAPAccount)initWithLibrary:(id)a3 persistentAccount:(id)a4;
+- (CastleIMAPAccount)initWithLibrary:(id)library persistentAccount:(id)account;
 - (NSString)clientInfo;
 - (NSString)personID;
-- (id)_deliveryAccountCreateIfNeeded:(BOOL)a3;
-- (id)_fromEmailAddressesIncludingDisabled:(id)a1;
-- (id)_mailPropertyFromAppleAccountForKey:(uint64_t)a1;
+- (id)_deliveryAccountCreateIfNeeded:(BOOL)needed;
+- (id)_fromEmailAddressesIncludingDisabled:(id)disabled;
+- (id)_mailPropertyFromAppleAccountForKey:(uint64_t)key;
 - (id)accountStore;
-- (id)anisetteDataWithError:(id *)a3;
+- (id)anisetteDataWithError:(id *)error;
 - (id)appleAccount;
-- (id)appleID2AuthDataWithHeaders:(void *)a1;
-- (id)authTokenWithError:(void *)a1;
-- (id)checkAndSetLocalDefaultEmailAddress:(id)a1;
+- (id)appleID2AuthDataWithHeaders:(void *)headers;
+- (id)authTokenWithError:(void *)error;
+- (id)checkAndSetLocalDefaultEmailAddress:(id)address;
 - (id)deliveryHostname;
 - (id)displayName;
 - (id)emailAddressStrings;
@@ -35,32 +35,32 @@
 - (unsigned)portNumber;
 - (void)_emailAliasesAreStale;
 - (void)_updateEmailAddressAndAliases;
-- (void)_updateEmailAddressAndAliasesWithResult:(void *)a1;
-- (void)appleID2AuthWithCompletion:(id)a3;
+- (void)_updateEmailAddressAndAliasesWithResult:(void *)result;
+- (void)appleID2AuthWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)handleAlertResponse:(id)a3;
-- (void)handleOverQuotaResponse:(id)a3;
+- (void)handleAlertResponse:(id)response;
+- (void)handleOverQuotaResponse:(id)response;
 - (void)invalidateEmailAliases;
-- (void)persistentAccountDidChange:(id)a3 previousAccount:(id)a4;
+- (void)persistentAccountDidChange:(id)change previousAccount:(id)account;
 - (void)pushUpdateForAliasData;
-- (void)setLocallyEnabled:(void *)a3 forEmailAddress:;
-- (void)setUsername:(id)a3;
+- (void)setLocallyEnabled:(void *)enabled forEmailAddress:;
+- (void)setUsername:(id)username;
 - (void)startListeningForNotifications;
 - (void)updateEmailAliasesIfNeeded;
 @end
 
 @implementation CastleIMAPAccount
 
-- (BOOL)shouldFetchRemoteLinksWithDateReceived:(id)a3
+- (BOOL)shouldFetchRemoteLinksWithDateReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   if (+[MFMailMessageLibrary canUsePersistence]&& [(IMAPAccount *)self supportsAppleRemoteLinks])
   {
     v5 = +[MFMailMessageLibrary defaultInstance];
-    v6 = [v5 persistence];
-    v7 = [v6 remoteContentManager];
+    persistence = [v5 persistence];
+    remoteContentManager = [persistence remoteContentManager];
 
-    v8 = [v7 shouldAddRemoteContentLinksForMessageWithDateReceived:v4];
+    v8 = [remoteContentManager shouldAddRemoteContentLinksForMessageWithDateReceived:receivedCopy];
   }
 
   else
@@ -71,13 +71,13 @@
   return v8;
 }
 
-- (CastleIMAPAccount)initWithLibrary:(id)a3 persistentAccount:(id)a4
+- (CastleIMAPAccount)initWithLibrary:(id)library persistentAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  accountCopy = account;
   v25.receiver = self;
   v25.super_class = CastleIMAPAccount;
-  v8 = [(IMAPAccount *)&v25 initWithLibrary:v6 persistentAccount:v7];
+  v8 = [(IMAPAccount *)&v25 initWithLibrary:libraryCopy persistentAccount:accountCopy];
   if (v8)
   {
     v9 = MEMORY[0x1E696AEC0];
@@ -90,14 +90,14 @@
     v8->_appleAccountLock = v13;
 
     v15 = objc_alloc(MEMORY[0x1E699B710]);
-    v16 = [v7 parentAccount];
-    v17 = [v15 initWithAppleAccount:v16];
+    parentAccount = [accountCopy parentAccount];
+    v17 = [v15 initWithAppleAccount:parentAccount];
     aliasSupport = v8->_aliasSupport;
     v8->_aliasSupport = v17;
 
     v19 = [MFCastleEmailAliasUpdater alloc];
-    v20 = [(MFAccount *)v8 identifier];
-    v21 = [(MFCastleEmailAliasUpdater *)v19 initWithAccountID:v20 aliasSupport:v8->_aliasSupport];
+    identifier = [(MFAccount *)v8 identifier];
+    v21 = [(MFCastleEmailAliasUpdater *)v19 initWithAccountID:identifier aliasSupport:v8->_aliasSupport];
     aliasUpdater = v8->_aliasUpdater;
     v8->_aliasUpdater = v21;
 
@@ -124,9 +124,9 @@
     [*(result + 416) lock];
     if (*(v1 + 424))
     {
-      v2 = [MEMORY[0x1E696AD88] defaultCenter];
-      v3 = [(CastleIMAPAccount *)v1 accountStore];
-      [v2 removeObserver:v1 name:*MEMORY[0x1E69597D8] object:v3];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      accountStore = [(CastleIMAPAccount *)v1 accountStore];
+      [defaultCenter removeObserver:v1 name:*MEMORY[0x1E69597D8] object:accountStore];
 
       v4 = *(v1 + 424);
       *(v1 + 424) = 0;
@@ -138,13 +138,13 @@
   return result;
 }
 
-- (BOOL)isEquivalentTo:(id)a3 hostname:(id)a4 username:(id)a5
+- (BOOL)isEquivalentTo:(id)to hostname:(id)hostname username:(id)username
 {
-  v7 = a3;
-  v8 = a5;
-  if ([(MailAccount *)self isAccountClassEquivalentTo:v7])
+  toCopy = to;
+  usernameCopy = username;
+  if ([(MailAccount *)self isAccountClassEquivalentTo:toCopy])
   {
-    v9 = [(MailAccount *)self isUsernameEquivalentTo:v8];
+    v9 = [(MailAccount *)self isUsernameEquivalentTo:usernameCopy];
   }
 
   else
@@ -184,7 +184,7 @@
 - (void)startListeningForNotifications
 {
   *(self + 440) &= ~1u;
-  v3 = [(IMAPAccount *)self separatorChar];
+  separatorChar = [(IMAPAccount *)self separatorChar];
   *(self + 440) |= 1u;
   v4.receiver = self;
   v4.super_class = CastleIMAPAccount;
@@ -193,35 +193,35 @@
 
 - (id)appleAccount
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 416);
+    v2 = *(self + 416);
     if (!v2)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:sel_appleAccount object:a1 file:@"CastleIMAPAccount.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"nil != _appleAccountLock"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_appleAccount object:self file:@"CastleIMAPAccount.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"nil != _appleAccountLock"}];
 
-      v2 = *(a1 + 416);
+      v2 = *(self + 416);
     }
 
     [v2 lock];
-    v3 = *(a1 + 424);
+    v3 = *(self + 424);
     if (!v3)
     {
-      v4 = [a1 persistentAccount];
-      v5 = [v4 parentAccount];
-      v6 = *(a1 + 424);
-      *(a1 + 424) = v5;
+      persistentAccount = [self persistentAccount];
+      parentAccount = [persistentAccount parentAccount];
+      v6 = *(self + 424);
+      *(self + 424) = parentAccount;
 
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      v8 = [(CastleIMAPAccount *)a1 accountStore];
-      [v7 addObserver:a1 selector:sel__accountsChanged_ name:*MEMORY[0x1E69597D8] object:v8];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      accountStore = [(CastleIMAPAccount *)self accountStore];
+      [defaultCenter addObserver:self selector:sel__accountsChanged_ name:*MEMORY[0x1E69597D8] object:accountStore];
 
-      v3 = *(a1 + 424);
+      v3 = *(self + 424);
     }
 
     v9 = v3;
-    [*(a1 + 416) unlock];
+    [*(self + 416) unlock];
   }
 
   else
@@ -234,27 +234,27 @@
 
 - (id)accountStore
 {
-  if (a1)
+  if (self)
   {
     v1 = +[MFAccountStore sharedAccountStore];
-    v2 = [v1 persistentStore];
+    persistentStore = [v1 persistentStore];
   }
 
   else
   {
-    v2 = 0;
+    persistentStore = 0;
   }
 
-  return v2;
+  return persistentStore;
 }
 
-- (id)_mailPropertyFromAppleAccountForKey:(uint64_t)a1
+- (id)_mailPropertyFromAppleAccountForKey:(uint64_t)key
 {
   v3 = a2;
-  if (a1)
+  if (key)
   {
-    v4 = [(CastleIMAPAccount *)a1 appleAccount];
-    v5 = [v4 propertiesForDataclass:*MEMORY[0x1E6959B28]];
+    appleAccount = [(CastleIMAPAccount *)key appleAccount];
+    v5 = [appleAccount propertiesForDataclass:*MEMORY[0x1E6959B28]];
     v6 = [v5 objectForKey:v3];
   }
 
@@ -266,16 +266,16 @@
   return v6;
 }
 
-+ (id)newChildAccountWithParentAccount:(id)a3 error:(id *)a4
++ (id)newChildAccountWithParentAccount:(id)account error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  accountCopy = account;
+  v6 = accountCopy;
+  if (accountCopy)
   {
     v7 = *MEMORY[0x1E6959B28];
-    v36 = [v5 propertiesForDataclass:*MEMORY[0x1E6959B28]];
-    v35 = [MEMORY[0x1E695DF90] dictionary];
+    v36 = [accountCopy propertiesForDataclass:*MEMORY[0x1E6959B28]];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if (([v6 isProvisionedForDataclass:v7] & 1) == 0)
     {
       v8 = [MFError errorWithDomain:@"CastleIMAPErrorDomain" code:2 localizedDescription:0];
@@ -289,8 +289,8 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v9 = [v6 childAccounts];
-    v10 = [v9 countByEnumeratingWithState:&v37 objects:v42 count:16];
+    childAccounts = [v6 childAccounts];
+    v10 = [childAccounts countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v10)
     {
       v11 = *v38;
@@ -301,12 +301,12 @@ LABEL_6:
       {
         if (*v38 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(childAccounts);
         }
 
-        v14 = [*(*(&v37 + 1) + 8 * v13) accountType];
-        v15 = [v14 identifier];
-        v16 = [v15 isEqualToString:v12];
+        accountType = [*(*(&v37 + 1) + 8 * v13) accountType];
+        identifier = [accountType identifier];
+        v16 = [identifier isEqualToString:v12];
 
         if (v16)
         {
@@ -315,7 +315,7 @@ LABEL_6:
 
         if (v10 == ++v13)
         {
-          v10 = [v9 countByEnumeratingWithState:&v37 objects:v42 count:16];
+          v10 = [childAccounts countByEnumeratingWithState:&v37 objects:v42 count:16];
           if (v10)
           {
             goto LABEL_6;
@@ -341,7 +341,7 @@ LABEL_12:
     v18 = [v36 objectForKey:@"Username"];
     if (v18)
     {
-      [v35 setObject:v18 forKey:@"Username"];
+      [dictionary setObject:v18 forKey:@"Username"];
     }
 
     else
@@ -353,16 +353,16 @@ LABEL_12:
       }
     }
 
-    v19 = [v6 username];
-    v20 = [v19 emailAddressValue];
-    v21 = [v20 domain];
+    username = [v6 username];
+    emailAddressValue = [username emailAddressValue];
+    domain = [emailAddressValue domain];
 
     v22 = [v36 objectForKey:@"dotMacMailSupported"];
-    v23 = [v22 BOOLValue];
+    bOOLValue = [v22 BOOLValue];
 
-    if (((v19 != 0) & v23) == 1 && v21 && [&unk_1F2774C20 containsObject:v21])
+    if (((username != 0) & bOOLValue) == 1 && domain && [&unk_1F2774C20 containsObject:domain])
     {
-      v24 = v19;
+      v24 = username;
     }
 
     else
@@ -382,39 +382,39 @@ LABEL_26:
           }
 
           v28 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-          v29 = [v6 aa_firstName];
-          [v28 setGivenName:v29];
+          aa_firstName = [v6 aa_firstName];
+          [v28 setGivenName:aa_firstName];
 
-          v30 = [v6 aa_lastName];
-          [v28 setFamilyName:v30];
+          aa_lastName = [v6 aa_lastName];
+          [v28 setFamilyName:aa_lastName];
 
           v27 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v28 style:3 options:0];
 
           if (v27)
           {
 LABEL_32:
-            [v35 setObject:v27 forKey:@"FullUserName"];
+            [dictionary setObject:v27 forKey:@"FullUserName"];
           }
 
-          v17 = [objc_opt_class() accountWithProperties:v35];
-          v31 = [v17 defaultPath];
-          [v17 setPath:v31];
+          v17 = [objc_opt_class() accountWithProperties:dictionary];
+          defaultPath = [v17 defaultPath];
+          [v17 setPath:defaultPath];
 
           [v17 setUsesSSL:1];
-          v32 = [v17 persistentAccount];
-          [v32 setParentAccount:v6];
-          [v32 setAuthenticationType:*MEMORY[0x1E6959AC8]];
+          persistentAccount = [v17 persistentAccount];
+          [persistentAccount setParentAccount:v6];
+          [persistentAccount setAuthenticationType:*MEMORY[0x1E6959AC8]];
 
           v8 = 0;
           goto LABEL_34;
         }
 
 LABEL_27:
-        if (a4)
+        if (error)
         {
           v26 = v8;
           v17 = 0;
-          *a4 = v8;
+          *error = v8;
         }
 
         else
@@ -430,7 +430,7 @@ LABEL_34:
 
     v41 = v24;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
-    [v35 setValue:v25 forKey:@"EmailAddresses"];
+    [dictionary setValue:v25 forKey:@"EmailAddresses"];
 
     v8 = 0;
     goto LABEL_26;
@@ -443,36 +443,36 @@ LABEL_35:
   return v17;
 }
 
-- (void)persistentAccountDidChange:(id)a3 previousAccount:(id)a4
+- (void)persistentAccountDidChange:(id)change previousAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  accountCopy = account;
   v8.receiver = self;
   v8.super_class = CastleIMAPAccount;
-  [(MailAccount *)&v8 persistentAccountDidChange:v6 previousAccount:v7];
+  [(MailAccount *)&v8 persistentAccountDidChange:changeCopy previousAccount:accountCopy];
   [(CastleIMAPAccount *)self _resetAppleAccount];
 }
 
 - (unsigned)portNumber
 {
   v2 = [(CastleIMAPAccount *)self _mailPropertyFromAppleAccountForKey:?];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (BOOL)usesSSL
 {
   v2 = [(CastleIMAPAccount *)self _mailPropertyFromAppleAccountForKey:?];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setUsername:(id)a3
+- (void)setUsername:(id)username
 {
-  v4 = a3;
-  v5 = [objc_opt_class() accountPropertiesValueForKey:@"Username" value:v4];
+  usernameCopy = username;
+  v5 = [objc_opt_class() accountPropertiesValueForKey:@"Username" value:usernameCopy];
   v6.receiver = self;
   v6.super_class = CastleIMAPAccount;
   [(MailAccount *)&v6 setUsername:v5];
@@ -480,42 +480,42 @@ LABEL_35:
 
 - (id)username
 {
-  v3 = [(CastleIMAPAccount *)self _mailPropertyFromAppleAccountForKey:?];
-  if (!v3)
+  username = [(CastleIMAPAccount *)self _mailPropertyFromAppleAccountForKey:?];
+  if (!username)
   {
-    v4 = [(CastleIMAPAccount *)self appleAccount];
+    appleAccount = [(CastleIMAPAccount *)self appleAccount];
 
-    if (v4)
+    if (appleAccount)
     {
-      v3 = 0;
+      username = 0;
     }
 
     else
     {
       v6.receiver = self;
       v6.super_class = CastleIMAPAccount;
-      v3 = [(MFAccount *)&v6 username];
+      username = [(MFAccount *)&v6 username];
     }
   }
 
-  return v3;
+  return username;
 }
 
 - (NSString)personID
 {
-  v2 = [(CastleIMAPAccount *)self appleAccount];
-  v3 = [v2 aa_personID];
+  appleAccount = [(CastleIMAPAccount *)self appleAccount];
+  aa_personID = [appleAccount aa_personID];
 
-  return v3;
+  return aa_personID;
 }
 
 - (id)makeAppleIDSession
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc(MEMORY[0x1E698DCC8]);
-    v3 = [a1 sourceApplicationBundleIdentifier];
-    v4 = [v2 initWithIdentifier:v3];
+    sourceApplicationBundleIdentifier = [self sourceApplicationBundleIdentifier];
+    v4 = [v2 initWithIdentifier:sourceApplicationBundleIdentifier];
   }
 
   else
@@ -526,18 +526,18 @@ LABEL_35:
   return v4;
 }
 
-- (id)appleID2AuthDataWithHeaders:(void *)a1
+- (id)appleID2AuthDataWithHeaders:(void *)headers
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (headers && v3)
   {
     v6 = [v3 mutableCopy];
-    v7 = [a1 authToken];
-    if (v7)
+    authToken = [headers authToken];
+    if (authToken)
     {
-      [v6 setObject:v7 forKeyedSubscript:@"token"];
+      [v6 setObject:authToken forKeyedSubscript:@"token"];
       v5 = v6;
       if (!v5)
       {
@@ -553,8 +553,8 @@ LABEL_14:
       if (v8)
       {
 
-        v11 = [a1 personID];
-        v12 = [v11 dataUsingEncoding:4];
+        personID = [headers personID];
+        v12 = [personID dataUsingEncoding:4];
 
         if (v12)
         {
@@ -588,18 +588,18 @@ LABEL_15:
   return v5;
 }
 
-- (void)appleID2AuthWithCompletion:(id)a3
+- (void)appleID2AuthWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CastleIMAPAccount *)self makeAppleIDSession];
+  completionCopy = completion;
+  makeAppleIDSession = [(CastleIMAPAccount *)self makeAppleIDSession];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke;
   v7[3] = &unk_1E7AA2298;
   v7[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 appleIDHeadersWithCompletion:v7];
+  [makeAppleIDSession appleIDHeadersWithCompletion:v7];
 }
 
 void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -618,14 +618,14 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
   }
 }
 
-- (id)authTokenWithError:(void *)a1
+- (id)authTokenWithError:(void *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (error)
   {
-    v4 = [(CastleIMAPAccount *)a1 appleAccount];
+    appleAccount = [(CastleIMAPAccount *)error appleAccount];
     v15 = 0;
-    v5 = [v4 aa_authTokenWithError:&v15];
+    v5 = [appleAccount aa_authTokenWithError:&v15];
     v6 = v15;
 
     if (!v5 && v6)
@@ -635,14 +635,14 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
       {
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
-        v13 = [a1 identifier];
-        v14 = [v6 ef_publicDescription];
+        identifier = [error identifier];
+        ef_publicDescription = [v6 ef_publicDescription];
         *buf = 138412802;
         v17 = v12;
         v18 = 2112;
-        v19 = v13;
+        v19 = identifier;
         v20 = 2114;
-        v21 = v14;
+        v21 = ef_publicDescription;
         _os_log_error_impl(&dword_1B0389000, v7, OS_LOG_TYPE_ERROR, "%@ (%@) failed to get auth token: %{public}@", buf, 0x20u);
       }
 
@@ -667,8 +667,8 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
 - (NSString)clientInfo
 {
   v2 = objc_alloc_init(MEMORY[0x1E698B890]);
-  v3 = [v2 clientInfoHeader];
-  v4 = [v3 copy];
+  clientInfoHeader = [v2 clientInfoHeader];
+  v4 = [clientInfoHeader copy];
 
   return v4;
 }
@@ -698,15 +698,15 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
 
 - (id)firstEmailAddress
 {
-  v3 = [(MailAccount *)self defaultEmailAddress];
-  if (!v3)
+  defaultEmailAddress = [(MailAccount *)self defaultEmailAddress];
+  if (!defaultEmailAddress)
   {
     v5.receiver = self;
     v5.super_class = CastleIMAPAccount;
-    v3 = [(MailAccount *)&v5 firstEmailAddress];
+    defaultEmailAddress = [(MailAccount *)&v5 firstEmailAddress];
   }
 
-  return v3;
+  return defaultEmailAddress;
 }
 
 - (id)emailAddressStrings
@@ -714,8 +714,8 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
   v10[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = CastleIMAPAccount;
-  v3 = [(MailAccount *)&v9 emailAddressStrings];
-  if (![v3 count])
+  emailAddressStrings = [(MailAccount *)&v9 emailAddressStrings];
+  if (![emailAddressStrings count])
   {
     v4 = [(CastleIMAPAccount *)self _mailPropertyFromAppleAccountForKey:?];
     v5 = v4;
@@ -724,37 +724,37 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
       v10[0] = v4;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 
-      v3 = v6;
+      emailAddressStrings = v6;
     }
   }
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return emailAddressStrings;
 }
 
 - (id)emailAddressesAndAliasesList
 {
-  v2 = [(MailAccount *)self emailAddressesAndAliases];
-  v3 = [v2 allKeys];
+  emailAddressesAndAliases = [(MailAccount *)self emailAddressesAndAliases];
+  allKeys = [emailAddressesAndAliases allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-- (id)_fromEmailAddressesIncludingDisabled:(id)a1
+- (id)_fromEmailAddressesIncludingDisabled:(id)disabled
 {
-  v2 = a1;
+  disabledCopy = disabled;
   v32 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (disabled)
   {
-    v21 = [a1 emailAddressesDictionary];
-    v20 = [v2 receiveEmailAliasAddresses];
-    v2 = [MEMORY[0x1E695DF70] array];
+    emailAddressesDictionary = [disabled emailAddressesDictionary];
+    receiveEmailAliasAddresses = [disabledCopy receiveEmailAliasAddresses];
+    disabledCopy = [MEMORY[0x1E695DF70] array];
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v4 = v21;
+    v4 = emailAddressesDictionary;
     v5 = [v4 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v5)
     {
@@ -772,15 +772,15 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
           if ((a2 & 1) == 0)
           {
             v9 = [v4 valueForKey:*(*(&v26 + 1) + 8 * i)];
-            v10 = [v9 BOOLValue];
+            bOOLValue = [v9 BOOLValue];
 
-            if (!v10)
+            if (!bOOLValue)
             {
               continue;
             }
           }
 
-          [v2 addObject:v8];
+          [disabledCopy addObject:v8];
         }
 
         v5 = [v4 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -793,7 +793,7 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = v20;
+    v11 = receiveEmailAliasAddresses;
     v12 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v12)
     {
@@ -811,15 +811,15 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
           if ((a2 & 1) == 0)
           {
             v16 = [v11 valueForKey:*(*(&v22 + 1) + 8 * j)];
-            v17 = [v16 BOOLValue];
+            bOOLValue2 = [v16 BOOLValue];
 
-            if (!v17)
+            if (!bOOLValue2)
             {
               continue;
             }
           }
 
-          [v2 addObject:v15];
+          [disabledCopy addObject:v15];
         }
 
         v12 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -831,32 +831,32 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return disabledCopy;
 }
 
-- (void)handleAlertResponse:(id)a3
+- (void)handleAlertResponse:(id)response
 {
-  v4 = a3;
-  if ([@"Mailbox is over quota" isEqualToString:v4])
+  responseCopy = response;
+  if ([@"Mailbox is over quota" isEqualToString:responseCopy])
   {
-    [(CastleIMAPAccount *)self handleOverQuotaResponse:v4];
+    [(CastleIMAPAccount *)self handleOverQuotaResponse:responseCopy];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CastleIMAPAccount;
-    [(IMAPAccount *)&v5 handleAlertResponse:v4];
+    [(IMAPAccount *)&v5 handleAlertResponse:responseCopy];
   }
 }
 
-- (void)handleOverQuotaResponse:(id)a3
+- (void)handleOverQuotaResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = MFLogGeneral();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [(CastleIMAPAccount *)v3 handleOverQuotaResponse:v4];
+    [(CastleIMAPAccount *)responseCopy handleOverQuotaResponse:v4];
   }
 
   v5 = objc_alloc(MEMORY[0x1E698B958]);
@@ -866,33 +866,33 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
 
 - (uint64_t)deliveryPortNumber
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [(CastleIMAPAccount *)a1 _mailPropertyFromAppleAccountForKey:?];
-  v2 = [v1 unsignedIntValue];
+  v1 = [(CastleIMAPAccount *)self _mailPropertyFromAppleAccountForKey:?];
+  unsignedIntValue = [v1 unsignedIntValue];
 
-  return v2;
+  return unsignedIntValue;
 }
 
 - (uint64_t)deliveryUsesSSL
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [(CastleIMAPAccount *)a1 _mailPropertyFromAppleAccountForKey:?];
-  v2 = [v1 BOOLValue];
+  v1 = [(CastleIMAPAccount *)self _mailPropertyFromAppleAccountForKey:?];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
-- (id)_deliveryAccountCreateIfNeeded:(BOOL)a3
+- (id)_deliveryAccountCreateIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   os_unfair_lock_lock(&self->_deliveryAccountLock);
   deliveryAccount = self->_deliveryAccount;
   if (deliveryAccount)
@@ -902,17 +902,17 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
 
   else
   {
-    v6 = !v3;
+    v6 = !neededCopy;
   }
 
   if (!v6)
   {
     v7 = objc_alloc_init(MFNewcastleSMTPAccount);
-    v8 = [(CastleIMAPAccount *)self displayName];
-    [(MFAccount *)v7 setDisplayName:v8];
+    displayName = [(CastleIMAPAccount *)self displayName];
+    [(MFAccount *)v7 setDisplayName:displayName];
 
-    v9 = [(CastleIMAPAccount *)self deliveryHostname];
-    [(MFAccount *)v7 setHostname:v9];
+    deliveryHostname = [(CastleIMAPAccount *)self deliveryHostname];
+    [(MFAccount *)v7 setHostname:deliveryHostname];
 
     [(MFAccount *)v7 setPortNumber:[(CastleIMAPAccount *)self deliveryPortNumber]];
     [(MFAccount *)v7 setUsesSSL:[(CastleIMAPAccount *)self deliveryUsesSSL]];
@@ -932,53 +932,53 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
   return v12;
 }
 
-- (id)checkAndSetLocalDefaultEmailAddress:(id)a1
+- (id)checkAndSetLocalDefaultEmailAddress:(id)address
 {
   v3 = a2;
-  if (a1)
+  if (address)
   {
-    v5.receiver = a1;
+    v5.receiver = address;
     v5.super_class = CastleIMAPAccount;
-    a1 = objc_msgSendSuper2(&v5, sel_checkAndSetDefaultEmailAddress_, v3);
+    address = objc_msgSendSuper2(&v5, sel_checkAndSetDefaultEmailAddress_, v3);
   }
 
-  return a1;
+  return address;
 }
 
-- (BOOL)checkAndSetDefaultEmailAddress:(id)a3
+- (BOOL)checkAndSetDefaultEmailAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(CastleIMAPAccount *)self checkAndSetLocalDefaultEmailAddress:v4];
-  v6 = [v4 copy];
+  addressCopy = address;
+  v5 = [(CastleIMAPAccount *)self checkAndSetLocalDefaultEmailAddress:addressCopy];
+  v6 = [addressCopy copy];
   updatedDefaultEmail = self->_updatedDefaultEmail;
   self->_updatedDefaultEmail = v6;
 
   return v5;
 }
 
-- (void)setLocallyEnabled:(void *)a3 forEmailAddress:
+- (void)setLocallyEnabled:(void *)enabled forEmailAddress:
 {
-  v11 = a3;
-  if (a1)
+  enabledCopy = enabled;
+  if (self)
   {
-    v5 = [a1 emailAddressesDictionary];
-    v6 = [v5 mutableCopy];
+    emailAddressesDictionary = [self emailAddressesDictionary];
+    v6 = [emailAddressesDictionary mutableCopy];
 
-    v7 = [a1 receiveEmailAliasAddresses];
-    v8 = [v7 mutableCopy];
+    receiveEmailAliasAddresses = [self receiveEmailAliasAddresses];
+    v8 = [receiveEmailAliasAddresses mutableCopy];
 
     v9 = [MEMORY[0x1E696AD98] numberWithBool:a2];
-    v10 = [v6 valueForKey:v11];
+    v10 = [v6 valueForKey:enabledCopy];
     if (v10)
     {
-      [v6 setValue:v9 forKey:v11];
-      [a1 setEmailAddresses:v6];
+      [v6 setValue:v9 forKey:enabledCopy];
+      [self setEmailAddresses:v6];
     }
 
     else
     {
-      [v8 setValue:v9 forKey:v11];
-      [a1 setReceiveEmailAliasAddresses:v8];
+      [v8 setValue:v9 forKey:enabledCopy];
+      [self setReceiveEmailAliasAddresses:v8];
     }
   }
 }
@@ -989,9 +989,9 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
   v3 = [MEMORY[0x1E699B710] log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MFAccount *)self identifier];
+    identifier = [(MFAccount *)self identifier];
     v6 = 138543362;
-    v7 = v4;
+    v7 = identifier;
     _os_log_impl(&dword_1B0389000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Clearing last update date for email aliases.", &v6, 0xCu);
   }
 
@@ -1010,43 +1010,43 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
 
 - (uint64_t)_emailAliasesAreStale
 {
-  v1 = a1;
+  selfCopy = self;
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 lastEmailAliasesSyncDate];
-    if (v2)
+    lastEmailAliasesSyncDate = [self lastEmailAliasesSyncDate];
+    if (lastEmailAliasesSyncDate)
     {
       v3 = +[MFAppStateMonitor sharedInstance];
-      v4 = [v3 isVisible];
+      isVisible = [v3 isVisible];
 
-      [v2 timeIntervalSinceNow];
+      [lastEmailAliasesSyncDate timeIntervalSinceNow];
       v6 = v5;
       v7 = 3600.0;
-      if (v4)
+      if (isVisible)
       {
         v7 = 600.0;
       }
 
       if (v7 >= -v6)
       {
-        v11 = [MEMORY[0x1E699B710] log];
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+        date = [MEMORY[0x1E699B710] log];
+        if (os_log_type_enabled(date, OS_LOG_TYPE_INFO))
         {
-          v12 = [v1 identifier];
-          [(CastleIMAPAccount *)v12 _emailAliasesAreStale:v11];
+          identifier = [selfCopy identifier];
+          [(CastleIMAPAccount *)identifier _emailAliasesAreStale:date];
         }
 
-        v1 = 0;
+        selfCopy = 0;
         goto LABEL_14;
       }
 
       v8 = [MEMORY[0x1E699B710] log];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v1 identifier];
+        identifier2 = [selfCopy identifier];
         v15 = 138543618;
-        v16 = v9;
+        v16 = identifier2;
         v17 = 2048;
         v18 = v6 / -60.0;
         _os_log_impl(&dword_1B0389000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Last update was %g minutes ago. Requesting update.", &v15, 0x16u);
@@ -1058,36 +1058,36 @@ void __48__CastleIMAPAccount_appleID2AuthWithCompletion___block_invoke(uint64_t 
       v8 = [MEMORY[0x1E699B710] log];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v1 identifier];
+        identifier3 = [selfCopy identifier];
         v15 = 138543362;
-        v16 = v10;
+        v16 = identifier3;
         _os_log_impl(&dword_1B0389000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] No last update date for email aliases. Requesting update.", &v15, 0xCu);
       }
     }
 
-    v11 = [MEMORY[0x1E695DF00] date];
-    [v1 setLastEmailAliasesSyncDate:v11];
-    v1 = 1;
+    date = [MEMORY[0x1E695DF00] date];
+    [selfCopy setLastEmailAliasesSyncDate:date];
+    selfCopy = 1;
 LABEL_14:
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v1;
+  return selfCopy;
 }
 
 - (void)_updateEmailAddressAndAliases
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[61];
-    v3 = [a1 lastEmailAliasesSyncDate];
-    v4 = [a1 lastEmailAliasesSyncEntityTag];
+    v2 = self[61];
+    lastEmailAliasesSyncDate = [self lastEmailAliasesSyncDate];
+    lastEmailAliasesSyncEntityTag = [self lastEmailAliasesSyncEntityTag];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __50__CastleIMAPAccount__updateEmailAddressAndAliases__block_invoke;
     v5[3] = &unk_1E7AA22C0;
-    v5[4] = a1;
-    [v2 getEmailAddressAndAliasesWithLastSyncDate:v3 entityTag:v4 handler:v5];
+    v5[4] = self;
+    [v2 getEmailAddressAndAliasesWithLastSyncDate:lastEmailAliasesSyncDate entityTag:lastEmailAliasesSyncEntityTag handler:v5];
   }
 }
 
@@ -1134,47 +1134,47 @@ void __50__CastleIMAPAccount__updateEmailAddressAndAliases__block_invoke(uint64_
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateEmailAddressAndAliasesWithResult:(void *)a1
+- (void)_updateEmailAddressAndAliasesWithResult:(void *)result
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!result)
   {
     goto LABEL_29;
   }
 
   if ([v3 isSuccess] && (objc_msgSend(v4, "notModified") & 1) == 0)
   {
-    v5 = [v4 receiveEmailAliasAddresses];
+    receiveEmailAliasAddresses = [v4 receiveEmailAliasAddresses];
 
-    if (v5)
+    if (receiveEmailAliasAddresses)
     {
-      v6 = [v4 receiveEmailAliasAddresses];
-      LOBYTE(v5) = [a1 checkAndSetReceiveEmailAliasAddresses:v6];
+      receiveEmailAliasAddresses2 = [v4 receiveEmailAliasAddresses];
+      LOBYTE(receiveEmailAliasAddresses) = [result checkAndSetReceiveEmailAliasAddresses:receiveEmailAliasAddresses2];
     }
 
-    v7 = [v4 emailAddresses];
+    emailAddresses = [v4 emailAddresses];
 
-    if ((v7 == 0) | v5 & 1)
+    if ((emailAddresses == 0) | receiveEmailAliasAddresses & 1)
     {
-      v8 = (v7 != 0) | v5;
+      v8 = (emailAddresses != 0) | receiveEmailAliasAddresses;
     }
 
     else
     {
-      v9 = [v4 emailAddresses];
-      v8 = [a1 checkAndSetEmailAddresses:v9];
+      emailAddresses2 = [v4 emailAddresses];
+      v8 = [result checkAndSetEmailAddresses:emailAddresses2];
     }
 
-    v10 = [v4 defaultEmailAddress];
+    defaultEmailAddress = [v4 defaultEmailAddress];
 
-    if (v10)
+    if (defaultEmailAddress)
     {
       if ((v8 & 1) == 0)
       {
-        v11 = [v4 defaultEmailAddress];
-        v12 = [a1 checkAndSetDefaultEmailAddress:v11];
+        defaultEmailAddress2 = [v4 defaultEmailAddress];
+        v12 = [result checkAndSetDefaultEmailAddress:defaultEmailAddress2];
 
         if ((v12 & 1) == 0)
         {
@@ -1185,24 +1185,24 @@ void __50__CastleIMAPAccount__updateEmailAddressAndAliases__block_invoke(uint64_
 
     else
     {
-      v13 = [a1 defaultEmailAddress];
-      if (!v13)
+      defaultEmailAddress3 = [result defaultEmailAddress];
+      if (!defaultEmailAddress3)
       {
-        v14 = [a1 fromEmailAddresses];
-        v15 = [v14 count];
+        fromEmailAddresses = [result fromEmailAddresses];
+        v15 = [fromEmailAddresses count];
 
         if (v15)
         {
-          v16 = [a1 fromEmailAddresses];
-          v13 = [v16 objectAtIndex:0];
+          fromEmailAddresses2 = [result fromEmailAddresses];
+          defaultEmailAddress3 = [fromEmailAddresses2 objectAtIndex:0];
         }
 
         else
         {
-          v17 = [a1 emailAddressStrings];
-          v13 = [v17 objectAtIndexedSubscript:0];
+          emailAddressStrings = [result emailAddressStrings];
+          defaultEmailAddress3 = [emailAddressStrings objectAtIndexedSubscript:0];
 
-          [(CastleIMAPAccount *)a1 setLocallyEnabled:v13 forEmailAddress:?];
+          [(CastleIMAPAccount *)result setLocallyEnabled:defaultEmailAddress3 forEmailAddress:?];
         }
 
         if (v8)
@@ -1211,7 +1211,7 @@ void __50__CastleIMAPAccount__updateEmailAddressAndAliases__block_invoke(uint64_
           goto LABEL_21;
         }
 
-        v8 = [(CastleIMAPAccount *)a1 checkAndSetLocalDefaultEmailAddress:v13];
+        v8 = [(CastleIMAPAccount *)result checkAndSetLocalDefaultEmailAddress:defaultEmailAddress3];
       }
 
       if ((v8 & 1) == 0)
@@ -1220,9 +1220,9 @@ LABEL_24:
         v20 = [MEMORY[0x1E699B710] log];
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [a1 identifier];
+          identifier = [result identifier];
           v26 = 138543362;
-          v27 = v21;
+          v27 = identifier;
           _os_log_impl(&dword_1B0389000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] Account is not changed. Not saving.", &v26, 0xCu);
         }
 
@@ -1234,22 +1234,22 @@ LABEL_21:
     v18 = [MEMORY[0x1E699B710] log];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [a1 identifier];
+      identifier2 = [result identifier];
       v26 = 138543362;
-      v27 = v19;
+      v27 = identifier2;
       _os_log_impl(&dword_1B0389000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] Saving account changes.", &v26, 0xCu);
     }
 
-    [a1 savePersistentAccount];
+    [result savePersistentAccount];
   }
 
 LABEL_27:
   if ([v4 accountNeedsToUpdateProperties])
   {
-    v22 = [(CastleIMAPAccount *)a1 appleAccount];
-    v23 = [v22 accountStore];
-    v24 = [(CastleIMAPAccount *)a1 appleAccount];
-    [v23 aa_updatePropertiesForAppleAccount:v24 completion:&__block_literal_global_0];
+    appleAccount = [(CastleIMAPAccount *)result appleAccount];
+    accountStore = [appleAccount accountStore];
+    appleAccount2 = [(CastleIMAPAccount *)result appleAccount];
+    [accountStore aa_updatePropertiesForAppleAccount:appleAccount2 completion:&__block_literal_global_0];
   }
 
 LABEL_29:
@@ -1285,44 +1285,44 @@ LABEL_29:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEnabledForDataclass:(id)a3
+- (BOOL)isEnabledForDataclass:(id)dataclass
 {
-  v4 = a3;
-  v5 = [(CastleIMAPAccount *)self appleAccount];
-  v6 = [v5 isEnabledForDataclass:v4];
+  dataclassCopy = dataclass;
+  appleAccount = [(CastleIMAPAccount *)self appleAccount];
+  v6 = [appleAccount isEnabledForDataclass:dataclassCopy];
 
   return v6;
 }
 
 - (id)displayName
 {
-  v2 = [(CastleIMAPAccount *)self appleAccount];
-  v3 = [v2 accountDescription];
+  appleAccount = [(CastleIMAPAccount *)self appleAccount];
+  accountDescription = [appleAccount accountDescription];
 
-  return v3;
+  return accountDescription;
 }
 
-- (id)anisetteDataWithError:(id *)a3
+- (id)anisetteDataWithError:(id *)error
 {
   if (self)
   {
     self = self->_aliasSupport;
   }
 
-  v3 = [(CastleIMAPAccount *)self anisetteDataWithError:a3];
+  v3 = [(CastleIMAPAccount *)self anisetteDataWithError:error];
 
   return v3;
 }
 
 - (id)deliveryHostname
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(CastleIMAPAccount *)a1 _mailPropertyFromAppleAccountForKey:?];
+    self = [(CastleIMAPAccount *)self _mailPropertyFromAppleAccountForKey:?];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)appleID2AuthDataWithHeaders:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)
@@ -1346,7 +1346,7 @@ LABEL_29:
 - (void)_emailAliasesAreStale
 {
   *buf = 138543618;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2048;
   *(buf + 14) = a4 / -60.0;
   _os_log_impl(&dword_1B0389000, log, OS_LOG_TYPE_INFO, "[%{public}@] Last update was %g minutes ago. Not requesting update.", buf, 0x16u);

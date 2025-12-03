@@ -1,57 +1,57 @@
 @interface NUIContainerFlowView
-+ (id)containerFlowViewWithArrangedSubviews:(id)a3;
-+ (id)containerFlowViewWithNumberOfColumns:(int64_t)a3 arrangedSubviews:(id)a4;
++ (id)containerFlowViewWithArrangedSubviews:(id)subviews;
++ (id)containerFlowViewWithNumberOfColumns:(int64_t)columns arrangedSubviews:(id)subviews;
 - (BOOL)isLayoutSizeDependentOnPerpendicularAxis;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (CGSize)calculateArrangedSizeFittingSize:(CGSize)a3;
-- (CGSize)fittingSizeForCell:(const _NUIFlowArrangementCell *)a3 withProposedSize:(CGSize)a4;
-- (NUIContainerFlowView)initWithArrangedSubviews:(id)a3;
-- (NUIContainerFlowView)initWithFrame:(CGRect)a3;
-- (_WORD)_effectiveAlignmentForArrangedSubview:(uint64_t)a3 inAxis:;
-- (double)_calculateArrangedSizeFittingSize:(CGFloat)a3 forLayout:(CGFloat)a4;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (CGSize)calculateArrangedSizeFittingSize:(CGSize)size;
+- (CGSize)fittingSizeForCell:(const _NUIFlowArrangementCell *)cell withProposedSize:(CGSize)size;
+- (NUIContainerFlowView)initWithArrangedSubviews:(id)subviews;
+- (NUIContainerFlowView)initWithFrame:(CGRect)frame;
+- (_WORD)_effectiveAlignmentForArrangedSubview:(uint64_t)subview inAxis:;
+- (double)_calculateArrangedSizeFittingSize:(CGFloat)size forLayout:(CGFloat)layout;
 - (id)arrangedDebugDescription;
 - (id)calculateViewForFirstBaselineLayout;
 - (id)calculateViewForLastBaselineLayout;
 - (id)debugDictionary;
-- (int64_t)alignmentForCell:(const _NUIFlowArrangementCell *)a3 inAxis:(int64_t)a4;
-- (int64_t)distributionForRowAtIndex:(int64_t)a3 ofTotalRowCount:(int64_t)a4 withCells:(const void *)a5;
+- (int64_t)alignmentForCell:(const _NUIFlowArrangementCell *)cell inAxis:(int64_t)axis;
+- (int64_t)distributionForRowAtIndex:(int64_t)index ofTotalRowCount:(int64_t)count withCells:(const void *)cells;
 - (void)dealloc;
-- (void)layoutArrangedSubviewsInBounds:(CGRect)a3;
-- (void)populateFlowArrangementCells:(void *)a3;
-- (void)setHorizontalAlignment:(int64_t)a3;
-- (void)setHorizontalDistribution:(int64_t)a3;
-- (void)setItemSpacing:(double)a3;
-- (void)setItemWidth:(double)a3;
-- (void)setNumberOfColumns:(int64_t)a3;
-- (void)setRowHeight:(double)a3;
-- (void)setRowSpacing:(double)a3;
-- (void)setVerticalAlignment:(int64_t)a3;
-- (void)setVerticalDistribution:(int64_t)a3;
+- (void)layoutArrangedSubviewsInBounds:(CGRect)bounds;
+- (void)populateFlowArrangementCells:(void *)cells;
+- (void)setHorizontalAlignment:(int64_t)alignment;
+- (void)setHorizontalDistribution:(int64_t)distribution;
+- (void)setItemSpacing:(double)spacing;
+- (void)setItemWidth:(double)width;
+- (void)setNumberOfColumns:(int64_t)columns;
+- (void)setRowHeight:(double)height;
+- (void)setRowSpacing:(double)spacing;
+- (void)setVerticalAlignment:(int64_t)alignment;
+- (void)setVerticalDistribution:(int64_t)distribution;
 @end
 
 @implementation NUIContainerFlowView
 
-+ (id)containerFlowViewWithArrangedSubviews:(id)a3
++ (id)containerFlowViewWithArrangedSubviews:(id)subviews
 {
-  v3 = [[a1 alloc] initWithArrangedSubviews:a3];
+  v3 = [[self alloc] initWithArrangedSubviews:subviews];
 
   return v3;
 }
 
-+ (id)containerFlowViewWithNumberOfColumns:(int64_t)a3 arrangedSubviews:(id)a4
++ (id)containerFlowViewWithNumberOfColumns:(int64_t)columns arrangedSubviews:(id)subviews
 {
-  v5 = [[a1 alloc] initWithArrangedSubviews:a4];
-  [v5 setNumberOfColumns:a3];
+  v5 = [[self alloc] initWithArrangedSubviews:subviews];
+  [v5 setNumberOfColumns:columns];
   [v5 setHorizontalDistribution:3];
 
   return v5;
 }
 
-- (NUIContainerFlowView)initWithFrame:(CGRect)a3
+- (NUIContainerFlowView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = NUIContainerFlowView;
-  result = [(NUIContainerView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(NUIContainerView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_arrangement.container = result;
@@ -62,11 +62,11 @@
   return result;
 }
 
-- (NUIContainerFlowView)initWithArrangedSubviews:(id)a3
+- (NUIContainerFlowView)initWithArrangedSubviews:(id)subviews
 {
   v4.receiver = self;
   v4.super_class = NUIContainerFlowView;
-  result = [(NUIContainerView *)&v4 initWithArrangedSubviews:a3];
+  result = [(NUIContainerView *)&v4 initWithArrangedSubviews:subviews];
   if (result)
   {
     result->_arrangement.container = result;
@@ -85,40 +85,40 @@
   [(NUIContainerView *)&v3 dealloc];
 }
 
-- (void)setNumberOfColumns:(int64_t)a3
+- (void)setNumberOfColumns:(int64_t)columns
 {
-  if (self->_arrangement.columns != a3)
+  if (self->_arrangement.columns != columns)
   {
-    self->_arrangement.columns = a3;
+    self->_arrangement.columns = columns;
     [(NUIContainerView *)self setNeedsInvalidation:2];
   }
 }
 
-- (void)setHorizontalAlignment:(int64_t)a3
+- (void)setHorizontalAlignment:(int64_t)alignment
 {
   flowFlags = self->_flowFlags;
-  if (a3 != flowFlags)
+  if (alignment != flowFlags)
   {
-    *&self->_flowFlags = flowFlags & 0xFF00 | a3;
+    *&self->_flowFlags = flowFlags & 0xFF00 | alignment;
     [(NUIContainerView *)self setNeedsInvalidation:1];
   }
 }
 
-- (void)setVerticalAlignment:(int64_t)a3
+- (void)setVerticalAlignment:(int64_t)alignment
 {
-  if (*&self->_flowFlags >> 8 != a3)
+  if (*&self->_flowFlags >> 8 != alignment)
   {
-    *&self->_flowFlags = *&self->_flowFlags | (a3 << 8);
+    *&self->_flowFlags = *&self->_flowFlags | (alignment << 8);
     [(NUIContainerView *)self setNeedsInvalidation:1];
   }
 }
 
-- (int64_t)alignmentForCell:(const _NUIFlowArrangementCell *)a3 inAxis:(int64_t)a4
+- (int64_t)alignmentForCell:(const _NUIFlowArrangementCell *)cell inAxis:(int64_t)axis
 {
-  result = [(NUIContainerView *)self alignmentForView:a3->var0 inAxis:?];
+  result = [(NUIContainerView *)self alignmentForView:cell->var0 inAxis:?];
   if (result == -1)
   {
-    if (a4)
+    if (axis)
     {
 
       return [(NUIContainerFlowView *)self verticalAlignment];
@@ -134,57 +134,57 @@
   return result;
 }
 
-- (void)setHorizontalDistribution:(int64_t)a3
+- (void)setHorizontalDistribution:(int64_t)distribution
 {
   v3 = *(&self->_arrangement + 4);
-  if (a3 != v3)
+  if (distribution != v3)
   {
-    *(&self->_arrangement + 4) = v3 & 0xFF00 | a3;
+    *(&self->_arrangement + 4) = v3 & 0xFF00 | distribution;
     [(NUIContainerView *)self setNeedsInvalidation:4];
   }
 }
 
-- (void)setVerticalDistribution:(int64_t)a3
+- (void)setVerticalDistribution:(int64_t)distribution
 {
-  if (*(&self->_arrangement + 4) >> 8 != a3)
+  if (*(&self->_arrangement + 4) >> 8 != distribution)
   {
-    *(&self->_arrangement + 4) = *(&self->_arrangement + 4) | (a3 << 8);
+    *(&self->_arrangement + 4) = *(&self->_arrangement + 4) | (distribution << 8);
     [(NUIContainerView *)self setNeedsInvalidation:1];
   }
 }
 
-- (void)setItemSpacing:(double)a3
+- (void)setItemSpacing:(double)spacing
 {
-  if (self->_arrangement.itemSpacing != a3)
+  if (self->_arrangement.itemSpacing != spacing)
   {
-    self->_arrangement.itemSpacing = a3;
+    self->_arrangement.itemSpacing = spacing;
     [(NUIContainerView *)self setNeedsInvalidation:2];
   }
 }
 
-- (void)setRowSpacing:(double)a3
+- (void)setRowSpacing:(double)spacing
 {
-  if (self->_arrangement.rowSpacing != a3)
+  if (self->_arrangement.rowSpacing != spacing)
   {
-    self->_arrangement.rowSpacing = a3;
+    self->_arrangement.rowSpacing = spacing;
     [(NUIContainerView *)self setNeedsInvalidation:2];
   }
 }
 
-- (void)setItemWidth:(double)a3
+- (void)setItemWidth:(double)width
 {
-  if (self->_arrangement.itemWidth != a3)
+  if (self->_arrangement.itemWidth != width)
   {
-    self->_arrangement.itemWidth = a3;
+    self->_arrangement.itemWidth = width;
     [(NUIContainerView *)self setNeedsInvalidation:2];
   }
 }
 
-- (void)setRowHeight:(double)a3
+- (void)setRowHeight:(double)height
 {
-  if (self->_arrangement.rowHeight != a3)
+  if (self->_arrangement.rowHeight != height)
   {
-    self->_arrangement.rowHeight = a3;
+    self->_arrangement.rowHeight = height;
     [(NUIContainerView *)self setNeedsInvalidation:2];
   }
 }
@@ -203,14 +203,14 @@
 
 - (id)calculateViewForFirstBaselineLayout
 {
-  v2 = self;
+  selfCopy = self;
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(NUIContainerView *)self visibleArrangedSubviews];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  visibleArrangedSubviews = [(NUIContainerView *)self visibleArrangedSubviews];
+  v4 = [(NSArray *)visibleArrangedSubviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -222,37 +222,37 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleArrangedSubviews);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         [(UIView *)v9 effectiveFirstBaselineOffsetFromTop];
         if (v10 > v7)
         {
-          v2 = v9;
+          selfCopy = v9;
           v7 = v10;
         }
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [(NSArray *)visibleArrangedSubviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)calculateViewForLastBaselineLayout
 {
-  v2 = self;
+  selfCopy = self;
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(NSArray *)[(NUIContainerView *)self visibleArrangedSubviews] reverseObjectEnumerator];
-  v4 = [(NSEnumerator *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  reverseObjectEnumerator = [(NSArray *)[(NUIContainerView *)self visibleArrangedSubviews] reverseObjectEnumerator];
+  v4 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -264,38 +264,38 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         [(UIView *)v9 effectiveBaselineOffsetFromBottom];
         if (v10 > v7)
         {
-          v2 = v9;
+          selfCopy = v9;
           v7 = v10;
         }
       }
 
-      v5 = [(NSEnumerator *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)populateFlowArrangementCells:(void *)a3
+- (void)populateFlowArrangementCells:(void *)cells
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = [(NUIContainerView *)self visibleArrangedSubviews];
-  *(a3 + 1) = *a3;
+  visibleArrangedSubviews = [(NUIContainerView *)self visibleArrangedSubviews];
+  *(cells + 1) = *cells;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v5;
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  obj = visibleArrangedSubviews;
+  v6 = [(NSArray *)visibleArrangedSubviews countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v6)
   {
     v35 = *v39;
@@ -349,17 +349,17 @@
           v20 = 0;
         }
 
-        v22 = *(a3 + 1);
-        v21 = *(a3 + 2);
+        v22 = *(cells + 1);
+        v21 = *(cells + 2);
         if (v22 >= v21)
         {
-          v25 = (v22 - *a3) >> 6;
+          v25 = (v22 - *cells) >> 6;
           if ((v25 + 1) >> 58)
           {
             std::vector<std::pair<CGSize,CGSize>>::__throw_length_error[abi:nn200100]();
           }
 
-          v26 = v21 - *a3;
+          v26 = v21 - *cells;
           v27 = v26 >> 5;
           if (v26 >> 5 <= (v25 + 1))
           {
@@ -378,18 +378,18 @@
 
           if (v28)
           {
-            std::__allocate_at_least[abi:nn200100]<std::allocator<_NUIFlowArrangementCell>>(a3, v28);
+            std::__allocate_at_least[abi:nn200100]<std::allocator<_NUIFlowArrangementCell>>(cells, v28);
           }
 
           _NUIFlowArrangementCell::_NUIFlowArrangementCell(v25 << 6, v8, flowFlags, v20);
           v24 = v29 + 64;
-          v30 = *(a3 + 1) - *a3;
+          v30 = *(cells + 1) - *cells;
           v31 = v29 - v30;
-          memcpy((v29 - v30), *a3, v30);
-          v32 = *a3;
-          *a3 = v31;
-          *(a3 + 1) = v24;
-          *(a3 + 2) = 0;
+          memcpy((v29 - v30), *cells, v30);
+          v32 = *cells;
+          *cells = v31;
+          *(cells + 1) = v24;
+          *(cells + 2) = 0;
           if (v32)
           {
             operator delete(v32);
@@ -398,12 +398,12 @@
 
         else
         {
-          *&v23 = _NUIFlowArrangementCell::_NUIFlowArrangementCell(*(a3 + 1), v8, flowFlags, v20).n128_u64[0];
+          *&v23 = _NUIFlowArrangementCell::_NUIFlowArrangementCell(*(cells + 1), v8, flowFlags, v20).n128_u64[0];
           v24 = v22 + 64;
-          *(a3 + 1) = v22 + 64;
+          *(cells + 1) = v22 + 64;
         }
 
-        *(a3 + 1) = v24;
+        *(cells + 1) = v24;
         ++v7;
       }
 
@@ -462,10 +462,10 @@
           [NUIContainerFlowView arrangedDebugDescription];
         }
 
-        v9 = [NUIStringFromAlignment(NUIContainerAlignment)::dict objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", flowFlags)}];
-        if (!v9)
+        flowFlags = [NUIStringFromAlignment(NUIContainerAlignment)::dict objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", flowFlags)}];
+        if (!flowFlags)
         {
-          v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown(%ld)", flowFlags];
+          flowFlags = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown(%ld)", flowFlags];
         }
 
         if (self)
@@ -493,7 +493,7 @@
           v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown(%ld)", v10];
         }
 
-        [v15 appendFormat:@"[%@|%@]", v9, v11];
+        [v15 appendFormat:@"[%@|%@]", flowFlags, v11];
         ++v6;
       }
 
@@ -521,14 +521,14 @@
     [NUIContainerFlowView arrangedDebugDescription];
   }
 
-  v5 = [NUIStringFromAlignment(NUIContainerAlignment)::dict objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", flowFlags)}];
-  if (!v5)
+  flowFlags = [NUIStringFromAlignment(NUIContainerAlignment)::dict objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", flowFlags)}];
+  if (!flowFlags)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown(%ld)", flowFlags];
+    flowFlags = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown(%ld)", flowFlags];
   }
 
   v10[1] = @"vertical";
-  v11[0] = v5;
+  v11[0] = flowFlags;
   v6 = *(&self->_flowFlags + 1);
   if (NUIStringFromAlignment(NUIContainerAlignment)::onceToken != -1)
   {
@@ -547,16 +547,16 @@
   return [v3 copy];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_fittingSizeForCell_withProposedSize_ == a3)
+  if (sel_fittingSizeForCell_withProposedSize_ == selector)
   {
     v4 = sel_fittingSizeForFlowPositioningOfArrangedSubview_withProposedSize_;
   }
 
   else
   {
-    if (sel_distributionForRowAtIndex_ofTotalRowCount_withCells_ != a3)
+    if (sel_distributionForRowAtIndex_ofTotalRowCount_withCells_ != selector)
     {
       v6.receiver = self;
       v6.super_class = NUIContainerFlowView;
@@ -570,19 +570,19 @@
   return v5 != [objc_opt_class() instanceMethodForSelector:v4];
 }
 
-- (CGSize)fittingSizeForCell:(const _NUIFlowArrangementCell *)a3 withProposedSize:(CGSize)a4
+- (CGSize)fittingSizeForCell:(const _NUIFlowArrangementCell *)cell withProposedSize:(CGSize)size
 {
-  [(NUIContainerFlowView *)self fittingSizeForFlowPositioningOfArrangedSubview:a3->var0 withProposedSize:a4.width, a4.height];
+  [(NUIContainerFlowView *)self fittingSizeForFlowPositioningOfArrangedSubview:cell->var0 withProposedSize:size.width, size.height];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (int64_t)distributionForRowAtIndex:(int64_t)a3 ofTotalRowCount:(int64_t)a4 withCells:(const void *)a5
+- (int64_t)distributionForRowAtIndex:(int64_t)index ofTotalRowCount:(int64_t)count withCells:(const void *)cells
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v9 = *a5;
-  v8 = *(a5 + 1);
+  v9 = *cells;
+  v8 = *(cells + 1);
   (MEMORY[0x28223BE20])();
   v11 = v14 - v10;
   for (i = 0; v9 != v8; v9 += 8)
@@ -594,19 +594,19 @@
     }
   }
 
-  return -[NUIContainerFlowView distributionForRowAtIndex:ofTotalRowCount:withArrangedSubviews:](self, "distributionForRowAtIndex:ofTotalRowCount:withArrangedSubviews:", a3, a4, [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:i]);
+  return -[NUIContainerFlowView distributionForRowAtIndex:ofTotalRowCount:withArrangedSubviews:](self, "distributionForRowAtIndex:ofTotalRowCount:withArrangedSubviews:", index, count, [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:i]);
 }
 
-- (_WORD)_effectiveAlignmentForArrangedSubview:(uint64_t)a3 inAxis:
+- (_WORD)_effectiveAlignmentForArrangedSubview:(uint64_t)subview inAxis:
 {
   if (result)
   {
     v4 = result;
-    result = [result alignmentForView:a2 inAxis:a3];
+    result = [result alignmentForView:a2 inAxis:subview];
     if (result == -1)
     {
       v5 = v4[352];
-      if (a3)
+      if (subview)
       {
         return (v5 >> 8);
       }
@@ -621,41 +621,41 @@
   return result;
 }
 
-- (double)_calculateArrangedSizeFittingSize:(CGFloat)a3 forLayout:(CGFloat)a4
+- (double)_calculateArrangedSizeFittingSize:(CGFloat)size forLayout:(CGFloat)layout
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
   do
   {
-    _NUIFlowArrangement::resetForInvalidation((a1 + 544), 0);
-    v11.width = a3;
-    v11.height = a4;
-    _NUIFlowArrangement::measureCells((a1 + 544), a2, v11);
+    _NUIFlowArrangement::resetForInvalidation((self + 544), 0);
+    v11.width = size;
+    v11.height = layout;
+    _NUIFlowArrangement::measureCells((self + 544), a2, v11);
     v9 = v8;
   }
 
-  while (([a1 mustRestartMeasurement] & 1) != 0);
+  while (([self mustRestartMeasurement] & 1) != 0);
   return v9;
 }
 
-- (CGSize)calculateArrangedSizeFittingSize:(CGSize)a3
+- (CGSize)calculateArrangedSizeFittingSize:(CGSize)size
 {
-  v3 = [(NUIContainerFlowView *)self _calculateArrangedSizeFittingSize:a3.width forLayout:a3.height];
+  v3 = [(NUIContainerFlowView *)self _calculateArrangedSizeFittingSize:size.width forLayout:size.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)layoutArrangedSubviewsInBounds:(CGRect)a3
+- (void)layoutArrangedSubviewsInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(NUIContainerFlowView *)self _calculateArrangedSizeFittingSize:a3.size.width forLayout:a3.size.height];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [(NUIContainerFlowView *)self _calculateArrangedSizeFittingSize:bounds.size.width forLayout:bounds.size.height];
 
   _NUIFlowArrangement::positionCells(&self->_arrangement, &__block_literal_global_4, x, y, width, height);
 }

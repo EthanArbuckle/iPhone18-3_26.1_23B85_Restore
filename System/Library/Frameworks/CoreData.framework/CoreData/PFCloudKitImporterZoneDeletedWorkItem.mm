@@ -1,20 +1,20 @@
 @interface PFCloudKitImporterZoneDeletedWorkItem
-- (PFCloudKitImporterZoneDeletedWorkItem)initWithDeletedRecordZoneID:(id)a3 options:(id)a4 request:(id)a5;
+- (PFCloudKitImporterZoneDeletedWorkItem)initWithDeletedRecordZoneID:(id)d options:(id)options request:(id)request;
 - (id)description;
 - (void)dealloc;
-- (void)doWorkForStore:(id)a3 inMonitor:(id)a4 completion:(id)a5;
+- (void)doWorkForStore:(id)store inMonitor:(id)monitor completion:(id)completion;
 @end
 
 @implementation PFCloudKitImporterZoneDeletedWorkItem
 
-- (PFCloudKitImporterZoneDeletedWorkItem)initWithDeletedRecordZoneID:(id)a3 options:(id)a4 request:(id)a5
+- (PFCloudKitImporterZoneDeletedWorkItem)initWithDeletedRecordZoneID:(id)d options:(id)options request:(id)request
 {
   v8.receiver = self;
   v8.super_class = PFCloudKitImporterZoneDeletedWorkItem;
-  v6 = [(PFCloudKitImporterWorkItem *)&v8 initWithOptions:a4 request:a5];
+  v6 = [(PFCloudKitImporterWorkItem *)&v8 initWithOptions:options request:request];
   if (v6)
   {
-    v6->_deletedRecordZoneID = a3;
+    v6->_deletedRecordZoneID = d;
   }
 
   return v6;
@@ -44,14 +44,14 @@
     request = 0;
   }
 
-  v8 = [v4 initWithFormat:@"<%@: %p - %@>", v6, self, request];
-  [v8 appendFormat:@" { %@ }", self->_deletedRecordZoneID];
+  request = [v4 initWithFormat:@"<%@: %p - %@>", v6, self, request];
+  [request appendFormat:@" { %@ }", self->_deletedRecordZoneID];
   objc_autoreleasePoolPop(v3);
 
-  return v8;
+  return request;
 }
 
-- (void)doWorkForStore:(id)a3 inMonitor:(id)a4 completion:(id)a5
+- (void)doWorkForStore:(id)store inMonitor:(id)monitor completion:(id)completion
 {
   v28[1] = *MEMORY[0x1E69E9840];
   v27 = 0;
@@ -68,8 +68,8 @@
       v10 = 0;
     }
 
-    v11 = [(NSCloudKitMirroringDelegateOptions *)v10 databaseScope];
-    if (v11 == 3)
+    databaseScope = [(NSCloudKitMirroringDelegateOptions *)v10 databaseScope];
+    if (databaseScope == 3)
     {
       v12 = 299;
     }
@@ -93,9 +93,9 @@
 
   else
   {
-    v11 = [0 databaseScope];
+    databaseScope = [0 databaseScope];
     metadataPurger = 0;
-    if (v11 == 3)
+    if (databaseScope == 3)
     {
       v12 = 299;
     }
@@ -107,10 +107,10 @@
   }
 
   v28[0] = self->_deletedRecordZoneID;
-  v16 = -[PFCloudKitMetadataPurger purgeMetadataFromStore:inMonitor:withOptions:forRecordZones:inDatabaseWithScope:andTransactionAuthor:error:](metadataPurger, a3, a4, v12, [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1], v11, @"NSCloudKitMirroringDelegate.import", &v27);
+  v16 = -[PFCloudKitMetadataPurger purgeMetadataFromStore:inMonitor:withOptions:forRecordZones:inDatabaseWithScope:andTransactionAuthor:error:](metadataPurger, store, monitor, v12, [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1], databaseScope, @"NSCloudKitMirroringDelegate.import", &v27);
   v17 = [NSCloudKitMirroringResult alloc];
   request = self->super._request;
-  v19 = [a3 identifier];
+  identifier = [store identifier];
   if (v16)
   {
     v20 = v17;
@@ -129,10 +129,10 @@
     v23 = 0;
   }
 
-  v25 = [(NSCloudKitMirroringResult *)v20 initWithRequest:v21 storeIdentifier:v19 success:v22 madeChanges:v23 error:v24];
-  if (a5)
+  v25 = [(NSCloudKitMirroringResult *)v20 initWithRequest:v21 storeIdentifier:identifier success:v22 madeChanges:v23 error:v24];
+  if (completion)
   {
-    (*(a5 + 2))(a5, v25);
+    (*(completion + 2))(completion, v25);
   }
 
   v26 = *MEMORY[0x1E69E9840];

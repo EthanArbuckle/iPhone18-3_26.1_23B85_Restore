@@ -1,27 +1,27 @@
 @interface TextEditorTextView
 - (BOOL)supportsTextReplacement;
-- (_TtC7SwiftUI18TextEditorTextView)initWithCoder:(id)a3;
-- (_TtC7SwiftUI18TextEditorTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (void)findInteraction:(id)a3 didBeginFindSession:(id)a4;
-- (void)findInteraction:(id)a3 didEndFindSession:(id)a4;
+- (_TtC7SwiftUI18TextEditorTextView)initWithCoder:(id)coder;
+- (_TtC7SwiftUI18TextEditorTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (void)findInteraction:(id)interaction didBeginFindSession:(id)session;
+- (void)findInteraction:(id)interaction didEndFindSession:(id)session;
 @end
 
 @implementation TextEditorTextView
 
-- (void)findInteraction:(id)a3 didBeginFindSession:(id)a4
+- (void)findInteraction:(id)interaction didBeginFindSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  TextEditorTextView.findInteraction(_:didBegin:)(v6, v7, &selRef_findInteraction_didBeginFindSession_);
+  interactionCopy = interaction;
+  sessionCopy = session;
+  selfCopy = self;
+  TextEditorTextView.findInteraction(_:didBegin:)(interactionCopy, sessionCopy, &selRef_findInteraction_didBeginFindSession_);
 }
 
-- (void)findInteraction:(id)a3 didEndFindSession:(id)a4
+- (void)findInteraction:(id)interaction didEndFindSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  TextEditorTextView.findInteraction(_:didBegin:)(v6, v7, &selRef_findInteraction_didEndFindSession_);
+  interactionCopy = interaction;
+  sessionCopy = session;
+  selfCopy = self;
+  TextEditorTextView.findInteraction(_:didBegin:)(interactionCopy, sessionCopy, &selRef_findInteraction_didEndFindSession_);
 }
 
 - (BOOL)supportsTextReplacement
@@ -34,12 +34,12 @@
   return (v3 != 1) & v4;
 }
 
-- (_TtC7SwiftUI18TextEditorTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC7SwiftUI18TextEditorTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9 = self + OBJC_IVAR____TtC7SwiftUI18TextEditorTextView_findContext;
   *v9 = xmmword_18CD633F0;
   v9[18] = 0;
@@ -47,10 +47,10 @@
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7SwiftUI18TextEditorTextView____lazy_storage___helper) = 0;
   v11.receiver = self;
   v11.super_class = type metadata accessor for TextEditorTextView();
-  return [(UIKitTextView *)&v11 initWithFrame:a4 textContainer:x, y, width, height];
+  return [(UIKitTextView *)&v11 initWithFrame:container textContainer:x, y, width, height];
 }
 
-- (_TtC7SwiftUI18TextEditorTextView)initWithCoder:(id)a3
+- (_TtC7SwiftUI18TextEditorTextView)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC7SwiftUI18TextEditorTextView_findContext;
   *v4 = xmmword_18CD633F0;
@@ -59,8 +59,8 @@
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7SwiftUI18TextEditorTextView____lazy_storage___helper) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for TextEditorTextView();
-  v5 = a3;
-  v6 = [(UIKitTextView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(UIKitTextView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

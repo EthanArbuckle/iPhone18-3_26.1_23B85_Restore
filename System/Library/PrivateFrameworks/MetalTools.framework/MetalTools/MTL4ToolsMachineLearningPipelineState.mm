@@ -1,99 +1,99 @@
 @interface MTL4ToolsMachineLearningPipelineState
 - (MTL4MachineLearningPipelineReflection)reflection;
-- (MTL4ToolsMachineLearningPipelineState)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTL4ToolsMachineLearningPipelineState)initWithBaseObject:(id)object parent:(id)parent;
 - (MTLDevice)device;
 - (NSString)label;
 - (id)optimizedBytecode;
-- (id)resourceBlobForByteCodeSignature:(id)a3 resourceName:(id)a4 error:(id *)a5;
-- (id)runWithInputsArray:(id)a3 resultsArray:(id)a4 intermediateOperations:(id)a5;
+- (id)resourceBlobForByteCodeSignature:(id)signature resourceName:(id)name error:(id *)error;
+- (id)runWithInputsArray:(id)array resultsArray:(id)resultsArray intermediateOperations:(id)operations;
 - (unint64_t)allocatedSize;
 - (unint64_t)intermediatesHeapSize;
 @end
 
 @implementation MTL4ToolsMachineLearningPipelineState
 
-- (MTL4ToolsMachineLearningPipelineState)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTL4ToolsMachineLearningPipelineState)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTL4ToolsMachineLearningPipelineState;
-  return [(MTLToolsObject *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTLToolsObject *)&v5 initWithBaseObject:object parent:parent];
 }
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
 - (MTLDevice)device
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 device];
+  return [baseObject device];
 }
 
 - (unint64_t)intermediatesHeapSize
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 intermediatesHeapSize];
+  return [baseObject intermediatesHeapSize];
 }
 
 - (MTL4MachineLearningPipelineReflection)reflection
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 reflection];
+  return [baseObject reflection];
 }
 
 - (unint64_t)allocatedSize
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 allocatedSize];
+  return [baseObject allocatedSize];
 }
 
 - (id)optimizedBytecode
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 optimizedBytecode];
+  return [baseObject optimizedBytecode];
 }
 
-- (id)resourceBlobForByteCodeSignature:(id)a3 resourceName:(id)a4 error:(id *)a5
+- (id)resourceBlobForByteCodeSignature:(id)signature resourceName:(id)name error:(id *)error
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 resourceBlobForByteCodeSignature:a3 resourceName:a4 error:a5];
+  return [baseObject resourceBlobForByteCodeSignature:signature resourceName:name error:error];
 }
 
-- (id)runWithInputsArray:(id)a3 resultsArray:(id)a4 intermediateOperations:(id)a5
+- (id)runWithInputsArray:(id)array resultsArray:(id)resultsArray intermediateOperations:(id)operations
 {
-  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a3, "count")}];
-  if ([a3 count])
+  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(array, "count")}];
+  if ([array count])
   {
     v10 = 0;
     do
     {
-      [v9 addObject:{objc_msgSend(objc_msgSend(a3, "objectAtIndexedSubscript:", v10++), "baseObject")}];
+      [v9 addObject:{objc_msgSend(objc_msgSend(array, "objectAtIndexedSubscript:", v10++), "baseObject")}];
     }
 
-    while (v10 < [a3 count]);
+    while (v10 < [array count]);
   }
 
-  if (a4)
+  if (resultsArray)
   {
-    v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a4, "count")}];
-    if ([a4 count])
+    v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(resultsArray, "count")}];
+    if ([resultsArray count])
     {
       v12 = 0;
       do
       {
-        [v11 addObject:{objc_msgSend(objc_msgSend(a4, "objectAtIndexedSubscript:", v12++), "baseObject")}];
+        [v11 addObject:{objc_msgSend(objc_msgSend(resultsArray, "objectAtIndexedSubscript:", v12++), "baseObject")}];
       }
 
-      while (v12 < [a4 count]);
+      while (v12 < [resultsArray count]);
     }
   }
 
@@ -104,16 +104,16 @@
 
   v13 = [-[MTLToolsObject baseObject](self "baseObject")];
 
-  if (!a4)
+  if (!resultsArray)
   {
-    a4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v13, "count")}];
+    resultsArray = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v13, "count")}];
     if ([v13 count])
     {
       v14 = 0;
       do
       {
         v15 = -[MTLToolsResource initWithBaseObject:parent:]([MTLToolsTensor alloc], "initWithBaseObject:parent:", [v13 objectAtIndexedSubscript:v14], self->super._device);
-        [a4 addObject:v15];
+        [resultsArray addObject:v15];
 
         ++v14;
       }
@@ -122,7 +122,7 @@
     }
   }
 
-  return a4;
+  return resultsArray;
 }
 
 @end

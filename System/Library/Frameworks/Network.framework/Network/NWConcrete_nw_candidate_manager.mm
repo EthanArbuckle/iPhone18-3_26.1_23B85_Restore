@@ -1,6 +1,6 @@
 @interface NWConcrete_nw_candidate_manager
 - (NSString)description;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 @end
 
 @implementation NWConcrete_nw_candidate_manager
@@ -46,11 +46,11 @@
   return v10;
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  initCopy = init;
+  if (!initCopy)
   {
     v10 = __nwlog_obj();
     *buf = 136446210;
@@ -204,7 +204,7 @@ LABEL_42:
   }
 
   v6->log_id = nw_candidate_manager_get_next_id();
-  objc_storeStrong(&v6->parameters, a3);
+  objc_storeStrong(&v6->parameters, init);
   v7 = _nw_array_create();
   candidates = v6->candidates;
   v6->candidates = v7;

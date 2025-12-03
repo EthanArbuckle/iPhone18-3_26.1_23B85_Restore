@@ -1,7 +1,7 @@
 @interface AAUIServiceSignInConfiguration
 - (AAUIServiceSignInConfiguration)init;
 - (AAUIServiceSignInControllerDelegate)serviceDelegate;
-- (void)setServiceTypes:(id)a3;
+- (void)setServiceTypes:(id)types;
 @end
 
 @implementation AAUIServiceSignInConfiguration
@@ -22,14 +22,14 @@
   return v3;
 }
 
-- (void)setServiceTypes:(id)a3
+- (void)setServiceTypes:(id)types
 {
-  v6 = a3;
-  objc_storeStrong(&self->_serviceTypes, a3);
-  if ([v6 count] == 1)
+  typesCopy = types;
+  objc_storeStrong(&self->_serviceTypes, types);
+  if ([typesCopy count] == 1)
   {
-    v5 = [v6 firstObject];
-    [(AAUIServiceSignInConfiguration *)self setServiceType:v5];
+    firstObject = [typesCopy firstObject];
+    [(AAUIServiceSignInConfiguration *)self setServiceType:firstObject];
   }
 
   else

@@ -1,38 +1,38 @@
 @interface _HKCardioFitnessLevelContext
-- (_HKCardioFitnessLevelContext)initWithMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5 baseDisplayType:(id)a6 cardioFitnessLevel:(int64_t)a7;
-- (id)_makeGraphSeriesWithDataSource:(id)a3 baseDisplayType:(id)a4;
-- (void)_updateContextItemWithChartPointCountForDateInterval:(id)a3 timeScope:(int64_t)a4 completion:(id)a5;
-- (void)_updateContextItemWithSampleCountForDateInterval:(id)a3 timeScope:(int64_t)a4 completion:(id)a5;
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7;
+- (_HKCardioFitnessLevelContext)initWithMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller baseDisplayType:(id)type cardioFitnessLevel:(int64_t)level;
+- (id)_makeGraphSeriesWithDataSource:(id)source baseDisplayType:(id)type;
+- (void)_updateContextItemWithChartPointCountForDateInterval:(id)interval timeScope:(int64_t)scope completion:(id)completion;
+- (void)_updateContextItemWithSampleCountForDateInterval:(id)interval timeScope:(int64_t)scope completion:(id)completion;
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion;
 @end
 
 @implementation _HKCardioFitnessLevelContext
 
-- (_HKCardioFitnessLevelContext)initWithMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5 baseDisplayType:(id)a6 cardioFitnessLevel:(int64_t)a7
+- (_HKCardioFitnessLevelContext)initWithMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller baseDisplayType:(id)type cardioFitnessLevel:(int64_t)level
 {
-  v12 = a4;
-  v13 = a6;
+  itemsCopy = items;
+  typeCopy = type;
   v36.receiver = self;
   v36.super_class = _HKCardioFitnessLevelContext;
-  v14 = [(_HKCardioFitnessOverlayContext *)&v36 initWithMode:a3 applicationItems:v12 overlayChartController:a5];
+  v14 = [(_HKCardioFitnessOverlayContext *)&v36 initWithMode:mode applicationItems:itemsCopy overlayChartController:controller];
   v15 = v14;
   if (v14)
   {
-    v14->_cardioFitnessLevel = a7;
-    objc_storeStrong(&v14->_baseDisplayType, a6);
-    v16 = [v12 healthStore];
+    v14->_cardioFitnessLevel = level;
+    objc_storeStrong(&v14->_baseDisplayType, type);
+    healthStore = [itemsCopy healthStore];
     healthStore = v15->_healthStore;
-    v15->_healthStore = v16;
+    v15->_healthStore = healthStore;
 
     v18 = [_HKCardioFitnessLevelDataSourceDelegate alloc];
     cardioFitnessLevel = v15->_cardioFitnessLevel;
-    v20 = [v12 healthStore];
-    v21 = [(_HKCardioFitnessLevelDataSourceDelegate *)v18 initWithCardioFitnessLevel:cardioFitnessLevel healthStore:v20 baseDisplayType:v13];
+    healthStore2 = [itemsCopy healthStore];
+    v21 = [(_HKCardioFitnessLevelDataSourceDelegate *)v18 initWithCardioFitnessLevel:cardioFitnessLevel healthStore:healthStore2 baseDisplayType:typeCopy];
     dataSourceDelegate = v15->_dataSourceDelegate;
     v15->_dataSourceDelegate = v21;
 
     v23 = [[HKDateRangeDataSource alloc] initWithSourceDelegate:v15->_dataSourceDelegate];
-    v24 = [(_HKCardioFitnessLevelContext *)v15 _makeGraphSeriesWithDataSource:v23 baseDisplayType:v13];
+    v24 = [(_HKCardioFitnessLevelContext *)v15 _makeGraphSeriesWithDataSource:v23 baseDisplayType:typeCopy];
     cardioFitnessLevelSeries = v15->_cardioFitnessLevelSeries;
     v15->_cardioFitnessLevelSeries = v24;
 
@@ -55,51 +55,51 @@
   return v15;
 }
 
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion
 {
-  if (a5 > 5)
+  if (scope > 5)
   {
-    [(_HKCardioFitnessLevelContext *)self _updateContextItemWithSampleCountForDateInterval:a3 timeScope:a5 completion:a7, a6];
+    [(_HKCardioFitnessLevelContext *)self _updateContextItemWithSampleCountForDateInterval:interval timeScope:scope completion:completion, resolution];
   }
 
   else
   {
-    [(_HKCardioFitnessLevelContext *)self _updateContextItemWithChartPointCountForDateInterval:a3 timeScope:a5 completion:a7, a6];
+    [(_HKCardioFitnessLevelContext *)self _updateContextItemWithChartPointCountForDateInterval:interval timeScope:scope completion:completion, resolution];
   }
 }
 
-- (void)_updateContextItemWithChartPointCountForDateInterval:(id)a3 timeScope:(int64_t)a4 completion:(id)a5
+- (void)_updateContextItemWithChartPointCountForDateInterval:(id)interval timeScope:(int64_t)scope completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(_HKCardioFitnessOverlayContext *)self overlayChartController];
-  v11 = [v10 primaryDisplayType];
+  intervalCopy = interval;
+  completionCopy = completion;
+  overlayChartController = [(_HKCardioFitnessOverlayContext *)self overlayChartController];
+  primaryDisplayType = [overlayChartController primaryDisplayType];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
-    v13 = [(_HKCardioFitnessOverlayContext *)self overlayChartController];
-    v14 = [v12 graphSeriesForTimeScope:a4];
+    v12 = primaryDisplayType;
+    overlayChartController2 = [(_HKCardioFitnessOverlayContext *)self overlayChartController];
+    v14 = [v12 graphSeriesForTimeScope:scope];
 
-    v15 = [v8 startDate];
-    v16 = [v8 endDate];
+    startDate = [intervalCopy startDate];
+    endDate = [intervalCopy endDate];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __106___HKCardioFitnessLevelContext__updateContextItemWithChartPointCountForDateInterval_timeScope_completion___block_invoke;
     v17[3] = &unk_1E81B6E70;
     v17[4] = self;
-    v19 = a4;
-    v18 = v9;
-    [v13 cachedDataForCustomGraphSeries:v14 timeScope:a4 resolution:0 startDate:v15 endDate:v16 completion:v17];
+    scopeCopy = scope;
+    v18 = completionCopy;
+    [overlayChartController2 cachedDataForCustomGraphSeries:v14 timeScope:scope resolution:0 startDate:startDate endDate:endDate completion:v17];
   }
 }
 
-- (void)_updateContextItemWithSampleCountForDateInterval:(id)a3 timeScope:(int64_t)a4 completion:(id)a5
+- (void)_updateContextItemWithSampleCountForDateInterval:(id)interval timeScope:(int64_t)scope completion:(id)completion
 {
   v49 = *MEMORY[0x1E69E9840];
-  v37 = a5;
-  v7 = [HKCardioFitnessUtilities cardioFitnessLevelDateIntervalsWithDateInterval:a3 healthStore:self->_healthStore];
+  completionCopy = completion;
+  v7 = [HKCardioFitnessUtilities cardioFitnessLevelDateIntervalsWithDateInterval:interval healthStore:self->_healthStore];
   v40 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
   v43 = 0u;
   v44 = 0u;
@@ -122,13 +122,13 @@
 
         v11 = *(*(&v43 + 1) + 8 * i);
         cardioFitnessLevel = self->_cardioFitnessLevel;
-        v13 = [v11 startDate];
-        v14 = [HKCardioFitnessUtilities cardioFitnessDataForLevel:cardioFitnessLevel date:v13 healthStore:self->_healthStore];
+        startDate = [v11 startDate];
+        v14 = [HKCardioFitnessUtilities cardioFitnessDataForLevel:cardioFitnessLevel date:startDate healthStore:self->_healthStore];
 
         if (!v14)
         {
-          v33 = v37;
-          (*(v37 + 2))(v37, 0, 0);
+          v33 = completionCopy;
+          (*(completionCopy + 2))(completionCopy, 0, 0);
           v36 = obj;
           v30 = obj;
           v29 = v40;
@@ -180,15 +180,15 @@
   v29 = v40;
   v30 = [objc_alloc(MEMORY[0x1E696AB28]) initWithType:2 subpredicates:v40];
   v31 = objc_alloc(MEMORY[0x1E696C3B0]);
-  v32 = [(HKDisplayType *)self->_baseDisplayType sampleType];
+  sampleType = [(HKDisplayType *)self->_baseDisplayType sampleType];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __102___HKCardioFitnessLevelContext__updateContextItemWithSampleCountForDateInterval_timeScope_completion___block_invoke;
   v41[3] = &unk_1E81B73A0;
   v41[4] = self;
-  v33 = v37;
-  v42 = v37;
-  v34 = [v31 initWithSampleType:v32 predicate:v30 resultsHandler:v41];
+  v33 = completionCopy;
+  v42 = completionCopy;
+  v34 = [v31 initWithSampleType:sampleType predicate:v30 resultsHandler:v41];
 
   healthStore = self->_healthStore;
   v36 = obj;
@@ -197,11 +197,11 @@
 LABEL_15:
 }
 
-- (id)_makeGraphSeriesWithDataSource:(id)a3 baseDisplayType:(id)a4
+- (id)_makeGraphSeriesWithDataSource:(id)source baseDisplayType:(id)type
 {
   cardioFitnessLevel = self->_cardioFitnessLevel;
-  v7 = a4;
-  v8 = a3;
+  typeCopy = type;
+  sourceCopy = source;
   v9 = [HKCardioFitnessUtilities cardioFitnessLevelChartShouldDisplayUpperBound:cardioFitnessLevel];
   if ([HKCardioFitnessUtilities cardioFitnessLevelChartShouldDisplayLowerBound:self->_cardioFitnessLevel])
   {
@@ -213,7 +213,7 @@ LABEL_15:
     v10 = v9;
   }
 
-  v11 = [HKLevelOverlaySeries levelOverlaySeriesWithDisplayType:v7 dataSource:v8 options:v10];
+  v11 = [HKLevelOverlaySeries levelOverlaySeriesWithDisplayType:typeCopy dataSource:sourceCopy options:v10];
 
   return v11;
 }

@@ -1,37 +1,37 @@
 @interface CPLCloudKitUpdateShareTask
-- (BOOL)_checkNonNilUserIdentifierEquality:(id)a3 withUserIdentifier:(id)a4;
-- (BOOL)_checkParticipant:(id)a3 inEmails:(id)a4 phoneNumbers:(id)a5 userRecordIDs:(id)a6 participantIDs:(id)a7;
-- (BOOL)_isCurrentUserOwnerOrAdminOfShare:(id)a3;
-- (BOOL)_isValidListOfShareParticipants:(id)a3;
-- (CPLCloudKitUpdateShareTask)initWithController:(id)a3 scope:(id)a4 transportScope:(id)a5 completionHandler:(id)a6;
+- (BOOL)_checkNonNilUserIdentifierEquality:(id)equality withUserIdentifier:(id)identifier;
+- (BOOL)_checkParticipant:(id)participant inEmails:(id)emails phoneNumbers:(id)numbers userRecordIDs:(id)ds participantIDs:(id)iDs;
+- (BOOL)_isCurrentUserOwnerOrAdminOfShare:(id)share;
+- (BOOL)_isValidListOfShareParticipants:(id)participants;
+- (CPLCloudKitUpdateShareTask)initWithController:(id)controller scope:(id)scope transportScope:(id)transportScope completionHandler:(id)handler;
 - (id)cloudKitScope;
-- (void)_addParticipant:(id)a3 toEmails:(id)a4 phoneNumbers:(id)a5 userRecordIDs:(id)a6 participantIDs:(id)a7;
-- (void)_fetchCKShareWithCompletionHandler:(id)a3;
-- (void)_modifyParticipantsOfCKShare:(id)a3 newParticipants:(id)a4;
-- (void)_updateCKShare:(id)a3 completionHandler:(id)a4;
-- (void)_uploadCKShare:(id)a3 completionHandler:(id)a4;
+- (void)_addParticipant:(id)participant toEmails:(id)emails phoneNumbers:(id)numbers userRecordIDs:(id)ds participantIDs:(id)iDs;
+- (void)_fetchCKShareWithCompletionHandler:(id)handler;
+- (void)_modifyParticipantsOfCKShare:(id)share newParticipants:(id)participants;
+- (void)_updateCKShare:(id)share completionHandler:(id)handler;
+- (void)_uploadCKShare:(id)share completionHandler:(id)handler;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitUpdateShareTask
 
-- (CPLCloudKitUpdateShareTask)initWithController:(id)a3 scope:(id)a4 transportScope:(id)a5 completionHandler:(id)a6
+- (CPLCloudKitUpdateShareTask)initWithController:(id)controller scope:(id)scope transportScope:(id)transportScope completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  transportScopeCopy = transportScope;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = CPLCloudKitUpdateShareTask;
-  v12 = [(CPLCloudKitManageScopeTask *)&v18 initWithController:a3 scope:a4];
+  v12 = [(CPLCloudKitManageScopeTask *)&v18 initWithController:controller scope:scope];
   if (v12)
   {
-    if (v10)
+    if (transportScopeCopy)
     {
-      v13 = [CPLCloudKitScope scopeFromTransportScope:v10];
+      v13 = [CPLCloudKitScope scopeFromTransportScope:transportScopeCopy];
       cloudKitScope = v12->_cloudKitScope;
       v12->_cloudKitScope = v13;
     }
 
-    v15 = [v11 copy];
+    v15 = [handlerCopy copy];
     completionHandler = v12->_completionHandler;
     v12->_completionHandler = v15;
   }
@@ -44,43 +44,43 @@
   cloudKitScope = self->_cloudKitScope;
   if (cloudKitScope)
   {
-    v3 = cloudKitScope;
+    cloudKitScope = cloudKitScope;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CPLCloudKitUpdateShareTask;
-    v3 = [(CPLCloudKitManageScopeTask *)&v5 cloudKitScope];
+    cloudKitScope = [(CPLCloudKitManageScopeTask *)&v5 cloudKitScope];
   }
 
-  return v3;
+  return cloudKitScope;
 }
 
-- (void)_fetchCKShareWithCompletionHandler:(id)a3
+- (void)_fetchCKShareWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v18 = 0;
   v5 = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v18];
   v6 = v18;
   if (v5)
   {
-    v7 = [(CPLCloudKitManageScopeTask *)self identification];
-    v8 = [v7 shareRecordName];
-    v9 = v8;
-    if (v8)
+    identification = [(CPLCloudKitManageScopeTask *)self identification];
+    shareRecordName = [identification shareRecordName];
+    v9 = shareRecordName;
+    if (shareRecordName)
     {
-      v19 = v8;
+      v19 = shareRecordName;
       v10 = [NSArray arrayWithObjects:&v19 count:1];
-      v11 = [(CPLCloudKitUpdateShareTask *)self cloudKitScope];
+      cloudKitScope = [(CPLCloudKitUpdateShareTask *)self cloudKitScope];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_10004C28C;
       v14[3] = &unk_100274598;
       v15 = v9;
-      v16 = self;
-      v17 = v4;
-      [(CPLCloudKitTransportTask *)self fetchRecordWithNames:v10 inScope:v11 completionHandler:v14];
+      selfCopy = self;
+      v17 = handlerCopy;
+      [(CPLCloudKitTransportTask *)self fetchRecordWithNames:v10 inScope:cloudKitScope completionHandler:v14];
 
       v12 = v15;
     }
@@ -89,99 +89,99 @@
     {
       v12 = [CPLScopeChange descriptionForScopeType:[(CPLCloudKitManageScopeTask *)self scopeType]];
       v13 = [CPLErrors cplErrorWithCode:38 description:@"%@ is an unsupported scope type for a share", v12];
-      (*(v4 + 2))(v4, 0, v13);
+      (*(handlerCopy + 2))(handlerCopy, 0, v13);
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, v6);
+    (*(handlerCopy + 2))(handlerCopy, 0, v6);
   }
 }
 
-- (void)_uploadCKShare:(id)a3 completionHandler:(id)a4
+- (void)_uploadCKShare:(id)share completionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10004C520;
   v8[3] = &unk_1002745E8;
-  v9 = a3;
-  v10 = a4;
+  shareCopy = share;
+  handlerCopy = handler;
   v8[4] = self;
-  v6 = v9;
-  v7 = v10;
+  v6 = shareCopy;
+  v7 = handlerCopy;
   [(CPLCloudKitTransportTask *)self getUserRecordIDFetchIfNecessaryWithCompletionHandler:v8];
 }
 
-- (BOOL)_checkNonNilUserIdentifierEquality:(id)a3 withUserIdentifier:(id)a4
+- (BOOL)_checkNonNilUserIdentifierEquality:(id)equality withUserIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  v8 = v5 && v6 && ([v5 isEqualToString:v6] & 1) != 0;
+  equalityCopy = equality;
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  v8 = equalityCopy && identifierCopy && ([equalityCopy isEqualToString:identifierCopy] & 1) != 0;
 
   return v8;
 }
 
-- (void)_addParticipant:(id)a3 toEmails:(id)a4 phoneNumbers:(id)a5 userRecordIDs:(id)a6 participantIDs:(id)a7
+- (void)_addParticipant:(id)participant toEmails:(id)emails phoneNumbers:(id)numbers userRecordIDs:(id)ds participantIDs:(id)iDs
 {
-  v25 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [v25 userIdentity];
-  v16 = [v15 lookupInfo];
+  participantCopy = participant;
+  emailsCopy = emails;
+  numbersCopy = numbers;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  userIdentity = [participantCopy userIdentity];
+  lookupInfo = [userIdentity lookupInfo];
 
-  v17 = [v16 emailAddress];
+  emailAddress = [lookupInfo emailAddress];
 
-  if (v17)
+  if (emailAddress)
   {
-    v18 = [v16 emailAddress];
-    [v11 addObject:v18];
+    emailAddress2 = [lookupInfo emailAddress];
+    [emailsCopy addObject:emailAddress2];
   }
 
-  v19 = [v16 phoneNumber];
+  phoneNumber = [lookupInfo phoneNumber];
 
-  if (v19)
+  if (phoneNumber)
   {
-    v20 = [v16 phoneNumber];
-    [v12 addObject:v20];
+    phoneNumber2 = [lookupInfo phoneNumber];
+    [numbersCopy addObject:phoneNumber2];
   }
 
-  v21 = [v16 userRecordID];
+  userRecordID = [lookupInfo userRecordID];
 
-  if (v21)
+  if (userRecordID)
   {
-    v22 = [v16 userRecordID];
-    [v13 addObject:v22];
+    userRecordID2 = [lookupInfo userRecordID];
+    [dsCopy addObject:userRecordID2];
   }
 
-  v23 = [v25 participantID];
+  participantID = [participantCopy participantID];
 
-  if (v23)
+  if (participantID)
   {
-    v24 = [v25 participantID];
-    [v14 addObject:v24];
+    participantID2 = [participantCopy participantID];
+    [iDsCopy addObject:participantID2];
   }
 }
 
-- (BOOL)_checkParticipant:(id)a3 inEmails:(id)a4 phoneNumbers:(id)a5 userRecordIDs:(id)a6 participantIDs:(id)a7
+- (BOOL)_checkParticipant:(id)participant inEmails:(id)emails phoneNumbers:(id)numbers userRecordIDs:(id)ds participantIDs:(id)iDs
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v11 userIdentity];
-  v17 = [v16 lookupInfo];
+  participantCopy = participant;
+  emailsCopy = emails;
+  numbersCopy = numbers;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  userIdentity = [participantCopy userIdentity];
+  lookupInfo = [userIdentity lookupInfo];
 
-  v18 = [v17 emailAddress];
-  if (v18)
+  emailAddress = [lookupInfo emailAddress];
+  if (emailAddress)
   {
-    v19 = v18;
-    v20 = [v17 emailAddress];
-    v21 = [v12 containsObject:v20];
+    v19 = emailAddress;
+    emailAddress2 = [lookupInfo emailAddress];
+    v21 = [emailsCopy containsObject:emailAddress2];
 
     if (v21)
     {
@@ -189,12 +189,12 @@
     }
   }
 
-  v22 = [v17 phoneNumber];
-  if (v22)
+  phoneNumber = [lookupInfo phoneNumber];
+  if (phoneNumber)
   {
-    v23 = v22;
-    v24 = [v17 phoneNumber];
-    v25 = [v13 containsObject:v24];
+    v23 = phoneNumber;
+    phoneNumber2 = [lookupInfo phoneNumber];
+    v25 = [numbersCopy containsObject:phoneNumber2];
 
     if (v25)
     {
@@ -202,15 +202,15 @@
     }
   }
 
-  v26 = [v17 userRecordID];
-  if (!v26)
+  userRecordID = [lookupInfo userRecordID];
+  if (!userRecordID)
   {
     goto LABEL_8;
   }
 
-  v27 = v26;
-  v28 = [v17 userRecordID];
-  v29 = [v14 containsObject:v28];
+  v27 = userRecordID;
+  userRecordID2 = [lookupInfo userRecordID];
+  v29 = [dsCopy containsObject:userRecordID2];
 
   if (v29)
   {
@@ -221,11 +221,11 @@ LABEL_7:
   else
   {
 LABEL_8:
-    v31 = [v11 participantID];
-    if (v31)
+    participantID = [participantCopy participantID];
+    if (participantID)
     {
-      v32 = [v11 participantID];
-      v30 = [v15 containsObject:v32];
+      participantID2 = [participantCopy participantID];
+      v30 = [iDsCopy containsObject:participantID2];
     }
 
     else
@@ -237,36 +237,36 @@ LABEL_8:
   return v30;
 }
 
-- (void)_modifyParticipantsOfCKShare:(id)a3 newParticipants:(id)a4
+- (void)_modifyParticipantsOfCKShare:(id)share newParticipants:(id)participants
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  shareCopy = share;
+  participantsCopy = participants;
+  if ([participantsCopy count])
   {
-    v32 = v6;
-    v8 = [v6 participants];
+    v32 = shareCopy;
+    participants = [shareCopy participants];
     if ((_CPLSilentLogging & 1) == 0)
     {
       v9 = sub_100003744();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v57 = v7;
+        v57 = participantsCopy;
         v58 = 2112;
-        v59 = v8;
+        v59 = participants;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Comparing new participants %@ with existing participants %@", buf, 0x16u);
       }
     }
 
-    v38 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
-    v37 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
-    v36 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
-    v35 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+    v38 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(participants, "count")}];
+    v37 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(participants, "count")}];
+    v36 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(participants, "count")}];
+    v35 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(participants, "count")}];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v10 = v8;
+    v10 = participants;
     v11 = [v10 countByEnumeratingWithState:&v47 objects:v55 count:16];
     if (v11)
     {
@@ -292,16 +292,16 @@ LABEL_8:
 
     obj = v10;
 
-    v15 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
-    v16 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
-    v17 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
-    v18 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
+    v15 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(participantsCopy, "count")}];
+    v16 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(participantsCopy, "count")}];
+    v17 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(participantsCopy, "count")}];
+    v18 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(participantsCopy, "count")}];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v31 = v7;
-    v19 = v7;
+    v31 = participantsCopy;
+    v19 = participantsCopy;
     v20 = [v19 countByEnumeratingWithState:&v43 objects:v54 count:16];
     if (v20)
     {
@@ -368,19 +368,19 @@ LABEL_8:
       while (v26);
     }
 
-    v7 = v31;
-    v6 = v32;
+    participantsCopy = v31;
+    shareCopy = v32;
   }
 }
 
-- (BOOL)_isValidListOfShareParticipants:(id)a3
+- (BOOL)_isValidListOfShareParticipants:(id)participants
 {
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  participantsCopy = participants;
+  v4 = [participantsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -390,7 +390,7 @@ LABEL_8:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(participantsCopy);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) role] == 1)
@@ -400,7 +400,7 @@ LABEL_8:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [participantsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -415,13 +415,13 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)_isCurrentUserOwnerOrAdminOfShare:(id)a3
+- (BOOL)_isCurrentUserOwnerOrAdminOfShare:(id)share
 {
-  v3 = [a3 currentUserParticipant];
-  v4 = v3;
-  if (v3)
+  currentUserParticipant = [share currentUserParticipant];
+  v4 = currentUserParticipant;
+  if (currentUserParticipant)
   {
-    v5 = [v3 role] == 1 || objc_msgSend(v4, "role") == 2;
+    v5 = [currentUserParticipant role] == 1 || objc_msgSend(v4, "role") == 2;
   }
 
   else
@@ -432,62 +432,62 @@ LABEL_11:
   return v5;
 }
 
-- (void)_updateCKShare:(id)a3 completionHandler:(id)a4
+- (void)_updateCKShare:(id)share completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  handlerCopy = handler;
   v21 = 0;
   v8 = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v21];
   v9 = v21;
   if (v8)
   {
-    v10 = [(CPLCloudKitManageScopeTask *)self scope];
-    if ([(CPLCloudKitUpdateShareTask *)self _isCurrentUserOwnerOrAdminOfShare:v6])
+    scope = [(CPLCloudKitManageScopeTask *)self scope];
+    if ([(CPLCloudKitUpdateShareTask *)self _isCurrentUserOwnerOrAdminOfShare:shareCopy])
     {
-      [v10 updateCKShare:v6];
-      v11 = [v10 share];
-      v12 = [v11 participants];
+      [scope updateCKShare:shareCopy];
+      share = [scope share];
+      participants = [share participants];
 
-      if ([v6 publicPermission] != 1 || !objc_msgSend(v12, "count"))
+      if ([shareCopy publicPermission] != 1 || !objc_msgSend(participants, "count"))
       {
-        [(CPLCloudKitUpdateShareTask *)self _uploadCKShare:v6 completionHandler:v7];
+        [(CPLCloudKitUpdateShareTask *)self _uploadCKShare:shareCopy completionHandler:handlerCopy];
         goto LABEL_11;
       }
 
-      if ([(CPLCloudKitUpdateShareTask *)self _isValidListOfShareParticipants:v12])
+      if ([(CPLCloudKitUpdateShareTask *)self _isValidListOfShareParticipants:participants])
       {
         v18[0] = _NSConcreteStackBlock;
         v18[1] = 3221225472;
         v18[2] = sub_10004D7C4;
         v18[3] = &unk_100274610;
-        v20 = v7;
+        v20 = handlerCopy;
         v18[4] = self;
-        v19 = v6;
-        [(CPLCloudKitManageScopeTask *)self fetchShareParticipantsForParticipants:v12 completionBlock:v18];
+        v19 = shareCopy;
+        [(CPLCloudKitManageScopeTask *)self fetchShareParticipantsForParticipants:participants completionBlock:v18];
 
 LABEL_11:
         goto LABEL_12;
       }
 
       completionHandler = self->_completionHandler;
-      v14 = [(CPLCloudKitManageScopeTask *)self scope];
-      v16 = [v14 scopeIdentifier];
-      v17 = [CPLErrors invalidScopeErrorWithScopeIdentifier:v16];
+      scope2 = [(CPLCloudKitManageScopeTask *)self scope];
+      scopeIdentifier = [scope2 scopeIdentifier];
+      v17 = [CPLErrors invalidScopeErrorWithScopeIdentifier:scopeIdentifier];
       completionHandler[2](completionHandler, 0, v17);
     }
 
     else
     {
       v13 = objc_opt_class();
-      v12 = [v10 scopeIdentifier];
-      v14 = [CPLErrors cplErrorWithCode:52 description:@"User is not owner or admin of <%@ %@>", v13, v12];
-      (*(v7 + 2))(v7, 0, v14);
+      participants = [scope scopeIdentifier];
+      scope2 = [CPLErrors cplErrorWithCode:52 description:@"User is not owner or admin of <%@ %@>", v13, participants];
+      (*(handlerCopy + 2))(handlerCopy, 0, scope2);
     }
 
     goto LABEL_11;
   }
 
-  (*(v7 + 2))(v7, 0, v9);
+  (*(handlerCopy + 2))(handlerCopy, 0, v9);
 LABEL_12:
 }
 

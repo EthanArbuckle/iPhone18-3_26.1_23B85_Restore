@@ -1,65 +1,65 @@
 @interface WeekGroupView
-- (BOOL)weekViewShouldAnnotateAppEntities:(id)a3 onDayStarting:(id)a4;
-- (CGPoint)pointAtDate:(id)a3 isAllDay:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)weekViewShouldAnnotateAppEntities:(id)entities onDayStarting:(id)starting;
+- (CGPoint)pointAtDate:(id)date isAllDay:(BOOL)day;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)description;
-- (WeekGroupView)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4 targetWindow:(id)a5 rightClickDelegate:(id)a6 isMultiDayView:(BOOL)a7;
+- (WeekGroupView)initWithFrame:(CGRect)frame sizeClass:(int64_t)class targetWindow:(id)window rightClickDelegate:(id)delegate isMultiDayView:(BOOL)view;
 - (WeekGroupViewDelegate)delegate;
-- (id)_castedDayOccurrenceViewFromGenericView:(id)a3;
-- (id)dateAtPoint:(CGPoint)a3 isAllDay:(BOOL *)a4 requireAllDayRegionInsistence:(BOOL)a5;
-- (id)dateForXOffset:(double)a3;
-- (id)occurrenceViewAtPoint:(CGPoint)a3 ignoreSelectedCopyView:(BOOL)a4;
+- (id)_castedDayOccurrenceViewFromGenericView:(id)view;
+- (id)dateAtPoint:(CGPoint)point isAllDay:(BOOL *)day requireAllDayRegionInsistence:(BOOL)insistence;
+- (id)dateForXOffset:(double)offset;
+- (id)occurrenceViewAtPoint:(CGPoint)point ignoreSelectedCopyView:(BOOL)view;
 - (id)presentationControllerForEditMenu;
 - (id)selectedEventsForEditMenu;
-- (id)weekViewForWeekAfter:(id)a3;
-- (id)weekViewForWeekBefore:(id)a3;
-- (int64_t)_secondAtPosition:(double)a3;
-- (void)adjustForVisibleRect:(CGRect)a3;
+- (id)weekViewForWeekAfter:(id)after;
+- (id)weekViewForWeekBefore:(id)before;
+- (int64_t)_secondAtPosition:(double)position;
+- (void)adjustForVisibleRect:(CGRect)rect;
 - (void)emptySpaceClick;
-- (void)emptySpaceClickedOnDate:(id)a3;
+- (void)emptySpaceClickedOnDate:(id)date;
 - (void)layoutSubviews;
-- (void)loadDataAsyncWithCompletion:(id)a3 reverse:(BOOL)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlightedDateComponents:(id)a3;
-- (void)setIsInUse:(BOOL)a3;
-- (void)setShowsTimeMarker:(BOOL)a3;
-- (void)showOverlayMonthInCellAtOffset:(double)a3 animated:(BOOL)a4;
-- (void)weekView:(id)a3 didSelectEvent:(id)a4 userInitiated:(BOOL)a5 dateSelected:(id)a6;
-- (void)weekView:(id)a3 didSelectEvents:(id)a4 userInitiated:(BOOL)a5;
-- (void)weekView:(id)a3 pointerDidTargetOccurrences:(id)a4;
-- (void)weekView:(id)a3 receivedTapInAllDayAreaOnDate:(id)a4;
-- (void)weekViewAllDaySectionDidScroll:(id)a3;
-- (void)weekViewDidBeginDragging:(id)a3;
-- (void)weekViewDidEndDecelerating:(id)a3;
-- (void)weekViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)weekViewDidLayout:(id)a3;
-- (void)weekViewDidScroll:(id)a3;
-- (void)weekViewFirstVisibleSecondChanged:(int64_t)a3;
-- (void)weekViewOccurrenceLayoutDidChange:(id)a3;
+- (void)loadDataAsyncWithCompletion:(id)completion reverse:(BOOL)reverse;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlightedDateComponents:(id)components;
+- (void)setIsInUse:(BOOL)use;
+- (void)setShowsTimeMarker:(BOOL)marker;
+- (void)showOverlayMonthInCellAtOffset:(double)offset animated:(BOOL)animated;
+- (void)weekView:(id)view didSelectEvent:(id)event userInitiated:(BOOL)initiated dateSelected:(id)selected;
+- (void)weekView:(id)view didSelectEvents:(id)events userInitiated:(BOOL)initiated;
+- (void)weekView:(id)view pointerDidTargetOccurrences:(id)occurrences;
+- (void)weekView:(id)view receivedTapInAllDayAreaOnDate:(id)date;
+- (void)weekViewAllDaySectionDidScroll:(id)scroll;
+- (void)weekViewDidBeginDragging:(id)dragging;
+- (void)weekViewDidEndDecelerating:(id)decelerating;
+- (void)weekViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)weekViewDidLayout:(id)layout;
+- (void)weekViewDidScroll:(id)scroll;
+- (void)weekViewFirstVisibleSecondChanged:(int64_t)changed;
+- (void)weekViewOccurrenceLayoutDidChange:(id)change;
 @end
 
 @implementation WeekGroupView
 
-- (WeekGroupView)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4 targetWindow:(id)a5 rightClickDelegate:(id)a6 isMultiDayView:(BOOL)a7
+- (WeekGroupView)initWithFrame:(CGRect)frame sizeClass:(int64_t)class targetWindow:(id)window rightClickDelegate:(id)delegate isMultiDayView:(BOOL)view
 {
-  v7 = a7;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a5;
-  v16 = a6;
+  viewCopy = view;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  windowCopy = window;
+  delegateCopy = delegate;
   v58.receiver = self;
   v58.super_class = WeekGroupView;
-  v17 = [(WeekGroupView *)&v58 initWithFrame:x, y, width, height];
-  v18 = v17;
-  if (v17)
+  height = [(WeekGroupView *)&v58 initWithFrame:x, y, width, height];
+  v18 = height;
+  if (height)
   {
-    v17->_isMultiDayView = v7;
-    if (v7)
+    height->_isMultiDayView = viewCopy;
+    if (viewCopy)
     {
       v19 = off_10020D550;
-      v20 = [[MultiDayWeekView alloc] initWithFrame:a4 sizeClass:v15 targetWindow:v16 rightClickDelegate:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+      v20 = [[MultiDayWeekView alloc] initWithFrame:class sizeClass:windowCopy targetWindow:delegateCopy rightClickDelegate:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
       weekView = v18->_weekView;
       v18->_weekView = &v20->super;
     }
@@ -67,7 +67,7 @@
     else
     {
       v19 = off_10020D578;
-      v22 = [[WeekView alloc] initWithFrame:a4 sizeClass:v15 targetWindow:v16 rightClickDelegate:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+      v22 = [[WeekView alloc] initWithFrame:class sizeClass:windowCopy targetWindow:delegateCopy rightClickDelegate:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
       v23 = v18->_weekView;
       v18->_weekView = v22;
 
@@ -80,8 +80,8 @@
     gutterView = v18->_gutterView;
     v18->_gutterView = v24;
 
-    v26 = [(__objc2_class *)*v19 weekSeparatorColor];
-    [(UIView *)v18->_gutterView setBackgroundColor:v26];
+    weekSeparatorColor = [(__objc2_class *)*v19 weekSeparatorColor];
+    [(UIView *)v18->_gutterView setBackgroundColor:weekSeparatorColor];
 
     [(WeekGroupView *)v18 addSubview:v18->_gutterView];
     v27 = CalSolariumEnabled();
@@ -92,44 +92,44 @@
       [(UIView *)v18->_gutterView setTranslatesAutoresizingMaskIntoConstraints:0];
       EKUISeparatorLineThickness();
       v30 = v29;
-      v55 = [(WeekView *)v18->_weekView leadingAnchor];
-      v54 = [(WeekGroupView *)v18 leadingAnchor];
-      v53 = [v55 constraintEqualToAnchor:v54];
+      leadingAnchor = [(WeekView *)v18->_weekView leadingAnchor];
+      leadingAnchor2 = [(WeekGroupView *)v18 leadingAnchor];
+      v53 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v59[0] = v53;
-      v52 = [(WeekView *)v18->_weekView trailingAnchor];
-      v51 = [(WeekGroupView *)v18 trailingAnchor];
-      v50 = [v52 constraintEqualToAnchor:v51];
+      trailingAnchor = [(WeekView *)v18->_weekView trailingAnchor];
+      trailingAnchor2 = [(WeekGroupView *)v18 trailingAnchor];
+      v50 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v59[1] = v50;
-      v49 = [(WeekView *)v18->_weekView topAnchor];
-      v48 = [(WeekGroupView *)v18 topAnchor];
-      v47 = [v49 constraintEqualToAnchor:v48];
+      topAnchor = [(WeekView *)v18->_weekView topAnchor];
+      topAnchor2 = [(WeekGroupView *)v18 topAnchor];
+      v47 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v59[2] = v47;
-      v46 = [(WeekView *)v18->_weekView bottomAnchor];
-      v45 = [(WeekGroupView *)v18 bottomAnchor];
-      v44 = [v46 constraintEqualToAnchor:v45];
+      bottomAnchor = [(WeekView *)v18->_weekView bottomAnchor];
+      bottomAnchor2 = [(WeekGroupView *)v18 bottomAnchor];
+      v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v59[3] = v44;
-      v43 = [(UIView *)v18->_gutterView leadingAnchor];
-      v42 = [(WeekGroupView *)v18 trailingAnchor];
-      v41 = [v43 constraintEqualToAnchor:v42];
+      leadingAnchor3 = [(UIView *)v18->_gutterView leadingAnchor];
+      trailingAnchor3 = [(WeekGroupView *)v18 trailingAnchor];
+      v41 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3];
       v59[4] = v41;
       [(UIView *)v18->_gutterView widthAnchor];
-      v31 = v57 = v15;
+      v31 = v57 = windowCopy;
       [v31 constraintEqualToConstant:v30];
-      v32 = v56 = v16;
+      v32 = v56 = delegateCopy;
       v59[5] = v32;
-      v33 = [(UIView *)v18->_gutterView topAnchor];
-      v34 = [(WeekGroupView *)v18 topAnchor];
-      v35 = [v33 constraintEqualToAnchor:v34];
+      topAnchor3 = [(UIView *)v18->_gutterView topAnchor];
+      topAnchor4 = [(WeekGroupView *)v18 topAnchor];
+      v35 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       v59[6] = v35;
-      v36 = [(UIView *)v18->_gutterView bottomAnchor];
-      v37 = [(WeekGroupView *)v18 bottomAnchor];
-      v38 = [v36 constraintEqualToAnchor:v37];
+      bottomAnchor3 = [(UIView *)v18->_gutterView bottomAnchor];
+      bottomAnchor4 = [(WeekGroupView *)v18 bottomAnchor];
+      v38 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       v59[7] = v38;
       v39 = [NSArray arrayWithObjects:v59 count:8];
       [NSLayoutConstraint activateConstraints:v39];
 
-      v16 = v56;
-      v15 = v57;
+      delegateCopy = v56;
+      windowCopy = v57;
     }
 
     else
@@ -179,12 +179,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (CalSolariumEnabled())
   {
     v11.receiver = self;
@@ -211,39 +211,39 @@
   v3 = objc_opt_class();
   [(WeekGroupView *)self frame];
   v4 = NSStringFromRect(v14);
-  v5 = [(WeekGroupView *)self weekStartDate];
-  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 month]);
-  v7 = [(WeekGroupView *)self weekStartDate];
-  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 day]);
-  v9 = [(WeekGroupView *)self weekStartDate];
-  v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 year]);
+  weekStartDate = [(WeekGroupView *)self weekStartDate];
+  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [weekStartDate month]);
+  weekStartDate2 = [(WeekGroupView *)self weekStartDate];
+  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [weekStartDate2 day]);
+  weekStartDate3 = [(WeekGroupView *)self weekStartDate];
+  v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [weekStartDate3 year]);
   v11 = [NSString stringWithFormat:@"<%@: %p frame = %@, weekStartDate = (%@ / %@ / %@)>", v3, self, v4, v6, v8, v10];;
 
   return v11;
 }
 
-- (void)setShowsTimeMarker:(BOOL)a3
+- (void)setShowsTimeMarker:(BOOL)marker
 {
-  if (self->_showsTimeMarker != a3)
+  if (self->_showsTimeMarker != marker)
   {
-    self->_showsTimeMarker = a3;
+    self->_showsTimeMarker = marker;
     [(WeekView *)self->_weekView setShowsTimeMarker:?];
   }
 }
 
-- (void)showOverlayMonthInCellAtOffset:(double)a3 animated:(BOOL)a4
+- (void)showOverlayMonthInCellAtOffset:(double)offset animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(WeekView *)self->_weekView frame];
-  v7 = a3 - CGRectGetMinX(v10);
+  v7 = offset - CGRectGetMinX(v10);
   weekView = self->_weekView;
 
-  [(WeekView *)weekView showOverlayMonthInCellAtOffset:v4 animated:v7];
+  [(WeekView *)weekView showOverlayMonthInCellAtOffset:animatedCopy animated:v7];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
+  height = fits.height;
   [(WeekView *)self->_weekView frame];
   v6 = v5;
   [(UIView *)self->_gutterView frame];
@@ -254,12 +254,12 @@
   return result;
 }
 
-- (void)adjustForVisibleRect:(CGRect)a3
+- (void)adjustForVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(WeekView *)self->_weekView frame];
   v9 = width - v8;
   weekView = self->_weekView;
@@ -276,16 +276,16 @@
   [(WeekView *)weekView adjustForVisibleRect:x, y, v11, height];
 }
 
-- (void)setIsInUse:(BOOL)a3
+- (void)setIsInUse:(BOOL)use
 {
-  self->_isInUse = a3;
-  if (!a3)
+  self->_isInUse = use;
+  if (!use)
   {
     [(WeekView *)self->_weekView setIsInUse:0];
   }
 }
 
-- (void)weekViewDidBeginDragging:(id)a3
+- (void)weekViewDidBeginDragging:(id)dragging
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -297,7 +297,7 @@
   }
 }
 
-- (void)weekViewDidScroll:(id)a3
+- (void)weekViewDidScroll:(id)scroll
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -309,20 +309,20 @@
   }
 }
 
-- (void)weekViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)weekViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
+  decelerateCopy = decelerate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 weekGroupDidEndDragging:self willDecelerate:v4];
+    [v8 weekGroupDidEndDragging:self willDecelerate:decelerateCopy];
   }
 }
 
-- (void)weekViewDidEndDecelerating:(id)a3
+- (void)weekViewDidEndDecelerating:(id)decelerating
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -334,7 +334,7 @@
   }
 }
 
-- (void)weekViewAllDaySectionDidScroll:(id)a3
+- (void)weekViewAllDaySectionDidScroll:(id)scroll
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -346,145 +346,145 @@
   }
 }
 
-- (void)weekView:(id)a3 receivedTapInAllDayAreaOnDate:(id)a4
+- (void)weekView:(id)view receivedTapInAllDayAreaOnDate:(id)date
 {
-  v8 = a4;
+  dateCopy = date;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 weekGroup:self didReceiveTapForDate:v8];
+    [v7 weekGroup:self didReceiveTapForDate:dateCopy];
   }
 }
 
-- (id)weekViewForWeekBefore:(id)a3
+- (id)weekViewForWeekBefore:(id)before
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) != 0 && (v6 = objc_loadWeakRetained(&self->_delegate), [v6 weekGroupForWeekBefore:self], v7 = objc_claimAutoreleasedReturnValue(), v6, v7))
   {
-    v8 = [v7 weekView];
+    weekView = [v7 weekView];
   }
 
   else
   {
-    v8 = 0;
+    weekView = 0;
   }
 
-  return v8;
+  return weekView;
 }
 
-- (id)weekViewForWeekAfter:(id)a3
+- (id)weekViewForWeekAfter:(id)after
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) != 0 && (v6 = objc_loadWeakRetained(&self->_delegate), [v6 weekGroupForWeekAfter:self], v7 = objc_claimAutoreleasedReturnValue(), v6, v7))
   {
-    v8 = [v7 weekView];
+    weekView = [v7 weekView];
   }
 
   else
   {
-    v8 = 0;
+    weekView = 0;
   }
 
-  return v8;
+  return weekView;
 }
 
 - (id)presentationControllerForEditMenu
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained presentationControllerForEditMenu];
+  presentationControllerForEditMenu = [WeakRetained presentationControllerForEditMenu];
 
-  return v3;
+  return presentationControllerForEditMenu;
 }
 
 - (id)selectedEventsForEditMenu
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained selectedEventsForEditMenu];
+  selectedEventsForEditMenu = [WeakRetained selectedEventsForEditMenu];
 
-  return v3;
+  return selectedEventsForEditMenu;
 }
 
-- (void)setHighlightedDateComponents:(id)a3
+- (void)setHighlightedDateComponents:(id)components
 {
-  objc_storeStrong(&self->_highlightedDateComponents, a3);
-  v5 = a3;
-  [(WeekView *)self->_weekView setHighlightedDateComponents:v5];
+  objc_storeStrong(&self->_highlightedDateComponents, components);
+  componentsCopy = components;
+  [(WeekView *)self->_weekView setHighlightedDateComponents:componentsCopy];
 }
 
-- (void)loadDataAsyncWithCompletion:(id)a3 reverse:(BOOL)a4
+- (void)loadDataAsyncWithCompletion:(id)completion reverse:(BOOL)reverse
 {
-  v4 = a4;
-  v6 = a3;
+  reverseCopy = reverse;
+  completionCopy = completion;
   weekView = self->_weekView;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10007D6A0;
   v9[3] = &unk_10020EBC8;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [(WeekView *)weekView loadDataAsyncWithCompletion:v9 reverse:v4];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(WeekView *)weekView loadDataAsyncWithCompletion:v9 reverse:reverseCopy];
 }
 
-- (void)weekView:(id)a3 didSelectEvent:(id)a4 userInitiated:(BOOL)a5 dateSelected:(id)a6
+- (void)weekView:(id)view didSelectEvent:(id)event userInitiated:(BOOL)initiated dateSelected:(id)selected
 {
-  v7 = a5;
-  v13 = a4;
-  v9 = a6;
+  initiatedCopy = initiated;
+  eventCopy = event;
+  selectedCopy = selected;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_delegate);
-    [v12 weekGroup:self didSelectEvent:v13 userInitiated:v7 dateSelected:v9];
+    [v12 weekGroup:self didSelectEvent:eventCopy userInitiated:initiatedCopy dateSelected:selectedCopy];
   }
 }
 
-- (void)weekView:(id)a3 didSelectEvents:(id)a4 userInitiated:(BOOL)a5
+- (void)weekView:(id)view didSelectEvents:(id)events userInitiated:(BOOL)initiated
 {
-  v5 = a5;
-  v10 = a4;
+  initiatedCopy = initiated;
+  eventsCopy = events;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 weekGroup:self didSelectEvents:v10 userInitiated:v5];
+    [v9 weekGroup:self didSelectEvents:eventsCopy userInitiated:initiatedCopy];
   }
 }
 
-- (void)weekView:(id)a3 pointerDidTargetOccurrences:(id)a4
+- (void)weekView:(id)view pointerDidTargetOccurrences:(id)occurrences
 {
-  v8 = a4;
+  occurrencesCopy = occurrences;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 weekGroup:self pointerDidTargetOccurrences:v8];
+    [v7 weekGroup:self pointerDidTargetOccurrences:occurrencesCopy];
   }
 }
 
-- (BOOL)weekViewShouldAnnotateAppEntities:(id)a3 onDayStarting:(id)a4
+- (BOOL)weekViewShouldAnnotateAppEntities:(id)entities onDayStarting:(id)starting
 {
-  v5 = a4;
+  startingCopy = starting;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    v9 = [v8 weekGroupViewShouldAnnotateAppEntities:self onDayStarting:v5];
+    v9 = [v8 weekGroupViewShouldAnnotateAppEntities:self onDayStarting:startingCopy];
   }
 
   else
@@ -495,11 +495,11 @@
   return v9;
 }
 
-- (int64_t)_secondAtPosition:(double)a3
+- (int64_t)_secondAtPosition:(double)position
 {
-  v4 = [(WeekView *)self->_weekView content];
-  v5 = [v4 grid];
-  v6 = [v5 secondAtPosition:a3];
+  content = [(WeekView *)self->_weekView content];
+  grid = [content grid];
+  v6 = [grid secondAtPosition:position];
 
   if (v6 >= 0x1517F)
   {
@@ -522,7 +522,7 @@
   }
 }
 
-- (id)dateForXOffset:(double)a3
+- (id)dateForXOffset:(double)offset
 {
   IsLeftToRight = CalTimeDirectionIsLeftToRight();
   MinX = 0.0;
@@ -532,39 +532,39 @@
     MinX = CGRectGetMinX(v11);
   }
 
-  v7 = a3 - MinX;
+  v7 = offset - MinX;
   weekView = self->_weekView;
 
   return [(WeekView *)weekView dateForXOffset:v7];
 }
 
-- (id)dateAtPoint:(CGPoint)a3 isAllDay:(BOOL *)a4 requireAllDayRegionInsistence:(BOOL)a5
+- (id)dateAtPoint:(CGPoint)point isAllDay:(BOOL *)day requireAllDayRegionInsistence:(BOOL)insistence
 {
-  v5 = a5;
-  y = a3.y;
-  v9 = [(WeekGroupView *)self dateForXOffset:a3.x];
-  v10 = [(WeekView *)self->_weekView calendar];
-  v11 = [v10 timeZone];
-  v12 = [EKCalendarDate calendarDateWithDateComponents:v9 timeZone:v11];
+  insistenceCopy = insistence;
+  y = point.y;
+  v9 = [(WeekGroupView *)self dateForXOffset:point.x];
+  calendar = [(WeekView *)self->_weekView calendar];
+  timeZone = [calendar timeZone];
+  v12 = [EKCalendarDate calendarDateWithDateComponents:v9 timeZone:timeZone];
 
-  v13 = [(WeekView *)self->_weekView scrollView];
-  [v13 frame];
+  scrollView = [(WeekView *)self->_weekView scrollView];
+  [scrollView frame];
   v15 = y - v14;
 
-  v16 = [(WeekView *)self->_weekView allDayView];
-  [v16 bounds];
+  allDayView = [(WeekView *)self->_weekView allDayView];
+  [allDayView bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(WeekView *)self->_weekView allDayView];
-  [(WeekGroupView *)self convertRect:v25 fromView:v18, v20, v22, v24];
+  allDayView2 = [(WeekView *)self->_weekView allDayView];
+  [(WeekGroupView *)self convertRect:allDayView2 fromView:v18, v20, v22, v24];
   v27 = v26;
   v29 = v28;
   v31 = v30;
   v33 = v32;
 
-  if (v5)
+  if (insistenceCopy)
   {
     v34 = v33 + -10.0;
   }
@@ -580,8 +580,8 @@
   MaxY = CGRectGetMaxY(*(&v34 - 3));
   if (y < MaxY || (-[WeekView scrollView](self->_weekView, "scrollView"), v39 = objc_claimAutoreleasedReturnValue(), [v39 frame], v41 = v40, v39, v15 <= v41))
   {
-    v43 = [(WeekView *)self->_weekView scrollView];
-    [v43 contentOffset];
+    scrollView2 = [(WeekView *)self->_weekView scrollView];
+    [scrollView2 contentOffset];
     v42 = [(WeekGroupView *)self _secondAtPosition:fmax(v15, 0.0) + v44];
   }
 
@@ -591,17 +591,17 @@
   }
 
   v45 = [v12 calendarDateByComponentwiseAddingSeconds:v42];
-  if (a4)
+  if (day)
   {
-    *a4 = y < MaxY;
+    *day = y < MaxY;
   }
 
   return v45;
 }
 
-- (CGPoint)pointAtDate:(id)a3 isAllDay:(BOOL)a4
+- (CGPoint)pointAtDate:(id)date isAllDay:(BOOL)day
 {
-  [(WeekView *)self->_weekView pointAtDate:a3 isAllDay:a4];
+  [(WeekView *)self->_weekView pointAtDate:date isAllDay:day];
   weekView = self->_weekView;
 
   [(WeekView *)weekView convertPoint:self toView:?];
@@ -610,11 +610,11 @@
   return result;
 }
 
-- (id)occurrenceViewAtPoint:(CGPoint)a3 ignoreSelectedCopyView:(BOOL)a4
+- (id)occurrenceViewAtPoint:(CGPoint)point ignoreSelectedCopyView:(BOOL)view
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  viewCopy = view;
+  y = point.y;
+  x = point.x;
   v8 = [(WeekGroupView *)self hitTest:0 withEvent:?];
   v15 = 0;
   v16 = &v15;
@@ -622,13 +622,13 @@
   v18 = sub_10007DE7C;
   v19 = sub_10007DE8C;
   v20 = [(WeekGroupView *)self _castedDayOccurrenceViewFromGenericView:v8];
-  if (v4 && [v16[5] isSelectedCopyView])
+  if (viewCopy && [v16[5] isSelectedCopyView])
   {
-    v9 = [v16[5] superview];
+    superview = [v16[5] superview];
     v10 = v16[5];
     v16[5] = 0;
 
-    v11 = [v9 subviews];
+    subviews = [superview subviews];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10007DE94;
@@ -637,7 +637,7 @@
     *&v14[7] = y;
     v14[4] = self;
     v14[5] = &v15;
-    [v11 enumerateObjectsWithOptions:2 usingBlock:v14];
+    [subviews enumerateObjectsWithOptions:2 usingBlock:v14];
 
     v12 = v16[5];
   }
@@ -652,22 +652,22 @@
   return v12;
 }
 
-- (id)_castedDayOccurrenceViewFromGenericView:(id)a3
+- (id)_castedDayOccurrenceViewFromGenericView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    occurrenceView = viewCopy;
 LABEL_5:
-    v5 = v4;
+    v5 = occurrenceView;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 occurrenceView];
+    occurrenceView = [viewCopy occurrenceView];
     goto LABEL_5;
   }
 
@@ -689,20 +689,20 @@ LABEL_7:
   }
 }
 
-- (void)emptySpaceClickedOnDate:(id)a3
+- (void)emptySpaceClickedOnDate:(id)date
 {
-  v7 = a3;
+  dateCopy = date;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 emptySpaceClickedOnDate:v7];
+    [v6 emptySpaceClickedOnDate:dateCopy];
   }
 }
 
-- (void)weekViewDidLayout:(id)a3
+- (void)weekViewDidLayout:(id)layout
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -714,7 +714,7 @@ LABEL_7:
   }
 }
 
-- (void)weekViewOccurrenceLayoutDidChange:(id)a3
+- (void)weekViewOccurrenceLayoutDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -726,7 +726,7 @@ LABEL_7:
   }
 }
 
-- (void)weekViewFirstVisibleSecondChanged:(int64_t)a3
+- (void)weekViewFirstVisibleSecondChanged:(int64_t)changed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
@@ -734,7 +734,7 @@ LABEL_7:
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 weekGroupViewFirstVisibleSecondChanged:a3];
+    [v7 weekGroupViewFirstVisibleSecondChanged:changed];
   }
 }
 

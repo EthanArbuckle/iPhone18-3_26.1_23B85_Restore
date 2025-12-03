@@ -1,19 +1,19 @@
 @interface PSWriter
-- (PSWriter)initWithName:(id)a3 withOutput:(id)a4;
+- (PSWriter)initWithName:(id)name withOutput:(id)output;
 - (id)description;
-- (id)initCameraStreamWriterWithName:(id)a3 withOutput:(id)a4;
+- (id)initCameraStreamWriterWithName:(id)name withOutput:(id)output;
 - (void)dealloc;
-- (void)setImageBufferPool:(id)a3;
-- (void)setMetadataBufferPool:(id)a3;
-- (void)setPearlBufferPools:(id)a3;
+- (void)setImageBufferPool:(id)pool;
+- (void)setMetadataBufferPool:(id)pool;
+- (void)setPearlBufferPools:(id)pools;
 @end
 
 @implementation PSWriter
 
-- (PSWriter)initWithName:(id)a3 withOutput:(id)a4
+- (PSWriter)initWithName:(id)name withOutput:(id)output
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  outputCopy = output;
   v18.receiver = self;
   v18.super_class = PSWriter;
   v9 = [(PSWriter *)&v18 init];
@@ -23,8 +23,8 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v9->_name, a3);
-  objc_storeStrong(&v10->_output, a4);
+  objc_storeStrong(&v9->_name, name);
+  objc_storeStrong(&v10->_output, output);
   v11 = malloc_type_calloc(1uLL, 0x78uLL, 0x10A0040C8A65D96uLL);
   v10->_context = v11;
   if (v11)
@@ -39,17 +39,17 @@ LABEL_4:
   return [(PSWriter *)v13 initCameraStreamWriterWithName:v14 withOutput:v15, v16];
 }
 
-- (id)initCameraStreamWriterWithName:(id)a3 withOutput:(id)a4
+- (id)initCameraStreamWriterWithName:(id)name withOutput:(id)output
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PSWriter *)self initWithName:v7 withOutput:v6];
-  v9 = [[PSSourceTask alloc] initWithName:v7];
+  outputCopy = output;
+  nameCopy = name;
+  v8 = [(PSWriter *)self initWithName:nameCopy withOutput:outputCopy];
+  v9 = [[PSSourceTask alloc] initWithName:nameCopy];
 
   sourceTask = v8->_sourceTask;
   v8->_sourceTask = v9;
 
-  [(PSSourceTask *)v8->_sourceTask addOutput:v6];
+  [(PSSourceTask *)v8->_sourceTask addOutput:outputCopy];
   return v8;
 }
 
@@ -61,36 +61,36 @@ LABEL_4:
   return v3;
 }
 
-- (void)setImageBufferPool:(id)a3
+- (void)setImageBufferPool:(id)pool
 {
-  v6 = a3;
-  objc_storeStrong(&self->_imageBufferPool, a3);
+  poolCopy = pool;
+  objc_storeStrong(&self->_imageBufferPool, pool);
   sourceTask = self->_sourceTask;
   if (sourceTask)
   {
-    [(PSSourceTask *)sourceTask setBufferPool:v6];
+    [(PSSourceTask *)sourceTask setBufferPool:poolCopy];
   }
 }
 
-- (void)setPearlBufferPools:(id)a3
+- (void)setPearlBufferPools:(id)pools
 {
-  v6 = a3;
-  objc_storeStrong(&self->_pearlBufferPoolList, a3);
+  poolsCopy = pools;
+  objc_storeStrong(&self->_pearlBufferPoolList, pools);
   sourceTask = self->_sourceTask;
   if (sourceTask)
   {
-    [(PSSourceTask *)sourceTask setPearlBufferPools:v6];
+    [(PSSourceTask *)sourceTask setPearlBufferPools:poolsCopy];
   }
 }
 
-- (void)setMetadataBufferPool:(id)a3
+- (void)setMetadataBufferPool:(id)pool
 {
-  v6 = a3;
-  objc_storeStrong(&self->_metadataBufferPool, a3);
+  poolCopy = pool;
+  objc_storeStrong(&self->_metadataBufferPool, pool);
   sourceTask = self->_sourceTask;
   if (sourceTask)
   {
-    [(PSSourceTask *)sourceTask setMetadataBufferPool:v6];
+    [(PSSourceTask *)sourceTask setMetadataBufferPool:poolCopy];
   }
 }
 

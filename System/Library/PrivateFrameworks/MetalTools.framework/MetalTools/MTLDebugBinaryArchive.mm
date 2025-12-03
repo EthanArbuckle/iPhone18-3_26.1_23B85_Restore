@@ -1,17 +1,17 @@
 @interface MTLDebugBinaryArchive
-- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)serializeToURL:(id)a3 error:(id *)a4;
-- (BOOL)serializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)serializeToURL:(id)l error:(id *)error;
+- (BOOL)serializeToURL:(id)l options:(unint64_t)options error:(id *)error;
 @end
 
 @implementation MTLDebugBinaryArchive
 
-- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
-  if (!a3)
+  if (!descriptor)
   {
     [MTLDebugBinaryArchive addComputePipelineFunctionsWithDescriptor:options:error:];
   }
@@ -22,21 +22,21 @@
     [MTLDebugBinaryArchive addComputePipelineFunctionsWithDescriptor:options:error:];
   }
 
-  if (![a3 computeFunction])
+  if (![descriptor computeFunction])
   {
     [MTLDebugBinaryArchive addComputePipelineFunctionsWithDescriptor:options:error:];
   }
 
-  v9 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLComputePipelineDescriptor:a3];
-  v10 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] debugPipelineOptions:a4 includePipelinePerfStats:0];
-  v11 = [(MTLToolsObject *)self baseObject];
+  v9 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLComputePipelineDescriptor:descriptor];
+  v10 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] debugPipelineOptions:options includePipelinePerfStats:0];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v11 addComputePipelineFunctionsWithDescriptor:v9 options:v10 error:a5];
+  return [baseObject addComputePipelineFunctionsWithDescriptor:v9 options:v10 error:error];
 }
 
-- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
-  if (!a3)
+  if (!descriptor)
   {
     [MTLDebugBinaryArchive addRenderPipelineFunctionsWithDescriptor:options:error:];
   }
@@ -47,16 +47,16 @@
     [MTLDebugBinaryArchive addRenderPipelineFunctionsWithDescriptor:options:error:];
   }
 
-  v9 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLRenderPipelineDescriptor:a3];
-  v10 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] debugPipelineOptions:a4 includePipelinePerfStats:0];
-  v11 = [(MTLToolsObject *)self baseObject];
+  v9 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLRenderPipelineDescriptor:descriptor];
+  v10 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] debugPipelineOptions:options includePipelinePerfStats:0];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v11 addRenderPipelineFunctionsWithDescriptor:v9 options:v10 error:a5];
+  return [baseObject addRenderPipelineFunctionsWithDescriptor:v9 options:v10 error:error];
 }
 
-- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
-  if (!a3)
+  if (!descriptor)
   {
     [MTLDebugBinaryArchive addMeshRenderPipelineFunctionsWithDescriptor:options:error:];
   }
@@ -67,18 +67,18 @@
     [MTLDebugBinaryArchive addMeshRenderPipelineFunctionsWithDescriptor:options:error:];
   }
 
-  v9 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLMeshRenderPipelineDescriptor:a3];
-  v10 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] debugPipelineOptions:a4 includePipelinePerfStats:0];
-  v11 = [(MTLToolsObject *)self baseObject];
+  v9 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLMeshRenderPipelineDescriptor:descriptor];
+  v10 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] debugPipelineOptions:options includePipelinePerfStats:0];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v11 addMeshRenderPipelineFunctionsWithDescriptor:v9 options:v10 error:a5];
+  return [baseObject addMeshRenderPipelineFunctionsWithDescriptor:v9 options:v10 error:error];
 }
 
-- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
   if (([(MTLDevice *)[(MTLToolsBinaryArchive *)self device] supportsTileShaders]& 1) != 0)
   {
-    if (a3)
+    if (descriptor)
     {
       goto LABEL_3;
     }
@@ -87,7 +87,7 @@
   else
   {
     [MTLDebugBinaryArchive addTileRenderPipelineFunctionsWithDescriptor:options:error:];
-    if (a3)
+    if (descriptor)
     {
       goto LABEL_3;
     }
@@ -101,45 +101,45 @@ LABEL_3:
     [MTLDebugBinaryArchive addTileRenderPipelineFunctionsWithDescriptor:options:error:];
   }
 
-  v9 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLTileRenderPipelineDescriptor:a3];
-  v10 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] debugPipelineOptions:a4 includePipelinePerfStats:0];
-  v11 = [(MTLToolsObject *)self baseObject];
+  v9 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLTileRenderPipelineDescriptor:descriptor];
+  v10 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] debugPipelineOptions:options includePipelinePerfStats:0];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v11 addTileRenderPipelineFunctionsWithDescriptor:v9 options:v10 error:a5];
+  return [baseObject addTileRenderPipelineFunctionsWithDescriptor:v9 options:v10 error:error];
 }
 
-- (BOOL)serializeToURL:(id)a3 error:(id *)a4
+- (BOOL)serializeToURL:(id)l error:(id *)error
 {
-  if (!a3)
+  if (!l)
   {
     [MTLDebugBinaryArchive serializeToURL:error:];
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([l isFileURL] & 1) == 0)
   {
     [MTLDebugBinaryArchive serializeToURL:error:];
   }
 
   v8.receiver = self;
   v8.super_class = MTLDebugBinaryArchive;
-  return [(MTLToolsBinaryArchive *)&v8 serializeToURL:a3 error:a4];
+  return [(MTLToolsBinaryArchive *)&v8 serializeToURL:l error:error];
 }
 
-- (BOOL)serializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)serializeToURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  if (!a3)
+  if (!l)
   {
     [MTLDebugBinaryArchive serializeToURL:options:error:];
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([l isFileURL] & 1) == 0)
   {
     [MTLDebugBinaryArchive serializeToURL:options:error:];
   }
 
   v10.receiver = self;
   v10.super_class = MTLDebugBinaryArchive;
-  return [(MTLToolsBinaryArchive *)&v10 serializeToURL:a3 options:a4 error:a5];
+  return [(MTLToolsBinaryArchive *)&v10 serializeToURL:l options:options error:error];
 }
 
 @end

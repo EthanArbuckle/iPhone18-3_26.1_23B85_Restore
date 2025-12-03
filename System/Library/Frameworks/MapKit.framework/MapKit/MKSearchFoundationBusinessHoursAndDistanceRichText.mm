@@ -1,23 +1,23 @@
 @interface MKSearchFoundationBusinessHoursAndDistanceRichText
 - (BOOL)isRichTextResolved;
-- (void)resolveBusinessHoursByMapItem:(id)a3 lines:(id)a4;
+- (void)resolveBusinessHoursByMapItem:(id)item lines:(id)lines;
 - (void)resolveDistanceNotFound;
-- (void)resolveDistanceString:(id)a3 lines:(id)a4;
-- (void)updateFormattedTextForLines:(id)a3;
+- (void)resolveDistanceString:(id)string lines:(id)lines;
+- (void)updateFormattedTextForLines:(id)lines;
 @end
 
 @implementation MKSearchFoundationBusinessHoursAndDistanceRichText
 
 - (BOOL)isRichTextResolved
 {
-  v3 = [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self isBusinessHoursResolved];
-  if (v3)
+  isBusinessHoursResolved = [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self isBusinessHoursResolved];
+  if (isBusinessHoursResolved)
   {
 
-    LOBYTE(v3) = [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self isDistanceResolved];
+    LOBYTE(isBusinessHoursResolved) = [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self isDistanceResolved];
   }
 
-  return v3;
+  return isBusinessHoursResolved;
 }
 
 - (void)resolveDistanceNotFound
@@ -30,34 +30,34 @@
   }
 }
 
-- (void)resolveDistanceString:(id)a3 lines:(id)a4
+- (void)resolveDistanceString:(id)string lines:(id)lines
 {
-  v7 = a4;
-  v6 = a3;
-  if ([v7 count])
+  linesCopy = lines;
+  stringCopy = string;
+  if ([linesCopy count])
   {
-    [v7 insertObject:v6 atIndex:0];
+    [linesCopy insertObject:stringCopy atIndex:0];
   }
 
   else
   {
-    [v7 addObject:v6];
+    [linesCopy addObject:stringCopy];
   }
 
   [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self setDistanceResolved:1];
-  [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self updateFormattedTextForLines:v7];
+  [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self updateFormattedTextForLines:linesCopy];
 }
 
-- (void)updateFormattedTextForLines:(id)a3
+- (void)updateFormattedTextForLines:(id)lines
 {
-  v23 = [MKSearchFoundationResult styledStringFromStringArray:a3];
-  v4 = [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self hoursString];
-  v5 = [v4 length];
+  v23 = [MKSearchFoundationResult styledStringFromStringArray:lines];
+  hoursString = [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self hoursString];
+  v5 = [hoursString length];
 
   if (v5)
   {
-    v6 = [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self hoursString];
-    v7 = [v23 rangeOfString:v6];
+    hoursString2 = [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self hoursString];
+    v7 = [v23 rangeOfString:hoursString2];
     v9 = v8;
 
     v10 = objc_opt_new();
@@ -69,21 +69,21 @@
     }
 
     v13 = MEMORY[0x1E69CA0F0];
-    v14 = [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self hoursString];
-    v15 = [v13 textWithString:v14];
+    hoursString3 = [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self hoursString];
+    v15 = [v13 textWithString:hoursString3];
 
-    v16 = [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self hoursColor];
+    hoursColor = [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self hoursColor];
     v17 = [MEMORY[0x1E69DC888] colorWithRed:0.949019611 green:0.286274523 blue:0.200000003 alpha:1.0];
-    if ([v16 isEqual:v17])
+    if ([hoursColor isEqual:v17])
     {
       [v15 setTextColor:1];
     }
 
     else
     {
-      v18 = [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self hoursColor];
+      hoursColor2 = [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self hoursColor];
       v19 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:0.568627477 blue:0.0 alpha:1.0];
-      if ([v18 isEqual:v19])
+      if ([hoursColor2 isEqual:v19])
       {
         v20 = 3;
       }
@@ -113,20 +113,20 @@
   }
 }
 
-- (void)resolveBusinessHoursByMapItem:(id)a3 lines:(id)a4
+- (void)resolveBusinessHoursByMapItem:(id)item lines:(id)lines
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  linesCopy = lines;
   v8 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __90__MKSearchFoundationBusinessHoursAndDistanceRichText_resolveBusinessHoursByMapItem_lines___block_invoke;
   block[3] = &unk_1E76CCC28;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = itemCopy;
+  selfCopy = self;
+  v14 = linesCopy;
+  v9 = linesCopy;
+  v10 = itemCopy;
   dispatch_async(v8, block);
 }
 

@@ -1,16 +1,16 @@
 @interface PSGInputSuggestionsRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRequest:(id)a3;
-- (PSGInputSuggestionsRequest)initWithCoder:(id)a3;
-- (PSGInputSuggestionsRequest)initWithResponseContext:(id)a3 conversationTurns:(id)a4 adaptationContextID:(id)a5 shouldDisableAutoCaps:(BOOL)a6 isResponseContextBlacklisted:(BOOL)a7 contextBeforeInput:(id)a8 markedText:(id)a9 selectedText:(id)a10 contextAfterInput:(id)a11 selectedRangeInMarkedText:(_NSRange)a12 localeIdentifier:(id)a13 bundleIdentifier:(id)a14 recipients:(id)a15 recipientNames:(id)a16 textContentType:(id)a17 availableApps:(id)a18 textualResponseLimit:(unint64_t)a19 structuredInfoLimit:(unint64_t)a20 totalSuggestionsLimit:(unint64_t)a21;
-- (PSGInputSuggestionsRequest)initWithResponseContext:(id)a3 conversationTurns:(id)a4 adaptationContextID:(id)a5 shouldDisableAutoCaps:(BOOL)a6 isResponseContextBlacklisted:(BOOL)a7 contextBeforeInput:(id)a8 markedText:(id)a9 selectedText:(id)a10 contextAfterInput:(id)a11 selectedRangeInMarkedText:(_NSRange)a12 localeIdentifier:(id)a13 bundleIdentifier:(id)a14 recipients:(id)a15 textContentType:(id)a16 availableApps:(id)a17 textualResponseLimit:(unint64_t)a18 structuredInfoLimit:(unint64_t)a19;
-- (PSGInputSuggestionsRequest)initWithResponseContext:(id)a3 conversationTurns:(id)a4 responseKitConversationTurns:(id)a5 adaptationContextID:(id)a6 shouldDisableAutoCaps:(BOOL)a7 isResponseContextBlacklisted:(BOOL)a8 contextBeforeInput:(id)a9 markedText:(id)a10 selectedText:(id)a11 contextAfterInput:(id)a12 selectedRangeInMarkedText:(_NSRange)a13 localeIdentifier:(id)a14 bundleIdentifier:(id)a15 recipients:(id)a16 recipientNames:(id)a17 textContentType:(id)a18 availableApps:(id)a19 textualResponseLimit:(unint64_t)a20 structuredInfoLimit:(unint64_t)a21 totalSuggestionsLimit:(unint64_t)a22;
-- (PSGInputSuggestionsRequest)initWithResponseContext:(id)a3 conversationTurns:(id)a4 responseKitConversationTurns:(id)a5 adaptationContextID:(id)a6 shouldDisableAutoCaps:(BOOL)a7 isResponseContextBlacklisted:(BOOL)a8 contextBeforeInput:(id)a9 markedText:(id)a10 selectedText:(id)a11 contextAfterInput:(id)a12 selectedRangeInMarkedText:(_NSRange)a13 localeIdentifier:(id)a14 bundleIdentifier:(id)a15 recipients:(id)a16 recipientNames:(id)a17 textContentType:(id)a18 availableApps:(id)a19 textualResponseLimit:(unint64_t)a20 structuredInfoLimit:(unint64_t)a21 totalSuggestionsLimit:(unint64_t)a22 initiatingProcess:(id)a23;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRequest:(id)request;
+- (PSGInputSuggestionsRequest)initWithCoder:(id)coder;
+- (PSGInputSuggestionsRequest)initWithResponseContext:(id)context conversationTurns:(id)turns adaptationContextID:(id)d shouldDisableAutoCaps:(BOOL)caps isResponseContextBlacklisted:(BOOL)blacklisted contextBeforeInput:(id)input markedText:(id)text selectedText:(id)self0 contextAfterInput:(id)self1 selectedRangeInMarkedText:(_NSRange)self2 localeIdentifier:(id)self3 bundleIdentifier:(id)self4 recipients:(id)self5 recipientNames:(id)self6 textContentType:(id)self7 availableApps:(id)self8 textualResponseLimit:(unint64_t)self9 structuredInfoLimit:(unint64_t)infoLimit totalSuggestionsLimit:(unint64_t)suggestionsLimit;
+- (PSGInputSuggestionsRequest)initWithResponseContext:(id)context conversationTurns:(id)turns adaptationContextID:(id)d shouldDisableAutoCaps:(BOOL)caps isResponseContextBlacklisted:(BOOL)blacklisted contextBeforeInput:(id)input markedText:(id)text selectedText:(id)self0 contextAfterInput:(id)self1 selectedRangeInMarkedText:(_NSRange)self2 localeIdentifier:(id)self3 bundleIdentifier:(id)self4 recipients:(id)self5 textContentType:(id)self6 availableApps:(id)self7 textualResponseLimit:(unint64_t)self8 structuredInfoLimit:(unint64_t)self9;
+- (PSGInputSuggestionsRequest)initWithResponseContext:(id)context conversationTurns:(id)turns responseKitConversationTurns:(id)conversationTurns adaptationContextID:(id)d shouldDisableAutoCaps:(BOOL)caps isResponseContextBlacklisted:(BOOL)blacklisted contextBeforeInput:(id)input markedText:(id)self0 selectedText:(id)self1 contextAfterInput:(id)self2 selectedRangeInMarkedText:(_NSRange)self3 localeIdentifier:(id)self4 bundleIdentifier:(id)self5 recipients:(id)self6 recipientNames:(id)self7 textContentType:(id)self8 availableApps:(id)self9 textualResponseLimit:(unint64_t)limit structuredInfoLimit:(unint64_t)infoLimit totalSuggestionsLimit:(unint64_t)suggestionsLimit;
+- (PSGInputSuggestionsRequest)initWithResponseContext:(id)context conversationTurns:(id)turns responseKitConversationTurns:(id)conversationTurns adaptationContextID:(id)d shouldDisableAutoCaps:(BOOL)caps isResponseContextBlacklisted:(BOOL)blacklisted contextBeforeInput:(id)input markedText:(id)self0 selectedText:(id)self1 contextAfterInput:(id)self2 selectedRangeInMarkedText:(_NSRange)self3 localeIdentifier:(id)self4 bundleIdentifier:(id)self5 recipients:(id)self6 recipientNames:(id)self7 textContentType:(id)self8 availableApps:(id)self9 textualResponseLimit:(unint64_t)limit structuredInfoLimit:(unint64_t)infoLimit totalSuggestionsLimit:(unint64_t)suggestionsLimit initiatingProcess:(id)process;
 - (_NSRange)selectedRangeInMarkedText;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSGInputSuggestionsRequest
@@ -193,34 +193,34 @@
   return [(NSString *)self->_initiatingProcess hash]- v24 + 32 * v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGInputSuggestionsRequest *)self isEqualToRequest:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGInputSuggestionsRequest *)self isEqualToRequest:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToRequest:(id)a3
+- (BOOL)isEqualToRequest:(id)request
 {
-  v4 = a3;
-  if (!v4)
+  requestCopy = request;
+  if (!requestCopy)
   {
     goto LABEL_65;
   }
 
   v5 = self->_responseContext;
   v6 = v5;
-  if (v5 == *(v4 + 2))
+  if (v5 == *(requestCopy + 2))
   {
   }
 
@@ -236,7 +236,7 @@
 
   v8 = self->_conversationTurns;
   v9 = v8;
-  if (v8 == *(v4 + 3))
+  if (v8 == *(requestCopy + 3))
   {
   }
 
@@ -251,14 +251,14 @@
   }
 
   v11 = [(NSArray *)self->_responseKitConversationTurns count];
-  if (v11 != [*(v4 + 18) count])
+  if (v11 != [*(requestCopy + 18) count])
   {
     goto LABEL_65;
   }
 
   v12 = self->_adaptationContextID;
   v13 = v12;
-  if (v12 == *(v4 + 4))
+  if (v12 == *(requestCopy + 4))
   {
   }
 
@@ -272,14 +272,14 @@
     }
   }
 
-  if (self->_shouldDisableAutoCaps != v4[8] || self->_isResponseContextBlacklisted != v4[9])
+  if (self->_shouldDisableAutoCaps != requestCopy[8] || self->_isResponseContextBlacklisted != requestCopy[9])
   {
     goto LABEL_65;
   }
 
   v15 = self->_contextBeforeInput;
   v16 = v15;
-  if (v15 == *(v4 + 5))
+  if (v15 == *(requestCopy + 5))
   {
   }
 
@@ -295,7 +295,7 @@
 
   v18 = self->_markedText;
   v19 = v18;
-  if (v18 == *(v4 + 6))
+  if (v18 == *(requestCopy + 6))
   {
   }
 
@@ -311,7 +311,7 @@
 
   v21 = self->_selectedText;
   v22 = v21;
-  if (v21 == *(v4 + 7))
+  if (v21 == *(requestCopy + 7))
   {
   }
 
@@ -327,7 +327,7 @@
 
   v24 = self->_contextAfterInput;
   v25 = v24;
-  if (v24 == *(v4 + 8))
+  if (v24 == *(requestCopy + 8))
   {
   }
 
@@ -342,13 +342,13 @@
   }
 
   v27 = 0;
-  if (self->_selectedRangeInMarkedText.location == *(v4 + 20) && self->_selectedRangeInMarkedText.length == *(v4 + 21))
+  if (self->_selectedRangeInMarkedText.location == *(requestCopy + 20) && self->_selectedRangeInMarkedText.length == *(requestCopy + 21))
   {
-    if (self->_isDocumentEmpty == v4[10])
+    if (self->_isDocumentEmpty == requestCopy[10])
     {
       v28 = self->_localeIdentifier;
       v29 = v28;
-      if (v28 == *(v4 + 9))
+      if (v28 == *(requestCopy + 9))
       {
       }
 
@@ -364,7 +364,7 @@
 
       v31 = self->_bundleIdentifier;
       v32 = v31;
-      if (v31 == *(v4 + 10))
+      if (v31 == *(requestCopy + 10))
       {
       }
 
@@ -380,7 +380,7 @@
 
       v34 = self->_recipients;
       v35 = v34;
-      if (v34 == *(v4 + 11))
+      if (v34 == *(requestCopy + 11))
       {
       }
 
@@ -396,7 +396,7 @@
 
       v37 = self->_recipientNames;
       v38 = v37;
-      if (v37 == *(v4 + 12))
+      if (v37 == *(requestCopy + 12))
       {
       }
 
@@ -412,7 +412,7 @@
 
       v40 = self->_textContentType;
       v41 = v40;
-      if (v40 == *(v4 + 13))
+      if (v40 == *(requestCopy + 13))
       {
       }
 
@@ -428,7 +428,7 @@
 
       v43 = self->_availableApps;
       v44 = v43;
-      if (v43 == *(v4 + 14))
+      if (v43 == *(requestCopy + 14))
       {
       }
 
@@ -442,14 +442,14 @@
         }
       }
 
-      if (self->_textualResponseLimit != *(v4 + 15) || self->_structuredInfoLimit != *(v4 + 16) || self->_totalSuggestionsLimit != *(v4 + 17))
+      if (self->_textualResponseLimit != *(requestCopy + 15) || self->_structuredInfoLimit != *(requestCopy + 16) || self->_totalSuggestionsLimit != *(requestCopy + 17))
       {
         goto LABEL_65;
       }
 
       v46 = self->_initiatingProcess;
       v47 = v46;
-      if (v46 == *(v4 + 19))
+      if (v46 == *(requestCopy + 19))
       {
         v27 = 1;
       }
@@ -471,69 +471,69 @@ LABEL_66:
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v5 = objc_opt_new();
   if (v5)
   {
-    v6 = [(NSString *)self->_responseContext copyWithZone:a3];
+    v6 = [(NSString *)self->_responseContext copyWithZone:zone];
     v7 = *(v5 + 16);
     *(v5 + 16) = v6;
 
-    v8 = [(NSArray *)self->_conversationTurns copyWithZone:a3];
+    v8 = [(NSArray *)self->_conversationTurns copyWithZone:zone];
     v9 = *(v5 + 24);
     *(v5 + 24) = v8;
 
-    v10 = [(NSArray *)self->_responseKitConversationTurns copyWithZone:a3];
+    v10 = [(NSArray *)self->_responseKitConversationTurns copyWithZone:zone];
     v11 = *(v5 + 144);
     *(v5 + 144) = v10;
 
-    v12 = [(NSString *)self->_adaptationContextID copyWithZone:a3];
+    v12 = [(NSString *)self->_adaptationContextID copyWithZone:zone];
     v13 = *(v5 + 32);
     *(v5 + 32) = v12;
 
     *(v5 + 8) = self->_shouldDisableAutoCaps;
     *(v5 + 9) = self->_isResponseContextBlacklisted;
-    v14 = [(NSString *)self->_contextBeforeInput copyWithZone:a3];
+    v14 = [(NSString *)self->_contextBeforeInput copyWithZone:zone];
     v15 = *(v5 + 40);
     *(v5 + 40) = v14;
 
-    v16 = [(NSString *)self->_markedText copyWithZone:a3];
+    v16 = [(NSString *)self->_markedText copyWithZone:zone];
     v17 = *(v5 + 48);
     *(v5 + 48) = v16;
 
-    v18 = [(NSString *)self->_selectedText copyWithZone:a3];
+    v18 = [(NSString *)self->_selectedText copyWithZone:zone];
     v19 = *(v5 + 56);
     *(v5 + 56) = v18;
 
-    v20 = [(NSString *)self->_contextAfterInput copyWithZone:a3];
+    v20 = [(NSString *)self->_contextAfterInput copyWithZone:zone];
     v21 = *(v5 + 64);
     *(v5 + 64) = v20;
 
     *(v5 + 160) = self->_selectedRangeInMarkedText;
     *(v5 + 10) = self->_isDocumentEmpty;
-    v22 = [(NSString *)self->_localeIdentifier copyWithZone:a3];
+    v22 = [(NSString *)self->_localeIdentifier copyWithZone:zone];
     v23 = *(v5 + 72);
     *(v5 + 72) = v22;
 
-    v24 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+    v24 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
     v25 = *(v5 + 80);
     *(v5 + 80) = v24;
 
-    v26 = [(NSArray *)self->_recipients copyWithZone:a3];
+    v26 = [(NSArray *)self->_recipients copyWithZone:zone];
     v27 = *(v5 + 88);
     *(v5 + 88) = v26;
 
-    v28 = [(NSSet *)self->_recipientNames copyWithZone:a3];
+    v28 = [(NSSet *)self->_recipientNames copyWithZone:zone];
     v29 = *(v5 + 96);
     *(v5 + 96) = v28;
 
-    v30 = [(NSString *)self->_textContentType copyWithZone:a3];
+    v30 = [(NSString *)self->_textContentType copyWithZone:zone];
     v31 = *(v5 + 104);
     *(v5 + 104) = v30;
 
-    v32 = [(NSSet *)self->_availableApps copyWithZone:a3];
+    v32 = [(NSSet *)self->_availableApps copyWithZone:zone];
     v33 = *(v5 + 112);
     *(v5 + 112) = v32;
 
@@ -546,43 +546,43 @@ LABEL_66:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   responseContext = self->_responseContext;
-  v5 = a3;
-  [v5 encodeObject:responseContext forKey:@"ctx"];
-  [v5 encodeObject:self->_conversationTurns forKey:@"cvt"];
-  [v5 encodeObject:self->_adaptationContextID forKey:@"aci"];
-  [v5 encodeBool:self->_shouldDisableAutoCaps forKey:@"dac"];
-  [v5 encodeBool:self->_isResponseContextBlacklisted forKey:@"rcb"];
-  [v5 encodeObject:self->_contextBeforeInput forKey:@"cbi"];
-  [v5 encodeObject:self->_markedText forKey:@"mkt"];
-  [v5 encodeObject:self->_selectedText forKey:@"stt"];
-  [v5 encodeObject:self->_contextAfterInput forKey:@"cai"];
-  [v5 encodeInt64:self->_selectedRangeInMarkedText.location forKey:@"loc"];
-  [v5 encodeInt64:self->_selectedRangeInMarkedText.length forKey:@"len"];
-  [v5 encodeObject:self->_localeIdentifier forKey:@"lid"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bid"];
-  [v5 encodeObject:self->_recipients forKey:@"rts"];
-  [v5 encodeObject:self->_recipientNames forKey:@"rns"];
-  [v5 encodeObject:self->_textContentType forKey:@"tct"];
-  [v5 encodeObject:self->_availableApps forKey:@"app"];
-  [v5 encodeInt64:self->_textualResponseLimit forKey:@"txtl"];
-  [v5 encodeInt64:self->_structuredInfoLimit forKey:@"strl"];
-  [v5 encodeInt64:self->_totalSuggestionsLimit forKey:@"tsgl"];
-  [v5 encodeObject:self->_initiatingProcess forKey:@"ipr"];
+  coderCopy = coder;
+  [coderCopy encodeObject:responseContext forKey:@"ctx"];
+  [coderCopy encodeObject:self->_conversationTurns forKey:@"cvt"];
+  [coderCopy encodeObject:self->_adaptationContextID forKey:@"aci"];
+  [coderCopy encodeBool:self->_shouldDisableAutoCaps forKey:@"dac"];
+  [coderCopy encodeBool:self->_isResponseContextBlacklisted forKey:@"rcb"];
+  [coderCopy encodeObject:self->_contextBeforeInput forKey:@"cbi"];
+  [coderCopy encodeObject:self->_markedText forKey:@"mkt"];
+  [coderCopy encodeObject:self->_selectedText forKey:@"stt"];
+  [coderCopy encodeObject:self->_contextAfterInput forKey:@"cai"];
+  [coderCopy encodeInt64:self->_selectedRangeInMarkedText.location forKey:@"loc"];
+  [coderCopy encodeInt64:self->_selectedRangeInMarkedText.length forKey:@"len"];
+  [coderCopy encodeObject:self->_localeIdentifier forKey:@"lid"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bid"];
+  [coderCopy encodeObject:self->_recipients forKey:@"rts"];
+  [coderCopy encodeObject:self->_recipientNames forKey:@"rns"];
+  [coderCopy encodeObject:self->_textContentType forKey:@"tct"];
+  [coderCopy encodeObject:self->_availableApps forKey:@"app"];
+  [coderCopy encodeInt64:self->_textualResponseLimit forKey:@"txtl"];
+  [coderCopy encodeInt64:self->_structuredInfoLimit forKey:@"strl"];
+  [coderCopy encodeInt64:self->_totalSuggestionsLimit forKey:@"tsgl"];
+  [coderCopy encodeObject:self->_initiatingProcess forKey:@"ipr"];
 }
 
-- (PSGInputSuggestionsRequest)initWithCoder:(id)a3
+- (PSGInputSuggestionsRequest)initWithCoder:(id)coder
 {
   v95 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  coderCopy = coder;
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = MEMORY[0x277D42620];
   v7 = psg_default_log_handle();
   v86 = v4;
-  v87 = [v6 robustDecodeObjectOfClass:v4 forKey:@"ctx" withCoder:v3 expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v7];
+  v87 = [v6 robustDecodeObjectOfClass:v4 forKey:@"ctx" withCoder:coderCopy expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v7];
 
   v8 = MEMORY[0x277D42620];
   v9 = objc_autoreleasePoolPush();
@@ -590,7 +590,7 @@ LABEL_66:
   v10 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{objc_opt_class(), v5, 0}];
   objc_autoreleasePoolPop(v9);
   v11 = psg_default_log_handle();
-  v12 = [v8 robustDecodeObjectOfClasses:v10 forKey:@"cvt" withCoder:v3 expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v11];
+  v12 = [v8 robustDecodeObjectOfClasses:v10 forKey:@"cvt" withCoder:coderCopy expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v11];
 
   v13 = objc_opt_new();
   v90 = 0u;
@@ -614,10 +614,10 @@ LABEL_66:
 
         v18 = *(*(&v90 + 1) + 8 * i);
         v19 = objc_alloc(MEMORY[0x277D46BC0]);
-        v20 = [v18 text];
-        v21 = [v18 senderID];
-        v22 = [v18 timestamp];
-        v23 = [v19 initWithString:v20 senderID:v21 timestamp:v22];
+        text = [v18 text];
+        senderID = [v18 senderID];
+        timestamp = [v18 timestamp];
+        v23 = [v19 initWithString:text senderID:senderID timestamp:timestamp];
 
         if (!v23)
         {
@@ -625,7 +625,7 @@ LABEL_66:
           v62 = obj;
           v63 = obj;
           v59 = v87;
-          v61 = self;
+          selfCopy3 = self;
           goto LABEL_17;
         }
 
@@ -644,94 +644,94 @@ LABEL_66:
 
   v24 = MEMORY[0x277D42620];
   v25 = psg_default_log_handle();
-  v77 = [v24 robustDecodeObjectOfClass:v86 forKey:@"aci" withCoder:v3 expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v25];
+  v77 = [v24 robustDecodeObjectOfClass:v86 forKey:@"aci" withCoder:coderCopy expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v25];
 
-  v74 = [v3 decodeBoolForKey:@"dac"];
-  v73 = [v3 decodeBoolForKey:@"rcb"];
+  v74 = [coderCopy decodeBoolForKey:@"dac"];
+  v73 = [coderCopy decodeBoolForKey:@"rcb"];
   v26 = MEMORY[0x277D42620];
   v27 = psg_default_log_handle();
-  v76 = [v26 robustDecodeObjectOfClass:v86 forKey:@"cbi" withCoder:v3 expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v27];
+  v76 = [v26 robustDecodeObjectOfClass:v86 forKey:@"cbi" withCoder:coderCopy expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v27];
 
   v28 = MEMORY[0x277D42620];
   v29 = psg_default_log_handle();
-  v75 = [v28 robustDecodeObjectOfClass:v86 forKey:@"mkt" withCoder:v3 expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v29];
+  v75 = [v28 robustDecodeObjectOfClass:v86 forKey:@"mkt" withCoder:coderCopy expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v29];
 
   v30 = MEMORY[0x277D42620];
   v31 = psg_default_log_handle();
-  v83 = [v30 robustDecodeObjectOfClass:v86 forKey:@"stt" withCoder:v3 expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v31];
+  v83 = [v30 robustDecodeObjectOfClass:v86 forKey:@"stt" withCoder:coderCopy expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v31];
 
   v32 = MEMORY[0x277D42620];
   v33 = psg_default_log_handle();
-  v82 = [v32 robustDecodeObjectOfClass:v86 forKey:@"cai" withCoder:v3 expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v33];
+  v82 = [v32 robustDecodeObjectOfClass:v86 forKey:@"cai" withCoder:coderCopy expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v33];
 
-  v72 = [v3 decodeInt64ForKey:@"loc"];
-  v71 = [v3 decodeInt64ForKey:@"len"];
+  v72 = [coderCopy decodeInt64ForKey:@"loc"];
+  v71 = [coderCopy decodeInt64ForKey:@"len"];
   v34 = MEMORY[0x277D42620];
   v35 = psg_default_log_handle();
-  v81 = [v34 robustDecodeObjectOfClass:v86 forKey:@"lid" withCoder:v3 expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v35];
+  v81 = [v34 robustDecodeObjectOfClass:v86 forKey:@"lid" withCoder:coderCopy expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v35];
 
   v36 = MEMORY[0x277D42620];
   v37 = psg_default_log_handle();
-  v80 = [v36 robustDecodeObjectOfClass:v86 forKey:@"bid" withCoder:v3 expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v37];
+  v80 = [v36 robustDecodeObjectOfClass:v86 forKey:@"bid" withCoder:coderCopy expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v37];
 
   v38 = MEMORY[0x277D42620];
   v39 = objc_autoreleasePoolPush();
   v40 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{v86, v84, 0}];
   objc_autoreleasePoolPop(v39);
   v41 = psg_default_log_handle();
-  v85 = [v38 robustDecodeObjectOfClasses:v40 forKey:@"rts" withCoder:v3 expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v41];
+  v85 = [v38 robustDecodeObjectOfClasses:v40 forKey:@"rts" withCoder:coderCopy expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v41];
 
   v42 = MEMORY[0x277D42620];
   v43 = objc_autoreleasePoolPush();
   v44 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{v86, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v43);
   v45 = psg_default_log_handle();
-  v79 = [v42 robustDecodeObjectOfClasses:v44 forKey:@"rns" withCoder:v3 expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v45];
+  v79 = [v42 robustDecodeObjectOfClasses:v44 forKey:@"rns" withCoder:coderCopy expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v45];
 
   v46 = MEMORY[0x277D42620];
   v47 = psg_default_log_handle();
-  v78 = [v46 robustDecodeObjectOfClass:v86 forKey:@"tct" withCoder:v3 expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v47];
+  v78 = [v46 robustDecodeObjectOfClass:v86 forKey:@"tct" withCoder:coderCopy expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v47];
 
   v48 = MEMORY[0x277D42620];
   v49 = objc_autoreleasePoolPush();
   v50 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{v86, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v49);
   v51 = psg_default_log_handle();
-  v52 = [v48 robustDecodeObjectOfClasses:v50 forKey:@"app" withCoder:v3 expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v51];
+  v52 = [v48 robustDecodeObjectOfClasses:v50 forKey:@"app" withCoder:coderCopy expectNonNull:0 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v51];
 
-  v70 = [v3 decodeInt64ForKey:@"txtl"];
-  v53 = [v3 decodeInt64ForKey:@"strl"];
-  v54 = [v3 decodeInt64ForKey:@"tsgl"];
+  v70 = [coderCopy decodeInt64ForKey:@"txtl"];
+  v53 = [coderCopy decodeInt64ForKey:@"strl"];
+  v54 = [coderCopy decodeInt64ForKey:@"tsgl"];
   v55 = MEMORY[0x277D42620];
   v56 = psg_default_log_handle();
-  v57 = [v55 robustDecodeObjectOfClass:v86 forKey:@"ipr" withCoder:v3 expectNonNull:1 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v56];
+  v57 = [v55 robustDecodeObjectOfClass:v86 forKey:@"ipr" withCoder:coderCopy expectNonNull:1 errorDomain:@"PSGErrorDomain" errorCode:3 logHandle:v56];
 
   if (v57)
   {
-    v58 = [v3 error];
+    error = [coderCopy error];
 
     v59 = v87;
-    if (!v58)
+    if (!error)
     {
       v69 = v54;
       v68 = v53;
       v65 = v75;
       v64 = v76;
       v63 = v77;
-      v61 = [(PSGInputSuggestionsRequest *)self initWithResponseContext:v87 conversationTurns:obj responseKitConversationTurns:v13 adaptationContextID:v77 shouldDisableAutoCaps:v74 isResponseContextBlacklisted:v73 contextBeforeInput:v76 markedText:v75 selectedText:v83 contextAfterInput:v82 selectedRangeInMarkedText:v72 localeIdentifier:v71 bundleIdentifier:v81 recipients:v80 recipientNames:v85 textContentType:v79 availableApps:v78 textualResponseLimit:v52 structuredInfoLimit:v70 totalSuggestionsLimit:v68 initiatingProcess:v69, v57];
-      v60 = v61;
+      selfCopy3 = [(PSGInputSuggestionsRequest *)self initWithResponseContext:v87 conversationTurns:obj responseKitConversationTurns:v13 adaptationContextID:v77 shouldDisableAutoCaps:v74 isResponseContextBlacklisted:v73 contextBeforeInput:v76 markedText:v75 selectedText:v83 contextAfterInput:v82 selectedRangeInMarkedText:v72 localeIdentifier:v71 bundleIdentifier:v81 recipients:v80 recipientNames:v85 textContentType:v79 availableApps:v78 textualResponseLimit:v52 structuredInfoLimit:v70 totalSuggestionsLimit:v68 initiatingProcess:v69, v57];
+      v60 = selfCopy3;
       goto LABEL_16;
     }
 
     v60 = 0;
-    v61 = self;
+    selfCopy3 = self;
   }
 
   else
   {
     v60 = 0;
     v59 = v87;
-    v61 = self;
+    selfCopy3 = self;
   }
 
   v64 = v76;
@@ -746,30 +746,30 @@ LABEL_17:
   return v60;
 }
 
-- (PSGInputSuggestionsRequest)initWithResponseContext:(id)a3 conversationTurns:(id)a4 adaptationContextID:(id)a5 shouldDisableAutoCaps:(BOOL)a6 isResponseContextBlacklisted:(BOOL)a7 contextBeforeInput:(id)a8 markedText:(id)a9 selectedText:(id)a10 contextAfterInput:(id)a11 selectedRangeInMarkedText:(_NSRange)a12 localeIdentifier:(id)a13 bundleIdentifier:(id)a14 recipients:(id)a15 recipientNames:(id)a16 textContentType:(id)a17 availableApps:(id)a18 textualResponseLimit:(unint64_t)a19 structuredInfoLimit:(unint64_t)a20 totalSuggestionsLimit:(unint64_t)a21
+- (PSGInputSuggestionsRequest)initWithResponseContext:(id)context conversationTurns:(id)turns adaptationContextID:(id)d shouldDisableAutoCaps:(BOOL)caps isResponseContextBlacklisted:(BOOL)blacklisted contextBeforeInput:(id)input markedText:(id)text selectedText:(id)self0 contextAfterInput:(id)self1 selectedRangeInMarkedText:(_NSRange)self2 localeIdentifier:(id)self3 bundleIdentifier:(id)self4 recipients:(id)self5 recipientNames:(id)self6 textContentType:(id)self7 availableApps:(id)self8 textualResponseLimit:(unint64_t)self9 structuredInfoLimit:(unint64_t)infoLimit totalSuggestionsLimit:(unint64_t)suggestionsLimit
 {
-  v49 = a6;
-  v50 = a7;
+  capsCopy = caps;
+  blacklistedCopy = blacklisted;
   v61 = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  v24 = a4;
-  v54 = a5;
-  v53 = a8;
-  v52 = a9;
-  v47 = a10;
-  v46 = a11;
-  v45 = a13;
-  v44 = a14;
-  v43 = a15;
-  v42 = a16;
-  v41 = a17;
-  v40 = a18;
+  contextCopy = context;
+  turnsCopy = turns;
+  dCopy = d;
+  inputCopy = input;
+  textCopy = text;
+  selectedTextCopy = selectedText;
+  afterInputCopy = afterInput;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  recipientsCopy = recipients;
+  namesCopy = names;
+  typeCopy = type;
+  appsCopy = apps;
   v25 = objc_opt_new();
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v26 = v24;
+  v26 = turnsCopy;
   v27 = [v26 countByEnumeratingWithState:&v56 objects:v60 count:16];
   if (v27)
   {
@@ -785,15 +785,15 @@ LABEL_17:
         }
 
         v31 = *(*(&v56 + 1) + 8 * i);
-        v32 = [v31 text];
+        text = [v31 text];
 
-        if (v32)
+        if (text)
         {
           v33 = objc_alloc(MEMORY[0x277D01F70]);
-          v34 = [v31 text];
-          v35 = [v31 senderId];
-          v36 = [v31 timestamp];
-          v37 = [v33 initWithText:v34 senderID:v35 timestamp:v36];
+          text2 = [v31 text];
+          senderId = [v31 senderId];
+          timestamp = [v31 timestamp];
+          v37 = [v33 initWithText:text2 senderID:senderId timestamp:timestamp];
           [v25 addObject:v37];
         }
       }
@@ -804,34 +804,34 @@ LABEL_17:
     while (v28);
   }
 
-  v51 = [(PSGInputSuggestionsRequest *)self initWithResponseContext:v55 conversationTurns:v25 responseKitConversationTurns:v26 adaptationContextID:v54 shouldDisableAutoCaps:v49 isResponseContextBlacklisted:v50 contextBeforeInput:v53 markedText:v52 selectedText:v47 contextAfterInput:v46 selectedRangeInMarkedText:a12.location localeIdentifier:a12.length bundleIdentifier:v45 recipients:v44 recipientNames:v43 textContentType:v42 availableApps:v41 textualResponseLimit:v40 structuredInfoLimit:a19 totalSuggestionsLimit:a20, a21];
+  suggestionsLimit = [(PSGInputSuggestionsRequest *)self initWithResponseContext:contextCopy conversationTurns:v25 responseKitConversationTurns:v26 adaptationContextID:dCopy shouldDisableAutoCaps:capsCopy isResponseContextBlacklisted:blacklistedCopy contextBeforeInput:inputCopy markedText:textCopy selectedText:selectedTextCopy contextAfterInput:afterInputCopy selectedRangeInMarkedText:markedText.location localeIdentifier:markedText.length bundleIdentifier:identifierCopy recipients:bundleIdentifierCopy recipientNames:recipientsCopy textContentType:namesCopy availableApps:typeCopy textualResponseLimit:appsCopy structuredInfoLimit:limit totalSuggestionsLimit:infoLimit, suggestionsLimit];
   v38 = *MEMORY[0x277D85DE8];
-  return v51;
+  return suggestionsLimit;
 }
 
-- (PSGInputSuggestionsRequest)initWithResponseContext:(id)a3 conversationTurns:(id)a4 adaptationContextID:(id)a5 shouldDisableAutoCaps:(BOOL)a6 isResponseContextBlacklisted:(BOOL)a7 contextBeforeInput:(id)a8 markedText:(id)a9 selectedText:(id)a10 contextAfterInput:(id)a11 selectedRangeInMarkedText:(_NSRange)a12 localeIdentifier:(id)a13 bundleIdentifier:(id)a14 recipients:(id)a15 textContentType:(id)a16 availableApps:(id)a17 textualResponseLimit:(unint64_t)a18 structuredInfoLimit:(unint64_t)a19
+- (PSGInputSuggestionsRequest)initWithResponseContext:(id)context conversationTurns:(id)turns adaptationContextID:(id)d shouldDisableAutoCaps:(BOOL)caps isResponseContextBlacklisted:(BOOL)blacklisted contextBeforeInput:(id)input markedText:(id)text selectedText:(id)self0 contextAfterInput:(id)self1 selectedRangeInMarkedText:(_NSRange)self2 localeIdentifier:(id)self3 bundleIdentifier:(id)self4 recipients:(id)self5 textContentType:(id)self6 availableApps:(id)self7 textualResponseLimit:(unint64_t)self8 structuredInfoLimit:(unint64_t)self9
 {
-  v47 = a6;
-  v48 = a7;
+  capsCopy = caps;
+  blacklistedCopy = blacklisted;
   v58 = *MEMORY[0x277D85DE8];
-  v52 = a3;
-  v22 = a4;
-  v51 = a5;
-  v50 = a8;
-  v45 = a9;
-  v44 = a10;
-  v43 = a11;
-  v42 = a13;
-  v41 = a14;
-  v40 = a15;
-  v39 = a16;
-  v38 = a17;
+  contextCopy = context;
+  turnsCopy = turns;
+  dCopy = d;
+  inputCopy = input;
+  textCopy = text;
+  selectedTextCopy = selectedText;
+  afterInputCopy = afterInput;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  recipientsCopy = recipients;
+  typeCopy = type;
+  appsCopy = apps;
   v23 = objc_opt_new();
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v24 = v22;
+  v24 = turnsCopy;
   v25 = [v24 countByEnumeratingWithState:&v53 objects:v57 count:16];
   if (v25)
   {
@@ -847,15 +847,15 @@ LABEL_17:
         }
 
         v29 = *(*(&v53 + 1) + 8 * i);
-        v30 = [v29 text];
+        text = [v29 text];
 
-        if (v30)
+        if (text)
         {
           v31 = objc_alloc(MEMORY[0x277D01F70]);
-          v32 = [v29 text];
-          v33 = [v29 senderId];
-          v34 = [v29 timestamp];
-          v35 = [v31 initWithText:v32 senderID:v33 timestamp:v34];
+          text2 = [v29 text];
+          senderId = [v29 senderId];
+          timestamp = [v29 timestamp];
+          v35 = [v31 initWithText:text2 senderID:senderId timestamp:timestamp];
           [v23 addObject:v35];
         }
       }
@@ -866,41 +866,41 @@ LABEL_17:
     while (v26);
   }
 
-  v49 = [(PSGInputSuggestionsRequest *)self initWithResponseContext:v52 conversationTurns:v23 responseKitConversationTurns:v24 adaptationContextID:v51 shouldDisableAutoCaps:v47 isResponseContextBlacklisted:v48 contextBeforeInput:v50 markedText:v45 selectedText:v44 contextAfterInput:v43 selectedRangeInMarkedText:a12.location localeIdentifier:a12.length bundleIdentifier:v42 recipients:v41 recipientNames:v40 textContentType:0 availableApps:v39 textualResponseLimit:v38 structuredInfoLimit:a18 totalSuggestionsLimit:a19, 3];
+  v49 = [(PSGInputSuggestionsRequest *)self initWithResponseContext:contextCopy conversationTurns:v23 responseKitConversationTurns:v24 adaptationContextID:dCopy shouldDisableAutoCaps:capsCopy isResponseContextBlacklisted:blacklistedCopy contextBeforeInput:inputCopy markedText:textCopy selectedText:selectedTextCopy contextAfterInput:afterInputCopy selectedRangeInMarkedText:markedText.location localeIdentifier:markedText.length bundleIdentifier:identifierCopy recipients:bundleIdentifierCopy recipientNames:recipientsCopy textContentType:0 availableApps:typeCopy textualResponseLimit:appsCopy structuredInfoLimit:limit totalSuggestionsLimit:infoLimit, 3];
   v36 = *MEMORY[0x277D85DE8];
   return v49;
 }
 
-- (PSGInputSuggestionsRequest)initWithResponseContext:(id)a3 conversationTurns:(id)a4 responseKitConversationTurns:(id)a5 adaptationContextID:(id)a6 shouldDisableAutoCaps:(BOOL)a7 isResponseContextBlacklisted:(BOOL)a8 contextBeforeInput:(id)a9 markedText:(id)a10 selectedText:(id)a11 contextAfterInput:(id)a12 selectedRangeInMarkedText:(_NSRange)a13 localeIdentifier:(id)a14 bundleIdentifier:(id)a15 recipients:(id)a16 recipientNames:(id)a17 textContentType:(id)a18 availableApps:(id)a19 textualResponseLimit:(unint64_t)a20 structuredInfoLimit:(unint64_t)a21 totalSuggestionsLimit:(unint64_t)a22
+- (PSGInputSuggestionsRequest)initWithResponseContext:(id)context conversationTurns:(id)turns responseKitConversationTurns:(id)conversationTurns adaptationContextID:(id)d shouldDisableAutoCaps:(BOOL)caps isResponseContextBlacklisted:(BOOL)blacklisted contextBeforeInput:(id)input markedText:(id)self0 selectedText:(id)self1 contextAfterInput:(id)self2 selectedRangeInMarkedText:(_NSRange)self3 localeIdentifier:(id)self4 bundleIdentifier:(id)self5 recipients:(id)self6 recipientNames:(id)self7 textContentType:(id)self8 availableApps:(id)self9 textualResponseLimit:(unint64_t)limit structuredInfoLimit:(unint64_t)infoLimit totalSuggestionsLimit:(unint64_t)suggestionsLimit
 {
-  v42 = a7;
-  v43 = a8;
+  capsCopy = caps;
+  blacklistedCopy = blacklisted;
   v31 = initWithResponseContext_conversationTurns_responseKitConversationTurns_adaptationContextID_shouldDisableAutoCaps_isResponseContextBlacklisted_contextBeforeInput_markedText_selectedText_contextAfterInput_selectedRangeInMarkedText_localeIdentifier_bundleIdentifier_recipients_recipientNames_textContentType_availableApps_textualResponseLimit_structuredInfoLimit_totalSuggestionsLimit___pasOnceToken4;
-  v40 = a19;
-  v35 = a18;
-  v39 = a17;
-  v38 = a16;
-  v23 = a15;
-  v37 = a14;
-  v36 = a12;
-  v24 = a11;
-  v25 = a10;
-  v47 = a9;
-  v46 = a6;
-  v45 = a5;
-  v26 = a4;
-  v27 = a3;
+  appsCopy = apps;
+  typeCopy = type;
+  namesCopy = names;
+  recipientsCopy = recipients;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  afterInputCopy = afterInput;
+  selectedTextCopy = selectedText;
+  textCopy = text;
+  inputCopy = input;
+  dCopy = d;
+  conversationTurnsCopy = conversationTurns;
+  turnsCopy = turns;
+  contextCopy = context;
   if (v31 != -1)
   {
-    v30 = v27;
+    v30 = contextCopy;
     dispatch_once(&initWithResponseContext_conversationTurns_responseKitConversationTurns_adaptationContextID_shouldDisableAutoCaps_isResponseContextBlacklisted_contextBeforeInput_markedText_selectedText_contextAfterInput_selectedRangeInMarkedText_localeIdentifier_bundleIdentifier_recipients_recipientNames_textContentType_availableApps_textualResponseLimit_structuredInfoLimit_totalSuggestionsLimit___pasOnceToken4, &__block_literal_global_97);
-    v27 = v30;
+    contextCopy = v30;
   }
 
-  v34 = v27;
-  v28 = [(PSGInputSuggestionsRequest *)self initWithResponseContext:v27 conversationTurns:v26 responseKitConversationTurns:v45 adaptationContextID:v46 shouldDisableAutoCaps:v42 isResponseContextBlacklisted:v43 contextBeforeInput:v47 markedText:v25 selectedText:v24 contextAfterInput:v36 selectedRangeInMarkedText:a13.location localeIdentifier:a13.length bundleIdentifier:v37 recipients:v23 recipientNames:v38 textContentType:v39 availableApps:v35 textualResponseLimit:v40 structuredInfoLimit:a20 totalSuggestionsLimit:a21 initiatingProcess:a22, initWithResponseContext_conversationTurns_responseKitConversationTurns_adaptationContextID_shouldDisableAutoCaps_isResponseContextBlacklisted_contextBeforeInput_markedText_selectedText_contextAfterInput_selectedRangeInMarkedText_localeIdentifier_bundleIdentifier_recipients_recipientNames_textContentType_availableApps_textualResponseLimit_structuredInfoLimit_totalSuggestionsLimit___pasExprOnceResult];
+  v34 = contextCopy;
+  initWithResponseContext_conversationTurns_responseKitConversationTurns_adaptationContextID_shouldDisableAutoCaps_isResponseContextBlacklisted_contextBeforeInput_markedText_selectedText_contextAfterInput_selectedRangeInMarkedText_localeIdentifier_bundleIdentifier_recipients_recipientNames_textContentType_availableApps_textualResponseLimit_structuredInfoLimit_totalSuggestionsLimit___pasExprOnceResult = [(PSGInputSuggestionsRequest *)self initWithResponseContext:contextCopy conversationTurns:turnsCopy responseKitConversationTurns:conversationTurnsCopy adaptationContextID:dCopy shouldDisableAutoCaps:capsCopy isResponseContextBlacklisted:blacklistedCopy contextBeforeInput:inputCopy markedText:textCopy selectedText:selectedTextCopy contextAfterInput:afterInputCopy selectedRangeInMarkedText:markedText.location localeIdentifier:markedText.length bundleIdentifier:identifierCopy recipients:bundleIdentifierCopy recipientNames:recipientsCopy textContentType:namesCopy availableApps:typeCopy textualResponseLimit:appsCopy structuredInfoLimit:limit totalSuggestionsLimit:infoLimit initiatingProcess:suggestionsLimit, initWithResponseContext_conversationTurns_responseKitConversationTurns_adaptationContextID_shouldDisableAutoCaps_isResponseContextBlacklisted_contextBeforeInput_markedText_selectedText_contextAfterInput_selectedRangeInMarkedText_localeIdentifier_bundleIdentifier_recipients_recipientNames_textContentType_availableApps_textualResponseLimit_structuredInfoLimit_totalSuggestionsLimit___pasExprOnceResult];
 
-  return v28;
+  return initWithResponseContext_conversationTurns_responseKitConversationTurns_adaptationContextID_shouldDisableAutoCaps_isResponseContextBlacklisted_contextBeforeInput_markedText_selectedText_contextAfterInput_selectedRangeInMarkedText_localeIdentifier_bundleIdentifier_recipients_recipientNames_textContentType_availableApps_textualResponseLimit_structuredInfoLimit_totalSuggestionsLimit___pasExprOnceResult;
 }
 
 void __412__PSGInputSuggestionsRequest_initWithResponseContext_conversationTurns_responseKitConversationTurns_adaptationContextID_shouldDisableAutoCaps_isResponseContextBlacklisted_contextBeforeInput_markedText_selectedText_contextAfterInput_selectedRangeInMarkedText_localeIdentifier_bundleIdentifier_recipients_recipientNames_textContentType_availableApps_textualResponseLimit_structuredInfoLimit_totalSuggestionsLimit___block_invoke()
@@ -914,88 +914,88 @@ void __412__PSGInputSuggestionsRequest_initWithResponseContext_conversationTurns
   objc_autoreleasePoolPop(v0);
 }
 
-- (PSGInputSuggestionsRequest)initWithResponseContext:(id)a3 conversationTurns:(id)a4 responseKitConversationTurns:(id)a5 adaptationContextID:(id)a6 shouldDisableAutoCaps:(BOOL)a7 isResponseContextBlacklisted:(BOOL)a8 contextBeforeInput:(id)a9 markedText:(id)a10 selectedText:(id)a11 contextAfterInput:(id)a12 selectedRangeInMarkedText:(_NSRange)a13 localeIdentifier:(id)a14 bundleIdentifier:(id)a15 recipients:(id)a16 recipientNames:(id)a17 textContentType:(id)a18 availableApps:(id)a19 textualResponseLimit:(unint64_t)a20 structuredInfoLimit:(unint64_t)a21 totalSuggestionsLimit:(unint64_t)a22 initiatingProcess:(id)a23
+- (PSGInputSuggestionsRequest)initWithResponseContext:(id)context conversationTurns:(id)turns responseKitConversationTurns:(id)conversationTurns adaptationContextID:(id)d shouldDisableAutoCaps:(BOOL)caps isResponseContextBlacklisted:(BOOL)blacklisted contextBeforeInput:(id)input markedText:(id)self0 selectedText:(id)self1 contextAfterInput:(id)self2 selectedRangeInMarkedText:(_NSRange)self3 localeIdentifier:(id)self4 bundleIdentifier:(id)self5 recipients:(id)self6 recipientNames:(id)self7 textContentType:(id)self8 availableApps:(id)self9 textualResponseLimit:(unint64_t)limit structuredInfoLimit:(unint64_t)infoLimit totalSuggestionsLimit:(unint64_t)suggestionsLimit initiatingProcess:(id)process
 {
-  v50 = a3;
-  v40 = a4;
-  v54 = a4;
-  v41 = a5;
-  v49 = a5;
-  v42 = a6;
-  v48 = a6;
-  v26 = a9;
-  v52 = a10;
-  v53 = a11;
-  v51 = a12;
-  v47 = a14;
-  v46 = a15;
-  v27 = a16;
-  v28 = a17;
-  v29 = a18;
-  v30 = v54;
-  v31 = a19;
-  v32 = a23;
+  contextCopy = context;
+  turnsCopy = turns;
+  turnsCopy2 = turns;
+  conversationTurnsCopy = conversationTurns;
+  conversationTurnsCopy2 = conversationTurns;
+  dCopy = d;
+  dCopy2 = d;
+  inputCopy = input;
+  textCopy = text;
+  selectedTextCopy = selectedText;
+  afterInputCopy = afterInput;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  recipientsCopy = recipients;
+  namesCopy = names;
+  typeCopy = type;
+  v30 = turnsCopy2;
+  appsCopy = apps;
+  processCopy = process;
   v55.receiver = self;
   v55.super_class = PSGInputSuggestionsRequest;
   v33 = [(PSGInputSuggestionsRequest *)&v55 init];
   v34 = v33;
   if (v33)
   {
-    objc_storeStrong(&v33->_responseContext, a3);
-    objc_storeStrong(&v34->_conversationTurns, v40);
-    objc_storeStrong(&v34->_responseKitConversationTurns, v41);
-    objc_storeStrong(&v34->_adaptationContextID, v42);
-    v34->_shouldDisableAutoCaps = a7;
-    v34->_isResponseContextBlacklisted = a8;
-    objc_storeStrong(&v34->_contextBeforeInput, a9);
-    objc_storeStrong(&v34->_markedText, a10);
-    objc_storeStrong(&v34->_selectedText, a11);
-    objc_storeStrong(&v34->_contextAfterInput, a12);
-    v34->_selectedRangeInMarkedText = a13;
-    if ([v26 length])
+    objc_storeStrong(&v33->_responseContext, context);
+    objc_storeStrong(&v34->_conversationTurns, turnsCopy);
+    objc_storeStrong(&v34->_responseKitConversationTurns, conversationTurnsCopy);
+    objc_storeStrong(&v34->_adaptationContextID, dCopy);
+    v34->_shouldDisableAutoCaps = caps;
+    v34->_isResponseContextBlacklisted = blacklisted;
+    objc_storeStrong(&v34->_contextBeforeInput, input);
+    objc_storeStrong(&v34->_markedText, text);
+    objc_storeStrong(&v34->_selectedText, selectedText);
+    objc_storeStrong(&v34->_contextAfterInput, afterInput);
+    v34->_selectedRangeInMarkedText = markedText;
+    if ([inputCopy length])
     {
       v35 = 0;
     }
 
-    else if ([v53 length])
+    else if ([selectedTextCopy length])
     {
       v35 = 0;
     }
 
-    else if ([v52 length])
+    else if ([textCopy length])
     {
       v35 = 0;
     }
 
     else
     {
-      v35 = [v51 length] == 0;
+      v35 = [afterInputCopy length] == 0;
     }
 
     v34->_isDocumentEmpty = v35;
-    objc_storeStrong(&v34->_localeIdentifier, a14);
-    objc_storeStrong(&v34->_bundleIdentifier, a15);
-    objc_storeStrong(&v34->_recipients, a16);
-    objc_storeStrong(&v34->_recipientNames, a17);
-    objc_storeStrong(&v34->_textContentType, a18);
-    objc_storeStrong(&v34->_availableApps, a19);
-    v36 = a20;
-    v37 = a21;
-    if (a20 >= a22)
+    objc_storeStrong(&v34->_localeIdentifier, identifier);
+    objc_storeStrong(&v34->_bundleIdentifier, bundleIdentifier);
+    objc_storeStrong(&v34->_recipients, recipients);
+    objc_storeStrong(&v34->_recipientNames, names);
+    objc_storeStrong(&v34->_textContentType, type);
+    objc_storeStrong(&v34->_availableApps, apps);
+    suggestionsLimitCopy = limit;
+    suggestionsLimitCopy2 = infoLimit;
+    if (limit >= suggestionsLimit)
     {
-      v36 = a22;
+      suggestionsLimitCopy = suggestionsLimit;
     }
 
-    if (a21 >= a22)
+    if (infoLimit >= suggestionsLimit)
     {
-      v37 = a22;
+      suggestionsLimitCopy2 = suggestionsLimit;
     }
 
-    v34->_textualResponseLimit = v36;
-    v34->_structuredInfoLimit = v37;
-    v34->_totalSuggestionsLimit = a22;
-    objc_storeStrong(&v34->_initiatingProcess, a23);
-    v30 = v54;
+    v34->_textualResponseLimit = suggestionsLimitCopy;
+    v34->_structuredInfoLimit = suggestionsLimitCopy2;
+    v34->_totalSuggestionsLimit = suggestionsLimit;
+    objc_storeStrong(&v34->_initiatingProcess, process);
+    v30 = turnsCopy2;
   }
 
   return v34;

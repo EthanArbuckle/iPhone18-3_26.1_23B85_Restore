@@ -1,34 +1,34 @@
 @interface IDSMMCSUploader
-- (IDSMMCSUploader)initWithEncryptionController:(id)a3 transferServicesController:(id)a4;
-- (id)uploadData:(id)a3 fromID:(id)a4 toEndpoint:(id)a5 onTopic:(id)a6 forGUID:(id)a7 encryptionType:(unint64_t)a8;
+- (IDSMMCSUploader)initWithEncryptionController:(id)controller transferServicesController:(id)servicesController;
+- (id)uploadData:(id)data fromID:(id)d toEndpoint:(id)endpoint onTopic:(id)topic forGUID:(id)iD encryptionType:(unint64_t)type;
 @end
 
 @implementation IDSMMCSUploader
 
-- (IDSMMCSUploader)initWithEncryptionController:(id)a3 transferServicesController:(id)a4
+- (IDSMMCSUploader)initWithEncryptionController:(id)controller transferServicesController:(id)servicesController
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  servicesControllerCopy = servicesController;
   v12.receiver = self;
   v12.super_class = IDSMMCSUploader;
   v9 = [(IDSMMCSUploader *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_encryptionController, a3);
-    objc_storeStrong(&v10->_transferServicesController, a4);
+    objc_storeStrong(&v9->_encryptionController, controller);
+    objc_storeStrong(&v10->_transferServicesController, servicesController);
   }
 
   return v10;
 }
 
-- (id)uploadData:(id)a3 fromID:(id)a4 toEndpoint:(id)a5 onTopic:(id)a6 forGUID:(id)a7 encryptionType:(unint64_t)a8
+- (id)uploadData:(id)data fromID:(id)d toEndpoint:(id)endpoint onTopic:(id)topic forGUID:(id)iD encryptionType:(unint64_t)type
 {
-  v13 = a3;
-  v39 = a4;
-  v14 = a5;
-  v15 = a6;
-  v40 = a7;
+  dataCopy = data;
+  dCopy = d;
+  endpointCopy = endpoint;
+  topicCopy = topic;
+  iDCopy = iD;
   v16 = objc_alloc_init(CUTUnsafePromiseSeal);
   v17 = +[NSFileManager defaultManager];
   v18 = [v17 _randomTemporaryPathWithSuffix:0];
@@ -38,9 +38,9 @@
     goto LABEL_10;
   }
 
-  v19 = [v13 data];
+  data = [dataCopy data];
   v50 = 0;
-  v20 = [v19 writeToFile:v18 options:1 error:&v50];
+  v20 = [data writeToFile:v18 options:1 error:&v50];
   v21 = v50;
 
   if (!v20)
@@ -69,38 +69,38 @@ LABEL_10:
   }
 
   transferServicesController = self->_transferServicesController;
-  v24 = [v18 stringByResolvingAndStandardizingPath];
+  stringByResolvingAndStandardizingPath = [v18 stringByResolvingAndStandardizingPath];
   v25 = [NSString stringGUIDForObject:v18];
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
   v41[2] = sub_10064CABC;
   v41[3] = &unk_100BE3148;
-  v42 = v14;
-  v43 = v40;
-  v49 = a8;
-  v44 = v39;
-  v26 = v15;
-  v27 = self;
-  v28 = v13;
-  v29 = v15;
-  v30 = v14;
+  v42 = endpointCopy;
+  v43 = iDCopy;
+  typeCopy = type;
+  v44 = dCopy;
+  v26 = topicCopy;
+  selfCopy = self;
+  v28 = dataCopy;
+  v29 = topicCopy;
+  v30 = endpointCopy;
   v31 = v26;
   v45 = v26;
-  v46 = v27;
+  v46 = selfCopy;
   v47 = v18;
   v48 = v16;
   v32 = v31;
-  v14 = v30;
-  v15 = v29;
-  v13 = v28;
-  [(IDSTransferServicesController *)transferServicesController sendFilePath:v24 topic:v32 userInfo:0 transferID:v25 encryptFile:0 progressBlock:&stru_100BE30F8 completionBlock:v41];
+  endpointCopy = v30;
+  topicCopy = v29;
+  dataCopy = v28;
+  [(IDSTransferServicesController *)transferServicesController sendFilePath:stringByResolvingAndStandardizingPath topic:v32 userInfo:0 transferID:v25 encryptFile:0 progressBlock:&stru_100BE30F8 completionBlock:v41];
 
   v33 = v42;
 LABEL_11:
 
-  v36 = [v16 promise];
+  promise = [v16 promise];
 
-  return v36;
+  return promise;
 }
 
 @end

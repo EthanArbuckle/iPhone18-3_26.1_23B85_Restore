@@ -1,7 +1,7 @@
 @interface RPPairingPromptViewController
 + (id)instantiateViewController;
 - (void)_retryTimer;
-- (void)handlePINEntered:(id)a3;
+- (void)handlePINEntered:(id)entered;
 @end
 
 @implementation RPPairingPromptViewController
@@ -11,7 +11,7 @@
   v2 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.RapportUI"];
   v3 = [MEMORY[0x277D75AC8] storyboardWithName:@"RPPairingPrompt_iOS" bundle:v2];
   v4 = [v3 instantiateViewControllerWithIdentifier:@"PINEntry"];
-  v5 = [v4 view];
+  view = [v4 view];
 
   return v4;
 }
@@ -29,9 +29,9 @@ void __48__RPPairingPromptViewController_viewWillAppear___block_invoke(uint64_t 
   }
 }
 
-- (void)handlePINEntered:(id)a3
+- (void)handlePINEntered:(id)entered
 {
-  v7 = a3;
+  enteredCopy = entered;
   [(RPPINEntryView *)self->_pinEntryView setDisabled:1];
   [(UIActivityIndicatorView *)self->_progressSpinner startAnimating];
   [(UIActivityIndicatorView *)self->_progressSpinner setHidden:0];
@@ -43,7 +43,7 @@ void __48__RPPairingPromptViewController_viewWillAppear___block_invoke(uint64_t 
   v6 = v5;
   if (v5)
   {
-    (*(v5 + 16))(v5, v7);
+    (*(v5 + 16))(v5, enteredCopy);
   }
 }
 

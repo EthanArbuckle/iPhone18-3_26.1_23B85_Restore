@@ -1,6 +1,6 @@
 @interface MapsActivityMergeController
 - (id)_performProcess;
-- (id)mergeActivities:(id)a3;
+- (id)mergeActivities:(id)activities;
 - (int64_t)_forcedViewMode;
 - (void)_mergeActivities;
 - (void)_mergeActivitiesIfNeeded;
@@ -36,15 +36,15 @@
 - (void)_mergeActivities
 {
   v3 = [(NSArray *)self->_activities objectAtIndexedSubscript:1];
-  v4 = [v3 action];
+  action = [v3 action];
 
   v5 = [(NSArray *)self->_activities objectAtIndexedSubscript:1];
-  v6 = [v5 mapsActivity];
-  v7 = [v6 copy];
+  mapsActivity = [v5 mapsActivity];
+  v7 = [mapsActivity copy];
 
   if (!v7)
   {
-    if (v4 && ![v4 isCompatibleWithRestorationTask] || (-[NSArray objectAtIndexedSubscript:](self->_activities, "objectAtIndexedSubscript:", 0), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "mapsActivity"), v9 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v9, "copy"), v9, v8, !v7))
+    if (action && ![action isCompatibleWithRestorationTask] || (-[NSArray objectAtIndexedSubscript:](self->_activities, "objectAtIndexedSubscript:", 0), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "mapsActivity"), v9 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v9, "copy"), v9, v8, !v7))
     {
       v7 = +[MapsActivity mapsActivityPerDefault];
     }
@@ -54,17 +54,17 @@
   v11 = [GEOURLOptions accumulateObjects:v10];
   if (v11)
   {
-    v12 = [(MapsActivityMergeController *)self _forcedViewMode];
-    if (v12 <= 2)
+    _forcedViewMode = [(MapsActivityMergeController *)self _forcedViewMode];
+    if (_forcedViewMode <= 2)
     {
-      if (v12 == -1)
+      if (_forcedViewMode == -1)
       {
 LABEL_24:
         [v7 setDisplayOptions:v11];
         goto LABEL_25;
       }
 
-      if (v12 == 1)
+      if (_forcedViewMode == 1)
       {
 LABEL_21:
         v13 = 2;
@@ -72,7 +72,7 @@ LABEL_21:
       }
 
       v13 = 0;
-      if (v12 != 2)
+      if (_forcedViewMode != 2)
       {
         goto LABEL_23;
       }
@@ -80,16 +80,16 @@ LABEL_21:
 
     else
     {
-      if (v12 <= 5)
+      if (_forcedViewMode <= 5)
       {
-        if (v12 == 3)
+        if (_forcedViewMode == 3)
         {
           v13 = 3;
           goto LABEL_23;
         }
 
         v13 = 0;
-        if (v12 != 5)
+        if (_forcedViewMode != 5)
         {
           goto LABEL_23;
         }
@@ -97,9 +97,9 @@ LABEL_21:
         goto LABEL_21;
       }
 
-      if (v12 != 6)
+      if (_forcedViewMode != 6)
       {
-        if (v12 == 7)
+        if (_forcedViewMode == 7)
         {
           v13 = 4;
         }
@@ -120,18 +120,18 @@ LABEL_23:
   }
 
 LABEL_25:
-  v14 = [[RichMapsActivity alloc] initWithMapsActivity:v7 mapsAction:v4];
+  v14 = [[RichMapsActivity alloc] initWithMapsActivity:v7 mapsAction:action];
   mergedActivity = self->_mergedActivity;
   self->_mergedActivity = v14;
 
   v16 = +[NSUUID UUID];
-  v17 = [v16 UUIDString];
+  uUIDString = [v16 UUIDString];
 
   v18 = sub_100005610();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v27 = v17;
+    v27 = uUIDString;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "_mergedActivity (tag %@)", buf, 0xCu);
   }
 
@@ -141,10 +141,10 @@ LABEL_25:
   v23[1] = 3221225472;
   v23[2] = sub_100F96E14;
   v23[3] = &unk_101661A90;
-  v24 = v17;
+  v24 = uUIDString;
   v25 = v19;
   v21 = v19;
-  v22 = v17;
+  v22 = uUIDString;
   dispatch_async(v20, v23);
 }
 
@@ -153,13 +153,13 @@ LABEL_25:
   v3 = [(NSArray *)self->_activities count];
   v4 = [(NSArray *)self->_activities copy];
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
+  uUIDString = [v5 UUIDString];
 
   v7 = sub_100005610();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = uUIDString;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "_mergeActivitiesIfNeeded (tag %@)", buf, 0xCu);
   }
 
@@ -168,7 +168,7 @@ LABEL_25:
   v14 = 3221225472;
   v15 = sub_100F970D0;
   v16 = &unk_101661A90;
-  v9 = v6;
+  v9 = uUIDString;
   v17 = v9;
   v10 = v4;
   v18 = v10;
@@ -198,9 +198,9 @@ LABEL_25:
   return mergedActivity;
 }
 
-- (id)mergeActivities:(id)a3
+- (id)mergeActivities:(id)activities
 {
-  objc_storeStrong(&self->_activities, a3);
+  objc_storeStrong(&self->_activities, activities);
 
   return [(MapsActivityMergeController *)self _performProcess];
 }

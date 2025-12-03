@@ -1,11 +1,11 @@
 @interface PLCropOverlayCropView
 - (CGRect)cropRect;
-- (PLCropOverlayCropView)initWithFrame:(CGRect)a3;
+- (PLCropOverlayCropView)initWithFrame:(CGRect)frame;
 - (void)_removeCropViews;
 - (void)_updateCropRectIfNeeded;
 - (void)dealloc;
-- (void)setAlpha:(double)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation PLCropOverlayCropView
@@ -84,11 +84,11 @@
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v4.receiver = self;
   v4.super_class = PLCropOverlayCropView;
-  [(PLCropOverlayCropView *)&v4 setAlpha:a3];
+  [(PLCropOverlayCropView *)&v4 setAlpha:alpha];
   [(PLCropOverlayCropView *)self _updateCropRectIfNeeded];
 }
 
@@ -105,12 +105,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PLCropOverlayCropView *)self frame];
   if (width != v9 || height != v8)
   {
@@ -129,11 +129,11 @@
   [(PLCropOverlayCropView *)&v3 dealloc];
 }
 
-- (PLCropOverlayCropView)initWithFrame:(CGRect)a3
+- (PLCropOverlayCropView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PLCropOverlayCropView;
-  v3 = [(PLCropOverlayCropView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLCropOverlayCropView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

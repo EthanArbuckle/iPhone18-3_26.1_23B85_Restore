@@ -6,12 +6,12 @@
 
 - (void)drawPreviewInRect:()UI
 {
-  v10 = [a1 attachment];
-  v11 = [v10 preferredViewSize];
+  attachment = [self attachment];
+  preferredViewSize = [attachment preferredViewSize];
 
-  if (v11 == 1)
+  if (preferredViewSize == 1)
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = &off_1F50593E8;
     objc_msgSendSuper2(&v19, sel_drawPreviewInRect_, a2, a3, a4, a5);
     return;
@@ -19,17 +19,17 @@
 
   v12 = objc_autoreleasePoolPush();
   v13 = objc_alloc(MEMORY[0x1E6978028]);
-  v14 = [a1 attachment];
-  v15 = [v14 media];
-  v16 = [v15 mediaURL];
-  v17 = [v13 initWithURL:v16];
+  attachment2 = [self attachment];
+  media = [attachment2 media];
+  mediaURL = [media mediaURL];
+  v17 = [v13 initWithURL:mediaURL];
 
   if (!v17)
   {
     v18 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [ICAttachmentPDFModel(UI) drawPreviewInRect:a1];
+      [ICAttachmentPDFModel(UI) drawPreviewInRect:self];
     }
 
     goto LABEL_9;
@@ -40,7 +40,7 @@
     v18 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [ICAttachmentPDFModel(UI) drawPreviewInRect:a1];
+      [ICAttachmentPDFModel(UI) drawPreviewInRect:self];
     }
 
 LABEL_9:

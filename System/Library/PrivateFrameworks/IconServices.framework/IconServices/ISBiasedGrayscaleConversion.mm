@@ -1,7 +1,7 @@
 @interface ISBiasedGrayscaleConversion
 - (ISBiasedGrayscaleConversion)init;
-- (__n128)computeGrayscaleConversionColorWithWidth:(int)a3 height:(int)a4 samples:(__int128 *)a5;
-- (double)computeGrayscaleConversionColorWithNumberOfRepresentativeSamples:(__n128)a3 representativeSamples:(uint64_t)a4;
+- (__n128)computeGrayscaleConversionColorWithWidth:(int)width height:(int)height samples:(__int128 *)samples;
+- (double)computeGrayscaleConversionColorWithNumberOfRepresentativeSamples:(__n128)samples representativeSamples:(uint64_t)representativeSamples;
 @end
 
 @implementation ISBiasedGrayscaleConversion
@@ -20,9 +20,9 @@
   return result;
 }
 
-- (__n128)computeGrayscaleConversionColorWithWidth:(int)a3 height:(int)a4 samples:(__int128 *)a5
+- (__n128)computeGrayscaleConversionColorWithWidth:(int)width height:(int)height samples:(__int128 *)samples
 {
-  v7 = a4 * a3;
+  v7 = height * width;
   v8 = malloc_type_malloc(0x7D00uLL, 0x1000040451B5BE8uLL);
   v9 = 0;
   v20 = 10;
@@ -32,8 +32,8 @@
     v11 = ISSegmentationMathUtils_rand_open(&v20, 0, v7);
     v19.i32[2] = 0;
     v19.i64[0] = 0;
-    v17 = *a5;
-    v18 = *(a5 + 2);
+    v17 = *samples;
+    v18 = *(samples + 2);
     v12 = ISSegmentationSamples_readOpaqueSample_i(&v17, v11, &v19, *&v17).u64[0];
     if (v13)
     {
@@ -48,7 +48,7 @@
   while (v10);
   if (v9)
   {
-    [a1 computeGrayscaleConversionColorWithNumberOfRepresentativeSamples:v9 representativeSamples:{v8, *&v12}];
+    [self computeGrayscaleConversionColorWithNumberOfRepresentativeSamples:v9 representativeSamples:{v8, *&v12}];
   }
 
   else
@@ -61,20 +61,20 @@
   return v16;
 }
 
-- (double)computeGrayscaleConversionColorWithNumberOfRepresentativeSamples:(__n128)a3 representativeSamples:(uint64_t)a4
+- (double)computeGrayscaleConversionColorWithNumberOfRepresentativeSamples:(__n128)samples representativeSamples:(uint64_t)representativeSamples
 {
-  v36 = *(a1 + 8);
-  v35 = *(a1 + 12);
+  v36 = *(self + 8);
+  v35 = *(self + 12);
   v8 = a5;
   v9 = a5;
   v10 = -3.4028e38;
   v11 = 0.0;
-  a3.n128_u64[0] = 0;
+  samples.n128_u64[0] = 0;
   do
   {
     v12.i64[1] = 0x3F0000003F000000;
-    v37 = a3;
-    v12.i64[0] = __PAIR64__(v36, a3.n128_u32[0]);
+    samplesCopy = samples;
+    v12.i64[0] = __PAIR64__(v36, samples.n128_u32[0]);
     *v13.i64 = ISSegmentationMathUtils_hsv2rgb(v12);
     v39 = v13;
     v14 = 1.0 / (v13.f32[2] + vaddv_f32(*v13.f32));
@@ -120,17 +120,17 @@
     }
 
     while (v24);
-    a3 = v37;
+    samples = samplesCopy;
     if (((v23 / v22) + (v35 * ((-v17 / v8) - (v23 / v22)))) > v10)
     {
-      v11 = v37.n128_f32[0];
+      v11 = samplesCopy.n128_f32[0];
       v10 = (v23 / v22) + (v35 * ((-v17 / v8) - (v23 / v22)));
     }
 
-    a3.n128_f32[0] = v37.n128_f32[0] + 0.02;
+    samples.n128_f32[0] = samplesCopy.n128_f32[0] + 0.02;
   }
 
-  while (a3.n128_f32[0] < 1.0);
+  while (samples.n128_f32[0] < 1.0);
   v30.i64[1] = 0x3F0000003F000000;
   v30.i64[0] = __PAIR64__(v36, COERCE_UNSIGNED_INT(fminf(v11 - floorf(v11), 1.0)));
   *v31.i64 = ISSegmentationMathUtils_hsv2rgb(v30);

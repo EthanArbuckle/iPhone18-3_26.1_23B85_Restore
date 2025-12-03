@@ -1,15 +1,15 @@
 @interface RAPTablePart
-+ (void)holdChangesAffectingTableView:(id)a3 withinBlock:(id)a4;
++ (void)holdChangesAffectingTableView:(id)view withinBlock:(id)block;
 - (RAPPresentingViewController)presentingViewController;
-- (RAPTablePart)initWithSections:(id)a3;
+- (RAPTablePart)initWithSections:(id)sections;
 - (RAPTablePartsDataSource)dataSource;
 - (id)_dataSource;
-- (void)_setTableView:(id)a3;
+- (void)_setTableView:(id)view;
 - (void)dealloc;
 - (void)didChange;
-- (void)holdChangesAffectingTableViewWithinBlock:(id)a3;
+- (void)holdChangesAffectingTableViewWithinBlock:(id)block;
 - (void)presentingViewControllerViewDidLayoutSubviews;
-- (void)setSections:(id)a3;
+- (void)setSections:(id)sections;
 @end
 
 @implementation RAPTablePart
@@ -23,8 +23,8 @@
 
 - (void)didChange
 {
-  v3 = [(RAPTablePart *)self _dataSource];
-  [v3 tablePartDidChange:self];
+  _dataSource = [(RAPTablePart *)self _dataSource];
+  [_dataSource tablePartDidChange:self];
 }
 
 - (void)presentingViewControllerViewDidLayoutSubviews
@@ -63,13 +63,13 @@
 
 - (RAPTablePartsDataSource)dataSource
 {
-  v2 = [(RAPTablePart *)self tableView];
-  v3 = [v2 dataSource];
+  tableView = [(RAPTablePart *)self tableView];
+  dataSource = [tableView dataSource];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = dataSource;
   }
 
   else
@@ -80,12 +80,12 @@
   return v4;
 }
 
-- (void)_setTableView:(id)a3
+- (void)_setTableView:(id)view
 {
-  v5 = a3;
-  if (self->_tableView != v5)
+  viewCopy = view;
+  if (self->_tableView != viewCopy)
   {
-    objc_storeStrong(&self->_tableView, a3);
+    objc_storeStrong(&self->_tableView, view);
     if (self->_tableView)
     {
       v13 = 0u;
@@ -119,18 +119,18 @@
   }
 }
 
-- (void)setSections:(id)a3
+- (void)setSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   sections = self->_sections;
-  if (sections != v4)
+  if (sections != sectionsCopy)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = sections;
-    v7 = [(NSArray *)v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    sectionsCopy2 = sections;
+    v7 = [(NSArray *)sectionsCopy2 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v7)
     {
       v8 = v7;
@@ -141,23 +141,23 @@
         {
           if (*v25 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(sectionsCopy2);
           }
 
           [*(*(&v24 + 1) + 8 * i) _setPartController:0];
         }
 
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v8 = [(NSArray *)sectionsCopy2 countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v8);
     }
 
-    v11 = [(NSArray *)v4 copy];
+    v11 = [(NSArray *)sectionsCopy copy];
     v12 = self->_sections;
     self->_sections = v11;
 
-    v13 = [(RAPTablePart *)self tableView];
+    tableView = [(RAPTablePart *)self tableView];
 
     v22 = 0u;
     v23 = 0u;
@@ -180,7 +180,7 @@
 
           v19 = *(*(&v20 + 1) + 8 * j);
           [v19 _setPartController:{self, v20}];
-          if (v13)
+          if (tableView)
           {
             [v19 _registerReuseIdentifiersIfNeeded];
           }
@@ -196,12 +196,12 @@
   }
 }
 
-- (void)holdChangesAffectingTableViewWithinBlock:(id)a3
+- (void)holdChangesAffectingTableViewWithinBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_class();
-  v6 = [(RAPTablePart *)self tableView];
-  [v5 holdChangesAffectingTableView:v6 withinBlock:v4];
+  tableView = [(RAPTablePart *)self tableView];
+  [v5 holdChangesAffectingTableView:tableView withinBlock:blockCopy];
 }
 
 - (void)dealloc
@@ -242,15 +242,15 @@
   [(RAPTablePart *)&v8 dealloc];
 }
 
-- (RAPTablePart)initWithSections:(id)a3
+- (RAPTablePart)initWithSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   v8.receiver = self;
   v8.super_class = RAPTablePart;
   v5 = [(RAPTablePart *)&v8 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [sectionsCopy copy];
     [(RAPTablePart *)v5 setSections:v6];
   }
 
@@ -259,13 +259,13 @@
 
 - (id)_dataSource
 {
-  v2 = [(RAPTablePart *)self tableView];
-  v3 = [v2 dataSource];
+  tableView = [(RAPTablePart *)self tableView];
+  dataSource = [tableView dataSource];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = dataSource;
   }
 
   else
@@ -278,13 +278,13 @@
   return v4;
 }
 
-+ (void)holdChangesAffectingTableView:(id)a3 withinBlock:(id)a4
++ (void)holdChangesAffectingTableView:(id)view withinBlock:(id)block
 {
-  v12 = a3;
-  v5 = a4;
-  v6 = v12;
-  v7 = v5;
-  if (v12)
+  viewCopy = view;
+  blockCopy = block;
+  v6 = viewCopy;
+  v7 = blockCopy;
+  if (viewCopy)
   {
     v8 = qword_10195CF78;
     if (!qword_10195CF78)
@@ -293,28 +293,28 @@
       v10 = qword_10195CF78;
       qword_10195CF78 = v9;
 
-      v6 = v12;
+      v6 = viewCopy;
       v8 = qword_10195CF78;
     }
 
     [v8 addObject:v6];
     v7[2](v7);
-    [qword_10195CF78 removeObject:v12];
+    [qword_10195CF78 removeObject:viewCopy];
     if (![qword_10195CF78 count])
     {
       v11 = qword_10195CF78;
       qword_10195CF78 = 0;
     }
 
-    if (([qword_10195CF78 containsObject:v12] & 1) == 0)
+    if (([qword_10195CF78 containsObject:viewCopy] & 1) == 0)
     {
-      [v12 reloadData];
+      [viewCopy reloadData];
     }
   }
 
   else
   {
-    v5[2](v5);
+    blockCopy[2](blockCopy);
   }
 }
 

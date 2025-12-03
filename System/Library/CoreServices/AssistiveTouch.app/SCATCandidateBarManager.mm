@@ -1,40 +1,40 @@
 @interface SCATCandidateBarManager
 - (BOOL)canBeActiveElementManager;
-- (BOOL)handleInputAction:(id)a3 withElement:(id)a4;
+- (BOOL)handleInputAction:(id)action withElement:(id)element;
 - (SCATCandidateBarManagerDelegate)delegate;
-- (void)didFetchElements:(id)a3 foundNewElements:(BOOL)a4 currentFocusContext:(id)a5 didChangeActiveElementManager:(BOOL)a6;
-- (void)driver:(id)a3 willFocusOnContext:(id)a4;
+- (void)didFetchElements:(id)elements foundNewElements:(BOOL)newElements currentFocusContext:(id)context didChangeActiveElementManager:(BOOL)manager;
+- (void)driver:(id)driver willFocusOnContext:(id)context;
 @end
 
 @implementation SCATCandidateBarManager
 
 - (BOOL)canBeActiveElementManager
 {
-  v2 = [(SCATCandidateBarManager *)self typingCandidates];
-  v3 = v2 != 0;
+  typingCandidates = [(SCATCandidateBarManager *)self typingCandidates];
+  v3 = typingCandidates != 0;
 
   return v3;
 }
 
-- (void)driver:(id)a3 willFocusOnContext:(id)a4
+- (void)driver:(id)driver willFocusOnContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 element];
-  if (v8)
+  driverCopy = driver;
+  contextCopy = context;
+  element = [contextCopy element];
+  if (element)
   {
-    v9 = [(SCATCandidateBarManager *)self typingCandidates];
-    v10 = [v9 containsObject:v8];
+    typingCandidates = [(SCATCandidateBarManager *)self typingCandidates];
+    v10 = [typingCandidates containsObject:element];
 
     if ((v10 & 1) == 0)
     {
-      v11 = v8;
+      v11 = element;
       _AXAssert();
     }
 
-    if ([v8 scatIsAXElement])
+    if ([element scatIsAXElement])
     {
-      [v8 scrollToVisible];
+      [element scrollToVisible];
     }
 
     else
@@ -45,37 +45,37 @@
 
   v12.receiver = self;
   v12.super_class = SCATCandidateBarManager;
-  [(SCATElementManager *)&v12 driver:v6 willFocusOnContext:v7];
+  [(SCATElementManager *)&v12 driver:driverCopy willFocusOnContext:contextCopy];
 }
 
-- (BOOL)handleInputAction:(id)a3 withElement:(id)a4
+- (BOOL)handleInputAction:(id)action withElement:(id)element
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 action] == 100 || objc_msgSend(v6, "action") == 103 || objc_msgSend(v6, "action") == 109)
+  actionCopy = action;
+  elementCopy = element;
+  if ([actionCopy action] == 100 || objc_msgSend(actionCopy, "action") == 103 || objc_msgSend(actionCopy, "action") == 109)
   {
     [(SCATCandidateBarManager *)self setTypingCandidates:0];
   }
 
   v10.receiver = self;
   v10.super_class = SCATCandidateBarManager;
-  v8 = [(SCATElementManager *)&v10 handleInputAction:v6 withElement:v7];
+  v8 = [(SCATElementManager *)&v10 handleInputAction:actionCopy withElement:elementCopy];
 
   return v8;
 }
 
-- (void)didFetchElements:(id)a3 foundNewElements:(BOOL)a4 currentFocusContext:(id)a5 didChangeActiveElementManager:(BOOL)a6
+- (void)didFetchElements:(id)elements foundNewElements:(BOOL)newElements currentFocusContext:(id)context didChangeActiveElementManager:(BOOL)manager
 {
-  v6 = a4;
-  v8 = a3;
-  if (v6)
+  newElementsCopy = newElements;
+  elementsCopy = elements;
+  if (newElementsCopy)
   {
-    v12 = v8;
-    v9 = [(SCATCandidateBarManager *)self delegate];
-    v10 = [(SCATCandidateBarManager *)self typingCandidates];
-    v11 = [v9 candidateBarManager:self hasValidTypingCandidates:v10];
+    v12 = elementsCopy;
+    delegate = [(SCATCandidateBarManager *)self delegate];
+    typingCandidates = [(SCATCandidateBarManager *)self typingCandidates];
+    v11 = [delegate candidateBarManager:self hasValidTypingCandidates:typingCandidates];
 
-    v8 = v12;
+    elementsCopy = v12;
     if ((v11 & 1) == 0)
     {
       [(SCATCandidateBarManager *)self setTypingCandidates:0];
@@ -89,7 +89,7 @@
         [v12 useFocusContextOnResume:0];
       }
 
-      v8 = v12;
+      elementsCopy = v12;
     }
   }
 }

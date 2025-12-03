@@ -1,31 +1,31 @@
 @interface PedestrianARSessionSunsetSunriseMonitor
 + ($6E15C01CA1BE37A4936191A84F7075E2)enablementGEOConfigKey;
 - (NSString)debugDescription;
-- (PedestrianARSessionSunsetSunriseMonitor)initWithObserver:(id)a3 locationManager:(id)a4 sunsetSunriseCalculator:(id)a5 platformController:(id)a6 transportTypeSupportProvider:(Class)a7;
+- (PedestrianARSessionSunsetSunriseMonitor)initWithObserver:(id)observer locationManager:(id)manager sunsetSunriseCalculator:(id)calculator platformController:(id)controller transportTypeSupportProvider:(Class)provider;
 - (void)dealloc;
-- (void)sunsetSunriseObserver:(id)a3 didUpdateState:(int64_t)a4;
+- (void)sunsetSunriseObserver:(id)observer didUpdateState:(int64_t)state;
 - (void)updateState;
 @end
 
 @implementation PedestrianARSessionSunsetSunriseMonitor
 
-- (void)sunsetSunriseObserver:(id)a3 didUpdateState:(int64_t)a4
+- (void)sunsetSunriseObserver:(id)observer didUpdateState:(int64_t)state
 {
   v6 = sub_100BE1374();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    if ((a4 - 1) > 3)
+    if ((state - 1) > 3)
     {
       v7 = @"Unknown";
     }
 
     else
     {
-      v7 = *(&off_10164D1F8 + a4 - 1);
+      v7 = *(&off_10164D1F8 + state - 1);
     }
 
     v8 = 134349314;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Got a new state from the sunset/sunrise observer: %@", &v8, 0x16u);
@@ -36,11 +36,11 @@
 
 - (NSString)debugDescription
 {
-  v3 = [objc_opt_class() friendlyName];
+  friendlyName = [objc_opt_class() friendlyName];
   [objc_opt_class() offsetThreshold];
   v5 = v4;
-  v6 = [(PedestrianARSessionSunsetSunriseMonitor *)self sunsetSunriseObserver];
-  v7 = [v6 currentState] - 1;
+  sunsetSunriseObserver = [(PedestrianARSessionSunsetSunriseMonitor *)self sunsetSunriseObserver];
+  v7 = [sunsetSunriseObserver currentState] - 1;
   if (v7 > 3)
   {
     v8 = @"Unknown";
@@ -51,24 +51,24 @@
     v8 = *(&off_10164D1F8 + v7);
   }
 
-  v9 = [(PedestrianARSessionSunsetSunriseMonitor *)self sunsetSunriseObserver];
-  v10 = [v9 _sunset];
-  v11 = [(PedestrianARSessionSunsetSunriseMonitor *)self sunsetSunriseObserver];
-  v12 = [v11 _sunrise];
-  v13 = [NSString stringWithFormat:@"%@\noffset threshold (seconds): %.2f\nsunset/sunrise state: %@\nsunset: %@\nsunrise: %@\n", v3, v5, v8, v10, v12];
+  sunsetSunriseObserver2 = [(PedestrianARSessionSunsetSunriseMonitor *)self sunsetSunriseObserver];
+  _sunset = [sunsetSunriseObserver2 _sunset];
+  sunsetSunriseObserver3 = [(PedestrianARSessionSunsetSunriseMonitor *)self sunsetSunriseObserver];
+  _sunrise = [sunsetSunriseObserver3 _sunrise];
+  v13 = [NSString stringWithFormat:@"%@\noffset threshold (seconds): %.2f\nsunset/sunrise state: %@\nsunset: %@\nsunrise: %@\n", friendlyName, v5, v8, _sunset, _sunrise];
 
   return v13;
 }
 
 - (void)updateState
 {
-  v3 = [(PedestrianARSessionSunsetSunriseMonitor *)self sunsetSunriseObserver];
-  v4 = [v3 currentState];
+  sunsetSunriseObserver = [(PedestrianARSessionSunsetSunriseMonitor *)self sunsetSunriseObserver];
+  currentState = [sunsetSunriseObserver currentState];
 
   v5 = 0;
-  if (v4 <= 1)
+  if (currentState <= 1)
   {
-    if (!v4)
+    if (!currentState)
     {
       v6 = sub_100BE1374();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -82,7 +82,7 @@
       goto LABEL_20;
     }
 
-    if (v4 == 1)
+    if (currentState == 1)
     {
       v6 = sub_100BE1374();
       v5 = 1;
@@ -99,7 +99,7 @@
 
   else
   {
-    switch(v4)
+    switch(currentState)
     {
       case 2:
         v6 = sub_100BE1374();
@@ -152,7 +152,7 @@ LABEL_15:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -162,13 +162,13 @@ LABEL_15:
   [(PedestrianARSessionMonitor *)&v4 dealloc];
 }
 
-- (PedestrianARSessionSunsetSunriseMonitor)initWithObserver:(id)a3 locationManager:(id)a4 sunsetSunriseCalculator:(id)a5 platformController:(id)a6 transportTypeSupportProvider:(Class)a7
+- (PedestrianARSessionSunsetSunriseMonitor)initWithObserver:(id)observer locationManager:(id)manager sunsetSunriseCalculator:(id)calculator platformController:(id)controller transportTypeSupportProvider:(Class)provider
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v13)
+  observerCopy = observer;
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  controllerCopy = controller;
+  if (!managerCopy)
   {
     v21 = sub_10006D178();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -197,7 +197,7 @@ LABEL_15:
     }
   }
 
-  if (!v14)
+  if (!calculatorCopy)
   {
     v24 = sub_10006D178();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -226,7 +226,7 @@ LABEL_15:
     }
   }
 
-  if (!v15)
+  if (!controllerCopy)
   {
     v27 = sub_10006D178();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -255,7 +255,7 @@ LABEL_15:
     }
   }
 
-  if (!a7)
+  if (!provider)
   {
     v30 = sub_10006D178();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -286,7 +286,7 @@ LABEL_15:
 
   v33.receiver = self;
   v33.super_class = PedestrianARSessionSunsetSunriseMonitor;
-  v16 = [(PedestrianARSessionMonitor *)&v33 initWithObserver:v12];
+  v16 = [(PedestrianARSessionMonitor *)&v33 initWithObserver:observerCopy];
   if (v16)
   {
     v17 = sub_100BE1374();
@@ -297,7 +297,7 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    v18 = [[MapsSunsetSunriseObserver alloc] initWithLocationManager:v13 sunsetSunriseCalculator:v14 platformController:v15 transportTypeSupportProvider:a7];
+    v18 = [[MapsSunsetSunriseObserver alloc] initWithLocationManager:managerCopy sunsetSunriseCalculator:calculatorCopy platformController:controllerCopy transportTypeSupportProvider:provider];
     sunsetSunriseObserver = v16->_sunsetSunriseObserver;
     v16->_sunsetSunriseObserver = v18;
 

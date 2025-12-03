@@ -1,9 +1,9 @@
 @interface CreateTimerIntentResponse
 - (CreateTimerIntentResponse)init;
-- (CreateTimerIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (CreateTimerIntentResponse)initWithPropertiesByName:(id)a3;
+- (CreateTimerIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (CreateTimerIntentResponse)initWithPropertiesByName:(id)name;
 - (int64_t)code;
-- (void)setCode:(int64_t)a3;
+- (void)setCode:(int64_t)code;
 @end
 
 @implementation CreateTimerIntentResponse
@@ -15,22 +15,22 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setCode:(int64_t)a3
+- (void)setCode:(int64_t)code
 {
   v5 = OBJC_IVAR___CreateTimerIntentResponse_code;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = code;
 }
 
-- (CreateTimerIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (CreateTimerIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   v7 = [(CreateTimerIntentResponse *)self init];
   v8 = OBJC_IVAR___CreateTimerIntentResponse_code;
   swift_beginAccess();
-  *(&v7->super.super.isa + v8) = a3;
+  *(&v7->super.super.isa + v8) = code;
   v9 = v7;
-  [(CreateTimerIntentResponse *)v9 setUserActivity:v6];
+  [(CreateTimerIntentResponse *)v9 setUserActivity:activityCopy];
 
   return v9;
 }
@@ -43,9 +43,9 @@
   return [(CreateTimerIntentResponse *)&v3 init];
 }
 
-- (CreateTimerIntentResponse)initWithPropertiesByName:(id)a3
+- (CreateTimerIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_2693B3720();
   }

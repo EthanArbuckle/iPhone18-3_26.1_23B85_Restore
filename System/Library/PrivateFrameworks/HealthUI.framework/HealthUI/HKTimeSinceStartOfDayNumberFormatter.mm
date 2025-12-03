@@ -1,20 +1,20 @@
 @interface HKTimeSinceStartOfDayNumberFormatter
-- (id)stringFromNumber:(id)a3 displayType:(id)a4 unitController:(id)a5;
+- (id)stringFromNumber:(id)number displayType:(id)type unitController:(id)controller;
 @end
 
 @implementation HKTimeSinceStartOfDayNumberFormatter
 
-- (id)stringFromNumber:(id)a3 displayType:(id)a4 unitController:(id)a5
+- (id)stringFromNumber:(id)number displayType:(id)type unitController:(id)controller
 {
   v6 = MEMORY[0x1E695DEE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 currentCalendar];
-  v10 = [v7 hk_startOfDayTransform];
+  typeCopy = type;
+  numberCopy = number;
+  currentCalendar = [v6 currentCalendar];
+  hk_startOfDayTransform = [typeCopy hk_startOfDayTransform];
 
   v11 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:0.0];
-  v12 = (v10)[2](v10, v9, v11);
-  [v8 doubleValue];
+  v12 = (hk_startOfDayTransform)[2](hk_startOfDayTransform, currentCalendar, v11);
+  [numberCopy doubleValue];
   v14 = v13;
 
   v15 = [v12 dateByAddingTimeInterval:v14];

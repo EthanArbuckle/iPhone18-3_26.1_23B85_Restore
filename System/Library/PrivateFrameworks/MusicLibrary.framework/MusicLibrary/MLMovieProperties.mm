@@ -1,34 +1,34 @@
 @interface MLMovieProperties
-- (MLMovieProperties)initWithMoviePropertiesDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setValue:(id)a3 forKey:(id)a4;
-- (void)_setValueCopy:(id)a3 forKey:(id)a4;
+- (MLMovieProperties)initWithMoviePropertiesDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setValue:(id)value forKey:(id)key;
+- (void)_setValueCopy:(id)copy forKey:(id)key;
 @end
 
 @implementation MLMovieProperties
 
-- (void)_setValueCopy:(id)a3 forKey:(id)a4
+- (void)_setValueCopy:(id)copy forKey:(id)key
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  [(MLMovieProperties *)self _setValue:v7 forKey:v6];
+  keyCopy = key;
+  v7 = [copy copy];
+  [(MLMovieProperties *)self _setValue:v7 forKey:keyCopy];
 }
 
-- (void)_setValue:(id)a3 forKey:(id)a4
+- (void)_setValue:(id)value forKey:(id)key
 {
   dictionary = self->_dictionary;
-  if (a3)
+  if (value)
   {
-    [(NSMutableDictionary *)dictionary setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)dictionary setObject:value forKey:key];
   }
 
   else
   {
-    [(NSMutableDictionary *)dictionary removeObjectForKey:a4];
+    [(NSMutableDictionary *)dictionary removeObjectForKey:key];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   dictionary = self->_dictionary;
@@ -36,17 +36,17 @@
   return [v4 initWithMoviePropertiesDictionary:dictionary];
 }
 
-- (MLMovieProperties)initWithMoviePropertiesDictionary:(id)a3
+- (MLMovieProperties)initWithMoviePropertiesDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = MLMovieProperties;
   v5 = [(MLMovieProperties *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (dictionaryCopy)
     {
-      v6 = [v4 mutableCopy];
+      v6 = [dictionaryCopy mutableCopy];
     }
 
     else

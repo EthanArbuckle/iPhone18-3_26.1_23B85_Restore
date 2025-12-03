@@ -1,9 +1,9 @@
 @interface RMDRandomSource
 + (id)sharedRandom;
 - (RMDRandomSource)init;
-- (RMDRandomSource)initWithCoder:(id)a3;
-- (id)arrayByShufflingObjectsInArray:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RMDRandomSource)initWithCoder:(id)coder;
+- (id)arrayByShufflingObjectsInArray:(id)array;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RMDRandomSource
@@ -29,14 +29,14 @@
   return p_super;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
 
   return objc_opt_new();
 }
 
-- (RMDRandomSource)initWithCoder:(id)a3
+- (RMDRandomSource)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = RMDRandomSource;
@@ -62,19 +62,19 @@ uint64_t __31__RMDRandomSource_sharedRandom__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)arrayByShufflingObjectsInArray:(id)a3
+- (id)arrayByShufflingObjectsInArray:(id)array
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count] > 1)
+  arrayCopy = array;
+  if ([arrayCopy count] > 1)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(arrayCopy, "count")}];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v19 = v4;
-    v7 = v4;
+    v19 = arrayCopy;
+    v7 = arrayCopy;
     v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
@@ -121,12 +121,12 @@ uint64_t __31__RMDRandomSource_sharedRandom__block_invoke()
     }
 
     v5 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v6];
-    v4 = v19;
+    arrayCopy = v19;
   }
 
   else
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v4];
+    v5 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:arrayCopy];
   }
 
   return v5;

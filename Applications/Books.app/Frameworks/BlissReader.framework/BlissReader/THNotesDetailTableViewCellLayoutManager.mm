@@ -1,15 +1,15 @@
 @interface THNotesDetailTableViewCellLayoutManager
-- (CGRect)editControlEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4;
-- (CGRect)editControlStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4;
+- (CGRect)editControlEndingRectForCell:(id)cell forNewEditingState:(BOOL)state;
+- (CGRect)editControlStartingRectForCell:(id)cell forNewEditingState:(BOOL)state;
 @end
 
 @implementation THNotesDetailTableViewCellLayoutManager
 
-- (CGRect)editControlStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4
+- (CGRect)editControlStartingRectForCell:(id)cell forNewEditingState:(BOOL)state
 {
   v16.receiver = self;
   v16.super_class = THNotesDetailTableViewCellLayoutManager;
-  [(THNotesDetailTableViewCellLayoutManager *)&v16 editControlStartingRectForCell:a3 forNewEditingState:a4];
+  [(THNotesDetailTableViewCellLayoutManager *)&v16 editControlStartingRectForCell:cell forNewEditingState:state];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -26,16 +26,16 @@
   return result;
 }
 
-- (CGRect)editControlEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4
+- (CGRect)editControlEndingRectForCell:(id)cell forNewEditingState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v18.receiver = self;
   v18.super_class = THNotesDetailTableViewCellLayoutManager;
   [THNotesDetailTableViewCellLayoutManager editControlEndingRectForCell:"editControlEndingRectForCell:forNewEditingState:" forNewEditingState:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  if (v4 && +[UIView userInterfaceLayoutDirectionForSemanticContentAttribute:](UIView, "userInterfaceLayoutDirectionForSemanticContentAttribute:", [a3 semanticContentAttribute]) == UIUserInterfaceLayoutDirectionLeftToRight)
+  if (stateCopy && +[UIView userInterfaceLayoutDirectionForSemanticContentAttribute:](UIView, "userInterfaceLayoutDirectionForSemanticContentAttribute:", [cell semanticContentAttribute]) == UIUserInterfaceLayoutDirectionLeftToRight)
   {
     v8 = v8 + 29.0;
   }

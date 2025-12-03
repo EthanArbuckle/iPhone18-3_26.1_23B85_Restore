@@ -1,26 +1,26 @@
 @interface BLNotificationConnection
-- (BLNotificationConnection)initWithEnvironment:(id)a3 queue:(id)a4;
+- (BLNotificationConnection)initWithEnvironment:(id)environment queue:(id)queue;
 - (BLNotificationConnectionDelegate)delegate;
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)dealloc;
 @end
 
 @implementation BLNotificationConnection
 
-- (BLNotificationConnection)initWithEnvironment:(id)a3 queue:(id)a4
+- (BLNotificationConnection)initWithEnvironment:(id)environment queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  environmentCopy = environment;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = BLNotificationConnection;
   v9 = [(BLNotificationConnection *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a4);
-    objc_storeStrong(&v10->_environment, a3);
-    v11 = [[APSConnection alloc] initWithEnvironmentName:v7 namedDelegatePort:@"com.apple.aps.bookassetd" queue:v10->_queue];
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_environment, environment);
+    v11 = [[APSConnection alloc] initWithEnvironmentName:environmentCopy namedDelegatePort:@"com.apple.aps.bookassetd" queue:v10->_queue];
     connection = v10->_connection;
     v10->_connection = v11;
 
@@ -42,19 +42,19 @@
   [(BLNotificationConnection *)&v3 dealloc];
 }
 
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info
 {
-  v7 = a3;
+  connectionCopy = connection;
   queue = self->_queue;
-  v9 = a5;
+  infoCopy = info;
   dispatch_assert_queue_V2(queue);
-  v10 = [[BLNotificationMessage alloc] initWithUserInfo:v9];
+  v10 = [[BLNotificationMessage alloc] initWithUserInfo:infoCopy];
 
   v11 = BLServiceNotificationLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v13 = 138543618;
-    v14 = v7;
+    v14 = connectionCopy;
     v15 = 2114;
     v16 = v10;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Connection: %{public}@ received incoming message %{public}@", &v13, 0x16u);
@@ -66,7 +66,7 @@
     if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_ERROR))
     {
       v13 = 138543618;
-      v14 = v7;
+      v14 = connectionCopy;
       v15 = 2114;
       v16 = v10;
       _os_log_impl(&_mh_execute_header, WeakRetained, OS_LOG_TYPE_ERROR, "Connection: %{public}@ received invalid message %{public}@", &v13, 0x16u);
@@ -80,19 +80,19 @@
   }
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_queue);
   v8 = BLServiceNotificationLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v7 bu_md5];
+    bu_md5 = [tokenCopy bu_md5];
     v10 = 138543618;
-    v11 = v6;
+    v11 = connectionCopy;
     v12 = 2114;
-    v13 = v9;
+    v13 = bu_md5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Connection: %{public}@ received public token %{public}@", &v10, 0x16u);
   }
 }

@@ -1,14 +1,14 @@
 @interface BKDevicePearl
-+ (BOOL)deviceAvailableWithFailure:(BOOL *)a3;
-- (BOOL)prewarmCamera:(unint64_t)a3 error:(id *)a4;
-- (BOOL)setTemplate:(id)a3 forIdentity:(id)a4 error:(id *)a5;
-- (id)createEnrollOperationWithError:(id *)a3;
-- (id)createMatchOperationWithError:(id *)a3;
-- (id)createPresenceDetectOperationWithError:(id *)a3;
-- (id)periocularMatchStateWithError:(id *)a3;
-- (id)supportsPeriocularEnrollmentWithError:(id *)a3;
-- (int64_t)deviceEventWithStatus:(unsigned int)a3;
-- (int64_t)deviceStateWithStatus:(unsigned int)a3;
++ (BOOL)deviceAvailableWithFailure:(BOOL *)failure;
+- (BOOL)prewarmCamera:(unint64_t)camera error:(id *)error;
+- (BOOL)setTemplate:(id)template forIdentity:(id)identity error:(id *)error;
+- (id)createEnrollOperationWithError:(id *)error;
+- (id)createMatchOperationWithError:(id *)error;
+- (id)createPresenceDetectOperationWithError:(id *)error;
+- (id)periocularMatchStateWithError:(id *)error;
+- (id)supportsPeriocularEnrollmentWithError:(id *)error;
+- (int64_t)deviceEventWithStatus:(unsigned int)status;
+- (int64_t)deviceStateWithStatus:(unsigned int)status;
 - (int64_t)pearlState;
 @end
 
@@ -16,12 +16,12 @@
 
 - (int64_t)pearlState
 {
-  v3 = [(BiometricKitXPCClient *)self->super._xpcClient getDeviceState];
+  getDeviceState = [(BiometricKitXPCClient *)self->super._xpcClient getDeviceState];
 
-  return [(BKDevicePearl *)self deviceStateWithStatus:v3];
+  return [(BKDevicePearl *)self deviceStateWithStatus:getDeviceState];
 }
 
-+ (BOOL)deviceAvailableWithFailure:(BOOL *)a3
++ (BOOL)deviceAvailableWithFailure:(BOOL *)failure
 {
   *&v13[5] = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -39,7 +39,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134217984;
-    *v13 = a3;
+    *v13 = failure;
     _os_log_impl(&dword_1C82AD000, v5, OS_LOG_TYPE_DEFAULT, "BKDevicePearl::deviceAvailableWithFailure: %p\n", &v12, 0xCu);
   }
 
@@ -49,15 +49,15 @@
   }
 
   v6 = isFaceIDPlatform();
-  if (a3)
+  if (failure)
   {
-    *a3 = 0;
+    *failure = 0;
   }
 
   if ((v6 & 1) == 0)
   {
 LABEL_20:
-    [(BKDevicePearl *)a3 deviceAvailableWithFailure:?];
+    [(BKDevicePearl *)failure deviceAvailableWithFailure:?];
     v9 = v12;
   }
 
@@ -75,9 +75,9 @@ LABEL_20:
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (failure)
       {
-        v8 = *a3;
+        v8 = *failure;
       }
 
       else
@@ -104,7 +104,7 @@ LABEL_20:
   return v9;
 }
 
-- (id)createEnrollOperationWithError:(id *)a3
+- (id)createEnrollOperationWithError:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -140,9 +140,9 @@ LABEL_20:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v9 = *a3;
+        v9 = *error;
       }
 
       else
@@ -160,7 +160,7 @@ LABEL_20:
 
   else
   {
-    [BKDevicePearl createEnrollOperationWithError:a3];
+    [BKDevicePearl createEnrollOperationWithError:error];
   }
 
   kdebug_trace();
@@ -169,7 +169,7 @@ LABEL_20:
   return v7;
 }
 
-- (id)createMatchOperationWithError:(id *)a3
+- (id)createMatchOperationWithError:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -205,9 +205,9 @@ LABEL_20:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v9 = *a3;
+        v9 = *error;
       }
 
       else
@@ -225,7 +225,7 @@ LABEL_20:
 
   else
   {
-    [BKDevicePearl createMatchOperationWithError:a3];
+    [BKDevicePearl createMatchOperationWithError:error];
   }
 
   kdebug_trace();
@@ -234,7 +234,7 @@ LABEL_20:
   return v7;
 }
 
-- (id)createPresenceDetectOperationWithError:(id *)a3
+- (id)createPresenceDetectOperationWithError:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -270,9 +270,9 @@ LABEL_20:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v9 = *a3;
+        v9 = *error;
       }
 
       else
@@ -290,7 +290,7 @@ LABEL_20:
 
   else
   {
-    [BKDevicePearl createPresenceDetectOperationWithError:a3];
+    [BKDevicePearl createPresenceDetectOperationWithError:error];
   }
 
   kdebug_trace();
@@ -299,7 +299,7 @@ LABEL_20:
   return v7;
 }
 
-- (id)supportsPeriocularEnrollmentWithError:(id *)a3
+- (id)supportsPeriocularEnrollmentWithError:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69E9C10];
@@ -318,7 +318,7 @@ LABEL_20:
     xpcClient = self->super._xpcClient;
     v8 = v6;
     *buf = 134217984;
-    v19 = [(BiometricKitXPCClient *)xpcClient connectionId];
+    connectionId = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v8, OS_LOG_TYPE_DEFAULT, "BKDevicePearl::supportsPeriocularEnrollment (_cid:%lu)\n", buf, 0xCu);
   }
 
@@ -346,9 +346,9 @@ LABEL_20:
 
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (error)
         {
-          v12 = *a3;
+          v12 = *error;
         }
 
         else
@@ -357,7 +357,7 @@ LABEL_20:
         }
 
         *buf = 138412546;
-        v19 = v10;
+        connectionId = v10;
         v20 = 2112;
         v21 = v12;
         _os_log_impl(&dword_1C82AD000, v11, OS_LOG_TYPE_DEFAULT, "BKDevicePearl::supportsPeriocularEnrollment -> %@, error:%@\n", buf, 0x16u);
@@ -379,9 +379,9 @@ LABEL_20:
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    if (a3)
+    if (error)
     {
-      v14 = *a3;
+      v14 = *error;
     }
 
     else
@@ -390,7 +390,7 @@ LABEL_20:
     }
 
     *buf = 138412546;
-    v19 = 0;
+    connectionId = 0;
     v20 = 2112;
     v21 = v14;
     _os_log_impl(&dword_1C82AD000, v13, OS_LOG_TYPE_ERROR, "BKDevicePearl::supportsPeriocularEnrollment -> %@, error:%@\n", buf, 0x16u);
@@ -403,7 +403,7 @@ LABEL_26:
   return v10;
 }
 
-- (id)periocularMatchStateWithError:(id *)a3
+- (id)periocularMatchStateWithError:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69E9C10];
@@ -422,7 +422,7 @@ LABEL_26:
     xpcClient = self->super._xpcClient;
     v8 = v6;
     *buf = 134217984;
-    v19 = [(BiometricKitXPCClient *)xpcClient connectionId];
+    connectionId = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v8, OS_LOG_TYPE_DEFAULT, "BKDevicePearl::periocularMatchState (_cid:%lu)\n", buf, 0xCu);
   }
 
@@ -434,10 +434,10 @@ LABEL_26:
 
   else
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:v17 & 0x3F];
-    if (v9)
+    0x3F = [MEMORY[0x1E696AD98] numberWithInteger:v17 & 0x3F];
+    if (0x3F)
     {
-      v10 = v9;
+      v10 = 0x3F;
       if (__osLogTrace)
       {
         v11 = __osLogTrace;
@@ -450,9 +450,9 @@ LABEL_26:
 
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (error)
         {
-          v12 = *a3;
+          v12 = *error;
         }
 
         else
@@ -461,7 +461,7 @@ LABEL_26:
         }
 
         *buf = 138412546;
-        v19 = v10;
+        connectionId = v10;
         v20 = 2112;
         v21 = v12;
         _os_log_impl(&dword_1C82AD000, v11, OS_LOG_TYPE_DEFAULT, "BKDevicePearl::periocularMatchState -> %@, error:%@\n", buf, 0x16u);
@@ -483,9 +483,9 @@ LABEL_26:
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    if (a3)
+    if (error)
     {
-      v14 = *a3;
+      v14 = *error;
     }
 
     else
@@ -494,7 +494,7 @@ LABEL_26:
     }
 
     *buf = 138412546;
-    v19 = 0;
+    connectionId = 0;
     v20 = 2112;
     v21 = v14;
     _os_log_impl(&dword_1C82AD000, v13, OS_LOG_TYPE_ERROR, "BKDevicePearl::periocularMatchState -> %@, error:%@\n", buf, 0x16u);
@@ -594,11 +594,11 @@ void __68__BKDevicePearl_removePeriocularEnrollmentsForUser_removeAll_reply___bl
   dispatch_async(v6, block);
 }
 
-- (BOOL)setTemplate:(id)a3 forIdentity:(id)a4 error:(id *)a5
+- (BOOL)setTemplate:(id)template forIdentity:(id)identity error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  templateCopy = template;
+  identityCopy = identity;
   v10 = MEMORY[0x1E69E9C10];
   if (__osLogTrace)
   {
@@ -613,20 +613,20 @@ void __68__BKDevicePearl_removePeriocularEnrollmentsForUser_removeAll_reply___bl
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v8 length];
-    v14 = [(BiometricKitXPCClient *)self->super._xpcClient connectionId];
+    v13 = [templateCopy length];
+    connectionId = [(BiometricKitXPCClient *)self->super._xpcClient connectionId];
     v27 = 134218496;
     *v28 = v13;
     *&v28[8] = 2048;
-    *&v28[10] = v9;
+    *&v28[10] = identityCopy;
     v29 = 2048;
-    v30 = v14;
+    v30 = connectionId;
     _os_log_impl(&dword_1C82AD000, v12, OS_LOG_TYPE_DEFAULT, "BKDevicePearl::setTemplate:forIdentity: NSData(length:%lu), %p (_cid:%lu)\n", &v27, 0x20u);
   }
 
   xpcClient = self->super._xpcClient;
-  v16 = [v9 serverIdentity];
-  v17 = [(BiometricKitXPCClient *)xpcClient setTemplate:v8 forIdentity:v16];
+  serverIdentity = [identityCopy serverIdentity];
+  v17 = [(BiometricKitXPCClient *)xpcClient setTemplate:templateCopy forIdentity:serverIdentity];
 
   if (v17)
   {
@@ -655,7 +655,7 @@ void __68__BKDevicePearl_removePeriocularEnrollmentsForUser_removeAll_reply___bl
       _os_log_impl(&dword_1C82AD000, v24, OS_LOG_TYPE_ERROR, "AssertMacros: %s (value = 0x%lx), %s file: %s, line: %d\n\n", &v27, 0x30u);
     }
 
-    setErrorWithOSStatus(v17, a5);
+    setErrorWithOSStatus(v17, error);
     if (__osLogTrace)
     {
       v25 = __osLogTrace;
@@ -668,9 +668,9 @@ void __68__BKDevicePearl_removePeriocularEnrollmentsForUser_removeAll_reply___bl
 
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      if (a5)
+      if (error)
       {
-        v26 = *a5;
+        v26 = *error;
       }
 
       else
@@ -702,9 +702,9 @@ void __68__BKDevicePearl_removePeriocularEnrollmentsForUser_removeAll_reply___bl
 
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      if (a5)
+      if (error)
       {
-        v19 = *a5;
+        v19 = *error;
       }
 
       else
@@ -727,7 +727,7 @@ LABEL_15:
   return v17 == 0;
 }
 
-- (BOOL)prewarmCamera:(unint64_t)a3 error:(id *)a4
+- (BOOL)prewarmCamera:(unint64_t)camera error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69E9C10];
@@ -746,13 +746,13 @@ LABEL_15:
     xpcClient = self->super._xpcClient;
     v10 = v8;
     v19 = 134218240;
-    *v20 = a3;
+    *v20 = camera;
     *&v20[8] = 2048;
     *&v20[10] = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v10, OS_LOG_TYPE_DEFAULT, "BKDevicePearl::prewarmCamera: %lu (_cid:%lu)\n", &v19, 0x16u);
   }
 
-  if (a3 == 1)
+  if (camera == 1)
   {
     if (![(BiometricKitXPCClient *)self->super._xpcClient prewarmCamera:2])
     {
@@ -768,9 +768,9 @@ LABEL_15:
 
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        if (a4)
+        if (error)
         {
-          v12 = *a4;
+          v12 = *error;
         }
 
         else
@@ -824,7 +824,7 @@ LABEL_15:
       _os_log_impl(&dword_1C82AD000, v13, OS_LOG_TYPE_ERROR, "AssertMacros: %s (value = 0x%lx), %s file: %s, line: %d\n\n", &v19, 0x30u);
     }
 
-    setError(1, a4);
+    setError(1, error);
   }
 
   if (__osLogTrace)
@@ -839,9 +839,9 @@ LABEL_15:
 
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    if (a4)
+    if (error)
     {
-      v15 = *a4;
+      v15 = *error;
     }
 
     else
@@ -874,10 +874,10 @@ void __38__BKDevicePearl_statusMessage_client___block_invoke_2(uint64_t a1)
   [v2 device:*(a1 + 32) pearlStateChanged:*(a1 + 40)];
 }
 
-- (int64_t)deviceEventWithStatus:(unsigned int)a3
+- (int64_t)deviceEventWithStatus:(unsigned int)status
 {
   result = 0;
-  switch(a3)
+  switch(status)
   {
     case 0x3E9u:
       result = 1;
@@ -933,12 +933,12 @@ void __38__BKDevicePearl_statusMessage_client___block_invoke_2(uint64_t a1)
       break;
     default:
       v4 = 11;
-      if (a3 != 1070)
+      if (status != 1070)
       {
         v4 = 0;
       }
 
-      if (a3 == 1066)
+      if (status == 1066)
       {
         result = 12;
       }
@@ -954,9 +954,9 @@ void __38__BKDevicePearl_statusMessage_client___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (int64_t)deviceStateWithStatus:(unsigned int)a3
+- (int64_t)deviceStateWithStatus:(unsigned int)status
 {
-  v3 = a3 - 1011;
+  v3 = status - 1011;
   if (v3 < 5)
   {
     return v3 + 1;

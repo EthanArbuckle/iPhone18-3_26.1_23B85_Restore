@@ -1,19 +1,19 @@
 @interface ATXMissedNotificationRankingFeedbackProcessingPipeline
 - (ATXMissedNotificationRankingFeedbackProcessingPipeline)init;
-- (ATXMissedNotificationRankingFeedbackProcessingPipeline)initWithBookmark:(id)a3 path:(id)a4 trackedMNRStream:(id)a5;
-- (BOOL)_fileExistsAtPath:(id)a3;
+- (ATXMissedNotificationRankingFeedbackProcessingPipeline)initWithBookmark:(id)bookmark path:(id)path trackedMNRStream:(id)stream;
+- (BOOL)_fileExistsAtPath:(id)path;
 - (void)_readBookmarkFromPath;
 - (void)_writeBookmarkToPath;
-- (void)logMetricsForRanking:(id)a3;
-- (void)logMetricsWithXPCActivity:(id)a3;
+- (void)logMetricsForRanking:(id)ranking;
+- (void)logMetricsWithXPCActivity:(id)activity;
 @end
 
 @implementation ATXMissedNotificationRankingFeedbackProcessingPipeline
 
 - (ATXMissedNotificationRankingFeedbackProcessingPipeline)init
 {
-  v3 = [MEMORY[0x277CEBCB0] metricsRootDirectory];
-  v4 = [v3 stringByAppendingPathComponent:@"mnrLoggingBookmark"];
+  metricsRootDirectory = [MEMORY[0x277CEBCB0] metricsRootDirectory];
+  v4 = [metricsRootDirectory stringByAppendingPathComponent:@"mnrLoggingBookmark"];
 
   v5 = objc_opt_new();
   v6 = [(ATXMissedNotificationRankingFeedbackProcessingPipeline *)self initWithBookmark:0 path:v4 trackedMNRStream:v5];
@@ -21,20 +21,20 @@
   return v6;
 }
 
-- (ATXMissedNotificationRankingFeedbackProcessingPipeline)initWithBookmark:(id)a3 path:(id)a4 trackedMNRStream:(id)a5
+- (ATXMissedNotificationRankingFeedbackProcessingPipeline)initWithBookmark:(id)bookmark path:(id)path trackedMNRStream:(id)stream
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  bookmarkCopy = bookmark;
+  pathCopy = path;
+  streamCopy = stream;
   v15.receiver = self;
   v15.super_class = ATXMissedNotificationRankingFeedbackProcessingPipeline;
   v12 = [(ATXMissedNotificationRankingFeedbackProcessingPipeline *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bookmark, a3);
-    objc_storeStrong(&v13->_path, a4);
-    objc_storeStrong(&v13->_trackedMNRStream, a5);
+    objc_storeStrong(&v12->_bookmark, bookmark);
+    objc_storeStrong(&v13->_path, path);
+    objc_storeStrong(&v13->_trackedMNRStream, stream);
     if (!v13->_bookmark)
     {
       [(ATXMissedNotificationRankingFeedbackProcessingPipeline *)v13 _readBookmarkFromPath];
@@ -44,9 +44,9 @@
   return v13;
 }
 
-- (void)logMetricsWithXPCActivity:(id)a3
+- (void)logMetricsWithXPCActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   trackedMNRStream = self->_trackedMNRStream;
   v6 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:-172800.0];
   [v6 timeIntervalSinceReferenceDate];
@@ -74,7 +74,7 @@
   v11[3] = &unk_27859C078;
   v11[4] = self;
   v13 = v16;
-  v9 = v4;
+  v9 = activityCopy;
   v12 = v9;
   v14 = v17;
   v10 = [v7 drivableSinkWithBookmark:bookmark completion:v15 shouldContinue:v11];
@@ -166,33 +166,33 @@ uint64_t __84__ATXMissedNotificationRankingFeedbackProcessingPipeline_logMetrics
   return v3 ^ 1u;
 }
 
-- (void)logMetricsForRanking:(id)a3
+- (void)logMetricsForRanking:(id)ranking
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  rankingCopy = ranking;
   v4 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [v3 uuid];
-    v8 = [v7 UUIDString];
+    uuid = [rankingCopy uuid];
+    uUIDString = [uuid UUIDString];
     *buf = 138412546;
     v26 = v6;
     v27 = 2112;
-    v28 = v8;
+    v28 = uUIDString;
     _os_log_impl(&dword_2263AA000, v4, OS_LOG_TYPE_INFO, "[%@] Logging metrics for missed notification ranking %@", buf, 0x16u);
   }
 
   v9 = objc_opt_new();
-  [v9 populateMetricsFromRanking:v3];
+  [v9 populateMetricsFromRanking:rankingCopy];
   [v9 logToCoreAnalytics];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [v3 rankedGroups];
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  rankedGroups = [rankingCopy rankedGroups];
+  v11 = [rankedGroups countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
@@ -203,23 +203,23 @@ uint64_t __84__ATXMissedNotificationRankingFeedbackProcessingPipeline_logMetrics
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(rankedGroups);
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 digestEngagementTrackingMetrics];
+        digestEngagementTrackingMetrics = [v15 digestEngagementTrackingMetrics];
 
-        if (v16)
+        if (digestEngagementTrackingMetrics)
         {
           v17 = objc_opt_new();
-          v18 = [v3 uuid];
-          [v17 populateMetricsFromDigestGroup:v15 mnbUUID:v18];
+          uuid2 = [rankingCopy uuid];
+          [v17 populateMetricsFromDigestGroup:v15 mnbUUID:uuid2];
 
           [v17 logToCoreAnalytics];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v12 = [rankedGroups countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v12);
@@ -232,9 +232,9 @@ uint64_t __84__ATXMissedNotificationRankingFeedbackProcessingPipeline_logMetrics
 {
   v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:self->_path];
   v3 = [MEMORY[0x277CEBBF8] bookmarkFromURLPath:v6 maxFileSize:2000000 versionNumber:&unk_283A56018];
-  v4 = [v3 bookmark];
+  bookmark = [v3 bookmark];
   bookmark = self->_bookmark;
-  self->_bookmark = v4;
+  self->_bookmark = bookmark;
 }
 
 - (void)_writeBookmarkToPath
@@ -251,12 +251,12 @@ uint64_t __84__ATXMissedNotificationRankingFeedbackProcessingPipeline_logMetrics
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_fileExistsAtPath:(id)a3
+- (BOOL)_fileExistsAtPath:(id)path
 {
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  pathCopy = path;
+  defaultManager = [v3 defaultManager];
+  v6 = [defaultManager fileExistsAtPath:pathCopy];
 
   return v6;
 }

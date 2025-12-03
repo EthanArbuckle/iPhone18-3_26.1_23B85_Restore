@@ -1,16 +1,16 @@
 @interface LNChoiceResponse
-- (LNChoiceResponse)initWithCoder:(id)a3;
-- (LNChoiceResponse)initWithIdentifier:(id)a3 selectedOption:(id)a4 context:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (LNChoiceResponse)initWithCoder:(id)coder;
+- (LNChoiceResponse)initWithIdentifier:(id)identifier selectedOption:(id)option context:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNChoiceResponse
 
-- (LNChoiceResponse)initWithCoder:(id)a3
+- (LNChoiceResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedOption"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedOption"];
   v7 = v6;
   if (v5)
   {
@@ -24,38 +24,38 @@
 
   if (v8)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
     self = [(LNChoiceResponse *)self initWithIdentifier:v5 selectedOption:v7 context:v9];
 
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = LNChoiceResponse;
-  v4 = a3;
-  [(LNResponse *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(LNResponse *)&v6 encodeWithCoder:coderCopy];
   v5 = [(LNChoiceResponse *)self selectedOption:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"selectedOption"];
+  [coderCopy encodeObject:v5 forKey:@"selectedOption"];
 }
 
-- (LNChoiceResponse)initWithIdentifier:(id)a3 selectedOption:(id)a4 context:(id)a5
+- (LNChoiceResponse)initWithIdentifier:(id)identifier selectedOption:(id)option context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  identifierCopy = identifier;
+  optionCopy = option;
+  contextCopy = context;
+  if (identifierCopy)
   {
-    if (v10)
+    if (optionCopy)
     {
       goto LABEL_3;
     }
@@ -63,26 +63,26 @@
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"LNChoiceResponse.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNChoiceResponse.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
-    if (v10)
+    if (optionCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"LNChoiceResponse.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"selectedOption"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNChoiceResponse.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"selectedOption"}];
 
 LABEL_3:
   v18.receiver = self;
   v18.super_class = LNChoiceResponse;
-  v12 = [(LNResponse *)&v18 initWithIdentifier:v9 context:v11];
+  v12 = [(LNResponse *)&v18 initWithIdentifier:identifierCopy context:contextCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_selectedOption, a4);
+    objc_storeStrong(&v12->_selectedOption, option);
     v14 = v13;
   }
 

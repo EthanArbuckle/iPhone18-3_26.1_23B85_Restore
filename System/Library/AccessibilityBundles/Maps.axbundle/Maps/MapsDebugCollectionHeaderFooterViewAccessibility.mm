@@ -1,5 +1,5 @@
 @interface MapsDebugCollectionHeaderFooterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,18 +7,18 @@
 
 @implementation MapsDebugCollectionHeaderFooterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MapsDebugCollectionHeaderFooterView" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MapsDebugCollectionHeaderFooterView" hasInstanceMethod:@"isFooter" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MapsDebugCollectionHeaderFooterView" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MapsDebugCollectionHeaderFooterView" hasInstanceMethod:@"isFooter" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
   v2 = [(MapsDebugCollectionHeaderFooterViewAccessibility *)self safeValueForKey:@"textLabel"];
-  v3 = [v2 text];
-  v4 = [v3 length] != 0;
+  text = [v2 text];
+  v4 = [text length] != 0;
 
   return v4;
 }
@@ -26,9 +26,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(MapsDebugCollectionHeaderFooterViewAccessibility *)self safeValueForKey:@"textLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits

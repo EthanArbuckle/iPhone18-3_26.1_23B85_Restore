@@ -1,28 +1,28 @@
 @interface TSCEFunction_EFFECT
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_EFFECT
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v51 = 0;
-  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, a3, a4, 0, &v51);
+  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, context, spec, 0, &v51);
   v11 = v51;
   v16 = objc_msgSend_decimalRepresentation(v10, v12, v13, v14, v15);
   if (v11)
   {
-    v20 = objc_msgSend_raiseErrorOrConvert_(a3, v17, v11, v18, v19);
+    v20 = objc_msgSend_raiseErrorOrConvert_(context, v17, v11, v18, v19);
   }
 
   else
   {
     v21 = v16;
     v22 = v17;
-    v23 = *(*a5 + 8);
+    v23 = *(*arguments + 8);
     v50 = 0;
-    v25 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v23, v24, a3, a4, 1, &v50);
+    v25 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v23, v24, context, spec, 1, &v50);
     v11 = v50;
     v30 = objc_msgSend_trunc(v25, v26, v27, v28, v29);
 
@@ -30,7 +30,7 @@
     v49._decimal.w[1] = v35;
     if (v11)
     {
-      v38 = objc_msgSend_raiseErrorOrConvert_(a3, v35, v11, v36, v37);
+      v38 = objc_msgSend_raiseErrorOrConvert_(context, v35, v11, v36, v37);
     }
 
     else

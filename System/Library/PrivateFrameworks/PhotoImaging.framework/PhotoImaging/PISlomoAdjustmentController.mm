@@ -1,24 +1,24 @@
 @interface PISlomoAdjustmentController
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)endTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)startTime;
-- (BOOL)isEqual:(id)a3 visualChangesOnly:(BOOL)a4;
+- (BOOL)isEqual:(id)equal visualChangesOnly:(BOOL)only;
 - (double)rate;
-- (void)setEndTime:(id *)a3;
-- (void)setRate:(double)a3;
-- (void)setStartTime:(id *)a3;
+- (void)setEndTime:(id *)time;
+- (void)setRate:(double)rate;
+- (void)setStartTime:(id *)time;
 @end
 
 @implementation PISlomoAdjustmentController
 
-- (BOOL)isEqual:(id)a3 visualChangesOnly:(BOOL)a4
+- (BOOL)isEqual:(id)equal visualChangesOnly:(BOOL)only
 {
-  v5 = a3;
+  equalCopy = equal;
   v6 = +[PISlomoAdjustmentController rateKey];
-  v7 = [(PIAdjustmentController *)self isSettingEqual:v5 forKey:v6];
+  v7 = [(PIAdjustmentController *)self isSettingEqual:equalCopy forKey:v6];
 
   if (v7)
   {
-    v8 = [(PIAdjustmentController *)[PISlomoAdjustmentController alloc] initWithAdjustment:v5];
+    v8 = [(PIAdjustmentController *)[PISlomoAdjustmentController alloc] initWithAdjustment:equalCopy];
     memset(&v16, 0, sizeof(v16));
     [(PISlomoAdjustmentController *)self startTime];
     [(PISlomoAdjustmentController *)self endTime];
@@ -66,19 +66,19 @@
   return v9;
 }
 
-- (void)setRate:(double)a3
+- (void)setRate:(double)rate
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:rate];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PISlomoAdjustmentController rateKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  [adjustment setObject:v6 forKeyedSubscript:v5];
 }
 
 - (double)rate
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PISlomoAdjustmentController rateKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
 
   if (v4)
   {
@@ -94,42 +94,42 @@
   return v6;
 }
 
-- (void)setEndTime:(id *)a3
+- (void)setEndTime:(id *)time
 {
-  if (a3->var2)
+  if (time->var2)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a3->var0];
-    v9 = [(PIAdjustmentController *)self adjustment];
+    v8 = [MEMORY[0x1E696AD98] numberWithLongLong:time->var0];
+    adjustment = [(PIAdjustmentController *)self adjustment];
     v10 = +[PISlomoAdjustmentController endKey];
-    [v9 setObject:v8 forKeyedSubscript:v10];
+    [adjustment setObject:v8 forKeyedSubscript:v10];
 
-    v12 = [MEMORY[0x1E696AD98] numberWithInt:a3->var1];
-    v6 = [(PIAdjustmentController *)self adjustment];
+    adjustment4 = [MEMORY[0x1E696AD98] numberWithInt:time->var1];
+    adjustment2 = [(PIAdjustmentController *)self adjustment];
     v11 = +[PISlomoAdjustmentController endScaleKey];
-    [v6 setObject:v12 forKeyedSubscript:v11];
+    [adjustment2 setObject:adjustment4 forKeyedSubscript:v11];
   }
 
   else
   {
-    v4 = [(PIAdjustmentController *)self adjustment];
+    adjustment3 = [(PIAdjustmentController *)self adjustment];
     v5 = +[PISlomoAdjustmentController endKey];
-    [v4 setObject:0 forKeyedSubscript:v5];
+    [adjustment3 setObject:0 forKeyedSubscript:v5];
 
-    v12 = [(PIAdjustmentController *)self adjustment];
-    v6 = +[PISlomoAdjustmentController endScaleKey];
-    [v12 setObject:0 forKeyedSubscript:v6];
+    adjustment4 = [(PIAdjustmentController *)self adjustment];
+    adjustment2 = +[PISlomoAdjustmentController endScaleKey];
+    [adjustment4 setObject:0 forKeyedSubscript:adjustment2];
   }
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)endTime
 {
-  v5 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v6 = +[PISlomoAdjustmentController endKey];
-  v13 = [v5 objectForKeyedSubscript:v6];
+  v13 = [adjustment objectForKeyedSubscript:v6];
 
-  v7 = [(PIAdjustmentController *)self adjustment];
+  adjustment2 = [(PIAdjustmentController *)self adjustment];
   v8 = +[PISlomoAdjustmentController endScaleKey];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [adjustment2 objectForKeyedSubscript:v8];
 
   if (v13)
   {
@@ -156,42 +156,42 @@
   return result;
 }
 
-- (void)setStartTime:(id *)a3
+- (void)setStartTime:(id *)time
 {
-  if (a3->var2)
+  if (time->var2)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a3->var0];
-    v9 = [(PIAdjustmentController *)self adjustment];
+    v8 = [MEMORY[0x1E696AD98] numberWithLongLong:time->var0];
+    adjustment = [(PIAdjustmentController *)self adjustment];
     v10 = +[PISlomoAdjustmentController startKey];
-    [v9 setObject:v8 forKeyedSubscript:v10];
+    [adjustment setObject:v8 forKeyedSubscript:v10];
 
-    v12 = [MEMORY[0x1E696AD98] numberWithInt:a3->var1];
-    v6 = [(PIAdjustmentController *)self adjustment];
+    adjustment4 = [MEMORY[0x1E696AD98] numberWithInt:time->var1];
+    adjustment2 = [(PIAdjustmentController *)self adjustment];
     v11 = +[PISlomoAdjustmentController startScaleKey];
-    [v6 setObject:v12 forKeyedSubscript:v11];
+    [adjustment2 setObject:adjustment4 forKeyedSubscript:v11];
   }
 
   else
   {
-    v4 = [(PIAdjustmentController *)self adjustment];
+    adjustment3 = [(PIAdjustmentController *)self adjustment];
     v5 = +[PISlomoAdjustmentController startKey];
-    [v4 setObject:0 forKeyedSubscript:v5];
+    [adjustment3 setObject:0 forKeyedSubscript:v5];
 
-    v12 = [(PIAdjustmentController *)self adjustment];
-    v6 = +[PISlomoAdjustmentController startScaleKey];
-    [v12 setObject:0 forKeyedSubscript:v6];
+    adjustment4 = [(PIAdjustmentController *)self adjustment];
+    adjustment2 = +[PISlomoAdjustmentController startScaleKey];
+    [adjustment4 setObject:0 forKeyedSubscript:adjustment2];
   }
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)startTime
 {
-  v5 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v6 = +[PISlomoAdjustmentController startKey];
-  v13 = [v5 objectForKeyedSubscript:v6];
+  v13 = [adjustment objectForKeyedSubscript:v6];
 
-  v7 = [(PIAdjustmentController *)self adjustment];
+  adjustment2 = [(PIAdjustmentController *)self adjustment];
   v8 = +[PISlomoAdjustmentController startScaleKey];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [adjustment2 objectForKeyedSubscript:v8];
 
   if (v13)
   {

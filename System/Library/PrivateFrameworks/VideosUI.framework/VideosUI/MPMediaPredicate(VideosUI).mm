@@ -122,15 +122,15 @@ LABEL_14:
   }
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [v6 persistentID];
-  v9 = [a1 vui_showPersistentIDPredicate:objc_msgSend(v8 comparison:{"unsignedIntegerValue"), a4}];
+  persistentID = [v6 persistentID];
+  v9 = [self vui_showPersistentIDPredicate:objc_msgSend(persistentID comparison:{"unsignedIntegerValue"), a4}];
   [v7 addObject:v9];
-  v10 = [v6 seasonNumber];
-  v11 = [a1 vui_seasonNumberPredicate:objc_msgSend(v10 comparison:{"unsignedIntegerValue"), a4}];
+  seasonNumber = [v6 seasonNumber];
+  v11 = [self vui_seasonNumberPredicate:objc_msgSend(seasonNumber comparison:{"unsignedIntegerValue"), a4}];
   [v7 addObject:v11];
   if ([v7 count] == 1)
   {
-    v12 = [v7 firstObject];
+    firstObject = [v7 firstObject];
   }
 
   else
@@ -152,10 +152,10 @@ LABEL_14:
       v13 = MEMORY[0x1E6970598];
     }
 
-    v12 = [v13 predicateMatchingPredicates:v7];
+    firstObject = [v13 predicateMatchingPredicates:v7];
   }
 
-  v14 = v12;
+  v14 = firstObject;
 LABEL_13:
 
   return v14;
@@ -201,9 +201,9 @@ LABEL_13:
   {
     v30 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v9 = +[VUIMediaLibraryManager defaultManager];
-    v10 = [v9 sidebandMediaLibrary];
+    sidebandMediaLibrary = [v9 sidebandMediaLibrary];
     v11 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F5E5E7F0];
-    v12 = [v10 videosWithDownloadState:2 entitlementTypes:v11 sortDescriptors:0 useMainThreadContext:0];
+    v12 = [sidebandMediaLibrary videosWithDownloadState:2 entitlementTypes:v11 sortDescriptors:0 useMainThreadContext:0];
 
     v40 = 0u;
     v41 = 0u;
@@ -230,14 +230,14 @@ LABEL_13:
           v35 = __Block_byref_object_copy_;
           v36 = __Block_byref_object_dispose_;
           v37 = 0;
-          v17 = [v16 managedObjectContext];
+          managedObjectContext = [v16 managedObjectContext];
           v31[0] = MEMORY[0x1E69E9820];
           v31[1] = 3221225472;
           v31[2] = __62__MPMediaPredicate_VideosUI__vui_isLocalPredicate_comparison___block_invoke;
           v31[3] = &unk_1E872DB58;
           v31[4] = v16;
           v31[5] = &v32;
-          [v17 performBlockAndWait:v31];
+          [managedObjectContext performBlockAndWait:v31];
 
           if (v33[5])
           {
@@ -300,7 +300,7 @@ LABEL_13:
     v7 = 0;
   }
 
-  v8 = [a1 _vui_isPlayablePredicate:v7 == a4];
+  v8 = [self _vui_isPlayablePredicate:v7 == a4];
 
   return v8;
 }
@@ -314,21 +314,21 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  v7 = [MEMORY[0x1E69DF780] sharedInstance];
-  v8 = [v6 mediaCategoryType];
-  if (v8 != 1)
+  mEMORY[0x1E69DF780] = [MEMORY[0x1E69DF780] sharedInstance];
+  mediaCategoryType = [v6 mediaCategoryType];
+  if (mediaCategoryType != 1)
   {
-    if (v8 || ([v7 allowsShowingUndownloadedMovies] & 1) != 0)
+    if (mediaCategoryType || ([mEMORY[0x1E69DF780] allowsShowingUndownloadedMovies] & 1) != 0)
     {
       goto LABEL_5;
     }
 
 LABEL_8:
-    v9 = [a1 vui_isLocalPredicate:1 comparison:0];
+    v9 = [self vui_isLocalPredicate:1 comparison:0];
     goto LABEL_9;
   }
 
-  if (([v7 allowsShowingUndownloadedTVShows] & 1) == 0)
+  if (([mEMORY[0x1E69DF780] allowsShowingUndownloadedTVShows] & 1) == 0)
   {
     goto LABEL_8;
   }
@@ -374,8 +374,8 @@ LABEL_10:
 + (id)_vui_isPlayablePredicate:()VideosUI
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v5 = [a1 vui_isLocalPredicate:a3 comparison:0];
-  v6 = [a1 _vui_isNetworkPlayablePredicate:a3];
+  v5 = [self vui_isLocalPredicate:a3 comparison:0];
+  v6 = [self _vui_isNetworkPlayablePredicate:a3];
   v7 = v6;
   if (a3)
   {

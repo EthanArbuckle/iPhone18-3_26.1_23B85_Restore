@@ -1,40 +1,40 @@
 @interface OrgApacheLuceneStoreByteArrayDataOutput
-- (OrgApacheLuceneStoreByteArrayDataOutput)initWithByteArray:(id)a3;
+- (OrgApacheLuceneStoreByteArrayDataOutput)initWithByteArray:(id)array;
 - (void)dealloc;
-- (void)resetWithByteArray:(id)a3;
-- (void)resetWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (void)writeByteWithByte:(char)a3;
+- (void)resetWithByteArray:(id)array;
+- (void)resetWithByteArray:(id)array withInt:(int)int withInt:(int)withInt;
+- (void)writeByteWithByte:(char)byte;
 @end
 
 @implementation OrgApacheLuceneStoreByteArrayDataOutput
 
-- (OrgApacheLuceneStoreByteArrayDataOutput)initWithByteArray:(id)a3
+- (OrgApacheLuceneStoreByteArrayDataOutput)initWithByteArray:(id)array
 {
   OrgApacheLuceneStoreDataOutput_init(self, a2);
-  [(OrgApacheLuceneStoreByteArrayDataOutput *)self resetWithByteArray:a3];
+  [(OrgApacheLuceneStoreByteArrayDataOutput *)self resetWithByteArray:array];
   return self;
 }
 
-- (void)resetWithByteArray:(id)a3
+- (void)resetWithByteArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  [(OrgApacheLuceneStoreByteArrayDataOutput *)self resetWithByteArray:a3 withInt:0 withInt:v4];
+  [(OrgApacheLuceneStoreByteArrayDataOutput *)self resetWithByteArray:array withInt:0 withInt:v4];
 }
 
-- (void)resetWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (void)resetWithByteArray:(id)array withInt:(int)int withInt:(int)withInt
 {
-  JreStrongAssign(&self->bytes_, a3);
-  self->pos_ = a4;
-  self->limit_ = a5 + a4;
+  JreStrongAssign(&self->bytes_, array);
+  self->pos_ = int;
+  self->limit_ = withInt + int;
 }
 
-- (void)writeByteWithByte:(char)a3
+- (void)writeByteWithByte:(char)byte
 {
   bytes = self->bytes_;
   if (!bytes)
@@ -50,7 +50,7 @@
     IOSArray_throwOutOfBoundsWithMsg(size, pos);
   }
 
-  *(&bytes->super.size_ + pos + 4) = a3;
+  *(&bytes->super.size_ + pos + 4) = byte;
 }
 
 - (void)dealloc

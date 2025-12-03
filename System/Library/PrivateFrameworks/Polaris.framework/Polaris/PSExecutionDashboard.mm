@@ -1,7 +1,7 @@
 @interface PSExecutionDashboard
 - (PSExecutionDashboard)init;
 - (id)getRunningGraphs;
-- (void)setRunningGraphs:(id)a3;
+- (void)setRunningGraphs:(id)graphs;
 @end
 
 @implementation PSExecutionDashboard
@@ -33,12 +33,12 @@
   return v3;
 }
 
-- (void)setRunningGraphs:(id)a3
+- (void)setRunningGraphs:(id)graphs
 {
-  v4 = a3;
+  graphsCopy = graphs;
   os_unfair_lock_lock(&self->_lock);
   runningGraphs = self->_runningGraphs;
-  self->_runningGraphs = v4;
+  self->_runningGraphs = graphsCopy;
 
   [(PSExecutionDashboard *)self setCompletedTransitionsCount:[(PSExecutionDashboard *)self completedTransitionsCount]+ 1];
   [(PSExecutionDashboard *)self setLastTransitionCompletionTimestamp:clock_gettime_nsec_np(_CLOCK_UPTIME_RAW)];

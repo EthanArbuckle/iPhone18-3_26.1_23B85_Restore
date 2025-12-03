@@ -1,41 +1,41 @@
 @interface TUNearbyConversationInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConversationInfo:(id)a3;
-- (TUNearbyConversationInfo)initWithCoder:(id)a3;
-- (TUNearbyConversationInfo)initWithConversationUUID:(id)a3 userProfileIdentifier:(id)a4 deviceHandle:(id)a5 avMode:(unint64_t)a6 supportedHandoffTypes:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConversationInfo:(id)info;
+- (TUNearbyConversationInfo)initWithCoder:(id)coder;
+- (TUNearbyConversationInfo)initWithConversationUUID:(id)d userProfileIdentifier:(id)identifier deviceHandle:(id)handle avMode:(unint64_t)mode supportedHandoffTypes:(id)types;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUNearbyConversationInfo
 
-- (TUNearbyConversationInfo)initWithConversationUUID:(id)a3 userProfileIdentifier:(id)a4 deviceHandle:(id)a5 avMode:(unint64_t)a6 supportedHandoffTypes:(id)a7
+- (TUNearbyConversationInfo)initWithConversationUUID:(id)d userProfileIdentifier:(id)identifier deviceHandle:(id)handle avMode:(unint64_t)mode supportedHandoffTypes:(id)types
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  dCopy = d;
+  identifierCopy = identifier;
+  handleCopy = handle;
+  typesCopy = types;
   v26.receiver = self;
   v26.super_class = TUNearbyConversationInfo;
   v16 = [(TUNearbyConversationInfo *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [dCopy copy];
     conversationUUID = v16->_conversationUUID;
     v16->_conversationUUID = v17;
 
-    v19 = [v13 copy];
+    v19 = [identifierCopy copy];
     userProfileIdentifier = v16->_userProfileIdentifier;
     v16->_userProfileIdentifier = v19;
 
-    v21 = [v14 copy];
+    v21 = [handleCopy copy];
     deviceHandle = v16->_deviceHandle;
     v16->_deviceHandle = v21;
 
-    v16->_avMode = a6;
-    v23 = [v15 copy];
+    v16->_avMode = mode;
+    v23 = [typesCopy copy];
     supportedHandoffTypes = v16->_supportedHandoffTypes;
     v16->_supportedHandoffTypes = v23;
   }
@@ -50,19 +50,19 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@ %p", v5, self];
 
-  v7 = [(TUNearbyConversationInfo *)self conversationUUID];
-  [v6 appendFormat:@" conversationUUID=%@", v7];
+  conversationUUID = [(TUNearbyConversationInfo *)self conversationUUID];
+  [v6 appendFormat:@" conversationUUID=%@", conversationUUID];
 
-  v8 = [(TUNearbyConversationInfo *)self userProfileIdentifier];
-  [v6 appendFormat:@" userProfileIdentifier=%@", v8];
+  userProfileIdentifier = [(TUNearbyConversationInfo *)self userProfileIdentifier];
+  [v6 appendFormat:@" userProfileIdentifier=%@", userProfileIdentifier];
 
-  v9 = [(TUNearbyConversationInfo *)self deviceHandle];
-  v10 = [v9 description];
+  deviceHandle = [(TUNearbyConversationInfo *)self deviceHandle];
+  v10 = [deviceHandle description];
   [v6 appendFormat:@" deviceHandle=%@", v10];
 
   [v6 appendFormat:@" avMode=%lu", -[TUNearbyConversationInfo avMode](self, "avMode")];
-  v11 = [(TUNearbyConversationInfo *)self supportedHandoffTypes];
-  [v6 appendFormat:@" supportedHandoffTypes=%@", v11];
+  supportedHandoffTypes = [(TUNearbyConversationInfo *)self supportedHandoffTypes];
+  [v6 appendFormat:@" supportedHandoffTypes=%@", supportedHandoffTypes];
 
   [v6 appendString:@">"];
   v12 = [v6 copy];
@@ -70,94 +70,94 @@
   return v12;
 }
 
-- (TUNearbyConversationInfo)initWithCoder:(id)a3
+- (TUNearbyConversationInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_conversationUUID);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_userProfileIdentifier);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = objc_opt_class();
   v12 = NSStringFromSelector(sel_deviceHandle);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
 
   v14 = NSStringFromSelector(sel_avMode);
-  v15 = [v4 decodeIntegerForKey:v14];
+  v15 = [coderCopy decodeIntegerForKey:v14];
 
   v16 = MEMORY[0x1E695DFD8];
   v17 = objc_opt_class();
   v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
   v19 = NSStringFromSelector(sel_supportedHandoffTypes);
-  v20 = [v4 decodeObjectOfClasses:v18 forKey:v19];
+  v20 = [coderCopy decodeObjectOfClasses:v18 forKey:v19];
 
   v21 = [(TUNearbyConversationInfo *)self initWithConversationUUID:v7 userProfileIdentifier:v10 deviceHandle:v13 avMode:v15 supportedHandoffTypes:v20];
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUNearbyConversationInfo *)self conversationUUID];
+  coderCopy = coder;
+  conversationUUID = [(TUNearbyConversationInfo *)self conversationUUID];
   v6 = NSStringFromSelector(sel_conversationUUID);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:conversationUUID forKey:v6];
 
-  v7 = [(TUNearbyConversationInfo *)self userProfileIdentifier];
+  userProfileIdentifier = [(TUNearbyConversationInfo *)self userProfileIdentifier];
   v8 = NSStringFromSelector(sel_userProfileIdentifier);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:userProfileIdentifier forKey:v8];
 
-  v9 = [(TUNearbyConversationInfo *)self deviceHandle];
+  deviceHandle = [(TUNearbyConversationInfo *)self deviceHandle];
   v10 = NSStringFromSelector(sel_deviceHandle);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:deviceHandle forKey:v10];
 
-  v11 = [(TUNearbyConversationInfo *)self avMode];
+  avMode = [(TUNearbyConversationInfo *)self avMode];
   v12 = NSStringFromSelector(sel_avMode);
-  [v4 encodeInteger:v11 forKey:v12];
+  [coderCopy encodeInteger:avMode forKey:v12];
 
-  v14 = [(TUNearbyConversationInfo *)self supportedHandoffTypes];
+  supportedHandoffTypes = [(TUNearbyConversationInfo *)self supportedHandoffTypes];
   v13 = NSStringFromSelector(sel_supportedHandoffTypes);
-  [v4 encodeObject:v14 forKey:v13];
+  [coderCopy encodeObject:supportedHandoffTypes forKey:v13];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(TUNearbyConversationInfo *)self conversationUUID];
-  v6 = [v5 copy];
-  v7 = [(TUNearbyConversationInfo *)self userProfileIdentifier];
-  v8 = [v7 copy];
-  v9 = [(TUNearbyConversationInfo *)self deviceHandle];
-  v10 = [v9 copy];
-  v11 = [(TUNearbyConversationInfo *)self avMode];
-  v12 = [(TUNearbyConversationInfo *)self supportedHandoffTypes];
-  v13 = [v12 copy];
-  v14 = [v4 initWithConversationUUID:v6 userProfileIdentifier:v8 deviceHandle:v10 avMode:v11 supportedHandoffTypes:v13];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  conversationUUID = [(TUNearbyConversationInfo *)self conversationUUID];
+  v6 = [conversationUUID copy];
+  userProfileIdentifier = [(TUNearbyConversationInfo *)self userProfileIdentifier];
+  v8 = [userProfileIdentifier copy];
+  deviceHandle = [(TUNearbyConversationInfo *)self deviceHandle];
+  v10 = [deviceHandle copy];
+  avMode = [(TUNearbyConversationInfo *)self avMode];
+  supportedHandoffTypes = [(TUNearbyConversationInfo *)self supportedHandoffTypes];
+  v13 = [supportedHandoffTypes copy];
+  v14 = [v4 initWithConversationUUID:v6 userProfileIdentifier:v8 deviceHandle:v10 avMode:avMode supportedHandoffTypes:v13];
 
   return v14;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(TUNearbyConversationInfo *)self conversationUUID];
-  v4 = [v3 hash];
-  v5 = [(TUNearbyConversationInfo *)self userProfileIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(TUNearbyConversationInfo *)self deviceHandle];
-  v8 = [v7 hash];
+  conversationUUID = [(TUNearbyConversationInfo *)self conversationUUID];
+  v4 = [conversationUUID hash];
+  userProfileIdentifier = [(TUNearbyConversationInfo *)self userProfileIdentifier];
+  v6 = [userProfileIdentifier hash] ^ v4;
+  deviceHandle = [(TUNearbyConversationInfo *)self deviceHandle];
+  v8 = [deviceHandle hash];
   v9 = v6 ^ v8 ^ [(TUNearbyConversationInfo *)self avMode];
-  v10 = [(TUNearbyConversationInfo *)self supportedHandoffTypes];
-  v11 = [v10 hash];
+  supportedHandoffTypes = [(TUNearbyConversationInfo *)self supportedHandoffTypes];
+  v11 = [supportedHandoffTypes hash];
 
   return v9 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -165,30 +165,30 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUNearbyConversationInfo *)self isEqualToConversationInfo:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUNearbyConversationInfo *)self isEqualToConversationInfo:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToConversationInfo:(id)a3
+- (BOOL)isEqualToConversationInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(TUNearbyConversationInfo *)self conversationUUID];
-  v6 = [v4 conversationUUID];
-  if ([v5 isEqual:v6])
+  infoCopy = info;
+  conversationUUID = [(TUNearbyConversationInfo *)self conversationUUID];
+  conversationUUID2 = [infoCopy conversationUUID];
+  if ([conversationUUID isEqual:conversationUUID2])
   {
-    v7 = [(TUNearbyConversationInfo *)self userProfileIdentifier];
-    v8 = [v4 userProfileIdentifier];
-    if ([v7 isEqualToString:v8])
+    userProfileIdentifier = [(TUNearbyConversationInfo *)self userProfileIdentifier];
+    userProfileIdentifier2 = [infoCopy userProfileIdentifier];
+    if ([userProfileIdentifier isEqualToString:userProfileIdentifier2])
     {
-      v9 = [(TUNearbyConversationInfo *)self deviceHandle];
-      v10 = [v4 deviceHandle];
-      if ([v9 isEquivalentToDeviceHandle:v10] && (v11 = -[TUNearbyConversationInfo avMode](self, "avMode"), v11 == objc_msgSend(v4, "avMode")))
+      deviceHandle = [(TUNearbyConversationInfo *)self deviceHandle];
+      deviceHandle2 = [infoCopy deviceHandle];
+      if ([deviceHandle isEquivalentToDeviceHandle:deviceHandle2] && (v11 = -[TUNearbyConversationInfo avMode](self, "avMode"), v11 == objc_msgSend(infoCopy, "avMode")))
       {
-        v12 = [(TUNearbyConversationInfo *)self supportedHandoffTypes];
-        v13 = [v4 supportedHandoffTypes];
-        v14 = [v12 isEqualToSet:v13];
+        supportedHandoffTypes = [(TUNearbyConversationInfo *)self supportedHandoffTypes];
+        supportedHandoffTypes2 = [infoCopy supportedHandoffTypes];
+        v14 = [supportedHandoffTypes isEqualToSet:supportedHandoffTypes2];
       }
 
       else

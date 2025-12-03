@@ -1,8 +1,8 @@
 @interface SBIconLabelImageParametersBuilder
-+ (UIEdgeInsets)insetsForFont:(id)a3;
-+ (double)_normalFontSizeForSizeParameter:(int64_t)a3;
-+ (id)defaultFontForContentSizeCategory:(id)a3 languageInsets:(UIEdgeInsets *)a4;
-+ (int64_t)_fontSizeParameterForContentSizeCategory:(id)a3;
++ (UIEdgeInsets)insetsForFont:(id)font;
++ (double)_normalFontSizeForSizeParameter:(int64_t)parameter;
++ (id)defaultFontForContentSizeCategory:(id)category languageInsets:(UIEdgeInsets *)insets;
++ (int64_t)_fontSizeParameterForContentSizeCategory:(id)category;
 - (BOOL)_canTightenLabel;
 - (BOOL)_hasValidInputs;
 - (CGSize)_maxSize;
@@ -11,11 +11,11 @@
 - (SBIconListLayoutProvider)listLayoutProvider;
 - (UIEdgeInsets)textInsets;
 - (UIFont)font;
-- (id)_fontWithLanguageInsets:(UIEdgeInsets *)a3;
+- (id)_fontWithLanguageInsets:(UIEdgeInsets *)insets;
 - (id)buildParameters;
 - (id)listLayout;
-- (void)setIcon:(id)a3;
-- (void)setIconView:(id)a3;
+- (void)setIcon:(id)icon;
+- (void)setIconView:(id)view;
 @end
 
 @implementation SBIconLabelImageParametersBuilder
@@ -30,9 +30,9 @@
   {
     v2->_scale = 2.0;
     v2->_accessibilityReduceTransparencyEnabled = UIAccessibilityIsReduceTransparencyEnabled();
-    v4 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+    preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
     contentSizeCategory = v3->_contentSizeCategory;
-    v3->_contentSizeCategory = v4;
+    v3->_contentSizeCategory = preferredContentSizeCategory;
   }
 
   return v3;
@@ -46,39 +46,39 @@
     goto LABEL_19;
   }
 
-  v3 = [(SBIconLabelImageParametersBuilder *)self overrideText];
-  v4 = v3;
-  if (v3)
+  overrideText = [(SBIconLabelImageParametersBuilder *)self overrideText];
+  v4 = overrideText;
+  if (overrideText)
   {
-    v5 = v3;
+    text = overrideText;
   }
 
   else
   {
-    v5 = [(SBIconLabelImageParametersBuilder *)self text];
+    text = [(SBIconLabelImageParametersBuilder *)self text];
   }
 
-  v7 = v5;
+  v7 = text;
 
   v8 = MEMORY[0x1E69DDCE0];
   v9 = *(MEMORY[0x1E69DDCE0] + 16);
   v39 = *MEMORY[0x1E69DDCE0];
   v40 = v9;
   v10 = [(SBIconLabelImageParametersBuilder *)self _fontWithLanguageInsets:&v39];
-  v11 = [v7 sb_containsEmoji];
-  v38 = [(SBIconLabelImageParametersBuilder *)self _canTruncateLabel];
-  v37 = [(SBIconLabelImageParametersBuilder *)self _canTightenLabel];
+  sb_containsEmoji = [v7 sb_containsEmoji];
+  _canTruncateLabel = [(SBIconLabelImageParametersBuilder *)self _canTruncateLabel];
+  _canTightenLabel = [(SBIconLabelImageParametersBuilder *)self _canTightenLabel];
   [(SBIconLabelImageParametersBuilder *)self _maxSize];
   v13 = v12;
   v15 = v14;
-  v36 = [(SBHLegibilitySettings *)self->_legibilitySettings style];
+  style = [(SBHLegibilitySettings *)self->_legibilitySettings style];
   [(SBIconLabelImageParametersBuilder *)self scale];
   v17 = v16;
-  v18 = [(SBIconLabelImageParametersBuilder *)self isAccessibilityReduceTransparencyEnabled];
-  v19 = [(SBIconLabelImageParametersBuilder *)self contentSizeCategory];
-  v20 = [(SBIconLabelImageParametersBuilder *)self focusHighlightColor];
-  v21 = [(SBIconLabelImageParametersBuilder *)self overrideTraitCollection];
-  if (self->_hasSetTextInsets || v11)
+  isAccessibilityReduceTransparencyEnabled = [(SBIconLabelImageParametersBuilder *)self isAccessibilityReduceTransparencyEnabled];
+  contentSizeCategory = [(SBIconLabelImageParametersBuilder *)self contentSizeCategory];
+  focusHighlightColor = [(SBIconLabelImageParametersBuilder *)self focusHighlightColor];
+  overrideTraitCollection = [(SBIconLabelImageParametersBuilder *)self overrideTraitCollection];
+  if (self->_hasSetTextInsets || sb_containsEmoji)
   {
     [(SBIconLabelImageParametersBuilder *)self textInsets];
   }
@@ -92,19 +92,19 @@
   v27 = v23;
   v28 = v24;
   v29 = v25;
-  v30 = [(SBIconLabelImageParametersBuilder *)self textColor];
-  if (!v30)
+  textColor = [(SBIconLabelImageParametersBuilder *)self textColor];
+  if (!textColor)
   {
-    if (v38 || v37)
+    if (_canTruncateLabel || _canTightenLabel)
     {
       v27 = 6.0;
       v26 = 0.0;
       v28 = 0.0;
       v29 = 6.0;
-      if (!v11)
+      if (!sb_containsEmoji)
       {
 LABEL_13:
-        v31 = [(SBIconLabelImageParametersBuilder *)self fallbackTextColor];
+        fallbackTextColor = [(SBIconLabelImageParametersBuilder *)self fallbackTextColor];
         goto LABEL_16;
       }
     }
@@ -115,25 +115,25 @@ LABEL_13:
       v27 = v8[1];
       v28 = v8[2];
       v29 = v8[3];
-      if (!v11)
+      if (!sb_containsEmoji)
       {
         goto LABEL_13;
       }
     }
 
-    v31 = [(SBHLegibilitySettings *)self->_legibilitySettings primaryColor];
+    fallbackTextColor = [(SBHLegibilitySettings *)self->_legibilitySettings primaryColor];
 LABEL_16:
-    v30 = v31;
-    if (!v31)
+    textColor = fallbackTextColor;
+    if (!fallbackTextColor)
     {
-      v30 = [MEMORY[0x1E69DC888] whiteColor];
+      textColor = [MEMORY[0x1E69DC888] whiteColor];
     }
   }
 
   v32 = [SBIconLabelImageParameters alloc];
   LOBYTE(v35) = 0;
-  LOBYTE(v34) = v18;
-  v6 = [(SBIconLabelImageParameters *)v32 initWithText:v7 maxSize:v10 font:v38 scale:v37 canTruncate:v11 canTighten:v36 containsEmoji:v13 legibilityStyle:v15 textColor:v17 accessibilityReduceTransparencyEnabled:v26 contentSizeCategory:v27 focusHighlightColor:v28 textInsets:v29 fontLanguageInsets:v30 overrideTraitCollection:v34 colorspaceGrayscale:v19, v20, v39, v40, v21, v35];
+  LOBYTE(v34) = isAccessibilityReduceTransparencyEnabled;
+  v6 = [(SBIconLabelImageParameters *)v32 initWithText:v7 maxSize:v10 font:_canTruncateLabel scale:_canTightenLabel canTruncate:sb_containsEmoji canTighten:style containsEmoji:v13 legibilityStyle:v15 textColor:v17 accessibilityReduceTransparencyEnabled:v26 contentSizeCategory:v27 focusHighlightColor:v28 textInsets:v29 fontLanguageInsets:textColor overrideTraitCollection:v34 colorspaceGrayscale:contentSizeCategory, focusHighlightColor, v39, v40, overrideTraitCollection, v35];
 
 LABEL_19:
 
@@ -171,20 +171,20 @@ LABEL_19:
 
 - (CGSize)_maxSize
 {
-  v3 = [(SBIconLabelImageParametersBuilder *)self iconView];
-  v4 = v3;
-  if (v3)
+  iconView = [(SBIconLabelImageParametersBuilder *)self iconView];
+  v4 = iconView;
+  if (iconView)
   {
-    [v3 maxLabelSize];
+    [iconView maxLabelSize];
     v6 = v5;
     v8 = v7;
   }
 
   else
   {
-    v9 = [(SBIconLabelImageParametersBuilder *)self listLayout];
-    v10 = [(SBIconLabelImageParametersBuilder *)self contentSizeCategory];
-    [(objc_class *)self->_iconViewClass maxLabelSizeForListLayout:v9 contentSizeCategory:v10 options:UIAccessibilityIsBoldTextEnabled()];
+    listLayout = [(SBIconLabelImageParametersBuilder *)self listLayout];
+    contentSizeCategory = [(SBIconLabelImageParametersBuilder *)self contentSizeCategory];
+    [(objc_class *)self->_iconViewClass maxLabelSizeForListLayout:listLayout contentSizeCategory:contentSizeCategory options:UIAccessibilityIsBoldTextEnabled()];
     v6 = v11;
     v8 = v12;
   }
@@ -224,38 +224,38 @@ LABEL_19:
   return result;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v5 = a3;
+  iconCopy = icon;
   p_icon = &self->_icon;
-  if (self->_icon != v5)
+  if (self->_icon != iconCopy)
   {
-    v10 = v5;
-    objc_storeStrong(p_icon, a3);
-    v7 = [(SBIconLabelImageParametersBuilder *)self iconView];
-    v8 = [v7 displaysIconStatusInLabel];
+    v10 = iconCopy;
+    objc_storeStrong(p_icon, icon);
+    iconView = [(SBIconLabelImageParametersBuilder *)self iconView];
+    displaysIconStatusInLabel = [iconView displaysIconStatusInLabel];
 
-    if (!v8 || ([(SBIcon *)v10 statusDescriptionForLocation:self->_iconLocation], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!displaysIconStatusInLabel || ([(SBIcon *)v10 statusDescriptionForLocation:self->_iconLocation], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v9 = [(SBIcon *)self->_icon displayNameForLocation:self->_iconLocation];
     }
 
     [(SBIconLabelImageParametersBuilder *)self setText:v9];
 
-    v5 = v10;
+    iconCopy = v10;
   }
 
-  MEMORY[0x1EEE66BB8](p_icon, v5);
+  MEMORY[0x1EEE66BB8](p_icon, iconCopy);
 }
 
-- (void)setIconView:(id)a3
+- (void)setIconView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   p_iconView = &self->_iconView;
-  if (self->_iconView != v5)
+  if (self->_iconView != viewCopy)
   {
-    v9 = v5;
-    objc_storeStrong(p_iconView, a3);
+    v9 = viewCopy;
+    objc_storeStrong(p_iconView, view);
     [(SBIconLabelImageParametersBuilder *)self setIconViewClass:objc_opt_class()];
     if ([(SBIconView *)v9 displaysIconStatusInLabel])
     {
@@ -266,75 +266,75 @@ LABEL_19:
       }
     }
 
-    v8 = [(SBIconView *)v9 traitCollection];
-    [v8 displayScale];
+    traitCollection = [(SBIconView *)v9 traitCollection];
+    [traitCollection displayScale];
     [(SBIconLabelImageParametersBuilder *)self setScale:?];
 
-    v5 = v9;
+    viewCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](p_iconView, v5);
+  MEMORY[0x1EEE66BB8](p_iconView, viewCopy);
 }
 
 - (SBIconListLayoutProvider)listLayoutProvider
 {
-  v3 = self->_listLayoutProvider;
-  if (!v3)
+  listLayoutProvider = self->_listLayoutProvider;
+  if (!listLayoutProvider)
   {
-    v3 = [(SBIconView *)self->_iconView listLayoutProvider];
+    listLayoutProvider = [(SBIconView *)self->_iconView listLayoutProvider];
   }
 
-  return v3;
+  return listLayoutProvider;
 }
 
 - (id)listLayout
 {
-  v3 = [(SBIconLabelImageParametersBuilder *)self iconView];
-  v4 = v3;
-  if (v3)
+  iconView = [(SBIconLabelImageParametersBuilder *)self iconView];
+  v4 = iconView;
+  if (iconView)
   {
-    v5 = [v3 listLayout];
+    listLayout = [iconView listLayout];
   }
 
   else
   {
-    v6 = [(SBIconLabelImageParametersBuilder *)self listLayoutProvider];
-    v7 = [(SBIconLabelImageParametersBuilder *)self iconLocation];
-    v8 = v7;
-    v5 = 0;
-    if (v6 && v7)
+    listLayoutProvider = [(SBIconLabelImageParametersBuilder *)self listLayoutProvider];
+    iconLocation = [(SBIconLabelImageParametersBuilder *)self iconLocation];
+    v8 = iconLocation;
+    listLayout = 0;
+    if (listLayoutProvider && iconLocation)
     {
-      v5 = [v6 layoutForIconLocation:v7];
+      listLayout = [listLayoutProvider layoutForIconLocation:iconLocation];
     }
   }
 
-  return v5;
+  return listLayout;
 }
 
 - (CGSize)iconImageSize
 {
-  v3 = [(SBIconLabelImageParametersBuilder *)self iconView];
-  v4 = v3;
-  if (!v3)
+  iconView = [(SBIconLabelImageParametersBuilder *)self iconView];
+  v4 = iconView;
+  if (!iconView)
   {
-    v9 = [(SBIconLabelImageParametersBuilder *)self listLayout];
-    v10 = v9;
-    if (v9)
+    listLayout = [(SBIconLabelImageParametersBuilder *)self listLayout];
+    v10 = listLayout;
+    if (listLayout)
     {
-      [v9 iconImageInfo];
+      [listLayout iconImageInfo];
     }
 
     else
     {
-      v13 = [(SBIconLabelImageParametersBuilder *)self iconViewClass];
-      if (!v13)
+      iconViewClass = [(SBIconLabelImageParametersBuilder *)self iconViewClass];
+      if (!iconViewClass)
       {
         v6 = 0x4059000000000000;
         v8 = 0x4059000000000000;
         goto LABEL_8;
       }
 
-      [(objc_class *)v13 defaultIconImageSize];
+      [(objc_class *)iconViewClass defaultIconImageSize];
     }
 
     v6 = v11;
@@ -344,7 +344,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [v3 iconImageSize];
+  [iconView iconImageSize];
   v6 = v5;
   v8 = v7;
 LABEL_9:
@@ -356,15 +356,15 @@ LABEL_9:
   return result;
 }
 
-+ (UIEdgeInsets)insetsForFont:(id)a3
++ (UIEdgeInsets)insetsForFont:(id)font
 {
-  v3 = a3;
+  fontCopy = font;
   if (insetsForFont__onceToken != -1)
   {
     +[SBIconLabelImageParametersBuilder insetsForFont:];
   }
 
-  v4 = [insetsForFont__cachedInsets objectForKey:v3];
+  v4 = [insetsForFont__cachedInsets objectForKey:fontCopy];
   v5 = v4;
   if (v4)
   {
@@ -381,7 +381,7 @@ LABEL_9:
     v9 = *(MEMORY[0x1E69DDCE0] + 8);
     v11 = *(MEMORY[0x1E69DDCE0] + 16);
     v13 = *(MEMORY[0x1E69DDCE0] + 24);
-    if (v3)
+    if (fontCopy)
     {
       if (CTFontGetLanguageAwareOutsets())
       {
@@ -393,7 +393,7 @@ LABEL_9:
 
       v14 = insetsForFont__cachedInsets;
       v15 = [MEMORY[0x1E696B098] valueWithUIEdgeInsets:{v7, v9, v11, v13, 0, 0, 0, 0}];
-      [v14 setObject:v15 forKey:v3];
+      [v14 setObject:v15 forKey:fontCopy];
     }
   }
 
@@ -417,27 +417,27 @@ uint64_t __51__SBIconLabelImageParametersBuilder_insetsForFont___block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)defaultFontForContentSizeCategory:(id)a3 languageInsets:(UIEdgeInsets *)a4
++ (id)defaultFontForContentSizeCategory:(id)category languageInsets:(UIEdgeInsets *)insets
 {
-  v6 = a3;
+  categoryCopy = category;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__SBIconLabelImageParametersBuilder_defaultFontForContentSizeCategory_languageInsets___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultFontForContentSizeCategory_languageInsets__onceToken != -1)
   {
     dispatch_once(&defaultFontForContentSizeCategory_languageInsets__onceToken, block);
   }
 
-  v7 = defaultFontForContentSizeCategory_languageInsets____NormalFontBySizeParameter[[a1 _fontSizeParameterForContentSizeCategory:v6]];
-  if (a4)
+  v7 = defaultFontForContentSizeCategory_languageInsets____NormalFontBySizeParameter[[self _fontSizeParameterForContentSizeCategory:categoryCopy]];
+  if (insets)
   {
-    [a1 insetsForFont:v7];
-    a4->top = v8;
-    a4->left = v9;
-    a4->bottom = v10;
-    a4->right = v11;
+    [self insetsForFont:v7];
+    insets->top = v8;
+    insets->left = v9;
+    insets->bottom = v10;
+    insets->right = v11;
   }
 
   return v7;
@@ -455,7 +455,7 @@ void __86__SBIconLabelImageParametersBuilder_defaultFontForContentSizeCategory_l
   }
 }
 
-- (id)_fontWithLanguageInsets:(UIEdgeInsets *)a3
+- (id)_fontWithLanguageInsets:(UIEdgeInsets *)insets
 {
   font = self->_font;
   if (font)
@@ -472,14 +472,14 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v8 = [(SBIconLabelImageParametersBuilder *)self iconLocation];
-  v9 = [(SBIconLabelImageParametersBuilder *)self contentSizeCategory];
-  v10 = [(SBIconListLayoutProvider *)self->_listLayoutProvider layoutForIconLocation:v8];
-  v7 = [v10 labelFontForContentSizeCategory:v9 options:UIAccessibilityIsBoldTextEnabled()];
+  iconLocation = [(SBIconLabelImageParametersBuilder *)self iconLocation];
+  contentSizeCategory = [(SBIconLabelImageParametersBuilder *)self contentSizeCategory];
+  v10 = [(SBIconListLayoutProvider *)self->_listLayoutProvider layoutForIconLocation:iconLocation];
+  v7 = [v10 labelFontForContentSizeCategory:contentSizeCategory options:UIAccessibilityIsBoldTextEnabled()];
 
 LABEL_6:
-  v11 = [(SBIconLabelImageParametersBuilder *)self text];
-  v12 = [v11 _adjustedFontForScripts:3 forFont:v7];
+  text = [(SBIconLabelImageParametersBuilder *)self text];
+  v12 = [text _adjustedFontForScripts:3 forFont:v7];
 
   if (v7 != v12)
   {
@@ -488,13 +488,13 @@ LABEL_6:
     v7 = v13;
   }
 
-  if (a3)
+  if (insets)
   {
     [objc_opt_class() insetsForFont:v12];
-    a3->top = v14;
-    a3->left = v15;
-    a3->bottom = v16;
-    a3->right = v17;
+    insets->top = v14;
+    insets->left = v15;
+    insets->bottom = v16;
+    insets->right = v17;
   }
 
   return v7;
@@ -511,11 +511,11 @@ LABEL_6:
   return v3;
 }
 
-+ (int64_t)_fontSizeParameterForContentSizeCategory:(id)a3
++ (int64_t)_fontSizeParameterForContentSizeCategory:(id)category
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || (v5 = UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC60]), v6 = UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x1E69DDC58]), v7 = UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x1E69DDC50]), v5 == NSOrderedAscending))
+  categoryCopy = category;
+  v4 = categoryCopy;
+  if (!categoryCopy || (v5 = UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC60]), v6 = UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x1E69DDC58]), v7 = UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x1E69DDC50]), v5 == NSOrderedAscending))
   {
     v8 = 0;
   }
@@ -547,7 +547,7 @@ LABEL_6:
   return v8;
 }
 
-+ (double)_normalFontSizeForSizeParameter:(int64_t)a3
++ (double)_normalFontSizeForSizeParameter:(int64_t)parameter
 {
   if (__sb__runningInSpringBoard())
   {
@@ -569,8 +569,8 @@ LABEL_10:
 
     else
     {
-      v4 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v4 userInterfaceIdiom] != 1)
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom] != 1)
       {
 
         goto LABEL_31;
@@ -586,8 +586,8 @@ LABEL_10:
 
     else
     {
-      v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v6 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -603,9 +603,9 @@ LABEL_10:
 
     if (v17 >= v18)
     {
-      v19 = a3 - 1;
+      v19 = parameter - 1;
       v8 = 14.0;
-      if ((a3 - 1) >= 4)
+      if ((parameter - 1) >= 4)
       {
         return v8;
       }
@@ -615,9 +615,9 @@ LABEL_10:
     }
 
 LABEL_31:
-    v19 = a3 - 1;
+    v19 = parameter - 1;
     v8 = 13.0;
-    if ((a3 - 1) >= 4)
+    if ((parameter - 1) >= 4)
     {
       return v8;
     }
@@ -626,25 +626,25 @@ LABEL_31:
     return v20[v19];
   }
 
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  currentDevice = [currentDevice2 userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (currentDevice == 1)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
   v8 = 12.0;
-  if (a3 <= 2)
+  if (parameter <= 2)
   {
     v9 = 14.0;
-    if (a3 != 2)
+    if (parameter != 2)
     {
       v9 = 12.0;
     }
 
-    if (a3 == 1)
+    if (parameter == 1)
     {
       return 13.0;
     }
@@ -655,9 +655,9 @@ LABEL_3:
     }
   }
 
-  if (a3 != 3)
+  if (parameter != 3)
   {
-    if (a3 != 4)
+    if (parameter != 4)
     {
       return v8;
     }
@@ -678,9 +678,9 @@ LABEL_3:
       goto LABEL_42;
     }
 
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
     v8 = 14.0;
-    if (![v3 userInterfaceIdiom])
+    if (![currentDevice2 userInterfaceIdiom])
     {
 LABEL_42:
       v22 = __sb__runningInSpringBoard();
@@ -692,8 +692,8 @@ LABEL_42:
 
       else
       {
-        v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v5 _referenceBounds];
+        mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen2 _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -724,9 +724,9 @@ LABEL_56:
 
   else
   {
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
     v8 = 14.0;
-    if ([v3 userInterfaceIdiom])
+    if ([currentDevice2 userInterfaceIdiom])
     {
       goto LABEL_56;
     }
@@ -741,8 +741,8 @@ LABEL_56:
 
   else
   {
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 _referenceBounds];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 _referenceBounds];
   }
 
   BSSizeRoundForScale();

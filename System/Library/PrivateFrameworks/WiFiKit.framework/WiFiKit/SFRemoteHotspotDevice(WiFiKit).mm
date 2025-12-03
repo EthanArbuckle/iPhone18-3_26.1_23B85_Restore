@@ -6,14 +6,14 @@
 
 - (__CFString)cellularProtocolString
 {
-  v1 = [a1 networkType];
-  if (v1 <= 2)
+  networkType = [self networkType];
+  if (networkType <= 2)
   {
-    if (v1)
+    if (networkType)
     {
-      if (v1 != 1)
+      if (networkType != 1)
       {
-        if (v1 == 2)
+        if (networkType == 2)
         {
           v2 = @"GPRS";
           goto LABEL_20;
@@ -35,11 +35,11 @@
     }
   }
 
-  else if (v1 > 5)
+  else if (networkType > 5)
   {
-    if (v1 != 6)
+    if (networkType != 6)
     {
-      if (v1 == 8)
+      if (networkType == 8)
       {
         v2 = @"5G";
         goto LABEL_20;
@@ -53,9 +53,9 @@
 
   else
   {
-    if (v1 != 3)
+    if (networkType != 3)
     {
-      if (v1 == 4)
+      if (networkType == 4)
       {
         v2 = @"3G";
         goto LABEL_20;

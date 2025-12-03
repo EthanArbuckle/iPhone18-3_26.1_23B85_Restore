@@ -1,19 +1,19 @@
 @interface CRKBoundedGrowthFunction
-- (CRKBoundedGrowthFunction)initWithGrowthFunction:(id)a3 lowerBound:(double)a4 upperBound:(double)a5;
-- (double)evaluateWithValue:(double)a3;
+- (CRKBoundedGrowthFunction)initWithGrowthFunction:(id)function lowerBound:(double)bound upperBound:(double)upperBound;
+- (double)evaluateWithValue:(double)value;
 @end
 
 @implementation CRKBoundedGrowthFunction
 
-- (CRKBoundedGrowthFunction)initWithGrowthFunction:(id)a3 lowerBound:(double)a4 upperBound:(double)a5
+- (CRKBoundedGrowthFunction)initWithGrowthFunction:(id)function lowerBound:(double)bound upperBound:(double)upperBound
 {
-  v10 = a3;
-  if (!v10)
+  functionCopy = function;
+  if (!functionCopy)
   {
     [CRKBoundedGrowthFunction initWithGrowthFunction:a2 lowerBound:self upperBound:?];
   }
 
-  if (a4 > a5)
+  if (bound > upperBound)
   {
     [CRKBoundedGrowthFunction initWithGrowthFunction:a2 lowerBound:self upperBound:?];
   }
@@ -24,18 +24,18 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_growthFunction, a3);
-    v12->_lowerBound = a4;
-    v12->_upperBound = a5;
+    objc_storeStrong(&v11->_growthFunction, function);
+    v12->_lowerBound = bound;
+    v12->_upperBound = upperBound;
   }
 
   return v12;
 }
 
-- (double)evaluateWithValue:(double)a3
+- (double)evaluateWithValue:(double)value
 {
-  v5 = [(CRKBoundedGrowthFunction *)self growthFunction];
-  [v5 evaluateWithValue:a3];
+  growthFunction = [(CRKBoundedGrowthFunction *)self growthFunction];
+  [growthFunction evaluateWithValue:value];
   v7 = v6;
 
   [(CRKBoundedGrowthFunction *)self lowerBound];

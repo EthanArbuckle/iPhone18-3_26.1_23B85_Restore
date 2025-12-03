@@ -1,30 +1,30 @@
 @interface MOBiomeDonationUtility
-+ (int)mapOnboardingFlowCompletion:(unint64_t)a3;
++ (int)mapOnboardingFlowCompletion:(unint64_t)completion;
 - (MOBiomeDonationUtility)init;
-- (id)convertAction:(id)a3;
-- (id)convertClusterMetadata:(id)a3;
-- (id)convertEvent:(id)a3;
-- (id)convertEventBundle:(id)a3;
-- (id)convertMetadataForRankgDictionary:(id)a3;
-- (id)convertOutlierMetadata:(id)a3;
-- (id)convertPerson:(id)a3;
-- (id)convertPlace:(id)a3;
-- (id)convertResource:(id)a3;
-- (int)mapBurstyInteractionCount:(unint64_t)a3;
-- (int)mapCallDurationType:(double)a3;
-- (int)mapDistanceToHomeInMiles:(double)a3;
-- (int)mapGEOPOICategory:(id)a3;
-- (int)mapLabelConfidenceScore:(float)a3;
-- (int)mapMediaGenre:(id)a3;
-- (int)mapMediaType:(id)a3;
-- (int)mapPersonRelationshipTag:(unint64_t)a3;
-- (int)mapPhotoMomentInference:(id)a3;
-- (int)mapSourceBundleID:(id)a3;
-- (int)mapTimeCorrelationScore:(float)a3;
-- (int)mapTimeTagType:(unint64_t)a3;
-- (int)mapVisitPlaceType:(unint64_t)a3;
-- (void)convertMediaEvent:(id)a3 toMediaType:(int *)a4 mediaGenre:(int *)a5 mediaSourceAppType:(int *)a6 numAudioMediaPlaySessionsPerDay:(unint64_t *)a7 numVideoMediaPlaySessionsPerDay:(unint64_t *)a8 numFirstPartyMediaPlaySessionsPerDay:(unint64_t *)a9 numThirdPartyMediaPlaySessionsPerDay:(unint64_t *)a10 durationAudioMediaPlaySessionsPerDay:(double *)a11 durationVideoMediaPlaySessionsPerDay:(double *)a12;
-- (void)convertSignificantContactEvent:(id)a3 toContactIDsInConversation:(id)a4 callLikeMechanismIncluded:(BOOL *)a5 textLikeMechanismIncluded:(BOOL *)a6 numAudioLikeInteractions:(unint64_t *)a7 numVideoLikeInteractions:(unint64_t *)a8 numTextLikeInteractions:(unint64_t *)a9 totalDurationOfCallLikeInteractions:(double *)a10 maxDurationOfCallLikeInteractions:(double *)a11 minDurationOfCallLikeInteractions:(double *)a12;
+- (id)convertAction:(id)action;
+- (id)convertClusterMetadata:(id)metadata;
+- (id)convertEvent:(id)event;
+- (id)convertEventBundle:(id)bundle;
+- (id)convertMetadataForRankgDictionary:(id)dictionary;
+- (id)convertOutlierMetadata:(id)metadata;
+- (id)convertPerson:(id)person;
+- (id)convertPlace:(id)place;
+- (id)convertResource:(id)resource;
+- (int)mapBurstyInteractionCount:(unint64_t)count;
+- (int)mapCallDurationType:(double)type;
+- (int)mapDistanceToHomeInMiles:(double)miles;
+- (int)mapGEOPOICategory:(id)category;
+- (int)mapLabelConfidenceScore:(float)score;
+- (int)mapMediaGenre:(id)genre;
+- (int)mapMediaType:(id)type;
+- (int)mapPersonRelationshipTag:(unint64_t)tag;
+- (int)mapPhotoMomentInference:(id)inference;
+- (int)mapSourceBundleID:(id)d;
+- (int)mapTimeCorrelationScore:(float)score;
+- (int)mapTimeTagType:(unint64_t)type;
+- (int)mapVisitPlaceType:(unint64_t)type;
+- (void)convertMediaEvent:(id)event toMediaType:(int *)type mediaGenre:(int *)genre mediaSourceAppType:(int *)appType numAudioMediaPlaySessionsPerDay:(unint64_t *)day numVideoMediaPlaySessionsPerDay:(unint64_t *)perDay numFirstPartyMediaPlaySessionsPerDay:(unint64_t *)sessionsPerDay numThirdPartyMediaPlaySessionsPerDay:(unint64_t *)self0 durationAudioMediaPlaySessionsPerDay:(double *)self1 durationVideoMediaPlaySessionsPerDay:(double *)self2;
+- (void)convertSignificantContactEvent:(id)event toContactIDsInConversation:(id)conversation callLikeMechanismIncluded:(BOOL *)included textLikeMechanismIncluded:(BOOL *)mechanismIncluded numAudioLikeInteractions:(unint64_t *)interactions numVideoLikeInteractions:(unint64_t *)likeInteractions numTextLikeInteractions:(unint64_t *)textLikeInteractions totalDurationOfCallLikeInteractions:(double *)self0 maxDurationOfCallLikeInteractions:(double *)self1 minDurationOfCallLikeInteractions:(double *)self2;
 @end
 
 @implementation MOBiomeDonationUtility
@@ -61,27 +61,27 @@
   return v2;
 }
 
-- (id)convertEventBundle:(id)a3
+- (id)convertEventBundle:(id)bundle
 {
-  v4 = a3;
-  v209 = [v4 source];
-  v207 = [v4 source];
-  v205 = [v4 source];
-  v202 = [v4 source];
-  v199 = [v4 source];
+  bundleCopy = bundle;
+  source = [bundleCopy source];
+  source2 = [bundleCopy source];
+  source3 = [bundleCopy source];
+  source4 = [bundleCopy source];
+  source5 = [bundleCopy source];
   v225 = objc_opt_new();
-  v5 = [v4 events];
-  v6 = [v5 count];
+  events = [bundleCopy events];
+  v6 = [events count];
 
-  v220 = v4;
+  v220 = bundleCopy;
   if (v6)
   {
     v257 = 0u;
     v256 = 0u;
     v255 = 0u;
     v254 = 0u;
-    v7 = [v4 events];
-    v8 = [v7 countByEnumeratingWithState:&v254 objects:v265 count:16];
+    events2 = [bundleCopy events];
+    v8 = [events2 countByEnumeratingWithState:&v254 objects:v265 count:16];
     if (v8)
     {
       v9 = v8;
@@ -93,13 +93,13 @@
         {
           if (*v255 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(events2);
           }
 
           v13 = *(*(&v254 + 1) + 8 * i);
-          v14 = [v13 eventIdentifier];
-          v15 = [v14 UUIDString];
-          [v225 addObject:v15];
+          eventIdentifier = [v13 eventIdentifier];
+          uUIDString = [eventIdentifier UUIDString];
+          [v225 addObject:uUIDString];
 
           if ([v13 provider] == 5)
           {
@@ -107,7 +107,7 @@
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v254 objects:v265 count:16];
+        v9 = [events2 countByEnumeratingWithState:&v254 objects:v265 count:16];
       }
 
       while (v9);
@@ -118,7 +118,7 @@
       v11 = 2;
     }
 
-    v4 = v220;
+    bundleCopy = v220;
   }
 
   else
@@ -126,12 +126,12 @@
     v11 = 2;
   }
 
-  v16 = [v4 action];
-  v219 = [(MOBiomeDonationUtility *)self convertAction:v16];
+  action = [bundleCopy action];
+  v219 = [(MOBiomeDonationUtility *)self convertAction:action];
 
   v17 = objc_opt_new();
-  v18 = [v4 backgroundActions];
-  v19 = [v18 count];
+  backgroundActions = [bundleCopy backgroundActions];
+  v19 = [backgroundActions count];
 
   if (v19)
   {
@@ -139,8 +139,8 @@
     v252 = 0u;
     v251 = 0u;
     v250 = 0u;
-    v20 = [v4 backgroundActions];
-    v21 = [v20 countByEnumeratingWithState:&v250 objects:v264 count:16];
+    backgroundActions2 = [bundleCopy backgroundActions];
+    v21 = [backgroundActions2 countByEnumeratingWithState:&v250 objects:v264 count:16];
     if (v21)
     {
       v22 = v21;
@@ -151,32 +151,32 @@
         {
           if (*v251 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(backgroundActions2);
           }
 
           v25 = [(MOBiomeDonationUtility *)self convertAction:*(*(&v250 + 1) + 8 * j)];
           [v17 addObject:v25];
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v250 objects:v264 count:16];
+        v22 = [backgroundActions2 countByEnumeratingWithState:&v250 objects:v264 count:16];
       }
 
       while (v22);
     }
   }
 
-  v26 = [v4 metaDataForRank];
+  metaDataForRank = [bundleCopy metaDataForRank];
 
   v218 = v17;
-  if (!v26)
+  if (!metaDataForRank)
   {
     v193 = 0;
     v194 = 0;
     goto LABEL_38;
   }
 
-  v27 = [v4 metaDataForRank];
-  v28 = [v27 objectForKeyedSubscript:@"LabelConfidence"];
+  metaDataForRank2 = [bundleCopy metaDataForRank];
+  v28 = [metaDataForRank2 objectForKeyedSubscript:@"LabelConfidence"];
   if (!v28)
   {
     v194 = 0;
@@ -184,30 +184,30 @@
   }
 
   v29 = v28;
-  v30 = [v4 metaDataForRank];
-  v31 = [v30 objectForKeyedSubscript:@"LabelConfidence"];
+  metaDataForRank3 = [bundleCopy metaDataForRank];
+  v31 = [metaDataForRank3 objectForKeyedSubscript:@"LabelConfidence"];
   objc_opt_class();
-  v32 = v4;
+  v32 = bundleCopy;
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v27 = [v32 metaDataForRank];
-    v34 = [v27 objectForKeyedSubscript:@"LabelConfidence"];
+    metaDataForRank2 = [v32 metaDataForRank];
+    v34 = [metaDataForRank2 objectForKeyedSubscript:@"LabelConfidence"];
     [v34 floatValue];
     v194 = [(MOBiomeDonationUtility *)self mapLabelConfidenceScore:?];
 
-    v4 = v32;
+    bundleCopy = v32;
 LABEL_30:
 
     goto LABEL_32;
   }
 
   v194 = 0;
-  v4 = v32;
+  bundleCopy = v32;
 LABEL_32:
-  v35 = [v4 metaDataForRank];
-  v36 = [v35 objectForKeyedSubscript:@"TimeCorrelationScore"];
+  metaDataForRank4 = [bundleCopy metaDataForRank];
+  v36 = [metaDataForRank4 objectForKeyedSubscript:@"TimeCorrelationScore"];
   if (!v36)
   {
     v193 = 0;
@@ -215,36 +215,36 @@ LABEL_32:
   }
 
   v37 = v36;
-  v38 = [v4 metaDataForRank];
-  v39 = [v38 objectForKeyedSubscript:@"TimeCorrelationScore"];
+  metaDataForRank5 = [bundleCopy metaDataForRank];
+  v39 = [metaDataForRank5 objectForKeyedSubscript:@"TimeCorrelationScore"];
   objc_opt_class();
-  v40 = v4;
+  v40 = bundleCopy;
   v41 = objc_opt_isKindOfClass();
 
   if (v41)
   {
-    v35 = [v40 metaDataForRank];
-    v42 = [v35 objectForKeyedSubscript:@"TimeCorrelationScore"];
+    metaDataForRank4 = [v40 metaDataForRank];
+    v42 = [metaDataForRank4 objectForKeyedSubscript:@"TimeCorrelationScore"];
     [v42 floatValue];
     v193 = [(MOBiomeDonationUtility *)self mapTimeCorrelationScore:?];
 
-    v4 = v40;
+    bundleCopy = v40;
 LABEL_36:
 
     goto LABEL_38;
   }
 
   v193 = 0;
-  v4 = v40;
+  bundleCopy = v40;
 LABEL_38:
-  if ([v4 interfaceType] == 4)
+  if ([bundleCopy interfaceType] == 4)
   {
-    v43 = [v4 place];
-    if (v43)
+    place = [bundleCopy place];
+    if (place)
     {
-      v44 = v43;
-      v45 = [v4 place];
-      v46 = [v45 placeUserType] == 1;
+      v44 = place;
+      place2 = [bundleCopy place];
+      v46 = [place2 placeUserType] == 1;
     }
 
     else
@@ -252,23 +252,23 @@ LABEL_38:
       v46 = 0;
     }
 
-    v47 = [v4 metaDataForRank];
+    metaDataForRank6 = [bundleCopy metaDataForRank];
 
-    if (v47)
+    if (metaDataForRank6)
     {
-      v48 = [v4 metaDataForRank];
-      v49 = [v48 objectForKeyedSubscript:@"callDuration"];
+      metaDataForRank7 = [bundleCopy metaDataForRank];
+      v49 = [metaDataForRank7 objectForKeyedSubscript:@"callDuration"];
       [v49 doubleValue];
       v51 = v50;
 
       HIDWORD(v191) = [(MOBiomeDonationUtility *)self mapCallDurationType:v51];
-      v52 = [v4 metaDataForRank];
-      v53 = [v52 objectForKeyedSubscript:@"burstyInteractionCount"];
+      metaDataForRank8 = [bundleCopy metaDataForRank];
+      v53 = [metaDataForRank8 objectForKeyedSubscript:@"burstyInteractionCount"];
 
       if (v53)
       {
-        v54 = [v4 metaDataForRank];
-        v55 = [v54 objectForKeyedSubscript:@"burstyInteractionCount"];
+        metaDataForRank9 = [bundleCopy metaDataForRank];
+        v55 = [metaDataForRank9 objectForKeyedSubscript:@"burstyInteractionCount"];
         LODWORD(v191) = -[MOBiomeDonationUtility mapBurstyInteractionCount:](self, "mapBurstyInteractionCount:", [v55 intValue]);
       }
 
@@ -277,37 +277,37 @@ LABEL_38:
         LODWORD(v191) = 0;
       }
 
-      v56 = [v4 metaDataForRank];
-      v57 = [v56 objectForKeyedSubscript:@"contactLocationWork"];
-      v58 = [v57 BOOLValue];
+      metaDataForRank10 = [bundleCopy metaDataForRank];
+      v57 = [metaDataForRank10 objectForKeyedSubscript:@"contactLocationWork"];
+      bOOLValue = [v57 BOOLValue];
 
-      if (v58)
+      if (bOOLValue)
       {
         v46 = 2;
       }
 
-      v59 = [v4 metaDataForRank];
-      v60 = [v59 objectForKeyedSubscript:@"SigConType"];
-      v190 = [v60 intValue];
+      metaDataForRank11 = [bundleCopy metaDataForRank];
+      v60 = [metaDataForRank11 objectForKeyedSubscript:@"SigConType"];
+      intValue = [v60 intValue];
     }
 
     else
     {
-      v190 = 0;
+      intValue = 0;
       v191 = 0;
     }
   }
 
   else
   {
-    v190 = 0;
+    intValue = 0;
     v191 = 0;
     v46 = 0;
   }
 
-  v61 = [v4 place];
+  place3 = [bundleCopy place];
   v192 = v46;
-  if (!v61 || (v62 = v61, [v4 place], v63 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v63, "distanceToHomeInMiles"), v65 = v64, v63, v62, v65 == 0.0))
+  if (!place3 || (v62 = place3, [bundleCopy place], v63 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v63, "distanceToHomeInMiles"), v65 = v64, v63, v62, v65 == 0.0))
   {
     v189 = 0;
     v188 = 0;
@@ -315,8 +315,8 @@ LABEL_38:
 
   else
   {
-    v66 = [v4 place];
-    [v66 distanceToHomeInMiles];
+    place4 = [bundleCopy place];
+    [place4 distanceToHomeInMiles];
     v68 = v67;
 
     if (v68 > 0.0)
@@ -334,8 +334,8 @@ LABEL_38:
   }
 
   v223 = objc_opt_new();
-  v70 = [v4 subBundleIDs];
-  v71 = [v70 count];
+  subBundleIDs = [bundleCopy subBundleIDs];
+  v71 = [subBundleIDs count];
 
   if (v71)
   {
@@ -343,8 +343,8 @@ LABEL_38:
     v248 = 0u;
     v247 = 0u;
     v246 = 0u;
-    v72 = [v4 subBundleIDs];
-    v73 = [v72 countByEnumeratingWithState:&v246 objects:v263 count:16];
+    subBundleIDs2 = [bundleCopy subBundleIDs];
+    v73 = [subBundleIDs2 countByEnumeratingWithState:&v246 objects:v263 count:16];
     if (v73)
     {
       v74 = v73;
@@ -355,7 +355,7 @@ LABEL_38:
         {
           if (*v247 != v75)
           {
-            objc_enumerationMutation(v72);
+            objc_enumerationMutation(subBundleIDs2);
           }
 
           v77 = *(*(&v246 + 1) + 8 * k);
@@ -370,24 +370,24 @@ LABEL_38:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v78 = [v77 UUIDString];
-              [v223 addObject:v78];
+              uUIDString2 = [v77 UUIDString];
+              [v223 addObject:uUIDString2];
             }
           }
         }
 
-        v74 = [v72 countByEnumeratingWithState:&v246 objects:v263 count:16];
+        v74 = [subBundleIDs2 countByEnumeratingWithState:&v246 objects:v263 count:16];
       }
 
       while (v74);
     }
 
-    v4 = v220;
+    bundleCopy = v220;
   }
 
   v222 = objc_opt_new();
-  v79 = [v4 subSuggestionIDs];
-  v80 = [v79 count];
+  subSuggestionIDs = [bundleCopy subSuggestionIDs];
+  v80 = [subSuggestionIDs count];
 
   if (v80)
   {
@@ -395,8 +395,8 @@ LABEL_38:
     v244 = 0u;
     v243 = 0u;
     v242 = 0u;
-    v81 = [v4 subSuggestionIDs];
-    v82 = [v81 countByEnumeratingWithState:&v242 objects:v262 count:16];
+    subSuggestionIDs2 = [bundleCopy subSuggestionIDs];
+    v82 = [subSuggestionIDs2 countByEnumeratingWithState:&v242 objects:v262 count:16];
     if (v82)
     {
       v83 = v82;
@@ -407,7 +407,7 @@ LABEL_38:
         {
           if (*v243 != v84)
           {
-            objc_enumerationMutation(v81);
+            objc_enumerationMutation(subSuggestionIDs2);
           }
 
           v86 = *(*(&v242 + 1) + 8 * m);
@@ -422,24 +422,24 @@ LABEL_38:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v87 = [v86 UUIDString];
-              [v222 addObject:v87];
+              uUIDString3 = [v86 UUIDString];
+              [v222 addObject:uUIDString3];
             }
           }
         }
 
-        v83 = [v81 countByEnumeratingWithState:&v242 objects:v262 count:16];
+        v83 = [subSuggestionIDs2 countByEnumeratingWithState:&v242 objects:v262 count:16];
       }
 
       while (v83);
     }
 
-    v4 = v220;
+    bundleCopy = v220;
   }
 
   v88 = objc_opt_new();
-  v89 = [v4 resources];
-  v90 = [v89 count];
+  resources = [bundleCopy resources];
+  v90 = [resources count];
 
   if (v90)
   {
@@ -447,8 +447,8 @@ LABEL_38:
     v240 = 0u;
     v239 = 0u;
     v238 = 0u;
-    v91 = [v4 resources];
-    v92 = [v91 countByEnumeratingWithState:&v238 objects:v261 count:16];
+    resources2 = [bundleCopy resources];
+    v92 = [resources2 countByEnumeratingWithState:&v238 objects:v261 count:16];
     if (v92)
     {
       v93 = v92;
@@ -459,14 +459,14 @@ LABEL_38:
         {
           if (*v239 != v94)
           {
-            objc_enumerationMutation(v91);
+            objc_enumerationMutation(resources2);
           }
 
           v96 = [(MOBiomeDonationUtility *)self convertResource:*(*(&v238 + 1) + 8 * n)];
           [v88 addObject:v96];
         }
 
-        v93 = [v91 countByEnumeratingWithState:&v238 objects:v261 count:16];
+        v93 = [resources2 countByEnumeratingWithState:&v238 objects:v261 count:16];
       }
 
       while (v93);
@@ -474,8 +474,8 @@ LABEL_38:
   }
 
   v224 = objc_opt_new();
-  v97 = [v4 persons];
-  v98 = [v97 count];
+  persons = [bundleCopy persons];
+  v98 = [persons count];
 
   if (v98)
   {
@@ -483,8 +483,8 @@ LABEL_38:
     v236 = 0u;
     v235 = 0u;
     v234 = 0u;
-    v99 = [v4 persons];
-    v100 = [v99 countByEnumeratingWithState:&v234 objects:v260 count:16];
+    persons2 = [bundleCopy persons];
+    v100 = [persons2 countByEnumeratingWithState:&v234 objects:v260 count:16];
     if (v100)
     {
       v101 = v100;
@@ -495,14 +495,14 @@ LABEL_38:
         {
           if (*v235 != v102)
           {
-            objc_enumerationMutation(v99);
+            objc_enumerationMutation(persons2);
           }
 
           v104 = [(MOBiomeDonationUtility *)self convertPerson:*(*(&v234 + 1) + 8 * ii)];
           [v224 addObject:v104];
         }
 
-        v101 = [v99 countByEnumeratingWithState:&v234 objects:v260 count:16];
+        v101 = [persons2 countByEnumeratingWithState:&v234 objects:v260 count:16];
       }
 
       while (v101);
@@ -510,12 +510,12 @@ LABEL_38:
   }
 
   v217 = v88;
-  v105 = [v4 place];
-  v216 = [(MOBiomeDonationUtility *)self convertPlace:v105];
+  place5 = [bundleCopy place];
+  v216 = [(MOBiomeDonationUtility *)self convertPlace:place5];
 
   v106 = objc_opt_new();
-  v107 = [v4 places];
-  v108 = [v107 count];
+  places = [bundleCopy places];
+  v108 = [places count];
 
   if (v108)
   {
@@ -523,8 +523,8 @@ LABEL_38:
     v232 = 0u;
     v231 = 0u;
     v230 = 0u;
-    v109 = [v4 places];
-    v110 = [v109 countByEnumeratingWithState:&v230 objects:v259 count:16];
+    places2 = [bundleCopy places];
+    v110 = [places2 countByEnumeratingWithState:&v230 objects:v259 count:16];
     if (v110)
     {
       v111 = v110;
@@ -535,14 +535,14 @@ LABEL_38:
         {
           if (*v231 != v112)
           {
-            objc_enumerationMutation(v109);
+            objc_enumerationMutation(places2);
           }
 
           v114 = [(MOBiomeDonationUtility *)self convertPlace:*(*(&v230 + 1) + 8 * jj)];
           [v106 addObject:v114];
         }
 
-        v111 = [v109 countByEnumeratingWithState:&v230 objects:v259 count:16];
+        v111 = [places2 countByEnumeratingWithState:&v230 objects:v259 count:16];
       }
 
       while (v111);
@@ -550,8 +550,8 @@ LABEL_38:
   }
 
   v221 = objc_opt_new();
-  v115 = [v4 photoTraits];
-  v116 = [v115 count];
+  photoTraits = [bundleCopy photoTraits];
+  v116 = [photoTraits count];
 
   if (v116)
   {
@@ -559,8 +559,8 @@ LABEL_38:
     v228 = 0u;
     v227 = 0u;
     v226 = 0u;
-    v117 = [v4 photoTraits];
-    v118 = [v117 countByEnumeratingWithState:&v226 objects:v258 count:16];
+    photoTraits2 = [bundleCopy photoTraits];
+    v118 = [photoTraits2 countByEnumeratingWithState:&v226 objects:v258 count:16];
     if (v118)
     {
       v119 = v118;
@@ -571,46 +571,46 @@ LABEL_38:
         {
           if (*v227 != v120)
           {
-            objc_enumerationMutation(v117);
+            objc_enumerationMutation(photoTraits2);
           }
 
           v122 = *(*(&v226 + 1) + 8 * kk);
-          v123 = [v122 name];
-          v124 = [v123 length];
+          name = [v122 name];
+          v124 = [name length];
 
           if (v124)
           {
-            v125 = [v122 name];
-            [v221 addObject:v125];
+            name2 = [v122 name];
+            [v221 addObject:name2];
           }
         }
 
-        v119 = [v117 countByEnumeratingWithState:&v226 objects:v258 count:16];
+        v119 = [photoTraits2 countByEnumeratingWithState:&v226 objects:v258 count:16];
       }
 
       while (v119);
     }
 
-    v4 = v220;
+    bundleCopy = v220;
   }
 
-  v126 = [v4 clusterMetadata];
-  v215 = [(MOBiomeDonationUtility *)self convertClusterMetadata:v126];
+  clusterMetadata = [bundleCopy clusterMetadata];
+  v215 = [(MOBiomeDonationUtility *)self convertClusterMetadata:clusterMetadata];
 
-  v127 = [v4 outlierMetadata];
-  v214 = [(MOBiomeDonationUtility *)self convertOutlierMetadata:v127];
+  outlierMetadata = [bundleCopy outlierMetadata];
+  v214 = [(MOBiomeDonationUtility *)self convertOutlierMetadata:outlierMetadata];
 
-  v128 = [v4 rankingDictionary];
+  rankingDictionary = [bundleCopy rankingDictionary];
 
-  if (v128)
+  if (rankingDictionary)
   {
-    v129 = [v4 rankingDictionary];
-    v130 = [v129 objectForKeyedSubscript:@"bundleGoodnessScore"];
+    rankingDictionary2 = [bundleCopy rankingDictionary];
+    v130 = [rankingDictionary2 objectForKeyedSubscript:@"bundleGoodnessScore"];
 
     if (v130)
     {
-      v131 = [v4 rankingDictionary];
-      v213 = [v131 objectForKeyedSubscript:@"bundleGoodnessScore"];
+      rankingDictionary3 = [bundleCopy rankingDictionary];
+      v213 = [rankingDictionary3 objectForKeyedSubscript:@"bundleGoodnessScore"];
     }
 
     else
@@ -618,13 +618,13 @@ LABEL_38:
       v213 = 0;
     }
 
-    v132 = [v4 rankingDictionary];
-    v133 = [v132 objectForKeyedSubscript:@"distinctnessScore"];
+    rankingDictionary4 = [bundleCopy rankingDictionary];
+    v133 = [rankingDictionary4 objectForKeyedSubscript:@"distinctnessScore"];
 
     if (v133)
     {
-      v134 = [v4 rankingDictionary];
-      v135 = [v134 objectForKeyedSubscript:@"distinctnessScore"];
+      rankingDictionary5 = [bundleCopy rankingDictionary];
+      v135 = [rankingDictionary5 objectForKeyedSubscript:@"distinctnessScore"];
     }
 
     else
@@ -632,13 +632,13 @@ LABEL_38:
       v135 = 0;
     }
 
-    v136 = [v4 rankingDictionary];
-    v137 = [v136 objectForKeyedSubscript:@"richnessScore"];
+    rankingDictionary6 = [bundleCopy rankingDictionary];
+    v137 = [rankingDictionary6 objectForKeyedSubscript:@"richnessScore"];
 
     if (v137)
     {
-      v138 = [v4 rankingDictionary];
-      v139 = [v138 objectForKeyedSubscript:@"richnessScore"];
+      rankingDictionary7 = [bundleCopy rankingDictionary];
+      v139 = [rankingDictionary7 objectForKeyedSubscript:@"richnessScore"];
     }
 
     else
@@ -646,13 +646,13 @@ LABEL_38:
       v139 = 0;
     }
 
-    v140 = [v4 rankingDictionary];
-    v141 = [v140 objectForKeyedSubscript:@"engagementScore"];
+    rankingDictionary8 = [bundleCopy rankingDictionary];
+    v141 = [rankingDictionary8 objectForKeyedSubscript:@"engagementScore"];
 
     if (v141)
     {
-      v142 = [v4 rankingDictionary];
-      v143 = [v142 objectForKeyedSubscript:@"engagementScore"];
+      rankingDictionary9 = [bundleCopy rankingDictionary];
+      v143 = [rankingDictionary9 objectForKeyedSubscript:@"engagementScore"];
     }
 
     else
@@ -660,16 +660,16 @@ LABEL_38:
       v143 = 0;
     }
 
-    v144 = [v4 rankingDictionary];
-    v145 = [v144 objectForKeyedSubscript:@"heuristicsScore"];
+    rankingDictionary10 = [bundleCopy rankingDictionary];
+    v145 = [rankingDictionary10 objectForKeyedSubscript:@"heuristicsScore"];
 
     v212 = v135;
     v204 = v139;
     v201 = v143;
     if (v145)
     {
-      v146 = [v4 rankingDictionary];
-      v211 = [v146 objectForKeyedSubscript:@"heuristicsScore"];
+      rankingDictionary11 = [bundleCopy rankingDictionary];
+      v211 = [rankingDictionary11 objectForKeyedSubscript:@"heuristicsScore"];
 
       goto LABEL_139;
     }
@@ -685,50 +685,50 @@ LABEL_38:
 
   v211 = 0;
 LABEL_139:
-  v147 = v199 == 16;
-  v148 = v202 == 8;
-  v197 = v205 == 4;
-  v149 = v207 == 2;
-  v150 = v209 == 1;
-  v151 = [v4 metaDataForRank];
-  v200 = [(MOBiomeDonationUtility *)self convertMetadataForRankgDictionary:v151];
+  v147 = source5 == 16;
+  v148 = source4 == 8;
+  v197 = source3 == 4;
+  v149 = source2 == 2;
+  v150 = source == 1;
+  metaDataForRank12 = [bundleCopy metaDataForRank];
+  v200 = [(MOBiomeDonationUtility *)self convertMetadataForRankgDictionary:metaDataForRank12];
 
   v186 = [BMMomentsEventDataEventBundle alloc];
-  v187 = [v4 bundleIdentifier];
-  v210 = [v187 UUIDString];
-  v208 = [v4 startDate];
-  v206 = [v4 endDate];
-  v203 = [v4 creationDate];
-  v183 = [v4 expirationDate];
-  v182 = [v4 interfaceType];
+  bundleIdentifier = [bundleCopy bundleIdentifier];
+  uUIDString4 = [bundleIdentifier UUIDString];
+  startDate = [bundleCopy startDate];
+  endDate = [bundleCopy endDate];
+  creationDate = [bundleCopy creationDate];
+  expirationDate = [bundleCopy expirationDate];
+  interfaceType = [bundleCopy interfaceType];
   v180 = [NSNumber numberWithBool:v150];
   v178 = [NSNumber numberWithBool:v149];
   v177 = [NSNumber numberWithBool:v197];
   v176 = [NSNumber numberWithBool:v148];
-  v175 = [v4 promptLanguage];
-  v185 = [v4 place];
-  v174 = [v185 placeType];
-  v184 = [v4 place];
-  v173 = [v184 placeUserType];
-  v181 = [v4 time];
-  v171 = [v181 timeTag];
-  v179 = [v4 suggestionID];
-  v198 = [v179 UUIDString];
-  v169 = [v4 photoSource];
+  promptLanguage = [bundleCopy promptLanguage];
+  place6 = [bundleCopy place];
+  placeType = [place6 placeType];
+  place7 = [bundleCopy place];
+  placeUserType = [place7 placeUserType];
+  time = [bundleCopy time];
+  timeTag = [time timeTag];
+  suggestionID = [bundleCopy suggestionID];
+  uUIDString5 = [suggestionID UUIDString];
+  photoSource = [bundleCopy photoSource];
   v196 = [NSNumber numberWithBool:v147];
   v168 = [NSNumber numberWithBool:0];
   v165 = [NSNumber numberWithBool:0];
-  v172 = [v4 persons];
-  v164 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v172 count]);
-  v170 = [v4 place];
-  LODWORD(v150) = [v170 placeType];
-  v167 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 filtered]);
-  [v4 bundleSuperType];
-  [v4 bundleSubType];
-  v166 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isAggregatedAndSuppressed]);
-  [v4 summarizationGranularity];
-  v163 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 includedInSummaryBundleOnly]);
-  [v4 firstCreationDate];
+  persons3 = [bundleCopy persons];
+  v164 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [persons3 count]);
+  place8 = [bundleCopy place];
+  LODWORD(v150) = [place8 placeType];
+  v167 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy filtered]);
+  [bundleCopy bundleSuperType];
+  [bundleCopy bundleSubType];
+  v166 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy isAggregatedAndSuppressed]);
+  [bundleCopy summarizationGranularity];
+  v163 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy includedInSummaryBundleOnly]);
+  [bundleCopy firstCreationDate];
   HIDWORD(v161) = v11;
   HIDWORD(v160) = v150;
   v162 = HIDWORD(v159) = v194;
@@ -738,42 +738,42 @@ LABEL_139:
   LODWORD(v157) = 0;
   LODWORD(v156) = 0;
   LODWORD(v155) = 0;
-  LODWORD(v154) = v171;
+  LODWORD(v154) = timeTag;
   LODWORD(v153) = 0;
   LODWORD(v160) = 0;
-  v195 = [v186 initWithBundleIdentifier:v210 bundleStartDate:v208 bundleEndDate:v206 bundleCreationDate:v203 bundleExpirationDate:v183 bundleInterfaceType:v182 bundleSourceHealthExists:v180 bundleSourcePhotoExists:v178 bundleSourceProactiveExists:v177 bundleSourceRoutineExists:v176 bundlePromptLanguageFormat:v175 bundlePromptToneID:0 bundlePromptParametersAvailability:0 bundlePlaceType:__PAIR64__(v173 bundlePlaceUserType:v174) bundleBaseEventCateory:v153 bundleEventIDs:v225 bundleActionType:v219 backgroundActions:v218 bundleIsFamilyIncluded:0 bundleTimeTag:v154 isBundleResourceTypeUnknown:0 isBundleResourceTypeValueIncluded:0 isBundleResourceTypePhotoAssetsIncluded:0 isBundleResourceTypeMediaIncluded:0 isBundleResourceTypeWebLinkIncluded:0 isBundleResourceTypeInterenceTagIncluded:0 bundlEngagement:v155 bundleVersion:0 rankingVersion:0 suggestionType:v156 suggestionTimestamp:0 suggestionClientIdentifier:0 suggestionViewContainerName:0 suggestionViewVisibleTime:0 appEntryEventType:v157 appEntryEventClientIdentifier:0 appEntryEventTimestamp:0 appEntryEventStartTime:0 appEntryEventEndTime:0 appEntryEventTotalCharacters:0 appEntryEventAddedCharacters:0 clientActivityEventType:v158 clientActivityEventClientIdentifier:0 clientActivityEventTimestamp:0 suggestionIdentifier:v198 photoSourceType:v169 photoLibraryType:v196 bundleSourcePostAnalyticsExists:v168 bundleSourcePDExists:v165 bundleSourceMotionExists:&__kCFBooleanFalse bundleSourceBooksExists:&__kCFBooleanFalse bundleSourceScreenTimeExists:&__NSArray0__struct gaPRArray:v164 bundlePCount:v159 ranking:__PAIR64__(HIDWORD(v191) labelConfidenceScore:v193) timeCorrelationScore:__PAIR64__(v190 callDuration:v191) interactionCount:__PAIR64__(v188 interactionType:v192) callPlace:v189 distanceFromHome:v160 homeAvailability:v161 workAvailability:v167 bundleVisitMapItemSource:? bundleVisitPlaceType:? bundleVisitPlaceLabelGranularity:? bundleIncludesAnomalousEvent:? isFiltered:? bundleSuperType:? bundleSubType:? isAggregatedAndSuppressed:? summarizationGranularity:? includedInSummaryBundleOnly:? subBundleIDs:? subSuggestionIDs:? firstCreationDate:? resources:? persons:? mainPlace:? otherPlaces:? photoTraits:? clusterMetadata:? outlierMetadata:? bundleGoodnessScore:? distinctnessScore:? richnessScore:? engagementScore:? heuristicsScore:? metadataForRank:?];
+  v195 = [v186 initWithBundleIdentifier:uUIDString4 bundleStartDate:startDate bundleEndDate:endDate bundleCreationDate:creationDate bundleExpirationDate:expirationDate bundleInterfaceType:interfaceType bundleSourceHealthExists:v180 bundleSourcePhotoExists:v178 bundleSourceProactiveExists:v177 bundleSourceRoutineExists:v176 bundlePromptLanguageFormat:promptLanguage bundlePromptToneID:0 bundlePromptParametersAvailability:0 bundlePlaceType:__PAIR64__(placeUserType bundlePlaceUserType:placeType) bundleBaseEventCateory:v153 bundleEventIDs:v225 bundleActionType:v219 backgroundActions:v218 bundleIsFamilyIncluded:0 bundleTimeTag:v154 isBundleResourceTypeUnknown:0 isBundleResourceTypeValueIncluded:0 isBundleResourceTypePhotoAssetsIncluded:0 isBundleResourceTypeMediaIncluded:0 isBundleResourceTypeWebLinkIncluded:0 isBundleResourceTypeInterenceTagIncluded:0 bundlEngagement:v155 bundleVersion:0 rankingVersion:0 suggestionType:v156 suggestionTimestamp:0 suggestionClientIdentifier:0 suggestionViewContainerName:0 suggestionViewVisibleTime:0 appEntryEventType:v157 appEntryEventClientIdentifier:0 appEntryEventTimestamp:0 appEntryEventStartTime:0 appEntryEventEndTime:0 appEntryEventTotalCharacters:0 appEntryEventAddedCharacters:0 clientActivityEventType:v158 clientActivityEventClientIdentifier:0 clientActivityEventTimestamp:0 suggestionIdentifier:uUIDString5 photoSourceType:photoSource photoLibraryType:v196 bundleSourcePostAnalyticsExists:v168 bundleSourcePDExists:v165 bundleSourceMotionExists:&__kCFBooleanFalse bundleSourceBooksExists:&__kCFBooleanFalse bundleSourceScreenTimeExists:&__NSArray0__struct gaPRArray:v164 bundlePCount:v159 ranking:__PAIR64__(HIDWORD(v191) labelConfidenceScore:v193) timeCorrelationScore:__PAIR64__(intValue callDuration:v191) interactionCount:__PAIR64__(v188 interactionType:v192) callPlace:v189 distanceFromHome:v160 homeAvailability:v161 workAvailability:v167 bundleVisitMapItemSource:? bundleVisitPlaceType:? bundleVisitPlaceLabelGranularity:? bundleIncludesAnomalousEvent:? isFiltered:? bundleSuperType:? bundleSubType:? isAggregatedAndSuppressed:? summarizationGranularity:? includedInSummaryBundleOnly:? subBundleIDs:? subSuggestionIDs:? firstCreationDate:? resources:? persons:? mainPlace:? otherPlaces:? photoTraits:? clusterMetadata:? outlierMetadata:? bundleGoodnessScore:? distinctnessScore:? richnessScore:? engagementScore:? heuristicsScore:? metadataForRank:?];
 
   return v195;
 }
 
-- (id)convertEvent:(id)a3
+- (id)convertEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 routineEvent];
+  eventCopy = event;
+  routineEvent = [eventCopy routineEvent];
 
-  if (v5)
+  if (routineEvent)
   {
-    v6 = [v4 routineEvent];
-    v7 = [v6 placeUserType];
+    routineEvent2 = [eventCopy routineEvent];
+    placeUserType = [routineEvent2 placeUserType];
 
-    if (v7)
+    if (placeUserType)
     {
-      v8 = [v4 routineEvent];
-      v77 = [v8 placeUserType];
+      routineEvent3 = [eventCopy routineEvent];
+      placeUserType2 = [routineEvent3 placeUserType];
     }
 
     else
     {
-      v77 = 0;
+      placeUserType2 = 0;
     }
 
-    v9 = [v4 routineEvent];
-    v10 = [v9 placeType];
+    routineEvent4 = [eventCopy routineEvent];
+    placeType = [routineEvent4 placeType];
 
-    if (v10)
+    if (placeType)
     {
-      v11 = [v4 routineEvent];
-      LODWORD(v76) = -[MOBiomeDonationUtility mapVisitPlaceType:](self, "mapVisitPlaceType:", [v11 placeType]);
+      routineEvent5 = [eventCopy routineEvent];
+      LODWORD(v76) = -[MOBiomeDonationUtility mapVisitPlaceType:](self, "mapVisitPlaceType:", [routineEvent5 placeType]);
     }
 
     else
@@ -781,14 +781,14 @@ LABEL_139:
       LODWORD(v76) = 0;
     }
 
-    v12 = [v4 routineEvent];
-    v13 = [v12 poiCategory];
+    routineEvent6 = [eventCopy routineEvent];
+    poiCategory = [routineEvent6 poiCategory];
 
-    if (v13)
+    if (poiCategory)
     {
-      v14 = [v4 routineEvent];
-      v15 = [v14 poiCategory];
-      HIDWORD(v76) = [(MOBiomeDonationUtility *)self mapGEOPOICategory:v15];
+      routineEvent7 = [eventCopy routineEvent];
+      poiCategory2 = [routineEvent7 poiCategory];
+      HIDWORD(v76) = [(MOBiomeDonationUtility *)self mapGEOPOICategory:poiCategory2];
     }
 
     else
@@ -796,78 +796,78 @@ LABEL_139:
       HIDWORD(v76) = 0;
     }
 
-    v16 = [v4 routineEvent];
-    v17 = [v16 placeDiscovery];
+    routineEvent8 = [eventCopy routineEvent];
+    placeDiscovery = [routineEvent8 placeDiscovery];
 
-    if (v17)
+    if (placeDiscovery)
     {
-      v18 = [v4 routineEvent];
-      v75 = [v18 placeDiscovery];
+      routineEvent9 = [eventCopy routineEvent];
+      placeDiscovery2 = [routineEvent9 placeDiscovery];
     }
 
     else
     {
-      v75 = 0;
+      placeDiscovery2 = 0;
     }
 
-    v19 = [v4 routineEvent];
-    v20 = [v19 mode];
+    routineEvent10 = [eventCopy routineEvent];
+    mode = [routineEvent10 mode];
 
-    if (v20)
+    if (mode)
     {
-      v21 = [v4 routineEvent];
-      v74 = [v21 mode];
-    }
-
-    else
-    {
-      v74 = 0;
-    }
-
-    v22 = [v4 routineEvent];
-    v23 = [v22 placeSource];
-
-    if (v23)
-    {
-      v24 = [v4 routineEvent];
-      v72 = [v24 placeSource];
+      routineEvent11 = [eventCopy routineEvent];
+      mode2 = [routineEvent11 mode];
     }
 
     else
     {
-      v72 = 0;
+      mode2 = 0;
+    }
+
+    routineEvent12 = [eventCopy routineEvent];
+    placeSource = [routineEvent12 placeSource];
+
+    if (placeSource)
+    {
+      routineEvent13 = [eventCopy routineEvent];
+      placeSource2 = [routineEvent13 placeSource];
+    }
+
+    else
+    {
+      placeSource2 = 0;
     }
   }
 
   else
   {
     v76 = 0;
-    v75 = 0;
-    v74 = 0;
-    v72 = 0;
-    v77 = 0;
+    placeDiscovery2 = 0;
+    mode2 = 0;
+    placeSource2 = 0;
+    placeUserType2 = 0;
   }
 
-  v25 = [v4 workoutEvent];
-  if (!v25)
+  workoutEvent = [eventCopy workoutEvent];
+  if (!workoutEvent)
   {
     goto LABEL_24;
   }
 
-  v26 = v25;
-  v27 = [v4 workoutEvent];
-  v28 = [v27 workoutType];
+  v26 = workoutEvent;
+  workoutEvent2 = [eventCopy workoutEvent];
+  workoutType = [workoutEvent2 workoutType];
 
-  if (v28)
+  if (workoutType)
   {
-    v29 = [v4 workoutEvent];
-    v69 = [v29 workoutType];
+    workoutEvent3 = [eventCopy workoutEvent];
+    workoutType2 = [workoutEvent3 workoutType];
   }
 
   else
   {
 LABEL_24:
-    LODWORD(v69) = 0;
+    LODWORD(workoutType2) = 0;
   }
 
   v112[0] = 0;
@@ -878,8 +878,8 @@ LABEL_24:
   v108 = 0;
   v105 = 0.0;
   v106 = 0.0;
-  v30 = [v4 mediaEvent];
-  [(MOBiomeDonationUtility *)self convertMediaEvent:v30 toMediaType:v112 + 4 mediaGenre:v112 mediaSourceAppType:&v111 numAudioMediaPlaySessionsPerDay:&v110 numVideoMediaPlaySessionsPerDay:&v109 numFirstPartyMediaPlaySessionsPerDay:&v108 numThirdPartyMediaPlaySessionsPerDay:&v107 durationAudioMediaPlaySessionsPerDay:&v106 durationVideoMediaPlaySessionsPerDay:&v105];
+  mediaEvent = [eventCopy mediaEvent];
+  [(MOBiomeDonationUtility *)self convertMediaEvent:mediaEvent toMediaType:v112 + 4 mediaGenre:v112 mediaSourceAppType:&v111 numAudioMediaPlaySessionsPerDay:&v110 numVideoMediaPlaySessionsPerDay:&v109 numFirstPartyMediaPlaySessionsPerDay:&v108 numThirdPartyMediaPlaySessionsPerDay:&v107 durationAudioMediaPlaySessionsPerDay:&v106 durationVideoMediaPlaySessionsPerDay:&v105];
 
   v31 = objc_opt_new();
   v104 = 0;
@@ -889,29 +889,29 @@ LABEL_24:
   v101 = 0;
   v98 = 1.79769313e308;
   v99 = 0.0;
-  v32 = [v4 significantContactEvent];
+  significantContactEvent = [eventCopy significantContactEvent];
   v97 = v31;
-  [(MOBiomeDonationUtility *)self convertSignificantContactEvent:v32 toContactIDsInConversation:v31 callLikeMechanismIncluded:&v104 + 1 textLikeMechanismIncluded:&v104 numAudioLikeInteractions:&v103 numVideoLikeInteractions:&v102 numTextLikeInteractions:&v101 totalDurationOfCallLikeInteractions:&v100 maxDurationOfCallLikeInteractions:&v99 minDurationOfCallLikeInteractions:&v98];
+  [(MOBiomeDonationUtility *)self convertSignificantContactEvent:significantContactEvent toContactIDsInConversation:v31 callLikeMechanismIncluded:&v104 + 1 textLikeMechanismIncluded:&v104 numAudioLikeInteractions:&v103 numVideoLikeInteractions:&v102 numTextLikeInteractions:&v101 totalDurationOfCallLikeInteractions:&v100 maxDurationOfCallLikeInteractions:&v99 minDurationOfCallLikeInteractions:&v98];
 
   v66 = [BMMomentsEventDataEvent alloc];
-  v73 = [v4 eventIdentifier];
-  v96 = [v73 UUIDString];
-  v95 = [v4 startDate];
-  v94 = [v4 endDate];
-  v93 = [v4 creationDate];
-  v92 = [v4 sourceCreationDate];
-  v91 = [v4 expirationDate];
-  v64 = [v4 provider];
-  v63 = [v4 category];
-  v90 = [v4 appBundle];
+  eventIdentifier = [eventCopy eventIdentifier];
+  uUIDString = [eventIdentifier UUIDString];
+  startDate = [eventCopy startDate];
+  endDate = [eventCopy endDate];
+  creationDate = [eventCopy creationDate];
+  sourceCreationDate = [eventCopy sourceCreationDate];
+  expirationDate = [eventCopy expirationDate];
+  provider = [eventCopy provider];
+  category = [eventCopy category];
+  appBundle = [eventCopy appBundle];
   v33 = v112[0];
-  v71 = [v4 mediaEvent];
-  v89 = [v71 mediaRepetitions];
-  v70 = [v4 mediaEvent];
-  v88 = [v70 mediaSumTimePlayed];
+  mediaEvent2 = [eventCopy mediaEvent];
+  mediaRepetitions = [mediaEvent2 mediaRepetitions];
+  mediaEvent3 = [eventCopy mediaEvent];
+  mediaSumTimePlayed = [mediaEvent3 mediaSumTimePlayed];
   v61 = v111;
-  v68 = [v4 mediaEvent];
-  v87 = [v68 mediaPlayerBundleId];
+  mediaEvent4 = [eventCopy mediaEvent];
+  mediaPlayerBundleId = [mediaEvent4 mediaPlayerBundleId];
   v67 = v110;
   if (v110)
   {
@@ -978,15 +978,15 @@ LABEL_24:
     v81 = 0;
   }
 
-  v59 = [v4 significantContactEvent];
-  v58 = [v59 interactionContacts];
-  v53 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v58 count]);
-  v57 = [v4 significantContactEvent];
-  v56 = [v57 interactionScoredContact];
-  v55 = [v56 contact];
-  v86 = [v55 identifier];
-  v54 = [v4 significantContactEvent];
-  v85 = [v54 interactionContactScore];
+  significantContactEvent2 = [eventCopy significantContactEvent];
+  interactionContacts = [significantContactEvent2 interactionContacts];
+  v53 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [interactionContacts count]);
+  significantContactEvent3 = [eventCopy significantContactEvent];
+  interactionScoredContact = [significantContactEvent3 interactionScoredContact];
+  contact = [interactionScoredContact contact];
+  identifier = [contact identifier];
+  significantContactEvent4 = [eventCopy significantContactEvent];
+  interactionContactScore = [significantContactEvent4 interactionContactScore];
   v51 = [NSNumber numberWithBool:v104];
   v36 = [NSNumber numberWithBool:HIBYTE(v104)];
   v52 = [NSNumber numberWithUnsignedInteger:v101];
@@ -995,15 +995,15 @@ LABEL_24:
   v38 = [NSNumber numberWithDouble:v100];
   v39 = [NSNumber numberWithDouble:v98];
   v40 = [NSNumber numberWithDouble:v99];
-  v41 = [v4 peopleDiscoveryEvent];
-  v42 = [v41 pCount];
+  peopleDiscoveryEvent = [eventCopy peopleDiscoveryEvent];
+  pCount = [peopleDiscoveryEvent pCount];
   LODWORD(v45) = v61;
-  LODWORD(v44) = v69;
+  LODWORD(v44) = workoutType2;
   LODWORD(v49) = 0;
   LODWORD(v48) = 0;
   LODWORD(v47) = 0;
   LODWORD(v46) = 0;
-  v78 = [v66 initWithEventIdentifier:v96 startDate:v95 endDate:v94 creationDate:v93 sourceCreationDate:v92 expirationDate:v91 provider:__PAIR64__(v63 category:v64) placeUserType:__PAIR64__(HIDWORD(v76) poiCategory:v77) placeDiscovery:__PAIR64__(v74 locationMode:v75) workoutType:v44 workoutBundleID:v90 mediaGenre:v33 mediaType:v89 mediaRepetitions:v88 mediaSumTimePlayed:v45 sourceParty:v87 mediaPlayerBundleID:v84 numAudioMediaPlaySessionsPerDay:v80 durationAudioMediaPlaySessionsPerDay:v83 numVideoMediaPlaySessionsPerDay:v79 durationVideoMediaPlaySessionsPerDay:v82 numFirstPartyMediaPlaySessionsPerDay:v81 numThirdPartyMediaPlaySessionsPerDay:v53 numContacts:v97 contactIDsInConversation:v86 contactIDMostSignificantInConversation:v85 interactionContactScore:v51 textLikeMechanismIncluded:v36 callLikeMechanismIncluded:v52 numTextLikeInteractions:v50 numAudioLikeInteractions:v37 numVideoLikeInteractions:v38 totalDurationOfCallLikeInteractions:v39 minDurationOfCallLikeInteractions:v40 maxDurationOfCallLikeInteractions:v46 photoMomentSource:&__NSArray0__struct photoMomentInferences:&__NSArray0__struct photoMomentHolidays:0 numPhotoMomentHolidays:0 numPhotoMomentInferences:0 numPhotoMomentPublicEvents:0 numPhotoMomentPersons:0 isFamilyInPhotoMoment:0 momentIncludesFavoritedAsset:0 momentIncludesVideo:0 momentIncludesPhoto:v47 suggestedEventCategory:0 numAttendees:0 numtripParts:v48 tripMode:0 numScoredTopics:0 numItemAuthors:0 numItemRecipients:0 isGatheringComplete:0 gaPR:v42 pCount:__PAIR64__(v76 mapItemSource:v72) placeType:v49 placeLabelGranularity:?];
+  v78 = [v66 initWithEventIdentifier:uUIDString startDate:startDate endDate:endDate creationDate:creationDate sourceCreationDate:sourceCreationDate expirationDate:expirationDate provider:__PAIR64__(category category:provider) placeUserType:__PAIR64__(HIDWORD(v76) poiCategory:placeUserType2) placeDiscovery:__PAIR64__(mode2 locationMode:placeDiscovery2) workoutType:v44 workoutBundleID:appBundle mediaGenre:v33 mediaType:mediaRepetitions mediaRepetitions:mediaSumTimePlayed mediaSumTimePlayed:v45 sourceParty:mediaPlayerBundleId mediaPlayerBundleID:v84 numAudioMediaPlaySessionsPerDay:v80 durationAudioMediaPlaySessionsPerDay:v83 numVideoMediaPlaySessionsPerDay:v79 durationVideoMediaPlaySessionsPerDay:v82 numFirstPartyMediaPlaySessionsPerDay:v81 numThirdPartyMediaPlaySessionsPerDay:v53 numContacts:v97 contactIDsInConversation:identifier contactIDMostSignificantInConversation:interactionContactScore interactionContactScore:v51 textLikeMechanismIncluded:v36 callLikeMechanismIncluded:v52 numTextLikeInteractions:v50 numAudioLikeInteractions:v37 numVideoLikeInteractions:v38 totalDurationOfCallLikeInteractions:v39 minDurationOfCallLikeInteractions:v40 maxDurationOfCallLikeInteractions:v46 photoMomentSource:&__NSArray0__struct photoMomentInferences:&__NSArray0__struct photoMomentHolidays:0 numPhotoMomentHolidays:0 numPhotoMomentInferences:0 numPhotoMomentPublicEvents:0 numPhotoMomentPersons:0 isFamilyInPhotoMoment:0 momentIncludesFavoritedAsset:0 momentIncludesVideo:0 momentIncludesPhoto:v47 suggestedEventCategory:0 numAttendees:0 numtripParts:v48 tripMode:0 numScoredTopics:0 numItemAuthors:0 numItemRecipients:0 isGatheringComplete:0 gaPR:pCount pCount:__PAIR64__(v76 mapItemSource:placeSource2) placeType:v49 placeLabelGranularity:?];
 
   if (v60)
   {
@@ -1032,22 +1032,22 @@ LABEL_24:
   return v78;
 }
 
-- (id)convertResource:(id)a3
+- (id)convertResource:(id)resource
 {
-  if (a3)
+  if (resource)
   {
-    v3 = a3;
+    resourceCopy = resource;
     v4 = [BMMomentsEventDataEventBundleResource alloc];
-    v5 = [v3 type];
-    v6 = [v3 photoAssetMediaType];
-    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 photoFaceCount]);
-    v8 = [v3 photoCurationScore];
-    [v3 photoOverallAestheticScore];
+    type = [resourceCopy type];
+    photoAssetMediaType = [resourceCopy photoAssetMediaType];
+    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [resourceCopy photoFaceCount]);
+    photoCurationScore = [resourceCopy photoCurationScore];
+    [resourceCopy photoOverallAestheticScore];
     v10 = v9;
 
     LODWORD(v11) = v10;
     v12 = [NSNumber numberWithFloat:v11];
-    v13 = [v4 initWithType:v5 photoAssetMediaType:v6 photoFaceCount:v7 photoCurationScore:v8 photoOverallAestheticScore:v12];
+    v13 = [v4 initWithType:type photoAssetMediaType:photoAssetMediaType photoFaceCount:v7 photoCurationScore:photoCurationScore photoOverallAestheticScore:v12];
   }
 
   else
@@ -1058,14 +1058,14 @@ LABEL_24:
   return v13;
 }
 
-- (id)convertPerson:(id)a3
+- (id)convertPerson:(id)person
 {
-  v4 = a3;
-  if (v4)
+  personCopy = person;
+  if (personCopy)
   {
     v5 = objc_opt_new();
-    v6 = [v4 personRelationships];
-    v7 = [v6 count];
+    personRelationships = [personCopy personRelationships];
+    v7 = [personRelationships count];
 
     if (v7)
     {
@@ -1073,8 +1073,8 @@ LABEL_24:
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v22 = v4;
-      obj = [v4 personRelationships];
+      v22 = personCopy;
+      obj = [personCopy personRelationships];
       v8 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v8)
       {
@@ -1105,12 +1105,12 @@ LABEL_24:
         while (v9);
       }
 
-      v4 = v22;
+      personCopy = v22;
     }
 
     v17 = [BMMomentsEventDataEventBundlePerson alloc];
-    v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isMePerson]);
-    [v4 significanceScore];
+    v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [personCopy isMePerson]);
+    [personCopy significanceScore];
     v19 = [NSNumber numberWithDouble:?];
     v20 = [v17 initWithPersonRelationships:v5 isMEPerson:v18 significanceScore:v19];
   }
@@ -1123,19 +1123,19 @@ LABEL_24:
   return v20;
 }
 
-- (id)convertAction:(id)a3
+- (id)convertAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
     v4 = [BMMomentsEventDataAction alloc];
-    v5 = [v3 actionType];
-    v6 = [v3 actionName];
-    [v3 actionNameConfidence];
+    actionType = [actionCopy actionType];
+    actionName = [actionCopy actionName];
+    [actionCopy actionNameConfidence];
     v8 = v7;
 
     v9 = [NSNumber numberWithDouble:v8];
-    v10 = [v4 initWithType:v5 actionName:v6 actionNameConfidence:v9];
+    v10 = [v4 initWithType:actionType actionName:actionName actionNameConfidence:v9];
   }
 
   else
@@ -1146,18 +1146,18 @@ LABEL_24:
   return v10;
 }
 
-- (id)convertPlace:(id)a3
+- (id)convertPlace:(id)place
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  placeCopy = place;
+  v5 = placeCopy;
+  if (placeCopy)
   {
-    v6 = [v4 poiCategory];
+    poiCategory = [placeCopy poiCategory];
 
-    if (v6)
+    if (poiCategory)
     {
-      v7 = [v5 poiCategory];
-      v8 = [(MOBiomeDonationUtility *)self mapGEOPOICategory:v7];
+      poiCategory2 = [v5 poiCategory];
+      v8 = [(MOBiomeDonationUtility *)self mapGEOPOICategory:poiCategory2];
     }
 
     else
@@ -1166,15 +1166,15 @@ LABEL_24:
     }
 
     v10 = [BMMomentsEventDataEventBundlePlace alloc];
-    v11 = [v5 placeType];
-    v12 = [v5 placeUserType];
+    placeType = [v5 placeType];
+    placeUserType = [v5 placeUserType];
     [v5 placeNameConfidence];
     v13 = [NSNumber numberWithDouble:?];
     [v5 familiarityIndexLOI];
     v14 = [NSNumber numberWithDouble:?];
     [v5 distanceToHomeInMiles];
     v15 = [NSNumber numberWithDouble:?];
-    v9 = [v10 initWithPlaceInferencePlaceType:v11 placeInferenceUserSpecificPlaceType:v12 geoPOICategoryType:v8 placeNameConfidence:v13 familiarityIndexLOI:v14 distanceToHomeInMiles:v15];
+    v9 = [v10 initWithPlaceInferencePlaceType:placeType placeInferenceUserSpecificPlaceType:placeUserType geoPOICategoryType:v8 placeNameConfidence:v13 familiarityIndexLOI:v14 distanceToHomeInMiles:v15];
   }
 
   else
@@ -1185,32 +1185,32 @@ LABEL_24:
   return v9;
 }
 
-- (id)convertClusterMetadata:(id)a3
+- (id)convertClusterMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 phenotype], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  metadataCopy = metadata;
+  v4 = metadataCopy;
+  if (metadataCopy && ([metadataCopy phenotype], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 phenotype];
-    v49 = [v6 objectForKeyedSubscript:@"topLevelActivityType"];
+    phenotype = [v4 phenotype];
+    v49 = [phenotype objectForKeyedSubscript:@"topLevelActivityType"];
 
-    v47 = [v6 objectForKeyedSubscript:@"secondLevelActivityType"];
+    v47 = [phenotype objectForKeyedSubscript:@"secondLevelActivityType"];
 
-    v7 = [v6 objectForKeyedSubscript:@"isWeekend"];
+    v7 = [phenotype objectForKeyedSubscript:@"isWeekend"];
 
-    v8 = [v6 objectForKeyedSubscript:@"timeTag"];
+    v8 = [phenotype objectForKeyedSubscript:@"timeTag"];
 
-    v9 = [v6 objectForKeyedSubscript:@"dayOfWeek"];
+    v9 = [phenotype objectForKeyedSubscript:@"dayOfWeek"];
 
-    v10 = [v6 objectForKeyedSubscript:@"placeName"];
+    v10 = [phenotype objectForKeyedSubscript:@"placeName"];
 
-    v11 = [v6 objectForKeyedSubscript:@"combinedPlaceType"];
+    v11 = [phenotype objectForKeyedSubscript:@"combinedPlaceType"];
 
-    v12 = [v6 objectForKeyedSubscript:@"enclosingAreaName"];
+    v12 = [phenotype objectForKeyedSubscript:@"enclosingAreaName"];
 
-    v13 = [v6 objectForKeyedSubscript:@"persons"];
+    v13 = [phenotype objectForKeyedSubscript:@"persons"];
 
-    v14 = [v6 objectForKeyedSubscript:@"withFamily"];
+    v14 = [phenotype objectForKeyedSubscript:@"withFamily"];
     if (v14)
     {
       v45 = 1;
@@ -1218,7 +1218,7 @@ LABEL_24:
 
     else
     {
-      v16 = [v6 objectForKeyedSubscript:@"withCoworker"];
+      v16 = [phenotype objectForKeyedSubscript:@"withCoworker"];
       if (v16)
       {
         v45 = 1;
@@ -1226,7 +1226,7 @@ LABEL_24:
 
       else
       {
-        v17 = [v6 objectForKeyedSubscript:@"withFriend"];
+        v17 = [phenotype objectForKeyedSubscript:@"withFriend"];
         if (v17)
         {
           v45 = 1;
@@ -1234,7 +1234,7 @@ LABEL_24:
 
         else
         {
-          v18 = [v6 objectForKeyedSubscript:@"withChild"];
+          v18 = [phenotype objectForKeyedSubscript:@"withChild"];
           if (v18)
           {
             v45 = 1;
@@ -1242,7 +1242,7 @@ LABEL_24:
 
           else
           {
-            v19 = [v6 objectForKeyedSubscript:@"withMyPet"];
+            v19 = [phenotype objectForKeyedSubscript:@"withMyPet"];
             v45 = v19 != 0;
 
             v18 = 0;
@@ -1258,16 +1258,16 @@ LABEL_24:
     v44 = v13 != 0;
     v20 = v49 != 0;
 
-    v21 = [v6 objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
+    v21 = [phenotype objectForKeyedSubscript:@"activityTypeFromPhotoTraits"];
     v35 = v21 != 0;
 
-    v22 = [v6 objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
+    v22 = [phenotype objectForKeyedSubscript:@"placeTypeFromPhotoTraits"];
     v41 = v22 != 0;
 
-    v23 = [v6 objectForKeyedSubscript:@"socialEventFromPhotoTraits"];
+    v23 = [phenotype objectForKeyedSubscript:@"socialEventFromPhotoTraits"];
     v38 = v23 != 0;
 
-    v24 = [v6 objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
+    v24 = [phenotype objectForKeyedSubscript:@"otherSubjectFromPhotoTraits"];
     v37 = v24 != 0;
 
     v39 = [BMMomentsEventDataEventBundleClusterMetadata alloc];
@@ -1300,18 +1300,18 @@ LABEL_24:
   return v15;
 }
 
-- (id)convertOutlierMetadata:(id)a3
+- (id)convertOutlierMetadata:(id)metadata
 {
-  if (a3)
+  if (metadata)
   {
-    v3 = a3;
+    metadataCopy = metadata;
     v4 = [BMMomentsEventDataEventBundleOutlierMetadata alloc];
-    v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isSignificant]);
-    [v3 outlierScore];
+    v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy isSignificant]);
+    [metadataCopy outlierScore];
     v6 = [NSNumber numberWithDouble:?];
-    v7 = [v3 updatedDate];
+    updatedDate = [metadataCopy updatedDate];
 
-    v8 = [v4 initWithIsSignificant:v5 outlierScore:v6 updatedDate:v7];
+    v8 = [v4 initWithIsSignificant:v5 outlierScore:v6 updatedDate:updatedDate];
   }
 
   else
@@ -1322,13 +1322,13 @@ LABEL_24:
   return v8;
 }
 
-- (id)convertMetadataForRankgDictionary:(id)a3
+- (id)convertMetadataForRankgDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"PoiCategory"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"PoiCategory"];
     if (!v5)
     {
       goto LABEL_4;
@@ -1440,38 +1440,38 @@ LABEL_4:
   return v10;
 }
 
-- (void)convertMediaEvent:(id)a3 toMediaType:(int *)a4 mediaGenre:(int *)a5 mediaSourceAppType:(int *)a6 numAudioMediaPlaySessionsPerDay:(unint64_t *)a7 numVideoMediaPlaySessionsPerDay:(unint64_t *)a8 numFirstPartyMediaPlaySessionsPerDay:(unint64_t *)a9 numThirdPartyMediaPlaySessionsPerDay:(unint64_t *)a10 durationAudioMediaPlaySessionsPerDay:(double *)a11 durationVideoMediaPlaySessionsPerDay:(double *)a12
+- (void)convertMediaEvent:(id)event toMediaType:(int *)type mediaGenre:(int *)genre mediaSourceAppType:(int *)appType numAudioMediaPlaySessionsPerDay:(unint64_t *)day numVideoMediaPlaySessionsPerDay:(unint64_t *)perDay numFirstPartyMediaPlaySessionsPerDay:(unint64_t *)sessionsPerDay numThirdPartyMediaPlaySessionsPerDay:(unint64_t *)self0 durationAudioMediaPlaySessionsPerDay:(double *)self1 durationVideoMediaPlaySessionsPerDay:(double *)self2
 {
-  v16 = a3;
-  v17 = v16;
-  if (v16)
+  eventCopy = event;
+  v17 = eventCopy;
+  if (eventCopy)
   {
-    v18 = [v16 mediaType];
+    mediaType = [eventCopy mediaType];
 
-    if (v18)
+    if (mediaType)
     {
-      v19 = [v17 mediaType];
-      *a4 = [(MOBiomeDonationUtility *)self mapMediaType:v19];
+      mediaType2 = [v17 mediaType];
+      *type = [(MOBiomeDonationUtility *)self mapMediaType:mediaType2];
     }
 
-    v20 = [v17 mediaGenre];
+    mediaGenre = [v17 mediaGenre];
 
-    if (v20)
+    if (mediaGenre)
     {
-      v21 = [v17 mediaGenre];
-      *a5 = [(MOBiomeDonationUtility *)self mapMediaGenre:v21];
+      mediaGenre2 = [v17 mediaGenre];
+      *genre = [(MOBiomeDonationUtility *)self mapMediaGenre:mediaGenre2];
     }
 
-    v22 = [v17 mediaPlayerBundleId];
+    mediaPlayerBundleId = [v17 mediaPlayerBundleId];
 
-    if (v22)
+    if (mediaPlayerBundleId)
     {
-      v23 = [v17 mediaPlayerBundleId];
-      *a6 = [(MOBiomeDonationUtility *)self mapSourceBundleID:v23];
+      mediaPlayerBundleId2 = [v17 mediaPlayerBundleId];
+      *appType = [(MOBiomeDonationUtility *)self mapSourceBundleID:mediaPlayerBundleId2];
     }
 
-    v24 = [v17 mediaPlaySessions];
-    v25 = [v24 count];
+    mediaPlaySessions = [v17 mediaPlaySessions];
+    v25 = [mediaPlaySessions count];
 
     if (v25)
     {
@@ -1496,45 +1496,45 @@ LABEL_4:
             }
 
             v30 = *(*(&v53 + 1) + 8 * i);
-            v31 = [v30 endDate];
-            v32 = [v30 startDate];
-            [v31 timeIntervalSinceDate:v32];
+            endDate = [v30 endDate];
+            startDate = [v30 startDate];
+            [endDate timeIntervalSinceDate:startDate];
             v34 = v33;
 
-            v35 = [v30 mediaType];
-            v36 = [v35 lowercaseString];
+            mediaType3 = [v30 mediaType];
+            lowercaseString = [mediaType3 lowercaseString];
 
-            v37 = [v36 containsString:@"audio"];
-            v38 = a11;
-            v39 = a7;
-            if ((v37 & 1) != 0 || (v40 = [v36 containsString:@"video"], v38 = a12, v39 = a8, v40))
+            v37 = [lowercaseString containsString:@"audio"];
+            mediaPlaySessionsPerDayCopy = mediaPlaySessionsPerDay;
+            dayCopy = day;
+            if ((v37 & 1) != 0 || (v40 = [lowercaseString containsString:@"video"], mediaPlaySessionsPerDayCopy = videoMediaPlaySessionsPerDay, dayCopy = perDay, v40))
             {
-              *v38 = v34 + *v38;
-              ++*v39;
+              *mediaPlaySessionsPerDayCopy = v34 + *mediaPlaySessionsPerDayCopy;
+              ++*dayCopy;
             }
 
-            v41 = [v30 bundleId];
-            v42 = [v41 lowercaseString];
+            bundleId = [v30 bundleId];
+            lowercaseString2 = [bundleId lowercaseString];
 
-            v43 = [v42 containsString:@"com.apple."];
-            v44 = a9;
+            v43 = [lowercaseString2 containsString:@"com.apple."];
+            playSessionsPerDayCopy = sessionsPerDay;
             if (v43)
             {
               goto LABEL_20;
             }
 
-            v45 = [v30 bundleId];
-            if (v45)
+            bundleId2 = [v30 bundleId];
+            if (bundleId2)
             {
-              v46 = v45;
-              v47 = [v30 bundleId];
-              v48 = [v47 length];
+              v46 = bundleId2;
+              bundleId3 = [v30 bundleId];
+              v48 = [bundleId3 length];
 
-              v44 = a10;
+              playSessionsPerDayCopy = playSessionsPerDay;
               if (v48)
               {
 LABEL_20:
-                ++*v44;
+                ++*playSessionsPerDayCopy;
               }
             }
           }
@@ -1550,14 +1550,14 @@ LABEL_20:
   }
 }
 
-- (void)convertSignificantContactEvent:(id)a3 toContactIDsInConversation:(id)a4 callLikeMechanismIncluded:(BOOL *)a5 textLikeMechanismIncluded:(BOOL *)a6 numAudioLikeInteractions:(unint64_t *)a7 numVideoLikeInteractions:(unint64_t *)a8 numTextLikeInteractions:(unint64_t *)a9 totalDurationOfCallLikeInteractions:(double *)a10 maxDurationOfCallLikeInteractions:(double *)a11 minDurationOfCallLikeInteractions:(double *)a12
+- (void)convertSignificantContactEvent:(id)event toContactIDsInConversation:(id)conversation callLikeMechanismIncluded:(BOOL *)included textLikeMechanismIncluded:(BOOL *)mechanismIncluded numAudioLikeInteractions:(unint64_t *)interactions numVideoLikeInteractions:(unint64_t *)likeInteractions numTextLikeInteractions:(unint64_t *)textLikeInteractions totalDurationOfCallLikeInteractions:(double *)self0 maxDurationOfCallLikeInteractions:(double *)self1 minDurationOfCallLikeInteractions:(double *)self2
 {
-  v14 = a3;
-  v15 = a4;
-  if (v14)
+  eventCopy = event;
+  conversationCopy = conversation;
+  if (eventCopy)
   {
-    v16 = [v14 interactionContacts];
-    v17 = [v16 count];
+    interactionContacts = [eventCopy interactionContacts];
+    v17 = [interactionContacts count];
 
     if (v17)
     {
@@ -1565,8 +1565,8 @@ LABEL_20:
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v18 = [v14 interactionContacts];
-      v19 = [v18 countByEnumeratingWithState:&v55 objects:v60 count:16];
+      interactionContacts2 = [eventCopy interactionContacts];
+      v19 = [interactionContacts2 countByEnumeratingWithState:&v55 objects:v60 count:16];
       if (v19)
       {
         v20 = v19;
@@ -1577,33 +1577,33 @@ LABEL_20:
           {
             if (*v56 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(interactionContacts2);
             }
 
-            v23 = [*(*(&v55 + 1) + 8 * i) contact];
-            v24 = [v23 identifier];
-            [v15 addObject:v24];
+            contact = [*(*(&v55 + 1) + 8 * i) contact];
+            identifier = [contact identifier];
+            [conversationCopy addObject:identifier];
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v55 objects:v60 count:16];
+          v20 = [interactionContacts2 countByEnumeratingWithState:&v55 objects:v60 count:16];
         }
 
         while (v20);
       }
     }
 
-    v25 = [v14 interactions];
-    v26 = [v25 count];
+    interactions = [eventCopy interactions];
+    v26 = [interactions count];
 
     if (v26)
     {
-      v44 = v15;
-      v45 = v14;
+      v44 = conversationCopy;
+      v45 = eventCopy;
       v53 = 0u;
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      obj = [v14 interactions];
+      obj = [eventCopy interactions];
       v27 = [obj countByEnumeratingWithState:&v51 objects:v59 count:16];
       if (v27)
       {
@@ -1619,9 +1619,9 @@ LABEL_20:
             }
 
             v31 = *(*(&v51 + 1) + 8 * j);
-            v32 = [v31 endDate];
-            v33 = [v31 startDate];
-            [v32 timeIntervalSinceDate:v33];
+            endDate = [v31 endDate];
+            startDate = [v31 startDate];
+            [endDate timeIntervalSinceDate:startDate];
             v35 = v34;
 
             callLikeMechanismsSet = self->_callLikeMechanismsSet;
@@ -1630,16 +1630,16 @@ LABEL_20:
 
             if (callLikeMechanismsSet)
             {
-              *a5 = 1;
-              *a10 = v35 + *a10;
-              if (v35 > *a11)
+              *included = 1;
+              *callLikeInteractions = v35 + *callLikeInteractions;
+              if (v35 > *ofCallLikeInteractions)
               {
-                *a11 = v35;
+                *ofCallLikeInteractions = v35;
               }
 
-              if (v35 < *a12)
+              if (v35 < *durationOfCallLikeInteractions)
               {
-                *a12 = v35;
+                *durationOfCallLikeInteractions = v35;
               }
             }
 
@@ -1649,7 +1649,7 @@ LABEL_20:
 
             if (textLikeMechanismsSet)
             {
-              *a6 = 1;
+              *mechanismIncluded = 1;
             }
 
             audioMechanismsSet = self->_audioMechanismsSet;
@@ -1658,7 +1658,7 @@ LABEL_20:
 
             if (audioMechanismsSet)
             {
-              ++*a7;
+              ++*interactions;
             }
 
             videoMechanismsSet = self->_videoMechanismsSet;
@@ -1667,7 +1667,7 @@ LABEL_20:
 
             if (videoMechanismsSet)
             {
-              ++*a8;
+              ++*likeInteractions;
             }
           }
 
@@ -1677,396 +1677,396 @@ LABEL_20:
         while (v28);
       }
 
-      v15 = v44;
-      v14 = v45;
+      conversationCopy = v44;
+      eventCopy = v45;
     }
   }
 }
 
-- (int)mapGEOPOICategory:(id)a3
+- (int)mapGEOPOICategory:(id)category
 {
-  v3 = a3;
-  if ([v3 isEqualToString:GEOPOICategoryAirport])
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:GEOPOICategoryAirport])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryAmusementPark])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryAmusementPark])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryAnimalService])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryAnimalService])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryAquarium])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryAquarium])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryATM])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryATM])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryAutomotiveRepair])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryAutomotiveRepair])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryBakery])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryBakery])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryBank])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryBank])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryBaseball])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryBaseball])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryBasketball])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryBasketball])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryBeach])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryBeach])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryBeauty])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryBeauty])
   {
     v4 = 49;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryBowling])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryBowling])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryBrewery])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryBrewery])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryCafe])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryCafe])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryCampground])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryCampground])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryCarRental])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryCarRental])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryCastle])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryCastle])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryConventionCenter])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryConventionCenter])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryDistillery])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryDistillery])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryEVCharger])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryEVCharger])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryFairground])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryFairground])
   {
     v4 = 54;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryFireStation])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryFireStation])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryFishing])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryFishing])
   {
     v4 = 55;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryFitnessCenter])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryFitnessCenter])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryFoodMarket])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryFoodMarket])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryFortress])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryFortress])
   {
     v4 = 56;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryGasStation])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryGasStation])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryGolf])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryGolf])
   {
     v4 = 57;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryGoKart])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryGoKart])
   {
     v4 = 58;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryHiking])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryHiking])
   {
     v4 = 59;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryHospital])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryHospital])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryHotel])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryHotel])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryKayaking])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryKayaking])
   {
     v4 = 60;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryLandmark])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryLandmark])
   {
     v4 = 61;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryLaundry])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryLaundry])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryLibrary])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryLibrary])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryMailbox])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryMailbox])
   {
     v4 = 62;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryMarina])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryMarina])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryMiniGolf])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryMiniGolf])
   {
     v4 = 63;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryMovieTheater])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryMovieTheater])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryMuseum])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryMuseum])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryMusicVenue])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryMusicVenue])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryNationalMonument])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryNationalMonument])
   {
     v4 = 65;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryNationalPark])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryNationalPark])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryNightlife])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryNightlife])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryPark])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryPark])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryParking])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryParking])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryPharmacy])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryPharmacy])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryPlanetarium])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryPlanetarium])
   {
     v4 = 66;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryPolice])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryPolice])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryPostOffice])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryPostOffice])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryPublicTransport])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryPublicTransport])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryRestaurant])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryRestaurant])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryRestroom])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryRestroom])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryRockClimbing])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryRockClimbing])
   {
     v4 = 67;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryRVPark])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryRVPark])
   {
     v4 = 68;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySchool])
+  else if ([categoryCopy isEqualToString:GEOPOICategorySchool])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySkatePark])
+  else if ([categoryCopy isEqualToString:GEOPOICategorySkatePark])
   {
     v4 = 69;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySkating])
+  else if ([categoryCopy isEqualToString:GEOPOICategorySkating])
   {
     v4 = 70;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySkiing])
+  else if ([categoryCopy isEqualToString:GEOPOICategorySkiing])
   {
     v4 = 71;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySoccer])
+  else if ([categoryCopy isEqualToString:GEOPOICategorySoccer])
   {
     v4 = 72;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySpa])
+  else if ([categoryCopy isEqualToString:GEOPOICategorySpa])
   {
     v4 = 73;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryStadium])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryStadium])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryStore])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryStore])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySurfing])
+  else if ([categoryCopy isEqualToString:GEOPOICategorySurfing])
   {
     v4 = 74;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategorySwimming])
+  else if ([categoryCopy isEqualToString:GEOPOICategorySwimming])
   {
     v4 = 75;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryTennis])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryTennis])
   {
     v4 = 76;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryTheater])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryTheater])
   {
     v4 = 39;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryUniversity])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryUniversity])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryVolleyball])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryVolleyball])
   {
     v4 = 77;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryWinery])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryWinery])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryZoo])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryZoo])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryAirportGate])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryAirportGate])
   {
     v4 = 43;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryAirportTerminal])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryAirportTerminal])
   {
     v4 = 44;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryPlayground])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryPlayground])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:GEOPOICategoryReligiousSite])
+  else if ([categoryCopy isEqualToString:GEOPOICategoryReligiousSite])
   {
     v4 = 33;
   }
@@ -2079,21 +2079,21 @@ LABEL_20:
   return v4;
 }
 
-- (int)mapPersonRelationshipTag:(unint64_t)a3
+- (int)mapPersonRelationshipTag:(unint64_t)tag
 {
-  if (a3 == 1)
+  if (tag == 1)
   {
-    v3 = 0;
+    tagCopy = 0;
   }
 
   else
   {
-    v3 = a3;
+    tagCopy = tag;
   }
 
-  if (a3)
+  if (tag)
   {
-    return v3;
+    return tagCopy;
   }
 
   else
@@ -2102,24 +2102,24 @@ LABEL_20:
   }
 }
 
-+ (int)mapOnboardingFlowCompletion:(unint64_t)a3
++ (int)mapOnboardingFlowCompletion:(unint64_t)completion
 {
-  if (a3 > 5)
+  if (completion > 5)
   {
     return 0;
   }
 
   else
   {
-    return dword_1003231B8[a3];
+    return dword_1003231B8[completion];
   }
 }
 
-- (int)mapTimeTagType:(unint64_t)a3
+- (int)mapTimeTagType:(unint64_t)type
 {
-  if (a3 <= 99)
+  if (type <= 99)
   {
-    if (a3 == 8)
+    if (type == 8)
     {
       v4 = 6;
     }
@@ -2129,7 +2129,7 @@ LABEL_20:
       v4 = 0;
     }
 
-    if (a3 == 7)
+    if (type == 7)
     {
       v5 = 5;
     }
@@ -2139,7 +2139,7 @@ LABEL_20:
       v5 = v4;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
       v6 = 4;
     }
@@ -2149,7 +2149,7 @@ LABEL_20:
       v6 = 0;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       v7 = 18;
     }
@@ -2159,12 +2159,12 @@ LABEL_20:
       v7 = v6;
     }
 
-    if (a3 <= 6)
+    if (type <= 6)
     {
       v5 = v7;
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       v8 = 3;
     }
@@ -2174,7 +2174,7 @@ LABEL_20:
       v8 = 0;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
       v9 = 17;
     }
@@ -2184,7 +2184,7 @@ LABEL_20:
       v9 = v8;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v10 = 2;
     }
@@ -2194,7 +2194,7 @@ LABEL_20:
       v10 = 0;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v11 = 1;
     }
@@ -2204,12 +2204,12 @@ LABEL_20:
       v11 = v10;
     }
 
-    if (a3 <= 2)
+    if (type <= 2)
     {
       v9 = v11;
     }
 
-    if (a3 <= 4)
+    if (type <= 4)
     {
       return v9;
     }
@@ -2220,9 +2220,9 @@ LABEL_20:
     }
   }
 
-  else if (a3 > 1999)
+  else if (type > 1999)
   {
-    if (a3 == 10004)
+    if (type == 10004)
     {
       v12 = 16;
     }
@@ -2232,7 +2232,7 @@ LABEL_20:
       v12 = 0;
     }
 
-    if (a3 == 10003)
+    if (type == 10003)
     {
       v13 = 15;
     }
@@ -2242,7 +2242,7 @@ LABEL_20:
       v13 = v12;
     }
 
-    if (a3 == 10002)
+    if (type == 10002)
     {
       v14 = 14;
     }
@@ -2252,7 +2252,7 @@ LABEL_20:
       v14 = 0;
     }
 
-    if (a3 == 10001)
+    if (type == 10001)
     {
       v15 = 13;
     }
@@ -2262,7 +2262,7 @@ LABEL_20:
       v15 = v14;
     }
 
-    if (a3 <= 10002)
+    if (type <= 10002)
     {
       v16 = v15;
     }
@@ -2272,7 +2272,7 @@ LABEL_20:
       v16 = v13;
     }
 
-    if (a3 == 10000)
+    if (type == 10000)
     {
       v17 = 12;
     }
@@ -2282,7 +2282,7 @@ LABEL_20:
       v17 = 0;
     }
 
-    if (a3 == 2002)
+    if (type == 2002)
     {
       v18 = 2002;
     }
@@ -2292,7 +2292,7 @@ LABEL_20:
       v18 = v17;
     }
 
-    if (a3 == 2001)
+    if (type == 2001)
     {
       v19 = 2001;
     }
@@ -2302,7 +2302,7 @@ LABEL_20:
       v19 = 0;
     }
 
-    if (a3 == 2000)
+    if (type == 2000)
     {
       v20 = 2000;
     }
@@ -2312,12 +2312,12 @@ LABEL_20:
       v20 = v19;
     }
 
-    if (a3 <= 2001)
+    if (type <= 2001)
     {
       v18 = v20;
     }
 
-    if (a3 <= 10000)
+    if (type <= 10000)
     {
       return v18;
     }
@@ -2330,7 +2330,7 @@ LABEL_20:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 'd':
         result = 100;
@@ -2386,15 +2386,15 @@ LABEL_20:
   return result;
 }
 
-- (int)mapMediaGenre:(id)a3
+- (int)mapMediaGenre:(id)genre
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  genreCopy = genre;
+  v4 = genreCopy;
+  if (genreCopy && [genreCopy length])
   {
-    v5 = [v4 lowercaseString];
-    v6 = [@"##_GENRE" lowercaseString];
-    v7 = [v5 containsString:v6];
+    lowercaseString = [v4 lowercaseString];
+    lowercaseString2 = [@"##_GENRE" lowercaseString];
+    v7 = [lowercaseString containsString:lowercaseString2];
 
     if (v7)
     {
@@ -2403,8 +2403,8 @@ LABEL_20:
 
     else
     {
-      v9 = [@"##_GENRE" lowercaseString];
-      v10 = [v5 containsString:v9];
+      lowercaseString3 = [@"##_GENRE" lowercaseString];
+      v10 = [lowercaseString containsString:lowercaseString3];
 
       if (v10)
       {
@@ -2413,8 +2413,8 @@ LABEL_20:
 
       else
       {
-        v11 = [@"##_GENRE" lowercaseString];
-        v12 = [v5 containsString:v11];
+        lowercaseString4 = [@"##_GENRE" lowercaseString];
+        v12 = [lowercaseString containsString:lowercaseString4];
 
         if (v12)
         {
@@ -2423,8 +2423,8 @@ LABEL_20:
 
         else
         {
-          v13 = [@"##_GENRE" lowercaseString];
-          v14 = [v5 containsString:v13];
+          lowercaseString5 = [@"##_GENRE" lowercaseString];
+          v14 = [lowercaseString containsString:lowercaseString5];
 
           if (v14)
           {
@@ -2433,8 +2433,8 @@ LABEL_20:
 
           else
           {
-            v15 = [@"##_GENRE" lowercaseString];
-            v16 = [v5 containsString:v15];
+            lowercaseString6 = [@"##_GENRE" lowercaseString];
+            v16 = [lowercaseString containsString:lowercaseString6];
 
             if (v16)
             {
@@ -2443,8 +2443,8 @@ LABEL_20:
 
             else
             {
-              v17 = [@"##_GENRE" lowercaseString];
-              v18 = [v5 containsString:v17];
+              lowercaseString7 = [@"##_GENRE" lowercaseString];
+              v18 = [lowercaseString containsString:lowercaseString7];
 
               if (v18)
               {
@@ -2453,8 +2453,8 @@ LABEL_20:
 
               else
               {
-                v19 = [@"##_GENRE" lowercaseString];
-                v20 = [v5 containsString:v19];
+                lowercaseString8 = [@"##_GENRE" lowercaseString];
+                v20 = [lowercaseString containsString:lowercaseString8];
 
                 if (v20)
                 {
@@ -2463,8 +2463,8 @@ LABEL_20:
 
                 else
                 {
-                  v21 = [@"##_GENRE" lowercaseString];
-                  v22 = [v5 containsString:v21];
+                  lowercaseString9 = [@"##_GENRE" lowercaseString];
+                  v22 = [lowercaseString containsString:lowercaseString9];
 
                   if (v22)
                   {
@@ -2473,8 +2473,8 @@ LABEL_20:
 
                   else
                   {
-                    v23 = [@"##_GENRE" lowercaseString];
-                    v24 = [v5 containsString:v23];
+                    lowercaseString10 = [@"##_GENRE" lowercaseString];
+                    v24 = [lowercaseString containsString:lowercaseString10];
 
                     if (v24)
                     {
@@ -2483,8 +2483,8 @@ LABEL_20:
 
                     else
                     {
-                      v25 = [@"##_GENRE" lowercaseString];
-                      v26 = [v5 containsString:v25];
+                      lowercaseString11 = [@"##_GENRE" lowercaseString];
+                      v26 = [lowercaseString containsString:lowercaseString11];
 
                       if (v26)
                       {
@@ -2493,8 +2493,8 @@ LABEL_20:
 
                       else
                       {
-                        v27 = [@"##_GENRE" lowercaseString];
-                        v28 = [v5 containsString:v27];
+                        lowercaseString12 = [@"##_GENRE" lowercaseString];
+                        v28 = [lowercaseString containsString:lowercaseString12];
 
                         if (v28)
                         {
@@ -2503,8 +2503,8 @@ LABEL_20:
 
                         else
                         {
-                          v29 = [@"##_GENRE" lowercaseString];
-                          v30 = [v5 containsString:v29];
+                          lowercaseString13 = [@"##_GENRE" lowercaseString];
+                          v30 = [lowercaseString containsString:lowercaseString13];
 
                           if (v30)
                           {
@@ -2513,8 +2513,8 @@ LABEL_20:
 
                           else
                           {
-                            v31 = [@"##_GENRE" lowercaseString];
-                            v32 = [v5 containsString:v31];
+                            lowercaseString14 = [@"##_GENRE" lowercaseString];
+                            v32 = [lowercaseString containsString:lowercaseString14];
 
                             if (v32)
                             {
@@ -2523,8 +2523,8 @@ LABEL_20:
 
                             else
                             {
-                              v33 = [@"##_GENRE" lowercaseString];
-                              v34 = [v5 containsString:v33];
+                              lowercaseString15 = [@"##_GENRE" lowercaseString];
+                              v34 = [lowercaseString containsString:lowercaseString15];
 
                               if (v34)
                               {
@@ -2533,8 +2533,8 @@ LABEL_20:
 
                               else
                               {
-                                v35 = [@"##_GENRE" lowercaseString];
-                                v36 = [v5 containsString:v35];
+                                lowercaseString16 = [@"##_GENRE" lowercaseString];
+                                v36 = [lowercaseString containsString:lowercaseString16];
 
                                 if (v36)
                                 {
@@ -2543,8 +2543,8 @@ LABEL_20:
 
                                 else
                                 {
-                                  v37 = [@"##_GENRE" lowercaseString];
-                                  v38 = [v5 containsString:v37];
+                                  lowercaseString17 = [@"##_GENRE" lowercaseString];
+                                  v38 = [lowercaseString containsString:lowercaseString17];
 
                                   if (v38)
                                   {
@@ -2553,8 +2553,8 @@ LABEL_20:
 
                                   else
                                   {
-                                    v39 = [@"##_GENRE" lowercaseString];
-                                    v40 = [v5 containsString:v39];
+                                    lowercaseString18 = [@"##_GENRE" lowercaseString];
+                                    v40 = [lowercaseString containsString:lowercaseString18];
 
                                     if (v40)
                                     {
@@ -2563,8 +2563,8 @@ LABEL_20:
 
                                     else
                                     {
-                                      v41 = [@"##_GENRE" lowercaseString];
-                                      v42 = [v5 containsString:v41];
+                                      lowercaseString19 = [@"##_GENRE" lowercaseString];
+                                      v42 = [lowercaseString containsString:lowercaseString19];
 
                                       if (v42)
                                       {
@@ -2573,8 +2573,8 @@ LABEL_20:
 
                                       else
                                       {
-                                        v43 = [@"##_GENRE" lowercaseString];
-                                        v44 = [v5 containsString:v43];
+                                        lowercaseString20 = [@"##_GENRE" lowercaseString];
+                                        v44 = [lowercaseString containsString:lowercaseString20];
 
                                         if (v44)
                                         {
@@ -2583,8 +2583,8 @@ LABEL_20:
 
                                         else
                                         {
-                                          v45 = [@"##_GENRE" lowercaseString];
-                                          v46 = [v5 containsString:v45];
+                                          lowercaseString21 = [@"##_GENRE" lowercaseString];
+                                          v46 = [lowercaseString containsString:lowercaseString21];
 
                                           if (v46)
                                           {
@@ -2593,8 +2593,8 @@ LABEL_20:
 
                                           else
                                           {
-                                            v47 = [@"##_GENRE" lowercaseString];
-                                            v48 = [v5 containsString:v47];
+                                            lowercaseString22 = [@"##_GENRE" lowercaseString];
+                                            v48 = [lowercaseString containsString:lowercaseString22];
 
                                             if (v48)
                                             {
@@ -2603,8 +2603,8 @@ LABEL_20:
 
                                             else
                                             {
-                                              v49 = [@"##_GENRE" lowercaseString];
-                                              v50 = [v5 containsString:v49];
+                                              lowercaseString23 = [@"##_GENRE" lowercaseString];
+                                              v50 = [lowercaseString containsString:lowercaseString23];
 
                                               if (v50)
                                               {
@@ -2613,8 +2613,8 @@ LABEL_20:
 
                                               else
                                               {
-                                                v51 = [@"##_GENRE" lowercaseString];
-                                                v52 = [v5 containsString:v51];
+                                                lowercaseString24 = [@"##_GENRE" lowercaseString];
+                                                v52 = [lowercaseString containsString:lowercaseString24];
 
                                                 if (v52)
                                                 {
@@ -2623,8 +2623,8 @@ LABEL_20:
 
                                                 else
                                                 {
-                                                  v53 = [@"##_GENRE" lowercaseString];
-                                                  v54 = [v5 containsString:v53];
+                                                  lowercaseString25 = [@"##_GENRE" lowercaseString];
+                                                  v54 = [lowercaseString containsString:lowercaseString25];
 
                                                   if (v54)
                                                   {
@@ -2633,8 +2633,8 @@ LABEL_20:
 
                                                   else
                                                   {
-                                                    v55 = [@"##_GENRE" lowercaseString];
-                                                    v56 = [v5 containsString:v55];
+                                                    lowercaseString26 = [@"##_GENRE" lowercaseString];
+                                                    v56 = [lowercaseString containsString:lowercaseString26];
 
                                                     if (v56)
                                                     {
@@ -2643,8 +2643,8 @@ LABEL_20:
 
                                                     else
                                                     {
-                                                      v57 = [@"##_GENRE" lowercaseString];
-                                                      v58 = [v5 containsString:v57];
+                                                      lowercaseString27 = [@"##_GENRE" lowercaseString];
+                                                      v58 = [lowercaseString containsString:lowercaseString27];
 
                                                       if (v58)
                                                       {
@@ -2653,8 +2653,8 @@ LABEL_20:
 
                                                       else
                                                       {
-                                                        v59 = [@"##_GENRE" lowercaseString];
-                                                        v60 = [v5 containsString:v59];
+                                                        lowercaseString28 = [@"##_GENRE" lowercaseString];
+                                                        v60 = [lowercaseString containsString:lowercaseString28];
 
                                                         if (v60)
                                                         {
@@ -2663,8 +2663,8 @@ LABEL_20:
 
                                                         else
                                                         {
-                                                          v61 = [@"##_GENRE" lowercaseString];
-                                                          [v5 containsString:v61];
+                                                          lowercaseString29 = [@"##_GENRE" lowercaseString];
+                                                          [lowercaseString containsString:lowercaseString29];
 
                                                           v8 = 28;
                                                         }
@@ -2704,26 +2704,26 @@ LABEL_20:
   return v8;
 }
 
-- (int)mapMediaType:(id)a3
+- (int)mapMediaType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  typeCopy = type;
+  v4 = typeCopy;
+  if (typeCopy && [typeCopy length])
   {
-    v5 = [v4 lowercaseString];
-    if ([v5 containsString:@"music"])
+    lowercaseString = [v4 lowercaseString];
+    if ([lowercaseString containsString:@"music"])
     {
       v6 = 1;
     }
 
-    else if ([v5 containsString:@"podcast"])
+    else if ([lowercaseString containsString:@"podcast"])
     {
       v6 = 2;
     }
 
-    else if ([v5 containsString:@"audio"])
+    else if ([lowercaseString containsString:@"audio"])
     {
-      if ([v5 containsString:@"book"])
+      if ([lowercaseString containsString:@"book"])
       {
         v6 = 3;
       }
@@ -2734,9 +2734,9 @@ LABEL_20:
       }
     }
 
-    else if ([v5 containsString:@"itune"])
+    else if ([lowercaseString containsString:@"itune"])
     {
-      if ([v5 containsString:@"radio"])
+      if ([lowercaseString containsString:@"radio"])
       {
         v6 = 5;
       }
@@ -2747,7 +2747,7 @@ LABEL_20:
       }
     }
 
-    else if ([v5 containsString:@"video"])
+    else if ([lowercaseString containsString:@"video"])
     {
       v6 = 7;
     }
@@ -2766,14 +2766,14 @@ LABEL_20:
   return v6;
 }
 
-- (int)mapSourceBundleID:(id)a3
+- (int)mapSourceBundleID:(id)d
 {
-  if (!a3)
+  if (!d)
   {
     return 0;
   }
 
-  if ([a3 containsString:@"com.apple."])
+  if ([d containsString:@"com.apple."])
   {
     return 1;
   }
@@ -2781,9 +2781,9 @@ LABEL_20:
   return 3;
 }
 
-- (int)mapVisitPlaceType:(unint64_t)a3
+- (int)mapVisitPlaceType:(unint64_t)type
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
     v3 = 3;
   }
@@ -2793,12 +2793,12 @@ LABEL_20:
     v3 = 0;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     v3 = 2;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = 1;
   }
@@ -2808,7 +2808,7 @@ LABEL_20:
     v4 = v3;
   }
 
-  if (a3 >= 2)
+  if (type >= 2)
   {
     return v4;
   }
@@ -2819,14 +2819,14 @@ LABEL_20:
   }
 }
 
-- (int)mapPhotoMomentInference:(id)a3
+- (int)mapPhotoMomentInference:(id)inference
 {
-  v3 = a3;
-  if ([v3 length])
+  inferenceCopy = inference;
+  if ([inferenceCopy length])
   {
-    v4 = [v3 lowercaseString];
-    v5 = [@"##_PHOTO_INFERENCE" lowercaseString];
-    v6 = [v4 containsString:v5];
+    lowercaseString = [inferenceCopy lowercaseString];
+    lowercaseString2 = [@"##_PHOTO_INFERENCE" lowercaseString];
+    v6 = [lowercaseString containsString:lowercaseString2];
 
     if (v6)
     {
@@ -2835,9 +2835,9 @@ LABEL_20:
 
     else
     {
-      v8 = [v3 lowercaseString];
-      v9 = [@"##_PHOTO_INFERENCE" lowercaseString];
-      v10 = [v8 containsString:v9];
+      lowercaseString3 = [inferenceCopy lowercaseString];
+      lowercaseString4 = [@"##_PHOTO_INFERENCE" lowercaseString];
+      v10 = [lowercaseString3 containsString:lowercaseString4];
 
       if (v10)
       {
@@ -2846,9 +2846,9 @@ LABEL_20:
 
       else
       {
-        v11 = [v3 lowercaseString];
-        v12 = [@"##_PHOTO_INFERENCE" lowercaseString];
-        v13 = [v11 containsString:v12];
+        lowercaseString5 = [inferenceCopy lowercaseString];
+        lowercaseString6 = [@"##_PHOTO_INFERENCE" lowercaseString];
+        v13 = [lowercaseString5 containsString:lowercaseString6];
 
         if (v13)
         {
@@ -2857,9 +2857,9 @@ LABEL_20:
 
         else
         {
-          v14 = [v3 lowercaseString];
-          v15 = [@"##_PHOTO_INFERENCE" lowercaseString];
-          v16 = [v14 containsString:v15];
+          lowercaseString7 = [inferenceCopy lowercaseString];
+          lowercaseString8 = [@"##_PHOTO_INFERENCE" lowercaseString];
+          v16 = [lowercaseString7 containsString:lowercaseString8];
 
           if (v16)
           {
@@ -2868,9 +2868,9 @@ LABEL_20:
 
           else
           {
-            v17 = [v3 lowercaseString];
-            v18 = [@"##_PHOTO_INFERENCE" lowercaseString];
-            v19 = [v17 containsString:v18];
+            lowercaseString9 = [inferenceCopy lowercaseString];
+            lowercaseString10 = [@"##_PHOTO_INFERENCE" lowercaseString];
+            v19 = [lowercaseString9 containsString:lowercaseString10];
 
             if (v19)
             {
@@ -2879,9 +2879,9 @@ LABEL_20:
 
             else
             {
-              v20 = [v3 lowercaseString];
-              v21 = [@"##_PHOTO_INFERENCE" lowercaseString];
-              v22 = [v20 containsString:v21];
+              lowercaseString11 = [inferenceCopy lowercaseString];
+              lowercaseString12 = [@"##_PHOTO_INFERENCE" lowercaseString];
+              v22 = [lowercaseString11 containsString:lowercaseString12];
 
               if (v22)
               {
@@ -2890,9 +2890,9 @@ LABEL_20:
 
               else
               {
-                v23 = [v3 lowercaseString];
-                v24 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                v25 = [v23 containsString:v24];
+                lowercaseString13 = [inferenceCopy lowercaseString];
+                lowercaseString14 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                v25 = [lowercaseString13 containsString:lowercaseString14];
 
                 if (v25)
                 {
@@ -2901,9 +2901,9 @@ LABEL_20:
 
                 else
                 {
-                  v26 = [v3 lowercaseString];
-                  v27 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                  v28 = [v26 containsString:v27];
+                  lowercaseString15 = [inferenceCopy lowercaseString];
+                  lowercaseString16 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                  v28 = [lowercaseString15 containsString:lowercaseString16];
 
                   if (v28)
                   {
@@ -2912,9 +2912,9 @@ LABEL_20:
 
                   else
                   {
-                    v29 = [v3 lowercaseString];
-                    v30 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                    v31 = [v29 containsString:v30];
+                    lowercaseString17 = [inferenceCopy lowercaseString];
+                    lowercaseString18 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                    v31 = [lowercaseString17 containsString:lowercaseString18];
 
                     if (v31)
                     {
@@ -2923,9 +2923,9 @@ LABEL_20:
 
                     else
                     {
-                      v32 = [v3 lowercaseString];
-                      v33 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                      v34 = [v32 containsString:v33];
+                      lowercaseString19 = [inferenceCopy lowercaseString];
+                      lowercaseString20 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                      v34 = [lowercaseString19 containsString:lowercaseString20];
 
                       if (v34)
                       {
@@ -2934,9 +2934,9 @@ LABEL_20:
 
                       else
                       {
-                        v35 = [v3 lowercaseString];
-                        v36 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                        v37 = [v35 containsString:v36];
+                        lowercaseString21 = [inferenceCopy lowercaseString];
+                        lowercaseString22 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                        v37 = [lowercaseString21 containsString:lowercaseString22];
 
                         if (v37)
                         {
@@ -2945,9 +2945,9 @@ LABEL_20:
 
                         else
                         {
-                          v38 = [v3 lowercaseString];
-                          v39 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                          v40 = [v38 containsString:v39];
+                          lowercaseString23 = [inferenceCopy lowercaseString];
+                          lowercaseString24 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                          v40 = [lowercaseString23 containsString:lowercaseString24];
 
                           if (v40)
                           {
@@ -2956,9 +2956,9 @@ LABEL_20:
 
                           else
                           {
-                            v41 = [v3 lowercaseString];
-                            v42 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                            v43 = [v41 containsString:v42];
+                            lowercaseString25 = [inferenceCopy lowercaseString];
+                            lowercaseString26 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                            v43 = [lowercaseString25 containsString:lowercaseString26];
 
                             if (v43)
                             {
@@ -2967,9 +2967,9 @@ LABEL_20:
 
                             else
                             {
-                              v44 = [v3 lowercaseString];
-                              v45 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                              v46 = [v44 containsString:v45];
+                              lowercaseString27 = [inferenceCopy lowercaseString];
+                              lowercaseString28 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                              v46 = [lowercaseString27 containsString:lowercaseString28];
 
                               if (v46)
                               {
@@ -2978,9 +2978,9 @@ LABEL_20:
 
                               else
                               {
-                                v47 = [v3 lowercaseString];
-                                v48 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                v49 = [v47 containsString:v48];
+                                lowercaseString29 = [inferenceCopy lowercaseString];
+                                lowercaseString30 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                v49 = [lowercaseString29 containsString:lowercaseString30];
 
                                 if (v49)
                                 {
@@ -2989,9 +2989,9 @@ LABEL_20:
 
                                 else
                                 {
-                                  v50 = [v3 lowercaseString];
-                                  v51 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                  v52 = [v50 containsString:v51];
+                                  lowercaseString31 = [inferenceCopy lowercaseString];
+                                  lowercaseString32 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                  v52 = [lowercaseString31 containsString:lowercaseString32];
 
                                   if (v52)
                                   {
@@ -3000,9 +3000,9 @@ LABEL_20:
 
                                   else
                                   {
-                                    v53 = [v3 lowercaseString];
-                                    v54 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                    v55 = [v53 containsString:v54];
+                                    lowercaseString33 = [inferenceCopy lowercaseString];
+                                    lowercaseString34 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                    v55 = [lowercaseString33 containsString:lowercaseString34];
 
                                     if (v55)
                                     {
@@ -3011,9 +3011,9 @@ LABEL_20:
 
                                     else
                                     {
-                                      v56 = [v3 lowercaseString];
-                                      v57 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                      v58 = [v56 containsString:v57];
+                                      lowercaseString35 = [inferenceCopy lowercaseString];
+                                      lowercaseString36 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                      v58 = [lowercaseString35 containsString:lowercaseString36];
 
                                       if (v58)
                                       {
@@ -3022,9 +3022,9 @@ LABEL_20:
 
                                       else
                                       {
-                                        v59 = [v3 lowercaseString];
-                                        v60 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                        v61 = [v59 containsString:v60];
+                                        lowercaseString37 = [inferenceCopy lowercaseString];
+                                        lowercaseString38 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                        v61 = [lowercaseString37 containsString:lowercaseString38];
 
                                         if (v61)
                                         {
@@ -3033,9 +3033,9 @@ LABEL_20:
 
                                         else
                                         {
-                                          v62 = [v3 lowercaseString];
-                                          v63 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                          v64 = [v62 containsString:v63];
+                                          lowercaseString39 = [inferenceCopy lowercaseString];
+                                          lowercaseString40 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                          v64 = [lowercaseString39 containsString:lowercaseString40];
 
                                           if (v64)
                                           {
@@ -3044,9 +3044,9 @@ LABEL_20:
 
                                           else
                                           {
-                                            v65 = [v3 lowercaseString];
-                                            v66 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                            v67 = [v65 containsString:v66];
+                                            lowercaseString41 = [inferenceCopy lowercaseString];
+                                            lowercaseString42 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                            v67 = [lowercaseString41 containsString:lowercaseString42];
 
                                             if (v67)
                                             {
@@ -3055,9 +3055,9 @@ LABEL_20:
 
                                             else
                                             {
-                                              v68 = [v3 lowercaseString];
-                                              v69 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                              v70 = [v68 containsString:v69];
+                                              lowercaseString43 = [inferenceCopy lowercaseString];
+                                              lowercaseString44 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                              v70 = [lowercaseString43 containsString:lowercaseString44];
 
                                               if (v70)
                                               {
@@ -3066,9 +3066,9 @@ LABEL_20:
 
                                               else
                                               {
-                                                v71 = [v3 lowercaseString];
-                                                v72 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                                v73 = [v71 containsString:v72];
+                                                lowercaseString45 = [inferenceCopy lowercaseString];
+                                                lowercaseString46 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                                v73 = [lowercaseString45 containsString:lowercaseString46];
 
                                                 if (v73)
                                                 {
@@ -3077,9 +3077,9 @@ LABEL_20:
 
                                                 else
                                                 {
-                                                  v74 = [v3 lowercaseString];
-                                                  v75 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                                  v76 = [v74 containsString:v75];
+                                                  lowercaseString47 = [inferenceCopy lowercaseString];
+                                                  lowercaseString48 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                                  v76 = [lowercaseString47 containsString:lowercaseString48];
 
                                                   if (v76)
                                                   {
@@ -3088,9 +3088,9 @@ LABEL_20:
 
                                                   else
                                                   {
-                                                    v77 = [v3 lowercaseString];
-                                                    v78 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                                    v79 = [v77 containsString:v78];
+                                                    lowercaseString49 = [inferenceCopy lowercaseString];
+                                                    lowercaseString50 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                                    v79 = [lowercaseString49 containsString:lowercaseString50];
 
                                                     if (v79)
                                                     {
@@ -3099,9 +3099,9 @@ LABEL_20:
 
                                                     else
                                                     {
-                                                      v80 = [v3 lowercaseString];
-                                                      v81 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                                      v82 = [v80 containsString:v81];
+                                                      lowercaseString51 = [inferenceCopy lowercaseString];
+                                                      lowercaseString52 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                                      v82 = [lowercaseString51 containsString:lowercaseString52];
 
                                                       if (v82)
                                                       {
@@ -3110,9 +3110,9 @@ LABEL_20:
 
                                                       else
                                                       {
-                                                        v83 = [v3 lowercaseString];
-                                                        v84 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                                        v85 = [v83 containsString:v84];
+                                                        lowercaseString53 = [inferenceCopy lowercaseString];
+                                                        lowercaseString54 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                                        v85 = [lowercaseString53 containsString:lowercaseString54];
 
                                                         if (v85)
                                                         {
@@ -3121,9 +3121,9 @@ LABEL_20:
 
                                                         else
                                                         {
-                                                          v86 = [v3 lowercaseString];
-                                                          v87 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                                          v88 = [v86 containsString:v87];
+                                                          lowercaseString55 = [inferenceCopy lowercaseString];
+                                                          lowercaseString56 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                                          v88 = [lowercaseString55 containsString:lowercaseString56];
 
                                                           if (v88)
                                                           {
@@ -3132,9 +3132,9 @@ LABEL_20:
 
                                                           else
                                                           {
-                                                            v89 = [v3 lowercaseString];
-                                                            v90 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                                            v91 = [v89 containsString:v90];
+                                                            lowercaseString57 = [inferenceCopy lowercaseString];
+                                                            lowercaseString58 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                                            v91 = [lowercaseString57 containsString:lowercaseString58];
 
                                                             if (v91)
                                                             {
@@ -3143,9 +3143,9 @@ LABEL_20:
 
                                                             else
                                                             {
-                                                              v92 = [v3 lowercaseString];
-                                                              v93 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                                              v94 = [v92 containsString:v93];
+                                                              lowercaseString59 = [inferenceCopy lowercaseString];
+                                                              lowercaseString60 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                                              v94 = [lowercaseString59 containsString:lowercaseString60];
 
                                                               if (v94)
                                                               {
@@ -3154,9 +3154,9 @@ LABEL_20:
 
                                                               else
                                                               {
-                                                                v95 = [v3 lowercaseString];
-                                                                v96 = [@"##_PHOTO_INFERENCE" lowercaseString];
-                                                                v97 = [v95 containsString:v96];
+                                                                lowercaseString61 = [inferenceCopy lowercaseString];
+                                                                lowercaseString62 = [@"##_PHOTO_INFERENCE" lowercaseString];
+                                                                v97 = [lowercaseString61 containsString:lowercaseString62];
 
                                                                 if (v97)
                                                                 {
@@ -3207,14 +3207,14 @@ LABEL_20:
   return v7;
 }
 
-- (int)mapTimeCorrelationScore:(float)a3
+- (int)mapTimeCorrelationScore:(float)score
 {
-  if (self->_kLowBundleQualityScoreThreshold > a3)
+  if (self->_kLowBundleQualityScoreThreshold > score)
   {
     return 1;
   }
 
-  if (self->_kHighBundleQualityScoreThreshold <= a3)
+  if (self->_kHighBundleQualityScoreThreshold <= score)
   {
     return 3;
   }
@@ -3222,14 +3222,14 @@ LABEL_20:
   return 2;
 }
 
-- (int)mapLabelConfidenceScore:(float)a3
+- (int)mapLabelConfidenceScore:(float)score
 {
-  if (self->_kLowBundleQualityScoreThreshold > a3)
+  if (self->_kLowBundleQualityScoreThreshold > score)
   {
     return 1;
   }
 
-  if (self->_kHighBundleQualityScoreThreshold <= a3)
+  if (self->_kHighBundleQualityScoreThreshold <= score)
   {
     return 3;
   }
@@ -3237,21 +3237,21 @@ LABEL_20:
   return 2;
 }
 
-- (int)mapCallDurationType:(double)a3
+- (int)mapCallDurationType:(double)type
 {
   shortCallDurationInSecondsThreshold = self->_shortCallDurationInSecondsThreshold;
-  if (a3 > 0.0 && shortCallDurationInSecondsThreshold >= a3)
+  if (type > 0.0 && shortCallDurationInSecondsThreshold >= type)
   {
     return 1;
   }
 
   longCallDurationInSecondsThreshold = self->_longCallDurationInSecondsThreshold;
-  if (shortCallDurationInSecondsThreshold < a3 && longCallDurationInSecondsThreshold >= a3)
+  if (shortCallDurationInSecondsThreshold < type && longCallDurationInSecondsThreshold >= type)
   {
     return 2;
   }
 
-  if (longCallDurationInSecondsThreshold >= a3)
+  if (longCallDurationInSecondsThreshold >= type)
   {
     return 0;
   }
@@ -3259,14 +3259,14 @@ LABEL_20:
   return 3;
 }
 
-- (int)mapBurstyInteractionCount:(unint64_t)a3
+- (int)mapBurstyInteractionCount:(unint64_t)count
 {
-  if (self->_lowBurstyInteractionCountThreshold >= a3)
+  if (self->_lowBurstyInteractionCountThreshold >= count)
   {
     return 1;
   }
 
-  if (self->_highBurstyInteractionCountThreshold >= a3)
+  if (self->_highBurstyInteractionCountThreshold >= count)
   {
     return 2;
   }
@@ -3274,24 +3274,24 @@ LABEL_20:
   return 3;
 }
 
-- (int)mapDistanceToHomeInMiles:(double)a3
+- (int)mapDistanceToHomeInMiles:(double)miles
 {
   distanceToHomeInMilesThresholdNearHome = self->_distanceToHomeInMilesThresholdNearHome;
-  if (a3 >= 0.0 && distanceToHomeInMilesThresholdNearHome > a3)
+  if (miles >= 0.0 && distanceToHomeInMilesThresholdNearHome > miles)
   {
     return 1;
   }
 
   distanceToHomeInMilesThresholdMedium = self->_distanceToHomeInMilesThresholdMedium;
-  if (distanceToHomeInMilesThresholdNearHome <= a3 && distanceToHomeInMilesThresholdMedium > a3)
+  if (distanceToHomeInMilesThresholdNearHome <= miles && distanceToHomeInMilesThresholdMedium > miles)
   {
     return 2;
   }
 
   distanceToHomeInMilesThresholdFar = self->_distanceToHomeInMilesThresholdFar;
-  if (distanceToHomeInMilesThresholdMedium > a3 || distanceToHomeInMilesThresholdFar <= a3)
+  if (distanceToHomeInMilesThresholdMedium > miles || distanceToHomeInMilesThresholdFar <= miles)
   {
-    return 4 * (distanceToHomeInMilesThresholdFar <= a3);
+    return 4 * (distanceToHomeInMilesThresholdFar <= miles);
   }
 
   else

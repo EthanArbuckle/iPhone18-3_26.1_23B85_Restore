@@ -1,11 +1,11 @@
 @interface GenerativeModelSystemInput
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GenerativeModelSystemInput)init;
-- (GenerativeModelSystemInput)initWithCoder:(id)a3;
+- (GenerativeModelSystemInput)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GenerativeModelSystemInput
@@ -30,17 +30,17 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = GenerativeModelSystemInput;
-  if (![(EligibilityInput *)&v11 isEqual:v4])
+  if (![(EligibilityInput *)&v11 isEqual:equalCopy])
   {
     goto LABEL_9;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v9 = 1;
     goto LABEL_11;
@@ -49,9 +49,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GenerativeModelSystemInput *)self supportsGenerativeModelSystems];
-    v7 = v6 ^ [(GenerativeModelSystemInput *)v5 supportsGenerativeModelSystems];
+    v5 = equalCopy;
+    supportsGenerativeModelSystems = [(GenerativeModelSystemInput *)self supportsGenerativeModelSystems];
+    v7 = supportsGenerativeModelSystems ^ [(GenerativeModelSystemInput *)v5 supportsGenerativeModelSystems];
     if (v7 == 1)
     {
       v8 = sub_10001F638();
@@ -87,16 +87,16 @@ LABEL_11:
   return v3 ^ [(GenerativeModelSystemInput *)self supportsGenerativeModelSystems];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = GenerativeModelSystemInput;
-  v4 = [(EligibilityInput *)&v6 copyWithZone:a3];
+  v4 = [(EligibilityInput *)&v6 copyWithZone:zone];
   [v4 setSupportsGenerativeModelSystems:{-[GenerativeModelSystemInput supportsGenerativeModelSystems](self, "supportsGenerativeModelSystems")}];
   return v4;
 }
 
-- (GenerativeModelSystemInput)initWithCoder:(id)a3
+- (GenerativeModelSystemInput)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GenerativeModelSystemInput;
@@ -109,11 +109,11 @@ LABEL_11:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = GenerativeModelSystemInput;
-  [(EligibilityInput *)&v3 encodeWithCoder:a3];
+  [(EligibilityInput *)&v3 encodeWithCoder:coder];
 }
 
 - (GenerativeModelSystemInput)init

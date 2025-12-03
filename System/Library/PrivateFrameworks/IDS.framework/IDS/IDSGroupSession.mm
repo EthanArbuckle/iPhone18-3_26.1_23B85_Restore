@@ -1,77 +1,77 @@
 @interface IDSGroupSession
-+ (id)augmentNetworkParametersForSession:(id)a3 participantID:(unint64_t)a4 parameters:(id)a5;
-+ (id)augmentNetworkParametersForSessionAlias:(id)a3 participantIDAlias:(unint64_t)a4 salt:(id)a5 parameters:(id)a6;
-+ (id)createEndpointForSessionIDAlias:(id)a3 topic:(id)a4 participantIDAlias:(unint64_t)a5 salt:(id)a6;
-+ (id)createGroupDescriptorForSessionIDAlias:(id)a3 topic:(id)a4 salt:(id)a5;
-+ (void)augmentConnectionGroupNetworkParameters:(id)a3;
-- (IDSGroupSession)initWithAccount:(id)a3 destinations:(id)a4 options:(id)a5;
-- (IDSGroupSession)initWithAccount:(id)a3 destinations:(id)a4 options:(id)a5 delegate:(id)a6 queue:(id)a7;
-- (IDSGroupSession)initWithAccount:(id)a3 options:(id)a4;
-- (IDSGroupSession)initWithAccount:(id)a3 options:(id)a4 delegate:(id)a5 queue:(id)a6;
++ (id)augmentNetworkParametersForSession:(id)session participantID:(unint64_t)d parameters:(id)parameters;
++ (id)augmentNetworkParametersForSessionAlias:(id)alias participantIDAlias:(unint64_t)dAlias salt:(id)salt parameters:(id)parameters;
++ (id)createEndpointForSessionIDAlias:(id)alias topic:(id)topic participantIDAlias:(unint64_t)dAlias salt:(id)salt;
++ (id)createGroupDescriptorForSessionIDAlias:(id)alias topic:(id)topic salt:(id)salt;
++ (void)augmentConnectionGroupNetworkParameters:(id)parameters;
+- (IDSGroupSession)initWithAccount:(id)account destinations:(id)destinations options:(id)options;
+- (IDSGroupSession)initWithAccount:(id)account destinations:(id)destinations options:(id)options delegate:(id)delegate queue:(id)queue;
+- (IDSGroupSession)initWithAccount:(id)account options:(id)options;
+- (IDSGroupSession)initWithAccount:(id)account options:(id)options delegate:(id)delegate queue:(id)queue;
 - (NSSet)requiredCapabilities;
 - (NSSet)requiredLackOfCapabilities;
 - (NSString)destination;
 - (NSString)sessionID;
 - (id)_internal;
 - (id)_internal_sessionWithValidityCheck;
-- (id)broadcastParameterForService:(id)a3;
+- (id)broadcastParameterForService:(id)service;
 - (id)keyValueDelivery;
-- (id)sessionIDAliasWithSalt:(id)a3;
-- (id)unicastConnectorWithDataMode:(int64_t)a3;
-- (id)unicastParameterForParticipantID:(unint64_t)a3 dataMode:(int64_t)a4 connectionIndex:(unint64_t)a5;
-- (id)unicastParameterForParticipantIDAlias:(unint64_t)a3 salt:(id)a4 dataMode:(int64_t)a5 connectionIndex:(unint64_t)a6;
-- (unint64_t)createAliasForLocalParticipantIDWithSalt:(id)a3;
-- (unint64_t)createAliasForParticipantID:(unint64_t)a3 salt:(id)a4;
-- (unint64_t)participantIDForAlias:(unint64_t)a3 salt:(id)a4;
+- (id)sessionIDAliasWithSalt:(id)salt;
+- (id)unicastConnectorWithDataMode:(int64_t)mode;
+- (id)unicastParameterForParticipantID:(unint64_t)d dataMode:(int64_t)mode connectionIndex:(unint64_t)index;
+- (id)unicastParameterForParticipantIDAlias:(unint64_t)alias salt:(id)salt dataMode:(int64_t)mode connectionIndex:(unint64_t)index;
+- (unint64_t)createAliasForLocalParticipantIDWithSalt:(id)salt;
+- (unint64_t)createAliasForParticipantID:(unint64_t)d salt:(id)salt;
+- (unint64_t)participantIDForAlias:(unint64_t)alias salt:(id)salt;
 - (unsigned)sessionEndedReason;
 - (unsigned)state;
-- (void)createAliasForLocalParticipantIDWithSalt:(id)a3 completionHandler:(id)a4;
-- (void)createAliasForParticipantID:(unint64_t)a3 salt:(id)a4 completionHandler:(id)a5;
-- (void)createSessionIDAliasWithSalt:(id)a3 completionHandler:(id)a4;
+- (void)createAliasForLocalParticipantIDWithSalt:(id)salt completionHandler:(id)handler;
+- (void)createAliasForParticipantID:(unint64_t)d salt:(id)salt completionHandler:(id)handler;
+- (void)createSessionIDAliasWithSalt:(id)salt completionHandler:(id)handler;
 - (void)dealloc;
-- (void)getParticipantIDForAlias:(unint64_t)a3 salt:(id)a4 completionHandler:(id)a5;
+- (void)getParticipantIDForAlias:(unint64_t)alias salt:(id)salt completionHandler:(id)handler;
 - (void)invalidate;
-- (void)joinWithOptions:(id)a3;
+- (void)joinWithOptions:(id)options;
 - (void)leaveGroupSession;
-- (void)leaveGroupSessionWithOptions:(id)a3;
-- (void)manageDesignatedMembers:(id)a3 withType:(unsigned __int16)a4;
+- (void)leaveGroupSessionWithOptions:(id)options;
+- (void)manageDesignatedMembers:(id)members withType:(unsigned __int16)type;
 - (void)reconnectUPlusOneSession;
-- (void)registerPluginWithOptions:(id)a3;
-- (void)removeParticipants:(id)a3;
+- (void)registerPluginWithOptions:(id)options;
+- (void)removeParticipants:(id)participants;
 - (void)requestActiveParticipants;
-- (void)requestDataCryptorForTopic:(id)a3 completionHandler:(id)a4;
-- (void)requestEncryptionKeyForParticipants:(id)a3;
-- (void)requestURIsForParticipantIDs:(id)a3 completionHandler:(id)a4;
-- (void)setCallScreeningMode:(BOOL)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setForceTCPFallbackOnCellUsingReinitiate:(BOOL)a3;
-- (void)setForceTCPFallbackOnWiFiUsingReinitiate:(BOOL)a3;
-- (void)setParticipantInfo:(id)a3;
-- (void)setPreferences:(id)a3;
-- (void)setRequiredCapabilities:(id)a3 requiredLackOfCapabilities:(id)a4;
-- (void)unregisterPluginWithOptions:(id)a3;
-- (void)updateMembers:(id)a3 withContext:(id)a4 messagingCapabilities:(id)a5 triggeredLocally:(BOOL)a6;
-- (void)updateMembers:(id)a3 withContext:(id)a4 triggeredLocally:(BOOL)a5;
-- (void)updateParticipantData:(id)a3 withContext:(id)a4;
-- (void)updateParticipantInfo:(id)a3;
-- (void)updateParticipantType:(unsigned __int16)a3 members:(id)a4 withContext:(id)a5 triggeredLocally:(BOOL)a6;
-- (void)updateParticipantType:(unsigned __int16)a3 members:(id)a4 withContext:(id)a5 triggeredLocally:(BOOL)a6 timestamp:(double)a7 identifier:(unint64_t)a8;
+- (void)requestDataCryptorForTopic:(id)topic completionHandler:(id)handler;
+- (void)requestEncryptionKeyForParticipants:(id)participants;
+- (void)requestURIsForParticipantIDs:(id)ds completionHandler:(id)handler;
+- (void)setCallScreeningMode:(BOOL)mode;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setForceTCPFallbackOnCellUsingReinitiate:(BOOL)reinitiate;
+- (void)setForceTCPFallbackOnWiFiUsingReinitiate:(BOOL)reinitiate;
+- (void)setParticipantInfo:(id)info;
+- (void)setPreferences:(id)preferences;
+- (void)setRequiredCapabilities:(id)capabilities requiredLackOfCapabilities:(id)ofCapabilities;
+- (void)unregisterPluginWithOptions:(id)options;
+- (void)updateMembers:(id)members withContext:(id)context messagingCapabilities:(id)capabilities triggeredLocally:(BOOL)locally;
+- (void)updateMembers:(id)members withContext:(id)context triggeredLocally:(BOOL)locally;
+- (void)updateParticipantData:(id)data withContext:(id)context;
+- (void)updateParticipantInfo:(id)info;
+- (void)updateParticipantType:(unsigned __int16)type members:(id)members withContext:(id)context triggeredLocally:(BOOL)locally;
+- (void)updateParticipantType:(unsigned __int16)type members:(id)members withContext:(id)context triggeredLocally:(BOOL)locally timestamp:(double)timestamp identifier:(unint64_t)identifier;
 @end
 
 @implementation IDSGroupSession
 
-- (IDSGroupSession)initWithAccount:(id)a3 destinations:(id)a4 options:(id)a5
+- (IDSGroupSession)initWithAccount:(id)account destinations:(id)destinations options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v11 = +[IDSInternalQueueController sharedInstance];
-  v12 = [v11 assertQueueIsNotCurrent];
+  assertQueueIsNotCurrent = [v11 assertQueueIsNotCurrent];
 
-  if (v12)
+  if (assertQueueIsNotCurrent)
   {
-    v13 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B28334();
     }
@@ -88,26 +88,26 @@
     v17[2] = sub_195A209B8;
     v17[3] = &unk_1E743EEE8;
     v18 = v14;
-    v19 = v8;
-    v20 = v9;
-    v21 = v10;
+    v19 = accountCopy;
+    v20 = destinationsCopy;
+    v21 = optionsCopy;
     [v15 performBlock:v17];
   }
 
   return v14;
 }
 
-- (IDSGroupSession)initWithAccount:(id)a3 options:(id)a4
+- (IDSGroupSession)initWithAccount:(id)account options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  optionsCopy = options;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsNotCurrent];
+  assertQueueIsNotCurrent = [v8 assertQueueIsNotCurrent];
 
-  if (v9)
+  if (assertQueueIsNotCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B283CC();
     }
@@ -123,29 +123,29 @@
     v14[1] = 3221225472;
     v14[2] = sub_195A20B70;
     v14[3] = &unk_1E743E620;
-    v15 = v7;
+    v15 = optionsCopy;
     v16 = v11;
-    v17 = v6;
+    v17 = accountCopy;
     [v12 performBlock:v14];
   }
 
   return v11;
 }
 
-- (IDSGroupSession)initWithAccount:(id)a3 destinations:(id)a4 options:(id)a5 delegate:(id)a6 queue:(id)a7
+- (IDSGroupSession)initWithAccount:(id)account destinations:(id)destinations options:(id)options delegate:(id)delegate queue:(id)queue
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  accountCopy = account;
+  destinationsCopy = destinations;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v17 = +[IDSInternalQueueController sharedInstance];
-  v18 = [v17 assertQueueIsNotCurrent];
+  assertQueueIsNotCurrent = [v17 assertQueueIsNotCurrent];
 
-  if (v18)
+  if (assertQueueIsNotCurrent)
   {
-    v19 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B28464();
     }
@@ -162,30 +162,30 @@
     v23[2] = sub_195A20DF0;
     v23[3] = &unk_1E743EF10;
     v24 = v20;
-    v25 = v12;
-    v26 = v13;
-    v27 = v14;
-    v28 = v15;
-    v29 = v16;
+    v25 = accountCopy;
+    v26 = destinationsCopy;
+    v27 = optionsCopy;
+    v28 = delegateCopy;
+    v29 = queueCopy;
     [v21 performBlock:v23];
   }
 
   return v20;
 }
 
-- (IDSGroupSession)initWithAccount:(id)a3 options:(id)a4 delegate:(id)a5 queue:(id)a6
+- (IDSGroupSession)initWithAccount:(id)account options:(id)options delegate:(id)delegate queue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  accountCopy = account;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v14 = +[IDSInternalQueueController sharedInstance];
-  v15 = [v14 assertQueueIsNotCurrent];
+  assertQueueIsNotCurrent = [v14 assertQueueIsNotCurrent];
 
-  if (v15)
+  if (assertQueueIsNotCurrent)
   {
-    v16 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B284FC();
     }
@@ -201,11 +201,11 @@
     v20[1] = 3221225472;
     v20[2] = sub_195A20FF4;
     v20[3] = &unk_1E743EF38;
-    v21 = v11;
+    v21 = optionsCopy;
     v22 = v17;
-    v23 = v10;
-    v24 = v12;
-    v25 = v13;
+    v23 = accountCopy;
+    v24 = delegateCopy;
+    v25 = queueCopy;
     [v18 performBlock:v20];
   }
 
@@ -248,12 +248,12 @@
 - (id)_internal_sessionWithValidityCheck
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B28594();
     }
@@ -297,9 +297,9 @@
   return v4;
 }
 
-- (id)sessionIDAliasWithSalt:(id)a3
+- (id)sessionIDAliasWithSalt:(id)salt
 {
-  v4 = a3;
+  saltCopy = salt;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -313,7 +313,7 @@
   v9[3] = &unk_1E743EA08;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = saltCopy;
   v10 = v6;
   [v5 performBlock:v9 waitUntilDone:1];
 
@@ -323,10 +323,10 @@
   return v7;
 }
 
-- (unint64_t)createAliasForParticipantID:(unint64_t)a3 salt:(id)a4
+- (unint64_t)createAliasForParticipantID:(unint64_t)d salt:(id)salt
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  saltCopy = salt;
   v6 = IDSIDAliasHashUInt64();
   v7 = +[IDSLogging _IDSGroupSession];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -334,9 +334,9 @@
     v10 = 134218498;
     v11 = v6;
     v12 = 2048;
-    v13 = a3;
+    dCopy = d;
     v14 = 2112;
-    v15 = v5;
+    v15 = saltCopy;
     _os_log_impl(&dword_1959FF000, v7, OS_LOG_TYPE_DEFAULT, "createAliasForParticipantID created %llu from %llu and %@", &v10, 0x20u);
   }
 
@@ -344,10 +344,10 @@
   return v6;
 }
 
-- (unint64_t)createAliasForLocalParticipantIDWithSalt:(id)a3
+- (unint64_t)createAliasForLocalParticipantIDWithSalt:(id)salt
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  saltCopy = salt;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -359,7 +359,7 @@
   v12[3] = &unk_1E743EF60;
   v12[4] = self;
   v14 = &v15;
-  v6 = v4;
+  v6 = saltCopy;
   v13 = v6;
   [v5 performBlock:v12 waitUntilDone:1];
 
@@ -379,9 +379,9 @@
   return v9;
 }
 
-- (unint64_t)participantIDForAlias:(unint64_t)a3 salt:(id)a4
+- (unint64_t)participantIDForAlias:(unint64_t)alias salt:(id)salt
 {
-  v6 = a4;
+  saltCopy = salt;
   v7 = dispatch_semaphore_create(0);
   v21 = 0;
   v22 = &v21;
@@ -393,8 +393,8 @@
   v16[2] = sub_195A21C90;
   v16[3] = &unk_1E743EFB0;
   v16[4] = self;
-  v20 = a3;
-  v9 = v6;
+  aliasCopy = alias;
+  v9 = saltCopy;
   v17 = v9;
   v19 = &v21;
   v10 = v7;
@@ -418,73 +418,73 @@
   return v13;
 }
 
-- (void)createSessionIDAliasWithSalt:(id)a3 completionHandler:(id)a4
+- (void)createSessionIDAliasWithSalt:(id)salt completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  saltCopy = salt;
+  handlerCopy = handler;
   v8 = +[IDSInternalQueueController sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195A21E30;
   v11[3] = &unk_1E743E9B8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = saltCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = saltCopy;
   [v8 performBlock:v11];
 }
 
-- (void)createAliasForParticipantID:(unint64_t)a3 salt:(id)a4 completionHandler:(id)a5
+- (void)createAliasForParticipantID:(unint64_t)d salt:(id)salt completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  saltCopy = salt;
+  handlerCopy = handler;
   v10 = +[IDSInternalQueueController sharedInstance];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_195A21F2C;
   v13[3] = &unk_1E743E828;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = saltCopy;
+  v15 = handlerCopy;
+  dCopy = d;
+  v11 = handlerCopy;
+  v12 = saltCopy;
   [v10 performBlock:v13];
 }
 
-- (void)createAliasForLocalParticipantIDWithSalt:(id)a3 completionHandler:(id)a4
+- (void)createAliasForLocalParticipantIDWithSalt:(id)salt completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  saltCopy = salt;
+  handlerCopy = handler;
   v8 = +[IDSInternalQueueController sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195A2201C;
   v11[3] = &unk_1E743E9B8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = saltCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = saltCopy;
   [v8 performBlock:v11];
 }
 
-- (void)getParticipantIDForAlias:(unint64_t)a3 salt:(id)a4 completionHandler:(id)a5
+- (void)getParticipantIDForAlias:(unint64_t)alias salt:(id)salt completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  saltCopy = salt;
+  handlerCopy = handler;
   v10 = +[IDSInternalQueueController sharedInstance];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_195A22118;
   v13[3] = &unk_1E743E828;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = saltCopy;
+  v15 = handlerCopy;
+  aliasCopy = alias;
+  v11 = handlerCopy;
+  v12 = saltCopy;
   [v10 performBlock:v13];
 }
 
@@ -597,32 +597,32 @@
   return v4;
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v8 = +[IDSInternalQueueController sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195A228D8;
   v11[3] = &unk_1E743E620;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
   [v8 performBlock:v11];
 }
 
 - (id)_internal
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B286B8();
     }
@@ -633,51 +633,51 @@
   return internal;
 }
 
-- (void)updateMembers:(id)a3 withContext:(id)a4 triggeredLocally:(BOOL)a5
+- (void)updateMembers:(id)members withContext:(id)context triggeredLocally:(BOOL)locally
 {
-  v8 = a3;
-  v9 = a4;
+  membersCopy = members;
+  contextCopy = context;
   v10 = +[IDSInternalQueueController sharedInstance];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_195A22AA8;
   v13[3] = &unk_1E743EFD8;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = membersCopy;
+  v15 = contextCopy;
+  locallyCopy = locally;
+  v11 = contextCopy;
+  v12 = membersCopy;
   [v10 performBlock:v13];
 }
 
-- (void)updateMembers:(id)a3 withContext:(id)a4 messagingCapabilities:(id)a5 triggeredLocally:(BOOL)a6
+- (void)updateMembers:(id)members withContext:(id)context messagingCapabilities:(id)capabilities triggeredLocally:(BOOL)locally
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  membersCopy = members;
+  contextCopy = context;
+  capabilitiesCopy = capabilities;
   v13 = +[IDSInternalQueueController sharedInstance];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = sub_195A22C0C;
   v17[3] = &unk_1E743F000;
   v17[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v21 = a6;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = membersCopy;
+  v19 = contextCopy;
+  v20 = capabilitiesCopy;
+  locallyCopy = locally;
+  v14 = capabilitiesCopy;
+  v15 = contextCopy;
+  v16 = membersCopy;
   [v13 performBlock:v17];
 }
 
-- (void)manageDesignatedMembers:(id)a3 withType:(unsigned __int16)a4
+- (void)manageDesignatedMembers:(id)members withType:(unsigned __int16)type
 {
-  v4 = a4;
+  typeCopy = type;
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v4 < 0xE)
+  membersCopy = members;
+  if (typeCopy < 0xE)
   {
     v8 = +[IDSInternalQueueController sharedInstance];
     v10[0] = MEMORY[0x1E69E9820];
@@ -685,8 +685,8 @@
     v10[2] = sub_195A22DB8;
     v10[3] = &unk_1E743F028;
     v10[4] = self;
-    v11 = v6;
-    v12 = v4;
+    v11 = membersCopy;
+    v12 = typeCopy;
     [v8 performBlock:v10];
   }
 
@@ -696,7 +696,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v14 = v4;
+      v14 = typeCopy;
       _os_log_impl(&dword_1959FF000, v7, OS_LOG_TYPE_DEFAULT, "manageDesignatedMembers: invalid type: %u", buf, 8u);
     }
   }
@@ -704,116 +704,116 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeParticipants:(id)a3
+- (void)removeParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A22EC8;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = participantsCopy;
+  v6 = participantsCopy;
   [v5 performBlock:v7];
 }
 
-- (void)updateParticipantData:(id)a3 withContext:(id)a4
+- (void)updateParticipantData:(id)data withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  contextCopy = context;
   v8 = +[IDSInternalQueueController sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195A22FF8;
   v11[3] = &unk_1E743E620;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = contextCopy;
+  v9 = contextCopy;
+  v10 = dataCopy;
   [v8 performBlock:v11];
 }
 
-- (void)updateParticipantInfo:(id)a3
+- (void)updateParticipantInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A23104;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   [v5 performBlock:v7];
 }
 
-- (void)setParticipantInfo:(id)a3
+- (void)setParticipantInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A23210;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   [v5 performBlock:v7];
 }
 
-- (void)updateParticipantType:(unsigned __int16)a3 members:(id)a4 withContext:(id)a5 triggeredLocally:(BOOL)a6
+- (void)updateParticipantType:(unsigned __int16)type members:(id)members withContext:(id)context triggeredLocally:(BOOL)locally
 {
-  v10 = a4;
-  v11 = a5;
+  membersCopy = members;
+  contextCopy = context;
   v12 = +[IDSInternalQueueController sharedInstance];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_195A23358;
   v15[3] = &unk_1E743F050;
-  v18 = a3;
+  typeCopy = type;
   v15[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v19 = a6;
-  v13 = v11;
-  v14 = v10;
+  v16 = membersCopy;
+  v17 = contextCopy;
+  locallyCopy = locally;
+  v13 = contextCopy;
+  v14 = membersCopy;
   [v12 performBlock:v15];
 }
 
-- (void)updateParticipantType:(unsigned __int16)a3 members:(id)a4 withContext:(id)a5 triggeredLocally:(BOOL)a6 timestamp:(double)a7 identifier:(unint64_t)a8
+- (void)updateParticipantType:(unsigned __int16)type members:(id)members withContext:(id)context triggeredLocally:(BOOL)locally timestamp:(double)timestamp identifier:(unint64_t)identifier
 {
-  v14 = a4;
-  v15 = a5;
+  membersCopy = members;
+  contextCopy = context;
   v16 = +[IDSInternalQueueController sharedInstance];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = sub_195A234C8;
   v19[3] = &unk_1E743F078;
-  v24 = a3;
+  typeCopy = type;
   v19[4] = self;
-  v20 = v14;
-  v21 = v15;
-  v25 = a6;
-  v22 = a7;
-  v23 = a8;
-  v17 = v15;
-  v18 = v14;
+  v20 = membersCopy;
+  v21 = contextCopy;
+  locallyCopy = locally;
+  timestampCopy = timestamp;
+  identifierCopy = identifier;
+  v17 = contextCopy;
+  v18 = membersCopy;
   [v16 performBlock:v19];
 }
 
-- (void)joinWithOptions:(id)a3
+- (void)joinWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A235E4;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   [v5 performBlock:v7];
 }
 
@@ -828,17 +828,17 @@
   [v3 performBlock:v4];
 }
 
-- (void)leaveGroupSessionWithOptions:(id)a3
+- (void)leaveGroupSessionWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A237C8;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   [v5 performBlock:v7];
 }
 
@@ -853,25 +853,25 @@
   [v3 performBlock:v4];
 }
 
-- (void)setPreferences:(id)a3
+- (void)setPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A239A8;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = preferencesCopy;
+  v6 = preferencesCopy;
   [v5 performBlock:v7];
 }
 
-- (void)setRequiredCapabilities:(id)a3 requiredLackOfCapabilities:(id)a4
+- (void)setRequiredCapabilities:(id)capabilities requiredLackOfCapabilities:(id)ofCapabilities
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  v8 = [v6 copy];
+  ofCapabilitiesCopy = ofCapabilities;
+  v7 = [capabilities copy];
+  v8 = [ofCapabilitiesCopy copy];
 
   v9 = +[IDSInternalQueueController sharedInstance];
   v12[0] = MEMORY[0x1E69E9820];
@@ -897,35 +897,35 @@
   [v3 performBlock:v4];
 }
 
-- (void)registerPluginWithOptions:(id)a3
+- (void)registerPluginWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A23CD0;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   [v5 performBlock:v7];
 }
 
-- (void)unregisterPluginWithOptions:(id)a3
+- (void)unregisterPluginWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A23DDC;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   [v5 performBlock:v7];
 }
 
-- (void)setCallScreeningMode:(BOOL)a3
+- (void)setCallScreeningMode:(BOOL)mode
 {
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
@@ -933,11 +933,11 @@
   v6[2] = sub_195A23ED0;
   v6[3] = &unk_1E743E8C8;
   v6[4] = self;
-  v7 = a3;
+  modeCopy = mode;
   [v5 performBlock:v6];
 }
 
-- (void)setForceTCPFallbackOnWiFiUsingReinitiate:(BOOL)a3
+- (void)setForceTCPFallbackOnWiFiUsingReinitiate:(BOOL)reinitiate
 {
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
@@ -945,11 +945,11 @@
   v6[2] = sub_195A23FC4;
   v6[3] = &unk_1E743E8C8;
   v6[4] = self;
-  v7 = a3;
+  reinitiateCopy = reinitiate;
   [v5 performBlock:v6];
 }
 
-- (void)setForceTCPFallbackOnCellUsingReinitiate:(BOOL)a3
+- (void)setForceTCPFallbackOnCellUsingReinitiate:(BOOL)reinitiate
 {
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
@@ -957,69 +957,69 @@
   v6[2] = sub_195A240B8;
   v6[3] = &unk_1E743E8C8;
   v6[4] = self;
-  v7 = a3;
+  reinitiateCopy = reinitiate;
   [v5 performBlock:v6];
 }
 
-- (void)requestURIsForParticipantIDs:(id)a3 completionHandler:(id)a4
+- (void)requestURIsForParticipantIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = +[IDSInternalQueueController sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195A241E8;
   v11[3] = &unk_1E743E9B8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dsCopy;
   [v8 performBlock:v11];
 }
 
-- (id)unicastParameterForParticipantID:(unint64_t)a3 dataMode:(int64_t)a4 connectionIndex:(unint64_t)a5
+- (id)unicastParameterForParticipantID:(unint64_t)d dataMode:(int64_t)mode connectionIndex:(unint64_t)index
 {
   v9 = IDSIDAliasFixedSalt();
-  v10 = [(IDSGroupSession *)self unicastParameterForParticipantIDAlias:[(IDSGroupSession *)self createAliasForParticipantID:a3 salt:v9] salt:v9 dataMode:a4 connectionIndex:a5];
+  v10 = [(IDSGroupSession *)self unicastParameterForParticipantIDAlias:[(IDSGroupSession *)self createAliasForParticipantID:d salt:v9] salt:v9 dataMode:mode connectionIndex:index];
 
   return v10;
 }
 
-- (id)unicastParameterForParticipantIDAlias:(unint64_t)a3 salt:(id)a4 dataMode:(int64_t)a5 connectionIndex:(unint64_t)a6
+- (id)unicastParameterForParticipantIDAlias:(unint64_t)alias salt:(id)salt dataMode:(int64_t)mode connectionIndex:(unint64_t)index
 {
-  v10 = a4;
-  v11 = [(IDSGroupSession *)self sessionIDAliasWithSalt:v10];
-  v12 = [[IDSGroupSessionUnicastParameter alloc] initWithGroupSessionID:v11 localParticipantID:[(IDSGroupSession *)self createAliasForLocalParticipantIDWithSalt:v10] remoteParticipantID:a3 salt:v10 dataMode:a5 connectionIndex:a6];
+  saltCopy = salt;
+  v11 = [(IDSGroupSession *)self sessionIDAliasWithSalt:saltCopy];
+  v12 = [[IDSGroupSessionUnicastParameter alloc] initWithGroupSessionID:v11 localParticipantID:[(IDSGroupSession *)self createAliasForLocalParticipantIDWithSalt:saltCopy] remoteParticipantID:alias salt:saltCopy dataMode:mode connectionIndex:index];
 
   return v12;
 }
 
-- (id)unicastConnectorWithDataMode:(int64_t)a3
+- (id)unicastConnectorWithDataMode:(int64_t)mode
 {
   v5 = IDSIDAliasFixedSalt();
   v6 = [(IDSGroupSession *)self sessionIDAliasWithSalt:v5];
-  v7 = [[IDSGroupSessionUnicastConnector alloc] initWithGroupSessionIDAlias:v6 participantIDAlias:[(IDSGroupSession *)self createAliasForLocalParticipantIDWithSalt:v5] salt:v5 dataMode:a3];
+  v7 = [[IDSGroupSessionUnicastConnector alloc] initWithGroupSessionIDAlias:v6 participantIDAlias:[(IDSGroupSession *)self createAliasForLocalParticipantIDWithSalt:v5] salt:v5 dataMode:mode];
 
   return v7;
 }
 
-+ (id)augmentNetworkParametersForSession:(id)a3 participantID:(unint64_t)a4 parameters:(id)a5
++ (id)augmentNetworkParametersForSession:(id)session participantID:(unint64_t)d parameters:(id)parameters
 {
   v7 = MEMORY[0x1E695DEF0];
-  v8 = a5;
-  v9 = a3;
-  v10 = [v7 data];
-  v11 = [IDSGroupSession augmentNetworkParametersForSessionAlias:v9 participantIDAlias:a4 salt:v10 parameters:v8];
+  parametersCopy = parameters;
+  sessionCopy = session;
+  data = [v7 data];
+  v11 = [IDSGroupSession augmentNetworkParametersForSessionAlias:sessionCopy participantIDAlias:d salt:data parameters:parametersCopy];
 
   return v11;
 }
 
-+ (id)augmentNetworkParametersForSessionAlias:(id)a3 participantIDAlias:(unint64_t)a4 salt:(id)a5 parameters:(id)a6
++ (id)augmentNetworkParametersForSessionAlias:(id)alias participantIDAlias:(unint64_t)dAlias salt:(id)salt parameters:(id)parameters
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
+  parametersCopy = parameters;
+  saltCopy = salt;
+  aliasCopy = alias;
   v12 = xpc_array_create(0, 0);
   v13 = xpc_array_create(0, 0);
   v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%u", *MEMORY[0x1E69A4EC8], getuid()];
@@ -1029,56 +1029,56 @@
   nw_parameters_set_required_netagent_classes();
   v15 = objc_alloc_init(MEMORY[0x1E69A5298]);
   [v15 setMultiplexer:@"groupsession"];
-  [v15 setSessionID:v11];
+  [v15 setSessionID:aliasCopy];
 
-  [v15 setParticipantID:a4];
-  [v15 setSalt:v10];
+  [v15 setParticipantID:dAlias];
+  [v15 setSalt:saltCopy];
 
-  v16 = [v15 stringRepresentation];
-  [v16 UTF8String];
+  stringRepresentation = [v15 stringRepresentation];
+  [stringRepresentation UTF8String];
   nw_parameters_set_account_id();
 
   host = nw_endpoint_create_host("0.0.0.0", "0");
-  MEMORY[0x19A8BBA70](v9, host);
+  MEMORY[0x19A8BBA70](parametersCopy, host);
 
   v18 = nw_endpoint_create_host("0.0.0.0", "3030");
 
   return v18;
 }
 
-+ (id)createEndpointForSessionIDAlias:(id)a3 topic:(id)a4 participantIDAlias:(unint64_t)a5 salt:(id)a6
++ (id)createEndpointForSessionIDAlias:(id)alias topic:(id)topic participantIDAlias:(unint64_t)dAlias salt:(id)salt
 {
   v9 = MEMORY[0x1E69A5298];
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  saltCopy = salt;
+  topicCopy = topic;
+  aliasCopy = alias;
   v13 = objc_alloc_init(v9);
   [v13 setMultiplexer:@"groupsession"];
-  [v13 setSessionID:v12];
+  [v13 setSessionID:aliasCopy];
 
-  [v13 setParticipantID:a5];
-  [v13 setSalt:v10];
+  [v13 setParticipantID:dAlias];
+  [v13 setSalt:saltCopy];
 
-  v14 = [v13 stringRepresentation];
-  [v14 UTF8String];
-  [v11 UTF8String];
+  stringRepresentation = [v13 stringRepresentation];
+  [stringRepresentation UTF8String];
+  [topicCopy UTF8String];
 
   apple_service = nw_endpoint_create_apple_service();
 
   return apple_service;
 }
 
-+ (id)createGroupDescriptorForSessionIDAlias:(id)a3 topic:(id)a4 salt:(id)a5
++ (id)createGroupDescriptorForSessionIDAlias:(id)alias topic:(id)topic salt:(id)salt
 {
-  v5 = [IDSGroupSession createEndpointForSessionIDAlias:a3 topic:a4 participantIDAlias:0 salt:a5];
+  v5 = [IDSGroupSession createEndpointForSessionIDAlias:alias topic:topic participantIDAlias:0 salt:salt];
   apple_id = nw_group_descriptor_create_apple_id();
 
   return apple_id;
 }
 
-+ (void)augmentConnectionGroupNetworkParameters:(id)a3
++ (void)augmentConnectionGroupNetworkParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v5 = xpc_array_create(0, 0);
   xpc_array_set_string(v5, 0xFFFFFFFFFFFFFFFFLL, "com.apple.ids");
   v4 = xpc_array_create(0, 0);
@@ -1086,52 +1086,52 @@
   nw_parameters_set_required_netagent_classes();
 }
 
-- (void)requestDataCryptorForTopic:(id)a3 completionHandler:(id)a4
+- (void)requestDataCryptorForTopic:(id)topic completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  topicCopy = topic;
+  handlerCopy = handler;
   v8 = +[IDSInternalQueueController sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195A24970;
   v11[3] = &unk_1E743E9B8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = topicCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = topicCopy;
   [v8 performBlock:v11];
 }
 
-- (void)requestEncryptionKeyForParticipants:(id)a3
+- (void)requestEncryptionKeyForParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A24A7C;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = participantsCopy;
+  v6 = participantsCopy;
   [v5 performBlock:v7];
 }
 
 - (id)keyValueDelivery
 {
-  v2 = [(IDSGroupSession *)self _internal_sessionWithValidityCheck];
-  v3 = [v2 keyValueDelivery];
+  _internal_sessionWithValidityCheck = [(IDSGroupSession *)self _internal_sessionWithValidityCheck];
+  keyValueDelivery = [_internal_sessionWithValidityCheck keyValueDelivery];
 
-  return v3;
+  return keyValueDelivery;
 }
 
-- (id)broadcastParameterForService:(id)a3
+- (id)broadcastParameterForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = [IDSGroupSessionBroadcastParameter alloc];
-  v6 = [(IDSGroupSession *)self sessionID];
+  sessionID = [(IDSGroupSession *)self sessionID];
   v7 = IDSIDAliasFixedSalt();
-  v8 = [(IDSGroupSessionBroadcastParameter *)v5 initWithGroupSessionID:v6 salt:v7 serviceName:v4];
+  v8 = [(IDSGroupSessionBroadcastParameter *)v5 initWithGroupSessionID:sessionID salt:v7 serviceName:serviceCopy];
 
   return v8;
 }

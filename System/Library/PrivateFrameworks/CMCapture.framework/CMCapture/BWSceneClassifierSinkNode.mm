@@ -1,21 +1,21 @@
 @interface BWSceneClassifierSinkNode
-- (BWSceneClassifierSinkNode)initWithCaptureDevice:(id)a3 version:(id)a4 lensSmudgeDetectionConfiguration:(BWLensSmudgeDetectionConfiguration *)a5 sinkID:(id)a6;
+- (BWSceneClassifierSinkNode)initWithCaptureDevice:(id)device version:(id)version lensSmudgeDetectionConfiguration:(BWLensSmudgeDetectionConfiguration *)configuration sinkID:(id)d;
 - (uint64_t)_updateLensSmudgeDetectionWithSampleBuffer:(uint64_t)result;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setMrcSceneObserver:(id)a3;
-- (void)setSemanticStyleSceneObserver:(id)a3;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setMrcSceneObserver:(id)observer;
+- (void)setSemanticStyleSceneObserver:(id)observer;
 @end
 
 @implementation BWSceneClassifierSinkNode
 
-- (BWSceneClassifierSinkNode)initWithCaptureDevice:(id)a3 version:(id)a4 lensSmudgeDetectionConfiguration:(BWLensSmudgeDetectionConfiguration *)a5 sinkID:(id)a6
+- (BWSceneClassifierSinkNode)initWithCaptureDevice:(id)device version:(id)version lensSmudgeDetectionConfiguration:(BWLensSmudgeDetectionConfiguration *)configuration sinkID:(id)d
 {
-  v7 = *&a4.var0;
+  v7 = *&version.var0;
   v16.receiver = self;
   v16.super_class = BWSceneClassifierSinkNode;
-  v9 = [(BWSinkNode *)&v16 initWithSinkID:a6];
+  v9 = [(BWSinkNode *)&v16 initWithSinkID:d];
   if (v9)
   {
     v10 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v9];
@@ -25,17 +25,17 @@
     [(BWNode *)v9 addInput:v10];
     v9->_version.patch = WORD2(v7);
     *&v9->_version.major = v7;
-    [a3 setSmartCameraVersion:v7 & 0xFFFFFFFFFFFFLL];
+    [device setSmartCameraVersion:v7 & 0xFFFFFFFFFFFFLL];
     v9->_resultLock._os_unfair_lock_opaque = 0;
-    v9->_device = a3;
+    v9->_device = device;
     v9->_observerQueue = FigDispatchQueueCreateWithPriority();
-    if (a5->lensSmudgeDetectionEnabled)
+    if (configuration->lensSmudgeDetectionEnabled)
     {
       v12 = [BWLensSmudgeDetection alloc];
-      v13 = [a3 activePortTypes];
-      v15[0] = *&a5->lensSmudgeDetectionEnabled;
-      *(v15 + 12) = *(&a5->lensSmudgeDetectionInterval.value + 4);
-      v9->_lensSmudgeDetection = [(BWLensSmudgeDetection *)v12 initWithConfiguration:v15 activePortTypes:v13];
+      activePortTypes = [device activePortTypes];
+      v15[0] = *&configuration->lensSmudgeDetectionEnabled;
+      *(v15 + 12) = *(&configuration->lensSmudgeDetectionInterval.value + 4);
+      v9->_lensSmudgeDetection = [(BWLensSmudgeDetection *)v12 initWithConfiguration:v15 activePortTypes:activePortTypes];
     }
 
     [(BWNode *)v9 setSupportsLiveReconfiguration:1];
@@ -52,11 +52,11 @@
   [(BWSinkNode *)&v3 dealloc];
 }
 
-- (void)setMrcSceneObserver:(id)a3
+- (void)setMrcSceneObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v5 = [[FigWeakReference alloc] initWithReferencedObject:a3];
+    v5 = [[FigWeakReference alloc] initWithReferencedObject:observer];
   }
 
   else
@@ -67,9 +67,9 @@
   self->_weakMRCSceneObserver = v5;
 }
 
-- (void)setSemanticStyleSceneObserver:(id)a3
+- (void)setSemanticStyleSceneObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     BWSmartCameraSceneInitialize(&self->_foodScene, 0.77 > 0.0, 2, 4, "Food", 0.77, 0.05, 0.75);
     BWSmartCameraSceneInitialize(&self->_indoorScene, 0.4 > 0.0, 2, 4, "Indoor", 0.4, 0.05, 0.75);
@@ -77,7 +77,7 @@
     BWSmartCameraSceneInitialize(&self->_sunsetScene, 0.88 > 0.0, 2, 4, "Sunset", 0.88, 0.05, 0.75);
     p_weakSemanticStyleSceneObserver = &self->_weakSemanticStyleSceneObserver;
 
-    v6 = [[FigWeakReference alloc] initWithReferencedObject:a3];
+    v6 = [[FigWeakReference alloc] initWithReferencedObject:observer];
   }
 
   else
@@ -94,9 +94,9 @@
   *p_weakSemanticStyleSceneObserver = v6;
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  if (!a3)
+  if (!d)
   {
     observerQueue = self->_observerQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -109,7 +109,7 @@
 
   v8.receiver = self;
   v8.super_class = BWSceneClassifierSinkNode;
-  [(BWSinkNode *)&v8 didReachEndOfDataForConfigurationID:a3 input:a4];
+  [(BWSinkNode *)&v8 didReachEndOfDataForConfigurationID:d input:input];
 }
 
 uint64_t __57__BWSceneClassifierSinkNode_renderSampleBuffer_forInput___block_invoke(uint64_t a1)
@@ -139,14 +139,14 @@ void __72__BWSceneClassifierSinkNode__updateLensSmudgeDetectionWithSampleBuffer_
   dispatch_async(v3, v4);
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   if (self->_lensSmudgeDetection)
   {
     [BWSceneClassifierSinkNode _updateLensSmudgeDetectionWithSampleBuffer:?];
   }
 
-  AttachedInferenceResult = BWInferenceGetAttachedInferenceResult(a3, 101);
+  AttachedInferenceResult = BWInferenceGetAttachedInferenceResult(buffer, 101);
   if (AttachedInferenceResult)
   {
     v7 = AttachedInferenceResult;
@@ -164,11 +164,11 @@ void __72__BWSceneClassifierSinkNode__updateLensSmudgeDetectionWithSampleBuffer_
       os_unfair_lock_unlock(&self->_resultLock);
       if ([(BWInferenceResult *)v7 isValid])
       {
-        v9 = [(BWInferenceResult *)v7 inferences];
-        v10 = v9;
+        inferences = [(BWInferenceResult *)v7 inferences];
+        v10 = inferences;
         if (self->_weakMRCSceneObserver)
         {
-          [-[NSDictionary objectForKeyedSubscript:](v9 objectForKeyedSubscript:{*off_1E798C340), "floatValue"}];
+          [-[NSDictionary objectForKeyedSubscript:](inferences objectForKeyedSubscript:{*off_1E798C340), "floatValue"}];
           v12 = v11;
           [-[NSDictionary objectForKeyedSubscript:](v10 objectForKeyedSubscript:{*off_1E798C300), "floatValue"}];
           v14 = v13;
@@ -176,12 +176,12 @@ void __72__BWSceneClassifierSinkNode__updateLensSmudgeDetectionWithSampleBuffer_
           v16 = v15;
           [-[NSDictionary objectForKeyedSubscript:](v10 objectForKeyedSubscript:{*off_1E798C358), "floatValue"}];
           v18 = v17;
-          v19 = [(FigWeakReference *)self->_weakMRCSceneObserver referencedObject];
+          referencedObject = [(FigWeakReference *)self->_weakMRCSceneObserver referencedObject];
           LODWORD(v20) = v12;
           LODWORD(v21) = v14;
           LODWORD(v22) = v16;
           LODWORD(v23) = v18;
-          [v19 sceneDidChangeQRConfidence:v20 appClipCodeConfidence:v21 documentConfidence:v22 textConfidence:v23];
+          [referencedObject sceneDidChangeQRConfidence:v20 appClipCodeConfidence:v21 documentConfidence:v22 textConfidence:v23];
         }
 
         if (self->_weakSemanticStyleSceneObserver)
@@ -239,7 +239,7 @@ void __72__BWSceneClassifierSinkNode__updateLensSmudgeDetectionWithSampleBuffer_
         v36 = 3221225472;
         v37 = __57__BWSceneClassifierSinkNode_renderSampleBuffer_forInput___block_invoke;
         v38 = &unk_1E7991B48;
-        v39 = self;
+        selfCopy = self;
         v40 = v7;
         v42 = v33;
         v41 = v32;

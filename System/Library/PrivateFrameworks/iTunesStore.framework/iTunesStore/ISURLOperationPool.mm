@@ -1,8 +1,8 @@
 @interface ISURLOperationPool
 - (ISURLOperationPool)init;
-- (id)_poolOperationForOperation:(id)a3 flags:(int64_t)a4;
-- (void)addOperation:(id)a3 withFlags:(int64_t)a4;
-- (void)cancelOperation:(id)a3;
+- (id)_poolOperationForOperation:(id)operation flags:(int64_t)flags;
+- (void)addOperation:(id)operation withFlags:(int64_t)flags;
+- (void)cancelOperation:(id)operation;
 - (void)dealloc;
 @end
 
@@ -29,32 +29,32 @@
   [(ISURLOperationPool *)&v3 dealloc];
 }
 
-- (void)addOperation:(id)a3 withFlags:(int64_t)a4
+- (void)addOperation:(id)operation withFlags:(int64_t)flags
 {
-  v6 = [(ISURLOperationPool *)self _poolOperationForOperation:a3 flags:a4];
+  v6 = [(ISURLOperationPool *)self _poolOperationForOperation:operation flags:flags];
   if (v6)
   {
 
-    [v6 addOperation:a3];
+    [v6 addOperation:operation];
   }
 
   else
   {
     v7 = objc_alloc_init(ISURLOperationPoolOperation);
-    [(ISURLOperationPoolOperation *)v7 addOperation:a3];
+    [(ISURLOperationPoolOperation *)v7 addOperation:operation];
     [(ISOperationQueue *)self->_operationQueue addOperation:v7];
   }
 }
 
-- (void)cancelOperation:(id)a3
+- (void)cancelOperation:(id)operation
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [(ISOperationQueue *)self->_operationQueue operations];
+  operations = [(ISOperationQueue *)self->_operationQueue operations];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [operations countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -65,18 +65,18 @@ LABEL_3:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(operations);
       }
 
       v9 = *(*(&v11 + 1) + 8 * v8);
-      if ([v9 containsOperation:a3])
+      if ([v9 containsOperation:operation])
       {
         break;
       }
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [operations countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -91,30 +91,30 @@ LABEL_3:
       goto LABEL_12;
     }
 
-    [v9 cancelOperation:a3];
+    [v9 cancelOperation:operation];
   }
 
   else
   {
 LABEL_12:
-    [a3 cancel];
+    [operation cancel];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_poolOperationForOperation:(id)a3 flags:(int64_t)a4
+- (id)_poolOperationForOperation:(id)operation flags:(int64_t)flags
 {
-  v4 = a4;
+  flagsCopy = flags;
   v24 = *MEMORY[0x277D85DE8];
-  v7 = [a3 dataProvider];
-  v8 = [objc_msgSend(a3 "_requestProperties")];
-  v9 = [(ISOperationQueue *)self->_operationQueue operations];
+  dataProvider = [operation dataProvider];
+  v8 = [objc_msgSend(operation "_requestProperties")];
+  operations = [(ISOperationQueue *)self->_operationQueue operations];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v10 = [operations countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -125,18 +125,18 @@ LABEL_3:
     {
       if (*v20 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(operations);
       }
 
       v14 = *(*(&v19 + 1) + 8 * v13);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = [v14 mainOperation];
-        if ([v8 isEqual:{objc_msgSend(objc_msgSend(v15, "_requestProperties"), "URL")}])
+        mainOperation = [v14 mainOperation];
+        if ([v8 isEqual:{objc_msgSend(objc_msgSend(mainOperation, "_requestProperties"), "URL")}])
         {
-          v16 = [v15 dataProvider];
-          if (v4 & 1) != 0 && (v7 == v16 || ([v7 isEqual:v16]))
+          dataProvider2 = [mainOperation dataProvider];
+          if (flagsCopy & 1) != 0 && (dataProvider == dataProvider2 || ([dataProvider isEqual:dataProvider2]))
           {
             break;
           }
@@ -145,7 +145,7 @@ LABEL_3:
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v11 = [operations countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v11)
         {
           goto LABEL_3;

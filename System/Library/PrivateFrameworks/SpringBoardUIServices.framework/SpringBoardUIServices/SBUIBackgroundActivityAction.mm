@@ -1,18 +1,18 @@
 @interface SBUIBackgroundActivityAction
 - (NSString)backgroundActivityIdentifier;
-- (SBUIBackgroundActivityAction)initWithBackgroundActivityIdentifier:(id)a3 handler:(id)a4;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (void)setProceed:(BOOL)a3;
+- (SBUIBackgroundActivityAction)initWithBackgroundActivityIdentifier:(id)identifier handler:(id)handler;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (void)setProceed:(BOOL)proceed;
 @end
 
 @implementation SBUIBackgroundActivityAction
 
-- (SBUIBackgroundActivityAction)initWithBackgroundActivityIdentifier:(id)a3 handler:(id)a4
+- (SBUIBackgroundActivityAction)initWithBackgroundActivityIdentifier:(id)identifier handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!identifierCopy)
   {
     [SBUIBackgroundActivityAction initWithBackgroundActivityIdentifier:a2 handler:self];
     if (v9)
@@ -25,14 +25,14 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v10 = objc_alloc_init(MEMORY[0x1E698E700]);
-  [v10 setObject:v7 forSetting:2];
+  [v10 setObject:identifierCopy forSetting:2];
   v11 = MEMORY[0x1E698E5F8];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -65,13 +65,13 @@ void __77__SBUIBackgroundActivityAction_initWithBackgroundActivityIdentifier_han
   }
 }
 
-- (void)setProceed:(BOOL)a3
+- (void)setProceed:(BOOL)proceed
 {
-  v3 = a3;
+  proceedCopy = proceed;
   if ([(SBUIBackgroundActivityAction *)self isValid]&& [(SBUIBackgroundActivityAction *)self canSendResponse])
   {
     v6 = objc_alloc_init(MEMORY[0x1E698E700]);
-    [v6 setFlag:v3 forSetting:1];
+    [v6 setFlag:proceedCopy forSetting:1];
     v5 = [objc_alloc(MEMORY[0x1E698E600]) initWithInfo:v6 error:0];
     [(SBUIBackgroundActivityAction *)self sendResponse:v5];
   }
@@ -79,21 +79,21 @@ void __77__SBUIBackgroundActivityAction_initWithBackgroundActivityIdentifier_han
 
 - (NSString)backgroundActivityIdentifier
 {
-  v2 = [(SBUIBackgroundActivityAction *)self info];
-  v3 = [v2 objectForSetting:2];
+  info = [(SBUIBackgroundActivityAction *)self info];
+  v3 = [info objectForSetting:2];
 
   return v3;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
   v3 = @"backgroundActivityIdentifier";
-  if (a3 != 2)
+  if (setting != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"proceed";
   }

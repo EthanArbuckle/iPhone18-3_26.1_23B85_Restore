@@ -1,54 +1,54 @@
 @interface MPCModelPlaybackContext
 - (BOOL)containsRestorableContent;
-- (BOOL)isReusableForPlaybackContext:(id)a3;
+- (BOOL)isReusableForPlaybackContext:(id)context;
 - (BOOL)isSupported;
 - (MPCModelPlaybackContext)init;
-- (MPCModelPlaybackContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MPCModelPlaybackContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionComponents;
-- (id)getSharedListeningTracklistWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)getRemotePlaybackQueueRepresentationWithCompletion:(id)a3;
-- (void)setPlaybackRequestEnvironment:(id)a3;
-- (void)setRequest:(id)a3 overrideEnvironment:(BOOL)a4;
-- (void)setUserIdentity:(id)a3;
-- (void)updateRequestPlaybackEnvironmentAllowingOverride:(BOOL)a3;
+- (id)getSharedListeningTracklistWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)getRemotePlaybackQueueRepresentationWithCompletion:(id)completion;
+- (void)setPlaybackRequestEnvironment:(id)environment;
+- (void)setRequest:(id)request overrideEnvironment:(BOOL)environment;
+- (void)setUserIdentity:(id)identity;
+- (void)updateRequestPlaybackEnvironmentAllowingOverride:(BOOL)override;
 @end
 
 @implementation MPCModelPlaybackContext
 
-- (void)setUserIdentity:(id)a3
+- (void)setUserIdentity:(id)identity
 {
-  v8 = a3;
-  if (!v8)
+  identityCopy = identity;
+  if (!identityCopy)
   {
-    v8 = [MEMORY[0x1E69E4680] activeAccount];
+    identityCopy = [MEMORY[0x1E69E4680] activeAccount];
   }
 
-  v4 = [(MPCPlaybackRequestEnvironment *)self->_playbackRequestEnvironment userIdentity];
-  v5 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-  v6 = [v4 isEqualToIdentity:v8 inStore:v5];
+  userIdentity = [(MPCPlaybackRequestEnvironment *)self->_playbackRequestEnvironment userIdentity];
+  defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  v6 = [userIdentity isEqualToIdentity:identityCopy inStore:defaultIdentityStore];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [MPCPlaybackRequestEnvironment requestEnvironmentWithUserIdentity:v8];
+    v7 = [MPCPlaybackRequestEnvironment requestEnvironmentWithUserIdentity:identityCopy];
     [(MPCModelPlaybackContext *)self setPlaybackRequestEnvironment:v7];
   }
 }
 
-- (void)updateRequestPlaybackEnvironmentAllowingOverride:(BOOL)a3
+- (void)updateRequestPlaybackEnvironmentAllowingOverride:(BOOL)override
 {
-  v3 = a3;
+  overrideCopy = override;
   if ([(MPModelRequest *)self->_request conformsToProtocol:&unk_1F45B4200])
   {
     request = self->_request;
-    if (v3)
+    if (overrideCopy)
     {
-      v6 = [(MPModelRequest *)request playbackRequestEnvironment];
+      playbackRequestEnvironment = [(MPModelRequest *)request playbackRequestEnvironment];
       playbackRequestEnvironment = self->_playbackRequestEnvironment;
-      self->_playbackRequestEnvironment = v6;
+      self->_playbackRequestEnvironment = playbackRequestEnvironment;
 
-      MEMORY[0x1EEE66BB8](v6, playbackRequestEnvironment);
+      MEMORY[0x1EEE66BB8](playbackRequestEnvironment, playbackRequestEnvironment);
     }
 
     else
@@ -60,75 +60,75 @@
   }
 }
 
-- (void)setRequest:(id)a3 overrideEnvironment:(BOOL)a4
+- (void)setRequest:(id)request overrideEnvironment:(BOOL)environment
 {
-  v4 = a4;
-  v6 = [a3 copy];
+  environmentCopy = environment;
+  v6 = [request copy];
   request = self->_request;
   self->_request = v6;
 
-  [(MPCModelPlaybackContext *)self updateRequestPlaybackEnvironmentAllowingOverride:v4];
+  [(MPCModelPlaybackContext *)self updateRequestPlaybackEnvironmentAllowingOverride:environmentCopy];
 }
 
-- (void)setPlaybackRequestEnvironment:(id)a3
+- (void)setPlaybackRequestEnvironment:(id)environment
 {
-  v5 = a3;
-  if (self->_playbackRequestEnvironment != v5)
+  environmentCopy = environment;
+  if (self->_playbackRequestEnvironment != environmentCopy)
   {
-    objc_storeStrong(&self->_playbackRequestEnvironment, a3);
+    objc_storeStrong(&self->_playbackRequestEnvironment, environment);
   }
 
   [(MPCModelPlaybackContext *)self updateRequestPlaybackEnvironmentAllowingOverride:0];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15.receiver = self;
   v15.super_class = MPCModelPlaybackContext;
-  v4 = [(MPCModelPlaybackContext *)&v15 copyWithZone:a3];
-  v5 = [(MPCModelPlaybackContext *)self playbackRequestEnvironment];
-  [v4 setPlaybackRequestEnvironment:v5];
+  v4 = [(MPCModelPlaybackContext *)&v15 copyWithZone:zone];
+  playbackRequestEnvironment = [(MPCModelPlaybackContext *)self playbackRequestEnvironment];
+  [v4 setPlaybackRequestEnvironment:playbackRequestEnvironment];
 
-  v6 = [(MPCModelPlaybackContext *)self request];
-  v7 = [v6 copy];
+  request = [(MPCModelPlaybackContext *)self request];
+  v7 = [request copy];
   [v4 setRequest:v7];
 
-  v8 = [(MPCModelPlaybackContext *)self startItemIdentifiers];
-  [v4 setStartItemIdentifiers:v8];
+  startItemIdentifiers = [(MPCModelPlaybackContext *)self startItemIdentifiers];
+  [v4 setStartItemIdentifiers:startItemIdentifiers];
 
-  v9 = [(MPCModelPlaybackContext *)self startTimeModifications];
-  [v4 setStartTimeModifications:v9];
+  startTimeModifications = [(MPCModelPlaybackContext *)self startTimeModifications];
+  [v4 setStartTimeModifications:startTimeModifications];
 
-  v10 = [(MPCModelPlaybackContext *)self endTimeModifications];
-  [v4 setEndTimeModifications:v10];
+  endTimeModifications = [(MPCModelPlaybackContext *)self endTimeModifications];
+  [v4 setEndTimeModifications:endTimeModifications];
 
-  v11 = [(MPCModelPlaybackContext *)self overrideStartItemID];
-  [v4 setOverrideStartItemID:v11];
+  overrideStartItemID = [(MPCModelPlaybackContext *)self overrideStartItemID];
+  [v4 setOverrideStartItemID:overrideStartItemID];
 
-  v12 = [(MPCModelPlaybackContext *)self fallbackSectionRepresentation];
-  [v4 setFallbackSectionRepresentation:v12];
+  fallbackSectionRepresentation = [(MPCModelPlaybackContext *)self fallbackSectionRepresentation];
+  [v4 setFallbackSectionRepresentation:fallbackSectionRepresentation];
 
   [v4 setSkipEncodingMediaLibraryUniqueID:{-[MPCModelPlaybackContext skipEncodingMediaLibraryUniqueID](self, "skipEncodingMediaLibraryUniqueID")}];
   [v4 setAllowsJumpToIt:{-[MPCModelPlaybackContext allowsJumpToIt](self, "allowsJumpToIt")}];
-  v13 = [(MPCModelPlaybackContext *)self delegateTokenB];
-  [v4 setDelegateTokenB:v13];
+  delegateTokenB = [(MPCModelPlaybackContext *)self delegateTokenB];
+  [v4 setDelegateTokenB:delegateTokenB];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = MPCModelPlaybackContext;
-  [(MPCModelPlaybackContext *)&v8 encodeWithCoder:v4];
-  [v4 encodeObject:self->_request forKey:@"MPCModelPlaybackContextRequest"];
-  [v4 encodeObject:self->_playbackRequestEnvironment forKey:@"MPCModelPlaybackContextPlaybackRequestEnvironment"];
-  [v4 encodeObject:self->_startItemIdentifiers forKey:@"MPCModelPlaybackContextStartItemIdentifiers"];
-  [v4 encodeObject:self->_startTimeModifications forKey:@"MPCModelPlaybackContextStartTimeModifications"];
-  [v4 encodeObject:self->_endTimeModifications forKey:@"MPCModelPlaybackContextEndTimeModifications"];
-  [v4 encodeObject:self->_fallbackSectionRepresentation forKey:@"MPCModelPlaybackContextFallbackSectionRepresentation"];
-  [v4 encodeBool:self->_skipEncodingMediaLibraryUniqueID forKey:@"semlUID"];
+  [(MPCModelPlaybackContext *)&v8 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_request forKey:@"MPCModelPlaybackContextRequest"];
+  [coderCopy encodeObject:self->_playbackRequestEnvironment forKey:@"MPCModelPlaybackContextPlaybackRequestEnvironment"];
+  [coderCopy encodeObject:self->_startItemIdentifiers forKey:@"MPCModelPlaybackContextStartItemIdentifiers"];
+  [coderCopy encodeObject:self->_startTimeModifications forKey:@"MPCModelPlaybackContextStartTimeModifications"];
+  [coderCopy encodeObject:self->_endTimeModifications forKey:@"MPCModelPlaybackContextEndTimeModifications"];
+  [coderCopy encodeObject:self->_fallbackSectionRepresentation forKey:@"MPCModelPlaybackContextFallbackSectionRepresentation"];
+  [coderCopy encodeBool:self->_skipEncodingMediaLibraryUniqueID forKey:@"semlUID"];
   if (!self->_skipEncodingMediaLibraryUniqueID)
   {
     objc_opt_class();
@@ -137,33 +137,33 @@
       encodedMediaLibraryUniqueID = self->_encodedMediaLibraryUniqueID;
       if (encodedMediaLibraryUniqueID)
       {
-        [v4 encodeObject:encodedMediaLibraryUniqueID forKey:@"MPCModelPlaybackContextMediaLibraryUniqueID"];
+        [coderCopy encodeObject:encodedMediaLibraryUniqueID forKey:@"MPCModelPlaybackContextMediaLibraryUniqueID"];
       }
 
       else
       {
-        v6 = [(MPModelRequest *)self->_request mediaLibrary];
-        v7 = [v6 uniqueIdentifier];
-        [v4 encodeObject:v7 forKey:@"MPCModelPlaybackContextMediaLibraryUniqueID"];
+        mediaLibrary = [(MPModelRequest *)self->_request mediaLibrary];
+        uniqueIdentifier = [mediaLibrary uniqueIdentifier];
+        [coderCopy encodeObject:uniqueIdentifier forKey:@"MPCModelPlaybackContextMediaLibraryUniqueID"];
       }
     }
   }
 }
 
-- (MPCModelPlaybackContext)initWithCoder:(id)a3
+- (MPCModelPlaybackContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = MPCModelPlaybackContext;
-  v5 = [(MPCModelPlaybackContext *)&v33 initWithCoder:v4];
+  v5 = [(MPCModelPlaybackContext *)&v33 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPCModelPlaybackContextRequest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPCModelPlaybackContextRequest"];
     request = v5->_request;
     v5->_request = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPCModelPlaybackContextUserIdentity"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPCModelPlaybackContextPlaybackRequestEnvironment"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPCModelPlaybackContextUserIdentity"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPCModelPlaybackContextPlaybackRequestEnvironment"];
     v10 = v9;
     if (!v9)
     {
@@ -176,7 +176,7 @@
     {
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPCModelPlaybackContextStartItemIdentifiers"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPCModelPlaybackContextStartItemIdentifiers"];
     startItemIdentifiers = v5->_startItemIdentifiers;
     v5->_startItemIdentifiers = v11;
 
@@ -185,7 +185,7 @@
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v13 setWithObjects:{v14, v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"MPCModelPlaybackContextStartTimeModifications"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"MPCModelPlaybackContextStartTimeModifications"];
     startTimeModifications = v5->_startTimeModifications;
     v5->_startTimeModifications = v18;
 
@@ -194,42 +194,42 @@
     v22 = objc_opt_class();
     v23 = objc_opt_class();
     v24 = [v20 setWithObjects:{v21, v22, v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"MPCModelPlaybackContextEndTimeModifications"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"MPCModelPlaybackContextEndTimeModifications"];
     endTimeModifications = v5->_endTimeModifications;
     v5->_endTimeModifications = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPCModelPlaybackContextFallbackSectionRepresentation"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPCModelPlaybackContextFallbackSectionRepresentation"];
     fallbackSectionRepresentation = v5->_fallbackSectionRepresentation;
     v5->_fallbackSectionRepresentation = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPCModelPlaybackContextMediaLibraryUniqueID"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPCModelPlaybackContextMediaLibraryUniqueID"];
     encodedMediaLibraryUniqueID = v5->_encodedMediaLibraryUniqueID;
     v5->_encodedMediaLibraryUniqueID = v29;
 
-    v5->_skipEncodingMediaLibraryUniqueID = [v4 decodeBoolForKey:@"semlUID"];
+    v5->_skipEncodingMediaLibraryUniqueID = [coderCopy decodeBoolForKey:@"semlUID"];
   }
 
   return v5;
 }
 
-- (BOOL)isReusableForPlaybackContext:(id)a3
+- (BOOL)isReusableForPlaybackContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = MPCModelPlaybackContext;
-  if ([(MPCModelPlaybackContext *)&v12 isReusableForPlaybackContext:v5])
+  if ([(MPCModelPlaybackContext *)&v12 isReusableForPlaybackContext:contextCopy])
   {
-    v6 = v5;
+    v6 = contextCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"MPCModelPlaybackContext.m" lineNumber:110 description:@"[super isReusableForPlaybackContext:] failed to check for equal types"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPCModelPlaybackContext.m" lineNumber:110 description:@"[super isReusableForPlaybackContext:] failed to check for equal types"];
     }
 
     request = self->_request;
-    v8 = [v6 request];
-    v9 = [(MPModelRequest *)request isEqual:v8];
+    request = [v6 request];
+    v9 = [(MPModelRequest *)request isEqual:request];
   }
 
   else
@@ -246,64 +246,64 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [MEMORY[0x1E69708A8] standardUserDefaults];
-    v4 = [v3 forceLibrarySupplementalContexts];
+    standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+    forceLibrarySupplementalContexts = [standardUserDefaults forceLibrarySupplementalContexts];
 
-    if (v4)
+    if (forceLibrarySupplementalContexts)
     {
-      v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+      userIdentity = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+      if (os_log_type_enabled(userIdentity, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138543618;
-        v21 = objc_opt_class();
+        selfCopy5 = objc_opt_class();
         v22 = 2048;
-        v23 = self;
-        v6 = v21;
-        _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> isSupported: NO [user default override]", &v20, 0x16u);
+        selfCopy = self;
+        v6 = selfCopy5;
+        _os_log_impl(&dword_1C5C61000, userIdentity, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> isSupported: NO [user default override]", &v20, 0x16u);
       }
 
       LOBYTE(v7) = 0;
       goto LABEL_18;
     }
 
-    v5 = [(MPCModelPlaybackContext *)self userIdentity];
+    userIdentity = [(MPCModelPlaybackContext *)self userIdentity];
     v9 = self->_request;
-    v10 = [MEMORY[0x1E69705E8] deviceMediaLibraryWithUserIdentity:v5];
-    v11 = [v10 uniqueIdentifier];
+    v10 = [MEMORY[0x1E69705E8] deviceMediaLibraryWithUserIdentity:userIdentity];
+    uniqueIdentifier = [v10 uniqueIdentifier];
 
     v12 = self->_encodedMediaLibraryUniqueID;
     v13 = [(MPModelRequest *)v9 valueForKeyPath:@"_mediaLibrary.uniqueIdentifier"];
-    v14 = [(MPModelRequest *)v9 mediaLibrary];
-    v15 = [v14 uniqueIdentifier];
+    mediaLibrary = [(MPModelRequest *)v9 mediaLibrary];
+    uniqueIdentifier2 = [mediaLibrary uniqueIdentifier];
 
     v16 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback_Oversize");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 134219266;
-      v21 = self;
+      selfCopy5 = self;
       v22 = 2114;
-      v23 = v5;
+      selfCopy = userIdentity;
       v24 = 2114;
-      v25 = v11;
+      v25 = uniqueIdentifier;
       v26 = 2114;
       v27 = v12;
       v28 = 2114;
       v29 = v13;
       v30 = 2114;
-      v31 = v15;
+      v31 = uniqueIdentifier2;
       _os_log_impl(&dword_1C5C61000, v16, OS_LOG_TYPE_DEFAULT, "[MPC:%p] isSupported | matching device libraries [] user=%{public}@ userDeviceLibraryID=%{public}@ encodedLibraryID=%{public}@ requestDecodedLibraryID=%{public}@ requestLibraryID=%{public}@", &v20, 0x3Eu);
     }
 
     if (v12)
     {
-      v7 = [v11 isEqualToString:v12];
+      v7 = [uniqueIdentifier isEqualToString:v12];
       v17 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 134218240;
-        v21 = self;
+        selfCopy5 = self;
         v22 = 1024;
-        LODWORD(v23) = v7;
+        LODWORD(selfCopy) = v7;
         v18 = "[MPC:%p] isSupported | returning %{BOOL}u [using encoded media library]";
 LABEL_16:
         _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_DEFAULT, v18, &v20, 0x12u);
@@ -312,14 +312,14 @@ LABEL_16:
 
     else
     {
-      v7 = [v11 isEqualToString:v15];
+      v7 = [uniqueIdentifier isEqualToString:uniqueIdentifier2];
       v17 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 134218240;
-        v21 = self;
+        selfCopy5 = self;
         v22 = 1024;
-        LODWORD(v23) = v7;
+        LODWORD(selfCopy) = v7;
         v18 = "[MPC:%p] isSupported | returning %{BOOL}u [using request media library]";
         goto LABEL_16;
       }
@@ -328,15 +328,15 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  userIdentity = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+  if (os_log_type_enabled(userIdentity, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 134218242;
-    v21 = self;
+    selfCopy5 = self;
     v22 = 2114;
-    v23 = objc_opt_class();
-    v8 = v23;
-    _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEFAULT, "[MPC:%p] isSupported | returning YES [non-library request] request.class=%{public}@", &v20, 0x16u);
+    selfCopy = objc_opt_class();
+    v8 = selfCopy;
+    _os_log_impl(&dword_1C5C61000, userIdentity, OS_LOG_TYPE_DEFAULT, "[MPC:%p] isSupported | returning YES [non-library request] request.class=%{public}@", &v20, 0x16u);
   }
 
   LOBYTE(v7) = 1;
@@ -356,27 +356,27 @@ LABEL_18:
 {
   v12.receiver = self;
   v12.super_class = MPCModelPlaybackContext;
-  v3 = [(MPCModelPlaybackContext *)&v12 descriptionComponents];
-  v4 = [v3 mutableCopy];
+  descriptionComponents = [(MPCModelPlaybackContext *)&v12 descriptionComponents];
+  v4 = [descriptionComponents mutableCopy];
 
-  v5 = [(MPCModelPlaybackContext *)self playbackRequestEnvironment];
-  v6 = [v5 description];
+  playbackRequestEnvironment = [(MPCModelPlaybackContext *)self playbackRequestEnvironment];
+  v6 = [playbackRequestEnvironment description];
   [v4 setObject:v6 forKeyedSubscript:@"playbackRequestEnvironment"];
 
   if ([(MPModelRequest *)self->_request conformsToProtocol:&unk_1F45B4200])
   {
-    v7 = [(MPModelRequest *)self->_request playbackRequestEnvironment];
-    v8 = v7;
-    if (v5 != v7)
+    playbackRequestEnvironment2 = [(MPModelRequest *)self->_request playbackRequestEnvironment];
+    v8 = playbackRequestEnvironment2;
+    if (playbackRequestEnvironment != playbackRequestEnvironment2)
     {
-      v9 = [v7 description];
+      v9 = [playbackRequestEnvironment2 description];
       [v4 setObject:v9 forKeyedSubscript:@"request.playbackRequestEnvironment"];
     }
   }
 
   [v4 setObject:self->_request forKeyedSubscript:@"request"];
-  v10 = [(MPIdentifierSet *)self->_startItemIdentifiers humanDescription];
-  [v4 setObject:v10 forKeyedSubscript:@"startItemIdentifiers"];
+  humanDescription = [(MPIdentifierSet *)self->_startItemIdentifiers humanDescription];
+  [v4 setObject:humanDescription forKeyedSubscript:@"startItemIdentifiers"];
 
   [v4 setObject:self->_delegateTokenB forKeyedSubscript:@"delegateTokenB"];
 
@@ -397,31 +397,31 @@ LABEL_18:
   return v3;
 }
 
-- (id)getSharedListeningTracklistWithCompletion:(id)a3
+- (id)getSharedListeningTracklistWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = [(MPCModelPlaybackContext *)self request];
-  v7 = [v6 copy];
+  completionCopy = completion;
+  request = [(MPCModelPlaybackContext *)self request];
+  v7 = [request copy];
 
   if (([v7 conformsToProtocol:&unk_1F45B4178] & 1) == 0)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"MPPlaybackContext+MPCSharedListening.m" lineNumber:39 description:{@"Request class (%@) must conform to MPCModelPlaybackRequest", objc_opt_class()}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPPlaybackContext+MPCSharedListening.m" lineNumber:39 description:{@"Request class (%@) must conform to MPCModelPlaybackRequest", objc_opt_class()}];
   }
 
-  v8 = [v7 itemKind];
-  v9 = [v8 modelClass];
+  itemKind = [v7 itemKind];
+  modelClass = [itemKind modelClass];
 
-  v10 = [v9 mqf_requiredItemPlaybackProperties];
-  if (v10)
+  mqf_requiredItemPlaybackProperties = [modelClass mqf_requiredItemPlaybackProperties];
+  if (mqf_requiredItemPlaybackProperties)
   {
-    [v7 setItemProperties:v10];
-    v11 = [v7 sectionKind];
-    v12 = [v11 modelClass];
+    [v7 setItemProperties:mqf_requiredItemPlaybackProperties];
+    sectionKind = [v7 sectionKind];
+    modelClass2 = [sectionKind modelClass];
 
-    v13 = [v12 mqf_requiredSectionPlaybackProperties];
-    v14 = [v7 sectionProperties];
-    v15 = [v13 propertySetByCombiningWithPropertySet:v14];
+    mqf_requiredSectionPlaybackProperties = [modelClass2 mqf_requiredSectionPlaybackProperties];
+    sectionProperties = [v7 sectionProperties];
+    v15 = [mqf_requiredSectionPlaybackProperties propertySetByCombiningWithPropertySet:sectionProperties];
 
     v35 = v15;
     [v7 setSectionProperties:v15];
@@ -429,7 +429,7 @@ LABEL_18:
     v17 = os_log_create("com.apple.amp.mediaplaybackcore", "SharedSession");
     v18 = os_signpost_id_make_with_pointer(v17, self);
 
-    v19 = [(MPCModelPlaybackContext *)self startItemIdentifiers];
+    startItemIdentifiers = [(MPCModelPlaybackContext *)self startItemIdentifiers];
     v20 = os_log_create("com.apple.amp.mediaplaybackcore", "SharedSession");
     v21 = v20;
     if ((v18 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
@@ -441,8 +441,8 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = [v7 legacyMediaQuery];
-      v23 = v22 != 0;
+      legacyMediaQuery = [v7 legacyMediaQuery];
+      v23 = legacyMediaQuery != 0;
     }
 
     else
@@ -453,13 +453,13 @@ LABEL_18:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v25 = [v19 library];
+      library = [startItemIdentifiers library];
 
-      if (v25)
+      if (library)
       {
-        v26 = [v19 copyWithSource:@"PlaybackContext-SharePlay" block:&__block_literal_global_17969];
+        v26 = [startItemIdentifiers copyWithSource:@"PlaybackContext-SharePlay" block:&__block_literal_global_17969];
 
-        v19 = v26;
+        startItemIdentifiers = v26;
       }
     }
 
@@ -470,9 +470,9 @@ LABEL_18:
     v38[3] = &unk_1E8235BB8;
     v42[1] = v18;
     objc_copyWeak(v42, buf);
-    v41 = v5;
+    v41 = completionCopy;
     v38[4] = self;
-    v27 = v19;
+    v27 = startItemIdentifiers;
     v39 = v27;
     v43 = v23;
     v40 = v7;
@@ -484,9 +484,9 @@ LABEL_18:
     v29 = v28;
     v37 = v29;
     [v16 setCancellationHandler:v36];
-    v30 = [(MPCModelPlaybackContext *)self request];
-    v31 = [objc_opt_class() preferredQueue];
-    [v31 addOperation:v29];
+    request2 = [(MPCModelPlaybackContext *)self request];
+    preferredQueue = [objc_opt_class() preferredQueue];
+    [preferredQueue addOperation:v29];
 
     objc_destroyWeak(v42);
     objc_destroyWeak(buf);
@@ -496,12 +496,12 @@ LABEL_18:
   {
     if (MSVDeviceOSIsInternalInstall())
     {
-      v34 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v34 handleFailureInMethod:a2 object:self file:@"MPPlaybackContext+MPCSharedListening.m" lineNumber:44 description:{@"Invalid request item class: %@ for %@", v9, v7}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPPlaybackContext+MPCSharedListening.m" lineNumber:44 description:{@"Invalid request item class: %@ for %@", modelClass, v7}];
     }
 
-    v24 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCMusicPlaybackContextSharePlayError" code:3 debugDescription:{@"Invalid request item class: %@ for %@", v9, v7}];
-    (*(v5 + 2))(v5, 0, 0, v24);
+    v24 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCMusicPlaybackContextSharePlayError" code:3 debugDescription:{@"Invalid request item class: %@ for %@", modelClass, v7}];
+    (*(completionCopy + 2))(completionCopy, 0, 0, v24);
 
     v16 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:0];
   }
@@ -930,46 +930,46 @@ void __89__MPCModelPlaybackContext_MPCSharedListening__getSharedListeningTrackli
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)getRemotePlaybackQueueRepresentationWithCompletion:(id)a3
+- (void)getRemotePlaybackQueueRepresentationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MPCModelPlaybackContext *)self request];
-  v6 = [v5 copy];
+  completionCopy = completion;
+  request = [(MPCModelPlaybackContext *)self request];
+  v6 = [request copy];
 
   if (v6)
   {
-    v37 = v4;
-    v7 = [MEMORY[0x1E69E4680] defaultMediaIdentity];
+    v37 = completionCopy;
+    defaultMediaIdentity = [MEMORY[0x1E69E4680] defaultMediaIdentity];
     if ([v6 conformsToProtocol:&unk_1F45B4200])
     {
       v8 = v6;
-      v9 = [v8 playbackRequestEnvironment];
+      playbackRequestEnvironment = [v8 playbackRequestEnvironment];
 
-      if (!v9)
+      if (!playbackRequestEnvironment)
       {
-        v10 = [(MPCModelPlaybackContext *)self playbackRequestEnvironment];
-        [v8 setPlaybackRequestEnvironment:v10];
+        playbackRequestEnvironment2 = [(MPCModelPlaybackContext *)self playbackRequestEnvironment];
+        [v8 setPlaybackRequestEnvironment:playbackRequestEnvironment2];
       }
 
-      v11 = [v8 playbackRequestEnvironment];
-      v12 = [v11 userIdentity];
+      playbackRequestEnvironment3 = [v8 playbackRequestEnvironment];
+      userIdentity = [playbackRequestEnvironment3 userIdentity];
 
-      v7 = v12;
+      defaultMediaIdentity = userIdentity;
     }
 
     v13 = objc_alloc_init(_MPCProtoTracklist);
-    v14 = [(MPCModelPlaybackContext *)self shuffleType];
-    if (v14 == 1000)
+    shuffleType = [(MPCModelPlaybackContext *)self shuffleType];
+    if (shuffleType == 1000)
     {
-      v15 = [MEMORY[0x1E69708A8] standardUserDefaults];
-      v14 = [v15 musicShuffleType];
+      standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+      shuffleType = [standardUserDefaults musicShuffleType];
     }
 
-    v38 = v7;
+    v38 = defaultMediaIdentity;
     if (v13)
     {
       *&v13->_has |= 1u;
-      v13->_shuffleMode = v14 != 0;
+      v13->_shuffleMode = shuffleType != 0;
     }
 
     v69[0] = 0;
@@ -1000,25 +1000,25 @@ void __89__MPCModelPlaybackContext_MPCSharedListening__getSharedListeningTrackli
     v61 = v18;
     v19 = v16;
     v62 = v19;
-    v63 = self;
+    selfCopy = self;
     v20 = v13;
     v64 = v20;
     v65 = v69;
     v66 = v67;
     [v6 performWithResponseHandler:v60];
-    v21 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+    defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
     v59 = 0;
-    v22 = [v21 getPropertiesForUserIdentity:v38 error:&v59];
+    v22 = [defaultIdentityStore getPropertiesForUserIdentity:v38 error:&v59];
     v23 = v59;
     v36 = v22;
-    v24 = [v22 DSID];
-    v25 = [v24 unsignedLongLongValue];
+    dSID = [v22 DSID];
+    unsignedLongLongValue = [dSID unsignedLongLongValue];
 
-    if (v25)
+    if (unsignedLongLongValue)
     {
       v35 = v23;
       v26 = MEMORY[0x1E69E4680];
-      v27 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v25];
+      v27 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:unsignedLongLongValue];
       v28 = [v26 specificAccountWithDSID:v27];
       v29 = [v28 identityAllowingDelegation:1];
 
@@ -1027,15 +1027,15 @@ void __89__MPCModelPlaybackContext_MPCSharedListening__getSharedListeningTrackli
       v49[1] = 3221225472;
       v49[2] = __96__MPCModelPlaybackContext_MPCPlaybackQueue__getRemotePlaybackQueueRepresentationWithCompletion___block_invoke_80;
       v49[3] = &unk_1E82360E8;
-      v50 = v21;
+      v50 = defaultIdentityStore;
       v30 = v29;
       v51 = v30;
-      v58 = v25;
+      v58 = unsignedLongLongValue;
       v52 = v18;
       v56 = v69;
       v57 = v67;
       v53 = v19;
-      v54 = self;
+      selfCopy2 = self;
       v55 = v20;
       [v50 getDelegationUUIDsForUserIdentity:v30 completionHandler:v49];
 
@@ -1060,7 +1060,7 @@ void __89__MPCModelPlaybackContext_MPCSharedListening__getSharedListeningTrackli
     v39[2] = __96__MPCModelPlaybackContext_MPCPlaybackQueue__getRemotePlaybackQueueRepresentationWithCompletion___block_invoke_5;
     v39[3] = &unk_1E8236138;
     v40 = v20;
-    v41 = self;
+    selfCopy3 = self;
     v42 = v37;
     v43 = v67;
     v44 = v69;
@@ -1081,8 +1081,8 @@ void __89__MPCModelPlaybackContext_MPCSharedListening__getSharedListeningTrackli
     block[1] = 3221225472;
     block[2] = __96__MPCModelPlaybackContext_MPCPlaybackQueue__getRemotePlaybackQueueRepresentationWithCompletion___block_invoke;
     block[3] = &unk_1E8239528;
-    v72 = v4;
-    v32 = v4;
+    v72 = completionCopy;
+    v32 = completionCopy;
     dispatch_async(v31, block);
   }
 }

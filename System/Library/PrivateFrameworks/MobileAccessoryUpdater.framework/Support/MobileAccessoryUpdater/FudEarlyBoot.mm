@@ -1,10 +1,10 @@
 @interface FudEarlyBoot
 - (FudEarlyBoot)init;
-- (int)doFUDEarlyBoot:(id)a3;
+- (int)doFUDEarlyBoot:(id)boot;
 - (void)calculateTimeTakenForEarlyBootEntries;
 - (void)dealloc;
-- (void)earlyBootAccessoryAttached:(id)a3;
-- (void)updateFWForDeviceClass:(id)a3 dict:(id)a4;
+- (void)earlyBootAccessoryAttached:(id)attached;
+- (void)updateFWForDeviceClass:(id)class dict:(id)dict;
 @end
 
 @implementation FudEarlyBoot
@@ -16,7 +16,7 @@
   return [(FudEarlyBoot *)&v3 init];
 }
 
-- (int)doFUDEarlyBoot:(id)a3
+- (int)doFUDEarlyBoot:(id)boot
 {
   FudLog();
   v5 = objc_alloc_init(NSMutableArray);
@@ -43,7 +43,7 @@
           {
             for (i = 0; i != v9; i = i + 1)
             {
-              v12 = self;
+              selfCopy = self;
               if (*v24 != v10)
               {
                 objc_enumerationMutation(v6);
@@ -53,14 +53,14 @@
               v14 = +[NSMutableDictionary dictionary];
               v15 = [v13 objectForKeyedSubscript:@"DeviceClassName"];
               [v14 addEntriesFromDictionary:{objc_msgSend(v13, "objectForKeyedSubscript:", @"OptionsDict"}];
-              if (a3)
+              if (boot)
               {
-                [v14 addEntriesFromDictionary:a3];
+                [v14 addEntriesFromDictionary:boot];
               }
 
               FudLog();
-              self = v12;
-              [(FudEarlyBoot *)v12 updateFWForDeviceClass:v15 dict:v14, "[FudEarlyBoot doFUDEarlyBoot:]", v14];
+              self = selfCopy;
+              [(FudEarlyBoot *)selfCopy updateFWForDeviceClass:v15 dict:v14, "[FudEarlyBoot doFUDEarlyBoot:]", v14];
             }
 
             v9 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -80,7 +80,7 @@
           if (dispatch_semaphore_wait(semaphore, v17))
           {
             v20 = "[FudEarlyBoot doFUDEarlyBoot:]";
-            v22 = [(AppleFirmwareUpdateController *)self->_afuController getPendingEarlyBootAccessories];
+            getPendingEarlyBootAccessories = [(AppleFirmwareUpdateController *)self->_afuController getPendingEarlyBootAccessories];
             FudLog();
           }
         }
@@ -125,12 +125,12 @@
   FudLog();
 }
 
-- (void)earlyBootAccessoryAttached:(id)a3
+- (void)earlyBootAccessoryAttached:(id)attached
 {
-  v5 = [a3 objectForKeyedSubscript:@"DeviceClassName"];
-  v7 = [a3 objectForKeyedSubscript:@"OptionsDict"];
+  v5 = [attached objectForKeyedSubscript:@"DeviceClassName"];
+  v7 = [attached objectForKeyedSubscript:@"OptionsDict"];
   FudLog();
-  -[FudEarlyBoot updateFWForDeviceClass:dict:](self, "updateFWForDeviceClass:dict:", v5, [a3 objectForKeyedSubscript:{@"OptionsDict", "-[FudEarlyBoot earlyBootAccessoryAttached:]", v7}]);
+  -[FudEarlyBoot updateFWForDeviceClass:dict:](self, "updateFWForDeviceClass:dict:", v5, [attached objectForKeyedSubscript:{@"OptionsDict", "-[FudEarlyBoot earlyBootAccessoryAttached:]", v7}]);
   if (![-[AppleFirmwareUpdateController getPendingEarlyBootAccessories](self->_afuController "getPendingEarlyBootAccessories")])
   {
     FudLog();
@@ -154,10 +154,10 @@
   [(FudEarlyBoot *)&v4 dealloc];
 }
 
-- (void)updateFWForDeviceClass:(id)a3 dict:(id)a4
+- (void)updateFWForDeviceClass:(id)class dict:(id)dict
 {
   FudLog();
-  v7 = [[AppleFirmwareUpdateController alloc] initWithRegistryEntryID:objc_msgSend(a4 fwAssetDirectory:{"objectForKeyedSubscript:", @"IOMatchLaunchServiceID", "-[FudEarlyBoot updateFWForDeviceClass:dict:]", a3, a4), objc_msgSend(a4, "objectForKeyedSubscript:", @"FWDirectory"}];
+  v7 = [[AppleFirmwareUpdateController alloc] initWithRegistryEntryID:objc_msgSend(dict fwAssetDirectory:{"objectForKeyedSubscript:", @"IOMatchLaunchServiceID", "-[FudEarlyBoot updateFWForDeviceClass:dict:]", class, dict), objc_msgSend(dict, "objectForKeyedSubscript:", @"FWDirectory"}];
   [v7 enableEarlyBootLoggingMode];
   if ([v7 createFWAssetInfo])
   {

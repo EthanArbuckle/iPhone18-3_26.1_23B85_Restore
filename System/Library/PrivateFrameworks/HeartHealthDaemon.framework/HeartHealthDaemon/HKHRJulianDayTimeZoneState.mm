@@ -13,9 +13,9 @@
   if (v2)
   {
     v2->_count = 0;
-    v4 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     lastSampleDate = v3->_lastSampleDate;
-    v3->_lastSampleDate = v4;
+    v3->_lastSampleDate = distantPast;
   }
 
   return v3;

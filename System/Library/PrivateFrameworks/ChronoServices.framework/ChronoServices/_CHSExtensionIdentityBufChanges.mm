@@ -3,76 +3,76 @@
 - (uint64_t)changeTypeDeviceIdentifier;
 - (unsigned)replacementContainerBundleIdentifier;
 - (unsigned)replacementDeviceIdentifier;
-- (void)replaceContainerBundleIdentifier:(id)a3;
-- (void)replaceDeviceIdentifier:(id)a3;
-- (void)replaceExtensionBundleIdentifier:(id)a3;
-- (void)replaceTokenString:(id)a3;
+- (void)replaceContainerBundleIdentifier:(id)identifier;
+- (void)replaceDeviceIdentifier:(id)identifier;
+- (void)replaceExtensionBundleIdentifier:(id)identifier;
+- (void)replaceTokenString:(id)string;
 @end
 
 @implementation _CHSExtensionIdentityBufChanges
 
-- (void)replaceTokenString:(id)a3
+- (void)replaceTokenString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   self->_changeTypeTokenString = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = stringCopy;
+  if (!stringCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1014 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1014 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    stringCopy = 0;
   }
 
-  self->_replacementTokenString = [v5 unsignedIntValue];
+  self->_replacementTokenString = [stringCopy unsignedIntValue];
 }
 
-- (void)replaceExtensionBundleIdentifier:(id)a3
+- (void)replaceExtensionBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   self->_changeTypeExtensionBundleIdentifier = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = identifierCopy;
+  if (!identifierCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1037 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1037 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    identifierCopy = 0;
   }
 
-  self->_replacementExtensionBundleIdentifier = [v5 unsignedIntValue];
+  self->_replacementExtensionBundleIdentifier = [identifierCopy unsignedIntValue];
 }
 
-- (void)replaceContainerBundleIdentifier:(id)a3
+- (void)replaceContainerBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   self->_changeTypeContainerBundleIdentifier = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = identifierCopy;
+  if (!identifierCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1060 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1060 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    identifierCopy = 0;
   }
 
-  self->_replacementContainerBundleIdentifier = [v5 unsignedIntValue];
+  self->_replacementContainerBundleIdentifier = [identifierCopy unsignedIntValue];
 }
 
-- (void)replaceDeviceIdentifier:(id)a3
+- (void)replaceDeviceIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   self->_changeTypeDeviceIdentifier = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = identifierCopy;
+  if (!identifierCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1083 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:1083 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    identifierCopy = 0;
   }
 
-  self->_replacementDeviceIdentifier = [v5 unsignedIntValue];
+  self->_replacementDeviceIdentifier = [identifierCopy unsignedIntValue];
 }
 
 - (uint64_t)changeTypeContainerBundleIdentifier
@@ -87,13 +87,13 @@
 
 - (unsigned)replacementContainerBundleIdentifier
 {
-  if (a1)
+  if (self)
   {
-    a1 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a1[7]];
+    self = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:self[7]];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)changeTypeDeviceIdentifier
@@ -108,13 +108,13 @@
 
 - (unsigned)replacementDeviceIdentifier
 {
-  if (a1)
+  if (self)
   {
-    a1 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a1[9]];
+    self = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:self[9]];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

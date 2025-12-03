@@ -1,70 +1,70 @@
 @interface INFERENCESchemaINFERENCEContactFeatureSet
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEContactFeatureSet)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEContactFeatureSet)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEContactFeatureSet)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEContactFeatureSet)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAllHandlesMatched:(BOOL)a3;
-- (void)setHasAllPrimaryNameTokensAreInQuery:(BOOL)a3;
-- (void)setHasAllQueryMatched:(BOOL)a3;
-- (void)setHasFreqAnyGroup0MinTo2Min:(BOOL)a3;
-- (void)setHasFreqAnyGroup10MinTo1Hr:(BOOL)a3;
-- (void)setHasFreqAnyGroup1DayTo7Day:(BOOL)a3;
-- (void)setHasFreqAnyGroup1HrTo6Hr:(BOOL)a3;
-- (void)setHasFreqAnyGroup28DayToInf:(BOOL)a3;
-- (void)setHasFreqAnyGroup2MinTo10Min:(BOOL)a3;
-- (void)setHasFreqAnyGroup6HrTo1Day:(BOOL)a3;
-- (void)setHasFreqAnyGroup7DayTo28Day:(BOOL)a3;
-- (void)setHasFreqSameGroup0MinTo2Min:(BOOL)a3;
-- (void)setHasFreqSameGroup10MinTo1Hr:(BOOL)a3;
-- (void)setHasFreqSameGroup1DayTo7Day:(BOOL)a3;
-- (void)setHasFreqSameGroup1HrTo6Hr:(BOOL)a3;
-- (void)setHasFreqSameGroup28DayToInf:(BOOL)a3;
-- (void)setHasFreqSameGroup2MinTo10Min:(BOOL)a3;
-- (void)setHasFreqSameGroup6HrTo1Day:(BOOL)a3;
-- (void)setHasFreqSameGroup7DayTo28Day:(BOOL)a3;
-- (void)setHasIsFamilyNameMatch:(BOOL)a3;
-- (void)setHasIsFavorite:(BOOL)a3;
-- (void)setHasIsGivenNameMatch:(BOOL)a3;
-- (void)setHasIsHighQualityRequestMatch:(BOOL)a3;
-- (void)setHasIsHypocorism:(BOOL)a3;
-- (void)setHasIsMeCardRelation:(BOOL)a3;
-- (void)setHasIsMiddleNameMatch:(BOOL)a3;
-- (void)setHasIsNamePrefixMatch:(BOOL)a3;
-- (void)setHasIsNameSuffixMatch:(BOOL)a3;
-- (void)setHasIsNicknameMatch:(BOOL)a3;
-- (void)setHasIsOrganizationNameMatch:(BOOL)a3;
-- (void)setHasIsPartialNameMatch:(BOOL)a3;
-- (void)setHasIsRecentInSameDomain:(BOOL)a3;
-- (void)setHasIsRecentInSiriRequest:(BOOL)a3;
-- (void)setHasIsRecentlyCorrected:(BOOL)a3;
-- (void)setHasIsRelationAlias:(BOOL)a3;
-- (void)setHasIsSuggested:(BOOL)a3;
-- (void)setHasIsWeakOrganizationMatch:(BOOL)a3;
-- (void)setHasNumPrimaryTokens:(BOOL)a3;
-- (void)setHasRecencyRank:(BOOL)a3;
-- (void)setHasRecencyRankInSameDomain:(BOOL)a3;
-- (void)setHasRecencyRankInSiriRequest:(BOOL)a3;
-- (void)setHasSpeechAlternativeRanksFamilyNameRank:(BOOL)a3;
-- (void)setHasSpeechAlternativeRanksGivenNameRank:(BOOL)a3;
-- (void)setHasSpeechAlternativeRanksMiddleNameRank:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAllHandlesMatched:(BOOL)matched;
+- (void)setHasAllPrimaryNameTokensAreInQuery:(BOOL)query;
+- (void)setHasAllQueryMatched:(BOOL)matched;
+- (void)setHasFreqAnyGroup0MinTo2Min:(BOOL)min;
+- (void)setHasFreqAnyGroup10MinTo1Hr:(BOOL)hr;
+- (void)setHasFreqAnyGroup1DayTo7Day:(BOOL)day;
+- (void)setHasFreqAnyGroup1HrTo6Hr:(BOOL)hr;
+- (void)setHasFreqAnyGroup28DayToInf:(BOOL)inf;
+- (void)setHasFreqAnyGroup2MinTo10Min:(BOOL)min;
+- (void)setHasFreqAnyGroup6HrTo1Day:(BOOL)day;
+- (void)setHasFreqAnyGroup7DayTo28Day:(BOOL)day;
+- (void)setHasFreqSameGroup0MinTo2Min:(BOOL)min;
+- (void)setHasFreqSameGroup10MinTo1Hr:(BOOL)hr;
+- (void)setHasFreqSameGroup1DayTo7Day:(BOOL)day;
+- (void)setHasFreqSameGroup1HrTo6Hr:(BOOL)hr;
+- (void)setHasFreqSameGroup28DayToInf:(BOOL)inf;
+- (void)setHasFreqSameGroup2MinTo10Min:(BOOL)min;
+- (void)setHasFreqSameGroup6HrTo1Day:(BOOL)day;
+- (void)setHasFreqSameGroup7DayTo28Day:(BOOL)day;
+- (void)setHasIsFamilyNameMatch:(BOOL)match;
+- (void)setHasIsFavorite:(BOOL)favorite;
+- (void)setHasIsGivenNameMatch:(BOOL)match;
+- (void)setHasIsHighQualityRequestMatch:(BOOL)match;
+- (void)setHasIsHypocorism:(BOOL)hypocorism;
+- (void)setHasIsMeCardRelation:(BOOL)relation;
+- (void)setHasIsMiddleNameMatch:(BOOL)match;
+- (void)setHasIsNamePrefixMatch:(BOOL)match;
+- (void)setHasIsNameSuffixMatch:(BOOL)match;
+- (void)setHasIsNicknameMatch:(BOOL)match;
+- (void)setHasIsOrganizationNameMatch:(BOOL)match;
+- (void)setHasIsPartialNameMatch:(BOOL)match;
+- (void)setHasIsRecentInSameDomain:(BOOL)domain;
+- (void)setHasIsRecentInSiriRequest:(BOOL)request;
+- (void)setHasIsRecentlyCorrected:(BOOL)corrected;
+- (void)setHasIsRelationAlias:(BOOL)alias;
+- (void)setHasIsSuggested:(BOOL)suggested;
+- (void)setHasIsWeakOrganizationMatch:(BOOL)match;
+- (void)setHasNumPrimaryTokens:(BOOL)tokens;
+- (void)setHasRecencyRank:(BOOL)rank;
+- (void)setHasRecencyRankInSameDomain:(BOOL)domain;
+- (void)setHasRecencyRankInSiriRequest:(BOOL)request;
+- (void)setHasSpeechAlternativeRanksFamilyNameRank:(BOOL)rank;
+- (void)setHasSpeechAlternativeRanksGivenNameRank:(BOOL)rank;
+- (void)setHasSpeechAlternativeRanksMiddleNameRank:(BOOL)rank;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEContactFeatureSet
 
-- (INFERENCESchemaINFERENCEContactFeatureSet)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEContactFeatureSet)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v100.receiver = self;
   v100.super_class = INFERENCESchemaINFERENCEContactFeatureSet;
   v5 = [(INFERENCESchemaINFERENCEContactFeatureSet *)&v100 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isRecent"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isRecent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,7 +72,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setIsRecent:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isRecentInSameDomain"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isRecentInSameDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,7 +80,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setIsRecentInSameDomain:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isRecentInSiriRequest"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isRecentInSiriRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,7 +88,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setIsRecentInSiriRequest:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isRecentlyCorrected"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isRecentlyCorrected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,7 +96,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setIsRecentlyCorrected:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"recencyRank"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"recencyRank"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,7 +104,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setRecencyRank:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"recencyRankInSameDomain"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"recencyRankInSameDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -113,7 +113,7 @@
     }
 
     v80 = v6;
-    v12 = [v4 objectForKeyedSubscript:@"recencyRankInSiriRequest"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"recencyRankInSiriRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -122,7 +122,7 @@
     }
 
     v74 = v12;
-    v13 = [v4 objectForKeyedSubscript:@"isHighQualityRequestMatch"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isHighQualityRequestMatch"];
     objc_opt_class();
     v99 = v13;
     if (objc_opt_isKindOfClass())
@@ -133,7 +133,7 @@
 
     v14 = v10;
     v79 = v7;
-    v15 = [v4 objectForKeyedSubscript:@"isFavorite"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isFavorite"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -142,7 +142,7 @@
     }
 
     v16 = v9;
-    v17 = [v4 objectForKeyedSubscript:@"isMeCardRelation"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"isMeCardRelation"];
     objc_opt_class();
     v98 = v17;
     if (objc_opt_isKindOfClass())
@@ -152,7 +152,7 @@
     }
 
     v18 = v8;
-    v19 = [v4 objectForKeyedSubscript:@"isWeakOrganizationMatch"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"isWeakOrganizationMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -160,7 +160,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setIsWeakOrganizationMatch:?];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"speechAlternativeRanksGivenNameRank"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"speechAlternativeRanksGivenNameRank"];
     objc_opt_class();
     v97 = v20;
     if (objc_opt_isKindOfClass())
@@ -169,7 +169,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setSpeechAlternativeRanksGivenNameRank:?];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"speechAlternativeRanksMiddleNameRank"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"speechAlternativeRanksMiddleNameRank"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -178,7 +178,7 @@
     }
 
     v71 = v21;
-    v22 = [v4 objectForKeyedSubscript:@"speechAlternativeRanksFamilyNameRank"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"speechAlternativeRanksFamilyNameRank"];
     objc_opt_class();
     v96 = v22;
     v78 = v18;
@@ -188,7 +188,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setSpeechAlternativeRanksFamilyNameRank:?];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"freqAnyGroup0MinTo2Min"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"freqAnyGroup0MinTo2Min"];
     objc_opt_class();
     v95 = v23;
     v77 = v16;
@@ -198,7 +198,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setFreqAnyGroup0MinTo2Min:?];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"freqAnyGroup2MinTo10Min"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"freqAnyGroup2MinTo10Min"];
     objc_opt_class();
     v94 = v24;
     v76 = v14;
@@ -208,7 +208,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setFreqAnyGroup2MinTo10Min:?];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"freqAnyGroup10MinTo1Hr"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"freqAnyGroup10MinTo1Hr"];
     objc_opt_class();
     v93 = v25;
     v75 = v11;
@@ -218,7 +218,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setFreqAnyGroup10MinTo1Hr:?];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"freqAnyGroup1HrTo6Hr"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"freqAnyGroup1HrTo6Hr"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -227,7 +227,7 @@
     }
 
     v70 = v26;
-    v27 = [v4 objectForKeyedSubscript:@"freqAnyGroup6HrTo1Day"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"freqAnyGroup6HrTo1Day"];
     objc_opt_class();
     v92 = v27;
     if (objc_opt_isKindOfClass())
@@ -236,7 +236,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setFreqAnyGroup6HrTo1Day:?];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"freqAnyGroup1DayTo7Day"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"freqAnyGroup1DayTo7Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -244,7 +244,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setFreqAnyGroup1DayTo7Day:?];
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"freqAnyGroup7DayTo28Day"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"freqAnyGroup7DayTo28Day"];
     objc_opt_class();
     v91 = v29;
     if (objc_opt_isKindOfClass())
@@ -253,7 +253,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setFreqAnyGroup7DayTo28Day:?];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"freqAnyGroup28DayToInf"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"freqAnyGroup28DayToInf"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -261,7 +261,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setFreqAnyGroup28DayToInf:?];
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"freqSameGroup0MinTo2Min"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"freqSameGroup0MinTo2Min"];
     objc_opt_class();
     v90 = v31;
     if (objc_opt_isKindOfClass())
@@ -271,7 +271,7 @@
     }
 
     v32 = v28;
-    v33 = [v4 objectForKeyedSubscript:@"freqSameGroup2MinTo10Min"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"freqSameGroup2MinTo10Min"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -280,7 +280,7 @@
     }
 
     v34 = v19;
-    v35 = [v4 objectForKeyedSubscript:@"freqSameGroup10MinTo1Hr"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"freqSameGroup10MinTo1Hr"];
     objc_opt_class();
     v89 = v35;
     if (objc_opt_isKindOfClass())
@@ -290,7 +290,7 @@
     }
 
     v36 = v15;
-    v37 = [v4 objectForKeyedSubscript:@"freqSameGroup1HrTo6Hr"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"freqSameGroup1HrTo6Hr"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -298,7 +298,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setFreqSameGroup1HrTo6Hr:?];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"freqSameGroup6HrTo1Day"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"freqSameGroup6HrTo1Day"];
     objc_opt_class();
     v88 = v38;
     if (objc_opt_isKindOfClass())
@@ -307,7 +307,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setFreqSameGroup6HrTo1Day:?];
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"freqSameGroup1DayTo7Day"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"freqSameGroup1DayTo7Day"];
     objc_opt_class();
     v87 = v39;
     v73 = v36;
@@ -317,7 +317,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setFreqSameGroup1DayTo7Day:?];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"freqSameGroup7DayTo28Day"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"freqSameGroup7DayTo28Day"];
     objc_opt_class();
     v86 = v40;
     v72 = v34;
@@ -327,7 +327,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setFreqSameGroup7DayTo28Day:?];
     }
 
-    v41 = [v4 objectForKeyedSubscript:@"freqSameGroup28DayToInf"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"freqSameGroup28DayToInf"];
     objc_opt_class();
     v85 = v41;
     v69 = v32;
@@ -337,7 +337,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setFreqSameGroup28DayToInf:?];
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"isSuggested"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"isSuggested"];
     objc_opt_class();
     v84 = v42;
     v43 = v30;
@@ -347,7 +347,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setIsSuggested:?];
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"isHypocorism"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"isHypocorism"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -355,7 +355,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setIsHypocorism:?];
     }
 
-    v45 = [v4 objectForKeyedSubscript:@"hasSuggestedProperties"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"hasSuggestedProperties"];
     objc_opt_class();
     v83 = v45;
     if (objc_opt_isKindOfClass())
@@ -364,7 +364,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setHasSuggestedProperties:?];
     }
 
-    v46 = [v4 objectForKeyedSubscript:@"isPartialNameMatch"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"isPartialNameMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -372,7 +372,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setIsPartialNameMatch:?];
     }
 
-    v47 = [v4 objectForKeyedSubscript:@"numPrimaryTokens"];
+    v47 = [dictionaryCopy objectForKeyedSubscript:@"numPrimaryTokens"];
     objc_opt_class();
     v82 = v47;
     if (objc_opt_isKindOfClass())
@@ -381,7 +381,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setNumPrimaryTokens:?];
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"allQueryMatched"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"allQueryMatched"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -389,7 +389,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setAllQueryMatched:?];
     }
 
-    v49 = [v4 objectForKeyedSubscript:@"allPrimaryNameTokensAreInQuery"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"allPrimaryNameTokensAreInQuery"];
     objc_opt_class();
     v81 = v49;
     if (objc_opt_isKindOfClass())
@@ -398,7 +398,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setAllPrimaryNameTokensAreInQuery:?];
     }
 
-    v50 = [v4 objectForKeyedSubscript:@"isGivenNameMatch"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"isGivenNameMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -407,7 +407,7 @@
     }
 
     v65 = v44;
-    v51 = [v4 objectForKeyedSubscript:@"isMiddleNameMatch"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"isMiddleNameMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -416,7 +416,7 @@
     }
 
     v64 = v46;
-    v52 = [v4 objectForKeyedSubscript:{@"isFamilyNameMatch", v51}];
+    v52 = [dictionaryCopy objectForKeyedSubscript:{@"isFamilyNameMatch", v51}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -425,7 +425,7 @@
     }
 
     v63 = v48;
-    v53 = [v4 objectForKeyedSubscript:@"isOrganizationNameMatch"];
+    v53 = [dictionaryCopy objectForKeyedSubscript:@"isOrganizationNameMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -434,7 +434,7 @@
     }
 
     v62 = v50;
-    v54 = [v4 objectForKeyedSubscript:@"isNicknameMatch"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"isNicknameMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -443,7 +443,7 @@
     }
 
     v68 = v43;
-    v55 = [v4 objectForKeyedSubscript:@"isNamePrefixMatch"];
+    v55 = [dictionaryCopy objectForKeyedSubscript:@"isNamePrefixMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -452,7 +452,7 @@
     }
 
     v67 = v33;
-    v56 = [v4 objectForKeyedSubscript:@"isNameSuffixMatch"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"isNameSuffixMatch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -461,7 +461,7 @@
     }
 
     v66 = v37;
-    v57 = [v4 objectForKeyedSubscript:@"allHandlesMatched"];
+    v57 = [dictionaryCopy objectForKeyedSubscript:@"allHandlesMatched"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -469,7 +469,7 @@
       [(INFERENCESchemaINFERENCEContactFeatureSet *)v5 setAllHandlesMatched:?];
     }
 
-    v58 = [v4 objectForKeyedSubscript:@"isRelationAlias"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"isRelationAlias"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -483,30 +483,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEContactFeatureSet)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEContactFeatureSet)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEContactFeatureSet *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEContactFeatureSet *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEContactFeatureSet *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -519,7 +519,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   p_has = &self->_has;
   v5 = *(&self->_has + 2);
   if ((v5 & 0x1000) != 0)
@@ -527,7 +527,7 @@
     v43 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self allHandlesMatched];
     v44 = [v43 numberWithFloat:?];
-    [v3 setObject:v44 forKeyedSubscript:@"allHandlesMatched"];
+    [dictionary setObject:v44 forKeyedSubscript:@"allHandlesMatched"];
 
     v5 = *(&self->_has + 2);
     if ((v5 & 0x10) == 0)
@@ -550,7 +550,7 @@ LABEL_3:
   v45 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self allPrimaryNameTokensAreInQuery];
   v46 = [v45 numberWithFloat:?];
-  [v3 setObject:v46 forKeyedSubscript:@"allPrimaryNameTokensAreInQuery"];
+  [dictionary setObject:v46 forKeyedSubscript:@"allPrimaryNameTokensAreInQuery"];
 
   if ((*(&self->_has + 2) & 8) != 0)
   {
@@ -558,7 +558,7 @@ LABEL_4:
     v6 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self allQueryMatched];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"allQueryMatched"];
+    [dictionary setObject:v7 forKeyedSubscript:@"allQueryMatched"];
   }
 
 LABEL_5:
@@ -568,7 +568,7 @@ LABEL_5:
     v47 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqAnyGroup0MinTo2Min];
     v48 = [v47 numberWithFloat:?];
-    [v3 setObject:v48 forKeyedSubscript:@"freqAnyGroup0MinTo2Min"];
+    [dictionary setObject:v48 forKeyedSubscript:@"freqAnyGroup0MinTo2Min"];
 
     v8 = *p_has;
     if ((*p_has & 0x10000) == 0)
@@ -591,7 +591,7 @@ LABEL_7:
   v49 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqAnyGroup10MinTo1Hr];
   v50 = [v49 numberWithFloat:?];
-  [v3 setObject:v50 forKeyedSubscript:@"freqAnyGroup10MinTo1Hr"];
+  [dictionary setObject:v50 forKeyedSubscript:@"freqAnyGroup10MinTo1Hr"];
 
   v8 = *p_has;
   if ((*p_has & 0x80000) == 0)
@@ -609,7 +609,7 @@ LABEL_67:
   v51 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqAnyGroup1DayTo7Day];
   v52 = [v51 numberWithFloat:?];
-  [v3 setObject:v52 forKeyedSubscript:@"freqAnyGroup1DayTo7Day"];
+  [dictionary setObject:v52 forKeyedSubscript:@"freqAnyGroup1DayTo7Day"];
 
   v8 = *p_has;
   if ((*p_has & 0x20000) == 0)
@@ -627,7 +627,7 @@ LABEL_68:
   v53 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqAnyGroup1HrTo6Hr];
   v54 = [v53 numberWithFloat:?];
-  [v3 setObject:v54 forKeyedSubscript:@"freqAnyGroup1HrTo6Hr"];
+  [dictionary setObject:v54 forKeyedSubscript:@"freqAnyGroup1HrTo6Hr"];
 
   v8 = *p_has;
   if ((*p_has & 0x200000) == 0)
@@ -645,7 +645,7 @@ LABEL_69:
   v55 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqAnyGroup28DayToInf];
   v56 = [v55 numberWithFloat:?];
-  [v3 setObject:v56 forKeyedSubscript:@"freqAnyGroup28DayToInf"];
+  [dictionary setObject:v56 forKeyedSubscript:@"freqAnyGroup28DayToInf"];
 
   v8 = *p_has;
   if ((*p_has & 0x8000) == 0)
@@ -663,7 +663,7 @@ LABEL_70:
   v57 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqAnyGroup2MinTo10Min];
   v58 = [v57 numberWithFloat:?];
-  [v3 setObject:v58 forKeyedSubscript:@"freqAnyGroup2MinTo10Min"];
+  [dictionary setObject:v58 forKeyedSubscript:@"freqAnyGroup2MinTo10Min"];
 
   v8 = *p_has;
   if ((*p_has & 0x40000) == 0)
@@ -681,7 +681,7 @@ LABEL_71:
   v59 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqAnyGroup6HrTo1Day];
   v60 = [v59 numberWithFloat:?];
-  [v3 setObject:v60 forKeyedSubscript:@"freqAnyGroup6HrTo1Day"];
+  [dictionary setObject:v60 forKeyedSubscript:@"freqAnyGroup6HrTo1Day"];
 
   v8 = *p_has;
   if ((*p_has & 0x100000) == 0)
@@ -699,7 +699,7 @@ LABEL_72:
   v61 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqAnyGroup7DayTo28Day];
   v62 = [v61 numberWithFloat:?];
-  [v3 setObject:v62 forKeyedSubscript:@"freqAnyGroup7DayTo28Day"];
+  [dictionary setObject:v62 forKeyedSubscript:@"freqAnyGroup7DayTo28Day"];
 
   v8 = *p_has;
   if ((*p_has & 0x400000) == 0)
@@ -717,7 +717,7 @@ LABEL_73:
   v63 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqSameGroup0MinTo2Min];
   v64 = [v63 numberWithFloat:?];
-  [v3 setObject:v64 forKeyedSubscript:@"freqSameGroup0MinTo2Min"];
+  [dictionary setObject:v64 forKeyedSubscript:@"freqSameGroup0MinTo2Min"];
 
   v8 = *p_has;
   if ((*p_has & 0x1000000) == 0)
@@ -735,7 +735,7 @@ LABEL_74:
   v65 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqSameGroup10MinTo1Hr];
   v66 = [v65 numberWithFloat:?];
-  [v3 setObject:v66 forKeyedSubscript:@"freqSameGroup10MinTo1Hr"];
+  [dictionary setObject:v66 forKeyedSubscript:@"freqSameGroup10MinTo1Hr"];
 
   v8 = *p_has;
   if ((*p_has & 0x8000000) == 0)
@@ -753,7 +753,7 @@ LABEL_75:
   v67 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqSameGroup1DayTo7Day];
   v68 = [v67 numberWithFloat:?];
-  [v3 setObject:v68 forKeyedSubscript:@"freqSameGroup1DayTo7Day"];
+  [dictionary setObject:v68 forKeyedSubscript:@"freqSameGroup1DayTo7Day"];
 
   v8 = *p_has;
   if ((*p_has & 0x2000000) == 0)
@@ -771,7 +771,7 @@ LABEL_76:
   v69 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqSameGroup1HrTo6Hr];
   v70 = [v69 numberWithFloat:?];
-  [v3 setObject:v70 forKeyedSubscript:@"freqSameGroup1HrTo6Hr"];
+  [dictionary setObject:v70 forKeyedSubscript:@"freqSameGroup1HrTo6Hr"];
 
   v8 = *p_has;
   if ((*p_has & 0x20000000) == 0)
@@ -789,7 +789,7 @@ LABEL_77:
   v71 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqSameGroup28DayToInf];
   v72 = [v71 numberWithFloat:?];
-  [v3 setObject:v72 forKeyedSubscript:@"freqSameGroup28DayToInf"];
+  [dictionary setObject:v72 forKeyedSubscript:@"freqSameGroup28DayToInf"];
 
   v8 = *p_has;
   if ((*p_has & 0x800000) == 0)
@@ -807,7 +807,7 @@ LABEL_78:
   v73 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqSameGroup2MinTo10Min];
   v74 = [v73 numberWithFloat:?];
-  [v3 setObject:v74 forKeyedSubscript:@"freqSameGroup2MinTo10Min"];
+  [dictionary setObject:v74 forKeyedSubscript:@"freqSameGroup2MinTo10Min"];
 
   v8 = *p_has;
   if ((*p_has & 0x4000000) == 0)
@@ -825,7 +825,7 @@ LABEL_79:
   v75 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqSameGroup6HrTo1Day];
   v76 = [v75 numberWithFloat:?];
-  [v3 setObject:v76 forKeyedSubscript:@"freqSameGroup6HrTo1Day"];
+  [dictionary setObject:v76 forKeyedSubscript:@"freqSameGroup6HrTo1Day"];
 
   if ((*p_has & 0x10000000) != 0)
   {
@@ -833,7 +833,7 @@ LABEL_21:
     v9 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self freqSameGroup7DayTo28Day];
     v10 = [v9 numberWithFloat:?];
-    [v3 setObject:v10 forKeyedSubscript:@"freqSameGroup7DayTo28Day"];
+    [dictionary setObject:v10 forKeyedSubscript:@"freqSameGroup7DayTo28Day"];
   }
 
 LABEL_22:
@@ -843,7 +843,7 @@ LABEL_22:
     v12 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self hasSuggestedProperties];
     v13 = [v12 numberWithFloat:?];
-    [v3 setObject:v13 forKeyedSubscript:@"hasSuggestedProperties"];
+    [dictionary setObject:v13 forKeyedSubscript:@"hasSuggestedProperties"];
 
     v11 = *(&self->_has + 2);
   }
@@ -853,7 +853,7 @@ LABEL_22:
     v14 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self isFamilyNameMatch];
     v15 = [v14 numberWithFloat:?];
-    [v3 setObject:v15 forKeyedSubscript:@"isFamilyNameMatch"];
+    [dictionary setObject:v15 forKeyedSubscript:@"isFamilyNameMatch"];
   }
 
   if (*(&self->_has + 1))
@@ -861,7 +861,7 @@ LABEL_22:
     v16 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self isFavorite];
     v17 = [v16 numberWithFloat:?];
-    [v3 setObject:v17 forKeyedSubscript:@"isFavorite"];
+    [dictionary setObject:v17 forKeyedSubscript:@"isFavorite"];
   }
 
   if ((*(&self->_has + 2) & 0x20) != 0)
@@ -869,7 +869,7 @@ LABEL_22:
     v18 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self isGivenNameMatch];
     v19 = [v18 numberWithFloat:?];
-    [v3 setObject:v19 forKeyedSubscript:@"isGivenNameMatch"];
+    [dictionary setObject:v19 forKeyedSubscript:@"isGivenNameMatch"];
   }
 
   v20 = *p_has;
@@ -878,7 +878,7 @@ LABEL_22:
     v77 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self isHighQualityRequestMatch];
     v78 = [v77 numberWithFloat:?];
-    [v3 setObject:v78 forKeyedSubscript:@"isHighQualityRequestMatch"];
+    [dictionary setObject:v78 forKeyedSubscript:@"isHighQualityRequestMatch"];
 
     v20 = *p_has;
     if ((*p_has & 0x80000000) == 0)
@@ -901,7 +901,7 @@ LABEL_32:
   v79 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self isHypocorism];
   v80 = [v79 numberWithFloat:?];
-  [v3 setObject:v80 forKeyedSubscript:@"isHypocorism"];
+  [dictionary setObject:v80 forKeyedSubscript:@"isHypocorism"];
 
   if ((*p_has & 0x200) != 0)
   {
@@ -909,7 +909,7 @@ LABEL_33:
     v21 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self isMeCardRelation];
     v22 = [v21 numberWithFloat:?];
-    [v3 setObject:v22 forKeyedSubscript:@"isMeCardRelation"];
+    [dictionary setObject:v22 forKeyedSubscript:@"isMeCardRelation"];
   }
 
 LABEL_34:
@@ -919,7 +919,7 @@ LABEL_34:
     v81 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self isMiddleNameMatch];
     v82 = [v81 numberWithFloat:?];
-    [v3 setObject:v82 forKeyedSubscript:@"isMiddleNameMatch"];
+    [dictionary setObject:v82 forKeyedSubscript:@"isMiddleNameMatch"];
 
     v23 = *(&self->_has + 2);
     if ((v23 & 0x400) == 0)
@@ -942,7 +942,7 @@ LABEL_36:
   v83 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self isNamePrefixMatch];
   v84 = [v83 numberWithFloat:?];
-  [v3 setObject:v84 forKeyedSubscript:@"isNamePrefixMatch"];
+  [dictionary setObject:v84 forKeyedSubscript:@"isNamePrefixMatch"];
 
   v23 = *(&self->_has + 2);
   if ((v23 & 0x800) == 0)
@@ -960,7 +960,7 @@ LABEL_86:
   v85 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self isNameSuffixMatch];
   v86 = [v85 numberWithFloat:?];
-  [v3 setObject:v86 forKeyedSubscript:@"isNameSuffixMatch"];
+  [dictionary setObject:v86 forKeyedSubscript:@"isNameSuffixMatch"];
 
   v23 = *(&self->_has + 2);
   if ((v23 & 0x200) == 0)
@@ -978,7 +978,7 @@ LABEL_87:
   v87 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self isNicknameMatch];
   v88 = [v87 numberWithFloat:?];
-  [v3 setObject:v88 forKeyedSubscript:@"isNicknameMatch"];
+  [dictionary setObject:v88 forKeyedSubscript:@"isNicknameMatch"];
 
   v23 = *(&self->_has + 2);
   if ((v23 & 0x100) == 0)
@@ -996,7 +996,7 @@ LABEL_88:
   v89 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self isOrganizationNameMatch];
   v90 = [v89 numberWithFloat:?];
-  [v3 setObject:v90 forKeyedSubscript:@"isOrganizationNameMatch"];
+  [dictionary setObject:v90 forKeyedSubscript:@"isOrganizationNameMatch"];
 
   if ((*(&self->_has + 2) & 2) != 0)
   {
@@ -1004,7 +1004,7 @@ LABEL_40:
     v24 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self isPartialNameMatch];
     v25 = [v24 numberWithFloat:?];
-    [v3 setObject:v25 forKeyedSubscript:@"isPartialNameMatch"];
+    [dictionary setObject:v25 forKeyedSubscript:@"isPartialNameMatch"];
   }
 
 LABEL_41:
@@ -1014,7 +1014,7 @@ LABEL_41:
     v91 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self isRecent];
     v92 = [v91 numberWithFloat:?];
-    [v3 setObject:v92 forKeyedSubscript:@"isRecent"];
+    [dictionary setObject:v92 forKeyedSubscript:@"isRecent"];
 
     v26 = *p_has;
     if ((*p_has & 2) == 0)
@@ -1037,7 +1037,7 @@ LABEL_43:
   v93 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self isRecentInSameDomain];
   v94 = [v93 numberWithFloat:?];
-  [v3 setObject:v94 forKeyedSubscript:@"isRecentInSameDomain"];
+  [dictionary setObject:v94 forKeyedSubscript:@"isRecentInSameDomain"];
 
   v26 = *p_has;
   if ((*p_has & 4) == 0)
@@ -1055,7 +1055,7 @@ LABEL_92:
   v95 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self isRecentInSiriRequest];
   v96 = [v95 numberWithFloat:?];
-  [v3 setObject:v96 forKeyedSubscript:@"isRecentInSiriRequest"];
+  [dictionary setObject:v96 forKeyedSubscript:@"isRecentInSiriRequest"];
 
   if ((*p_has & 8) != 0)
   {
@@ -1063,7 +1063,7 @@ LABEL_45:
     v27 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self isRecentlyCorrected];
     v28 = [v27 numberWithFloat:?];
-    [v3 setObject:v28 forKeyedSubscript:@"isRecentlyCorrected"];
+    [dictionary setObject:v28 forKeyedSubscript:@"isRecentlyCorrected"];
   }
 
 LABEL_46:
@@ -1072,7 +1072,7 @@ LABEL_46:
     v29 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self isRelationAlias];
     v30 = [v29 numberWithFloat:?];
-    [v3 setObject:v30 forKeyedSubscript:@"isRelationAlias"];
+    [dictionary setObject:v30 forKeyedSubscript:@"isRelationAlias"];
   }
 
   v31 = *p_has;
@@ -1081,7 +1081,7 @@ LABEL_46:
     v32 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self isSuggested];
     v33 = [v32 numberWithFloat:?];
-    [v3 setObject:v33 forKeyedSubscript:@"isSuggested"];
+    [dictionary setObject:v33 forKeyedSubscript:@"isSuggested"];
 
     v31 = *p_has;
   }
@@ -1091,7 +1091,7 @@ LABEL_46:
     v34 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self isWeakOrganizationMatch];
     v35 = [v34 numberWithFloat:?];
-    [v3 setObject:v35 forKeyedSubscript:@"isWeakOrganizationMatch"];
+    [dictionary setObject:v35 forKeyedSubscript:@"isWeakOrganizationMatch"];
   }
 
   if ((*(&self->_has + 2) & 4) != 0)
@@ -1099,7 +1099,7 @@ LABEL_46:
     v36 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self numPrimaryTokens];
     v37 = [v36 numberWithFloat:?];
-    [v3 setObject:v37 forKeyedSubscript:@"numPrimaryTokens"];
+    [dictionary setObject:v37 forKeyedSubscript:@"numPrimaryTokens"];
   }
 
   v38 = *p_has;
@@ -1108,7 +1108,7 @@ LABEL_46:
     v97 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self recencyRank];
     v98 = [v97 numberWithFloat:?];
-    [v3 setObject:v98 forKeyedSubscript:@"recencyRank"];
+    [dictionary setObject:v98 forKeyedSubscript:@"recencyRank"];
 
     v38 = *p_has;
     if ((*p_has & 0x20) == 0)
@@ -1131,7 +1131,7 @@ LABEL_56:
   v99 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self recencyRankInSameDomain];
   v100 = [v99 numberWithFloat:?];
-  [v3 setObject:v100 forKeyedSubscript:@"recencyRankInSameDomain"];
+  [dictionary setObject:v100 forKeyedSubscript:@"recencyRankInSameDomain"];
 
   v38 = *p_has;
   if ((*p_has & 0x40) == 0)
@@ -1149,7 +1149,7 @@ LABEL_96:
   v101 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self recencyRankInSiriRequest];
   v102 = [v101 numberWithFloat:?];
-  [v3 setObject:v102 forKeyedSubscript:@"recencyRankInSiriRequest"];
+  [dictionary setObject:v102 forKeyedSubscript:@"recencyRankInSiriRequest"];
 
   v38 = *p_has;
   if ((*p_has & 0x2000) == 0)
@@ -1164,7 +1164,7 @@ LABEL_98:
     v105 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self speechAlternativeRanksGivenNameRank];
     v106 = [v105 numberWithFloat:?];
-    [v3 setObject:v106 forKeyedSubscript:@"speechAlternativeRanksGivenNameRank"];
+    [dictionary setObject:v106 forKeyedSubscript:@"speechAlternativeRanksGivenNameRank"];
 
     if ((*p_has & 0x1000) == 0)
     {
@@ -1178,7 +1178,7 @@ LABEL_97:
   v103 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEContactFeatureSet *)self speechAlternativeRanksFamilyNameRank];
   v104 = [v103 numberWithFloat:?];
-  [v3 setObject:v104 forKeyedSubscript:@"speechAlternativeRanksFamilyNameRank"];
+  [dictionary setObject:v104 forKeyedSubscript:@"speechAlternativeRanksFamilyNameRank"];
 
   v38 = *p_has;
   if ((*p_has & 0x800) != 0)
@@ -1193,14 +1193,14 @@ LABEL_60:
     v39 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactFeatureSet *)self speechAlternativeRanksMiddleNameRank];
     v40 = [v39 numberWithFloat:?];
-    [v3 setObject:v40 forKeyedSubscript:@"speechAlternativeRanksMiddleNameRank"];
+    [dictionary setObject:v40 forKeyedSubscript:@"speechAlternativeRanksMiddleNameRank"];
   }
 
 LABEL_61:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v41 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v41 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -3056,18 +3056,18 @@ LABEL_408:
   return v10 ^ v272 ^ v15 ^ v20 ^ v25 ^ v30 ^ v165 ^ v271 ^ v270 ^ v269 ^ v268 ^ v267 ^ v266 ^ v265 ^ v264 ^ v263 ^ v257 ^ v256 ^ v202 ^ v209 ^ v217 ^ v223 ^ v230 ^ v262 ^ v261 ^ v130 ^ v260 ^ v259 ^ v258 ^ v203 ^ v211 ^ v253 ^ v254 ^ v255 ^ v224 ^ v210 ^ v187 ^ v192 ^ v197 ^ v204 ^ v212 ^ v218 ^ v225 ^ v231 ^ v236 ^ v247;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_184;
   }
 
   p_has = &self->_has;
   has = self->_has;
-  v7 = v4 + 48;
-  v8 = v4[48];
+  v7 = equalCopy + 48;
+  v8 = equalCopy[48];
   if ((has & 1) != (v8 & 1))
   {
     goto LABEL_184;
@@ -3076,7 +3076,7 @@ LABEL_408:
   if (has)
   {
     isRecent = self->_isRecent;
-    [v4 isRecent];
+    [equalCopy isRecent];
     if (isRecent != v10)
     {
       goto LABEL_184;
@@ -3092,7 +3092,7 @@ LABEL_408:
     if (v11)
     {
       isRecentInSameDomain = self->_isRecentInSameDomain;
-      [v4 isRecentInSameDomain];
+      [equalCopy isRecentInSameDomain];
       if (isRecentInSameDomain != v13)
       {
         goto LABEL_184;
@@ -3108,7 +3108,7 @@ LABEL_408:
       if (v14)
       {
         isRecentInSiriRequest = self->_isRecentInSiriRequest;
-        [v4 isRecentInSiriRequest];
+        [equalCopy isRecentInSiriRequest];
         if (isRecentInSiriRequest != v16)
         {
           goto LABEL_184;
@@ -3124,7 +3124,7 @@ LABEL_408:
         if (v17)
         {
           isRecentlyCorrected = self->_isRecentlyCorrected;
-          [v4 isRecentlyCorrected];
+          [equalCopy isRecentlyCorrected];
           if (isRecentlyCorrected != v19)
           {
             goto LABEL_184;
@@ -3140,7 +3140,7 @@ LABEL_408:
           if (v20)
           {
             recencyRank = self->_recencyRank;
-            [v4 recencyRank];
+            [equalCopy recencyRank];
             if (recencyRank != v22)
             {
               goto LABEL_184;
@@ -3156,7 +3156,7 @@ LABEL_408:
             if (v23)
             {
               recencyRankInSameDomain = self->_recencyRankInSameDomain;
-              [v4 recencyRankInSameDomain];
+              [equalCopy recencyRankInSameDomain];
               if (recencyRankInSameDomain != v25)
               {
                 goto LABEL_184;
@@ -3172,7 +3172,7 @@ LABEL_408:
               if (v26)
               {
                 recencyRankInSiriRequest = self->_recencyRankInSiriRequest;
-                [v4 recencyRankInSiriRequest];
+                [equalCopy recencyRankInSiriRequest];
                 if (recencyRankInSiriRequest != v28)
                 {
                   goto LABEL_184;
@@ -3188,7 +3188,7 @@ LABEL_408:
                 if (v29)
                 {
                   isHighQualityRequestMatch = self->_isHighQualityRequestMatch;
-                  [v4 isHighQualityRequestMatch];
+                  [equalCopy isHighQualityRequestMatch];
                   if (isHighQualityRequestMatch != v31)
                   {
                     goto LABEL_184;
@@ -3204,7 +3204,7 @@ LABEL_408:
                   if (v32)
                   {
                     isFavorite = self->_isFavorite;
-                    [v4 isFavorite];
+                    [equalCopy isFavorite];
                     if (isFavorite != v34)
                     {
                       goto LABEL_184;
@@ -3220,7 +3220,7 @@ LABEL_408:
                     if (v35)
                     {
                       isMeCardRelation = self->_isMeCardRelation;
-                      [v4 isMeCardRelation];
+                      [equalCopy isMeCardRelation];
                       if (isMeCardRelation != v37)
                       {
                         goto LABEL_184;
@@ -3236,7 +3236,7 @@ LABEL_408:
                       if (v38)
                       {
                         isWeakOrganizationMatch = self->_isWeakOrganizationMatch;
-                        [v4 isWeakOrganizationMatch];
+                        [equalCopy isWeakOrganizationMatch];
                         if (isWeakOrganizationMatch != v40)
                         {
                           goto LABEL_184;
@@ -3252,7 +3252,7 @@ LABEL_408:
                         if (v41)
                         {
                           speechAlternativeRanksGivenNameRank = self->_speechAlternativeRanksGivenNameRank;
-                          [v4 speechAlternativeRanksGivenNameRank];
+                          [equalCopy speechAlternativeRanksGivenNameRank];
                           if (speechAlternativeRanksGivenNameRank != v43)
                           {
                             goto LABEL_184;
@@ -3268,7 +3268,7 @@ LABEL_408:
                           if (v44)
                           {
                             speechAlternativeRanksMiddleNameRank = self->_speechAlternativeRanksMiddleNameRank;
-                            [v4 speechAlternativeRanksMiddleNameRank];
+                            [equalCopy speechAlternativeRanksMiddleNameRank];
                             if (speechAlternativeRanksMiddleNameRank != v46)
                             {
                               goto LABEL_184;
@@ -3284,7 +3284,7 @@ LABEL_408:
                             if (v47)
                             {
                               speechAlternativeRanksFamilyNameRank = self->_speechAlternativeRanksFamilyNameRank;
-                              [v4 speechAlternativeRanksFamilyNameRank];
+                              [equalCopy speechAlternativeRanksFamilyNameRank];
                               if (speechAlternativeRanksFamilyNameRank != v49)
                               {
                                 goto LABEL_184;
@@ -3300,7 +3300,7 @@ LABEL_408:
                               if (v50)
                               {
                                 freqAnyGroup0MinTo2Min = self->_freqAnyGroup0MinTo2Min;
-                                [v4 freqAnyGroup0MinTo2Min];
+                                [equalCopy freqAnyGroup0MinTo2Min];
                                 if (freqAnyGroup0MinTo2Min != v52)
                                 {
                                   goto LABEL_184;
@@ -3316,7 +3316,7 @@ LABEL_408:
                                 if (v53)
                                 {
                                   freqAnyGroup2MinTo10Min = self->_freqAnyGroup2MinTo10Min;
-                                  [v4 freqAnyGroup2MinTo10Min];
+                                  [equalCopy freqAnyGroup2MinTo10Min];
                                   if (freqAnyGroup2MinTo10Min != v55)
                                   {
                                     goto LABEL_184;
@@ -3332,7 +3332,7 @@ LABEL_408:
                                   if (v56)
                                   {
                                     freqAnyGroup10MinTo1Hr = self->_freqAnyGroup10MinTo1Hr;
-                                    [v4 freqAnyGroup10MinTo1Hr];
+                                    [equalCopy freqAnyGroup10MinTo1Hr];
                                     if (freqAnyGroup10MinTo1Hr != v58)
                                     {
                                       goto LABEL_184;
@@ -3348,7 +3348,7 @@ LABEL_408:
                                     if (v59)
                                     {
                                       freqAnyGroup1HrTo6Hr = self->_freqAnyGroup1HrTo6Hr;
-                                      [v4 freqAnyGroup1HrTo6Hr];
+                                      [equalCopy freqAnyGroup1HrTo6Hr];
                                       if (freqAnyGroup1HrTo6Hr != v61)
                                       {
                                         goto LABEL_184;
@@ -3364,7 +3364,7 @@ LABEL_408:
                                       if (v62)
                                       {
                                         freqAnyGroup6HrTo1Day = self->_freqAnyGroup6HrTo1Day;
-                                        [v4 freqAnyGroup6HrTo1Day];
+                                        [equalCopy freqAnyGroup6HrTo1Day];
                                         if (freqAnyGroup6HrTo1Day != v64)
                                         {
                                           goto LABEL_184;
@@ -3380,7 +3380,7 @@ LABEL_408:
                                         if (v65)
                                         {
                                           freqAnyGroup1DayTo7Day = self->_freqAnyGroup1DayTo7Day;
-                                          [v4 freqAnyGroup1DayTo7Day];
+                                          [equalCopy freqAnyGroup1DayTo7Day];
                                           if (freqAnyGroup1DayTo7Day != v67)
                                           {
                                             goto LABEL_184;
@@ -3396,7 +3396,7 @@ LABEL_408:
                                           if (v68)
                                           {
                                             freqAnyGroup7DayTo28Day = self->_freqAnyGroup7DayTo28Day;
-                                            [v4 freqAnyGroup7DayTo28Day];
+                                            [equalCopy freqAnyGroup7DayTo28Day];
                                             if (freqAnyGroup7DayTo28Day != v70)
                                             {
                                               goto LABEL_184;
@@ -3412,7 +3412,7 @@ LABEL_408:
                                             if (v71)
                                             {
                                               freqAnyGroup28DayToInf = self->_freqAnyGroup28DayToInf;
-                                              [v4 freqAnyGroup28DayToInf];
+                                              [equalCopy freqAnyGroup28DayToInf];
                                               if (freqAnyGroup28DayToInf != v73)
                                               {
                                                 goto LABEL_184;
@@ -3428,7 +3428,7 @@ LABEL_408:
                                               if (v74)
                                               {
                                                 freqSameGroup0MinTo2Min = self->_freqSameGroup0MinTo2Min;
-                                                [v4 freqSameGroup0MinTo2Min];
+                                                [equalCopy freqSameGroup0MinTo2Min];
                                                 if (freqSameGroup0MinTo2Min != v76)
                                                 {
                                                   goto LABEL_184;
@@ -3444,7 +3444,7 @@ LABEL_408:
                                                 if (v77)
                                                 {
                                                   freqSameGroup2MinTo10Min = self->_freqSameGroup2MinTo10Min;
-                                                  [v4 freqSameGroup2MinTo10Min];
+                                                  [equalCopy freqSameGroup2MinTo10Min];
                                                   if (freqSameGroup2MinTo10Min != v79)
                                                   {
                                                     goto LABEL_184;
@@ -3460,7 +3460,7 @@ LABEL_408:
                                                   if (v80)
                                                   {
                                                     freqSameGroup10MinTo1Hr = self->_freqSameGroup10MinTo1Hr;
-                                                    [v4 freqSameGroup10MinTo1Hr];
+                                                    [equalCopy freqSameGroup10MinTo1Hr];
                                                     if (freqSameGroup10MinTo1Hr != v82)
                                                     {
                                                       goto LABEL_184;
@@ -3476,7 +3476,7 @@ LABEL_408:
                                                     if (v83)
                                                     {
                                                       freqSameGroup1HrTo6Hr = self->_freqSameGroup1HrTo6Hr;
-                                                      [v4 freqSameGroup1HrTo6Hr];
+                                                      [equalCopy freqSameGroup1HrTo6Hr];
                                                       if (freqSameGroup1HrTo6Hr != v85)
                                                       {
                                                         goto LABEL_184;
@@ -3492,7 +3492,7 @@ LABEL_408:
                                                       if (v86)
                                                       {
                                                         freqSameGroup6HrTo1Day = self->_freqSameGroup6HrTo1Day;
-                                                        [v4 freqSameGroup6HrTo1Day];
+                                                        [equalCopy freqSameGroup6HrTo1Day];
                                                         if (freqSameGroup6HrTo1Day != v88)
                                                         {
                                                           goto LABEL_184;
@@ -3508,7 +3508,7 @@ LABEL_408:
                                                         if (v89)
                                                         {
                                                           freqSameGroup1DayTo7Day = self->_freqSameGroup1DayTo7Day;
-                                                          [v4 freqSameGroup1DayTo7Day];
+                                                          [equalCopy freqSameGroup1DayTo7Day];
                                                           if (freqSameGroup1DayTo7Day != v91)
                                                           {
                                                             goto LABEL_184;
@@ -3524,7 +3524,7 @@ LABEL_408:
                                                           if (v92)
                                                           {
                                                             freqSameGroup7DayTo28Day = self->_freqSameGroup7DayTo28Day;
-                                                            [v4 freqSameGroup7DayTo28Day];
+                                                            [equalCopy freqSameGroup7DayTo28Day];
                                                             if (freqSameGroup7DayTo28Day != v94)
                                                             {
                                                               goto LABEL_184;
@@ -3540,7 +3540,7 @@ LABEL_408:
                                                             if (v95)
                                                             {
                                                               freqSameGroup28DayToInf = self->_freqSameGroup28DayToInf;
-                                                              [v4 freqSameGroup28DayToInf];
+                                                              [equalCopy freqSameGroup28DayToInf];
                                                               if (freqSameGroup28DayToInf != v97)
                                                               {
                                                                 goto LABEL_184;
@@ -3556,7 +3556,7 @@ LABEL_408:
                                                               if (v98)
                                                               {
                                                                 isSuggested = self->_isSuggested;
-                                                                [v4 isSuggested];
+                                                                [equalCopy isSuggested];
                                                                 if (isSuggested != v100)
                                                                 {
                                                                   goto LABEL_184;
@@ -3574,7 +3574,7 @@ LABEL_408:
                                                               if ((has & 0x80000000) != 0)
                                                               {
                                                                 isHypocorism = self->_isHypocorism;
-                                                                [v4 isHypocorism];
+                                                                [equalCopy isHypocorism];
                                                                 if (isHypocorism != v102)
                                                                 {
                                                                   goto LABEL_184;
@@ -3582,7 +3582,7 @@ LABEL_408:
                                                               }
 
                                                               v103 = *(&self->_has + 2);
-                                                              v104 = *(v4 + 98);
+                                                              v104 = *(equalCopy + 98);
                                                               if ((v103 & 1) != (v104 & 1))
                                                               {
                                                                 goto LABEL_184;
@@ -3591,14 +3591,14 @@ LABEL_408:
                                                               if (v103)
                                                               {
                                                                 hasSuggestedProperties = self->_hasSuggestedProperties;
-                                                                [v4 hasSuggestedProperties];
+                                                                [equalCopy hasSuggestedProperties];
                                                                 if (hasSuggestedProperties != v106)
                                                                 {
                                                                   goto LABEL_184;
                                                                 }
 
                                                                 v103 = *(&self->_has + 2);
-                                                                v104 = *(v4 + 98);
+                                                                v104 = *(equalCopy + 98);
                                                               }
 
                                                               v107 = (v103 >> 1) & 1;
@@ -3607,14 +3607,14 @@ LABEL_408:
                                                                 if (v107)
                                                                 {
                                                                   isPartialNameMatch = self->_isPartialNameMatch;
-                                                                  [v4 isPartialNameMatch];
+                                                                  [equalCopy isPartialNameMatch];
                                                                   if (isPartialNameMatch != v109)
                                                                   {
                                                                     goto LABEL_184;
                                                                   }
 
                                                                   v103 = *(&self->_has + 2);
-                                                                  v104 = *(v4 + 98);
+                                                                  v104 = *(equalCopy + 98);
                                                                 }
 
                                                                 v110 = (v103 >> 2) & 1;
@@ -3623,14 +3623,14 @@ LABEL_408:
                                                                   if (v110)
                                                                   {
                                                                     numPrimaryTokens = self->_numPrimaryTokens;
-                                                                    [v4 numPrimaryTokens];
+                                                                    [equalCopy numPrimaryTokens];
                                                                     if (numPrimaryTokens != v112)
                                                                     {
                                                                       goto LABEL_184;
                                                                     }
 
                                                                     v103 = *(&self->_has + 2);
-                                                                    v104 = *(v4 + 98);
+                                                                    v104 = *(equalCopy + 98);
                                                                   }
 
                                                                   v113 = (v103 >> 3) & 1;
@@ -3639,14 +3639,14 @@ LABEL_408:
                                                                     if (v113)
                                                                     {
                                                                       allQueryMatched = self->_allQueryMatched;
-                                                                      [v4 allQueryMatched];
+                                                                      [equalCopy allQueryMatched];
                                                                       if (allQueryMatched != v115)
                                                                       {
                                                                         goto LABEL_184;
                                                                       }
 
                                                                       v103 = *(&self->_has + 2);
-                                                                      v104 = *(v4 + 98);
+                                                                      v104 = *(equalCopy + 98);
                                                                     }
 
                                                                     v116 = (v103 >> 4) & 1;
@@ -3655,14 +3655,14 @@ LABEL_408:
                                                                       if (v116)
                                                                       {
                                                                         allPrimaryNameTokensAreInQuery = self->_allPrimaryNameTokensAreInQuery;
-                                                                        [v4 allPrimaryNameTokensAreInQuery];
+                                                                        [equalCopy allPrimaryNameTokensAreInQuery];
                                                                         if (allPrimaryNameTokensAreInQuery != v118)
                                                                         {
                                                                           goto LABEL_184;
                                                                         }
 
                                                                         v103 = *(&self->_has + 2);
-                                                                        v104 = *(v4 + 98);
+                                                                        v104 = *(equalCopy + 98);
                                                                       }
 
                                                                       v119 = (v103 >> 5) & 1;
@@ -3671,14 +3671,14 @@ LABEL_408:
                                                                         if (v119)
                                                                         {
                                                                           isGivenNameMatch = self->_isGivenNameMatch;
-                                                                          [v4 isGivenNameMatch];
+                                                                          [equalCopy isGivenNameMatch];
                                                                           if (isGivenNameMatch != v121)
                                                                           {
                                                                             goto LABEL_184;
                                                                           }
 
                                                                           v103 = *(&self->_has + 2);
-                                                                          v104 = *(v4 + 98);
+                                                                          v104 = *(equalCopy + 98);
                                                                         }
 
                                                                         v122 = (v103 >> 6) & 1;
@@ -3687,14 +3687,14 @@ LABEL_408:
                                                                           if (v122)
                                                                           {
                                                                             isMiddleNameMatch = self->_isMiddleNameMatch;
-                                                                            [v4 isMiddleNameMatch];
+                                                                            [equalCopy isMiddleNameMatch];
                                                                             if (isMiddleNameMatch != v124)
                                                                             {
                                                                               goto LABEL_184;
                                                                             }
 
                                                                             v103 = *(&self->_has + 2);
-                                                                            v104 = *(v4 + 98);
+                                                                            v104 = *(equalCopy + 98);
                                                                           }
 
                                                                           v125 = (v103 >> 7) & 1;
@@ -3703,14 +3703,14 @@ LABEL_408:
                                                                             if (v125)
                                                                             {
                                                                               isFamilyNameMatch = self->_isFamilyNameMatch;
-                                                                              [v4 isFamilyNameMatch];
+                                                                              [equalCopy isFamilyNameMatch];
                                                                               if (isFamilyNameMatch != v127)
                                                                               {
                                                                                 goto LABEL_184;
                                                                               }
 
                                                                               v103 = *(&self->_has + 2);
-                                                                              v104 = *(v4 + 98);
+                                                                              v104 = *(equalCopy + 98);
                                                                             }
 
                                                                             v128 = (v103 >> 8) & 1;
@@ -3719,14 +3719,14 @@ LABEL_408:
                                                                               if (v128)
                                                                               {
                                                                                 isOrganizationNameMatch = self->_isOrganizationNameMatch;
-                                                                                [v4 isOrganizationNameMatch];
+                                                                                [equalCopy isOrganizationNameMatch];
                                                                                 if (isOrganizationNameMatch != v130)
                                                                                 {
                                                                                   goto LABEL_184;
                                                                                 }
 
                                                                                 v103 = *(&self->_has + 2);
-                                                                                v104 = *(v4 + 98);
+                                                                                v104 = *(equalCopy + 98);
                                                                               }
 
                                                                               v131 = (v103 >> 9) & 1;
@@ -3735,14 +3735,14 @@ LABEL_408:
                                                                                 if (v131)
                                                                                 {
                                                                                   isNicknameMatch = self->_isNicknameMatch;
-                                                                                  [v4 isNicknameMatch];
+                                                                                  [equalCopy isNicknameMatch];
                                                                                   if (isNicknameMatch != v133)
                                                                                   {
                                                                                     goto LABEL_184;
                                                                                   }
 
                                                                                   v103 = *(&self->_has + 2);
-                                                                                  v104 = *(v4 + 98);
+                                                                                  v104 = *(equalCopy + 98);
                                                                                 }
 
                                                                                 v134 = (v103 >> 10) & 1;
@@ -3751,14 +3751,14 @@ LABEL_408:
                                                                                   if (v134)
                                                                                   {
                                                                                     isNamePrefixMatch = self->_isNamePrefixMatch;
-                                                                                    [v4 isNamePrefixMatch];
+                                                                                    [equalCopy isNamePrefixMatch];
                                                                                     if (isNamePrefixMatch != v136)
                                                                                     {
                                                                                       goto LABEL_184;
                                                                                     }
 
                                                                                     v103 = *(&self->_has + 2);
-                                                                                    v104 = *(v4 + 98);
+                                                                                    v104 = *(equalCopy + 98);
                                                                                   }
 
                                                                                   v137 = (v103 >> 11) & 1;
@@ -3767,14 +3767,14 @@ LABEL_408:
                                                                                     if (v137)
                                                                                     {
                                                                                       isNameSuffixMatch = self->_isNameSuffixMatch;
-                                                                                      [v4 isNameSuffixMatch];
+                                                                                      [equalCopy isNameSuffixMatch];
                                                                                       if (isNameSuffixMatch != v139)
                                                                                       {
                                                                                         goto LABEL_184;
                                                                                       }
 
                                                                                       v103 = *(&self->_has + 2);
-                                                                                      v104 = *(v4 + 98);
+                                                                                      v104 = *(equalCopy + 98);
                                                                                     }
 
                                                                                     v140 = (v103 >> 12) & 1;
@@ -3783,20 +3783,20 @@ LABEL_408:
                                                                                       if (v140)
                                                                                       {
                                                                                         allHandlesMatched = self->_allHandlesMatched;
-                                                                                        [v4 allHandlesMatched];
+                                                                                        [equalCopy allHandlesMatched];
                                                                                         if (allHandlesMatched != v142)
                                                                                         {
                                                                                           goto LABEL_184;
                                                                                         }
 
                                                                                         v103 = *(&self->_has + 2);
-                                                                                        v104 = *(v4 + 98);
+                                                                                        v104 = *(equalCopy + 98);
                                                                                       }
 
                                                                                       v143 = (v103 >> 13) & 1;
                                                                                       if (v143 == ((v104 >> 13) & 1))
                                                                                       {
-                                                                                        if (!v143 || (isRelationAlias = self->_isRelationAlias, [v4 isRelationAlias], isRelationAlias == v145))
+                                                                                        if (!v143 || (isRelationAlias = self->_isRelationAlias, [equalCopy isRelationAlias], isRelationAlias == v145))
                                                                                         {
                                                                                           v146 = 1;
                                                                                           goto LABEL_185;
@@ -3852,9 +3852,9 @@ LABEL_185:
   return v146;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   p_has = &self->_has;
   has = self->_has;
   if (has)
@@ -4479,9 +4479,9 @@ LABEL_47:
 LABEL_48:
 }
 
-- (void)setHasIsRelationAlias:(BOOL)a3
+- (void)setHasIsRelationAlias:(BOOL)alias
 {
-  if (a3)
+  if (alias)
   {
     v3 = 0x2000;
   }
@@ -4494,9 +4494,9 @@ LABEL_48:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xDFFF | v3;
 }
 
-- (void)setHasAllHandlesMatched:(BOOL)a3
+- (void)setHasAllHandlesMatched:(BOOL)matched
 {
-  if (a3)
+  if (matched)
   {
     v3 = 4096;
   }
@@ -4509,9 +4509,9 @@ LABEL_48:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xEFFF | v3;
 }
 
-- (void)setHasIsNameSuffixMatch:(BOOL)a3
+- (void)setHasIsNameSuffixMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 2048;
   }
@@ -4524,9 +4524,9 @@ LABEL_48:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xF7FF | v3;
 }
 
-- (void)setHasIsNamePrefixMatch:(BOOL)a3
+- (void)setHasIsNamePrefixMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 1024;
   }
@@ -4539,9 +4539,9 @@ LABEL_48:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFBFF | v3;
 }
 
-- (void)setHasIsNicknameMatch:(BOOL)a3
+- (void)setHasIsNicknameMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 512;
   }
@@ -4554,9 +4554,9 @@ LABEL_48:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFDFF | v3;
 }
 
-- (void)setHasIsOrganizationNameMatch:(BOOL)a3
+- (void)setHasIsOrganizationNameMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 256;
   }
@@ -4569,9 +4569,9 @@ LABEL_48:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFEFF | v3;
 }
 
-- (void)setHasIsFamilyNameMatch:(BOOL)a3
+- (void)setHasIsFamilyNameMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 128;
   }
@@ -4584,9 +4584,9 @@ LABEL_48:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFF7F | v3;
 }
 
-- (void)setHasIsMiddleNameMatch:(BOOL)a3
+- (void)setHasIsMiddleNameMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 64;
   }
@@ -4599,9 +4599,9 @@ LABEL_48:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFBF | v3;
 }
 
-- (void)setHasIsGivenNameMatch:(BOOL)a3
+- (void)setHasIsGivenNameMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 32;
   }
@@ -4614,9 +4614,9 @@ LABEL_48:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFDF | v3;
 }
 
-- (void)setHasAllPrimaryNameTokensAreInQuery:(BOOL)a3
+- (void)setHasAllPrimaryNameTokensAreInQuery:(BOOL)query
 {
-  if (a3)
+  if (query)
   {
     v3 = 16;
   }
@@ -4629,9 +4629,9 @@ LABEL_48:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFEF | v3;
 }
 
-- (void)setHasAllQueryMatched:(BOOL)a3
+- (void)setHasAllQueryMatched:(BOOL)matched
 {
-  if (a3)
+  if (matched)
   {
     v3 = 8;
   }
@@ -4644,9 +4644,9 @@ LABEL_48:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFF7 | v3;
 }
 
-- (void)setHasNumPrimaryTokens:(BOOL)a3
+- (void)setHasNumPrimaryTokens:(BOOL)tokens
 {
-  if (a3)
+  if (tokens)
   {
     v3 = 4;
   }
@@ -4659,9 +4659,9 @@ LABEL_48:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFB | v3;
 }
 
-- (void)setHasIsPartialNameMatch:(BOOL)a3
+- (void)setHasIsPartialNameMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 2;
   }
@@ -4674,9 +4674,9 @@ LABEL_48:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFD | v3;
 }
 
-- (void)setHasIsHypocorism:(BOOL)a3
+- (void)setHasIsHypocorism:(BOOL)hypocorism
 {
-  if (a3)
+  if (hypocorism)
   {
     v3 = 0x80000000;
   }
@@ -4689,9 +4689,9 @@ LABEL_48:
   *&self->_has = v3 & 0x80000000 | *&self->_has & 0x7FFFFFFF;
 }
 
-- (void)setHasIsSuggested:(BOOL)a3
+- (void)setHasIsSuggested:(BOOL)suggested
 {
-  if (a3)
+  if (suggested)
   {
     v3 = 0x40000000;
   }
@@ -4704,9 +4704,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xBFFFFFFF | v3;
 }
 
-- (void)setHasFreqSameGroup28DayToInf:(BOOL)a3
+- (void)setHasFreqSameGroup28DayToInf:(BOOL)inf
 {
-  if (a3)
+  if (inf)
   {
     v3 = 0x20000000;
   }
@@ -4719,9 +4719,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xDFFFFFFF | v3;
 }
 
-- (void)setHasFreqSameGroup7DayTo28Day:(BOOL)a3
+- (void)setHasFreqSameGroup7DayTo28Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 0x10000000;
   }
@@ -4734,9 +4734,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xEFFFFFFF | v3;
 }
 
-- (void)setHasFreqSameGroup1DayTo7Day:(BOOL)a3
+- (void)setHasFreqSameGroup1DayTo7Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 0x8000000;
   }
@@ -4749,9 +4749,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xF7FFFFFF | v3;
 }
 
-- (void)setHasFreqSameGroup6HrTo1Day:(BOOL)a3
+- (void)setHasFreqSameGroup6HrTo1Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 0x4000000;
   }
@@ -4764,9 +4764,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFBFFFFFF | v3;
 }
 
-- (void)setHasFreqSameGroup1HrTo6Hr:(BOOL)a3
+- (void)setHasFreqSameGroup1HrTo6Hr:(BOOL)hr
 {
-  if (a3)
+  if (hr)
   {
     v3 = 0x2000000;
   }
@@ -4779,9 +4779,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFDFFFFFF | v3;
 }
 
-- (void)setHasFreqSameGroup10MinTo1Hr:(BOOL)a3
+- (void)setHasFreqSameGroup10MinTo1Hr:(BOOL)hr
 {
-  if (a3)
+  if (hr)
   {
     v3 = 0x1000000;
   }
@@ -4794,9 +4794,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFEFFFFFF | v3;
 }
 
-- (void)setHasFreqSameGroup2MinTo10Min:(BOOL)a3
+- (void)setHasFreqSameGroup2MinTo10Min:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 0x800000;
   }
@@ -4809,9 +4809,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFF7FFFFF | v3;
 }
 
-- (void)setHasFreqSameGroup0MinTo2Min:(BOOL)a3
+- (void)setHasFreqSameGroup0MinTo2Min:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 0x400000;
   }
@@ -4824,9 +4824,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFBFFFFF | v3;
 }
 
-- (void)setHasFreqAnyGroup28DayToInf:(BOOL)a3
+- (void)setHasFreqAnyGroup28DayToInf:(BOOL)inf
 {
-  if (a3)
+  if (inf)
   {
     v3 = 0x200000;
   }
@@ -4839,9 +4839,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFDFFFFF | v3;
 }
 
-- (void)setHasFreqAnyGroup7DayTo28Day:(BOOL)a3
+- (void)setHasFreqAnyGroup7DayTo28Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 0x100000;
   }
@@ -4854,9 +4854,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFEFFFFF | v3;
 }
 
-- (void)setHasFreqAnyGroup1DayTo7Day:(BOOL)a3
+- (void)setHasFreqAnyGroup1DayTo7Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 0x80000;
   }
@@ -4869,9 +4869,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFF7FFFF | v3;
 }
 
-- (void)setHasFreqAnyGroup6HrTo1Day:(BOOL)a3
+- (void)setHasFreqAnyGroup6HrTo1Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 0x40000;
   }
@@ -4884,9 +4884,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFBFFFF | v3;
 }
 
-- (void)setHasFreqAnyGroup1HrTo6Hr:(BOOL)a3
+- (void)setHasFreqAnyGroup1HrTo6Hr:(BOOL)hr
 {
-  if (a3)
+  if (hr)
   {
     v3 = 0x20000;
   }
@@ -4899,9 +4899,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFDFFFF | v3;
 }
 
-- (void)setHasFreqAnyGroup10MinTo1Hr:(BOOL)a3
+- (void)setHasFreqAnyGroup10MinTo1Hr:(BOOL)hr
 {
-  if (a3)
+  if (hr)
   {
     v3 = 0x10000;
   }
@@ -4914,9 +4914,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFEFFFF | v3;
 }
 
-- (void)setHasFreqAnyGroup2MinTo10Min:(BOOL)a3
+- (void)setHasFreqAnyGroup2MinTo10Min:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 0x8000;
   }
@@ -4929,9 +4929,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFF7FFF | v3;
 }
 
-- (void)setHasFreqAnyGroup0MinTo2Min:(BOOL)a3
+- (void)setHasFreqAnyGroup0MinTo2Min:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 0x4000;
   }
@@ -4944,9 +4944,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFFBFFF | v3;
 }
 
-- (void)setHasSpeechAlternativeRanksFamilyNameRank:(BOOL)a3
+- (void)setHasSpeechAlternativeRanksFamilyNameRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 0x2000;
   }
@@ -4959,9 +4959,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFFDFFF | v3;
 }
 
-- (void)setHasSpeechAlternativeRanksMiddleNameRank:(BOOL)a3
+- (void)setHasSpeechAlternativeRanksMiddleNameRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 4096;
   }
@@ -4974,9 +4974,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFFEFFF | v3;
 }
 
-- (void)setHasSpeechAlternativeRanksGivenNameRank:(BOOL)a3
+- (void)setHasSpeechAlternativeRanksGivenNameRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 2048;
   }
@@ -4989,9 +4989,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFFF7FF | v3;
 }
 
-- (void)setHasIsWeakOrganizationMatch:(BOOL)a3
+- (void)setHasIsWeakOrganizationMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 1024;
   }
@@ -5004,9 +5004,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFFFBFF | v3;
 }
 
-- (void)setHasIsMeCardRelation:(BOOL)a3
+- (void)setHasIsMeCardRelation:(BOOL)relation
 {
-  if (a3)
+  if (relation)
   {
     v3 = 512;
   }
@@ -5019,9 +5019,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFFFDFF | v3;
 }
 
-- (void)setHasIsFavorite:(BOOL)a3
+- (void)setHasIsFavorite:(BOOL)favorite
 {
-  if (a3)
+  if (favorite)
   {
     v3 = 256;
   }
@@ -5034,9 +5034,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFFFEFF | v3;
 }
 
-- (void)setHasIsHighQualityRequestMatch:(BOOL)a3
+- (void)setHasIsHighQualityRequestMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     v3 = 128;
   }
@@ -5049,9 +5049,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFFFF7F | v3;
 }
 
-- (void)setHasRecencyRankInSiriRequest:(BOOL)a3
+- (void)setHasRecencyRankInSiriRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 64;
   }
@@ -5064,9 +5064,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFFFFBF | v3;
 }
 
-- (void)setHasRecencyRankInSameDomain:(BOOL)a3
+- (void)setHasRecencyRankInSameDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 32;
   }
@@ -5079,9 +5079,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFFFFDF | v3;
 }
 
-- (void)setHasRecencyRank:(BOOL)a3
+- (void)setHasRecencyRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 16;
   }
@@ -5094,9 +5094,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFFFFEF | v3;
 }
 
-- (void)setHasIsRecentlyCorrected:(BOOL)a3
+- (void)setHasIsRecentlyCorrected:(BOOL)corrected
 {
-  if (a3)
+  if (corrected)
   {
     v3 = 8;
   }
@@ -5109,9 +5109,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFFFFF7 | v3;
 }
 
-- (void)setHasIsRecentInSiriRequest:(BOOL)a3
+- (void)setHasIsRecentInSiriRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 4;
   }
@@ -5124,9 +5124,9 @@ LABEL_48:
   *&self->_has = *&self->_has & 0xFFFFFFFB | v3;
 }
 
-- (void)setHasIsRecentInSameDomain:(BOOL)a3
+- (void)setHasIsRecentInSameDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 2;
   }

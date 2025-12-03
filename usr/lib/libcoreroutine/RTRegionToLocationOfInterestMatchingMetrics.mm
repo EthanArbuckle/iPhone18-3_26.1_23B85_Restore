@@ -1,26 +1,26 @@
 @interface RTRegionToLocationOfInterestMatchingMetrics
-+ (void)submitMetricsWithDistanceCalculator:(id)a3 region:(id)a4 locationOfInterest:(id)a5 matchingError:(id)a6 numberOfMatches:(unint64_t)a7;
-- (RTRegionToLocationOfInterestMatchingMetrics)initWithDistanceCalculator:(id)a3 region:(id)a4 locationOfInterest:(id)a5 matchingError:(id)a6 numberOfMatches:(unint64_t)a7;
++ (void)submitMetricsWithDistanceCalculator:(id)calculator region:(id)region locationOfInterest:(id)interest matchingError:(id)error numberOfMatches:(unint64_t)matches;
+- (RTRegionToLocationOfInterestMatchingMetrics)initWithDistanceCalculator:(id)calculator region:(id)region locationOfInterest:(id)interest matchingError:(id)error numberOfMatches:(unint64_t)matches;
 - (id)computeMetrics;
 - (void)submitMetrics;
 @end
 
 @implementation RTRegionToLocationOfInterestMatchingMetrics
 
-- (RTRegionToLocationOfInterestMatchingMetrics)initWithDistanceCalculator:(id)a3 region:(id)a4 locationOfInterest:(id)a5 matchingError:(id)a6 numberOfMatches:(unint64_t)a7
+- (RTRegionToLocationOfInterestMatchingMetrics)initWithDistanceCalculator:(id)calculator region:(id)region locationOfInterest:(id)interest matchingError:(id)error numberOfMatches:(unint64_t)matches
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (!v13)
+  calculatorCopy = calculator;
+  regionCopy = region;
+  interestCopy = interest;
+  errorCopy = error;
+  if (!calculatorCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v19 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -31,7 +31,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v14)
+  if (!regionCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -50,68 +50,68 @@ LABEL_12:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_distanceCalculator, a3);
-    objc_storeStrong(&v18->_region, a4);
-    objc_storeStrong(&v18->_locationOfInterest, a5);
-    objc_storeStrong(&v18->_matchingError, a6);
-    v18->_numberOfMatches = a7;
+    objc_storeStrong(&v17->_distanceCalculator, calculator);
+    objc_storeStrong(&v18->_region, region);
+    objc_storeStrong(&v18->_locationOfInterest, interest);
+    objc_storeStrong(&v18->_matchingError, error);
+    v18->_numberOfMatches = matches;
   }
 
   self = v18;
-  v19 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v19;
+  return selfCopy;
 }
 
 - (id)computeMetrics
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"matched"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"matched"];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTRegionToLocationOfInterestMatchingMetrics numberOfMatches](self, "numberOfMatches")}];
-  [v3 setObject:v4 forKeyedSubscript:@"numberOfMatches"];
+  [dictionary setObject:v4 forKeyedSubscript:@"numberOfMatches"];
 
-  v5 = [(RTRegionToLocationOfInterestMatchingMetrics *)self matchingError];
+  matchingError = [(RTRegionToLocationOfInterestMatchingMetrics *)self matchingError];
 
-  if (v5)
+  if (matchingError)
   {
-    v6 = [(RTRegionToLocationOfInterestMatchingMetrics *)self matchingError];
-    v7 = [v6 domain];
-    [v3 setObject:v7 forKeyedSubscript:@"errorDomain"];
+    matchingError2 = [(RTRegionToLocationOfInterestMatchingMetrics *)self matchingError];
+    domain = [matchingError2 domain];
+    [dictionary setObject:domain forKeyedSubscript:@"errorDomain"];
 
     v8 = MEMORY[0x277CCABB0];
-    v9 = [(RTRegionToLocationOfInterestMatchingMetrics *)self matchingError];
-    v10 = [v8 numberWithInteger:{objc_msgSend(v9, "code")}];
-    [v3 setObject:v10 forKeyedSubscript:@"errorCode"];
+    matchingError3 = [(RTRegionToLocationOfInterestMatchingMetrics *)self matchingError];
+    v10 = [v8 numberWithInteger:{objc_msgSend(matchingError3, "code")}];
+    [dictionary setObject:v10 forKeyedSubscript:@"errorCode"];
   }
 
   v11 = MEMORY[0x277CCABB0];
-  v12 = [(RTRegionToLocationOfInterestMatchingMetrics *)self region];
-  [v12 horizontalUncertainty];
+  region = [(RTRegionToLocationOfInterestMatchingMetrics *)self region];
+  [region horizontalUncertainty];
   v13 = [v11 numberWithDouble:?];
-  [v3 setObject:v13 forKeyedSubscript:@"regionRadius"];
+  [dictionary setObject:v13 forKeyedSubscript:@"regionRadius"];
 
-  v14 = [(RTRegionToLocationOfInterestMatchingMetrics *)self locationOfInterest];
+  locationOfInterest = [(RTRegionToLocationOfInterestMatchingMetrics *)self locationOfInterest];
 
-  if (v14)
+  if (locationOfInterest)
   {
-    [v3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"matched"];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"matched"];
     v15 = MEMORY[0x277CCABB0];
-    v16 = [(RTRegionToLocationOfInterestMatchingMetrics *)self locationOfInterest];
-    v17 = [v16 location];
-    v18 = [v17 location];
-    [v18 horizontalUncertainty];
+    locationOfInterest2 = [(RTRegionToLocationOfInterestMatchingMetrics *)self locationOfInterest];
+    location = [locationOfInterest2 location];
+    v17Location = [location location];
+    [v17Location horizontalUncertainty];
     v19 = [v15 numberWithDouble:?];
-    [v3 setObject:v19 forKeyedSubscript:@"loiRadius"];
+    [dictionary setObject:v19 forKeyedSubscript:@"loiRadius"];
 
     distanceCalculator = self->_distanceCalculator;
-    v21 = [(RTRegionToLocationOfInterestMatchingMetrics *)self region];
-    v22 = [(RTRegionToLocationOfInterestMatchingMetrics *)self locationOfInterest];
-    v23 = [v22 location];
-    v24 = [v23 location];
+    region2 = [(RTRegionToLocationOfInterestMatchingMetrics *)self region];
+    locationOfInterest3 = [(RTRegionToLocationOfInterestMatchingMetrics *)self locationOfInterest];
+    location2 = [locationOfInterest3 location];
+    v23Location = [location2 location];
     v32 = 0;
-    [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v21 toLocation:v24 error:&v32];
+    [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:region2 toLocation:v23Location error:&v32];
     v26 = v25;
     v27 = v32;
 
@@ -135,11 +135,11 @@ LABEL_10:
     else
     {
       v28 = [MEMORY[0x277CCABB0] numberWithDouble:v26];
-      [v3 setObject:v28 forKeyedSubscript:@"distanceRegionToLoi"];
+      [dictionary setObject:v28 forKeyedSubscript:@"distanceRegionToLoi"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (void)submitMetrics
@@ -173,13 +173,13 @@ id __60__RTRegionToLocationOfInterestMatchingMetrics_submitMetrics__block_invoke
   return v2;
 }
 
-+ (void)submitMetricsWithDistanceCalculator:(id)a3 region:(id)a4 locationOfInterest:(id)a5 matchingError:(id)a6 numberOfMatches:(unint64_t)a7
++ (void)submitMetricsWithDistanceCalculator:(id)calculator region:(id)region locationOfInterest:(id)interest matchingError:(id)error numberOfMatches:(unint64_t)matches
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[RTRegionToLocationOfInterestMatchingMetrics alloc] initWithDistanceCalculator:v14 region:v13 locationOfInterest:v12 matchingError:v11 numberOfMatches:a7];
+  errorCopy = error;
+  interestCopy = interest;
+  regionCopy = region;
+  calculatorCopy = calculator;
+  v15 = [[RTRegionToLocationOfInterestMatchingMetrics alloc] initWithDistanceCalculator:calculatorCopy region:regionCopy locationOfInterest:interestCopy matchingError:errorCopy numberOfMatches:matches];
 
   [(RTRegionToLocationOfInterestMatchingMetrics *)v15 submitMetrics];
 }

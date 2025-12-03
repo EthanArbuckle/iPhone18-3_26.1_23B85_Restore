@@ -1,85 +1,85 @@
 @interface NanoMapsSettingsManager
-+ (BOOL)BOOLForKey:(id)a3 defaultValue:(BOOL)a4;
-+ (BOOL)unsignedIntegerForKey:(id)a3 defaultValue:(unint64_t)a4;
-+ (id)stringForKey:(id)a3;
-+ (void)_synchronizeKey:(id)a3;
-+ (void)setString:(id)a3 forKey:(id)a4;
-+ (void)setUnsignedInteger:(unint64_t)a3 forKey:(id)a4;
++ (BOOL)BOOLForKey:(id)key defaultValue:(BOOL)value;
++ (BOOL)unsignedIntegerForKey:(id)key defaultValue:(unint64_t)value;
++ (id)stringForKey:(id)key;
++ (void)_synchronizeKey:(id)key;
++ (void)setString:(id)string forKey:(id)key;
++ (void)setUnsignedInteger:(unint64_t)integer forKey:(id)key;
 @end
 
 @implementation NanoMapsSettingsManager
 
-+ (void)_synchronizeKey:(id)a3
++ (void)_synchronizeKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[NPSDomainAccessor nanoMapsDomainAccessor];
-  v5 = [v4 synchronize];
+  synchronize = [v4 synchronize];
 
   v7 = objc_opt_new();
-  v6 = [NSSet setWithObject:v3];
+  v6 = [NSSet setWithObject:keyCopy];
 
   [v7 synchronizeNanoDomain:@"com.apple.NanoMaps" keys:v6];
 }
 
-+ (BOOL)BOOLForKey:(id)a3 defaultValue:(BOOL)a4
++ (BOOL)BOOLForKey:(id)key defaultValue:(BOOL)value
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = +[NPSDomainAccessor nanoMapsDomainAccessor];
-  v7 = [v6 synchronize];
+  synchronize = [v6 synchronize];
   v10 = 0;
-  v8 = [v6 BOOLForKey:v5 keyExistsAndHasValidFormat:&v10];
+  v8 = [v6 BOOLForKey:keyCopy keyExistsAndHasValidFormat:&v10];
 
   if (v10)
   {
-    a4 = v8;
+    value = v8;
   }
 
-  return a4;
+  return value;
 }
 
-+ (BOOL)unsignedIntegerForKey:(id)a3 defaultValue:(unint64_t)a4
++ (BOOL)unsignedIntegerForKey:(id)key defaultValue:(unint64_t)value
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = +[NPSDomainAccessor nanoMapsDomainAccessor];
-  v7 = [v6 synchronize];
-  v8 = [v6 objectForKey:v5];
+  synchronize = [v6 synchronize];
+  v8 = [v6 objectForKey:keyCopy];
 
   if (v8)
   {
-    a4 = [v8 unsignedIntegerValue];
+    value = [v8 unsignedIntegerValue];
   }
 
-  return a4 != 0;
+  return value != 0;
 }
 
-+ (void)setUnsignedInteger:(unint64_t)a3 forKey:(id)a4
++ (void)setUnsignedInteger:(unint64_t)integer forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v8 = +[NPSDomainAccessor nanoMapsDomainAccessor];
-  v7 = [NSNumber numberWithUnsignedInteger:a3];
-  [v8 setObject:v7 forKey:v6];
+  v7 = [NSNumber numberWithUnsignedInteger:integer];
+  [v8 setObject:v7 forKey:keyCopy];
 
-  [a1 _synchronizeKey:v6];
+  [self _synchronizeKey:keyCopy];
 }
 
-+ (id)stringForKey:(id)a3
++ (id)stringForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[NPSDomainAccessor nanoMapsDomainAccessor];
-  v5 = [v4 synchronize];
-  v6 = [v4 stringForKey:v3];
+  synchronize = [v4 synchronize];
+  v6 = [v4 stringForKey:keyCopy];
 
   return v6;
 }
 
-+ (void)setString:(id)a3 forKey:(id)a4
++ (void)setString:(id)string forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  stringCopy = string;
   v8 = +[NPSDomainAccessor nanoMapsDomainAccessor];
-  [v8 setObject:v7 forKey:v6];
+  [v8 setObject:stringCopy forKey:keyCopy];
 
-  [a1 _synchronizeKey:v6];
+  [self _synchronizeKey:keyCopy];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface PRSPosterConfigurationCacheProvider
 - (NSData)lastActiveHomePoster;
 - (NSData)lastActiveLockPoster;
-- (PRSPosterConfigurationCacheProvider)initWithCachingReason:(id)a3;
-- (id)_lock_readAtURL:(id)a3;
-- (void)_lock_removeAtURL:(id)a3;
+- (PRSPosterConfigurationCacheProvider)initWithCachingReason:(id)reason;
+- (id)_lock_readAtURL:(id)l;
+- (void)_lock_removeAtURL:(id)l;
 - (void)_lock_setupSharedWorkspaceIfNeeded;
-- (void)_lock_writeData:(id)a3 atURL:(id)a4;
+- (void)_lock_writeData:(id)data atURL:(id)l;
 - (void)removeCaches;
-- (void)setLastActiveHomePoster:(id)a3;
-- (void)setLastActiveLockPoster:(id)a3;
+- (void)setLastActiveHomePoster:(id)poster;
+- (void)setLastActiveLockPoster:(id)poster;
 @end
 
 @implementation PRSPosterConfigurationCacheProvider
 
-- (PRSPosterConfigurationCacheProvider)initWithCachingReason:(id)a3
+- (PRSPosterConfigurationCacheProvider)initWithCachingReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v11.receiver = self;
   v11.super_class = PRSPosterConfigurationCacheProvider;
   v5 = [(PRSPosterConfigurationCacheProvider *)&v11 init];
@@ -44,7 +44,7 @@
     }
 
     v7 = v6();
-    v8 = [v7 URLByAppendingPathComponent:v4];
+    v8 = [v7 URLByAppendingPathComponent:reasonCopy];
     baseURL = v5->_baseURL;
     v5->_baseURL = v8;
 
@@ -57,8 +57,8 @@
 - (NSData)lastActiveLockPoster
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(PRSPosterConfigurationCacheProvider *)self _lockURL];
-  v4 = [(PRSPosterConfigurationCacheProvider *)self _lock_readAtURL:v3];
+  _lockURL = [(PRSPosterConfigurationCacheProvider *)self _lockURL];
+  v4 = [(PRSPosterConfigurationCacheProvider *)self _lock_readAtURL:_lockURL];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -68,30 +68,30 @@
 - (NSData)lastActiveHomePoster
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(PRSPosterConfigurationCacheProvider *)self _homeURL];
-  v4 = [(PRSPosterConfigurationCacheProvider *)self _lock_readAtURL:v3];
+  _homeURL = [(PRSPosterConfigurationCacheProvider *)self _homeURL];
+  v4 = [(PRSPosterConfigurationCacheProvider *)self _lock_readAtURL:_homeURL];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v4;
 }
 
-- (void)setLastActiveLockPoster:(id)a3
+- (void)setLastActiveLockPoster:(id)poster
 {
-  v4 = a3;
+  posterCopy = poster;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PRSPosterConfigurationCacheProvider *)self _lockURL];
-  [(PRSPosterConfigurationCacheProvider *)self _lock_writeData:v4 atURL:v5];
+  _lockURL = [(PRSPosterConfigurationCacheProvider *)self _lockURL];
+  [(PRSPosterConfigurationCacheProvider *)self _lock_writeData:posterCopy atURL:_lockURL];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setLastActiveHomePoster:(id)a3
+- (void)setLastActiveHomePoster:(id)poster
 {
-  v4 = a3;
+  posterCopy = poster;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PRSPosterConfigurationCacheProvider *)self _homeURL];
-  [(PRSPosterConfigurationCacheProvider *)self _lock_writeData:v4 atURL:v5];
+  _homeURL = [(PRSPosterConfigurationCacheProvider *)self _homeURL];
+  [(PRSPosterConfigurationCacheProvider *)self _lock_writeData:posterCopy atURL:_homeURL];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -99,26 +99,26 @@
 - (void)removeCaches
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(PRSPosterConfigurationCacheProvider *)self _lockURL];
-  [(PRSPosterConfigurationCacheProvider *)self _lock_removeAtURL:v3];
+  _lockURL = [(PRSPosterConfigurationCacheProvider *)self _lockURL];
+  [(PRSPosterConfigurationCacheProvider *)self _lock_removeAtURL:_lockURL];
 
-  v4 = [(PRSPosterConfigurationCacheProvider *)self _homeURL];
-  [(PRSPosterConfigurationCacheProvider *)self _lock_removeAtURL:v4];
+  _homeURL = [(PRSPosterConfigurationCacheProvider *)self _homeURL];
+  [(PRSPosterConfigurationCacheProvider *)self _lock_removeAtURL:_homeURL];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_lock_readAtURL:(id)a3
+- (id)_lock_readAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v14 = 0;
-  v4 = [v3 checkResourceIsReachableAndReturnError:&v14];
+  v4 = [lCopy checkResourceIsReachableAndReturnError:&v14];
   v5 = v14;
   v6 = v5;
   if (v4)
   {
     v13 = 0;
-    v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v3 options:1 error:&v13];
+    v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:1 error:&v13];
     v8 = v13;
     v9 = v8;
     if (v7)
@@ -167,13 +167,13 @@ LABEL_15:
   return v7;
 }
 
-- (void)_lock_writeData:(id)a3 atURL:(id)a4
+- (void)_lock_writeData:(id)data atURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
+  lCopy = l;
+  dataCopy = data;
   [(PRSPosterConfigurationCacheProvider *)self _lock_setupSharedWorkspaceIfNeeded];
   v10 = 0;
-  LOBYTE(self) = [v7 writeToURL:v6 options:268435457 error:&v10];
+  LOBYTE(self) = [dataCopy writeToURL:lCopy options:268435457 error:&v10];
 
   v8 = v10;
   if ((self & 1) == 0)
@@ -186,12 +186,12 @@ LABEL_15:
   }
 }
 
-- (void)_lock_removeAtURL:(id)a3
+- (void)_lock_removeAtURL:(id)l
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v9 = 0;
-  v5 = [v4 removeItemAtURL:v3 error:&v9];
+  v5 = [defaultManager removeItemAtURL:lCopy error:&v9];
   v6 = v9;
   v7 = v6;
   if ((v5 & 1) == 0 && v6)
@@ -207,7 +207,7 @@ LABEL_15:
 - (void)_lock_setupSharedWorkspaceIfNeeded
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = [a1 localizedDescription];
+  localizedDescription = [self localizedDescription];
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
 

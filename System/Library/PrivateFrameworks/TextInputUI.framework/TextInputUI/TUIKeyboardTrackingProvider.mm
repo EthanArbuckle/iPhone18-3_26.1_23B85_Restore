@@ -1,36 +1,36 @@
 @interface TUIKeyboardTrackingProvider
-+ (id)trackingProviderForKeyboardScene:(id)a3;
-- (CGRect)convertFrameToTrackingCoordinatorSpace:(CGRect)a3;
++ (id)trackingProviderForKeyboardScene:(id)scene;
+- (CGRect)convertFrameToTrackingCoordinatorSpace:(CGRect)space;
 - (CGRect)lastKnownFrame;
-- (TUIKeyboardTrackingProvider)initWithWindowScene:(id)a3;
+- (TUIKeyboardTrackingProvider)initWithWindowScene:(id)scene;
 - (id)description;
 - (id)localCoordinateSpace;
 - (id)localTrackingCoordinator;
-- (void)interactiveOffsetUpdateFromPoint:(CGPoint)a3;
-- (void)interactiveSizeUpdate:(CGSize)a3;
-- (void)interactiveUpdateFromPoint:(CGPoint)a3 size:(CGSize)a4;
-- (void)keyboardChangeToStateComplete:(id)a3;
-- (void)keyboardWillChangeFrame:(CGRect)a3 animationInfo:(id)a4;
-- (void)keyboardWillChangeState:(id)a3 endFrame:(CGRect)a4 animationInfo:(id)a5;
+- (void)interactiveOffsetUpdateFromPoint:(CGPoint)point;
+- (void)interactiveSizeUpdate:(CGSize)update;
+- (void)interactiveUpdateFromPoint:(CGPoint)point size:(CGSize)size;
+- (void)keyboardChangeToStateComplete:(id)complete;
+- (void)keyboardWillChangeFrame:(CGRect)frame animationInfo:(id)info;
+- (void)keyboardWillChangeState:(id)state endFrame:(CGRect)frame animationInfo:(id)info;
 @end
 
 @implementation TUIKeyboardTrackingProvider
 
 - (id)localCoordinateSpace
 {
-  v2 = [(TUIKeyboardTrackingProvider *)self keyboardScene];
-  v3 = [v2 effectiveGeometry];
-  v4 = [v3 coordinateSpace];
+  keyboardScene = [(TUIKeyboardTrackingProvider *)self keyboardScene];
+  effectiveGeometry = [keyboardScene effectiveGeometry];
+  coordinateSpace = [effectiveGeometry coordinateSpace];
 
-  return v4;
+  return coordinateSpace;
 }
 
 - (id)localTrackingCoordinator
 {
-  v2 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
-  v3 = [v2 trackingElementCoordinator];
+  activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+  trackingElementCoordinator = [activeKeyboardSceneDelegate trackingElementCoordinator];
 
-  return v3;
+  return trackingElementCoordinator;
 }
 
 - (CGRect)lastKnownFrame
@@ -46,54 +46,54 @@
   return result;
 }
 
-- (void)interactiveUpdateFromPoint:(CGPoint)a3 size:(CGSize)a4
+- (void)interactiveUpdateFromPoint:(CGPoint)point size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
-  v17 = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
-  v9 = [(TUIKeyboardTrackingProvider *)self localCoordinateSpace];
-  v10 = [v17 primaryScene];
-  v11 = [v10 effectiveGeometry];
-  v12 = [v11 coordinateSpace];
-  [v9 convertPoint:v12 toCoordinateSpace:{x, y}];
+  height = size.height;
+  width = size.width;
+  y = point.y;
+  x = point.x;
+  localTrackingCoordinator = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
+  localCoordinateSpace = [(TUIKeyboardTrackingProvider *)self localCoordinateSpace];
+  primaryScene = [localTrackingCoordinator primaryScene];
+  effectiveGeometry = [primaryScene effectiveGeometry];
+  coordinateSpace = [effectiveGeometry coordinateSpace];
+  [localCoordinateSpace convertPoint:coordinateSpace toCoordinateSpace:{x, y}];
   v14 = v13;
   v16 = v15;
 
-  [v17 interactiveUpdateChangingOffset:v14 size:{v16, width, height}];
+  [localTrackingCoordinator interactiveUpdateChangingOffset:v14 size:{v16, width, height}];
 }
 
-- (void)interactiveSizeUpdate:(CGSize)a3
+- (void)interactiveSizeUpdate:(CGSize)update
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
-  [v5 interactiveSizeUpdate:{width, height}];
+  height = update.height;
+  width = update.width;
+  localTrackingCoordinator = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
+  [localTrackingCoordinator interactiveSizeUpdate:{width, height}];
 }
 
-- (void)interactiveOffsetUpdateFromPoint:(CGPoint)a3
+- (void)interactiveOffsetUpdateFromPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
-  v15 = [v6 trackingElementCoordinator];
+  y = point.y;
+  x = point.x;
+  activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+  trackingElementCoordinator = [activeKeyboardSceneDelegate trackingElementCoordinator];
 
-  v7 = [(TUIKeyboardTrackingProvider *)self localCoordinateSpace];
-  v8 = [v15 primaryScene];
-  v9 = [v8 effectiveGeometry];
-  v10 = [v9 coordinateSpace];
-  [v7 convertPoint:v10 toCoordinateSpace:{x, y}];
+  localCoordinateSpace = [(TUIKeyboardTrackingProvider *)self localCoordinateSpace];
+  primaryScene = [trackingElementCoordinator primaryScene];
+  effectiveGeometry = [primaryScene effectiveGeometry];
+  coordinateSpace = [effectiveGeometry coordinateSpace];
+  [localCoordinateSpace convertPoint:coordinateSpace toCoordinateSpace:{x, y}];
   v12 = v11;
   v14 = v13;
 
-  [v15 interactiveOffsetUpdate:{v12, v14}];
+  [trackingElementCoordinator interactiveOffsetUpdate:{v12, v14}];
 }
 
-- (void)keyboardChangeToStateComplete:(id)a3
+- (void)keyboardChangeToStateComplete:(id)complete
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completeCopy = complete;
   lastKnownAnimationInfo = self->_lastKnownAnimationInfo;
   if (lastKnownAnimationInfo && ![(TUIKeyboardAnimationInfo *)lastKnownAnimationInfo isRotating])
   {
@@ -106,40 +106,40 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v16 = 138412290;
-      v17 = v4;
+      v17 = completeCopy;
       _os_log_debug_impl(&dword_18FFDC000, v15, OS_LOG_TYPE_DEBUG, "Tracking provider change to %@ complete.", &v16, 0xCu);
     }
 
-    v6 = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
-    [v6 postEndNotificationOnlyWithEndFrame:v4 state:self->_lastKnownAnimationInfo animationInfo:v8, v10, v12, v14];
+    localTrackingCoordinator = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
+    [localTrackingCoordinator postEndNotificationOnlyWithEndFrame:completeCopy state:self->_lastKnownAnimationInfo animationInfo:v8, v10, v12, v14];
   }
 
   else
   {
-    v6 = _TUIKeyboardTrackingLogger_8526();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    localTrackingCoordinator = _TUIKeyboardTrackingLogger_8526();
+    if (os_log_type_enabled(localTrackingCoordinator, OS_LOG_TYPE_DEBUG))
     {
       v16 = 138412290;
-      v17 = v4;
-      _os_log_debug_impl(&dword_18FFDC000, v6, OS_LOG_TYPE_DEBUG, "Tracking provider skipping state complete due to rotation. State: %@", &v16, 0xCu);
+      v17 = completeCopy;
+      _os_log_debug_impl(&dword_18FFDC000, localTrackingCoordinator, OS_LOG_TYPE_DEBUG, "Tracking provider skipping state complete due to rotation. State: %@", &v16, 0xCu);
     }
   }
 }
 
-- (void)keyboardWillChangeFrame:(CGRect)a3 animationInfo:(id)a4
+- (void)keyboardWillChangeFrame:(CGRect)frame animationInfo:(id)info
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  infoCopy = info;
   self->_lastKnownFrame.origin.x = x;
   self->_lastKnownFrame.origin.y = y;
   self->_lastKnownFrame.size.width = width;
   self->_lastKnownFrame.size.height = height;
-  objc_storeStrong(&self->_lastKnownAnimationInfo, a4);
-  if (![v10 isRotating] || (objc_msgSend(v10, "notificationInfo"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  objc_storeStrong(&self->_lastKnownAnimationInfo, info);
+  if (![infoCopy isRotating] || (objc_msgSend(infoCopy, "notificationInfo"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
     [(TUIKeyboardTrackingProvider *)self convertFrameToTrackingCoordinatorSpace:x, y, width, height];
     v13 = v12;
@@ -164,34 +164,34 @@
       v26 = 2112;
       v27 = v23;
       v28 = 2112;
-      v29 = v10;
+      v29 = infoCopy;
       _os_log_debug_impl(&dword_18FFDC000, v20, OS_LOG_TYPE_DEBUG, "Tracking provider will change frame: %@ [converted: %@] info: %@", &v24, 0x20u);
     }
 
-    v21 = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
-    [v21 postNotificationsOnlyWithEndFrame:v10 animationInfo:{v13, v15, v17, v19}];
+    localTrackingCoordinator = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
+    [localTrackingCoordinator postNotificationsOnlyWithEndFrame:infoCopy animationInfo:{v13, v15, v17, v19}];
   }
 }
 
-- (void)keyboardWillChangeState:(id)a3 endFrame:(CGRect)a4 animationInfo:(id)a5
+- (void)keyboardWillChangeState:(id)state endFrame:(CGRect)frame animationInfo:(id)info
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v35 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  objc_storeStrong(&self->_lastKnownState, a3);
+  stateCopy = state;
+  infoCopy = info;
+  objc_storeStrong(&self->_lastKnownState, state);
   self->_lastKnownFrame.origin.x = x;
   self->_lastKnownFrame.origin.y = y;
   self->_lastKnownFrame.size.width = width;
   self->_lastKnownFrame.size.height = height;
-  objc_storeStrong(&self->_lastKnownAnimationInfo, a5);
-  if ([v13 isRotating])
+  objc_storeStrong(&self->_lastKnownAnimationInfo, info);
+  if ([infoCopy isRotating])
   {
-    v14 = _TUIKeyboardTrackingLogger_8526();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    localTrackingCoordinator = _TUIKeyboardTrackingLogger_8526();
+    if (os_log_type_enabled(localTrackingCoordinator, OS_LOG_TYPE_DEBUG))
     {
       v36.origin.x = x;
       v36.origin.y = y;
@@ -200,7 +200,7 @@
       v15 = NSStringFromCGRect(v36);
       v27 = 138412290;
       v28 = v15;
-      _os_log_debug_impl(&dword_18FFDC000, v14, OS_LOG_TYPE_DEBUG, "Tracking provider skipping will change state due to rotation. End frame: %@", &v27, 0xCu);
+      _os_log_debug_impl(&dword_18FFDC000, localTrackingCoordinator, OS_LOG_TYPE_DEBUG, "Tracking provider skipping will change state due to rotation. End frame: %@", &v27, 0xCu);
     }
   }
 
@@ -225,56 +225,56 @@
       v38.size.height = v23;
       v26 = NSStringFromCGRect(v38);
       v27 = 138413058;
-      v28 = v12;
+      v28 = stateCopy;
       v29 = 2112;
       v30 = v25;
       v31 = 2112;
       v32 = v26;
       v33 = 2112;
-      v34 = v13;
+      v34 = infoCopy;
       _os_log_debug_impl(&dword_18FFDC000, v24, OS_LOG_TYPE_DEBUG, "Tracking provider will change state: %@ frame: %@ [converted: %@] info: %@", &v27, 0x2Au);
     }
 
-    v14 = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
-    [v14 updateClientsForState:v12 finalFrame:v13 animationInfo:1 forStart:v17, v19, v21, v23];
+    localTrackingCoordinator = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
+    [localTrackingCoordinator updateClientsForState:stateCopy finalFrame:infoCopy animationInfo:1 forStart:v17, v19, v21, v23];
   }
 }
 
-- (CGRect)convertFrameToTrackingCoordinatorSpace:(CGRect)a3
+- (CGRect)convertFrameToTrackingCoordinatorSpace:(CGRect)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(TUIKeyboardTrackingProvider *)self localCoordinateSpace];
-  if (v8)
+  height = space.size.height;
+  width = space.size.width;
+  y = space.origin.y;
+  x = space.origin.x;
+  localCoordinateSpace = [(TUIKeyboardTrackingProvider *)self localCoordinateSpace];
+  if (localCoordinateSpace)
   {
-    v9 = v8;
-    v10 = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
-    v11 = [v10 primaryScene];
-    if (!v11)
+    localCoordinateSpace2 = localCoordinateSpace;
+    localTrackingCoordinator = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
+    primaryScene = [localTrackingCoordinator primaryScene];
+    if (!primaryScene)
     {
 LABEL_5:
 
       goto LABEL_6;
     }
 
-    v12 = v11;
-    v13 = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
-    v14 = [v13 primaryScene];
-    v15 = [v14 effectiveGeometry];
-    v16 = [v15 coordinateSpace];
-    [v16 bounds];
+    v12 = primaryScene;
+    localTrackingCoordinator2 = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
+    primaryScene2 = [localTrackingCoordinator2 primaryScene];
+    effectiveGeometry = [primaryScene2 effectiveGeometry];
+    coordinateSpace = [effectiveGeometry coordinateSpace];
+    [coordinateSpace bounds];
     IsNull = CGRectIsNull(v29);
 
     if (!IsNull)
     {
-      v9 = [(TUIKeyboardTrackingProvider *)self localCoordinateSpace];
-      v10 = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
-      v18 = [v10 primaryScene];
-      v19 = [v18 effectiveGeometry];
-      v20 = [v19 coordinateSpace];
-      [v9 convertRect:v20 toCoordinateSpace:{x, y, width, height}];
+      localCoordinateSpace2 = [(TUIKeyboardTrackingProvider *)self localCoordinateSpace];
+      localTrackingCoordinator = [(TUIKeyboardTrackingProvider *)self localTrackingCoordinator];
+      primaryScene3 = [localTrackingCoordinator primaryScene];
+      effectiveGeometry2 = [primaryScene3 effectiveGeometry];
+      coordinateSpace2 = [effectiveGeometry2 coordinateSpace];
+      [localCoordinateSpace2 convertRect:coordinateSpace2 toCoordinateSpace:{x, y, width, height}];
       x = v21;
       y = v22;
       width = v23;
@@ -300,37 +300,37 @@ LABEL_6:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(TUIKeyboardTrackingProvider *)self keyboardScene];
-  v6 = [v3 stringWithFormat:@"<%@:%p scene=%@>", v4, self, v5];
+  keyboardScene = [(TUIKeyboardTrackingProvider *)self keyboardScene];
+  v6 = [v3 stringWithFormat:@"<%@:%p scene=%@>", v4, self, keyboardScene];
 
   return v6;
 }
 
-- (TUIKeyboardTrackingProvider)initWithWindowScene:(id)a3
+- (TUIKeyboardTrackingProvider)initWithWindowScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   v9.receiver = self;
   v9.super_class = TUIKeyboardTrackingProvider;
   v6 = [(TUIKeyboardTrackingProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keyboardScene, a3);
+    objc_storeStrong(&v6->_keyboardScene, scene);
   }
 
   return v7;
 }
 
-+ (id)trackingProviderForKeyboardScene:(id)a3
++ (id)trackingProviderForKeyboardScene:(id)scene
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [[TUIKeyboardTrackingProvider alloc] initWithWindowScene:v3];
+  sceneCopy = scene;
+  v4 = [[TUIKeyboardTrackingProvider alloc] initWithWindowScene:sceneCopy];
   v5 = _TUIKeyboardTrackingLogger_8526();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = sceneCopy;
     _os_log_debug_impl(&dword_18FFDC000, v5, OS_LOG_TYPE_DEBUG, "Tracking provider created with scene: %@", &v7, 0xCu);
   }
 

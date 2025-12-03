@@ -1,34 +1,34 @@
 @interface AutocorrectionFailure
 - (AutocorrectionFailure)init;
-- (BOOL)doesMatchResult:(id)a3;
+- (BOOL)doesMatchResult:(id)result;
 @end
 
 @implementation AutocorrectionFailure
 
-- (BOOL)doesMatchResult:(id)a3
+- (BOOL)doesMatchResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 corrected];
-  v6 = [v5 componentsJoinedByString:&stru_287EC4808];
-  v7 = [v6 lowercaseString];
+  resultCopy = result;
+  corrected = [resultCopy corrected];
+  v6 = [corrected componentsJoinedByString:&stru_287EC4808];
+  lowercaseString = [v6 lowercaseString];
 
-  v8 = [v4 intended];
-  v9 = [v8 componentsJoinedByString:&stru_287EC4808];
-  v10 = [v9 lowercaseString];
+  intended = [resultCopy intended];
+  v9 = [intended componentsJoinedByString:&stru_287EC4808];
+  lowercaseString2 = [v9 lowercaseString];
 
-  if ([v10 length])
+  if ([lowercaseString2 length])
   {
     v11 = 0;
-    while ([v7 length] > v11)
+    while ([lowercaseString length] > v11)
     {
-      v12 = [v10 characterAtIndex:v11];
-      if (v12 != [v7 characterAtIndex:v11] && -[NSCharacterSet characterIsMember:](self->_letters, "characterIsMember:", v12))
+      v12 = [lowercaseString2 characterAtIndex:v11];
+      if (v12 != [lowercaseString characterAtIndex:v11] && -[NSCharacterSet characterIsMember:](self->_letters, "characterIsMember:", v12))
       {
         v13 = 1;
         goto LABEL_8;
       }
 
-      if ([v10 length] <= ++v11)
+      if ([lowercaseString2 length] <= ++v11)
       {
         break;
       }
@@ -48,9 +48,9 @@ LABEL_8:
   v2 = [(AutocorrectionFailure *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCA900] letterCharacterSet];
+    letterCharacterSet = [MEMORY[0x277CCA900] letterCharacterSet];
     letters = v2->_letters;
-    v2->_letters = v3;
+    v2->_letters = letterCharacterSet;
   }
 
   return v2;

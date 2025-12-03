@@ -1,7 +1,7 @@
 @interface _NSXPCConnectionClassCache
 - (_NSXPCConnectionClassCache)init;
 - (uint64_t)containsClass:(uint64_t)result;
-- (void)addClass:(uint64_t)a1;
+- (void)addClass:(uint64_t)class;
 - (void)clear;
 - (void)dealloc;
 @end
@@ -19,19 +19,19 @@
 
 - (void)clear
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    v2 = *(a1 + 8);
+    v2 = *(self + 8);
     if (!v2)
     {
       v2 = objc_opt_new();
-      *(a1 + 8) = v2;
+      *(self + 8) = v2;
     }
 
     [v2 removeAllObjects];
 
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((self + 16));
   }
 }
 
@@ -70,21 +70,21 @@
   return result;
 }
 
-- (void)addClass:(uint64_t)a1
+- (void)addClass:(uint64_t)class
 {
-  if (a1)
+  if (class)
   {
     os_unfair_lock_lock_with_options();
-    v4 = *(a1 + 8);
+    v4 = *(class + 8);
     if (!v4)
     {
       v4 = objc_opt_new();
-      *(a1 + 8) = v4;
+      *(class + 8) = v4;
     }
 
     [v4 addObject:a2];
 
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((class + 16));
   }
 }
 

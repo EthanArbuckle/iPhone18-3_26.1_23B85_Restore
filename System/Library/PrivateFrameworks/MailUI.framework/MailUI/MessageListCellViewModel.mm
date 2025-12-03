@@ -1,14 +1,14 @@
 @interface MessageListCellViewModel
-- (MessageListCellViewModel)initWithBuilder:(id)a3;
-- (MessageListCellViewModel)initWithItemBuilder:(id)a3;
+- (MessageListCellViewModel)initWithBuilder:(id)builder;
+- (MessageListCellViewModel)initWithItemBuilder:(id)builder;
 @end
 
 @implementation MessageListCellViewModel
 
-- (MessageListCellViewModel)initWithBuilder:(id)a3
+- (MessageListCellViewModel)initWithBuilder:(id)builder
 {
-  v5 = a3;
-  if (!v5)
+  builderCopy = builder;
+  if (!builderCopy)
   {
     [(MessageListCellViewModel *)a2 initWithBuilder:?];
   }
@@ -21,15 +21,15 @@
   {
     [(MessageListCellViewModel *)v6 setSubjectIsPresent:1];
     [(MessageListCellViewModel *)v7 setAddressIsPresent:1];
-    v5[2](v5, v7);
+    builderCopy[2](builderCopy, v7);
   }
 
   return v7;
 }
 
-- (MessageListCellViewModel)initWithItemBuilder:(id)a3
+- (MessageListCellViewModel)initWithItemBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   [(MessageListCellViewModel *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MessageListCellViewModel initWithItemBuilder:]", "MessageListCellViewModel.m", 44, "0");
 }

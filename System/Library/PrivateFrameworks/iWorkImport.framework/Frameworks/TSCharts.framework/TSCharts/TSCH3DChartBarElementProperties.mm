@@ -1,24 +1,24 @@
 @interface TSCH3DChartBarElementProperties
-- (BOOL)applyElementTransform:(void *)a3 series:(id)a4 index:(tvec2<int>)a5 propertyAccessor:(id)a6;
-- (BarElementInfo)barElementInfoAtIndex:(SEL)a3;
+- (BOOL)applyElementTransform:(void *)transform series:(id)series index:(tvec2<int>)index propertyAccessor:(id)accessor;
+- (BarElementInfo)barElementInfoAtIndex:(SEL)index;
 - (TSCH3DChartBarElementProperties)init;
-- (const)extrusionDetailsForShape:(int)a3;
-- (float)elementTransformDepthFromPropertyAccessor:(id)a3;
-- (float)interceptValueForSeries:(id)a3;
-- (float)maxValueForSeries:(int64_t)a3;
+- (const)extrusionDetailsForShape:(int)shape;
+- (float)elementTransformDepthFromPropertyAccessor:(id)accessor;
+- (float)interceptValueForSeries:(id)series;
+- (float)maxValueForSeries:(int64_t)series;
 - (id).cxx_construct;
-- (id)boundsGeometryForSeries:(id)a3 index:(void *)a4;
-- (id)calculateInterceptForSeries:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)geometryForSeries:(id)a3 index:(void *)a4;
-- (id)normalsForSeries:(id)a3 index:(void *)a4;
+- (id)boundsGeometryForSeries:(id)series index:(void *)index;
+- (id)calculateInterceptForSeries:(id)series;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)geometryForSeries:(id)series index:(void *)index;
+- (id)normalsForSeries:(id)series index:(void *)index;
 - (id)p_appearance;
 - (id)p_appearanceClasses;
-- (id)p_barResourceCacheItemAtIndex:(void *)a3;
-- (id)p_calculateRangeForSeries:(id)a3 index:(void *)a4 intercept:(id)a5;
-- (id)rangeForSeries:(id)a3 index:(void *)a4;
-- (id)texcoordsForSeries:(id)a3 index:(void *)a4;
-- (int64_t)flatIndex:(void *)a3;
+- (id)p_barResourceCacheItemAtIndex:(void *)index;
+- (id)p_calculateRangeForSeries:(id)series index:(void *)index intercept:(id)intercept;
+- (id)rangeForSeries:(id)series index:(void *)index;
+- (id)texcoordsForSeries:(id)series index:(void *)index;
+- (int64_t)flatIndex:(void *)index;
 - (void)calculateLayout;
 - (void)createResources;
 - (void)dealloc;
@@ -28,9 +28,9 @@
 - (void)p_updateRangeCache;
 - (void)releaseAndClearAppearance;
 - (void)reset;
-- (void)setElementInfo:(const BarElementInfo *)a3 atIndex:(void *)a4;
-- (void)setExtrusionDetails:(const BarExtrusionDetails *)a3 forShape:(int)a4;
-- (void)setMaxValueForSeries:(int64_t)a3 value:(float)a4;
+- (void)setElementInfo:(const BarElementInfo *)info atIndex:(void *)index;
+- (void)setExtrusionDetails:(const BarExtrusionDetails *)details forShape:(int)shape;
+- (void)setMaxValueForSeries:(int64_t)series value:(float)value;
 - (void)updateLabels;
 - (void)updateMaxValuesAndBevels;
 @end
@@ -52,11 +52,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v39.receiver = self;
   v39.super_class = TSCH3DChartBarElementProperties;
-  v4 = [(TSCH3DChartBasicElementProperties *)&v39 copyWithZone:a3];
+  v4 = [(TSCH3DChartBasicElementProperties *)&v39 copyWithZone:zone];
   v9 = v4;
   if (v4)
   {
@@ -115,10 +115,10 @@
   [(TSCH3DChartBasicElementProperties *)&v6 dealloc];
 }
 
-- (int64_t)flatIndex:(void *)a3
+- (int64_t)flatIndex:(void *)index
 {
   p_size = &self->super._size;
-  if (*a3 >= self->super._size.var0.var0)
+  if (*index >= self->super._size.var0.var0)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCH3DChartBarElementProperties flatIndex:]");
@@ -128,7 +128,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  v23 = *(a3 + 1);
+  v23 = *(index + 1);
   if (v23 >= p_size->var1.var0)
   {
     v24 = MEMORY[0x277D81150];
@@ -137,47 +137,47 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v24, v31, v32, v33, v34, v25, v30, 201, 0, "Series out of range");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v35, v36, v37, v38);
-    v23 = *(a3 + 1);
+    v23 = *(index + 1);
   }
 
-  return *a3 + p_size->var0.var0 * v23;
+  return *index + p_size->var0.var0 * v23;
 }
 
-- (void)setElementInfo:(const BarElementInfo *)a3 atIndex:(void *)a4
+- (void)setElementInfo:(const BarElementInfo *)info atIndex:(void *)index
 {
-  v8 = &self->_elementInfos.__begin_[objc_msgSend_flatIndex_(self, a2, v4, v5, v6, a4)];
-  var3 = a3->var3;
-  *&v8->var0 = *&a3->var0;
+  v8 = &self->_elementInfos.__begin_[objc_msgSend_flatIndex_(self, a2, v4, v5, v6, index)];
+  var3 = info->var3;
+  *&v8->var0 = *&info->var0;
   v8->var3 = var3;
 }
 
-- (BarElementInfo)barElementInfoAtIndex:(SEL)a3
+- (BarElementInfo)barElementInfoAtIndex:(SEL)index
 {
-  result = objc_msgSend_flatIndex_(self, a3, v4, v5, v6, a4);
+  result = objc_msgSend_flatIndex_(self, index, v4, v5, v6, a4);
   *retstr = self->_elementInfos.__begin_[result];
   return result;
 }
 
-- (void)setMaxValueForSeries:(int64_t)a3 value:(float)a4
+- (void)setMaxValueForSeries:(int64_t)series value:(float)value
 {
-  if (self->super._size.var1.var0 <= a3)
+  if (self->super._size.var1.var0 <= series)
   {
     v9 = MEMORY[0x277D81150];
-    v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, *&a4, v4, v5, "[TSCH3DChartBarElementProperties setMaxValueForSeries:value:]");
+    v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, *&value, v4, v5, "[TSCH3DChartBarElementProperties setMaxValueForSeries:value:]");
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v12, v13, v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartBarElementProperties.mm");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v16, v17, v18, v19, v10, v15, 218, 0, "Series out of range");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  self->_maxValues.__begin_[a3] = a4;
+  self->_maxValues.__begin_[series] = value;
 }
 
-- (id)calculateInterceptForSeries:(id)a3
+- (id)calculateInterceptForSeries:(id)series
 {
-  v3 = a3;
-  v8 = objc_msgSend_model(v3, v4, v5, v6, v7);
-  v13 = objc_msgSend_seriesIndex(v3, v9, v10, v11, v12);
+  seriesCopy = series;
+  v8 = objc_msgSend_model(seriesCopy, v4, v5, v6, v7);
+  v13 = objc_msgSend_seriesIndex(seriesCopy, v9, v10, v11, v12);
   v18 = objc_msgSend_barModelCacheForSeries_(v8, v14, v15, v16, v17, v13);
 
   v24 = objc_msgSend_valueAxis(v18, v19, v20, v21, v22);
@@ -250,9 +250,9 @@
   }
 }
 
-- (id)rangeForSeries:(id)a3 index:(void *)a4
+- (id)rangeForSeries:(id)series index:(void *)index
 {
-  v8 = objc_msgSend_flatIndex_(self, a2, v4, v5, v6, a4);
+  v8 = objc_msgSend_flatIndex_(self, a2, v4, v5, v6, index);
   if (v8 >= objc_msgSend_count(self->_rangeCache, v9, v10, v11, v12))
   {
     v17 = MEMORY[0x277D81150];
@@ -268,42 +268,42 @@
   return v32;
 }
 
-- (id)p_calculateRangeForSeries:(id)a3 index:(void *)a4 intercept:(id)a5
+- (id)p_calculateRangeForSeries:(id)series index:(void *)index intercept:(id)intercept
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = *a4;
-  v15 = objc_msgSend_valueAxis(v9, v11, v12, v13, v14);
-  objc_msgSend_unitSpaceValueForSeries_groupIndex_(v15, v16, v17, v18, v19, v8, v10);
+  seriesCopy = series;
+  interceptCopy = intercept;
+  v10 = *index;
+  v15 = objc_msgSend_valueAxis(interceptCopy, v11, v12, v13, v14);
+  objc_msgSend_unitSpaceValueForSeries_groupIndex_(v15, v16, v17, v18, v19, seriesCopy, v10);
   v21 = v20;
 
-  objc_msgSend_value(v9, v22, v23, v24, v25);
+  objc_msgSend_value(interceptCopy, v22, v23, v24, v25);
   v30 = v27;
   if (self->_stacked)
   {
-    objc_msgSend_value(v9, v26, v27, v28, v29);
+    objc_msgSend_value(interceptCopy, v26, v27, v28, v29);
     v32 = v31;
-    if (objc_msgSend_seriesIndex(v8, v33, v31, v34, v35) != *(a4 + 1))
+    if (objc_msgSend_seriesIndex(seriesCopy, v33, v31, v34, v35) != *(index + 1))
     {
       v40 = MEMORY[0x277D81150];
       v41 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v36, v37, v38, v39, "[TSCH3DChartBarElementProperties p_calculateRangeForSeries:index:intercept:]");
       v46 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v42, v43, v44, v45, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartBarElementProperties.mm");
-      v51 = objc_msgSend_seriesIndex(v8, v47, v48, v49, v50);
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v40, v52, v53, v54, v55, v41, v46, 275, 0, "series index mismatch %lu should be %lu", v51, *(a4 + 1));
+      v51 = objc_msgSend_seriesIndex(seriesCopy, v47, v48, v49, v50);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v40, v52, v53, v54, v55, v41, v46, 275, 0, "series index mismatch %lu should be %lu", v51, *(index + 1));
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v56, v57, v58, v59);
     }
 
-    objc_msgSend_value(v9, v36, v37, v38, v39);
+    objc_msgSend_value(interceptCopy, v36, v37, v38, v39);
     v61 = v60;
-    v65 = objc_msgSend_valueAxis(v9, v62, v60, v63, v64);
-    objc_msgSend_beginValueForStackedBarSeries_groupIndex_unitSpaceIntercept_relativelyPositive_valueAxis_(TSCHChartInfo, v66, v61, v67, v68, v8, v10, v21 >= v32, v65);
+    v65 = objc_msgSend_valueAxis(interceptCopy, v62, v60, v63, v64);
+    objc_msgSend_beginValueForStackedBarSeries_groupIndex_unitSpaceIntercept_relativelyPositive_valueAxis_(TSCHChartInfo, v66, v61, v67, v68, seriesCopy, v10, v21 >= v32, v65);
     v30 = v69;
   }
 
   v70 = fmin(v30, 1.0);
   v71 = fmax(v70, 0.0);
-  objc_msgSend_value(v9, v26, v70, 0.0, v29);
+  objc_msgSend_value(interceptCopy, v26, v70, 0.0, v29);
   v72 = fmin(v21, 1.0);
   v73 = fmax(v72, 0.0);
   *&v72 = v71;
@@ -314,19 +314,19 @@
   return v76;
 }
 
-- (float)interceptValueForSeries:(id)a3
+- (float)interceptValueForSeries:(id)series
 {
-  v6 = objc_msgSend_calculateInterceptForSeries_(self, a2, v3, v4, v5, a3);
+  v6 = objc_msgSend_calculateInterceptForSeries_(self, a2, v3, v4, v5, series);
   objc_msgSend_value(v6, v7, v8, v9, v10);
   v12 = v11;
 
   return v12;
 }
 
-- (float)elementTransformDepthFromPropertyAccessor:(id)a3
+- (float)elementTransformDepthFromPropertyAccessor:(id)accessor
 {
-  v5 = a3;
-  if (!v5)
+  accessorCopy = accessor;
+  if (!accessorCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v6, v7, v8, "[TSCH3DChartBarElementProperties elementTransformDepthFromPropertyAccessor:]");
@@ -343,9 +343,9 @@
 
   if (isCircular)
   {
-    if (v5)
+    if (accessorCopy)
     {
-      objc_msgSend_stageScale(v5, v35, v36, v37, v38);
+      objc_msgSend_stageScale(accessorCopy, v35, v36, v37, v38);
     }
 
     else
@@ -354,18 +354,18 @@
       v41 = 0;
     }
 
-    isHorizontal = objc_msgSend_isHorizontal(v5, v35, v36, v37, v38);
+    isHorizontal = objc_msgSend_isHorizontal(accessorCopy, v35, v36, v37, v38);
     v25 = (self->_barWidth * *(&v41 | (4 * isHorizontal))) / v42;
   }
 
   return v25;
 }
 
-- (BOOL)applyElementTransform:(void *)a3 series:(id)a4 index:(tvec2<int>)a5 propertyAccessor:(id)a6
+- (BOOL)applyElementTransform:(void *)transform series:(id)series index:(tvec2<int>)index propertyAccessor:(id)accessor
 {
-  v10 = a4;
-  v12 = a6;
-  if (!v12)
+  seriesCopy = series;
+  accessorCopy = accessor;
+  if (!accessorCopy)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v13, v14, v15, "[TSCH3DChartBarElementProperties applyElementTransform:series:index:propertyAccessor:]");
@@ -375,17 +375,17 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
   }
 
-  v31 = objc_msgSend_rangeForSeries_index_(self, v11, v13, v14, v15, v10, a5);
-  objc_msgSend_elementTransformDepthFromPropertyAccessor_(self, v32, v33, v34, v35, v12);
+  v31 = objc_msgSend_rangeForSeries_index_(self, v11, v13, v14, v15, seriesCopy, index);
+  objc_msgSend_elementTransformDepthFromPropertyAccessor_(self, v32, v33, v34, v35, accessorCopy);
   v37 = *&v36;
   objc_msgSend_scale(v31, v38, v36, v39, v40);
   v42 = *&v41;
   barWidth = self->_barWidth;
   elementsXOffset = self->_elementsXOffset;
   seriesOffset = self->_seriesOffset;
-  v48 = a5;
-  v46 = *a5.var0.var0;
-  v47 = *(*&v48 + 4);
+  indexCopy = index;
+  v46 = *index.var0.var0;
+  v47 = *(*&indexCopy + 4);
   setWidth = self->_setWidth;
   objc_msgSend_offset(v31, v50, v41, v51, v52);
   v63 = xmmword_2764D5F20;
@@ -398,7 +398,7 @@
   v62[1] = v53;
   v62[2] = 0.0;
   v66 = 1;
-  *&v54 = sub_276168C80(a3, v62);
+  *&v54 = sub_276168C80(transform, v62);
   if ((objc_msgSend_above(v31, v55, v54, v56, v57) & 1) == 0)
   {
     v60 = 0;
@@ -406,13 +406,13 @@
     v59[1] = xmmword_2764D5F30;
     v59[2] = xmmword_2764D60F0;
     v61 = 1;
-    sub_276168C80(a3, v59);
+    sub_276168C80(transform, v59);
   }
 
   return fabsf(v42) > 0.00000011921;
 }
 
-- (id)p_barResourceCacheItemAtIndex:(void *)a3
+- (id)p_barResourceCacheItemAtIndex:(void *)index
 {
   bevelEdges = self->_bevelEdges;
   if (bevelEdges)
@@ -422,11 +422,11 @@
 
   else
   {
-    v9 = objc_msgSend_beveledAtIndex_(self, a2, v3, v4, v5, a3);
+    v9 = objc_msgSend_beveledAtIndex_(self, a2, v3, v4, v5, index);
     bevelEdges = self->_bevelEdges;
   }
 
-  v10 = *(objc_msgSend_elementInfoAtIndex_(self, a2, v3, v4, v5, a3) + 4);
+  v10 = *(objc_msgSend_elementInfoAtIndex_(self, a2, v3, v4, v5, index) + 4);
   v15 = objc_msgSend_appearance(self, v11, v12, v13, v14);
   isCircular = objc_msgSend_isCircular(v15, v16, v17, v18, v19);
   stacked = self->_stacked;
@@ -462,9 +462,9 @@
   return v46;
 }
 
-- (id)geometryForSeries:(id)a3 index:(void *)a4
+- (id)geometryForSeries:(id)series index:(void *)index
 {
-  v7 = objc_msgSend_p_barResourceCacheItemAtIndex_(self, a2, v4, v5, v6, a4);
+  v7 = objc_msgSend_p_barResourceCacheItemAtIndex_(self, a2, v4, v5, v6, index);
   v12 = objc_msgSend_vertexResource(v7, v8, v9, v10, v11);
 
   v17 = objc_msgSend_verticesOffset(v12, v13, v14, v15, v16);
@@ -478,25 +478,25 @@
   return v47;
 }
 
-- (id)boundsGeometryForSeries:(id)a3 index:(void *)a4
+- (id)boundsGeometryForSeries:(id)series index:(void *)index
 {
-  v7 = objc_msgSend_sharedInstance(TSCH3DBarUnitCubeResource, a2, v4, v5, v6, a3, a4);
+  v7 = objc_msgSend_sharedInstance(TSCH3DBarUnitCubeResource, a2, v4, v5, v6, series, index);
   v12 = objc_msgSend_resourceWithType_resource_(TSCH3DGeometryResource, v8, v9, v10, v11, 5, v7);
 
   return v12;
 }
 
-- (id)normalsForSeries:(id)a3 index:(void *)a4
+- (id)normalsForSeries:(id)series index:(void *)index
 {
-  v7 = objc_msgSend_p_barResourceCacheItemAtIndex_(self, a2, v4, v5, v6, a4);
+  v7 = objc_msgSend_p_barResourceCacheItemAtIndex_(self, a2, v4, v5, v6, index);
   v12 = objc_msgSend_normalResource(v7, v8, v9, v10, v11);
 
   return v12;
 }
 
-- (id)texcoordsForSeries:(id)a3 index:(void *)a4
+- (id)texcoordsForSeries:(id)series index:(void *)index
 {
-  v7 = objc_msgSend_p_barResourceCacheItemAtIndex_(self, a2, v4, v5, v6, a4);
+  v7 = objc_msgSend_p_barResourceCacheItemAtIndex_(self, a2, v4, v5, v6, index);
   v12 = objc_msgSend_texCoordResource(v7, v8, v9, v10, v11);
 
   return v12;
@@ -804,9 +804,9 @@
   objc_msgSend_updateMaxValuesAndBevels(self, v64, v65, v66, v67);
 }
 
-- (float)maxValueForSeries:(int64_t)a3
+- (float)maxValueForSeries:(int64_t)series
 {
-  if (self->super._size.var1.var0 <= a3)
+  if (self->super._size.var1.var0 <= series)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCH3DChartBarElementProperties maxValueForSeries:]");
@@ -816,43 +816,43 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  return self->_maxValues.__begin_[a3];
+  return self->_maxValues.__begin_[series];
 }
 
-- (const)extrusionDetailsForShape:(int)a3
+- (const)extrusionDetailsForShape:(int)shape
 {
-  v7 = a3;
-  if (a3 >= 2)
+  shapeCopy = shape;
+  if (shape >= 2)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCH3DChartBarElementProperties extrusionDetailsForShape:]");
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartBarElementProperties.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v15, v16, v17, v18, v9, v14, 520, 0, "invalid shape type %ld", v7);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v15, v16, v17, v18, v9, v14, 520, 0, "invalid shape type %ld", shapeCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  return &self->_extrusionDetails.__elems_[v7];
+  return &self->_extrusionDetails.__elems_[shapeCopy];
 }
 
-- (void)setExtrusionDetails:(const BarExtrusionDetails *)a3 forShape:(int)a4
+- (void)setExtrusionDetails:(const BarExtrusionDetails *)details forShape:(int)shape
 {
-  v9 = a4;
-  if (a4 >= 2)
+  shapeCopy = shape;
+  if (shape >= 2)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCH3DChartBarElementProperties setExtrusionDetails:forShape:]");
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v13, v14, v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartBarElementProperties.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v17, v18, v19, v20, v11, v16, 527, 0, "invalid shape type %ld", v9);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v17, v18, v19, v20, v11, v16, 527, 0, "invalid shape type %ld", shapeCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
   }
 
-  v25 = &self->_extrusionDetails.__elems_[v9];
-  v27 = *&a3->crossSection.crossType;
-  v26 = *&a3->spine.bevelSlices;
-  v28 = *&a3->crossSection.detail;
-  *&v25->spine.creaseAngle = *&a3->spine.creaseAngle;
+  v25 = &self->_extrusionDetails.__elems_[shapeCopy];
+  v27 = *&details->crossSection.crossType;
+  v26 = *&details->spine.bevelSlices;
+  v28 = *&details->crossSection.detail;
+  *&v25->spine.creaseAngle = *&details->spine.creaseAngle;
   *&v25->crossSection.crossType = v27;
   *&v25->spine.bevelSlices = v26;
   *&v25->crossSection.detail = v28;

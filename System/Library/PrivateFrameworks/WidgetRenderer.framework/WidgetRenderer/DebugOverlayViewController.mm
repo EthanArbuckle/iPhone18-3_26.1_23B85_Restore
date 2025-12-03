@@ -1,21 +1,21 @@
 @interface DebugOverlayViewController
-- (_TtC14WidgetRenderer26DebugOverlayViewController)initWithCoder:(id)a3;
-- (_TtC14WidgetRenderer26DebugOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC14WidgetRenderer26DebugOverlayViewController)initWithCoder:(id)coder;
+- (_TtC14WidgetRenderer26DebugOverlayViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_didExitAlwaysOn;
 - (void)_willEnterAlwaysOn;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DebugOverlayViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v5 = self;
-  v3 = [(DebugOverlayViewController *)v5 view];
-  if (v3)
+  selfCopy = self;
+  view = [(DebugOverlayViewController *)selfCopy view];
+  if (view)
   {
-    v4 = v3;
-    [v3 setNeedsLayout];
+    v4 = view;
+    [view setNeedsLayout];
   }
 
   else
@@ -24,7 +24,7 @@
   }
 }
 
-- (_TtC14WidgetRenderer26DebugOverlayViewController)initWithCoder:(id)a3
+- (_TtC14WidgetRenderer26DebugOverlayViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC14WidgetRenderer26DebugOverlayViewController_validationState) = 0;
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC14WidgetRenderer26DebugOverlayViewController_debugText);
@@ -51,7 +51,7 @@
   [v2 setNeedsLayout];
 }
 
-- (_TtC14WidgetRenderer26DebugOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14WidgetRenderer26DebugOverlayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

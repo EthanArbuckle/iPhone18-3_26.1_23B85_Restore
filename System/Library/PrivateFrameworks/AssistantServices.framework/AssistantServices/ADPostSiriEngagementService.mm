@@ -1,14 +1,14 @@
 @interface ADPostSiriEngagementService
 - (ADPostSiriEngagementService)init;
 - (ActivityDispatcher)_getActivityDispatcher;
-- (void)runMaintenanceWorkWithCompletion:(id)a3;
+- (void)runMaintenanceWorkWithCompletion:(id)completion;
 @end
 
 @implementation ADPostSiriEngagementService
 
-- (void)runMaintenanceWorkWithCompletion:(id)a3
+- (void)runMaintenanceWorkWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -17,14 +17,14 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Run service maintenance for PSE collection", buf, 0xCu);
   }
 
-  v6 = [(ADPostSiriEngagementService *)self _getActivityDispatcher];
+  _getActivityDispatcher = [(ADPostSiriEngagementService *)self _getActivityDispatcher];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10029C4E0;
   v8[3] = &unk_10051D2F0;
-  v9 = v4;
-  v7 = v4;
-  [v6 runCollectorsDefinedInParameters:&stru_10051F508 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [_getActivityDispatcher runCollectorsDefinedInParameters:&stru_10051F508 completion:v8];
 }
 
 - (ActivityDispatcher)_getActivityDispatcher

@@ -1,30 +1,30 @@
 @interface NSDecimalNumber
-+ (NSDecimalNumber)allocWithZone:(_NSZone *)a3;
++ (NSDecimalNumber)allocWithZone:(_NSZone *)zone;
 + (NSDecimalNumber)decimalNumberWithDecimal:(NSDecimal *)dcm;
 + (NSDecimalNumber)decimalNumberWithMantissa:(unint64_t)mantissa exponent:(__int16)exponent isNegative:(BOOL)flag;
 + (NSDecimalNumber)decimalNumberWithString:(NSString *)numberValue;
 + (NSDecimalNumber)decimalNumberWithString:(NSString *)numberValue locale:(id)locale;
 + (NSDecimalNumber)notANumber;
-+ (NSDecimalNumber)numberWithBool:(BOOL)a3;
-+ (NSDecimalNumber)numberWithChar:(char)a3;
-+ (NSDecimalNumber)numberWithDouble:(double)a3;
-+ (NSDecimalNumber)numberWithFloat:(float)a3;
-+ (NSDecimalNumber)numberWithInt:(int)a3;
-+ (NSDecimalNumber)numberWithInteger:(int64_t)a3;
-+ (NSDecimalNumber)numberWithLong:(int64_t)a3;
-+ (NSDecimalNumber)numberWithLongLong:(int64_t)a3;
-+ (NSDecimalNumber)numberWithShort:(signed __int16)a3;
-+ (NSDecimalNumber)numberWithUnsignedChar:(unsigned __int8)a3;
-+ (NSDecimalNumber)numberWithUnsignedInt:(unsigned int)a3;
-+ (NSDecimalNumber)numberWithUnsignedInteger:(unint64_t)a3;
-+ (NSDecimalNumber)numberWithUnsignedLong:(unint64_t)a3;
-+ (NSDecimalNumber)numberWithUnsignedLongLong:(unint64_t)a3;
-+ (NSDecimalNumber)numberWithUnsignedShort:(unsigned __int16)a3;
++ (NSDecimalNumber)numberWithBool:(BOOL)bool;
++ (NSDecimalNumber)numberWithChar:(char)char;
++ (NSDecimalNumber)numberWithDouble:(double)double;
++ (NSDecimalNumber)numberWithFloat:(float)float;
++ (NSDecimalNumber)numberWithInt:(int)int;
++ (NSDecimalNumber)numberWithInteger:(int64_t)integer;
++ (NSDecimalNumber)numberWithLong:(int64_t)long;
++ (NSDecimalNumber)numberWithLongLong:(int64_t)long;
++ (NSDecimalNumber)numberWithShort:(signed __int16)short;
++ (NSDecimalNumber)numberWithUnsignedChar:(unsigned __int8)char;
++ (NSDecimalNumber)numberWithUnsignedInt:(unsigned int)int;
++ (NSDecimalNumber)numberWithUnsignedInteger:(unint64_t)integer;
++ (NSDecimalNumber)numberWithUnsignedLong:(unint64_t)long;
++ (NSDecimalNumber)numberWithUnsignedLongLong:(unint64_t)long;
++ (NSDecimalNumber)numberWithUnsignedShort:(unsigned __int16)short;
 + (id)defaultBehavior;
 + (void)initialize;
 + (void)setDefaultBehavior:(id)defaultBehavior;
-- (BOOL)_getCString:(char *)a3 length:(int)a4 multiplier:(double)a5;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_getCString:(char *)string length:(int)length multiplier:(double)multiplier;
+- (BOOL)isEqual:(id)equal;
 - (NSComparisonResult)compare:(NSNumber *)decimalNumber;
 - (NSDecimal)decimalValue;
 - (NSDecimalNumber)decimalNumberByAdding:(NSDecimalNumber *)decimalNumber;
@@ -42,20 +42,20 @@
 - (NSDecimalNumber)decimalNumberBySubtracting:(NSDecimalNumber *)decimalNumber withBehavior:(id)behavior;
 - (NSString)descriptionWithLocale:(id)locale;
 - (double)doubleValue;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)decimalNumberBySubstracting:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)decimalNumberBySubstracting:(id)substracting;
 - (int64_t)longLongValue;
 - (int64_t)longValue;
 - (unint64_t)unsignedLongLongValue;
 - (unint64_t)unsignedLongValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSDecimalNumber
 
 + (void)initialize
 {
-  if (NSDecimalNumber == a1)
+  if (NSDecimalNumber == self)
   {
     objc_opt_class();
   }
@@ -198,20 +198,20 @@
   return v2;
 }
 
-+ (NSDecimalNumber)allocWithZone:(_NSZone *)a3
++ (NSDecimalNumber)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     return &_cachedPlaceholder;
   }
 
-  return NSAllocateObject(a1, 0, a3);
+  return NSAllocateObject(self, 0, zone);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (NSShouldRetainWithZone(self, a3))
+  if (NSShouldRetainWithZone(self, zone))
   {
 
     return self;
@@ -339,9 +339,9 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
@@ -351,7 +351,7 @@
     v5 = _NSIsNSNumber();
     if (v5)
     {
-      LOBYTE(v5) = [(NSDecimalNumber *)self compare:a3]== NSOrderedSame;
+      LOBYTE(v5) = [(NSDecimalNumber *)self compare:equal]== NSOrderedSame;
     }
   }
 
@@ -360,9 +360,9 @@
 
 - (NSDecimalNumber)decimalNumberByAdding:(NSDecimalNumber *)decimalNumber
 {
-  v5 = [objc_opt_self() defaultBehavior];
+  defaultBehavior = [objc_opt_self() defaultBehavior];
 
-  return [(NSDecimalNumber *)self decimalNumberByAdding:decimalNumber withBehavior:v5];
+  return [(NSDecimalNumber *)self decimalNumberByAdding:decimalNumber withBehavior:defaultBehavior];
 }
 
 - (NSDecimalNumber)decimalNumberByAdding:(NSDecimalNumber *)decimalNumber withBehavior:(id)behavior
@@ -370,8 +370,8 @@
   v20 = *MEMORY[0x1E69E9840];
   v18 = 0uLL;
   v19 = 0;
-  v8 = [behavior scale];
-  v9 = [behavior roundingMode];
+  scale = [behavior scale];
+  roundingMode = [behavior roundingMode];
   v16[0] = 0;
   v16[1] = 0;
   v17 = 0;
@@ -388,24 +388,24 @@
     [(NSDecimalNumber *)decimalNumber decimalValue];
   }
 
-  v10 = _NSDecimalAdd(&v18, v16, v14, v9);
+  v10 = _NSDecimalAdd(&v18, v16, v14, roundingMode);
   v12 = v18;
   v13 = v19;
-  return _checkErrorAndRound(v10, a2, self, decimalNumber, v8, v9, &v12, behavior);
+  return _checkErrorAndRound(v10, a2, self, decimalNumber, scale, roundingMode, &v12, behavior);
 }
 
-- (id)decimalNumberBySubstracting:(id)a3
+- (id)decimalNumberBySubstracting:(id)substracting
 {
   v5 = +[NSDecimalNumber defaultBehavior];
 
-  return [(NSDecimalNumber *)self decimalNumberBySubtracting:a3 withBehavior:v5];
+  return [(NSDecimalNumber *)self decimalNumberBySubtracting:substracting withBehavior:v5];
 }
 
 - (NSDecimalNumber)decimalNumberBySubtracting:(NSDecimalNumber *)decimalNumber
 {
-  v5 = [objc_opt_self() defaultBehavior];
+  defaultBehavior = [objc_opt_self() defaultBehavior];
 
-  return [(NSDecimalNumber *)self decimalNumberBySubtracting:decimalNumber withBehavior:v5];
+  return [(NSDecimalNumber *)self decimalNumberBySubtracting:decimalNumber withBehavior:defaultBehavior];
 }
 
 - (NSDecimalNumber)decimalNumberBySubtracting:(NSDecimalNumber *)decimalNumber withBehavior:(id)behavior
@@ -413,8 +413,8 @@
   v20 = *MEMORY[0x1E69E9840];
   v18 = 0uLL;
   v19 = 0;
-  v8 = [behavior scale];
-  v9 = [behavior roundingMode];
+  scale = [behavior scale];
+  roundingMode = [behavior roundingMode];
   v16[0] = 0;
   v16[1] = 0;
   v17 = 0;
@@ -431,17 +431,17 @@
     [(NSDecimalNumber *)decimalNumber decimalValue];
   }
 
-  v10 = _NSDecimalSubtract(&v18, v16, v14, v9);
+  v10 = _NSDecimalSubtract(&v18, v16, v14, roundingMode);
   v12 = v18;
   v13 = v19;
-  return _checkErrorAndRound(v10, a2, self, decimalNumber, v8, v9, &v12, behavior);
+  return _checkErrorAndRound(v10, a2, self, decimalNumber, scale, roundingMode, &v12, behavior);
 }
 
 - (NSDecimalNumber)decimalNumberByMultiplyingBy:(NSDecimalNumber *)decimalNumber
 {
-  v5 = [objc_opt_self() defaultBehavior];
+  defaultBehavior = [objc_opt_self() defaultBehavior];
 
-  return [(NSDecimalNumber *)self decimalNumberByMultiplyingBy:decimalNumber withBehavior:v5];
+  return [(NSDecimalNumber *)self decimalNumberByMultiplyingBy:decimalNumber withBehavior:defaultBehavior];
 }
 
 - (NSDecimalNumber)decimalNumberByMultiplyingBy:(NSDecimalNumber *)decimalNumber withBehavior:(id)behavior
@@ -449,8 +449,8 @@
   v20 = *MEMORY[0x1E69E9840];
   v18 = 0uLL;
   v19 = 0;
-  v8 = [behavior scale];
-  v9 = [behavior roundingMode];
+  scale = [behavior scale];
+  roundingMode = [behavior roundingMode];
   v16[0] = 0;
   v16[1] = 0;
   v17 = 0;
@@ -467,17 +467,17 @@
     [(NSDecimalNumber *)decimalNumber decimalValue];
   }
 
-  v10 = _NSDecimalMultiply(&v18, v16, v14, v9);
+  v10 = _NSDecimalMultiply(&v18, v16, v14, roundingMode);
   v12 = v18;
   v13 = v19;
-  return _checkErrorAndRound(v10, a2, self, decimalNumber, v8, v9, &v12, behavior);
+  return _checkErrorAndRound(v10, a2, self, decimalNumber, scale, roundingMode, &v12, behavior);
 }
 
 - (NSDecimalNumber)decimalNumberByDividingBy:(NSDecimalNumber *)decimalNumber
 {
-  v5 = [objc_opt_self() defaultBehavior];
+  defaultBehavior = [objc_opt_self() defaultBehavior];
 
-  return [(NSDecimalNumber *)self decimalNumberByDividingBy:decimalNumber withBehavior:v5];
+  return [(NSDecimalNumber *)self decimalNumberByDividingBy:decimalNumber withBehavior:defaultBehavior];
 }
 
 - (NSDecimalNumber)decimalNumberByDividingBy:(NSDecimalNumber *)decimalNumber withBehavior:(id)behavior
@@ -485,8 +485,8 @@
   v20 = *MEMORY[0x1E69E9840];
   v18 = 0uLL;
   v19 = 0;
-  v8 = [behavior scale];
-  v9 = [behavior roundingMode];
+  scale = [behavior scale];
+  roundingMode = [behavior roundingMode];
   v16[0] = 0;
   v16[1] = 0;
   v17 = 0;
@@ -503,17 +503,17 @@
     [(NSDecimalNumber *)decimalNumber decimalValue];
   }
 
-  v10 = _NSDecimalDivide(&v18, v16, v14, v9);
+  v10 = _NSDecimalDivide(&v18, v16, v14, roundingMode);
   v12 = v18;
   v13 = v19;
-  return _checkErrorAndRound(v10, a2, self, decimalNumber, v8, v9, &v12, behavior);
+  return _checkErrorAndRound(v10, a2, self, decimalNumber, scale, roundingMode, &v12, behavior);
 }
 
 - (NSDecimalNumber)decimalNumberByRaisingToPower:(NSUInteger)power
 {
-  v5 = [objc_opt_self() defaultBehavior];
+  defaultBehavior = [objc_opt_self() defaultBehavior];
 
-  return [(NSDecimalNumber *)self decimalNumberByRaisingToPower:power withBehavior:v5];
+  return [(NSDecimalNumber *)self decimalNumberByRaisingToPower:power withBehavior:defaultBehavior];
 }
 
 - (NSDecimalNumber)decimalNumberByRaisingToPower:(NSUInteger)power withBehavior:(id)behavior
@@ -521,8 +521,8 @@
   v18 = *MEMORY[0x1E69E9840];
   v16 = 0uLL;
   v17 = 0;
-  v8 = [behavior scale];
-  v9 = [behavior roundingMode];
+  scale = [behavior scale];
+  roundingMode = [behavior roundingMode];
   v14[0] = 0;
   v14[1] = 0;
   v15 = 0;
@@ -531,18 +531,18 @@
     [(NSDecimalNumber *)self decimalValue];
   }
 
-  v10 = _NSDecimalPower(&v16, v14, power, v9);
+  v10 = _NSDecimalPower(&v16, v14, power, roundingMode);
   v12 = v16;
   v13 = v17;
-  return _checkErrorAndRound(v10, a2, self, 0, v8, v9, &v12, behavior);
+  return _checkErrorAndRound(v10, a2, self, 0, scale, roundingMode, &v12, behavior);
 }
 
 - (NSDecimalNumber)decimalNumberByMultiplyingByPowerOf10:(__int16)power
 {
   v3 = power;
-  v5 = [objc_opt_self() defaultBehavior];
+  defaultBehavior = [objc_opt_self() defaultBehavior];
 
-  return [(NSDecimalNumber *)self decimalNumberByMultiplyingByPowerOf10:v3 withBehavior:v5];
+  return [(NSDecimalNumber *)self decimalNumberByMultiplyingByPowerOf10:v3 withBehavior:defaultBehavior];
 }
 
 - (NSDecimalNumber)decimalNumberByMultiplyingByPowerOf10:(__int16)power withBehavior:(id)behavior
@@ -551,8 +551,8 @@
   v18 = *MEMORY[0x1E69E9840];
   v16 = 0uLL;
   v17 = 0;
-  v8 = [behavior scale];
-  v9 = [behavior roundingMode];
+  scale = [behavior scale];
+  roundingMode = [behavior roundingMode];
   v14[0] = 0;
   v14[1] = 0;
   v15 = 0;
@@ -561,26 +561,26 @@
     [(NSDecimalNumber *)self decimalValue];
   }
 
-  v10 = _NSDecimalMultiplyByPowerOf10(&v16, v14, v5, v9);
+  v10 = _NSDecimalMultiplyByPowerOf10(&v16, v14, v5, roundingMode);
   v12 = v16;
   v13 = v17;
-  return _checkErrorAndRound(v10, a2, self, 0, v8, v9, &v12, behavior);
+  return _checkErrorAndRound(v10, a2, self, 0, scale, roundingMode, &v12, behavior);
 }
 
 - (NSDecimalNumber)decimalNumberByRoundingAccordingToBehavior:(id)behavior
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [behavior scale];
-  if (v5 == 0x7FFF)
+  scale = [behavior scale];
+  if (scale == 0x7FFF)
   {
-    v6 = self;
+    selfCopy = self;
 
-    return v6;
+    return selfCopy;
   }
 
   else
   {
-    v8 = v5;
+    v8 = scale;
     v14 = 0uLL;
     v15 = 0;
     v12[0] = 0;
@@ -601,12 +601,12 @@
 
 + (void)setDefaultBehavior:(id)defaultBehavior
 {
-  v4 = [+[NSThread currentThread](NSThread threadDictionary];
+  threadDictionary = [+[NSThread currentThread](NSThread threadDictionary];
 
-  [(NSMutableDictionary *)v4 setObject:defaultBehavior forKey:@"NSDecimalNumberBehaviors"];
+  [(NSMutableDictionary *)threadDictionary setObject:defaultBehavior forKey:@"NSDecimalNumberBehaviors"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12 = *MEMORY[0x1E69E9840];
   v10[0] = 0;
@@ -626,14 +626,14 @@ LABEL_5:
     bzero(v10 + 2 * v4 + 4, 16 - 2 * v4);
   }
 
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeInt32:SLOBYTE(v10[0]) forKey:@"NS.exponent"];
-    [a3 encodeInt32:(LODWORD(v10[0]) >> 8) & 0xF forKey:@"NS.length"];
-    [a3 encodeBool:(LODWORD(v10[0]) >> 12) & 1 forKey:@"NS.negative"];
-    [a3 encodeBool:(LODWORD(v10[0]) >> 13) & 1 forKey:@"NS.compact"];
-    [a3 encodeInt32:1 forKey:@"NS.mantissa.bo"];
-    [a3 encodeBytes:v10 + 4 length:16 forKey:@"NS.mantissa"];
+    [coder encodeInt32:SLOBYTE(v10[0]) forKey:@"NS.exponent"];
+    [coder encodeInt32:(LODWORD(v10[0]) >> 8) & 0xF forKey:@"NS.length"];
+    [coder encodeBool:(LODWORD(v10[0]) >> 12) & 1 forKey:@"NS.negative"];
+    [coder encodeBool:(LODWORD(v10[0]) >> 13) & 1 forKey:@"NS.compact"];
+    [coder encodeInt32:1 forKey:@"NS.mantissa.bo"];
+    [coder encodeBytes:v10 + 4 length:16 forKey:@"NS.mantissa"];
   }
 
   else
@@ -643,12 +643,12 @@ LABEL_5:
     v7 = (v10[0] & 0x1000) != 0;
     v6 = (v10[0] & 0x2000) != 0;
     v5 = 8;
-    [a3 encodeValueOfObjCType:"i" at:&v9];
-    [a3 encodeValueOfObjCType:"S" at:&v8];
-    [a3 encodeValueOfObjCType:"C" at:&v7];
-    [a3 encodeValueOfObjCType:"C" at:&v6];
-    [a3 encodeValueOfObjCType:"I" at:&v5];
-    [a3 encodeArrayOfObjCType:"S" count:v5 at:v10 + 4];
+    [coder encodeValueOfObjCType:"i" at:&v9];
+    [coder encodeValueOfObjCType:"S" at:&v8];
+    [coder encodeValueOfObjCType:"C" at:&v7];
+    [coder encodeValueOfObjCType:"C" at:&v6];
+    [coder encodeValueOfObjCType:"I" at:&v5];
+    [coder encodeArrayOfObjCType:"S" count:v5 at:v10 + 4];
   }
 }
 
@@ -826,122 +826,122 @@ LABEL_5:
   return v2;
 }
 
-- (BOOL)_getCString:(char *)a3 length:(int)a4 multiplier:(double)a5
+- (BOOL)_getCString:(char *)string length:(int)length multiplier:(double)multiplier
 {
-  if (a5 != 1.0)
+  if (multiplier != 1.0)
   {
-    v8 = [(NSNumber *)[NSDecimalNumber alloc] initWithDouble:a5];
+    v8 = [(NSNumber *)[NSDecimalNumber alloc] initWithDouble:multiplier];
     self = [(NSDecimalNumber *)self decimalNumberByMultiplyingBy:v8];
   }
 
   v9 = [(NSDecimalNumber *)self description];
 
-  return [v9 getCString:a3 maxLength:a4 encoding:1];
+  return [v9 getCString:string maxLength:length encoding:1];
 }
 
-+ (NSDecimalNumber)numberWithChar:(char)a3
++ (NSDecimalNumber)numberWithChar:(char)char
 {
-  v3 = [objc_allocWithZone(NSDecimalNumber) initWithChar:a3];
+  v3 = [objc_allocWithZone(NSDecimalNumber) initWithChar:char];
 
   return v3;
 }
 
-+ (NSDecimalNumber)numberWithUnsignedChar:(unsigned __int8)a3
++ (NSDecimalNumber)numberWithUnsignedChar:(unsigned __int8)char
 {
-  v3 = [objc_allocWithZone(NSDecimalNumber) initWithUnsignedChar:a3];
+  v3 = [objc_allocWithZone(NSDecimalNumber) initWithUnsignedChar:char];
 
   return v3;
 }
 
-+ (NSDecimalNumber)numberWithShort:(signed __int16)a3
++ (NSDecimalNumber)numberWithShort:(signed __int16)short
 {
-  v3 = [objc_allocWithZone(NSDecimalNumber) initWithShort:a3];
+  v3 = [objc_allocWithZone(NSDecimalNumber) initWithShort:short];
 
   return v3;
 }
 
-+ (NSDecimalNumber)numberWithUnsignedShort:(unsigned __int16)a3
++ (NSDecimalNumber)numberWithUnsignedShort:(unsigned __int16)short
 {
-  v3 = [objc_allocWithZone(NSDecimalNumber) initWithUnsignedShort:a3];
+  v3 = [objc_allocWithZone(NSDecimalNumber) initWithUnsignedShort:short];
 
   return v3;
 }
 
-+ (NSDecimalNumber)numberWithInt:(int)a3
++ (NSDecimalNumber)numberWithInt:(int)int
 {
-  v3 = [objc_allocWithZone(NSDecimalNumber) initWithInt:*&a3];
+  v3 = [objc_allocWithZone(NSDecimalNumber) initWithInt:*&int];
 
   return v3;
 }
 
-+ (NSDecimalNumber)numberWithInteger:(int64_t)a3
++ (NSDecimalNumber)numberWithInteger:(int64_t)integer
 {
-  v3 = [objc_allocWithZone(NSDecimalNumber) initWithInteger:a3];
+  v3 = [objc_allocWithZone(NSDecimalNumber) initWithInteger:integer];
 
   return v3;
 }
 
-+ (NSDecimalNumber)numberWithUnsignedInt:(unsigned int)a3
++ (NSDecimalNumber)numberWithUnsignedInt:(unsigned int)int
 {
-  v3 = [objc_allocWithZone(NSDecimalNumber) initWithUnsignedInt:*&a3];
+  v3 = [objc_allocWithZone(NSDecimalNumber) initWithUnsignedInt:*&int];
 
   return v3;
 }
 
-+ (NSDecimalNumber)numberWithUnsignedInteger:(unint64_t)a3
++ (NSDecimalNumber)numberWithUnsignedInteger:(unint64_t)integer
 {
-  v3 = [objc_allocWithZone(NSDecimalNumber) initWithUnsignedInteger:a3];
+  v3 = [objc_allocWithZone(NSDecimalNumber) initWithUnsignedInteger:integer];
 
   return v3;
 }
 
-+ (NSDecimalNumber)numberWithLong:(int64_t)a3
++ (NSDecimalNumber)numberWithLong:(int64_t)long
 {
-  v3 = [objc_allocWithZone(NSDecimalNumber) initWithLong:a3];
+  v3 = [objc_allocWithZone(NSDecimalNumber) initWithLong:long];
 
   return v3;
 }
 
-+ (NSDecimalNumber)numberWithUnsignedLong:(unint64_t)a3
++ (NSDecimalNumber)numberWithUnsignedLong:(unint64_t)long
 {
-  v3 = [objc_allocWithZone(NSDecimalNumber) initWithUnsignedLong:a3];
+  v3 = [objc_allocWithZone(NSDecimalNumber) initWithUnsignedLong:long];
 
   return v3;
 }
 
-+ (NSDecimalNumber)numberWithLongLong:(int64_t)a3
++ (NSDecimalNumber)numberWithLongLong:(int64_t)long
 {
-  v3 = [objc_allocWithZone(NSDecimalNumber) initWithLongLong:a3];
+  v3 = [objc_allocWithZone(NSDecimalNumber) initWithLongLong:long];
 
   return v3;
 }
 
-+ (NSDecimalNumber)numberWithUnsignedLongLong:(unint64_t)a3
++ (NSDecimalNumber)numberWithUnsignedLongLong:(unint64_t)long
 {
-  v3 = [objc_allocWithZone(NSDecimalNumber) initWithUnsignedLongLong:a3];
+  v3 = [objc_allocWithZone(NSDecimalNumber) initWithUnsignedLongLong:long];
 
   return v3;
 }
 
-+ (NSDecimalNumber)numberWithFloat:(float)a3
++ (NSDecimalNumber)numberWithFloat:(float)float
 {
   v4 = objc_allocWithZone(NSDecimalNumber);
-  *&v5 = a3;
+  *&v5 = float;
   v6 = [v4 initWithFloat:v5];
 
   return v6;
 }
 
-+ (NSDecimalNumber)numberWithDouble:(double)a3
++ (NSDecimalNumber)numberWithDouble:(double)double
 {
-  v3 = [objc_allocWithZone(NSDecimalNumber) initWithDouble:a3];
+  v3 = [objc_allocWithZone(NSDecimalNumber) initWithDouble:double];
 
   return v3;
 }
 
-+ (NSDecimalNumber)numberWithBool:(BOOL)a3
++ (NSDecimalNumber)numberWithBool:(BOOL)bool
 {
-  v3 = [objc_allocWithZone(NSDecimalNumber) initWithBool:a3];
+  v3 = [objc_allocWithZone(NSDecimalNumber) initWithBool:bool];
 
   return v3;
 }

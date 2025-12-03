@@ -1,10 +1,10 @@
 @interface DelaunayTriangle
-- (id)initFirst:(DelaunayTriangle *)self second:(SEL)a2 third:;
+- (id)initFirst:(DelaunayTriangle *)self second:(SEL)second third:;
 @end
 
 @implementation DelaunayTriangle
 
-- (id)initFirst:(DelaunayTriangle *)self second:(SEL)a2 third:
+- (id)initFirst:(DelaunayTriangle *)self second:(SEL)second third:
 {
   v9 = v3;
   v10 = v2;

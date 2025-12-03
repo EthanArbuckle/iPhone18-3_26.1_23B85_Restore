@@ -1,5 +1,5 @@
 @interface VNFgBgE5MLInstanceSegmenterConfiguration
-+ (id)configurationForRevision:(unint64_t)a3 error:(id *)a4;
++ (id)configurationForRevision:(unint64_t)revision error:(id *)error;
 - (CGSize)inputSize;
 - (id)initDefaultConfig;
 @end
@@ -46,8 +46,8 @@
 
     v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v10 = MEMORY[0x1E695DFF8];
-    v11 = [v9 resourcePath];
-    v20[0] = v11;
+    resourcePath = [v9 resourcePath];
+    v20[0] = resourcePath;
     v20[1] = @"foregroundbackgroundsegmenter.mlmodelc";
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v13 = [v10 fileURLWithPathComponents:v12];
@@ -64,25 +64,25 @@
   return v3;
 }
 
-+ (id)configurationForRevision:(unint64_t)a3 error:(id *)a4
++ (id)configurationForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 1)
+  if (revision == 1)
   {
-    v4 = [[a1 alloc] initDefaultConfig];
+    initDefaultConfig = [[self alloc] initDefaultConfig];
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v6 = +[VNFgBgInstanceSegmenterError genericErrorConfigDescription];
-      *a4 = [VNFgBgInstanceSegmenterError errorWithCode:-4 description:v6];
+      *error = [VNFgBgInstanceSegmenterError errorWithCode:-4 description:v6];
     }
 
-    v4 = 0;
+    initDefaultConfig = 0;
   }
 
-  return v4;
+  return initDefaultConfig;
 }
 
 @end

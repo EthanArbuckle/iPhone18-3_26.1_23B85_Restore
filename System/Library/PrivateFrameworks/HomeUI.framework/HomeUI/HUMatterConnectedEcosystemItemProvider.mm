@@ -1,19 +1,19 @@
 @interface HUMatterConnectedEcosystemItemProvider
-- (id)futureFilteringOutSystemCommissionerEcosystem:(id)a3;
+- (id)futureFilteringOutSystemCommissionerEcosystem:(id)ecosystem;
 @end
 
 @implementation HUMatterConnectedEcosystemItemProvider
 
-- (id)futureFilteringOutSystemCommissionerEcosystem:(id)a3
+- (id)futureFilteringOutSystemCommissionerEcosystem:(id)ecosystem
 {
-  v4 = a3;
+  ecosystemCopy = ecosystem;
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __88__HUMatterConnectedEcosystemItemProvider_futureFilteringOutSystemCommissionerEcosystem___block_invoke;
   v7[3] = &unk_277DBB720;
   objc_copyWeak(&v8, &location);
-  v5 = [v4 flatMap:v7];
+  v5 = [ecosystemCopy flatMap:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 

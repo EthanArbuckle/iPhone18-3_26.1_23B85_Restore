@@ -1,29 +1,29 @@
 @interface FedStatsCategoricalTypeDelimitedTokenizer
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4;
-- (FedStatsCategoricalTypeDelimitedTokenizer)initWithDelimiter:(id)a3;
-- (id)tokenize:(id)a3;
++ (id)instanceWithParameters:(id)parameters error:(id *)error;
+- (FedStatsCategoricalTypeDelimitedTokenizer)initWithDelimiter:(id)delimiter;
+- (id)tokenize:(id)tokenize;
 @end
 
 @implementation FedStatsCategoricalTypeDelimitedTokenizer
 
-- (FedStatsCategoricalTypeDelimitedTokenizer)initWithDelimiter:(id)a3
+- (FedStatsCategoricalTypeDelimitedTokenizer)initWithDelimiter:(id)delimiter
 {
-  v5 = a3;
+  delimiterCopy = delimiter;
   v9.receiver = self;
   v9.super_class = FedStatsCategoricalTypeDelimitedTokenizer;
   v6 = [(FedStatsCategoricalTypeDelimitedTokenizer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delimiter, a3);
+    objc_storeStrong(&v6->_delimiter, delimiter);
   }
 
   return v7;
 }
 
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4
++ (id)instanceWithParameters:(id)parameters error:(id *)error
 {
-  v6 = [a3 objectForKey:@"delimiter"];
+  v6 = [parameters objectForKey:@"delimiter"];
   if (v6)
   {
     v7 = v6;
@@ -37,26 +37,26 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = [[a1 alloc] initWithDelimiter:v7];
+    error = [[self alloc] initWithDelimiter:v7];
   }
 
-  else if (a4)
+  else if (error)
     v8 = {;
-    *a4 = [FedStatsError errorWithCode:101 description:v8];
+    *error = [FedStatsError errorWithCode:101 description:v8];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
-- (id)tokenize:(id)a3
+- (id)tokenize:(id)tokenize
 {
-  if (a3)
+  if (tokenize)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", a3];
-    v5 = [(FedStatsCategoricalTypeDelimitedTokenizer *)self delimiter];
-    v6 = [v4 componentsSeparatedByString:v5];
+    tokenize = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", tokenize];
+    delimiter = [(FedStatsCategoricalTypeDelimitedTokenizer *)self delimiter];
+    v6 = [tokenize componentsSeparatedByString:delimiter];
   }
 
   else

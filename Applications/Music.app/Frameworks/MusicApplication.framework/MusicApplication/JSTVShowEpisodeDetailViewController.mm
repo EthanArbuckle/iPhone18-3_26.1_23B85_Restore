@@ -1,14 +1,14 @@
 @interface JSTVShowEpisodeDetailViewController
-- (_TtC16MusicApplication35JSTVShowEpisodeDetailViewController)initWithCoder:(id)a3;
-- (_TtC16MusicApplication35JSTVShowEpisodeDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MusicApplication35JSTVShowEpisodeDetailViewController)initWithCoder:(id)coder;
+- (_TtC16MusicApplication35JSTVShowEpisodeDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation JSTVShowEpisodeDetailViewController
 
-- (_TtC16MusicApplication35JSTVShowEpisodeDetailViewController)initWithCoder:(id)a3
+- (_TtC16MusicApplication35JSTVShowEpisodeDetailViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16MusicApplication35JSTVShowEpisodeDetailViewController_tvShowEpisodeDetailView) = 0;
   v4 = OBJC_IVAR____TtC16MusicApplication35JSTVShowEpisodeDetailViewController_artworkCachingReference;
@@ -22,23 +22,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_166518();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_167B9C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_167D34(a3);
+  selfCopy = self;
+  sub_167D34(appear);
 }
 
-- (_TtC16MusicApplication35JSTVShowEpisodeDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication35JSTVShowEpisodeDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

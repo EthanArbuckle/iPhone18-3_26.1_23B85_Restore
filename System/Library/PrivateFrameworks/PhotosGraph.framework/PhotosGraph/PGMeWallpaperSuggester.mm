@@ -1,5 +1,5 @@
 @interface PGMeWallpaperSuggester
-- (id)personLocalIdentifiersByOriginalPersonLocalIdentifierWithProgress:(id)a3;
+- (id)personLocalIdentifiersByOriginalPersonLocalIdentifierWithProgress:(id)progress;
 - (void)setupFilteringContexts;
 @end
 
@@ -25,30 +25,30 @@
   [(PGPeopleWallpaperSuggester *)self setSecondaryFilteringContext:0];
 }
 
-- (id)personLocalIdentifiersByOriginalPersonLocalIdentifierWithProgress:(id)a3
+- (id)personLocalIdentifiersByOriginalPersonLocalIdentifierWithProgress:(id)progress
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  progressCopy = progress;
+  v5 = _Block_copy(progressCopy);
   v6 = 0.0;
   if (!v5 || (Current = CFAbsoluteTimeGetCurrent(), Current < 0.01))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [(PGAbstractSuggester *)self session];
+    session = [(PGAbstractSuggester *)self session];
     *v23 = 0;
     *&v24 = v23;
     *(&v24 + 1) = 0x3032000000;
     v25 = __Block_byref_object_copy__37873;
     v26 = __Block_byref_object_dispose__37874;
     v27 = 0;
-    v10 = [v9 workingContext];
+    workingContext = [session workingContext];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __92__PGMeWallpaperSuggester_personLocalIdentifiersByOriginalPersonLocalIdentifierWithProgress___block_invoke;
     v16[3] = &unk_27888A5C0;
     v16[4] = v23;
-    [v10 performSynchronousConcurrentGraphReadUsingBlock:v16];
+    [workingContext performSynchronousConcurrentGraphReadUsingBlock:v16];
 
     if (v5 && CFAbsoluteTimeGetCurrent() - v6 >= 0.01 && (v15 = 0, v5[2](v5, &v15, 1.0), v8 | v15))
     {

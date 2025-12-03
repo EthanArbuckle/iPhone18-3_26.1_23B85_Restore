@@ -1,5 +1,5 @@
 @interface AVScrubberAccessibility
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (CGRect)accessibilityFrame;
 @end
 
@@ -22,11 +22,11 @@
   return result;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = AVScrubberAccessibility;
-  v4 = [(AVScrubberAccessibility *)&v6 continueTrackingWithTouch:a3 withEvent:a4];
+  v4 = [(AVScrubberAccessibility *)&v6 continueTrackingWithTouch:touch withEvent:event];
   AXPerformSafeBlock();
   return v4;
 }

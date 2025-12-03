@@ -3,21 +3,21 @@
 - (BOOL)isJellyfishVideo;
 - (CGSize)_defaultSize;
 - (CGSize)size;
-- (id)_generateThumbnailFillToSize:(CGSize)a3;
+- (id)_generateThumbnailFillToSize:(CGSize)size;
 - (id)previewItemTitle;
-- (void)generatePreviewWithCompletion:(id)a3;
+- (void)generatePreviewWithCompletion:(id)completion;
 @end
 
 @implementation CKMovieAttachmentItem
 
 - (BOOL)isJellyfishVideo
 {
-  v3 = [MEMORY[0x1E69A5B80] sharedInstance];
-  v4 = [(CKAttachmentItem *)self transferGUID];
-  v5 = [v3 transferForGUID:v4];
+  mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+  transferGUID = [(CKAttachmentItem *)self transferGUID];
+  v5 = [mEMORY[0x1E69A5B80] transferForGUID:transferGUID];
 
-  v6 = [v5 attributionInfo];
-  v7 = [v6 objectForKey:*MEMORY[0x1E69A6FB0]];
+  attributionInfo = [v5 attributionInfo];
+  v7 = [attributionInfo objectForKey:*MEMORY[0x1E69A6FB0]];
   if (v7)
   {
     v8 = IMBalloonExtensionIDWithSuffix();
@@ -34,17 +34,17 @@
 
 + (id)UTITypes
 {
-  v2 = [MEMORY[0x1E6988168] audiovisualTypes];
-  v3 = [v2 indexesOfObjectsPassingTest:&__block_literal_global_256];
-  v4 = [v2 objectsAtIndexes:v3];
+  audiovisualTypes = [MEMORY[0x1E6988168] audiovisualTypes];
+  v3 = [audiovisualTypes indexesOfObjectsPassingTest:&__block_literal_global_256];
+  v4 = [audiovisualTypes objectsAtIndexes:v3];
 
   return v4;
 }
 
-- (void)generatePreviewWithCompletion:(id)a3
+- (void)generatePreviewWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [objc_opt_class() previewCache];
+  completionCopy = completion;
+  previewCache = [objc_opt_class() previewCache];
   v6 = CKAttachmentPreviewCacheKey(self);
   v7 = +[CKUIBehavior sharedBehaviors];
   v8 = +[CKUIBehavior sharedBehaviors];
@@ -55,7 +55,7 @@
   v14 = v13;
   v16 = v15;
 
-  if (([v5 isGeneratingPreviewForKey:v6] & 1) == 0)
+  if (([previewCache isGeneratingPreviewForKey:v6] & 1) == 0)
   {
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -68,10 +68,10 @@
     v17[1] = 3221225472;
     v17[2] = __55__CKMovieAttachmentItem_generatePreviewWithCompletion___block_invoke_2;
     v17[3] = &unk_1E72EDE00;
-    v18 = v5;
+    v18 = previewCache;
     v19 = v6;
-    v20 = self;
-    v21 = v4;
+    selfCopy = self;
+    v21 = completionCopy;
     [v18 enqueueGenerationBlock:v22 completion:v17 withPriority:1 forKey:v19];
   }
 }
@@ -111,18 +111,18 @@ void __55__CKMovieAttachmentItem_generatePreviewWithCompletion___block_invoke_3(
   }
 }
 
-- (id)_generateThumbnailFillToSize:(CGSize)a3
+- (id)_generateThumbnailFillToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = MEMORY[0x193AF5ED0]("kCMTimeZero", @"CoreMedia");
   v81 = *v6;
   v82 = *(v6 + 16);
   [(CKMovieAttachmentItem *)self size];
   v8 = v7;
   v10 = v9;
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v11 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v13 = v12;
 
   v14 = width * v13 / v8;
@@ -140,8 +140,8 @@ void __55__CKMovieAttachmentItem_generatePreviewWithCompletion___block_invoke_3(
   v16 = fmax(v14, v15);
   v17 = ceil(v8 * v16);
   v18 = ceil(v10 * v16);
-  v19 = [(CKAttachmentItem *)self fileURL];
-  v20 = CKAVURLAssetForURL(v19);
+  fileURL = [(CKAttachmentItem *)self fileURL];
+  v20 = CKAVURLAssetForURL(fileURL);
 
   v21 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:v20];
   [v21 setAppliesPreferredTrackTransform:1];
@@ -195,8 +195,8 @@ void __55__CKMovieAttachmentItem_generatePreviewWithCompletion___block_invoke_3(
       }
 
       v33 = ceil(v31 * v32) / v32;
-      v34 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v34 scale];
+      mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen2 scale];
       v36 = v35 / v33;
 
       v37 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:v23 scale:0 orientation:v36];
@@ -225,14 +225,14 @@ void __55__CKMovieAttachmentItem_generatePreviewWithCompletion___block_invoke_3(
     }
 
     v47 = +[CKUIBehavior sharedBehaviors];
-    v48 = [v47 playButtonImage];
-    v49 = [v47 playButtonArrowImage];
-    v50 = [v47 playButtonPunchesOutArrow];
-    v51 = [v47 playButtonBackdropStyle];
+    playButtonImage = [v47 playButtonImage];
+    playButtonArrowImage = [v47 playButtonArrowImage];
+    playButtonPunchesOutArrow = [v47 playButtonPunchesOutArrow];
+    playButtonBackdropStyle = [v47 playButtonBackdropStyle];
     v85.width = width;
     v85.height = height;
     UIGraphicsBeginImageContextWithOptions(v85, 0, 0.0);
-    [v48 size];
+    [playButtonImage size];
     v53 = v52;
     v55 = v54;
     if (CKMainScreenScale_once_93 != -1)
@@ -252,7 +252,7 @@ void __55__CKMovieAttachmentItem_generatePreviewWithCompletion___block_invoke_3(
     v59 = floor((v38 + v57) * v56) / v56;
     v60 = v39;
     v61 = floor((v39 + (height - v55) * 0.5) * v56) / v56;
-    [v49 size];
+    [playButtonArrowImage size];
     v63 = v62;
     v65 = v64;
     if (CKMainScreenScale_once_93 != -1)
@@ -261,9 +261,9 @@ void __55__CKMovieAttachmentItem_generatePreviewWithCompletion___block_invoke_3(
     }
 
     v66 = *&CKMainScreenScale_sMainScreenScale_93;
-    [v48 drawAtPoint:{v59, v61}];
+    [playButtonImage drawAtPoint:{v59, v61}];
     v67 = v78 - v63;
-    if (v50)
+    if (playButtonPunchesOutArrow)
     {
       v68 = 1.0;
       if (v66 != 0.0)
@@ -271,13 +271,13 @@ void __55__CKMovieAttachmentItem_generatePreviewWithCompletion___block_invoke_3(
         v68 = v66;
       }
 
-      [v49 drawAtPoint:23 blendMode:floor((v58 + v67 * 0.5) * v68) / v68 alpha:{floor((v60 + (height - v65) * 0.5) * v68) / v68, 1.0}];
+      [playButtonArrowImage drawAtPoint:23 blendMode:floor((v58 + v67 * 0.5) * v68) / v68 alpha:{floor((v60 + (height - v65) * 0.5) * v68) / v68, 1.0}];
     }
 
     v69 = UIGraphicsGetImageFromCurrentImageContext();
 
     UIGraphicsEndImageContext();
-    v70 = [MEMORY[0x1E69DD378] settingsForPrivateStyle:v51 graphicsQuality:100];
+    v70 = [MEMORY[0x1E69DD378] settingsForPrivateStyle:playButtonBackdropStyle graphicsQuality:100];
     [v70 setGrayscaleTintMaskImage:v69];
     [v70 setColorTintMaskImage:v69];
     [v70 setFilterMaskImage:v69];
@@ -298,7 +298,7 @@ void __55__CKMovieAttachmentItem_generatePreviewWithCompletion___block_invoke_3(
     }
 
     [v71 drawInRect:{floor(((v78 - v78) * 0.5 + v58) * v72) / v72, floor(((height - height) * 0.5 + v60) * v72) / v72, v78, height}];
-    if (v50)
+    if (playButtonPunchesOutArrow)
     {
       v20 = v77;
       if (CKMainScreenScale_once_93 != -1)
@@ -312,7 +312,7 @@ void __55__CKMovieAttachmentItem_generatePreviewWithCompletion___block_invoke_3(
         v73 = *&CKMainScreenScale_sMainScreenScale_93;
       }
 
-      [v49 drawInRect:26 blendMode:floor((v58 + v67 * 0.5) * v73) / v73 alpha:{floor((v60 + (height - v65) * 0.5) * v73) / v73, v63, v65, 0.4}];
+      [playButtonArrowImage drawInRect:26 blendMode:floor((v58 + v67 * 0.5) * v73) / v73 alpha:{floor((v60 + (height - v65) * 0.5) * v73) / v73, v63, v65, 0.4}];
     }
 
     else
@@ -329,7 +329,7 @@ void __55__CKMovieAttachmentItem_generatePreviewWithCompletion___block_invoke_3(
         v74 = *&CKMainScreenScale_sMainScreenScale_93;
       }
 
-      [v49 drawInRect:{floor((v58 + v67 * 0.5) * v74) / v74, floor((v60 + (height - v65) * 0.5) * v74) / v74, v63, v65}];
+      [playButtonArrowImage drawInRect:{floor((v58 + v67 * 0.5) * v74) / v74, floor((v60 + (height - v65) * 0.5) * v74) / v74, v63, v65}];
     }
 
     v46 = UIGraphicsGetImageFromCurrentImageContext();
@@ -355,21 +355,21 @@ void __55__CKMovieAttachmentItem_generatePreviewWithCompletion___block_invoke_3(
   v7 = *(MEMORY[0x1E695F060] + 8);
   if (width == *MEMORY[0x1E695F060] && height == v7)
   {
-    v9 = [(CKAttachmentItem *)self fileURL];
-    v10 = CKAVURLAssetForURL(v9);
+    fileURL = [(CKAttachmentItem *)self fileURL];
+    v10 = CKAVURLAssetForURL(fileURL);
 
     v11 = [v10 tracksWithMediaType:*MEMORY[0x1E6987608]];
     if ([v11 count])
     {
-      v12 = [v11 firstObject];
+      firstObject = [v11 firstObject];
       v13 = *MEMORY[0x1E695EFF8];
       v14 = *(MEMORY[0x1E695EFF8] + 8);
-      [v12 naturalSize];
+      [firstObject naturalSize];
       v16 = v15;
       v18 = v17;
-      if (v12)
+      if (firstObject)
       {
-        [v12 preferredTransform];
+        [firstObject preferredTransform];
       }
 
       else
@@ -422,9 +422,9 @@ void __55__CKMovieAttachmentItem_generatePreviewWithCompletion___block_invoke_3(
 
   else
   {
-    v6 = [(CKAttachmentItem *)self fileURL];
-    v7 = [v6 lastPathComponent];
-    v8 = [v7 isEqualToString:@"Video Message.mov"];
+    fileURL = [(CKAttachmentItem *)self fileURL];
+    lastPathComponent = [fileURL lastPathComponent];
+    v8 = [lastPathComponent isEqualToString:@"Video Message.mov"];
 
     v3 = CKFrameworkBundle();
     v4 = v3;

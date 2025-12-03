@@ -1,6 +1,6 @@
 @interface ATXModeSetupPredictionFeatures
 - (ATXModeSetupPredictionFeatures)init;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
 @end
 
@@ -112,138 +112,138 @@
   return v3;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v70.receiver = self;
   v70.super_class = ATXModeSetupPredictionFeatures;
   v5 = [(ATXModeSetupPredictionFeatures *)&v70 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isDigestCurrentlyEnabled"];
+    v6 = [nCopy objectForKeyedSubscript:@"isDigestCurrentlyEnabled"];
     v5->_isDigestCurrentlyEnabled = [v6 BOOLValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"globalAllPagesFolderCount"];
+    v7 = [nCopy objectForKeyedSubscript:@"globalAllPagesFolderCount"];
     globalAllPagesFolderCount = v5->_globalAllPagesFolderCount;
     v5->_globalAllPagesFolderCount = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"globalAllPagesWidgetCount"];
+    v9 = [nCopy objectForKeyedSubscript:@"globalAllPagesWidgetCount"];
     globalAllPagesWidgetCount = v5->_globalAllPagesWidgetCount;
     v5->_globalAllPagesWidgetCount = v9;
 
-    v11 = [v4 objectForKeyedSubscript:@"homePageFolderCountBucket"];
+    v11 = [nCopy objectForKeyedSubscript:@"homePageFolderCountBucket"];
     homePageFolderCountBucket = v5->_homePageFolderCountBucket;
     v5->_homePageFolderCountBucket = v11;
 
-    v13 = [v4 objectForKeyedSubscript:@"homePageWidgetCountBucket"];
+    v13 = [nCopy objectForKeyedSubscript:@"homePageWidgetCountBucket"];
     homePageWidgetCountBucket = v5->_homePageWidgetCountBucket;
     v5->_homePageWidgetCountBucket = v13;
 
-    v15 = [v4 objectForKeyedSubscript:@"globalAppLaunchCountWithinLastNDays"];
+    v15 = [nCopy objectForKeyedSubscript:@"globalAppLaunchCountWithinLastNDays"];
     globalAppLaunchCountWithinLastNDays = v5->_globalAppLaunchCountWithinLastNDays;
     v5->_globalAppLaunchCountWithinLastNDays = v15;
 
-    v17 = [v4 objectForKeyedSubscript:@"globalAppLaunchCountWithinLast1Day"];
+    v17 = [nCopy objectForKeyedSubscript:@"globalAppLaunchCountWithinLast1Day"];
     globalAppLaunchCountWithinLast1Day = v5->_globalAppLaunchCountWithinLast1Day;
     v5->_globalAppLaunchCountWithinLast1Day = v17;
 
-    v19 = [v4 objectForKeyedSubscript:@"modeAppLaunchCountBasedOnGlobalPriorsWithinLastNDays"];
+    v19 = [nCopy objectForKeyedSubscript:@"modeAppLaunchCountBasedOnGlobalPriorsWithinLastNDays"];
     modeAppLaunchCountBasedOnGlobalPriorsWithinLastNDays = v5->_modeAppLaunchCountBasedOnGlobalPriorsWithinLastNDays;
     v5->_modeAppLaunchCountBasedOnGlobalPriorsWithinLastNDays = v19;
 
-    v21 = [v4 objectForKeyedSubscript:@"modeAppLaunchCountBasedOnGlobalPriorsWithinLast1Day"];
+    v21 = [nCopy objectForKeyedSubscript:@"modeAppLaunchCountBasedOnGlobalPriorsWithinLast1Day"];
     modeAppLaunchCountBasedOnGlobalPriorsWithinLast1Day = v5->_modeAppLaunchCountBasedOnGlobalPriorsWithinLast1Day;
     v5->_modeAppLaunchCountBasedOnGlobalPriorsWithinLast1Day = v21;
 
-    v23 = [v4 objectForKeyedSubscript:@"modeInferredDurationInLastNDays"];
+    v23 = [nCopy objectForKeyedSubscript:@"modeInferredDurationInLastNDays"];
     modeInferredDurationInLastNDays = v5->_modeInferredDurationInLastNDays;
     v5->_modeInferredDurationInLastNDays = v23;
 
-    v25 = [v4 objectForKeyedSubscript:@"modeInferredDurationInLast1Day"];
+    v25 = [nCopy objectForKeyedSubscript:@"modeInferredDurationInLast1Day"];
     modeInferredDurationInLast1Day = v5->_modeInferredDurationInLast1Day;
     v5->_modeInferredDurationInLast1Day = v25;
 
-    v27 = [v4 objectForKeyedSubscript:@"modeInferredCountInLastNDays"];
+    v27 = [nCopy objectForKeyedSubscript:@"modeInferredCountInLastNDays"];
     modeInferredCountInLastNDays = v5->_modeInferredCountInLastNDays;
     v5->_modeInferredCountInLastNDays = v27;
 
-    v29 = [v4 objectForKeyedSubscript:@"modeInferredCountInLast1Day"];
+    v29 = [nCopy objectForKeyedSubscript:@"modeInferredCountInLast1Day"];
     modeInferredCountInLast1Day = v5->_modeInferredCountInLast1Day;
     v5->_modeInferredCountInLast1Day = v29;
 
-    v31 = [v4 objectForKeyedSubscript:@"modeCountOfNotificationsClearedWithinLastNDays"];
+    v31 = [nCopy objectForKeyedSubscript:@"modeCountOfNotificationsClearedWithinLastNDays"];
     modeCountOfNotificationsClearedWithinLastNDays = v5->_modeCountOfNotificationsClearedWithinLastNDays;
     v5->_modeCountOfNotificationsClearedWithinLastNDays = v31;
 
-    v33 = [v4 objectForKeyedSubscript:@"modeCountOfNotificationsClearedWithinLast1Day"];
+    v33 = [nCopy objectForKeyedSubscript:@"modeCountOfNotificationsClearedWithinLast1Day"];
     modeCountOfNotificationsClearedWithinLast1Day = v5->_modeCountOfNotificationsClearedWithinLast1Day;
     v5->_modeCountOfNotificationsClearedWithinLast1Day = v33;
 
-    v35 = [v4 objectForKeyedSubscript:@"globalCountOfNotificationsClearedWithinLastNDays"];
+    v35 = [nCopy objectForKeyedSubscript:@"globalCountOfNotificationsClearedWithinLastNDays"];
     globalCountOfNotificationsClearedWithinLastNDays = v5->_globalCountOfNotificationsClearedWithinLastNDays;
     v5->_globalCountOfNotificationsClearedWithinLastNDays = v35;
 
-    v37 = [v4 objectForKeyedSubscript:@"globalCountOfNotificationsClearedWithinLast1Day"];
+    v37 = [nCopy objectForKeyedSubscript:@"globalCountOfNotificationsClearedWithinLast1Day"];
     globalCountOfNotificationsClearedWithinLast1Day = v5->_globalCountOfNotificationsClearedWithinLast1Day;
     v5->_globalCountOfNotificationsClearedWithinLast1Day = v37;
 
-    v39 = [v4 objectForKeyedSubscript:@"modeCountOfNotificationsReceivedWithinLastNDays"];
+    v39 = [nCopy objectForKeyedSubscript:@"modeCountOfNotificationsReceivedWithinLastNDays"];
     modeCountOfNotificationsReceivedWithinLastNDays = v5->_modeCountOfNotificationsReceivedWithinLastNDays;
     v5->_modeCountOfNotificationsReceivedWithinLastNDays = v39;
 
-    v41 = [v4 objectForKeyedSubscript:@"modeCountOfNotificationsReceivedWithinLast1Day"];
+    v41 = [nCopy objectForKeyedSubscript:@"modeCountOfNotificationsReceivedWithinLast1Day"];
     modeCountOfNotificationsReceivedWithinLast1Day = v5->_modeCountOfNotificationsReceivedWithinLast1Day;
     v5->_modeCountOfNotificationsReceivedWithinLast1Day = v41;
 
-    v43 = [v4 objectForKeyedSubscript:@"globalCountOfNotificationsReceivedWithinLastNDays"];
+    v43 = [nCopy objectForKeyedSubscript:@"globalCountOfNotificationsReceivedWithinLastNDays"];
     globalCountOfNotificationsReceivedWithinLastNDays = v5->_globalCountOfNotificationsReceivedWithinLastNDays;
     v5->_globalCountOfNotificationsReceivedWithinLastNDays = v43;
 
-    v45 = [v4 objectForKeyedSubscript:@"globalCountOfNotificationsReceivedWithinLast1Day"];
+    v45 = [nCopy objectForKeyedSubscript:@"globalCountOfNotificationsReceivedWithinLast1Day"];
     globalCountOfNotificationsReceivedWithinLast1Day = v5->_globalCountOfNotificationsReceivedWithinLast1Day;
     v5->_globalCountOfNotificationsReceivedWithinLast1Day = v45;
 
-    v47 = [v4 objectForKeyedSubscript:@"modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLastNDays"];
+    v47 = [nCopy objectForKeyedSubscript:@"modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLastNDays"];
     modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLastNDays = v5->_modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLastNDays;
     v5->_modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLastNDays = v47;
 
-    v49 = [v4 objectForKeyedSubscript:@"modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLast1Day"];
+    v49 = [nCopy objectForKeyedSubscript:@"modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLast1Day"];
     modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLast1Day = v5->_modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLast1Day;
     v5->_modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLast1Day = v49;
 
-    v51 = [v4 objectForKeyedSubscript:@"globalPosterConfigurationsCount"];
+    v51 = [nCopy objectForKeyedSubscript:@"globalPosterConfigurationsCount"];
     globalPosterConfigurationsCount = v5->_globalPosterConfigurationsCount;
     v5->_globalPosterConfigurationsCount = v51;
 
-    v53 = [v4 objectForKeyedSubscript:@"globalInterruptedAppSessionsCountWithinLastNDays"];
+    v53 = [nCopy objectForKeyedSubscript:@"globalInterruptedAppSessionsCountWithinLastNDays"];
     globalInterruptedAppSessionsCountWithinLastNDays = v5->_globalInterruptedAppSessionsCountWithinLastNDays;
     v5->_globalInterruptedAppSessionsCountWithinLastNDays = v53;
 
-    v55 = [v4 objectForKeyedSubscript:@"globalInterruptedAppSessionsCountWithinLast1Day"];
+    v55 = [nCopy objectForKeyedSubscript:@"globalInterruptedAppSessionsCountWithinLast1Day"];
     globalInterruptedAppSessionsCountWithinLast1Day = v5->_globalInterruptedAppSessionsCountWithinLast1Day;
     v5->_globalInterruptedAppSessionsCountWithinLast1Day = v55;
 
-    v57 = [v4 objectForKeyedSubscript:@"modeInterruptedAppSessionsCountWithinLastNDays"];
+    v57 = [nCopy objectForKeyedSubscript:@"modeInterruptedAppSessionsCountWithinLastNDays"];
     modeInterruptedAppSessionsCountWithinLastNDays = v5->_modeInterruptedAppSessionsCountWithinLastNDays;
     v5->_modeInterruptedAppSessionsCountWithinLastNDays = v57;
 
-    v59 = [v4 objectForKeyedSubscript:@"modeInterruptedAppSessionsCountWithinLast1Day"];
+    v59 = [nCopy objectForKeyedSubscript:@"modeInterruptedAppSessionsCountWithinLast1Day"];
     modeInterruptedAppSessionsCountWithinLast1Day = v5->_modeInterruptedAppSessionsCountWithinLast1Day;
     v5->_modeInterruptedAppSessionsCountWithinLast1Day = v59;
 
-    v61 = [v4 objectForKeyedSubscript:@"modeAppInterruptionsCountWithinLastNDaysBasedOnAllowListOfMode"];
+    v61 = [nCopy objectForKeyedSubscript:@"modeAppInterruptionsCountWithinLastNDaysBasedOnAllowListOfMode"];
     modeAppInterruptionsCountWithinLastNDaysBasedOnAllowListOfMode = v5->_modeAppInterruptionsCountWithinLastNDaysBasedOnAllowListOfMode;
     v5->_modeAppInterruptionsCountWithinLastNDaysBasedOnAllowListOfMode = v61;
 
-    v63 = [v4 objectForKeyedSubscript:@"modeAppInterruptionsCountWithinLastNDaysBasedOnDenyListOfMode"];
+    v63 = [nCopy objectForKeyedSubscript:@"modeAppInterruptionsCountWithinLastNDaysBasedOnDenyListOfMode"];
     modeAppInterruptionsCountWithinLastNDaysBasedOnDenyListOfMode = v5->_modeAppInterruptionsCountWithinLastNDaysBasedOnDenyListOfMode;
     v5->_modeAppInterruptionsCountWithinLastNDaysBasedOnDenyListOfMode = v63;
 
-    v65 = [v4 objectForKeyedSubscript:@"modeAppInterruptionsCountWithinLast1DayBasedOnAllowListOfMode"];
+    v65 = [nCopy objectForKeyedSubscript:@"modeAppInterruptionsCountWithinLast1DayBasedOnAllowListOfMode"];
     modeAppInterruptionsCountWithinLast1DayBasedOnAllowListOfMode = v5->_modeAppInterruptionsCountWithinLast1DayBasedOnAllowListOfMode;
     v5->_modeAppInterruptionsCountWithinLast1DayBasedOnAllowListOfMode = v65;
 
-    v67 = [v4 objectForKeyedSubscript:@"modeAppInterruptionsCountWithinLast1DayBasedOnDenyListOfMode"];
+    v67 = [nCopy objectForKeyedSubscript:@"modeAppInterruptionsCountWithinLast1DayBasedOnDenyListOfMode"];
     modeAppInterruptionsCountWithinLast1DayBasedOnDenyListOfMode = v5->_modeAppInterruptionsCountWithinLast1DayBasedOnDenyListOfMode;
     v5->_modeAppInterruptionsCountWithinLast1DayBasedOnDenyListOfMode = v67;
   }

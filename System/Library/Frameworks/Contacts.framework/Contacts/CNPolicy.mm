@@ -1,21 +1,21 @@
 @interface CNPolicy
-- (BOOL)_validateLabeledValueArrayAttributeSupport:(id)a3 forContactProperty:(id)a4 replacementValue:(id *)a5;
-- (BOOL)_validateLabeledValueArrayLabels:(id)a3 forContactProperty:(id)a4 replacementValue:(id *)a5;
-- (BOOL)shouldSetValue:(id)a3 property:(id)a4 contact:(id)a5 replacementValue:(id *)a6;
-- (CNPolicy)initWithCoder:(id)a3;
-- (id)_replacementLabeledValue:(id)a3 omittingKeys:(id)a4;
+- (BOOL)_validateLabeledValueArrayAttributeSupport:(id)support forContactProperty:(id)property replacementValue:(id *)value;
+- (BOOL)_validateLabeledValueArrayLabels:(id)labels forContactProperty:(id)property replacementValue:(id *)value;
+- (BOOL)shouldSetValue:(id)value property:(id)property contact:(id)contact replacementValue:(id *)replacementValue;
+- (CNPolicy)initWithCoder:(id)coder;
+- (id)_replacementLabeledValue:(id)value omittingKeys:(id)keys;
 @end
 
 @implementation CNPolicy
 
-- (BOOL)shouldSetValue:(id)a3 property:(id)a4 contact:(id)a5 replacementValue:(id *)a6
+- (BOOL)shouldSetValue:(id)value property:(id)property contact:(id)contact replacementValue:(id *)replacementValue
 {
-  v9 = a3;
-  v10 = a4;
+  valueCopy = value;
+  propertyCopy = property;
   v11 = +[CN contactPropertiesByKey];
-  v12 = [v11 objectForKey:v10];
+  v12 = [v11 objectForKey:propertyCopy];
 
-  if (![(CNPolicy *)self isContactPropertySupported:v10])
+  if (![(CNPolicy *)self isContactPropertySupported:propertyCopy])
   {
     goto LABEL_5;
   }
@@ -28,28 +28,28 @@
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v13 = [v9 count], v13 <= -[CNPolicy maximumCountOfValuesForContactProperty:](self, "maximumCountOfValuesForContactProperty:", v10)))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v13 = [valueCopy count], v13 <= -[CNPolicy maximumCountOfValuesForContactProperty:](self, "maximumCountOfValuesForContactProperty:", propertyCopy)))
   {
     v24 = 0;
-    v17 = [(CNPolicy *)self _validateLabeledValueArrayLabels:v9 forContactProperty:v10 replacementValue:&v24];
+    v17 = [(CNPolicy *)self _validateLabeledValueArrayLabels:valueCopy forContactProperty:propertyCopy replacementValue:&v24];
     v18 = v24;
     v19 = v18;
     if (!v17 && v18)
     {
       v20 = v18;
 
-      v9 = v20;
+      valueCopy = v20;
     }
 
     v23 = v19;
-    v21 = [(CNPolicy *)self _validateLabeledValueArrayAttributeSupport:v9 forContactProperty:v10 replacementValue:&v23];
+    v21 = [(CNPolicy *)self _validateLabeledValueArrayAttributeSupport:valueCopy forContactProperty:propertyCopy replacementValue:&v23];
     v14 = v23;
 
     v15 = v17 && v21;
-    if (a6 && !v15 && v14)
+    if (replacementValue && !v15 && v14)
     {
       v22 = v14;
-      *a6 = v14;
+      *replacementValue = v14;
     }
   }
 
@@ -65,11 +65,11 @@ LABEL_7:
   return v15;
 }
 
-- (BOOL)_validateLabeledValueArrayLabels:(id)a3 forContactProperty:(id)a4 replacementValue:(id *)a5
+- (BOOL)_validateLabeledValueArrayLabels:(id)labels forContactProperty:(id)property replacementValue:(id *)value
 {
   v57 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v35 = a4;
+  labelsCopy = labels;
+  propertyCopy = property;
   v32 = [(CNPolicy *)self supportedLabelsForContactProperty:?];
   if (![v32 count])
   {
@@ -77,16 +77,16 @@ LABEL_7:
     goto LABEL_35;
   }
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  if (a5)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (value)
   {
-    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v31, "count")}];
-    v33 = [MEMORY[0x1E696AD50] indexSet];
+    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(labelsCopy, "count")}];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
   }
 
   else
   {
-    v33 = 0;
+    indexSet = 0;
     v8 = 0;
   }
 
@@ -109,8 +109,8 @@ LABEL_7:
         }
 
         v14 = *(*(&v51 + 1) + 8 * i);
-        v15 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CNPolicy maximumCountOfValuesForContactProperty:label:](self, "maximumCountOfValuesForContactProperty:label:", v35, v14)}];
-        [v7 setObject:v15 forKey:v14];
+        v15 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CNPolicy maximumCountOfValuesForContactProperty:label:](self, "maximumCountOfValuesForContactProperty:label:", propertyCopy, v14)}];
+        [dictionary setObject:v15 forKey:v14];
       }
 
       v11 = [v10 countByEnumeratingWithState:&v51 objects:v56 count:16];
@@ -123,7 +123,7 @@ LABEL_7:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v31;
+  obj = labelsCopy;
   v16 = [obj countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (!v16)
   {
@@ -144,29 +144,29 @@ LABEL_7:
       }
 
       v19 = *(*(&v47 + 1) + 8 * j);
-      v20 = [v19 label];
-      v21 = [v7 objectForKey:v20];
+      label = [v19 label];
+      v21 = [dictionary objectForKey:label];
 
       if (v21 && [v21 integerValue])
       {
         if (v8)
         {
-          v22 = [v19 label];
-          [v8 addObject:v22];
+          label2 = [v19 label];
+          [v8 addObject:label2];
         }
 
-        v23 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v21, "integerValue") - 1}];
-        v24 = [v19 label];
-        [v7 setObject:v23 forKey:v24];
+        null = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v21, "integerValue") - 1}];
+        label3 = [v19 label];
+        [dictionary setObject:null forKey:label3];
 
         goto LABEL_25;
       }
 
       if (v8)
       {
-        [v33 addIndex:{objc_msgSend(v8, "count")}];
-        v23 = [MEMORY[0x1E695DFB0] null];
-        [v8 addObject:v23];
+        [indexSet addIndex:{objc_msgSend(v8, "count")}];
+        null = [MEMORY[0x1E695DFB0] null];
+        [v8 addObject:null];
         v9 = 0;
 LABEL_25:
 
@@ -182,7 +182,7 @@ LABEL_27:
 
   while (v16);
 
-  if (!((a5 == 0) | v9 & 1))
+  if (!((value == 0) | v9 & 1))
   {
     v43 = 0;
     v44 = &v43;
@@ -192,11 +192,11 @@ LABEL_27:
     v39[1] = 3221225472;
     v39[2] = __81__CNPolicy__validateLabeledValueArrayLabels_forContactProperty_replacementValue___block_invoke;
     v39[3] = &unk_1E74173F8;
-    v40 = v7;
+    v40 = dictionary;
     v25 = v8;
     v41 = v25;
     v42 = &v43;
-    [v33 enumerateIndexesUsingBlock:v39];
+    [indexSet enumerateIndexesUsingBlock:v39];
     if (*(v44 + 24) == 1)
     {
       v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(obj, "count")}];
@@ -209,7 +209,7 @@ LABEL_27:
       v38 = v27;
       [obj enumerateObjectsUsingBlock:v36];
       v28 = v27;
-      *a5 = v27;
+      *value = v27;
     }
 
     _Block_object_dispose(&v43, 8);
@@ -295,10 +295,10 @@ void __81__CNPolicy__validateLabeledValueArrayLabels_forContactProperty_replacem
   }
 }
 
-- (BOOL)_validateLabeledValueArrayAttributeSupport:(id)a3 forContactProperty:(id)a4 replacementValue:(id *)a5
+- (BOOL)_validateLabeledValueArrayAttributeSupport:(id)support forContactProperty:(id)property replacementValue:(id *)value
 {
-  v8 = a3;
-  v9 = a4;
+  supportCopy = support;
+  propertyCopy = property;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -309,12 +309,12 @@ void __81__CNPolicy__validateLabeledValueArrayLabels_forContactProperty_replacem
   v25 = __Block_byref_object_copy__33;
   v26 = __Block_byref_object_dispose__33;
   v27 = 0;
-  v10 = [(CNPolicy *)self unsupportedAttributesForLabeledContactProperty:v9];
+  v10 = [(CNPolicy *)self unsupportedAttributesForLabeledContactProperty:propertyCopy];
   v11 = v10;
   if (!v10)
   {
     *(v29 + 24) = 0;
-    if (!a5)
+    if (!value)
     {
       goto LABEL_9;
     }
@@ -330,20 +330,20 @@ void __81__CNPolicy__validateLabeledValueArrayLabels_forContactProperty_replacem
     v15[3] = &unk_1E7417420;
     v16 = v11;
     v19 = &v28;
-    v21 = a5 != 0;
+    v21 = value != 0;
     v20 = &v22;
-    v17 = v8;
-    v18 = self;
+    v17 = supportCopy;
+    selfCopy = self;
     [v17 enumerateObjectsUsingBlock:v15];
   }
 
-  if (a5)
+  if (value)
   {
 LABEL_7:
     v12 = v23[5];
     if (v12)
     {
-      *a5 = v12;
+      *value = v12;
     }
   }
 
@@ -427,24 +427,24 @@ void __91__CNPolicy__validateLabeledValueArrayAttributeSupport_forContactPropert
   }
 }
 
-- (id)_replacementLabeledValue:(id)a3 omittingKeys:(id)a4
+- (id)_replacementLabeledValue:(id)value omittingKeys:(id)keys
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 value];
+  valueCopy = value;
+  keysCopy = keys;
+  value = [valueCopy value];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [v5 value];
-    v10 = [v9 mutableCopy];
+    value2 = [valueCopy value];
+    v10 = [value2 mutableCopy];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v11 = v6;
+    v11 = keysCopy;
     v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v12)
     {
@@ -477,7 +477,7 @@ void __91__CNPolicy__validateLabeledValueArrayAttributeSupport_forContactPropert
   return v10;
 }
 
-- (CNPolicy)initWithCoder:(id)a3
+- (CNPolicy)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CNPolicy;

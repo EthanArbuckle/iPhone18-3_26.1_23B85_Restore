@@ -1,7 +1,7 @@
 @interface IMDIdentityLookupDecisioningManager
 + (id)sharedManager;
-- (BOOL)filterMessage:(id)a3 fromSender:(id)a4 receiverISOCountryCode:(id)a5 extensionID:(id)a6 withCompletion:(id)a7;
-- (BOOL)requestFilterCapabilitiesForExtensionID:(id)a3 withCompletion:(id)a4;
+- (BOOL)filterMessage:(id)message fromSender:(id)sender receiverISOCountryCode:(id)code extensionID:(id)d withCompletion:(id)completion;
+- (BOOL)requestFilterCapabilitiesForExtensionID:(id)d withCompletion:(id)completion;
 @end
 
 @implementation IMDIdentityLookupDecisioningManager
@@ -18,10 +18,10 @@
   return v3;
 }
 
-- (BOOL)requestFilterCapabilitiesForExtensionID:(id)a3 withCompletion:(id)a4
+- (BOOL)requestFilterCapabilitiesForExtensionID:(id)d withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -44,7 +44,7 @@
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 initWithExtensionIdentifier:v5];
+    v11 = [v9 initWithExtensionIdentifier:dCopy];
     v17 = 0;
     v18 = &v17;
     v19 = 0x3032000000;
@@ -56,7 +56,7 @@
     v14[1] = 3221225472;
     v14[2] = sub_22B627858;
     v14[3] = &unk_278706878;
-    v15 = v6;
+    v15 = completionCopy;
     v16 = &v17;
     [v12 performCapabilitiesQueryRequest:v11 completion:v14];
 
@@ -66,22 +66,22 @@
   return v10 != 0;
 }
 
-- (BOOL)filterMessage:(id)a3 fromSender:(id)a4 receiverISOCountryCode:(id)a5 extensionID:(id)a6 withCompletion:(id)a7
+- (BOOL)filterMessage:(id)message fromSender:(id)sender receiverISOCountryCode:(id)code extensionID:(id)d withCompletion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  messageCopy = message;
+  senderCopy = sender;
+  codeCopy = code;
+  dCopy = d;
+  completionCopy = completion;
   v16 = sub_22B627B00();
   if (v16)
   {
-    v17 = [objc_alloc(sub_22B627B00()) initWithExtensionIdentifier:v14];
-    v18 = [v11 string];
-    [v17 setMessageBody:v18];
+    v17 = [objc_alloc(sub_22B627B00()) initWithExtensionIdentifier:dCopy];
+    string = [messageCopy string];
+    [v17 setMessageBody:string];
 
-    [v17 setSender:v12];
-    [v17 setReceiverISOCountryCode:v13];
+    [v17 setSender:senderCopy];
+    [v17 setReceiverISOCountryCode:codeCopy];
     v24 = 0;
     v25 = &v24;
     v26 = 0x3032000000;
@@ -93,7 +93,7 @@
     v21[1] = 3221225472;
     v21[2] = sub_22B627BE0;
     v21[3] = &unk_2787068A0;
-    v22 = v15;
+    v22 = completionCopy;
     v23 = &v24;
     [v19 performQueryRequest:v17 completion:v21];
 

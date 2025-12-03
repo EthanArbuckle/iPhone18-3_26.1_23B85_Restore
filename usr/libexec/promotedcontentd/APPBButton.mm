@@ -1,15 +1,15 @@
 @interface APPBButton
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)predefinedAsString:(int)a3;
-- (int)StringAsPredefined:(id)a3;
+- (id)predefinedAsString:(int)string;
+- (int)StringAsPredefined:(id)predefined;
 - (int)predefined;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBButton
@@ -27,53 +27,53 @@
   }
 }
 
-- (id)predefinedAsString:(int)a3
+- (id)predefinedAsString:(int)string
 {
-  if ((a3 - 100000) >= 7)
+  if ((string - 100000) >= 7)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_10047E180[a3 - 100000];
+    v4 = off_10047E180[string - 100000];
   }
 
   return v4;
 }
 
-- (int)StringAsPredefined:(id)a3
+- (int)StringAsPredefined:(id)predefined
 {
   v3 = 100000;
-  v4 = a3;
-  if (([v4 isEqualToString:@"BUY_NOW"] & 1) == 0)
+  predefinedCopy = predefined;
+  if (([predefinedCopy isEqualToString:@"BUY_NOW"] & 1) == 0)
   {
-    if ([v4 isEqualToString:@"DOWNLOAD_NOW"])
+    if ([predefinedCopy isEqualToString:@"DOWNLOAD_NOW"])
     {
       v3 = 100001;
     }
 
-    else if ([v4 isEqualToString:@"READ_MORE"])
+    else if ([predefinedCopy isEqualToString:@"READ_MORE"])
     {
       v3 = 100002;
     }
 
-    else if ([v4 isEqualToString:@"SUBSCRIBE_NOW"])
+    else if ([predefinedCopy isEqualToString:@"SUBSCRIBE_NOW"])
     {
       v3 = 100003;
     }
 
-    else if ([v4 isEqualToString:@"VIEW_MORE"])
+    else if ([predefinedCopy isEqualToString:@"VIEW_MORE"])
     {
       v3 = 100004;
     }
 
-    else if ([v4 isEqualToString:@"LEARN_MORE"])
+    else if ([predefinedCopy isEqualToString:@"LEARN_MORE"])
     {
       v3 = 100005;
     }
 
-    else if ([v4 isEqualToString:@"TRY_IT_FREE"])
+    else if ([predefinedCopy isEqualToString:@"TRY_IT_FREE"])
     {
       v3 = 100006;
     }
@@ -92,8 +92,8 @@
   v7.receiver = self;
   v7.super_class = APPBButton;
   v3 = [(APPBButton *)&v7 description];
-  v4 = [(APPBButton *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBButton *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -132,74 +132,74 @@
   buttonStyle = self->_buttonStyle;
   if (buttonStyle)
   {
-    v9 = [(APPBButtonStyle *)buttonStyle dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"buttonStyle"];
+    dictionaryRepresentation = [(APPBButtonStyle *)buttonStyle dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"buttonStyle"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_text)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_accessText)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_buttonStyle)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_predefined;
-    *(v4 + 40) |= 1u;
+    toCopy[6] = self->_predefined;
+    *(toCopy + 40) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_text)
   {
-    [v4 setText:?];
-    v4 = v5;
+    [toCopy setText:?];
+    toCopy = v5;
   }
 
   if (self->_accessText)
   {
     [v5 setAccessText:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_buttonStyle)
   {
     [v5 setButtonStyle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -207,38 +207,38 @@
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(NSString *)self->_text copyWithZone:a3];
+  v7 = [(NSString *)self->_text copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
-  v9 = [(NSString *)self->_accessText copyWithZone:a3];
+  v9 = [(NSString *)self->_accessText copyWithZone:zone];
   v10 = v6[1];
   v6[1] = v9;
 
-  v11 = [(APPBButtonStyle *)self->_buttonStyle copyWithZone:a3];
+  v11 = [(APPBButtonStyle *)self->_buttonStyle copyWithZone:zone];
   v12 = v6[2];
   v6[2] = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_predefined != *(v4 + 6))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_predefined != *(equalCopy + 6))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v8 = 0;
@@ -246,13 +246,13 @@ LABEL_13:
   }
 
   text = self->_text;
-  if (text | *(v4 + 4) && ![(NSString *)text isEqual:?])
+  if (text | *(equalCopy + 4) && ![(NSString *)text isEqual:?])
   {
     goto LABEL_13;
   }
 
   accessText = self->_accessText;
-  if (accessText | *(v4 + 1))
+  if (accessText | *(equalCopy + 1))
   {
     if (![(NSString *)accessText isEqual:?])
     {
@@ -261,7 +261,7 @@ LABEL_13:
   }
 
   buttonStyle = self->_buttonStyle;
-  if (buttonStyle | *(v4 + 2))
+  if (buttonStyle | *(equalCopy + 2))
   {
     v8 = [(APPBButtonStyle *)buttonStyle isEqual:?];
   }
@@ -293,18 +293,18 @@ LABEL_14:
   return v4 ^ v5 ^ [(APPBButtonStyle *)self->_buttonStyle hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[10])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[10])
   {
-    self->_predefined = v4[6];
+    self->_predefined = fromCopy[6];
     *&self->_has |= 1u;
   }
 
-  v8 = v4;
-  if (*(v4 + 4))
+  v8 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(APPBButton *)self setText:?];
     v5 = v8;

@@ -1,26 +1,26 @@
 @interface _HKContextFreeGrammar
-+ (id)grammarWithRootNonTerminal:(id)a3 emptyStringEvaluator:(id)a4;
-- (_HKContextFreeGrammar)initWithRootNonTerminal:(id)a3 emptyStringEvaluator:(id)a4;
-- (id)parseTreeForString:(id)a3;
-- (void)_gatherExpressionsStartingAt:(id)a3;
++ (id)grammarWithRootNonTerminal:(id)terminal emptyStringEvaluator:(id)evaluator;
+- (_HKContextFreeGrammar)initWithRootNonTerminal:(id)terminal emptyStringEvaluator:(id)evaluator;
+- (id)parseTreeForString:(id)string;
+- (void)_gatherExpressionsStartingAt:(id)at;
 @end
 
 @implementation _HKContextFreeGrammar
 
-+ (id)grammarWithRootNonTerminal:(id)a3 emptyStringEvaluator:(id)a4
++ (id)grammarWithRootNonTerminal:(id)terminal emptyStringEvaluator:(id)evaluator
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithRootNonTerminal:v7 emptyStringEvaluator:v6];
+  evaluatorCopy = evaluator;
+  terminalCopy = terminal;
+  v8 = [[self alloc] initWithRootNonTerminal:terminalCopy emptyStringEvaluator:evaluatorCopy];
 
   return v8;
 }
 
-- (_HKContextFreeGrammar)initWithRootNonTerminal:(id)a3 emptyStringEvaluator:(id)a4
+- (_HKContextFreeGrammar)initWithRootNonTerminal:(id)terminal emptyStringEvaluator:(id)evaluator
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  terminalCopy = terminal;
+  evaluatorCopy = evaluator;
   v31.receiver = self;
   v31.super_class = _HKContextFreeGrammar;
   v9 = [(_HKContextFreeGrammar *)&v31 init];
@@ -34,8 +34,8 @@
     terminals = v9->_terminals;
     v9->_terminals = v12;
 
-    objc_storeStrong(&v9->_rootNonTerminal, a3);
-    v14 = [v8 copy];
+    objc_storeStrong(&v9->_rootNonTerminal, terminal);
+    v14 = [evaluatorCopy copy];
     emptyStringEvaluator = v9->_emptyStringEvaluator;
     v9->_emptyStringEvaluator = v14;
 
@@ -62,8 +62,8 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v27 + 1) + 8 * v21) characterSet];
-          [v16 formUnionWithCharacterSet:v22];
+          characterSet = [*(*(&v27 + 1) + 8 * v21) characterSet];
+          [v16 formUnionWithCharacterSet:characterSet];
 
           ++v21;
         }
@@ -84,12 +84,12 @@
   return v9;
 }
 
-- (id)parseTreeForString:(id)a3
+- (id)parseTreeForString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v5 = [MEMORY[0x1E696AE88] scannerWithString:v4];
+    v5 = [MEMORY[0x1E696AE88] scannerWithString:stringCopy];
     [v5 setCharactersToBeSkipped:0];
     v6 = 0;
     if (([v5 isAtEnd] & 1) == 0)
@@ -126,19 +126,19 @@
   return v10;
 }
 
-- (void)_gatherExpressionsStartingAt:(id)a3
+- (void)_gatherExpressionsStartingAt:(id)at
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([(NSMutableSet *)self->_nonTerminals containsObject:v4]& 1) == 0)
+  atCopy = at;
+  if (([(NSMutableSet *)self->_nonTerminals containsObject:atCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_nonTerminals addObject:v4];
+    [(NSMutableSet *)self->_nonTerminals addObject:atCopy];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v17 = v4;
-    obj = [v4 _replacementRules];
+    v17 = atCopy;
+    obj = [atCopy _replacementRules];
     v5 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v5)
     {
@@ -159,8 +159,8 @@
           v20 = 0u;
           v21 = 0u;
           v22 = 0u;
-          v10 = [v9 rightHandSide];
-          v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+          rightHandSide = [v9 rightHandSide];
+          v11 = [rightHandSide countByEnumeratingWithState:&v19 objects:v27 count:16];
           if (v11)
           {
             v12 = v11;
@@ -172,7 +172,7 @@
               {
                 if (*v20 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(rightHandSide);
                 }
 
                 v15 = *(*(&v19 + 1) + 8 * v14);
@@ -191,7 +191,7 @@
               }
 
               while (v12 != v14);
-              v12 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+              v12 = [rightHandSide countByEnumeratingWithState:&v19 objects:v27 count:16];
             }
 
             while (v12);
@@ -207,7 +207,7 @@
       while (v6);
     }
 
-    v4 = v17;
+    atCopy = v17;
   }
 
   v16 = *MEMORY[0x1E69E9840];

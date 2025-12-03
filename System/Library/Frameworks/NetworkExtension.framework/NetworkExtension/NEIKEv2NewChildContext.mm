@@ -21,9 +21,9 @@
     childSA = 0;
   }
 
-  v5 = [v3 initWithFormat:@"new child request with id %u", childSA];
+  childSA = [v3 initWithFormat:@"new child request with id %u", childSA];
 
-  return v5;
+  return childSA;
 }
 
 @end

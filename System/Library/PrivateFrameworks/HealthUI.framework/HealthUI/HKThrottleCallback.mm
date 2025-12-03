@@ -1,11 +1,11 @@
 @interface HKThrottleCallback
-- (HKThrottleCallback)initWithThrottleDelay:(double)a3;
-- (void)executeWithThrottle:(id)a3;
+- (HKThrottleCallback)initWithThrottleDelay:(double)delay;
+- (void)executeWithThrottle:(id)throttle;
 @end
 
 @implementation HKThrottleCallback
 
-- (HKThrottleCallback)initWithThrottleDelay:(double)a3
+- (HKThrottleCallback)initWithThrottleDelay:(double)delay
 {
   v8.receiver = self;
   v8.super_class = HKThrottleCallback;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    [(HKThrottleCallback *)v4 setThrottleDelayInNanoseconds:(a3 / 0.000000001)];
+    [(HKThrottleCallback *)v4 setThrottleDelayInNanoseconds:(delay / 0.000000001)];
     v6 = dispatch_queue_create("HKThrottleExpirationQueue", 0);
     [(HKThrottleCallback *)v5 setThrottleExpirationQueue:v6];
 
@@ -25,27 +25,27 @@
   return v5;
 }
 
-- (void)executeWithThrottle:(id)a3
+- (void)executeWithThrottle:(id)throttle
 {
-  v4 = a3;
+  throttleCopy = throttle;
   os_unfair_lock_lock(&self->_throttleLock);
   if ([(HKThrottleCallback *)self throttleDelayInNanoseconds]< 1)
   {
-    v4[2](v4);
+    throttleCopy[2](throttleCopy);
   }
 
   else if ([(HKThrottleCallback *)self throttleExpirationTime]< 0)
   {
-    v4[2](v4);
+    throttleCopy[2](throttleCopy);
     [(HKThrottleCallback *)self setThrottleExpirationTime:[(HKThrottleCallback *)self throttleDelayInNanoseconds]+ clock_gettime_nsec_np(_CLOCK_MONOTONIC)];
     v6 = dispatch_time(0xFFFFFFFFFFFFFFFELL, [(HKThrottleCallback *)self throttleDelayInNanoseconds]);
-    v7 = [(HKThrottleCallback *)self throttleExpirationQueue];
+    throttleExpirationQueue = [(HKThrottleCallback *)self throttleExpirationQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __42__HKThrottleCallback_executeWithThrottle___block_invoke;
     block[3] = &unk_1E81B55A8;
     block[4] = self;
-    dispatch_after(v6, v7, block);
+    dispatch_after(v6, throttleExpirationQueue, block);
   }
 
   else
@@ -53,14 +53,14 @@
     v5 = clock_gettime_nsec_np(_CLOCK_MONOTONIC);
     if (v5 >= [(HKThrottleCallback *)self throttleExpirationTime])
     {
-      v4[2](v4);
+      throttleCopy[2](throttleCopy);
       [(HKThrottleCallback *)self setLastExecutionBlock:0];
       [(HKThrottleCallback *)self setThrottleExpirationTime:-1];
     }
 
     else
     {
-      [(HKThrottleCallback *)self setLastExecutionBlock:v4];
+      [(HKThrottleCallback *)self setLastExecutionBlock:throttleCopy];
     }
   }
 

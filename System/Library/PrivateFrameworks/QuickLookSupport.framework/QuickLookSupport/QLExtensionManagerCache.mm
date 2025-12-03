@@ -1,10 +1,10 @@
 @interface QLExtensionManagerCache
-+ (id)bestMatchingExtensionsFromSupportingExtensions:(id)a3 includingExtensionsWithSupportingParentTypes:(BOOL)a4 byContentType:(id)a5;
-- (BOOL)_supportedContentTypesFromExtension:(id)a3 matches:(id)a4 allowMatchingWithParentTypes:(BOOL)a5;
-- (BOOL)hasExtensionWithMatchingAttributes:(id)a3;
-- (QLExtensionManagerCache)initWithMatchingAttributes:(id)a3;
-- (id)extensionWithMatchingAttributes:(id)a3 allowExtensionsForParentTypes:(BOOL)a4 extensionPath:(id)a5 firstPartyExtension:(BOOL)a6;
-- (void)_didReceiveNewMatchingExtensionList:(id)a3;
++ (id)bestMatchingExtensionsFromSupportingExtensions:(id)extensions includingExtensionsWithSupportingParentTypes:(BOOL)types byContentType:(id)type;
+- (BOOL)_supportedContentTypesFromExtension:(id)extension matches:(id)matches allowMatchingWithParentTypes:(BOOL)types;
+- (BOOL)hasExtensionWithMatchingAttributes:(id)attributes;
+- (QLExtensionManagerCache)initWithMatchingAttributes:(id)attributes;
+- (id)extensionWithMatchingAttributes:(id)attributes allowExtensionsForParentTypes:(BOOL)types extensionPath:(id)path firstPartyExtension:(BOOL)extension;
+- (void)_didReceiveNewMatchingExtensionList:(id)list;
 - (void)_synchronouslyWaitForExtensionListIfNeeded;
 - (void)beginMatchingExtensions;
 - (void)dealloc;
@@ -13,15 +13,15 @@
 
 @implementation QLExtensionManagerCache
 
-- (QLExtensionManagerCache)initWithMatchingAttributes:(id)a3
+- (QLExtensionManagerCache)initWithMatchingAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v21.receiver = self;
   v21.super_class = QLExtensionManagerCache;
   v5 = [(QLExtensionManagerCache *)&v21 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [attributesCopy copy];
     matchingAttributes = v5->_matchingAttributes;
     v5->_matchingAttributes = v6;
 
@@ -105,17 +105,17 @@ void __48__QLExtensionManagerCache_endMatchingExtensions__block_invoke(uint64_t 
   }
 }
 
-- (void)_didReceiveNewMatchingExtensionList:(id)a3
+- (void)_didReceiveNewMatchingExtensionList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   accessMatchingExtensionsQueue = self->_accessMatchingExtensionsQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__QLExtensionManagerCache__didReceiveNewMatchingExtensionList___block_invoke;
   v7[3] = &unk_279ADB358;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listCopy;
+  v6 = listCopy;
   dispatch_async(accessMatchingExtensionsQueue, v7);
 }
 
@@ -221,23 +221,23 @@ void __63__QLExtensionManagerCache__didReceiveNewMatchingExtensionList___block_i
   dispatch_sync(v27, block);
 }
 
-- (BOOL)hasExtensionWithMatchingAttributes:(id)a3
+- (BOOL)hasExtensionWithMatchingAttributes:(id)attributes
 {
-  v3 = [(QLExtensionManagerCache *)self extensionWithMatchingAttributes:a3 allowExtensionsForParentTypes:0 extensionPath:0];
+  v3 = [(QLExtensionManagerCache *)self extensionWithMatchingAttributes:attributes allowExtensionsForParentTypes:0 extensionPath:0];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)extensionWithMatchingAttributes:(id)a3 allowExtensionsForParentTypes:(BOOL)a4 extensionPath:(id)a5 firstPartyExtension:(BOOL)a6
+- (id)extensionWithMatchingAttributes:(id)attributes allowExtensionsForParentTypes:(BOOL)types extensionPath:(id)path firstPartyExtension:(BOOL)extension
 {
-  v6 = a6;
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  if ([v10 count])
+  extensionCopy = extension;
+  typesCopy = types;
+  attributesCopy = attributes;
+  pathCopy = path;
+  if ([attributesCopy count])
   {
-    v12 = [[QLExtensionManagerCacheKey alloc] initWithAttributes:v10 allowParentTypes:v8 wantsFirstPartyExtension:v6 extensionPath:v11];
+    v12 = [[QLExtensionManagerCacheKey alloc] initWithAttributes:attributesCopy allowParentTypes:typesCopy wantsFirstPartyExtension:extensionCopy extensionPath:pathCopy];
     v31 = 0;
     v32 = &v31;
     v33 = 0x3032000000;
@@ -277,10 +277,10 @@ void __63__QLExtensionManagerCache__didReceiveNewMatchingExtensionList___block_i
       v22[2] = __123__QLExtensionManagerCache_extensionWithMatchingAttributes_allowExtensionsForParentTypes_extensionPath_firstPartyExtension___block_invoke_2;
       v22[3] = &unk_279ADB3A8;
       v22[4] = self;
-      v26 = v6;
-      v23 = v10;
-      v27 = v8;
-      v24 = v11;
+      v26 = extensionCopy;
+      v23 = attributesCopy;
+      v27 = typesCopy;
+      v24 = pathCopy;
       v25 = &v31;
       dispatch_sync(accessMatchingExtensionsQueue, v22);
       v17 = self->_queryCacheQueue;
@@ -602,22 +602,22 @@ void __123__QLExtensionManagerCache_extensionWithMatchingAttributes_allowExtensi
   }
 }
 
-+ (id)bestMatchingExtensionsFromSupportingExtensions:(id)a3 includingExtensionsWithSupportingParentTypes:(BOOL)a4 byContentType:(id)a5
++ (id)bestMatchingExtensionsFromSupportingExtensions:(id)extensions includingExtensionsWithSupportingParentTypes:(BOOL)types byContentType:(id)type
 {
   v71 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v43 = a5;
-  v8 = [v43 lowercaseString];
+  extensionsCopy = extensions;
+  typeCopy = type;
+  lowercaseString = [typeCopy lowercaseString];
   v9 = +[QLUTIManager typesForWhichExternalGeneratorsArePreferred];
-  v10 = [v9 containsObject:v8];
+  v10 = [v9 containsObject:lowercaseString];
 
-  if (!a4)
+  if (!types)
   {
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v49 = v7;
+    v49 = extensionsCopy;
     v29 = [v49 countByEnumeratingWithState:&v58 objects:v70 count:16];
     if (v29)
     {
@@ -636,19 +636,19 @@ LABEL_30:
 
         v12 = *(*(&v58 + 1) + 8 * v32);
 
-        v34 = [v12 extension];
+        extension = [v12 extension];
         v35 = v10;
-        v36 = ([v34 QL_isAppleExtension] ^ 1) & v10;
+        v36 = ([extension QL_isAppleExtension] ^ 1) & v10;
 
         if (v36)
         {
           break;
         }
 
-        v37 = [v12 extension];
-        v38 = [v37 QL_isAppleExtension];
+        extension2 = [v12 extension];
+        qL_isAppleExtension = [extension2 QL_isAppleExtension];
 
-        if (!(v35 & 1 | ((v38 & 1) == 0)))
+        if (!(v35 & 1 | ((qL_isAppleExtension & 1) == 0)))
         {
           break;
         }
@@ -682,12 +682,12 @@ LABEL_30:
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v11 = v7;
+  v11 = extensionsCopy;
   v48 = [v11 countByEnumeratingWithState:&v54 objects:v69 count:16];
   if (v48)
   {
     obj = v11;
-    v42 = v7;
+    v42 = extensionsCopy;
     v12 = 0;
     v47 = *v55;
     v45 = v10;
@@ -702,13 +702,13 @@ LABEL_30:
         }
 
         v14 = *(*(&v54 + 1) + 8 * i);
-        v15 = [v14 extension];
+        extension3 = [v14 extension];
         v50 = 0u;
         v51 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v16 = [v15 attributes];
-        v17 = [v16 objectForKeyedSubscript:@"QLSupportedContentTypes"];
+        attributes = [extension3 attributes];
+        v17 = [attributes objectForKeyedSubscript:@"QLSupportedContentTypes"];
 
         v18 = [v17 countByEnumeratingWithState:&v50 objects:v68 count:16];
         if (v18)
@@ -724,8 +724,8 @@ LABEL_30:
                 objc_enumerationMutation(v17);
               }
 
-              v22 = [*(*(&v50 + 1) + 8 * j) lowercaseString];
-              if ([v22 isEqualToString:v8])
+              lowercaseString2 = [*(*(&v50 + 1) + 8 * j) lowercaseString];
+              if ([lowercaseString2 isEqualToString:lowercaseString])
               {
                 v24 = v14;
 
@@ -735,14 +735,14 @@ LABEL_30:
 
               if (!v12)
               {
-                v23 = [v49 objectForKeyedSubscript:v22];
+                v23 = [v49 objectForKeyedSubscript:lowercaseString2];
                 if (v23)
                 {
                 }
 
-                else if ([v15 QL_isAppleExtension])
+                else if ([extension3 QL_isAppleExtension])
                 {
-                  [v49 setObject:v14 forKeyedSubscript:v22];
+                  [v49 setObject:v14 forKeyedSubscript:lowercaseString2];
                 }
               }
             }
@@ -760,19 +760,19 @@ LABEL_22:
           LOBYTE(v10) = v45;
         }
 
-        v25 = [v12 extension];
-        v26 = [v25 QL_isAppleExtension];
+        extension4 = [v12 extension];
+        qL_isAppleExtension2 = [extension4 QL_isAppleExtension];
 
-        if (!(v10 & 1 | ((v26 & 1) == 0)))
+        if (!(v10 & 1 | ((qL_isAppleExtension2 & 1) == 0)))
         {
 
           goto LABEL_41;
         }
 
-        v27 = [v12 extension];
-        v28 = [v27 QL_isAppleExtension];
+        extension5 = [v12 extension];
+        qL_isAppleExtension3 = [extension5 QL_isAppleExtension];
 
-        if (((v28 | v46) & 1) == 0)
+        if (((qL_isAppleExtension3 | v46) & 1) == 0)
         {
           goto LABEL_41;
         }
@@ -789,11 +789,11 @@ LABEL_22:
 
 LABEL_41:
 
-    v7 = v42;
+    extensionsCopy = v42;
     if (v12)
     {
 LABEL_42:
-      v39 = v43;
+      v39 = typeCopy;
       goto LABEL_48;
     }
   }
@@ -814,30 +814,30 @@ LABEL_42:
     *buf = 138412802;
     v63 = @"extension";
     v64 = 2112;
-    v65 = v43;
+    v65 = typeCopy;
     v66 = 2048;
     v67 = v49;
     _os_log_impl(&dword_2615AE000, v40, OS_LOG_TYPE_INFO, "Retrieving %@ for type %@ from dictionary %p #UTI", buf, 0x20u);
   }
 
-  v39 = v43;
-  v12 = [QLUTIManager valueInTypeKeyedDictionary:v49 forType:v43];
+  v39 = typeCopy;
+  v12 = [QLUTIManager valueInTypeKeyedDictionary:v49 forType:typeCopy];
 LABEL_48:
 
   return v12;
 }
 
-- (BOOL)_supportedContentTypesFromExtension:(id)a3 matches:(id)a4 allowMatchingWithParentTypes:(BOOL)a5
+- (BOOL)_supportedContentTypesFromExtension:(id)extension matches:(id)matches allowMatchingWithParentTypes:(BOOL)types
 {
-  v5 = a5;
+  typesCopy = types;
   v48 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v8];
-  if ([v7 QL_isAppleExtension] && v5)
+  extensionCopy = extension;
+  matchesCopy = matches;
+  v9 = [MEMORY[0x277CE1CB8] typeWithIdentifier:matchesCopy];
+  if ([extensionCopy QL_isAppleExtension] && typesCopy)
   {
-    v10 = [v7 attributes];
-    v11 = [v10 objectForKeyedSubscript:@"QLSupportedContentTypes"];
+    attributes = [extensionCopy attributes];
+    v11 = [attributes objectForKeyedSubscript:@"QLSupportedContentTypes"];
 
     v40 = 0u;
     v41 = 0u;
@@ -848,7 +848,7 @@ LABEL_48:
     if (v13)
     {
       v14 = v13;
-      v33 = v7;
+      v33 = extensionCopy;
       v15 = *v39;
       while (2)
       {
@@ -874,15 +874,15 @@ LABEL_48:
             v19 = _log();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
             {
-              v31 = [v33 identifier];
+              identifier = [v33 identifier];
               *buf = 138412546;
               v44 = v17;
               v45 = 2112;
-              v46 = v31;
+              v46 = identifier;
               _os_log_error_impl(&dword_2615AE000, v19, OS_LOG_TYPE_ERROR, "Invalid content type identifier %@ specified in extension %@", buf, 0x16u);
             }
 
-            if (![v8 compare:v17 options:1])
+            if (![matchesCopy compare:v17 options:1])
             {
 LABEL_31:
 
@@ -905,7 +905,7 @@ LABEL_31:
 LABEL_32:
       v22 = v12;
 LABEL_33:
-      v7 = v33;
+      extensionCopy = v33;
     }
 
     else
@@ -921,14 +921,14 @@ LABEL_33:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v21 = [v7 attributes];
-    v22 = [v21 objectForKeyedSubscript:@"QLSupportedContentTypes"];
+    attributes2 = [extensionCopy attributes];
+    v22 = [attributes2 objectForKeyedSubscript:@"QLSupportedContentTypes"];
 
     v23 = [v22 countByEnumeratingWithState:&v34 objects:v42 count:16];
     if (v23)
     {
       v24 = v23;
-      v33 = v7;
+      v33 = extensionCopy;
       v25 = *v35;
       do
       {
@@ -956,16 +956,16 @@ LABEL_33:
             v29 = _log();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
             {
-              v32 = [v33 identifier];
+              identifier2 = [v33 identifier];
               *buf = 138412546;
               v44 = v27;
               v45 = 2112;
-              v46 = v32;
+              v46 = identifier2;
               _os_log_error_impl(&dword_2615AE000, v29, OS_LOG_TYPE_ERROR, "Invalid content type identifier %@ specified in extension %@", buf, 0x16u);
             }
 
             v20 = 1;
-            if (![v27 compare:v8 options:1])
+            if (![v27 compare:matchesCopy options:1])
             {
               goto LABEL_33;
             }
@@ -977,7 +977,7 @@ LABEL_33:
 
       while (v24);
       v20 = 0;
-      v7 = v33;
+      extensionCopy = v33;
     }
 
     else

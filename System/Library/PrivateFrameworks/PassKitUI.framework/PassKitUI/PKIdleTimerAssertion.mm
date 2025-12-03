@@ -1,16 +1,16 @@
 @interface PKIdleTimerAssertion
-- (PKIdleTimerAssertion)initWithReason:(id)a3;
+- (PKIdleTimerAssertion)initWithReason:(id)reason;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation PKIdleTimerAssertion
 
-- (PKIdleTimerAssertion)initWithReason:(id)a3
+- (PKIdleTimerAssertion)initWithReason:(id)reason
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  reasonCopy = reason;
+  if (reasonCopy)
   {
     v14.receiver = self;
     v14.super_class = PKIdleTimerAssertion;
@@ -21,15 +21,15 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v5;
+        v16 = reasonCopy;
         _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "Taking idle timer assertion with reason: %@", buf, 0xCu);
       }
 
-      objc_storeStrong(&self->_reason, a3);
+      objc_storeStrong(&self->_reason, reason);
       if (PKRunningInViewService())
       {
-        v7 = [MEMORY[0x1E69A8AB8] sharedInstance];
-        v8 = [v7 newAssertionToDisableIdleTimerForReason:self->_reason error:0];
+        mEMORY[0x1E69A8AB8] = [MEMORY[0x1E69A8AB8] sharedInstance];
+        v8 = [mEMORY[0x1E69A8AB8] newAssertionToDisableIdleTimerForReason:self->_reason error:0];
         idleTimerAssertion = self->_idleTimerAssertion;
         self->_idleTimerAssertion = v8;
 
@@ -50,13 +50,13 @@ LABEL_11:
 
       else
       {
-        v12 = [MEMORY[0x1E69DC668] sharedApplication];
-        [v12 _setIdleTimerDisabled:1 forReason:self->_reason];
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+        [mEMORY[0x1E69DC668] _setIdleTimerDisabled:1 forReason:self->_reason];
       }
     }
 
     self = self;
-    v11 = self;
+    selfCopy = self;
     goto LABEL_15;
   }
 
@@ -70,10 +70,10 @@ LABEL_11:
 
 LABEL_12:
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_15:
 
-  return v11;
+  return selfCopy;
 }
 
 - (void)invalidate
@@ -94,14 +94,14 @@ LABEL_15:
     if (idleTimerAssertion)
     {
       [(BSInvalidatable *)idleTimerAssertion invalidate];
-      v6 = self->_idleTimerAssertion;
+      mEMORY[0x1E69DC668] = self->_idleTimerAssertion;
       self->_idleTimerAssertion = 0;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69DC668] sharedApplication];
-      [v6 _setIdleTimerDisabled:0 forReason:self->_reason];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      [mEMORY[0x1E69DC668] _setIdleTimerDisabled:0 forReason:self->_reason];
     }
   }
 }

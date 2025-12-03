@@ -2,8 +2,8 @@
 - (NSString)description;
 - (SBBluetoothAccessoryBatteryMonitor)init;
 - (id)descriptionBuilder;
-- (void)_popLowPowerAlertForAccessoryIfNecessary:(id)a3;
-- (void)connectedDevicesDidChange:(id)a3;
+- (void)_popLowPowerAlertForAccessoryIfNecessary:(id)necessary;
+- (void)connectedDevicesDidChange:(id)change;
 @end
 
 @implementation SBBluetoothAccessoryBatteryMonitor
@@ -29,15 +29,15 @@
   return v2;
 }
 
-- (void)connectedDevicesDidChange:(id)a3
+- (void)connectedDevicesDidChange:(id)change
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [changeCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -49,7 +49,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(changeCopy);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
@@ -59,41 +59,41 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [changeCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_popLowPowerAlertForAccessoryIfNecessary:(id)a3
+- (void)_popLowPowerAlertForAccessoryIfNecessary:(id)necessary
 {
-  v8 = a3;
-  v4 = [v8 name];
-  v5 = [(NSMutableSet *)self->_accessoryNamesInLowPower containsObject:v4];
-  if ([v8 isLowBattery] && objc_msgSend(v8, "isConnected"))
+  necessaryCopy = necessary;
+  name = [necessaryCopy name];
+  v5 = [(NSMutableSet *)self->_accessoryNamesInLowPower containsObject:name];
+  if ([necessaryCopy isLowBattery] && objc_msgSend(necessaryCopy, "isConnected"))
   {
     if ((v5 & 1) == 0)
     {
-      [(NSMutableSet *)self->_accessoryNamesInLowPower addObject:v4];
-      v6 = -[SBBluetoothAccessoryLowPowerAlertItem initWithAccessory:batteryLevel:]([SBBluetoothAccessoryLowPowerAlertItem alloc], "initWithAccessory:batteryLevel:", v4, [v8 percentCharge]);
+      [(NSMutableSet *)self->_accessoryNamesInLowPower addObject:name];
+      v6 = -[SBBluetoothAccessoryLowPowerAlertItem initWithAccessory:batteryLevel:]([SBBluetoothAccessoryLowPowerAlertItem alloc], "initWithAccessory:batteryLevel:", name, [necessaryCopy percentCharge]);
       v7 = +[SBAlertItemsController sharedInstance];
       [v7 activateAlertItem:v6];
     }
   }
 
-  else if (([v8 isLowBattery] & 1) == 0 && ((v5 ^ 1) & 1) == 0)
+  else if (([necessaryCopy isLowBattery] & 1) == 0 && ((v5 ^ 1) & 1) == 0)
   {
-    [(NSMutableSet *)self->_accessoryNamesInLowPower removeObject:v4];
+    [(NSMutableSet *)self->_accessoryNamesInLowPower removeObject:name];
   }
 }
 
 - (NSString)description
 {
-  v2 = [(SBBluetoothAccessoryBatteryMonitor *)self descriptionBuilder];
-  v3 = [v2 build];
+  descriptionBuilder = [(SBBluetoothAccessoryBatteryMonitor *)self descriptionBuilder];
+  build = [descriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)descriptionBuilder

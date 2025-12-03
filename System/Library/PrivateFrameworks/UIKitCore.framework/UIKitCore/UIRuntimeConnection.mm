@@ -1,25 +1,25 @@
 @interface UIRuntimeConnection
-- (UIRuntimeConnection)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UIRuntimeConnection)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIRuntimeConnection
 
-- (UIRuntimeConnection)initWithCoder:(id)a3
+- (UIRuntimeConnection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UIRuntimeConnection *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UILabel"];
+    v6 = [coderCopy decodeObjectForKey:@"UILabel"];
     label = v5->_label;
     v5->_label = v6;
 
-    v8 = [v4 decodeObjectForKey:@"UISource"];
+    v8 = [coderCopy decodeObjectForKey:@"UISource"];
     source = v5->_source;
     v5->_source = v8;
 
-    v10 = [v4 decodeObjectForKey:@"UIDestination"];
+    v10 = [coderCopy decodeObjectForKey:@"UIDestination"];
     destination = v5->_destination;
     v5->_destination = v10;
   }
@@ -27,29 +27,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   label = self->_label;
-  v8 = v4;
+  v8 = coderCopy;
   if (label)
   {
-    [v4 encodeObject:label forKey:@"UILabel"];
-    v4 = v8;
+    [coderCopy encodeObject:label forKey:@"UILabel"];
+    coderCopy = v8;
   }
 
   source = self->_source;
   if (source)
   {
     [v8 encodeObject:source forKey:@"UISource"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   destination = self->_destination;
   if (destination)
   {
     [v8 encodeObject:destination forKey:@"UIDestination"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 

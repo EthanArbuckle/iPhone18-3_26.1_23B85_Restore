@@ -2,7 +2,7 @@
 - (BOOL)hasVideoComplement;
 - (BOOL)isInTrash;
 - (BOOL)isLegacy;
-- (PHImportDuplicateInfo)initWithAssetInfo:(id)a3;
+- (PHImportDuplicateInfo)initWithAssetInfo:(id)info;
 - (double)timezoneOffset;
 - (id)description;
 @end
@@ -21,38 +21,38 @@
 - (BOOL)isInTrash
 {
   v2 = [(NSMutableDictionary *)self->_info objectForKeyedSubscript:@"asset.trashedState"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasVideoComplement
 {
   v2 = [(NSMutableDictionary *)self->_info objectForKeyedSubscript:@"hasVideoComplement"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PHImportDuplicateInfo *)self uuid];
-  v5 = [(PHImportDuplicateInfo *)self fileSize];
-  v6 = [(PHImportDuplicateInfo *)self fileName];
-  v7 = [(PHImportDuplicateInfo *)self imageDate];
-  v8 = [(PHImportDuplicateInfo *)self alternateImportImageDate];
-  if (v8)
+  uuid = [(PHImportDuplicateInfo *)self uuid];
+  fileSize = [(PHImportDuplicateInfo *)self fileSize];
+  fileName = [(PHImportDuplicateInfo *)self fileName];
+  imageDate = [(PHImportDuplicateInfo *)self imageDate];
+  alternateImportImageDate = [(PHImportDuplicateInfo *)self alternateImportImageDate];
+  if (alternateImportImageDate)
   {
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [(PHImportDuplicateInfo *)self alternateImportImageDate];
-    v11 = [v9 stringWithFormat:@" (alt: %@)", v10];
-    v12 = [v3 stringWithFormat:@"uuid: %@, size: %@, name: %@, date: %@%@", v4, v5, v6, v7, v11];
+    alternateImportImageDate2 = [(PHImportDuplicateInfo *)self alternateImportImageDate];
+    v11 = [v9 stringWithFormat:@" (alt: %@)", alternateImportImageDate2];
+    v12 = [v3 stringWithFormat:@"uuid: %@, size: %@, name: %@, date: %@%@", uuid, fileSize, fileName, imageDate, v11];
   }
 
   else
   {
-    v12 = [v3 stringWithFormat:@"uuid: %@, size: %@, name: %@, date: %@%@", v4, v5, v6, v7, &stru_1F0FC60C8];
+    v12 = [v3 stringWithFormat:@"uuid: %@, size: %@, name: %@, date: %@%@", uuid, fileSize, fileName, imageDate, &stru_1F0FC60C8];
   }
 
   return v12;
@@ -60,34 +60,34 @@
 
 - (BOOL)isLegacy
 {
-  v2 = [(PHImportDuplicateInfo *)self alternateImportImageDate];
-  v3 = v2 == 0;
+  alternateImportImageDate = [(PHImportDuplicateInfo *)self alternateImportImageDate];
+  v3 = alternateImportImageDate == 0;
 
   return v3;
 }
 
-- (PHImportDuplicateInfo)initWithAssetInfo:(id)a3
+- (PHImportDuplicateInfo)initWithAssetInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     v5 = [(PHImportDuplicateInfo *)self init];
     v6 = v5;
     if (v5)
     {
-      [(PHImportDuplicateInfo *)v5 setInfo:v4];
+      [(PHImportDuplicateInfo *)v5 setInfo:infoCopy];
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

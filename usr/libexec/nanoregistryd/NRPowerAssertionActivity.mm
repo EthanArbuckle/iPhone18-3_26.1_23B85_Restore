@@ -1,38 +1,38 @@
 @interface NRPowerAssertionActivity
-+ (NRPowerAssertionActivity)activityWithName:(id)a3;
-+ (void)addActivityGroup:(id)a3;
-+ (void)renameAssertionWithSuffix:(id)a3;
-- (NRPowerAssertionActivity)initWithName:(id)a3;
++ (NRPowerAssertionActivity)activityWithName:(id)name;
++ (void)addActivityGroup:(id)group;
++ (void)renameAssertionWithSuffix:(id)suffix;
+- (NRPowerAssertionActivity)initWithName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation NRPowerAssertionActivity
 
-+ (void)addActivityGroup:(id)a3
++ (void)addActivityGroup:(id)group
 {
-  v3 = a3;
+  groupCopy = group;
   v4 = +[NRPowerAssertion sharedInstance];
-  [v4 addActivityGroup:v3];
+  [v4 addActivityGroup:groupCopy];
 }
 
-+ (void)renameAssertionWithSuffix:(id)a3
++ (void)renameAssertionWithSuffix:(id)suffix
 {
-  v3 = a3;
+  suffixCopy = suffix;
   v4 = +[NRPowerAssertion sharedInstance];
-  [v4 renameAssertionWithSuffix:v3];
+  [v4 renameAssertionWithSuffix:suffixCopy];
 }
 
-+ (NRPowerAssertionActivity)activityWithName:(id)a3
++ (NRPowerAssertionActivity)activityWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] initWithName:nameCopy];
 
   return v5;
 }
 
-- (NRPowerAssertionActivity)initWithName:(id)a3
+- (NRPowerAssertionActivity)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = NRPowerAssertionActivity;
   v5 = [(NRPowerAssertionActivity *)&v11 init];
@@ -42,7 +42,7 @@
   }
 
   v6 = +[NRPowerAssertion sharedInstance];
-  v7 = [v6 addActivityWithName:v4];
+  v7 = [v6 addActivityWithName:nameCopy];
   uuid = v5->_uuid;
   v5->_uuid = v7;
 

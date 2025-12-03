@@ -1,8 +1,8 @@
 @interface RMStatusQuerier
 - (RMStatusQuerier)init;
-- (RMStatusQuerier)initWithStatusPublishers:(id)a3;
-- (id)_findStatusPublishersForKeyPaths:(id)a3;
-- (id)_queryForFilteredStatusWithKeyPaths:(id)a3 lastAcknowledgedDateByKeyPath:(id)a4 onBehalfOfManagementChannel:(id)a5;
+- (RMStatusQuerier)initWithStatusPublishers:(id)publishers;
+- (id)_findStatusPublishersForKeyPaths:(id)paths;
+- (id)_queryForFilteredStatusWithKeyPaths:(id)paths lastAcknowledgedDateByKeyPath:(id)path onBehalfOfManagementChannel:(id)channel;
 @end
 
 @implementation RMStatusQuerier
@@ -28,15 +28,15 @@
   return v8;
 }
 
-- (RMStatusQuerier)initWithStatusPublishers:(id)a3
+- (RMStatusQuerier)initWithStatusPublishers:(id)publishers
 {
-  v4 = a3;
+  publishersCopy = publishers;
   v9.receiver = self;
   v9.super_class = RMStatusQuerier;
   v5 = [(RMStatusQuerier *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [publishersCopy copy];
     statusPublishers = v5->_statusPublishers;
     v5->_statusPublishers = v6;
   }
@@ -44,9 +44,9 @@
   return v5;
 }
 
-- (id)_findStatusPublishersForKeyPaths:(id)a3
+- (id)_findStatusPublishersForKeyPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v5 = +[RMExternalStatusPublisher sharedPublisher];
   v6 = [NSMutableArray arrayWithObject:v5];
 
@@ -54,8 +54,8 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(RMStatusQuerier *)self statusPublishers];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  statusPublishers = [(RMStatusQuerier *)self statusPublishers];
+  v8 = [statusPublishers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -66,12 +66,12 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(statusPublishers);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 supportedKeyPaths];
-        v14 = RMFilterSupportedKeyPathsByRequestedKeyPaths(v13, v4);
+        supportedKeyPaths = [v12 supportedKeyPaths];
+        v14 = RMFilterSupportedKeyPathsByRequestedKeyPaths(supportedKeyPaths, pathsCopy);
 
         if ([v14 count])
         {
@@ -79,7 +79,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [statusPublishers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -88,18 +88,18 @@
   return v6;
 }
 
-- (id)_queryForFilteredStatusWithKeyPaths:(id)a3 lastAcknowledgedDateByKeyPath:(id)a4 onBehalfOfManagementChannel:(id)a5
+- (id)_queryForFilteredStatusWithKeyPaths:(id)paths lastAcknowledgedDateByKeyPath:(id)path onBehalfOfManagementChannel:(id)channel
 {
-  v73 = a3;
-  v74 = a4;
-  v71 = a5;
+  pathsCopy = paths;
+  pathCopy = path;
+  channelCopy = channel;
   v8 = +[RMLog statusQuerier];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100068D34(v73, v8);
+    sub_100068D34(pathsCopy, v8);
   }
 
-  if (![v73 count])
+  if (![pathsCopy count])
   {
     v63 = objc_opt_new();
     goto LABEL_78;
@@ -107,8 +107,8 @@
 
   v68 = objc_opt_new();
   v66 = objc_opt_new();
-  v9 = [(RMStatusQuerier *)self _findStatusPublishersForKeyPaths:v73];
-  v70 = [NSMutableSet setWithSet:v73];
+  v9 = [(RMStatusQuerier *)self _findStatusPublishersForKeyPaths:pathsCopy];
+  v70 = [NSMutableSet setWithSet:pathsCopy];
   v84 = 0u;
   v85 = 0u;
   v82 = 0u;
@@ -137,8 +137,8 @@
 
       v75 = v11;
       v13 = *(*(&v82 + 1) + 8 * v11);
-      v14 = [v13 supportedKeyPaths];
-      v15 = RMFilterSupportedKeyPathsByRequestedKeyPaths(v14, v73);
+      supportedKeyPaths = [v13 supportedKeyPaths];
+      v15 = RMFilterSupportedKeyPathsByRequestedKeyPaths(supportedKeyPaths, pathsCopy);
 
       [v70 minusSet:v15];
       v16 = v15;
@@ -188,17 +188,17 @@
         while (v18);
       }
 
-      if (v74)
+      if (pathCopy)
       {
         v80 = 0;
-        v77 = [v13 queryForUnacknowledgedStatusWithKeyPaths:v17 lastAcknowledgedDateByKeyPath:v74 onBehalfOfManagementChannel:v71 error:&v80];
+        v77 = [v13 queryForUnacknowledgedStatusWithKeyPaths:v17 lastAcknowledgedDateByKeyPath:pathCopy onBehalfOfManagementChannel:channelCopy error:&v80];
         v25 = &v80;
       }
 
       else
       {
         v81 = 0;
-        v77 = [v13 queryForStatusWithKeyPaths:v17 onBehalfOfManagementChannel:v71 error:&v81];
+        v77 = [v13 queryForStatusWithKeyPaths:v17 onBehalfOfManagementChannel:channelCopy error:&v81];
         v25 = &v81;
       }
 
@@ -268,13 +268,13 @@ LABEL_44:
             {
             }
 
-            v39 = [v32 pathExtension];
-            v40 = [v39 length] == 0;
+            pathExtension = [v32 pathExtension];
+            v40 = [pathExtension length] == 0;
 
             if (!v40)
             {
-              v41 = [v32 stringByDeletingPathExtension];
-              sub_1000326D0(v26, v41);
+              stringByDeletingPathExtension = [v32 stringByDeletingPathExtension];
+              sub_1000326D0(v26, stringByDeletingPathExtension);
             }
 
             v35 = [v27 valueForKeyPath:v32];
@@ -407,7 +407,7 @@ LABEL_63:
     }
   }
 
-  v63 = [[RMStatusQueryResult alloc] initWithStatusKeyPaths:v73 statusByKeyPath:v68 errorByKeyPath:v66];
+  v63 = [[RMStatusQueryResult alloc] initWithStatusKeyPaths:pathsCopy statusByKeyPath:v68 errorByKeyPath:v66];
 
 LABEL_78:
 

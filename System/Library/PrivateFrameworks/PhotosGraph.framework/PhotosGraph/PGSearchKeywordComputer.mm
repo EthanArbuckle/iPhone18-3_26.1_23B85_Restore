@@ -1,38 +1,38 @@
 @interface PGSearchKeywordComputer
-- (PGSearchKeywordComputer)initWithGraph:(id)a3 searchComputationCache:(id)a4;
-- (id)_holidayNodesForTimedEvent:(id)a3;
-- (id)_personLocalIdentifiersBySocialGroupUUIDWithPhotoLibrary:(id)a3 graph:(id)a4;
-- (id)_personUUIDsInSocialGroupNode:(id)a3 photoLibrary:(id)a4;
-- (id)assetSearchKeywordsByMomentUUIDWithEventUUIDs:(id)a3 ofType:(unint64_t)a4 searchEntityAccumulator:(id)a5 progressBlock:(id)a6;
-- (id)searchKeywordsByEventWithEventUUIDs:(id)a3 ofType:(unint64_t)a4 photoLibrary:(id)a5 progressBlock:(id)a6;
-- (void)_aggregatePublicEventsWithoutBusinessForMomentNode:(id)a3 searchEntityAccumuator:(id)a4;
-- (void)_enumerateBusinessAndPublicEventKeywordsForEvent:(id)a3 usingBlock:(id)a4;
-- (void)_enumerateEventNodesForUUIDs:(id)a3 ofType:(unint64_t)a4 usingBlock:(id)a5;
+- (PGSearchKeywordComputer)initWithGraph:(id)graph searchComputationCache:(id)cache;
+- (id)_holidayNodesForTimedEvent:(id)event;
+- (id)_personLocalIdentifiersBySocialGroupUUIDWithPhotoLibrary:(id)library graph:(id)graph;
+- (id)_personUUIDsInSocialGroupNode:(id)node photoLibrary:(id)library;
+- (id)assetSearchKeywordsByMomentUUIDWithEventUUIDs:(id)ds ofType:(unint64_t)type searchEntityAccumulator:(id)accumulator progressBlock:(id)block;
+- (id)searchKeywordsByEventWithEventUUIDs:(id)ds ofType:(unint64_t)type photoLibrary:(id)library progressBlock:(id)block;
+- (void)_aggregatePublicEventsWithoutBusinessForMomentNode:(id)node searchEntityAccumuator:(id)accumuator;
+- (void)_enumerateBusinessAndPublicEventKeywordsForEvent:(id)event usingBlock:(id)block;
+- (void)_enumerateEventNodesForUUIDs:(id)ds ofType:(unint64_t)type usingBlock:(id)block;
 @end
 
 @implementation PGSearchKeywordComputer
 
-- (id)_holidayNodesForTimedEvent:(id)a3
+- (id)_holidayNodesForTimedEvent:(id)event
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 celebratedHolidayNodes];
-  v40 = [v5 mutableCopy];
+  eventCopy = event;
+  celebratedHolidayNodes = [eventCopy celebratedHolidayNodes];
+  v40 = [celebratedHolidayNodes mutableCopy];
 
-  v6 = [v4 holidayNodes];
-  v43 = [(NSLocale *)self->_userLocale countryCode];
+  holidayNodes = [eventCopy holidayNodes];
+  countryCode = [(NSLocale *)self->_userLocale countryCode];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v7 = v6;
+  v7 = holidayNodes;
   v8 = [v7 countByEnumeratingWithState:&v50 objects:v55 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v51;
     v34 = v7;
-    v35 = self;
+    selfCopy = self;
     v33 = *v51;
     do
     {
@@ -48,13 +48,13 @@
         v12 = *(*(&v50 + 1) + 8 * v11);
         if (([v40 containsObject:v12] & 1) == 0)
         {
-          v38 = [v12 name];
+          name = [v12 name];
           v13 = [(CLSHolidayCalendarEventService *)self->_holidayService eventRuleForHolidayName:?];
           v14 = v13;
           if (v13)
           {
-            v15 = [v13 commonCelebratedCountryCodes];
-            v16 = [v15 objectForKeyedSubscript:v43];
+            commonCelebratedCountryCodes = [v13 commonCelebratedCountryCodes];
+            v16 = [commonCelebratedCountryCodes objectForKeyedSubscript:countryCode];
 
             if (v16)
             {
@@ -64,7 +64,7 @@
               v49 = 0u;
               v46 = 0u;
               v47 = 0u;
-              obj = [v4 dateNodes];
+              obj = [eventCopy dateNodes];
               v17 = v14;
               v44 = [obj countByEnumeratingWithState:&v46 objects:v54 count:16];
               if (v44)
@@ -89,19 +89,19 @@
                     v22 = [v17 localDateByEvaluatingRuleForDate:? countryCode:?];
                     v23 = [MEMORY[0x277D27690] startOfDayForDate:v22];
                     v24 = [MEMORY[0x277D27690] endOfDayForDate:v22];
-                    v25 = [v4 localStartDate];
-                    if ([v25 compare:v23] == 1)
+                    localStartDate = [eventCopy localStartDate];
+                    if ([localStartDate compare:v23] == 1)
                     {
-                      [v4 localEndDate];
+                      [eventCopy localEndDate];
                       v27 = v26 = v17;
-                      v28 = v4;
+                      v28 = eventCopy;
                       v29 = [v27 compare:v24];
 
                       v17 = v26;
                       v18 = v41;
 
                       v30 = v29 == -1;
-                      v4 = v28;
+                      eventCopy = v28;
                       if (v30)
                       {
                         [v40 addObject:v39];
@@ -121,7 +121,7 @@
 
               v14 = v17;
               v7 = v34;
-              self = v35;
+              self = selfCopy;
               v10 = v33;
               v9 = v36;
               v11 = v37;
@@ -144,15 +144,15 @@
   return v40;
 }
 
-- (id)_personUUIDsInSocialGroupNode:(id)a3 photoLibrary:(id)a4
+- (id)_personUUIDsInSocialGroupNode:(id)node photoLibrary:(id)library
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 graph];
-  v9 = [(PGSearchKeywordComputer *)self _personLocalIdentifiersBySocialGroupUUIDWithPhotoLibrary:v7 graph:v8];
-  v10 = [v6 UUID];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  nodeCopy = node;
+  libraryCopy = library;
+  graph = [nodeCopy graph];
+  v9 = [(PGSearchKeywordComputer *)self _personLocalIdentifiersBySocialGroupUUIDWithPhotoLibrary:libraryCopy graph:graph];
+  uUID = [nodeCopy UUID];
+  v11 = [v9 objectForKeyedSubscript:uUID];
 
   v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v11, "count")}];
   v21 = 0u;
@@ -192,58 +192,58 @@
   return v12;
 }
 
-- (void)_aggregatePublicEventsWithoutBusinessForMomentNode:(id)a3 searchEntityAccumuator:(id)a4
+- (void)_aggregatePublicEventsWithoutBusinessForMomentNode:(id)node searchEntityAccumuator:(id)accumuator
 {
   v35 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEB18];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 array];
+  accumuatorCopy = accumuator;
+  nodeCopy = node;
+  array = [v5 array];
   v9 = [MEMORY[0x277CBEB58] set];
   v10 = [MEMORY[0x277CBEB58] set];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __101__PGSearchKeywordComputer__aggregatePublicEventsWithoutBusinessForMomentNode_searchEntityAccumuator___block_invoke;
   v29[3] = &unk_278883E60;
-  v11 = v8;
+  v11 = array;
   v30 = v11;
   v12 = v10;
   v31 = v12;
   v13 = v9;
   v32 = v13;
-  [v7 enumeratePublicEventNodesUsingBlock:v29];
-  v14 = [MEMORY[0x277CBEB38] dictionary];
-  [v14 setObject:v11 forKeyedSubscript:&unk_284483CF0];
-  v15 = [v12 allObjects];
-  [v14 setObject:v15 forKeyedSubscript:&unk_284483D08];
+  [nodeCopy enumeratePublicEventNodesUsingBlock:v29];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:v11 forKeyedSubscript:&unk_284483CF0];
+  allObjects = [v12 allObjects];
+  [dictionary setObject:allObjects forKeyedSubscript:&unk_284483D08];
 
-  v16 = [v13 allObjects];
-  [v14 setObject:v16 forKeyedSubscript:&unk_284483C78];
+  allObjects2 = [v13 allObjects];
+  [dictionary setObject:allObjects2 forKeyedSubscript:&unk_284483C78];
 
   v17 = objc_alloc(MEMORY[0x277CCA970]);
-  v18 = [MEMORY[0x277CBEAA8] distantPast];
-  v19 = [MEMORY[0x277CBEAA8] distantFuture];
-  v20 = [v17 initWithStartDate:v18 endDate:v19];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v20 = [v17 initWithStartDate:distantPast endDate:distantFuture];
 
   v21 = MEMORY[0x277CD9918];
-  v22 = [v7 localIdentifier];
+  localIdentifier = [nodeCopy localIdentifier];
 
-  v23 = [v21 uuidFromLocalIdentifier:v22];
+  v23 = [v21 uuidFromLocalIdentifier:localIdentifier];
 
   v28 = 0;
-  [v6 accumulatePublicEventsInPublicEventKeywords:v14 forMomentUUID:v23 dateInterval:v20 error:&v28];
+  [accumuatorCopy accumulatePublicEventsInPublicEventKeywords:dictionary forMomentUUID:v23 dateInterval:v20 error:&v28];
 
   v24 = v28;
   if (v24)
   {
     v25 = +[PGLogging sharedLogging];
-    v26 = [v25 loggingConnection];
+    loggingConnection = [v25 loggingConnection];
 
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v34 = v24;
-      _os_log_error_impl(&dword_22F0FC000, v26, OS_LOG_TYPE_ERROR, "Error returned by accumulatePublicEventsInPublicEventKeywords(): (%@)", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Error returned by accumulatePublicEventsInPublicEventKeywords(): (%@)", buf, 0xCu);
     }
   }
 
@@ -269,29 +269,29 @@ void __101__PGSearchKeywordComputer__aggregatePublicEventsWithoutBusinessForMome
   }
 }
 
-- (void)_enumerateBusinessAndPublicEventKeywordsForEvent:(id)a3 usingBlock:(id)a4
+- (void)_enumerateBusinessAndPublicEventKeywordsForEvent:(id)event usingBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = MEMORY[0x277CBEB38];
-  v7 = a3;
-  v8 = [v6 dictionary];
+  eventCopy = event;
+  dictionary = [v6 dictionary];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __87__PGSearchKeywordComputer__enumerateBusinessAndPublicEventKeywordsForEvent_usingBlock___block_invoke;
   v16[3] = &unk_278883E10;
-  v17 = v8;
-  v9 = v8;
-  [v7 enumerateBusinessesUsingBlock:v16];
-  v10 = [v7 publicEventNodes];
+  v17 = dictionary;
+  v9 = dictionary;
+  [eventCopy enumerateBusinessesUsingBlock:v16];
+  publicEventNodes = [eventCopy publicEventNodes];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __87__PGSearchKeywordComputer__enumerateBusinessAndPublicEventKeywordsForEvent_usingBlock___block_invoke_2;
   v13[3] = &unk_278883E38;
-  v14 = v10;
-  v15 = v5;
-  v11 = v5;
-  v12 = v10;
+  v14 = publicEventNodes;
+  v15 = blockCopy;
+  v11 = blockCopy;
+  v12 = publicEventNodes;
   [v9 enumerateKeysAndObjectsUsingBlock:v13];
 }
 
@@ -473,21 +473,21 @@ LABEL_27:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_personLocalIdentifiersBySocialGroupUUIDWithPhotoLibrary:(id)a3 graph:(id)a4
+- (id)_personLocalIdentifiersBySocialGroupUUIDWithPhotoLibrary:(id)library graph:(id)graph
 {
   personLocalIdentifiersBySocialGroupUUID = self->_personLocalIdentifiersBySocialGroupUUID;
   if (!personLocalIdentifiersBySocialGroupUUID)
   {
     graph = self->_graph;
-    v8 = a4;
-    v9 = a3;
+    graphCopy = graph;
+    libraryCopy = library;
     v10 = [(PGGraphNodeCollection *)PGGraphSocialGroupNodeCollection nodesInGraph:graph];
-    v11 = [v8 fetchMemberNodesBySocialGroupNodeForSocialGroups:v10];
+    v11 = [graphCopy fetchMemberNodesBySocialGroupNodeForSocialGroups:v10];
     v12 = [(PGGraph *)self->_graph memberLocalIdentifiersBySocialGroupUUIDWithMemberNodesBySocialGroupNode:v11 shouldIncludeMeNode:1 simulateMeNodeNotSet:0];
     v13 = self->_personLocalIdentifiersBySocialGroupUUID;
     self->_personLocalIdentifiersBySocialGroupUUID = v12;
 
-    v14 = [PGPeopleUtilities validateKeyedSocialGroups:self->_personLocalIdentifiersBySocialGroupUUID withPhotoLibrary:v9 graph:v8];
+    v14 = [PGPeopleUtilities validateKeyedSocialGroups:self->_personLocalIdentifiersBySocialGroupUUID withPhotoLibrary:libraryCopy graph:graphCopy];
 
     v15 = self->_personLocalIdentifiersBySocialGroupUUID;
     self->_personLocalIdentifiersBySocialGroupUUID = v14;
@@ -498,33 +498,33 @@ LABEL_27:
   return personLocalIdentifiersBySocialGroupUUID;
 }
 
-- (void)_enumerateEventNodesForUUIDs:(id)a3 ofType:(unint64_t)a4 usingBlock:(id)a5
+- (void)_enumerateEventNodesForUUIDs:(id)ds ofType:(unint64_t)type usingBlock:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 1)
+  dsCopy = ds;
+  blockCopy = block;
+  if (type == 1)
   {
-    v10 = [PGGraphHighlightNodeCollection highlightNodesForUUIDs:v8 inGraph:self->_graph];
+    loggingConnection = [PGGraphHighlightNodeCollection highlightNodesForUUIDs:dsCopy inGraph:self->_graph];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __74__PGSearchKeywordComputer__enumerateEventNodesForUUIDs_ofType_usingBlock___block_invoke_2;
     v14[3] = &unk_278883DE8;
-    v15 = v9;
-    [v10 enumerateNodesUsingBlock:v14];
+    v15 = blockCopy;
+    [loggingConnection enumerateNodesUsingBlock:v14];
     v11 = v15;
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!type)
   {
-    v10 = [PGGraphMomentNodeCollection momentNodesForUUIDs:v8 inGraph:self->_graph];
+    loggingConnection = [PGGraphMomentNodeCollection momentNodesForUUIDs:dsCopy inGraph:self->_graph];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __74__PGSearchKeywordComputer__enumerateEventNodesForUUIDs_ofType_usingBlock___block_invoke;
     v16[3] = &unk_278883DC0;
-    v17 = v9;
-    [v10 enumerateNodesUsingBlock:v16];
+    v17 = blockCopy;
+    [loggingConnection enumerateNodesUsingBlock:v16];
     v11 = v17;
 LABEL_5:
 
@@ -532,13 +532,13 @@ LABEL_5:
   }
 
   v12 = +[PGLogging sharedLogging];
-  v10 = [v12 loggingConnection];
+  loggingConnection = [v12 loggingConnection];
 
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v19 = a4;
-    _os_log_error_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_ERROR, "Cannot get graph node for uuid of unsupported asset collection type %ld", buf, 0xCu);
+    typeCopy = type;
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Cannot get graph node for uuid of unsupported asset collection type %ld", buf, 0xCu);
   }
 
 LABEL_8:
@@ -683,12 +683,12 @@ void __126__PGSearchKeywordComputer_searchableAssetUUIDsBySocialGroupWithEventUU
   *(*(*(a1 + 40) + 8) + 24) = v9;
 }
 
-- (id)assetSearchKeywordsByMomentUUIDWithEventUUIDs:(id)a3 ofType:(unint64_t)a4 searchEntityAccumulator:(id)a5 progressBlock:(id)a6
+- (id)assetSearchKeywordsByMomentUUIDWithEventUUIDs:(id)ds ofType:(unint64_t)type searchEntityAccumulator:(id)accumulator progressBlock:(id)block
 {
   v59 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v30 = a5;
-  aBlock = a6;
+  dsCopy = ds;
+  accumulatorCopy = accumulator;
+  aBlock = block;
   v10 = CreateSearchLog();
   v11 = os_signpost_id_generate(v10);
   v12 = v10;
@@ -718,18 +718,18 @@ void __126__PGSearchKeywordComputer_searchableAssetUUIDsBySocialGroupWithEventUU
       _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", &v56, 0x12u);
     }
 
-    v17 = MEMORY[0x277CBEC10];
+    aggregatedKeywords = MEMORY[0x277CBEC10];
   }
 
   else
   {
     v18 = objc_alloc_init(PGSearchKeywordComputerKeywordAggregator);
-    v19 = [(PGGraph *)self->_graph meNodeCollection];
+    meNodeCollection = [(PGGraph *)self->_graph meNodeCollection];
     v56 = 0;
     *&v57 = &v56;
     *(&v57 + 1) = 0x2020000000;
     v58 = 0;
-    v20 = 1.0 / [v32 count];
+    v20 = 1.0 / [dsCopy count];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __118__PGSearchKeywordComputer_assetSearchKeywordsByMomentUUIDWithEventUUIDs_ofType_searchEntityAccumulator_progressBlock___block_invoke;
@@ -744,11 +744,11 @@ void __126__PGSearchKeywordComputer_searchableAssetUUIDsBySocialGroupWithEventUU
     v34[4] = self;
     v22 = v18;
     v35 = v22;
-    v36 = v30;
-    v44 = a4;
-    v23 = v19;
+    v36 = accumulatorCopy;
+    typeCopy = type;
+    v23 = meNodeCollection;
     v37 = v23;
-    [(PGSearchKeywordComputer *)self _enumerateEventNodesForUUIDs:v32 ofType:a4 usingBlock:v34];
+    [(PGSearchKeywordComputer *)self _enumerateEventNodesForUUIDs:dsCopy ofType:type usingBlock:v34];
     if (v14 && (Current = CFAbsoluteTimeGetCurrent(), Current - v46[3] >= 0.01) && (v46[3] = Current, v33 = 0, (*(v21 + 2))(v21, &v33, 1.0), v25 = *(p_buf + 24) | v33, *(p_buf + 24) = v25, (v25 & 1) != 0))
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -760,7 +760,7 @@ void __126__PGSearchKeywordComputer_searchableAssetUUIDsBySocialGroupWithEventUU
         _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", v53, 0x12u);
       }
 
-      v17 = MEMORY[0x277CBEC10];
+      aggregatedKeywords = MEMORY[0x277CBEC10];
     }
 
     else
@@ -773,7 +773,7 @@ void __126__PGSearchKeywordComputer_searchableAssetUUIDsBySocialGroupWithEventUU
         _os_signpost_emit_with_name_impl(&dword_22F0FC000, v27, OS_SIGNPOST_INTERVAL_END, v11, "assetSearchKeywordsByMomentUUIDWithEventUUIDs", "", v53, 2u);
       }
 
-      v17 = [(PGSearchKeywordComputerKeywordAggregator *)v22 aggregatedKeywords];
+      aggregatedKeywords = [(PGSearchKeywordComputerKeywordAggregator *)v22 aggregatedKeywords];
     }
 
     _Block_object_dispose(&v56, 8);
@@ -784,7 +784,7 @@ void __126__PGSearchKeywordComputer_searchableAssetUUIDsBySocialGroupWithEventUU
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return aggregatedKeywords;
 }
 
 void __118__PGSearchKeywordComputer_assetSearchKeywordsByMomentUUIDWithEventUUIDs_ofType_searchEntityAccumulator_progressBlock___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -1604,13 +1604,13 @@ void __118__PGSearchKeywordComputer_assetSearchKeywordsByMomentUUIDWithEventUUID
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)searchKeywordsByEventWithEventUUIDs:(id)a3 ofType:(unint64_t)a4 photoLibrary:(id)a5 progressBlock:(id)a6
+- (id)searchKeywordsByEventWithEventUUIDs:(id)ds ofType:(unint64_t)type photoLibrary:(id)library progressBlock:(id)block
 {
   v53 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = _Block_copy(v12);
+  dsCopy = ds;
+  libraryCopy = library;
+  blockCopy = block;
+  v13 = _Block_copy(blockCopy);
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
@@ -1634,13 +1634,13 @@ void __118__PGSearchKeywordComputer_assetSearchKeywordsByMomentUUIDWithEventUUID
 
   else
   {
-    v17 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v10, "count")}];
-    v18 = [(PGGraph *)self->_graph meNodeCollection];
+    v17 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(dsCopy, "count")}];
+    meNodeCollection = [(PGGraph *)self->_graph meNodeCollection];
     buf = 0;
     *&v51 = &buf;
     *(&v51 + 1) = 0x2020000000;
     v52 = 0;
-    v19 = [v10 count];
+    v19 = [dsCopy count];
     v28[1] = 3221225472;
     v28[0] = MEMORY[0x277D85DD0];
     v28[2] = __97__PGSearchKeywordComputer_searchKeywordsByEventWithEventUUIDs_ofType_photoLibrary_progressBlock___block_invoke;
@@ -1653,13 +1653,13 @@ void __118__PGSearchKeywordComputer_assetSearchKeywordsByMomentUUIDWithEventUUID
     v35 = &v43;
     v32 = v20;
     v28[4] = self;
-    v29 = v11;
-    v38 = a4;
-    v21 = v18;
+    v29 = libraryCopy;
+    typeCopy = type;
+    v21 = meNodeCollection;
     v30 = v21;
     v22 = v17;
     v31 = v22;
-    [(PGSearchKeywordComputer *)self _enumerateEventNodesForUUIDs:v10 ofType:a4 usingBlock:v28];
+    [(PGSearchKeywordComputer *)self _enumerateEventNodesForUUIDs:dsCopy ofType:type usingBlock:v28];
     if (v13 && (Current = CFAbsoluteTimeGetCurrent(), Current - v40[3] >= 0.01) && (v40[3] = Current, v27 = 0, (*(v20 + 2))(v20, &v27, 1.0), v24 = *(v44 + 24) | v27, *(v44 + 24) = v24, (v24 & 1) != 0))
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2442,21 +2442,21 @@ void __97__PGSearchKeywordComputer_searchKeywordsByEventWithEventUUIDs_ofType_ph
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (PGSearchKeywordComputer)initWithGraph:(id)a3 searchComputationCache:(id)a4
+- (PGSearchKeywordComputer)initWithGraph:(id)graph searchComputationCache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
+  graphCopy = graph;
+  cacheCopy = cache;
   v16.receiver = self;
   v16.super_class = PGSearchKeywordComputer;
   v9 = [(PGSearchKeywordComputer *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_graph, a3);
-    objc_storeStrong(&v10->_searchComputationCache, a4);
-    v11 = [MEMORY[0x277CBEAF8] currentLocale];
+    objc_storeStrong(&v9->_graph, graph);
+    objc_storeStrong(&v10->_searchComputationCache, cache);
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     userLocale = v10->_userLocale;
-    v10->_userLocale = v11;
+    v10->_userLocale = currentLocale;
 
     v13 = [objc_alloc(MEMORY[0x277D276D8]) initWithLocale:v10->_userLocale];
     holidayService = v10->_holidayService;

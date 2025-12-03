@@ -1,7 +1,7 @@
 @interface AXCaptionPreviewCell
 + (CGSize)previewSize;
-- (AXCaptionPreviewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (AXCaptionPreviewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
@@ -12,9 +12,9 @@
 
 - (void)didMoveToSuperview
 {
-  v3 = [(AXCaptionPreviewCell *)self superview];
+  superview = [(AXCaptionPreviewCell *)self superview];
 
-  if (v3)
+  if (superview)
   {
     captionPreviewView = self->_captionPreviewView;
 
@@ -34,20 +34,20 @@
   return result;
 }
 
-- (AXCaptionPreviewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AXCaptionPreviewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v16.receiver = self;
   v16.super_class = AXCaptionPreviewCell;
-  v4 = [(AXCaptionPreviewCell *)&v16 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(AXCaptionPreviewCell *)&v16 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [AXCaptionPreviewView alloc];
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    v9 = [(AXCaptionPreviewView *)v5 initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [(AXCaptionPreviewView *)v5 initWithFrame:CGRectZero.origin.x, y, width, height];
     captionPreviewView = v4->_captionPreviewView;
-    v4->_captionPreviewView = v9;
+    v4->_captionPreviewView = height;
 
     v11 = +[UIColor whiteColor];
     [(AXCaptionPreviewView *)v4->_captionPreviewView setBackgroundColor:v11];
@@ -79,17 +79,17 @@
 
   [(AXCaptionPreviewView *)self->_captionPreviewView frame];
   [(AXCaptionPreviewView *)self->_captionPreviewView setOriginalFrame:?];
-  v4 = [(AXCaptionPreviewCell *)self backgroundView];
-  [v4 setUserInteractionEnabled:1];
+  backgroundView = [(AXCaptionPreviewCell *)self backgroundView];
+  [backgroundView setUserInteractionEnabled:1];
 
   [(AXCloudShadowView *)self->_shadowView setUserInteractionEnabled:0];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (([(AXCaptionPreviewCell *)self isHidden]& 1) != 0)
   {
     v8 = 0;
@@ -100,16 +100,16 @@
     [(AXCaptionPreviewCell *)self convertPoint:self->_captionPreviewView toView:x, y];
     v10 = v9;
     v12 = v11;
-    if ([(AXCaptionPreviewView *)self->_captionPreviewView pointInside:v7 withEvent:?])
+    if ([(AXCaptionPreviewView *)self->_captionPreviewView pointInside:eventCopy withEvent:?])
     {
-      v13 = [(AXCaptionPreviewView *)self->_captionPreviewView hitTest:v7 withEvent:v10, v12];
+      v13 = [(AXCaptionPreviewView *)self->_captionPreviewView hitTest:eventCopy withEvent:v10, v12];
     }
 
     else
     {
       v15.receiver = self;
       v15.super_class = AXCaptionPreviewCell;
-      v13 = [(AXCaptionPreviewCell *)&v15 hitTest:v7 withEvent:x, y];
+      v13 = [(AXCaptionPreviewCell *)&v15 hitTest:eventCopy withEvent:x, y];
     }
 
     v8 = v13;
@@ -139,12 +139,12 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AXCaptionPreviewCell *)self contentView];
-  [v11 setBounds:{v4, v6, v8, v10}];
+  contentView = [(AXCaptionPreviewCell *)self contentView];
+  [contentView setBounds:{v4, v6, v8, v10}];
 
-  v12 = [(AXCaptionPreviewCell *)self contentView];
-  v13 = [v12 superview];
-  [v13 setBounds:{v4, v6, v8, v10}];
+  contentView2 = [(AXCaptionPreviewCell *)self contentView];
+  superview = [contentView2 superview];
+  [superview setBounds:{v4, v6, v8, v10}];
 
   [(AXCaptionPreviewCell *)self bounds];
   [(AXCaptionPreviewView *)self->_captionPreviewView frame];

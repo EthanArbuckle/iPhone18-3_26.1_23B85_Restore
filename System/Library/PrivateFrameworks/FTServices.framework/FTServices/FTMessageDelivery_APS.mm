@@ -1,49 +1,49 @@
 @interface FTMessageDelivery_APS
 + (id)sharedInstance;
-- (BOOL)_fillMessageParameters:(id *)a3 ftMessage:(id *)a4;
-- (BOOL)_isBusyWithMessage:(id)a3;
-- (BOOL)_sendMessageAsynchronously:(id)a3 error:(id *)a4;
-- (BOOL)_shouldSendSOSForFailure:(id)a3;
+- (BOOL)_fillMessageParameters:(id *)parameters ftMessage:(id *)message;
+- (BOOL)_isBusyWithMessage:(id)message;
+- (BOOL)_sendMessageAsynchronously:(id)asynchronously error:(id *)error;
+- (BOOL)_shouldSendSOSForFailure:(id)failure;
 - (BOOL)busy;
-- (BOOL)sendMessage:(id)a3;
-- (BOOL)shouldFailFastForMessage:(id)a3;
-- (FTMessageDelivery_APS)initWithAPSConnection:(id)a3;
-- (FTMessageDelivery_APS)initWithAPSConnection:(id)a3 mobileNetworkManager:(id)a4;
-- (id)_apsOutgoingMessageForFTMessage:(id)a3;
-- (id)_bodyForMessage:(id)a3;
+- (BOOL)sendMessage:(id)message;
+- (BOOL)shouldFailFastForMessage:(id)message;
+- (FTMessageDelivery_APS)initWithAPSConnection:(id)connection;
+- (FTMessageDelivery_APS)initWithAPSConnection:(id)connection mobileNetworkManager:(id)manager;
+- (id)_apsOutgoingMessageForFTMessage:(id)message;
+- (id)_bodyForMessage:(id)message;
 - (id)_getEnabledTopics;
-- (id)_messageForAPSOutgoingMessage:(id)a3;
-- (id)_requiredTopicsWithUltraConstrainedTopics:(id *)a3;
+- (id)_messageForAPSOutgoingMessage:(id)message;
+- (id)_requiredTopicsWithUltraConstrainedTopics:(id *)topics;
 - (id)allMessages;
-- (int64_t)_retryCountForMessage:(id)a3;
+- (int64_t)_retryCountForMessage:(id)message;
 - (int64_t)maxLargeMessageSize;
 - (int64_t)maxMessageSize;
-- (void)_apsMessageBodyForMessage:(id)a3 completion:(id)a4;
-- (void)_apsMessageForMessage:(id)a3 body:(id)a4 completion:(id)a5;
-- (void)_clearMapForMessageID:(id)a3;
+- (void)_apsMessageBodyForMessage:(id)message completion:(id)completion;
+- (void)_apsMessageForMessage:(id)message body:(id)body completion:(id)completion;
+- (void)_clearMapForMessageID:(id)d;
 - (void)_dequeueIfNeeded;
-- (void)_invalidateDeathTimerForMessageID:(id)a3;
-- (void)_invalidateTimerForMessageID:(id)a3;
-- (void)_messageACKTimedOut:(id)a3;
-- (void)_messageAckGracePeriodTimedOut:(id)a3;
-- (void)_messageCompletelyTimedOut:(id)a3;
-- (void)_messageNeedsRetry:(id)a3;
-- (void)_messageSendTimedOut:(id)a3;
-- (void)_noteMessageACKd:(id)a3 ftMessage:(id)a4;
-- (void)_noteMessageFailed:(id)a3 ftMessage:(id)a4 retryBehavior:(int)a5 error:(id)a6;
-- (void)_noteMessageSent:(id)a3 ftMessage:(id)a4 body:(id)a5;
-- (void)_noteMessageSucceeded:(id)a3 ftMessage:(id)a4 error:(id)a5 result:(id)a6 resultCode:(int64_t)a7;
-- (void)_notifyDelegateAboutError:(id)a3 resultCode:(int64_t)a4 forMessage:(id)a5;
-- (void)_powerLogEvent:(id)a3 dictionary:(id)a4;
-- (void)_sendMessage:(id)a3 ftMessage:(id)a4;
-- (void)_serverBagLoaded:(id)a3;
-- (void)_setEnabledTopics:(id)a3;
-- (void)_setMapForMessage:(id)a3 apsMessage:(id)a4 messageBody:(id)a5 timeoutTime:(double)a6 timeoutSelector:(SEL)a7 handlerBlock:(id)a8 retries:(id)a9;
+- (void)_invalidateDeathTimerForMessageID:(id)d;
+- (void)_invalidateTimerForMessageID:(id)d;
+- (void)_messageACKTimedOut:(id)out;
+- (void)_messageAckGracePeriodTimedOut:(id)out;
+- (void)_messageCompletelyTimedOut:(id)out;
+- (void)_messageNeedsRetry:(id)retry;
+- (void)_messageSendTimedOut:(id)out;
+- (void)_noteMessageACKd:(id)kd ftMessage:(id)message;
+- (void)_noteMessageFailed:(id)failed ftMessage:(id)message retryBehavior:(int)behavior error:(id)error;
+- (void)_noteMessageSent:(id)sent ftMessage:(id)message body:(id)body;
+- (void)_noteMessageSucceeded:(id)succeeded ftMessage:(id)message error:(id)error result:(id)result resultCode:(int64_t)code;
+- (void)_notifyDelegateAboutError:(id)error resultCode:(int64_t)code forMessage:(id)message;
+- (void)_powerLogEvent:(id)event dictionary:(id)dictionary;
+- (void)_sendMessage:(id)message ftMessage:(id)ftMessage;
+- (void)_serverBagLoaded:(id)loaded;
+- (void)_setEnabledTopics:(id)topics;
+- (void)_setMapForMessage:(id)message apsMessage:(id)apsMessage messageBody:(id)body timeoutTime:(double)time timeoutSelector:(SEL)selector handlerBlock:(id)block retries:(id)retries;
 - (void)_updateTopics;
-- (void)cancelMessage:(id)a3 withError:(int64_t)a4;
-- (void)connection:(id)a3 didFailToSendOutgoingMessage:(id)a4 error:(id)a5;
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5;
-- (void)connection:(id)a3 didSendOutgoingMessage:(id)a4;
+- (void)cancelMessage:(id)message withError:(int64_t)error;
+- (void)connection:(id)connection didFailToSendOutgoingMessage:(id)message error:(id)error;
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info;
+- (void)connection:(id)connection didSendOutgoingMessage:(id)message;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -53,24 +53,24 @@
 - (int64_t)maxLargeMessageSize
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(FTMessageDelivery *)self connection];
+  connection = [(FTMessageDelivery *)self connection];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(FTMessageDelivery *)self connection];
-    v6 = [v5 largeMessageSize];
+    connection2 = [(FTMessageDelivery *)self connection];
+    largeMessageSize = [connection2 largeMessageSize];
 
-    if (v6 <= 5119)
+    if (largeMessageSize <= 5119)
     {
       v7 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(FTMessageDelivery *)self connection];
+        connection3 = [(FTMessageDelivery *)self connection];
         *buf = 138412802;
-        v16 = v8;
+        v16 = connection3;
         v17 = 1024;
-        v18 = v6;
+        v18 = largeMessageSize;
         v19 = 2048;
         v20 = 5120;
         _os_log_impl(&dword_195925000, v7, OS_LOG_TYPE_ERROR, "APSConnection %@  gave me a connection large size of: %d  which doesn't pass our sanity size of: %ld   ignoring", buf, 0x1Cu);
@@ -78,10 +78,10 @@
 
       if (os_log_shim_legacy_logging_enabled())
       {
-        v12 = [(FTMessageDelivery *)self connection];
+        connection4 = [(FTMessageDelivery *)self connection];
         _IDSWarnV();
 
-        v13 = [(FTMessageDelivery *)self connection:v12];
+        v13 = [(FTMessageDelivery *)self connection:connection4];
         _IDSLogV();
 
         v14 = [(FTMessageDelivery *)self connection:v13];
@@ -89,14 +89,14 @@
       }
     }
 
-    if (v6 <= 5120)
+    if (largeMessageSize <= 5120)
     {
       result = 5120;
     }
 
     else
     {
-      result = v6;
+      result = largeMessageSize;
     }
 
     v10 = *MEMORY[0x1E69E9840];
@@ -115,19 +115,19 @@
 - (int64_t)maxMessageSize
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(FTMessageDelivery *)self connection];
-  v4 = [v3 messageSize];
+  connection = [(FTMessageDelivery *)self connection];
+  messageSize = [connection messageSize];
 
-  if (v4 <= 5119)
+  if (messageSize <= 5119)
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(FTMessageDelivery *)self connection];
+      connection2 = [(FTMessageDelivery *)self connection];
       *buf = 138412802;
-      v13 = v6;
+      v13 = connection2;
       v14 = 1024;
-      v15 = v4;
+      v15 = messageSize;
       v16 = 2048;
       v17 = 5120;
       _os_log_impl(&dword_195925000, v5, OS_LOG_TYPE_ERROR, "APSConnection %@  gave me a connection size of: %d  which doesn't pass our sanity size of: %ld   ignoring", buf, 0x1Cu);
@@ -135,10 +135,10 @@
 
     if (os_log_shim_legacy_logging_enabled())
     {
-      v9 = [(FTMessageDelivery *)self connection];
+      connection3 = [(FTMessageDelivery *)self connection];
       _IDSWarnV();
 
-      v10 = [(FTMessageDelivery *)self connection:v9];
+      v10 = [(FTMessageDelivery *)self connection:connection3];
       _IDSLogV();
 
       v11 = [(FTMessageDelivery *)self connection:v10];
@@ -146,14 +146,14 @@
     }
   }
 
-  if (v4 <= 5120)
+  if (messageSize <= 5120)
   {
     result = 5120;
   }
 
   else
   {
-    result = v4;
+    result = messageSize;
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -167,21 +167,21 @@
   v52 = _os_activity_create(&dword_195925000, "APS dequeue message", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   os_activity_scope_enter(v52, &state);
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(FTMessageDelivery *)v7 _queue];
-  v9 = [v8 count] == 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _queue = [(FTMessageDelivery *)selfCopy _queue];
+  v9 = [_queue count] == 0;
 
   if (!v9)
   {
-    v10 = [(FTMessageDelivery *)v7 _queue];
-    v11 = [v10 topMessage];
+    _queue2 = [(FTMessageDelivery *)selfCopy _queue];
+    topMessage = [_queue2 topMessage];
 
-    [v11 startSendEventTracing];
-    if ([v11 isIDSMessage] && objc_msgSend(v11, "wantsBagKey"))
+    [topMessage startSendEventTracing];
+    if ([topMessage isIDSMessage] && objc_msgSend(topMessage, "wantsBagKey"))
     {
-      v12 = [MEMORY[0x1E69A53F0] sharedInstance];
-      if (([(__CFString *)v12 isLoaded]& 1) == 0)
+      mEMORY[0x1E69A53F0] = [MEMORY[0x1E69A53F0] sharedInstance];
+      if (([(__CFString *)mEMORY[0x1E69A53F0] isLoaded]& 1) == 0)
       {
         v25 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -195,7 +195,7 @@
           _IDSLogV();
         }
 
-        if ([(__CFString *)v12 isServerAvailable])
+        if ([(__CFString *)mEMORY[0x1E69A53F0] isServerAvailable])
         {
           v26 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -209,7 +209,7 @@
             _IDSLogV();
           }
 
-          if (([(__CFString *)v12 isLoading]& 1) == 0)
+          if (([(__CFString *)mEMORY[0x1E69A53F0] isLoading]& 1) == 0)
           {
             v38 = OSLogHandleForIDSCategory();
             if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -223,7 +223,7 @@
               _IDSLogV();
             }
 
-            [(__CFString *)v12 startBagLoad];
+            [(__CFString *)mEMORY[0x1E69A53F0] startBagLoad];
             goto LABEL_148;
           }
 
@@ -275,7 +275,7 @@
       }
     }
 
-    if ([(FTMessageDelivery_APS *)v7 busy])
+    if ([(FTMessageDelivery_APS *)selfCopy busy])
     {
       v14 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -292,10 +292,10 @@
       goto LABEL_149;
     }
 
-    v16 = [(FTMessageDelivery *)v7 _queue];
-    v17 = [v16 dequeueTopMessage];
+    _queue3 = [(FTMessageDelivery *)selfCopy _queue];
+    dequeueTopMessage = [_queue3 dequeueTopMessage];
 
-    if (([v17 isValidMessage] & 1) == 0)
+    if (([dequeueTopMessage isValidMessage] & 1) == 0)
     {
       v22 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -309,15 +309,15 @@
         _IDSLogV();
       }
 
-      v23 = OSLogHandleForIDSCategory();
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      messageBodyUsingCache = OSLogHandleForIDSCategory();
+      if (os_log_type_enabled(messageBodyUsingCache, OS_LOG_TYPE_DEFAULT))
       {
-        v2 = [v17 payloadCanBeLogged];
-        if (v2)
+        payloadCanBeLogged = [dequeueTopMessage payloadCanBeLogged];
+        if (payloadCanBeLogged)
         {
-          v11 = [v17 messageBodyUsingCache];
-          v3 = [v11 description];
-          v4 = [v17 service];
+          topMessage = [dequeueTopMessage messageBodyUsingCache];
+          service2 = [topMessage description];
+          service = [dequeueTopMessage service];
           v24 = IDSLoggableDescriptionForObjectOnService();
         }
 
@@ -328,20 +328,20 @@
 
         *buf = 138412290;
         v54 = v24;
-        _os_log_impl(&dword_195925000, v23, OS_LOG_TYPE_DEFAULT, "Message body: %@", buf, 0xCu);
-        if (v2)
+        _os_log_impl(&dword_195925000, messageBodyUsingCache, OS_LOG_TYPE_DEFAULT, "Message body: %@", buf, 0xCu);
+        if (payloadCanBeLogged)
         {
         }
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v33 = [v17 payloadCanBeLogged];
-        if (v33)
+        payloadCanBeLogged2 = [dequeueTopMessage payloadCanBeLogged];
+        if (payloadCanBeLogged2)
         {
-          v23 = [v17 messageBodyUsingCache];
-          v2 = [v23 description];
-          v3 = [v17 service];
+          messageBodyUsingCache = [dequeueTopMessage messageBodyUsingCache];
+          payloadCanBeLogged = [messageBodyUsingCache description];
+          service2 = [dequeueTopMessage service];
           v34 = IDSLoggableDescriptionForObjectOnService();
         }
 
@@ -352,51 +352,51 @@
 
         v49 = v34;
         _IDSLogV();
-        if (v33)
+        if (payloadCanBeLogged2)
         {
         }
       }
 
       v37 = [FTMessageDelivery _errorForTDMessageDeliveryStatus:5003 userInfo:0, v49];
-      [(FTMessageDelivery_APS *)v7 _notifyDelegateAboutError:v37 resultCode:5003 forMessage:v17];
-      v12 = 0;
+      [(FTMessageDelivery_APS *)selfCopy _notifyDelegateAboutError:v37 resultCode:5003 forMessage:dequeueTopMessage];
+      mEMORY[0x1E69A53F0] = 0;
       goto LABEL_147;
     }
 
     v50 = 0;
-    v18 = [v17 hasRequiredKeys:&v50];
-    v12 = v50;
+    v18 = [dequeueTopMessage hasRequiredKeys:&v50];
+    mEMORY[0x1E69A53F0] = v50;
     if ((v18 & 1) == 0)
     {
-      v28 = [MEMORY[0x1E69A6138] warning];
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+      warning = [MEMORY[0x1E69A6138] warning];
+      if (os_log_type_enabled(warning, OS_LOG_TYPE_ERROR))
       {
-        sub_195963FAC(v12, v28);
+        sub_195963FAC(mEMORY[0x1E69A53F0], warning);
       }
 
       v29 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v54 = v12;
+        v54 = mEMORY[0x1E69A53F0];
         _os_log_impl(&dword_195925000, v29, OS_LOG_TYPE_DEFAULT, "Cancelling message delivery! Missing keys: %@", buf, 0xCu);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v49 = v12;
+        v49 = mEMORY[0x1E69A53F0];
         _IDSLogV();
       }
 
-      v30 = OSLogHandleForIDSCategory();
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+      messageBodyUsingCache2 = OSLogHandleForIDSCategory();
+      if (os_log_type_enabled(messageBodyUsingCache2, OS_LOG_TYPE_DEFAULT))
       {
-        v3 = [v17 payloadCanBeLogged];
-        if (v3)
+        service2 = [dequeueTopMessage payloadCanBeLogged];
+        if (service2)
         {
-          v2 = [v17 messageBodyUsingCache];
-          v4 = [v2 description];
-          v5 = [v17 service];
+          payloadCanBeLogged = [dequeueTopMessage messageBodyUsingCache];
+          service = [payloadCanBeLogged description];
+          service3 = [dequeueTopMessage service];
           v31 = IDSLoggableDescriptionForObjectOnService();
         }
 
@@ -407,20 +407,20 @@
 
         *buf = 138412290;
         v54 = v31;
-        _os_log_impl(&dword_195925000, v30, OS_LOG_TYPE_DEFAULT, "Message body: %@", buf, 0xCu);
-        if (v3)
+        _os_log_impl(&dword_195925000, messageBodyUsingCache2, OS_LOG_TYPE_DEFAULT, "Message body: %@", buf, 0xCu);
+        if (service2)
         {
         }
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v39 = [v17 payloadCanBeLogged];
-        if (v39)
+        payloadCanBeLogged3 = [dequeueTopMessage payloadCanBeLogged];
+        if (payloadCanBeLogged3)
         {
-          v30 = [v17 messageBodyUsingCache];
-          v3 = [v30 description];
-          v4 = [v17 service];
+          messageBodyUsingCache2 = [dequeueTopMessage messageBodyUsingCache];
+          service2 = [messageBodyUsingCache2 description];
+          service = [dequeueTopMessage service];
           v40 = IDSLoggableDescriptionForObjectOnService();
         }
 
@@ -431,17 +431,17 @@
 
         v49 = v40;
         _IDSLogV();
-        if (v39)
+        if (payloadCanBeLogged3)
         {
         }
       }
 
       v37 = [FTMessageDelivery _errorForTDMessageDeliveryStatus:5008 userInfo:0, v49];
-      [(FTMessageDelivery_APS *)v7 _notifyDelegateAboutError:v37 resultCode:5008 forMessage:v17];
+      [(FTMessageDelivery_APS *)selfCopy _notifyDelegateAboutError:v37 resultCode:5008 forMessage:dequeueTopMessage];
       goto LABEL_147;
     }
 
-    if (([v17 ignoresNetworkConnectivity] & 1) == 0 && -[FTMessageDeliveryAPSMobileNetworkManager isAirplaneModeEnabled](v7->_mobileNetworkManager, "isAirplaneModeEnabled") && (-[FTMessageDeliveryAPSMobileNetworkManager isWiFiUsable](v7->_mobileNetworkManager, "isWiFiUsable") & 1) == 0)
+    if (([dequeueTopMessage ignoresNetworkConnectivity] & 1) == 0 && -[FTMessageDeliveryAPSMobileNetworkManager isAirplaneModeEnabled](selfCopy->_mobileNetworkManager, "isAirplaneModeEnabled") && (-[FTMessageDeliveryAPSMobileNetworkManager isWiFiUsable](selfCopy->_mobileNetworkManager, "isWiFiUsable") & 1) == 0)
     {
       v41 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
@@ -455,15 +455,15 @@
         _IDSLogV();
       }
 
-      v42 = OSLogHandleForIDSCategory();
-      if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+      messageBodyUsingCache3 = OSLogHandleForIDSCategory();
+      if (os_log_type_enabled(messageBodyUsingCache3, OS_LOG_TYPE_DEFAULT))
       {
-        v3 = [v17 payloadCanBeLogged];
-        if (v3)
+        service2 = [dequeueTopMessage payloadCanBeLogged];
+        if (service2)
         {
-          v2 = [v17 messageBodyUsingCache];
-          v4 = [v2 description];
-          v5 = [v17 service];
+          payloadCanBeLogged = [dequeueTopMessage messageBodyUsingCache];
+          service = [payloadCanBeLogged description];
+          service3 = [dequeueTopMessage service];
           v43 = IDSLoggableDescriptionForObjectOnService();
         }
 
@@ -474,20 +474,20 @@
 
         *buf = 138412290;
         v54 = v43;
-        _os_log_impl(&dword_195925000, v42, OS_LOG_TYPE_DEFAULT, "Message body: %@", buf, 0xCu);
-        if (v3)
+        _os_log_impl(&dword_195925000, messageBodyUsingCache3, OS_LOG_TYPE_DEFAULT, "Message body: %@", buf, 0xCu);
+        if (service2)
         {
         }
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v46 = [v17 payloadCanBeLogged];
-        if (v46)
+        payloadCanBeLogged4 = [dequeueTopMessage payloadCanBeLogged];
+        if (payloadCanBeLogged4)
         {
-          v42 = [v17 messageBodyUsingCache];
-          v3 = [v42 description];
-          v4 = [v17 service];
+          messageBodyUsingCache3 = [dequeueTopMessage messageBodyUsingCache];
+          service2 = [messageBodyUsingCache3 description];
+          service = [dequeueTopMessage service];
           v47 = IDSLoggableDescriptionForObjectOnService();
         }
 
@@ -498,7 +498,7 @@
 
         v49 = v47;
         _IDSLogV();
-        if (v46)
+        if (payloadCanBeLogged4)
         {
         }
       }
@@ -506,7 +506,7 @@
       goto LABEL_146;
     }
 
-    if ([(FTMessageDelivery_APS *)v7 shouldFailFastForMessage:v17])
+    if ([(FTMessageDelivery_APS *)selfCopy shouldFailFastForMessage:dequeueTopMessage])
     {
       v19 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -520,15 +520,15 @@
         _IDSLogV();
       }
 
-      v20 = OSLogHandleForIDSCategory();
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+      messageBodyUsingCache4 = OSLogHandleForIDSCategory();
+      if (os_log_type_enabled(messageBodyUsingCache4, OS_LOG_TYPE_DEFAULT))
       {
-        v3 = [v17 payloadCanBeLogged];
-        if (v3)
+        service2 = [dequeueTopMessage payloadCanBeLogged];
+        if (service2)
         {
-          v2 = [v17 messageBodyUsingCache];
-          v4 = [v2 description];
-          v5 = [v17 service];
+          payloadCanBeLogged = [dequeueTopMessage messageBodyUsingCache];
+          service = [payloadCanBeLogged description];
+          service3 = [dequeueTopMessage service];
           v21 = IDSLoggableDescriptionForObjectOnService();
         }
 
@@ -539,20 +539,20 @@
 
         *buf = 138412290;
         v54 = v21;
-        _os_log_impl(&dword_195925000, v20, OS_LOG_TYPE_DEFAULT, "Message body: %@", buf, 0xCu);
-        if (v3)
+        _os_log_impl(&dword_195925000, messageBodyUsingCache4, OS_LOG_TYPE_DEFAULT, "Message body: %@", buf, 0xCu);
+        if (service2)
         {
         }
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v44 = [v17 payloadCanBeLogged];
-        if (v44)
+        payloadCanBeLogged5 = [dequeueTopMessage payloadCanBeLogged];
+        if (payloadCanBeLogged5)
         {
-          v20 = [v17 messageBodyUsingCache];
-          v3 = [v20 description];
-          v4 = [v17 service];
+          messageBodyUsingCache4 = [dequeueTopMessage messageBodyUsingCache];
+          service2 = [messageBodyUsingCache4 description];
+          service = [dequeueTopMessage service];
           v45 = IDSLoggableDescriptionForObjectOnService();
         }
 
@@ -563,26 +563,26 @@
 
         v49 = v45;
         _IDSLogV();
-        if (v44)
+        if (payloadCanBeLogged5)
         {
         }
       }
 
 LABEL_146:
       v37 = [FTMessageDelivery _errorForTDMessageDeliveryStatus:10000 userInfo:0, v49];
-      [(FTMessageDelivery_APS *)v7 _notifyDelegateAboutError:v37 resultCode:10000 forMessage:v17];
+      [(FTMessageDelivery_APS *)selfCopy _notifyDelegateAboutError:v37 resultCode:10000 forMessage:dequeueTopMessage];
 LABEL_147:
 
-      v11 = v17;
+      topMessage = dequeueTopMessage;
       goto LABEL_148;
     }
 
-    if ([(FTMessageDelivery *)v7 isTrafficDisabledOnVMForMessage:v17])
+    if ([(FTMessageDelivery *)selfCopy isTrafficDisabledOnVMForMessage:dequeueTopMessage])
     {
-      v35 = [MEMORY[0x1E69A6138] warning];
-      if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+      warning2 = [MEMORY[0x1E69A6138] warning];
+      if (os_log_type_enabled(warning2, OS_LOG_TYPE_ERROR))
       {
-        sub_195964024(v35);
+        sub_195964024(warning2);
       }
 
       v36 = OSLogHandleForIDSCategory();
@@ -606,12 +606,12 @@ LABEL_147:
       }
 
       v37 = [FTMessageDelivery _errorForTDMessageDeliveryStatus:20000 userInfo:0];
-      [(FTMessageDelivery_APS *)v7 _notifyDelegateAboutError:v37 resultCode:20000 forMessage:v17];
+      [(FTMessageDelivery_APS *)selfCopy _notifyDelegateAboutError:v37 resultCode:20000 forMessage:dequeueTopMessage];
       goto LABEL_147;
     }
 
-    [(FTMessageDelivery_APS *)v7 _sendMessageAsynchronously:v17 error:0];
-    v11 = v17;
+    [(FTMessageDelivery_APS *)selfCopy _sendMessageAsynchronously:dequeueTopMessage error:0];
+    topMessage = dequeueTopMessage;
 LABEL_148:
 
 LABEL_149:
@@ -630,9 +630,9 @@ LABEL_149:
     _IDSLogV();
   }
 
-  [(FTMessageDelivery_APS *)v7 _updateTopics];
+  [(FTMessageDelivery_APS *)selfCopy _updateTopics];
 LABEL_150:
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   os_activity_scope_leave(&state);
   cut_arc_os_release();
@@ -652,21 +652,21 @@ LABEL_150:
   return v3;
 }
 
-- (FTMessageDelivery_APS)initWithAPSConnection:(id)a3 mobileNetworkManager:(id)a4
+- (FTMessageDelivery_APS)initWithAPSConnection:(id)connection mobileNetworkManager:(id)manager
 {
-  v7 = a4;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = FTMessageDelivery_APS;
-  v8 = [(FTMessageDelivery *)&v15 initWithAPSConnection:a3];
+  v8 = [(FTMessageDelivery *)&v15 initWithAPSConnection:connection];
   if (v8)
   {
     v8->_APSOutgoingMessageClass = MEMORY[0x19A8B8550](@"APSOutgoingMessage", @"ApplePushService");
-    v9 = [(FTMessageDelivery *)v8 connection];
-    [v9 setDelegate:v8];
+    connection = [(FTMessageDelivery *)v8 connection];
+    [connection setDelegate:v8];
 
-    objc_storeStrong(&v8->_mobileNetworkManager, a4);
-    v10 = [MEMORY[0x1E695DEC8] array];
-    [(FTMessageDelivery_APS *)v8 _setEnabledTopics:v10];
+    objc_storeStrong(&v8->_mobileNetworkManager, manager);
+    array = [MEMORY[0x1E695DEC8] array];
+    [(FTMessageDelivery_APS *)v8 _setEnabledTopics:array];
 
     [(FTMessageDelivery_APS *)v8 _updateTopics];
     if (_os_feature_enabled_impl() && ([MEMORY[0x1E69A6180] shouldDisableFailFastWhenSatelliteIsAvailable] & 1) == 0)
@@ -676,27 +676,27 @@ LABEL_150:
       v8->_offGridConnectionMonitor = v11;
     }
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v8 selector:sel__serverBagLoaded_ name:*MEMORY[0x1E69A50A8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__serverBagLoaded_ name:*MEMORY[0x1E69A50A8] object:0];
   }
 
   return v8;
 }
 
-- (FTMessageDelivery_APS)initWithAPSConnection:(id)a3
+- (FTMessageDelivery_APS)initWithAPSConnection:(id)connection
 {
   v4 = MEMORY[0x1E69A6108];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [(FTMessageDelivery_APS *)self initWithAPSConnection:v5 mobileNetworkManager:v6];
+  connectionCopy = connection;
+  sharedInstance = [v4 sharedInstance];
+  v7 = [(FTMessageDelivery_APS *)self initWithAPSConnection:connectionCopy mobileNetworkManager:sharedInstance];
 
   return v7;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:0 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:0 object:0];
 
   apsMessageMap = self->_apsMessageMap;
   v8[0] = MEMORY[0x1E69E9820];
@@ -707,63 +707,63 @@ LABEL_150:
   [(NSMutableDictionary *)apsMessageMap enumerateKeysAndObjectsUsingBlock:v8];
   [(NSMutableDictionary *)self->_timerMap enumerateKeysAndObjectsUsingBlock:&unk_1F09C7188];
   [(NSMutableDictionary *)self->_deathTimerMap enumerateKeysAndObjectsUsingBlock:&unk_1F09C71A8];
-  v5 = [MEMORY[0x1E695DEC8] array];
-  [(FTMessageDelivery_APS *)self _setEnabledTopics:v5];
+  array = [MEMORY[0x1E695DEC8] array];
+  [(FTMessageDelivery_APS *)self _setEnabledTopics:array];
 
-  v6 = [(FTMessageDelivery *)self connection];
-  [v6 setDelegate:0];
+  connection = [(FTMessageDelivery *)self connection];
+  [connection setDelegate:0];
 
   v7.receiver = self;
   v7.super_class = FTMessageDelivery_APS;
   [(FTMessageDelivery *)&v7 dealloc];
 }
 
-- (void)_setEnabledTopics:(id)a3
+- (void)_setEnabledTopics:(id)topics
 {
-  v4 = a3;
-  v7 = [(FTMessageDelivery *)self connection];
-  v5 = [MEMORY[0x1E695DEC8] array];
-  v6 = [MEMORY[0x1E695DEC8] array];
-  [v7 setEnabledTopics:v5 ignoredTopics:v6 opportunisticTopics:v4];
+  topicsCopy = topics;
+  connection = [(FTMessageDelivery *)self connection];
+  array = [MEMORY[0x1E695DEC8] array];
+  array2 = [MEMORY[0x1E695DEC8] array];
+  [connection setEnabledTopics:array ignoredTopics:array2 opportunisticTopics:topicsCopy];
 }
 
 - (id)_getEnabledTopics
 {
-  v2 = [(FTMessageDelivery *)self connection];
-  v3 = [v2 opportunisticTopics];
+  connection = [(FTMessageDelivery *)self connection];
+  opportunisticTopics = [connection opportunisticTopics];
 
-  return v3;
+  return opportunisticTopics;
 }
 
-- (void)_invalidateTimerForMessageID:(id)a3
+- (void)_invalidateTimerForMessageID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_timerMap objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_timerMap objectForKey:d];
   [v3 invalidate];
 }
 
-- (void)_invalidateDeathTimerForMessageID:(id)a3
+- (void)_invalidateDeathTimerForMessageID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_deathTimerMap objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_deathTimerMap objectForKey:d];
   [v3 invalidate];
 }
 
-- (void)_setMapForMessage:(id)a3 apsMessage:(id)a4 messageBody:(id)a5 timeoutTime:(double)a6 timeoutSelector:(SEL)a7 handlerBlock:(id)a8 retries:(id)a9
+- (void)_setMapForMessage:(id)message apsMessage:(id)apsMessage messageBody:(id)body timeoutTime:(double)time timeoutSelector:(SEL)selector handlerBlock:(id)block retries:(id)retries
 {
   v83 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v71 = a4;
-  value = a5;
-  v68 = a8;
-  v70 = a9;
-  v17 = [v16 uniqueIDString];
-  if (v17)
+  messageCopy = message;
+  apsMessageCopy = apsMessage;
+  value = body;
+  blockCopy = block;
+  retriesCopy = retries;
+  uniqueIDString = [messageCopy uniqueIDString];
+  if (uniqueIDString)
   {
     v18 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      if (a7)
+      if (selector)
       {
-        v19 = NSStringFromSelector(a7);
+        v19 = NSStringFromSelector(selector);
       }
 
       else
@@ -772,45 +772,45 @@ LABEL_150:
       }
 
       *buf = 138413314;
-      v74 = v17;
+      v74 = uniqueIDString;
       v75 = 2112;
-      v76 = v16;
+      v76 = messageCopy;
       v77 = 2112;
-      v78 = v71;
+      v78 = apsMessageCopy;
       v79 = 2048;
-      v80 = a6;
+      timeCopy = time;
       v81 = 2112;
       v82 = v19;
       _os_log_impl(&dword_195925000, v18, OS_LOG_TYPE_DEFAULT, "Mapping messageID: %@  message: %@   APSMessage: %@   timeout: %f  timeoutSelector: %@", buf, 0x34u);
-      if (a7)
+      if (selector)
       {
       }
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      if (a7)
+      if (selector)
       {
-        v67 = NSStringFromSelector(a7);
-        v66 = a6;
-        v64 = v16;
-        v65 = v71;
-        v59 = v17;
+        v67 = NSStringFromSelector(selector);
+        timeCopy3 = time;
+        v64 = messageCopy;
+        v65 = apsMessageCopy;
+        v59 = uniqueIDString;
         _IDSLogV();
       }
 
       else
       {
         v67 = @"none";
-        v66 = a6;
-        v64 = v16;
-        v65 = v71;
-        v59 = v17;
+        timeCopy3 = time;
+        v64 = messageCopy;
+        v65 = apsMessageCopy;
+        v59 = uniqueIDString;
         _IDSLogV();
       }
     }
 
-    [(FTMessageDelivery_APS *)self _invalidateTimerForMessageID:v17, v59, v64, v65, *&v66, v67];
+    [(FTMessageDelivery_APS *)self _invalidateTimerForMessageID:uniqueIDString, v59, v64, v65, *&timeCopy3, v67];
     if (!self->_ftMessageMap)
     {
       Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
@@ -860,15 +860,15 @@ LABEL_150:
       self->_deathTimerMap = v33;
     }
 
-    if (a6 > 0.0)
+    if (time > 0.0)
     {
       v35 = objc_alloc(MEMORY[0x1E69A60C0]);
       v36 = im_primary_queue();
-      v37 = [v35 initWithQueue:v36 interval:a6 repeats:0 userInfo:v17 handlerBlock:v68];
+      v37 = [v35 initWithQueue:v36 interval:time repeats:0 userInfo:uniqueIDString handlerBlock:blockCopy];
 
       if (v37)
       {
-        [(NSMutableDictionary *)self->_timerMap setObject:v37 forKey:v17];
+        [(NSMutableDictionary *)self->_timerMap setObject:v37 forKey:uniqueIDString];
       }
 
       else
@@ -877,7 +877,7 @@ LABEL_150:
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v74 = v17;
+          v74 = uniqueIDString;
           _os_log_impl(&dword_195925000, v38, OS_LOG_TYPE_ERROR, "No timer specified for message ID: %@", buf, 0xCu);
         }
 
@@ -885,33 +885,33 @@ LABEL_150:
         {
           _IDSWarnV();
           _IDSLogV();
-          v60 = v17;
+          v60 = uniqueIDString;
           _IDSLogTransport();
         }
       }
     }
 
-    if (v16)
+    if (messageCopy)
     {
-      CFDictionarySetValue(self->_ftMessageMap, v17, v16);
+      CFDictionarySetValue(self->_ftMessageMap, uniqueIDString, messageCopy);
     }
 
     if (value)
     {
-      CFDictionarySetValue(self->_bodyMap, v17, value);
+      CFDictionarySetValue(self->_bodyMap, uniqueIDString, value);
     }
 
-    if (v70)
+    if (retriesCopy)
     {
-      CFDictionarySetValue(self->_retriesMap, v17, v70);
+      CFDictionarySetValue(self->_retriesMap, uniqueIDString, retriesCopy);
     }
 
-    if (v71)
+    if (apsMessageCopy)
     {
-      CFDictionarySetValue(self->_apsMessageMap, v17, v71);
+      CFDictionarySetValue(self->_apsMessageMap, uniqueIDString, apsMessageCopy);
     }
 
-    v39 = [(NSMutableDictionary *)self->_apsMessageMap objectForKey:v17, v60];
+    v39 = [(NSMutableDictionary *)self->_apsMessageMap objectForKey:uniqueIDString, v60];
     v40 = v39 == 0;
 
     if (v40)
@@ -920,7 +920,7 @@ LABEL_150:
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v74 = v17;
+        v74 = uniqueIDString;
         _os_log_impl(&dword_195925000, v41, OS_LOG_TYPE_ERROR, "Missing APS Message for message ID: %@", buf, 0xCu);
       }
 
@@ -928,12 +928,12 @@ LABEL_150:
       {
         _IDSWarnV();
         _IDSLogV();
-        v61 = v17;
+        v61 = uniqueIDString;
         _IDSLogTransport();
       }
     }
 
-    v42 = [(NSMutableDictionary *)self->_ftMessageMap objectForKey:v17, v61];
+    v42 = [(NSMutableDictionary *)self->_ftMessageMap objectForKey:uniqueIDString, v61];
     v43 = v42 == 0;
 
     if (v43)
@@ -942,7 +942,7 @@ LABEL_150:
       if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v74 = v17;
+        v74 = uniqueIDString;
         _os_log_impl(&dword_195925000, v44, OS_LOG_TYPE_ERROR, "Missing FTMessage for message ID: %@", buf, 0xCu);
       }
 
@@ -950,12 +950,12 @@ LABEL_150:
       {
         _IDSWarnV();
         _IDSLogV();
-        v62 = v17;
+        v62 = uniqueIDString;
         _IDSLogTransport();
       }
     }
 
-    v45 = [(NSMutableDictionary *)self->_bodyMap objectForKey:v17, v62];
+    v45 = [(NSMutableDictionary *)self->_bodyMap objectForKey:uniqueIDString, v62];
     v46 = v45 == 0;
 
     if (v46)
@@ -964,7 +964,7 @@ LABEL_150:
       if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v74 = v17;
+        v74 = uniqueIDString;
         _os_log_impl(&dword_195925000, v47, OS_LOG_TYPE_ERROR, "Missing body for message ID: %@", buf, 0xCu);
       }
 
@@ -972,37 +972,37 @@ LABEL_150:
       {
         _IDSWarnV();
         _IDSLogV();
-        v63 = v17;
+        v63 = uniqueIDString;
         _IDSLogTransport();
       }
     }
 
-    v48 = [(NSMutableDictionary *)self->_retriesMap objectForKey:v17, v63];
+    v48 = [(NSMutableDictionary *)self->_retriesMap objectForKey:uniqueIDString, v63];
     v49 = v48 == 0;
 
     if (v49)
     {
-      CFDictionarySetValue(self->_retriesMap, v17, &unk_1F09D0788);
+      CFDictionarySetValue(self->_retriesMap, uniqueIDString, &unk_1F09D0788);
     }
 
-    v50 = [(NSMutableDictionary *)self->_deathTimerMap objectForKey:v17];
+    v50 = [(NSMutableDictionary *)self->_deathTimerMap objectForKey:uniqueIDString];
     v51 = v50 == 0;
 
     if (v51)
     {
       v52 = objc_alloc(MEMORY[0x1E69A60C0]);
       v53 = im_primary_queue();
-      [v16 timeout];
+      [messageCopy timeout];
       v55 = v54;
-      v56 = [v16 uniqueIDString];
+      uniqueIDString2 = [messageCopy uniqueIDString];
       v72[0] = MEMORY[0x1E69E9820];
       v72[1] = 3221225472;
       v72[2] = sub_1959486A0;
       v72[3] = &unk_1E7435238;
       v72[4] = self;
-      v57 = [v52 initWithQueue:v53 interval:fmax(v55 repeats:20.0) userInfo:0 handlerBlock:{v56, v72}];
+      v57 = [v52 initWithQueue:v53 interval:fmax(v55 repeats:20.0) userInfo:0 handlerBlock:{uniqueIDString2, v72}];
 
-      [(NSMutableDictionary *)self->_deathTimerMap setObject:v57 forKey:v17];
+      [(NSMutableDictionary *)self->_deathTimerMap setObject:v57 forKey:uniqueIDString];
     }
   }
 
@@ -1012,7 +1012,7 @@ LABEL_150:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v74 = v16;
+      v74 = messageCopy;
       _os_log_impl(&dword_195925000, v20, OS_LOG_TYPE_ERROR, "Cannot map Message: %@   no ID!", buf, 0xCu);
     }
 
@@ -1027,32 +1027,32 @@ LABEL_150:
   v58 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_clearMapForMessageID:(id)a3
+- (void)_clearMapForMessageID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = dCopy;
     _os_log_impl(&dword_195925000, v5, OS_LOG_TYPE_DEFAULT, "_clearMapForMessageID: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v13 = v4;
+    v13 = dCopy;
     _IDSLogV();
   }
 
-  [(FTMessageDelivery_APS *)self _invalidateTimerForMessageID:v4, v13];
-  [(FTMessageDelivery_APS *)self _invalidateDeathTimerForMessageID:v4];
-  [(NSMutableDictionary *)self->_ftMessageMap removeObjectForKey:v4];
-  [(NSMutableDictionary *)self->_apsMessageMap removeObjectForKey:v4];
-  [(NSMutableDictionary *)self->_retriesMap removeObjectForKey:v4];
-  [(NSMutableDictionary *)self->_timerMap removeObjectForKey:v4];
-  [(NSMutableDictionary *)self->_bodyMap removeObjectForKey:v4];
-  [(NSMutableDictionary *)self->_deathTimerMap removeObjectForKey:v4];
+  [(FTMessageDelivery_APS *)self _invalidateTimerForMessageID:dCopy, v13];
+  [(FTMessageDelivery_APS *)self _invalidateDeathTimerForMessageID:dCopy];
+  [(NSMutableDictionary *)self->_ftMessageMap removeObjectForKey:dCopy];
+  [(NSMutableDictionary *)self->_apsMessageMap removeObjectForKey:dCopy];
+  [(NSMutableDictionary *)self->_retriesMap removeObjectForKey:dCopy];
+  [(NSMutableDictionary *)self->_timerMap removeObjectForKey:dCopy];
+  [(NSMutableDictionary *)self->_bodyMap removeObjectForKey:dCopy];
+  [(NSMutableDictionary *)self->_deathTimerMap removeObjectForKey:dCopy];
   if (![(NSMutableDictionary *)self->_deathTimerMap count])
   {
     deathTimerMap = self->_deathTimerMap;
@@ -1092,9 +1092,9 @@ LABEL_150:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isBusyWithMessage:(id)a3
+- (BOOL)_isBusyWithMessage:(id)message
 {
-  v3 = [(NSMutableDictionary *)self->_apsMessageMap allKeysForObject:a3];
+  v3 = [(NSMutableDictionary *)self->_apsMessageMap allKeysForObject:message];
   v4 = [v3 count] != 0;
 
   return v4;
@@ -1102,64 +1102,64 @@ LABEL_150:
 
 - (id)allMessages
 {
-  v3 = [(FTMessageDelivery *)self queuedMessages];
-  v4 = [v3 mutableCopy];
+  queuedMessages = [(FTMessageDelivery *)self queuedMessages];
+  v4 = [queuedMessages mutableCopy];
 
   if (!v4)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  v5 = [(FTMessageDelivery_APS *)self _currentMessages];
-  [v4 addObjectsFromArray:v5];
+  _currentMessages = [(FTMessageDelivery_APS *)self _currentMessages];
+  [v4 addObjectsFromArray:_currentMessages];
 
   return v4;
 }
 
-- (int64_t)_retryCountForMessage:(id)a3
+- (int64_t)_retryCountForMessage:(id)message
 {
   retriesMap = self->_retriesMap;
-  v4 = [a3 uniqueIDString];
-  v5 = [(NSMutableDictionary *)retriesMap objectForKey:v4];
-  v6 = [v5 intValue];
+  uniqueIDString = [message uniqueIDString];
+  v5 = [(NSMutableDictionary *)retriesMap objectForKey:uniqueIDString];
+  intValue = [v5 intValue];
 
-  return v6;
+  return intValue;
 }
 
-- (id)_bodyForMessage:(id)a3
+- (id)_bodyForMessage:(id)message
 {
   bodyMap = self->_bodyMap;
-  v4 = [a3 uniqueIDString];
-  v5 = [(NSMutableDictionary *)bodyMap objectForKey:v4];
+  uniqueIDString = [message uniqueIDString];
+  v5 = [(NSMutableDictionary *)bodyMap objectForKey:uniqueIDString];
 
   return v5;
 }
 
-- (id)_messageForAPSOutgoingMessage:(id)a3
+- (id)_messageForAPSOutgoingMessage:(id)message
 {
-  v4 = [(NSMutableDictionary *)self->_apsMessageMap allKeysForObject:a3];
-  v5 = [v4 __imFirstObject];
-  v6 = [(NSMutableDictionary *)self->_ftMessageMap objectForKey:v5];
+  v4 = [(NSMutableDictionary *)self->_apsMessageMap allKeysForObject:message];
+  __imFirstObject = [v4 __imFirstObject];
+  v6 = [(NSMutableDictionary *)self->_ftMessageMap objectForKey:__imFirstObject];
 
   return v6;
 }
 
-- (id)_apsOutgoingMessageForFTMessage:(id)a3
+- (id)_apsOutgoingMessageForFTMessage:(id)message
 {
-  v4 = [(NSMutableDictionary *)self->_ftMessageMap allKeysForObject:a3];
-  v5 = [v4 __imFirstObject];
-  v6 = [(NSMutableDictionary *)self->_apsMessageMap objectForKey:v5];
+  v4 = [(NSMutableDictionary *)self->_ftMessageMap allKeysForObject:message];
+  __imFirstObject = [v4 __imFirstObject];
+  v6 = [(NSMutableDictionary *)self->_apsMessageMap objectForKey:__imFirstObject];
 
   return v6;
 }
 
-- (BOOL)_fillMessageParameters:(id *)a3 ftMessage:(id *)a4
+- (BOOL)_fillMessageParameters:(id *)parameters ftMessage:(id *)message
 {
   result = 0;
-  if (a3 && a4)
+  if (parameters && message)
   {
-    v8 = *a3;
-    v9 = *a4;
+    v8 = *parameters;
+    v9 = *message;
     if (v8)
     {
       if (v9)
@@ -1171,8 +1171,8 @@ LABEL_150:
     else
     {
       v8 = [(FTMessageDelivery_APS *)self _apsOutgoingMessageForFTMessage:v9];
-      *a3 = v8;
-      if (*a4)
+      *parameters = v8;
+      if (*message)
       {
         v10 = 1;
         return v8 != 0 && v10;
@@ -1180,8 +1180,8 @@ LABEL_150:
     }
 
     v11 = [(FTMessageDelivery_APS *)self _messageForAPSOutgoingMessage:v8];
-    *a4 = v11;
-    v8 = *a3;
+    *message = v11;
+    v8 = *parameters;
     v10 = v11 != 0;
     return v8 != 0 && v10;
   }
@@ -1189,37 +1189,37 @@ LABEL_150:
   return result;
 }
 
-- (BOOL)_shouldSendSOSForFailure:(id)a3
+- (BOOL)_shouldSendSOSForFailure:(id)failure
 {
-  v3 = a3;
+  failureCopy = failure;
   if (qword_1EAED7830 != -1)
   {
     sub_195963C18();
   }
 
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:qword_1ED768810];
+  domain = [failureCopy domain];
+  v5 = [domain isEqualToString:qword_1ED768810];
 
-  if ((v5 & 1) != 0 || ([v3 domain], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", *MEMORY[0x1E696A978]), v6, v7))
+  if ((v5 & 1) != 0 || ([failureCopy domain], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", *MEMORY[0x1E696A978]), v6, v7))
   {
-    [v3 code];
+    [failureCopy code];
   }
 
   return 0;
 }
 
-- (void)_noteMessageFailed:(id)a3 ftMessage:(id)a4 retryBehavior:(int)a5 error:(id)a6
+- (void)_noteMessageFailed:(id)failed ftMessage:(id)message retryBehavior:(int)behavior error:(id)error
 {
   v87 = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v79 = a4;
-  v80 = a3;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(FTMessageDelivery_APS *)self _fillMessageParameters:&v80 ftMessage:&v79];
-  v14 = v80;
+  errorCopy = error;
+  messageCopy = message;
+  failedCopy = failed;
+  messageCopy2 = message;
+  failedCopy2 = failed;
+  v13 = [(FTMessageDelivery_APS *)self _fillMessageParameters:&failedCopy ftMessage:&messageCopy];
+  v14 = failedCopy;
 
-  v15 = v79;
+  v15 = messageCopy;
   if (!v13)
   {
     goto LABEL_90;
@@ -1231,32 +1231,32 @@ LABEL_150:
   }
 
   v74 = [(FTMessageDelivery_APS *)self _retryCountForMessage:v15];
-  v16 = [v10 domain];
-  v17 = [v16 isEqualToString:*MEMORY[0x1E696A978]];
+  domain = [errorCopy domain];
+  v17 = [domain isEqualToString:*MEMORY[0x1E696A978]];
 
   if (v17)
   {
     v73 = 0;
-    v18 = [v10 code] == -1001;
+    v18 = [errorCopy code] == -1001;
     goto LABEL_11;
   }
 
-  v19 = [v10 domain];
-  v20 = [v19 isEqualToString:qword_1ED768818];
+  domain2 = [errorCopy domain];
+  v20 = [domain2 isEqualToString:qword_1ED768818];
 
   if (v20)
   {
-    v21 = [v10 code];
-    if (v21 <= 7)
+    code = [errorCopy code];
+    if (code <= 7)
     {
-      if (((1 << v21) & 0xC6) != 0)
+      if (((1 << code) & 0xC6) != 0)
       {
         v18 = 0;
         v73 = 1;
         goto LABEL_11;
       }
 
-      if (v21 == 3)
+      if (code == 3)
       {
         goto LABEL_90;
       }
@@ -1278,9 +1278,9 @@ LABEL_11:
     v22 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v15 hasReceivedPushAck];
+      hasReceivedPushAck = [v15 hasReceivedPushAck];
       v24 = @"NO";
-      if (v23)
+      if (hasReceivedPushAck)
       {
         v24 = @"YES";
       }
@@ -1300,28 +1300,28 @@ LABEL_11:
     goto LABEL_40;
   }
 
-  v25 = [MEMORY[0x1E69A53F0] sharedInstance];
-  v26 = [v25 objectForKey:@"md-retry-attempts"];
+  mEMORY[0x1E69A53F0] = [MEMORY[0x1E69A53F0] sharedInstance];
+  v26 = [mEMORY[0x1E69A53F0] objectForKey:@"md-retry-attempts"];
 
   if (v26 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v27 = v26;
-    v28 = [v27 intValue];
+    intValue = [v27 intValue];
     v29 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *v82 = v28;
+      *v82 = intValue;
       _os_log_impl(&dword_195925000, v29, OS_LOG_TYPE_DEFAULT, "Server Bag provided us with %d retries", buf, 8u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v64 = v28;
+      v64 = intValue;
       _IDSLogV();
     }
 
-    v30 = v28;
+    v30 = intValue;
   }
 
   else
@@ -1351,9 +1351,9 @@ LABEL_11:
   v32 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
-    v33 = [v15 hasReceivedPushAck];
+    hasReceivedPushAck2 = [v15 hasReceivedPushAck];
     v34 = @"NO";
-    if (v33)
+    if (hasReceivedPushAck2)
     {
       v34 = @"YES";
     }
@@ -1371,9 +1371,9 @@ LABEL_11:
     if (_IDSShouldLog())
     {
 LABEL_40:
-      v35 = [v15 hasReceivedPushAck];
+      hasReceivedPushAck3 = [v15 hasReceivedPushAck];
       v36 = @"NO";
-      if (v35)
+      if (hasReceivedPushAck3)
       {
         v36 = @"YES";
       }
@@ -1393,13 +1393,13 @@ LABEL_44:
   v37 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
-    v38 = [v15 uniqueIDString];
-    v39 = v38;
+    uniqueIDString = [v15 uniqueIDString];
+    v39 = uniqueIDString;
     v40 = @"NO";
     *buf = 138413314;
     *v82 = v15;
     *&v82[8] = 2112;
-    if (a5 == 1)
+    if (behavior == 1)
     {
       v41 = @"YES";
     }
@@ -1409,7 +1409,7 @@ LABEL_44:
       v41 = @"NO";
     }
 
-    *&v82[10] = v38;
+    *&v82[10] = uniqueIDString;
     if (v18)
     {
       v40 = @"YES";
@@ -1426,10 +1426,10 @@ LABEL_44:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v42 = [v15 uniqueIDString];
-    v43 = v42;
+    uniqueIDString2 = [v15 uniqueIDString];
+    v43 = uniqueIDString2;
     v44 = @"NO";
-    if (a5 == 1)
+    if (behavior == 1)
     {
       v45 = @"YES";
     }
@@ -1446,83 +1446,83 @@ LABEL_44:
 
     v70 = v45;
     v72 = v44;
-    v66 = v42;
+    v66 = uniqueIDString2;
     v68 = v74;
     v64 = v15;
     _IDSLogV();
   }
 
   [v15 logFailureInfo];
-  if ([(FTMessageDelivery_APS *)self _shouldSendSOSForFailure:v10])
+  if ([(FTMessageDelivery_APS *)self _shouldSendSOSForFailure:errorCopy])
   {
-    if ([v10 code])
+    if ([errorCopy code])
     {
-      v46 = [v10 code];
+      code2 = [errorCopy code];
     }
 
     else
     {
-      v46 = 9999;
+      code2 = 9999;
     }
 
     v47 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
-      v48 = [v10 code];
+      code3 = [errorCopy code];
       *buf = 67109120;
-      *v82 = v48;
+      *v82 = code3;
       _os_log_impl(&dword_195925000, v47, OS_LOG_TYPE_DEFAULT, "FTMessageDelivery Sending SOS for APS failure that recieved response code: (HTTP Status Code: %d)", buf, 8u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v65 = [v10 code];
+      code4 = [errorCopy code];
       _IDSLogV();
     }
 
     v49 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
     {
-      v50 = [v15 topic];
+      topic = [v15 topic];
       *buf = 67109890;
       *v82 = 0;
       *&v82[4] = 1024;
       *&v82[6] = 0;
       *&v82[10] = 1024;
-      *&v82[12] = v46;
+      *&v82[12] = code2;
       *&v82[16] = 2112;
-      v83 = v50;
+      v83 = topic;
       _os_log_impl(&dword_195925000, v49, OS_LOG_TYPE_DEFAULT, "SOS Metric Domain (%d), sos type (%d), error code (%d), url (%@)", buf, 0x1Eu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
       [v15 topic];
-      v65 = 0;
+      code4 = 0;
       v67 = 0.0;
-      v71 = v69 = v46;
+      v71 = v69 = code2;
       _IDSLogV();
     }
 
     v51 = MEMORY[0x1E69A53D8];
-    v52 = [v15 topic];
-    v53 = [v51 metricWithDomain:0 type:0 error:v46 bagURL:v52];
+    topic2 = [v15 topic];
+    v53 = [v51 metricWithDomain:0 type:0 error:code2 bagURL:topic2];
 
-    v54 = [MEMORY[0x1E69A53D0] logger];
-    [v54 logMetric:v53];
+    logger = [MEMORY[0x1E69A53D0] logger];
+    [logger logMetric:v53];
   }
 
   v55 = !v18;
-  if (a5 != 1)
+  if (behavior != 1)
   {
     v55 = 1;
   }
 
   if (v55)
   {
-    if ((v73 & 1) != 0 || ((a5 == 2) | [v15 hasReceivedPushAck]) == 1)
+    if ((v73 & 1) != 0 || ((behavior == 2) | [v15 hasReceivedPushAck]) == 1)
     {
-      [(FTMessageDelivery_APS *)self _notifyDelegateAboutError:v10 resultCode:20001 forMessage:v15];
+      [(FTMessageDelivery_APS *)self _notifyDelegateAboutError:errorCopy resultCode:20001 forMessage:v15];
     }
 
     else if (([v15 hasReceivedPushAck] & 1) == 0)
@@ -1563,11 +1563,11 @@ LABEL_44:
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
       v67 = v56;
-      v65 = v15;
+      code4 = v15;
       _IDSLogV();
     }
 
-    v59 = [(FTMessageDelivery *)self connection:v65];
+    v59 = [(FTMessageDelivery *)self connection:code4];
     [v59 cancelOutgoingMessage:v14];
 
     [v15 setHasReceivedPushAck:0];
@@ -1595,25 +1595,25 @@ LABEL_90:
   v62 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_noteMessageSucceeded:(id)a3 ftMessage:(id)a4 error:(id)a5 result:(id)a6 resultCode:(int64_t)a7
+- (void)_noteMessageSucceeded:(id)succeeded ftMessage:(id)message error:(id)error result:(id)result resultCode:(int64_t)code
 {
   v39 = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = a6;
-  v31 = a4;
-  v32 = a3;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(FTMessageDelivery_APS *)self _fillMessageParameters:&v32 ftMessage:&v31];
-  v17 = v32;
+  errorCopy = error;
+  resultCopy = result;
+  messageCopy = message;
+  succeededCopy = succeeded;
+  messageCopy2 = message;
+  succeededCopy2 = succeeded;
+  v16 = [(FTMessageDelivery_APS *)self _fillMessageParameters:&succeededCopy ftMessage:&messageCopy];
+  v17 = succeededCopy;
 
-  v18 = v31;
+  v18 = messageCopy;
   if (v16)
   {
-    v19 = [v18 uniqueIDString];
+    uniqueIDString = [v18 uniqueIDString];
     [v18 setHasReceivedPushAck:1];
-    v20 = [(FTMessageDelivery *)self _queue];
-    [v20 removeMessage:v18];
+    _queue = [(FTMessageDelivery *)self _queue];
+    [_queue removeMessage:v18];
 
     v21 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -1621,27 +1621,27 @@ LABEL_90:
       *buf = 138412546;
       v34 = v18;
       v35 = 2048;
-      v36 = a7;
+      codeCopy = code;
       _os_log_impl(&dword_195925000, v21, OS_LOG_TYPE_DEFAULT, "Informing delegate about message %@ with resultCode %ld", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
       v26 = v18;
-      v28 = a7;
+      codeCopy2 = code;
       _IDSLogV();
     }
 
-    [(FTMessageDelivery *)self _informDelegateAboutMessage:v18 error:0 result:v13 resultCode:a7 interface:1, v26, v28];
+    [(FTMessageDelivery *)self _informDelegateAboutMessage:v18 error:0 result:resultCopy resultCode:code interface:1, v26, codeCopy2];
     v22 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v18 uniqueIDString];
+      uniqueIDString2 = [v18 uniqueIDString];
       v24 = [(NSMutableDictionary *)self->_ftMessageMap count];
       *buf = 138412802;
       v34 = v18;
       v35 = 2112;
-      v36 = v23;
+      codeCopy = uniqueIDString2;
       v37 = 1024;
       v38 = v24;
       _os_log_impl(&dword_195925000, v22, OS_LOG_TYPE_DEFAULT, "Noting message success: %@   (Request ID: %@   %d remaining)", buf, 0x1Cu);
@@ -1649,41 +1649,41 @@ LABEL_90:
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v29 = [v18 uniqueIDString];
+      uniqueIDString3 = [v18 uniqueIDString];
       v30 = [(NSMutableDictionary *)self->_ftMessageMap count];
       v27 = v18;
       _IDSLogV();
     }
 
-    [(FTMessageDelivery_APS *)self _clearMapForMessageID:v19, v27, v29, v30];
+    [(FTMessageDelivery_APS *)self _clearMapForMessageID:uniqueIDString, v27, uniqueIDString3, v30];
     [(FTMessageDelivery_APS *)self _dequeueIfNeeded];
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_noteMessageACKd:(id)a3 ftMessage:(id)a4
+- (void)_noteMessageACKd:(id)kd ftMessage:(id)message
 {
   v29 = *MEMORY[0x1E69E9840];
-  v21 = a4;
-  v22 = a3;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FTMessageDelivery_APS *)self _fillMessageParameters:&v22 ftMessage:&v21];
-  v9 = v22;
+  messageCopy = message;
+  kdCopy = kd;
+  messageCopy2 = message;
+  kdCopy2 = kd;
+  v8 = [(FTMessageDelivery_APS *)self _fillMessageParameters:&kdCopy ftMessage:&messageCopy];
+  v9 = kdCopy;
 
-  v10 = v21;
+  v10 = messageCopy;
   if (v8)
   {
     v11 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v10 uniqueIDString];
+      uniqueIDString = [v10 uniqueIDString];
       v13 = [(NSMutableDictionary *)self->_ftMessageMap count];
       *buf = 138412802;
       v24 = v10;
       v25 = 2112;
-      v26 = v12;
+      v26 = uniqueIDString;
       v27 = 1024;
       v28 = v13;
       _os_log_impl(&dword_195925000, v11, OS_LOG_TYPE_DEFAULT, "Noting message ack'd: %@   (Request ID: %@   %d remaining)", buf, 0x1Cu);
@@ -1691,19 +1691,19 @@ LABEL_90:
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v19 = [v10 uniqueIDString];
+      uniqueIDString2 = [v10 uniqueIDString];
       v20 = [(NSMutableDictionary *)self->_ftMessageMap count];
       v18 = v10;
       _IDSLogV();
     }
 
-    v14 = [v10 originalTimestamp];
-    v15 = v14 == 0;
+    originalTimestamp = [v10 originalTimestamp];
+    v15 = originalTimestamp == 0;
 
     if (v15)
     {
-      v16 = [v10 pushAckTimestamp];
-      [v10 setOriginalTimestamp:v16];
+      pushAckTimestamp = [v10 pushAckTimestamp];
+      [v10 setOriginalTimestamp:pushAckTimestamp];
     }
 
     [v10 setHasReceivedPushAck:1];
@@ -1713,21 +1713,21 @@ LABEL_90:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_noteMessageSent:(id)a3 ftMessage:(id)a4 body:(id)a5
+- (void)_noteMessageSent:(id)sent ftMessage:(id)message body:(id)body
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v46 = a4;
-  v47 = a3;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(FTMessageDelivery_APS *)self _fillMessageParameters:&v47 ftMessage:&v46];
-  v12 = v47;
+  bodyCopy = body;
+  messageCopy = message;
+  sentCopy = sent;
+  messageCopy2 = message;
+  sentCopy2 = sent;
+  v11 = [(FTMessageDelivery_APS *)self _fillMessageParameters:&sentCopy ftMessage:&messageCopy];
+  v12 = sentCopy;
 
-  v13 = v46;
+  v13 = messageCopy;
   if (v11)
   {
-    v14 = [v13 uniqueIDString];
+    uniqueIDString = [v13 uniqueIDString];
     if ([v13 wantsAPSRetries] && objc_msgSend(v13, "highPriority"))
     {
       v15 = OSLogHandleForIDSCategory();
@@ -1743,8 +1743,8 @@ LABEL_90:
       }
 
       v16 = [(FTMessageDelivery_APS *)self _retryCountForMessage:v13];
-      v17 = [MEMORY[0x1E69A53F0] sharedInstance];
-      v18 = [v17 objectForKey:@"md-retry-start-interval"];
+      mEMORY[0x1E69A53F0] = [MEMORY[0x1E69A53F0] sharedInstance];
+      v18 = [mEMORY[0x1E69A53F0] objectForKey:@"md-retry-start-interval"];
 
       if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
@@ -1815,7 +1815,7 @@ LABEL_90:
       v44[2] = sub_19594AA04;
       v44[3] = &unk_1E7435500;
       objc_copyWeak(&v45, buf);
-      [(FTMessageDelivery_APS *)self _setMapForMessage:v13 apsMessage:v12 messageBody:v8 timeoutTime:sel__messageACKTimedOut_ timeoutSelector:v44 handlerBlock:0 retries:v30];
+      [(FTMessageDelivery_APS *)self _setMapForMessage:v13 apsMessage:v12 messageBody:bodyCopy timeoutTime:sel__messageACKTimedOut_ timeoutSelector:v44 handlerBlock:0 retries:v30];
       objc_destroyWeak(&v45);
       objc_destroyWeak(buf);
     }
@@ -1846,7 +1846,7 @@ LABEL_90:
       v42[2] = sub_19594AB04;
       v42[3] = &unk_1E7435500;
       objc_copyWeak(&v43, buf);
-      [(FTMessageDelivery_APS *)self _setMapForMessage:v13 apsMessage:v12 messageBody:v8 timeoutTime:sel__messageSendTimedOut_ timeoutSelector:v42 handlerBlock:0 retries:v27 + 2.0];
+      [(FTMessageDelivery_APS *)self _setMapForMessage:v13 apsMessage:v12 messageBody:bodyCopy timeoutTime:sel__messageSendTimedOut_ timeoutSelector:v42 handlerBlock:0 retries:v27 + 2.0];
       objc_destroyWeak(&v43);
       objc_destroyWeak(buf);
     }
@@ -1855,26 +1855,26 @@ LABEL_90:
     v32 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v13 uniqueIDString];
+      uniqueIDString2 = [v13 uniqueIDString];
       v34 = [(NSMutableDictionary *)self->_ftMessageMap count];
-      v35 = [(NSMutableDictionary *)self->_retriesMap objectForKey:v14];
-      v36 = [v35 intValue];
+      v35 = [(NSMutableDictionary *)self->_retriesMap objectForKey:uniqueIDString];
+      intValue = [v35 intValue];
       *buf = 138413058;
       v49 = v13;
       v50 = 2112;
-      v51 = *&v33;
+      v51 = *&uniqueIDString2;
       v52 = 1024;
       v53 = v34;
       v54 = 1024;
-      v55 = v36;
+      v55 = intValue;
       _os_log_impl(&dword_195925000, v32, OS_LOG_TYPE_DEFAULT, "Noting message sent: %@   (Request ID: %@  Remaining: %d  Attempt: %d)", buf, 0x22u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v37 = [v13 uniqueIDString];
+      uniqueIDString3 = [v13 uniqueIDString];
       [(NSMutableDictionary *)self->_ftMessageMap count];
-      v38 = [(NSMutableDictionary *)self->_retriesMap objectForKey:v14];
+      v38 = [(NSMutableDictionary *)self->_retriesMap objectForKey:uniqueIDString];
       [v38 intValue];
       _IDSLogV();
     }
@@ -1883,38 +1883,38 @@ LABEL_90:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendMessage:(id)a3 ftMessage:(id)a4
+- (void)_sendMessage:(id)message ftMessage:(id)ftMessage
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  ftMessageCopy = ftMessage;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_19594ACD0;
   v10[3] = &unk_1E7435528;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = ftMessageCopy;
+  v12 = messageCopy;
+  v8 = messageCopy;
+  v9 = ftMessageCopy;
   [(FTMessageDelivery_APS *)self _apsMessageForMessage:v9 body:v8 completion:v10];
 }
 
-- (void)_messageACKTimedOut:(id)a3
+- (void)_messageACKTimedOut:(id)out
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [(NSMutableDictionary *)self->_ftMessageMap objectForKey:v5];
+  outCopy = out;
+  userInfo = [outCopy userInfo];
+  v6 = [(NSMutableDictionary *)self->_ftMessageMap objectForKey:userInfo];
   if (v6)
   {
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 uniqueIDString];
+      uniqueIDString = [v6 uniqueIDString];
       *buf = 138412546;
       v14 = v6;
       v15 = 2112;
-      v16 = v8;
+      v16 = uniqueIDString;
       _os_log_impl(&dword_195925000, v7, OS_LOG_TYPE_DEFAULT, "Timed out waiting for server ack for message: %@   (Request ID: %@)", buf, 0x16u);
     }
 
@@ -1939,22 +1939,22 @@ LABEL_90:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_messageSendTimedOut:(id)a3
+- (void)_messageSendTimedOut:(id)out
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [(NSMutableDictionary *)self->_ftMessageMap objectForKey:v5];
+  outCopy = out;
+  userInfo = [outCopy userInfo];
+  v6 = [(NSMutableDictionary *)self->_ftMessageMap objectForKey:userInfo];
   if (v6)
   {
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 uniqueIDString];
+      uniqueIDString = [v6 uniqueIDString];
       *buf = 138412546;
       v14 = v6;
       v15 = 2112;
-      v16 = v8;
+      v16 = uniqueIDString;
       _os_log_impl(&dword_195925000, v7, OS_LOG_TYPE_DEFAULT, "Timed out waiting for server response for message: %@   (Request ID: %@)", buf, 0x16u);
     }
 
@@ -1979,22 +1979,22 @@ LABEL_90:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_messageCompletelyTimedOut:(id)a3
+- (void)_messageCompletelyTimedOut:(id)out
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [(NSMutableDictionary *)self->_ftMessageMap objectForKey:v5];
+  outCopy = out;
+  userInfo = [outCopy userInfo];
+  v6 = [(NSMutableDictionary *)self->_ftMessageMap objectForKey:userInfo];
   if (v6)
   {
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 uniqueIDString];
+      uniqueIDString = [v6 uniqueIDString];
       *buf = 138412546;
       v14 = v6;
       v15 = 2112;
-      v16 = v8;
+      v16 = uniqueIDString;
       _os_log_impl(&dword_195925000, v7, OS_LOG_TYPE_DEFAULT, "Timed out waiting for server response for message: %@   (Request ID: %@)", buf, 0x16u);
     }
 
@@ -2019,33 +2019,33 @@ LABEL_90:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_messageNeedsRetry:(id)a3
+- (void)_messageNeedsRetry:(id)retry
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [(NSMutableDictionary *)self->_ftMessageMap objectForKey:v5];
+  retryCopy = retry;
+  userInfo = [retryCopy userInfo];
+  v6 = [(NSMutableDictionary *)self->_ftMessageMap objectForKey:userInfo];
   v7 = [(FTMessageDelivery_APS *)self _retryCountForMessage:v6];
   if (objc_opt_respondsToSelector())
   {
-    [(NSMutableDictionary *)self->_bodyMap removeObjectForKey:v5];
-    [(NSMutableDictionary *)self->_apsMessageMap removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_bodyMap removeObjectForKey:userInfo];
+    [(NSMutableDictionary *)self->_apsMessageMap removeObjectForKey:userInfo];
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
     [v6 setRetryCount:v8];
   }
 
-  v9 = [(NSMutableDictionary *)self->_apsMessageMap objectForKey:v5];
+  v9 = [(NSMutableDictionary *)self->_apsMessageMap objectForKey:userInfo];
   v10 = [(FTMessageDelivery_APS *)self _bodyForMessage:v6];
   if (v6)
   {
     v11 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 uniqueIDString];
+      uniqueIDString = [v6 uniqueIDString];
       *buf = 138412546;
       v18 = v9;
       v19 = 2112;
-      v20 = v12;
+      v20 = uniqueIDString;
       _os_log_impl(&dword_195925000, v11, OS_LOG_TYPE_DEFAULT, "Starting retry for message: %@   (Request ID: %@)", buf, 0x16u);
     }
 
@@ -2072,9 +2072,9 @@ LABEL_90:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v18 = v4;
+      v18 = retryCopy;
       v19 = 2112;
-      v20 = v5;
+      v20 = userInfo;
       _os_log_impl(&dword_195925000, v13, OS_LOG_TYPE_ERROR, "Missing message for retry!  (timer: %@   messageID: %@)", buf, 0x16u);
     }
 
@@ -2089,22 +2089,22 @@ LABEL_90:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_messageAckGracePeriodTimedOut:(id)a3
+- (void)_messageAckGracePeriodTimedOut:(id)out
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [(NSMutableDictionary *)self->_ftMessageMap objectForKey:v5];
+  outCopy = out;
+  userInfo = [outCopy userInfo];
+  v6 = [(NSMutableDictionary *)self->_ftMessageMap objectForKey:userInfo];
   if (v6)
   {
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 uniqueIDString];
+      uniqueIDString = [v6 uniqueIDString];
       *buf = 138412546;
       v14 = v6;
       v15 = 2112;
-      v16 = v8;
+      v16 = uniqueIDString;
       _os_log_impl(&dword_195925000, v7, OS_LOG_TYPE_DEFAULT, "Timed out waiting for server response after final grace period for message: %@   (Request ID: %@)", buf, 0x16u);
     }
 
@@ -2129,7 +2129,7 @@ LABEL_90:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_requiredTopicsWithUltraConstrainedTopics:(id *)a3
+- (id)_requiredTopicsWithUltraConstrainedTopics:(id *)topics
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v29 = 0;
@@ -2138,18 +2138,18 @@ LABEL_90:
   v32 = sub_19592BEA4;
   v33 = sub_19592BFE0;
   v34 = 0;
-  v6 = [(FTMessageDelivery *)self currentMessage];
-  v7 = [v6 topic];
+  currentMessage = [(FTMessageDelivery *)self currentMessage];
+  topic = [currentMessage topic];
 
-  if ([v7 length])
+  if ([topic length])
   {
-    [v5 addObject:v7];
-    if (a3)
+    [v5 addObject:topic];
+    if (topics)
     {
-      v8 = [(FTMessageDelivery *)self currentMessage];
-      v9 = [v8 ultraConstrainedAllowed];
+      currentMessage2 = [(FTMessageDelivery *)self currentMessage];
+      ultraConstrainedAllowed = [currentMessage2 ultraConstrainedAllowed];
 
-      if (v9)
+      if (ultraConstrainedAllowed)
       {
         v10 = v30[5];
         if (!v10)
@@ -2161,12 +2161,12 @@ LABEL_90:
           v10 = v30[5];
         }
 
-        [v10 addObject:v7];
+        [v10 addObject:topic];
       }
     }
   }
 
-  v13 = [(FTMessageDelivery *)self queuedMessages];
+  queuedMessages = [(FTMessageDelivery *)self queuedMessages];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = sub_19594BE7C;
@@ -2174,9 +2174,9 @@ LABEL_90:
   v14 = v5;
   v27 = v14;
   v28 = &v29;
-  [v13 enumerateObjectsUsingBlock:v26];
+  [queuedMessages enumerateObjectsUsingBlock:v26];
 
-  v15 = [(FTMessageDelivery_APS *)self _currentMessages];
+  _currentMessages = [(FTMessageDelivery_APS *)self _currentMessages];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = sub_19594BF34;
@@ -2184,37 +2184,37 @@ LABEL_90:
   v16 = v14;
   v24 = v16;
   v25 = &v29;
-  [v15 enumerateObjectsUsingBlock:&v20];
+  [_currentMessages enumerateObjectsUsingBlock:&v20];
 
-  if (a3)
+  if (topics)
   {
     v17 = v30[5];
     if (v17)
     {
-      *a3 = [v17 allObjects];
+      *topics = [v17 allObjects];
     }
   }
 
-  v18 = [v16 allObjects];
+  allObjects = [v16 allObjects];
 
   _Block_object_dispose(&v29, 8);
 
-  return v18;
+  return allObjects;
 }
 
 - (void)_updateTopics
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13 = 0;
-  v3 = [(FTMessageDelivery_APS *)v2 _requiredTopicsWithUltraConstrainedTopics:&v13];
+  v3 = [(FTMessageDelivery_APS *)selfCopy _requiredTopicsWithUltraConstrainedTopics:&v13];
   v4 = v13;
-  v5 = [(FTMessageDelivery_APS *)v2 _getEnabledTopics];
-  v6 = [v5 count];
+  _getEnabledTopics = [(FTMessageDelivery_APS *)selfCopy _getEnabledTopics];
+  v6 = [_getEnabledTopics count];
   if (v6 == [v3 count])
   {
-    v7 = [v5 isEqualToArray:v3] ^ 1;
+    v7 = [_getEnabledTopics isEqualToArray:v3] ^ 1;
   }
 
   else
@@ -2238,7 +2238,7 @@ LABEL_90:
 
   if (v7)
   {
-    [(FTMessageDelivery_APS *)v2 _setEnabledTopics:v3];
+    [(FTMessageDelivery_APS *)selfCopy _setEnabledTopics:v3];
   }
 
   else
@@ -2256,22 +2256,22 @@ LABEL_90:
     }
   }
 
-  v10 = [(FTMessageDelivery *)v2 connection];
-  [v10 setUltraConstrainedTopics:v4];
+  connection = [(FTMessageDelivery *)selfCopy connection];
+  [connection setUltraConstrainedTopics:v4];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_apsMessageBodyForMessage:(id)a3 completion:(id)a4
+- (void)_apsMessageBodyForMessage:(id)message completion:(id)completion
 {
   v143 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v109 = a4;
-  v112 = v5;
+  messageCopy = message;
+  completionCopy = completion;
+  v112 = messageCopy;
   v113 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(__CFString *)v5 messageBodyUsingCache];
-  v7 = [v6 mutableCopy];
+  messageBodyUsingCache = [(__CFString *)messageCopy messageBodyUsingCache];
+  v7 = [messageBodyUsingCache mutableCopy];
 
   v111 = v7;
   if (!v7)
@@ -2279,25 +2279,25 @@ LABEL_90:
     v111 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v107 = [(__CFString *)v112 bagKey];
-  v110 = [(__CFString *)v112 topic];
-  if (v110)
+  bagKey = [(__CFString *)v112 bagKey];
+  topic = [(__CFString *)v112 topic];
+  if (topic)
   {
     theDict = objc_alloc_init(MEMORY[0x1E695DF90]);
     v8 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v140 = v110;
+      v140 = topic;
       v141 = 2112;
-      v142 = v107;
+      v142 = bagKey;
       _os_log_impl(&dword_195925000, v8, OS_LOG_TYPE_DEFAULT, "Building URL request with topic: %@  bagKey: %@", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v97 = v110;
-      v102 = v107;
+      v97 = topic;
+      v102 = bagKey;
       _IDSLogV();
     }
 
@@ -2306,51 +2306,51 @@ LABEL_90:
       v9 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(FTMessageDelivery *)self userAgent];
+        userAgent = [(FTMessageDelivery *)self userAgent];
         *buf = 138412290;
-        v140 = v10;
+        v140 = userAgent;
         _os_log_impl(&dword_195925000, v9, OS_LOG_TYPE_DEFAULT, "       User Agent: %@", buf, 0xCu);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v98 = [(FTMessageDelivery *)self userAgent];
+        userAgent2 = [(FTMessageDelivery *)self userAgent];
         _IDSLogV();
       }
 
-      v104 = [(FTMessageDelivery *)self userAgent];
-      if ([v104 length])
+      userAgent3 = [(FTMessageDelivery *)self userAgent];
+      if ([userAgent3 length])
       {
         v11 = MEMORY[0x1E696AEC0];
         v12 = +[FTDeviceSupport sharedInstance];
-        v13 = [v12 userAgentString];
-        v105 = [v11 stringWithFormat:@"%@ %@", v104, v13];
+        userAgentString = [v12 userAgentString];
+        userAgentString2 = [v11 stringWithFormat:@"%@ %@", userAgent3, userAgentString];
       }
 
       else
       {
         v12 = +[FTDeviceSupport sharedInstance];
-        v105 = [v12 userAgentString];
+        userAgentString2 = [v12 userAgentString];
       }
 
       v15 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v140 = v105;
+        v140 = userAgentString2;
         _os_log_impl(&dword_195925000, v15, OS_LOG_TYPE_DEFAULT, "            Agent: %@", buf, 0xCu);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v99 = v105;
+        v99 = userAgentString2;
         _IDSLogV();
       }
 
-      v16 = [(__CFString *)v112 wantsUserAgentInHeaders];
-      if ([(__CFString *)v105 length])
+      wantsUserAgentInHeaders = [(__CFString *)v112 wantsUserAgentInHeaders];
+      if ([(__CFString *)userAgentString2 length])
       {
-        if (v16)
+        if (wantsUserAgentInHeaders)
         {
           v17 = v113;
         }
@@ -2360,8 +2360,8 @@ LABEL_90:
           v17 = v111;
         }
 
-        v18 = [(__CFString *)v112 userAgentHeaderString];
-        [v17 setObject:v105 forKey:v18];
+        userAgentHeaderString = [(__CFString *)v112 userAgentHeaderString];
+        [v17 setObject:userAgentString2 forKey:userAgentHeaderString];
       }
 
       if ([(__CFString *)v112 wantsCompressedBody])
@@ -2376,13 +2376,13 @@ LABEL_90:
         }
       }
 
-      v22 = [(__CFString *)v112 additionalMessageHeadersForOutgoingPush];
+      additionalMessageHeadersForOutgoingPush = [(__CFString *)v112 additionalMessageHeadersForOutgoingPush];
       v133 = 0u;
       v134 = 0u;
       v131 = 0u;
       v132 = 0u;
-      v23 = [v22 allKeys];
-      v24 = [v23 countByEnumeratingWithState:&v131 objects:v138 count:16];
+      allKeys = [additionalMessageHeadersForOutgoingPush allKeys];
+      v24 = [allKeys countByEnumeratingWithState:&v131 objects:v138 count:16];
       if (v24)
       {
         v25 = *v132;
@@ -2392,22 +2392,22 @@ LABEL_90:
           {
             if (*v132 != v25)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(allKeys);
             }
 
             v27 = *(*(&v131 + 1) + 8 * i);
-            v28 = [v22 objectForKey:{v27, v100, v103}];
+            v28 = [additionalMessageHeadersForOutgoingPush objectForKey:{v27, v100, v103}];
 
             if (v28)
             {
-              v29 = [v22 objectForKey:v27];
+              v29 = [additionalMessageHeadersForOutgoingPush objectForKey:v27];
               [v113 setObject:v29 forKey:v27];
             }
 
             v30 = OSLogHandleForIDSCategory();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
             {
-              v31 = [v22 objectForKey:v27];
+              v31 = [additionalMessageHeadersForOutgoingPush objectForKey:v27];
               *buf = 138412546;
               v140 = v27;
               v141 = 2112;
@@ -2417,31 +2417,31 @@ LABEL_90:
 
             if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
             {
-              [v22 objectForKey:v27];
+              [additionalMessageHeadersForOutgoingPush objectForKey:v27];
               v103 = v100 = v27;
               _IDSLogV();
             }
           }
 
-          v24 = [v23 countByEnumeratingWithState:&v131 objects:v138 count:16];
+          v24 = [allKeys countByEnumeratingWithState:&v131 objects:v138 count:16];
         }
 
         while (v24);
       }
 
-      v32 = [MEMORY[0x1E69A60F0] sharedInstance];
-      v33 = [v32 isInternalInstall];
+      mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+      isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-      if (v33)
+      if (isInternalInstall)
       {
-        v34 = [(__CFString *)v112 additionalInternalHeaders];
+        additionalInternalHeaders = [(__CFString *)v112 additionalInternalHeaders];
 
         v129 = 0u;
         v130 = 0u;
         v127 = 0u;
         v128 = 0u;
-        v35 = [v34 allKeys];
-        v36 = [v35 countByEnumeratingWithState:&v127 objects:v137 count:16];
+        allKeys2 = [additionalInternalHeaders allKeys];
+        v36 = [allKeys2 countByEnumeratingWithState:&v127 objects:v137 count:16];
         if (v36)
         {
           v37 = *v128;
@@ -2451,12 +2451,12 @@ LABEL_90:
             {
               if (*v128 != v37)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(allKeys2);
               }
 
               v39 = *(*(&v127 + 1) + 8 * j);
               v40 = [(__CFString *)v112 wantsUserAgentInHeaders:v100];
-              v41 = [v34 objectForKey:v39];
+              v41 = [additionalInternalHeaders objectForKey:v39];
 
               if (v41)
               {
@@ -2470,14 +2470,14 @@ LABEL_90:
                   v42 = v111;
                 }
 
-                v43 = [v34 objectForKey:v39];
+                v43 = [additionalInternalHeaders objectForKey:v39];
                 [v42 setObject:v43 forKey:v39];
               }
 
               v44 = OSLogHandleForIDSCategory();
               if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
               {
-                v45 = [v34 objectForKey:v39];
+                v45 = [additionalInternalHeaders objectForKey:v39];
                 *buf = 138412546;
                 v140 = v39;
                 v141 = 2112;
@@ -2487,13 +2487,13 @@ LABEL_90:
 
               if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
               {
-                [v34 objectForKey:v39];
+                [additionalInternalHeaders objectForKey:v39];
                 v103 = v100 = v39;
                 _IDSLogV();
               }
             }
 
-            v36 = [v35 countByEnumeratingWithState:&v127 objects:v137 count:16];
+            v36 = [allKeys2 countByEnumeratingWithState:&v127 objects:v137 count:16];
           }
 
           while (v36);
@@ -2502,17 +2502,17 @@ LABEL_90:
 
       else
       {
-        v34 = v22;
+        additionalInternalHeaders = additionalMessageHeadersForOutgoingPush;
       }
 
-      v46 = [(__CFString *)v112 nonStandardMessageHeadersForOutgoingPush];
+      nonStandardMessageHeadersForOutgoingPush = [(__CFString *)v112 nonStandardMessageHeadersForOutgoingPush];
 
       v125 = 0u;
       v126 = 0u;
       v123 = 0u;
       v124 = 0u;
-      v47 = [v46 allKeys];
-      v48 = [v47 countByEnumeratingWithState:&v123 objects:v136 count:16];
+      allKeys3 = [nonStandardMessageHeadersForOutgoingPush allKeys];
+      v48 = [allKeys3 countByEnumeratingWithState:&v123 objects:v136 count:16];
       if (v48)
       {
         v49 = *v124;
@@ -2522,22 +2522,22 @@ LABEL_90:
           {
             if (*v124 != v49)
             {
-              objc_enumerationMutation(v47);
+              objc_enumerationMutation(allKeys3);
             }
 
             v51 = *(*(&v123 + 1) + 8 * k);
-            v52 = [v46 objectForKey:{v51, v98, v103}];
+            v52 = [nonStandardMessageHeadersForOutgoingPush objectForKey:{v51, userAgent2, v103}];
 
             if (v52)
             {
-              v53 = [v46 objectForKey:v51];
+              v53 = [nonStandardMessageHeadersForOutgoingPush objectForKey:v51];
               [v113 setObject:v53 forKey:v51];
             }
 
             v54 = OSLogHandleForIDSCategory();
             if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
             {
-              v55 = [v46 objectForKey:v51];
+              v55 = [nonStandardMessageHeadersForOutgoingPush objectForKey:v51];
               *buf = 138412546;
               v140 = v51;
               v141 = 2112;
@@ -2547,26 +2547,26 @@ LABEL_90:
 
             if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
             {
-              [v46 objectForKey:v51];
-              v103 = v98 = v51;
+              [nonStandardMessageHeadersForOutgoingPush objectForKey:v51];
+              v103 = userAgent2 = v51;
               _IDSLogV();
             }
           }
 
-          v48 = [v47 countByEnumeratingWithState:&v123 objects:v136 count:16];
+          v48 = [allKeys3 countByEnumeratingWithState:&v123 objects:v136 count:16];
         }
 
         while (v48);
       }
 
-      v56 = [(__CFString *)v112 nonStandardMessageHeadersForOutgoingPush];
+      nonStandardMessageHeadersForOutgoingPush2 = [(__CFString *)v112 nonStandardMessageHeadersForOutgoingPush];
 
       v121 = 0u;
       v122 = 0u;
       v119 = 0u;
       v120 = 0u;
-      v57 = [v56 allKeys];
-      v58 = [v57 countByEnumeratingWithState:&v119 objects:v135 count:16];
+      allKeys4 = [nonStandardMessageHeadersForOutgoingPush2 allKeys];
+      v58 = [allKeys4 countByEnumeratingWithState:&v119 objects:v135 count:16];
       if (v58)
       {
         v59 = *v120;
@@ -2576,22 +2576,22 @@ LABEL_90:
           {
             if (*v120 != v59)
             {
-              objc_enumerationMutation(v57);
+              objc_enumerationMutation(allKeys4);
             }
 
             v61 = *(*(&v119 + 1) + 8 * m);
-            v62 = [v56 objectForKey:{v61, v98, v103}];
+            v62 = [nonStandardMessageHeadersForOutgoingPush2 objectForKey:{v61, userAgent2, v103}];
 
             if (v62)
             {
-              v63 = [v56 objectForKey:v61];
+              v63 = [nonStandardMessageHeadersForOutgoingPush2 objectForKey:v61];
               [v113 setObject:v63 forKey:v61];
             }
 
             v64 = OSLogHandleForIDSCategory();
             if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
             {
-              v65 = [v56 objectForKey:v61];
+              v65 = [nonStandardMessageHeadersForOutgoingPush2 objectForKey:v61];
               *buf = 138412546;
               v140 = v61;
               v141 = 2112;
@@ -2601,13 +2601,13 @@ LABEL_90:
 
             if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
             {
-              [v56 objectForKey:v61];
-              v103 = v98 = v61;
+              [nonStandardMessageHeadersForOutgoingPush2 objectForKey:v61];
+              v103 = userAgent2 = v61;
               _IDSLogV();
             }
           }
 
-          v58 = [v57 countByEnumeratingWithState:&v119 objects:v135 count:16];
+          v58 = [allKeys4 countByEnumeratingWithState:&v119 objects:v135 count:16];
         }
 
         while (v58);
@@ -2619,8 +2619,8 @@ LABEL_90:
       v66 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
       {
-        v67 = [(__CFString *)v112 payloadCanBeLogged];
-        if (v67)
+        payloadCanBeLogged = [(__CFString *)v112 payloadCanBeLogged];
+        if (payloadCanBeLogged)
         {
           v68 = [v111 description];
         }
@@ -2633,7 +2633,7 @@ LABEL_90:
         *buf = 138412290;
         v140 = v68;
         _os_log_impl(&dword_195925000, v66, OS_LOG_TYPE_DEFAULT, "Body: %@", buf, 0xCu);
-        if (v67)
+        if (payloadCanBeLogged)
         {
         }
       }
@@ -2656,14 +2656,14 @@ LABEL_90:
 
     if ([(__CFString *)v112 wantsBagKey])
     {
-      v69 = [MEMORY[0x1E69A53F0] sharedInstance];
-      v70 = [(__CFString *)v112 bagKey];
-      v71 = [v69 urlWithKey:v70];
+      mEMORY[0x1E69A53F0] = [MEMORY[0x1E69A53F0] sharedInstance];
+      bagKey2 = [(__CFString *)v112 bagKey];
+      v71 = [mEMORY[0x1E69A53F0] urlWithKey:bagKey2];
 
-      v72 = [v71 absoluteString];
-      if (v72)
+      absoluteString = [v71 absoluteString];
+      if (absoluteString)
       {
-        CFDictionarySetValue(theDict, @"u", v72);
+        CFDictionarySetValue(theDict, @"u", absoluteString);
       }
 
       else
@@ -2677,10 +2677,10 @@ LABEL_90:
       }
     }
 
-    v75 = [(__CFString *)v112 command];
-    if (v75 >= 1)
+    command = [(__CFString *)v112 command];
+    if (command >= 1)
     {
-      v76 = [MEMORY[0x1E696AD98] numberWithInt:v75];
+      v76 = [MEMORY[0x1E696AD98] numberWithInt:command];
       if (v76)
       {
         CFDictionarySetValue(theDict, @"c", v76);
@@ -2698,17 +2698,17 @@ LABEL_90:
     }
 
     v79 = [v111 count] == 0;
-    v80 = [(__CFString *)v112 wantsCompressedBody];
+    wantsCompressedBody = [(__CFString *)v112 wantsCompressedBody];
     if (v79)
     {
-      if (v80)
+      if (wantsCompressedBody)
       {
-        v82 = [MEMORY[0x1E695DF20] dictionary];
-        [(__CFDictionary *)theDict setObject:v82 forKey:@"p"];
+        dictionary = [MEMORY[0x1E695DF20] dictionary];
+        [(__CFDictionary *)theDict setObject:dictionary forKey:@"p"];
       }
     }
 
-    else if (v80)
+    else if (wantsCompressedBody)
     {
       v81 = v111;
       if (v81)
@@ -2753,11 +2753,11 @@ LABEL_90:
 
     if ([(__CFString *)v112 wantsIntegerUniqueIDs])
     {
-      v88 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[__CFString uniqueID](v112, "uniqueID")}];
-      if (v88)
+      uniqueIDString = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[__CFString uniqueID](v112, "uniqueID")}];
+      if (uniqueIDString)
       {
 LABEL_149:
-        CFDictionarySetValue(theDict, @"i", v88);
+        CFDictionarySetValue(theDict, @"i", uniqueIDString);
 LABEL_157:
 
         v114[0] = MEMORY[0x1E69E9820];
@@ -2769,7 +2769,7 @@ LABEL_157:
         v116 = v93;
         v94 = theDict;
         v117 = v94;
-        v118 = v109;
+        v118 = completionCopy;
         v95 = MEMORY[0x19A8B8CC0](v114);
         if ([(__CFString *)v93 wantsSignature])
         {
@@ -2794,8 +2794,8 @@ LABEL_157:
 
     else
     {
-      v88 = [(__CFString *)v112 uniqueIDString];
-      if (v88)
+      uniqueIDString = [(__CFString *)v112 uniqueIDString];
+      if (uniqueIDString)
       {
         goto LABEL_149;
       }
@@ -2829,31 +2829,31 @@ LABEL_157:
     MarcoNoteCheckpoint();
   }
 
-  (*(v109 + 2))(v109, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_161:
 
   v96 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_apsMessageForMessage:(id)a3 body:(id)a4 completion:(id)a5
+- (void)_apsMessageForMessage:(id)message body:(id)body completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  bodyCopy = body;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_19594DB00;
   v15[3] = &unk_1E7435378;
   v15[4] = self;
-  v11 = v8;
+  v11 = messageCopy;
   v16 = v11;
-  v17 = v10;
-  v12 = v10;
+  v17 = completionCopy;
+  v12 = completionCopy;
   v13 = MEMORY[0x19A8B8CC0](v15);
   v14 = v13;
-  if (v9)
+  if (bodyCopy)
   {
-    (*(v13 + 16))(v13, v9);
+    (*(v13 + 16))(v13, bodyCopy);
   }
 
   else
@@ -2862,10 +2862,10 @@ LABEL_161:
   }
 }
 
-- (void)_powerLogEvent:(id)a3 dictionary:(id)a4
+- (void)_powerLogEvent:(id)event dictionary:(id)dictionary
 {
-  v6 = a3;
-  v5 = a4;
+  eventCopy = event;
+  dictionaryCopy = dictionary;
   if (qword_1ED768828 != -1)
   {
     sub_195963F10();
@@ -2873,18 +2873,18 @@ LABEL_161:
 
   if (off_1ED768820)
   {
-    off_1ED768820(2, v6, v5, 0);
+    off_1ED768820(2, eventCopy, dictionaryCopy, 0);
   }
 }
 
-- (void)_notifyDelegateAboutError:(id)a3 resultCode:(int64_t)a4 forMessage:(id)a5
+- (void)_notifyDelegateAboutError:(id)error resultCode:(int64_t)code forMessage:(id)message
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 uniqueIDString];
-  [(FTMessageDelivery_APS *)self _clearMapForMessageID:v10];
+  messageCopy = message;
+  errorCopy = error;
+  uniqueIDString = [messageCopy uniqueIDString];
+  [(FTMessageDelivery_APS *)self _clearMapForMessageID:uniqueIDString];
 
-  [(FTMessageDelivery *)self _informDelegateAboutMessage:v8 error:v9 result:0 resultCode:a4 interface:1];
+  [(FTMessageDelivery *)self _informDelegateAboutMessage:messageCopy error:errorCopy result:0 resultCode:code interface:1];
 
   [(FTMessageDelivery_APS *)self _dequeueIfNeeded];
 }
@@ -2896,7 +2896,7 @@ LABEL_161:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_195925000, v3, OS_LOG_TYPE_DEFAULT, "invalidating: %@", buf, 0xCu);
   }
 
@@ -2905,50 +2905,50 @@ LABEL_161:
     _IDSLogV();
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(FTMessageDelivery *)v4 _queue];
-  [v5 removeAllMessages];
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  _queue = [(FTMessageDelivery *)selfCopy2 _queue];
+  [_queue removeAllMessages];
 
-  [(FTMessageDelivery_APS *)v4 _updateTopics];
-  objc_sync_exit(v4);
+  [(FTMessageDelivery_APS *)selfCopy2 _updateTopics];
+  objc_sync_exit(selfCopy2);
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_sendMessageAsynchronously:(id)a3 error:(id *)a4
+- (BOOL)_sendMessageAsynchronously:(id)asynchronously error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
+  asynchronouslyCopy = asynchronously;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v5;
+    v19 = asynchronouslyCopy;
     _os_log_impl(&dword_195925000, v7, OS_LOG_TYPE_DEFAULT, "Requesting async send: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v13 = v5;
+    v13 = asynchronouslyCopy;
     _IDSLogV();
   }
 
-  v8 = [v5 bagKey];
+  bagKey = [asynchronouslyCopy bagKey];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_19594E2A0;
   v14[3] = &unk_1E74350D8;
-  v9 = v8;
+  v9 = bagKey;
   v15 = v9;
-  v10 = v5;
+  v10 = asynchronouslyCopy;
   v16 = v10;
-  v17 = v6;
-  [(FTMessageDelivery_APS *)v6 _apsMessageBodyForMessage:v10 completion:v14];
+  v17 = selfCopy;
+  [(FTMessageDelivery_APS *)selfCopy _apsMessageBodyForMessage:v10 completion:v14];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v11 = *MEMORY[0x1E69E9840];
   return 1;
 }
@@ -2961,8 +2961,8 @@ LABEL_161:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 allValues];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [v3 allValues];
+  v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = 0;
@@ -2973,13 +2973,13 @@ LABEL_161:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v6 += [*(*(&v12 + 1) + 8 * i) hasReceivedPushAck] ^ 1;
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -2991,34 +2991,34 @@ LABEL_161:
   return v9;
 }
 
-- (void)cancelMessage:(id)a3 withError:(int64_t)a4
+- (void)cancelMessage:(id)message withError:(int64_t)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  messageCopy = message;
   v21.receiver = self;
   v21.super_class = FTMessageDelivery_APS;
-  [(FTMessageDelivery *)&v21 cancelMessage:v6];
-  if (v6)
+  [(FTMessageDelivery *)&v21 cancelMessage:messageCopy];
+  if (messageCopy)
   {
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v6;
+      v23 = messageCopy;
       _os_log_impl(&dword_195925000, v7, OS_LOG_TYPE_DEFAULT, "Cancelling message in the queue: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v18 = v6;
+      v18 = messageCopy;
       _IDSLogV();
     }
 
-    v8 = [(FTMessageDelivery_APS *)self _apsOutgoingMessageForFTMessage:v6, v18];
-    v9 = [(FTMessageDelivery *)self currentMessage];
-    v10 = [(FTMessageDelivery *)self _queue];
-    v11 = [v10 removeMessage:v6];
-    if (v9 == v6)
+    v8 = [(FTMessageDelivery_APS *)self _apsOutgoingMessageForFTMessage:messageCopy, v18];
+    currentMessage = [(FTMessageDelivery *)self currentMessage];
+    _queue = [(FTMessageDelivery *)self _queue];
+    v11 = [_queue removeMessage:messageCopy];
+    if (currentMessage == messageCopy)
     {
       v12 = 1;
     }
@@ -3032,16 +3032,16 @@ LABEL_161:
     {
       if (v8)
       {
-        v13 = [(FTMessageDelivery *)self connection];
-        [v13 cancelOutgoingMessage:v8];
+        connection = [(FTMessageDelivery *)self connection];
+        [connection cancelOutgoingMessage:v8];
       }
 
-      [(FTMessageDelivery *)self _informDelegateAboutMessage:v6 error:0 result:0 resultCode:a4 interface:1];
+      [(FTMessageDelivery *)self _informDelegateAboutMessage:messageCopy error:0 result:0 resultCode:error interface:1];
       v14 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v23 = v6;
+        v23 = messageCopy;
         v24 = 2112;
         v25 = v8;
         _os_log_impl(&dword_195925000, v14, OS_LOG_TYPE_DEFAULT, "Removed message: %@   apsMessage: %@", buf, 0x16u);
@@ -3049,7 +3049,7 @@ LABEL_161:
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v19 = v6;
+        v19 = messageCopy;
         v20 = v8;
         _IDSLogV();
       }
@@ -3066,7 +3066,7 @@ LABEL_161:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v23 = v6;
+        v23 = messageCopy;
         v24 = 2112;
         v25 = v8;
         _os_log_impl(&dword_195925000, v15, OS_LOG_TYPE_DEFAULT, "Message: %@ not in queue.   Current message: %@", buf, 0x16u);
@@ -3074,78 +3074,78 @@ LABEL_161:
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v19 = v6;
+        v19 = messageCopy;
         v20 = v8;
         _IDSLogV();
       }
     }
 
-    v16 = [v6 uniqueIDString];
-    [(FTMessageDelivery_APS *)self _clearMapForMessageID:v16];
+    uniqueIDString = [messageCopy uniqueIDString];
+    [(FTMessageDelivery_APS *)self _clearMapForMessageID:uniqueIDString];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)sendMessage:(id)a3
+- (BOOL)sendMessage:(id)message
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [v4 _setUsingOutgoingPush:1];
+  messageCopy = message;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [messageCopy _setUsingOutgoingPush:1];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-  [v4 setTimeSent:?];
+  [messageCopy setTimeSent:?];
   v6 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = messageCopy;
     _os_log_impl(&dword_195925000, v6, OS_LOG_TYPE_DEFAULT, "Adding message to the queue: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v12 = v4;
+    v12 = messageCopy;
     _IDSLogV();
   }
 
-  v7 = [(FTMessageDelivery *)v5 _queue];
-  [v7 addMessage:v4];
+  _queue = [(FTMessageDelivery *)selfCopy _queue];
+  [_queue addMessage:messageCopy];
 
-  if ([(FTMessageDelivery_APS *)v5 busy])
+  if ([(FTMessageDelivery_APS *)selfCopy busy])
   {
     v8 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(FTMessageDelivery_APS *)v5 _currentMessages];
+      _currentMessages = [(FTMessageDelivery_APS *)selfCopy _currentMessages];
       *buf = 138412290;
-      v15 = v9;
+      v15 = _currentMessages;
       _os_log_impl(&dword_195925000, v8, OS_LOG_TYPE_DEFAULT, "  Busy delivering: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v13 = [(FTMessageDelivery_APS *)v5 _currentMessages];
+      _currentMessages2 = [(FTMessageDelivery_APS *)selfCopy _currentMessages];
       _IDSLogV();
     }
   }
 
   else
   {
-    [(FTMessageDelivery_APS *)v5 _dequeueIfNeeded];
+    [(FTMessageDelivery_APS *)selfCopy _dequeueIfNeeded];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v10 = *MEMORY[0x1E69E9840];
   return 1;
 }
 
-- (void)_serverBagLoaded:(id)a3
+- (void)_serverBagLoaded:(id)loaded
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  loadedCopy = loaded;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3163,15 +3163,15 @@ LABEL_161:
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(FTMessageDelivery_APS *)self _currentMessages];
+      _currentMessages = [(FTMessageDelivery_APS *)self _currentMessages];
       *buf = 138412290;
-      v11 = v7;
+      v11 = _currentMessages;
       _os_log_impl(&dword_195925000, v6, OS_LOG_TYPE_DEFAULT, "  Busy delivering: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v9 = [(FTMessageDelivery_APS *)self _currentMessages];
+      _currentMessages2 = [(FTMessageDelivery_APS *)self _currentMessages];
       _IDSLogV();
     }
   }
@@ -3184,9 +3184,9 @@ LABEL_161:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)shouldFailFastForMessage:(id)a3
+- (BOOL)shouldFailFastForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (!_os_feature_enabled_impl() || ([MEMORY[0x1E69A6180] shouldDisableFailFastWhenSatelliteIsAvailable] & 1) != 0)
   {
     goto LABEL_14;
@@ -3202,25 +3202,25 @@ LABEL_161:
     sub_19596407C();
   }
 
-  v5 = [v4 topic];
-  if ([v5 isEqualToIgnoringCase:qword_1ED768838])
+  topic = [messageCopy topic];
+  if ([topic isEqualToIgnoringCase:qword_1ED768838])
   {
-    v6 = [(_FT_IDSOffGridConnectionMonitor *)self->_offGridConnectionMonitor isConnectionSuitableForIMLOverStewie];
+    isConnectionSuitableForIMLOverStewie = [(_FT_IDSOffGridConnectionMonitor *)self->_offGridConnectionMonitor isConnectionSuitableForIMLOverStewie];
   }
 
   else
   {
-    v7 = [v4 topic];
-    if (([v7 isEqualToIgnoringCase:qword_1ED768848] & 1) == 0)
+    topic2 = [messageCopy topic];
+    if (([topic2 isEqualToIgnoringCase:qword_1ED768848] & 1) == 0)
     {
 
       goto LABEL_14;
     }
 
-    v6 = [(_FT_IDSOffGridConnectionMonitor *)self->_offGridConnectionMonitor isConnectionSuitableForIMLOverStewie];
+    isConnectionSuitableForIMLOverStewie = [(_FT_IDSOffGridConnectionMonitor *)self->_offGridConnectionMonitor isConnectionSuitableForIMLOverStewie];
   }
 
-  if ((v6 & 1) == 0)
+  if ((isConnectionSuitableForIMLOverStewie & 1) == 0)
   {
 LABEL_14:
     v8 = 0;
@@ -3233,13 +3233,13 @@ LABEL_15:
   return v8;
 }
 
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info
 {
   v93 = *MEMORY[0x1E69E9840];
-  v79 = a3;
-  v7 = a4;
-  v8 = a5;
-  v84 = [v8 objectForKey:@"c"];
+  connectionCopy = connection;
+  topicCopy = topic;
+  infoCopy = info;
+  v84 = [infoCopy objectForKey:@"c"];
   v9 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -3255,21 +3255,21 @@ LABEL_15:
     _IDSLogV();
   }
 
-  v11 = [v8 objectForKey:{@"i", v65}];
+  v11 = [infoCopy objectForKey:{@"i", v65}];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v13 = [v8 objectForKey:@"i"];
+  v13 = [infoCopy objectForKey:@"i"];
   v14 = v13;
   if ((isKindOfClass & 1) == 0)
   {
-    v15 = [v13 stringValue];
+    stringValue = [v13 stringValue];
 
-    v14 = v15;
+    v14 = stringValue;
   }
 
-  v82 = [v8 _dataForKey:@"U"];
-  v16 = [v8 objectForKey:@"h"];
+  v82 = [infoCopy _dataForKey:@"U"];
+  v16 = [infoCopy objectForKey:@"h"];
   if (v16)
   {
     v17 = [v84 intValue] == 97;
@@ -3279,7 +3279,7 @@ LABEL_15:
       v18 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v8 objectForKey:@"h"];
+        v19 = [infoCopy objectForKey:@"h"];
         *buf = 138412290;
         v90 = v19;
         _os_log_impl(&dword_195925000, v18, OS_LOG_TYPE_DEFAULT, "Response Headers: %@", buf, 0xCu);
@@ -3287,7 +3287,7 @@ LABEL_15:
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v66 = [v8 objectForKey:@"h"];
+        v66 = [infoCopy objectForKey:@"h"];
         _IDSLogV();
       }
     }
@@ -3311,8 +3311,8 @@ LABEL_15:
       _IDSLogV();
     }
 
-    v23 = [v84 intValue];
-    if ([v20 responseCommand] == v23 || objc_msgSend(v84, "intValue") == 255 || objc_msgSend(v84, "intValue") == 101)
+    intValue = [v84 intValue];
+    if ([v20 responseCommand] == intValue || objc_msgSend(v84, "intValue") == 255 || objc_msgSend(v84, "intValue") == 101)
     {
       v24 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -3329,18 +3329,18 @@ LABEL_15:
         _IDSLogV();
       }
 
-      v26 = [v8 objectForKey:{@"b", v68}];
+      v26 = [infoCopy objectForKey:{@"b", v68}];
 
       if (v26)
       {
-        v27 = [v8 objectForKey:@"b"];
+        v27 = [infoCopy objectForKey:@"b"];
         objc_opt_class();
         v28 = objc_opt_isKindOfClass();
 
-        v80 = [v8 objectForKey:@"b"];
+        v80 = [infoCopy objectForKey:@"b"];
         if (v28)
         {
-          v29 = [v80 _FTDataFromBase64String];
+          _FTDataFromBase64String = [v80 _FTDataFromBase64String];
           goto LABEL_44;
         }
 
@@ -3349,7 +3349,7 @@ LABEL_15:
 
         if (v32)
         {
-          v29 = [v8 objectForKey:@"b"];
+          _FTDataFromBase64String = [infoCopy objectForKey:@"b"];
           v80 = 0;
           goto LABEL_44;
         }
@@ -3370,20 +3370,20 @@ LABEL_15:
       }
 
       v80 = 0;
-      v29 = 0;
+      _FTDataFromBase64String = 0;
 LABEL_44:
       v86 = 0xAAAAAAAAAAAAAAAALL;
-      v76 = v29;
-      v34 = [v29 _FTDecompressData];
-      v77 = v34;
+      v76 = _FTDataFromBase64String;
+      _FTDecompressData = [_FTDataFromBase64String _FTDecompressData];
+      v77 = _FTDecompressData;
       v35 = v76;
-      if (v34)
+      if (_FTDecompressData)
       {
-        v35 = v34;
+        v35 = _FTDecompressData;
       }
 
       v78 = v35;
-      v36 = [v8 objectForKey:@"p"];
+      v36 = [infoCopy objectForKey:@"p"];
       if (v36)
       {
         v37 = 0;
@@ -3434,11 +3434,11 @@ LABEL_54:
       }
 
 LABEL_60:
-      v81 = [v8 objectForKey:{@"h", v69, v73}];
-      v40 = [v8 objectForKey:@"s"];
+      v81 = [infoCopy objectForKey:{@"h", v69, v73}];
+      v40 = [infoCopy objectForKey:@"s"];
       if (_os_feature_enabled_impl())
       {
-        v41 = [v8 objectForKey:@"hs"];
+        v41 = [infoCopy objectForKey:@"hs"];
         v42 = MEMORY[0x19A8B8550](@"IDSBAASigner", @"IDS");
         if (v41)
         {
@@ -3478,12 +3478,12 @@ LABEL_60:
         v36 = v46;
       }
 
-      v47 = [MEMORY[0x1E695DF00] date];
-      [v20 setResponseReceived:v47];
+      date = [MEMORY[0x1E695DF00] date];
+      [v20 setResponseReceived:date];
 
       if (![v36 count])
       {
-        v48 = v8;
+        v48 = infoCopy;
 
         v36 = v48;
       }
@@ -3516,7 +3516,7 @@ LABEL_60:
 
         else
         {
-          [v20 handleResponseDictionary:v8];
+          [v20 handleResponseDictionary:infoCopy];
         }
 
         v51 = [v36 objectForKey:{@"status", v71, v74}];
@@ -3615,7 +3615,7 @@ LABEL_113:
       v88[0] = v84;
       v88[1] = v14;
       v87[2] = @"Topic";
-      v88[2] = v7;
+      v88[2] = topicCopy;
       v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v88 forKeys:v87 count:3];
       v58 = [v57 mutableCopy];
 
@@ -3626,7 +3626,7 @@ LABEL_113:
       }
 
       v60 = objc_opt_class();
-      v61 = sub_19594EAB0(v60, v8, *MEMORY[0x1E69A49E8]);
+      v61 = sub_19594EAB0(v60, infoCopy, *MEMORY[0x1E69A49E8]);
       if (v61)
       {
         [(NSMutableDictionary *)v58 setObject:v61 forKeyedSubscript:@"CommandContext"];
@@ -3671,38 +3671,38 @@ LABEL_113:
   v63 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connection:(id)a3 didSendOutgoingMessage:(id)a4
+- (void)connection:(id)connection didSendOutgoingMessage:(id)message
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([(FTMessageDelivery_APS *)self _isBusyWithMessage:v7])
+  connectionCopy = connection;
+  messageCopy = message;
+  if ([(FTMessageDelivery_APS *)self _isBusyWithMessage:messageCopy])
   {
-    v8 = [(FTMessageDelivery_APS *)self _messageForAPSOutgoingMessage:v7];
+    v8 = [(FTMessageDelivery_APS *)self _messageForAPSOutgoingMessage:messageCopy];
     v9 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v8 uniqueIDString];
+      uniqueIDString = [v8 uniqueIDString];
       *buf = 138412546;
-      v30 = v7;
+      v30 = messageCopy;
       v31 = 2112;
-      v32 = v10;
+      v32 = uniqueIDString;
       _os_log_impl(&dword_195925000, v9, OS_LOG_TYPE_DEFAULT, "Server ACK'd outgoing message: %@      (Request ID: %@)", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
       [v8 uniqueIDString];
-      v28 = v27 = v7;
+      v28 = v27 = messageCopy;
       _IDSLogV();
     }
 
     v11 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v8 wantsResponse];
+      wantsResponse = [v8 wantsResponse];
       v13 = @"NO";
-      if (v12)
+      if (wantsResponse)
       {
         v13 = @"YES";
       }
@@ -3716,9 +3716,9 @@ LABEL_113:
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v14 = [v8 wantsResponse];
+      wantsResponse2 = [v8 wantsResponse];
       v15 = @"NO";
-      if (v14)
+      if (wantsResponse2)
       {
         v15 = @"YES";
       }
@@ -3728,73 +3728,73 @@ LABEL_113:
       _IDSLogV();
     }
 
-    if (1000000 * [v7 ackTimestamp])
+    if (1000000 * [messageCopy ackTimestamp])
     {
       v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
       [v8 setPushAckTimestamp:v16];
     }
 
-    v17 = [v8 deliveryAcknowledgementBlock];
-    v18 = v17;
-    if (v17)
+    deliveryAcknowledgementBlock = [v8 deliveryAcknowledgementBlock];
+    v18 = deliveryAcknowledgementBlock;
+    if (deliveryAcknowledgementBlock)
     {
-      (*(v17 + 16))(v17, v8);
+      (*(deliveryAcknowledgementBlock + 16))(deliveryAcknowledgementBlock, v8);
     }
 
-    v19 = [(FTMessageDelivery_APS *)self _messageForAPSOutgoingMessage:v7];
+    v19 = [(FTMessageDelivery_APS *)self _messageForAPSOutgoingMessage:messageCopy];
     v20 = [(FTMessageDelivery_APS *)self _bodyForMessage:v19];
     v21 = [v20 objectForKey:*MEMORY[0x1E69A49F0]];
 
-    v22 = [v21 integerValue];
-    if ((v22 - 200) <= 0x27 && ((1 << (v22 + 56)) & 0x8100000FC1) != 0)
+    integerValue = [v21 integerValue];
+    if ((integerValue - 200) <= 0x27 && ((1 << (integerValue + 56)) & 0x8100000FC1) != 0)
     {
       v23 = [objc_alloc(MEMORY[0x1E69A5208]) initWithCommand:objc_msgSend(v21 success:"integerValue") errorDomain:1 errorCode:0 retryCount:{0, -[FTMessageDelivery_APS _retryCountForMessage:](self, "_retryCountForMessage:", v19)}];
       v24 = [MEMORY[0x1E69A53A8] loggerWithCategory:2000];
       [v24 logMetric:v23];
     }
 
-    v25 = [MEMORY[0x1E695DF00] date];
-    [v8 setRequestEnd:v25];
+    date = [MEMORY[0x1E695DF00] date];
+    [v8 setRequestEnd:date];
 
     if ([v8 wantsResponse])
     {
-      [(FTMessageDelivery_APS *)self _noteMessageACKd:v7 ftMessage:v8];
+      [(FTMessageDelivery_APS *)self _noteMessageACKd:messageCopy ftMessage:v8];
     }
 
     else
     {
-      [(FTMessageDelivery_APS *)self _noteMessageSucceeded:v7 ftMessage:v8 error:0 result:0 resultCode:0];
+      [(FTMessageDelivery_APS *)self _noteMessageSucceeded:messageCopy ftMessage:v8 error:0 result:0 resultCode:0];
     }
   }
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connection:(id)a3 didFailToSendOutgoingMessage:(id)a4 error:(id)a5
+- (void)connection:(id)connection didFailToSendOutgoingMessage:(id)message error:(id)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v49 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([(FTMessageDelivery_APS *)self _isBusyWithMessage:v8])
+  connectionCopy = connection;
+  messageCopy = message;
+  errorCopy = error;
+  if ([(FTMessageDelivery_APS *)self _isBusyWithMessage:messageCopy])
   {
     if (qword_1EAED7840 != -1)
     {
       sub_195964090();
     }
 
-    v10 = [v9 domain];
-    v11 = [v10 isEqualToString:qword_1ED768850];
+    domain = [errorCopy domain];
+    v11 = [domain isEqualToString:qword_1ED768850];
 
-    if (!v11 || [v9 code] != 3)
+    if (!v11 || [errorCopy code] != 3)
     {
-      v12 = [(FTMessageDelivery_APS *)self _messageForAPSOutgoingMessage:v8];
+      v12 = [(FTMessageDelivery_APS *)self _messageForAPSOutgoingMessage:messageCopy];
       v48 = [(FTMessageDelivery *)self disallowRetry]^ 1;
       v13 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v51 = v9;
+        v51 = errorCopy;
         v52 = 1024;
         v53 = v48;
         _os_log_impl(&dword_195925000, v13, OS_LOG_TYPE_DEFAULT, "message delivery failed {error: %@, retryBehavior: %d}", buf, 0x12u);
@@ -3802,7 +3802,7 @@ LABEL_113:
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v42 = v9;
+        v42 = errorCopy;
         v43 = v48;
         _IDSLogV();
       }
@@ -3810,17 +3810,17 @@ LABEL_113:
       v14 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v9 domain];
-        v16 = [v9 code];
-        v17 = [v9 localizedDescription];
-        v18 = [v9 userInfo];
-        v19 = [v18 objectForKey:*MEMORY[0x1E696A990]];
+        domain2 = [errorCopy domain];
+        code = [errorCopy code];
+        localizedDescription = [errorCopy localizedDescription];
+        userInfo = [errorCopy userInfo];
+        v19 = [userInfo objectForKey:*MEMORY[0x1E696A990]];
         *buf = 138413058;
-        v51 = v15;
+        v51 = domain2;
         v52 = 1024;
-        v53 = v16;
+        v53 = code;
         v54 = 2112;
-        v55 = v17;
+        v55 = localizedDescription;
         v56 = 2112;
         v57 = v19;
         _os_log_impl(&dword_195925000, v14, OS_LOG_TYPE_ERROR, "FTMessageDelivery failed! Error (%@:%d): %@ %@", buf, 0x26u);
@@ -3828,29 +3828,29 @@ LABEL_113:
 
       if (os_log_shim_legacy_logging_enabled())
       {
-        v20 = [v9 domain];
-        v21 = [v9 code];
-        v22 = [v9 localizedDescription];
-        v23 = [v9 userInfo];
+        domain3 = [errorCopy domain];
+        code2 = [errorCopy code];
+        localizedDescription2 = [errorCopy localizedDescription];
+        userInfo2 = [errorCopy userInfo];
         v24 = *MEMORY[0x1E696A990];
-        v46 = [v23 objectForKey:*MEMORY[0x1E696A990]];
+        v46 = [userInfo2 objectForKey:*MEMORY[0x1E696A990]];
         _IDSWarnV();
 
-        v25 = [v9 domain];
-        v26 = [v9 code];
-        v27 = [v9 localizedDescription];
-        v28 = [v9 userInfo];
-        v47 = [v28 objectForKey:v24];
+        domain4 = [errorCopy domain];
+        code3 = [errorCopy code];
+        localizedDescription3 = [errorCopy localizedDescription];
+        userInfo3 = [errorCopy userInfo];
+        v47 = [userInfo3 objectForKey:v24];
         _IDSLogV();
 
-        v29 = [v9 domain];
-        v30 = [v9 code];
-        v31 = [v9 localizedDescription];
-        v32 = [v9 userInfo];
-        [v32 objectForKey:v24];
-        v45 = v44 = v31;
-        v42 = v29;
-        v43 = v30;
+        domain5 = [errorCopy domain];
+        code4 = [errorCopy code];
+        localizedDescription4 = [errorCopy localizedDescription];
+        userInfo4 = [errorCopy userInfo];
+        [userInfo4 objectForKey:v24];
+        v45 = v44 = localizedDescription4;
+        v42 = domain5;
+        v43 = code4;
         _IDSLogTransport();
       }
 
@@ -3861,15 +3861,15 @@ LABEL_113:
       if (v35 <= 0x27 && ((1 << v35) & 0x8100000FC1) != 0)
       {
         v36 = objc_alloc(MEMORY[0x1E69A5208]);
-        v37 = [v34 integerValue];
-        v38 = [v9 domain];
-        v39 = [v36 initWithCommand:v37 success:0 errorDomain:v38 errorCode:objc_msgSend(v9 retryCount:{"code"), -[FTMessageDelivery_APS _retryCountForMessage:](self, "_retryCountForMessage:", v12)}];
+        integerValue = [v34 integerValue];
+        domain6 = [errorCopy domain];
+        v39 = [v36 initWithCommand:integerValue success:0 errorDomain:domain6 errorCode:objc_msgSend(errorCopy retryCount:{"code"), -[FTMessageDelivery_APS _retryCountForMessage:](self, "_retryCountForMessage:", v12)}];
 
         v40 = [MEMORY[0x1E69A53A8] loggerWithCategory:2000];
         [v40 logMetric:v39];
       }
 
-      [(FTMessageDelivery_APS *)self _noteMessageFailed:v8 ftMessage:v12 retryBehavior:v48 error:v9];
+      [(FTMessageDelivery_APS *)self _noteMessageFailed:messageCopy ftMessage:v12 retryBehavior:v48 error:errorCopy];
     }
   }
 

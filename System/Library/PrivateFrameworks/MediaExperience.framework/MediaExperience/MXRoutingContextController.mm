@@ -1,24 +1,24 @@
 @interface MXRoutingContextController
 - (BOOL)isContextPrewarmed;
-- (MXRoutingContextController)initWithRoutingContextUUID:(id)a3;
+- (MXRoutingContextController)initWithRoutingContextUUID:(id)d;
 - (NSArray)currentRoutes;
-- (id)discoverRouteDescriptorsWithRouteUUIDS:(id)a3 forDiscoverer:(OpaqueFigRouteDiscoverer *)a4;
-- (id)routeDescriptorsWithRouteIDs:(id)a3 discoverer:(OpaqueFigRouteDiscoverer *)a4;
+- (id)discoverRouteDescriptorsWithRouteUUIDS:(id)s forDiscoverer:(OpaqueFigRouteDiscoverer *)discoverer;
+- (id)routeDescriptorsWithRouteIDs:(id)ds discoverer:(OpaqueFigRouteDiscoverer *)discoverer;
 - (void)dealloc;
-- (void)prewarmRoutesWithUUIDs:(id)a3 completionHandler:(id)a4;
-- (void)selectRouteDescriptors:(id)a3;
-- (void)setContextPrewarmed:(BOOL)a3;
+- (void)prewarmRoutesWithUUIDs:(id)ds completionHandler:(id)handler;
+- (void)selectRouteDescriptors:(id)descriptors;
+- (void)setContextPrewarmed:(BOOL)prewarmed;
 @end
 
 @implementation MXRoutingContextController
 
-- (MXRoutingContextController)initWithRoutingContextUUID:(id)a3
+- (MXRoutingContextController)initWithRoutingContextUUID:(id)d
 {
   v12.receiver = self;
   v12.super_class = MXRoutingContextController;
   v4 = [(MXRoutingContextController *)&v12 init];
-  v4->_routingContextUUID = a3;
-  FigRoutingManagerCopyContextWithUUID(a3, &v4->mRoutingContext);
+  v4->_routingContextUUID = d;
+  FigRoutingManagerCopyContextWithUUID(d, &v4->mRoutingContext);
   cf = 0;
   mRoutingContext = v4->mRoutingContext;
   VTable = CMBaseObjectGetVTable();
@@ -62,17 +62,17 @@
   [(MXRoutingContextController *)&v4 dealloc];
 }
 
-- (id)routeDescriptorsWithRouteIDs:(id)a3 discoverer:(OpaqueFigRouteDiscoverer *)a4
+- (id)routeDescriptorsWithRouteIDs:(id)ds discoverer:(OpaqueFigRouteDiscoverer *)discoverer
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v22 = 0;
   VTable = CMBaseObjectGetVTable();
   v8 = *(*(VTable + 8) + 48);
   if (v8)
   {
     v9 = *(VTable + 8) + 48;
-    v8(a4, @"availableRouteDescriptors", *MEMORY[0x1E695E480], &v22);
+    v8(discoverer, @"availableRouteDescriptors", *MEMORY[0x1E695E480], &v22);
     v10 = v22;
   }
 
@@ -100,9 +100,9 @@
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
-        if ([a3 containsObject:{objc_msgSend(v15, "objectForKey:", @"RouteUID"}])
+        if ([ds containsObject:{objc_msgSend(v15, "objectForKey:", @"RouteUID"}])
         {
-          [v6 addObject:v15];
+          [array addObject:v15];
         }
       }
 
@@ -113,10 +113,10 @@
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v6;
+  return array;
 }
 
-- (id)discoverRouteDescriptorsWithRouteUUIDS:(id)a3 forDiscoverer:(OpaqueFigRouteDiscoverer *)a4
+- (id)discoverRouteDescriptorsWithRouteUUIDS:(id)s forDiscoverer:(OpaqueFigRouteDiscoverer *)discoverer
 {
   v26 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(MEMORY[0x1E696AB30]);
@@ -127,21 +127,21 @@
   v24 = __Block_byref_object_dispose__5;
   v25 = 0;
   objc_initWeak(&location, self);
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __83__MXRoutingContextController_discoverRouteDescriptorsWithRouteUUIDS_forDiscoverer___block_invoke;
   v17[3] = &unk_1E7AEB318;
   objc_copyWeak(v18, &location);
-  v17[4] = a3;
+  v17[4] = s;
   v17[5] = v7;
-  v18[1] = a4;
+  v18[1] = discoverer;
   v17[6] = &v20;
-  v9 = [v8 addObserverForName:@"Discoverer_AvailableRoutesChanged" object:a4 queue:0 usingBlock:v17];
+  v9 = [defaultCenter addObserverForName:@"Discoverer_AvailableRoutesChanged" object:discoverer queue:0 usingBlock:v17];
   v10 = *(*(CMBaseObjectGetVTable() + 8) + 56);
   if (v10)
   {
-    v10(a4, @"DiscoveryMode", @"DiscoveryMode_Detailed");
+    v10(discoverer, @"DiscoveryMode", @"DiscoveryMode_Detailed");
   }
 
   v11 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:3.0];
@@ -152,7 +152,7 @@
   if (v11)
   {
     v12 = [v21[5] count];
-    if (v12 != [a3 count] && dword_1EB75DE40)
+    if (v12 != [s count] && dword_1EB75DE40)
     {
       goto LABEL_8;
     }
@@ -192,7 +192,7 @@ uint64_t __83__MXRoutingContextController_discoverRouteDescriptorsWithRouteUUIDS
   return result;
 }
 
-- (void)selectRouteDescriptors:(id)a3
+- (void)selectRouteDescriptors:(id)descriptors
 {
   v9 = *MEMORY[0x1E69E9840];
   if (dword_1EB75DE40)
@@ -206,13 +206,13 @@ uint64_t __83__MXRoutingContextController_discoverRouteDescriptorsWithRouteUUIDS
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 48);
   if (v7)
   {
-    v7(mRoutingContext, a3, MEMORY[0x1E695E0F8]);
+    v7(mRoutingContext, descriptors, MEMORY[0x1E695E0F8]);
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)prewarmRoutesWithUUIDs:(id)a3 completionHandler:(id)a4
+- (void)prewarmRoutesWithUUIDs:(id)ds completionHandler:(id)handler
 {
   v25[20] = *MEMORY[0x1E69E9840];
   if (dword_1EB75DE40)
@@ -227,13 +227,13 @@ uint64_t __83__MXRoutingContextController_discoverRouteDescriptorsWithRouteUUIDS
   v24 = @"discovererType";
   v25[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{self->mDiscovererType, v19, v20}];
   FigRouteDiscovererCreate(v8, [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1], &cf);
-  v9 = [(MXRoutingContextController *)self discoverRouteDescriptorsWithRouteUUIDS:a3 forDiscoverer:cf];
+  v9 = [(MXRoutingContextController *)self discoverRouteDescriptorsWithRouteUUIDS:ds forDiscoverer:cf];
   v10 = [v9 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithBlock:", &__block_literal_global_28)}];
   v11 = [v10 count];
-  if (v11 == [a3 count])
+  if (v11 == [ds count])
   {
     [(MXRoutingContextController *)self setContextPrewarmed:1];
-    v12 = [a4 copy];
+    v12 = [handler copy];
     v22[0] = @"PreviousRouteDescriptors";
     v23[0] = [(MXRoutingContextController *)self currentRoutes];
     v23[1] = v12;
@@ -260,7 +260,7 @@ uint64_t __83__MXRoutingContextController_discoverRouteDescriptorsWithRouteUUIDS
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    (*(a4 + 2))(a4, 0);
+    (*(handler + 2))(handler, 0);
   }
 
   if (cf)
@@ -293,9 +293,9 @@ uint64_t __83__MXRoutingContextController_discoverRouteDescriptorsWithRouteUUIDS
   return v7 != 0;
 }
 
-- (void)setContextPrewarmed:(BOOL)a3
+- (void)setContextPrewarmed:(BOOL)prewarmed
 {
-  if (a3)
+  if (prewarmed)
   {
     v3 = MEMORY[0x1E695E4D0];
   }

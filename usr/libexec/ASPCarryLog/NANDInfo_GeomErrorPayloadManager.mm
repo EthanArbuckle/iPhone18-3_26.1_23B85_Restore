@@ -1,25 +1,25 @@
 @interface NANDInfo_GeomErrorPayloadManager
 - (BOOL)hasNewErrors;
-- (BOOL)iteratePerPageDictsForMaxPagesWithStatus:(unsigned int)a3 iteratorCallBack:(id)a4;
-- (NANDInfo_GeomErrorPayloadManager)initWithPayloadBuf:(char *)a3 bufSize:(unint64_t)a4 prevNumErrors:(unsigned int)a5;
+- (BOOL)iteratePerPageDictsForMaxPagesWithStatus:(unsigned int)status iteratorCallBack:(id)back;
+- (NANDInfo_GeomErrorPayloadManager)initWithPayloadBuf:(char *)buf bufSize:(unint64_t)size prevNumErrors:(unsigned int)errors;
 - (id)dictionaryRepresentation;
-- (void)parseErrorPayloadBuf:(char *)a3 bufSize:(unint64_t)a4;
-- (void)populateOtherStats:(id)a3;
+- (void)parseErrorPayloadBuf:(char *)buf bufSize:(unint64_t)size;
+- (void)populateOtherStats:(id)stats;
 @end
 
 @implementation NANDInfo_GeomErrorPayloadManager
 
-- (NANDInfo_GeomErrorPayloadManager)initWithPayloadBuf:(char *)a3 bufSize:(unint64_t)a4 prevNumErrors:(unsigned int)a5
+- (NANDInfo_GeomErrorPayloadManager)initWithPayloadBuf:(char *)buf bufSize:(unint64_t)size prevNumErrors:(unsigned int)errors
 {
   v22.receiver = self;
   v22.super_class = NANDInfo_GeomErrorPayloadManager;
   v8 = [(NANDInfo_GeomErrorPayloadManager *)&v22 init];
   v9 = v8;
   v10 = 0;
-  if (a4 >= 4 && v8)
+  if (size >= 4 && v8)
   {
     v8->_invalid_error_payload = 0;
-    v8->_num_errors_in_payload_prev = a5;
+    v8->_num_errors_in_payload_prev = errors;
     v11 = objc_alloc_init(NSMutableArray);
     error_payload_array = v9->_error_payload_array;
     v9->_error_payload_array = v11;
@@ -31,17 +31,17 @@
     other_stats_dict = v9->_other_stats_dict;
     v9->_other_stats_dict = 0;
 
-    v16 = *a3;
-    if (*a3)
+    v16 = *buf;
+    if (*buf)
     {
       v17 = 0;
-      v18 = a3 + 4;
+      v18 = buf + 4;
       v19 = 4;
       do
       {
         v20 = *(v18 + 1) + 4;
         v19 += v20;
-        if (a4 < v19)
+        if (size < v19)
         {
           break;
         }
@@ -67,9 +67,9 @@
   return v10;
 }
 
-- (void)parseErrorPayloadBuf:(char *)a3 bufSize:(unint64_t)a4
+- (void)parseErrorPayloadBuf:(char *)buf bufSize:(unint64_t)size
 {
-  if (!a3 || a4 <= 3)
+  if (!buf || size <= 3)
   {
     syslog(3, "Error: invalid geom error payload buffer");
 
@@ -77,8 +77,8 @@
     return;
   }
 
-  v7 = *a3;
-  syslog(5, "total %u geom error entries", *a3);
+  v7 = *buf;
+  syslog(5, "total %u geom error entries", *buf);
   v51 = v7;
   if (!v7)
   {
@@ -87,10 +87,10 @@
 
   v8 = 0;
   v9 = 0;
-  v52 = &a3[a4];
-  v10 = a3 + 4;
+  v52 = &buf[size];
+  v10 = buf + 4;
   v11 = 0;
-  v50 = self;
+  selfCopy = self;
   while (v52 >= v10 || v52 >= &v10[*(v10 + 1) + 4])
   {
     syslog(5, "Geom error idx %d", v11);
@@ -146,8 +146,8 @@
     v21 = [NSNumber numberWithUnsignedInt:(*(v10 + 2) >> 9) & 7];
     [v16 setObject:v21 forKeyedSubscript:@"plane"];
 
-    v22 = [NSNumber numberWithUnsignedInt:(*(v10 + 2) >> 12) & 0x7FFF];
-    [v16 setObject:v22 forKeyedSubscript:@"bork"];
+    0x7FFF = [NSNumber numberWithUnsignedInt:(*(v10 + 2) >> 12) & 0x7FFF];
+    [v16 setObject:0x7FFF forKeyedSubscript:@"bork"];
 
     v23 = [NSNumber numberWithUnsignedInt:*(v10 + 2) >> 27];
     [v16 setObject:v23 forKeyedSubscript:@"reason"];
@@ -245,12 +245,12 @@ LABEL_16:
     v47 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v39 count]);
     [v16 setObject:v47 forKeyedSubscript:@"ESR_numFailedPages"];
 
-    self = v50;
-    v48 = [(NANDInfo_GeomErrorPayloadManager *)v50 error_payload_array];
-    [v48 addObject:v16];
+    self = selfCopy;
+    error_payload_array = [(NANDInfo_GeomErrorPayloadManager *)selfCopy error_payload_array];
+    [error_payload_array addObject:v16];
 
-    v49 = [(NANDInfo_GeomErrorPayloadManager *)v50 error_pages_array];
-    [v49 addObject:v39];
+    error_pages_array = [(NANDInfo_GeomErrorPayloadManager *)selfCopy error_pages_array];
+    [error_pages_array addObject:v39];
 
     v10 = v53;
     v11 = (v54 + 1);
@@ -268,9 +268,9 @@ LABEL_34:
   [(NANDInfo_GeomErrorPayloadManager *)self setInvalid_error_payload:1];
 }
 
-- (void)populateOtherStats:(id)a3
+- (void)populateOtherStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -300,13 +300,13 @@ LABEL_34:
 
           v8 = *(*(&v15 + 1) + 8 * v10);
 
-          v12 = [v4 objectForKeyedSubscript:v8];
+          v12 = [statsCopy objectForKeyedSubscript:v8];
 
           if (v12)
           {
-            v13 = [v4 objectForKeyedSubscript:v8];
-            v14 = [(NANDInfo_GeomErrorPayloadManager *)self other_stats_dict];
-            [v14 setObject:v13 forKeyedSubscript:v8];
+            v13 = [statsCopy objectForKeyedSubscript:v8];
+            other_stats_dict = [(NANDInfo_GeomErrorPayloadManager *)self other_stats_dict];
+            [other_stats_dict setObject:v13 forKeyedSubscript:v8];
           }
 
           v10 = v10 + 1;
@@ -322,32 +322,32 @@ LABEL_34:
   }
 }
 
-- (BOOL)iteratePerPageDictsForMaxPagesWithStatus:(unsigned int)a3 iteratorCallBack:(id)a4
+- (BOOL)iteratePerPageDictsForMaxPagesWithStatus:(unsigned int)status iteratorCallBack:(id)back
 {
-  v5 = a4;
+  backCopy = back;
   if ([(NANDInfo_GeomErrorPayloadManager *)self invalid_error_payload])
   {
     goto LABEL_30;
   }
 
-  v6 = [(NANDInfo_GeomErrorPayloadManager *)self error_payload_array];
-  if (!v6)
+  error_payload_array = [(NANDInfo_GeomErrorPayloadManager *)self error_payload_array];
+  if (!error_payload_array)
   {
     goto LABEL_30;
   }
 
-  v7 = v6;
-  v8 = [(NANDInfo_GeomErrorPayloadManager *)self error_pages_array];
-  if (!v8)
+  v7 = error_payload_array;
+  error_pages_array = [(NANDInfo_GeomErrorPayloadManager *)self error_pages_array];
+  if (!error_pages_array)
   {
 
     goto LABEL_30;
   }
 
-  v9 = v8;
-  v10 = [(NANDInfo_GeomErrorPayloadManager *)self other_stats_dict];
+  v9 = error_pages_array;
+  other_stats_dict = [(NANDInfo_GeomErrorPayloadManager *)self other_stats_dict];
 
-  if (!v10)
+  if (!other_stats_dict)
   {
 LABEL_30:
     syslog(3, "ERROR: Missing valid input data");
@@ -359,8 +359,8 @@ LABEL_30:
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v11 = [(NANDInfo_GeomErrorPayloadManager *)self error_payload_array];
-  v47 = [v11 countByEnumeratingWithState:&v59 objects:v64 count:16];
+  error_payload_array2 = [(NANDInfo_GeomErrorPayloadManager *)self error_payload_array];
+  v47 = [error_payload_array2 countByEnumeratingWithState:&v59 objects:v64 count:16];
   if (v47)
   {
     v52 = 0;
@@ -369,8 +369,8 @@ LABEL_30:
     v14 = 0;
     v15 = 0;
     v48 = *v60;
-    v44 = v11;
-    v46 = self;
+    v44 = error_payload_array2;
+    selfCopy = self;
     while (2)
     {
       v16 = 0;
@@ -381,15 +381,15 @@ LABEL_30:
         if (*v60 != v48)
         {
           v19 = v16;
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(error_payload_array2);
           v16 = v19;
         }
 
         v49 = v16;
         v20 = *(*(&v59 + 1) + 8 * v16);
 
-        v21 = [(NANDInfo_GeomErrorPayloadManager *)self error_pages_array];
-        v22 = [v21 count];
+        error_pages_array2 = [(NANDInfo_GeomErrorPayloadManager *)self error_pages_array];
+        v22 = [error_pages_array2 count];
 
         if (v22 <= v52)
         {
@@ -408,8 +408,8 @@ LABEL_30:
         v24 = v23 = self;
         v13 = [v24 objectAtIndexedSubscript:v52];
 
-        v25 = [(NANDInfo_GeomErrorPayloadManager *)v23 other_stats_dict];
-        [v14 addEntriesFromDictionary:v25];
+        other_stats_dict2 = [(NANDInfo_GeomErrorPayloadManager *)v23 other_stats_dict];
+        [v14 addEntriesFromDictionary:other_stats_dict2];
 
         if ([v13 count])
         {
@@ -440,9 +440,9 @@ LABEL_30:
 
                 v15 = *(*(&v55 + 1) + 8 * v30);
 
-                if (v31 > a3)
+                if (v31 > status)
                 {
-                  v11 = v44;
+                  error_payload_array2 = v44;
                   v13 = v45;
                   goto LABEL_25;
                 }
@@ -455,14 +455,14 @@ LABEL_30:
 
                 v35 = objc_autoreleasePoolPush();
                 v36 = [[NSDictionary alloc] initWithDictionary:v14 copyItems:1];
-                v37 = v5[2](v5, v36);
+                v37 = backCopy[2](backCopy, v36);
 
                 if (!v37)
                 {
                   syslog(3, "ERROR: failed to run the callBack when iterating error payload pages!");
                   objc_autoreleasePoolPop(v35);
 
-                  v11 = v44;
+                  error_payload_array2 = v44;
                   v13 = v45;
                   goto LABEL_33;
                 }
@@ -475,7 +475,7 @@ LABEL_30:
 
               while (v27 != v30);
               v27 = [obj countByEnumeratingWithState:&v55 objects:v63 count:16];
-              v11 = v44;
+              error_payload_array2 = v44;
               v13 = v45;
               v28 = v43;
               if (v27)
@@ -496,7 +496,7 @@ LABEL_25:
           [v14 setObject:&off_1000C1040 forKeyedSubscript:@"ESR_page_i"];
           [v14 setObject:&off_1000C1040 forKeyedSubscript:@"ESR_page_i_status"];
           v38 = [[NSDictionary alloc] initWithDictionary:v14 copyItems:1];
-          v39 = v5[2](v5, v38);
+          v39 = backCopy[2](backCopy, v38);
 
           if ((v39 & 1) == 0)
           {
@@ -509,7 +509,7 @@ LABEL_33:
           }
         }
 
-        self = v46;
+        self = selfCopy;
         ++v52;
         objc_autoreleasePoolPop(context);
         v16 = v49 + 1;
@@ -522,7 +522,7 @@ LABEL_33:
       while ((v49 + 1) != v47);
       v12 = v51;
       v13 = v40;
-      v47 = [v11 countByEnumeratingWithState:&v59 objects:v64 count:16];
+      v47 = [error_payload_array2 countByEnumeratingWithState:&v59 objects:v64 count:16];
       if (v47)
       {
         continue;
@@ -559,21 +559,21 @@ LABEL_31:
 
   else
   {
-    v4 = [(NANDInfo_GeomErrorPayloadManager *)self error_payload_array];
-    v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 count]);
+    error_payload_array = [(NANDInfo_GeomErrorPayloadManager *)self error_payload_array];
+    v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [error_payload_array count]);
     [v3 setObject:v5 forKeyedSubscript:@"error_count"];
 
-    v6 = [(NANDInfo_GeomErrorPayloadManager *)self error_payload_array];
-    v7 = [v6 count];
+    error_payload_array2 = [(NANDInfo_GeomErrorPayloadManager *)self error_payload_array];
+    v7 = [error_payload_array2 count];
 
     if (v7)
     {
-      v8 = [(NANDInfo_GeomErrorPayloadManager *)self other_stats_dict];
+      other_stats_dict = [(NANDInfo_GeomErrorPayloadManager *)self other_stats_dict];
 
-      if (v8)
+      if (other_stats_dict)
       {
-        v9 = [(NANDInfo_GeomErrorPayloadManager *)self other_stats_dict];
-        [v3 setObject:v9 forKeyedSubscript:@"other_stats"];
+        other_stats_dict2 = [(NANDInfo_GeomErrorPayloadManager *)self other_stats_dict];
+        [v3 setObject:other_stats_dict2 forKeyedSubscript:@"other_stats"];
       }
 
       v10 = objc_alloc_init(NSMutableArray);
@@ -609,9 +609,9 @@ LABEL_31:
             v15 = *(*(&v27 + 1) + 8 * v17);
 
             v13 = [[NSMutableDictionary alloc] initWithDictionary:v15 copyItems:1];
-            v21 = [(NANDInfo_GeomErrorPayloadManager *)self error_pages_array];
+            error_pages_array = [(NANDInfo_GeomErrorPayloadManager *)self error_pages_array];
             v14 = v19 + 1;
-            v22 = [v21 objectAtIndexedSubscript:v19];
+            v22 = [error_pages_array objectAtIndexedSubscript:v19];
             [v13 setObject:v22 forKeyedSubscript:@"page_statuses"];
 
             v23 = [v26 objectForKeyedSubscript:@"error_payload"];
@@ -644,8 +644,8 @@ LABEL_31:
     return 0;
   }
 
-  v4 = [(NANDInfo_GeomErrorPayloadManager *)self num_errors_in_payload_cur];
-  return v4 > [(NANDInfo_GeomErrorPayloadManager *)self num_errors_in_payload_prev];
+  num_errors_in_payload_cur = [(NANDInfo_GeomErrorPayloadManager *)self num_errors_in_payload_cur];
+  return num_errors_in_payload_cur > [(NANDInfo_GeomErrorPayloadManager *)self num_errors_in_payload_prev];
 }
 
 @end

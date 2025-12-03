@@ -1,14 +1,14 @@
 @interface FKOrderMessagesPreviewMetadata
-- (FKOrderMessagesPreviewMetadata)initWithOrderData:(id)a3 workingDirectory:(id)a4 error:(id *)a5;
+- (FKOrderMessagesPreviewMetadata)initWithOrderData:(id)data workingDirectory:(id)directory error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation FKOrderMessagesPreviewMetadata
 
-- (FKOrderMessagesPreviewMetadata)initWithOrderData:(id)a3 workingDirectory:(id)a4 error:(id *)a5
+- (FKOrderMessagesPreviewMetadata)initWithOrderData:(id)data workingDirectory:(id)directory error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  directoryCopy = directory;
   v34.receiver = self;
   v34.super_class = FKOrderMessagesPreviewMetadata;
   v10 = [(FKOrderMessagesPreviewMetadata *)&v34 init];
@@ -20,55 +20,55 @@ LABEL_13:
   }
 
   v11 = [__FKOrderMessagesPreviewMetadata alloc];
-  if (v9)
+  if (directoryCopy)
   {
-    v12 = [(__FKOrderMessagesPreviewMetadata *)v11 initWithOrderData:v8 workingDirectory:v9 error:a5];
+    v12 = [(__FKOrderMessagesPreviewMetadata *)v11 initWithOrderData:dataCopy workingDirectory:directoryCopy error:error];
   }
 
   else
   {
-    v12 = [(__FKOrderMessagesPreviewMetadata *)v11 initWithOrderData:v8 error:a5];
+    v12 = [(__FKOrderMessagesPreviewMetadata *)v11 initWithOrderData:dataCopy error:error];
   }
 
   v13 = v12;
   if (v12)
   {
-    v14 = [(__FKOrderMessagesPreviewMetadata *)v12 image];
+    image = [(__FKOrderMessagesPreviewMetadata *)v12 image];
 
-    if (v14)
+    if (image)
     {
       v15 = [FKOrderMessagesPreviewMetadataImage alloc];
-      v16 = [(FKOrderMessagesPreviewMetadata *)v13 image];
-      v17 = [(FKOrderMessagesPreviewMetadataImage *)v15 _initWithImage:v16];
+      image2 = [(FKOrderMessagesPreviewMetadata *)v13 image];
+      v17 = [(FKOrderMessagesPreviewMetadataImage *)v15 _initWithImage:image2];
       headerImage = v10->_headerImage;
       v10->_headerImage = v17;
     }
 
     v10->_backgroundColor = CGColorRetain([(FKOrderMessagesPreviewMetadata *)v13 backgroundColor]);
     v19 = [FKOrderMessagesPreviewMetadataText alloc];
-    v20 = [(FKOrderMessagesPreviewMetadata *)v13 primaryText];
-    v21 = [(FKOrderMessagesPreviewMetadataText *)v19 _initWithText:v20];
+    primaryText = [(FKOrderMessagesPreviewMetadata *)v13 primaryText];
+    v21 = [(FKOrderMessagesPreviewMetadataText *)v19 _initWithText:primaryText];
     primaryText = v10->_primaryText;
     v10->_primaryText = v21;
 
-    v23 = [(FKOrderMessagesPreviewMetadata *)v13 secondaryText];
+    secondaryText = [(FKOrderMessagesPreviewMetadata *)v13 secondaryText];
 
-    if (v23)
+    if (secondaryText)
     {
       v24 = [FKOrderMessagesPreviewMetadataText alloc];
-      v25 = [(FKOrderMessagesPreviewMetadata *)v13 secondaryText];
-      v26 = [(FKOrderMessagesPreviewMetadataText *)v24 _initWithText:v25];
+      secondaryText2 = [(FKOrderMessagesPreviewMetadata *)v13 secondaryText];
+      v26 = [(FKOrderMessagesPreviewMetadataText *)v24 _initWithText:secondaryText2];
       secondaryText = v10->_secondaryText;
       v10->_secondaryText = v26;
     }
 
-    v28 = [(FKOrderMessagesPreviewMetadata *)v13 tertiaryText];
+    tertiaryText = [(FKOrderMessagesPreviewMetadata *)v13 tertiaryText];
 
-    if (v28)
+    if (tertiaryText)
     {
       v29 = [FKOrderMessagesPreviewMetadataText alloc];
-      v30 = [(FKOrderMessagesPreviewMetadata *)v13 tertiaryText];
-      v31 = [(FKOrderMessagesPreviewMetadataText *)v29 _initWithText:v30];
+      tertiaryText2 = [(FKOrderMessagesPreviewMetadata *)v13 tertiaryText];
+      v31 = [(FKOrderMessagesPreviewMetadataText *)v29 _initWithText:tertiaryText2];
       tertiaryText = v10->_tertiaryText;
       v10->_tertiaryText = v31;
     }

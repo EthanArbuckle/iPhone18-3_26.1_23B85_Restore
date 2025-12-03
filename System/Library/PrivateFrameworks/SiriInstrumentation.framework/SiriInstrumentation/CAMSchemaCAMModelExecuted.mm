@@ -1,29 +1,29 @@
 @interface CAMSchemaCAMModelExecuted
-- (BOOL)isEqual:(id)a3;
-- (CAMSchemaCAMModelExecuted)initWithDictionary:(id)a3;
-- (CAMSchemaCAMModelExecuted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CAMSchemaCAMModelExecuted)initWithDictionary:(id)dictionary;
+- (CAMSchemaCAMModelExecuted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsShadowLog:(BOOL)a3;
-- (void)setHasPredictionScore:(BOOL)a3;
-- (void)setHasPredictionThreshold:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsShadowLog:(BOOL)log;
+- (void)setHasPredictionScore:(BOOL)score;
+- (void)setHasPredictionThreshold:(BOOL)threshold;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAMSchemaCAMModelExecuted
 
-- (CAMSchemaCAMModelExecuted)initWithDictionary:(id)a3
+- (CAMSchemaCAMModelExecuted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = CAMSchemaCAMModelExecuted;
   v5 = [(CAMSchemaCAMModelExecuted *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"modelId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"modelId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,14 +31,14 @@
       [(CAMSchemaCAMModelExecuted *)v5 setModelId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"prediction"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"prediction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAMSchemaCAMModelExecuted setPrediction:](v5, "setPrediction:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"predictionScore"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"predictionScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(CAMSchemaCAMModelExecuted *)v5 setPredictionScore:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"predictionThreshold"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"predictionThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,14 +54,14 @@
       [(CAMSchemaCAMModelExecuted *)v5 setPredictionThreshold:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isShadowLog"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isShadowLog"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAMSchemaCAMModelExecuted setIsShadowLog:](v5, "setIsShadowLog:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"asset"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"asset"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,30 +75,30 @@
   return v5;
 }
 
-- (CAMSchemaCAMModelExecuted)initWithJSON:(id)a3
+- (CAMSchemaCAMModelExecuted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CAMSchemaCAMModelExecuted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CAMSchemaCAMModelExecuted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CAMSchemaCAMModelExecuted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -111,42 +111,42 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_asset)
   {
-    v4 = [(CAMSchemaCAMModelExecuted *)self asset];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    asset = [(CAMSchemaCAMModelExecuted *)self asset];
+    dictionaryRepresentation = [asset dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"asset"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"asset"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"asset"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"asset"];
     }
   }
 
   if ((*&self->_has & 8) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAMSchemaCAMModelExecuted isShadowLog](self, "isShadowLog")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isShadowLog"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isShadowLog"];
   }
 
   if (self->_modelId)
   {
-    v8 = [(CAMSchemaCAMModelExecuted *)self modelId];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    modelId = [(CAMSchemaCAMModelExecuted *)self modelId];
+    dictionaryRepresentation2 = [modelId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"modelId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"modelId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"modelId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"modelId"];
     }
   }
 
@@ -154,7 +154,7 @@
   if (has)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAMSchemaCAMModelExecuted prediction](self, "prediction")}];
-    [v3 setObject:v15 forKeyedSubscript:@"prediction"];
+    [dictionary setObject:v15 forKeyedSubscript:@"prediction"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -177,7 +177,7 @@ LABEL_15:
   v16 = MEMORY[0x1E696AD98];
   [(CAMSchemaCAMModelExecuted *)self predictionScore];
   v17 = [v16 numberWithFloat:?];
-  [v3 setObject:v17 forKeyedSubscript:@"predictionScore"];
+  [dictionary setObject:v17 forKeyedSubscript:@"predictionScore"];
 
   if ((*&self->_has & 4) != 0)
   {
@@ -185,13 +185,13 @@ LABEL_16:
     v12 = MEMORY[0x1E696AD98];
     [(CAMSchemaCAMModelExecuted *)self predictionThreshold];
     v13 = [v12 numberWithFloat:?];
-    [v3 setObject:v13 forKeyedSubscript:@"predictionThreshold"];
+    [dictionary setObject:v13 forKeyedSubscript:@"predictionThreshold"];
   }
 
 LABEL_17:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -300,28 +300,28 @@ LABEL_10:
   return v6 ^ v3 ^ v11 ^ v12 ^ v17 ^ [(SISchemaAsset *)self->_asset hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(CAMSchemaCAMModelExecuted *)self modelId];
-  v6 = [v4 modelId];
-  if ((v5 != 0) == (v6 == 0))
+  modelId = [(CAMSchemaCAMModelExecuted *)self modelId];
+  modelId2 = [equalCopy modelId];
+  if ((modelId != 0) == (modelId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(CAMSchemaCAMModelExecuted *)self modelId];
-  if (v7)
+  modelId3 = [(CAMSchemaCAMModelExecuted *)self modelId];
+  if (modelId3)
   {
-    v8 = v7;
-    v9 = [(CAMSchemaCAMModelExecuted *)self modelId];
-    v10 = [v4 modelId];
-    v11 = [v9 isEqual:v10];
+    v8 = modelId3;
+    modelId4 = [(CAMSchemaCAMModelExecuted *)self modelId];
+    modelId5 = [equalCopy modelId];
+    v11 = [modelId4 isEqual:modelId5];
 
     if (!v11)
     {
@@ -334,7 +334,7 @@ LABEL_10:
   }
 
   has = self->_has;
-  v13 = v4[40];
+  v13 = equalCopy[40];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_27;
@@ -343,13 +343,13 @@ LABEL_10:
   if (*&has)
   {
     prediction = self->_prediction;
-    if (prediction != [v4 prediction])
+    if (prediction != [equalCopy prediction])
     {
       goto LABEL_27;
     }
 
     has = self->_has;
-    v13 = v4[40];
+    v13 = equalCopy[40];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -361,14 +361,14 @@ LABEL_10:
   if (v15)
   {
     predictionScore = self->_predictionScore;
-    [v4 predictionScore];
+    [equalCopy predictionScore];
     if (predictionScore != v17)
     {
       goto LABEL_27;
     }
 
     has = self->_has;
-    v13 = v4[40];
+    v13 = equalCopy[40];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -380,14 +380,14 @@ LABEL_10:
   if (v18)
   {
     predictionThreshold = self->_predictionThreshold;
-    [v4 predictionThreshold];
+    [equalCopy predictionThreshold];
     if (predictionThreshold != v20)
     {
       goto LABEL_27;
     }
 
     has = self->_has;
-    v13 = v4[40];
+    v13 = equalCopy[40];
   }
 
   v21 = (*&has >> 3) & 1;
@@ -399,23 +399,23 @@ LABEL_10:
   if (v21)
   {
     isShadowLog = self->_isShadowLog;
-    if (isShadowLog != [v4 isShadowLog])
+    if (isShadowLog != [equalCopy isShadowLog])
     {
       goto LABEL_27;
     }
   }
 
-  v5 = [(CAMSchemaCAMModelExecuted *)self asset];
-  v6 = [v4 asset];
-  if ((v5 != 0) == (v6 == 0))
+  modelId = [(CAMSchemaCAMModelExecuted *)self asset];
+  modelId2 = [equalCopy asset];
+  if ((modelId != 0) == (modelId2 == 0))
   {
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  v23 = [(CAMSchemaCAMModelExecuted *)self asset];
-  if (!v23)
+  asset = [(CAMSchemaCAMModelExecuted *)self asset];
+  if (!asset)
   {
 
 LABEL_30:
@@ -423,10 +423,10 @@ LABEL_30:
     goto LABEL_28;
   }
 
-  v24 = v23;
-  v25 = [(CAMSchemaCAMModelExecuted *)self asset];
-  v26 = [v4 asset];
-  v27 = [v25 isEqual:v26];
+  v24 = asset;
+  asset2 = [(CAMSchemaCAMModelExecuted *)self asset];
+  asset3 = [equalCopy asset];
+  v27 = [asset2 isEqual:asset3];
 
   if (v27)
   {
@@ -440,14 +440,14 @@ LABEL_28:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(CAMSchemaCAMModelExecuted *)self modelId];
+  toCopy = to;
+  modelId = [(CAMSchemaCAMModelExecuted *)self modelId];
 
-  if (v4)
+  if (modelId)
   {
-    v5 = [(CAMSchemaCAMModelExecuted *)self modelId];
+    modelId2 = [(CAMSchemaCAMModelExecuted *)self modelId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -495,21 +495,21 @@ LABEL_7:
   }
 
 LABEL_8:
-  v7 = [(CAMSchemaCAMModelExecuted *)self asset];
+  asset = [(CAMSchemaCAMModelExecuted *)self asset];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (asset)
   {
-    v9 = [(CAMSchemaCAMModelExecuted *)self asset];
+    asset2 = [(CAMSchemaCAMModelExecuted *)self asset];
     PBDataWriterWriteSubmessage();
 
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
-- (void)setHasIsShadowLog:(BOOL)a3
+- (void)setHasIsShadowLog:(BOOL)log
 {
-  if (a3)
+  if (log)
   {
     v3 = 8;
   }
@@ -522,9 +522,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPredictionThreshold:(BOOL)a3
+- (void)setHasPredictionThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 4;
   }
@@ -537,9 +537,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPredictionScore:(BOOL)a3
+- (void)setHasPredictionScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -552,26 +552,26 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = CAMSchemaCAMModelExecuted;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(CAMSchemaCAMModelExecuted *)self modelId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  modelId = [(CAMSchemaCAMModelExecuted *)self modelId];
+  v7 = [modelId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(CAMSchemaCAMModelExecuted *)self deleteModelId];
   }
 
-  v9 = [(CAMSchemaCAMModelExecuted *)self asset];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  asset = [(CAMSchemaCAMModelExecuted *)self asset];
+  v10 = [asset applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(CAMSchemaCAMModelExecuted *)self deleteAsset];
   }

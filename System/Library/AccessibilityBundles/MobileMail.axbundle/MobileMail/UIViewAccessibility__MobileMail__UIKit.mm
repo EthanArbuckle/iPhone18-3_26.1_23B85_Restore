@@ -10,8 +10,8 @@
 
 - (BOOL)_accessibilityUseAccessibilityFrameForHittest
 {
-  v3 = [(UIViewAccessibility__MobileMail__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AXAccessibilityUseAccessibilityFrameForHittest"];
+  accessibilityIdentification = [(UIViewAccessibility__MobileMail__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AXAccessibilityUseAccessibilityFrameForHittest"];
 
   if (v4)
   {
@@ -25,8 +25,8 @@
 
 - (BOOL)_accessibilityIsFirstElementForFocus
 {
-  v3 = [(UIViewAccessibility__MobileMail__UIKit *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"MailMessagesTableView"];
+  accessibilityIdentifier = [(UIViewAccessibility__MobileMail__UIKit *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"MailMessagesTableView"];
 
   if (v4)
   {
@@ -40,8 +40,8 @@
 
 - (BOOL)_accessibilityIsApplicationSceneView
 {
-  v2 = [(UIViewAccessibility__MobileMail__UIKit *)self accessibilityIdentifier];
-  v3 = [v2 isEqualToString:@"kAXApplicationSceneViewIdentifier"];
+  accessibilityIdentifier = [(UIViewAccessibility__MobileMail__UIKit *)self accessibilityIdentifier];
+  v3 = [accessibilityIdentifier isEqualToString:@"kAXApplicationSceneViewIdentifier"];
 
   return v3;
 }
@@ -58,9 +58,9 @@
   }
 
   v3 = [(UIViewAccessibility__MobileMail__UIKit *)self _accessibilityValueForKey:@"kAXShowDraftsKey"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if ((v4 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v33.receiver = self;
     v33.super_class = UIViewAccessibility__MobileMail__UIKit;
@@ -83,12 +83,12 @@
   v7 = v6;
 
   v8 = [(UIViewAccessibility__MobileMail__UIKit *)self _accessibilityValueForKey:@"kAXNumberOfDraftsKey"];
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
   v10 = accessibilityLocalizedString(@"show.drafts");
   v11 = MEMORY[0x29EDBA0F8];
   v12 = accessibilityLocalizedString(@"number.of.drafts");
-  v13 = [v11 localizedStringWithFormat:v12, v9];
+  v13 = [v11 localizedStringWithFormat:v12, unsignedIntegerValue];
 
   v14 = __UIAXStringForVariables();
 
@@ -105,18 +105,18 @@
   [accessibilityElements_showDraftsElement setAccessibilityFrame:{v18, v22 - v16, v20, v16 - v23}];
   v30.receiver = self;
   v30.super_class = UIViewAccessibility__MobileMail__UIKit;
-  v24 = [(UIViewAccessibility__MobileMail__UIKit *)&v30 accessibilityElements];
-  v25 = [v24 mutableCopy];
+  accessibilityElements = [(UIViewAccessibility__MobileMail__UIKit *)&v30 accessibilityElements];
+  array = [accessibilityElements mutableCopy];
 
-  if (!v25)
+  if (!array)
   {
-    v25 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
   v26 = [(UIViewAccessibility__MobileMail__UIKit *)self safeArrayForKey:@"subviews"];
-  [v25 axSafelyAddObjectsFromArray:v26];
+  [array axSafelyAddObjectsFromArray:v26];
 
-  v27 = [v25 ax_filteredArrayUsingBlock:&__block_literal_global_16];
+  v27 = [array ax_filteredArrayUsingBlock:&__block_literal_global_16];
   v28 = [v27 mutableCopy];
 
   if (([v28 containsObject:accessibilityElements_showDraftsElement] & 1) == 0)
@@ -131,8 +131,8 @@ LABEL_13:
 
 - (BOOL)_accessibilityOverridesInvalidFrames
 {
-  v3 = [(UIViewAccessibility__MobileMail__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AXAccessibilityStatusIndicatorView"];
+  accessibilityIdentification = [(UIViewAccessibility__MobileMail__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AXAccessibilityStatusIndicatorView"];
 
   if (v4)
   {

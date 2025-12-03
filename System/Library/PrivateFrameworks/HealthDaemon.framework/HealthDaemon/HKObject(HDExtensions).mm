@@ -17,8 +17,8 @@
   v27 = *MEMORY[0x277D85DE8];
   v3 = a3;
   v4 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CBEB40] orderedSet];
-  v6 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -39,15 +39,15 @@
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v12 hd_associatedObjects];
-        v14 = [v13 mutableCopy];
+        hd_associatedObjects = [v12 hd_associatedObjects];
+        v14 = [hd_associatedObjects mutableCopy];
 
         v15 = [v14 count];
-        v16 = v5;
+        v16 = orderedSet;
         if (v15)
         {
-          [v5 addObjectsFromArray:v14];
-          v16 = v6;
+          [orderedSet addObjectsFromArray:v14];
+          v16 = orderedSet2;
         }
 
         [v16 addObject:v12];
@@ -59,9 +59,9 @@
     while (v9);
   }
 
-  v17 = [v5 array];
-  v18 = [v6 array];
-  v19 = [v17 arrayByAddingObjectsFromArray:v18];
+  array = [orderedSet array];
+  array2 = [orderedSet2 array];
+  v19 = [array arrayByAddingObjectsFromArray:array2];
 
   objc_autoreleasePoolPop(v4);
   v20 = *MEMORY[0x277D85DE8];

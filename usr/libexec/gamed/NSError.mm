@@ -1,5 +1,5 @@
 @interface NSError
-+ (id)_gkErrorForDatabase:(sqlite3 *)a3;
++ (id)_gkErrorForDatabase:(sqlite3 *)database;
 - (BOOL)isSQLiteFatalFileError;
 - (NSError)serializableError;
 - (id)withExpungedClientData;
@@ -9,11 +9,11 @@
 
 - (BOOL)isSQLiteFatalFileError
 {
-  v3 = [(NSError *)self domain];
-  if ([v3 isEqualToString:NSCocoaErrorDomain] && -[NSError code](self, "code") == 256)
+  domain = [(NSError *)self domain];
+  if ([domain isEqualToString:NSCocoaErrorDomain] && -[NSError code](self, "code") == 256)
   {
-    v4 = [(NSError *)self userInfo];
-    v5 = [v4 objectForKeyedSubscript:NSSQLiteErrorDomain];
+    userInfo = [(NSError *)self userInfo];
+    v5 = [userInfo objectForKeyedSubscript:NSSQLiteErrorDomain];
     v6 = [v5 intValue] == 14;
   }
 
@@ -25,57 +25,57 @@
   return v6;
 }
 
-+ (id)_gkErrorForDatabase:(sqlite3 *)a3
++ (id)_gkErrorForDatabase:(sqlite3 *)database
 {
-  v4 = [NSString stringWithFormat:@"sqlite3 error: %s", sqlite3_errmsg(a3), NSLocalizedDescriptionKey];
-  v9 = v4;
+  nSLocalizedDescriptionKey = [NSString stringWithFormat:@"sqlite3 error: %s", sqlite3_errmsg(database), NSLocalizedDescriptionKey];
+  v9 = nSLocalizedDescriptionKey;
   v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
 
-  v6 = [[NSError alloc] initWithDomain:@"GKDatabaseErrorDomain" code:sqlite3_errcode(a3) userInfo:v5];
+  v6 = [[NSError alloc] initWithDomain:@"GKDatabaseErrorDomain" code:sqlite3_errcode(database) userInfo:v5];
 
   return v6;
 }
 
 - (NSError)serializableError
 {
-  v3 = [(NSError *)self userInfo];
+  userInfo = [(NSError *)self userInfo];
 
-  if (!v3)
+  if (!userInfo)
   {
     goto LABEL_6;
   }
 
-  v4 = [(NSError *)self domain];
-  if ([v4 isEqualToString:GKErrorDomain])
+  domain = [(NSError *)self domain];
+  if ([domain isEqualToString:GKErrorDomain])
   {
     goto LABEL_5;
   }
 
-  v5 = [(NSError *)self domain];
-  if ([v5 isEqualToString:GKServerErrorDomain])
+  domain2 = [(NSError *)self domain];
+  if ([domain2 isEqualToString:GKServerErrorDomain])
   {
 
 LABEL_5:
 LABEL_6:
-    v6 = self;
+    selfCopy = self;
     goto LABEL_7;
   }
 
-  v8 = [(NSError *)self domain];
-  v9 = [v8 isEqualToString:GKInternalErrorDomain];
+  domain3 = [(NSError *)self domain];
+  v9 = [domain3 isEqualToString:GKInternalErrorDomain];
 
   if (v9)
   {
     goto LABEL_6;
   }
 
-  v10 = [(NSError *)self domain];
-  v11 = [v10 isEqualToString:NSURLErrorDomain];
+  domain4 = [(NSError *)self domain];
+  v11 = [domain4 isEqualToString:NSURLErrorDomain];
 
   if (!v11)
   {
-    v12 = [(NSError *)self userInfo];
-    v13 = [NSJSONSerialization isValidJSONObject:v12];
+    userInfo2 = [(NSError *)self userInfo];
+    v13 = [NSJSONSerialization isValidJSONObject:userInfo2];
 
     if (v13)
     {
@@ -83,10 +83,10 @@ LABEL_6:
     }
   }
 
-  v6 = [(NSError *)self withExpungedClientData];
+  selfCopy = [(NSError *)self withExpungedClientData];
 LABEL_7:
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)withExpungedClientData
@@ -100,21 +100,21 @@ LABEL_7:
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Making error serializable: %@", buf, 0xCu);
   }
 
-  v5 = [(NSError *)self domain];
-  v6 = [(NSError *)self code];
-  v7 = [(NSError *)self userInfo];
+  domain = [(NSError *)self domain];
+  code = [(NSError *)self code];
+  userInfo = [(NSError *)self userInfo];
   v12[0] = NSHelpAnchorErrorKey;
   v12[1] = NSLocalizedDescriptionKey;
   v12[2] = NSLocalizedFailureReasonErrorKey;
   v12[3] = NSLocalizedRecoveryOptionsErrorKey;
   v12[4] = NSLocalizedRecoverySuggestionErrorKey;
   v8 = [NSArray arrayWithObjects:v12 count:5];
-  v9 = [v7 _gkSubDictionaryWithKeys:v8];
-  v10 = [NSError errorWithDomain:v5 code:v6 userInfo:v9];
+  v9 = [userInfo _gkSubDictionaryWithKeys:v8];
+  v10 = [NSError errorWithDomain:domain code:code userInfo:v9];
 
   return v10;
 }

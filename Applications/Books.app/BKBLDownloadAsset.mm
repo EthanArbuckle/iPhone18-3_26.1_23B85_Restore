@@ -1,30 +1,30 @@
 @interface BKBLDownloadAsset
-- (BKBLDownloadAsset)initWithBLDownloadStatus:(id)a3 dataSourceIdentifier:(id)a4 isParent:(BOOL)a5;
+- (BKBLDownloadAsset)initWithBLDownloadStatus:(id)status dataSourceIdentifier:(id)identifier isParent:(BOOL)parent;
 - (BKBLDownloadAsset)parent;
-- (BOOL)_isSupplementalPDFromDownloadStatus:(id)a3;
-- (BOOL)updateMetadata:(id)a3;
+- (BOOL)_isSupplementalPDFromDownloadStatus:(id)status;
+- (BOOL)updateMetadata:(id)metadata;
 - (NSArray)activeChildren;
 - (NSArray)children;
 - (NSString)identifier;
-- (id)_assetIDFromDownloadStatus:(id)a3;
-- (id)_temporaryAssetIDFromDownloadStatus:(id)a3;
+- (id)_assetIDFromDownloadStatus:(id)status;
+- (id)_temporaryAssetIDFromDownloadStatus:(id)status;
 - (void)_updateContentTypeFromKind;
 - (void)_updateIfNeeded;
-- (void)addChild:(id)a3;
+- (void)addChild:(id)child;
 - (void)removeFromParent;
-- (void)setBytesDownloaded:(int64_t)a3;
-- (void)setBytesTotal:(int64_t)a3;
-- (void)setDownloadStatus:(id)a3;
-- (void)setProgress:(float)a3;
-- (void)setSecondsRemaining:(int64_t)a3;
+- (void)setBytesDownloaded:(int64_t)downloaded;
+- (void)setBytesTotal:(int64_t)total;
+- (void)setDownloadStatus:(id)status;
+- (void)setProgress:(float)progress;
+- (void)setSecondsRemaining:(int64_t)remaining;
 @end
 
 @implementation BKBLDownloadAsset
 
-- (BKBLDownloadAsset)initWithBLDownloadStatus:(id)a3 dataSourceIdentifier:(id)a4 isParent:(BOOL)a5
+- (BKBLDownloadAsset)initWithBLDownloadStatus:(id)status dataSourceIdentifier:(id)identifier isParent:(BOOL)parent
 {
-  v8 = a3;
-  v9 = a4;
+  statusCopy = status;
+  identifierCopy = identifier;
   v47.receiver = self;
   v47.super_class = BKBLDownloadAsset;
   v10 = [(BKBLDownloadAsset *)&v47 init];
@@ -33,98 +33,98 @@
   {
     v10->_active = 1;
     v10->_needsUpdate = 0;
-    objc_storeStrong(&v10->_dataSourceIdentifier, a4);
-    v12 = [v8 downloadID];
+    objc_storeStrong(&v10->_dataSourceIdentifier, identifier);
+    downloadID = [statusCopy downloadID];
     downloadID = v11->_downloadID;
-    v11->_downloadID = v12;
+    v11->_downloadID = downloadID;
 
-    v14 = [v8 genre];
+    genre = [statusCopy genre];
     genre = v11->_genre;
-    v11->_genre = v14;
+    v11->_genre = genre;
 
-    v16 = [v8 thumbnailImageURL];
-    v17 = [NSURL URLWithString:v16];
+    thumbnailImageURL = [statusCopy thumbnailImageURL];
+    v17 = [NSURL URLWithString:thumbnailImageURL];
     thumbnailImageURL = v11->_thumbnailImageURL;
     v11->_thumbnailImageURL = v17;
 
     v11->_generation = 0x7FFFFFFFFFFFFFFFLL;
-    v19 = [v8 assetKind];
+    assetKind = [statusCopy assetKind];
     kind = v11->_kind;
-    v11->_kind = v19;
+    v11->_kind = assetKind;
 
     v11->_state = 2;
-    v11->_sample = [v8 isSample];
-    if (a5)
+    v11->_sample = [statusCopy isSample];
+    if (parent)
     {
       v11->_isAudiobook = 1;
-      v11->_isParent = a5;
+      v11->_isParent = parent;
       [(BKBLDownloadAsset *)v11 _updateContentTypeFromKind];
-      v21 = [v8 collectionArtistName];
+      collectionArtistName = [statusCopy collectionArtistName];
       author = v11->_author;
-      v11->_author = v21;
+      v11->_author = collectionArtistName;
 
-      v23 = [v8 collectionTitle];
+      collectionTitle = [statusCopy collectionTitle];
       title = v11->_title;
-      v11->_title = v23;
+      v11->_title = collectionTitle;
 
-      v25 = [v8 storePlaylistID];
-      v26 = [v25 stringValue];
+      storePlaylistID = [statusCopy storePlaylistID];
+      stringValue = [storePlaylistID stringValue];
       assetID = v11->_assetID;
-      v11->_assetID = v26;
+      v11->_assetID = stringValue;
 
-      objc_storeStrong(&v11->_storeID, v26);
-      v28 = objc_opt_new();
+      objc_storeStrong(&v11->_storeID, stringValue);
+      identifierFromPermlink = objc_opt_new();
       v29 = 344;
     }
 
     else
     {
-      v11->_isAudiobook = [v8 isAudiobook];
-      v11->_isParent = a5;
+      v11->_isAudiobook = [statusCopy isAudiobook];
+      v11->_isParent = parent;
       [(BKBLDownloadAsset *)v11 _updateContentTypeFromKind];
-      v30 = [v8 artistName];
+      artistName = [statusCopy artistName];
       v31 = v11->_author;
-      v11->_author = v30;
+      v11->_author = artistName;
 
-      v32 = [v8 title];
+      title = [statusCopy title];
       v33 = v11->_title;
-      v11->_title = v32;
+      v11->_title = title;
 
-      v34 = [v8 storeID];
-      v35 = [v34 longLongValue];
+      storeID = [statusCopy storeID];
+      longLongValue = [storeID longLongValue];
 
-      if (v35)
+      if (longLongValue)
       {
-        v36 = [v8 storeID];
-        v37 = [v36 stringValue];
+        storeID2 = [statusCopy storeID];
+        stringValue2 = [storeID2 stringValue];
         storeID = v11->_storeID;
-        v11->_storeID = v37;
+        v11->_storeID = stringValue2;
 
-        v39 = [(BKBLDownloadAsset *)v11 _assetIDFromDownloadStatus:v8];
+        v39 = [(BKBLDownloadAsset *)v11 _assetIDFromDownloadStatus:statusCopy];
         v40 = v11->_assetID;
         v11->_assetID = v39;
 
-        v28 = [(BKBLDownloadAsset *)v11 _temporaryAssetIDFromDownloadStatus:v8];
+        identifierFromPermlink = [(BKBLDownloadAsset *)v11 _temporaryAssetIDFromDownloadStatus:statusCopy];
       }
 
       else
       {
-        v43 = [v8 permLink];
+        permLink = [statusCopy permLink];
 
-        if (!v43)
+        if (!permLink)
         {
           goto LABEL_8;
         }
 
-        v44 = [v8 permLink];
-        v45 = [NSURL URLWithString:v44];
+        permLink2 = [statusCopy permLink];
+        v45 = [NSURL URLWithString:permLink2];
         permlink = v11->_permlink;
         v11->_permlink = v45;
 
-        v28 = v11->_permlink;
-        if (v28)
+        identifierFromPermlink = v11->_permlink;
+        if (identifierFromPermlink)
         {
-          v28 = [v28 identifierFromPermlink];
+          identifierFromPermlink = [identifierFromPermlink identifierFromPermlink];
         }
       }
 
@@ -132,7 +132,7 @@
     }
 
     v41 = *(&v11->super.isa + v29);
-    *(&v11->super.isa + v29) = v28;
+    *(&v11->super.isa + v29) = identifierFromPermlink;
   }
 
 LABEL_8:
@@ -140,15 +140,15 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)_isSupplementalPDFromDownloadStatus:(id)a3
+- (BOOL)_isSupplementalPDFromDownloadStatus:(id)status
 {
-  v3 = a3;
-  v4 = [v3 storePlaylistID];
-  v5 = [v4 stringValue];
+  statusCopy = status;
+  storePlaylistID = [statusCopy storePlaylistID];
+  stringValue = [storePlaylistID stringValue];
 
-  if (v5)
+  if (stringValue)
   {
-    v6 = [v3 isAudiobook] ^ 1;
+    v6 = [statusCopy isAudiobook] ^ 1;
   }
 
   else
@@ -159,49 +159,49 @@ LABEL_8:
   return v6;
 }
 
-- (id)_assetIDFromDownloadStatus:(id)a3
+- (id)_assetIDFromDownloadStatus:(id)status
 {
-  v4 = a3;
-  if ([(BKBLDownloadAsset *)self _isSupplementalPDFromDownloadStatus:v4])
+  statusCopy = status;
+  if ([(BKBLDownloadAsset *)self _isSupplementalPDFromDownloadStatus:statusCopy])
   {
-    v5 = 0;
+    stringValue = 0;
   }
 
   else
   {
-    v6 = [v4 storeID];
-    v5 = [v6 stringValue];
+    storeID = [statusCopy storeID];
+    stringValue = [storeID stringValue];
   }
 
-  return v5;
+  return stringValue;
 }
 
-- (id)_temporaryAssetIDFromDownloadStatus:(id)a3
+- (id)_temporaryAssetIDFromDownloadStatus:(id)status
 {
-  v4 = a3;
-  if ([(BKBLDownloadAsset *)self _isSupplementalPDFromDownloadStatus:v4])
+  statusCopy = status;
+  if ([(BKBLDownloadAsset *)self _isSupplementalPDFromDownloadStatus:statusCopy])
   {
-    v5 = [v4 storeID];
-    v6 = [v5 stringValue];
+    storeID = [statusCopy storeID];
+    stringValue = [storeID stringValue];
     goto LABEL_6;
   }
 
-  v7 = [v4 permLink];
+  permLink = [statusCopy permLink];
 
-  if (v7)
+  if (permLink)
   {
-    v8 = [v4 permLink];
-    v5 = [NSURL URLWithString:v8];
+    permLink2 = [statusCopy permLink];
+    storeID = [NSURL URLWithString:permLink2];
 
-    if (!v5)
+    if (!storeID)
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    v6 = [(NSURL *)self->_permlink identifierFromPermlink];
+    stringValue = [(NSURL *)self->_permlink identifierFromPermlink];
 LABEL_6:
-    v9 = v6;
+    v9 = stringValue;
 LABEL_7:
 
     goto LABEL_8;
@@ -213,20 +213,20 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)updateMetadata:(id)a3
+- (BOOL)updateMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   if (![(BKBLDownloadAsset *)self isParent])
   {
-    v6 = [v4 title];
-    if ([v6 length])
+    title = [metadataCopy title];
+    if ([title length])
     {
     }
 
     else
     {
-      v16 = [v4 artistName];
-      v17 = [v16 length];
+      artistName = [metadataCopy artistName];
+      v17 = [artistName length];
 
       if (!v17)
       {
@@ -234,42 +234,42 @@ LABEL_8:
       }
     }
 
-    v18 = [v4 artistName];
+    artistName2 = [metadataCopy artistName];
     author = self->_author;
-    self->_author = v18;
+    self->_author = artistName2;
 
-    v20 = [v4 title];
+    title2 = [metadataCopy title];
     title = self->_title;
-    self->_title = v20;
+    self->_title = title2;
 
-    v22 = [v4 storeID];
-    v23 = [v22 longLongValue];
+    storeID = [metadataCopy storeID];
+    longLongValue = [storeID longLongValue];
 
-    if (v23)
+    if (longLongValue)
     {
-      v24 = [v4 storeID];
-      v25 = [v24 stringValue];
+      storeID2 = [metadataCopy storeID];
+      stringValue = [storeID2 stringValue];
       storeID = self->_storeID;
-      self->_storeID = v25;
+      self->_storeID = stringValue;
 
-      v27 = [(BKBLDownloadAsset *)self _assetIDFromDownloadStatus:v4];
+      v27 = [(BKBLDownloadAsset *)self _assetIDFromDownloadStatus:metadataCopy];
       assetID = self->_assetID;
       self->_assetID = v27;
 
-      v29 = [(BKBLDownloadAsset *)self _temporaryAssetIDFromDownloadStatus:v4];
+      identifierFromPermlink = [(BKBLDownloadAsset *)self _temporaryAssetIDFromDownloadStatus:metadataCopy];
     }
 
     else
     {
-      v43 = [v4 permLink];
+      permLink = [metadataCopy permLink];
 
-      if (!v43)
+      if (!permLink)
       {
         goto LABEL_13;
       }
 
-      v44 = [v4 permLink];
-      v45 = [NSURL URLWithString:v44];
+      permLink2 = [metadataCopy permLink];
+      v45 = [NSURL URLWithString:permLink2];
       permlink = self->_permlink;
       self->_permlink = v45;
 
@@ -281,40 +281,40 @@ LABEL_8:
         goto LABEL_12;
       }
 
-      v29 = [(NSURL *)v47 identifierFromPermlink];
+      identifierFromPermlink = [(NSURL *)v47 identifierFromPermlink];
     }
 
     temporaryAssetID = self->_temporaryAssetID;
-    self->_temporaryAssetID = v29;
+    self->_temporaryAssetID = identifierFromPermlink;
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v5 = [v4 collectionTitle];
-  if ([v5 length])
+  collectionTitle = [metadataCopy collectionTitle];
+  if ([collectionTitle length])
   {
 
 LABEL_7:
-    v9 = [v4 collectionArtistName];
+    collectionArtistName = [metadataCopy collectionArtistName];
     v10 = self->_author;
-    self->_author = v9;
+    self->_author = collectionArtistName;
 
-    v11 = [v4 collectionTitle];
+    collectionTitle2 = [metadataCopy collectionTitle];
     v12 = self->_title;
-    self->_title = v11;
+    self->_title = collectionTitle2;
 
-    temporaryAssetID = [v4 storePlaylistID];
-    v14 = [temporaryAssetID stringValue];
+    temporaryAssetID = [metadataCopy storePlaylistID];
+    stringValue2 = [temporaryAssetID stringValue];
     v15 = self->_assetID;
-    self->_assetID = v14;
+    self->_assetID = stringValue2;
 
-    objc_storeStrong(&self->_storeID, v14);
+    objc_storeStrong(&self->_storeID, stringValue2);
     goto LABEL_12;
   }
 
-  v7 = [v4 collectionArtistName];
-  v8 = [v7 length];
+  collectionArtistName2 = [metadataCopy collectionArtistName];
+  v8 = [collectionArtistName2 length];
 
   if (v8)
   {
@@ -324,8 +324,8 @@ LABEL_7:
 LABEL_13:
   if (![(NSString *)self->_storeID length])
   {
-    v30 = [(NSURL *)self->_permlink absoluteString];
-    v31 = [v30 length];
+    absoluteString = [(NSURL *)self->_permlink absoluteString];
+    v31 = [absoluteString length];
 
     if (!v31)
     {
@@ -346,34 +346,34 @@ LABEL_13:
     }
   }
 
-  v34 = [v4 genre];
+  genre = [metadataCopy genre];
   genre = self->_genre;
-  self->_genre = v34;
+  self->_genre = genre;
 
-  v36 = [v4 thumbnailImageURL];
-  v37 = [NSURL URLWithString:v36];
+  thumbnailImageURL = [metadataCopy thumbnailImageURL];
+  v37 = [NSURL URLWithString:thumbnailImageURL];
   thumbnailImageURL = self->_thumbnailImageURL;
   self->_thumbnailImageURL = v37;
 
   self->_generation = 0x7FFFFFFFFFFFFFFFLL;
-  v39 = [v4 assetKind];
+  assetKind = [metadataCopy assetKind];
   kind = self->_kind;
-  self->_kind = v39;
+  self->_kind = assetKind;
 
   if ([(BKBLDownloadAsset *)self isParent])
   {
-    v41 = 1;
+    isAudiobook = 1;
   }
 
   else
   {
-    v41 = [v4 isAudiobook];
+    isAudiobook = [metadataCopy isAudiobook];
   }
 
-  self->_isAudiobook = v41;
+  self->_isAudiobook = isAudiobook;
   [(BKBLDownloadAsset *)self _updateContentTypeFromKind];
   self->_state = 2;
-  self->_sample = [v4 isSample];
+  self->_sample = [metadataCopy isSample];
 
   return 1;
 }
@@ -387,8 +387,8 @@ LABEL_13:
 
   else
   {
-    v6 = [(BKBLDownloadAsset *)self kind];
-    v7 = [v6 isEqualToString:BLDownloadKindEBook];
+    kind = [(BKBLDownloadAsset *)self kind];
+    v7 = [kind isEqualToString:BLDownloadKindEBook];
 
     if (v7)
     {
@@ -397,8 +397,8 @@ LABEL_13:
 
     else
     {
-      v8 = [(BKBLDownloadAsset *)self kind];
-      v9 = [v8 isEqualToString:BLDownloadKindPDF];
+      kind2 = [(BKBLDownloadAsset *)self kind];
+      v9 = [kind2 isEqualToString:BLDownloadKindPDF];
 
       if (!v9)
       {
@@ -414,86 +414,86 @@ LABEL_13:
 
 - (NSString)identifier
 {
-  v3 = [(BKBLDownloadAsset *)self storeID];
-  v4 = v3;
-  if (v3)
+  storeID = [(BKBLDownloadAsset *)self storeID];
+  v4 = storeID;
+  if (storeID)
   {
-    v5 = v3;
+    temporaryAssetID = storeID;
   }
 
   else
   {
-    v5 = [(BKBLDownloadAsset *)self temporaryAssetID];
+    temporaryAssetID = [(BKBLDownloadAsset *)self temporaryAssetID];
   }
 
-  v6 = v5;
+  v6 = temporaryAssetID;
 
   return v6;
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
-  self->_progress = a3;
-  v3 = [(BKBLDownloadAsset *)self parent];
-  [v3 setNeedsUpdate:1];
+  self->_progress = progress;
+  parent = [(BKBLDownloadAsset *)self parent];
+  [parent setNeedsUpdate:1];
 }
 
-- (void)setSecondsRemaining:(int64_t)a3
+- (void)setSecondsRemaining:(int64_t)remaining
 {
-  if (self->_secondsRemaining != a3)
+  if (self->_secondsRemaining != remaining)
   {
-    self->_secondsRemaining = a3;
-    v4 = [(BKBLDownloadAsset *)self parent];
-    [v4 setNeedsUpdate:1];
+    self->_secondsRemaining = remaining;
+    parent = [(BKBLDownloadAsset *)self parent];
+    [parent setNeedsUpdate:1];
   }
 }
 
-- (void)setBytesDownloaded:(int64_t)a3
+- (void)setBytesDownloaded:(int64_t)downloaded
 {
-  if (self->_bytesDownloaded != a3)
+  if (self->_bytesDownloaded != downloaded)
   {
-    self->_bytesDownloaded = a3;
-    v4 = [(BKBLDownloadAsset *)self parent];
-    [v4 setNeedsUpdate:1];
+    self->_bytesDownloaded = downloaded;
+    parent = [(BKBLDownloadAsset *)self parent];
+    [parent setNeedsUpdate:1];
   }
 }
 
-- (void)setBytesTotal:(int64_t)a3
+- (void)setBytesTotal:(int64_t)total
 {
-  if (self->_bytesTotal != a3)
+  if (self->_bytesTotal != total)
   {
-    self->_bytesTotal = a3;
-    v4 = [(BKBLDownloadAsset *)self parent];
-    [v4 setNeedsUpdate:1];
+    self->_bytesTotal = total;
+    parent = [(BKBLDownloadAsset *)self parent];
+    [parent setNeedsUpdate:1];
   }
 }
 
-- (void)setDownloadStatus:(id)a3
+- (void)setDownloadStatus:(id)status
 {
-  if (a3)
+  if (status)
   {
-    v4 = a3;
-    v5 = [v4 percentComplete];
-    [v5 floatValue];
+    statusCopy = status;
+    percentComplete = [statusCopy percentComplete];
+    [percentComplete floatValue];
     self->_progress = v6;
 
-    v7 = [v4 estimatedTimeRemaining];
-    self->_secondsRemaining = [v7 integerValue];
+    estimatedTimeRemaining = [statusCopy estimatedTimeRemaining];
+    self->_secondsRemaining = [estimatedTimeRemaining integerValue];
 
-    v8 = [v4 transferBytesWritten];
-    self->_bytesDownloaded = [v8 longLongValue];
+    transferBytesWritten = [statusCopy transferBytesWritten];
+    self->_bytesDownloaded = [transferBytesWritten longLongValue];
 
-    v9 = [v4 transferBytesExpected];
-    self->_bytesTotal = [v9 longLongValue];
+    transferBytesExpected = [statusCopy transferBytesExpected];
+    self->_bytesTotal = [transferBytesExpected longLongValue];
 
-    v10 = [v4 downloadPhase];
-    if (v10 <= 8)
+    downloadPhase = [statusCopy downloadPhase];
+    if (downloadPhase <= 8)
     {
-      self->_downloadState = qword_10080B5F0[v10];
+      self->_downloadState = qword_10080B5F0[downloadPhase];
     }
 
-    v11 = [(BKBLDownloadAsset *)self parent];
-    [v11 setNeedsUpdate:1];
+    parent = [(BKBLDownloadAsset *)self parent];
+    [parent setNeedsUpdate:1];
   }
 }
 
@@ -502,8 +502,8 @@ LABEL_13:
   if ([(BKBLDownloadAsset *)self needsUpdate])
   {
     self->_downloadState = 4;
-    v3 = [(BKBLDownloadAsset *)self children];
-    if ([v3 count])
+    children = [(BKBLDownloadAsset *)self children];
+    if ([children count])
     {
       self->_secondsRemaining = 0;
       self->_bytesDownloaded = 0;
@@ -512,12 +512,12 @@ LABEL_13:
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v4 = v3;
+      v4 = children;
       v5 = [v4 countByEnumeratingWithState:&v32 objects:v44 count:16];
       if (v5)
       {
         v6 = v5;
-        v29 = v3;
+        v29 = children;
         obj = v4;
         v7 = 0;
         v8 = 0;
@@ -542,8 +542,8 @@ LABEL_13:
             self->_bytesTotal += [v15 bytesTotal];
             [v15 progress];
             v13 = v13 + v16;
-            v17 = [v15 downloadState];
-            if (v17 == 7)
+            downloadState = [v15 downloadState];
+            if (downloadState == 7)
             {
               v18 = v9 + 1;
             }
@@ -553,7 +553,7 @@ LABEL_13:
               v18 = v9;
             }
 
-            if (v17 == 8)
+            if (downloadState == 8)
             {
               v19 = v8 + 1;
             }
@@ -563,12 +563,12 @@ LABEL_13:
               v19 = v8;
             }
 
-            if (v17 == 8)
+            if (downloadState == 8)
             {
               v18 = v9;
             }
 
-            if (v17 == 6)
+            if (downloadState == 6)
             {
               v19 = v8;
               v18 = v9;
@@ -580,7 +580,7 @@ LABEL_13:
               v20 = v10;
             }
 
-            if (v17 == 5)
+            if (downloadState == 5)
             {
               v21 = v11 + 1;
             }
@@ -590,7 +590,7 @@ LABEL_13:
               v21 = v11;
             }
 
-            if (v17 == 4)
+            if (downloadState == 4)
             {
               v21 = v11;
               v22 = v12 + 1;
@@ -601,7 +601,7 @@ LABEL_13:
               v22 = v12;
             }
 
-            if (v17 == 3)
+            if (downloadState == 3)
             {
               v23 = v7 + 1;
             }
@@ -611,13 +611,13 @@ LABEL_13:
               v23 = v7;
             }
 
-            if (v17 == 3)
+            if (downloadState == 3)
             {
               v21 = v11;
               v22 = v12;
             }
 
-            if (v17 > 5)
+            if (downloadState > 5)
             {
               v8 = v19;
             }
@@ -627,7 +627,7 @@ LABEL_13:
               v7 = v23;
             }
 
-            if (v17 <= 5)
+            if (downloadState <= 5)
             {
               v11 = v21;
               v12 = v22;
@@ -646,7 +646,7 @@ LABEL_13:
         while (v6);
         v24 = v9 > 0;
         v25 = v12 > 0;
-        v3 = v29;
+        children = v29;
         v4 = obj;
       }
 
@@ -661,8 +661,8 @@ LABEL_13:
         v13 = 0.0;
       }
 
-      v26 = [(BKBLDownloadAsset *)self children];
-      self->_progress = v13 / [v26 count];
+      children2 = [(BKBLDownloadAsset *)self children];
+      self->_progress = v13 / [children2 count];
 
       v27 = 4;
       if (v24)
@@ -722,29 +722,29 @@ LABEL_13:
   }
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v5 = a3;
-  v4 = [(BKBLDownloadAsset *)self childAssets];
-  [v4 addObject:v5];
+  childCopy = child;
+  childAssets = [(BKBLDownloadAsset *)self childAssets];
+  [childAssets addObject:childCopy];
 
   [(BKBLDownloadAsset *)self setNumberOfAddedChildren:[(BKBLDownloadAsset *)self numberOfAddedChildren]+ 1];
-  [v5 setParent:self];
+  [childCopy setParent:self];
 }
 
 - (void)removeFromParent
 {
-  v3 = [(BKBLDownloadAsset *)self parent];
-  v4 = [v3 childAssets];
-  [v4 removeObject:self];
+  parent = [(BKBLDownloadAsset *)self parent];
+  childAssets = [parent childAssets];
+  [childAssets removeObject:self];
 
   [(BKBLDownloadAsset *)self setParent:0];
 }
 
 - (NSArray)children
 {
-  v2 = [(BKBLDownloadAsset *)self childAssets];
-  v3 = [v2 copy];
+  childAssets = [(BKBLDownloadAsset *)self childAssets];
+  v3 = [childAssets copy];
 
   return v3;
 }
@@ -752,8 +752,8 @@ LABEL_13:
 - (NSArray)activeChildren
 {
   v3 = [NSPredicate predicateWithFormat:@"active == YES"];
-  v4 = [(BKBLDownloadAsset *)self childAssets];
-  v5 = [v4 filteredArrayUsingPredicate:v3];
+  childAssets = [(BKBLDownloadAsset *)self childAssets];
+  v5 = [childAssets filteredArrayUsingPredicate:v3];
 
   return v5;
 }

@@ -2,7 +2,7 @@
 - (MTHostWindowReadyTrackingController)init;
 - (void)_hostWindowDidBecomeReady;
 - (void)performPendingBlocksIfReady;
-- (void)runBlockWhenReady:(id)a3;
+- (void)runBlockWhenReady:(id)ready;
 - (void)start;
 @end
 
@@ -23,12 +23,12 @@
   return v2;
 }
 
-- (void)runBlockWhenReady:(id)a3
+- (void)runBlockWhenReady:(id)ready
 {
-  if (a3)
+  if (ready)
   {
     pendingBlocks = self->_pendingBlocks;
-    v5 = objc_retainBlock(a3);
+    v5 = objc_retainBlock(ready);
     [(NSMutableArray *)pendingBlocks addObject:v5];
 
     [(MTHostWindowReadyTrackingController *)self performPendingBlocksIfReady];

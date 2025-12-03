@@ -1,143 +1,143 @@
 @interface BKAssetUtilities
-+ (BOOL)filenameForAsset:(id)a3 matches:(id)a4;
-+ (id)aggregateIdentifierFromAsset:(id)a3;
-+ (id)aggregateIdentifierFromAssetID:(id)a3 assetURL:(id)a4 contentType:(signed __int16)a5;
-+ (id)descriptionForAsset:(id)a3;
-+ (id)dictionaryRepresentationForAsset:(id)a3;
-+ (id)localizedAssetKindForContentType:(signed __int16)a3;
-+ (id)pathExtensionForContentType:(signed __int16)a3;
-+ (id)utiTypeForContentType:(signed __int16)a3;
-+ (signed)assetContentTypeForBKAssetContentType:(id)a3;
-+ (signed)assetContentTypeForContentType:(signed __int16)a3;
-+ (signed)contentTypeForBKAssetContentType:(signed __int16)a3;
-+ (signed)contentTypeForExtension:(id)a3;
-+ (signed)contentTypeForPath:(id)a3;
++ (BOOL)filenameForAsset:(id)asset matches:(id)matches;
++ (id)aggregateIdentifierFromAsset:(id)asset;
++ (id)aggregateIdentifierFromAssetID:(id)d assetURL:(id)l contentType:(signed __int16)type;
++ (id)descriptionForAsset:(id)asset;
++ (id)dictionaryRepresentationForAsset:(id)asset;
++ (id)localizedAssetKindForContentType:(signed __int16)type;
++ (id)pathExtensionForContentType:(signed __int16)type;
++ (id)utiTypeForContentType:(signed __int16)type;
++ (signed)assetContentTypeForBKAssetContentType:(id)type;
++ (signed)assetContentTypeForContentType:(signed __int16)type;
++ (signed)contentTypeForBKAssetContentType:(signed __int16)type;
++ (signed)contentTypeForExtension:(id)extension;
++ (signed)contentTypeForPath:(id)path;
 @end
 
 @implementation BKAssetUtilities
 
-+ (signed)contentTypeForBKAssetContentType:(signed __int16)a3
++ (signed)contentTypeForBKAssetContentType:(signed __int16)type
 {
-  if ((a3 - 1) > 0x12)
+  if ((type - 1) > 0x12)
   {
     return -1;
   }
 
   else
   {
-    return word_2A3D20[(a3 - 1)];
+    return word_2A3D20[(type - 1)];
   }
 }
 
-+ (signed)assetContentTypeForContentType:(signed __int16)a3
++ (signed)assetContentTypeForContentType:(signed __int16)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 0;
   }
 
   else
   {
-    return word_2A3D46[a3];
+    return word_2A3D46[type];
   }
 }
 
-+ (signed)assetContentTypeForBKAssetContentType:(id)a3
++ (signed)assetContentTypeForBKAssetContentType:(id)type
 {
-  v3 = a3;
-  if (v3 && ([&off_2EBE78 objectForKeyedSubscript:v3], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  typeCopy = type;
+  if (typeCopy && ([&off_2EBE78 objectForKeyedSubscript:typeCopy], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
-+ (signed)contentTypeForExtension:(id)a3
++ (signed)contentTypeForExtension:(id)extension
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 isEqualToString:@"epub"])
+  lowercaseString = [extension lowercaseString];
+  if ([lowercaseString isEqualToString:@"epub"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"pdf"])
+  else if ([lowercaseString isEqualToString:@"pdf"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ibooks"])
+  else if ([lowercaseString isEqualToString:@"ibooks"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"m4a"])
+  else if ([lowercaseString isEqualToString:@"m4a"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"m4b"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"m4p"))
+  else if ([lowercaseString isEqualToString:@"m4b"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"m4p"))
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"aa"])
+  else if ([lowercaseString isEqualToString:@"aa"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"aax"])
+  else if ([lowercaseString isEqualToString:@"aax"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"mp3"])
+  else if ([lowercaseString isEqualToString:@"mp3"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"mp4"])
+  else if ([lowercaseString isEqualToString:@"mp4"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"aac"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"adts"))
+  else if ([lowercaseString isEqualToString:@"aac"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"adts"))
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"ac3"])
+  else if ([lowercaseString isEqualToString:@"ac3"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"aif"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"aiff") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"aifc"))
+  else if ([lowercaseString isEqualToString:@"aif"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"aiff") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"aifc"))
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"caf"])
+  else if ([lowercaseString isEqualToString:@"caf"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"snd"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"au"))
+  else if ([lowercaseString isEqualToString:@"snd"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"au"))
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"sd2"])
+  else if ([lowercaseString isEqualToString:@"sd2"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"wav"])
+  else if ([lowercaseString isEqualToString:@"wav"])
   {
     v4 = 18;
   }
@@ -150,23 +150,23 @@
   return v4;
 }
 
-+ (id)pathExtensionForContentType:(signed __int16)a3
++ (id)pathExtensionForContentType:(signed __int16)type
 {
-  if ((a3 - 1) > 0x12)
+  if ((type - 1) > 0x12)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_2CC080 + (a3 - 1));
+    return *(&off_2CC080 + (type - 1));
   }
 }
 
-+ (id)utiTypeForContentType:(signed __int16)a3
++ (id)utiTypeForContentType:(signed __int16)type
 {
-  v3 = 0;
-  switch(a3)
+  identifier = 0;
+  switch(type)
   {
     case 1:
       v4 = &UTTypeEPUB;
@@ -178,82 +178,82 @@
       v4 = &UTTypePDF;
       goto LABEL_12;
     case 4:
-      v3 = @"com.apple.ibooks-container";
+      identifier = @"com.apple.ibooks-container";
       break;
     case 6:
       v4 = &UTTypeDirectory;
 LABEL_12:
-      v3 = [*v4 identifier];
+      identifier = [*v4 identifier];
       break;
     case 7:
-      v3 = @"com.apple.m4a-audio";
+      identifier = @"com.apple.m4a-audio";
       break;
     case 8:
-      v3 = @"com.apple.protected-mpeg-4-audio";
+      identifier = @"com.apple.protected-mpeg-4-audio";
       break;
     case 9:
-      v3 = @"com.audible.aa-audiobook";
+      identifier = @"com.audible.aa-audiobook";
       break;
     case 10:
-      v3 = @"com.audible.aax-audiobook";
+      identifier = @"com.audible.aax-audiobook";
       break;
     case 11:
-      v3 = @"public.mp3";
+      identifier = @"public.mp3";
       break;
     case 12:
-      v3 = @"public.aac-audio";
+      identifier = @"public.aac-audio";
       break;
     case 13:
-      v3 = @"public.ac3-audio";
+      identifier = @"public.ac3-audio";
       break;
     case 14:
-      v3 = @"public.aiff-audio";
+      identifier = @"public.aiff-audio";
       break;
     case 15:
-      v3 = @"com.apple.coreaudio-format";
+      identifier = @"com.apple.coreaudio-format";
       break;
     case 16:
-      v3 = @"com.digidesign.sd2-audio";
+      identifier = @"com.digidesign.sd2-audio";
       break;
     case 17:
-      v3 = @"public.au-audio";
+      identifier = @"public.au-audio";
       break;
     case 18:
-      v3 = @"com.microsoft.waveform-audio";
+      identifier = @"com.microsoft.waveform-audio";
       break;
     case 19:
-      v3 = @"public.mpeg-4";
+      identifier = @"public.mpeg-4";
       break;
     default:
       break;
   }
 
-  return v3;
+  return identifier;
 }
 
-+ (id)aggregateIdentifierFromAsset:(id)a3
++ (id)aggregateIdentifierFromAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 assetID];
-  v5 = [v3 url];
-  v6 = [v3 contentType];
+  assetCopy = asset;
+  assetID = [assetCopy assetID];
+  v5 = [assetCopy url];
+  contentType = [assetCopy contentType];
 
-  v7 = [BKAssetUtilities aggregateIdentifierFromAssetID:v4 assetURL:v5 contentType:v6];
+  v7 = [BKAssetUtilities aggregateIdentifierFromAssetID:assetID assetURL:v5 contentType:contentType];
 
   return v7;
 }
 
-+ (id)aggregateIdentifierFromAssetID:(id)a3 assetURL:(id)a4 contentType:(signed __int16)a5
++ (id)aggregateIdentifierFromAssetID:(id)d assetURL:(id)l contentType:(signed __int16)type
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [a3 copy];
-  if ([BKAssetUtilities requiresAggregateContentType:v5])
+  typeCopy = type;
+  lCopy = l;
+  v8 = [d copy];
+  if ([BKAssetUtilities requiresAggregateContentType:typeCopy])
   {
-    v9 = [v7 lastPathComponent];
-    if ([v9 length])
+    lastPathComponent = [lCopy lastPathComponent];
+    if ([lastPathComponent length])
     {
-      v10 = [NSString stringWithFormat:@"%@-%@", v8, v9];
+      v10 = [NSString stringWithFormat:@"%@-%@", v8, lastPathComponent];
 
       v8 = v10;
     }
@@ -262,42 +262,42 @@ LABEL_12:
   return v8;
 }
 
-+ (BOOL)filenameForAsset:(id)a3 matches:(id)a4
++ (BOOL)filenameForAsset:(id)asset matches:(id)matches
 {
-  v5 = a4;
-  v6 = a3;
+  matchesCopy = matches;
+  assetCopy = asset;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 filenameMatches:v5];
+    v7 = [assetCopy filenameMatches:matchesCopy];
   }
 
   else
   {
-    v8 = [v6 url];
+    v8 = [assetCopy url];
 
-    v9 = [v8 lastPathComponent];
-    v7 = [v9 isEqualToString:v5];
+    lastPathComponent = [v8 lastPathComponent];
+    v7 = [lastPathComponent isEqualToString:matchesCopy];
 
-    v6 = v8;
+    assetCopy = v8;
   }
 
   return v7;
 }
 
-+ (signed)contentTypeForPath:(id)a3
++ (signed)contentTypeForPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 pathExtension];
-  v6 = [v5 lowercaseString];
+  pathCopy = path;
+  pathExtension = [pathCopy pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
 
-  if ([v6 length])
+  if ([lowercaseString length])
   {
-    v7 = [a1 contentTypeForExtension:v6];
+    v7 = [self contentTypeForExtension:lowercaseString];
   }
 
-  else if ([v4 length])
+  else if ([pathCopy length])
   {
-    v8 = [NSURL fileURLWithPath:v4];
+    v8 = [NSURL fileURLWithPath:pathCopy];
     if ([v8 bu_isFolder])
     {
       v9 = +[NSFileManager defaultManager];
@@ -325,11 +325,11 @@ LABEL_12:
                 objc_enumerationMutation(v11);
               }
 
-              v16 = [*(*(&v20 + 1) + 8 * i) pathExtension];
-              v17 = [v16 lowercaseString];
+              pathExtension2 = [*(*(&v20 + 1) + 8 * i) pathExtension];
+              lowercaseString2 = [pathExtension2 lowercaseString];
 
-              LODWORD(v16) = [a1 isAudiobookTrackContentType:{objc_msgSend(a1, "contentTypeForExtension:", v17)}];
-              if (!v16)
+              LODWORD(pathExtension2) = [self isAudiobookTrackContentType:{objc_msgSend(self, "contentTypeForExtension:", lowercaseString2)}];
+              if (!pathExtension2)
               {
                 v7 = 0;
                 goto LABEL_18;
@@ -376,21 +376,21 @@ LABEL_18:
   return v7;
 }
 
-+ (id)localizedAssetKindForContentType:(signed __int16)a3
++ (id)localizedAssetKindForContentType:(signed __int16)type
 {
   v3 = 0;
-  if (a3 <= 4)
+  if (type <= 4)
   {
-    if (a3 <= 1)
+    if (type <= 1)
     {
-      if (!a3)
+      if (!type)
       {
 LABEL_18:
         v3 = &stru_2D2930;
         goto LABEL_5;
       }
 
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_5;
       }
@@ -398,7 +398,7 @@ LABEL_18:
 
     else
     {
-      if (a3 == 2)
+      if (type == 2)
       {
         v4 = IMCommonCoreBundle();
         v5 = v4;
@@ -406,7 +406,7 @@ LABEL_18:
         goto LABEL_4;
       }
 
-      if (a3 == 3)
+      if (type == 3)
       {
         v4 = IMCommonCoreBundle();
         v5 = v4;
@@ -421,7 +421,7 @@ LABEL_18:
     goto LABEL_4;
   }
 
-  if ((a3 - 7) < 0xD)
+  if ((type - 7) < 0xD)
   {
     v4 = IMCommonCoreBundle();
     v5 = v4;
@@ -432,12 +432,12 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (a3 == 5)
+  if (type == 5)
   {
     goto LABEL_18;
   }
 
-  if (a3 == 6)
+  if (type == 6)
   {
     v4 = IMCommonCoreBundle();
     v5 = v4;
@@ -450,441 +450,441 @@ LABEL_5:
   return v3;
 }
 
-+ (id)dictionaryRepresentationForAsset:(id)a3
++ (id)dictionaryRepresentationForAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 accountID];
+  accountID = [assetCopy accountID];
 
-  if (v5)
+  if (accountID)
   {
-    v6 = [v3 accountID];
-    [v4 setObject:v6 forKeyedSubscript:@"accountID"];
+    accountID2 = [assetCopy accountID];
+    [v4 setObject:accountID2 forKeyedSubscript:@"accountID"];
   }
 
-  v7 = [v3 assetID];
+  assetID = [assetCopy assetID];
 
-  if (v7)
+  if (assetID)
   {
-    v8 = [v3 assetID];
-    [v4 setObject:v8 forKeyedSubscript:@"assetID"];
+    assetID2 = [assetCopy assetID];
+    [v4 setObject:assetID2 forKeyedSubscript:@"assetID"];
   }
 
-  v9 = [v3 temporaryAssetID];
+  temporaryAssetID = [assetCopy temporaryAssetID];
 
-  if (v9)
+  if (temporaryAssetID)
   {
-    v10 = [v3 temporaryAssetID];
-    [v4 setObject:v10 forKeyedSubscript:@"temporaryAssetID"];
+    temporaryAssetID2 = [assetCopy temporaryAssetID];
+    [v4 setObject:temporaryAssetID2 forKeyedSubscript:@"temporaryAssetID"];
   }
 
-  v11 = [v3 storeID];
+  storeID = [assetCopy storeID];
 
-  if (v11)
+  if (storeID)
   {
-    v12 = [v3 storeID];
-    [v4 setObject:v12 forKeyedSubscript:@"storeID"];
+    storeID2 = [assetCopy storeID];
+    [v4 setObject:storeID2 forKeyedSubscript:@"storeID"];
   }
 
-  v13 = [v3 author];
+  author = [assetCopy author];
 
-  if (v13)
+  if (author)
   {
-    v14 = [v3 author];
-    [v4 setObject:v14 forKeyedSubscript:@"author"];
+    author2 = [assetCopy author];
+    [v4 setObject:author2 forKeyedSubscript:@"author"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v3 authorCount];
+    authorCount = [assetCopy authorCount];
 
-    if (v15)
+    if (authorCount)
     {
-      v16 = [v3 authorCount];
-      [v4 setObject:v16 forKeyedSubscript:@"authorCount"];
+      authorCount2 = [assetCopy authorCount];
+      [v4 setObject:authorCount2 forKeyedSubscript:@"authorCount"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v3 authorNames];
+    authorNames = [assetCopy authorNames];
 
-    if (v17)
+    if (authorNames)
     {
-      v18 = [v3 authorNames];
-      [v4 setObject:v18 forKeyedSubscript:@"authorNames"];
+      authorNames2 = [assetCopy authorNames];
+      [v4 setObject:authorNames2 forKeyedSubscript:@"authorNames"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v19 = [v3 hasTooManyAuthors];
+    hasTooManyAuthors = [assetCopy hasTooManyAuthors];
 
-    if (v19)
+    if (hasTooManyAuthors)
     {
-      v20 = [v3 hasTooManyAuthors];
-      [v4 setObject:v20 forKeyedSubscript:@"hasTooManyAuthors"];
+      hasTooManyAuthors2 = [assetCopy hasTooManyAuthors];
+      [v4 setObject:hasTooManyAuthors2 forKeyedSubscript:@"hasTooManyAuthors"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v21 = [v3 narratorCount];
+    narratorCount = [assetCopy narratorCount];
 
-    if (v21)
+    if (narratorCount)
     {
-      v22 = [v3 narratorCount];
-      [v4 setObject:v22 forKeyedSubscript:@"narratorCount"];
+      narratorCount2 = [assetCopy narratorCount];
+      [v4 setObject:narratorCount2 forKeyedSubscript:@"narratorCount"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v23 = [v3 narratorNames];
+    narratorNames = [assetCopy narratorNames];
 
-    if (v23)
+    if (narratorNames)
     {
-      v24 = [v3 narratorNames];
-      [v4 setObject:v24 forKeyedSubscript:@"narratorNames"];
+      narratorNames2 = [assetCopy narratorNames];
+      [v4 setObject:narratorNames2 forKeyedSubscript:@"narratorNames"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v25 = [v3 hasTooManyNarrators];
+    hasTooManyNarrators = [assetCopy hasTooManyNarrators];
 
-    if (v25)
+    if (hasTooManyNarrators)
     {
-      v26 = [v3 hasTooManyNarrators];
-      [v4 setObject:v26 forKeyedSubscript:@"hasTooManyNarrators"];
+      hasTooManyNarrators2 = [assetCopy hasTooManyNarrators];
+      [v4 setObject:hasTooManyNarrators2 forKeyedSubscript:@"hasTooManyNarrators"];
     }
   }
 
-  v27 = [v3 title];
+  title = [assetCopy title];
 
-  if (v27)
+  if (title)
   {
-    v28 = [v3 title];
-    [v4 setObject:v28 forKeyedSubscript:@"title"];
+    title2 = [assetCopy title];
+    [v4 setObject:title2 forKeyedSubscript:@"title"];
   }
 
-  v29 = [v3 sortTitle];
+  sortTitle = [assetCopy sortTitle];
 
-  if (v29)
+  if (sortTitle)
   {
-    v30 = [v3 sortTitle];
-    [v4 setObject:v30 forKeyedSubscript:@"sortTitle"];
+    sortTitle2 = [assetCopy sortTitle];
+    [v4 setObject:sortTitle2 forKeyedSubscript:@"sortTitle"];
   }
 
-  v31 = [v3 url];
+  v31 = [assetCopy url];
 
   if (v31)
   {
-    v32 = [v3 url];
-    v33 = [v32 absoluteString];
-    [v4 setObject:v33 forKeyedSubscript:@"url"];
+    v32 = [assetCopy url];
+    absoluteString = [v32 absoluteString];
+    [v4 setObject:absoluteString forKeyedSubscript:@"url"];
   }
 
-  v34 = [v3 genre];
+  genre = [assetCopy genre];
 
-  if (v34)
+  if (genre)
   {
-    v35 = [v3 genre];
-    [v4 setObject:v35 forKeyedSubscript:@"genre"];
+    genre2 = [assetCopy genre];
+    [v4 setObject:genre2 forKeyedSubscript:@"genre"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v36 = [v3 genres];
+    genres = [assetCopy genres];
 
-    if (v36)
+    if (genres)
     {
-      v37 = [v3 genres];
-      [v4 setObject:v37 forKeyedSubscript:@"genres"];
+      genres2 = [assetCopy genres];
+      [v4 setObject:genres2 forKeyedSubscript:@"genres"];
     }
   }
 
-  v38 = [v3 dataSourceIdentifier];
+  dataSourceIdentifier = [assetCopy dataSourceIdentifier];
 
-  if (v38)
+  if (dataSourceIdentifier)
   {
-    v39 = [v3 dataSourceIdentifier];
-    [v4 setObject:v39 forKeyedSubscript:@"dataSourceIdentifier"];
+    dataSourceIdentifier2 = [assetCopy dataSourceIdentifier];
+    [v4 setObject:dataSourceIdentifier2 forKeyedSubscript:@"dataSourceIdentifier"];
   }
 
-  v40 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v3 generation]);
+  v40 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [assetCopy generation]);
   [v4 setObject:v40 forKeyedSubscript:@"generation"];
 
-  v41 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v3 fileSize]);
+  v41 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [assetCopy fileSize]);
   [v4 setObject:v41 forKeyedSubscript:@"fileSize"];
 
-  v42 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [v3 contentType]);
+  v42 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [assetCopy contentType]);
   [v4 setObject:v42 forKeyedSubscript:@"contentType"];
 
-  v43 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [v3 state]);
+  v43 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [assetCopy state]);
   [v4 setObject:v43 forKeyedSubscript:@"state"];
 
-  v44 = [v3 dataSourceInsertionDate];
+  dataSourceInsertionDate = [assetCopy dataSourceInsertionDate];
 
-  if (v44)
+  if (dataSourceInsertionDate)
   {
-    v45 = [v3 dataSourceInsertionDate];
-    [v4 setObject:v45 forKeyedSubscript:@"dataSourceInsertionDate"];
+    dataSourceInsertionDate2 = [assetCopy dataSourceInsertionDate];
+    [v4 setObject:dataSourceInsertionDate2 forKeyedSubscript:@"dataSourceInsertionDate"];
   }
 
-  v46 = [v3 releaseDate];
+  releaseDate = [assetCopy releaseDate];
 
-  if (v46)
+  if (releaseDate)
   {
-    v47 = [v3 releaseDate];
-    [v4 setObject:v47 forKeyedSubscript:@"releaseDate"];
+    releaseDate2 = [assetCopy releaseDate];
+    [v4 setObject:releaseDate2 forKeyedSubscript:@"releaseDate"];
   }
 
-  v48 = [v3 purchaseDate];
+  purchaseDate = [assetCopy purchaseDate];
 
-  if (v48)
+  if (purchaseDate)
   {
-    v49 = [v3 purchaseDate];
-    [v4 setObject:v49 forKeyedSubscript:@"purchaseDate"];
+    purchaseDate2 = [assetCopy purchaseDate];
+    [v4 setObject:purchaseDate2 forKeyedSubscript:@"purchaseDate"];
   }
 
-  v50 = [v3 expectedDate];
+  expectedDate = [assetCopy expectedDate];
 
-  if (v50)
+  if (expectedDate)
   {
-    v51 = [v3 expectedDate];
-    [v4 setObject:v51 forKeyedSubscript:@"expectedDate"];
+    expectedDate2 = [assetCopy expectedDate];
+    [v4 setObject:expectedDate2 forKeyedSubscript:@"expectedDate"];
   }
 
-  v52 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 shouldDisableOptimizeSpeed]);
+  v52 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [assetCopy shouldDisableOptimizeSpeed]);
   [v4 setObject:v52 forKeyedSubscript:@"shouldDisableOptimizeSpeed"];
 
-  v53 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 shouldDisableTouchEmulation]);
+  v53 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [assetCopy shouldDisableTouchEmulation]);
   [v4 setObject:v53 forKeyedSubscript:@"shouldDisableTouchEmulation"];
 
-  v54 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [v3 desktopSupportLevel]);
+  v54 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [assetCopy desktopSupportLevel]);
   [v4 setObject:v54 forKeyedSubscript:@"desktopSupportLevel"];
 
-  v55 = [v3 scrollDirection];
+  scrollDirection = [assetCopy scrollDirection];
 
-  if (v55)
+  if (scrollDirection)
   {
-    v56 = [v3 scrollDirection];
-    [v4 setObject:v56 forKeyedSubscript:@"scrollDirection"];
+    scrollDirection2 = [assetCopy scrollDirection];
+    [v4 setObject:scrollDirection2 forKeyedSubscript:@"scrollDirection"];
   }
 
-  v57 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v3 pageCount]);
+  v57 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [assetCopy pageCount]);
   [v4 setObject:v57 forKeyedSubscript:@"pageCount"];
 
-  v58 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v3 rating]);
+  v58 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [assetCopy rating]);
   [v4 setObject:v58 forKeyedSubscript:@"rating"];
 
-  v59 = [v3 updateDate];
+  updateDate = [assetCopy updateDate];
 
-  if (v59)
+  if (updateDate)
   {
-    v60 = [v3 updateDate];
-    [v4 setObject:v60 forKeyedSubscript:@"updateDate"];
+    updateDate2 = [assetCopy updateDate];
+    [v4 setObject:updateDate2 forKeyedSubscript:@"updateDate"];
   }
 
-  v61 = [v3 versionNumber];
+  versionNumber = [assetCopy versionNumber];
 
-  if (v61)
+  if (versionNumber)
   {
-    v62 = [v3 versionNumber];
-    [v4 setObject:v62 forKeyedSubscript:@"versionNumber"];
+    versionNumber2 = [assetCopy versionNumber];
+    [v4 setObject:versionNumber2 forKeyedSubscript:@"versionNumber"];
   }
 
-  v63 = [v3 bookDescription];
+  bookDescription = [assetCopy bookDescription];
 
-  if (v63)
+  if (bookDescription)
   {
-    v64 = [v3 bookDescription];
-    [v4 setObject:v64 forKeyedSubscript:@"bookDescription"];
+    bookDescription2 = [assetCopy bookDescription];
+    [v4 setObject:bookDescription2 forKeyedSubscript:@"bookDescription"];
   }
 
-  v65 = [v3 comments];
+  comments = [assetCopy comments];
 
-  if (v65)
+  if (comments)
   {
-    v66 = [v3 comments];
-    [v4 setObject:v66 forKeyedSubscript:@"comments"];
+    comments2 = [assetCopy comments];
+    [v4 setObject:comments2 forKeyedSubscript:@"comments"];
   }
 
-  v67 = [v3 kind];
+  kind = [assetCopy kind];
 
-  if (v67)
+  if (kind)
   {
-    v68 = [v3 kind];
-    [v4 setObject:v68 forKeyedSubscript:@"kind"];
+    kind2 = [assetCopy kind];
+    [v4 setObject:kind2 forKeyedSubscript:@"kind"];
   }
 
-  v69 = [v3 year];
+  year = [assetCopy year];
 
-  if (v69)
+  if (year)
   {
-    v70 = [v3 year];
-    [v4 setObject:v70 forKeyedSubscript:@"year"];
+    year2 = [assetCopy year];
+    [v4 setObject:year2 forKeyedSubscript:@"year"];
   }
 
-  v71 = [v3 grouping];
+  grouping = [assetCopy grouping];
 
-  if (v71)
+  if (grouping)
   {
-    v72 = [v3 grouping];
-    [v4 setObject:v72 forKeyedSubscript:@"grouping"];
+    grouping2 = [assetCopy grouping];
+    [v4 setObject:grouping2 forKeyedSubscript:@"grouping"];
   }
 
-  v73 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 computedRating]);
+  v73 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [assetCopy computedRating]);
   [v4 setObject:v73 forKeyedSubscript:@"computedRating"];
 
-  v74 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v3 metadataMigrationVersion]);
+  v74 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [assetCopy metadataMigrationVersion]);
   [v4 setObject:v74 forKeyedSubscript:@"metadataMigrationVersion"];
 
   if (objc_opt_respondsToSelector())
   {
-    v75 = [v3 assetIsHidden];
+    assetIsHidden = [assetCopy assetIsHidden];
 
-    if (v75)
+    if (assetIsHidden)
     {
-      v76 = [v3 assetIsHidden];
-      [v4 setObject:v76 forKeyedSubscript:@"assetIsHidden"];
+      assetIsHidden2 = [assetCopy assetIsHidden];
+      [v4 setObject:assetIsHidden2 forKeyedSubscript:@"assetIsHidden"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v77 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v3 storeFrontID]);
+    v77 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [assetCopy storeFrontID]);
     [v4 setObject:v77 forKeyedSubscript:@"storeFrontID"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v78 = [v3 coverAspectRatio];
+    coverAspectRatio = [assetCopy coverAspectRatio];
 
-    if (v78)
+    if (coverAspectRatio)
     {
-      v79 = [v3 coverAspectRatio];
-      [v4 setObject:v79 forKeyedSubscript:@"coverAspectRatio"];
+      coverAspectRatio2 = [assetCopy coverAspectRatio];
+      [v4 setObject:coverAspectRatio2 forKeyedSubscript:@"coverAspectRatio"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v80 = [v3 seriesIsHidden];
+    seriesIsHidden = [assetCopy seriesIsHidden];
 
-    if (v80)
+    if (seriesIsHidden)
     {
-      v81 = [v3 seriesIsHidden];
-      [v4 setObject:v81 forKeyedSubscript:@"seriesIsHidden"];
+      seriesIsHidden2 = [assetCopy seriesIsHidden];
+      [v4 setObject:seriesIsHidden2 forKeyedSubscript:@"seriesIsHidden"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v82 = [v3 seriesIsCloudOnly];
+    seriesIsCloudOnly = [assetCopy seriesIsCloudOnly];
 
-    if (v82)
+    if (seriesIsCloudOnly)
     {
-      v83 = [v3 seriesIsCloudOnly];
-      [v4 setObject:v83 forKeyedSubscript:@"seriesIsCloudOnly"];
+      seriesIsCloudOnly2 = [assetCopy seriesIsCloudOnly];
+      [v4 setObject:seriesIsCloudOnly2 forKeyedSubscript:@"seriesIsCloudOnly"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v84 = [v3 seriesIsOrdered];
+    seriesIsOrdered = [assetCopy seriesIsOrdered];
 
-    if (v84)
+    if (seriesIsOrdered)
     {
-      v85 = [v3 seriesIsOrdered];
-      [v4 setObject:v85 forKeyedSubscript:@"seriesIsOrdered"];
+      seriesIsOrdered2 = [assetCopy seriesIsOrdered];
+      [v4 setObject:seriesIsOrdered2 forKeyedSubscript:@"seriesIsOrdered"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v86 = [v3 sequenceDisplayName];
+    sequenceDisplayName = [assetCopy sequenceDisplayName];
 
-    if (v86)
+    if (sequenceDisplayName)
     {
-      v87 = [v3 sequenceDisplayName];
-      [v4 setObject:v87 forKeyedSubscript:@"sequenceDisplayName"];
+      sequenceDisplayName2 = [assetCopy sequenceDisplayName];
+      [v4 setObject:sequenceDisplayName2 forKeyedSubscript:@"sequenceDisplayName"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v88 = [v3 sequenceNumber];
+    sequenceNumber = [assetCopy sequenceNumber];
 
-    if (v88)
+    if (sequenceNumber)
     {
-      v89 = [v3 sequenceNumber];
-      [v4 setObject:v89 forKeyedSubscript:@"sequenceNumber"];
+      sequenceNumber2 = [assetCopy sequenceNumber];
+      [v4 setObject:sequenceNumber2 forKeyedSubscript:@"sequenceNumber"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v90 = [v3 seriesID];
+    seriesID = [assetCopy seriesID];
 
-    if (v90)
+    if (seriesID)
     {
-      v91 = [v3 seriesID];
-      [v4 setObject:v91 forKeyedSubscript:@"seriesID"];
+      seriesID2 = [assetCopy seriesID];
+      [v4 setObject:seriesID2 forKeyedSubscript:@"seriesID"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v92 = [v3 isStoreAudiobook];
+    isStoreAudiobook = [assetCopy isStoreAudiobook];
 
-    if (v92)
+    if (isStoreAudiobook)
     {
-      v93 = [v3 isStoreAudiobook];
-      [v4 setObject:v93 forKeyedSubscript:@"isStoreAudiobook"];
+      isStoreAudiobook2 = [assetCopy isStoreAudiobook];
+      [v4 setObject:isStoreAudiobook2 forKeyedSubscript:@"isStoreAudiobook"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v94 = [v3 mappedAssetID];
+    mappedAssetID = [assetCopy mappedAssetID];
 
-    if (v94)
+    if (mappedAssetID)
     {
-      v95 = [v3 mappedAssetID];
-      [v4 setObject:v95 forKeyedSubscript:@"mappedAssetID"];
+      mappedAssetID2 = [assetCopy mappedAssetID];
+      [v4 setObject:mappedAssetID2 forKeyedSubscript:@"mappedAssetID"];
     }
   }
 
-  v96 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [v3 mappedAssetContentType]);
+  v96 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [assetCopy mappedAssetContentType]);
   [v4 setObject:v96 forKeyedSubscript:@"mappedAssetContentType"];
 
   if (objc_opt_respondsToSelector())
   {
-    v97 = [v3 hasRACSupport];
+    hasRACSupport = [assetCopy hasRACSupport];
 
-    if (v97)
+    if (hasRACSupport)
     {
-      v98 = [v3 hasRACSupport];
-      [v4 setObject:v98 forKeyedSubscript:@"hasRACSupport"];
+      hasRACSupport2 = [assetCopy hasRACSupport];
+      [v4 setObject:hasRACSupport2 forKeyedSubscript:@"hasRACSupport"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v99 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isSupplementalContent]);
+    v99 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [assetCopy isSupplementalContent]);
     [v4 setObject:v99 forKeyedSubscript:@"isSupplementalContent"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v100 = [v3 storePlaylistID];
+    storePlaylistID = [assetCopy storePlaylistID];
 
-    if (v100)
+    if (storePlaylistID)
     {
-      v101 = [v3 storePlaylistID];
-      [v4 setObject:v101 forKeyedSubscript:@"storePlaylistID"];
+      storePlaylistID2 = [assetCopy storePlaylistID];
+      [v4 setObject:storePlaylistID2 forKeyedSubscript:@"storePlaylistID"];
     }
   }
 
@@ -893,461 +893,461 @@ LABEL_5:
   return v4;
 }
 
-+ (id)descriptionForAsset:(id)a3
++ (id)descriptionForAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [NSMutableString stringWithFormat:@"\n%@: <%p>", v5, v3];
+  assetCopy = [NSMutableString stringWithFormat:@"\n%@: <%p>", v5, assetCopy];
 
-  v7 = [v3 assetID];
-  v8 = v7;
-  if (v7)
+  assetID = [assetCopy assetID];
+  v8 = assetID;
+  if (assetID)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"assetID", v7];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"assetID", assetID];
   }
 
-  v9 = [v3 title];
-  v10 = v9;
-  if (v9)
+  title = [assetCopy title];
+  v10 = title;
+  if (title)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"title", v9];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"title", title];
   }
 
-  v11 = [v3 sortTitle];
-  v12 = v11;
-  if (v11)
+  sortTitle = [assetCopy sortTitle];
+  v12 = sortTitle;
+  if (sortTitle)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"sortTitle", v11];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"sortTitle", sortTitle];
   }
 
-  v13 = [v3 author];
-  v14 = v13;
-  if (v13)
+  author = [assetCopy author];
+  v14 = author;
+  if (author)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"author", v13];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"author", author];
   }
 
-  v15 = [v3 sortAuthor];
-  v16 = v15;
-  if (v15)
+  sortAuthor = [assetCopy sortAuthor];
+  v16 = sortAuthor;
+  if (sortAuthor)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"sortAuthor", v15];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"sortAuthor", sortAuthor];
   }
 
-  v17 = [v3 storeID];
-  v18 = v17;
-  if (v17)
+  storeID = [assetCopy storeID];
+  v18 = storeID;
+  if (storeID)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"storeID", v17];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"storeID", storeID];
   }
 
-  v19 = [v3 temporaryAssetID];
-  v20 = v19;
-  if (v19)
+  temporaryAssetID = [assetCopy temporaryAssetID];
+  v20 = temporaryAssetID;
+  if (temporaryAssetID)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"temporaryAssetID", v19];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"temporaryAssetID", temporaryAssetID];
   }
 
-  v21 = [v3 accountID];
-  v22 = v21;
-  if (v21)
+  accountID = [assetCopy accountID];
+  v22 = accountID;
+  if (accountID)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"accountID", v21];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"accountID", accountID];
   }
 
-  if ([v3 contentType])
+  if ([assetCopy contentType])
   {
-    v23 = BKStringFromAssetContentType([v3 contentType]);
-    [v6 appendFormat:@"\n\tcontentType :  %@", v23];
+    v23 = BKStringFromAssetContentType([assetCopy contentType]);
+    [assetCopy appendFormat:@"\n\tcontentType :  %@", v23];
   }
 
-  if ([v3 state])
+  if ([assetCopy state])
   {
-    v24 = BKStringFromAssetState([v3 state]);
-    [v6 appendFormat:@"\n\tstate :  %@", v24];
+    v24 = BKStringFromAssetState([assetCopy state]);
+    [assetCopy appendFormat:@"\n\tstate :  %@", v24];
   }
 
-  v25 = [v3 genre];
-  v26 = v25;
-  if (v25)
+  genre = [assetCopy genre];
+  v26 = genre;
+  if (genre)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"genre", v25];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"genre", genre];
   }
 
-  v27 = [v3 dataSourceIdentifier];
-  v28 = v27;
-  if (v27)
+  dataSourceIdentifier = [assetCopy dataSourceIdentifier];
+  v28 = dataSourceIdentifier;
+  if (dataSourceIdentifier)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"dataSourceIdentifier", v27];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"dataSourceIdentifier", dataSourceIdentifier];
   }
 
-  v29 = [v3 bookDescription];
-  v30 = v29;
-  if (v29)
+  bookDescription = [assetCopy bookDescription];
+  v30 = bookDescription;
+  if (bookDescription)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"bookDescription", v29];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"bookDescription", bookDescription];
   }
 
-  v31 = [v3 comments];
-  v32 = v31;
-  if (v31)
+  comments = [assetCopy comments];
+  v32 = comments;
+  if (comments)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"comments", v31];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"comments", comments];
   }
 
-  v33 = [v3 kind];
-  v34 = v33;
-  if (v33)
+  kind = [assetCopy kind];
+  v34 = kind;
+  if (kind)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"kind", v33];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"kind", kind];
   }
 
-  v35 = [v3 isExplicit];
-  v36 = v35;
-  if (v35)
+  isExplicit = [assetCopy isExplicit];
+  v36 = isExplicit;
+  if (isExplicit)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"isExplicit", v35];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"isExplicit", isExplicit];
   }
 
-  v37 = [v3 year];
-  v38 = v37;
-  if (v37)
+  year = [assetCopy year];
+  v38 = year;
+  if (year)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"year", v37];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"year", year];
   }
 
-  v39 = [v3 versionNumber];
-  v40 = v39;
-  if (v39)
+  versionNumber = [assetCopy versionNumber];
+  v40 = versionNumber;
+  if (versionNumber)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"versionNumber", v39];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"versionNumber", versionNumber];
   }
 
-  v41 = [v3 versionNumberHumanReadable];
-  v42 = v41;
-  if (v41)
+  versionNumberHumanReadable = [assetCopy versionNumberHumanReadable];
+  v42 = versionNumberHumanReadable;
+  if (versionNumberHumanReadable)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"versionNumberHumanReadable", v41];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"versionNumberHumanReadable", versionNumberHumanReadable];
   }
 
-  v43 = [v3 dataSourceInsertionDate];
-  v44 = v43;
-  if (v43)
+  dataSourceInsertionDate = [assetCopy dataSourceInsertionDate];
+  v44 = dataSourceInsertionDate;
+  if (dataSourceInsertionDate)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"dataSourceInsertionDate", v43];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"dataSourceInsertionDate", dataSourceInsertionDate];
   }
 
-  v45 = [v3 releaseDate];
-  v46 = v45;
-  if (v45)
+  releaseDate = [assetCopy releaseDate];
+  v46 = releaseDate;
+  if (releaseDate)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"releaseDate", v45];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"releaseDate", releaseDate];
   }
 
-  v47 = [v3 purchaseDate];
-  v48 = v47;
-  if (v47)
+  purchaseDate = [assetCopy purchaseDate];
+  v48 = purchaseDate;
+  if (purchaseDate)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"purchaseDate", v47];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"purchaseDate", purchaseDate];
   }
 
-  v49 = [v3 expectedDate];
-  v50 = v49;
-  if (v49)
+  expectedDate = [assetCopy expectedDate];
+  v50 = expectedDate;
+  if (expectedDate)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"expectedDate", v49];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"expectedDate", expectedDate];
   }
 
-  v51 = [v3 lastOpenDate];
-  v52 = v51;
-  if (v51)
+  lastOpenDate = [assetCopy lastOpenDate];
+  v52 = lastOpenDate;
+  if (lastOpenDate)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"lastOpenDate", v51];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"lastOpenDate", lastOpenDate];
   }
 
-  v53 = [v3 updateDate];
-  v54 = v53;
-  if (v53)
+  updateDate = [assetCopy updateDate];
+  v54 = updateDate;
+  if (updateDate)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"updateDate", v53];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"updateDate", updateDate];
   }
 
-  v55 = [v3 generation];
-  sub_9D99C(v55, v6, v55, @"generation");
-  v56 = [v3 fileSize];
-  sub_9D99C(v56, v6, v56, @"fileSize");
-  v57 = [v3 pageCount];
-  sub_9D99C(v57, v6, v57, @"pageCount");
-  v58 = [v3 rating];
-  sub_9D99C(v58, v6, v58, @"rating");
-  if ([v3 isSample])
+  generation = [assetCopy generation];
+  sub_9D99C(generation, assetCopy, generation, @"generation");
+  fileSize = [assetCopy fileSize];
+  sub_9D99C(fileSize, assetCopy, fileSize, @"fileSize");
+  pageCount = [assetCopy pageCount];
+  sub_9D99C(pageCount, assetCopy, pageCount, @"pageCount");
+  rating = [assetCopy rating];
+  sub_9D99C(rating, assetCopy, rating, @"rating");
+  if ([assetCopy isSample])
   {
-    [v6 appendFormat:@"\n\t%@ :  YES", @"sample"];
+    [assetCopy appendFormat:@"\n\t%@ :  YES", @"sample"];
   }
 
-  if ([v3 isProof])
+  if ([assetCopy isProof])
   {
-    [v6 appendFormat:@"\n\t%@ :  YES", @"proof"];
+    [assetCopy appendFormat:@"\n\t%@ :  YES", @"proof"];
   }
 
-  if ([v3 isCompressed])
+  if ([assetCopy isCompressed])
   {
-    [v6 appendFormat:@"\n\t%@ :  YES", @"compressed"];
+    [assetCopy appendFormat:@"\n\t%@ :  YES", @"compressed"];
   }
 
-  if ([v3 isLocked])
+  if ([assetCopy isLocked])
   {
-    [v6 appendFormat:@"\n\t%@ :  YES", @"locked"];
+    [assetCopy appendFormat:@"\n\t%@ :  YES", @"locked"];
   }
 
-  if ([v3 isEphemeral])
+  if ([assetCopy isEphemeral])
   {
-    [v6 appendFormat:@"\n\t%@ :  YES", @"ephemeral"];
-  }
-
-  if (objc_opt_respondsToSelector())
-  {
-    v59 = [v3 storeFrontID];
-    sub_9D99C(v59, v6, v59, @"storeFrontID");
+    [assetCopy appendFormat:@"\n\t%@ :  YES", @"ephemeral"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v60 = [v3 assetIsHidden];
-    v61 = v60;
-    if (v60)
+    storeFrontID = [assetCopy storeFrontID];
+    sub_9D99C(storeFrontID, assetCopy, storeFrontID, @"storeFrontID");
+  }
+
+  if (objc_opt_respondsToSelector())
+  {
+    assetIsHidden = [assetCopy assetIsHidden];
+    v61 = assetIsHidden;
+    if (assetIsHidden)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"assetIsHidden", v60];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"assetIsHidden", assetIsHidden];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v62 = [v3 coverAspectRatio];
-    v63 = v62;
-    if (v62)
+    coverAspectRatio = [assetCopy coverAspectRatio];
+    v63 = coverAspectRatio;
+    if (coverAspectRatio)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"coverAspectRatio", v62];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"coverAspectRatio", coverAspectRatio];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v64 = [v3 seriesIsHidden];
-    v65 = v64;
-    if (v64)
+    seriesIsHidden = [assetCopy seriesIsHidden];
+    v65 = seriesIsHidden;
+    if (seriesIsHidden)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"seriesIsHidden", v64];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"seriesIsHidden", seriesIsHidden];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v66 = [v3 seriesIsCloudOnly];
-    v67 = v66;
-    if (v66)
+    seriesIsCloudOnly = [assetCopy seriesIsCloudOnly];
+    v67 = seriesIsCloudOnly;
+    if (seriesIsCloudOnly)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"seriesIsCloudOnly", v66];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"seriesIsCloudOnly", seriesIsCloudOnly];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v68 = [v3 seriesIsOrdered];
-    v69 = v68;
-    if (v68)
+    seriesIsOrdered = [assetCopy seriesIsOrdered];
+    v69 = seriesIsOrdered;
+    if (seriesIsOrdered)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"seriesIsOrdered", v68];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"seriesIsOrdered", seriesIsOrdered];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v70 = [v3 seriesSortKey];
-    v71 = v70;
-    if (v70)
+    seriesSortKey = [assetCopy seriesSortKey];
+    v71 = seriesSortKey;
+    if (seriesSortKey)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"seriesSortKey", v70];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"seriesSortKey", seriesSortKey];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v72 = [v3 sequenceDisplayName];
-    v73 = v72;
-    if (v72)
+    sequenceDisplayName = [assetCopy sequenceDisplayName];
+    v73 = sequenceDisplayName;
+    if (sequenceDisplayName)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"sequenceDisplayName", v72];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"sequenceDisplayName", sequenceDisplayName];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v74 = [v3 seriesID];
-    v75 = v74;
-    if (v74)
+    seriesID = [assetCopy seriesID];
+    v75 = seriesID;
+    if (seriesID)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"seriesID", v74];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"seriesID", seriesID];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v76 = [v3 permlink];
-    v77 = v76;
-    if (v76)
+    permlink = [assetCopy permlink];
+    v77 = permlink;
+    if (permlink)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"permlink", v76];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"permlink", permlink];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v78 = [v3 isStoreAudiobook];
-    v79 = v78;
-    if (v78)
+    isStoreAudiobook = [assetCopy isStoreAudiobook];
+    v79 = isStoreAudiobook;
+    if (isStoreAudiobook)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"isStoreAudiobook", v78];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"isStoreAudiobook", isStoreAudiobook];
     }
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v3 isSupplementalContent])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [assetCopy isSupplementalContent])
   {
-    [v6 appendFormat:@"\n\t%@ :  YES", @"supplementalContent"];
+    [assetCopy appendFormat:@"\n\t%@ :  YES", @"supplementalContent"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v80 = [v3 storePlaylistID];
-    v81 = v80;
-    if (v80)
+    storePlaylistID = [assetCopy storePlaylistID];
+    v81 = storePlaylistID;
+    if (storePlaylistID)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"storePlaylistID", v80];
-    }
-  }
-
-  if (objc_opt_respondsToSelector())
-  {
-    v82 = [v3 hasRACSupport];
-    v83 = v82;
-    if (v82)
-    {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"hasRACSupport", v82];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"storePlaylistID", storePlaylistID];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v84 = [v3 genres];
-    v85 = v84;
-    if (v84)
+    hasRACSupport = [assetCopy hasRACSupport];
+    v83 = hasRACSupport;
+    if (hasRACSupport)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"genres", v84];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"hasRACSupport", hasRACSupport];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v86 = [v3 authorCount];
-    v87 = v86;
-    if (v86)
+    genres = [assetCopy genres];
+    v85 = genres;
+    if (genres)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"authorCount", v86];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"genres", genres];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v88 = [v3 authorNames];
-    v89 = v88;
-    if (v88)
+    authorCount = [assetCopy authorCount];
+    v87 = authorCount;
+    if (authorCount)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"authorNames", v88];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"authorCount", authorCount];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v90 = [v3 hasTooManyAuthors];
-    v91 = v90;
-    if (v90)
+    authorNames = [assetCopy authorNames];
+    v89 = authorNames;
+    if (authorNames)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"hasTooManyAuthors", v90];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"authorNames", authorNames];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v92 = [v3 narratorCount];
-    v93 = v92;
-    if (v92)
+    hasTooManyAuthors = [assetCopy hasTooManyAuthors];
+    v91 = hasTooManyAuthors;
+    if (hasTooManyAuthors)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"narratorCount", v92];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"hasTooManyAuthors", hasTooManyAuthors];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v94 = [v3 narratorNames];
-    v95 = v94;
-    if (v94)
+    narratorCount = [assetCopy narratorCount];
+    v93 = narratorCount;
+    if (narratorCount)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"narratorNames", v94];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"narratorCount", narratorCount];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v96 = [v3 hasTooManyNarrators];
-    v97 = v96;
-    if (v96)
+    narratorNames = [assetCopy narratorNames];
+    v95 = narratorNames;
+    if (narratorNames)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"hasTooManyNarrators", v96];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"narratorNames", narratorNames];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v98 = [v3 mappedAssetID];
-    v99 = v98;
-    if (v98)
+    hasTooManyNarrators = [assetCopy hasTooManyNarrators];
+    v97 = hasTooManyNarrators;
+    if (hasTooManyNarrators)
     {
-      [v6 appendFormat:@"\n\t%@ :  %@", @"mappedAssetID", v98];
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"hasTooManyNarrators", hasTooManyNarrators];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v100 = BKStringFromAssetContentType([v3 mappedAssetContentType]);
-    [v6 appendFormat:@"\n\tmappedAssetContentType :  %@", v100];
+    mappedAssetID = [assetCopy mappedAssetID];
+    v99 = mappedAssetID;
+    if (mappedAssetID)
+    {
+      [assetCopy appendFormat:@"\n\t%@ :  %@", @"mappedAssetID", mappedAssetID];
+    }
   }
 
-  v101 = [v3 url];
+  if (objc_opt_respondsToSelector())
+  {
+    v100 = BKStringFromAssetContentType([assetCopy mappedAssetContentType]);
+    [assetCopy appendFormat:@"\n\tmappedAssetContentType :  %@", v100];
+  }
+
+  v101 = [assetCopy url];
   v102 = v101;
   if (v101)
   {
-    [v6 appendFormat:@"\n\t%@ :  %@", @"url", v101];
+    [assetCopy appendFormat:@"\n\t%@ :  %@", @"url", v101];
   }
 
-  v103 = [v3 url];
-  v104 = [v103 isFileURL];
+  v103 = [assetCopy url];
+  isFileURL = [v103 isFileURL];
 
-  if (v104)
+  if (isFileURL)
   {
-    v105 = [v3 url];
-    v106 = [v3 url];
+    v105 = [assetCopy url];
+    v106 = [assetCopy url];
     v107 = +[BCUbiquityMetadataHelper ubiquityMetadataForURL:options:needsCoordination:](BCUbiquityMetadataHelper, "ubiquityMetadataForURL:options:needsCoordination:", v105, -262145, [v106 bc_isUbiquitous]);
 
     if ([v107 count])
     {
-      [v6 appendFormat:@"\n\txattr metadata : "];
+      [assetCopy appendFormat:@"\n\txattr metadata : "];
       v118 = 0u;
       v119 = 0u;
       v116 = 0u;
       v117 = 0u;
-      v108 = [v107 allKeys];
-      v109 = [v108 countByEnumeratingWithState:&v116 objects:v120 count:16];
+      allKeys = [v107 allKeys];
+      v109 = [allKeys countByEnumeratingWithState:&v116 objects:v120 count:16];
       if (v109)
       {
         v110 = v109;
@@ -1358,15 +1358,15 @@ LABEL_5:
           {
             if (*v117 != v111)
             {
-              objc_enumerationMutation(v108);
+              objc_enumerationMutation(allKeys);
             }
 
             v113 = *(*(&v116 + 1) + 8 * i);
             v114 = [v107 objectForKey:v113];
-            [v6 appendFormat:@"\n\t\t\t%@: %@", v113, v114];
+            [assetCopy appendFormat:@"\n\t\t\t%@: %@", v113, v114];
           }
 
-          v110 = [v108 countByEnumeratingWithState:&v116 objects:v120 count:16];
+          v110 = [allKeys countByEnumeratingWithState:&v116 objects:v120 count:16];
         }
 
         while (v110);
@@ -1374,9 +1374,9 @@ LABEL_5:
     }
   }
 
-  [v6 appendFormat:@"\n"];
+  [assetCopy appendFormat:@"\n"];
 
-  return v6;
+  return assetCopy;
 }
 
 @end

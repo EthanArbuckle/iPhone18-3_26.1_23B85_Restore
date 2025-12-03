@@ -8,8 +8,8 @@
 - (unint64_t)hash
 {
   v2 = [(WBSSiteMetadataRequest *)self url];
-  v3 = [v2 host];
-  v4 = [v3 hash];
+  host = [v2 host];
+  v4 = [host hash];
 
   return v4;
 }

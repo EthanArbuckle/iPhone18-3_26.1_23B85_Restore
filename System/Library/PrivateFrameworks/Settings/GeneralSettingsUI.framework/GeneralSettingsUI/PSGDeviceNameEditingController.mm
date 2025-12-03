@@ -1,7 +1,7 @@
 @interface PSGDeviceNameEditingController
 - (id)_editedDeviceName;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)suspend;
 - (void)viewDidLoad;
 @end
@@ -20,8 +20,8 @@
   else
   {
     v6 = objc_alloc(MEMORY[0x277CBEB18]);
-    v7 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    v8 = [v6 initWithObjects:{v7, 0}];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    v8 = [v6 initWithObjects:{emptyGroupSpecifier, 0}];
 
     v9 = MEMORY[0x277D3FAD8];
     WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD08]));
@@ -42,8 +42,8 @@
 
 - (void)suspend
 {
-  v3 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) firstResponder];
-  [v3 resignFirstResponder];
+  firstResponder = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) firstResponder];
+  [firstResponder resignFirstResponder];
 
   v4.receiver = self;
   v4.super_class = PSGDeviceNameEditingController;
@@ -88,22 +88,22 @@ void __49__PSGDeviceNameEditingController_viewWillAppear___block_invoke(uint64_t
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = PSGDeviceNameEditingController;
-  v5 = [(PSGDeviceNameEditingController *)&v9 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(PSGDeviceNameEditingController *)&v9 tableView:view cellForRowAtIndexPath:path];
   if ([v5 tag] == 8)
   {
     v6 = DeviceName();
-    v7 = [v5 editableTextField];
-    [v7 setAutocapitalizationType:2];
-    [v7 setAutocorrectionType:1];
-    [v7 setAutoresizesTextToFit:1];
-    [v7 setTextAlignment:4];
-    [v7 setReturnKeyType:9];
-    [v7 setClearButtonMode:3];
-    [v7 setPlaceholder:v6];
+    editableTextField = [v5 editableTextField];
+    [editableTextField setAutocapitalizationType:2];
+    [editableTextField setAutocorrectionType:1];
+    [editableTextField setAutoresizesTextToFit:1];
+    [editableTextField setTextAlignment:4];
+    [editableTextField setReturnKeyType:9];
+    [editableTextField setClearButtonMode:3];
+    [editableTextField setPlaceholder:v6];
     [v5 setControllerDelegate:self];
   }
 
@@ -112,19 +112,19 @@ void __49__PSGDeviceNameEditingController_viewWillAppear___block_invoke(uint64_t
 
 - (id)_editedDeviceName
 {
-  v2 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) firstResponder];
+  firstResponder = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) firstResponder];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 text];
+    text = [firstResponder text];
   }
 
   else
   {
-    v3 = 0;
+    text = 0;
   }
 
-  return v3;
+  return text;
 }
 
 @end

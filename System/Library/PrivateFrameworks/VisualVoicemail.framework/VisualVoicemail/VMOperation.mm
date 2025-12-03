@@ -1,8 +1,8 @@
 @interface VMOperation
 - (NSProgress)progress;
 - (VMOperation)init;
-- (void)configureProgressWithUnitCount:(int64_t)a3;
-- (void)performSynchronousBlock:(id)a3;
+- (void)configureProgressWithUnitCount:(int64_t)count;
+- (void)performSynchronousBlock:(id)block;
 @end
 
 @implementation VMOperation
@@ -16,10 +16,10 @@
   {
     v3 = MEMORY[0x277CCACA8];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v5 = [v4 bundleIdentifier];
+    bundleIdentifier = [v4 bundleIdentifier];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v3 stringWithFormat:@"%@.%@", v5, v7];
+    v8 = [v3 stringWithFormat:@"%@.%@", bundleIdentifier, v7];
     v9 = NSStringFromSelector(sel_queue);
     v10 = [v3 stringWithFormat:@"%@.%@", v8, v9];
 
@@ -52,16 +52,16 @@
   return v2;
 }
 
-- (void)configureProgressWithUnitCount:(int64_t)a3
+- (void)configureProgressWithUnitCount:(int64_t)count
 {
-  v5 = [(VMOperation *)self queue];
+  queue = [(VMOperation *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__VMOperation_configureProgressWithUnitCount___block_invoke;
   v6[3] = &unk_279E3D130;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = count;
+  dispatch_async(queue, v6);
 }
 
 uint64_t __46__VMOperation_configureProgressWithUnitCount___block_invoke(uint64_t a1)
@@ -77,20 +77,20 @@ uint64_t __46__VMOperation_configureProgressWithUnitCount___block_invoke(uint64_
   return [v5 setPausable:0];
 }
 
-- (void)performSynchronousBlock:(id)a3
+- (void)performSynchronousBlock:(id)block
 {
   if (dispatch_get_specific(VMOperationDispatchQueueContextKey) == self)
   {
-    v6 = *(a3 + 2);
-    v7 = a3;
+    v6 = *(block + 2);
+    blockCopy = block;
     v6();
   }
 
   else
   {
-    v5 = a3;
-    v7 = [(VMOperation *)self queue];
-    dispatch_sync(v7, v5);
+    blockCopy2 = block;
+    blockCopy = [(VMOperation *)self queue];
+    dispatch_sync(blockCopy, blockCopy2);
   }
 }
 

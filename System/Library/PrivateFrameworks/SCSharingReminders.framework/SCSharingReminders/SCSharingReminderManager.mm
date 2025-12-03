@@ -1,27 +1,27 @@
 @interface SCSharingReminderManager
 - (BOOL)cacheHasDueReminders;
-- (BOOL)isWithinDeliveryWindow:(id)a3;
+- (BOOL)isWithinDeliveryWindow:(id)window;
 - (SCSharingReminderManager)init;
-- (SCSharingReminderManager)initWithCache:(id)a3 notificationService:(id)a4;
-- (id)reminderForPairedComputer:(id)a3 delay:(double)a4;
-- (id)validRemindersDueBy:(id)a3;
-- (void)archiveCache:(id)a3 completion:(id)a4;
-- (void)checkNotificationAvailabilityWithCompletion:(id)a3;
-- (void)fetchStatusWithCompletion:(id)a3;
-- (void)getNeededNotificationsWithCompletion:(id)a3;
-- (void)handleNotificationAction:(id)a3;
-- (void)handleNotificationEventWithName:(id)a3;
-- (void)handleSignals:(id)a3 completion:(id)a4;
-- (void)handleWifiSyncNotificationEventWithName:(id)a3;
+- (SCSharingReminderManager)initWithCache:(id)cache notificationService:(id)service;
+- (id)reminderForPairedComputer:(id)computer delay:(double)delay;
+- (id)validRemindersDueBy:(id)by;
+- (void)archiveCache:(id)cache completion:(id)completion;
+- (void)checkNotificationAvailabilityWithCompletion:(id)completion;
+- (void)fetchStatusWithCompletion:(id)completion;
+- (void)getNeededNotificationsWithCompletion:(id)completion;
+- (void)handleNotificationAction:(id)action;
+- (void)handleNotificationEventWithName:(id)name;
+- (void)handleSignals:(id)signals completion:(id)completion;
+- (void)handleWifiSyncNotificationEventWithName:(id)name;
 - (void)loadOrMakeCache;
 - (void)postDueSharingReminders;
-- (void)postWifiSyncNotificationWithCompletion:(id)a3;
-- (void)resetFeatureWithCompletion:(id)a3;
-- (void)setReminderDelays:(id)a3 completion:(id)a4;
-- (void)setStatus:(id *)a3 completion:(id)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)userOpenedSafetyCheckWithCompletion:(id)a3;
-- (void)validateCacheWithCompletion:(id)a3;
+- (void)postWifiSyncNotificationWithCompletion:(id)completion;
+- (void)resetFeatureWithCompletion:(id)completion;
+- (void)setReminderDelays:(id)delays completion:(id)completion;
+- (void)setStatus:(id *)status completion:(id)completion;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)userOpenedSafetyCheckWithCompletion:(id)completion;
+- (void)validateCacheWithCompletion:(id)completion;
 @end
 
 @implementation SCSharingReminderManager
@@ -54,10 +54,10 @@
   return v2;
 }
 
-- (SCSharingReminderManager)initWithCache:(id)a3 notificationService:(id)a4
+- (SCSharingReminderManager)initWithCache:(id)cache notificationService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  cacheCopy = cache;
+  serviceCopy = service;
   v14.receiver = self;
   v14.super_class = SCSharingReminderManager;
   v8 = [(SCSharingReminderManager *)&v14 init];
@@ -66,8 +66,8 @@
     v9 = dispatch_queue_create("com.apple.safetycheckd.SCSharingReminderManager", 0);
     [(SCSharingReminderManager *)v8 setWorkQueue:v9];
 
-    [(SCSharingReminderManager *)v8 setSharingReminderCache:v6];
-    [(SCSharingReminderManager *)v8 setUserNotificationService:v7];
+    [(SCSharingReminderManager *)v8 setSharingReminderCache:cacheCopy];
+    [(SCSharingReminderManager *)v8 setUserNotificationService:serviceCopy];
     v10 = objc_alloc_init(SCArchivingService);
     [(SCSharingReminderManager *)v8 setArchiverService:v10];
 
@@ -77,7 +77,7 @@
     v12 = [MEMORY[0x277CBEB58] set];
     [(SCSharingReminderManager *)v8 setNotificationsToRequest:v12];
 
-    [(SCSharingReminderManager *)v8 archiveCache:v6 completion:0];
+    [(SCSharingReminderManager *)v8 archiveCache:cacheCopy completion:0];
   }
 
   return v8;
@@ -85,14 +85,14 @@
 
 - (void)loadOrMakeCache
 {
-  v3 = [(SCSharingReminderManager *)self archiverService];
+  archiverService = [(SCSharingReminderManager *)self archiverService];
   v4 = objc_opt_class();
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __43__SCSharingReminderManager_loadOrMakeCache__block_invoke;
   v5[3] = &unk_279B39510;
   v5[4] = self;
-  [v3 getObjectOfClass:v4 atKey:@"SharingReminderCache" completion:v5];
+  [archiverService getObjectOfClass:v4 atKey:@"SharingReminderCache" completion:v5];
 }
 
 void __43__SCSharingReminderManager_loadOrMakeCache__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -126,9 +126,9 @@ void __43__SCSharingReminderManager_loadOrMakeCache__block_invoke(uint64_t a1, u
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getNeededNotificationsWithCompletion:(id)a3
+- (void)getNeededNotificationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (-[SCSharingReminderManager cacheHasDueReminders](self, "cacheHasDueReminders") && (-[SCSharingReminderManager notificationsToRequest](self, "notificationsToRequest"), v5 = objc_claimAutoreleasedReturnValue(), -[SCSharingReminderManager notificationDeliveryKey](self, "notificationDeliveryKey"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 containsObject:v6], v6, v5, (v7 & 1) == 0))
   {
     objc_initWeak(&location, self);
@@ -137,7 +137,7 @@ void __43__SCSharingReminderManager_loadOrMakeCache__block_invoke(uint64_t a1, u
     v10[2] = __65__SCSharingReminderManager_getNeededNotificationsWithCompletion___block_invoke;
     v10[3] = &unk_279B39538;
     objc_copyWeak(&v12, &location);
-    v11 = v4;
+    v11 = completionCopy;
     [(SCSharingReminderManager *)self checkNotificationAvailabilityWithCompletion:v10];
 
     objc_destroyWeak(&v12);
@@ -146,9 +146,9 @@ void __43__SCSharingReminderManager_loadOrMakeCache__block_invoke(uint64_t a1, u
 
   else
   {
-    v8 = [(SCSharingReminderManager *)self notificationsToRequest];
-    v9 = [v8 allObjects];
-    (*(v4 + 2))(v4, v9, 0);
+    notificationsToRequest = [(SCSharingReminderManager *)self notificationsToRequest];
+    allObjects = [notificationsToRequest allObjects];
+    (*(completionCopy + 2))(completionCopy, allObjects, 0);
   }
 }
 
@@ -170,11 +170,11 @@ void __65__SCSharingReminderManager_getNeededNotificationsWithCompletion___block
   }
 }
 
-- (void)handleNotificationEventWithName:(id)a3
+- (void)handleNotificationEventWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(SCSharingReminderManager *)self notificationDeliveryKey];
-  v6 = [v4 isEqualToString:v5];
+  nameCopy = name;
+  notificationDeliveryKey = [(SCSharingReminderManager *)self notificationDeliveryKey];
+  v6 = [nameCopy isEqualToString:notificationDeliveryKey];
 
   if (v6)
   {
@@ -191,13 +191,13 @@ void __65__SCSharingReminderManager_getNeededNotificationsWithCompletion___block
 
   else
   {
-    v7 = [(SCSharingReminderManager *)self wifiSyncService];
-    v8 = [v7 interestedNotifications];
-    v9 = [v8 containsObject:v4];
+    wifiSyncService = [(SCSharingReminderManager *)self wifiSyncService];
+    interestedNotifications = [wifiSyncService interestedNotifications];
+    v9 = [interestedNotifications containsObject:nameCopy];
 
     if (v9)
     {
-      [(SCSharingReminderManager *)self handleWifiSyncNotificationEventWithName:v4];
+      [(SCSharingReminderManager *)self handleWifiSyncNotificationEventWithName:nameCopy];
     }
 
     else
@@ -247,16 +247,16 @@ void __60__SCSharingReminderManager_handleNotificationEventWithName___block_invo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleWifiSyncNotificationEventWithName:(id)a3
+- (void)handleWifiSyncNotificationEventWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(SCSharingReminderManager *)self wifiSyncService];
+  nameCopy = name;
+  wifiSyncService = [(SCSharingReminderManager *)self wifiSyncService];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__SCSharingReminderManager_handleWifiSyncNotificationEventWithName___block_invoke;
   v6[3] = &unk_279B395D8;
   v6[4] = self;
-  [v5 hostForIdentifier:v4 completion:v6];
+  [wifiSyncService hostForIdentifier:nameCopy completion:v6];
 }
 
 void __68__SCSharingReminderManager_handleWifiSyncNotificationEventWithName___block_invoke(uint64_t a1, void *a2)
@@ -388,36 +388,36 @@ void __68__SCSharingReminderManager_handleWifiSyncNotificationEventWithName___bl
   }
 }
 
-- (id)reminderForPairedComputer:(id)a3 delay:(double)a4
+- (id)reminderForPairedComputer:(id)computer delay:(double)delay
 {
-  v5 = a3;
-  v6 = [v5 deviceName];
-  v7 = [v6 length];
+  computerCopy = computer;
+  deviceName = [computerCopy deviceName];
+  v7 = [deviceName length];
 
   if (v7)
   {
-    v8 = [v5 deviceName];
+    deviceName2 = [computerCopy deviceName];
   }
 
   else
   {
-    v9 = [v5 marketingName];
-    v10 = [v9 isEqualToString:@"Windows PC"];
+    marketingName = [computerCopy marketingName];
+    v10 = [marketingName isEqualToString:@"Windows PC"];
 
     if (v10)
     {
-      v8 = @"Windows PC";
+      deviceName2 = @"Windows PC";
     }
 
     else
     {
-      v8 = &stru_2875209E0;
+      deviceName2 = &stru_2875209E0;
     }
   }
 
   v11 = [SCSharingReminder alloc];
-  v12 = [v5 lockdownFrameworkKey];
-  v13 = [(SCSharingReminder *)v11 initWithIdentifier:v12 displayName:v8 type:@"com.apple.safetycheckd.wifi" deliverAfter:a4];
+  lockdownFrameworkKey = [computerCopy lockdownFrameworkKey];
+  v13 = [(SCSharingReminder *)v11 initWithIdentifier:lockdownFrameworkKey displayName:deviceName2 type:@"com.apple.safetycheckd.wifi" deliverAfter:delay];
 
   return v13;
 }
@@ -464,25 +464,25 @@ void __51__SCSharingReminderManager_postDueSharingReminders__block_invoke(uint64
   }
 }
 
-- (void)postWifiSyncNotificationWithCompletion:(id)a3
+- (void)postWifiSyncNotificationWithCompletion:(id)completion
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[SCSharingReminder alloc] initWithIdentifier:@"id" displayName:@"Windows PC" type:@"com.apple.safetycheckd.wifi" deliverAfter:0.0];
-  v6 = [(SCSharingReminderManager *)self userNotificationService];
+  userNotificationService = [(SCSharingReminderManager *)self userNotificationService];
   v14[0] = v5;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  v8 = [v6 toUNNotificationRequest:v7];
+  v8 = [userNotificationService toUNNotificationRequest:v7];
 
   if (v8)
   {
-    v9 = [(SCSharingReminderManager *)self userNotificationService];
+    userNotificationService2 = [(SCSharingReminderManager *)self userNotificationService];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __67__SCSharingReminderManager_postWifiSyncNotificationWithCompletion___block_invoke;
     v12[3] = &unk_279B39628;
-    v13 = v4;
-    [v9 addNotificationRequest:v8 withCompletionHandler:v12];
+    v13 = completionCopy;
+    [userNotificationService2 addNotificationRequest:v8 withCompletionHandler:v12];
 
     v10 = v13;
   }
@@ -499,21 +499,21 @@ void __51__SCSharingReminderManager_postDueSharingReminders__block_invoke(uint64
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkNotificationAvailabilityWithCompletion:(id)a3
+- (void)checkNotificationAvailabilityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (-[SCSharingReminderManager cacheHasDueReminders](self, "cacheHasDueReminders") && ([MEMORY[0x277CBEAA8] now], v5 = objc_claimAutoreleasedReturnValue(), v6 = -[SCSharingReminderManager isWithinDeliveryWindow:](self, "isWithinDeliveryWindow:", v5), v5, v6))
   {
     objc_initWeak(&location, self);
-    v7 = [(SCSharingReminderManager *)self archiverService];
+    archiverService = [(SCSharingReminderManager *)self archiverService];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __72__SCSharingReminderManager_checkNotificationAvailabilityWithCompletion___block_invoke;
     v8[3] = &unk_279B39678;
     objc_copyWeak(&v10, &location);
     v8[4] = self;
-    v9 = v4;
-    [v7 getIntAtKey:0 completion:v8];
+    v9 = completionCopy;
+    [archiverService getIntAtKey:0 completion:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -521,7 +521,7 @@ void __51__SCSharingReminderManager_postDueSharingReminders__block_invoke(uint64
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -608,19 +608,19 @@ void __72__SCSharingReminderManager_checkNotificationAvailabilityWithCompletion_
   }
 }
 
-- (id)validRemindersDueBy:(id)a3
+- (id)validRemindersDueBy:(id)by
 {
-  v4 = a3;
-  v5 = [(SCSharingReminderManager *)self workQueue];
+  byCopy = by;
+  workQueue = [(SCSharingReminderManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__SCSharingReminderManager_validRemindersDueBy___block_invoke;
   block[3] = &unk_279B396C0;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(workQueue, block);
 
-  v6 = [(SCSharingReminderManager *)self sharingReminderCache];
-  v7 = [v6 remindersDueBy:v4];
+  sharingReminderCache = [(SCSharingReminderManager *)self sharingReminderCache];
+  v7 = [sharingReminderCache remindersDueBy:byCopy];
 
   return v7;
 }
@@ -649,21 +649,21 @@ void __48__SCSharingReminderManager_validRemindersDueBy___block_invoke_2(uint64_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)validateCacheWithCompletion:(id)a3
+- (void)validateCacheWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [(SCSharingReminderManager *)self wifiSyncService];
+  wifiSyncService = [(SCSharingReminderManager *)self wifiSyncService];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__SCSharingReminderManager_validateCacheWithCompletion___block_invoke;
   v9[3] = &unk_279B396E8;
   v9[4] = self;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = v5;
-  [v6 fetchWifiSyncIdentifiersWithCompletion:v9];
+  [wifiSyncService fetchWifiSyncIdentifiersWithCompletion:v9];
 }
 
 void __56__SCSharingReminderManager_validateCacheWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -782,20 +782,20 @@ LABEL_14:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)archiveCache:(id)a3 completion:(id)a4
+- (void)archiveCache:(id)cache completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCSharingReminderManager *)self archiverService];
+  cacheCopy = cache;
+  completionCopy = completion;
+  archiverService = [(SCSharingReminderManager *)self archiverService];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __52__SCSharingReminderManager_archiveCache_completion___block_invoke;
   v11[3] = &unk_279B39710;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 setObject:v10 atKey:@"SharingReminderCache" completion:v11];
+  v12 = cacheCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = cacheCopy;
+  [archiverService setObject:v10 atKey:@"SharingReminderCache" completion:v11];
 }
 
 void __52__SCSharingReminderManager_archiveCache_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -817,16 +817,16 @@ void __52__SCSharingReminderManager_archiveCache_completion___block_invoke(uint6
   }
 }
 
-- (BOOL)isWithinDeliveryWindow:(id)a3
+- (BOOL)isWithinDeliveryWindow:(id)window
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  v7 = [v5 componentsInTimeZone:v6 fromDate:v4];
+  windowCopy = window;
+  currentCalendar = [v3 currentCalendar];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  v7 = [currentCalendar componentsInTimeZone:systemTimeZone fromDate:windowCopy];
 
-  LOBYTE(v5) = ([v7 hour] - 9) < 9;
-  return v5;
+  LOBYTE(currentCalendar) = ([v7 hour] - 9) < 9;
+  return currentCalendar;
 }
 
 - (BOOL)cacheHasDueReminders
@@ -838,21 +838,21 @@ void __52__SCSharingReminderManager_archiveCache_completion___block_invoke(uint6
   return v5;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 notification];
-  v10 = [v9 request];
-  v11 = [v10 content];
-  v12 = [v11 categoryIdentifier];
+  responseCopy = response;
+  handlerCopy = handler;
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  categoryIdentifier = [content categoryIdentifier];
 
-  if ([v12 hasPrefix:@"scsharingreminders"])
+  if ([categoryIdentifier hasPrefix:@"scsharingreminders"])
   {
-    v13 = [v7 actionIdentifier];
-    [(SCSharingReminderManager *)self handleNotificationAction:v13];
+    actionIdentifier = [responseCopy actionIdentifier];
+    [(SCSharingReminderManager *)self handleNotificationAction:actionIdentifier];
 
-    if (!v8)
+    if (!handlerCopy)
     {
       goto LABEL_8;
     }
@@ -866,34 +866,34 @@ void __52__SCSharingReminderManager_archiveCache_completion___block_invoke(uint6
     [SCSharingReminderManager userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:];
   }
 
-  if (v8)
+  if (handlerCopy)
   {
 LABEL_7:
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_8:
 }
 
-- (void)handleNotificationAction:(id)a3
+- (void)handleNotificationAction:(id)action
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277CE20F0]])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:*MEMORY[0x277CE20F0]])
   {
-    v5 = [(SCSharingReminderManager *)self sharingReminderCache];
-    [v5 incrementNotificationCount];
+    sharingReminderCache = [(SCSharingReminderManager *)self sharingReminderCache];
+    [sharingReminderCache incrementNotificationCount];
 LABEL_5:
 
-    v6 = [(SCSharingReminderManager *)self sharingReminderCache];
-    [(SCSharingReminderManager *)self archiveCache:v6 completion:0];
+    sharingReminderCache2 = [(SCSharingReminderManager *)self sharingReminderCache];
+    [(SCSharingReminderManager *)self archiveCache:sharingReminderCache2 completion:0];
 
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x277CE20E8]])
+  if ([actionCopy isEqualToString:*MEMORY[0x277CE20E8]])
   {
-    v5 = [(SCSharingReminderManager *)self sharingReminderCache];
-    [v5 resetNotificationCount];
+    sharingReminderCache = [(SCSharingReminderManager *)self sharingReminderCache];
+    [sharingReminderCache resetNotificationCount];
     goto LABEL_5;
   }
 
@@ -906,22 +906,22 @@ LABEL_5:
 LABEL_9:
 }
 
-- (void)userOpenedSafetyCheckWithCompletion:(id)a3
+- (void)userOpenedSafetyCheckWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SCSharingReminderManager *)self sharingReminderCache];
-  [v5 resetNotificationCount];
+  completionCopy = completion;
+  sharingReminderCache = [(SCSharingReminderManager *)self sharingReminderCache];
+  [sharingReminderCache resetNotificationCount];
 
   objc_initWeak(&location, self);
-  v6 = [(SCSharingReminderManager *)self archiverService];
+  archiverService = [(SCSharingReminderManager *)self archiverService];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__SCSharingReminderManager_userOpenedSafetyCheckWithCompletion___block_invoke;
   v8[3] = &unk_279B39738;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
-  [v6 getIntAtKey:2 completion:v8];
+  [archiverService getIntAtKey:2 completion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -953,17 +953,17 @@ void __64__SCSharingReminderManager_userOpenedSafetyCheckWithCompletion___block_
   }
 }
 
-- (void)handleSignals:(id)a3 completion:(id)a4
+- (void)handleSignals:(id)signals completion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v23 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
+  signalsCopy = signals;
+  completionCopy = completion;
+  array = [MEMORY[0x277CBEB18] array];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = v5;
+  v7 = signalsCopy;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v8)
   {
@@ -978,8 +978,8 @@ void __64__SCSharingReminderManager_userOpenedSafetyCheckWithCompletion___block_
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        v12 = [v11 signalType];
-        v13 = [v12 isEqualToString:@"userAcknowledgedShare"];
+        signalType = [v11 signalType];
+        v13 = [signalType isEqualToString:@"userAcknowledgedShare"];
 
         v14 = SCLogger();
         v15 = v14;
@@ -992,12 +992,12 @@ void __64__SCSharingReminderManager_userOpenedSafetyCheckWithCompletion___block_
             _os_log_impl(&dword_262556000, v15, OS_LOG_TYPE_INFO, "Ignoring future reminders for %@ and removing any existing ones", buf, 0xCu);
           }
 
-          v16 = [(SCSharingReminderManager *)self sharingReminderCache];
-          v17 = [v11 sharingIdentifier];
-          v34 = v17;
+          sharingReminderCache = [(SCSharingReminderManager *)self sharingReminderCache];
+          sharingIdentifier = [v11 sharingIdentifier];
+          v34 = sharingIdentifier;
           v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
-          v19 = [v11 sharingType];
-          [v16 addIgnoredIdentifiers:v18 withType:v19];
+          sharingType = [v11 sharingType];
+          [sharingReminderCache addIgnoredIdentifiers:v18 withType:sharingType];
         }
 
         else
@@ -1007,8 +1007,8 @@ void __64__SCSharingReminderManager_userOpenedSafetyCheckWithCompletion___block_
             [SCSharingReminderManager handleSignals:v33 completion:v11];
           }
 
-          v16 = [SCDaemonError errorWithCode:4];
-          [v6 addObject:v16];
+          sharingReminderCache = [SCDaemonError errorWithCode:4];
+          [array addObject:sharingReminderCache];
         }
       }
 
@@ -1024,9 +1024,9 @@ void __64__SCSharingReminderManager_userOpenedSafetyCheckWithCompletion___block_
   v25[2] = __53__SCSharingReminderManager_handleSignals_completion___block_invoke;
   v25[3] = &unk_279B39760;
   objc_copyWeak(&v28, buf);
-  v20 = v6;
+  v20 = array;
   v26 = v20;
-  v21 = v23;
+  v21 = completionCopy;
   v27 = v21;
   [(SCSharingReminderManager *)self validateCacheWithCompletion:v25];
 
@@ -1085,19 +1085,19 @@ void __53__SCSharingReminderManager_handleSignals_completion___block_invoke_2(ui
   (*(*(a1 + 40) + 16))(*(a1 + 40), v4 == 0, v4);
 }
 
-- (void)fetchStatusWithCompletion:(id)a3
+- (void)fetchStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(SCSharingReminderManager *)self archiverService];
+  archiverService = [(SCSharingReminderManager *)self archiverService];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__SCSharingReminderManager_fetchStatusWithCompletion___block_invoke;
   v7[3] = &unk_279B39800;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 getValueAtKey:0 completion:v7];
+  [archiverService getValueAtKey:0 completion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1210,9 +1210,9 @@ void __54__SCSharingReminderManager_fetchStatusWithCompletion___block_invoke_4(u
   }
 }
 
-- (void)resetFeatureWithCompletion:(id)a3
+- (void)resetFeatureWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -1242,7 +1242,7 @@ void __54__SCSharingReminderManager_fetchStatusWithCompletion___block_invoke_4(u
   v15 = v9;
   if (self)
   {
-    [(SCSharingReminderManager *)self setStatus:v11 completion:v4];
+    [(SCSharingReminderManager *)self setStatus:v11 completion:completionCopy];
   }
 
   else
@@ -1251,30 +1251,30 @@ void __54__SCSharingReminderManager_fetchStatusWithCompletion___block_invoke_4(u
   }
 }
 
-- (void)setStatus:(id *)a3 completion:(id)a4
+- (void)setStatus:(id *)status completion:(id)completion
 {
-  v6 = a4;
-  v7 = [[SCSharingReminderKVStoreValue alloc] initWithIntegerValue:a3->var0.var0];
-  v8 = [[SCSharingReminderKVStoreValue alloc] initWithIntegerValue:a3->var0.var1];
-  v9 = [[SCSharingReminderKVStoreValue alloc] initWithIntegerValue:a3->var0.var3];
-  v10 = [[SCSharingReminderKVStoreValue alloc] initWithIntegerValue:a3->var0.var2];
+  completionCopy = completion;
+  v7 = [[SCSharingReminderKVStoreValue alloc] initWithIntegerValue:status->var0.var0];
+  v8 = [[SCSharingReminderKVStoreValue alloc] initWithIntegerValue:status->var0.var1];
+  v9 = [[SCSharingReminderKVStoreValue alloc] initWithIntegerValue:status->var0.var3];
+  v10 = [[SCSharingReminderKVStoreValue alloc] initWithIntegerValue:status->var0.var2];
   objc_initWeak(location, self);
   v11 = dispatch_group_create();
   dispatch_group_enter(v11);
-  v12 = [(SCSharingReminderManager *)self archiverService];
+  archiverService = [(SCSharingReminderManager *)self archiverService];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __49__SCSharingReminderManager_setStatus_completion___block_invoke;
   v44[3] = &unk_279B39828;
   objc_copyWeak(&v47, location);
-  v13 = v6;
+  v13 = completionCopy;
   v46 = v13;
   v14 = v11;
   v45 = v14;
-  [v12 setValue:v7 atKey:0 completion:v44];
+  [archiverService setValue:v7 atKey:0 completion:v44];
 
   dispatch_group_enter(v14);
-  v15 = [(SCSharingReminderManager *)self archiverService];
+  archiverService2 = [(SCSharingReminderManager *)self archiverService];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __49__SCSharingReminderManager_setStatus_completion___block_invoke_55;
@@ -1284,10 +1284,10 @@ void __54__SCSharingReminderManager_fetchStatusWithCompletion___block_invoke_4(u
   v42 = v16;
   v17 = v14;
   v41 = v17;
-  [v15 setValue:v8 atKey:1 completion:v40];
+  [archiverService2 setValue:v8 atKey:1 completion:v40];
 
   dispatch_group_enter(v17);
-  v18 = [(SCSharingReminderManager *)self archiverService];
+  archiverService3 = [(SCSharingReminderManager *)self archiverService];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __49__SCSharingReminderManager_setStatus_completion___block_invoke_56;
@@ -1298,10 +1298,10 @@ void __54__SCSharingReminderManager_fetchStatusWithCompletion___block_invoke_4(u
   v20 = v17;
   v37 = v20;
   v21 = v10;
-  [v18 setValue:v10 atKey:2 completion:v36];
+  [archiverService3 setValue:v10 atKey:2 completion:v36];
 
   dispatch_group_enter(v20);
-  v22 = [(SCSharingReminderManager *)self archiverService];
+  archiverService4 = [(SCSharingReminderManager *)self archiverService];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __49__SCSharingReminderManager_setStatus_completion___block_invoke_57;
@@ -1311,16 +1311,16 @@ void __54__SCSharingReminderManager_fetchStatusWithCompletion___block_invoke_4(u
   v34 = v23;
   v24 = v20;
   v33 = v24;
-  [v22 setValue:v9 atKey:3 completion:v32];
+  [archiverService4 setValue:v9 atKey:3 completion:v32];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3254779904;
   block[2] = __49__SCSharingReminderManager_setStatus_completion___block_invoke_58;
   block[3] = &unk_2875207B0;
-  v25 = *&a3->var0.var2;
-  v29 = *&a3->var0.var0;
+  v25 = *&status->var0.var2;
+  v29 = *&status->var0.var0;
   v30 = v25;
-  __copy_constructor_8_8_t0w1_s8_s16_s24(v31, &a3->var1);
+  __copy_constructor_8_8_t0w1_s8_s16_s24(v31, &status->var1);
   block[4] = self;
   v28 = v23;
   v26 = v23;
@@ -1333,7 +1333,7 @@ void __54__SCSharingReminderManager_fetchStatusWithCompletion___block_invoke_4(u
   objc_destroyWeak(&v47);
 
   objc_destroyWeak(location);
-  __destructor_8_s8_s16_s24(&a3->var1);
+  __destructor_8_s8_s16_s24(&status->var1);
 }
 
 void __49__SCSharingReminderManager_setStatus_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1477,39 +1477,39 @@ void __49__SCSharingReminderManager_setStatus_completion___block_invoke_58(uint6
   [*(a1 + 32) archiveCache:v2 completion:*(a1 + 40)];
 }
 
-- (void)setReminderDelays:(id)a3 completion:(id)a4
+- (void)setReminderDelays:(id)delays completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  delaysCopy = delays;
+  completionCopy = completion;
   v8 = [SCSharingReminderKVStoreValue alloc];
-  v9 = [v6 objectAtIndexedSubscript:0];
+  v9 = [delaysCopy objectAtIndexedSubscript:0];
   v10 = -[SCSharingReminderKVStoreValue initWithIntegerValue:](v8, "initWithIntegerValue:", [v9 longLongValue]);
 
   v11 = [SCSharingReminderKVStoreValue alloc];
-  v12 = [v6 objectAtIndexedSubscript:1];
+  v12 = [delaysCopy objectAtIndexedSubscript:1];
   v13 = -[SCSharingReminderKVStoreValue initWithIntegerValue:](v11, "initWithIntegerValue:", [v12 longLongValue]);
 
   v14 = [SCSharingReminderKVStoreValue alloc];
-  v15 = [v6 objectAtIndexedSubscript:2];
+  v15 = [delaysCopy objectAtIndexedSubscript:2];
   v27 = -[SCSharingReminderKVStoreValue initWithIntegerValue:](v14, "initWithIntegerValue:", [v15 longLongValue]);
 
   objc_initWeak(location, self);
   v16 = dispatch_group_create();
   dispatch_group_enter(v16);
-  v17 = [(SCSharingReminderManager *)self archiverService];
+  archiverService = [(SCSharingReminderManager *)self archiverService];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __57__SCSharingReminderManager_setReminderDelays_completion___block_invoke;
   v38[3] = &unk_279B39828;
   objc_copyWeak(&v41, location);
-  v18 = v7;
+  v18 = completionCopy;
   v40 = v18;
   v19 = v16;
   v39 = v19;
-  [v17 setValue:v10 atKey:1 completion:v38];
+  [archiverService setValue:v10 atKey:1 completion:v38];
 
   dispatch_group_enter(v19);
-  v20 = [(SCSharingReminderManager *)self archiverService];
+  archiverService2 = [(SCSharingReminderManager *)self archiverService];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __57__SCSharingReminderManager_setReminderDelays_completion___block_invoke_59;
@@ -1519,10 +1519,10 @@ void __49__SCSharingReminderManager_setStatus_completion___block_invoke_58(uint6
   v36 = v21;
   v22 = v19;
   v35 = v22;
-  [v20 setValue:v13 atKey:2 completion:v34];
+  [archiverService2 setValue:v13 atKey:2 completion:v34];
 
   dispatch_group_enter(v22);
-  v23 = [(SCSharingReminderManager *)self archiverService];
+  archiverService3 = [(SCSharingReminderManager *)self archiverService];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __57__SCSharingReminderManager_setReminderDelays_completion___block_invoke_60;
@@ -1532,7 +1532,7 @@ void __49__SCSharingReminderManager_setStatus_completion___block_invoke_58(uint6
   v32 = v24;
   v25 = v22;
   v31 = v25;
-  [v23 setValue:v27 atKey:3 completion:v30];
+  [archiverService3 setValue:v27 atKey:3 completion:v30];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

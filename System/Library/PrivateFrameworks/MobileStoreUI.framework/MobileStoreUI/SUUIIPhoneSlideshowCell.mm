@@ -1,21 +1,21 @@
 @interface SUUIIPhoneSlideshowCell
 - (CGRect)imageFrame;
 - (CGSize)imageSize;
-- (SUUIIPhoneSlideshowCell)initWithFrame:(CGRect)a3;
+- (SUUIIPhoneSlideshowCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setImageSize:(CGSize)a3;
-- (void)setVideo:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image;
+- (void)setImageSize:(CGSize)size;
+- (void)setVideo:(BOOL)video;
 @end
 
 @implementation SUUIIPhoneSlideshowCell
 
-- (SUUIIPhoneSlideshowCell)initWithFrame:(CGRect)a3
+- (SUUIIPhoneSlideshowCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SUUIIPhoneSlideshowCell;
-  v3 = [(SUUIIPhoneSlideshowCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIIPhoneSlideshowCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D755E8]);
@@ -23,8 +23,8 @@
     v3->_imageView = v4;
 
     [(UIImageView *)v3->_imageView setContentMode:1];
-    v6 = [(SUUIIPhoneSlideshowCell *)v3 contentView];
-    [v6 addSubview:v3->_imageView];
+    contentView = [(SUUIIPhoneSlideshowCell *)v3 contentView];
+    [contentView addSubview:v3->_imageView];
   }
 
   return v3;
@@ -40,40 +40,40 @@
   return result;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v6 = a3;
-  v4 = [(UIImageView *)self->_imageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_imageView image];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = imageCopy;
+  if (image != imageCopy)
   {
-    [(UIImageView *)self->_imageView setImage:v6];
+    [(UIImageView *)self->_imageView setImage:imageCopy];
     [(SUUIIPhoneSlideshowCell *)self setNeedsLayout];
-    v5 = v6;
+    v5 = imageCopy;
   }
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  if (self->_imageSize.width != a3.width || self->_imageSize.height != a3.height)
+  if (self->_imageSize.width != size.width || self->_imageSize.height != size.height)
   {
-    self->_imageSize = a3;
+    self->_imageSize = size;
     [(SUUIIPhoneSlideshowCell *)self setNeedsLayout];
   }
 }
 
-- (void)setVideo:(BOOL)a3
+- (void)setVideo:(BOOL)video
 {
   playIcon = self->_playIcon;
-  if ((((playIcon == 0) ^ a3) & 1) == 0)
+  if ((((playIcon == 0) ^ video) & 1) == 0)
   {
-    v5 = a3;
+    videoCopy = video;
     [(UIImageView *)playIcon removeFromSuperview];
     v6 = self->_playIcon;
     self->_playIcon = 0;
 
-    if (v5)
+    if (videoCopy)
     {
       v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v7 = MEMORY[0x277D755B8];
@@ -92,24 +92,24 @@
       v11 = self->_playIcon;
       self->_playIcon = v10;
 
-      v12 = [(SUUIIPhoneSlideshowCell *)self contentView];
-      [v12 addSubview:self->_playIcon];
+      contentView = [(SUUIIPhoneSlideshowCell *)self contentView];
+      [contentView addSubview:self->_playIcon];
 
       [(SUUIIPhoneSlideshowCell *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v9.receiver = self;
   v9.super_class = SUUIIPhoneSlideshowCell;
   [(SUUIIPhoneSlideshowCell *)&v9 setHighlighted:?];
   if (self->_playIcon)
   {
     v5 = MEMORY[0x277D755B8];
-    if (v3)
+    if (highlightedCopy)
     {
       v6 = @"PlayControlPressed";
     }
@@ -132,8 +132,8 @@
   v19.receiver = self;
   v19.super_class = SUUIIPhoneSlideshowCell;
   [(SUUIIPhoneSlideshowCell *)&v19 layoutSubviews];
-  v3 = [(SUUIIPhoneSlideshowCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUIIPhoneSlideshowCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
 
@@ -144,8 +144,8 @@
     height = self->_imageSize.height;
     if (width == *MEMORY[0x277CBF3A8] && height == *(MEMORY[0x277CBF3A8] + 8))
     {
-      v12 = [(UIImageView *)imageView image];
-      [v12 size];
+      image = [(UIImageView *)imageView image];
+      [image size];
       width = v13;
       height = v14;
 

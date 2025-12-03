@@ -5,7 +5,7 @@
 - (id)setDelegate:(id *)result;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setVideoRotationAngle:(void *)a1;
+- (void)setVideoRotationAngle:(void *)angle;
 @end
 
 @implementation VKAVCapturePreviewView
@@ -15,9 +15,9 @@
   v5.receiver = self;
   v5.super_class = VKAVCapturePreviewView;
   [(VKAVCapturePreviewView *)&v5 didMoveToWindow];
-  v3 = [(VKAVCapturePreviewView *)&self->super.super.super.isa delegate];
-  v4 = [(VKAVCapturePreviewView *)self window];
-  [v3 previewView:self didMoveToWindow:v4];
+  delegate = [(VKAVCapturePreviewView *)&self->super.super.super.isa delegate];
+  window = [(VKAVCapturePreviewView *)self window];
+  [delegate previewView:self didMoveToWindow:window];
 }
 
 - (void)layoutSubviews
@@ -31,8 +31,8 @@
     p_bounds->origin.y = v9;
     p_bounds->size.width = v10;
     p_bounds->size.height = v11;
-    v12 = [(VKAVCapturePreviewView *)&self->super.super.super.isa delegate];
-    [v12 didChangeBoundsForPreviewView:self];
+    delegate = [(VKAVCapturePreviewView *)&self->super.super.super.isa delegate];
+    [delegate didChangeBoundsForPreviewView:self];
   }
 
   v13.receiver = self;
@@ -42,15 +42,15 @@
 
 - (id)previewLayer
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_opt_class();
-    v3 = [v1 layer];
-    v1 = VKDynamicCast(v2, v3);
+    layer = [selfCopy layer];
+    selfCopy = VKDynamicCast(v2, layer);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)delegate
@@ -66,27 +66,27 @@
 
 - (double)videoRotationAngle
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = [(VKAVCapturePreviewView *)a1 previewLayer];
-  v2 = [v1 connection];
-  [v2 videoRotationAngle];
+  previewLayer = [(VKAVCapturePreviewView *)self previewLayer];
+  connection = [previewLayer connection];
+  [connection videoRotationAngle];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setVideoRotationAngle:(void *)a1
+- (void)setVideoRotationAngle:(void *)angle
 {
-  if (a1)
+  if (angle)
   {
-    v3 = [(VKAVCapturePreviewView *)a1 previewLayer];
-    v4 = [v3 connection];
+    previewLayer = [(VKAVCapturePreviewView *)angle previewLayer];
+    connection = [previewLayer connection];
 
-    [v4 setVideoRotationAngle:a2];
+    [connection setVideoRotationAngle:a2];
   }
 }
 

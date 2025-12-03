@@ -1,7 +1,7 @@
 @interface PLAccountingQualificationEventBackwardEntry
 + (id)entryKey;
 + (void)load;
-- (PLAccountingQualificationEventBackwardEntry)initWithQualificationID:(id)a3 withChildNodeNames:(id)a4 withEndDate:(id)a5;
+- (PLAccountingQualificationEventBackwardEntry)initWithQualificationID:(id)d withChildNodeNames:(id)names withEndDate:(id)date;
 @end
 
 @implementation PLAccountingQualificationEventBackwardEntry
@@ -20,7 +20,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAccountingQualificationEventBackwardEntry;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -32,23 +32,23 @@ uint64_t __55__PLAccountingQualificationEventBackwardEntry_entryKey__block_invok
   return MEMORY[0x2821F96F8]();
 }
 
-- (PLAccountingQualificationEventBackwardEntry)initWithQualificationID:(id)a3 withChildNodeNames:(id)a4 withEndDate:(id)a5
+- (PLAccountingQualificationEventBackwardEntry)initWithQualificationID:(id)d withChildNodeNames:(id)names withEndDate:(id)date
 {
-  v5 = a5;
-  if (a5)
+  selfCopy = date;
+  if (date)
   {
-    v8 = a4;
-    v9 = a3;
-    v10 = [PLAccountingRange rangeWithStartDate:0 withEndDate:v5];
+    namesCopy = names;
+    dCopy = d;
+    v10 = [PLAccountingRange rangeWithStartDate:0 withEndDate:selfCopy];
     v13.receiver = self;
     v13.super_class = PLAccountingQualificationEventBackwardEntry;
-    v11 = [(PLAccountingQualificationEventEntry *)&v13 initWithQualificationID:v9 withChildNodeNames:v8 withRange:v10];
+    v11 = [(PLAccountingQualificationEventEntry *)&v13 initWithQualificationID:dCopy withChildNodeNames:namesCopy withRange:v10];
 
     self = v11;
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

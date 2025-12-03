@@ -1,7 +1,7 @@
 @interface HFAbstractBinaryStatusItem
-- (id)_shortTitleForTitle:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)defaultTitleForRepresentedHomeKitObjects:(id)a3;
+- (id)_shortTitleForTitle:(id)title;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)defaultTitleForRepresentedHomeKitObjects:(id)objects;
 - (id)multipleAbnormalServicesDescriptionString;
 - (id)multipleAbnormalServicesFormatString;
 - (id)multipleNormalServicesDescriptionString;
@@ -14,29 +14,29 @@
 
 @implementation HFAbstractBinaryStatusItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [objc_opt_class() serviceTypes];
+  optionsCopy = options;
+  serviceTypes = [objc_opt_class() serviceTypes];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __58__HFAbstractBinaryStatusItem__subclass_updateWithOptions___block_invoke;
   v19[3] = &unk_277DF2DD8;
   v19[4] = self;
-  v6 = [v5 na_flatMap:v19];
-  v7 = [v5 allObjects];
-  v8 = [v6 allObjects];
-  v9 = [(HFStatusItem *)self filteredServicesOfTypes:v7 containingCharacteristicTypes:v8];
+  v6 = [serviceTypes na_flatMap:v19];
+  allObjects = [serviceTypes allObjects];
+  allObjects2 = [v6 allObjects];
+  v9 = [(HFStatusItem *)self filteredServicesOfTypes:allObjects containingCharacteristicTypes:allObjects2];
 
   objc_initWeak(&location, self);
-  v10 = [(HFStatusItem *)self valueSource];
-  v11 = [v10 readValuesForCharacteristicTypes:v6 inServices:v9];
+  valueSource = [(HFStatusItem *)self valueSource];
+  v11 = [valueSource readValuesForCharacteristicTypes:v6 inServices:v9];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __58__HFAbstractBinaryStatusItem__subclass_updateWithOptions___block_invoke_2;
   v15[3] = &unk_277DF61A0;
   objc_copyWeak(&v17, &location);
-  v12 = v5;
+  v12 = serviceTypes;
   v16 = v12;
   v13 = [v11 flatMap:v15];
 
@@ -159,84 +159,84 @@ LABEL_20:
 
 - (id)oneAbnormalServiceFormatString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:95 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem oneAbnormalServiceFormatString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:95 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem oneAbnormalServiceFormatString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)oneNormalServiceFormatString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:101 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem oneNormalServiceFormatString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:101 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem oneNormalServiceFormatString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)multipleAbnormalServicesFormatString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:107 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem multipleAbnormalServicesFormatString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:107 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem multipleAbnormalServicesFormatString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)multipleNormalServicesFormatString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:113 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem multipleNormalServicesFormatString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:113 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem multipleNormalServicesFormatString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)oneAbnormalServiceDescriptionString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:120 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem oneAbnormalServiceDescriptionString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:120 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem oneAbnormalServiceDescriptionString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)oneNormalServiceDescriptionString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:126 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem oneNormalServiceDescriptionString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:126 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem oneNormalServiceDescriptionString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)multipleAbnormalServicesDescriptionString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:132 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem multipleAbnormalServicesDescriptionString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:132 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem multipleAbnormalServicesDescriptionString]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)multipleNormalServicesDescriptionString
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:138 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem multipleNormalServicesDescriptionString]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractBinaryStatusItem.m" lineNumber:138 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBinaryStatusItem multipleNormalServicesDescriptionString]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)defaultTitleForRepresentedHomeKitObjects:(id)a3
+- (id)defaultTitleForRepresentedHomeKitObjects:(id)objects
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  objectsCopy = objects;
+  if ([objectsCopy count] == 1)
   {
-    v5 = [(HFAbstractBinaryStatusItem *)self oneUnknownServiceFormatString];
+    oneUnknownServiceFormatString = [(HFAbstractBinaryStatusItem *)self oneUnknownServiceFormatString];
   }
 
-  else if ([v4 count] >= 2 && (-[HFAbstractBinaryStatusItem multipleUnknownServicesFormatString](self, "multipleUnknownServicesFormatString"), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  else if ([objectsCopy count] >= 2 && (-[HFAbstractBinaryStatusItem multipleUnknownServicesFormatString](self, "multipleUnknownServicesFormatString"), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     v11 = 0;
-    v5 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v6 validFormatSpecifiers:@"%lu" error:&v11, objc_msgSend(v4, "count")];
+    oneUnknownServiceFormatString = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v6 validFormatSpecifiers:@"%lu" error:&v11, objc_msgSend(objectsCopy, "count")];
     v8 = v11;
     v9 = v8;
-    if (!v5)
+    if (!oneUnknownServiceFormatString)
     {
       NSLog(&cfstr_CouldnTLocaliz_1.isa, v8);
     }
@@ -244,18 +244,18 @@ LABEL_20:
 
   else
   {
-    v5 = 0;
+    oneUnknownServiceFormatString = 0;
   }
 
-  return v5;
+  return oneUnknownServiceFormatString;
 }
 
-- (id)_shortTitleForTitle:(id)a3
+- (id)_shortTitleForTitle:(id)title
 {
-  v3 = [a3 componentsSeparatedByString:@" "];
-  v4 = [v3 lastObject];
+  v3 = [title componentsSeparatedByString:@" "];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
 @end

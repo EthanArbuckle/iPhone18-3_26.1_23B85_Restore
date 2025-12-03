@@ -1,66 +1,66 @@
 @interface OFUIGridView
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)isCellVisible:(id)a3;
-- (BOOL)isFrameEntirelyVisible:(CGRect)a3;
-- (BOOL)isFrameVisible:(CGRect)a3;
-- (BOOL)performDragOperation:(id)a3;
-- (CGPoint)_cellPositionAtIndex:(int64_t)a3;
-- (CGPoint)draggingSource:(id)a3 badgeCenterForItem:(id)a4;
-- (CGRect)draggingDestination:(id)a3 originalFrameForItem:(id)a4;
-- (CGRect)draggingSource:(id)a3 originalFrameForItem:(id)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)isCellVisible:(id)visible;
+- (BOOL)isFrameEntirelyVisible:(CGRect)visible;
+- (BOOL)isFrameVisible:(CGRect)visible;
+- (BOOL)performDragOperation:(id)operation;
+- (CGPoint)_cellPositionAtIndex:(int64_t)index;
+- (CGPoint)draggingSource:(id)source badgeCenterForItem:(id)item;
+- (CGRect)draggingDestination:(id)destination originalFrameForItem:(id)item;
+- (CGRect)draggingSource:(id)source originalFrameForItem:(id)item;
 - (CGSize)_bestContentSize;
-- (CGSize)_cellSizeAtIndex:(int64_t)a3;
+- (CGSize)_cellSizeAtIndex:(int64_t)index;
 - (CGSize)cellSize;
 - (CGSize)maxCellSize;
 - (CGSize)minCellSize;
-- (OFUIGridView)initWithCoder:(id)a3;
-- (OFUIGridView)initWithFrame:(CGRect)a3;
+- (OFUIGridView)initWithCoder:(id)coder;
+- (OFUIGridView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)borderInset;
 - (_NSRange)_displayedCellsRange;
-- (float)autoscrollDistance:(CGRect)a3;
-- (id)cellAtIndex:(unint64_t)a3;
-- (id)dequeueReusableCellWithIdentifier:(id)a3;
-- (id)displayedCellWithItem:(id)a3;
+- (float)autoscrollDistance:(CGRect)distance;
+- (id)cellAtIndex:(unint64_t)index;
+- (id)dequeueReusableCellWithIdentifier:(id)identifier;
+- (id)displayedCellWithItem:(id)item;
 - (id)indexesForDisplayedCells;
 - (id)indexesForVisibleCells;
 - (id)visibleCells;
-- (int64_t)_indexAtPosition:(CGPoint)a3;
-- (unint64_t)draggingDestinationEntered:(id)a3;
-- (unint64_t)draggingDestinationUpdated:(id)a3;
+- (int64_t)_indexAtPosition:(CGPoint)position;
+- (unint64_t)draggingDestinationEntered:(id)entered;
+- (unint64_t)draggingDestinationUpdated:(id)updated;
 - (void)_layoutSubviews;
 - (void)_updateCells;
 - (void)_updateContentSize;
-- (void)autoscroll:(float)a3;
+- (void)autoscroll:(float)autoscroll;
 - (void)cleanupDisplayedCells;
 - (void)commonInit;
-- (void)concludeDragOperation:(id)a3;
+- (void)concludeDragOperation:(id)operation;
 - (void)dealloc;
-- (void)deleteCellsAtIndexes:(id)a3 animated:(BOOL)a4;
-- (void)draggingDestinationEnded:(id)a3 cancelled:(BOOL)a4;
-- (void)draggingDestinationExited:(id)a3;
-- (void)draggingSource:(id)a3 cleanupItem:(id)a4;
-- (void)draggingSource:(id)a3 prepareItem:(id)a4;
-- (void)handleLiveResizingPinchGesture:(id)a3;
-- (void)handlePan:(id)a3;
-- (void)insertCellsAtIndexes:(id)a3 animated:(BOOL)a4;
-- (void)moveCellsAtIndexes:(id)a3 toIndexes:(id)a4 animated:(BOOL)a5;
+- (void)deleteCellsAtIndexes:(id)indexes animated:(BOOL)animated;
+- (void)draggingDestinationEnded:(id)ended cancelled:(BOOL)cancelled;
+- (void)draggingDestinationExited:(id)exited;
+- (void)draggingSource:(id)source cleanupItem:(id)item;
+- (void)draggingSource:(id)source prepareItem:(id)item;
+- (void)handleLiveResizingPinchGesture:(id)gesture;
+- (void)handlePan:(id)pan;
+- (void)insertCellsAtIndexes:(id)indexes animated:(BOOL)animated;
+- (void)moveCellsAtIndexes:(id)indexes toIndexes:(id)toIndexes animated:(BOOL)animated;
 - (void)prepareForUnloading;
 - (void)reloadData;
-- (void)setAllowContinuousSelection:(BOOL)a3;
-- (void)setAllowFastPanning:(BOOL)a3;
-- (void)setAllowLiveResizing:(BOOL)a3;
-- (void)setBorderInset:(UIEdgeInsets)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCellSize:(CGSize)a3;
-- (void)setDraggingSource:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)setMaxCellSize:(CGSize)a3;
-- (void)setMinCellSize:(CGSize)a3;
-- (void)setMinimumCellSpacePadding:(double)a3;
-- (void)setNumberOfCachedPages:(unint64_t)a3;
-- (void)setOrientation:(unint64_t)a3;
-- (void)updateLayout:(BOOL)a3;
+- (void)setAllowContinuousSelection:(BOOL)selection;
+- (void)setAllowFastPanning:(BOOL)panning;
+- (void)setAllowLiveResizing:(BOOL)resizing;
+- (void)setBorderInset:(UIEdgeInsets)inset;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCellSize:(CGSize)size;
+- (void)setDraggingSource:(id)source;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setFrame:(CGRect)frame;
+- (void)setMaxCellSize:(CGSize)size;
+- (void)setMinCellSize:(CGSize)size;
+- (void)setMinimumCellSpacePadding:(double)padding;
+- (void)setNumberOfCachedPages:(unint64_t)pages;
+- (void)setOrientation:(unint64_t)orientation;
+- (void)updateLayout:(BOOL)layout;
 @end
 
 @implementation OFUIGridView
@@ -135,11 +135,11 @@
   self->_lastCellUpdatedForMerge = 0;
 }
 
-- (OFUIGridView)initWithFrame:(CGRect)a3
+- (OFUIGridView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = OFUIGridView;
-  v3 = [(OFUIScrollView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(OFUIScrollView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -149,11 +149,11 @@
   return v4;
 }
 
-- (OFUIGridView)initWithCoder:(id)a3
+- (OFUIGridView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = OFUIGridView;
-  v3 = [(OFUIScrollView *)&v6 initWithCoder:a3];
+  v3 = [(OFUIScrollView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -220,12 +220,12 @@
   [(NSMutableArray *)recycledCells removeAllObjects];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(OFUIGridView *)self frame];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -247,12 +247,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(OFUIGridView *)self bounds];
   if (v9 != width || v8 != height)
   {
@@ -334,12 +334,12 @@ LABEL_12:
           }
 
           v5 = *(*(&v24 + 1) + 8 * v7);
-          v9 = [v5 index];
-          v10 = v9;
+          index = [v5 index];
+          v10 = index;
           draggingDestinationIndex = self->_draggingDestinationIndex;
           if (draggingDestinationIndex != 0x7FFFFFFFFFFFFFFFLL)
           {
-            if (v9 < draggingDestinationIndex || self->_draggingDestinationCount == 0x7FFFFFFFFFFFFFFFLL)
+            if (index < draggingDestinationIndex || self->_draggingDestinationCount == 0x7FFFFFFFFFFFFFFFLL)
             {
               draggingDestinationCount = 0;
             }
@@ -349,7 +349,7 @@ LABEL_12:
               draggingDestinationCount = self->_draggingDestinationCount;
             }
 
-            v10 = draggingDestinationCount + v9;
+            v10 = draggingDestinationCount + index;
           }
 
           [(OFUIGridView *)self _cellPositionAtIndex:v10];
@@ -366,7 +366,7 @@ LABEL_12:
 
           else
           {
-            v22 = [MEMORY[0x277D75D18] areAnimationsEnabled];
+            areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
             [MEMORY[0x277D75D18] setAnimationsEnabled:0];
             [v5 setBounds:{0.0, 0.0, v19, v21}];
             [v5 setCenter:{v15 + v19 * 0.5, v17 + v21 * 0.5}];
@@ -385,7 +385,7 @@ LABEL_12:
               [(OFUIGridView *)self addSubview:v5];
             }
 
-            [MEMORY[0x277D75D18] setAnimationsEnabled:v22];
+            [MEMORY[0x277D75D18] setAnimationsEnabled:areAnimationsEnabled];
           }
 
           ++v7;
@@ -423,9 +423,9 @@ uint64_t __31__OFUIGridView__layoutSubviews__block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (void)updateLayout:(BOOL)a3
+- (void)updateLayout:(BOOL)layout
 {
-  if (a3)
+  if (layout)
   {
     self->_dirtyLayout = 1;
   }
@@ -524,7 +524,7 @@ LABEL_16:
   [(OFUIGridView *)self _layoutSubviews];
 }
 
-- (CGPoint)_cellPositionAtIndex:(int64_t)a3
+- (CGPoint)_cellPositionAtIndex:(int64_t)index
 {
   orientation = self->_orientation;
   p_borderInset = &self->_borderInset;
@@ -539,7 +539,7 @@ LABEL_16:
     numberOfCellsPerRow = self->_numberOfCellsPerRow;
   }
 
-  v8 = ldiv(a3, numberOfCellsPerRow);
+  v8 = ldiv(index, numberOfCellsPerRow);
   cellSpacePadding = self->_cellSpacePadding;
   v10 = self->_cellSize.width + cellSpacePadding;
   if (orientation)
@@ -561,7 +561,7 @@ LABEL_16:
   return result;
 }
 
-- (CGSize)_cellSizeAtIndex:(int64_t)a3
+- (CGSize)_cellSizeAtIndex:(int64_t)index
 {
   width = self->_cellSize.width;
   height = self->_cellSize.height;
@@ -570,24 +570,24 @@ LABEL_16:
   return result;
 }
 
-- (int64_t)_indexAtPosition:(CGPoint)a3
+- (int64_t)_indexAtPosition:(CGPoint)position
 {
   p_borderInset = &self->_borderInset;
   cellSpacePadding = self->_cellSpacePadding;
   if (self->_orientation)
   {
-    v5 = a3.y - p_borderInset->top;
+    v5 = position.y - p_borderInset->top;
     p_cellSize = &self->_cellSize;
     v7 = floor(v5 / (self->_cellSize.height + cellSpacePadding));
-    v8 = a3.x - self->_borderInset.left;
+    v8 = position.x - self->_borderInset.left;
   }
 
   else
   {
     top = p_borderInset->top;
     p_cellSize = &self->_cellSize.height;
-    v7 = floor((a3.x - self->_borderInset.left) / (self->_cellSize.width + cellSpacePadding));
-    v8 = a3.y - top;
+    v7 = floor((position.x - self->_borderInset.left) / (self->_cellSize.width + cellSpacePadding));
+    v8 = position.y - top;
   }
 
   return (floor(v8 / (cellSpacePadding + p_cellSize->width)) + v7 * self->_numberOfCellsPerRow);
@@ -651,9 +651,9 @@ LABEL_11:
   [(OFUIGridView *)self _bestContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(OFUIGridView *)self orientation];
+  orientation = [(OFUIGridView *)self orientation];
   [(OFUIGridView *)self contentOffset];
-  if (v7)
+  if (orientation)
   {
     v10 = v9;
   }
@@ -665,11 +665,11 @@ LABEL_11:
 
   if (self->_percentageScrolledToRestore != 0.0)
   {
-    v11 = [(OFUIGridView *)self orientation];
+    orientation2 = [(OFUIGridView *)self orientation];
     [(OFUIGridView *)self percentageScrolledToRestore];
     v13 = v12;
     [(OFUIGridView *)self bounds];
-    if (v11)
+    if (orientation2)
     {
       v16 = v15;
     }
@@ -679,7 +679,7 @@ LABEL_11:
       v16 = v14;
     }
 
-    if (v11)
+    if (orientation2)
     {
       v17 = v6;
     }
@@ -693,9 +693,9 @@ LABEL_11:
     self->_percentageScrolledToRestore = 0.0;
   }
 
-  v18 = [(OFUIGridView *)self orientation];
+  orientation3 = [(OFUIGridView *)self orientation];
   [(OFUIGridView *)self bounds];
-  if (v18)
+  if (orientation3)
   {
     if (v10 > v6 - v20)
     {
@@ -851,18 +851,18 @@ LABEL_11:
   {
     if (self->_numberOfCells)
     {
-      v3 = [(OFUIGridView *)self _displayedCellsRange];
-      if (v3 + v4 >= self->_numberOfCells - 1)
+      _displayedCellsRange = [(OFUIGridView *)self _displayedCellsRange];
+      if (_displayedCellsRange + v4 >= self->_numberOfCells - 1)
       {
         v5 = self->_numberOfCells - 1;
       }
 
       else
       {
-        v5 = v3 + v4;
+        v5 = _displayedCellsRange + v4;
       }
 
-      if (v3 == self->_visibleIndexBegin && v5 == self->_visibleIndexEnd)
+      if (_displayedCellsRange == self->_visibleIndexBegin && v5 == self->_visibleIndexEnd)
       {
         if (!self->_dirtyLayout)
         {
@@ -872,13 +872,13 @@ LABEL_11:
 
       else
       {
-        self->_visibleIndexBegin = v3;
+        self->_visibleIndexBegin = _displayedCellsRange;
         self->_visibleIndexEnd = v5;
         self->_dirtyLayout = 1;
       }
 
       v22 = v5;
-      v23 = v3;
+      v23 = _displayedCellsRange;
       v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v26 = 0u;
       v27 = 0u;
@@ -942,7 +942,7 @@ LABEL_11:
         [(NSMutableArray *)self->_recycledCells removeObjectsInRange:v14 - 1, [(NSMutableArray *)self->_recycledCells count]- v14];
       }
 
-      v15 = [(OFUIGridView *)self indexesForDisplayedCells];
+      indexesForDisplayedCells = [(OFUIGridView *)self indexesForDisplayedCells];
       visibleIndexBegin = self->_visibleIndexBegin;
       visibleIndexEnd = self->_visibleIndexEnd;
       if (visibleIndexEnd >= self->_numberOfCells - 1)
@@ -952,7 +952,7 @@ LABEL_11:
 
       if (visibleIndexBegin <= visibleIndexEnd)
       {
-        v18 = v15;
+        v18 = indexesForDisplayedCells;
         do
         {
           if (([v18 containsIndex:visibleIndexBegin] & 1) == 0)
@@ -994,32 +994,32 @@ LABEL_11:
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
+    self->_editing = editing;
     [(OFUIGridView *)self window];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [-[OFUIGridView window](self "window")] && objc_msgSend(objc_msgSend(-[OFUIGridView window](self, "window"), "draggingSession"), "source") == self->_draggingSource)
     {
-      v5 = [(OFUIGridView *)self window];
+      window = [(OFUIGridView *)self window];
 
-      [v5 cancelDragging];
+      [window cancelDragging];
     }
   }
 }
 
-- (void)setOrientation:(unint64_t)a3
+- (void)setOrientation:(unint64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
     v12 = v5;
     v13 = v4;
     v14 = v3;
-    self->_orientation = a3;
-    v10 = a3 != 0;
-    v11 = a3 == 0;
+    self->_orientation = orientation;
+    v10 = orientation != 0;
+    v11 = orientation == 0;
     [(OFUIGridView *)self setAlwaysBounceHorizontal:v11, v6, v12, v13, v14, v7];
     [(OFUIGridView *)self setAlwaysBounceVertical:v10];
     [(OFUIGridView *)self setShowsHorizontalScrollIndicator:v11];
@@ -1029,23 +1029,23 @@ LABEL_11:
   }
 }
 
-- (void)setCellSize:(CGSize)a3
+- (void)setCellSize:(CGSize)size
 {
   p_cellSize = &self->_cellSize;
-  if (self->_cellSize.width != a3.width || self->_cellSize.height != a3.height)
+  if (self->_cellSize.width != size.width || self->_cellSize.height != size.height)
   {
-    p_cellSize->width = a3.width;
-    self->_cellSize.height = a3.height;
+    p_cellSize->width = size.width;
+    self->_cellSize.height = size.height;
     p_minCellSize = &self->_minCellSize;
     if (self->_allowLiveResizing)
     {
-      if (a3.width < p_minCellSize->width || a3.height < self->_minCellSize.height)
+      if (size.width < p_minCellSize->width || size.height < self->_minCellSize.height)
       {
         *p_cellSize = *p_minCellSize;
-        a3.width = p_cellSize->width;
+        size.width = p_cellSize->width;
       }
 
-      if (a3.width > self->_maxCellSize.width || self->_cellSize.height > self->_maxCellSize.height)
+      if (size.width > self->_maxCellSize.width || self->_cellSize.height > self->_maxCellSize.height)
       {
         *p_cellSize = self->_maxCellSize;
       }
@@ -1061,16 +1061,16 @@ LABEL_11:
   }
 }
 
-- (void)setMinCellSize:(CGSize)a3
+- (void)setMinCellSize:(CGSize)size
 {
   p_minCellSize = &self->_minCellSize;
-  if (self->_minCellSize.width != a3.width || self->_minCellSize.height != a3.height)
+  if (self->_minCellSize.width != size.width || self->_minCellSize.height != size.height)
   {
-    p_minCellSize->width = a3.width;
-    self->_minCellSize.height = a3.height;
+    p_minCellSize->width = size.width;
+    self->_minCellSize.height = size.height;
     if (self->_allowLiveResizing)
     {
-      if (self->_cellSize.width < a3.width || self->_cellSize.height < a3.height)
+      if (self->_cellSize.width < size.width || self->_cellSize.height < size.height)
       {
         self->_cellSize = *p_minCellSize;
       }
@@ -1080,16 +1080,16 @@ LABEL_11:
   }
 }
 
-- (void)setMaxCellSize:(CGSize)a3
+- (void)setMaxCellSize:(CGSize)size
 {
   p_maxCellSize = &self->_maxCellSize;
-  if (self->_maxCellSize.width != a3.width || self->_maxCellSize.height != a3.height)
+  if (self->_maxCellSize.width != size.width || self->_maxCellSize.height != size.height)
   {
-    p_maxCellSize->width = a3.width;
-    self->_maxCellSize.height = a3.height;
+    p_maxCellSize->width = size.width;
+    self->_maxCellSize.height = size.height;
     if (self->_allowLiveResizing)
     {
-      if (self->_cellSize.width > a3.width || self->_cellSize.height > a3.height)
+      if (self->_cellSize.width > size.width || self->_cellSize.height > size.height)
       {
         self->_cellSize = *p_maxCellSize;
       }
@@ -1099,49 +1099,49 @@ LABEL_11:
   }
 }
 
-- (void)setBorderInset:(UIEdgeInsets)a3
+- (void)setBorderInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_borderInset.top, v3), vceqq_f64(*&self->_borderInset.bottom, v4)))) & 1) == 0)
   {
-    self->_borderInset = a3;
+    self->_borderInset = inset;
     [(OFUIGridView *)self updateLayout:1];
   }
 }
 
-- (void)setMinimumCellSpacePadding:(double)a3
+- (void)setMinimumCellSpacePadding:(double)padding
 {
-  if (self->_minimumCellSpacePadding != a3)
+  if (self->_minimumCellSpacePadding != padding)
   {
-    self->_minimumCellSpacePadding = a3;
+    self->_minimumCellSpacePadding = padding;
     [(OFUIGridView *)self updateLayout:1];
   }
 }
 
-- (void)setNumberOfCachedPages:(unint64_t)a3
+- (void)setNumberOfCachedPages:(unint64_t)pages
 {
-  if (self->_numberOfCachedPages != a3)
+  if (self->_numberOfCachedPages != pages)
   {
-    v3 = 2;
-    if (a3 > 2)
+    pagesCopy = 2;
+    if (pages > 2)
     {
-      v3 = a3;
+      pagesCopy = pages;
     }
 
-    self->_numberOfCachedPages = v3;
+    self->_numberOfCachedPages = pagesCopy;
     [(OFUIGridView *)self updateLayout:1];
   }
 }
 
-- (void)setDraggingSource:(id)a3
+- (void)setDraggingSource:(id)source
 {
-  if (self->_draggingSource != a3)
+  if (self->_draggingSource != source)
   {
-    v5 = a3 == 0;
-    [(OFUIGridView *)self setDelaysContentTouches:a3 != 0];
+    v5 = source == 0;
+    [(OFUIGridView *)self setDelaysContentTouches:source != 0];
     [(OFUIGridView *)self setCanCancelContentTouches:v5];
     if (self->_allowContinuousSelection)
     {
@@ -1153,15 +1153,15 @@ LABEL_11:
       self->_allowContinuousSelection = 0;
     }
 
-    self->_draggingSource = a3;
+    self->_draggingSource = source;
   }
 }
 
-- (void)setAllowLiveResizing:(BOOL)a3
+- (void)setAllowLiveResizing:(BOOL)resizing
 {
-  if (self->_allowLiveResizing != a3)
+  if (self->_allowLiveResizing != resizing)
   {
-    if (a3)
+    if (resizing)
     {
       p_cellSize = &self->_cellSize;
       width = self->_cellSize.width;
@@ -1177,13 +1177,13 @@ LABEL_11:
       }
     }
 
-    self->_allowLiveResizing = a3;
+    self->_allowLiveResizing = resizing;
   }
 }
 
-- (void)setAllowContinuousSelection:(BOOL)a3
+- (void)setAllowContinuousSelection:(BOOL)selection
 {
-  if (a3 && [(OFUIGridView *)self draggingSource])
+  if (selection && [(OFUIGridView *)self draggingSource])
   {
     if (OFLoggerLevel >= 4)
     {
@@ -1193,16 +1193,16 @@ LABEL_11:
     [(OFUIGridView *)self setDraggingSource:0];
   }
 
-  self->_allowContinuousSelection = a3;
+  self->_allowContinuousSelection = selection;
 }
 
-- (void)setAllowFastPanning:(BOOL)a3
+- (void)setAllowFastPanning:(BOOL)panning
 {
-  v3 = a3;
-  self->_allowFastPanning = a3;
+  panningCopy = panning;
+  self->_allowFastPanning = panning;
   [-[OFUIGridView panGestureRecognizer](self "panGestureRecognizer")];
-  v5 = [(OFUIGridView *)self panGestureRecognizer];
-  if (v3)
+  panGestureRecognizer = [(OFUIGridView *)self panGestureRecognizer];
+  if (panningCopy)
   {
     v6 = 3;
   }
@@ -1212,7 +1212,7 @@ LABEL_11:
     v6 = 1;
   }
 
-  [v5 setMaximumNumberOfTouches:v6];
+  [panGestureRecognizer setMaximumNumberOfTouches:v6];
 }
 
 - (void)reloadData
@@ -1222,7 +1222,7 @@ LABEL_11:
   [(OFUIGridView *)self updateLayout:1];
 }
 
-- (id)dequeueReusableCellWithIdentifier:(id)a3
+- (id)dequeueReusableCellWithIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -1276,7 +1276,7 @@ LABEL_11:
   return result;
 }
 
-- (id)cellAtIndex:(unint64_t)a3
+- (id)cellAtIndex:(unint64_t)index
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -1302,7 +1302,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 index] == a3)
+    if ([v9 index] == index)
     {
       return v9;
     }
@@ -1320,12 +1320,12 @@ LABEL_3:
   }
 }
 
-- (BOOL)isFrameVisible:(CGRect)a3
+- (BOOL)isFrameVisible:(CGRect)visible
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
   orientation = self->_orientation;
   [(OFUIGridView *)self contentOffset];
   if (orientation)
@@ -1380,13 +1380,13 @@ LABEL_3:
   return v14 <= v19;
 }
 
-- (BOOL)isFrameEntirelyVisible:(CGRect)a3
+- (BOOL)isFrameEntirelyVisible:(CGRect)visible
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(OFUIGridView *)self convertRect:[(OFUIGridView *)self window] toView:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  [(OFUIGridView *)self convertRect:[(OFUIGridView *)self window] toView:visible.origin.x, visible.origin.y, visible.size.width, visible.size.height];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -1406,14 +1406,14 @@ LABEL_3:
   return v16;
 }
 
-- (BOOL)isCellVisible:(id)a3
+- (BOOL)isCellVisible:(id)visible
 {
-  [a3 frame];
+  [visible frame];
 
   return [(OFUIGridView *)self isFrameVisible:?];
 }
 
-- (id)displayedCellWithItem:(id)a3
+- (id)displayedCellWithItem:(id)item
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -1460,7 +1460,7 @@ LABEL_3:
 - (id)indexesForDisplayedCells
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1481,7 +1481,7 @@ LABEL_3:
           objc_enumerationMutation(displayedCells);
         }
 
-        [v3 addIndex:{objc_msgSend(*(*(&v10 + 1) + 8 * v8++), "index")}];
+        [indexSet addIndex:{objc_msgSend(*(*(&v10 + 1) + 8 * v8++), "index")}];
       }
 
       while (v6 != v8);
@@ -1491,13 +1491,13 @@ LABEL_3:
     while (v6);
   }
 
-  return v3;
+  return indexSet;
 }
 
 - (id)visibleCells
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1520,7 +1520,7 @@ LABEL_3:
         v9 = *(*(&v11 + 1) + 8 * i);
         if ([(OFUIGridView *)self isCellVisible:v9])
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
@@ -1530,13 +1530,13 @@ LABEL_3:
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)indexesForVisibleCells
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1559,7 +1559,7 @@ LABEL_3:
         v9 = *(*(&v11 + 1) + 8 * i);
         if ([(OFUIGridView *)self isCellVisible:v9])
         {
-          [v3 addIndex:{objc_msgSend(v9, "index")}];
+          [indexSet addIndex:{objc_msgSend(v9, "index")}];
         }
       }
 
@@ -1569,34 +1569,34 @@ LABEL_3:
     while (v6);
   }
 
-  return v3;
+  return indexSet;
 }
 
-- (void)insertCellsAtIndexes:(id)a3 animated:(BOOL)a4
+- (void)insertCellsAtIndexes:(id)indexes animated:(BOOL)animated
 {
-  v16 = a4;
+  animatedCopy = animated;
   v31 = *MEMORY[0x277D85DE8];
-  v6 = [a3 firstIndex];
+  firstIndex = [indexes firstIndex];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3052000000;
   v27 = __Block_byref_object_copy__1;
   v28 = __Block_byref_object_dispose__1;
   v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  while (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  while (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     visibleIndexEnd = self->_visibleIndexEnd;
-    if (v6 <= [a3 count] + visibleIndexEnd)
+    if (firstIndex <= [indexes count] + visibleIndexEnd)
     {
       if (self->_dataSource)
       {
         if (objc_opt_respondsToSelector())
         {
-          v8 = [(OFUIGridViewDataSource *)self->_dataSource gridView:self cellAtIndex:v6];
+          v8 = [(OFUIGridViewDataSource *)self->_dataSource gridView:self cellAtIndex:firstIndex];
           v9 = v8;
           if (v8)
           {
-            [v8 setIndex:v6];
+            [v8 setIndex:firstIndex];
             [v25[5] addObject:v9];
           }
         }
@@ -1621,7 +1621,7 @@ LABEL_3:
             }
 
             v14 = *(*(&v20 + 1) + 8 * i);
-            if ([v14 index] >= v6)
+            if ([v14 index] >= firstIndex)
             {
               [v14 setIndex:{objc_msgSend(v14, "index") + 1}];
             }
@@ -1636,7 +1636,7 @@ LABEL_3:
 
     ++self->_numberOfCells;
     self->_dirtyLayout = 1;
-    v6 = [a3 indexGreaterThanIndex:v6];
+    firstIndex = [indexes indexGreaterThanIndex:firstIndex];
   }
 
   v19[0] = MEMORY[0x277D85DD0];
@@ -1647,7 +1647,7 @@ LABEL_3:
   v19[5] = &v24;
   [self performBlockWithoutAnimations:v19];
   v15 = 0.200000003;
-  if (!v16)
+  if (!animatedCopy)
   {
     v15 = 0.0;
   }
@@ -1787,24 +1787,24 @@ void __46__OFUIGridView_insertCellsAtIndexes_animated___block_invoke_3(uint64_t 
   }
 }
 
-- (void)deleteCellsAtIndexes:(id)a3 animated:(BOOL)a4
+- (void)deleteCellsAtIndexes:(id)indexes animated:(BOOL)animated
 {
-  v18 = a4;
+  animatedCopy = animated;
   v32 = *MEMORY[0x277D85DE8];
-  v6 = [a3 lastIndex];
+  lastIndex = [indexes lastIndex];
   v25 = 0;
   v26 = &v25;
   v27 = 0x3052000000;
   v28 = __Block_byref_object_copy__1;
   v29 = __Block_byref_object_dispose__1;
   v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  while (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  while (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v6 <= self->_visibleIndexEnd)
+    if (lastIndex <= self->_visibleIndexEnd)
     {
-      if (v6 >= self->_visibleIndexBegin)
+      if (lastIndex >= self->_visibleIndexBegin)
       {
-        v7 = [(OFUIGridView *)self cellAtIndex:v6];
+        v7 = [(OFUIGridView *)self cellAtIndex:lastIndex];
         if (v7)
         {
           [v26[5] addObject:v7];
@@ -1831,7 +1831,7 @@ void __46__OFUIGridView_insertCellsAtIndexes_animated___block_invoke_3(uint64_t 
             }
 
             v12 = *(*(&v21 + 1) + 8 * i);
-            if ([v12 index] >= v6)
+            if ([v12 index] >= lastIndex)
             {
               [v12 setIndex:{objc_msgSend(v12, "index") - 1}];
             }
@@ -1846,7 +1846,7 @@ void __46__OFUIGridView_insertCellsAtIndexes_animated___block_invoke_3(uint64_t 
 
     --self->_numberOfCells;
     self->_dirtyLayout = 1;
-    v6 = [a3 indexLessThanIndex:v6];
+    lastIndex = [indexes indexLessThanIndex:lastIndex];
   }
 
   if ([(OFUIGridView *)self isEditing])
@@ -1887,7 +1887,7 @@ void __46__OFUIGridView_insertCellsAtIndexes_animated___block_invoke_3(uint64_t 
 
 LABEL_31:
   v17 = 0.200000003;
-  if (!v18)
+  if (!animatedCopy)
   {
     v17 = 0.0;
   }
@@ -2008,25 +2008,25 @@ void __46__OFUIGridView_deleteCellsAtIndexes_animated___block_invoke_2(uint64_t 
   }
 }
 
-- (void)moveCellsAtIndexes:(id)a3 toIndexes:(id)a4 animated:(BOOL)a5
+- (void)moveCellsAtIndexes:(id)indexes toIndexes:(id)toIndexes animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v49 = *MEMORY[0x277D85DE8];
-  v9 = [a3 count];
-  if (v9 == [a4 count])
+  v9 = [indexes count];
+  if (v9 == [toIndexes count])
   {
-    v32 = v5;
+    v32 = animatedCopy;
     v34 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v35 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if ([a3 count])
+    if ([indexes count])
     {
       v11 = 0;
       while (1)
       {
-        v12 = [objc_msgSend(a3 objectAtIndex:{v11), "integerValue"}];
-        v13 = [objc_msgSend(a4 objectAtIndex:{v11), "integerValue"}];
+        v12 = [objc_msgSend(indexes objectAtIndex:{v11), "integerValue"}];
+        v13 = [objc_msgSend(toIndexes objectAtIndex:{v11), "integerValue"}];
         v14 = v13;
         visibleIndexBegin = self->_visibleIndexBegin;
         if (visibleIndexBegin > v12 || v12 > self->_visibleIndexEnd)
@@ -2058,7 +2058,7 @@ void __46__OFUIGridView_deleteCellsAtIndexes_animated___block_invoke_2(uint64_t 
         }
 
 LABEL_15:
-        if (++v11 >= [a3 count])
+        if (++v11 >= [indexes count])
         {
           goto LABEL_19;
         }
@@ -2122,8 +2122,8 @@ LABEL_19:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v25 = [v35 reverseObjectEnumerator];
-    v26 = [v25 countByEnumeratingWithState:&v39 objects:v47 count:16];
+    reverseObjectEnumerator = [v35 reverseObjectEnumerator];
+    v26 = [reverseObjectEnumerator countByEnumeratingWithState:&v39 objects:v47 count:16];
     if (v26)
     {
       v27 = v26;
@@ -2134,7 +2134,7 @@ LABEL_19:
         {
           if (*v40 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v30 = *(*(&v39 + 1) + 8 * j);
@@ -2147,7 +2147,7 @@ LABEL_19:
           [self performBlockWithoutAnimations:v38];
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v39 objects:v47 count:16];
+        v27 = [reverseObjectEnumerator countByEnumeratingWithState:&v39 objects:v47 count:16];
       }
 
       while (v27);
@@ -2438,9 +2438,9 @@ void __54__OFUIGridView_moveCellsAtIndexes_toIndexes_animated___block_invoke_3(i
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_liveResizingPinchGestureRecognizer != a3)
+  if (self->_liveResizingPinchGestureRecognizer != begin)
   {
     return 1;
   }
@@ -2455,11 +2455,11 @@ void __54__OFUIGridView_moveCellsAtIndexes_toIndexes_animated___block_invoke_3(i
   return (objc_opt_isKindOfClass() & 1) == 0 || ([-[OFUIGridView window](self "window")] & 1) == 0;
 }
 
-- (void)handleLiveResizingPinchGesture:(id)a3
+- (void)handleLiveResizingPinchGesture:(id)gesture
 {
-  if ([a3 state] != 5)
+  if ([gesture state] != 5)
   {
-    if ([a3 state] == 1)
+    if ([gesture state] == 1)
     {
       [(OFUIGridView *)self setIsLiveResizing:1];
       self->_cellSizeBeforeLiveResizing = self->_cellSize;
@@ -2471,10 +2471,10 @@ void __54__OFUIGridView_moveCellsAtIndexes_toIndexes_animated___block_invoke_3(i
       }
     }
 
-    else if ([a3 state] == 2)
+    else if ([gesture state] == 2)
     {
       width = self->_cellSizeBeforeLiveResizing.width;
-      [a3 scale];
+      [gesture scale];
       v8 = round(width * v7);
       if (v8 < self->_minCellSize.width)
       {
@@ -2495,7 +2495,7 @@ void __54__OFUIGridView_moveCellsAtIndexes_toIndexes_animated___block_invoke_3(i
       }
     }
 
-    else if ([a3 state] == 4 || objc_msgSend(a3, "state") == 3)
+    else if ([gesture state] == 4 || objc_msgSend(gesture, "state") == 3)
     {
       [(OFUIGridView *)self setIsLiveResizing:0];
       self->_cellSizeBeforeLiveResizing = *MEMORY[0x277CBF3A8];
@@ -2512,43 +2512,43 @@ void __54__OFUIGridView_moveCellsAtIndexes_toIndexes_animated___block_invoke_3(i
   }
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
   v5 = MEMORY[0x277CBF348];
-  if ((!self->_allowFastPanning || [a3 numberOfTouches] <= 1) && ((v6 = self->_fastPanningLastTranslation.y, self->_fastPanningLastTranslation.x == v5->x) ? (v7 = v6 == v5->y) : (v7 = 0), v7))
+  if ((!self->_allowFastPanning || [pan numberOfTouches] <= 1) && ((v6 = self->_fastPanningLastTranslation.y, self->_fastPanningLastTranslation.x == v5->x) ? (v7 = v6 == v5->y) : (v7 = 0), v7))
   {
     [(OFUIGridView *)self setIsFastPanning:0, self->_fastPanningLastTranslation.x, v6];
   }
 
   else
   {
-    if ([a3 state] == 1)
+    if ([pan state] == 1)
     {
-      v8 = self;
+      selfCopy2 = self;
       v9 = 1;
 LABEL_24:
-      [(OFUIGridView *)v8 setIsFastPanning:v9];
+      [(OFUIGridView *)selfCopy2 setIsFastPanning:v9];
       self->_fastPanningLastTranslation = *v5;
       goto LABEL_25;
     }
 
-    if ([a3 state] != 2)
+    if ([pan state] != 2)
     {
-      v8 = self;
+      selfCopy2 = self;
       v9 = 0;
       goto LABEL_24;
     }
 
-    [a3 translationInView:self];
+    [pan translationInView:self];
     v11 = v10;
     v13 = v12;
-    v14 = [a3 numberOfTouches];
+    numberOfTouches = [pan numberOfTouches];
     v15 = 4.0;
-    if (v14 != 2)
+    if (numberOfTouches != 2)
     {
-      v16 = [a3 numberOfTouches];
+      numberOfTouches2 = [pan numberOfTouches];
       v15 = 1.0;
-      if (v16 > 2)
+      if (numberOfTouches2 > 2)
       {
         v15 = 8.0;
       }
@@ -2575,33 +2575,33 @@ LABEL_24:
     v25 = v20;
     p_fastPanningLastTranslation->x = v25;
     self->_fastPanningLastTranslation.y = v24;
-    [a3 setTranslation:self inView:?];
+    [pan setTranslation:self inView:?];
   }
 
 LABEL_25:
   v26.receiver = self;
   v26.super_class = OFUIGridView;
-  [(OFUIGridView *)&v26 handlePan:a3];
+  [(OFUIGridView *)&v26 handlePan:pan];
 }
 
-- (void)draggingSource:(id)a3 prepareItem:(id)a4
+- (void)draggingSource:(id)source prepareItem:(id)item
 {
-  v6 = -[OFUIGridView displayedCellWithItem:](self, "displayedCellWithItem:", [a4 object]);
+  v6 = -[OFUIGridView displayedCellWithItem:](self, "displayedCellWithItem:", [item object]);
   if (v6)
   {
     v7 = v6;
-    if ([a3 sourceOperation] == 2)
+    if ([source sourceOperation] == 2)
     {
 
       [v7 setHighlighted:1];
     }
 
-    else if ([a3 sourceOperation] == 4)
+    else if ([source sourceOperation] == 4)
     {
       [v7 setHidden:1];
       if (self->_draggingSource)
       {
-        if ((objc_opt_respondsToSelector() & 1) != 0 && -[OFUIWindowDraggingSource gridView:removeItemsAtIndexes:session:](self->_draggingSource, "gridView:removeItemsAtIndexes:session:", self, [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(v7, "index")}], a3))
+        if ((objc_opt_respondsToSelector() & 1) != 0 && -[OFUIWindowDraggingSource gridView:removeItemsAtIndexes:session:](self->_draggingSource, "gridView:removeItemsAtIndexes:session:", self, [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(v7, "index")}], source))
         {
           v8 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(v7, "index")}];
 
@@ -2612,18 +2612,18 @@ LABEL_25:
   }
 }
 
-- (void)draggingSource:(id)a3 cleanupItem:(id)a4
+- (void)draggingSource:(id)source cleanupItem:(id)item
 {
-  v6 = [a4 object];
-  v7 = [(OFUIGridView *)self displayedCellWithItem:v6];
+  object = [item object];
+  v7 = [(OFUIGridView *)self displayedCellWithItem:object];
   if (!v7)
   {
-    v9 = v6;
+    v9 = object;
     goto LABEL_5;
   }
 
   v8 = v7;
-  if ([a3 sourceOperation] == 2)
+  if ([source sourceOperation] == 2)
   {
     v9 = v8;
 LABEL_5:
@@ -2632,17 +2632,17 @@ LABEL_5:
     return;
   }
 
-  [a3 sourceOperation];
+  [source sourceOperation];
 }
 
-- (CGRect)draggingSource:(id)a3 originalFrameForItem:(id)a4
+- (CGRect)draggingSource:(id)source originalFrameForItem:(id)item
 {
-  v6 = -[OFUIGridView displayedCellWithItem:](self, "displayedCellWithItem:", [a4 object]);
+  v6 = -[OFUIGridView displayedCellWithItem:](self, "displayedCellWithItem:", [item object]);
   if (v6 && (v7 = v6, [(OFUIGridView *)self isCellVisible:v6]))
   {
-    v8 = [a3 window];
+    window = [source window];
     [v7 frame];
-    [v8 convertRect:objc_msgSend(v7 fromView:{"superview"), v9, v10, v11, v12}];
+    [window convertRect:objc_msgSend(v7 fromView:{"superview"), v9, v10, v11, v12}];
   }
 
   else
@@ -2660,7 +2660,7 @@ LABEL_5:
   return result;
 }
 
-- (CGPoint)draggingSource:(id)a3 badgeCenterForItem:(id)a4
+- (CGPoint)draggingSource:(id)source badgeCenterForItem:(id)item
 {
   v4 = *MEMORY[0x277CBF348];
   v5 = *(MEMORY[0x277CBF348] + 8);
@@ -2669,19 +2669,19 @@ LABEL_5:
   return result;
 }
 
-- (unint64_t)draggingDestinationEntered:(id)a3
+- (unint64_t)draggingDestinationEntered:(id)entered
 {
-  if (!-[OFUIGridView isEditing](self, "isEditing") || ![objc_msgSend(a3 "pasteboard")])
+  if (!-[OFUIGridView isEditing](self, "isEditing") || ![objc_msgSend(entered "pasteboard")])
   {
     return 1;
   }
 
-  v5 = [a3 source];
+  source = [entered source];
   draggingSource = self->_draggingSource;
-  v7 = [a3 sourceOperation];
-  if (v5 == draggingSource)
+  sourceOperation = [entered sourceOperation];
+  if (source == draggingSource)
   {
-    if (v7 == 2)
+    if (sourceOperation == 2)
     {
       return 1;
     }
@@ -2689,10 +2689,10 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (v7 != 2)
+  if (sourceOperation != 2)
   {
 LABEL_7:
-    if ([a3 sourceOperation] == 4)
+    if ([entered sourceOperation] == 4)
     {
       v8 = 4;
       goto LABEL_9;
@@ -2708,37 +2708,37 @@ LABEL_9:
   return v8;
 }
 
-- (unint64_t)draggingDestinationUpdated:(id)a3
+- (unint64_t)draggingDestinationUpdated:(id)updated
 {
-  if (!-[OFUIGridView isEditing](self, "isEditing") || ![objc_msgSend(a3 "pasteboard")])
+  if (!-[OFUIGridView isEditing](self, "isEditing") || ![objc_msgSend(updated "pasteboard")])
   {
     v74[0] = MEMORY[0x277D85DD0];
     v74[1] = 3221225472;
     v74[2] = __43__OFUIGridView_draggingDestinationUpdated___block_invoke_33;
     v74[3] = &unk_279C89FB8;
     v74[4] = self;
-    v74[5] = a3;
+    v74[5] = updated;
     [MEMORY[0x277D75D18] animateWithDuration:196611 delay:v74 options:&__block_literal_global_87 animations:0.200000003 completion:0.0];
     v21 = MEMORY[0x277D75D18];
     v69 = MEMORY[0x277D85DD0];
     v70 = 3221225472;
     v71 = __43__OFUIGridView_draggingDestinationUpdated___block_invoke_35;
     v72 = &unk_279C89F90;
-    v73 = self;
+    selfCopy = self;
     v22 = &__block_literal_global_89;
     v23 = &v69;
     goto LABEL_10;
   }
 
-  v5 = [a3 source];
+  source = [updated source];
   draggingSource = self->_draggingSource;
-  v7 = [a3 sourceOperation];
-  if (v5 != draggingSource)
+  sourceOperation = [updated sourceOperation];
+  if (source != draggingSource)
   {
-    if (v7 == 2 || [a3 sourceOperation] == 4)
+    if (sourceOperation == 2 || [updated sourceOperation] == 4)
     {
-      [a3 position];
-      -[OFUIGridView convertPoint:fromView:](self, "convertPoint:fromView:", [a3 window], v8, v9);
+      [updated position];
+      -[OFUIGridView convertPoint:fromView:](self, "convertPoint:fromView:", [updated window], v8, v9);
       v11 = v10;
       v13 = v12;
       v14 = *MEMORY[0x277CBF3A0];
@@ -2766,12 +2766,12 @@ LABEL_9:
             numberOfCells = v18 & ~(v18 >> 63);
           }
 
-          v36 = [(OFUIGridView *)self draggingDestinationCount];
+          draggingDestinationCount = [(OFUIGridView *)self draggingDestinationCount];
           v37 = numberOfCells;
-          if (v36 != 0x7FFFFFFFFFFFFFFFLL)
+          if (draggingDestinationCount != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v38 = [(OFUIGridView *)self draggingDestinationIndex];
-            v39 = [(OFUIGridView *)self draggingDestinationCount]+ v38;
+            draggingDestinationIndex = [(OFUIGridView *)self draggingDestinationIndex];
+            v39 = [(OFUIGridView *)self draggingDestinationCount]+ draggingDestinationIndex;
             v37 = numberOfCells;
             if (numberOfCells >= v39)
             {
@@ -2780,11 +2780,11 @@ LABEL_9:
           }
 
           v19 = [(OFUIGridView *)self cellAtIndex:v37];
-          v40 = [(OFUIGridView *)self orientation];
+          orientation = [(OFUIGridView *)self orientation];
           [(OFUIGridViewCell *)v19 frame];
           v14 = v41;
           [(OFUIGridViewCell *)v19 frame];
-          if (v40 == 1)
+          if (orientation == 1)
           {
             v14 = v14 + v43 * 0.25;
             [(OFUIGridViewCell *)v19 frame];
@@ -2814,7 +2814,7 @@ LABEL_9:
         v19 = 0;
       }
 
-      if ((objc_opt_respondsToSelector() & 1) != 0 && -[OFUIWindowDraggingSource gridView:canMergeWithItemsFromPasteboard:atIndex:session:](self->_draggingSource, "gridView:canMergeWithItemsFromPasteboard:atIndex:session:", self, [a3 pasteboard], numberOfCells, a3))
+      if ((objc_opt_respondsToSelector() & 1) != 0 && -[OFUIWindowDraggingSource gridView:canMergeWithItemsFromPasteboard:atIndex:session:](self->_draggingSource, "gridView:canMergeWithItemsFromPasteboard:atIndex:session:", self, [updated pasteboard], numberOfCells, updated))
       {
         v95.origin.x = v14;
         v95.origin.y = v15;
@@ -2846,13 +2846,13 @@ LABEL_9:
           v80[2] = __43__OFUIGridView_draggingDestinationUpdated___block_invoke_21;
           v80[3] = &unk_279C89FB8;
           v80[4] = v19;
-          v80[5] = a3;
+          v80[5] = updated;
           v52 = &__block_literal_global_75;
           v53 = v80;
           goto LABEL_37;
         }
 
-        if ([a3 destinationOperation] == 32)
+        if ([updated destinationOperation] == 32)
         {
           [(OFUIGridViewCell *)self->_lastCellUpdatedForMerge frame];
           v92.x = v11;
@@ -2869,9 +2869,9 @@ LABEL_9:
       v79[2] = __43__OFUIGridView_draggingDestinationUpdated___block_invoke_23;
       v79[3] = &unk_279C89FB8;
       v79[4] = self;
-      v79[5] = a3;
+      v79[5] = updated;
       [MEMORY[0x277D75D18] animateWithDuration:196611 delay:v79 options:&__block_literal_global_77 animations:0.200000003 completion:0.0];
-      if (numberOfCells != 0x7FFFFFFFFFFFFFFFLL && ((objc_opt_respondsToSelector() & 1) == 0 || -[OFUIWindowDraggingSource gridView:canInsertItemsFromPasteboard:atIndex:session:](self->_draggingSource, "gridView:canInsertItemsFromPasteboard:atIndex:session:", self, [a3 pasteboard], numberOfCells, a3)))
+      if (numberOfCells != 0x7FFFFFFFFFFFFFFFLL && ((objc_opt_respondsToSelector() & 1) == 0 || -[OFUIWindowDraggingSource gridView:canInsertItemsFromPasteboard:atIndex:session:](self->_draggingSource, "gridView:canInsertItemsFromPasteboard:atIndex:session:", self, [updated pasteboard], numberOfCells, updated)))
       {
         v78[0] = MEMORY[0x277D85DD0];
         v78[1] = 3221225472;
@@ -2880,7 +2880,7 @@ LABEL_9:
         v78[4] = self;
         v78[5] = numberOfCells;
         [MEMORY[0x277D75D18] animateWithDuration:196611 delay:v78 options:&__block_literal_global_79 animations:0.200000003 completion:0.0];
-        return [a3 sourceOperation];
+        return [updated sourceOperation];
       }
 
       v21 = MEMORY[0x277D75D18];
@@ -2900,7 +2900,7 @@ LABEL_9:
       v76[2] = __43__OFUIGridView_draggingDestinationUpdated___block_invoke_29;
       v76[3] = &unk_279C89FB8;
       v76[4] = self;
-      v76[5] = a3;
+      v76[5] = updated;
       [MEMORY[0x277D75D18] animateWithDuration:196611 delay:v76 options:&__block_literal_global_83 animations:0.200000003 completion:0.0];
       v21 = MEMORY[0x277D75D18];
       v75[0] = MEMORY[0x277D85DD0];
@@ -2913,18 +2913,18 @@ LABEL_9:
     }
 
 LABEL_10:
-    [v21 animateWithDuration:196611 delay:v23 options:v22 animations:0.200000003 completion:{0.0, v69, v70, v71, v72, v73}];
+    [v21 animateWithDuration:196611 delay:v23 options:v22 animations:0.200000003 completion:{0.0, v69, v70, v71, v72, selfCopy}];
     return 1;
   }
 
-  if (v7 == 2)
+  if (sourceOperation == 2)
   {
     v90[0] = MEMORY[0x277D85DD0];
     v90[1] = 3221225472;
     v90[2] = __43__OFUIGridView_draggingDestinationUpdated___block_invoke;
     v90[3] = &unk_279C89FB8;
     v90[4] = self;
-    v90[5] = a3;
+    v90[5] = updated;
     [MEMORY[0x277D75D18] animateWithDuration:196611 delay:v90 options:&__block_literal_global_51 animations:0.200000003 completion:0.0];
     v21 = MEMORY[0x277D75D18];
     v89[0] = MEMORY[0x277D85DD0];
@@ -2937,14 +2937,14 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if ([a3 sourceOperation] != 4)
+  if ([updated sourceOperation] != 4)
   {
     v83[0] = MEMORY[0x277D85DD0];
     v83[1] = 3221225472;
     v83[2] = __43__OFUIGridView_draggingDestinationUpdated___block_invoke_15;
     v83[3] = &unk_279C89FB8;
     v83[4] = self;
-    v83[5] = a3;
+    v83[5] = updated;
     [MEMORY[0x277D75D18] animateWithDuration:196611 delay:v83 options:&__block_literal_global_69 animations:0.200000003 completion:0.0];
     v21 = MEMORY[0x277D75D18];
     v82[0] = MEMORY[0x277D85DD0];
@@ -2957,8 +2957,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  [a3 position];
-  -[OFUIGridView convertPoint:fromView:](self, "convertPoint:fromView:", [a3 window], v25, v26);
+  [updated position];
+  -[OFUIGridView convertPoint:fromView:](self, "convertPoint:fromView:", [updated window], v25, v26);
   v28 = v27;
   v30 = v29;
   v31 = *MEMORY[0x277CBF3A0];
@@ -2986,12 +2986,12 @@ LABEL_10:
         numberOfCells = v35 & ~(v35 >> 63);
       }
 
-      v54 = [(OFUIGridView *)self draggingDestinationCount];
+      draggingDestinationCount2 = [(OFUIGridView *)self draggingDestinationCount];
       v55 = numberOfCells;
-      if (v54 != 0x7FFFFFFFFFFFFFFFLL)
+      if (draggingDestinationCount2 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v56 = [(OFUIGridView *)self draggingDestinationIndex];
-        v57 = [(OFUIGridView *)self draggingDestinationCount]+ v56;
+        draggingDestinationIndex2 = [(OFUIGridView *)self draggingDestinationIndex];
+        v57 = [(OFUIGridView *)self draggingDestinationCount]+ draggingDestinationIndex2;
         v55 = numberOfCells;
         if (numberOfCells >= v57)
         {
@@ -3000,11 +3000,11 @@ LABEL_10:
       }
 
       v19 = [(OFUIGridView *)self cellAtIndex:v55];
-      v58 = [(OFUIGridView *)self orientation];
+      orientation2 = [(OFUIGridView *)self orientation];
       [(OFUIGridViewCell *)v19 frame];
       v31 = v59;
       [(OFUIGridViewCell *)v19 frame];
-      if (v58 == 1)
+      if (orientation2 == 1)
       {
         v31 = v31 + v61 * 0.25;
         [(OFUIGridViewCell *)v19 frame];
@@ -3034,7 +3034,7 @@ LABEL_10:
     v19 = 0;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && -[OFUIWindowDraggingSource gridView:canMergeWithItemsFromPasteboard:atIndex:session:](self->_draggingSource, "gridView:canMergeWithItemsFromPasteboard:atIndex:session:", self, [a3 pasteboard], numberOfCells, a3))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && -[OFUIWindowDraggingSource gridView:canMergeWithItemsFromPasteboard:atIndex:session:](self->_draggingSource, "gridView:canMergeWithItemsFromPasteboard:atIndex:session:", self, [updated pasteboard], numberOfCells, updated))
   {
     v97.origin.x = v31;
     v97.origin.y = v32;
@@ -3066,7 +3066,7 @@ LABEL_10:
       v87[2] = __43__OFUIGridView_draggingDestinationUpdated___block_invoke_7;
       v87[3] = &unk_279C89FB8;
       v87[4] = v19;
-      v87[5] = a3;
+      v87[5] = updated;
       v52 = &__block_literal_global_59;
       v53 = v87;
 LABEL_37:
@@ -3076,7 +3076,7 @@ LABEL_37:
       return 32;
     }
 
-    if ([a3 destinationOperation] == 32)
+    if ([updated destinationOperation] == 32)
     {
       [(OFUIGridViewCell *)self->_lastCellUpdatedForMerge frame];
       v94.x = v28;
@@ -3093,9 +3093,9 @@ LABEL_37:
   v86[2] = __43__OFUIGridView_draggingDestinationUpdated___block_invoke_9;
   v86[3] = &unk_279C89FB8;
   v86[4] = self;
-  v86[5] = a3;
+  v86[5] = updated;
   [MEMORY[0x277D75D18] animateWithDuration:196611 delay:v86 options:&__block_literal_global_61 animations:0.200000003 completion:0.0];
-  if (numberOfCells == 0x7FFFFFFFFFFFFFFFLL || (objc_opt_respondsToSelector() & 1) != 0 && !-[OFUIWindowDraggingSource gridView:canInsertItemsFromPasteboard:atIndex:session:](self->_draggingSource, "gridView:canInsertItemsFromPasteboard:atIndex:session:", self, [a3 pasteboard], numberOfCells, a3))
+  if (numberOfCells == 0x7FFFFFFFFFFFFFFFLL || (objc_opt_respondsToSelector() & 1) != 0 && !-[OFUIWindowDraggingSource gridView:canInsertItemsFromPasteboard:atIndex:session:](self->_draggingSource, "gridView:canInsertItemsFromPasteboard:atIndex:session:", self, [updated pasteboard], numberOfCells, updated))
   {
     v21 = MEMORY[0x277D75D18];
     v84[0] = MEMORY[0x277D85DD0];
@@ -3272,7 +3272,7 @@ uint64_t __43__OFUIGridView_draggingDestinationUpdated___block_invoke_35(uint64_
   return [v2 forceLayout];
 }
 
-- (void)draggingDestinationExited:(id)a3
+- (void)draggingDestinationExited:(id)exited
 {
   self->_isDraggingIn = 0;
   v5[0] = MEMORY[0x277D85DD0];
@@ -3280,7 +3280,7 @@ uint64_t __43__OFUIGridView_draggingDestinationUpdated___block_invoke_35(uint64_
   v5[2] = __42__OFUIGridView_draggingDestinationExited___block_invoke;
   v5[3] = &unk_279C89FB8;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = exited;
   [MEMORY[0x277D75D18] animateWithDuration:196611 delay:v5 options:&__block_literal_global_91 animations:0.200000003 completion:0.0];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -3307,19 +3307,19 @@ uint64_t __42__OFUIGridView_draggingDestinationExited___block_invoke_3(uint64_t 
   return [v2 updateLayout:1];
 }
 
-- (CGRect)draggingDestination:(id)a3 originalFrameForItem:(id)a4
+- (CGRect)draggingDestination:(id)destination originalFrameForItem:(id)item
 {
-  v7 = [(OFUIGridView *)self draggingDestinationIndex];
-  v8 = [a3 indexOfItem:a4];
-  [(OFUIGridView *)self _cellPositionAtIndex:v8 + v7];
+  draggingDestinationIndex = [(OFUIGridView *)self draggingDestinationIndex];
+  v8 = [destination indexOfItem:item];
+  [(OFUIGridView *)self _cellPositionAtIndex:v8 + draggingDestinationIndex];
   v10 = v9;
   v12 = v11;
-  [(OFUIGridView *)self _cellSizeAtIndex:v8 + v7];
+  [(OFUIGridView *)self _cellSizeAtIndex:v8 + draggingDestinationIndex];
   v14 = v13;
   v16 = v15;
   if ([(OFUIGridView *)self isFrameEntirelyVisible:v10, v12, v13, v15])
   {
-    [objc_msgSend(a3 "window")];
+    [objc_msgSend(destination "window")];
   }
 
   else
@@ -3337,32 +3337,32 @@ uint64_t __42__OFUIGridView_draggingDestinationExited___block_invoke_3(uint64_t 
   return result;
 }
 
-- (BOOL)performDragOperation:(id)a3
+- (BOOL)performDragOperation:(id)operation
 {
   if (!self->_draggingSource)
   {
     return 0;
   }
 
-  v5 = [a3 destinationOperation];
-  v6 = [(OFUIGridView *)self draggingDestinationIndex];
-  if (v5 == 32)
+  destinationOperation = [operation destinationOperation];
+  draggingDestinationIndex = [(OFUIGridView *)self draggingDestinationIndex];
+  if (destinationOperation == 32)
   {
-    if (v6 != 0x7FFFFFFFFFFFFFFFLL && (objc_opt_respondsToSelector() & 1) != 0)
+    if (draggingDestinationIndex != 0x7FFFFFFFFFFFFFFFLL && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      if (-[OFUIWindowDraggingSource gridView:mergeWithItemsFromPasteboard:atIndex:session:](self->_draggingSource, "gridView:mergeWithItemsFromPasteboard:atIndex:session:", self, [a3 pasteboard], -[OFUIGridView draggingDestinationIndex](self, "draggingDestinationIndex"), a3))
+      if (-[OFUIWindowDraggingSource gridView:mergeWithItemsFromPasteboard:atIndex:session:](self->_draggingSource, "gridView:mergeWithItemsFromPasteboard:atIndex:session:", self, [operation pasteboard], -[OFUIGridView draggingDestinationIndex](self, "draggingDestinationIndex"), operation))
       {
         if ([(OFUIGridView *)self draggingDestinationCount]>= 1)
         {
           [(OFUIGridView *)self setDraggingDestinationIndex:[(OFUIGridView *)self draggingDestinationIndex]+ 1];
         }
 
-        if ([a3 animation] == 1)
+        if ([operation animation] == 1)
         {
-          [a3 setAnimation:8];
+          [operation setAnimation:8];
         }
 
-        if ([a3 destinationOperation] == 32)
+        if ([operation destinationOperation] == 32)
         {
           v10[0] = MEMORY[0x277D85DD0];
           v10[1] = 3221225472;
@@ -3377,31 +3377,31 @@ LABEL_23:
         }
       }
 
-      [a3 setAnimation:2];
+      [operation setAnimation:2];
     }
 
     v7 = 0;
     goto LABEL_23;
   }
 
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL || (objc_opt_respondsToSelector() & 1) == 0)
+  if (draggingDestinationIndex == 0x7FFFFFFFFFFFFFFFLL || (objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  -[OFUIGridView setDraggingDestinationCount:](self, "setDraggingDestinationCount:", [a3 numberOfItems]);
-  if (!-[OFUIWindowDraggingSource gridView:insertItemsFromPasteboard:atIndex:session:](self->_draggingSource, "gridView:insertItemsFromPasteboard:atIndex:session:", self, [a3 pasteboard], -[OFUIGridView draggingDestinationIndex](self, "draggingDestinationIndex"), a3))
+  -[OFUIGridView setDraggingDestinationCount:](self, "setDraggingDestinationCount:", [operation numberOfItems]);
+  if (!-[OFUIWindowDraggingSource gridView:insertItemsFromPasteboard:atIndex:session:](self->_draggingSource, "gridView:insertItemsFromPasteboard:atIndex:session:", self, [operation pasteboard], -[OFUIGridView draggingDestinationIndex](self, "draggingDestinationIndex"), operation))
   {
-    [a3 setAnimation:2];
+    [operation setAnimation:2];
     return 0;
   }
 
-  if ([a3 animation] == 1)
+  if ([operation animation] == 1)
   {
-    [a3 setAnimation:4];
+    [operation setAnimation:4];
   }
 
-  if ([a3 destinationOperation] == 2 || objc_msgSend(a3, "destinationOperation") == 4)
+  if ([operation destinationOperation] == 2 || objc_msgSend(operation, "destinationOperation") == 4)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -3414,9 +3414,9 @@ LABEL_23:
   return 1;
 }
 
-- (void)concludeDragOperation:(id)a3
+- (void)concludeDragOperation:(id)operation
 {
-  if ([a3 destinationOperation] == 2 || objc_msgSend(a3, "destinationOperation") == 4 || objc_msgSend(a3, "destinationOperation") == 32)
+  if ([operation destinationOperation] == 2 || objc_msgSend(operation, "destinationOperation") == 4 || objc_msgSend(operation, "destinationOperation") == 32)
   {
     if ([(OFUIGridView *)self draggingDestinationIndex]!= 0x7FFFFFFFFFFFFFFFLL && [(OFUIGridView *)self draggingDestinationCount]!= 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -3430,21 +3430,21 @@ LABEL_23:
   }
 }
 
-- (void)draggingDestinationEnded:(id)a3 cancelled:(BOOL)a4
+- (void)draggingDestinationEnded:(id)ended cancelled:(BOOL)cancelled
 {
   self->_isDraggingIn = 0;
-  [(OFUIGridView *)self setDraggingDestinationIndex:0x7FFFFFFFFFFFFFFFLL, a4];
+  [(OFUIGridView *)self setDraggingDestinationIndex:0x7FFFFFFFFFFFFFFFLL, cancelled];
   [(OFUIGridView *)self setDraggingDestinationCount:0x7FFFFFFFFFFFFFFFLL];
 
   [(OFUIGridView *)self updateLayout:1];
 }
 
-- (float)autoscrollDistance:(CGRect)a3
+- (float)autoscrollDistance:(CGRect)distance
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = distance.size.height;
+  width = distance.size.width;
+  y = distance.origin.y;
+  x = distance.origin.x;
   [(OFUIGridView *)self bounds];
   v49.origin.x = v8;
   v49.origin.y = v9;
@@ -3479,10 +3479,10 @@ LABEL_23:
     MaxY = CGRectGetMaxY(v47);
     if (v19 < 50.0)
     {
-      v21 = self;
+      selfCopy2 = self;
       *&MaxY = v19;
 LABEL_8:
-      [(OFUIGridView *)v21 _autoscrollDistanceForProximityToEdge:MaxY];
+      [(OFUIGridView *)selfCopy2 _autoscrollDistanceForProximityToEdge:MaxY];
       v22 = -v24;
       goto LABEL_13;
     }
@@ -3497,7 +3497,7 @@ LABEL_8:
     MaxY = CGRectGetMaxX(v48);
     if (v23 < 50.0)
     {
-      v21 = self;
+      selfCopy2 = self;
       *&MaxY = v23;
       goto LABEL_8;
     }
@@ -3557,7 +3557,7 @@ LABEL_13:
   return v32;
 }
 
-- (void)autoscroll:(float)a3
+- (void)autoscroll:(float)autoscroll
 {
   orientation = self->_orientation;
   [(OFUIGridView *)self contentOffset];
@@ -3579,28 +3579,28 @@ LABEL_13:
   if (orientation)
   {
     v25 = v21;
-    v26 = v19;
+    autoscrollCopy = v19;
   }
 
   else
   {
-    v26 = v23;
+    autoscrollCopy = v23;
   }
 
   v27 = v25;
-  if (v26 <= a3)
+  if (autoscrollCopy <= autoscroll)
   {
-    v26 = a3;
+    autoscrollCopy = autoscroll;
   }
 
-  if (v26 >= v27)
+  if (autoscrollCopy >= v27)
   {
     v28 = v27;
   }
 
   else
   {
-    v28 = v26;
+    v28 = autoscrollCopy;
   }
 
   [(OFUIGridView *)self contentOffset];

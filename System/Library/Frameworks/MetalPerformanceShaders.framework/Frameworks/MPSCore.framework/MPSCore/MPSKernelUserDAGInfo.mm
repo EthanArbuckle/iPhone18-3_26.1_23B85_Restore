@@ -1,6 +1,6 @@
 @interface MPSKernelUserDAGInfo
-- (MPSKernelUserDAGInfo)initWithMTLStitchingGraphs:(id)a3 visibleFunctions:(id)a4 stitchedFunctions:(id)a5;
-- (id)getStitchedFunctions:(id)a3;
+- (MPSKernelUserDAGInfo)initWithMTLStitchingGraphs:(id)graphs visibleFunctions:(id)functions stitchedFunctions:(id)stitchedFunctions;
+- (id)getStitchedFunctions:(id)functions;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -52,21 +52,21 @@
   return cachedHash;
 }
 
-- (MPSKernelUserDAGInfo)initWithMTLStitchingGraphs:(id)a3 visibleFunctions:(id)a4 stitchedFunctions:(id)a5
+- (MPSKernelUserDAGInfo)initWithMTLStitchingGraphs:(id)graphs visibleFunctions:(id)functions stitchedFunctions:(id)stitchedFunctions
 {
   v23.receiver = self;
   v23.super_class = MPSKernelUserDAGInfo;
   v8 = [(MPSKernelUserDAGInfo *)&v23 init];
-  v8->_stitchingGraphs = objc_msgSend_copy(a3, v9, v10, v11, v12);
-  v8->_userVisibleFunctions = objc_msgSend_copy(a4, v13, v14, v15, v16);
-  v21 = objc_msgSend_copy(a5, v17, v18, v19, v20);
+  v8->_stitchingGraphs = objc_msgSend_copy(graphs, v9, v10, v11, v12);
+  v8->_userVisibleFunctions = objc_msgSend_copy(functions, v13, v14, v15, v16);
+  v21 = objc_msgSend_copy(stitchedFunctions, v17, v18, v19, v20);
   v8->_stitchedMTLFunctions = 0;
   v8->_cachedHash = 0;
   v8->_userStitchedFunctions = v21;
   return v8;
 }
 
-- (id)getStitchedFunctions:(id)a3
+- (id)getStitchedFunctions:(id)functions
 {
   v89 = *MEMORY[0x277D85DE8];
   result = self->_stitchedMTLFunctions;
@@ -95,7 +95,7 @@
               objc_enumerationMutation(userVisibleFunctions);
             }
 
-            VisibleFunction = objc_msgSend_getVisibleFunction_(*(*(&v83 + 1) + 8 * i), v15, a3, v16, v17);
+            VisibleFunction = objc_msgSend_getVisibleFunction_(*(*(&v83 + 1) + 8 * i), v15, functions, v16, v17);
             objc_msgSend_addObject_(v12, v22, VisibleFunction, v23, v24);
           }
 
@@ -109,11 +109,11 @@
     v25 = objc_opt_new();
     objc_msgSend_setFunctions_(v25, v26, v12, v27, v28);
     objc_msgSend_setFunctionGraphs_(v25, v29, self->_stitchingGraphs, v30, v31);
-    v36 = objc_msgSend_device(a3, v32, v33, v34, v35);
+    v36 = objc_msgSend_device(functions, v32, v33, v34, v35);
     MPSDevice = MPSDevice::GetMPSDevice(v36);
     MPSDevice::AddBinaryArchives(MPSDevice, v25);
     v82 = 0;
-    v42 = objc_msgSend_device(a3, v38, v39, v40, v41);
+    v42 = objc_msgSend_device(functions, v38, v39, v40, v41);
     v49 = objc_msgSend_newLibraryWithStitchedDescriptor_error_(v42, v43, v25, &v82, v44);
     if (!v49 && MTLReportFailureTypeEnabled())
     {

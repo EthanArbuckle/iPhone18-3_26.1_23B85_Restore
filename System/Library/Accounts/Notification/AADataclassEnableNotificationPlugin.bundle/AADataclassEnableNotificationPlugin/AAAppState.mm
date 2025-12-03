@@ -1,18 +1,18 @@
 @interface AAAppState
-- (AAAppState)initWithInstalled:(BOOL)a3 isRestricted:(BOOL)a4;
+- (AAAppState)initWithInstalled:(BOOL)installed isRestricted:(BOOL)restricted;
 @end
 
 @implementation AAAppState
 
-- (AAAppState)initWithInstalled:(BOOL)a3 isRestricted:(BOOL)a4
+- (AAAppState)initWithInstalled:(BOOL)installed isRestricted:(BOOL)restricted
 {
   v7.receiver = self;
   v7.super_class = AAAppState;
   result = [(AAAppState *)&v7 init];
   if (result)
   {
-    result->_isInstalled = a3;
-    result->_isRestricted = a4;
+    result->_isInstalled = installed;
+    result->_isRestricted = restricted;
   }
 
   return result;

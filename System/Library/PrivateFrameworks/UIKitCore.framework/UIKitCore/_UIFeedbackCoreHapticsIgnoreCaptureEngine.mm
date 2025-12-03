@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __57___UIFeedbackCoreHapticsIgnoreCaptureEngine_sharedEngine__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49A130 != -1)
   {
     dispatch_once(&qword_1ED49A130, block);
@@ -26,14 +26,14 @@
 {
   v6.receiver = self;
   v6.super_class = _UIFeedbackCoreHapticsIgnoreCaptureEngine;
-  v3 = [(_UIFeedbackCoreHapticsEngine *)&v6 _internal_createCoreHapticsEngine];
-  if (!v3)
+  _internal_createCoreHapticsEngine = [(_UIFeedbackCoreHapticsEngine *)&v6 _internal_createCoreHapticsEngine];
+  if (!_internal_createCoreHapticsEngine)
   {
-    v4 = [(_UIFeedbackCoreHapticsEngine *)self coreHapticsEngine];
-    [v4 setMuteHapticsWhileRecordingAudio:0];
+    coreHapticsEngine = [(_UIFeedbackCoreHapticsEngine *)self coreHapticsEngine];
+    [coreHapticsEngine setMuteHapticsWhileRecordingAudio:0];
   }
 
-  return v3;
+  return _internal_createCoreHapticsEngine;
 }
 
 @end

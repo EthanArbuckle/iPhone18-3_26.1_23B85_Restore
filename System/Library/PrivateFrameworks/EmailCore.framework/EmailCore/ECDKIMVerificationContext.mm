@@ -1,24 +1,24 @@
 @interface ECDKIMVerificationContext
-- (ECDKIMVerificationContext)initWithVerifiableMessage:(id)a3 dkimSignatureHeaders:(id)a4;
+- (ECDKIMVerificationContext)initWithVerifiableMessage:(id)message dkimSignatureHeaders:(id)headers;
 - (ECRawMessageHeaders)headers;
 - (NSData)bodyData;
-- (void)removeDKIMSignatureHeaders:(id)a3;
+- (void)removeDKIMSignatureHeaders:(id)headers;
 @end
 
 @implementation ECDKIMVerificationContext
 
-- (ECDKIMVerificationContext)initWithVerifiableMessage:(id)a3 dkimSignatureHeaders:(id)a4
+- (ECDKIMVerificationContext)initWithVerifiableMessage:(id)message dkimSignatureHeaders:(id)headers
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  headersCopy = headers;
   v14.receiver = self;
   v14.super_class = ECDKIMVerificationContext;
   v9 = [(ECDKIMVerificationContext *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_verifiableMessage, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_verifiableMessage, message);
+    v11 = [headersCopy copy];
     dkimSignatureHeaders = v10->_dkimSignatureHeaders;
     v10->_dkimSignatureHeaders = v11;
   }
@@ -28,27 +28,27 @@
 
 - (ECRawMessageHeaders)headers
 {
-  v2 = [(ECDKIMVerificationContext *)self verifiableMessage];
-  v3 = [v2 headers];
+  verifiableMessage = [(ECDKIMVerificationContext *)self verifiableMessage];
+  headers = [verifiableMessage headers];
 
-  return v3;
+  return headers;
 }
 
 - (NSData)bodyData
 {
-  v2 = [(ECDKIMVerificationContext *)self verifiableMessage];
-  v3 = [v2 bodyData];
+  verifiableMessage = [(ECDKIMVerificationContext *)self verifiableMessage];
+  bodyData = [verifiableMessage bodyData];
 
-  return v3;
+  return bodyData;
 }
 
-- (void)removeDKIMSignatureHeaders:(id)a3
+- (void)removeDKIMSignatureHeaders:(id)headers
 {
-  v5 = a3;
-  if ([v5 count])
+  headersCopy = headers;
+  if ([headersCopy count])
   {
     v4 = [(NSArray *)self->_dkimSignatureHeaders mutableCopy];
-    [v4 removeObjectsInArray:v5];
+    [v4 removeObjectsInArray:headersCopy];
     [(ECDKIMVerificationContext *)self setDkimSignatureHeaders:v4];
   }
 }

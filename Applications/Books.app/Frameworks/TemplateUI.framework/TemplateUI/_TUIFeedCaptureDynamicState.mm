@@ -1,37 +1,37 @@
 @interface _TUIFeedCaptureDynamicState
-- (BOOL)isEqual:(id)a3;
-- (_TUIFeedCaptureDynamicState)initWithValue:(id)a3 kind:(id)a4 instance:(id)a5 parameters:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (_TUIFeedCaptureDynamicState)initWithValue:(id)value kind:(id)kind instance:(id)instance parameters:(id)parameters;
 - (unint64_t)hash;
 @end
 
 @implementation _TUIFeedCaptureDynamicState
 
-- (_TUIFeedCaptureDynamicState)initWithValue:(id)a3 kind:(id)a4 instance:(id)a5 parameters:(id)a6
+- (_TUIFeedCaptureDynamicState)initWithValue:(id)value kind:(id)kind instance:(id)instance parameters:(id)parameters
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  valueCopy = value;
+  kindCopy = kind;
+  instanceCopy = instance;
+  parametersCopy = parameters;
   v18.receiver = self;
   v18.super_class = _TUIFeedCaptureDynamicState;
   v15 = [(_TUIFeedCaptureDynamicState *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_value, a3);
-    objc_storeStrong(&v16->_kind, a4);
-    objc_storeStrong(&v16->_instance, a5);
-    objc_storeStrong(&v16->_parameters, a6);
+    objc_storeStrong(&v15->_value, value);
+    objc_storeStrong(&v16->_kind, kind);
+    objc_storeStrong(&v16->_instance, instance);
+    objc_storeStrong(&v16->_parameters, parameters);
   }
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, equalCopy);
 
   if (v6 && ((kind = self->_kind, kind == v6[2]) || [(NSString *)kind isEqualToString:?]) && ((instance = self->_instance, instance == v6[3]) || [instance isEqual:?]))
   {

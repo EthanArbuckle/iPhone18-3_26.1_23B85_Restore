@@ -7,26 +7,26 @@
 - (uint64_t)_sb_nonInteractiveAvailableWithSwitcher:()NonInteractiveResolverSupport applicationController:authenticationState:
 {
   v7 = a4;
-  v8 = [a1 type];
-  if (v8 == 5)
+  type = [self type];
+  if (type == 5)
   {
-    v10 = [v7 musicApplication];
+    musicApplication = [v7 musicApplication];
     goto LABEL_9;
   }
 
-  if (v8 == 4)
+  if (type == 4)
   {
-    v10 = [v7 iPodOutApplication];
+    musicApplication = [v7 iPodOutApplication];
 LABEL_9:
-    v9 = v10;
-    v11 = [v10 processState];
-    HasApplicationSceneInLockedOrUnlockedEnvironmentLayoutStateMatchingApplication = [v11 isRunning];
+    v9 = musicApplication;
+    processState = [musicApplication processState];
+    HasApplicationSceneInLockedOrUnlockedEnvironmentLayoutStateMatchingApplication = [processState isRunning];
 
 LABEL_10:
     goto LABEL_12;
   }
 
-  if (v8 != 1)
+  if (type != 1)
   {
     HasApplicationSceneInLockedOrUnlockedEnvironmentLayoutStateMatchingApplication = 0;
     goto LABEL_12;
@@ -34,13 +34,13 @@ LABEL_10:
 
   if (HasApplicationSceneInLockedOrUnlockedEnvironmentLayoutStateMatchingApplication)
   {
-    if (![a1 isRestrictedAirPlayDisplay])
+    if (![self isRestrictedAirPlayDisplay])
     {
       HasApplicationSceneInLockedOrUnlockedEnvironmentLayoutStateMatchingApplication = 1;
       goto LABEL_12;
     }
 
-    v9 = [v7 applicationWithPid:{objc_msgSend(a1, "pid")}];
+    v9 = [v7 applicationWithPid:{objc_msgSend(self, "pid")}];
     HasApplicationSceneInLockedOrUnlockedEnvironmentLayoutStateMatchingApplication = SBWorkspaceHasApplicationSceneInLockedOrUnlockedEnvironmentLayoutStateMatchingApplication(v9);
     goto LABEL_10;
   }

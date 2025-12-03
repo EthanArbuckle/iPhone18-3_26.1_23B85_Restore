@@ -1,24 +1,24 @@
 @interface STKStickerMetadataUtilities
-+ (id)encodeCGImage:(CGImage *)a3 withStickerEffectType:(unint64_t)a4;
-+ (id)encodeCGImageSource:(CGImageSource *)a3 withStickerEffectType:(unint64_t)a4;
-+ (id)encodeImage:(id)a3 withStickerEffectType:(unint64_t)a4;
-+ (id)encodeImageData:(id)a3 withStickerEffectType:(unint64_t)a4;
-+ (id)stringFromStickerEffectType:(unint64_t)a3;
-+ (int64_t)effectTypeForStickerEffectView:(id)a3;
-+ (unint64_t)stickerEffectTypeFromImageData:(id)a3;
-+ (unint64_t)stickerEffectTypeFromString:(id)a3;
-+ (void)clearCachedPreviewsForStickerView:(id)a3;
-+ (void)playSettlingAnimation:(id)a3;
-+ (void)setBoundsIncludeStroke:(BOOL)a3 effectView:(id)a4;
-+ (void)stickerEffect:(id)a3 applyWithWideStrokeToImage:(id)a4 completion:(id)a5;
++ (id)encodeCGImage:(CGImage *)image withStickerEffectType:(unint64_t)type;
++ (id)encodeCGImageSource:(CGImageSource *)source withStickerEffectType:(unint64_t)type;
++ (id)encodeImage:(id)image withStickerEffectType:(unint64_t)type;
++ (id)encodeImageData:(id)data withStickerEffectType:(unint64_t)type;
++ (id)stringFromStickerEffectType:(unint64_t)type;
++ (int64_t)effectTypeForStickerEffectView:(id)view;
++ (unint64_t)stickerEffectTypeFromImageData:(id)data;
++ (unint64_t)stickerEffectTypeFromString:(id)string;
++ (void)clearCachedPreviewsForStickerView:(id)view;
++ (void)playSettlingAnimation:(id)animation;
++ (void)setBoundsIncludeStroke:(BOOL)stroke effectView:(id)view;
++ (void)stickerEffect:(id)effect applyWithWideStrokeToImage:(id)image completion:(id)completion;
 @end
 
 @implementation STKStickerMetadataUtilities
 
-+ (id)encodeImageData:(id)a3 withStickerEffectType:(unint64_t)a4
++ (id)encodeImageData:(id)data withStickerEffectType:(unint64_t)type
 {
-  v6 = CGImageSourceCreateWithData(a3, 0);
-  v7 = [a1 encodeCGImageSource:v6 withStickerEffectType:a4];
+  v6 = CGImageSourceCreateWithData(data, 0);
+  v7 = [self encodeCGImageSource:v6 withStickerEffectType:type];
   if (v6)
   {
     CFRelease(v6);
@@ -27,19 +27,19 @@
   return v7;
 }
 
-+ (id)encodeImage:(id)a3 withStickerEffectType:(unint64_t)a4
++ (id)encodeImage:(id)image withStickerEffectType:(unint64_t)type
 {
-  v7 = a3;
-  v8 = [a3 CGImage];
+  imageCopy = image;
+  cGImage = [image CGImage];
 
-  return [a1 encodeCGImage:v8 withStickerEffectType:a4];
+  return [self encodeCGImage:cGImage withStickerEffectType:type];
 }
 
-+ (id)encodeCGImage:(CGImage *)a3 withStickerEffectType:(unint64_t)a4
++ (id)encodeCGImage:(CGImage *)image withStickerEffectType:(unint64_t)type
 {
-  DataProvider = CGImageGetDataProvider(a3);
+  DataProvider = CGImageGetDataProvider(image);
   v7 = CGImageSourceCreateWithDataProvider(DataProvider, 0);
-  v8 = [a1 encodeCGImageSource:v7 withStickerEffectType:a4];
+  v8 = [self encodeCGImageSource:v7 withStickerEffectType:type];
   if (v7)
   {
     CFRelease(v7);
@@ -48,9 +48,9 @@
   return v8;
 }
 
-+ (id)encodeCGImageSource:(CGImageSource *)a3 withStickerEffectType:(unint64_t)a4
++ (id)encodeCGImageSource:(CGImageSource *)source withStickerEffectType:(unint64_t)type
 {
-  v7 = CGImageSourceCopyMetadataAtIndex(a3, 0, 0);
+  v7 = CGImageSourceCopyMetadataAtIndex(source, 0, 0);
   if (v7)
   {
     v8 = v7;
@@ -64,7 +64,7 @@
   }
 
   err = 0;
-  v10 = [a1 stringFromStickerEffectType:a4];
+  v10 = [self stringFromStickerEffectType:type];
   if (CGImageMetadataRegisterNamespaceForPrefix(MutableCopy, @"http://ns.apple.com/Stickers/1.0/", @"stickerEffect", &err))
   {
     v11 = CGImageMetadataTagCreate(@"http://ns.apple.com/Stickers/1.0/", @"stickerEffect", @"stickerEffect", kCGImageMetadataTypeString, v10);
@@ -72,10 +72,10 @@
     if (CGImageMetadataSetTagWithPath(MutableCopy, 0, @"stickerEffect:type", v11))
     {
       Mutable = CFDataCreateMutable(0, 0);
-      v13 = [*MEMORY[0x277CE1D90] identifier];
-      v14 = CGImageDestinationCreateWithData(Mutable, v13, 1uLL, 0);
+      identifier = [*MEMORY[0x277CE1D90] identifier];
+      v14 = CGImageDestinationCreateWithData(Mutable, identifier, 1uLL, 0);
 
-      ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, 0, 0);
+      ImageAtIndex = CGImageSourceCreateImageAtIndex(source, 0, 0);
       CGImageDestinationAddImageAndMetadata(v14, ImageAtIndex, MutableCopy, 0);
       CGImageDestinationFinalize(v14);
       if (ImageAtIndex)
@@ -126,9 +126,9 @@
   return Mutable;
 }
 
-+ (unint64_t)stickerEffectTypeFromImageData:(id)a3
++ (unint64_t)stickerEffectTypeFromImageData:(id)data
 {
-  v4 = CGImageSourceCreateWithData(a3, 0);
+  v4 = CGImageSourceCreateWithData(data, 0);
   v5 = CGImageSourceCopyMetadataAtIndex(v4, 0, 0);
   if (!v5)
   {
@@ -156,7 +156,7 @@
     CFRelease(v8);
     if (v9)
     {
-      v10 = [a1 stickerEffectTypeFromString:v9];
+      v10 = [self stickerEffectTypeFromString:v9];
       CFRelease(v9);
       goto LABEL_15;
     }
@@ -193,24 +193,24 @@ LABEL_16:
   return v10;
 }
 
-+ (id)stringFromStickerEffectType:(unint64_t)a3
++ (id)stringFromStickerEffectType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     return @"none";
   }
 
   else
   {
-    return off_279D14420[a3 - 1];
+    return off_279D14420[type - 1];
   }
 }
 
-+ (unint64_t)stickerEffectTypeFromString:(id)a3
++ (unint64_t)stickerEffectTypeFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  lowercaseString = [string lowercaseString];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v5 = [lowercaseString stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if ([v5 isEqualToString:@"none"])
   {
@@ -245,63 +245,63 @@ LABEL_16:
   return v6;
 }
 
-+ (void)playSettlingAnimation:(id)a3
++ (void)playSettlingAnimation:(id)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   if (objc_opt_respondsToSelector())
   {
-    [v3 playSettlingAnimation];
+    [animationCopy playSettlingAnimation];
   }
 }
 
-+ (void)clearCachedPreviewsForStickerView:(id)a3
++ (void)clearCachedPreviewsForStickerView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
-    [v3 clearCachedPreviewsForCurrentSticker];
+    [viewCopy clearCachedPreviewsForCurrentSticker];
   }
 }
 
-+ (void)setBoundsIncludeStroke:(BOOL)a3 effectView:(id)a4
++ (void)setBoundsIncludeStroke:(BOOL)stroke effectView:(id)view
 {
-  v4 = a3;
-  v5 = a4;
+  strokeCopy = stroke;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
-    [v5 setBoundsIncludeStroke:v4];
+    [viewCopy setBoundsIncludeStroke:strokeCopy];
   }
 }
 
-+ (int64_t)effectTypeForStickerEffectView:(id)a3
++ (int64_t)effectTypeForStickerEffectView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 effect];
+  viewCopy = view;
+  effect = [viewCopy effect];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [v3 effect];
-    v7 = [v6 type];
+    effect2 = [viewCopy effect];
+    type = [effect2 type];
   }
 
   else
   {
-    v7 = 0;
+    type = 0;
   }
 
-  return v7;
+  return type;
 }
 
-+ (void)stickerEffect:(id)a3 applyWithWideStrokeToImage:(id)a4 completion:(id)a5
++ (void)stickerEffect:(id)effect applyWithWideStrokeToImage:(id)image completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  effectCopy = effect;
+  imageCopy = image;
+  completionCopy = completion;
   v10 = objc_opt_respondsToSelector();
   if (v10)
   {
-    [v7 setForceSmallStrokeRadiusMultiplier:1];
+    [effectCopy setForceSmallStrokeRadiusMultiplier:1];
   }
 
   v13[0] = MEMORY[0x277D85DD0];
@@ -309,11 +309,11 @@ LABEL_16:
   v13[2] = __83__STKStickerMetadataUtilities_stickerEffect_applyWithWideStrokeToImage_completion___block_invoke;
   v13[3] = &unk_279D14400;
   v16 = v10 & 1;
-  v14 = v7;
-  v15 = v9;
-  v11 = v9;
-  v12 = v7;
-  [v12 applyToImage:v8 completion:v13];
+  v14 = effectCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = effectCopy;
+  [v12 applyToImage:imageCopy completion:v13];
 }
 
 void __83__STKStickerMetadataUtilities_stickerEffect_applyWithWideStrokeToImage_completion___block_invoke(uint64_t a1, void *a2, void *a3)

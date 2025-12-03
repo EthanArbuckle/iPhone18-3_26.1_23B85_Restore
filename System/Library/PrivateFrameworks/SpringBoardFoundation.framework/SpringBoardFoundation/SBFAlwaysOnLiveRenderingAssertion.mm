@@ -1,6 +1,6 @@
 @interface SBFAlwaysOnLiveRenderingAssertion
 - (NSString)description;
-- (SBFAlwaysOnLiveRenderingAssertion)initWithReason:(id)a3 timeout:(double)a4 invalidationHandler:(id)a5;
+- (SBFAlwaysOnLiveRenderingAssertion)initWithReason:(id)reason timeout:(double)timeout invalidationHandler:(id)handler;
 - (void)_startAutoInvalidationTimer;
 - (void)dealloc;
 - (void)invalidate;
@@ -45,20 +45,20 @@
   [(SBFAlwaysOnLiveRenderingAssertion *)&v3 dealloc];
 }
 
-- (SBFAlwaysOnLiveRenderingAssertion)initWithReason:(id)a3 timeout:(double)a4 invalidationHandler:(id)a5
+- (SBFAlwaysOnLiveRenderingAssertion)initWithReason:(id)reason timeout:(double)timeout invalidationHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = SBFAlwaysOnLiveRenderingAssertion;
   v10 = [(SBFAlwaysOnLiveRenderingAssertion *)&v18 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [reasonCopy copy];
     reason = v10->_reason;
     v10->_reason = v11;
 
-    v13 = [v9 copy];
+    v13 = [handlerCopy copy];
     invalidationHandler = v10->_invalidationHandler;
     v10->_invalidationHandler = v13;
 
@@ -66,9 +66,9 @@
     createdAt = v10->_createdAt;
     v10->_createdAt = v15;
 
-    v10->_timeout = a4;
+    v10->_timeout = timeout;
     v10->_valid = 1;
-    if (a4 > 0.0)
+    if (timeout > 0.0)
     {
       [(SBFAlwaysOnLiveRenderingAssertion *)v10 _startAutoInvalidationTimer];
     }
@@ -92,10 +92,10 @@ void __64__SBFAlwaysOnLiveRenderingAssertion__startAutoInvalidationTimer__block_
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(SBFAlwaysOnLiveRenderingAssertion *)self reason];
-  v6 = [(SBFAlwaysOnLiveRenderingAssertion *)self createdAt];
-  [v6 timeIntervalSince1970];
-  v8 = [v3 stringWithFormat:@"<%@: %p reason: %@; createdAt: %f>", v4, self, v5, v7];;
+  reason = [(SBFAlwaysOnLiveRenderingAssertion *)self reason];
+  createdAt = [(SBFAlwaysOnLiveRenderingAssertion *)self createdAt];
+  [createdAt timeIntervalSince1970];
+  v8 = [v3 stringWithFormat:@"<%@: %p reason: %@; createdAt: %f>", v4, self, reason, v7];;
 
   return v8;
 }

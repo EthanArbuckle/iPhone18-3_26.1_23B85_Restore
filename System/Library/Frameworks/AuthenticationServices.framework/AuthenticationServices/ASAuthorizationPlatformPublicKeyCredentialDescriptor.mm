@@ -1,11 +1,11 @@
 @interface ASAuthorizationPlatformPublicKeyCredentialDescriptor
-- (ASAuthorizationPlatformPublicKeyCredentialDescriptor)initWithCoder:(id)a3;
+- (ASAuthorizationPlatformPublicKeyCredentialDescriptor)initWithCoder:(id)coder;
 - (ASAuthorizationPlatformPublicKeyCredentialDescriptor)initWithCredentialID:(NSData *)credentialID;
 - (ASCPublicKeyCredentialDescriptor)coreDescriptor;
 - (NSData)credentialID;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCredentialID:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCredentialID:(id)d;
 @end
 
 @implementation ASAuthorizationPlatformPublicKeyCredentialDescriptor
@@ -36,29 +36,29 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(ASAuthorizationPlatformPublicKeyCredentialDescriptor *)self credentialID];
-  v6 = [v4 initWithCredentialID:v5];
+  credentialID = [(ASAuthorizationPlatformPublicKeyCredentialDescriptor *)self credentialID];
+  v6 = [v4 initWithCredentialID:credentialID];
 
   return v6;
 }
 
-- (ASAuthorizationPlatformPublicKeyCredentialDescriptor)initWithCoder:(id)a3
+- (ASAuthorizationPlatformPublicKeyCredentialDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credentialID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialID"];
 
   v6 = [(ASAuthorizationPlatformPublicKeyCredentialDescriptor *)self initWithCredentialID:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASAuthorizationPlatformPublicKeyCredentialDescriptor *)self credentialID];
-  [v4 encodeObject:v5 forKey:@"credentialID"];
+  coderCopy = coder;
+  credentialID = [(ASAuthorizationPlatformPublicKeyCredentialDescriptor *)self credentialID];
+  [coderCopy encodeObject:credentialID forKey:@"credentialID"];
 }
 
 - (NSData)credentialID
@@ -70,12 +70,12 @@
   return v3;
 }
 
-- (void)setCredentialID:(id)a3
+- (void)setCredentialID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_internalLock);
   credentialID = self->_credentialID;
-  self->_credentialID = v4;
+  self->_credentialID = dCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }

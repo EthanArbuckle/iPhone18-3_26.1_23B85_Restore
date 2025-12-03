@@ -6,17 +6,17 @@
 - (id)navigationItem;
 - (id)scriptForJSBridge;
 - (id)scriptForScalesPageToFit;
-- (void)_dismissWithPayload:(id)a3;
+- (void)_dismissWithPayload:(id)payload;
 - (void)_startActivityIndicator;
 - (void)_stopActivityIndicator;
 - (void)dealloc;
-- (void)loadURL:(id)a3 completion:(id)a4;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)loadURL:(id)l completion:(id)completion;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation RemoteUIWebViewController
@@ -30,17 +30,17 @@
   if (!self->_webView)
   {
     v3 = objc_opt_new();
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1 || self->_scalesPageToFit)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || self->_scalesPageToFit)
     {
-      v6 = [(RemoteUIWebViewController *)self scriptForScalesPageToFit];
-      [v3 addUserScript:v6];
+      scriptForScalesPageToFit = [(RemoteUIWebViewController *)self scriptForScalesPageToFit];
+      [v3 addUserScript:scriptForScalesPageToFit];
     }
 
-    v7 = [(RemoteUIWebViewController *)self scriptForJSBridge];
-    [v3 addUserScript:v7];
+    scriptForJSBridge = [(RemoteUIWebViewController *)self scriptForJSBridge];
+    [v3 addUserScript:scriptForJSBridge];
 
     [v3 addScriptMessageHandler:self name:@"dismissWebView"];
     [v3 addScriptMessageHandler:self name:@"startActivityIndicator"];
@@ -60,67 +60,67 @@
 
     [(WKWebView *)self->_webView setNavigationDelegate:self];
     [(WKWebView *)self->_webView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [(WKWebView *)self->_webView scrollView];
-    [v12 setContentInsetAdjustmentBehavior:3];
+    scrollView = [(WKWebView *)self->_webView scrollView];
+    [scrollView setContentInsetAdjustmentBehavior:3];
 
     v13 = [objc_alloc(MEMORY[0x277D75D28]) initWithNibName:0 bundle:0];
-    v14 = [v13 view];
-    [v14 addSubview:self->_webView];
+    view = [v13 view];
+    [view addSubview:self->_webView];
 
     v15 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v13];
     [(RemoteUIWebViewController *)self addChildViewController:v15];
-    v16 = [(RemoteUIWebViewController *)self view];
-    v17 = [v15 view];
-    [v16 addSubview:v17];
+    view2 = [(RemoteUIWebViewController *)self view];
+    view3 = [v15 view];
+    [view2 addSubview:view3];
 
-    v18 = [v15 view];
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view4 = [v15 view];
+    [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v52 = MEMORY[0x277CCAAD0];
-    v66 = [(WKWebView *)self->_webView topAnchor];
-    v67 = [v13 view];
-    v65 = [v67 topAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65];
+    topAnchor = [(WKWebView *)self->_webView topAnchor];
+    view5 = [v13 view];
+    topAnchor2 = [view5 topAnchor];
+    v64 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v73[0] = v64;
-    v62 = [(WKWebView *)self->_webView leadingAnchor];
-    v63 = [v13 view];
-    v61 = [v63 leadingAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    leadingAnchor = [(WKWebView *)self->_webView leadingAnchor];
+    view6 = [v13 view];
+    leadingAnchor2 = [view6 leadingAnchor];
+    v60 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v73[1] = v60;
-    v58 = [(WKWebView *)self->_webView trailingAnchor];
-    v59 = [v13 view];
-    v57 = [v59 trailingAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57];
+    trailingAnchor = [(WKWebView *)self->_webView trailingAnchor];
+    view7 = [v13 view];
+    trailingAnchor2 = [view7 trailingAnchor];
+    v56 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v73[2] = v56;
-    v54 = [(WKWebView *)self->_webView bottomAnchor];
+    bottomAnchor = [(WKWebView *)self->_webView bottomAnchor];
     v68 = v13;
-    v55 = [v13 view];
-    v53 = [v55 bottomAnchor];
-    v51 = [v54 constraintEqualToAnchor:v53];
+    view8 = [v13 view];
+    bottomAnchor2 = [view8 bottomAnchor];
+    v51 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v73[3] = v51;
-    v50 = [v15 view];
-    v48 = [v50 topAnchor];
-    v49 = [(RemoteUIWebViewController *)self view];
-    v47 = [v49 topAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    view9 = [v15 view];
+    topAnchor3 = [view9 topAnchor];
+    view10 = [(RemoteUIWebViewController *)self view];
+    topAnchor4 = [view10 topAnchor];
+    v46 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v73[4] = v46;
-    v45 = [v15 view];
-    v43 = [v45 leadingAnchor];
-    v44 = [(RemoteUIWebViewController *)self view];
-    v42 = [v44 leadingAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42];
+    view11 = [v15 view];
+    leadingAnchor3 = [view11 leadingAnchor];
+    view12 = [(RemoteUIWebViewController *)self view];
+    leadingAnchor4 = [view12 leadingAnchor];
+    v41 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v73[5] = v41;
-    v40 = [v15 view];
-    v38 = [v40 trailingAnchor];
-    v39 = [(RemoteUIWebViewController *)self view];
-    v19 = [v39 trailingAnchor];
-    v20 = [v38 constraintEqualToAnchor:v19];
+    view13 = [v15 view];
+    trailingAnchor3 = [view13 trailingAnchor];
+    view14 = [(RemoteUIWebViewController *)self view];
+    trailingAnchor4 = [view14 trailingAnchor];
+    v20 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v73[6] = v20;
-    v21 = [v15 view];
-    v22 = [v21 bottomAnchor];
-    v23 = [(RemoteUIWebViewController *)self view];
-    v24 = [v23 bottomAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24];
+    view15 = [v15 view];
+    bottomAnchor3 = [view15 bottomAnchor];
+    view16 = [(RemoteUIWebViewController *)self view];
+    bottomAnchor4 = [view16 bottomAnchor];
+    v25 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v73[7] = v25;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:8];
     [v52 activateConstraints:v26];
@@ -132,14 +132,14 @@
     v71[3] = &unk_2782E7F30;
     v71[4] = self;
     [MEMORY[0x277D75D18] performWithoutAnimation:v71];
-    v27 = [(RemoteUIWebViewController *)self dismissButtonLabel];
+    dismissButtonLabel = [(RemoteUIWebViewController *)self dismissButtonLabel];
 
     v28 = objc_alloc(MEMORY[0x277D751E0]);
     v29 = v28;
-    if (v27)
+    if (dismissButtonLabel)
     {
-      v30 = [(RemoteUIWebViewController *)self dismissButtonLabel];
-      v31 = [v29 initWithTitle:v30 style:0 target:self action:sel_donePressed_];
+      dismissButtonLabel2 = [(RemoteUIWebViewController *)self dismissButtonLabel];
+      v31 = [v29 initWithTitle:dismissButtonLabel2 style:0 target:self action:sel_donePressed_];
     }
 
     else
@@ -147,24 +147,24 @@
       v31 = [v28 initWithBarButtonSystemItem:0 target:self action:sel_donePressed_];
     }
 
-    v32 = [(RemoteUIWebViewController *)self dismissButtonAlignment];
-    v33 = [v32 isEqualToString:@"leading"];
+    dismissButtonAlignment = [(RemoteUIWebViewController *)self dismissButtonAlignment];
+    v33 = [dismissButtonAlignment isEqualToString:@"leading"];
 
-    v34 = [v68 navigationItem];
-    v35 = v34;
+    navigationItem = [v68 navigationItem];
+    v35 = navigationItem;
     if (v33)
     {
-      [v34 setLeftBarButtonItem:v31];
+      [navigationItem setLeftBarButtonItem:v31];
     }
 
     else
     {
-      [v34 setRightBarButtonItem:v31];
+      [navigationItem setRightBarButtonItem:v31];
     }
 
     style = self->_style;
-    v37 = [v15 navigationBar];
-    [(RUIStyle *)style applyToNavigationBar:v37];
+    navigationBar = [v15 navigationBar];
+    [(RUIStyle *)style applyToNavigationBar:navigationBar];
   }
 }
 
@@ -178,25 +178,25 @@ uint64_t __40__RemoteUIWebViewController_viewDidLoad__block_invoke(uint64_t a1)
 
 - (id)navigationItem
 {
-  v2 = [(UINavigationController *)self->_navigationController topViewController];
-  v3 = [v2 navigationItem];
+  topViewController = [(UINavigationController *)self->_navigationController topViewController];
+  navigationItem = [topViewController navigationItem];
 
-  return v3;
+  return navigationItem;
 }
 
 - (void)_startActivityIndicator
 {
   v5 = +[RUINavBarSpinnerManager sharedSpinnerManager];
-  v3 = [(RemoteUIWebViewController *)self navigationItem];
-  v4 = [(RemoteUIWebViewController *)self _spinnerManagerIdentifier];
-  [v5 startAnimatingInNavItem:v3 title:0 forIdentifier:v4 hideBackButton:0 hideLeftItems:0];
+  navigationItem = [(RemoteUIWebViewController *)self navigationItem];
+  _spinnerManagerIdentifier = [(RemoteUIWebViewController *)self _spinnerManagerIdentifier];
+  [v5 startAnimatingInNavItem:navigationItem title:0 forIdentifier:_spinnerManagerIdentifier hideBackButton:0 hideLeftItems:0];
 }
 
 - (void)_stopActivityIndicator
 {
   v4 = +[RUINavBarSpinnerManager sharedSpinnerManager];
-  v3 = [(RemoteUIWebViewController *)self _spinnerManagerIdentifier];
-  [v4 stopAnimatingForIdentifier:v3];
+  _spinnerManagerIdentifier = [(RemoteUIWebViewController *)self _spinnerManagerIdentifier];
+  [v4 stopAnimatingForIdentifier:_spinnerManagerIdentifier];
 }
 
 - (id)_spinnerManagerIdentifier
@@ -254,7 +254,7 @@ uint64_t __40__RemoteUIWebViewController_viewDidLoad__block_invoke(uint64_t a1)
   [(RemoteUIWebViewController *)&v3 dealloc];
 }
 
-- (void)_dismissWithPayload:(id)a3
+- (void)_dismissWithPayload:(id)payload
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -272,14 +272,14 @@ uint64_t __40__RemoteUIWebViewController_viewDidLoad__block_invoke(uint64_t a1)
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(RemoteUIWebViewController *)self isBeingDismissed];
+  disappearCopy = disappear;
+  isBeingDismissed = [(RemoteUIWebViewController *)self isBeingDismissed];
   v9.receiver = self;
   v9.super_class = RemoteUIWebViewController;
-  [(RemoteUIWebViewController *)&v9 viewDidDisappear:v3];
-  if (v5)
+  [(RemoteUIWebViewController *)&v9 viewDidDisappear:disappearCopy];
+  if (isBeingDismissed)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v7 = objc_opt_respondsToSelector();
@@ -292,42 +292,42 @@ uint64_t __40__RemoteUIWebViewController_viewDidLoad__block_invoke(uint64_t a1)
   }
 }
 
-- (void)loadURL:(id)a3 completion:(id)a4
+- (void)loadURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  lCopy = l;
+  v7 = [completion copy];
   loadCompletion = self->_loadCompletion;
   self->_loadCompletion = v7;
 
   [(RemoteUIWebViewController *)self loadViewIfNeeded];
-  v10 = [MEMORY[0x277CCAB70] requestWithURL:v6];
+  v10 = [MEMORY[0x277CCAB70] requestWithURL:lCopy];
 
   [v10 setTimeoutInterval:30.0];
   v9 = [(WKWebView *)self->_webView loadRequest:v10];
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
   loadCompletion = self->_loadCompletion;
   if (loadCompletion)
   {
-    loadCompletion[2](loadCompletion, 1, 0, a4);
+    loadCompletion[2](loadCompletion, 1, 0, navigation);
     v6 = self->_loadCompletion;
     self->_loadCompletion = 0;
   }
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  errorCopy = error;
   if (_isInternalInstall())
   {
     v7 = _RUILoggingFacility();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v6;
+      v11 = errorCopy;
       _os_log_impl(&dword_21B93D000, v7, OS_LOG_TYPE_DEFAULT, "WebView load failed with error %@", &v10, 0xCu);
     }
   }
@@ -335,23 +335,23 @@ uint64_t __40__RemoteUIWebViewController_viewDidLoad__block_invoke(uint64_t a1)
   loadCompletion = self->_loadCompletion;
   if (loadCompletion)
   {
-    loadCompletion[2](loadCompletion, 0, v6);
+    loadCompletion[2](loadCompletion, 0, errorCopy);
     v9 = self->_loadCompletion;
     self->_loadCompletion = 0;
   }
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  errorCopy = error;
   if (_isInternalInstall())
   {
     v7 = _RUILoggingFacility();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v6;
+      v11 = errorCopy;
       _os_log_impl(&dword_21B93D000, v7, OS_LOG_TYPE_DEFAULT, "WebView load failed with error %@", &v10, 0xCu);
     }
   }
@@ -359,42 +359,42 @@ uint64_t __40__RemoteUIWebViewController_viewDidLoad__block_invoke(uint64_t a1)
   loadCompletion = self->_loadCompletion;
   if (loadCompletion)
   {
-    loadCompletion[2](loadCompletion, 0, v6);
+    loadCompletion[2](loadCompletion, 0, errorCopy);
     v9 = self->_loadCompletion;
     self->_loadCompletion = 0;
   }
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  messageCopy = message;
   if (_isInternalInstall())
   {
     v6 = _RUILoggingFacility();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 name];
+      name = [messageCopy name];
       v22 = 138543362;
-      v23 = v7;
+      v23 = name;
       _os_log_impl(&dword_21B93D000, v6, OS_LOG_TYPE_DEFAULT, "didReceiveScriptMessage: %{public}@", &v22, 0xCu);
     }
   }
 
-  v8 = [v5 name];
-  v9 = [v8 isEqualToString:@"dismissWebView"];
+  name2 = [messageCopy name];
+  v9 = [name2 isEqualToString:@"dismissWebView"];
 
   if (v9)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v11 = [v5 body];
-    [WeakRetained remoteUIWebViewController:self dismissWithPayload:v11];
+    body = [messageCopy body];
+    [WeakRetained remoteUIWebViewController:self dismissWithPayload:body];
   }
 
   else
   {
-    v12 = [v5 name];
-    v13 = [v12 isEqualToString:@"startActivityIndicator"];
+    name3 = [messageCopy name];
+    v13 = [name3 isEqualToString:@"startActivityIndicator"];
 
     if (v13)
     {
@@ -403,13 +403,13 @@ uint64_t __40__RemoteUIWebViewController_viewDidLoad__block_invoke(uint64_t a1)
 
     else
     {
-      v14 = [v5 name];
-      v15 = [v14 isEqualToString:@"stopActivityIndicator"];
+      name4 = [messageCopy name];
+      v15 = [name4 isEqualToString:@"stopActivityIndicator"];
 
       if (!v15)
       {
-        v16 = [v5 name];
-        v17 = [v16 isEqualToString:@"log"];
+        name5 = [messageCopy name];
+        v17 = [name5 isEqualToString:@"log"];
 
         if (v17)
         {
@@ -421,17 +421,17 @@ uint64_t __40__RemoteUIWebViewController_viewDidLoad__block_invoke(uint64_t a1)
           v18 = _RUILoggingFacility();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [v5 body];
+            body2 = [messageCopy body];
             v22 = 138412290;
-            v23 = v19;
+            v23 = body2;
             _os_log_impl(&dword_21B93D000, v18, OS_LOG_TYPE_DEFAULT, "remoteUIBridge.log: %@", &v22, 0xCu);
           }
         }
 
         else
         {
-          v20 = [v5 name];
-          v21 = [v20 isEqualToString:@"error"];
+          name6 = [messageCopy name];
+          v21 = [name6 isEqualToString:@"error"];
 
           if (!v21)
           {
@@ -441,7 +441,7 @@ uint64_t __40__RemoteUIWebViewController_viewDidLoad__block_invoke(uint64_t a1)
           v18 = _RUILoggingFacility();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            [RemoteUIWebViewController userContentController:v5 didReceiveScriptMessage:v18];
+            [RemoteUIWebViewController userContentController:messageCopy didReceiveScriptMessage:v18];
           }
         }
 

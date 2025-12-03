@@ -1,128 +1,128 @@
 @interface SMTSiriIntendedInfo
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SMTSiriIntendedInfo)initWithBuilder:(id)a3;
-- (SMTSiriIntendedInfo)initWithCoder:(id)a3;
-- (SMTSiriIntendedInfo)initWithOdldScore:(float)a3 aftmScore:(float)a4 spkrIdScore:(float)a5 lrnnScore:(float)a6 checkerScore:(float)a7 invocationType:(id)a8 lrnnThreshold:(float)a9 lrnnScale:(float)a10 lrnnOffset:(float)a11 conversationalOdldScore:(float)a12;
-- (SMTSiriIntendedInfo)initWithOdldScore:(float)a3 aftmScore:(float)a4 spkrIdScore:(float)a5 lrnnScore:(float)a6 checkerScore:(float)a7 invocationType:(id)a8 lrnnThreshold:(float)a9 lrnnScale:(float)a10 lrnnOffset:(float)a11 conversationalOdldScore:(float)a12 spkrIdThreshold:(float)a13;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SMTSiriIntendedInfo)initWithBuilder:(id)builder;
+- (SMTSiriIntendedInfo)initWithCoder:(id)coder;
+- (SMTSiriIntendedInfo)initWithOdldScore:(float)score aftmScore:(float)aftmScore spkrIdScore:(float)idScore lrnnScore:(float)lrnnScore checkerScore:(float)checkerScore invocationType:(id)type lrnnThreshold:(float)threshold lrnnScale:(float)self0 lrnnOffset:(float)self1 conversationalOdldScore:(float)self2;
+- (SMTSiriIntendedInfo)initWithOdldScore:(float)score aftmScore:(float)aftmScore spkrIdScore:(float)idScore lrnnScore:(float)lrnnScore checkerScore:(float)checkerScore invocationType:(id)type lrnnThreshold:(float)threshold lrnnScale:(float)self0 lrnnOffset:(float)self1 conversationalOdldScore:(float)self2 spkrIdThreshold:(float)self3;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMTSiriIntendedInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   odldScore = self->_odldScore;
-  v6 = a3;
+  coderCopy = coder;
   *&v7 = odldScore;
   v8 = [v4 numberWithFloat:v7];
-  [v6 encodeObject:v8 forKey:@"SMTSiriIntendedInfo::odldScore"];
+  [coderCopy encodeObject:v8 forKey:@"SMTSiriIntendedInfo::odldScore"];
 
   *&v9 = self->_aftmScore;
   v10 = [MEMORY[0x277CCABB0] numberWithFloat:v9];
-  [v6 encodeObject:v10 forKey:@"SMTSiriIntendedInfo::aftmScore"];
+  [coderCopy encodeObject:v10 forKey:@"SMTSiriIntendedInfo::aftmScore"];
 
   *&v11 = self->_spkrIdScore;
   v12 = [MEMORY[0x277CCABB0] numberWithFloat:v11];
-  [v6 encodeObject:v12 forKey:@"SMTSiriIntendedInfo::spkrIdScore"];
+  [coderCopy encodeObject:v12 forKey:@"SMTSiriIntendedInfo::spkrIdScore"];
 
   *&v13 = self->_lrnnScore;
   v14 = [MEMORY[0x277CCABB0] numberWithFloat:v13];
-  [v6 encodeObject:v14 forKey:@"SMTSiriIntendedInfo::lrnnScore"];
+  [coderCopy encodeObject:v14 forKey:@"SMTSiriIntendedInfo::lrnnScore"];
 
   *&v15 = self->_checkerScore;
   v16 = [MEMORY[0x277CCABB0] numberWithFloat:v15];
-  [v6 encodeObject:v16 forKey:@"SMTSiriIntendedInfo::checkerScore"];
+  [coderCopy encodeObject:v16 forKey:@"SMTSiriIntendedInfo::checkerScore"];
 
-  [v6 encodeObject:self->_invocationType forKey:@"SMTSiriIntendedInfo::invocationType"];
+  [coderCopy encodeObject:self->_invocationType forKey:@"SMTSiriIntendedInfo::invocationType"];
   *&v17 = self->_lrnnThreshold;
   v18 = [MEMORY[0x277CCABB0] numberWithFloat:v17];
-  [v6 encodeObject:v18 forKey:@"SMTSiriIntendedInfo::lrnnThreshold"];
+  [coderCopy encodeObject:v18 forKey:@"SMTSiriIntendedInfo::lrnnThreshold"];
 
   *&v19 = self->_lrnnScale;
   v20 = [MEMORY[0x277CCABB0] numberWithFloat:v19];
-  [v6 encodeObject:v20 forKey:@"SMTSiriIntendedInfo::lrnnScale"];
+  [coderCopy encodeObject:v20 forKey:@"SMTSiriIntendedInfo::lrnnScale"];
 
   *&v21 = self->_lrnnOffset;
   v22 = [MEMORY[0x277CCABB0] numberWithFloat:v21];
-  [v6 encodeObject:v22 forKey:@"SMTSiriIntendedInfo::lrnnOffset"];
+  [coderCopy encodeObject:v22 forKey:@"SMTSiriIntendedInfo::lrnnOffset"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithBool:self->_isGazeSignalPresent];
-  [v6 encodeObject:v23 forKey:@"SMTSiriIntendedInfo::isGazeSignalPresent"];
+  [coderCopy encodeObject:v23 forKey:@"SMTSiriIntendedInfo::isGazeSignalPresent"];
 
   *&v24 = self->_conversationalOdldScore;
   v25 = [MEMORY[0x277CCABB0] numberWithFloat:v24];
-  [v6 encodeObject:v25 forKey:@"SMTSiriIntendedInfo::conversationalOdldScore"];
+  [coderCopy encodeObject:v25 forKey:@"SMTSiriIntendedInfo::conversationalOdldScore"];
 
   *&v26 = self->_spkrIdThreshold;
   v27 = [MEMORY[0x277CCABB0] numberWithFloat:v26];
-  [v6 encodeObject:v27 forKey:@"SMTSiriIntendedInfo::spkrIdThreshold"];
+  [coderCopy encodeObject:v27 forKey:@"SMTSiriIntendedInfo::spkrIdThreshold"];
 
   *&v28 = self->_neuralCombinerScore;
   v29 = [MEMORY[0x277CCABB0] numberWithFloat:v28];
-  [v6 encodeObject:v29 forKey:@"SMTSiriIntendedInfo::neuralCombinerScore"];
+  [coderCopy encodeObject:v29 forKey:@"SMTSiriIntendedInfo::neuralCombinerScore"];
 
   *&v30 = self->_neuralCombinerThreshold;
   v31 = [MEMORY[0x277CCABB0] numberWithFloat:v30];
-  [v6 encodeObject:v31 forKey:@"SMTSiriIntendedInfo::neuralCombinerThreshold"];
+  [coderCopy encodeObject:v31 forKey:@"SMTSiriIntendedInfo::neuralCombinerThreshold"];
 }
 
-- (SMTSiriIntendedInfo)initWithCoder:(id)a3
+- (SMTSiriIntendedInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::odldScore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::odldScore"];
   [v5 floatValue];
   v45 = v6;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::aftmScore"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::aftmScore"];
   [v7 floatValue];
   v44 = v8;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::spkrIdScore"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::spkrIdScore"];
   [v9 floatValue];
   v43 = v10;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::lrnnScore"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::lrnnScore"];
   [v11 floatValue];
   v42 = v12;
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::checkerScore"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::checkerScore"];
   [v13 floatValue];
   v15 = v14;
 
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::invocationType"];
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::lrnnThreshold"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::invocationType"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::lrnnThreshold"];
   [v17 floatValue];
   v19 = v18;
 
-  v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::lrnnScale"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::lrnnScale"];
   [v20 floatValue];
   v22 = v21;
 
-  v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::lrnnOffset"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::lrnnOffset"];
   [v23 floatValue];
   v25 = v24;
 
-  v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::isGazeSignalPresent"];
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::isGazeSignalPresent"];
   [v26 BOOLValue];
 
-  v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::conversationalOdldScore"];
+  v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::conversationalOdldScore"];
   [v27 floatValue];
   v29 = v28;
 
-  v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::spkrIdThreshold"];
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::spkrIdThreshold"];
   [v30 floatValue];
   v32 = v31;
 
-  v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::neuralCombinerScore"];
+  v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::neuralCombinerScore"];
   [v33 floatValue];
   v35 = v34;
 
-  v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::neuralCombinerThreshold"];
+  v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTSiriIntendedInfo::neuralCombinerThreshold"];
 
   [v36 floatValue];
   v38 = v37;
@@ -181,10 +181,10 @@ void __37__SMTSiriIntendedInfo_initWithCoder___block_invoke(uint64_t a1, void *a
   [v16 setNeuralCombinerThreshold:v15];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v31 = 1;
   }
@@ -194,7 +194,7 @@ void __37__SMTSiriIntendedInfo_initWithCoder___block_invoke(uint64_t a1, void *a
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       odldScore = self->_odldScore;
       [(SMTSiriIntendedInfo *)v5 odldScore];
       if (odldScore != v7)
@@ -231,9 +231,9 @@ void __37__SMTSiriIntendedInfo_initWithCoder___block_invoke(uint64_t a1, void *a
       }
 
       invocationType = self->_invocationType;
-      v17 = [(SMTSiriIntendedInfo *)v5 invocationType];
+      invocationType = [(SMTSiriIntendedInfo *)v5 invocationType];
 
-      if (invocationType != v17)
+      if (invocationType != invocationType)
       {
         goto LABEL_16;
       }
@@ -328,7 +328,7 @@ LABEL_16:
   return v36 ^ v34;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v8.receiver = self;
@@ -339,25 +339,25 @@ LABEL_16:
   return v6;
 }
 
-- (SMTSiriIntendedInfo)initWithOdldScore:(float)a3 aftmScore:(float)a4 spkrIdScore:(float)a5 lrnnScore:(float)a6 checkerScore:(float)a7 invocationType:(id)a8 lrnnThreshold:(float)a9 lrnnScale:(float)a10 lrnnOffset:(float)a11 conversationalOdldScore:(float)a12 spkrIdThreshold:(float)a13
+- (SMTSiriIntendedInfo)initWithOdldScore:(float)score aftmScore:(float)aftmScore spkrIdScore:(float)idScore lrnnScore:(float)lrnnScore checkerScore:(float)checkerScore invocationType:(id)type lrnnThreshold:(float)threshold lrnnScale:(float)self0 lrnnOffset:(float)self1 conversationalOdldScore:(float)self2 spkrIdThreshold:(float)self3
 {
-  v20 = a8;
+  typeCopy = type;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __176__SMTSiriIntendedInfo_initWithOdldScore_aftmScore_spkrIdScore_lrnnScore_checkerScore_invocationType_lrnnThreshold_lrnnScale_lrnnOffset_conversationalOdldScore_spkrIdThreshold___block_invoke;
   v26[3] = &unk_2784D5CF8;
-  v28 = a3;
-  v29 = a4;
-  v30 = a5;
-  v31 = a6;
-  v27 = v20;
-  v32 = a7;
-  v33 = a9;
-  v34 = a10;
-  v35 = a11;
-  v36 = a12;
-  v37 = a13;
-  v21 = v20;
+  scoreCopy = score;
+  aftmScoreCopy = aftmScore;
+  idScoreCopy = idScore;
+  lrnnScoreCopy = lrnnScore;
+  v27 = typeCopy;
+  checkerScoreCopy = checkerScore;
+  thresholdCopy = threshold;
+  scaleCopy = scale;
+  offsetCopy = offset;
+  odldScoreCopy = odldScore;
+  idThresholdCopy = idThreshold;
+  v21 = typeCopy;
   v22 = [(SMTSiriIntendedInfo *)self initWithBuilder:v26];
 
   return v22;
@@ -390,24 +390,24 @@ void __176__SMTSiriIntendedInfo_initWithOdldScore_aftmScore_spkrIdScore_lrnnScor
   [v14 setSpkrIdThreshold:v13];
 }
 
-- (SMTSiriIntendedInfo)initWithOdldScore:(float)a3 aftmScore:(float)a4 spkrIdScore:(float)a5 lrnnScore:(float)a6 checkerScore:(float)a7 invocationType:(id)a8 lrnnThreshold:(float)a9 lrnnScale:(float)a10 lrnnOffset:(float)a11 conversationalOdldScore:(float)a12
+- (SMTSiriIntendedInfo)initWithOdldScore:(float)score aftmScore:(float)aftmScore spkrIdScore:(float)idScore lrnnScore:(float)lrnnScore checkerScore:(float)checkerScore invocationType:(id)type lrnnThreshold:(float)threshold lrnnScale:(float)self0 lrnnOffset:(float)self1 conversationalOdldScore:(float)self2
 {
-  v20 = a8;
+  typeCopy = type;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __160__SMTSiriIntendedInfo_initWithOdldScore_aftmScore_spkrIdScore_lrnnScore_checkerScore_invocationType_lrnnThreshold_lrnnScale_lrnnOffset_conversationalOdldScore___block_invoke;
   v25[3] = &unk_2784D5CD0;
-  v27 = a3;
-  v28 = a4;
-  v29 = a5;
-  v30 = a6;
-  v26 = v20;
-  v31 = a7;
-  v32 = a9;
-  v33 = a10;
-  v34 = a11;
-  v35 = a12;
-  v21 = v20;
+  scoreCopy = score;
+  aftmScoreCopy = aftmScore;
+  idScoreCopy = idScore;
+  lrnnScoreCopy = lrnnScore;
+  v26 = typeCopy;
+  checkerScoreCopy = checkerScore;
+  thresholdCopy = threshold;
+  scaleCopy = scale;
+  offsetCopy = offset;
+  odldScoreCopy = odldScore;
+  v21 = typeCopy;
   v22 = [(SMTSiriIntendedInfo *)self initWithBuilder:v25];
 
   return v22;
@@ -438,17 +438,17 @@ void __160__SMTSiriIntendedInfo_initWithOdldScore_aftmScore_spkrIdScore_lrnnScor
   [v13 setConversationalOdldScore:v12];
 }
 
-- (SMTSiriIntendedInfo)initWithBuilder:(id)a3
+- (SMTSiriIntendedInfo)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v23.receiver = self;
   v23.super_class = SMTSiriIntendedInfo;
   v5 = [(SMTSiriIntendedInfo *)&v23 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_SMTSiriIntendedInfoMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_SMTSiriIntendedInfoMutation *)v7 isDirty])
     {
       [(_SMTSiriIntendedInfoMutation *)v7 getOdldScore];
@@ -461,9 +461,9 @@ void __160__SMTSiriIntendedInfo_initWithOdldScore_aftmScore_spkrIdScore_lrnnScor
       v6->_lrnnScore = v11;
       [(_SMTSiriIntendedInfoMutation *)v7 getCheckerScore];
       v6->_checkerScore = v12;
-      v13 = [(_SMTSiriIntendedInfoMutation *)v7 getInvocationType];
+      getInvocationType = [(_SMTSiriIntendedInfoMutation *)v7 getInvocationType];
       invocationType = v6->_invocationType;
-      v6->_invocationType = v13;
+      v6->_invocationType = getInvocationType;
 
       [(_SMTSiriIntendedInfoMutation *)v7 getLrnnThreshold];
       v6->_lrnnThreshold = v15;
@@ -486,21 +486,21 @@ void __160__SMTSiriIntendedInfo_initWithOdldScore_aftmScore_spkrIdScore_lrnnScor
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SMTSiriIntendedInfoMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_SMTSiriIntendedInfoMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(SMTSiriIntendedInfo);
@@ -514,9 +514,9 @@ void __160__SMTSiriIntendedInfo_initWithOdldScore_aftmScore_spkrIdScore_lrnnScor
       v6->_lrnnScore = v10;
       [(_SMTSiriIntendedInfoMutation *)v5 getCheckerScore];
       v6->_checkerScore = v11;
-      v12 = [(_SMTSiriIntendedInfoMutation *)v5 getInvocationType];
+      getInvocationType = [(_SMTSiriIntendedInfoMutation *)v5 getInvocationType];
       invocationType = v6->_invocationType;
-      v6->_invocationType = v12;
+      v6->_invocationType = getInvocationType;
 
       [(_SMTSiriIntendedInfoMutation *)v5 getLrnnThreshold];
       v6->_lrnnThreshold = v14;

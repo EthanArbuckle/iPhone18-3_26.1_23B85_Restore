@@ -1,18 +1,18 @@
 @interface BPSPBApproxPercentileDigest
-- (BOOL)isEqual:(id)a3;
-- (float)centroidMeansAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (float)centroidMeansAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)centroidWeightsAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)centroidWeightsAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCentroidCount:(BOOL)a3;
-- (void)setHasMax:(BOOL)a3;
-- (void)setHasMin:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasCentroidCount:(BOOL)count;
+- (void)setHasMax:(BOOL)max;
+- (void)setHasMin:(BOOL)min;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BPSPBApproxPercentileDigest
@@ -26,9 +26,9 @@
   [(BPSPBApproxPercentileDigest *)&v3 dealloc];
 }
 
-- (void)setHasMin:(BOOL)a3
+- (void)setHasMin:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 8;
   }
@@ -41,9 +41,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMax:(BOOL)a3
+- (void)setHasMax:(BOOL)max
 {
-  if (a3)
+  if (max)
   {
     v3 = 4;
   }
@@ -56,9 +56,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCentroidCount:(BOOL)a3
+- (void)setHasCentroidCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -71,36 +71,36 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (float)centroidMeansAtIndex:(unint64_t)a3
+- (float)centroidMeansAtIndex:(unint64_t)index
 {
   p_centroidMeans = &self->_centroidMeans;
   count = self->_centroidMeans.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_centroidMeans->list[a3];
+  return p_centroidMeans->list[index];
 }
 
-- (unsigned)centroidWeightsAtIndex:(unint64_t)a3
+- (unsigned)centroidWeightsAtIndex:(unint64_t)index
 {
   p_centroidWeights = &self->_centroidWeights;
   count = self->_centroidWeights.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_centroidWeights->list[a3];
+  return p_centroidWeights->list[index];
 }
 
 - (id)description
@@ -109,21 +109,21 @@
   v8.receiver = self;
   v8.super_class = BPSPBApproxPercentileDigest;
   v4 = [(BPSPBApproxPercentileDigest *)&v8 description];
-  v5 = [(BPSPBApproxPercentileDigest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BPSPBApproxPercentileDigest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     *&v4 = self->_min;
     v10 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-    [v3 setObject:v10 forKey:@"min"];
+    [dictionary setObject:v10 forKey:@"min"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -145,7 +145,7 @@ LABEL_3:
 
   *&v4 = self->_max;
   v11 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v11 forKey:@"max"];
+  [dictionary setObject:v11 forKey:@"max"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -161,28 +161,28 @@ LABEL_4:
 
 LABEL_11:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_centroidCount];
-  [v3 setObject:v12 forKey:@"centroidCount"];
+  [dictionary setObject:v12 forKey:@"centroidCount"];
 
   if (*&self->_has)
   {
 LABEL_5:
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_bufferMultiplier];
-    [v3 setObject:v6 forKey:@"bufferMultiplier"];
+    [dictionary setObject:v6 forKey:@"bufferMultiplier"];
   }
 
 LABEL_6:
   v7 = PBRepeatedFloatNSArray();
-  [v3 setObject:v7 forKey:@"centroidMeans"];
+  [dictionary setObject:v7 forKey:@"centroidMeans"];
 
   v8 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v8 forKey:@"centroidWeights"];
+  [dictionary setObject:v8 forKey:@"centroidWeights"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -271,14 +271,14 @@ LABEL_6:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[17] = LODWORD(self->_min);
-    *(v4 + 72) |= 8u;
+    toCopy[17] = LODWORD(self->_min);
+    *(toCopy + 72) |= 8u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -289,8 +289,8 @@ LABEL_3:
       }
 
 LABEL_19:
-      v4[15] = self->_centroidCount;
-      *(v4 + 72) |= 2u;
+      toCopy[15] = self->_centroidCount;
+      *(toCopy + 72) |= 2u;
       if ((*&self->_has & 1) == 0)
       {
         goto LABEL_6;
@@ -305,8 +305,8 @@ LABEL_19:
     goto LABEL_3;
   }
 
-  v4[16] = LODWORD(self->_max);
-  *(v4 + 72) |= 4u;
+  toCopy[16] = LODWORD(self->_max);
+  *(toCopy + 72) |= 4u;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -317,19 +317,19 @@ LABEL_4:
   if (has)
   {
 LABEL_5:
-    v4[14] = self->_bufferMultiplier;
-    *(v4 + 72) |= 1u;
+    toCopy[14] = self->_bufferMultiplier;
+    *(toCopy + 72) |= 1u;
   }
 
 LABEL_6:
-  v12 = v4;
+  v12 = toCopy;
   if ([(BPSPBApproxPercentileDigest *)self centroidMeansCount])
   {
     [v12 clearCentroidMeans];
-    v6 = [(BPSPBApproxPercentileDigest *)self centroidMeansCount];
-    if (v6)
+    centroidMeansCount = [(BPSPBApproxPercentileDigest *)self centroidMeansCount];
+    if (centroidMeansCount)
     {
-      v7 = v6;
+      v7 = centroidMeansCount;
       for (i = 0; i != v7; ++i)
       {
         [(BPSPBApproxPercentileDigest *)self centroidMeansAtIndex:i];
@@ -341,10 +341,10 @@ LABEL_6:
   if ([(BPSPBApproxPercentileDigest *)self centroidWeightsCount])
   {
     [v12 clearCentroidWeights];
-    v9 = [(BPSPBApproxPercentileDigest *)self centroidWeightsCount];
-    if (v9)
+    centroidWeightsCount = [(BPSPBApproxPercentileDigest *)self centroidWeightsCount];
+    if (centroidWeightsCount)
     {
-      v10 = v9;
+      v10 = centroidWeightsCount;
       for (j = 0; j != v10; ++j)
       {
         [v12 addCentroidWeights:{-[BPSPBApproxPercentileDigest centroidWeightsAtIndex:](self, "centroidWeightsAtIndex:", j)}];
@@ -353,9 +353,9 @@ LABEL_6:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 8) != 0)
@@ -410,63 +410,63 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = *(v4 + 72);
+  v5 = *(equalCopy + 72);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 72) & 8) == 0 || self->_min != *(v4 + 17))
+    if ((*(equalCopy + 72) & 8) == 0 || self->_min != *(equalCopy + 17))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 72) & 8) != 0)
+  else if ((*(equalCopy + 72) & 8) != 0)
   {
     goto LABEL_24;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_max != *(v4 + 16))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_max != *(equalCopy + 16))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_24;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_centroidCount != *(v4 + 15))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_centroidCount != *(equalCopy + 15))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
     goto LABEL_24;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_bufferMultiplier != *(v4 + 14))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_bufferMultiplier != *(equalCopy + 14))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_24;
   }
@@ -579,15 +579,15 @@ LABEL_22:
   return v14 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 72);
+  fromCopy = from;
+  v5 = *(fromCopy + 72);
   if ((v5 & 8) != 0)
   {
-    self->_min = *(v4 + 17);
+    self->_min = *(fromCopy + 17);
     *&self->_has |= 8u;
-    v5 = *(v4 + 72);
+    v5 = *(fromCopy + 72);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -600,14 +600,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 72) & 4) == 0)
+  else if ((*(fromCopy + 72) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_max = *(v4 + 16);
+  self->_max = *(fromCopy + 16);
   *&self->_has |= 4u;
-  v5 = *(v4 + 72);
+  v5 = *(fromCopy + 72);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -620,21 +620,21 @@ LABEL_4:
   }
 
 LABEL_17:
-  self->_centroidCount = *(v4 + 15);
+  self->_centroidCount = *(fromCopy + 15);
   *&self->_has |= 2u;
-  if (*(v4 + 72))
+  if (*(fromCopy + 72))
   {
 LABEL_5:
-    self->_bufferMultiplier = *(v4 + 14);
+    self->_bufferMultiplier = *(fromCopy + 14);
     *&self->_has |= 1u;
   }
 
 LABEL_6:
-  v12 = v4;
-  v6 = [v4 centroidMeansCount];
-  if (v6)
+  v12 = fromCopy;
+  centroidMeansCount = [fromCopy centroidMeansCount];
+  if (centroidMeansCount)
   {
-    v7 = v6;
+    v7 = centroidMeansCount;
     for (i = 0; i != v7; ++i)
     {
       [v12 centroidMeansAtIndex:i];
@@ -642,10 +642,10 @@ LABEL_6:
     }
   }
 
-  v9 = [v12 centroidWeightsCount];
-  if (v9)
+  centroidWeightsCount = [v12 centroidWeightsCount];
+  if (centroidWeightsCount)
   {
-    v10 = v9;
+    v10 = centroidWeightsCount;
     for (j = 0; j != v10; ++j)
     {
       -[BPSPBApproxPercentileDigest addCentroidWeights:](self, "addCentroidWeights:", [v12 centroidWeightsAtIndex:j]);

@@ -1,15 +1,15 @@
 @interface CKXArrayProxyBase
 - ($3CC19D079FD0B010EE84973AA846B91B)listInstance;
-- (void)associateWithListInstance:(id *)a3;
+- (void)associateWithListInstance:(id *)instance;
 - (void)reset;
 @end
 
 @implementation CKXArrayProxyBase
 
-- (void)associateWithListInstance:(id *)a3
+- (void)associateWithListInstance:(id *)instance
 {
-  v3 = *&a3->var2;
-  *&self->_listInstance.structToken = *&a3->var0;
+  v3 = *&instance->var2;
+  *&self->_listInstance.structToken = *&instance->var0;
   *&self->_listInstance.page = v3;
 }
 

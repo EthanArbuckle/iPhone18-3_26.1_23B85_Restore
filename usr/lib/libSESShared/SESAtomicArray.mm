@@ -1,10 +1,10 @@
 @interface SESAtomicArray
 - (SESAtomicArray)init;
-- (id)firstWhere:(id)a3;
+- (id)firstWhere:(id)where;
 - (id)snapshot;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3;
+- (void)removeObject:(id)object;
 @end
 
 @implementation SESAtomicArray
@@ -35,19 +35,19 @@
   return v3;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_objects addObject:v4];
+  [(NSMutableArray *)self->_objects addObject:objectCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_objects removeObject:v4];
+  [(NSMutableArray *)self->_objects removeObject:objectCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
@@ -59,11 +59,11 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)firstWhere:(id)a3
+- (id)firstWhere:(id)where
 {
-  v4 = a3;
+  whereCopy = where;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableArray *)self->_objects find:v4];
+  v5 = [(NSMutableArray *)self->_objects find:whereCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;

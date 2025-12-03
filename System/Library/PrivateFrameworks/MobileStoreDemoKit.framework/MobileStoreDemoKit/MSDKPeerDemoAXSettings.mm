@@ -1,8 +1,8 @@
 @interface MSDKPeerDemoAXSettings
 - (MSDKPeerDemoAXSettings)init;
-- (MSDKPeerDemoAXSettings)initWithCoder:(id)a3;
+- (MSDKPeerDemoAXSettings)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSDKPeerDemoAXSettings
@@ -41,68 +41,68 @@
   return v5;
 }
 
-- (MSDKPeerDemoAXSettings)initWithCoder:(id)a3
+- (MSDKPeerDemoAXSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = MSDKPeerDemoAXSettings;
   v5 = [(MSDKPeerDemoAXSettings *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pointerControl"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pointerControl"];
     -[MSDKPeerDemoAXSettings setPointerControl:](v5, "setPointerControl:", [v6 unsignedIntegerValue]);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gazeAccessibility"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gazeAccessibility"];
     -[MSDKPeerDemoAXSettings setGazeAccessibility:](v5, "setGazeAccessibility:", [v7 unsignedIntegerValue]);
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"staticFoveation"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"staticFoveation"];
     -[MSDKPeerDemoAXSettings setStaticFoveation:](v5, "setStaticFoveation:", [v8 unsignedIntegerValue]);
 
-    if ([v4 containsValueForKey:@"pointerControlHandChirality"])
+    if ([coderCopy containsValueForKey:@"pointerControlHandChirality"])
     {
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pointerControlHandChirality"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pointerControlHandChirality"];
       -[MSDKPeerDemoAXSettings setPointerControlHandChirality:](v5, "setPointerControlHandChirality:", [v9 unsignedIntegerValue]);
     }
 
-    if ([v4 containsValueForKey:@"dwellControl"])
+    if ([coderCopy containsValueForKey:@"dwellControl"])
     {
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dwellControl"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dwellControl"];
       -[MSDKPeerDemoAXSettings setDwellControl:](v5, "setDwellControl:", [v10 unsignedIntegerValue]);
     }
 
-    if ([v4 containsValueForKey:@"voiceOver"])
+    if ([coderCopy containsValueForKey:@"voiceOver"])
     {
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"voiceOver"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"voiceOver"];
       -[MSDKPeerDemoAXSettings setVoiceOver:](v5, "setVoiceOver:", [v11 unsignedIntegerValue]);
     }
 
-    if ([v4 containsValueForKey:@"closedCaptions"])
+    if ([coderCopy containsValueForKey:@"closedCaptions"])
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"closedCaptions"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"closedCaptions"];
       -[MSDKPeerDemoAXSettings setClosedCaptions:](v5, "setClosedCaptions:", [v12 unsignedIntegerValue]);
     }
 
-    if ([v4 containsValueForKey:@"assistiveTouch"])
+    if ([coderCopy containsValueForKey:@"assistiveTouch"])
     {
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assistiveTouch"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assistiveTouch"];
       -[MSDKPeerDemoAXSettings setAssistiveTouch:](v5, "setAssistiveTouch:", [v13 unsignedIntegerValue]);
     }
 
-    if ([v4 containsValueForKey:@"audioDescriptions"])
+    if ([coderCopy containsValueForKey:@"audioDescriptions"])
     {
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"audioDescriptions"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"audioDescriptions"];
       -[MSDKPeerDemoAXSettings setAudioDescriptions:](v5, "setAudioDescriptions:", [v14 unsignedIntegerValue]);
     }
 
-    if ([v4 containsValueForKey:@"voiceOverTutorial"])
+    if ([coderCopy containsValueForKey:@"voiceOverTutorial"])
     {
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"voiceOverTutorial"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"voiceOverTutorial"];
       -[MSDKPeerDemoAXSettings setVoiceOverTutorial:](v5, "setVoiceOverTutorial:", [v15 unsignedIntegerValue]);
     }
 
-    if ([v4 containsValueForKey:@"liveTranscription"])
+    if ([coderCopy containsValueForKey:@"liveTranscription"])
     {
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"liveTranscription"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"liveTranscription"];
       -[MSDKPeerDemoAXSettings setLiveTranscription:](v5, "setLiveTranscription:", [v16 unsignedIntegerValue]);
     }
   }
@@ -110,42 +110,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[MSDKPeerDemoAXSettings pointerControl](self, "pointerControl")}];
-  [v5 encodeObject:v6 forKey:@"pointerControl"];
+  [coderCopy encodeObject:v6 forKey:@"pointerControl"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MSDKPeerDemoAXSettings gazeAccessibility](self, "gazeAccessibility")}];
-  [v5 encodeObject:v7 forKey:@"gazeAccessibility"];
+  [coderCopy encodeObject:v7 forKey:@"gazeAccessibility"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MSDKPeerDemoAXSettings staticFoveation](self, "staticFoveation")}];
-  [v5 encodeObject:v8 forKey:@"staticFoveation"];
+  [coderCopy encodeObject:v8 forKey:@"staticFoveation"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MSDKPeerDemoAXSettings pointerControlHandChirality](self, "pointerControlHandChirality")}];
-  [v5 encodeObject:v9 forKey:@"pointerControlHandChirality"];
+  [coderCopy encodeObject:v9 forKey:@"pointerControlHandChirality"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MSDKPeerDemoAXSettings dwellControl](self, "dwellControl")}];
-  [v5 encodeObject:v10 forKey:@"dwellControl"];
+  [coderCopy encodeObject:v10 forKey:@"dwellControl"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MSDKPeerDemoAXSettings voiceOver](self, "voiceOver")}];
-  [v5 encodeObject:v11 forKey:@"voiceOver"];
+  [coderCopy encodeObject:v11 forKey:@"voiceOver"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MSDKPeerDemoAXSettings closedCaptions](self, "closedCaptions")}];
-  [v5 encodeObject:v12 forKey:@"closedCaptions"];
+  [coderCopy encodeObject:v12 forKey:@"closedCaptions"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MSDKPeerDemoAXSettings assistiveTouch](self, "assistiveTouch")}];
-  [v5 encodeObject:v13 forKey:@"assistiveTouch"];
+  [coderCopy encodeObject:v13 forKey:@"assistiveTouch"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MSDKPeerDemoAXSettings audioDescriptions](self, "audioDescriptions")}];
-  [v5 encodeObject:v14 forKey:@"audioDescriptions"];
+  [coderCopy encodeObject:v14 forKey:@"audioDescriptions"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MSDKPeerDemoAXSettings voiceOverTutorial](self, "voiceOverTutorial")}];
-  [v5 encodeObject:v15 forKey:@"voiceOverTutorial"];
+  [coderCopy encodeObject:v15 forKey:@"voiceOverTutorial"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MSDKPeerDemoAXSettings liveTranscription](self, "liveTranscription")}];
-  [v5 encodeObject:v16 forKey:@"liveTranscription"];
+  [coderCopy encodeObject:v16 forKey:@"liveTranscription"];
 }
 
 @end

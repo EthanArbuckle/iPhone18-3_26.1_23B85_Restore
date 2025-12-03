@@ -1,24 +1,24 @@
 @interface _SFLinkWithPreviewActivityItemProvider
-- (_SFLinkWithPreviewActivityItemProvider)initWithPlaceholderItem:(id)a3 URL:(id)a4 pageTitle:(id)a5 webView:(id)a6;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (_SFLinkWithPreviewActivityItemProvider)initWithPlaceholderItem:(id)item URL:(id)l pageTitle:(id)title webView:(id)view;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 @end
 
 @implementation _SFLinkWithPreviewActivityItemProvider
 
-- (_SFLinkWithPreviewActivityItemProvider)initWithPlaceholderItem:(id)a3 URL:(id)a4 pageTitle:(id)a5 webView:(id)a6
+- (_SFLinkWithPreviewActivityItemProvider)initWithPlaceholderItem:(id)item URL:(id)l pageTitle:(id)title webView:(id)view
 {
   v17.receiver = self;
   v17.super_class = _SFLinkWithPreviewActivityItemProvider;
-  v6 = [(_SFActivityItemProvider *)&v17 initWithPlaceholderItem:a3 URL:a4 pageTitle:a5 webView:a6];
+  v6 = [(_SFActivityItemProvider *)&v17 initWithPlaceholderItem:item URL:l pageTitle:title webView:view];
   v7 = v6;
   if (v6)
   {
     v8 = MEMORY[0x1E69C97E8];
     v9 = [(_SFActivityItemProvider *)v6 url];
-    v10 = [(_SFActivityItemProvider *)v7 webView];
-    v11 = [MEMORY[0x1E69B1C68] sharedSiteMetadataManager];
-    v12 = [v11 linkPresentationIconCache];
-    v13 = [v8 linkMetadataForURL:v9 webView:v10 iconCache:v12];
+    webView = [(_SFActivityItemProvider *)v7 webView];
+    mEMORY[0x1E69B1C68] = [MEMORY[0x1E69B1C68] sharedSiteMetadataManager];
+    linkPresentationIconCache = [mEMORY[0x1E69B1C68] linkPresentationIconCache];
+    v13 = [v8 linkMetadataForURL:v9 webView:webView iconCache:linkPresentationIconCache];
     cachedLinkMetadata = v7->_cachedLinkMetadata;
     v7->_cachedLinkMetadata = v13;
 
@@ -28,7 +28,7 @@
   return v7;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;

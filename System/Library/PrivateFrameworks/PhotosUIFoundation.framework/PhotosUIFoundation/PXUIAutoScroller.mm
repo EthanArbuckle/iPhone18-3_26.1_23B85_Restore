@@ -1,38 +1,38 @@
 @interface PXUIAutoScroller
-- (BOOL)autoscrollWithOffset:(CGPoint)a3;
-- (CGRect)visibleRectForScrollView:(id)a3;
-- (void)_handleDisplayLink:(id)a3;
+- (BOOL)autoscrollWithOffset:(CGPoint)offset;
+- (CGRect)visibleRectForScrollView:(id)view;
+- (void)_handleDisplayLink:(id)link;
 - (void)startRepeating;
 - (void)stopRepeating;
-- (void)updateWithGestureRecognizer:(id)a3;
+- (void)updateWithGestureRecognizer:(id)recognizer;
 @end
 
 @implementation PXUIAutoScroller
 
-- (void)updateWithGestureRecognizer:(id)a3
+- (void)updateWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v9 = [v4 view];
-  [v4 locationInView:v9];
+  recognizerCopy = recognizer;
+  view = [recognizerCopy view];
+  [recognizerCopy locationInView:view];
   v6 = v5;
   v8 = v7;
 
-  [(PXAutoScroller *)self updateWithUserInteractionLocation:v9 inCoordinateSpace:v6, v8];
+  [(PXAutoScroller *)self updateWithUserInteractionLocation:view inCoordinateSpace:v6, v8];
 }
 
-- (BOOL)autoscrollWithOffset:(CGPoint)a3
+- (BOOL)autoscrollWithOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(PXAutoScroller *)self scrollView];
-  [v5 contentOffset];
+  y = offset.y;
+  x = offset.x;
+  scrollView = [(PXAutoScroller *)self scrollView];
+  [scrollView contentOffset];
   v7 = v6;
   v9 = v8;
-  [v5 px_constrainedContentOffset:{v6 + x, v8 + y}];
+  [scrollView px_constrainedContentOffset:{v6 + x, v8 + y}];
   v12 = v11 != v9 || v10 != v7;
   if (v12)
   {
-    [v5 setContentOffset:?];
+    [scrollView setContentOffset:?];
   }
 
   return v12;
@@ -40,31 +40,31 @@
 
 - (void)stopRepeating
 {
-  v3 = [(PXUIAutoScroller *)self displayLink];
-  [v3 setPaused:1];
-  [v3 invalidate];
+  displayLink = [(PXUIAutoScroller *)self displayLink];
+  [displayLink setPaused:1];
+  [displayLink invalidate];
   [(PXUIAutoScroller *)self setDisplayLink:0];
 }
 
-- (void)_handleDisplayLink:(id)a3
+- (void)_handleDisplayLink:(id)link
 {
-  [a3 timestamp];
+  [link timestamp];
 
   [(PXAutoScroller *)self updateWithTimestamp:?];
 }
 
 - (void)startRepeating
 {
-  v4 = [(PXUIAutoScroller *)self displayLink];
+  displayLink = [(PXUIAutoScroller *)self displayLink];
 
-  if (v4)
+  if (displayLink)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXUIAutoScroller.m" lineNumber:37 description:@"display link already exists"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIAutoScroller.m" lineNumber:37 description:@"display link already exists"];
   }
 
-  v5 = self;
-  v6 = [[_PXDisplayLinkWeakReference alloc] initWithObject:v5 selector:sel__handleDisplayLink_];
+  selfCopy = self;
+  v6 = [[_PXDisplayLinkWeakReference alloc] initWithObject:selfCopy selector:sel__handleDisplayLink_];
 
   v9 = [MEMORY[0x1E6979330] displayLinkWithTarget:v6 selector:sel_handleDisplayLink_];
 
@@ -76,21 +76,21 @@
   }
 
   [v9 setPaused:0];
-  v7 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [v9 addToRunLoop:v7 forMode:*MEMORY[0x1E695DA28]];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [v9 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
 
-  [(PXUIAutoScroller *)v5 setDisplayLink:v9];
+  [(PXUIAutoScroller *)selfCopy setDisplayLink:v9];
 }
 
-- (CGRect)visibleRectForScrollView:(id)a3
+- (CGRect)visibleRectForScrollView:(id)view
 {
-  v3 = a3;
-  [v3 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [viewCopy safeAreaInsets];
   v13 = v12;
   v15 = v14;
   v17 = v16;

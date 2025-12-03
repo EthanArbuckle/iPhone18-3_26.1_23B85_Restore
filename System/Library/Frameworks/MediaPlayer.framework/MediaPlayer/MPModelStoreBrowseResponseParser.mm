@@ -1,51 +1,51 @@
 @interface MPModelStoreBrowseResponseParser
-- (BOOL)_parseFeaturedContentChild:(id)a3 isMemberOfChartSet:(BOOL)a4 insertingResultsToSectionedCollection:(id)a5 atSectionIndex:(int64_t)a6 additionalContentIdentifiers:(id)a7 allAdditionalContentIdentifiersNeedingLookup:(id)a8;
-- (BOOL)_storeItemMetadataIsAvailableForContentIdentifier:(id)a3;
-- (MPModelStoreBrowseResponseParser)initWithPreviousParser:(id)a3 additionalStoreItemMetadataResponse:(id)a4 options:(id)a5 sectionBuilder:(id)a6 contentItemBuilder:(id)a7 userIdentity:(id)a8;
-- (MPModelStoreBrowseResponseParser)initWithRawResponseOutput:(id)a3 options:(id)a4 sectionBuilder:(id)a5 contentItemBuilder:(id)a6 userIdentity:(id)a7;
+- (BOOL)_parseFeaturedContentChild:(id)child isMemberOfChartSet:(BOOL)set insertingResultsToSectionedCollection:(id)collection atSectionIndex:(int64_t)index additionalContentIdentifiers:(id)identifiers allAdditionalContentIdentifiersNeedingLookup:(id)lookup;
+- (BOOL)_storeItemMetadataIsAvailableForContentIdentifier:(id)identifier;
+- (MPModelStoreBrowseResponseParser)initWithPreviousParser:(id)parser additionalStoreItemMetadataResponse:(id)response options:(id)options sectionBuilder:(id)builder contentItemBuilder:(id)itemBuilder userIdentity:(id)identity;
+- (MPModelStoreBrowseResponseParser)initWithRawResponseOutput:(id)output options:(id)options sectionBuilder:(id)builder contentItemBuilder:(id)itemBuilder userIdentity:(id)identity;
 - (MPSectionedCollection)additionalContentIdentifiers;
 - (MPSectionedCollection)results;
 - (NSArray)allAdditionalContentIdentifiersNeedingLookup;
-- (id)_storeItemMetadataForContentIdentifier:(id)a3;
+- (id)_storeItemMetadataForContentIdentifier:(id)identifier;
 - (void)_parse;
-- (void)_parseFeaturedContentStructureModelChildren:(id)a3;
-- (void)_parseSingleContentListFromPageDataDictionary:(id)a3 isMemberOfChartSet:(BOOL)a4;
+- (void)_parseFeaturedContentStructureModelChildren:(id)children;
+- (void)_parseSingleContentListFromPageDataDictionary:(id)dictionary isMemberOfChartSet:(BOOL)set;
 - (void)_parseUsingAdditionalContentIdentifiersFromPreviousParser;
-- (void)_populateStorePlatformDataResultsFromRawResponseOutputDictionary:(id)a3;
-- (void)_populateUnavailableContentIdentifiersFromPageDataDictionary:(id)a3;
+- (void)_populateStorePlatformDataResultsFromRawResponseOutputDictionary:(id)dictionary;
+- (void)_populateUnavailableContentIdentifiersFromPageDataDictionary:(id)dictionary;
 @end
 
 @implementation MPModelStoreBrowseResponseParser
 
-- (BOOL)_storeItemMetadataIsAvailableForContentIdentifier:(id)a3
+- (BOOL)_storeItemMetadataIsAvailableForContentIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(MPModelStoreBrowseResponseParser *)self->_previousParser _storeItemMetadataIsAvailableForContentIdentifier:v4]|| ([(MPStoreItemMetadataResponse *)self->_additionalStoreItemMetadataResponse storeItemMetadataForItemIdentifier:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  identifierCopy = identifier;
+  if ([(MPModelStoreBrowseResponseParser *)self->_previousParser _storeItemMetadataIsAvailableForContentIdentifier:identifierCopy]|| ([(MPStoreItemMetadataResponse *)self->_additionalStoreItemMetadataResponse storeItemMetadataForItemIdentifier:identifierCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = 1;
   }
 
   else
   {
-    v8 = [(NSDictionary *)self->_storePlatformDataResults objectForKey:v4];
+    v8 = [(NSDictionary *)self->_storePlatformDataResults objectForKey:identifierCopy];
     v6 = _NSIsNSDictionary();
   }
 
   return v6;
 }
 
-- (id)_storeItemMetadataForContentIdentifier:(id)a3
+- (id)_storeItemMetadataForContentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MPModelStoreBrowseResponseParser *)self->_previousParser _storeItemMetadataForContentIdentifier:v4];
-  if (v5 || ([(MPStoreItemMetadataResponse *)self->_additionalStoreItemMetadataResponse storeItemMetadataForItemIdentifier:v4], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  identifierCopy = identifier;
+  v5 = [(MPModelStoreBrowseResponseParser *)self->_previousParser _storeItemMetadataForContentIdentifier:identifierCopy];
+  if (v5 || ([(MPStoreItemMetadataResponse *)self->_additionalStoreItemMetadataResponse storeItemMetadataForItemIdentifier:identifierCopy], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
   }
 
   else
   {
-    v8 = [(NSDictionary *)self->_storePlatformDataResults objectForKey:v4];
+    v8 = [(NSDictionary *)self->_storePlatformDataResults objectForKey:identifierCopy];
     if (_NSIsNSDictionary())
     {
       v9 = v8;
@@ -61,11 +61,11 @@
   return v6;
 }
 
-- (void)_populateUnavailableContentIdentifiersFromPageDataDictionary:(id)a3
+- (void)_populateUnavailableContentIdentifiersFromPageDataDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"unAvailableContentIds"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"unAvailableContentIds"];
   if (_NSIsNSDictionary())
   {
     v21 = 0;
@@ -161,18 +161,18 @@ void __97__MPModelStoreBrowseResponseParser__populateUnavailableContentIdentifie
   }
 }
 
-- (void)_populateStorePlatformDataResultsFromRawResponseOutputDictionary:(id)a3
+- (void)_populateStorePlatformDataResultsFromRawResponseOutputDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"storePlatformData"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"storePlatformData"];
   if (_NSIsNSDictionary())
   {
-    v6 = [v5 allValues];
-    v7 = [v6 firstObject];
+    allValues = [v5 allValues];
+    firstObject = [allValues firstObject];
 
     if (_NSIsNSDictionary())
     {
-      v8 = [v7 objectForKey:@"results"];
+      v8 = [firstObject objectForKey:@"results"];
       if (_NSIsNSDictionary())
       {
         v9 = v8;
@@ -223,8 +223,8 @@ void __101__MPModelStoreBrowseResponseParser__populateStorePlatformDataResultsFr
 
 - (void)_parseUsingAdditionalContentIdentifiersFromPreviousParser
 {
-  v3 = [(MPModelStoreBrowseResponseParser *)self->_previousParser results];
-  v4 = [(MPModelStoreBrowseResponseParser *)self->_previousParser additionalContentIdentifiers];
+  results = [(MPModelStoreBrowseResponseParser *)self->_previousParser results];
+  additionalContentIdentifiers = [(MPModelStoreBrowseResponseParser *)self->_previousParser additionalContentIdentifiers];
   v5 = objc_alloc_init(MPMutableSectionedCollection);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = objc_alloc_init(MPMutableSectionedCollection);
@@ -237,11 +237,11 @@ void __101__MPModelStoreBrowseResponseParser__populateStorePlatformDataResultsFr
   v29 = v9;
   v10 = v5;
   v30 = v10;
-  v11 = v3;
+  v11 = results;
   v31 = v11;
-  v12 = v4;
+  v12 = additionalContentIdentifiers;
   v32 = v12;
-  v33 = self;
+  selfCopy = self;
   v13 = v6;
   v34 = v13;
   v14 = v8;
@@ -382,17 +382,17 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_parseSingleContentListFromPageDataDictionary:(id)a3 isMemberOfChartSet:(BOOL)a4
+- (void)_parseSingleContentListFromPageDataDictionary:(id)dictionary isMemberOfChartSet:(BOOL)set
 {
-  v50 = a4;
+  setCopy = set;
   v86 = *MEMORY[0x1E69E9840];
-  v54 = a3;
-  v53 = [v54 objectForKey:@"title"];
+  dictionaryCopy = dictionary;
+  v53 = [dictionaryCopy objectForKey:@"title"];
   if ((_NSIsNSString() & 1) == 0)
   {
 
 LABEL_5:
-    v4 = [v54 objectForKey:@"pageTitle"];
+    v4 = [dictionaryCopy objectForKey:@"pageTitle"];
     if (_NSIsNSString())
     {
       v53 = v4;
@@ -412,7 +412,7 @@ LABEL_5:
   }
 
 LABEL_9:
-  v5 = [v54 objectForKey:@"seeAllUrl"];
+  v5 = [dictionaryCopy objectForKey:@"seeAllUrl"];
   if (_NSIsNSString())
   {
     v51 = [MEMORY[0x1E695DFF8] URLWithString:v5];
@@ -424,7 +424,7 @@ LABEL_9:
   }
 
   v57 = objc_alloc_init(MPModelStoreBrowseSectionUniformContentItemTypeResolver);
-  v52 = [v54 objectForKey:@"adamIds"];
+  v52 = [dictionaryCopy objectForKey:@"adamIds"];
   if (!_NSIsNSArray())
   {
     v55 = 0;
@@ -481,17 +481,17 @@ LABEL_9:
 
               v55 = v16;
               [v16 addObject:v15];
-              v17 = [v15 detailedItemType];
+              detailedItemType = [v15 detailedItemType];
             }
 
             else
             {
-              v17 = 0;
+              detailedItemType = 0;
             }
 
             v10 = 1;
 LABEL_36:
-            [(MPModelStoreBrowseSectionUniformContentItemTypeResolver *)v57 addContentItemType:v17];
+            [(MPModelStoreBrowseSectionUniformContentItemTypeResolver *)v57 addContentItemType:detailedItemType];
             goto LABEL_37;
           }
         }
@@ -511,7 +511,7 @@ LABEL_36:
         [v18 addObject:v12];
         if (v14)
         {
-          v17 = 0;
+          detailedItemType = 0;
         }
 
         else
@@ -524,7 +524,7 @@ LABEL_36:
 
           v56 = v19;
           [v19 addObject:v12];
-          v17 = 0;
+          detailedItemType = 0;
           v10 = 0;
         }
 
@@ -541,10 +541,10 @@ LABEL_37:
 LABEL_42:
 
 LABEL_43:
-  v20 = [(MPModelStoreBrowseSectionUniformContentItemTypeResolver *)v57 uniformContentItemType];
-  if (!v20)
+  uniformContentItemType = [(MPModelStoreBrowseSectionUniformContentItemTypeResolver *)v57 uniformContentItemType];
+  if (!uniformContentItemType)
   {
-    v21 = [v54 objectForKey:@"kinds"];
+    v21 = [dictionaryCopy objectForKey:@"kinds"];
     v72 = 0;
     v73 = &v72;
     v74 = 0x3032000000;
@@ -612,37 +612,37 @@ LABEL_59:
 
     if ([v73[5] count] == 1)
     {
-      v32 = [v73[5] anyObject];
-      if ([v32 isEqualToString:@"album"])
+      anyObject = [v73[5] anyObject];
+      if ([anyObject isEqualToString:@"album"])
       {
-        v20 = 1;
+        uniformContentItemType = 1;
       }
 
-      else if ([v32 isEqualToString:@"musicVideo"])
+      else if ([anyObject isEqualToString:@"musicVideo"])
       {
-        v20 = 6;
+        uniformContentItemType = 6;
       }
 
-      else if ([v32 isEqualToString:@"song"])
+      else if ([anyObject isEqualToString:@"song"])
       {
-        v20 = 10;
+        uniformContentItemType = 10;
       }
 
       else
       {
-        v20 = 0;
+        uniformContentItemType = 0;
       }
     }
 
     else
     {
-      v20 = 0;
+      uniformContentItemType = 0;
     }
 
     _Block_object_dispose(&v72, 8);
   }
 
-  v33 = [(MPModelStoreBrowseSectionBuilder *)self->_sectionBuilder modelObjectWithTitle:v53 loadAdditionalContentURL:v51 uniformContentItemType:v20 isMemberOfChartSet:v50 isBrick:0 previouslyRetrievedNestedResponse:0];
+  v33 = [(MPModelStoreBrowseSectionBuilder *)self->_sectionBuilder modelObjectWithTitle:v53 loadAdditionalContentURL:v51 uniformContentItemType:uniformContentItemType isMemberOfChartSet:setCopy isBrick:0 previouslyRetrievedNestedResponse:0];
   v34 = objc_alloc_init(MPMutableSectionedCollection);
   [(MPMutableSectionedCollection *)v34 appendSection:v33];
   v65 = 0u;
@@ -736,21 +736,21 @@ void __101__MPModelStoreBrowseResponseParser__parseSingleContentListFromPageData
   }
 }
 
-- (BOOL)_parseFeaturedContentChild:(id)a3 isMemberOfChartSet:(BOOL)a4 insertingResultsToSectionedCollection:(id)a5 atSectionIndex:(int64_t)a6 additionalContentIdentifiers:(id)a7 allAdditionalContentIdentifiersNeedingLookup:(id)a8
+- (BOOL)_parseFeaturedContentChild:(id)child isMemberOfChartSet:(BOOL)set insertingResultsToSectionedCollection:(id)collection atSectionIndex:(int64_t)index additionalContentIdentifiers:(id)identifiers allAdditionalContentIdentifiersNeedingLookup:(id)lookup
 {
-  v11 = a4;
+  setCopy = set;
   v111 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v93 = a5;
-  v92 = a7;
-  v83 = a8;
+  childCopy = child;
+  collectionCopy = collection;
+  identifiersCopy = identifiers;
+  lookupCopy = lookup;
   if (!_NSIsNSDictionary())
   {
     v16 = 0;
     goto LABEL_112;
   }
 
-  v14 = v13;
+  v14 = childCopy;
   v15 = [v14 objectForKey:@"name"];
   if (_NSIsNSString())
   {
@@ -776,7 +776,7 @@ void __101__MPModelStoreBrowseResponseParser__parseSingleContentListFromPageData
   }
 
 LABEL_11:
-  v88 = self;
+  selfCopy = self;
   v18 = [v14 objectForKey:@"seeAllUrl"];
   if (_NSIsNSString())
   {
@@ -854,18 +854,18 @@ LABEL_33:
     goto LABEL_86;
   }
 
-  v74 = v11;
+  v74 = setCopy;
   v76 = v22;
   v77 = v19;
   v79 = v15;
   v81 = v14;
-  v75 = v13;
+  v75 = childCopy;
   v84 = 0;
   v86 = 0;
   v90 = 0;
   v26 = *v105;
   v27 = 1;
-  v28 = v88;
+  v28 = selfCopy;
   do
   {
     for (i = 0; i != v25; i = i + 1)
@@ -921,7 +921,7 @@ LABEL_33:
               if (v40)
               {
                 v41 = v40;
-                v42 = [v40 detailedItemType];
+                detailedItemType = [v40 detailedItemType];
                 v43 = v84;
                 if (!v84)
                 {
@@ -941,7 +941,7 @@ LABEL_33:
                   v44 = 1;
                 }
 
-                if (v42)
+                if (detailedItemType)
                 {
                   v27 = 1;
                   goto LABEL_74;
@@ -960,12 +960,12 @@ LABEL_33:
 
               v90 = v44;
               v47 = v91;
-              v42 = 0;
+              detailedItemType = 0;
               v27 = 1;
 LABEL_80:
-              [(MPModelStoreBrowseSectionUniformContentItemTypeResolver *)v89 addContentItemType:v42];
+              [(MPModelStoreBrowseSectionUniformContentItemTypeResolver *)v89 addContentItemType:detailedItemType];
 
-              v28 = v88;
+              v28 = selfCopy;
 LABEL_81:
 
               continue;
@@ -973,7 +973,7 @@ LABEL_81:
 
             v47 = v38;
             v48 = [(MPModelStoreBrowseContentItemBuilder *)v28->_contentItemBuilder contentItemTypeForStoreItemMetadata:v38];
-            v42 = v48;
+            detailedItemType = v48;
             if (v90)
             {
               v49 = v90;
@@ -995,7 +995,7 @@ LABEL_81:
           else
           {
             v45 = [v31 objectForKey:@"kindIds"];
-            v42 = [(MPModelStoreBrowseContentItemBuilder *)contentItemBuilder contentItemTypeForRawResponseKindIdentifiers:v45];
+            detailedItemType = [(MPModelStoreBrowseContentItemBuilder *)contentItemBuilder contentItemTypeForRawResponseKindIdentifiers:v45];
 
             if (v90)
             {
@@ -1007,7 +1007,7 @@ LABEL_81:
               v46 = 1;
             }
 
-            if (!v42)
+            if (!detailedItemType)
             {
               v27 = 0;
               v90 = v46;
@@ -1029,7 +1029,7 @@ LABEL_74:
           [v50 addObject:v36];
           if (!v47)
           {
-            [v83 addObject:v36];
+            [lookupCopy addObject:v36];
           }
 
           v27 = 0;
@@ -1045,18 +1045,18 @@ LABEL_74:
   }
 
   while (v25);
-  v13 = v75;
+  childCopy = v75;
   v22 = v76;
   v15 = v79;
   v14 = v81;
   v19 = v77;
-  v11 = v74;
+  setCopy = v74;
   v25 = v84;
   v51 = v86;
   v52 = v90;
 LABEL_86:
 
-  v53 = [(MPModelStoreBrowseSectionUniformContentItemTypeResolver *)v89 uniformContentItemType];
+  uniformContentItemType = [(MPModelStoreBrowseSectionUniformContentItemTypeResolver *)v89 uniformContentItemType];
   v54 = [v25 count];
   if ((v52 & 1) != 0 || v54)
   {
@@ -1075,7 +1075,7 @@ LABEL_86:
   }
 
 LABEL_93:
-  if (v88->_options.useCarPlayBrowseTopLevelContentOnly && v53 == 7)
+  if (selfCopy->_options.useCarPlayBrowseTopLevelContentOnly && uniformContentItemType == 7)
   {
 LABEL_95:
     v16 = 0;
@@ -1086,8 +1086,8 @@ LABEL_95:
   v78 = v19;
   v80 = v15;
   v82 = v14;
-  v55 = [(MPModelStoreBrowseSectionBuilder *)v88->_sectionBuilder modelObjectWithTitle:v15 loadAdditionalContentURL:v19 uniformContentItemType:v53 isMemberOfChartSet:v11 isBrick:v73 previouslyRetrievedNestedResponse:0];
-  [v93 insertSection:v55 atIndex:a6];
+  v55 = [(MPModelStoreBrowseSectionBuilder *)selfCopy->_sectionBuilder modelObjectWithTitle:v15 loadAdditionalContentURL:v19 uniformContentItemType:uniformContentItemType isMemberOfChartSet:setCopy isBrick:v73 previouslyRetrievedNestedResponse:0];
+  [collectionCopy insertSection:v55 atIndex:index];
   v102 = 0u;
   v103 = 0u;
   v100 = 0u;
@@ -1110,8 +1110,8 @@ LABEL_95:
         }
 
         v62 = *(*(&v100 + 1) + 8 * j);
-        v63 = [MEMORY[0x1E696AC88] indexPathForItem:v59 inSection:a6];
-        [v93 insertItem:v62 atIndexPath:v63];
+        v63 = [MEMORY[0x1E696AC88] indexPathForItem:v59 inSection:index];
+        [collectionCopy insertItem:v62 atIndexPath:v63];
         ++v59;
       }
 
@@ -1121,7 +1121,7 @@ LABEL_95:
     while (v58);
   }
 
-  [v92 insertSection:v55 atIndex:a6];
+  [identifiersCopy insertSection:v55 atIndex:index];
   v98 = 0u;
   v99 = 0u;
   v96 = 0u;
@@ -1143,8 +1143,8 @@ LABEL_95:
         }
 
         v70 = *(*(&v96 + 1) + 8 * k);
-        v71 = [MEMORY[0x1E696AC88] indexPathForItem:v67 inSection:a6];
-        [v92 insertItem:v70 atIndexPath:v71];
+        v71 = [MEMORY[0x1E696AC88] indexPathForItem:v67 inSection:index];
+        [identifiersCopy insertItem:v70 atIndexPath:v71];
         ++v67;
       }
 
@@ -1166,15 +1166,15 @@ LABEL_112:
   return v16;
 }
 
-- (void)_parseFeaturedContentStructureModelChildren:(id)a3
+- (void)_parseFeaturedContentStructureModelChildren:(id)children
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  childrenCopy = children;
   v5 = objc_alloc_init(MEMORY[0x1E696AD50]);
   [v5 addIndex:324];
   [v5 addIndex:323];
   [v5 addIndex:326];
-  v45 = self;
+  selfCopy = self;
   if (!self->_options.useCarPlayBrowseTopLevelContentOnly)
   {
     [v5 addIndex:327];
@@ -1189,7 +1189,7 @@ LABEL_112:
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v8 = v4;
+  v8 = childrenCopy;
   v9 = [v8 countByEnumeratingWithState:&v53 objects:v59 count:16];
   if (v9)
   {
@@ -1219,10 +1219,10 @@ LABEL_112:
           if (objc_opt_respondsToSelector())
           {
             v42 = v13;
-            v16 = [v15 integerValue];
-            if ([v5 containsIndex:v16])
+            integerValue = [v15 integerValue];
+            if ([v5 containsIndex:integerValue])
             {
-              v48 = v16;
+              v48 = integerValue;
               v17 = v15;
               v18 = [v43 objectForKey:@"children"];
               v41 = v18;
@@ -1238,7 +1238,7 @@ LABEL_112:
               }
 
               v20 = v44;
-              v21 = v45;
+              v21 = selfCopy;
               v51 = 0u;
               v52 = 0u;
               v49 = 0u;
@@ -1265,21 +1265,21 @@ LABEL_112:
                       goto LABEL_24;
                     }
 
-                    v27 = [(MPSectionedCollection *)v6 numberOfSections];
+                    numberOfSections = [(MPSectionedCollection *)v6 numberOfSections];
                     v28 = v21;
                     v29 = v21->_options.useCarPlayBrowseTopLevelRequestReorderingHeuristics & (v48 != 324) & ~BYTE4(v47);
                     v20 = v44;
-                    v30 = [(MPModelStoreBrowseResponseParser *)v28 _parseFeaturedContentChild:v26 isMemberOfChartSet:v48 == 323 insertingResultsToSectionedCollection:v6 atSectionIndex:v27 additionalContentIdentifiers:v7 allAdditionalContentIdentifiersNeedingLookup:v44];
+                    v30 = [(MPModelStoreBrowseResponseParser *)v28 _parseFeaturedContentChild:v26 isMemberOfChartSet:v48 == 323 insertingResultsToSectionedCollection:v6 atSectionIndex:numberOfSections additionalContentIdentifiers:v7 allAdditionalContentIdentifiersNeedingLookup:v44];
                     if (v29)
                     {
-                      v21 = v45;
+                      v21 = selfCopy;
 LABEL_24:
                       v15 = v17;
                       v11 += v30;
                       continue;
                     }
 
-                    v21 = v45;
+                    v21 = selfCopy;
                     v15 = v17;
                   }
 
@@ -1344,8 +1344,8 @@ LABEL_24:
     v31 = [(MPMutableSectionedCollection *)v6 copy];
   }
 
-  results = v45->_results;
-  v45->_results = v31;
+  results = selfCopy->_results;
+  selfCopy->_results = v31;
 
   if ([(MPSectionedCollection *)v7 numberOfSections]< 1)
   {
@@ -1357,8 +1357,8 @@ LABEL_24:
     v33 = [(MPMutableSectionedCollection *)v7 copy];
   }
 
-  additionalContentIdentifiers = v45->_additionalContentIdentifiers;
-  v45->_additionalContentIdentifiers = v33;
+  additionalContentIdentifiers = selfCopy->_additionalContentIdentifiers;
+  selfCopy->_additionalContentIdentifiers = v33;
 
   v35 = [v44 count];
   if (v35)
@@ -1366,8 +1366,8 @@ LABEL_24:
     v35 = [v44 copy];
   }
 
-  allAdditionalContentIdentifiersNeedingLookup = v45->_allAdditionalContentIdentifiersNeedingLookup;
-  v45->_allAdditionalContentIdentifiersNeedingLookup = v35;
+  allAdditionalContentIdentifiersNeedingLookup = selfCopy->_allAdditionalContentIdentifiersNeedingLookup;
+  selfCopy->_allAdditionalContentIdentifiersNeedingLookup = v35;
 }
 
 - (void)_parse
@@ -1407,19 +1407,19 @@ LABEL_24:
           v6 = [v4 objectForKey:@"selectedChart"];
           if (_NSIsNSDictionary())
           {
-            v8 = self;
+            selfCopy2 = self;
             v9 = v6;
             v10 = 1;
           }
 
           else
           {
-            v8 = self;
+            selfCopy2 = self;
             v9 = v4;
             v10 = 0;
           }
 
-          [(MPModelStoreBrowseResponseParser *)v8 _parseSingleContentListFromPageDataDictionary:v9 isMemberOfChartSet:v10];
+          [(MPModelStoreBrowseResponseParser *)selfCopy2 _parseSingleContentListFromPageDataDictionary:v9 isMemberOfChartSet:v10];
         }
       }
     }
@@ -1477,53 +1477,53 @@ LABEL_24:
   return self->_results;
 }
 
-- (MPModelStoreBrowseResponseParser)initWithPreviousParser:(id)a3 additionalStoreItemMetadataResponse:(id)a4 options:(id)a5 sectionBuilder:(id)a6 contentItemBuilder:(id)a7 userIdentity:(id)a8
+- (MPModelStoreBrowseResponseParser)initWithPreviousParser:(id)parser additionalStoreItemMetadataResponse:(id)response options:(id)options sectionBuilder:(id)builder contentItemBuilder:(id)itemBuilder userIdentity:(id)identity
 {
-  v23 = a3;
-  v22 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  parserCopy = parser;
+  responseCopy = response;
+  builderCopy = builder;
+  itemBuilderCopy = itemBuilder;
+  identityCopy = identity;
   v24.receiver = self;
   v24.super_class = MPModelStoreBrowseResponseParser;
   v18 = [(MPModelStoreBrowseResponseParser *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_additionalStoreItemMetadataResponse, a4);
-    objc_storeStrong(&v19->_contentItemBuilder, a7);
-    v19->_options = a5;
-    objc_storeStrong(&v19->_previousParser, a3);
+    objc_storeStrong(&v18->_additionalStoreItemMetadataResponse, response);
+    objc_storeStrong(&v19->_contentItemBuilder, itemBuilder);
+    v19->_options = options;
+    objc_storeStrong(&v19->_previousParser, parser);
     previousParser = v19->_previousParser;
     if (previousParser)
     {
       objc_storeStrong(&v19->_rawResponseOutput, previousParser->_rawResponseOutput);
     }
 
-    objc_storeStrong(&v19->_sectionBuilder, a6);
-    objc_storeStrong(&v19->_userIdentity, a8);
+    objc_storeStrong(&v19->_sectionBuilder, builder);
+    objc_storeStrong(&v19->_userIdentity, identity);
   }
 
   return v19;
 }
 
-- (MPModelStoreBrowseResponseParser)initWithRawResponseOutput:(id)a3 options:(id)a4 sectionBuilder:(id)a5 contentItemBuilder:(id)a6 userIdentity:(id)a7
+- (MPModelStoreBrowseResponseParser)initWithRawResponseOutput:(id)output options:(id)options sectionBuilder:(id)builder contentItemBuilder:(id)itemBuilder userIdentity:(id)identity
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  outputCopy = output;
+  builderCopy = builder;
+  itemBuilderCopy = itemBuilder;
+  identityCopy = identity;
   v20.receiver = self;
   v20.super_class = MPModelStoreBrowseResponseParser;
   v17 = [(MPModelStoreBrowseResponseParser *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_contentItemBuilder, a6);
-    v18->_options = a4;
-    objc_storeStrong(&v18->_rawResponseOutput, a3);
-    objc_storeStrong(&v18->_sectionBuilder, a5);
-    objc_storeStrong(&v18->_userIdentity, a7);
+    objc_storeStrong(&v17->_contentItemBuilder, itemBuilder);
+    v18->_options = options;
+    objc_storeStrong(&v18->_rawResponseOutput, output);
+    objc_storeStrong(&v18->_sectionBuilder, builder);
+    objc_storeStrong(&v18->_userIdentity, identity);
   }
 
   return v18;

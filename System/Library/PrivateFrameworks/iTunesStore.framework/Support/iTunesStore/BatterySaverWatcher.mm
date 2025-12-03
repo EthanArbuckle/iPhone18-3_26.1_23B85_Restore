@@ -1,6 +1,6 @@
 @interface BatterySaverWatcher
 - (BOOL)batterySaverEnabled;
-- (BatterySaverWatcher)initWithDelegate:(id)a3;
+- (BatterySaverWatcher)initWithDelegate:(id)delegate;
 - (BatterySaverWatcherDelegate)delegate;
 - (unint64_t)_getState;
 - (void)_notifyDelegate;
@@ -11,9 +11,9 @@
 
 @implementation BatterySaverWatcher
 
-- (BatterySaverWatcher)initWithDelegate:(id)a3
+- (BatterySaverWatcher)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = BatterySaverWatcher;
   v5 = [(BatterySaverWatcher *)&v8 init];
@@ -21,7 +21,7 @@
   if (v5)
   {
     v5->_enabled = 0;
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     [(BatterySaverWatcher *)v6 _registerNotifier];
   }
 
@@ -38,7 +38,7 @@
 
 - (BOOL)batterySaverEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v6[0] = 0;
   v6[1] = v6;
   v6[2] = 0x2020000000;
@@ -48,12 +48,12 @@
   v5[1] = 3221225472;
   v5[2] = sub_1000B1518;
   v5[3] = &unk_1003274C0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = v6;
   dispatch_sync(notifyQueue, v5);
-  LOBYTE(v2) = v2->_enabled;
+  LOBYTE(selfCopy) = selfCopy->_enabled;
   _Block_object_dispose(v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (unint64_t)_getState

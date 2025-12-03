@@ -8,49 +8,49 @@
 - (BOOL)canSearch;
 - (BOOL)hasPeers;
 - (NSArray)searchResults;
-- (id)_messageForSwitchEvent:(id)a3 index:(unint64_t)a4;
+- (id)_messageForSwitchEvent:(id)event index:(unint64_t)index;
 - (id)_stateDescription;
-- (id)_stringForState:(int64_t)a3;
+- (id)_stringForState:(int64_t)state;
 - (void)_advertise;
-- (void)_broadcastICloudMessage:(id)a3;
+- (void)_broadcastICloudMessage:(id)message;
 - (void)_cancelAdvertising;
 - (void)_handleHighlightMessage;
 - (void)_handlePerformSysdiagnoseMessage;
-- (void)_handleSelectionMessageWithPayload:(id)a3;
-- (void)_handleSwitchEventMessageWithPayload:(id)a3 fromPeer:(id)a4;
+- (void)_handleSelectionMessageWithPayload:(id)payload;
+- (void)_handleSwitchEventMessageWithPayload:(id)payload fromPeer:(id)peer;
 - (void)_handleTimeoutAsPotentialReceiver;
-- (void)_removePeerFromAvailableDevices:(id)a3;
-- (void)_sendDataToReceiver:(id)a3;
+- (void)_removePeerFromAvailableDevices:(id)devices;
+- (void)_sendDataToReceiver:(id)receiver;
 - (void)_sendDummyPacket;
-- (void)_sendICloudMessage:(id)a3 toDevice:(id)a4;
+- (void)_sendICloudMessage:(id)message toDevice:(id)device;
 - (void)_setUpSessionIfNecessary;
 - (void)_tearDownAdvertiser;
 - (void)_tearDownBrowser;
 - (void)_tearDownConnectivity;
 - (void)_tearDownSession;
-- (void)advertiser:(id)a3 didNotStartAdvertisingPeer:(id)a4;
-- (void)advertiser:(id)a3 didReceiveInvitationFromPeer:(id)a4 withContext:(id)a5 invitationHandler:(id)a6;
-- (void)browser:(id)a3 didNotStartBrowsingForPeers:(id)a4;
-- (void)browser:(id)a3 foundPeer:(id)a4 withDiscoveryInfo:(id)a5;
-- (void)browser:(id)a3 lostPeer:(id)a4;
+- (void)advertiser:(id)advertiser didNotStartAdvertisingPeer:(id)peer;
+- (void)advertiser:(id)advertiser didReceiveInvitationFromPeer:(id)peer withContext:(id)context invitationHandler:(id)handler;
+- (void)browser:(id)browser didNotStartBrowsingForPeers:(id)peers;
+- (void)browser:(id)browser foundPeer:(id)peer withDiscoveryInfo:(id)info;
+- (void)browser:(id)browser lostPeer:(id)peer;
 - (void)dealloc;
-- (void)forwardSwitchEvent:(id)a3;
-- (void)highlightSearchResult:(id)a3;
+- (void)forwardSwitchEvent:(id)event;
+- (void)highlightSearchResult:(id)result;
 - (void)performSysdiagnoseOnReceiver;
 - (void)search;
 - (void)searchResults;
-- (void)selectSearchResult:(id)a3 settings:(id)a4;
-- (void)sendHearingAidsMessage:(id)a3 toDevice:(id)a4;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)session:(id)a3 didFinishReceivingResourceWithName:(id)a4 fromPeer:(id)a5 atURL:(id)a6 withError:(id)a7;
-- (void)session:(id)a3 didReceiveCertificate:(id)a4 fromPeer:(id)a5 certificateHandler:(id)a6;
-- (void)session:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5;
-- (void)session:(id)a3 didReceiveStream:(id)a4 withName:(id)a5 fromPeer:(id)a6;
-- (void)session:(id)a3 didStartReceivingResourceWithName:(id)a4 fromPeer:(id)a5 withProgress:(id)a6;
-- (void)session:(id)a3 peer:(id)a4 didChangeState:(int64_t)a5;
-- (void)setState:(int64_t)a3;
+- (void)selectSearchResult:(id)result settings:(id)settings;
+- (void)sendHearingAidsMessage:(id)message toDevice:(id)device;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)session:(id)session didFinishReceivingResourceWithName:(id)name fromPeer:(id)peer atURL:(id)l withError:(id)error;
+- (void)session:(id)session didReceiveCertificate:(id)certificate fromPeer:(id)peer certificateHandler:(id)handler;
+- (void)session:(id)session didReceiveData:(id)data fromPeer:(id)peer;
+- (void)session:(id)session didReceiveStream:(id)stream withName:(id)name fromPeer:(id)peer;
+- (void)session:(id)session didStartReceivingResourceWithName:(id)name fromPeer:(id)peer withProgress:(id)progress;
+- (void)session:(id)session peer:(id)peer didChangeState:(int64_t)state;
+- (void)setState:(int64_t)state;
 - (void)stop;
 @end
 
@@ -144,25 +144,25 @@
 
 - (id)_stateDescription
 {
-  v3 = [(AXSSInterDeviceCommunicator *)self state];
+  state = [(AXSSInterDeviceCommunicator *)self state];
 
-  return [(AXSSInterDeviceCommunicator *)self _stringForState:v3];
+  return [(AXSSInterDeviceCommunicator *)self _stringForState:state];
 }
 
-- (id)_stringForState:(int64_t)a3
+- (id)_stringForState:(int64_t)state
 {
-  if (a3 > 6)
+  if (state > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_1E8135D68[a3];
+    return off_1E8135D68[state];
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v90 = *MEMORY[0x1E69E9840];
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
@@ -178,7 +178,7 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = [(AXSSInterDeviceCommunicator *)self _stringForState:self->_state];
-    v15 = [(AXSSInterDeviceCommunicator *)self _stringForState:a3];
+    v15 = [(AXSSInterDeviceCommunicator *)self _stringForState:state];
     v86 = 138412546;
     v87 = v14;
     v88 = 2112;
@@ -187,15 +187,15 @@
   }
 
   state = self->_state;
-  if (state == a3)
+  if (state == state)
   {
     goto LABEL_36;
   }
 
-  self->_state = a3;
-  if (a3 != 3 || state != 2)
+  self->_state = state;
+  if (state != 3 || state != 2)
   {
-    if (a3 == 3 && state == 6)
+    if (state == 3 && state == 6)
     {
       v38 = AXSSLogForCategory(0);
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -206,7 +206,7 @@
       goto LABEL_23;
     }
 
-    if (a3 == 3 && state == 4)
+    if (state == 3 && state == 4)
     {
       v48 = AXSSLogForCategory(0);
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -217,13 +217,13 @@
 
     else
     {
-      if (a3 != 3 || state != 5)
+      if (state != 3 || state != 5)
       {
-        if (a3 == 2)
+        if (state == 2)
         {
-          v64 = [(AXSSInterDeviceCommunicator *)self receiver];
+          receiver = [(AXSSInterDeviceCommunicator *)self receiver];
 
-          if (!v64)
+          if (!receiver)
           {
             v65 = AXSSLogForCategory(0);
             if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
@@ -233,14 +233,14 @@
           }
 
           [(AXSSInterDeviceCommunicator *)self setSwitchEventIndex:0];
-          v73 = [(AXSSInterDeviceCommunicator *)self connectionListener];
-          v74 = [(AXSSInterDeviceCommunicator *)self receiver];
-          v75 = [v74 displayName];
-          [v73 didConnectAsForwarderToDeviceWithName:v75];
+          connectionListener = [(AXSSInterDeviceCommunicator *)self connectionListener];
+          receiver2 = [(AXSSInterDeviceCommunicator *)self receiver];
+          displayName = [receiver2 displayName];
+          [connectionListener didConnectAsForwarderToDeviceWithName:displayName];
 
-          v76 = [(AXSSInterDeviceCommunicator *)self dummyPacketTimer];
+          dummyPacketTimer = [(AXSSInterDeviceCommunicator *)self dummyPacketTimer];
 
-          if (v76)
+          if (dummyPacketTimer)
           {
             v77 = AXSSLogForCategory(0);
             if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
@@ -253,8 +253,8 @@
           v85 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__sendDummyPacket selector:0 userInfo:1 repeats:0.00545454545];
           [(AXSSInterDeviceCommunicator *)self setDummyPacketTimer:v85];
 
-          v47 = [(AXSSInterDeviceCommunicator *)self dummyPacketTimer];
-          [v47 setTolerance:0.000545454545];
+          dummyPacketTimer2 = [(AXSSInterDeviceCommunicator *)self dummyPacketTimer];
+          [dummyPacketTimer2 setTolerance:0.000545454545];
           goto LABEL_26;
         }
 
@@ -269,8 +269,8 @@
         }
 
 LABEL_23:
-        v46 = [(AXSSInterDeviceCommunicator *)self connectionListener];
-        [v46 didDisconnectAsReceiver];
+        connectionListener2 = [(AXSSInterDeviceCommunicator *)self connectionListener];
+        [connectionListener2 didDisconnectAsReceiver];
 
         goto LABEL_24;
       }
@@ -293,9 +293,9 @@ LABEL_23:
   }
 
 LABEL_13:
-  v25 = [(AXSSInterDeviceCommunicator *)self receiver];
+  receiver3 = [(AXSSInterDeviceCommunicator *)self receiver];
 
-  if (!v25)
+  if (!receiver3)
   {
     v26 = AXSSLogForCategory(0);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -304,22 +304,22 @@ LABEL_13:
     }
   }
 
-  v34 = [(AXSSInterDeviceCommunicator *)self connectionListener];
-  v35 = [(AXSSInterDeviceCommunicator *)self receiver];
-  v36 = [v35 displayName];
-  [v34 didDisconnectAsForwarderFromDeviceWithName:v36];
+  connectionListener3 = [(AXSSInterDeviceCommunicator *)self connectionListener];
+  receiver4 = [(AXSSInterDeviceCommunicator *)self receiver];
+  displayName2 = [receiver4 displayName];
+  [connectionListener3 didDisconnectAsForwarderFromDeviceWithName:displayName2];
 
-  v37 = [(AXSSInterDeviceCommunicator *)self dummyPacketTimer];
-  [v37 invalidate];
+  dummyPacketTimer3 = [(AXSSInterDeviceCommunicator *)self dummyPacketTimer];
+  [dummyPacketTimer3 invalidate];
 
   [(AXSSInterDeviceCommunicator *)self setDummyPacketTimer:0];
 LABEL_24:
   [(AXSSInterDeviceCommunicator *)self setReceiver:0];
-  if (!a3)
+  if (!state)
   {
     [(AXSSInterDeviceCommunicator *)self _tearDownConnectivity];
-    v47 = [(AXSSInterDeviceCommunicator *)self connectionListener];
-    [v47 didBecomeIdle];
+    dummyPacketTimer2 = [(AXSSInterDeviceCommunicator *)self connectionListener];
+    [dummyPacketTimer2 didBecomeIdle];
 LABEL_26:
   }
 
@@ -329,15 +329,15 @@ LABEL_36:
 
 - (void)_tearDownAdvertiser
 {
-  v3 = [(AXSSInterDeviceCommunicator *)self advertiser];
+  advertiser = [(AXSSInterDeviceCommunicator *)self advertiser];
 
-  if (v3)
+  if (advertiser)
   {
-    v4 = [(AXSSInterDeviceCommunicator *)self advertiser];
-    [v4 stopAdvertisingPeer];
+    advertiser2 = [(AXSSInterDeviceCommunicator *)self advertiser];
+    [advertiser2 stopAdvertisingPeer];
 
-    v5 = [(AXSSInterDeviceCommunicator *)self advertiser];
-    [v5 setDelegate:0];
+    advertiser3 = [(AXSSInterDeviceCommunicator *)self advertiser];
+    [advertiser3 setDelegate:0];
 
     [(AXSSInterDeviceCommunicator *)self setAdvertiser:0];
   }
@@ -345,15 +345,15 @@ LABEL_36:
 
 - (void)_tearDownSession
 {
-  v3 = [(AXSSInterDeviceCommunicator *)self session];
+  session = [(AXSSInterDeviceCommunicator *)self session];
 
-  if (v3)
+  if (session)
   {
-    v4 = [(AXSSInterDeviceCommunicator *)self session];
-    [v4 disconnect];
+    session2 = [(AXSSInterDeviceCommunicator *)self session];
+    [session2 disconnect];
 
-    v5 = [(AXSSInterDeviceCommunicator *)self session];
-    [v5 setDelegate:0];
+    session3 = [(AXSSInterDeviceCommunicator *)self session];
+    [session3 setDelegate:0];
 
     [(AXSSInterDeviceCommunicator *)self setSession:0];
   }
@@ -361,15 +361,15 @@ LABEL_36:
 
 - (void)_tearDownBrowser
 {
-  v3 = [(AXSSInterDeviceCommunicator *)self browser];
+  browser = [(AXSSInterDeviceCommunicator *)self browser];
 
-  if (v3)
+  if (browser)
   {
-    v4 = [(AXSSInterDeviceCommunicator *)self browser];
-    [v4 stopBrowsingForPeers];
+    browser2 = [(AXSSInterDeviceCommunicator *)self browser];
+    [browser2 stopBrowsingForPeers];
 
-    v5 = [(AXSSInterDeviceCommunicator *)self browser];
-    [v5 setDelegate:0];
+    browser3 = [(AXSSInterDeviceCommunicator *)self browser];
+    [browser3 setDelegate:0];
 
     [(AXSSInterDeviceCommunicator *)self setBrowser:0];
   }
@@ -387,27 +387,27 @@ LABEL_36:
   [(AXSSInterDeviceCommunicator *)self setForwarder:0];
 }
 
-- (void)_broadcastICloudMessage:(id)a3
+- (void)_broadcastICloudMessage:(id)message
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(IDSService *)self->_service devices];
+  messageCopy = message;
+  devices = [(IDSService *)self->_service devices];
   v6 = AXSSLogForCategory(1);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v5;
+    v30 = devices;
     _os_log_impl(&dword_1C0E8A000, v6, OS_LOG_TYPE_DEFAULT, "Devices: %@", buf, 0xCu);
   }
 
-  if ([v5 count])
+  if ([devices count])
   {
-    v7 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v5, "count")}];
+    v7 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(devices, "count")}];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = v5;
+    v8 = devices;
     v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v9)
     {
@@ -443,7 +443,7 @@ LABEL_36:
     service = self->_service;
     v22 = 0;
     v23 = 0;
-    v16 = [(IDSService *)service sendMessage:v4 toDestinations:v7 priority:300 options:0 identifier:&v23 error:&v22];
+    v16 = [(IDSService *)service sendMessage:messageCopy toDestinations:v7 priority:300 options:0 identifier:&v23 error:&v22];
     v17 = v23;
     v18 = v22;
     v19 = AXSSLogForCategory(1);
@@ -467,25 +467,25 @@ LABEL_36:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendICloudMessage:(id)a3 toDevice:(id)a4
+- (void)_sendICloudMessage:(id)message toDevice:(id)device
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  messageCopy = message;
+  deviceCopy = device;
+  if (deviceCopy)
   {
-    v8 = [(IDSService *)self->_service devices];
+    devices = [(IDSService *)self->_service devices];
     v9 = AXSSLogForCategory(1);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v22 = v6;
+      v22 = messageCopy;
       v23 = 2112;
-      v24 = v7;
+      v24 = deviceCopy;
       _os_log_impl(&dword_1C0E8A000, v9, OS_LOG_TYPE_DEFAULT, "Sending message %@ to device: %@", buf, 0x16u);
     }
 
-    if ([v8 count] && objc_msgSend(v8, "containsObject:", v7))
+    if ([devices count] && objc_msgSend(devices, "containsObject:", deviceCopy))
     {
       v10 = [MEMORY[0x1E695DFA8] setWithCapacity:1];
       v11 = IDSCopyIDForDevice();
@@ -497,7 +497,7 @@ LABEL_36:
       service = self->_service;
       v19 = 0;
       v20 = 0;
-      v13 = [(IDSService *)service sendMessage:v6 toDestinations:v10 priority:300 options:0 identifier:&v20 error:&v19];
+      v13 = [(IDSService *)service sendMessage:messageCopy toDestinations:v10 priority:300 options:0 identifier:&v20 error:&v19];
       v14 = v20;
       v15 = v19;
       v16 = AXSSLogForCategory(1);
@@ -521,7 +521,7 @@ LABEL_36:
 
   else
   {
-    [(AXSSInterDeviceCommunicator *)self _broadcastICloudMessage:v6];
+    [(AXSSInterDeviceCommunicator *)self _broadcastICloudMessage:messageCopy];
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -543,12 +543,12 @@ LABEL_36:
     return 1;
   }
 
-  v12 = [(AXSSInterDeviceCommunicator *)self securityHelper];
-  v13 = [v12 securityIdentity];
+  securityHelper = [(AXSSInterDeviceCommunicator *)self securityHelper];
+  securityIdentity = [securityHelper securityIdentity];
 
-  if ([(AXSSInterDeviceCommunicator *)self state]!= 1 || v13)
+  if ([(AXSSInterDeviceCommunicator *)self state]!= 1 || securityIdentity)
   {
-    if (v13)
+    if (securityIdentity)
     {
       v30 = 0;
       v31 = &v30;
@@ -569,8 +569,8 @@ LABEL_36:
       v23 = v22;
       _Block_object_dispose(&v30, 8);
       v24 = [v22 alloc];
-      v25 = [(AXSSInterDeviceCommunicator *)self localPeerID];
-      v26 = [v24 initWithPeer:v25 securityIdentity:v13 encryptionPreference:1];
+      localPeerID = [(AXSSInterDeviceCommunicator *)self localPeerID];
+      v26 = [v24 initWithPeer:localPeerID securityIdentity:securityIdentity encryptionPreference:1];
       session = self->_session;
       self->_session = v26;
 
@@ -607,14 +607,14 @@ LABEL_19:
     return 0;
   }
 
-  v3 = [(IDSService *)self->_service devices];
-  v4 = [v3 count];
+  devices = [(IDSService *)self->_service devices];
+  v4 = [devices count];
 
   if (v4)
   {
-    v5 = [(AXSSInterDeviceSecurityHelper *)self->_securityHelper securityIdentity];
+    securityIdentity = [(AXSSInterDeviceSecurityHelper *)self->_securityHelper securityIdentity];
 
-    if (v5)
+    if (securityIdentity)
     {
       return 1;
     }
@@ -649,7 +649,7 @@ LABEL_10:
 - (void)search
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_0(&dword_1C0E8A000, a1, a3, "Assertion failed: %s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_1C0E8A000, self, a3, "Assertion failed: %s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
@@ -709,32 +709,32 @@ LABEL_10:
     v15 = v14;
     _Block_object_dispose(&v28, 8);
     v16 = [v14 alloc];
-    v17 = [(AXSSInterDeviceCommunicator *)self localPeerID];
+    localPeerID = [(AXSSInterDeviceCommunicator *)self localPeerID];
     v32[0] = @"AXSSIDCVersion";
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", 1];
     v32[1] = @"AXSSIDCDeviceType";
     v33[0] = v18;
     v33[1] = v13;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
-    v20 = [v16 initWithPeer:v17 discoveryInfo:v19 serviceType:@"switchcontrol"];
+    v20 = [v16 initWithPeer:localPeerID discoveryInfo:v19 serviceType:@"switchcontrol"];
     advertiser = self->_advertiser;
     self->_advertiser = v20;
 
-    v22 = [(AXSSInterDeviceCommunicator *)self advertiser];
-    [v22 setAWDLDisabled:1];
+    advertiser = [(AXSSInterDeviceCommunicator *)self advertiser];
+    [advertiser setAWDLDisabled:1];
 
-    v23 = [(AXSSInterDeviceCommunicator *)self advertiser];
-    [v23 setDelegate:self];
+    advertiser2 = [(AXSSInterDeviceCommunicator *)self advertiser];
+    [advertiser2 setDelegate:self];
 
-    v24 = [(AXSSInterDeviceCommunicator *)self advertiser];
-    [v24 startAdvertisingPeer];
+    advertiser3 = [(AXSSInterDeviceCommunicator *)self advertiser];
+    [advertiser3 startAdvertisingPeer];
 
     v25 = AXSSLogForCategory(1);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [(AXSSInterDeviceCommunicator *)self advertiser];
+      advertiser4 = [(AXSSInterDeviceCommunicator *)self advertiser];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v26;
+      *(&buf + 4) = advertiser4;
       _os_log_impl(&dword_1C0E8A000, v25, OS_LOG_TYPE_DEFAULT, "Created advertiser: %@", &buf, 0xCu);
     }
   }
@@ -778,16 +778,16 @@ LABEL_10:
     }
   }
 
-  v19 = [(AXSSInterDeviceCommunicator *)self availableDevices];
-  v20 = [v19 copy];
+  availableDevices = [(AXSSInterDeviceCommunicator *)self availableDevices];
+  v20 = [availableDevices copy];
 
   return v20;
 }
 
-- (void)highlightSearchResult:(id)a3
+- (void)highlightSearchResult:(id)result
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   if ([(AXSSInterDeviceCommunicator *)self state]!= 1)
   {
     v5 = AXSSLogForCategory(0);
@@ -816,12 +816,12 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v17 = [(AXSSInterDeviceCommunicator *)self session];
-  v18 = [v4 peerID];
-  v26 = v18;
+  session = [(AXSSInterDeviceCommunicator *)self session];
+  peerID = [resultCopy peerID];
+  v26 = peerID;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
   v24 = v16;
-  v20 = [v17 sendData:v15 toPeers:v19 withMode:0 error:&v24];
+  v20 = [session sendData:v15 toPeers:v19 withMode:0 error:&v24];
   v21 = v24;
 
   if ((v20 & 1) == 0)
@@ -841,11 +841,11 @@ LABEL_12:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)selectSearchResult:(id)a3 settings:(id)a4
+- (void)selectSearchResult:(id)result settings:(id)settings
 {
   v66 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  settingsCopy = settings;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v8 = AXSSLogForCategory(0);
@@ -858,33 +858,33 @@ LABEL_12:
   v16 = AXSSLogForCategory(1);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v6 peerID];
+    peerID = [resultCopy peerID];
     *buf = 138412546;
-    v63 = v17;
+    v63 = peerID;
     v64 = 2112;
-    v65 = v7;
+    v65 = settingsCopy;
     _os_log_impl(&dword_1C0E8A000, v16, OS_LOG_TYPE_DEFAULT, "Selecting %@ with %@", buf, 0x16u);
   }
 
-  v18 = [v6 peerID];
-  [(AXSSInterDeviceCommunicator *)self setReceiver:v18];
+  peerID2 = [resultCopy peerID];
+  [(AXSSInterDeviceCommunicator *)self setReceiver:peerID2];
 
   [(AXSSInterDeviceCommunicator *)self setState:2];
   v19 = MEMORY[0x1E696AE40];
-  v20 = [(AXSSInterDeviceCommunicator *)self _messageForSelection:1 settings:v7];
+  v20 = [(AXSSInterDeviceCommunicator *)self _messageForSelection:1 settings:settingsCopy];
   v59 = 0;
   v21 = [v19 dataWithPropertyList:v20 format:200 options:0 error:&v59];
   v22 = v59;
 
   if (v21)
   {
-    v51 = v6;
-    v23 = [(AXSSInterDeviceCommunicator *)self session];
-    v24 = [(AXSSInterDeviceCommunicator *)self receiver];
-    v61 = v24;
+    v51 = resultCopy;
+    session = [(AXSSInterDeviceCommunicator *)self session];
+    receiver = [(AXSSInterDeviceCommunicator *)self receiver];
+    v61 = receiver;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v61 count:1];
     v58 = v22;
-    v26 = [v23 sendData:v21 toPeers:v25 withMode:0 error:&v58];
+    v26 = [session sendData:v21 toPeers:v25 withMode:0 error:&v58];
     v27 = v58;
 
     if ((v26 & 1) == 0)
@@ -901,14 +901,14 @@ LABEL_12:
     }
 
     v49 = v27;
-    v50 = v7;
-    v28 = [MEMORY[0x1E695DF70] array];
+    v50 = settingsCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v29 = [(AXSSInterDeviceCommunicator *)self availableDevices];
-    v30 = [v29 countByEnumeratingWithState:&v54 objects:v60 count:16];
+    availableDevices = [(AXSSInterDeviceCommunicator *)self availableDevices];
+    v30 = [availableDevices countByEnumeratingWithState:&v54 objects:v60 count:16];
     if (v30)
     {
       v31 = v30;
@@ -919,35 +919,35 @@ LABEL_12:
         {
           if (*v55 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(availableDevices);
           }
 
           v34 = *(*(&v54 + 1) + 8 * i);
-          v35 = [v34 peerID];
-          v36 = [(AXSSInterDeviceCommunicator *)self receiver];
+          peerID3 = [v34 peerID];
+          receiver2 = [(AXSSInterDeviceCommunicator *)self receiver];
 
-          if (v35 != v36)
+          if (peerID3 != receiver2)
           {
-            v37 = [v34 peerID];
-            [v28 addObject:v37];
+            peerID4 = [v34 peerID];
+            [array addObject:peerID4];
           }
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v54 objects:v60 count:16];
+        v31 = [availableDevices countByEnumeratingWithState:&v54 objects:v60 count:16];
       }
 
       while (v31);
     }
 
-    if (![v28 count])
+    if (![array count])
     {
       v44 = v49;
-      v7 = v50;
+      settingsCopy = v50;
 LABEL_35:
 
       v22 = v44;
 LABEL_36:
-      v6 = v51;
+      resultCopy = v51;
       goto LABEL_37;
     }
 
@@ -957,12 +957,12 @@ LABEL_36:
     v40 = [v38 dataWithPropertyList:v39 format:200 options:0 error:&v53];
     v41 = v53;
 
-    v7 = v50;
+    settingsCopy = v50;
     if (v40)
     {
-      v42 = [(AXSSInterDeviceCommunicator *)self session];
+      session2 = [(AXSSInterDeviceCommunicator *)self session];
       v52 = v41;
-      v43 = [v42 sendData:v40 toPeers:v28 withMode:0 error:&v52];
+      v43 = [session2 sendData:v40 toPeers:array withMode:0 error:&v52];
       v44 = v52;
 
       if (v43)
@@ -1006,7 +1006,7 @@ LABEL_37:
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_messageForSwitchEvent:(id)a3 index:(unint64_t)a4
+- (id)_messageForSwitchEvent:(id)event index:(unint64_t)index
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v15[0] = @"MessageType";
@@ -1014,13 +1014,13 @@ LABEL_37:
   v16[0] = @"SwitchEvent";
   v13[0] = @"Index";
   v5 = MEMORY[0x1E696AD98];
-  v6 = a3;
-  v7 = [v5 numberWithUnsignedLongLong:a4];
+  eventCopy = event;
+  v7 = [v5 numberWithUnsignedLongLong:index];
   v13[1] = @"DictionaryRepresentation";
   v14[0] = v7;
-  v8 = [v6 dictionaryRepresentation];
+  dictionaryRepresentation = [eventCopy dictionaryRepresentation];
 
-  v14[1] = v8;
+  v14[1] = dictionaryRepresentation;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
   v16[1] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -1030,16 +1030,16 @@ LABEL_37:
   return v10;
 }
 
-- (void)_sendDataToReceiver:(id)a3
+- (void)_sendDataToReceiver:(id)receiver
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AXSSInterDeviceCommunicator *)self session];
-  v6 = [(AXSSInterDeviceCommunicator *)self receiver];
-  v24[0] = v6;
+  receiverCopy = receiver;
+  session = [(AXSSInterDeviceCommunicator *)self session];
+  receiver = [(AXSSInterDeviceCommunicator *)self receiver];
+  v24[0] = receiver;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
   v18[0] = 0;
-  v8 = [v5 sendData:v4 toPeers:v7 withMode:1 error:v18];
+  v8 = [session sendData:receiverCopy toPeers:v7 withMode:1 error:v18];
   v9 = v18[0];
 
   if ((v8 & 1) == 0)
@@ -1050,7 +1050,7 @@ LABEL_37:
       [AXSSInterDeviceCommunicator _sendDataToReceiver:];
     }
 
-    v11 = [v9 domain];
+    domain = [v9 domain];
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
@@ -1077,7 +1077,7 @@ LABEL_37:
       __break(1u);
     }
 
-    if (v11 == *v12)
+    if (domain == *v12)
     {
       v15 = [v9 code] == 1;
 
@@ -1101,10 +1101,10 @@ LABEL_37:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)forwardSwitchEvent:(id)a3
+- (void)forwardSwitchEvent:(id)event
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v5 = AXSSLogForCategory(0);
@@ -1114,9 +1114,9 @@ LABEL_37:
     }
   }
 
-  v13 = [(AXSSInterDeviceCommunicator *)self receiver];
+  receiver = [(AXSSInterDeviceCommunicator *)self receiver];
 
-  if (!v13)
+  if (!receiver)
   {
     v14 = AXSSLogForCategory(0);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1125,25 +1125,25 @@ LABEL_37:
     }
   }
 
-  v22 = [(AXSSInterDeviceCommunicator *)self receiver];
+  receiver2 = [(AXSSInterDeviceCommunicator *)self receiver];
 
-  if (v22)
+  if (receiver2)
   {
     [(AXSSInterDeviceCommunicator *)self setSwitchEventIndex:[(AXSSInterDeviceCommunicator *)self switchEventIndex]+ 1];
     v23 = AXSSLogForCategory(1);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       *buf = 134218498;
-      v32 = [(AXSSInterDeviceCommunicator *)self switchEventIndex];
+      switchEventIndex = [(AXSSInterDeviceCommunicator *)self switchEventIndex];
       v33 = 2048;
       Current = CFAbsoluteTimeGetCurrent();
       v35 = 2112;
-      v36 = v4;
+      v36 = eventCopy;
       _os_log_impl(&dword_1C0E8A000, v23, OS_LOG_TYPE_INFO, "Forwarding switch event %llu at time %f: %@", buf, 0x20u);
     }
 
     v24 = MEMORY[0x1E696AE40];
-    v25 = [(AXSSInterDeviceCommunicator *)self _messageForSwitchEvent:v4 index:[(AXSSInterDeviceCommunicator *)self switchEventIndex]];
+    v25 = [(AXSSInterDeviceCommunicator *)self _messageForSwitchEvent:eventCopy index:[(AXSSInterDeviceCommunicator *)self switchEventIndex]];
     v30 = 0;
     v26 = [v24 dataWithPropertyList:v25 format:200 options:0 error:&v30];
     v27 = v30;
@@ -1182,12 +1182,12 @@ LABEL_37:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  serviceCopy = service;
+  messageCopy = message;
+  dCopy = d;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v13 = AXSSLogForCategory(0);
@@ -1197,27 +1197,27 @@ LABEL_37:
     }
   }
 
-  v21 = [v11 objectForKey:@"com.apple.hearing.hearingaids"];
+  v21 = [messageCopy objectForKey:@"com.apple.hearing.hearingaids"];
 
   if (!v21)
   {
     v27 = AXSSLogForCategory(1);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [(AXSSInterDeviceCommunicator *)self _stateDescription];
+      _stateDescription = [(AXSSInterDeviceCommunicator *)self _stateDescription];
       v39 = 138412546;
-      v40 = v11;
+      v40 = messageCopy;
       v41 = 2112;
-      v42 = v28;
+      v42 = _stateDescription;
       _os_log_impl(&dword_1C0E8A000, v27, OS_LOG_TYPE_DEFAULT, "Did receive message: %@. State: %@", &v39, 0x16u);
     }
 
-    v29 = [(AXSSInterDeviceCommunicator *)self connectionListener];
-    v30 = [v29 canAdvertise];
+    connectionListener = [(AXSSInterDeviceCommunicator *)self connectionListener];
+    canAdvertise = [connectionListener canAdvertise];
 
-    if (v30)
+    if (canAdvertise)
     {
-      v31 = [v10 deviceForFromID:v12];
+      v31 = [serviceCopy deviceForFromID:dCopy];
 
       if (!v31)
       {
@@ -1228,7 +1228,7 @@ LABEL_37:
         }
 
         v39 = 138412290;
-        v40 = v12;
+        v40 = dCopy;
         v35 = "Received message, but it was not from our account. FromID: %@";
         v36 = v34;
         v37 = 12;
@@ -1239,10 +1239,10 @@ LABEL_26:
 
       if (![(AXSSInterDeviceCommunicator *)self state]|| [(AXSSInterDeviceCommunicator *)self state]== 3)
       {
-        v32 = [v11 objectForKeyedSubscript:@"AXSSIDCVersion"];
-        v33 = [v32 integerValue];
+        v32 = [messageCopy objectForKeyedSubscript:@"AXSSIDCVersion"];
+        integerValue = [v32 integerValue];
 
-        if (v33 == 1)
+        if (integerValue == 1)
         {
           [(AXSSInterDeviceCommunicator *)self _advertise];
           goto LABEL_28;
@@ -1252,7 +1252,7 @@ LABEL_26:
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
           v39 = 134218240;
-          v40 = v33;
+          v40 = integerValue;
           v41 = 2048;
           v42 = 1;
           v35 = "Compatibility version %ld did not match our compatibility version %ld";
@@ -1293,68 +1293,68 @@ LABEL_27:
     goto LABEL_26;
   }
 
-  v22 = [(IDSService *)self->_service deviceForFromID:v12];
+  v22 = [(IDSService *)self->_service deviceForFromID:dCopy];
   v23 = AXSSLogForCategory(1);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     v39 = 138412546;
-    v40 = v11;
+    v40 = messageCopy;
     v41 = 2112;
     v42 = v22;
     _os_log_impl(&dword_1C0E8A000, v23, OS_LOG_TYPE_DEFAULT, "Did receive Hearing Aids message: %@ from device: %@", &v39, 0x16u);
   }
 
-  v24 = [(AXSSInterDeviceCommunicator *)self hearingAidsMessagesObserver];
+  hearingAidsMessagesObserver = [(AXSSInterDeviceCommunicator *)self hearingAidsMessagesObserver];
   v25 = objc_opt_respondsToSelector();
 
   if (v25)
   {
-    v26 = [(AXSSInterDeviceCommunicator *)self hearingAidsMessagesObserver];
-    [v26 didReceiveHearingAidsMessage:v11 fromDevice:v22];
+    hearingAidsMessagesObserver2 = [(AXSSInterDeviceCommunicator *)self hearingAidsMessagesObserver];
+    [hearingAidsMessagesObserver2 didReceiveHearingAidsMessage:messageCopy fromDevice:v22];
   }
 
 LABEL_28:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  changedCopy = changed;
   v6 = AXSSLogForCategory(1);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = changedCopy;
     _os_log_impl(&dword_1C0E8A000, v6, OS_LOG_TYPE_DEFAULT, "Devices changed: %@", &v11, 0xCu);
   }
 
-  v7 = [(AXSSInterDeviceCommunicator *)self hearingAidsMessagesObserver];
+  hearingAidsMessagesObserver = [(AXSSInterDeviceCommunicator *)self hearingAidsMessagesObserver];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(AXSSInterDeviceCommunicator *)self hearingAidsMessagesObserver];
-    [v9 didUpdateDevices:v5];
+    hearingAidsMessagesObserver2 = [(AXSSInterDeviceCommunicator *)self hearingAidsMessagesObserver];
+    [hearingAidsMessagesObserver2 didUpdateDevices:changedCopy];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
+  successCopy = success;
   v16 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a7;
+  identifierCopy = identifier;
+  errorCopy = error;
   v11 = AXSSLogForCategory(1);
   v12 = v11;
-  if (v8)
+  if (successCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v9;
+      v15 = identifierCopy;
       _os_log_impl(&dword_1C0E8A000, v12, OS_LOG_TYPE_DEFAULT, "Successfully sent message with identifier %@.", &v14, 0xCu);
     }
   }
@@ -1367,19 +1367,19 @@ LABEL_28:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSwitchEventMessageWithPayload:(id)a3 fromPeer:(id)a4
+- (void)_handleSwitchEventMessageWithPayload:(id)payload fromPeer:(id)peer
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  peerCopy = peer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 objectForKeyedSubscript:@"Index"];
+    v8 = [payloadCopy objectForKeyedSubscript:@"Index"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 unsignedLongLongValue];
+      unsignedLongLongValue = [v8 unsignedLongLongValue];
     }
 
     else
@@ -1390,33 +1390,33 @@ LABEL_28:
         [AXSSInterDeviceCommunicator _handleSwitchEventMessageWithPayload:fromPeer:];
       }
 
-      v9 = 0;
+      unsignedLongLongValue = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"DictionaryRepresentation"];
+    v11 = [payloadCopy objectForKeyedSubscript:@"DictionaryRepresentation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v12 = [[AXSSInterDeviceSwitchEvent alloc] initWithDictionaryRepresentation:v11];
-      v13 = [(AXSSInterDeviceCommunicator *)self state];
+      state = [(AXSSInterDeviceCommunicator *)self state];
       v14 = AXSSLogForCategory(1);
-      v15 = v14;
-      if (v13 == 6)
+      actionReceiver = v14;
+      if (state == 6)
       {
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           v18 = 134218498;
-          v19 = v9;
+          v19 = unsignedLongLongValue;
           v20 = 2048;
           Current = CFAbsoluteTimeGetCurrent();
           v22 = 2112;
           v23 = v12;
-          _os_log_impl(&dword_1C0E8A000, v15, OS_LOG_TYPE_INFO, "Handling switch event %llu at time %f: %@", &v18, 0x20u);
+          _os_log_impl(&dword_1C0E8A000, actionReceiver, OS_LOG_TYPE_INFO, "Handling switch event %llu at time %f: %@", &v18, 0x20u);
         }
 
-        v15 = [(AXSSInterDeviceCommunicator *)self actionReceiver];
-        v16 = [v7 displayName];
-        [v15 didReceiveSwitchEvent:v12 forDeviceWithName:v16];
+        actionReceiver = [(AXSSInterDeviceCommunicator *)self actionReceiver];
+        displayName = [peerCopy displayName];
+        [actionReceiver didReceiveSwitchEvent:v12 forDeviceWithName:displayName];
       }
 
       else if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1447,23 +1447,23 @@ LABEL_28:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSelectionMessageWithPayload:(id)a3
+- (void)_handleSelectionMessageWithPayload:(id)payload
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  payloadCopy = payload;
   if ([(AXSSInterDeviceCommunicator *)self state]== 5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 objectForKeyedSubscript:@"IsSelected"];
+      v5 = [payloadCopy objectForKeyedSubscript:@"IsSelected"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         if ([v5 BOOLValue])
         {
           [(AXSSInterDeviceCommunicator *)self setState:6];
-          v6 = [v4 objectForKeyedSubscript:@"Settings"];
+          v6 = [payloadCopy objectForKeyedSubscript:@"Settings"];
           if (v6)
           {
             v7 = [[AXSSSwitchControlSettings alloc] initWithDictionaryRepresentation:v6];
@@ -1482,8 +1482,8 @@ LABEL_28:
             _os_log_impl(&dword_1C0E8A000, v9, OS_LOG_TYPE_DEFAULT, "Connected as receiver with settings %@", &v12, 0xCu);
           }
 
-          v10 = [(AXSSInterDeviceCommunicator *)self connectionListener];
-          [v10 didConnectAsReceiverWithSettings:v7];
+          connectionListener = [(AXSSInterDeviceCommunicator *)self connectionListener];
+          [connectionListener didConnectAsReceiverWithSettings:v7];
         }
 
         else
@@ -1534,7 +1534,7 @@ LABEL_28:
 - (void)_handlePerformSysdiagnoseMessage
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 _stateDescription];
+  _stateDescription = [self _stateDescription];
   OUTLINED_FUNCTION_3();
   OUTLINED_FUNCTION_4_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -1542,10 +1542,10 @@ LABEL_28:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removePeerFromAvailableDevices:(id)a3
+- (void)_removePeerFromAvailableDevices:(id)devices
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  devicesCopy = devices;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v5 = AXSSLogForCategory(0);
@@ -1555,14 +1555,14 @@ LABEL_28:
     }
   }
 
-  v13 = [(AXSSInterDeviceCommunicator *)self availableDevices];
+  availableDevices = [(AXSSInterDeviceCommunicator *)self availableDevices];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __63__AXSSInterDeviceCommunicator__removePeerFromAvailableDevices___block_invoke;
   v20[3] = &unk_1E8135C90;
-  v14 = v4;
+  v14 = devicesCopy;
   v21 = v14;
-  v15 = [v13 indexOfObjectPassingTest:v20];
+  v15 = [availableDevices indexOfObjectPassingTest:v20];
 
   if (v15 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1574,11 +1574,11 @@ LABEL_28:
       _os_log_impl(&dword_1C0E8A000, v16, OS_LOG_TYPE_DEFAULT, "Removed from available results: %@", buf, 0xCu);
     }
 
-    v17 = [(AXSSInterDeviceCommunicator *)self availableDevices];
-    [v17 removeObjectAtIndex:v15];
+    availableDevices2 = [(AXSSInterDeviceCommunicator *)self availableDevices];
+    [availableDevices2 removeObjectAtIndex:v15];
 
-    v18 = [(AXSSInterDeviceCommunicator *)self searchObserver];
-    [v18 didUpdateSearchResults];
+    searchObserver = [(AXSSInterDeviceCommunicator *)self searchObserver];
+    [searchObserver didUpdateSearchResults];
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -1592,12 +1592,12 @@ BOOL __63__AXSSInterDeviceCommunicator__removePeerFromAvailableDevices___block_i
   return v4;
 }
 
-- (void)session:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5
+- (void)session:(id)session didReceiveData:(id)data fromPeer:(id)peer
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  peerCopy = peer;
   v25 = 0;
-  v8 = [MEMORY[0x1E696AE40] propertyListWithData:a4 options:0 format:0 error:&v25];
+  v8 = [MEMORY[0x1E696AE40] propertyListWithData:data options:0 format:0 error:&v25];
   v9 = v25;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1636,7 +1636,7 @@ BOOL __63__AXSSInterDeviceCommunicator__removePeerFromAvailableDevices___block_i
           *buf = 138412546;
           v27 = v10;
           v28 = 2112;
-          v29 = v7;
+          v29 = peerCopy;
           _os_log_impl(&dword_1C0E8A000, v14, OS_LOG_TYPE_INFO, "Received message %@ from peer %@", buf, 0x16u);
         }
       }
@@ -1646,9 +1646,9 @@ BOOL __63__AXSSInterDeviceCommunicator__removePeerFromAvailableDevices___block_i
       block[2] = __63__AXSSInterDeviceCommunicator_session_didReceiveData_fromPeer___block_invoke;
       block[3] = &unk_1E8135CB8;
       v21 = v12;
-      v22 = self;
+      selfCopy = self;
       v23 = v13;
-      v24 = v7;
+      v24 = peerCopy;
       v18 = v13;
       v15 = v12;
       dispatch_async(MEMORY[0x1E69E96A0], block);
@@ -1670,7 +1670,7 @@ BOOL __63__AXSSInterDeviceCommunicator__removePeerFromAvailableDevices___block_i
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v27 = v7;
+      v27 = peerCopy;
       v28 = 2112;
       v29 = v8;
       v30 = 2112;
@@ -1726,7 +1726,7 @@ void __63__AXSSInterDeviceCommunicator_session_didReceiveData_fromPeer___block_i
   }
 }
 
-- (void)session:(id)a3 didStartReceivingResourceWithName:(id)a4 fromPeer:(id)a5 withProgress:(id)a6
+- (void)session:(id)session didStartReceivingResourceWithName:(id)name fromPeer:(id)peer withProgress:(id)progress
 {
   v6 = AXSSLogForCategory(1);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1735,7 +1735,7 @@ void __63__AXSSInterDeviceCommunicator_session_didReceiveData_fromPeer___block_i
   }
 }
 
-- (void)session:(id)a3 didFinishReceivingResourceWithName:(id)a4 fromPeer:(id)a5 atURL:(id)a6 withError:(id)a7
+- (void)session:(id)session didFinishReceivingResourceWithName:(id)name fromPeer:(id)peer atURL:(id)l withError:(id)error
 {
   v7 = AXSSLogForCategory(1);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1744,7 +1744,7 @@ void __63__AXSSInterDeviceCommunicator_session_didReceiveData_fromPeer___block_i
   }
 }
 
-- (void)session:(id)a3 didReceiveStream:(id)a4 withName:(id)a5 fromPeer:(id)a6
+- (void)session:(id)session didReceiveStream:(id)stream withName:(id)name fromPeer:(id)peer
 {
   v6 = AXSSLogForCategory(1);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1753,17 +1753,17 @@ void __63__AXSSInterDeviceCommunicator_session_didReceiveData_fromPeer___block_i
   }
 }
 
-- (void)session:(id)a3 peer:(id)a4 didChangeState:(int64_t)a5
+- (void)session:(id)session peer:(id)peer didChangeState:(int64_t)state
 {
-  v7 = a4;
+  peerCopy = peer;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__AXSSInterDeviceCommunicator_session_peer_didChangeState___block_invoke;
   block[3] = &unk_1E8135CE0;
-  v11 = self;
-  v12 = a5;
-  v10 = v7;
-  v8 = v7;
+  selfCopy = self;
+  stateCopy = state;
+  v10 = peerCopy;
+  v8 = peerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1919,21 +1919,21 @@ LABEL_40:
   v57 = *MEMORY[0x1E69E9840];
 }
 
-- (void)session:(id)a3 didReceiveCertificate:(id)a4 fromPeer:(id)a5 certificateHandler:(id)a6
+- (void)session:(id)session didReceiveCertificate:(id)certificate fromPeer:(id)peer certificateHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = [(AXSSInterDeviceCommunicator *)self securityHelper];
+  peerCopy = peer;
+  handlerCopy = handler;
+  certificateCopy = certificate;
+  securityHelper = [(AXSSInterDeviceCommunicator *)self securityHelper];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __89__AXSSInterDeviceCommunicator_session_didReceiveCertificate_fromPeer_certificateHandler___block_invoke;
   v15[3] = &unk_1E8135D08;
-  v16 = v9;
-  v17 = v10;
-  v13 = v10;
-  v14 = v9;
-  [v12 verifyCertificate:v11 completion:v15];
+  v16 = peerCopy;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = peerCopy;
+  [securityHelper verifyCertificate:certificateCopy completion:v15];
 }
 
 uint64_t __89__AXSSInterDeviceCommunicator_session_didReceiveCertificate_fromPeer_certificateHandler___block_invoke(uint64_t a1, int a2)
@@ -1955,18 +1955,18 @@ uint64_t __89__AXSSInterDeviceCommunicator_session_didReceiveCertificate_fromPee
   return result;
 }
 
-- (void)browser:(id)a3 foundPeer:(id)a4 withDiscoveryInfo:(id)a5
+- (void)browser:(id)browser foundPeer:(id)peer withDiscoveryInfo:(id)info
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  peerCopy = peer;
+  infoCopy = info;
   v9 = AXSSLogForCategory(1);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v18 = v7;
+    v18 = peerCopy;
     v19 = 2112;
-    v20 = v8;
+    v20 = infoCopy;
     _os_log_impl(&dword_1C0E8A000, v9, OS_LOG_TYPE_DEFAULT, "Found peer %@ with info %@", buf, 0x16u);
   }
 
@@ -1974,11 +1974,11 @@ uint64_t __89__AXSSInterDeviceCommunicator_session_didReceiveCertificate_fromPee
   block[1] = 3221225472;
   block[2] = __67__AXSSInterDeviceCommunicator_browser_foundPeer_withDiscoveryInfo___block_invoke;
   block[3] = &unk_1E8134848;
-  v14 = v8;
-  v15 = self;
-  v16 = v7;
-  v10 = v7;
-  v11 = v8;
+  v14 = infoCopy;
+  selfCopy = self;
+  v16 = peerCopy;
+  v10 = peerCopy;
+  v11 = infoCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -2038,15 +2038,15 @@ LABEL_11:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)browser:(id)a3 lostPeer:(id)a4
+- (void)browser:(id)browser lostPeer:(id)peer
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  peerCopy = peer;
   v6 = AXSSLogForCategory(1);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v5;
+    v12 = peerCopy;
     _os_log_impl(&dword_1C0E8A000, v6, OS_LOG_TYPE_DEFAULT, "Lost peer %@", buf, 0xCu);
   }
 
@@ -2055,8 +2055,8 @@ LABEL_11:
   v9[2] = __48__AXSSInterDeviceCommunicator_browser_lostPeer___block_invoke;
   v9[3] = &unk_1E8134950;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = peerCopy;
+  v7 = peerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v9);
 
   v8 = *MEMORY[0x1E69E9840];
@@ -2115,9 +2115,9 @@ LABEL_15:
   [v3 _removePeerFromAvailableDevices:v4];
 }
 
-- (void)browser:(id)a3 didNotStartBrowsingForPeers:(id)a4
+- (void)browser:(id)browser didNotStartBrowsingForPeers:(id)peers
 {
-  v5 = a4;
+  peersCopy = peers;
   v6 = AXSSLogForCategory(1);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -2132,19 +2132,19 @@ LABEL_15:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)advertiser:(id)a3 didReceiveInvitationFromPeer:(id)a4 withContext:(id)a5 invitationHandler:(id)a6
+- (void)advertiser:(id)advertiser didReceiveInvitationFromPeer:(id)peer withContext:(id)context invitationHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  peerCopy = peer;
+  contextCopy = context;
+  handlerCopy = handler;
   v12 = AXSSLogForCategory(1);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v20 = v9;
+    v20 = peerCopy;
     v21 = 2112;
-    v22 = v10;
+    v22 = contextCopy;
     _os_log_impl(&dword_1C0E8A000, v12, OS_LOG_TYPE_DEFAULT, "Received invitation from %@ with context %@.", buf, 0x16u);
   }
 
@@ -2153,10 +2153,10 @@ LABEL_15:
   block[2] = __101__AXSSInterDeviceCommunicator_advertiser_didReceiveInvitationFromPeer_withContext_invitationHandler___block_invoke;
   block[3] = &unk_1E8135D30;
   block[4] = self;
-  v17 = v9;
-  v18 = v11;
-  v13 = v11;
-  v14 = v9;
+  v17 = peerCopy;
+  v18 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = peerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   v15 = *MEMORY[0x1E69E9840];
@@ -2197,9 +2197,9 @@ LABEL_9:
   [v4 setState:4];
 }
 
-- (void)advertiser:(id)a3 didNotStartAdvertisingPeer:(id)a4
+- (void)advertiser:(id)advertiser didNotStartAdvertisingPeer:(id)peer
 {
-  v5 = a4;
+  peerCopy = peer;
   v6 = AXSSLogForCategory(1);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -2216,22 +2216,22 @@ LABEL_9:
 
 - (BOOL)hasPeers
 {
-  v2 = [(IDSService *)self->_service devices];
-  v3 = [v2 count] != 0;
+  devices = [(IDSService *)self->_service devices];
+  v3 = [devices count] != 0;
 
   return v3;
 }
 
-- (void)sendHearingAidsMessage:(id)a3 toDevice:(id)a4
+- (void)sendHearingAidsMessage:(id)message toDevice:(id)device
 {
-  if (a4)
+  if (device)
   {
-    [(AXSSInterDeviceCommunicator *)self _sendICloudMessage:a3 toDevice:?];
+    [(AXSSInterDeviceCommunicator *)self _sendICloudMessage:message toDevice:?];
   }
 
   else
   {
-    [(AXSSInterDeviceCommunicator *)self _broadcastICloudMessage:a3];
+    [(AXSSInterDeviceCommunicator *)self _broadcastICloudMessage:message];
   }
 }
 
@@ -2330,7 +2330,7 @@ LABEL_9:
 - (void)searchResults
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_0(&dword_1C0E8A000, a1, a3, "Assertion failed: %s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_1C0E8A000, self, a3, "Assertion failed: %s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 

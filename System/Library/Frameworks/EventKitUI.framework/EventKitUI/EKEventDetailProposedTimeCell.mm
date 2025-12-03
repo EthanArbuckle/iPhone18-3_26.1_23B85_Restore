@@ -1,27 +1,27 @@
 @interface EKEventDetailProposedTimeCell
 - (BOOL)update;
-- (EKEventDetailProposedTimeCell)initWithEvent:(id)a3 andAttendee:(id)a4;
-- (void)setRoundedCorners:(unint64_t)a3;
-- (void)setSeparatorStyle:(int64_t)a3;
-- (void)setShowsTopSeparator:(BOOL)a3;
+- (EKEventDetailProposedTimeCell)initWithEvent:(id)event andAttendee:(id)attendee;
+- (void)setRoundedCorners:(unint64_t)corners;
+- (void)setSeparatorStyle:(int64_t)style;
+- (void)setShowsTopSeparator:(BOOL)separator;
 @end
 
 @implementation EKEventDetailProposedTimeCell
 
-- (EKEventDetailProposedTimeCell)initWithEvent:(id)a3 andAttendee:(id)a4
+- (EKEventDetailProposedTimeCell)initWithEvent:(id)event andAttendee:(id)attendee
 {
   v67[4] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  attendeeCopy = attendee;
   v61.receiver = self;
   v61.super_class = EKEventDetailProposedTimeCell;
-  v9 = [(EKEventDetailCell *)&v61 initWithEvent:v7 editable:0 style:1];
+  v9 = [(EKEventDetailCell *)&v61 initWithEvent:eventCopy editable:0 style:1];
   if (v9)
   {
-    v60 = v8;
+    v60 = attendeeCopy;
     if (MEMORY[0x1D38B98D0]())
     {
-      v10 = [(EKEventDetailProposedTimeCell *)v9 contentView];
+      contentView = [(EKEventDetailProposedTimeCell *)v9 contentView];
     }
 
     else
@@ -48,12 +48,12 @@
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:4];
       [v14 activateConstraints:v18];
 
-      v10 = v9->_bgView;
+      contentView = v9->_bgView;
     }
 
-    v19 = v10;
-    objc_storeStrong(&v9->_attendee, a4);
-    objc_storeStrong(&v9->_event, a3);
+    v19 = contentView;
+    objc_storeStrong(&v9->_attendee, attendee);
+    objc_storeStrong(&v9->_event, event);
     [(EKUITableViewCell *)v9 setDrawsOwnRowSeparators:1];
     [(EKUITableViewCell *)v9 setSeparatorEdges:0];
     v20 = [(EKEventDetailProposedTimeCell *)v9 setSeparatorStyle:0];
@@ -74,17 +74,17 @@
 
     [(EKEventDetailsHighlightControl *)v9->_control setTranslatesAutoresizingMaskIntoConstraints:0];
     [(EKEventDetailsHighlightControl *)v9->_control setEnabled:0];
-    v24 = [(EKEventDetailProposedTimeCell *)v9 contentView];
-    [v24 addSubview:v9->_control];
+    contentView2 = [(EKEventDetailProposedTimeCell *)v9 contentView];
+    [contentView2 addSubview:v9->_control];
 
     v25 = objc_alloc(MEMORY[0x1E69DCAE0]);
-    v26 = [(EKEventDetailProposedTimeCell *)v9 traitCollection];
-    v27 = TableViewDisclosureIndicatorImage(v26);
+    traitCollection = [(EKEventDetailProposedTimeCell *)v9 traitCollection];
+    v27 = TableViewDisclosureIndicatorImage(traitCollection);
     v28 = [v25 initWithImage:v27];
 
     [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v29 = [(EKEventDetailProposedTimeCell *)v9 contentView];
-    [v29 addSubview:v28];
+    contentView3 = [(EKEventDetailProposedTimeCell *)v9 contentView];
+    [contentView3 addSubview:v28];
 
     v30 = MEMORY[0x1E696ACD8];
     v31 = 0.0;
@@ -113,10 +113,10 @@
     }
 
     v41 = v40;
-    v42 = [(EKEventDetailProposedTimeCell *)v9 contentView];
+    contentView4 = [(EKEventDetailProposedTimeCell *)v9 contentView];
     v43 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:v41 options:0 metrics:0 views:v38];
 
-    [v42 addConstraints:v43];
+    [contentView4 addConstraints:v43];
     v44 = MEMORY[0x1E696ACD8];
     v45 = [MEMORY[0x1E696ACD8] constraintWithItem:v28 attribute:10 relatedBy:0 toItem:v9 attribute:10 multiplier:1.0 constant:0.0];
     v65 = v45;
@@ -128,8 +128,8 @@
     v9->_topSeparator = v47;
 
     [(UIView *)v9->_topSeparator setTranslatesAutoresizingMaskIntoConstraints:0];
-    v49 = [MEMORY[0x1E69DC888] separatorColor];
-    [(UIView *)v9->_topSeparator setBackgroundColor:v49];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [(UIView *)v9->_topSeparator setBackgroundColor:separatorColor];
 
     [(EKEventDetailProposedTimeCell *)v9 addSubview:v9->_topSeparator];
     v50 = _NSDictionaryOfVariableBindings(&cfstr_Topseparator.isa, v9->_topSeparator, 0);
@@ -150,24 +150,24 @@
     v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:2];
     [v54 activateConstraints:v57];
 
-    v8 = v60;
+    attendeeCopy = v60;
   }
 
   return v9;
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
   v3.receiver = self;
   v3.super_class = EKEventDetailProposedTimeCell;
   [(EKEventDetailProposedTimeCell *)&v3 setSeparatorStyle:0];
 }
 
-- (void)setShowsTopSeparator:(BOOL)a3
+- (void)setShowsTopSeparator:(BOOL)separator
 {
-  if (self->_showsTopSeparator != a3)
+  if (self->_showsTopSeparator != separator)
   {
-    if (a3)
+    if (separator)
     {
       [MEMORY[0x1E69DC888] separatorColor];
     }
@@ -179,16 +179,16 @@
     v5 = ;
     [(UIView *)self->_topSeparator setBackgroundColor:v5];
 
-    self->_showsTopSeparator = a3;
+    self->_showsTopSeparator = separator;
   }
 }
 
-- (void)setRoundedCorners:(unint64_t)a3
+- (void)setRoundedCorners:(unint64_t)corners
 {
-  v5 = [(UIView *)self->_bgView layer];
-  [v5 setMaskedCorners:a3];
+  layer = [(UIView *)self->_bgView layer];
+  [layer setMaskedCorners:corners];
 
-  if (a3)
+  if (corners)
   {
     v6 = 5.0;
   }
@@ -198,8 +198,8 @@
     v6 = 0.0;
   }
 
-  v7 = [(UIView *)self->_bgView layer];
-  [v7 setCornerRadius:v6];
+  layer2 = [(UIView *)self->_bgView layer];
+  [layer2 setCornerRadius:v6];
 }
 
 - (BOOL)update
@@ -214,8 +214,8 @@
   v79[0] = v4;
   v5 = *MEMORY[0x1E69DB650];
   v78[1] = *MEMORY[0x1E69DB650];
-  v6 = [MEMORY[0x1E69DC888] labelColor];
-  v79[1] = v6;
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v79[1] = labelColor;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v79 forKeys:v78 count:2];
 
   v8 = EventKitUIBundle();
@@ -234,8 +234,8 @@
   v65 = 0;
   v62 = 0;
   v63 = 0;
-  v12 = [(EKCalendarEventInvitationNotificationAttendee *)self->_attendee proposedStartDate];
-  CalDetailStringsForCalendarEvent(event, v11, &v69, &v68, &v67, &v66, &v65, &v64, &v63, &v62, v12, 0);
+  proposedStartDate = [(EKCalendarEventInvitationNotificationAttendee *)self->_attendee proposedStartDate];
+  CalDetailStringsForCalendarEvent(event, v11, &v69, &v68, &v67, &v66, &v65, &v64, &v63, &v62, proposedStartDate, 0);
   v13 = v69;
   v14 = v68;
   v15 = v67;
@@ -321,14 +321,14 @@
   v39 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:20.0 scale:{20.0, v38}];
   [v39 setDrawBorder:1];
   v40 = MEMORY[0x1E6993380];
-  v41 = [(EKCalendarEventInvitationNotificationAttendee *)self->_attendee proposedStartDate];
+  proposedStartDate2 = [(EKCalendarEventInvitationNotificationAttendee *)self->_attendee proposedStartDate];
   v42 = CUIKCalendar();
-  v43 = [v40 iconDateNameFormatTypeForDateBasedOnDistanceFromNow:v41 calendar:v42];
+  v43 = [v40 iconDateNameFormatTypeForDateBasedOnDistanceFromNow:proposedStartDate2 calendar:v42];
 
   v44 = objc_alloc(MEMORY[0x1E69A8A00]);
-  v45 = [(EKCalendarEventInvitationNotificationAttendee *)self->_attendee proposedStartDate];
+  proposedStartDate3 = [(EKCalendarEventInvitationNotificationAttendee *)self->_attendee proposedStartDate];
   v46 = CUIKCalendar();
-  v47 = [v44 initWithDate:v45 calendar:v46 format:v43];
+  v47 = [v44 initWithDate:proposedStartDate3 calendar:v46 format:v43];
 
   v48 = [v47 prepareImageForDescriptor:v39];
   v49 = [MEMORY[0x1E69DCAB8] imageWithCGImage:objc_msgSend(v48 scale:"CGImage") orientation:{0, v38}];

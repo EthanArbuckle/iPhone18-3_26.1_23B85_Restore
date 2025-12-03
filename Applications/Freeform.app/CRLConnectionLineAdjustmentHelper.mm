@@ -1,27 +1,27 @@
 @interface CRLConnectionLineAdjustmentHelper
-+ (id)commandForUpdatingMagnetAfterUngroupingForCline:(id)a3 withPosition:(id)a4 forMagnet:(BOOL)a5 withIcc:(id)a6;
-+ (id)commandsForAdjustingConnectionLines:(id)a3 infosToRemove:(id)a4 editingCoordinator:(id)a5 withIcc:(id)a6;
-+ (id)infosForAdjustingConnectionLinesAfterRemove:(id)a3;
-+ (id)p_commandsForUpdateConnectionLineInfoGeometry:(id)a3 withBoardItemOwner:(id)a4 withNewPathSource:(id *)a5;
-+ (id)p_getMagnetUnscaledPositionValueForMagnet:(id)a3 withConnectedItem:(id)a4 withIcc:(id)a5;
-+ (id)p_getUpdatedMagnetForClineItem:(id)a3 forHeadMagnet:(BOOL)a4 withOriginalLayout:(id)a5 withIcc:(id)a6 newConnectedInfo:(id *)a7;
-+ (unint64_t)p_getUpdatedMagnetTypeWithPosition:(CGPoint)a3 inLayout:(id)a4;
-+ (void)getMagnetUnscaledPositionsFromInfos:(id)a3 withAffectedInfos:(id)a4 withClineHeadMagnets:(id *)a5 withClineTailMagnets:(id *)a6 withIcc:(id)a7;
-+ (void)p_computeLayoutInfoGeometry:(id *)a3 andPathSource:(id *)a4 forConnectionLine:(id)a5 withBoardItemOwner:(id)a6;
-+ (void)transferLaidOutInfoGeometryAndPathSourceFrom:(id)a3 to:(id)a4 withBoardItemOwner:(id)a5;
++ (id)commandForUpdatingMagnetAfterUngroupingForCline:(id)cline withPosition:(id)position forMagnet:(BOOL)magnet withIcc:(id)icc;
++ (id)commandsForAdjustingConnectionLines:(id)lines infosToRemove:(id)remove editingCoordinator:(id)coordinator withIcc:(id)icc;
++ (id)infosForAdjustingConnectionLinesAfterRemove:(id)remove;
++ (id)p_commandsForUpdateConnectionLineInfoGeometry:(id)geometry withBoardItemOwner:(id)owner withNewPathSource:(id *)source;
++ (id)p_getMagnetUnscaledPositionValueForMagnet:(id)magnet withConnectedItem:(id)item withIcc:(id)icc;
++ (id)p_getUpdatedMagnetForClineItem:(id)item forHeadMagnet:(BOOL)magnet withOriginalLayout:(id)layout withIcc:(id)icc newConnectedInfo:(id *)info;
++ (unint64_t)p_getUpdatedMagnetTypeWithPosition:(CGPoint)position inLayout:(id)layout;
++ (void)getMagnetUnscaledPositionsFromInfos:(id)infos withAffectedInfos:(id)affectedInfos withClineHeadMagnets:(id *)magnets withClineTailMagnets:(id *)tailMagnets withIcc:(id)icc;
++ (void)p_computeLayoutInfoGeometry:(id *)geometry andPathSource:(id *)source forConnectionLine:(id)line withBoardItemOwner:(id)owner;
++ (void)transferLaidOutInfoGeometryAndPathSourceFrom:(id)from to:(id)to withBoardItemOwner:(id)owner;
 @end
 
 @implementation CRLConnectionLineAdjustmentHelper
 
-+ (id)infosForAdjustingConnectionLinesAfterRemove:(id)a3
++ (id)infosForAdjustingConnectionLinesAfterRemove:(id)remove
 {
-  v3 = a3;
+  removeCopy = remove;
   v4 = +[NSMutableSet set];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v3;
+  obj = removeCopy;
   v5 = [obj countByEnumeratingWithState:&v34 objects:v49 count:16];
   if (v5)
   {
@@ -39,8 +39,8 @@
 
         v9 = *(*(&v34 + 1) + 8 * v8);
         v10 = objc_opt_class();
-        v11 = [v9 parentInfo];
-        v12 = sub_100014370(v10, v11);
+        parentInfo = [v9 parentInfo];
+        v12 = sub_100014370(v10, parentInfo);
 
         if (v12)
         {
@@ -123,8 +123,8 @@
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v30 + 1) + 8 * i) childInfos];
-        [v20 addObjectsFromArray:v26];
+        childInfos = [*(*(&v30 + 1) + 8 * i) childInfos];
+        [v20 addObjectsFromArray:childInfos];
       }
 
       v23 = [v21 countByEnumeratingWithState:&v30 objects:v38 count:16];
@@ -138,26 +138,26 @@
   return v27;
 }
 
-+ (id)commandsForAdjustingConnectionLines:(id)a3 infosToRemove:(id)a4 editingCoordinator:(id)a5 withIcc:(id)a6
++ (id)commandsForAdjustingConnectionLines:(id)lines infosToRemove:(id)remove editingCoordinator:(id)coordinator withIcc:(id)icc
 {
-  v9 = a3;
-  v70 = a4;
-  v10 = a5;
-  v67 = a6;
+  linesCopy = lines;
+  removeCopy = remove;
+  coordinatorCopy = coordinator;
+  iccCopy = icc;
   v79 = +[NSMutableArray array];
-  v66 = v10;
-  v11 = [v10 mainBoard];
+  v66 = coordinatorCopy;
+  mainBoard = [coordinatorCopy mainBoard];
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
-  obj = v9;
+  obj = linesCopy;
   v12 = [obj countByEnumeratingWithState:&v94 objects:v100 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v95;
-    v68 = v11;
+    v68 = mainBoard;
     v69 = *v95;
     do
     {
@@ -174,12 +174,12 @@
         if ([v16 isMemberOfClass:objc_opt_class()])
         {
           v17 = v16;
-          v18 = [v17 getConnectedFromWithBoardItemOwner:v11];
-          v19 = [v17 getConnectedToWithBoardItemOwner:v11];
+          v18 = [v17 getConnectedFromWithBoardItemOwner:mainBoard];
+          v19 = [v17 getConnectedToWithBoardItemOwner:mainBoard];
           if (v18 | v19)
           {
             v93 = 0;
-            v20 = [a1 p_commandsForUpdateConnectionLineInfoGeometry:v17 withBoardItemOwner:v11 withNewPathSource:&v93];
+            v20 = [self p_commandsForUpdateConnectionLineInfoGeometry:v17 withBoardItemOwner:mainBoard withNewPathSource:&v93];
             v21 = v93;
             v76 = v20;
             [v79 addObjectsFromArray:v20];
@@ -187,22 +187,22 @@
             v72 = v21;
             v23 = sub_100014370(v22, v21);
             v24 = v19;
-            v25 = [v17 connectionLinePathSource];
-            v26 = [v25 headMagnet];
-            if (!v26)
+            connectionLinePathSource = [v17 connectionLinePathSource];
+            headMagnet = [connectionLinePathSource headMagnet];
+            if (!headMagnet)
             {
               goto LABEL_11;
             }
 
-            v27 = v26;
-            v28 = [v70 containsObject:v24];
+            v27 = headMagnet;
+            v28 = [removeCopy containsObject:v24];
 
             if (v28)
             {
 
-              v25 = [v67 layoutForInfo:v24];
+              connectionLinePathSource = [iccCopy layoutForInfo:v24];
               v92 = 0;
-              v29 = [a1 p_getUpdatedMagnetForClineItem:v17 forHeadMagnet:1 withOriginalLayout:v25 withIcc:v67 newConnectedInfo:&v92];
+              v29 = [self p_getUpdatedMagnetForClineItem:v17 forHeadMagnet:1 withOriginalLayout:connectionLinePathSource withIcc:iccCopy newConnectedInfo:&v92];
               v24 = v92;
               [v23 setHeadMagnet:v29];
 
@@ -213,22 +213,22 @@ LABEL_11:
             if (v18)
             {
               v31 = v30;
-              v32 = [v17 connectionLinePathSource];
-              v33 = [v32 tailMagnet];
-              if (!v33)
+              connectionLinePathSource2 = [v17 connectionLinePathSource];
+              tailMagnet = [connectionLinePathSource2 tailMagnet];
+              if (!tailMagnet)
               {
                 goto LABEL_16;
               }
 
-              v34 = v33;
-              v35 = [v70 containsObject:v31];
+              v34 = tailMagnet;
+              v35 = [removeCopy containsObject:v31];
 
               if (v35)
               {
 
-                v32 = [v67 layoutForInfo:v31];
+                connectionLinePathSource2 = [iccCopy layoutForInfo:v31];
                 v91 = 0;
-                v36 = [a1 p_getUpdatedMagnetForClineItem:v17 forHeadMagnet:0 withOriginalLayout:v32 withIcc:v67 newConnectedInfo:&v91];
+                v36 = [self p_getUpdatedMagnetForClineItem:v17 forHeadMagnet:0 withOriginalLayout:connectionLinePathSource2 withIcc:iccCopy newConnectedInfo:&v91];
                 v31 = v91;
                 [v23 setTailMagnet:v36];
 
@@ -246,7 +246,7 @@ LABEL_16:
             v38 = [[_TtC8Freeform37CRLCommandSetConnectionLineConnection alloc] initWithConnectionLine:v17 connectedItem:v31 chirality:0 pathSource:v23];
             [v79 addObject:v38];
 
-            v11 = v68;
+            mainBoard = v68;
             v14 = v69;
             v13 = v71;
           }
@@ -266,7 +266,7 @@ LABEL_16:
   v90 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v39 = v70;
+  v39 = removeCopy;
   v40 = [v39 countByEnumeratingWithState:&v87 objects:v99 count:16];
   v77 = v39;
   if (v40)
@@ -287,12 +287,12 @@ LABEL_16:
         if ([v44 isMemberOfClass:objc_opt_class()])
         {
           v45 = v44;
-          v46 = [v45 getConnectedFromWithBoardItemOwner:v11];
-          v47 = [v45 getConnectedToWithBoardItemOwner:v11];
+          v46 = [v45 getConnectedFromWithBoardItemOwner:mainBoard];
+          v47 = [v45 getConnectedToWithBoardItemOwner:mainBoard];
           if (v46 | v47)
           {
             v86 = 0;
-            v48 = [a1 p_commandsForUpdateConnectionLineInfoGeometry:v45 withBoardItemOwner:v11 withNewPathSource:&v86];
+            v48 = [self p_commandsForUpdateConnectionLineInfoGeometry:v45 withBoardItemOwner:mainBoard withNewPathSource:&v86];
             v49 = v86;
             [v79 addObjectsFromArray:v48];
             v50 = objc_opt_class();
@@ -351,11 +351,11 @@ LABEL_16:
           v59 = v58;
           v80 = 0;
           v81 = 0;
-          [a1 p_computeLayoutInfoGeometry:&v81 andPathSource:&v80 forConnectionLine:v59 withBoardItemOwner:v11];
+          [self p_computeLayoutInfoGeometry:&v81 andPathSource:&v80 forConnectionLine:v59 withBoardItemOwner:mainBoard];
           v60 = v81;
           v61 = v80;
-          v62 = [v59 getConnectedFromWithBoardItemOwner:v11];
-          v63 = [v59 getConnectedToWithBoardItemOwner:v11];
+          v62 = [v59 getConnectedFromWithBoardItemOwner:mainBoard];
+          v63 = [v59 getConnectedToWithBoardItemOwner:mainBoard];
           if ((!v62 || [v39 containsObject:v62]) && (!v63 || objc_msgSend(v39, "containsObject:", v63)))
           {
             v64 = [v59 commandToAnchorToTableWith:v60];
@@ -378,13 +378,13 @@ LABEL_16:
   return v79;
 }
 
-+ (id)p_getUpdatedMagnetForClineItem:(id)a3 forHeadMagnet:(BOOL)a4 withOriginalLayout:(id)a5 withIcc:(id)a6 newConnectedInfo:(id *)a7
++ (id)p_getUpdatedMagnetForClineItem:(id)item forHeadMagnet:(BOOL)magnet withOriginalLayout:(id)layout withIcc:(id)icc newConnectedInfo:(id *)info
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  magnetCopy = magnet;
+  itemCopy = item;
+  layoutCopy = layout;
+  iccCopy = icc;
+  if (!layoutCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -413,27 +413,27 @@ LABEL_16:
     [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:152 isFatal:0 description:"invalid nil value for '%{public}s'", "originalLayout"];
   }
 
-  v17 = [v11 connectionLinePathSource];
-  v18 = v17;
-  if (v10)
+  connectionLinePathSource = [itemCopy connectionLinePathSource];
+  v18 = connectionLinePathSource;
+  if (magnetCopy)
   {
-    [v17 headMagnet];
+    [connectionLinePathSource headMagnet];
   }
 
   else
   {
-    [v17 tailMagnet];
+    [connectionLinePathSource tailMagnet];
   }
   v19 = ;
   [v19 magnetNormalizedPosition];
   v41 = v21;
   v42 = v20;
 
-  v22 = [v12 pureGeometry];
-  v23 = v22;
-  if (v22)
+  pureGeometry = [layoutCopy pureGeometry];
+  v23 = pureGeometry;
+  if (pureGeometry)
   {
-    [v22 fullTransform];
+    [pureGeometry fullTransform];
     v24 = v47;
     v25 = v48;
     v26 = v49;
@@ -452,22 +452,22 @@ LABEL_16:
   v44[1] = 3221225472;
   v44[2] = sub_100340258;
   v44[3] = &unk_1018572B8;
-  v27 = v12;
+  v27 = layoutCopy;
   v45 = v27;
-  v28 = v11;
+  v28 = itemCopy;
   v46 = v28;
-  v29 = [v13 hitRep:v44 passingTest:?];
-  v30 = [v29 repForSelecting];
-  v31 = [v30 layout];
+  v29 = [iccCopy hitRep:v44 passingTest:?];
+  repForSelecting = [v29 repForSelecting];
+  layout = [repForSelecting layout];
 
-  if (v31)
+  if (layout)
   {
     v32 = objc_opt_class();
-    v33 = [v31 info];
-    v34 = sub_100014370(v32, v33);
+    info = [layout info];
+    v34 = sub_100014370(v32, info);
 
-    [v18 getNewNormalizedPositionForMagnet:v10 withPreviousLayout:v27 onNewLayout:v31];
-    v37 = -[CRLConnectionLineMagnet initWithType:normalizedPosition:]([CRLConnectionLineMagnet alloc], "initWithType:normalizedPosition:", [a1 p_getUpdatedMagnetTypeWithPosition:v31 inLayout:*&v43], v35, v36);
+    [v18 getNewNormalizedPositionForMagnet:magnetCopy withPreviousLayout:v27 onNewLayout:layout];
+    v37 = -[CRLConnectionLineMagnet initWithType:normalizedPosition:]([CRLConnectionLineMagnet alloc], "initWithType:normalizedPosition:", [self p_getUpdatedMagnetTypeWithPosition:layout inLayout:*&v43], v35, v36);
   }
 
   else
@@ -477,20 +477,20 @@ LABEL_16:
   }
 
   v38 = v34;
-  *a7 = v34;
+  *info = v34;
 
   return v37;
 }
 
-+ (unint64_t)p_getUpdatedMagnetTypeWithPosition:(CGPoint)a3 inLayout:(id)a4
++ (unint64_t)p_getUpdatedMagnetTypeWithPosition:(CGPoint)position inLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v7 = 2;
   v8 = 7;
   do
   {
-    [a4 getCardinalPositionFromType:v7];
+    [layout getCardinalPositionFromType:v7];
     if (sub_100120090(v9, v10, x, y) < 10.0)
     {
       v8 = v7;
@@ -503,47 +503,47 @@ LABEL_16:
   return v8;
 }
 
-+ (id)p_commandsForUpdateConnectionLineInfoGeometry:(id)a3 withBoardItemOwner:(id)a4 withNewPathSource:(id *)a5
++ (id)p_commandsForUpdateConnectionLineInfoGeometry:(id)geometry withBoardItemOwner:(id)owner withNewPathSource:(id *)source
 {
-  v8 = a4;
-  v9 = a3;
+  ownerCopy = owner;
+  geometryCopy = geometry;
   v10 = +[NSMutableArray array];
   v17 = 0;
   v18 = 0;
-  [a1 p_computeLayoutInfoGeometry:&v18 andPathSource:&v17 forConnectionLine:v9 withBoardItemOwner:v8];
+  [self p_computeLayoutInfoGeometry:&v18 andPathSource:&v17 forConnectionLine:geometryCopy withBoardItemOwner:ownerCopy];
 
   v11 = v18;
   v12 = v17;
-  v13 = [[_TtC8Freeform25CRLCommandSetInfoGeometry alloc] initWithBoardItem:v9 geometry:v11];
+  v13 = [[_TtC8Freeform25CRLCommandSetInfoGeometry alloc] initWithBoardItem:geometryCopy geometry:v11];
   [v10 addObject:v13];
-  v14 = [[_TtC8Freeform23CRLCommandSetPathSource alloc] initWithShapeItem:v9 pathSource:v12];
+  v14 = [[_TtC8Freeform23CRLCommandSetPathSource alloc] initWithShapeItem:geometryCopy pathSource:v12];
 
   [v10 addObject:v14];
   v15 = v12;
 
-  *a5 = v12;
+  *source = v12;
 
   return v10;
 }
 
-+ (void)transferLaidOutInfoGeometryAndPathSourceFrom:(id)a3 to:(id)a4 withBoardItemOwner:(id)a5
++ (void)transferLaidOutInfoGeometryAndPathSourceFrom:(id)from to:(id)to withBoardItemOwner:(id)owner
 {
   v11 = 0;
   v12 = 0;
-  v8 = a4;
-  [a1 p_computeLayoutInfoGeometry:&v12 andPathSource:&v11 forConnectionLine:a3 withBoardItemOwner:a5];
+  toCopy = to;
+  [self p_computeLayoutInfoGeometry:&v12 andPathSource:&v11 forConnectionLine:from withBoardItemOwner:owner];
   v9 = v12;
   v10 = v11;
-  [v8 setGeometry:v9];
-  [v8 setPathSource:v10];
+  [toCopy setGeometry:v9];
+  [toCopy setPathSource:v10];
 }
 
-+ (void)p_computeLayoutInfoGeometry:(id *)a3 andPathSource:(id *)a4 forConnectionLine:(id)a5 withBoardItemOwner:(id)a6
++ (void)p_computeLayoutInfoGeometry:(id *)geometry andPathSource:(id *)source forConnectionLine:(id)line withBoardItemOwner:(id)owner
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [v9 getConnectedFromWithBoardItemOwner:v10];
-  v12 = [v9 getConnectedToWithBoardItemOwner:v10];
+  lineCopy = line;
+  ownerCopy = owner;
+  v11 = [lineCopy getConnectedFromWithBoardItemOwner:ownerCopy];
+  v12 = [lineCopy getConnectedToWithBoardItemOwner:ownerCopy];
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -558,8 +558,8 @@ LABEL_16:
   v35 = 0;
   if (v11 | v12)
   {
-    v25 = a4;
-    v17 = [NSMutableArray arrayWithObject:v9];
+    sourceCopy = source;
+    v17 = [NSMutableArray arrayWithObject:lineCopy];
     v16 = v17;
     if (v11)
     {
@@ -575,43 +575,43 @@ LABEL_16:
     v26[1] = 3221225472;
     v26[2] = sub_10034089C;
     v26[3] = &unk_101857320;
-    v18 = v9;
+    v18 = lineCopy;
     v27 = v18;
     v28 = &v36;
     v29 = &v30;
     [CRLCanvasLayoutController temporaryLayoutControllerForInfos:v16 useInBlock:v26];
     v19 = objc_opt_class();
     v20 = sub_100014370(v19, v31[5]);
-    v21 = [v18 connectionLinePathSource];
-    v22 = [v21 headMagnet];
-    [v20 setHeadMagnet:v22];
+    connectionLinePathSource = [v18 connectionLinePathSource];
+    headMagnet = [connectionLinePathSource headMagnet];
+    [v20 setHeadMagnet:headMagnet];
 
-    v23 = [v18 connectionLinePathSource];
-    v24 = [v23 tailMagnet];
-    [v20 setTailMagnet:v24];
+    connectionLinePathSource2 = [v18 connectionLinePathSource];
+    tailMagnet = [connectionLinePathSource2 tailMagnet];
+    [v20 setTailMagnet:tailMagnet];
 
-    a4 = v25;
+    source = sourceCopy;
   }
 
   else
   {
-    v13 = [v9 geometry];
+    geometry = [lineCopy geometry];
     v14 = v37[5];
-    v37[5] = v13;
+    v37[5] = geometry;
 
-    v15 = [v9 pathSource];
+    pathSource = [lineCopy pathSource];
     v16 = v31[5];
-    v31[5] = v15;
+    v31[5] = pathSource;
   }
 
-  if (a3)
+  if (geometry)
   {
-    *a3 = v37[5];
+    *geometry = v37[5];
   }
 
-  if (a4)
+  if (source)
   {
-    *a4 = v31[5];
+    *source = v31[5];
   }
 
   _Block_object_dispose(&v30, 8);
@@ -619,18 +619,18 @@ LABEL_16:
   _Block_object_dispose(&v36, 8);
 }
 
-+ (id)commandForUpdatingMagnetAfterUngroupingForCline:(id)a3 withPosition:(id)a4 forMagnet:(BOOL)a5 withIcc:(id)a6
++ (id)commandForUpdatingMagnetAfterUngroupingForCline:(id)cline withPosition:(id)position forMagnet:(BOOL)magnet withIcc:(id)icc
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a6;
-  v11 = a4;
+  magnetCopy = magnet;
+  clineCopy = cline;
+  iccCopy = icc;
+  positionCopy = position;
   v12 = objc_alloc_init(NSMutableArray);
   v13 = objc_opt_class();
-  v14 = [v10 layoutForInfo:v9];
+  v14 = [iccCopy layoutForInfo:clineCopy];
   v15 = sub_100014370(v13, v14);
 
-  if (v7)
+  if (magnetCopy)
   {
     v16 = 11;
   }
@@ -640,7 +640,7 @@ LABEL_16:
     v16 = 10;
   }
 
-  [v11 CGPointValue];
+  [positionCopy CGPointValue];
   v43 = v18;
   v44 = v17;
 
@@ -651,25 +651,25 @@ LABEL_16:
   v19 = v15;
   v49 = v19;
   v50 = v16;
-  v20 = [v10 hitRep:v48 passingTest:{v44, v43}];
+  v20 = [iccCopy hitRep:v48 passingTest:{v44, v43}];
 
   if (v20)
   {
-    v21 = [v20 repForSelecting];
-    if (v21)
+    repForSelecting = [v20 repForSelecting];
+    if (repForSelecting)
     {
-      v22 = v21;
-      v23 = [v20 repForSelecting];
-      v24 = [v23 layout];
+      v22 = repForSelecting;
+      repForSelecting2 = [v20 repForSelecting];
+      layout = [repForSelecting2 layout];
 
-      if (v24)
+      if (layout)
       {
-        v25 = [v20 repForSelecting];
-        v26 = [v25 layout];
+        repForSelecting3 = [v20 repForSelecting];
+        layout2 = [repForSelecting3 layout];
 
-        if (v26)
+        if (layout2)
         {
-          [v26 pureTransformInRoot];
+          [layout2 pureTransformInRoot];
         }
 
         else
@@ -679,17 +679,17 @@ LABEL_16:
 
         CGAffineTransformInvert(&v47, &v46);
         v45 = vaddq_f64(*&v47.tx, vmlaq_n_f64(vmulq_n_f64(*&v47.c, v43), *&v47.a, v44));
-        v27 = [v26 pureGeometry];
-        [v27 size];
+        pureGeometry = [layout2 pureGeometry];
+        [pureGeometry size];
         v28 = sub_10011ECB4();
         v31 = sub_100121720(v45.f64[0], v45.f64[1], v28, v29, v30);
         v33 = v32;
 
-        v34 = [v9 connectionLinePathSource];
-        v35 = [v34 copy];
+        connectionLinePathSource = [clineCopy connectionLinePathSource];
+        v35 = [connectionLinePathSource copy];
 
         v36 = [[CRLConnectionLineMagnet alloc] initWithType:7 normalizedPosition:v31, v33];
-        if (v7)
+        if (magnetCopy)
         {
           [v35 setHeadMagnet:v36];
           v37 = 1;
@@ -702,10 +702,10 @@ LABEL_16:
         }
 
         v38 = objc_opt_class();
-        v39 = [v26 info];
-        v40 = sub_100014370(v38, v39);
+        info = [layout2 info];
+        v40 = sub_100014370(v38, info);
 
-        v41 = [[_TtC8Freeform37CRLCommandSetConnectionLineConnection alloc] initWithConnectionLine:v9 connectedItem:v40 chirality:v37 pathSource:v35];
+        v41 = [[_TtC8Freeform37CRLCommandSetConnectionLineConnection alloc] initWithConnectionLine:clineCopy connectedItem:v40 chirality:v37 pathSource:v35];
         [v12 addObject:v41];
       }
     }
@@ -714,18 +714,18 @@ LABEL_16:
   return v12;
 }
 
-+ (void)getMagnetUnscaledPositionsFromInfos:(id)a3 withAffectedInfos:(id)a4 withClineHeadMagnets:(id *)a5 withClineTailMagnets:(id *)a6 withIcc:(id)a7
++ (void)getMagnetUnscaledPositionsFromInfos:(id)infos withAffectedInfos:(id)affectedInfos withClineHeadMagnets:(id *)magnets withClineTailMagnets:(id *)tailMagnets withIcc:(id)icc
 {
-  v40 = a5;
-  v9 = a3;
-  v10 = a4;
-  obj = v9;
-  v45 = a7;
+  magnetsCopy = magnets;
+  infosCopy = infos;
+  affectedInfosCopy = affectedInfos;
+  obj = infosCopy;
+  iccCopy = icc;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v11 = [v9 countByEnumeratingWithState:&v46 objects:v50 count:16];
+  v11 = [infosCopy countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v11)
   {
     v12 = v11;
@@ -748,18 +748,18 @@ LABEL_16:
         {
           v16 = objc_opt_class();
           v17 = sub_100014370(v16, v15);
-          v18 = [v17 connectionLinePathSource];
-          v19 = [v10 containsObject:v17];
-          v20 = [v45 editingCoordinator];
-          v21 = [v20 mainBoard];
-          v22 = [v17 getConnectedToWithBoardItemOwner:v21];
+          connectionLinePathSource = [v17 connectionLinePathSource];
+          v19 = [affectedInfosCopy containsObject:v17];
+          editingCoordinator = [iccCopy editingCoordinator];
+          mainBoard = [editingCoordinator mainBoard];
+          v22 = [v17 getConnectedToWithBoardItemOwner:mainBoard];
 
-          v23 = [v10 containsObject:v22];
-          v24 = [v45 editingCoordinator];
-          v25 = [v24 mainBoard];
-          v26 = [v17 getConnectedFromWithBoardItemOwner:v25];
+          v23 = [affectedInfosCopy containsObject:v22];
+          editingCoordinator2 = [iccCopy editingCoordinator];
+          mainBoard2 = [editingCoordinator2 mainBoard];
+          v26 = [v17 getConnectedFromWithBoardItemOwner:mainBoard2];
 
-          v27 = [v10 containsObject:v26];
+          v27 = [affectedInfosCopy containsObject:v26];
           v28 = v27;
           if (v19)
           {
@@ -788,25 +788,25 @@ LABEL_19:
             goto LABEL_20;
           }
 
-          v30 = [v18 headMagnet];
-          v31 = (v30 != 0) & v23;
+          headMagnet = [connectionLinePathSource headMagnet];
+          v31 = (headMagnet != 0) & v23;
 
           if (v31 == 1)
           {
-            v32 = *v40;
-            v33 = [v18 headMagnet];
-            v34 = [CRLConnectionLineAdjustmentHelper p_getMagnetUnscaledPositionValueForMagnet:v33 withConnectedItem:v22 withIcc:v45];
+            v32 = *magnetsCopy;
+            headMagnet2 = [connectionLinePathSource headMagnet];
+            v34 = [CRLConnectionLineAdjustmentHelper p_getMagnetUnscaledPositionValueForMagnet:headMagnet2 withConnectedItem:v22 withIcc:iccCopy];
             [v32 setObject:v34 forKey:v17];
           }
 
-          v35 = [v18 tailMagnet];
-          v36 = (v35 != 0) & v28;
+          tailMagnet = [connectionLinePathSource tailMagnet];
+          v36 = (tailMagnet != 0) & v28;
 
           if (v36 == 1)
           {
-            v37 = *a6;
-            v38 = [v18 tailMagnet];
-            v39 = [CRLConnectionLineAdjustmentHelper p_getMagnetUnscaledPositionValueForMagnet:v38 withConnectedItem:v26 withIcc:v45];
+            v37 = *tailMagnets;
+            tailMagnet2 = [connectionLinePathSource tailMagnet];
+            v39 = [CRLConnectionLineAdjustmentHelper p_getMagnetUnscaledPositionValueForMagnet:tailMagnet2 withConnectedItem:v26 withIcc:iccCopy];
             [v37 setObject:v39 forKey:v17];
           }
 
@@ -825,19 +825,19 @@ LABEL_20:
   }
 }
 
-+ (id)p_getMagnetUnscaledPositionValueForMagnet:(id)a3 withConnectedItem:(id)a4 withIcc:(id)a5
++ (id)p_getMagnetUnscaledPositionValueForMagnet:(id)magnet withConnectedItem:(id)item withIcc:(id)icc
 {
-  v7 = a3;
-  v8 = [a5 layoutForInfo:a4];
-  [v7 magnetNormalizedPosition];
+  magnetCopy = magnet;
+  v8 = [icc layoutForInfo:item];
+  [magnetCopy magnetNormalizedPosition];
   v18 = v10;
   v19 = v9;
 
-  v11 = [v8 pureGeometry];
-  v12 = v11;
-  if (v11)
+  pureGeometry = [v8 pureGeometry];
+  v12 = pureGeometry;
+  if (pureGeometry)
   {
-    [v11 fullTransform];
+    [pureGeometry fullTransform];
     v13 = v21;
     v14 = v22;
     v15 = v23;

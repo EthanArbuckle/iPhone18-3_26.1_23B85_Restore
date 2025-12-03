@@ -1,27 +1,27 @@
 @interface TabChangeDelegate
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4;
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController;
 - (_TtC22SubscribePageExtension17TabChangeDelegate)init;
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4;
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController;
 @end
 
 @implementation TabChangeDelegate
 
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1005C9E24(v6, v7);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  sub_1005C9E24(controllerCopy, viewControllerCopy);
 
   return 1;
 }
 
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1005CA4D0(v6, v7);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  sub_1005CA4D0(controllerCopy, viewControllerCopy);
 }
 
 - (_TtC22SubscribePageExtension17TabChangeDelegate)init

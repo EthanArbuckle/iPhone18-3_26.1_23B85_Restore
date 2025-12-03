@@ -1,7 +1,7 @@
 @interface WBSAutomaticBugCaptureManager
 + (id)sharedManager;
 - (WBSAutomaticBugCaptureManager)init;
-- (void)_startLoggingSessionForDomain:(id)a3 detectedProcess:(id)a4 type:(id)a5 subType:(id)a6 context:(id)a7 duration:(double)a8;
+- (void)_startLoggingSessionForDomain:(id)domain detectedProcess:(id)process type:(id)type subType:(id)subType context:(id)context duration:(double)duration;
 @end
 
 @implementation WBSAutomaticBugCaptureManager
@@ -39,41 +39,41 @@ void __46__WBSAutomaticBugCaptureManager_sharedManager__block_invoke()
     self->_reporter = v3;
 
     self = self;
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)_startLoggingSessionForDomain:(id)a3 detectedProcess:(id)a4 type:(id)a5 subType:(id)a6 context:(id)a7 duration:(double)a8
+- (void)_startLoggingSessionForDomain:(id)domain detectedProcess:(id)process type:(id)type subType:(id)subType context:(id)context duration:(double)duration
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  domainCopy = domain;
+  processCopy = process;
+  typeCopy = type;
+  subTypeCopy = subType;
+  contextCopy = context;
   v19 = dispatch_get_global_queue(9, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __109__WBSAutomaticBugCaptureManager__startLoggingSessionForDomain_detectedProcess_type_subType_context_duration___block_invoke;
   block[3] = &unk_1E7FB6B30;
   block[4] = self;
-  v26 = v14;
-  v27 = v16;
-  v28 = v17;
-  v29 = v15;
-  v30 = v18;
-  v31 = a8;
-  v20 = v18;
-  v21 = v15;
-  v22 = v17;
-  v23 = v16;
-  v24 = v14;
+  v26 = domainCopy;
+  v27 = typeCopy;
+  v28 = subTypeCopy;
+  v29 = processCopy;
+  v30 = contextCopy;
+  durationCopy = duration;
+  v20 = contextCopy;
+  v21 = processCopy;
+  v22 = subTypeCopy;
+  v23 = typeCopy;
+  v24 = domainCopy;
   dispatch_async(v19, block);
 }
 

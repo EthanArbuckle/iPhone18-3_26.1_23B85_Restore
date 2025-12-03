@@ -1,21 +1,21 @@
 @interface LPLinkViewComponents
-- (void)applyToAllViews:(id)a3;
+- (void)applyToAllViews:(id)views;
 @end
 
 @implementation LPLinkViewComponents
 
-- (void)applyToAllViews:(id)a3
+- (void)applyToAllViews:(id)views
 {
-  v4 = a3;
-  v4[2](v4, self->_captionBar);
-  v4[2](v4, self->_media);
-  v4[2](v4, self->_mediaBackground);
-  v4[2](v4, self->_mediaTopCaptionBar);
-  v4[2](v4, self->_mediaBottomCaptionBar);
-  v4[2](v4, self->_quote);
-  v4[2](v4, self->_backgroundImage);
-  v4[2](v4, self->_contactsBadge);
-  v4[2](v4, self->_domainNameIndicator);
+  viewsCopy = views;
+  viewsCopy[2](viewsCopy, self->_captionBar);
+  viewsCopy[2](viewsCopy, self->_media);
+  viewsCopy[2](viewsCopy, self->_mediaBackground);
+  viewsCopy[2](viewsCopy, self->_mediaTopCaptionBar);
+  viewsCopy[2](viewsCopy, self->_mediaBottomCaptionBar);
+  viewsCopy[2](viewsCopy, self->_quote);
+  viewsCopy[2](viewsCopy, self->_backgroundImage);
+  viewsCopy[2](viewsCopy, self->_contactsBadge);
+  viewsCopy[2](viewsCopy, self->_domainNameIndicator);
 }
 
 @end

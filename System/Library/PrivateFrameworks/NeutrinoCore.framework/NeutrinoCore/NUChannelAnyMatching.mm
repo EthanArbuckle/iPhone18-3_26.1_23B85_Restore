@@ -1,7 +1,7 @@
 @interface NUChannelAnyMatching
-- (BOOL)match:(id)a3;
+- (BOOL)match:(id)match;
 - (NUChannelAnyMatching)init;
-- (NUChannelAnyMatching)initWithPredicates:(id)a3;
+- (NUChannelAnyMatching)initWithPredicates:(id)predicates;
 - (id)description;
 @end
 
@@ -10,23 +10,23 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(NUChannelAnyMatching *)self predicates];
-  v4 = [v3 componentsJoinedByString:{@", "}];
+  predicates = [(NUChannelAnyMatching *)self predicates];
+  v4 = [predicates componentsJoinedByString:{@", "}];
   v5 = [v2 stringWithFormat:@"ANY(%@)", v4];
 
   return v5;
 }
 
-- (BOOL)match:(id)a3
+- (BOOL)match:(id)match
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  matchCopy = match;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NUChannelAnyMatching *)self predicates];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  predicates = [(NUChannelAnyMatching *)self predicates];
+  v6 = [predicates countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -36,17 +36,17 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(predicates);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) match:v4])
+        if ([*(*(&v10 + 1) + 8 * i) match:matchCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [predicates countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -61,11 +61,11 @@ LABEL_11:
   return v6;
 }
 
-- (NUChannelAnyMatching)initWithPredicates:(id)a3
+- (NUChannelAnyMatching)initWithPredicates:(id)predicates
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 count])
+  predicatesCopy = predicates;
+  if (![predicatesCopy count])
   {
     v9 = NUAssertLogger_4187();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -86,8 +86,8 @@ LABEL_11:
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -98,8 +98,8 @@ LABEL_11:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -111,7 +111,7 @@ LABEL_11:
   v25.receiver = self;
   v25.super_class = NUChannelAnyMatching;
   v5 = [(NUChannelAnyMatching *)&v25 init];
-  v6 = [v4 copy];
+  v6 = [predicatesCopy copy];
   predicates = v5->_predicates;
   v5->_predicates = v6;
 
@@ -164,8 +164,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -181,8 +181,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

@@ -1,12 +1,12 @@
 @interface VUIMediaLibraryApplicationController
 + (id)defaultController;
 - (BOOL)isCellularDataForPlaybackEnabled;
-- (BOOL)shouldWarnAboutPlaybackQualityForRentalMediaItem:(id)a3;
+- (BOOL)shouldWarnAboutPlaybackQualityForRentalMediaItem:(id)item;
 - (id)settingsURL;
-- (unint64_t)assetTypeForRentalMediaItem:(id)a3;
+- (unint64_t)assetTypeForRentalMediaItem:(id)item;
 - (void)clearCellularPlaybackQualityOverrides;
-- (void)overrideCellularPlaybackQuality:(unint64_t)a3 forMediaItem:(id)a4;
-- (void)removeRentalMediaItem:(id)a3 withCompletion:(id)a4;
+- (void)overrideCellularPlaybackQuality:(unint64_t)quality forMediaItem:(id)item;
+- (void)removeRentalMediaItem:(id)item withCompletion:(id)completion;
 @end
 
 @implementation VUIMediaLibraryApplicationController
@@ -32,11 +32,11 @@ void __57__VUIMediaLibraryApplicationController_defaultController__block_invoke(
 
 - (id)settingsURL
 {
-  v3 = [(VUIMediaLibraryApplicationController *)self delegate];
-  v4 = v3;
-  if (v3)
+  delegate = [(VUIMediaLibraryApplicationController *)self delegate];
+  v4 = delegate;
+  if (delegate)
   {
-    v5 = [v3 settingsURLForMediaLibraryApplicationController:self];
+    v5 = [delegate settingsURLForMediaLibraryApplicationController:self];
   }
 
   else
@@ -55,11 +55,11 @@ void __57__VUIMediaLibraryApplicationController_defaultController__block_invoke(
 
 - (BOOL)isCellularDataForPlaybackEnabled
 {
-  v3 = [(VUIMediaLibraryApplicationController *)self delegate];
-  v4 = v3;
-  if (v3)
+  delegate = [(VUIMediaLibraryApplicationController *)self delegate];
+  v4 = delegate;
+  if (delegate)
   {
-    v5 = [v3 isCellularDataPlaybackEnabledForMediaLibraryApplicationController:self];
+    v5 = [delegate isCellularDataPlaybackEnabledForMediaLibraryApplicationController:self];
   }
 
   else
@@ -76,14 +76,14 @@ void __57__VUIMediaLibraryApplicationController_defaultController__block_invoke(
   return v5;
 }
 
-- (BOOL)shouldWarnAboutPlaybackQualityForRentalMediaItem:(id)a3
+- (BOOL)shouldWarnAboutPlaybackQualityForRentalMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = [(VUIMediaLibraryApplicationController *)self delegate];
-  if (!v5)
+  itemCopy = item;
+  delegate = [(VUIMediaLibraryApplicationController *)self delegate];
+  if (!delegate)
   {
-    v6 = VUIDefaultLogObject();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    mediaPlayerMediaItem = VUIDefaultLogObject();
+    if (os_log_type_enabled(mediaPlayerMediaItem, OS_LOG_TYPE_ERROR))
     {
       [VUIMediaLibraryApplicationController shouldWarnAboutPlaybackQualityForRentalMediaItem:];
     }
@@ -91,8 +91,8 @@ void __57__VUIMediaLibraryApplicationController_defaultController__block_invoke(
     goto LABEL_9;
   }
 
-  v6 = [v4 mediaPlayerMediaItem];
-  if (!v6)
+  mediaPlayerMediaItem = [itemCopy mediaPlayerMediaItem];
+  if (!mediaPlayerMediaItem)
   {
     v8 = VUIDefaultLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -105,7 +105,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v7 = [v5 mediaLibraryApplicationController:self shouldWarnAboutPlaybackQualityForRentalMediaItem:v6];
+  v7 = [delegate mediaLibraryApplicationController:self shouldWarnAboutPlaybackQualityForRentalMediaItem:mediaPlayerMediaItem];
 LABEL_10:
 
   return v7;
@@ -113,11 +113,11 @@ LABEL_10:
 
 - (void)clearCellularPlaybackQualityOverrides
 {
-  v3 = [(VUIMediaLibraryApplicationController *)self delegate];
-  v4 = v3;
-  if (v3)
+  delegate = [(VUIMediaLibraryApplicationController *)self delegate];
+  v4 = delegate;
+  if (delegate)
   {
-    [v3 clearCellularPlaybackQualityOverridesForMediaLibraryApplicationController:self];
+    [delegate clearCellularPlaybackQualityOverridesForMediaLibraryApplicationController:self];
   }
 
   else
@@ -130,16 +130,16 @@ LABEL_10:
   }
 }
 
-- (void)overrideCellularPlaybackQuality:(unint64_t)a3 forMediaItem:(id)a4
+- (void)overrideCellularPlaybackQuality:(unint64_t)quality forMediaItem:(id)item
 {
-  v6 = a4;
-  v7 = [(VUIMediaLibraryApplicationController *)self delegate];
-  if (v7)
+  itemCopy = item;
+  delegate = [(VUIMediaLibraryApplicationController *)self delegate];
+  if (delegate)
   {
-    v8 = [v6 mediaPlayerMediaItem];
-    if (v8)
+    mediaPlayerMediaItem = [itemCopy mediaPlayerMediaItem];
+    if (mediaPlayerMediaItem)
     {
-      [v7 mediaLibraryApplicationController:self overrideCellularPlaybackQuality:a3 forMediaItem:v8];
+      [delegate mediaLibraryApplicationController:self overrideCellularPlaybackQuality:quality forMediaItem:mediaPlayerMediaItem];
     }
 
     else
@@ -154,22 +154,22 @@ LABEL_10:
 
   else
   {
-    v8 = VUIDefaultLogObject();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    mediaPlayerMediaItem = VUIDefaultLogObject();
+    if (os_log_type_enabled(mediaPlayerMediaItem, OS_LOG_TYPE_ERROR))
     {
       [VUIMediaLibraryApplicationController shouldWarnAboutPlaybackQualityForRentalMediaItem:];
     }
   }
 }
 
-- (unint64_t)assetTypeForRentalMediaItem:(id)a3
+- (unint64_t)assetTypeForRentalMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = [(VUIMediaLibraryApplicationController *)self delegate];
-  v6 = v5;
-  if (v5)
+  itemCopy = item;
+  delegate = [(VUIMediaLibraryApplicationController *)self delegate];
+  v6 = delegate;
+  if (delegate)
   {
-    [v5 mediaLibraryApplicationController:self assetTypeForRentalMediaItem:v4];
+    [delegate mediaLibraryApplicationController:self assetTypeForRentalMediaItem:itemCopy];
   }
 
   else
@@ -184,22 +184,22 @@ LABEL_10:
   return 0;
 }
 
-- (void)removeRentalMediaItem:(id)a3 withCompletion:(id)a4
+- (void)removeRentalMediaItem:(id)item withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__VUIMediaLibraryApplicationController_removeRentalMediaItem_withCompletion___block_invoke;
   aBlock[3] = &unk_1E872E470;
-  v14 = v7;
-  v8 = v7;
+  v14 = completionCopy;
+  v8 = completionCopy;
   v9 = _Block_copy(aBlock);
-  v10 = [(VUIMediaLibraryApplicationController *)self delegate];
-  v11 = v10;
-  if (v10)
+  delegate = [(VUIMediaLibraryApplicationController *)self delegate];
+  v11 = delegate;
+  if (delegate)
   {
-    [v10 mediaLibraryApplicationController:self removeRentalMediaItem:v6 withCompletion:v9];
+    [delegate mediaLibraryApplicationController:self removeRentalMediaItem:itemCopy withCompletion:v9];
   }
 
   else

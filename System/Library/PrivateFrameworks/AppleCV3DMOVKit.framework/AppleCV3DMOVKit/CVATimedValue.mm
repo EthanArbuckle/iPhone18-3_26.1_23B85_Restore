@@ -1,11 +1,11 @@
 @interface CVATimedValue
 + (id)classes;
-+ (id)withData:(id)a3;
-- (CVATimedValue)initWithCoder:(id)a3;
-- (CVATimedValue)initWithDictionary:(id)a3;
++ (id)withData:(id)data;
+- (CVATimedValue)initWithCoder:(id)coder;
+- (CVATimedValue)initWithDictionary:(id)dictionary;
 - (id)debugDescription;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVATimedValue
@@ -26,11 +26,11 @@
   return v3;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVATimedValue classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -48,72 +48,72 @@
   return v6;
 }
 
-- (CVATimedValue)initWithDictionary:(id)a3
+- (CVATimedValue)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = CVATimedValue;
   v5 = [(CVATimedValue *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"v"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"v"];
     value = v5->_value;
     v5->_value = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"a"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"a"];
     attachments = v5->_attachments;
     v5->_attachments = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"t"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"t"];
     [v10 doubleValue];
     v5->_timestamp = v11;
 
-    v12 = [v4 objectForKeyedSubscript:@"st"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"st"];
     v5->_syncTimestamp = [v12 unsignedLongLongValue];
 
-    v13 = [v4 objectForKeyedSubscript:@"fi"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"fi"];
     v5->_frameId = [v13 unsignedLongLongValue];
   }
 
   return v5;
 }
 
-- (CVATimedValue)initWithCoder:(id)a3
+- (CVATimedValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CVATimedValue;
   v5 = [(CVATimedValue *)&v13 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectForKey:@"v"];
+    v7 = [coderCopy decodeObjectForKey:@"v"];
     value = v5->_value;
     v5->_value = v7;
 
-    v9 = [v4 decodeObjectForKey:@"a"];
+    v9 = [coderCopy decodeObjectForKey:@"a"];
     attachments = v5->_attachments;
     v5->_attachments = v9;
 
-    [v4 decodeDoubleForKey:@"t"];
+    [coderCopy decodeDoubleForKey:@"t"];
     v5->_timestamp = v11;
-    v5->_syncTimestamp = [v4 decodeInt64ForKey:@"st"];
-    v5->_frameId = [v4 decodeInt64ForKey:@"fi"];
+    v5->_syncTimestamp = [coderCopy decodeInt64ForKey:@"st"];
+    v5->_frameId = [coderCopy decodeInt64ForKey:@"fi"];
     objc_autoreleasePoolPop(v6);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v5 encodeObject:self->_value forKey:@"v"];
-  [v5 encodeObject:self->_attachments forKey:@"a"];
-  [v5 encodeDouble:@"t" forKey:self->_timestamp];
-  [v5 encodeInt64:self->_syncTimestamp forKey:@"st"];
-  [v5 encodeInt64:self->_frameId forKey:@"fi"];
+  [coderCopy encodeObject:self->_value forKey:@"v"];
+  [coderCopy encodeObject:self->_attachments forKey:@"a"];
+  [coderCopy encodeDouble:@"t" forKey:self->_timestamp];
+  [coderCopy encodeInt64:self->_syncTimestamp forKey:@"st"];
+  [coderCopy encodeInt64:self->_frameId forKey:@"fi"];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -143,8 +143,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVATimedValue *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVATimedValue *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

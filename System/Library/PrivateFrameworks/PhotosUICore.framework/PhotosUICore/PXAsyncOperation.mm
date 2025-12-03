@@ -37,10 +37,10 @@
 
 - (void)px_start
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAsyncOperation.m" lineNumber:96 description:{@"Method %s is a responsibility of subclass %@", "-[PXAsyncOperation px_start]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAsyncOperation.m" lineNumber:96 description:{@"Method %s is a responsibility of subclass %@", "-[PXAsyncOperation px_start]", v6}];
 
   abort();
 }

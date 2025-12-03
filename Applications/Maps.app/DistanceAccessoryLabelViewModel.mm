@@ -1,13 +1,13 @@
 @interface DistanceAccessoryLabelViewModel
 - (UIView)labelView;
 - (_TtC4Maps31DistanceAccessoryLabelViewModel)init;
-- (void)setLabelView:(id)a3;
-- (void)setString:(id)a3;
+- (void)setLabelView:(id)view;
+- (void)setString:(id)string;
 @end
 
 @implementation DistanceAccessoryLabelViewModel
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
   v5 = type metadata accessor for AttributedString();
   v6 = *(v5 - 8);
@@ -15,8 +15,8 @@
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v9);
   v11 = &v14 - v10;
-  v12 = a3;
-  v13 = self;
+  stringCopy = string;
+  selfCopy = self;
   AttributedString.init(_:)();
   swift_getKeyPath();
   swift_getKeyPath();
@@ -49,18 +49,18 @@
 
 - (UIView)labelView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1003D8960();
 
   return v3;
 }
 
-- (void)setLabelView:(id)a3
+- (void)setLabelView:(id)view
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC4Maps31DistanceAccessoryLabelViewModel____lazy_storage___labelView);
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps31DistanceAccessoryLabelViewModel____lazy_storage___labelView) = a3;
-  v5 = a3;
-  v6 = self;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps31DistanceAccessoryLabelViewModel____lazy_storage___labelView) = view;
+  viewCopy = view;
+  selfCopy = self;
   sub_10005D280(v4);
 }
 

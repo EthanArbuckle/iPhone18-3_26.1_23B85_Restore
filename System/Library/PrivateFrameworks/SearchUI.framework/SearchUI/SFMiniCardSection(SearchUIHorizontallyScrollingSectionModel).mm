@@ -6,9 +6,9 @@
 
 - (double)searchUIHorizontallyScrollingSectionModel_additionalSectionInsets
 {
-  v0 = [MEMORY[0x1E69D9240] isMacOS];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
   result = 12.0;
-  if (v0)
+  if (isMacOS)
   {
     return 6.0;
   }

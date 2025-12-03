@@ -1,38 +1,38 @@
 @interface HistoryDayViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (_TtC10FitnessApp24HistoryDayViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (_TtC10FitnessApp24HistoryDayViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata;
+- (id)activityViewControllerPlaceholderItem:(id)item;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 - (void)share;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation HistoryDayViewController
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for HistoryDayViewController();
-  v4 = a3;
+  controllerCopy = controller;
   v5 = v6.receiver;
-  [(HistoryDayViewController *)&v6 willMoveToParentViewController:v4];
+  [(HistoryDayViewController *)&v6 willMoveToParentViewController:controllerCopy];
   [*&v5[OBJC_IVAR____TtC10FitnessApp24HistoryDayViewController_tableView] _scrollToTopHidingTableHeader:{0, v6.receiver, v6.super_class}];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10050CD54();
 }
 
@@ -43,11 +43,11 @@
   v2 = v14.receiver;
   [(HistoryDayViewController *)&v14 viewWillLayoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC10FitnessApp24HistoryDayViewController_tableView];
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -62,17 +62,17 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10050E958(a3);
+  selfCopy = self;
+  sub_10050E958(appear);
 }
 
 - (void)share
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC10FitnessApp24HistoryDayViewController_activitySummary))
   {
-    v2 = self;
+    selfCopy = self;
     sub_100511674();
   }
 
@@ -82,108 +82,108 @@
   }
 }
 
-- (_TtC10FitnessApp24HistoryDayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10FitnessApp24HistoryDayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v3 = _bridgeAnythingNonVerbatimToObjectiveC<A>(_:)();
 
   return v3;
 }
 
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = self;
+  metadataCopy = metadata;
+  selfCopy = self;
   v6 = sub_100512C24();
 
   return v6;
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = self;
-  v14 = sub_100512DB0(a4, v11, v12);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  toViewControllerCopy = toViewController;
+  selfCopy = self;
+  v14 = sub_100512DB0(operation, viewControllerCopy, toViewControllerCopy);
 
   return v14;
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_1005138D0();
   swift_unknownObjectRelease();
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_100687C2C(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_100687C2C(section);
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_100684E58(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_100684E58(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_100686C60(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_100686C60(viewCopy, section);
 
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_100687F10(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100687F10(section);
   v9 = v8;
 
   return v9;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_10068803C(v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_10068803C(cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -196,16 +196,16 @@
   return (v9 - 7) < 3u;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_100687528(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100687528(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }

@@ -1,22 +1,22 @@
 @interface CKSendMenuCollectionViewLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGSize)collectionViewContentSize;
-- (CKSendMenuCollectionViewLayout)initWithCoder:(id)a3;
-- (CKSendMenuCollectionViewLayout)initWithSection:(id)a3;
-- (CKSendMenuCollectionViewLayout)initWithSection:(id)a3 configuration:(id)a4;
-- (CKSendMenuCollectionViewLayout)initWithSection:(id)a3 sectionProvider:(id)a4 configuration:(id)a5;
-- (CKSendMenuCollectionViewLayout)initWithSectionProvider:(id)a3;
-- (CKSendMenuCollectionViewLayout)initWithSectionProvider:(id)a3 configuration:(id)a4;
-- (id)_animationForReusableView:(id)a3 toLayoutAttributes:(id)a4 type:(unint64_t)a5;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (CKSendMenuCollectionViewLayout)initWithCoder:(id)coder;
+- (CKSendMenuCollectionViewLayout)initWithSection:(id)section;
+- (CKSendMenuCollectionViewLayout)initWithSection:(id)section configuration:(id)configuration;
+- (CKSendMenuCollectionViewLayout)initWithSection:(id)section sectionProvider:(id)provider configuration:(id)configuration;
+- (CKSendMenuCollectionViewLayout)initWithSectionProvider:(id)provider;
+- (CKSendMenuCollectionViewLayout)initWithSectionProvider:(id)provider configuration:(id)configuration;
+- (id)_animationForReusableView:(id)view toLayoutAttributes:(id)attributes type:(unint64_t)type;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)prepareLayout;
-- (void)stretchSpringsAttachedToCellsForBoundsChange:(CGRect)a3;
+- (void)stretchSpringsAttachedToCellsForBoundsChange:(CGRect)change;
 @end
 
 @implementation CKSendMenuCollectionViewLayout
 
-- (CKSendMenuCollectionViewLayout)initWithCoder:(id)a3
+- (CKSendMenuCollectionViewLayout)initWithCoder:(id)coder
 {
   *(&self->super.super._collectionView + OBJC_IVAR___CKSendMenuCollectionViewLayout_sendMenuLayoutDelegate) = 0;
   swift_unknownObjectWeakInit();
@@ -54,17 +54,17 @@
   return result;
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
   v4 = sub_190D51C00();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_190D51BC0();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_190D51BB0();
   v10 = type metadata accessor for SendMenuCollectionViewLayout();
-  v14.receiver = v8;
+  v14.receiver = selfCopy;
   v14.super_class = v10;
   v11 = [(CKSendMenuCollectionViewLayout *)&v14 initialLayoutAttributesForAppearingItemAtIndexPath:v9];
 
@@ -79,7 +79,7 @@
     else
     {
 
-      v8 = v11;
+      selfCopy = v11;
       v11 = 0;
     }
   }
@@ -89,12 +89,12 @@
   return v11;
 }
 
-- (id)_animationForReusableView:(id)a3 toLayoutAttributes:(id)a4 type:(unint64_t)a5
+- (id)_animationForReusableView:(id)view toLayoutAttributes:(id)attributes type:(unint64_t)type
 {
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v11 = sub_19084EE30(a3, a4, a5);
+  selfCopy = self;
+  viewCopy = view;
+  attributesCopy = attributes;
+  v11 = sub_19084EE30(view, attributes, type);
   v13 = v12;
 
   if (v11)
@@ -121,7 +121,7 @@
   sub_19084FF34();
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = sub_190D51C00();
   v5 = *(v4 - 8);
@@ -129,21 +129,21 @@
   v7 = &v15 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_190D51BC0();
   v8 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0xE8);
-  v9 = self;
+  selfCopy = self;
   if (v8())
   {
     v10 = sub_19084E244();
     v11 = sub_190D51BB0();
     v12 = [(CKSendMenuCollectionViewLayout *)v10 layoutAttributesForCellAtIndexPath:v11];
 
-    v9 = v10;
+    selfCopy = v10;
   }
 
   else
   {
     v11 = sub_190D51BB0();
     v13 = type metadata accessor for SendMenuCollectionViewLayout();
-    v15.receiver = v9;
+    v15.receiver = selfCopy;
     v15.super_class = v13;
     v12 = [(CKSendMenuCollectionViewLayout *)&v15 layoutAttributesForItemAtIndexPath:v11];
   }
@@ -153,17 +153,17 @@
   return v12;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   v11.receiver = self;
   v11.super_class = type metadata accessor for SendMenuCollectionViewLayout();
   v7 = v11.receiver;
-  v8 = [(CKSendMenuCollectionViewLayout *)&v11 shouldInvalidateLayoutForBoundsChange:x, y, width, height];
-  if (v8)
+  height = [(CKSendMenuCollectionViewLayout *)&v11 shouldInvalidateLayoutForBoundsChange:x, y, width, height];
+  if (height)
   {
     v9 = sub_19084E244();
     [v9 removeAllBehaviors];
@@ -171,53 +171,53 @@
 
   [v7 stretchSpringsAttachedToCellsForBoundsChange_];
 
-  return v8;
+  return height;
 }
 
-- (CKSendMenuCollectionViewLayout)initWithSection:(id)a3
+- (CKSendMenuCollectionViewLayout)initWithSection:(id)section
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (CKSendMenuCollectionViewLayout)initWithSection:(id)a3 configuration:(id)a4
+- (CKSendMenuCollectionViewLayout)initWithSection:(id)section configuration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (CKSendMenuCollectionViewLayout)initWithSectionProvider:(id)a3
+- (CKSendMenuCollectionViewLayout)initWithSectionProvider:(id)provider
 {
-  _Block_copy(a3);
+  _Block_copy(provider);
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (CKSendMenuCollectionViewLayout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (CKSendMenuCollectionViewLayout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
-  _Block_copy(a3);
+  _Block_copy(provider);
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (CKSendMenuCollectionViewLayout)initWithSection:(id)a3 sectionProvider:(id)a4 configuration:(id)a5
+- (CKSendMenuCollectionViewLayout)initWithSection:(id)section sectionProvider:(id)provider configuration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)stretchSpringsAttachedToCellsForBoundsChange:(CGRect)a3
+- (void)stretchSpringsAttachedToCellsForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  selfCopy = self;
   sub_190850CD4(x, y, width, height);
 }
 

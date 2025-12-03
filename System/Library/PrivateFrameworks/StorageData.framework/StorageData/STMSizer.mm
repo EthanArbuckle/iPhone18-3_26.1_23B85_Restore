@@ -1,29 +1,29 @@
 @interface STMSizer
-+ (id)containersWithClass:(unint64_t)a3;
-+ (id)listOfUsedPathsInOverrides:(id)a3;
++ (id)containersWithClass:(unint64_t)class;
++ (id)listOfUsedPathsInOverrides:(id)overrides;
 + (id)sharedAppSizer;
-- (STMSizer)initWithPrefsKey:(id)a3;
-- (id)addContainer:(id)a3;
-- (id)addContainers:(id)a3;
-- (id)cachePathOfContainer:(id)a3;
-- (id)cacheSizeForContainer:(id)a3;
-- (id)containersForApp:(id)a3;
-- (id)pathOfContainer:(id)a3;
-- (id)sizeForContainer:(id)a3;
-- (id)sizeForURL:(id)a3;
-- (id)updatedCacheSizeForContainer:(id)a3;
-- (id)updatedSizeForContainer:(id)a3;
-- (id)updatedSizeForURL:(id)a3;
-- (void)_asyncProcessPendingEvents:(id)a3;
-- (void)addApp:(id)a3;
-- (void)addApps:(id)a3;
+- (STMSizer)initWithPrefsKey:(id)key;
+- (id)addContainer:(id)container;
+- (id)addContainers:(id)containers;
+- (id)cachePathOfContainer:(id)container;
+- (id)cacheSizeForContainer:(id)container;
+- (id)containersForApp:(id)app;
+- (id)pathOfContainer:(id)container;
+- (id)sizeForContainer:(id)container;
+- (id)sizeForURL:(id)l;
+- (id)updatedCacheSizeForContainer:(id)container;
+- (id)updatedSizeForContainer:(id)container;
+- (id)updatedSizeForURL:(id)l;
+- (void)_asyncProcessPendingEvents:(id)events;
+- (void)addApp:(id)app;
+- (void)addApps:(id)apps;
 - (void)dealloc;
 - (void)flushCacheAsynchronously;
-- (void)processEvents:(id)a3;
+- (void)processEvents:(id)events;
 - (void)processPendingEvents;
-- (void)reloadAppContainer:(id)a3;
-- (void)setEvent:(id)a3 forItem:(id)a4;
-- (void)setRootPaths:(id)a3;
+- (void)reloadAppContainer:(id)container;
+- (void)setEvent:(id)event forItem:(id)item;
+- (void)setRootPaths:(id)paths;
 - (void)startSizer;
 - (void)stopSizer;
 @end
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = __32__STMSizer_Apps__sharedAppSizer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedAppSizer_onceToken != -1)
   {
     dispatch_once(&sharedAppSizer_onceToken, block);
@@ -62,51 +62,51 @@ void __32__STMSizer_Apps__sharedAppSizer__block_invoke(uint64_t a1)
   [sharedAppSizer__gSizer setRootPaths:v7];
 }
 
-- (id)containersForApp:(id)a3
+- (id)containersForApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:4];
-  if ([v3 userVisible])
+  if ([appCopy userVisible])
   {
-    v5 = [v3 appContainer];
-    if (v5)
+    appContainer = [appCopy appContainer];
+    if (appContainer)
     {
-      [v4 addObject:v5];
+      [v4 addObject:appContainer];
     }
 
-    v6 = [v3 dataContainers];
-    if ([v6 count])
+    dataContainers = [appCopy dataContainers];
+    if ([dataContainers count])
     {
-      [v4 addObjectsFromArray:v6];
+      [v4 addObjectsFromArray:dataContainers];
     }
 
-    v7 = [v3 sharedContainers];
+    sharedContainers = [appCopy sharedContainers];
 
-    if ([v7 count])
+    if ([sharedContainers count])
     {
-      [v4 addObjectsFromArray:v7];
+      [v4 addObjectsFromArray:sharedContainers];
     }
   }
 
   return v4;
 }
 
-- (void)addApp:(id)a3
+- (void)addApp:(id)app
 {
-  v5 = [(STMSizer *)self containersForApp:a3];
+  v5 = [(STMSizer *)self containersForApp:app];
   v4 = [(STMSizer *)self addContainers:v5];
 }
 
-- (void)addApps:(id)a3
+- (void)addApps:(id)apps
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{4 * objc_msgSend(v4, "count")}];
+  appsCopy = apps;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{4 * objc_msgSend(appsCopy, "count")}];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = v4;
+  v6 = appsCopy;
   v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v7)
   {
@@ -159,11 +159,11 @@ void __32__STMSizer_Apps__sharedAppSizer__block_invoke(uint64_t a1)
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v27 + 1) + 8 * j) itemPath];
-        if ([v19 length])
+        itemPath = [*(*(&v27 + 1) + 8 * j) itemPath];
+        if ([itemPath length])
         {
           v20 = MEMORY[0x277CBEBC0];
-          v21 = [v19 stringByAppendingPathComponent:@"Library/Caches/"];
+          v21 = [itemPath stringByAppendingPathComponent:@"Library/Caches/"];
           v22 = [v20 fileURLWithPath:v21];
 
           if (v22)
@@ -183,31 +183,31 @@ void __32__STMSizer_Apps__sharedAppSizer__block_invoke(uint64_t a1)
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reloadAppContainer:(id)a3
+- (void)reloadAppContainer:(id)container
 {
-  v7 = [a3 appContainer];
-  v4 = [v7 url];
-  v5 = [v4 path];
+  appContainer = [container appContainer];
+  v4 = [appContainer url];
+  path = [v4 path];
 
-  if ([v5 length])
+  if ([path length])
   {
-    v6 = [[STMSizeCacheEntry alloc] initWithContainer:v7];
+    v6 = [[STMSizeCacheEntry alloc] initWithContainer:appContainer];
     [(STMSizeCache *)self addItem:v6];
     [(STMSizeCacheEntry *)v6 calculateSize];
   }
 }
 
-+ (id)listOfUsedPathsInOverrides:(id)a3
++ (id)listOfUsedPathsInOverrides:(id)overrides
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  overridesCopy = overrides;
   v4 = [MEMORY[0x277CBEB58] setWithCapacity:5];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 allValues];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [overridesCopy allValues];
+  v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -218,38 +218,38 @@ void __32__STMSizer_Apps__sharedAppSizer__block_invoke(uint64_t a1)
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) includeFsPaths];
-        [v4 addObjectsFromArray:v10];
+        includeFsPaths = [*(*(&v14 + 1) + 8 * i) includeFsPaths];
+        [v4 addObjectsFromArray:includeFsPaths];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return allObjects;
 }
 
-- (STMSizer)initWithPrefsKey:(id)a3
+- (STMSizer)initWithPrefsKey:(id)key
 {
   v16.receiver = self;
   v16.super_class = STMSizer;
-  v3 = [(STMSizeCache *)&v16 initWithPrefsKey:a3];
+  v3 = [(STMSizeCache *)&v16 initWithPrefsKey:key];
   v4 = v3;
   if (v3)
   {
     v3->_pendingEventsLock._os_unfair_lock_opaque = 0;
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pendingEventsByPath = v4->_pendingEventsByPath;
-    v4->_pendingEventsByPath = v5;
+    v4->_pendingEventsByPath = dictionary;
 
     if (!_gSharedFSQueue)
     {
@@ -272,20 +272,20 @@ void __32__STMSizer_Apps__sharedAppSizer__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  fsStream = v2->_fsStream;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fsStream = selfCopy->_fsStream;
   if (fsStream)
   {
-    FSEventStreamGetLatestEventId(v2->_fsStream);
+    FSEventStreamGetLatestEventId(selfCopy->_fsStream);
     STLog(1, @"Stop <FSEventStream: %p> at #%llu", v4, v5, v6, v7, v8, v9, fsStream);
-    FSEventStreamStop(v2->_fsStream);
-    FSEventStreamInvalidate(v2->_fsStream);
-    FSEventStreamRelease(v2->_fsStream);
-    v2->_fsStream = 0;
+    FSEventStreamStop(selfCopy->_fsStream);
+    FSEventStreamInvalidate(selfCopy->_fsStream);
+    FSEventStreamRelease(selfCopy->_fsStream);
+    selfCopy->_fsStream = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v10 = dispatch_semaphore_create(0);
   v11 = _gSharedUpdateQueue;
@@ -298,30 +298,30 @@ void __32__STMSizer_Apps__sharedAppSizer__block_invoke(uint64_t a1)
   dispatch_async(v11, block);
   dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
 
-  v13.receiver = v2;
+  v13.receiver = selfCopy;
   v13.super_class = STMSizer;
   [(STMSizeCache *)&v13 dealloc];
 }
 
-- (void)setRootPaths:(id)a3
+- (void)setRootPaths:(id)paths
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 count];
+  pathsCopy = paths;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [pathsCopy count];
   STLog(1, @"Recreating FSEventStream, -setRootPaths called with %ld paths", v7, v8, v9, v10, v11, v12, v6);
-  streamRunning = v5->_streamRunning;
-  fsStream = v5->_fsStream;
+  streamRunning = selfCopy->_streamRunning;
+  fsStream = selfCopy->_fsStream;
   if (fsStream)
   {
-    FSEventStreamGetLatestEventId(v5->_fsStream);
+    FSEventStreamGetLatestEventId(selfCopy->_fsStream);
     STLog(1, @"Stop <FSEventStream: %p> at #%llu", v21, v22, v23, v24, v25, v26, fsStream);
-    FSEventStreamStop(v5->_fsStream);
-    FSEventStreamInvalidate(v5->_fsStream);
-    FSEventStreamRelease(v5->_fsStream);
-    v5->_fsStream = 0;
-    v5->_streamRunning = 0;
+    FSEventStreamStop(selfCopy->_fsStream);
+    FSEventStreamInvalidate(selfCopy->_fsStream);
+    FSEventStreamRelease(selfCopy->_fsStream);
+    selfCopy->_fsStream = 0;
+    selfCopy->_streamRunning = 0;
   }
 
   else
@@ -329,12 +329,12 @@ void __32__STMSizer_Apps__sharedAppSizer__block_invoke(uint64_t a1)
     STLog(1, @"\tNo FSEventStream to stop", v13, v14, v15, v16, v17, v18, v51);
   }
 
-  v27 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v27 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(pathsCopy, "count")}];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v28 = v4;
+  v28 = pathsCopy;
   v29 = [v28 countByEnumeratingWithState:&v53 objects:v57 count:16];
   if (v29)
   {
@@ -358,17 +358,17 @@ void __32__STMSizer_Apps__sharedAppSizer__block_invoke(uint64_t a1)
     while (v29);
   }
 
-  objc_storeStrong(&v5->_rootPaths, v27);
+  objc_storeStrong(&selfCopy->_rootPaths, v27);
   if ([v27 count])
   {
     context.version = 0;
     memset(&context.retain, 0, 24);
-    context.info = v5;
-    v33 = [(STMSizeCache *)v5 cacheEventID];
+    context.info = selfCopy;
+    cacheEventID = [(STMSizeCache *)selfCopy cacheEventID];
     v34 = *MEMORY[0x277CBECE8];
-    if (v33)
+    if (cacheEventID)
     {
-      v35 = v33;
+      v35 = cacheEventID;
     }
 
     else
@@ -377,21 +377,21 @@ void __32__STMSizer_Apps__sharedAppSizer__block_invoke(uint64_t a1)
     }
 
     v36 = FSEventStreamCreate(*MEMORY[0x277CBECE8], _FSEventStreamCallback, &context, v27, v35, 1.0, 0x10u);
-    v5->_fsStream = v36;
-    [(STMSizeCache *)v5 cacheEventID];
+    selfCopy->_fsStream = v36;
+    [(STMSizeCache *)selfCopy cacheEventID];
     STLog(1, @"\tNew <FSEventStream: %p> at #%llu", v37, v38, v39, v40, v41, v42, v36);
-    FSEventStreamSetDispatchQueue(v5->_fsStream, _gSharedFSQueue);
+    FSEventStreamSetDispatchQueue(selfCopy->_fsStream, _gSharedFSQueue);
     if (streamRunning)
     {
-      v43 = v5->_fsStream;
-      [(STMSizeCache *)v5 cacheEventID];
+      v43 = selfCopy->_fsStream;
+      [(STMSizeCache *)selfCopy cacheEventID];
       STLog(1, @"Starting <FSEventStream: %p> at #%llu", v44, v45, v46, v47, v48, v49, v43);
-      FSEventStreamStart(v5->_fsStream);
-      v5->_streamRunning = 1;
+      FSEventStreamStart(selfCopy->_fsStream);
+      selfCopy->_streamRunning = 1;
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v50 = *MEMORY[0x277D85DE8];
 }
 
@@ -437,16 +437,16 @@ void __32__STMSizer_Apps__sharedAppSizer__block_invoke(uint64_t a1)
   {
     os_unfair_lock_lock(&self->_pendingEventsLock);
     v5 = [(NSMutableDictionary *)self->_pendingEventsByPath copy];
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pendingEventsByPath = self->_pendingEventsByPath;
-    self->_pendingEventsByPath = v3;
+    self->_pendingEventsByPath = dictionary;
 
     os_unfair_lock_unlock(&self->_pendingEventsLock);
     [(STMSizeCache *)self updateLastCacheEventID:[(STMSizeCache *)self processCacheEvents:v5]];
   }
 }
 
-- (void)_asyncProcessPendingEvents:(id)a3
+- (void)_asyncProcessPendingEvents:(id)events
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -456,31 +456,31 @@ void __32__STMSizer_Apps__sharedAppSizer__block_invoke(uint64_t a1)
   dispatch_async(_gSharedUpdateQueue, block);
 }
 
-- (void)setEvent:(id)a3 forItem:(id)a4
+- (void)setEvent:(id)event forItem:(id)item
 {
-  v10 = a3;
-  v6 = [a4 itemPath];
-  v7 = [v10 evtID];
-  v8 = [(NSMutableDictionary *)self->_pendingEventsByPath objectForKey:v6];
+  eventCopy = event;
+  itemPath = [item itemPath];
+  evtID = [eventCopy evtID];
+  v8 = [(NSMutableDictionary *)self->_pendingEventsByPath objectForKey:itemPath];
   v9 = v8;
-  if (!v8 || [v8 evtID] <= v7)
+  if (!v8 || [v8 evtID] <= evtID)
   {
-    [(NSMutableDictionary *)self->_pendingEventsByPath setObject:v10 forKey:v6];
+    [(NSMutableDictionary *)self->_pendingEventsByPath setObject:eventCopy forKey:itemPath];
   }
 }
 
-- (void)processEvents:(id)a3
+- (void)processEvents:(id)events
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   os_unfair_lock_lock(&self->_pendingEventsLock);
-  v5 = [v4 count];
+  v5 = [eventsCopy count];
   STLog(1, @"Processing %ld STMSizeCacheEvent", v6, v7, v8, v9, v10, v11, v5);
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v4;
+  obj = eventsCopy;
   v12 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v12)
   {
@@ -496,18 +496,18 @@ void __32__STMSizer_Apps__sharedAppSizer__block_invoke(uint64_t a1)
         }
 
         v16 = *(*(&v38 + 1) + 8 * i);
-        v17 = [v16 path];
+        path = [v16 path];
         if ([v16 flags])
         {
-          v18 = [(STMSizeCache *)self itemsContainedByPath:v17];
+          v18 = [(STMSizeCache *)self itemsContainedByPath:path];
           v19 = @"FSEvents triggering deep rescan at %@, invalidating %lu cache entries";
 LABEL_10:
           [v18 count];
-          STLog(4, v19, v20, v21, v22, v23, v24, v25, v17);
+          STLog(4, v19, v20, v21, v22, v23, v24, v25, path);
           goto LABEL_11;
         }
 
-        v18 = [(STMSizeCache *)self itemsContainingPath:v17];
+        v18 = [(STMSizeCache *)self itemsContainingPath:path];
         v19 = @"FSEvent at %@ is invalidating %lu cache entries containing it";
         if ([v18 count] >= 0xB)
         {
@@ -581,45 +581,45 @@ uint64_t __26__STMSizer_processEvents___block_invoke(uint64_t a1)
   }
 }
 
-- (id)sizeForURL:(id)a3
+- (id)sizeForURL:(id)l
 {
-  v4 = [a3 path];
-  v5 = [(STMSizeCache *)self sizeOfItemForPath:v4];
+  path = [l path];
+  v5 = [(STMSizeCache *)self sizeOfItemForPath:path];
 
   return v5;
 }
 
-- (id)updatedSizeForURL:(id)a3
+- (id)updatedSizeForURL:(id)l
 {
-  v4 = [a3 path];
-  v5 = [(STMSizeCache *)self updatedSizeOfItemForPath:v4];
+  path = [l path];
+  v5 = [(STMSizeCache *)self updatedSizeOfItemForPath:path];
 
   return v5;
 }
 
-- (id)pathOfContainer:(id)a3
+- (id)pathOfContainer:(id)container
 {
-  v3 = [a3 url];
-  v4 = [v3 path];
+  v3 = [container url];
+  path = [v3 path];
 
-  return v4;
+  return path;
 }
 
-- (id)cachePathOfContainer:(id)a3
+- (id)cachePathOfContainer:(id)container
 {
-  v3 = [(STMSizer *)self pathOfContainer:a3];
+  v3 = [(STMSizer *)self pathOfContainer:container];
   v4 = [v3 stringByAppendingPathComponent:@"Library/Caches/"];
 
   return v4;
 }
 
-- (id)addContainer:(id)a3
+- (id)addContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(STMSizer *)self pathOfContainer:v4];
+  containerCopy = container;
+  v5 = [(STMSizer *)self pathOfContainer:containerCopy];
   if ([v5 length])
   {
-    v6 = [[STMSizeCacheEntry alloc] initWithContainer:v4];
+    v6 = [[STMSizeCacheEntry alloc] initWithContainer:containerCopy];
     [(STMSizeCache *)self addItem:v6];
   }
 
@@ -631,16 +631,16 @@ uint64_t __26__STMSizer_processEvents___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (id)addContainers:(id)a3
+- (id)addContainers:(id)containers
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  containersCopy = containers;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(containersCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = containersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -673,39 +673,39 @@ uint64_t __26__STMSizer_processEvents___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)sizeForContainer:(id)a3
+- (id)sizeForContainer:(id)container
 {
-  v4 = [(STMSizer *)self pathOfContainer:a3];
+  v4 = [(STMSizer *)self pathOfContainer:container];
   v5 = [(STMSizeCache *)self sizeOfItemForPath:v4];
 
   return v5;
 }
 
-- (id)updatedSizeForContainer:(id)a3
+- (id)updatedSizeForContainer:(id)container
 {
-  v4 = [(STMSizer *)self pathOfContainer:a3];
+  v4 = [(STMSizer *)self pathOfContainer:container];
   v5 = [(STMSizeCache *)self updatedSizeOfItemForPath:v4];
 
   return v5;
 }
 
-- (id)cacheSizeForContainer:(id)a3
+- (id)cacheSizeForContainer:(id)container
 {
-  v4 = [(STMSizer *)self cachePathOfContainer:a3];
+  v4 = [(STMSizer *)self cachePathOfContainer:container];
   v5 = [(STMSizeCache *)self sizeOfItemForPath:v4];
 
   return v5;
 }
 
-- (id)updatedCacheSizeForContainer:(id)a3
+- (id)updatedCacheSizeForContainer:(id)container
 {
-  v4 = [(STMSizer *)self cachePathOfContainer:a3];
+  v4 = [(STMSizer *)self cachePathOfContainer:container];
   v5 = [(STMSizeCache *)self updatedSizeOfItemForPath:v4];
 
   return v5;
 }
 
-+ (id)containersWithClass:(unint64_t)a3
++ (id)containersWithClass:(unint64_t)class
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = [STContainer containersWithClass:7 personaUniqueString:0];
@@ -730,10 +730,10 @@ uint64_t __26__STMSizer_processEvents___block_invoke(uint64_t a1)
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        if ([v11 length])
+        identifier = [v10 identifier];
+        if ([identifier length])
         {
-          [v4 setObject:v10 forKey:v11];
+          [v4 setObject:v10 forKey:identifier];
         }
       }
 

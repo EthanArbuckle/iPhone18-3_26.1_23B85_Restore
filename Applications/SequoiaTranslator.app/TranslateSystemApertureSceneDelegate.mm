@@ -1,41 +1,41 @@
 @interface TranslateSystemApertureSceneDelegate
 - (_TtC17SequoiaTranslator36TranslateSystemApertureSceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneWillResignActive:(id)active;
+- (void)setWindow:(id)window;
 @end
 
 @implementation TranslateSystemApertureSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC17SequoiaTranslator36TranslateSystemApertureSceneDelegate_window);
-  *(&self->super.isa + OBJC_IVAR____TtC17SequoiaTranslator36TranslateSystemApertureSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC17SequoiaTranslator36TranslateSystemApertureSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100285554(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100285554(sceneCopy);
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_100283BAC(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_100283BAC(activeCopy);
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_100284578(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_100284578(activeCopy);
 }
 
 - (_TtC17SequoiaTranslator36TranslateSystemApertureSceneDelegate)init

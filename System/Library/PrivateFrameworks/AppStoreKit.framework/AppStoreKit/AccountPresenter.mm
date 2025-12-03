@@ -1,13 +1,13 @@
 @interface AccountPresenter
 - (void)profilePictureStoreDidChange;
-- (void)restrictionsDidChange:(id)a3;
+- (void)restrictionsDidChange:(id)change;
 @end
 
 @implementation AccountPresenter
 
-- (void)restrictionsDidChange:(id)a3
+- (void)restrictionsDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
   sub_1E1A9DCDC(sub_1E1AA3AE8, &block_descriptor_257);
 }

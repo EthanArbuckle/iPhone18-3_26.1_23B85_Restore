@@ -1,20 +1,20 @@
 @interface NLLMSLanguageModel
-- (NLLMSLanguageModel)initWithLocalization:(id)a3 options:(id)a4;
-- (id)sessionWithOptions:(id)a3;
+- (NLLMSLanguageModel)initWithLocalization:(id)localization options:(id)options;
+- (id)sessionWithOptions:(id)options;
 @end
 
 @implementation NLLMSLanguageModel
 
-- (NLLMSLanguageModel)initWithLocalization:(id)a3 options:(id)a4
+- (NLLMSLanguageModel)initWithLocalization:(id)localization options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = stringForKey(v7, @"Architecture", @"LSTM");
-  v9 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v6];
-  v10 = [v9 languageCode];
-  if (v10)
+  localizationCopy = localization;
+  optionsCopy = options;
+  v8 = stringForKey(optionsCopy, @"Architecture", @"LSTM");
+  v9 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:localizationCopy];
+  languageCode = [v9 languageCode];
+  if (languageCode)
   {
-    v11 = [&unk_1F10D14B0 objectForKey:v10];
+    v11 = [&unk_1F10D14B0 objectForKey:languageCode];
   }
 
   else
@@ -25,9 +25,9 @@
   v39[0] = 0;
   v39[1] = 0;
   v38 = v39;
-  std::string::basic_string[abi:ne200100]<0>(&v37, [v6 UTF8String]);
-  v12 = BOOLForKey(v7, @"AdaptationEnabled", 1);
-  v13 = BOOLForKey(v7, @"IsSiriModel", 0);
+  std::string::basic_string[abi:ne200100]<0>(&v37, [localizationCopy UTF8String]);
+  v12 = BOOLForKey(optionsCopy, @"AdaptationEnabled", 1);
+  v13 = BOOLForKey(optionsCopy, @"IsSiriModel", 0);
   if (v11)
   {
     std::string::basic_string[abi:ne200100]<0>(&__str, [v11 UTF8String]);
@@ -175,7 +175,7 @@ LABEL_27:
 
   v33.receiver = self;
   v33.super_class = NLLMSLanguageModel;
-  v29 = [(NLLanguageModel *)&v33 initWithLocalization:v6, v26];
+  v29 = [(NLLanguageModel *)&v33 initWithLocalization:localizationCopy, v26];
   if (v29)
   {
     language_modeling::v1::LanguageModel::init();
@@ -195,10 +195,10 @@ LABEL_27:
   return v29;
 }
 
-- (id)sessionWithOptions:(id)a3
+- (id)sessionWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [[NLLMSLanguageModelSession alloc] initWithLanguageModel:self options:v4];
+  optionsCopy = options;
+  v5 = [[NLLMSLanguageModelSession alloc] initWithLanguageModel:self options:optionsCopy];
 
   return v5;
 }

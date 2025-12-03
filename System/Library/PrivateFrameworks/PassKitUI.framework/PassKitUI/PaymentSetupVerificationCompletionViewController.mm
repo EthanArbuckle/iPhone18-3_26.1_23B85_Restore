@@ -1,18 +1,18 @@
 @interface PaymentSetupVerificationCompletionViewController
-- (_TtC9PassKitUI48PaymentSetupVerificationCompletionViewController)initWithCoder:(id)a3;
-- (_TtC9PassKitUI48PaymentSetupVerificationCompletionViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6;
+- (_TtC9PassKitUI48PaymentSetupVerificationCompletionViewController)initWithCoder:(id)coder;
+- (_TtC9PassKitUI48PaymentSetupVerificationCompletionViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model;
 - (id)defaultFields;
 - (id)defaultHeaderViewSubTitle;
 - (id)defaultHeaderViewTitle;
 - (void)loadView;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PaymentSetupVerificationCompletionViewController
 
-- (_TtC9PassKitUI48PaymentSetupVerificationCompletionViewController)initWithCoder:(id)a3
+- (_TtC9PassKitUI48PaymentSetupVerificationCompletionViewController)initWithCoder:(id)coder
 {
   result = sub_1BE053994();
   __break(1u);
@@ -21,22 +21,22 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD49C888();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(PKPaymentSetupFieldsViewController *)&v7 viewWillAppear:v3];
-  v5 = [v4 dockView];
-  if (v5)
+  [(PKPaymentSetupFieldsViewController *)&v7 viewWillAppear:appearCopy];
+  dockView = [v4 dockView];
+  if (dockView)
   {
-    v6 = v5;
-    [v5 setButtonsEnabled_];
+    v6 = dockView;
+    [dockView setButtonsEnabled_];
   }
 
   else
@@ -45,18 +45,18 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(PKPaymentSetupFieldsViewController *)&v5 viewDidAppear:v3];
+  [(PKPaymentSetupFieldsViewController *)&v5 viewDidAppear:appearCopy];
   [*&v4[OBJC_IVAR____TtC9PassKitUI48PaymentSetupVerificationCompletionViewController_reporter] reportViewAppeared];
   sub_1BD49CAB0();
 }
 
-- (_TtC9PassKitUI48PaymentSetupVerificationCompletionViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6
+- (_TtC9PassKitUI48PaymentSetupVerificationCompletionViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -65,7 +65,7 @@
 
 - (id)defaultHeaderViewTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD49D038();
 
   v3 = sub_1BE052404();
@@ -75,7 +75,7 @@
 
 - (id)defaultHeaderViewSubTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD49D038();
   v4 = v3;
 
@@ -99,29 +99,29 @@
   return v2;
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v4 = a3;
-  v9 = self;
-  v5 = [(PKPaymentSetupTableViewController *)v9 dockView];
-  if (!v5)
+  iCopy = i;
+  selfCopy = self;
+  dockView = [(PKPaymentSetupTableViewController *)selfCopy dockView];
+  if (!dockView)
   {
     __break(1u);
     goto LABEL_7;
   }
 
-  v6 = v5;
-  [(PKPaymentSetupDockView *)v5 setButtonsEnabled:0];
-  v7 = [(PKPaymentSetupDockView *)v6 primaryButton];
-  if (!v7)
+  v6 = dockView;
+  [(PKPaymentSetupDockView *)dockView setButtonsEnabled:0];
+  primaryButton = [(PKPaymentSetupDockView *)v6 primaryButton];
+  if (!primaryButton)
   {
 LABEL_7:
     __break(1u);
     return;
   }
 
-  v8 = v7;
-  [(PKLegacyButtonInterface *)v7 setShowSpinner:v4];
+  v8 = primaryButton;
+  [(PKLegacyButtonInterface *)primaryButton setShowSpinner:iCopy];
 }
 
 @end

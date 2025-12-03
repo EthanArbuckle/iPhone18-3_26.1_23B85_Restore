@@ -1,7 +1,7 @@
 @interface PGTitleSpecCollection
-+ (PGTitleSpecCollection)collectionWithSpecPools:(id)a3;
-- (PGTitleSpecCollection)initWithSpecPools:(id)a3;
-- (id)_allPossibleTitlesWithMomentNodes:(id)a3 forHighlight:(BOOL)a4 argumentEvaluationContext:(id)a5;
++ (PGTitleSpecCollection)collectionWithSpecPools:(id)pools;
+- (PGTitleSpecCollection)initWithSpecPools:(id)pools;
+- (id)_allPossibleTitlesWithMomentNodes:(id)nodes forHighlight:(BOOL)highlight argumentEvaluationContext:(id)context;
 - (id)description;
 @end
 
@@ -18,12 +18,12 @@
   return v5;
 }
 
-- (id)_allPossibleTitlesWithMomentNodes:(id)a3 forHighlight:(BOOL)a4 argumentEvaluationContext:(id)a5
+- (id)_allPossibleTitlesWithMomentNodes:(id)nodes forHighlight:(BOOL)highlight argumentEvaluationContext:(id)context
 {
-  v6 = a4;
+  highlightCopy = highlight;
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  nodesCopy = nodes;
+  contextCopy = context;
   v10 = [MEMORY[0x277CBEB58] set];
   v29 = 0u;
   v30 = 0u;
@@ -48,8 +48,8 @@
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v13 = [v12 specs];
-        v14 = [v13 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        specs = [v12 specs];
+        v14 = [specs countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v14)
         {
           v15 = v14;
@@ -60,23 +60,23 @@
             {
               if (*v26 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(specs);
               }
 
               v18 = *(*(&v25 + 1) + 8 * j);
-              if (v6)
+              if (highlightCopy)
               {
                 [*(*(&v25 + 1) + 8 * j) setInsertNonBreakableSpace:1];
               }
 
-              v19 = [v18 titleWithMomentNodes:v8 argumentEvaluationContext:v9];
+              v19 = [v18 titleWithMomentNodes:nodesCopy argumentEvaluationContext:contextCopy];
               if (v19)
               {
                 [v10 addObject:v19];
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v15 = [specs countByEnumeratingWithState:&v25 objects:v33 count:16];
           }
 
           while (v15);
@@ -94,25 +94,25 @@
   return v10;
 }
 
-- (PGTitleSpecCollection)initWithSpecPools:(id)a3
+- (PGTitleSpecCollection)initWithSpecPools:(id)pools
 {
-  v5 = a3;
+  poolsCopy = pools;
   v9.receiver = self;
   v9.super_class = PGTitleSpecCollection;
   v6 = [(PGTitleSpecCollection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_specPools, a3);
+    objc_storeStrong(&v6->_specPools, pools);
   }
 
   return v7;
 }
 
-+ (PGTitleSpecCollection)collectionWithSpecPools:(id)a3
++ (PGTitleSpecCollection)collectionWithSpecPools:(id)pools
 {
-  v3 = a3;
-  v4 = [[PGTitleSpecCollection alloc] initWithSpecPools:v3];
+  poolsCopy = pools;
+  v4 = [[PGTitleSpecCollection alloc] initWithSpecPools:poolsCopy];
 
   return v4;
 }

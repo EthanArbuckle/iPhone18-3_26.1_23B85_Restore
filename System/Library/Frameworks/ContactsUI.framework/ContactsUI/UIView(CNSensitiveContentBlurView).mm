@@ -8,22 +8,22 @@
 {
   v19[4] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v18 = [v4 topAnchor];
-  v17 = [a1 topAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  topAnchor = [v4 topAnchor];
+  topAnchor2 = [self topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v19[0] = v16;
-  v5 = [v4 bottomAnchor];
-  v6 = [a1 bottomAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  bottomAnchor = [v4 bottomAnchor];
+  bottomAnchor2 = [self bottomAnchor];
+  v7 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v19[1] = v7;
-  v8 = [v4 leadingAnchor];
-  v9 = [a1 leadingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  leadingAnchor = [v4 leadingAnchor];
+  leadingAnchor2 = [self leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v19[2] = v10;
-  v11 = [v4 trailingAnchor];
+  trailingAnchor = [v4 trailingAnchor];
 
-  v12 = [a1 trailingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  trailingAnchor2 = [self trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v19[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
 

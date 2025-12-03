@@ -1,24 +1,24 @@
 @interface UIKBRecentInputsView
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIKBRecentInputsView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIKBRecentInputsView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)selectedRecentInputString;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (unint64_t)focusableVariantCount;
 - (void)refreshSelectedRecent;
-- (void)scrollViewDidChangeContentSize:(id)a3;
-- (void)setRecentInputs:(id)a3;
-- (void)setVerticalLayout:(BOOL)a3;
+- (void)scrollViewDidChangeContentSize:(id)size;
+- (void)setRecentInputs:(id)inputs;
+- (void)setVerticalLayout:(BOOL)layout;
 - (void)setupCollectionView;
 @end
 
 @implementation UIKBRecentInputsView
 
-- (UIKBRecentInputsView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5
+- (UIKBRecentInputsView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key
 {
   v8.receiver = self;
   v8.super_class = UIKBRecentInputsView;
-  v5 = [(UIKBKeyView *)&v8 initWithFrame:a4 keyplane:a5 key:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIKBKeyView *)&v8 initWithFrame:keyplane keyplane:key key:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
@@ -33,18 +33,18 @@
 {
   v24 = *MEMORY[0x1E69E9840];
   v3 = [(UIKBKeyView *)self key];
-  v4 = [v3 selectedVariantIndex];
+  selectedVariantIndex = [v3 selectedVariantIndex];
 
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (selectedVariantIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(UIKBRecentInputsView *)self collectionView];
-    v6 = [v5 indexPathsForSelectedItems];
+    collectionView = [(UIKBRecentInputsView *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v6;
+    v7 = indexPathsForSelectedItems;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -60,8 +60,8 @@
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [(UIKBRecentInputsView *)self collectionView];
-          [v13 deselectItemAtIndexPath:v12 animated:1];
+          collectionView2 = [(UIKBRecentInputsView *)self collectionView];
+          [collectionView2 deselectItemAtIndexPath:v12 animated:1];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -73,27 +73,27 @@
 
   else
   {
-    v14 = [(UIKBRecentInputsView *)self recentInputStrings];
-    v15 = [v14 count];
+    recentInputStrings = [(UIKBRecentInputsView *)self recentInputStrings];
+    v15 = [recentInputStrings count];
 
-    if (v4 >= v15)
+    if (selectedVariantIndex >= v15)
     {
-      v16 = [(UIKBRecentInputsView *)self recentInputStrings];
-      v4 = [v16 count] - 1;
+      recentInputStrings2 = [(UIKBRecentInputsView *)self recentInputStrings];
+      selectedVariantIndex = [recentInputStrings2 count] - 1;
     }
 
-    v18 = [(UIKBRecentInputsView *)self collectionView];
-    v17 = [MEMORY[0x1E696AC88] indexPathForRow:v4 inSection:0];
-    [v18 selectItemAtIndexPath:v17 animated:1 scrollPosition:16];
+    collectionView3 = [(UIKBRecentInputsView *)self collectionView];
+    v17 = [MEMORY[0x1E696AC88] indexPathForRow:selectedVariantIndex inSection:0];
+    [collectionView3 selectItemAtIndexPath:v17 animated:1 scrollPosition:16];
   }
 }
 
 - (id)selectedRecentInputString
 {
   v3 = [(UIKBKeyView *)self key];
-  v4 = [v3 selectedVariantIndex];
+  selectedVariantIndex = [v3 selectedVariantIndex];
 
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (selectedVariantIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
   }
@@ -101,20 +101,20 @@
   else
   {
     v6 = [(UIKBKeyView *)self key];
-    v7 = [v6 selectedVariantIndex];
-    v8 = [(UIKBRecentInputsView *)self recentInputStrings];
-    v9 = [v8 count] - 1;
+    selectedVariantIndex2 = [v6 selectedVariantIndex];
+    recentInputStrings = [(UIKBRecentInputsView *)self recentInputStrings];
+    v9 = [recentInputStrings count] - 1;
 
-    if (v7 == v9)
+    if (selectedVariantIndex2 == v9)
     {
       v5 = @"⊗";
     }
 
     else
     {
-      v10 = [(UIKBRecentInputsView *)self recentInputStrings];
+      recentInputStrings2 = [(UIKBRecentInputsView *)self recentInputStrings];
       v11 = [(UIKBKeyView *)self key];
-      v5 = [v10 objectAtIndex:{objc_msgSend(v11, "selectedVariantIndex")}];
+      v5 = [recentInputStrings2 objectAtIndex:{objc_msgSend(v11, "selectedVariantIndex")}];
     }
   }
 
@@ -123,34 +123,34 @@
 
 - (unint64_t)focusableVariantCount
 {
-  v2 = [(UIKBRecentInputsView *)self recentInputStrings];
-  v3 = [v2 count];
+  recentInputStrings = [(UIKBRecentInputsView *)self recentInputStrings];
+  v3 = [recentInputStrings count];
 
   return v3;
 }
 
-- (void)setVerticalLayout:(BOOL)a3
+- (void)setVerticalLayout:(BOOL)layout
 {
-  v3 = a3;
-  self->_verticalLayout = a3;
-  v4 = [(UIKBRecentInputsView *)self flowLayout];
-  [v4 setScrollDirection:!v3];
+  layoutCopy = layout;
+  self->_verticalLayout = layout;
+  flowLayout = [(UIKBRecentInputsView *)self flowLayout];
+  [flowLayout setScrollDirection:!layoutCopy];
 }
 
-- (void)setRecentInputs:(id)a3
+- (void)setRecentInputs:(id)inputs
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [v4 array];
-  v7 = [v5 entries];
+  inputsCopy = inputs;
+  array = [v4 array];
+  entries = [inputsCopy entries];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __40__UIKBRecentInputsView_setRecentInputs___block_invoke;
   v11[3] = &unk_1E7114240;
-  v8 = v6;
+  v8 = array;
   v12 = v8;
-  [v7 enumerateObjectsUsingBlock:v11];
+  [entries enumerateObjectsUsingBlock:v11];
 
   if (self->_verticalLayout)
   {
@@ -164,8 +164,8 @@
   }
 
   [(UIKBRecentInputsView *)self setRecentInputStrings:v8];
-  v10 = [(UIKBRecentInputsView *)self collectionView];
-  [v10 reloadData];
+  collectionView = [(UIKBRecentInputsView *)self collectionView];
+  [collectionView reloadData];
 }
 
 void __40__UIKBRecentInputsView_setRecentInputs___block_invoke(uint64_t a1, void *a2)
@@ -187,8 +187,8 @@ void __40__UIKBRecentInputsView_setRecentInputs___block_invoke(uint64_t a1, void
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(UIKBRecentInputsView *)self flowLayout];
-  v14 = [(UICollectionView *)v4 initWithFrame:v13 collectionViewLayout:v6, v8, v10, v12];
+  flowLayout = [(UIKBRecentInputsView *)self flowLayout];
+  v14 = [(UICollectionView *)v4 initWithFrame:flowLayout collectionViewLayout:v6, v8, v10, v12];
 
   [(UICollectionView *)v14 setDataSource:self];
   [(UICollectionView *)v14 setDelegate:self];
@@ -200,38 +200,38 @@ void __40__UIKBRecentInputsView_setRecentInputs___block_invoke(uint64_t a1, void
   [(UIKBRecentInputsView *)self setCollectionView:v14];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(UIKBRecentInputsView *)self recentInputStrings:a3];
+  v4 = [(UIKBRecentInputsView *)self recentInputStrings:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"recentInputCell" forIndexPath:v6];
-  v8 = [(UIKBRecentInputsView *)self recentInputStrings];
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"recentInputCell" forIndexPath:pathCopy];
+  recentInputStrings = [(UIKBRecentInputsView *)self recentInputStrings];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndex:v9];
+  v10 = [recentInputStrings objectAtIndex:v9];
 
   [v7 setInputText:v10];
 
   return v7;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(UIKBRecentInputsView *)self recentInputStrings];
-  v8 = [v6 row];
+  pathCopy = path;
+  recentInputStrings = [(UIKBRecentInputsView *)self recentInputStrings];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndex:v8];
+  v9 = [recentInputStrings objectAtIndex:v8];
 
-  v10 = [(UIView *)self _inheritedRenderConfig];
-  v11 = [UIKBRecentInputCell titleAttributesForRenderConfig:v10];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  v11 = [UIKBRecentInputCell titleAttributesForRenderConfig:_inheritedRenderConfig];
   [v9 sizeWithAttributes:v11];
   v13 = v12;
   v15 = v14;
@@ -264,16 +264,16 @@ void __40__UIKBRecentInputsView_setRecentInputs___block_invoke(uint64_t a1, void
   return result;
 }
 
-- (void)scrollViewDidChangeContentSize:(id)a3
+- (void)scrollViewDidChangeContentSize:(id)size
 {
-  v20 = a3;
-  [v20 contentInset];
+  sizeCopy = size;
+  [sizeCopy contentInset];
   v4 = v3;
   v6 = v5;
   v8 = v7;
-  [v20 contentSize];
+  [sizeCopy contentSize];
   v10 = v9;
-  [v20 frame];
+  [sizeCopy frame];
   v11 = 0.0;
   v13 = v10 < v12;
   v14 = 0.0;
@@ -281,16 +281,16 @@ void __40__UIKBRecentInputsView_setRecentInputs___block_invoke(uint64_t a1, void
   v16 = 0.0;
   if (v13)
   {
-    [v20 frame];
+    [sizeCopy frame];
     v18 = v17;
-    [v20 contentSize];
+    [sizeCopy contentSize];
     v14 = (v18 - v19) * 0.5;
     v11 = v4;
     v15 = v6;
     v16 = v8;
   }
 
-  [v20 setContentInset:{v11, v14, v15, v16}];
+  [sizeCopy setContentInset:{v11, v14, v15, v16}];
 }
 
 @end

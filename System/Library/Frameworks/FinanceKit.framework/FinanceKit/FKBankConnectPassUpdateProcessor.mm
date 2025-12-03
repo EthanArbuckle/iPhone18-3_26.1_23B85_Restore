@@ -1,8 +1,8 @@
 @interface FKBankConnectPassUpdateProcessor
 + (id)makeProcessor;
 - (FKBankConnectPassUpdateProcessor)init;
-- (void)didDeletePassWithPrimaryAccountIdentifier:(NSString *)a3 completion:(id)a4;
-- (void)didProvisionPassWithPrimaryAccountIdentifier:(NSString *)a3 completion:(id)a4;
+- (void)didDeletePassWithPrimaryAccountIdentifier:(NSString *)identifier completion:(id)completion;
+- (void)didProvisionPassWithPrimaryAccountIdentifier:(NSString *)identifier completion:(id)completion;
 @end
 
 @implementation FKBankConnectPassUpdateProcessor
@@ -14,14 +14,14 @@
   return v2;
 }
 
-- (void)didDeletePassWithPrimaryAccountIdentifier:(NSString *)a3 completion:(id)a4
+- (void)didDeletePassWithPrimaryAccountIdentifier:(NSString *)identifier completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB99C280);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = identifier;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1B7800DF8();
@@ -36,19 +36,19 @@
   v14[3] = 0;
   v14[4] = &unk_1B780D940;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_1B77E494C(0, 0, v9, &unk_1B780D948, v14);
 }
 
-- (void)didProvisionPassWithPrimaryAccountIdentifier:(NSString *)a3 completion:(id)a4
+- (void)didProvisionPassWithPrimaryAccountIdentifier:(NSString *)identifier completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB99C280);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = identifier;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1B7800DF8();
@@ -63,8 +63,8 @@
   v14[3] = 0;
   v14[4] = &unk_1B780BB50;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_1B77E494C(0, 0, v9, &unk_1B780D8F0, v14);
 }
 

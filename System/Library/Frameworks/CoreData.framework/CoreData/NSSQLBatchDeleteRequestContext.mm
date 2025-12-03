@@ -1,5 +1,5 @@
 @interface NSSQLBatchDeleteRequestContext
-- (BOOL)executeRequestCore:(id *)a3;
+- (BOOL)executeRequestCore:(id *)core;
 - (NSBatchDeleteRequest)request;
 - (uint64_t)_createFetchRequestContextForObjectsToDelete;
 - (uint64_t)fetchRequestForObjectsToDelete;
@@ -48,13 +48,13 @@
 
 - (void)_createDeleteStatements
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 104))
+    if (!*(self + 104))
     {
       newValue = 0;
-      *(a1 + 104) = -[NSSQLiteAdapter generateDeleteStatementsForRequest:error:]([*(a1 + 8) adapter], a1, &newValue);
-      objc_setProperty_nonatomic(a1, v2, newValue, 40);
+      *(self + 104) = -[NSSQLiteAdapter generateDeleteStatementsForRequest:error:]([*(self + 8) adapter], self, &newValue);
+      objc_setProperty_nonatomic(self, v2, newValue, 40);
     }
   }
 }
@@ -149,12 +149,12 @@
   if (result)
   {
     v1 = result;
-    v2 = [(NSSQLBatchDeleteRequestContext *)result fetchRequestForObjectsToDelete];
+    fetchRequestForObjectsToDelete = [(NSSQLBatchDeleteRequestContext *)result fetchRequestForObjectsToDelete];
     v3 = [NSSQLFetchRequestContext alloc];
     v4 = *(v1 + 32);
     v5 = *(v1 + 8);
 
-    return [(NSSQLFetchRequestContext *)v3 initWithRequest:v2 context:v4 sqlCore:v5];
+    return [(NSSQLFetchRequestContext *)v3 initWithRequest:fetchRequestForObjectsToDelete context:v4 sqlCore:v5];
   }
 
   return result;
@@ -179,17 +179,17 @@
   [(NSSQLBatchOperationRequestContext *)&v3 dealloc];
 }
 
-- (BOOL)executeRequestCore:(id *)a3
+- (BOOL)executeRequestCore:(id *)core
 {
-  [(NSSQLStoreRequestContext *)self setResult:_executeBatchDeleteRequest(self, a3)];
-  if (a3 && *a3)
+  [(NSSQLStoreRequestContext *)self setResult:_executeBatchDeleteRequest(self, core)];
+  if (core && *core)
   {
     if (!self)
     {
       return [(NSSQLStoreRequestContext *)self result]!= 0;
     }
 
-    objc_setProperty_nonatomic(self, v5, *a3, 40);
+    objc_setProperty_nonatomic(self, v5, *core, 40);
   }
 
   else if (!self)

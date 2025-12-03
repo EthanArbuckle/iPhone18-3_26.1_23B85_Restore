@@ -1,30 +1,30 @@
 @interface BKSMutableHIDKeyboardDeviceProperties
-- (void)setExclusivityIdentifier:(id)a3;
-- (void)setLanguage:(id)a3;
-- (void)setLayout:(id)a3;
-- (void)setPlatformInputModeConfiguration:(id)a3;
-- (void)setTransport:(id)a3;
+- (void)setExclusivityIdentifier:(id)identifier;
+- (void)setLanguage:(id)language;
+- (void)setLayout:(id)layout;
+- (void)setPlatformInputModeConfiguration:(id)configuration;
+- (void)setTransport:(id)transport;
 @end
 
 @implementation BKSMutableHIDKeyboardDeviceProperties
 
-- (void)setPlatformInputModeConfiguration:(id)a3
+- (void)setPlatformInputModeConfiguration:(id)configuration
 {
   v30 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  if (v17)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [v17 classForCoder];
-      if (!v9)
+      classForCoder = [configurationCopy classForCoder];
+      if (!classForCoder)
       {
-        v9 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v10 = NSStringFromClass(v9);
+      v10 = NSStringFromClass(classForCoder);
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = [v8 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"platformInputModeConfiguration", v10, v12];
@@ -39,7 +39,7 @@
         v20 = 2114;
         v21 = v16;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2114;
         v25 = @"BKSHIDKeyboardDeviceProperties.m";
         v26 = 1024;
@@ -56,30 +56,30 @@
     }
   }
 
-  v5 = [v17 copy];
+  v5 = [configurationCopy copy];
   platformInputModeConfiguration = self->super._platformInputModeConfiguration;
   self->super._platformInputModeConfiguration = v5;
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setExclusivityIdentifier:(id)a3
+- (void)setExclusivityIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  if (v17)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [v17 classForCoder];
-      if (!v9)
+      classForCoder = [identifierCopy classForCoder];
+      if (!classForCoder)
       {
-        v9 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v10 = NSStringFromClass(v9);
+      v10 = NSStringFromClass(classForCoder);
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = [v8 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"exclusivityIdentifier", v10, v12];
@@ -94,7 +94,7 @@
         v20 = 2114;
         v21 = v16;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2114;
         v25 = @"BKSHIDKeyboardDeviceProperties.m";
         v26 = 1024;
@@ -111,30 +111,30 @@
     }
   }
 
-  v5 = [v17 copy];
+  v5 = [identifierCopy copy];
   exclusivityIdentifier = self->super._exclusivityIdentifier;
   self->super._exclusivityIdentifier = v5;
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
   v30 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  if (v17)
+  layoutCopy = layout;
+  if (layoutCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [v17 classForCoder];
-      if (!v9)
+      classForCoder = [layoutCopy classForCoder];
+      if (!classForCoder)
       {
-        v9 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v10 = NSStringFromClass(v9);
+      v10 = NSStringFromClass(classForCoder);
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = [v8 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"layout", v10, v12];
@@ -149,7 +149,7 @@
         v20 = 2114;
         v21 = v16;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2114;
         v25 = @"BKSHIDKeyboardDeviceProperties.m";
         v26 = 1024;
@@ -166,30 +166,30 @@
     }
   }
 
-  v5 = [v17 copy];
+  v5 = [layoutCopy copy];
   layout = self->super._layout;
   self->super._layout = v5;
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setLanguage:(id)a3
+- (void)setLanguage:(id)language
 {
   v30 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  if (v17)
+  languageCopy = language;
+  if (languageCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [v17 classForCoder];
-      if (!v9)
+      classForCoder = [languageCopy classForCoder];
+      if (!classForCoder)
       {
-        v9 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v10 = NSStringFromClass(v9);
+      v10 = NSStringFromClass(classForCoder);
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = [v8 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"language", v10, v12];
@@ -204,7 +204,7 @@
         v20 = 2114;
         v21 = v16;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2114;
         v25 = @"BKSHIDKeyboardDeviceProperties.m";
         v26 = 1024;
@@ -221,30 +221,30 @@
     }
   }
 
-  v5 = [v17 copy];
+  v5 = [languageCopy copy];
   language = self->super._language;
   self->super._language = v5;
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setTransport:(id)a3
+- (void)setTransport:(id)transport
 {
   v30 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  if (v17)
+  transportCopy = transport;
+  if (transportCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [v17 classForCoder];
-      if (!v9)
+      classForCoder = [transportCopy classForCoder];
+      if (!classForCoder)
       {
-        v9 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v10 = NSStringFromClass(v9);
+      v10 = NSStringFromClass(classForCoder);
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = [v8 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"transport", v10, v12];
@@ -259,7 +259,7 @@
         v20 = 2114;
         v21 = v16;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2114;
         v25 = @"BKSHIDKeyboardDeviceProperties.m";
         v26 = 1024;
@@ -276,7 +276,7 @@
     }
   }
 
-  v5 = [v17 copy];
+  v5 = [transportCopy copy];
   transport = self->super._transport;
   self->super._transport = v5;
 

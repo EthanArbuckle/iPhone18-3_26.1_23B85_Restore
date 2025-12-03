@@ -1,75 +1,75 @@
 @interface CNResult
-+ (id)failureWithError:(id)a3;
-+ (id)resultWithBlock:(id)a3;
-+ (id)resultWithFuture:(id)a3 timeout:(double)a4;
-+ (id)resultWithValue:(id)a3 orError:(id)a4;
-+ (id)successWithValue:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CNResult)initWithValue:(id)a3 error:(id)a4;
++ (id)failureWithError:(id)error;
++ (id)resultWithBlock:(id)block;
++ (id)resultWithFuture:(id)future timeout:(double)timeout;
++ (id)resultWithValue:(id)value orError:(id)error;
++ (id)successWithValue:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (CNResult)initWithValue:(id)value error:(id)error;
 - (id)description;
-- (id)flatMap:(id)a3;
-- (id)map:(id)a3;
-- (id)recover:(id)a3;
-- (id)valueWithError:(id *)a3;
+- (id)flatMap:(id)map;
+- (id)map:(id)map;
+- (id)recover:(id)recover;
+- (id)valueWithError:(id *)error;
 @end
 
 @implementation CNResult
 
-+ (id)resultWithValue:(id)a3 orError:(id)a4
++ (id)resultWithValue:(id)value orError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithValue:v7 error:v6];
+  errorCopy = error;
+  valueCopy = value;
+  v8 = [[self alloc] initWithValue:valueCopy error:errorCopy];
 
   return v8;
 }
 
-+ (id)resultWithBlock:(id)a3
++ (id)resultWithBlock:(id)block
 {
   v8 = 0;
-  v4 = (*(a3 + 2))(a3, &v8);
+  v4 = (*(block + 2))(block, &v8);
   v5 = v8;
-  v6 = [a1 resultWithValue:v4 orError:v5];
+  v6 = [self resultWithValue:v4 orError:v5];
 
   return v6;
 }
 
-+ (id)resultWithFuture:(id)a3 timeout:(double)a4
++ (id)resultWithFuture:(id)future timeout:(double)timeout
 {
   v9 = 0;
-  v5 = [a3 resultWithTimeout:&v9 error:a4];
+  v5 = [future resultWithTimeout:&v9 error:timeout];
   v6 = v9;
-  v7 = [a1 resultWithValue:v5 orError:v6];
+  v7 = [self resultWithValue:v5 orError:v6];
 
   return v7;
 }
 
-+ (id)successWithValue:(id)a3
++ (id)successWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithValue:v4 error:0];
+  valueCopy = value;
+  v5 = [[self alloc] initWithValue:valueCopy error:0];
 
   return v5;
 }
 
-+ (id)failureWithError:(id)a3
++ (id)failureWithError:(id)error
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithValue:0 error:v4];
+  errorCopy = error;
+  v5 = [[self alloc] initWithValue:0 error:errorCopy];
 
   return v5;
 }
 
-- (CNResult)initWithValue:(id)a3 error:(id)a4
+- (CNResult)initWithValue:(id)value error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  errorCopy = error;
   v13.receiver = self;
   v13.super_class = CNResult;
   v8 = [(CNResult *)&v13 init];
   if (v8)
   {
-    v9 = [CNEither eitherWithLeft:v6 right:v7];
+    v9 = [CNEither eitherWithLeft:valueCopy right:errorCopy];
     either = v8->_either;
     v8->_either = v9;
 
@@ -84,31 +84,31 @@
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   if ([(CNResult *)self isSuccess])
   {
-    v4 = [(CNResult *)self value];
+    value = [(CNResult *)self value];
     v5 = @"value";
   }
 
   else
   {
-    v4 = [(CNResult *)self error];
+    value = [(CNResult *)self error];
     v5 = @"error";
   }
 
-  v6 = [v3 appendName:v5 object:v4];
+  v6 = [v3 appendName:v5 object:value];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || (either = self->_either, either | v4->_either) && ![(CNEither *)either isEqual:?])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || (either = self->_either, either | equalCopy->_either) && ![(CNEither *)either isEqual:?])
     {
       v6 = 0;
     }
@@ -117,71 +117,71 @@
   return v6;
 }
 
-- (id)valueWithError:(id *)a3
+- (id)valueWithError:(id *)error
 {
-  v5 = [(CNResult *)self value];
-  v6 = [(CNResult *)self error];
-  v7 = v5;
+  value = [(CNResult *)self value];
+  error = [(CNResult *)self error];
+  v7 = value;
   v8 = v7;
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    v9 = v6;
-    *a3 = v6;
+    v9 = error;
+    *error = error;
   }
 
   return v8;
 }
 
-- (id)map:(id)a3
+- (id)map:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   if ([(CNResult *)self isSuccess])
   {
-    v5 = [(CNResult *)self value];
-    v6 = v4[2](v4, v5);
-    v7 = [CNResult successWithValue:v6];
+    value = [(CNResult *)self value];
+    v6 = mapCopy[2](mapCopy, value);
+    selfCopy = [CNResult successWithValue:v6];
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)flatMap:(id)a3
+- (id)flatMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   if ([(CNResult *)self isSuccess])
   {
-    v5 = [(CNResult *)self value];
-    v6 = v4[2](v4, v5);
+    value = [(CNResult *)self value];
+    selfCopy = mapCopy[2](mapCopy, value);
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)recover:(id)a3
+- (id)recover:(id)recover
 {
-  v4 = a3;
+  recoverCopy = recover;
   if ([(CNResult *)self isFailure])
   {
-    v5 = [(CNResult *)self error];
-    v6 = v4[2](v4, v5);
+    error = [(CNResult *)self error];
+    selfCopy = recoverCopy[2](recoverCopy, error);
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

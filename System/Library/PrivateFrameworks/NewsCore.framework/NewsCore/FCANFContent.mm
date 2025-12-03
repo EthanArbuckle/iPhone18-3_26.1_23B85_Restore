@@ -1,28 +1,28 @@
 @interface FCANFContent
 - (BOOL)isANFDocumentCached;
-- (FCANFContent)initWithIdentifier:(id)a3 mainDocumentAssetHandle:(id)a4 fontResourceIDs:(id)a5;
+- (FCANFContent)initWithIdentifier:(id)identifier mainDocumentAssetHandle:(id)handle fontResourceIDs:(id)ds;
 - (NSArray)anfDocumentAssetHandles;
-- (id)fetchANFDocumentDataProviderWithPriority:(int64_t)a3 completion:(id)a4;
+- (id)fetchANFDocumentDataProviderWithPriority:(int64_t)priority completion:(id)completion;
 @end
 
 @implementation FCANFContent
 
-- (FCANFContent)initWithIdentifier:(id)a3 mainDocumentAssetHandle:(id)a4 fontResourceIDs:(id)a5
+- (FCANFContent)initWithIdentifier:(id)identifier mainDocumentAssetHandle:(id)handle fontResourceIDs:(id)ds
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  handleCopy = handle;
+  dsCopy = ds;
   v18.receiver = self;
   v18.super_class = FCANFContent;
   v11 = [(FCANFContent *)&v18 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    objc_storeStrong(&v11->_mainDocumentAssetHandle, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_mainDocumentAssetHandle, handle);
+    v14 = [dsCopy copy];
     v15 = v14;
     if (v14)
     {
@@ -62,22 +62,22 @@ void __39__FCANFContent_anfDocumentAssetHandles__block_invoke(uint64_t a1, void 
 
 - (BOOL)isANFDocumentCached
 {
-  v2 = [(FCANFContent *)self mainDocumentAssetHandle];
-  v3 = [v2 dataProvider];
-  v4 = v3 != 0;
+  mainDocumentAssetHandle = [(FCANFContent *)self mainDocumentAssetHandle];
+  dataProvider = [mainDocumentAssetHandle dataProvider];
+  v4 = dataProvider != 0;
 
   return v4;
 }
 
-- (id)fetchANFDocumentDataProviderWithPriority:(int64_t)a3 completion:(id)a4
+- (id)fetchANFDocumentDataProviderWithPriority:(int64_t)priority completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(FCANFContent *)self mainDocumentAssetHandle];
+  completionCopy = completion;
+  mainDocumentAssetHandle = [(FCANFContent *)self mainDocumentAssetHandle];
 
-  if (v7)
+  if (mainDocumentAssetHandle)
   {
-    v8 = [(FCANFContent *)self mainDocumentAssetHandle];
-    v9 = [v8 fetchDataProviderWithPriority:a3 flags:0 completion:v6];
+    mainDocumentAssetHandle2 = [(FCANFContent *)self mainDocumentAssetHandle];
+    v9 = [mainDocumentAssetHandle2 fetchDataProviderWithPriority:priority flags:0 completion:completionCopy];
   }
 
   else
@@ -87,7 +87,7 @@ void __39__FCANFContent_anfDocumentAssetHandles__block_invoke(uint64_t a1, void 
     v11[2] = __68__FCANFContent_fetchANFDocumentDataProviderWithPriority_completion___block_invoke;
     v11[3] = &unk_1E7C41A70;
     v11[4] = self;
-    v12 = v6;
+    v12 = completionCopy;
     v9 = __68__FCANFContent_fetchANFDocumentDataProviderWithPriority_completion___block_invoke(v11);
   }
 

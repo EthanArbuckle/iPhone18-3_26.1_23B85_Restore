@@ -24,7 +24,7 @@
   v4[1] = 3221225472;
   v4[2] = __63__NSString_ECEmailAddressQuoting__ecemailaddress_uniquedDomain__block_invoke_261;
   v4[3] = &unk_27874B948;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = &v5;
   dispatch_sync(ecemailaddress_uniquedDomain_uniqueStringsQueue, v4);
   v2 = v6[5];
@@ -40,27 +40,27 @@
     [NSString(ECEmailAddressQuoting) ecemailaddress_trimmedAndQuotedDisplayName];
   }
 
-  v2 = a1;
-  if (![v2 length])
+  selfCopy = self;
+  if (![selfCopy length])
   {
     goto LABEL_7;
   }
 
-  v3 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v4 = [selfCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if (![v4 length] || objc_msgSend(v4, "rangeOfCharacterFromSet:", ecemailaddress_trimmedAndQuotedDisplayName_specials) == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v2 = v4;
+    selfCopy = v4;
 LABEL_7:
-    v5 = v2;
-    v4 = v5;
+    ecemailaddress_quotedString = selfCopy;
+    v4 = ecemailaddress_quotedString;
     goto LABEL_8;
   }
 
-  v5 = [v4 ecemailaddress_quotedString];
+  ecemailaddress_quotedString = [v4 ecemailaddress_quotedString];
 LABEL_8:
-  v6 = v5;
+  v6 = ecemailaddress_quotedString;
 
   return v6;
 }
@@ -72,15 +72,15 @@ LABEL_8:
     [NSString(ECEmailAddressQuoting) ecemailaddress_trimmedAndQuotedLocalPart];
   }
 
-  v2 = a1;
-  if ([v2 length])
+  selfCopy = self;
+  if ([selfCopy length])
   {
-    v3 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v4 = [v2 stringByTrimmingCharactersInSet:v3];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v4 = [selfCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     if ([(__CFString *)v4 length]&& ([(__CFString *)v4 rangeOfCharacterFromSet:ecemailaddress_trimmedAndQuotedLocalPart_specials]!= 0x7FFFFFFFFFFFFFFFLL || [(__CFString *)v4 characterAtIndex:0]== 46 || [(__CFString *)v4 characterAtIndex:[(__CFString *)v4 length]- 1]== 46 || [(__CFString *)v4 rangeOfString:@".."]!= 0x7FFFFFFFFFFFFFFFLL))
     {
-      v5 = [(__CFString *)v4 ecemailaddress_quotedString];
+      ecemailaddress_quotedString = [(__CFString *)v4 ecemailaddress_quotedString];
       goto LABEL_12;
     }
   }
@@ -91,17 +91,17 @@ LABEL_8:
     v4 = @"";
   }
 
-  v5 = v4;
-  v4 = v5;
+  ecemailaddress_quotedString = v4;
+  v4 = ecemailaddress_quotedString;
 LABEL_12:
-  v6 = v5;
+  v6 = ecemailaddress_quotedString;
 
   return v6;
 }
 
 - (id)ecemailaddress_quotedString
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   if ([v1 length])
   {
     [v1 replaceOccurrencesOfString:@"\ withString:@"\\\ options:0 range:{0, objc_msgSend(v1, "length")}];

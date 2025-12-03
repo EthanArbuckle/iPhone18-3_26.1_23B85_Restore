@@ -1,81 +1,81 @@
 @interface DESDodMLTaskSchedulingPolicy
-- (DESDodMLTaskSchedulingPolicy)initWithAssetURL:(id)a3 error:(id *)a4;
-- (DESDodMLTaskSchedulingPolicy)initWithPolicyDict:(id)a3;
-- (id)_policyForRecipeID:(id)a3 error:(id *)a4;
-- (id)predicateForRecipeID:(id)a3 error:(id *)a4;
-- (id)samplingRateForRecipeID:(id)a3 error:(id *)a4;
+- (DESDodMLTaskSchedulingPolicy)initWithAssetURL:(id)l error:(id *)error;
+- (DESDodMLTaskSchedulingPolicy)initWithPolicyDict:(id)dict;
+- (id)_policyForRecipeID:(id)d error:(id *)error;
+- (id)predicateForRecipeID:(id)d error:(id *)error;
+- (id)samplingRateForRecipeID:(id)d error:(id *)error;
 @end
 
 @implementation DESDodMLTaskSchedulingPolicy
 
-- (DESDodMLTaskSchedulingPolicy)initWithAssetURL:(id)a3 error:(id *)a4
+- (DESDodMLTaskSchedulingPolicy)initWithAssetURL:(id)l error:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  lCopy = l;
+  if (lCopy)
   {
     v21 = 0;
-    v7 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v6 options:8 error:&v21];
+    v7 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy options:8 error:&v21];
     v8 = v21;
     if (v7)
     {
       v20 = v8;
-      v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v7 options:0 error:&v20];
+      lCopy2 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v7 options:0 error:&v20];
       v10 = v20;
 
-      if (v9)
+      if (lCopy2)
       {
-        self = [(DESDodMLTaskSchedulingPolicy *)self initWithPolicyDict:v9];
+        self = [(DESDodMLTaskSchedulingPolicy *)self initWithPolicyDict:lCopy2];
         v8 = v10;
-        v11 = self;
+        selfCopy = self;
       }
 
       else
       {
-        if (a4)
+        if (error)
         {
           v15 = MEMORY[0x277CCA9B8];
           v22[0] = *MEMORY[0x277CCA450];
-          v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fail to decode JSON object from URL = (%@)", v6];
+          lCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Fail to decode JSON object from URL = (%@)", lCopy];
           v22[1] = *MEMORY[0x277CCA7E8];
-          v23[0] = v16;
+          v23[0] = lCopy;
           v23[1] = v10;
           v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
-          *a4 = [v15 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:5005 userInfo:v17];
+          *error = [v15 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:5005 userInfo:v17];
         }
 
-        v11 = 0;
+        selfCopy = 0;
         v8 = v10;
       }
     }
 
     else
     {
-      if (!a4)
+      if (!error)
       {
-        v11 = 0;
+        selfCopy = 0;
         goto LABEL_13;
       }
 
       v13 = MEMORY[0x277CCA9B8];
       v24[0] = *MEMORY[0x277CCA450];
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fail to read URL = (%@)", v6];
+      lCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fail to read URL = (%@)", lCopy];
       v24[1] = *MEMORY[0x277CCA7E8];
-      v25[0] = v9;
+      v25[0] = lCopy2;
       v25[1] = v8;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
-      *a4 = [v13 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:5005 userInfo:v14];
+      *error = [v13 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:5005 userInfo:v14];
 
-      v11 = 0;
+      selfCopy = 0;
     }
 
 LABEL_13:
     goto LABEL_14;
   }
 
-  if (!a4)
+  if (!error)
   {
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -84,18 +84,18 @@ LABEL_13:
   v27[0] = @"Nil policy URL";
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
   [v12 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:5002 userInfo:v8];
-  *a4 = v11 = 0;
+  *error = selfCopy = 0;
 LABEL_14:
 
 LABEL_15:
   v18 = *MEMORY[0x277D85DE8];
-  return v11;
+  return selfCopy;
 }
 
-- (DESDodMLTaskSchedulingPolicy)initWithPolicyDict:(id)a3
+- (DESDodMLTaskSchedulingPolicy)initWithPolicyDict:(id)dict
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictCopy = dict;
   v58.receiver = self;
   v58.super_class = DESDodMLTaskSchedulingPolicy;
   v5 = [(DESDodMLTaskSchedulingPolicy *)&v58 init];
@@ -104,13 +104,13 @@ LABEL_15:
   {
     v5->_recipeCountLimit = 1;
     *&v5->_timeLimit = xmmword_249019F10;
-    if (v4)
+    if (dictCopy)
     {
-      v7 = [v4 objectForKeyedSubscript:@"recipes"];
+      v7 = [dictCopy objectForKeyedSubscript:@"recipes"];
       recipes = v6->_recipes;
       v6->_recipes = v7;
 
-      v9 = [v4 objectForKeyedSubscript:@"evaluation_limits"];
+      v9 = [dictCopy objectForKeyedSubscript:@"evaluation_limits"];
       v10 = 0x277CBE000uLL;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -154,7 +154,7 @@ LABEL_15:
         }
       }
 
-      v18 = [v4 objectForKeyedSubscript:@"return_routes"];
+      v18 = [dictCopy objectForKeyedSubscript:@"return_routes"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -170,7 +170,7 @@ LABEL_15:
           v51 = v18;
           v52 = v9;
           v22 = v6;
-          v53 = v4;
+          v53 = dictCopy;
           v23 = *v55;
           do
           {
@@ -245,7 +245,7 @@ LABEL_15:
           while (v30);
           v6 = v22;
           v9 = v52;
-          v4 = v53;
+          dictCopy = v53;
           v18 = v51;
           v10 = 0x277CBE000;
         }
@@ -267,7 +267,7 @@ LABEL_15:
         v6->_originReturnRouteEnabled = 1;
       }
 
-      v32 = [v4 objectForKeyedSubscript:@"host"];
+      v32 = [dictCopy objectForKeyedSubscript:@"host"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -300,7 +300,7 @@ LABEL_15:
         }
       }
 
-      v37 = [v4 objectForKeyedSubscript:@"telemetry"];
+      v37 = [dictCopy objectForKeyedSubscript:@"telemetry"];
       v38 = *(v10 + 2752);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -367,43 +367,43 @@ LABEL_15:
   return v6;
 }
 
-- (id)_policyForRecipeID:(id)a3 error:(id *)a4
+- (id)_policyForRecipeID:(id)d error:(id *)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_recipes objectForKeyedSubscript:v6];
+  dCopy = d;
+  v7 = [(NSDictionary *)self->_recipes objectForKeyedSubscript:dCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = v7;
+    error = v7;
   }
 
-  else if (a4)
+  else if (error)
   {
     v8 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277CCA470];
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid policy for recipeID=%@, policy=%@", v6, v7];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid policy for recipeID=%@, policy=%@", dCopy, v7];
     v14[0] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    *a4 = [v8 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1513 userInfo:v10];
+    *error = [v8 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1513 userInfo:v10];
 
-    a4 = 0;
+    error = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
-- (id)samplingRateForRecipeID:(id)a3 error:(id *)a4
+- (id)samplingRateForRecipeID:(id)d error:(id *)error
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(DESDodMLTaskSchedulingPolicy *)self _policyForRecipeID:v6 error:a4];
+  dCopy = d;
+  v7 = [(DESDodMLTaskSchedulingPolicy *)self _policyForRecipeID:dCopy error:error];
   v8 = v7;
   if (!v7)
   {
-    a4 = 0;
+    error = 0;
     goto LABEL_14;
   }
 
@@ -411,42 +411,42 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
-    [v10 doubleValue];
+    dCopy2 = v9;
+    [dCopy2 doubleValue];
     if (v11 <= 1.0 && v11 > 0.0)
     {
-      v10 = v10;
-      a4 = v10;
+      dCopy2 = dCopy2;
+      error = dCopy2;
 LABEL_12:
 
       goto LABEL_13;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
 
     v14 = MEMORY[0x277CCA9B8];
     v18 = *MEMORY[0x277CCA470];
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid sampling rate=%f, recipeID=%@", *&v11, v6];
-    v19 = v13;
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid sampling rate=%f, recipeID=%@", *&v11, dCopy];
+    v19 = dCopy;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-    *a4 = [v14 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1513 userInfo:v15];
+    *error = [v14 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1513 userInfo:v15];
 
 LABEL_11:
-    a4 = 0;
+    error = 0;
     goto LABEL_12;
   }
 
-  if (a4)
+  if (error)
   {
     v12 = MEMORY[0x277CCA9B8];
     v20 = *MEMORY[0x277CCA470];
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid sampling rate in policy for recipeID: %@", v6];
-    v21[0] = v10;
-    v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-    *a4 = [v12 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1513 userInfo:v13];
+    dCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid sampling rate in policy for recipeID: %@", dCopy];
+    v21[0] = dCopy2;
+    dCopy = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
+    *error = [v12 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1513 userInfo:dCopy];
     goto LABEL_11;
   }
 
@@ -455,14 +455,14 @@ LABEL_13:
 LABEL_14:
   v16 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
-- (id)predicateForRecipeID:(id)a3 error:(id *)a4
+- (id)predicateForRecipeID:(id)d error:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(DESDodMLTaskSchedulingPolicy *)self _policyForRecipeID:v6 error:a4];
+  dCopy = d;
+  v7 = [(DESDodMLTaskSchedulingPolicy *)self _policyForRecipeID:dCopy error:error];
   v8 = v7;
   if (v7)
   {
@@ -470,29 +470,29 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      a4 = v9;
+      error = v9;
     }
 
-    else if (a4)
+    else if (error)
     {
       v10 = MEMORY[0x277CCA9B8];
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid predicate in recipeID=%@", v6, *MEMORY[0x277CCA470]];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid predicate in recipeID=%@", dCopy, *MEMORY[0x277CCA470]];
       v16[0] = v11;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-      *a4 = [v10 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1513 userInfo:v12];
+      *error = [v10 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:1513 userInfo:v12];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
   else
   {
-    a4 = 0;
+    error = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
 - (void)initWithPolicyDict:(void *)a1 .cold.1(void *a1, NSObject *a2)

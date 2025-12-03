@@ -1,10 +1,10 @@
 @interface DiagnosticService
 - (DiagnosticService)init;
-- (void)_handlePingMessage:(id)a3 fromDevice:(id)a4;
-- (void)addSubscriberWithEndpoint:(id)a3;
-- (void)pingWithReplyHandler:(id)a3;
-- (void)sendCommandWithDetailedReplyHandler:(int64_t)a3 handler:(id)a4;
-- (void)sendCommandWithReplyHandler:(int64_t)a3 handler:(id)a4;
+- (void)_handlePingMessage:(id)message fromDevice:(id)device;
+- (void)addSubscriberWithEndpoint:(id)endpoint;
+- (void)pingWithReplyHandler:(id)handler;
+- (void)sendCommandWithDetailedReplyHandler:(int64_t)handler handler:(id)a4;
+- (void)sendCommandWithReplyHandler:(int64_t)handler handler:(id)a4;
 @end
 
 @implementation DiagnosticService
@@ -31,23 +31,23 @@
   return v2;
 }
 
-- (void)addSubscriberWithEndpoint:(id)a3
+- (void)addSubscriberWithEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   listenerLock = self->_listenerLock;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10030D108;
   v7[3] = &unk_10051B570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = endpointCopy;
+  selfCopy = self;
+  v6 = endpointCopy;
   sub_100379C5C(listenerLock, v7);
 }
 
-- (void)pingWithReplyHandler:(id)a3
+- (void)pingWithReplyHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = sub_1002C0D84();
   sub_1002C13BC(v4, 2048);
 
@@ -78,10 +78,10 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "->> %{public}@", buf, 0xCu);
   }
 
-  v3[2](v3);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)sendCommandWithReplyHandler:(int64_t)a3 handler:(id)a4
+- (void)sendCommandWithReplyHandler:(int64_t)handler handler:(id)a4
 {
   v6 = a4;
   if (!os_variant_has_internal_content())
@@ -95,20 +95,20 @@
     *buf = 138412546;
     *v125 = objc_opt_class();
     *&v125[8] = 2048;
-    v126 = a3;
+    handlerCopy = handler;
     v8 = *v125;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%@]: Recieved command: %ld", buf, 0x16u);
   }
 
-  if (a3 > 719)
+  if (handler > 719)
   {
-    if (a3 <= 743)
+    if (handler <= 743)
     {
-      if (a3 > 739)
+      if (handler > 739)
       {
-        if (a3 > 741)
+        if (handler > 741)
         {
-          if (a3 == 742)
+          if (handler == 742)
           {
             objc_opt_self();
             qword_1005ABBE8 = -2;
@@ -137,7 +137,7 @@
 
         else
         {
-          if (a3 == 740)
+          if (handler == 740)
           {
             v9 = ASDLogHandleForCategory();
             if (os_log_type_enabled(&v9->super, OS_LOG_TYPE_DEFAULT))
@@ -173,11 +173,11 @@ LABEL_87:
         goto LABEL_88;
       }
 
-      if (a3 > 721)
+      if (handler > 721)
       {
-        if (a3 != 722)
+        if (handler != 722)
         {
-          if (a3 != 730)
+          if (handler != 730)
           {
             goto LABEL_67;
           }
@@ -186,14 +186,14 @@ LABEL_87:
           v31 = [NSURL URLWithString:@"https://xp.apple.com/report/2/xp_app_buy?clientId=0&sf=143441&adamId=123"];
           v123 = v31;
           v32 = [NSArray arrayWithObjects:&v123 count:1];
-          v14 = sub_100402FDC(v30, v32);
+          ams_activeiTunesAccount2 = sub_100402FDC(v30, v32);
 
           v33 = sub_100284B90();
-          v122 = v14;
-          v34 = [NSArray arrayWithObjects:&v122 count:1];
+          v122 = ams_activeiTunesAccount2;
+          present = [NSArray arrayWithObjects:&v122 count:1];
           if (v33)
           {
-            [(objc_class *)v33[1].isa addOperations:v34 waitUntilFinished:1];
+            [(objc_class *)v33[1].isa addOperations:present waitUntilFinished:1];
           }
 
           goto LABEL_81;
@@ -208,7 +208,7 @@ LABEL_87:
       else
       {
         [NSURL URLWithString:@"http://www.apple.com"];
-        if (a3 == 720)
+        if (handler == 720)
           v10 = {;
           v11 = &stru_100529300;
         }
@@ -222,33 +222,33 @@ LABEL_87:
         v56 = 1;
       }
 
-      v14 = sub_1002C61F4(UPPManifestDialogRequest, v55, v11, v56);
+      ams_activeiTunesAccount2 = sub_1002C61F4(UPPManifestDialogRequest, v55, v11, v56);
 
-      v33 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v14];
-      v34 = [v33 present];
-      [v34 waitUntilFinishedWithTimeout:120.0];
+      v33 = [[AMSSystemAlertDialogTask alloc] initWithRequest:ams_activeiTunesAccount2];
+      present = [v33 present];
+      [present waitUntilFinishedWithTimeout:120.0];
 LABEL_81:
 
       goto LABEL_135;
     }
 
-    if (a3 <= 902)
+    if (handler <= 902)
     {
-      if (a3 > 900)
+      if (handler > 900)
       {
-        if (a3 != 901)
+        if (handler != 901)
         {
-          v14 = objc_alloc_init(_TtC9appstored6LogKey);
+          ams_activeiTunesAccount2 = objc_alloc_init(_TtC9appstored6LogKey);
           v35 = ASDLogHandleForCategory();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            *v125 = v14;
+            *v125 = ams_activeiTunesAccount2;
             _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "[%@] Removing stale Katana supplemental account data for active account", buf, 0xCu);
           }
 
-          v15 = +[_TtC9appstored29KatanaSubscriptionCoordinator shared];
-          v36 = [(LogKey *)v15 removeStaleSubscriptionInfoWithLogKey:v14];
+          ams_activeiTunesAccount3 = +[_TtC9appstored29KatanaSubscriptionCoordinator shared];
+          v36 = [(LogKey *)ams_activeiTunesAccount3 removeStaleSubscriptionInfoWithLogKey:ams_activeiTunesAccount2];
           v19 = ASDLogHandleForCategory();
           if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
@@ -256,9 +256,9 @@ LABEL_81:
           }
 
           *buf = 138412546;
-          *v125 = v14;
+          *v125 = ams_activeiTunesAccount2;
           *&v125[8] = 1024;
-          LODWORD(v126) = v36;
+          LODWORD(handlerCopy) = v36;
           v24 = "[%@] Removed stale Katana subscription info with success: %{BOOL}d";
           v25 = v19;
           v26 = 18;
@@ -275,10 +275,10 @@ LABEL_81:
         v67 = objc_alloc_init(_TtC9appstored6LogKey);
         v68 = +[_TtC9appstored29KatanaSubscriptionCoordinator shared];
         v69 = +[ACAccountStore ams_sharedAccountStore];
-        v70 = [v69 ams_activeiTunesAccount];
+        ams_activeiTunesAccount = [v69 ams_activeiTunesAccount];
 
         v112 = 0;
-        v71 = sub_10030F358(self, v70, &v112);
+        v71 = sub_10030F358(self, ams_activeiTunesAccount, &v112);
         v72 = v112;
         v73 = +[BagService appstoredService];
         v106[0] = _NSConcreteStackBlock;
@@ -287,11 +287,11 @@ LABEL_81:
         v106[3] = &unk_100522C78;
         v107 = v68;
         v108 = v71;
-        v109 = v70;
+        v109 = ams_activeiTunesAccount;
         v110 = v67;
         v111 = v6;
         v74 = v67;
-        v75 = v70;
+        v75 = ams_activeiTunesAccount;
         v76 = v71;
         v77 = v68;
         [v73 recentBagWithCompletionHandler:v106];
@@ -300,7 +300,7 @@ LABEL_111:
         goto LABEL_137;
       }
 
-      if (a3 == 744)
+      if (handler == 744)
       {
         objc_opt_self();
         qword_1005ABBE8 = -1;
@@ -315,7 +315,7 @@ LABEL_111:
         goto LABEL_131;
       }
 
-      if (a3 == 745)
+      if (handler == 745)
       {
         v12 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -327,9 +327,9 @@ LABEL_111:
         v13 = sub_1002AB1B0();
         sub_1002AC6A0(v13, &off_100549500);
 
-        v14 = [[LSApplicationRecord alloc] initWithBundleIdentifier:@"com.apple.Pages" allowPlaceholder:0 error:0];
-        v15 = objc_alloc_init(_TtC9appstored6LogKey);
-        v16 = sub_1003BB60C([AppLedgerEvent alloc], v14, v15);
+        ams_activeiTunesAccount2 = [[LSApplicationRecord alloc] initWithBundleIdentifier:@"com.apple.Pages" allowPlaceholder:0 error:0];
+        ams_activeiTunesAccount3 = objc_alloc_init(_TtC9appstored6LogKey);
+        v16 = sub_1003BB60C([AppLedgerEvent alloc], ams_activeiTunesAccount2, ams_activeiTunesAccount3);
         v17 = sub_1002AB1B0();
         v121 = v16;
         v18 = [NSArray arrayWithObjects:&v121 count:1];
@@ -354,11 +354,11 @@ LABEL_132:
       goto LABEL_137;
     }
 
-    if (a3 > 998)
+    if (handler > 998)
     {
-      if (a3 != 999)
+      if (handler != 999)
       {
-        if (a3 == 1001)
+        if (handler == 1001)
         {
           v37 = ASDLogHandleForCategory();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -369,7 +369,7 @@ LABEL_132:
 
           v38 = objc_alloc_init(_TtC9appstored6LogKey);
           v39 = +[ACAccountStore ams_sharedAccountStore];
-          v14 = [v39 ams_activeiTunesAccount];
+          ams_activeiTunesAccount2 = [v39 ams_activeiTunesAccount];
 
           v40 = +[AMSAccountCachedServerData sharedInstance];
           v103[0] = _NSConcreteStackBlock;
@@ -378,8 +378,8 @@ LABEL_132:
           v103[3] = &unk_100522CA0;
           v104 = v38;
           v105 = v6;
-          v15 = v38;
-          [v40 intForKey:3 account:v14 logKey:v15 staleValueAcceptable:0 completionHandler:v103];
+          ams_activeiTunesAccount3 = v38;
+          [v40 intForKey:3 account:ams_activeiTunesAccount2 logKey:ams_activeiTunesAccount3 staleValueAcceptable:0 completionHandler:v103];
 
           goto LABEL_95;
         }
@@ -394,14 +394,14 @@ LABEL_132:
         _os_log_impl(&_mh_execute_header, v78, OS_LOG_TYPE_DEFAULT, "Checking app intents", buf, 2u);
       }
 
-      v14 = objc_alloc_init(_TtC9appstored6LogKey);
+      ams_activeiTunesAccount2 = objc_alloc_init(_TtC9appstored6LogKey);
       v79 = [NSDateInterval alloc];
       v80 = +[NSDate distantPast];
       v81 = +[NSDate distantFuture];
-      v15 = [v79 initWithStartDate:v80 endDate:v81];
+      ams_activeiTunesAccount3 = [v79 initWithStartDate:v80 endDate:v81];
 
       v82 = [_TtC9appstored7Intents alloc];
-      v16 = [(Intents *)v82 intentUsageWithDateInterval:v15 logKey:v14];
+      v16 = [(Intents *)v82 intentUsageWithDateInterval:ams_activeiTunesAccount3 logKey:ams_activeiTunesAccount2];
 
       v17 = ASDLogHandleForCategory();
       if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -422,9 +422,9 @@ LABEL_94:
 
     else
     {
-      if (a3 != 903)
+      if (handler != 903)
       {
-        if (a3 == 904)
+        if (handler == 904)
         {
           v28 = ASDLogHandleForCategory();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -450,20 +450,20 @@ LABEL_94:
         goto LABEL_67;
       }
 
-      v14 = objc_alloc_init(_TtC9appstored6LogKey);
+      ams_activeiTunesAccount2 = objc_alloc_init(_TtC9appstored6LogKey);
       v60 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *v125 = v14;
+        *v125 = ams_activeiTunesAccount2;
         _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "[%@] Migrating Katana supplemental account data for active account", buf, 0xCu);
       }
 
       v61 = +[ACAccountStore ams_sharedAccountStore];
-      v15 = [v61 ams_activeiTunesAccount];
+      ams_activeiTunesAccount3 = [v61 ams_activeiTunesAccount];
 
       v16 = +[_TtC9appstored29KatanaSubscriptionCoordinator shared];
-      v62 = [v16 migrateSubscriptionStateWithAccount:v15 logKey:v14];
+      v62 = [v16 migrateSubscriptionStateWithAccount:ams_activeiTunesAccount3 logKey:ams_activeiTunesAccount2];
       v17 = ASDLogHandleForCategory();
       if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
@@ -471,9 +471,9 @@ LABEL_94:
       }
 
       *buf = 138412546;
-      *v125 = v14;
+      *v125 = ams_activeiTunesAccount2;
       *&v125[8] = 1024;
-      LODWORD(v126) = v62;
+      LODWORD(handlerCopy) = v62;
       v63 = "[%@] Migrated Katana subscription info with success: %{BOOL}d";
       v64 = v17;
       v65 = 18;
@@ -483,9 +483,9 @@ LABEL_94:
     goto LABEL_94;
   }
 
-  if (a3 > 299)
+  if (handler > 299)
   {
-    switch(a3)
+    switch(handler)
     {
       case 601:
         v9 = sub_1002C0D84();
@@ -493,16 +493,16 @@ LABEL_94:
         goto LABEL_131;
       case 602:
         v92 = +[ACAccountStore ams_sharedAccountStore];
-        v93 = [v92 ams_activeiTunesAccount];
+        ams_activeiTunesAccount4 = [v92 ams_activeiTunesAccount];
 
         v94 = +[BagService appstoredService];
         v113[0] = _NSConcreteStackBlock;
         v113[1] = 3221225472;
         v113[2] = sub_10030F0A8;
         v113[3] = &unk_10051D998;
-        v114 = v93;
+        v114 = ams_activeiTunesAccount4;
         v115 = v6;
-        v77 = v93;
+        v77 = ams_activeiTunesAccount4;
         [v94 recentBagWithCompletionHandler:v113];
 
         goto LABEL_111;
@@ -545,18 +545,18 @@ LABEL_122:
         goto LABEL_131;
       case 613:
         v87 = +[ACAccountStore ams_sharedAccountStore];
-        v14 = [v87 ams_activeiTunesAccount];
+        ams_activeiTunesAccount2 = [v87 ams_activeiTunesAccount];
 
         v88 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v88, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *v125 = v14;
+          *v125 = ams_activeiTunesAccount2;
           _os_log_impl(&_mh_execute_header, v88, OS_LOG_TYPE_DEFAULT, "Kicking retry restores for  %@", buf, 0xCu);
         }
 
         v33 = sub_1002856D4();
-        sub_1002898BC(v33, v14, 0);
+        sub_1002898BC(v33, ams_activeiTunesAccount2, 0);
         goto LABEL_135;
       case 614:
         v85 = ASDLogHandleForCategory();
@@ -588,11 +588,11 @@ LABEL_122:
           _os_log_impl(&_mh_execute_header, v102, OS_LOG_TYPE_DEFAULT, "Install distributor if needed - with app", buf, 2u);
         }
 
-        v14 = objc_alloc_init(_TtC9appstored6LogKey);
+        ams_activeiTunesAccount2 = objc_alloc_init(_TtC9appstored6LogKey);
         v98 = sub_1002856D4();
         v33 = v98;
         v100 = @"com.dreamgames.royalmatch";
-        v99 = v14;
+        v99 = ams_activeiTunesAccount2;
         goto LABEL_128;
       case 617:
         v97 = ASDLogHandleForCategory();
@@ -602,10 +602,10 @@ LABEL_122:
           _os_log_impl(&_mh_execute_header, v97, OS_LOG_TYPE_DEFAULT, "Install distributor if needed - generic", buf, 2u);
         }
 
-        v14 = objc_alloc_init(_TtC9appstored6LogKey);
+        ams_activeiTunesAccount2 = objc_alloc_init(_TtC9appstored6LogKey);
         v98 = sub_1002856D4();
         v33 = v98;
-        v99 = v14;
+        v99 = ams_activeiTunesAccount2;
         v100 = 0;
 LABEL_128:
         sub_1002878E0(v98, v99, v100, 0);
@@ -636,7 +636,7 @@ LABEL_119:
         sub_1002870A8(v90, @"Diagnostic", 0, v91);
         goto LABEL_131;
       default:
-        if (a3 == 300)
+        if (handler == 300)
         {
           v41 = sub_1001DFF60();
           v9 = v41;
@@ -645,7 +645,7 @@ LABEL_119:
 
         else
         {
-          if (a3 != 301)
+          if (handler != 301)
           {
             goto LABEL_67;
           }
@@ -662,14 +662,14 @@ LABEL_119:
     goto LABEL_131;
   }
 
-  if (a3 != 1)
+  if (handler != 1)
   {
-    if (a3 != 2)
+    if (handler != 2)
     {
-      if (a3 == 100)
+      if (handler == 100)
       {
-        v14 = sub_10032C390();
-        v15 = sub_100227468();
+        ams_activeiTunesAccount2 = sub_10032C390();
+        ams_activeiTunesAccount3 = sub_100227468();
         v19 = ASDLogHandleForCategory();
         if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
@@ -682,17 +682,17 @@ LABEL_136:
           goto LABEL_137;
         }
 
-        v20 = [(LogKey *)v15 isConnected];
-        v21 = [(LogKey *)v15 isExpensive];
-        v22 = [(LogKey *)v15 isConstrained];
-        v23 = sub_10032C78C(v14);
+        isConnected = [(LogKey *)ams_activeiTunesAccount3 isConnected];
+        isExpensive = [(LogKey *)ams_activeiTunesAccount3 isExpensive];
+        isConstrained = [(LogKey *)ams_activeiTunesAccount3 isConstrained];
+        v23 = sub_10032C78C(ams_activeiTunesAccount2);
         *buf = 67109888;
-        *v125 = v20;
+        *v125 = isConnected;
         *&v125[4] = 1024;
-        *&v125[6] = v21;
-        LOWORD(v126) = 1024;
-        *(&v126 + 2) = v22;
-        HIWORD(v126) = 1024;
+        *&v125[6] = isExpensive;
+        LOWORD(handlerCopy) = 1024;
+        *(&handlerCopy + 2) = isConstrained;
+        HIWORD(handlerCopy) = 1024;
         v127 = v23;
         v24 = "NETWORK: isConnected = %{BOOL}d, isExpensive = %{BOOL}d, isConstrained = %{BOOL}d, isRoaming = %{BOOL}d";
         v25 = v19;
@@ -707,14 +707,14 @@ LABEL_45:
 
     v43 = sub_1002EB36C();
     v44 = sub_1002B0154();
-    v14 = sub_1002B0280(v44);
+    ams_activeiTunesAccount2 = sub_1002B0280(v44);
 
-    if (v14)
+    if (ams_activeiTunesAccount2)
     {
       v45 = objc_alloc_init(XDCPingMessage);
       v46 = +[NSUUID UUID];
-      v47 = [v46 UUIDString];
-      sub_100268B54(v45, v47);
+      uUIDString = [v46 UUIDString];
+      sub_100268B54(v45, uUIDString);
 
       v48 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
@@ -746,7 +746,7 @@ LABEL_45:
       v53 = v45;
       if (v52)
       {
-        sub_1002EB834(v52, v51, v14, 1, v116);
+        sub_1002EB834(v52, v51, ams_activeiTunesAccount2, 1, v116);
       }
 
       goto LABEL_136;
@@ -776,7 +776,7 @@ LABEL_135:
 LABEL_137:
 }
 
-- (void)sendCommandWithDetailedReplyHandler:(int64_t)a3 handler:(id)a4
+- (void)sendCommandWithDetailedReplyHandler:(int64_t)handler handler:(id)a4
 {
   v71 = a4;
   if ((os_variant_has_internal_content() & 1) == 0)
@@ -793,19 +793,19 @@ LABEL_137:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = a3;
+    *(&buf + 4) = handler;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Recieved detailed command: %ld", &buf, 0xCu);
   }
 
-  if (a3 <= 804)
+  if (handler <= 804)
   {
-    if (a3 > 612)
+    if (handler > 612)
     {
-      if (a3 > 615)
+      if (handler > 615)
       {
-        if (a3 != 616)
+        if (handler != 616)
         {
-          if (a3 != 617)
+          if (handler != 617)
           {
             goto LABEL_89;
           }
@@ -818,7 +818,7 @@ LABEL_137:
           }
 
           v30 = +[ACAccountStore ams_sharedAccountStore];
-          v31 = [v30 ams_activeiTunesAccount];
+          ams_activeiTunesAccount = [v30 ams_activeiTunesAccount];
 
           v32 = sub_100355E58();
           v76[0] = _NSConcreteStackBlock;
@@ -826,7 +826,7 @@ LABEL_137:
           v76[2] = sub_100310A18;
           v76[3] = &unk_10051D1B0;
           v77 = v71;
-          sub_100359E70(v32, v31, v76);
+          sub_100359E70(v32, ams_activeiTunesAccount, v76);
 
           goto LABEL_90;
         }
@@ -849,7 +849,7 @@ LABEL_137:
 
       else
       {
-        if (a3 == 613)
+        if (handler == 613)
         {
           v45 = sub_1001E5E74();
           v46 = ASDLogHandleForCategory();
@@ -866,7 +866,7 @@ LABEL_137:
           goto LABEL_90;
         }
 
-        if (a3 != 615)
+        if (handler != 615)
         {
           goto LABEL_89;
         }
@@ -897,9 +897,9 @@ LABEL_137:
       goto LABEL_90;
     }
 
-    if (a3 <= 411)
+    if (handler <= 411)
     {
-      if (a3 == 100)
+      if (handler == 100)
       {
         v82[0] = _NSConcreteStackBlock;
         v82[1] = 3221225472;
@@ -911,7 +911,7 @@ LABEL_137:
         goto LABEL_90;
       }
 
-      if (a3 == 411)
+      if (handler == 411)
       {
         v105 = @"installs";
         v11 = sub_1002C0D84();
@@ -926,9 +926,9 @@ LABEL_137:
       goto LABEL_89;
     }
 
-    if (a3 != 412)
+    if (handler != 412)
     {
-      if (a3 == 600)
+      if (handler == 600)
       {
         v98[0] = @"restore";
         v24 = sub_1002856D4();
@@ -1008,11 +1008,11 @@ LABEL_137:
     (*(v71 + 2))(v71, v73);
   }
 
-  else if (a3 <= 820)
+  else if (handler <= 820)
   {
-    if (a3 <= 809)
+    if (handler <= 809)
     {
-      if (a3 == 805)
+      if (handler == 805)
       {
         v38 = objc_alloc_init(AppPurgeCoordinator);
         sub_1001ECFD8(v38);
@@ -1021,7 +1021,7 @@ LABEL_137:
         goto LABEL_90;
       }
 
-      if (a3 == 806)
+      if (handler == 806)
       {
         v14 = objc_alloc_init(AppPurgeCoordinator);
         v15 = sub_1001E7C04(v14, 1);
@@ -1033,7 +1033,7 @@ LABEL_137:
       goto LABEL_89;
     }
 
-    if (a3 == 810)
+    if (handler == 810)
     {
       v39 = objc_alloc_init(AppPurgeCoordinator);
       v40 = +[NSMutableDictionary dictionary];
@@ -1043,7 +1043,7 @@ LABEL_137:
       goto LABEL_90;
     }
 
-    if (a3 != 820)
+    if (handler != 820)
     {
       goto LABEL_89;
     }
@@ -1065,9 +1065,9 @@ LABEL_137:
     (*(v71 + 2))(v71, &__NSDictionary0__struct);
   }
 
-  else if (a3 <= 869)
+  else if (handler <= 869)
   {
-    if (a3 == 821)
+    if (handler == 821)
     {
       v67 = sub_10039EFBC([HandleInvalidReceiptTask alloc], @"com.shazam.Shazam");
       v68 = sub_100284B90();
@@ -1083,7 +1083,7 @@ LABEL_137:
 
     else
     {
-      if (a3 != 860)
+      if (handler != 860)
       {
         goto LABEL_89;
       }
@@ -1127,7 +1127,7 @@ LABEL_137:
 
   else
   {
-    switch(a3)
+    switch(handler)
     {
       case 870:
         v63 = ASDLogHandleForCategory();
@@ -1213,14 +1213,14 @@ LABEL_89:
 LABEL_90:
 }
 
-- (void)_handlePingMessage:(id)a3 fromDevice:(id)a4
+- (void)_handlePingMessage:(id)message fromDevice:(id)device
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  deviceCopy = device;
   v8 = [XDCPingMessage alloc];
-  if (v5)
+  if (messageCopy)
   {
-    Property = objc_getProperty(v5, v7, 16, 1);
+    Property = objc_getProperty(messageCopy, v7, 16, 1);
   }
 
   else
@@ -1248,7 +1248,7 @@ LABEL_90:
     v21 = 138543618;
     v22 = v14;
     v23 = 2114;
-    v24 = v6;
+    v24 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ >> RECEIVED PING FROM %{public}@", &v21, 0x16u);
   }
 
@@ -1266,12 +1266,12 @@ LABEL_90:
   v17 = v16;
   sub_100268B54(v15, v17);
 
-  v18 = sub_100342264(v5, v15, 1);
+  v18 = sub_100342264(messageCopy, v15, 1);
   v19 = sub_1002EB36C();
   v20 = v19;
   if (v19)
   {
-    sub_1002EB834(v19, v18, v6, 0, 0);
+    sub_1002EB834(v19, v18, deviceCopy, 0, 0);
   }
 }
 

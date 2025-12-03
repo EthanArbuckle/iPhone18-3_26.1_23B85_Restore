@@ -1,57 +1,57 @@
 @interface IMSPIAttachment
-- (IMSPIAttachment)initWithGuid:(id)a3 fileUrl:(id)a4 transferState:(int64_t)a5 uti:(id)a6 isSticker:(BOOL)a7 isOutgoing:(BOOL)a8 stickerUserInfo:(id)a9 attributionInfo:(id)a10 creationDate:(id)a11 adaptiveImageGlyphContentIdentifier:(id)a12 adaptiveImageGlyphContentDescription:(id)a13;
+- (IMSPIAttachment)initWithGuid:(id)guid fileUrl:(id)url transferState:(int64_t)state uti:(id)uti isSticker:(BOOL)sticker isOutgoing:(BOOL)outgoing stickerUserInfo:(id)info attributionInfo:(id)self0 creationDate:(id)self1 adaptiveImageGlyphContentIdentifier:(id)self2 adaptiveImageGlyphContentDescription:(id)self3;
 - (id)description;
 @end
 
 @implementation IMSPIAttachment
 
-- (IMSPIAttachment)initWithGuid:(id)a3 fileUrl:(id)a4 transferState:(int64_t)a5 uti:(id)a6 isSticker:(BOOL)a7 isOutgoing:(BOOL)a8 stickerUserInfo:(id)a9 attributionInfo:(id)a10 creationDate:(id)a11 adaptiveImageGlyphContentIdentifier:(id)a12 adaptiveImageGlyphContentDescription:(id)a13
+- (IMSPIAttachment)initWithGuid:(id)guid fileUrl:(id)url transferState:(int64_t)state uti:(id)uti isSticker:(BOOL)sticker isOutgoing:(BOOL)outgoing stickerUserInfo:(id)info attributionInfo:(id)self0 creationDate:(id)self1 adaptiveImageGlyphContentIdentifier:(id)self2 adaptiveImageGlyphContentDescription:(id)self3
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a6;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
+  guidCopy = guid;
+  urlCopy = url;
+  utiCopy = uti;
+  infoCopy = info;
+  attributionInfoCopy = attributionInfo;
+  dateCopy = date;
+  identifierCopy = identifier;
+  descriptionCopy = description;
   v61.receiver = self;
   v61.super_class = IMSPIAttachment;
   v27 = [(IMSPIAttachment *)&v61 init];
   if (v27)
   {
-    v28 = objc_msgSend_copy(v17, v25, v26);
+    v28 = objc_msgSend_copy(guidCopy, v25, v26);
     guid = v27->_guid;
     v27->_guid = v28;
 
-    v32 = objc_msgSend_copy(v18, v30, v31);
+    v32 = objc_msgSend_copy(urlCopy, v30, v31);
     fileUrl = v27->_fileUrl;
     v27->_fileUrl = v32;
 
-    v27->_fileTransferState = a5;
-    v36 = objc_msgSend_copy(v19, v34, v35);
+    v27->_fileTransferState = state;
+    v36 = objc_msgSend_copy(utiCopy, v34, v35);
     uti = v27->_uti;
     v27->_uti = v36;
 
-    v27->_isSticker = a7;
-    v27->_isOutgoing = a8;
-    v40 = objc_msgSend_copy(v20, v38, v39);
+    v27->_isSticker = sticker;
+    v27->_isOutgoing = outgoing;
+    v40 = objc_msgSend_copy(infoCopy, v38, v39);
     stickerUserInfo = v27->_stickerUserInfo;
     v27->_stickerUserInfo = v40;
 
-    v44 = objc_msgSend_copy(v21, v42, v43);
+    v44 = objc_msgSend_copy(attributionInfoCopy, v42, v43);
     attributionInfo = v27->_attributionInfo;
     v27->_attributionInfo = v44;
 
-    v48 = objc_msgSend_copy(v22, v46, v47);
+    v48 = objc_msgSend_copy(dateCopy, v46, v47);
     creationDate = v27->_creationDate;
     v27->_creationDate = v48;
 
-    v52 = objc_msgSend_copy(v23, v50, v51);
+    v52 = objc_msgSend_copy(identifierCopy, v50, v51);
     adaptiveImageGlyphContentIdentifier = v27->_adaptiveImageGlyphContentIdentifier;
     v27->_adaptiveImageGlyphContentIdentifier = v52;
 
-    v56 = objc_msgSend_copy(v24, v54, v55);
+    v56 = objc_msgSend_copy(descriptionCopy, v54, v55);
     adaptiveImageGlyphContentDescription = v27->_adaptiveImageGlyphContentDescription;
     v27->_adaptiveImageGlyphContentDescription = v56;
   }

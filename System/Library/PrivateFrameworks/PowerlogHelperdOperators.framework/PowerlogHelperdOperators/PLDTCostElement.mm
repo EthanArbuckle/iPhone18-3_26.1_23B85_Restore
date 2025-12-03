@@ -1,9 +1,9 @@
 @interface PLDTCostElement
 + (id)getCostElementInstance;
 - (PLDTCostElement)init;
-- (PLDTCostElement)initWithTime:(id)a3;
-- (id)getCostUptoTime:(id)a3;
-- (void)addEvent:(double)a3 atTime:(id)a4;
+- (PLDTCostElement)initWithTime:(id)time;
+- (id)getCostUptoTime:(id)time;
+- (void)addEvent:(double)event atTime:(id)time;
 @end
 
 @implementation PLDTCostElement
@@ -43,17 +43,17 @@ uint64_t __41__PLDTCostElement_getCostElementInstance__block_invoke()
   return v2;
 }
 
-- (PLDTCostElement)initWithTime:(id)a3
+- (PLDTCostElement)initWithTime:(id)time
 {
-  v5 = a3;
+  timeCopy = time;
   v11.receiver = self;
   v11.super_class = PLDTCostElement;
   v6 = [(PLDTCostElement *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_startDate, a3);
-    objc_storeStrong(&v7->_costReturnedTillDate, a3);
+    objc_storeStrong(&v6->_startDate, time);
+    objc_storeStrong(&v7->_costReturnedTillDate, time);
     v7->_costAggregated = 0.0;
     v8 = objc_opt_new();
     v9 = _trackedProcesses;
@@ -63,26 +63,26 @@ uint64_t __41__PLDTCostElement_getCostElementInstance__block_invoke()
   return v7;
 }
 
-- (void)addEvent:(double)a3 atTime:(id)a4
+- (void)addEvent:(double)event atTime:(id)time
 {
-  v7 = a4;
+  timeCopy = time;
   objc_sync_enter(@"___Sync___");
   [(PLDTCostElement *)self costAggregated];
-  [(PLDTCostElement *)self setCostAggregated:v6 + a3];
-  if (a3 > 0.0)
+  [(PLDTCostElement *)self setCostAggregated:v6 + event];
+  if (event > 0.0)
   {
-    [(PLDTCostElement *)self setLastOverheadStart:v7];
+    [(PLDTCostElement *)self setLastOverheadStart:timeCopy];
   }
 
   objc_sync_exit(@"___Sync___");
 }
 
-- (id)getCostUptoTime:(id)a3
+- (id)getCostUptoTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v5 = objc_opt_new();
-  v6 = [(PLDTCostElement *)self costReturnedTillDate];
-  [v4 timeIntervalSinceDate:v6];
+  costReturnedTillDate = [(PLDTCostElement *)self costReturnedTillDate];
+  [timeCopy timeIntervalSinceDate:costReturnedTillDate];
   v8 = v7;
 
   [v5 setObject:&unk_287146420 forKeyedSubscript:@"cost"];
@@ -101,8 +101,8 @@ uint64_t __41__PLDTCostElement_getCostElementInstance__block_invoke()
       }
     }
 
-    v12 = [(PLDTCostElement *)self lastOverheadStart];
-    [v4 timeIntervalSinceDate:v12];
+    lastOverheadStart = [(PLDTCostElement *)self lastOverheadStart];
+    [timeCopy timeIntervalSinceDate:lastOverheadStart];
     v14 = v13;
 
     if (v14 < 5.0)
@@ -114,7 +114,7 @@ uint64_t __41__PLDTCostElement_getCostElementInstance__block_invoke()
     objc_sync_exit(@"___Sync___");
   }
 
-  [(PLDTCostElement *)self setCostReturnedTillDate:v4];
+  [(PLDTCostElement *)self setCostReturnedTillDate:timeCopy];
 
   return v5;
 }

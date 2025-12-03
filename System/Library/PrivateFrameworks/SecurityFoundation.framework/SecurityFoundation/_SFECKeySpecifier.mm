@@ -1,13 +1,13 @@
 @interface _SFECKeySpecifier
-- (_SFECKeySpecifier)initWithCoder:(id)a3;
-- (_SFECKeySpecifier)initWithCurve:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_SFECKeySpecifier)initWithCoder:(id)coder;
+- (_SFECKeySpecifier)initWithCurve:(int64_t)curve;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation _SFECKeySpecifier
 
-- (_SFECKeySpecifier)initWithCurve:(int64_t)a3
+- (_SFECKeySpecifier)initWithCurve:(int64_t)curve
 {
   v8.receiver = self;
   v8.super_class = _SFECKeySpecifier;
@@ -18,22 +18,22 @@
     ecKeySpecifierInternal = v4->_ecKeySpecifierInternal;
     v4->_ecKeySpecifierInternal = v5;
 
-    *(v4->_ecKeySpecifierInternal + 1) = a3;
+    *(v4->_ecKeySpecifierInternal + 1) = curve;
   }
 
   return v4;
 }
 
-- (_SFECKeySpecifier)initWithCoder:(id)a3
+- (_SFECKeySpecifier)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _SFECKeySpecifier;
   return [(_SFECKeySpecifier *)&v4 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = *(self->_ecKeySpecifierInternal + 1);
 
   return [v4 initWithCurve:v5];

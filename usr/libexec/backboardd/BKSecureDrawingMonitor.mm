@@ -24,7 +24,7 @@
   if ([(BKSecureDrawingMonitor *)self isSecureModeEnabled])
   {
     v2 = +[CAWindowServer serverIfRunning];
-    v3 = [v2 secureModeViolations];
+    secureModeViolations = [v2 secureModeViolations];
 
     v31 = 0;
     v32 = &v31;
@@ -44,7 +44,7 @@
     v28[3] = &unk_1000FBF40;
     v28[4] = &v31;
     v28[5] = v29;
-    [v3 enumerateObjectsUsingBlock:v28];
+    [secureModeViolations enumerateObjectsUsingBlock:v28];
     v22 = 0;
     v23 = &v22;
     v24 = 0x3032000000;
@@ -86,7 +86,7 @@
         v8 = v7;
         _Block_object_dispose(&v42, 8);
         v9 = objc_alloc_init(v7);
-        v10 = [v9 systemApplicationBundleIdentifier];
+        systemApplicationBundleIdentifier = [v9 systemApplicationBundleIdentifier];
         v42 = 0;
         v43 = &v42;
         v44 = 0x2020000000;
@@ -119,7 +119,7 @@
 
         v14 = *v11;
         v15 = v14;
-        if (v10)
+        if (systemApplicationBundleIdentifier)
         {
           if (v14)
           {

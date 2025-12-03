@@ -1,22 +1,22 @@
 @interface ARLightEstimate
-- (ARLightEstimate)initWithAmbientIntensity:(double)a3 temperature:(double)a4;
-- (ARLightEstimate)initWithCoder:(id)a3;
+- (ARLightEstimate)initWithAmbientIntensity:(double)intensity temperature:(double)temperature;
+- (ARLightEstimate)initWithCoder:(id)coder;
 - (NSData)sphericalHarmonicsCoefficients;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARLightEstimate
 
-- (ARLightEstimate)initWithAmbientIntensity:(double)a3 temperature:(double)a4
+- (ARLightEstimate)initWithAmbientIntensity:(double)intensity temperature:(double)temperature
 {
   v7.receiver = self;
   v7.super_class = ARLightEstimate;
   result = [(ARLightEstimate *)&v7 init];
   if (result)
   {
-    result->_ambientIntensity = a3;
-    result->_ambientColorTemperature = a4;
+    result->_ambientIntensity = intensity;
+    result->_ambientColorTemperature = temperature;
   }
 
   return result;
@@ -47,29 +47,29 @@
   return v6;
 }
 
-- (ARLightEstimate)initWithCoder:(id)a3
+- (ARLightEstimate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ARLightEstimate;
   v5 = [(ARLightEstimate *)&v9 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"ambientIntensity"];
+    [coderCopy decodeDoubleForKey:@"ambientIntensity"];
     v5->_ambientIntensity = v6;
-    [v4 decodeDoubleForKey:@"ambientColorTemperature"];
+    [coderCopy decodeDoubleForKey:@"ambientColorTemperature"];
     v5->_ambientColorTemperature = v7;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   ambientIntensity = self->_ambientIntensity;
-  v5 = a3;
-  [v5 encodeDouble:@"ambientIntensity" forKey:ambientIntensity];
-  [v5 encodeDouble:@"ambientColorTemperature" forKey:self->_ambientColorTemperature];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"ambientIntensity" forKey:ambientIntensity];
+  [coderCopy encodeDouble:@"ambientColorTemperature" forKey:self->_ambientColorTemperature];
 }
 
 @end

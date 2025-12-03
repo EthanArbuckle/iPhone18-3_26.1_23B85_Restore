@@ -5,7 +5,7 @@
 - (BOOL)isExpensiveOrCellular;
 - (int64_t)interfaceType;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation NetworkMonitor
@@ -116,25 +116,25 @@
   return interfaceType;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v24 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_pathEvaluator == v9 && [v24 isEqualToString:@"path"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (self->_pathEvaluator == objectCopy && [pathCopy isEqualToString:@"path"])
   {
-    v11 = [v10 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v11 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
     if (v11)
     {
       os_unfair_lock_lock(&self->_lock);
-      v12 = [(NWPathEvaluator *)self->_pathEvaluator path];
+      path = [(NWPathEvaluator *)self->_pathEvaluator path];
       v13 = sub_100227F48(self);
-      if (([v12 status] | 2) == 3)
+      if (([path status] | 2) == 3)
       {
         self->_connected = 1;
-        self->_expensive = [v12 isExpensive];
-        self->_constrained = [v12 isConstrained];
-        v14 = sub_1002B2260(v12);
+        self->_expensive = [path isExpensive];
+        self->_constrained = [path isConstrained];
+        v14 = sub_1002B2260(path);
       }
 
       else
@@ -161,13 +161,13 @@
             if (interfaceType >= 5)
             {
               v23 = self->_constrained;
-              v22 = [[NSString alloc] initWithFormat:@"unknown (%ld)", interfaceType];
+              interfaceType = [[NSString alloc] initWithFormat:@"unknown (%ld)", interfaceType];
               constrained = v23;
             }
 
             else
             {
-              v22 = off_10051DDF8[interfaceType];
+              interfaceType = off_10051DDF8[interfaceType];
             }
 
             *buf = 67109634;
@@ -175,7 +175,7 @@
             v27 = 1024;
             v28 = constrained;
             v29 = 2114;
-            v30 = v22;
+            v30 = interfaceType;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[Network] Network available (expensive = %{BOOL}d, constrained = %{BOOL}d, interface = %{public}@)", buf, 0x18u);
           }
         }

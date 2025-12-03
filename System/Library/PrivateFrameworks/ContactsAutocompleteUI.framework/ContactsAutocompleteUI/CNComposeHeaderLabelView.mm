@@ -1,6 +1,6 @@
 @interface CNComposeHeaderLabelView
 - (CGPoint)baselinePoint;
-- (CNComposeHeaderLabelView)initWithFrame:(CGRect)a3;
+- (CNComposeHeaderLabelView)initWithFrame:(CGRect)frame;
 - (void)_updateTextColor;
 - (void)tintColorDidChange;
 @end
@@ -9,15 +9,15 @@
 
 - (void)_updateTextColor
 {
-  v3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(CNComposeHeaderLabelView *)self setTextColor:v3];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(CNComposeHeaderLabelView *)self setTextColor:secondaryLabelColor];
 }
 
-- (CNComposeHeaderLabelView)initWithFrame:(CGRect)a3
+- (CNComposeHeaderLabelView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CNComposeHeaderLabelView;
-  v3 = [(CNComposeHeaderLabelView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNComposeHeaderLabelView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[CNComposeHeaderView defaultFont];

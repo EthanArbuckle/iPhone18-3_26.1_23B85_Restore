@@ -4,13 +4,13 @@
 - (id)_openCameraActionIdentifier;
 - (uint64_t)trackPressDownForLatencyMeasurement:(uint64_t)result;
 - (void)_logSignificantTimeChanged;
-- (void)_sendEventToPowerLog:(id)a3 payload:(id)a4;
-- (void)trackInteractionWithType:(void *)a3 forAction:(void *)a4 suppressionStatus:;
-- (void)trackPerformedAction:(double)a3 executionTime:;
-- (void)trackPocketStateQueryWithExecutionTime:(double)a3 error:;
-- (void)trackPressUpForLatencyMeasurement:(int)a3 cancelled:(int)a4 longPressTriggered:(void *)a5 selectedActionIdentifier:;
-- (void)trackSelectedActionChanged:(void *)a1;
-- (void)trackSuppressionStatusUpdate:(uint64_t)a1;
+- (void)_sendEventToPowerLog:(id)log payload:(id)payload;
+- (void)trackInteractionWithType:(void *)type forAction:(void *)action suppressionStatus:;
+- (void)trackPerformedAction:(double)action executionTime:;
+- (void)trackPocketStateQueryWithExecutionTime:(double)time error:;
+- (void)trackPressUpForLatencyMeasurement:(int)measurement cancelled:(int)cancelled longPressTriggered:(void *)triggered selectedActionIdentifier:;
+- (void)trackSelectedActionChanged:(void *)changed;
+- (void)trackSuppressionStatusUpdate:(uint64_t)update;
 @end
 
 @implementation SBSystemActionAnalyticsTracker
@@ -51,9 +51,9 @@ void __47__SBSystemActionAnalyticsTracker_sharedTracker__block_invoke(uint64_t a
     powerLogSendQueue = v2->_powerLogSendQueue;
     v2->_powerLogSendQueue = SerialWithQoS;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v6 = [MEMORY[0x277CCABD8] mainQueue];
-    v7 = [v5 addObserverForName:@"SBSignificantTimeChangedNotification" object:0 queue:v6 usingBlock:&__block_literal_global_319];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+    v7 = [defaultCenter addObserverForName:@"SBSignificantTimeChangedNotification" object:0 queue:mainQueue usingBlock:&__block_literal_global_319];
   }
 
   return v2;
@@ -65,23 +65,23 @@ void __38__SBSystemActionAnalyticsTracker_init__block_invoke()
   [v0 _logSignificantTimeChanged];
 }
 
-- (void)trackInteractionWithType:(void *)a3 forAction:(void *)a4 suppressionStatus:
+- (void)trackInteractionWithType:(void *)type forAction:(void *)action suppressionStatus:
 {
-  v21 = a3;
-  v6 = a4;
-  if (a1)
+  typeCopy = type;
+  actionCopy = action;
+  if (self)
   {
-    if (!v21)
+    if (!typeCopy)
     {
       [SBSystemActionAnalyticsTracker trackInteractionWithType:? forAction:? suppressionStatus:?];
     }
 
-    v7 = [v21 analyticsData];
-    v8 = v7;
+    analyticsData = [typeCopy analyticsData];
+    v8 = analyticsData;
     v10 = v9;
-    if (v7)
+    if (analyticsData)
     {
-      v11 = v7;
+      v11 = analyticsData;
     }
 
     else
@@ -89,7 +89,7 @@ void __38__SBSystemActionAnalyticsTracker_init__block_invoke()
       v11 = @"null";
     }
 
-    objc_storeStrong((a1 + 16), v11);
+    objc_storeStrong((self + 16), v11);
     if (v10)
     {
       v12 = v10;
@@ -100,45 +100,45 @@ void __38__SBSystemActionAnalyticsTracker_init__block_invoke()
       v12 = @"null";
     }
 
-    objc_storeStrong((a1 + 24), v12);
+    objc_storeStrong((self + 24), v12);
     v13 = [MEMORY[0x277CBEAA8] now];
-    v14 = *(a1 + 32);
-    *(a1 + 32) = v13;
+    v14 = *(self + 32);
+    *(self + 32) = v13;
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v16 = NSStringFromSBSAnalyticsActionButtonInteractionType();
-    [v15 setObject:v16 forKeyedSubscript:@"type"];
+    [dictionary setObject:v16 forKeyedSubscript:@"type"];
 
-    [v15 setObject:*(a1 + 16) forKeyedSubscript:@"action"];
-    [v15 setObject:*(a1 + 24) forKeyedSubscript:@"param_value"];
-    v17 = [v15 copy];
+    [dictionary setObject:*(self + 16) forKeyedSubscript:@"action"];
+    [dictionary setObject:*(self + 24) forKeyedSubscript:@"param_value"];
+    v17 = [dictionary copy];
     v18 = NSStringFromAnalyticsEventType();
-    [a1 _sendEventToPowerLog:v18 payload:v17];
+    [self _sendEventToPowerLog:v18 payload:v17];
 
-    v19 = [(SBHomeScreenConfigurationServer *)v6 listener];
-    SBAddSuppressionMetricsIntoEventPayload(v15, v19, 0);
+    listener = [(SBHomeScreenConfigurationServer *)actionCopy listener];
+    SBAddSuppressionMetricsIntoEventPayload(dictionary, listener, 0);
 
-    v20 = [MEMORY[0x277D65DD0] sharedInstance];
-    [v20 emitEvent:61 withPayload:v15];
+    mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+    [mEMORY[0x277D65DD0] emitEvent:61 withPayload:dictionary];
   }
 }
 
-- (void)trackPerformedAction:(double)a3 executionTime:
+- (void)trackPerformedAction:(double)action executionTime:
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    v7 = [v5 analyticsData];
+    analyticsData = [v5 analyticsData];
     v9 = v8;
-    v10 = [MEMORY[0x277D65DD0] sharedInstance];
+    mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
     v11 = @"null";
     v15[0] = @"action";
     v15[1] = @"param_value";
-    if (v7)
+    if (analyticsData)
     {
-      v12 = v7;
+      v12 = analyticsData;
     }
 
     else
@@ -154,18 +154,18 @@ void __38__SBSystemActionAnalyticsTracker_init__block_invoke()
     v16[0] = v12;
     v16[1] = v11;
     v15[2] = @"execution_time";
-    v13 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v13 = [MEMORY[0x277CCABB0] numberWithDouble:action];
     v16[2] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
-    [v10 emitEvent:65 withPayload:v14];
+    [mEMORY[0x277D65DD0] emitEvent:65 withPayload:v14];
   }
 }
 
-- (void)trackSuppressionStatusUpdate:(uint64_t)a1
+- (void)trackSuppressionStatusUpdate:(uint64_t)update
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (update)
   {
     if (!v3)
     {
@@ -173,27 +173,27 @@ void __38__SBSystemActionAnalyticsTracker_init__block_invoke()
     }
 
     v5 = v3;
-    [(SBSystemActionAnalyticsTracker *)a1 trackSuppressionStatusUpdate:v3];
+    [(SBSystemActionAnalyticsTracker *)update trackSuppressionStatusUpdate:v3];
     v4 = v5;
   }
 }
 
-- (void)trackSelectedActionChanged:(void *)a1
+- (void)trackSelectedActionChanged:(void *)changed
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (changed)
   {
-    v5 = [v3 analyticsData];
-    v7 = v5;
+    analyticsData = [v3 analyticsData];
+    v7 = analyticsData;
     v8 = v6;
     v9 = @"null";
     v14[0] = @"action";
     v14[1] = @"param_value";
-    if (v5)
+    if (analyticsData)
     {
-      v10 = v5;
+      v10 = analyticsData;
     }
 
     else
@@ -209,11 +209,11 @@ void __38__SBSystemActionAnalyticsTracker_init__block_invoke()
     v15[0] = v10;
     v15[1] = v9;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-    v12 = [MEMORY[0x277D65DD0] sharedInstance];
-    [v12 emitEvent:63 withPayload:v11];
+    mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+    [mEMORY[0x277D65DD0] emitEvent:63 withPayload:v11];
 
     v13 = NSStringFromAnalyticsEventType();
-    [a1 _sendEventToPowerLog:v13 payload:v11];
+    [changed _sendEventToPowerLog:v13 payload:v11];
   }
 }
 
@@ -246,13 +246,13 @@ id __122__SBSystemActionAnalyticsTracker_trackPressUpForLatencyMeasurement_cance
 - (void)_logSignificantTimeChanged
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v3 = [SBApp systemActionControl];
-  v4 = [(SBSystemActionControl *)v3 selectedActionAnalyticsData];
+  systemActionControl = [SBApp systemActionControl];
+  selectedActionAnalyticsData = [(SBSystemActionControl *)systemActionControl selectedActionAnalyticsData];
   v6 = v5;
 
-  if (v4)
+  if (selectedActionAnalyticsData)
   {
-    v7 = v4;
+    v7 = selectedActionAnalyticsData;
   }
 
   else
@@ -275,26 +275,26 @@ id __122__SBSystemActionAnalyticsTracker_trackPressUpForLatencyMeasurement_cance
   v13[0] = v7;
   v13[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  v10 = [MEMORY[0x277D65DD0] sharedInstance];
-  [v10 emitEvent:62 withPayload:v9];
+  mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+  [mEMORY[0x277D65DD0] emitEvent:62 withPayload:v9];
 
   v11 = NSStringFromAnalyticsEventType();
   [(SBSystemActionAnalyticsTracker *)self _sendEventToPowerLog:v11 payload:v9];
 }
 
-- (void)_sendEventToPowerLog:(id)a3 payload:(id)a4
+- (void)_sendEventToPowerLog:(id)log payload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  logCopy = log;
+  payloadCopy = payload;
   powerLogSendQueue = self->_powerLogSendQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __63__SBSystemActionAnalyticsTracker__sendEventToPowerLog_payload___block_invoke;
   v11[3] = &unk_2783A92D8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = logCopy;
+  v13 = payloadCopy;
+  v9 = payloadCopy;
+  v10 = logCopy;
   dispatch_async(powerLogSendQueue, v11);
 }
 
@@ -329,26 +329,26 @@ void __61__SBSystemActionAnalyticsTracker__openCameraActionIdentifier__block_inv
   _openCameraActionIdentifier___openCameraActionIdentifier = v0;
 }
 
-- (void)trackPocketStateQueryWithExecutionTime:(double)a3 error:
+- (void)trackPocketStateQueryWithExecutionTime:(double)time error:
 {
   v12 = a2;
-  if (a1)
+  if (self)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-    [v5 setObject:v6 forKeyedSubscript:@"execution_time"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v6 = [MEMORY[0x277CCABB0] numberWithDouble:time];
+    [dictionary setObject:v6 forKeyedSubscript:@"execution_time"];
 
     if (v12)
     {
       v7 = MEMORY[0x277CCACA8];
-      v8 = [v12 domain];
+      domain = [v12 domain];
       v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v12, "code")}];
-      v10 = [v7 stringWithFormat:@"%@: %@", v8, v9];
-      [v5 setObject:v10 forKeyedSubscript:@"error"];
+      v10 = [v7 stringWithFormat:@"%@: %@", domain, v9];
+      [dictionary setObject:v10 forKeyedSubscript:@"error"];
     }
 
-    v11 = [MEMORY[0x277D65DD0] sharedInstance];
-    [v11 emitEvent:66 withPayload:v5];
+    mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+    [mEMORY[0x277D65DD0] emitEvent:66 withPayload:dictionary];
   }
 }
 
@@ -365,21 +365,21 @@ void __61__SBSystemActionAnalyticsTracker__openCameraActionIdentifier__block_inv
   return result;
 }
 
-- (void)trackPressUpForLatencyMeasurement:(int)a3 cancelled:(int)a4 longPressTriggered:(void *)a5 selectedActionIdentifier:
+- (void)trackPressUpForLatencyMeasurement:(int)measurement cancelled:(int)cancelled longPressTriggered:(void *)triggered selectedActionIdentifier:
 {
   v33 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a5;
-  if (a1 && (_os_feature_enabled_impl() & 1) == 0)
+  triggeredCopy = triggered;
+  if (self && (_os_feature_enabled_impl() & 1) == 0)
   {
     BSAbsoluteMachTimeNow();
     v12 = v11;
-    v13 = a1[6];
-    v14 = a1 + 5;
-    v15 = v13 - a1[5];
-    v16 = [(SBCameraActivationManager *)v9 workspace];
-    v17 = [a1 _openCameraActionIdentifier];
-    v18 = [v10 containsString:v17];
+    v13 = self[6];
+    v14 = self + 5;
+    v15 = v13 - self[5];
+    workspace = [(SBCameraActivationManager *)v9 workspace];
+    _openCameraActionIdentifier = [self _openCameraActionIdentifier];
+    v18 = [triggeredCopy containsString:_openCameraActionIdentifier];
 
     if (v15 > 0.0)
     {
@@ -393,11 +393,11 @@ void __61__SBSystemActionAnalyticsTracker__openCameraActionIdentifier__block_inv
         v23 = 2048;
         v24 = v19;
         v25 = 1024;
-        v26 = a3;
+        measurementCopy = measurement;
         v27 = 2048;
-        v28 = v16;
+        v28 = workspace;
         v29 = 1024;
-        v30 = a4;
+        cancelledCopy = cancelled;
         v31 = 1024;
         v32 = v18;
         _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "Action Button press event delivery latency analytics: %f, duration: %f, cancelled: %{BOOL}d, suppression state: %lu, longPressTriggered: %{BOOL}d, cameraActionSelected: %{BOOL}d", buf, 0x32u);

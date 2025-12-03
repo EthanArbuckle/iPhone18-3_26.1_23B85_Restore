@@ -8,7 +8,7 @@
 - (id)nu_layerRecursiveDescription
 {
   v2 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  [a1 _nu_recursiveDescriptionWithLevel:0 result:v2];
+  [self _nu_recursiveDescriptionWithLevel:0 result:v2];
 
   return v2;
 }
@@ -30,7 +30,7 @@
   }
 
   memset(&v31, 0, sizeof(v31));
-  [a1 transform];
+  [self transform];
   v30 = v31;
   if (CATransform3DIsIdentity(&v30))
   {
@@ -43,7 +43,7 @@
   }
 
   memset(&v30, 0, sizeof(v30));
-  [a1 sublayerTransform];
+  [self sublayerTransform];
   v29 = v30;
   v24 = v8;
   if (CATransform3DIsIdentity(&v29))
@@ -58,11 +58,11 @@
 
   v10 = objc_opt_class();
   v22 = NSStringFromClass(v10);
-  [a1 frame];
+  [self frame];
   v11 = NSStringFromCGRect(v36);
-  [a1 bounds];
+  [self bounds];
   v12 = NSStringFromCGRect(v37);
-  if ([a1 isHidden])
+  if ([self isHidden])
   {
     v13 = @"YES";
   }
@@ -72,20 +72,20 @@
     v13 = @"NO";
   }
 
-  [a1 position];
+  [self position];
   v14 = NSStringFromCGPoint(v34);
-  [a1 anchorPoint];
+  [self anchorPoint];
   v15 = NSStringFromCGPoint(v35);
-  v16 = [a1 preferredDynamicRange];
+  preferredDynamicRange = [self preferredDynamicRange];
   v23 = v9;
-  [v6 appendFormat:@"<%p %@> frame = %@, bounds = %@%@%@, isHidden = %@, position = %@, anchor = %@, edr = %@\n", a1, v22, v11, v12, v24, v9, v13, v14, v15, v16];
+  [v6 appendFormat:@"<%p %@> frame = %@, bounds = %@%@%@, isHidden = %@, position = %@, anchor = %@, edr = %@\n", self, v22, v11, v12, v24, v9, v13, v14, v15, preferredDynamicRange];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v17 = [a1 sublayers];
-  v18 = [v17 countByEnumeratingWithState:&v25 objects:v32 count:16];
+  sublayers = [self sublayers];
+  v18 = [sublayers countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v18)
   {
     v19 = v18;
@@ -96,13 +96,13 @@
       {
         if (*v26 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(sublayers);
         }
 
         [*(*(&v25 + 1) + 8 * i) _nu_recursiveDescriptionWithLevel:a3 + 1 result:v6];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v25 objects:v32 count:16];
+      v19 = [sublayers countByEnumeratingWithState:&v25 objects:v32 count:16];
     }
 
     while (v19);

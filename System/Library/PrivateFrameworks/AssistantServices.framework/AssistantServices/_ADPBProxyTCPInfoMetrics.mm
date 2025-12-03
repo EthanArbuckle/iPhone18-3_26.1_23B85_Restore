@@ -1,46 +1,46 @@
 @interface _ADPBProxyTCPInfoMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRttBest:(BOOL)a3;
-- (void)setHasRttCurrent:(BOOL)a3;
-- (void)setHasRttSmoothed:(BOOL)a3;
-- (void)setHasRttVariance:(BOOL)a3;
-- (void)setHasRxDuplicateBytes:(BOOL)a3;
-- (void)setHasRxOooBytes:(BOOL)a3;
-- (void)setHasRxPackets:(BOOL)a3;
-- (void)setHasSndBandwidth:(BOOL)a3;
-- (void)setHasSynRetransmits:(BOOL)a3;
-- (void)setHasTfoSynDataAcked:(BOOL)a3;
-- (void)setHasTxBytes:(BOOL)a3;
-- (void)setHasTxPackets:(BOOL)a3;
-- (void)setHasTxRetransmitBytes:(BOOL)a3;
-- (void)setHasTxUnacked:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRttBest:(BOOL)best;
+- (void)setHasRttCurrent:(BOOL)current;
+- (void)setHasRttSmoothed:(BOOL)smoothed;
+- (void)setHasRttVariance:(BOOL)variance;
+- (void)setHasRxDuplicateBytes:(BOOL)bytes;
+- (void)setHasRxOooBytes:(BOOL)bytes;
+- (void)setHasRxPackets:(BOOL)packets;
+- (void)setHasSndBandwidth:(BOOL)bandwidth;
+- (void)setHasSynRetransmits:(BOOL)retransmits;
+- (void)setHasTfoSynDataAcked:(BOOL)acked;
+- (void)setHasTxBytes:(BOOL)bytes;
+- (void)setHasTxPackets:(BOOL)packets;
+- (void)setHasTxRetransmitBytes:(BOOL)bytes;
+- (void)setHasTxUnacked:(BOOL)unacked;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ADPBProxyTCPInfoMetrics
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 10))
+  fromCopy = from;
+  if (*(fromCopy + 10))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(_ADPBProxyTCPInfoMetrics *)self setInterfaceName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x400) != 0)
   {
-    self->_rttCurrent = *(v4 + 23);
+    self->_rttCurrent = *(fromCopy + 23);
     *&self->_has |= 0x400u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
     if ((v5 & 0x800) == 0)
     {
 LABEL_5:
@@ -53,14 +53,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 56) & 0x800) == 0)
+  else if ((*(fromCopy + 56) & 0x800) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_rttSmoothed = *(v4 + 24);
+  self->_rttSmoothed = *(fromCopy + 24);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_6:
@@ -73,9 +73,9 @@ LABEL_6:
   }
 
 LABEL_24:
-  self->_rttVariance = *(v4 + 25);
+  self->_rttVariance = *(fromCopy + 25);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x200) == 0)
   {
 LABEL_7:
@@ -88,9 +88,9 @@ LABEL_7:
   }
 
 LABEL_25:
-  self->_rttBest = *(v4 + 22);
+  self->_rttBest = *(fromCopy + 22);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x40) == 0)
   {
 LABEL_8:
@@ -103,9 +103,9 @@ LABEL_8:
   }
 
 LABEL_26:
-  self->_txPackets = *(v4 + 7);
+  self->_txPackets = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x20) == 0)
   {
 LABEL_9:
@@ -118,9 +118,9 @@ LABEL_9:
   }
 
 LABEL_27:
-  self->_txBytes = *(v4 + 6);
+  self->_txBytes = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x80) == 0)
   {
 LABEL_10:
@@ -133,9 +133,9 @@ LABEL_10:
   }
 
 LABEL_28:
-  self->_txRetransmitBytes = *(v4 + 8);
+  self->_txRetransmitBytes = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x100) == 0)
   {
 LABEL_11:
@@ -148,9 +148,9 @@ LABEL_11:
   }
 
 LABEL_29:
-  self->_txUnacked = *(v4 + 9);
+  self->_txUnacked = *(fromCopy + 9);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 8) == 0)
   {
 LABEL_12:
@@ -163,9 +163,9 @@ LABEL_12:
   }
 
 LABEL_30:
-  self->_rxPackets = *(v4 + 4);
+  self->_rxPackets = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 1) == 0)
   {
 LABEL_13:
@@ -178,9 +178,9 @@ LABEL_13:
   }
 
 LABEL_31:
-  self->_rxBytes = *(v4 + 1);
+  self->_rxBytes = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 2) == 0)
   {
 LABEL_14:
@@ -193,9 +193,9 @@ LABEL_14:
   }
 
 LABEL_32:
-  self->_rxDuplicateBytes = *(v4 + 2);
+  self->_rxDuplicateBytes = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 4) == 0)
   {
 LABEL_15:
@@ -208,9 +208,9 @@ LABEL_15:
   }
 
 LABEL_33:
-  self->_rxOooBytes = *(v4 + 3);
+  self->_rxOooBytes = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x10) == 0)
   {
 LABEL_16:
@@ -223,9 +223,9 @@ LABEL_16:
   }
 
 LABEL_34:
-  self->_sndBandwidth = *(v4 + 5);
+  self->_sndBandwidth = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_17:
@@ -238,12 +238,12 @@ LABEL_17:
   }
 
 LABEL_35:
-  self->_synRetransmits = *(v4 + 26);
+  self->_synRetransmits = *(fromCopy + 26);
   *&self->_has |= 0x2000u;
-  if ((*(v4 + 56) & 0x4000) != 0)
+  if ((*(fromCopy + 56) & 0x4000) != 0)
   {
 LABEL_18:
-    self->_tfoSynDataAcked = *(v4 + 27);
+    self->_tfoSynDataAcked = *(fromCopy + 27);
     *&self->_has |= 0x4000u;
   }
 
@@ -460,16 +460,16 @@ LABEL_16:
   return v5 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_79;
   }
 
   interfaceName = self->_interfaceName;
-  if (interfaceName | *(v4 + 10))
+  if (interfaceName | *(equalCopy + 10))
   {
     if (![(NSString *)interfaceName isEqual:?])
     {
@@ -478,16 +478,16 @@ LABEL_16:
   }
 
   has = self->_has;
-  v7 = *(v4 + 56);
+  v7 = *(equalCopy + 56);
   if ((has & 0x400) != 0)
   {
-    if ((*(v4 + 56) & 0x400) == 0 || self->_rttCurrent != *(v4 + 23))
+    if ((*(equalCopy + 56) & 0x400) == 0 || self->_rttCurrent != *(equalCopy + 23))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 56) & 0x400) != 0)
+  else if ((*(equalCopy + 56) & 0x400) != 0)
   {
 LABEL_79:
     v8 = 0;
@@ -496,46 +496,46 @@ LABEL_79:
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 56) & 0x800) == 0 || self->_rttSmoothed != *(v4 + 24))
+    if ((*(equalCopy + 56) & 0x800) == 0 || self->_rttSmoothed != *(equalCopy + 24))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 56) & 0x800) != 0)
+  else if ((*(equalCopy + 56) & 0x800) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 56) & 0x1000) == 0 || self->_rttVariance != *(v4 + 25))
+    if ((*(equalCopy + 56) & 0x1000) == 0 || self->_rttVariance != *(equalCopy + 25))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 56) & 0x1000) != 0)
+  else if ((*(equalCopy + 56) & 0x1000) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 56) & 0x200) == 0 || self->_rttBest != *(v4 + 22))
+    if ((*(equalCopy + 56) & 0x200) == 0 || self->_rttBest != *(equalCopy + 22))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 56) & 0x200) != 0)
+  else if ((*(equalCopy + 56) & 0x200) != 0)
   {
     goto LABEL_79;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_txPackets != *(v4 + 7))
+    if ((v7 & 0x40) == 0 || self->_txPackets != *(equalCopy + 7))
     {
       goto LABEL_79;
     }
@@ -548,7 +548,7 @@ LABEL_79:
 
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_txBytes != *(v4 + 6))
+    if ((v7 & 0x20) == 0 || self->_txBytes != *(equalCopy + 6))
     {
       goto LABEL_79;
     }
@@ -561,7 +561,7 @@ LABEL_79:
 
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_txRetransmitBytes != *(v4 + 8))
+    if ((v7 & 0x80) == 0 || self->_txRetransmitBytes != *(equalCopy + 8))
     {
       goto LABEL_79;
     }
@@ -574,20 +574,20 @@ LABEL_79:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 56) & 0x100) == 0 || self->_txUnacked != *(v4 + 9))
+    if ((*(equalCopy + 56) & 0x100) == 0 || self->_txUnacked != *(equalCopy + 9))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 56) & 0x100) != 0)
+  else if ((*(equalCopy + 56) & 0x100) != 0)
   {
     goto LABEL_79;
   }
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_rxPackets != *(v4 + 4))
+    if ((v7 & 8) == 0 || self->_rxPackets != *(equalCopy + 4))
     {
       goto LABEL_79;
     }
@@ -600,7 +600,7 @@ LABEL_79:
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_rxBytes != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_rxBytes != *(equalCopy + 1))
     {
       goto LABEL_79;
     }
@@ -613,7 +613,7 @@ LABEL_79:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_rxDuplicateBytes != *(v4 + 2))
+    if ((v7 & 2) == 0 || self->_rxDuplicateBytes != *(equalCopy + 2))
     {
       goto LABEL_79;
     }
@@ -626,7 +626,7 @@ LABEL_79:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_rxOooBytes != *(v4 + 3))
+    if ((v7 & 4) == 0 || self->_rxOooBytes != *(equalCopy + 3))
     {
       goto LABEL_79;
     }
@@ -639,7 +639,7 @@ LABEL_79:
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_sndBandwidth != *(v4 + 5))
+    if ((v7 & 0x10) == 0 || self->_sndBandwidth != *(equalCopy + 5))
     {
       goto LABEL_79;
     }
@@ -652,20 +652,20 @@ LABEL_79:
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 56) & 0x2000) == 0 || self->_synRetransmits != *(v4 + 26))
+    if ((*(equalCopy + 56) & 0x2000) == 0 || self->_synRetransmits != *(equalCopy + 26))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 56) & 0x2000) != 0)
+  else if ((*(equalCopy + 56) & 0x2000) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 56) & 0x4000) == 0 || self->_tfoSynDataAcked != *(v4 + 27))
+    if ((*(equalCopy + 56) & 0x4000) == 0 || self->_tfoSynDataAcked != *(equalCopy + 27))
     {
       goto LABEL_79;
     }
@@ -683,10 +683,10 @@ LABEL_80:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_interfaceName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_interfaceName copyWithZone:zone];
   v7 = v5[10];
   v5[10] = v6;
 
@@ -905,21 +905,21 @@ LABEL_16:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_interfaceName)
   {
-    v6 = v4;
-    [v4 setInterfaceName:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setInterfaceName:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x400) != 0)
   {
-    *(v4 + 23) = self->_rttCurrent;
-    *(v4 + 56) |= 0x400u;
+    *(toCopy + 23) = self->_rttCurrent;
+    *(toCopy + 56) |= 0x400u;
     has = self->_has;
     if ((has & 0x800) == 0)
     {
@@ -938,8 +938,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 24) = self->_rttSmoothed;
-  *(v4 + 56) |= 0x800u;
+  *(toCopy + 24) = self->_rttSmoothed;
+  *(toCopy + 56) |= 0x800u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -953,8 +953,8 @@ LABEL_6:
   }
 
 LABEL_24:
-  *(v4 + 25) = self->_rttVariance;
-  *(v4 + 56) |= 0x1000u;
+  *(toCopy + 25) = self->_rttVariance;
+  *(toCopy + 56) |= 0x1000u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -968,8 +968,8 @@ LABEL_7:
   }
 
 LABEL_25:
-  *(v4 + 22) = self->_rttBest;
-  *(v4 + 56) |= 0x200u;
+  *(toCopy + 22) = self->_rttBest;
+  *(toCopy + 56) |= 0x200u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -983,8 +983,8 @@ LABEL_8:
   }
 
 LABEL_26:
-  *(v4 + 7) = self->_txPackets;
-  *(v4 + 56) |= 0x40u;
+  *(toCopy + 7) = self->_txPackets;
+  *(toCopy + 56) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -998,8 +998,8 @@ LABEL_9:
   }
 
 LABEL_27:
-  *(v4 + 6) = self->_txBytes;
-  *(v4 + 56) |= 0x20u;
+  *(toCopy + 6) = self->_txBytes;
+  *(toCopy + 56) |= 0x20u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -1013,8 +1013,8 @@ LABEL_10:
   }
 
 LABEL_28:
-  *(v4 + 8) = self->_txRetransmitBytes;
-  *(v4 + 56) |= 0x80u;
+  *(toCopy + 8) = self->_txRetransmitBytes;
+  *(toCopy + 56) |= 0x80u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -1028,8 +1028,8 @@ LABEL_11:
   }
 
 LABEL_29:
-  *(v4 + 9) = self->_txUnacked;
-  *(v4 + 56) |= 0x100u;
+  *(toCopy + 9) = self->_txUnacked;
+  *(toCopy + 56) |= 0x100u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -1043,8 +1043,8 @@ LABEL_12:
   }
 
 LABEL_30:
-  *(v4 + 4) = self->_rxPackets;
-  *(v4 + 56) |= 8u;
+  *(toCopy + 4) = self->_rxPackets;
+  *(toCopy + 56) |= 8u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -1058,8 +1058,8 @@ LABEL_13:
   }
 
 LABEL_31:
-  *(v4 + 1) = self->_rxBytes;
-  *(v4 + 56) |= 1u;
+  *(toCopy + 1) = self->_rxBytes;
+  *(toCopy + 56) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -1073,8 +1073,8 @@ LABEL_14:
   }
 
 LABEL_32:
-  *(v4 + 2) = self->_rxDuplicateBytes;
-  *(v4 + 56) |= 2u;
+  *(toCopy + 2) = self->_rxDuplicateBytes;
+  *(toCopy + 56) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -1088,8 +1088,8 @@ LABEL_15:
   }
 
 LABEL_33:
-  *(v4 + 3) = self->_rxOooBytes;
-  *(v4 + 56) |= 4u;
+  *(toCopy + 3) = self->_rxOooBytes;
+  *(toCopy + 56) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -1103,8 +1103,8 @@ LABEL_16:
   }
 
 LABEL_34:
-  *(v4 + 5) = self->_sndBandwidth;
-  *(v4 + 56) |= 0x10u;
+  *(toCopy + 5) = self->_sndBandwidth;
+  *(toCopy + 56) |= 0x10u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -1118,33 +1118,33 @@ LABEL_17:
   }
 
 LABEL_35:
-  *(v4 + 26) = self->_synRetransmits;
-  *(v4 + 56) |= 0x2000u;
+  *(toCopy + 26) = self->_synRetransmits;
+  *(toCopy + 56) |= 0x2000u;
   if ((*&self->_has & 0x4000) != 0)
   {
 LABEL_18:
-    *(v4 + 27) = self->_tfoSynDataAcked;
-    *(v4 + 56) |= 0x4000u;
+    *(toCopy + 27) = self->_tfoSynDataAcked;
+    *(toCopy + 56) |= 0x4000u;
   }
 
 LABEL_19:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_interfaceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x400) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 0x800) == 0)
     {
@@ -1164,7 +1164,7 @@ LABEL_5:
   }
 
   PBDataWriterWriteUint32Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -1179,7 +1179,7 @@ LABEL_6:
 
 LABEL_24:
   PBDataWriterWriteUint32Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -1194,7 +1194,7 @@ LABEL_7:
 
 LABEL_25:
   PBDataWriterWriteUint32Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -1209,7 +1209,7 @@ LABEL_8:
 
 LABEL_26:
   PBDataWriterWriteUint64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -1224,7 +1224,7 @@ LABEL_9:
 
 LABEL_27:
   PBDataWriterWriteUint64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -1239,7 +1239,7 @@ LABEL_10:
 
 LABEL_28:
   PBDataWriterWriteUint64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -1254,7 +1254,7 @@ LABEL_11:
 
 LABEL_29:
   PBDataWriterWriteUint64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -1269,7 +1269,7 @@ LABEL_12:
 
 LABEL_30:
   PBDataWriterWriteUint64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -1284,7 +1284,7 @@ LABEL_13:
 
 LABEL_31:
   PBDataWriterWriteUint64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -1299,7 +1299,7 @@ LABEL_14:
 
 LABEL_32:
   PBDataWriterWriteUint64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -1314,7 +1314,7 @@ LABEL_15:
 
 LABEL_33:
   PBDataWriterWriteUint64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -1329,7 +1329,7 @@ LABEL_16:
 
 LABEL_34:
   PBDataWriterWriteUint64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -1344,12 +1344,12 @@ LABEL_17:
 
 LABEL_35:
   PBDataWriterWriteUint32Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 0x4000) != 0)
   {
 LABEL_18:
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_19:
@@ -1601,15 +1601,15 @@ LABEL_19:
   v7.receiver = self;
   v7.super_class = _ADPBProxyTCPInfoMetrics;
   v3 = [(_ADPBProxyTCPInfoMetrics *)&v7 description];
-  v4 = [(_ADPBProxyTCPInfoMetrics *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_ADPBProxyTCPInfoMetrics *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasTfoSynDataAcked:(BOOL)a3
+- (void)setHasTfoSynDataAcked:(BOOL)acked
 {
-  if (a3)
+  if (acked)
   {
     v3 = 0x4000;
   }
@@ -1622,9 +1622,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasSynRetransmits:(BOOL)a3
+- (void)setHasSynRetransmits:(BOOL)retransmits
 {
-  if (a3)
+  if (retransmits)
   {
     v3 = 0x2000;
   }
@@ -1637,9 +1637,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasSndBandwidth:(BOOL)a3
+- (void)setHasSndBandwidth:(BOOL)bandwidth
 {
-  if (a3)
+  if (bandwidth)
   {
     v3 = 16;
   }
@@ -1652,9 +1652,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasRxOooBytes:(BOOL)a3
+- (void)setHasRxOooBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 4;
   }
@@ -1667,9 +1667,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasRxDuplicateBytes:(BOOL)a3
+- (void)setHasRxDuplicateBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 2;
   }
@@ -1682,9 +1682,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasRxPackets:(BOOL)a3
+- (void)setHasRxPackets:(BOOL)packets
 {
-  if (a3)
+  if (packets)
   {
     v3 = 8;
   }
@@ -1697,9 +1697,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasTxUnacked:(BOOL)a3
+- (void)setHasTxUnacked:(BOOL)unacked
 {
-  if (a3)
+  if (unacked)
   {
     v3 = 256;
   }
@@ -1712,9 +1712,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasTxRetransmitBytes:(BOOL)a3
+- (void)setHasTxRetransmitBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 128;
   }
@@ -1727,9 +1727,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasTxBytes:(BOOL)a3
+- (void)setHasTxBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 32;
   }
@@ -1742,9 +1742,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasTxPackets:(BOOL)a3
+- (void)setHasTxPackets:(BOOL)packets
 {
-  if (a3)
+  if (packets)
   {
     v3 = 64;
   }
@@ -1757,9 +1757,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasRttBest:(BOOL)a3
+- (void)setHasRttBest:(BOOL)best
 {
-  if (a3)
+  if (best)
   {
     v3 = 512;
   }
@@ -1772,9 +1772,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasRttVariance:(BOOL)a3
+- (void)setHasRttVariance:(BOOL)variance
 {
-  if (a3)
+  if (variance)
   {
     v3 = 4096;
   }
@@ -1787,9 +1787,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasRttSmoothed:(BOOL)a3
+- (void)setHasRttSmoothed:(BOOL)smoothed
 {
-  if (a3)
+  if (smoothed)
   {
     v3 = 2048;
   }
@@ -1802,9 +1802,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasRttCurrent:(BOOL)a3
+- (void)setHasRttCurrent:(BOOL)current
 {
-  if (a3)
+  if (current)
   {
     v3 = 1024;
   }

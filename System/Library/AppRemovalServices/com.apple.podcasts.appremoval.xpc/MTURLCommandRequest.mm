@@ -1,29 +1,29 @@
 @interface MTURLCommandRequest
-- (MTURLCommandRequest)initWithURLString:(id)a3;
-- (id)copyWithPlayReason:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_loadQueryParameterValuesFromString:(id)a3;
+- (MTURLCommandRequest)initWithURLString:(id)string;
+- (id)copyWithPlayReason:(unint64_t)reason;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_loadQueryParameterValuesFromString:(id)string;
 @end
 
 @implementation MTURLCommandRequest
 
-- (MTURLCommandRequest)initWithURLString:(id)a3
+- (MTURLCommandRequest)initWithURLString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = MTURLCommandRequest;
   v6 = [(MTURLCommandRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_urlString, a3);
-    [(MTURLCommandRequest *)v7 _loadQueryParameterValuesFromString:v5];
+    objc_storeStrong(&v6->_urlString, string);
+    [(MTURLCommandRequest *)v7 _loadQueryParameterValuesFromString:stringCopy];
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
@@ -68,22 +68,22 @@
   return v4;
 }
 
-- (id)copyWithPlayReason:(unint64_t)a3
+- (id)copyWithPlayReason:(unint64_t)reason
 {
   result = [(MTURLCommandRequest *)self copy];
-  *(result + 4) = a3;
+  *(result + 4) = reason;
   return result;
 }
 
-- (void)_loadQueryParameterValuesFromString:(id)a3
+- (void)_loadQueryParameterValuesFromString:(id)string
 {
-  v42 = a3;
-  v4 = [NSURL URLWithString:v42];
-  v5 = [v4 query];
-  v6 = [MTPlaybackIdentifierUtil __queryStringToQueryDictionary:v5];
+  stringCopy = string;
+  v4 = [NSURL URLWithString:stringCopy];
+  query = [v4 query];
+  v6 = [MTPlaybackIdentifierUtil __queryStringToQueryDictionary:query];
 
   v7 = +[MTPlaybackIdentifierUtil sharedInstance];
-  v8 = [v7 isSubscribeCommandURLString:v42];
+  v8 = [v7 isSubscribeCommandURLString:stringCopy];
 
   if (v8)
   {
@@ -93,7 +93,7 @@
   else
   {
     v10 = +[MTPlaybackIdentifierUtil sharedInstance];
-    v11 = [v10 isLocalSetPlaybackQueueURLString:v42];
+    v11 = [v10 isLocalSetPlaybackQueueURLString:stringCopy];
 
     if (v11)
     {
@@ -103,7 +103,7 @@
     else
     {
       v12 = +[MTPlaybackIdentifierUtil sharedInstance];
-      v13 = [v12 isUniversalPlaybackIdentifierURLString:v42];
+      v13 = [v12 isUniversalPlaybackIdentifierURLString:stringCopy];
 
       if (!v13)
       {
@@ -162,10 +162,10 @@ LABEL_8:
     v27 = self->_episodeUuid;
     self->_episodeUuid = v26;
 
-    [(MTURLCommandRequest *)self _lookupPodcastUuidIfNecessaryFromURLString:v42];
+    [(MTURLCommandRequest *)self _lookupPodcastUuidIfNecessaryFromURLString:stringCopy];
   }
 
-  [(MTURLCommandRequest *)self _lookupEpisodeUuidIfNecessaryFromURLString:v42];
+  [(MTURLCommandRequest *)self _lookupEpisodeUuidIfNecessaryFromURLString:stringCopy];
 LABEL_13:
   v32 = [v6 objectForKeyedSubscript:@"storeCollectionId"];
   podcastAdamId = self->_podcastAdamId;

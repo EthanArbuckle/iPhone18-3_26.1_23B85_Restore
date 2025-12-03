@@ -1,7 +1,7 @@
 @interface WLKAppInstaller
 + (id)defaultAppInstaller;
 - (WLKAppInstaller)init;
-- (void)installAppForInstallable:(id)a3 sceneIdentifier:(id)a4 offer:(id)a5 progressHandler:(id)a6 completion:(id)a7;
+- (void)installAppForInstallable:(id)installable sceneIdentifier:(id)identifier offer:(id)offer progressHandler:(id)handler completion:(id)completion;
 @end
 
 @implementation WLKAppInstaller
@@ -44,26 +44,26 @@ uint64_t __38__WLKAppInstaller_defaultAppInstaller__block_invoke()
   return v2;
 }
 
-- (void)installAppForInstallable:(id)a3 sceneIdentifier:(id)a4 offer:(id)a5 progressHandler:(id)a6 completion:(id)a7
+- (void)installAppForInstallable:(id)installable sceneIdentifier:(id)identifier offer:(id)offer progressHandler:(id)handler completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12)
+  installableCopy = installable;
+  identifierCopy = identifier;
+  offerCopy = offer;
+  handlerCopy = handler;
+  completionCopy = completion;
+  if (installableCopy)
   {
     installQueue = self->_installQueue;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __93__WLKAppInstaller_installAppForInstallable_sceneIdentifier_offer_progressHandler_completion___block_invoke;
     v18[3] = &unk_279E5FC30;
-    v19 = v12;
-    v20 = v14;
-    v21 = v13;
-    v22 = self;
-    v23 = v15;
-    v24 = v16;
+    v19 = installableCopy;
+    v20 = offerCopy;
+    v21 = identifierCopy;
+    selfCopy = self;
+    v23 = handlerCopy;
+    v24 = completionCopy;
     dispatch_async(installQueue, v18);
   }
 

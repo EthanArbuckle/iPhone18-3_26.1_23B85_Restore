@@ -1,16 +1,16 @@
 @interface EGStillImageInferenceMergingNode
-- (EGStillImageInferenceMergingNode)initWithName:(id)a3 stillImageSettings:(id)a4 resourceCoordinator:(id)a5;
+- (EGStillImageInferenceMergingNode)initWithName:(id)name stillImageSettings:(id)settings resourceCoordinator:(id)coordinator;
 - (void)dealloc;
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4;
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group;
 @end
 
 @implementation EGStillImageInferenceMergingNode
 
-- (EGStillImageInferenceMergingNode)initWithName:(id)a3 stillImageSettings:(id)a4 resourceCoordinator:(id)a5
+- (EGStillImageInferenceMergingNode)initWithName:(id)name stillImageSettings:(id)settings resourceCoordinator:(id)coordinator
 {
   v12.receiver = self;
   v12.super_class = EGStillImageInferenceMergingNode;
-  v7 = [(EGNode *)&v12 initWithName:a3];
+  v7 = [(EGNode *)&v12 initWithName:name];
   if (v7)
   {
     v8 = [[EGInputGroup alloc] initWithName:@"inputGroup"];
@@ -21,8 +21,8 @@
     v10 = [(EGOutput *)[EGStillImageOutput alloc] initWithName:@"sbuf"];
     v7->_sbufOutput = v10;
     [(EGNode *)v7 installOutput:v10];
-    v7->_resourceCoordinator = a5;
-    v7->_stillImageSettings = a4;
+    v7->_resourceCoordinator = coordinator;
+    v7->_stillImageSettings = settings;
   }
 
   return v7;
@@ -35,9 +35,9 @@
   [(EGQueueManagementNode *)&v3 dealloc];
 }
 
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group
 {
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](self->_sbufInput, "name", a3, a4)), "sampleBuffer"}];
+  v5 = [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](self->_sbufInput, "name", data, group)), "sampleBuffer"}];
   if (v5)
   {
     v6 = v5;

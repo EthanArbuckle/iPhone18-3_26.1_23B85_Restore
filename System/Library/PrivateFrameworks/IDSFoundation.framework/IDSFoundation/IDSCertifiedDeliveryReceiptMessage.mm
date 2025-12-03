@@ -1,57 +1,57 @@
 @interface IDSCertifiedDeliveryReceiptMessage
-- (IDSCertifiedDeliveryReceiptMessage)initWithCertifiedDeliveryContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (IDSCertifiedDeliveryReceiptMessage)initWithCertifiedDeliveryContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 @end
 
 @implementation IDSCertifiedDeliveryReceiptMessage
 
-- (IDSCertifiedDeliveryReceiptMessage)initWithCertifiedDeliveryContext:(id)a3
+- (IDSCertifiedDeliveryReceiptMessage)initWithCertifiedDeliveryContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v27.receiver = self;
   v27.super_class = IDSCertifiedDeliveryReceiptMessage;
   v5 = [(IDSMessage *)&v27 init];
   if (v5)
   {
-    v6 = [v4 senderToken];
+    senderToken = [contextCopy senderToken];
     originalGUID = v5->_originalGUID;
-    v5->_originalGUID = v6;
+    v5->_originalGUID = senderToken;
 
-    v8 = [v4 certifiedDeliveryRTS];
+    certifiedDeliveryRTS = [contextCopy certifiedDeliveryRTS];
     senderToken = v5->_senderToken;
-    v5->_senderToken = v8;
+    v5->_senderToken = certifiedDeliveryRTS;
 
-    v5->_certifiedDeliveryRTS = [v4 certifiedDeliveryVersion];
-    v10 = [v4 originalGUID];
+    v5->_certifiedDeliveryRTS = [contextCopy certifiedDeliveryVersion];
+    originalGUID = [contextCopy originalGUID];
     v11 = *&v5->_generateDeliveryReceipt;
-    *&v5->_generateDeliveryReceipt = v10;
+    *&v5->_generateDeliveryReceipt = originalGUID;
 
-    v12 = [v4 failureReason];
+    failureReason = [contextCopy failureReason];
     certifiedDeliveryVersion = v5->_certifiedDeliveryVersion;
-    v5->_certifiedDeliveryVersion = v12;
+    v5->_certifiedDeliveryVersion = failureReason;
 
-    v14 = [v4 failureReasonMessage];
+    failureReasonMessage = [contextCopy failureReasonMessage];
     failureReason = v5->_failureReason;
-    v5->_failureReason = v14;
+    v5->_failureReason = failureReasonMessage;
 
-    *(&v5->super._wantsCertifiedDelivery + 1) = [v4 generateDeliveryReceipt];
-    v16 = [v4 deliveryStatusContext];
+    *(&v5->super._wantsCertifiedDelivery + 1) = [contextCopy generateDeliveryReceipt];
+    deliveryStatusContext = [contextCopy deliveryStatusContext];
     failureReasonMessage = v5->_failureReasonMessage;
-    v5->_failureReasonMessage = v16;
+    v5->_failureReasonMessage = deliveryStatusContext;
 
-    v18 = [v4 localURI];
+    localURI = [contextCopy localURI];
     generatedDeliveryStatusContext = v5->_generatedDeliveryStatusContext;
-    v5->_generatedDeliveryStatusContext = v18;
+    v5->_generatedDeliveryStatusContext = localURI;
 
-    v20 = [v4 remoteURI];
+    remoteURI = [contextCopy remoteURI];
     localURI = v5->_localURI;
-    v5->_localURI = v20;
+    v5->_localURI = remoteURI;
 
-    v22 = [v4 queryHash];
+    queryHash = [contextCopy queryHash];
     remoteURI = v5->_remoteURI;
-    v5->_remoteURI = v22;
+    v5->_remoteURI = queryHash;
 
     queryHash = v5->_queryHash;
     v5->_queryHash = 0;
@@ -63,11 +63,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15.receiver = self;
   v15.super_class = IDSCertifiedDeliveryReceiptMessage;
-  v4 = [(IDSMessage *)&v15 copyWithZone:a3];
+  v4 = [(IDSMessage *)&v15 copyWithZone:zone];
   v5 = [(NSString *)self->_originalGUID copy];
   [v4 setSenderToken:v5];
 
@@ -116,8 +116,8 @@
 {
   v19.receiver = self;
   v19.super_class = IDSCertifiedDeliveryReceiptMessage;
-  v3 = [(IDSMessage *)&v19 messageBody];
-  v4 = [v3 mutableCopy];
+  messageBody = [(IDSMessage *)&v19 messageBody];
+  v4 = [messageBody mutableCopy];
 
   v5 = IDSGetUUIDData(*&self->_generateDeliveryReceipt);
   if (v5)
@@ -219,16 +219,16 @@
 
     if (_os_feature_enabled_impl())
     {
-      v16 = [(IDSCertifiedDeliveryReceiptMessage *)self encryptedData];
-      if (v16)
+      encryptedData = [(IDSCertifiedDeliveryReceiptMessage *)self encryptedData];
+      if (encryptedData)
       {
-        CFDictionarySetValue(v4, @"P", v16);
+        CFDictionarySetValue(v4, @"P", encryptedData);
       }
 
-      v17 = [(IDSCertifiedDeliveryReceiptMessage *)self encryptionType];
-      if (v17)
+      encryptionType = [(IDSCertifiedDeliveryReceiptMessage *)self encryptionType];
+      if (encryptionType)
       {
-        CFDictionarySetValue(v4, @"E", v17);
+        CFDictionarySetValue(v4, @"E", encryptionType);
       }
     }
   }

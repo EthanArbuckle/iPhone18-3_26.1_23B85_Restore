@@ -1,10 +1,10 @@
 @interface TTRIAccountsListsDragItem
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-+ (int64_t)itemProviderVisibilityForRepresentationWithTypeIdentifier:(id)a3;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
++ (int64_t)itemProviderVisibilityForRepresentationWithTypeIdentifier:(id)identifier;
 - (_TtC9Reminders25TTRIAccountsListsDragItem)init;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 @end
 
 @implementation TTRIAccountsListsDragItem
@@ -35,9 +35,9 @@
   return v4.super.isa;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   sub_100139D84(v7, v8);
 
@@ -46,12 +46,12 @@
   v11 = [v9 internalErrorWithDebugDescription:v10];
 
   swift_willThrow();
-  if (a5)
+  if (error)
   {
     v12 = _convertErrorToNSError(_:)();
 
     v13 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   else
@@ -76,7 +76,7 @@
   *(v2 + 40) = v3;
   v4 = objc_opt_self();
 
-  v5 = [v4 writableTypeIdentifiersForItemProvider];
+  writableTypeIdentifiersForItemProvider = [v4 writableTypeIdentifiersForItemProvider];
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
   sub_100081340(v6);
@@ -85,7 +85,7 @@
   return v7.super.isa;
 }
 
-+ (int64_t)itemProviderVisibilityForRepresentationWithTypeIdentifier:(id)a3
++ (int64_t)itemProviderVisibilityForRepresentationWithTypeIdentifier:(id)identifier
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   if (qword_100767378 != -1)
@@ -119,14 +119,14 @@
   }
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  v10 = sub_1004B6E68(v6, v8, v9, v5);
+  selfCopy = self;
+  v10 = sub_1004B6E68(v6, v8, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 

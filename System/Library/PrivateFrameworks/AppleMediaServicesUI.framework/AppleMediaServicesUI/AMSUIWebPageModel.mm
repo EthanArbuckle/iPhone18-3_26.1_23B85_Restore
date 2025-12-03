@@ -1,17 +1,17 @@
 @interface AMSUIWebPageModel
-- (AMSUIWebPageModel)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebPageModel)initWithJSObject:(id)object context:(id)context;
 - (CGSize)windowSize;
 - (NSString)description;
-- (id)createViewControllerForContainer:(id)a3;
+- (id)createViewControllerForContainer:(id)container;
 @end
 
 @implementation AMSUIWebPageModel
 
-- (AMSUIWebPageModel)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebPageModel)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  objectCopy = object;
+  contextCopy = context;
+  if (objectCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v36.receiver = self;
     v36.super_class = AMSUIWebPageModel;
@@ -19,26 +19,26 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_context, a4);
-      v11 = [AMSUIWebModel backgroundColorFromPageModel:v6];
+      objc_storeStrong(&v9->_context, context);
+      v11 = [AMSUIWebModel backgroundColorFromPageModel:objectCopy];
       backgroundColor = v10->_backgroundColor;
       v10->_backgroundColor = v11;
 
-      v13 = [AMSUIWebModel impressionEventFromPageModel:v6 context:v7];
+      v13 = [AMSUIWebModel impressionEventFromPageModel:objectCopy context:contextCopy];
       impressionEvent = v10->_impressionEvent;
       v10->_impressionEvent = v13;
 
-      v15 = [AMSUIWebModel navigationBarFromPageModel:v6 context:v7];
+      v15 = [AMSUIWebModel navigationBarFromPageModel:objectCopy context:contextCopy];
       navigationBar = v10->_navigationBar;
       v10->_navigationBar = v15;
 
-      [AMSUIWebModel windowSizeFromPageModel:v6];
+      [AMSUIWebModel windowSizeFromPageModel:objectCopy];
       v10->_windowSize.width = v17;
       v10->_windowSize.height = v18;
-      v19 = [v6 objectForKeyedSubscript:@"ignoreBottomSafeArea"];
+      v19 = [objectCopy objectForKeyedSubscript:@"ignoreBottomSafeArea"];
       if (objc_opt_respondsToSelector())
       {
-        v20 = [v6 objectForKeyedSubscript:@"ignoreBottomSafeArea"];
+        v20 = [objectCopy objectForKeyedSubscript:@"ignoreBottomSafeArea"];
         v10->_ignoreBottomSafeArea = [v20 BOOLValue];
       }
 
@@ -47,10 +47,10 @@
         v10->_ignoreBottomSafeArea = 0;
       }
 
-      v21 = [v6 objectForKeyedSubscript:@"ignoreTopSafeArea"];
+      v21 = [objectCopy objectForKeyedSubscript:@"ignoreTopSafeArea"];
       if (objc_opt_respondsToSelector())
       {
-        v22 = [v6 objectForKeyedSubscript:@"ignoreTopSafeArea"];
+        v22 = [objectCopy objectForKeyedSubscript:@"ignoreTopSafeArea"];
         v10->_ignoreTopSafeArea = [v22 BOOLValue];
       }
 
@@ -59,10 +59,10 @@
         v10->_ignoreTopSafeArea = 0;
       }
 
-      v23 = [v6 objectForKeyedSubscript:@"supportsRefresh"];
+      v23 = [objectCopy objectForKeyedSubscript:@"supportsRefresh"];
       if (objc_opt_respondsToSelector())
       {
-        v24 = [v6 objectForKeyedSubscript:@"supportsRefresh"];
+        v24 = [objectCopy objectForKeyedSubscript:@"supportsRefresh"];
         v10->_supportsRefresh = [v24 BOOLValue];
       }
 
@@ -71,7 +71,7 @@
         v10->_supportsRefresh = 0;
       }
 
-      v25 = [v6 objectForKeyedSubscript:@"swipeToDismissAction"];
+      v25 = [objectCopy objectForKeyedSubscript:@"swipeToDismissAction"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -86,13 +86,13 @@
       if (v26)
       {
         v27 = [AMSUIWebAction alloc];
-        v28 = [(AMSUIWebPageModel *)v10 context];
-        v29 = [(AMSUIWebAction *)v27 initWithJSObject:v26 context:v28];
+        context = [(AMSUIWebPageModel *)v10 context];
+        v29 = [(AMSUIWebAction *)v27 initWithJSObject:v26 context:context];
         swipeToDismissAction = v10->_swipeToDismissAction;
         v10->_swipeToDismissAction = v29;
       }
 
-      v31 = [v6 objectForKeyedSubscript:@"toolbar"];
+      v31 = [objectCopy objectForKeyedSubscript:@"toolbar"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -106,30 +106,30 @@
 
       if (v32)
       {
-        v33 = [[AMSUIWebToolbarModel alloc] initWithJSObject:v32 context:v7];
+        v33 = [[AMSUIWebToolbarModel alloc] initWithJSObject:v32 context:contextCopy];
         toolbar = v10->_toolbar;
         v10->_toolbar = v33;
       }
     }
 
     self = v10;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)createViewControllerForContainer:(id)a3
+- (id)createViewControllerForContainer:(id)container
 {
-  v3 = [(AMSUIWebPageModel *)self context];
-  v4 = [v3 webPage];
+  context = [(AMSUIWebPageModel *)self context];
+  webPage = [context webPage];
 
-  return v4;
+  return webPage;
 }
 
 - (NSString)description
@@ -178,36 +178,36 @@
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:4];
   v8 = [v7 mutableCopy];
 
-  v9 = [(AMSUIWebPageModel *)self backgroundColor];
+  backgroundColor = [(AMSUIWebPageModel *)self backgroundColor];
 
-  if (v9)
+  if (backgroundColor)
   {
-    v10 = [(AMSUIWebPageModel *)self backgroundColor];
-    [v8 setObject:v10 forKey:@"backgroundColor"];
+    backgroundColor2 = [(AMSUIWebPageModel *)self backgroundColor];
+    [v8 setObject:backgroundColor2 forKey:@"backgroundColor"];
   }
 
-  v11 = [(AMSUIWebPageModel *)self impressionEvent];
+  impressionEvent = [(AMSUIWebPageModel *)self impressionEvent];
 
-  if (v11)
+  if (impressionEvent)
   {
-    v12 = [(AMSUIWebPageModel *)self impressionEvent];
-    [v8 setObject:v12 forKey:@"impressionEvent"];
+    impressionEvent2 = [(AMSUIWebPageModel *)self impressionEvent];
+    [v8 setObject:impressionEvent2 forKey:@"impressionEvent"];
   }
 
-  v13 = [(AMSUIWebPageModel *)self navigationBar];
+  navigationBar = [(AMSUIWebPageModel *)self navigationBar];
 
-  if (v13)
+  if (navigationBar)
   {
-    v14 = [(AMSUIWebPageModel *)self navigationBar];
-    [v8 setObject:v14 forKey:@"navigationBar"];
+    navigationBar2 = [(AMSUIWebPageModel *)self navigationBar];
+    [v8 setObject:navigationBar2 forKey:@"navigationBar"];
   }
 
-  v15 = [(AMSUIWebPageModel *)self toolbar];
+  toolbar = [(AMSUIWebPageModel *)self toolbar];
 
-  if (v15)
+  if (toolbar)
   {
-    v16 = [(AMSUIWebPageModel *)self toolbar];
-    [v8 setObject:v16 forKey:@"toolbar"];
+    toolbar2 = [(AMSUIWebPageModel *)self toolbar];
+    [v8 setObject:toolbar2 forKey:@"toolbar"];
   }
 
   v17 = [v8 description];

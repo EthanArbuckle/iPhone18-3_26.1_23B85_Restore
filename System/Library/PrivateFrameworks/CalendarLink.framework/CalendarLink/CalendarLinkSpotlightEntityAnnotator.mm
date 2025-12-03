@@ -1,11 +1,11 @@
 @interface CalendarLinkSpotlightEntityAnnotator
-+ (void)associateEventEntityWithIdentifier:(id)a3 occurrenceDate:(id)a4 with:(id)a5;
++ (void)associateEventEntityWithIdentifier:(id)identifier occurrenceDate:(id)date with:(id)with;
 - (CalendarLinkSpotlightEntityAnnotator)init;
 @end
 
 @implementation CalendarLinkSpotlightEntityAnnotator
 
-+ (void)associateEventEntityWithIdentifier:(id)a3 occurrenceDate:(id)a4 with:(id)a5
++ (void)associateEventEntityWithIdentifier:(id)identifier occurrenceDate:(id)date with:(id)with
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27ECC26F0, &unk_2428B7960);
   v8 = *(*(v7 - 8) + 64);
@@ -13,7 +13,7 @@
   v10 = &v17 - v9;
   v11 = sub_2428B4618();
   v13 = v12;
-  if (a4)
+  if (date)
   {
     sub_2428B3678();
     v14 = sub_2428B3688();
@@ -26,8 +26,8 @@
     (*(*(v15 - 8) + 56))(v10, 1, 1, v15);
   }
 
-  v16 = a5;
-  sub_242857420(v11, v13, v10, v16);
+  withCopy = with;
+  sub_242857420(v11, v13, v10, withCopy);
 
   sub_242830FC0(v10);
 }

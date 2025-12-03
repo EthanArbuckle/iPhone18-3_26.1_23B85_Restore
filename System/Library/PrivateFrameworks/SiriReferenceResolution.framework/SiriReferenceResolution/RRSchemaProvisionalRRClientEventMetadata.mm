@@ -1,23 +1,23 @@
 @interface RRSchemaProvisionalRRClientEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RRSchemaProvisionalRRClientEventMetadata)initWithDictionary:(id)a3;
-- (RRSchemaProvisionalRRClientEventMetadata)initWithJSON:(id)a3;
+- (RRSchemaProvisionalRRClientEventMetadata)initWithDictionary:(id)dictionary;
+- (RRSchemaProvisionalRRClientEventMetadata)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RRSchemaProvisionalRRClientEventMetadata
 
-- (RRSchemaProvisionalRRClientEventMetadata)initWithDictionary:(id)a3
+- (RRSchemaProvisionalRRClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = RRSchemaProvisionalRRClientEventMetadata;
   v5 = [(RRSchemaProvisionalRRClientEventMetadata *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"rrID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"rrID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -25,7 +25,7 @@
       [(RRSchemaProvisionalRRClientEventMetadata *)v5 setRrID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"requestId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"requestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,30 +39,30 @@
   return v5;
 }
 
-- (RRSchemaProvisionalRRClientEventMetadata)initWithJSON:(id)a3
+- (RRSchemaProvisionalRRClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RRSchemaProvisionalRRClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RRSchemaProvisionalRRClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RRSchemaProvisionalRRClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -75,66 +75,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_requestId)
   {
-    v4 = [(RRSchemaProvisionalRRClientEventMetadata *)self requestId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    requestId = [(RRSchemaProvisionalRRClientEventMetadata *)self requestId];
+    dictionaryRepresentation = [requestId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"requestId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"requestId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"requestId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"requestId"];
     }
   }
 
   if (self->_rrID)
   {
-    v7 = [(RRSchemaProvisionalRRClientEventMetadata *)self rrID];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    rrID = [(RRSchemaProvisionalRRClientEventMetadata *)self rrID];
+    dictionaryRepresentation2 = [rrID dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"rrID"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"rrID"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"rrID"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"rrID"];
     }
   }
 
-  [(RRSchemaProvisionalRRClientEventMetadata *)self willProduceDictionaryRepresentation:v3];
+  [(RRSchemaProvisionalRRClientEventMetadata *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(RRSchemaProvisionalRRClientEventMetadata *)self rrID];
-  v6 = [v4 rrID];
-  if ((v5 != 0) == (v6 == 0))
+  rrID = [(RRSchemaProvisionalRRClientEventMetadata *)self rrID];
+  rrID2 = [equalCopy rrID];
+  if ((rrID != 0) == (rrID2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(RRSchemaProvisionalRRClientEventMetadata *)self rrID];
-  if (v7)
+  rrID3 = [(RRSchemaProvisionalRRClientEventMetadata *)self rrID];
+  if (rrID3)
   {
-    v8 = v7;
-    v9 = [(RRSchemaProvisionalRRClientEventMetadata *)self rrID];
-    v10 = [v4 rrID];
-    v11 = [v9 isEqual:v10];
+    v8 = rrID3;
+    rrID4 = [(RRSchemaProvisionalRRClientEventMetadata *)self rrID];
+    rrID5 = [equalCopy rrID];
+    v11 = [rrID4 isEqual:rrID5];
 
     if (!v11)
     {
@@ -146,12 +146,12 @@
   {
   }
 
-  v5 = [(RRSchemaProvisionalRRClientEventMetadata *)self requestId];
-  v6 = [v4 requestId];
-  if ((v5 != 0) != (v6 == 0))
+  rrID = [(RRSchemaProvisionalRRClientEventMetadata *)self requestId];
+  rrID2 = [equalCopy requestId];
+  if ((rrID != 0) != (rrID2 == 0))
   {
-    v12 = [(RRSchemaProvisionalRRClientEventMetadata *)self requestId];
-    if (!v12)
+    requestId = [(RRSchemaProvisionalRRClientEventMetadata *)self requestId];
+    if (!requestId)
     {
 
 LABEL_15:
@@ -159,10 +159,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(RRSchemaProvisionalRRClientEventMetadata *)self requestId];
-    v15 = [v4 requestId];
-    v16 = [v14 isEqual:v15];
+    v13 = requestId;
+    requestId2 = [(RRSchemaProvisionalRRClientEventMetadata *)self requestId];
+    requestId3 = [equalCopy requestId];
+    v16 = [requestId2 isEqual:requestId3];
 
     if (v16)
     {
@@ -182,22 +182,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(RRSchemaProvisionalRRClientEventMetadata *)self rrID];
+  toCopy = to;
+  rrID = [(RRSchemaProvisionalRRClientEventMetadata *)self rrID];
 
-  if (v4)
+  if (rrID)
   {
-    v5 = [(RRSchemaProvisionalRRClientEventMetadata *)self rrID];
+    rrID2 = [(RRSchemaProvisionalRRClientEventMetadata *)self rrID];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(RRSchemaProvisionalRRClientEventMetadata *)self requestId];
+  requestId = [(RRSchemaProvisionalRRClientEventMetadata *)self requestId];
 
-  if (v6)
+  if (requestId)
   {
-    v7 = [(RRSchemaProvisionalRRClientEventMetadata *)self requestId];
+    requestId2 = [(RRSchemaProvisionalRRClientEventMetadata *)self requestId];
     PBDataWriterWriteSubmessage();
   }
 }

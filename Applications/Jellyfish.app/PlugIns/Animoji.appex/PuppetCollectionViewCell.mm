@@ -2,124 +2,124 @@
 + (UIColor)selectedBorderColor;
 - (BOOL)isAnimatingHighlight;
 - (CGSize)maxSize;
-- (PuppetCollectionViewCell)initWithFrame:(CGRect)a3;
+- (PuppetCollectionViewCell)initWithFrame:(CGRect)frame;
 - (id)asyncPuppetThumbnailHandler;
-- (void)displayHighlight:(BOOL)a3;
-- (void)displaySelection:(BOOL)a3;
+- (void)displayHighlight:(BOOL)highlight;
+- (void)displaySelection:(BOOL)selection;
 - (void)layoutSubviews;
-- (void)onImageButtonTapped:(id)a3;
+- (void)onImageButtonTapped:(id)tapped;
 - (void)prepareForReuse;
-- (void)setButtonImageNamed:(id)a3 alpha:(double)a4 maxSize:(CGSize)a5 enabled:(BOOL)a6 touchedHandler:(id)a7;
-- (void)setPuppetThumbnail:(id)a3 alpha:(double)a4 maxSize:(CGSize)a5;
+- (void)setButtonImageNamed:(id)named alpha:(double)alpha maxSize:(CGSize)size enabled:(BOOL)enabled touchedHandler:(id)handler;
+- (void)setPuppetThumbnail:(id)thumbnail alpha:(double)alpha maxSize:(CGSize)size;
 @end
 
 @implementation PuppetCollectionViewCell
 
-- (PuppetCollectionViewCell)initWithFrame:(CGRect)a3
+- (PuppetCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v56.receiver = self;
   v56.super_class = PuppetCollectionViewCell;
-  v5 = [(PuppetCollectionViewCell *)&v56 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(PuppetCollectionViewCell *)&v56 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
-    v6 = [[AdditivelyAnimatableView alloc] initWithFrame:0.0, 0.0, width, height];
-    [(PuppetCollectionViewCell *)v5 setContentContainerView:v6];
+    height = [[AdditivelyAnimatableView alloc] initWithFrame:0.0, 0.0, width, height];
+    [(PuppetCollectionViewCell *)v5 setContentContainerView:height];
 
-    v7 = [(PuppetCollectionViewCell *)v5 contentContainerView];
-    [v7 setAutoresizingMask:0];
+    contentContainerView = [(PuppetCollectionViewCell *)v5 contentContainerView];
+    [contentContainerView setAutoresizingMask:0];
 
-    v8 = [(PuppetCollectionViewCell *)v5 contentView];
-    v9 = [(PuppetCollectionViewCell *)v5 contentContainerView];
-    [v8 addSubview:v9];
+    contentView = [(PuppetCollectionViewCell *)v5 contentView];
+    contentContainerView2 = [(PuppetCollectionViewCell *)v5 contentContainerView];
+    [contentView addSubview:contentContainerView2];
 
     v10 = [[UIImageView alloc] initWithFrame:{0.0, 0.0, width + -24.0, height + -24.0}];
     [(PuppetCollectionViewCell *)v5 setPuppetImgView:v10];
 
-    v11 = [(PuppetCollectionViewCell *)v5 contentContainerView];
-    v12 = [(PuppetCollectionViewCell *)v5 puppetImgView];
-    [v11 addSubview:v12];
+    contentContainerView3 = [(PuppetCollectionViewCell *)v5 contentContainerView];
+    puppetImgView = [(PuppetCollectionViewCell *)v5 puppetImgView];
+    [contentContainerView3 addSubview:puppetImgView];
 
-    v13 = [(PuppetCollectionViewCell *)v5 contentView];
-    [v13 frame];
+    contentView2 = [(PuppetCollectionViewCell *)v5 contentView];
+    [contentView2 frame];
     v15 = v14 * 0.5;
-    v16 = [(PuppetCollectionViewCell *)v5 contentView];
-    [v16 frame];
+    contentView3 = [(PuppetCollectionViewCell *)v5 contentView];
+    [contentView3 frame];
     v18 = v17 * 0.5;
-    v19 = [(PuppetCollectionViewCell *)v5 puppetImgView];
-    [v19 setCenter:{v15, v18}];
+    puppetImgView2 = [(PuppetCollectionViewCell *)v5 puppetImgView];
+    [puppetImgView2 setCenter:{v15, v18}];
 
-    v20 = [(PuppetCollectionViewCell *)v5 puppetImgView];
-    [v20 setAutoresizingMask:0];
+    puppetImgView3 = [(PuppetCollectionViewCell *)v5 puppetImgView];
+    [puppetImgView3 setAutoresizingMask:0];
 
-    v21 = [(PuppetCollectionViewCell *)v5 puppetImgView];
-    [v21 setHidden:1];
+    puppetImgView4 = [(PuppetCollectionViewCell *)v5 puppetImgView];
+    [puppetImgView4 setHidden:1];
 
-    v22 = [(PuppetCollectionViewCell *)v5 puppetImgView];
-    v23 = [v22 layer];
-    [v23 setMasksToBounds:1];
+    puppetImgView5 = [(PuppetCollectionViewCell *)v5 puppetImgView];
+    layer = [puppetImgView5 layer];
+    [layer setMasksToBounds:1];
 
-    v24 = [(PuppetCollectionViewCell *)v5 puppetImgView];
-    v25 = [v24 layer];
-    [v25 setCornerRadius:6.0];
+    puppetImgView6 = [(PuppetCollectionViewCell *)v5 puppetImgView];
+    layer2 = [puppetImgView6 layer];
+    [layer2 setCornerRadius:6.0];
 
-    v26 = [(PuppetCollectionViewCell *)v5 puppetImgView];
-    v27 = [v26 layer];
-    [v27 setCornerCurve:kCACornerCurveContinuous];
+    puppetImgView7 = [(PuppetCollectionViewCell *)v5 puppetImgView];
+    layer3 = [puppetImgView7 layer];
+    [layer3 setCornerCurve:kCACornerCurveContinuous];
 
-    v28 = [[AdditivelyAnimatableView alloc] initWithFrame:0.0, 0.0, width, height];
-    [(PuppetCollectionViewCell *)v5 setBorderView:v28];
+    height2 = [[AdditivelyAnimatableView alloc] initWithFrame:0.0, 0.0, width, height];
+    [(PuppetCollectionViewCell *)v5 setBorderView:height2];
 
     v29 = +[UIColor clearColor];
-    v30 = [(PuppetCollectionViewCell *)v5 borderView];
-    [v30 setBackgroundColor:v29];
+    borderView = [(PuppetCollectionViewCell *)v5 borderView];
+    [borderView setBackgroundColor:v29];
 
-    v31 = [(PuppetCollectionViewCell *)v5 contentView];
-    v32 = [(PuppetCollectionViewCell *)v5 borderView];
-    [v31 addSubview:v32];
+    contentView4 = [(PuppetCollectionViewCell *)v5 contentView];
+    borderView2 = [(PuppetCollectionViewCell *)v5 borderView];
+    [contentView4 addSubview:borderView2];
 
-    v33 = [(PuppetCollectionViewCell *)v5 contentView];
-    [v33 frame];
+    contentView5 = [(PuppetCollectionViewCell *)v5 contentView];
+    [contentView5 frame];
     v35 = v34 * 0.5;
-    v36 = [(PuppetCollectionViewCell *)v5 contentView];
-    [v36 frame];
+    contentView6 = [(PuppetCollectionViewCell *)v5 contentView];
+    [contentView6 frame];
     v38 = v37 * 0.5;
-    v39 = [(PuppetCollectionViewCell *)v5 borderView];
-    [v39 setCenter:{v35, v38}];
+    borderView3 = [(PuppetCollectionViewCell *)v5 borderView];
+    [borderView3 setCenter:{v35, v38}];
 
-    v40 = [(PuppetCollectionViewCell *)v5 borderView];
-    v41 = [v40 layer];
-    [v41 setBorderWidth:3.0];
+    borderView4 = [(PuppetCollectionViewCell *)v5 borderView];
+    layer4 = [borderView4 layer];
+    [layer4 setBorderWidth:3.0];
 
-    v42 = [(PuppetCollectionViewCell *)v5 borderView];
-    v43 = [v42 layer];
-    [v43 setCornerRadius:12.0];
+    borderView5 = [(PuppetCollectionViewCell *)v5 borderView];
+    layer5 = [borderView5 layer];
+    [layer5 setCornerRadius:12.0];
 
-    v44 = [(PuppetCollectionViewCell *)v5 borderView];
-    v45 = [v44 layer];
-    [v45 setCornerCurve:kCACornerCurveContinuous];
+    borderView6 = [(PuppetCollectionViewCell *)v5 borderView];
+    layer6 = [borderView6 layer];
+    [layer6 setCornerCurve:kCACornerCurveContinuous];
 
-    v46 = [(PuppetCollectionViewCell *)v5 borderView];
-    [v46 setAutoresizingMask:18];
+    borderView7 = [(PuppetCollectionViewCell *)v5 borderView];
+    [borderView7 setAutoresizingMask:18];
 
-    v47 = [objc_opt_class() selectedBorderColor];
-    v48 = [v47 CGColor];
-    v49 = [(PuppetCollectionViewCell *)v5 borderView];
-    v50 = [v49 layer];
-    [v50 setBorderColor:v48];
+    selectedBorderColor = [objc_opt_class() selectedBorderColor];
+    cGColor = [selectedBorderColor CGColor];
+    borderView8 = [(PuppetCollectionViewCell *)v5 borderView];
+    layer7 = [borderView8 layer];
+    [layer7 setBorderColor:cGColor];
 
-    v51 = [(PuppetCollectionViewCell *)v5 borderView];
-    [v51 setAlpha:0.0];
+    borderView9 = [(PuppetCollectionViewCell *)v5 borderView];
+    [borderView9 setAlpha:0.0];
 
     v52 = [AVTCircularButton buttonWithType:0];
     [v52 addTarget:v5 action:"onImageButtonTapped:" forControlEvents:64];
-    v53 = [(PuppetCollectionViewCell *)v5 contentView];
-    [v53 addSubview:v52];
+    contentView7 = [(PuppetCollectionViewCell *)v5 contentView];
+    [contentView7 addSubview:v52];
 
     [(PuppetCollectionViewCell *)v5 setImageButton:v52];
-    v54 = [(PuppetCollectionViewCell *)v5 imageButton];
-    [v54 setHidden:1];
+    imageButton = [(PuppetCollectionViewCell *)v5 imageButton];
+    [imageButton setHidden:1];
 
     [(PuppetCollectionViewCell *)v5 setThumbRequestId:-1];
   }
@@ -145,13 +145,13 @@
   v18.receiver = self;
   v18.super_class = PuppetCollectionViewCell;
   [(PuppetCollectionViewCell *)&v18 layoutSubviews];
-  v3 = [(PuppetCollectionViewCell *)self puppetImgView];
-  [v3 isHidden];
+  puppetImgView = [(PuppetCollectionViewCell *)self puppetImgView];
+  [puppetImgView isHidden];
 
   [(PuppetCollectionViewCell *)self maxSize];
   v5 = v4;
-  v6 = [(PuppetCollectionViewCell *)self contentView];
-  [v6 bounds];
+  contentView = [(PuppetCollectionViewCell *)self contentView];
+  [contentView bounds];
   v7 = CGRectGetWidth(v19) + -24.0;
 
   if (v5 >= v7)
@@ -161,8 +161,8 @@
 
   [(PuppetCollectionViewCell *)self maxSize];
   v9 = v8;
-  v10 = [(PuppetCollectionViewCell *)self contentView];
-  [v10 bounds];
+  contentView2 = [(PuppetCollectionViewCell *)self contentView];
+  [contentView2 bounds];
   v11 = CGRectGetHeight(v20) + -24.0;
 
   if (v9 >= v11)
@@ -170,34 +170,34 @@
     v9 = v11;
   }
 
-  v12 = [(PuppetCollectionViewCell *)self contentView];
-  [v12 bounds];
+  contentView3 = [(PuppetCollectionViewCell *)self contentView];
+  [contentView3 bounds];
   v13 = (CGRectGetWidth(v21) - v5) * 0.5;
 
-  v14 = [(PuppetCollectionViewCell *)self contentView];
-  [v14 bounds];
+  contentView4 = [(PuppetCollectionViewCell *)self contentView];
+  [contentView4 bounds];
   v15 = (CGRectGetHeight(v22) - v9) * 0.5;
 
-  v16 = [(PuppetCollectionViewCell *)self puppetImgView];
-  [v16 setFrame:{v13, v15, v5, v9}];
+  puppetImgView2 = [(PuppetCollectionViewCell *)self puppetImgView];
+  [puppetImgView2 setFrame:{v13, v15, v5, v9}];
 
-  v17 = [(PuppetCollectionViewCell *)self imageButton];
-  [v17 setFrame:{v13, v15, v5, v9}];
+  imageButton = [(PuppetCollectionViewCell *)self imageButton];
+  [imageButton setFrame:{v13, v15, v5, v9}];
 }
 
-- (void)setPuppetThumbnail:(id)a3 alpha:(double)a4 maxSize:(CGSize)a5
+- (void)setPuppetThumbnail:(id)thumbnail alpha:(double)alpha maxSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
-  v10 = [(PuppetCollectionViewCell *)self puppetImgView];
-  [v10 setAlpha:a4];
+  height = size.height;
+  width = size.width;
+  thumbnailCopy = thumbnail;
+  puppetImgView = [(PuppetCollectionViewCell *)self puppetImgView];
+  [puppetImgView setAlpha:alpha];
 
-  v11 = [(PuppetCollectionViewCell *)self puppetImgView];
-  [v11 setImage:v9];
+  puppetImgView2 = [(PuppetCollectionViewCell *)self puppetImgView];
+  [puppetImgView2 setImage:thumbnailCopy];
 
-  v12 = [(PuppetCollectionViewCell *)self puppetImgView];
-  [v12 setHidden:0];
+  puppetImgView3 = [(PuppetCollectionViewCell *)self puppetImgView];
+  [puppetImgView3 setHidden:0];
 
   [(PuppetCollectionViewCell *)self setMaxSize:width, height];
 
@@ -222,28 +222,28 @@
   return v4;
 }
 
-- (void)setButtonImageNamed:(id)a3 alpha:(double)a4 maxSize:(CGSize)a5 enabled:(BOOL)a6 touchedHandler:(id)a7
+- (void)setButtonImageNamed:(id)named alpha:(double)alpha maxSize:(CGSize)size enabled:(BOOL)enabled touchedHandler:(id)handler
 {
-  v7 = a6;
-  height = a5.height;
-  width = a5.width;
-  v13 = a7;
-  v14 = a3;
+  enabledCopy = enabled;
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  namedCopy = named;
   [(PuppetCollectionViewCell *)self setMaxSize:width, height];
   v22 = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleLargeTitle scale:1];
-  v15 = [(PuppetCollectionViewCell *)self imageButton];
-  [v15 setSymbolImageWithName:v14 configuration:v22];
+  imageButton = [(PuppetCollectionViewCell *)self imageButton];
+  [imageButton setSymbolImageWithName:namedCopy configuration:v22];
 
-  v16 = [(PuppetCollectionViewCell *)self imageButton];
-  [v16 setHidden:0];
+  imageButton2 = [(PuppetCollectionViewCell *)self imageButton];
+  [imageButton2 setHidden:0];
 
-  v17 = [(PuppetCollectionViewCell *)self imageButton];
-  [v17 setAlpha:a4];
+  imageButton3 = [(PuppetCollectionViewCell *)self imageButton];
+  [imageButton3 setAlpha:alpha];
 
-  v18 = [(PuppetCollectionViewCell *)self imageButton];
-  [v18 setEnabled:v7];
+  imageButton4 = [(PuppetCollectionViewCell *)self imageButton];
+  [imageButton4 setEnabled:enabledCopy];
 
-  if (v7)
+  if (enabledCopy)
   {
     [(PuppetCollectionViewCell *)self setTintColor:0];
   }
@@ -254,43 +254,43 @@
     [(PuppetCollectionViewCell *)self setTintColor:v19];
   }
 
-  [(PuppetCollectionViewCell *)self setImageButtonHandlerBlock:v13];
+  [(PuppetCollectionViewCell *)self setImageButtonHandlerBlock:handlerCopy];
 
-  v20 = [(PuppetCollectionViewCell *)self puppetImgView];
-  [v20 setImage:0];
+  puppetImgView = [(PuppetCollectionViewCell *)self puppetImgView];
+  [puppetImgView setImage:0];
 
-  v21 = [(PuppetCollectionViewCell *)self puppetImgView];
-  [v21 setHidden:1];
+  puppetImgView2 = [(PuppetCollectionViewCell *)self puppetImgView];
+  [puppetImgView2 setHidden:1];
 
   [(PuppetCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)onImageButtonTapped:(id)a3
+- (void)onImageButtonTapped:(id)tapped
 {
-  v3 = [(PuppetCollectionViewCell *)self imageButtonHandlerBlock];
-  if (v3)
+  imageButtonHandlerBlock = [(PuppetCollectionViewCell *)self imageButtonHandlerBlock];
+  if (imageButtonHandlerBlock)
   {
-    v4 = v3;
-    v3[2]();
-    v3 = v4;
+    v4 = imageButtonHandlerBlock;
+    imageButtonHandlerBlock[2]();
+    imageButtonHandlerBlock = v4;
   }
 }
 
 - (BOOL)isAnimatingHighlight
 {
-  v2 = [(PuppetCollectionViewCell *)self contentContainerView];
-  v3 = [v2 layer];
-  v4 = [v3 animationForKey:@"transform"];
+  contentContainerView = [(PuppetCollectionViewCell *)self contentContainerView];
+  layer = [contentContainerView layer];
+  v4 = [layer animationForKey:@"transform"];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (void)displayHighlight:(BOOL)a3
+- (void)displayHighlight:(BOOL)highlight
 {
-  v3 = a3;
+  highlightCopy = highlight;
   memset(&v21, 0, sizeof(v21));
-  if (a3)
+  if (highlight)
   {
     CGAffineTransformMakeScale(&v21, 0.95, 0.95);
   }
@@ -304,11 +304,11 @@
   }
 
   v6 = +[UIView areAnimationsEnabled];
-  v7 = [(PuppetCollectionViewCell *)self contentContainerView];
-  v8 = v7;
-  if (v7)
+  contentContainerView = [(PuppetCollectionViewCell *)self contentContainerView];
+  v8 = contentContainerView;
+  if (contentContainerView)
   {
-    [v7 transform];
+    [contentContainerView transform];
   }
 
   else
@@ -337,13 +337,13 @@
   if (!v6)
   {
     [UIView performWithoutAnimation:v12];
-    v14 = [(PuppetCollectionViewCell *)self contentContainerView];
-    [v14 _removeAllAnimations:0];
+    contentContainerView2 = [(PuppetCollectionViewCell *)self contentContainerView];
+    [contentContainerView2 _removeAllAnimations:0];
 
     goto LABEL_12;
   }
 
-  if (v9 | ![(PuppetCollectionViewCell *)self isAnimatingHighlight]|| (v13 = v12, v3))
+  if (v9 | ![(PuppetCollectionViewCell *)self isAnimatingHighlight]|| (v13 = v12, highlightCopy))
   {
     (v12[2])(v12);
 LABEL_12:
@@ -353,12 +353,12 @@ LABEL_12:
   [(PuppetCollectionViewCell *)self setPendingHighlightBounceAnimation:v13];
 }
 
-- (void)displaySelection:(BOOL)a3
+- (void)displaySelection:(BOOL)selection
 {
-  v5 = a3;
+  selectionCopy = selection;
   v6 = +[UIView areAnimationsEnabled];
-  v7 = [(PuppetCollectionViewCell *)self borderView];
-  [v7 alpha];
+  borderView = [(PuppetCollectionViewCell *)self borderView];
+  [borderView alpha];
   v9 = v8;
 
   v13[0] = _NSConcreteStackBlock;
@@ -366,18 +366,18 @@ LABEL_12:
   v13[2] = sub_100004DA4;
   v13[3] = &unk_1000348C8;
   v13[4] = self;
-  *&v13[5] = v5;
+  *&v13[5] = selectionCopy;
   v10 = objc_retainBlock(v13);
   if (!v6)
   {
     [UIView performWithoutAnimation:v10];
-    v12 = [(PuppetCollectionViewCell *)self borderView];
-    [v12 _removeAllAnimations:0];
+    borderView2 = [(PuppetCollectionViewCell *)self borderView];
+    [borderView2 _removeAllAnimations:0];
 
     goto LABEL_7;
   }
 
-  if (![(PuppetCollectionViewCell *)self isAnimatingHighlight]|| v9 == v5 || (v11 = v10, !a3))
+  if (![(PuppetCollectionViewCell *)self isAnimatingHighlight]|| v9 == selectionCopy || (v11 = v10, !selection))
   {
     (v10[2])(v10);
 LABEL_7:

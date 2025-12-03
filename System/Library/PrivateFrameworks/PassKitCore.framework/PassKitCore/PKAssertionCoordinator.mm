@@ -1,15 +1,15 @@
 @interface PKAssertionCoordinator
 + (id)sharedInstance;
 - (id)initSharedInstance;
-- (void)_removeAssertionWithIdentifier:(id)a3;
-- (void)acquireAssertionOfType:(unint64_t)a3 withReason:(id)a4 completion:(id)a5;
-- (void)assertion:(id)a3 shouldInvalidateWhenBackgrounded:(BOOL)a4;
+- (void)_removeAssertionWithIdentifier:(id)identifier;
+- (void)acquireAssertionOfType:(unint64_t)type withReason:(id)reason completion:(id)completion;
+- (void)assertion:(id)assertion shouldInvalidateWhenBackgrounded:(BOOL)backgrounded;
 - (void)dealloc;
-- (void)hasValidAssertionOfType:(unint64_t)a3 completion:(id)a4;
-- (void)invalidateAssertion:(id)a3 completion:(id)a4;
-- (void)isAssertionValid:(id)a3 completion:(id)a4;
-- (void)remoteService:(id)a3 didInterruptConnection:(id)a4;
-- (void)remoteServiceDidSuspend:(id)a3;
+- (void)hasValidAssertionOfType:(unint64_t)type completion:(id)completion;
+- (void)invalidateAssertion:(id)assertion completion:(id)completion;
+- (void)isAssertionValid:(id)valid completion:(id)completion;
+- (void)remoteService:(id)service didInterruptConnection:(id)connection;
+- (void)remoteServiceDidSuspend:(id)suspend;
 @end
 
 @implementation PKAssertionCoordinator
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __40__PKAssertionCoordinator_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_261 != -1)
   {
     dispatch_once(&_MergedGlobals_261, block);
@@ -48,9 +48,9 @@ void __40__PKAssertionCoordinator_sharedInstance__block_invoke(uint64_t a1)
     coordinatorSerialQueue = v2->_coordinatorSerialQueue;
     v2->_coordinatorSerialQueue = v4;
 
-    v6 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     acquiredAssertions = v2->_acquiredAssertions;
-    v2->_acquiredAssertions = v6;
+    v2->_acquiredAssertions = pk_weakObjectsHashTableUsingPointerPersonality;
 
     v8 = [PKXPCService alloc];
     v9 = PDAssertionCoordinatorInterface();
@@ -72,11 +72,11 @@ void __40__PKAssertionCoordinator_sharedInstance__block_invoke(uint64_t a1)
   [(PKAssertionCoordinator *)&v3 dealloc];
 }
 
-- (void)acquireAssertionOfType:(unint64_t)a3 withReason:(id)a4 completion:(id)a5
+- (void)acquireAssertionOfType:(unint64_t)type withReason:(id)reason completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  reasonCopy = reason;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(PKXPCService *)self->_remoteService isSuspended])
     {
@@ -84,34 +84,34 @@ void __40__PKAssertionCoordinator_sharedInstance__block_invoke(uint64_t a1)
       block[1] = 3221225472;
       block[2] = __71__PKAssertionCoordinator_acquireAssertionOfType_withReason_completion___block_invoke_7;
       block[3] = &unk_1E79C4428;
-      v16 = v9;
+      v16 = completionCopy;
       dispatch_async(MEMORY[0x1E69E96A0], block);
       v10 = v16;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E696AFB0] UUID];
-      v12 = [v11 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
 
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __71__PKAssertionCoordinator_acquireAssertionOfType_withReason_completion___block_invoke;
       v22[3] = &unk_1E79C4428;
-      v13 = v9;
+      v13 = completionCopy;
       v23 = v13;
       v14 = [(PKAssertionCoordinator *)self _remoteObjectProxyWithFailureHandler:v22];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __71__PKAssertionCoordinator_acquireAssertionOfType_withReason_completion___block_invoke_3;
       v17[3] = &unk_1E79DEE38;
-      v21 = a3;
+      typeCopy = type;
       v17[4] = self;
-      v18 = v12;
-      v19 = v8;
+      v18 = uUIDString;
+      v19 = reasonCopy;
       v20 = v13;
-      v10 = v12;
-      [v14 acquireAssertionOfType:a3 withIdentifier:v10 reason:v19 handler:v17];
+      v10 = uUIDString;
+      [v14 acquireAssertionOfType:type withIdentifier:v10 reason:v19 handler:v17];
     }
   }
 }
@@ -195,32 +195,32 @@ void __71__PKAssertionCoordinator_acquireAssertionOfType_withReason_completion__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)invalidateAssertion:(id)a3 completion:(id)a4
+- (void)invalidateAssertion:(id)assertion completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
+  assertionCopy = assertion;
+  completionCopy = completion;
+  identifier = [assertionCopy identifier];
   if ([(PKXPCService *)self->_remoteService connectionEstablished])
   {
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __57__PKAssertionCoordinator_invalidateAssertion_completion___block_invoke;
     v25[3] = &unk_1E79C4428;
-    v9 = v7;
+    v9 = completionCopy;
     v26 = v9;
     v10 = [(PKAssertionCoordinator *)self _remoteObjectProxyWithFailureHandler:v25];
-    v11 = [v6 type];
-    v12 = [v6 identifier];
+    type = [assertionCopy type];
+    identifier2 = [assertionCopy identifier];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __57__PKAssertionCoordinator_invalidateAssertion_completion___block_invoke_3;
     v22[3] = &unk_1E79C4D60;
     v22[4] = self;
-    v23 = v8;
+    v23 = identifier;
     v24 = v9;
     v13 = v9;
-    v14 = v8;
-    [v10 invalidateAssertionOfType:v11 withIdentifier:v12 handler:v22];
+    v14 = identifier;
+    [v10 invalidateAssertionOfType:type withIdentifier:identifier2 handler:v22];
 
     v15 = v26;
   }
@@ -233,10 +233,10 @@ void __71__PKAssertionCoordinator_acquireAssertionOfType_withReason_completion__
     block[2] = __57__PKAssertionCoordinator_invalidateAssertion_completion___block_invoke_6;
     block[3] = &unk_1E79C4D60;
     block[4] = self;
-    v20 = v8;
-    v21 = v7;
-    v17 = v7;
-    v18 = v8;
+    v20 = identifier;
+    v21 = completionCopy;
+    v17 = completionCopy;
+    v18 = identifier;
     dispatch_async(coordinatorSerialQueue, block);
 
     v15 = v20;
@@ -302,36 +302,36 @@ void __57__PKAssertionCoordinator_invalidateAssertion_completion___block_invoke_
   }
 }
 
-- (void)assertion:(id)a3 shouldInvalidateWhenBackgrounded:(BOOL)a4
+- (void)assertion:(id)assertion shouldInvalidateWhenBackgrounded:(BOOL)backgrounded
 {
-  v4 = a4;
-  v6 = a3;
-  v9 = [(PKAssertionCoordinator *)self _remoteObjectProxy];
-  v7 = [v6 type];
-  v8 = [v6 identifier];
+  backgroundedCopy = backgrounded;
+  assertionCopy = assertion;
+  _remoteObjectProxy = [(PKAssertionCoordinator *)self _remoteObjectProxy];
+  type = [assertionCopy type];
+  identifier = [assertionCopy identifier];
 
-  [v9 assertionOfType:v7 withIdentifier:v8 shouldInvalidateWhenBackgrounded:v4];
+  [_remoteObjectProxy assertionOfType:type withIdentifier:identifier shouldInvalidateWhenBackgrounded:backgroundedCopy];
 }
 
-- (void)isAssertionValid:(id)a3 completion:(id)a4
+- (void)isAssertionValid:(id)valid completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(PKAssertionCoordinator *)self _remoteObjectProxy];
-  v8 = [v7 type];
-  v9 = [v7 identifier];
+  completionCopy = completion;
+  validCopy = valid;
+  _remoteObjectProxy = [(PKAssertionCoordinator *)self _remoteObjectProxy];
+  type = [validCopy type];
+  identifier = [validCopy identifier];
 
-  [v10 assertionOfType:v8 withIdentifier:v9 isValid:v6];
+  [_remoteObjectProxy assertionOfType:type withIdentifier:identifier isValid:completionCopy];
 }
 
-- (void)hasValidAssertionOfType:(unint64_t)a3 completion:(id)a4
+- (void)hasValidAssertionOfType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PKAssertionCoordinator *)self _remoteObjectProxy];
-  [v7 hasValidAssertionOfType:a3 completion:v6];
+  completionCopy = completion;
+  _remoteObjectProxy = [(PKAssertionCoordinator *)self _remoteObjectProxy];
+  [_remoteObjectProxy hasValidAssertionOfType:type completion:completionCopy];
 }
 
-- (void)remoteService:(id)a3 didInterruptConnection:(id)a4
+- (void)remoteService:(id)service didInterruptConnection:(id)connection
 {
   coordinatorSerialQueue = self->_coordinatorSerialQueue;
   v6[0] = MEMORY[0x1E69E9820];
@@ -357,7 +357,7 @@ void __63__PKAssertionCoordinator_remoteService_didInterruptConnection___block_i
   [v3 enumerateObjectsUsingBlock:&__block_literal_global_186];
 }
 
-- (void)remoteServiceDidSuspend:(id)a3
+- (void)remoteServiceDidSuspend:(id)suspend
 {
   coordinatorSerialQueue = self->_coordinatorSerialQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -414,14 +414,14 @@ void __50__PKAssertionCoordinator_remoteServiceDidSuspend___block_invoke(uint64_
   }
 }
 
-- (void)_removeAssertionWithIdentifier:(id)a3
+- (void)_removeAssertionWithIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_coordinatorSerialQueue);
   v5 = objc_autoreleasePoolPush();
-  v6 = [(NSHashTable *)self->_acquiredAssertions allObjects];
-  v7 = [v6 copy];
+  allObjects = [(NSHashTable *)self->_acquiredAssertions allObjects];
+  v7 = [allObjects copy];
 
   v18 = 0u;
   v19 = 0u;
@@ -443,8 +443,8 @@ void __50__PKAssertionCoordinator_remoteServiceDidSuspend___block_invoke(uint64_
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        v14 = [v13 identifier];
-        v15 = [v14 isEqualToString:v4];
+        identifier = [v13 identifier];
+        v15 = [identifier isEqualToString:identifierCopy];
 
         if (v15)
         {

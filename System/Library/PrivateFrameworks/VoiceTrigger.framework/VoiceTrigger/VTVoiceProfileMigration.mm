@@ -1,17 +1,17 @@
 @interface VTVoiceProfileMigration
-+ (BOOL)migrateVoiceProfileToVersion:(unint64_t)a3 forLanguageCode:(id)a4;
-+ (unint64_t)getCurrentVoiceProfileVersionForLanguageCode:(id)a3;
-+ (void)updateVoiceProfileVersionFileForLanguageCode:(id)a3;
++ (BOOL)migrateVoiceProfileToVersion:(unint64_t)version forLanguageCode:(id)code;
++ (unint64_t)getCurrentVoiceProfileVersionForLanguageCode:(id)code;
++ (void)updateVoiceProfileVersionFileForLanguageCode:(id)code;
 @end
 
 @implementation VTVoiceProfileMigration
 
-+ (void)updateVoiceProfileVersionFileForLanguageCode:(id)a3
++ (void)updateVoiceProfileVersionFileForLanguageCode:(id)code
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [VTSpeakerIdUtilities getProfileVersionFilePathForLanguageCode:v3];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  codeCopy = code;
+  v4 = [VTSpeakerIdUtilities getProfileVersionFilePathForLanguageCode:codeCopy];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v39 = 0;
   v6 = +[VTUtilities deviceProductType];
   if (!v6 || (v7 = [VTUtilities deviceCategoryForDeviceProductType:v6]) == 0)
@@ -22,14 +22,14 @@
       *buf = 138543618;
       v43 = v6;
       v44 = 2114;
-      v45 = v3;
+      v45 = codeCopy;
       _os_log_error_impl(&dword_223A31000, v8, OS_LOG_TYPE_ERROR, "ERR: Unknown device-category for device: %{public}@, languageCode: %{public}@", buf, 0x16u);
     }
 
     v7 = 0;
   }
 
-  if ([v5 fileExistsAtPath:v4 isDirectory:&v39] && (v39 & 1) == 0)
+  if ([defaultManager fileExistsAtPath:v4 isDirectory:&v39] && (v39 & 1) == 0)
   {
     v20 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v4];
     v38 = 0;
@@ -85,14 +85,14 @@
     [MEMORY[0x277CCAD78] UUID];
     v12 = v4;
     v13 = v6;
-    v14 = v5;
-    v16 = v15 = v3;
-    v17 = [v16 UUIDString];
-    v41[4] = v17;
+    v14 = defaultManager;
+    v16 = v15 = codeCopy;
+    uUIDString = [v16 UUIDString];
+    v41[4] = uUIDString;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:5];
 
-    v3 = v15;
-    v5 = v14;
+    codeCopy = v15;
+    defaultManager = v14;
     v6 = v13;
     v4 = v12;
     v19 = v34;
@@ -118,10 +118,10 @@
     goto LABEL_19;
   }
 
-  if ([v5 fileExistsAtPath:v4 isDirectory:&v39] && (v39 & 1) == 0)
+  if ([defaultManager fileExistsAtPath:v4 isDirectory:&v39] && (v39 & 1) == 0)
   {
     v36 = 0;
-    v33 = [v5 removeItemAtPath:v4 error:&v36];
+    v33 = [defaultManager removeItemAtPath:v4 error:&v36];
     v22 = v36;
     if ((v33 & 1) == 0)
     {
@@ -176,38 +176,38 @@ LABEL_31:
 LABEL_21:
 }
 
-+ (BOOL)migrateVoiceProfileToVersion:(unint64_t)a3 forLanguageCode:(id)a4
++ (BOOL)migrateVoiceProfileToVersion:(unint64_t)version forLanguageCode:(id)code
 {
   v93 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [VTVoiceProfileMigration getCurrentVoiceProfileVersionForLanguageCode:v5];
+  codeCopy = code;
+  v6 = [VTVoiceProfileMigration getCurrentVoiceProfileVersionForLanguageCode:codeCopy];
   v7 = v6;
   v85 = 0;
-  if (a3 != 1 || v6)
+  if (version != 1 || v6)
   {
     v58 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v87 = v5;
+      v87 = codeCopy;
       v88 = 2048;
       v89 = v7;
       v90 = 2048;
-      v91 = a3;
+      versionCopy = version;
       _os_log_impl(&dword_223A31000, v58, OS_LOG_TYPE_DEFAULT, "Migrating Voice Profile for %{public}@ from %lu to %lu not supported", buf, 0x20u);
     }
   }
 
   else
   {
-    v8 = [VTSpeakerIdUtilities getSATDirectoryForLanguageCode:v5];
+    v8 = [VTSpeakerIdUtilities getSATDirectoryForLanguageCode:codeCopy];
     v9 = 0x277CCA000uLL;
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v84 = 0;
-    v11 = [v10 contentsOfDirectoryAtPath:v8 error:&v84];
+    v11 = [defaultManager contentsOfDirectoryAtPath:v8 error:&v84];
     v12 = v84;
 
-    v69 = [VTSpeakerIdUtilities getSATDirectoryForModelType:1 forLanguageCode:v5];
+    v69 = [VTSpeakerIdUtilities getSATDirectoryForModelType:1 forLanguageCode:codeCopy];
     if (v12 || !v11)
     {
       v59 = VTLogContextFacilityVoiceTrigger;
@@ -223,10 +223,10 @@ LABEL_21:
 
     else
     {
-      v13 = [VTSpeakerIdUtilities createSATDirectoriesForType:1 forLanguageCode:v5];
-      v14 = [VTSpeakerIdUtilities createSATDirectoriesForType:3 forLanguageCode:v5];
-      v62 = v5;
-      v15 = [VTSpeakerIdUtilities createSATDirectoriesForType:2 forLanguageCode:v5];
+      v13 = [VTSpeakerIdUtilities createSATDirectoriesForType:1 forLanguageCode:codeCopy];
+      v14 = [VTSpeakerIdUtilities createSATDirectoriesForType:3 forLanguageCode:codeCopy];
+      v62 = codeCopy;
+      v15 = [VTSpeakerIdUtilities createSATDirectoriesForType:2 forLanguageCode:codeCopy];
       v80 = 0u;
       v81 = 0u;
       v82 = 0u;
@@ -268,16 +268,16 @@ LABEL_21:
               v71 = [v8 stringByAppendingPathComponent:@"enrollment_migrated"];
               v23 = v21;
               v70 = [v8 stringByAppendingPathComponent:@"enrollment_completed"];
-              v24 = [*(v9 + 2560) defaultManager];
+              defaultManager2 = [*(v9 + 2560) defaultManager];
               v25 = v9;
-              v26 = [v24 fileExistsAtPath:v21 isDirectory:&v85];
+              v26 = [defaultManager2 fileExistsAtPath:v21 isDirectory:&v85];
 
               v65 = v22;
               if (v26)
               {
-                v27 = [*(v25 + 2560) defaultManager];
+                defaultManager3 = [*(v25 + 2560) defaultManager];
                 v79 = v20;
-                v28 = [v27 moveItemAtPath:v21 toPath:v22 error:&v79];
+                v28 = [defaultManager3 moveItemAtPath:v21 toPath:v22 error:&v79];
                 v29 = v79;
 
                 if ((v28 & 1) == 0)
@@ -292,21 +292,21 @@ LABEL_21:
                     v88 = 2114;
                     v89 = v22;
                     v90 = 2114;
-                    v91 = v29;
+                    versionCopy = v29;
                     _os_log_impl(&dword_223A31000, v30, OS_LOG_TYPE_DEFAULT, "ERR: Failed to move %{public}@ to %{public}@ with error %{public}@", buf, 0x20u);
                   }
 
                   v18 = v68;
 LABEL_23:
                   v9 = 0x277CCA000uLL;
-                  v32 = [MEMORY[0x277CCAA00] defaultManager];
-                  v33 = [v32 fileExistsAtPath:v31 isDirectory:&v85];
+                  defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+                  v33 = [defaultManager4 fileExistsAtPath:v31 isDirectory:&v85];
 
                   if (v33)
                   {
-                    v34 = [MEMORY[0x277CCAA00] defaultManager];
+                    defaultManager5 = [MEMORY[0x277CCAA00] defaultManager];
                     v78 = v29;
-                    v35 = [v34 moveItemAtPath:v31 toPath:v71 error:&v78];
+                    v35 = [defaultManager5 moveItemAtPath:v31 toPath:v71 error:&v78];
                     v36 = v78;
 
                     if ((v35 & 1) == 0)
@@ -320,19 +320,19 @@ LABEL_23:
                         v88 = 2114;
                         v89 = v71;
                         v90 = 2114;
-                        v91 = v36;
+                        versionCopy = v36;
                         _os_log_impl(&dword_223A31000, v37, OS_LOG_TYPE_DEFAULT, "ERR: Failed to move %{public}@ to %{public}@ with error %{public}@", buf, 0x20u);
                       }
 
 LABEL_29:
-                      v39 = [MEMORY[0x277CCAA00] defaultManager];
-                      v40 = [v39 fileExistsAtPath:v38 isDirectory:&v85];
+                      defaultManager6 = [MEMORY[0x277CCAA00] defaultManager];
+                      v40 = [defaultManager6 fileExistsAtPath:v38 isDirectory:&v85];
 
                       if (v40)
                       {
-                        v41 = [MEMORY[0x277CCAA00] defaultManager];
+                        defaultManager7 = [MEMORY[0x277CCAA00] defaultManager];
                         v77 = v36;
-                        v42 = [v41 moveItemAtPath:v38 toPath:v70 error:&v77];
+                        v42 = [defaultManager7 moveItemAtPath:v38 toPath:v70 error:&v77];
                         v12 = v77;
 
                         if ((v42 & 1) == 0)
@@ -345,7 +345,7 @@ LABEL_29:
                             v88 = 2114;
                             v89 = v70;
                             v90 = 2114;
-                            v91 = v12;
+                            versionCopy = v12;
                             _os_log_impl(&dword_223A31000, v43, OS_LOG_TYPE_DEFAULT, "ERR: Failed to move %{public}@ to %{public}@ with error %{public}@", buf, 0x20u);
                           }
                         }
@@ -362,14 +362,14 @@ LABEL_29:
 LABEL_36:
                       if (([v17 isEqualToString:{@"audio", v61}] & 1) != 0 || (objc_msgSend(v17, "isEqualToString:", @"model") & 1) != 0 || objc_msgSend(v17, "isEqualToString:", @"td-sr-model"))
                       {
-                        v44 = [*(v9 + 2560) defaultManager];
-                        v45 = [v44 fileExistsAtPath:v19 isDirectory:&v85];
+                        defaultManager8 = [*(v9 + 2560) defaultManager];
+                        v45 = [defaultManager8 fileExistsAtPath:v19 isDirectory:&v85];
 
                         if (v45)
                         {
-                          v46 = [*(v9 + 2560) defaultManager];
+                          defaultManager9 = [*(v9 + 2560) defaultManager];
                           v76 = v12;
-                          v47 = [v46 removeItemAtPath:v19 error:&v76];
+                          v47 = [defaultManager9 removeItemAtPath:v19 error:&v76];
                           v48 = v76;
 
                           if ((v47 & 1) == 0)
@@ -391,9 +391,9 @@ LABEL_36:
                           v48 = v12;
                         }
 
-                        v50 = [*(v9 + 2560) defaultManager];
+                        defaultManager10 = [*(v9 + 2560) defaultManager];
                         v75 = v48;
-                        v51 = [v50 moveItemAtPath:v18 toPath:v19 error:&v75];
+                        v51 = [defaultManager10 moveItemAtPath:v18 toPath:v19 error:&v75];
                         v12 = v75;
 
                         v52 = VTLogContextFacilityVoiceTrigger;
@@ -427,7 +427,7 @@ LABEL_10:
                         v88 = 2114;
                         v89 = v19;
                         v90 = 2114;
-                        v91 = v12;
+                        versionCopy = v12;
                         v54 = v52;
                         v55 = "ERR: Failed to move %{public}@ to %{public}@ with error %{public}@";
                         v56 = 32;
@@ -482,7 +482,7 @@ LABEL_9:
         while (v74);
       }
 
-      v5 = v62;
+      codeCopy = v62;
       [VTVoiceProfileMigration updateVoiceProfileVersionFileForLanguageCode:v62];
       v11 = v61;
     }
@@ -491,16 +491,16 @@ LABEL_9:
   return 1;
 }
 
-+ (unint64_t)getCurrentVoiceProfileVersionForLanguageCode:(id)a3
++ (unint64_t)getCurrentVoiceProfileVersionForLanguageCode:(id)code
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [VTSpeakerIdUtilities getProfileVersionFilePathForLanguageCode:v4];
+  codeCopy = code;
+  defaultManager = [v3 defaultManager];
+  v6 = [VTSpeakerIdUtilities getProfileVersionFilePathForLanguageCode:codeCopy];
 
   v19 = 0;
-  if (![v5 fileExistsAtPath:v6 isDirectory:&v19])
+  if (![defaultManager fileExistsAtPath:v6 isDirectory:&v19])
   {
     v9 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -559,7 +559,7 @@ LABEL_7:
       _os_log_error_impl(&dword_223A31000, v14, OS_LOG_TYPE_ERROR, "ERR: Could not read existing %@ file: err: %@", buf, 0x16u);
     }
 
-    v15 = 0;
+    intValue = 0;
     goto LABEL_18;
   }
 
@@ -568,16 +568,16 @@ LABEL_16:
 
   if (!v16)
   {
-    v15 = 0;
+    intValue = 0;
     goto LABEL_20;
   }
 
   v10 = [v8 objectForKeyedSubscript:@"VoiceProfileCompatabiltyVersion"];
-  v15 = [v10 intValue];
+  intValue = [v10 intValue];
 LABEL_18:
 
 LABEL_20:
-  return v15;
+  return intValue;
 }
 
 @end

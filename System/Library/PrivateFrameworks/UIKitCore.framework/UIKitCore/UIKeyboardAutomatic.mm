@@ -1,16 +1,16 @@
 @interface UIKeyboardAutomatic
 + (id)sharedInstance;
 - (BOOL)isActive;
-- (UIKeyboardAutomatic)initWithFrame:(CGRect)a3;
-- (UIPeripheralAnimationGeometry)geometryForHeightDelta:(SEL)a3;
+- (UIKeyboardAutomatic)initWithFrame:(CGRect)frame;
+- (UIPeripheralAnimationGeometry)geometryForHeightDelta:(SEL)delta;
 - (void)activate;
 - (void)dealloc;
-- (void)didSuspend:(id)a3;
-- (void)implBoundsHeightChangeDone:(double)a3 suppressNotification:(BOOL)a4;
+- (void)didSuspend:(id)suspend;
+- (void)implBoundsHeightChangeDone:(double)done suppressNotification:(BOOL)notification;
 - (void)maximize;
 - (void)minimize;
-- (void)prepareForImplBoundsHeightChange:(double)a3 suppressNotification:(BOOL)a4;
-- (void)willResume:(id)a3;
+- (void)prepareForImplBoundsHeightChange:(double)change suppressNotification:(BOOL)notification;
+- (void)willResume:(id)resume;
 @end
 
 @implementation UIKeyboardAutomatic
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __37__UIKeyboardAutomatic_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49AE68 != -1)
   {
     dispatch_once(&qword_1ED49AE68, block);
@@ -50,8 +50,8 @@ void __37__UIKeyboardAutomatic_sharedInstance__block_invoke(uint64_t a1)
   }
 
   v2 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v3 = [v2 responder];
-  if (v3)
+  responder = [v2 responder];
+  if (responder)
   {
     v4 = 1;
   }
@@ -78,24 +78,24 @@ LABEL_4:
   }
 
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 automaticAppearanceReallyEnabled];
+  automaticAppearanceReallyEnabled = [v4 automaticAppearanceReallyEnabled];
 
-  if (v5)
+  if (automaticAppearanceReallyEnabled)
   {
     goto LABEL_4;
   }
 }
 
-- (UIKeyboardAutomatic)initWithFrame:(CGRect)a3
+- (UIKeyboardAutomatic)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIKeyboardAutomatic;
-  v3 = [(UIKeyboard *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIKeyboard *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel_willResume_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
-    [v4 addObserver:v3 selector:sel_didSuspend_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_willResume_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel_didSuspend_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
   }
 
   return v3;
@@ -104,11 +104,11 @@ LABEL_4:
 - (void)dealloc
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UIApplicationWillEnterForegroundNotification";
   v6[1] = @"UIApplicationDidEnterBackgroundNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   v5.receiver = self;
   v5.super_class = UIKeyboardAutomatic;
@@ -127,35 +127,35 @@ LABEL_4:
   [v2 maximize];
 }
 
-- (UIPeripheralAnimationGeometry)geometryForHeightDelta:(SEL)a3
+- (UIPeripheralAnimationGeometry)geometryForHeightDelta:(SEL)delta
 {
   v27 = +[UIPeripheralHost sharedInstance];
   *&retstr->transform.a = 0u;
   *&retstr->transform.c = 0u;
   *&retstr->transform.tx = 0u;
   retstr->targetFrameHeightDelta = 0.0;
-  v7 = [(UIView *)self _keyboardOrientation];
+  _keyboardOrientation = [(UIView *)self _keyboardOrientation];
   retstr->bounds.origin.x = 0.0;
   retstr->bounds.origin.y = 0.0;
-  [UIKeyboard sizeForInterfaceOrientation:v7];
+  [UIKeyboard sizeForInterfaceOrientation:_keyboardOrientation];
   v9 = v8;
   v11 = v10;
   retstr->bounds.size.width = v8;
   retstr->bounds.size.height = v10;
-  v12 = [v27 inputViews];
-  v13 = [v12 inputAccessoryView];
+  inputViews = [v27 inputViews];
+  inputAccessoryView = [inputViews inputAccessoryView];
 
-  if (v13)
+  if (inputAccessoryView)
   {
-    v14 = [v27 inputViews];
-    v15 = [v14 inputAccessoryView];
-    [v15 frame];
+    inputViews2 = [v27 inputViews];
+    inputAccessoryView2 = [inputViews2 inputAccessoryView];
+    [inputAccessoryView2 frame];
     v11 = v11 + v16;
     retstr->bounds.size.height = v11;
   }
 
-  v17 = [v27 containerWindow];
-  [v17 bounds];
+  containerWindow = [v27 containerWindow];
+  [containerWindow bounds];
   v19 = v18;
 
   v20 = v9 * 0.5;
@@ -190,15 +190,15 @@ LABEL_4:
   return result;
 }
 
-- (void)prepareForImplBoundsHeightChange:(double)a3 suppressNotification:(BOOL)a4
+- (void)prepareForImplBoundsHeightChange:(double)change suppressNotification:(BOOL)notification
 {
-  if (!a4)
+  if (!notification)
   {
     v6 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v7 = [v6 inputViews];
-    v8 = [v7 inputView];
+    inputViews = [v6 inputViews];
+    inputView = [inputViews inputView];
 
-    if (v8)
+    if (inputView)
     {
       v19 = 0;
       v17 = 0u;
@@ -208,7 +208,7 @@ LABEL_4:
       v13 = 0u;
       v14 = 0u;
       v12 = 0u;
-      [(UIKeyboardAutomatic *)self geometryForHeightDelta:a3];
+      [(UIKeyboardAutomatic *)self geometryForHeightDelta:change];
       v9 = +[UIPeripheralHost sharedInstance];
       v10[4] = v16;
       v10[5] = v17;
@@ -223,13 +223,13 @@ LABEL_4:
   }
 }
 
-- (void)implBoundsHeightChangeDone:(double)a3 suppressNotification:(BOOL)a4
+- (void)implBoundsHeightChangeDone:(double)done suppressNotification:(BOOL)notification
 {
   v7 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v8 = [v7 inputViews];
-  v9 = [v8 inputView];
+  inputViews = [v7 inputViews];
+  inputView = [inputViews inputView];
 
-  if (v9)
+  if (inputView)
   {
     self->super.m_respondingToImplGeometryChange = 1;
     [(UIView *)self frame];
@@ -242,9 +242,9 @@ LABEL_4:
     v14 = 0u;
     v15 = 0u;
     v13 = 0u;
-    [(UIKeyboardAutomatic *)self geometryForHeightDelta:a3];
+    [(UIKeyboardAutomatic *)self geometryForHeightDelta:done];
     self->super.m_respondingToImplGeometryChange = 0;
-    if (!a4)
+    if (!notification)
     {
       v10 = +[UIPeripheralHost sharedInstance];
       v11[4] = v17;
@@ -260,7 +260,7 @@ LABEL_4:
   }
 }
 
-- (void)willResume:(id)a3
+- (void)willResume:(id)resume
 {
   v33 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
   v4 = +[UIKeyboard activeKeyboard];
@@ -282,9 +282,9 @@ LABEL_3:
     goto LABEL_20;
   }
 
-  v7 = [(UIKeyboard *)self window];
+  window = [(UIKeyboard *)self window];
 
-  if (!v7)
+  if (!window)
   {
     goto LABEL_3;
   }
@@ -307,8 +307,8 @@ LABEL_3:
 
   [(UIKeyboardAutomatic *)self activate];
   v19 = +[UIPeripheralHost sharedInstance];
-  v20 = [v33 responder];
-  if ([v20 _requiresKeyboardWhenFirstResponder])
+  responder = [v33 responder];
+  if ([responder _requiresKeyboardWhenFirstResponder])
   {
     [v33 updateRenderConfigForCurrentResponder];
     v21 = +[UIKeyboardImpl activeInstance];
@@ -317,30 +317,30 @@ LABEL_3:
     [v21 setShowsCandidateBar:{-[UIKeyboardAutomatic showsCandidateBar](self, "showsCandidateBar")}];
     [v21 setShowsCandidateInline:{-[UIKeyboardAutomatic showsCandidateInline](self, "showsCandidateInline")}];
     [v21 setDelegate:0];
-    v22 = [v20 _keyboardResponder];
-    [v21 setDelegate:v22];
+    _keyboardResponder = [responder _keyboardResponder];
+    [v21 setDelegate:_keyboardResponder];
 
     if ([v21 _shouldSuppressSoftwareKeyboard])
     {
-      v23 = 1;
+      _shouldMinimizeForHardwareKeyboard = 1;
     }
 
     else
     {
-      v23 = [v21 _shouldMinimizeForHardwareKeyboard];
+      _shouldMinimizeForHardwareKeyboard = [v21 _shouldMinimizeForHardwareKeyboard];
     }
 
-    [(UIKeyboard *)self setMinimized:v23];
+    [(UIKeyboard *)self setMinimized:_shouldMinimizeForHardwareKeyboard];
     [v19 moveToPersistentOffset];
     [v19 setKeyboardOnScreenNotifyKey:{-[UIKeyboard isMinimized](self, "isMinimized") ^ 1}];
     v24 = +[UIKeyboardInputModeController sharedInputModeController];
-    [v24 _trackInputModeIfNecessary:v20];
+    [v24 _trackInputModeIfNecessary:responder];
 
-    v25 = [(UIKeyboardAutomatic *)self lastMatchedSupplementalCandidate];
-    [v21 setLastMatchedSupplementalCandidate:v25];
+    lastMatchedSupplementalCandidate = [(UIKeyboardAutomatic *)self lastMatchedSupplementalCandidate];
+    [v21 setLastMatchedSupplementalCandidate:lastMatchedSupplementalCandidate];
 
-    v26 = [(UIKeyboardAutomatic *)self pendingSupplementalCandidateToInsert];
-    [v21 setPendingSupplementalCandidateToInsert:v26];
+    pendingSupplementalCandidateToInsert = [(UIKeyboardAutomatic *)self pendingSupplementalCandidateToInsert];
+    [v21 setPendingSupplementalCandidateToInsert:pendingSupplementalCandidateToInsert];
 
     [v21 setLastChooseSupplementalItemToInsertCallbackIdentifier:{-[UIKeyboardAutomatic lastChooseSupplementalItemToInsertCallbackIdentifier](self, "lastChooseSupplementalItemToInsertCallbackIdentifier")}];
   }
@@ -369,9 +369,9 @@ LABEL_20:
       else
       {
         v30 = +[UIKeyboardImpl activeInstance];
-        v31 = [v30 _shouldMinimizeForHardwareKeyboard];
+        _shouldMinimizeForHardwareKeyboard2 = [v30 _shouldMinimizeForHardwareKeyboard];
 
-        if ((v31 & 1) == 0)
+        if ((_shouldMinimizeForHardwareKeyboard2 & 1) == 0)
         {
           self->super.m_minimized = 0;
           [v33 maximizeWithAnimation:0];
@@ -380,29 +380,29 @@ LABEL_20:
     }
   }
 
-  v32 = [(UIKeyboardAutomatic *)self blinkAssertion];
-  [v32 invalidate];
+  blinkAssertion = [(UIKeyboardAutomatic *)self blinkAssertion];
+  [blinkAssertion invalidate];
 
   [(UIKeyboardAutomatic *)self setBlinkAssertion:0];
 }
 
-- (void)didSuspend:(id)a3
+- (void)didSuspend:(id)suspend
 {
   v9 = +[UIKeyboardImpl activeInstance];
   -[UIKeyboardAutomatic setReceivedCandidatesInCurrentInputMode:](self, "setReceivedCandidatesInCurrentInputMode:", [v9 receivedCandidatesInCurrentInputMode]);
   -[UIKeyboardAutomatic setShowsCandidateBar:](self, "setShowsCandidateBar:", [v9 showsCandidateBar]);
   -[UIKeyboardAutomatic setShowsCandidateInline:](self, "setShowsCandidateInline:", [v9 showsCandidateInline]);
-  v4 = [v9 lastMatchedSupplementalCandidate];
-  [(UIKeyboardAutomatic *)self setLastMatchedSupplementalCandidate:v4];
+  lastMatchedSupplementalCandidate = [v9 lastMatchedSupplementalCandidate];
+  [(UIKeyboardAutomatic *)self setLastMatchedSupplementalCandidate:lastMatchedSupplementalCandidate];
 
-  v5 = [v9 pendingSupplementalCandidateToInsert];
-  [(UIKeyboardAutomatic *)self setPendingSupplementalCandidateToInsert:v5];
+  pendingSupplementalCandidateToInsert = [v9 pendingSupplementalCandidateToInsert];
+  [(UIKeyboardAutomatic *)self setPendingSupplementalCandidateToInsert:pendingSupplementalCandidateToInsert];
 
   -[UIKeyboardAutomatic setLastChooseSupplementalItemToInsertCallbackIdentifier:](self, "setLastChooseSupplementalItemToInsertCallbackIdentifier:", [v9 lastChooseSupplementalItemToInsertCallbackIdentifier]);
   if ([v9 caretBlinks])
   {
-    v6 = [v9 _activeAssertionController];
-    v7 = [v6 nonBlinkingAssertionWithReason:@"UIKeyboardAutomatic Suspend/Resume"];
+    _activeAssertionController = [v9 _activeAssertionController];
+    v7 = [_activeAssertionController nonBlinkingAssertionWithReason:@"UIKeyboardAutomatic Suspend/Resume"];
     [(UIKeyboardAutomatic *)self setBlinkAssertion:v7];
   }
 

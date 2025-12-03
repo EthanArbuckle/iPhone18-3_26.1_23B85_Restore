@@ -1,28 +1,28 @@
 @interface SESConfigUtilities
-+ (float)getVersion:(id)a3 error:(id *)a4;
-+ (id)validateKey:(id)a3 expectedClass:(Class)a4 dictionary:(id)a5;
++ (float)getVersion:(id)version error:(id *)error;
++ (id)validateKey:(id)key expectedClass:(Class)class dictionary:(id)dictionary;
 @end
 
 @implementation SESConfigUtilities
 
-+ (float)getVersion:(id)a3 error:(id *)a4
++ (float)getVersion:(id)version error:(id *)error
 {
-  v5 = a3;
-  [v5 floatValue];
+  versionCopy = version;
+  [versionCopy floatValue];
   v7 = v6;
-  if (a4 && v6 == 0.0)
+  if (error && v6 == 0.0)
   {
     v8 = SESDefaultLogObject();
-    *a4 = SESCreateAndLogError(0, v8, SESErrorDomain, 1, @"Invalid version from string %@", v9, v10, v11, v5);
+    *error = SESCreateAndLogError(0, v8, SESErrorDomain, 1, @"Invalid version from string %@", v9, v10, v11, versionCopy);
   }
 
   return v7;
 }
 
-+ (id)validateKey:(id)a3 expectedClass:(Class)a4 dictionary:(id)a5
++ (id)validateKey:(id)key expectedClass:(Class)class dictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = [a5 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  v7 = [dictionary objectForKeyedSubscript:keyCopy];
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -32,13 +32,13 @@
     }
 
     v9 = SESDefaultLogObject();
-    SESCreateAndLogError(0, v9, SESErrorDomain, 1, @"Wrong class for key %@", v13, v14, v15, v6);
+    SESCreateAndLogError(0, v9, SESErrorDomain, 1, @"Wrong class for key %@", v13, v14, v15, keyCopy);
   }
 
   else
   {
     v9 = SESDefaultLogObject();
-    SESCreateAndLogError(0, v9, SESErrorDomain, 4, @"Missing key %@", v10, v11, v12, v6);
+    SESCreateAndLogError(0, v9, SESErrorDomain, 4, @"Missing key %@", v10, v11, v12, keyCopy);
   }
   v8 = ;
 

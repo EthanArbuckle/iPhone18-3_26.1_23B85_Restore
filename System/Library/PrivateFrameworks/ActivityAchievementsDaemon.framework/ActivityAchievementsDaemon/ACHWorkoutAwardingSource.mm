@@ -5,57 +5,57 @@
 - (ACHDataStore)dataStore;
 - (ACHEarnedInstanceAwardingEngine)engine;
 - (ACHTemplateStore)templateStore;
-- (ACHWorkoutAwardingSource)initWithClient:(id)a3 healthStore:(id)a4 awardingEngine:(id)a5 dataStore:(id)a6 templateStore:(id)a7 creatorDevice:(unsigned __int8)a8 progressEngine:(id)a9 workoutClient:(id)a10 initialResultsHandler:(id)a11;
-- (BOOL)_appendEarnedInstancesForWorkout:(id)a3 toSet:(id)a4 templates:(id)a5 calendar:(id)a6 numberOfDaysInWeek:(unint64_t)a7 predicates:(id)a8 firstDayOfFitnessWeek:(int64_t)a9 watchCountryCode:(id)a10 error:(id *)a11;
+- (ACHWorkoutAwardingSource)initWithClient:(id)client healthStore:(id)store awardingEngine:(id)engine dataStore:(id)dataStore templateStore:(id)templateStore creatorDevice:(unsigned __int8)device progressEngine:(id)progressEngine workoutClient:(id)self0 initialResultsHandler:(id)self1;
+- (BOOL)_appendEarnedInstancesForWorkout:(id)workout toSet:(id)set templates:(id)templates calendar:(id)calendar numberOfDaysInWeek:(unint64_t)week predicates:(id)predicates firstDayOfFitnessWeek:(int64_t)fitnessWeek watchCountryCode:(id)self0 error:(id *)self1;
 - (BOOL)_isMetricLocale;
 - (BOOL)isAppleWatch;
 - (BOOL)isTinkerPaired;
 - (NSDate)validThroughDate;
 - (NSDictionary)dataStoreProperties;
 - (id)_dataStoreKeys;
-- (id)_earnedInstancesForWorkouts:(id)a3;
-- (id)_earnedInstancesForWorkoutsInDateInterval:(id)a3 error:(id *)a4;
-- (id)_keyForBaseKey:(id)a3 activityType:(unint64_t)a4;
-- (id)_lock_createWorkoutEvaluationEnvironmentWithWorkout:(id)a3 firstDayOfFitnessWeek:(int64_t)a4 numberOfDaysInWeek:(unint64_t)a5 calendar:(id)a6 error:(id *)a7;
+- (id)_earnedInstancesForWorkouts:(id)workouts;
+- (id)_earnedInstancesForWorkoutsInDateInterval:(id)interval error:(id *)error;
+- (id)_keyForBaseKey:(id)key activityType:(unint64_t)type;
+- (id)_lock_createWorkoutEvaluationEnvironmentWithWorkout:(id)workout firstDayOfFitnessWeek:(int64_t)week numberOfDaysInWeek:(unint64_t)inWeek calendar:(id)calendar error:(id *)error;
 - (id)_progressEnvironment;
-- (id)_queue_goalQuantityForTemplate:(id)a3 progressEnvironment:(id)a4;
-- (id)_queue_progressQuantityForTemplate:(id)a3 progressEnvironment:(id)a4;
-- (id)_stringForDate:(id)a3;
-- (id)_stringForDuration:(double)a3;
-- (id)_stringForExperienceType:(unint64_t)a3;
-- (id)_valueForDataStoreKey:(id)a3;
+- (id)_queue_goalQuantityForTemplate:(id)template progressEnvironment:(id)environment;
+- (id)_queue_progressQuantityForTemplate:(id)template progressEnvironment:(id)environment;
+- (id)_stringForDate:(id)date;
+- (id)_stringForDuration:(double)duration;
+- (id)_stringForExperienceType:(unint64_t)type;
+- (id)_valueForDataStoreKey:(id)key;
 - (id)currentDate;
-- (id)earnedInstancesForHistoricalInterval:(id)a3 error:(id *)a4;
+- (id)earnedInstancesForHistoricalInterval:(id)interval error:(id *)error;
 - (id)watchCountryCode;
-- (void)_lock_startWorkoutQueryWithInitialResultsHandler:(id)a3;
-- (void)_lock_updateWorkoutRecordsWithEnvironment:(id)a3;
+- (void)_lock_startWorkoutQueryWithInitialResultsHandler:(id)handler;
+- (void)_lock_updateWorkoutRecordsWithEnvironment:(id)environment;
 - (void)_progressEnvironment;
 - (void)_startWorkoutQueryIfNecessary;
 - (void)_stopWorkoutQuery;
-- (void)_unit_test_setHistoricalRunCompleteVersion:(int64_t)a3;
+- (void)_unit_test_setHistoricalRunCompleteVersion:(int64_t)version;
 - (void)activate;
-- (void)dataStoreDidClearAllProperties:(id)a3 completion:(id)a4;
+- (void)dataStoreDidClearAllProperties:(id)properties completion:(id)completion;
 - (void)dealloc;
-- (void)requestAchievementProgressUpdatesForTemplates:(id)a3;
-- (void)setDataStoreProperties:(id)a3;
-- (void)workoutsAdded:(id)a3;
+- (void)requestAchievementProgressUpdatesForTemplates:(id)templates;
+- (void)setDataStoreProperties:(id)properties;
+- (void)workoutsAdded:(id)added;
 @end
 
 @implementation ACHWorkoutAwardingSource
 
 - (id)_progressEnvironment
 {
-  v3 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v4 = [v3 maximumRangeOfUnit:512];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  v4 = [hk_gregorianCalendar maximumRangeOfUnit:512];
   v6 = v5;
-  v7 = [(ACHWorkoutAwardingSource *)self currentDate];
+  currentDate = [(ACHWorkoutAwardingSource *)self currentDate];
   v8 = ACHStartOfFitnessWeekBeforeDateInCalendar();
 
-  v9 = [v3 hk_dateByAddingDays:v4 + v6 toDate:v8];
+  v9 = [hk_gregorianCalendar hk_dateByAddingDays:v4 + v6 toDate:v8];
   v10 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v8 endDate:v9];
-  v11 = [(ACHWorkoutAwardingSource *)self workoutClient];
+  workoutClient = [(ACHWorkoutAwardingSource *)self workoutClient];
   v17 = 0;
-  v12 = [v11 numberOfFirstPartyWorkoutsWithDuration:v10 containedInInterval:&v17 error:300.0];
+  v12 = [workoutClient numberOfFirstPartyWorkoutsWithDuration:v10 containedInInterval:&v17 error:300.0];
   v13 = v17;
 
   if (v13)
@@ -74,9 +74,9 @@
 
 - (id)currentDate
 {
-  v3 = [(ACHWorkoutAwardingSource *)self currentDateOverride];
+  currentDateOverride = [(ACHWorkoutAwardingSource *)self currentDateOverride];
 
-  if (v3)
+  if (currentDateOverride)
   {
     [(ACHWorkoutAwardingSource *)self currentDateOverride];
   }
@@ -104,16 +104,16 @@
   return WeakRetained;
 }
 
-- (ACHWorkoutAwardingSource)initWithClient:(id)a3 healthStore:(id)a4 awardingEngine:(id)a5 dataStore:(id)a6 templateStore:(id)a7 creatorDevice:(unsigned __int8)a8 progressEngine:(id)a9 workoutClient:(id)a10 initialResultsHandler:(id)a11
+- (ACHWorkoutAwardingSource)initWithClient:(id)client healthStore:(id)store awardingEngine:(id)engine dataStore:(id)dataStore templateStore:(id)templateStore creatorDevice:(unsigned __int8)device progressEngine:(id)progressEngine workoutClient:(id)self0 initialResultsHandler:(id)self1
 {
-  v17 = a3;
-  v36 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
+  clientCopy = client;
+  storeCopy = store;
+  engineCopy = engine;
+  dataStoreCopy = dataStore;
+  templateStoreCopy = templateStore;
+  progressEngineCopy = progressEngine;
+  workoutClientCopy = workoutClient;
+  handlerCopy = handler;
   v37.receiver = self;
   v37.super_class = ACHWorkoutAwardingSource;
   v24 = [(ACHWorkoutAwardingSource *)&v37 init];
@@ -121,17 +121,17 @@
   if (v24)
   {
     v24->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v24->_client, v17);
-    objc_storeStrong(&v25->_healthStore, a4);
+    objc_storeWeak(&v24->_client, clientCopy);
+    objc_storeStrong(&v25->_healthStore, store);
     v26 = HKCreateSerialDispatchQueue();
     internalQueue = v25->_internalQueue;
     v25->_internalQueue = v26;
 
-    objc_storeWeak(&v25->_engine, v18);
-    objc_storeWeak(&v25->_dataStore, v19);
-    objc_storeWeak(&v25->_progressEngine, v21);
-    objc_storeWeak(&v25->_templateStore, v20);
-    v25->_creatorDevice = a8;
+    objc_storeWeak(&v25->_engine, engineCopy);
+    objc_storeWeak(&v25->_dataStore, dataStoreCopy);
+    objc_storeWeak(&v25->_progressEngine, progressEngineCopy);
+    objc_storeWeak(&v25->_templateStore, templateStoreCopy);
+    v25->_creatorDevice = device;
     v28 = objc_alloc_init(MEMORY[0x277CBEB38]);
     templateValidationResultsByUniqueName = v25->_templateValidationResultsByUniqueName;
     v25->_templateValidationResultsByUniqueName = v28;
@@ -143,8 +143,8 @@
     WeakRetained = objc_loadWeakRetained(&v25->_dataStore);
     [WeakRetained addPropertyProvider:v25];
 
-    objc_storeWeak(&v25->_workoutClient, v22);
-    v33 = _Block_copy(v23);
+    objc_storeWeak(&v25->_workoutClient, workoutClientCopy);
+    v33 = _Block_copy(handlerCopy);
     initialResultsHandler = v25->_initialResultsHandler;
     v25->_initialResultsHandler = v33;
 
@@ -157,7 +157,7 @@
 - (void)activate
 {
   objc_initWeak(&location, self);
-  v3 = [*MEMORY[0x277CE8C10] UTF8String];
+  uTF8String = [*MEMORY[0x277CE8C10] UTF8String];
   v4 = MEMORY[0x277D85CD0];
   v5 = MEMORY[0x277D85CD0];
   v6 = MEMORY[0x277D85DD0];
@@ -165,7 +165,7 @@
   v8 = __36__ACHWorkoutAwardingSource_activate__block_invoke;
   v9 = &unk_2784907F8;
   objc_copyWeak(&v10, &location);
-  notify_register_dispatch(v3, &self->_protectedDataToken, v4, &v6);
+  notify_register_dispatch(uTF8String, &self->_protectedDataToken, v4, &v6);
 
   [(ACHWorkoutAwardingSource *)self _startWorkoutQueryIfNecessary:v6];
   objc_destroyWeak(&v10);
@@ -211,12 +211,12 @@ void __36__ACHWorkoutAwardingSource_activate__block_invoke(uint64_t a1)
 - (void)_startWorkoutQueryIfNecessary
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  if ([v3 isAppleWatch])
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  if ([mEMORY[0x277CCDD30] isAppleWatch])
   {
-    v4 = [(ACHWorkoutAwardingSource *)self initialHistoricalRunComplete];
+    initialHistoricalRunComplete = [(ACHWorkoutAwardingSource *)self initialHistoricalRunComplete];
 
-    if (!v4)
+    if (!initialHistoricalRunComplete)
     {
       goto LABEL_7;
     }
@@ -236,28 +236,28 @@ LABEL_7:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_startWorkoutQueryWithInitialResultsHandler:(id)a3
+- (void)_lock_startWorkoutQueryWithInitialResultsHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-  v6 = [v5 objectForKeyedSubscript:@"LastWorkoutProcessedEndDate"];
+  workoutRecordsByKey = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+  v6 = [workoutRecordsByKey objectForKeyedSubscript:@"LastWorkoutProcessedEndDate"];
 
   v7 = MEMORY[0x277CBEAA8];
   [v6 doubleValue];
   v8 = [v7 dateWithTimeIntervalSinceReferenceDate:?];
   v9 = [MEMORY[0x277CCD838] predicateForSamplesWithStartDate:v8 endDate:0 options:1];
   v10 = objc_alloc(MEMORY[0x277CCCFF0]);
-  v11 = [MEMORY[0x277CCD8D8] workoutType];
-  v12 = [MEMORY[0x277CCD840] latestAnchor];
+  workoutType = [MEMORY[0x277CCD8D8] workoutType];
+  latestAnchor = [MEMORY[0x277CCD840] latestAnchor];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __77__ACHWorkoutAwardingSource__lock_startWorkoutQueryWithInitialResultsHandler___block_invoke;
   v21[3] = &unk_278492960;
   objc_copyWeak(&v23, &location);
-  v13 = v4;
+  v13 = handlerCopy;
   v22 = v13;
-  v14 = [v10 initWithType:v11 predicate:v9 anchor:v12 limit:0 resultsHandler:v21];
+  v14 = [v10 initWithType:workoutType predicate:v9 anchor:latestAnchor limit:0 resultsHandler:v21];
   workoutQuery = self->_workoutQuery;
   self->_workoutQuery = v14;
 
@@ -274,8 +274,8 @@ LABEL_7:
     _os_log_impl(&dword_221DDC000, v16, OS_LOG_TYPE_DEFAULT, "Starting workout query", v18, 2u);
   }
 
-  v17 = [(ACHWorkoutAwardingSource *)self healthStore];
-  [v17 executeQuery:self->_workoutQuery];
+  healthStore = [(ACHWorkoutAwardingSource *)self healthStore];
+  [healthStore executeQuery:self->_workoutQuery];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&v23);
@@ -343,8 +343,8 @@ LABEL_7:
 - (void)_stopWorkoutQuery
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(ACHWorkoutAwardingSource *)self healthStore];
-  [v3 stopQuery:self->_workoutQuery];
+  healthStore = [(ACHWorkoutAwardingSource *)self healthStore];
+  [healthStore stopQuery:self->_workoutQuery];
 
   workoutQuery = self->_workoutQuery;
   self->_workoutQuery = 0;
@@ -354,52 +354,52 @@ LABEL_7:
 
 - (BOOL)isAppleWatch
 {
-  v3 = [(ACHWorkoutAwardingSource *)self overrideIsAppleWatch];
+  overrideIsAppleWatch = [(ACHWorkoutAwardingSource *)self overrideIsAppleWatch];
 
-  if (v3)
+  if (overrideIsAppleWatch)
   {
-    v4 = [(ACHWorkoutAwardingSource *)self overrideIsAppleWatch];
-    v5 = [v4 BOOLValue];
+    overrideIsAppleWatch2 = [(ACHWorkoutAwardingSource *)self overrideIsAppleWatch];
+    bOOLValue = [overrideIsAppleWatch2 BOOLValue];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v5 = [v4 isAppleWatch];
+    overrideIsAppleWatch2 = [MEMORY[0x277CCDD30] sharedBehavior];
+    bOOLValue = [overrideIsAppleWatch2 isAppleWatch];
   }
 
-  v6 = v5;
+  v6 = bOOLValue;
 
   return v6;
 }
 
 - (BOOL)isTinkerPaired
 {
-  v3 = [(ACHWorkoutAwardingSource *)self overrideIsTinkerPaired];
+  overrideIsTinkerPaired = [(ACHWorkoutAwardingSource *)self overrideIsTinkerPaired];
 
-  if (!v3)
+  if (!overrideIsTinkerPaired)
   {
     return self->_isTinkerPaired;
   }
 
-  v4 = [(ACHWorkoutAwardingSource *)self overrideIsTinkerPaired];
-  v5 = [v4 BOOLValue];
+  overrideIsTinkerPaired2 = [(ACHWorkoutAwardingSource *)self overrideIsTinkerPaired];
+  bOOLValue = [overrideIsTinkerPaired2 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)earnedInstancesForHistoricalInterval:(id)a3 error:(id *)a4
+- (id)earnedInstancesForHistoricalInterval:(id)interval error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  intervalCopy = interval;
   if (![(ACHWorkoutAwardingSource *)self isAppleWatch]|| [(ACHWorkoutAwardingSource *)self isTinkerPaired])
   {
     goto LABEL_5;
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-  v8 = [v7 objectForKeyedSubscript:@"WorkoutHistoricalRunCompleteVersion"];
+  workoutRecordsByKey = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+  v8 = [workoutRecordsByKey objectForKeyedSubscript:@"WorkoutHistoricalRunCompleteVersion"];
 
   os_unfair_lock_unlock(&self->_lock);
   if ([v8 integerValue] >= 2)
@@ -407,7 +407,7 @@ LABEL_7:
 
 LABEL_5:
     v23 = 0;
-    v9 = [(ACHWorkoutAwardingSource *)self _earnedInstancesForWorkoutsInDateInterval:v6 error:&v23];
+    v9 = [(ACHWorkoutAwardingSource *)self _earnedInstancesForWorkoutsInDateInterval:intervalCopy error:&v23];
     v8 = v23;
     if (v8)
     {
@@ -417,10 +417,10 @@ LABEL_5:
         [ACHWorkoutAwardingSource earnedInstancesForHistoricalInterval:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v11 = v8;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -437,8 +437,8 @@ LABEL_5:
       [(ACHWorkoutAwardingSource *)self setInitialHistoricalRunComplete:1];
       if (![(ACHWorkoutAwardingSource *)self isAppleWatch])
       {
-        v12 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-        [v12 setObject:&unk_283555B78 forKeyedSubscript:@"WorkoutHistoricalRunCompleteVersion"];
+        workoutRecordsByKey2 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+        [workoutRecordsByKey2 setObject:&unk_283555B78 forKeyedSubscript:@"WorkoutHistoricalRunCompleteVersion"];
       }
 
       os_unfair_lock_unlock(&self->_lock);
@@ -469,10 +469,10 @@ LABEL_5:
   v21 = v20;
   if (v21)
   {
-    if (a4)
+    if (error)
     {
       v22 = v21;
-      *a4 = v21;
+      *error = v21;
     }
 
     else
@@ -489,15 +489,15 @@ LABEL_16:
   return v14;
 }
 
-- (void)workoutsAdded:(id)a3
+- (void)workoutsAdded:(id)added
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACHWorkoutAwardingSource *)self progressEngine];
-  [v5 requestProgressUpdateForProgressProvider:self];
+  addedCopy = added;
+  progressEngine = [(ACHWorkoutAwardingSource *)self progressEngine];
+  [progressEngine requestProgressUpdateForProgressProvider:self];
 
-  v6 = [MEMORY[0x277CCDD30] sharedBehavior];
-  IsAppleWatch = ACHConfigurationSupportsIncrementalEvaluationWithIsAppleWatch([v6 isAppleWatch]);
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  IsAppleWatch = ACHConfigurationSupportsIncrementalEvaluationWithIsAppleWatch([mEMORY[0x277CCDD30] isAppleWatch]);
 
   if (IsAppleWatch)
   {
@@ -505,19 +505,19 @@ LABEL_16:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v16 = [v4 count];
+      v16 = [addedCopy count];
       _os_log_impl(&dword_221DDC000, v8, OS_LOG_TYPE_DEFAULT, "WorkoutAwardingProvider found %lu new workout samples, requesting incremental evaluation", buf, 0xCu);
     }
 
-    v9 = [(ACHWorkoutAwardingSource *)self engine];
-    v10 = [(ACHWorkoutAwardingSource *)self uniqueName];
+    engine = [(ACHWorkoutAwardingSource *)self engine];
+    uniqueName = [(ACHWorkoutAwardingSource *)self uniqueName];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __42__ACHWorkoutAwardingSource_workoutsAdded___block_invoke;
     v12[3] = &unk_278490908;
-    v13 = v4;
-    v14 = self;
-    [v9 requestIncrementalEvaluationForSource:v10 evaluationBlock:v12];
+    v13 = addedCopy;
+    selfCopy = self;
+    [engine requestIncrementalEvaluationForSource:uniqueName evaluationBlock:v12];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -545,18 +545,18 @@ id __42__ACHWorkoutAwardingSource_workoutsAdded___block_invoke(uint64_t a1, void
   return v6;
 }
 
-- (void)requestAchievementProgressUpdatesForTemplates:(id)a3
+- (void)requestAchievementProgressUpdatesForTemplates:(id)templates
 {
-  v4 = a3;
-  v5 = [(ACHWorkoutAwardingSource *)self internalQueue];
+  templatesCopy = templates;
+  internalQueue = [(ACHWorkoutAwardingSource *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__ACHWorkoutAwardingSource_requestAchievementProgressUpdatesForTemplates___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = templatesCopy;
+  v6 = templatesCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 void __74__ACHWorkoutAwardingSource_requestAchievementProgressUpdatesForTemplates___block_invoke(uint64_t a1)
@@ -617,67 +617,67 @@ void __74__ACHWorkoutAwardingSource_requestAchievementProgressUpdatesForTemplate
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_queue_progressQuantityForTemplate:(id)a3 progressEnvironment:(id)a4
+- (id)_queue_progressQuantityForTemplate:(id)template progressEnvironment:(id)environment
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v9 = [(ACHWorkoutAwardingSource *)self currentDate];
-  IsAvailableForCalendarAndDate = ACHTemplateIsAvailableForCalendarAndDate(v6, v8, v9);
+  templateCopy = template;
+  environmentCopy = environment;
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  currentDate = [(ACHWorkoutAwardingSource *)self currentDate];
+  IsAvailableForCalendarAndDate = ACHTemplateIsAvailableForCalendarAndDate(templateCopy, hk_gregorianCalendar, currentDate);
 
   if (IsAvailableForCalendarAndDate)
   {
-    v11 = [v6 graceProgressExpression];
-    v12 = v11;
-    if (v11)
+    graceProgressExpression = [templateCopy graceProgressExpression];
+    v12 = graceProgressExpression;
+    if (graceProgressExpression)
     {
-      v13 = v11;
+      progressExpression = graceProgressExpression;
     }
 
     else
     {
-      v13 = [v6 progressExpression];
+      progressExpression = [templateCopy progressExpression];
     }
 
-    v14 = v13;
+    canonicalUnit2 = progressExpression;
 
-    v16 = [MEMORY[0x277CCA9C0] expressionWithFormat:v14];
-    v17 = [v16 expressionValueWithObject:v7 context:0];
-    v18 = [v6 canonicalUnit];
+    v16 = [MEMORY[0x277CCA9C0] expressionWithFormat:canonicalUnit2];
+    v17 = [v16 expressionValueWithObject:environmentCopy context:0];
+    canonicalUnit = [templateCopy canonicalUnit];
     v15 = ACHHKQuantityWithValueAndUnit();
   }
 
   else
   {
-    v14 = [v6 canonicalUnit];
+    canonicalUnit2 = [templateCopy canonicalUnit];
     v15 = ACHHKQuantityWithValueAndUnit();
   }
 
   return v15;
 }
 
-- (id)_queue_goalQuantityForTemplate:(id)a3 progressEnvironment:(id)a4
+- (id)_queue_goalQuantityForTemplate:(id)template progressEnvironment:(id)environment
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 graceGoalExpression];
-  v8 = v7;
-  if (v7)
+  templateCopy = template;
+  environmentCopy = environment;
+  graceGoalExpression = [templateCopy graceGoalExpression];
+  v8 = graceGoalExpression;
+  if (graceGoalExpression)
   {
-    v9 = v7;
+    goalExpression = graceGoalExpression;
   }
 
   else
   {
-    v9 = [v5 goalExpression];
+    goalExpression = [templateCopy goalExpression];
   }
 
-  v10 = v9;
+  v10 = goalExpression;
 
   v11 = [MEMORY[0x277CCA9C0] expressionWithFormat:v10];
-  v12 = [v11 expressionValueWithObject:v6 context:0];
+  v12 = [v11 expressionValueWithObject:environmentCopy context:0];
 
-  v13 = [v5 canonicalUnit];
+  canonicalUnit = [templateCopy canonicalUnit];
   v14 = ACHHKQuantityWithValueAndUnit();
 
   return v14;
@@ -686,8 +686,8 @@ void __74__ACHWorkoutAwardingSource_requestAchievementProgressUpdatesForTemplate
 - (NSDate)validThroughDate
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-  v4 = [v3 objectForKeyedSubscript:@"LastWorkoutProcessedEndDate"];
+  workoutRecordsByKey = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+  v4 = [workoutRecordsByKey objectForKeyedSubscript:@"LastWorkoutProcessedEndDate"];
 
   os_unfair_lock_unlock(&self->_lock);
   if (v4)
@@ -705,13 +705,13 @@ void __74__ACHWorkoutAwardingSource_requestAchievementProgressUpdatesForTemplate
   return v6;
 }
 
-- (id)_keyForBaseKey:(id)a3 activityType:(unint64_t)a4
+- (id)_keyForBaseKey:(id)key activityType:(unint64_t)type
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = MEMORY[0x277CCDBE8];
-  v7 = a3;
-  v8 = [v6 _stringFromWorkoutActivityType:a4];
-  v9 = [v5 stringWithFormat:@"%@-%@", v7, v8];
+  keyCopy = key;
+  v8 = [v6 _stringFromWorkoutActivityType:type];
+  v9 = [v5 stringWithFormat:@"%@-%@", keyCopy, v8];
 
   return v9;
 }
@@ -757,7 +757,7 @@ void __74__ACHWorkoutAwardingSource_requestAchievementProgressUpdatesForTemplate
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v26 + 1) + 8 * i) unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v26 + 1) + 8 * i) unsignedIntegerValue];
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
@@ -777,7 +777,7 @@ void __74__ACHWorkoutAwardingSource_requestAchievementProgressUpdatesForTemplate
                 objc_enumerationMutation(v9);
               }
 
-              v14 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:*(*(&v22 + 1) + 8 * j) activityType:v8];
+              v14 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:*(*(&v22 + 1) + 8 * j) activityType:unsignedIntegerValue];
               [v4 addObject:v14];
             }
 
@@ -803,14 +803,14 @@ void __74__ACHWorkoutAwardingSource_requestAchievementProgressUpdatesForTemplate
 - (NSDictionary)dataStoreProperties
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(ACHWorkoutAwardingSource *)self _dataStoreKeys];
+  _dataStoreKeys = [(ACHWorkoutAwardingSource *)self _dataStoreKeys];
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   os_unfair_lock_lock(&self->_lock);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = _dataStoreKeys;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -826,8 +826,8 @@ void __74__ACHWorkoutAwardingSource_requestAchievementProgressUpdatesForTemplate
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        workoutRecordsByKey = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+        v12 = [workoutRecordsByKey objectForKeyedSubscript:v10];
 
         if (v12)
         {
@@ -849,17 +849,17 @@ void __74__ACHWorkoutAwardingSource_requestAchievementProgressUpdatesForTemplate
   return v13;
 }
 
-- (void)setDataStoreProperties:(id)a3
+- (void)setDataStoreProperties:(id)properties
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertiesCopy = properties;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(ACHWorkoutAwardingSource *)self _dataStoreKeys];
+  _dataStoreKeys = [(ACHWorkoutAwardingSource *)self _dataStoreKeys];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [_dataStoreKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -870,19 +870,19 @@ void __74__ACHWorkoutAwardingSource_requestAchievementProgressUpdatesForTemplate
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_dataStoreKeys);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:v10];
+        v11 = [propertiesCopy objectForKeyedSubscript:v10];
         if (v11)
         {
-          v12 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-          [v12 setObject:v11 forKeyedSubscript:v10];
+          workoutRecordsByKey = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+          [workoutRecordsByKey setObject:v11 forKeyedSubscript:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [_dataStoreKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -893,67 +893,67 @@ void __74__ACHWorkoutAwardingSource_requestAchievementProgressUpdatesForTemplate
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dataStoreDidClearAllProperties:(id)a3 completion:(id)a4
+- (void)dataStoreDidClearAllProperties:(id)properties completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-  [v5 removeAllObjects];
+  workoutRecordsByKey = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+  [workoutRecordsByKey removeAllObjects];
 
   os_unfair_lock_unlock(&self->_lock);
-  v6[2](v6, 1);
+  completionCopy[2](completionCopy, 1);
 }
 
-- (id)_valueForDataStoreKey:(id)a3
+- (id)_valueForDataStoreKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  workoutRecordsByKey = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+  v6 = [workoutRecordsByKey objectForKeyedSubscript:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v6;
 }
 
-- (id)_stringForDuration:(double)a3
+- (id)_stringForDuration:(double)duration
 {
-  if (a3 == 1.79769313e308)
+  if (duration == 1.79769313e308)
   {
     v4 = @"No Record Set";
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lf seconds", *&a3];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lf seconds", *&duration];
   }
 
   return v4;
 }
 
-- (id)_stringForExperienceType:(unint64_t)a3
+- (id)_stringForExperienceType:(unint64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_2784929A8[a3];
+    return off_2784929A8[type];
   }
 }
 
-- (id)_stringForDate:(id)a3
+- (id)_stringForDate:(id)date
 {
   v3 = _stringForDate__onceToken;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     [ACHWorkoutAwardingSource _stringForDate:];
   }
 
-  v5 = [_stringForDate__formatter stringFromDate:v4];
+  v5 = [_stringForDate__formatter stringFromDate:dateCopy];
 
   return v5;
 }
@@ -969,48 +969,48 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
   return [v2 setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
 }
 
-- (id)_lock_createWorkoutEvaluationEnvironmentWithWorkout:(id)a3 firstDayOfFitnessWeek:(int64_t)a4 numberOfDaysInWeek:(unint64_t)a5 calendar:(id)a6 error:(id *)a7
+- (id)_lock_createWorkoutEvaluationEnvironmentWithWorkout:(id)workout firstDayOfFitnessWeek:(int64_t)week numberOfDaysInWeek:(unint64_t)inWeek calendar:(id)calendar error:(id *)error
 {
   v124 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v119 = a6;
-  v12 = [v11 sourceRevision];
-  v13 = [v12 source];
-  v14 = [v13 _hasFirstPartyBundleID];
+  workoutCopy = workout;
+  calendarCopy = calendar;
+  sourceRevision = [workoutCopy sourceRevision];
+  source = [sourceRevision source];
+  _hasFirstPartyBundleID = [source _hasFirstPartyBundleID];
 
-  v15 = [v11 workoutActivityType];
-  v16 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:@"WorkoutCount" activityType:v15];
-  v17 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+  workoutActivityType = [workoutCopy workoutActivityType];
+  v16 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:@"WorkoutCount" activityType:workoutActivityType];
+  workoutRecordsByKey = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
   v118 = v16;
-  v18 = [v17 objectForKeyedSubscript:v16];
+  v18 = [workoutRecordsByKey objectForKeyedSubscript:v16];
 
   v117 = v18;
-  v19 = [v18 unsignedIntegerValue];
-  if (v14)
+  unsignedIntegerValue = [v18 unsignedIntegerValue];
+  if (_hasFirstPartyBundleID)
   {
-    [v11 duration];
+    [workoutCopy duration];
     if (v20 >= 300.0)
     {
-      ++v19;
+      ++unsignedIntegerValue;
     }
   }
 
-  v114 = v19;
-  v21 = [v11 endDate];
-  v22 = v119;
+  v114 = unsignedIntegerValue;
+  endDate = [workoutCopy endDate];
+  v22 = calendarCopy;
   v23 = ACHStartOfFitnessWeekBeforeDateWithFirstWeekdayInCalendar();
 
-  v24 = [v119 hk_dateByAddingDays:a5 toDate:v23];
-  v25 = [v11 endDate];
-  v26 = [v24 earlierDate:v25];
+  v24 = [calendarCopy hk_dateByAddingDays:inWeek toDate:v23];
+  endDate2 = [workoutCopy endDate];
+  v26 = [v24 earlierDate:endDate2];
 
   v115 = v23;
   v116 = v26;
   v27 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v23 endDate:v26];
-  v28 = [(ACHWorkoutAwardingSource *)self workoutClient];
+  workoutClient = [(ACHWorkoutAwardingSource *)self workoutClient];
   v121 = 0;
   v29 = v27;
-  v30 = [v28 numberOfFirstPartyWorkoutsWithDuration:v27 containedInInterval:&v121 error:300.0];
+  v30 = [workoutClient numberOfFirstPartyWorkoutsWithDuration:v27 containedInInterval:&v121 error:300.0];
   v31 = v121;
 
   if (v31)
@@ -1021,11 +1021,11 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       [ACHWorkoutAwardingSource _lock_createWorkoutEvaluationEnvironmentWithWorkout:firstDayOfFitnessWeek:numberOfDaysInWeek:calendar:error:];
     }
 
-    if (a7)
+    if (error)
     {
       v33 = v31;
       v34 = 0;
-      *a7 = v31;
+      *error = v31;
     }
 
     else
@@ -1038,26 +1038,26 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
   else
   {
     v109 = v30;
-    v35 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:@"BestEnergyBurned" activityType:v15];
-    v36 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+    v35 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:@"BestEnergyBurned" activityType:workoutActivityType];
+    workoutRecordsByKey2 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
     v113 = v35;
-    v37 = [v36 objectForKeyedSubscript:v35];
+    v37 = [workoutRecordsByKey2 objectForKeyedSubscript:v35];
 
     v112 = v37;
     [v37 doubleValue];
     v39 = v38;
-    v40 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:@"BestDistance" activityType:v15];
-    v41 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+    v40 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:@"BestDistance" activityType:workoutActivityType];
+    workoutRecordsByKey3 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
     v111 = v40;
-    v42 = [v41 objectForKeyedSubscript:v40];
+    v42 = [workoutRecordsByKey3 objectForKeyedSubscript:v40];
 
     v110 = v42;
     [v42 doubleValue];
     v44 = v43;
-    v45 = [(ACHWorkoutAwardingSource *)self healthStore];
-    v46 = [v11 endDate];
+    healthStore = [(ACHWorkoutAwardingSource *)self healthStore];
+    endDate3 = [workoutCopy endDate];
     v120 = 0;
-    v47 = ACHExperienceTypeForDateWithHealthStore(v45, v119, v46, &v120);
+    v47 = ACHExperienceTypeForDateWithHealthStore(healthStore, calendarCopy, endDate3, &v120);
     v31 = v120;
 
     if (v31)
@@ -1068,11 +1068,11 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
         [ACHWorkoutAwardingSource _lock_createWorkoutEvaluationEnvironmentWithWorkout:firstDayOfFitnessWeek:numberOfDaysInWeek:calendar:error:];
       }
 
-      if (a7)
+      if (error)
       {
         v49 = v31;
         v34 = 0;
-        *a7 = v31;
+        *error = v31;
       }
 
       else
@@ -1084,12 +1084,12 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
 
     else
     {
-      v99 = [(ACHWorkoutAwardingSource *)self _isMetricLocale];
-      if ([v11 workoutActivityType] == 24)
+      _isMetricLocale = [(ACHWorkoutAwardingSource *)self _isMetricLocale];
+      if ([workoutCopy workoutActivityType] == 24)
       {
         v50 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:@"BestElevationGained" activityType:24];
-        v51 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-        v52 = [v51 objectForKeyedSubscript:v50];
+        workoutRecordsByKey4 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+        v52 = [workoutRecordsByKey4 objectForKeyedSubscript:v50];
 
         if (v52)
         {
@@ -1109,10 +1109,10 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       }
 
       v101 = v24;
-      if ([v11 workoutActivityType] == 37)
+      if ([workoutCopy workoutActivityType] == 37)
       {
-        v54 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-        v55 = [v54 objectForKeyedSubscript:@"Best5KDuration"];
+        workoutRecordsByKey5 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+        v55 = [workoutRecordsByKey5 objectForKeyedSubscript:@"Best5KDuration"];
 
         if (v55)
         {
@@ -1125,8 +1125,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
           v107 = 1.79769313e308;
         }
 
-        v59 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-        v60 = [v59 objectForKeyedSubscript:@"Best10KDuration"];
+        workoutRecordsByKey6 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+        v60 = [workoutRecordsByKey6 objectForKeyedSubscript:@"Best10KDuration"];
 
         if (v60)
         {
@@ -1139,8 +1139,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
           v106 = 1.79769313e308;
         }
 
-        v62 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-        v63 = [v62 objectForKeyedSubscript:@"BestHalfMarathonDuration"];
+        workoutRecordsByKey7 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+        v63 = [workoutRecordsByKey7 objectForKeyedSubscript:@"BestHalfMarathonDuration"];
 
         if (v63)
         {
@@ -1153,8 +1153,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
           v58 = 1.79769313e308;
         }
 
-        v65 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-        v66 = [v65 objectForKeyedSubscript:@"BestMarathonDuration"];
+        workoutRecordsByKey8 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+        v66 = [workoutRecordsByKey8 objectForKeyedSubscript:@"BestMarathonDuration"];
 
         if (v66)
         {
@@ -1176,10 +1176,10 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
         v107 = 1.79769313e308;
       }
 
-      if ([v11 workoutActivityType] == 71)
+      if ([workoutCopy workoutActivityType] == 71)
       {
-        v68 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-        v69 = [v68 objectForKeyedSubscript:@"BestWheelchair5KDuration"];
+        workoutRecordsByKey9 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+        v69 = [workoutRecordsByKey9 objectForKeyedSubscript:@"BestWheelchair5KDuration"];
 
         if (v69)
         {
@@ -1192,8 +1192,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
           v71 = 1.79769313e308;
         }
 
-        v75 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-        v76 = [v75 objectForKeyedSubscript:@"BestWheelchair10KDuration"];
+        workoutRecordsByKey10 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+        v76 = [workoutRecordsByKey10 objectForKeyedSubscript:@"BestWheelchair10KDuration"];
 
         if (v76)
         {
@@ -1206,8 +1206,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
           v72 = 1.79769313e308;
         }
 
-        v78 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-        v79 = [v78 objectForKeyedSubscript:@"BestWheelchairHalfMarathonDuration"];
+        workoutRecordsByKey11 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+        v79 = [workoutRecordsByKey11 objectForKeyedSubscript:@"BestWheelchairHalfMarathonDuration"];
 
         if (v79)
         {
@@ -1220,8 +1220,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
           v73 = 1.79769313e308;
         }
 
-        v81 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-        v82 = [v81 objectForKeyedSubscript:@"BestWheelchairMarathonDuration"];
+        workoutRecordsByKey12 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+        v82 = [workoutRecordsByKey12 objectForKeyedSubscript:@"BestWheelchairMarathonDuration"];
 
         if (v82)
         {
@@ -1243,14 +1243,14 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
         v74 = 1.79769313e308;
       }
 
-      v105 = [MEMORY[0x277CCDBE8] _stringFromWorkoutActivityType:{objc_msgSend(v11, "workoutActivityType")}];
+      v105 = [MEMORY[0x277CCDBE8] _stringFromWorkoutActivityType:{objc_msgSend(workoutCopy, "workoutActivityType")}];
       v96 = MEMORY[0x277CCACA8];
       v95 = [(ACHWorkoutAwardingSource *)self _stringForExperienceType:v47];
-      v98 = [v29 startDate];
-      v104 = [(ACHWorkoutAwardingSource *)self _stringForDate:v98];
+      startDate = [v29 startDate];
+      v104 = [(ACHWorkoutAwardingSource *)self _stringForDate:startDate];
       v100 = v29;
-      v97 = [v29 endDate];
-      v103 = [(ACHWorkoutAwardingSource *)self _stringForDate:v97];
+      endDate4 = [v29 endDate];
+      v103 = [(ACHWorkoutAwardingSource *)self _stringForDate:endDate4];
       v102 = [(ACHWorkoutAwardingSource *)self _stringForDuration:v107];
       v84 = [(ACHWorkoutAwardingSource *)self _stringForDuration:v106];
       v94 = [(ACHWorkoutAwardingSource *)self _stringForDuration:v71];
@@ -1269,8 +1269,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
         _os_log_impl(&dword_221DDC000, v90, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
       }
 
-      v34 = [[ACHWorkoutEvaluationEnvironment alloc] initWithWorkout:v11 healthStore:self->_healthStore numberOfFirstPartyWorkoutsOver5MinutesWithType:v114 numberOfFirstPartyWorkoutsOver5MinutesDuringCurrentFitnessWeek:v109 bestKilocaloriesForType:v47 bestKilometersForType:v99 bestElevationGainedForType:v39 best5KDuration:v44 best10KDuration:v108 bestWheelchair5KDuration:v107 bestWheelchair10KDuration:v106 bestHalfMarathonDuration:v71 bestMarathonDuration:v72 bestWheelchairHalfMarathonDuration:v58 bestWheelchairMarathonDuration:*&v57 experienceType:*&v73 isMetricLocale:*&v74];
-      v22 = v119;
+      v34 = [[ACHWorkoutEvaluationEnvironment alloc] initWithWorkout:workoutCopy healthStore:self->_healthStore numberOfFirstPartyWorkoutsOver5MinutesWithType:v114 numberOfFirstPartyWorkoutsOver5MinutesDuringCurrentFitnessWeek:v109 bestKilocaloriesForType:v47 bestKilometersForType:_isMetricLocale bestElevationGainedForType:v39 best5KDuration:v44 best10KDuration:v108 bestWheelchair5KDuration:v107 bestWheelchair10KDuration:v106 bestHalfMarathonDuration:v71 bestMarathonDuration:v72 bestWheelchairHalfMarathonDuration:v58 bestWheelchairMarathonDuration:*&v57 experienceType:*&v73 isMetricLocale:*&v74];
+      v22 = calendarCopy;
       v29 = v100;
       v24 = v101;
     }
@@ -1281,27 +1281,27 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
   return v34;
 }
 
-- (void)_lock_updateWorkoutRecordsWithEnvironment:(id)a3
+- (void)_lock_updateWorkoutRecordsWithEnvironment:(id)environment
 {
   v150 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 workout];
-  v6 = [v5 isFirstParty];
+  environmentCopy = environment;
+  workout = [environmentCopy workout];
+  isFirstParty = [workout isFirstParty];
 
-  if (v6)
+  if (isFirstParty)
   {
-    v7 = [v4 workout];
-    v8 = [v7 type];
+    workout2 = [environmentCopy workout];
+    type = [workout2 type];
 
-    v9 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:@"WorkoutCount" activityType:v8];
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "numberOfFirstPartyWorkoutsOver5MinutesWithType")}];
-    v11 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-    [v11 setObject:v10 forKeyedSubscript:v9];
+    v9 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:@"WorkoutCount" activityType:type];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(environmentCopy, "numberOfFirstPartyWorkoutsOver5MinutesWithType")}];
+    workoutRecordsByKey = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+    [workoutRecordsByKey setObject:v10 forKeyedSubscript:v9];
 
-    v12 = [v4 workout];
-    [v12 kilocalories];
+    workout3 = [environmentCopy workout];
+    [workout3 kilocalories];
     v14 = v13;
-    [v4 bestKilocaloriesForType];
+    [environmentCopy bestKilocaloriesForType];
     v16 = v15;
 
     if (v14 > v16)
@@ -1309,26 +1309,26 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       v17 = ACHLogWorkouts();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v4 workout];
-        [v18 kilocalories];
+        workout4 = [environmentCopy workout];
+        [workout4 kilocalories];
         v148 = 134217984;
         v149 = v19;
         _os_log_impl(&dword_221DDC000, v17, OS_LOG_TYPE_DEFAULT, "Updated best calories burned to %lf kcal", &v148, 0xCu);
       }
 
-      v20 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:@"BestEnergyBurned" activityType:v8];
+      v20 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:@"BestEnergyBurned" activityType:type];
       v21 = MEMORY[0x277CCABB0];
-      v22 = [v4 workout];
-      [v22 kilocalories];
+      workout5 = [environmentCopy workout];
+      [workout5 kilocalories];
       v23 = [v21 numberWithDouble:?];
-      v24 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-      [v24 setObject:v23 forKeyedSubscript:v20];
+      workoutRecordsByKey2 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+      [workoutRecordsByKey2 setObject:v23 forKeyedSubscript:v20];
     }
 
-    v25 = [v4 workout];
-    [v25 kilometers];
+    workout6 = [environmentCopy workout];
+    [workout6 kilometers];
     v27 = v26;
-    [v4 bestKilometersForType];
+    [environmentCopy bestKilometersForType];
     v29 = v28;
 
     if (v27 > v29)
@@ -1336,28 +1336,28 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       v30 = ACHLogWorkouts();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [v4 workout];
-        [v31 kilometers];
+        workout7 = [environmentCopy workout];
+        [workout7 kilometers];
         v148 = 134217984;
         v149 = v32;
         _os_log_impl(&dword_221DDC000, v30, OS_LOG_TYPE_DEFAULT, "Updated best kilometers to %lf km", &v148, 0xCu);
       }
 
-      v33 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:@"BestDistance" activityType:v8];
+      v33 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:@"BestDistance" activityType:type];
       v34 = MEMORY[0x277CCABB0];
-      v35 = [v4 workout];
-      [v35 kilometers];
+      workout8 = [environmentCopy workout];
+      [workout8 kilometers];
       v36 = [v34 numberWithDouble:?];
-      v37 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-      [v37 setObject:v36 forKeyedSubscript:v33];
+      workoutRecordsByKey3 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+      [workoutRecordsByKey3 setObject:v36 forKeyedSubscript:v33];
     }
 
-    if (v8 == 24)
+    if (type == 24)
     {
-      v38 = [v4 workout];
-      [v38 elevationGained];
+      workout9 = [environmentCopy workout];
+      [workout9 elevationGained];
       v40 = v39;
-      [v4 bestElevationGainedForType];
+      [environmentCopy bestElevationGainedForType];
       v42 = v41;
 
       if (v40 > v42)
@@ -1365,8 +1365,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
         v43 = ACHLogWorkouts();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
         {
-          v44 = [v4 workout];
-          [v44 elevationGained];
+          workout10 = [environmentCopy workout];
+          [workout10 elevationGained];
           v148 = 134217984;
           v149 = v45;
           _os_log_impl(&dword_221DDC000, v43, OS_LOG_TYPE_DEFAULT, "Updated best elevation gain to %lf cm", &v148, 0xCu);
@@ -1374,18 +1374,18 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
 
         v46 = [(ACHWorkoutAwardingSource *)self _keyForBaseKey:@"BestElevationGained" activityType:24];
         v47 = MEMORY[0x277CCABB0];
-        v48 = [v4 workout];
-        [v48 elevationGained];
+        workout11 = [environmentCopy workout];
+        [workout11 elevationGained];
         v49 = [v47 numberWithDouble:?];
-        v50 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-        [v50 setObject:v49 forKeyedSubscript:v46];
+        workoutRecordsByKey4 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+        [workoutRecordsByKey4 setObject:v49 forKeyedSubscript:v46];
       }
     }
 
-    v51 = [v4 workout];
-    [v51 best5KDuration];
+    workout12 = [environmentCopy workout];
+    [workout12 best5KDuration];
     v53 = v52;
-    [v4 best5KDuration];
+    [environmentCopy best5KDuration];
     v55 = v54;
 
     if (v53 < v55)
@@ -1393,8 +1393,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       v56 = ACHLogWorkouts();
       if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
       {
-        v57 = [v4 workout];
-        [v57 best5KDuration];
+        workout13 = [environmentCopy workout];
+        [workout13 best5KDuration];
         v58 = [(ACHWorkoutAwardingSource *)self _stringForDuration:?];
         v148 = 138412290;
         v149 = v58;
@@ -1402,17 +1402,17 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       }
 
       v59 = MEMORY[0x277CCABB0];
-      v60 = [v4 workout];
-      [v60 best5KDuration];
+      workout14 = [environmentCopy workout];
+      [workout14 best5KDuration];
       v61 = [v59 numberWithDouble:?];
-      v62 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-      [v62 setObject:v61 forKeyedSubscript:@"Best5KDuration"];
+      workoutRecordsByKey5 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+      [workoutRecordsByKey5 setObject:v61 forKeyedSubscript:@"Best5KDuration"];
     }
 
-    v63 = [v4 workout];
-    [v63 best10KDuration];
+    workout15 = [environmentCopy workout];
+    [workout15 best10KDuration];
     v65 = v64;
-    [v4 best10KDuration];
+    [environmentCopy best10KDuration];
     v67 = v66;
 
     if (v65 < v67)
@@ -1420,8 +1420,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       v68 = ACHLogWorkouts();
       if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
       {
-        v69 = [v4 workout];
-        [v69 best10KDuration];
+        workout16 = [environmentCopy workout];
+        [workout16 best10KDuration];
         v70 = [(ACHWorkoutAwardingSource *)self _stringForDuration:?];
         v148 = 138412290;
         v149 = v70;
@@ -1429,17 +1429,17 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       }
 
       v71 = MEMORY[0x277CCABB0];
-      v72 = [v4 workout];
-      [v72 best10KDuration];
+      workout17 = [environmentCopy workout];
+      [workout17 best10KDuration];
       v73 = [v71 numberWithDouble:?];
-      v74 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-      [v74 setObject:v73 forKeyedSubscript:@"Best10KDuration"];
+      workoutRecordsByKey6 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+      [workoutRecordsByKey6 setObject:v73 forKeyedSubscript:@"Best10KDuration"];
     }
 
-    v75 = [v4 workout];
-    [v75 bestWheelchair5KDuration];
+    workout18 = [environmentCopy workout];
+    [workout18 bestWheelchair5KDuration];
     v77 = v76;
-    [v4 bestWheelchair5KDuration];
+    [environmentCopy bestWheelchair5KDuration];
     v79 = v78;
 
     if (v77 < v79)
@@ -1447,8 +1447,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       v80 = ACHLogWorkouts();
       if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
       {
-        v81 = [v4 workout];
-        [v81 bestWheelchair5KDuration];
+        workout19 = [environmentCopy workout];
+        [workout19 bestWheelchair5KDuration];
         v82 = [(ACHWorkoutAwardingSource *)self _stringForDuration:?];
         v148 = 138412290;
         v149 = v82;
@@ -1456,17 +1456,17 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       }
 
       v83 = MEMORY[0x277CCABB0];
-      v84 = [v4 workout];
-      [v84 bestWheelchair5KDuration];
+      workout20 = [environmentCopy workout];
+      [workout20 bestWheelchair5KDuration];
       v85 = [v83 numberWithDouble:?];
-      v86 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-      [v86 setObject:v85 forKeyedSubscript:@"BestWheelchair5KDuration"];
+      workoutRecordsByKey7 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+      [workoutRecordsByKey7 setObject:v85 forKeyedSubscript:@"BestWheelchair5KDuration"];
     }
 
-    v87 = [v4 workout];
-    [v87 bestWheelchair10KDuration];
+    workout21 = [environmentCopy workout];
+    [workout21 bestWheelchair10KDuration];
     v89 = v88;
-    [v4 bestWheelchair10KDuration];
+    [environmentCopy bestWheelchair10KDuration];
     v91 = v90;
 
     if (v89 < v91)
@@ -1474,8 +1474,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       v92 = ACHLogWorkouts();
       if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
       {
-        v93 = [v4 workout];
-        [v93 bestWheelchair10KDuration];
+        workout22 = [environmentCopy workout];
+        [workout22 bestWheelchair10KDuration];
         v94 = [(ACHWorkoutAwardingSource *)self _stringForDuration:?];
         v148 = 138412290;
         v149 = v94;
@@ -1483,17 +1483,17 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       }
 
       v95 = MEMORY[0x277CCABB0];
-      v96 = [v4 workout];
-      [v96 bestWheelchair10KDuration];
+      workout23 = [environmentCopy workout];
+      [workout23 bestWheelchair10KDuration];
       v97 = [v95 numberWithDouble:?];
-      v98 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-      [v98 setObject:v97 forKeyedSubscript:@"BestWheelchair10KDuration"];
+      workoutRecordsByKey8 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+      [workoutRecordsByKey8 setObject:v97 forKeyedSubscript:@"BestWheelchair10KDuration"];
     }
 
-    v99 = [v4 workout];
-    [v99 bestHalfMarathonDuration];
+    workout24 = [environmentCopy workout];
+    [workout24 bestHalfMarathonDuration];
     v101 = v100;
-    [v4 bestHalfMarathonDuration];
+    [environmentCopy bestHalfMarathonDuration];
     v103 = v102;
 
     if (v101 < v103)
@@ -1501,8 +1501,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       v104 = ACHLogWorkouts();
       if (os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT))
       {
-        v105 = [v4 workout];
-        [v105 bestHalfMarathonDuration];
+        workout25 = [environmentCopy workout];
+        [workout25 bestHalfMarathonDuration];
         v106 = [(ACHWorkoutAwardingSource *)self _stringForDuration:?];
         v148 = 138412290;
         v149 = v106;
@@ -1510,17 +1510,17 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       }
 
       v107 = MEMORY[0x277CCABB0];
-      v108 = [v4 workout];
-      [v108 bestHalfMarathonDuration];
+      workout26 = [environmentCopy workout];
+      [workout26 bestHalfMarathonDuration];
       v109 = [v107 numberWithDouble:?];
-      v110 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-      [v110 setObject:v109 forKeyedSubscript:@"BestHalfMarathonDuration"];
+      workoutRecordsByKey9 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+      [workoutRecordsByKey9 setObject:v109 forKeyedSubscript:@"BestHalfMarathonDuration"];
     }
 
-    v111 = [v4 workout];
-    [v111 bestMarathonDuration];
+    workout27 = [environmentCopy workout];
+    [workout27 bestMarathonDuration];
     v113 = v112;
-    [v4 bestMarathonDuration];
+    [environmentCopy bestMarathonDuration];
     v115 = v114;
 
     if (v113 < v115)
@@ -1528,8 +1528,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       v116 = ACHLogWorkouts();
       if (os_log_type_enabled(v116, OS_LOG_TYPE_DEFAULT))
       {
-        v117 = [v4 workout];
-        [v117 bestMarathonDuration];
+        workout28 = [environmentCopy workout];
+        [workout28 bestMarathonDuration];
         v118 = [(ACHWorkoutAwardingSource *)self _stringForDuration:?];
         v148 = 138412290;
         v149 = v118;
@@ -1537,17 +1537,17 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       }
 
       v119 = MEMORY[0x277CCABB0];
-      v120 = [v4 workout];
-      [v120 bestMarathonDuration];
+      workout29 = [environmentCopy workout];
+      [workout29 bestMarathonDuration];
       v121 = [v119 numberWithDouble:?];
-      v122 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-      [v122 setObject:v121 forKeyedSubscript:@"BestMarathonDuration"];
+      workoutRecordsByKey10 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+      [workoutRecordsByKey10 setObject:v121 forKeyedSubscript:@"BestMarathonDuration"];
     }
 
-    v123 = [v4 workout];
-    [v123 bestWheelchairHalfMarathonDuration];
+    workout30 = [environmentCopy workout];
+    [workout30 bestWheelchairHalfMarathonDuration];
     v125 = v124;
-    [v4 bestWheelchairHalfMarathonDuration];
+    [environmentCopy bestWheelchairHalfMarathonDuration];
     v127 = v126;
 
     if (v125 < v127)
@@ -1555,8 +1555,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       v128 = ACHLogWorkouts();
       if (os_log_type_enabled(v128, OS_LOG_TYPE_DEFAULT))
       {
-        v129 = [v4 workout];
-        [v129 bestWheelchairHalfMarathonDuration];
+        workout31 = [environmentCopy workout];
+        [workout31 bestWheelchairHalfMarathonDuration];
         v130 = [(ACHWorkoutAwardingSource *)self _stringForDuration:?];
         v148 = 138412290;
         v149 = v130;
@@ -1564,17 +1564,17 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       }
 
       v131 = MEMORY[0x277CCABB0];
-      v132 = [v4 workout];
-      [v132 bestWheelchairHalfMarathonDuration];
+      workout32 = [environmentCopy workout];
+      [workout32 bestWheelchairHalfMarathonDuration];
       v133 = [v131 numberWithDouble:?];
-      v134 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-      [v134 setObject:v133 forKeyedSubscript:@"BestWheelchairHalfMarathonDuration"];
+      workoutRecordsByKey11 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+      [workoutRecordsByKey11 setObject:v133 forKeyedSubscript:@"BestWheelchairHalfMarathonDuration"];
     }
 
-    v135 = [v4 workout];
-    [v135 bestWheelchairMarathonDuration];
+    workout33 = [environmentCopy workout];
+    [workout33 bestWheelchairMarathonDuration];
     v137 = v136;
-    [v4 bestWheelchairMarathonDuration];
+    [environmentCopy bestWheelchairMarathonDuration];
     v139 = v138;
 
     if (v137 < v139)
@@ -1582,8 +1582,8 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       v140 = ACHLogWorkouts();
       if (os_log_type_enabled(v140, OS_LOG_TYPE_DEFAULT))
       {
-        v141 = [v4 workout];
-        [v141 bestWheelchairMarathonDuration];
+        workout34 = [environmentCopy workout];
+        [workout34 bestWheelchairMarathonDuration];
         v142 = [(ACHWorkoutAwardingSource *)self _stringForDuration:?];
         v148 = 138412290;
         v149 = v142;
@@ -1591,57 +1591,57 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
       }
 
       v143 = MEMORY[0x277CCABB0];
-      v144 = [v4 workout];
-      [v144 bestWheelchairMarathonDuration];
+      workout35 = [environmentCopy workout];
+      [workout35 bestWheelchairMarathonDuration];
       v145 = [v143 numberWithDouble:?];
-      v146 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-      [v146 setObject:v145 forKeyedSubscript:@"BestWheelchairMarathonDuration"];
+      workoutRecordsByKey12 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+      [workoutRecordsByKey12 setObject:v145 forKeyedSubscript:@"BestWheelchairMarathonDuration"];
     }
   }
 
   v147 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_appendEarnedInstancesForWorkout:(id)a3 toSet:(id)a4 templates:(id)a5 calendar:(id)a6 numberOfDaysInWeek:(unint64_t)a7 predicates:(id)a8 firstDayOfFitnessWeek:(int64_t)a9 watchCountryCode:(id)a10 error:(id *)a11
+- (BOOL)_appendEarnedInstancesForWorkout:(id)workout toSet:(id)set templates:(id)templates calendar:(id)calendar numberOfDaysInWeek:(unint64_t)week predicates:(id)predicates firstDayOfFitnessWeek:(int64_t)fitnessWeek watchCountryCode:(id)self0 error:(id *)self1
 {
   v100 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v80 = a6;
-  v20 = a8;
-  v21 = v17;
-  v79 = a10;
+  workoutCopy = workout;
+  setCopy = set;
+  templatesCopy = templates;
+  calendarCopy = calendar;
+  predicatesCopy = predicates;
+  v21 = workoutCopy;
+  codeCopy = code;
   os_unfair_lock_lock(&self->_lock);
   v22 = ACHLogWorkouts();
-  v85 = v20;
+  v85 = predicatesCopy;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v17 aad_redactedWorkoutDescription];
+    aad_redactedWorkoutDescription = [workoutCopy aad_redactedWorkoutDescription];
     *buf = 138412290;
-    v96 = v23;
+    v96 = aad_redactedWorkoutDescription;
     _os_log_impl(&dword_221DDC000, v22, OS_LOG_TYPE_DEFAULT, "Evaluating workout %@", buf, 0xCu);
 
-    v20 = v85;
+    predicatesCopy = v85;
   }
 
-  v24 = a7;
-  v25 = v80;
-  v90 = [(ACHWorkoutAwardingSource *)self _lock_createWorkoutEvaluationEnvironmentWithWorkout:v17 firstDayOfFitnessWeek:a9 numberOfDaysInWeek:v24 calendar:v80 error:a11];
+  weekCopy = week;
+  v25 = calendarCopy;
+  v90 = [(ACHWorkoutAwardingSource *)self _lock_createWorkoutEvaluationEnvironmentWithWorkout:workoutCopy firstDayOfFitnessWeek:fitnessWeek numberOfDaysInWeek:weekCopy calendar:calendarCopy error:error];
   if (v90)
   {
     v26 = *MEMORY[0x277CE8B28];
-    v27 = [v17 endDate];
+    endDate = [workoutCopy endDate];
     v84 = v26;
-    v28 = [v80 components:v26 fromDate:v27];
+    v28 = [calendarCopy components:v26 fromDate:endDate];
 
     v77 = v28;
-    v78 = v19;
-    v29 = ACHAvailableTemplatesForDateComponentsAndCountryCodeInTemplates(v28, v79, v19);
+    v78 = templatesCopy;
+    v29 = ACHAvailableTemplatesForDateComponentsAndCountryCodeInTemplates(v28, codeCopy, templatesCopy);
     v30 = ACHLogWorkouts();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
-      [ACHWorkoutAwardingSource _appendEarnedInstancesForWorkout:v29 toSet:v17 templates:v30 calendar:? numberOfDaysInWeek:? predicates:? firstDayOfFitnessWeek:? watchCountryCode:? error:?];
+      [ACHWorkoutAwardingSource _appendEarnedInstancesForWorkout:v29 toSet:workoutCopy templates:v30 calendar:? numberOfDaysInWeek:? predicates:? firstDayOfFitnessWeek:? watchCountryCode:? error:?];
     }
 
     v86 = objc_alloc_init(MEMORY[0x277CE8D40]);
@@ -1655,9 +1655,9 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
     if (v89)
     {
       v88 = *v92;
-      v81 = v18;
-      v82 = v17;
-      v83 = self;
+      v81 = setCopy;
+      v82 = workoutCopy;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v89; ++i)
@@ -1668,16 +1668,16 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
           }
 
           v33 = *(*(&v91 + 1) + 8 * i);
-          v34 = [(ACHWorkoutAwardingSource *)self templateValidationResultsByUniqueName];
-          v35 = [v33 uniqueName];
-          v36 = [v34 objectForKeyedSubscript:v35];
+          templateValidationResultsByUniqueName = [(ACHWorkoutAwardingSource *)self templateValidationResultsByUniqueName];
+          uniqueName = [v33 uniqueName];
+          v36 = [templateValidationResultsByUniqueName objectForKeyedSubscript:uniqueName];
 
           if (!v36)
           {
             v36 = [v86 validateTemplate:v33];
-            v37 = [(ACHWorkoutAwardingSource *)self templateValidationResultsByUniqueName];
-            v38 = [v33 uniqueName];
-            [v37 setObject:v36 forKeyedSubscript:v38];
+            templateValidationResultsByUniqueName2 = [(ACHWorkoutAwardingSource *)self templateValidationResultsByUniqueName];
+            uniqueName2 = [v33 uniqueName];
+            [templateValidationResultsByUniqueName2 setObject:v36 forKeyedSubscript:uniqueName2];
           }
 
           if (([v36 isValid] & 1) == 0)
@@ -1685,37 +1685,37 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
             v40 = ACHLogAwardEngine();
             if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
             {
-              v44 = [v33 uniqueName];
+              uniqueName3 = [v33 uniqueName];
               *buf = 138412290;
-              v96 = v44;
+              v96 = uniqueName3;
               _os_log_impl(&dword_221DDC000, v40, OS_LOG_TYPE_DEFAULT, "Template has invalid predicates, skipping: %@", buf, 0xCu);
             }
 
             goto LABEL_34;
           }
 
-          v39 = [v33 uniqueName];
-          v40 = [v20 objectForKeyedSubscript:v39];
+          uniqueName4 = [v33 uniqueName];
+          v40 = [predicatesCopy objectForKeyedSubscript:uniqueName4];
 
           if (!v40)
           {
-            v41 = [v33 gracePredicate];
-            v42 = v41;
-            if (v41)
+            gracePredicate = [v33 gracePredicate];
+            v42 = gracePredicate;
+            if (gracePredicate)
             {
-              v43 = v41;
+              predicate = gracePredicate;
             }
 
             else
             {
-              v43 = [v33 predicate];
+              predicate = [v33 predicate];
             }
 
-            v45 = v43;
+            v45 = predicate;
 
             v40 = [MEMORY[0x277CCAC30] predicateWithFormat:v45];
-            v46 = [v33 uniqueName];
-            [v20 setObject:v40 forKeyedSubscript:v46];
+            uniqueName5 = [v33 uniqueName];
+            [predicatesCopy setObject:v40 forKeyedSubscript:uniqueName5];
           }
 
           v31 = v90;
@@ -1724,12 +1724,12 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
             v47 = ACHLogWorkouts();
             if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
             {
-              v48 = [v33 uniqueName];
-              v49 = [v21 aad_redactedWorkoutDescription];
+              uniqueName6 = [v33 uniqueName];
+              aad_redactedWorkoutDescription2 = [v21 aad_redactedWorkoutDescription];
               *buf = 138543618;
-              v96 = v48;
+              v96 = uniqueName6;
               v97 = 2112;
-              v98 = v49;
+              v98 = aad_redactedWorkoutDescription2;
               _os_log_impl(&dword_221DDC000, v47, OS_LOG_TYPE_DEFAULT, "Template %{public}@ evaluated to true for workout %@", buf, 0x16u);
             }
 
@@ -1742,23 +1742,23 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
             }
 
             v51 = objc_alloc_init(MEMORY[0x277CE8D38]);
-            v52 = [v33 uniqueName];
-            [v51 setTemplateUniqueName:v52];
+            uniqueName7 = [v33 uniqueName];
+            [v51 setTemplateUniqueName:uniqueName7];
 
-            v53 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-            v54 = [v21 endDate];
-            v55 = [v53 components:v84 fromDate:v54];
+            hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+            endDate2 = [v21 endDate];
+            v55 = [hk_gregorianCalendar components:v84 fromDate:endDate2];
             [v51 setEarnedDateComponents:v55];
 
-            v56 = [v21 UUID];
-            v57 = [v56 UUIDString];
-            [v51 setExternalIdentifier:v57];
+            uUID = [v21 UUID];
+            uUIDString = [uUID UUIDString];
+            [v51 setExternalIdentifier:uUIDString];
 
-            v58 = [v33 graceValueExpression];
-            if (v58 || ([v33 valueExpression], (v58 = objc_claimAutoreleasedReturnValue()) != 0))
+            graceValueExpression = [v33 graceValueExpression];
+            if (graceValueExpression || ([v33 valueExpression], (graceValueExpression = objc_claimAutoreleasedReturnValue()) != 0))
             {
-              v59 = v58;
-              v60 = [MEMORY[0x277CCA9C0] expressionWithFormat:v58];
+              v59 = graceValueExpression;
+              v60 = [MEMORY[0x277CCA9C0] expressionWithFormat:graceValueExpression];
               v61 = [v60 expressionValueWithObject:v90 context:0];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
@@ -1766,29 +1766,29 @@ uint64_t __43__ACHWorkoutAwardingSource__stringForDate___block_invoke()
                 [v61 doubleValue];
                 v63 = v62;
                 v64 = MEMORY[0x277CCD7E8];
-                v65 = [v33 canonicalUnit];
-                v66 = [v64 quantityWithUnit:v65 doubleValue:v63];
+                canonicalUnit = [v33 canonicalUnit];
+                v66 = [v64 quantityWithUnit:canonicalUnit doubleValue:v63];
                 [v51 setValue:v66];
 
-                v18 = v81;
+                setCopy = v81;
                 v21 = v82;
               }
             }
 
-            [v18 addObject:v51];
+            [setCopy addObject:v51];
             v67 = ACHLogWorkouts();
-            v20 = v85;
+            predicatesCopy = v85;
             if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
             {
-              v68 = [v33 uniqueName];
+              uniqueName8 = [v33 uniqueName];
               *buf = 138543618;
-              v96 = v68;
+              v96 = uniqueName8;
               v97 = 2112;
               v98 = v51;
               _os_log_impl(&dword_221DDC000, v67, OS_LOG_TYPE_DEFAULT, "Earned instance created for template %{public}@: %@", buf, 0x16u);
             }
 
-            self = v83;
+            self = selfCopy;
 LABEL_34:
             v31 = v90;
           }
@@ -1803,15 +1803,15 @@ LABEL_34:
     [(ACHWorkoutAwardingSource *)self _lock_updateWorkoutRecordsWithEnvironment:v31];
     v69 = v31;
     v70 = MEMORY[0x277CCABB0];
-    v71 = [v21 endDate];
-    [v71 timeIntervalSinceReferenceDate];
+    endDate3 = [v21 endDate];
+    [endDate3 timeIntervalSinceReferenceDate];
     v72 = [v70 numberWithDouble:?];
-    v73 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-    [v73 setObject:v72 forKeyedSubscript:@"LastWorkoutProcessedEndDate"];
+    workoutRecordsByKey = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+    [workoutRecordsByKey setObject:v72 forKeyedSubscript:@"LastWorkoutProcessedEndDate"];
 
     os_unfair_lock_unlock(&self->_lock);
-    v19 = v78;
-    v25 = v80;
+    templatesCopy = v78;
+    v25 = calendarCopy;
   }
 
   else
@@ -1830,37 +1830,37 @@ LABEL_34:
   return v69 != 0;
 }
 
-- (id)_earnedInstancesForWorkoutsInDateInterval:(id)a3 error:(id *)a4
+- (id)_earnedInstancesForWorkoutsInDateInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
+  intervalCopy = interval;
   v60 = 0;
   v61 = &v60;
   v62 = 0x3032000000;
   v63 = __Block_byref_object_copy__25;
   v64 = __Block_byref_object_dispose__25;
   v65 = [MEMORY[0x277CBEB58] set];
-  v7 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v8 = [v7 maximumRangeOfUnit:512];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  v8 = [hk_gregorianCalendar maximumRangeOfUnit:512];
   v10 = v9;
-  v11 = [(ACHWorkoutAwardingSource *)self templateStore];
-  v12 = [v11 allTemplates];
+  templateStore = [(ACHWorkoutAwardingSource *)self templateStore];
+  allTemplates = [templateStore allTemplates];
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
   v59[2] = __76__ACHWorkoutAwardingSource__earnedInstancesForWorkoutsInDateInterval_error___block_invoke;
   v59[3] = &unk_278491B98;
   v59[4] = self;
-  v13 = [v12 hk_filter:v59];
+  v13 = [allTemplates hk_filter:v59];
 
   v14 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v13, "count")}];
   v15 = HKFirstDayOfWeekForWeeklyGoalCalculations();
-  v35 = [(ACHWorkoutAwardingSource *)self watchCountryCode];
+  watchCountryCode = [(ACHWorkoutAwardingSource *)self watchCountryCode];
   v36 = v15;
   v16 = v14;
-  v17 = v7;
-  v34 = a4;
+  v17 = hk_gregorianCalendar;
+  errorCopy = error;
   v18 = [ACHWorkoutIterator alloc];
-  v19 = [(ACHWorkoutAwardingSource *)self healthStore];
-  v37 = [(ACHWorkoutIterator *)v18 initWithHealthStore:v19];
+  healthStore = [(ACHWorkoutAwardingSource *)self healthStore];
+  v37 = [(ACHWorkoutIterator *)v18 initWithHealthStore:healthStore];
 
   v53 = 0;
   v54 = &v53;
@@ -1872,7 +1872,7 @@ LABEL_34:
   v50 = &v49;
   v51 = 0x2020000000;
   v52 = 0;
-  v20 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __76__ACHWorkoutAwardingSource__earnedInstancesForWorkoutsInDateInterval_error___block_invoke_2;
@@ -1887,7 +1887,7 @@ LABEL_34:
   v23 = v16;
   v42 = v23;
   v48 = v36;
-  v24 = v35;
+  v24 = watchCountryCode;
   v43 = v24;
   v45 = &v53;
   v46 = &v49;
@@ -1896,20 +1896,20 @@ LABEL_34:
   v38[2] = __76__ACHWorkoutAwardingSource__earnedInstancesForWorkoutsInDateInterval_error___block_invoke_3;
   v38[3] = &unk_278490958;
   v38[4] = &v53;
-  [(ACHWorkoutIterator *)v37 enumerateWorkoutsForDateInterval:v6 handler:v39 errorHandler:v38];
-  v25 = [MEMORY[0x277CBEAA8] date];
-  [v25 timeIntervalSinceReferenceDate];
+  [(ACHWorkoutIterator *)v37 enumerateWorkoutsForDateInterval:intervalCopy handler:v39 errorHandler:v38];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [date2 timeIntervalSinceReferenceDate];
   v27 = v26;
-  [v20 timeIntervalSinceReferenceDate];
-  [ACHDMetricsReporter reportProcessingMetricsWithSourceType:1 intervalProcessed:v6 processingDuration:v50[3] recordsProcessed:v54[5] error:v27 - v28];
+  [date timeIntervalSinceReferenceDate];
+  [ACHDMetricsReporter reportProcessingMetricsWithSourceType:1 intervalProcessed:intervalCopy processingDuration:v50[3] recordsProcessed:v54[5] error:v27 - v28];
   v29 = v54[5];
   v30 = v29;
   if (v29)
   {
-    if (v34)
+    if (errorCopy)
     {
       v31 = v29;
-      *v34 = v30;
+      *errorCopy = v30;
     }
 
     else
@@ -1953,33 +1953,33 @@ uint64_t __76__ACHWorkoutAwardingSource__earnedInstancesForWorkoutsInDateInterva
   return v14;
 }
 
-- (id)_earnedInstancesForWorkouts:(id)a3
+- (id)_earnedInstancesForWorkouts:(id)workouts
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  workoutsCopy = workouts;
   v27 = [MEMORY[0x277CBEB58] set];
-  v26 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v5 = [v26 maximumRangeOfUnit:512];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  v5 = [hk_gregorianCalendar maximumRangeOfUnit:512];
   v24 = v6;
   v25 = v5;
-  v7 = [(ACHWorkoutAwardingSource *)self templateStore];
-  v8 = [v7 allTemplates];
+  templateStore = [(ACHWorkoutAwardingSource *)self templateStore];
+  allTemplates = [templateStore allTemplates];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __56__ACHWorkoutAwardingSource__earnedInstancesForWorkouts___block_invoke;
   v32[3] = &unk_278491B98;
   v32[4] = self;
-  v9 = [v8 hk_filter:v32];
+  v9 = [allTemplates hk_filter:v32];
 
   v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
   v11 = HKFirstDayOfWeekForWeeklyGoalCalculations();
-  v12 = self;
-  v13 = [(ACHWorkoutAwardingSource *)self watchCountryCode];
+  selfCopy = self;
+  watchCountryCode = [(ACHWorkoutAwardingSource *)self watchCountryCode];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v4;
+  obj = workoutsCopy;
   v14 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v14)
   {
@@ -1996,7 +1996,7 @@ uint64_t __76__ACHWorkoutAwardingSource__earnedInstancesForWorkoutsInDateInterva
 
         v18 = *(*(&v28 + 1) + 8 * i);
         v19 = objc_autoreleasePoolPush();
-        [(ACHWorkoutAwardingSource *)v12 _appendEarnedInstancesForWorkout:v18 toSet:v27 templates:v9 calendar:v26 numberOfDaysInWeek:v25 + v24 predicates:v10 firstDayOfFitnessWeek:v11 watchCountryCode:v13 error:0];
+        [(ACHWorkoutAwardingSource *)selfCopy _appendEarnedInstancesForWorkout:v18 toSet:v27 templates:v9 calendar:hk_gregorianCalendar numberOfDaysInWeek:v25 + v24 predicates:v10 firstDayOfFitnessWeek:v11 watchCountryCode:watchCountryCode error:0];
         objc_autoreleasePoolPop(v19);
       }
 
@@ -2015,29 +2015,29 @@ uint64_t __76__ACHWorkoutAwardingSource__earnedInstancesForWorkoutsInDateInterva
 
 - (BOOL)_isMetricLocale
 {
-  v3 = [(ACHWorkoutAwardingSource *)self injectedIsMetricLocale];
-  if (v3)
+  injectedIsMetricLocale = [(ACHWorkoutAwardingSource *)self injectedIsMetricLocale];
+  if (injectedIsMetricLocale)
   {
-    v4 = [(ACHWorkoutAwardingSource *)self injectedIsMetricLocale];
-    v5 = [v4 BOOLValue];
+    injectedIsMetricLocale2 = [(ACHWorkoutAwardingSource *)self injectedIsMetricLocale];
+    bOOLValue = [injectedIsMetricLocale2 BOOLValue];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEAF8] currentLocale];
-    v5 = [v4 usesMetricSystem];
+    injectedIsMetricLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+    bOOLValue = [injectedIsMetricLocale2 usesMetricSystem];
   }
 
-  v6 = v5;
+  v6 = bOOLValue;
 
   return v6;
 }
 
 - (id)watchCountryCode
 {
-  v3 = [(ACHWorkoutAwardingSource *)self watchCountryCodeOverride];
+  watchCountryCodeOverride = [(ACHWorkoutAwardingSource *)self watchCountryCodeOverride];
 
-  if (v3)
+  if (watchCountryCodeOverride)
   {
     [(ACHWorkoutAwardingSource *)self watchCountryCodeOverride];
   }
@@ -2051,12 +2051,12 @@ uint64_t __76__ACHWorkoutAwardingSource__earnedInstancesForWorkoutsInDateInterva
   return v4;
 }
 
-- (void)_unit_test_setHistoricalRunCompleteVersion:(int64_t)a3
+- (void)_unit_test_setHistoricalRunCompleteVersion:(int64_t)version
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v6 = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
-  [v6 setObject:v5 forKeyedSubscript:@"WorkoutHistoricalRunCompleteVersion"];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:version];
+  workoutRecordsByKey = [(ACHWorkoutAwardingSource *)self workoutRecordsByKey];
+  [workoutRecordsByKey setObject:v5 forKeyedSubscript:@"WorkoutHistoricalRunCompleteVersion"];
 
   os_unfair_lock_unlock(&self->_lock);
 }

@@ -1,20 +1,20 @@
 @interface DOCFolderIcon
 - (DOCFolderIcon)init;
-- (DOCFolderIcon)initWithNode:(id)a3 size:(CGSize)a4 scale:(double)a5;
+- (DOCFolderIcon)initWithNode:(id)node size:(CGSize)size scale:(double)scale;
 - (id)imageWithMinimalIO;
-- (void)fetchImageWithCompletionHandler:(id)a3;
+- (void)fetchImageWithCompletionHandler:(id)handler;
 @end
 
 @implementation DOCFolderIcon
 
-- (DOCFolderIcon)initWithNode:(id)a3 size:(CGSize)a4 scale:(double)a5
+- (DOCFolderIcon)initWithNode:(id)node size:(CGSize)size scale:(double)scale
 {
   v5 = self + OBJC_IVAR___DOCFolderIcon_fetcher;
-  *v5 = a3;
+  *v5 = node;
   *(v5 + 1) = 0;
   v5[16] = 1;
-  *(v5 + 24) = a4;
-  *(v5 + 5) = a5;
+  *(v5 + 24) = size;
+  *(v5 + 5) = scale;
   *(v5 + 6) = 0;
   v7.receiver = self;
   v7.super_class = DOCFolderIcon;
@@ -37,13 +37,13 @@
   return v3;
 }
 
-- (void)fetchImageWithCompletionHandler:(id)a3
+- (void)fetchImageWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EF19670, &qword_249D07600);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -59,7 +59,7 @@
   v13[3] = 0;
   v13[4] = &unk_249D07620;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_249CF99D8(0, 0, v8, &unk_249D07630, v13);
 }
 

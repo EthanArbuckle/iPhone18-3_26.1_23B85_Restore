@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (BOOL)_gateCheckOk;
 - (NRTailspinCapture)init;
-- (void)captureForApp:(id)a3 startEdge:(unint64_t)a4;
+- (void)captureForApp:(id)app startEdge:(unint64_t)edge;
 @end
 
 @implementation NRTailspinCapture
@@ -38,8 +38,8 @@
     v6 = objc_alloc_init(NSDateFormatter);
     [(NRTailspinCapture *)v2 setFormatter:v6];
 
-    v7 = [(NRTailspinCapture *)v2 formatter];
-    [v7 setDateFormat:@"yyyyMMdd_HHmmSS"];
+    formatter = [(NRTailspinCapture *)v2 formatter];
+    [formatter setDateFormat:@"yyyyMMdd_HHmmSS"];
 
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("nanoregistry.tailspin", v8);
@@ -51,22 +51,22 @@
   return v2;
 }
 
-- (void)captureForApp:(id)a3 startEdge:(unint64_t)a4
+- (void)captureForApp:(id)app startEdge:(unint64_t)edge
 {
-  v6 = a3;
+  appCopy = app;
   Current = CFAbsoluteTimeGetCurrent();
   if ([(NRTailspinCapture *)self _gateCheckOk])
   {
-    v8 = [(NRTailspinCapture *)self queue];
+    queue = [(NRTailspinCapture *)self queue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100089088;
     v9[3] = &unk_100178608;
-    v10 = v6;
-    v11 = self;
-    v12 = a4;
+    v10 = appCopy;
+    selfCopy = self;
+    edgeCopy = edge;
     v13 = Current;
-    dispatch_async(v8, v9);
+    dispatch_async(queue, v9);
   }
 }
 

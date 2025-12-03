@@ -7,41 +7,41 @@
 - (BOOL)httpRequestSucceeded;
 - (BOOL)shouldProcessResponseBody;
 - (BOOL)urlRequestFailed;
-- (BOOL)willAcceptResponseContentType:(id)a3;
-- (PDURLRequestOperation)initWithDatabase:(id)a3;
+- (BOOL)willAcceptResponseContentType:(id)type;
+- (PDURLRequestOperation)initWithDatabase:(id)database;
 - (id)_createRequestTask;
 - (id)createNSURLRequest;
 - (id)createSessionIfNeeded;
 - (id)operationID;
-- (id)sessionTaskForRequest:(id)a3 withData:(id)a4;
+- (id)sessionTaskForRequest:(id)request withData:(id)data;
 - (id)statusReport;
 - (int64_t)clsErrorCodeForAuthenticationFailure;
 - (int64_t)errorCodeForRequest;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)_simulateResponseWithURL:(id)a3 statusCode:(int64_t)a4 headers:(id)a5 data:(id)a6 error:(id)a7;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)_simulateResponseWithURL:(id)l statusCode:(int64_t)code headers:(id)headers data:(id)data error:(id)error;
 - (void)abort;
-- (void)abortWithError:(id)a3;
-- (void)closeSession:(BOOL)a3;
+- (void)abortWithError:(id)error;
+- (void)closeSession:(BOOL)session;
 - (void)didCompleteProcessingResponse;
 - (void)execute;
 - (void)flushCachedData;
-- (void)handleHTTPStatusCode:(id)a3;
+- (void)handleHTTPStatusCode:(id)code;
 - (void)handleRequestError;
-- (void)handleResponseBody:(BOOL)a3;
-- (void)logHTTPHeaders:(id)a3 withMessage:(id)a4;
+- (void)handleResponseBody:(BOOL)body;
+- (void)logHTTPHeaders:(id)headers withMessage:(id)message;
 - (void)markAsFinished;
 - (void)prepareForNextRequest;
-- (void)prepareForNextRequestWithResponse:(id)a3;
+- (void)prepareForNextRequestWithResponse:(id)response;
 - (void)releaseResponse;
-- (void)requestCompletedWith:(id)a3 error:(id)a4;
+- (void)requestCompletedWith:(id)with error:(id)error;
 - (void)rescheduleOperation;
-- (void)sessionFailedWithError:(id)a3;
-- (void)setAuthHeadersForRequest:(id)a3;
-- (void)setHeadersForRequest:(id)a3;
+- (void)sessionFailedWithError:(id)error;
+- (void)setAuthHeadersForRequest:(id)request;
+- (void)setHeadersForRequest:(id)request;
 @end
 
 @implementation PDURLRequestOperation
@@ -94,11 +94,11 @@
   return v5;
 }
 
-- (PDURLRequestOperation)initWithDatabase:(id)a3
+- (PDURLRequestOperation)initWithDatabase:(id)database
 {
   v8.receiver = self;
   v8.super_class = PDURLRequestOperation;
-  v3 = [(PDOperation *)&v8 initWithDatabase:a3];
+  v3 = [(PDOperation *)&v8 initWithDatabase:database];
   v4 = v3;
   if (v3)
   {
@@ -121,17 +121,17 @@
   {
     v9.receiver = self;
     v9.super_class = PDURLRequestOperation;
-    v3 = [(PDOperation *)&v9 operationID];
+    operationID = [(PDOperation *)&v9 operationID];
     v4 = *(&self->_requestUUID + 2);
-    [NSString stringWithFormat:@"%@+%ld+%@", v3, v4, *(&self->_error + 2)];
+    [NSString stringWithFormat:@"%@+%ld+%@", operationID, v4, *(&self->_error + 2)];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PDURLRequestOperation;
-    v3 = [(PDOperation *)&v8 operationID];
-    [NSString stringWithFormat:@"%@+%ld", v3, *(&self->_requestUUID + 2), v7];
+    operationID = [(PDOperation *)&v8 operationID];
+    [NSString stringWithFormat:@"%@+%ld", operationID, *(&self->_requestUUID + 2), v7];
   }
   v5 = ;
 
@@ -140,26 +140,26 @@
 
 - (void)prepareForNextRequest
 {
-  v3 = [(PDURLRequestOperation *)self hasBigResponses];
+  hasBigResponses = [(PDURLRequestOperation *)self hasBigResponses];
   v4 = [PDURLResponse alloc];
-  v5 = [(PDURLRequestOperation *)self operationID];
-  v6 = sub_1001123FC(&v4->super.isa, v5, v3);
+  operationID = [(PDURLRequestOperation *)self operationID];
+  v6 = sub_1001123FC(&v4->super.isa, operationID, hasBigResponses);
 
   [(PDURLRequestOperation *)self prepareForNextRequestWithResponse:v6];
 }
 
-- (void)prepareForNextRequestWithResponse:(id)a3
+- (void)prepareForNextRequestWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = *(&self->_error + 2);
   v6 = +[NSUUID UUID];
   v7 = *(&self->_error + 2);
   *(&self->_error + 2) = v6;
 
   v8 = +[PDUserDefaults sharedDefaults];
-  v9 = [v8 enableVerboseLogging];
+  enableVerboseLogging = [v8 enableVerboseLogging];
 
-  if (v9)
+  if (enableVerboseLogging)
   {
     CLSInitLog();
     v10 = CLSLogOperations;
@@ -168,11 +168,11 @@
       v17 = v10;
       v18 = objc_opt_class();
       v19 = v18;
-      v20 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       v21 = 138543874;
       v22 = v18;
       v23 = 2114;
-      v24 = v20;
+      v24 = operationID;
       v25 = 2112;
       v26 = v5;
       _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "OPS: prepareForNextRequest %{public}@:%{public}@ (was %@)", &v21, 0x20u);
@@ -180,8 +180,8 @@
   }
 
   v11 = *(&self->_urlRequestAttempted + 2);
-  *(&self->_urlRequestAttempted + 2) = v4;
-  v12 = v4;
+  *(&self->_urlRequestAttempted + 2) = responseCopy;
+  v12 = responseCopy;
 
   v13 = sub_10009E7C0([PDURLOperationStats alloc], self);
   v14 = *(&self->_response + 2);
@@ -195,13 +195,13 @@
   *(&self->_request + 2) = 0;
 }
 
-- (id)sessionTaskForRequest:(id)a3 withData:(id)a4
+- (id)sessionTaskForRequest:(id)request withData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDOperation *)self isAborted];
+  requestCopy = request;
+  dataCopy = data;
+  isAborted = [(PDOperation *)self isAborted];
   v9 = 0;
-  if (v6 && (v8 & 1) == 0)
+  if (requestCopy && (isAborted & 1) == 0)
   {
     if ([(PDOperation *)self isAborted])
     {
@@ -211,19 +211,19 @@
 
     else
     {
-      v10 = [(PDURLRequestOperation *)self createSessionIfNeeded];
+      createSessionIfNeeded = [(PDURLRequestOperation *)self createSessionIfNeeded];
       v11 = *(&self->_clsErrorCode + 2);
-      *(&self->_clsErrorCode + 2) = v10;
+      *(&self->_clsErrorCode + 2) = createSessionIfNeeded;
 
       v12 = *(&self->_clsErrorCode + 2);
-      if (v7)
+      if (dataCopy)
       {
-        [v12 uploadTaskWithRequest:v6 fromData:v7];
+        [v12 uploadTaskWithRequest:requestCopy fromData:dataCopy];
       }
 
       else
       {
-        [v12 dataTaskWithRequest:v6];
+        [v12 dataTaskWithRequest:requestCopy];
       }
       v9 = ;
     }
@@ -234,9 +234,9 @@
 
 - (id)_createRequestTask
 {
-  v3 = [(PDURLRequestOperation *)self createNSURLRequest];
+  createNSURLRequest = [(PDURLRequestOperation *)self createNSURLRequest];
   v4 = *(&self->_wantsToExecute + 2);
-  *(&self->_wantsToExecute + 2) = v3;
+  *(&self->_wantsToExecute + 2) = createNSURLRequest;
 
   if ([(PDOperation *)self isAborted])
   {
@@ -257,9 +257,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v5 = [(PDURLRequestOperation *)self requestData];
+  requestData = [(PDURLRequestOperation *)self requestData];
   v6 = *(&self->_acceptContentType + 2);
-  *(&self->_acceptContentType + 2) = v5;
+  *(&self->_acceptContentType + 2) = requestData;
 
   v7 = [*(&self->_acceptContentType + 2) length];
   v8 = *(&self->_response + 2);
@@ -279,11 +279,11 @@ LABEL_12:
     [(PDURLRequestOperation *)self abort];
   }
 
-  v10 = [*(&self->_wantsToExecute + 2) allHTTPHeaderFields];
+  allHTTPHeaderFields = [*(&self->_wantsToExecute + 2) allHTTPHeaderFields];
   v11 = objc_opt_class();
-  v12 = [(PDURLRequestOperation *)self operationID];
-  v13 = [NSString stringWithFormat:@"%@:%@ Request headers:", v11, v12];
-  [(PDURLRequestOperation *)self logHTTPHeaders:v10 withMessage:v13];
+  operationID = [(PDURLRequestOperation *)self operationID];
+  v13 = [NSString stringWithFormat:@"%@:%@ Request headers:", v11, operationID];
+  [(PDURLRequestOperation *)self logHTTPHeaders:allHTTPHeaderFields withMessage:v13];
 
 LABEL_13:
 
@@ -306,11 +306,11 @@ LABEL_13:
           v9 = v8;
           v10 = objc_opt_class();
           v11 = v10;
-          v12 = [(PDURLRequestOperation *)self operationID];
+          operationID = [(PDURLRequestOperation *)self operationID];
           v18 = 138543618;
           v19 = v10;
           v20 = 2114;
-          v21 = v12;
+          v21 = operationID;
           _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "OPS: execution limited %{public}@:%{public}@", &v18, 0x16u);
         }
 
@@ -325,9 +325,9 @@ LABEL_13:
       else
       {
         v4 = +[PDUserDefaults sharedDefaults];
-        v5 = [v4 enableVerboseLogging];
+        enableVerboseLogging = [v4 enableVerboseLogging];
 
-        if (v5)
+        if (enableVerboseLogging)
         {
           CLSInitLog();
           v6 = CLSLogOperations;
@@ -346,13 +346,13 @@ LABEL_13:
             v14 = v6;
             v15 = objc_opt_class();
             v16 = v15;
-            v17 = [(PDURLRequestOperation *)self operationID];
+            operationID2 = [(PDURLRequestOperation *)self operationID];
             v18 = 138412802;
             v19 = v13;
             v20 = 2114;
             v21 = v15;
             v22 = 2114;
-            v23 = v17;
+            v23 = operationID2;
             _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "OPS: executing %@%{public}@:%{public}@", &v18, 0x20u);
           }
         }
@@ -360,11 +360,11 @@ LABEL_13:
         ++*(&self->_requestUUID + 2);
         BYTE2(self->_executionsCount) = 0;
         [(PDURLRequestOperation *)self prepareForNextRequest];
-        v7 = [(PDURLRequestOperation *)self _createRequestTask];
-        if (v7)
+        _createRequestTask = [(PDURLRequestOperation *)self _createRequestTask];
+        if (_createRequestTask)
         {
           [(PDURLRequestOperation *)self setUrlRequestAttempted:1];
-          [v7 resume];
+          [_createRequestTask resume];
         }
       }
     }
@@ -380,9 +380,9 @@ LABEL_13:
 - (void)rescheduleOperation
 {
   v3 = +[PDUserDefaults sharedDefaults];
-  v4 = [v3 enableVerboseLogging];
+  enableVerboseLogging = [v3 enableVerboseLogging];
 
-  if (v4)
+  if (enableVerboseLogging)
   {
     CLSInitLog();
     v5 = CLSLogOperations;
@@ -391,11 +391,11 @@ LABEL_13:
       v6 = v5;
       v7 = objc_opt_class();
       v8 = v7;
-      v9 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       v10 = 138543618;
       v11 = v7;
       v12 = 2114;
-      v13 = v9;
+      v13 = operationID;
       _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "OPS: rescheduled %{public}@:%{public}@", &v10, 0x16u);
     }
   }
@@ -414,16 +414,16 @@ LABEL_13:
   }
 }
 
-- (BOOL)willAcceptResponseContentType:(id)a3
+- (BOOL)willAcceptResponseContentType:(id)type
 {
-  v4 = a3;
-  v5 = [(PDURLRequestOperation *)self acceptContentType];
-  v6 = v5;
-  v7 = (v4 | v5) == 0;
-  if (v4 && v5)
+  typeCopy = type;
+  acceptContentType = [(PDURLRequestOperation *)self acceptContentType];
+  v6 = acceptContentType;
+  v7 = (typeCopy | acceptContentType) == 0;
+  if (typeCopy && acceptContentType)
   {
-    v8 = [(PDURLRequestOperation *)self acceptContentType];
-    v7 = [v4 caseInsensitiveCompare:v8] == 0;
+    acceptContentType2 = [(PDURLRequestOperation *)self acceptContentType];
+    v7 = [typeCopy caseInsensitiveCompare:acceptContentType2] == 0;
   }
 
   return v7;
@@ -439,48 +439,48 @@ LABEL_13:
   else
   {
     v4 = [(PDURLRequestOperation *)self URL];
-    v5 = [(PDOperation *)self database];
-    if (v4 && ([v4 host], v6 = objc_claimAutoreleasedReturnValue(), v7 = sub_10006F644(v5, v6), v6, (v7 & 1) != 0))
+    database = [(PDOperation *)self database];
+    if (v4 && ([v4 host], v6 = objc_claimAutoreleasedReturnValue(), v7 = sub_10006F644(database, v6), v6, (v7 & 1) != 0))
     {
       v8 = +[PDUserDefaults sharedDefaults];
-      v9 = [v8 enableVerboseLogging];
+      enableVerboseLogging = [v8 enableVerboseLogging];
 
-      if (v9)
+      if (enableVerboseLogging)
       {
         CLSInitLog();
-        v10 = [(PDOperation *)self logSubsystem];
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+        logSubsystem = [(PDOperation *)self logSubsystem];
+        if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
         {
           v15 = objc_opt_class();
           v16 = v15;
-          v17 = [(PDURLRequestOperation *)self operationID];
+          operationID = [(PDURLRequestOperation *)self operationID];
           v18 = [(PDURLRequestOperation *)self URL];
           v19 = 138543874;
           v20 = v15;
           v21 = 2114;
-          v22 = v17;
+          v22 = operationID;
           v23 = 2114;
           v24 = v18;
-          _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%{public}@:%{public}@ Creating request for url: %{public}@", &v19, 0x20u);
+          _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@:%{public}@ Creating request for url: %{public}@", &v19, 0x20u);
         }
       }
 
       v11 = [NSMutableURLRequest alloc];
       [(PDURLRequestOperation *)self timeoutIntervalForRequest];
       v3 = [v11 initWithURL:v4 cachePolicy:1 timeoutInterval:?];
-      v12 = [(PDURLRequestOperation *)self httpMethod];
-      [v3 setHTTPMethod:v12];
+      httpMethod = [(PDURLRequestOperation *)self httpMethod];
+      [v3 setHTTPMethod:httpMethod];
     }
 
     else
     {
       CLSInitLog();
-      v13 = [(PDOperation *)self logSubsystem];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      logSubsystem2 = [(PDOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138412290;
         v20 = v4;
-        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Unable to make request. Host for URL: %@ not allowed.", &v19, 0xCu);
+        _os_log_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEFAULT, "Unable to make request. Host for URL: %@ not allowed.", &v19, 0xCu);
       }
 
       [(PDURLRequestOperation *)self abort];
@@ -491,29 +491,29 @@ LABEL_13:
   return v3;
 }
 
-- (void)setHeadersForRequest:(id)a3
+- (void)setHeadersForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (*(&self->_error + 2))
   {
     v5 = [NSString stringWithFormat:@"%@", *(&self->_error + 2)];
-    [v4 setValue:v5 forHTTPHeaderField:@"X-Apple-Request-UUID"];
+    [requestCopy setValue:v5 forHTTPHeaderField:@"X-Apple-Request-UUID"];
   }
 
   v6 = [NSNumber numberWithUnsignedInteger:*(&self->_requestUUID + 2)];
-  v7 = [v6 stringValue];
-  [v4 setValue:v7 forHTTPHeaderField:@"X-Apple-ClassKit-ExecutionCount"];
+  stringValue = [v6 stringValue];
+  [requestCopy setValue:stringValue forHTTPHeaderField:@"X-Apple-ClassKit-ExecutionCount"];
 
-  v8 = [(PDURLRequestOperation *)self requestContentType];
-  if ([v8 length])
+  requestContentType = [(PDURLRequestOperation *)self requestContentType];
+  if ([requestContentType length])
   {
-    [v4 setValue:v8 forHTTPHeaderField:@"Content-Type"];
+    [requestCopy setValue:requestContentType forHTTPHeaderField:@"Content-Type"];
   }
 
-  v9 = [(PDURLRequestOperation *)self acceptContentType];
-  if ([v9 length])
+  acceptContentType = [(PDURLRequestOperation *)self acceptContentType];
+  if ([acceptContentType length])
   {
-    [v4 setValue:v9 forHTTPHeaderField:@"Accept"];
+    [requestCopy setValue:acceptContentType forHTTPHeaderField:@"Accept"];
   }
 
   if (qword_10024DB10 != -1)
@@ -523,7 +523,7 @@ LABEL_13:
 
   if (byte_10024DAF8 == 1)
   {
-    [v4 setValue:@"yes" forHTTPHeaderField:@"X-Apple-ClassKit-Dev"];
+    [requestCopy setValue:@"yes" forHTTPHeaderField:@"X-Apple-ClassKit-Dev"];
   }
 
   if (qword_10024DB18 != -1)
@@ -533,25 +533,25 @@ LABEL_13:
 
   if (byte_10024DAF9 == 1)
   {
-    [v4 setValue:@"1" forHTTPHeaderField:@"X-Apple-Canary-Request"];
+    [requestCopy setValue:@"1" forHTTPHeaderField:@"X-Apple-Canary-Request"];
   }
 
   if ([(PDURLRequestOperation *)self requiresAuth])
   {
-    [(PDURLRequestOperation *)self setAuthHeadersForRequest:v4];
+    [(PDURLRequestOperation *)self setAuthHeadersForRequest:requestCopy];
   }
 
-  v10 = [(PDURLRequestOperation *)self customRequestHeaders];
-  v11 = v10;
-  if (v10)
+  customRequestHeaders = [(PDURLRequestOperation *)self customRequestHeaders];
+  v11 = customRequestHeaders;
+  if (customRequestHeaders)
   {
-    v22 = v8;
+    v22 = requestContentType;
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = [v10 allKeys];
-    v13 = [v12 countByEnumeratingWithState:&v23 objects:v29 count:16];
+    allKeys = [customRequestHeaders allKeys];
+    v13 = [allKeys countByEnumeratingWithState:&v23 objects:v29 count:16];
     if (v13)
     {
       v14 = v13;
@@ -562,46 +562,46 @@ LABEL_13:
         {
           if (*v24 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allKeys);
           }
 
           v17 = *(*(&v23 + 1) + 8 * i);
           v18 = [v11 objectForKeyedSubscript:v17];
-          [v4 setValue:v18 forHTTPHeaderField:v17];
+          [requestCopy setValue:v18 forHTTPHeaderField:v17];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v23 objects:v29 count:16];
+        v14 = [allKeys countByEnumeratingWithState:&v23 objects:v29 count:16];
       }
 
       while (v14);
     }
 
-    v8 = v22;
+    requestContentType = v22;
   }
 
   v19 = sub_1000B2730();
   if ([v19 length])
   {
-    [v4 setValue:v19 forHTTPHeaderField:@"X-Schoolwork-Info"];
+    [requestCopy setValue:v19 forHTTPHeaderField:@"X-Schoolwork-Info"];
   }
 
-  v20 = [objc_opt_class() setAppleInternalHeadersForRequest:v4];
+  v20 = [objc_opt_class() setAppleInternalHeadersForRequest:requestCopy];
   if (v20)
   {
     CLSInitLog();
-    v21 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    logSubsystem = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v28 = v20;
-      _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to add Apple Headers. Error: %{public}@", buf, 0xCu);
+      _os_log_error_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_ERROR, "Failed to add Apple Headers. Error: %{public}@", buf, 0xCu);
     }
   }
 }
 
-- (void)setAuthHeadersForRequest:(id)a3
+- (void)setAuthHeadersForRequest:(id)request
 {
-  v7 = a3;
+  requestCopy = request;
   if (![(PDOperation *)self isAborted])
   {
     v4 = sub_10003E1B4();
@@ -618,31 +618,31 @@ LABEL_13:
       }
 
       v6 = v5;
-      [v7 setValue:v6 forHTTPHeaderField:@"X-Apple-Alternate-Id"];
+      [requestCopy setValue:v6 forHTTPHeaderField:@"X-Apple-Alternate-Id"];
     }
   }
 }
 
-- (void)logHTTPHeaders:(id)a3 withMessage:(id)a4
+- (void)logHTTPHeaders:(id)headers withMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  headersCopy = headers;
+  messageCopy = message;
   CLSInitLog();
-  v8 = [(PDOperation *)self logSubsystem];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  logSubsystem = [(PDOperation *)self logSubsystem];
+  if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v24 = v7;
-    _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%@ {", buf, 0xCu);
+    v24 = messageCopy;
+    _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%@ {", buf, 0xCu);
   }
 
-  v18 = v7;
+  v18 = messageCopy;
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v6;
+  v9 = headersCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v10)
   {
@@ -660,15 +660,15 @@ LABEL_13:
 
         v14 = *(*(&v19 + 1) + 8 * v13);
         CLSInitLog();
-        v15 = [(PDOperation *)self logSubsystem];
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+        logSubsystem2 = [(PDOperation *)self logSubsystem];
+        if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
         {
           v16 = [v9 objectForKeyedSubscript:v14];
           *buf = 138412546;
           v24 = v14;
           v25 = 2112;
           v26 = v16;
-          _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "    %@: %@", buf, 0x16u);
+          _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "    %@: %@", buf, 0x16u);
         }
 
         v13 = v13 + 1;
@@ -682,11 +682,11 @@ LABEL_13:
   }
 
   CLSInitLog();
-  v17 = [(PDOperation *)self logSubsystem];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+  logSubsystem3 = [(PDOperation *)self logSubsystem];
+  if (os_log_type_enabled(logSubsystem3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 0;
-    _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "}", buf, 2u);
+    _os_log_debug_impl(&_mh_execute_header, logSubsystem3, OS_LOG_TYPE_DEBUG, "}", buf, 2u);
   }
 }
 
@@ -705,12 +705,12 @@ LABEL_13:
     v10 = v4;
     v21 = objc_opt_class();
     v12 = v21;
-    v13 = [(PDURLRequestOperation *)self operationID];
+    operationID = [(PDURLRequestOperation *)self operationID];
     v22 = *(&self->_responseFailureCause + 2);
     v23 = 138543874;
     v24 = v21;
     v25 = 2114;
-    v26 = v13;
+    v26 = operationID;
     v27 = 2048;
     v28 = v22;
     v15 = "%{public}@:%{public}@ Network layer error (clsErrorCode:%ld)";
@@ -720,8 +720,8 @@ LABEL_13:
   v6 = *(&self->super._executing + 1);
   if (v6)
   {
-    v7 = [v6 domain];
-    v8 = [NSURLErrorDomain isEqualToString:v7];
+    domain = [v6 domain];
+    v8 = [NSURLErrorDomain isEqualToString:domain];
 
     if (v8)
     {
@@ -735,14 +735,14 @@ LABEL_13:
       v10 = v9;
       v11 = objc_opt_class();
       v12 = v11;
-      v13 = [(PDURLRequestOperation *)self operationID];
-      v14 = [*(&self->super._executing + 1) code];
+      operationID = [(PDURLRequestOperation *)self operationID];
+      code = [*(&self->super._executing + 1) code];
       v23 = 138543874;
       v24 = v11;
       v25 = 2114;
-      v26 = v13;
+      v26 = operationID;
       v27 = 2048;
-      v28 = v14;
+      v28 = code;
       v15 = "%{public}@:%{public}@ Network layer error (code:%ld)";
 LABEL_15:
       _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, v15, &v23, 0x20u);
@@ -755,9 +755,9 @@ LABEL_16:
   if (![(PDURLRequestOperation *)self httpRequestCompleted])
   {
     v16 = +[PDUserDefaults sharedDefaults];
-    v17 = [v16 enableVerboseLogging];
+    enableVerboseLogging = [v16 enableVerboseLogging];
 
-    if (!v17)
+    if (!enableVerboseLogging)
     {
       return 1;
     }
@@ -772,11 +772,11 @@ LABEL_16:
     v10 = v18;
     v19 = objc_opt_class();
     v12 = v19;
-    v20 = [(PDURLRequestOperation *)self operationID];
+    operationID2 = [(PDURLRequestOperation *)self operationID];
     v23 = 138543618;
     v24 = v19;
     v25 = 2114;
-    v26 = v20;
+    v26 = operationID2;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%{public}@:%{public}@ !httpRequestCompleted", &v23, 0x16u);
 
     goto LABEL_16;
@@ -803,9 +803,9 @@ LABEL_16:
     return 0;
   }
 
-  v3 = [(PDURLRequestOperation *)self response];
-  v4 = v3;
-  v6 = v3 && (v5 = *(v3 + 56)) != 0 && [v5 statusCode] - 200 < 0x64;
+  response = [(PDURLRequestOperation *)self response];
+  v4 = response;
+  v6 = response && (v5 = *(response + 56)) != 0 && [v5 statusCode] - 200 < 0x64;
 
   return v6;
 }
@@ -817,35 +817,35 @@ LABEL_16:
     return 0;
   }
 
-  v3 = [(PDURLRequestOperation *)self response];
-  v4 = v3;
-  v6 = v3 && (v5 = *(v3 + 56)) != 0 && [v5 statusCode] - 400 < 0xC8;
+  response = [(PDURLRequestOperation *)self response];
+  v4 = response;
+  v6 = response && (v5 = *(response + 56)) != 0 && [v5 statusCode] - 400 < 0xC8;
 
   return v6;
 }
 
 - (BOOL)httpRequestHadTimeoutError
 {
-  v3 = [(PDURLRequestOperation *)self httpRequestCompleted];
-  if (v3)
+  httpRequestCompleted = [(PDURLRequestOperation *)self httpRequestCompleted];
+  if (httpRequestCompleted)
   {
-    v4 = [(PDURLRequestOperation *)self response];
-    if (!v4)
+    response = [(PDURLRequestOperation *)self response];
+    if (!response)
     {
       goto LABEL_5;
     }
 
-    v5 = v4;
-    v6 = *(v4 + 56);
+    v5 = response;
+    v6 = *(response + 56);
     if (v6)
     {
-      v7 = [v6 statusCode];
+      statusCode = [v6 statusCode];
 
-      if (v7 != -1)
+      if (statusCode != -1)
       {
 LABEL_5:
-        LOBYTE(v3) = 0;
-        return v3;
+        LOBYTE(httpRequestCompleted) = 0;
+        return httpRequestCompleted;
       }
     }
 
@@ -854,17 +854,17 @@ LABEL_5:
     }
 
     v8 = objc_opt_class();
-    v9 = [(PDURLRequestOperation *)self operationID];
-    v10 = [NSString stringWithFormat:@"%@:%@ Timeout error error: %ld %@", v8, v9, -1, *(&self->_request + 2)];
+    operationID = [(PDURLRequestOperation *)self operationID];
+    v10 = [NSString stringWithFormat:@"%@:%@ Timeout error error: %ld %@", v8, operationID, -1, *(&self->_request + 2)];
     v11 = [NSError cls_createErrorWithCode:320 description:v10];
     v12 = *(&self->super._executing + 1);
     *(&self->super._executing + 1) = v11;
 
     *(&self->_responseFailureCause + 2) = 320;
-    LOBYTE(v3) = 1;
+    LOBYTE(httpRequestCompleted) = 1;
   }
 
-  return v3;
+  return httpRequestCompleted;
 }
 
 - (void)releaseResponse
@@ -890,18 +890,18 @@ LABEL_5:
 - (void)didCompleteProcessingResponse
 {
   [(PDURLRequestOperation *)self releaseResponse];
-  v3 = [(PDURLRequestOperation *)self stats];
-  sub_10009ECCC(v3);
+  stats = [(PDURLRequestOperation *)self stats];
+  sub_10009ECCC(stats);
 }
 
-- (void)handleResponseBody:(BOOL)a3
+- (void)handleResponseBody:(BOOL)body
 {
-  v3 = a3;
-  v5 = [(PDURLRequestOperation *)self stats];
-  sub_10009EC7C(v5);
+  bodyCopy = body;
+  stats = [(PDURLRequestOperation *)self stats];
+  sub_10009EC7C(stats);
 
   v6 = 0;
-  if ([(PDURLRequestOperation *)self shouldProcessResponseBody]&& v3)
+  if ([(PDURLRequestOperation *)self shouldProcessResponseBody]&& bodyCopy)
   {
     v25 = 0;
     v6 = [(PDURLRequestOperation *)self processResponse:&v25];
@@ -909,19 +909,19 @@ LABEL_5:
     if (v7)
     {
       CLSInitLog();
-      v8 = [(PDOperation *)self logSubsystem];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      logSubsystem = [(PDOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEFAULT))
       {
         v9 = objc_opt_class();
         v10 = v9;
-        v11 = [(PDURLRequestOperation *)self operationID];
+        operationID = [(PDURLRequestOperation *)self operationID];
         *buf = 138543874;
         v27 = v9;
         v28 = 2114;
-        v29 = v11;
+        v29 = operationID;
         v30 = 2114;
         v31 = v7;
-        _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@:%{public}@ request processing failed error: %{public}@", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEFAULT, "%{public}@:%{public}@ request processing failed error: %{public}@", buf, 0x20u);
       }
 
       [(PDURLRequestOperation *)self abortWithError:v7];
@@ -935,8 +935,8 @@ LABEL_5:
   if (os_log_type_enabled(CLSLogOperations, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
-    v14 = [(PDURLRequestOperation *)self stats];
-    v15 = sub_10009ED44(v14);
+    stats2 = [(PDURLRequestOperation *)self stats];
+    v15 = sub_10009ED44(stats2);
     *buf = 138543362;
     v27 = v15;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "STATS=req:%{public}@", buf, 0xCu);
@@ -947,8 +947,8 @@ LABEL_5:
   if (os_log_type_enabled(CLSLogOperations, OS_LOG_TYPE_DEFAULT))
   {
     v17 = v16;
-    v18 = [(PDURLRequestOperation *)self stats];
-    v19 = sub_10009EDA4(v18);
+    stats3 = [(PDURLRequestOperation *)self stats];
+    v19 = sub_10009EDA4(stats3);
     *buf = 138543362;
     v27 = v19;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "STATS=resp:%{public}@", buf, 0xCu);
@@ -956,10 +956,10 @@ LABEL_5:
 
   v20 = sub_1000B51E4();
   v21 = sub_1000B51E4();
-  v22 = [(PDURLRequestOperation *)self statusReport];
-  v23 = sub_1000B5648(v21, v22);
-  v24 = [(PDOperation *)self database];
-  sub_1000B5E40(v20, v23, v24);
+  statusReport = [(PDURLRequestOperation *)self statusReport];
+  v23 = sub_1000B5648(v21, statusReport);
+  database = [(PDOperation *)self database];
+  sub_1000B5E40(v20, v23, database);
 
   if (v6)
   {
@@ -983,36 +983,36 @@ LABEL_5:
   *(&self->_request + 2) = 0;
 }
 
-- (void)abortWithError:(id)a3
+- (void)abortWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v11.receiver = self;
   v11.super_class = PDURLRequestOperation;
-  [(PDOperation *)&v11 abortWithError:v4];
-  if (v4 && !*(&self->_responseFailureCause + 2))
+  [(PDOperation *)&v11 abortWithError:errorCopy];
+  if (errorCopy && !*(&self->_responseFailureCause + 2))
   {
-    v5 = [v4 cls_underlyingErrorWithDomain:CLSErrorCodeDomain];
+    v5 = [errorCopy cls_underlyingErrorWithDomain:CLSErrorCodeDomain];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 code];
+      code = [v5 code];
     }
 
     else
     {
-      v7 = 100;
+      code = 100;
     }
 
-    *(&self->_responseFailureCause + 2) = v7;
-    v8 = [(PDURLRequestOperation *)self stats];
+    *(&self->_responseFailureCause + 2) = code;
+    stats = [(PDURLRequestOperation *)self stats];
 
-    if (v8)
+    if (stats)
     {
       v9 = *(&self->_responseFailureCause + 2);
-      v10 = [(PDURLRequestOperation *)self stats];
-      if (v10)
+      stats2 = [(PDURLRequestOperation *)self stats];
+      if (stats2)
       {
-        v10[13] = v9;
+        stats2[13] = v9;
       }
     }
   }
@@ -1041,25 +1041,25 @@ LABEL_5:
     return 0;
   }
 
-  v4 = [(PDURLRequestOperation *)self response];
-  v5 = v4;
-  if (!v4 || (v6 = *(v4 + 56)) == 0)
+  response = [(PDURLRequestOperation *)self response];
+  v5 = response;
+  if (!response || (v6 = *(response + 56)) == 0)
   {
 
     return 100;
   }
 
-  v7 = [v6 statusCode];
+  statusCode = [v6 statusCode];
 
-  if (v7 >= 500)
+  if (statusCode >= 500)
   {
-    if (v7 != 503)
+    if (statusCode != 503)
     {
       return 303;
     }
 
-    v8 = [(PDURLRequestOperation *)self response];
-    v9 = sub_100112E70(v8, @"Retry-After");
+    response2 = [(PDURLRequestOperation *)self response];
+    v9 = sub_100112E70(response2, @"Retry-After");
 
     if (v9)
     {
@@ -1072,12 +1072,12 @@ LABEL_5:
     }
   }
 
-  if (v7 < 400)
+  if (statusCode < 400)
   {
     return 100;
   }
 
-  if (v7 != 401)
+  if (statusCode != 401)
   {
     return 302;
   }
@@ -1085,29 +1085,29 @@ LABEL_5:
   return [(PDURLRequestOperation *)self clsErrorCodeForAuthenticationFailure];
 }
 
-- (void)handleHTTPStatusCode:(id)a3
+- (void)handleHTTPStatusCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   if ([(PDURLRequestOperation *)self httpRequestCompleted]&& ![(PDURLRequestOperation *)self httpRequestSucceeded])
   {
     CLSInitLog();
-    v5 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    logSubsystem = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEFAULT))
     {
       v6 = objc_opt_class();
       v7 = v6;
-      v8 = [(PDURLRequestOperation *)self operationID];
-      v9 = [v4 statusCode];
-      v10 = [v4 URL];
+      operationID = [(PDURLRequestOperation *)self operationID];
+      statusCode = [codeCopy statusCode];
+      v10 = [codeCopy URL];
       *buf = 138544130;
       v26 = v6;
       v27 = 2114;
-      v28 = v8;
+      v28 = operationID;
       v29 = 2048;
-      v30 = v9;
+      v30 = statusCode;
       v31 = 2112;
       v32 = v10;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@:%{public}@ Received %ld response for request url: %@", buf, 0x2Au);
+      _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEFAULT, "%{public}@:%{public}@ Received %ld response for request url: %@", buf, 0x2Au);
     }
 
     v11 = sub_100112C30(*(&self->_urlRequestAttempted + 2));
@@ -1119,28 +1119,28 @@ LABEL_5:
       v11 = [v12 initWithData:v13 encoding:4];
     }
 
-    v14 = [(PDURLRequestOperation *)self response];
-    v15 = sub_100112E70(v14, @"X-Orion-Failure-Cause");
+    response = [(PDURLRequestOperation *)self response];
+    v15 = sub_100112E70(response, @"X-Orion-Failure-Cause");
     v16 = *(&self->_request + 2);
     *(&self->_request + 2) = v15;
 
     if (!*(&self->super._executing + 1))
     {
-      v17 = [(PDURLRequestOperation *)self errorCodeForRequest];
-      *(&self->_responseFailureCause + 2) = v17;
+      errorCodeForRequest = [(PDURLRequestOperation *)self errorCodeForRequest];
+      *(&self->_responseFailureCause + 2) = errorCodeForRequest;
       v18 = objc_opt_class();
-      v19 = [(PDURLRequestOperation *)self operationID];
-      v20 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@:%@ Server returned error: %ld %@ data: %@", v18, v19, [v4 statusCode], *(&self->_request + 2), v11);
-      v21 = [NSError cls_createErrorWithCode:v17 description:v20];
+      operationID2 = [(PDURLRequestOperation *)self operationID];
+      v20 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@:%@ Server returned error: %ld %@ data: %@", v18, operationID2, [codeCopy statusCode], *(&self->_request + 2), v11);
+      v21 = [NSError cls_createErrorWithCode:errorCodeForRequest description:v20];
       v22 = *(&self->super._executing + 1);
       *(&self->super._executing + 1) = v21;
     }
 
     v23 = *(&self->_responseFailureCause + 2);
-    v24 = [(PDURLRequestOperation *)self stats];
-    if (v24)
+    stats = [(PDURLRequestOperation *)self stats];
+    if (stats)
     {
-      v24[13] = v23;
+      stats[13] = v23;
     }
   }
 }
@@ -1148,16 +1148,16 @@ LABEL_5:
 - (void)handleRequestError
 {
   CLSInitLog();
-  v3 = [(PDOperation *)self logSubsystem];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+  logSubsystem = [(PDOperation *)self logSubsystem];
+  if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_ERROR))
   {
-    v4 = [(PDURLRequestOperation *)self operationID];
+    operationID = [(PDURLRequestOperation *)self operationID];
     v5 = *(&self->super._executing + 1);
     v6 = 138543618;
-    v7 = v4;
+    v7 = operationID;
     v8 = 2114;
     v9 = v5;
-    _os_log_error_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "Request %{public}@ failed with error=%{public}@. Aborting the operation", &v6, 0x16u);
+    _os_log_error_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_ERROR, "Request %{public}@ failed with error=%{public}@. Aborting the operation", &v6, 0x16u);
   }
 
   [(PDURLRequestOperation *)self abortWithError:*(&self->super._executing + 1)];
@@ -1167,29 +1167,29 @@ LABEL_5:
 {
   v40.receiver = self;
   v40.super_class = PDURLRequestOperation;
-  v3 = [(PDAsyncOperation *)&v40 statusReport];
-  v4 = [(PDURLRequestOperation *)self response];
-  v5 = v4;
-  if (v4)
+  statusReport = [(PDAsyncOperation *)&v40 statusReport];
+  response = [(PDURLRequestOperation *)self response];
+  v5 = response;
+  if (response)
   {
-    v6 = *(v4 + 56);
+    v6 = *(response + 56);
     if (v6)
     {
-      v7 = [v6 statusCode];
+      statusCode = [v6 statusCode];
     }
 
     else
     {
-      v7 = -1;
+      statusCode = -1;
     }
   }
 
   else
   {
-    v7 = 0;
+    statusCode = 0;
   }
 
-  v8 = [NSNumber numberWithInteger:v7];
+  v8 = [NSNumber numberWithInteger:statusCode];
   v9 = v8;
   if (v8)
   {
@@ -1201,7 +1201,7 @@ LABEL_5:
     v10 = @"None";
   }
 
-  [v3 setObject:v10 forKeyedSubscript:@"httpStatusCode"];
+  [statusReport setObject:v10 forKeyedSubscript:@"httpStatusCode"];
 
   v11 = [NSNumber numberWithBool:[(PDURLRequestOperation *)self httpRequestCompleted]];
   v12 = v11;
@@ -1215,7 +1215,7 @@ LABEL_5:
     v13 = @"None";
   }
 
-  [v3 setObject:v13 forKeyedSubscript:@"httpRequestCompleted"];
+  [statusReport setObject:v13 forKeyedSubscript:@"httpRequestCompleted"];
 
   v14 = [NSNumber numberWithBool:[(PDURLRequestOperation *)self httpRequestSucceeded]];
   v15 = v14;
@@ -1229,18 +1229,18 @@ LABEL_5:
     v16 = @"None";
   }
 
-  [v3 setObject:v16 forKeyedSubscript:@"httpRequestSucceeded"];
+  [statusReport setObject:v16 forKeyedSubscript:@"httpRequestSucceeded"];
 
-  v17 = [(PDURLRequestOperation *)self stats];
-  v18 = sub_10009EED8(v17);
-  [v3 setObject:v18 forKeyedSubscript:@"stats"];
+  stats = [(PDURLRequestOperation *)self stats];
+  v18 = sub_10009EED8(stats);
+  [statusReport setObject:v18 forKeyedSubscript:@"stats"];
 
   v19 = [(PDURLRequestOperation *)self URL];
-  v20 = [v19 absoluteString];
-  v21 = v20;
-  if (v20)
+  absoluteString = [v19 absoluteString];
+  v21 = absoluteString;
+  if (absoluteString)
   {
-    v22 = v20;
+    v22 = absoluteString;
   }
 
   else
@@ -1248,13 +1248,13 @@ LABEL_5:
     v22 = @"None";
   }
 
-  [v3 setObject:v22 forKeyedSubscript:@"URL"];
+  [statusReport setObject:v22 forKeyedSubscript:@"URL"];
 
-  v23 = [(PDURLRequestOperation *)self httpMethod];
-  v24 = v23;
-  if (v23)
+  httpMethod = [(PDURLRequestOperation *)self httpMethod];
+  v24 = httpMethod;
+  if (httpMethod)
   {
-    v25 = v23;
+    v25 = httpMethod;
   }
 
   else
@@ -1262,13 +1262,13 @@ LABEL_5:
     v25 = @"None";
   }
 
-  [v3 setObject:v25 forKeyedSubscript:@"httpMethod"];
+  [statusReport setObject:v25 forKeyedSubscript:@"httpMethod"];
 
-  v26 = [(PDURLRequestOperation *)self requestContentType];
-  v27 = v26;
-  if (v26)
+  requestContentType = [(PDURLRequestOperation *)self requestContentType];
+  v27 = requestContentType;
+  if (requestContentType)
   {
-    v28 = v26;
+    v28 = requestContentType;
   }
 
   else
@@ -1276,13 +1276,13 @@ LABEL_5:
     v28 = @"None";
   }
 
-  [v3 setObject:v28 forKeyedSubscript:@"requestContentType"];
+  [statusReport setObject:v28 forKeyedSubscript:@"requestContentType"];
 
-  v29 = [(PDURLRequestOperation *)self acceptContentType];
-  v30 = v29;
-  if (v29)
+  acceptContentType = [(PDURLRequestOperation *)self acceptContentType];
+  v30 = acceptContentType;
+  if (acceptContentType)
   {
-    v31 = v29;
+    v31 = acceptContentType;
   }
 
   else
@@ -1290,17 +1290,17 @@ LABEL_5:
     v31 = @"None";
   }
 
-  [v3 setObject:v31 forKeyedSubscript:@"acceptContentType"];
+  [statusReport setObject:v31 forKeyedSubscript:@"acceptContentType"];
 
   [(PDURLRequestOperation *)self timeoutIntervalForRequest];
   v32 = [NSNumber numberWithDouble:?];
-  [v3 setObject:v32 forKeyedSubscript:@"timeoutIntervalForRequest"];
+  [statusReport setObject:v32 forKeyedSubscript:@"timeoutIntervalForRequest"];
 
-  v33 = [*(&self->_wantsToExecute + 2) allHTTPHeaderFields];
-  v34 = v33;
-  if (v33)
+  allHTTPHeaderFields = [*(&self->_wantsToExecute + 2) allHTTPHeaderFields];
+  v34 = allHTTPHeaderFields;
+  if (allHTTPHeaderFields)
   {
-    v35 = v33;
+    v35 = allHTTPHeaderFields;
   }
 
   else
@@ -1308,7 +1308,7 @@ LABEL_5:
     v35 = @"None";
   }
 
-  [v3 setObject:v35 forKeyedSubscript:@"requestHeaders"];
+  [statusReport setObject:v35 forKeyedSubscript:@"requestHeaders"];
 
   v36 = sub_100112E38(*(&self->_urlRequestAttempted + 2));
   v37 = v36;
@@ -1322,9 +1322,9 @@ LABEL_5:
     v38 = @"None";
   }
 
-  [v3 setObject:v38 forKeyedSubscript:@"responseHeaders"];
+  [statusReport setObject:v38 forKeyedSubscript:@"responseHeaders"];
 
-  return v3;
+  return statusReport;
 }
 
 - (id)createSessionIfNeeded
@@ -1343,8 +1343,8 @@ LABEL_5:
     v5 = +[PDURLRequestOperation appleIDSession];
     [v4 set_appleIDContext:v5];
 
-    v6 = [(PDOperation *)self sourceApplicationBundleIdentifier];
-    [v4 set_sourceApplicationBundleIdentifier:v6];
+    sourceApplicationBundleIdentifier = [(PDOperation *)self sourceApplicationBundleIdentifier];
+    [v4 set_sourceApplicationBundleIdentifier:sourceApplicationBundleIdentifier];
 
     [v4 setMultipathServiceType:2];
     v7 = [NSURLSession sessionWithConfiguration:v4 delegate:self delegateQueue:0];
@@ -1352,9 +1352,9 @@ LABEL_5:
     *(&self->_clsErrorCode + 2) = v7;
 
     v9 = +[PDUserDefaults sharedDefaults];
-    v10 = [v9 enableVerboseLogging];
+    enableVerboseLogging = [v9 enableVerboseLogging];
 
-    if (v10)
+    if (enableVerboseLogging)
     {
       CLSInitLog();
       v11 = CLSLogOperations;
@@ -1363,33 +1363,33 @@ LABEL_5:
         v15 = v11;
         v16 = objc_opt_class();
         v17 = v16;
-        v18 = [(PDURLRequestOperation *)self operationID];
+        operationID = [(PDURLRequestOperation *)self operationID];
         v19 = 138543618;
         v20 = v16;
         v21 = 2114;
-        v22 = v18;
+        v22 = operationID;
         _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "OPS: session %{public}@:%{public}@ created", &v19, 0x16u);
       }
     }
   }
 
-  v12 = [(PDURLRequestOperation *)self operationID];
-  [*(&self->_clsErrorCode + 2) setSessionDescription:v12];
+  operationID2 = [(PDURLRequestOperation *)self operationID];
+  [*(&self->_clsErrorCode + 2) setSessionDescription:operationID2];
 
   v13 = *(&self->_clsErrorCode + 2);
 
   return v13;
 }
 
-- (void)closeSession:(BOOL)a3
+- (void)closeSession:(BOOL)session
 {
   if (*(&self->_clsErrorCode + 2))
   {
-    v3 = a3;
+    sessionCopy = session;
     v5 = +[PDUserDefaults sharedDefaults];
-    v6 = [v5 enableVerboseLogging];
+    enableVerboseLogging = [v5 enableVerboseLogging];
 
-    if (v6)
+    if (enableVerboseLogging)
     {
       CLSInitLog();
       v7 = CLSLogOperations;
@@ -1398,7 +1398,7 @@ LABEL_5:
         v10 = v7;
         v11 = objc_opt_class();
         v12 = v11;
-        if (v3)
+        if (sessionCopy)
         {
           v13 = @"finished";
         }
@@ -1410,19 +1410,19 @@ LABEL_5:
 
         v14 = *(&self->_clsErrorCode + 2);
         v15 = v11;
-        v16 = [v14 sessionDescription];
+        sessionDescription = [v14 sessionDescription];
         v17 = 138543874;
         v18 = v12;
         v19 = 2114;
         v20 = v13;
         v21 = 2112;
-        v22 = v16;
+        v22 = sessionDescription;
         _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "OPS: session %{public}@:%{public}@ %@", &v17, 0x20u);
       }
     }
 
     v8 = *(&self->_clsErrorCode + 2);
-    if (v3)
+    if (sessionCopy)
     {
       [v8 finishTasksAndInvalidate];
     }
@@ -1437,19 +1437,19 @@ LABEL_5:
   }
 }
 
-- (void)sessionFailedWithError:(id)a3
+- (void)sessionFailedWithError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     *(&self->_responseFailureCause + 2) = 317;
-    v13 = v4;
-    v5 = [v4 domain];
-    if (NSURLErrorDomain == v5)
+    v13 = errorCopy;
+    domain = [errorCopy domain];
+    if (NSURLErrorDomain == domain)
     {
-      v6 = [v13 code];
+      code = [v13 code];
 
-      if (v6 == -1009)
+      if (code == -1009)
       {
         *(&self->_responseFailureCause + 2) = 103;
       }
@@ -1459,50 +1459,50 @@ LABEL_5:
     {
     }
 
-    v4 = v13;
+    errorCopy = v13;
     if (!*(&self->super._executing + 1))
     {
       v7 = *(&self->_responseFailureCause + 2);
       v8 = objc_opt_class();
-      v9 = [(PDURLRequestOperation *)self operationID];
-      v10 = [NSString stringWithFormat:@"%@:%@ session failed with error: %@ (%ld) ", v8, v9, v13, *(&self->_responseFailureCause + 2)];
+      operationID = [(PDURLRequestOperation *)self operationID];
+      v10 = [NSString stringWithFormat:@"%@:%@ session failed with error: %@ (%ld) ", v8, operationID, v13, *(&self->_responseFailureCause + 2)];
       v11 = [NSError cls_createErrorWithCode:v7 underlyingError:v13 description:v10];
       v12 = *(&self->super._executing + 1);
       *(&self->super._executing + 1) = v11;
 
-      v4 = v13;
+      errorCopy = v13;
     }
   }
 }
 
-- (void)requestCompletedWith:(id)a3 error:(id)a4
+- (void)requestCompletedWith:(id)with error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  errorCopy = error;
   v8 = objc_autoreleasePoolPush();
   if (![(PDOperation *)self isAborted])
   {
-    v9 = [(PDURLRequestOperation *)self response];
-    v10 = [(PDURLRequestOperation *)self stats];
-    sub_100112B90(v9, v10);
+    response = [(PDURLRequestOperation *)self response];
+    stats = [(PDURLRequestOperation *)self stats];
+    sub_100112B90(response, stats);
 
     v11 = +[PDUserDefaults sharedDefaults];
-    LODWORD(v10) = [v11 enableVerboseLogging];
+    LODWORD(stats) = [v11 enableVerboseLogging];
 
-    if (v10)
+    if (stats)
     {
       CLSInitLog();
-      v12 = [(PDOperation *)self logSubsystem];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+      logSubsystem = [(PDOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_INFO))
       {
         v13 = objc_opt_class();
         v29 = v13;
-        v28 = [(PDURLRequestOperation *)self operationID];
-        v14 = [(PDURLRequestOperation *)self stats];
-        v15 = v14;
-        if (v14)
+        operationID = [(PDURLRequestOperation *)self operationID];
+        stats2 = [(PDURLRequestOperation *)self stats];
+        v15 = stats2;
+        if (stats2)
         {
-          v16 = *(v14 + 88);
+          v16 = *(stats2 + 88);
         }
 
         else
@@ -1510,11 +1510,11 @@ LABEL_5:
           v16 = 0;
         }
 
-        v17 = [(PDURLRequestOperation *)self stats];
-        v18 = v17;
-        if (v17)
+        stats3 = [(PDURLRequestOperation *)self stats];
+        v18 = stats3;
+        if (stats3)
         {
-          v19 = *(v17 + 96);
+          v19 = *(stats3 + 96);
         }
 
         else
@@ -1525,26 +1525,26 @@ LABEL_5:
         *buf = 138544130;
         v31 = v13;
         v32 = 2114;
-        v33 = v28;
+        v33 = operationID;
         v34 = 2048;
         v35 = v16;
         v36 = 2048;
         v37 = v19;
-        _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%{public}@:%{public}@ Received %ld byte response with httpStatus: %ld", buf, 0x2Au);
+        _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_INFO, "%{public}@:%{public}@ Received %ld byte response with httpStatus: %ld", buf, 0x2Au);
       }
     }
 
-    v20 = [(PDURLRequestOperation *)self response];
-    v21 = sub_100112E38(v20);
+    response2 = [(PDURLRequestOperation *)self response];
+    v21 = sub_100112E38(response2);
     v22 = objc_opt_class();
-    v23 = [(PDURLRequestOperation *)self operationID];
-    v24 = [NSString stringWithFormat:@"%@:%@ Response headers:", v22, v23];
+    operationID2 = [(PDURLRequestOperation *)self operationID];
+    v24 = [NSString stringWithFormat:@"%@:%@ Response headers:", v22, operationID2];
     [(PDURLRequestOperation *)self logHTTPHeaders:v21 withMessage:v24];
 
-    [(PDURLRequestOperation *)self sessionFailedWithError:v7];
-    if (v6)
+    [(PDURLRequestOperation *)self sessionFailedWithError:errorCopy];
+    if (withCopy)
     {
-      v25 = v6[7];
+      v25 = withCopy[7];
     }
 
     else
@@ -1556,7 +1556,7 @@ LABEL_5:
     [(PDURLRequestOperation *)self handleHTTPStatusCode:v26];
 
     v27 = ![(PDURLRequestOperation *)self httpRequestHadTimeoutError]&& ![(PDURLRequestOperation *)self httpRequestHadServerError]&& [(PDURLRequestOperation *)self verifyResponse];
-    if (*(&self->super._executing + 1) || (objc_storeStrong((&self->super._executing + 1), a4), *(&self->super._executing + 1)))
+    if (*(&self->super._executing + 1) || (objc_storeStrong((&self->super._executing + 1), error), *(&self->super._executing + 1)))
     {
       [(PDURLRequestOperation *)self handleRequestError];
     }
@@ -1567,13 +1567,13 @@ LABEL_5:
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = +[PDUserDefaults sharedDefaults];
-  v7 = [v6 enableVerboseLogging];
+  enableVerboseLogging = [v6 enableVerboseLogging];
 
-  if (v7)
+  if (enableVerboseLogging)
   {
     CLSInitLog();
     v8 = CLSLogConnection;
@@ -1583,30 +1583,30 @@ LABEL_5:
       v10 = objc_opt_class();
       v11 = *(&self->_clsErrorCode + 2);
       v12 = v10;
-      v13 = [v11 sessionDescription];
+      sessionDescription = [v11 sessionDescription];
       v14 = 138543874;
       v15 = v10;
       v16 = 2114;
-      v17 = v13;
+      v17 = sessionDescription;
       v18 = 2112;
-      v19 = v5;
+      v19 = errorCopy;
       _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "OPS: session %{public}@:%{public}@ URLSession:didBecomeInvalidWithError:%@", &v14, 0x20u);
     }
   }
 
-  [(PDURLRequestOperation *)self sessionFailedWithError:v5];
+  [(PDURLRequestOperation *)self sessionFailedWithError:errorCopy];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = [v8 protectionSpace];
-  v11 = [v10 authenticationMethod];
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
   v12 = +[PDUserDefaults sharedDefaults];
-  v13 = [v12 enableVerboseLogging];
+  enableVerboseLogging = [v12 enableVerboseLogging];
 
-  if (v13)
+  if (enableVerboseLogging)
   {
     CLSInitLog();
     v14 = CLSLogOperations;
@@ -1616,33 +1616,33 @@ LABEL_5:
       v17 = objc_opt_class();
       v18 = *(&self->_clsErrorCode + 2);
       v19 = v17;
-      v20 = [v18 sessionDescription];
+      sessionDescription = [v18 sessionDescription];
       v21 = 138543618;
       v22 = v17;
       v23 = 2114;
-      v24 = v20;
+      v24 = sessionDescription;
       _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "OPS: session %{public}@:%{public}@ didReceiveChallenge", &v21, 0x16u);
     }
   }
 
-  if (([v11 isEqualToString:NSURLAuthenticationMethodServerTrust] & 1) != 0 || objc_msgSend(v11, "isEqualToString:", NSURLAuthenticationMethodClientCertificate))
+  if (([authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust] & 1) != 0 || objc_msgSend(authenticationMethod, "isEqualToString:", NSURLAuthenticationMethodClientCertificate))
   {
-    v15 = [v8 proposedCredential];
-    v9[2](v9, 1, v15);
+    proposedCredential = [challengeCopy proposedCredential];
+    handlerCopy[2](handlerCopy, 1, proposedCredential);
   }
 
   else
   {
-    v9[2](v9, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
+  if (errorCopy)
   {
     CLSInitLog();
     v11 = CLSLogOperations;
@@ -1652,13 +1652,13 @@ LABEL_5:
       v13 = objc_opt_class();
       v14 = *(&self->_clsErrorCode + 2);
       v15 = v13;
-      v16 = [v14 sessionDescription];
+      sessionDescription = [v14 sessionDescription];
       *buf = 138543874;
       v35 = v13;
       v36 = 2114;
-      v37 = v16;
+      v37 = sessionDescription;
       v38 = 2112;
-      v39 = v10;
+      v39 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "OPS: session %{public}@:%{public}@ didComplete error:%@", buf, 0x20u);
 LABEL_7:
     }
@@ -1667,9 +1667,9 @@ LABEL_7:
   else
   {
     v17 = +[PDUserDefaults sharedDefaults];
-    v18 = [v17 enableVerboseLogging];
+    enableVerboseLogging = [v17 enableVerboseLogging];
 
-    if (v18)
+    if (enableVerboseLogging)
     {
       CLSInitLog();
       v19 = CLSLogOperations;
@@ -1679,11 +1679,11 @@ LABEL_7:
         v20 = objc_opt_class();
         v21 = *(&self->_clsErrorCode + 2);
         v15 = v20;
-        v16 = [v21 sessionDescription];
+        sessionDescription = [v21 sessionDescription];
         *buf = 138543618;
         v35 = v20;
         v36 = 2114;
-        v37 = v16;
+        v37 = sessionDescription;
         _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "OPS: session %{public}@:%{public}@ didComplete", buf, 0x16u);
         goto LABEL_7;
       }
@@ -1704,11 +1704,11 @@ LABEL_7:
       v29 = objc_opt_class();
       v30 = *(&self->_clsErrorCode + 2);
       v31 = v29;
-      v32 = [v30 sessionDescription];
+      sessionDescription2 = [v30 sessionDescription];
       *buf = 138543874;
       v35 = v29;
       v36 = 2114;
-      v37 = v32;
+      v37 = sessionDescription2;
       v38 = 2112;
       v39 = v24;
       _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "OPS: session %{public}@:%{public}@ failed to close response %@", buf, 0x20u);
@@ -1716,20 +1716,20 @@ LABEL_7:
   }
 
   v26 = objc_autoreleasePoolPush();
-  v27 = [(PDURLRequestOperation *)self response];
-  [(PDURLRequestOperation *)self requestCompletedWith:v27 error:v10];
+  response = [(PDURLRequestOperation *)self response];
+  [(PDURLRequestOperation *)self requestCompletedWith:response error:errorCopy];
 
   objc_autoreleasePoolPop(v26);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a6;
+  responseCopy = response;
+  handlerCopy = handler;
   v10 = +[PDUserDefaults sharedDefaults];
-  v11 = [v10 enableVerboseLogging];
+  enableVerboseLogging = [v10 enableVerboseLogging];
 
-  if (v11)
+  if (enableVerboseLogging)
   {
     CLSInitLog();
     v12 = CLSLogOperations;
@@ -1739,11 +1739,11 @@ LABEL_7:
       v15 = objc_opt_class();
       v16 = *(&self->_clsErrorCode + 2);
       v17 = v15;
-      v18 = [v16 sessionDescription];
+      sessionDescription = [v16 sessionDescription];
       v26 = 138543618;
       v27 = v15;
       v28 = 2114;
-      v29 = v18;
+      v29 = sessionDescription;
       _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "OPS: session %{public}@:%{public}@ URLSession:dataTask:didRecieveResponse", &v26, 0x16u);
     }
   }
@@ -1751,7 +1751,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    sub_10003F69C(*(&self->_urlRequestAttempted + 2), v8);
+    sub_10003F69C(*(&self->_urlRequestAttempted + 2), responseCopy);
   }
 
   else
@@ -1764,12 +1764,12 @@ LABEL_7:
       v20 = objc_opt_class();
       v21 = *(&self->_clsErrorCode + 2);
       v22 = v20;
-      v23 = [v21 sessionDescription];
+      sessionDescription2 = [v21 sessionDescription];
       v24 = objc_opt_class();
       v26 = 138543874;
       v27 = v20;
       v28 = 2114;
-      v29 = v23;
+      v29 = sessionDescription2;
       v30 = 2112;
       v31 = v24;
       v25 = v24;
@@ -1777,16 +1777,16 @@ LABEL_7:
     }
   }
 
-  v9[2](v9, 1);
+  handlerCopy[2](handlerCopy, 1);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v6 = a5;
+  dataCopy = data;
   v7 = +[PDUserDefaults sharedDefaults];
-  v8 = [v7 enableVerboseLogging];
+  enableVerboseLogging = [v7 enableVerboseLogging];
 
-  if (v8)
+  if (enableVerboseLogging)
   {
     CLSInitLog();
     v9 = CLSLogOperations;
@@ -1796,20 +1796,20 @@ LABEL_7:
       v14 = objc_opt_class();
       v15 = *(&self->_clsErrorCode + 2);
       v16 = v14;
-      v17 = [v15 sessionDescription];
+      sessionDescription = [v15 sessionDescription];
       *buf = 138543874;
       v20 = v14;
       v21 = 2114;
-      v22 = v17;
+      v22 = sessionDescription;
       v23 = 2048;
-      v24 = [v6 length];
+      v24 = [dataCopy length];
       _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "OPS: session %{public}@:%{public}@ URLSession:dataTask:didReceiveData:wrote %ld bytes", buf, 0x20u);
     }
   }
 
   v10 = *(&self->_urlRequestAttempted + 2);
   v18 = 0;
-  v11 = sub_10011275C(v10, v6, &v18);
+  v11 = sub_10011275C(v10, dataCopy, &v18);
   v12 = v18;
   if ((v11 & 1) == 0)
   {
@@ -1817,30 +1817,30 @@ LABEL_7:
   }
 }
 
-- (void)_simulateResponseWithURL:(id)a3 statusCode:(int64_t)a4 headers:(id)a5 data:(id)a6 error:(id)a7
+- (void)_simulateResponseWithURL:(id)l statusCode:(int64_t)code headers:(id)headers data:(id)data error:(id)error
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  lCopy = l;
+  headersCopy = headers;
+  dataCopy = data;
+  errorCopy = error;
   if (!*(&self->_urlRequestAttempted + 2))
   {
     v16 = [PDURLResponse alloc];
-    v17 = [(PDURLRequestOperation *)self operationID];
-    v18 = sub_1001123FC(&v16->super.isa, v17, [(PDURLRequestOperation *)self hasBigResponses]);
+    operationID = [(PDURLRequestOperation *)self operationID];
+    v18 = sub_1001123FC(&v16->super.isa, operationID, [(PDURLRequestOperation *)self hasBigResponses]);
     v19 = *(&self->_urlRequestAttempted + 2);
     *(&self->_urlRequestAttempted + 2) = v18;
   }
 
-  objc_storeStrong((&self->super._executing + 1), a7);
+  objc_storeStrong((&self->super._executing + 1), error);
   [(PDAsyncOperation *)self setDidExecute:1];
   [(PDURLRequestOperation *)self setUrlRequestAttempted:1];
-  [*(&self->_urlRequestAttempted + 2) _simulateHTTPResponseWithURL:v12 statusCode:a4 headers:v13];
-  if (v14)
+  [*(&self->_urlRequestAttempted + 2) _simulateHTTPResponseWithURL:lCopy statusCode:code headers:headersCopy];
+  if (dataCopy)
   {
     v20 = *(&self->_urlRequestAttempted + 2);
     v27 = 0;
-    v21 = sub_10011275C(v20, v14, &v27);
+    v21 = sub_10011275C(v20, dataCopy, &v27);
     v22 = v27;
     if ((v21 & 1) == 0)
     {

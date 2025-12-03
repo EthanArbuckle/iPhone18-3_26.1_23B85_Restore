@@ -1,11 +1,11 @@
 @interface IDSDestinationURI
-- (IDSDestinationURI)initWithCoder:(id)a3;
-- (IDSDestinationURI)initWithURI:(id)a3;
-- (IDSDestinationURI)initWithURIString:(id)a3;
+- (IDSDestinationURI)initWithCoder:(id)coder;
+- (IDSDestinationURI)initWithURI:(id)i;
+- (IDSDestinationURI)initWithURIString:(id)string;
 - (id)description;
 - (id)destinationLightweightStatus;
 - (id)destinationURIs;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSDestinationURI
@@ -13,11 +13,11 @@
 - (id)destinationURIs
 {
   v2 = [(IDSDestinationURI *)self uri];
-  v3 = [v2 prefixedURI];
+  prefixedURI = [v2 prefixedURI];
 
-  if (v3)
+  if (prefixedURI)
   {
-    [MEMORY[0x1E695DFD8] setWithObject:v3];
+    [MEMORY[0x1E695DFD8] setWithObject:prefixedURI];
   }
 
   else
@@ -39,49 +39,49 @@
   return v6;
 }
 
-- (IDSDestinationURI)initWithURI:(id)a3
+- (IDSDestinationURI)initWithURI:(id)i
 {
-  v5 = a3;
+  iCopy = i;
   v9.receiver = self;
   v9.super_class = IDSDestinationURI;
   v6 = [(IDSDestinationURI *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uri, a3);
+    objc_storeStrong(&v6->_uri, i);
   }
 
   return v7;
 }
 
-- (IDSDestinationURI)initWithURIString:(id)a3
+- (IDSDestinationURI)initWithURIString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (([v4 containsString:@":"] & 1) == 0)
+  stringCopy = string;
+  _bestGuessURI = stringCopy;
+  if (([stringCopy containsString:@":"] & 1) == 0)
   {
-    v5 = [v4 _bestGuessURI];
+    _bestGuessURI = [stringCopy _bestGuessURI];
   }
 
-  v6 = [[IDSURI alloc] initWithPrefixedURI:v5];
+  v6 = [[IDSURI alloc] initWithPrefixedURI:_bestGuessURI];
   v7 = [(IDSDestinationURI *)self initWithURI:v6];
 
   return v7;
 }
 
-- (IDSDestinationURI)initWithCoder:(id)a3
+- (IDSDestinationURI)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"kIDSDestinationURIURIObject"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"kIDSDestinationURIURIObject"])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIDSDestinationURIURIObject"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIDSDestinationURIURIObject"];
 
     v6 = [(IDSDestinationURI *)self initWithURI:v5];
   }
 
   else
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIDSDestinationURIURI"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIDSDestinationURIURI"];
 
     v6 = [(IDSDestinationURI *)self initWithURIString:v5];
   }
@@ -91,22 +91,22 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(IDSDestinationURI *)self uri];
-  [v4 encodeObject:v5 forKey:@"kIDSDestinationURIURIObject"];
+  [coderCopy encodeObject:v5 forKey:@"kIDSDestinationURIURIObject"];
 }
 
 - (id)destinationLightweightStatus
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v2 = [(IDSDestinationURI *)self uri];
-  v3 = [v2 prefixedURI];
+  prefixedURI = [v2 prefixedURI];
 
-  if (v3)
+  if (prefixedURI)
   {
-    v6 = v3;
+    v6 = prefixedURI;
     v7[0] = MEMORY[0x1E695E110];
     v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   }

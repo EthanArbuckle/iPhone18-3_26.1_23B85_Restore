@@ -9,10 +9,10 @@
 - (id)if_popObjectForKey:()IntentsFoundation
 {
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   if (v5)
   {
-    [a1 removeObjectForKey:v4];
+    [self removeObjectForKey:v4];
   }
 
   return v5;
@@ -25,7 +25,7 @@
     v5 = MEMORY[0x277CCABB0];
     v6 = a4;
     v7 = [v5 numberWithBool:1];
-    [a1 setObject:v7 forKey:v6];
+    [self setObject:v7 forKey:v6];
   }
 }
 
@@ -33,10 +33,10 @@
 {
   if (a3)
   {
-    return [a1 setObject:? forKey:?];
+    return [self setObject:? forKey:?];
   }
 
-  return a1;
+  return self;
 }
 
 @end

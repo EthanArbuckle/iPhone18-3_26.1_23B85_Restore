@@ -1,27 +1,27 @@
 @interface SIRINLUINTERNALEMBEDDINGEmbeddingRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALEMBEDDINGEmbeddingRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy[1])
   {
     [(SIRINLUINTERNALEMBEDDINGEmbeddingRequest *)self setText:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   tokenChain = self->_tokenChain;
-  v6 = v4[2];
+  v6 = fromCopy[2];
   if (tokenChain)
   {
     if (v6)
@@ -38,13 +38,13 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((text = self->_text, !(text | v4[1])) || -[NSString isEqual:](text, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((text = self->_text, !(text | equalCopy[1])) || -[NSString isEqual:](text, "isEqual:")))
   {
     tokenChain = self->_tokenChain;
-    if (tokenChain | v4[2])
+    if (tokenChain | equalCopy[2])
     {
       v7 = [(SIRINLUINTERNALTokenChain *)tokenChain isEqual:?];
     }
@@ -63,69 +63,69 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_text copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_text copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(SIRINLUINTERNALTokenChain *)self->_tokenChain copyWithZone:a3];
+  v8 = [(SIRINLUINTERNALTokenChain *)self->_tokenChain copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_text)
   {
-    [v4 setText:?];
-    v4 = v5;
+    [toCopy setText:?];
+    toCopy = v5;
   }
 
   if (self->_tokenChain)
   {
     [v5 setTokenChain:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_text)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_tokenChain)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   text = self->_text;
   if (text)
   {
-    [v3 setObject:text forKey:@"text"];
+    [dictionary setObject:text forKey:@"text"];
   }
 
   tokenChain = self->_tokenChain;
   if (tokenChain)
   {
-    v7 = [(SIRINLUINTERNALTokenChain *)tokenChain dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"token_chain"];
+    dictionaryRepresentation = [(SIRINLUINTERNALTokenChain *)tokenChain dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"token_chain"];
   }
 
   return v4;
@@ -137,8 +137,8 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALEMBEDDINGEmbeddingRequest;
   v4 = [(SIRINLUINTERNALEMBEDDINGEmbeddingRequest *)&v8 description];
-  v5 = [(SIRINLUINTERNALEMBEDDINGEmbeddingRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALEMBEDDINGEmbeddingRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

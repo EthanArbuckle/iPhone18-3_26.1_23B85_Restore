@@ -1,10 +1,10 @@
 @interface JavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject
-- (BOOL)awaitUntilWithJavaUtilDate:(id)a3;
-- (BOOL)awaitWithLong:(int64_t)a3 withJavaUtilConcurrentTimeUnitEnum:(id)a4;
+- (BOOL)awaitUntilWithJavaUtilDate:(id)date;
+- (BOOL)awaitWithLong:(int64_t)long withJavaUtilConcurrentTimeUnitEnum:(id)enum;
 - (BOOL)hasWaiters;
 - (JavaUtilArrayList)getWaitingThreads;
-- (int)checkInterruptWhileWaitingWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)a3;
-- (int64_t)awaitNanosWithLong:(int64_t)a3;
+- (int)checkInterruptWhileWaitingWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)node;
+- (int64_t)awaitNanosWithLong:(int64_t)long;
 - (uint64_t)getWaitQueueLength;
 - (void)await;
 - (void)awaitUninterruptibly;
@@ -17,13 +17,13 @@
 
 - (BOOL)hasWaiters
 {
-  if (([*(a1 + 8) isHeldExclusively] & 1) == 0)
+  if (([*(self + 8) isHeldExclusively] & 1) == 0)
   {
     v5 = new_JavaLangIllegalMonitorStateException_init();
     objc_exception_throw(v5);
   }
 
-  v2 = *(a1 + 16);
+  v2 = *(self + 16);
   if (!v2)
   {
     return 0;
@@ -47,13 +47,13 @@
 
 - (uint64_t)getWaitQueueLength
 {
-  if (([*(a1 + 8) isHeldExclusively] & 1) == 0)
+  if (([*(self + 8) isHeldExclusively] & 1) == 0)
   {
     v5 = new_JavaLangIllegalMonitorStateException_init();
     objc_exception_throw(v5);
   }
 
-  v2 = *(a1 + 16);
+  v2 = *(self + 16);
   if (!v2)
   {
     return 0;
@@ -82,14 +82,14 @@
 
 - (JavaUtilArrayList)getWaitingThreads
 {
-  if (([*(a1 + 8) isHeldExclusively] & 1) == 0)
+  if (([*(self + 8) isHeldExclusively] & 1) == 0)
   {
     v7 = new_JavaLangIllegalMonitorStateException_init();
     objc_exception_throw(v7);
   }
 
   v2 = new_JavaUtilArrayList_init();
-  for (i = *(a1 + 16); i; i = *(i + 40))
+  for (i = *(self + 16); i; i = *(i + 40))
   {
     v4 = atomic_load((i + 8));
     if (v4 == -2)
@@ -152,12 +152,12 @@
   }
 }
 
-- (int)checkInterruptWhileWaitingWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)a3
+- (int)checkInterruptWhileWaitingWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)node
 {
   result = JavaLangThread_interrupted();
   if (result)
   {
-    if (sub_10022C96C(self->this$0_, a3))
+    if (sub_10022C96C(self->this$0_, node))
     {
       return -1;
     }
@@ -231,7 +231,7 @@ LABEL_9:
   }
 }
 
-- (int64_t)awaitNanosWithLong:(int64_t)a3
+- (int64_t)awaitNanosWithLong:(int64_t)long
 {
   if (JavaLangThread_interrupted())
   {
@@ -252,20 +252,20 @@ LABEL_8:
   {
     while (1)
     {
-      if (a3 <= 0)
+      if (long <= 0)
       {
         sub_10022C96C(self->this$0_, v5);
         goto LABEL_8;
       }
 
-      JavaUtilConcurrentLocksLockSupport_parkNanosWithId_withLong_(self, a3);
+      JavaUtilConcurrentLocksLockSupport_parkNanosWithId_withLong_(self, long);
       if (JavaLangThread_interrupted())
       {
         break;
       }
 
       v8 = JavaLangSystem_nanoTime();
-      a3 = a3 + v7 - v8;
+      long = long + v7 - v8;
       v7 = v8;
       if (sub_10022C828(self->this$0_, v5))
       {
@@ -312,18 +312,18 @@ LABEL_9:
     sub_10022D8AC(v10);
   }
 
-  return a3 + v7 - JavaLangSystem_nanoTime();
+  return long + v7 - JavaLangSystem_nanoTime();
 }
 
-- (BOOL)awaitUntilWithJavaUtilDate:(id)a3
+- (BOOL)awaitUntilWithJavaUtilDate:(id)date
 {
-  if (!a3)
+  if (!date)
   {
     v11 = new_JavaLangNullPointerException_init();
     goto LABEL_25;
   }
 
-  v4 = [a3 getTime];
+  getTime = [date getTime];
   if (JavaLangThread_interrupted())
   {
     v11 = new_JavaLangInterruptedException_init();
@@ -343,12 +343,12 @@ LABEL_11:
       goto LABEL_13;
     }
 
-    if (JavaLangSystem_currentTimeMillis() > v4)
+    if (JavaLangSystem_currentTimeMillis() > getTime)
     {
       break;
     }
 
-    JavaUtilConcurrentLocksLockSupport_parkUntilWithId_withLong_(self, v4);
+    JavaUtilConcurrentLocksLockSupport_parkUntilWithId_withLong_(self, getTime);
     if (JavaLangThread_interrupted())
     {
       if (sub_10022C96C(self->this$0_, v5))
@@ -396,15 +396,15 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)awaitWithLong:(int64_t)a3 withJavaUtilConcurrentTimeUnitEnum:(id)a4
+- (BOOL)awaitWithLong:(int64_t)long withJavaUtilConcurrentTimeUnitEnum:(id)enum
 {
-  if (!a4)
+  if (!enum)
   {
     v14 = new_JavaLangNullPointerException_init();
     goto LABEL_27;
   }
 
-  v5 = [a4 toNanosWithLong:a3];
+  v5 = [enum toNanosWithLong:long];
   if (JavaLangThread_interrupted())
   {
     v14 = new_JavaLangInterruptedException_init();

@@ -1,47 +1,47 @@
 @interface HDHRHeartRateNotificationsFeatureAvailabilityManager
 - (BOOL)_isActiveRemoteDevicePresent;
 - (BOOL)_isOnboardingRecordPresent;
-- (HDHRHeartRateNotificationsFeatureAvailabilityManager)initWithFeatureIdentifier:(id)a3 notificationSettingsDefaults:(id)a4 pairedDeviceCapabilityProvider:(id)a5 disableAndExpiryProvider:(id)a6;
-- (id)_activeRemoteDeviceSupportsHeartRateNotificationsWithError:(id *)a3;
+- (HDHRHeartRateNotificationsFeatureAvailabilityManager)initWithFeatureIdentifier:(id)identifier notificationSettingsDefaults:(id)defaults pairedDeviceCapabilityProvider:(id)provider disableAndExpiryProvider:(id)expiryProvider;
+- (id)_activeRemoteDeviceSupportsHeartRateNotificationsWithError:(id *)error;
 - (id)_featureEnabledDefaultsKey;
 - (id)_featureSettings;
 - (id)_thresholdDefaultsKey;
-- (id)canCompleteOnboardingForCountryCode:(id)a3 error:(id *)a4;
-- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)a3;
-- (id)featureAvailabilityRequirementsWithError:(id *)a3;
-- (id)featureOnboardingRecordWithError:(id *)a3;
-- (id)isCurrentOnboardingVersionCompletedWithError:(id *)a3;
-- (id)onboardedCountryCodeSupportedStateWithError:(id *)a3;
-- (id)onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4;
-- (id)pairedFeatureAttributesWithError:(id *)a3;
+- (id)canCompleteOnboardingForCountryCode:(id)code error:(id *)error;
+- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)error;
+- (id)featureAvailabilityRequirementsWithError:(id *)error;
+- (id)featureOnboardingRecordWithError:(id *)error;
+- (id)isCurrentOnboardingVersionCompletedWithError:(id *)error;
+- (id)onboardedCountryCodeSupportedStateWithError:(id *)error;
+- (id)onboardingEligibilityForCountryCode:(id)code error:(id *)error;
+- (id)pairedFeatureAttributesWithError:(id *)error;
 - (int64_t)_defaultHeartRateThreshold;
-- (void)_setFeatureEnabled:(id)a3 preferredThreshold:(id)a4;
-- (void)disableAndExpiryProviderDidUpdate:(id)a3;
-- (void)getFeatureOnboardingRecordWithCompletion:(id)a3;
-- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)registerObserver:(id)a3 queue:(id)a4;
-- (void)removeFeatureSettingValueForKey:(id)a3 completion:(id)a4;
-- (void)resetOnboardingWithCompletion:(id)a3;
-- (void)saveOnboardingCompletion:(id)a3 settings:(id)a4 completion:(id)a5;
-- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)a3 countryCodeProvenance:(int64_t)a4 date:(id)a5 settings:(id)a6 completion:(id)a7;
-- (void)setFeatureSettingData:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setFeatureSettingNumber:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setFeatureSettingString:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)unregisterObserver:(id)a3;
+- (void)_setFeatureEnabled:(id)enabled preferredThreshold:(id)threshold;
+- (void)disableAndExpiryProviderDidUpdate:(id)update;
+- (void)getFeatureOnboardingRecordWithCompletion:(id)completion;
+- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)registerObserver:(id)observer queue:(id)queue;
+- (void)removeFeatureSettingValueForKey:(id)key completion:(id)completion;
+- (void)resetOnboardingWithCompletion:(id)completion;
+- (void)saveOnboardingCompletion:(id)completion settings:(id)settings completion:(id)a5;
+- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)code countryCodeProvenance:(int64_t)provenance date:(id)date settings:(id)settings completion:(id)completion;
+- (void)setFeatureSettingData:(id)data forKey:(id)key completion:(id)completion;
+- (void)setFeatureSettingNumber:(id)number forKey:(id)key completion:(id)completion;
+- (void)setFeatureSettingString:(id)string forKey:(id)key completion:(id)completion;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HDHRHeartRateNotificationsFeatureAvailabilityManager
 
-- (HDHRHeartRateNotificationsFeatureAvailabilityManager)initWithFeatureIdentifier:(id)a3 notificationSettingsDefaults:(id)a4 pairedDeviceCapabilityProvider:(id)a5 disableAndExpiryProvider:(id)a6
+- (HDHRHeartRateNotificationsFeatureAvailabilityManager)initWithFeatureIdentifier:(id)identifier notificationSettingsDefaults:(id)defaults pairedDeviceCapabilityProvider:(id)provider disableAndExpiryProvider:(id)expiryProvider
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (([v12 isEqualToString:*MEMORY[0x277CCC088]] & 1) == 0 && (objc_msgSend(v12, "isEqualToString:", *MEMORY[0x277CCC060]) & 1) == 0)
+  identifierCopy = identifier;
+  defaultsCopy = defaults;
+  providerCopy = provider;
+  expiryProviderCopy = expiryProvider;
+  if (([identifierCopy isEqualToString:*MEMORY[0x277CCC088]] & 1) == 0 && (objc_msgSend(identifierCopy, "isEqualToString:", *MEMORY[0x277CCC060]) & 1) == 0)
   {
-    [HDHRHeartRateNotificationsFeatureAvailabilityManager initWithFeatureIdentifier:a2 notificationSettingsDefaults:self pairedDeviceCapabilityProvider:v12 disableAndExpiryProvider:?];
+    [HDHRHeartRateNotificationsFeatureAvailabilityManager initWithFeatureIdentifier:a2 notificationSettingsDefaults:self pairedDeviceCapabilityProvider:identifierCopy disableAndExpiryProvider:?];
   }
 
   v23.receiver = self;
@@ -50,10 +50,10 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_featureIdentifier, a3);
-    objc_storeStrong(&v17->_notificationSettingsDefaults, a4);
-    objc_storeStrong(&v17->_pairedDeviceCapabilityProvider, a5);
-    objc_storeStrong(&v17->_disableAndExpiryProvider, a6);
+    objc_storeStrong(&v16->_featureIdentifier, identifier);
+    objc_storeStrong(&v17->_notificationSettingsDefaults, defaults);
+    objc_storeStrong(&v17->_pairedDeviceCapabilityProvider, provider);
+    objc_storeStrong(&v17->_disableAndExpiryProvider, expiryProvider);
     [(HDFeatureDisableAndExpiryProviding *)v17->_disableAndExpiryProvider setDelegate:v17];
     v18 = objc_alloc(MEMORY[0x277CCD738]);
     v19 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)v17 description];
@@ -81,8 +81,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"HDHRHeartRateNotificationsFeatureAvailabilityManager.m" lineNumber:124 description:{@"Unsupported feature identifier %@", self->_featureIdentifier}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HDHRHeartRateNotificationsFeatureAvailabilityManager.m" lineNumber:124 description:{@"Unsupported feature identifier %@", self->_featureIdentifier}];
 
   v5 = &stru_283CC4740;
 LABEL_7:
@@ -106,8 +106,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"HDHRHeartRateNotificationsFeatureAvailabilityManager.m" lineNumber:135 description:{@"Unsupported feature identifier %@", self->_featureIdentifier}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HDHRHeartRateNotificationsFeatureAvailabilityManager.m" lineNumber:135 description:{@"Unsupported feature identifier %@", self->_featureIdentifier}];
 
   v5 = &stru_283CC4740;
 LABEL_7:
@@ -129,13 +129,13 @@ LABEL_7:
     return *v4;
   }
 
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"HDHRHeartRateNotificationsFeatureAvailabilityManager.m" lineNumber:146 description:{@"Unsupported feature identifier %@", self->_featureIdentifier}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HDHRHeartRateNotificationsFeatureAvailabilityManager.m" lineNumber:146 description:{@"Unsupported feature identifier %@", self->_featureIdentifier}];
 
   return -1;
 }
 
-- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)a3
+- (id)earliestDateLowestOnboardingVersionCompletedWithError:(id *)error
 {
   if ([(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _isOnboardingRecordPresent])
   {
@@ -150,11 +150,11 @@ LABEL_7:
   return v3;
 }
 
-- (id)featureOnboardingRecordWithError:(id *)a3
+- (id)featureOnboardingRecordWithError:(id *)error
 {
   if ([(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _isOnboardingRecordPresent])
   {
-    v5 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:0 error:a3];
+    v5 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:0 error:error];
     if (v5)
     {
       v6 = objc_alloc(MEMORY[0x277CCD740]);
@@ -163,9 +163,9 @@ LABEL_7:
       v9 = [v6 initWithFeatureIdentifier:featureIdentifier version:1 completionDate:v8 countryCode:0 countryCodeProvenance:0];
 
       v10 = objc_alloc(MEMORY[0x277CCD448]);
-      v11 = [v5 onboardedCountrySupportedState];
-      v12 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _featureSettings];
-      v13 = [v10 initWithOnboardingState:v11 onboardingCompletion:v9 featureSettings:v12];
+      onboardedCountrySupportedState = [v5 onboardedCountrySupportedState];
+      _featureSettings = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _featureSettings];
+      v13 = [v10 initWithOnboardingState:onboardedCountrySupportedState onboardingCompletion:v9 featureSettings:_featureSettings];
     }
 
     else
@@ -182,13 +182,13 @@ LABEL_7:
   return v13;
 }
 
-- (void)getFeatureOnboardingRecordWithCompletion:(id)a3
+- (void)getFeatureOnboardingRecordWithCompletion:(id)completion
 {
   v7 = 0;
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self featureOnboardingRecordWithError:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  completionCopy[2](completionCopy, v5, v6);
 }
 
 - (id)_featureSettings
@@ -197,22 +197,22 @@ LABEL_7:
   if ([(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _isOnboardingRecordPresent])
   {
     notificationSettingsDefaults = self->_notificationSettingsDefaults;
-    v4 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _featureEnabledDefaultsKey];
-    v5 = [(NSUserDefaults *)notificationSettingsDefaults objectForKey:v4];
+    _featureEnabledDefaultsKey = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _featureEnabledDefaultsKey];
+    v5 = [(NSUserDefaults *)notificationSettingsDefaults objectForKey:_featureEnabledDefaultsKey];
 
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v6 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
     }
 
     else
     {
-      v6 = 0;
+      bOOLValue = 0;
     }
 
     v9 = self->_notificationSettingsDefaults;
-    v10 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _thresholdDefaultsKey];
-    v11 = [(NSUserDefaults *)v9 objectForKey:v10];
+    _thresholdDefaultsKey = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _thresholdDefaultsKey];
+    v11 = [(NSUserDefaults *)v9 objectForKey:_thresholdDefaultsKey];
 
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -227,12 +227,12 @@ LABEL_7:
     v13 = v12;
     v14 = MEMORY[0x277CBEB38];
     v20 = *MEMORY[0x277CCC120];
-    v15 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+    v15 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
     v21[0] = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
     v17 = [v14 dictionaryWithDictionary:v16];
 
-    if (v6)
+    if (bOOLValue)
     {
       [v17 setObject:v13 forKeyedSubscript:*MEMORY[0x277CCC128]];
     }
@@ -254,18 +254,18 @@ LABEL_7:
 - (BOOL)_isOnboardingRecordPresent
 {
   notificationSettingsDefaults = self->_notificationSettingsDefaults;
-  v3 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _featureEnabledDefaultsKey];
-  v4 = [(NSUserDefaults *)notificationSettingsDefaults objectForKey:v3];
+  _featureEnabledDefaultsKey = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _featureEnabledDefaultsKey];
+  v4 = [(NSUserDefaults *)notificationSettingsDefaults objectForKey:_featureEnabledDefaultsKey];
   LOBYTE(notificationSettingsDefaults) = v4 != 0;
 
   return notificationSettingsDefaults;
 }
 
-- (id)onboardingEligibilityForCountryCode:(id)a3 error:(id *)a4
+- (id)onboardingEligibilityForCountryCode:(id)code error:(id *)error
 {
   disableAndExpiryProvider = self->_disableAndExpiryProvider;
   v18 = 0;
-  v7 = [(HDFeatureDisableAndExpiryProviding *)disableAndExpiryProvider rescindedStatusOnActivePairedDeviceForCountryCode:a3 error:&v18];
+  v7 = [(HDFeatureDisableAndExpiryProviding *)disableAndExpiryProvider rescindedStatusOnActivePairedDeviceForCountryCode:code error:&v18];
   v8 = v18;
   v9 = v8;
   if (!v7)
@@ -285,10 +285,10 @@ LABEL_7:
       }
     }
 
-    if (a4)
+    if (error)
     {
       v16 = v13;
-      *a4 = v13;
+      *error = v13;
     }
 
     else
@@ -308,17 +308,17 @@ LABEL_7:
 
   [v7 integerValue];
   v10 = HKFeatureAvailabilityOnboardingIneligibilityReasonsForRescindedStatus();
-  v11 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v12 = [v11 isAppleWatch];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (v12)
+  if (isAppleWatch)
   {
     v13 = [objc_alloc(MEMORY[0x277CCD3F8]) initWithIneligibilityReasons:v10 countryAvailabilityVersion:@"unchecked"];
   }
 
   else
   {
-    v14 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _activeRemoteDeviceSupportsHeartRateNotificationsWithError:a4];
+    v14 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _activeRemoteDeviceSupportsHeartRateNotificationsWithError:error];
     if (!v14)
     {
       goto LABEL_19;
@@ -348,22 +348,22 @@ LABEL_19:
 
 - (BOOL)_isActiveRemoteDevicePresent
 {
-  v2 = [(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceCapabilityProvider activePairedDevice];
-  v3 = v2 != 0;
+  activePairedDevice = [(HDPairedDeviceCapabilityProviding *)self->_pairedDeviceCapabilityProvider activePairedDevice];
+  v3 = activePairedDevice != 0;
 
   return v3;
 }
 
-- (id)_activeRemoteDeviceSupportsHeartRateNotificationsWithError:(id *)a3
+- (id)_activeRemoteDeviceSupportsHeartRateNotificationsWithError:(id *)error
 {
   pairedDeviceCapabilityProvider = self->_pairedDeviceCapabilityProvider;
   v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"E17D2903-B868-4E6C-8E76-6D4939BEED44"];
-  v6 = [(HDPairedDeviceCapabilityProviding *)pairedDeviceCapabilityProvider isCapabilitySupportedOnActivePairedDevice:v5 error:a3];
+  v6 = [(HDPairedDeviceCapabilityProviding *)pairedDeviceCapabilityProvider isCapabilitySupportedOnActivePairedDevice:v5 error:error];
 
   return v6;
 }
 
-- (id)pairedFeatureAttributesWithError:(id *)a3
+- (id)pairedFeatureAttributesWithError:(id *)error
 {
   v3 = [MEMORY[0x277CCD3D8] featureAttributesDerivedFromOSBuildAndFeatureVersion:@"1"];
   v4 = [objc_alloc(MEMORY[0x277CCD780]) initWithLocalAttributes:v3 pairedAttributes:0];
@@ -371,7 +371,7 @@ LABEL_19:
   return v4;
 }
 
-- (id)featureAvailabilityRequirementsWithError:(id *)a3
+- (id)featureAvailabilityRequirementsWithError:(id *)error
 {
   v39[4] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCD420];
@@ -387,10 +387,10 @@ LABEL_19:
   v5 = *MEMORY[0x277CCC228];
   v30 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:*MEMORY[0x277CCC228]];
   v37[3] = v30;
-  v29 = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
-  v37[4] = v29;
-  v28 = [MEMORY[0x277CCD428] wristDetectionIsEnabledForActiveWatch];
-  v37[5] = v28;
+  heartRateIsEnabledInPrivacy = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
+  v37[4] = heartRateIsEnabledInPrivacy;
+  wristDetectionIsEnabledForActiveWatch = [MEMORY[0x277CCD428] wristDetectionIsEnabledForActiveWatch];
+  v37[5] = wristDetectionIsEnabledForActiveWatch;
   v6 = *MEMORY[0x277D12F18];
   v27 = [MEMORY[0x277CCD428] watchAppIsInstalledForBundleIdentifier:*MEMORY[0x277D12F18]];
   v37[6] = v27;
@@ -410,10 +410,10 @@ LABEL_19:
   v35[2] = v19;
   v7 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:v5];
   v35[3] = v7;
-  v8 = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
-  v35[4] = v8;
-  v9 = [MEMORY[0x277CCD428] wristDetectionIsEnabledForActiveWatch];
-  v35[5] = v9;
+  heartRateIsEnabledInPrivacy2 = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
+  v35[4] = heartRateIsEnabledInPrivacy2;
+  wristDetectionIsEnabledForActiveWatch2 = [MEMORY[0x277CCD428] wristDetectionIsEnabledForActiveWatch];
+  v35[5] = wristDetectionIsEnabledForActiveWatch2;
   v10 = [MEMORY[0x277CCD428] featureIsOnWithIdentifier:v4 isOnIfSettingIsAbsent:0];
 
   v35[6] = v10;
@@ -422,10 +422,10 @@ LABEL_19:
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:8];
   v39[2] = v12;
   v38[3] = *MEMORY[0x277CCBE30];
-  v13 = [MEMORY[0x277CCD428] isNotInPostPregnancy];
-  v34[0] = v13;
-  v14 = [MEMORY[0x277CCD428] noOngoingPregnancy];
-  v34[1] = v14;
+  isNotInPostPregnancy = [MEMORY[0x277CCD428] isNotInPostPregnancy];
+  v34[0] = isNotInPostPregnancy;
+  noOngoingPregnancy = [MEMORY[0x277CCD428] noOngoingPregnancy];
+  v34[1] = noOngoingPregnancy;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
   v39[3] = v15;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:4];
@@ -436,32 +436,32 @@ LABEL_19:
   return v26;
 }
 
-- (void)saveOnboardingCompletion:(id)a3 settings:(id)a4 completion:(id)a5
+- (void)saveOnboardingCompletion:(id)completion settings:(id)settings completion:(id)a5
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  settingsCopy = settings;
   v10 = a5;
-  v11 = [a3 countryCode];
+  countryCode = [completion countryCode];
   v25 = 0;
-  v12 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:v11 error:&v25];
+  v12 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:countryCode error:&v25];
   v13 = v25;
 
   if (v12)
   {
-    v14 = [v12 isEligible];
+    isEligible = [v12 isEligible];
     _HKInitializeLogging();
     v15 = HKLogHeartRateCategory();
     v16 = v15;
-    if (v14)
+    if (isEligible)
     {
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v27 = self;
+        selfCopy = self;
         _os_log_impl(&dword_229486000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] Saving onboarding record", buf, 0xCu);
       }
 
-      v17 = [v9 numberForKey:*MEMORY[0x277CCC128]];
+      v17 = [settingsCopy numberForKey:*MEMORY[0x277CCC128]];
       [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _setFeatureEnabled:MEMORY[0x277CBEC38] preferredThreshold:v17];
       v10[2](v10, 1, 0);
     }
@@ -475,8 +475,8 @@ LABEL_19:
 
       v19 = MEMORY[0x277CCA9B8];
       v20 = objc_opt_class();
-      v21 = [v12 ineligibilityReasonsDescription];
-      v22 = [v19 hk_errorForInvalidArgument:@"@" class:v20 selector:a2 format:{@"Cannot complete onboarding: %@", v21}];
+      ineligibilityReasonsDescription = [v12 ineligibilityReasonsDescription];
+      v22 = [v19 hk_errorForInvalidArgument:@"@" class:v20 selector:a2 format:{@"Cannot complete onboarding: %@", ineligibilityReasonsDescription}];
       (v10)[2](v10, 0, v22);
     }
   }
@@ -505,69 +505,69 @@ LABEL_19:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)a3 countryCodeProvenance:(int64_t)a4 date:(id)a5 settings:(id)a6 completion:(id)a7
+- (void)setCurrentOnboardingVersionCompletedForCountryCode:(id)code countryCodeProvenance:(int64_t)provenance date:(id)date settings:(id)settings completion:(id)completion
 {
-  v21 = a3;
-  v12 = a5;
+  codeCopy = code;
+  dateCopy = date;
   v13 = MEMORY[0x277CCD740];
-  v14 = a7;
-  v15 = a6;
+  completionCopy = completion;
+  settingsCopy = settings;
   v16 = [v13 alloc];
   v17 = v16;
   featureIdentifier = self->_featureIdentifier;
-  if (v12)
+  if (dateCopy)
   {
-    v19 = [v16 initWithFeatureIdentifier:self->_featureIdentifier version:1 completionDate:v12 countryCode:v21 countryCodeProvenance:a4];
+    v19 = [v16 initWithFeatureIdentifier:self->_featureIdentifier version:1 completionDate:dateCopy countryCode:codeCopy countryCodeProvenance:provenance];
   }
 
   else
   {
-    v20 = [MEMORY[0x277CBEAA8] date];
-    v19 = [v17 initWithFeatureIdentifier:featureIdentifier version:1 completionDate:v20 countryCode:v21 countryCodeProvenance:a4];
+    date = [MEMORY[0x277CBEAA8] date];
+    v19 = [v17 initWithFeatureIdentifier:featureIdentifier version:1 completionDate:date countryCode:codeCopy countryCodeProvenance:provenance];
   }
 
-  [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self saveOnboardingCompletion:v19 settings:v15 completion:v14];
+  [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self saveOnboardingCompletion:v19 settings:settingsCopy completion:completionCopy];
 }
 
-- (void)resetOnboardingWithCompletion:(id)a3
+- (void)resetOnboardingWithCompletion:(id)completion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = HKLogHeartRateCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_229486000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Resetting onboarding", &v7, 0xCu);
   }
 
   [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _setFeatureEnabled:0 preferredThreshold:0];
-  v4[2](v4, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFeatureSettingNumber:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingNumber:(id)number forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:*MEMORY[0x277CCC120]])
+  numberCopy = number;
+  keyCopy = key;
+  completionCopy = completion;
+  if ([keyCopy isEqualToString:*MEMORY[0x277CCC120]])
   {
     notificationSettingsDefaults = self->_notificationSettingsDefaults;
-    v12 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _thresholdDefaultsKey];
-    v13 = [(NSUserDefaults *)notificationSettingsDefaults objectForKey:v12];
-    [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _setFeatureEnabled:v8 preferredThreshold:v13];
+    _thresholdDefaultsKey = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _thresholdDefaultsKey];
+    v13 = [(NSUserDefaults *)notificationSettingsDefaults objectForKey:_thresholdDefaultsKey];
+    [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _setFeatureEnabled:numberCopy preferredThreshold:v13];
 
 LABEL_5:
-    v10[2](v10, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
     goto LABEL_9;
   }
 
-  if ([v9 isEqualToString:*MEMORY[0x277CCC128]])
+  if ([keyCopy isEqualToString:*MEMORY[0x277CCC128]])
   {
-    [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _setFeatureEnabled:MEMORY[0x277CBEC38] preferredThreshold:v8];
+    [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _setFeatureEnabled:MEMORY[0x277CBEC38] preferredThreshold:numberCopy];
     goto LABEL_5;
   }
 
@@ -578,15 +578,15 @@ LABEL_5:
     [HDHRHeartRateNotificationsFeatureAvailabilityManager setFeatureSettingNumber:forKey:completion:];
   }
 
-  v15 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Unsupported feature setting %@", v9}];
-  (v10)[2](v10, 0, v15);
+  v15 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Unsupported feature setting %@", keyCopy}];
+  (completionCopy)[2](completionCopy, 0, v15);
 
 LABEL_9:
 }
 
-- (void)setFeatureSettingData:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingData:(id)data forKey:(id)key completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   _HKInitializeLogging();
   v7 = HKLogHeartRateCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -595,12 +595,12 @@ LABEL_9:
   }
 
   v8 = [MEMORY[0x277CCA9B8] hk_error:3 format:@"setFeatureSettingData: is not supported"];
-  v6[2](v6, 0, v8);
+  completionCopy[2](completionCopy, 0, v8);
 }
 
-- (void)setFeatureSettingString:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setFeatureSettingString:(id)string forKey:(id)key completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   _HKInitializeLogging();
   v7 = HKLogHeartRateCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -609,25 +609,25 @@ LABEL_9:
   }
 
   v8 = [MEMORY[0x277CCA9B8] hk_error:3 format:@"setFeatureSettingString: is not supported"];
-  v6[2](v6, 0, v8);
+  completionCopy[2](completionCopy, 0, v8);
 }
 
-- (void)removeFeatureSettingValueForKey:(id)a3 completion:(id)a4
+- (void)removeFeatureSettingValueForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:*MEMORY[0x277CCC120]])
+  keyCopy = key;
+  completionCopy = completion;
+  if ([keyCopy isEqualToString:*MEMORY[0x277CCC120]])
   {
-    [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self resetOnboardingWithCompletion:v7];
+    [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self resetOnboardingWithCompletion:completionCopy];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CCC128]])
+  else if ([keyCopy isEqualToString:*MEMORY[0x277CCC128]])
   {
     notificationSettingsDefaults = self->_notificationSettingsDefaults;
-    v9 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _thresholdDefaultsKey];
-    [(NSUserDefaults *)notificationSettingsDefaults removeObjectForKey:v9];
+    _thresholdDefaultsKey = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _thresholdDefaultsKey];
+    [(NSUserDefaults *)notificationSettingsDefaults removeObjectForKey:_thresholdDefaultsKey];
 
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
@@ -639,56 +639,56 @@ LABEL_9:
       [HDHRHeartRateNotificationsFeatureAvailabilityManager setFeatureSettingNumber:forKey:completion:];
     }
 
-    v11 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Unsupported feature setting %@", v6}];
-    (v7)[2](v7, 0, v11);
+    v11 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Unsupported feature setting %@", keyCopy}];
+    (completionCopy)[2](completionCopy, 0, v11);
   }
 }
 
-- (void)_setFeatureEnabled:(id)a3 preferredThreshold:(id)a4
+- (void)_setFeatureEnabled:(id)enabled preferredThreshold:(id)threshold
 {
-  v22 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  thresholdCopy = threshold;
   notificationSettingsDefaults = self->_notificationSettingsDefaults;
-  v8 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _featureEnabledDefaultsKey];
-  v9 = [(NSUserDefaults *)notificationSettingsDefaults objectForKey:v8];
+  _featureEnabledDefaultsKey = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _featureEnabledDefaultsKey];
+  v9 = [(NSUserDefaults *)notificationSettingsDefaults objectForKey:_featureEnabledDefaultsKey];
 
-  v10 = v22;
-  if (v9 != v22)
+  v10 = enabledCopy;
+  if (v9 != enabledCopy)
   {
-    if (!v9 || (v11 = [v22 isEqual:v9], v10 = v22, (v11 & 1) == 0))
+    if (!v9 || (v11 = [enabledCopy isEqual:v9], v10 = enabledCopy, (v11 & 1) == 0))
     {
       v12 = self->_notificationSettingsDefaults;
-      v13 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _featureEnabledDefaultsKey];
-      [(NSUserDefaults *)v12 setObject:v22 forKey:v13];
+      _featureEnabledDefaultsKey2 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _featureEnabledDefaultsKey];
+      [(NSUserDefaults *)v12 setObject:enabledCopy forKey:_featureEnabledDefaultsKey2];
 
-      v10 = v22;
+      v10 = enabledCopy;
     }
   }
 
-  v14 = [v10 BOOLValue];
-  if (!v6 && v14)
+  bOOLValue = [v10 BOOLValue];
+  if (!thresholdCopy && bOOLValue)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HDHRHeartRateNotificationsFeatureAvailabilityManager _defaultHeartRateThreshold](self, "_defaultHeartRateThreshold")}];
+    thresholdCopy = [MEMORY[0x277CCABB0] numberWithInteger:{-[HDHRHeartRateNotificationsFeatureAvailabilityManager _defaultHeartRateThreshold](self, "_defaultHeartRateThreshold")}];
   }
 
   v15 = self->_notificationSettingsDefaults;
-  v16 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _thresholdDefaultsKey];
-  [(NSUserDefaults *)v15 setObject:v6 forKey:v16];
+  _thresholdDefaultsKey = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _thresholdDefaultsKey];
+  [(NSUserDefaults *)v15 setObject:thresholdCopy forKey:_thresholdDefaultsKey];
 
   v17 = *MEMORY[0x277CCE458];
   v18 = MEMORY[0x277CBEB98];
-  v19 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _featureEnabledDefaultsKey];
-  v20 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _thresholdDefaultsKey];
-  v21 = [v18 setWithObjects:{v19, v20, 0}];
+  _featureEnabledDefaultsKey3 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _featureEnabledDefaultsKey];
+  _thresholdDefaultsKey2 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _thresholdDefaultsKey];
+  v21 = [v18 setWithObjects:{_featureEnabledDefaultsKey3, _thresholdDefaultsKey2, 0}];
   HKSynchronizeNanoPreferencesUserDefaults();
 
-  if ([v22 BOOLValue])
+  if ([enabledCopy BOOLValue])
   {
     HKHRSubmitNotificationsEnabledSignal();
   }
 }
 
-- (void)registerObserver:(id)a3 queue:(id)a4
+- (void)registerObserver:(id)observer queue:(id)queue
 {
   observers = self->_observers;
   v5[0] = MEMORY[0x277D85DD0];
@@ -696,7 +696,7 @@ LABEL_9:
   v5[2] = __79__HDHRHeartRateNotificationsFeatureAvailabilityManager_registerObserver_queue___block_invoke;
   v5[3] = &unk_27865FD90;
   v5[4] = self;
-  [(HKObserverSet *)observers registerObserver:a3 queue:a4 runIfFirstObserver:v5];
+  [(HKObserverSet *)observers registerObserver:observer queue:queue runIfFirstObserver:v5];
 }
 
 void __79__HDHRHeartRateNotificationsFeatureAvailabilityManager_registerObserver_queue___block_invoke(uint64_t a1)
@@ -712,7 +712,7 @@ void __79__HDHRHeartRateNotificationsFeatureAvailabilityManager_registerObserver
   [v6 addObserver:v5 forKeyPath:v7 options:1 context:_HDHRHeartRateNotificationsSettingObservingContext];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -720,7 +720,7 @@ void __79__HDHRHeartRateNotificationsFeatureAvailabilityManager_registerObserver
   v4[2] = __75__HDHRHeartRateNotificationsFeatureAvailabilityManager_unregisterObserver___block_invoke;
   v4[3] = &unk_27865FD90;
   v4[4] = self;
-  [(HKObserverSet *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKObserverSet *)observers unregisterObserver:observer runIfLastObserver:v4];
 }
 
 void __75__HDHRHeartRateNotificationsFeatureAvailabilityManager_unregisterObserver___block_invoke(uint64_t a1)
@@ -736,22 +736,22 @@ void __75__HDHRHeartRateNotificationsFeatureAvailabilityManager_unregisterObserv
   [v6 removeObserver:v5 forKeyPath:v7 context:_HDHRHeartRateNotificationsSettingObservingContext];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (_HDHRHeartRateNotificationsSettingObservingContext != a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (_HDHRHeartRateNotificationsSettingObservingContext != context)
   {
     v35.receiver = self;
     v35.super_class = HDHRHeartRateNotificationsFeatureAvailabilityManager;
-    [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)&v35 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6, v32.receiver, v32.super_class];
+    [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)&v35 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context, v32.receiver, v32.super_class];
     goto LABEL_13;
   }
 
-  v13 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _featureEnabledDefaultsKey];
-  v14 = [v10 isEqualToString:v13];
+  _featureEnabledDefaultsKey = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _featureEnabledDefaultsKey];
+  v14 = [pathCopy isEqualToString:_featureEnabledDefaultsKey];
 
   if (v14)
   {
@@ -769,7 +769,7 @@ void __75__HDHRHeartRateNotificationsFeatureAvailabilityManager_unregisterObserv
       v38 = 2114;
       v39 = v20;
       v40 = 2114;
-      v41 = v10;
+      v41 = pathCopy;
       _os_log_impl(&dword_229486000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifying %{public}@ observers for change in setting %{public}@", buf, 0x20u);
     }
 
@@ -784,12 +784,12 @@ void __75__HDHRHeartRateNotificationsFeatureAvailabilityManager_unregisterObserv
 
   else
   {
-    v23 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _thresholdDefaultsKey];
-    v24 = [v10 isEqualToString:v23];
+    _thresholdDefaultsKey = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _thresholdDefaultsKey];
+    v24 = [pathCopy isEqualToString:_thresholdDefaultsKey];
 
     if (!v24)
     {
-      [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)&v32 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6, self, HDHRHeartRateNotificationsFeatureAvailabilityManager];
+      [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)&v32 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context, self, HDHRHeartRateNotificationsFeatureAvailabilityManager];
       goto LABEL_13;
     }
 
@@ -807,7 +807,7 @@ void __75__HDHRHeartRateNotificationsFeatureAvailabilityManager_unregisterObserv
       v38 = 2114;
       v39 = v30;
       v40 = 2114;
-      v41 = v10;
+      v41 = pathCopy;
       _os_log_impl(&dword_229486000, v25, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifying %{public}@ observers for change in setting %{public}@", buf, 0x20u);
     }
 
@@ -835,7 +835,7 @@ void __103__HDHRHeartRateNotificationsFeatureAvailabilityManager_observeValueFor
   }
 }
 
-- (void)disableAndExpiryProviderDidUpdate:(id)a3
+- (void)disableAndExpiryProviderDidUpdate:(id)update
 {
   v13 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -844,7 +844,7 @@ void __103__HDHRHeartRateNotificationsFeatureAvailabilityManager_observeValueFor
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HKObserverSet count](self->_observers, "count")}];
     *buf = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v5;
     _os_log_impl(&dword_229486000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifying %@ observers of disable and expiry update", buf, 0x16u);
@@ -860,9 +860,9 @@ void __103__HDHRHeartRateNotificationsFeatureAvailabilityManager_observeValueFor
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)canCompleteOnboardingForCountryCode:(id)a3 error:(id *)a4
+- (id)canCompleteOnboardingForCountryCode:(id)code error:(id *)error
 {
-  v4 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:a3 error:a4];
+  v4 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:code error:error];
   v5 = v4;
   if (v4)
   {
@@ -877,9 +877,9 @@ void __103__HDHRHeartRateNotificationsFeatureAvailabilityManager_observeValueFor
   return v6;
 }
 
-- (id)onboardedCountryCodeSupportedStateWithError:(id *)a3
+- (id)onboardedCountryCodeSupportedStateWithError:(id *)error
 {
-  v3 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:0 error:a3];
+  v3 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self onboardingEligibilityForCountryCode:0 error:error];
   v4 = v3;
   if (v3)
   {
@@ -894,20 +894,20 @@ void __103__HDHRHeartRateNotificationsFeatureAvailabilityManager_observeValueFor
   return v5;
 }
 
-- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)a3
+- (void)isCurrentOnboardingVersionCompletedWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _isOnboardingRecordPresent];
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:v5];
-  v4[2](v4, v6, 0);
+  completionCopy = completion;
+  _isOnboardingRecordPresent = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _isOnboardingRecordPresent];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:_isOnboardingRecordPresent];
+  completionCopy[2](completionCopy, v6, 0);
 }
 
-- (id)isCurrentOnboardingVersionCompletedWithError:(id *)a3
+- (id)isCurrentOnboardingVersionCompletedWithError:(id *)error
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _isOnboardingRecordPresent];
+  _isOnboardingRecordPresent = [(HDHRHeartRateNotificationsFeatureAvailabilityManager *)self _isOnboardingRecordPresent];
 
-  return [v3 numberWithBool:v4];
+  return [v3 numberWithBool:_isOnboardingRecordPresent];
 }
 
 - (void)initWithFeatureIdentifier:(uint64_t)a3 notificationSettingsDefaults:pairedDeviceCapabilityProvider:disableAndExpiryProvider:.cold.1(uint64_t a1, uint64_t a2, uint64_t a3)

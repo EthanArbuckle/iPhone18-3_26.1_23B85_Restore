@@ -12,8 +12,8 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [a1 mediaStorage];
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  mediaStorage = [self mediaStorage];
+  v4 = [mediaStorage countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -24,19 +24,19 @@
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(mediaStorage);
         }
 
         v8 = *(*(&v22 + 1) + 8 * i);
-        v9 = [MEMORY[0x277D75C80] currentTraitCollection];
-        if ([v9 userInterfaceStyle] == 2)
+        currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+        if ([currentTraitCollection userInterfaceStyle] == 2)
         {
-          v10 = [v8 displayColorDark];
+          displayColorDark = [v8 displayColorDark];
 
-          if (v10)
+          if (displayColorDark)
           {
             v11 = MEMORY[0x277D75348];
-            v12 = [v8 displayColorDark];
+            displayColorDark2 = [v8 displayColorDark];
             goto LABEL_11;
           }
         }
@@ -46,24 +46,24 @@
         }
 
         v11 = MEMORY[0x277D75348];
-        v12 = [v8 displayColor];
+        displayColorDark2 = [v8 displayColor];
 LABEL_11:
-        v13 = v12;
-        v14 = [v11 icqui_colorWithHexString:v12];
+        v13 = displayColorDark2;
+        v14 = [v11 icqui_colorWithHexString:displayColorDark2];
 
         v15 = objc_alloc(MEMORY[0x277CECB00]);
-        v16 = [v8 mediaType];
-        v17 = [v8 storageUsed];
-        [v17 floatValue];
-        v18 = [v15 initWithMediaType:v16 representativeColor:v14 bytesUsed:?];
+        mediaType = [v8 mediaType];
+        storageUsed = [v8 storageUsed];
+        [storageUsed floatValue];
+        v18 = [v15 initWithMediaType:mediaType representativeColor:v14 bytesUsed:?];
 
-        v19 = [v8 displayLabel];
-        [v18 setDisplayLabel:v19];
+        displayLabel = [v8 displayLabel];
+        [v18 setDisplayLabel:displayLabel];
 
         [v2 addObject:v18];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v5 = [mediaStorage countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v5);

@@ -1,23 +1,23 @@
 @interface _WKWebExtensionSQLiteRowEnumerator
-- (_WKWebExtensionSQLiteRowEnumerator)initWithResultsOfStatement:(id)a3;
+- (_WKWebExtensionSQLiteRowEnumerator)initWithResultsOfStatement:(id)statement;
 - (id)nextObject;
 @end
 
 @implementation _WKWebExtensionSQLiteRowEnumerator
 
-- (_WKWebExtensionSQLiteRowEnumerator)initWithResultsOfStatement:(id)a3
+- (_WKWebExtensionSQLiteRowEnumerator)initWithResultsOfStatement:(id)statement
 {
-  v5 = a3;
+  statementCopy = statement;
   v11.receiver = self;
   v11.super_class = _WKWebExtensionSQLiteRowEnumerator;
   v6 = [(_WKWebExtensionSQLiteRowEnumerator *)&v11 init];
   if (v6)
   {
-    v7 = [v5 database];
-    v8 = [v7 queue];
-    dispatch_assert_queue_V2(v8);
+    database = [statementCopy database];
+    queue = [database queue];
+    dispatch_assert_queue_V2(queue);
 
-    objc_storeStrong(&v6->_statement, a3);
+    objc_storeStrong(&v6->_statement, statement);
     v9 = v6;
   }
 
@@ -26,9 +26,9 @@
 
 - (id)nextObject
 {
-  v3 = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  database = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
+  queue = [database queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = sqlite3_step([(_WKWebExtensionSQLiteStatement *)self->_statement handle]);
   v6 = 0;
@@ -52,8 +52,8 @@
 
     else if (v5 != 101)
     {
-      v7 = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
-      [v7 reportErrorWithCode:self->_lastResultCode statement:-[_WKWebExtensionSQLiteStatement handle](self->_statement error:{"handle"), 0}];
+      database2 = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
+      [database2 reportErrorWithCode:self->_lastResultCode statement:-[_WKWebExtensionSQLiteStatement handle](self->_statement error:{"handle"), 0}];
 
       v6 = 0;
     }

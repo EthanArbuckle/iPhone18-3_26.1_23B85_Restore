@@ -6,7 +6,7 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C10625E8();
 }
 

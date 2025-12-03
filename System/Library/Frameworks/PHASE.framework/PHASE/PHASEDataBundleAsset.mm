@@ -1,7 +1,7 @@
 @interface PHASEDataBundleAsset
 - (PHASEDataBundleAsset)init;
-- (PHASEDataBundleAsset)initWithUID:(id)a3 assetRegistry:(id)a4 weakStringPoolReference:(void *)a5;
-- (PHASEDataBundleAsset)initWithURL:(id)a3 uid:(id)a4 dataBundle:()unique_ptr<Phase:(std:(id)a6 :(void *)a7 default_delete<Phase::DataBundle>>)a5 :DataBundle assetRegistry:weakStringPoolReference:;
+- (PHASEDataBundleAsset)initWithUID:(id)d assetRegistry:(id)registry weakStringPoolReference:(void *)reference;
+- (PHASEDataBundleAsset)initWithURL:(id)l uid:(id)uid dataBundle:()unique_ptr<Phase:(std:(id)phase :(void *)a7 default_delete<Phase::DataBundle>>)a5 :DataBundle assetRegistry:weakStringPoolReference:;
 - (unint64_t)sizeInBytes;
 @end
 
@@ -14,23 +14,23 @@
   return 0;
 }
 
-- (PHASEDataBundleAsset)initWithUID:(id)a3 assetRegistry:(id)a4 weakStringPoolReference:(void *)a5
+- (PHASEDataBundleAsset)initWithUID:(id)d assetRegistry:(id)registry weakStringPoolReference:(void *)reference
 {
-  [(PHASEDataBundleAsset *)self doesNotRecognizeSelector:a2, a4, a5];
+  [(PHASEDataBundleAsset *)self doesNotRecognizeSelector:a2, registry, reference];
 
   return 0;
 }
 
-- (PHASEDataBundleAsset)initWithURL:(id)a3 uid:(id)a4 dataBundle:()unique_ptr<Phase:(std:(id)a6 :(void *)a7 default_delete<Phase::DataBundle>>)a5 :DataBundle assetRegistry:weakStringPoolReference:
+- (PHASEDataBundleAsset)initWithURL:(id)l uid:(id)uid dataBundle:()unique_ptr<Phase:(std:(id)phase :(void *)a7 default_delete<Phase::DataBundle>>)a5 :DataBundle assetRegistry:weakStringPoolReference:
 {
-  v13 = a3;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = PHASEDataBundleAsset;
-  v14 = [(PHASEAsset *)&v18 initWithUID:a4 assetRegistry:a6 weakStringPoolReference:a7];
+  v14 = [(PHASEAsset *)&v18 initWithUID:uid assetRegistry:phase weakStringPoolReference:a7];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_url, a3);
+    objc_storeStrong(&v14->_url, l);
     v16 = *a5.__ptr_;
     *a5.__ptr_ = 0;
     std::unique_ptr<Phase::DataBundle>::reset[abi:ne200100](&v15->_dataBundle.__ptr_, v16);
@@ -41,11 +41,11 @@
 
 - (unint64_t)sizeInBytes
 {
-  v2 = [(PHASEDataBundleAsset *)self getDataBundle];
-  v3 = v2[1];
+  getDataBundle = [(PHASEDataBundleAsset *)self getDataBundle];
+  v3 = getDataBundle[1];
   if (v3)
   {
-    v4 = (v2[2] + 64);
+    v4 = (getDataBundle[2] + 64);
     v5 = 72;
     do
     {
@@ -62,7 +62,7 @@
     v5 = 72;
   }
 
-  return v5 + 1064 * v2[3] + 1176 * v2[5] + 464 * v2[7];
+  return v5 + 1064 * getDataBundle[3] + 1176 * getDataBundle[5] + 464 * getDataBundle[7];
 }
 
 @end

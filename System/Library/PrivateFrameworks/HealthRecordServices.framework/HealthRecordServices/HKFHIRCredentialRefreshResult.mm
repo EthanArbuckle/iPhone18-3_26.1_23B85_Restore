@@ -1,38 +1,38 @@
 @interface HKFHIRCredentialRefreshResult
-- (BOOL)isEqual:(id)a3;
-- (HKFHIRCredentialRefreshResult)initWithCoder:(id)a3;
-- (HKFHIRCredentialRefreshResult)initWithCredential:(id)a3 authResponse:(id)a4 endStates:(id)a5 error:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HKFHIRCredentialRefreshResult)initWithCoder:(id)coder;
+- (HKFHIRCredentialRefreshResult)initWithCredential:(id)credential authResponse:(id)response endStates:(id)states error:(id)error;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFHIRCredentialRefreshResult
 
-- (HKFHIRCredentialRefreshResult)initWithCredential:(id)a3 authResponse:(id)a4 endStates:(id)a5 error:(id)a6
+- (HKFHIRCredentialRefreshResult)initWithCredential:(id)credential authResponse:(id)response endStates:(id)states error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  credentialCopy = credential;
+  responseCopy = response;
+  statesCopy = states;
+  errorCopy = error;
   v24.receiver = self;
   v24.super_class = HKFHIRCredentialRefreshResult;
   v14 = [(HKFHIRCredentialRefreshResult *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [credentialCopy copy];
     credential = v14->_credential;
     v14->_credential = v15;
 
-    v17 = [v11 copy];
+    v17 = [responseCopy copy];
     authResponse = v14->_authResponse;
     v14->_authResponse = v17;
 
-    v19 = [v12 copy];
+    v19 = [statesCopy copy];
     endStates = v14->_endStates;
     v14->_endStates = v19;
 
-    v21 = [v13 copy];
+    v21 = [errorCopy copy];
     error = v14->_error;
     v14->_error = v21;
   }
@@ -40,126 +40,126 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      LOBYTE(v13) = 0;
+      LOBYTE(authResponse3) = 0;
 LABEL_42:
 
       goto LABEL_43;
     }
 
     credential = self->_credential;
-    v9 = [(HKFHIRCredentialRefreshResult *)v7 credential];
-    if (credential != v9)
+    credential = [(HKFHIRCredentialRefreshResult *)v7 credential];
+    if (credential != credential)
     {
-      v10 = [(HKFHIRCredentialRefreshResult *)v7 credential];
-      if (!v10)
+      credential2 = [(HKFHIRCredentialRefreshResult *)v7 credential];
+      if (!credential2)
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(authResponse3) = 0;
         goto LABEL_41;
       }
 
-      v3 = v10;
+      v3 = credential2;
       v11 = self->_credential;
-      v12 = [(HKFHIRCredentialRefreshResult *)v7 credential];
-      if (![(HKOAuth2Credential *)v11 isEqual:v12])
+      credential3 = [(HKFHIRCredentialRefreshResult *)v7 credential];
+      if (![(HKOAuth2Credential *)v11 isEqual:credential3])
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(authResponse3) = 0;
 LABEL_40:
 
         goto LABEL_41;
       }
 
-      v41 = v12;
+      v41 = credential3;
     }
 
     authResponse = self->_authResponse;
-    v15 = [(HKFHIRCredentialRefreshResult *)v7 authResponse];
+    authResponse = [(HKFHIRCredentialRefreshResult *)v7 authResponse];
     v42 = authResponse;
-    if (authResponse != v15)
+    if (authResponse != authResponse)
     {
-      v16 = [(HKFHIRCredentialRefreshResult *)v7 authResponse];
-      if (!v16)
+      authResponse2 = [(HKFHIRCredentialRefreshResult *)v7 authResponse];
+      if (!authResponse2)
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(authResponse3) = 0;
         goto LABEL_38;
       }
 
-      v17 = v16;
+      v17 = authResponse2;
       v18 = self->_authResponse;
-      v13 = [(HKFHIRCredentialRefreshResult *)v7 authResponse];
-      if (![(HDFHIRAuthResponse *)v18 isEqual:v13])
+      authResponse3 = [(HKFHIRCredentialRefreshResult *)v7 authResponse];
+      if (![(HDFHIRAuthResponse *)v18 isEqual:authResponse3])
       {
 
-        LOBYTE(v13) = 0;
+        LOBYTE(authResponse3) = 0;
         goto LABEL_39;
       }
 
-      v38 = v13;
+      v38 = authResponse3;
       v39 = v17;
     }
 
     endStates = self->_endStates;
-    v40 = [(HKFHIRCredentialRefreshResult *)v7 endStates];
-    if (endStates == v40)
+    endStates = [(HKFHIRCredentialRefreshResult *)v7 endStates];
+    if (endStates == endStates)
     {
       v37 = v3;
     }
 
     else
     {
-      v13 = [(HKFHIRCredentialRefreshResult *)v7 endStates];
-      if (!v13)
+      authResponse3 = [(HKFHIRCredentialRefreshResult *)v7 endStates];
+      if (!authResponse3)
       {
         v31 = v38;
         v32 = v39;
-        v30 = v40;
+        v30 = endStates;
         goto LABEL_30;
       }
 
       v20 = self->_endStates;
-      v21 = [(HKFHIRCredentialRefreshResult *)v7 endStates];
+      endStates2 = [(HKFHIRCredentialRefreshResult *)v7 endStates];
       v22 = v20;
-      v23 = v21;
-      if (![(HKFHIRRequestTaskEndStates *)v22 isEqual:v21])
+      v23 = endStates2;
+      if (![(HKFHIRRequestTaskEndStates *)v22 isEqual:endStates2])
       {
 
-        LOBYTE(v13) = 0;
-        v29 = v42 == v15;
+        LOBYTE(authResponse3) = 0;
+        v29 = v42 == authResponse;
         goto LABEL_33;
       }
 
       v34 = v23;
-      v36 = v13;
+      v36 = authResponse3;
       v37 = v3;
     }
 
     error = self->_error;
-    v25 = [(HKFHIRCredentialRefreshResult *)v7 error];
-    LOBYTE(v13) = error == v25;
-    if (error != v25)
+    error = [(HKFHIRCredentialRefreshResult *)v7 error];
+    LOBYTE(authResponse3) = error == error;
+    if (error != error)
     {
-      v26 = [(HKFHIRCredentialRefreshResult *)v7 error];
-      if (v26)
+      error2 = [(HKFHIRCredentialRefreshResult *)v7 error];
+      if (error2)
       {
-        v27 = v26;
-        v13 = self->_error;
-        v28 = [(HKFHIRCredentialRefreshResult *)v7 error];
-        LOBYTE(v13) = [v13 isEqual:v28];
+        v27 = error2;
+        authResponse3 = self->_error;
+        error3 = [(HKFHIRCredentialRefreshResult *)v7 error];
+        LOBYTE(authResponse3) = [authResponse3 isEqual:error3];
 
-        if (endStates != v40)
+        if (endStates != endStates)
         {
         }
 
-        v29 = v42 == v15;
+        v29 = v42 == authResponse;
         v3 = v37;
 LABEL_33:
         v32 = v39;
@@ -172,8 +172,8 @@ LABEL_37:
 LABEL_38:
 
 LABEL_39:
-        v12 = v41;
-        if (credential != v9)
+        credential3 = v41;
+        if (credential != credential)
         {
           goto LABEL_40;
         }
@@ -184,14 +184,14 @@ LABEL_41:
       }
     }
 
-    v30 = v40;
-    if (endStates == v40)
+    v30 = endStates;
+    if (endStates == endStates)
     {
 
       v3 = v37;
       v31 = v38;
       v32 = v39;
-      if (v42 == v15)
+      if (v42 == authResponse)
       {
         goto LABEL_38;
       }
@@ -206,7 +206,7 @@ LABEL_36:
     v32 = v39;
 LABEL_30:
 
-    if (v42 == v15)
+    if (v42 == authResponse)
     {
       goto LABEL_38;
     }
@@ -214,10 +214,10 @@ LABEL_30:
     goto LABEL_36;
   }
 
-  LOBYTE(v13) = 1;
+  LOBYTE(authResponse3) = 1;
 LABEL_43:
 
-  return v13;
+  return authResponse3;
 }
 
 - (unint64_t)hash
@@ -228,37 +228,37 @@ LABEL_43:
   return v4 ^ v5 ^ [(NSError *)self->_error hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   credential = self->_credential;
-  v5 = a3;
-  [v5 encodeObject:credential forKey:@"credential"];
-  [v5 encodeObject:self->_authResponse forKey:@"authResponse"];
-  [v5 encodeObject:self->_endStates forKey:@"endStates"];
-  [v5 encodeObject:self->_error forKey:@"error"];
+  coderCopy = coder;
+  [coderCopy encodeObject:credential forKey:@"credential"];
+  [coderCopy encodeObject:self->_authResponse forKey:@"authResponse"];
+  [coderCopy encodeObject:self->_endStates forKey:@"endStates"];
+  [coderCopy encodeObject:self->_error forKey:@"error"];
 }
 
-- (HKFHIRCredentialRefreshResult)initWithCoder:(id)a3
+- (HKFHIRCredentialRefreshResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credential"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credential"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authResponse"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endStates"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authResponse"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endStates"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     self = [(HKFHIRCredentialRefreshResult *)self initWithCredential:v5 authResponse:v6 endStates:v7 error:v8];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v9 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)debugDescription

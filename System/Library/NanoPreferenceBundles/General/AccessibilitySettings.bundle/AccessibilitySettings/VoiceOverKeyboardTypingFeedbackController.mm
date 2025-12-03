@@ -1,17 +1,17 @@
 @interface VoiceOverKeyboardTypingFeedbackController
-+ (id)typingFeedbackShortStringDescription:(int64_t)a3;
++ (id)typingFeedbackShortStringDescription:(int64_t)description;
 - (id)actionDetailControllerDelegate;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation VoiceOverKeyboardTypingFeedbackController
 
 - (id)actionDetailControllerDelegate
 {
-  v2 = [(VoiceOverKeyboardTypingFeedbackController *)self specifier];
-  v3 = [v2 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"VoiceOverKeyboardTypingFeedbackDelegateKey"];
+  specifier = [(VoiceOverKeyboardTypingFeedbackController *)self specifier];
+  userInfo = [specifier userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"VoiceOverKeyboardTypingFeedbackDelegateKey"];
 
   return v4;
 }
@@ -35,22 +35,22 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v18.receiver = self;
   v18.super_class = VoiceOverKeyboardTypingFeedbackController;
-  v6 = a4;
-  [(VoiceOverKeyboardTypingFeedbackController *)&v18 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(VoiceOverKeyboardTypingFeedbackController *)self indexForIndexPath:v6, v18.receiver, v18.super_class];
-  v8 = [(VoiceOverKeyboardTypingFeedbackController *)self specifiers];
-  v9 = [v8 objectAtIndex:v7];
+  pathCopy = path;
+  [(VoiceOverKeyboardTypingFeedbackController *)&v18 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(VoiceOverKeyboardTypingFeedbackController *)self indexForIndexPath:pathCopy, v18.receiver, v18.super_class];
+  specifiers = [(VoiceOverKeyboardTypingFeedbackController *)self specifiers];
+  v9 = [specifiers objectAtIndex:v7];
 
-  v10 = [v6 section];
-  v11 = [(VoiceOverKeyboardTypingFeedbackController *)self specifierAtIndex:[(VoiceOverKeyboardTypingFeedbackController *)self indexOfGroup:v10]];
+  section = [pathCopy section];
+  v11 = [(VoiceOverKeyboardTypingFeedbackController *)self specifierAtIndex:[(VoiceOverKeyboardTypingFeedbackController *)self indexOfGroup:section]];
   v12 = [v11 propertyForKey:*MEMORY[0x277D3FFE8]];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
     v14 = [v9 propertyForKey:*MEMORY[0x277D401A8]];
     if (v14)
@@ -58,24 +58,24 @@
       v15 = [v11 propertyForKey:*MEMORY[0x277D3FFB8]];
       v16 = [v15 isEqualToString:*MEMORY[0x277CE7F80]];
 
-      v17 = [(VoiceOverKeyboardTypingFeedbackController *)self actionDetailControllerDelegate];
-      [v17 setTypingFeedback:v14 isSoftware:v16];
+      actionDetailControllerDelegate = [(VoiceOverKeyboardTypingFeedbackController *)self actionDetailControllerDelegate];
+      [actionDetailControllerDelegate setTypingFeedback:v14 isSoftware:v16];
 
       [(VoiceOverKeyboardTypingFeedbackController *)self reloadSpecifiers];
     }
   }
 }
 
-+ (id)typingFeedbackShortStringDescription:(int64_t)a3
++ (id)typingFeedbackShortStringDescription:(int64_t)description
 {
-  if (a3 > 3)
+  if (description > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = settingsLocString(off_278B90B50[a3], @"VoiceOverSettings");
+    v4 = settingsLocString(off_278B90B50[description], @"VoiceOverSettings");
   }
 
   return v4;

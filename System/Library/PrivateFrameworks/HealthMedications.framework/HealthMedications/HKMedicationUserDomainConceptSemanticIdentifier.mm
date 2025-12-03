@@ -1,8 +1,8 @@
 @interface HKMedicationUserDomainConceptSemanticIdentifier
-+ (id)semanticIdentifierWithComponents:(id)a3;
++ (id)semanticIdentifierWithComponents:(id)components;
 - (HKMedicationUserDomainConceptSemanticIdentifier)init;
-- (HKMedicationUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)a3;
-- (HKMedicationUserDomainConceptSemanticIdentifier)initWithUUID:(id)a3 medicalCoding:(id)a4;
+- (HKMedicationUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)identifier;
+- (HKMedicationUserDomainConceptSemanticIdentifier)initWithUUID:(id)d medicalCoding:(id)coding;
 - (id)healthConceptIdentifier;
 - (id)stringValue;
 @end
@@ -19,7 +19,7 @@
   return 0;
 }
 
-- (HKMedicationUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)a3
+- (HKMedicationUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];
@@ -29,39 +29,39 @@
   return 0;
 }
 
-- (HKMedicationUserDomainConceptSemanticIdentifier)initWithUUID:(id)a3 medicalCoding:(id)a4
+- (HKMedicationUserDomainConceptSemanticIdentifier)initWithUUID:(id)d medicalCoding:(id)coding
 {
-  v8 = a3;
-  v9 = a4;
-  if ((v8 != 0) != (v9 == 0))
+  dCopy = d;
+  codingCopy = coding;
+  if ((dCopy != 0) != (codingCopy == 0))
   {
     [HKMedicationUserDomainConceptSemanticIdentifier initWithUUID:a2 medicalCoding:self];
   }
 
-  v10 = [MEMORY[0x277CCDB50] medicationUserDomainConceptTypeIdentifier];
+  medicationUserDomainConceptTypeIdentifier = [MEMORY[0x277CCDB50] medicationUserDomainConceptTypeIdentifier];
   v13.receiver = self;
   v13.super_class = HKMedicationUserDomainConceptSemanticIdentifier;
-  v11 = [(HKUserDomainConceptSemanticIdentifier *)&v13 initWithTypeIdentifier:v10];
+  v11 = [(HKUserDomainConceptSemanticIdentifier *)&v13 initWithTypeIdentifier:medicationUserDomainConceptTypeIdentifier];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_UUID, a3);
-    objc_storeStrong(&v11->_medicalCoding, a4);
+    objc_storeStrong(&v11->_UUID, d);
+    objc_storeStrong(&v11->_medicalCoding, coding);
   }
 
   return v11;
 }
 
-+ (id)semanticIdentifierWithComponents:(id)a3
++ (id)semanticIdentifierWithComponents:(id)components
 {
-  v3 = a3;
-  if ([v3 count] != 2)
+  componentsCopy = components;
+  if ([componentsCopy count] != 2)
   {
     v15 = 0;
     goto LABEL_19;
   }
 
-  v4 = [v3 objectAtIndexedSubscript:0];
+  v4 = [componentsCopy objectAtIndexedSubscript:0];
   v5 = *MEMORY[0x277CCCE48];
   if ([v4 isEqualToString:*MEMORY[0x277CCCE48]])
   {
@@ -74,7 +74,7 @@
   }
 
   v7 = v6;
-  v8 = [v3 objectAtIndexedSubscript:1];
+  v8 = [componentsCopy objectAtIndexedSubscript:1];
   if ([v8 isEqualToString:v5])
   {
     v9 = 0;
@@ -134,19 +134,19 @@ LABEL_19:
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [v3 addObject:@"medication"];
-  v4 = [&unk_2863B6C10 stringValue];
-  [v3 addObject:v4];
+  stringValue = [&unk_2863B6C10 stringValue];
+  [v3 addObject:stringValue];
 
   medicalCoding = self->_medicalCoding;
   if (medicalCoding)
   {
-    v6 = [(HKMedicalCoding *)medicalCoding codingSystem];
-    v7 = [v6 identifier];
-    v8 = v7;
+    codingSystem = [(HKMedicalCoding *)medicalCoding codingSystem];
+    identifier = [codingSystem identifier];
+    v8 = identifier;
     v9 = *MEMORY[0x277CCCE48];
-    if (v7)
+    if (identifier)
     {
-      v10 = v7;
+      v10 = identifier;
     }
 
     else
@@ -156,11 +156,11 @@ LABEL_19:
 
     [v3 addObject:v10];
 
-    v11 = [(HKMedicalCoding *)self->_medicalCoding code];
-    v12 = v11;
-    if (v11)
+    code = [(HKMedicalCoding *)self->_medicalCoding code];
+    uUID = code;
+    if (code)
     {
-      v13 = v11;
+      v13 = code;
     }
 
     else
@@ -174,9 +174,9 @@ LABEL_19:
   else
   {
     [v3 addObject:*MEMORY[0x277CCCE58]];
-    v12 = [(HKMedicationUserDomainConceptSemanticIdentifier *)self UUID];
-    v14 = [v12 UUIDString];
-    [v3 addObject:v14];
+    uUID = [(HKMedicationUserDomainConceptSemanticIdentifier *)self UUID];
+    uUIDString = [uUID UUIDString];
+    [v3 addObject:uUIDString];
   }
 
   v15 = [v3 componentsJoinedByString:*MEMORY[0x277CCCE50]];
@@ -187,8 +187,8 @@ LABEL_19:
 - (id)healthConceptIdentifier
 {
   v2 = MEMORY[0x277CCD4B0];
-  v3 = [(HKMedicationUserDomainConceptSemanticIdentifier *)self stringValue];
-  v4 = [v2 medicationConceptIdentifierWithSemanticIdentifierString:v3];
+  stringValue = [(HKMedicationUserDomainConceptSemanticIdentifier *)self stringValue];
+  v4 = [v2 medicationConceptIdentifierWithSemanticIdentifierString:stringValue];
 
   return v4;
 }

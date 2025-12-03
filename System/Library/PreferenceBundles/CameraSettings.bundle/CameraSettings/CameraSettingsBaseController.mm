@@ -1,8 +1,8 @@
 @interface CameraSettingsBaseController
 + (CAMCaptureCapabilities)capabilities;
 + (NSNumberFormatter)integerFormatter;
-+ (void)allowMultilineTitlesForSpecifiers:(id)a3;
-- (id)groupSpecifierWithTitle:(id)a3 footer:(id)a4 identifier:(id)a5;
++ (void)allowMultilineTitlesForSpecifiers:(id)specifiers;
+- (id)groupSpecifierWithTitle:(id)title footer:(id)footer identifier:(id)identifier;
 - (void)reloadSpecifiers;
 - (void)viewDidLoad;
 @end
@@ -57,14 +57,14 @@
   [(CameraSettingsBaseController *)&v3 viewDidLoad];
 }
 
-+ (void)allowMultilineTitlesForSpecifiers:(id)a3
++ (void)allowMultilineTitlesForSpecifiers:(id)specifiers
 {
-  v3 = a3;
+  specifiersCopy = specifiers;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [specifiersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -77,7 +77,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(specifiersCopy);
         }
 
         [*(*(&v9 + 1) + 8 * v8) setProperty:&__kCFBooleanTrue forKey:v7];
@@ -85,7 +85,7 @@
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [specifiersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -104,20 +104,20 @@
   return v3;
 }
 
-- (id)groupSpecifierWithTitle:(id)a3 footer:(id)a4 identifier:(id)a5
+- (id)groupSpecifierWithTitle:(id)title footer:(id)footer identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [PSSpecifier groupSpecifierWithID:a5];
-  if (v7)
+  titleCopy = title;
+  footerCopy = footer;
+  v9 = [PSSpecifier groupSpecifierWithID:identifier];
+  if (titleCopy)
   {
-    v10 = sub_3A24(v7);
+    v10 = sub_3A24(titleCopy);
     [v9 setName:v10];
   }
 
-  if (v8)
+  if (footerCopy)
   {
-    v11 = sub_3A24(v8);
+    v11 = sub_3A24(footerCopy);
     [v9 setObject:v11 forKeyedSubscript:PSFooterTextGroupKey];
   }
 

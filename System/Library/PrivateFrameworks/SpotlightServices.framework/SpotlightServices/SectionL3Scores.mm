@@ -1,11 +1,11 @@
 @interface SectionL3Scores
-+ (void)getComparableL3Score:(id)a3 sectionMapping:(id)a4 bundleId1:(id)a5 bundleId2:(id)a6 score1:(float *)a7 score2:(float *)a8 usePommesScore:(BOOL)a9 useLegacyScore:(BOOL)a10;
-+ (void)getComparableModelL3Score:(id)a3 bundleId1:(id)a4 bundleId2:(id)a5 score1:(float *)a6 score2:(float *)a7;
-- (BOOL)computeScore:(id)a3 rankingConfig:(id)a4 hasGoodLocalResult:(BOOL)a5 pos:(int)a6 queryContext:(id)a7;
++ (void)getComparableL3Score:(id)score sectionMapping:(id)mapping bundleId1:(id)id1 bundleId2:(id)id2 score1:(float *)score1 score2:(float *)score2 usePommesScore:(BOOL)pommesScore useLegacyScore:(BOOL)self0;
++ (void)getComparableModelL3Score:(id)score bundleId1:(id)id1 bundleId2:(id)id2 score1:(float *)score1 score2:(float *)score2;
+- (BOOL)computeScore:(id)score rankingConfig:(id)config hasGoodLocalResult:(BOOL)result pos:(int)pos queryContext:(id)context;
 - (SectionL3Scores)init;
-- (float)getL3Score:(int)a3 isLegacy:(BOOL)a4;
-- (float)getResultScore:(id)a3 section:(id)a4 isLegacy:(BOOL)a5;
-- (id)getIFunScore:(id)a3 rankingConfig:(id)a4 isLocal:(BOOL)a5 result:(id)a6 queryContext:(id)a7 isQUIntent:(BOOL *)a8;
+- (float)getL3Score:(int)score isLegacy:(BOOL)legacy;
+- (float)getResultScore:(id)score section:(id)section isLegacy:(BOOL)legacy;
+- (id)getIFunScore:(id)score rankingConfig:(id)config isLocal:(BOOL)local result:(id)result queryContext:(id)context isQUIntent:(BOOL *)intent;
 @end
 
 @implementation SectionL3Scores
@@ -33,55 +33,55 @@
   return v3;
 }
 
-- (float)getL3Score:(int)a3 isLegacy:(BOOL)a4
+- (float)getL3Score:(int)score isLegacy:(BOOL)legacy
 {
   v4 = 8;
-  if (a4)
+  if (legacy)
   {
     v4 = 20;
   }
 
-  return *(&self->super.isa + 4 * a3 + v4);
+  return *(&self->super.isa + 4 * score + v4);
 }
 
-- (float)getResultScore:(id)a3 section:(id)a4 isLegacy:(BOOL)a5
+- (float)getResultScore:(id)score section:(id)section isLegacy:(BOOL)legacy
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v5)
+  legacyCopy = legacy;
+  scoreCopy = score;
+  sectionCopy = section;
+  v9 = sectionCopy;
+  if (legacyCopy)
   {
-    if ([v8 domain] == 2)
+    if ([sectionCopy domain] == 2)
     {
-      [v7 l2score];
+      [scoreCopy l2score];
     }
 
     else
     {
-      v16 = [v7 rankingItem];
-      v17 = [v16 L2FeatureVector];
+      rankingItem = [scoreCopy rankingItem];
+      l2FeatureVector = [rankingItem L2FeatureVector];
 
-      if (!v17)
+      if (!l2FeatureVector)
       {
         v12 = -1.0;
         goto LABEL_17;
       }
 
-      v18 = [v7 rankingItem];
-      v19 = [v18 L2FeatureVector];
-      [v19 originalL2Score];
+      rankingItem2 = [scoreCopy rankingItem];
+      l2FeatureVector2 = [rankingItem2 L2FeatureVector];
+      [l2FeatureVector2 originalL2Score];
       v21 = v20;
 
       if (v21 < -1000.0)
       {
-        v22 = [v7 rankingItem];
-        [v22 keywordMatchScore];
+        rankingItem3 = [scoreCopy rankingItem];
+        [rankingItem3 keywordMatchScore];
         v24 = v23;
 
         if (v24 > 0.05)
         {
-          [v7 l2score];
+          [scoreCopy l2score];
           v21 = *&v10;
         }
       }
@@ -95,17 +95,17 @@
 
   else
   {
-    v11 = [v7 rankingItem];
+    rankingItem4 = [scoreCopy rankingItem];
     v12 = -1.0;
-    if (v11)
+    if (rankingItem4)
     {
-      v13 = v11;
-      v14 = [v7 rankingItem];
-      [v14 keywordMatchScore];
+      rankingItem7 = rankingItem4;
+      rankingItem5 = [scoreCopy rankingItem];
+      [rankingItem5 keywordMatchScore];
       if (v15 >= 0.0)
       {
-        v26 = [v7 rankingItem];
-        [v26 likelihood];
+        rankingItem6 = [scoreCopy rankingItem];
+        [rankingItem6 likelihood];
         v28 = v27;
 
         if (v28 <= 0.0)
@@ -113,8 +113,8 @@
           goto LABEL_17;
         }
 
-        v13 = [v7 rankingItem];
-        [v13 likelihood];
+        rankingItem7 = [scoreCopy rankingItem];
+        [rankingItem7 likelihood];
         v12 = v29;
       }
 
@@ -129,42 +129,42 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)computeScore:(id)a3 rankingConfig:(id)a4 hasGoodLocalResult:(BOOL)a5 pos:(int)a6 queryContext:(id)a7
+- (BOOL)computeScore:(id)score rankingConfig:(id)config hasGoodLocalResult:(BOOL)result pos:(int)pos queryContext:(id)context
 {
-  v198 = a5;
+  resultCopy = result;
   v226 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v189 = a4;
-  v12 = a7;
-  if ([v11 resultsCount])
+  scoreCopy = score;
+  configCopy = config;
+  contextCopy = context;
+  if ([scoreCopy resultsCount])
   {
-    v185 = a6;
-    v13 = [v11 resultsAtIndex:0];
-    v14 = [v11 domain];
-    if (v14 == 2)
+    posCopy = pos;
+    v13 = [scoreCopy resultsAtIndex:0];
+    domain = [scoreCopy domain];
+    if (domain == 2)
     {
-      v16 = [v13 sectionBundleIdentifier];
+      sectionBundleIdentifier = [v13 sectionBundleIdentifier];
     }
 
     else
     {
-      v15 = [v13 rankingItem];
-      v16 = [v15 sectionBundleIdentifier];
+      rankingItem = [v13 rankingItem];
+      sectionBundleIdentifier = [rankingItem sectionBundleIdentifier];
     }
 
     v212 = 0;
-    v190 = [(SectionL3Scores *)self getIFunScore:v16 rankingConfig:v189 isLocal:v14 != 2 result:v13 queryContext:v12 isQUIntent:&v212];
+    v190 = [(SectionL3Scores *)self getIFunScore:sectionBundleIdentifier rankingConfig:configCopy isLocal:domain != 2 result:v13 queryContext:contextCopy isQUIntent:&v212];
     if (v212 == 1)
     {
       v187 = v13;
-      v18 = v16;
-      v19 = self;
+      v18 = sectionBundleIdentifier;
+      selfCopy = self;
       v210 = 0u;
       v211 = 0u;
       v208 = 0u;
       v209 = 0u;
-      v20 = [v11 resultSet];
-      v21 = [v20 countByEnumeratingWithState:&v208 objects:v225 count:16];
+      resultSet = [scoreCopy resultSet];
+      v21 = [resultSet countByEnumeratingWithState:&v208 objects:v225 count:16];
       if (v21)
       {
         v22 = v21;
@@ -175,46 +175,46 @@ LABEL_17:
           {
             if (*v209 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(resultSet);
             }
 
             v25 = *(*(&v208 + 1) + 8 * i);
-            v26 = [v25 rankingItem];
+            rankingItem2 = [v25 rankingItem];
 
-            if (v26)
+            if (rankingItem2)
             {
-              v27 = [v25 rankingItem];
-              [v27 setShouldHideUnderShowMore:0];
+              rankingItem3 = [v25 rankingItem];
+              [rankingItem3 setShouldHideUnderShowMore:0];
             }
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v208 objects:v225 count:16];
+          v22 = [resultSet countByEnumeratingWithState:&v208 objects:v225 count:16];
         }
 
         while (v22);
       }
 
-      self = v19;
-      v16 = v18;
+      self = selfCopy;
+      sectionBundleIdentifier = v18;
       v13 = v187;
     }
 
-    v28 = [v11 resultsCount];
+    resultsCount = [scoreCopy resultsCount];
     v223 = 0xBF800000BF800000;
     v224 = -1082130432;
     v221 = 0xBF800000BF800000;
     v222 = -1082130432;
-    if (v28 >= 1)
+    if (resultsCount >= 1)
     {
       v29 = 0;
-      if (v28 >= 3)
+      if (resultsCount >= 3)
       {
         v30 = 3;
       }
 
       else
       {
-        v30 = v28;
+        v30 = resultsCount;
       }
 
       if (v30 <= 1)
@@ -229,12 +229,12 @@ LABEL_17:
 
       do
       {
-        v32 = [v11 resultsAtIndex:v29];
+        v32 = [scoreCopy resultsAtIndex:v29];
 
         v13 = v32;
-        [(SectionL3Scores *)self getResultScore:v32 section:v11 isLegacy:1];
+        [(SectionL3Scores *)self getResultScore:v32 section:scoreCopy isLegacy:1];
         *(&v223 + v29) = v33;
-        [(SectionL3Scores *)self getResultScore:v32 section:v11 isLegacy:0];
+        [(SectionL3Scores *)self getResultScore:v32 section:scoreCopy isLegacy:0];
         *(&v221 + v29++) = v34;
       }
 
@@ -288,14 +288,14 @@ LABEL_17:
       v13 = v32;
     }
 
-    v186 = v12;
-    if ([v11 domain] == 2)
+    v186 = contextCopy;
+    if ([scoreCopy domain] == 2)
     {
-      v44 = [v189 serverRelevanceScores];
-      if (v44)
+      serverRelevanceScores = [configCopy serverRelevanceScores];
+      if (serverRelevanceScores)
       {
-        v45 = v44;
-        v46 = [v16 isEqualToString:@"com.apple.parsec.web_index"];
+        v45 = serverRelevanceScores;
+        v46 = [sectionBundleIdentifier isEqualToString:@"com.apple.parsec.web_index"];
 
         if (v46)
         {
@@ -304,14 +304,14 @@ LABEL_17:
           v207 = 0u;
           v204 = 0u;
           v205 = 0u;
-          v48 = [v11 results];
-          v49 = [v48 countByEnumeratingWithState:&v204 objects:v220 count:16];
+          results = [scoreCopy results];
+          v49 = [results countByEnumeratingWithState:&v204 objects:v220 count:16];
           if (v49)
           {
             v50 = v49;
-            v181 = v16;
-            v183 = v11;
-            v51 = self;
+            v181 = sectionBundleIdentifier;
+            v183 = scoreCopy;
+            selfCopy2 = self;
             v52 = 0;
             v53 = *v205;
             v54 = v47;
@@ -325,45 +325,45 @@ LABEL_17:
               {
                 if (*v205 != v53)
                 {
-                  objc_enumerationMutation(v48);
+                  objc_enumerationMutation(results);
                 }
 
                 v54 = *(*(&v204 + 1) + 8 * v55);
 
-                v58 = [v189 serverRelevanceScores];
-                v59 = [v54 identifier];
-                v60 = [v58 objectForKey:v59];
+                serverRelevanceScores2 = [configCopy serverRelevanceScores];
+                identifier = [v54 identifier];
+                v60 = [serverRelevanceScores2 objectForKey:identifier];
 
                 if (v60)
                 {
                   if (!v56)
                   {
                     [v60 floatValue];
-                    v51->_serverRelevanceScore = v61;
+                    selfCopy2->_serverRelevanceScore = v61;
                   }
 
                   [v60 floatValue];
                   v63 = v62;
-                  [v189 serverRelevanceScoreThreshold];
-                  if (v63 < v64 && v198)
+                  [configCopy serverRelevanceScoreThreshold];
+                  if (v63 < v64 && resultCopy)
                   {
-                    self = v51;
-                    memset_pattern16(v51->l3Score, &unk_1DA0D53B0, 0xCuLL);
-                    *v51->l3ScoreLegacy = 0x80000000800000;
-                    v51->l3ScoreLegacy[2] = -3.4028e38;
-                    v11 = v183;
-                    v66 = [v183 results];
-                    v67 = [v66 count] - v56;
+                    self = selfCopy2;
+                    memset_pattern16(selfCopy2->l3Score, &unk_1DA0D53B0, 0xCuLL);
+                    *selfCopy2->l3ScoreLegacy = 0x80000000800000;
+                    selfCopy2->l3ScoreLegacy[2] = -3.4028e38;
+                    scoreCopy = v183;
+                    results2 = [v183 results];
+                    v67 = [results2 count] - v56;
 
-                    v68 = [v183 resultSet];
-                    [v68 removeObjectsInRange:{v56, v67}];
+                    resultSet2 = [v183 resultSet];
+                    [resultSet2 removeObjectsInRange:{v56, v67}];
 
                     v69 = SSGeneralLog();
                     v70 = os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT);
                     v47 = v60;
                     if (v70)
                     {
-                      [v189 serverRelevanceScoreThreshold];
+                      [configCopy serverRelevanceScoreThreshold];
                       *buf = 138412802;
                       v215 = v60;
                       v216 = 2048;
@@ -383,7 +383,7 @@ LABEL_17:
               }
 
               while (v50 != v55);
-              v50 = [v48 countByEnumeratingWithState:&v204 objects:v220 count:16];
+              v50 = [results countByEnumeratingWithState:&v204 objects:v220 count:16];
               v52 = v196;
               if (v50)
               {
@@ -395,10 +395,10 @@ LABEL_17:
 
             v47 = v54;
             v54 = 0;
-            v11 = v183;
-            self = v51;
+            scoreCopy = v183;
+            self = selfCopy2;
 LABEL_59:
-            v16 = v181;
+            sectionBundleIdentifier = v181;
           }
 
           else
@@ -411,18 +411,18 @@ LABEL_59:
       }
     }
 
-    [(NSMutableDictionary *)self->_features setObject:v16 forKeyedSubscript:@"section_bundle_id"];
+    [(NSMutableDictionary *)self->_features setObject:sectionBundleIdentifier forKeyedSubscript:@"section_bundle_id"];
     v202 = 0u;
     v203 = 0u;
     v200 = 0u;
     v201 = 0u;
-    obj = [v11 resultSet];
+    obj = [scoreCopy resultSet];
     v197 = [obj countByEnumeratingWithState:&v200 objects:v213 count:16];
     if (v197)
     {
       v188 = v13;
-      v182 = v16;
-      v184 = v11;
+      v182 = sectionBundleIdentifier;
+      v184 = scoreCopy;
       v72 = 0;
       v73 = 0;
       v74 = 0;
@@ -458,7 +458,7 @@ LABEL_59:
             }
 
             v193 = v75;
-            v83 = self;
+            selfCopy3 = self;
             features = self->_features;
             [MEMORY[0x1E696AEC0] stringWithFormat:@"results_top3_is_tophit_%d", v72];
             v85 = v192 = v74;
@@ -470,64 +470,64 @@ LABEL_59:
             }
 
             v86 = MEMORY[0x1E696AD98];
-            v87 = [v81 rankingItem];
-            [v87 l2Score];
+            rankingItem4 = [v81 rankingItem];
+            [rankingItem4 l2Score];
             v88 = [v86 numberWithFloat:?];
-            v89 = v83->_features;
+            v89 = selfCopy3->_features;
             v90 = [MEMORY[0x1E696AEC0] stringWithFormat:@"results_top3_pommesL2Score_%d", v72];
             [(NSMutableDictionary *)v89 setObject:v88 forKeyedSubscript:v90];
 
             v91 = MEMORY[0x1E696AD98];
-            v92 = [v81 rankingItem];
-            [v92 keywordMatchScore];
+            rankingItem5 = [v81 rankingItem];
+            [rankingItem5 keywordMatchScore];
             v93 = [v91 numberWithFloat:?];
-            v94 = v83->_features;
+            v94 = selfCopy3->_features;
             v95 = [MEMORY[0x1E696AEC0] stringWithFormat:@"results_top3_topicalityScore_%d", v72];
             [(NSMutableDictionary *)v94 setObject:v93 forKeyedSubscript:v95];
 
             v96 = MEMORY[0x1E696AD98];
-            v97 = [v81 rankingItem];
-            [v97 freshnessScore];
+            rankingItem6 = [v81 rankingItem];
+            [rankingItem6 freshnessScore];
             *&v98 = v98;
             v99 = [v96 numberWithFloat:v98];
-            v100 = v83->_features;
+            v100 = selfCopy3->_features;
             v101 = [MEMORY[0x1E696AEC0] stringWithFormat:@"results_top3_freshness_%d", v72];
             [(NSMutableDictionary *)v100 setObject:v99 forKeyedSubscript:v101];
 
             v102 = MEMORY[0x1E696AD98];
-            v103 = [v81 rankingItem];
-            [v103 engagementScore];
+            rankingItem7 = [v81 rankingItem];
+            [rankingItem7 engagementScore];
             *&v104 = v104;
             v105 = [v102 numberWithFloat:v104];
-            v106 = v83->_features;
+            v106 = selfCopy3->_features;
             v107 = [MEMORY[0x1E696AEC0] stringWithFormat:@"results_top3_engagementScore_%d", v72];
             [(NSMutableDictionary *)v106 setObject:v105 forKeyedSubscript:v107];
 
             v108 = MEMORY[0x1E696AD98];
-            v109 = [v81 rankingItem];
-            [v109 likelihood];
+            rankingItem8 = [v81 rankingItem];
+            [rankingItem8 likelihood];
             *&v110 = v110;
             v111 = [v108 numberWithFloat:v110];
-            v112 = v83->_features;
+            v112 = selfCopy3->_features;
             v113 = [MEMORY[0x1E696AEC0] stringWithFormat:@"results_top3_predictedLikelihoodOfEngagement_%d", v72];
             [(NSMutableDictionary *)v112 setObject:v111 forKeyedSubscript:v113];
 
             v114 = MEMORY[0x1E696AD98];
-            v115 = [v81 topHit];
+            topHit = [v81 topHit];
             v116 = 1.0;
-            if (!v115)
+            if (!topHit)
             {
               v116 = 0.0;
             }
 
             v117 = [v114 numberWithDouble:v116];
-            v118 = v83->_features;
+            v118 = selfCopy3->_features;
             v119 = [MEMORY[0x1E696AEC0] stringWithFormat:@"results_top3_wasNominatedAsTopHit_%d", v72];
             [(NSMutableDictionary *)v118 setObject:v117 forKeyedSubscript:v119];
 
             v120 = MEMORY[0x1E696AD98];
-            v121 = [v81 rankingItem];
-            if ([v121 exactMatchedLaunchString])
+            rankingItem9 = [v81 rankingItem];
+            if ([rankingItem9 exactMatchedLaunchString])
             {
               *&v122 = 1.0;
             }
@@ -538,13 +538,13 @@ LABEL_59:
             }
 
             v123 = [v120 numberWithFloat:v122];
-            v124 = v83->_features;
+            v124 = selfCopy3->_features;
             v125 = [MEMORY[0x1E696AEC0] stringWithFormat:@"results_top3_isExactMatchOfLaunchString_%d", v72];
             [(NSMutableDictionary *)v124 setObject:v123 forKeyedSubscript:v125];
 
             v126 = MEMORY[0x1E696AD98];
-            v127 = [v81 rankingItem];
-            if ([v127 wasEngagedInSpotlight])
+            rankingItem10 = [v81 rankingItem];
+            if ([rankingItem10 wasEngagedInSpotlight])
             {
               *&v128 = 1.0;
             }
@@ -555,22 +555,22 @@ LABEL_59:
             }
 
             v129 = [v126 numberWithFloat:v128];
-            v130 = v83->_features;
+            v130 = selfCopy3->_features;
             v131 = [MEMORY[0x1E696AEC0] stringWithFormat:@"results_top3_wasEngagedInSpotlight_%d", v72];
             [(NSMutableDictionary *)v130 setObject:v129 forKeyedSubscript:v131];
 
             v132 = MEMORY[0x1E696AD98];
-            v133 = [v81 rankingItem];
-            v134 = [v133 L2FeatureVector];
-            [v134 originalL2Score];
+            rankingItem11 = [v81 rankingItem];
+            l2FeatureVector = [rankingItem11 L2FeatureVector];
+            [l2FeatureVector originalL2Score];
             v135 = [v132 numberWithFloat:?];
-            v136 = v83->_features;
+            v136 = selfCopy3->_features;
             v137 = [MEMORY[0x1E696AEC0] stringWithFormat:@"results_top3_originalL2Score_%d", v72];
             v138 = v136;
             v74 = v192;
             [(NSMutableDictionary *)v138 setObject:v135 forKeyedSubscript:v137];
 
-            self = v83;
+            self = selfCopy3;
             v75 = v193;
 
             v139 = MEMORY[0x1E696AD98];
@@ -588,9 +588,9 @@ LABEL_59:
 
           else
           {
-            v143 = [v81 topHit];
+            topHit2 = [v81 topHit];
             v144 = v195;
-            if (v143 == 2)
+            if (topHit2 == 2)
             {
               v144 = v195 + 1;
             }
@@ -599,8 +599,8 @@ LABEL_59:
           }
 
           v75 += [SSTopHitNominationManager passLikelihoodForTopHitCandidate:v81];
-          v145 = [v81 rankingItem];
-          [v145 likelihood];
+          rankingItem12 = [v81 rankingItem];
+          [rankingItem12 likelihood];
           v147 = v146;
 
           if (v147 > v76)
@@ -608,8 +608,8 @@ LABEL_59:
             v76 = v147;
           }
 
-          v148 = [v81 rankingItem];
-          [v148 keywordMatchScore];
+          rankingItem13 = [v81 rankingItem];
+          [rankingItem13 keywordMatchScore];
           v150 = v149;
 
           if (v77 < v150)
@@ -617,9 +617,9 @@ LABEL_59:
             v77 = v150;
           }
 
-          v151 = [v81 rankingItem];
-          v152 = [v151 L2FeatureVector];
-          [v152 originalL2Score];
+          rankingItem14 = [v81 rankingItem];
+          l2FeatureVector2 = [rankingItem14 L2FeatureVector];
+          [l2FeatureVector2 originalL2Score];
           v154 = v153;
 
           if (v78 < v154)
@@ -646,8 +646,8 @@ LABEL_59:
       v157 = v74;
       v158 = v195;
       v159 = v75;
-      v16 = v182;
-      v11 = v184;
+      sectionBundleIdentifier = v182;
+      scoreCopy = v184;
       v13 = v188;
     }
 
@@ -663,10 +663,10 @@ LABEL_59:
       v79 = 0.0;
     }
 
-    v12 = v186;
-    if ([v11 domain] == 2)
+    contextCopy = v186;
+    if ([scoreCopy domain] == 2)
     {
-      *&v160 = v185;
+      *&v160 = posCopy;
       v161 = [MEMORY[0x1E696AD98] numberWithFloat:v160];
       [(NSMutableDictionary *)self->_features setObject:v161 forKeyedSubscript:@"server_section_dpos"];
     }
@@ -720,43 +720,43 @@ LABEL_59:
   return v17 & 1;
 }
 
-- (id)getIFunScore:(id)a3 rankingConfig:(id)a4 isLocal:(BOOL)a5 result:(id)a6 queryContext:(id)a7 isQUIntent:(BOOL *)a8
+- (id)getIFunScore:(id)score rankingConfig:(id)config isLocal:(BOOL)local result:(id)result queryContext:(id)context isQUIntent:(BOOL *)intent
 {
-  v11 = a5;
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  if (([(__CFString *)v13 isEqualToString:@"com.apple.spotlight.contacts"]& 1) != 0 || ([(__CFString *)v13 isEqualToString:@"com.apple.contacts"]& 1) != 0)
+  localCopy = local;
+  scoreCopy = score;
+  configCopy = config;
+  resultCopy = result;
+  contextCopy = context;
+  if (([(__CFString *)scoreCopy isEqualToString:@"com.apple.spotlight.contacts"]& 1) != 0 || ([(__CFString *)scoreCopy isEqualToString:@"com.apple.contacts"]& 1) != 0)
   {
     v17 = @"com.apple.MobileAddressBook";
 LABEL_4:
 
-    v13 = v17;
+    scoreCopy = v17;
     goto LABEL_5;
   }
 
-  if (([(__CFString *)v13 isEqualToString:@"com.apple.calculation"]& 1) != 0)
+  if (([(__CFString *)scoreCopy isEqualToString:@"com.apple.calculation"]& 1) != 0)
   {
     v17 = @"com.apple.calculator";
     goto LABEL_4;
   }
 
-  if ([(__CFString *)v13 isEqualToString:@"com.apple.DocumentsApp"])
+  if ([(__CFString *)scoreCopy isEqualToString:@"com.apple.DocumentsApp"])
   {
     v17 = @"com.apple.CloudDocs.MobileDocumentsFileProvider";
     goto LABEL_4;
   }
 
 LABEL_5:
-  if (isQUIntentMatchBundle([v16 intentFromQU], v13))
+  if (isQUIntentMatchBundle([contextCopy intentFromQU], scoreCopy))
   {
-    *a8 = 1;
-    v18 = &unk_1F55B6CA8;
+    *intent = 1;
+    localScore2 = &unk_1F55B6CA8;
     goto LABEL_200;
   }
 
-  v19 = v13;
+  v19 = scoreCopy;
   if ([(__CFString *)v19 compare:@"com.apple.unknown" options:3])
   {
     if ([(__CFString *)v19 compare:@"com.apple.applications" options:3])
@@ -1459,40 +1459,40 @@ LABEL_5:
     v20 = 0;
   }
 
-  v21 = [v14 iFunScores];
-  v22 = [v21 domainScores];
+  iFunScores = [configCopy iFunScores];
+  domainScores = [iFunScores domainScores];
   v23 = [MEMORY[0x1E696AD98] numberWithInt:v20];
-  v18 = [v22 objectForKey:v23];
+  localScore2 = [domainScores objectForKey:v23];
 
-  if (!v18)
+  if (!localScore2)
   {
-    if (v11)
+    if (localCopy)
     {
-      v24 = [v15 rankingItem];
-      if (v24)
+      rankingItem = [resultCopy rankingItem];
+      if (rankingItem)
       {
-        v25 = v24;
-        v26 = [v15 rankingItem];
-        [v26 keywordMatchScore];
+        v25 = rankingItem;
+        rankingItem2 = [resultCopy rankingItem];
+        [rankingItem2 keywordMatchScore];
         if (v27 <= 0.0)
         {
         }
 
         else
         {
-          v28 = [v15 rankingItem];
-          v29 = [v28 sectionBundleIdentifier];
-          v30 = [v29 isEqualToString:@"com.apple.tips"];
+          rankingItem3 = [resultCopy rankingItem];
+          sectionBundleIdentifier = [rankingItem3 sectionBundleIdentifier];
+          v30 = [sectionBundleIdentifier isEqualToString:@"com.apple.tips"];
 
           if ((v30 & 1) == 0)
           {
-            v31 = [v14 iFunScores];
-            v32 = [v31 localScore];
+            iFunScores2 = [configCopy iFunScores];
+            localScore = [iFunScores2 localScore];
 
-            if (v32)
+            if (localScore)
             {
-              v33 = [v14 iFunScores];
-              v18 = [v33 localScore];
+              iFunScores3 = [configCopy iFunScores];
+              localScore2 = [iFunScores3 localScore];
 
               goto LABEL_200;
             }
@@ -1503,67 +1503,67 @@ LABEL_5:
       }
     }
 
-    v34 = [v14 iFunScores];
+    iFunScores4 = [configCopy iFunScores];
 
-    if (v34)
+    if (iFunScores4)
     {
       if (v20 != 34)
       {
         goto LABEL_198;
       }
 
-      v35 = [v14 iFunScores];
-      v36 = [v35 domainScores];
-      v18 = [v36 objectForKey:&unk_1F55B3A08];
+      iFunScores5 = [configCopy iFunScores];
+      domainScores2 = [iFunScores5 domainScores];
+      localScore2 = [domainScores2 objectForKey:&unk_1F55B3A08];
 
-      if (!v18)
+      if (!localScore2)
       {
 LABEL_198:
-        v18 = &unk_1F55B6F48;
+        localScore2 = &unk_1F55B6F48;
       }
     }
 
     else
     {
-      v18 = 0;
+      localScore2 = 0;
     }
   }
 
 LABEL_200:
 
-  return v18;
+  return localScore2;
 }
 
-+ (void)getComparableL3Score:(id)a3 sectionMapping:(id)a4 bundleId1:(id)a5 bundleId2:(id)a6 score1:(float *)a7 score2:(float *)a8 usePommesScore:(BOOL)a9 useLegacyScore:(BOOL)a10
++ (void)getComparableL3Score:(id)score sectionMapping:(id)mapping bundleId1:(id)id1 bundleId2:(id)id2 score1:(float *)score1 score2:(float *)score2 usePommesScore:(BOOL)pommesScore useLegacyScore:(BOOL)self0
 {
-  v36 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  scoreCopy = score;
+  mappingCopy = mapping;
+  id1Copy = id1;
+  id2Copy = id2;
   if (SSEnableSpotlightFullPageRanking())
   {
-    v18 = [v36 objectForKey:v16];
-    v19 = [v36 objectForKey:v17];
+    v18 = [scoreCopy objectForKey:id1Copy];
+    v19 = [scoreCopy objectForKey:id2Copy];
     v20 = v19;
     if (!v18 || !v19)
     {
       goto LABEL_21;
     }
 
-    v34 = a8;
-    v21 = [v15 objectForKey:v16];
-    v22 = [v15 objectForKey:v17];
+    score2Copy = score2;
+    v21 = [mappingCopy objectForKey:id1Copy];
+    v22 = [mappingCopy objectForKey:id2Copy];
     v35 = v22;
     if ([v21 resultsCount] && objc_msgSend(v22, "resultsCount"))
     {
-      v23 = [v21 resultsCount];
+      resultsCount = [v21 resultsCount];
       v33 = v21;
-      v24 = a7;
-      v25 = v23;
-      v26 = [v22 resultsCount];
-      if (v25 >= v26)
+      score1Copy = score1;
+      v25 = resultsCount;
+      resultsCount2 = [v22 resultsCount];
+      if (v25 >= resultsCount2)
       {
-        v27 = v26;
+        v27 = resultsCount2;
       }
 
       else
@@ -1571,7 +1571,7 @@ LABEL_200:
         v27 = v25;
       }
 
-      a7 = v24;
+      score1 = score1Copy;
       v21 = v33;
       if (v27 >= 3)
       {
@@ -1579,7 +1579,7 @@ LABEL_200:
       }
 
       v28 = (v27 - 1);
-      if (!a9)
+      if (!pommesScore)
       {
         goto LABEL_16;
       }
@@ -1588,7 +1588,7 @@ LABEL_200:
     else
     {
       v28 = 0;
-      if (!a9)
+      if (!pommesScore)
       {
         goto LABEL_16;
       }
@@ -1600,8 +1600,8 @@ LABEL_200:
     if (v30 >= 0.0 && v31 >= 0.0)
     {
 LABEL_19:
-      *a7 = v30;
-      *v34 = v31;
+      *score1 = v30;
+      *score2Copy = v31;
 LABEL_20:
 
 LABEL_21:
@@ -1609,7 +1609,7 @@ LABEL_21:
     }
 
 LABEL_16:
-    if (!a10)
+    if (!legacyScore)
     {
       goto LABEL_20;
     }
@@ -1628,15 +1628,15 @@ LABEL_16:
 LABEL_22:
 }
 
-+ (void)getComparableModelL3Score:(id)a3 bundleId1:(id)a4 bundleId2:(id)a5 score1:(float *)a6 score2:(float *)a7
++ (void)getComparableModelL3Score:(id)score bundleId1:(id)id1 bundleId2:(id)id2 score1:(float *)score1 score2:(float *)score2
 {
-  v20 = a3;
-  v11 = a4;
-  v12 = a5;
+  scoreCopy = score;
+  id1Copy = id1;
+  id2Copy = id2;
   if (SSEnableSpotlightFullPageRanking())
   {
-    v13 = [v20 objectForKey:v11];
-    v14 = [v20 objectForKey:v12];
+    v13 = [scoreCopy objectForKey:id1Copy];
+    v14 = [scoreCopy objectForKey:id2Copy];
     v15 = v14;
     if (v13)
     {
@@ -1649,9 +1649,9 @@ LABEL_22:
           if (v17 >= 0.0)
           {
             [v13 modelScore];
-            *a6 = v18;
+            *score1 = v18;
             [v15 modelScore];
-            *a7 = v19;
+            *score2 = v19;
           }
         }
       }

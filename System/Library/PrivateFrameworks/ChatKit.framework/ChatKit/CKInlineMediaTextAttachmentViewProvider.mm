@@ -1,15 +1,15 @@
 @interface CKInlineMediaTextAttachmentViewProvider
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7;
-- (_TtC7ChatKit39CKInlineMediaTextAttachmentViewProvider)initWithTextAttachment:(id)a3 parentView:(id)a4 textLayoutManager:(id)a5 location:(id)a6;
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position;
+- (_TtC7ChatKit39CKInlineMediaTextAttachmentViewProvider)initWithTextAttachment:(id)attachment parentView:(id)view textLayoutManager:(id)manager location:(id)location;
 @end
 
 @implementation CKInlineMediaTextAttachmentViewProvider
 
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position
 {
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
+  containerCopy = container;
+  selfCopy = self;
   sub_19085475C();
   v12 = v11;
   v14 = v13;
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (_TtC7ChatKit39CKInlineMediaTextAttachmentViewProvider)initWithTextAttachment:(id)a3 parentView:(id)a4 textLayoutManager:(id)a5 location:(id)a6
+- (_TtC7ChatKit39CKInlineMediaTextAttachmentViewProvider)initWithTextAttachment:(id)attachment parentView:(id)view textLayoutManager:(id)manager location:(id)location
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

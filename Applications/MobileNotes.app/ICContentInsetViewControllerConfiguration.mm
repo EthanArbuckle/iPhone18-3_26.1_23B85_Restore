@@ -1,7 +1,7 @@
 @interface ICContentInsetViewControllerConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ICContentInsetViewControllerConfiguration)init;
-- (ICContentInsetViewControllerConfiguration)initWithInsets:(NSDirectionalEdgeInsets)a3 usesSafeAreaLayoutGuide:(BOOL)a4 cornerRadius:(double)a5;
+- (ICContentInsetViewControllerConfiguration)initWithInsets:(NSDirectionalEdgeInsets)insets usesSafeAreaLayoutGuide:(BOOL)guide cornerRadius:(double)radius;
 - (NSDirectionalEdgeInsets)insets;
 @end
 
@@ -20,21 +20,21 @@
   return result;
 }
 
-- (ICContentInsetViewControllerConfiguration)initWithInsets:(NSDirectionalEdgeInsets)a3 usesSafeAreaLayoutGuide:(BOOL)a4 cornerRadius:(double)a5
+- (ICContentInsetViewControllerConfiguration)initWithInsets:(NSDirectionalEdgeInsets)insets usesSafeAreaLayoutGuide:(BOOL)guide cornerRadius:(double)radius
 {
-  *(&self->super.isa + OBJC_IVAR___ICContentInsetViewControllerConfiguration_insets) = a3;
-  *(&self->super.isa + OBJC_IVAR___ICContentInsetViewControllerConfiguration_usesSafeAreaLayoutGuide) = a4;
-  *(&self->super.isa + OBJC_IVAR___ICContentInsetViewControllerConfiguration_cornerRadius) = a5;
+  *(&self->super.isa + OBJC_IVAR___ICContentInsetViewControllerConfiguration_insets) = insets;
+  *(&self->super.isa + OBJC_IVAR___ICContentInsetViewControllerConfiguration_usesSafeAreaLayoutGuide) = guide;
+  *(&self->super.isa + OBJC_IVAR___ICContentInsetViewControllerConfiguration_cornerRadius) = radius;
   v6.receiver = self;
   v6.super_class = type metadata accessor for ContentInsetViewController.Configuration();
   return [(ICContentInsetViewControllerConfiguration *)&v6 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -43,7 +43,7 @@
   else
   {
     memset(v11, 0, sizeof(v11));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10027CA3C(v11, v9);

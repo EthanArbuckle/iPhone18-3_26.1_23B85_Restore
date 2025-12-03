@@ -1,46 +1,46 @@
 @interface BKLibraryUploadStatusViewController
-+ (id)_titleForUploadError:(int64_t)a3 more:(BOOL)a4;
-+ (id)_titleForUploading:(BOOL)a3;
-+ (id)_titleForUploadingCount:(unint64_t)a3;
++ (id)_titleForUploadError:(int64_t)error more:(BOOL)more;
++ (id)_titleForUploading:(BOOL)uploading;
++ (id)_titleForUploadingCount:(unint64_t)count;
 + (id)titleForUploadButton;
 + (int64_t)_uploadErrorType;
-- (BKLibraryUploadStatusViewController)initWithMetrics:(id)a3;
+- (BKLibraryUploadStatusViewController)initWithMetrics:(id)metrics;
 - (BKLibraryUploadStatusViewControllerDelegate)delegate;
-- (id)_uploadAssetAtIndex:(unint64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)_uploadAssetAtIndex:(unint64_t)index;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)preferredStatusBarStyle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_adjustPreferredContentSize;
-- (void)_configureThemeForCell:(id)a3;
+- (void)_configureThemeForCell:(id)cell;
 - (void)_configureThemeForErrorHeaderView;
-- (void)_dismissWithCompletion:(id)a3;
-- (void)_mergeAssets:(id)a3;
-- (void)_networkReachabilityChanged:(id)a3;
+- (void)_dismissWithCompletion:(id)completion;
+- (void)_mergeAssets:(id)assets;
+- (void)_networkReachabilityChanged:(id)changed;
 - (void)_presentUpgradeStorageFlow;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)_updateTitle:(int64_t)a3;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)_updateTitle:(int64_t)title;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setMainHeaderMetrics:(id)a3;
-- (void)setPresentedInPopover:(BOOL)a3;
-- (void)setThemeForUserInterfaceStyle:(int64_t)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setMainHeaderMetrics:(id)metrics;
+- (void)setPresentedInPopover:(BOOL)popover;
+- (void)setThemeForUserInterfaceStyle:(int64_t)style;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation BKLibraryUploadStatusViewController
 
-- (BKLibraryUploadStatusViewController)initWithMetrics:(id)a3
+- (BKLibraryUploadStatusViewController)initWithMetrics:(id)metrics
 {
-  v5 = a3;
+  metricsCopy = metrics;
   v11.receiver = self;
   v11.super_class = BKLibraryUploadStatusViewController;
   v6 = [(BKLibraryUploadStatusViewController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mainHeaderMetrics, a3);
+    objc_storeStrong(&v6->_mainHeaderMetrics, metrics);
     v8 = +[UITraitCollection bc_allAPITraits];
     v9 = [(BKLibraryUploadStatusViewController *)v7 registerForTraitChanges:v8 withAction:"_traitCollectionDidChange:previousTraitCollection:"];
   }
@@ -48,10 +48,10 @@
   return v7;
 }
 
-- (void)setMainHeaderMetrics:(id)a3
+- (void)setMainHeaderMetrics:(id)metrics
 {
-  objc_storeStrong(&self->_mainHeaderMetrics, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_mainHeaderMetrics, metrics);
+  metricsCopy = metrics;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000554D0;
@@ -62,16 +62,16 @@
 
 - (void)dealloc
 {
-  v3 = [(BKLibraryUploadStatusViewController *)self tableView];
-  [v3 setDelegate:0];
+  tableView = [(BKLibraryUploadStatusViewController *)self tableView];
+  [tableView setDelegate:0];
 
-  v4 = [(BKLibraryUploadStatusViewController *)self tableView];
-  [v4 setDataSource:0];
+  tableView2 = [(BKLibraryUploadStatusViewController *)self tableView];
+  [tableView2 setDataSource:0];
 
   v5 = +[BKLibraryAssetStatusController sharedController];
-  v6 = [v5 uploadAssets];
+  uploadAssets = [v5 uploadAssets];
 
-  [v6 removeObserver:self forKeyPath:@"arrangedObjects" context:off_100ACBF30];
+  [uploadAssets removeObserver:self forKeyPath:@"arrangedObjects" context:off_100ACBF30];
   v7 = +[BKLibraryAssetStatusController sharedController];
   [v7 removeObserver:self forKeyPath:@"uploadStatus" context:off_100ACBF38];
 
@@ -83,23 +83,23 @@
   [(BKLibraryUploadStatusViewController *)&v9 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_100ACBF30 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_100ACBF30 == context)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000558B4;
     block[3] = &unk_100A03440;
     block[4] = self;
-    v16 = v11;
+    v16 = objectCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 
-  else if (off_100ACBF38 == a6)
+  else if (off_100ACBF38 == context)
   {
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -113,28 +113,28 @@
   {
     v13.receiver = self;
     v13.super_class = BKLibraryUploadStatusViewController;
-    [(BKLibraryUploadStatusViewController *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(BKLibraryUploadStatusViewController *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)setThemeForUserInterfaceStyle:(int64_t)a3
+- (void)setThemeForUserInterfaceStyle:(int64_t)style
 {
-  v5 = [(BKLibraryUploadStatusViewController *)self navigationController];
-  v6 = [v5 navigationBar];
+  navigationController = [(BKLibraryUploadStatusViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
   v30 = NSForegroundColorAttributeName;
   v7 = +[UIColor bc_booksLabelColor];
   v31 = v7;
   v8 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-  [v6 setTitleTextAttributes:v8];
+  [navigationBar setTitleTextAttributes:v8];
 
   v9 = +[UIColor bc_booksKeyColor];
-  v10 = [(BKLibraryUploadStatusViewController *)self navigationController];
-  v11 = [v10 navigationBar];
-  [v11 setTintColor:v9];
+  navigationController2 = [(BKLibraryUploadStatusViewController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  [navigationBar2 setTintColor:v9];
 
   v12 = +[UIColor bc_booksKeyColor];
-  v13 = [(BKLibraryUploadStatusViewController *)self view];
-  [v13 setTintColor:v12];
+  view = [(BKLibraryUploadStatusViewController *)self view];
+  [view setTintColor:v12];
 
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
@@ -143,54 +143,54 @@
   v29[4] = self;
   [UIView performWithoutAnimation:v29];
   v14 = +[UIColor bc_booksSeparatorColor];
-  v15 = [(BKLibraryUploadStatusViewController *)self tableView];
-  [v15 setSeparatorColor:v14];
+  tableView = [(BKLibraryUploadStatusViewController *)self tableView];
+  [tableView setSeparatorColor:v14];
 
   v16 = +[UIColor bc_booksBackground];
-  v17 = [(BKLibraryUploadStatusViewController *)self tableView];
-  [v17 setBackgroundColor:v16];
+  tableView2 = [(BKLibraryUploadStatusViewController *)self tableView];
+  [tableView2 setBackgroundColor:v16];
 
-  v18 = [(BKLibraryUploadStatusViewController *)self navigationController];
-  v19 = [v18 navigationBar];
+  navigationController3 = [(BKLibraryUploadStatusViewController *)self navigationController];
+  navigationBar3 = [navigationController3 navigationBar];
   v20 = +[UIColor bc_booksSecondaryBackground];
-  [v19 setBarTintColor:v20];
+  [navigationBar3 setBarTintColor:v20];
 
-  v21 = [(BKLibraryUploadStatusViewController *)self navigationController];
-  v22 = [v21 navigationBar];
-  v23 = a3 == 1;
-  [v22 setTranslucent:v23];
+  navigationController4 = [(BKLibraryUploadStatusViewController *)self navigationController];
+  navigationBar4 = [navigationController4 navigationBar];
+  v23 = style == 1;
+  [navigationBar4 setTranslucent:v23];
 
-  v24 = [(BKLibraryUploadStatusViewController *)self navigationController];
-  v25 = [v24 toolbar];
+  navigationController5 = [(BKLibraryUploadStatusViewController *)self navigationController];
+  toolbar = [navigationController5 toolbar];
   v26 = +[UIColor bc_booksSecondaryBackground];
-  [v25 setBarTintColor:v26];
+  [toolbar setBarTintColor:v26];
 
-  v27 = [(BKLibraryUploadStatusViewController *)self navigationController];
-  v28 = [v27 toolbar];
-  [v28 setTranslucent:v23];
+  navigationController6 = [(BKLibraryUploadStatusViewController *)self navigationController];
+  toolbar2 = [navigationController6 toolbar];
+  [toolbar2 setTranslucent:v23];
 
   [(BKLibraryUploadStatusViewController *)self _configureThemeForErrorHeaderView];
   [(BKLibraryUploadStatusViewController *)self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = [a4 userInterfaceStyle];
-  v6 = [(BKLibraryUploadStatusViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  userInterfaceStyle = [collection userInterfaceStyle];
+  traitCollection = [(BKLibraryUploadStatusViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v8 = [(BKLibraryUploadStatusViewController *)self traitCollection];
-    -[BKLibraryUploadStatusViewController setThemeForUserInterfaceStyle:](self, "setThemeForUserInterfaceStyle:", [v8 userInterfaceStyle]);
+    traitCollection2 = [(BKLibraryUploadStatusViewController *)self traitCollection];
+    -[BKLibraryUploadStatusViewController setThemeForUserInterfaceStyle:](self, "setThemeForUserInterfaceStyle:", [traitCollection2 userInterfaceStyle]);
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = BKLibraryUploadStatusViewController;
-  [(BKLibraryUploadStatusViewController *)&v6 viewWillDisappear:a3];
+  [(BKLibraryUploadStatusViewController *)&v6 viewWillDisappear:disappear];
   v4 = +[BKLibraryAssetStatusController sharedController];
   [v4 removeCompletedUploads];
 
@@ -198,32 +198,32 @@
   [v5 removeObserver:self];
 }
 
-- (void)setPresentedInPopover:(BOOL)a3
+- (void)setPresentedInPopover:(BOOL)popover
 {
-  self->_presentedInPopover = a3;
-  if (a3)
+  self->_presentedInPopover = popover;
+  if (popover)
   {
-    v5 = [(BKLibraryUploadStatusViewController *)self navigationItem];
-    [v5 setLeftBarButtonItem:0];
+    navigationItem = [(BKLibraryUploadStatusViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:0];
   }
 
   else
   {
-    v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_dismiss"];
-    v4 = [(BKLibraryUploadStatusViewController *)self navigationItem];
-    [v4 setLeftBarButtonItem:v5];
+    navigationItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_dismiss"];
+    navigationItem2 = [(BKLibraryUploadStatusViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:navigationItem];
   }
 }
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(BKLibraryUploadStatusViewController *)self traitCollection];
-  v3 = [v2 userInterfaceStyle] == 2;
+  traitCollection = [(BKLibraryUploadStatusViewController *)self traitCollection];
+  v3 = [traitCollection userInterfaceStyle] == 2;
 
   return v3;
 }
 
-- (void)_networkReachabilityChanged:(id)a3
+- (void)_networkReachabilityChanged:(id)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -233,12 +233,12 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-+ (id)_titleForUploading:(BOOL)a3
++ (id)_titleForUploading:(BOOL)uploading
 {
-  v3 = a3;
+  uploadingCopy = uploading;
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (uploadingCopy)
   {
     v6 = @"Uploading to iCloud…";
   }
@@ -253,24 +253,24 @@
   return v7;
 }
 
-+ (id)_titleForUploadingCount:(unint64_t)a3
++ (id)_titleForUploadingCount:(unint64_t)count
 {
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"Syncing %lu item(s) to iCloud…" value:&stru_100A30A68 table:0];
-  v6 = [NSString localizedStringWithFormat:v5, a3];
+  v6 = [NSString localizedStringWithFormat:v5, count];
 
   return v6;
 }
 
-+ (id)_titleForUploadError:(int64_t)a3 more:(BOOL)a4
++ (id)_titleForUploadError:(int64_t)error more:(BOOL)more
 {
-  if (a3 == 2)
+  if (error == 2)
   {
     v7 = +[BCDevice deviceClass];
     v5 = +[NSBundle mainBundle];
     if (v7 == 4)
     {
-      if (a4)
+      if (more)
       {
         v6 = @"Your Mac is Offline…";
       }
@@ -283,7 +283,7 @@
 
     else if (v7 == 3)
     {
-      if (a4)
+      if (more)
       {
         v6 = @"Your iPad is Offline…";
       }
@@ -296,7 +296,7 @@
 
     else if (v7 == 1)
     {
-      if (a4)
+      if (more)
       {
         v6 = @"Your iPhone is Offline…";
       }
@@ -307,7 +307,7 @@
       }
     }
 
-    else if (a4)
+    else if (more)
     {
       v6 = @"Your device is Offline…";
     }
@@ -320,14 +320,14 @@
 
   else
   {
-    if (a3 != 1)
+    if (error != 1)
     {
       v8 = 0;
       goto LABEL_13;
     }
 
     v5 = +[NSBundle mainBundle];
-    if (a4)
+    if (more)
     {
       v6 = @"iCloud Storage Is Full…";
     }
@@ -347,18 +347,18 @@ LABEL_13:
 
 + (id)titleForUploadButton
 {
-  v3 = [objc_opt_class() _uploadErrorType];
-  if ((v3 | 2) != 2)
+  _uploadErrorType = [objc_opt_class() _uploadErrorType];
+  if ((_uploadErrorType | 2) != 2)
   {
-    v9 = [a1 _titleForUploadError:v3 more:1];
+    v9 = [self _titleForUploadError:_uploadErrorType more:1];
     goto LABEL_16;
   }
 
   v4 = +[BKLibraryAssetStatusController sharedController];
-  v5 = [v4 uploadAssets];
-  v6 = [v5 arrangedObjects];
+  uploadAssets = [v4 uploadAssets];
+  arrangedObjects = [uploadAssets arrangedObjects];
 
-  if ([v6 count])
+  if ([arrangedObjects count])
   {
     v17 = 0;
     v18 = &v17;
@@ -370,9 +370,9 @@ LABEL_13:
     v14 = &unk_100A03878;
     v15 = v4;
     v16 = &v17;
-    [v6 enumerateObjectsUsingBlock:&v11];
+    [arrangedObjects enumerateObjectsUsingBlock:&v11];
     v7 = v18[3];
-    if (v3)
+    if (_uploadErrorType)
     {
       if (!v7)
       {
@@ -383,7 +383,7 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v8 = [a1 _titleForUploadError:v3 more:{1, v11, v12, v13, v14}];
+      v8 = [self _titleForUploadError:_uploadErrorType more:{1, v11, v12, v13, v14}];
     }
 
     else
@@ -412,23 +412,23 @@ LABEL_16:
   return v9;
 }
 
-- (void)_updateTitle:(int64_t)a3
+- (void)_updateTitle:(int64_t)title
 {
-  if (a3)
+  if (title)
   {
-    v4 = [objc_opt_class() _titleForUploadError:a3 more:0];
+    v4 = [objc_opt_class() _titleForUploadError:title more:0];
   }
 
   else
   {
-    v5 = [(BKLibraryUploadStatusViewController *)self assetIdToState];
-    v6 = [v5 allValues];
+    assetIdToState = [(BKLibraryUploadStatusViewController *)self assetIdToState];
+    allValues = [assetIdToState allValues];
 
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = v6;
+    v7 = allValues;
     v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
@@ -464,21 +464,21 @@ LABEL_13:
     v4 = [objc_opt_class() _titleForUploading:v8];
   }
 
-  v11 = [(BKLibraryUploadStatusViewController *)self navigationItem];
-  [v11 setTitle:v4];
+  navigationItem = [(BKLibraryUploadStatusViewController *)self navigationItem];
+  [navigationItem setTitle:v4];
 }
 
 + (int64_t)_uploadErrorType
 {
   v2 = +[BKReachability sharedReachabilityForInternetConnection];
-  v3 = [v2 currentReachabilityStatus];
+  currentReachabilityStatus = [v2 currentReachabilityStatus];
 
   v4 = +[BKLibraryAssetStatusController sharedController];
-  v5 = [v4 uploadStatus];
+  uploadStatus = [v4 uploadStatus];
 
-  if (v3)
+  if (currentReachabilityStatus)
   {
-    return v5 == 2;
+    return uploadStatus == 2;
   }
 
   else
@@ -487,9 +487,9 @@ LABEL_13:
   }
 }
 
-- (void)_mergeAssets:(id)a3
+- (void)_mergeAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v5 = +[NSMutableArray array];
   v6 = +[NSMutableArray array];
   +[BKLibraryAssetStatusController sharedController];
@@ -497,39 +497,39 @@ LABEL_13:
   v15 = 3221225472;
   v16 = sub_1000568C0;
   v18 = v17 = &unk_100A038A0;
-  v19 = self;
+  selfCopy = self;
   v7 = v5;
   v20 = v7;
   v8 = v6;
   v21 = v8;
   v9 = v18;
-  [v4 enumerateObjectsUsingBlock:&v14];
+  [assetsCopy enumerateObjectsUsingBlock:&v14];
 
   if ([v7 count] || objc_msgSend(v8, "count"))
   {
-    v10 = [(BKLibraryUploadStatusViewController *)self tableView];
-    [v10 beginUpdates];
+    tableView = [(BKLibraryUploadStatusViewController *)self tableView];
+    [tableView beginUpdates];
 
-    v11 = [(BKLibraryUploadStatusViewController *)self tableView];
-    [v11 insertRowsAtIndexPaths:v7 withRowAnimation:100];
+    tableView2 = [(BKLibraryUploadStatusViewController *)self tableView];
+    [tableView2 insertRowsAtIndexPaths:v7 withRowAnimation:100];
 
     -[BKLibraryUploadStatusViewController setNumAssetsAdded:](self, "setNumAssetsAdded:", [v7 count] + -[BKLibraryUploadStatusViewController numAssetsAdded](self, "numAssetsAdded"));
-    v12 = [(BKLibraryUploadStatusViewController *)self tableView];
-    [v12 reloadRowsAtIndexPaths:v8 withRowAnimation:0];
+    tableView3 = [(BKLibraryUploadStatusViewController *)self tableView];
+    [tableView3 reloadRowsAtIndexPaths:v8 withRowAnimation:0];
 
-    v13 = [(BKLibraryUploadStatusViewController *)self tableView];
-    [v13 endUpdates];
+    tableView4 = [(BKLibraryUploadStatusViewController *)self tableView];
+    [tableView4 endUpdates];
   }
 }
 
 - (void)_adjustPreferredContentSize
 {
-  v3 = [(BKLibraryUploadStatusViewController *)self tableView];
-  [v3 rowHeight];
+  tableView = [(BKLibraryUploadStatusViewController *)self tableView];
+  [tableView rowHeight];
   v5 = v4 * 5.0 + 0.0;
 
-  v6 = [(BKLibraryUploadStatusViewController *)self errorHeaderView];
-  [v6 bounds];
+  errorHeaderView = [(BKLibraryUploadStatusViewController *)self errorHeaderView];
+  [errorHeaderView bounds];
   v8 = v5 + v7;
 
   [(BKLibraryUploadStatusViewController *)self preferredContentSize];
@@ -542,25 +542,25 @@ LABEL_13:
   }
 }
 
-- (void)_dismissWithCompletion:(id)a3
+- (void)_dismissWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100056B50;
   v4[3] = &unk_100A03788;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(BKLibraryUploadStatusViewController *)v5 dismissViewControllerAnimated:1 completion:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(BKLibraryUploadStatusViewController *)selfCopy dismissViewControllerAnimated:1 completion:v4];
 }
 
-- (id)_uploadAssetAtIndex:(unint64_t)a3
+- (id)_uploadAssetAtIndex:(unint64_t)index
 {
   v4 = +[BKLibraryAssetStatusController sharedController];
-  v5 = [v4 uploadAssets];
-  v6 = [v5 arrangedObjects];
+  uploadAssets = [v4 uploadAssets];
+  arrangedObjects = [uploadAssets arrangedObjects];
 
-  if ([v6 count] <= a3)
+  if ([arrangedObjects count] <= index)
   {
     v9 = 0;
   }
@@ -568,7 +568,7 @@ LABEL_13:
   else
   {
     v7 = +[BKLibraryManager defaultManager];
-    v8 = [v6 objectAtIndexedSubscript:a3];
+    v8 = [arrangedObjects objectAtIndexedSubscript:index];
     v9 = [v7 libraryAssetOnMainQueueWithAssetID:v8];
   }
 
@@ -577,106 +577,106 @@ LABEL_13:
 
 - (void)_presentUpgradeStorageFlow
 {
-  v3 = [(BKLibraryUploadStatusViewController *)self delegate];
-  v4 = [v3 libraryUploadStatusPresentingViewController];
-  v5 = [v4 navigationController];
+  delegate = [(BKLibraryUploadStatusViewController *)self delegate];
+  libraryUploadStatusPresentingViewController = [delegate libraryUploadStatusPresentingViewController];
+  navigationController = [libraryUploadStatusPresentingViewController navigationController];
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100056D58;
   v7[3] = &unk_100A033C8;
-  v8 = v5;
-  v6 = v5;
+  v8 = navigationController;
+  v6 = navigationController;
   [(BKLibraryUploadStatusViewController *)self _dismissWithCompletion:v7];
 }
 
-- (void)_configureThemeForCell:(id)a3
+- (void)_configureThemeForCell:(id)cell
 {
-  v24 = a3;
+  cellCopy = cell;
   v4 = +[UIColor bc_booksBackground];
-  [v24 setBackgroundColor:v4];
+  [cellCopy setBackgroundColor:v4];
 
   v5 = +[UIColor bc_booksBackground];
-  v6 = [v24 textContainerView];
-  [v6 setBackgroundColor:v5];
+  textContainerView = [cellCopy textContainerView];
+  [textContainerView setBackgroundColor:v5];
 
-  v7 = [(BKLibraryUploadStatusViewController *)self mainHeaderMetrics];
+  mainHeaderMetrics = [(BKLibraryUploadStatusViewController *)self mainHeaderMetrics];
 
-  if (v7)
+  if (mainHeaderMetrics)
   {
-    v8 = [(BKLibraryUploadStatusViewController *)self mainHeaderMetrics];
-    v9 = [v8 iCloudBookTitleFontAttributes];
-    v10 = [v9 font];
-    v11 = [v24 titleLabel];
-    [v11 setFont:v10];
+    mainHeaderMetrics2 = [(BKLibraryUploadStatusViewController *)self mainHeaderMetrics];
+    iCloudBookTitleFontAttributes = [mainHeaderMetrics2 iCloudBookTitleFontAttributes];
+    font = [iCloudBookTitleFontAttributes font];
+    titleLabel = [cellCopy titleLabel];
+    [titleLabel setFont:font];
 
-    v12 = [(BKLibraryUploadStatusViewController *)self mainHeaderMetrics];
-    v13 = [v12 iCloudBookTitleFontAttributes];
-    v14 = [v13 foregroundColor];
-    v15 = [v24 titleLabel];
-    [v15 setTextColor:v14];
+    mainHeaderMetrics3 = [(BKLibraryUploadStatusViewController *)self mainHeaderMetrics];
+    iCloudBookTitleFontAttributes2 = [mainHeaderMetrics3 iCloudBookTitleFontAttributes];
+    foregroundColor = [iCloudBookTitleFontAttributes2 foregroundColor];
+    titleLabel2 = [cellCopy titleLabel];
+    [titleLabel2 setTextColor:foregroundColor];
 
-    v16 = [(BKLibraryUploadStatusViewController *)self mainHeaderMetrics];
-    v17 = [v16 iCloudBookStatusFontAttributes];
-    v18 = [v17 font];
-    v19 = [v24 statusLabel];
-    [v19 setFont:v18];
+    mainHeaderMetrics4 = [(BKLibraryUploadStatusViewController *)self mainHeaderMetrics];
+    iCloudBookStatusFontAttributes = [mainHeaderMetrics4 iCloudBookStatusFontAttributes];
+    font2 = [iCloudBookStatusFontAttributes font];
+    statusLabel = [cellCopy statusLabel];
+    [statusLabel setFont:font2];
 
-    v20 = [(BKLibraryUploadStatusViewController *)self mainHeaderMetrics];
-    v21 = [v20 iCloudBookStatusFontAttributes];
-    v22 = [v21 foregroundColor];
-    v23 = [v24 statusLabel];
-    [v23 setTextColor:v22];
+    mainHeaderMetrics5 = [(BKLibraryUploadStatusViewController *)self mainHeaderMetrics];
+    iCloudBookStatusFontAttributes2 = [mainHeaderMetrics5 iCloudBookStatusFontAttributes];
+    foregroundColor2 = [iCloudBookStatusFontAttributes2 foregroundColor];
+    statusLabel2 = [cellCopy statusLabel];
+    [statusLabel2 setTextColor:foregroundColor2];
   }
 
   else
   {
-    v20 = +[UIColor bc_booksLabelColor];
-    v21 = [v24 titleLabel];
-    [v21 setTextColor:v20];
+    mainHeaderMetrics5 = +[UIColor bc_booksLabelColor];
+    iCloudBookStatusFontAttributes2 = [cellCopy titleLabel];
+    [iCloudBookStatusFontAttributes2 setTextColor:mainHeaderMetrics5];
   }
 }
 
 - (void)_configureThemeForErrorHeaderView
 {
-  v3 = [(BKLibraryUploadStatusViewController *)self errorHeaderView];
+  errorHeaderView = [(BKLibraryUploadStatusViewController *)self errorHeaderView];
 
-  if (v3)
+  if (errorHeaderView)
   {
-    v4 = [(BKLibraryUploadStatusViewController *)self traitCollection];
-    v5 = [v4 userInterfaceStyle] == 2;
+    traitCollection = [(BKLibraryUploadStatusViewController *)self traitCollection];
+    v5 = [traitCollection userInterfaceStyle] == 2;
 
     v6 = [UIBlurEffect effectWithStyle:2 * v5];
-    v7 = [(BKLibraryUploadStatusViewController *)self errorHeaderView];
-    v8 = [v7 visualEffectView];
-    [v8 setEffect:v6];
+    errorHeaderView2 = [(BKLibraryUploadStatusViewController *)self errorHeaderView];
+    visualEffectView = [errorHeaderView2 visualEffectView];
+    [visualEffectView setEffect:v6];
 
     v9 = +[UIColor bc_booksSeparatorColor];
-    v10 = [(BKLibraryUploadStatusViewController *)self errorHeaderView];
-    v11 = [v10 underlineView];
-    [v11 setBackgroundColor:v9];
+    errorHeaderView3 = [(BKLibraryUploadStatusViewController *)self errorHeaderView];
+    underlineView = [errorHeaderView3 underlineView];
+    [underlineView setBackgroundColor:v9];
 
-    v12 = [(BKLibraryUploadStatusViewController *)self mainHeaderMetrics];
+    mainHeaderMetrics = [(BKLibraryUploadStatusViewController *)self mainHeaderMetrics];
 
-    if (!v12)
+    if (!mainHeaderMetrics)
     {
       v13 = +[UIColor bc_booksSecondaryLabelColor];
-      v14 = [(BKLibraryUploadStatusViewController *)self errorHeaderView];
-      v15 = [v14 errorLabel];
-      [v15 setTextColor:v13];
+      errorHeaderView4 = [(BKLibraryUploadStatusViewController *)self errorHeaderView];
+      errorLabel = [errorHeaderView4 errorLabel];
+      [errorLabel setTextColor:v13];
 
-      v16 = [(BKLibraryUploadStatusViewController *)self errorHeaderView];
-      v17 = [v16 upgradeButton];
+      errorHeaderView5 = [(BKLibraryUploadStatusViewController *)self errorHeaderView];
+      upgradeButton = [errorHeaderView5 upgradeButton];
 
-      if (v17)
+      if (upgradeButton)
       {
         v23 = +[UIColor bc_booksKeyColor];
         v18 = v23;
-        v19 = [v23 CGColor];
-        v20 = [(BKLibraryUploadStatusViewController *)self errorHeaderView];
-        v21 = [v20 upgradeButton];
-        v22 = [v21 layer];
-        [v22 setBorderColor:v19];
+        cGColor = [v23 CGColor];
+        errorHeaderView6 = [(BKLibraryUploadStatusViewController *)self errorHeaderView];
+        upgradeButton2 = [errorHeaderView6 upgradeButton];
+        layer = [upgradeButton2 layer];
+        [layer setBorderColor:cGColor];
       }
     }
   }
@@ -695,17 +695,17 @@ LABEL_13:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[BKLibraryUploadStatusViewController _uploadAssetAtIndex:](self, "_uploadAssetAtIndex:", [v7 row]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[BKLibraryUploadStatusViewController _uploadAssetAtIndex:](self, "_uploadAssetAtIndex:", [pathCopy row]);
   if (!v8)
   {
-    sub_100789128(v7);
+    sub_100789128(pathCopy);
   }
 
-  v9 = [v6 dequeueReusableCellWithIdentifier:@"BKUploadStatusCellIdentifier" forIndexPath:v7];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:@"BKUploadStatusCellIdentifier" forIndexPath:pathCopy];
   [(BKLibraryUploadStatusViewController *)self _configureThemeForCell:v9];
   [v9 configureForAsset:v8];
 
@@ -725,38 +725,38 @@ LABEL_13:
   v19.super_class = BKLibraryUploadStatusViewController;
   [(BKLibraryUploadStatusViewController *)&v19 viewDidLoad];
   v4 = [UITableView alloc];
-  v5 = [sub_100057458() view];
-  [v5 bounds];
+  view = [sub_100057458() view];
+  [view bounds];
   [v2 initWithFrame:0 style:?];
   [sub_100057458() setTableView:v2];
 
-  v6 = [(BKLibraryUploadStatusViewController *)self tableView];
-  [v6 setAutoresizingMask:18];
+  tableView = [(BKLibraryUploadStatusViewController *)self tableView];
+  [tableView setAutoresizingMask:18];
 
-  v7 = [(BKLibraryUploadStatusViewController *)self tableView];
-  [v7 setDelegate:self];
+  tableView2 = [(BKLibraryUploadStatusViewController *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v8 = [(BKLibraryUploadStatusViewController *)self tableView];
-  [v8 setDataSource:self];
+  tableView3 = [(BKLibraryUploadStatusViewController *)self tableView];
+  [tableView3 setDataSource:self];
 
   [(BKLibraryUploadStatusViewController *)self view];
   objc_claimAutoreleasedReturnValue();
-  v9 = [sub_100057458() tableView];
-  [v8 addSubview:v9];
+  tableView4 = [sub_100057458() tableView];
+  [tableView3 addSubview:tableView4];
 
-  v10 = [(BKLibraryUploadStatusViewController *)self tableView];
+  tableView5 = [(BKLibraryUploadStatusViewController *)self tableView];
   v11 = [UINib nibWithNibName:@"BKUploadStatusCell" bundle:0];
-  [v10 registerNib:v11 forCellReuseIdentifier:@"BKUploadStatusCellIdentifier"];
+  [tableView5 registerNib:v11 forCellReuseIdentifier:@"BKUploadStatusCellIdentifier"];
 
   [(BKLibraryUploadStatusViewController *)self setPresentedInPopover:0];
   -[BKLibraryUploadStatusViewController _updateTitle:](self, "_updateTitle:", [objc_opt_class() _uploadErrorType]);
-  v12 = [(BKLibraryUploadStatusViewController *)self tableView];
-  [v12 setRowHeight:64.0];
+  tableView6 = [(BKLibraryUploadStatusViewController *)self tableView];
+  [tableView6 setRowHeight:64.0];
 
   v13 = +[BKLibraryAssetStatusController sharedController];
-  v14 = [v13 uploadAssets];
+  uploadAssets = [v13 uploadAssets];
 
-  [v14 addObserver:self forKeyPath:@"arrangedObjects" options:1 context:off_100ACBF30];
+  [uploadAssets addObserver:self forKeyPath:@"arrangedObjects" options:1 context:off_100ACBF30];
   v15 = +[BKLibraryAssetStatusController sharedController];
   [v15 addObserver:self forKeyPath:@"uploadStatus" options:1 context:off_100ACBF38];
 
@@ -767,18 +767,18 @@ LABEL_13:
   v17 = +[NSMutableDictionary dictionary];
   [(BKLibraryUploadStatusViewController *)self setAssetIdToState:v17];
 
-  v18 = [v14 arrangedObjects];
-  [(BKLibraryUploadStatusViewController *)self _mergeAssets:v18];
+  arrangedObjects = [uploadAssets arrangedObjects];
+  [(BKLibraryUploadStatusViewController *)self _mergeAssets:arrangedObjects];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = BKLibraryUploadStatusViewController;
-  [(BKLibraryUploadStatusViewController *)&v5 viewWillAppear:a3];
+  [(BKLibraryUploadStatusViewController *)&v5 viewWillAppear:appear];
   sub_1007885C8(self);
-  v4 = [(BKLibraryUploadStatusViewController *)self traitCollection];
-  -[BKLibraryUploadStatusViewController setThemeForUserInterfaceStyle:](self, "setThemeForUserInterfaceStyle:", [v4 userInterfaceStyle]);
+  traitCollection = [(BKLibraryUploadStatusViewController *)self traitCollection];
+  -[BKLibraryUploadStatusViewController setThemeForUserInterfaceStyle:](self, "setThemeForUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
 }
 
 @end

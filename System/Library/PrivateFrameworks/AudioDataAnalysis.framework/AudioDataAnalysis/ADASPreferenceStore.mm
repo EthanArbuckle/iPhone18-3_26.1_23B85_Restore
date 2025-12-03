@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (ADASPreferenceStore)init;
 - (void)initNPSDomain;
-- (void)pairedDeviceStateChanged:(id)a3;
+- (void)pairedDeviceStateChanged:(id)changed;
 - (void)registerForNotifications;
 @end
 
@@ -27,16 +27,16 @@ uint64_t __37__ADASPreferenceStore_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)pairedDeviceStateChanged:(id)a3
+- (void)pairedDeviceStateChanged:(id)changed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   os_unfair_lock_lock(&self->_npsDomainLock);
   v5 = ADAFLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = changedCopy;
     _os_log_impl(&dword_241579000, v5, OS_LOG_TYPE_DEFAULT, "NPSDomainAccessor state change: %@", &v9, 0xCu);
   }
 
@@ -52,11 +52,11 @@ uint64_t __37__ADASPreferenceStore_sharedInstance__block_invoke()
 
 - (void)registerForNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_pairedDeviceStateChanged_ name:*MEMORY[0x277D2BC48] object:0];
-  [v3 addObserver:self selector:sel_pairedDeviceStateChanged_ name:*MEMORY[0x277D2BC50] object:0];
-  [v3 addObserver:self selector:sel_pairedDeviceStateChanged_ name:*MEMORY[0x277D2BC68] object:0];
-  [v3 addObserver:self selector:sel_pairedDeviceStateChanged_ name:*MEMORY[0x277D2BC78] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_pairedDeviceStateChanged_ name:*MEMORY[0x277D2BC48] object:0];
+  [defaultCenter addObserver:self selector:sel_pairedDeviceStateChanged_ name:*MEMORY[0x277D2BC50] object:0];
+  [defaultCenter addObserver:self selector:sel_pairedDeviceStateChanged_ name:*MEMORY[0x277D2BC68] object:0];
+  [defaultCenter addObserver:self selector:sel_pairedDeviceStateChanged_ name:*MEMORY[0x277D2BC78] object:0];
 }
 
 - (void)initNPSDomain

@@ -1,14 +1,14 @@
 @interface PKSettingsHeaderAlertView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKSettingsHeaderAlertView)initWithSpecifier:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKSettingsHeaderAlertView)initWithSpecifier:(id)specifier;
 - (void)layoutSubviews;
 @end
 
 @implementation PKSettingsHeaderAlertView
 
-- (PKSettingsHeaderAlertView)initWithSpecifier:(id)a3
+- (PKSettingsHeaderAlertView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = [(PKSettingsHeaderAlertView *)self initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v5)
   {
@@ -16,27 +16,27 @@
     textView = v5->_textView;
     v5->_textView = v6;
 
-    v8 = [v4 propertyForKey:@"settingsAlertHeaderText"];
+    v8 = [specifierCopy propertyForKey:@"settingsAlertHeaderText"];
     headerText = v5->_headerText;
     v5->_headerText = v8;
 
-    v10 = [v4 propertyForKey:@"settingsAlertDescriptionText"];
+    v10 = [specifierCopy propertyForKey:@"settingsAlertDescriptionText"];
     descriptionText = v5->_descriptionText;
     v5->_descriptionText = v10;
 
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", v5->_headerText, v5->_descriptionText];
     [(UITextView *)v5->_textView setText:v12];
     v13 = v5->_textView;
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITextView *)v13 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITextView *)v13 setBackgroundColor:clearColor];
 
     [(UITextView *)v5->_textView setShowsVerticalScrollIndicator:0];
     [(UITextView *)v5->_textView setEditable:0];
     [(UITextView *)v5->_textView setSelectable:0];
     [(UITextView *)v5->_textView setScrollEnabled:0];
     v15 = v5->_textView;
-    v16 = [MEMORY[0x1E69DC888] systemDarkRedColor];
-    [(UITextView *)v15 setTextColor:v16];
+    systemDarkRedColor = [MEMORY[0x1E69DC888] systemDarkRedColor];
+    [(UITextView *)v15 setTextColor:systemDarkRedColor];
 
     v17 = v5->_textView;
     v18 = [MEMORY[0x1E69DB878] systemFontOfSize:14.0];
@@ -73,9 +73,9 @@
   [(UITextView *)self->_textView setFrame:v16, v18, v20, v21];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   PreferencesTableViewCellLeftPad();
   v6 = v5;
   PreferencesTableViewCellRightPad();

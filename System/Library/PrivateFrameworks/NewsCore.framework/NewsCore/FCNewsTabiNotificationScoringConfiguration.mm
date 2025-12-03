@@ -1,38 +1,38 @@
 @interface FCNewsTabiNotificationScoringConfiguration
-- (FCNewsTabiNotificationScoringConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiNotificationScoringConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation FCNewsTabiNotificationScoringConfiguration
 
-- (FCNewsTabiNotificationScoringConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiNotificationScoringConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [FCNewsTabiNotificationScoringOutputConfiguration alloc];
-  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"bundleOutputConfiguration", 0);
+  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"bundleOutputConfiguration", 0);
   v7 = [(FCNewsTabiNotificationScoringOutputConfiguration *)v5 initWithDictionary:v6];
 
   if (v7)
   {
     v8 = v7;
-    v9 = FCAppConfigurationNumberValue(v4, @"fullBodyEmbeddingDimension", 0);
+    v9 = FCAppConfigurationNumberValue(dictionaryCopy, @"fullBodyEmbeddingDimension", 0);
     v10 = v9;
     if (v9)
     {
       v11 = v9;
-      v12 = FCAppConfigurationNumberValue(v4, @"maxTopicIds", 0);
+      v12 = FCAppConfigurationNumberValue(dictionaryCopy, @"maxTopicIds", 0);
       v13 = v12;
       if (v12)
       {
         v27 = v12;
         v14 = [FCNewsTabiNotificationScoringOutputConfiguration alloc];
-        v15 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"nonBundleOutputConfiguration", 0);
+        v15 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"nonBundleOutputConfiguration", 0);
         v16 = [(FCNewsTabiNotificationScoringOutputConfiguration *)v14 initWithDictionary:v15];
 
         if (v16)
         {
           v17 = v16;
-          v26 = FCAppConfigurationNumberValue(v4, @"titleEmbeddingDimension", 0);
+          v26 = FCAppConfigurationNumberValue(dictionaryCopy, @"titleEmbeddingDimension", 0);
           if (v26)
           {
             v28.receiver = self;
@@ -43,7 +43,7 @@
             {
               objc_storeStrong(&v18->_bundleOutputConfiguration, v7);
               v20 = [MEMORY[0x1E696AD98] numberWithInt:4];
-              FCAppConfigurationNumberValue(v4, @"maxNotabilityScores", v20);
+              FCAppConfigurationNumberValue(dictionaryCopy, @"maxNotabilityScores", v20);
               v21 = v25 = v17;
               v19->_maxNotabilityScores = [v21 integerValue];
 
@@ -55,7 +55,7 @@
             }
 
             self = v19;
-            v22 = self;
+            selfCopy = self;
           }
 
           else
@@ -64,8 +64,8 @@
             v29[1] = 3221225472;
             v29[2] = __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke_70;
             v29[3] = &unk_1E7C36F98;
-            v30 = v4;
-            v22 = __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke_70(v29);
+            v30 = dictionaryCopy;
+            selfCopy = __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke_70(v29);
           }
         }
 
@@ -75,8 +75,8 @@
           v31[1] = 3221225472;
           v31[2] = __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke_69;
           v31[3] = &unk_1E7C36F98;
-          v32 = v4;
-          v22 = __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke_69(v31);
+          v32 = dictionaryCopy;
+          selfCopy = __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke_69(v31);
           v17 = v32;
         }
 
@@ -89,8 +89,8 @@
         v33[1] = 3221225472;
         v33[2] = __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke_68;
         v33[3] = &unk_1E7C36F98;
-        v34 = v4;
-        v22 = __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke_68(v33);
+        v34 = dictionaryCopy;
+        selfCopy = __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke_68(v33);
         v23 = v34;
       }
     }
@@ -101,8 +101,8 @@
       v35[1] = 3221225472;
       v35[2] = __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke_67;
       v35[3] = &unk_1E7C36F98;
-      v36 = v4;
-      v22 = __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke_67(v35);
+      v36 = dictionaryCopy;
+      selfCopy = __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke_67(v35);
       v11 = v36;
     }
   }
@@ -113,12 +113,12 @@
     v37[1] = 3221225472;
     v37[2] = __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke;
     v37[3] = &unk_1E7C36F98;
-    v38 = v4;
-    v22 = __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke(v37);
+    v38 = dictionaryCopy;
+    selfCopy = __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke(v37);
     v8 = v38;
   }
 
-  return v22;
+  return selfCopy;
 }
 
 uint64_t __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___block_invoke(uint64_t a1)
@@ -214,16 +214,16 @@ uint64_t __65__FCNewsTabiNotificationScoringConfiguration_initWithDictionary___b
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiNotificationScoringConfiguration *)self bundleOutputConfiguration];
-  v5 = [v4 indentedDescription];
-  [v3 appendFormat:@"\n\tbundleOutputConfiguration: %@", v5];
+  bundleOutputConfiguration = [(FCNewsTabiNotificationScoringConfiguration *)self bundleOutputConfiguration];
+  indentedDescription = [bundleOutputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tbundleOutputConfiguration: %@", indentedDescription];
 
   [v3 appendFormat:@"\n\tfullBodyEmbeddingDimension: %lu", -[FCNewsTabiNotificationScoringConfiguration fullBodyEmbeddingDimension](self, "fullBodyEmbeddingDimension")];
   [v3 appendFormat:@"\n\tmaxNotabilityScores: %lu", -[FCNewsTabiNotificationScoringConfiguration maxNotabilityScores](self, "maxNotabilityScores")];
   [v3 appendFormat:@"\n\tmaxTopicIds: %lu", -[FCNewsTabiNotificationScoringConfiguration maxTopicIds](self, "maxTopicIds")];
-  v6 = [(FCNewsTabiNotificationScoringConfiguration *)self nonBundleOutputConfiguration];
-  v7 = [v6 indentedDescription];
-  [v3 appendFormat:@"\n\tnonBundleOutputConfiguration: %@", v7];
+  nonBundleOutputConfiguration = [(FCNewsTabiNotificationScoringConfiguration *)self nonBundleOutputConfiguration];
+  indentedDescription2 = [nonBundleOutputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tnonBundleOutputConfiguration: %@", indentedDescription2];
 
   [v3 appendFormat:@"\n\ttitleEmbeddingDimension: %lu", -[FCNewsTabiNotificationScoringConfiguration titleEmbeddingDimension](self, "titleEmbeddingDimension")];
   [v3 appendString:@"\n>"];

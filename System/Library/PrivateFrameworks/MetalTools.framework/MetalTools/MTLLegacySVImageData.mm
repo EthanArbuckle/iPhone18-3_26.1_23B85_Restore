@@ -1,50 +1,50 @@
 @interface MTLLegacySVImageData
-- (MTLLegacySVImageData)initWithDynamicLibrary:(id)a3;
-- (MTLLegacySVImageData)initWithFunction:(id)a3;
-- (MTLLegacySVImageData)initWithFunction:(id)a3 debugInstrumentationData:(id)a4;
+- (MTLLegacySVImageData)initWithDynamicLibrary:(id)library;
+- (MTLLegacySVImageData)initWithFunction:(id)function;
+- (MTLLegacySVImageData)initWithFunction:(id)function debugInstrumentationData:(id)data;
 - (id).cxx_construct;
 - (void)_applyConstantRelocation;
-- (void)_applyConstantRelocation:(id)a3;
-- (void)_applyImageIDRelocation:(id)a3;
+- (void)_applyConstantRelocation:(id)relocation;
+- (void)_applyImageIDRelocation:(id)relocation;
 - (void)dealloc;
-- (void)setConstantData:(id)a3;
+- (void)setConstantData:(id)data;
 @end
 
 @implementation MTLLegacySVImageData
 
-- (MTLLegacySVImageData)initWithDynamicLibrary:(id)a3
+- (MTLLegacySVImageData)initWithDynamicLibrary:(id)library
 {
   v6.receiver = self;
   v6.super_class = MTLLegacySVImageData;
   v4 = [(MTLLegacySVImageData *)&v6 init];
   *(v4 + 21) = v4;
-  *(v4 + 2) = [a3 device];
-  objc_storeWeak(v4 + 24, a3);
-  *(v4 + 18) = [objc_msgSend(a3 "installName")];
-  *(v4 + 19) = [a3 debugInstrumentationData];
+  *(v4 + 2) = [library device];
+  objc_storeWeak(v4 + 24, library);
+  *(v4 + 18) = [objc_msgSend(library "installName")];
+  *(v4 + 19) = [library debugInstrumentationData];
   *(v4 + 40) = 1;
   [v4 _applyImageIDRelocation:objc_loadWeak(v4 + 24)];
   return v4;
 }
 
-- (MTLLegacySVImageData)initWithFunction:(id)a3
+- (MTLLegacySVImageData)initWithFunction:(id)function
 {
-  v5 = [a3 debugInstrumentationData];
+  debugInstrumentationData = [function debugInstrumentationData];
 
-  return [(MTLLegacySVImageData *)self initWithFunction:a3 debugInstrumentationData:v5];
+  return [(MTLLegacySVImageData *)self initWithFunction:function debugInstrumentationData:debugInstrumentationData];
 }
 
-- (MTLLegacySVImageData)initWithFunction:(id)a3 debugInstrumentationData:(id)a4
+- (MTLLegacySVImageData)initWithFunction:(id)function debugInstrumentationData:(id)data
 {
   v8.receiver = self;
   v8.super_class = MTLLegacySVImageData;
   v6 = [(MTLLegacySVImageData *)&v8 init];
   *(v6 + 21) = v6;
-  *(v6 + 2) = [a3 device];
-  objc_storeWeak(v6 + 23, a3);
-  *(v6 + 18) = [objc_msgSend(a3 "name")];
-  *(v6 + 22) = [a3 functionType];
-  *(v6 + 19) = a4;
+  *(v6 + 2) = [function device];
+  objc_storeWeak(v6 + 23, function);
+  *(v6 + 18) = [objc_msgSend(function "name")];
+  *(v6 + 22) = [function functionType];
+  *(v6 + 19) = data;
   *(v6 + 40) = 0;
   [v6 _applyImageIDRelocation:objc_loadWeak(v6 + 23)];
   return v6;
@@ -73,48 +73,48 @@
   [(MTLLegacySVImageData *)self _applyConstantRelocation:Weak];
 }
 
-- (void)_applyConstantRelocation:(id)a3
+- (void)_applyConstantRelocation:(id)relocation
 {
   if ([*(self + 2) supportsGlobalVariableRelocationCompute] && (*(self + 40) || (*(self + 22) - 4) <= 2))
   {
     v7 = MTLLegacySVBufferHandleToOffset(*(self + 11));
     v5 = [objc_alloc(MEMORY[0x277CD6D40]) initWithSymbolName:@"mtl.global_constants_handle" bytes:&v7 length:8];
-    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(objc_msgSend(a3, "relocations"), "count") + 2}];
-    if ([a3 relocations])
+    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(objc_msgSend(relocation, "relocations"), "count") + 2}];
+    if ([relocation relocations])
     {
-      [v6 addObjectsFromArray:{objc_msgSend(a3, "relocations")}];
+      [v6 addObjectsFromArray:{objc_msgSend(relocation, "relocations")}];
     }
 
     [v6 addObject:v5];
-    [a3 setRelocations:v6];
+    [relocation setRelocations:v6];
   }
 }
 
-- (void)_applyImageIDRelocation:(id)a3
+- (void)_applyImageIDRelocation:(id)relocation
 {
   if ([*(self + 2) supportsGlobalVariableRelocationCompute] && (*(self + 40) || (*(self + 22) - 4) <= 2))
   {
     v6 = [objc_alloc(MEMORY[0x277CD6D40]) initWithSymbolName:@"mtl.current_image_id" bytes:self + 168 length:8];
-    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(objc_msgSend(a3, "relocations"), "count") + 2}];
-    if ([a3 relocations])
+    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(objc_msgSend(relocation, "relocations"), "count") + 2}];
+    if ([relocation relocations])
     {
-      [v5 addObjectsFromArray:{objc_msgSend(a3, "relocations")}];
+      [v5 addObjectsFromArray:{objc_msgSend(relocation, "relocations")}];
     }
 
     [v5 addObject:v6];
-    [a3 setRelocations:v5];
+    [relocation setRelocations:v5];
   }
 }
 
-- (void)setConstantData:(id)a3
+- (void)setConstantData:(id)data
 {
   v11 = *MEMORY[0x277D85DE8];
   std::mutex::lock((self + 24));
-  if (a3 && [a3 length])
+  if (data && [data length])
   {
     if (!*(self + 1))
     {
-      LegacySVConstantBufferCache::getOrCreateBuffer((*(self + 2) + 432), a3, v8);
+      LegacySVConstantBufferCache::getOrCreateBuffer((*(self + 2) + 432), data, v8);
       v5 = v8[1];
       *(self + 6) = v8[0];
       *(self + 7) = v5;

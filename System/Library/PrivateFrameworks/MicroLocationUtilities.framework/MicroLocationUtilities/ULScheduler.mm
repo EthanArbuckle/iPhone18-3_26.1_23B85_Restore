@@ -1,7 +1,7 @@
 @interface ULScheduler
 + (ULScheduler)globalAsyncScheduler;
 + (ULScheduler)immediateScheduler;
-+ (id)dispatchQueueSchedulerWithQueue:(id)a3;
++ (id)dispatchQueueSchedulerWithQueue:(id)queue;
 @end
 
 @implementation ULScheduler
@@ -47,10 +47,10 @@ void __35__ULScheduler_globalAsyncScheduler__block_invoke()
   globalAsyncScheduler_ul_once_object_1 = v2;
 }
 
-+ (id)dispatchQueueSchedulerWithQueue:(id)a3
++ (id)dispatchQueueSchedulerWithQueue:(id)queue
 {
-  v3 = a3;
-  v4 = [[ULQueueScheduler alloc] initWithQueue:v3];
+  queueCopy = queue;
+  v4 = [[ULQueueScheduler alloc] initWithQueue:queueCopy];
 
   return v4;
 }

@@ -1,5 +1,5 @@
 @interface JavaUtilCollections_SingletonSet_$1
-- (JavaUtilCollections_SingletonSet_$1)initWithJavaUtilCollections_SingletonSet:(id)a3;
+- (JavaUtilCollections_SingletonSet_$1)initWithJavaUtilCollections_SingletonSet:(id)set;
 - (id)next;
 - (void)dealloc;
 @end
@@ -18,9 +18,9 @@
   return self->this$0_->element_;
 }
 
-- (JavaUtilCollections_SingletonSet_$1)initWithJavaUtilCollections_SingletonSet:(id)a3
+- (JavaUtilCollections_SingletonSet_$1)initWithJavaUtilCollections_SingletonSet:(id)set
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, set);
   self->hasNext_ = 1;
   return self;
 }

@@ -1,32 +1,32 @@
 @interface FUDepartureInfo
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation FUDepartureInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v25 = [(FUBaseStopInfo *)self airport];
-  v27 = [v25 copyWithZone:a3];
-  v24 = [(FUBaseStopInfo *)self gate];
-  v26 = [v24 copyWithZone:a3];
-  v23 = [(FUBaseStopInfo *)self terminal];
-  v6 = [v23 copyWithZone:a3];
-  v22 = [(FUBaseStopInfo *)self displayTime];
-  v7 = [v22 copyWithZone:a3];
-  v21 = [(FUBaseStopInfo *)self scheduledGateTime];
-  v17 = [v21 copyWithZone:a3];
-  v20 = [(FUBaseStopInfo *)self currentGateTime];
-  v16 = [v20 copyWithZone:a3];
-  v19 = [(FUBaseStopInfo *)self scheduledRunwayTime];
-  v15 = [v19 copyWithZone:a3];
-  v8 = [(FUBaseStopInfo *)self currentRunwayTime];
-  v9 = [v8 copyWithZone:a3];
-  v10 = [(FUBaseStopInfo *)self gateBufferMinutes];
-  v11 = [v10 copyWithZone:a3];
-  v12 = [(FUBaseStopInfo *)self runwayBufferMinutes];
-  v13 = [v12 copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  airport = [(FUBaseStopInfo *)self airport];
+  v27 = [airport copyWithZone:zone];
+  gate = [(FUBaseStopInfo *)self gate];
+  v26 = [gate copyWithZone:zone];
+  terminal = [(FUBaseStopInfo *)self terminal];
+  v6 = [terminal copyWithZone:zone];
+  displayTime = [(FUBaseStopInfo *)self displayTime];
+  v7 = [displayTime copyWithZone:zone];
+  scheduledGateTime = [(FUBaseStopInfo *)self scheduledGateTime];
+  v17 = [scheduledGateTime copyWithZone:zone];
+  currentGateTime = [(FUBaseStopInfo *)self currentGateTime];
+  v16 = [currentGateTime copyWithZone:zone];
+  scheduledRunwayTime = [(FUBaseStopInfo *)self scheduledRunwayTime];
+  v15 = [scheduledRunwayTime copyWithZone:zone];
+  currentRunwayTime = [(FUBaseStopInfo *)self currentRunwayTime];
+  v9 = [currentRunwayTime copyWithZone:zone];
+  gateBufferMinutes = [(FUBaseStopInfo *)self gateBufferMinutes];
+  v11 = [gateBufferMinutes copyWithZone:zone];
+  runwayBufferMinutes = [(FUBaseStopInfo *)self runwayBufferMinutes];
+  v13 = [runwayBufferMinutes copyWithZone:zone];
   v18 = [v5 initWithAirport:v27 gate:v26 terminal:v6 displayTime:v7 scheduledGateTime:v17 currentGateTime:v16 scheduledRunwayTime:v15 currentRunwayTime:v9 gateBufferMinutes:v11 runwayBufferMinutes:v13];
 
   return v18;

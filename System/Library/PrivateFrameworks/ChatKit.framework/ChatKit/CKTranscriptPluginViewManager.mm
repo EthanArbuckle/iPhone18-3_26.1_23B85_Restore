@@ -1,11 +1,11 @@
 @interface CKTranscriptPluginViewManager
 + (id)sharedInstance;
-- (BOOL)_objectSupportsPluginViewReuse:(id)a3;
+- (BOOL)_objectSupportsPluginViewReuse:(id)reuse;
 - (CKTranscriptPluginViewManager)init;
-- (id)dequeuePluginViewForBalloonController:(id)a3;
-- (void)_registerPluginView:(id)a3 withReuseDelegate:(id)a4;
+- (id)dequeuePluginViewForBalloonController:(id)controller;
+- (void)_registerPluginView:(id)view withReuseDelegate:(id)delegate;
 - (void)dealloc;
-- (void)enqueuePluginViewForReuse:(id)a3;
+- (void)enqueuePluginViewForReuse:(id)reuse;
 - (void)resetState;
 @end
 
@@ -37,8 +37,8 @@ void __47__CKTranscriptPluginViewManager_sharedInstance__block_invoke()
   v2 = [(CKTranscriptPluginViewManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_didReceiveMemoryWarning name:*MEMORY[0x1E69DDAD8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_didReceiveMemoryWarning name:*MEMORY[0x1E69DDAD8] object:0];
 
     v4 = v2;
   }
@@ -48,8 +48,8 @@ void __47__CKTranscriptPluginViewManager_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
 
   v4.receiver = self;
   v4.super_class = CKTranscriptPluginViewManager;
@@ -64,19 +64,19 @@ void __47__CKTranscriptPluginViewManager_sharedInstance__block_invoke()
   [(NSMutableDictionary *)pluginViewToReuseDelegateMap removeAllObjects];
 }
 
-- (id)dequeuePluginViewForBalloonController:(id)a3
+- (id)dequeuePluginViewForBalloonController:(id)controller
 {
-  v4 = a3;
-  if ([(CKTranscriptPluginViewManager *)self _objectSupportsPluginViewReuse:v4])
+  controllerCopy = controller;
+  if ([(CKTranscriptPluginViewManager *)self _objectSupportsPluginViewReuse:controllerCopy])
   {
-    v5 = NSStringFromClass([v4 pluginViewClassType]);
+    v5 = NSStringFromClass([controllerCopy pluginViewClassType]);
     if (v5)
     {
-      v6 = [(IMMultiDict *)self->_reusablePluginViewsByClassName dequeueObjectForKey:v5];
-      if (!v6)
+      createNewPluginView = [(IMMultiDict *)self->_reusablePluginViewsByClassName dequeueObjectForKey:v5];
+      if (!createNewPluginView)
       {
-        v6 = [v4 createNewPluginView];
-        if (([objc_opt_class() isEqual:{objc_msgSend(v4, "pluginViewClassType")}] & 1) == 0)
+        createNewPluginView = [controllerCopy createNewPluginView];
+        if (([objc_opt_class() isEqual:{objc_msgSend(controllerCopy, "pluginViewClassType")}] & 1) == 0)
         {
           v7 = MEMORY[0x1E696AEC0];
           v8 = IMFileLocationTrimFileName();
@@ -91,16 +91,16 @@ void __47__CKTranscriptPluginViewManager_sharedInstance__block_invoke()
 
           else
           {
-            v14 = [MEMORY[0x1E69A6138] warning];
-            if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+            warning = [MEMORY[0x1E69A6138] warning];
+            if (os_log_type_enabled(warning, OS_LOG_TYPE_ERROR))
             {
-              [(CKTranscriptPluginViewManager *)v10 dequeuePluginViewForBalloonController:v14];
+              [(CKTranscriptPluginViewManager *)v10 dequeuePluginViewForBalloonController:warning];
             }
           }
         }
       }
 
-      [(CKTranscriptPluginViewManager *)self _registerPluginView:v6 withReuseDelegate:v4];
+      [(CKTranscriptPluginViewManager *)self _registerPluginView:createNewPluginView withReuseDelegate:controllerCopy];
     }
 
     else
@@ -111,7 +111,7 @@ void __47__CKTranscriptPluginViewManager_sharedInstance__block_invoke()
         [CKTranscriptPluginViewManager dequeuePluginViewForBalloonController:v13];
       }
 
-      v6 = 0;
+      createNewPluginView = 0;
     }
   }
 
@@ -125,40 +125,40 @@ void __47__CKTranscriptPluginViewManager_sharedInstance__block_invoke()
 
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v4 createNewPluginView];
+      createNewPluginView = [controllerCopy createNewPluginView];
     }
 
     else
     {
-      v6 = 0;
+      createNewPluginView = 0;
     }
   }
 
-  return v6;
+  return createNewPluginView;
 }
 
-- (BOOL)_objectSupportsPluginViewReuse:(id)a3
+- (BOOL)_objectSupportsPluginViewReuse:(id)reuse
 {
-  v3 = a3;
+  reuseCopy = reuse;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 allowsReusablePluginViews];
+    allowsReusablePluginViews = [reuseCopy allowsReusablePluginViews];
   }
 
   else
   {
-    v4 = 0;
+    allowsReusablePluginViews = 0;
   }
 
-  return v4;
+  return allowsReusablePluginViews;
 }
 
-- (void)_registerPluginView:(id)a3 withReuseDelegate:(id)a4
+- (void)_registerPluginView:(id)view withReuseDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  viewCopy = view;
+  delegateCopy = delegate;
+  v8 = delegateCopy;
+  if (!viewCopy || !delegateCopy)
   {
     v12 = IMLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -169,7 +169,7 @@ void __47__CKTranscriptPluginViewManager_sharedInstance__block_invoke()
     goto LABEL_9;
   }
 
-  if ([(CKTranscriptPluginViewManager *)self _objectSupportsPluginViewReuse:v7])
+  if ([(CKTranscriptPluginViewManager *)self _objectSupportsPluginViewReuse:delegateCopy])
   {
     pluginViewToReuseDelegateMap = self->_pluginViewToReuseDelegateMap;
     if (!pluginViewToReuseDelegateMap)
@@ -181,21 +181,21 @@ void __47__CKTranscriptPluginViewManager_sharedInstance__block_invoke()
       pluginViewToReuseDelegateMap = self->_pluginViewToReuseDelegateMap;
     }
 
-    v12 = [(CKTranscriptPluginViewManager *)self _pointerKeyForPluginView:v6];
+    v12 = [(CKTranscriptPluginViewManager *)self _pointerKeyForPluginView:viewCopy];
     [(NSMutableDictionary *)pluginViewToReuseDelegateMap setObject:v8 forKey:v12];
 LABEL_9:
   }
 }
 
-- (void)enqueuePluginViewForReuse:(id)a3
+- (void)enqueuePluginViewForReuse:(id)reuse
 {
-  v4 = a3;
+  reuseCopy = reuse;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = v6;
-  if (v4 && v6)
+  if (reuseCopy && v6)
   {
-    v8 = [(CKTranscriptPluginViewManager *)self _pointerKeyForPluginView:v4];
+    v8 = [(CKTranscriptPluginViewManager *)self _pointerKeyForPluginView:reuseCopy];
     v9 = [(NSMutableDictionary *)self->_pluginViewToReuseDelegateMap objectForKey:v8];
     if (v9 && [(CKTranscriptPluginViewManager *)self _objectSupportsPluginViewReuse:v9])
     {
@@ -213,8 +213,8 @@ LABEL_9:
       v13 = self->_reusablePluginViewsByClassName;
       self->_reusablePluginViewsByClassName = v11;
 
-      [(IMMultiDict *)self->_reusablePluginViewsByClassName enqueueObject:v4 forKey:v7];
-      [v9 pluginViewDidEnterReuseQueue:v4];
+      [(IMMultiDict *)self->_reusablePluginViewsByClassName enqueueObject:reuseCopy forKey:v7];
+      [v9 pluginViewDidEnterReuseQueue:reuseCopy];
       [(NSMutableDictionary *)self->_pluginViewToReuseDelegateMap removeObjectForKey:v8];
     }
   }

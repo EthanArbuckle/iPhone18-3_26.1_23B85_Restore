@@ -1,52 +1,52 @@
 @interface SBSystemActionDataSourceWithDefaultAction
-- (id)initWithInnerDataSource:(void *)a3 defaultAction:;
+- (id)initWithInnerDataSource:(void *)source defaultAction:;
 - (void)updateSelectedAction;
 @end
 
 @implementation SBSystemActionDataSourceWithDefaultAction
 
-- (id)initWithInnerDataSource:(void *)a3 defaultAction:
+- (id)initWithInnerDataSource:(void *)source defaultAction:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  sourceCopy = source;
+  if (self)
   {
     if (!v6)
     {
       [SBSystemActionDataSourceWithDefaultAction initWithInnerDataSource:? defaultAction:?];
     }
 
-    if (!v7)
+    if (!sourceCopy)
     {
       [SBSystemActionDataSourceWithDefaultAction initWithInnerDataSource:? defaultAction:?];
     }
 
-    objc_storeStrong(a1 + 4, a2);
-    objc_storeStrong(a1 + 5, a3);
-    v8 = [v6 hostIdentifier];
-    v10.receiver = a1;
+    objc_storeStrong(self + 4, a2);
+    objc_storeStrong(self + 5, source);
+    hostIdentifier = [v6 hostIdentifier];
+    v10.receiver = self;
     v10.super_class = SBSystemActionDataSourceWithDefaultAction;
-    a1 = objc_msgSendSuper2(&v10, sel_initWithHostIdentifier_, v8);
+    self = objc_msgSendSuper2(&v10, sel_initWithHostIdentifier_, hostIdentifier);
 
-    if (a1)
+    if (self)
     {
-      [v6 addObserver:a1];
+      [v6 addObserver:self];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)updateSelectedAction
 {
-  v3 = [(SBSystemActionDataSource *)self->_innerDataSource selectedSystemAction];
-  if (!v3)
+  selectedSystemAction = [(SBSystemActionDataSource *)self->_innerDataSource selectedSystemAction];
+  if (!selectedSystemAction)
   {
-    v3 = self->_defaultAction;
+    selectedSystemAction = self->_defaultAction;
   }
 
-  v4 = v3;
-  [(SBSystemActionAbstractDataSource *)self setSelectedSystemAction:v3];
+  v4 = selectedSystemAction;
+  [(SBSystemActionAbstractDataSource *)self setSelectedSystemAction:selectedSystemAction];
 }
 
 - (void)initWithInnerDataSource:(const char *)a1 defaultAction:.cold.1(const char *a1)

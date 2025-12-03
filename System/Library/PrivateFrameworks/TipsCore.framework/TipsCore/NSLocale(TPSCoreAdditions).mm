@@ -9,8 +9,8 @@
 
 + (id)tps_userPreferredLocalizations
 {
-  v2 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v3 = [a1 tps_userPreferredLocalizationsForLanguages:v2];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  v3 = [self tps_userPreferredLocalizationsForLanguages:preferredLanguages];
 
   return v3;
 }
@@ -20,27 +20,27 @@
   v3 = MEMORY[0x1E696AAE8];
   v4 = MEMORY[0x1E695DF58];
   v5 = a3;
-  v6 = [v4 systemLanguages];
-  v7 = [v3 preferredLocalizationsFromArray:v6 forPreferences:v5];
+  systemLanguages = [v4 systemLanguages];
+  v7 = [v3 preferredLocalizationsFromArray:systemLanguages forPreferences:v5];
 
   return v7;
 }
 
 + (id)tps_userLanguageCode
 {
-  v1 = [a1 tps_userPreferredLocalizations];
-  v2 = [v1 firstObject];
+  tps_userPreferredLocalizations = [self tps_userPreferredLocalizations];
+  firstObject = [tps_userPreferredLocalizations firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 + (id)tps_userRegion
 {
-  v0 = [MEMORY[0x1E695DF58] currentLocale];
-  v1 = [v0 objectForKey:*MEMORY[0x1E695D978]];
-  v2 = [v1 lowercaseString];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v1 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
+  lowercaseString = [v1 lowercaseString];
 
-  return v2;
+  return lowercaseString;
 }
 
 @end

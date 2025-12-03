@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = __51__UIColor_MTAdditions__cellEmpahsisBackgroundColor__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (cellEmpahsisBackgroundColor_onceToken != -1)
   {
     dispatch_once(&cellEmpahsisBackgroundColor_onceToken, block);
@@ -63,8 +63,8 @@
 
 - (uint64_t)isBlackColor
 {
-  v2 = [MEMORY[0x277D75348] blackColor];
-  v3 = [v2 isEqual:a1];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v3 = [blackColor isEqual:self];
 
   return v3;
 }

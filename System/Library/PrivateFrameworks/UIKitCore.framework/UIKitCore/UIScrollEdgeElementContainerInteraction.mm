@@ -3,7 +3,7 @@
 - (UIScrollView)scrollView;
 - (UIView)view;
 - (void)_updateProperties;
-- (void)setEdge:(unint64_t)a3;
+- (void)setEdge:(unint64_t)edge;
 @end
 
 @implementation UIScrollEdgeElementContainerInteraction
@@ -15,10 +15,10 @@
   return Strong;
 }
 
-- (void)setEdge:(unint64_t)a3
+- (void)setEdge:(unint64_t)edge
 {
-  v4 = self;
-  sub_1891DC560(a3, &OBJC_IVAR___UIScrollEdgeElementContainerInteraction_implementation);
+  selfCopy = self;
+  sub_1891DC560(edge, &OBJC_IVAR___UIScrollEdgeElementContainerInteraction_implementation);
 }
 
 - (UIView)view
@@ -30,7 +30,7 @@
 
 - (void)_updateProperties
 {
-  v2 = self;
+  selfCopy = self;
   sub_188AF9204();
 }
 

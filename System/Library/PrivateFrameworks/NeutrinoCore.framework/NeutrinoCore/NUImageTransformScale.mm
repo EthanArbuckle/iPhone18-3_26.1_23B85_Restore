@@ -1,7 +1,7 @@
 @interface NUImageTransformScale
 - ($0AC6E346AE4835514AAA8AC86D8F4844)scale;
-- (NUImageTransformScale)initWithAffineTransform:(CGAffineTransform *)a3;
-- (NUImageTransformScale)initWithScale:(id)a3;
+- (NUImageTransformScale)initWithAffineTransform:(CGAffineTransform *)transform;
+- (NUImageTransformScale)initWithScale:(id)scale;
 - (id)inverseTransform;
 @end
 
@@ -24,10 +24,10 @@
   return v2;
 }
 
-- (NUImageTransformScale)initWithScale:(id)a3
+- (NUImageTransformScale)initWithScale:(id)scale
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3.var0 < 1 || (var1 = a3.var1, a3.var1 <= 0))
+  if (scale.var0 < 1 || (var1 = scale.var1, scale.var1 <= 0))
   {
     v8 = NUAssertLogger_21429();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -48,8 +48,8 @@
         v15 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v16 = MEMORY[0x1E696AF00];
         v17 = v15;
-        v18 = [v16 callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v19 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(v25.a) = 138543618;
         *(&v25.a + 4) = v15;
         WORD2(v25.b) = 2114;
@@ -60,8 +60,8 @@
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(v25.a) = 138543362;
       *(&v25.a + 4) = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v25, 0xCu);
@@ -70,8 +70,8 @@
     _NUAssertFailHandler("[NUImageTransformScale initWithScale:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/transforms/NUGeometryTransform.m", 482, @"Invalid parameter not satisfying: %s", v20, v21, v22, v23, "NUScaleIsValid(scale)");
   }
 
-  var0 = a3.var0;
-  v6 = NUScaleToDouble(a3.var0, a3.var1);
+  var0 = scale.var0;
+  v6 = NUScaleToDouble(scale.var0, scale.var1);
   CGAffineTransformMakeScale(&v25, v6, v6);
   v24.receiver = self;
   v24.super_class = NUImageTransformScale;
@@ -85,7 +85,7 @@
   return result;
 }
 
-- (NUImageTransformScale)initWithAffineTransform:(CGAffineTransform *)a3
+- (NUImageTransformScale)initWithAffineTransform:(CGAffineTransform *)transform
 {
   v34 = *MEMORY[0x1E69E9840];
   if (_NULogOnceToken != -1)
@@ -131,8 +131,8 @@ LABEL_8:
     {
       v13 = MEMORY[0x1E696AF00];
       v14 = v12;
-      v15 = [v13 callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v13 callStackSymbols];
+      v16 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v16;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -148,8 +148,8 @@ LABEL_8:
     v19 = MEMORY[0x1E696AF00];
     v20 = specific;
     v21 = v17;
-    v22 = [v19 callStackSymbols];
-    v23 = [v22 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v19 callStackSymbols];
+    v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v31 = specific;
     v32 = 2114;

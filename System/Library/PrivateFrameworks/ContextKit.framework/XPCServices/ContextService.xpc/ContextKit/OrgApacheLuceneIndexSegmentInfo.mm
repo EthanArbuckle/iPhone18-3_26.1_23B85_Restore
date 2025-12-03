@@ -1,32 +1,32 @@
 @interface OrgApacheLuceneIndexSegmentInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)files;
-- (id)getAttributeWithNSString:(id)a3;
+- (id)getAttributeWithNSString:(id)string;
 - (id)getId;
-- (id)namedForThisSegmentWithNSString:(id)a3;
-- (id)putAttributeWithNSString:(id)a3 withNSString:(id)a4;
+- (id)namedForThisSegmentWithNSString:(id)string;
+- (id)putAttributeWithNSString:(id)string withNSString:(id)sString;
 - (int)maxDoc;
 - (unint64_t)hash;
-- (void)addFileWithNSString:(id)a3;
-- (void)addFilesWithJavaUtilCollection:(id)a3;
+- (void)addFileWithNSString:(id)string;
+- (void)addFilesWithJavaUtilCollection:(id)collection;
 - (void)dealloc;
-- (void)setCodecWithOrgApacheLuceneCodecsCodec:(id)a3;
-- (void)setDiagnosticsWithJavaUtilMap:(id)a3;
-- (void)setFilesWithJavaUtilCollection:(id)a3;
+- (void)setCodecWithOrgApacheLuceneCodecsCodec:(id)codec;
+- (void)setDiagnosticsWithJavaUtilMap:(id)map;
+- (void)setFilesWithJavaUtilCollection:(id)collection;
 @end
 
 @implementation OrgApacheLuceneIndexSegmentInfo
 
-- (void)setDiagnosticsWithJavaUtilMap:(id)a3
+- (void)setDiagnosticsWithJavaUtilMap:(id)map
 {
-  v4 = OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_(a3);
+  v4 = OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_(map);
 
   JreStrongAssign(&self->diagnostics_, v4);
 }
 
-- (void)setCodecWithOrgApacheLuceneCodecsCodec:(id)a3
+- (void)setCodecWithOrgApacheLuceneCodecsCodec:(id)codec
 {
-  if (!a3)
+  if (!codec)
   {
     v5 = new_JavaLangIllegalArgumentException_initWithNSString_(@"codec must be non-null");
     objc_exception_throw(v5);
@@ -34,7 +34,7 @@
 
   p_codec = &self->codec_;
 
-  JreStrongAssign(p_codec, a3);
+  JreStrongAssign(p_codec, codec);
 }
 
 - (int)maxDoc
@@ -61,9 +61,9 @@
   return JavaUtilCollections_unmodifiableSetWithJavaUtilSet_(setFiles);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -75,7 +75,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_13;
   }
@@ -85,12 +85,12 @@
     JreThrowClassCastException();
   }
 
-  if (*(a3 + 2) != self->dir_)
+  if (*(equal + 2) != self->dir_)
   {
     return 0;
   }
 
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
   if (!v6)
   {
 LABEL_13:
@@ -124,28 +124,28 @@ LABEL_13:
   return result;
 }
 
-- (void)setFilesWithJavaUtilCollection:(id)a3
+- (void)setFilesWithJavaUtilCollection:(id)collection
 {
   v5 = new_JavaUtilHashSet_init();
   JreStrongAssignAndConsume(&self->setFiles_, v5);
 
-  [(OrgApacheLuceneIndexSegmentInfo *)self addFilesWithJavaUtilCollection:a3];
+  [(OrgApacheLuceneIndexSegmentInfo *)self addFilesWithJavaUtilCollection:collection];
 }
 
-- (void)addFilesWithJavaUtilCollection:(id)a3
+- (void)addFilesWithJavaUtilCollection:(id)collection
 {
-  sub_100093DF8(a3);
+  sub_100093DF8(collection);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  if (!a3)
+  if (!collection)
   {
 LABEL_11:
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [collection countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -156,7 +156,7 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(collection);
         }
 
         setFiles = self->setFiles_;
@@ -168,16 +168,16 @@ LABEL_11:
         [(JavaUtilSet *)setFiles addWithId:[(OrgApacheLuceneIndexSegmentInfo *)self namedForThisSegmentWithNSString:*(*(&v10 + 1) + 8 * i), v10]];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [collection countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addFileWithNSString:(id)a3
+- (void)addFileWithNSString:(id)string
 {
-  v5 = JavaUtilCollections_singletonWithId_(a3);
+  v5 = JavaUtilCollections_singletonWithId_(string);
   sub_100093DF8(v5);
   setFiles = self->setFiles_;
   if (!setFiles)
@@ -185,19 +185,19 @@ LABEL_11:
     JreThrowNullPointerException();
   }
 
-  v7 = [(OrgApacheLuceneIndexSegmentInfo *)self namedForThisSegmentWithNSString:a3];
+  v7 = [(OrgApacheLuceneIndexSegmentInfo *)self namedForThisSegmentWithNSString:string];
 
   [(JavaUtilSet *)setFiles addWithId:v7];
 }
 
-- (id)namedForThisSegmentWithNSString:(id)a3
+- (id)namedForThisSegmentWithNSString:(id)string
 {
   name = self->name_;
-  OrgApacheLuceneIndexIndexFileNames_stripSegmentNameWithNSString_(a3);
+  OrgApacheLuceneIndexIndexFileNames_stripSegmentNameWithNSString_(string);
   return JreStrcat("$$", v4, v5, v6, v7, v8, v9, v10, name);
 }
 
-- (id)getAttributeWithNSString:(id)a3
+- (id)getAttributeWithNSString:(id)string
 {
   attributes = self->attributes_;
   if (!attributes)
@@ -205,10 +205,10 @@ LABEL_11:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)attributes getWithId:a3];
+  return [(JavaUtilMap *)attributes getWithId:string];
 }
 
-- (id)putAttributeWithNSString:(id)a3 withNSString:(id)a4
+- (id)putAttributeWithNSString:(id)string withNSString:(id)sString
 {
   attributes = self->attributes_;
   if (!attributes)
@@ -216,7 +216,7 @@ LABEL_11:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)attributes putWithId:a3 withId:a4];
+  return [(JavaUtilMap *)attributes putWithId:string withId:sString];
 }
 
 - (void)dealloc

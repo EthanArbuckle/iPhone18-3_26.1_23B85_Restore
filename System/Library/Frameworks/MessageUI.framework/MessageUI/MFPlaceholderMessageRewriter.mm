@@ -1,7 +1,7 @@
 @interface MFPlaceholderMessageRewriter
-+ (id)_deriveOutgoingMessageContentFromLibraryMessageContent:(id)a3;
++ (id)_deriveOutgoingMessageContentFromLibraryMessageContent:(id)content;
 - (MFMessageRewriterPlaceholderResolver)placeholderResolver;
-- (MFPlaceholderMessageRewriter)initWithOriginalMessageContent:(id)a3 resolver:(id)a4;
+- (MFPlaceholderMessageRewriter)initWithOriginalMessageContent:(id)content resolver:(id)resolver;
 - (id)bccRecipients;
 - (id)ccRecipients;
 - (id)rewrittenMessageContent;
@@ -13,10 +13,10 @@
 
 @implementation MFPlaceholderMessageRewriter
 
-- (MFPlaceholderMessageRewriter)initWithOriginalMessageContent:(id)a3 resolver:(id)a4
+- (MFPlaceholderMessageRewriter)initWithOriginalMessageContent:(id)content resolver:(id)resolver
 {
-  v7 = a3;
-  v8 = a4;
+  contentCopy = content;
+  resolverCopy = resolver;
   v13.receiver = self;
   v13.super_class = MFPlaceholderMessageRewriter;
   v9 = [(MFPlaceholderMessageRewriter *)&v13 init];
@@ -26,42 +26,42 @@
     placeholders = v9->_placeholders;
     v9->_placeholders = v10;
 
-    objc_storeStrong(&v9->_originalMessageContent, a3);
-    objc_storeWeak(&v9->_placeholderResolver, v8);
+    objc_storeStrong(&v9->_originalMessageContent, content);
+    objc_storeWeak(&v9->_placeholderResolver, resolverCopy);
   }
 
   return v9;
 }
 
-+ (id)_deriveOutgoingMessageContentFromLibraryMessageContent:(id)a3
++ (id)_deriveOutgoingMessageContentFromLibraryMessageContent:(id)content
 {
   v51 = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v3 = [v39 libraryMessage];
+  contentCopy = content;
+  libraryMessage = [contentCopy libraryMessage];
 
-  if (!v3)
+  if (!libraryMessage)
   {
     v40 = 0;
     goto LABEL_47;
   }
 
-  v36 = [v39 libraryMessage];
-  v38 = [v36 messageBody];
-  v4 = [v38 preferredBodyPart];
-  v5 = v4;
-  v37 = v4;
-  if (v4)
+  libraryMessage2 = [contentCopy libraryMessage];
+  messageBody = [libraryMessage2 messageBody];
+  preferredBodyPart = [messageBody preferredBodyPart];
+  v5 = preferredBodyPart;
+  v37 = preferredBodyPart;
+  if (preferredBodyPart)
   {
-    v35 = [v4 contentToOffset:1 resultOffset:0 asHTML:1];
-    v6 = [v5 type];
-    if ([v6 isEqualToString:@"multipart"])
+    v35 = [preferredBodyPart contentToOffset:1 resultOffset:0 asHTML:1];
+    type = [v5 type];
+    if ([type isEqualToString:@"multipart"])
     {
-      v7 = [v37 subtype];
-      v8 = [v7 isEqualToString:@"related"];
+      subtype = [v37 subtype];
+      v8 = [subtype isEqualToString:@"related"];
 
       if (v8)
       {
-        v9 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v47 = 0u;
         v48 = 0u;
         v45 = 0u;
@@ -86,8 +86,8 @@
               if (objc_opt_isKindOfClass())
               {
                 v16 = v15;
-                v17 = [v16 htmlData];
-                if (v17)
+                htmlData = [v16 htmlData];
+                if (htmlData)
                 {
                   [v16 preferredEncoding];
                   v18 = MFCreateStringWithData();
@@ -95,13 +95,13 @@
                   v11 = v18;
                 }
 
-                v19 = [v16 attachmentsInDocument];
-                [v9 addObjectsFromArray:v19];
+                attachmentsInDocument = [v16 attachmentsInDocument];
+                [array addObjectsFromArray:attachmentsInDocument];
               }
 
               else
               {
-                [v9 addObject:v15];
+                [array addObject:v15];
               }
             }
 
@@ -113,7 +113,7 @@
 
         v20 = objc_alloc_init(MEMORY[0x1E69B1668]);
         [v20 setHtmlBody:v11];
-        [v20 setMixedContent:v9];
+        [v20 setMixedContent:array];
         v40 = v20;
 
         goto LABEL_22;
@@ -177,15 +177,15 @@ LABEL_24:
 LABEL_30:
     }
 
-    v27 = [v38 topLevelPart];
-    for (j = 0; j < [v27 numberOfAlternatives]; ++j)
+    topLevelPart = [messageBody topLevelPart];
+    for (j = 0; j < [topLevelPart numberOfAlternatives]; ++j)
     {
-      v29 = [v27 alternativeAtIndex:j];
-      v30 = [v29 type];
-      if ([v30 isEqualToString:@"text"])
+      v29 = [topLevelPart alternativeAtIndex:j];
+      type2 = [v29 type];
+      if ([type2 isEqualToString:@"text"])
       {
-        v31 = [v29 subtype];
-        if ([v31 isEqualToString:@"plain"])
+        subtype2 = [v29 subtype];
+        if ([subtype2 isEqualToString:@"plain"])
         {
 
 LABEL_41:
@@ -199,8 +199,8 @@ LABEL_41:
           break;
         }
 
-        v32 = [v29 subtype];
-        v33 = [v32 isEqualToString:@"enriched"];
+        subtype3 = [v29 subtype];
+        v33 = [subtype3 isEqualToString:@"enriched"];
 
         if (v33)
         {
@@ -236,15 +236,15 @@ LABEL_47:
   rewrittenMessageContent = self->_rewrittenMessageContent;
   if (!rewrittenMessageContent)
   {
-    v44 = self;
+    selfCopy = self;
     v39 = self->_originalMessageContent;
-    v4 = [(MFOutgoingMessageContent *)v39 libraryContent];
+    libraryContent = [(MFOutgoingMessageContent *)v39 libraryContent];
 
-    if (v4)
+    if (libraryContent)
     {
       v5 = objc_opt_class();
-      v6 = [(MFOutgoingMessageContent *)v39 libraryContent];
-      v7 = [v5 _deriveOutgoingMessageContentFromLibraryMessageContent:v6];
+      libraryContent2 = [(MFOutgoingMessageContent *)v39 libraryContent];
+      v7 = [v5 _deriveOutgoingMessageContentFromLibraryMessageContent:libraryContent2];
     }
 
     else
@@ -254,15 +254,15 @@ LABEL_47:
 
     v40 = v7;
     v46 = [v7 copy];
-    v8 = [v7 richtextContent];
-    v38 = [v8 mixedContent];
+    richtextContent = [v7 richtextContent];
+    mixedContent = [richtextContent mixedContent];
 
-    v47 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    obj = v38;
+    obj = mixedContent;
     v9 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
     if (v9)
     {
@@ -293,7 +293,7 @@ LABEL_47:
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  [v47 addObject:v11];
+                  [array addObject:v11];
                   goto LABEL_50;
                 }
               }
@@ -301,15 +301,15 @@ LABEL_47:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v19 = [v11 mimePart];
-                v18 = [v19 partURL];
-                v20 = [v19 bodyParameterForKey:v43];
-                v21 = [v19 approximateRawSize];
-                v22 = 0;
-                if (v42 < v21 && v41 > v21)
+                mimePart = [v11 mimePart];
+                partURL = [mimePart partURL];
+                contentID = [mimePart bodyParameterForKey:v43];
+                approximateRawSize = [mimePart approximateRawSize];
+                placeholder = 0;
+                if (v42 < approximateRawSize && v41 > approximateRawSize)
                 {
-                  v23 = [v19 copyBodyDataToOffset:-1 resultOffset:0 downloadIfNecessary:1];
-                  v22 = [MEMORY[0x1E69B15D8] placeholderFromSerializedRepresentation:v23];
+                  v23 = [mimePart copyBodyDataToOffset:-1 resultOffset:0 downloadIfNecessary:1];
+                  placeholder = [MEMORY[0x1E69B15D8] placeholderFromSerializedRepresentation:v23];
                 }
 
 LABEL_32:
@@ -320,54 +320,54 @@ LABEL_32:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v19 = v11;
-                  v22 = [v19 placeholder];
-                  v18 = [v19 url];
-                  v20 = [v19 contentID];
+                  mimePart = v11;
+                  placeholder = [mimePart placeholder];
+                  partURL = [mimePart url];
+                  contentID = [mimePart contentID];
                   goto LABEL_32;
                 }
 
-                v18 = 0;
-                v20 = 0;
-                v22 = 0;
+                partURL = 0;
+                contentID = 0;
+                placeholder = 0;
               }
 
-              v24 = [(MFPlaceholderMessageRewriter *)v44 placeholderResolver];
-              v25 = v24;
-              if (v22)
+              placeholderResolver = [(MFPlaceholderMessageRewriter *)selfCopy placeholderResolver];
+              v25 = placeholderResolver;
+              if (placeholder)
               {
-                [(NSMutableArray *)v44->_placeholders addObject:v22];
-                v26 = [v25 contentForPlaceholder:v22];
+                [(NSMutableArray *)selfCopy->_placeholders addObject:placeholder];
+                v26 = [v25 contentForPlaceholder:placeholder];
                 goto LABEL_38;
               }
 
-              v27 = [v24 contentForURL:v18];
+              v27 = [placeholderResolver contentForURL:partURL];
               if (v27)
               {
 
                 goto LABEL_42;
               }
 
-              v26 = [v25 contentForContentID:v20];
+              v26 = [v25 contentForContentID:contentID];
 LABEL_38:
               v27 = v26;
 
               if (v27)
               {
 LABEL_42:
-                v28 = [v46 multipartContent];
-                if (v28)
+                multipartContent = [v46 multipartContent];
+                if (multipartContent)
                 {
                   objc_opt_class();
                   isKindOfClass = objc_opt_isKindOfClass();
 
                   if (isKindOfClass)
                   {
-                    v30 = [v46 multipartContent];
-                    v31 = [v30 htmlBody];
-                    v32 = [v31 stringByAppendingString:v27];
-                    v33 = [v46 multipartContent];
-                    [v33 setHtmlBody:v32];
+                    multipartContent2 = [v46 multipartContent];
+                    htmlBody = [multipartContent2 htmlBody];
+                    v32 = [htmlBody stringByAppendingString:v27];
+                    multipartContent3 = [v46 multipartContent];
+                    [multipartContent3 setHtmlBody:v32];
                   }
                 }
 
@@ -375,12 +375,12 @@ LABEL_42:
                 if (objc_opt_isKindOfClass())
                 {
                   v34 = [MEMORY[0x1E699B288] mf_utf8HTMLStringWithString:v27];
-                  [v47 addObject:v34];
+                  [array addObject:v34];
                 }
 
                 else
                 {
-                  [v47 addObject:v27];
+                  [array addObject:v27];
                 }
               }
 
@@ -392,39 +392,39 @@ LABEL_42:
           if (objc_opt_isKindOfClass())
           {
             v12 = v11;
-            v13 = [v12 mimeBody];
-            v14 = [v13 isHTML];
+            mimeBody = [v12 mimeBody];
+            isHTML = [mimeBody isHTML];
 
-            if (v14)
+            if (isHTML)
             {
-              v15 = [v12 htmlData];
-              if (v15)
+              htmlData = [v12 htmlData];
+              if (htmlData)
               {
                 v16 = MEMORY[0x1E699B288];
                 [v12 preferredEncoding];
                 v17 = MFCreateStringWithData();
-                v18 = [v16 mf_utf8HTMLStringWithString:v17];
+                partURL = [v16 mf_utf8HTMLStringWithString:v17];
                 goto LABEL_26;
               }
 
-              v18 = 0;
+              partURL = 0;
             }
 
             else
             {
-              v15 = [v12 mimePart];
+              htmlData = [v12 mimePart];
               [v12 preferredEncoding];
-              v17 = _plaintextDocumentForMimePart(v15);
-              [v47 addObject:v17];
-              v18 = 0;
+              v17 = _plaintextDocumentForMimePart(htmlData);
+              [array addObject:v17];
+              partURL = 0;
 LABEL_26:
             }
 
 LABEL_28:
-            if (v18)
+            if (partURL)
             {
               [v46 setTextPartsAreHTML:1];
-              [v47 addObject:v18];
+              [array addObject:partURL];
             }
 
             goto LABEL_49;
@@ -433,11 +433,11 @@ LABEL_28:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = v11;
+            partURL = v11;
             goto LABEL_28;
           }
 
-          v18 = 0;
+          partURL = 0;
 LABEL_49:
 
 LABEL_50:
@@ -452,12 +452,12 @@ LABEL_50:
       while (v35);
     }
 
-    [v46 setMixedContent:v47];
-    [v46 setPlaceholders:v44->_placeholders];
-    v36 = v44->_rewrittenMessageContent;
-    v44->_rewrittenMessageContent = v46;
+    [v46 setMixedContent:array];
+    [v46 setPlaceholders:selfCopy->_placeholders];
+    v36 = selfCopy->_rewrittenMessageContent;
+    selfCopy->_rewrittenMessageContent = v46;
 
-    rewrittenMessageContent = v44->_rewrittenMessageContent;
+    rewrittenMessageContent = selfCopy->_rewrittenMessageContent;
   }
 
   return rewrittenMessageContent;
@@ -465,52 +465,52 @@ LABEL_50:
 
 - (id)toRecipients
 {
-  v2 = [(MFOutgoingMessageContent *)self->_originalMessageContent headers];
-  v3 = [v2 copyAddressListForTo];
+  headers = [(MFOutgoingMessageContent *)self->_originalMessageContent headers];
+  copyAddressListForTo = [headers copyAddressListForTo];
 
-  return v3;
+  return copyAddressListForTo;
 }
 
 - (id)ccRecipients
 {
-  v2 = [(MFOutgoingMessageContent *)self->_originalMessageContent headers];
-  v3 = [v2 copyAddressListForCc];
+  headers = [(MFOutgoingMessageContent *)self->_originalMessageContent headers];
+  copyAddressListForCc = [headers copyAddressListForCc];
 
-  return v3;
+  return copyAddressListForCc;
 }
 
 - (id)bccRecipients
 {
-  v2 = [(MFOutgoingMessageContent *)self->_originalMessageContent headers];
-  v3 = [v2 copyAddressListForBcc];
+  headers = [(MFOutgoingMessageContent *)self->_originalMessageContent headers];
+  copyAddressListForBcc = [headers copyAddressListForBcc];
 
-  return v3;
+  return copyAddressListForBcc;
 }
 
 - (id)subject
 {
-  v2 = [(MFOutgoingMessageContent *)self->_originalMessageContent headers];
-  v3 = [v2 headersForKey:*MEMORY[0x1E699B178]];
-  v4 = [v3 firstObject];
+  headers = [(MFOutgoingMessageContent *)self->_originalMessageContent headers];
+  v3 = [headers headersForKey:*MEMORY[0x1E699B178]];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (id)savedHeaders
 {
-  v2 = [(MFOutgoingMessageContent *)self->_originalMessageContent headers];
-  v3 = [v2 mutableCopy];
+  headers = [(MFOutgoingMessageContent *)self->_originalMessageContent headers];
+  v3 = [headers mutableCopy];
 
   return v3;
 }
 
 - (id)sendingEmailAddress
 {
-  v2 = [(MFOutgoingMessageContent *)self->_originalMessageContent headers];
-  v3 = [v2 copyAddressListForSender];
-  v4 = [v3 firstObject];
+  headers = [(MFOutgoingMessageContent *)self->_originalMessageContent headers];
+  copyAddressListForSender = [headers copyAddressListForSender];
+  firstObject = [copyAddressListForSender firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (MFMessageRewriterPlaceholderResolver)placeholderResolver

@@ -1,8 +1,8 @@
 @interface PLPlatterHeaderContentView
-+ (double)contentBaselineToBoundsBottomWithWidth:(double)a3 scale:(double)a4;
++ (double)contentBaselineToBoundsBottomWithWidth:(double)width scale:(double)scale;
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BSUIFontProvider)_fontProvider;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)icons;
 - (NSString)preferredContentSizeCategory;
 - (NSString)title;
@@ -10,65 +10,65 @@
 - (UIButton)utilityButton;
 - (UIFont)_dateLabelFont;
 - (UIFont)_titleLabelFont;
-- (double)_headerHeightForWidth:(double)a3;
+- (double)_headerHeightForWidth:(double)width;
 - (double)contentBaseline;
-- (id)_attributedStringForTitle:(id)a3;
+- (id)_attributedStringForTitle:(id)title;
 - (id)_dateLabelPreferredFont;
 - (id)_layoutManager;
 - (id)_lazyTitleLabel;
 - (id)_newIconButton;
 - (id)_newTitleLabel;
 - (id)_titleLabelPreferredFont;
-- (id)_updateTitleAttributesForAttributedString:(id)a3;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
+- (id)_updateTitleAttributesForAttributedString:(id)string;
+- (id)visualStylingProviderForCategory:(int64_t)category;
 - (void)_configureDateLabel;
 - (void)_configureDateLabelIfNecessary;
-- (void)_configureIconButton:(id)a3 withIcon:(id)a4;
-- (void)_configureIconButtonsForIcons:(id)a3;
-- (void)_configureTitleLabel:(id)a3;
+- (void)_configureIconButton:(id)button withIcon:(id)icon;
+- (void)_configureIconButtonsForIcons:(id)icons;
+- (void)_configureTitleLabel:(id)label;
 - (void)_configureUtilityButton;
 - (void)_configureUtilityButtonIfNecessary;
-- (void)_darkerSystemColorsStatusDidChange:(id)a3;
-- (void)_layoutDateLabelWithScale:(double)a3;
-- (void)_layoutIconButtonsWithScale:(double)a3;
-- (void)_layoutTitleLabelWithScale:(double)a3;
-- (void)_layoutUtilityButtonWithScale:(double)a3;
+- (void)_darkerSystemColorsStatusDidChange:(id)change;
+- (void)_layoutDateLabelWithScale:(double)scale;
+- (void)_layoutIconButtonsWithScale:(double)scale;
+- (void)_layoutTitleLabelWithScale:(double)scale;
+- (void)_layoutUtilityButtonWithScale:(double)scale;
 - (void)_recycleDateLabel;
-- (void)_reduceTransparencyStatusDidChange:(id)a3;
-- (void)_setUsesLargeTextLayout:(BOOL)a3;
+- (void)_reduceTransparencyStatusDidChange:(id)change;
+- (void)_setUsesLargeTextLayout:(BOOL)layout;
 - (void)_tearDownDateLabel;
-- (void)_updateStylingForTitleLabel:(id)a3;
+- (void)_updateStylingForTitleLabel:(id)label;
 - (void)_updateTextAttributesForDateLabel;
-- (void)_updateTextAttributesForTitleLabel:(id)a3;
+- (void)_updateTextAttributesForTitleLabel:(id)label;
 - (void)_updateUtilityButtonFont;
 - (void)_updateUtilityButtonVisualStyling;
-- (void)dateLabelDidChange:(id)a3;
+- (void)dateLabelDidChange:(id)change;
 - (void)dealloc;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setDate:(id)a3;
-- (void)setDateAllDay:(BOOL)a3;
-- (void)setDateFormatStyle:(int64_t)a3;
-- (void)setIcons:(id)a3;
-- (void)setTimeZone:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUtilityView:(id)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setDate:(id)date;
+- (void)setDateAllDay:(BOOL)day;
+- (void)setDateFormatStyle:(int64_t)style;
+- (void)setIcons:(id)icons;
+- (void)setTimeZone:(id)zone;
+- (void)setTitle:(id)title;
+- (void)setUtilityView:(id)view;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 @end
 
 @implementation PLPlatterHeaderContentView
 
-+ (double)contentBaselineToBoundsBottomWithWidth:(double)a3 scale:(double)a4
++ (double)contentBaselineToBoundsBottomWithWidth:(double)width scale:(double)scale
 {
-  v7 = [MEMORY[0x277D75128] sharedApplication];
-  v8 = [v7 preferredContentSizeCategory];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-  UIContentSizeCategoryIsAccessibilityCategory(v8);
+  UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   v9 = objc_opt_class();
-  v10 = [MEMORY[0x277CF0D60] preferredFontProvider];
-  v11 = [a1 _titleLabelFontFromFontProvider:v10];
-  [v9 contentBaselineToBoundsBottomWithFont:v11 boundsWidth:a3 scale:a4];
+  preferredFontProvider = [MEMORY[0x277CF0D60] preferredFontProvider];
+  v11 = [self _titleLabelFontFromFontProvider:preferredFontProvider];
+  [v9 contentBaselineToBoundsBottomWithFont:v11 boundsWidth:width scale:scale];
   v13 = v12;
 
   return v13;
@@ -84,11 +84,11 @@
   {
     v2->_dateFormatStyle = 1;
     [(PLPlatterHeaderContentView *)v2 setPreservesSuperviewLayoutMargins:1];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel__darkerSystemColorsStatusDidChange_ name:*MEMORY[0x277D76460] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__darkerSystemColorsStatusDidChange_ name:*MEMORY[0x277D76460] object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v3 selector:sel__reduceTransparencyStatusDidChange_ name:*MEMORY[0x277D764C8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel__reduceTransparencyStatusDidChange_ name:*MEMORY[0x277D764C8] object:0];
   }
 
   return v3;
@@ -96,11 +96,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76460] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76460] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D764C8] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D764C8] object:0];
 
   [(PLPlatterHeaderContentView *)self _recycleDateLabel];
   v5.receiver = self;
@@ -147,20 +147,20 @@
   return layoutManager;
 }
 
-- (void)_setUsesLargeTextLayout:(BOOL)a3
+- (void)_setUsesLargeTextLayout:(BOOL)layout
 {
-  if (self->_usesLargeTextLayout != a3)
+  if (self->_usesLargeTextLayout != layout)
   {
-    self->_usesLargeTextLayout = a3;
+    self->_usesLargeTextLayout = layout;
     self->_layoutManager = 0;
     MEMORY[0x2821F96F8]();
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PLPlatterHeaderContentView *)self _headerHeightForWidth:a3.width, a3.height];
+  width = fits.width;
+  [(PLPlatterHeaderContentView *)self _headerHeightForWidth:fits.width, fits.height];
   v5 = v4;
   v6 = width;
   result.height = v5;
@@ -215,10 +215,10 @@
   return v3;
 }
 
-- (void)_configureIconButtonsForIcons:(id)a3
+- (void)_configureIconButtonsForIcons:(id)icons
 {
-  v16 = a3;
-  if ([v16 count])
+  iconsCopy = icons;
+  if ([iconsCopy count])
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   }
@@ -228,45 +228,45 @@
     v4 = 0;
   }
 
-  v5 = [v16 count];
+  v5 = [iconsCopy count];
   p_iconButtons = &self->_iconButtons;
   if (v5 | [(NSArray *)self->_iconButtons count])
   {
     v7 = 0;
     do
     {
-      v8 = [v16 count];
+      v8 = [iconsCopy count];
       v9 = [(NSArray *)*p_iconButtons count];
       if (v7 >= v8)
       {
         if (v7 >= v9)
         {
-          v10 = 0;
+          _newIconButton = 0;
         }
 
         else
         {
-          v10 = [(NSArray *)*p_iconButtons objectAtIndex:v7];
+          _newIconButton = [(NSArray *)*p_iconButtons objectAtIndex:v7];
         }
 
-        [v10 removeFromSuperview];
+        [_newIconButton removeFromSuperview];
       }
 
       else
       {
-        if (v7 >= v9 || ([(NSArray *)*p_iconButtons objectAtIndex:v7], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+        if (v7 >= v9 || ([(NSArray *)*p_iconButtons objectAtIndex:v7], (_newIconButton = objc_claimAutoreleasedReturnValue()) == 0))
         {
-          v10 = [(PLPlatterHeaderContentView *)self _newIconButton];
-          [(PLPlatterHeaderContentView *)self addSubview:v10];
+          _newIconButton = [(PLPlatterHeaderContentView *)self _newIconButton];
+          [(PLPlatterHeaderContentView *)self addSubview:_newIconButton];
         }
 
-        v11 = [v16 objectAtIndex:v7];
-        [(PLPlatterHeaderContentView *)self _configureIconButton:v10 withIcon:v11];
-        [(NSArray *)v4 addObject:v10];
+        v11 = [iconsCopy objectAtIndex:v7];
+        [(PLPlatterHeaderContentView *)self _configureIconButton:_newIconButton withIcon:v11];
+        [(NSArray *)v4 addObject:_newIconButton];
       }
 
       ++v7;
-      v12 = [v16 count];
+      v12 = [iconsCopy count];
       p_iconButtons = &self->_iconButtons;
       v13 = [(NSArray *)self->_iconButtons count];
       if (v12 <= v13)
@@ -287,12 +287,12 @@
   *p_iconButtons = v4;
 }
 
-- (void)setIcons:(id)a3
+- (void)setIcons:(id)icons
 {
   iconButtons = self->_iconButtons;
-  v5 = a3;
+  iconsCopy = icons;
   v6 = [(NSArray *)iconButtons count];
-  [(PLPlatterHeaderContentView *)self _configureIconButtonsForIcons:v5];
+  [(PLPlatterHeaderContentView *)self _configureIconButtonsForIcons:iconsCopy];
 
   if (v6 != [(NSArray *)self->_iconButtons count])
   {
@@ -304,25 +304,25 @@
 
 - (NSString)title
 {
-  v2 = [(PLPlatterHeaderContentView *)self _titleLabel];
-  v3 = [v2 text];
+  _titleLabel = [(PLPlatterHeaderContentView *)self _titleLabel];
+  text = [_titleLabel text];
 
-  return v3;
+  return text;
 }
 
 - (id)_titleLabelPreferredFont
 {
   v3 = objc_opt_class();
-  v4 = [(PLPlatterHeaderContentView *)self _fontProvider];
-  v5 = [v3 _titleLabelFontFromFontProvider:v4];
+  _fontProvider = [(PLPlatterHeaderContentView *)self _fontProvider];
+  v5 = [v3 _titleLabelFontFromFontProvider:_fontProvider];
 
   return v5;
 }
 
 - (UIFont)_titleLabelFont
 {
-  v3 = [(UILabel *)self->_titleLabel attributedText];
-  if ([v3 length])
+  attributedText = [(UILabel *)self->_titleLabel attributedText];
+  if ([attributedText length])
   {
     [(UILabel *)self->_titleLabel font];
   }
@@ -336,15 +336,15 @@
   return v4;
 }
 
-- (void)_updateTextAttributesForTitleLabel:(id)a3
+- (void)_updateTextAttributesForTitleLabel:(id)label
 {
-  v7 = a3;
-  v4 = [v7 attributedText];
-  v5 = [v4 mutableCopy];
+  labelCopy = label;
+  attributedText = [labelCopy attributedText];
+  v5 = [attributedText mutableCopy];
   v6 = [(PLPlatterHeaderContentView *)self _updateTitleAttributesForAttributedString:v5];
-  [v7 setAttributedText:v6];
+  [labelCopy setAttributedText:v6];
 
-  [v7 setNumberOfLines:{-[PLPlatterHeaderContentView _usesLargeTextLayout](self, "_usesLargeTextLayout") ^ 1}];
+  [labelCopy setNumberOfLines:{-[PLPlatterHeaderContentView _usesLargeTextLayout](self, "_usesLargeTextLayout") ^ 1}];
 }
 
 - (id)_newTitleLabel
@@ -359,9 +359,9 @@
   titleLabel = self->_titleLabel;
   if (!titleLabel)
   {
-    v4 = [(PLPlatterHeaderContentView *)self _newTitleLabel];
+    _newTitleLabel = [(PLPlatterHeaderContentView *)self _newTitleLabel];
     v5 = self->_titleLabel;
-    self->_titleLabel = v4;
+    self->_titleLabel = _newTitleLabel;
 
     [(PLPlatterHeaderContentView *)self addSubview:self->_titleLabel];
     [(PLPlatterHeaderContentView *)self _configureTitleLabel:self->_titleLabel];
@@ -371,43 +371,43 @@
   return titleLabel;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  if (!v4)
+  titleCopy = title;
+  if (!titleCopy)
   {
-    v4 = @" ";
+    titleCopy = @" ";
   }
 
-  v10 = v4;
-  v5 = [(PLPlatterHeaderContentView *)self title];
-  v6 = [(__CFString *)v10 isEqualToString:v5];
+  v10 = titleCopy;
+  title = [(PLPlatterHeaderContentView *)self title];
+  v6 = [(__CFString *)v10 isEqualToString:title];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(PLPlatterHeaderContentView *)self _layoutManager];
-    [v7 invalidateCachedSizeInfo];
+    _layoutManager = [(PLPlatterHeaderContentView *)self _layoutManager];
+    [_layoutManager invalidateCachedSizeInfo];
 
-    v8 = [(PLPlatterHeaderContentView *)self _lazyTitleLabel];
+    _lazyTitleLabel = [(PLPlatterHeaderContentView *)self _lazyTitleLabel];
     v9 = [(PLPlatterHeaderContentView *)self _attributedStringForTitle:v10];
-    [v8 setAttributedText:v9];
+    [_lazyTitleLabel setAttributedText:v9];
 
     [(PLPlatterHeaderContentView *)self setNeedsLayout];
     self->_hasUpdatedContent = 1;
     if ([MEMORY[0x277D75D18] _isInAnimationBlock])
     {
       self->_hasUpdatedContent = 0;
-      [v8 pl_performCrossFadeIfNecessary];
+      [_lazyTitleLabel pl_performCrossFadeIfNecessary];
     }
   }
 }
 
-- (id)_attributedStringForTitle:(id)a3
+- (id)_attributedStringForTitle:(id)title
 {
-  v4 = a3;
-  if ([v4 length])
+  titleCopy = title;
+  if ([titleCopy length])
   {
-    v5 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v4];
+    v5 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:titleCopy];
     v6 = [(PLPlatterHeaderContentView *)self _updateTitleAttributesForAttributedString:v5];
   }
 
@@ -419,13 +419,13 @@
   return v6;
 }
 
-- (id)_updateTitleAttributesForAttributedString:(id)a3
+- (id)_updateTitleAttributesForAttributedString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [(PLPlatterHeaderContentView *)self _usesLargeTextLayout];
-    if (v5)
+    _usesLargeTextLayout = [(PLPlatterHeaderContentView *)self _usesLargeTextLayout];
+    if (_usesLargeTextLayout)
     {
       v6 = 0.45;
     }
@@ -435,7 +435,7 @@
       v6 = 0.0;
     }
 
-    if (v5)
+    if (_usesLargeTextLayout)
     {
       v7 = 0;
     }
@@ -445,8 +445,8 @@
       v7 = 4;
     }
 
-    v8 = [MEMORY[0x277D74248] defaultParagraphStyle];
-    v9 = [v8 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+    v9 = [defaultParagraphStyle mutableCopy];
 
     v10 = [(NSArray *)self->_iconButtons count];
     [(PLPlatterHeaderContentView *)self _iconDimension];
@@ -473,13 +473,13 @@
     [v9 setLineBreakMode:v7];
     *&v17 = v6;
     [v9 setHyphenationFactor:v17];
-    [v4 addAttribute:*MEMORY[0x277D74118] value:v9 range:{0, objc_msgSend(v4, "length")}];
+    [stringCopy addAttribute:*MEMORY[0x277D74118] value:v9 range:{0, objc_msgSend(stringCopy, "length")}];
     v18 = *MEMORY[0x277D740A8];
-    v19 = [(PLPlatterHeaderContentView *)self _titleLabelPreferredFont];
-    [v4 addAttribute:v18 value:v19 range:{0, objc_msgSend(v4, "length")}];
+    _titleLabelPreferredFont = [(PLPlatterHeaderContentView *)self _titleLabelPreferredFont];
+    [stringCopy addAttribute:v18 value:_titleLabelPreferredFont range:{0, objc_msgSend(stringCopy, "length")}];
   }
 
-  return v4;
+  return stringCopy;
 }
 
 - (void)_updateTextAttributesForDateLabel
@@ -489,8 +489,8 @@
   {
     [(BSUIDateLabel *)dateLabel setAdjustsFontSizeToFitWidth:[(PLPlatterHeaderContentView *)self _usesLargeTextLayout]];
     v4 = self->_dateLabel;
-    v5 = [(PLPlatterHeaderContentView *)self _dateLabelPreferredFont];
-    [(BSUIDateLabel *)v4 setFont:v5];
+    _dateLabelPreferredFont = [(PLPlatterHeaderContentView *)self _dateLabelPreferredFont];
+    [(BSUIDateLabel *)v4 setFont:_dateLabelPreferredFont];
 
     [(BSUIDateLabel *)self->_dateLabel setNumberOfLines:1];
     v6 = self->_dateLabel;
@@ -501,27 +501,27 @@
 
 - (UIFont)_dateLabelFont
 {
-  v3 = [(BSUIDateLabel *)self->_dateLabel font];
-  v4 = v3;
-  if (v3)
+  font = [(BSUIDateLabel *)self->_dateLabel font];
+  v4 = font;
+  if (font)
   {
-    v5 = v3;
+    _dateLabelPreferredFont = font;
   }
 
   else
   {
-    v5 = [(PLPlatterHeaderContentView *)self _dateLabelPreferredFont];
+    _dateLabelPreferredFont = [(PLPlatterHeaderContentView *)self _dateLabelPreferredFont];
   }
 
-  v6 = v5;
+  v6 = _dateLabelPreferredFont;
 
   return v6;
 }
 
 - (id)_dateLabelPreferredFont
 {
-  v2 = [(PLPlatterHeaderContentView *)self _fontProvider];
-  v3 = [v2 preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:1];
+  _fontProvider = [(PLPlatterHeaderContentView *)self _fontProvider];
+  v3 = [_fontProvider preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:1];
 
   return v3;
 }
@@ -569,12 +569,12 @@ void __48__PLPlatterHeaderContentView__tearDownDateLabel__block_invoke(uint64_t 
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [dateCopy copy];
     date = self->_date;
     self->_date = v4;
 
@@ -583,34 +583,34 @@ void __48__PLPlatterHeaderContentView__tearDownDateLabel__block_invoke(uint64_t 
   }
 }
 
-- (void)setDateAllDay:(BOOL)a3
+- (void)setDateAllDay:(BOOL)day
 {
-  if (self->_dateAllDay != a3)
+  if (self->_dateAllDay != day)
   {
-    self->_dateAllDay = a3;
+    self->_dateAllDay = day;
     [(PLPlatterHeaderContentView *)self _tearDownDateLabel];
 
     [(PLPlatterHeaderContentView *)self setNeedsLayout];
   }
 }
 
-- (void)setDateFormatStyle:(int64_t)a3
+- (void)setDateFormatStyle:(int64_t)style
 {
-  if (self->_dateFormatStyle != a3)
+  if (self->_dateFormatStyle != style)
   {
-    self->_dateFormatStyle = a3;
+    self->_dateFormatStyle = style;
     [(PLPlatterHeaderContentView *)self _tearDownDateLabel];
 
     [(PLPlatterHeaderContentView *)self setNeedsLayout];
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
+  zoneCopy = zone;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [zoneCopy copy];
     timeZone = self->_timeZone;
     self->_timeZone = v4;
 
@@ -627,21 +627,21 @@ void __48__PLPlatterHeaderContentView__tearDownDateLabel__block_invoke(uint64_t 
   return utilityButton;
 }
 
-- (void)setUtilityView:(id)a3
+- (void)setUtilityView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   utilityView = self->_utilityView;
-  if (utilityView != v5)
+  if (utilityView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)utilityView removeFromSuperview];
-    objc_storeStrong(&self->_utilityView, a3);
+    objc_storeStrong(&self->_utilityView, view);
     [(PLPlatterHeaderContentView *)self addSubview:self->_utilityView];
     utilityView = [(PLPlatterHeaderContentView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](utilityView, v5);
+  MEMORY[0x2821F96F8](utilityView, viewCopy);
 }
 
 - (double)contentBaseline
@@ -656,8 +656,8 @@ void __48__PLPlatterHeaderContentView__tearDownDateLabel__block_invoke(uint64_t 
     [MEMORY[0x277D75D18] performWithoutAnimation:v7];
   }
 
-  v3 = [(PLPlatterHeaderContentView *)self _layoutManager];
-  [v3 contentBaseline];
+  _layoutManager = [(PLPlatterHeaderContentView *)self _layoutManager];
+  [_layoutManager contentBaseline];
   v5 = v4;
 
   return v5;
@@ -668,10 +668,10 @@ void __48__PLPlatterHeaderContentView__tearDownDateLabel__block_invoke(uint64_t 
   utilityButton = self->_utilityButton;
   if (utilityButton)
   {
-    v6 = [(UIButton *)utilityButton titleLabel];
-    v4 = [(PLPlatterHeaderContentView *)self _fontProvider];
-    v5 = [v4 preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:1];
-    [v6 setFont:v5];
+    titleLabel = [(UIButton *)utilityButton titleLabel];
+    _fontProvider = [(PLPlatterHeaderContentView *)self _fontProvider];
+    v5 = [_fontProvider preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:1];
+    [titleLabel setFont:v5];
   }
 }
 
@@ -689,14 +689,14 @@ void __48__PLPlatterHeaderContentView__tearDownDateLabel__block_invoke(uint64_t 
   v8.super_class = PLPlatterHeaderContentView;
   [(PLPlatterHeaderContentView *)&v8 layoutSubviews];
   [(PLPlatterHeaderContentView *)self _configureDateLabelIfNecessary];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v5 = v4;
 
   [(PLPlatterHeaderContentView *)self _layoutIconButtonsWithScale:v5];
-  v6 = [(PLPlatterHeaderContentView *)self _utilityButton];
+  _utilityButton = [(PLPlatterHeaderContentView *)self _utilityButton];
 
-  if (v6)
+  if (_utilityButton)
   {
     [(PLPlatterHeaderContentView *)self _layoutUtilityButtonWithScale:v5];
   }
@@ -724,9 +724,9 @@ uint64_t __44__PLPlatterHeaderContentView_layoutSubviews__block_invoke(uint64_t 
   return [v2 _layoutTitleLabelWithScale:v3];
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
-  if (a3 == 1)
+  if (category == 1)
   {
     return self->_visualStylingProvider;
   }
@@ -737,29 +737,29 @@ uint64_t __44__PLPlatterHeaderContentView_layoutSubviews__block_invoke(uint64_t 
   }
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v7 = a3;
-  if (a4 == 1 && self->_visualStylingProvider != v7)
+  providerCopy = provider;
+  if (category == 1 && self->_visualStylingProvider != providerCopy)
   {
-    v8 = v7;
-    [(MTVisualStylingProvider *)v7 stopAutomaticallyUpdatingView:self->_titleLabel];
+    v8 = providerCopy;
+    [(MTVisualStylingProvider *)providerCopy stopAutomaticallyUpdatingView:self->_titleLabel];
     [(MTVisualStylingProvider *)v8 stopAutomaticallyUpdatingView:self->_dateLabel];
     [(MTVisualStylingProvider *)v8 stopAutomaticallyUpdatingView:self->_utilityButton];
-    objc_storeStrong(&self->_visualStylingProvider, a3);
+    objc_storeStrong(&self->_visualStylingProvider, provider);
     [(PLPlatterHeaderContentView *)self _updateStylingForTitleLabel:self->_titleLabel];
     [(PLPlatterHeaderContentView *)self _tearDownDateLabel];
     [(PLPlatterHeaderContentView *)self _updateUtilityButtonVisualStyling];
     [(PLPlatterHeaderContentView *)self setNeedsLayout];
-    v7 = v8;
+    providerCopy = v8;
   }
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     [(PLPlatterHeaderContentView *)self adjustForContentSizeCategoryChange];
   }
 }
@@ -778,24 +778,24 @@ uint64_t __44__PLPlatterHeaderContentView_layoutSubviews__block_invoke(uint64_t 
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-  v5 = [(PLPlatterHeaderContentView *)self preferredContentSizeCategory];
-  v6 = [v4 isEqualToString:v5];
+  preferredContentSizeCategory2 = [(PLPlatterHeaderContentView *)self preferredContentSizeCategory];
+  v6 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v6 & 1) == 0)
   {
     fontProvider = self->_fontProvider;
     self->_fontProvider = 0;
 
-    [(PLPlatterHeaderContentView *)self setPreferredContentSizeCategory:v4];
-    [(PLPlatterHeaderContentView *)self _setUsesLargeTextLayout:UIContentSizeCategoryIsAccessibilityCategory(v4)];
-    v8 = [(PLPlatterHeaderContentView *)self _layoutManager];
-    [v8 invalidateCachedSizeInfo];
+    [(PLPlatterHeaderContentView *)self setPreferredContentSizeCategory:preferredContentSizeCategory];
+    [(PLPlatterHeaderContentView *)self _setUsesLargeTextLayout:UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory)];
+    _layoutManager = [(PLPlatterHeaderContentView *)self _layoutManager];
+    [_layoutManager invalidateCachedSizeInfo];
 
-    v9 = [(PLPlatterHeaderContentView *)self _titleLabel];
-    [(PLPlatterHeaderContentView *)self _updateTextAttributesForTitleLabel:v9];
+    _titleLabel = [(PLPlatterHeaderContentView *)self _titleLabel];
+    [(PLPlatterHeaderContentView *)self _updateTextAttributesForTitleLabel:_titleLabel];
 
     [(PLPlatterHeaderContentView *)self _updateTextAttributesForDateLabel];
     [(PLPlatterHeaderContentView *)self _updateUtilityButtonFont];
@@ -805,7 +805,7 @@ uint64_t __44__PLPlatterHeaderContentView_layoutSubviews__block_invoke(uint64_t 
   return v6 ^ 1;
 }
 
-- (void)dateLabelDidChange:(id)a3
+- (void)dateLabelDidChange:(id)change
 {
   if (![(PLPlatterHeaderContentView *)self _usesLargeTextLayout])
   {
@@ -823,10 +823,10 @@ uint64_t __44__PLPlatterHeaderContentView_layoutSubviews__block_invoke(uint64_t 
   }
 }
 
-- (double)_headerHeightForWidth:(double)a3
+- (double)_headerHeightForWidth:(double)width
 {
-  v4 = [(PLPlatterHeaderContentView *)self _layoutManager];
-  [v4 headerHeightForWidth:a3];
+  _layoutManager = [(PLPlatterHeaderContentView *)self _layoutManager];
+  [_layoutManager headerHeightForWidth:width];
   v6 = v5;
 
   return v6;
@@ -840,48 +840,48 @@ uint64_t __44__PLPlatterHeaderContentView_layoutSubviews__block_invoke(uint64_t 
   return v2;
 }
 
-- (void)_configureIconButton:(id)a3 withIcon:(id)a4
+- (void)_configureIconButton:(id)button withIcon:(id)icon
 {
-  v8 = a3;
-  v5 = a4;
-  [v8 setImage:v5 forState:0];
-  v6 = [v5 isSymbolImage];
+  buttonCopy = button;
+  iconCopy = icon;
+  [buttonCopy setImage:iconCopy forState:0];
+  isSymbolImage = [iconCopy isSymbolImage];
 
-  if (v6)
+  if (isSymbolImage)
   {
-    v7 = [MEMORY[0x277D75348] labelColor];
-    [v8 setTintColor:v7];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [buttonCopy setTintColor:labelColor];
   }
 
   else
   {
-    [v8 setTintColor:0];
+    [buttonCopy setTintColor:0];
   }
 }
 
-- (void)_updateStylingForTitleLabel:(id)a3
+- (void)_updateStylingForTitleLabel:(id)label
 {
   visualStylingProvider = self->_visualStylingProvider;
   if (visualStylingProvider)
   {
-    v6 = a3;
+    labelCopy = label;
     [MTVisualStylingProvider automaticallyUpdateView:"automaticallyUpdateView:withStyle:" withStyle:?];
   }
 
   else
   {
     v4 = MEMORY[0x277D75348];
-    v5 = a3;
-    v6 = [v4 blackColor];
-    [v5 setTextColor:?];
+    labelCopy2 = label;
+    labelCopy = [v4 blackColor];
+    [labelCopy2 setTextColor:?];
   }
 }
 
-- (void)_configureTitleLabel:(id)a3
+- (void)_configureTitleLabel:(id)label
 {
-  v4 = a3;
-  [(PLPlatterHeaderContentView *)self _updateTextAttributesForTitleLabel:v4];
-  [(PLPlatterHeaderContentView *)self _updateStylingForTitleLabel:v4];
+  labelCopy = label;
+  [(PLPlatterHeaderContentView *)self _updateTextAttributesForTitleLabel:labelCopy];
+  [(PLPlatterHeaderContentView *)self _updateStylingForTitleLabel:labelCopy];
 }
 
 - (void)_configureDateLabel
@@ -904,8 +904,8 @@ uint64_t __44__PLPlatterHeaderContentView_layoutSubviews__block_invoke(uint64_t 
 
   else
   {
-    v8 = [MEMORY[0x277D75348] blackColor];
-    [(BSUIDateLabel *)v7 setTextColor:v8];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(BSUIDateLabel *)v7 setTextColor:blackColor];
   }
 }
 
@@ -915,13 +915,13 @@ uint64_t __44__PLPlatterHeaderContentView_layoutSubviews__block_invoke(uint64_t 
   {
     objc_initWeak(&location, self->_utilityButton);
     visualStylingProvider = self->_visualStylingProvider;
-    v4 = [(UIButton *)self->_utilityButton titleLabel];
+    titleLabel = [(UIButton *)self->_utilityButton titleLabel];
     v7 = MEMORY[0x277D85DD0];
     v8 = 3221225472;
     v9 = __73__PLPlatterHeaderContentView_Subclass___updateUtilityButtonVisualStyling__block_invoke;
     v10 = &unk_278425490;
     objc_copyWeak(&v11, &location);
-    [(MTVisualStylingProvider *)visualStylingProvider automaticallyUpdateView:v4 withStyle:1 andObserverBlock:&v7];
+    [(MTVisualStylingProvider *)visualStylingProvider automaticallyUpdateView:titleLabel withStyle:1 andObserverBlock:&v7];
 
     v5 = self->_visualStylingProvider;
     v6 = [(UIButton *)self->_utilityButton imageView:v7];
@@ -970,18 +970,18 @@ void __73__PLPlatterHeaderContentView_Subclass___updateUtilityButtonVisualStylin
   [(PLPlatterHeaderContentView *)self _updateUtilityButtonVisualStyling];
 }
 
-- (void)_layoutIconButtonsWithScale:(double)a3
+- (void)_layoutIconButtonsWithScale:(double)scale
 {
-  v4 = [(PLPlatterHeaderContentView *)self _layoutManager];
-  [v4 layoutIconButtonsWithScale:a3];
+  _layoutManager = [(PLPlatterHeaderContentView *)self _layoutManager];
+  [_layoutManager layoutIconButtonsWithScale:scale];
 }
 
-- (void)_layoutTitleLabelWithScale:(double)a3
+- (void)_layoutTitleLabelWithScale:(double)scale
 {
-  v5 = [(PLPlatterHeaderContentView *)self _titleLabel];
-  if (v5)
+  _titleLabel = [(PLPlatterHeaderContentView *)self _titleLabel];
+  if (_titleLabel)
   {
-    v22 = v5;
+    v22 = _titleLabel;
     dateLabel = self->_dateLabel;
     if (!dateLabel)
     {
@@ -1029,29 +1029,29 @@ LABEL_15:
     MaxX = CGRectGetMinX(*&v15);
 LABEL_16:
     v20 = MaxX;
-    v21 = [(PLPlatterHeaderContentView *)self _layoutManager];
-    [v21 layoutTitleLabelWithTrailingXLimit:v20 scale:a3];
+    _layoutManager = [(PLPlatterHeaderContentView *)self _layoutManager];
+    [_layoutManager layoutTitleLabelWithTrailingXLimit:v20 scale:scale];
 
-    v5 = v22;
+    _titleLabel = v22;
   }
 }
 
-- (void)_layoutUtilityButtonWithScale:(double)a3
+- (void)_layoutUtilityButtonWithScale:(double)scale
 {
-  v4 = [(PLPlatterHeaderContentView *)self _layoutManager];
-  [v4 layoutUtilityButtonWithScale:a3];
+  _layoutManager = [(PLPlatterHeaderContentView *)self _layoutManager];
+  [_layoutManager layoutUtilityButtonWithScale:scale];
 }
 
-- (void)_layoutDateLabelWithScale:(double)a3
+- (void)_layoutDateLabelWithScale:(double)scale
 {
   if (self->_dateLabel)
   {
-    v4 = [(PLPlatterHeaderContentView *)self _layoutManager];
-    [v4 layoutDateLabelWithScale:a3];
+    _layoutManager = [(PLPlatterHeaderContentView *)self _layoutManager];
+    [_layoutManager layoutDateLabelWithScale:scale];
   }
 }
 
-- (void)_darkerSystemColorsStatusDidChange:(id)a3
+- (void)_darkerSystemColorsStatusDidChange:(id)change
 {
   if (self->_titleLabel)
   {
@@ -1059,7 +1059,7 @@ LABEL_16:
   }
 }
 
-- (void)_reduceTransparencyStatusDidChange:(id)a3
+- (void)_reduceTransparencyStatusDidChange:(id)change
 {
   if (self->_titleLabel)
   {

@@ -2,17 +2,17 @@
 - (BOOL)isConnected;
 - (IMDaemonConnection)init;
 - (id)onSetupComplete;
-- (void)connectWithCapabilities:(unint64_t)a3 context:(id)a4 contextChanged:(BOOL)a5;
-- (void)requestSetupIfNeededWithCompletionHandler:(id)a3;
-- (void)setOnSetupComplete:(id)a3;
+- (void)connectWithCapabilities:(unint64_t)capabilities context:(id)context contextChanged:(BOOL)changed;
+- (void)requestSetupIfNeededWithCompletionHandler:(id)handler;
+- (void)setOnSetupComplete:(id)complete;
 - (void)waitForSetup;
 @end
 
 @implementation IMDaemonConnection
 
-- (void)setOnSetupComplete:(id)a3
+- (void)setOnSetupComplete:(id)complete
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(complete);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -26,7 +26,7 @@
 
   v6 = *(&self->super.isa + OBJC_IVAR___IMDaemonConnection_queue);
   MEMORY[0x1EEE9AC00]();
-  v7 = self;
+  selfCopy = self;
   sub_1A84E5A5C();
   sub_1A8245638(v5);
 }
@@ -34,7 +34,7 @@
 - (BOOL)isConnected
 {
   v2 = *(&self->super.isa + OBJC_IVAR___IMDaemonConnection_queue);
-  v3 = self;
+  selfCopy = self;
   sub_1A84E5A5C();
 
   return v5;
@@ -42,30 +42,30 @@
 
 - (void)waitForSetup
 {
-  v2 = self;
+  selfCopy = self;
   DaemonConnection.waitForSetup()();
 }
 
-- (void)connectWithCapabilities:(unint64_t)a3 context:(id)a4 contextChanged:(BOOL)a5
+- (void)connectWithCapabilities:(unint64_t)capabilities context:(id)context contextChanged:(BOOL)changed
 {
   v8 = sub_1A84E5D3C();
   v9 = *(&self->super.isa + OBJC_IVAR___IMDaemonConnection_queue);
   v10 = swift_allocObject();
-  *(v10 + 16) = a3;
+  *(v10 + 16) = capabilities;
   *(v10 + 24) = v8;
-  *(v10 + 32) = a5;
+  *(v10 + 32) = changed;
   *(v10 + 40) = self;
-  v11 = self;
+  selfCopy = self;
   sub_1A84E5A6C();
 }
 
-- (void)requestSetupIfNeededWithCompletionHandler:(id)a3
+- (void)requestSetupIfNeededWithCompletionHandler:(id)handler
 {
   v5 = sub_1A83EA2FC(&qword_1EB2E6600, &qword_1A8507BA0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -81,7 +81,7 @@
   v13[3] = 0;
   v13[4] = &unk_1A85008C0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1A84CF9DC(0, 0, v8, &unk_1A8507BC0, v13);
 }
 
@@ -95,7 +95,7 @@
 - (id)onSetupComplete
 {
   v2 = *(&self->super.isa + OBJC_IVAR___IMDaemonConnection_queue);
-  v3 = self;
+  selfCopy = self;
   sub_1A83EA2FC(&qword_1EB2E65B0, &qword_1A8500740);
   sub_1A84E5A5C();
 

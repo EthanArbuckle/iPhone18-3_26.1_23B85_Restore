@@ -1,7 +1,7 @@
 @interface SBIdleTimerService
-+ (id)_sharedIdleTimerStateServiceCreatingIfNeeded:(BOOL)a3;
++ (id)_sharedIdleTimerStateServiceCreatingIfNeeded:(BOOL)needed;
 + (id)sharedInstance;
-- (BOOL)_isMediaPlaybackClient:(id)a3;
+- (BOOL)_isMediaPlaybackClient:(id)client;
 - (BOOL)handleIdleTimerDidExpire;
 - (BOOL)handleIdleTimerDidWarn;
 - (BOOL)handleIdleTimerUserAttentionDidReset;
@@ -12,28 +12,28 @@
 - (id)_init;
 - (id)_mediaPlaybackDisableReasons;
 - (id)_stateCaptureDescription;
-- (id)acquireIdleTimerAssertionOnBehalfOfSceneWithPID:(int)a3 fromProcess:(id)a4 withConfiguration:(id)a5 forReason:(id)a6;
-- (void)_addClientRequestConfiguration:(id)a3 forReason:(id)a4;
-- (void)_addConfiguration:(id)a3 toSortedArray:(id)a4;
-- (void)_addMediaPlaybackDisableReason:(id)a3;
+- (id)acquireIdleTimerAssertionOnBehalfOfSceneWithPID:(int)d fromProcess:(id)process withConfiguration:(id)configuration forReason:(id)reason;
+- (void)_addClientRequestConfiguration:(id)configuration forReason:(id)reason;
+- (void)_addConfiguration:(id)configuration toSortedArray:(id)array;
+- (void)_addMediaPlaybackDisableReason:(id)reason;
 - (void)_addStateCaptureHandlers;
-- (void)_removeClientRequestConfigurationForReason:(id)a3;
-- (void)_removeConfiguration:(id)a3 fromArray:(id)a4;
-- (void)_removeMediaPlaybackDisableReason:(id)a3;
+- (void)_removeClientRequestConfigurationForReason:(id)reason;
+- (void)_removeConfiguration:(id)configuration fromArray:(id)array;
+- (void)_removeMediaPlaybackDisableReason:(id)reason;
 - (void)dealloc;
 @end
 
 @implementation SBIdleTimerService
 
-+ (id)_sharedIdleTimerStateServiceCreatingIfNeeded:(BOOL)a3
++ (id)_sharedIdleTimerStateServiceCreatingIfNeeded:(BOOL)needed
 {
-  if (a3)
+  if (needed)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __67__SBIdleTimerService__sharedIdleTimerStateServiceCreatingIfNeeded___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (_sharedIdleTimerStateServiceCreatingIfNeeded__onceToken != -1)
     {
       dispatch_once(&_sharedIdleTimerStateServiceCreatingIfNeeded__onceToken, block);
@@ -138,10 +138,10 @@ void __36__SBIdleTimerService_sharedInstance__block_invoke()
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v4 = [(SBIdleTimerService *)self _clientRequestConfigurations];
-  v5 = [v4 allValues];
+  _clientRequestConfigurations = [(SBIdleTimerService *)self _clientRequestConfigurations];
+  allValues = [_clientRequestConfigurations allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v6)
   {
     v7 = *v39;
@@ -151,14 +151,14 @@ void __36__SBIdleTimerService_sharedInstance__block_invoke()
       {
         if (*v39 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v38 + 1) + 8 * i);
-        v10 = [v9 configuration];
-        v11 = [v10 disablesTimer];
+        configuration = [v9 configuration];
+        disablesTimer = [configuration disablesTimer];
 
-        if (v11)
+        if (disablesTimer)
         {
           v34 = 0;
           v35 = &v34;
@@ -178,9 +178,9 @@ void __36__SBIdleTimerService_sharedInstance__block_invoke()
 
           if (*(v35 + 24) == 1)
           {
-            v13 = [v9 configuration];
+            configuration2 = [v9 configuration];
             v14 = objc_opt_class();
-            v15 = v13;
+            v15 = configuration2;
             if (v14)
             {
               if (objc_opt_isKindOfClass())
@@ -203,22 +203,22 @@ void __36__SBIdleTimerService_sharedInstance__block_invoke()
 
             if (v24)
             {
-              v25 = [v24 precedence];
+              precedence = [v24 precedence];
             }
 
             else
             {
-              v25 = 0;
+              precedence = 0;
             }
 
-            v26 = [(SBIdleTimerAggregatedClientConfiguration *)v3 disableTimerSetting];
-            v27 = v26;
-            if (!v26 || v25 > [v26 precedence])
+            disableTimerSetting = [(SBIdleTimerAggregatedClientConfiguration *)v3 disableTimerSetting];
+            v27 = disableTimerSetting;
+            if (!disableTimerSetting || precedence > [disableTimerSetting precedence])
             {
-              [(SBIdleTimerAggregatedClientConfiguration *)v3 setDisablesTimerWithPrecedence:v25];
+              [(SBIdleTimerAggregatedClientConfiguration *)v3 setDisablesTimerWithPrecedence:precedence];
             }
 
-            if (v25 == 2)
+            if (precedence == 2)
             {
               _Block_object_dispose(&v34, 8);
               goto LABEL_37;
@@ -230,9 +230,9 @@ void __36__SBIdleTimerService_sharedInstance__block_invoke()
 
         else
         {
-          v17 = [v9 configuration];
+          configuration3 = [v9 configuration];
           v18 = objc_opt_class();
-          v19 = v17;
+          v19 = configuration3;
           if (v18)
           {
             if (objc_opt_isKindOfClass())
@@ -255,21 +255,21 @@ void __36__SBIdleTimerService_sharedInstance__block_invoke()
 
           if ([v21 hasMinExpirationTimeout])
           {
-            v22 = [v21 precedence];
+            precedence2 = [v21 precedence];
             [v21 minExpirationTimeout];
-            [(SBIdleTimerAggregatedClientConfiguration *)v3 setMinExpirationTimeout:v22 ifGreatestForPrecedence:?];
+            [(SBIdleTimerAggregatedClientConfiguration *)v3 setMinExpirationTimeout:precedence2 ifGreatestForPrecedence:?];
           }
 
           if ([v21 hasMaxExpirationTimeout])
           {
-            v23 = [v21 precedence];
+            precedence3 = [v21 precedence];
             [v21 maxExpirationTimeout];
-            [(SBIdleTimerAggregatedClientConfiguration *)v3 setMaxExpirationTimeout:v23 ifLeastForPrecedence:?];
+            [(SBIdleTimerAggregatedClientConfiguration *)v3 setMaxExpirationTimeout:precedence3 ifLeastForPrecedence:?];
           }
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v38 objects:v42 count:16];
       if (v6)
       {
         continue;
@@ -281,8 +281,8 @@ void __36__SBIdleTimerService_sharedInstance__block_invoke()
 
 LABEL_37:
 
-  v28 = [(SBIdleTimerAggregatedClientConfiguration *)v3 disableTimerSetting];
-  if (v28 || ([(SBIdleTimerAggregatedClientConfiguration *)v3 minExpirationTimeoutSettings], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
+  disableTimerSetting2 = [(SBIdleTimerAggregatedClientConfiguration *)v3 disableTimerSetting];
+  if (disableTimerSetting2 || ([(SBIdleTimerAggregatedClientConfiguration *)v3 minExpirationTimeoutSettings], (disableTimerSetting2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_40:
@@ -290,8 +290,8 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v31 = [(SBIdleTimerAggregatedClientConfiguration *)v3 maxExpirationTimeoutSettings];
-  v32 = v31 == 0;
+  maxExpirationTimeoutSettings = [(SBIdleTimerAggregatedClientConfiguration *)v3 maxExpirationTimeoutSettings];
+  v32 = maxExpirationTimeoutSettings == 0;
 
   if (!v32)
   {
@@ -368,45 +368,45 @@ LABEL_14:
 
 - (BOOL)isDisabledByMediaPlayback
 {
-  v2 = [(SBIdleTimerService *)self _mediaPlaybackDisableReasons];
-  v3 = [v2 count] != 0;
+  _mediaPlaybackDisableReasons = [(SBIdleTimerService *)self _mediaPlaybackDisableReasons];
+  v3 = [_mediaPlaybackDisableReasons count] != 0;
 
   return v3;
 }
 
-- (id)acquireIdleTimerAssertionOnBehalfOfSceneWithPID:(int)a3 fromProcess:(id)a4 withConfiguration:(id)a5 forReason:(id)a6
+- (id)acquireIdleTimerAssertionOnBehalfOfSceneWithPID:(int)d fromProcess:(id)process withConfiguration:(id)configuration forReason:(id)reason
 {
-  v8 = *&a3;
+  v8 = *&d;
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  processCopy = process;
+  configurationCopy = configuration;
+  reasonCopy = reason;
   BSDispatchQueueAssert();
   v13 = SBLogIdleTimer();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [v10 bundleIdentifier];
+    bundleIdentifier = [processCopy bundleIdentifier];
     *buf = 138544386;
     v35 = v15;
     v36 = 1024;
     *v37 = v8;
     *&v37[4] = 2114;
-    *&v37[6] = v16;
+    *&v37[6] = bundleIdentifier;
     *&v37[14] = 2114;
-    *&v37[16] = v11;
+    *&v37[16] = configurationCopy;
     v38 = 2114;
-    v39 = v12;
+    v39 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@ - acquireIdleTimerAssertionOnBehalfOfSceneWithPID:%i fromProcess:%{public}@ withConfiguration:%{public}@ forReason:%{public}@]", buf, 0x30u);
   }
 
-  if ([v11 disablesTimer] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if ([configurationCopy disablesTimer] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     objc_initWeak(buf, self);
     v17 = MEMORY[0x277CCACA8];
-    v18 = [v10 bundleIdentifier];
-    v19 = [v17 stringWithFormat:@"%@-%i", v18, v8];
+    bundleIdentifier2 = [processCopy bundleIdentifier];
+    v19 = [v17 stringWithFormat:@"%@-%i", bundleIdentifier2, v8];
 
     v20 = objc_alloc(MEMORY[0x277CF0CE8]);
     v21 = __serviceCalloutQueue;
@@ -415,10 +415,10 @@ LABEL_14:
     v31[2] = __110__SBIdleTimerService_acquireIdleTimerAssertionOnBehalfOfSceneWithPID_fromProcess_withConfiguration_forReason___block_invoke;
     v31[3] = &unk_2783AEA48;
     objc_copyWeak(&v33, buf);
-    v22 = v12;
+    v22 = reasonCopy;
     v32 = v22;
     v23 = [v20 initWithIdentifier:v19 forReason:v22 queue:v21 invalidationBlock:v31];
-    v24 = [[SBIdleTimerServiceClientRequestConfiguration alloc] initWithScenePID:v8 process:v10 configuration:v11];
+    v24 = [[SBIdleTimerServiceClientRequestConfiguration alloc] initWithScenePID:v8 process:processCopy configuration:configurationCopy];
     [(SBIdleTimerService *)self _addClientRequestConfiguration:v24 forReason:v22];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained idleTimerServiceTimeoutAssertionsDidChange:self fromClient:v19];
@@ -434,13 +434,13 @@ LABEL_14:
     {
       v28 = objc_opt_class();
       v29 = NSStringFromClass(v28);
-      v30 = [v10 bundleIdentifier];
+      bundleIdentifier3 = [processCopy bundleIdentifier];
       *buf = 138544130;
       v35 = v29;
       v36 = 2114;
-      *v37 = v11;
+      *v37 = configurationCopy;
       *&v37[8] = 2114;
-      *&v37[10] = v30;
+      *&v37[10] = bundleIdentifier3;
       *&v37[18] = 1024;
       *&v37[20] = v8;
       _os_log_error_impl(&dword_21ED4E000, v26, OS_LOG_TYPE_ERROR, "[%{public}@ - requested configuration: %{public}@ from process: %{public}@ for pid: %i is not supported.]", buf, 0x26u);
@@ -490,8 +490,8 @@ void __110__SBIdleTimerService_acquireIdleTimerAssertionOnBehalfOfSceneWithPID_f
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableArray *)self->_access_idleWarnHandlers reverseObjectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v19 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_access_idleWarnHandlers reverseObjectEnumerator];
+  v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v19 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -501,7 +501,7 @@ LABEL_3:
     {
       if (*v12 != v5)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v7 = *(*(&v11 + 1) + 8 * v6);
@@ -520,7 +520,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [v3 countByEnumeratingWithState:&v11 objects:v19 count:16];
+        v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v19 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -556,8 +556,8 @@ void __44__SBIdleTimerService_handleIdleTimerDidWarn__block_invoke(uint64_t a1)
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableArray *)self->_access_idleExpirationHandlers reverseObjectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v19 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_access_idleExpirationHandlers reverseObjectEnumerator];
+  v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v19 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -567,7 +567,7 @@ LABEL_3:
     {
       if (*v12 != v5)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v7 = *(*(&v11 + 1) + 8 * v6);
@@ -586,7 +586,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [v3 countByEnumeratingWithState:&v11 objects:v19 count:16];
+        v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v19 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -622,8 +622,8 @@ void __46__SBIdleTimerService_handleIdleTimerDidExpire__block_invoke(uint64_t a1
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableArray *)self->_access_idleUserAttentionResetHandlers reverseObjectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v19 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_access_idleUserAttentionResetHandlers reverseObjectEnumerator];
+  v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v19 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -633,7 +633,7 @@ LABEL_3:
     {
       if (*v12 != v5)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v7 = *(*(&v11 + 1) + 8 * v6);
@@ -652,7 +652,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [v3 countByEnumeratingWithState:&v11 objects:v19 count:16];
+        v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v19 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -675,13 +675,13 @@ void __58__SBIdleTimerService_handleIdleTimerUserAttentionDidReset__block_invoke
   *(*(*(a1 + 48) + 8) + 24) = [v2 clientConfiguration:*(a1 + 40) handleIdleEvent:4];
 }
 
-- (void)_addClientRequestConfiguration:(id)a3 forReason:(id)a4
+- (void)_addClientRequestConfiguration:(id)configuration forReason:(id)reason
 {
-  v16 = a3;
-  v6 = a4;
-  if (v16)
+  configurationCopy = configuration;
+  reasonCopy = reason;
+  if (configurationCopy)
   {
-    if (v6)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
@@ -690,7 +690,7 @@ void __58__SBIdleTimerService_handleIdleTimerUserAttentionDidReset__block_invoke
   else
   {
     [SBIdleTimerService _addClientRequestConfiguration:forReason:];
-    if (v6)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
@@ -699,26 +699,26 @@ void __58__SBIdleTimerService_handleIdleTimerUserAttentionDidReset__block_invoke
   [SBIdleTimerService _addClientRequestConfiguration:forReason:];
 LABEL_3:
   BSDispatchQueueAssert();
-  v7 = [v16 configuration];
-  v8 = [v7 disablesTimer];
+  configuration = [configurationCopy configuration];
+  disablesTimer = [configuration disablesTimer];
 
-  if (v8)
+  if (disablesTimer)
   {
-    v9 = [v16 process];
-    v10 = [(SBIdleTimerService *)self _isMediaPlaybackClient:v9];
+    process = [configurationCopy process];
+    v10 = [(SBIdleTimerService *)self _isMediaPlaybackClient:process];
 
     if (!v10)
     {
       goto LABEL_13;
     }
 
-    [(SBIdleTimerService *)self _addMediaPlaybackDisableReason:v6];
-    v11 = +[SBScreenLongevityController sharedInstanceIfExists];
-    [v11 evaluateEnablement];
+    [(SBIdleTimerService *)self _addMediaPlaybackDisableReason:reasonCopy];
+    configuration3 = +[SBScreenLongevityController sharedInstanceIfExists];
+    [configuration3 evaluateEnablement];
     goto LABEL_12;
   }
 
-  v12 = [v16 configuration];
+  configuration2 = [configurationCopy configuration];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -727,23 +727,23 @@ LABEL_3:
     goto LABEL_13;
   }
 
-  v11 = [v16 configuration];
-  v14 = [v11 idleEventMask];
-  if (!v14)
+  configuration3 = [configurationCopy configuration];
+  idleEventMask = [configuration3 idleEventMask];
+  if (!idleEventMask)
   {
     goto LABEL_12;
   }
 
-  v15 = v14;
-  if ((v14 & 2) == 0)
+  v15 = idleEventMask;
+  if ((idleEventMask & 2) == 0)
   {
-    if ((v14 & 1) == 0)
+    if ((idleEventMask & 1) == 0)
     {
       goto LABEL_10;
     }
 
 LABEL_17:
-    [(SBIdleTimerService *)self _addConfiguration:v11 toSortedArray:self->_access_idleWarnHandlers];
+    [(SBIdleTimerService *)self _addConfiguration:configuration3 toSortedArray:self->_access_idleWarnHandlers];
     if ((v15 & 4) == 0)
     {
       goto LABEL_12;
@@ -752,7 +752,7 @@ LABEL_17:
     goto LABEL_11;
   }
 
-  [(SBIdleTimerService *)self _addConfiguration:v11 toSortedArray:self->_access_idleExpirationHandlers];
+  [(SBIdleTimerService *)self _addConfiguration:configuration3 toSortedArray:self->_access_idleExpirationHandlers];
   if (v15)
   {
     goto LABEL_17;
@@ -762,7 +762,7 @@ LABEL_10:
   if ((v15 & 4) != 0)
   {
 LABEL_11:
-    [(SBIdleTimerService *)self _addConfiguration:v11 toSortedArray:self->_access_idleUserAttentionResetHandlers];
+    [(SBIdleTimerService *)self _addConfiguration:configuration3 toSortedArray:self->_access_idleUserAttentionResetHandlers];
   }
 
 LABEL_12:
@@ -770,25 +770,25 @@ LABEL_12:
 LABEL_13:
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_lock_clientRequestConfigurations setObject:v16 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_lock_clientRequestConfigurations setObject:configurationCopy forKeyedSubscript:reasonCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_removeClientRequestConfigurationForReason:(id)a3
+- (void)_removeClientRequestConfigurationForReason:(id)reason
 {
-  v12 = a3;
-  if (!v12)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [SBIdleTimerService _removeClientRequestConfigurationForReason:];
   }
 
   BSDispatchQueueAssert();
-  v4 = [(SBIdleTimerService *)self _clientRequestConfigurations];
-  v5 = [v4 objectForKey:v12];
+  _clientRequestConfigurations = [(SBIdleTimerService *)self _clientRequestConfigurations];
+  v5 = [_clientRequestConfigurations objectForKey:reasonCopy];
 
-  v6 = [v5 configuration];
+  configuration = [v5 configuration];
   v7 = objc_opt_class();
-  v8 = v6;
+  v8 = configuration;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -813,20 +813,20 @@ LABEL_13:
   [(SBIdleTimerService *)self _removeConfiguration:v10 fromArray:self->_access_idleWarnHandlers];
   [(SBIdleTimerService *)self _removeConfiguration:v10 fromArray:self->_access_idleUserAttentionResetHandlers];
 
-  [(SBIdleTimerService *)self _removeMediaPlaybackDisableReason:v12];
+  [(SBIdleTimerService *)self _removeMediaPlaybackDisableReason:reasonCopy];
   v11 = +[SBScreenLongevityController sharedInstanceIfExists];
   [v11 evaluateEnablement];
 
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_lock_clientRequestConfigurations removeObjectForKey:v12];
+  [(NSMutableDictionary *)self->_lock_clientRequestConfigurations removeObjectForKey:reasonCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_addMediaPlaybackDisableReason:(id)a3
+- (void)_addMediaPlaybackDisableReason:(id)reason
 {
-  v4 = a3;
-  if (!v4)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [SBIdleTimerService _addMediaPlaybackDisableReason:];
   }
@@ -834,14 +834,14 @@ LABEL_13:
   BSDispatchQueueAssert();
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_lock_mediaPlaybackDisableReasons addObject:v4];
+  [(NSMutableSet *)self->_lock_mediaPlaybackDisableReasons addObject:reasonCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_removeMediaPlaybackDisableReason:(id)a3
+- (void)_removeMediaPlaybackDisableReason:(id)reason
 {
-  v4 = a3;
-  if (!v4)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [SBIdleTimerService _removeMediaPlaybackDisableReason:];
   }
@@ -849,19 +849,19 @@ LABEL_13:
   BSDispatchQueueAssert();
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_lock_mediaPlaybackDisableReasons removeObject:v4];
+  [(NSMutableSet *)self->_lock_mediaPlaybackDisableReasons removeObject:reasonCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_addConfiguration:(id)a3 toSortedArray:(id)a4
+- (void)_addConfiguration:(id)configuration toSortedArray:(id)array
 {
-  v6 = a4;
-  v7 = a3;
+  arrayCopy = array;
+  configurationCopy = configuration;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  [v6 addObject:v7];
+  [arrayCopy addObject:configurationCopy];
 
-  [v6 sortUsingComparator:&__block_literal_global_118_1];
+  [arrayCopy sortUsingComparator:&__block_literal_global_118_1];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
@@ -889,13 +889,13 @@ uint64_t __54__SBIdleTimerService__addConfiguration_toSortedArray___block_invoke
   }
 }
 
-- (void)_removeConfiguration:(id)a3 fromArray:(id)a4
+- (void)_removeConfiguration:(id)configuration fromArray:(id)array
 {
-  v6 = a4;
-  v7 = a3;
+  arrayCopy = array;
+  configurationCopy = configuration;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  [v6 removeObject:v7];
+  [arrayCopy removeObject:configurationCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
@@ -920,18 +920,18 @@ uint64_t __54__SBIdleTimerService__addConfiguration_toSortedArray___block_invoke
   return v3;
 }
 
-- (BOOL)_isMediaPlaybackClient:(id)a3
+- (BOOL)_isMediaPlaybackClient:(id)client
 {
-  v3 = [a3 bundleIdentifier];
-  v4 = [v3 isEqual:@"com.apple.mediaplaybackd"];
+  bundleIdentifier = [client bundleIdentifier];
+  v4 = [bundleIdentifier isEqual:@"com.apple.mediaplaybackd"];
 
   return v4;
 }
 
 - (void)_addStateCaptureHandlers
 {
-  v5 = self;
-  v2 = v5;
+  selfCopy = self;
+  v2 = selfCopy;
   v3 = BSLogAddStateCaptureBlockWithTitle();
   stateCaptureAssertion = v2->_stateCaptureAssertion;
   v2->_stateCaptureAssertion = v3;
@@ -961,12 +961,12 @@ __CFString *__46__SBIdleTimerService__addStateCaptureHandlers__block_invoke(uint
   v9 = __46__SBIdleTimerService__stateCaptureDescription__block_invoke;
   v10 = &unk_2783A92D8;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendBodySectionWithName:0 multilinePrefix:0 block:&v7];
-  v5 = [v4 build];
+  build = [v4 build];
 
-  return v5;
+  return build;
 }
 
 void __46__SBIdleTimerService__stateCaptureDescription__block_invoke(uint64_t a1)

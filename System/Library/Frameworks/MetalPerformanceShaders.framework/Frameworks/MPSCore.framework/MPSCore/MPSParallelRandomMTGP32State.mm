@@ -1,16 +1,16 @@
 @interface MPSParallelRandomMTGP32State
-- (MPSParallelRandomMTGP32State)initWithCoder:(id)a3;
-- (MPSParallelRandomMTGP32State)initWithSeed:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MPSParallelRandomMTGP32State)initWithCoder:(id)coder;
+- (MPSParallelRandomMTGP32State)initWithSeed:(unint64_t)seed;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSParallelRandomMTGP32State
 
-- (MPSParallelRandomMTGP32State)initWithSeed:(unint64_t)a3
+- (MPSParallelRandomMTGP32State)initWithSeed:(unint64_t)seed
 {
-  v3 = a3;
+  seedCopy = seed;
   v24.receiver = self;
   v24.super_class = MPSParallelRandomMTGP32State;
   v22 = [(MPSParallelRandomMTGP32State *)&v24 init];
@@ -49,9 +49,9 @@
       v23[v4] = v11;
       v18 = HIDWORD(*(isa + 2 * v4)) ^ (*(isa + v4) << 16);
       memset(state + 2, v18 + HIWORD(v18) + ((v18 + HIWORD(v18)) >> 8), 0x574uLL);
-      *state = v3;
+      *state = seedCopy;
       state[1] = v18;
-      v19 = v3;
+      v19 = seedCopy;
       for (i = 1; i != 351; ++i)
       {
         v19 = (i + 1812433253 * (v19 ^ (v19 >> 30))) ^ state[i];
@@ -68,7 +68,7 @@
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(MPSParallelRandomMTGP32State);
   if (result)
@@ -177,7 +177,7 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   state = self->_state;
   v6 = malloc_type_malloc(0x57C0uLL, 0x100004052888210uLL);
@@ -185,7 +185,7 @@
   {
     v7 = v6;
     MPSCopyToFromNetworkByteOrder32(v6, state, 5616);
-    objc_msgSend_encodeBytes_length_forKey_(a3, v8, v7, 22464, @"kMPSParallelRandomMTGP32StateStateArrayKey");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v8, v7, 22464, @"kMPSParallelRandomMTGP32StateStateArrayKey");
     free(v7);
   }
 
@@ -195,7 +195,7 @@
   {
     v11 = v10;
     MPSCopyToFromNetworkByteOrder32(v10, shift1, 64);
-    objc_msgSend_encodeBytes_length_forKey_(a3, v12, v11, 256, @"kMPSParallelRandomMTGP32StateParameterShift1ArrayKey");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v12, v11, 256, @"kMPSParallelRandomMTGP32StateParameterShift1ArrayKey");
     free(v11);
   }
 
@@ -205,7 +205,7 @@
   {
     v15 = v14;
     MPSCopyToFromNetworkByteOrder32(v14, shift2, 64);
-    objc_msgSend_encodeBytes_length_forKey_(a3, v16, v15, 256, @"kMPSParallelRandomMTGP32StateParameterShift2ArrayKey");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v16, v15, 256, @"kMPSParallelRandomMTGP32StateParameterShift2ArrayKey");
     free(v15);
   }
 
@@ -215,7 +215,7 @@
   {
     v19 = v18;
     MPSCopyToFromNetworkByteOrder32(v18, isa, 256);
-    objc_msgSend_encodeBytes_length_forKey_(a3, v20, v19, 1024, @"kMPSParallelRandomMTGP32StateParameterMRArrayKey");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v20, v19, 1024, @"kMPSParallelRandomMTGP32StateParameterMRArrayKey");
     free(v19);
   }
 
@@ -225,7 +225,7 @@
   {
     v23 = v22;
     MPSCopyToFromNetworkByteOrder32(v22, v21, 256);
-    objc_msgSend_encodeBytes_length_forKey_(a3, v24, v23, 1024, @"kMPSParallelRandomMTGP32StateParameterMTArrayKey");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v24, v23, 1024, @"kMPSParallelRandomMTGP32StateParameterMTArrayKey");
     free(v23);
   }
 
@@ -235,7 +235,7 @@
   {
     v27 = v26;
     MPSCopyToFromNetworkByteOrder32(v26, v25, 64);
-    objc_msgSend_encodeBytes_length_forKey_(a3, v28, v27, 256, @"kMPSParallelRandomMTGP32StateParameterMArrayKey");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v28, v27, 256, @"kMPSParallelRandomMTGP32StateParameterMArrayKey");
     free(v27);
   }
 
@@ -245,21 +245,21 @@
   {
     v31 = v30;
     MPSCopyToFromNetworkByteOrder32(v30, v29, 64);
-    objc_msgSend_encodeBytes_length_forKey_(a3, v32, v31, 256, @"kMPSParallelRandomMTGP32StateParameterStateIdxArrayKey");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v32, v31, 256, @"kMPSParallelRandomMTGP32StateParameterStateIdxArrayKey");
 
     free(v31);
   }
 }
 
-- (MPSParallelRandomMTGP32State)initWithCoder:(id)a3
+- (MPSParallelRandomMTGP32State)initWithCoder:(id)coder
 {
-  v6 = objc_msgSend_init(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_init(self, a2, coder, v3, v4);
   v9 = v6;
   if (v6)
   {
     v10 = *(v6 + 8);
     v37 = 0;
-    v11 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v7, @"kMPSParallelRandomMTGP32StateStateArrayKey", &v37, v8);
+    v11 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v7, @"kMPSParallelRandomMTGP32StateStateArrayKey", &v37, v8);
     if (v11 && v37 == 22464)
     {
       MPSCopyToFromNetworkByteOrder32(v10, v11, 5616);
@@ -267,7 +267,7 @@
 
     shift1 = v9->_stateParams.shift1;
     v37 = 0;
-    v15 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v12, @"kMPSParallelRandomMTGP32StateParameterShift1ArrayKey", &v37, v13);
+    v15 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v12, @"kMPSParallelRandomMTGP32StateParameterShift1ArrayKey", &v37, v13);
     if (v15 && v37 == 64)
     {
       MPSCopyToFromNetworkByteOrder32(shift1, v15, 16);
@@ -275,7 +275,7 @@
 
     shift2 = v9->_stateParams.shift2;
     v37 = 0;
-    v19 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v16, @"kMPSParallelRandomMTGP32StateParameterShift2ArrayKey", &v37, v17);
+    v19 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v16, @"kMPSParallelRandomMTGP32StateParameterShift2ArrayKey", &v37, v17);
     if (v19 && v37 == 64)
     {
       MPSCopyToFromNetworkByteOrder32(shift2, v19, 16);
@@ -283,7 +283,7 @@
 
     isa = v9[1].super.isa;
     v37 = 0;
-    v23 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v20, @"kMPSParallelRandomMTGP32StateParameterMRArrayKey", &v37, v21);
+    v23 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v20, @"kMPSParallelRandomMTGP32StateParameterMRArrayKey", &v37, v21);
     if (v23 && v37 == 256)
     {
       MPSCopyToFromNetworkByteOrder32(isa, v23, 64);
@@ -291,7 +291,7 @@
 
     state = v9[1]._state;
     v37 = 0;
-    v27 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v24, @"kMPSParallelRandomMTGP32StateParameterMTArrayKey", &v37, v25);
+    v27 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v24, @"kMPSParallelRandomMTGP32StateParameterMTArrayKey", &v37, v25);
     if (v27 && v37 == 256)
     {
       MPSCopyToFromNetworkByteOrder32(state, v27, 64);
@@ -299,7 +299,7 @@
 
     v30 = v9[1]._stateParams.shift1;
     v37 = 0;
-    v31 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v28, @"kMPSParallelRandomMTGP32StateParameterMArrayKey", &v37, v29);
+    v31 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v28, @"kMPSParallelRandomMTGP32StateParameterMArrayKey", &v37, v29);
     if (v31 && v37 == 64)
     {
       MPSCopyToFromNetworkByteOrder32(v30, v31, 16);
@@ -307,7 +307,7 @@
 
     v34 = v9[1]._stateParams.shift2;
     v37 = 0;
-    v35 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v32, @"kMPSParallelRandomMTGP32StateParameterStateIdxArrayKey", &v37, v33);
+    v35 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v32, @"kMPSParallelRandomMTGP32StateParameterStateIdxArrayKey", &v37, v33);
     if (v35 && v37 == 64)
     {
       MPSCopyToFromNetworkByteOrder32(v34, v35, 16);

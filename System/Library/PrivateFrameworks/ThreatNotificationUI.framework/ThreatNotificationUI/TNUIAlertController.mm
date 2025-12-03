@@ -1,11 +1,11 @@
 @interface TNUIAlertController
-- (_TtC20ThreatNotificationUI19TNUIAlertController)initWithCoder:(id)a3;
-- (_TtC20ThreatNotificationUI19TNUIAlertController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20ThreatNotificationUI19TNUIAlertController)initWithCoder:(id)coder;
+- (_TtC20ThreatNotificationUI19TNUIAlertController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation TNUIAlertController
 
-- (_TtC20ThreatNotificationUI19TNUIAlertController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20ThreatNotificationUI19TNUIAlertController)initWithNibName:(id)name bundle:(id)bundle
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -15,29 +15,29 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = v8;
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ThreatNotificationUI19TNUIAlertController_buttons) = MEMORY[0x277D84F90];
-    v10 = a4;
-    a3 = MEMORY[0x223D615B0](v7, v9);
+    bundleCopy = bundle;
+    name = MEMORY[0x223D615B0](v7, v9);
   }
 
   else
   {
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ThreatNotificationUI19TNUIAlertController_buttons) = MEMORY[0x277D84F90];
-    v11 = a4;
+    bundleCopy2 = bundle;
   }
 
   v14.receiver = self;
   v14.super_class = type metadata accessor for TNUIAlertController();
-  v12 = [(TNUIAlertController *)&v14 initWithNibName:a3 bundle:a4];
+  v12 = [(TNUIAlertController *)&v14 initWithNibName:name bundle:bundle];
 
   return v12;
 }
 
-- (_TtC20ThreatNotificationUI19TNUIAlertController)initWithCoder:(id)a3
+- (_TtC20ThreatNotificationUI19TNUIAlertController)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -50,8 +50,8 @@
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ThreatNotificationUI19TNUIAlertController_buttons) = MEMORY[0x277D84F90];
   v8.receiver = self;
   v8.super_class = type metadata accessor for TNUIAlertController();
-  v5 = a3;
-  v6 = [(TNUIAlertController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(TNUIAlertController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

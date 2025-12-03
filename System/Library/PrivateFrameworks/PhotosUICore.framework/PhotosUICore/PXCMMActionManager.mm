@@ -1,8 +1,8 @@
 @interface PXCMMActionManager
-- (Class)actionPerformerClassForActionType:(id)a3;
+- (Class)actionPerformerClassForActionType:(id)type;
 - (PXCMMActionManager)init;
 - (PXCMMActionPerformerDelegate)performerDelegate;
-- (id)actionPerformerForActionType:(id)a3;
+- (id)actionPerformerForActionType:(id)type;
 @end
 
 @implementation PXCMMActionManager
@@ -14,24 +14,24 @@
   return WeakRetained;
 }
 
-- (Class)actionPerformerClassForActionType:(id)a3
+- (Class)actionPerformerClassForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXCMMActionManager *)self performerClassByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  performerClassByType = [(PXCMMActionManager *)self performerClassByType];
+  v6 = [performerClassByType objectForKeyedSubscript:typeCopy];
 
   return v6;
 }
 
-- (id)actionPerformerForActionType:(id)a3
+- (id)actionPerformerForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXCMMActionManager *)self actionPerformerClassForActionType:v4];
+  typeCopy = type;
+  v5 = [(PXCMMActionManager *)self actionPerformerClassForActionType:typeCopy];
   if (v5)
   {
-    v6 = [[v5 alloc] initWithActionType:v4];
-    v7 = [(PXCMMActionManager *)self performerDelegate];
-    [v6 setDelegate:v7];
+    v6 = [[v5 alloc] initWithActionType:typeCopy];
+    performerDelegate = [(PXCMMActionManager *)self performerDelegate];
+    [v6 setDelegate:performerDelegate];
   }
 
   else

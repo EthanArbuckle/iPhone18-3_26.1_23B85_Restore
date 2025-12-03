@@ -1,24 +1,24 @@
 @interface MPSNNPermute
 - (MPSNNDimensionOrder)dimensionOrder;
-- (MPSNNPermute)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNNPermute)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6;
-- (id)resultStateForSourceImage:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5;
-- (id)temporaryResultStateForCommandBuffer:(id)a3 sourceImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6;
-- (void)encodeBatchInternalToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceImages:(id)a5 inStates:(id)a6 destinationImages:(id)a7 srcSize:(id *)a8 destSize:(id *)a9 testClipRect:(id *)a10 testMaxClipRect:(id *)a11;
-- (void)encodeBatchToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceImages:(id)a5 inStates:(id)a6 destinationImages:(id)a7;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDimensionOrder:(MPSNNDimensionOrder *)a3;
+- (MPSNNPermute)initWithCoder:(id)coder device:(id)device;
+- (MPSNNPermute)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset;
+- (id)resultStateForSourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage;
+- (id)temporaryResultStateForCommandBuffer:(id)buffer sourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage;
+- (void)encodeBatchInternalToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceImages:(id)images inStates:(id)states destinationImages:(id)destinationImages srcSize:(id *)size destSize:(id *)destSize testClipRect:(id *)self0 testMaxClipRect:(id *)self1;
+- (void)encodeBatchToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceImages:(id)images inStates:(id)states destinationImages:(id)destinationImages;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDimensionOrder:(MPSNNDimensionOrder *)order;
 @end
 
 @implementation MPSNNPermute
 
-- (MPSNNPermute)initWithDevice:(id)a3
+- (MPSNNPermute)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNNPermute;
-  result = [(MPSCNNKernel *)&v4 initWithDevice:a3];
+  result = [(MPSCNNKernel *)&v4 initWithDevice:device];
   if (result)
   {
     *result->_dimensionOrder.dimensions = xmmword_239D7E290;
@@ -32,22 +32,22 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v7.receiver = self;
   v7.super_class = MPSNNPermute;
-  result = [(MPSCNNKernel *)&v7 copyWithZone:a3 device:a4];
+  result = [(MPSCNNKernel *)&v7 copyWithZone:zone device:device];
   v6 = *&self->_dimensionOrder.dimensions[2];
   *(result + 328) = *self->_dimensionOrder.dimensions;
   *(result + 344) = v6;
   return result;
 }
 
-- (MPSNNPermute)initWithCoder:(id)a3 device:(id)a4
+- (MPSNNPermute)initWithCoder:(id)coder device:(id)device
 {
   v33.receiver = self;
   v33.super_class = MPSNNPermute;
-  v5 = [(MPSCNNKernel *)&v33 initWithCoder:a3 device:a4];
+  v5 = [(MPSCNNKernel *)&v33 initWithCoder:coder device:device];
   v12 = v5;
   if (!v5)
   {
@@ -57,10 +57,10 @@
   v5->super._checkFlags |= 2u;
   if (*(&v5->super.super.super.isa + *MEMORY[0x277CD7358] + 2) << 16 == 0x10000)
   {
-    v5->_dimensionOrder.dimensions[0] = objc_msgSend_decodeInt64ForKey_(a3, v6, @"MPSNNPermuteDimensionOrder0", v7, v8, v9, v10, v11);
-    v12->_dimensionOrder.dimensions[1] = objc_msgSend_decodeInt64ForKey_(a3, v13, @"MPSNNPermuteDimensionOrder1", v14, v15, v16, v17, v18);
-    v12->_dimensionOrder.dimensions[2] = objc_msgSend_decodeInt64ForKey_(a3, v19, @"MPSNNPermuteDimensionOrder2", v20, v21, v22, v23, v24);
-    v12->_dimensionOrder.dimensions[3] = objc_msgSend_decodeInt64ForKey_(a3, v25, @"MPSNNPermuteDimensionOrder3", v26, v27, v28, v29, v30);
+    v5->_dimensionOrder.dimensions[0] = objc_msgSend_decodeInt64ForKey_(coder, v6, @"MPSNNPermuteDimensionOrder0", v7, v8, v9, v10, v11);
+    v12->_dimensionOrder.dimensions[1] = objc_msgSend_decodeInt64ForKey_(coder, v13, @"MPSNNPermuteDimensionOrder1", v14, v15, v16, v17, v18);
+    v12->_dimensionOrder.dimensions[2] = objc_msgSend_decodeInt64ForKey_(coder, v19, @"MPSNNPermuteDimensionOrder2", v20, v21, v22, v23, v24);
+    v12->_dimensionOrder.dimensions[3] = objc_msgSend_decodeInt64ForKey_(coder, v25, @"MPSNNPermuteDimensionOrder3", v26, v27, v28, v29, v30);
     v12->super._encode = sub_239CFA21C;
     v12->super._batchEncode = sub_239CFA810;
     v12->super._encodeData = v12;
@@ -77,26 +77,26 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v25.receiver = self;
   v25.super_class = MPSNNPermute;
   [(MPSCNNKernel *)&v25 encodeWithCoder:?];
-  v4 += 41;
-  objc_msgSend_encodeInt64_forKey_(a3, v5, *v4, @"MPSNNPermuteDimensionOrder0", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, v4[1], @"MPSNNPermuteDimensionOrder1", v11, v12, v13, v14);
-  objc_msgSend_encodeInt64_forKey_(a3, v15, v4[2], @"MPSNNPermuteDimensionOrder2", v16, v17, v18, v19);
-  objc_msgSend_encodeInt64_forKey_(a3, v20, v4[3], @"MPSNNPermuteDimensionOrder3", v21, v22, v23, v24);
+  selfCopy += 41;
+  objc_msgSend_encodeInt64_forKey_(coder, v5, *selfCopy, @"MPSNNPermuteDimensionOrder0", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, selfCopy[1], @"MPSNNPermuteDimensionOrder1", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v15, selfCopy[2], @"MPSNNPermuteDimensionOrder2", v16, v17, v18, v19);
+  objc_msgSend_encodeInt64_forKey_(coder, v20, selfCopy[3], @"MPSNNPermuteDimensionOrder3", v21, v22, v23, v24);
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset
 {
   v51[3] = *MEMORY[0x277D85DE8];
   v50.receiver = self;
   v50.super_class = MPSNNPermute;
-  v7 = [(MPSCNNKernel *)&v50 destinationImageDescriptorForSourceImages:a3 sourceStates:a4 paddingMethod:a5 sourceOffset:a6];
+  v7 = [(MPSCNNKernel *)&v50 destinationImageDescriptorForSourceImages:images sourceStates:states paddingMethod:method sourceOffset:offset];
   v15 = v7;
   p_dimensionOrder = &self->_dimensionOrder;
   if (p_dimensionOrder->dimensions[3] == 3)
@@ -112,10 +112,10 @@
   return v15;
 }
 
-- (void)encodeBatchInternalToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceImages:(id)a5 inStates:(id)a6 destinationImages:(id)a7 srcSize:(id *)a8 destSize:(id *)a9 testClipRect:(id *)a10 testMaxClipRect:(id *)a11
+- (void)encodeBatchInternalToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceImages:(id)images inStates:(id)states destinationImages:(id)destinationImages srcSize:(id *)size destSize:(id *)destSize testClipRect:(id *)self0 testMaxClipRect:(id *)self1
 {
   v820 = *MEMORY[0x277D85DE8];
-  v13 = objc_msgSend_sourceFeatureChannelOffset(self, a2, a3, a4, a5, a6, a7, a8);
+  v13 = objc_msgSend_sourceFeatureChannelOffset(self, a2, encoder, buffer, images, states, destinationImages, size);
   v21 = objc_msgSend_destinationFeatureChannelOffset(self, v14, v15, v16, v17, v18, v19, v20);
   v738 = *MEMORY[0x277CD7350];
   v740 = (*(**(&self->super.super.super.isa + v738) + 56))(*(&self->super.super.super.isa + v738));
@@ -131,7 +131,7 @@
 
   v760 = v29;
   v739 = malloc_type_calloc(v29, 0x78uLL, 0x10E004012FEE65DuLL);
-  v762 = self;
+  selfCopy = self;
   objc_msgSend_offset(self, v30, v31, v32, v33, v34, v35, v36);
   v37.i16[0] = *v808;
   v753 = v37;
@@ -139,17 +139,17 @@
   v51 = v753;
   v51.i16[2] = *&v765[8];
   v754 = v51;
-  v52 = a7;
+  destinationImagesCopy = destinationImages;
   v51.i16[0] = self->super._kernelWidth;
   v51.i16[2] = self->super._kernelHeight;
   v749 = v51;
   v51.i16[0] = self->super._dilationRateX;
   v51.i16[2] = self->super._dilationRateY;
   v751 = v51;
-  if (a7)
+  if (destinationImages)
   {
-    v53 = objc_msgSend_objectAtIndexedSubscript_(a7, v45, 0, v46, v47, v48, v49, v50);
-    v52 = objc_msgSend_featureChannels(v53, v54, v55, v56, v57, v58, v59, v60);
+    v53 = objc_msgSend_objectAtIndexedSubscript_(destinationImages, v45, 0, v46, v47, v48, v49, v50);
+    destinationImagesCopy = objc_msgSend_featureChannels(v53, v54, v55, v56, v57, v58, v59, v60);
   }
 
   v61 = 328;
@@ -163,9 +163,9 @@
   }
 
   while (v63 != 3);
-  if (v52 >= v21)
+  if (destinationImagesCopy >= v21)
   {
-    v64 = v52 - v21;
+    v64 = destinationImagesCopy - v21;
   }
 
   else
@@ -173,19 +173,19 @@
     v64 = 0;
   }
 
-  v65 = objc_msgSend_objectAtIndexedSubscript_(a5, v45, 0, v46, v47, v48, v49, v50);
+  v65 = objc_msgSend_objectAtIndexedSubscript_(images, v45, 0, v46, v47, v48, v49, v50);
   v807[0] = objc_msgSend_featureChannels(v65, v66, v67, v68, v69, v70, v71, v72);
-  v79 = objc_msgSend_objectAtIndexedSubscript_(a5, v73, 0, v74, v75, v76, v77, v78);
+  v79 = objc_msgSend_objectAtIndexedSubscript_(images, v73, 0, v74, v75, v76, v77, v78);
   v807[1] = objc_msgSend_width(v79, v80, v81, v82, v83, v84, v85, v86);
-  v93 = objc_msgSend_objectAtIndexedSubscript_(a5, v87, 0, v88, v89, v90, v91, v92);
+  v93 = objc_msgSend_objectAtIndexedSubscript_(images, v87, 0, v88, v89, v90, v91, v92);
   v807[2] = objc_msgSend_height(v93, v94, v95, v96, v97, v98, v99, v100);
-  v807[3] = objc_msgSend_count(a5, v101, v102, v103, v104, v105, v106, v107);
+  v807[3] = objc_msgSend_count(images, v101, v102, v103, v104, v105, v106, v107);
   memset(v800, 0, sizeof(v800));
-  *v765 = *a9;
-  v108 = *&a10->var0.var2;
-  *v808 = *&a10->var0.var0;
+  *v765 = *destSize;
+  v108 = *&rect->var0.var2;
+  *v808 = *&rect->var0.var0;
   *&v808[16] = v108;
-  *&v808[32] = *&a10->var1.var1;
+  *&v808[32] = *&rect->var1.var1;
   MPSGetEffectiveClipRegion(v800[0].i64, v765, v808);
   v116 = v800[2].i64[1];
   if (v62 == 3)
@@ -194,7 +194,7 @@
   }
 
   v759 = v116;
-  v733 = objc_msgSend_count(a5, v109, v110, v111, v112, v113, v114, v115);
+  v733 = objc_msgSend_count(images, v109, v110, v111, v112, v113, v114, v115);
   if (v62)
   {
     v124 = 1;
@@ -223,7 +223,7 @@
     MTLReportFailure();
   }
 
-  if (objc_msgSend_retainedReferences(a4, v117, v118, v119, v120, v121, v122, v123, v728, v729))
+  if (objc_msgSend_retainedReferences(buffer, v117, v118, v119, v120, v121, v122, v123, v728, v729))
   {
     aSelectora = 0;
   }
@@ -236,7 +236,7 @@
     v799[2] = sub_239CFCE28;
     v799[3] = &unk_278B28F28;
     v799[4] = aSelectora;
-    objc_msgSend_addCompletedHandler_(a4, v126, v799, v127, v128, v129, v130, v131);
+    objc_msgSend_addCompletedHandler_(buffer, v126, v799, v127, v128, v129, v130, v131);
   }
 
   v132 = *&self->_dimensionOrder.dimensions[2];
@@ -255,33 +255,33 @@
   v136 = v807[*(&v797 + 1)];
   *(&v796 + 1) = v134;
   v137 = v807[v798];
-  var2 = a8->var2;
+  var2 = size->var2;
   v794[0] = v136;
   v794[1] = v137;
   v794[2] = var2;
   memset(v793, 0, sizeof(v793));
-  v139 = v794;
+  destSizeCopy = v794;
   if (!v759)
   {
-    v139 = a9;
+    destSizeCopy = destSize;
   }
 
-  *v765 = *&v139->var0;
-  *&v765[16] = v139->var2;
+  *v765 = *&destSizeCopy->var0;
+  *&v765[16] = destSizeCopy->var2;
   if (v759)
   {
-    v140 = a11;
+    rectCopy = clipRect;
   }
 
   else
   {
-    v140 = a10;
+    rectCopy = rect;
   }
 
-  v141 = *&v140->var0.var2;
-  *v808 = *&v140->var0.var0;
+  v141 = *&rectCopy->var0.var2;
+  *v808 = *&rectCopy->var0.var0;
   *&v808[16] = v141;
-  *&v808[32] = *&v140->var1.var1;
+  *&v808[32] = *&rectCopy->var1.var1;
   MPSGetEffectiveClipRegion(v793[0].i64, v765, v808);
   if (v759)
   {
@@ -320,23 +320,23 @@
   v151.i32[1] = ((v150 + 3) >> 2);
   v785 = v152;
   v786 = v151;
-  v154 = a7;
+  destinationImagesCopy3 = destinationImages;
   if (v759)
   {
     v155 = &v807[v797];
-    v156 = a5;
+    destinationImagesCopy4 = images;
   }
 
   else
   {
-    v155 = (objc_msgSend_objectAtIndexedSubscript_(a7, v142, 0, v144, v145, v146, v147, v148) + *MEMORY[0x277CD72F8]);
-    v154 = a7;
-    v156 = a7;
+    v155 = (objc_msgSend_objectAtIndexedSubscript_(destinationImages, v142, 0, v144, v145, v146, v147, v148) + *MEMORY[0x277CD72F8]);
+    destinationImagesCopy3 = destinationImages;
+    destinationImagesCopy4 = destinationImages;
   }
 
-  v157 = v154 == 0;
+  v157 = destinationImagesCopy3 == 0;
   LOWORD(v787[0]) = *v155;
-  HIWORD(v787[0]) = objc_msgSend_count(v156, v142, v143, v144, v145, v146, v147, v148);
+  HIWORD(v787[0]) = objc_msgSend_count(destinationImagesCopy4, v142, v143, v144, v145, v146, v147, v148);
   v787[1] = 1;
   LOWORD(v787[2]) = 0;
   HIWORD(v787[2]) = v760;
@@ -358,7 +358,7 @@
   HIWORD(v789) = v751.i16[2];
   WORD6(v789) = v751.i16[0];
   LOWORD(v790[0]) = objc_msgSend_sourceFeatureChannelOffset(self, v160, v161, v162, v163, v164, v165, v166);
-  WORD1(v790[0]) = *(objc_msgSend_objectAtIndexedSubscript_(a5, v167, 0, v168, v169, v170, v171, v172) + *MEMORY[0x277CD72F8]);
+  WORD1(v790[0]) = *(objc_msgSend_objectAtIndexedSubscript_(images, v167, 0, v168, v169, v170, v171, v172) + *MEMORY[0x277CD72F8]);
   objc_msgSend_offset(self, v173, v174, v175, v176, v177, v178, v179);
   HIDWORD(v790[0]) = *&v808[16];
   *&v790[1] = v793[0];
@@ -382,8 +382,8 @@
   v768 = 0u;
   v766 = 0u;
   memset(v765, 0, sizeof(v765));
-  *v765 = objc_msgSend_count(a5, v187, v188, v189, v190, v191, v192, v193);
-  *&v765[8] = objc_msgSend_count(a7, v194, v195, v196, v197, v198, v199, v200);
+  *v765 = objc_msgSend_count(images, v187, v188, v189, v190, v191, v192, v193);
+  *&v765[8] = objc_msgSend_count(destinationImages, v194, v195, v196, v197, v198, v199, v200);
   *&v765[16] = 0u;
   v766 = 0u;
   *&v767 = v739;
@@ -407,8 +407,8 @@
 
   else
   {
-    WORD4(v769) = *(objc_msgSend_objectAtIndexedSubscript_(a7, v201, 0, v203, v204, v205, v206, v207) + *MEMORY[0x277CD72F8]);
-    v218 = objc_msgSend_count(a7, v211, v212, v213, v214, v215, v216, v217);
+    WORD4(v769) = *(objc_msgSend_objectAtIndexedSubscript_(destinationImages, v201, 0, v203, v204, v205, v206, v207) + *MEMORY[0x277CD72F8]);
+    v218 = objc_msgSend_count(destinationImages, v211, v212, v213, v214, v215, v216, v217);
   }
 
   WORD5(v769) = v218;
@@ -443,15 +443,15 @@
   WORD4(v773) = v220;
   v755 = v807[v797];
   WORD5(v773) = v755;
-  objc_msgSend_offset(v762, v201, v202, v203, v204, v205, v206, v207);
+  objc_msgSend_offset(selfCopy, v201, v202, v203, v204, v205, v206, v207);
   HIDWORD(v773) = *&v808[16];
   v774 = v800[0];
   v775 = v800[1];
   v776 = v800[2];
-  objc_msgSend_offset(v762, v221, v222, v223, v224, v225, v226, v227);
+  objc_msgSend_offset(selfCopy, v221, v222, v223, v224, v225, v226, v227);
   *(&v778 + 1) = v21;
   v779 = v220;
-  MEMORY[0x23EE7D040](v764, a4, 0);
+  MEMORY[0x23EE7D040](v764, buffer, 0);
   v228 = 125;
   if (v150 == 2)
   {
@@ -468,7 +468,7 @@
     v229 = v228;
   }
 
-  PixelInfo = MPSDevice::GetPixelInfo(*(&v762->super.super.super.isa + v738), v229, MPSImageFeatureChannelFormatNone);
+  PixelInfo = MPSDevice::GetPixelInfo(*(&selfCopy->super.super.super.isa + v738), v229, MPSImageFeatureChannelFormatNone);
   v231 = objc_alloc(MEMORY[0x277CBEB18]);
   v743 = objc_msgSend_initWithCapacity_(v231, v232, v760, v233, v234, v235, v236, v237);
   if (v760 && v759)
@@ -489,7 +489,7 @@
     v242 = v760;
     do
     {
-      v243 = *(&v762->super.super.super.isa + v738);
+      v243 = *(&selfCopy->super.super.super.isa + v738);
       v244 = objc_autoreleasePoolPush();
       v246 = objc_msgSend_imageDescriptorWithChannelFormat_width_height_featureChannels_numberOfImages_usage_(MEMORY[0x277CD7220], v245, 4, v238, v239, v755, 1, 19);
       *&v801 = MPSDevice::GetPixelInfo(v243, v241[v240], MPSImageFeatureChannelFormatNone);
@@ -515,28 +515,28 @@
     v750 = 0;
     if (v759)
     {
-      v290 = v743;
+      destinationImagesCopy5 = v743;
     }
 
     else
     {
-      v290 = a7;
+      destinationImagesCopy5 = destinationImages;
     }
 
-    v291 = a5;
+    imagesCopy2 = images;
     if (v759)
     {
-      v291 = v743;
+      imagesCopy2 = v743;
     }
 
-    v731 = v291;
-    v732 = v290;
+    v731 = imagesCopy2;
+    v732 = destinationImagesCopy5;
     v736 = 0;
     v292 = MEMORY[0x277CD7318];
     do
     {
       context = objc_autoreleasePoolPush();
-      v300 = objc_msgSend_count(a5, v293, v294, v295, v296, v297, v298, v299);
+      v300 = objc_msgSend_count(images, v293, v294, v295, v296, v297, v298, v299);
       v308 = v300;
       v756 = v300 - v750;
       if (v760 >= v300 - v750)
@@ -552,8 +552,8 @@
       if (v740)
       {
         LODWORD(v801) = 0;
-        objc_msgSend_offset(v762, v301, v302, v303, v304, v305, v306, v307);
-        v316 = sub_239CFCE30(a5, a4, *&v808[16] + v750, v309, &v801, v310, v311, v312);
+        objc_msgSend_offset(selfCopy, v301, v302, v303, v304, v305, v306, v307);
+        v316 = sub_239CFCE30(images, buffer, *&v808[16] + v750, v309, &v801, v310, v311, v312);
         *&v788 = v316;
         v787[6] = v801;
         *v808 = v801;
@@ -567,7 +567,7 @@
           v317 = v793[1].i64[0] + v750;
         }
 
-        v325 = sub_239CFCE30(v732, a4, v317, v309, v808, v313, v314, v315);
+        v325 = sub_239CFCE30(v732, buffer, v317, v309, v808, v313, v314, v315);
         *(&v784 + 1) = v325;
         v326 = *v808;
         LODWORD(v784) = *v808;
@@ -584,12 +584,12 @@
 
       else
       {
-        objc_msgSend_offset(v762, v301, v302, v303, v304, v305, v306, v307);
-        v339 = objc_msgSend_objectAtIndexedSubscript_(a5, v333, *&v808[16] + v750, v334, v335, v336, v337, v338);
+        objc_msgSend_offset(selfCopy, v301, v302, v303, v304, v305, v306, v307);
+        v339 = objc_msgSend_objectAtIndexedSubscript_(images, v333, *&v808[16] + v750, v334, v335, v336, v337, v338);
         v347 = objc_msgSend_texture(v339, v340, v341, v342, v343, v344, v345, v346);
         *&v788 = v347;
-        objc_msgSend_offset(v762, v348, v349, v350, v351, v352, v353, v354);
-        v361 = *(objc_msgSend_objectAtIndexedSubscript_(a5, v355, *&v808[16] + v750, v356, v357, v358, v359, v360) + *MEMORY[0x277CD72F0]);
+        objc_msgSend_offset(selfCopy, v348, v349, v350, v351, v352, v353, v354);
+        v361 = *(objc_msgSend_objectAtIndexedSubscript_(images, v355, *&v808[16] + v750, v356, v357, v358, v359, v360) + *MEMORY[0x277CD72F0]);
         v369 = objc_msgSend_textureType(v347, v362, v363, v364, v365, v366, v367, v368);
         if (v361 - 1 > 4)
         {
@@ -704,8 +704,8 @@
         {
           while (1)
           {
-            objc_msgSend_offset(v762, v318, v319, v320, v321, v322, v323, v324);
-            v456 = objc_msgSend_objectAtIndexedSubscript_(a5, v443, v750 + v440 + *&v808[16], v444, v445, v446, v447, v448);
+            objc_msgSend_offset(selfCopy, v318, v319, v320, v321, v322, v323, v324);
+            v456 = objc_msgSend_objectAtIndexedSubscript_(images, v443, v750 + v440 + *&v808[16], v444, v445, v446, v447, v448);
             if (v759)
             {
               v457 = objc_msgSend_objectAtIndexedSubscript_(v743, v449, v440, v451, v452, v453, v454, v455);
@@ -713,8 +713,8 @@
 
             else
             {
-              objc_msgSend_clipRect(v762, v449, v450, v451, v452, v453, v454, v455);
-              v457 = objc_msgSend_objectAtIndexedSubscript_(a7, v458, v750 + v440 + *&v808[16], v459, v460, v461, v462, v463);
+              objc_msgSend_clipRect(selfCopy, v449, v450, v451, v452, v453, v454, v455);
+              v457 = objc_msgSend_objectAtIndexedSubscript_(destinationImages, v458, v750 + v440 + *&v808[16], v459, v460, v461, v462, v463);
             }
 
             v464 = v457;
@@ -893,10 +893,10 @@ LABEL_142:
 
       v483 = v798;
       *p_dimensionOrder->dimensions = v797;
-      *&v762->_dimensionOrder.dimensions[2] = v483;
-      sub_239CFA810(v762, a3, a4, &v780, v321, v322, v323, v324);
-      objc_msgSend_offset(v762, v484, v485, v486, v487, v488, v489, v490);
-      objc_msgSend_subarrayWithRange_(a5, v491, *&v808[16] + v750, v309, v492, v493, v494, v495);
+      *&selfCopy->_dimensionOrder.dimensions[2] = v483;
+      sub_239CFA810(selfCopy, encoder, buffer, &v780, v321, v322, v323, v324);
+      objc_msgSend_offset(selfCopy, v484, v485, v486, v487, v488, v489, v490);
+      objc_msgSend_subarrayWithRange_(images, v491, *&v808[16] + v750, v309, v492, v493, v494, v495);
       MPSDecrementReadCount();
       *&v765[16] = v309;
       v766.i64[0] = v750;
@@ -925,8 +925,8 @@ LABEL_142:
 
           else
           {
-            objc_msgSend_offset(v762, v502, v503, v504, v505, v506, v507, v508);
-            v516 = objc_msgSend_objectAtIndexedSubscript_(a5, v517, v750 + v509 + *&v808[16], v518, v519, v520, v521, v522);
+            objc_msgSend_offset(selfCopy, v502, v503, v504, v505, v506, v507, v508);
+            v516 = objc_msgSend_objectAtIndexedSubscript_(images, v517, v750 + v509 + *&v808[16], v518, v519, v520, v521, v522);
           }
 
           v523 = v516;
@@ -1017,14 +1017,14 @@ LABEL_142:
 
       v529 = v796;
       *p_dimensionOrder->dimensions = v795;
-      *&v762->_dimensionOrder.dimensions[2] = v529;
+      *&selfCopy->_dimensionOrder.dimensions[2] = v529;
       if (v759)
       {
         v752 = 0;
         v530 = 0;
         while (2)
         {
-          v531 = objc_msgSend_count(a7, v502, v503, v504, v505, v506, v507, v508);
+          v531 = objc_msgSend_count(destinationImages, v502, v503, v504, v505, v506, v507, v508);
           v538 = v531;
           v539 = v531 - v530;
           if (v760 >= v531 - v530)
@@ -1040,7 +1040,7 @@ LABEL_142:
           if (v740)
           {
             *v808 = 0;
-            v503 = sub_239CFCE30(a7, a4, v530, v540, v808, v535, v536, v537);
+            v503 = sub_239CFCE30(destinationImages, buffer, v530, v540, v808, v535, v536, v537);
             *&v768 = v503;
             DWORD2(v767) = *v808;
             if (aSelectora)
@@ -1051,9 +1051,9 @@ LABEL_142:
 
           else
           {
-            v541 = objc_msgSend_objectAtIndexedSubscript_(a7, v532, v530, v533, v534, v535, v536, v537);
+            v541 = objc_msgSend_objectAtIndexedSubscript_(destinationImages, v532, v530, v533, v534, v535, v536, v537);
             v549 = objc_msgSend_texture(v541, v542, v543, v544, v545, v546, v547, v548);
-            v556 = *(objc_msgSend_objectAtIndexedSubscript_(a7, v550, v530, v551, v552, v553, v554, v555) + *MEMORY[0x277CD72F0]);
+            v556 = *(objc_msgSend_objectAtIndexedSubscript_(destinationImages, v550, v530, v551, v552, v553, v554, v555) + *MEMORY[0x277CD72F0]);
             v564 = objc_msgSend_textureType(v549, v557, v558, v559, v560, v561, v562, v563);
             if (v556 - 1 > 4)
             {
@@ -1114,10 +1114,10 @@ LABEL_142:
             v588 = v585;
             do
             {
-              if (a7)
+              if (destinationImages)
               {
-                objc_msgSend_clipRect(v762, v502, v503, v504, v505, v506, v507, v508);
-                v599 = objc_msgSend_objectAtIndexedSubscript_(a7, v593, v586 + *&v808[16], v594, v595, v596, v597, v598);
+                objc_msgSend_clipRect(selfCopy, v502, v503, v504, v505, v506, v507, v508);
+                v599 = objc_msgSend_objectAtIndexedSubscript_(destinationImages, v593, v586 + *&v808[16], v594, v595, v596, v597, v598);
               }
 
               else
@@ -1215,10 +1215,10 @@ LABEL_142:
             goto LABEL_177;
           }
 
-          v605 = *(&v762->super.super.super.isa + v738);
-          objc_msgSend_dimensionOrder(v762, v502, v503, v504, v505, v506, v507, v508);
+          v605 = *(&selfCopy->super.super.super.isa + v738);
+          objc_msgSend_dimensionOrder(selfCopy, v502, v503, v504, v505, v506, v507, v508);
           v606 = *&v808[24];
-          v614 = objc_msgSend_maxBatchSize(v762, v607, v608, v609, v610, v611, v612, v613);
+          v614 = objc_msgSend_maxBatchSize(selfCopy, v607, v608, v609, v610, v611, v612, v613);
           *v808 = v614;
           *&v808[8] = BYTE8(v767) & 0x3F | ((v771 & 0x3F) << 6);
           *&v808[16] = v606;
@@ -1285,11 +1285,11 @@ LABEL_233:
 
               v758 = v804;
               *(&v770 + 4) = v654;
-              objc_msgSend_setComputePipelineState_(a3, v646, PipelineStateForMPSKey, v647, v648, v649, v650, v651);
+              objc_msgSend_setComputePipelineState_(encoder, v646, PipelineStateForMPSKey, v647, v648, v649, v650, v651);
               v668 = *(&v771 + 1);
               if ((v771 & 2) == 0)
               {
-                objc_msgSend_setTexture_atIndex_(a3, v661, *(&v771 + 1), v614, v664, v665, v666, v667);
+                objc_msgSend_setTexture_atIndex_(encoder, v661, *(&v771 + 1), v614, v664, v665, v666, v667);
                 goto LABEL_262;
               }
 
@@ -1365,19 +1365,19 @@ LABEL_233:
 
                   bzero(&v808[8 * v676], 8 * v678);
 LABEL_254:
-                  objc_msgSend_setTextures_withRange_(a3, v669, v808, i + v614, v677, v670, v671, v672);
+                  objc_msgSend_setTextures_withRange_(encoder, v669, v808, i + v614, v677, v670, v671, v672);
                 }
               }
 
               v653 = v737;
 LABEL_262:
-              objc_msgSend_setBytes_length_atIndex_(a3, v669, &v772, 32, 1, v670, v671, v672);
+              objc_msgSend_setBytes_length_atIndex_(encoder, v669, &v772, 32, 1, v670, v671, v672);
               Sampler = MPSDevice::GetSampler();
-              objc_msgSend_setSamplerState_atIndex_(a3, v680, Sampler, 1, v681, v682, v683, v684);
+              objc_msgSend_setSamplerState_atIndex_(encoder, v680, Sampler, 1, v681, v682, v683, v684);
               v692 = v768;
               if ((BYTE8(v767) & 2) == 0)
               {
-                objc_msgSend_setTexture_atIndex_(a3, v685, v768, 0, v688, v689, v690, v691);
+                objc_msgSend_setTexture_atIndex_(encoder, v685, v768, 0, v688, v689, v690, v691);
                 goto LABEL_283;
               }
 
@@ -1400,9 +1400,9 @@ LABEL_262:
 LABEL_282:
                 v653 = v698;
 LABEL_283:
-                objc_msgSend_setBytes_length_atIndex_(a3, v693, &v768 + 8, 40, 0, v694, v695, v696);
+                objc_msgSend_setBytes_length_atIndex_(encoder, v693, &v768 + 8, 40, 0, v694, v695, v696);
                 v803 = vrev64_s32(vmovn_s64(v766));
-                objc_msgSend_setBytes_length_atIndex_(a3, v704, &v803, 8, 30, v705, v706, v707);
+                objc_msgSend_setBytes_length_atIndex_(encoder, v704, &v803, 8, 30, v705, v706, v707);
                 v708 = vand_s8(*&vmovl_u16(v758), 0xFFFF0000FFFFLL);
                 *&v709 = v708.u32[0];
                 *(&v709 + 1) = v708.u32[1];
@@ -1413,7 +1413,7 @@ LABEL_283:
                 *(&v709 + 1) = v710.u32[1];
                 v801 = v709;
                 v802 = v653;
-                objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(a3, v711, v808, &v801, v712, v713, v714, v715);
+                objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(encoder, v711, v808, &v801, v712, v713, v714, v715);
 LABEL_177:
                 v530 += v760;
                 v752 -= v760;
@@ -1481,7 +1481,7 @@ LABEL_274:
                   }
                 }
 
-                objc_msgSend_setTextures_withRange_(a3, v693, v808, v700, v702, v694, v695, v696);
+                objc_msgSend_setTextures_withRange_(encoder, v693, v808, v700, v702, v694, v695, v696);
                 v700 += v702;
                 if (v700 >= v614)
                 {
@@ -1511,20 +1511,20 @@ LABEL_284:
 
   v716 = v806;
   *p_dimensionOrder->dimensions = v805;
-  *&v762->_dimensionOrder.dimensions[2] = v716;
+  *&selfCopy->_dimensionOrder.dimensions[2] = v716;
 
   free(v739);
-  if (a6)
+  if (states)
   {
-    v723 = objc_msgSend_objectAtIndexedSubscript_(a6, v717, 0, v718, v719, v720, v721, v722);
-    v724 = *&v762->_dimensionOrder.dimensions[2];
+    v723 = objc_msgSend_objectAtIndexedSubscript_(states, v717, 0, v718, v719, v720, v721, v722);
+    v724 = *&selfCopy->_dimensionOrder.dimensions[2];
     v723[18] = *p_dimensionOrder->dimensions;
     v723[19] = v724;
-    v725 = v762->_dimensionOrder.dimensions[1];
+    v725 = selfCopy->_dimensionOrder.dimensions[1];
     *&v808[8 * p_dimensionOrder->dimensions[0]] = 0;
     *&v808[8 * v725] = 1;
-    v726 = v762->_dimensionOrder.dimensions[3];
-    *&v808[8 * v762->_dimensionOrder.dimensions[2]] = 2;
+    v726 = selfCopy->_dimensionOrder.dimensions[3];
+    *&v808[8 * selfCopy->_dimensionOrder.dimensions[2]] = 2;
     *&v808[8 * v726] = 3;
     v723[20] = *v808;
     v723[21] = *&v808[16];
@@ -1533,32 +1533,32 @@ LABEL_284:
   MPSAutoCache::~MPSAutoCache(v764);
 }
 
-- (void)encodeBatchToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceImages:(id)a5 inStates:(id)a6 destinationImages:(id)a7
+- (void)encodeBatchToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceImages:(id)images inStates:(id)states destinationImages:(id)destinationImages
 {
-  v8 = a7;
-  v9 = a6;
-  v11 = a4;
-  v14 = objc_msgSend_objectAtIndexedSubscript_(a5, a2, 0, a4, a5, a6, a7, v7);
+  destinationImagesCopy = destinationImages;
+  statesCopy = states;
+  bufferCopy = buffer;
+  v14 = objc_msgSend_objectAtIndexedSubscript_(images, a2, 0, buffer, images, states, destinationImages, v7);
   v22 = objc_msgSend_width(v14, v15, v16, v17, v18, v19, v20, v21);
-  v29 = objc_msgSend_objectAtIndexedSubscript_(a5, v23, 0, v24, v25, v26, v27, v28);
+  v29 = objc_msgSend_objectAtIndexedSubscript_(images, v23, 0, v24, v25, v26, v27, v28);
   v37 = objc_msgSend_height(v29, v30, v31, v32, v33, v34, v35, v36);
-  v52 = objc_msgSend_count(a5, v38, v39, v40, v41, v42, v43, v44);
-  if (v8)
+  v52 = objc_msgSend_count(images, v38, v39, v40, v41, v42, v43, v44);
+  if (destinationImagesCopy)
   {
-    v53 = objc_msgSend_objectAtIndexedSubscript_(v8, v45, 0, v47, v48, v49, v50, v51);
+    v53 = objc_msgSend_objectAtIndexedSubscript_(destinationImagesCopy, v45, 0, v47, v48, v49, v50, v51);
     v166 = objc_msgSend_width(v53, v54, v55, v56, v57, v58, v59, v60);
-    v67 = objc_msgSend_objectAtIndexedSubscript_(v8, v61, 0, v62, v63, v64, v65, v66);
+    v67 = objc_msgSend_objectAtIndexedSubscript_(destinationImagesCopy, v61, 0, v62, v63, v64, v65, v66);
     v165 = objc_msgSend_height(v67, v68, v69, v70, v71, v72, v73, v74);
-    v164 = objc_msgSend_count(v8, v75, v76, v77, v78, v79, v80, v81);
+    v164 = objc_msgSend_count(destinationImagesCopy, v75, v76, v77, v78, v79, v80, v81);
     if (self)
     {
-      v161 = v8;
+      v161 = destinationImagesCopy;
       v88 = v52;
-      v89 = a3;
+      encoderCopy2 = encoder;
       v90 = v37;
       v91 = v22;
-      v92 = v11;
-      v93 = v9;
+      v92 = bufferCopy;
+      v93 = statesCopy;
       v94 = v175;
       objc_msgSend_clipRect(self, v45, v82, v83, v84, v85, v86, v87);
       v103 = v174;
@@ -1568,13 +1568,13 @@ LABEL_9:
       v163 = *v94;
       v184 = 0uLL;
       v185 = 0;
-      v9 = v93;
-      v11 = v92;
+      statesCopy = v93;
+      bufferCopy = v92;
       v22 = v91;
       v37 = v90;
-      a3 = v89;
+      encoder = encoderCopy2;
       v52 = v88;
-      v8 = v161;
+      destinationImagesCopy = v161;
       goto LABEL_10;
     }
 
@@ -1586,7 +1586,7 @@ LABEL_13:
     v174 = 0u;
     v184 = *&v175[1];
     v185 = 0;
-    if (!a5)
+    if (!images)
     {
       return;
     }
@@ -1640,11 +1640,11 @@ LABEL_7:
 LABEL_8:
     v161 = 0;
     v88 = v52;
-    v89 = a3;
+    encoderCopy2 = encoder;
     v90 = v37;
     v91 = v22;
-    v92 = v11;
-    v93 = v9;
+    v92 = bufferCopy;
+    v93 = statesCopy;
     v94 = v176;
     objc_msgSend_offset(self, v95, v96, v97, v98, v99, v100, v101);
     v164 = 0;
@@ -1662,13 +1662,13 @@ LABEL_10:
   objc_msgSend_clipRect(self, v95, v96, v97, v98, v99, v100, v101);
   v184 = *&v175[1];
   v185 = v175[3];
-  if (!a5)
+  if (!images)
   {
     return;
   }
 
 LABEL_14:
-  if (a3)
+  if (encoder)
   {
     v181 = v22;
     v182 = v37;
@@ -1687,15 +1687,15 @@ LABEL_14:
     v171 = -1;
     v172 = -1;
     v173 = -1;
-    objc_msgSend_encodeBatchInternalToCommandEncoder_commandBuffer_sourceImages_inStates_destinationImages_srcSize_destSize_testClipRect_testMaxClipRect_(self, v45, a3, v11, a5, v9, v8, &v181, &v178, &v174, &v168);
+    objc_msgSend_encodeBatchInternalToCommandEncoder_commandBuffer_sourceImages_inStates_destinationImages_srcSize_destSize_testClipRect_testMaxClipRect_(self, v45, encoder, bufferCopy, images, statesCopy, destinationImagesCopy, &v181, &v178, &v174, &v168);
   }
 
   else
   {
-    v162 = v9;
+    v162 = statesCopy;
     v132 = objc_alloc(MEMORY[0x277CD7210]);
-    v160 = v11;
-    v144 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v132, v133, v11, 0, v134, v135, v136, v137);
+    v160 = bufferCopy;
+    v144 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v132, v133, bufferCopy, 0, v134, v135, v136, v137);
     v176[1] = v144;
     v176[2] = self;
     if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x18) != 0)
@@ -1724,16 +1724,16 @@ LABEL_14:
     v171 = -1;
     v172 = -1;
     v173 = -1;
-    objc_msgSend_encodeBatchInternalToCommandEncoder_commandBuffer_sourceImages_inStates_destinationImages_srcSize_destSize_testClipRect_testMaxClipRect_(self, v138, v144, v160, a5, v162, v8, &v181, &v178, &v174, &v168);
+    objc_msgSend_encodeBatchInternalToCommandEncoder_commandBuffer_sourceImages_inStates_destinationImages_srcSize_destSize_testClipRect_testMaxClipRect_(self, v138, v144, v160, images, v162, destinationImagesCopy, &v181, &v178, &v174, &v168);
     objc_msgSend_endEncoding(v144, v153, v154, v155, v156, v157, v158, v159);
   }
 }
 
-- (id)resultStateForSourceImage:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5
+- (id)resultStateForSourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage
 {
   v9 = [MPSNNPermuteGradientState alloc];
   v16 = objc_msgSend_initWithResource_(v9, v10, 0, v11, v12, v13, v14, v15);
-  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v17, v16, a3, a4, a5, v18, v19);
+  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v17, v16, image, states, destinationImage, v18, v19);
   v20 = *&self->_dimensionOrder.dimensions[2];
   v16[18] = *self->_dimensionOrder.dimensions;
   v16[19] = v20;
@@ -1750,10 +1750,10 @@ LABEL_14:
   return v16;
 }
 
-- (id)temporaryResultStateForCommandBuffer:(id)a3 sourceImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6
+- (id)temporaryResultStateForCommandBuffer:(id)buffer sourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage
 {
-  v12 = objc_msgSend_temporaryStateWithCommandBuffer_(MPSNNPermuteGradientState, a2, a3, a4, a5, a6, v6, v7);
-  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v13, v12, a4, a5, a6, v14, v15);
+  v12 = objc_msgSend_temporaryStateWithCommandBuffer_(MPSNNPermuteGradientState, a2, buffer, image, states, destinationImage, v6, v7);
+  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v13, v12, image, states, destinationImage, v14, v15);
   v16 = *&self->_dimensionOrder.dimensions[2];
   v12[18] = *self->_dimensionOrder.dimensions;
   v12[19] = v16;
@@ -1777,10 +1777,10 @@ LABEL_14:
   return self;
 }
 
-- (void)setDimensionOrder:(MPSNNDimensionOrder *)a3
+- (void)setDimensionOrder:(MPSNNDimensionOrder *)order
 {
-  v3 = *&a3->dimensions[2];
-  *self->_dimensionOrder.dimensions = *a3->dimensions;
+  v3 = *&order->dimensions[2];
+  *self->_dimensionOrder.dimensions = *order->dimensions;
   *&self->_dimensionOrder.dimensions[2] = v3;
 }
 

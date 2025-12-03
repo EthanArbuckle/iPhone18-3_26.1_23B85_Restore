@@ -5,52 +5,52 @@
 - (id)remoteInterface;
 - (id)stateChangedBlockWithCompletion;
 - (id)statusChangedBlockWithCompletion;
-- (void)allBeaconingKeysForUUID:(id)a3 dateInterval:(id)a4 forceGenerate:(BOOL)a5 completion:(id)a6;
-- (void)allBeaconsOfType:(id)a3 completion:(id)a4;
-- (void)allBeaconsOfTypes:(id)a3 completion:(id)a4;
-- (void)allBeaconsOfTypes:(id)a3 includeDupes:(BOOL)a4 includeHidden:(BOOL)a5 completion:(id)a6;
-- (void)allBeaconsWithCompletion:(id)a3;
-- (void)allDuriansWithCompletion:(id)a3;
-- (void)beaconForUUID:(id)a3 completion:(id)a4;
-- (void)beaconingKeysForUUID:(id)a3 dateInterval:(id)a4 completion:(id)a5;
-- (void)connectedToBeacon:(id)a3 withIndex:(unint64_t)a4 completion:(id)a5;
-- (void)connectionTokensForBeaconUUID:(id)a3 completion:(id)a4;
-- (void)connectionTokensForBeaconUUID:(id)a3 criteria:(id)a4 completion:(id)a5;
-- (void)connectionTokensForBeaconUUID:(id)a3 dateInterval:(id)a4 completion:(id)a5;
-- (void)createDuplicateBeaconsForBeacon:(id)a3 skipGroupIdentifier:(BOOL)a4 count:(int64_t)a5 completion:(id)a6;
-- (void)createKeyReconcilerWithCompletion:(id)a3;
-- (void)createOwnedDeviceKeyRecordForUUID:(id)a3 completion:(id)a4;
+- (void)allBeaconingKeysForUUID:(id)d dateInterval:(id)interval forceGenerate:(BOOL)generate completion:(id)completion;
+- (void)allBeaconsOfType:(id)type completion:(id)completion;
+- (void)allBeaconsOfTypes:(id)types completion:(id)completion;
+- (void)allBeaconsOfTypes:(id)types includeDupes:(BOOL)dupes includeHidden:(BOOL)hidden completion:(id)completion;
+- (void)allBeaconsWithCompletion:(id)completion;
+- (void)allDuriansWithCompletion:(id)completion;
+- (void)beaconForUUID:(id)d completion:(id)completion;
+- (void)beaconingKeysForUUID:(id)d dateInterval:(id)interval completion:(id)completion;
+- (void)connectedToBeacon:(id)beacon withIndex:(unint64_t)index completion:(id)completion;
+- (void)connectionTokensForBeaconUUID:(id)d completion:(id)completion;
+- (void)connectionTokensForBeaconUUID:(id)d criteria:(id)criteria completion:(id)completion;
+- (void)connectionTokensForBeaconUUID:(id)d dateInterval:(id)interval completion:(id)completion;
+- (void)createDuplicateBeaconsForBeacon:(id)beacon skipGroupIdentifier:(BOOL)identifier count:(int64_t)count completion:(id)completion;
+- (void)createKeyReconcilerWithCompletion:(id)completion;
+- (void)createOwnedDeviceKeyRecordForUUID:(id)d completion:(id)completion;
 - (void)dealloc;
-- (void)fetchFirmwareVersionForBeacon:(id)a3 completion:(id)a4;
-- (void)fetchUserStatsForBeacon:(id)a3 completion:(id)a4;
+- (void)fetchFirmwareVersionForBeacon:(id)beacon completion:(id)completion;
+- (void)fetchUserStatsForBeacon:(id)beacon completion:(id)completion;
 - (void)invalidate;
-- (void)isLPEMModeSupported:(id)a3;
-- (void)keySyncMetadataWithcompletion:(id)a3;
-- (void)notificationBeaconForSubscriptionId:(id)a3 completion:(id)a4;
-- (void)ownedDeviceKeyRecordsForUUID:(id)a3 completion:(id)a4;
-- (void)postedLocalNotifyWhenFoundNotificationForUUID:(id)a3 completion:(id)a4;
-- (void)purgeOwnedDeviceKeyRecordsForUUID:(id)a3 completion:(id)a4;
-- (void)removeDuplicateBeaconsWithCompletion:(id)a3;
-- (void)repairDataStore:(id)a3;
-- (void)roleCategoriesWithCompletion:(id)a3;
-- (void)setAlignmentUncertainty:(double)a3 atIndex:(unint64_t)a4 date:(id)a5 forBeacon:(id)a6 completion:(id)a7;
-- (void)setBeaconingKeyChangedBlockWithCompletion:(id)a3;
-- (void)setCurrentWildKeyIndex:(int64_t)a3 forBeacon:(id)a4 completion:(id)a5;
-- (void)setKeyRollInterval:(unint64_t)a3 forBeacon:(id)a4 completion:(id)a5;
-- (void)setRole:(int64_t)a3 forBeacon:(id)a4 completion:(id)a5;
-- (void)setStateChangedBlockWithCompletion:(id)a3;
-- (void)setStatusChangedBlockWithCompletion:(id)a3;
-- (void)setSuppressLPEMBeaconing:(BOOL)a3 completion:(id)a4;
-- (void)setUserHasAcknowledgedFindMy:(BOOL)a3 completion:(id)a4;
-- (void)setWildKeyBase:(unint64_t)a3 interval:(unint64_t)a4 fallback:(unint64_t)a5 forBeacon:(id)a6 completion:(id)a7;
+- (void)isLPEMModeSupported:(id)supported;
+- (void)keySyncMetadataWithcompletion:(id)withcompletion;
+- (void)notificationBeaconForSubscriptionId:(id)id completion:(id)completion;
+- (void)ownedDeviceKeyRecordsForUUID:(id)d completion:(id)completion;
+- (void)postedLocalNotifyWhenFoundNotificationForUUID:(id)d completion:(id)completion;
+- (void)purgeOwnedDeviceKeyRecordsForUUID:(id)d completion:(id)completion;
+- (void)removeDuplicateBeaconsWithCompletion:(id)completion;
+- (void)repairDataStore:(id)store;
+- (void)roleCategoriesWithCompletion:(id)completion;
+- (void)setAlignmentUncertainty:(double)uncertainty atIndex:(unint64_t)index date:(id)date forBeacon:(id)beacon completion:(id)completion;
+- (void)setBeaconingKeyChangedBlockWithCompletion:(id)completion;
+- (void)setCurrentWildKeyIndex:(int64_t)index forBeacon:(id)beacon completion:(id)completion;
+- (void)setKeyRollInterval:(unint64_t)interval forBeacon:(id)beacon completion:(id)completion;
+- (void)setRole:(int64_t)role forBeacon:(id)beacon completion:(id)completion;
+- (void)setStateChangedBlockWithCompletion:(id)completion;
+- (void)setStatusChangedBlockWithCompletion:(id)completion;
+- (void)setSuppressLPEMBeaconing:(BOOL)beaconing completion:(id)completion;
+- (void)setUserHasAcknowledgedFindMy:(BOOL)my completion:(id)completion;
+- (void)setWildKeyBase:(unint64_t)base interval:(unint64_t)interval fallback:(unint64_t)fallback forBeacon:(id)beacon completion:(id)completion;
 - (void)start;
-- (void)startUpdatingSimpleBeaconsWithContext:(id)a3 collectionDifference:(id)a4 completion:(id)a5;
-- (void)stopUpdatingSimpleBeaconsWithCompletion:(id)a3;
-- (void)submitDeviceEvent:(id)a3 source:(unsigned int)a4 attachedTo:(id)a5 completion:(id)a6;
-- (void)unacceptedBeaconsWithCompletion:(id)a3;
-- (void)updateBeacon:(id)a3 updates:(id)a4 completion:(id)a5;
-- (void)updateObfuscatedIdentifierWithCompletion:(id)a3;
-- (void)userHasAcknowledgeFindMyWithCompletion:(id)a3;
+- (void)startUpdatingSimpleBeaconsWithContext:(id)context collectionDifference:(id)difference completion:(id)completion;
+- (void)stopUpdatingSimpleBeaconsWithCompletion:(id)completion;
+- (void)submitDeviceEvent:(id)event source:(unsigned int)source attachedTo:(id)to completion:(id)completion;
+- (void)unacceptedBeaconsWithCompletion:(id)completion;
+- (void)updateBeacon:(id)beacon updates:(id)updates completion:(id)completion;
+- (void)updateObfuscatedIdentifierWithCompletion:(id)completion;
+- (void)userHasAcknowledgeFindMyWithCompletion:(id)completion;
 @end
 
 @implementation SPBeaconManager
@@ -73,9 +73,9 @@
       goto LABEL_4;
     }
 
-    v6 = [MEMORY[0x277CCAC38] processInfo];
-    v7 = [v6 environment];
-    v8 = [v7 objectForKeyedSubscript:@"UNDER_TEST"];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    environment = [processInfo environment];
+    v8 = [environment objectForKeyedSubscript:@"UNDER_TEST"];
 
     if (!v8)
     {
@@ -85,8 +85,8 @@ LABEL_4:
       v2->_localBeaconingManager = v9;
 
       v11 = objc_alloc(MEMORY[0x277D07BA0]);
-      v12 = [(SPBeaconManager *)v2 remoteInterface];
-      v13 = [v11 initWithMachServiceName:@"com.apple.icloud.searchpartyd.beaconmanager" options:0 remoteObjectInterface:v12 interruptionHandler:0 invalidationHandler:0];
+      remoteInterface = [(SPBeaconManager *)v2 remoteInterface];
+      v13 = [v11 initWithMachServiceName:@"com.apple.icloud.searchpartyd.beaconmanager" options:0 remoteObjectInterface:remoteInterface interruptionHandler:0 invalidationHandler:0];
       serviceDescription = v2->_serviceDescription;
       v2->_serviceDescription = v13;
 
@@ -241,47 +241,47 @@ LABEL_4:
 
 - (id)stateChangedBlockWithCompletion
 {
-  v2 = [(SPBeaconManager *)self localBeaconingManager];
-  v3 = [v2 stateChangedBlockWithCompletion];
+  localBeaconingManager = [(SPBeaconManager *)self localBeaconingManager];
+  stateChangedBlockWithCompletion = [localBeaconingManager stateChangedBlockWithCompletion];
 
-  return v3;
+  return stateChangedBlockWithCompletion;
 }
 
-- (void)setStateChangedBlockWithCompletion:(id)a3
+- (void)setStateChangedBlockWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SPBeaconManager *)self localBeaconingManager];
-  [v5 setStateChangedBlockWithCompletion:v4];
+  completionCopy = completion;
+  localBeaconingManager = [(SPBeaconManager *)self localBeaconingManager];
+  [localBeaconingManager setStateChangedBlockWithCompletion:completionCopy];
 }
 
 - (id)statusChangedBlockWithCompletion
 {
-  v2 = [(SPBeaconManager *)self localBeaconingManager];
-  v3 = [v2 statusChangedBlockWithCompletion];
+  localBeaconingManager = [(SPBeaconManager *)self localBeaconingManager];
+  statusChangedBlockWithCompletion = [localBeaconingManager statusChangedBlockWithCompletion];
 
-  return v3;
+  return statusChangedBlockWithCompletion;
 }
 
-- (void)setStatusChangedBlockWithCompletion:(id)a3
+- (void)setStatusChangedBlockWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SPBeaconManager *)self localBeaconingManager];
-  [v5 setStatusChangedBlockWithCompletion:v4];
+  completionCopy = completion;
+  localBeaconingManager = [(SPBeaconManager *)self localBeaconingManager];
+  [localBeaconingManager setStatusChangedBlockWithCompletion:completionCopy];
 }
 
 - (id)beaconingKeyChangedBlockWithCompletion
 {
-  v2 = [(SPBeaconManager *)self localBeaconingManager];
-  v3 = [v2 beaconingKeyChangedBlockWithCompletion];
+  localBeaconingManager = [(SPBeaconManager *)self localBeaconingManager];
+  beaconingKeyChangedBlockWithCompletion = [localBeaconingManager beaconingKeyChangedBlockWithCompletion];
 
-  return v3;
+  return beaconingKeyChangedBlockWithCompletion;
 }
 
-- (void)setBeaconingKeyChangedBlockWithCompletion:(id)a3
+- (void)setBeaconingKeyChangedBlockWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SPBeaconManager *)self localBeaconingManager];
-  [v5 setBeaconingKeyChangedBlockWithCompletion:v4];
+  completionCopy = completion;
+  localBeaconingManager = [(SPBeaconManager *)self localBeaconingManager];
+  [localBeaconingManager setBeaconingKeyChangedBlockWithCompletion:completionCopy];
 }
 
 - (void)dealloc
@@ -295,7 +295,7 @@ LABEL_4:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2643D0000, v4, OS_LOG_TYPE_DEFAULT, "SPBeaconManager: Dealloc %{public}@", buf, 0xCu);
   }
 
@@ -308,56 +308,56 @@ LABEL_4:
 - (SPBeaconManagerXPCProtocol)proxy
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(SPBeaconManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SPBeaconManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SPBeaconManager *)self session];
+  session = [(SPBeaconManager *)self session];
 
-  if (!v4)
+  if (!session)
   {
     v5 = objc_alloc(MEMORY[0x277D07BA8]);
-    v6 = [(SPBeaconManager *)self serviceDescription];
-    v7 = [v5 initWithServiceDescription:v6];
+    serviceDescription = [(SPBeaconManager *)self serviceDescription];
+    v7 = [v5 initWithServiceDescription:serviceDescription];
     [(SPBeaconManager *)self setSession:v7];
 
     v8 = LogCategory_BeaconManager();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(SPBeaconManager *)self serviceDescription];
-      v10 = [v9 machService];
+      serviceDescription2 = [(SPBeaconManager *)self serviceDescription];
+      machService = [serviceDescription2 machService];
       v16 = 138412290;
-      v17 = v10;
+      v17 = machService;
       _os_log_impl(&dword_2643D0000, v8, OS_LOG_TYPE_DEFAULT, "SPBeaconManager: Establishing XPC connection to %@", &v16, 0xCu);
     }
 
-    v11 = [(SPBeaconManager *)self session];
-    [v11 resume];
+    session2 = [(SPBeaconManager *)self session];
+    [session2 resume];
   }
 
-  v12 = [(SPBeaconManager *)self session];
-  v13 = [v12 proxy];
+  session3 = [(SPBeaconManager *)self session];
+  proxy = [session3 proxy];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return proxy;
 }
 
 - (void)start
 {
-  v2 = [(SPBeaconManager *)self localBeaconingManager];
-  [v2 start];
+  localBeaconingManager = [(SPBeaconManager *)self localBeaconingManager];
+  [localBeaconingManager start];
 }
 
 - (void)invalidate
 {
-  v2 = [(SPBeaconManager *)self localBeaconingManager];
-  [v2 invalidate];
+  localBeaconingManager = [(SPBeaconManager *)self localBeaconingManager];
+  [localBeaconingManager invalidate];
 }
 
-- (void)updateObfuscatedIdentifierWithCompletion:(id)a3
+- (void)updateObfuscatedIdentifierWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -367,15 +367,15 @@ LABEL_4:
   }
 
   objc_initWeak(buf, self);
-  v6 = [(SPBeaconManager *)self queue];
+  queue = [(SPBeaconManager *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__SPBeaconManager_updateObfuscatedIdentifierWithCompletion___block_invoke;
   v9[3] = &unk_279B59650;
   objc_copyWeak(&v11, buf);
-  v10 = v4;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(queue, v9);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(buf);
@@ -389,19 +389,19 @@ void __60__SPBeaconManager_updateObfuscatedIdentifierWithCompletion___block_invo
   [v2 updateObfuscatedIdentifierWithCompletion:*(a1 + 32)];
 }
 
-- (void)beaconForUUID:(id)a3 completion:(id)a4
+- (void)beaconForUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __44__SPBeaconManager_beaconForUUID_completion___block_invoke;
   activity_block[3] = &unk_279B59A48;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = completionCopy;
+  v11 = dCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: beaconForUUID:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -455,19 +455,19 @@ void __44__SPBeaconManager_beaconForUUID_completion___block_invoke_220(uint64_t 
   [v2 beaconForUUID:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)ownedDeviceKeyRecordsForUUID:(id)a3 completion:(id)a4
+- (void)ownedDeviceKeyRecordsForUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __59__SPBeaconManager_ownedDeviceKeyRecordsForUUID_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: ownedDeviceKeyRecordsForUUID:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -505,19 +505,19 @@ void __59__SPBeaconManager_ownedDeviceKeyRecordsForUUID_completion___block_invok
   [v2 ownedDeviceKeyRecordsForUUID:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)purgeOwnedDeviceKeyRecordsForUUID:(id)a3 completion:(id)a4
+- (void)purgeOwnedDeviceKeyRecordsForUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __64__SPBeaconManager_purgeOwnedDeviceKeyRecordsForUUID_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: purgeOwnedDeviceKeyRecordsForUUID:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -555,19 +555,19 @@ void __64__SPBeaconManager_purgeOwnedDeviceKeyRecordsForUUID_completion___block_
   [v2 purgeOwnedDeviceKeyRecordsForUUID:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)createOwnedDeviceKeyRecordForUUID:(id)a3 completion:(id)a4
+- (void)createOwnedDeviceKeyRecordForUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __64__SPBeaconManager_createOwnedDeviceKeyRecordForUUID_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: createOwnedDeviceKeyRecordForUUID:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -605,19 +605,19 @@ void __64__SPBeaconManager_createOwnedDeviceKeyRecordForUUID_completion___block_
   [v2 createOwnedDeviceKeyRecordForUUID:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)notificationBeaconForSubscriptionId:(id)a3 completion:(id)a4
+- (void)notificationBeaconForSubscriptionId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __66__SPBeaconManager_notificationBeaconForSubscriptionId_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = idCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = idCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: notificationBeaconForSubscriptionId:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -655,16 +655,16 @@ void __66__SPBeaconManager_notificationBeaconForSubscriptionId_completion___bloc
   [v2 notificationBeaconForSubscriptionId:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)allBeaconsWithCompletion:(id)a3
+- (void)allBeaconsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__SPBeaconManager_allBeaconsWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: allBeaconsWithCompletion:", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -701,19 +701,19 @@ void __44__SPBeaconManager_allBeaconsWithCompletion___block_invoke_225(uint64_t 
   [v2 allBeaconsWithCompletion:*(a1 + 32)];
 }
 
-- (void)allBeaconsOfTypes:(id)a3 completion:(id)a4
+- (void)allBeaconsOfTypes:(id)types completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __48__SPBeaconManager_allBeaconsOfTypes_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = typesCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = typesCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: allBeaconsOfTypes:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -782,21 +782,21 @@ void __48__SPBeaconManager_allBeaconsOfTypes_completion___block_invoke_227(uint6
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allBeaconsOfTypes:(id)a3 includeDupes:(BOOL)a4 includeHidden:(BOOL)a5 completion:(id)a6
+- (void)allBeaconsOfTypes:(id)types includeDupes:(BOOL)dupes includeHidden:(BOOL)hidden completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  typesCopy = types;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __75__SPBeaconManager_allBeaconsOfTypes_includeDupes_includeHidden_completion___block_invoke;
   v14[3] = &unk_279B5A470;
   v14[4] = self;
-  v15 = v10;
-  v17 = a4;
-  v18 = a5;
-  v16 = v11;
-  v12 = v11;
-  v13 = v10;
+  v15 = typesCopy;
+  dupesCopy = dupes;
+  hiddenCopy = hidden;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = typesCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: allBeaconsOfTypes:includeDupes:includeHidden:completion:", OS_ACTIVITY_FLAG_DEFAULT, v14);
 }
 
@@ -868,19 +868,19 @@ void __75__SPBeaconManager_allBeaconsOfTypes_includeDupes_includeHidden_completi
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allBeaconsOfType:(id)a3 completion:(id)a4
+- (void)allBeaconsOfType:(id)type completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __47__SPBeaconManager_allBeaconsOfType_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = typeCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = typeCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: allBeaconsOfType:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -932,12 +932,12 @@ void __47__SPBeaconManager_allBeaconsOfType_completion___block_invoke_231(uint64
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startUpdatingSimpleBeaconsWithContext:(id)a3 collectionDifference:(id)a4 completion:(id)a5
+- (void)startUpdatingSimpleBeaconsWithContext:(id)context collectionDifference:(id)difference completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  differenceCopy = difference;
+  completionCopy = completion;
   v11 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -951,14 +951,14 @@ void __47__SPBeaconManager_allBeaconsOfType_completion___block_invoke_231(uint64
   aBlock[2] = __89__SPBeaconManager_startUpdatingSimpleBeaconsWithContext_collectionDifference_completion___block_invoke;
   aBlock[3] = &unk_279B58E30;
   aBlock[4] = self;
-  v22 = v8;
-  v23 = v9;
-  v24 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v22 = contextCopy;
+  v23 = differenceCopy;
+  v24 = completionCopy;
+  v12 = completionCopy;
+  v13 = contextCopy;
+  v14 = differenceCopy;
   v15 = _Block_copy(aBlock);
-  v16 = [(SPBeaconManager *)self queue];
+  queue = [(SPBeaconManager *)self queue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __89__SPBeaconManager_startUpdatingSimpleBeaconsWithContext_collectionDifference_completion___block_invoke_4;
@@ -966,7 +966,7 @@ void __47__SPBeaconManager_allBeaconsOfType_completion___block_invoke_231(uint64
   v19[4] = self;
   v20 = v15;
   v17 = v15;
-  dispatch_async(v16, v19);
+  dispatch_async(queue, v19);
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -1057,10 +1057,10 @@ void __89__SPBeaconManager_startUpdatingSimpleBeaconsWithContext_collectionDiffe
   dispatch_async(v2, block);
 }
 
-- (void)stopUpdatingSimpleBeaconsWithCompletion:(id)a3
+- (void)stopUpdatingSimpleBeaconsWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1069,15 +1069,15 @@ void __89__SPBeaconManager_startUpdatingSimpleBeaconsWithContext_collectionDiffe
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPBeaconManager: SPI: %{public}s", buf, 0xCu);
   }
 
-  v6 = [(SPBeaconManager *)self queue];
+  queue = [(SPBeaconManager *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__SPBeaconManager_stopUpdatingSimpleBeaconsWithCompletion___block_invoke;
   v9[3] = &unk_279B58B80;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -1097,16 +1097,16 @@ void __59__SPBeaconManager_stopUpdatingSimpleBeaconsWithCompletion___block_invok
   }
 }
 
-- (void)unacceptedBeaconsWithCompletion:(id)a3
+- (void)unacceptedBeaconsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__SPBeaconManager_unacceptedBeaconsWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: unacceptedBeaconsWithCompletion:", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -1143,22 +1143,22 @@ void __51__SPBeaconManager_unacceptedBeaconsWithCompletion___block_invoke_241(ui
   [v2 unacceptedBeaconsWithCompletion:*(a1 + 32)];
 }
 
-- (void)beaconingKeysForUUID:(id)a3 dateInterval:(id)a4 completion:(id)a5
+- (void)beaconingKeysForUUID:(id)d dateInterval:(id)interval completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  intervalCopy = interval;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__SPBeaconManager_beaconingKeysForUUID_dateInterval_completion___block_invoke;
   v14[3] = &unk_279B593C0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = dCopy;
+  v16 = intervalCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = intervalCopy;
+  v13 = dCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: beaconingKeysForUUID:dateInterval:completion:", OS_ACTIVITY_FLAG_DEFAULT, v14);
 }
 
@@ -1197,19 +1197,19 @@ void __64__SPBeaconManager_beaconingKeysForUUID_dateInterval_completion___block_
   [v2 beaconingKeysForUUID:*(a1 + 32) dateInterval:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)postedLocalNotifyWhenFoundNotificationForUUID:(id)a3 completion:(id)a4
+- (void)postedLocalNotifyWhenFoundNotificationForUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __76__SPBeaconManager_postedLocalNotifyWhenFoundNotificationForUUID_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: postedLocalNotifyWhenFoundNotificationForUUID:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -1247,16 +1247,16 @@ void __76__SPBeaconManager_postedLocalNotifyWhenFoundNotificationForUUID_complet
   [v2 postedLocalNotifyWhenFoundNotificationForUUID:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)allDuriansWithCompletion:(id)a3
+- (void)allDuriansWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__SPBeaconManager_allDuriansWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: allDuriansWithCompletion:", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -1299,16 +1299,16 @@ void __44__SPBeaconManager_allDuriansWithCompletion___block_invoke_244(uint64_t 
   [v2 allDuriansWithCompletion:*(a1 + 32)];
 }
 
-- (void)roleCategoriesWithCompletion:(id)a3
+- (void)roleCategoriesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__SPBeaconManager_roleCategoriesWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: roleCategoriesWithCompletion:", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -1345,20 +1345,20 @@ void __48__SPBeaconManager_roleCategoriesWithCompletion___block_invoke_245(uint6
   [v2 roleCategoriesWithCompletion:*(a1 + 32)];
 }
 
-- (void)setRole:(int64_t)a3 forBeacon:(id)a4 completion:(id)a5
+- (void)setRole:(int64_t)role forBeacon:(id)beacon completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  beaconCopy = beacon;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __48__SPBeaconManager_setRole_forBeacon_completion___block_invoke;
   v12[3] = &unk_279B5A498;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a3;
-  v10 = v9;
-  v11 = v8;
+  v13 = beaconCopy;
+  v14 = completionCopy;
+  roleCopy = role;
+  v10 = completionCopy;
+  v11 = beaconCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: setRole:forBeacon:completion:", OS_ACTIVITY_FLAG_DEFAULT, v12);
 }
 
@@ -1397,22 +1397,22 @@ void __48__SPBeaconManager_setRole_forBeacon_completion___block_invoke_246(uint6
   [v2 setRole:*(a1 + 56) beaconId:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)updateBeacon:(id)a3 updates:(id)a4 completion:(id)a5
+- (void)updateBeacon:(id)beacon updates:(id)updates completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  beaconCopy = beacon;
+  updatesCopy = updates;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __51__SPBeaconManager_updateBeacon_updates_completion___block_invoke;
   v14[3] = &unk_279B593C0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = beaconCopy;
+  v16 = updatesCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = updatesCopy;
+  v13 = beaconCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: updateBeacon:updates:completion:", OS_ACTIVITY_FLAG_DEFAULT, v14);
 }
 
@@ -1467,22 +1467,22 @@ void __51__SPBeaconManager_updateBeacon_updates_completion___block_invoke_2(uint
   [v2 updateBeacon:*(a1 + 32) updates:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)connectionTokensForBeaconUUID:(id)a3 dateInterval:(id)a4 completion:(id)a5
+- (void)connectionTokensForBeaconUUID:(id)d dateInterval:(id)interval completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  intervalCopy = interval;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __73__SPBeaconManager_connectionTokensForBeaconUUID_dateInterval_completion___block_invoke;
   v14[3] = &unk_279B593C0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = dCopy;
+  v16 = intervalCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = intervalCopy;
+  v13 = dCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: connectionTokensForBeaconUUID:dateInterval:completion:", OS_ACTIVITY_FLAG_DEFAULT, v14);
 }
 
@@ -1570,22 +1570,22 @@ void __73__SPBeaconManager_connectionTokensForBeaconUUID_dateInterval_completion
   [*(a1 + 32) addObjectsFromArray:v5];
 }
 
-- (void)connectionTokensForBeaconUUID:(id)a3 criteria:(id)a4 completion:(id)a5
+- (void)connectionTokensForBeaconUUID:(id)d criteria:(id)criteria completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  criteriaCopy = criteria;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__SPBeaconManager_connectionTokensForBeaconUUID_criteria_completion___block_invoke;
   v14[3] = &unk_279B593C0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = dCopy;
+  v16 = criteriaCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = criteriaCopy;
+  v13 = dCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: connectionTokensForBeaconUUID:criteria:completion:", OS_ACTIVITY_FLAG_DEFAULT, v14);
 }
 
@@ -1647,23 +1647,23 @@ void __69__SPBeaconManager_connectionTokensForBeaconUUID_criteria_completion___b
   [v3 commandKeysForUUID:v4 withCriteria:v5 completion:v6];
 }
 
-- (void)allBeaconingKeysForUUID:(id)a3 dateInterval:(id)a4 forceGenerate:(BOOL)a5 completion:(id)a6
+- (void)allBeaconingKeysForUUID:(id)d dateInterval:(id)interval forceGenerate:(BOOL)generate completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  intervalCopy = interval;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __81__SPBeaconManager_allBeaconingKeysForUUID_dateInterval_forceGenerate_completion___block_invoke;
   activity_block[3] = &unk_279B59CE8;
   activity_block[4] = self;
-  v17 = v10;
-  v20 = a5;
-  v18 = v11;
-  v19 = v12;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v17 = dCopy;
+  generateCopy = generate;
+  v18 = intervalCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = intervalCopy;
+  v15 = dCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: allBeaconingKeysForUUID:dateInterval:forceGenerate:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -1703,24 +1703,24 @@ void __81__SPBeaconManager_allBeaconingKeysForUUID_dateInterval_forceGenerate_co
   [v2 allBeaconingKeysForUUID:*(a1 + 32) dateInterval:*(a1 + 40) forceGenerate:*(a1 + 64) completion:*(a1 + 48)];
 }
 
-- (void)setAlignmentUncertainty:(double)a3 atIndex:(unint64_t)a4 date:(id)a5 forBeacon:(id)a6 completion:(id)a7
+- (void)setAlignmentUncertainty:(double)uncertainty atIndex:(unint64_t)index date:(id)date forBeacon:(id)beacon completion:(id)completion
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dateCopy = date;
+  beaconCopy = beacon;
+  completionCopy = completion;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __77__SPBeaconManager_setAlignmentUncertainty_atIndex_date_forBeacon_completion___block_invoke;
   v18[3] = &unk_279B5A538;
-  v22 = a3;
-  v23 = a4;
+  uncertaintyCopy = uncertainty;
+  indexCopy = index;
   v18[4] = self;
-  v19 = v12;
-  v20 = v13;
-  v21 = v14;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
+  v19 = dateCopy;
+  v20 = beaconCopy;
+  v21 = completionCopy;
+  v15 = completionCopy;
+  v16 = beaconCopy;
+  v17 = dateCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: setAlignmentUncertainty:atIndex:forceGenerate:date:forBeacon:completion:", OS_ACTIVITY_FLAG_DEFAULT, v18);
 }
 
@@ -1761,20 +1761,20 @@ void __77__SPBeaconManager_setAlignmentUncertainty_atIndex_date_forBeacon_comple
   [v2 setAlignmentUncertainty:*(a1 + 72) atIndex:*(a1 + 32) date:*(a1 + 40) forBeacon:*(a1 + 48) completion:*(a1 + 64)];
 }
 
-- (void)setKeyRollInterval:(unint64_t)a3 forBeacon:(id)a4 completion:(id)a5
+- (void)setKeyRollInterval:(unint64_t)interval forBeacon:(id)beacon completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  beaconCopy = beacon;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59__SPBeaconManager_setKeyRollInterval_forBeacon_completion___block_invoke;
   v12[3] = &unk_279B5A498;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a3;
-  v10 = v9;
-  v11 = v8;
+  v13 = beaconCopy;
+  v14 = completionCopy;
+  intervalCopy = interval;
+  v10 = completionCopy;
+  v11 = beaconCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: setKeyRollInterval:forBeacon:completion:", OS_ACTIVITY_FLAG_DEFAULT, v12);
 }
 
@@ -1813,22 +1813,22 @@ void __59__SPBeaconManager_setKeyRollInterval_forBeacon_completion___block_invok
   [v2 setKeyRollInterval:*(a1 + 56) forBeacon:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)setWildKeyBase:(unint64_t)a3 interval:(unint64_t)a4 fallback:(unint64_t)a5 forBeacon:(id)a6 completion:(id)a7
+- (void)setWildKeyBase:(unint64_t)base interval:(unint64_t)interval fallback:(unint64_t)fallback forBeacon:(id)beacon completion:(id)completion
 {
-  v12 = a6;
-  v13 = a7;
+  beaconCopy = beacon;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __73__SPBeaconManager_setWildKeyBase_interval_fallback_forBeacon_completion___block_invoke;
   v16[3] = &unk_279B5A588;
-  v20 = a4;
-  v21 = a5;
+  intervalCopy = interval;
+  fallbackCopy = fallback;
   v16[4] = self;
-  v17 = v12;
-  v18 = v13;
-  v19 = a3;
-  v14 = v13;
-  v15 = v12;
+  v17 = beaconCopy;
+  v18 = completionCopy;
+  baseCopy = base;
+  v14 = completionCopy;
+  v15 = beaconCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: setWildKeyBase:interval:fallback:forBeacon:completion:", OS_ACTIVITY_FLAG_DEFAULT, v16);
 }
 
@@ -1868,20 +1868,20 @@ void __73__SPBeaconManager_setWildKeyBase_interval_fallback_forBeacon_completion
   [v2 setWildKeyBase:*(a1 + 56) interval:*(a1 + 64) fallback:*(a1 + 72) forBeacon:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)setCurrentWildKeyIndex:(int64_t)a3 forBeacon:(id)a4 completion:(id)a5
+- (void)setCurrentWildKeyIndex:(int64_t)index forBeacon:(id)beacon completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  beaconCopy = beacon;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__SPBeaconManager_setCurrentWildKeyIndex_forBeacon_completion___block_invoke;
   v12[3] = &unk_279B5A498;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a3;
-  v10 = v9;
-  v11 = v8;
+  v13 = beaconCopy;
+  v14 = completionCopy;
+  indexCopy = index;
+  v10 = completionCopy;
+  v11 = beaconCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: setCurrentWildKeyIndex:forBeacon:completion:", OS_ACTIVITY_FLAG_DEFAULT, v12);
 }
 
@@ -1920,19 +1920,19 @@ void __63__SPBeaconManager_setCurrentWildKeyIndex_forBeacon_completion___block_i
   [v2 setCurrentWildKeyIndex:*(a1 + 56) forBeacon:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)connectionTokensForBeaconUUID:(id)a3 completion:(id)a4
+- (void)connectionTokensForBeaconUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __60__SPBeaconManager_connectionTokensForBeaconUUID_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: connectionTokensForBeaconUUID:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -2010,20 +2010,20 @@ void __60__SPBeaconManager_connectionTokensForBeaconUUID_completion___block_invo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)connectedToBeacon:(id)a3 withIndex:(unint64_t)a4 completion:(id)a5
+- (void)connectedToBeacon:(id)beacon withIndex:(unint64_t)index completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  beaconCopy = beacon;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__SPBeaconManager_connectedToBeacon_withIndex_completion___block_invoke;
   v12[3] = &unk_279B5A498;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a4;
-  v10 = v9;
-  v11 = v8;
+  v13 = beaconCopy;
+  v14 = completionCopy;
+  indexCopy = index;
+  v10 = completionCopy;
+  v11 = beaconCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: connectedToBeacon:withIndex:completion:", OS_ACTIVITY_FLAG_DEFAULT, v12);
 }
 
@@ -2065,19 +2065,19 @@ void __58__SPBeaconManager_connectedToBeacon_withIndex_completion___block_invoke
   [v2 connectedToBeacon:*(a1 + 32) withIndex:*(a1 + 56) completion:*(a1 + 40)];
 }
 
-- (void)fetchUserStatsForBeacon:(id)a3 completion:(id)a4
+- (void)fetchUserStatsForBeacon:(id)beacon completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  beaconCopy = beacon;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __54__SPBeaconManager_fetchUserStatsForBeacon_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = beaconCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = beaconCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: fetchUserStatsForBeacon:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -2115,19 +2115,19 @@ void __54__SPBeaconManager_fetchUserStatsForBeacon_completion___block_invoke_264
   [v2 fetchUserStatsForBeacon:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)fetchFirmwareVersionForBeacon:(id)a3 completion:(id)a4
+- (void)fetchFirmwareVersionForBeacon:(id)beacon completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  beaconCopy = beacon;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __60__SPBeaconManager_fetchFirmwareVersionForBeacon_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = beaconCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = beaconCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: fetchFirmwareVersionForBeacon:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -2165,16 +2165,16 @@ void __60__SPBeaconManager_fetchFirmwareVersionForBeacon_completion___block_invo
   [v2 fetchFirmwareVersionForBeacon:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)createKeyReconcilerWithCompletion:(id)a3
+- (void)createKeyReconcilerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__SPBeaconManager_createKeyReconcilerWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling createKeyReconcilerWithCompletion", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -2239,16 +2239,16 @@ void __53__SPBeaconManager_createKeyReconcilerWithCompletion___block_invoke_3(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)repairDataStore:(id)a3
+- (void)repairDataStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__SPBeaconManager_repairDataStore___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = storeCopy;
+  v5 = storeCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconManager: repairDataStore:", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -2285,18 +2285,18 @@ void __35__SPBeaconManager_repairDataStore___block_invoke_268(uint64_t a1)
   [v2 repairDataStore:*(a1 + 32)];
 }
 
-- (void)isLPEMModeSupported:(id)a3
+- (void)isLPEMModeSupported:(id)supported
 {
-  v4 = a3;
-  v5 = [(SPBeaconManager *)self queue];
+  supportedCopy = supported;
+  queue = [(SPBeaconManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__SPBeaconManager_isLPEMModeSupported___block_invoke;
   v7[3] = &unk_279B58B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = supportedCopy;
+  v6 = supportedCopy;
+  dispatch_async(queue, v7);
 }
 
 void __39__SPBeaconManager_isLPEMModeSupported___block_invoke(uint64_t a1)
@@ -2310,18 +2310,18 @@ void __39__SPBeaconManager_isLPEMModeSupported___block_invoke(uint64_t a1)
   [v2 isLPEMModeSupportedWithCompletion:v3];
 }
 
-- (void)userHasAcknowledgeFindMyWithCompletion:(id)a3
+- (void)userHasAcknowledgeFindMyWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SPBeaconManager *)self queue];
+  completionCopy = completion;
+  queue = [(SPBeaconManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__SPBeaconManager_userHasAcknowledgeFindMyWithCompletion___block_invoke;
   v7[3] = &unk_279B58B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __58__SPBeaconManager_userHasAcknowledgeFindMyWithCompletion___block_invoke(uint64_t a1)
@@ -2335,19 +2335,19 @@ void __58__SPBeaconManager_userHasAcknowledgeFindMyWithCompletion___block_invoke
   [v2 userHasAcknowledgeFindMyWithCompletion:v3];
 }
 
-- (void)setUserHasAcknowledgedFindMy:(BOOL)a3 completion:(id)a4
+- (void)setUserHasAcknowledgedFindMy:(BOOL)my completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(SPBeaconManager *)self queue];
+  completionCopy = completion;
+  queue = [(SPBeaconManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__SPBeaconManager_setUserHasAcknowledgedFindMy_completion___block_invoke;
   block[3] = &unk_279B59FF0;
-  v11 = a3;
+  myCopy = my;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __59__SPBeaconManager_setUserHasAcknowledgedFindMy_completion___block_invoke(uint64_t a1)
@@ -2362,19 +2362,19 @@ void __59__SPBeaconManager_setUserHasAcknowledgedFindMy_completion___block_invok
   [v2 setUserHasAcknowledgedFindMy:v3 completion:v4];
 }
 
-- (void)setSuppressLPEMBeaconing:(BOOL)a3 completion:(id)a4
+- (void)setSuppressLPEMBeaconing:(BOOL)beaconing completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(SPBeaconManager *)self queue];
+  completionCopy = completion;
+  queue = [(SPBeaconManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__SPBeaconManager_setSuppressLPEMBeaconing_completion___block_invoke;
   block[3] = &unk_279B59FF0;
-  v11 = a3;
+  beaconingCopy = beaconing;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __55__SPBeaconManager_setSuppressLPEMBeaconing_completion___block_invoke(uint64_t a1)
@@ -2389,23 +2389,23 @@ void __55__SPBeaconManager_setSuppressLPEMBeaconing_completion___block_invoke(ui
   [v2 setSuppressLPEMBeaconing:v3 completion:v4];
 }
 
-- (void)createDuplicateBeaconsForBeacon:(id)a3 skipGroupIdentifier:(BOOL)a4 count:(int64_t)a5 completion:(id)a6
+- (void)createDuplicateBeaconsForBeacon:(id)beacon skipGroupIdentifier:(BOOL)identifier count:(int64_t)count completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(SPBeaconManager *)self queue];
+  beaconCopy = beacon;
+  completionCopy = completion;
+  queue = [(SPBeaconManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__SPBeaconManager_createDuplicateBeaconsForBeacon_skipGroupIdentifier_count_completion___block_invoke;
   block[3] = &unk_279B5A620;
   block[4] = self;
-  v16 = v10;
-  v19 = a4;
-  v17 = v11;
-  v18 = a5;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, block);
+  v16 = beaconCopy;
+  identifierCopy = identifier;
+  v17 = completionCopy;
+  countCopy = count;
+  v13 = completionCopy;
+  v14 = beaconCopy;
+  dispatch_async(queue, block);
 }
 
 void __88__SPBeaconManager_createDuplicateBeaconsForBeacon_skipGroupIdentifier_count_completion___block_invoke(uint64_t a1)
@@ -2414,18 +2414,18 @@ void __88__SPBeaconManager_createDuplicateBeaconsForBeacon_skipGroupIdentifier_c
   [v2 createDuplicateBeaconsForBeacon:*(a1 + 40) skipGroupIdentifier:*(a1 + 64) count:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (void)removeDuplicateBeaconsWithCompletion:(id)a3
+- (void)removeDuplicateBeaconsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SPBeaconManager *)self queue];
+  completionCopy = completion;
+  queue = [(SPBeaconManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__SPBeaconManager_removeDuplicateBeaconsWithCompletion___block_invoke;
   v7[3] = &unk_279B58B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __56__SPBeaconManager_removeDuplicateBeaconsWithCompletion___block_invoke(uint64_t a1)
@@ -2434,25 +2434,25 @@ void __56__SPBeaconManager_removeDuplicateBeaconsWithCompletion___block_invoke(u
   [v2 removeDuplicateBeaconsWithCompletion:*(a1 + 40)];
 }
 
-- (void)submitDeviceEvent:(id)a3 source:(unsigned int)a4 attachedTo:(id)a5 completion:(id)a6
+- (void)submitDeviceEvent:(id)event source:(unsigned int)source attachedTo:(id)to completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(SPBeaconManager *)self queue];
+  eventCopy = event;
+  toCopy = to;
+  completionCopy = completion;
+  queue = [(SPBeaconManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__SPBeaconManager_submitDeviceEvent_source_attachedTo_completion___block_invoke;
   block[3] = &unk_279B5A648;
   block[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = eventCopy;
+  sourceCopy = source;
+  v19 = toCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = toCopy;
+  v16 = eventCopy;
+  dispatch_async(queue, block);
 }
 
 void __66__SPBeaconManager_submitDeviceEvent_source_attachedTo_completion___block_invoke(uint64_t a1)
@@ -2461,18 +2461,18 @@ void __66__SPBeaconManager_submitDeviceEvent_source_attachedTo_completion___bloc
   [v2 submitDeviceEvent:*(a1 + 40) source:*(a1 + 64) attachedTo:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)keySyncMetadataWithcompletion:(id)a3
+- (void)keySyncMetadataWithcompletion:(id)withcompletion
 {
-  v4 = a3;
-  v5 = [(SPBeaconManager *)self queue];
+  withcompletionCopy = withcompletion;
+  queue = [(SPBeaconManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__SPBeaconManager_keySyncMetadataWithcompletion___block_invoke;
   v7[3] = &unk_279B58B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = withcompletionCopy;
+  v6 = withcompletionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __49__SPBeaconManager_keySyncMetadataWithcompletion___block_invoke(uint64_t a1)

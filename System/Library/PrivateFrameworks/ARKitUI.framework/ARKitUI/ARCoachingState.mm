@@ -1,20 +1,20 @@
 @interface ARCoachingState
 - (ARCoachingOverlayView)view;
-- (ARCoachingState)initWithView:(id)a3;
+- (ARCoachingState)initWithView:(id)view;
 @end
 
 @implementation ARCoachingState
 
-- (ARCoachingState)initWithView:(id)a3
+- (ARCoachingState)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = ARCoachingState;
   v5 = [(ARCoachingState *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_view, v4);
+    objc_storeWeak(&v5->_view, viewCopy);
   }
 
   return v6;

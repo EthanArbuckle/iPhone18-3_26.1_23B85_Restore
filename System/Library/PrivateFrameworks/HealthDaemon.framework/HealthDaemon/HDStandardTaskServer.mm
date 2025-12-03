@@ -2,12 +2,12 @@
 + (NSString)taskIdentifier;
 + (id)requiredEntitlements;
 - (HDProfile)profile;
-- (HDStandardTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDStandardTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (HDTaskServerDelegate)delegate;
 - (id)exportedInterface;
 - (id)remoteInterface;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (void)remote_unitTesting_createTaskServerNoOpWithCompletion:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (void)remote_unitTesting_createTaskServerNoOpWithCompletion:(id)completion;
 @end
 
 @implementation HDStandardTaskServer
@@ -30,12 +30,12 @@
   return v2;
 }
 
-- (HDStandardTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDStandardTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  clientCopy = client;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = HDStandardTaskServer;
   v12 = [(HDStandardTaskServer *)&v19 init];
@@ -48,31 +48,31 @@
       *buf = 138543618;
       v21 = v12;
       v22 = 2114;
-      v23 = v9;
+      v23 = dCopy;
       _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_INFO, "%{public}@: Initialized for task %{public}@.", buf, 0x16u);
     }
 
-    v14 = [v9 copy];
+    v14 = [dCopy copy];
     taskUUID = v12->_taskUUID;
     v12->_taskUUID = v14;
 
-    objc_storeStrong(&v12->_client, a5);
-    v16 = [v10 profile];
-    objc_storeWeak(&v12->_profile, v16);
+    objc_storeStrong(&v12->_client, client);
+    profile = [clientCopy profile];
+    objc_storeWeak(&v12->_profile, profile);
 
-    objc_storeWeak(&v12->_delegate, v11);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
   }
 
   v17 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self client];
-  v6 = [v5 connection];
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  client = [(HDStandardTaskServer *)self client];
+  connection = [client connection];
+  v7 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v7;
 }
@@ -93,24 +93,24 @@
   return 0;
 }
 
-- (void)remote_unitTesting_createTaskServerNoOpWithCompletion:(id)a3
+- (void)remote_unitTesting_createTaskServerNoOpWithCompletion:(id)completion
 {
   if (_HDIsUnitTesting)
   {
-    v3 = *(a3 + 2);
-    v9 = a3;
+    v3 = *(completion + 2);
+    completionCopy = completion;
     v3();
   }
 
   else
   {
     v6 = MEMORY[0x277CCA890];
-    v7 = a3;
-    v8 = [v6 currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HDStandardTaskServer.m" lineNumber:78 description:@"This method can only be called while unit testing"];
+    completionCopy2 = completion;
+    currentHandler = [v6 currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDStandardTaskServer.m" lineNumber:78 description:@"This method can only be called while unit testing"];
 
-    v9 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"This method can only be called while unit testing"];
-    v7[2](v7, 0);
+    completionCopy = [MEMORY[0x277CCA9B8] hk_error:100 description:@"This method can only be called while unit testing"];
+    completionCopy2[2](completionCopy2, 0);
   }
 }
 

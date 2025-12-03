@@ -1,12 +1,12 @@
 @interface UNSExampleUserNotificationCenter
 - (UNSExampleUserNotificationCenter)init;
 - (id)_basicPostUpdateRecipe;
-- (id)_existingNotificationRequestForIdentifier:(id)a3;
-- (id)_newNotificationRequest:(id)a3 threadIdentifier:(id)a4;
+- (id)_existingNotificationRequestForIdentifier:(id)identifier;
+- (id)_newNotificationRequest:(id)request threadIdentifier:(id)identifier;
 - (id)_userNotificationCenter;
-- (void)_postNotificationWithID:(id)a3 threadIdentifier:(id)a4;
-- (void)publish:(unint64_t)a3 numberOfUniqueThreads:(unint64_t)a4 completion:(id)a5;
-- (void)publishWithNumberOfUniqueThreads:(unint64_t)a3;
+- (void)_postNotificationWithID:(id)d threadIdentifier:(id)identifier;
+- (void)publish:(unint64_t)publish numberOfUniqueThreads:(unint64_t)threads completion:(id)completion;
+- (void)publishWithNumberOfUniqueThreads:(unint64_t)threads;
 - (void)removeAllNotifications;
 - (void)update;
 @end
@@ -21,9 +21,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(UNSExampleUserNotificationCenter *)v2 _basicPostUpdateRecipe];
+    _basicPostUpdateRecipe = [(UNSExampleUserNotificationCenter *)v2 _basicPostUpdateRecipe];
     basicTestRecipe = v3->_basicTestRecipe;
-    v3->_basicTestRecipe = v4;
+    v3->_basicTestRecipe = _basicPostUpdateRecipe;
 
     [(PTDomain *)UNSUserNotificationServerDomain registerTestRecipe:v3->_basicTestRecipe];
   }
@@ -31,37 +31,37 @@
   return v3;
 }
 
-- (void)publishWithNumberOfUniqueThreads:(unint64_t)a3
+- (void)publishWithNumberOfUniqueThreads:(unint64_t)threads
 {
   ++__notificationRequestCount;
-  if (a3)
+  if (threads)
   {
     v4 = __notificationThreadCount++;
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"thread-%ld", v4 % a3];
+    threads = [MEMORY[0x277CCACA8] stringWithFormat:@"thread-%ld", v4 % threads];
   }
 
   else
   {
-    v6 = 0;
+    threads = 0;
   }
 
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", __notificationRequestCount];
-  [(UNSExampleUserNotificationCenter *)self _postNotificationWithID:v5 threadIdentifier:v6];
+  __notificationRequestCount = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", __notificationRequestCount];
+  [(UNSExampleUserNotificationCenter *)self _postNotificationWithID:__notificationRequestCount threadIdentifier:threads];
 }
 
-- (void)publish:(unint64_t)a3 numberOfUniqueThreads:(unint64_t)a4 completion:(id)a5
+- (void)publish:(unint64_t)publish numberOfUniqueThreads:(unint64_t)threads completion:(id)completion
 {
-  v8 = a5;
-  if (a3)
+  completionCopy = completion;
+  if (publish)
   {
-    v9 = a3;
+    publishCopy = publish;
     do
     {
-      [(UNSExampleUserNotificationCenter *)self publishWithNumberOfUniqueThreads:a4];
-      --v9;
+      [(UNSExampleUserNotificationCenter *)self publishWithNumberOfUniqueThreads:threads];
+      --publishCopy;
     }
 
-    while (v9);
+    while (publishCopy);
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
@@ -70,16 +70,16 @@
     {
       v10 = dispatch_group_create();
       dispatch_group_enter(v10);
-      v11 = [(UNSExampleUserNotificationCenter *)self _userNotificationCenter];
+      _userNotificationCenter = [(UNSExampleUserNotificationCenter *)self _userNotificationCenter];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __77__UNSExampleUserNotificationCenter_publish_numberOfUniqueThreads_completion___block_invoke;
       v13[3] = &unk_279E10918;
       v15 = &v17;
-      v16 = a3;
+      publishCopy2 = publish;
       v12 = v10;
       v14 = v12;
-      [v11 getDeliveredNotificationsWithCompletionHandler:v13];
+      [_userNotificationCenter getDeliveredNotificationsWithCompletionHandler:v13];
 
       dispatch_group_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
     }
@@ -88,9 +88,9 @@
     _Block_object_dispose(&v17, 8);
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -104,42 +104,42 @@ void __77__UNSExampleUserNotificationCenter_publish_numberOfUniqueThreads_comple
 
 - (void)update
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", __notificationRequestCount];
-  [(UNSExampleUserNotificationCenter *)self _postNotificationWithID:v3 threadIdentifier:0];
+  __notificationRequestCount = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", __notificationRequestCount];
+  [(UNSExampleUserNotificationCenter *)self _postNotificationWithID:__notificationRequestCount threadIdentifier:0];
 }
 
 - (void)removeAllNotifications
 {
-  v3 = [(UNSExampleUserNotificationCenter *)self _userNotificationCenter];
-  [v3 removeAllPendingNotificationRequests];
+  _userNotificationCenter = [(UNSExampleUserNotificationCenter *)self _userNotificationCenter];
+  [_userNotificationCenter removeAllPendingNotificationRequests];
 
-  v4 = [(UNSExampleUserNotificationCenter *)self _userNotificationCenter];
-  [v4 removeAllDeliveredNotifications];
+  _userNotificationCenter2 = [(UNSExampleUserNotificationCenter *)self _userNotificationCenter];
+  [_userNotificationCenter2 removeAllDeliveredNotifications];
 }
 
-- (void)_postNotificationWithID:(id)a3 threadIdentifier:(id)a4
+- (void)_postNotificationWithID:(id)d threadIdentifier:(id)identifier
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [(UNSExampleUserNotificationCenter *)self _existingNotificationRequestForIdentifier:v18];
+  dCopy = d;
+  identifierCopy = identifier;
+  v7 = [(UNSExampleUserNotificationCenter *)self _existingNotificationRequestForIdentifier:dCopy];
   if (v7)
   {
     v8 = v7;
-    v9 = [v7 content];
-    v10 = [v9 mutableCopy];
-    v11 = [MEMORY[0x277CBEAA8] date];
-    [v10 setDate:v11];
+    content = [v7 content];
+    v10 = [content mutableCopy];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v10 setDate:date];
 
-    v12 = [v9 body];
-    v13 = [v12 rangeOfString:@" [UPDATE]\n\n\n[UPDATE]"];
-    if ([v12 hasSuffix:@" [UPDATE]\n\n\n[UPDATE]"])
+    body = [content body];
+    v13 = [body rangeOfString:@" [UPDATE]\n\n\n[UPDATE]"];
+    if ([body hasSuffix:@" [UPDATE]\n\n\n[UPDATE]"])
     {
-      v14 = [v12 substringToIndex:v13];
+      v14 = [body substringToIndex:v13];
     }
 
     else
     {
-      if ([v12 hasSuffix:@" [UPDATE]"])
+      if ([body hasSuffix:@" [UPDATE]"])
       {
         v15 = @" [UPDATE]\n\n\n[UPDATE]";
       }
@@ -149,27 +149,27 @@ void __77__UNSExampleUserNotificationCenter_publish_numberOfUniqueThreads_comple
         v15 = @" [UPDATE]";
       }
 
-      v14 = [v12 stringByAppendingString:v15];
+      v14 = [body stringByAppendingString:v15];
     }
 
     v16 = v14;
 
     [v10 setBody:v16];
-    v17 = [(UNSExampleUserNotificationCenter *)self _userNotificationCenter];
-    [v17 replaceContentForRequestWithIdentifier:v18 replacementContent:v10 completionHandler:0];
+    _userNotificationCenter = [(UNSExampleUserNotificationCenter *)self _userNotificationCenter];
+    [_userNotificationCenter replaceContentForRequestWithIdentifier:dCopy replacementContent:v10 completionHandler:0];
   }
 
   else
   {
-    v8 = [(UNSExampleUserNotificationCenter *)self _newNotificationRequest:v18 threadIdentifier:v6];
-    v9 = [(UNSExampleUserNotificationCenter *)self _userNotificationCenter];
-    [v9 addNotificationRequest:v8 withCompletionHandler:0];
+    v8 = [(UNSExampleUserNotificationCenter *)self _newNotificationRequest:dCopy threadIdentifier:identifierCopy];
+    content = [(UNSExampleUserNotificationCenter *)self _userNotificationCenter];
+    [content addNotificationRequest:v8 withCompletionHandler:0];
   }
 }
 
-- (id)_existingNotificationRequestForIdentifier:(id)a3
+- (id)_existingNotificationRequestForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -186,7 +186,7 @@ void __77__UNSExampleUserNotificationCenter_publish_numberOfUniqueThreads_comple
     v11[1] = 3221225472;
     v11[2] = __78__UNSExampleUserNotificationCenter__existingNotificationRequestForIdentifier___block_invoke;
     v11[3] = &unk_279E10940;
-    v12 = v4;
+    v12 = identifierCopy;
     v14 = &v15;
     v8 = v6;
     v13 = v8;
@@ -260,8 +260,8 @@ LABEL_11:
   if (!userNotificationCenter)
   {
     v4 = objc_alloc(MEMORY[0x277CE2028]);
-    v5 = [(UNSExampleUserNotificationCenter *)self sectionIdentifier];
-    v6 = [v4 initWithBundleIdentifier:v5];
+    sectionIdentifier = [(UNSExampleUserNotificationCenter *)self sectionIdentifier];
+    v6 = [v4 initWithBundleIdentifier:sectionIdentifier];
     v7 = self->_userNotificationCenter;
     self->_userNotificationCenter = v6;
 
@@ -272,25 +272,25 @@ LABEL_11:
   return userNotificationCenter;
 }
 
-- (id)_newNotificationRequest:(id)a3 threadIdentifier:(id)a4
+- (id)_newNotificationRequest:(id)request threadIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(MEMORY[0x277CE1F60]);
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Notification %@", v5];
-  [v7 setTitle:v8];
+  requestCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Notification %@", requestCopy];
+  [v7 setTitle:requestCopy];
 
   [v7 setBody:@"Message"];
   v9 = [MEMORY[0x277CBEBC0] URLWithString:@"http://www.apple.com"];
   [v7 setDefaultActionURL:v9];
 
   [v7 setCategoryIdentifier:@"default"];
-  if (v6)
+  if (identifierCopy)
   {
-    [v7 setThreadIdentifier:v6];
+    [v7 setThreadIdentifier:identifierCopy];
   }
 
-  v10 = [MEMORY[0x277CE1FC0] requestWithIdentifier:v5 content:v7 trigger:0];
+  v10 = [MEMORY[0x277CE1FC0] requestWithIdentifier:requestCopy content:v7 trigger:0];
 
   return v10;
 }

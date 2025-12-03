@@ -2,8 +2,8 @@
 - (CLLocationCoordinate2D)coordinate;
 - (NSString)title;
 - (_TtC16MomentsUIService15MOMapAnnotation)init;
-- (void)setCoordinate:(CLLocationCoordinate2D)a3;
-- (void)setTitle:(id)a3;
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)setTitle:(id)title;
 @end
 
 @implementation MOMapAnnotation
@@ -19,10 +19,10 @@
   return result;
 }
 
-- (void)setCoordinate:(CLLocationCoordinate2D)a3
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v5 = (self + OBJC_IVAR____TtC16MomentsUIService15MOMapAnnotation_coordinate);
   swift_beginAccess();
   *v5 = latitude;
@@ -47,9 +47,9 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;

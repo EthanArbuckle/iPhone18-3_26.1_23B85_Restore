@@ -1,5 +1,5 @@
 @interface VCStatisticsCollectorQueue
-- (VCStatisticsCollectorQueue)initWithQueueSize:(int)a3 shouldBlockWhenFull:(BOOL)a4 queueWaitTimeMs:(unsigned int)a5 useExternalThread:(BOOL)a6;
+- (VCStatisticsCollectorQueue)initWithQueueSize:(int)size shouldBlockWhenFull:(BOOL)full queueWaitTimeMs:(unsigned int)ms useExternalThread:(BOOL)thread;
 - (void)dealloc;
 - (void)start;
 - (void)stop;
@@ -8,7 +8,7 @@
 
 @implementation VCStatisticsCollectorQueue
 
-- (VCStatisticsCollectorQueue)initWithQueueSize:(int)a3 shouldBlockWhenFull:(BOOL)a4 queueWaitTimeMs:(unsigned int)a5 useExternalThread:(BOOL)a6
+- (VCStatisticsCollectorQueue)initWithQueueSize:(int)size shouldBlockWhenFull:(BOOL)full queueWaitTimeMs:(unsigned int)ms useExternalThread:(BOOL)thread
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -20,33 +20,33 @@
     return v11;
   }
 
-  v10->_maxQueueSize = a3;
-  if (a3 > 300)
+  v10->_maxQueueSize = size;
+  if (size > 300)
   {
-    a3 = 300;
+    size = 300;
 LABEL_6:
-    v10->_maxQueueSize = a3;
+    v10->_maxQueueSize = size;
     goto LABEL_7;
   }
 
-  if (a3 <= 1)
+  if (size <= 1)
   {
-    a3 = 2;
+    size = 2;
     goto LABEL_6;
   }
 
 LABEL_7:
-  v10->_queueProcessWaitTimeMs = a5;
-  v10->_shouldProcessMessageImmediately = a5 == 0;
-  v10->_shouldProcessMessageOnExternalThread = a6;
-  v12 = (a3 * 0.75);
-  if (!v12)
+  v10->_queueProcessWaitTimeMs = ms;
+  v10->_shouldProcessMessageImmediately = ms == 0;
+  v10->_shouldProcessMessageOnExternalThread = thread;
+  sizeCopy = (size * 0.75);
+  if (!sizeCopy)
   {
-    v12 = a3;
+    sizeCopy = size;
   }
 
-  v10->_almostFullQueueSize = v12;
-  v10->_shouldBlockWhenFull = a4 & ~a6;
+  v10->_almostFullQueueSize = sizeCopy;
+  v10->_shouldBlockWhenFull = full & ~thread;
   v10->_isThreadRunning = 0;
   *&v10->_firstMessageIndex = 0;
   pthread_mutex_init(&v10->_queueMutex, 0);

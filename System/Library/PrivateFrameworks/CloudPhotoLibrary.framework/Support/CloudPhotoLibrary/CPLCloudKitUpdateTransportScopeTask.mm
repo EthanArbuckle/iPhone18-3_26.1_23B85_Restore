@@ -1,28 +1,28 @@
 @interface CPLCloudKitUpdateTransportScopeTask
-- (CPLCloudKitUpdateTransportScopeTask)initWithController:(id)a3 cloudKitScope:(id)a4 scope:(id)a5 scopeChange:(id)a6 completionHandler:(id)a7;
+- (CPLCloudKitUpdateTransportScopeTask)initWithController:(id)controller cloudKitScope:(id)scope scope:(id)a5 scopeChange:(id)change completionHandler:(id)handler;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitUpdateTransportScopeTask
 
-- (CPLCloudKitUpdateTransportScopeTask)initWithController:(id)a3 cloudKitScope:(id)a4 scope:(id)a5 scopeChange:(id)a6 completionHandler:(id)a7
+- (CPLCloudKitUpdateTransportScopeTask)initWithController:(id)controller cloudKitScope:(id)scope scope:(id)a5 scopeChange:(id)change completionHandler:(id)handler
 {
-  v13 = a4;
+  scopeCopy = scope;
   v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  changeCopy = change;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = CPLCloudKitUpdateTransportScopeTask;
-  v17 = [(CPLCloudKitTransportTask *)&v21 initWithController:a3];
+  v17 = [(CPLCloudKitTransportTask *)&v21 initWithController:controller];
   if (v17)
   {
-    v18 = [v16 copy];
+    v18 = [handlerCopy copy];
     completionHandler = v17->_completionHandler;
     v17->_completionHandler = v18;
 
-    objc_storeStrong(&v17->_cloudKitScope, a4);
+    objc_storeStrong(&v17->_cloudKitScope, scope);
     objc_storeStrong(&v17->_scope, a5);
-    objc_storeStrong(&v17->_scopeChange, a6);
+    objc_storeStrong(&v17->_scopeChange, change);
   }
 
   return v17;

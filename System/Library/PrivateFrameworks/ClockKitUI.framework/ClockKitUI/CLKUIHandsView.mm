@@ -1,22 +1,22 @@
 @interface CLKUIHandsView
-- (CLKUIHandsView)initWithDiameter:(double)a3 forDevice:(id)a4;
+- (CLKUIHandsView)initWithDiameter:(double)diameter forDevice:(id)device;
 - (id)hourHandConfiguration;
 - (id)minuteHandConfiguration;
 - (id)secondHandConfiguration;
-- (void)setOverrideDate:(id)a3;
+- (void)setOverrideDate:(id)date;
 @end
 
 @implementation CLKUIHandsView
 
-- (CLKUIHandsView)initWithDiameter:(double)a3 forDevice:(id)a4
+- (CLKUIHandsView)initWithDiameter:(double)diameter forDevice:(id)device
 {
   v8.receiver = self;
   v8.super_class = CLKUIHandsView;
-  v5 = [(CLKUIAnalogHandsView *)&v8 initForDevice:a4];
+  v5 = [(CLKUIAnalogHandsView *)&v8 initForDevice:device];
   v6 = v5;
   if (v5)
   {
-    [(CLKUIHandsView *)v5 setFrame:0.0, 0.0, a3, a3];
+    [(CLKUIHandsView *)v5 setFrame:0.0, 0.0, diameter, diameter];
     [(CLKUIAnalogHandsView *)v6 setMinuteHandDotDiameter:1.0];
   }
 
@@ -33,26 +33,26 @@
   v10 = 0u;
   v11 = 0u;
   v9 = 0u;
-  v3 = [(CLKUIAnalogHandsView *)self device];
-  ___LayoutConstants_block_invoke_4(v3, &v9);
+  device = [(CLKUIAnalogHandsView *)self device];
+  ___LayoutConstants_block_invoke_4(device, &v9);
 
   v8.receiver = self;
   v8.super_class = CLKUIHandsView;
-  v4 = [(CLKUIAnalogHandsView *)&v8 hourHandConfiguration];
+  hourHandConfiguration = [(CLKUIAnalogHandsView *)&v8 hourHandConfiguration];
   v5 = *&v9;
   v6 = *(&v10 + 1);
-  [v4 setHandLength:*(&v11 + 1)];
-  [v4 setHandWidth:v5];
-  [v4 setArmLength:*&v10];
-  [v4 setArmWidth:*(&v9 + 1)];
-  [v4 setSmoothingRadius:0.5];
-  [v4 setPegRadius:v6 * 0.5];
-  [v4 setPegStrokeWidth:(v5 - v6) * 0.5];
-  [v4 setRadialShadowRadius:*&v11];
-  [v4 setRadialShadowOpacity:*(&v15 + 1)];
-  [v4 setInlayInsetRadius:v16];
+  [hourHandConfiguration setHandLength:*(&v11 + 1)];
+  [hourHandConfiguration setHandWidth:v5];
+  [hourHandConfiguration setArmLength:*&v10];
+  [hourHandConfiguration setArmWidth:*(&v9 + 1)];
+  [hourHandConfiguration setSmoothingRadius:0.5];
+  [hourHandConfiguration setPegRadius:v6 * 0.5];
+  [hourHandConfiguration setPegStrokeWidth:(v5 - v6) * 0.5];
+  [hourHandConfiguration setRadialShadowRadius:*&v11];
+  [hourHandConfiguration setRadialShadowOpacity:*(&v15 + 1)];
+  [hourHandConfiguration setInlayInsetRadius:v16];
 
-  return v4;
+  return hourHandConfiguration;
 }
 
 - (id)minuteHandConfiguration
@@ -65,26 +65,26 @@
   v10 = 0u;
   v11 = 0u;
   v9 = 0u;
-  v3 = [(CLKUIAnalogHandsView *)self device];
-  ___LayoutConstants_block_invoke_4(v3, &v9);
+  device = [(CLKUIAnalogHandsView *)self device];
+  ___LayoutConstants_block_invoke_4(device, &v9);
 
   v8.receiver = self;
   v8.super_class = CLKUIHandsView;
-  v4 = [(CLKUIAnalogHandsView *)&v8 minuteHandConfiguration];
+  minuteHandConfiguration = [(CLKUIAnalogHandsView *)&v8 minuteHandConfiguration];
   v5 = *&v9;
   v6 = *(&v10 + 1);
-  [v4 setHandLength:*&v12];
-  [v4 setHandWidth:v5];
-  [v4 setArmLength:*&v10];
-  [v4 setArmWidth:*(&v9 + 1)];
-  [v4 setSmoothingRadius:0.5];
-  [v4 setPegRadius:v6 * 0.5];
-  [v4 setPegStrokeWidth:(v5 - v6) * 0.5];
-  [v4 setRadialShadowRadius:*&v11];
-  [v4 setRadialShadowOpacity:*(&v15 + 1)];
-  [v4 setInlayInsetRadius:v16];
+  [minuteHandConfiguration setHandLength:*&v12];
+  [minuteHandConfiguration setHandWidth:v5];
+  [minuteHandConfiguration setArmLength:*&v10];
+  [minuteHandConfiguration setArmWidth:*(&v9 + 1)];
+  [minuteHandConfiguration setSmoothingRadius:0.5];
+  [minuteHandConfiguration setPegRadius:v6 * 0.5];
+  [minuteHandConfiguration setPegStrokeWidth:(v5 - v6) * 0.5];
+  [minuteHandConfiguration setRadialShadowRadius:*&v11];
+  [minuteHandConfiguration setRadialShadowOpacity:*(&v15 + 1)];
+  [minuteHandConfiguration setInlayInsetRadius:v16];
 
-  return v4;
+  return minuteHandConfiguration;
 }
 
 - (id)secondHandConfiguration
@@ -95,54 +95,54 @@
   v10 = 0u;
   v11 = 0u;
   memset(v9, 0, sizeof(v9));
-  v3 = [(CLKUIAnalogHandsView *)self device];
-  ___LayoutConstants_block_invoke_4(v3, v9);
+  device = [(CLKUIAnalogHandsView *)self device];
+  ___LayoutConstants_block_invoke_4(device, v9);
 
   v8.receiver = self;
   v8.super_class = CLKUIHandsView;
-  v4 = [(CLKUIAnalogHandsView *)&v8 secondHandConfiguration];
+  secondHandConfiguration = [(CLKUIAnalogHandsView *)&v8 secondHandConfiguration];
   v5 = v12;
   v6 = *&v12 * 0.5;
-  [v4 setHandLength:*&v12 * 0.5 + *(&v10 + 1)];
-  [v4 setHandWidth:*(&v11 + 1)];
-  [v4 setTailLength:v6 + *&v11];
-  [v4 setPegRadius:*(&v5 + 1) * 0.5];
-  [v4 setPegStrokeWidth:(*&v5 - *(&v5 + 1)) * 0.5];
+  [secondHandConfiguration setHandLength:*&v12 * 0.5 + *(&v10 + 1)];
+  [secondHandConfiguration setHandWidth:*(&v11 + 1)];
+  [secondHandConfiguration setTailLength:v6 + *&v11];
+  [secondHandConfiguration setPegRadius:*(&v5 + 1) * 0.5];
+  [secondHandConfiguration setPegStrokeWidth:(*&v5 - *(&v5 + 1)) * 0.5];
 
-  return v4;
+  return secondHandConfiguration;
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if ((CLKEqualObjects() & 1) == 0)
   {
     [(CLKUIAnalogHandsView *)self _stopTimeAnimation];
-    objc_storeStrong(&self->_overrideDate, a3);
-    if (v5)
+    objc_storeStrong(&self->_overrideDate, date);
+    if (dateCopy)
     {
-      v6 = v5;
+      displayTime = dateCopy;
     }
 
     else
     {
-      v6 = [(CLKUIAnalogHandsView *)self displayTime];
+      displayTime = [(CLKUIAnalogHandsView *)self displayTime];
     }
 
-    v7 = v6;
-    v8 = [(CLKUIAnalogHandsView *)self calendar];
+    v7 = displayTime;
+    calendar = [(CLKUIAnalogHandsView *)self calendar];
     CLKHourMinuteSecondAnglesForTime();
 
-    v9 = [(CLKUIAnalogHandsView *)self hourHandView];
-    [v9 setZRotation:0.0];
+    hourHandView = [(CLKUIAnalogHandsView *)self hourHandView];
+    [hourHandView setZRotation:0.0];
 
-    v10 = [(CLKUIAnalogHandsView *)self minuteHandView];
-    [v10 setZRotation:0.0];
+    minuteHandView = [(CLKUIAnalogHandsView *)self minuteHandView];
+    [minuteHandView setZRotation:0.0];
 
-    v11 = [(CLKUIAnalogHandsView *)self secondHandView];
-    [v11 setZRotation:0.0];
+    secondHandView = [(CLKUIAnalogHandsView *)self secondHandView];
+    [secondHandView setZRotation:0.0];
 
-    if (!v5)
+    if (!dateCopy)
     {
       [(CLKUIAnalogHandsView *)self _startNewTimeAnimation];
     }

@@ -1,7 +1,7 @@
 @interface FCPeopleAlsoReadFeedItemService
 - (FCPeopleAlsoReadFeedItemService)init;
-- (FCPeopleAlsoReadFeedItemService)initWithConfigurationManager:(id)a3 contentContext:(id)a4 readingHistory:(id)a5;
-- (void)fetchFeedItemsWithCursor:(id)a3 feedItemHandler:(id)a4 networkEventHandler:(id)a5 completionHandler:(id)a6;
+- (FCPeopleAlsoReadFeedItemService)initWithConfigurationManager:(id)manager contentContext:(id)context readingHistory:(id)history;
+- (void)fetchFeedItemsWithCursor:(id)cursor feedItemHandler:(id)handler networkEventHandler:(id)eventHandler completionHandler:(id)completionHandler;
 @end
 
 @implementation FCPeopleAlsoReadFeedItemService
@@ -32,13 +32,13 @@
   objc_exception_throw(v6);
 }
 
-- (FCPeopleAlsoReadFeedItemService)initWithConfigurationManager:(id)a3 contentContext:(id)a4 readingHistory:(id)a5
+- (FCPeopleAlsoReadFeedItemService)initWithConfigurationManager:(id)manager contentContext:(id)context readingHistory:(id)history
 {
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  managerCopy = manager;
+  contextCopy = context;
+  historyCopy = history;
+  if (!managerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "configurationManager"];
     *buf = 136315906;
@@ -51,13 +51,13 @@
     v27 = v16;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v10)
+    if (contextCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v10)
+  else if (contextCopy)
   {
     goto LABEL_6;
   }
@@ -77,7 +77,7 @@
   }
 
 LABEL_6:
-  if (!v11 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!historyCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "readingHistory"];
     *buf = 136315906;
@@ -97,44 +97,44 @@ LABEL_6:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_configurationManager, a3);
-    objc_storeStrong(&v13->_contentContext, a4);
-    objc_storeStrong(&v13->_readingHistory, a5);
+    objc_storeStrong(&v12->_configurationManager, manager);
+    objc_storeStrong(&v13->_contentContext, context);
+    objc_storeStrong(&v13->_readingHistory, history);
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (void)fetchFeedItemsWithCursor:(id)a3 feedItemHandler:(id)a4 networkEventHandler:(id)a5 completionHandler:(id)a6
+- (void)fetchFeedItemsWithCursor:(id)cursor feedItemHandler:(id)handler networkEventHandler:(id)eventHandler completionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(FCPeopleAlsoReadFeedItemService *)self configurationManager];
-  v15 = [v14 possiblyUnfetchedAppConfiguration];
+  cursorCopy = cursor;
+  handlerCopy = handler;
+  eventHandlerCopy = eventHandler;
+  completionHandlerCopy = completionHandler;
+  configurationManager = [(FCPeopleAlsoReadFeedItemService *)self configurationManager];
+  possiblyUnfetchedAppConfiguration = [configurationManager possiblyUnfetchedAppConfiguration];
 
   if (objc_opt_respondsToSelector())
   {
-    v16 = [v15 peopleAlsoReadConfiguration];
-    if (v16)
+    peopleAlsoReadConfiguration = [possiblyUnfetchedAppConfiguration peopleAlsoReadConfiguration];
+    if (peopleAlsoReadConfiguration)
     {
-      v17 = v16;
+      v17 = peopleAlsoReadConfiguration;
       v18 = [FCPeopleAlsoReadArticlesOperation alloc];
-      v19 = [(FCPeopleAlsoReadFeedItemService *)self contentContext];
-      v20 = [(FCPeopleAlsoReadFeedItemService *)self readingHistory];
-      v21 = [(FCPeopleAlsoReadArticlesOperation *)v18 initWithContentContext:v19 configuration:v17 readingHistory:v20 cursor:v10];
+      contentContext = [(FCPeopleAlsoReadFeedItemService *)self contentContext];
+      readingHistory = [(FCPeopleAlsoReadFeedItemService *)self readingHistory];
+      v21 = [(FCPeopleAlsoReadArticlesOperation *)v18 initWithContentContext:contentContext configuration:v17 readingHistory:readingHistory cursor:cursorCopy];
 
-      [(FCPeopleAlsoReadArticlesOperation *)v21 setFeedItemHandler:v11];
+      [(FCPeopleAlsoReadArticlesOperation *)v21 setFeedItemHandler:handlerCopy];
       objc_initWeak(&location, v21);
       v22 = MEMORY[0x1E69E9820];
       v23 = 3221225472;
       v24 = __114__FCPeopleAlsoReadFeedItemService_fetchFeedItemsWithCursor_feedItemHandler_networkEventHandler_completionHandler___block_invoke_3;
       v25 = &unk_1E7C47970;
       objc_copyWeak(&v28, &location);
-      v26 = v12;
-      v27 = v13;
+      v26 = eventHandlerCopy;
+      v27 = completionHandlerCopy;
       [(FCPeopleAlsoReadArticlesOperation *)v21 setCompletionHandler:&v22];
       [(FCOperation *)v21 start:v22];
 
@@ -148,7 +148,7 @@ LABEL_6:
       v30[1] = 3221225472;
       v30[2] = __114__FCPeopleAlsoReadFeedItemService_fetchFeedItemsWithCursor_feedItemHandler_networkEventHandler_completionHandler___block_invoke_2;
       v30[3] = &unk_1E7C379C8;
-      v31 = v13;
+      v31 = completionHandlerCopy;
       __114__FCPeopleAlsoReadFeedItemService_fetchFeedItemsWithCursor_feedItemHandler_networkEventHandler_completionHandler___block_invoke_2(v30);
 
       v17 = 0;
@@ -161,7 +161,7 @@ LABEL_6:
     v33 = 3221225472;
     v34 = __114__FCPeopleAlsoReadFeedItemService_fetchFeedItemsWithCursor_feedItemHandler_networkEventHandler_completionHandler___block_invoke;
     v35 = &unk_1E7C379C8;
-    v36 = v13;
+    v36 = completionHandlerCopy;
     v36[2](v36, 0);
     v17 = v36;
   }

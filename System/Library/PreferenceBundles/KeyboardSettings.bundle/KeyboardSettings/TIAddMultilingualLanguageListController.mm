@@ -2,7 +2,7 @@
 - (NSArray)multilingualSet;
 - (id)newSpecifiers;
 - (id)specifiers;
-- (void)addLanguage:(id)a3;
+- (void)addLanguage:(id)language;
 - (void)reloadKeyboardSpecifiers;
 - (void)viewDidLoad;
 @end
@@ -25,9 +25,9 @@
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(TIAddMultilingualLanguageListController *)self newSpecifiers];
+    newSpecifiers = [(TIAddMultilingualLanguageListController *)self newSpecifiers];
     v6 = *&self->PSListController_opaque[v3];
-    *&self->PSListController_opaque[v3] = v5;
+    *&self->PSListController_opaque[v3] = newSpecifiers;
 
     v4 = *&self->PSListController_opaque[v3];
   }
@@ -39,10 +39,10 @@
 {
   v3 = +[NSMutableArray array];
   v4 = +[UIKeyboardInputModeController sharedInputModeController];
-  v17 = [v4 enabledInputModeIdentifiers];
+  enabledInputModeIdentifiers = [v4 enabledInputModeIdentifiers];
 
-  v5 = [(TIAddMultilingualLanguageListController *)self multilingualSet];
-  v6 = TIUIGetAddableInputModesForMultilingualSet(v5);
+  multilingualSet = [(TIAddMultilingualLanguageListController *)self multilingualSet];
+  v6 = TIUIGetAddableInputModesForMultilingualSet(multilingualSet);
 
   v21 = 0u;
   v22 = 0u;
@@ -93,10 +93,10 @@
   multilingualSet = self->_multilingualSet;
   if (!multilingualSet)
   {
-    v4 = [(TIAddMultilingualLanguageListController *)self parentController];
-    v5 = [v4 multilingualSet];
+    parentController = [(TIAddMultilingualLanguageListController *)self parentController];
+    multilingualSet = [parentController multilingualSet];
     v6 = self->_multilingualSet;
-    self->_multilingualSet = v5;
+    self->_multilingualSet = multilingualSet;
 
     multilingualSet = self->_multilingualSet;
   }
@@ -104,18 +104,18 @@
   return multilingualSet;
 }
 
-- (void)addLanguage:(id)a3
+- (void)addLanguage:(id)language
 {
-  v4 = [a3 propertyForKey:PSIDKey];
-  v5 = [(TIAddMultilingualLanguageListController *)self multilingualSet];
-  v6 = TIUICanAddInputModeToMultilingualSet(v4, v5);
+  v4 = [language propertyForKey:PSIDKey];
+  multilingualSet = [(TIAddMultilingualLanguageListController *)self multilingualSet];
+  v6 = TIUICanAddInputModeToMultilingualSet(v4, multilingualSet);
 
   if (v6)
   {
     v7 = +[UIKeyboardInputModeController sharedInputModeController];
-    v8 = [v7 enabledInputModeIdentifiers];
+    enabledInputModeIdentifiers = [v7 enabledInputModeIdentifiers];
 
-    TIUIGetProposedMultilingualSetsForAddingInputMode(v4, v8);
+    TIUIGetProposedMultilingualSetsForAddingInputMode(v4, enabledInputModeIdentifiers);
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -125,7 +125,7 @@
     {
       v12 = v10;
       v13 = *v25;
-      v23 = v8;
+      v23 = enabledInputModeIdentifiers;
       while (2)
       {
         for (i = 0; i != v12; i = i + 1)
@@ -137,12 +137,12 @@
 
           v15 = *(*(&v24 + 1) + 8 * i);
           v16 = TIUIProposedInputModeGetCurrent(v15, v11);
-          v17 = [(TIAddMultilingualLanguageListController *)self multilingualSet];
-          v18 = [v16 isEqualToArray:v17];
+          multilingualSet2 = [(TIAddMultilingualLanguageListController *)self multilingualSet];
+          v18 = [v16 isEqualToArray:multilingualSet2];
 
           if (v18)
           {
-            v8 = v23;
+            enabledInputModeIdentifiers = v23;
             v19 = TIUIGetInputModesByAddingProposedInputMode(v15, v23);
             [TIKeyboardListController setInputModes:v19];
             v20 = TIUIProposedInputModeGetMultilingualSet(v15);
@@ -153,7 +153,7 @@
         }
 
         v12 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
-        v8 = v23;
+        enabledInputModeIdentifiers = v23;
         if (v12)
         {
           continue;
@@ -167,15 +167,15 @@ LABEL_12:
   }
 
   [(TIAddMultilingualLanguageListController *)self reloadKeyboardSpecifiers];
-  v21 = [(TIAddMultilingualLanguageListController *)self navigationController];
-  v22 = [v21 popViewControllerAnimated:1];
+  navigationController = [(TIAddMultilingualLanguageListController *)self navigationController];
+  v22 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)reloadKeyboardSpecifiers
 {
-  v4 = [(TIAddMultilingualLanguageListController *)self parentController];
-  v3 = [(TIAddMultilingualLanguageListController *)self multilingualSet];
-  [v4 reloadSoftwareLayoutSpecifiersWithMultilingualSet:v3];
+  parentController = [(TIAddMultilingualLanguageListController *)self parentController];
+  multilingualSet = [(TIAddMultilingualLanguageListController *)self multilingualSet];
+  [parentController reloadSoftwareLayoutSpecifiersWithMultilingualSet:multilingualSet];
 }
 
 @end

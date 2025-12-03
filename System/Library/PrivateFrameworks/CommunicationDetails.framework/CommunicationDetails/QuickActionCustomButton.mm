@@ -1,12 +1,12 @@
 @interface QuickActionCustomButton
-- (_TtC20CommunicationDetails23QuickActionCustomButton)initWithCoder:(id)a3;
-- (_TtC20CommunicationDetails23QuickActionCustomButton)initWithFrame:(CGRect)a3;
+- (_TtC20CommunicationDetails23QuickActionCustomButton)initWithCoder:(id)coder;
+- (_TtC20CommunicationDetails23QuickActionCustomButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation QuickActionCustomButton
 
-- (_TtC20CommunicationDetails23QuickActionCustomButton)initWithCoder:(id)a3
+- (_TtC20CommunicationDetails23QuickActionCustomButton)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -33,14 +33,14 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for QuickActionCustomButton();
-  v3 = self;
+  selfCopy = self;
   [(QuickActionCustomButton *)&v6 layoutSubviews];
-  v4 = [(QuickActionCustomButton *)v3 layer:v6.receiver];
-  [(QuickActionCustomButton *)v3 frame];
+  v4 = [(QuickActionCustomButton *)selfCopy layer:v6.receiver];
+  [(QuickActionCustomButton *)selfCopy frame];
   [v4 setCornerRadius_];
 }
 
-- (_TtC20CommunicationDetails23QuickActionCustomButton)initWithFrame:(CGRect)a3
+- (_TtC20CommunicationDetails23QuickActionCustomButton)initWithFrame:(CGRect)frame
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

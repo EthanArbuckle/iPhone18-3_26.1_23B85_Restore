@@ -1,65 +1,65 @@
 @interface SISchemaAnnounceNotifications
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaAnnounceNotifications)initWithDictionary:(id)a3;
-- (SISchemaAnnounceNotifications)initWithJSON:(id)a3;
+- (SISchemaAnnounceNotifications)initWithDictionary:(id)dictionary;
+- (SISchemaAnnounceNotifications)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCarPlayStatus:(BOOL)a3;
-- (void)setHasIsCarPlayMuted:(BOOL)a3;
-- (void)setHasIsEnabledForHeadphones:(BOOL)a3;
-- (void)setHasProxCardSeen:(BOOL)a3;
-- (void)setHasReplyWithoutConfirmation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCarPlayStatus:(BOOL)status;
+- (void)setHasIsCarPlayMuted:(BOOL)muted;
+- (void)setHasIsEnabledForHeadphones:(BOOL)headphones;
+- (void)setHasProxCardSeen:(BOOL)seen;
+- (void)setHasReplyWithoutConfirmation:(BOOL)confirmation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaAnnounceNotifications
 
-- (SISchemaAnnounceNotifications)initWithDictionary:(id)a3
+- (SISchemaAnnounceNotifications)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = SISchemaAnnounceNotifications;
   v5 = [(SISchemaAnnounceNotifications *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaAnnounceNotifications setIsEnabled:](v5, "setIsEnabled:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"proxCardSeen"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"proxCardSeen"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaAnnounceNotifications setProxCardSeen:](v5, "setProxCardSeen:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"replyWithoutConfirmation"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"replyWithoutConfirmation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaAnnounceNotifications setReplyWithoutConfirmation:](v5, "setReplyWithoutConfirmation:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"carPlayStatus"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"carPlayStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaAnnounceNotifications setCarPlayStatus:](v5, "setCarPlayStatus:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isEnabledForHeadphones"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isEnabledForHeadphones"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaAnnounceNotifications setIsEnabledForHeadphones:](v5, "setIsEnabledForHeadphones:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isCarPlayMuted"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isCarPlayMuted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,30 +72,30 @@
   return v5;
 }
 
-- (SISchemaAnnounceNotifications)initWithJSON:(id)a3
+- (SISchemaAnnounceNotifications)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaAnnounceNotifications *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaAnnounceNotifications *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaAnnounceNotifications *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,7 +108,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isCarPlayMuted + 1);
   if ((v4 & 8) != 0)
   {
@@ -123,14 +123,14 @@
       v6 = off_1E78E2E58[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"carPlayStatus"];
+    [dictionary setObject:v6 forKeyedSubscript:@"carPlayStatus"];
     v4 = *(&self->_isCarPlayMuted + 1);
   }
 
   if ((v4 & 0x20) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaAnnounceNotifications isCarPlayMuted](self, "isCarPlayMuted")}];
-    [v3 setObject:v9 forKeyedSubscript:@"isCarPlayMuted"];
+    [dictionary setObject:v9 forKeyedSubscript:@"isCarPlayMuted"];
 
     v4 = *(&self->_isCarPlayMuted + 1);
     if ((v4 & 1) == 0)
@@ -151,7 +151,7 @@ LABEL_8:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaAnnounceNotifications isEnabled](self, "isEnabled")}];
-  [v3 setObject:v10 forKeyedSubscript:@"isEnabled"];
+  [dictionary setObject:v10 forKeyedSubscript:@"isEnabled"];
 
   v4 = *(&self->_isCarPlayMuted + 1);
   if ((v4 & 0x10) == 0)
@@ -167,7 +167,7 @@ LABEL_9:
 
 LABEL_17:
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaAnnounceNotifications isEnabledForHeadphones](self, "isEnabledForHeadphones")}];
-  [v3 setObject:v11 forKeyedSubscript:@"isEnabledForHeadphones"];
+  [dictionary setObject:v11 forKeyedSubscript:@"isEnabledForHeadphones"];
 
   v4 = *(&self->_isCarPlayMuted + 1);
   if ((v4 & 2) == 0)
@@ -183,19 +183,19 @@ LABEL_10:
 
 LABEL_18:
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaAnnounceNotifications proxCardSeen](self, "proxCardSeen")}];
-  [v3 setObject:v12 forKeyedSubscript:@"proxCardSeen"];
+  [dictionary setObject:v12 forKeyedSubscript:@"proxCardSeen"];
 
   if ((*(&self->_isCarPlayMuted + 1) & 4) != 0)
   {
 LABEL_11:
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaAnnounceNotifications replyWithoutConfirmation](self, "replyWithoutConfirmation")}];
-    [v3 setObject:v7 forKeyedSubscript:@"replyWithoutConfirmation"];
+    [dictionary setObject:v7 forKeyedSubscript:@"replyWithoutConfirmation"];
   }
 
 LABEL_12:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -280,16 +280,16 @@ LABEL_7:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   v5 = *(&self->_isCarPlayMuted + 1);
-  v6 = v4[18];
+  v6 = equalCopy[18];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_26;
@@ -298,13 +298,13 @@ LABEL_7:
   if (v5)
   {
     isEnabled = self->_isEnabled;
-    if (isEnabled != [v4 isEnabled])
+    if (isEnabled != [equalCopy isEnabled])
     {
       goto LABEL_26;
     }
 
     v5 = *(&self->_isCarPlayMuted + 1);
-    v6 = v4[18];
+    v6 = equalCopy[18];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -316,13 +316,13 @@ LABEL_7:
   if (v8)
   {
     proxCardSeen = self->_proxCardSeen;
-    if (proxCardSeen != [v4 proxCardSeen])
+    if (proxCardSeen != [equalCopy proxCardSeen])
     {
       goto LABEL_26;
     }
 
     v5 = *(&self->_isCarPlayMuted + 1);
-    v6 = v4[18];
+    v6 = equalCopy[18];
   }
 
   v10 = (v5 >> 2) & 1;
@@ -334,13 +334,13 @@ LABEL_7:
   if (v10)
   {
     replyWithoutConfirmation = self->_replyWithoutConfirmation;
-    if (replyWithoutConfirmation != [v4 replyWithoutConfirmation])
+    if (replyWithoutConfirmation != [equalCopy replyWithoutConfirmation])
     {
       goto LABEL_26;
     }
 
     v5 = *(&self->_isCarPlayMuted + 1);
-    v6 = v4[18];
+    v6 = equalCopy[18];
   }
 
   v12 = (v5 >> 3) & 1;
@@ -352,13 +352,13 @@ LABEL_7:
   if (v12)
   {
     carPlayStatus = self->_carPlayStatus;
-    if (carPlayStatus != [v4 carPlayStatus])
+    if (carPlayStatus != [equalCopy carPlayStatus])
     {
       goto LABEL_26;
     }
 
     v5 = *(&self->_isCarPlayMuted + 1);
-    v6 = v4[18];
+    v6 = equalCopy[18];
   }
 
   v14 = (v5 >> 4) & 1;
@@ -370,10 +370,10 @@ LABEL_7:
   if (v14)
   {
     isEnabledForHeadphones = self->_isEnabledForHeadphones;
-    if (isEnabledForHeadphones == [v4 isEnabledForHeadphones])
+    if (isEnabledForHeadphones == [equalCopy isEnabledForHeadphones])
     {
       v5 = *(&self->_isCarPlayMuted + 1);
-      v6 = v4[18];
+      v6 = equalCopy[18];
       goto LABEL_22;
     }
 
@@ -392,7 +392,7 @@ LABEL_22:
   if (v16)
   {
     isCarPlayMuted = self->_isCarPlayMuted;
-    if (isCarPlayMuted != [v4 isCarPlayMuted])
+    if (isCarPlayMuted != [equalCopy isCarPlayMuted])
     {
       goto LABEL_26;
     }
@@ -404,9 +404,9 @@ LABEL_27:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   v4 = *(&self->_isCarPlayMuted + 1);
   if (v4)
   {
@@ -481,9 +481,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setHasIsCarPlayMuted:(BOOL)a3
+- (void)setHasIsCarPlayMuted:(BOOL)muted
 {
-  if (a3)
+  if (muted)
   {
     v3 = 32;
   }
@@ -496,9 +496,9 @@ LABEL_8:
   *(&self->_isCarPlayMuted + 1) = *(&self->_isCarPlayMuted + 1) & 0xDF | v3;
 }
 
-- (void)setHasIsEnabledForHeadphones:(BOOL)a3
+- (void)setHasIsEnabledForHeadphones:(BOOL)headphones
 {
-  if (a3)
+  if (headphones)
   {
     v3 = 16;
   }
@@ -511,9 +511,9 @@ LABEL_8:
   *(&self->_isCarPlayMuted + 1) = *(&self->_isCarPlayMuted + 1) & 0xEF | v3;
 }
 
-- (void)setHasCarPlayStatus:(BOOL)a3
+- (void)setHasCarPlayStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 8;
   }
@@ -526,9 +526,9 @@ LABEL_8:
   *(&self->_isCarPlayMuted + 1) = *(&self->_isCarPlayMuted + 1) & 0xF7 | v3;
 }
 
-- (void)setHasReplyWithoutConfirmation:(BOOL)a3
+- (void)setHasReplyWithoutConfirmation:(BOOL)confirmation
 {
-  if (a3)
+  if (confirmation)
   {
     v3 = 4;
   }
@@ -541,9 +541,9 @@ LABEL_8:
   *(&self->_isCarPlayMuted + 1) = *(&self->_isCarPlayMuted + 1) & 0xFB | v3;
 }
 
-- (void)setHasProxCardSeen:(BOOL)a3
+- (void)setHasProxCardSeen:(BOOL)seen
 {
-  if (a3)
+  if (seen)
   {
     v3 = 2;
   }

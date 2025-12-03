@@ -1,5 +1,5 @@
 @interface ICSharedFilterTypeSelection
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)emptySummary;
 - (id)emptySummaryTitle;
 - (id)shortEmptySummary;
@@ -7,17 +7,17 @@
 
 @implementation ICSharedFilterTypeSelection
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [ICSharedFilterTypeSelection allocWithZone:?];
-  v6 = [(ICParticipantsFilterTypeSelection *)self managedObjectContext];
-  v7 = [(ICFilterTypeSelection *)self accountObjectID];
-  v8 = [(ICParticipantsFilterTypeSelection *)v5 initWithManagedObjectContext:v6 accountObjectID:v7];
+  managedObjectContext = [(ICParticipantsFilterTypeSelection *)self managedObjectContext];
+  accountObjectID = [(ICFilterTypeSelection *)self accountObjectID];
+  v8 = [(ICParticipantsFilterTypeSelection *)v5 initWithManagedObjectContext:managedObjectContext accountObjectID:accountObjectID];
 
   [(ICParticipantsFilterTypeSelection *)v8 setSelectionType:[(ICParticipantsFilterTypeSelection *)self selectionType]];
   [(ICParticipantsFilterTypeSelection *)v8 setJoinOperator:[(ICParticipantsFilterTypeSelection *)self joinOperator]];
-  v9 = [(ICParticipantsFilterTypeSelection *)self participantUserIDs];
-  v10 = [v9 copyWithZone:a3];
+  participantUserIDs = [(ICParticipantsFilterTypeSelection *)self participantUserIDs];
+  v10 = [participantUserIDs copyWithZone:zone];
   [(ICParticipantsFilterTypeSelection *)v8 setParticipantUserIDs:v10];
 
   return v8;

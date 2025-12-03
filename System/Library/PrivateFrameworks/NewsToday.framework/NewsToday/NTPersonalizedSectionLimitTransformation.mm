@@ -1,7 +1,7 @@
 @interface NTPersonalizedSectionLimitTransformation
 - (NTPersonalizedSectionLimitTransformation)init;
-- (NTPersonalizedSectionLimitTransformation)initWithMandatoryArticleIDs:(id)a3 personalizedArticleIDs:(id)a4 limit:(unint64_t)a5;
-- (id)transformFeedItems:(id)a3;
+- (NTPersonalizedSectionLimitTransformation)initWithMandatoryArticleIDs:(id)ds personalizedArticleIDs:(id)iDs limit:(unint64_t)limit;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation NTPersonalizedSectionLimitTransformation
@@ -32,20 +32,20 @@
   objc_exception_throw(v6);
 }
 
-- (NTPersonalizedSectionLimitTransformation)initWithMandatoryArticleIDs:(id)a3 personalizedArticleIDs:(id)a4 limit:(unint64_t)a5
+- (NTPersonalizedSectionLimitTransformation)initWithMandatoryArticleIDs:(id)ds personalizedArticleIDs:(id)iDs limit:(unint64_t)limit
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  iDsCopy = iDs;
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTPersonalizedSectionLimitTransformation initWithMandatoryArticleIDs:personalizedArticleIDs:limit:];
-    if (v9)
+    if (iDsCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (iDsCopy)
   {
     goto LABEL_6;
   }
@@ -56,7 +56,7 @@
   }
 
 LABEL_6:
-  if ([v8 intersectsOrderedSet:v9] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if ([dsCopy intersectsOrderedSet:iDsCopy] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTPersonalizedSectionLimitTransformation initWithMandatoryArticleIDs:personalizedArticleIDs:limit:];
   }
@@ -66,29 +66,29 @@ LABEL_6:
   v10 = [(NTPersonalizedSectionLimitTransformation *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dsCopy copy];
     mandatoryArticleIDs = v10->_mandatoryArticleIDs;
     v10->_mandatoryArticleIDs = v11;
 
-    v13 = [v9 copy];
+    v13 = [iDsCopy copy];
     personalizedArticleIDs = v10->_personalizedArticleIDs;
     v10->_personalizedArticleIDs = v13;
 
-    v10->_limit = a5;
+    v10->_limit = limit;
   }
 
   return v10;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  itemsCopy = items;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTPersonalizedSectionLimitTransformation transformFeedItems:];
   }
 
-  v5 = [(NTPersonalizedSectionLimitTransformation *)self mandatoryArticleIDs];
+  mandatoryArticleIDs = [(NTPersonalizedSectionLimitTransformation *)self mandatoryArticleIDs];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -97,23 +97,23 @@ LABEL_6:
   v17 = 3221225472;
   v18 = __63__NTPersonalizedSectionLimitTransformation_transformFeedItems___block_invoke;
   v19 = &unk_2799838A0;
-  v6 = v5;
+  v6 = mandatoryArticleIDs;
   v20 = v6;
   v21 = &v22;
-  [v4 enumerateObjectsWithOptions:2 usingBlock:&v16];
+  [itemsCopy enumerateObjectsWithOptions:2 usingBlock:&v16];
   v7 = [(NTPersonalizedSectionLimitTransformation *)self limit:v16];
   v8 = v23[3];
   v9 = v8 + 1;
   v10 = v7 - (v8 + 1);
   if (v7 <= v8 + 1)
   {
-    v14 = [v4 fc_subarrayUpToCountInclusive:v7];
+    v14 = [itemsCopy fc_subarrayUpToCountInclusive:v7];
   }
 
   else
   {
-    v11 = [v4 fc_subarrayUpToCountInclusive:v8 + 1];
-    v12 = [v4 fc_safeSubarrayWithCountFromBack:{objc_msgSend(v4, "count") - v9}];
+    v11 = [itemsCopy fc_subarrayUpToCountInclusive:v8 + 1];
+    v12 = [itemsCopy fc_safeSubarrayWithCountFromBack:{objc_msgSend(itemsCopy, "count") - v9}];
     v13 = [v12 fc_subarrayWithMaxCount:v10];
 
     v14 = [MEMORY[0x277CBEA60] fc_arrayByAddingObjectsFromArray:v13 toArray:v11];

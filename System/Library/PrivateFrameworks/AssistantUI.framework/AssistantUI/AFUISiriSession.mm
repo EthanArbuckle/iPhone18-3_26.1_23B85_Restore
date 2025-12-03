@@ -2,10 +2,10 @@
 + (id)effectiveCoreLocationBundle;
 + (unint64_t)availabilityState;
 - (AFConnection)_connection;
-- (AFUISiriSession)initWithConnection:(id)a3 delegateQueue:(id)a4 requestSource:(int64_t)a5;
+- (AFUISiriSession)initWithConnection:(id)connection delegateQueue:(id)queue requestSource:(int64_t)source;
 - (AFUISiriSessionLocalDataSource)localDataSource;
 - (AFUISiriSessionLocalDelegate)localDelegate;
-- (BOOL)_aceObjectExpectsTurnIdentifierWhenSendingCommand:(id)a3;
+- (BOOL)_aceObjectExpectsTurnIdentifierWhenSendingCommand:(id)command;
 - (BOOL)_isContinuousConversationAvailable;
 - (BOOL)_shouldFetchActiveAccount;
 - (BOOL)attendingState;
@@ -13,152 +13,152 @@
 - (SRUIFSiriStateResponding)visualIntelligenceCameraDelegate;
 - (SRUIFWatchAuthenticationManager)_watchAuthenticationManager;
 - (float)recordingPowerLevel;
-- (id)_getMissingAssetTypes:(id)a3;
-- (id)_invocationContextFromTVRemoteType:(unint64_t)a3;
-- (id)_invocationEventForRequestOptions:(id)a3 localDataSource:(id)a4;
+- (id)_getMissingAssetTypes:(id)types;
+- (id)_invocationContextFromTVRemoteType:(unint64_t)type;
+- (id)_invocationEventForRequestOptions:(id)options localDataSource:(id)source;
 - (id)_modeOverrideValue;
-- (id)_photoPickerDirectActionRequestWith:(id)a3 assetIdentifiers:(id)a4;
-- (id)_preparedSpeechRequestWithRequestOptions:(id)a3;
-- (id)_processInstrumentationForFinalOptionsAndGenerateNewTurn:(id)a3;
-- (id)_setRefIdForAllViewsInAddViews:(id)a3;
-- (id)_startingRecordingAlertPolicyForSoundID:(id)a3;
-- (id)_tamaleDirectActionRequestWithText:(id)a3;
-- (id)safeWrapResponseCompletion:(id)a3;
-- (int)_mapInvocationSource:(int64_t)a3;
-- (int64_t)_mapSuggestionRequestType:(int64_t)a3;
+- (id)_photoPickerDirectActionRequestWith:(id)with assetIdentifiers:(id)identifiers;
+- (id)_preparedSpeechRequestWithRequestOptions:(id)options;
+- (id)_processInstrumentationForFinalOptionsAndGenerateNewTurn:(id)turn;
+- (id)_setRefIdForAllViewsInAddViews:(id)views;
+- (id)_startingRecordingAlertPolicyForSoundID:(id)d;
+- (id)_tamaleDirectActionRequestWithText:(id)text;
+- (id)safeWrapResponseCompletion:(id)completion;
+- (int)_mapInvocationSource:(int64_t)source;
+- (int64_t)_mapSuggestionRequestType:(int64_t)type;
 - (void)_cancelTypeToSiriLatencyTimerIfNeeded;
-- (void)_discardConnectionForReason:(int64_t)a3;
-- (void)_forceAudioSessionActiveWithCompletionWrapper:(id)a3;
+- (void)_discardConnectionForReason:(int64_t)reason;
+- (void)_forceAudioSessionActiveWithCompletionWrapper:(id)wrapper;
 - (void)_handleDidChangeAudioRecordingPower;
-- (void)_handlePhotoPickerRequest:(id)a3 completion:(id)a4;
-- (void)_handlePlayAudioCommand:(id)a3 completion:(id)a4;
-- (void)_handleRequestUpdateViewsCommand:(id)a3 completion:(id)a4;
-- (void)_handleSuppressDelayFeedbackCommand:(id)a3 completion:(id)a4;
-- (void)_handleUnlockAppCommand:(id)a3 completion:(id)a4;
-- (void)_handleUnlockDeviceCommand:(id)a3 completion:(id)a4;
-- (void)_handleUnlockDeviceWithWatchCommand:(id)a3 completion:(id)a4;
-- (void)_invalidateConnectionForReason:(int64_t)a3;
-- (void)_performAceCommand:(id)a3 forRequestUpdateViewsCommand:(id)a4 afterDelay:(double)a5;
-- (void)_performAceCommand:(id)a3 turnIdentifier:(id)a4 machAbsoluteTime:(double)a5 conflictHandler:(id)a6;
-- (void)_performAceCommands:(id)a3;
-- (void)_performBlockWithDelegate:(id)a3;
-- (void)_performPunchoutCommand:(id)a3 delegate:(id)a4 completion:(id)a5;
-- (void)_playPhaticWithCompletion:(id)a3;
-- (void)_populateInvocationEventWithBluetoothCarInvocationContext:(id)a3;
-- (void)_populateInvocationEventWithTypeToSiriInvocationContext:(id)a3;
-- (void)_requestDidFinishWithError:(id)a3;
-- (void)_requestStartedWithInfo:(id)a3;
-- (void)_sendContextWithCompletion:(id)a3;
+- (void)_handlePhotoPickerRequest:(id)request completion:(id)completion;
+- (void)_handlePlayAudioCommand:(id)command completion:(id)completion;
+- (void)_handleRequestUpdateViewsCommand:(id)command completion:(id)completion;
+- (void)_handleSuppressDelayFeedbackCommand:(id)command completion:(id)completion;
+- (void)_handleUnlockAppCommand:(id)command completion:(id)completion;
+- (void)_handleUnlockDeviceCommand:(id)command completion:(id)completion;
+- (void)_handleUnlockDeviceWithWatchCommand:(id)command completion:(id)completion;
+- (void)_invalidateConnectionForReason:(int64_t)reason;
+- (void)_performAceCommand:(id)command forRequestUpdateViewsCommand:(id)viewsCommand afterDelay:(double)delay;
+- (void)_performAceCommand:(id)command turnIdentifier:(id)identifier machAbsoluteTime:(double)time conflictHandler:(id)handler;
+- (void)_performAceCommands:(id)commands;
+- (void)_performBlockWithDelegate:(id)delegate;
+- (void)_performPunchoutCommand:(id)command delegate:(id)delegate completion:(id)completion;
+- (void)_playPhaticWithCompletion:(id)completion;
+- (void)_populateInvocationEventWithBluetoothCarInvocationContext:(id)context;
+- (void)_populateInvocationEventWithTypeToSiriInvocationContext:(id)context;
+- (void)_requestDidFinishWithError:(id)error;
+- (void)_requestStartedWithInfo:(id)info;
+- (void)_sendContextWithCompletion:(id)completion;
 - (void)_setupConnectionIfNeeded;
-- (void)_startContinuityRequestWithInfo:(id)a3 completion:(id)a4;
-- (void)_startDirectRequestWith:(id)a3 turnIdentifier:(id)a4 completion:(id)a5;
-- (void)_startLegacyDirectActionRequestWithInfo:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_startRequestForReadoutOfBulletin:(id)a3;
-- (void)_startRequestWithBlock:(id)a3;
-- (void)_startRequestWithFinalOptions:(id)a3 completion:(id)a4;
-- (void)_startRequestWithInfo:(id)a3 completion:(id)a4;
-- (void)_startRequestWithSuggestionText:(id)a3 suggestionRequestType:(int64_t)a4 turnIdentifier:(id)a5 completion:(id)a6;
-- (void)_startRequestWithText:(id)a3 turnIdentifier:(id)a4 completion:(id)a5;
-- (void)_startSpeechPronunciationRequestWithContext:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)_startSpeechRequestWithOptions:(id)a3 completion:(id)a4;
-- (void)_startSpeechRequestWithSpeechRequestOptions:(id)a3 isInitialBringUp:(BOOL)a4 completion:(id)a5;
+- (void)_startContinuityRequestWithInfo:(id)info completion:(id)completion;
+- (void)_startDirectRequestWith:(id)with turnIdentifier:(id)identifier completion:(id)completion;
+- (void)_startLegacyDirectActionRequestWithInfo:(id)info context:(id)context completion:(id)completion;
+- (void)_startRequestForReadoutOfBulletin:(id)bulletin;
+- (void)_startRequestWithBlock:(id)block;
+- (void)_startRequestWithFinalOptions:(id)options completion:(id)completion;
+- (void)_startRequestWithInfo:(id)info completion:(id)completion;
+- (void)_startRequestWithSuggestionText:(id)text suggestionRequestType:(int64_t)type turnIdentifier:(id)identifier completion:(id)completion;
+- (void)_startRequestWithText:(id)text turnIdentifier:(id)identifier completion:(id)completion;
+- (void)_startSpeechPronunciationRequestWithContext:(id)context options:(id)options completion:(id)completion;
+- (void)_startSpeechRequestWithOptions:(id)options completion:(id)completion;
+- (void)_startSpeechRequestWithSpeechRequestOptions:(id)options isInitialBringUp:(BOOL)up completion:(id)completion;
 - (void)_startTypeToSiriLatencyTimer;
-- (void)_startVisualIntelligenceDirectInvocationRequestWith:(id)a3 completion:(id)a4;
-- (void)_startVisualIntelligenceDirectInvocationRequestWithText:(id)a3 turnIdentifier:(id)a4 completion:(id)a5;
+- (void)_startVisualIntelligenceDirectInvocationRequestWith:(id)with completion:(id)completion;
+- (void)_startVisualIntelligenceDirectInvocationRequestWithText:(id)text turnIdentifier:(id)identifier completion:(id)completion;
 - (void)_typeToSiriLatencyTimerFired;
-- (void)_updateActiveAccount:(id)a3;
-- (void)_updateActiveAccount:(id)a3 withNumberOfActiveAccounts:(unint64_t)a4;
-- (void)_updateAssistantVersion:(id)a3;
-- (void)_updateCarPlayInvocationContext:(id)a3 fromDirectActionEvent:(int64_t)a4 appBundleIdentifier:(id)a5;
-- (void)_updateModesHeuristicsForRequestOptions:(id)a3;
-- (void)assistantConnection:(id)a3 appLaunchFailedWithBundleIdentifier:(id)a4;
-- (void)assistantConnection:(id)a3 didChangeAudioSessionID:(unsigned int)a4;
-- (void)assistantConnection:(id)a3 didFinishAcousticIDRequestWithSuccess:(BOOL)a4;
-- (void)assistantConnection:(id)a3 didLoadAssistant:(id)a4;
-- (void)assistantConnection:(id)a3 didUpdateResponseMode:(id)a4;
-- (void)assistantConnection:(id)a3 dismissAssistantWithReason:(int64_t)a4;
-- (void)assistantConnection:(id)a3 extensionRequestFinishedForApplication:(id)a4 error:(id)a5;
-- (void)assistantConnection:(id)a3 extensionRequestWillStartForApplication:(id)a4;
-- (void)assistantConnection:(id)a3 openURL:(id)a4 completion:(id)a5;
-- (void)assistantConnection:(id)a3 receivedCommand:(id)a4 completion:(id)a5;
-- (void)assistantConnection:(id)a3 recognitionUpdateWithPhrases:(id)a4 utterances:(id)a5 refId:(id)a6;
-- (void)assistantConnection:(id)a3 recognizedAdditionalSpeechInterpretation:(id)a4 refId:(id)a5;
-- (void)assistantConnection:(id)a3 replayAll:(unint64_t)a4 with:(id)a5;
-- (void)assistantConnection:(id)a3 replayAt:(unint64_t)a4 with:(id)a5;
-- (void)assistantConnection:(id)a3 requestFailedWithError:(id)a4 requestClass:(id)a5;
-- (void)assistantConnection:(id)a3 setReplayEnabled:(BOOL)a4;
-- (void)assistantConnection:(id)a3 setReplayOverridePath:(id)a4;
-- (void)assistantConnection:(id)a3 speechRecognized:(id)a4;
-- (void)assistantConnection:(id)a3 speechRecognizedPartialResult:(id)a4;
-- (void)assistantConnection:(id)a3 speechRecordingDidBeginOnAVRecordRoute:(id)a4 audioSessionID:(unsigned int)a5;
-- (void)assistantConnection:(id)a3 speechRecordingDidChangeAVRecordRoute:(id)a4;
-- (void)assistantConnection:(id)a3 speechRecordingDidFail:(id)a4;
-- (void)assistantConnection:(id)a3 speechRecordingPerformTwoShotPromptWithType:(int64_t)a4 completion:(id)a5;
-- (void)assistantConnection:(id)a3 startPlaybackDidFail:(int64_t)a4;
-- (void)assistantConnection:(id)a3 startUIRequestWithText:(id)a4 completion:(id)a5;
-- (void)assistantConnection:(id)a3 wantsToCacheImage:(id)a4;
-- (void)assistantConnection:(id)a3 willProcessAppLaunchWithBundleIdentifier:(id)a4;
-- (void)assistantConnection:(id)a3 willProcessStartPlayback:(int64_t)a4 intent:(id)a5 completion:(id)a6;
-- (void)assistantConnectionAudioSessionDidBeginInterruption:(id)a3 userInfo:(id)a4;
-- (void)assistantConnectionAudioSessionDidEndInterruption:(id)a3 shouldResume:(BOOL)a4 userInfo:(id)a5;
-- (void)assistantConnectionDidChangeAudioRecordingPower:(id)a3;
-- (void)assistantConnectionRequestFinished:(id)a3;
-- (void)assistantConnectionRequestWillStart:(id)a3;
-- (void)assistantConnectionSpeechRecordingDidCancel:(id)a3;
-- (void)assistantConnectionSpeechRecordingDidEnd:(id)a3;
-- (void)assistantConnectionSpeechRecordingWillBegin:(id)a3;
-- (void)assistantConnectionUpdatedSpeechEndEstimate:(id)a3 speechEndEstimate:(unint64_t)a4;
+- (void)_updateActiveAccount:(id)account;
+- (void)_updateActiveAccount:(id)account withNumberOfActiveAccounts:(unint64_t)accounts;
+- (void)_updateAssistantVersion:(id)version;
+- (void)_updateCarPlayInvocationContext:(id)context fromDirectActionEvent:(int64_t)event appBundleIdentifier:(id)identifier;
+- (void)_updateModesHeuristicsForRequestOptions:(id)options;
+- (void)assistantConnection:(id)connection appLaunchFailedWithBundleIdentifier:(id)identifier;
+- (void)assistantConnection:(id)connection didChangeAudioSessionID:(unsigned int)d;
+- (void)assistantConnection:(id)connection didFinishAcousticIDRequestWithSuccess:(BOOL)success;
+- (void)assistantConnection:(id)connection didLoadAssistant:(id)assistant;
+- (void)assistantConnection:(id)connection didUpdateResponseMode:(id)mode;
+- (void)assistantConnection:(id)connection dismissAssistantWithReason:(int64_t)reason;
+- (void)assistantConnection:(id)connection extensionRequestFinishedForApplication:(id)application error:(id)error;
+- (void)assistantConnection:(id)connection extensionRequestWillStartForApplication:(id)application;
+- (void)assistantConnection:(id)connection openURL:(id)l completion:(id)completion;
+- (void)assistantConnection:(id)connection receivedCommand:(id)command completion:(id)completion;
+- (void)assistantConnection:(id)connection recognitionUpdateWithPhrases:(id)phrases utterances:(id)utterances refId:(id)id;
+- (void)assistantConnection:(id)connection recognizedAdditionalSpeechInterpretation:(id)interpretation refId:(id)id;
+- (void)assistantConnection:(id)connection replayAll:(unint64_t)all with:(id)with;
+- (void)assistantConnection:(id)connection replayAt:(unint64_t)at with:(id)with;
+- (void)assistantConnection:(id)connection requestFailedWithError:(id)error requestClass:(id)class;
+- (void)assistantConnection:(id)connection setReplayEnabled:(BOOL)enabled;
+- (void)assistantConnection:(id)connection setReplayOverridePath:(id)path;
+- (void)assistantConnection:(id)connection speechRecognized:(id)recognized;
+- (void)assistantConnection:(id)connection speechRecognizedPartialResult:(id)result;
+- (void)assistantConnection:(id)connection speechRecordingDidBeginOnAVRecordRoute:(id)route audioSessionID:(unsigned int)d;
+- (void)assistantConnection:(id)connection speechRecordingDidChangeAVRecordRoute:(id)route;
+- (void)assistantConnection:(id)connection speechRecordingDidFail:(id)fail;
+- (void)assistantConnection:(id)connection speechRecordingPerformTwoShotPromptWithType:(int64_t)type completion:(id)completion;
+- (void)assistantConnection:(id)connection startPlaybackDidFail:(int64_t)fail;
+- (void)assistantConnection:(id)connection startUIRequestWithText:(id)text completion:(id)completion;
+- (void)assistantConnection:(id)connection wantsToCacheImage:(id)image;
+- (void)assistantConnection:(id)connection willProcessAppLaunchWithBundleIdentifier:(id)identifier;
+- (void)assistantConnection:(id)connection willProcessStartPlayback:(int64_t)playback intent:(id)intent completion:(id)completion;
+- (void)assistantConnectionAudioSessionDidBeginInterruption:(id)interruption userInfo:(id)info;
+- (void)assistantConnectionAudioSessionDidEndInterruption:(id)interruption shouldResume:(BOOL)resume userInfo:(id)info;
+- (void)assistantConnectionDidChangeAudioRecordingPower:(id)power;
+- (void)assistantConnectionRequestFinished:(id)finished;
+- (void)assistantConnectionRequestWillStart:(id)start;
+- (void)assistantConnectionSpeechRecordingDidCancel:(id)cancel;
+- (void)assistantConnectionSpeechRecordingDidEnd:(id)end;
+- (void)assistantConnectionSpeechRecordingWillBegin:(id)begin;
+- (void)assistantConnectionUpdatedSpeechEndEstimate:(id)estimate speechEndEstimate:(unint64_t)endEstimate;
 - (void)cancelRequest;
 - (void)clearContext;
 - (void)dealloc;
-- (void)emitSiriWasUnavailableEventWithRequestOptions:(id)a3;
+- (void)emitSiriWasUnavailableEventWithRequestOptions:(id)options;
 - (void)end;
-- (void)endForReason:(int64_t)a3;
-- (void)fetchAttendingState:(id)a3;
-- (void)forceAudioSessionActiveWithCompletion:(id)a3;
+- (void)endForReason:(int64_t)reason;
+- (void)fetchAttendingState:(id)state;
+- (void)forceAudioSessionActiveWithCompletion:(id)completion;
 - (void)forceAudioSessionInactive;
-- (void)idleAndQuietStatusDidChange:(BOOL)a3;
+- (void)idleAndQuietStatusDidChange:(BOOL)change;
 - (void)invalidateConnection;
-- (void)launchedIntoListeningAtTime:(double)a3;
+- (void)launchedIntoListeningAtTime:(double)time;
 - (void)notifyStateManagerSpeakingBegan;
 - (void)notifyStateManagerSpeakingEnded;
-- (void)orchestrationBeganTaskWithIdentifier:(id)a3;
+- (void)orchestrationBeganTaskWithIdentifier:(id)identifier;
 - (void)preheat;
 - (void)promptedUserForInput;
-- (void)receivedLatencyInformation:(id)a3;
-- (void)receivedNLRoutingDecision:(id)a3;
-- (void)recordMetricsContext:(id)a3 forDisambiguatedAppWIthBundleIdentifier:(id)a4;
-- (void)recordRequestMetricEvent:(id)a3 withTimestamp:(double)a4;
-- (void)recordUIMetrics:(id)a3;
-- (void)requestDidPresentViewForErrorCommand:(id)a3;
-- (void)requestDidPresentViewForUICommand:(id)a3;
-- (void)resetContextTypes:(int64_t)a3;
-- (void)resultDidChangeForAceCommand:(id)a3 completion:(id)a4;
+- (void)receivedLatencyInformation:(id)information;
+- (void)receivedNLRoutingDecision:(id)decision;
+- (void)recordMetricsContext:(id)context forDisambiguatedAppWIthBundleIdentifier:(id)identifier;
+- (void)recordRequestMetricEvent:(id)event withTimestamp:(double)timestamp;
+- (void)recordUIMetrics:(id)metrics;
+- (void)requestDidPresentViewForErrorCommand:(id)command;
+- (void)requestDidPresentViewForUICommand:(id)command;
+- (void)resetContextTypes:(int64_t)types;
+- (void)resultDidChangeForAceCommand:(id)command completion:(id)completion;
 - (void)resumeInterruptedAudioPlaybackIfNeeded;
 - (void)rollbackClearContext;
-- (void)sessionStateHandler:(id)a3 didTransitionFromState:(int64_t)a4 toState:(int64_t)a5 forEvent:(int64_t)a6 machAbsoluteTime:(double)a7;
+- (void)sessionStateHandler:(id)handler didTransitionFromState:(int64_t)state toState:(int64_t)toState forEvent:(int64_t)event machAbsoluteTime:(double)time;
 - (void)setAlertContext;
-- (void)setAnnouncementRequestsPermittedByPresentationWhileActive:(BOOL)a3;
-- (void)setApplicationContextForDirectAction:(BOOL)a3;
-- (void)setCarDNDActive:(BOOL)a3;
-- (void)setCarOwnsMainAudio:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDeviceInStarkMode:(BOOL)a3;
-- (void)setEyesFree:(BOOL)a3;
-- (void)setLockState:(unint64_t)a3;
-- (void)setSupportsCarPlayVehicleData:(BOOL)a3;
-- (void)setWatchAuthenticated:(BOOL)a3;
+- (void)setAnnouncementRequestsPermittedByPresentationWhileActive:(BOOL)active;
+- (void)setApplicationContextForDirectAction:(BOOL)action;
+- (void)setCarDNDActive:(BOOL)active;
+- (void)setCarOwnsMainAudio:(BOOL)audio;
+- (void)setDelegate:(id)delegate;
+- (void)setDeviceInStarkMode:(BOOL)mode;
+- (void)setEyesFree:(BOOL)free;
+- (void)setLockState:(unint64_t)state;
+- (void)setSupportsCarPlayVehicleData:(BOOL)data;
+- (void)setWatchAuthenticated:(BOOL)authenticated;
 - (void)showAssetsDownloadNotificationPrompt;
-- (void)siriUIDidPresentDynamicSnippetWithInfo:(id)a3;
-- (void)speechRequestHandlerDidCancelSpeechRequest:(id)a3;
-- (void)speechSynthesisDidUpdatePowerLevelTo:(float)a3;
-- (void)startCorrectedRequestWithText:(id)a3 correctionIdentifier:(id)a4 userSelectionResults:(id)a5 turnIdentifier:(id)a6 machAbsoluteTime:(double)a7;
-- (void)startRequestWithOptions:(id)a3 completion:(id)a4;
-- (void)stateFeedbackManagerDidStartPlaybackForStateFeedbackType:(int64_t)a3;
+- (void)siriUIDidPresentDynamicSnippetWithInfo:(id)info;
+- (void)speechRequestHandlerDidCancelSpeechRequest:(id)request;
+- (void)speechSynthesisDidUpdatePowerLevelTo:(float)to;
+- (void)startCorrectedRequestWithText:(id)text correctionIdentifier:(id)identifier userSelectionResults:(id)results turnIdentifier:(id)turnIdentifier machAbsoluteTime:(double)time;
+- (void)startRequestWithOptions:(id)options completion:(id)completion;
+- (void)stateFeedbackManagerDidStartPlaybackForStateFeedbackType:(int64_t)type;
 - (void)stopAttending;
-- (void)stopRequestWithOptions:(id)a3;
+- (void)stopRequestWithOptions:(id)options;
 - (void)telephonyRequestCompleted;
-- (void)updateRequestOptions:(id)a3;
+- (void)updateRequestOptions:(id)options;
 @end
 
 @implementation AFUISiriSession
@@ -183,9 +183,9 @@
 {
   if (AFHasUnlockedSinceBoot())
   {
-    v2 = [MEMORY[0x277D61AB8] sharedInstance];
-    v3 = [v2 understandingOnDeviceAssetsAvailable];
-    if ((v3 & 1) == 0)
+    mEMORY[0x277D61AB8] = [MEMORY[0x277D61AB8] sharedInstance];
+    understandingOnDeviceAssetsAvailable = [mEMORY[0x277D61AB8] understandingOnDeviceAssetsAvailable];
+    if ((understandingOnDeviceAssetsAvailable & 1) == 0)
     {
       v4 = MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
@@ -207,7 +207,7 @@
 
     if ([MEMORY[0x277CEF218] isAvailable])
     {
-      if ((v3 | [MEMORY[0x277CEF218] isNetworkAvailable]))
+      if ((understandingOnDeviceAssetsAvailable | [MEMORY[0x277CEF218] isNetworkAvailable]))
       {
         v5 = 0;
 LABEL_20:
@@ -249,14 +249,14 @@ LABEL_20:
     _os_log_impl(&dword_241432000, v3, OS_LOG_TYPE_DEFAULT, "%s ", &v5, 0xCu);
   }
 
-  v4 = [(AFUISiriSession *)self _connection];
-  [v4 clearContext];
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection clearContext];
 }
 
 - (void)setAlertContext
 {
-  v3 = [(AFUISiriSession *)self localDataSource];
-  v4 = [v3 bulletinsForSiriSession:self];
+  localDataSource = [(AFUISiriSession *)self localDataSource];
+  v4 = [localDataSource bulletinsForSiriSession:self];
 
   if (v4)
   {
@@ -269,8 +269,8 @@ LABEL_20:
   }
 
   v7 = v5;
-  v6 = [(AFUISiriSession *)self _connection];
-  [v6 setAlertContextWithBulletins:v7];
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection setAlertContextWithBulletins:v7];
 }
 
 - (AFUISiriSessionLocalDataSource)localDataSource
@@ -289,15 +289,15 @@ LABEL_20:
 
 - (BOOL)attendingState
 {
-  v3 = [(AFUISiriSession *)self _isContinuousConversationAvailable];
-  if (v3)
+  _isContinuousConversationAvailable = [(AFUISiriSession *)self _isContinuousConversationAvailable];
+  if (_isContinuousConversationAvailable)
   {
     uiBridgeClient = self->_uiBridgeClient;
 
-    LOBYTE(v3) = [(SRUIFUIBridgeClient *)uiBridgeClient isAttending];
+    LOBYTE(_isContinuousConversationAvailable) = [(SRUIFUIBridgeClient *)uiBridgeClient isAttending];
   }
 
-  return v3;
+  return _isContinuousConversationAvailable;
 }
 
 - (BOOL)_isContinuousConversationAvailable
@@ -322,8 +322,8 @@ LABEL_20:
 
 - (BOOL)_shouldFetchActiveAccount
 {
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  if ([v3 showServerOnUI])
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  if ([mEMORY[0x277CEF368] showServerOnUI])
   {
     WeakRetained = objc_loadWeakRetained(&self->_localDataSource);
     v5 = [WeakRetained isPPTAvailable] ^ 1;
@@ -362,15 +362,15 @@ LABEL_20:
   {
     v2 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.siri.internal"];
     v3 = [v2 stringForKey:@"ModeOverride"];
-    v4 = [v3 lowercaseString];
+    lowercaseString = [v3 lowercaseString];
   }
 
   else
   {
-    v4 = 0;
+    lowercaseString = 0;
   }
 
-  return v4;
+  return lowercaseString;
 }
 
 - (SRUIFSiriStateResponding)visualIntelligenceCameraDelegate
@@ -419,13 +419,13 @@ LABEL_20:
   objc_initWeak(&location, self);
   if ([MEMORY[0x277CEF4D0] saeAvailable])
   {
-    v3 = [(AFUISiriSession *)self localDelegate];
+    localDelegate = [(AFUISiriSession *)self localDelegate];
     [(AFUISiriSession *)self recordingPowerLevel];
     v5 = v4;
     [(AFUISiriSession *)self recordingPowerLevel];
     LODWORD(v7) = v6;
     LODWORD(v8) = v5;
-    [v3 siriSessionAudioRecordingDidChangePowerLevel:v8 peakLevel:v7];
+    [localDelegate siriSessionAudioRecordingDidChangePowerLevel:v8 peakLevel:v7];
 
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -439,9 +439,9 @@ LABEL_20:
 
   else
   {
-    v10 = [(AFUISiriSession *)self localDelegate];
+    localDelegate2 = [(AFUISiriSession *)self localDelegate];
     [(AFUISiriSession *)self recordingPowerLevel];
-    [v10 siriSessionAudioRecordingDidChangePowerLevel:?];
+    [localDelegate2 siriSessionAudioRecordingDidChangePowerLevel:?];
 
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -461,9 +461,9 @@ LABEL_20:
   audioPowerLevelUpdater = self->_audioPowerLevelUpdater;
   if (!audioPowerLevelUpdater)
   {
-    v4 = [MEMORY[0x277CEF2A8] isContinuousConversationEnabled];
+    isContinuousConversationEnabled = [MEMORY[0x277CEF2A8] isContinuousConversationEnabled];
     v5 = 32;
-    if (v4)
+    if (isContinuousConversationEnabled)
     {
       v5 = 200;
     }
@@ -491,27 +491,27 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke(uin
   }
 }
 
-- (AFUISiriSession)initWithConnection:(id)a3 delegateQueue:(id)a4 requestSource:(int64_t)a5
+- (AFUISiriSession)initWithConnection:(id)connection delegateQueue:(id)queue requestSource:(int64_t)source
 {
-  v9 = a3;
-  v10 = a4;
+  connectionCopy = connection;
+  queueCopy = queue;
   v35.receiver = self;
   v35.super_class = AFUISiriSession;
   v11 = [(AFUISiriSession *)&v35 init];
   if (v11)
   {
-    if (!v10)
+    if (!queueCopy)
     {
       [AFUISiriSession initWithConnection:a2 delegateQueue:v11 requestSource:?];
     }
 
-    objc_storeStrong(&v11->_delegateQueue, a4);
+    objc_storeStrong(&v11->_delegateQueue, queue);
     v11->_currentRequestDidPresent = 1;
-    if ([(AFUISiriSession *)v11 _shouldRetainConnectionForRequestSource:a5])
+    if ([(AFUISiriSession *)v11 _shouldRetainConnectionForRequestSource:source])
     {
-      if (v9)
+      if (connectionCopy)
       {
-        v12 = v9;
+        v12 = connectionCopy;
       }
 
       else
@@ -542,12 +542,12 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke(uin
     siriSessionInfo = v11->_siriSessionInfo;
     v11->_siriSessionInfo = v20;
 
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v22 addObserver:v11 selector:sel__siriNetworkAvailabilityDidChange_ name:*MEMORY[0x277CEF040] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel__siriNetworkAvailabilityDidChange_ name:*MEMORY[0x277CEF040] object:0];
 
-    v23 = [MEMORY[0x277CEF3D8] sharedManager];
+    mEMORY[0x277CEF3D8] = [MEMORY[0x277CEF3D8] sharedManager];
     clientStateManager = v11->_clientStateManager;
-    v11->_clientStateManager = v23;
+    v11->_clientStateManager = mEMORY[0x277CEF3D8];
 
     v25 = [objc_alloc(MEMORY[0x277D61B00]) initWithDelegate:v11];
     stateHandler = v11->_stateHandler;
@@ -577,9 +577,9 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke(uin
 - (void)dealloc
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(AFUISiriSession *)self _connection];
+  _connection = [(AFUISiriSession *)self _connection];
 
-  if (v3)
+  if (_connection)
   {
     v4 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -592,8 +592,8 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke(uin
     [(AFUISiriSession *)self _discardConnectionForReason:0];
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.LocalAuthentication.ui.presented", 0);
@@ -606,25 +606,25 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke(uin
   [(AFUISiriSession *)&v9 dealloc];
 }
 
-- (void)sessionStateHandler:(id)a3 didTransitionFromState:(int64_t)a4 toState:(int64_t)a5 forEvent:(int64_t)a6 machAbsoluteTime:(double)a7
+- (void)sessionStateHandler:(id)handler didTransitionFromState:(int64_t)state toState:(int64_t)toState forEvent:(int64_t)event machAbsoluteTime:(double)time
 {
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __96__AFUISiriSession_sessionStateHandler_didTransitionFromState_toState_forEvent_machAbsoluteTime___block_invoke;
   v13[3] = &__block_descriptor_64_e35_v16__0___AFUISiriSessionDelegate__8l;
-  v13[4] = a4;
-  v13[5] = a5;
-  v13[6] = a6;
-  *&v13[7] = a7;
+  v13[4] = state;
+  v13[5] = toState;
+  v13[6] = event;
+  *&v13[7] = time;
   [(AFUISiriSession *)self _performBlockWithDelegate:v13];
   WeakRetained = objc_loadWeakRetained(&self->_localDelegate);
-  [WeakRetained siriSession:self didChangeToState:a5 event:a6 machAbsoluteTransitionTime:a7];
+  [WeakRetained siriSession:self didChangeToState:toState event:event machAbsoluteTransitionTime:time];
 
-  [(SRUIFStateFeedbackManager *)self->_stateFeedbackManager didTransitionFromState:a4 toState:a5 event:a6 machAbsoluteTransitionTime:a7];
-  [(SRUIFAudioPowerLevelUpdater *)self->_audioPowerLevelUpdater sessionStateDidChangeTo:a5 isAttending:[(AFUISiriSession *)self attendingState]];
+  [(SRUIFStateFeedbackManager *)self->_stateFeedbackManager didTransitionFromState:state toState:toState event:event machAbsoluteTransitionTime:time];
+  [(SRUIFAudioPowerLevelUpdater *)self->_audioPowerLevelUpdater sessionStateDidChangeTo:toState isAttending:[(AFUISiriSession *)self attendingState]];
 }
 
-- (void)speechRequestHandlerDidCancelSpeechRequest:(id)a3
+- (void)speechRequestHandlerDidCancelSpeechRequest:(id)request
 {
   [(SRUIFSiriSessionStateHandler *)self->_stateHandler performTransitionForEvent:5];
 
@@ -648,46 +648,46 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke(uin
   }
 }
 
-- (void)receivedLatencyInformation:(id)a3
+- (void)receivedLatencyInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__AFUISiriSession_receivedLatencyInformation___block_invoke;
   v6[3] = &unk_278CD59E0;
-  v7 = v4;
-  v5 = v4;
+  v7 = informationCopy;
+  v5 = informationCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v6];
 }
 
-- (void)receivedNLRoutingDecision:(id)a3
+- (void)receivedNLRoutingDecision:(id)decision
 {
-  v4 = a3;
+  decisionCopy = decision;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__AFUISiriSession_receivedNLRoutingDecision___block_invoke;
   v6[3] = &unk_278CD59E0;
-  v7 = v4;
-  v5 = v4;
+  v7 = decisionCopy;
+  v5 = decisionCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v6];
 }
 
-- (void)orchestrationBeganTaskWithIdentifier:(id)a3
+- (void)orchestrationBeganTaskWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__AFUISiriSession_orchestrationBeganTaskWithIdentifier___block_invoke;
   v6[3] = &unk_278CD59E0;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v6];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  objc_storeStrong(&self->_delegate, a3);
+  delegateCopy = delegate;
+  objc_storeStrong(&self->_delegate, delegate);
   if (self->_siriSessionInfo && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v6[0] = MEMORY[0x277D85DD0];
@@ -699,9 +699,9 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke(uin
   }
 }
 
-- (void)_performBlockWithDelegate:(id)a3
+- (void)_performBlockWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   objc_initWeak(&location, self);
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -709,8 +709,8 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke(uin
   block[2] = __45__AFUISiriSession__performBlockWithDelegate___block_invoke;
   block[3] = &unk_278CD5A08;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(delegateQueue, block);
 
   objc_destroyWeak(&v9);
@@ -727,20 +727,20 @@ uint64_t __45__AFUISiriSession__performBlockWithDelegate___block_invoke(uint64_t
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)idleAndQuietStatusDidChange:(BOOL)a3
+- (void)idleAndQuietStatusDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   if ([(AFUISiriSession *)self _isContinuousConversationAvailable])
   {
     uiBridgeClient = self->_uiBridgeClient;
 
-    [(SRUIFUIBridgeClient *)uiBridgeClient idleAndQuietDidChange:v3];
+    [(SRUIFUIBridgeClient *)uiBridgeClient idleAndQuietDidChange:changeCopy];
   }
 }
 
-- (void)stateFeedbackManagerDidStartPlaybackForStateFeedbackType:(int64_t)a3
+- (void)stateFeedbackManagerDidStartPlaybackForStateFeedbackType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     [(SRUIFSiriSessionStateHandler *)self->_stateHandler performTransitionForEvent:15];
 
@@ -750,10 +750,10 @@ uint64_t __45__AFUISiriSession__performBlockWithDelegate___block_invoke(uint64_t
 
 - (BOOL)stateFeedbackManagerShouldCancelOnMediaResume
 {
-  v2 = [(AFUISiriSession *)self localDataSource];
-  v3 = [v2 getUIViewModeIsUIFreeForCurrentRequest];
+  localDataSource = [(AFUISiriSession *)self localDataSource];
+  getUIViewModeIsUIFreeForCurrentRequest = [localDataSource getUIViewModeIsUIFreeForCurrentRequest];
 
-  return v3 ^ 1;
+  return getUIViewModeIsUIFreeForCurrentRequest ^ 1;
 }
 
 - (void)_startTypeToSiriLatencyTimer
@@ -791,11 +791,11 @@ uint64_t __45__AFUISiriSession__performBlockWithDelegate___block_invoke(uint64_t
 
 - (void)preheat
 {
-  v2 = [(AFUISiriSession *)self _connection];
-  [v2 preheatWithStyle:1];
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection preheatWithStyle:1];
 }
 
-- (void)launchedIntoListeningAtTime:(double)a3
+- (void)launchedIntoListeningAtTime:(double)time
 {
   v8 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
@@ -806,18 +806,18 @@ uint64_t __45__AFUISiriSession__performBlockWithDelegate___block_invoke(uint64_t
     _os_log_impl(&dword_241432000, v5, OS_LOG_TYPE_DEFAULT, "%s ", &v6, 0xCu);
   }
 
-  [(SRUIFSiriSessionStateHandler *)self->_stateHandler performTransitionForEvent:14 eventTimeStamp:a3];
+  [(SRUIFSiriSessionStateHandler *)self->_stateHandler performTransitionForEvent:14 eventTimeStamp:time];
 }
 
-- (void)forceAudioSessionActiveWithCompletion:(id)a3
+- (void)forceAudioSessionActiveWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__AFUISiriSession_forceAudioSessionActiveWithCompletion___block_invoke;
   v6[3] = &unk_278CD5A30;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(AFUISiriSession *)self _forceAudioSessionActiveWithCompletionWrapper:v6];
 }
 
@@ -850,10 +850,10 @@ void __57__AFUISiriSession_forceAudioSessionActiveWithCompletion___block_invoke(
   }
 }
 
-- (void)_forceAudioSessionActiveWithCompletionWrapper:(id)a3
+- (void)_forceAudioSessionActiveWithCompletionWrapper:(id)wrapper
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  wrapperCopy = wrapper;
   v5 = MEMORY[0x277CEF098];
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEBUG))
@@ -871,9 +871,9 @@ void __57__AFUISiriSession_forceAudioSessionActiveWithCompletion___block_invoke(
       _os_log_impl(&dword_241432000, v9, OS_LOG_TYPE_DEFAULT, "%s #tts #carPlay AudioSession CarPlay", &v11, 0xCu);
     }
 
-    v8 = [(AFUISiriSession *)self _connection];
+    _connection = [(AFUISiriSession *)self _connection];
     v10 = [objc_alloc(MEMORY[0x277CEF498]) initWithActivationEvent:9];
-    [v8 forceAudioSessionActiveWithOptions:1 reason:3 speechRequestOptions:v10 completion:v4];
+    [_connection forceAudioSessionActiveWithOptions:1 reason:3 speechRequestOptions:v10 completion:wrapperCopy];
   }
 
   else
@@ -886,47 +886,47 @@ void __57__AFUISiriSession_forceAudioSessionActiveWithCompletion___block_invoke(
       _os_log_impl(&dword_241432000, v7, OS_LOG_TYPE_DEFAULT, "%s #tts AudioSession", &v11, 0xCu);
     }
 
-    v8 = [(AFUISiriSession *)self _connection];
-    [v8 forceAudioSessionActiveWithOptions:1 reason:3 completion:v4];
+    _connection = [(AFUISiriSession *)self _connection];
+    [_connection forceAudioSessionActiveWithOptions:1 reason:3 completion:wrapperCopy];
   }
 }
 
 - (void)forceAudioSessionInactive
 {
-  v2 = [(AFUISiriSession *)self _connection];
-  [v2 forceAudioSessionInactive];
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection forceAudioSessionInactive];
 }
 
 - (void)resumeInterruptedAudioPlaybackIfNeeded
 {
-  v2 = [(AFUISiriSession *)self _connection];
-  [v2 resumeInterruptedAudioPlaybackIfNeeded];
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection resumeInterruptedAudioPlaybackIfNeeded];
 }
 
-- (void)emitSiriWasUnavailableEventWithRequestOptions:(id)a3
+- (void)emitSiriWasUnavailableEventWithRequestOptions:(id)options
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = mach_absolute_time();
-  v6 = [(AFUISiriSession *)self _processInstrumentationForFinalOptionsAndGenerateNewTurn:v4];
-  v7 = [(AFUISiriSession *)self localDataSource];
-  v8 = [(AFUISiriSession *)self _invocationEventForRequestOptions:v4 localDataSource:v7];
+  v6 = [(AFUISiriSession *)self _processInstrumentationForFinalOptionsAndGenerateNewTurn:optionsCopy];
+  localDataSource = [(AFUISiriSession *)self localDataSource];
+  v8 = [(AFUISiriSession *)self _invocationEventForRequestOptions:optionsCopy localDataSource:localDataSource];
 
   v9 = MEMORY[0x277CEF098];
   v10 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [v6 turnIdentifier];
-    v13 = [v8 formattedText];
+    turnIdentifier = [v6 turnIdentifier];
+    formattedText = [v8 formattedText];
     v22 = 136315906;
     v23 = "[AFUISiriSession emitSiriWasUnavailableEventWithRequestOptions:]";
     v24 = 2112;
     v25 = v8;
     v26 = 2112;
-    v27 = v12;
+    v27 = turnIdentifier;
     v28 = 2112;
-    v29 = v13;
+    v29 = formattedText;
     _os_log_impl(&dword_241432000, v11, OS_LOG_TYPE_DEFAULT, "%s #instrumentation %@ in turn %@: \n%@", &v22, 0x2Au);
   }
 
@@ -934,12 +934,12 @@ void __57__AFUISiriSession_forceAudioSessionActiveWithCompletion___block_invoke(
   v14 = objc_alloc_init(MEMORY[0x277D5ABB0]);
   [v14 setReason:2];
   [v14 setProduct:1];
-  v15 = [MEMORY[0x277D61AB8] sharedInstance];
-  v16 = [v15 assistantUODStatus];
+  mEMORY[0x277D61AB8] = [MEMORY[0x277D61AB8] sharedInstance];
+  assistantUODStatus = [mEMORY[0x277D61AB8] assistantUODStatus];
 
-  if (v16 && [v16 count])
+  if (assistantUODStatus && [assistantUODStatus count])
   {
-    v17 = [(AFUISiriSession *)self _getMissingAssetTypes:v16];
+    v17 = [(AFUISiriSession *)self _getMissingAssetTypes:assistantUODStatus];
     [v14 setAssetTypes:v17];
   }
 
@@ -947,27 +947,27 @@ void __57__AFUISiriSession_forceAudioSessionActiveWithCompletion___block_invoke(
   if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
   {
     v19 = v18;
-    v20 = [v6 turnIdentifier];
-    v21 = [v14 formattedText];
+    turnIdentifier2 = [v6 turnIdentifier];
+    formattedText2 = [v14 formattedText];
     v22 = 136315906;
     v23 = "[AFUISiriSession emitSiriWasUnavailableEventWithRequestOptions:]";
     v24 = 2112;
     v25 = v14;
     v26 = 2112;
-    v27 = v20;
+    v27 = turnIdentifier2;
     v28 = 2112;
-    v29 = v21;
+    v29 = formattedText2;
     _os_log_impl(&dword_241432000, v19, OS_LOG_TYPE_DEFAULT, "%s #instrumentation %@ in turn %@: \n%@", &v22, 0x2Au);
   }
 
   [v6 emitInstrumentation:v14 machAbsoluteTime:v5];
 }
 
-- (id)_getMissingAssetTypes:(id)a3
+- (id)_getMissingAssetTypes:(id)types
 {
-  v3 = a3;
+  typesCopy = types;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKey:@"SPEECH"];
+  v5 = [typesCopy objectForKey:@"SPEECH"];
 
   if (v5)
   {
@@ -975,7 +975,7 @@ void __57__AFUISiriSession_forceAudioSessionActiveWithCompletion___block_invoke(
     [v4 addObject:v6];
   }
 
-  v7 = [v3 objectForKey:@"NL"];
+  v7 = [typesCopy objectForKey:@"NL"];
 
   if (v7)
   {
@@ -983,7 +983,7 @@ void __57__AFUISiriSession_forceAudioSessionActiveWithCompletion___block_invoke(
     [v4 addObject:v8];
   }
 
-  v9 = [v3 objectForKey:@"MORPHUN"];
+  v9 = [typesCopy objectForKey:@"MORPHUN"];
 
   if (v9)
   {
@@ -991,7 +991,7 @@ void __57__AFUISiriSession_forceAudioSessionActiveWithCompletion___block_invoke(
     [v4 addObject:v10];
   }
 
-  v11 = [v3 objectForKey:@"ATTENTION"];
+  v11 = [typesCopy objectForKey:@"ATTENTION"];
 
   if (v11)
   {
@@ -999,7 +999,7 @@ void __57__AFUISiriSession_forceAudioSessionActiveWithCompletion___block_invoke(
     [v4 addObject:v12];
   }
 
-  v13 = [v3 objectForKey:@"NLROUTER"];
+  v13 = [typesCopy objectForKey:@"NLROUTER"];
 
   if (v13)
   {
@@ -1015,54 +1015,54 @@ void __57__AFUISiriSession_forceAudioSessionActiveWithCompletion___block_invoke(
   return v4;
 }
 
-- (id)_processInstrumentationForFinalOptionsAndGenerateNewTurn:(id)a3
+- (id)_processInstrumentationForFinalOptionsAndGenerateNewTurn:(id)turn
 {
   v104 = *MEMORY[0x277D85DE8];
-  v82 = a3;
+  turnCopy = turn;
   val = self;
-  v4 = [(AFUISiriSession *)self localDataSource];
-  v81 = [(AFUISiriSession *)val _invocationEventForRequestOptions:v82 localDataSource:v4];
+  localDataSource = [(AFUISiriSession *)self localDataSource];
+  v81 = [(AFUISiriSession *)val _invocationEventForRequestOptions:turnCopy localDataSource:localDataSource];
 
   if ([v81 invocationSource] != 52)
   {
     if ([v81 invocationSource] == 48)
     {
-      v13 = [MEMORY[0x277D61AD8] sharedManager];
-      v14 = [v13 latestStoredTurn];
+      mEMORY[0x277D61AD8] = [MEMORY[0x277D61AD8] sharedManager];
+      latestStoredTurn = [mEMORY[0x277D61AD8] latestStoredTurn];
 
-      v80 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:v14];
+      v80 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:latestStoredTurn];
       v15 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
       {
         v16 = v15;
-        v17 = [v80 turnIdentifier];
+        turnIdentifier = [v80 turnIdentifier];
         *buf = 136315650;
         v97 = "[AFUISiriSession _processInstrumentationForFinalOptionsAndGenerateNewTurn:]";
         v98 = 2112;
-        v99 = v17;
+        v99 = turnIdentifier;
         v100 = 2112;
-        v101 = v14;
+        v101 = latestStoredTurn;
         _os_log_impl(&dword_241432000, v16, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New Turn %@ <-> Old Turn %@ ", buf, 0x20u);
       }
     }
 
     else if ([v81 invocationSource] == 92)
     {
-      v18 = [MEMORY[0x277D61AD8] sharedManager];
-      v14 = [v18 latestResponseProducingTurn];
+      mEMORY[0x277D61AD8]2 = [MEMORY[0x277D61AD8] sharedManager];
+      latestStoredTurn = [mEMORY[0x277D61AD8]2 latestResponseProducingTurn];
 
-      v80 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:v14];
+      v80 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:latestStoredTurn];
       v19 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
       {
         v20 = v19;
-        v21 = [v80 turnIdentifier];
+        turnIdentifier2 = [v80 turnIdentifier];
         *buf = 136315650;
         v97 = "[AFUISiriSession _processInstrumentationForFinalOptionsAndGenerateNewTurn:]";
         v98 = 2112;
-        v99 = v21;
+        v99 = turnIdentifier2;
         v100 = 2112;
-        v101 = v14;
+        v101 = latestStoredTurn;
         _os_log_impl(&dword_241432000, v20, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New Turn %@ <-> Old Turn %@ ", buf, 0x20u);
       }
     }
@@ -1071,40 +1071,40 @@ void __57__AFUISiriSession_forceAudioSessionActiveWithCompletion___block_invoke(
     {
       if ([v81 invocationSource] != 29)
       {
-        v31 = [MEMORY[0x277CEF158] sharedAnalytics];
-        v32 = [v31 newTurnBasedInstrumentationContext];
+        mEMORY[0x277CEF158] = [MEMORY[0x277CEF158] sharedAnalytics];
+        newTurnBasedInstrumentationContext = [mEMORY[0x277CEF158] newTurnBasedInstrumentationContext];
 
         v33 = *MEMORY[0x277CEF098];
-        v80 = v32;
+        v80 = newTurnBasedInstrumentationContext;
         if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
         {
           v34 = v33;
-          v35 = [v32 turnIdentifier];
+          turnIdentifier3 = [newTurnBasedInstrumentationContext turnIdentifier];
           *buf = 136315394;
           v97 = "[AFUISiriSession _processInstrumentationForFinalOptionsAndGenerateNewTurn:]";
           v98 = 2112;
-          v99 = v35;
+          v99 = turnIdentifier3;
           _os_log_impl(&dword_241432000, v34, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New Turn %@ ", buf, 0x16u);
         }
 
         goto LABEL_22;
       }
 
-      v27 = [MEMORY[0x277D61AD8] sharedManager];
-      v14 = [v27 latestStoredTurn];
+      mEMORY[0x277D61AD8]3 = [MEMORY[0x277D61AD8] sharedManager];
+      latestStoredTurn = [mEMORY[0x277D61AD8]3 latestStoredTurn];
 
-      v80 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:v14];
+      v80 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:latestStoredTurn];
       v28 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
       {
         v29 = v28;
-        v30 = [v80 turnIdentifier];
+        turnIdentifier4 = [v80 turnIdentifier];
         *buf = 136315650;
         v97 = "[AFUISiriSession _processInstrumentationForFinalOptionsAndGenerateNewTurn:]";
         v98 = 2112;
-        v99 = v30;
+        v99 = turnIdentifier4;
         v100 = 2112;
-        v101 = v14;
+        v101 = latestStoredTurn;
         _os_log_impl(&dword_241432000, v29, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New Turn %@ <-> Old Turn %@ ", buf, 0x20u);
       }
     }
@@ -1114,52 +1114,52 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v5 = [v82 previousTurnIdentifier];
+  previousTurnIdentifier = [turnCopy previousTurnIdentifier];
 
-  if (v5)
+  if (previousTurnIdentifier)
   {
     v6 = MEMORY[0x277CEF168];
-    v7 = [v82 previousTurnIdentifier];
-    v8 = [v6 newTurnBasedContextWithPreviousTurnID:v7];
+    previousTurnIdentifier2 = [turnCopy previousTurnIdentifier];
+    v8 = [v6 newTurnBasedContextWithPreviousTurnID:previousTurnIdentifier2];
 
     v9 = *MEMORY[0x277CEF098];
     v80 = v8;
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [v8 turnIdentifier];
-      v12 = [v82 previousTurnIdentifier];
+      turnIdentifier5 = [v8 turnIdentifier];
+      previousTurnIdentifier3 = [turnCopy previousTurnIdentifier];
       *buf = 136315650;
       v97 = "[AFUISiriSession _processInstrumentationForFinalOptionsAndGenerateNewTurn:]";
       v98 = 2112;
-      v99 = v11;
+      v99 = turnIdentifier5;
       v100 = 2112;
-      v101 = v12;
+      v101 = previousTurnIdentifier3;
       _os_log_impl(&dword_241432000, v10, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New Turn %@ <-> Old Turn %@ ", buf, 0x20u);
     }
 
     goto LABEL_22;
   }
 
-  v22 = [MEMORY[0x277CEF158] sharedAnalytics];
-  v23 = [v22 newTurnBasedInstrumentationContext];
+  mEMORY[0x277CEF158]2 = [MEMORY[0x277CEF158] sharedAnalytics];
+  newTurnBasedInstrumentationContext2 = [mEMORY[0x277CEF158]2 newTurnBasedInstrumentationContext];
 
   v24 = *MEMORY[0x277CEF098];
-  v80 = v23;
+  v80 = newTurnBasedInstrumentationContext2;
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v25 = v24;
-    v26 = [v23 turnIdentifier];
+    turnIdentifier6 = [newTurnBasedInstrumentationContext2 turnIdentifier];
     *buf = 136315394;
     v97 = "[AFUISiriSession _processInstrumentationForFinalOptionsAndGenerateNewTurn:]";
     v98 = 2112;
-    v99 = v26;
+    v99 = turnIdentifier6;
     _os_log_impl(&dword_241432000, v25, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New Turn %@ ", buf, 0x16u);
   }
 
   v78 = 1;
 LABEL_23:
-  if ([v82 isInitialBringUp])
+  if ([turnCopy isInitialBringUp])
   {
     objc_initWeak(buf, val);
     block[0] = MEMORY[0x277D85DD0];
@@ -1175,50 +1175,50 @@ LABEL_23:
   }
 
   [(AFUISiriSession *)val _setInstrumentationTurnContext:v80];
-  if ([v82 isTypeToSiriRequest])
+  if ([turnCopy isTypeToSiriRequest])
   {
-    v36 = [v82 text];
-    if ([v36 length])
+    text = [turnCopy text];
+    if ([text length])
     {
-      v37 = [MEMORY[0x277CEF4D0] saeAvailable];
+      saeAvailable = [MEMORY[0x277CEF4D0] saeAvailable];
 
-      if (!v37)
+      if (!saeAvailable)
       {
         goto LABEL_32;
       }
 
       v38 = objc_alloc(MEMORY[0x277D5AC78]);
       v39 = objc_alloc_init(MEMORY[0x277CCAD78]);
-      v36 = [v38 initWithNSUUID:v39];
+      text = [v38 initWithNSUUID:v39];
 
       v40 = objc_alloc_init(MEMORY[0x277D5AB60]);
-      [v40 setLinkId:v36];
+      [v40 setLinkId:text];
       [v40 setHasLinkId:1];
-      v41 = [v82 text];
-      [v40 setTypedText:v41];
+      text2 = [turnCopy text];
+      [v40 setTypedText:text2];
 
-      [v81 setLinkId:v36];
+      [v81 setLinkId:text];
       [v81 setHasLinkId:1];
       v42 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
       {
         v43 = v42;
-        v44 = [(AFUISiriSession *)val _instrumentationTurnContext];
-        v45 = [v44 turnIdentifier];
-        v46 = [v40 formattedText];
+        _instrumentationTurnContext = [(AFUISiriSession *)val _instrumentationTurnContext];
+        turnIdentifier7 = [_instrumentationTurnContext turnIdentifier];
+        formattedText = [v40 formattedText];
         *buf = 136315906;
         v97 = "[AFUISiriSession _processInstrumentationForFinalOptionsAndGenerateNewTurn:]";
         v98 = 2112;
         v99 = v40;
         v100 = 2112;
-        v101 = v45;
+        v101 = turnIdentifier7;
         v102 = 2112;
-        v103 = v46;
+        v103 = formattedText;
         _os_log_impl(&dword_241432000, v43, OS_LOG_TYPE_DEFAULT, "%s #instrumentation %@ in turn %@: \n%@", buf, 0x2Au);
       }
 
-      v47 = [(AFUISiriSession *)val _instrumentationTurnContext];
-      [v47 emitInstrumentation:v40 machAbsoluteTime:mach_absolute_time()];
+      _instrumentationTurnContext2 = [(AFUISiriSession *)val _instrumentationTurnContext];
+      [_instrumentationTurnContext2 emitInstrumentation:v40 machAbsoluteTime:mach_absolute_time()];
     }
   }
 
@@ -1227,61 +1227,61 @@ LABEL_32:
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v49 = v48;
-    v50 = [(AFUISiriSession *)val _instrumentationTurnContext];
-    v51 = [v50 turnIdentifier];
-    v52 = [v81 formattedText];
+    _instrumentationTurnContext3 = [(AFUISiriSession *)val _instrumentationTurnContext];
+    turnIdentifier8 = [_instrumentationTurnContext3 turnIdentifier];
+    formattedText2 = [v81 formattedText];
     *buf = 136315906;
     v97 = "[AFUISiriSession _processInstrumentationForFinalOptionsAndGenerateNewTurn:]";
     v98 = 2112;
     v99 = v81;
     v100 = 2112;
-    v101 = v51;
+    v101 = turnIdentifier8;
     v102 = 2112;
-    v103 = v52;
+    v103 = formattedText2;
     _os_log_impl(&dword_241432000, v49, OS_LOG_TYPE_DEFAULT, "%s #instrumentation %@ in turn %@: \n%@", buf, 0x2Au);
   }
 
-  v53 = [(AFUISiriSession *)val _instrumentationTurnContext];
-  [v53 emitInstrumentation:v81 machAbsoluteTime:mach_absolute_time()];
+  _instrumentationTurnContext4 = [(AFUISiriSession *)val _instrumentationTurnContext];
+  [_instrumentationTurnContext4 emitInstrumentation:v81 machAbsoluteTime:mach_absolute_time()];
 
-  v79 = [v82 activationEventInstrumentationIdenifier];
-  if (v79)
+  activationEventInstrumentationIdenifier = [turnCopy activationEventInstrumentationIdenifier];
+  if (activationEventInstrumentationIdenifier)
   {
     activationInstrumentationSender = val->_activationInstrumentationSender;
     if (!activationInstrumentationSender)
     {
       v55 = objc_alloc(MEMORY[0x277D55158]);
-      v56 = [MEMORY[0x277D552C0] sharedAnalytics];
-      v57 = [v56 defaultMessageStream];
-      v58 = [v55 initWithAnalyticsStream:v57];
+      mEMORY[0x277D552C0] = [MEMORY[0x277D552C0] sharedAnalytics];
+      defaultMessageStream = [mEMORY[0x277D552C0] defaultMessageStream];
+      v58 = [v55 initWithAnalyticsStream:defaultMessageStream];
       v59 = val->_activationInstrumentationSender;
       val->_activationInstrumentationSender = v58;
 
       activationInstrumentationSender = val->_activationInstrumentationSender;
     }
 
-    v60 = [v80 turnIdentifier];
-    [(SASActivationInstrumentationSender *)activationInstrumentationSender instrumentTurnActivatedWithTurnId:v60 activationEventIdentifier:v79];
+    turnIdentifier9 = [v80 turnIdentifier];
+    [(SASActivationInstrumentationSender *)activationInstrumentationSender instrumentTurnActivatedWithTurnId:turnIdentifier9 activationEventIdentifier:activationEventInstrumentationIdenifier];
 
     v61 = val->_activationInstrumentationSender;
-    v62 = [v80 turnIdentifier];
-    [(SASActivationInstrumentationSender *)v61 instrumentRequestLinkToUEIWithTurnId:v62 activationEventIdentifier:v79];
+    turnIdentifier10 = [v80 turnIdentifier];
+    [(SASActivationInstrumentationSender *)v61 instrumentRequestLinkToUEIWithTurnId:turnIdentifier10 activationEventIdentifier:activationEventInstrumentationIdenifier];
   }
 
   v77 = SRUIFConstructLaunchContextForLaunchStarted();
-  if ([v82 requestSource] == 23)
+  if ([turnCopy requestSource] == 23)
   {
-    [v82 buttonDownTimestamp];
+    [turnCopy buttonDownTimestamp];
   }
 
-  else if ([v82 requestSource] == 44)
+  else if ([turnCopy requestSource] == 44)
   {
-    [v82 computedActivationTime];
+    [turnCopy computedActivationTime];
   }
 
   else
   {
-    [v82 timestamp];
+    [turnCopy timestamp];
   }
 
   v76 = AFGetMachAbsoluteTimeFromTimeInterval();
@@ -1289,8 +1289,8 @@ LABEL_32:
   v91 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v63 = [v82 instrumentationEvents];
-  v64 = [v63 countByEnumeratingWithState:&v88 objects:v95 count:16];
+  instrumentationEvents = [turnCopy instrumentationEvents];
+  v64 = [instrumentationEvents countByEnumeratingWithState:&v88 objects:v95 count:16];
   if (v64)
   {
     v65 = *v89;
@@ -1300,7 +1300,7 @@ LABEL_32:
       {
         if (*v89 != v65)
         {
-          objc_enumerationMutation(v63);
+          objc_enumerationMutation(instrumentationEvents);
         }
 
         v67 = *(*(&v88 + 1) + 8 * i);
@@ -1308,25 +1308,25 @@ LABEL_32:
         if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
         {
           v69 = v68;
-          v70 = [(AFUISiriSession *)val _instrumentationTurnContext];
-          v71 = [v70 turnIdentifier];
-          v72 = [v67 formattedText];
+          _instrumentationTurnContext5 = [(AFUISiriSession *)val _instrumentationTurnContext];
+          turnIdentifier11 = [_instrumentationTurnContext5 turnIdentifier];
+          formattedText3 = [v67 formattedText];
           *buf = 136315906;
           v97 = "[AFUISiriSession _processInstrumentationForFinalOptionsAndGenerateNewTurn:]";
           v98 = 2112;
           v99 = v67;
           v100 = 2112;
-          v101 = v71;
+          v101 = turnIdentifier11;
           v102 = 2112;
-          v103 = v72;
+          v103 = formattedText3;
           _os_log_impl(&dword_241432000, v69, OS_LOG_TYPE_DEFAULT, "%s #instrumentation %@ in turn %@: \n%@", buf, 0x2Au);
         }
 
-        v73 = [(AFUISiriSession *)val _instrumentationTurnContext];
-        [v73 emitInstrumentation:v67 machAbsoluteTime:mach_absolute_time()];
+        _instrumentationTurnContext6 = [(AFUISiriSession *)val _instrumentationTurnContext];
+        [_instrumentationTurnContext6 emitInstrumentation:v67 machAbsoluteTime:mach_absolute_time()];
       }
 
-      v64 = [v63 countByEnumeratingWithState:&v88 objects:v95 count:16];
+      v64 = [instrumentationEvents countByEnumeratingWithState:&v88 objects:v95 count:16];
     }
 
     while (v64);
@@ -1371,13 +1371,13 @@ void __76__AFUISiriSession__processInstrumentationForFinalOptionsAndGenerateNewT
   [v3 siriSessionDidStartNewTurn:v4 associatedLaunchStartContext:*(a1 + 32) machAbsoluteTime:*(a1 + 56) linkPreviousTurn:*(a1 + 48)];
 }
 
-- (void)_startRequestWithFinalOptions:(id)a3 completion:(id)a4
+- (void)_startRequestWithFinalOptions:(id)options completion:(id)completion
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 speechRequestOptions];
-  self->_lastAFSpeechEvent = [v8 activationEvent];
+  optionsCopy = options;
+  completionCopy = completion;
+  speechRequestOptions = [optionsCopy speechRequestOptions];
+  self->_lastAFSpeechEvent = [speechRequestOptions activationEvent];
 
   v9 = MEMORY[0x277CEF098];
   v10 = *MEMORY[0x277CEF098];
@@ -1386,7 +1386,7 @@ void __76__AFUISiriSession__processInstrumentationForFinalOptionsAndGenerateNewT
     [AFUISiriSession _startRequestWithFinalOptions:v10 completion:?];
   }
 
-  if ([v6 isVisualIntelligenceRequest])
+  if ([optionsCopy isVisualIntelligenceRequest])
   {
     v11 = *v9;
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
@@ -1399,19 +1399,19 @@ void __76__AFUISiriSession__processInstrumentationForFinalOptionsAndGenerateNewT
     goto LABEL_45;
   }
 
-  v12 = [(AFUISiriSession *)self _processInstrumentationForFinalOptionsAndGenerateNewTurn:v6];
-  self->_activeRequestIsTypeToSiri = [v6 isTypeToSiriRequest];
+  v12 = [(AFUISiriSession *)self _processInstrumentationForFinalOptionsAndGenerateNewTurn:optionsCopy];
+  self->_activeRequestIsTypeToSiri = [optionsCopy isTypeToSiriRequest];
   if (_os_feature_enabled_impl())
   {
-    [(AFUISiriSession *)self _updateModesHeuristicsForRequestOptions:v6];
+    [(AFUISiriSession *)self _updateModesHeuristicsForRequestOptions:optionsCopy];
   }
 
   [(AFUISiriSession *)self _setupConnectionIfNeeded];
   objc_initWeak(&location, self);
   if ([(AFUISiriSession *)self _shouldFetchActiveAccount])
   {
-    v13 = [(SRUIFSiriSessionInfo *)self->_siriSessionInfo activeAccount];
-    v14 = v13 == 0;
+    activeAccount = [(SRUIFSiriSessionInfo *)self->_siriSessionInfo activeAccount];
+    v14 = activeAccount == 0;
 
     if (v14)
     {
@@ -1426,54 +1426,54 @@ void __76__AFUISiriSession__processInstrumentationForFinalOptionsAndGenerateNewT
     }
   }
 
-  v16 = [v6 requestInfo];
-  v17 = [v16 turnIdentifier];
-  v18 = v17 == 0;
+  requestInfo = [optionsCopy requestInfo];
+  turnIdentifier = [requestInfo turnIdentifier];
+  v18 = turnIdentifier == 0;
 
   if (v18)
   {
-    v19 = [(AFUISiriSession *)self _instrumentationTurnContext];
-    v20 = [v6 requestInfo];
-    v21 = [v19 turnIdentifier];
-    [v20 setTurnIdentifier:v21];
+    _instrumentationTurnContext = [(AFUISiriSession *)self _instrumentationTurnContext];
+    requestInfo2 = [optionsCopy requestInfo];
+    turnIdentifier2 = [_instrumentationTurnContext turnIdentifier];
+    [requestInfo2 setTurnIdentifier:turnIdentifier2];
 
     v22 = *v9;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v19 turnIdentifier];
+      turnIdentifier3 = [_instrumentationTurnContext turnIdentifier];
       *buf = 136315650;
       v75 = "[AFUISiriSession _startRequestWithFinalOptions:completion:]";
       v76 = 2112;
-      v77 = v23;
+      v77 = turnIdentifier3;
       v78 = 2112;
-      v79 = v6;
+      v79 = optionsCopy;
       _os_log_impl(&dword_241432000, v22, OS_LOG_TYPE_DEFAULT, "%s #instrumentation Specified turn %@ to final options %@", buf, 0x20u);
     }
   }
 
-  if ([v6 requestSource] == 14 || objc_msgSend(v6, "requestSource") == 13)
+  if ([optionsCopy requestSource] == 14 || objc_msgSend(optionsCopy, "requestSource") == 13)
   {
-    v24 = [v6 requestInfo];
-    v25 = [v24 startLocalRequest];
+    requestInfo3 = [optionsCopy requestInfo];
+    startLocalRequest = [requestInfo3 startLocalRequest];
 
-    if (v25)
+    if (startLocalRequest)
     {
       v26 = *v9;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v24 startLocalRequest];
+        startLocalRequest2 = [requestInfo3 startLocalRequest];
         *buf = 136315650;
         v75 = "[AFUISiriSession _startRequestWithFinalOptions:completion:]";
         v76 = 2112;
-        v77 = v6;
+        v77 = optionsCopy;
         v78 = 2112;
-        v79 = v27;
+        v79 = startLocalRequest2;
         _os_log_impl(&dword_241432000, v26, OS_LOG_TYPE_DEFAULT, "%s #activation #carPlay activating requested direct action via Native Siri Kit. SASRequestOptions: %@, SAStartLocalRequest: %@", buf, 0x20u);
       }
 
       objc_copyWeak(&v70, &location);
-      v68 = v24;
-      v69 = v7;
+      v68 = requestInfo3;
+      v69 = completionCopy;
       SRUIFInvokeOnMainQueue();
 
       objc_destroyWeak(&v70);
@@ -1481,9 +1481,9 @@ void __76__AFUISiriSession__processInstrumentationForFinalOptionsAndGenerateNewT
 
     else
     {
-      v28 = [v24 legacyDirectActionIdentifier];
+      legacyDirectActionIdentifier = [requestInfo3 legacyDirectActionIdentifier];
 
-      if (v28)
+      if (legacyDirectActionIdentifier)
       {
         v29 = *v9;
         if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
@@ -1491,33 +1491,33 @@ void __76__AFUISiriSession__processInstrumentationForFinalOptionsAndGenerateNewT
           *buf = 136315394;
           v75 = "[AFUISiriSession _startRequestWithFinalOptions:completion:]";
           v76 = 2112;
-          v77 = v6;
+          v77 = optionsCopy;
           _os_log_impl(&dword_241432000, v29, OS_LOG_TYPE_DEFAULT, "%s #activation #carPlay activating requested direct action via Legacy. SASRequestOptions: %@", buf, 0x16u);
         }
 
-        v30 = [v6 directActionApplicationContext];
-        [(AFUISiriSession *)self _startLegacyDirectActionRequestWithInfo:v24 context:v30 completion:v7];
+        directActionApplicationContext = [optionsCopy directActionApplicationContext];
+        [(AFUISiriSession *)self _startLegacyDirectActionRequestWithInfo:requestInfo3 context:directActionApplicationContext completion:completionCopy];
       }
 
       else
       {
-        v37 = [v6 bulletin];
+        bulletin = [optionsCopy bulletin];
 
         v38 = *v9;
         v39 = *v9;
-        if (v37)
+        if (bulletin)
         {
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 136315394;
             v75 = "[AFUISiriSession _startRequestWithFinalOptions:completion:]";
             v76 = 2112;
-            v77 = v6;
+            v77 = optionsCopy;
             _os_log_impl(&dword_241432000, v38, OS_LOG_TYPE_DEFAULT, "%s #activation #carPlay activating requested direct action with no direct action specified. SASRequestOptions: %@", buf, 0x16u);
           }
 
-          v40 = [v6 bulletin];
-          [(AFUISiriSession *)self _startRequestForReadoutOfBulletin:v40];
+          bulletin2 = [optionsCopy bulletin];
+          [(AFUISiriSession *)self _startRequestForReadoutOfBulletin:bulletin2];
         }
 
         else
@@ -1527,10 +1527,10 @@ void __76__AFUISiriSession__processInstrumentationForFinalOptionsAndGenerateNewT
             [AFUISiriSession _startRequestWithFinalOptions:completion:];
           }
 
-          if (v7)
+          if (completionCopy)
           {
             v42 = [MEMORY[0x277CEF2A0] errorWithCode:2510 description:@"Unable to handle direct action request options" underlyingError:0];
-            (*(v7 + 2))(v7, v42);
+            (*(completionCopy + 2))(completionCopy, v42);
           }
         }
       }
@@ -1539,63 +1539,63 @@ void __76__AFUISiriSession__processInstrumentationForFinalOptionsAndGenerateNewT
     goto LABEL_42;
   }
 
-  if ([v6 requestSource] != 22)
+  if ([optionsCopy requestSource] != 22)
   {
-    if ([v6 requestSource] == 12)
+    if ([optionsCopy requestSource] == 12)
     {
-      v33 = [v6 requestInfo];
-      v34 = [v33 speechRequestOptions];
+      requestInfo4 = [optionsCopy requestInfo];
+      speechRequestOptions2 = [requestInfo4 speechRequestOptions];
 
-      if (v34)
+      if (speechRequestOptions2)
       {
-        v35 = [v6 requestInfo];
-        v36 = [v35 speechRequestOptions];
-        -[AFUISiriSession _startSpeechRequestWithSpeechRequestOptions:isInitialBringUp:completion:](self, "_startSpeechRequestWithSpeechRequestOptions:isInitialBringUp:completion:", v36, [v6 isInitialBringUp], v7);
+        requestInfo5 = [optionsCopy requestInfo];
+        speechRequestOptions3 = [requestInfo5 speechRequestOptions];
+        -[AFUISiriSession _startSpeechRequestWithSpeechRequestOptions:isInitialBringUp:completion:](self, "_startSpeechRequestWithSpeechRequestOptions:isInitialBringUp:completion:", speechRequestOptions3, [optionsCopy isInitialBringUp], completionCopy);
 
         goto LABEL_42;
       }
 
-      v48 = [v6 requestInfo];
+      requestInfo6 = [optionsCopy requestInfo];
 
-      if (v48)
+      if (requestInfo6)
       {
 LABEL_58:
-        v53 = [v6 requestInfo];
-        [(AFUISiriSession *)self _startRequestWithInfo:v53 completion:v7];
+        requestInfo7 = [optionsCopy requestInfo];
+        [(AFUISiriSession *)self _startRequestWithInfo:requestInfo7 completion:completionCopy];
 
         goto LABEL_42;
       }
 
 LABEL_64:
-      [(AFUISiriSession *)self _startSpeechRequestWithOptions:v6 completion:v7];
+      [(AFUISiriSession *)self _startSpeechRequestWithOptions:optionsCopy completion:completionCopy];
       goto LABEL_42;
     }
 
-    if ([v6 requestSource] == 15)
+    if ([optionsCopy requestSource] == 15)
     {
-      v41 = [v6 requestInfo];
+      requestInfo8 = [optionsCopy requestInfo];
 
-      if (v41)
+      if (requestInfo8)
       {
         goto LABEL_58;
       }
 
-      v49 = [v6 text];
+      text = [optionsCopy text];
 
-      if (v49)
+      if (text)
       {
-        v50 = [v6 text];
-        v51 = [v12 turnIdentifier];
-        [(AFUISiriSession *)self _startRequestWithText:v50 turnIdentifier:v51 completion:v7];
+        text2 = [optionsCopy text];
+        turnIdentifier4 = [v12 turnIdentifier];
+        [(AFUISiriSession *)self _startRequestWithText:text2 turnIdentifier:turnIdentifier4 completion:completionCopy];
 
         goto LABEL_42;
       }
 
-      v54 = [v6 speechFileURL];
+      speechFileURL = [optionsCopy speechFileURL];
 
-      if (!v54)
+      if (!speechFileURL)
       {
-        if ([v6 inputType] != 2)
+        if ([optionsCopy inputType] != 2)
         {
           if (os_log_type_enabled(*v9, OS_LOG_TYPE_ERROR))
           {
@@ -1611,33 +1611,33 @@ LABEL_64:
 
     else
     {
-      if ([v6 requestSource] == 19 || objc_msgSend(v6, "requestSource") == 38 || objc_msgSend(v6, "requestSource") == 41 || objc_msgSend(v6, "requestSource") == 43 || objc_msgSend(v6, "requestSource") == 42)
+      if ([optionsCopy requestSource] == 19 || objc_msgSend(optionsCopy, "requestSource") == 38 || objc_msgSend(optionsCopy, "requestSource") == 41 || objc_msgSend(optionsCopy, "requestSource") == 43 || objc_msgSend(optionsCopy, "requestSource") == 42)
       {
-        v44 = [v6 requestInfo];
-        v45 = [v44 speechRequestOptions];
+        requestInfo9 = [optionsCopy requestInfo];
+        speechRequestOptions4 = [requestInfo9 speechRequestOptions];
 
-        if (v45)
+        if (speechRequestOptions4)
         {
-          v46 = [v6 requestInfo];
-          v47 = [v46 speechRequestOptions];
+          requestInfo10 = [optionsCopy requestInfo];
+          speechRequestOptions5 = [requestInfo10 speechRequestOptions];
 
-          -[AFUISiriSession _startSpeechRequestWithSpeechRequestOptions:isInitialBringUp:completion:](self, "_startSpeechRequestWithSpeechRequestOptions:isInitialBringUp:completion:", v47, [v6 isInitialBringUp], v7);
+          -[AFUISiriSession _startSpeechRequestWithSpeechRequestOptions:isInitialBringUp:completion:](self, "_startSpeechRequestWithSpeechRequestOptions:isInitialBringUp:completion:", speechRequestOptions5, [optionsCopy isInitialBringUp], completionCopy);
           goto LABEL_42;
         }
 
-        v52 = [v6 requestInfo];
+        requestInfo11 = [optionsCopy requestInfo];
 
-        if (v52)
+        if (requestInfo11)
         {
           goto LABEL_58;
         }
 
-        v56 = [v6 speechRequestOptions];
+        speechRequestOptions6 = [optionsCopy speechRequestOptions];
 
-        if (!v56)
+        if (!speechRequestOptions6)
         {
-          v57 = [v6 continuityInfo];
-          [(AFUISiriSession *)self _startContinuityRequestWithInfo:v57 completion:v7];
+          continuityInfo = [optionsCopy continuityInfo];
+          [(AFUISiriSession *)self _startContinuityRequestWithInfo:continuityInfo completion:completionCopy];
 
           goto LABEL_42;
         }
@@ -1645,71 +1645,71 @@ LABEL_64:
         goto LABEL_64;
       }
 
-      if ([v6 requestSource] == 35 || objc_msgSend(v6, "requestSource") == 40)
+      if ([optionsCopy requestSource] == 35 || objc_msgSend(optionsCopy, "requestSource") == 40)
       {
-        if (v7)
+        if (completionCopy)
         {
-          (*(v7 + 2))(v7, 0);
+          (*(completionCopy + 2))(completionCopy, 0);
         }
 
         goto LABEL_42;
       }
 
-      if ([v6 isPronunciationRequest])
+      if ([optionsCopy isPronunciationRequest])
       {
-        v58 = [v6 pronunciationContext];
-        [(AFUISiriSession *)self _startSpeechPronunciationRequestWithContext:v58 options:v6 completion:v7];
+        pronunciationContext = [optionsCopy pronunciationContext];
+        [(AFUISiriSession *)self _startSpeechPronunciationRequestWithContext:pronunciationContext options:optionsCopy completion:completionCopy];
 
         goto LABEL_42;
       }
 
-      v59 = [v6 text];
+      text3 = [optionsCopy text];
 
-      if (v59)
+      if (text3)
       {
-        [v6 requestSource];
+        [optionsCopy requestSource];
         if (SASRequestSourceIsVisualIntelligenceDirectInvocation())
         {
-          v60 = [v6 text];
-          v61 = [v12 turnIdentifier];
-          [(AFUISiriSession *)self _startVisualIntelligenceDirectInvocationRequestWithText:v60 turnIdentifier:v61 completion:v7];
+          text4 = [optionsCopy text];
+          turnIdentifier5 = [v12 turnIdentifier];
+          [(AFUISiriSession *)self _startVisualIntelligenceDirectInvocationRequestWithText:text4 turnIdentifier:turnIdentifier5 completion:completionCopy];
         }
 
         else
         {
-          if ([v6 requestSource] == 51)
+          if ([optionsCopy requestSource] == 51)
           {
-            v63 = [v6 text];
-            v64 = [v6 suggestionRequestType];
-            v65 = [v12 turnIdentifier];
-            [(AFUISiriSession *)self _startRequestWithSuggestionText:v63 suggestionRequestType:v64 turnIdentifier:v65 completion:v7];
+            text5 = [optionsCopy text];
+            suggestionRequestType = [optionsCopy suggestionRequestType];
+            turnIdentifier6 = [v12 turnIdentifier];
+            [(AFUISiriSession *)self _startRequestWithSuggestionText:text5 suggestionRequestType:suggestionRequestType turnIdentifier:turnIdentifier6 completion:completionCopy];
           }
 
           else
           {
-            v63 = [v6 text];
-            v65 = [v12 turnIdentifier];
-            [(AFUISiriSession *)self _startRequestWithText:v63 turnIdentifier:v65 completion:v7];
+            text5 = [optionsCopy text];
+            turnIdentifier6 = [v12 turnIdentifier];
+            [(AFUISiriSession *)self _startRequestWithText:text5 turnIdentifier:turnIdentifier6 completion:completionCopy];
           }
         }
 
         goto LABEL_42;
       }
 
-      v62 = [v6 speechFileURL];
+      speechFileURL2 = [optionsCopy speechFileURL];
 
-      if (!v62)
+      if (!speechFileURL2)
       {
-        if ([v6 inputType] != 2)
+        if ([optionsCopy inputType] != 2)
         {
-          [v6 requestSource];
+          [optionsCopy requestSource];
           if (SASRequestSourceIsVisualIntelligenceDirectInvocation())
           {
-            v66 = [v12 turnIdentifier];
-            [(AFUISiriSession *)self _startVisualIntelligenceDirectInvocationRequestWith:v66 completion:v7];
+            turnIdentifier7 = [v12 turnIdentifier];
+            [(AFUISiriSession *)self _startVisualIntelligenceDirectInvocationRequestWith:turnIdentifier7 completion:completionCopy];
           }
 
-          else if ([v6 requestSource] == 48)
+          else if ([optionsCopy requestSource] == 48)
           {
             [(AFUISiriSession *)self stopAttending];
             [(AFUISiriSession *)self cancelRequest];
@@ -1722,10 +1722,10 @@ LABEL_64:
               [AFUISiriSession _startRequestWithFinalOptions:completion:];
             }
 
-            if (v7)
+            if (completionCopy)
             {
               v67 = [MEMORY[0x277CEF2A0] errorWithCode:2510 description:@"Unexpected UI request options." underlyingError:0];
-              (*(v7 + 2))(v7, v67);
+              (*(completionCopy + 2))(completionCopy, v67);
             }
           }
 
@@ -1736,18 +1736,18 @@ LABEL_64:
       }
     }
 
-    v55 = [v6 speechFileURL];
-    [(AFUISiriSession *)self _startSpeechRequestWithSpeechFileAtURL:v55 completion:v7];
+    speechFileURL3 = [optionsCopy speechFileURL];
+    [(AFUISiriSession *)self _startSpeechRequestWithSpeechFileAtURL:speechFileURL3 completion:completionCopy];
 
     goto LABEL_42;
   }
 
-  v31 = [v6 requestInfo];
-  v32 = [v6 directActionApplicationContext];
-  [(AFUISiriSession *)self _startLegacyDirectActionRequestWithInfo:v31 context:v32 completion:v7];
+  requestInfo12 = [optionsCopy requestInfo];
+  directActionApplicationContext2 = [optionsCopy directActionApplicationContext];
+  [(AFUISiriSession *)self _startLegacyDirectActionRequestWithInfo:requestInfo12 context:directActionApplicationContext2 completion:completionCopy];
 
 LABEL_42:
-  if ([v6 isFlexibleFollowupRequest])
+  if ([optionsCopy isFlexibleFollowupRequest])
   {
     WeakRetained = objc_loadWeakRetained(&self->_localDelegate);
     [WeakRetained siriSessionDidReactivateFromFlexibleFollowups];
@@ -1836,10 +1836,10 @@ void __60__AFUISiriSession__startRequestWithFinalOptions_completion___block_invo
   [WeakRetained _startRequestWithInfo:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)_startRequestForReadoutOfBulletin:(id)a3
+- (void)_startRequestForReadoutOfBulletin:(id)bulletin
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bulletinCopy = bulletin;
   v5 = MEMORY[0x277CEF098];
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -1847,11 +1847,11 @@ void __60__AFUISiriSession__startRequestWithFinalOptions_completion___block_invo
     *buf = 136315394;
     v10 = "[AFUISiriSession _startRequestForReadoutOfBulletin:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = bulletinCopy;
     _os_log_impl(&dword_241432000, v6, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (bulletinCopy)
   {
     [(AFUISiriSession *)self _performBlockWithDelegate:&__block_literal_global_102];
     [(SRUIFSiriSessionStateHandler *)self->_stateHandler performTransitionForEvent:6];
@@ -1860,7 +1860,7 @@ void __60__AFUISiriSession__startRequestWithFinalOptions_completion___block_invo
     v7[1] = 3221225472;
     v7[2] = __53__AFUISiriSession__startRequestForReadoutOfBulletin___block_invoke_2;
     v7[3] = &unk_278CD59E0;
-    v8 = v4;
+    v8 = bulletinCopy;
     [(AFUISiriSession *)self _performBlockWithDelegate:v7];
   }
 
@@ -1939,54 +1939,54 @@ LABEL_14:
   }
 }
 
-- (void)startRequestWithOptions:(id)a3 completion:(id)a4
+- (void)startRequestWithOptions:(id)options completion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = objc_alloc(MEMORY[0x277CEF340]);
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __54__AFUISiriSession_startRequestWithOptions_completion___block_invoke;
   v37[3] = &unk_278CD57E0;
-  v9 = v7;
+  v9 = completionCopy;
   v38 = v9;
   v10 = [MEMORY[0x277CEF2A0] errorWithCode:2510 description:@"Completion block of start request was dropped." underlyingError:0];
   v11 = [v8 initWithBlock:v37 defaultValue:v10];
 
   [(SRUIFSpeechRequestHandler *)self->_speechRequestHandler discardCurrentSpeechGroup];
-  -[AFUISiriSession setEyesFree:](self, "setEyesFree:", [v6 isForBluetoothCar]);
-  v12 = [objc_opt_class() availabilityState];
-  if (v12 == 3)
+  -[AFUISiriSession setEyesFree:](self, "setEyesFree:", [optionsCopy isForBluetoothCar]);
+  availabilityState = [objc_opt_class() availabilityState];
+  if (availabilityState == 3)
   {
-    if ([v6 isVisualIntelligenceRequest])
+    if ([optionsCopy isVisualIntelligenceRequest])
     {
 LABEL_13:
-      v21 = [(SRUIFSpeechRequestHandler *)self->_speechRequestHandler prepareForNewSpeechRequest];
-      if ([v6 isInitialBringUp] & 1) != 0 || objc_msgSend(v6, "inputType") == 1 || (-[AFUISiriSession delegate](self, "delegate"), (v22 = objc_claimAutoreleasedReturnValue()) == 0) || (v23 = objc_msgSend(v6, "isVisualIntelligenceRequest"), v22, (v23))
+      prepareForNewSpeechRequest = [(SRUIFSpeechRequestHandler *)self->_speechRequestHandler prepareForNewSpeechRequest];
+      if ([optionsCopy isInitialBringUp] & 1) != 0 || objc_msgSend(optionsCopy, "inputType") == 1 || (-[AFUISiriSession delegate](self, "delegate"), (v22 = objc_claimAutoreleasedReturnValue()) == 0) || (v23 = objc_msgSend(optionsCopy, "isVisualIntelligenceRequest"), v22, (v23))
       {
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __54__AFUISiriSession_startRequestWithOptions_completion___block_invoke_124;
         v30[3] = &unk_278CD58D0;
         v31 = v11;
-        [(AFUISiriSession *)self _startRequestWithFinalOptions:v6 completion:v30];
+        [(AFUISiriSession *)self _startRequestWithFinalOptions:optionsCopy completion:v30];
       }
 
       else
       {
-        dispatch_group_enter(v21);
+        dispatch_group_enter(prepareForNewSpeechRequest);
         objc_initWeak(buf, self);
         delegate = self->_delegate;
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __54__AFUISiriSession_startRequestWithOptions_completion___block_invoke_119;
         v32[3] = &unk_278CD5B20;
-        v33 = v21;
+        v33 = prepareForNewSpeechRequest;
         objc_copyWeak(&v36, buf);
         v34 = v11;
-        v35 = self;
-        [(AFUISiriSessionDelegate *)delegate siriSessionWillStartRequestWithOptions:v6 completion:v32];
+        selfCopy = self;
+        [(AFUISiriSessionDelegate *)delegate siriSessionWillStartRequestWithOptions:optionsCopy completion:v32];
 
         objc_destroyWeak(&v36);
         objc_destroyWeak(buf);
@@ -1999,7 +1999,7 @@ LABEL_13:
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
       v25 = v24;
-      [v6 requestSource];
+      [optionsCopy requestSource];
       v26 = SASRequestSourceGetName();
       *buf = 136315394;
       v40 = "[AFUISiriSession startRequestWithOptions:completion:]";
@@ -2011,23 +2011,23 @@ LABEL_13:
     v27 = [MEMORY[0x277CEF2A0] errorWithCode:2510 description:@"No assets." underlyingError:0];
     [v11 invokeWithValue:v27];
 
-    v28 = [MEMORY[0x277D61AA8] sharedInstance];
-    [v28 downloadAssets];
+    mEMORY[0x277D61AA8] = [MEMORY[0x277D61AA8] sharedInstance];
+    [mEMORY[0x277D61AA8] downloadAssets];
 
-    [(AFUISiriSession *)self emitSiriWasUnavailableEventWithRequestOptions:v6];
+    [(AFUISiriSession *)self emitSiriWasUnavailableEventWithRequestOptions:optionsCopy];
   }
 
   else
   {
-    if (v12 != 2)
+    if (availabilityState != 2)
     {
-      if (v12 == 1 && [v6 requestSource] != 27 && (objc_msgSend(v6, "isVisualIntelligenceRequest") & 1) == 0)
+      if (availabilityState == 1 && [optionsCopy requestSource] != 27 && (objc_msgSend(optionsCopy, "isVisualIntelligenceRequest") & 1) == 0)
       {
         v13 = *MEMORY[0x277CEF098];
         if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
         {
           v14 = v13;
-          [v6 requestSource];
+          [optionsCopy requestSource];
           v15 = SASRequestSourceGetName();
           *buf = 136315394;
           v40 = "[AFUISiriSession startRequestWithOptions:completion:]";
@@ -2049,7 +2049,7 @@ LABEL_13:
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      [v6 requestSource];
+      [optionsCopy requestSource];
       v19 = SASRequestSourceGetName();
       *buf = 136315394;
       v40 = "[AFUISiriSession startRequestWithOptions:completion:]";
@@ -2122,21 +2122,21 @@ void __54__AFUISiriSession_startRequestWithOptions_completion___block_invoke_119
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)stopRequestWithOptions:(id)a3
+- (void)stopRequestWithOptions:(id)options
 {
   speechRequestHandler = self->_speechRequestHandler;
-  v4 = [(AFUISiriSession *)self _preparedSpeechRequestWithRequestOptions:a3];
+  v4 = [(AFUISiriSession *)self _preparedSpeechRequestWithRequestOptions:options];
   [(SRUIFSpeechRequestHandler *)speechRequestHandler stopSpeechRequestWithOptions:v4];
 }
 
-- (void)updateRequestOptions:(id)a3
+- (void)updateRequestOptions:(id)options
 {
   speechRequestHandler = self->_speechRequestHandler;
-  v4 = [(AFUISiriSession *)self _preparedSpeechRequestWithRequestOptions:a3];
+  v4 = [(AFUISiriSession *)self _preparedSpeechRequestWithRequestOptions:options];
   [(SRUIFSpeechRequestHandler *)speechRequestHandler updateSpeechRequestOptions:v4];
 }
 
-- (void)assistantConnectionRequestWillStart:(id)a3
+- (void)assistantConnectionRequestWillStart:(id)start
 {
   v15 = *MEMORY[0x277D85DE8];
   self->_currentRequestDidPresent = 0;
@@ -2163,8 +2163,8 @@ void __54__AFUISiriSession_startRequestWithOptions_completion___block_invoke_119
       _os_log_impl(&dword_241432000, v7, OS_LOG_TYPE_DEFAULT, "%s #modes Sending modes configuration : %@", buf, 0x16u);
     }
 
-    v9 = [(AFUISiriSession *)self _connection];
-    [v9 setModesConfiguration:self->_modesConfiguration];
+    _connection = [(AFUISiriSession *)self _connection];
+    [_connection setModesConfiguration:self->_modesConfiguration];
   }
 
   [(SRUIFUIBridgeClient *)self->_uiBridgeClient newRequestWillStart];
@@ -2179,40 +2179,40 @@ void __55__AFUISiriSession_assistantConnectionRequestWillStart___block_invoke(ui
   [v3 setModeOverrideValue:v4];
 }
 
-- (id)safeWrapResponseCompletion:(id)a3
+- (id)safeWrapResponseCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v3 = a3;
+    completionCopy = completion;
   }
 
   else
   {
-    v3 = &__block_literal_global_132;
+    completionCopy = &__block_literal_global_132;
   }
 
-  v4 = _Block_copy(v3);
+  v4 = _Block_copy(completionCopy);
 
   return v4;
 }
 
-- (id)_setRefIdForAllViewsInAddViews:(id)a3
+- (id)_setRefIdForAllViewsInAddViews:(id)views
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 refId];
-  if (v4)
+  viewsCopy = views;
+  refId = [viewsCopy refId];
+  if (refId)
   {
     v5 = MEMORY[0x277CBEB18];
-    v6 = [v3 views];
-    v7 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    views = [viewsCopy views];
+    v7 = [v5 arrayWithCapacity:{objc_msgSend(views, "count")}];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v3 views];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    views2 = [viewsCopy views];
+    v9 = [views2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -2223,64 +2223,64 @@ void __55__AFUISiriSession_assistantConnectionRequestWillStart___block_invoke(ui
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(views2);
           }
 
-          v13 = [*(*(&v17 + 1) + 8 * i) dictionary];
-          [v13 setObject:v4 forKey:@"refId"];
-          [v7 addObject:v13];
+          dictionary = [*(*(&v17 + 1) + 8 * i) dictionary];
+          [dictionary setObject:refId forKey:@"refId"];
+          [v7 addObject:dictionary];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [views2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
     }
 
-    v14 = [v3 dictionary];
-    [v14 setObject:v7 forKey:*MEMORY[0x277D48B00]];
-    v15 = [objc_alloc(MEMORY[0x277D479E8]) initWithDictionary:v14];
+    dictionary2 = [viewsCopy dictionary];
+    [dictionary2 setObject:v7 forKey:*MEMORY[0x277D48B00]];
+    v15 = [objc_alloc(MEMORY[0x277D479E8]) initWithDictionary:dictionary2];
   }
 
   else
   {
-    v15 = v3;
+    v15 = viewsCopy;
   }
 
   return v15;
 }
 
-- (void)assistantConnection:(id)a3 receivedCommand:(id)a4 completion:(id)a5
+- (void)assistantConnection:(id)connection receivedCommand:(id)command completion:(id)completion
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 encodedClassName];
-  v12 = [(AFUISiriSession *)self safeWrapResponseCompletion:v10];
+  connectionCopy = connection;
+  commandCopy = command;
+  completionCopy = completion;
+  encodedClassName = [commandCopy encodedClassName];
+  v12 = [(AFUISiriSession *)self safeWrapResponseCompletion:completionCopy];
 
   v13 = MEMORY[0x277CEF098];
   v14 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [v9 aceId];
+    aceId = [commandCopy aceId];
     *buf = 136315650;
     v51 = "[AFUISiriSession assistantConnection:receivedCommand:completion:]";
     v52 = 2112;
-    v53 = v11;
+    v53 = encodedClassName;
     v54 = 2112;
-    v55 = v16;
+    v55 = aceId;
     _os_log_impl(&dword_241432000, v15, OS_LOG_TYPE_DEFAULT, "%s Received Command: %@ aceId: %@", buf, 0x20u);
   }
 
-  v17 = [(AFUISiriSession *)self visualIntelligenceCameraDelegate];
-  [v17 siriWillPresentResult];
+  visualIntelligenceCameraDelegate = [(AFUISiriSession *)self visualIntelligenceCameraDelegate];
+  [visualIntelligenceCameraDelegate siriWillPresentResult];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = v9;
+    v18 = commandCopy;
   }
 
   else
@@ -2311,9 +2311,9 @@ void __55__AFUISiriSession_assistantConnectionRequestWillStart___block_invoke(ui
 
   v25 = [(AFUISiriSession *)self _setRefIdForAllViewsInAddViews:v20];
 
-  v26 = [v25 af_dialogPhase];
-  v27 = [v26 isPossiblyPartOfMultiTurnRequest];
-  if (v27)
+  af_dialogPhase = [v25 af_dialogPhase];
+  isPossiblyPartOfMultiTurnRequest = [af_dialogPhase isPossiblyPartOfMultiTurnRequest];
+  if (isPossiblyPartOfMultiTurnRequest)
   {
     v28 = *v13;
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -2321,7 +2321,7 @@ void __55__AFUISiriSession_assistantConnectionRequestWillStart___block_invoke(ui
       *buf = 136315394;
       v51 = "[AFUISiriSession assistantConnection:receivedCommand:completion:]";
       v52 = 2112;
-      v53 = v26;
+      v53 = af_dialogPhase;
       v29 = "%s %@ may be a part of a multi turn request.";
 LABEL_18:
       _os_log_impl(&dword_241432000, v28, OS_LOG_TYPE_DEFAULT, v29, buf, 0x16u);
@@ -2330,7 +2330,7 @@ LABEL_18:
 
   else
   {
-    if (([v26 isCompletionDialogPhase] & 1) == 0 && (objc_msgSend(v26, "isErrorDialogPhase") & 1) == 0 && !objc_msgSend(v26, "isConfirmedDialogPhase"))
+    if (([af_dialogPhase isCompletionDialogPhase] & 1) == 0 && (objc_msgSend(af_dialogPhase, "isErrorDialogPhase") & 1) == 0 && !objc_msgSend(af_dialogPhase, "isConfirmedDialogPhase"))
     {
       goto LABEL_20;
     }
@@ -2341,14 +2341,14 @@ LABEL_18:
       *buf = 136315394;
       v51 = "[AFUISiriSession assistantConnection:receivedCommand:completion:]";
       v52 = 2112;
-      v53 = v26;
+      v53 = af_dialogPhase;
       v29 = "%s %@ indicates end of a multi turn request.";
       goto LABEL_18;
     }
   }
 
-  v30 = [(AFUISiriSession *)self _connection];
-  [v30 adviseSessionArbiterToContinueWithPreviousWinner:v27];
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection adviseSessionArbiterToContinueWithPreviousWinner:isPossiblyPartOfMultiTurnRequest];
 
 LABEL_20:
   if ([v25 immersiveExperience])
@@ -2358,51 +2358,51 @@ LABEL_20:
   }
 
 LABEL_23:
-  v32 = [v9 sruif_usefulUserResultType];
-  if (v32)
+  sruif_usefulUserResultType = [commandCopy sruif_usefulUserResultType];
+  if (sruif_usefulUserResultType)
   {
-    v33 = [(AFUISiriSession *)self _connection];
-    [v33 willPresentUsefulUserResultWithType:v32 forCommand:v9];
+    _connection2 = [(AFUISiriSession *)self _connection];
+    [_connection2 willPresentUsefulUserResultWithType:sruif_usefulUserResultType forCommand:commandCopy];
   }
 
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __66__AFUISiriSession_assistantConnection_receivedCommand_completion___block_invoke;
   v48[3] = &unk_278CD59E0;
-  v34 = v9;
+  v34 = commandCopy;
   v49 = v34;
   [(AFUISiriSession *)self _performBlockWithDelegate:v48];
-  if ([v11 isEqualToString:*MEMORY[0x277D48BC0]])
+  if ([encodedClassName isEqualToString:*MEMORY[0x277D48BC0]])
   {
     v35 = objc_loadWeakRetained(&self->_localDelegate);
     [v35 siriSessionDidReceiveDelayedActionCancelCommand:v34 completion:v12];
   }
 
-  else if ([v11 isEqualToString:*MEMORY[0x277D48BC8]])
+  else if ([encodedClassName isEqualToString:*MEMORY[0x277D48BC8]])
   {
     v36 = objc_loadWeakRetained(&self->_localDelegate);
     [v36 siriSessionDidReceiveDelayedActionCommand:v34 completion:v12];
   }
 
-  else if ([v11 isEqualToString:*MEMORY[0x277D48D30]])
+  else if ([encodedClassName isEqualToString:*MEMORY[0x277D48D30]])
   {
     v37 = objc_loadWeakRetained(&self->_localDelegate);
     [v37 siriSessionDidReceiveTakeScreenshotCommand:v34 completion:v12];
   }
 
-  else if ([v11 isEqualToString:*MEMORY[0x277D47D28]])
+  else if ([encodedClassName isEqualToString:*MEMORY[0x277D47D28]])
   {
     v38 = objc_loadWeakRetained(&self->_localDelegate);
     [v38 siriSessionDidReceiveStartScreenRecordingCommand:v34 completion:v12];
   }
 
-  else if ([v11 isEqualToString:*MEMORY[0x277D47D30]])
+  else if ([encodedClassName isEqualToString:*MEMORY[0x277D47D30]])
   {
     v39 = objc_loadWeakRetained(&self->_localDelegate);
     [v39 siriSessionDidReceiveStopScreenRecordingCommand:v34 completion:v12];
   }
 
-  else if ([v11 isEqualToString:*MEMORY[0x277D48CC8]])
+  else if ([encodedClassName isEqualToString:*MEMORY[0x277D48CC8]])
   {
     v40 = objc_loadWeakRetained(&self->_localDelegate);
     [v40 siriSessionDidReceiveSetUpdateMaskCommand:v34 completion:v12];
@@ -2415,11 +2415,11 @@ LABEL_23:
     v41[1] = 3221225472;
     v41[2] = __66__AFUISiriSession_assistantConnection_receivedCommand_completion___block_invoke_2;
     v41[3] = &unk_278CD5B90;
-    v42 = v11;
+    v42 = encodedClassName;
     v43 = v25;
     v46 = v12;
     v44 = v34;
-    v45 = self;
+    selfCopy = self;
     objc_copyWeak(&v47, buf);
     [(AFUISiriSession *)self _performBlockWithDelegate:v41];
     objc_destroyWeak(&v47);
@@ -2680,19 +2680,19 @@ void __66__AFUISiriSession_assistantConnection_receivedCommand_completion___bloc
   }
 }
 
-- (void)_handleSuppressDelayFeedbackCommand:(id)a3 completion:(id)a4
+- (void)_handleSuppressDelayFeedbackCommand:(id)command completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   stateFeedbackManager = self->_stateFeedbackManager;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__AFUISiriSession__handleSuppressDelayFeedbackCommand_completion___block_invoke;
   v11[3] = &unk_278CD5BB8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = commandCopy;
+  v13 = completionCopy;
+  v9 = commandCopy;
+  v10 = completionCopy;
   [(SRUIFStateFeedbackManager *)stateFeedbackManager cancelFeedbackWithCompletion:v11];
 }
 
@@ -2717,11 +2717,11 @@ void __66__AFUISiriSession__handleSuppressDelayFeedbackCommand_completion___bloc
   }
 }
 
-- (void)_handlePlayAudioCommand:(id)a3 completion:(id)a4
+- (void)_handlePlayAudioCommand:(id)command completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   v8 = MEMORY[0x277CEF098];
   v9 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -2738,8 +2738,8 @@ void __66__AFUISiriSession__handleSuppressDelayFeedbackCommand_completion___bloc
     v13[1] = 3221225472;
     v13[2] = __54__AFUISiriSession__handlePlayAudioCommand_completion___block_invoke;
     v13[3] = &unk_278CD5BE0;
-    v14 = v6;
-    v15 = v7;
+    v14 = commandCopy;
+    v15 = completionCopy;
     [(SRUIFStateFeedbackManager *)stateFeedbackManager playAudioPlaybackRequest:v14 completion:v13];
 
     v11 = v14;
@@ -2753,10 +2753,10 @@ void __66__AFUISiriSession__handleSuppressDelayFeedbackCommand_completion___bloc
     }
 
     v11 = objc_alloc_init(MEMORY[0x277D47208]);
-    v12 = [v6 aceId];
-    [v11 setRefId:v12];
+    aceId = [commandCopy aceId];
+    [v11 setRefId:aceId];
 
-    (*(v7 + 2))(v7, v11);
+    (*(completionCopy + 2))(completionCopy, v11);
   }
 }
 
@@ -2775,12 +2775,12 @@ void __54__AFUISiriSession__handlePlayAudioCommand_completion___block_invoke(uin
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_performPunchoutCommand:(id)a3 delegate:(id)a4 completion:(id)a5
+- (void)_performPunchoutCommand:(id)command delegate:(id)delegate completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  commandCopy = command;
+  delegateCopy = delegate;
+  completionCopy = completion;
   v11 = MEMORY[0x277CEF098];
   v12 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -2808,8 +2808,8 @@ void __54__AFUISiriSession__handlePlayAudioCommand_completion___block_invoke(uin
     v23[1] = 3221225472;
     v23[2] = __63__AFUISiriSession__performPunchoutCommand_delegate_completion___block_invoke;
     v23[3] = &unk_278CD5C08;
-    v25 = v10;
-    v24 = v8;
+    v25 = completionCopy;
+    v24 = commandCopy;
     [v22 handlePunchoutCommand:v24 completion:v23];
   }
 
@@ -2828,7 +2828,7 @@ void __54__AFUISiriSession__handlePlayAudioCommand_completion___block_invoke(uin
       _os_log_impl(&dword_241432000, v19, OS_LOG_TYPE_DEFAULT, "%s Delegate is handling it - responds to shouldNonLocalDelegateHandlePunchouts: %@", buf, 0x16u);
     }
 
-    [v9 siriSessionDidReceiveAppPunchOutCommand:v8 completion:v10];
+    [delegateCopy siriSessionDidReceiveAppPunchOutCommand:commandCopy completion:completionCopy];
   }
 }
 
@@ -2850,77 +2850,77 @@ void __63__AFUISiriSession__performPunchoutCommand_delegate_completion___block_i
   }
 }
 
-- (void)assistantConnection:(id)a3 startUIRequestWithText:(id)a4 completion:(id)a5
+- (void)assistantConnection:(id)connection startUIRequestWithText:(id)text completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  textCopy = text;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__AFUISiriSession_assistantConnection_startUIRequestWithText_completion___block_invoke;
   v11[3] = &unk_278CD5C30;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = textCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = textCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v11];
 }
 
-- (void)assistantConnection:(id)a3 replayAll:(unint64_t)a4 with:(id)a5
+- (void)assistantConnection:(id)connection replayAll:(unint64_t)all with:(id)with
 {
-  v7 = a5;
+  withCopy = with;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __54__AFUISiriSession_assistantConnection_replayAll_with___block_invoke;
   v9[3] = &unk_278CD5C58;
-  v10 = v7;
-  v11 = a4;
-  v8 = v7;
+  v10 = withCopy;
+  allCopy = all;
+  v8 = withCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v9];
 }
 
-- (void)assistantConnection:(id)a3 replayAt:(unint64_t)a4 with:(id)a5
+- (void)assistantConnection:(id)connection replayAt:(unint64_t)at with:(id)with
 {
-  v7 = a5;
+  withCopy = with;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__AFUISiriSession_assistantConnection_replayAt_with___block_invoke;
   v9[3] = &unk_278CD5C58;
-  v10 = v7;
-  v11 = a4;
-  v8 = v7;
+  v10 = withCopy;
+  atCopy = at;
+  v8 = withCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v9];
 }
 
-- (void)assistantConnection:(id)a3 setReplayEnabled:(BOOL)a4
+- (void)assistantConnection:(id)connection setReplayEnabled:(BOOL)enabled
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__AFUISiriSession_assistantConnection_setReplayEnabled___block_invoke;
   v4[3] = &__block_descriptor_33_e35_v16__0___AFUISiriSessionDelegate__8l;
-  v5 = a4;
+  enabledCopy = enabled;
   [(AFUISiriSession *)self _performBlockWithDelegate:v4];
 }
 
-- (void)assistantConnection:(id)a3 setReplayOverridePath:(id)a4
+- (void)assistantConnection:(id)connection setReplayOverridePath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__AFUISiriSession_assistantConnection_setReplayOverridePath___block_invoke;
   v7[3] = &unk_278CD59E0;
-  v8 = v5;
-  v6 = v5;
+  v8 = pathCopy;
+  v6 = pathCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v7];
 }
 
-- (void)_requestDidFinishWithError:(id)a3
+- (void)_requestDidFinishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__AFUISiriSession__requestDidFinishWithError___block_invoke;
   v9[3] = &unk_278CD59E0;
-  v5 = v4;
+  v5 = errorCopy;
   v10 = v5;
   [(AFUISiriSession *)self _performBlockWithDelegate:v9];
   WeakRetained = objc_loadWeakRetained(&self->_localDelegate);
@@ -2933,16 +2933,16 @@ void __63__AFUISiriSession__performPunchoutCommand_delegate_completion___block_i
   }
 }
 
-- (void)assistantConnection:(id)a3 didFinishAcousticIDRequestWithSuccess:(BOOL)a4
+- (void)assistantConnection:(id)connection didFinishAcousticIDRequestWithSuccess:(BOOL)success
 {
-  v4 = a4;
+  successCopy = success;
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  connectionCopy = connection;
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"NO";
-    if (v4)
+    if (successCopy)
     {
       v8 = @"YES";
     }
@@ -2955,7 +2955,7 @@ void __63__AFUISiriSession__performPunchoutCommand_delegate_completion___block_i
   }
 
   self->_isProcessingAcousticIdRequest = 0;
-  if (!v4)
+  if (!successCopy)
   {
     [(SRUIFSiriSessionStateHandler *)self->_stateHandler performTransitionForEvent:7];
   }
@@ -2964,34 +2964,34 @@ void __63__AFUISiriSession__performPunchoutCommand_delegate_completion___block_i
   v9[1] = 3221225472;
   v9[2] = __77__AFUISiriSession_assistantConnection_didFinishAcousticIDRequestWithSuccess___block_invoke;
   v9[3] = &__block_descriptor_33_e35_v16__0___AFUISiriSessionDelegate__8l;
-  v10 = v4;
+  v10 = successCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v9];
   [(AFUISiriSession *)self _cancelTypeToSiriLatencyTimerIfNeeded];
 }
 
-- (void)assistantConnection:(id)a3 requestFailedWithError:(id)a4 requestClass:(id)a5
+- (void)assistantConnection:(id)connection requestFailedWithError:(id)error requestClass:(id)class
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  errorCopy = error;
+  classCopy = class;
   v9 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315650;
     v11 = "[AFUISiriSession assistantConnection:requestFailedWithError:requestClass:]";
     v12 = 2112;
-    v13 = v7;
+    v13 = errorCopy;
     v14 = 2112;
-    v15 = v8;
+    v15 = classCopy;
     _os_log_impl(&dword_241432000, v9, OS_LOG_TYPE_DEFAULT, "%s error:%@ requestClass:%@", &v10, 0x20u);
   }
 
   [(SRUIFSiriSessionStateHandler *)self->_stateHandler performTransitionForEvent:7];
   [(AFUISiriSession *)self _cancelTypeToSiriLatencyTimerIfNeeded];
-  [(AFUISiriSession *)self _requestDidFinishWithError:v7];
+  [(AFUISiriSession *)self _requestDidFinishWithError:errorCopy];
 }
 
-- (void)assistantConnectionRequestFinished:(id)a3
+- (void)assistantConnectionRequestFinished:(id)finished
 {
   v7 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CEF098];
@@ -3007,27 +3007,27 @@ void __63__AFUISiriSession__performPunchoutCommand_delegate_completion___block_i
   [(AFUISiriSession *)self _requestDidFinishWithError:0];
 }
 
-- (void)assistantConnection:(id)a3 openURL:(id)a4 completion:(id)a5
+- (void)assistantConnection:(id)connection openURL:(id)l completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  lCopy = l;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__AFUISiriSession_assistantConnection_openURL_completion___block_invoke;
   v11[3] = &unk_278CD5C30;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = lCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = lCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v11];
 }
 
-- (void)assistantConnection:(id)a3 willProcessStartPlayback:(int64_t)a4 intent:(id)a5 completion:(id)a6
+- (void)assistantConnection:(id)connection willProcessStartPlayback:(int64_t)playback intent:(id)intent completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  connectionCopy = connection;
+  intentCopy = intent;
+  completionCopy = completion;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2050000000;
@@ -3080,10 +3080,10 @@ void __63__AFUISiriSession__performPunchoutCommand_delegate_completion___block_i
     _os_log_impl(&dword_241432000, v21, OS_LOG_TYPE_DEFAULT, "%s #PhoneCallAudioSessionHandler: shouldExtendAudioSessionForImminentPhoneCall: %@, suppressAudioInterruptedNotificationFlag: %@", buf, 0x20u);
   }
 
-  v11[2](v11, v15 & 1, 1);
+  completionCopy[2](completionCopy, v15 & 1, 1);
 }
 
-- (void)assistantConnection:(id)a3 startPlaybackDidFail:(int64_t)a4
+- (void)assistantConnection:(id)connection startPlaybackDidFail:(int64_t)fail
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
@@ -3098,13 +3098,13 @@ void __63__AFUISiriSession__performPunchoutCommand_delegate_completion___block_i
   [WeakRetained siriSessionShouldEndExtendAudioSessionForImminentPhoneCall];
 }
 
-- (void)assistantConnection:(id)a3 didChangeAudioSessionID:(unsigned int)a4
+- (void)assistantConnection:(id)connection didChangeAudioSessionID:(unsigned int)d
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __63__AFUISiriSession_assistantConnection_didChangeAudioSessionID___block_invoke;
   v4[3] = &__block_descriptor_36_e35_v16__0___AFUISiriSessionDelegate__8l;
-  v5 = a4;
+  dCopy = d;
   [(AFUISiriSession *)self _performBlockWithDelegate:v4];
 }
 
@@ -3128,16 +3128,16 @@ void __63__AFUISiriSession_assistantConnection_didChangeAudioSessionID___block_i
   [v3 siriSessionDidUpdateAudioSessionID:*(a1 + 32)];
 }
 
-- (void)assistantConnection:(id)a3 dismissAssistantWithReason:(int64_t)a4
+- (void)assistantConnection:(id)connection dismissAssistantWithReason:(int64_t)reason
 {
-  if ((a4 - 1) > 5)
+  if ((reason - 1) > 5)
   {
     v6 = 32;
   }
 
   else
   {
-    v6 = qword_2414945B8[a4 - 1];
+    v6 = qword_2414945B8[reason - 1];
   }
 
   v7[5] = v4;
@@ -3150,19 +3150,19 @@ void __63__AFUISiriSession_assistantConnection_didChangeAudioSessionID___block_i
   [(AFUISiriSession *)self _performBlockWithDelegate:v7];
 }
 
-- (void)assistantConnection:(id)a3 wantsToCacheImage:(id)a4
+- (void)assistantConnection:(id)connection wantsToCacheImage:(id)image
 {
-  v5 = a4;
+  imageCopy = image;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__AFUISiriSession_assistantConnection_wantsToCacheImage___block_invoke;
   v7[3] = &unk_278CD59E0;
-  v8 = v5;
-  v6 = v5;
+  v8 = imageCopy;
+  v6 = imageCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v7];
 }
 
-- (void)assistantConnection:(id)a3 extensionRequestWillStartForApplication:(id)a4
+- (void)assistantConnection:(id)connection extensionRequestWillStartForApplication:(id)application
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _authenticationUIPresentedCallBack, @"com.apple.LocalAuthentication.ui.presented", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -3171,7 +3171,7 @@ void __63__AFUISiriSession_assistantConnection_didChangeAudioSessionID___block_i
   CFNotificationCenterAddObserver(v6, self, _authenticationUIPresentedCallBack, v7, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
-- (void)assistantConnection:(id)a3 extensionRequestFinishedForApplication:(id)a4 error:(id)a5
+- (void)assistantConnection:(id)connection extensionRequestFinishedForApplication:(id)application error:(id)error
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.LocalAuthentication.ui.presented", 0);
@@ -3180,37 +3180,37 @@ void __63__AFUISiriSession_assistantConnection_didChangeAudioSessionID___block_i
   CFNotificationCenterRemoveObserver(v7, self, v8, 0);
 }
 
-- (void)assistantConnection:(id)a3 didLoadAssistant:(id)a4
+- (void)assistantConnection:(id)connection didLoadAssistant:(id)assistant
 {
-  v5 = [a4 version];
-  [(AFUISiriSession *)self _updateAssistantVersion:v5];
+  version = [assistant version];
+  [(AFUISiriSession *)self _updateAssistantVersion:version];
 }
 
-- (void)assistantConnection:(id)a3 willProcessAppLaunchWithBundleIdentifier:(id)a4
+- (void)assistantConnection:(id)connection willProcessAppLaunchWithBundleIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_localDelegate);
-  [WeakRetained siriSession:self willProcessAppLaunchWithBundleIdentifier:v5];
+  [WeakRetained siriSession:self willProcessAppLaunchWithBundleIdentifier:identifierCopy];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __80__AFUISiriSession_assistantConnection_willProcessAppLaunchWithBundleIdentifier___block_invoke;
   v8[3] = &unk_278CD59E0;
-  v9 = v5;
-  v7 = v5;
+  v9 = identifierCopy;
+  v7 = identifierCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v8];
 }
 
-- (void)assistantConnection:(id)a3 appLaunchFailedWithBundleIdentifier:(id)a4
+- (void)assistantConnection:(id)connection appLaunchFailedWithBundleIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_localDelegate);
-  [WeakRetained siriSession:self failedToLaunchAppWithBundleIdentifier:v5];
+  [WeakRetained siriSession:self failedToLaunchAppWithBundleIdentifier:identifierCopy];
 }
 
-- (void)_updateAssistantVersion:(id)a3
+- (void)_updateAssistantVersion:(id)version
 {
-  v4 = [(SRUIFSiriSessionInfo *)self->_siriSessionInfo setAssistantVersionAndGenerateLightweightInfo:a3];
+  v4 = [(SRUIFSiriSessionInfo *)self->_siriSessionInfo setAssistantVersionAndGenerateLightweightInfo:version];
   WeakRetained = objc_loadWeakRetained(&self->_localDelegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -3231,10 +3231,10 @@ void __63__AFUISiriSession_assistantConnection_didChangeAudioSessionID___block_i
   }
 }
 
-- (void)assistantConnection:(id)a3 didUpdateResponseMode:(id)a4
+- (void)assistantConnection:(id)connection didUpdateResponseMode:(id)mode
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  modeCopy = mode;
   if ([MEMORY[0x277CEF2A8] isStateFeedbackEnabled])
   {
     v6 = *MEMORY[0x277CEF098];
@@ -3243,29 +3243,29 @@ void __63__AFUISiriSession_assistantConnection_didChangeAudioSessionID___block_i
       v7 = 136315394;
       v8 = "[AFUISiriSession assistantConnection:didUpdateResponseMode:]";
       v9 = 2112;
-      v10 = v5;
+      v10 = modeCopy;
       _os_log_impl(&dword_241432000, v6, OS_LOG_TYPE_DEFAULT, "%s client recieved mode update: %@", &v7, 0x16u);
     }
 
-    [(SRUIFStateFeedbackManager *)self->_stateFeedbackManager updateResponseMode:v5];
+    [(SRUIFStateFeedbackManager *)self->_stateFeedbackManager updateResponseMode:modeCopy];
   }
 }
 
-- (void)assistantConnection:(id)a3 speechRecordingPerformTwoShotPromptWithType:(int64_t)a4 completion:(id)a5
+- (void)assistantConnection:(id)connection speechRecordingPerformTwoShotPromptWithType:(int64_t)type completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  completionCopy = completion;
   v8 = objc_alloc(MEMORY[0x277CEF340]);
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __94__AFUISiriSession_assistantConnection_speechRecordingPerformTwoShotPromptWithType_completion___block_invoke;
   v20 = &unk_278CD57E0;
-  v9 = v7;
+  v9 = completionCopy;
   v21 = v9;
   v10 = [v8 initWithBlock:&v17];
   v11 = *MEMORY[0x277CEF098];
   v12 = os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT);
-  if (a4 == 2)
+  if (type == 2)
   {
     if (v12)
     {
@@ -3284,13 +3284,13 @@ void __63__AFUISiriSession_assistantConnection_didChangeAudioSessionID___block_i
       *buf = 136315394;
       v23 = "[AFUISiriSession assistantConnection:speechRecordingPerformTwoShotPromptWithType:completion:]";
       v24 = 2048;
-      v25 = a4;
+      typeCopy = type;
       _os_log_impl(&dword_241432000, v11, OS_LOG_TYPE_DEFAULT, "%s #phatic 1 Fail: type = %tu", buf, 0x16u);
     }
 
     v13 = MEMORY[0x277CEF2A0];
     v14 = objc_alloc(MEMORY[0x277CCACA8]);
-    v15 = [v14 initWithFormat:@"Unsupported Two-Shot prompt type %ld.", a4, v17, v18, v19, v20];
+    v15 = [v14 initWithFormat:@"Unsupported Two-Shot prompt type %ld.", type, v17, v18, v19, v20];
     v16 = [v13 errorWithCode:15 description:v15 underlyingError:0];
     [v10 invokeWithValue:v16];
   }
@@ -3314,10 +3314,10 @@ void __94__AFUISiriSession_assistantConnection_speechRecordingPerformTwoShotProm
   }
 }
 
-- (void)_playPhaticWithCompletion:(id)a3
+- (void)_playPhaticWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -3330,9 +3330,9 @@ void __94__AFUISiriSession_assistantConnection_speechRecordingPerformTwoShotProm
   v10 = 3221225472;
   v11 = __45__AFUISiriSession__playPhaticWithCompletion___block_invoke;
   v12 = &unk_278CD5D08;
-  v13 = self;
-  v14 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v14 = completionCopy;
+  v6 = completionCopy;
   v7 = _Block_copy(&v9);
   v8 = [(AFUISiriSession *)self _connection:v9];
   [v8 forceAudioSessionActiveWithOptions:0 reason:3 completion:v7];
@@ -3415,7 +3415,7 @@ void __45__AFUISiriSession__playPhaticWithCompletion___block_invoke_173(uint64_t
   }
 }
 
-- (void)assistantConnectionSpeechRecordingWillBegin:(id)a3
+- (void)assistantConnectionSpeechRecordingWillBegin:(id)begin
 {
   WeakRetained = objc_loadWeakRetained(&self->_localDelegate);
   [WeakRetained siriSessionRecordingPreparationHasFinished:self];
@@ -3425,16 +3425,16 @@ void __45__AFUISiriSession__playPhaticWithCompletion___block_invoke_173(uint64_t
   [(SRUIFSpeechRequestHandler *)speechRequestHandler speechRecordingWillBegin];
 }
 
-- (void)assistantConnection:(id)a3 speechRecordingDidBeginOnAVRecordRoute:(id)a4 audioSessionID:(unsigned int)a5
+- (void)assistantConnection:(id)connection speechRecordingDidBeginOnAVRecordRoute:(id)route audioSessionID:(unsigned int)d
 {
-  v7 = a4;
+  routeCopy = route;
   [(SRUIFSiriSessionStateHandler *)self->_stateHandler performTransitionForEvent:1];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __93__AFUISiriSession_assistantConnection_speechRecordingDidBeginOnAVRecordRoute_audioSessionID___block_invoke;
   v12[3] = &unk_278CD59E0;
-  v13 = v7;
-  v8 = v7;
+  v13 = routeCopy;
+  v8 = routeCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v12];
   WeakRetained = objc_loadWeakRetained(&self->_localDelegate);
   [WeakRetained siriSession:self speechRecordingDidBeginOnAVRecordRoute:v8];
@@ -3443,7 +3443,7 @@ void __45__AFUISiriSession__playPhaticWithCompletion___block_invoke_173(uint64_t
   v10[1] = 3221225472;
   v10[2] = __93__AFUISiriSession_assistantConnection_speechRecordingDidBeginOnAVRecordRoute_audioSessionID___block_invoke_2;
   v10[3] = &__block_descriptor_36_e35_v16__0___AFUISiriSessionDelegate__8l;
-  v11 = a5;
+  dCopy = d;
   [(AFUISiriSession *)self _performBlockWithDelegate:v10];
 }
 
@@ -3467,19 +3467,19 @@ void __93__AFUISiriSession_assistantConnection_speechRecordingDidBeginOnAVRecord
   [v3 siriSessionDidUpdateAudioSessionID:*(a1 + 32)];
 }
 
-- (void)assistantConnection:(id)a3 speechRecordingDidChangeAVRecordRoute:(id)a4
+- (void)assistantConnection:(id)connection speechRecordingDidChangeAVRecordRoute:(id)route
 {
-  v5 = a4;
+  routeCopy = route;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__AFUISiriSession_assistantConnection_speechRecordingDidChangeAVRecordRoute___block_invoke;
   v7[3] = &unk_278CD59E0;
-  v8 = v5;
-  v6 = v5;
+  v8 = routeCopy;
+  v6 = routeCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v7];
 }
 
-- (void)assistantConnectionDidChangeAudioRecordingPower:(id)a3
+- (void)assistantConnectionDidChangeAudioRecordingPower:(id)power
 {
   if (![(AFUISiriSession *)self _isContinuousConversationAvailable])
   {
@@ -3500,23 +3500,23 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke_2(u
   }
 }
 
-- (void)assistantConnectionSpeechRecordingDidEnd:(id)a3
+- (void)assistantConnectionSpeechRecordingDidEnd:(id)end
 {
-  v4 = [(AFUISiriSession *)self visualIntelligenceCameraDelegate];
-  [v4 siriWillProcessRequest];
+  visualIntelligenceCameraDelegate = [(AFUISiriSession *)self visualIntelligenceCameraDelegate];
+  [visualIntelligenceCameraDelegate siriWillProcessRequest];
 
   [(SRUIFSiriSessionStateHandler *)self->_stateHandler performTransitionForEvent:2];
 
   [(AFUISiriSession *)self _performBlockWithDelegate:&__block_literal_global_180];
 }
 
-- (void)assistantConnectionUpdatedSpeechEndEstimate:(id)a3 speechEndEstimate:(unint64_t)a4
+- (void)assistantConnectionUpdatedSpeechEndEstimate:(id)estimate speechEndEstimate:(unint64_t)endEstimate
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = [(AFUISiriSession *)self localDataSource];
-  v7 = [v6 getUIViewModeIsUIFreeForCurrentRequest];
+  localDataSource = [(AFUISiriSession *)self localDataSource];
+  getUIViewModeIsUIFreeForCurrentRequest = [localDataSource getUIViewModeIsUIFreeForCurrentRequest];
 
-  if (v7)
+  if (getUIViewModeIsUIFreeForCurrentRequest)
   {
     v8 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -3531,20 +3531,20 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke_2(u
   {
     stateFeedbackManager = self->_stateFeedbackManager;
 
-    [(SRUIFStateFeedbackManager *)stateFeedbackManager didUpdateEstimatedEndOfUserInput:a4];
+    [(SRUIFStateFeedbackManager *)stateFeedbackManager didUpdateEstimatedEndOfUserInput:endEstimate];
   }
 }
 
-- (void)assistantConnectionSpeechRecordingDidCancel:(id)a3
+- (void)assistantConnectionSpeechRecordingDidCancel:(id)cancel
 {
   [(SRUIFSiriSessionStateHandler *)self->_stateHandler performTransitionForEvent:3];
 
   [(AFUISiriSession *)self _performBlockWithDelegate:&__block_literal_global_182];
 }
 
-- (void)assistantConnection:(id)a3 speechRecordingDidFail:(id)a4
+- (void)assistantConnection:(id)connection speechRecordingDidFail:(id)fail
 {
-  v5 = a4;
+  failCopy = fail;
   WeakRetained = objc_loadWeakRetained(&self->_localDelegate);
   [WeakRetained siriSessionRecordingPreparationHasFinished:self];
 
@@ -3553,82 +3553,82 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke_2(u
   v8[1] = 3221225472;
   v8[2] = __62__AFUISiriSession_assistantConnection_speechRecordingDidFail___block_invoke;
   v8[3] = &unk_278CD59E0;
-  v9 = v5;
-  v7 = v5;
+  v9 = failCopy;
+  v7 = failCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v8];
   [(SRUIFSpeechRequestHandler *)self->_speechRequestHandler speechRecordingDidFail];
 }
 
-- (void)assistantConnection:(id)a3 speechRecognized:(id)a4
+- (void)assistantConnection:(id)connection speechRecognized:(id)recognized
 {
-  v5 = a4;
+  recognizedCopy = recognized;
   kdebug_trace();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__AFUISiriSession_assistantConnection_speechRecognized___block_invoke;
   v7[3] = &unk_278CD59E0;
-  v8 = v5;
-  v6 = v5;
+  v8 = recognizedCopy;
+  v6 = recognizedCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v7];
 }
 
-- (void)assistantConnection:(id)a3 recognizedAdditionalSpeechInterpretation:(id)a4 refId:(id)a5
+- (void)assistantConnection:(id)connection recognizedAdditionalSpeechInterpretation:(id)interpretation refId:(id)id
 {
-  v7 = a4;
-  v8 = a5;
+  interpretationCopy = interpretation;
+  idCopy = id;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __86__AFUISiriSession_assistantConnection_recognizedAdditionalSpeechInterpretation_refId___block_invoke;
   v11[3] = &unk_278CD5D80;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = interpretationCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = interpretationCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v11];
 }
 
-- (void)assistantConnection:(id)a3 recognitionUpdateWithPhrases:(id)a4 utterances:(id)a5 refId:(id)a6
+- (void)assistantConnection:(id)connection recognitionUpdateWithPhrases:(id)phrases utterances:(id)utterances refId:(id)id
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  phrasesCopy = phrases;
+  utterancesCopy = utterances;
+  idCopy = id;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __85__AFUISiriSession_assistantConnection_recognitionUpdateWithPhrases_utterances_refId___block_invoke;
   v15[3] = &unk_278CD5DA8;
-  v16 = v9;
-  v17 = v10;
-  v18 = v11;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
+  v16 = phrasesCopy;
+  v17 = utterancesCopy;
+  v18 = idCopy;
+  v12 = idCopy;
+  v13 = utterancesCopy;
+  v14 = phrasesCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v15];
 }
 
-- (void)assistantConnection:(id)a3 speechRecognizedPartialResult:(id)a4
+- (void)assistantConnection:(id)connection speechRecognizedPartialResult:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   kdebug_trace();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__AFUISiriSession_assistantConnection_speechRecognizedPartialResult___block_invoke;
   v7[3] = &unk_278CD59E0;
-  v8 = v5;
-  v6 = v5;
+  v8 = resultCopy;
+  v6 = resultCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v7];
 }
 
-- (void)assistantConnectionAudioSessionDidBeginInterruption:(id)a3 userInfo:(id)a4
+- (void)assistantConnectionAudioSessionDidBeginInterruption:(id)interruption userInfo:(id)info
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  infoCopy = info;
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v13 = "[AFUISiriSession assistantConnectionAudioSessionDidBeginInterruption:userInfo:]";
     v14 = 2114;
-    v15 = v5;
+    v15 = infoCopy;
     _os_log_impl(&dword_241432000, v6, OS_LOG_TYPE_DEFAULT, "%s #audioInterruption audio session interruption began userInfo: %{public}@", buf, 0x16u);
   }
 
@@ -3637,54 +3637,54 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke_2(u
   v9[1] = 3221225472;
   v9[2] = __80__AFUISiriSession_assistantConnectionAudioSessionDidBeginInterruption_userInfo___block_invoke;
   v9[3] = &unk_278CD5C58;
-  v10 = v5;
+  v10 = infoCopy;
   v11 = v7;
-  v8 = v5;
+  v8 = infoCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v9];
 }
 
-- (void)assistantConnectionAudioSessionDidEndInterruption:(id)a3 shouldResume:(BOOL)a4 userInfo:(id)a5
+- (void)assistantConnectionAudioSessionDidEndInterruption:(id)interruption shouldResume:(BOOL)resume userInfo:(id)info
 {
-  v5 = a4;
+  resumeCopy = resume;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  infoCopy = info;
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315650;
     v9 = "[AFUISiriSession assistantConnectionAudioSessionDidEndInterruption:shouldResume:userInfo:]";
     v10 = 1026;
-    v11 = v5;
+    v11 = resumeCopy;
     v12 = 2114;
-    v13 = v6;
+    v13 = infoCopy;
     _os_log_impl(&dword_241432000, v7, OS_LOG_TYPE_DEFAULT, "%s #audioInterruption audio session interruption ended shouldResume: %{public, BOOL}d userInfo: %{public}@", &v8, 0x1Cu);
   }
 }
 
-- (void)_startRequestWithBlock:(id)a3
+- (void)_startRequestWithBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_visualIntelligenceCameraDelegate);
   [WeakRetained siriWillProcessRequest];
 
   [(SRUIFSpeechRequestHandler *)self->_speechRequestHandler nonSpeechRequestWillBegin];
-  v5 = v6;
-  if (v6)
+  v5 = blockCopy;
+  if (blockCopy)
   {
-    (*(v6 + 2))(v6);
-    v5 = v6;
+    (*(blockCopy + 2))(blockCopy);
+    v5 = blockCopy;
   }
 }
 
-- (id)_preparedSpeechRequestWithRequestOptions:(id)a3
+- (id)_preparedSpeechRequestWithRequestOptions:(id)options
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 speechRequestOptions];
-  if (v5)
+  optionsCopy = options;
+  speechRequestOptions = [optionsCopy speechRequestOptions];
+  if (speechRequestOptions)
   {
-    v6 = [v4 speechRequestOptions];
-    v7 = [v6 copy];
+    speechRequestOptions2 = [optionsCopy speechRequestOptions];
+    v7 = [speechRequestOptions2 copy];
   }
 
   else
@@ -3692,14 +3692,14 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke_2(u
     v7 = objc_alloc_init(MEMORY[0x277CEF498]);
   }
 
-  v8 = [v4 requestSource];
+  requestSource = [optionsCopy requestSource];
   v9 = 0;
-  switch(v8)
+  switch(requestSource)
   {
     case 1:
     case 6:
     case 7:
-      v9 = v8;
+      v9 = requestSource;
       break;
     case 2:
     case 29:
@@ -3716,10 +3716,10 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke_2(u
       v9 = 3;
       break;
     case 8:
-      v10 = [v7 activationEvent];
-      if (v10)
+      activationEvent = [v7 activationEvent];
+      if (activationEvent)
       {
-        v9 = v10;
+        v9 = activationEvent;
       }
 
       else
@@ -3780,20 +3780,20 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke_2(u
 
   [v7 setActivationEvent:v9];
   [v7 setIsEyesFree:self->_eyesFree];
-  v11 = [v4 serverCommandId];
-  [v7 setServerCommandId:v11];
+  serverCommandId = [optionsCopy serverCommandId];
+  [v7 setServerCommandId:serverCommandId];
 
-  [v4 timestamp];
+  [optionsCopy timestamp];
   [v7 setActivationEventTime:?];
-  [v4 buttonDownTimestamp];
+  [optionsCopy buttonDownTimestamp];
   [v7 setHomeButtonDownEventTime:?];
-  [v4 expectedTimestamp];
+  [optionsCopy expectedTimestamp];
   [v7 setExpectedActivationEventTime:?];
-  [v7 setIsInitialBringUp:{objc_msgSend(v4, "isInitialBringUp")}];
-  v12 = [v4 activationDeviceIdentifier];
-  [v7 setActivationDeviceIdentifier:v12];
+  [v7 setIsInitialBringUp:{objc_msgSend(optionsCopy, "isInitialBringUp")}];
+  activationDeviceIdentifier = [optionsCopy activationDeviceIdentifier];
+  [v7 setActivationDeviceIdentifier:activationDeviceIdentifier];
 
-  if ([v4 useAutomaticEndpointing])
+  if ([optionsCopy useAutomaticEndpointing])
   {
     v13 = 3;
   }
@@ -3804,23 +3804,23 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke_2(u
   }
 
   [v7 setEndpointerOperationMode:v13];
-  [v7 setUseStreamingDictation:{objc_msgSend(v4, "useStreamingDictation")}];
-  v14 = [v4 homeButtonUpFromBeep];
-  [v7 setHomeButtonUpFromBeep:v14];
+  [v7 setUseStreamingDictation:{objc_msgSend(optionsCopy, "useStreamingDictation")}];
+  homeButtonUpFromBeep = [optionsCopy homeButtonUpFromBeep];
+  [v7 setHomeButtonUpFromBeep:homeButtonUpFromBeep];
 
-  [v7 setAcousticIdEnabled:{objc_msgSend(v4, "acousticIdEnabled")}];
-  [v7 setReleaseAudioSessionOnRecordingCompletion:{objc_msgSend(v4, "releaseAudioSessionOnRecordingCompletion")}];
+  [v7 setAcousticIdEnabled:{objc_msgSend(optionsCopy, "acousticIdEnabled")}];
+  [v7 setReleaseAudioSessionOnRecordingCompletion:{objc_msgSend(optionsCopy, "releaseAudioSessionOnRecordingCompletion")}];
   [v7 setSpeechSynthesisRecord:self->_lastSpeechSynthesisRecord];
   [v7 setIsSystemApertureEnabled:AFUIIsDeviceSystemApertureEnabled()];
-  v15 = [v4 presentationMode];
-  if (!v15)
+  presentationMode = [optionsCopy presentationMode];
+  if (!presentationMode)
   {
-    v16 = [v4 requestInfo];
-    v17 = [v16 speechRequestOptions];
-    v15 = [v17 presentationMode];
+    requestInfo = [optionsCopy requestInfo];
+    speechRequestOptions3 = [requestInfo speechRequestOptions];
+    presentationMode = [speechRequestOptions3 presentationMode];
   }
 
-  [v7 setPresentationMode:v15];
+  [v7 setPresentationMode:presentationMode];
   WeakRetained = objc_loadWeakRetained(&self->_localDataSource);
   [v7 setIsInAmbient:{objc_msgSend(WeakRetained, "isAmbientPresented:", self)}];
 
@@ -3828,9 +3828,9 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke_2(u
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v20 = v19;
-    v21 = [v7 isInAmbient];
+    isInAmbient = [v7 isInAmbient];
     v22 = "NO";
-    if (v21)
+    if (isInAmbient)
     {
       v22 = "YES";
     }
@@ -3842,12 +3842,12 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke_2(u
     _os_log_impl(&dword_241432000, v20, OS_LOG_TYPE_DEFAULT, "%s #ambientRF setIsInAmbient: %s", &v27, 0x16u);
   }
 
-  v23 = [v4 startRecordingSoundId];
+  startRecordingSoundId = [optionsCopy startRecordingSoundId];
 
-  if (v23)
+  if (startRecordingSoundId)
   {
-    v24 = [v4 startRecordingSoundId];
-    v25 = [(AFUISiriSession *)self _startingRecordingAlertPolicyForSoundID:v24];
+    startRecordingSoundId2 = [optionsCopy startRecordingSoundId];
+    v25 = [(AFUISiriSession *)self _startingRecordingAlertPolicyForSoundID:startRecordingSoundId2];
 
     [v7 setRecordingAlertPolicy:v25];
   }
@@ -3855,9 +3855,9 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke_2(u
   return v7;
 }
 
-- (id)_startingRecordingAlertPolicyForSoundID:(id)a3
+- (id)_startingRecordingAlertPolicyForSoundID:(id)d
 {
-  if ([a3 isEqualToString:*MEMORY[0x277D48D18]])
+  if ([d isEqualToString:*MEMORY[0x277D48D18]])
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -3883,15 +3883,15 @@ void __54__AFUISiriSession__handleDidChangeAudioRecordingPower__block_invoke_2(u
   return v6;
 }
 
-- (void)_sendContextWithCompletion:(id)a3
+- (void)_sendContextWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__AFUISiriSession__sendContextWithCompletion___block_invoke;
   v6[3] = &unk_278CD5E40;
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   objc_copyWeak(&v8, &location);
   [(AFUISiriSession *)self _performBlockWithDelegate:v6];
@@ -3940,32 +3940,32 @@ void __46__AFUISiriSession__sendContextWithCompletion___block_invoke_2(uint64_t 
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_startSpeechRequestWithOptions:(id)a3 completion:(id)a4
+- (void)_startSpeechRequestWithOptions:(id)options completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(AFUISiriSession *)self _preparedSpeechRequestWithRequestOptions:v7];
-  v8 = [v7 isInitialBringUp];
+  completionCopy = completion;
+  optionsCopy = options;
+  v9 = [(AFUISiriSession *)self _preparedSpeechRequestWithRequestOptions:optionsCopy];
+  isInitialBringUp = [optionsCopy isInitialBringUp];
 
-  [(AFUISiriSession *)self _startSpeechRequestWithSpeechRequestOptions:v9 isInitialBringUp:v8 completion:v6];
+  [(AFUISiriSession *)self _startSpeechRequestWithSpeechRequestOptions:v9 isInitialBringUp:isInitialBringUp completion:completionCopy];
 }
 
-- (void)_startSpeechRequestWithSpeechRequestOptions:(id)a3 isInitialBringUp:(BOOL)a4 completion:(id)a5
+- (void)_startSpeechRequestWithSpeechRequestOptions:(id)options isInitialBringUp:(BOOL)up completion:(id)completion
 {
-  v5 = a4;
+  upCopy = up;
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
   WeakRetained = objc_loadWeakRetained(&self->_localDelegate);
   if (objc_opt_respondsToSelector())
   {
     v11 = objc_loadWeakRetained(&self->_localDelegate);
-    v12 = [v11 headphonesAuthenticated];
+    headphonesAuthenticated = [v11 headphonesAuthenticated];
   }
 
   else
   {
-    v12 = 0;
+    headphonesAuthenticated = 0;
   }
 
   v13 = *MEMORY[0x277CEF098];
@@ -3973,7 +3973,7 @@ void __46__AFUISiriSession__sendContextWithCompletion___block_invoke_2(uint64_t 
   {
     v14 = MEMORY[0x277CCABB0];
     v15 = v13;
-    v16 = [v14 numberWithBool:v12];
+    v16 = [v14 numberWithBool:headphonesAuthenticated];
     v19 = 136315394;
     v20 = "[AFUISiriSession _startSpeechRequestWithSpeechRequestOptions:isInitialBringUp:completion:]";
     v21 = 2112;
@@ -3981,23 +3981,23 @@ void __46__AFUISiriSession__sendContextWithCompletion___block_invoke_2(uint64_t 
     _os_log_impl(&dword_241432000, v15, OS_LOG_TYPE_DEFAULT, "%s 🎧 setIsHeadphonesAuthenticated: %@", &v19, 0x16u);
   }
 
-  [v9 setIsHeadphonesAuthenticated:v12];
+  [optionsCopy setIsHeadphonesAuthenticated:headphonesAuthenticated];
   speechRequestHandler = self->_speechRequestHandler;
-  v18 = [(AFUISiriSession *)self _instrumentationTurnContext];
-  [(SRUIFSpeechRequestHandler *)speechRequestHandler startSpeechRequestWithSpeechRequestOptions:v9 instrumentationTurn:v18 isInitialBringUp:v5 completion:v8];
+  _instrumentationTurnContext = [(AFUISiriSession *)self _instrumentationTurnContext];
+  [(SRUIFSpeechRequestHandler *)speechRequestHandler startSpeechRequestWithSpeechRequestOptions:optionsCopy instrumentationTurn:_instrumentationTurnContext isInitialBringUp:upCopy completion:completionCopy];
 }
 
-- (void)_startSpeechPronunciationRequestWithContext:(id)a3 options:(id)a4 completion:(id)a5
+- (void)_startSpeechPronunciationRequestWithContext:(id)context options:(id)options completion:(id)completion
 {
-  v11 = a5;
-  v8 = a3;
-  v9 = [(AFUISiriSession *)self _preparedSpeechRequestWithRequestOptions:a4];
-  v10 = [(AFUISiriSession *)self _connection];
-  [v10 startSpeechPronunciationRequestWithOptions:v9 pronunciationContext:v8];
+  completionCopy = completion;
+  contextCopy = context;
+  v9 = [(AFUISiriSession *)self _preparedSpeechRequestWithRequestOptions:options];
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection startSpeechPronunciationRequestWithOptions:v9 pronunciationContext:contextCopy];
 
-  if (v11)
+  if (completionCopy)
   {
-    v11[2](v11, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -4009,14 +4009,14 @@ void __46__AFUISiriSession__sendContextWithCompletion___block_invoke_2(uint64_t 
   [(SRUIFSpeechRequestHandler *)speechRequestHandler cancelSpeechRequest];
 }
 
-- (void)requestDidPresentViewForUICommand:(id)a3
+- (void)requestDidPresentViewForUICommand:(id)command
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = commandCopy;
     if ([v5 temporary])
     {
       v6 = *MEMORY[0x277CEF098];
@@ -4038,18 +4038,18 @@ LABEL_15:
   self->_currentRequestDidPresent = 1;
   [(SRUIFSiriSessionStateHandler *)self->_stateHandler performTransitionForEvent:6];
   [(AFUISiriSession *)self _cancelTypeToSiriLatencyTimerIfNeeded];
-  if (AFIsInternalInstall() && [v4 sruif_usefulUserResultType])
+  if (AFIsInternalInstall() && [commandCopy sruif_usefulUserResultType])
   {
     kdebug_trace();
-    v7 = [v4 deserializationDuration];
-    if (v7)
+    deserializationDuration = [commandCopy deserializationDuration];
+    if (deserializationDuration)
     {
       v8 = objc_alloc(MEMORY[0x277CEF300]);
-      v9 = [v4 aceId];
-      v10 = [v8 initWithOriginalCommandId:v9 category:6 duration:v7];
+      aceId = [commandCopy aceId];
+      v10 = [v8 initWithOriginalCommandId:aceId category:6 duration:deserializationDuration];
 
-      v11 = [(AFUISiriSession *)self _connection];
-      [v11 recordUIMetrics:v10];
+      _connection = [(AFUISiriSession *)self _connection];
+      [_connection recordUIMetrics:v10];
     }
   }
 
@@ -4062,22 +4062,22 @@ LABEL_15:
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [(AFUISiriSession *)self _instrumentationTurnContext];
-      v16 = [v15 turnIdentifier];
-      v17 = [v5 formattedText];
+      _instrumentationTurnContext = [(AFUISiriSession *)self _instrumentationTurnContext];
+      turnIdentifier = [_instrumentationTurnContext turnIdentifier];
+      formattedText = [v5 formattedText];
       v19 = 136315906;
       v20 = "[AFUISiriSession requestDidPresentViewForUICommand:]";
       v21 = 2112;
       v22 = v5;
       v23 = 2112;
-      v24 = v16;
+      v24 = turnIdentifier;
       v25 = 2112;
-      v26 = v17;
+      v26 = formattedText;
       _os_log_impl(&dword_241432000, v14, OS_LOG_TYPE_DEFAULT, "%s #instrumentation %@ in turn %@: \n%@", &v19, 0x2Au);
     }
 
-    v18 = [(AFUISiriSession *)self _instrumentationTurnContext];
-    [v18 emitInstrumentation:v5 machAbsoluteTime:mach_absolute_time()];
+    _instrumentationTurnContext2 = [(AFUISiriSession *)self _instrumentationTurnContext];
+    [_instrumentationTurnContext2 emitInstrumentation:v5 machAbsoluteTime:mach_absolute_time()];
 
     goto LABEL_15;
   }
@@ -4085,7 +4085,7 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)requestDidPresentViewForErrorCommand:(id)a3
+- (void)requestDidPresentViewForErrorCommand:(id)command
 {
   self->_currentRequestDidPresent = 1;
   [(SRUIFSiriSessionStateHandler *)self->_stateHandler performTransitionForEvent:7];
@@ -4093,33 +4093,33 @@ LABEL_16:
   [(AFUISiriSession *)self _cancelTypeToSiriLatencyTimerIfNeeded];
 }
 
-- (void)recordUIMetrics:(id)a3
+- (void)recordUIMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [(AFUISiriSession *)self underlyingConnection];
-  [v5 recordUIMetrics:v4];
+  metricsCopy = metrics;
+  underlyingConnection = [(AFUISiriSession *)self underlyingConnection];
+  [underlyingConnection recordUIMetrics:metricsCopy];
 }
 
-- (void)recordRequestMetricEvent:(id)a3 withTimestamp:(double)a4
+- (void)recordRequestMetricEvent:(id)event withTimestamp:(double)timestamp
 {
-  v6 = a3;
-  v7 = [(AFUISiriSession *)self underlyingConnection];
-  [v7 recordRequestMetric:v6 withTimestamp:a4];
+  eventCopy = event;
+  underlyingConnection = [(AFUISiriSession *)self underlyingConnection];
+  [underlyingConnection recordRequestMetric:eventCopy withTimestamp:timestamp];
 }
 
-- (void)recordMetricsContext:(id)a3 forDisambiguatedAppWIthBundleIdentifier:(id)a4
+- (void)recordMetricsContext:(id)context forDisambiguatedAppWIthBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AFUISiriSession *)self underlyingConnection];
-  [v8 sendFeedbackToAppPreferencesPredictorForMetricsContext:v7 selectedBundleId:v6];
+  identifierCopy = identifier;
+  contextCopy = context;
+  underlyingConnection = [(AFUISiriSession *)self underlyingConnection];
+  [underlyingConnection sendFeedbackToAppPreferencesPredictorForMetricsContext:contextCopy selectedBundleId:identifierCopy];
 }
 
-- (void)speechSynthesisDidUpdatePowerLevelTo:(float)a3
+- (void)speechSynthesisDidUpdatePowerLevelTo:(float)to
 {
-  v5 = [(AFUISiriSession *)self localDelegate];
-  *&v4 = a3;
-  [v5 siriSessionAudioOutputDidChangePowerLevel:v4];
+  localDelegate = [(AFUISiriSession *)self localDelegate];
+  *&v4 = to;
+  [localDelegate siriSessionAudioOutputDidChangePowerLevel:v4];
 }
 
 - (void)notifyStateManagerSpeakingBegan
@@ -4146,37 +4146,37 @@ LABEL_16:
   }
 }
 
-- (void)fetchAttendingState:(id)a3
+- (void)fetchAttendingState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   if ([(AFUISiriSession *)self _isContinuousConversationAvailable])
   {
-    v4 = [(SRUIFUIBridgeClient *)self->_uiBridgeClient isAttending];
+    isAttending = [(SRUIFUIBridgeClient *)self->_uiBridgeClient isAttending];
   }
 
   else
   {
-    v4 = 0;
+    isAttending = 0;
   }
 
-  v5[2](v5, v4);
+  stateCopy[2](stateCopy, isAttending);
 }
 
-- (void)_startLegacyDirectActionRequestWithInfo:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_startLegacyDirectActionRequestWithInfo:(id)info context:(id)context completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v21 = "[AFUISiriSession _startLegacyDirectActionRequestWithInfo:context:completion:]";
     v22 = 2112;
-    v23 = v8;
+    v23 = infoCopy;
     v24 = 2112;
-    v25 = v9;
+    v25 = contextCopy;
     _os_log_impl(&dword_241432000, v11, OS_LOG_TYPE_DEFAULT, "%s #activation requestInfo: %@, context: %@", buf, 0x20u);
   }
 
@@ -4186,12 +4186,12 @@ LABEL_16:
   v15[2] = __78__AFUISiriSession__startLegacyDirectActionRequestWithInfo_context_completion___block_invoke;
   v15[3] = &unk_278CD5E68;
   objc_copyWeak(&v19, buf);
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = contextCopy;
+  v17 = infoCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = infoCopy;
+  v14 = contextCopy;
   dispatch_async(MEMORY[0x277D85CD0], v15);
 
   objc_destroyWeak(&v19);
@@ -4245,18 +4245,18 @@ uint64_t __78__AFUISiriSession__startLegacyDirectActionRequestWithInfo_context_c
   return result;
 }
 
-- (void)_startContinuityRequestWithInfo:(id)a3 completion:(id)a4
+- (void)_startContinuityRequestWithInfo:(id)info completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v16 = "[AFUISiriSession _startContinuityRequestWithInfo:completion:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = infoCopy;
     _os_log_impl(&dword_241432000, v8, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -4266,9 +4266,9 @@ uint64_t __78__AFUISiriSession__startLegacyDirectActionRequestWithInfo_context_c
   v11[2] = __62__AFUISiriSession__startContinuityRequestWithInfo_completion___block_invoke;
   v11[3] = &unk_278CD5AD0;
   objc_copyWeak(&v14, buf);
-  v9 = v6;
+  v9 = infoCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = completionCopy;
   v13 = v10;
   [(AFUISiriSession *)self _startRequestWithBlock:v11];
 
@@ -4293,18 +4293,18 @@ uint64_t __62__AFUISiriSession__startContinuityRequestWithInfo_completion___bloc
   return result;
 }
 
-- (void)_startRequestWithInfo:(id)a3 completion:(id)a4
+- (void)_startRequestWithInfo:(id)info completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v16 = "[AFUISiriSession _startRequestWithInfo:completion:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = infoCopy;
     _os_log_impl(&dword_241432000, v8, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -4314,9 +4314,9 @@ uint64_t __62__AFUISiriSession__startContinuityRequestWithInfo_completion___bloc
   v11[2] = __52__AFUISiriSession__startRequestWithInfo_completion___block_invoke;
   v11[3] = &unk_278CD5AD0;
   objc_copyWeak(&v14, buf);
-  v9 = v6;
+  v9 = infoCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = completionCopy;
   v13 = v10;
   [(AFUISiriSession *)self _startRequestWithBlock:v11];
 
@@ -4340,9 +4340,9 @@ void __52__AFUISiriSession__startRequestWithInfo_completion___block_invoke(uint6
   [v5 _requestStartedWithInfo:*(a1 + 32)];
 }
 
-- (void)_requestStartedWithInfo:(id)a3
+- (void)_requestStartedWithInfo:(id)info
 {
-  if ([a3 activationEvent] == 10)
+  if ([info activationEvent] == 10)
   {
     stateHandler = self->_stateHandler;
 
@@ -4350,11 +4350,11 @@ void __52__AFUISiriSession__startRequestWithInfo_completion___block_invoke(uint6
   }
 }
 
-- (void)_startRequestWithText:(id)a3 turnIdentifier:(id)a4 completion:(id)a5
+- (void)_startRequestWithText:(id)text turnIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([MEMORY[0x277CEF4D0] saeAvailable])
   {
     [(AFUISiriSession *)self _startTypeToSiriLatencyTimer];
@@ -4366,12 +4366,12 @@ void __52__AFUISiriSession__startRequestWithInfo_completion___block_invoke(uint6
   v14[1] = 3221225472;
   v14[2] = __67__AFUISiriSession__startRequestWithText_turnIdentifier_completion___block_invoke;
   v14[3] = &unk_278CD5E90;
-  v11 = v9;
+  v11 = identifierCopy;
   v15 = v11;
-  v12 = v8;
+  v12 = textCopy;
   v16 = v12;
   objc_copyWeak(&v18, &location);
-  v13 = v10;
+  v13 = completionCopy;
   v17 = v13;
   [(AFUISiriSession *)self _startRequestWithBlock:v14];
 
@@ -4406,11 +4406,11 @@ void __67__AFUISiriSession__startRequestWithText_turnIdentifier_completion___blo
   }
 }
 
-- (void)_startRequestWithSuggestionText:(id)a3 suggestionRequestType:(int64_t)a4 turnIdentifier:(id)a5 completion:(id)a6
+- (void)_startRequestWithSuggestionText:(id)text suggestionRequestType:(int64_t)type turnIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  textCopy = text;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([MEMORY[0x277CEF4D0] saeAvailable])
   {
     [(AFUISiriSession *)self _startTypeToSiriLatencyTimer];
@@ -4422,13 +4422,13 @@ void __67__AFUISiriSession__startRequestWithText_turnIdentifier_completion___blo
   v16[2] = __99__AFUISiriSession__startRequestWithSuggestionText_suggestionRequestType_turnIdentifier_completion___block_invoke;
   v16[3] = &unk_278CD5EB8;
   v16[4] = self;
-  v20[1] = a4;
-  v13 = v11;
+  v20[1] = type;
+  v13 = identifierCopy;
   v17 = v13;
-  v14 = v10;
+  v14 = textCopy;
   v18 = v14;
   objc_copyWeak(v20, &location);
-  v15 = v12;
+  v15 = completionCopy;
   v19 = v15;
   [(AFUISiriSession *)self _startRequestWithBlock:v16];
 
@@ -4468,25 +4468,25 @@ void __99__AFUISiriSession__startRequestWithSuggestionText_suggestionRequestType
   }
 }
 
-- (void)startCorrectedRequestWithText:(id)a3 correctionIdentifier:(id)a4 userSelectionResults:(id)a5 turnIdentifier:(id)a6 machAbsoluteTime:(double)a7
+- (void)startCorrectedRequestWithText:(id)text correctionIdentifier:(id)identifier userSelectionResults:(id)results turnIdentifier:(id)turnIdentifier machAbsoluteTime:(double)time
 {
   v61 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v42 = a6;
+  textCopy = text;
+  identifierCopy = identifier;
+  resultsCopy = results;
+  turnIdentifierCopy = turnIdentifier;
   objc_initWeak(&location, self);
-  v15 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:v42];
+  v15 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:turnIdentifierCopy];
   v16 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v15 turnIdentifier];
+    turnIdentifier = [v15 turnIdentifier];
     *buf = 136315650;
     v54 = "[AFUISiriSession startCorrectedRequestWithText:correctionIdentifier:userSelectionResults:turnIdentifier:machAbsoluteTime:]";
     v55 = 2112;
-    v56 = v17;
+    v56 = turnIdentifier;
     v57 = 2112;
-    v58 = v42;
+    v58 = turnIdentifierCopy;
     _os_log_impl(&dword_241432000, v16, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New Turn %@ <-> Old Turn %@ ", buf, 0x20u);
   }
 
@@ -4496,19 +4496,19 @@ void __99__AFUISiriSession__startRequestWithSuggestionText_suggestionRequestType
   v46[2] = __123__AFUISiriSession_startCorrectedRequestWithText_correctionIdentifier_userSelectionResults_turnIdentifier_machAbsoluteTime___block_invoke;
   v46[3] = &unk_278CD5EE0;
   objc_copyWeak(&v51, &location);
-  v18 = v12;
+  v18 = textCopy;
   v47 = v18;
-  v39 = v13;
+  v39 = identifierCopy;
   v48 = v39;
-  v40 = v14;
+  v40 = resultsCopy;
   v49 = v40;
   v41 = v15;
   v50 = v41;
   [(AFUISiriSession *)self _startRequestWithBlock:v46];
   v19 = objc_alloc_init(MEMORY[0x277D5A928]);
   [v19 setInvocationSource:12];
-  v20 = [(AFUISiriSession *)self localDataSource];
-  v21 = [v20 lockStateForSiriSession:self];
+  localDataSource = [(AFUISiriSession *)self localDataSource];
+  v21 = [localDataSource lockStateForSiriSession:self];
 
   [v19 setIsDeviceLocked:v21 != 0];
   if ([MEMORY[0x277CEF4D0] saeAvailable])
@@ -4529,43 +4529,43 @@ void __99__AFUISiriSession__startRequestWithSuggestionText_suggestionRequestType
     v27 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [(AFUISiriSession *)self _instrumentationTurnContext];
-      v29 = [v28 turnIdentifier];
-      v30 = [v26 formattedText];
+      _instrumentationTurnContext = [(AFUISiriSession *)self _instrumentationTurnContext];
+      turnIdentifier2 = [_instrumentationTurnContext turnIdentifier];
+      formattedText = [v26 formattedText];
       *buf = 136315906;
       v54 = "[AFUISiriSession startCorrectedRequestWithText:correctionIdentifier:userSelectionResults:turnIdentifier:machAbsoluteTime:]";
       v55 = 2112;
       v56 = v26;
       v57 = 2112;
-      v58 = v29;
+      v58 = turnIdentifier2;
       v59 = 2112;
-      v60 = v30;
+      v60 = formattedText;
       _os_log_impl(&dword_241432000, v27, OS_LOG_TYPE_DEFAULT, "%s #instrumentation %@ in turn %@: \n%@", buf, 0x2Au);
     }
 
-    v31 = [(AFUISiriSession *)self _instrumentationTurnContext];
-    [v31 emitInstrumentation:v26 machAbsoluteTime:mach_absolute_time()];
+    _instrumentationTurnContext2 = [(AFUISiriSession *)self _instrumentationTurnContext];
+    [_instrumentationTurnContext2 emitInstrumentation:v26 machAbsoluteTime:mach_absolute_time()];
   }
 
   v32 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
-    v33 = [(AFUISiriSession *)self _instrumentationTurnContext];
-    v34 = [v33 turnIdentifier];
-    v35 = [v19 formattedText];
+    _instrumentationTurnContext3 = [(AFUISiriSession *)self _instrumentationTurnContext];
+    turnIdentifier3 = [_instrumentationTurnContext3 turnIdentifier];
+    formattedText2 = [v19 formattedText];
     *buf = 136315906;
     v54 = "[AFUISiriSession startCorrectedRequestWithText:correctionIdentifier:userSelectionResults:turnIdentifier:machAbsoluteTime:]";
     v55 = 2112;
     v56 = v19;
     v57 = 2112;
-    v58 = v34;
+    v58 = turnIdentifier3;
     v59 = 2112;
-    v60 = v35;
+    v60 = formattedText2;
     _os_log_impl(&dword_241432000, v32, OS_LOG_TYPE_DEFAULT, "%s #instrumentation %@ in turn %@: \n%@", buf, 0x2Au);
   }
 
-  v36 = [(AFUISiriSession *)self _instrumentationTurnContext];
-  [v36 emitInstrumentation:v19 machAbsoluteTime:mach_absolute_time()];
+  _instrumentationTurnContext4 = [(AFUISiriSession *)self _instrumentationTurnContext];
+  [_instrumentationTurnContext4 emitInstrumentation:v19 machAbsoluteTime:mach_absolute_time()];
 
   v37 = SRUIFConstructLaunchContextForLaunchStarted();
   v43[0] = MEMORY[0x277D85DD0];
@@ -4575,7 +4575,7 @@ void __99__AFUISiriSession__startRequestWithSuggestionText_suggestionRequestType
   objc_copyWeak(v45, &location);
   v38 = v37;
   v44 = v38;
-  v45[1] = *&a7;
+  v45[1] = *&time;
   [(AFUISiriSession *)self _performBlockWithDelegate:v43];
 
   objc_destroyWeak(v45);
@@ -4607,18 +4607,18 @@ void __123__AFUISiriSession_startCorrectedRequestWithText_correctionIdentifier_u
   }
 }
 
-- (void)resultDidChangeForAceCommand:(id)a3 completion:(id)a4
+- (void)resultDidChangeForAceCommand:(id)command completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__AFUISiriSession_resultDidChangeForAceCommand_completion___block_invoke;
   v10[3] = &unk_278CD5C30;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = commandCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = commandCopy;
   [(AFUISiriSession *)self _performBlockWithDelegate:v10];
 }
 
@@ -4670,38 +4670,38 @@ LABEL_9:
 
 - (void)telephonyRequestCompleted
 {
-  v2 = [(AFUISiriSession *)self _connection];
-  [v2 telephonyRequestCompleted];
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection telephonyRequestCompleted];
 }
 
-- (void)setApplicationContextForDirectAction:(BOOL)a3
+- (void)setApplicationContextForDirectAction:(BOOL)action
 {
-  v3 = a3;
-  if (a3)
+  actionCopy = action;
+  if (action)
   {
     v13 = 0;
   }
 
   else
   {
-    v5 = [(AFUISiriSession *)self localDataSource];
-    v13 = [v5 contextAppInfosForSiriSession:self];
+    localDataSource = [(AFUISiriSession *)self localDataSource];
+    v13 = [localDataSource contextAppInfosForSiriSession:self];
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [(AFUISiriSession *)self localDataSource];
-  v8 = [v7 starkAppBundleIdentifierContextForSiriSession:self];
+  localDataSource2 = [(AFUISiriSession *)self localDataSource];
+  v8 = [localDataSource2 starkAppBundleIdentifierContextForSiriSession:self];
   [v6 addObjectsFromArray:v8];
 
-  if (v3)
+  if (actionCopy)
   {
     [(AFUISiriSession *)self directActionApplicationContexts];
   }
 
   else
   {
-    v9 = [(AFUISiriSession *)self localDataSource];
-    v10 = [v9 currentCarPlaySupportedOEMAppIDListForSiriSession:self];
+    localDataSource3 = [(AFUISiriSession *)self localDataSource];
+    v10 = [localDataSource3 currentCarPlaySupportedOEMAppIDListForSiriSession:self];
     [v6 addObjectsFromArray:v10];
 
     [(AFUISiriSession *)self sessionDelegateContext];
@@ -4709,11 +4709,11 @@ LABEL_9:
   v11 = ;
   [v6 addObjectsFromArray:v11];
 
-  v12 = [(AFUISiriSession *)self _connection];
-  [v12 fetchAppicationContextForApplicationInfo:v13 supplementalContext:v6 refID:0];
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection fetchAppicationContextForApplicationInfo:v13 supplementalContext:v6 refID:0];
 }
 
-- (void)resetContextTypes:(int64_t)a3
+- (void)resetContextTypes:(int64_t)types
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
@@ -4722,19 +4722,19 @@ LABEL_9:
     v9 = 136315394;
     v10 = "[AFUISiriSession resetContextTypes:]";
     v11 = 2048;
-    v12 = a3;
+    typesCopy = types;
     _os_log_impl(&dword_241432000, v5, OS_LOG_TYPE_DEFAULT, "%s %zd", &v9, 0x16u);
-    if ((a3 & 4) == 0)
+    if ((types & 4) == 0)
     {
 LABEL_3:
-      if ((a3 & 2) == 0)
+      if ((types & 2) == 0)
       {
         goto LABEL_4;
       }
 
 LABEL_9:
       [(AFUISiriSession *)self setAlertContext];
-      if ((a3 & 1) == 0)
+      if ((types & 1) == 0)
       {
         goto LABEL_6;
       }
@@ -4743,88 +4743,88 @@ LABEL_9:
     }
   }
 
-  else if ((a3 & 4) == 0)
+  else if ((types & 4) == 0)
   {
     goto LABEL_3;
   }
 
   [(AFUISiriSession *)self clearContext];
-  if ((a3 & 2) != 0)
+  if ((types & 2) != 0)
   {
     goto LABEL_9;
   }
 
 LABEL_4:
-  if (a3)
+  if (types)
   {
 LABEL_5:
     [(AFUISiriSession *)self setApplicationContext];
   }
 
 LABEL_6:
-  v6 = [(AFUISiriSession *)self localDataSource];
-  v7 = [v6 lockStateForSiriSession:self];
+  localDataSource = [(AFUISiriSession *)self localDataSource];
+  v7 = [localDataSource lockStateForSiriSession:self];
 
   [(AFUISiriSession *)self setLockState:v7];
   [(AFUISiriSession *)self setWatchAuthenticated:0];
-  v8 = [(AFUISiriSession *)self localDelegate];
-  [v8 siriSessionDidResetContext:self];
+  localDelegate = [(AFUISiriSession *)self localDelegate];
+  [localDelegate siriSessionDidResetContext:self];
 }
 
 - (void)rollbackClearContext
 {
-  v2 = [(AFUISiriSession *)self _connection];
-  [v2 rollbackClearContext];
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection rollbackClearContext];
 }
 
-- (void)setDeviceInStarkMode:(BOOL)a3
+- (void)setDeviceInStarkMode:(BOOL)mode
 {
-  v3 = a3;
-  self->_isDeviceInStarkMode = a3;
-  v4 = [(AFUISiriSession *)self _connection];
-  [v4 setIsDeviceInStarkMode:v3];
+  modeCopy = mode;
+  self->_isDeviceInStarkMode = mode;
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection setIsDeviceInStarkMode:modeCopy];
 }
 
-- (void)setCarDNDActive:(BOOL)a3
+- (void)setCarDNDActive:(BOOL)active
 {
-  v3 = a3;
-  v4 = [(AFUISiriSession *)self _connection];
-  [v4 setCarDNDActive:v3];
+  activeCopy = active;
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection setCarDNDActive:activeCopy];
 }
 
-- (void)setSupportsCarPlayVehicleData:(BOOL)a3
+- (void)setSupportsCarPlayVehicleData:(BOOL)data
 {
-  v3 = a3;
-  v4 = [(AFUISiriSession *)self _connection];
-  [v4 setSupportsCarPlayVehicleData:v3];
+  dataCopy = data;
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection setSupportsCarPlayVehicleData:dataCopy];
 }
 
-- (void)setCarOwnsMainAudio:(BOOL)a3
+- (void)setCarOwnsMainAudio:(BOOL)audio
 {
-  v3 = a3;
-  v4 = [(AFUISiriSession *)self _connection];
-  [v4 setCarOwnsMainAudio:v3];
+  audioCopy = audio;
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection setCarOwnsMainAudio:audioCopy];
 }
 
-- (void)setEyesFree:(BOOL)a3
+- (void)setEyesFree:(BOOL)free
 {
-  self->_eyesFree = a3;
+  self->_eyesFree = free;
   if (self->_connection)
   {
-    v4 = a3;
+    freeCopy = free;
     if (objc_opt_respondsToSelector())
     {
       connection = self->_connection;
 
-      [(AFConnection *)connection setIsEyesFree:v4];
+      [(AFConnection *)connection setIsEyesFree:freeCopy];
     }
   }
 }
 
-- (void)setLockState:(unint64_t)a3
+- (void)setLockState:(unint64_t)state
 {
-  v4 = (a3 >> 1) & 1;
-  v5 = a3 & 1;
+  v4 = (state >> 1) & 1;
+  v5 = state & 1;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -4833,7 +4833,7 @@ LABEL_6:
   objc_copyWeak(v7, &location);
   v8 = v4;
   v9 = v5;
-  v7[1] = a3;
+  v7[1] = state;
   dispatch_async(MEMORY[0x277D85CD0], v6);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -4854,9 +4854,9 @@ void __32__AFUISiriSession_setLockState___block_invoke(uint64_t a1)
   [v4 _performBlockWithDelegate:v5];
 }
 
-- (void)setAnnouncementRequestsPermittedByPresentationWhileActive:(BOOL)a3
+- (void)setAnnouncementRequestsPermittedByPresentationWhileActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v11 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -4864,39 +4864,39 @@ void __32__AFUISiriSession_setLockState___block_invoke(uint64_t a1)
     v7 = 136315394;
     v8 = "[AFUISiriSession setAnnouncementRequestsPermittedByPresentationWhileActive:]";
     v9 = 1024;
-    v10 = v3;
+    v10 = activeCopy;
     _os_log_impl(&dword_241432000, v5, OS_LOG_TYPE_DEFAULT, "%s Updating announcement requests permitted by presentation: %{BOOL}d", &v7, 0x12u);
   }
 
-  v6 = [(AFUISiriSession *)self _connection];
-  [v6 setAnnouncementRequestsPermittedByPresentationWhileActive:v3];
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection setAnnouncementRequestsPermittedByPresentationWhileActive:activeCopy];
 }
 
-- (void)_handleUnlockAppCommand:(id)a3 completion:(id)a4
+- (void)_handleUnlockAppCommand:(id)command completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __54__AFUISiriSession__handleUnlockAppCommand_completion___block_invoke;
   aBlock[3] = &unk_278CD5C08;
-  v8 = v7;
+  v8 = completionCopy;
   v25 = v8;
-  v9 = v6;
+  v9 = commandCopy;
   v24 = v9;
   v10 = _Block_copy(aBlock);
-  v11 = [v9 appBundleId];
+  appBundleId = [v9 appBundleId];
   v12 = *MEMORY[0x277CEF098];
   v13 = os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT);
-  if (v11)
+  if (appBundleId)
   {
     if (v13)
     {
       *buf = 136315394;
       v27 = "[AFUISiriSession _handleUnlockAppCommand:completion:]";
       v28 = 2112;
-      v29 = v11;
+      v29 = appBundleId;
       _os_log_impl(&dword_241432000, v12, OS_LOG_TYPE_DEFAULT, "%s UnlockApp command received for appBundleId=%@", buf, 0x16u);
     }
 
@@ -4910,11 +4910,11 @@ void __32__AFUISiriSession_setLockState___block_invoke(uint64_t a1)
     v15 = v9;
     v20 = v15;
     objc_copyWeak(&v22, buf);
-    [WeakRetained siriSession:self didReceiveAppUnlockRequestForAppId:v11 withCompletion:v19];
+    [WeakRetained siriSession:self didReceiveAppUnlockRequestForAppId:appBundleId withCompletion:v19];
 
     v16 = objc_alloc(MEMORY[0x277CEF300]);
-    v17 = [v15 refId];
-    v18 = [v16 initWithOriginalCommandId:v17 category:5 duration:0];
+    refId = [v15 refId];
+    v18 = [v16 initWithOriginalCommandId:refId category:5 duration:0];
 
     [(AFUISiriSession *)self recordUIMetrics:v18];
     objc_destroyWeak(&v22);
@@ -4981,13 +4981,13 @@ void __54__AFUISiriSession__handleUnlockAppCommand_completion___block_invoke_215
   [WeakRetained _performAceCommands:v5];
 }
 
-- (void)_handleUnlockDeviceCommand:(id)a3 completion:(id)a4
+- (void)_handleUnlockDeviceCommand:(id)command completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AFUISiriSession *)self localDataSource];
-  v9 = [v8 lockStateForSiriSession:self];
+  commandCopy = command;
+  completionCopy = completion;
+  localDataSource = [(AFUISiriSession *)self localDataSource];
+  v9 = [localDataSource lockStateForSiriSession:self];
 
   v10 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -5003,9 +5003,9 @@ void __54__AFUISiriSession__handleUnlockAppCommand_completion___block_invoke_215
   aBlock[1] = 3221225472;
   aBlock[2] = __57__AFUISiriSession__handleUnlockDeviceCommand_completion___block_invoke;
   aBlock[3] = &unk_278CD5C08;
-  v11 = v7;
+  v11 = completionCopy;
   v26 = v11;
-  v12 = v6;
+  v12 = commandCopy;
   v25 = v12;
   v13 = _Block_copy(aBlock);
   v14 = v13;
@@ -5029,13 +5029,13 @@ void __54__AFUISiriSession__handleUnlockAppCommand_completion___block_invoke_215
   else
   {
     (*(v13 + 2))(v13, 1);
-    v15 = [v12 successCommands];
-    [(AFUISiriSession *)self _performAceCommands:v15];
+    successCommands = [v12 successCommands];
+    [(AFUISiriSession *)self _performAceCommands:successCommands];
   }
 
   v17 = objc_alloc(MEMORY[0x277CEF300]);
-  v18 = [v12 refId];
-  v19 = [v17 initWithOriginalCommandId:v18 category:5 duration:0];
+  refId = [v12 refId];
+  v19 = [v17 initWithOriginalCommandId:refId category:5 duration:0];
 
   [(AFUISiriSession *)self recordUIMetrics:v19];
 }
@@ -5086,21 +5086,21 @@ LABEL_10:
   [v5 _performAceCommands:v6];
 }
 
-- (void)_handleUnlockDeviceWithWatchCommand:(id)a3 completion:(id)a4
+- (void)_handleUnlockDeviceWithWatchCommand:(id)command completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__AFUISiriSession__handleUnlockDeviceWithWatchCommand_completion___block_invoke;
   aBlock[3] = &unk_278CD5C08;
-  v8 = v7;
+  v8 = completionCopy;
   v21 = v8;
-  v9 = v6;
+  v9 = commandCopy;
   v20 = v9;
   v10 = _Block_copy(aBlock);
   objc_initWeak(&location, self);
-  v11 = [(AFUISiriSession *)self _watchAuthenticationManager];
+  _watchAuthenticationManager = [(AFUISiriSession *)self _watchAuthenticationManager];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __66__AFUISiriSession__handleUnlockDeviceWithWatchCommand_completion___block_invoke_2;
@@ -5110,7 +5110,7 @@ LABEL_10:
   v16 = v12;
   v13 = v9;
   v15 = v13;
-  [v11 requestWatchAuthentication:v14];
+  [_watchAuthenticationManager requestWatchAuthentication:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -5177,7 +5177,7 @@ void __66__AFUISiriSession__handleUnlockDeviceWithWatchCommand_completion___bloc
   [WeakRetained _performAceCommands:*(a1 + 32)];
 }
 
-- (void)setWatchAuthenticated:(BOOL)a3
+- (void)setWatchAuthenticated:(BOOL)authenticated
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
@@ -5185,7 +5185,7 @@ void __66__AFUISiriSession__handleUnlockDeviceWithWatchCommand_completion___bloc
   block[2] = __41__AFUISiriSession_setWatchAuthenticated___block_invoke;
   block[3] = &unk_278CD5708;
   objc_copyWeak(&v5, &location);
-  v6 = a3;
+  authenticatedCopy = authenticated;
   dispatch_async(MEMORY[0x277D85CD0], block);
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -5213,21 +5213,21 @@ void __41__AFUISiriSession_setWatchAuthenticated___block_invoke(uint64_t a1)
   return watchAuthenticationManager;
 }
 
-- (void)_performAceCommand:(id)a3 forRequestUpdateViewsCommand:(id)a4 afterDelay:(double)a5
+- (void)_performAceCommand:(id)command forRequestUpdateViewsCommand:(id)viewsCommand afterDelay:(double)delay
 {
-  v8 = a3;
-  v9 = a4;
+  commandCopy = command;
+  viewsCommandCopy = viewsCommand;
   objc_initWeak(&location, self);
-  v10 = dispatch_time(0, (a5 * 1000000000.0));
+  v10 = dispatch_time(0, (delay * 1000000000.0));
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__AFUISiriSession__performAceCommand_forRequestUpdateViewsCommand_afterDelay___block_invoke;
   v13[3] = &unk_278CD5FF8;
   objc_copyWeak(&v16, &location);
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = commandCopy;
+  v15 = viewsCommandCopy;
+  v11 = viewsCommandCopy;
+  v12 = commandCopy;
   dispatch_after(v10, MEMORY[0x277D85CD0], v13);
 
   objc_destroyWeak(&v16);
@@ -5271,21 +5271,21 @@ void __78__AFUISiriSession__performAceCommand_forRequestUpdateViewsCommand_after
   [WeakRetained _performAceCommand:*(a1 + 32) forRequestUpdateViewsCommand:*(a1 + 40) afterDelay:10.0];
 }
 
-- (void)_handleRequestUpdateViewsCommand:(id)a3 completion:(id)a4
+- (void)_handleRequestUpdateViewsCommand:(id)command completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 timeInSeconds];
-  [v8 doubleValue];
+  commandCopy = command;
+  completionCopy = completion;
+  timeInSeconds = [commandCopy timeInSeconds];
+  [timeInSeconds doubleValue];
   v10 = v9;
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v6 commands];
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  commands = [commandCopy commands];
+  v12 = [commands countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
     v13 = v12;
@@ -5297,38 +5297,38 @@ void __78__AFUISiriSession__performAceCommand_forRequestUpdateViewsCommand_after
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(commands);
         }
 
-        [(AFUISiriSession *)self _performAceCommand:*(*(&v18 + 1) + 8 * v15++) forRequestUpdateViewsCommand:v6 afterDelay:v10];
+        [(AFUISiriSession *)self _performAceCommand:*(*(&v18 + 1) + 8 * v15++) forRequestUpdateViewsCommand:commandCopy afterDelay:v10];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v13 = [commands countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v13);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v16 = objc_alloc_init(MEMORY[0x277D47218]);
-    v17 = [v6 aceId];
-    [v16 setRefId:v17];
+    aceId = [commandCopy aceId];
+    [v16 setRefId:aceId];
 
-    v7[2](v7, v16);
+    completionCopy[2](completionCopy, v16);
   }
 }
 
-- (void)_performAceCommands:(id)a3
+- (void)_performAceCommands:(id)commands
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  commandsCopy = commands;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [commandsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -5340,26 +5340,26 @@ void __78__AFUISiriSession__performAceCommand_forRequestUpdateViewsCommand_after
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(commandsCopy);
         }
 
         [(AFUISiriSession *)self performAceCommand:*(*(&v9 + 1) + 8 * v8++) turnIdentifier:0 machAbsoluteTime:mach_absolute_time()];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [commandsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_performAceCommand:(id)a3 turnIdentifier:(id)a4 machAbsoluteTime:(double)a5 conflictHandler:(id)a6
+- (void)_performAceCommand:(id)command turnIdentifier:(id)identifier machAbsoluteTime:(double)time conflictHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  commandCopy = command;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (SRUIFShouldInstrumentLaunchContextForAceCommand())
   {
     v13 = SRUIFConstructLaunchContextForLaunchStarted();
@@ -5368,7 +5368,7 @@ void __78__AFUISiriSession__performAceCommand_forRequestUpdateViewsCommand_after
     v30[2] = __86__AFUISiriSession__performAceCommand_turnIdentifier_machAbsoluteTime_conflictHandler___block_invoke;
     v30[3] = &unk_278CD5C58;
     v31 = v13;
-    v32 = a5;
+    timeCopy = time;
     v14 = v13;
     [(AFUISiriSession *)self _performBlockWithDelegate:v30];
   }
@@ -5379,8 +5379,8 @@ void __78__AFUISiriSession__performAceCommand_forRequestUpdateViewsCommand_after
     v28 = 0u;
     v29 = 0u;
     v27 = 0u;
-    v15 = [v10 commands];
-    v16 = [v15 countByEnumeratingWithState:&v26 objects:v37 count:16];
+    commands = [commandCopy commands];
+    v16 = [commands countByEnumeratingWithState:&v26 objects:v37 count:16];
     if (v16)
     {
       v17 = v16;
@@ -5391,7 +5391,7 @@ void __78__AFUISiriSession__performAceCommand_forRequestUpdateViewsCommand_after
         {
           if (*v27 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(commands);
           }
 
           objc_opt_class();
@@ -5402,7 +5402,7 @@ void __78__AFUISiriSession__performAceCommand_forRequestUpdateViewsCommand_after
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v26 objects:v37 count:16];
+        v17 = [commands countByEnumeratingWithState:&v26 objects:v37 count:16];
         if (v17)
         {
           continue;
@@ -5424,9 +5424,9 @@ LABEL_16:
     }
   }
 
-  if ([(AFUISiriSession *)self _aceObjectExpectsTurnIdentifierWhenSendingCommand:v10])
+  if ([(AFUISiriSession *)self _aceObjectExpectsTurnIdentifierWhenSendingCommand:commandCopy])
   {
-    if (!v11)
+    if (!identifierCopy)
     {
       v20 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
@@ -5435,11 +5435,11 @@ LABEL_16:
       }
 
 LABEL_25:
-      v11 = 0;
+      identifierCopy = 0;
     }
   }
 
-  else if (v11)
+  else if (identifierCopy)
   {
     v21 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -5457,22 +5457,22 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v25 = [(AFUISiriSession *)self _connection];
-  [v25 sendGenericAceCommand:v10 turnIdentifier:v11 conflictHandler:v12];
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection sendGenericAceCommand:commandCopy turnIdentifier:identifierCopy conflictHandler:handlerCopy];
 }
 
-- (BOOL)_aceObjectExpectsTurnIdentifierWhenSendingCommand:(id)a3
+- (BOOL)_aceObjectExpectsTurnIdentifierWhenSendingCommand:(id)command
 {
-  v3 = a3;
+  commandCopy = command;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)siriUIDidPresentDynamicSnippetWithInfo:(id)a3
+- (void)siriUIDidPresentDynamicSnippetWithInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   if (siriUIDidPresentDynamicSnippetWithInfo__onceToken != -1)
   {
     [AFUISiriSession siriUIDidPresentDynamicSnippetWithInfo:];
@@ -5498,17 +5498,17 @@ LABEL_25:
 
     v5 = v4;
     _Block_object_dispose(&v11, 8);
-    v6 = [v4 siriServiceStream];
-    v7 = [v6 name];
+    siriServiceStream = [v4 siriServiceStream];
+    name = [siriServiceStream name];
   }
 
   else
   {
-    v7 = 0;
+    name = 0;
   }
 
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v8 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   AFRecordCoreDuetEventWithStream();
 }
 
@@ -5541,7 +5541,7 @@ uint64_t __58__AFUISiriSession_siriUIDidPresentDynamicSnippetWithInfo___block_in
   [(AFUISiriSession *)self endForReason:0];
 }
 
-- (void)endForReason:(int64_t)a3
+- (void)endForReason:(int64_t)reason
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
@@ -5550,25 +5550,25 @@ uint64_t __58__AFUISiriSession_siriUIDidPresentDynamicSnippetWithInfo___block_in
     v8 = 136315394;
     v9 = "[AFUISiriSession endForReason:]";
     v10 = 2048;
-    v11 = a3;
+    reasonCopy = reason;
     _os_log_impl(&dword_241432000, v5, OS_LOG_TYPE_DEFAULT, "%s reason %zd", &v8, 0x16u);
   }
 
-  v6 = [(AFUISiriSession *)self localDelegate];
-  [v6 siriSessionWillEnd:self];
+  localDelegate = [(AFUISiriSession *)self localDelegate];
+  [localDelegate siriSessionWillEnd:self];
 
   [(SRUIFStateFeedbackManager *)self->_stateFeedbackManager siriSessionDidEnd];
   [(SRUIFSpeechRequestHandler *)self->_speechRequestHandler discardCurrentSpeechGroup];
   if ([(AFUISiriSession *)self _isContinuousConversationAvailable])
   {
-    [(SRUIFUIBridgeClient *)self->_uiBridgeClient endForReason:a3];
+    [(SRUIFUIBridgeClient *)self->_uiBridgeClient endForReason:reason];
   }
 
   [(SRUIFAudioPowerLevelUpdater *)self->_audioPowerLevelUpdater invalidate];
-  [(AFUISiriSession *)self _discardConnectionForReason:a3];
+  [(AFUISiriSession *)self _discardConnectionForReason:reason];
   [(AFSiriClientStateManager *)self->_clientStateManager invalidateClient:self];
-  v7 = [(AFUISiriSession *)self localDelegate];
-  [v7 siriSessionDidEnd:self];
+  localDelegate2 = [(AFUISiriSession *)self localDelegate];
+  [localDelegate2 siriSessionDidEnd:self];
 }
 
 - (void)stopAttending
@@ -5583,36 +5583,36 @@ uint64_t __58__AFUISiriSession_siriUIDidPresentDynamicSnippetWithInfo___block_in
 
 - (void)invalidateConnection
 {
-  v3 = [(AFUISiriSession *)self _connection];
-  [v3 didDismissUI];
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection didDismissUI];
 
   [(AFUISiriSession *)self _invalidateConnectionForReason:0];
 }
 
-- (void)_invalidateConnectionForReason:(int64_t)a3
+- (void)_invalidateConnectionForReason:(int64_t)reason
 {
-  v5 = [(AFUISiriSession *)self _connection];
-  [v5 cancelRequestForReason:a3];
+  _connection = [(AFUISiriSession *)self _connection];
+  [_connection cancelRequestForReason:reason];
 
-  v6 = [(AFUISiriSession *)self _connection];
-  [v6 endSession];
+  _connection2 = [(AFUISiriSession *)self _connection];
+  [_connection2 endSession];
 
-  v7 = [(AFUISiriSession *)self _connection];
-  [v7 invalidate];
+  _connection3 = [(AFUISiriSession *)self _connection];
+  [_connection3 invalidate];
 
-  v8 = [(AFUISiriSession *)self _connection];
-  [v8 setSpeechDelegate:0];
+  _connection4 = [(AFUISiriSession *)self _connection];
+  [_connection4 setSpeechDelegate:0];
 
-  v9 = [(AFUISiriSession *)self _connection];
-  [v9 setDelegate:0];
+  _connection5 = [(AFUISiriSession *)self _connection];
+  [_connection5 setDelegate:0];
 
   connection = self->_connection;
   self->_connection = 0;
 }
 
-- (void)_discardConnectionForReason:(int64_t)a3
+- (void)_discardConnectionForReason:(int64_t)reason
 {
-  [(AFUISiriSession *)self _invalidateConnectionForReason:a3];
+  [(AFUISiriSession *)self _invalidateConnectionForReason:reason];
   uiBridgeClient = self->_uiBridgeClient;
   self->_uiBridgeClient = 0;
 
@@ -5620,9 +5620,9 @@ uint64_t __58__AFUISiriSession_siriUIDidPresentDynamicSnippetWithInfo___block_in
   self->_audioPowerLevelUpdater = 0;
 }
 
-- (void)_updateActiveAccount:(id)a3
+- (void)_updateActiveAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   objc_initWeak(&location, self);
   settingsConnection = self->_settingsConnection;
   v7[0] = MEMORY[0x277D85DD0];
@@ -5630,7 +5630,7 @@ uint64_t __58__AFUISiriSession_siriUIDidPresentDynamicSnippetWithInfo___block_in
   v7[2] = __40__AFUISiriSession__updateActiveAccount___block_invoke;
   v7[3] = &unk_278CD6020;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = accountCopy;
   v8 = v6;
   [(AFSettingsConnection *)settingsConnection fetchAccountsWithCompletion:v7];
 
@@ -5660,12 +5660,12 @@ void __40__AFUISiriSession__updateActiveAccount___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)_updateActiveAccount:(id)a3 withNumberOfActiveAccounts:(unint64_t)a4
+- (void)_updateActiveAccount:(id)account withNumberOfActiveAccounts:(unint64_t)accounts
 {
-  v6 = [(SRUIFSiriSessionInfo *)self->_siriSessionInfo setActiveAccountAndGenerateLightweightInfo:a3];
+  v6 = [(SRUIFSiriSessionInfo *)self->_siriSessionInfo setActiveAccountAndGenerateLightweightInfo:account];
   if (v6)
   {
-    v7 = [(SRUIFSiriSessionInfo *)self->_siriSessionInfo setUserAccountCountGenerateLightweightInfo:a4];
+    v7 = [(SRUIFSiriSessionInfo *)self->_siriSessionInfo setUserAccountCountGenerateLightweightInfo:accounts];
     WeakRetained = objc_loadWeakRetained(&self->_localDelegate);
     v9 = objc_opt_respondsToSelector();
 
@@ -5687,21 +5687,21 @@ void __40__AFUISiriSession__updateActiveAccount___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)_updateModesHeuristicsForRequestOptions:(id)a3
+- (void)_updateModesHeuristicsForRequestOptions:(id)options
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   if (_os_feature_enabled_impl())
   {
-    v5 = 0;
+    isForBluetoothCar = 0;
   }
 
   else
   {
-    v5 = [v4 isForBluetoothCar];
+    isForBluetoothCar = [optionsCopy isForBluetoothCar];
   }
 
-  v6 = ([v4 currentLockState] & 2) == 0;
+  v6 = ([optionsCopy currentLockState] & 2) == 0;
   modesConfiguration = self->_modesConfiguration;
   if (modesConfiguration)
   {
@@ -5710,8 +5710,8 @@ void __40__AFUISiriSession__updateActiveAccount___block_invoke(uint64_t a1, void
     v18[2] = __59__AFUISiriSession__updateModesHeuristicsForRequestOptions___block_invoke_232;
     v18[3] = &unk_278CD6048;
     v8 = &v19;
-    v19 = v4;
-    v20 = v5;
+    v19 = optionsCopy;
+    v20 = isForBluetoothCar;
     v21 = v6;
     v22 = 0;
     v9 = [(AFModesConfiguration *)modesConfiguration mutatedCopyWithMutator:v18];
@@ -5740,8 +5740,8 @@ LABEL_9:
     v23[2] = __59__AFUISiriSession__updateModesHeuristicsForRequestOptions___block_invoke;
     v23[3] = &unk_278CD6048;
     v8 = &v24;
-    v24 = v4;
-    v25 = v5;
+    v24 = optionsCopy;
+    v25 = isForBluetoothCar;
     v26 = v6;
     v27 = 0;
     v15 = [v14 newWithBuilder:v23];
@@ -5841,57 +5841,57 @@ void __59__AFUISiriSession__updateModesHeuristicsForRequestOptions___block_invok
   [v7 setIsUserEngagedWithDevice:v6];
 }
 
-- (id)_invocationEventForRequestOptions:(id)a3 localDataSource:(id)a4
+- (id)_invocationEventForRequestOptions:(id)options localDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  sourceCopy = source;
   v8 = objc_alloc_init(MEMORY[0x277D5A928]);
-  v9 = [v6 speechRequestOptions];
-  if ([v9 activationEvent] == 15)
+  speechRequestOptions = [optionsCopy speechRequestOptions];
+  if ([speechRequestOptions activationEvent] == 15)
   {
     v10 = 21;
   }
 
   else
   {
-    v11 = [v9 voiceTriggerEventInfo];
-    if (v11 && (v12 = v11, [v9 voiceTriggerEventInfo], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "objectForKey:", @"triggeredPhraseId"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "unsignedLongValue"), v14, v13, v12, v15 == 1))
+    voiceTriggerEventInfo = [speechRequestOptions voiceTriggerEventInfo];
+    if (voiceTriggerEventInfo && (v12 = voiceTriggerEventInfo, [speechRequestOptions voiceTriggerEventInfo], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "objectForKey:", @"triggeredPhraseId"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "unsignedLongValue"), v14, v13, v12, v15 == 1))
     {
       v10 = 80;
     }
 
     else
     {
-      v10 = -[AFUISiriSession _mapInvocationSource:](self, "_mapInvocationSource:", [v6 requestSource]);
+      v10 = -[AFUISiriSession _mapInvocationSource:](self, "_mapInvocationSource:", [optionsCopy requestSource]);
     }
   }
 
   [v8 setInvocationSource:v10];
-  [v8 setIsDeviceLocked:{objc_msgSend(v7, "lockStateForSiriSession:", self) != 0}];
-  if (![v6 isForStark])
+  [v8 setIsDeviceLocked:{objc_msgSend(sourceCopy, "lockStateForSiriSession:", self) != 0}];
+  if (![optionsCopy isForStark])
   {
-    if ([v6 tvRemoteType])
+    if ([optionsCopy tvRemoteType])
     {
-      v22 = -[AFUISiriSession _invocationContextFromTVRemoteType:](self, "_invocationContextFromTVRemoteType:", [v6 tvRemoteType]);
+      v22 = -[AFUISiriSession _invocationContextFromTVRemoteType:](self, "_invocationContextFromTVRemoteType:", [optionsCopy tvRemoteType]);
       [v8 setTvRemoteInvocationContext:v22];
     }
 
     else
     {
-      if ([v6 isForBluetoothCar])
+      if ([optionsCopy isForBluetoothCar])
       {
         [(AFUISiriSession *)self _populateInvocationEventWithBluetoothCarInvocationContext:v8];
         goto LABEL_18;
       }
 
-      if ([v6 isTypeToSiriRequest])
+      if ([optionsCopy isTypeToSiriRequest])
       {
         [(AFUISiriSession *)self _populateInvocationEventWithTypeToSiriInvocationContext:v8];
         goto LABEL_18;
       }
 
       v22 = objc_alloc_init(MEMORY[0x277D5A8D0]);
-      v24 = [v6 longPressBehavior] + 1;
+      v24 = [optionsCopy longPressBehavior] + 1;
       if (v24 < 3)
       {
         v25 = (v24 + 1);
@@ -5910,20 +5910,20 @@ void __59__AFUISiriSession__updateModesHeuristicsForRequestOptions___block_invok
   }
 
   v16 = objc_alloc_init(MEMORY[0x277D5A7E8]);
-  v17 = [v6 requestInfo];
-  v18 = [v17 activationEvent];
+  requestInfo = [optionsCopy requestInfo];
+  activationEvent = [requestInfo activationEvent];
 
-  if (v18 == 2)
+  if (activationEvent == 2)
   {
-    v19 = [v6 directActionEvent];
-    v20 = [v6 appBundleIdentifier];
-    [(AFUISiriSession *)self _updateCarPlayInvocationContext:v16 fromDirectActionEvent:v19 appBundleIdentifier:v20];
+    directActionEvent = [optionsCopy directActionEvent];
+    appBundleIdentifier = [optionsCopy appBundleIdentifier];
+    [(AFUISiriSession *)self _updateCarPlayInvocationContext:v16 fromDirectActionEvent:directActionEvent appBundleIdentifier:appBundleIdentifier];
   }
 
-  [v7 carPlayEnhancedVoiceTriggerModeForSiriSession:self];
+  [sourceCopy carPlayEnhancedVoiceTriggerModeForSiriSession:self];
   [v16 setEnhancedVoiceTriggerMode:SASCarPlayEnhancedVoiceTriggerModeToSISchemaEnhancedVoiceTriggerMode()];
-  v21 = [MEMORY[0x277D551B0] sharedSystemState];
-  [v21 carPlayTransportType];
+  mEMORY[0x277D551B0] = [MEMORY[0x277D551B0] sharedSystemState];
+  [mEMORY[0x277D551B0] carPlayTransportType];
 
   [v16 setCarPlayConnection:SASCarPlayTransportTypeToSISchemaCarPlayConnection()];
   [v8 setCarPlayInvocationContext:v16];
@@ -5933,33 +5933,33 @@ LABEL_18:
   return v8;
 }
 
-- (int64_t)_mapSuggestionRequestType:(int64_t)a3
+- (int64_t)_mapSuggestionRequestType:(int64_t)type
 {
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-- (void)_populateInvocationEventWithBluetoothCarInvocationContext:(id)a3
+- (void)_populateInvocationEventWithBluetoothCarInvocationContext:(id)context
 {
   v3 = MEMORY[0x277D5A7C8];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(v3);
-  v6 = [MEMORY[0x277CEF368] sharedPreferences];
-  v7 = [v6 bluetoothPreferredCarAudioRoute];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  bluetoothPreferredCarAudioRoute = [mEMORY[0x277CEF368] bluetoothPreferredCarAudioRoute];
 
-  if ([v7 isEqualToString:@"A2DP"])
+  if ([bluetoothPreferredCarAudioRoute isEqualToString:@"A2DP"])
   {
     v8 = 1;
   }
 
-  else if ([v7 isEqualToString:@"DeviceSpeaker"])
+  else if ([bluetoothPreferredCarAudioRoute isEqualToString:@"DeviceSpeaker"])
   {
     v8 = 2;
   }
@@ -5976,13 +5976,13 @@ LABEL_18:
   }
 
   [v5 setRoute:v8];
-  [v4 setBluetoothCarInvocationContext:v5];
+  [contextCopy setBluetoothCarInvocationContext:v5];
 }
 
-- (void)_populateInvocationEventWithTypeToSiriInvocationContext:(id)a3
+- (void)_populateInvocationEventWithTypeToSiriInvocationContext:(id)context
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(MEMORY[0x277D5AA80]);
   WeakRetained = objc_loadWeakRetained(&self->_localDataSource);
   v7 = [WeakRetained contextAppInfosForSiriSession:self];
@@ -5991,18 +5991,18 @@ LABEL_18:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = [v7 reverseObjectEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  reverseObjectEnumerator = [v7 reverseObjectEnumerator];
+  v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (!v9)
   {
-    v24 = v8;
+    identifier3 = reverseObjectEnumerator;
     goto LABEL_18;
   }
 
   v10 = v9;
   v26 = v7;
   v27 = v5;
-  v28 = v4;
+  v28 = contextCopy;
   v11 = *v31;
   v12 = @"com.apple.chrono.WidgetRenderer-Default";
   v13 = @"com.apple.siri.IntelligentLight";
@@ -6012,18 +6012,18 @@ LABEL_3:
   {
     if (*v31 != v11)
     {
-      objc_enumerationMutation(v8);
+      objc_enumerationMutation(reverseObjectEnumerator);
     }
 
     v15 = *(*(&v30 + 1) + 8 * v14);
-    v16 = [v15 identifier];
-    if ([v16 isEqualToString:v12])
+    identifier = [v15 identifier];
+    if ([identifier isEqualToString:v12])
     {
       goto LABEL_9;
     }
 
-    v17 = [v15 identifier];
-    if (![v17 isEqualToString:v13])
+    identifier2 = [v15 identifier];
+    if (![identifier2 isEqualToString:v13])
     {
       break;
     }
@@ -6032,15 +6032,15 @@ LABEL_9:
 LABEL_11:
     if (v10 == ++v14)
     {
-      v10 = [v8 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v30 objects:v38 count:16];
       if (v10)
       {
         goto LABEL_3;
       }
 
-      v24 = v8;
+      identifier3 = reverseObjectEnumerator;
       v5 = v27;
-      v4 = v28;
+      contextCopy = v28;
       v7 = v26;
       goto LABEL_18;
     }
@@ -6050,12 +6050,12 @@ LABEL_11:
   v18 = v10;
   v19 = v11;
   v20 = v12;
-  v21 = v8;
+  v21 = reverseObjectEnumerator;
   v23 = v22 = v13;
   v29 = [v23 isEqualToString:@"com.apple.siri"];
 
   v13 = v22;
-  v8 = v21;
+  reverseObjectEnumerator = v21;
   v12 = v20;
   v11 = v19;
   v10 = v18;
@@ -6065,53 +6065,53 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v24 = [v15 identifier];
+  identifier3 = [v15 identifier];
 
   v5 = v27;
-  v4 = v28;
+  contextCopy = v28;
   v7 = v26;
-  if (!v24)
+  if (!identifier3)
   {
     goto LABEL_19;
   }
 
-  [v27 setBackgroundAppBundleId:v24];
+  [v27 setBackgroundAppBundleId:identifier3];
   v25 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v35 = "[AFUISiriSession _populateInvocationEventWithTypeToSiriInvocationContext:]";
     v36 = 2112;
-    v37 = v24;
+    v37 = identifier3;
     _os_log_impl(&dword_241432000, v25, OS_LOG_TYPE_DEFAULT, "%s #TypeToSiriInvocationContextSender The current backgroundAppBundleId is: %@", buf, 0x16u);
   }
 
 LABEL_18:
 
 LABEL_19:
-  [v4 setTypeToSiriContext:v5];
+  [contextCopy setTypeToSiriContext:v5];
 }
 
-- (int)_mapInvocationSource:(int64_t)a3
+- (int)_mapInvocationSource:(int64_t)source
 {
-  if ((a3 - 1) > 0x3B)
+  if ((source - 1) > 0x3B)
   {
     return 0;
   }
 
   else
   {
-    return dword_2414945E8[a3 - 1];
+    return dword_2414945E8[source - 1];
   }
 }
 
-- (void)_updateCarPlayInvocationContext:(id)a3 fromDirectActionEvent:(int64_t)a4 appBundleIdentifier:(id)a5
+- (void)_updateCarPlayInvocationContext:(id)context fromDirectActionEvent:(int64_t)event appBundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = a4 - 2;
-  if (a4 - 2) < 0x11 && ((0x1E83Du >> v9))
+  contextCopy = context;
+  identifierCopy = identifier;
+  v9 = event - 2;
+  if (event - 2) < 0x11 && ((0x1E83Du >> v9))
   {
     v10 = dword_2414946D8[v9];
   }
@@ -6126,28 +6126,28 @@ LABEL_19:
       v13 = 136315394;
       v14 = "[AFUISiriSession _updateCarPlayInvocationContext:fromDirectActionEvent:appBundleIdentifier:]";
       v15 = 2048;
-      v16 = a4;
+      eventCopy = event;
       _os_log_impl(&dword_241432000, v11, OS_LOG_TYPE_DEFAULT, "%s Unhandled direct action event: %li", &v13, 0x16u);
       v10 = 0;
     }
   }
 
-  [v7 setDirectAction:v10];
-  [v7 setBundleID:v8];
+  [contextCopy setDirectAction:v10];
+  [contextCopy setBundleID:identifierCopy];
 }
 
-- (id)_invocationContextFromTVRemoteType:(unint64_t)a3
+- (id)_invocationContextFromTVRemoteType:(unint64_t)type
 {
   v4 = objc_alloc_init(MEMORY[0x277D5AA48]);
   v5 = v4;
-  if (a3 - 1 > 5)
+  if (type - 1 > 5)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = dword_24149471C[a3 - 1];
+    v6 = dword_24149471C[type - 1];
   }
 
   [v4 setRemoteType:v6];
@@ -6155,17 +6155,17 @@ LABEL_19:
   return v5;
 }
 
-- (id)_tamaleDirectActionRequestWithText:(id)a3
+- (id)_tamaleDirectActionRequestWithText:(id)text
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  textCopy = text;
   v4 = [objc_alloc(MEMORY[0x277D5C220]) initWithIdentifier:@"com.apple.siri.ifflow.ajaxMedia"];
-  if (v3)
+  if (textCopy)
   {
-    if ([v3 length])
+    if ([textCopy length])
     {
       v15 = @"utterance";
-      v16[0] = v3;
+      v16[0] = textCopy;
       v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
       [v4 setUserData:v5];
 
@@ -6175,7 +6175,7 @@ LABEL_19:
         v11 = 136315394;
         v12 = "[AFUISiriSession _tamaleDirectActionRequestWithText:]";
         v13 = 2112;
-        v14 = v3;
+        v14 = textCopy;
         _os_log_impl(&dword_241432000, v6, OS_LOG_TYPE_DEFAULT, "%s Visual Intelligence direct invocation with text utterance: %@", &v11, 0x16u);
       }
     }
@@ -6188,31 +6188,31 @@ LABEL_19:
   return v9;
 }
 
-- (void)_startVisualIntelligenceDirectInvocationRequestWith:(id)a3 completion:(id)a4
+- (void)_startVisualIntelligenceDirectInvocationRequestWith:(id)with completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  completionCopy = completion;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[AFUISiriSession _startVisualIntelligenceDirectInvocationRequestWith:completion:]";
     v12 = 2112;
-    v13 = v6;
+    v13 = withCopy;
     _os_log_impl(&dword_241432000, v8, OS_LOG_TYPE_DEFAULT, "%s startQuickTypeTamaleRequest turnId:%@", &v10, 0x16u);
   }
 
-  v9 = [(AFUISiriSession *)self _tamaleDirectActionRequest];
-  [(AFUISiriSession *)self _startDirectRequestWith:v9 turnIdentifier:v6 completion:v7];
+  _tamaleDirectActionRequest = [(AFUISiriSession *)self _tamaleDirectActionRequest];
+  [(AFUISiriSession *)self _startDirectRequestWith:_tamaleDirectActionRequest turnIdentifier:withCopy completion:completionCopy];
 }
 
-- (void)_startVisualIntelligenceDirectInvocationRequestWithText:(id)a3 turnIdentifier:(id)a4 completion:(id)a5
+- (void)_startVisualIntelligenceDirectInvocationRequestWithText:(id)text turnIdentifier:(id)identifier completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  identifierCopy = identifier;
+  completionCopy = completion;
   [(AFUISiriSession *)self _startTypeToSiriLatencyTimer];
   v11 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -6220,26 +6220,26 @@ LABEL_19:
     v13 = 136315650;
     v14 = "[AFUISiriSession _startVisualIntelligenceDirectInvocationRequestWithText:turnIdentifier:completion:]";
     v15 = 2112;
-    v16 = v8;
+    v16 = textCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = identifierCopy;
     _os_log_impl(&dword_241432000, v11, OS_LOG_TYPE_DEFAULT, "%s startVisualIntelligenceTextRequest with text: %@ turnId:%@", &v13, 0x20u);
   }
 
-  v12 = [(AFUISiriSession *)self _tamaleDirectActionRequestWithText:v8];
-  [(AFUISiriSession *)self _startDirectRequestWith:v12 turnIdentifier:v9 completion:v10];
+  v12 = [(AFUISiriSession *)self _tamaleDirectActionRequestWithText:textCopy];
+  [(AFUISiriSession *)self _startDirectRequestWith:v12 turnIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (id)_photoPickerDirectActionRequestWith:(id)a3 assetIdentifiers:(id)a4
+- (id)_photoPickerDirectActionRequestWith:(id)with assetIdentifiers:(id)identifiers
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D5C220];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithIdentifier:v7];
+  identifiersCopy = identifiers;
+  withCopy = with;
+  v8 = [[v5 alloc] initWithIdentifier:withCopy];
 
   v14 = @"assetIdentifiers";
-  v15[0] = v6;
+  v15[0] = identifiersCopy;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   [v8 setUserData:v9];
 
@@ -6250,20 +6250,20 @@ LABEL_19:
   return v12;
 }
 
-- (void)_handlePhotoPickerRequest:(id)a3 completion:(id)a4
+- (void)_handlePhotoPickerRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   delegate = self->_delegate;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__AFUISiriSession__handlePhotoPickerRequest_completion___block_invoke;
   v11[3] = &unk_278CD6070;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = requestCopy;
+  v9 = requestCopy;
+  v10 = completionCopy;
   [(AFUISiriSessionDelegate *)delegate siriSessionRequestedPhotoSelectionWithPhotoPickerRequest:v9 completion:v11];
 }
 
@@ -6331,23 +6331,23 @@ void __56__AFUISiriSession__handlePhotoPickerRequest_completion___block_invoke_2
   }
 }
 
-- (void)_startDirectRequestWith:(id)a3 turnIdentifier:(id)a4 completion:(id)a5
+- (void)_startDirectRequestWith:(id)with turnIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  withCopy = with;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__AFUISiriSession__startDirectRequestWith_turnIdentifier_completion___block_invoke;
   block[3] = &unk_278CD5E68;
   objc_copyWeak(&v18, &location);
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = withCopy;
+  v16 = identifierCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = identifierCopy;
+  v13 = withCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v18);

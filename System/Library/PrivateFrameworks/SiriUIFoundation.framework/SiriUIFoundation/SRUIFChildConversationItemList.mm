@@ -1,33 +1,33 @@
 @interface SRUIFChildConversationItemList
-- (BOOL)itemIsRestoredAtIndex:(int64_t)a3;
-- (SRUIFChildConversationItemList)initWithConversation:(id)a3 parentItemIdentifier:(id)a4;
-- (id)_identifierOfItemAtIndex:(int64_t)a3;
-- (id)_indexPathForItemAtIndex:(int64_t)a3;
+- (BOOL)itemIsRestoredAtIndex:(int64_t)index;
+- (SRUIFChildConversationItemList)initWithConversation:(id)conversation parentItemIdentifier:(id)identifier;
+- (id)_identifierOfItemAtIndex:(int64_t)index;
+- (id)_indexPathForItemAtIndex:(int64_t)index;
 - (id)_indexPathForLastRestoredItem;
-- (id)identifiersForItemsAtIndexes:(id)a3;
-- (id)itemAtIndex:(int64_t)a3;
-- (id)itemWithIdentifier:(id)a3;
+- (id)identifiersForItemsAtIndexes:(id)indexes;
+- (id)itemAtIndex:(int64_t)index;
+- (id)itemWithIdentifier:(id)identifier;
 - (int64_t)numberOfItems;
-- (void)_addItemsForAceObjects:(id)a3 type:(int64_t)a4 dialogPhase:(id)a5 asChildrenOfItemWithIdentifier:(id)a6;
-- (void)addItemsForAceObjects:(id)a3 type:(int64_t)a4 dialogPhase:(id)a5 asChildrenOfItemAtIndex:(int64_t)a6;
-- (void)removeItemsAtIndexes:(id)a3;
-- (void)removeItemsWithIdentifiers:(id)a3;
+- (void)_addItemsForAceObjects:(id)objects type:(int64_t)type dialogPhase:(id)phase asChildrenOfItemWithIdentifier:(id)identifier;
+- (void)addItemsForAceObjects:(id)objects type:(int64_t)type dialogPhase:(id)phase asChildrenOfItemAtIndex:(int64_t)index;
+- (void)removeItemsAtIndexes:(id)indexes;
+- (void)removeItemsWithIdentifiers:(id)identifiers;
 @end
 
 @implementation SRUIFChildConversationItemList
 
-- (SRUIFChildConversationItemList)initWithConversation:(id)a3 parentItemIdentifier:(id)a4
+- (SRUIFChildConversationItemList)initWithConversation:(id)conversation parentItemIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  conversationCopy = conversation;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = SRUIFChildConversationItemList;
   v9 = [(SRUIFChildConversationItemList *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_conversation, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_conversation, conversation);
+    v11 = [identifierCopy copy];
     parentItemIdentifier = v10->_parentItemIdentifier;
     v10->_parentItemIdentifier = v11;
   }
@@ -37,50 +37,50 @@
 
 - (int64_t)numberOfItems
 {
-  v3 = [(SRUIFChildConversationItemList *)self _conversation];
-  v4 = [(SRUIFChildConversationItemList *)self _parentItemIdentifier];
-  v5 = [v3 numberOfChildrenForItemWithIdentifier:v4];
+  _conversation = [(SRUIFChildConversationItemList *)self _conversation];
+  _parentItemIdentifier = [(SRUIFChildConversationItemList *)self _parentItemIdentifier];
+  v5 = [_conversation numberOfChildrenForItemWithIdentifier:_parentItemIdentifier];
 
   return v5;
 }
 
-- (id)itemAtIndex:(int64_t)a3
+- (id)itemAtIndex:(int64_t)index
 {
-  v5 = [(SRUIFChildConversationItemList *)self _conversation];
-  v6 = [(SRUIFChildConversationItemList *)self _indexPathForItemAtIndex:a3];
-  v7 = [v5 itemAtIndexPath:v6];
+  _conversation = [(SRUIFChildConversationItemList *)self _conversation];
+  v6 = [(SRUIFChildConversationItemList *)self _indexPathForItemAtIndex:index];
+  v7 = [_conversation itemAtIndexPath:v6];
 
   return v7;
 }
 
-- (id)itemWithIdentifier:(id)a3
+- (id)itemWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SRUIFChildConversationItemList *)self _conversation];
-  v6 = [v5 itemWithIdentifier:v4];
+  identifierCopy = identifier;
+  _conversation = [(SRUIFChildConversationItemList *)self _conversation];
+  v6 = [_conversation itemWithIdentifier:identifierCopy];
 
-  v7 = [v6 identifier];
-  v8 = [v5 parentOfItemWithIdentifier:v7];
+  identifier = [v6 identifier];
+  v8 = [_conversation parentOfItemWithIdentifier:identifier];
 
-  v9 = [v8 identifier];
-  v10 = [(SRUIFChildConversationItemList *)self _parentItemIdentifier];
-  v11 = v10;
-  if (v9 == v10)
+  identifier2 = [v8 identifier];
+  _parentItemIdentifier = [(SRUIFChildConversationItemList *)self _parentItemIdentifier];
+  v11 = _parentItemIdentifier;
+  if (identifier2 == _parentItemIdentifier)
   {
   }
 
   else
   {
-    v12 = [v8 identifier];
-    v13 = [(SRUIFChildConversationItemList *)self _parentItemIdentifier];
-    v14 = [v12 isEqual:v13];
+    identifier3 = [v8 identifier];
+    _parentItemIdentifier2 = [(SRUIFChildConversationItemList *)self _parentItemIdentifier];
+    v14 = [identifier3 isEqual:_parentItemIdentifier2];
 
     if (v14)
     {
       goto LABEL_6;
     }
 
-    v9 = v6;
+    identifier2 = v6;
     v6 = 0;
   }
 
@@ -89,27 +89,27 @@ LABEL_6:
   return v6;
 }
 
-- (void)addItemsForAceObjects:(id)a3 type:(int64_t)a4 dialogPhase:(id)a5 asChildrenOfItemAtIndex:(int64_t)a6
+- (void)addItemsForAceObjects:(id)objects type:(int64_t)type dialogPhase:(id)phase asChildrenOfItemAtIndex:(int64_t)index
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [(SRUIFChildConversationItemList *)self _identifierOfItemAtIndex:a6];
-  [(SRUIFChildConversationItemList *)self _addItemsForAceObjects:v11 type:a4 dialogPhase:v10 asChildrenOfItemWithIdentifier:v12];
+  phaseCopy = phase;
+  objectsCopy = objects;
+  v12 = [(SRUIFChildConversationItemList *)self _identifierOfItemAtIndex:index];
+  [(SRUIFChildConversationItemList *)self _addItemsForAceObjects:objectsCopy type:type dialogPhase:phaseCopy asChildrenOfItemWithIdentifier:v12];
 }
 
-- (id)identifiersForItemsAtIndexes:(id)a3
+- (id)identifiersForItemsAtIndexes:(id)indexes
 {
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
-  v6 = [v4 setWithCapacity:{objc_msgSend(v5, "count")}];
+  indexesCopy = indexes;
+  v6 = [v4 setWithCapacity:{objc_msgSend(indexesCopy, "count")}];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63__SRUIFChildConversationItemList_identifiersForItemsAtIndexes___block_invoke;
   v10[3] = &unk_279C61940;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v5 enumerateIndexesUsingBlock:v10];
+  selfCopy = self;
+  [indexesCopy enumerateIndexesUsingBlock:v10];
 
   v8 = v7;
   return v7;
@@ -122,19 +122,19 @@ void __63__SRUIFChildConversationItemList_identifiersForItemsAtIndexes___block_i
   [v2 addObject:v3];
 }
 
-- (void)removeItemsAtIndexes:(id)a3
+- (void)removeItemsAtIndexes:(id)indexes
 {
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
-  v6 = [v4 setWithCapacity:{objc_msgSend(v5, "count")}];
+  indexesCopy = indexes;
+  v6 = [v4 setWithCapacity:{objc_msgSend(indexesCopy, "count")}];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __55__SRUIFChildConversationItemList_removeItemsAtIndexes___block_invoke;
   v12 = &unk_279C61940;
   v13 = v6;
-  v14 = self;
+  selfCopy = self;
   v7 = v6;
-  [v5 enumerateIndexesUsingBlock:&v9];
+  [indexesCopy enumerateIndexesUsingBlock:&v9];
 
   v8 = [(SRUIFChildConversationItemList *)self _conversation:v9];
   [v8 removeItemsWithIdentifiers:v7];
@@ -147,19 +147,19 @@ void __55__SRUIFChildConversationItemList_removeItemsAtIndexes___block_invoke(ui
   [v2 addObject:v3];
 }
 
-- (void)removeItemsWithIdentifiers:(id)a3
+- (void)removeItemsWithIdentifiers:(id)identifiers
 {
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
-  v6 = [v4 setWithCapacity:{objc_msgSend(v5, "count")}];
+  identifiersCopy = identifiers;
+  v6 = [v4 setWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __61__SRUIFChildConversationItemList_removeItemsWithIdentifiers___block_invoke;
   v12 = &unk_279C61968;
-  v13 = self;
+  selfCopy = self;
   v14 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:&v9];
+  [identifiersCopy enumerateObjectsUsingBlock:&v9];
 
   v8 = [(SRUIFChildConversationItemList *)self _conversation:v9];
   [v8 removeItemsWithIdentifiers:v7];
@@ -177,13 +177,13 @@ void __61__SRUIFChildConversationItemList_removeItemsWithIdentifiers___block_inv
   }
 }
 
-- (BOOL)itemIsRestoredAtIndex:(int64_t)a3
+- (BOOL)itemIsRestoredAtIndex:(int64_t)index
 {
-  v5 = [(SRUIFChildConversationItemList *)self _indexPathForLastRestoredItem];
-  if (v5)
+  _indexPathForLastRestoredItem = [(SRUIFChildConversationItemList *)self _indexPathForLastRestoredItem];
+  if (_indexPathForLastRestoredItem)
   {
-    v6 = [(SRUIFChildConversationItemList *)self _indexPathForItemAtIndex:a3];
-    v7 = [v6 compare:v5] != 1;
+    v6 = [(SRUIFChildConversationItemList *)self _indexPathForItemAtIndex:index];
+    v7 = [v6 compare:_indexPathForLastRestoredItem] != 1;
   }
 
   else
@@ -194,33 +194,33 @@ void __61__SRUIFChildConversationItemList_removeItemsWithIdentifiers___block_inv
   return v7;
 }
 
-- (id)_identifierOfItemAtIndex:(int64_t)a3
+- (id)_identifierOfItemAtIndex:(int64_t)index
 {
-  v3 = [(SRUIFChildConversationItemList *)self itemAtIndex:a3];
-  v4 = [v3 identifier];
+  v3 = [(SRUIFChildConversationItemList *)self itemAtIndex:index];
+  identifier = [v3 identifier];
 
-  return v4;
+  return identifier;
 }
 
-- (id)_indexPathForItemAtIndex:(int64_t)a3
+- (id)_indexPathForItemAtIndex:(int64_t)index
 {
-  v5 = [(SRUIFChildConversationItemList *)self _conversation];
-  v6 = [(SRUIFChildConversationItemList *)self _parentItemIdentifier];
-  v7 = [v5 indexPathForItemWithIdentifier:v6];
-  v8 = [v7 indexPathByAddingIndex:a3];
+  _conversation = [(SRUIFChildConversationItemList *)self _conversation];
+  _parentItemIdentifier = [(SRUIFChildConversationItemList *)self _parentItemIdentifier];
+  v7 = [_conversation indexPathForItemWithIdentifier:_parentItemIdentifier];
+  v8 = [v7 indexPathByAddingIndex:index];
 
   return v8;
 }
 
 - (id)_indexPathForLastRestoredItem
 {
-  v2 = [(SRUIFChildConversationItemList *)self _conversation];
-  v3 = [v2 lastRestoredItem];
-  v4 = v3;
-  if (v3 && ([v3 identifier], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v2, "hasItemWithIdentifier:", v5), v5, v6))
+  _conversation = [(SRUIFChildConversationItemList *)self _conversation];
+  lastRestoredItem = [_conversation lastRestoredItem];
+  v4 = lastRestoredItem;
+  if (lastRestoredItem && ([lastRestoredItem identifier], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(_conversation, "hasItemWithIdentifier:", v5), v5, v6))
   {
-    v7 = [v4 identifier];
-    v8 = [v2 indexPathForItemWithIdentifier:v7];
+    identifier = [v4 identifier];
+    v8 = [_conversation indexPathForItemWithIdentifier:identifier];
   }
 
   else
@@ -231,13 +231,13 @@ void __61__SRUIFChildConversationItemList_removeItemsWithIdentifiers___block_inv
   return v8;
 }
 
-- (void)_addItemsForAceObjects:(id)a3 type:(int64_t)a4 dialogPhase:(id)a5 asChildrenOfItemWithIdentifier:(id)a6
+- (void)_addItemsForAceObjects:(id)objects type:(int64_t)type dialogPhase:(id)phase asChildrenOfItemWithIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(SRUIFChildConversationItemList *)self _conversation];
-  [v13 addItemsForAceObjects:v12 type:a4 dialogPhase:v11 asChildrenOfItemWithIdentifier:v10];
+  identifierCopy = identifier;
+  phaseCopy = phase;
+  objectsCopy = objects;
+  _conversation = [(SRUIFChildConversationItemList *)self _conversation];
+  [_conversation addItemsForAceObjects:objectsCopy type:type dialogPhase:phaseCopy asChildrenOfItemWithIdentifier:identifierCopy];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface InputPickeriPadPresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
-- (_TtC5AVKit37InputPickeriPadPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (_TtC5AVKit37InputPickeriPadPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (void)backgroundTapHandler;
 - (void)containerViewWillLayoutSubviews;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 @end
 
 @implementation InputPickeriPadPresentationController
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18B50684C();
   v5 = v4;
   v7 = v6;
@@ -34,27 +34,27 @@
   v5.super_class = type metadata accessor for InputPickeriPadPresentationController();
   v2 = v5.receiver;
   [(InputPickeriPadPresentationController *)&v5 containerViewWillLayoutSubviews];
-  v3 = [v2 presentedView];
-  if (v3)
+  presentedView = [v2 presentedView];
+  if (presentedView)
   {
-    v4 = v3;
+    v4 = presentedView;
     [v2 frameOfPresentedViewInContainerView];
     [v4 setFrame_];
   }
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_18B506AA8(a3);
+  selfCopy = self;
+  sub_18B506AA8(container);
   swift_unknownObjectRelease();
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v4 = self;
-  sub_18B506C8C(a3);
+  selfCopy = self;
+  sub_18B506C8C(end);
 }
 
 - (void)backgroundTapHandler
@@ -62,7 +62,7 @@
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC5AVKit37InputPickeriPadPresentationController_dismissHandler);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_18B4A324C(v2);
     v2(v4);
 
@@ -70,7 +70,7 @@
   }
 }
 
-- (_TtC5AVKit37InputPickeriPadPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_TtC5AVKit37InputPickeriPadPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v7 = (&self->super.super.isa + OBJC_IVAR____TtC5AVKit37InputPickeriPadPresentationController_presentedViewPreferredSize);
   *v7 = 0;
@@ -82,7 +82,7 @@
   swift_unknownObjectWeakInit();
   v10.receiver = self;
   v10.super_class = type metadata accessor for InputPickeriPadPresentationController();
-  return [(InputPickeriPadPresentationController *)&v10 initWithPresentedViewController:a3 presentingViewController:a4];
+  return [(InputPickeriPadPresentationController *)&v10 initWithPresentedViewController:controller presentingViewController:viewController];
 }
 
 @end

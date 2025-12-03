@@ -1,15 +1,15 @@
 @interface CNAvatarCardTransition
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation CNAvatarCardTransition
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x1E69DE768]];
-  v7 = [v4 viewControllerForKey:*MEMORY[0x1E69DE778]];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE768]];
+  v7 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
   v172 = v7;
   v173 = v6;
   if ([(CNAvatarCardTransition *)self reversed])
@@ -23,9 +23,9 @@
   }
 
   v9 = v8;
-  v10 = [v9 presentationController];
-  v170 = [v10 sourceViewController];
-  v11 = [v170 _cardViewControllerTransitioning];
+  presentationController = [v9 presentationController];
+  sourceViewController = [presentationController sourceViewController];
+  _cardViewControllerTransitioning = [sourceViewController _cardViewControllerTransitioning];
   if ([(CNAvatarCardTransition *)self reversed])
   {
     v12 = v9;
@@ -33,15 +33,15 @@
 
   else
   {
-    v12 = v11;
+    v12 = _cardViewControllerTransitioning;
   }
 
   v13 = v12;
   v171 = v9;
-  v169 = v11;
+  v169 = _cardViewControllerTransitioning;
   if ([(CNAvatarCardTransition *)self reversed])
   {
-    v14 = v11;
+    v14 = _cardViewControllerTransitioning;
   }
 
   else
@@ -50,21 +50,21 @@
   }
 
   v15 = v14;
-  v16 = [v10 presentedView];
-  v17 = [v10 vibrancyView];
-  [v10 frameOfPresentedViewInContainerView];
+  presentedView = [presentationController presentedView];
+  vibrancyView = [presentationController vibrancyView];
+  [presentationController frameOfPresentedViewInContainerView];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
   if (![(CNAvatarCardTransition *)self reversed])
   {
-    [v5 addSubview:v16];
-    v26 = [v10 dimmingView];
-    [v26 setAlpha:0.0];
+    [containerView addSubview:presentedView];
+    dimmingView = [presentationController dimmingView];
+    [dimmingView setAlpha:0.0];
 
-    [v16 setFrame:{v19, v21, v23, v25}];
-    [v5 layoutIfNeeded];
+    [presentedView setFrame:{v19, v21, v23, v25}];
+    [containerView layoutIfNeeded];
   }
 
   v27 = *MEMORY[0x1E695F058];
@@ -81,12 +81,12 @@
     v31 = 1;
   }
 
-  v165 = v16;
+  v165 = presentedView;
   if (v31)
   {
     if ([(CNAvatarCardTransition *)self reversed])
     {
-      v48 = 0;
+      transitioningImage2 = 0;
       v66 = 0;
       v164 = 0;
       v161 = v29;
@@ -101,36 +101,36 @@
 
     else
     {
-      v69 = [v10 sourceView];
-      [v10 sourceRect];
-      v70 = [v69 resizableSnapshotViewFromRect:0 afterScreenUpdates:? withCapInsets:?];
+      sourceView = [presentationController sourceView];
+      [presentationController sourceRect];
+      v70 = [sourceView resizableSnapshotViewFromRect:0 afterScreenUpdates:? withCapInsets:?];
 
-      [v10 sourceRect];
+      [presentationController sourceRect];
       v72 = v71;
       v73 = v29;
       v75 = v74;
       v76 = v30;
       v78 = v77;
       v80 = v79;
-      v81 = [v10 sourceView];
+      sourceView2 = [presentationController sourceView];
       v82 = v75;
       v29 = v73;
       v83 = v78;
       v30 = v76;
-      [v17 convertRect:v81 fromView:{v72, v82, v83, v80}];
+      [vibrancyView convertRect:sourceView2 fromView:{v72, v82, v83, v80}];
       [v70 setFrame:?];
 
-      v84 = [v15 transitioningView];
+      transitioningView = [v15 transitioningView];
       [v15 transitioningFrame];
-      [v84 convertRect:v17 toView:?];
+      [transitioningView convertRect:vibrancyView toView:?];
       v155 = v85;
       v156 = v86;
       v158 = v87;
       v68 = v88;
 
       v164 = v70;
-      [v17 addSubview:v70];
-      v48 = 0;
+      [vibrancyView addSubview:v70];
+      transitioningImage2 = 0;
       v66 = 0;
       v161 = v73;
       v162 = v76;
@@ -141,7 +141,7 @@
 
   else
   {
-    v32 = [v13 transitioningImage];
+    transitioningImage = [v13 transitioningImage];
     [v13 transitioningImageFrame];
     v34 = v33;
     v174 = v29;
@@ -149,14 +149,14 @@
     v167 = v30;
     v38 = v37;
     v40 = v39;
-    v41 = [v13 transitioningView];
-    [v5 convertRect:v41 fromView:{v34, v36, v38, v40}];
+    transitioningView2 = [v13 transitioningView];
+    [containerView convertRect:transitioningView2 fromView:{v34, v36, v38, v40}];
     v163 = v42;
     v157 = v43;
     v45 = v44;
     v47 = v46;
 
-    v48 = [v15 transitioningImage];
+    transitioningImage2 = [v15 transitioningImage];
     [v15 transitioningImageFrame];
     v50 = v49;
     v52 = v51;
@@ -164,26 +164,26 @@
     v55 = v54;
     v56 = v27;
     v58 = v57;
-    v59 = [v15 transitioningView];
+    transitioningView3 = [v15 transitioningView];
     v60 = v55;
     v28 = v53;
     v29 = v174;
     v61 = v58;
     v27 = v56;
-    [v5 convertRect:v59 fromView:{v50, v52, v60, v61}];
+    [containerView convertRect:transitioningView3 fromView:{v50, v52, v60, v61}];
     v159 = v62;
     v160 = v63;
     v161 = v64;
     v162 = v65;
 
-    v66 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v32];
-    [v5 addSubview:v66];
+    v66 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:transitioningImage];
+    [containerView addSubview:v66];
     v67 = v45;
     v30 = v167;
     [v66 setFrame:{v163, v157, v67, v47}];
     [v13 setTransitioningImageVisible:0];
     [v15 setTransitioningImageVisible:0];
-    [v10 setOriginalTransitioning:v13];
+    [presentationController setOriginalTransitioning:v13];
 
     v164 = 0;
     v68 = v167;
@@ -193,9 +193,9 @@
   }
 
   v168 = v13;
-  v175 = v5;
+  v175 = containerView;
   v153 = v15;
-  v154 = v17;
+  v154 = vibrancyView;
   if ([(CNAvatarCardTransition *)self reversed])
   {
     v89 = 0;
@@ -208,58 +208,58 @@
 
   else
   {
-    v91 = [v15 transitioningView];
+    transitioningView4 = [v15 transitioningView];
     [v15 transitioningContentFrame];
     v93 = v92;
     v95 = v94;
     v97 = v96;
     v147 = v68;
     v99 = v98;
-    v90 = [v91 resizableSnapshotViewFromRect:1 afterScreenUpdates:? withCapInsets:?];
-    [v10 sourceRect];
+    v90 = [transitioningView4 resizableSnapshotViewFromRect:1 afterScreenUpdates:? withCapInsets:?];
+    [presentationController sourceRect];
     v101 = v100;
     v103 = v102;
     v105 = v104;
     v107 = v106;
-    v108 = [v10 sourceView];
-    [v17 convertRect:v108 fromView:{v101, v103, v105, v107}];
+    sourceView3 = [presentationController sourceView];
+    [vibrancyView convertRect:sourceView3 fromView:{v101, v103, v105, v107}];
     [v90 setFrame:?];
 
     [v90 setAlpha:0.0];
-    [v17 convertRect:v91 fromView:{v93, v95, v97, v99}];
+    [vibrancyView convertRect:transitioningView4 fromView:{v93, v95, v97, v99}];
     v149 = v109;
     v150 = v110;
     v151 = v111;
     v152 = v112;
-    [v17 addSubview:v90];
+    [vibrancyView addSubview:v90];
     [v15 transitioningFrame];
     v114 = v113;
     v116 = v115;
     v118 = v117;
     v120 = v119;
-    v89 = [v91 resizableSnapshotViewFromRect:1 afterScreenUpdates:? withCapInsets:?];
-    [v10 sourceRect];
+    v89 = [transitioningView4 resizableSnapshotViewFromRect:1 afterScreenUpdates:? withCapInsets:?];
+    [presentationController sourceRect];
     v122 = v121;
     v124 = v123;
     v126 = v125;
     v128 = v127;
-    v129 = [v10 sourceView];
-    [v17 convertRect:v129 fromView:{v122, v124, v126, v128}];
+    sourceView4 = [presentationController sourceView];
+    [vibrancyView convertRect:sourceView4 fromView:{v122, v124, v126, v128}];
     [v89 setFrame:?];
 
     [v89 setAlpha:0.0];
     v130 = v114;
     v68 = v147;
-    [v17 convertRect:v91 fromView:{v130, v116, v118, v120}];
+    [vibrancyView convertRect:transitioningView4 fromView:{v130, v116, v118, v120}];
     v27 = v131;
     v28 = v132;
     v29 = v133;
     v30 = v134;
-    [v17 addSubview:v89];
+    [vibrancyView addSubview:v89];
   }
 
   v148 = MEMORY[0x1E69DD250];
-  [(CNAvatarCardTransition *)self transitionDuration:v4];
+  [(CNAvatarCardTransition *)self transitionDuration:transitionCopy];
   v136 = v135;
   if ([(CNAvatarCardTransition *)self reversed])
   {
@@ -280,7 +280,7 @@
   v197 = v161;
   v198 = v162;
   v187 = v66;
-  v188 = v48;
+  v188 = transitioningImage2;
   v189 = v164;
   v199 = v155;
   v200 = v156;
@@ -291,14 +291,14 @@
   v204 = v150;
   v205 = v151;
   v206 = v152;
-  v138 = v48;
+  v138 = transitioningImage2;
   v207 = v27;
   v208 = v28;
   v209 = v29;
   v210 = v30;
   v191 = v89;
-  v192 = self;
-  v193 = v10;
+  selfCopy = self;
+  v193 = presentationController;
   v194 = v165;
   v176[0] = MEMORY[0x1E69E9820];
   v176[1] = 3221225472;
@@ -306,14 +306,14 @@
   v176[3] = &unk_1E74E76F8;
   v177 = v187;
   v178 = v153;
-  v179 = self;
+  selfCopy2 = self;
   v180 = v193;
   v181 = v189;
   v182 = v190;
   v183 = v191;
   v184 = v194;
-  v185 = v4;
-  v139 = v4;
+  v185 = transitionCopy;
+  v139 = transitionCopy;
   v140 = v194;
   v141 = v191;
   v166 = v190;

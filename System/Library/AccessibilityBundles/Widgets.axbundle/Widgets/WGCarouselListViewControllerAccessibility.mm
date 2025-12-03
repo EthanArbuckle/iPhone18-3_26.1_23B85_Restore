@@ -1,21 +1,21 @@
 @interface WGCarouselListViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 @end
 
 @implementation WGCarouselListViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WGCarouselListViewController" hasInstanceMethod:@"setFooterVisible:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"WGCarouselListViewController" hasInstanceMethod:@"isVisuallyRevealed" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WGCarouselListViewController" hasInstanceMethod:@"setVisuallyRevealed:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WGCarouselListViewController" hasInstanceMethod:@"setFooterVisible:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"WGCarouselListViewController" hasInstanceMethod:@"isVisuallyRevealed" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WGCarouselListViewController" hasInstanceMethod:@"setVisuallyRevealed:" withFullSignature:{"v", "B", 0}];
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  if (a3 == 4 && ([(WGCarouselListViewControllerAccessibility *)self safeBoolForKey:@"isVisuallyRevealed"]& 1) == 0)
+  if (scroll == 4 && ([(WGCarouselListViewControllerAccessibility *)self safeBoolForKey:@"isVisuallyRevealed"]& 1) == 0)
   {
     AXPerformSafeBlock();
     return 1;
@@ -25,7 +25,7 @@
   {
     v6.receiver = self;
     v6.super_class = WGCarouselListViewControllerAccessibility;
-    return [(WGCarouselListViewControllerAccessibility *)&v6 accessibilityScroll:a3];
+    return [(WGCarouselListViewControllerAccessibility *)&v6 accessibilityScroll:scroll];
   }
 }
 

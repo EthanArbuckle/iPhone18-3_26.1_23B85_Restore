@@ -1,7 +1,7 @@
 @interface GCDeviceSessionEvent
 - (GCController)controller;
 - (GCDeviceSessionEvent)init;
-- (GCDeviceSessionEvent)initWithType:(unint64_t)a3 device:(id)a4;
+- (GCDeviceSessionEvent)initWithType:(unint64_t)type device:(id)device;
 - (GCKeyboard)keyboard;
 - (GCMouse)mouse;
 - (GCRacingWheel)racingWheel;
@@ -13,15 +13,15 @@
 
 @implementation GCDeviceSessionEvent
 
-- (GCDeviceSessionEvent)initWithType:(unint64_t)a3 device:(id)a4
+- (GCDeviceSessionEvent)initWithType:(unint64_t)type device:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   v10.receiver = self;
   v10.super_class = GCDeviceSessionEvent;
   v7 = [(GCDeviceSessionEvent *)&v10 init];
   device = v7->_device;
-  v7->_type = a3;
-  v7->_device = v6;
+  v7->_type = type;
+  v7->_device = deviceCopy;
 
   return v7;
 }
@@ -137,20 +137,20 @@
 
 - (id)description
 {
-  v3 = [(GCDeviceSessionEvent *)self type];
-  if (v3 > 99)
+  type = [(GCDeviceSessionEvent *)self type];
+  if (type > 99)
   {
-    if (v3 == 100)
+    if (type == 100)
     {
       v8 = MEMORY[0x1E696AEC0];
-      v6 = [(GCDeviceSessionEvent *)self device];
-      v7 = [v6 description];
+      device = [(GCDeviceSessionEvent *)self device];
+      v7 = [device description];
       [v8 stringWithFormat:@".deviceDidConnect(%@)", v7];
     }
 
     else
     {
-      if (v3 != 101)
+      if (type != 101)
       {
 LABEL_8:
         v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@".unknown(%zu)", self->_type];
@@ -158,8 +158,8 @@ LABEL_8:
       }
 
       v5 = MEMORY[0x1E696AEC0];
-      v6 = [(GCDeviceSessionEvent *)self device];
-      v7 = [v6 description];
+      device = [(GCDeviceSessionEvent *)self device];
+      v7 = [device description];
       [v5 stringWithFormat:@".deviceDidDisconnect(%@)", v7];
     }
     v4 = ;
@@ -167,9 +167,9 @@ LABEL_8:
 
   else
   {
-    if (v3 != 1)
+    if (type != 1)
     {
-      if (v3 == 2)
+      if (type == 2)
       {
         v4 = @".invalidated";
         goto LABEL_12;

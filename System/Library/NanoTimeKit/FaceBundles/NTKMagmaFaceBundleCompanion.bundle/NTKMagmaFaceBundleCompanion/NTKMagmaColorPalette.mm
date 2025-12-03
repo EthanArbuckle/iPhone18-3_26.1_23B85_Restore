@@ -12,20 +12,20 @@
 - (id)_primaryBackgroundEnd;
 - (id)_primaryBackgroundStart;
 - (id)_swoosh;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)identifier;
-- (id)swatchImageForSize:(CGSize)a3;
-- (void)configurationDidChange:(id)a3;
-- (void)setBackgroundStyle:(unint64_t)a3;
+- (id)swatchImageForSize:(CGSize)size;
+- (void)configurationDidChange:(id)change;
+- (void)setBackgroundStyle:(unint64_t)style;
 @end
 
 @implementation NTKMagmaColorPalette
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NTKMagmaColorPalette;
-  v4 = [(NTKMagmaColorPalette *)&v6 copyWithZone:a3];
+  v4 = [(NTKMagmaColorPalette *)&v6 copyWithZone:zone];
   [v4 setBackgroundStyle:{-[NTKMagmaColorPalette backgroundStyle](self, "backgroundStyle")}];
   return v4;
 }
@@ -37,8 +37,8 @@
   {
     v8.receiver = self;
     v8.super_class = NTKMagmaColorPalette;
-    v4 = [(NTKMagmaColorPalette *)&v8 identifier];
-    v5 = [NSString stringWithFormat:@"%@-%lu", v4, self->_backgroundStyle];
+    identifier = [(NTKMagmaColorPalette *)&v8 identifier];
+    v5 = [NSString stringWithFormat:@"%@-%lu", identifier, self->_backgroundStyle];
     v6 = self->_cachedIdentifier;
     self->_cachedIdentifier = v5;
 
@@ -48,18 +48,18 @@
   return cachedIdentifier;
 }
 
-- (void)configurationDidChange:(id)a3
+- (void)configurationDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = NTKMagmaColorPalette;
-  [(NTKMagmaColorPalette *)&v5 configurationDidChange:a3];
+  [(NTKMagmaColorPalette *)&v5 configurationDidChange:change];
   cachedIdentifier = self->_cachedIdentifier;
   self->_cachedIdentifier = 0;
 }
 
-- (void)setBackgroundStyle:(unint64_t)a3
+- (void)setBackgroundStyle:(unint64_t)style
 {
-  self->_backgroundStyle = a3;
+  self->_backgroundStyle = style;
   cachedIdentifier = self->_cachedIdentifier;
   self->_cachedIdentifier = 0;
   _objc_release_x1();
@@ -72,9 +72,9 @@
     return 1;
   }
 
-  v4 = [(NTKMagmaColorPalette *)self pigmentEditOption];
-  v5 = [v4 collectionName];
-  v6 = [v5 isEqualToString:@"magma.special"];
+  pigmentEditOption = [(NTKMagmaColorPalette *)self pigmentEditOption];
+  collectionName = [pigmentEditOption collectionName];
+  v6 = [collectionName isEqualToString:@"magma.special"];
 
   return v6;
 }
@@ -89,15 +89,15 @@
       goto LABEL_6;
     }
 
-    v3 = [(NTKMagmaColorPalette *)self digitsBackgroundOn];
+    digitsBackgroundOn = [(NTKMagmaColorPalette *)self digitsBackgroundOn];
   }
 
   else
   {
-    v3 = [(NTKMagmaColorPalette *)self digitsBackgroundOff];
+    digitsBackgroundOn = [(NTKMagmaColorPalette *)self digitsBackgroundOff];
   }
 
-  a2 = v3;
+  a2 = digitsBackgroundOn;
 LABEL_6:
 
   return a2;
@@ -105,8 +105,8 @@ LABEL_6:
 
 - (id)_digitsOutline
 {
-  v2 = [(NTKMagmaColorPalette *)self digits];
-  v3 = [v2 colorWithAlphaComponent:0.0];
+  digits = [(NTKMagmaColorPalette *)self digits];
+  v3 = [digits colorWithAlphaComponent:0.0];
 
   return v3;
 }
@@ -121,15 +121,15 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v3 = [(NTKMagmaColorPalette *)self logo];
+    logo = [(NTKMagmaColorPalette *)self logo];
   }
 
   else
   {
-    v3 = [(NTKMagmaColorPalette *)self logoBackgroundOff];
+    logo = [(NTKMagmaColorPalette *)self logoBackgroundOff];
   }
 
-  a2 = v3;
+  a2 = logo;
 LABEL_6:
 
   return a2;
@@ -139,15 +139,15 @@ LABEL_6:
 {
   if (-[NTKMagmaColorPalette isSpecialColor](self, "isSpecialColor") || (-[NTKMagmaColorPalette pigmentEditOption](self, "pigmentEditOption"), v3 = objc_claimAutoreleasedReturnValue(), [v3 fullname], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", ntk_victory_fall2025_voltSplash), v4, v3, v5))
   {
-    v6 = [(NTKMagmaColorPalette *)self primaryBackgroundEnd];
+    primaryBackgroundEnd = [(NTKMagmaColorPalette *)self primaryBackgroundEnd];
   }
 
   else
   {
-    v6 = [(NTKMagmaColorPalette *)self logo];
+    primaryBackgroundEnd = [(NTKMagmaColorPalette *)self logo];
   }
 
-  return v6;
+  return primaryBackgroundEnd;
 }
 
 - (id)_primaryBackgroundStart
@@ -155,15 +155,15 @@ LABEL_6:
   if ([(NTKMagmaColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKMagmaColorPalette *)self paletteAtIndex:0];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
   {
-    v4 = [(NTKMagmaColorPalette *)self primaryColor];
+    primaryColor = [(NTKMagmaColorPalette *)self primaryColor];
   }
 
-  return v4;
+  return primaryColor;
 }
 
 - (id)_primaryBackgroundEnd
@@ -171,15 +171,15 @@ LABEL_6:
   if ([(NTKMagmaColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKMagmaColorPalette *)self paletteAtIndex:1];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
   {
-    v4 = [(NTKMagmaColorPalette *)self primaryBackgroundStart];
+    primaryColor = [(NTKMagmaColorPalette *)self primaryBackgroundStart];
   }
 
-  return v4;
+  return primaryColor;
 }
 
 - (id)_backgroundStart
@@ -192,15 +192,15 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v3 = [(NTKMagmaColorPalette *)self primaryBackgroundStart];
+    primaryBackgroundStart = [(NTKMagmaColorPalette *)self primaryBackgroundStart];
   }
 
   else
   {
-    v3 = +[UIColor blackColor];
+    primaryBackgroundStart = +[UIColor blackColor];
   }
 
-  a2 = v3;
+  a2 = primaryBackgroundStart;
 LABEL_6:
 
   return a2;
@@ -216,15 +216,15 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v3 = [(NTKMagmaColorPalette *)self primaryBackgroundEnd];
+    primaryBackgroundEnd = [(NTKMagmaColorPalette *)self primaryBackgroundEnd];
   }
 
   else
   {
-    v3 = +[UIColor blackColor];
+    primaryBackgroundEnd = +[UIColor blackColor];
   }
 
-  a2 = v3;
+  a2 = primaryBackgroundEnd;
 LABEL_6:
 
   return a2;
@@ -240,15 +240,15 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v3 = [(NTKMagmaColorPalette *)self maskedBackgroundOnStart];
+    maskedBackgroundOnStart = [(NTKMagmaColorPalette *)self maskedBackgroundOnStart];
   }
 
   else
   {
-    v3 = [(NTKMagmaColorPalette *)self maskedBackgroundOffStart];
+    maskedBackgroundOnStart = [(NTKMagmaColorPalette *)self maskedBackgroundOffStart];
   }
 
-  a2 = v3;
+  a2 = maskedBackgroundOnStart;
 LABEL_6:
 
   return a2;
@@ -264,15 +264,15 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v3 = [(NTKMagmaColorPalette *)self maskedBackgroundOnEnd];
+    maskedBackgroundOnEnd = [(NTKMagmaColorPalette *)self maskedBackgroundOnEnd];
   }
 
   else
   {
-    v3 = [(NTKMagmaColorPalette *)self maskedBackgroundOffEnd];
+    maskedBackgroundOnEnd = [(NTKMagmaColorPalette *)self maskedBackgroundOffEnd];
   }
 
-  a2 = v3;
+  a2 = maskedBackgroundOnEnd;
 LABEL_6:
 
   return a2;
@@ -280,9 +280,9 @@ LABEL_6:
 
 - (id)_backgroundMask
 {
-  v3 = [(NTKMagmaColorPalette *)self isSpecialColor];
+  isSpecialColor = [(NTKMagmaColorPalette *)self isSpecialColor];
   v4 = &off_15150;
-  if (v3 && !self->_backgroundStyle)
+  if (isSpecialColor && !self->_backgroundStyle)
   {
     v4 = &off_15140;
   }
@@ -292,9 +292,9 @@ LABEL_6:
 
 - (id)_backgroundTextureAlpha
 {
-  v3 = [(NTKMagmaColorPalette *)self isRainbowColor];
+  isRainbowColor = [(NTKMagmaColorPalette *)self isRainbowColor];
   v4 = &off_15150;
-  if (v3 && self->_backgroundStyle == 1)
+  if (isRainbowColor && self->_backgroundStyle == 1)
   {
     v4 = &off_15140;
   }
@@ -302,15 +302,15 @@ LABEL_6:
   return v4;
 }
 
-- (id)swatchImageForSize:(CGSize)a3
+- (id)swatchImageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(NTKMagmaColorPalette *)self isRainbowColor])
   {
     v14.receiver = self;
     v14.super_class = NTKMagmaColorPalette;
-    v6 = [(NTKMagmaColorPalette *)&v14 swatchImageForSize:width, height];
+    height = [(NTKMagmaColorPalette *)&v14 swatchImageForSize:width, height];
   }
 
   else if ([(NTKMagmaColorPalette *)self isSpecialColor])
@@ -320,29 +320,29 @@ LABEL_6:
       sub_A518();
     }
 
-    v7 = [(NTKMagmaColorPalette *)self configuration];
-    v8 = [v7 uniqueId];
+    configuration = [(NTKMagmaColorPalette *)self configuration];
+    uniqueId = [configuration uniqueId];
     v16.width = width;
     v16.height = height;
     v9 = NSStringFromCGSize(v16);
-    v10 = [NSString stringWithFormat:@"%@-%@", v8, v9];
+    v10 = [NSString stringWithFormat:@"%@-%@", uniqueId, v9];
 
-    v6 = [qword_1C158 objectForKey:v10];
-    if (!v6)
+    height = [qword_1C158 objectForKey:v10];
+    if (!height)
     {
-      v11 = [(NTKMagmaColorPalette *)self maskedBackgroundOffStart];
-      v12 = [(NTKMagmaColorPalette *)self maskedBackgroundOffEnd];
-      v6 = NTKSwatchTwoColorGradientImage();
-      [qword_1C158 setObject:v6 forKey:v10];
+      maskedBackgroundOffStart = [(NTKMagmaColorPalette *)self maskedBackgroundOffStart];
+      maskedBackgroundOffEnd = [(NTKMagmaColorPalette *)self maskedBackgroundOffEnd];
+      height = NTKSwatchTwoColorGradientImage();
+      [qword_1C158 setObject:height forKey:v10];
     }
   }
 
   else
   {
-    v6 = 0;
+    height = 0;
   }
 
-  return v6;
+  return height;
 }
 
 @end

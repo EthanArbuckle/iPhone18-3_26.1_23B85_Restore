@@ -1,29 +1,29 @@
 @interface BCSMetric
-- (id)_initWithType:(void *)a3 context:(void *)a4 postProcessingMetricHandlers:;
+- (id)_initWithType:(void *)type context:(void *)context postProcessingMetricHandlers:;
 - (void)submitForPostProcessing;
 @end
 
 @implementation BCSMetric
 
-- (id)_initWithType:(void *)a3 context:(void *)a4 postProcessingMetricHandlers:
+- (id)_initWithType:(void *)type context:(void *)context postProcessingMetricHandlers:
 {
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  typeCopy = type;
+  contextCopy = context;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = BCSMetric;
     v10 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       v10[3] = a2;
-      objc_storeStrong(v10 + 2, a3);
-      objc_storeStrong(a1 + 1, a4);
+      objc_storeStrong(v10 + 2, type);
+      objc_storeStrong(self + 1, context);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)submitForPostProcessing

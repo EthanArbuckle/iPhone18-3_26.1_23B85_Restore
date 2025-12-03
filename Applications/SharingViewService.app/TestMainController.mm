@@ -1,48 +1,48 @@
 @interface TestMainController
-- (_TtC18SharingViewService18TestMainController)initWithCoder:(id)a3;
-- (_TtC18SharingViewService18TestMainController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (_TtC18SharingViewService18TestMainController)initWithCoder:(id)coder;
+- (_TtC18SharingViewService18TestMainController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TestMainController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100013CF8(a3);
+  selfCopy = self;
+  sub_100013CF8(appear);
 }
 
-- (_TtC18SharingViewService18TestMainController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18SharingViewService18TestMainController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *&self->super.SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC18SharingViewService18TestMainController_vcNav] = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
     *&self->super.SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC18SharingViewService18TestMainController_vcNav] = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for TestMainController();
-  v9 = [(TestMainController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(TestMainController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC18SharingViewService18TestMainController)initWithCoder:(id)a3
+- (_TtC18SharingViewService18TestMainController)initWithCoder:(id)coder
 {
   *&self->super.SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC18SharingViewService18TestMainController_vcNav] = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for TestMainController();
-  v4 = a3;
-  v5 = [(TestMainController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(TestMainController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,25 +1,25 @@
 @interface WISDailyWirelessUsageMetricController
 - (WISDailyWirelessUsageMetricController)init;
-- (int)registerForNotification:(const char *)a3 withBlock:(id)a4;
-- (void)activeCallServicesChangedTo:(id)a3;
-- (void)cellularTransmitStateChangedTo:(id)a3;
-- (void)dataStatusChangedFor:(id)a3 to:(id)a4;
+- (int)registerForNotification:(const char *)notification withBlock:(id)block;
+- (void)activeCallServicesChangedTo:(id)to;
+- (void)cellularTransmitStateChangedTo:(id)to;
+- (void)dataStatusChangedFor:(id)for to:(id)to;
 - (void)dealloc;
-- (void)handleABMServerStateChangedWithState:(id)a3;
-- (void)handleBasebandBootStateChangeWithState:(id)a3;
+- (void)handleABMServerStateChangedWithState:(id)state;
+- (void)handleBasebandBootStateChangeWithState:(id)state;
 - (void)handleChargingStateUpdate;
-- (void)handleDataIconChangedTo:(id)a3;
+- (void)handleDataIconChangedTo:(id)to;
 - (void)handleDisplayBlankedStateUpdate;
 - (void)handleLowPowerModeStateUpdate;
-- (void)handleSignalStrengthChangedFor:(id)a3 to:(id)a4;
-- (void)handleStewieStateChangedTo:(id)a3;
-- (void)handleUpdate:(id)a3 forKey:(int)a4 withState:(id)a5;
-- (void)radioStateChangedTo:(int)a3;
-- (void)registrationStatusChangedFor:(id)a3 to:(id)a4;
+- (void)handleSignalStrengthChangedFor:(id)for to:(id)to;
+- (void)handleStewieStateChangedTo:(id)to;
+- (void)handleUpdate:(id)update forKey:(int)key withState:(id)state;
+- (void)radioStateChangedTo:(int)to;
+- (void)registrationStatusChangedFor:(id)for to:(id)to;
 - (void)submitEventAndReset;
 - (void)triggerMetric;
 - (void)updateCurrentDataContext;
-- (void)updateDurationFieldFor:(id)a3 isNowActive:(BOOL)a4;
+- (void)updateDurationFieldFor:(id)for isNowActive:(BOOL)active;
 @end
 
 @implementation WISDailyWirelessUsageMetricController
@@ -96,53 +96,53 @@
   [(WISDailyWirelessUsageMetricController *)&v3 dealloc];
 }
 
-- (void)handleUpdate:(id)a3 forKey:(int)a4 withState:(id)a5
+- (void)handleUpdate:(id)update forKey:(int)key withState:(id)state
 {
-  v10 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (a4 > 7)
+  updateCopy = update;
+  stateCopy = state;
+  v9 = stateCopy;
+  if (key > 7)
   {
-    if (a4 <= 13)
+    if (key <= 13)
     {
-      if (a4 == 8)
+      if (key == 8)
       {
-        if (v8)
+        if (stateCopy)
         {
-          [(WISDailyWirelessUsageMetricController *)self registrationStatusChangedFor:v10 to:v8];
+          [(WISDailyWirelessUsageMetricController *)self registrationStatusChangedFor:updateCopy to:stateCopy];
         }
       }
 
-      else if (a4 == 12)
+      else if (key == 12)
       {
-        [(WISDailyWirelessUsageMetricController *)self handleStewieStateChangedTo:v8];
+        [(WISDailyWirelessUsageMetricController *)self handleStewieStateChangedTo:stateCopy];
       }
     }
 
-    else if (a4 == 14)
+    else if (key == 14)
     {
-      -[WISDailyWirelessUsageMetricController radioStateChangedTo:](self, "radioStateChangedTo:", [v8 intValue]);
+      -[WISDailyWirelessUsageMetricController radioStateChangedTo:](self, "radioStateChangedTo:", [stateCopy intValue]);
     }
 
-    else if (a4 == 16)
+    else if (key == 16)
     {
-      if (v8)
+      if (stateCopy)
       {
-        [(WISDailyWirelessUsageMetricController *)self cellularTransmitStateChangedTo:v8];
+        [(WISDailyWirelessUsageMetricController *)self cellularTransmitStateChangedTo:stateCopy];
       }
     }
 
-    else if (a4 == 17 && v8)
+    else if (key == 17 && stateCopy)
     {
-      [(WISDailyWirelessUsageMetricController *)self activeCallServicesChangedTo:v8];
+      [(WISDailyWirelessUsageMetricController *)self activeCallServicesChangedTo:stateCopy];
     }
   }
 
-  else if (a4 <= 3)
+  else if (key <= 3)
   {
-    if (a4 != 1)
+    if (key != 1)
     {
-      if (a4 != 3)
+      if (key != 3)
       {
         goto LABEL_28;
       }
@@ -150,21 +150,21 @@
       goto LABEL_15;
     }
 
-    if (v10)
+    if (updateCopy)
     {
-      [(WISDailyWirelessUsageMetricController *)self handleSignalStrengthChangedFor:v10 to:v8];
+      [(WISDailyWirelessUsageMetricController *)self handleSignalStrengthChangedFor:updateCopy to:stateCopy];
     }
   }
 
   else
   {
-    if (a4 != 4)
+    if (key != 4)
     {
-      if (a4 != 6)
+      if (key != 6)
       {
-        if (a4 == 7)
+        if (key == 7)
         {
-          -[WISDailyWirelessUsageMetricController handleAirplaneModeStatusChangedTo:](self, "handleAirplaneModeStatusChangedTo:", [v8 BOOLValue]);
+          -[WISDailyWirelessUsageMetricController handleAirplaneModeStatusChangedTo:](self, "handleAirplaneModeStatusChangedTo:", [stateCopy BOOLValue]);
         }
 
         goto LABEL_28;
@@ -175,58 +175,58 @@ LABEL_15:
       goto LABEL_28;
     }
 
-    if (v8)
+    if (stateCopy)
     {
-      [(WISDailyWirelessUsageMetricController *)self dataStatusChangedFor:v10 to:v8];
+      [(WISDailyWirelessUsageMetricController *)self dataStatusChangedFor:updateCopy to:stateCopy];
     }
   }
 
 LABEL_28:
 }
 
-- (void)radioStateChangedTo:(int)a3
+- (void)radioStateChangedTo:(int)to
 {
-  [(WISDailyWirelessUsageMetricController *)self updateDurationFieldFor:@"basebandOnline" isNowActive:a3 == 0];
+  [(WISDailyWirelessUsageMetricController *)self updateDurationFieldFor:@"basebandOnline" isNowActive:to == 0];
 
-  [(WISDailyWirelessUsageMetricController *)self updateDurationFieldFor:@"basebandBooted" isNowActive:a3 < 2];
+  [(WISDailyWirelessUsageMetricController *)self updateDurationFieldFor:@"basebandBooted" isNowActive:to < 2];
 }
 
-- (void)cellularTransmitStateChangedTo:(id)a3
+- (void)cellularTransmitStateChangedTo:(id)to
 {
-  v4 = a3;
-  -[WISDailyWirelessUsageMetricController updateDurationFieldFor:isNowActive:](self, "updateDurationFieldFor:isNowActive:", @"basebandConnectedMode", [v4 isEqualToString:kCTCellularTransmitStateConnected]);
+  toCopy = to;
+  -[WISDailyWirelessUsageMetricController updateDurationFieldFor:isNowActive:](self, "updateDurationFieldFor:isNowActive:", @"basebandConnectedMode", [toCopy isEqualToString:kCTCellularTransmitStateConnected]);
 }
 
-- (void)registrationStatusChangedFor:(id)a3 to:(id)a4
+- (void)registrationStatusChangedFor:(id)for to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WISDailyWirelessUsageMetricController *)self currentDataContextUUID];
-  if (!v8)
+  forCopy = for;
+  toCopy = to;
+  currentDataContextUUID = [(WISDailyWirelessUsageMetricController *)self currentDataContextUUID];
+  if (!currentDataContextUUID)
   {
     goto LABEL_14;
   }
 
-  v9 = [v6 uuid];
-  v10 = [(WISDailyWirelessUsageMetricController *)self currentDataContextUUID];
-  v11 = [v9 isEqual:v10];
+  uuid = [forCopy uuid];
+  currentDataContextUUID2 = [(WISDailyWirelessUsageMetricController *)self currentDataContextUUID];
+  v11 = [uuid isEqual:currentDataContextUUID2];
 
   if (v11)
   {
     v12 = *(qword_1002DBE98 + 48);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [v6 uuid];
-      sub_100203950(v13, v7, v14, v12);
+      uuid2 = [forCopy uuid];
+      sub_100203950(uuid2, toCopy, v14, v12);
     }
 
-    [(WISDailyWirelessUsageMetricController *)self setCurrentRegistrationState:v7];
-    [(WISDailyWirelessUsageMetricController *)self updateDurationFieldFor:@"limitedService" isNowActive:[WISTelephonyUtils isRegistrationDisplayStatusLimitedService:v7]];
+    [(WISDailyWirelessUsageMetricController *)self setCurrentRegistrationState:toCopy];
+    [(WISDailyWirelessUsageMetricController *)self updateDurationFieldFor:@"limitedService" isNowActive:[WISTelephonyUtils isRegistrationDisplayStatusLimitedService:toCopy]];
     if ([(WISDailyWirelessUsageMetricController *)self isAirplaneModeActive])
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
       {
-        [v6 uuid];
+        [forCopy uuid];
         objc_claimAutoreleasedReturnValue();
         sub_1002039AC();
       }
@@ -234,7 +234,7 @@ LABEL_28:
 
     else
     {
-      [(WISDailyWirelessUsageMetricController *)self updateDurationFieldFor:@"outOfService" isNowActive:[WISTelephonyUtils isRegistrationDisplayStatusOutOfService:v7]];
+      [(WISDailyWirelessUsageMetricController *)self updateDurationFieldFor:@"outOfService" isNowActive:[WISTelephonyUtils isRegistrationDisplayStatusOutOfService:toCopy]];
     }
   }
 
@@ -243,26 +243,26 @@ LABEL_28:
 LABEL_14:
     if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
     {
-      [v6 uuid];
+      [forCopy uuid];
       objc_claimAutoreleasedReturnValue();
       sub_1002039F0();
     }
   }
 }
 
-- (void)dataStatusChangedFor:(id)a3 to:(id)a4
+- (void)dataStatusChangedFor:(id)for to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WISDailyWirelessUsageMetricController *)self currentDataContextUUID];
-  if (!v8)
+  forCopy = for;
+  toCopy = to;
+  currentDataContextUUID = [(WISDailyWirelessUsageMetricController *)self currentDataContextUUID];
+  if (!currentDataContextUUID)
   {
     goto LABEL_13;
   }
 
-  v9 = [v6 uuid];
-  v10 = [(WISDailyWirelessUsageMetricController *)self currentDataContextUUID];
-  v11 = [v9 isEqual:v10];
+  uuid = [forCopy uuid];
+  currentDataContextUUID2 = [(WISDailyWirelessUsageMetricController *)self currentDataContextUUID];
+  v11 = [uuid isEqual:currentDataContextUUID2];
 
   if (v11)
   {
@@ -271,19 +271,19 @@ LABEL_14:
       sub_100203A34();
     }
 
-    [(WISDailyWirelessUsageMetricController *)self setCurrentDataStatus:v7];
-    v12 = [WISSystemStatusSimulacrum deriveConnectionTypeForDataStatus:v7];
-    v13 = [(TelephonyStateRelay *)self->_ctRelay getStewieState];
-    v14 = [TelephonyStateRelay deriveDataIcon:v12 stewieState:v13];
+    [(WISDailyWirelessUsageMetricController *)self setCurrentDataStatus:toCopy];
+    v12 = [WISSystemStatusSimulacrum deriveConnectionTypeForDataStatus:toCopy];
+    getStewieState = [(TelephonyStateRelay *)self->_ctRelay getStewieState];
+    v14 = [TelephonyStateRelay deriveDataIcon:v12 stewieState:getStewieState];
 
     [(WISDailyWirelessUsageMetricController *)self handleDataIconChangedTo:v14];
-    v15 = [v7 dataBearerSoMask];
-    if ((v15 & 8) != 0)
+    dataBearerSoMask = [toCopy dataBearerSoMask];
+    if ((dataBearerSoMask & 8) != 0)
     {
       [(WISDailyWirelessUsageMetricController *)self setDidSeeFR2:1];
     }
 
-    [(WISDailyWirelessUsageMetricController *)self setIsFR2Active:(v15 >> 3) & 1];
+    [(WISDailyWirelessUsageMetricController *)self setIsFR2Active:(dataBearerSoMask >> 3) & 1];
   }
 
   else
@@ -291,23 +291,23 @@ LABEL_14:
 LABEL_13:
     if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
     {
-      [v6 uuid];
+      [forCopy uuid];
       objc_claimAutoreleasedReturnValue();
       sub_100203AB8();
     }
   }
 }
 
-- (void)activeCallServicesChangedTo:(id)a3
+- (void)activeCallServicesChangedTo:(id)to
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  toCopy = to;
+  v5 = [toCopy mutableCopy];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(WISDailyWirelessUsageMetricController *)self activeCallServices];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  activeCallServices = [(WISDailyWirelessUsageMetricController *)self activeCallServices];
+  v7 = [activeCallServices countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -318,7 +318,7 @@ LABEL_13:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activeCallServices);
         }
 
         [v5 removeObject:*(*(&v13 + 1) + 8 * v9)];
@@ -326,7 +326,7 @@ LABEL_13:
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [activeCallServices countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -337,7 +337,7 @@ LABEL_13:
     [(WISDailyWirelessUsageMetricController *)self setNumConnectedCalls:[(WISDailyWirelessUsageMetricController *)self numConnectedCalls]+ 1];
   }
 
-  -[WISDailyWirelessUsageMetricController updateDurationFieldFor:isNowActive:](self, "updateDurationFieldFor:isNowActive:", @"activeCalls", [v4 count] != 0);
+  -[WISDailyWirelessUsageMetricController updateDurationFieldFor:isNowActive:](self, "updateDurationFieldFor:isNowActive:", @"activeCalls", [toCopy count] != 0);
   v10 = [NSNumber numberWithInt:1];
   v11 = [v5 containsObject:v10];
 
@@ -347,26 +347,26 @@ LABEL_13:
   }
 
   v12 = [NSNumber numberWithInt:1];
-  -[WISDailyWirelessUsageMetricController updateDurationFieldFor:isNowActive:](self, "updateDurationFieldFor:isNowActive:", @"activeTelephonyCalls", [v4 containsObject:v12]);
+  -[WISDailyWirelessUsageMetricController updateDurationFieldFor:isNowActive:](self, "updateDurationFieldFor:isNowActive:", @"activeTelephonyCalls", [toCopy containsObject:v12]);
 
-  [(WISDailyWirelessUsageMetricController *)self setActiveCallServices:v4];
+  [(WISDailyWirelessUsageMetricController *)self setActiveCallServices:toCopy];
 }
 
-- (void)handleSignalStrengthChangedFor:(id)a3 to:(id)a4
+- (void)handleSignalStrengthChangedFor:(id)for to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  forCopy = for;
+  toCopy = to;
+  v8 = toCopy;
+  if (toCopy)
   {
-    v9 = [v7 displayBars];
-    if (v9)
+    displayBars = [toCopy displayBars];
+    if (displayBars)
     {
-      v10 = [(WISDailyWirelessUsageMetricController *)self currentCellularSignalBars];
-      if (!v10 || (-[WISDailyWirelessUsageMetricController currentCellularSignalBars](self, "currentCellularSignalBars"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqualToNumber:v9], v11, v10, (v12 & 1) == 0))
+      currentCellularSignalBars = [(WISDailyWirelessUsageMetricController *)self currentCellularSignalBars];
+      if (!currentCellularSignalBars || (-[WISDailyWirelessUsageMetricController currentCellularSignalBars](self, "currentCellularSignalBars"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqualToNumber:displayBars], v11, currentCellularSignalBars, (v12 & 1) == 0))
       {
         [(WISDailyWirelessUsageMetricController *)self setNumCellularSignalBarChanges:[(WISDailyWirelessUsageMetricController *)self numCellularSignalBarChanges]+ 1];
-        [(WISDailyWirelessUsageMetricController *)self setCurrentCellularSignalBars:v9];
+        [(WISDailyWirelessUsageMetricController *)self setCurrentCellularSignalBars:displayBars];
         if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
         {
           [(WISDailyWirelessUsageMetricController *)self numCellularSignalBarChanges];
@@ -379,7 +379,7 @@ LABEL_13:
 
     else if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
     {
-      [v6 uuid];
+      [forCopy uuid];
       objc_claimAutoreleasedReturnValue();
       sub_100203B44();
     }
@@ -387,19 +387,19 @@ LABEL_13:
 
   else if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
   {
-    [v6 uuid];
+    [forCopy uuid];
     objc_claimAutoreleasedReturnValue();
     sub_100203B88();
   }
 }
 
-- (void)handleStewieStateChangedTo:(id)a3
+- (void)handleStewieStateChangedTo:(id)to
 {
-  v4 = a3;
-  v5 = [(WISDailyWirelessUsageMetricController *)self currentDataStatus];
-  if (v5)
+  toCopy = to;
+  currentDataStatus = [(WISDailyWirelessUsageMetricController *)self currentDataStatus];
+  if (currentDataStatus)
   {
-    v6 = [TelephonyStateRelay deriveDataIcon:[WISSystemStatusSimulacrum deriveConnectionTypeForDataStatus:v5] stewieState:v4];
+    v6 = [TelephonyStateRelay deriveDataIcon:[WISSystemStatusSimulacrum deriveConnectionTypeForDataStatus:currentDataStatus] stewieState:toCopy];
     [(WISDailyWirelessUsageMetricController *)self handleDataIconChangedTo:v6];
   }
 
@@ -450,9 +450,9 @@ LABEL_13:
   }
 }
 
-- (void)handleBasebandBootStateChangeWithState:(id)a3
+- (void)handleBasebandBootStateChangeWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
   {
     sub_100203C80();
@@ -460,7 +460,7 @@ LABEL_13:
 
   v5 = [NSString stringWithUTF8String:abm::kKeyBasebandBootState];
   v14 = 0;
-  v6 = [WISXPCUtils extractValueFromDict:v4 atKey:v5 ofExpectedClass:objc_opt_class() error:&v14];
+  v6 = [WISXPCUtils extractValueFromDict:stateCopy atKey:v5 ofExpectedClass:objc_opt_class() error:&v14];
   v7 = v14;
 
   if (v7 || !v6)
@@ -481,7 +481,7 @@ LABEL_13:
       [(WISDailyWirelessUsageMetricController *)self setNumBasebandCrashes:[(WISDailyWirelessUsageMetricController *)self numBasebandCrashes]+ 1];
       v10 = [NSString stringWithUTF8String:abm::kKeyBasebandResetIsMTBF];
       v13 = 0;
-      v11 = [WISXPCUtils extractValueFromDict:v4 atKey:v10 ofExpectedClass:objc_opt_class() error:&v13];
+      v11 = [WISXPCUtils extractValueFromDict:stateCopy atKey:v10 ofExpectedClass:objc_opt_class() error:&v13];
       v7 = v13;
 
       if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
@@ -519,9 +519,9 @@ LABEL_13:
   }
 }
 
-- (void)handleABMServerStateChangedWithState:(id)a3
+- (void)handleABMServerStateChangedWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
   {
     sub_100203E58();
@@ -529,7 +529,7 @@ LABEL_13:
 
   v5 = [NSString stringWithUTF8String:abm::kKeyServerState];
   v11 = 0;
-  v6 = [WISXPCUtils extractValueFromDict:v4 atKey:v5 ofExpectedClass:objc_opt_class() error:&v11];
+  v6 = [WISXPCUtils extractValueFromDict:stateCopy atKey:v5 ofExpectedClass:objc_opt_class() error:&v11];
   v7 = v11;
 
   if (v7 || !v6)
@@ -557,14 +557,14 @@ LABEL_13:
   }
 }
 
-- (void)handleDataIconChangedTo:(id)a3
+- (void)handleDataIconChangedTo:(id)to
 {
-  v4 = a3;
-  v5 = [(WISDailyWirelessUsageMetricController *)self currentDataIcon];
-  if (!v5 || (-[WISDailyWirelessUsageMetricController currentDataIcon](self, "currentDataIcon"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqualToString:v4], v6, v5, (v7 & 1) == 0))
+  toCopy = to;
+  currentDataIcon = [(WISDailyWirelessUsageMetricController *)self currentDataIcon];
+  if (!currentDataIcon || (-[WISDailyWirelessUsageMetricController currentDataIcon](self, "currentDataIcon"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqualToString:toCopy], v6, currentDataIcon, (v7 & 1) == 0))
   {
     [(WISDailyWirelessUsageMetricController *)self setNumCellularRATIconChanges:[(WISDailyWirelessUsageMetricController *)self numCellularRATIconChanges]+ 1];
-    [(WISDailyWirelessUsageMetricController *)self setCurrentDataIcon:v4];
+    [(WISDailyWirelessUsageMetricController *)self setCurrentDataIcon:toCopy];
     if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
     {
       [(WISDailyWirelessUsageMetricController *)self numCellularRATIconChanges];
@@ -575,22 +575,22 @@ LABEL_13:
   }
 }
 
-- (void)updateDurationFieldFor:(id)a3 isNowActive:(BOOL)a4
+- (void)updateDurationFieldFor:(id)for isNowActive:(BOOL)active
 {
-  v4 = a4;
-  v6 = a3;
+  activeCopy = active;
+  forCopy = for;
   if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
   {
     sub_100203FBC();
   }
 
   v7 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-  v8 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
-  v9 = [v8 valueForKey:v6];
+  durationTrackingDict = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
+  v9 = [durationTrackingDict valueForKey:forCopy];
 
   if (v9)
   {
-    if (v4)
+    if (activeCopy)
     {
       [v9 hasBecomeActiveAtTimestamp:v7];
     }
@@ -604,11 +604,11 @@ LABEL_13:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = 138412802;
-      v12 = v6;
+      v12 = forCopy;
       v13 = 2112;
       v14 = v9;
       v15 = 1024;
-      v16 = v4;
+      v16 = activeCopy;
       _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "DailyWirelessUsageMetric:#D Updated duration tracker for field %@: %@ (switched to %{BOOL}d)", &v11, 0x1Cu);
     }
   }
@@ -619,21 +619,21 @@ LABEL_13:
   }
 }
 
-- (int)registerForNotification:(const char *)a3 withBlock:(id)a4
+- (int)registerForNotification:(const char *)notification withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   out_token = -1;
-  v7 = self;
-  v8 = [(WISDailyWirelessUsageMetricController *)v7 queue];
+  selfCopy = self;
+  queue = [(WISDailyWirelessUsageMetricController *)selfCopy queue];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_10009C8E4;
   handler[3] = &unk_1002AE900;
-  v17 = a3;
-  handler[4] = v7;
-  v9 = v6;
+  notificationCopy = notification;
+  handler[4] = selfCopy;
+  v9 = blockCopy;
   v16 = v9;
-  if (notify_register_dispatch(a3, &out_token, v8, handler))
+  if (notify_register_dispatch(notification, &out_token, queue, handler))
   {
     if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_ERROR))
     {
@@ -645,14 +645,14 @@ LABEL_13:
 
   else
   {
-    v11 = [(WISDailyWirelessUsageMetricController *)v7 queue];
+    queue2 = [(WISDailyWirelessUsageMetricController *)selfCopy queue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10009C96C;
     v13[3] = &unk_1002AE928;
-    v13[4] = v7;
+    v13[4] = selfCopy;
     v14 = v9;
-    dispatch_async(v11, v13);
+    dispatch_async(queue2, v13);
     v10 = out_token;
   }
 
@@ -663,10 +663,10 @@ LABEL_13:
 {
   [(WISDailyWirelessUsageMetricController *)self setCurrentDataContextUUID:0];
   [(WISDailyWirelessUsageMetricController *)self setCurrentRegistrationState:0];
-  v3 = [(WISDailyWirelessUsageMetricController *)self ctRelay];
-  v4 = [v3 coreTelephonyClient];
+  ctRelay = [(WISDailyWirelessUsageMetricController *)self ctRelay];
+  coreTelephonyClient = [ctRelay coreTelephonyClient];
   v12 = 0;
-  v5 = [v4 getCurrentDataSubscriptionContextSync:&v12];
+  v5 = [coreTelephonyClient getCurrentDataSubscriptionContextSync:&v12];
   v6 = v12;
 
   v7 = *(qword_1002DBE98 + 48);
@@ -685,12 +685,12 @@ LABEL_13:
       sub_10020420C();
     }
 
-    v8 = [v5 uuid];
-    [(WISDailyWirelessUsageMetricController *)self setCurrentDataContextUUID:v8];
+    uuid = [v5 uuid];
+    [(WISDailyWirelessUsageMetricController *)self setCurrentDataContextUUID:uuid];
 
-    v9 = [(WISDailyWirelessUsageMetricController *)self ctRelay];
+    ctRelay2 = [(WISDailyWirelessUsageMetricController *)self ctRelay];
     v11 = 0;
-    v10 = [v9 copyCTRegistrationStatus:v5 error:&v11];
+    v10 = [ctRelay2 copyCTRegistrationStatus:v5 error:&v11];
     v6 = v11;
 
     if (v6 || !v10)
@@ -711,9 +711,9 @@ LABEL_13:
 - (void)submitEventAndReset
 {
   v3 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-  v4 = [(WISDailyWirelessUsageMetricController *)self startTimestamp];
-  v5 = v3 - v4;
-  if (v3 >= v4)
+  startTimestamp = [(WISDailyWirelessUsageMetricController *)self startTimestamp];
+  v5 = v3 - startTimestamp;
+  if (v3 >= startTimestamp)
   {
     v52[0] = @"baseband_num_mtbf_crashes";
     v48 = [NSNumber numberWithUnsignedInteger:[(WISDailyWirelessUsageMetricController *)self numBasebandMTBFCrashes]];
@@ -721,48 +721,48 @@ LABEL_13:
     v52[1] = @"baseband_num_resets";
     v54 = [NSNumber numberWithUnsignedInteger:[(WISDailyWirelessUsageMetricController *)self numBasebandCrashes]];
     v52[2] = @"baseband_duration_online";
-    v45 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
-    v46 = [v45 objectForKey:@"basebandOnline"];
+    durationTrackingDict = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
+    v46 = [durationTrackingDict objectForKey:@"basebandOnline"];
     v41 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v46 getTotalDurationAndResetAtTimestamp:v3] / 0x3B9ACA00);
     v55 = v41;
     v52[3] = @"baseband_duration_booted";
-    v43 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
-    v44 = [v43 objectForKey:@"basebandBooted"];
+    durationTrackingDict2 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
+    v44 = [durationTrackingDict2 objectForKey:@"basebandBooted"];
     v39 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v44 getTotalDurationAndResetAtTimestamp:v3] / 0x3B9ACA00);
     v56 = v39;
     v52[4] = @"baseband_duration_connected_mode";
-    v40 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
-    v42 = [v40 objectForKey:@"basebandConnectedMode"];
+    durationTrackingDict3 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
+    v42 = [durationTrackingDict3 objectForKey:@"basebandConnectedMode"];
     v38 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v42 getTotalDurationAndResetAtTimestamp:v3] / 0x3B9ACA00);
     v57 = v38;
     v52[5] = @"num_commcenter_resets";
     v34 = [NSNumber numberWithUnsignedInteger:[(WISDailyWirelessUsageMetricController *)self numCommCenterCrashes]];
     v58 = v34;
     v52[6] = @"duration_oos";
-    v36 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
-    v37 = [v36 objectForKey:@"outOfService"];
+    durationTrackingDict4 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
+    v37 = [durationTrackingDict4 objectForKey:@"outOfService"];
     v32 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v37 getTotalDurationAndResetAtTimestamp:v3] / 0x3B9ACA00);
     v59 = v32;
     v52[7] = @"duration_limited_service";
-    v33 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
-    v35 = [v33 objectForKey:@"limitedService"];
+    durationTrackingDict5 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
+    v35 = [durationTrackingDict5 objectForKey:@"limitedService"];
     v31 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v35 getTotalDurationAndResetAtTimestamp:v3] / 0x3B9ACA00);
     v60 = v31;
     v52[8] = @"num_airplane_mode_toggles";
     v28 = [NSNumber numberWithUnsignedInteger:[(WISDailyWirelessUsageMetricController *)self numAirplaneModeToggles]];
     v61 = v28;
     v52[9] = @"duration_screen_on";
-    v29 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
-    v30 = [v29 objectForKey:@"screenOn"];
+    durationTrackingDict6 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
+    v30 = [durationTrackingDict6 objectForKey:@"screenOn"];
     v24 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v30 getTotalDurationAndResetAtTimestamp:v3] / 0x3B9ACA00);
     v62 = v24;
     v52[10] = @"duration_low_power_mode";
-    v25 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
-    v27 = [v25 objectForKey:@"lowPowerMode"];
+    durationTrackingDict7 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
+    v27 = [durationTrackingDict7 objectForKey:@"lowPowerMode"];
     v63 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v27 getTotalDurationAndResetAtTimestamp:v3] / 0x3B9ACA00);
     v52[11] = @"duration_charging";
-    v23 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
-    v26 = [v23 objectForKey:@"charging"];
+    durationTrackingDict8 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
+    v26 = [durationTrackingDict8 objectForKey:@"charging"];
     v22 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v26 getTotalDurationAndResetAtTimestamp:v3] / 0x3B9ACA00);
     v64 = v22;
     v52[12] = @"num_connected_calls";
@@ -772,13 +772,13 @@ LABEL_13:
     v17 = [NSNumber numberWithUnsignedInteger:[(WISDailyWirelessUsageMetricController *)self numConnectedTelephonyCalls]];
     v66 = v17;
     v52[14] = @"duration_calls";
-    v18 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
-    v20 = [v18 objectForKey:@"activeCalls"];
+    durationTrackingDict9 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
+    v20 = [durationTrackingDict9 objectForKey:@"activeCalls"];
     v15 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v20 getTotalDurationAndResetAtTimestamp:v3] / 0x3B9ACA00);
     v67 = v15;
     v52[15] = @"duration_telephony_calls";
-    v16 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
-    v19 = [v16 objectForKey:@"activeTelephonyCalls"];
+    durationTrackingDict10 = [(WISDailyWirelessUsageMetricController *)self durationTrackingDict];
+    v19 = [durationTrackingDict10 objectForKey:@"activeTelephonyCalls"];
     v6 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v19 getTotalDurationAndResetAtTimestamp:v3] / 0x3B9ACA00);
     v68 = v6;
     v52[16] = @"was_fr2_seen";
@@ -795,8 +795,8 @@ LABEL_13:
     v11 = [NSNumber numberWithUnsignedInteger:[(WISDailyWirelessUsageMetricController *)self numCellularSignalBarChanges]];
     v72 = v11;
     v52[20] = @"duration";
-    v12 = [NSNumber numberWithUnsignedLongLong:v9 / 0x3B9ACA00];
-    v73 = v12;
+    0x3B9ACA00 = [NSNumber numberWithUnsignedLongLong:v9 / 0x3B9ACA00];
+    v73 = 0x3B9ACA00;
     v14 = v63;
     v13 = v54;
     v47 = [NSDictionary dictionaryWithObjects:&v53 forKeys:v52 count:21];

@@ -1,23 +1,23 @@
 @interface _GCWebKitUserIntentRecognizer
-- (_GCWebKitUserIntentRecognizer)initWithPhysicalInputProfile:(id)a3 thumbstickUserIntentHandler:(id)a4 slidingWindowTotalDuration:(double)a5 slidingWindowSegmentDuration:(double)a6 deadzone:(double)a7 sensitivity:(int)a8;
-- (void)processChangedElements:(id)a3 atTimestamp:(unint64_t)a4;
+- (_GCWebKitUserIntentRecognizer)initWithPhysicalInputProfile:(id)profile thumbstickUserIntentHandler:(id)handler slidingWindowTotalDuration:(double)duration slidingWindowSegmentDuration:(double)segmentDuration deadzone:(double)deadzone sensitivity:(int)sensitivity;
+- (void)processChangedElements:(id)elements atTimestamp:(unint64_t)timestamp;
 @end
 
 @implementation _GCWebKitUserIntentRecognizer
 
-- (_GCWebKitUserIntentRecognizer)initWithPhysicalInputProfile:(id)a3 thumbstickUserIntentHandler:(id)a4 slidingWindowTotalDuration:(double)a5 slidingWindowSegmentDuration:(double)a6 deadzone:(double)a7 sensitivity:(int)a8
+- (_GCWebKitUserIntentRecognizer)initWithPhysicalInputProfile:(id)profile thumbstickUserIntentHandler:(id)handler slidingWindowTotalDuration:(double)duration slidingWindowSegmentDuration:(double)segmentDuration deadzone:(double)deadzone sensitivity:(int)sensitivity
 {
   v40 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
+  profileCopy = profile;
+  handlerCopy = handler;
   v29.receiver = self;
   v29.super_class = _GCWebKitUserIntentRecognizer;
   v16 = [(_GCWebKitUserIntentRecognizer *)&v29 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_physicalInputProfile, v14);
-    v18 = [v15 copy];
+    objc_storeWeak(&v16->_physicalInputProfile, profileCopy);
+    v18 = [handlerCopy copy];
     thumbstickUserIntentHandler = v17->_thumbstickUserIntentHandler;
     v17->_thumbstickUserIntentHandler = v18;
 
@@ -25,10 +25,10 @@
     trackedInputs = v17->_trackedInputs;
     v17->_trackedInputs = v20;
 
-    v17->_slidingWindowTotalDuration = a5;
-    v17->_slidingWindowSegmentDuration = a6;
-    v17->_deadzoneSquared = a7 * a7;
-    v17->_distanceThreshold = ((1.0 / a8) * 6.0);
+    v17->_slidingWindowTotalDuration = duration;
+    v17->_slidingWindowSegmentDuration = segmentDuration;
+    v17->_deadzoneSquared = deadzone * deadzone;
+    v17->_distanceThreshold = ((1.0 / sensitivity) * 6.0);
     if (gc_isInternalBuild())
     {
       v24 = getGCLogger();
@@ -39,7 +39,7 @@
         deadzoneSquared = v17->_deadzoneSquared;
         distanceThreshold = v17->_distanceThreshold;
         *buf = 138413314;
-        v31 = v14;
+        v31 = profileCopy;
         v32 = 2048;
         v33 = slidingWindowTotalDuration;
         v34 = 2048;
@@ -57,14 +57,14 @@
   return v17;
 }
 
-- (void)processChangedElements:(id)a3 atTimestamp:(unint64_t)a4
+- (void)processChangedElements:(id)elements atTimestamp:(unint64_t)timestamp
 {
   v68 = *MEMORY[0x1E69E9840];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  obj = a3;
+  obj = elements;
   v58 = [obj countByEnumeratingWithState:&v63 objects:v67 count:16];
   if (v58)
   {
@@ -80,15 +80,15 @@
         }
 
         v6 = *(*(&v63 + 1) + 8 * v5);
-        v7 = [v6 primaryAlias];
-        if ([v7 isEqualToString:@"Left Thumbstick"])
+        primaryAlias = [v6 primaryAlias];
+        if ([primaryAlias isEqualToString:@"Left Thumbstick"])
         {
         }
 
         else
         {
-          v8 = [v6 primaryAlias];
-          v9 = [v8 isEqualToString:@"Right Thumbstick"];
+          primaryAlias2 = [v6 primaryAlias];
+          v9 = [primaryAlias2 isEqualToString:@"Right Thumbstick"];
 
           if (!v9)
           {
@@ -98,21 +98,21 @@
 
         v10 = v6;
         trackedInputs = self->_trackedInputs;
-        v12 = [v10 primaryAlias];
-        v13 = [(NSMutableDictionary *)trackedInputs objectForKey:v12];
+        primaryAlias3 = [v10 primaryAlias];
+        v13 = [(NSMutableDictionary *)trackedInputs objectForKey:primaryAlias3];
         LODWORD(trackedInputs) = v13 == 0;
 
         if (trackedInputs)
         {
           v14 = objc_opt_new();
           v15 = self->_trackedInputs;
-          v16 = [v10 primaryAlias];
-          [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:v16];
+          primaryAlias4 = [v10 primaryAlias];
+          [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:primaryAlias4];
         }
 
         v17 = self->_trackedInputs;
-        v18 = [v10 primaryAlias];
-        v19 = [(NSMutableDictionary *)v17 objectForKeyedSubscript:v18];
+        primaryAlias5 = [v10 primaryAlias];
+        v19 = [(NSMutableDictionary *)v17 objectForKeyedSubscript:primaryAlias5];
 
         v20 = mach_absolute_time();
         if (timestampToSecondsMultiplier_onceToken != -1)
@@ -135,24 +135,24 @@
         }
 
         [v19 removeObjectsInRange:{0, i}];
-        v27 = [v19 lastObject];
-        [v27 timestampInSeconds];
+        lastObject = [v19 lastObject];
+        [lastObject timestampInSeconds];
         v29 = v28;
         if (![v19 count] || (v30 = v21 - v29, v21 - v29 >= self->_slidingWindowSegmentDuration))
         {
           v31 = [_GCUserIntentInputEvent alloc];
-          v32 = [v10 xAxis];
-          [v32 value];
+          xAxis = [v10 xAxis];
+          [xAxis value];
           v34 = v33;
-          v35 = [v10 yAxis];
-          [v35 value];
+          yAxis = [v10 yAxis];
+          [yAxis value];
           LODWORD(v37) = v36;
           LODWORD(v38) = v34;
-          v39 = [(_GCUserIntentInputEvent *)v31 initWithXValue:a4 yValue:v38 timestamp:v37 deadzoneSquared:self->_deadzoneSquared];
+          v39 = [(_GCUserIntentInputEvent *)v31 initWithXValue:timestamp yValue:v38 timestamp:v37 deadzoneSquared:self->_deadzoneSquared];
 
           if ([(_GCUserIntentInputEvent *)v39 octant]!= -1)
           {
-            if (![v19 count] || v27 && (v40 = objc_msgSend(v27, "octant"), v40 != -[_GCUserIntentInputEvent octant](v39, "octant")))
+            if (![v19 count] || lastObject && (v40 = objc_msgSend(lastObject, "octant"), v40 != -[_GCUserIntentInputEvent octant](v39, "octant")))
             {
               [v19 addObject:v39];
             }
@@ -174,26 +174,26 @@
             {
               v43 = [v19 objectAtIndexedSubscript:v42];
               v44 = [v19 objectAtIndexedSubscript:++v42];
-              v45 = [v43 octant];
-              v46 = [v44 octant];
-              if (v46 <= v45)
+              octant = [v43 octant];
+              octant2 = [v44 octant];
+              if (octant2 <= octant)
               {
-                v47 = v45;
+                v47 = octant;
               }
 
               else
               {
-                v47 = v46;
+                v47 = octant2;
               }
 
-              if (v46 >= v45)
+              if (octant2 >= octant)
               {
-                v48 = v45;
+                v48 = octant;
               }
 
               else
               {
-                v48 = v46;
+                v48 = octant2;
               }
 
               if (v47 - v48 >= 5)
@@ -232,7 +232,7 @@
           {
             objc_initWeak(&location, self);
             WeakRetained = objc_loadWeakRetained(&self->_physicalInputProfile);
-            v53 = [WeakRetained handlerQueue];
+            handlerQueue = [WeakRetained handlerQueue];
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
             block[2] = __68___GCWebKitUserIntentRecognizer_processChangedElements_atTimestamp___block_invoke;
@@ -240,7 +240,7 @@
             objc_copyWeak(&v61, &location);
             block[4] = v10;
             v60 = v19;
-            dispatch_async(v53, block);
+            dispatch_async(handlerQueue, block);
 
             objc_destroyWeak(&v61);
             objc_destroyWeak(&location);

@@ -1,10 +1,10 @@
 @interface WBSFormTelemetryData
-- (WBSFormTelemetryData)initWithFormType:(unint64_t)a3 formID:(int64_t)a4;
+- (WBSFormTelemetryData)initWithFormType:(unint64_t)type formID:(int64_t)d;
 @end
 
 @implementation WBSFormTelemetryData
 
-- (WBSFormTelemetryData)initWithFormType:(unint64_t)a3 formID:(int64_t)a4
+- (WBSFormTelemetryData)initWithFormType:(unint64_t)type formID:(int64_t)d
 {
   v11.receiver = self;
   v11.super_class = WBSFormTelemetryData;
@@ -12,14 +12,14 @@
   v7 = v6;
   if (v6)
   {
-    v8 = 3;
-    if (a3 < 6)
+    typeCopy = 3;
+    if (type < 6)
     {
-      v8 = a3;
+      typeCopy = type;
     }
 
-    v6->_formID = a4;
-    v6->_formType = v8;
+    v6->_formID = d;
+    v6->_formType = typeCopy;
     v9 = v6;
   }
 

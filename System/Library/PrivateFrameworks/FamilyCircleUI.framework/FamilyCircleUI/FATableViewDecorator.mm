@@ -1,30 +1,30 @@
 @interface FATableViewDecorator
-- (BOOL)respondsToSelector:(SEL)a3;
-- (FATableViewDecorator)initWithTableView:(id)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (FATableViewDecorator)initWithTableView:(id)view;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 @end
 
 @implementation FATableViewDecorator
 
-- (FATableViewDecorator)initWithTableView:(id)a3
+- (FATableViewDecorator)initWithTableView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = FATableViewDecorator;
   v6 = [(FATableViewDecorator *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tableView, a3);
-    v8 = [v5 dataSource];
+    objc_storeStrong(&v6->_tableView, view);
+    dataSource = [viewCopy dataSource];
     strongDataSource = v7->_strongDataSource;
-    v7->_strongDataSource = v8;
+    v7->_strongDataSource = dataSource;
 
-    v10 = [v5 delegate];
+    delegate = [viewCopy delegate];
     strongDelegate = v7->_strongDelegate;
-    v7->_strongDelegate = v10;
+    v7->_strongDelegate = delegate;
 
     [(FATableViewProtocol *)v7->_tableView setDelegate:v7];
     [(FATableViewProtocol *)v7->_tableView setDataSource:v7];
@@ -33,36 +33,36 @@
   return v7;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v4 = [(FATableViewDecorator *)self dataSource];
+  dataSource = [(FATableViewDecorator *)self dataSource];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(FATableViewDecorator *)self dataSource];
+    dataSource2 = [(FATableViewDecorator *)self dataSource];
   }
 
   else
   {
-    v7 = [(FATableViewDecorator *)self delegate];
+    delegate = [(FATableViewDecorator *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v6 = [(FATableViewDecorator *)self delegate];
+      dataSource2 = [(FATableViewDecorator *)self delegate];
     }
 
     else
     {
-      v6 = 0;
+      dataSource2 = 0;
     }
   }
 
-  return v6;
+  return dataSource2;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = FATableViewDecorator;
@@ -73,28 +73,28 @@
 
   else
   {
-    v7 = [(FATableViewDecorator *)self delegate];
+    delegate = [(FATableViewDecorator *)self delegate];
     v6 = objc_opt_respondsToSelector();
   }
 
   return v6 & 1;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(FATableViewDecorator *)self dataSource];
-  v8 = [v7 tableView:v6 numberOfRowsInSection:a4];
+  viewCopy = view;
+  dataSource = [(FATableViewDecorator *)self dataSource];
+  v8 = [dataSource tableView:viewCopy numberOfRowsInSection:section];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FATableViewDecorator *)self dataSource];
-  v9 = [v8 tableView:v7 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(FATableViewDecorator *)self dataSource];
+  v9 = [dataSource tableView:viewCopy cellForRowAtIndexPath:pathCopy];
 
   return v9;
 }

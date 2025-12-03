@@ -1,21 +1,21 @@
 @interface _UISearchBarContainerView
-- (_UISearchBarContainerView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_addSubview:(id)a3 positioned:(int64_t)a4 relativeTo:(id)a5;
-- (void)_uncontainerSubview:(id)a3;
+- (_UISearchBarContainerView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_addSubview:(id)subview positioned:(int64_t)positioned relativeTo:(id)to;
+- (void)_uncontainerSubview:(id)subview;
 - (void)enforceSubviewAtBottomIfNecessary;
 - (void)safeAreaInsetsDidChange;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation _UISearchBarContainerView
 
-- (_UISearchBarContainerView)initWithFrame:(CGRect)a3
+- (_UISearchBarContainerView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = _UISearchBarContainerView;
-  v3 = [(UIView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3 && _UISolariumEnabled())
   {
     [(UIView *)v3 _setSafeAreaCornerAdaptation:4];
@@ -32,11 +32,11 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = _UISearchBarContainerView;
-  v5 = [(UIView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -51,30 +51,30 @@
   return v7;
 }
 
-- (void)_addSubview:(id)a3 positioned:(int64_t)a4 relativeTo:(id)a5
+- (void)_addSubview:(id)subview positioned:(int64_t)positioned relativeTo:(id)to
 {
-  v8 = a3;
+  subviewCopy = subview;
   v11.receiver = self;
   v11.super_class = _UISearchBarContainerView;
-  [(UIView *)&v11 _addSubview:v8 positioned:a4 relativeTo:a5];
+  [(UIView *)&v11 _addSubview:subviewCopy positioned:positioned relativeTo:to];
   v9 = objc_opt_respondsToSelector();
   self->_shouldSendContainerSafeAreaInsetsDidChange = v9 & 1;
   if (v9)
   {
-    [(UIView *)v8 _containerSafeAreaInsetsDidChange:self];
+    [(UIView *)subviewCopy _containerSafeAreaInsetsDidChange:self];
   }
 
-  self->_resizingMask = [(UIView *)v8 autoresizingMask];
-  [(UIView *)v8 setAutoresizingMask:10];
+  self->_resizingMask = [(UIView *)subviewCopy autoresizingMask];
+  [(UIView *)subviewCopy setAutoresizingMask:10];
   subview = self->_subview;
-  self->_subview = v8;
+  self->_subview = subviewCopy;
 }
 
-- (void)_uncontainerSubview:(id)a3
+- (void)_uncontainerSubview:(id)subview
 {
-  if (self->_subview == a3)
+  if (self->_subview == subview)
   {
-    [a3 setAutoresizingMask:self->_resizingMask];
+    [subview setAutoresizingMask:self->_resizingMask];
     subview = self->_subview;
     self->_subview = 0;
   }
@@ -106,19 +106,19 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _UISearchBarContainerView;
-  [(UIView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_UISearchBarContainerView *)self enforceSubviewAtBottomIfNecessary];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = _UISearchBarContainerView;
-  [(UIView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(_UISearchBarContainerView *)self enforceSubviewAtBottomIfNecessary];
 }
 

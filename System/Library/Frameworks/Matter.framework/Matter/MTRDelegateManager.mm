@@ -1,16 +1,16 @@
 @interface MTRDelegateManager
-- (BOOL)_callDelegatesWithBlock:(id)a3 logString:(const char *)a4;
-- (MTRDelegateManager)initWithOwner:(id)a3;
-- (unint64_t)iterateDelegatesWithBlock:(id)a3;
-- (void)addDelegateInfo:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (BOOL)_callDelegatesWithBlock:(id)block logString:(const char *)string;
+- (MTRDelegateManager)initWithOwner:(id)owner;
+- (unint64_t)iterateDelegatesWithBlock:(id)block;
+- (void)addDelegateInfo:(id)info;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation MTRDelegateManager
 
-- (MTRDelegateManager)initWithOwner:(id)a3
+- (MTRDelegateManager)initWithOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v10.receiver = self;
   v10.super_class = MTRDelegateManager;
   v5 = [(MTRDelegateManager *)&v10 init];
@@ -20,24 +20,24 @@
     delegates = v5->_delegates;
     v5->_delegates = v6;
 
-    objc_storeWeak(&v5->_owner, v4);
+    objc_storeWeak(&v5->_owner, ownerCopy);
     v8 = v5;
   }
 
   return v5;
 }
 
-- (void)addDelegateInfo:(id)a3
+- (void)addDelegateInfo:(id)info
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
   v6 = [MEMORY[0x277CBEB58] set];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v28 = self;
+  selfCopy = self;
   v7 = self->_delegates;
   v8 = [(NSMutableSet *)v7 countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v8)
@@ -53,11 +53,11 @@
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        v12 = [v11 delegate];
-        if (v12)
+        delegate = [v11 delegate];
+        if (delegate)
         {
-          v13 = [v4 delegate];
-          v14 = v12 == v13;
+          delegate2 = [infoCopy delegate];
+          v14 = delegate == delegate2;
 
           if (v14)
           {
@@ -65,18 +65,18 @@
             v15 = sub_2393D9044(0);
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
             {
-              v16 = [v4 delegate];
+              delegate3 = [infoCopy delegate];
               *buf = 138412546;
               v34 = WeakRetained;
               v35 = 2048;
-              v36 = v16;
+              v36 = delegate3;
               _os_log_impl(&dword_238DAE000, v15, OS_LOG_TYPE_DEFAULT, "%@ replacing delegate info for %p", buf, 0x16u);
             }
 
             if (sub_2393D5398(2u))
             {
-              [v4 delegate];
-              v27 = v26 = WeakRetained;
+              [infoCopy delegate];
+              delegatePointerValue2 = v26 = WeakRetained;
               sub_2393D5320(0, 2);
             }
           }
@@ -88,18 +88,18 @@
           v17 = sub_2393D9044(0);
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [v11 delegatePointerValue];
+            delegatePointerValue = [v11 delegatePointerValue];
             *buf = 138412546;
             v34 = WeakRetained;
             v35 = 2048;
-            v36 = v18;
+            v36 = delegatePointerValue;
             _os_log_impl(&dword_238DAE000, v17, OS_LOG_TYPE_DEFAULT, "%@ removing delegate info for nil delegate %p", buf, 0x16u);
           }
 
           if (sub_2393D5398(2u))
           {
             v26 = WeakRetained;
-            v27 = [v11 delegatePointerValue];
+            delegatePointerValue2 = [v11 delegatePointerValue];
             sub_2393D5320(0, 2);
           }
         }
@@ -113,12 +113,12 @@
 
   if ([v6 count])
   {
-    v19 = [(NSMutableSet *)v28->_delegates count];
-    [(NSMutableSet *)v28->_delegates minusSet:v6];
+    v19 = [(NSMutableSet *)selfCopy->_delegates count];
+    [(NSMutableSet *)selfCopy->_delegates minusSet:v6];
     v20 = sub_2393D9044(0);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [(NSMutableSet *)v28->_delegates count];
+      v21 = [(NSMutableSet *)selfCopy->_delegates count];
       *buf = 138412546;
       v34 = WeakRetained;
       v35 = 2048;
@@ -129,21 +129,21 @@
     if (sub_2393D5398(2u))
     {
       v26 = WeakRetained;
-      v27 = (v19 - [(NSMutableSet *)v28->_delegates count]);
+      delegatePointerValue2 = (v19 - [(NSMutableSet *)selfCopy->_delegates count]);
       sub_2393D5320(0, 2);
     }
   }
 
-  [(NSMutableSet *)v28->_delegates addObject:v4, v26, v27];
+  [(NSMutableSet *)selfCopy->_delegates addObject:infoCopy, v26, delegatePointerValue2];
   v22 = sub_2393D9044(0);
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v4 delegatePointerValue];
-    v24 = [(NSMutableSet *)v28->_delegates count];
+    delegatePointerValue3 = [infoCopy delegatePointerValue];
+    v24 = [(NSMutableSet *)selfCopy->_delegates count];
     *buf = 138412802;
     v34 = WeakRetained;
     v35 = 2048;
-    v36 = v23;
+    v36 = delegatePointerValue3;
     v37 = 2048;
     v38 = v24;
     _os_log_impl(&dword_238DAE000, v22, OS_LOG_TYPE_DEFAULT, "%@ added delegate %p total %lu", buf, 0x20u);
@@ -151,18 +151,18 @@
 
   if (sub_2393D5398(2u))
   {
-    [v4 delegatePointerValue];
-    [(NSMutableSet *)v28->_delegates count];
+    [infoCopy delegatePointerValue];
+    [(NSMutableSet *)selfCopy->_delegates count];
     sub_2393D5320(0, 2);
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
   v6 = sub_2393D9044(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -170,7 +170,7 @@
     *buf = 138412546;
     *&buf[4] = WeakRetained;
     *&buf[12] = 2048;
-    *&buf[14] = v4;
+    *&buf[14] = delegateCopy;
     _os_log_impl(&dword_238DAE000, v6, OS_LOG_TYPE_DEFAULT, "%@ removeDelegate %p", buf, 0x16u);
   }
 
@@ -189,7 +189,7 @@
   v11[1] = 3221225472;
   v11[2] = sub_238DB747C;
   v11[3] = &unk_278A716C0;
-  v7 = v4;
+  v7 = delegateCopy;
   v12 = v7;
   v13 = buf;
   [(MTRDelegateManager *)self iterateDelegatesWithBlock:v11];
@@ -240,10 +240,10 @@ LABEL_13:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)iterateDelegatesWithBlock:(id)a3
+- (unint64_t)iterateDelegatesWithBlock:(id)block
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
   if ([(NSMutableSet *)self->_delegates count])
   {
@@ -267,13 +267,13 @@ LABEL_13:
           }
 
           v10 = *(*(&v24 + 1) + 8 * i);
-          v11 = [v10 delegate];
-          if (v11)
+          delegate = [v10 delegate];
+          if (delegate)
           {
-            if (v4)
+            if (blockCopy)
             {
               v12 = objc_autoreleasePoolPush();
-              v4[2](v4, v10);
+              blockCopy[2](blockCopy, v10);
               objc_autoreleasePoolPop(v12);
             }
           }
@@ -346,10 +346,10 @@ LABEL_13:
   return v16;
 }
 
-- (BOOL)_callDelegatesWithBlock:(id)a3 logString:(const char *)a4
+- (BOOL)_callDelegatesWithBlock:(id)block logString:(const char *)string
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
   v18 = 0;
   v19 = &v18;
@@ -359,11 +359,11 @@ LABEL_13:
   v15[1] = 3221225472;
   v15[2] = sub_238DB7A7C;
   v15[3] = &unk_278A716E8;
-  v8 = v6;
+  v8 = blockCopy;
   v16 = v8;
   v17 = &v18;
   [(MTRDelegateManager *)self iterateDelegatesWithBlock:v15];
-  if (a4)
+  if (string)
   {
     v9 = sub_2393D9044(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -374,7 +374,7 @@ LABEL_13:
       v24 = 2048;
       v25 = v10;
       v26 = 2080;
-      v27 = a4;
+      stringCopy = string;
       _os_log_impl(&dword_238DAE000, v9, OS_LOG_TYPE_DEFAULT, "%@ %lu delegates called for %s", buf, 0x20u);
     }
 

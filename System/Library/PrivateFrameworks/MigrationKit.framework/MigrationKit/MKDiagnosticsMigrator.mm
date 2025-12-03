@@ -1,7 +1,7 @@
 @interface MKDiagnosticsMigrator
 - (MKDiagnosticsMigrator)init;
-- (id)saveData:(id)a3 toFile:(id)a4;
-- (void)savePerformanceMetrics:(id)a3;
+- (id)saveData:(id)data toFile:(id)file;
+- (void)savePerformanceMetrics:(id)metrics;
 @end
 
 @implementation MKDiagnosticsMigrator
@@ -22,25 +22,25 @@
   return v2;
 }
 
-- (void)savePerformanceMetrics:(id)a3
+- (void)savePerformanceMetrics:(id)metrics
 {
-  v4 = [(MKDiagnosticsMigrator *)self saveData:a3 toFile:@"performance.json"];
+  v4 = [(MKDiagnosticsMigrator *)self saveData:metrics toFile:@"performance.json"];
   performanceMetricsPath = self->_performanceMetricsPath;
   self->_performanceMetricsPath = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)saveData:(id)a3 toFile:(id)a4
+- (id)saveData:(id)data toFile:(id)file
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  fileCopy = file;
   v7 = MEMORY[0x277CCAA00];
-  v8 = a3;
-  v9 = [v7 defaultManager];
+  dataCopy = data;
+  defaultManager = [v7 defaultManager];
   basePath = self->_basePath;
   v21 = 0;
-  v11 = [v9 createDirectoryAtPath:basePath withIntermediateDirectories:1 attributes:0 error:&v21];
+  v11 = [defaultManager createDirectoryAtPath:basePath withIntermediateDirectories:1 attributes:0 error:&v21];
   v12 = v21;
 
   if ((v11 & 1) == 0)
@@ -52,8 +52,8 @@
     }
   }
 
-  v14 = [(NSString *)self->_basePath stringByAppendingPathComponent:v6];
-  v15 = [v8 writeToFile:v14 atomically:0];
+  v14 = [(NSString *)self->_basePath stringByAppendingPathComponent:fileCopy];
+  v15 = [dataCopy writeToFile:v14 atomically:0];
 
   v16 = +[MKLog log];
   v17 = v16;
@@ -62,7 +62,7 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v23 = self;
+      selfCopy = self;
       v24 = 2112;
       v25 = v14;
       _os_log_impl(&dword_2592D2000, v17, OS_LOG_TYPE_INFO, "%@: Saved data to file: %@", buf, 0x16u);

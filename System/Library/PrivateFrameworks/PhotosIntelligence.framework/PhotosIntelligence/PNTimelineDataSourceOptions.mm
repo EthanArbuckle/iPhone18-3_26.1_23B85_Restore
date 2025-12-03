@@ -2,7 +2,7 @@
 - (CGSize)widgetSize;
 - (PNTimelineDataSourceOptions)initWithMemoriesOnly;
 - (id)initForWatchShuffle;
-- (id)initForWidgetWithSize:(CGSize)a3;
+- (id)initForWidgetWithSize:(CGSize)size;
 @end
 
 @implementation PNTimelineDataSourceOptions
@@ -30,10 +30,10 @@
   return result;
 }
 
-- (id)initForWidgetWithSize:(CGSize)a3
+- (id)initForWidgetWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = PNTimelineDataSourceOptions;
   result = [(PNTimelineDataSourceOptions *)&v6 init];

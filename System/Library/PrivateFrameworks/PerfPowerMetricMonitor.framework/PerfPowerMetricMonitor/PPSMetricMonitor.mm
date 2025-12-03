@@ -1,38 +1,38 @@
 @interface PPSMetricMonitor
-- (BOOL)setUpdateInterval:(double)a3 error:(id *)a4;
-- (BOOL)startMonitoringProcessWithName:(id)a3 error:(id *)a4;
-- (BOOL)startMonitoringProcessesWithName:(id)a3 error:(id *)a4;
-- (BOOL)startMonitoringProcessesWithNames:(id)a3 PIDs:(id)a4 error:(id *)a5;
-- (BOOL)startMonitoringProcessesWithPID:(id)a3 error:(id *)a4;
-- (BOOL)startMonitoringSystemMetricsWithError:(id *)a3;
-- (PPSMetricMonitor)initWithConfiguration:(id)a3 delegate:(id)a4 error:(id *)a5;
+- (BOOL)setUpdateInterval:(double)interval error:(id *)error;
+- (BOOL)startMonitoringProcessWithName:(id)name error:(id *)error;
+- (BOOL)startMonitoringProcessesWithName:(id)name error:(id *)error;
+- (BOOL)startMonitoringProcessesWithNames:(id)names PIDs:(id)ds error:(id *)error;
+- (BOOL)startMonitoringProcessesWithPID:(id)d error:(id *)error;
+- (BOOL)startMonitoringSystemMetricsWithError:(id *)error;
+- (PPSMetricMonitor)initWithConfiguration:(id)configuration delegate:(id)delegate error:(id *)error;
 - (PPSMetricMonitorDelegate)delegate;
 - (id)collectMetricsOnDemand;
-- (id)collectMetricsOnSnapshot:(id *)a3;
+- (id)collectMetricsOnSnapshot:(id *)snapshot;
 - (void)_cancelUpdateTimer;
 - (void)_handleXPCInterruption;
 - (void)_resetMonitoringState;
 - (void)_resumeMonitoring;
-- (void)_setUpXPCConnectionWithConfig:(id)a3;
-- (void)_startUpdateTimer:(double)a3;
+- (void)_setUpXPCConnectionWithConfig:(id)config;
+- (void)_startUpdateTimer:(double)timer;
 - (void)collectMetricsOnDemand;
-- (void)endWithError:(id)a3;
+- (void)endWithError:(id)error;
 - (void)stopMonitoring;
-- (void)updateWithMetricCollection:(id)a3;
+- (void)updateWithMetricCollection:(id)collection;
 @end
 
 @implementation PPSMetricMonitor
 
-- (PPSMetricMonitor)initWithConfiguration:(id)a3 delegate:(id)a4 error:(id *)a5
+- (PPSMetricMonitor)initWithConfiguration:(id)configuration delegate:(id)delegate error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v11 = PPSMetricMonitorLogHandleForCategory(1);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v34 = v9;
+    v34 = configurationCopy;
     _os_log_impl(&dword_22E4FA000, v11, OS_LOG_TYPE_INFO, "Initializing with config : %@", buf, 0xCu);
   }
 
@@ -45,8 +45,8 @@
   }
 
   v13 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
-  objc_storeWeak(&v12->_delegate, v10);
-  objc_storeStrong(&v12->_config, a3);
+  objc_storeWeak(&v12->_delegate, delegateCopy);
+  objc_storeStrong(&v12->_config, configuration);
   currentProcessPIDs = v12->_currentProcessPIDs;
   v12->_monitoringState = 0;
   v12->_currentProcessPIDs = 0;
@@ -63,31 +63,31 @@
   delegateQueue = v12->_delegateQueue;
   v12->_delegateQueue = v18;
 
-  v20 = [v9 mode];
+  mode = [configurationCopy mode];
   v21 = 0.0;
-  if ((v20 - 1) < 3)
+  if ((mode - 1) < 3)
   {
     goto LABEL_5;
   }
 
-  if (!v20)
+  if (!mode)
   {
-    [v9 updateInterval];
+    [configurationCopy updateInterval];
     v21 = 0.2;
     if (v22 < 0.2)
     {
       v23 = PPSMetricMonitorLogHandleForCategory(1);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        [PPSMetricMonitor initWithConfiguration:v9 delegate:? error:?];
+        [PPSMetricMonitor initWithConfiguration:configurationCopy delegate:? error:?];
       }
 
 LABEL_5:
-      [v9 setUpdateInterval:v21];
+      [configurationCopy setUpdateInterval:v21];
     }
   }
 
-  if (![v9 updateDelegate] || (objc_opt_respondsToSelector() & 1) != 0)
+  if (![configurationCopy updateDelegate] || (objc_opt_respondsToSelector() & 1) != 0)
   {
 
 LABEL_14:
@@ -101,13 +101,13 @@ LABEL_14:
     [PPSMetricMonitor initWithConfiguration:delegate:error:];
   }
 
-  if (a5)
+  if (error)
   {
     v28 = MEMORY[0x277CCA9B8];
     v31 = *MEMORY[0x277CCA450];
     v32 = @"Invalid configuration";
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-    *a5 = [v28 errorWithDomain:@"com.apple.PerfPowerMetricMonitor" code:0 userInfo:v29];
+    *error = [v28 errorWithDomain:@"com.apple.PerfPowerMetricMonitor" code:0 userInfo:v29];
   }
 
   v24 = 0;
@@ -117,7 +117,7 @@ LABEL_15:
   return v24;
 }
 
-- (BOOL)startMonitoringSystemMetricsWithError:(id *)a3
+- (BOOL)startMonitoringSystemMetricsWithError:(id *)error
 {
   v38[1] = *MEMORY[0x277D85DE8];
   v5 = PPSMetricMonitorLogHandleForCategory(1);
@@ -136,13 +136,13 @@ LABEL_15:
   if (![(PPSMetricMonitor *)self monitoringState]|| [(PPSMetricMonitor *)self isInterrupted])
   {
     [(PPSMetricMonitor *)self _resetMonitoringState];
-    v7 = [(PPSMetricMonitor *)self connection];
-    v8 = v7 == 0;
+    connection = [(PPSMetricMonitor *)self connection];
+    v8 = connection == 0;
 
     if (v8)
     {
-      v9 = [(PPSMetricMonitor *)self config];
-      [(PPSMetricMonitor *)self _setUpXPCConnectionWithConfig:v9];
+      config = [(PPSMetricMonitor *)self config];
+      [(PPSMetricMonitor *)self _setUpXPCConnectionWithConfig:config];
     }
 
     v10 = dispatch_semaphore_create(0);
@@ -152,7 +152,7 @@ LABEL_15:
     v34 = __Block_byref_object_copy_;
     v35 = __Block_byref_object_dispose_;
     v36 = 0;
-    v11 = [(PPSMetricMonitor *)self xpcMessagingQueue];
+    xpcMessagingQueue = [(PPSMetricMonitor *)self xpcMessagingQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__PPSMetricMonitor_startMonitoringSystemMetricsWithError___block_invoke;
@@ -161,22 +161,22 @@ LABEL_15:
     v30 = buf;
     v12 = v10;
     v29 = v12;
-    dispatch_sync(v11, block);
+    dispatch_sync(xpcMessagingQueue, block);
 
     dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
     v13 = *(v32 + 5);
     v14 = v13 == 0;
     if (v13)
     {
-      if (a3)
+      if (error)
       {
-        *a3 = v13;
+        *error = v13;
       }
 
-      v15 = [(PPSMetricMonitor *)self config];
-      v16 = [v15 isHeadless];
+      config2 = [(PPSMetricMonitor *)self config];
+      isHeadless = [config2 isHeadless];
 
-      if (!v16)
+      if (!isHeadless)
       {
         goto LABEL_27;
       }
@@ -184,20 +184,20 @@ LABEL_15:
 
     else
     {
-      v20 = [(PPSMetricMonitor *)self connection];
+      connection2 = [(PPSMetricMonitor *)self connection];
 
-      if (v20)
+      if (connection2)
       {
         [(PPSMetricMonitor *)self setMonitoringState:1];
       }
 
-      v21 = [(PPSMetricMonitor *)self config];
-      v22 = [v21 isHeadless];
+      config3 = [(PPSMetricMonitor *)self config];
+      isHeadless2 = [config3 isHeadless];
 
-      if (!v22)
+      if (!isHeadless2)
       {
-        v24 = [(PPSMetricMonitor *)self config];
-        v25 = [v24 mode] == 0;
+        config4 = [(PPSMetricMonitor *)self config];
+        v25 = [config4 mode] == 0;
 
         if (!v25)
         {
@@ -207,8 +207,8 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        v17 = [(PPSMetricMonitor *)self config];
-        [v17 updateInterval];
+        config5 = [(PPSMetricMonitor *)self config];
+        [config5 updateInterval];
         [(PPSMetricMonitor *)self _startUpdateTimer:?];
 LABEL_26:
 
@@ -217,19 +217,19 @@ LABEL_26:
 
       if (![(PPSMetricMonitor *)self isAnalyticsSent])
       {
-        v23 = [MEMORY[0x277CBEAA8] date];
-        [(PPSMetricMonitor *)self setMonitoredStartTime:v23];
+        date = [MEMORY[0x277CBEAA8] date];
+        [(PPSMetricMonitor *)self setMonitoredStartTime:date];
 
         [(PPSMetricMonitor *)self setIsAnalyticsSent:1];
       }
     }
 
-    v17 = [(PPSMetricMonitor *)self connection];
-    [v17 invalidate];
+    config5 = [(PPSMetricMonitor *)self connection];
+    [config5 invalidate];
     goto LABEL_26;
   }
 
-  if (!a3)
+  if (!error)
   {
     v14 = 0;
     goto LABEL_29;
@@ -246,7 +246,7 @@ LABEL_26:
   v38[0] = @"Already monitoring";
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:&v37 count:1];
   [v19 errorWithDomain:@"com.apple.PerfPowerMetricMonitor" code:7 userInfo:v12];
-  *a3 = v14 = 0;
+  *error = v14 = 0;
 LABEL_28:
 
 LABEL_29:
@@ -300,10 +300,10 @@ void __56__PPSMetricMonitor_startMonitoringProcessWithPID_error___block_invoke_2
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)startMonitoringProcessesWithPID:(id)a3 error:(id *)a4
+- (BOOL)startMonitoringProcessesWithPID:(id)d error:(id *)error
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = PPSMetricMonitorLogHandleForCategory(1);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -313,13 +313,13 @@ void __56__PPSMetricMonitor_startMonitoringProcessWithPID_error___block_invoke_2
   if (![(PPSMetricMonitor *)self monitoringState]|| [(PPSMetricMonitor *)self isInterrupted])
   {
     [(PPSMetricMonitor *)self _resetMonitoringState];
-    v8 = [(PPSMetricMonitor *)self connection];
-    v9 = v8 == 0;
+    connection = [(PPSMetricMonitor *)self connection];
+    v9 = connection == 0;
 
     if (v9)
     {
-      v10 = [(PPSMetricMonitor *)self config];
-      [(PPSMetricMonitor *)self _setUpXPCConnectionWithConfig:v10];
+      config = [(PPSMetricMonitor *)self config];
+      [(PPSMetricMonitor *)self _setUpXPCConnectionWithConfig:config];
     }
 
     v11 = dispatch_semaphore_create(0);
@@ -329,59 +329,59 @@ void __56__PPSMetricMonitor_startMonitoringProcessWithPID_error___block_invoke_2
     v41 = __Block_byref_object_copy_;
     v42 = __Block_byref_object_dispose_;
     v43 = 0;
-    v12 = [(PPSMetricMonitor *)self xpcMessagingQueue];
+    xpcMessagingQueue = [(PPSMetricMonitor *)self xpcMessagingQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__PPSMetricMonitor_startMonitoringProcessesWithPID_error___block_invoke;
     block[3] = &unk_278847968;
     block[4] = self;
-    v13 = v6;
+    v13 = dCopy;
     v35 = v13;
     v37 = &v38;
     v14 = v11;
     v36 = v14;
-    dispatch_sync(v12, block);
+    dispatch_sync(xpcMessagingQueue, block);
 
     dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
     v15 = v39[5];
     v16 = v15 == 0;
     if (v15)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = v15;
+        *error = v15;
       }
 
-      v17 = [(PPSMetricMonitor *)self config];
-      v18 = [v17 isHeadless];
+      config2 = [(PPSMetricMonitor *)self config];
+      isHeadless = [config2 isHeadless];
 
-      if (!v18)
+      if (!isHeadless)
       {
         goto LABEL_27;
       }
 
-      v19 = [(PPSMetricMonitor *)self connection];
-      [v19 invalidate];
+      connection2 = [(PPSMetricMonitor *)self connection];
+      [connection2 invalidate];
     }
 
     else
     {
-      v22 = [(PPSMetricMonitor *)self connection];
+      connection3 = [(PPSMetricMonitor *)self connection];
 
-      if (v22)
+      if (connection3)
       {
         [(PPSMetricMonitor *)self setMonitoringState:2];
         v23 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v13];
         [(PPSMetricMonitor *)self setCurrentProcessPIDs:v23];
       }
 
-      v24 = [(PPSMetricMonitor *)self config];
-      v25 = [v24 isHeadless];
+      config3 = [(PPSMetricMonitor *)self config];
+      isHeadless2 = [config3 isHeadless];
 
-      if (v25 && (-[PPSMetricMonitor connection](self, "connection"), v26 = objc_claimAutoreleasedReturnValue(), [v26 invalidate], v26, !-[PPSMetricMonitor isAnalyticsSent](self, "isAnalyticsSent")))
+      if (isHeadless2 && (-[PPSMetricMonitor connection](self, "connection"), v26 = objc_claimAutoreleasedReturnValue(), [v26 invalidate], v26, !-[PPSMetricMonitor isAnalyticsSent](self, "isAnalyticsSent")))
       {
-        v29 = [MEMORY[0x277CBEAA8] date];
-        [(PPSMetricMonitor *)self setMonitoredStartTime:v29];
+        date = [MEMORY[0x277CBEAA8] date];
+        [(PPSMetricMonitor *)self setMonitoredStartTime:date];
 
         v30 = v13;
         AnalyticsSendEventLazy();
@@ -392,13 +392,13 @@ void __56__PPSMetricMonitor_startMonitoringProcessWithPID_error___block_invoke_2
         }
 
         [(PPSMetricMonitor *)self setIsAnalyticsSent:1];
-        v19 = v30;
+        connection2 = v30;
       }
 
       else
       {
-        v27 = [(PPSMetricMonitor *)self config];
-        v28 = [v27 mode] == 0;
+        config4 = [(PPSMetricMonitor *)self config];
+        v28 = [config4 mode] == 0;
 
         if (!v28)
         {
@@ -410,8 +410,8 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        v19 = [(PPSMetricMonitor *)self config];
-        [v19 updateInterval];
+        connection2 = [(PPSMetricMonitor *)self config];
+        [connection2 updateInterval];
         [(PPSMetricMonitor *)self _startUpdateTimer:?];
       }
     }
@@ -419,7 +419,7 @@ LABEL_28:
     goto LABEL_27;
   }
 
-  if (a4)
+  if (error)
   {
     v20 = PPSMetricMonitorLogHandleForCategory(1);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -432,7 +432,7 @@ LABEL_28:
     v46[0] = @"Already monitoring";
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:&v45 count:1];
     [v21 errorWithDomain:@"com.apple.PerfPowerMetricMonitor" code:7 userInfo:v14];
-    *a4 = v16 = 0;
+    *error = v16 = 0;
     goto LABEL_28;
   }
 
@@ -477,10 +477,10 @@ id __58__PPSMetricMonitor_startMonitoringProcessesWithPID_error___block_invoke_3
   return v2;
 }
 
-- (BOOL)startMonitoringProcessWithName:(id)a3 error:(id *)a4
+- (BOOL)startMonitoringProcessWithName:(id)name error:(id *)error
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nameCopy = name;
   v7 = PPSMetricMonitorLogHandleForCategory(1);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -490,13 +490,13 @@ id __58__PPSMetricMonitor_startMonitoringProcessesWithPID_error___block_invoke_3
   if (![(PPSMetricMonitor *)self monitoringState]|| [(PPSMetricMonitor *)self isInterrupted])
   {
     [(PPSMetricMonitor *)self _resetMonitoringState];
-    v8 = [(PPSMetricMonitor *)self connection];
-    v9 = v8 == 0;
+    connection = [(PPSMetricMonitor *)self connection];
+    v9 = connection == 0;
 
     if (v9)
     {
-      v10 = [(PPSMetricMonitor *)self config];
-      [(PPSMetricMonitor *)self _setUpXPCConnectionWithConfig:v10];
+      config = [(PPSMetricMonitor *)self config];
+      [(PPSMetricMonitor *)self _setUpXPCConnectionWithConfig:config];
     }
 
     v11 = dispatch_semaphore_create(0);
@@ -506,39 +506,39 @@ id __58__PPSMetricMonitor_startMonitoringProcessesWithPID_error___block_invoke_3
     v44 = __Block_byref_object_copy_;
     v45 = __Block_byref_object_dispose_;
     v46 = 0;
-    v12 = [(PPSMetricMonitor *)self xpcMessagingQueue];
+    xpcMessagingQueue = [(PPSMetricMonitor *)self xpcMessagingQueue];
     v33 = MEMORY[0x277D85DD0];
     v34 = 3221225472;
     v35 = __57__PPSMetricMonitor_startMonitoringProcessWithName_error___block_invoke;
     v36 = &unk_278847968;
-    v37 = self;
-    v13 = v6;
+    selfCopy = self;
+    v13 = nameCopy;
     v38 = v13;
     v40 = &v41;
     v14 = v11;
     v39 = v14;
-    dispatch_sync(v12, &v33);
+    dispatch_sync(xpcMessagingQueue, &v33);
 
     dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
     v15 = v42[5];
     v16 = v15 == 0;
     if (v15)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = v15;
+        *error = v15;
       }
 
       v17 = [(PPSMetricMonitor *)self config:v33];
-      v18 = [v17 isHeadless];
+      isHeadless = [v17 isHeadless];
 
-      if (!v18)
+      if (!isHeadless)
       {
         goto LABEL_23;
       }
 
-      v19 = [(PPSMetricMonitor *)self connection];
-      [v19 invalidate];
+      connection2 = [(PPSMetricMonitor *)self connection];
+      [connection2 invalidate];
     }
 
     else
@@ -553,18 +553,18 @@ id __58__PPSMetricMonitor_startMonitoringProcessesWithPID_error___block_invoke_3
         [(PPSMetricMonitor *)self setCurrentProcessNames:v23];
       }
 
-      v24 = [(PPSMetricMonitor *)self config];
-      v25 = [v24 isHeadless];
+      config2 = [(PPSMetricMonitor *)self config];
+      isHeadless2 = [config2 isHeadless];
 
-      if (v25)
+      if (isHeadless2)
       {
-        v26 = [(PPSMetricMonitor *)self connection];
-        [v26 invalidate];
+        connection3 = [(PPSMetricMonitor *)self connection];
+        [connection3 invalidate];
 
         if (![(PPSMetricMonitor *)self isAnalyticsSent])
         {
-          v31 = [MEMORY[0x277CBEAA8] date];
-          [(PPSMetricMonitor *)self setMonitoredStartTime:v31];
+          date = [MEMORY[0x277CBEAA8] date];
+          [(PPSMetricMonitor *)self setMonitoredStartTime:date];
 
           AnalyticsSendEventLazy();
           v32 = PPSMetricMonitorLogHandleForCategory(1);
@@ -578,8 +578,8 @@ id __58__PPSMetricMonitor_startMonitoringProcessesWithPID_error___block_invoke_3
         }
       }
 
-      v27 = [(PPSMetricMonitor *)self config];
-      v28 = [v27 mode] == 0;
+      config3 = [(PPSMetricMonitor *)self config];
+      v28 = [config3 mode] == 0;
 
       if (!v28)
       {
@@ -589,15 +589,15 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v19 = [(PPSMetricMonitor *)self config];
-      [v19 updateInterval];
+      connection2 = [(PPSMetricMonitor *)self config];
+      [connection2 updateInterval];
       [(PPSMetricMonitor *)self _startUpdateTimer:?];
     }
 
     goto LABEL_23;
   }
 
-  if (!a4)
+  if (!error)
   {
     v16 = 0;
     goto LABEL_25;
@@ -614,7 +614,7 @@ LABEL_23:
   v49[0] = @"Already monitoring";
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:&v48 count:1];
   [v21 errorWithDomain:@"com.apple.PerfPowerMetricMonitor" code:7 userInfo:v14];
-  *a4 = v16 = 0;
+  *error = v16 = 0;
 LABEL_24:
 
 LABEL_25:
@@ -643,10 +643,10 @@ void __57__PPSMetricMonitor_startMonitoringProcessWithName_error___block_invoke_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)startMonitoringProcessesWithName:(id)a3 error:(id *)a4
+- (BOOL)startMonitoringProcessesWithName:(id)name error:(id *)error
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nameCopy = name;
   v7 = PPSMetricMonitorLogHandleForCategory(1);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -656,13 +656,13 @@ void __57__PPSMetricMonitor_startMonitoringProcessWithName_error___block_invoke_
   if (![(PPSMetricMonitor *)self monitoringState]|| [(PPSMetricMonitor *)self isInterrupted])
   {
     [(PPSMetricMonitor *)self _resetMonitoringState];
-    v8 = [(PPSMetricMonitor *)self connection];
-    v9 = v8 == 0;
+    connection = [(PPSMetricMonitor *)self connection];
+    v9 = connection == 0;
 
     if (v9)
     {
-      v10 = [(PPSMetricMonitor *)self config];
-      [(PPSMetricMonitor *)self _setUpXPCConnectionWithConfig:v10];
+      config = [(PPSMetricMonitor *)self config];
+      [(PPSMetricMonitor *)self _setUpXPCConnectionWithConfig:config];
     }
 
     v11 = dispatch_semaphore_create(0);
@@ -672,59 +672,59 @@ void __57__PPSMetricMonitor_startMonitoringProcessWithName_error___block_invoke_
     v41 = __Block_byref_object_copy_;
     v42 = __Block_byref_object_dispose_;
     v43 = 0;
-    v12 = [(PPSMetricMonitor *)self xpcMessagingQueue];
+    xpcMessagingQueue = [(PPSMetricMonitor *)self xpcMessagingQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__PPSMetricMonitor_startMonitoringProcessesWithName_error___block_invoke;
     block[3] = &unk_278847968;
     block[4] = self;
-    v13 = v6;
+    v13 = nameCopy;
     v35 = v13;
     v37 = &v38;
     v14 = v11;
     v36 = v14;
-    dispatch_sync(v12, block);
+    dispatch_sync(xpcMessagingQueue, block);
 
     dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
     v15 = v39[5];
     v16 = v15 == 0;
     if (v15)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = v15;
+        *error = v15;
       }
 
-      v17 = [(PPSMetricMonitor *)self config];
-      v18 = [v17 isHeadless];
+      config2 = [(PPSMetricMonitor *)self config];
+      isHeadless = [config2 isHeadless];
 
-      if (!v18)
+      if (!isHeadless)
       {
         goto LABEL_27;
       }
 
-      v19 = [(PPSMetricMonitor *)self connection];
-      [v19 invalidate];
+      connection2 = [(PPSMetricMonitor *)self connection];
+      [connection2 invalidate];
     }
 
     else
     {
-      v22 = [(PPSMetricMonitor *)self connection];
+      connection3 = [(PPSMetricMonitor *)self connection];
 
-      if (v22)
+      if (connection3)
       {
         [(PPSMetricMonitor *)self setMonitoringState:2];
         v23 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v13];
         [(PPSMetricMonitor *)self setCurrentProcessNames:v23];
       }
 
-      v24 = [(PPSMetricMonitor *)self config];
-      v25 = [v24 isHeadless];
+      config3 = [(PPSMetricMonitor *)self config];
+      isHeadless2 = [config3 isHeadless];
 
-      if (v25 && (-[PPSMetricMonitor connection](self, "connection"), v26 = objc_claimAutoreleasedReturnValue(), [v26 invalidate], v26, !-[PPSMetricMonitor isAnalyticsSent](self, "isAnalyticsSent")))
+      if (isHeadless2 && (-[PPSMetricMonitor connection](self, "connection"), v26 = objc_claimAutoreleasedReturnValue(), [v26 invalidate], v26, !-[PPSMetricMonitor isAnalyticsSent](self, "isAnalyticsSent")))
       {
-        v29 = [MEMORY[0x277CBEAA8] date];
-        [(PPSMetricMonitor *)self setMonitoredStartTime:v29];
+        date = [MEMORY[0x277CBEAA8] date];
+        [(PPSMetricMonitor *)self setMonitoredStartTime:date];
 
         v30 = v13;
         AnalyticsSendEventLazy();
@@ -735,13 +735,13 @@ void __57__PPSMetricMonitor_startMonitoringProcessWithName_error___block_invoke_
         }
 
         [(PPSMetricMonitor *)self setIsAnalyticsSent:1];
-        v19 = v30;
+        connection2 = v30;
       }
 
       else
       {
-        v27 = [(PPSMetricMonitor *)self config];
-        v28 = [v27 mode] == 0;
+        config4 = [(PPSMetricMonitor *)self config];
+        v28 = [config4 mode] == 0;
 
         if (!v28)
         {
@@ -753,8 +753,8 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        v19 = [(PPSMetricMonitor *)self config];
-        [v19 updateInterval];
+        connection2 = [(PPSMetricMonitor *)self config];
+        [connection2 updateInterval];
         [(PPSMetricMonitor *)self _startUpdateTimer:?];
       }
     }
@@ -762,7 +762,7 @@ LABEL_28:
     goto LABEL_27;
   }
 
-  if (a4)
+  if (error)
   {
     v20 = PPSMetricMonitorLogHandleForCategory(1);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -775,7 +775,7 @@ LABEL_28:
     v46[0] = @"Already monitoring";
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:&v45 count:1];
     [v21 errorWithDomain:@"com.apple.PerfPowerMetricMonitor" code:7 userInfo:v14];
-    *a4 = v16 = 0;
+    *error = v16 = 0;
     goto LABEL_28;
   }
 
@@ -820,11 +820,11 @@ id __59__PPSMetricMonitor_startMonitoringProcessesWithName_error___block_invoke_
   return v2;
 }
 
-- (BOOL)startMonitoringProcessesWithNames:(id)a3 PIDs:(id)a4 error:(id *)a5
+- (BOOL)startMonitoringProcessesWithNames:(id)names PIDs:(id)ds error:(id *)error
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  namesCopy = names;
+  dsCopy = ds;
   v10 = PPSMetricMonitorLogHandleForCategory(1);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -834,13 +834,13 @@ id __59__PPSMetricMonitor_startMonitoringProcessesWithName_error___block_invoke_
   if (![(PPSMetricMonitor *)self monitoringState]|| [(PPSMetricMonitor *)self isInterrupted])
   {
     [(PPSMetricMonitor *)self _resetMonitoringState];
-    v11 = [(PPSMetricMonitor *)self connection];
-    v12 = v11 == 0;
+    connection = [(PPSMetricMonitor *)self connection];
+    v12 = connection == 0;
 
     if (v12)
     {
-      v13 = [(PPSMetricMonitor *)self config];
-      [(PPSMetricMonitor *)self _setUpXPCConnectionWithConfig:v13];
+      config = [(PPSMetricMonitor *)self config];
+      [(PPSMetricMonitor *)self _setUpXPCConnectionWithConfig:config];
     }
 
     v14 = dispatch_semaphore_create(0);
@@ -850,49 +850,49 @@ id __59__PPSMetricMonitor_startMonitoringProcessesWithName_error___block_invoke_
     v52 = __Block_byref_object_copy_;
     v53 = __Block_byref_object_dispose_;
     v54 = 0;
-    v15 = [(PPSMetricMonitor *)self xpcMessagingQueue];
+    xpcMessagingQueue = [(PPSMetricMonitor *)self xpcMessagingQueue];
     block = MEMORY[0x277D85DD0];
     v41 = 3221225472;
     v42 = __65__PPSMetricMonitor_startMonitoringProcessesWithNames_PIDs_error___block_invoke;
     v43 = &unk_2788479B8;
-    v44 = self;
-    v45 = v8;
-    v16 = v9;
+    selfCopy = self;
+    v45 = namesCopy;
+    v16 = dsCopy;
     v46 = v16;
     v48 = &v49;
     v17 = v14;
     v47 = v17;
-    dispatch_sync(v15, &block);
+    dispatch_sync(xpcMessagingQueue, &block);
 
     dispatch_semaphore_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
     v18 = v50[5];
     v19 = v18 == 0;
     if (v18)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = v18;
+        *error = v18;
       }
     }
 
     else
     {
-      v22 = [(PPSMetricMonitor *)self connection];
+      connection2 = [(PPSMetricMonitor *)self connection];
 
-      if (v22)
+      if (connection2)
       {
         [(PPSMetricMonitor *)self setMonitoringState:2];
         v23 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v16];
         [(PPSMetricMonitor *)self setCurrentProcessPIDs:v23];
       }
 
-      v24 = [(PPSMetricMonitor *)self config];
-      v25 = [v24 isHeadless];
+      config2 = [(PPSMetricMonitor *)self config];
+      isHeadless = [config2 isHeadless];
 
-      if (v25 && ![(PPSMetricMonitor *)self isAnalyticsSent])
+      if (isHeadless && ![(PPSMetricMonitor *)self isAnalyticsSent])
       {
-        v26 = [MEMORY[0x277CBEAA8] date];
-        [(PPSMetricMonitor *)self setMonitoredStartTime:v26];
+        date = [MEMORY[0x277CBEAA8] date];
+        [(PPSMetricMonitor *)self setMonitoredStartTime:date];
 
         v35 = MEMORY[0x277D85DD0];
         v36 = 3221225472;
@@ -917,13 +917,13 @@ id __59__PPSMetricMonitor_startMonitoringProcessesWithName_error___block_invoke_
 
       else
       {
-        v30 = [(PPSMetricMonitor *)self config];
-        v31 = [v30 isHeadless];
+        config3 = [(PPSMetricMonitor *)self config];
+        isHeadless2 = [config3 isHeadless];
 
-        if ((v31 & 1) == 0)
+        if ((isHeadless2 & 1) == 0)
         {
-          v32 = [(PPSMetricMonitor *)self config];
-          [v32 updateInterval];
+          config4 = [(PPSMetricMonitor *)self config];
+          [config4 updateInterval];
           [(PPSMetricMonitor *)self _startUpdateTimer:?];
         }
       }
@@ -935,7 +935,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (a5)
+  if (error)
   {
     v20 = PPSMetricMonitorLogHandleForCategory(1);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -948,7 +948,7 @@ LABEL_27:
     v57[0] = @"Already monitoring";
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:&v56 count:1];
     [v21 errorWithDomain:@"com.apple.PerfPowerMetricMonitor" code:7 userInfo:v17];
-    *a5 = v19 = 0;
+    *error = v19 = 0;
     goto LABEL_27;
   }
 
@@ -994,7 +994,7 @@ id __65__PPSMetricMonitor_startMonitoringProcessesWithNames_PIDs_error___block_i
   return v2;
 }
 
-- (id)collectMetricsOnSnapshot:(id *)a3
+- (id)collectMetricsOnSnapshot:(id *)snapshot
 {
   v31 = *MEMORY[0x277D85DE8];
   v5 = PPSMetricMonitorLogHandleForCategory(1);
@@ -1057,13 +1057,13 @@ LABEL_8:
 
   else
   {
-    v12 = [(PPSMetricMonitor *)self connection];
+    connection = [(PPSMetricMonitor *)self connection];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __45__PPSMetricMonitor_collectMetricsOnSnapshot___block_invoke;
     v19[3] = &unk_2788479E0;
     v19[4] = &v20;
-    v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:v19];
+    v13 = [connection synchronousRemoteObjectProxyWithErrorHandler:v19];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __45__PPSMetricMonitor_collectMetricsOnSnapshot___block_invoke_2;
@@ -1075,7 +1075,7 @@ LABEL_8:
     v14 = *(v21[0] + 40);
     if (v14)
     {
-      *a3 = v14;
+      *snapshot = v14;
     }
   }
 
@@ -1152,8 +1152,8 @@ void __45__PPSMetricMonitor_collectMetricsOnSnapshot___block_invoke_2(uint64_t a
 LABEL_8:
   if (*(v17[0] + 40))
   {
-    v9 = PPSMetricMonitorLogHandleForCategory(1);
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    connection = PPSMetricMonitorLogHandleForCategory(1);
+    if (os_log_type_enabled(connection, OS_LOG_TYPE_ERROR))
     {
       [(PPSMetricMonitor *)v17 collectMetricsOnDemand];
     }
@@ -1161,13 +1161,13 @@ LABEL_8:
 
   else
   {
-    v9 = [(PPSMetricMonitor *)self connection];
+    connection = [(PPSMetricMonitor *)self connection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __42__PPSMetricMonitor_collectMetricsOnDemand__block_invoke;
     v15[3] = &unk_2788479E0;
     v15[4] = &v16;
-    v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v15];
+    v10 = [connection synchronousRemoteObjectProxyWithErrorHandler:v15];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __42__PPSMetricMonitor_collectMetricsOnDemand__block_invoke_2;
@@ -1213,10 +1213,10 @@ void __34__PPSMetricMonitor_stopMonitoring__block_invoke(uint64_t a1)
   [v1 finishMonitoringAndSendMetrics];
 }
 
-- (BOOL)setUpdateInterval:(double)a3 error:(id *)a4
+- (BOOL)setUpdateInterval:(double)interval error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  if (a3 < 0.2)
+  if (interval < 0.2)
   {
     v7 = PPSMetricMonitorLogHandleForCategory(1);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1228,23 +1228,23 @@ void __34__PPSMetricMonitor_stopMonitoring__block_invoke(uint64_t a1)
     v17 = *MEMORY[0x277CCA450];
     v18[0] = @"Update interval smaller than 0.2 s is not supported; defaulting to 0.2 s";
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-    *a4 = [v8 errorWithDomain:@"com.apple.PerfPowerMetricMonitor" code:0 userInfo:v9];
+    *error = [v8 errorWithDomain:@"com.apple.PerfPowerMetricMonitor" code:0 userInfo:v9];
   }
 
   v10 = PPSMetricMonitorLogHandleForCategory(2);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v15 = 134217984;
-    v16 = a3;
+    intervalCopy = interval;
     _os_log_impl(&dword_22E4FA000, v10, OS_LOG_TYPE_INFO, "Setting update interval to %f s", &v15, 0xCu);
   }
 
-  v11 = [(PPSMetricMonitor *)self updateTimer];
+  updateTimer = [(PPSMetricMonitor *)self updateTimer];
 
-  if (v11)
+  if (updateTimer)
   {
-    v12 = [(PPSMetricMonitor *)self updateTimer];
-    dispatch_source_set_timer(v12, 0, (a3 * 1000000000.0), 0x989680uLL);
+    updateTimer2 = [(PPSMetricMonitor *)self updateTimer];
+    dispatch_source_set_timer(updateTimer2, 0, (interval * 1000000000.0), 0x989680uLL);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1260,26 +1260,26 @@ void __34__PPSMetricMonitor_stopMonitoring__block_invoke(uint64_t a1)
   [(PPSMetricMonitor *)self setIsInterrupted:0];
 }
 
-- (void)updateWithMetricCollection:(id)a3
+- (void)updateWithMetricCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PPSMetricMonitor *)self delegate];
+  collectionCopy = collection;
+  delegate = [(PPSMetricMonitor *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(PPSMetricMonitor *)self delegate];
+    delegate2 = [(PPSMetricMonitor *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PPSMetricMonitor *)self delegateQueue];
+      delegateQueue = [(PPSMetricMonitor *)self delegateQueue];
       v13 = MEMORY[0x277D85DD0];
       v14 = 3221225472;
       v15 = __47__PPSMetricMonitor_updateWithMetricCollection___block_invoke;
       v16 = &unk_278847A58;
-      v17 = self;
-      v18 = v4;
-      dispatch_async(v8, &v13);
+      selfCopy = self;
+      v18 = collectionCopy;
+      dispatch_async(delegateQueue, &v13);
 
       goto LABEL_9;
     }
@@ -1302,12 +1302,12 @@ void __34__PPSMetricMonitor_stopMonitoring__block_invoke(uint64_t a1)
 
 LABEL_9:
   v10 = [(PPSMetricMonitor *)self config:v13];
-  v11 = [v10 mode];
+  mode = [v10 mode];
 
-  if (v11 == 1)
+  if (mode == 1)
   {
-    v12 = [(PPSMetricMonitor *)self connection];
-    [v12 invalidate];
+    connection = [(PPSMetricMonitor *)self connection];
+    [connection invalidate];
   }
 }
 
@@ -1317,16 +1317,16 @@ void __47__PPSMetricMonitor_updateWithMetricCollection___block_invoke(uint64_t a
   [v2 metricMonitor:*(a1 + 32) didUpdateWithMetrics:*(a1 + 40)];
 }
 
-- (void)endWithError:(id)a3
+- (void)endWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(PPSMetricMonitor *)self monitoredStartTime];
+  errorCopy = error;
+  monitoredStartTime = [(PPSMetricMonitor *)self monitoredStartTime];
 
-  if (v5)
+  if (monitoredStartTime)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [(PPSMetricMonitor *)self monitoredStartTime];
-    [v6 timeIntervalSinceDate:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    monitoredStartTime2 = [(PPSMetricMonitor *)self monitoredStartTime];
+    [date timeIntervalSinceDate:monitoredStartTime2];
 
     [(PPSMetricMonitor *)self setMonitoredStartTime:0];
     v8 = PPSMetricMonitorLogHandleForCategory(2);
@@ -1338,8 +1338,8 @@ void __47__PPSMetricMonitor_updateWithMetricCollection___block_invoke(uint64_t a
     AnalyticsSendEventLazy();
   }
 
-  v9 = [(PPSMetricMonitor *)self delegate];
-  [v9 metricMonitor:self didEndWithError:v4];
+  delegate = [(PPSMetricMonitor *)self delegate];
+  [delegate metricMonitor:self didEndWithError:errorCopy];
 
   [(PPSMetricMonitor *)self _resetMonitoringState];
 }
@@ -1357,9 +1357,9 @@ id __33__PPSMetricMonitor_endWithError___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_setUpXPCConnectionWithConfig:(id)a3
+- (void)_setUpXPCConnectionWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = PPSMetricMonitorLogHandleForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1370,46 +1370,46 @@ id __33__PPSMetricMonitor_endWithError___block_invoke(uint64_t a1)
   [(PPSMetricMonitor *)self setConnection:v6];
 
   v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284302200];
-  v8 = [(PPSMetricMonitor *)self connection];
-  [v8 setRemoteObjectInterface:v7];
+  connection = [(PPSMetricMonitor *)self connection];
+  [connection setRemoteObjectInterface:v7];
 
-  v9 = [(PPSMetricMonitor *)self connection];
-  v10 = [v9 remoteObjectInterface];
+  connection2 = [(PPSMetricMonitor *)self connection];
+  remoteObjectInterface = [connection2 remoteObjectInterface];
   v11 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
-  [v10 setClasses:v11 forSelector:sel_setUpWithConfiguration_completion_ argumentIndex:0 ofReply:0];
+  [remoteObjectInterface setClasses:v11 forSelector:sel_setUpWithConfiguration_completion_ argumentIndex:0 ofReply:0];
 
   v12 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284301658];
-  v13 = [(PPSMetricMonitor *)self connection];
-  [v13 setExportedInterface:v12];
+  connection3 = [(PPSMetricMonitor *)self connection];
+  [connection3 setExportedInterface:v12];
 
-  v14 = [(PPSMetricMonitor *)self connection];
-  v15 = [v14 exportedInterface];
+  connection4 = [(PPSMetricMonitor *)self connection];
+  exportedInterface = [connection4 exportedInterface];
   v16 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
-  [v15 setClasses:v16 forSelector:sel_updateWithMetricCollection_ argumentIndex:0 ofReply:0];
+  [exportedInterface setClasses:v16 forSelector:sel_updateWithMetricCollection_ argumentIndex:0 ofReply:0];
 
-  v17 = [(PPSMetricMonitor *)self connection];
-  [v17 setExportedObject:self];
+  connection5 = [(PPSMetricMonitor *)self connection];
+  [connection5 setExportedObject:self];
 
   objc_initWeak(&location, self);
-  v18 = [(PPSMetricMonitor *)self connection];
-  v19 = [v18 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_79];
+  connection6 = [(PPSMetricMonitor *)self connection];
+  v19 = [connection6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_79];
   [(PPSMetricMonitor *)self setRemoteProxy:v19];
 
-  v20 = [(PPSMetricMonitor *)self connection];
+  connection7 = [(PPSMetricMonitor *)self connection];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __50__PPSMetricMonitor__setUpXPCConnectionWithConfig___block_invoke_80;
   v31[3] = &unk_278847AC0;
   objc_copyWeak(&v32, &location);
-  [v20 setInterruptionHandler:v31];
+  [connection7 setInterruptionHandler:v31];
 
-  v21 = [(PPSMetricMonitor *)self connection];
+  connection8 = [(PPSMetricMonitor *)self connection];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __50__PPSMetricMonitor__setUpXPCConnectionWithConfig___block_invoke_81;
   v29[3] = &unk_278847AC0;
   objc_copyWeak(&v30, &location);
-  [v21 setInvalidationHandler:v29];
+  [connection8 setInvalidationHandler:v29];
 
   v22 = PPSMetricMonitorLogHandleForCategory(3);
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -1418,18 +1418,18 @@ id __33__PPSMetricMonitor_endWithError___block_invoke(uint64_t a1)
     _os_log_impl(&dword_22E4FA000, v22, OS_LOG_TYPE_DEFAULT, "Connecting to perfpowermetricd", buf, 2u);
   }
 
-  v23 = [(PPSMetricMonitor *)self connection];
-  [v23 resume];
+  connection9 = [(PPSMetricMonitor *)self connection];
+  [connection9 resume];
 
-  v24 = [(PPSMetricMonitor *)self xpcMessagingQueue];
+  xpcMessagingQueue = [(PPSMetricMonitor *)self xpcMessagingQueue];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __50__PPSMetricMonitor__setUpXPCConnectionWithConfig___block_invoke_86;
   v26[3] = &unk_278847A58;
   v26[4] = self;
-  v27 = v4;
-  v25 = v4;
-  dispatch_async(v24, v26);
+  v27 = configCopy;
+  v25 = configCopy;
+  dispatch_async(xpcMessagingQueue, v26);
 
   objc_destroyWeak(&v30);
   objc_destroyWeak(&v32);
@@ -1558,27 +1558,27 @@ void __50__PPSMetricMonitor__setUpXPCConnectionWithConfig___block_invoke_3(uint6
 - (void)_handleXPCInterruption
 {
   [(PPSMetricMonitor *)self setIsInterrupted:1];
-  v3 = [(PPSMetricMonitor *)self delegate];
+  delegate = [(PPSMetricMonitor *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PPSMetricMonitor *)self delegateQueue];
+    delegateQueue = [(PPSMetricMonitor *)self delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __42__PPSMetricMonitor__handleXPCInterruption__block_invoke;
     block[3] = &unk_278847A30;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(delegateQueue, block);
   }
 
-  v6 = [(PPSMetricMonitor *)self xpcMessagingQueue];
+  xpcMessagingQueue = [(PPSMetricMonitor *)self xpcMessagingQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__PPSMetricMonitor__handleXPCInterruption__block_invoke_2;
   v7[3] = &unk_278847A30;
   v7[4] = self;
-  dispatch_async(v6, v7);
+  dispatch_async(xpcMessagingQueue, v7);
 }
 
 void __42__PPSMetricMonitor__handleXPCInterruption__block_invoke(uint64_t a1)
@@ -1632,7 +1632,7 @@ void __42__PPSMetricMonitor__handleXPCInterruption__block_invoke_91(uint64_t a1)
 - (void)_resumeMonitoring
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 currentProcessNames];
+  currentProcessNames = [self currentProcessNames];
   OUTLINED_FUNCTION_3();
   OUTLINED_FUNCTION_4();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0x16u);
@@ -1668,35 +1668,35 @@ void __37__PPSMetricMonitor__resumeMonitoring__block_invoke_2(uint64_t a1)
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)_startUpdateTimer:(double)a3
+- (void)_startUpdateTimer:(double)timer
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = PPSMetricMonitorLogHandleForCategory(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v14 = a3;
+    timerCopy = timer;
     _os_log_impl(&dword_22E4FA000, v5, OS_LOG_TYPE_INFO, "Starting update timer with interval: %f", buf, 0xCu);
   }
 
   [(PPSMetricMonitor *)self _cancelUpdateTimer];
-  v6 = [(PPSMetricMonitor *)self delegateQueue];
-  v7 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v6);
+  delegateQueue = [(PPSMetricMonitor *)self delegateQueue];
+  v7 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, delegateQueue);
   [(PPSMetricMonitor *)self setUpdateTimer:v7];
 
-  v8 = [(PPSMetricMonitor *)self updateTimer];
-  dispatch_source_set_timer(v8, 0, (a3 * 1000000000.0), 0x989680uLL);
+  updateTimer = [(PPSMetricMonitor *)self updateTimer];
+  dispatch_source_set_timer(updateTimer, 0, (timer * 1000000000.0), 0x989680uLL);
 
-  v9 = [(PPSMetricMonitor *)self updateTimer];
+  updateTimer2 = [(PPSMetricMonitor *)self updateTimer];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __38__PPSMetricMonitor__startUpdateTimer___block_invoke;
   handler[3] = &unk_278847A30;
   handler[4] = self;
-  dispatch_source_set_event_handler(v9, handler);
+  dispatch_source_set_event_handler(updateTimer2, handler);
 
-  v10 = [(PPSMetricMonitor *)self updateTimer];
-  dispatch_resume(v10);
+  updateTimer3 = [(PPSMetricMonitor *)self updateTimer];
+  dispatch_resume(updateTimer3);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -1823,7 +1823,7 @@ void __37__PPSMetricMonitor__resumeMonitoring__block_invoke_2(uint64_t a1)
 - (void)collectMetricsOnDemand
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *(*a1 + 40);
+  v7 = *(*self + 40);
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x277D85DE8];

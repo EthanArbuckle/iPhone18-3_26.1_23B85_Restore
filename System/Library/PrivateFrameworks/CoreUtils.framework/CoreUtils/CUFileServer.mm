@@ -1,29 +1,29 @@
 @interface CUFileServer
 - (CUFileServer)init;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_handleKeepAlive:(id)a3 responseHandler:(id)a4;
-- (void)_handleQuery:(id)a3 responseHandler:(id)a4;
-- (void)_handleQuery:(id)a3 session:(id)a4;
-- (void)_handleRequestFiles:(id)a3 responseHandler:(id)a4;
-- (void)_handleSessionStart:(id)a3 responseHandler:(id)a4;
-- (void)_handleSessionStop:(id)a3 responseHandler:(id)a4;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_handleKeepAlive:(id)alive responseHandler:(id)handler;
+- (void)_handleQuery:(id)query responseHandler:(id)handler;
+- (void)_handleQuery:(id)query session:(id)session;
+- (void)_handleRequestFiles:(id)files responseHandler:(id)handler;
+- (void)_handleSessionStart:(id)start responseHandler:(id)handler;
+- (void)_handleSessionStop:(id)stop responseHandler:(id)handler;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_sessionInvalidate:(id)a3;
+- (void)_sessionInvalidate:(id)invalidate;
 - (void)_sessionTimerFired;
 - (void)_update;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation CUFileServer
 
-- (void)_handleRequestFiles:(id)a3 responseHandler:(id)a4
+- (void)_handleRequestFiles:(id)files responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  filesCopy = files;
+  handlerCopy = handler;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -36,10 +36,10 @@
   aBlock[3] = &unk_1E73A3FA0;
   v29 = &v30;
   aBlock[4] = self;
-  v8 = v7;
+  v8 = handlerCopy;
   v28 = v8;
   v9 = _Block_copy(aBlock);
-  v15 = NSDictionaryGetNSNumber(v6, @"sid", 0);
+  v15 = NSDictionaryGetNSNumber(filesCopy, @"sid", 0);
   if (!v15)
   {
     v23 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960591, "No session ID", v10, v11, v12, v13, v14, v26);
@@ -116,10 +116,10 @@ LABEL_7:
   return v11();
 }
 
-- (void)_handleQuery:(id)a3 session:(id)a4
+- (void)_handleQuery:(id)query session:(id)session
 {
-  v6 = a3;
-  v83 = a4;
+  queryCopy = query;
+  sessionCopy = session;
   v92 = 0;
   v93 = &v92;
   v94 = 0x3032000000;
@@ -132,17 +132,17 @@ LABEL_7:
   aBlock[3] = &unk_1E73A32B8;
   v91 = &v92;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = queryCopy;
   v90 = v7;
   v81 = _Block_copy(aBlock);
   v82 = v7;
-  v8 = [v7 path];
-  v80 = v8;
-  if (v8)
+  path = [v7 path];
+  v80 = path;
+  if (path)
   {
-    v9 = [(NSURL *)self->_rootDirectoryURL URLByAppendingPathComponent:v8 isDirectory:0];
+    v9 = [(NSURL *)self->_rootDirectoryURL URLByAppendingPathComponent:path isDirectory:0];
     *__error() = 0;
-    v10 = realpath_DARWIN_EXTSN([v9 fileSystemRepresentation], v83 + 8);
+    v10 = realpath_DARWIN_EXTSN([v9 fileSystemRepresentation], sessionCopy + 8);
     v16 = v10;
     if (!v10)
     {
@@ -172,10 +172,10 @@ LABEL_7:
       while (v20);
     }
 
-    v21 = [v83 dirStream];
-    if (v21)
+    dirStream = [sessionCopy dirStream];
+    if (dirStream)
     {
-      closedir(v21);
+      closedir(dirStream);
     }
 
     v22 = opendir(v16);
@@ -186,14 +186,14 @@ LABEL_7:
       goto LABEL_46;
     }
 
-    [v83 setDirStream:v22];
+    [sessionCopy setDirStream:v22];
   }
 
-  v23 = [v83 dirStream];
-  if (!v23)
+  dirStream2 = [sessionCopy dirStream];
+  if (!dirStream2)
   {
-    v23 = opendir(self->_rootPath);
-    if (!v23)
+    dirStream2 = opendir(self->_rootPath);
+    if (!dirStream2)
     {
       v71 = __error();
       v77 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960592, "opendir failed: %d", v72, v73, v74, v75, v76, *v71);
@@ -202,8 +202,8 @@ LABEL_7:
       goto LABEL_49;
     }
 
-    [v83 setDirStream:v23];
-    strlcpy(v83 + 8, self->_rootPath, 0x400uLL);
+    [sessionCopy setDirStream:dirStream2];
+    strlcpy(sessionCopy + 8, self->_rootPath, 0x400uLL);
   }
 
   v9 = 0;
@@ -211,7 +211,7 @@ LABEL_7:
   while (1)
   {
     *__error() = 0;
-    v25 = readdir(v23);
+    v25 = readdir(dirStream2);
     if (!v25)
     {
       break;
@@ -221,7 +221,7 @@ LABEL_7:
     if (v25->d_name[0] != 46 || v25->d_name[1] && (v25->d_name[1] != 46 || v25->d_name[2]))
     {
       v88 = 0;
-      asprintf(&v88, "%s/%s", v83 + 8, v25->d_name);
+      asprintf(&v88, "%s/%s", sessionCopy + 8, v25->d_name);
       if (!v88)
       {
         v49 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960596, "entry path failed", v27, v28, v29, v30, v31, v79);
@@ -393,10 +393,10 @@ void __37__CUFileServer__handleQuery_session___block_invoke_2(uint64_t a1)
   (*(v2 + 2))(v2, 0, *(*(*(a1 + 40) + 8) + 40));
 }
 
-- (void)_handleQuery:(id)a3 responseHandler:(id)a4
+- (void)_handleQuery:(id)query responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  handlerCopy = handler;
   v67 = 0;
   v68 = &v67;
   v69 = 0x3032000000;
@@ -409,10 +409,10 @@ void __37__CUFileServer__handleQuery_session___block_invoke_2(uint64_t a1)
   aBlock[3] = &unk_1E73A3FA0;
   v66 = &v67;
   aBlock[4] = self;
-  v8 = v7;
+  v8 = handlerCopy;
   v65 = v8;
   v9 = _Block_copy(aBlock);
-  v15 = NSDictionaryGetNSNumber(v6, @"sid", 0);
+  v15 = NSDictionaryGetNSNumber(queryCopy, @"sid", 0);
   if (!v15)
   {
     v52 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960591, "No session ID", v10, v11, v12, v13, v14, v55);
@@ -431,7 +431,7 @@ void __37__CUFileServer__handleQuery_session___block_invoke_2(uint64_t a1)
   }
 
   TypeID = CFDictionaryGetTypeID();
-  v28 = CFDictionaryGetTypedValue(v6, @"fQry", TypeID, 0);
+  v28 = CFDictionaryGetTypedValue(queryCopy, @"fQry", TypeID, 0);
   if (v28)
   {
     v29 = [CUFileQuery alloc];
@@ -473,10 +473,10 @@ LABEL_9:
       {
         v56 = v9;
         v47 = NSPrintF("%s-IO", v39, v40, v41, v42, v43, v44, v45, self->_ucat->var4);
-        v48 = [v47 UTF8String];
+        uTF8String = [v47 UTF8String];
 
         v49 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-        v46 = dispatch_queue_create(v48, v49);
+        v46 = dispatch_queue_create(uTF8String, v49);
 
         objc_storeStrong(&self->_ioQueue, v46);
         v9 = v56;
@@ -566,10 +566,10 @@ void __45__CUFileServer__handleQuery_responseHandler___block_invoke_2(uint64_t a
   }
 }
 
-- (void)_handleKeepAlive:(id)a3 responseHandler:(id)a4
+- (void)_handleKeepAlive:(id)alive responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  aliveCopy = alive;
+  handlerCopy = handler;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -582,10 +582,10 @@ void __45__CUFileServer__handleQuery_responseHandler___block_invoke_2(uint64_t a
   aBlock[3] = &unk_1E73A3FA0;
   v34 = &v35;
   aBlock[4] = self;
-  v8 = v7;
+  v8 = handlerCopy;
   v33 = v8;
   v9 = _Block_copy(aBlock);
-  v15 = NSDictionaryGetNSNumber(v6, @"sid", 0);
+  v15 = NSDictionaryGetNSNumber(aliveCopy, @"sid", 0);
   if (!v15)
   {
     v28 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960591, "No session ID", v10, v11, v12, v13, v14, v31);
@@ -664,10 +664,10 @@ LABEL_7:
   return v11();
 }
 
-- (void)_handleSessionStop:(id)a3 responseHandler:(id)a4
+- (void)_handleSessionStop:(id)stop responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stopCopy = stop;
+  handlerCopy = handler;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -680,10 +680,10 @@ LABEL_7:
   aBlock[3] = &unk_1E73A3FA0;
   v29 = &v30;
   aBlock[4] = self;
-  v8 = v7;
+  v8 = handlerCopy;
   v28 = v8;
   v9 = _Block_copy(aBlock);
-  v15 = NSDictionaryGetNSNumber(v6, @"sid", 0);
+  v15 = NSDictionaryGetNSNumber(stopCopy, @"sid", 0);
   if (!v15)
   {
     v23 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960591, "No session ID", v10, v11, v12, v13, v14, v26);
@@ -762,10 +762,10 @@ LABEL_7:
   return v11();
 }
 
-- (void)_handleSessionStart:(id)a3 responseHandler:(id)a4
+- (void)_handleSessionStart:(id)start responseHandler:(id)handler
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [(NSMutableDictionary *)self->_sessionMap count];
   if (v6 < 0x1E)
   {
@@ -805,7 +805,7 @@ LABEL_13:
     v28 = @"sid";
     v29[0] = v21;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-    (*(v5 + 2))(v5, v27, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, v27, 0, 0);
 
     goto LABEL_14;
   }
@@ -828,7 +828,7 @@ LABEL_13:
   }
 
 LABEL_11:
-  (*(v5 + 2))(v5, 0, 0, v16);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v16);
 LABEL_14:
 }
 
@@ -942,8 +942,8 @@ LABEL_5:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [(NSMutableDictionary *)self->_sessionMap allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  allKeys = [(NSMutableDictionary *)self->_sessionMap allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v10)
   {
     goto LABEL_20;
@@ -958,7 +958,7 @@ LABEL_5:
     {
       if (*v24 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(allKeys);
       }
 
       v14 = *(*(&v23 + 1) + 8 * v13);
@@ -989,7 +989,7 @@ LABEL_13:
     }
 
     while (v11 != v13);
-    v21 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v21 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
     v11 = v21;
   }
 
@@ -997,14 +997,14 @@ LABEL_13:
 LABEL_20:
 }
 
-- (void)_sessionInvalidate:(id)a3
+- (void)_sessionInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v3 = [v4 dirStream];
-  if (v3)
+  invalidateCopy = invalidate;
+  dirStream = [invalidateCopy dirStream];
+  if (dirStream)
   {
-    closedir(v3);
-    [v4 setDirStream:0];
+    closedir(dirStream);
+    [invalidateCopy setDirStream:0];
   }
 }
 
@@ -1112,9 +1112,9 @@ LABEL_6:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v78 = 0;
   v79 = &v78;
   v80 = 0x3032000000;
@@ -1127,7 +1127,7 @@ LABEL_6:
   aBlock[3] = &unk_1E73A3FA0;
   v77 = &v78;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v76 = v5;
   v10 = _Block_copy(aBlock);
   ucat = self->_ucat;
@@ -1330,17 +1330,17 @@ LABEL_11:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__CUFileServer_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1382,13 +1382,13 @@ LABEL_9:
   [v16 _activateWithCompletion:v17];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE9728;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

@@ -6,8 +6,8 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(UILabelAccessibility__MusicApplication__UIKit *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"AXUIButtonLabelEmptyLabel"];
+  accessibilityIdentifier = [(UILabelAccessibility__MusicApplication__UIKit *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"AXUIButtonLabelEmptyLabel"];
 
   if (v4)
   {

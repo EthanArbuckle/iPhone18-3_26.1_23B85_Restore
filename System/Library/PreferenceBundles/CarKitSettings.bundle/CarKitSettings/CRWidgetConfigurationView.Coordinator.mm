@@ -1,19 +1,19 @@
 @interface CRWidgetConfigurationView.Coordinator
 - (_TtCV14CarKitSettings25CRWidgetConfigurationView11Coordinator)init;
-- (void)widgetConfigurationViewController:(id)a3 didFinishWithIntent:(id)a4;
+- (void)widgetConfigurationViewController:(id)controller didFinishWithIntent:(id)intent;
 @end
 
 @implementation CRWidgetConfigurationView.Coordinator
 
-- (void)widgetConfigurationViewController:(id)a3 didFinishWithIntent:(id)a4
+- (void)widgetConfigurationViewController:(id)controller didFinishWithIntent:(id)intent
 {
   v5 = *(&stru_20.maxprot + (swift_isaMask & self->super.isa));
-  v6 = a4;
-  v11 = self;
+  intentCopy = intent;
+  selfCopy = self;
   v7 = v5();
   v9 = v8;
 
-  v9(v6);
+  v9(intentCopy);
 }
 
 - (_TtCV14CarKitSettings25CRWidgetConfigurationView11Coordinator)init

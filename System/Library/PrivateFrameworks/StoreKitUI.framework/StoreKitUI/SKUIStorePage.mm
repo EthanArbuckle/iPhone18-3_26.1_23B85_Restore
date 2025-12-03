@@ -1,16 +1,16 @@
 @interface SKUIStorePage
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)valueForPageKey:(id)a3;
-- (void)setPageComponents:(id)a3;
-- (void)setValue:(id)a3 forPageKey:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)valueForPageKey:(id)key;
+- (void)setPageComponents:(id)components;
+- (void)setValue:(id)value forPageKey:(id)key;
 @end
 
 @implementation SKUIStorePage
 
-- (void)setPageComponents:(id)a3
+- (void)setPageComponents:(id)components
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  componentsCopy = components;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -23,14 +23,14 @@
     }
   }
 
-  if (self->_pageComponents != v4)
+  if (self->_pageComponents != componentsCopy)
   {
     v13 = objc_alloc_init(MEMORY[0x277CCA940]);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v14 = v4;
+    v14 = componentsCopy;
     v15 = [(NSArray *)v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v15)
     {
@@ -46,11 +46,11 @@
           }
 
           v19 = *(*(&v23 + 1) + 8 * i);
-          v20 = [v19 metricsElementName];
-          if (v20)
+          metricsElementName = [v19 metricsElementName];
+          if (metricsElementName)
           {
-            [v19 _setMetricsLocationPosition:{objc_msgSend(v13, "countForObject:", v20)}];
-            [v13 addObject:v20];
+            [v19 _setMetricsLocationPosition:{objc_msgSend(v13, "countForObject:", metricsElementName)}];
+            [v13 addObject:metricsElementName];
           }
         }
 
@@ -66,10 +66,10 @@
   }
 }
 
-- (void)setValue:(id)a3 forPageKey:(id)a4
+- (void)setValue:(id)value forPageKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -83,7 +83,7 @@
   }
 
   values = self->_values;
-  if (v6)
+  if (valueCopy)
   {
     if (!values)
     {
@@ -94,18 +94,18 @@
       values = self->_values;
     }
 
-    [(NSMutableDictionary *)values setObject:v6 forKey:v7];
+    [(NSMutableDictionary *)values setObject:valueCopy forKey:keyCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)values removeObjectForKey:v7];
+    [(NSMutableDictionary *)values removeObjectForKey:keyCopy];
   }
 }
 
-- (id)valueForPageKey:(id)a3
+- (id)valueForPageKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -118,12 +118,12 @@
     }
   }
 
-  v13 = [(NSMutableDictionary *)self->_values objectForKey:v4];
+  v13 = [(NSMutableDictionary *)self->_values objectForKey:keyCopy];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (os_variant_has_internal_content())
   {
@@ -137,13 +137,13 @@
     }
   }
 
-  v13 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v13 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v13 setBackgroundArtwork:self->_backgroundArtwork];
   [v13 setITMLData:self->_itmlData];
   [v13 setITMLResponse:self->_itmlResponse];
   [v13 setMetricsConfiguration:self->_metricsConfiguration];
   [v13 setMetricsPageDescription:self->_metricsPageDescription];
-  v14 = [(NSArray *)self->_pageComponents copyWithZone:a3];
+  v14 = [(NSArray *)self->_pageComponents copyWithZone:zone];
   v15 = v13[6];
   v13[6] = v14;
 
@@ -152,7 +152,7 @@
   [v13 setProductPage:self->_productPage];
   [v13 setTitle:self->_title];
   [v13 setUber:self->_uber];
-  v16 = [(NSMutableDictionary *)self->_values mutableCopyWithZone:a3];
+  v16 = [(NSMutableDictionary *)self->_values mutableCopyWithZone:zone];
   v17 = v13[12];
   v13[12] = v16;
 

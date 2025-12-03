@@ -1,187 +1,187 @@
 @interface PHMediaFormatConversionImplementation_MediaConversionService
 - (PHMediaFormatConversionImplementation_MediaConversionService)init;
-- (id)submitNonSinglePassVideoConversionRequest:(id)a3 destination:(id)a4 completionHandler:(id)a5;
-- (id)submitSinglePassVideoConversionRequest:(id)a3 destination:(id)a4 completionHandler:(id)a5;
+- (id)submitNonSinglePassVideoConversionRequest:(id)request destination:(id)destination completionHandler:(id)handler;
+- (id)submitSinglePassVideoConversionRequest:(id)request destination:(id)destination completionHandler:(id)handler;
 - (int64_t)transferBehaviorUserPreference;
-- (void)applyCommonOptionsFromRequest:(id)a3 toOptions:(id)a4;
-- (void)applyCommonOptionsFromVideoRequest:(id)a3 toOptions:(id)a4;
+- (void)applyCommonOptionsFromRequest:(id)request toOptions:(id)options;
+- (void)applyCommonOptionsFromVideoRequest:(id)request toOptions:(id)options;
 - (void)dealloc;
-- (void)performConversionRequest:(id)a3 completionHandler:(id)a4;
-- (void)performImageConversionRequest:(id)a3 completionHandler:(id)a4;
-- (void)performVideoConversionRequest:(id)a3 completionHandler:(id)a4;
+- (void)performConversionRequest:(id)request completionHandler:(id)handler;
+- (void)performImageConversionRequest:(id)request completionHandler:(id)handler;
+- (void)performVideoConversionRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation PHMediaFormatConversionImplementation_MediaConversionService
 
-- (void)applyCommonOptionsFromRequest:(id)a3 toOptions:(id)a4
+- (void)applyCommonOptionsFromRequest:(id)request toOptions:(id)options
 {
-  v5 = a4;
-  if ([a3 requiresPassthroughConversion])
+  optionsCopy = options;
+  if ([request requiresPassthroughConversion])
   {
-    [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"PAMediaConversionServiceOptionIsPassthroughConversionKey"];
+    [optionsCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"PAMediaConversionServiceOptionIsPassthroughConversionKey"];
   }
 
-  [v5 setObject:&unk_2869A1048 forKeyedSubscript:@"PAMediaConversionServiceOptionJobPriorityKey"];
+  [optionsCopy setObject:&unk_2869A1048 forKeyedSubscript:@"PAMediaConversionServiceOptionJobPriorityKey"];
 }
 
-- (void)performImageConversionRequest:(id)a3 completionHandler:(id)a4
+- (void)performImageConversionRequest:(id)request completionHandler:(id)handler
 {
   v77 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = objc_opt_new();
   [v8 setMediaType:2];
-  v9 = [v6 outputPathExtension];
-  [v8 setOutputPathExtension:v9];
+  outputPathExtension = [requestCopy outputPathExtension];
+  [v8 setOutputPathExtension:outputPathExtension];
 
-  [v8 generateTemporaryOutputFileURLForRequest:v6];
+  [v8 generateTemporaryOutputFileURLForRequest:requestCopy];
   v74 = 0;
   v10 = [v8 createTemporaryOutputFileWithErrorError:&v74];
   v11 = v74;
   if (v10)
   {
-    v12 = [MEMORY[0x277CBEB18] array];
-    v13 = [MEMORY[0x277D3B420] standardPolicy];
-    [v12 addObject:v13];
+    array = [MEMORY[0x277CBEB18] array];
+    standardPolicy = [MEMORY[0x277D3B420] standardPolicy];
+    [array addObject:standardPolicy];
 
-    v14 = [v6 source];
-    v15 = [v14 renderOriginatingSignature];
+    source = [requestCopy source];
+    renderOriginatingSignature = [source renderOriginatingSignature];
 
-    v68 = v15;
-    if (v15)
+    v68 = renderOriginatingSignature;
+    if (renderOriginatingSignature)
     {
       v16 = MEMORY[0x277D3B410];
-      v17 = [MEMORY[0x277D3B458] renderOriginatingAssetIdentifierMetadataKey];
-      v18 = [v16 policyWithKey:v17 value:v15];
-      [v12 addObject:v18];
+      renderOriginatingAssetIdentifierMetadataKey = [MEMORY[0x277D3B458] renderOriginatingAssetIdentifierMetadataKey];
+      originatingAssetIdentifierMetadataKey = [v16 policyWithKey:renderOriginatingAssetIdentifierMetadataKey value:renderOriginatingSignature];
+      [array addObject:originatingAssetIdentifierMetadataKey];
     }
 
     else
     {
-      if (![v6 requiresFormatConversion])
+      if (![requestCopy requiresFormatConversion])
       {
 LABEL_11:
-        v22 = [v6 livePhotoPairingIdentifier];
-        v23 = [v6 livePhotoPairingIdentifierBehavior];
-        v67 = v22;
-        if (v23 <= 2)
+        livePhotoPairingIdentifier = [requestCopy livePhotoPairingIdentifier];
+        livePhotoPairingIdentifierBehavior = [requestCopy livePhotoPairingIdentifierBehavior];
+        v67 = livePhotoPairingIdentifier;
+        if (livePhotoPairingIdentifierBehavior <= 2)
         {
-          if (!v23)
+          if (!livePhotoPairingIdentifierBehavior)
           {
-            v24 = [MEMORY[0x277CCA890] currentHandler];
-            [v24 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionImplementation_MediaConversionService.m" lineNumber:322 description:@"Unexpected uninitialized live photo pairing identifier behavior"];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionImplementation_MediaConversionService.m" lineNumber:322 description:@"Unexpected uninitialized live photo pairing identifier behavior"];
             goto LABEL_27;
           }
 
-          if (v23 != 2 || ([v6 source], v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v28, "livePhotoPairingIdentifier"), v29 = objc_claimAutoreleasedReturnValue(), v29, v28, !v29))
+          if (livePhotoPairingIdentifierBehavior != 2 || ([requestCopy source], v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v28, "livePhotoPairingIdentifier"), v29 = objc_claimAutoreleasedReturnValue(), v29, v28, !v29))
           {
 LABEL_28:
-            if ([v6 locationMetadataBehavior] == 1)
+            if ([requestCopy locationMetadataBehavior] == 1)
             {
-              v39 = [MEMORY[0x277D3B440] policyWithLocation:0];
-              [v12 addObject:v39];
+              location = [MEMORY[0x277D3B440] policyWithLocation:0];
+              [array addObject:location];
             }
 
             else
             {
-              if ([v6 locationMetadataBehavior] != 2 || (objc_msgSend(v6, "location"), v40 = objc_claimAutoreleasedReturnValue(), v40, !v40))
+              if ([requestCopy locationMetadataBehavior] != 2 || (objc_msgSend(requestCopy, "location"), v40 = objc_claimAutoreleasedReturnValue(), v40, !v40))
               {
 LABEL_34:
-                if ([v6 creationDateMetadataBehavior] == 2)
+                if ([requestCopy creationDateMetadataBehavior] == 2)
                 {
-                  v43 = [v6 creationDate];
+                  creationDate = [requestCopy creationDate];
 
-                  if (v43)
+                  if (creationDate)
                   {
                     v44 = MEMORY[0x277D3B438];
-                    v45 = [v6 creationDate];
-                    v46 = [v6 creationDateTimeZone];
-                    v47 = [v44 policyWithCreationDate:v45 inTimeZone:v46];
-                    [v12 addObject:v47];
+                    creationDate2 = [requestCopy creationDate];
+                    creationDateTimeZone = [requestCopy creationDateTimeZone];
+                    v47 = [v44 policyWithCreationDate:creationDate2 inTimeZone:creationDateTimeZone];
+                    [array addObject:v47];
                   }
                 }
 
-                if ([v6 captionMetadataBehavior] == 1)
+                if ([requestCopy captionMetadataBehavior] == 1)
                 {
-                  v48 = [MEMORY[0x277D3B430] policyWithCaption:0];
-                  [v12 addObject:v48];
+                  caption = [MEMORY[0x277D3B430] policyWithCaption:0];
+                  [array addObject:caption];
                 }
 
                 else
                 {
-                  if ([v6 captionMetadataBehavior] != 2 || (objc_msgSend(v6, "caption"), v49 = objc_claimAutoreleasedReturnValue(), v49, !v49))
+                  if ([requestCopy captionMetadataBehavior] != 2 || (objc_msgSend(requestCopy, "caption"), v49 = objc_claimAutoreleasedReturnValue(), v49, !v49))
                   {
 LABEL_43:
-                    if ([v6 accessibilityDescriptionMetadataBehavior] == 1)
+                    if ([requestCopy accessibilityDescriptionMetadataBehavior] == 1)
                     {
-                      v52 = [MEMORY[0x277D3B428] policyWithAccessibilityDescription:0];
-                      [v12 addObject:v52];
+                      accessibilityDescription2 = [MEMORY[0x277D3B428] policyWithAccessibilityDescription:0];
+                      [array addObject:accessibilityDescription2];
                     }
 
                     else
                     {
-                      if ([v6 accessibilityDescriptionMetadataBehavior] != 2)
+                      if ([requestCopy accessibilityDescriptionMetadataBehavior] != 2)
                       {
                         goto LABEL_49;
                       }
 
-                      v53 = [v6 accessibilityDescription];
+                      accessibilityDescription = [requestCopy accessibilityDescription];
 
-                      if (!v53)
+                      if (!accessibilityDescription)
                       {
                         goto LABEL_49;
                       }
 
                       v54 = MEMORY[0x277D3B428];
-                      v52 = [v6 accessibilityDescription];
-                      v55 = [v54 policyWithAccessibilityDescription:v52];
-                      [v12 addObject:v55];
+                      accessibilityDescription2 = [requestCopy accessibilityDescription];
+                      v55 = [v54 policyWithAccessibilityDescription:accessibilityDescription2];
+                      [array addObject:v55];
                     }
 
 LABEL_49:
-                    v56 = [MEMORY[0x277CBEB38] dictionary];
-                    v57 = [MEMORY[0x277D3B418] policyWithPolicies:v12];
-                    [v56 setObject:v57 forKeyedSubscript:@"PAMediaConversionServiceOptionMetadataPolicyKey"];
+                    dictionary = [MEMORY[0x277CBEB38] dictionary];
+                    v57 = [MEMORY[0x277D3B418] policyWithPolicies:array];
+                    [dictionary setObject:v57 forKeyedSubscript:@"PAMediaConversionServiceOptionMetadataPolicyKey"];
 
-                    [v56 setObject:&unk_2869A1210 forKeyedSubscript:@"PAMediaConversionServiceOptionScaleFactorKey"];
-                    [v56 setObject:&unk_2869A1030 forKeyedSubscript:@"PAMediaConversionServiceOptionColorSpaceKey"];
-                    [v56 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"PAMediaConversionServiceOptionFormatConversionOnlyKey"];
-                    [v56 setObject:@"PHMediaFormatConversion" forKeyedSubscript:@"PAMediaConversionServiceOptionRequestReasonKey"];
-                    [(PHMediaFormatConversionImplementation_MediaConversionService *)self applyCommonOptionsFromRequest:v6 toOptions:v56];
-                    v58 = [v6 source];
-                    v59 = [v58 fileURL];
-                    v60 = [PAMediaConversionServiceResourceURLCollection collectionWithMainResourceURL:v59];
+                    [dictionary setObject:&unk_2869A1210 forKeyedSubscript:@"PAMediaConversionServiceOptionScaleFactorKey"];
+                    [dictionary setObject:&unk_2869A1030 forKeyedSubscript:@"PAMediaConversionServiceOptionColorSpaceKey"];
+                    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"PAMediaConversionServiceOptionFormatConversionOnlyKey"];
+                    [dictionary setObject:@"PHMediaFormatConversion" forKeyedSubscript:@"PAMediaConversionServiceOptionRequestReasonKey"];
+                    [(PHMediaFormatConversionImplementation_MediaConversionService *)self applyCommonOptionsFromRequest:requestCopy toOptions:dictionary];
+                    source2 = [requestCopy source];
+                    fileURL = [source2 fileURL];
+                    v60 = [PAMediaConversionServiceResourceURLCollection collectionWithMainResourceURL:fileURL];
 
-                    v61 = [v8 fileURL];
-                    v62 = [PAMediaConversionServiceResourceURLCollection collectionWithMainResourceURL:v61];
+                    fileURL2 = [v8 fileURL];
+                    v62 = [PAMediaConversionServiceResourceURLCollection collectionWithMainResourceURL:fileURL2];
 
-                    v63 = [(PHMediaFormatConversionImplementation_MediaConversionService *)self imageConversionServiceClient];
+                    imageConversionServiceClient = [(PHMediaFormatConversionImplementation_MediaConversionService *)self imageConversionServiceClient];
                     v70[0] = MEMORY[0x277D85DD0];
                     v70[1] = 3221225472;
                     v70[2] = __112__PHMediaFormatConversionImplementation_MediaConversionService_performImageConversionRequest_completionHandler___block_invoke;
                     v70[3] = &unk_27989B908;
-                    v71 = v6;
-                    v73 = v7;
+                    v71 = requestCopy;
+                    v73 = handlerCopy;
                     v72 = v8;
-                    [v63 convertImageAtSourceURLCollection:v60 toDestinationURLCollection:v62 options:v56 completionHandler:v70];
+                    [imageConversionServiceClient convertImageAtSourceURLCollection:v60 toDestinationURLCollection:v62 options:dictionary completionHandler:v70];
 
 LABEL_50:
                     goto LABEL_51;
                   }
 
                   v50 = MEMORY[0x277D3B430];
-                  v48 = [v6 caption];
-                  v51 = [v50 policyWithCaption:v48];
-                  [v12 addObject:v51];
+                  caption = [requestCopy caption];
+                  v51 = [v50 policyWithCaption:caption];
+                  [array addObject:v51];
                 }
 
                 goto LABEL_43;
               }
 
               v41 = MEMORY[0x277D3B440];
-              v39 = [v6 location];
-              v42 = [v41 policyWithLocation:v39];
-              [v12 addObject:v42];
+              location = [requestCopy location];
+              v42 = [v41 policyWithLocation:location];
+              [array addObject:v42];
             }
 
             goto LABEL_34;
@@ -190,93 +190,93 @@ LABEL_50:
 
         else
         {
-          if (v23 == 3)
+          if (livePhotoPairingIdentifierBehavior == 3)
           {
             v34 = MEMORY[0x277D3B410];
-            v24 = [MEMORY[0x277D3B458] livePhotoPairingIdentifierMetadataKey];
+            currentHandler = [MEMORY[0x277D3B458] livePhotoPairingIdentifierMetadataKey];
             v31 = v34;
-            v32 = v24;
-            v33 = v22;
+            v32 = currentHandler;
+            v33 = livePhotoPairingIdentifier;
             goto LABEL_25;
           }
 
-          if (v23 == 4)
+          if (livePhotoPairingIdentifierBehavior == 4)
           {
-            v35 = [v6 source];
-            v36 = [v35 livePhotoPairingIdentifier];
+            source3 = [requestCopy source];
+            livePhotoPairingIdentifier2 = [source3 livePhotoPairingIdentifier];
 
-            if (!v36)
+            if (!livePhotoPairingIdentifier2)
             {
               goto LABEL_28;
             }
 
             v37 = MEMORY[0x277D3B410];
-            v24 = [MEMORY[0x277D3B458] livePhotoPairingIdentifierMetadataKey];
+            currentHandler = [MEMORY[0x277D3B458] livePhotoPairingIdentifierMetadataKey];
             v31 = v37;
-            v32 = v24;
+            v32 = currentHandler;
             v33 = v67;
             goto LABEL_25;
           }
 
-          if (v23 != 5)
+          if (livePhotoPairingIdentifierBehavior != 5)
           {
             goto LABEL_28;
           }
 
-          v24 = [v6 source];
-          v25 = [v24 livePhotoPairingIdentifier];
-          if (!v25)
+          currentHandler = [requestCopy source];
+          livePhotoPairingIdentifier3 = [currentHandler livePhotoPairingIdentifier];
+          if (!livePhotoPairingIdentifier3)
           {
             goto LABEL_27;
           }
 
-          v26 = v25;
-          v27 = [v6 requiresFormatConversion];
+          v26 = livePhotoPairingIdentifier3;
+          requiresFormatConversion = [requestCopy requiresFormatConversion];
 
-          if (!v27)
+          if (!requiresFormatConversion)
           {
             goto LABEL_28;
           }
         }
 
         v30 = MEMORY[0x277D3B410];
-        v24 = [MEMORY[0x277D3B458] livePhotoPairingIdentifierMetadataKey];
+        currentHandler = [MEMORY[0x277D3B458] livePhotoPairingIdentifierMetadataKey];
         v31 = v30;
-        v32 = v24;
+        v32 = currentHandler;
         v33 = 0;
 LABEL_25:
         v38 = [v31 policyWithKey:v32 value:v33];
-        [v12 addObject:v38];
+        [array addObject:v38];
 
 LABEL_27:
         goto LABEL_28;
       }
 
-      v19 = [v6 source];
-      v17 = [v19 fileSignature];
+      source4 = [requestCopy source];
+      renderOriginatingAssetIdentifierMetadataKey = [source4 fileSignature];
 
-      if (!v17)
+      if (!renderOriginatingAssetIdentifierMetadataKey)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
-          v66 = [v6 source];
+          source5 = [requestCopy source];
           *buf = 138412290;
-          v76 = v66;
+          v76 = source5;
           _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unexpected nil file signature for source %@", buf, 0xCu);
         }
 
         v65 = [MEMORY[0x277CCA9B8] errorWithDomain:@"PHMediaFormatConversionErrorDomain" code:5 userInfo:0];
-        [v6 setError:v65];
+        [requestCopy setError:v65];
 
-        [v6 setStatus:5];
-        v7[2](v7);
+        [requestCopy setStatus:5];
+        handlerCopy[2](handlerCopy);
         goto LABEL_50;
       }
 
       v20 = MEMORY[0x277D3B410];
-      v18 = [MEMORY[0x277D3B458] originatingAssetIdentifierMetadataKey];
-      v21 = [v20 policyWithKey:v18 value:v17];
-      [v12 addObject:v21];
+      originatingAssetIdentifierMetadataKey = [MEMORY[0x277D3B458] originatingAssetIdentifierMetadataKey];
+      v21 = [v20 policyWithKey:originatingAssetIdentifierMetadataKey value:renderOriginatingAssetIdentifierMetadataKey];
+      [array addObject:v21];
     }
 
     goto LABEL_11;
@@ -289,44 +289,44 @@ LABEL_27:
     _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to create format conversion output temporary file: %@", buf, 0xCu);
   }
 
-  [v6 setError:v11];
-  [v6 setStatus:5];
-  v7[2](v7);
+  [requestCopy setError:v11];
+  [requestCopy setStatus:5];
+  handlerCopy[2](handlerCopy);
 LABEL_51:
 
   v64 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applyCommonOptionsFromVideoRequest:(id)a3 toOptions:(id)a4
+- (void)applyCommonOptionsFromVideoRequest:(id)request toOptions:(id)options
 {
-  v42 = a3;
-  v7 = a4;
-  v8 = [v42 source];
-  v9 = [v8 renderOriginatingSignature];
+  requestCopy = request;
+  optionsCopy = options;
+  source = [requestCopy source];
+  renderOriginatingSignature = [source renderOriginatingSignature];
 
-  if (v9)
+  if (renderOriginatingSignature)
   {
-    [v7 setObject:v9 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataRenderOriginatingSignatureKey"];
+    [optionsCopy setObject:renderOriginatingSignature forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataRenderOriginatingSignatureKey"];
   }
 
-  v10 = [v42 livePhotoPairingIdentifier];
-  v11 = [v42 livePhotoPairingIdentifierBehavior];
-  if (v11 <= 2)
+  livePhotoPairingIdentifier = [requestCopy livePhotoPairingIdentifier];
+  livePhotoPairingIdentifierBehavior = [requestCopy livePhotoPairingIdentifierBehavior];
+  if (livePhotoPairingIdentifierBehavior <= 2)
   {
-    if (!v11)
+    if (!livePhotoPairingIdentifierBehavior)
     {
-      v22 = [MEMORY[0x277CCA890] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionImplementation_MediaConversionService.m" lineNumber:220 description:@"Unexpected uninitialized live photo pairing identifier behavior"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionImplementation_MediaConversionService.m" lineNumber:220 description:@"Unexpected uninitialized live photo pairing identifier behavior"];
 
       goto LABEL_19;
     }
 
-    if (v11 == 2)
+    if (livePhotoPairingIdentifierBehavior == 2)
     {
-      v16 = [v42 source];
-      v17 = [v16 livePhotoPairingIdentifier];
+      source2 = [requestCopy source];
+      livePhotoPairingIdentifier2 = [source2 livePhotoPairingIdentifier];
 
-      if (v17)
+      if (livePhotoPairingIdentifier2)
       {
         goto LABEL_13;
       }
@@ -335,163 +335,163 @@ LABEL_51:
     goto LABEL_19;
   }
 
-  switch(v11)
+  switch(livePhotoPairingIdentifierBehavior)
   {
     case 3:
 LABEL_15:
-      v19 = v7;
-      v18 = v10;
+      v19 = optionsCopy;
+      v18 = livePhotoPairingIdentifier;
       goto LABEL_16;
     case 4:
-      v20 = [v42 source];
-      v21 = [v20 livePhotoPairingIdentifier];
+      source3 = [requestCopy source];
+      livePhotoPairingIdentifier3 = [source3 livePhotoPairingIdentifier];
 
-      if (!v21)
+      if (!livePhotoPairingIdentifier3)
       {
         break;
       }
 
       goto LABEL_15;
     case 5:
-      v12 = [v42 source];
-      v13 = [v12 livePhotoPairingIdentifier];
-      if (!v13)
+      source4 = [requestCopy source];
+      livePhotoPairingIdentifier4 = [source4 livePhotoPairingIdentifier];
+      if (!livePhotoPairingIdentifier4)
       {
 
         break;
       }
 
-      v14 = v13;
-      v15 = [v42 requiresFormatConversion];
+      v14 = livePhotoPairingIdentifier4;
+      requiresFormatConversion = [requestCopy requiresFormatConversion];
 
-      if (!v15)
+      if (!requiresFormatConversion)
       {
         break;
       }
 
 LABEL_13:
       v18 = &stru_28699D8A8;
-      v19 = v7;
+      v19 = optionsCopy;
 LABEL_16:
       [v19 setObject:v18 forKeyedSubscript:@"PAMediaConversionServiceOptionLivePhotoPairingIdentifierKey"];
       break;
   }
 
 LABEL_19:
-  v23 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v42, "locationMetadataBehavior") != 1}];
-  [v7 setObject:v23 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataIncludeLocationKey"];
+  v23 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(requestCopy, "locationMetadataBehavior") != 1}];
+  [optionsCopy setObject:v23 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataIncludeLocationKey"];
 
-  if ([v42 locationMetadataBehavior] == 2)
+  if ([requestCopy locationMetadataBehavior] == 2)
   {
-    v24 = [v42 location];
+    location = [requestCopy location];
 
-    if (v24)
+    if (location)
     {
-      v25 = [v42 location];
-      [v7 setObject:v25 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataLocationKey"];
+      location2 = [requestCopy location];
+      [optionsCopy setObject:location2 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataLocationKey"];
     }
   }
 
-  if ([v42 creationDateMetadataBehavior] == 2)
+  if ([requestCopy creationDateMetadataBehavior] == 2)
   {
-    v26 = [v42 creationDate];
+    creationDate = [requestCopy creationDate];
 
-    if (v26)
+    if (creationDate)
     {
-      v27 = [v42 creationDate];
-      [v7 setObject:v27 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataContentCreationDateKey"];
+      creationDate2 = [requestCopy creationDate];
+      [optionsCopy setObject:creationDate2 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataContentCreationDateKey"];
 
-      v28 = [v42 creationDateTimeZone];
+      creationDateTimeZone = [requestCopy creationDateTimeZone];
 
-      if (v28)
+      if (creationDateTimeZone)
       {
-        v29 = [v42 creationDateTimeZone];
-        v30 = [v42 creationDate];
-        v31 = [v29 secondsFromGMTForDate:v30];
+        creationDateTimeZone2 = [requestCopy creationDateTimeZone];
+        creationDate3 = [requestCopy creationDate];
+        v31 = [creationDateTimeZone2 secondsFromGMTForDate:creationDate3];
 
         v32 = [MEMORY[0x277CCABB0] numberWithInteger:v31];
-        [v7 setObject:v32 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataContentCreationDateTimeZoneOffsetKey"];
+        [optionsCopy setObject:v32 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataContentCreationDateTimeZoneOffsetKey"];
       }
     }
   }
 
-  v33 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v42, "captionMetadataBehavior") != 1}];
-  [v7 setObject:v33 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataIncludeDescriptionKey"];
+  v33 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(requestCopy, "captionMetadataBehavior") != 1}];
+  [optionsCopy setObject:v33 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataIncludeDescriptionKey"];
 
-  if ([v42 captionMetadataBehavior] == 2)
+  if ([requestCopy captionMetadataBehavior] == 2)
   {
-    v34 = [v42 caption];
+    caption = [requestCopy caption];
 
-    if (v34)
+    if (caption)
     {
-      v35 = [v42 caption];
-      [v7 setObject:v35 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataDescriptionKey"];
+      caption2 = [requestCopy caption];
+      [optionsCopy setObject:caption2 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataDescriptionKey"];
     }
   }
 
-  v36 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v42, "accessibilityDescriptionMetadataBehavior") != 1}];
-  [v7 setObject:v36 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataIncludeAccessibilityDescriptionKey"];
+  v36 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(requestCopy, "accessibilityDescriptionMetadataBehavior") != 1}];
+  [optionsCopy setObject:v36 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataIncludeAccessibilityDescriptionKey"];
 
-  if ([v42 accessibilityDescriptionMetadataBehavior] == 2)
+  if ([requestCopy accessibilityDescriptionMetadataBehavior] == 2)
   {
-    v37 = [v42 accessibilityDescription];
+    accessibilityDescription = [requestCopy accessibilityDescription];
 
-    if (v37)
+    if (accessibilityDescription)
     {
-      v38 = [v42 accessibilityDescription];
-      [v7 setObject:v38 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataAccessibilityDescriptionKey"];
+      accessibilityDescription2 = [requestCopy accessibilityDescription];
+      [optionsCopy setObject:accessibilityDescription2 forKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataAccessibilityDescriptionKey"];
     }
   }
 
-  [v7 setObject:&unk_2869A1000 forKeyedSubscript:@"PAMediaConversionServiceOptionPowerEfficiencyKey"];
-  [v7 setObject:&unk_2869A1018 forKeyedSubscript:@"PAMediaConversionServiceOptionPowerEfficiencyMinimumDurationKey"];
+  [optionsCopy setObject:&unk_2869A1000 forKeyedSubscript:@"PAMediaConversionServiceOptionPowerEfficiencyKey"];
+  [optionsCopy setObject:&unk_2869A1018 forKeyedSubscript:@"PAMediaConversionServiceOptionPowerEfficiencyMinimumDurationKey"];
   v39 = *MEMORY[0x277CE5C00];
-  v40 = [v42 videoExportPreset];
+  videoExportPreset = [requestCopy videoExportPreset];
 
-  if (v40)
+  if (videoExportPreset)
   {
-    v41 = [v42 videoExportPreset];
+    videoExportPreset2 = [requestCopy videoExportPreset];
 
-    [v7 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"PAMediaConversionServiceOptionIsPassthroughConversionKey"];
+    [optionsCopy setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"PAMediaConversionServiceOptionIsPassthroughConversionKey"];
   }
 
   else
   {
-    if (![v42 shouldExportAsHDR])
+    if (![requestCopy shouldExportAsHDR])
     {
       goto LABEL_37;
     }
 
-    v41 = *MEMORY[0x277CE5BF8];
+    videoExportPreset2 = *MEMORY[0x277CE5BF8];
   }
 
-  v39 = v41;
+  v39 = videoExportPreset2;
 LABEL_37:
-  [v7 setObject:v39 forKeyedSubscript:@"PAMediaConversionServiceOptionExportPresetNameKey"];
+  [optionsCopy setObject:v39 forKeyedSubscript:@"PAMediaConversionServiceOptionExportPresetNameKey"];
 }
 
-- (id)submitSinglePassVideoConversionRequest:(id)a3 destination:(id)a4 completionHandler:(id)a5
+- (id)submitSinglePassVideoConversionRequest:(id)request destination:(id)destination completionHandler:(id)handler
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v25 = a4;
-  v9 = a5;
+  requestCopy = request;
+  destinationCopy = destination;
+  handlerCopy = handler;
   v10 = objc_opt_new();
   v11 = MEMORY[0x277CBEB38];
   v31 = @"PAMediaConversionServiceOptionTargetFileSizeKey";
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v8, "estimatedOutputFileLength")}];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(requestCopy, "estimatedOutputFileLength")}];
   v32[0] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
   v14 = [v11 dictionaryWithDictionary:v13];
 
-  [(PHMediaFormatConversionImplementation_MediaConversionService *)self applyCommonOptionsFromRequest:v8 toOptions:v14];
-  [(PHMediaFormatConversionImplementation_MediaConversionService *)self applyCommonOptionsFromVideoRequest:v8 toOptions:v14];
-  objc_initWeak(&location, v8);
-  v15 = [(PHMediaFormatConversionImplementation_MediaConversionService *)self videoConversionServiceClient];
-  v16 = [v8 source];
-  v17 = [v16 fileURL];
-  v18 = [v8 destination];
-  v19 = [v18 fileURL];
+  [(PHMediaFormatConversionImplementation_MediaConversionService *)self applyCommonOptionsFromRequest:requestCopy toOptions:v14];
+  [(PHMediaFormatConversionImplementation_MediaConversionService *)self applyCommonOptionsFromVideoRequest:requestCopy toOptions:v14];
+  objc_initWeak(&location, requestCopy);
+  videoConversionServiceClient = [(PHMediaFormatConversionImplementation_MediaConversionService *)self videoConversionServiceClient];
+  source = [requestCopy source];
+  fileURL = [source fileURL];
+  destination = [requestCopy destination];
+  fileURL2 = [destination fileURL];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __133__PHMediaFormatConversionImplementation_MediaConversionService_submitSinglePassVideoConversionRequest_destination_completionHandler___block_invoke;
@@ -499,11 +499,11 @@ LABEL_37:
   v20 = v10;
   v27 = v20;
   objc_copyWeak(&v29, &location);
-  v21 = v9;
+  v21 = handlerCopy;
   v28 = v21;
-  v22 = [v15 convertVideoAtSourceURL:v17 toDestinationURL:v19 options:v14 completionHandler:v26];
+  v22 = [videoConversionServiceClient convertVideoAtSourceURL:fileURL toDestinationURL:fileURL2 options:v14 completionHandler:v26];
 
-  [v20 startObservingProgress:v22 forRequest:v8];
+  [v20 startObservingProgress:v22 forRequest:requestCopy];
   objc_destroyWeak(&v29);
 
   objc_destroyWeak(&location);
@@ -512,12 +512,12 @@ LABEL_37:
   return v22;
 }
 
-- (id)submitNonSinglePassVideoConversionRequest:(id)a3 destination:(id)a4 completionHandler:(id)a5
+- (id)submitNonSinglePassVideoConversionRequest:(id)request destination:(id)destination completionHandler:(id)handler
 {
   v30[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  destinationCopy = destination;
+  handlerCopy = handler;
   v11 = MEMORY[0x277CBEB38];
   v12 = *MEMORY[0x277CE5DA8];
   v29[0] = @"PAMediaConversionServiceOptionOutputFileTypeKey";
@@ -529,23 +529,23 @@ LABEL_37:
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:3];
   v14 = [v11 dictionaryWithDictionary:v13];
 
-  [(PHMediaFormatConversionImplementation_MediaConversionService *)self applyCommonOptionsFromRequest:v8 toOptions:v14];
-  [(PHMediaFormatConversionImplementation_MediaConversionService *)self applyCommonOptionsFromVideoRequest:v8 toOptions:v14];
-  objc_initWeak(&location, v8);
-  v15 = [(PHMediaFormatConversionImplementation_MediaConversionService *)self videoConversionServiceClient];
-  v16 = [v8 source];
-  v17 = [v16 fileURL];
-  v18 = [v9 fileURL];
+  [(PHMediaFormatConversionImplementation_MediaConversionService *)self applyCommonOptionsFromRequest:requestCopy toOptions:v14];
+  [(PHMediaFormatConversionImplementation_MediaConversionService *)self applyCommonOptionsFromVideoRequest:requestCopy toOptions:v14];
+  objc_initWeak(&location, requestCopy);
+  videoConversionServiceClient = [(PHMediaFormatConversionImplementation_MediaConversionService *)self videoConversionServiceClient];
+  source = [requestCopy source];
+  fileURL = [source fileURL];
+  fileURL2 = [destinationCopy fileURL];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __136__PHMediaFormatConversionImplementation_MediaConversionService_submitNonSinglePassVideoConversionRequest_destination_completionHandler___block_invoke;
   v24[3] = &unk_27989B858;
   objc_copyWeak(&v27, &location);
-  v19 = v9;
+  v19 = destinationCopy;
   v25 = v19;
-  v20 = v10;
+  v20 = handlerCopy;
   v26 = v20;
-  v21 = [v15 convertVideoAtSourceURL:v17 toDestinationURL:v18 options:v14 completionHandler:v24];
+  v21 = [videoConversionServiceClient convertVideoAtSourceURL:fileURL toDestinationURL:fileURL2 options:v14 completionHandler:v24];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(&location);
@@ -555,44 +555,44 @@ LABEL_37:
   return v21;
 }
 
-- (void)performVideoConversionRequest:(id)a3 completionHandler:(id)a4
+- (void)performVideoConversionRequest:(id)request completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 destination];
-  if (!v8)
+  requestCopy = request;
+  handlerCopy = handler;
+  destination = [requestCopy destination];
+  if (!destination)
   {
-    v8 = objc_opt_new();
-    [v8 setMediaType:1];
-    [v8 generateTemporaryOutputFileURLForRequest:v6];
+    destination = objc_opt_new();
+    [destination setMediaType:1];
+    [destination generateTemporaryOutputFileURLForRequest:requestCopy];
   }
 
   v14 = 0;
-  v9 = [v8 createTemporaryOutputFileWithErrorError:&v14];
+  v9 = [destination createTemporaryOutputFileWithErrorError:&v14];
   v10 = v14;
   if (v9)
   {
-    if ([v6 requiresSinglePassVideoConversion])
+    if ([requestCopy requiresSinglePassVideoConversion])
     {
-      [(PHMediaFormatConversionImplementation_MediaConversionService *)self submitSinglePassVideoConversionRequest:v6 destination:v8 completionHandler:v7];
+      [(PHMediaFormatConversionImplementation_MediaConversionService *)self submitSinglePassVideoConversionRequest:requestCopy destination:destination completionHandler:handlerCopy];
     }
 
     else
     {
-      [(PHMediaFormatConversionImplementation_MediaConversionService *)self submitNonSinglePassVideoConversionRequest:v6 destination:v8 completionHandler:v7];
+      [(PHMediaFormatConversionImplementation_MediaConversionService *)self submitNonSinglePassVideoConversionRequest:requestCopy destination:destination completionHandler:handlerCopy];
     }
     v11 = ;
     if (v11)
     {
-      v12 = [v6 progress];
-      [v12 addChild:v11 withPendingUnitCount:1];
+      progress = [requestCopy progress];
+      [progress addChild:v11 withPendingUnitCount:1];
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = v6;
+      v16 = requestCopy;
       _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unexpected nil progress for conversion request %@", buf, 0xCu);
     }
   }
@@ -606,58 +606,58 @@ LABEL_37:
       _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to create format conversion output temporary file: %@", buf, 0xCu);
     }
 
-    [v6 setError:v10];
-    [v6 setStatus:5];
-    v7[2](v7);
+    [requestCopy setError:v10];
+    [requestCopy setStatus:5];
+    handlerCopy[2](handlerCopy);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performConversionRequest:(id)a3 completionHandler:(id)a4
+- (void)performConversionRequest:(id)request completionHandler:(id)handler
 {
-  v14 = a3;
-  v7 = a4;
-  v8 = v14;
-  if (!v14)
+  requestCopy = request;
+  handlerCopy = handler;
+  v8 = requestCopy;
+  if (!requestCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionImplementation_MediaConversionService.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionImplementation_MediaConversionService.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"request"}];
 
     v8 = 0;
   }
 
   if ([v8 isCompositeRequest])
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionImplementation_MediaConversionService.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"!request.isCompositeRequest"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionImplementation_MediaConversionService.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"!request.isCompositeRequest"}];
 
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
     goto LABEL_5;
   }
 
-  v13 = [MEMORY[0x277CCA890] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionImplementation_MediaConversionService.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversionImplementation_MediaConversionService.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_5:
-  v9 = [v14 source];
-  v10 = [v9 mediaType];
+  source = [requestCopy source];
+  mediaType = [source mediaType];
 
-  if (v10 == 1)
+  if (mediaType == 1)
   {
-    [(PHMediaFormatConversionImplementation_MediaConversionService *)self performVideoConversionRequest:v14 completionHandler:v7];
+    [(PHMediaFormatConversionImplementation_MediaConversionService *)self performVideoConversionRequest:requestCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    [(PHMediaFormatConversionImplementation_MediaConversionService *)self performImageConversionRequest:v14 completionHandler:v7];
+    [(PHMediaFormatConversionImplementation_MediaConversionService *)self performImageConversionRequest:requestCopy completionHandler:handlerCopy];
   }
 }
 
@@ -696,17 +696,17 @@ LABEL_5:
   if (!v3 || (objc_opt_respondsToSelector() & 1) == 0)
   {
 LABEL_6:
-    v4 = 0;
+    integerValue = 0;
     goto LABEL_7;
   }
 
-  v4 = [v3 integerValue];
-  if (v4 >= 2)
+  integerValue = [v3 integerValue];
+  if (integerValue >= 2)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v7 = 134217984;
-      v8 = v4;
+      v8 = integerValue;
       _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unknown transfer behavior user preference value %ld, using automatic", &v7, 0xCu);
     }
 
@@ -716,7 +716,7 @@ LABEL_6:
 LABEL_7:
 
   v5 = *MEMORY[0x277D85DE8];
-  return v4;
+  return integerValue;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface DiagnosticCaseStorageAnalytics
 - (DiagnosticCaseStorageAnalytics)init;
 - (id)diagnosticCaseDictionaryKeys;
-- (id)diagnosticCaseStorageDictionaryForIdentifier:(id)a3 properties:(id)a4;
-- (id)diagnosticCaseStorageWithId:(id)a3;
-- (id)diagnosticCaseStorageWithIdentifier:(id)a3;
-- (id)historicalDiagnosticCaseStorageDictionaryFromIdentifier:(id)a3 withEvents:(BOOL)a4 count:(unint64_t)a5;
-- (id)historicalDiagnosticCaseStorageFromIdentifier:(id)a3 count:(unint64_t)a4;
+- (id)diagnosticCaseStorageDictionaryForIdentifier:(id)identifier properties:(id)properties;
+- (id)diagnosticCaseStorageWithId:(id)id;
+- (id)diagnosticCaseStorageWithIdentifier:(id)identifier;
+- (id)historicalDiagnosticCaseStorageDictionaryFromIdentifier:(id)identifier withEvents:(BOOL)events count:(unint64_t)count;
+- (id)historicalDiagnosticCaseStorageFromIdentifier:(id)identifier count:(unint64_t)count;
 - (int64_t)removeAllDiagnosticCaseStorages;
 @end
 
@@ -21,31 +21,31 @@
   return v4;
 }
 
-- (id)diagnosticCaseStorageWithId:(id)a3
+- (id)diagnosticCaseStorageWithId:(id)id
 {
   v4 = MEMORY[0x277CCAC30];
-  v5 = [a3 UUIDString];
-  v6 = [v4 predicateWithFormat:@"%K == %@", @"caseID", v5];
+  uUIDString = [id UUIDString];
+  v6 = [v4 predicateWithFormat:@"%K == %@", @"caseID", uUIDString];
 
   v7 = [(ObjectAnalytics *)self fetchEntitiesFreeForm:v6 sortDesc:0];
 
   return v7;
 }
 
-- (id)diagnosticCaseStorageWithIdentifier:(id)a3
+- (id)diagnosticCaseStorageWithIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"caseID == %@", a3];
-  v5 = [(ObjectAnalytics *)self fetchEntitiesFreeForm:v4 sortDesc:0];
+  identifier = [MEMORY[0x277CCAC30] predicateWithFormat:@"caseID == %@", identifier];
+  v5 = [(ObjectAnalytics *)self fetchEntitiesFreeForm:identifier sortDesc:0];
 
   return v5;
 }
 
-- (id)diagnosticCaseStorageDictionaryForIdentifier:(id)a3 properties:(id)a4
+- (id)diagnosticCaseStorageDictionaryForIdentifier:(id)identifier properties:(id)properties
 {
   v6 = MEMORY[0x277CCAC30];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"caseID == %@", a3];
-  v9 = [(ObjectAnalytics *)self fetchEntityDictionariesWithProperties:v7 predicate:v8];
+  propertiesCopy = properties;
+  identifier = [v6 predicateWithFormat:@"caseID == %@", identifier];
+  v9 = [(ObjectAnalytics *)self fetchEntityDictionariesWithProperties:propertiesCopy predicate:identifier];
 
   return v9;
 }
@@ -57,21 +57,21 @@
   return v2;
 }
 
-- (id)historicalDiagnosticCaseStorageFromIdentifier:(id)a3 count:(unint64_t)a4
+- (id)historicalDiagnosticCaseStorageFromIdentifier:(id)identifier count:(unint64_t)count
 {
-  v6 = a3;
-  if ([v6 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v7 = [(DiagnosticCaseStorageAnalytics *)self diagnosticCaseStorageWithIdentifier:v6];
+    v7 = [(DiagnosticCaseStorageAnalytics *)self diagnosticCaseStorageWithIdentifier:identifierCopy];
     if ([v7 count])
     {
-      v8 = [v7 firstObject];
-      v9 = v8;
-      if (v8)
+      firstObject = [v7 firstObject];
+      v9 = firstObject;
+      if (firstObject)
       {
         v10 = MEMORY[0x277CCAC30];
-        v11 = [v8 timeStamp];
-        v12 = [v10 predicateWithFormat:@"timeStamp < %@", v11];
+        timeStamp = [firstObject timeStamp];
+        v12 = [v10 predicateWithFormat:@"timeStamp < %@", timeStamp];
       }
 
       else
@@ -92,33 +92,33 @@
   }
 
   v13 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"timeStamp" ascending:0];
-  v14 = [(ObjectAnalytics *)self fetchEntitiesFreeForm:v12 sortDesc:v13 limit:a4];
+  v14 = [(ObjectAnalytics *)self fetchEntitiesFreeForm:v12 sortDesc:v13 limit:count];
 
   return v14;
 }
 
-- (id)historicalDiagnosticCaseStorageDictionaryFromIdentifier:(id)a3 withEvents:(BOOL)a4 count:(unint64_t)a5
+- (id)historicalDiagnosticCaseStorageDictionaryFromIdentifier:(id)identifier withEvents:(BOOL)events count:(unint64_t)count
 {
-  v6 = a4;
+  eventsCopy = events;
   v21[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(DiagnosticCaseStorageAnalytics *)self diagnosticCaseDictionaryKeys];
-  v10 = v9;
-  if (v6)
+  identifierCopy = identifier;
+  diagnosticCaseDictionaryKeys = [(DiagnosticCaseStorageAnalytics *)self diagnosticCaseDictionaryKeys];
+  v10 = diagnosticCaseDictionaryKeys;
+  if (eventsCopy)
   {
-    [v9 addObject:@"caseEvents"];
+    [diagnosticCaseDictionaryKeys addObject:@"caseEvents"];
   }
 
-  if ([v8 length])
+  if ([identifierCopy length])
   {
-    v11 = [(DiagnosticCaseStorageAnalytics *)self diagnosticCaseStorageDictionaryForIdentifier:v8 properties:v10];
+    v11 = [(DiagnosticCaseStorageAnalytics *)self diagnosticCaseStorageDictionaryForIdentifier:identifierCopy properties:v10];
     if ([v11 count])
     {
-      v12 = [v11 firstObject];
-      v13 = v12;
-      if (v12)
+      firstObject = [v11 firstObject];
+      v13 = firstObject;
+      if (firstObject)
       {
-        v14 = [v12 objectForKeyedSubscript:@"timeStamp"];
+        v14 = [firstObject objectForKeyedSubscript:@"timeStamp"];
         v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"timeStamp < %@", v14];
       }
 
@@ -142,7 +142,7 @@
   v16 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"timeStamp" ascending:0];
   v21[0] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-  v18 = [(ObjectAnalytics *)self fetchEntityDictionariesWithProperties:v10 predicate:v15 sortDescriptors:v17 limit:a5];
+  v18 = [(ObjectAnalytics *)self fetchEntityDictionariesWithProperties:v10 predicate:v15 sortDescriptors:v17 limit:count];
 
   v19 = *MEMORY[0x277D85DE8];
 

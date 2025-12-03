@@ -1,17 +1,17 @@
 @interface MSVBloomFilter
-- (BOOL)containsObject:(id)a3;
-- (MSVBloomFilter)initWithCapacity:(int64_t)a3 falsePositiveTolerance:(float)a4;
-- (MSVBloomFilter)initWithCapacity:(int64_t)a3 falsePositiveTolerance:(float)a4 murmurSeed:(unint64_t)a5;
-- (MSVBloomFilter)initWithCoder:(id)a3;
+- (BOOL)containsObject:(id)object;
+- (MSVBloomFilter)initWithCapacity:(int64_t)capacity falsePositiveTolerance:(float)tolerance;
+- (MSVBloomFilter)initWithCapacity:(int64_t)capacity falsePositiveTolerance:(float)tolerance murmurSeed:(unint64_t)seed;
+- (MSVBloomFilter)initWithCoder:(id)coder;
 - (float)falsePositiveProbability;
-- (id)_vectorIndexSetForObject:(id)a3;
+- (id)_vectorIndexSetForObject:(id)object;
 - (id)description;
 - (int64_t)estimatedCount;
-- (unint64_t)_fnvHashObject:(id)a3;
-- (unint64_t)_murmur2HashObject:(id)a3;
-- (void)addObject:(id)a3;
+- (unint64_t)_fnvHashObject:(id)object;
+- (unint64_t)_murmur2HashObject:(id)object;
+- (void)addObject:(id)object;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSVBloomFilter
@@ -29,16 +29,16 @@
   [(MSVBloomFilter *)&v4 dealloc];
 }
 
-- (unint64_t)_murmur2HashObject:(id)a3
+- (unint64_t)_murmur2HashObject:(id)object
 {
-  v4 = [a3 hash];
+  v4 = [object hash];
   v5 = 0xC6A4A7935BD1E995 * (self->_murmurSeed ^ 0x35253C9ADE8F4CA8 ^ (0xC6A4A7935BD1E995 * ((0xC6A4A7935BD1E995 * v4) ^ ((0xC6A4A7935BD1E995 * v4) >> 47))));
   return (0xC6A4A7935BD1E995 * (v5 ^ (v5 >> 47))) ^ ((0xC6A4A7935BD1E995 * (v5 ^ (v5 >> 47))) >> 47);
 }
 
-- (unint64_t)_fnvHashObject:(id)a3
+- (unint64_t)_fnvHashObject:(id)object
 {
-  v3 = [a3 hash];
+  v3 = [object hash];
   v4 = 0;
   v5 = 0xCBF29CE484222325;
   do
@@ -50,18 +50,18 @@
   return v5;
 }
 
-- (id)_vectorIndexSetForObject:(id)a3
+- (id)_vectorIndexSetForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(MSVBloomFilter *)self _fnvHashObject:v4];
-  v6 = [(MSVBloomFilter *)self _murmur2HashObject:v4];
-  v7 = [MEMORY[0x1E696AD50] indexSet];
+  objectCopy = object;
+  v5 = [(MSVBloomFilter *)self _fnvHashObject:objectCopy];
+  v6 = [(MSVBloomFilter *)self _murmur2HashObject:objectCopy];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   if (self->_hashCount >= 1)
   {
     v8 = 0;
     do
     {
-      [v7 addIndex:v5 % self->_vectorCapacity];
+      [indexSet addIndex:v5 % self->_vectorCapacity];
       ++v8;
       v5 += v6;
     }
@@ -69,7 +69,7 @@
     while (v8 < self->_hashCount);
   }
 
-  return v7;
+  return indexSet;
 }
 
 - (int64_t)estimatedCount
@@ -87,10 +87,10 @@
   return pow(1.0 - v3, hashCount);
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = a3;
-  v5 = [(MSVBloomFilter *)self _vectorIndexSetForObject:v4];
+  objectCopy = object;
+  v5 = [(MSVBloomFilter *)self _vectorIndexSetForObject:objectCopy];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -120,9 +120,9 @@ uint64_t __33__MSVBloomFilter_containsObject___block_invoke(uint64_t a1, CFIndex
   return result;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = [(MSVBloomFilter *)self _vectorIndexSetForObject:a3];
+  v4 = [(MSVBloomFilter *)self _vectorIndexSetForObject:object];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __28__MSVBloomFilter_addObject___block_invoke;
@@ -131,30 +131,30 @@ uint64_t __33__MSVBloomFilter_containsObject___block_invoke(uint64_t a1, CFIndex
   [v4 enumerateIndexesUsingBlock:v5];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   capacity = self->_capacity;
-  v5 = a3;
-  [v5 encodeInteger:capacity forKey:@"capacity"];
-  [v5 encodeInteger:self->_vectorCapacity forKey:@"vectorCapacity"];
-  [v5 encodeInteger:self->_falsePositiveTolerance forKey:@"falsePositiveTolerance"];
-  [v5 encodeInteger:self->_hashCount forKey:@"hashCount"];
-  [v5 encodeInt64:self->_murmurSeed forKey:@"murmurSeed"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:capacity forKey:@"capacity"];
+  [coderCopy encodeInteger:self->_vectorCapacity forKey:@"vectorCapacity"];
+  [coderCopy encodeInteger:self->_falsePositiveTolerance forKey:@"falsePositiveTolerance"];
+  [coderCopy encodeInteger:self->_hashCount forKey:@"hashCount"];
+  [coderCopy encodeInt64:self->_murmurSeed forKey:@"murmurSeed"];
   v10 = [MEMORY[0x1E695DF88] dataWithLength:self->_vectorCapacity / 8];
   vector = self->_vector;
   vectorCapacity = self->_vectorCapacity;
   v8 = v10;
-  v9 = [v10 mutableBytes];
+  mutableBytes = [v10 mutableBytes];
   v12.location = 0;
   v12.length = vectorCapacity;
-  CFBitVectorGetBits(vector, v12, v9);
-  [v5 encodeObject:v10 forKey:@"vectorData"];
+  CFBitVectorGetBits(vector, v12, mutableBytes);
+  [coderCopy encodeObject:v10 forKey:@"vectorData"];
 }
 
-- (MSVBloomFilter)initWithCoder:(id)a3
+- (MSVBloomFilter)initWithCoder:(id)coder
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = MSVBloomFilter;
   v5 = [(MSVBloomFilter *)&v17 init];
@@ -163,12 +163,12 @@ uint64_t __33__MSVBloomFilter_containsObject___block_invoke(uint64_t a1, CFIndex
     goto LABEL_6;
   }
 
-  v5->_capacity = [v4 decodeIntegerForKey:@"capacity"];
-  v5->_vectorCapacity = [v4 decodeIntegerForKey:@"vectorCapacity"];
-  v5->_falsePositiveTolerance = [v4 decodeIntegerForKey:@"falsePositiveTolerance"];
-  v5->_hashCount = [v4 decodeIntegerForKey:@"hashCount"];
-  v5->_murmurSeed = [v4 decodeInt64ForKey:@"murmurSeed"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vectorData"];
+  v5->_capacity = [coderCopy decodeIntegerForKey:@"capacity"];
+  v5->_vectorCapacity = [coderCopy decodeIntegerForKey:@"vectorCapacity"];
+  v5->_falsePositiveTolerance = [coderCopy decodeIntegerForKey:@"falsePositiveTolerance"];
+  v5->_hashCount = [coderCopy decodeIntegerForKey:@"hashCount"];
+  v5->_murmurSeed = [coderCopy decodeInt64ForKey:@"murmurSeed"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vectorData"];
   v7 = v6;
   if (!v6)
   {
@@ -231,35 +231,35 @@ LABEL_9:
   return [v3 stringWithFormat:@"<%@: %p size=%ld hashCount=%ld falsePositiveProbability=%0.4f>", v4, self, v5, hashCount, v7];
 }
 
-- (MSVBloomFilter)initWithCapacity:(int64_t)a3 falsePositiveTolerance:(float)a4 murmurSeed:(unint64_t)a5
+- (MSVBloomFilter)initWithCapacity:(int64_t)capacity falsePositiveTolerance:(float)tolerance murmurSeed:(unint64_t)seed
 {
-  result = [(MSVBloomFilter *)self initWithCapacity:a3 falsePositiveTolerance:?];
+  result = [(MSVBloomFilter *)self initWithCapacity:capacity falsePositiveTolerance:?];
   if (result)
   {
-    result->_murmurSeed = a5;
+    result->_murmurSeed = seed;
   }
 
   return result;
 }
 
-- (MSVBloomFilter)initWithCapacity:(int64_t)a3 falsePositiveTolerance:(float)a4
+- (MSVBloomFilter)initWithCapacity:(int64_t)capacity falsePositiveTolerance:(float)tolerance
 {
-  if (a3 <= 0)
+  if (capacity <= 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"MSVBloomFilter.m" lineNumber:23 description:@"An expected capacity must be provided."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVBloomFilter.m" lineNumber:23 description:@"An expected capacity must be provided."];
   }
 
-  if (a4 >= 1.0)
+  if (tolerance >= 1.0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MSVBloomFilter.m" lineNumber:24 description:@"Tolerance must be between 0..<1 and cannot be 1"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MSVBloomFilter.m" lineNumber:24 description:@"Tolerance must be between 0..<1 and cannot be 1"];
   }
 
-  if (a4 <= 0.0)
+  if (tolerance <= 0.0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"MSVBloomFilter.m" lineNumber:25 description:@"Tolerance must be between 0..<1 and cannot be 0"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"MSVBloomFilter.m" lineNumber:25 description:@"Tolerance must be between 0..<1 and cannot be 0"];
   }
 
   v20.receiver = self;
@@ -268,17 +268,17 @@ LABEL_9:
   v9 = v8;
   if (v8)
   {
-    v8->_falsePositiveTolerance = a4;
-    v8->_capacity = a3;
+    v8->_falsePositiveTolerance = tolerance;
+    v8->_capacity = capacity;
     arc4random_buf(&v8->_murmurSeed, 8uLL);
-    v10 = -log(a4);
+    v10 = -log(tolerance);
     v11 = 1;
-    v12 = a3;
+    capacityCopy = capacity;
     do
     {
-      v13 = vcvtpd_s64_f64(v10 * v12 / 0.480453014);
+      v13 = vcvtpd_s64_f64(v10 * capacityCopy / 0.480453014);
       v9->_vectorCapacity = v13;
-      v9->_hashCount = vcvtpd_s64_f64((v13 / v12) * 0.693147181);
+      v9->_hashCount = vcvtpd_s64_f64((v13 / capacityCopy) * 0.693147181);
       [(MSVBloomFilter *)v9 falsePositiveProbability];
       if (v11 > 0xB)
       {
@@ -286,10 +286,10 @@ LABEL_9:
       }
 
       ++v11;
-      v12 += a3;
+      capacityCopy += capacity;
     }
 
-    while (v14 > a4);
+    while (v14 > tolerance);
     Mutable = CFBitVectorCreateMutable(*MEMORY[0x1E695E480], v9->_vectorCapacity);
     v9->_vector = Mutable;
     CFBitVectorSetCount(Mutable, v9->_vectorCapacity);

@@ -1,49 +1,49 @@
 @interface WFContentItemsViewController
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)setContentItems:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)setContentItems:(id)items;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation WFContentItemsViewController
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v23 = -[NSArray objectAtIndex:](self->_contentItems, "objectAtIndex:", [a4 row]);
+  v23 = -[NSArray objectAtIndex:](self->_contentItems, "objectAtIndex:", [path row]);
   if (self->_allowsCoercion)
   {
     v5 = [[WFContentGraphViewController alloc] initWithContentItem:v23];
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (!v7)
+    if (!userInterfaceIdiom)
     {
-      v8 = objc_alloc_init(MEMORY[0x277D75D28]);
-      v9 = [(WFContentItemsViewController *)self navigationController];
-      v10 = [v9 view];
-      [v10 bounds];
+      navigationController4 = objc_alloc_init(MEMORY[0x277D75D28]);
+      navigationController = [(WFContentItemsViewController *)self navigationController];
+      view = [navigationController view];
+      [view bounds];
       v12 = v11;
-      v13 = [(WFContentItemsViewController *)self navigationController];
-      v14 = [v13 view];
-      [v14 bounds];
+      navigationController2 = [(WFContentItemsViewController *)self navigationController];
+      view2 = [navigationController2 view];
+      [view2 bounds];
       v16 = v15 + 20.0;
-      v17 = [(WFContentGraphViewController *)v5 view];
-      [v17 setFrame:{0.0, 0.0, v12, v16}];
+      view3 = [(WFContentGraphViewController *)v5 view];
+      [view3 setFrame:{0.0, 0.0, v12, v16}];
 
-      v18 = [(WFContentGraphViewController *)v5 view];
-      [v18 setAutoresizingMask:0];
+      view4 = [(WFContentGraphViewController *)v5 view];
+      [view4 setAutoresizingMask:0];
 
-      [v8 addChildViewController:v5];
-      [(WFContentGraphViewController *)v5 didMoveToParentViewController:v8];
-      v19 = [v8 view];
-      v20 = [(WFContentGraphViewController *)v5 view];
-      [v19 addSubview:v20];
+      [navigationController4 addChildViewController:v5];
+      [(WFContentGraphViewController *)v5 didMoveToParentViewController:navigationController4];
+      view5 = [navigationController4 view];
+      view6 = [(WFContentGraphViewController *)v5 view];
+      [view5 addSubview:view6];
 
-      v21 = [(WFContentGraphViewController *)v5 title];
-      [v8 setTitle:v21];
+      title = [(WFContentGraphViewController *)v5 title];
+      [navigationController4 setTitle:title];
 
-      v22 = [(WFContentItemsViewController *)self navigationController];
-      [v22 pushViewController:v8 animated:1];
+      navigationController3 = [(WFContentItemsViewController *)self navigationController];
+      [navigationController3 pushViewController:navigationController4 animated:1];
 
       goto LABEL_6;
     }
@@ -54,37 +54,37 @@
     v5 = [[WFContentItemViewController alloc] initWithContentItem:v23];
   }
 
-  v8 = [(WFContentItemsViewController *)self navigationController];
-  [v8 pushViewController:v5 animated:1];
+  navigationController4 = [(WFContentItemsViewController *)self navigationController];
+  [navigationController4 pushViewController:v5 animated:1];
 LABEL_6:
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"WFContentItemCellIdentifier" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"WFContentItemCellIdentifier" forIndexPath:pathCopy];
   contentItems = self->_contentItems;
-  v9 = [v6 row];
+  v9 = [pathCopy row];
 
   v10 = [(NSArray *)contentItems objectAtIndex:v9];
   [v7 setAccessoryType:1];
-  v11 = [v10 icon];
-  v12 = [v11 UIImage];
-  v13 = [v7 imageView];
-  [v13 setImage:v12];
+  icon = [v10 icon];
+  uIImage = [icon UIImage];
+  imageView = [v7 imageView];
+  [imageView setImage:uIImage];
 
-  v14 = [v10 name];
-  v15 = [v7 textLabel];
-  [v15 setText:v14];
+  name = [v10 name];
+  textLabel = [v7 textLabel];
+  [textLabel setText:name];
 
   return v7;
 }
 
-- (void)setContentItems:(id)a3
+- (void)setContentItems:(id)items
 {
-  objc_storeStrong(&self->_contentItems, a3);
-  v4 = [(WFContentItemsViewController *)self tableView];
-  [v4 reloadData];
+  objc_storeStrong(&self->_contentItems, items);
+  tableView = [(WFContentItemsViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)viewDidLoad
@@ -95,8 +95,8 @@ LABEL_6:
   v3 = WFLocalizedString(@"Items");
   [(WFContentItemsViewController *)self setTitle:v3];
 
-  v4 = [(WFContentItemsViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"WFContentItemCellIdentifier"];
+  tableView = [(WFContentItemsViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"WFContentItemCellIdentifier"];
 }
 
 @end

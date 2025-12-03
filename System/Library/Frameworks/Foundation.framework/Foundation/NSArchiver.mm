@@ -1,22 +1,22 @@
 @interface NSArchiver
 + (BOOL)archiveRootObject:(id)rootObject toFile:(NSString *)path;
 + (NSData)archivedDataWithRootObject:(id)rootObject;
-+ (id)classNameEncodedForTrueClassName:(id)a3;
-+ (void)encodeClassName:(id)a3 intoClassName:(id)a4;
++ (id)classNameEncodedForTrueClassName:(id)name;
++ (void)encodeClassName:(id)name intoClassName:(id)className;
 + (void)initialize;
 - (NSArchiver)initForWritingWithMutableData:(NSMutableData *)mdata;
 - (NSString)classNameEncodedForTrueClassName:(NSString *)trueName;
-- (int64_t)versionForClassName:(id)a3;
+- (int64_t)versionForClassName:(id)name;
 - (void)dealloc;
-- (void)encodeArrayOfObjCType:(const char *)a3 count:(unint64_t)a4 at:(const void *)a5;
-- (void)encodeBytes:(const void *)a3 length:(unint64_t)a4;
+- (void)encodeArrayOfObjCType:(const char *)type count:(unint64_t)count at:(const void *)at;
+- (void)encodeBytes:(const void *)bytes length:(unint64_t)length;
 - (void)encodeClassName:(NSString *)trueName intoClassName:(NSString *)inArchiveName;
 - (void)encodeConditionalObject:(id)object;
-- (void)encodeDataObject:(id)a3;
-- (void)encodeObject:(id)a3;
+- (void)encodeDataObject:(id)object;
+- (void)encodeObject:(id)object;
 - (void)encodeRootObject:(id)rootObject;
-- (void)encodeValueOfObjCType:(const char *)a3 at:(const void *)a4;
-- (void)encodeValuesOfObjCTypes:(const char *)a3;
+- (void)encodeValueOfObjCType:(const char *)type at:(const void *)at;
+- (void)encodeValuesOfObjCTypes:(const char *)types;
 - (void)replaceObject:(id)object withObject:(id)newObject;
 @end
 
@@ -24,7 +24,7 @@
 
 + (void)initialize
 {
-  if (NSArchiver == a1)
+  if (NSArchiver == self)
   {
     [NSArchiver encodeClassName:@"__NSLocalTimeZone" intoClassName:@"NSLocalTimeZone"];
 
@@ -111,7 +111,7 @@
   CFDictionarySetValue(replacementTable, object, v8);
 }
 
-+ (void)encodeClassName:(id)a3 intoClassName:(id)a4
++ (void)encodeClassName:(id)name intoClassName:(id)className
 {
   Mutable = encodingMap;
   if (!encodingMap)
@@ -120,19 +120,19 @@
     encodingMap = Mutable;
   }
 
-  CFDictionarySetValue(Mutable, a3, a4);
+  CFDictionarySetValue(Mutable, name, className);
 }
 
-+ (id)classNameEncodedForTrueClassName:(id)a3
++ (id)classNameEncodedForTrueClassName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
-  if (!encodingMap || (result = CFDictionaryGetValue(encodingMap, a3)) == 0)
+  if (!encodingMap || (result = CFDictionaryGetValue(encodingMap, name)) == 0)
   {
-    v5 = [a3 copyWithZone:0];
+    v5 = [name copyWithZone:0];
 
     return v5;
   }
@@ -140,14 +140,14 @@
   return result;
 }
 
-- (int64_t)versionForClassName:(id)a3
+- (int64_t)versionForClassName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v3 = NSClassFromString(a3);
+  v3 = NSClassFromString(name);
   if (v3)
   {
     return class_getVersion(v3);
@@ -159,40 +159,40 @@
   }
 }
 
-- (void)encodeValueOfObjCType:(const char *)a3 at:(const void *)a4
+- (void)encodeValueOfObjCType:(const char *)type at:(const void *)at
 {
   mdata = self->mdata;
   if (mdata)
   {
-    _encodeOrReuseCString(mdata, a3, self->stringTable);
+    _encodeOrReuseCString(mdata, type, self->stringTable);
   }
 
-  v8 = *_encodeValueOfObjCType(self, a3, a4);
+  v8 = *_encodeValueOfObjCType(self, type, at);
   if (v8)
   {
-    typeDescriptorError(v8, a3, "excess characters in type descriptor");
+    typeDescriptorError(v8, type, "excess characters in type descriptor");
   }
 }
 
-- (void)encodeValuesOfObjCTypes:(const char *)a3
+- (void)encodeValuesOfObjCTypes:(const char *)types
 {
-  v3 = a3;
+  typesCopy = types;
   mdata = self->mdata;
   if (mdata)
   {
-    _encodeOrReuseCString(mdata, a3, self->stringTable);
+    _encodeOrReuseCString(mdata, types, self->stringTable);
   }
 
-  for (i = &v8; *v3; v3 = _encodeValueOfObjCType(self, v3, *v6))
+  for (i = &v8; *typesCopy; typesCopy = _encodeValueOfObjCType(self, typesCopy, *v6))
   {
     v6 = i++;
   }
 }
 
-- (void)encodeArrayOfObjCType:(const char *)a3 count:(unint64_t)a4 at:(const void *)a5
+- (void)encodeArrayOfObjCType:(const char *)type count:(unint64_t)count at:(const void *)at
 {
   sizep[1] = *MEMORY[0x1E69E9840];
-  v9 = strlen(a3);
+  v9 = strlen(type);
   if (self->mdata)
   {
     v10 = v9 + 15;
@@ -215,7 +215,7 @@
       v11 = malloc_type_malloc(v9 + 15, 0x100004077774924uLL);
     }
 
-    snprintf(v11, v10, "[%lu%s]", a4, a3);
+    snprintf(v11, v10, "[%lu%s]", count, type);
     _encodeOrReuseCString(self->mdata, v11, self->stringTable);
     if (v10 >= 0x201)
     {
@@ -223,16 +223,16 @@
     }
   }
 
-  v12 = *a3;
-  if (v12 == 99 && (v13 = a3 + 1, !a3[1]))
+  v12 = *type;
+  if (v12 == 99 && (v13 = type + 1, !type[1]))
   {
-    [self->mdata appendBytes:a5 length:a4];
+    [self->mdata appendBytes:at length:count];
   }
 
   else
   {
     sizep[0] = 0;
-    v14 = strlen(a3);
+    v14 = strlen(type);
     v15 = v14 + 3;
     if (v14 + 3 < 0x201)
     {
@@ -251,36 +251,36 @@
     else
     {
       v16 = malloc_type_malloc(v14 + 3, 0x100004077774924uLL);
-      v12 = *a3;
+      v12 = *type;
     }
 
-    v17 = a3;
+    typeCopy3 = type;
     if (v12)
     {
-      v17 = a3;
+      typeCopy3 = type;
       if (v12 != 123)
       {
-        v17 = a3;
-        if (a3[1])
+        typeCopy3 = type;
+        if (type[1])
         {
           strlcpy(v16, "{", v15);
-          strlcat(v16, a3, v15);
+          strlcat(v16, type, v15);
           strlcat(v16, "}", v15);
-          v17 = v16;
+          typeCopy3 = v16;
         }
       }
     }
 
-    v13 = NSGetSizeAndAlignment(v17, sizep, 0);
-    if (a4)
+    v13 = NSGetSizeAndAlignment(typeCopy3, sizep, 0);
+    if (count)
     {
       v18 = 0;
       do
       {
-        _encodeValueOfObjCType(self, v17, (a5 + sizep[0] * v18++));
+        _encodeValueOfObjCType(self, typeCopy3, (at + sizep[0] * v18++));
       }
 
-      while (a4 != v18);
+      while (count != v18);
     }
 
     if (v15 >= 0x201)
@@ -291,24 +291,24 @@
 
   if (*v13)
   {
-    typeDescriptorError(*v13, a3, "excess characters in type descriptor");
+    typeDescriptorError(*v13, type, "excess characters in type descriptor");
   }
 }
 
-- (void)encodeBytes:(const void *)a3 length:(unint64_t)a4
+- (void)encodeBytes:(const void *)bytes length:(unint64_t)length
 {
   mdata = self->mdata;
   if (mdata)
   {
     _encodeOrReuseCString(mdata, "+", self->stringTable);
-    _encodeInt(self->mdata, a4);
+    _encodeInt(self->mdata, length);
     v8 = self->mdata;
 
-    [v8 appendBytes:a3 length:a4];
+    [v8 appendBytes:bytes length:length];
   }
 }
 
-- (void)encodeObject:(id)a3
+- (void)encodeObject:(id)object
 {
   mdata = self->mdata;
   if (mdata)
@@ -316,13 +316,13 @@
     _encodeOrReuseCString(mdata, "@", self->stringTable);
   }
 
-  _encodeObject_old(self, a3);
+  _encodeObject_old(self, object);
 }
 
-- (void)encodeDataObject:(id)a3
+- (void)encodeDataObject:(id)object
 {
   v9 = *MEMORY[0x1E69E9840];
-  v6 = [a3 length];
+  v6 = [object length];
   if (v6 >> 31)
   {
     v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: data length (%qd) makes data too large to fit in non-keyed archive", _NSMethodExceptionProem(self, a2), v6), 0}];
@@ -331,7 +331,7 @@
 
   v8 = v6;
   [(NSArchiver *)self encodeValueOfObjCType:"i" at:&v8];
-  -[NSArchiver encodeArrayOfObjCType:count:at:](self, "encodeArrayOfObjCType:count:at:", "c", v8, [a3 bytes]);
+  -[NSArchiver encodeArrayOfObjCType:count:at:](self, "encodeArrayOfObjCType:count:at:", "c", v8, [object bytes]);
 }
 
 - (void)encodeRootObject:(id)rootObject
@@ -339,8 +339,8 @@
   mdata = self->mdata;
   if (!mdata)
   {
-    v7 = [NSString stringWithFormat:@"*** -encodeRootObject: already done for %p", rootObject];
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v7 userInfo:0]);
+    rootObject = [NSString stringWithFormat:@"*** -encodeRootObject: already done for %p", rootObject];
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:rootObject userInfo:0]);
   }
 
   if (!self->ids)
@@ -363,8 +363,8 @@
   {
     if (!self->ids)
     {
-      v7 = [NSString stringWithFormat:@"*** encodeConditionalObject: -encodeRootObject: has not been previously done for %p", object];
-      objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v7 userInfo:0]);
+      object = [NSString stringWithFormat:@"*** encodeConditionalObject: -encodeRootObject: has not been previously done for %p", object];
+      objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:object userInfo:0]);
     }
 
     v5 = _replacementObjectForObject(self, object);
@@ -392,25 +392,25 @@
 
 + (NSData)archivedDataWithRootObject:(id)rootObject
 {
-  v5 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   v6 = _CFExecutableLinkedOnOrAfter();
   if (v6)
   {
     _CFAutoreleasePoolPush();
   }
 
-  [objc_msgSend(objc_allocWithZone(a1) initForWritingWithMutableData:{v5), "encodeRootObject:", rootObject}];
+  [objc_msgSend(objc_allocWithZone(self) initForWritingWithMutableData:{data), "encodeRootObject:", rootObject}];
   if (v6)
   {
     _CFAutoreleasePoolPop();
   }
 
-  return v5;
+  return data;
 }
 
 + (BOOL)archiveRootObject:(id)rootObject toFile:(NSString *)path
 {
-  v5 = [a1 archivedDataWithRootObject:rootObject];
+  v5 = [self archivedDataWithRootObject:rootObject];
 
   return [v5 writeToFile:path atomically:1];
 }

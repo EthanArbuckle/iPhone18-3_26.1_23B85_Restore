@@ -1,63 +1,63 @@
 @interface WFiTunesArtistContentItem
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
-- (BOOL)getListSubtitle:(id)a3;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 @end
 
 @implementation WFiTunesArtistContentItem
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
-    v5 = a3;
-    v6 = [(WFiTunesObjectContentItem *)self object];
-    v7 = [v6 genre];
-    (*(a3 + 2))(v5, v7);
+    subtitleCopy = subtitle;
+    object = [(WFiTunesObjectContentItem *)self object];
+    genre = [object genre];
+    (*(subtitle + 2))(subtitleCopy, genre);
   }
 
   return 1;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  v8 = a4;
-  if (objc_opt_class() == a3)
+  optionsCopy = options;
+  if (objc_opt_class() == class)
   {
     v10 = MEMORY[0x1E6996EC8];
-    v11 = [(WFiTunesArtistContentItem *)self name];
-    v9 = [v10 object:v11];
+    name = [(WFiTunesArtistContentItem *)self name];
+    v9 = [v10 object:name];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = WFiTunesArtistContentItem;
-    v9 = [(WFiTunesObjectContentItem *)&v13 generateObjectRepresentationForClass:a3 options:v8 error:a5];
+    v9 = [(WFiTunesObjectContentItem *)&v13 generateObjectRepresentationForClass:class options:optionsCopy error:error];
   }
 
   return v9;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"iTunes artists", @"iTunes artists");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"iTunes artist", @"iTunes artist");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -84,7 +84,7 @@
 + (id)stringConversionBehavior
 {
   v2 = MEMORY[0x1E6996D70];
-  v3 = [a1 propertyForName:@"Name"];
+  v3 = [self propertyForName:@"Name"];
   v4 = [v2 accessingProperty:v3];
 
   return v4;

@@ -10,12 +10,12 @@
   v5.receiver = self;
   v5.super_class = _UIMoreListTableView;
   [(UITableView *)&v5 didMoveToWindow];
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(_UIMoreListTableView *)self _listController];
-    [v4 _layoutCells];
+    _listController = [(_UIMoreListTableView *)self _listController];
+    [_listController _layoutCells];
   }
 }
 

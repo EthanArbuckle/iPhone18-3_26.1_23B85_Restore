@@ -1,21 +1,21 @@
 @interface GKContactsIntegrationIDSUpdateIntervalState
 + (id)secureCodedPropertyKeys;
-- (id)initUpdateIntervalHandleCount:(unint64_t)a3 updateIntervalStartTime:(id)a4;
+- (id)initUpdateIntervalHandleCount:(unint64_t)count updateIntervalStartTime:(id)time;
 @end
 
 @implementation GKContactsIntegrationIDSUpdateIntervalState
 
-- (id)initUpdateIntervalHandleCount:(unint64_t)a3 updateIntervalStartTime:(id)a4
+- (id)initUpdateIntervalHandleCount:(unint64_t)count updateIntervalStartTime:(id)time
 {
-  v7 = a4;
+  timeCopy = time;
   v11.receiver = self;
   v11.super_class = GKContactsIntegrationIDSUpdateIntervalState;
   v8 = [(GKContactsIntegrationIDSUpdateIntervalState *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_updateIntervalHandleCount = a3;
-    objc_storeStrong(&v8->_updateIntervalStartTime, a4);
+    v8->_updateIntervalHandleCount = count;
+    objc_storeStrong(&v8->_updateIntervalStartTime, time);
   }
 
   return v9;

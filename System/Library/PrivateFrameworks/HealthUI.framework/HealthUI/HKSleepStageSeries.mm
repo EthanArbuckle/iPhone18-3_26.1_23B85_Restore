@@ -2,13 +2,13 @@
 - (HKSleepStageSeries)init;
 - (NSArray)sleepStageFillStyles;
 - (NSNumber)highlightedSleepStage;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (void)_drawColumnForLayer:(int64_t)a3 offsets:(id)a4 coordinate:(id)a5 selectedBezierPaths:(id)a6 unselectedBezierPaths:(id)a7 barWidth:(double)a8 pathCount:(int64_t *)a9;
-- (void)_drawWithBlockCoordinates:(id)a3 visibleBarCount:(int64_t)a4 pointTransform:(CGAffineTransform *)a5 context:(CGContext *)a6 axisRect:(CGRect)a7 axisResolution:(double)a8 seriesRenderingDelegate:(id)a9;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (void)_drawColumnForLayer:(int64_t)layer offsets:(id)offsets coordinate:(id)coordinate selectedBezierPaths:(id)paths unselectedBezierPaths:(id)bezierPaths barWidth:(double)width pathCount:(int64_t *)count;
+- (void)_drawWithBlockCoordinates:(id)coordinates visibleBarCount:(int64_t)count pointTransform:(CGAffineTransform *)transform context:(CGContext *)context axisRect:(CGRect)rect axisResolution:(double)resolution seriesRenderingDelegate:(id)delegate;
 - (void)_rebuildFillStyles;
-- (void)setHighlightedSleepStage:(id)a3;
-- (void)setSleepStageFillStyles:(id)a3;
-- (void)updateChartPointUserInfo:(id)a3 forHighlightedSleepStage:(id)a4;
+- (void)setHighlightedSleepStage:(id)stage;
+- (void)setSleepStageFillStyles:(id)styles;
+- (void)updateChartPointUserInfo:(id)info forHighlightedSleepStage:(id)stage;
 @end
 
 @implementation HKSleepStageSeries
@@ -39,87 +39,87 @@
 
 - (NSNumber)highlightedSleepStage
 {
-  v3 = [(HKSleepStageSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepStageSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_highlightedSleepStageStorage;
-  v5 = [(HKSleepStageSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKSleepStageSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setHighlightedSleepStage:(id)a3
+- (void)setHighlightedSleepStage:(id)stage
 {
-  v4 = a3;
-  v5 = [(HKSleepStageSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  stageCopy = stage;
+  seriesMutableStateLock = [(HKSleepStageSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   highlightedSleepStageStorage = self->_highlightedSleepStageStorage;
-  self->_highlightedSleepStageStorage = v4;
+  self->_highlightedSleepStageStorage = stageCopy;
 
-  v7 = [(HKSleepStageSeries *)self seriesMutableStateLock];
-  [v7 unlock];
+  seriesMutableStateLock2 = [(HKSleepStageSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   [(HKSleepStageSeries *)self _rebuildFillStyles];
 }
 
 - (NSArray)sleepStageFillStyles
 {
-  v3 = [(HKSleepStageSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepStageSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_sleepStageFillStylesStorage;
-  v5 = [(HKSleepStageSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKSleepStageSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setSleepStageFillStyles:(id)a3
+- (void)setSleepStageFillStyles:(id)styles
 {
-  v4 = a3;
-  v5 = [(HKSleepStageSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  stylesCopy = styles;
+  seriesMutableStateLock = [(HKSleepStageSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [stylesCopy copy];
   sleepStageFillStylesStorage = self->_sleepStageFillStylesStorage;
   self->_sleepStageFillStylesStorage = v6;
 
-  v8 = [(HKSleepStageSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKSleepStageSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   [(HKSleepStageSeries *)self _rebuildFillStyles];
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 chartPoints];
-  if (!v13)
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  chartPoints = [block chartPoints];
+  if (!chartPoints)
   {
     [HKSleepStageSeries coordinatesForBlock:a2 blockPath:self xAxis:? yAxis:?];
   }
 
-  v14 = [v11 transform];
-  v15 = [v12 transform];
+  transform = [axisCopy transform];
+  transform2 = [yAxisCopy transform];
 
   v16 = objc_opt_new();
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __64__HKSleepStageSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invoke;
   v24[3] = &unk_1E81B98A0;
-  v25 = v14;
-  v26 = v15;
-  v27 = self;
+  v25 = transform;
+  v26 = transform2;
+  selfCopy = self;
   v28 = v16;
   v17 = v16;
-  v18 = v15;
-  v19 = v14;
-  [v13 enumerateObjectsUsingBlock:v24];
-  v22 = *&a4->index;
-  resolution = a4->resolution;
+  v18 = transform2;
+  v19 = transform;
+  [chartPoints enumerateObjectsUsingBlock:v24];
+  v22 = *&path->index;
+  resolution = path->resolution;
   v20 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:v17 blockPath:&v22];
 
   return v20;
@@ -195,45 +195,45 @@ void __64__HKSleepStageSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_
   }
 }
 
-- (void)updateChartPointUserInfo:(id)a3 forHighlightedSleepStage:(id)a4
+- (void)updateChartPointUserInfo:(id)info forHighlightedSleepStage:(id)stage
 {
-  v7 = a3;
-  [v7 setAnnotationOptions:HKSleepChartPointFormatterOptionsForSleepAnalysis(a4)];
-  v5 = [v7 chartPointInfoProvider];
-  v6 = [v5 hasSleepStageData];
+  infoCopy = info;
+  [infoCopy setAnnotationOptions:HKSleepChartPointFormatterOptionsForSleepAnalysis(stage)];
+  chartPointInfoProvider = [infoCopy chartPointInfoProvider];
+  hasSleepStageData = [chartPointInfoProvider hasSleepStageData];
 
-  if (v6)
+  if (hasSleepStageData)
   {
-    [v7 setAnnotationOptions:{objc_msgSend(v7, "annotationOptions") | 0x40}];
-    [v7 setCurrentValueViewOptions:{objc_msgSend(v7, "currentValueViewOptions") | 0x40}];
-    [v7 setCurrentValueViewOptionsPriority:2];
+    [infoCopy setAnnotationOptions:{objc_msgSend(infoCopy, "annotationOptions") | 0x40}];
+    [infoCopy setCurrentValueViewOptions:{objc_msgSend(infoCopy, "currentValueViewOptions") | 0x40}];
+    [infoCopy setCurrentValueViewOptionsPriority:2];
   }
 }
 
-- (void)_drawWithBlockCoordinates:(id)a3 visibleBarCount:(int64_t)a4 pointTransform:(CGAffineTransform *)a5 context:(CGContext *)a6 axisRect:(CGRect)a7 axisResolution:(double)a8 seriesRenderingDelegate:(id)a9
+- (void)_drawWithBlockCoordinates:(id)coordinates visibleBarCount:(int64_t)count pointTransform:(CGAffineTransform *)transform context:(CGContext *)context axisRect:(CGRect)rect axisResolution:(double)resolution seriesRenderingDelegate:(id)delegate
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v93[6] = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v56 = a9;
-  v51 = [v56 seriesDrawingDuringTiling];
-  if (v51 && ([(HKSleepPeriodSeries *)self tiledStrokeStyle], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  coordinatesCopy = coordinates;
+  delegateCopy = delegate;
+  seriesDrawingDuringTiling = [delegateCopy seriesDrawingDuringTiling];
+  if (seriesDrawingDuringTiling && ([(HKSleepPeriodSeries *)self tiledStrokeStyle], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v57 = [(HKSleepPeriodSeries *)self tiledStrokeStyle];
+    tiledStrokeStyle = [(HKSleepPeriodSeries *)self tiledStrokeStyle];
   }
 
   else
   {
-    v57 = [(HKSleepPeriodSeries *)self strokeStyle];
+    tiledStrokeStyle = [(HKSleepPeriodSeries *)self strokeStyle];
   }
 
-  [v57 lineWidth];
+  [tiledStrokeStyle lineWidth];
   v19 = v18;
-  [v56 screenRectForSeries:self];
-  [HKSleepPeriodSeries barWidthForVisibleBarCount:"barWidthForVisibleBarCount:axisRect:minimumSpacing:" axisRect:a4 minimumSpacing:?];
+  [delegateCopy screenRectForSeries:self];
+  [HKSleepPeriodSeries barWidthForVisibleBarCount:"barWidthForVisibleBarCount:axisRect:minimumSpacing:" axisRect:count minimumSpacing:?];
   v21 = v20;
   v94.origin.x = x;
   v94.origin.y = y;
@@ -245,24 +245,24 @@ void __64__HKSleepStageSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_
   v95.size.width = width;
   v95.size.height = height;
   MinX = CGRectGetMinX(v95);
-  v24 = [MEMORY[0x1E69DC728] bezierPath];
-  v93[0] = v24;
-  v25 = [MEMORY[0x1E69DC728] bezierPath];
-  v93[1] = v25;
-  v26 = [MEMORY[0x1E69DC728] bezierPath];
-  v93[2] = v26;
-  v27 = [MEMORY[0x1E69DC728] bezierPath];
-  v93[3] = v27;
-  v28 = [MEMORY[0x1E69DC728] bezierPath];
-  v93[4] = v28;
-  v29 = [MEMORY[0x1E69DC728] bezierPath];
-  v93[5] = v29;
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+  v93[0] = bezierPath;
+  bezierPath2 = [MEMORY[0x1E69DC728] bezierPath];
+  v93[1] = bezierPath2;
+  bezierPath3 = [MEMORY[0x1E69DC728] bezierPath];
+  v93[2] = bezierPath3;
+  bezierPath4 = [MEMORY[0x1E69DC728] bezierPath];
+  v93[3] = bezierPath4;
+  bezierPath5 = [MEMORY[0x1E69DC728] bezierPath];
+  v93[4] = bezierPath5;
+  bezierPath6 = [MEMORY[0x1E69DC728] bezierPath];
+  v93[5] = bezierPath6;
   v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v93 count:6];
 
   v30 = [v55 mutableCopy];
   v31 = [v55 mutableCopy];
-  v32 = [MEMORY[0x1E69DC728] bezierPath];
-  v33 = [MEMORY[0x1E69DC728] bezierPath];
+  bezierPath7 = [MEMORY[0x1E69DC728] bezierPath];
+  bezierPath8 = [MEMORY[0x1E69DC728] bezierPath];
   v91[0] = 0;
   v91[1] = v91;
   v91[2] = 0x3032000000;
@@ -302,15 +302,15 @@ void __64__HKSleepStageSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_
   v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v36 = v19 + v21 + v19 + v21;
-  v37 = a8 / 86400.0 * 0.05;
+  v37 = resolution / 86400.0 * 0.05;
   v59[1] = 3221225472;
-  v38 = a8 / 86400.0 - v37;
+  v38 = resolution / 86400.0 - v37;
   v59[0] = MEMORY[0x1E69E9820];
   v59[2] = __135__HKSleepStageSeries__drawWithBlockCoordinates_visibleBarCount_pointTransform_context_axisRect_axisResolution_seriesRenderingDelegate___block_invoke;
   v59[3] = &unk_1E81B98C8;
   v73 = MinX;
   v74 = v36;
-  v39 = a8 / 86400.0 + v37;
+  v39 = resolution / 86400.0 + v37;
   v75 = MaxX;
   v59[4] = self;
   v40 = v31;
@@ -324,22 +324,22 @@ void __64__HKSleepStageSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_
   v67 = v88;
   v68 = v86;
   v69 = v83;
-  v42 = v32;
+  v42 = bezierPath7;
   v62 = v42;
   v43 = v34;
   v63 = v43;
   v70 = v84;
-  v44 = v33;
+  v44 = bezierPath8;
   v64 = v44;
   v45 = v35;
   v65 = v45;
   v71 = v91;
   v72 = v89;
-  v46 = *&a5->c;
-  v58[0] = *&a5->a;
+  v46 = *&transform->c;
+  v58[0] = *&transform->a;
   v58[1] = v46;
-  v58[2] = *&a5->tx;
-  [v53 enumerateCoordinatesWithTransform:v58 roundToViewScale:1 block:v59];
+  v58[2] = *&transform->tx;
+  [coordinatesCopy enumerateCoordinatesWithTransform:v58 roundToViewScale:1 block:v59];
   if ([(HKGraphSeries *)self allowsSelection])
   {
     [(HKSleepPeriodSeries *)self defaultFillStyles];
@@ -350,23 +350,23 @@ void __64__HKSleepStageSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_
     [(HKSleepPeriodSeries *)self inactiveFillStyles];
   }
   v47 = ;
-  [(HKSleepPeriodSeries *)self drawPaths:v41 withFillStyles:v47 strokeStyle:v57 axisRect:a6 context:x, y, width, height];
-  v48 = [(HKSleepPeriodSeries *)self highlightedFillStyles];
-  v49 = v48;
-  if (!v48)
+  [(HKSleepPeriodSeries *)self drawPaths:v41 withFillStyles:v47 strokeStyle:tiledStrokeStyle axisRect:context context:x, y, width, height];
+  highlightedFillStyles = [(HKSleepPeriodSeries *)self highlightedFillStyles];
+  defaultFillStyles = highlightedFillStyles;
+  if (!highlightedFillStyles)
   {
-    v49 = [(HKSleepPeriodSeries *)self defaultFillStyles];
+    defaultFillStyles = [(HKSleepPeriodSeries *)self defaultFillStyles];
   }
 
-  [(HKSleepPeriodSeries *)self drawPaths:v40 withFillStyles:v49 strokeStyle:v57 axisRect:a6 context:x, y, width, height];
-  if (!v48)
+  [(HKSleepPeriodSeries *)self drawPaths:v40 withFillStyles:defaultFillStyles strokeStyle:tiledStrokeStyle axisRect:context context:x, y, width, height];
+  if (!highlightedFillStyles)
   {
   }
 
-  if (((v51 | [v56 measuringStartupTime] ^ 1) & 1) == 0 && v80[3] >= 1)
+  if (((seriesDrawingDuringTiling | [delegateCopy measuringStartupTime] ^ 1) & 1) == 0 && v80[3] >= 1)
   {
-    v50 = [(HKGraphSeries *)self delegate];
-    [v50 nonemptyDrawComplete];
+    delegate = [(HKGraphSeries *)self delegate];
+    [delegate nonemptyDrawComplete];
   }
 
   _Block_object_dispose(&v79, 8);
@@ -503,31 +503,31 @@ void __135__HKSleepStageSeries__drawWithBlockCoordinates_visibleBarCount_pointTr
   }
 }
 
-- (void)_drawColumnForLayer:(int64_t)a3 offsets:(id)a4 coordinate:(id)a5 selectedBezierPaths:(id)a6 unselectedBezierPaths:(id)a7 barWidth:(double)a8 pathCount:(int64_t *)a9
+- (void)_drawColumnForLayer:(int64_t)layer offsets:(id)offsets coordinate:(id)coordinate selectedBezierPaths:(id)paths unselectedBezierPaths:(id)bezierPaths barWidth:(double)width pathCount:(int64_t *)count
 {
-  v48 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if ([v48 count])
+  offsetsCopy = offsets;
+  coordinateCopy = coordinate;
+  pathsCopy = paths;
+  bezierPathsCopy = bezierPaths;
+  if ([offsetsCopy count])
   {
-    v47 = a9;
-    [v16 xValue];
+    countCopy = count;
+    [coordinateCopy xValue];
     v20 = v19;
-    v46 = v17;
-    if ([v16 highlighted])
+    v46 = pathsCopy;
+    if ([coordinateCopy highlighted])
     {
-      v21 = v17;
+      v21 = pathsCopy;
     }
 
     else
     {
-      v21 = v18;
+      v21 = bezierPathsCopy;
     }
 
-    v22 = [v21 objectAtIndexedSubscript:a3];
-    v23 = [v48 firstObject];
-    if ([v48 count] < 2)
+    v22 = [v21 objectAtIndexedSubscript:layer];
+    firstObject = [offsetsCopy firstObject];
+    if ([offsetsCopy count] < 2)
     {
       v24 = 0;
     }
@@ -536,16 +536,16 @@ void __135__HKSleepStageSeries__drawWithBlockCoordinates_visibleBarCount_pointTr
     {
       v24 = 0;
       v25 = 1;
-      v26 = v23;
+      v26 = firstObject;
       do
       {
-        v23 = [v48 objectAtIndexedSubscript:v25];
-        v27 = [v26 value];
-        [v27 doubleValue];
+        firstObject = [offsetsCopy objectAtIndexedSubscript:v25];
+        value = [v26 value];
+        [value doubleValue];
         v29 = v28;
 
-        v30 = [v23 value];
-        [v30 doubleValue];
+        value2 = [firstObject value];
+        [value2 doubleValue];
         v32 = v31;
 
         if (v25)
@@ -560,7 +560,7 @@ void __135__HKSleepStageSeries__drawWithBlockCoordinates_visibleBarCount_pointTr
             v33 = 3;
           }
 
-          if ([v23 continuation])
+          if ([firstObject continuation])
           {
             v34 = v33;
           }
@@ -582,9 +582,9 @@ void __135__HKSleepStageSeries__drawWithBlockCoordinates_visibleBarCount_pointTr
 
           v36 = v20;
           v37 = v29;
-          v38 = a8;
+          widthCopy = width;
           v50 = CGRectStandardize(*(&v35 - 3));
-          v51 = CGRectOffset(v50, a8 * -0.5, 0.0);
+          v51 = CGRectOffset(v50, width * -0.5, 0.0);
           x = v51.origin.x;
           y = v51.origin.y;
           width = v51.size.width;
@@ -597,22 +597,22 @@ void __135__HKSleepStageSeries__drawWithBlockCoordinates_visibleBarCount_pointTr
         }
 
         ++v25;
-        v26 = v23;
+        v26 = firstObject;
       }
 
-      while (v25 < [v48 count]);
+      while (v25 < [offsetsCopy count]);
     }
 
-    *v47 = v24;
+    *countCopy = v24;
 
-    v17 = v46;
+    pathsCopy = v46;
   }
 }
 
 - (void)_rebuildFillStyles
 {
-  v3 = [(HKSleepStageSeries *)self highlightedSleepStage];
-  v4 = [HKSleepUtilities sleepStageFillStylesWithActiveSleepStage:v3];
+  highlightedSleepStage = [(HKSleepStageSeries *)self highlightedSleepStage];
+  v4 = [HKSleepUtilities sleepStageFillStylesWithActiveSleepStage:highlightedSleepStage];
 
   [(HKSleepPeriodSeries *)self setHighlightedFillStyles:v4];
   [(HKSleepPeriodSeries *)self setDefaultFillStyles:v4];

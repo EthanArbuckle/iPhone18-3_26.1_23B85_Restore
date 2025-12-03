@@ -1,19 +1,19 @@
 @interface MCUIPINPane
-- (void)setStyle:(unint64_t)a3;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation MCUIPINPane
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    if (a3 == 1)
+    self->_style = style;
+    if (style == 1)
     {
-      v4 = [MEMORY[0x277D75348] systemBackgroundColor];
+      systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
       v5 = *MEMORY[0x277D3FBD0];
-      [*(&self->super.super.super.super.super.isa + v5) setBackgroundColor:v4];
+      [*(&self->super.super.super.super.super.isa + v5) setBackgroundColor:systemBackgroundColor];
 
       v6 = *(&self->super.super.super.super.super.isa + v5);
       v8 = MCUILocalizedStringByDevice(@"PIN_MESSAGE_USER_ENROLLMENT");

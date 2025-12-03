@@ -1,38 +1,38 @@
 @interface ISUpdatingLanguageViewController
-+ (id)labelForString:(id)a3 languageIdentifier:(id)a4;
-- (ISUpdatingLanguageViewController)initWithLabel:(id)a3 languageIdentifier:(id)a4;
++ (id)labelForString:(id)string languageIdentifier:(id)identifier;
+- (ISUpdatingLanguageViewController)initWithLabel:(id)label languageIdentifier:(id)identifier;
 - (void)viewDidLoad;
 @end
 
 @implementation ISUpdatingLanguageViewController
 
-- (ISUpdatingLanguageViewController)initWithLabel:(id)a3 languageIdentifier:(id)a4
+- (ISUpdatingLanguageViewController)initWithLabel:(id)label languageIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  labelCopy = label;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = ISUpdatingLanguageViewController;
   v9 = [(ISUpdatingLanguageViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_label, a3);
-    objc_storeStrong(&v10->_languageIdentifier, a4);
+    objc_storeStrong(&v9->_label, label);
+    objc_storeStrong(&v10->_languageIdentifier, identifier);
   }
 
   return v10;
 }
 
-+ (id)labelForString:(id)a3 languageIdentifier:(id)a4
++ (id)labelForString:(id)string languageIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  stringCopy = string;
   v7 = objc_alloc_init(UILabel);
   v8 = [NSAttributedString alloc];
   v15 = kCTLanguageAttributeName;
-  v16 = v5;
+  v16 = identifierCopy;
   v9 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-  v10 = [v8 initWithString:v6 attributes:v9];
+  v10 = [v8 initWithString:stringCopy attributes:v9];
 
   [v7 setAttributedText:v10];
   v11 = +[UIColor blackColor];
@@ -65,36 +65,36 @@
   [v5 setBackgroundColor:v6];
 
   v7 = objc_opt_class();
-  v8 = [(ISUpdatingLanguageViewController *)self label];
-  v9 = [(ISUpdatingLanguageViewController *)self languageIdentifier];
-  v10 = [v7 labelForString:v8 languageIdentifier:v9];
+  label = [(ISUpdatingLanguageViewController *)self label];
+  languageIdentifier = [(ISUpdatingLanguageViewController *)self languageIdentifier];
+  v10 = [v7 labelForString:label languageIdentifier:languageIdentifier];
 
   [v10 setTextAlignment:1];
   [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v5 addSubview:v10];
-  v11 = [v5 layoutMarginsGuide];
-  v12 = [v10 leadingAnchor];
-  v13 = [v11 leadingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  layoutMarginsGuide = [v5 layoutMarginsGuide];
+  leadingAnchor = [v10 leadingAnchor];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v14 setActive:1];
 
-  v15 = [v10 trailingAnchor];
-  v16 = [v11 trailingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  trailingAnchor = [v10 trailingAnchor];
+  trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v17 setActive:1];
 
-  v18 = [v10 centerXAnchor];
-  v19 = [v11 centerXAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  centerXAnchor = [v10 centerXAnchor];
+  centerXAnchor2 = [layoutMarginsGuide centerXAnchor];
+  v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v20 setActive:1];
 
-  v21 = [v10 centerYAnchor];
-  v22 = [v11 centerYAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  centerYAnchor = [v10 centerYAnchor];
+  centerYAnchor2 = [layoutMarginsGuide centerYAnchor];
+  v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v23 setActive:1];
 
-  v24 = [(ISUpdatingLanguageViewController *)self view];
-  [v24 addSubview:v5];
+  view = [(ISUpdatingLanguageViewController *)self view];
+  [view addSubview:v5];
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface SKOpenGLNode
-+ (id)openGLNodeWithViewportSize:(CGSize)a3;
++ (id)openGLNodeWithViewportSize:(CGSize)size;
 - (CGSize)viewportSize;
 - (SKOpenGLNode)init;
-- (SKOpenGLNode)initWithCoder:(id)a3;
-- (SKOpenGLNode)initWithViewportSize:(CGSize)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)renderForTime:(double)a3;
+- (SKOpenGLNode)initWithCoder:(id)coder;
+- (SKOpenGLNode)initWithViewportSize:(CGSize)size;
+- (void)encodeWithCoder:(id)coder;
+- (void)renderForTime:(double)time;
 @end
 
 @implementation SKOpenGLNode
@@ -17,28 +17,28 @@
   return [(SKNode *)&v3 init];
 }
 
-- (SKOpenGLNode)initWithViewportSize:(CGSize)a3
+- (SKOpenGLNode)initWithViewportSize:(CGSize)size
 {
   v4.receiver = self;
   v4.super_class = SKOpenGLNode;
-  return [(SKNode *)&v4 init:a3.width];
+  return [(SKNode *)&v4 init:size.width];
 }
 
-- (SKOpenGLNode)initWithCoder:(id)a3
+- (SKOpenGLNode)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SKOpenGLNode;
-  return [(SKNode *)&v4 initWithCoder:a3];
+  return [(SKNode *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = SKOpenGLNode;
-  [(SKNode *)&v5 encodeWithCoder:v4];
+  [(SKNode *)&v5 encodeWithCoder:coderCopy];
   [(SKOpenGLNode *)self viewportSize];
-  [v4 encodeCGSize:@"viewportSize" forKey:?];
+  [coderCopy encodeCGSize:@"viewportSize" forKey:?];
 }
 
 - (CGSize)viewportSize
@@ -50,14 +50,14 @@
   return result;
 }
 
-+ (id)openGLNodeWithViewportSize:(CGSize)a3
++ (id)openGLNodeWithViewportSize:(CGSize)size
 {
-  v3 = [[SKOpenGLNode alloc] initWithViewportSize:a3.width, a3.height];
+  v3 = [[SKOpenGLNode alloc] initWithViewportSize:size.width, size.height];
 
   return v3;
 }
 
-- (void)renderForTime:(double)a3
+- (void)renderForTime:(double)time
 {
   glClearColor(0.0, 0.0, 0.0, 0.0);
 

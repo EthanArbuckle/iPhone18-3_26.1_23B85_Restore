@@ -4,20 +4,20 @@
 + (AAURLSession)sharedSession;
 + (AAURLSession)sharedSessionWithNoUrlCache;
 + (AAURLSession)sharedSigningSession;
-- (id)_enqueueRequest:(id)a3 completion:(id)a4;
-- (id)_initRequiringSigning:(BOOL)a3 requiresPinning:(BOOL)a4 requiresUrlCache:(BOOL)a5;
-- (id)bodyTaskWithRequest:(id)a3 completion:(id)a4;
-- (id)bodyTaskWithURL:(id)a3 completion:(id)a4;
-- (id)dataTaskWithRequest:(id)a3 completion:(id)a4;
-- (id)dataTaskWithURL:(id)a3 completion:(id)a4;
-- (id)initForProxiedDevice:(id)a3 anisetteDataProvider:(id)a4;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)_sessionQueue_dequeueTask:(id)a3 withResponse:(id)a4 error:(id)a5;
-- (void)_sessionQueue_enqueueTask:(id)a3 completion:(id)a4;
-- (void)_sessionQueue_updateTask:(id)a3 withData:(id)a4;
+- (id)_enqueueRequest:(id)request completion:(id)completion;
+- (id)_initRequiringSigning:(BOOL)signing requiresPinning:(BOOL)pinning requiresUrlCache:(BOOL)cache;
+- (id)bodyTaskWithRequest:(id)request completion:(id)completion;
+- (id)bodyTaskWithURL:(id)l completion:(id)completion;
+- (id)dataTaskWithRequest:(id)request completion:(id)completion;
+- (id)dataTaskWithURL:(id)l completion:(id)completion;
+- (id)initForProxiedDevice:(id)device anisetteDataProvider:(id)provider;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)_sessionQueue_dequeueTask:(id)task withResponse:(id)response error:(id)error;
+- (void)_sessionQueue_enqueueTask:(id)task completion:(id)completion;
+- (void)_sessionQueue_updateTask:(id)task withData:(id)data;
 - (void)resetSessionCache;
 @end
 
@@ -118,7 +118,7 @@ uint64_t __40__AAURLSession_sharedPinningOnlySession__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_initRequiringSigning:(BOOL)a3 requiresPinning:(BOOL)a4 requiresUrlCache:(BOOL)a5
+- (id)_initRequiringSigning:(BOOL)signing requiresPinning:(BOOL)pinning requiresUrlCache:(BOOL)cache
 {
   v32 = *MEMORY[0x1E69E9840];
   if (_AAURLSessionRegisterProtocol_onceToken != -1)
@@ -132,9 +132,9 @@ uint64_t __40__AAURLSession_sharedPinningOnlySession__block_invoke()
   v10 = v9;
   if (v9)
   {
-    v9->_requiresSigning = a3;
-    v9->_requiresICSSPinning = a4;
-    v9->_requiresUrlCache = a5;
+    v9->_requiresSigning = signing;
+    v9->_requiresICSSPinning = pinning;
+    v9->_requiresUrlCache = cache;
     v11 = [[_AAURLSessionDelegate alloc] initWithDelegate:v9];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v13 = dispatch_queue_create("com.apple.AppleAccount.SessionQ", v12);
@@ -183,10 +183,10 @@ uint64_t __40__AAURLSession_sharedPinningOnlySession__block_invoke()
   return v10;
 }
 
-- (id)initForProxiedDevice:(id)a3 anisetteDataProvider:(id)a4
+- (id)initForProxiedDevice:(id)device anisetteDataProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  providerCopy = provider;
   if (_AAURLSessionRegisterProtocol_onceToken != -1)
   {
     [AAURLSession _initRequiringSigning:requiresPinning:requiresUrlCache:];
@@ -205,15 +205,15 @@ uint64_t __40__AAURLSession_sharedPinningOnlySession__block_invoke()
     sessionQueue = v9->_sessionQueue;
     v9->_sessionQueue = v12;
 
-    v14 = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
-    [v14 setWaitsForConnectivity:1];
-    [v14 setTimeoutIntervalForResource:60.0];
+    defaultSessionConfiguration = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
+    [defaultSessionConfiguration setWaitsForConnectivity:1];
+    [defaultSessionConfiguration setTimeoutIntervalForResource:60.0];
     v15 = objc_alloc_init(MEMORY[0x1E698DCC8]);
-    [v15 setPairedDevice:v6];
-    [v15 setAnisetteDataProvider:v7];
-    [v14 set_appleIDContext:v15];
+    [v15 setPairedDevice:deviceCopy];
+    [v15 setAnisetteDataProvider:providerCopy];
+    [defaultSessionConfiguration set_appleIDContext:v15];
     v16 = [MEMORY[0x1E696ADC8] aa_operationQueueWithUnderlyingQueue:v9->_sessionQueue];
-    v17 = [MEMORY[0x1E695AC78] sessionWithConfiguration:v14 delegate:v10 delegateQueue:v16];
+    v17 = [MEMORY[0x1E695AC78] sessionWithConfiguration:defaultSessionConfiguration delegate:v10 delegateQueue:v16];
     session = v9->_session;
     v9->_session = v17;
 
@@ -241,14 +241,14 @@ uint64_t __40__AAURLSession_sharedPinningOnlySession__block_invoke()
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (id)dataTaskWithURL:(id)a3 completion:(id)a4
+- (id)dataTaskWithURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  lCopy = l;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (lCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -271,20 +271,20 @@ LABEL_3:
     [AAURLSession dataTaskWithURL:completion:];
   }
 
-  v10 = [MEMORY[0x1E695AC68] requestWithURL:v6];
+  v10 = [MEMORY[0x1E695AC68] requestWithURL:lCopy];
   v11 = [(AAURLSession *)self dataTaskWithRequest:v10 completion:v8];
 
   return v11;
 }
 
-- (id)dataTaskWithRequest:(id)a3 completion:(id)a4
+- (id)dataTaskWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  requestCopy = request;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (requestCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -301,19 +301,19 @@ LABEL_3:
 
   [AAURLSession dataTaskWithRequest:completion:];
 LABEL_3:
-  v9 = [(AAURLSession *)self _enqueueRequest:v6 completion:v8];
+  v9 = [(AAURLSession *)self _enqueueRequest:requestCopy completion:v8];
 
   return v9;
 }
 
-- (id)bodyTaskWithURL:(id)a3 completion:(id)a4
+- (id)bodyTaskWithURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  lCopy = l;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (lCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -330,20 +330,20 @@ LABEL_3:
 
   [AAURLSession bodyTaskWithURL:completion:];
 LABEL_3:
-  v9 = [MEMORY[0x1E695AC68] requestWithURL:v6];
+  v9 = [MEMORY[0x1E695AC68] requestWithURL:lCopy];
   v10 = [(AAURLSession *)self bodyTaskWithRequest:v9 completion:v8];
 
   return v10;
 }
 
-- (id)bodyTaskWithRequest:(id)a3 completion:(id)a4
+- (id)bodyTaskWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  requestCopy = request;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (requestCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -366,7 +366,7 @@ LABEL_3:
   v12[3] = &unk_1E7C9BD18;
   v13 = v8;
   v9 = v8;
-  v10 = [(AAURLSession *)self dataTaskWithRequest:v6 completion:v12];
+  v10 = [(AAURLSession *)self dataTaskWithRequest:requestCopy completion:v12];
 
   return v10;
 }
@@ -425,12 +425,12 @@ void __47__AAURLSession_bodyTaskWithRequest_completion___block_invoke(uint64_t a
   }
 }
 
-- (id)_enqueueRequest:(id)a3 completion:(id)a4
+- (id)_enqueueRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  requestCopy = request;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!requestCopy)
   {
     [AAURLSession _enqueueRequest:completion:];
     if (v8)
@@ -443,13 +443,13 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v9 = [(NSURLSession *)self->_session dataTaskWithRequest:v6];
+  v9 = [(NSURLSession *)self->_session dataTaskWithRequest:requestCopy];
   sessionQueue = self->_sessionQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -467,14 +467,14 @@ LABEL_3:
   return v11;
 }
 
-- (void)_sessionQueue_enqueueTask:(id)a3 completion:(id)a4
+- (void)_sessionQueue_enqueueTask:(id)task completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  taskCopy = task;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (taskCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -493,7 +493,7 @@ LABEL_3:
 LABEL_3:
   dispatch_assert_queue_V2(self->_sessionQueue);
   v9 = [_AAURLSessionOperation operationWithCompletion:v8];
-  [(NSMutableDictionary *)self->_pendingSessionOperations setObject:v9 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_pendingSessionOperations setObject:v9 forKeyedSubscript:taskCopy];
 
   v10 = _AALogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -502,13 +502,13 @@ LABEL_3:
   }
 }
 
-- (void)_sessionQueue_updateTask:(id)a3 withData:(id)a4
+- (void)_sessionQueue_updateTask:(id)task withData:(id)data
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8)
+  taskCopy = task;
+  dataCopy = data;
+  if (taskCopy)
   {
-    if (v6)
+    if (dataCopy)
     {
       goto LABEL_3;
     }
@@ -517,7 +517,7 @@ LABEL_3:
   else
   {
     [AAURLSession _sessionQueue_updateTask:withData:];
-    if (v6)
+    if (dataCopy)
     {
       goto LABEL_3;
     }
@@ -526,22 +526,22 @@ LABEL_3:
   [AAURLSession _sessionQueue_updateTask:withData:];
 LABEL_3:
   dispatch_assert_queue_V2(self->_sessionQueue);
-  v7 = [(NSMutableDictionary *)self->_pendingSessionOperations objectForKeyedSubscript:v8];
-  [v7 appendData:v6];
+  v7 = [(NSMutableDictionary *)self->_pendingSessionOperations objectForKeyedSubscript:taskCopy];
+  [v7 appendData:dataCopy];
 }
 
-- (void)_sessionQueue_dequeueTask:(id)a3 withResponse:(id)a4 error:(id)a5
+- (void)_sessionQueue_dequeueTask:(id)task withResponse:(id)response error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  taskCopy = task;
+  responseCopy = response;
+  errorCopy = error;
+  if (!taskCopy)
   {
     [AAURLSession _sessionQueue_dequeueTask:withResponse:error:];
   }
 
-  v12 = v10;
-  v13 = v11;
+  v12 = responseCopy;
+  v13 = errorCopy;
   if ((v12 != 0) != (v13 == 0))
   {
     v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Invalid exclusivity not satisfying: response ^ error" userInfo:0];
@@ -551,10 +551,10 @@ LABEL_3:
   v14 = v13;
 
   dispatch_assert_queue_V2(self->_sessionQueue);
-  v15 = [(NSMutableDictionary *)self->_pendingSessionOperations aaf_removeObjectForKey:v9];
+  v15 = [(NSMutableDictionary *)self->_pendingSessionOperations aaf_removeObjectForKey:taskCopy];
   if (!v15)
   {
-    [AAURLSession _sessionQueue_dequeueTask:a2 withResponse:self error:v9];
+    [AAURLSession _sessionQueue_dequeueTask:a2 withResponse:self error:taskCopy];
   }
 
   v16 = _AALogSystem();
@@ -566,21 +566,21 @@ LABEL_3:
   [v15 invokeCompletionWithResponse:v12 error:v14];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v10)
+  sessionCopy = session;
+  taskCopy = task;
+  dataCopy = data;
+  if (sessionCopy)
   {
-    if (v8)
+    if (taskCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [AAURLSession URLSession:dataTask:didReceiveData:];
-    if (v9)
+    if (dataCopy)
     {
       goto LABEL_4;
     }
@@ -589,13 +589,13 @@ LABEL_8:
   }
 
   [AAURLSession URLSession:dataTask:didReceiveData:];
-  if (!v8)
+  if (!taskCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v9)
+  if (dataCopy)
   {
     goto LABEL_4;
   }
@@ -604,22 +604,22 @@ LABEL_9:
   [AAURLSession URLSession:dataTask:didReceiveData:];
 LABEL_4:
   dispatch_assert_queue_V2(self->_sessionQueue);
-  [(AAURLSession *)self _sessionQueue_updateTask:v8 withData:v9];
+  [(AAURLSession *)self _sessionQueue_updateTask:taskCopy withData:dataCopy];
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v11 = a3;
-  v7 = a4;
-  if (!v11)
+  sessionCopy = session;
+  errorCopy = error;
+  if (!sessionCopy)
   {
     [AAURLSession URLSession:didBecomeInvalidWithError:];
   }
 
   dispatch_assert_queue_V2(self->_sessionQueue);
-  if (self->_session != v11)
+  if (self->_session != sessionCopy)
   {
-    [(AAURLSession *)a2 URLSession:v11 didBecomeInvalidWithError:?];
+    [(AAURLSession *)a2 URLSession:sessionCopy didBecomeInvalidWithError:?];
   }
 
   [(NSMutableDictionary *)self->_pendingSessionOperations enumerateKeysAndObjectsUsingBlock:&__block_literal_global_202];
@@ -629,14 +629,14 @@ LABEL_4:
   self->_session = v9;
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v10 = a5;
+  handlerCopy = handler;
   if (self->_requiresICSSPinning)
   {
-    v7 = a4;
+    challengeCopy = challenge;
     v8 = objc_opt_new();
-    v9 = [v8 validateCertificateTrustWithChallenge:v7 type:2];
+    v9 = [v8 validateCertificateTrustWithChallenge:challengeCopy type:2];
   }
 
   else
@@ -644,18 +644,18 @@ LABEL_4:
     v9 = 1;
   }
 
-  v10[2](v10, v9, 0);
+  handlerCopy[2](handlerCopy, v9, 0);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v17)
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
+  if (!sessionCopy)
   {
     [AAURLSession URLSession:task:didCompleteWithError:];
-    if (v8)
+    if (taskCopy)
     {
       goto LABEL_3;
     }
@@ -665,18 +665,18 @@ LABEL_14:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!taskCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_3:
   dispatch_assert_queue_V2(self->_sessionQueue);
-  v10 = [v8 response];
-  v11 = v10;
-  if (v9 || !v10)
+  response = [taskCopy response];
+  v11 = response;
+  if (errorCopy || !response)
   {
-    [(AAURLSession *)self _sessionQueue_dequeueTask:v8 withResponse:0 error:v9];
+    [(AAURLSession *)self _sessionQueue_dequeueTask:taskCopy withResponse:0 error:errorCopy];
   }
 
   else
@@ -685,8 +685,8 @@ LABEL_3:
     v12 = v11;
     if (objc_opt_isKindOfClass())
     {
-      v13 = self;
-      v14 = v8;
+      selfCopy2 = self;
+      v14 = taskCopy;
       v15 = v12;
       v16 = 0;
     }
@@ -695,13 +695,13 @@ LABEL_3:
     {
 
       v12 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-4402 underlyingError:0];
-      v13 = self;
-      v14 = v8;
+      selfCopy2 = self;
+      v14 = taskCopy;
       v15 = 0;
       v16 = v12;
     }
 
-    [(AAURLSession *)v13 _sessionQueue_dequeueTask:v14 withResponse:v15 error:v16];
+    [(AAURLSession *)selfCopy2 _sessionQueue_dequeueTask:v14 withResponse:v15 error:v16];
   }
 }
 

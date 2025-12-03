@@ -1,6 +1,6 @@
 @interface UserVoiceProfile
 - (UserVoiceProfile)init;
-- (UserVoiceProfile)initWithJson:(id)a3;
+- (UserVoiceProfile)initWithJson:(id)json;
 @end
 
 @implementation UserVoiceProfile
@@ -19,16 +19,16 @@
   return v3;
 }
 
-- (UserVoiceProfile)initWithJson:(id)a3
+- (UserVoiceProfile)initWithJson:(id)json
 {
-  v4 = a3;
+  jsonCopy = json;
   v21.receiver = self;
   v21.super_class = UserVoiceProfile;
   v5 = [(UserVoiceProfile *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"mean"];
-    v7 = [v4 objectForKey:@"std"];
+    v6 = [jsonCopy objectForKey:@"mean"];
+    v7 = [jsonCopy objectForKey:@"std"];
     v8 = [v6 objectAtIndexedSubscript:0];
     [v8 floatValue];
     v5->_pitch_mean = v9;

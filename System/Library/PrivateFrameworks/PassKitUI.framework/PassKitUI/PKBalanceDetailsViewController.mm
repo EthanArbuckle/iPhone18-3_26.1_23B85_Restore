@@ -1,80 +1,80 @@
 @interface PKBalanceDetailsViewController
 - (BOOL)_shouldDisplayAction;
-- (BOOL)shouldMapSection:(unint64_t)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (PKBalanceDetailsViewController)initWithBalance:(id)a3 forPass:(id)a4 balanceReminder:(id)a5 associatedAction:(id)a6 paymentDataProvider:(id)a7 webService:(id)a8 style:(int64_t)a9;
-- (PKBalanceDetailsViewController)initWithBalance:(id)a3 forPass:(id)a4 balanceReminder:(id)a5 balanceName:(id)a6 currencyCode:(id)a7 associatedAction:(id)a8 paymentDataProvider:(id)a9 webService:(id)a10 style:(int64_t)a11;
-- (PKBalanceDetailsViewController)initWithTransitPassProperties:(id)a3 forPass:(id)a4 balanceReminder:(id)a5 associatedAction:(id)a6 paymentDataProvider:(id)a7 webService:(id)a8 style:(int64_t)a9;
+- (BOOL)shouldMapSection:(unint64_t)section;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (PKBalanceDetailsViewController)initWithBalance:(id)balance forPass:(id)pass balanceReminder:(id)reminder associatedAction:(id)action paymentDataProvider:(id)provider webService:(id)service style:(int64_t)style;
+- (PKBalanceDetailsViewController)initWithBalance:(id)balance forPass:(id)pass balanceReminder:(id)reminder balanceName:(id)name currencyCode:(id)code associatedAction:(id)action paymentDataProvider:(id)provider webService:(id)self0 style:(int64_t)self1;
+- (PKBalanceDetailsViewController)initWithTransitPassProperties:(id)properties forPass:(id)pass balanceReminder:(id)reminder associatedAction:(id)action paymentDataProvider:(id)provider webService:(id)service style:(int64_t)style;
 - (PKBalanceDetailsViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (int64_t)_numberOfBalanceDetailsRowsEnabled;
-- (int64_t)_numberOfBalanceDetailsRowsEnabledForRowType:(unint64_t)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)_balanceDetailsRowTypeForRowIndex:(int64_t)a3;
+- (int64_t)_numberOfBalanceDetailsRowsEnabledForRowType:(unint64_t)type;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)_balanceDetailsRowTypeForRowIndex:(int64_t)index;
 - (void)_handleActionSelected;
-- (void)_handleReminderAmountChanged:(id)a3;
-- (void)_initializeReminderAmounts:(id)a3;
+- (void)_handleReminderAmountChanged:(id)changed;
+- (void)_initializeReminderAmounts:(id)amounts;
 - (void)dealloc;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateBalanceReminder:(id)a4 forBalanceWithIdentifier:(id)a5;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4;
-- (void)performActionViewControllerDidCancel:(id)a3;
-- (void)performActionViewControllerDidCompleteAutoReload:(id)a3;
-- (void)performActionViewControllerDidPerformAction:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateBalanceReminder:(id)reminder forBalanceWithIdentifier:(id)withIdentifier;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties;
+- (void)performActionViewControllerDidCancel:(id)cancel;
+- (void)performActionViewControllerDidCompleteAutoReload:(id)reload;
+- (void)performActionViewControllerDidPerformAction:(id)action;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKBalanceDetailsViewController
 
-- (PKBalanceDetailsViewController)initWithBalance:(id)a3 forPass:(id)a4 balanceReminder:(id)a5 balanceName:(id)a6 currencyCode:(id)a7 associatedAction:(id)a8 paymentDataProvider:(id)a9 webService:(id)a10 style:(int64_t)a11
+- (PKBalanceDetailsViewController)initWithBalance:(id)balance forPass:(id)pass balanceReminder:(id)reminder balanceName:(id)name currencyCode:(id)code associatedAction:(id)action paymentDataProvider:(id)provider webService:(id)self0 style:(int64_t)self1
 {
-  v17 = a3;
-  v30 = a4;
-  v31 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = [v19 type];
-  if ((!v19 || v21 == 1 || v21 == 6) && self->_shouldShowReminderSettings)
+  balanceCopy = balance;
+  passCopy = pass;
+  reminderCopy = reminder;
+  codeCopy = code;
+  actionCopy = action;
+  providerCopy = provider;
+  type = [actionCopy type];
+  if ((!actionCopy || type == 1 || type == 6) && self->_shouldShowReminderSettings)
   {
     v32.receiver = self;
     v32.super_class = PKBalanceDetailsViewController;
-    v22 = -[PKSectionTableViewController initWithStyle:numberOfSections:](&v32, sel_initWithStyle_numberOfSections_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:a11 != 1], 2);
+    v22 = -[PKSectionTableViewController initWithStyle:numberOfSections:](&v32, sel_initWithStyle_numberOfSections_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:style != 1], 2);
     v23 = v22;
     if (v22)
     {
-      objc_storeStrong(&v22->_currentBalance, a3);
-      objc_storeStrong(&v23->_pass, a4);
-      objc_storeStrong(&v23->_action, a8);
-      objc_storeStrong(&v23->_paymentDataProvider, a9);
-      v23->_style = a11;
-      objc_storeStrong(&v23->_currencyCode, a7);
-      [(PKBalanceDetailsViewController *)v23 _initializeReminderAmounts:v31];
+      objc_storeStrong(&v22->_currentBalance, balance);
+      objc_storeStrong(&v23->_pass, pass);
+      objc_storeStrong(&v23->_action, action);
+      objc_storeStrong(&v23->_paymentDataProvider, provider);
+      v23->_style = style;
+      objc_storeStrong(&v23->_currencyCode, code);
+      [(PKBalanceDetailsViewController *)v23 _initializeReminderAmounts:reminderCopy];
       if (objc_opt_respondsToSelector())
       {
         [(PKPaymentDataProvider *)v23->_paymentDataProvider addDelegate:v23];
       }
 
-      v24 = [(PKBalanceDetailsViewController *)v23 navigationItem];
+      navigationItem = [(PKBalanceDetailsViewController *)v23 navigationItem];
       if ((_UISolariumEnabled() & 1) == 0)
       {
-        [v24 pkui_setupScrollEdgeChromelessAppearance];
-        [v24 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+        [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+        [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
       }
 
       v25 = PKLocalizedPaymentString(&cfstr_BalanceDetailB.isa);
-      [v24 setTitle:v25];
+      [navigationItem setTitle:v25];
 
-      v17 = v29;
+      balanceCopy = v29;
     }
 
     self = v23;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
@@ -86,53 +86,53 @@
       _os_log_impl(&dword_1BD026000, v27, OS_LOG_TYPE_DEFAULT, "Got invalid action type", buf, 2u);
     }
 
-    v26 = 0;
+    selfCopy = 0;
   }
 
-  return v26;
+  return selfCopy;
 }
 
-- (PKBalanceDetailsViewController)initWithTransitPassProperties:(id)a3 forPass:(id)a4 balanceReminder:(id)a5 associatedAction:(id)a6 paymentDataProvider:(id)a7 webService:(id)a8 style:(int64_t)a9
+- (PKBalanceDetailsViewController)initWithTransitPassProperties:(id)properties forPass:(id)pass balanceReminder:(id)reminder associatedAction:(id)action paymentDataProvider:(id)provider webService:(id)service style:(int64_t)style
 {
-  v28 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  serviceCopy = service;
+  providerCopy = provider;
+  actionCopy = action;
+  reminderCopy = reminder;
+  passCopy = pass;
+  propertiesCopy = properties;
   v20 = PKLocalizedPaymentString(&cfstr_LowBalanceRemi.isa);
-  v21 = [v19 balanceAmount];
-  v22 = [v21 currency];
+  balanceAmount = [propertiesCopy balanceAmount];
+  currency = [balanceAmount currency];
 
-  v23 = [v19 balance];
+  balance = [propertiesCopy balance];
 
-  v24 = PKCurrencyAmountCreate(v23, v22);
-  v25 = [v24 formattedStringValue];
+  v24 = PKCurrencyAmountCreate(balance, currency);
+  formattedStringValue = [v24 formattedStringValue];
 
   self->_shouldShowReminderSettings = 1;
-  v26 = [(PKBalanceDetailsViewController *)self initWithBalance:v25 forPass:v18 balanceReminder:v17 balanceName:v20 currencyCode:v22 associatedAction:v16 paymentDataProvider:v15 webService:v28 style:a9];
+  v26 = [(PKBalanceDetailsViewController *)self initWithBalance:formattedStringValue forPass:passCopy balanceReminder:reminderCopy balanceName:v20 currencyCode:currency associatedAction:actionCopy paymentDataProvider:providerCopy webService:serviceCopy style:style];
 
   return v26;
 }
 
-- (PKBalanceDetailsViewController)initWithBalance:(id)a3 forPass:(id)a4 balanceReminder:(id)a5 associatedAction:(id)a6 paymentDataProvider:(id)a7 webService:(id)a8 style:(int64_t)a9
+- (PKBalanceDetailsViewController)initWithBalance:(id)balance forPass:(id)pass balanceReminder:(id)reminder associatedAction:(id)action paymentDataProvider:(id)provider webService:(id)service style:(int64_t)style
 {
-  v16 = a3;
-  v17 = a4;
-  if (v16)
+  balanceCopy = balance;
+  passCopy = pass;
+  if (balanceCopy)
   {
-    obj = a3;
+    obj = balance;
     self->_isPostPaidPass = 0;
-    v18 = a8;
-    v19 = a7;
-    v20 = a6;
-    v21 = a5;
-    v22 = ![v17 isAutoTopUpBalance:v16] || !objc_msgSend(v17, "isAutoTopEnabled") || self->_isPostPaidPass;
+    serviceCopy = service;
+    providerCopy = provider;
+    actionCopy = action;
+    reminderCopy = reminder;
+    v22 = ![passCopy isAutoTopUpBalance:balanceCopy] || !objc_msgSend(passCopy, "isAutoTopEnabled") || self->_isPostPaidPass;
     self->_shouldShowReminderSettings = v22;
-    v23 = [v16 formattedValue];
-    v24 = [v16 localizedTitle];
-    v25 = [v16 currencyCode];
-    v26 = [(PKBalanceDetailsViewController *)self initWithBalance:v23 forPass:v17 balanceReminder:v21 balanceName:v24 currencyCode:v25 associatedAction:v20 paymentDataProvider:v19 webService:v18 style:a9];
+    formattedValue = [balanceCopy formattedValue];
+    localizedTitle = [balanceCopy localizedTitle];
+    currencyCode = [balanceCopy currencyCode];
+    v26 = [(PKBalanceDetailsViewController *)self initWithBalance:formattedValue forPass:passCopy balanceReminder:reminderCopy balanceName:localizedTitle currencyCode:currencyCode associatedAction:actionCopy paymentDataProvider:providerCopy webService:serviceCopy style:style];
 
     if (v26)
     {
@@ -140,15 +140,15 @@
     }
 
     self = v26;
-    v27 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v27 = 0;
+    selfCopy = 0;
   }
 
-  return v27;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -163,32 +163,32 @@
   [(PKSectionTableViewController *)&v3 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = PKBalanceDetailsViewController;
-  [(PKBalanceDetailsViewController *)&v8 viewWillAppear:a3];
+  [(PKBalanceDetailsViewController *)&v8 viewWillAppear:appear];
   if (self->_style == 1)
   {
     v4 = PKBridgeAppearanceGetAppearanceSpecifier();
     PKAppearanceApplyToContainer(v4, self);
 
-    v5 = [(PKBalanceDetailsViewController *)self tableView];
+    tableView = [(PKBalanceDetailsViewController *)self tableView];
     v6 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v7 = [v6 tintColor];
-    [v5 setTintColor:v7];
+    tintColor = [v6 tintColor];
+    [tableView setTintColor:tintColor];
   }
 }
 
-- (void)_initializeReminderAmounts:(id)a3
+- (void)_initializeReminderAmounts:(id)amounts
 {
   v26[4] = *MEMORY[0x1E69E9840];
   action = self->_action;
-  v5 = a3;
-  v6 = [(PKPaymentPassAction *)action enteredValueItem];
-  v7 = [v6 lowBalanceReminderOptions];
+  amountsCopy = amounts;
+  enteredValueItem = [(PKPaymentPassAction *)action enteredValueItem];
+  lowBalanceReminderOptions = [enteredValueItem lowBalanceReminderOptions];
   reminderAmounts = self->_reminderAmounts;
-  self->_reminderAmounts = v7;
+  self->_reminderAmounts = lowBalanceReminderOptions;
 
   if ([(NSArray *)self->_reminderAmounts count]|| ![(PKPaymentPass *)self->_pass needsHardcodedReminderOptions])
   {
@@ -236,9 +236,9 @@ LABEL_8:
   self->_reminderAmounts = v19;
 
   v21 = self->_reminderAmounts;
-  v22 = [v5 threshold];
+  threshold = [amountsCopy threshold];
 
-  v23 = [(NSArray *)v21 indexOfObject:v22];
+  v23 = [(NSArray *)v21 indexOfObject:threshold];
   if (v23 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v24 = 0;
@@ -252,10 +252,10 @@ LABEL_8:
   self->_selectedReminderAmountIndex = v24;
 }
 
-- (void)_handleReminderAmountChanged:(id)a3
+- (void)_handleReminderAmountChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 row];
+  changedCopy = changed;
+  v5 = [changedCopy row];
   if (v5 != self->_selectedReminderAmountIndex)
   {
     v6 = v5;
@@ -282,7 +282,7 @@ LABEL_8:
       v17 = &unk_1E80232C8;
       objc_copyWeak(v19, &location);
       v19[1] = v6;
-      v18 = v4;
+      v18 = changedCopy;
       [(PKPaymentDataProvider *)paymentDataProvider setBalanceReminder:v8 forBalance:balance pass:pass completion:&v14];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v13 = WeakRetained;
@@ -361,14 +361,14 @@ LABEL_7:
   }
 
   pass = self->_pass;
-  v7 = [(PKPaymentPassAction *)self->_action externalActionContent];
-  v8 = [(PKPaymentPassAction *)self->_action title];
+  externalActionContent = [(PKPaymentPassAction *)self->_action externalActionContent];
+  title = [(PKPaymentPassAction *)self->_action title];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__PKBalanceDetailsViewController__handleActionSelected__block_invoke;
   v10[3] = &unk_1E8014560;
   v10[4] = self;
-  PKPaymentPassActionPerformExternalActionContent(pass, v7, v8, v10);
+  PKPaymentPassActionPerformExternalActionContent(pass, externalActionContent, title, v10);
 
 LABEL_8:
 }
@@ -383,11 +383,11 @@ uint64_t __55__PKBalanceDetailsViewController__handleActionSelected__block_invok
   return result;
 }
 
-- (BOOL)shouldMapSection:(unint64_t)a3
+- (BOOL)shouldMapSection:(unint64_t)section
 {
-  if (a3)
+  if (section)
   {
-    if (a3 == 1)
+    if (section == 1)
     {
       if (self->_shouldShowReminderSettings)
       {
@@ -425,19 +425,19 @@ uint64_t __55__PKBalanceDetailsViewController__handleActionSelected__block_invok
   [(PKBalanceDetailsViewController *)&v5 viewWillLayoutSubviews];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(PKBalanceDetailsViewController *)self tableView];
-    v4 = [(PKBalanceDetailsViewController *)self navigationItem];
-    [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+    tableView = [(PKBalanceDetailsViewController *)self tableView];
+    navigationItem = [(PKBalanceDetailsViewController *)self navigationItem];
+    [tableView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v3 = [(PKBalanceDetailsViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(PKBalanceDetailsViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (unint64_t)_balanceDetailsRowTypeForRowIndex:(int64_t)a3
+- (unint64_t)_balanceDetailsRowTypeForRowIndex:(int64_t)index
 {
   v5 = 0;
   v6 = 0;
@@ -455,8 +455,8 @@ uint64_t __55__PKBalanceDetailsViewController__handleActionSelected__block_invok
     v6 = 1;
   }
 
-  while (v7 <= a3);
-  if (v7 <= a3)
+  while (v7 <= index);
+  if (v7 <= index)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -480,14 +480,14 @@ uint64_t __55__PKBalanceDetailsViewController__handleActionSelected__block_invok
   }
 }
 
-- (int64_t)_numberOfBalanceDetailsRowsEnabledForRowType:(unint64_t)a3
+- (int64_t)_numberOfBalanceDetailsRowsEnabledForRowType:(unint64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     return 1;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return [(PKBalanceDetailsViewController *)self _shouldDisplayAction:v3];
   }
@@ -502,40 +502,40 @@ uint64_t __55__PKBalanceDetailsViewController__handleActionSelected__block_invok
     goto LABEL_14;
   }
 
-  v3 = [(PKPaymentPass *)self->_pass activationState];
-  if ([(PKPaymentPassAction *)self->_action type]== 1 && v3 - 1 < 2)
+  activationState = [(PKPaymentPass *)self->_pass activationState];
+  if ([(PKPaymentPassAction *)self->_action type]== 1 && activationState - 1 < 2)
   {
     goto LABEL_14;
   }
 
-  v5 = [(PKPaymentPassAction *)self->_action isActionAvailable];
-  if (v5)
+  isActionAvailable = [(PKPaymentPassAction *)self->_action isActionAvailable];
+  if (isActionAvailable)
   {
     if (([(PKPaymentPassAction *)self->_action unavailableActionBehavior]& 2) != 0)
     {
 LABEL_14:
-      LOBYTE(v5) = 0;
-      return v5;
+      LOBYTE(isActionAvailable) = 0;
+      return isActionAvailable;
     }
 
     if (self->_style == 1)
     {
 
-      LOBYTE(v5) = PKIsAltAccountPairedOrPairing();
+      LOBYTE(isActionAvailable) = PKIsAltAccountPairedOrPairing();
     }
 
     else
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(isActionAvailable) = 1;
     }
   }
 
-  return v5;
+  return isActionAvailable;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v5 = [(PKSectionTableViewController *)self sectionForIndex:section];
   if (v5 == 1)
   {
     return [(NSArray *)self->_reminderAmounts count]+ 1;
@@ -549,10 +549,10 @@ LABEL_14:
   return [(PKBalanceDetailsViewController *)self _numberOfBalanceDetailsRowsEnabled];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"cell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"cell"];
   if (v7)
   {
     v8 = v7;
@@ -564,31 +564,31 @@ LABEL_14:
     v8 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"cell"];
   }
 
-  v9 = [v6 row];
-  v10 = [v6 section];
+  v9 = [pathCopy row];
+  section = [pathCopy section];
 
-  v11 = [(PKSectionTableViewController *)self sectionForIndex:v10];
+  v11 = [(PKSectionTableViewController *)self sectionForIndex:section];
   if (v11 == 1)
   {
     if (v9 < 1)
     {
-      v18 = PKLocalizedPaymentString(&cfstr_LowBalanceRemi_1.isa);
+      title = PKLocalizedPaymentString(&cfstr_LowBalanceRemi_1.isa);
     }
 
     else
     {
       v15 = [(NSArray *)self->_reminderAmounts objectAtIndexedSubscript:v9 - 1];
       v16 = PKCurrencyAmountCreate(v15, self->_currencyCode);
-      v17 = [v16 formattedStringValue];
+      formattedStringValue = [v16 formattedStringValue];
 
-      v18 = PKLocalizedPaymentString(&cfstr_LowBalanceRemi_0.isa, &stru_1F3BD5BF0.isa, v17);
+      title = PKLocalizedPaymentString(&cfstr_LowBalanceRemi_0.isa, &stru_1F3BD5BF0.isa, formattedStringValue);
     }
 
-    v19 = [v8 textLabel];
-    [v19 setText:v18];
+    textLabel = [v8 textLabel];
+    [textLabel setText:title];
 
-    v20 = [v8 detailTextLabel];
-    [v20 setText:0];
+    detailTextLabel = [v8 detailTextLabel];
+    [detailTextLabel setText:0];
 
     if (v9 == self->_selectedReminderAmountIndex)
     {
@@ -606,9 +606,9 @@ LABEL_14:
       goto LABEL_27;
     }
 
-    v22 = [v8 textLabel];
-    v23 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v24 = [v23 textColor];
+    textLabel2 = [v8 textLabel];
+    systemBlueColor = PKBridgeAppearanceGetAppearanceSpecifier();
+    textColor = [systemBlueColor textColor];
     goto LABEL_20;
   }
 
@@ -620,29 +620,29 @@ LABEL_14:
   v12 = [(PKBalanceDetailsViewController *)self _balanceDetailsRowTypeForRowIndex:v9];
   if (v12 == 1)
   {
-    v18 = [(PKPaymentPassAction *)self->_action title];
-    v25 = [v8 textLabel];
-    [v25 setText:v18];
+    title = [(PKPaymentPassAction *)self->_action title];
+    textLabel3 = [v8 textLabel];
+    [textLabel3 setText:title];
 
-    v26 = [v8 detailTextLabel];
-    [v26 setText:0];
+    detailTextLabel2 = [v8 detailTextLabel];
+    [detailTextLabel2 setText:0];
 
     style = self->_style;
-    v22 = [v8 textLabel];
+    textLabel2 = [v8 textLabel];
     if (style != 1)
     {
-      v23 = [MEMORY[0x1E69DC888] systemBlueColor];
-      v29 = v22;
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      v29 = textLabel2;
 LABEL_25:
-      [v29 setTextColor:v23];
+      [v29 setTextColor:systemBlueColor];
       goto LABEL_26;
     }
 
-    v23 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v24 = [v23 buttonTextColor];
+    systemBlueColor = PKBridgeAppearanceGetAppearanceSpecifier();
+    textColor = [systemBlueColor buttonTextColor];
 LABEL_20:
-    v28 = v24;
-    [v22 setTextColor:v24];
+    v28 = textColor;
+    [textLabel2 setTextColor:textColor];
 
 LABEL_26:
 LABEL_27:
@@ -652,28 +652,28 @@ LABEL_27:
 
   if (!v12)
   {
-    v13 = [v8 textLabel];
-    v14 = [(PKPaymentBalance *)self->_balance localizedTitle];
-    if (v14)
+    textLabel4 = [v8 textLabel];
+    localizedTitle = [(PKPaymentBalance *)self->_balance localizedTitle];
+    if (localizedTitle)
     {
-      [v13 setText:v14];
+      [textLabel4 setText:localizedTitle];
     }
 
     else
     {
       v30 = PKLocalizedPaymentString(&cfstr_BalanceDetailB.isa);
-      [v13 setText:v30];
+      [textLabel4 setText:v30];
     }
 
-    v31 = [v8 detailTextLabel];
-    [v31 setText:self->_currentBalance];
+    detailTextLabel3 = [v8 detailTextLabel];
+    [detailTextLabel3 setText:self->_currentBalance];
 
     if (self->_style == 1)
     {
-      v18 = [v8 textLabel];
-      v22 = PKBridgeAppearanceGetAppearanceSpecifier();
-      v23 = [v22 textColor];
-      v29 = v18;
+      title = [v8 textLabel];
+      textLabel2 = PKBridgeAppearanceGetAppearanceSpecifier();
+      systemBlueColor = [textLabel2 textColor];
+      v29 = title;
       goto LABEL_25;
     }
   }
@@ -684,8 +684,8 @@ LABEL_28:
     v32 = objc_alloc(MEMORY[0x1E69DD250]);
     v33 = [v32 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     v34 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v35 = [v34 tableViewCellHighlightColor];
-    [v33 setBackgroundColor:v35];
+    tableViewCellHighlightColor = [v34 tableViewCellHighlightColor];
+    [v33 setBackgroundColor:tableViewCellHighlightColor];
 
     [v8 setSelectedBackgroundView:v33];
   }
@@ -693,10 +693,10 @@ LABEL_28:
   return v8;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v5 section]);
+  pathCopy = path;
+  v6 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   if (v6 == 1)
   {
     v7 = 1;
@@ -709,31 +709,31 @@ LABEL_28:
 
   else
   {
-    v7 = -[PKBalanceDetailsViewController _balanceDetailsRowTypeForRowIndex:](self, "_balanceDetailsRowTypeForRowIndex:", [v5 row]) == 1;
+    v7 = -[PKBalanceDetailsViewController _balanceDetailsRowTypeForRowIndex:](self, "_balanceDetailsRowTypeForRowIndex:", [pathCopy row]) == 1;
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  [a3 deselectRowAtIndexPath:v7 animated:1];
-  v6 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v7 section]);
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v6 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   if (v6 == 1)
   {
-    [(PKBalanceDetailsViewController *)self _handleReminderAmountChanged:v7];
+    [(PKBalanceDetailsViewController *)self _handleReminderAmountChanged:pathCopy];
   }
 
-  else if (!v6 && -[PKBalanceDetailsViewController _balanceDetailsRowTypeForRowIndex:](self, "_balanceDetailsRowTypeForRowIndex:", [v7 row]) == 1)
+  else if (!v6 && -[PKBalanceDetailsViewController _balanceDetailsRowTypeForRowIndex:](self, "_balanceDetailsRowTypeForRowIndex:", [pathCopy row]) == 1)
   {
     [(PKBalanceDetailsViewController *)self _handleActionSelected];
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if ([(PKSectionTableViewController *)self sectionForIndex:a4]== 1)
+  if ([(PKSectionTableViewController *)self sectionForIndex:section]== 1)
   {
     v4 = PKLocalizedPaymentString(&cfstr_BalanceDetailR.isa);
   }
@@ -746,9 +746,9 @@ LABEL_28:
   return v4;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v5 = [(PKSectionTableViewController *)self sectionForIndex:section];
   if (v5 == 1)
   {
     v7 = @"REMINDERS_SECTION_REMINDER_FOOTER_ONLY";
@@ -779,56 +779,56 @@ LABEL_9:
   return v6;
 }
 
-- (void)performActionViewControllerDidCancel:(id)a3
+- (void)performActionViewControllerDidCancel:(id)cancel
 {
-  v3 = a3;
-  [v3 setDelegate:0];
-  v4 = [v3 presentingViewController];
+  cancelCopy = cancel;
+  [cancelCopy setDelegate:0];
+  presentingViewController = [cancelCopy presentingViewController];
 
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)performActionViewControllerDidPerformAction:(id)a3
+- (void)performActionViewControllerDidPerformAction:(id)action
 {
-  v3 = a3;
-  [v3 setDelegate:0];
-  v4 = [v3 presentingViewController];
+  actionCopy = action;
+  [actionCopy setDelegate:0];
+  presentingViewController = [actionCopy presentingViewController];
 
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)performActionViewControllerDidCompleteAutoReload:(id)a3
+- (void)performActionViewControllerDidCompleteAutoReload:(id)reload
 {
-  [(PKBalanceDetailsViewController *)self performActionViewControllerDidPerformAction:a3];
-  v5 = [(PKBalanceDetailsViewController *)self navigationController];
-  if ([v5 pk_settings_useStateDrivenNavigation])
+  [(PKBalanceDetailsViewController *)self performActionViewControllerDidPerformAction:reload];
+  navigationController = [(PKBalanceDetailsViewController *)self navigationController];
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    [v5 pk_settings_popToRootViewController];
+    [navigationController pk_settings_popToRootViewController];
   }
 
   else
   {
-    v4 = [v5 popToRootViewControllerAnimated:1];
+    v4 = [navigationController popToRootViewControllerAnimated:1];
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentPass *)self->_pass uniqueID];
-  v9 = [v8 isEqualToString:v6];
+  identifierCopy = identifier;
+  updateCopy = update;
+  uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
+  v9 = [uniqueID isEqualToString:identifierCopy];
 
   if (v9)
   {
-    v19 = v7;
-    v20 = v6;
+    v19 = updateCopy;
+    v20 = identifierCopy;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = v7;
+    v10 = updateCopy;
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
@@ -845,7 +845,7 @@ LABEL_9:
 
           v15 = *(*(&v22 + 1) + 8 * i);
           v16 = [(PKPaymentBalance *)self->_balance identifiers:v19];
-          v17 = [v15 identifiers];
+          identifiers = [v15 identifiers];
           v18 = PKEqualObjects();
 
           if (v18)
@@ -873,8 +873,8 @@ LABEL_9:
 
 LABEL_12:
 
-    v7 = v19;
-    v6 = v20;
+    updateCopy = v19;
+    identifierCopy = v20;
   }
 }
 
@@ -894,13 +894,13 @@ void __90__PKBalanceDetailsViewController_paymentPassWithUniqueIdentifier_didRec
   [v7 setText:*(*(a1 + 32) + 1152)];
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties
 {
-  v6 = a4;
+  propertiesCopy = properties;
   pass = self->_pass;
-  v8 = a3;
-  v9 = [(PKPaymentPass *)pass uniqueID];
-  v10 = [v9 isEqualToString:v8];
+  identifierCopy = identifier;
+  uniqueID = [(PKPaymentPass *)pass uniqueID];
+  v10 = [uniqueID isEqualToString:identifierCopy];
 
   if (v10 && !self->_balance)
   {
@@ -909,7 +909,7 @@ void __90__PKBalanceDetailsViewController_paymentPassWithUniqueIdentifier_didRec
     v11[2] = __101__PKBalanceDetailsViewController_paymentPassWithUniqueIdentifier_didUpdateWithTransitPassProperties___block_invoke;
     v11[3] = &unk_1E8010A10;
     v11[4] = self;
-    v12 = v6;
+    v12 = propertiesCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v11);
   }
 }
@@ -933,19 +933,19 @@ void __101__PKBalanceDetailsViewController_paymentPassWithUniqueIdentifier_didUp
   [v11 setText:*(*(a1 + 32) + 1152)];
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateBalanceReminder:(id)a4 forBalanceWithIdentifier:(id)a5
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateBalanceReminder:(id)reminder forBalanceWithIdentifier:(id)withIdentifier
 {
-  v8 = a4;
-  v9 = a5;
+  reminderCopy = reminder;
+  withIdentifierCopy = withIdentifier;
   pass = self->_pass;
-  v11 = a3;
-  v12 = [(PKPaymentPass *)pass uniqueID];
-  LOBYTE(pass) = [v12 isEqualToString:v11];
+  identifierCopy = identifier;
+  uniqueID = [(PKPaymentPass *)pass uniqueID];
+  LOBYTE(pass) = [uniqueID isEqualToString:identifierCopy];
 
   if (pass)
   {
-    v13 = [(PKPaymentBalance *)self->_balance identifiers];
-    v14 = [v13 containsObject:v9];
+    identifiers = [(PKPaymentBalance *)self->_balance identifiers];
+    v14 = [identifiers containsObject:withIdentifierCopy];
 
     if (v14)
     {
@@ -954,7 +954,7 @@ void __101__PKBalanceDetailsViewController_paymentPassWithUniqueIdentifier_didUp
       v15[2] = __116__PKBalanceDetailsViewController_paymentPassWithUniqueIdentifier_didUpdateBalanceReminder_forBalanceWithIdentifier___block_invoke;
       v15[3] = &unk_1E8010A10;
       v15[4] = self;
-      v16 = v8;
+      v16 = reminderCopy;
       dispatch_async(MEMORY[0x1E69E96A0], v15);
     }
   }

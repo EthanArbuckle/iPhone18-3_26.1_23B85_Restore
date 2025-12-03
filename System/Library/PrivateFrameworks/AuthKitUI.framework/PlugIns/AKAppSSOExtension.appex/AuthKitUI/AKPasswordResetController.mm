@@ -1,17 +1,17 @@
 @interface AKPasswordResetController
-- (void)presentPasswordResetForRequest:(id)a3 completion:(id)a4;
+- (void)presentPasswordResetForRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AKPasswordResetController
 
-- (void)presentPasswordResetForRequest:(id)a3 completion:(id)a4
+- (void)presentPasswordResetForRequest:(id)request completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v15 = objc_alloc_init(AKAppleIDAuthenticationContext);
   [v15 setNeedsCredentialRecovery:1];
   [v15 setIsNativeTakeover:1];

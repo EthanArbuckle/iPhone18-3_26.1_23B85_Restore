@@ -1,15 +1,15 @@
 @interface HMDCKRecordIDCanonicalStringDataTransformer
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4;
-+ (id)transformedValue:(id)a3 error:(id *)a4;
++ (id)reverseTransformedValue:(id)value error:(id *)error;
++ (id)transformedValue:(id)value error:(id *)error;
 @end
 
 @implementation HMDCKRecordIDCanonicalStringDataTransformer
 
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4
++ (id)reverseTransformedValue:(id)value error:(id *)error
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithData:v5 encoding:1];
+  valueCopy = value;
+  v6 = [[v4 alloc] initWithData:valueCopy encoding:1];
 
   if (v6)
   {
@@ -25,10 +25,10 @@
   return v8;
 }
 
-+ (id)transformedValue:(id)a3 error:(id *)a4
++ (id)transformedValue:(id)value error:(id *)error
 {
-  v4 = [a3 hmd_canonicalStringRepresentation];
-  v5 = [v4 dataUsingEncoding:1];
+  hmd_canonicalStringRepresentation = [value hmd_canonicalStringRepresentation];
+  v5 = [hmd_canonicalStringRepresentation dataUsingEncoding:1];
 
   return v5;
 }

@@ -1,9 +1,9 @@
 @interface OKResourceLoader
 + (id)resourceLoader;
-- (BOOL)canLoadResourceWithURL:(id)a3;
-- (id)copyResource:(id)a3;
-- (id)loadResourceWithURL:(id)a3 withPresentationViewController:(id)a4;
-- (void)deleteResource:(id)a3;
+- (BOOL)canLoadResourceWithURL:(id)l;
+- (id)copyResource:(id)resource;
+- (id)loadResourceWithURL:(id)l withPresentationViewController:(id)controller;
+- (void)deleteResource:(id)resource;
 @end
 
 @implementation OKResourceLoader
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (BOOL)canLoadResourceWithURL:(id)a3
+- (BOOL)canLoadResourceWithURL:(id)l
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -25,7 +25,7 @@
   return 0;
 }
 
-- (id)loadResourceWithURL:(id)a3 withPresentationViewController:(id)a4
+- (id)loadResourceWithURL:(id)l withPresentationViewController:(id)controller
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -35,7 +35,7 @@
   return 0;
 }
 
-- (id)copyResource:(id)a3
+- (id)copyResource:(id)resource
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -45,7 +45,7 @@
   return 0;
 }
 
-- (void)deleteResource:(id)a3
+- (void)deleteResource:(id)resource
 {
   if (*MEMORY[0x277D62808] >= 4)
   {

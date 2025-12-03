@@ -1,26 +1,26 @@
 @interface PHImageResourceChooserPolicyHandler
-+ (BOOL)_passesSquareTableThumbnailTestWithKey:(id)a3 pixelSize:(CGSize)a4 storeClassID:(unsigned __int16)a5 loadingOptions:(unint64_t)a6;
-+ (unint64_t)qualifyResourceInfo:(id)a3 againstPolicy:(int64_t)a4 requestInfo:(id)a5 reversed:(BOOL)a6 tooLargeForPolicy:(BOOL *)a7 disqualificationReason:(id *)a8;
++ (BOOL)_passesSquareTableThumbnailTestWithKey:(id)key pixelSize:(CGSize)size storeClassID:(unsigned __int16)d loadingOptions:(unint64_t)options;
++ (unint64_t)qualifyResourceInfo:(id)info againstPolicy:(int64_t)policy requestInfo:(id)requestInfo reversed:(BOOL)reversed tooLargeForPolicy:(BOOL *)forPolicy disqualificationReason:(id *)reason;
 @end
 
 @implementation PHImageResourceChooserPolicyHandler
 
-+ (unint64_t)qualifyResourceInfo:(id)a3 againstPolicy:(int64_t)a4 requestInfo:(id)a5 reversed:(BOOL)a6 tooLargeForPolicy:(BOOL *)a7 disqualificationReason:(id *)a8
++ (unint64_t)qualifyResourceInfo:(id)info againstPolicy:(int64_t)policy requestInfo:(id)requestInfo reversed:(BOOL)reversed tooLargeForPolicy:(BOOL *)forPolicy disqualificationReason:(id *)reason
 {
-  v14 = a3;
-  v15 = a5;
-  if (v15)
+  infoCopy = info;
+  requestInfoCopy = requestInfo;
+  if (requestInfoCopy)
   {
-    if (a7)
+    if (forPolicy)
     {
       goto LABEL_3;
     }
 
 LABEL_30:
-    v44 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v44 handleFailureInMethod:a2 object:a1 file:@"PHImageResourceChooserPolicyHandler.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"tooLargeForPolicy"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHImageResourceChooserPolicyHandler.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"tooLargeForPolicy"}];
 
-    if (a8)
+    if (reason)
     {
       goto LABEL_4;
     }
@@ -28,57 +28,57 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v43 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v43 handleFailureInMethod:a2 object:a1 file:@"PHImageResourceChooserPolicyHandler.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"requestInfo"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHImageResourceChooserPolicyHandler.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"requestInfo"}];
 
-  if (!a7)
+  if (!forPolicy)
   {
     goto LABEL_30;
   }
 
 LABEL_3:
-  if (a8)
+  if (reason)
   {
     goto LABEL_4;
   }
 
 LABEL_31:
-  v45 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v45 handleFailureInMethod:a2 object:a1 file:@"PHImageResourceChooserPolicyHandler.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"outDisqualificationReason"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHImageResourceChooserPolicyHandler.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"outDisqualificationReason"}];
 
 LABEL_4:
-  v16 = [v14 store];
-  v17 = [objc_opt_class() storeClassID];
+  store = [infoCopy store];
+  storeClassID = [objc_opt_class() storeClassID];
 
-  v18 = [v15 allowedResourceVersions];
-  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v14, "version")}];
-  v20 = [v18 containsObject:v19];
+  allowedResourceVersions = [requestInfoCopy allowedResourceVersions];
+  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(infoCopy, "version")}];
+  v20 = [allowedResourceVersions containsObject:v19];
 
   if (!v20)
   {
     v28 = @"version mismatch";
 LABEL_22:
     v33 = 0;
-    *a8 = v28;
+    *reason = v28;
     goto LABEL_23;
   }
 
-  v21 = [v14 dataStoreKey];
-  [v15 desiredSize];
+  dataStoreKey = [infoCopy dataStoreKey];
+  [requestInfoCopy desiredSize];
   v23 = v22;
   v25 = v24;
-  v26 = [v15 behaviorSpec];
-  v27 = [a1 _passesSquareTableThumbnailTestWithKey:v21 pixelSize:v17 storeClassID:objc_msgSend(v26 loadingOptions:{"loadingOptions"), v23, v25}];
+  behaviorSpec = [requestInfoCopy behaviorSpec];
+  behaviorSpec2 = [self _passesSquareTableThumbnailTestWithKey:dataStoreKey pixelSize:storeClassID storeClassID:objc_msgSend(behaviorSpec loadingOptions:{"loadingOptions"), v23, v25}];
 
-  if (!v27)
+  if (!behaviorSpec2)
   {
     v28 = @"failed square thumb test";
     goto LABEL_22;
   }
 
-  if (a4 == 4)
+  if (policy == 4)
   {
-    if ([v15 isCloudShared])
+    if ([requestInfoCopy isCloudShared])
     {
       goto LABEL_19;
     }
@@ -86,51 +86,51 @@ LABEL_22:
 
   else
   {
-    v27 = [v15 behaviorSpec];
-    if ([v27 version] != 2 || (objc_msgSend(v15, "isCloudShared") & 1) != 0)
+    behaviorSpec2 = [requestInfoCopy behaviorSpec];
+    if ([behaviorSpec2 version] != 2 || (objc_msgSend(requestInfoCopy, "isCloudShared") & 1) != 0)
     {
 
       goto LABEL_19;
     }
   }
 
-  v29 = [v15 asset];
-  v30 = [v29 mediaType];
+  asset = [requestInfoCopy asset];
+  mediaType = [asset mediaType];
 
-  if (a4 != 4)
+  if (policy != 4)
   {
   }
 
-  if (v30 != 2 && ([v14 isDerivative] & 1) != 0)
+  if (mediaType != 2 && ([infoCopy isDerivative] & 1) != 0)
   {
     v28 = @"failed derivative test";
     goto LABEL_22;
   }
 
 LABEL_19:
-  v31 = [v15 behaviorSpec];
-  v32 = [v31 useLimitedLibraryMode];
+  behaviorSpec3 = [requestInfoCopy behaviorSpec];
+  useLimitedLibraryMode = [behaviorSpec3 useLimitedLibraryMode];
 
-  if (v32 && v17 == 1)
+  if (useLimitedLibraryMode && storeClassID == 1)
   {
     v28 = @"failed limited library test";
     goto LABEL_22;
   }
 
-  v35 = [v15 behaviorSpec];
-  v36 = [v35 useLowMemoryMode];
+  behaviorSpec4 = [requestInfoCopy behaviorSpec];
+  useLowMemoryMode = [behaviorSpec4 useLowMemoryMode];
 
   v33 = 2;
-  if (v36 && v17 != 1)
+  if (useLowMemoryMode && storeClassID != 1)
   {
-    v37 = [v15 asset];
-    [v14 approximateSizeFromAsset:v37];
+    asset2 = [requestInfoCopy asset];
+    [infoCopy approximateSizeFromAsset:asset2];
     v39 = v38;
     v41 = v40;
 
-    v42 = [v14 isPrimaryFormat];
+    isPrimaryFormat = [infoCopy isPrimaryFormat];
     v28 = @"failed low-memory mode test";
-    if (v42 && v39 * v41 <= 25000000.0)
+    if (isPrimaryFormat && v39 * v41 <= 25000000.0)
     {
       v33 = 2;
       goto LABEL_23;
@@ -144,14 +144,14 @@ LABEL_23:
   return v33;
 }
 
-+ (BOOL)_passesSquareTableThumbnailTestWithKey:(id)a3 pixelSize:(CGSize)a4 storeClassID:(unsigned __int16)a5 loadingOptions:(unint64_t)a6
++ (BOOL)_passesSquareTableThumbnailTestWithKey:(id)key pixelSize:(CGSize)size storeClassID:(unsigned __int16)d loadingOptions:(unint64_t)options
 {
-  v6 = a5;
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = v9;
-  v11 = v6 != 1 || width == height && width > 0.0 || ([v9 representsSquareResource] & 1) == 0;
+  dCopy = d;
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
+  v10 = keyCopy;
+  v11 = dCopy != 1 || width == height && width > 0.0 || ([keyCopy representsSquareResource] & 1) == 0;
 
   return v11;
 }

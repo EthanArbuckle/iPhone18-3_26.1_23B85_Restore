@@ -1,10 +1,10 @@
 @interface BBBulletinServiceConnection
-+ (id)sharedBulletinServiceWithDelegate:(id)a3;
++ (id)sharedBulletinServiceWithDelegate:(id)delegate;
 @end
 
 @implementation BBBulletinServiceConnection
 
-+ (id)sharedBulletinServiceWithDelegate:(id)a3
++ (id)sharedBulletinServiceWithDelegate:(id)delegate
 {
   if (sharedBulletinServiceWithDelegate__onceToken[0] != -1)
   {

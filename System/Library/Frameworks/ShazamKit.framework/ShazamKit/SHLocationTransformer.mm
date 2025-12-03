@@ -1,20 +1,20 @@
 @interface SHLocationTransformer
-+ (BOOL)isValidCoordinateValue:(id)a3;
-+ (CLLocationCoordinate2D)coordinateFromLocation:(id)a3;
-+ (id)coordinateValueFromLatitude:(id)a3 longitude:(id)a4;
-+ (id)coordinateValueFromLocation:(id)a3;
-+ (id)locationFromCoordinate:(CLLocationCoordinate2D)a3;
-+ (id)locationFromCoordinateValue:(id)a3;
-+ (id)valueForCoordinate:(CLLocationCoordinate2D)a3;
++ (BOOL)isValidCoordinateValue:(id)value;
++ (CLLocationCoordinate2D)coordinateFromLocation:(id)location;
++ (id)coordinateValueFromLatitude:(id)latitude longitude:(id)longitude;
++ (id)coordinateValueFromLocation:(id)location;
++ (id)locationFromCoordinate:(CLLocationCoordinate2D)coordinate;
++ (id)locationFromCoordinateValue:(id)value;
++ (id)valueForCoordinate:(CLLocationCoordinate2D)coordinate;
 @end
 
 @implementation SHLocationTransformer
 
-+ (id)locationFromCoordinate:(CLLocationCoordinate2D)a3
++ (id)locationFromCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  if (CLLocationCoordinate2DIsValid(a3))
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  if (CLLocationCoordinate2DIsValid(coordinate))
   {
     v5 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:latitude longitude:longitude];
   }
@@ -27,14 +27,14 @@
   return v5;
 }
 
-+ (CLLocationCoordinate2D)coordinateFromLocation:(id)a3
++ (CLLocationCoordinate2D)coordinateFromLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
-    v3 = a3;
-    [v3 coordinate];
+    locationCopy = location;
+    [locationCopy coordinate];
     v5 = v4;
-    [v3 coordinate];
+    [locationCopy coordinate];
     v7 = v6;
 
     v10 = CLLocationCoordinate2DMake(v5, v7);
@@ -53,12 +53,12 @@
   return result;
 }
 
-+ (id)coordinateValueFromLocation:(id)a3
++ (id)coordinateValueFromLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
-    [a3 coordinate];
-    v5 = [a1 valueForCoordinate:?];
+    [location coordinate];
+    v5 = [self valueForCoordinate:?];
   }
 
   else
@@ -69,30 +69,30 @@
   return v5;
 }
 
-+ (id)coordinateValueFromLatitude:(id)a3 longitude:(id)a4
++ (id)coordinateValueFromLatitude:(id)latitude longitude:(id)longitude
 {
   v5 = 0;
-  if (a3 && a4)
+  if (latitude && longitude)
   {
-    v7 = a4;
-    [a3 doubleValue];
+    longitudeCopy = longitude;
+    [latitude doubleValue];
     v9 = v8;
-    [v7 doubleValue];
+    [longitudeCopy doubleValue];
     v11 = v10;
 
     v12 = CLLocationCoordinate2DMake(v9, v11);
-    v5 = [a1 valueForCoordinate:{v12.latitude, v12.longitude}];
+    v5 = [self valueForCoordinate:{v12.latitude, v12.longitude}];
   }
 
   return v5;
 }
 
-+ (id)valueForCoordinate:(CLLocationCoordinate2D)a3
++ (id)valueForCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  v5 = a3;
-  if (CLLocationCoordinate2DIsValid(a3))
+  coordinateCopy = coordinate;
+  if (CLLocationCoordinate2DIsValid(coordinate))
   {
-    v3 = [MEMORY[0x277CCAE60] valueWithBytes:&v5 objCType:"{CLLocationCoordinate2D=dd}"];
+    v3 = [MEMORY[0x277CCAE60] valueWithBytes:&coordinateCopy objCType:"{CLLocationCoordinate2D=dd}"];
   }
 
   else
@@ -103,15 +103,15 @@
   return v3;
 }
 
-+ (id)locationFromCoordinateValue:(id)a3
++ (id)locationFromCoordinateValue:(id)value
 {
-  v4 = a3;
-  if (v4 && [a1 isValidCoordinateValue:v4])
+  valueCopy = value;
+  if (valueCopy && [self isValidCoordinateValue:valueCopy])
   {
     v7 = 0.0;
     v8 = 0.0;
-    [v4 getValue:&v7 size:16];
-    v5 = [a1 locationFromCoordinate:{v7, v8}];
+    [valueCopy getValue:&v7 size:16];
+    v5 = [self locationFromCoordinate:{v7, v8}];
   }
 
   else
@@ -122,12 +122,12 @@
   return v5;
 }
 
-+ (BOOL)isValidCoordinateValue:(id)a3
++ (BOOL)isValidCoordinateValue:(id)value
 {
-  result = a3;
-  if (a3)
+  result = value;
+  if (value)
   {
-    return strcmp([a3 objCType], "{CLLocationCoordinate2D=dd}") == 0;
+    return strcmp([value objCType], "{CLLocationCoordinate2D=dd}") == 0;
   }
 
   return result;

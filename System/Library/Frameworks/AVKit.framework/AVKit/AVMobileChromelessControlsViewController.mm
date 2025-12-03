@@ -1,37 +1,37 @@
 @interface AVMobileChromelessControlsViewController
 - (AVMobileChromelessControlsViewController)init;
-- (AVMobileSliderMark)_sliderMarkForInterstitialTimeRange:(char)a3 isCollapsed:;
+- (AVMobileSliderMark)_sliderMarkForInterstitialTimeRange:(char)range isCollapsed:;
 - (BOOL)_isLandscape;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)isMediaPresentationSettingsEnabledForMediaSelectionMenuController:(id)a3;
-- (BOOL)shouldApplyLegibleMediaSelectionCriteriaAutomaticallyForMediaSelectionMenuController:(id)a3;
-- (BOOL)shouldFilterMediaPresentationOptionsToAvailableCacheForMediaSelectionMenuController:(id)a3;
-- (BOOL)shouldShowMediaAvailablePresentationLanguagesForMediaSelectionMenuController:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)isMediaPresentationSettingsEnabledForMediaSelectionMenuController:(id)controller;
+- (BOOL)shouldApplyLegibleMediaSelectionCriteriaAutomaticallyForMediaSelectionMenuController:(id)controller;
+- (BOOL)shouldFilterMediaPresentationOptionsToAvailableCacheForMediaSelectionMenuController:(id)controller;
+- (BOOL)shouldShowMediaAvailablePresentationLanguagesForMediaSelectionMenuController:(id)controller;
 - (CGRect)unobscuredContentArea;
 - (UIPanGestureRecognizer)contentTabPanGestureRecognizer;
 - (__CFString)_currentAccessibilityIdentifierForAudibleMedia;
-- (double)_frameForLiveEdgeMarkContentTag:(double)a3;
-- (float)_normalizeTimeValue:(uint64_t)a1;
-- (id)_auxiliaryControlForControlItem:(uint64_t)a1;
-- (id)_auxiliaryControlForIdentifier:(uint64_t)a1;
+- (double)_frameForLiveEdgeMarkContentTag:(double)tag;
+- (float)_normalizeTimeValue:(uint64_t)value;
+- (id)_auxiliaryControlForControlItem:(uint64_t)item;
+- (id)_auxiliaryControlForIdentifier:(uint64_t)identifier;
 - (id)_auxiliaryControlsView;
 - (id)_configureTips;
-- (id)_didEndUpdatingControlsVisibilityStateTo:(uint64_t)a3 completed:(int)a4;
+- (id)_didEndUpdatingControlsVisibilityStateTo:(uint64_t)to completed:(int)completed;
 - (id)_displayModeControlsView;
 - (id)_timelineSlider;
 - (id)_timelineView;
 - (id)_titlebarView;
 - (id)_updateRoutePickerControlInclusionState;
 - (id)_volumeControlsView;
-- (id)auxiliaryControlsView:(id)a3 menuElementForControl:(id)a4;
+- (id)auxiliaryControlsView:(id)view menuElementForControl:(id)control;
 - (id)displayModeControlsLayoutItem;
-- (id)effectiveSettingsForSelectorForMediaSelectionMenuController:(id)a3;
-- (id)mediaSelectionMenuController:(id)a3 complementarySettingsForSelectedMediaPresentationSettingsForSelector:(id)a4;
-- (id)mediaSelectionMenuController:(id)a3 complementarySettingsForSelector:(id)a4;
-- (id)mediaSelectionMenuController:(id)a3 displayNameForMediaSelectionOption:(id)a4;
-- (id)mediaSelectionMenuController:(id)a3 effectiveSettingForSelector:(id)a4;
-- (id)mediaSelectionMenuController:(id)a3 selectedPresentationSettingForSelector:(id)a4;
-- (id)menuForMenuButton:(id)a3;
+- (id)effectiveSettingsForSelectorForMediaSelectionMenuController:(id)controller;
+- (id)mediaSelectionMenuController:(id)controller complementarySettingsForSelectedMediaPresentationSettingsForSelector:(id)selector;
+- (id)mediaSelectionMenuController:(id)controller complementarySettingsForSelector:(id)selector;
+- (id)mediaSelectionMenuController:(id)controller displayNameForMediaSelectionOption:(id)option;
+- (id)mediaSelectionMenuController:(id)controller effectiveSettingForSelector:(id)selector;
+- (id)mediaSelectionMenuController:(id)controller selectedPresentationSettingForSelector:(id)selector;
+- (id)menuForMenuButton:(id)button;
 - (id)transportControlsLayoutItem;
 - (id)volumeControlsLayoutItem;
 - (uint64_t)_canPerformSetup;
@@ -39,25 +39,25 @@
 - (uint64_t)_preferredAuxiliaryControlsPlacement;
 - (uint64_t)_setUpMediaSelectionMenuControllerIfNeeded;
 - (uint64_t)_updateWebKitExcludedObservationState;
-- (unint64_t)indexOfSelectedMediaPresentationLanguageForMediaSelectionMenuController:(id)a3;
-- (unint64_t)mediaSelectionMenuController:(id)a3 indexOfEffectivePresentationSettingForSelector:(id)a4;
-- (void)_animateSliderToTintState:(void *)a3 duration:(double)a4 completionHandler:;
-- (void)_animateVolumeEmphasisTo:(id *)a1;
+- (unint64_t)indexOfSelectedMediaPresentationLanguageForMediaSelectionMenuController:(id)controller;
+- (unint64_t)mediaSelectionMenuController:(id)controller indexOfEffectivePresentationSettingForSelector:(id)selector;
+- (void)_animateSliderToTintState:(void *)state duration:(double)duration completionHandler:;
+- (void)_animateVolumeEmphasisTo:(id *)to;
 - (void)_attemptSetupIfNeeded;
-- (void)_configureAuxiliaryControlButton:(void *)a1;
-- (void)_contentTabPanGestureRecognizerTriggered:(id)a3;
-- (void)_contentTabTapGestureRecognizerTriggered:(id)a3;
+- (void)_configureAuxiliaryControlButton:(void *)button;
+- (void)_contentTabPanGestureRecognizerTriggered:(id)triggered;
+- (void)_contentTabTapGestureRecognizerTriggered:(id)triggered;
 - (void)_decrementUserInteractionCount;
-- (void)_didBeginUpdatingControlsVisibilityStateFromState:(uint64_t)a3 toState:(uint64_t)a4 withAnimationCoordinator:(uint64_t)a5;
-- (void)_dismissControlItemWithTipInSymmetricDifferenceSet:(void *)a1;
-- (void)_enumerateControlItemsOfTypes:(id)a3 usingBlock:(id)a4;
+- (void)_didBeginUpdatingControlsVisibilityStateFromState:(uint64_t)state toState:(uint64_t)toState withAnimationCoordinator:(uint64_t)coordinator;
+- (void)_dismissControlItemWithTipInSymmetricDifferenceSet:(void *)set;
+- (void)_enumerateControlItemsOfTypes:(id)types usingBlock:(id)block;
 - (void)_handleJumpToLiveAction;
 - (void)_handleMuteStateToggle;
 - (void)_hideControlsIfPossible;
 - (void)_incrementUserInteractionCount;
 - (void)_resetControlsVisibilityTimer;
 - (void)_resetVolumeSliderTemporarilyVisibleTimer;
-- (void)_setContentTabPresented:(int)a3 animated:;
+- (void)_setContentTabPresented:(int)presented animated:;
 - (void)_setNeedsControlsVisibilityStateUpdate;
 - (void)_setUpAnalysisControlIfNeeded;
 - (void)_setUpAuxiliaryControlsViewIfNeeded;
@@ -66,8 +66,8 @@
 - (void)_setUpTapGestureRecognizerIfNeeded;
 - (void)_setUpVisualLookupControlIfNeeded;
 - (void)_temporarilyShowVolumeSlider;
-- (void)_timelineSliderDidChangeValue:(id)a3;
-- (void)_transitionContentTabIfNeccesary:(double)a3;
+- (void)_timelineSliderDidChangeValue:(id)value;
+- (void)_transitionContentTabIfNeccesary:(double)neccesary;
 - (void)_updateAnalysisControlInclusionIfNeeded;
 - (void)_updateAudibleMediaSelectionControlInclusionState;
 - (void)_updateAudibleMediaSelectionMenu;
@@ -79,8 +79,8 @@
 - (void)_updateContentTag;
 - (void)_updateControlItemsInclusionState;
 - (void)_updateControlsViewLayoutConfiguration;
-- (void)_updateControlsVisibilityStateAnimated:(uint64_t)a1;
-- (void)_updateControlsVisibilityStateIfNeededAnimated:(id)a3;
+- (void)_updateControlsVisibilityStateAnimated:(uint64_t)animated;
+- (void)_updateControlsVisibilityStateIfNeededAnimated:(id)animated;
 - (void)_updateDisplayModeControlsButtonsInclusion;
 - (void)_updateDisplayModeControlsForControlItems;
 - (void)_updateExtendedDynamicRangeGain;
@@ -97,7 +97,7 @@
 - (void)_updatePlaybackControlsViewInclusionState;
 - (void)_updatePlaybackSpeedControlInclusion;
 - (void)_updatePrefersSystemVolumeHUDHidden;
-- (void)_updatePrefersVolumeSliderIncludedAnimated:(uint64_t)a1;
+- (void)_updatePrefersVolumeSliderIncludedAnimated:(uint64_t)animated;
 - (void)_updateSecondaryPlaybackControlsTypes;
 - (void)_updateSliderMarkForLiveEdgeIfNeeded;
 - (void)_updateStyleSheet;
@@ -111,101 +111,101 @@
 - (void)_updateTitleAndDescriptionInfo;
 - (void)_updateTitleBarViewInclusionState;
 - (void)_updateTransportControlsLayoutGuidesConstraintsIfNeeded;
-- (void)_updateViewVisibilityStatesTo:(int)a3;
+- (void)_updateViewVisibilityStatesTo:(int)to;
 - (void)_updateVolumeControllerClient;
 - (void)_updateVolumeControlsViewAllowsVolumeAdjustmentState;
 - (void)_updateVolumeControlsViewMutedState;
-- (void)_updateVolumeControlsViewVolumeWithMuteStateUpdate:(id *)a1;
+- (void)_updateVolumeControlsViewVolumeWithMuteStateUpdate:(id *)update;
 - (void)_volumeControlsViewInteractionDidContinue;
-- (void)auxiliaryControlsView:(id)a3 didOverflowControls:(id)a4;
-- (void)contentTabsViewController:(id)a3 didChangeSelectedCustomInfoViewController:(id)a4 withReason:(unint64_t)a5;
-- (void)controlItemDidUpdateVisualConfiguration:(id)a3;
+- (void)auxiliaryControlsView:(id)view didOverflowControls:(id)controls;
+- (void)contentTabsViewController:(id)controller didChangeSelectedCustomInfoViewController:(id)viewController withReason:(unint64_t)reason;
+- (void)controlItemDidUpdateVisualConfiguration:(id)configuration;
 - (void)dealloc;
 - (void)didBeginIndirectUserInteraction;
-- (void)dismissCustomInfoViewControllerAnimated:(BOOL)a3;
-- (void)displayModeControlsView:(id)a3 layoutWithHiddenIdentifiers:(id)a4;
-- (void)displayModeControlsViewFullscreenButtonWasPressed:(id)a3;
-- (void)displayModeControlsViewMultiviewButtonWasPressed:(id)a3;
-- (void)displayModeControlsViewPictureInPictureButtonWasPressed:(id)a3;
-- (void)flashControlsWithDuration:(double)a3;
-- (void)fullscreenControllerDidChangePresentationState:(id)a3;
-- (void)hapticsMenuControllerDidSelectHapticsOff:(id)a3;
-- (void)hapticsMenuControllerDidSelectTrackID:(id)a3 controller:(id)a4;
+- (void)dismissCustomInfoViewControllerAnimated:(BOOL)animated;
+- (void)displayModeControlsView:(id)view layoutWithHiddenIdentifiers:(id)identifiers;
+- (void)displayModeControlsViewFullscreenButtonWasPressed:(id)pressed;
+- (void)displayModeControlsViewMultiviewButtonWasPressed:(id)pressed;
+- (void)displayModeControlsViewPictureInPictureButtonWasPressed:(id)pressed;
+- (void)flashControlsWithDuration:(double)duration;
+- (void)fullscreenControllerDidChangePresentationState:(id)state;
+- (void)hapticsMenuControllerDidSelectHapticsOff:(id)off;
+- (void)hapticsMenuControllerDidSelectTrackID:(id)d controller:(id)controller;
 - (void)loadView;
-- (void)mediaSelectionMenuController:(id)a3 didSelectEnhanceDialogueOption:(int64_t)a4;
-- (void)mediaSelectionMenuController:(id)a3 didSelectOption:(id)a4;
-- (void)mediaSelectionMenuController:(id)a3 selectMediaPresentationLanguage:(id)a4;
-- (void)mediaSelectionMenuController:(id)a3 selectMediaPresentationSetting:(id)a4 forSelector:(id)a5;
-- (void)playbackControlsViewBackwardSecondaryControlWasPressed:(id)a3;
-- (void)playbackControlsViewForwardSecondaryControlWasPressed:(id)a3;
-- (void)playbackControlsViewPlayPauseButtonWasPressed:(id)a3;
+- (void)mediaSelectionMenuController:(id)controller didSelectEnhanceDialogueOption:(int64_t)option;
+- (void)mediaSelectionMenuController:(id)controller didSelectOption:(id)option;
+- (void)mediaSelectionMenuController:(id)controller selectMediaPresentationLanguage:(id)language;
+- (void)mediaSelectionMenuController:(id)controller selectMediaPresentationSetting:(id)setting forSelector:(id)selector;
+- (void)playbackControlsViewBackwardSecondaryControlWasPressed:(id)pressed;
+- (void)playbackControlsViewForwardSecondaryControlWasPressed:(id)pressed;
+- (void)playbackControlsViewPlayPauseButtonWasPressed:(id)pressed;
 - (void)scheduleTips;
-- (void)setControlItems:(id)a3;
-- (void)setCustomInfoViewControllers:(id)a3;
-- (void)setExcludedControls:(unint64_t)a3;
-- (void)setExtendedDynamicRangeGain:(double)a3;
-- (void)setFullscreenController:(id)a3;
-- (void)setIncludedControls:(unint64_t)a3;
-- (void)setMediaPresentationSettingsCustomItems:(id)a3;
-- (void)setOptimizeForPerformance:(BOOL)a3;
-- (void)setPlaybackSpeedCollection:(id)a3;
-- (void)setPlayerController:(id)a3;
-- (void)setPrefersFullScreenStyleForEmbeddedMode:(BOOL)a3;
-- (void)setPrefersMediaPresentationSettingsMenuGroupTitle:(id)a3;
-- (void)setRequiresLinearPlayback:(BOOL)a3;
-- (void)setRoutingConfiguration:(id)a3;
-- (void)setSecondaryPlaybackControlsType:(unint64_t)a3;
-- (void)setShowsAnalysisControl:(BOOL)a3;
-- (void)setShowsAudioTrackSelectionMenu:(BOOL)a3;
-- (void)setShowsCopySubjectControl:(BOOL)a3;
-- (void)setShowsFullScreenControl:(BOOL)a3;
-- (void)setShowsVisualLookupControl:(BOOL)a3;
-- (void)setTransportBarCustomMenuItems:(id)a3;
-- (void)setVolumeController:(id)a3;
-- (void)slider:(id)a3 didUpdateFrame:(CGRect)a4 forSliderMark:(id)a5;
-- (void)sliderDidBeginTracking:(id)a3;
-- (void)sliderDidEndTracking:(id)a3;
-- (void)sliderWillEndTracking:(id)a3;
-- (void)toggleVisibility:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateVisibilityPolicy:(unint64_t)a3 animated:(BOOL)a4;
+- (void)setControlItems:(id)items;
+- (void)setCustomInfoViewControllers:(id)controllers;
+- (void)setExcludedControls:(unint64_t)controls;
+- (void)setExtendedDynamicRangeGain:(double)gain;
+- (void)setFullscreenController:(id)controller;
+- (void)setIncludedControls:(unint64_t)controls;
+- (void)setMediaPresentationSettingsCustomItems:(id)items;
+- (void)setOptimizeForPerformance:(BOOL)performance;
+- (void)setPlaybackSpeedCollection:(id)collection;
+- (void)setPlayerController:(id)controller;
+- (void)setPrefersFullScreenStyleForEmbeddedMode:(BOOL)mode;
+- (void)setPrefersMediaPresentationSettingsMenuGroupTitle:(id)title;
+- (void)setRequiresLinearPlayback:(BOOL)playback;
+- (void)setRoutingConfiguration:(id)configuration;
+- (void)setSecondaryPlaybackControlsType:(unint64_t)type;
+- (void)setShowsAnalysisControl:(BOOL)control;
+- (void)setShowsAudioTrackSelectionMenu:(BOOL)menu;
+- (void)setShowsCopySubjectControl:(BOOL)control;
+- (void)setShowsFullScreenControl:(BOOL)control;
+- (void)setShowsVisualLookupControl:(BOOL)control;
+- (void)setTransportBarCustomMenuItems:(id)items;
+- (void)setVolumeController:(id)controller;
+- (void)slider:(id)slider didUpdateFrame:(CGRect)frame forSliderMark:(id)mark;
+- (void)sliderDidBeginTracking:(id)tracking;
+- (void)sliderDidEndTracking:(id)tracking;
+- (void)sliderWillEndTracking:(id)tracking;
+- (void)toggleVisibility:(id)visibility;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateVisibilityPolicy:(unint64_t)policy animated:(BOOL)animated;
 - (void)viewDidLayoutSubviews;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewIsOverVideoDidChange:(id)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewIsOverVideoDidChange:(id)change;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)volumeControlsView:(id)a3 didSelectHapticsOn:(BOOL)a4;
-- (void)volumeControlsView:(id)a3 volumeDidChangeTo:(double)a4;
-- (void)volumeControlsView:(id)a3 volumeDidChangeTo:(double)a4 withUpdateSource:(unint64_t)a5;
-- (void)volumeControlsViewButtonWasTapped:(id)a3;
-- (void)volumeControlsViewInteractionDidBegin:(id)a3;
-- (void)volumeControlsViewInteractionDidEnd:(id)a3;
-- (void)webkitPlayerController:(id)a3 didChangeScrubbingStateTo:(BOOL)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)volumeControlsView:(id)view didSelectHapticsOn:(BOOL)on;
+- (void)volumeControlsView:(id)view volumeDidChangeTo:(double)to;
+- (void)volumeControlsView:(id)view volumeDidChangeTo:(double)to withUpdateSource:(unint64_t)source;
+- (void)volumeControlsViewButtonWasTapped:(id)tapped;
+- (void)volumeControlsViewInteractionDidBegin:(id)begin;
+- (void)volumeControlsViewInteractionDidEnd:(id)end;
+- (void)webkitPlayerController:(id)controller didChangeScrubbingStateTo:(BOOL)to;
 @end
 
 @implementation AVMobileChromelessControlsViewController
 
 - (void)_updateTimelineEmphasisStateIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v2 = [(AVMobileChromelessControlsViewController *)a1 _isScrubbing];
-    v3 = [a1[154] timelineView];
-    if (v2 != [v3 isEmphasized])
+    _isScrubbing = [(AVMobileChromelessControlsViewController *)self _isScrubbing];
+    timelineView = [self[154] timelineView];
+    if (_isScrubbing != [timelineView isEmphasized])
     {
-      [v3 prepareForDeemphasisIfNeeded];
-      [v3 setEmphasized:v2];
-      v4 = a1[208];
+      [timelineView prepareForDeemphasisIfNeeded];
+      [timelineView setEmphasized:_isScrubbing];
+      v4 = self[208];
       v5 = 1.0;
       v6 = 1.0;
-      if (v4 && [v4 isRunning] && objc_msgSend(a1[208], "isInterruptible"))
+      if (v4 && [v4 isRunning] && objc_msgSend(self[208], "isInterruptible"))
       {
-        [a1[208] fractionComplete];
+        [self[208] fractionComplete];
         v6 = v7;
-        [a1[208] stopAnimation:1];
-        [a1[208] finishAnimationAtPosition:2];
-        v8 = a1[208];
-        a1[208] = 0;
+        [self[208] stopAnimation:1];
+        [self[208] finishAnimationAtPosition:2];
+        v8 = self[208];
+        self[208] = 0;
       }
 
       if (v6 <= 1.0)
@@ -219,7 +219,7 @@
       }
 
       v10 = v9 * 0.2;
-      if (v2)
+      if (_isScrubbing)
       {
         v11 = 288.0;
       }
@@ -230,7 +230,7 @@
         v11 = 500.0;
       }
 
-      if (v2)
+      if (_isScrubbing)
       {
         v12 = 26.5;
       }
@@ -242,26 +242,26 @@
 
       v13 = [objc_alloc(MEMORY[0x1E69DCF88]) initWithMass:v5 stiffness:v11 damping:v12 initialVelocity:{0.0, 0.0}];
       v14 = [objc_alloc(MEMORY[0x1E69DD278]) initWithDuration:v13 timingParameters:v10];
-      v15 = a1[208];
-      a1[208] = v14;
+      v15 = self[208];
+      self[208] = v14;
 
-      objc_initWeak(&location, a1);
-      v16 = a1[208];
+      objc_initWeak(&location, self);
+      v16 = self[208];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __80__AVMobileChromelessControlsViewController__updateTimelineEmphasisStateIfNeeded__block_invoke;
       v23[3] = &unk_1E720A0B8;
       objc_copyWeak(&v24, &location);
-      v25 = v2;
+      v25 = _isScrubbing;
       [v16 addAnimations:v23];
-      v17 = a1[208];
+      v17 = self[208];
       v18 = MEMORY[0x1E69E9820];
       v19 = 3221225472;
       v20 = __80__AVMobileChromelessControlsViewController__updateTimelineEmphasisStateIfNeeded__block_invoke_2;
       v21 = &unk_1E7209618;
       objc_copyWeak(&v22, &location);
       [v17 addCompletion:&v18];
-      [a1[208] startAnimation];
+      [self[208] startAnimation];
       objc_destroyWeak(&v22);
       objc_destroyWeak(&v24);
       objc_destroyWeak(&location);
@@ -271,21 +271,21 @@
 
 - (uint64_t)_isScrubbing
 {
-  v2 = [a1 playerController];
-  v3 = [(AVMobileChromelessControlsViewController *)a1 _timelineSlider];
-  v4 = [v3 isTracking];
+  playerController = [self playerController];
+  _timelineSlider = [(AVMobileChromelessControlsViewController *)self _timelineSlider];
+  isTracking = [_timelineSlider isTracking];
 
-  if (v4 & 1) != 0 || ([v2 isScrubbing])
+  if (isTracking & 1) != 0 || ([playerController isScrubbing])
   {
-    v5 = 1;
+    avkit_webkitIsScrubbing = 1;
   }
 
   else
   {
-    v5 = [v2 avkit_webkitIsScrubbing];
+    avkit_webkitIsScrubbing = [playerController avkit_webkitIsScrubbing];
   }
 
-  return v5;
+  return avkit_webkitIsScrubbing;
 }
 
 void __80__AVMobileChromelessControlsViewController__updateTimelineEmphasisStateIfNeeded__block_invoke(uint64_t a1)
@@ -319,23 +319,23 @@ void __80__AVMobileChromelessControlsViewController__updateTimelineEmphasisState
 
 - (id)_timelineSlider
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 1232) timelineView];
-    v2 = [v1 slider];
+    timelineView = [*(self + 1232) timelineView];
+    slider = [timelineView slider];
   }
 
   else
   {
-    v2 = 0;
+    slider = 0;
   }
 
-  return v2;
+  return slider;
 }
 
-- (void)_timelineSliderDidChangeValue:(id)a3
+- (void)_timelineSliderDidChangeValue:(id)value
 {
-  v13 = a3;
+  valueCopy = value;
   timeResolver = self->_timeResolver;
   if (timeResolver)
   {
@@ -346,8 +346,8 @@ void __80__AVMobileChromelessControlsViewController__updateTimelineEmphasisState
     v9 = v8;
     if ((*&v7 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&v8 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
     {
-      v11 = [(AVMobileChromelessControlsViewController *)self _timelineSlider];
-      [v11 value];
+      _timelineSlider = [(AVMobileChromelessControlsViewController *)self _timelineSlider];
+      [_timelineSlider value];
       [(AVPlayerControllerTimeResolver *)self->_timeResolver setTargetTime:v6 + (v9 - v6) * v12];
     }
   }
@@ -357,18 +357,18 @@ void __80__AVMobileChromelessControlsViewController__updateTimelineEmphasisState
 
 - (void)_updateTimelineValues
 {
-  if (a1)
+  if (self)
   {
-    v31 = [(AVMobileChromelessControlsViewController *)a1 _timelineSlider];
-    v2 = [*(a1 + 1232) timelineView];
-    [v31 value];
+    _timelineSlider = [(AVMobileChromelessControlsViewController *)self _timelineSlider];
+    timelineView = [*(self + 1232) timelineView];
+    [_timelineSlider value];
     v4 = v3;
-    v5 = *(a1 + 1232);
-    if (v5 && *(a1 + 1216) == 1 && ([v5 isHidden] & 1) == 0 && (v6 = *(a1 + 1464)) != 0 && ((objc_msgSend(v6, "minTime"), v8 = v7, v9 = v7, objc_msgSend(*(a1 + 1464), "maxTime"), v11 = v10, (*&v9 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL) ? (v12 = (*&v10 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000) : (v12 = 1), !v12))
+    v5 = *(self + 1232);
+    if (v5 && *(self + 1216) == 1 && ([v5 isHidden] & 1) == 0 && (v6 = *(self + 1464)) != 0 && ((objc_msgSend(v6, "minTime"), v8 = v7, v9 = v7, objc_msgSend(*(self + 1464), "maxTime"), v11 = v10, (*&v9 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL) ? (v12 = (*&v10 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000) : (v12 = 1), !v12))
     {
       v19 = v10 - v8;
-      v20 = [a1 playerController];
-      [v20 avkit_webkitSeekToTime];
+      playerController = [self playerController];
+      [playerController avkit_webkitSeekToTime];
       v22 = v21;
 
       v23 = (COERCE__INT64(fabs(v11 - v8)) - 0x10000000000000) >> 53;
@@ -378,22 +378,22 @@ void __80__AVMobileChromelessControlsViewController__updateTimelineEmphasisState
         v4 = v27;
       }
 
-      [*(a1 + 1472) setFormatTemplate:v11 - v8];
-      [*(a1 + 1480) setFormatTemplate:v11 - v8];
-      v28 = [a1 playerController];
-      v29 = [v28 currentOrEstimatedDate];
-      if ([v28 hasSeekableLiveStreamingContent] && v29)
+      [*(self + 1472) setFormatTemplate:v11 - v8];
+      [*(self + 1480) setFormatTemplate:v11 - v8];
+      playerController2 = [self playerController];
+      currentOrEstimatedDate = [playerController2 currentOrEstimatedDate];
+      if ([playerController2 hasSeekableLiveStreamingContent] && currentOrEstimatedDate)
       {
-        v30 = [v29 dateByAddingTimeInterval:-(v19 - v22)];
-        v14 = [*(a1 + 1488) stringFromDate:v30];
+        v30 = [currentOrEstimatedDate dateByAddingTimeInterval:-(v19 - v22)];
+        v14 = [*(self + 1488) stringFromDate:v30];
 
         v13 = &stru_1EFED57D8;
       }
 
       else
       {
-        v14 = [*(a1 + 1472) stringFromSeconds:v22];
-        v13 = [*(a1 + 1480) stringFromSeconds:v11 - v22];
+        v14 = [*(self + 1472) stringFromSeconds:v22];
+        v13 = [*(self + 1480) stringFromSeconds:v11 - v22];
       }
     }
 
@@ -403,51 +403,51 @@ void __80__AVMobileChromelessControlsViewController__updateTimelineEmphasisState
       v14 = 0;
     }
 
-    v15 = [v2 leadingTimeText];
-    v16 = v15 != 0;
+    leadingTimeText = [timelineView leadingTimeText];
+    v16 = leadingTimeText != 0;
 
-    v17 = [v2 trailingTimeText];
+    trailingTimeText = [timelineView trailingTimeText];
 
-    if ((v14 == 0) == v16 || (v13 == 0) == (v17 != 0))
+    if ((v14 == 0) == v16 || (v13 == 0) == (trailingTimeText != 0))
     {
-      [*(a1 + 1232) setNeedsLayout];
+      [*(self + 1232) setNeedsLayout];
     }
 
-    if (([v31 isTracking] & 1) == 0)
+    if (([_timelineSlider isTracking] & 1) == 0)
     {
-      v18 = vmovn_s32(vuzp1q_s32(vceqq_f64(*(a1 + 1680), *MEMORY[0x1E69DDCE0]), vceqq_f64(*(a1 + 1696), *(MEMORY[0x1E69DDCE0] + 16))));
+      v18 = vmovn_s32(vuzp1q_s32(vceqq_f64(*(self + 1680), *MEMORY[0x1E69DDCE0]), vceqq_f64(*(self + 1696), *(MEMORY[0x1E69DDCE0] + 16))));
       if (vminv_u16(v18))
       {
         *v18.i32 = v4;
-        [v31 setValue:*&v18];
+        [_timelineSlider setValue:*&v18];
       }
     }
 
-    [v2 setLeadingTimeText:v14];
-    [v2 setTrailingTimeText:v13];
+    [timelineView setLeadingTimeText:v14];
+    [timelineView setTrailingTimeText:v13];
   }
 }
 
 - (void)_handleJumpToLiveAction
 {
-  v3 = [(AVMobileControlsViewController *)self playerController];
-  [v3 seekToEnd:self];
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  [playerController seekToEnd:self];
 }
 
-- (void)_enumerateControlItemsOfTypes:(id)a3 usingBlock:(id)a4
+- (void)_enumerateControlItemsOfTypes:(id)types usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVMobileControlsViewController *)self controlItems];
+  typesCopy = types;
+  blockCopy = block;
+  controlItems = [(AVMobileControlsViewController *)self controlItems];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __85__AVMobileChromelessControlsViewController__enumerateControlItemsOfTypes_usingBlock___block_invoke;
   v11[3] = &unk_1E72092A8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 enumerateObjectsUsingBlock:v11];
+  v12 = typesCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = typesCopy;
+  [controlItems enumerateObjectsUsingBlock:v11];
 }
 
 void __85__AVMobileChromelessControlsViewController__enumerateControlItemsOfTypes_usingBlock___block_invoke(uint64_t a1, void *a2)
@@ -475,37 +475,37 @@ void __85__AVMobileChromelessControlsViewController__enumerateControlItemsOfType
 {
   audibleMediaSelectionButton = self->_audibleMediaSelectionButton;
   v4 = MEMORY[0x1E69DC888];
-  v5 = [(AVButton *)audibleMediaSelectionButton isOverVideo];
-  v6 = [(AVMobileChromelessControlsViewController *)self traitCollection];
-  v7 = [v4 avkit_tintColorForControlElementIsOverVideo:v5 withUserInterfaceStyle:{objc_msgSend(v6, "userInterfaceStyle")}];
+  isOverVideo = [(AVButton *)audibleMediaSelectionButton isOverVideo];
+  traitCollection = [(AVMobileChromelessControlsViewController *)self traitCollection];
+  v7 = [v4 avkit_tintColorForControlElementIsOverVideo:isOverVideo withUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
   [(AVMenuButton *)audibleMediaSelectionButton setTintColor:v7];
 
   legibleMediaSelectionButton = self->_legibleMediaSelectionButton;
   v9 = MEMORY[0x1E69DC888];
-  v10 = [(AVButton *)legibleMediaSelectionButton isOverVideo];
-  v11 = [(AVMobileChromelessControlsViewController *)self traitCollection];
-  v12 = [v9 avkit_tintColorForControlElementIsOverVideo:v10 withUserInterfaceStyle:{objc_msgSend(v11, "userInterfaceStyle")}];
+  isOverVideo2 = [(AVButton *)legibleMediaSelectionButton isOverVideo];
+  traitCollection2 = [(AVMobileChromelessControlsViewController *)self traitCollection];
+  v12 = [v9 avkit_tintColorForControlElementIsOverVideo:isOverVideo2 withUserInterfaceStyle:{objc_msgSend(traitCollection2, "userInterfaceStyle")}];
   [(AVMenuButton *)legibleMediaSelectionButton setTintColor:v12];
 
   playbackSpeedButton = self->_playbackSpeedButton;
   v14 = MEMORY[0x1E69DC888];
-  v15 = [(AVButton *)playbackSpeedButton isOverVideo];
-  v17 = [(AVMobileChromelessControlsViewController *)self traitCollection];
-  v16 = [v14 avkit_tintColorForControlElementIsOverVideo:v15 withUserInterfaceStyle:{objc_msgSend(v17, "userInterfaceStyle")}];
+  isOverVideo3 = [(AVButton *)playbackSpeedButton isOverVideo];
+  traitCollection3 = [(AVMobileChromelessControlsViewController *)self traitCollection];
+  v16 = [v14 avkit_tintColorForControlElementIsOverVideo:isOverVideo3 withUserInterfaceStyle:{objc_msgSend(traitCollection3, "userInterfaceStyle")}];
   [(AVMenuButton *)playbackSpeedButton setTintColor:v16];
 }
 
-- (void)hapticsMenuControllerDidSelectTrackID:(id)a3 controller:(id)a4
+- (void)hapticsMenuControllerDidSelectTrackID:(id)d controller:(id)controller
 {
-  v5 = a3;
+  dCopy = d;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __93__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSelectTrackID_controller___block_invoke;
   block[3] = &unk_1E7209A10;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v9);
@@ -572,48 +572,48 @@ void __93__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
 
 - (void)_updateHasHapticTrackSelectionMenu
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 playerController];
-    v5 = [v2 hapticTracksForCurrentItem];
+    playerController = [self playerController];
+    hapticTracksForCurrentItem = [playerController hapticTracksForCurrentItem];
 
-    [(AVMobileChromelessControlsViewController *)a1 _updateHasHapticTrackSelectionMenuIDs];
-    v3 = [a1[154] volumeControlsView];
-    [v3 setHasHapticsTracks:{objc_msgSend(v5, "count") != 0}];
+    [(AVMobileChromelessControlsViewController *)self _updateHasHapticTrackSelectionMenuIDs];
+    volumeControlsView = [self[154] volumeControlsView];
+    [volumeControlsView setHasHapticsTracks:{objc_msgSend(hapticTracksForCurrentItem, "count") != 0}];
 
-    v4 = [a1[154] volumeControlsView];
-    [v4 setHapticsIsOn:{+[AVMobileHapticsTrackItem hasOnTrack:](AVMobileHapticsTrackItem, "hasOnTrack:", v5)}];
+    volumeControlsView2 = [self[154] volumeControlsView];
+    [volumeControlsView2 setHapticsIsOn:{+[AVMobileHapticsTrackItem hasOnTrack:](AVMobileHapticsTrackItem, "hasOnTrack:", hapticTracksForCurrentItem)}];
 
-    [(AVMobileChromelessControlsViewController *)a1 _updateAuxiliaryControls];
+    [(AVMobileChromelessControlsViewController *)self _updateAuxiliaryControls];
   }
 }
 
 - (void)_updateHasHapticTrackSelectionMenuIDs
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 playerController];
-    v3 = [v2 hapticTracksForCurrentItem];
+    playerController = [self playerController];
+    hapticTracksForCurrentItem = [playerController hapticTracksForCurrentItem];
 
-    [a1[225] setHapticTrackIDs:v3];
+    [self[225] setHapticTrackIDs:hapticTracksForCurrentItem];
   }
 }
 
 - (void)_updateAuxiliaryControls
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 1232) auxiliaryControlsView];
+    auxiliaryControlsView = [*(self + 1232) auxiliaryControlsView];
     v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v4 = *(a1 + 1656);
+    v4 = *(self + 1656);
     if (v4 && [v4 count])
     {
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v5 = *(a1 + 1656);
+      v5 = *(self + 1656);
       v6 = [v5 countByEnumeratingWithState:&v31 objects:v36 count:16];
       if (v6)
       {
@@ -638,22 +638,22 @@ void __93__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
       }
     }
 
-    v10 = [a1 transportBarCustomMenuItems];
-    if (v10)
+    transportBarCustomMenuItems = [self transportBarCustomMenuItems];
+    if (transportBarCustomMenuItems)
     {
-      v11 = v10;
-      v12 = [a1 transportBarCustomMenuItems];
-      v13 = [v12 count];
+      v11 = transportBarCustomMenuItems;
+      transportBarCustomMenuItems2 = [self transportBarCustomMenuItems];
+      v13 = [transportBarCustomMenuItems2 count];
 
       if (v13)
       {
-        v26 = v2;
+        v26 = auxiliaryControlsView;
         v29 = 0u;
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v14 = [a1 transportBarCustomMenuItems];
-        v15 = [v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        transportBarCustomMenuItems3 = [self transportBarCustomMenuItems];
+        v15 = [transportBarCustomMenuItems3 countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v15)
         {
           v16 = v15;
@@ -664,7 +664,7 @@ void __93__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
             {
               if (*v28 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(transportBarCustomMenuItems3);
               }
 
               v19 = [AVMobileGlassControlsViewController _identifierForMenuElement:?];
@@ -676,28 +676,28 @@ void __93__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v16 = [transportBarCustomMenuItems3 countByEnumeratingWithState:&v27 objects:v35 count:16];
           }
 
           while (v16);
         }
 
-        v2 = v26;
+        auxiliaryControlsView = v26;
       }
     }
 
-    if (*(a1 + 1280))
+    if (*(self + 1280))
     {
       [v3 addObject:?];
     }
 
-    if (*(a1 + 1288))
+    if (*(self + 1288))
     {
-      v21 = [a1 fullscreenController];
-      v22 = [v21 presentationState];
+      fullscreenController = [self fullscreenController];
+      presentationState = [fullscreenController presentationState];
 
-      v23 = *(a1 + 1288);
-      if (v22 == 2)
+      v23 = *(self + 1288);
+      if (presentationState == 2)
       {
         [v3 addObject:v23];
       }
@@ -708,32 +708,32 @@ void __93__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
       }
     }
 
-    if (*(a1 + 1272))
+    if (*(self + 1272))
     {
       [v3 addObject:?];
     }
 
-    if (*(a1 + 1812) == 1 && *(a1 + 1256))
+    if (*(self + 1812) == 1 && *(self + 1256))
     {
       [v3 addObject:?];
     }
 
-    if (*(a1 + 1264))
+    if (*(self + 1264))
     {
       [v3 addObject:?];
     }
 
-    if (*(a1 + 1296))
+    if (*(self + 1296))
     {
       [v3 addObject:?];
     }
 
-    if (*(a1 + 1304))
+    if (*(self + 1304))
     {
       [v3 addObject:?];
     }
 
-    if (*(a1 + 1312))
+    if (*(self + 1312))
     {
       [v3 addObject:?];
     }
@@ -741,11 +741,11 @@ void __93__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
     v24 = +[AVKitGlobalSettings shared];
     if ([v24 hapticsEnabled])
     {
-      v25 = *(a1 + 1784);
+      v25 = *(self + 1784);
 
       if (v25)
       {
-        [v3 addObject:*(a1 + 1784)];
+        [v3 addObject:*(self + 1784)];
       }
     }
 
@@ -753,38 +753,38 @@ void __93__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
     {
     }
 
-    [v2 setControls:v3];
-    [v2 updateOverflowMenu];
-    [(AVMobileChromelessControlsViewController *)a1 _updateControlsViewLayoutConfiguration];
+    [auxiliaryControlsView setControls:v3];
+    [auxiliaryControlsView updateOverflowMenu];
+    [(AVMobileChromelessControlsViewController *)self _updateControlsViewLayoutConfiguration];
   }
 }
 
 - (id)_auxiliaryControlsView
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[154] auxiliaryControlsView];
+    self = [self[154] auxiliaryControlsView];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_updateControlsViewLayoutConfiguration
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 fullscreenController];
-    v3 = [v2 presentationState];
+    fullscreenController = [self fullscreenController];
+    presentationState = [fullscreenController presentationState];
 
-    v4 = *(a1 + 1760);
-    v5 = [(AVMobileChromelessControlsViewController *)a1 _preferredAuxiliaryControlsPlacement];
-    [*(a1 + 1224) standardPaddingFullScreen];
+    v4 = *(self + 1760);
+    _preferredAuxiliaryControlsPlacement = [(AVMobileChromelessControlsViewController *)self _preferredAuxiliaryControlsPlacement];
+    [*(self + 1224) standardPaddingFullScreen];
     v7 = v6;
     [v4 presentationHeight];
     v9 = v8;
-    v10 = [a1 includedControls];
+    includedControls = [self includedControls];
     if (v4)
     {
       v11 = [v4 state] == 2;
@@ -795,25 +795,25 @@ void __93__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
       v11 = 0;
     }
 
-    if (v3 == 2)
+    if (presentationState == 2)
     {
-      [*(a1 + 1224) standardPaddingInline];
+      [*(self + 1224) standardPaddingInline];
       v7 = v12;
-      v10 &= ~0x40uLL;
+      includedControls &= ~0x40uLL;
     }
 
     memset(v32, 0, sizeof(v32));
-    v13 = *(a1 + 1576);
-    v14 = *(a1 + 1240);
-    v15 = *(a1 + 1720);
-    v16 = [*(a1 + 1760) presentationLayout];
+    v13 = *(self + 1576);
+    v14 = *(self + 1240);
+    v15 = *(self + 1720);
+    presentationLayout = [*(self + 1760) presentationLayout];
 
-    v17 = *(a1 + 1232);
-    v20 = v10;
+    v17 = *(self + 1232);
+    v20 = includedControls;
     v21 = v13;
     memset(v22, 0, sizeof(v22));
     v23 = v7;
-    v24 = v5;
+    v24 = _preferredAuxiliaryControlsPlacement;
     v18 = v14;
     v19 = v18;
     v25 = v18;
@@ -822,7 +822,7 @@ void __93__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
     v28 = *v32;
     *v29 = *&v32[16];
     *&v29[14] = 0;
-    v30 = v16;
+    v30 = presentationLayout;
     v31 = v9;
     if (v17)
     {
@@ -837,12 +837,12 @@ void __93__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
 
 - (uint64_t)_preferredAuxiliaryControlsPlacement
 {
-  v2 = [a1 fullscreenController];
-  v3 = [v2 presentationState];
+  fullscreenController = [self fullscreenController];
+  presentationState = [fullscreenController presentationState];
 
-  if (v3 == 2)
+  if (presentationState == 2)
   {
-    return [a1 prefersFullScreenStyleForEmbeddedMode] ^ 1;
+    return [self prefersFullScreenStyleForEmbeddedMode] ^ 1;
   }
 
   else
@@ -851,7 +851,7 @@ void __93__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
   }
 }
 
-- (void)hapticsMenuControllerDidSelectHapticsOff:(id)a3
+- (void)hapticsMenuControllerDidSelectHapticsOff:(id)off
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x1E69E9820];
@@ -876,41 +876,41 @@ void __85__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
 
 - (void)_updateStyleSheet
 {
-  v8 = [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _timelineView];
-  v3 = [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _titlebarView];
-  v4 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-  v5 = [v4 traitCollection];
+  _timelineView = [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _timelineView];
+  _titlebarView = [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _titlebarView];
+  avkit_mainScreen = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+  traitCollection = [avkit_mainScreen traitCollection];
 
-  v6 = [[AVMobileChromelessControlsStyleSheet alloc] initWithTraitCollection:v5];
+  v6 = [[AVMobileChromelessControlsStyleSheet alloc] initWithTraitCollection:traitCollection];
   styleSheet = self->_styleSheet;
   self->_styleSheet = v6;
 
-  [v8 setStyleSheet:self->_styleSheet];
-  [v3 setStyleSheet:self->_styleSheet];
+  [_timelineView setStyleSheet:self->_styleSheet];
+  [_titlebarView setStyleSheet:self->_styleSheet];
   [(AVMobileChromelessControlsViewController *)self _updateLayoutMargins];
   [(AVMobileChromelessControlsViewController *)self _updateControlsViewLayoutConfiguration];
 }
 
 - (id)_timelineView
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[154] timelineView];
+    self = [self[154] timelineView];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_titlebarView
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[154] titlebarView];
+    self = [self[154] titlebarView];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_updateLayoutMargins
@@ -919,10 +919,10 @@ void __85__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
   {
     v1 = result;
     v2 = *(result + 175);
-    v3 = [result fullscreenController];
-    v4 = [v3 presentationState];
+    fullscreenController = [result fullscreenController];
+    presentationState = [fullscreenController presentationState];
 
-    v5 = v4 == 2 ? [v1 prefersFullScreenStyleForEmbeddedMode] : 1;
+    v5 = presentationState == 2 ? [v1 prefersFullScreenStyleForEmbeddedMode] : 1;
     [v1[153] playbackControlsViewLayoutMarginsForView:v1[154] keyboardHeight:v5 isFullScreen:v2];
     v7 = v6;
     v9 = v8;
@@ -943,14 +943,14 @@ void __85__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
   return result;
 }
 
-- (void)_contentTabTapGestureRecognizerTriggered:(id)a3
+- (void)_contentTabTapGestureRecognizerTriggered:(id)triggered
 {
-  v7 = a3;
-  v4 = [v7 state] - 1;
-  v5 = v7;
+  triggeredCopy = triggered;
+  v4 = [triggeredCopy state] - 1;
+  v5 = triggeredCopy;
   if (v4 <= 2)
   {
-    v6 = v7;
+    v6 = triggeredCopy;
     if (self)
     {
       if ([(AVMobileContentTabPresentationContext *)self->_contentTabPresentationContext presentationLayout])
@@ -964,15 +964,15 @@ void __85__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
       }
     }
 
-    v5 = v7;
+    v5 = triggeredCopy;
   }
 }
 
-- (void)_contentTabPanGestureRecognizerTriggered:(id)a3
+- (void)_contentTabPanGestureRecognizerTriggered:(id)triggered
 {
-  v39 = a3;
-  v4 = [v39 state];
-  if ((v4 - 3) < 2)
+  triggeredCopy = triggered;
+  state = [triggeredCopy state];
+  if ((state - 3) < 2)
   {
     if (!self)
     {
@@ -980,14 +980,14 @@ void __85__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
     }
 
     view = self->_view;
-    v15 = v39;
+    v15 = triggeredCopy;
     [v15 velocityInView:view];
     v17 = v16;
     v19 = v18;
-    v20 = [v15 state];
+    state2 = [v15 state];
 
     v21 = v17 * 0.05;
-    v23 = v19 < 0.0 || v20 == 4;
+    v23 = v19 < 0.0 || state2 == 4;
     contentTabPresentationContext = self->_contentTabPresentationContext;
     if (!contentTabPresentationContext)
     {
@@ -1002,15 +1002,15 @@ void __85__AVMobileChromelessControlsViewController_hapticsMenuControllerDidSele
     v25 = self->_contentTabPresentationContext;
     if (v25)
     {
-      v26 = [(AVMobileContentTabPresentationContext *)v25 state];
+      state3 = [(AVMobileContentTabPresentationContext *)v25 state];
       v27 = self->_contentTabPresentationContext;
       v28 = v27;
-      if (v26 == 2)
+      if (state3 == 2)
       {
-        v29 = [(AVMobileContentTabPresentationContext *)v27 transitionContext];
-        v30 = [v29 direction];
+        transitionContext = [(AVMobileContentTabPresentationContext *)v27 transitionContext];
+        direction = [transitionContext direction];
 
-        if (v30)
+        if (direction)
         {
 LABEL_21:
           v31 = [objc_alloc(MEMORY[0x1E69DCF88]) initWithDampingRatio:1.0 initialVelocity:{v21, v19 * 0.05}];
@@ -1035,12 +1035,12 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
     if (self)
     {
       v32 = self->_contentTabViewPresentationAnimator;
-      v33 = v39;
+      v33 = triggeredCopy;
       [(UIViewPropertyAnimator *)v32 pauseAnimation];
       [v33 velocityInView:self->_view];
       [(AVMobileChromelessControlsViewController *)self _transitionContentTabIfNeccesary:v34, v35];
@@ -1057,10 +1057,10 @@ LABEL_19:
     }
   }
 
-  else if (v4 == 1 && self)
+  else if (state == 1 && self)
   {
     v5 = self->_contentTabViewPresentationAnimator;
-    v6 = v39;
+    v6 = triggeredCopy;
     [(UIViewPropertyAnimator *)v5 pauseAnimation];
     [v6 velocityInView:self->_view];
     v8 = v7;
@@ -1078,32 +1078,32 @@ LABEL_19:
 LABEL_26:
 }
 
-- (void)_transitionContentTabIfNeccesary:(double)a3
+- (void)_transitionContentTabIfNeccesary:(double)neccesary
 {
-  v6 = a1[220];
-  if ((!v6 || [v6 state] != 2) && fabs(a3) > fabs(a2))
+  v6 = self[220];
+  if ((!v6 || [v6 state] != 2) && fabs(neccesary) > fabs(a2))
   {
     [objc_opt_class() autoHideInterval];
-    [a1 flashControlsWithDuration:?];
+    [self flashControlsWithDuration:?];
 
-    [(AVMobileChromelessControlsViewController *)a1 _setContentTabPresented:1 animated:?];
+    [(AVMobileChromelessControlsViewController *)self _setContentTabPresented:1 animated:?];
   }
 }
 
-- (void)_setContentTabPresented:(int)a3 animated:
+- (void)_setContentTabPresented:(int)presented animated:
 {
   v63[12] = *MEMORY[0x1E69E9840];
-  if (!a1 || *(a1 + 1720) == a2)
+  if (!self || *(self + 1720) == a2)
   {
     return;
   }
 
-  *(a1 + 1720) = a2;
-  [(AVMobileChromelessControlsViewController *)a1 _setUpPanGestureRecognizerIfNeeded];
-  [(AVMobileChromelessControlsViewController *)a1 _setUpTapGestureRecognizerIfNeeded];
-  v5 = *(a1 + 1760);
-  v6 = [*(a1 + 1752) selectedCustomInfoViewController];
-  if (a3)
+  *(self + 1720) = a2;
+  [(AVMobileChromelessControlsViewController *)self _setUpPanGestureRecognizerIfNeeded];
+  [(AVMobileChromelessControlsViewController *)self _setUpTapGestureRecognizerIfNeeded];
+  v5 = *(self + 1760);
+  selectedCustomInfoViewController = [*(self + 1752) selectedCustomInfoViewController];
+  if (presented)
   {
     v7 = 2;
     if (!v5)
@@ -1114,7 +1114,7 @@ LABEL_26:
 
   else
   {
-    v7 = *(a1 + 1720) ^ 1;
+    v7 = *(self + 1720) ^ 1;
     if (!v5)
     {
 LABEL_8:
@@ -1123,22 +1123,22 @@ LABEL_8:
   }
 
   [(AVMobileContentTabPresentationContext *)v5 setState:v7];
-  [(AVMobileContentTabPresentationContext *)v5 setCustomInfoViewController:v6];
-  if (a3)
+  [(AVMobileContentTabPresentationContext *)v5 setCustomInfoViewController:selectedCustomInfoViewController];
+  if (presented)
   {
     v8 = objc_alloc_init(AVPlayerViewControllerAnimationCoordinator);
-    v9 = *(a1 + 1720);
+    v9 = *(self + 1720);
     v10 = objc_alloc_init(AVMobileContentTabTransitionContext);
     [(AVMobileContentTabTransitionContext *)v10 setDirection:v9 ^ 1];
     [(AVMobileContentTabTransitionContext *)v10 setAnimationCoordinator:v8];
     [(AVMobileContentTabPresentationContext *)v5 setTransitionContext:v10];
   }
 
-  v11 = *(a1 + 1760);
-  *(a1 + 1760) = v5;
+  v11 = *(self + 1760);
+  *(self + 1760) = v5;
   v56 = v5;
 
-  v12 = *(a1 + 1760);
+  v12 = *(self + 1760);
   if (v12)
   {
     v13 = v12;
@@ -1150,11 +1150,11 @@ LABEL_8:
 
     else
     {
-      v55 = [a1 delegate];
+      delegate = [self delegate];
       v58 = 0u;
       v59 = 0u;
       memset(v60, 0, sizeof(v60));
-      v16 = *(a1 + 1712);
+      v16 = *(self + 1712);
       v17 = [v16 countByEnumeratingWithState:&v58 objects:v62 count:16];
       v18 = *(MEMORY[0x1E695F060] + 8);
       if (v17)
@@ -1184,19 +1184,19 @@ LABEL_8:
         while (v17);
       }
 
-      v23 = *(a1 + 1232);
-      v24 = [v23 contentTabsView];
+      v23 = *(self + 1232);
+      contentTabsView = [v23 contentTabsView];
       [v23 layoutMargins];
       v26 = v25;
-      [v24 intrinsicContentSize];
+      [contentTabsView intrinsicContentSize];
       v28 = v27;
-      [*(a1 + 1232) bounds];
+      [*(self + 1232) bounds];
       v30 = v29;
       v32 = v31;
-      [*(a1 + 1232) safeAreaInsets];
+      [*(self + 1232) safeAreaInsets];
       v34 = v33;
 
-      v35 = v55;
+      v35 = delegate;
       if (objc_opt_respondsToSelector())
       {
         v36 = 16.0;
@@ -1216,7 +1216,7 @@ LABEL_8:
           v37 = v34;
         }
 
-        v38 = [v55 controlsViewController:a1 contentTabPresentationInfoWithPreferredHeight:{v18 + v28 + v36 + v37, v55}];
+        v38 = [delegate controlsViewController:self contentTabPresentationInfoWithPreferredHeight:{v18 + v28 + v36 + v37, delegate}];
         v14 = v39;
         v15 = *&v38;
       }
@@ -1228,36 +1228,36 @@ LABEL_8:
       }
     }
 
-    [v13 setPresentationHeight:{v15, v55}];
+    [v13 setPresentationHeight:{v15, delegate}];
     [v13 setPresentationLayout:v14];
   }
 
-  [(AVMobileChromelessControlsViewController *)a1 _updateControlsViewLayoutConfiguration];
-  [*(a1 + 1560) invalidate];
-  v40 = *(a1 + 1560);
-  *(a1 + 1560) = 0;
+  [(AVMobileChromelessControlsViewController *)self _updateControlsViewLayoutConfiguration];
+  [*(self + 1560) invalidate];
+  v40 = *(self + 1560);
+  *(self + 1560) = 0;
 
-  v57 = *(a1 + 1760);
-  v41 = [a1 delegate];
-  if (*(a1 + 1720) == 1 && (objc_opt_respondsToSelector() & 1) != 0)
+  v57 = *(self + 1760);
+  delegate2 = [self delegate];
+  if (*(self + 1720) == 1 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v41 controlsViewController:a1 willBeginPresentingContentTabWithContext:v57];
+    [delegate2 controlsViewController:self willBeginPresentingContentTabWithContext:v57];
   }
 
-  if (*(a1 + 1720) & 1) == 0 && (objc_opt_respondsToSelector())
+  if (*(self + 1720) & 1) == 0 && (objc_opt_respondsToSelector())
   {
-    [v41 controlsViewController:a1 willBeginDismissingContentTabWithContext:v57];
+    [delegate2 controlsViewController:self willBeginDismissingContentTabWithContext:v57];
   }
 
-  if (a3)
+  if (presented)
   {
-    v42 = [*(a1 + 1816) state] != 1 && objc_msgSend(*(a1 + 1816), "state") != 2;
-    if (*(a1 + 1720) == 1 && !v42)
+    v42 = [*(self + 1816) state] != 1 && objc_msgSend(*(self + 1816), "state") != 2;
+    if (*(self + 1720) == 1 && !v42)
     {
-      [*(a1 + 1752) selectInitialCustomInfoViewController];
+      [*(self + 1752) selectInitialCustomInfoViewController];
     }
 
-    v44 = *(a1 + 1744);
+    v44 = *(self + 1744);
     v45 = 0.0;
     if ([v44 isRunning] && objc_msgSend(v44, "isInterruptible"))
     {
@@ -1265,16 +1265,16 @@ LABEL_8:
       v45 = v46;
       [v44 stopAnimation:1];
       [v44 finishAnimationAtPosition:2];
-      v47 = *(a1 + 1744);
-      *(a1 + 1744) = 0;
+      v47 = *(self + 1744);
+      *(self + 1744) = 0;
     }
 
-    [*(a1 + 1232) bounds];
+    [*(self + 1232) bounds];
     v49 = (1.0 - v45) * (v48 / 0.15 * 0.15);
     v50 = [objc_alloc(MEMORY[0x1E69DCF88]) initWithMass:1.0 stiffness:250.0 damping:30.0 initialVelocity:{0.0, 0.0}];
     v51 = [objc_alloc(MEMORY[0x1E69DD278]) initWithDuration:v50 timingParameters:v49];
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v62[0] = MEMORY[0x1E69E9820];
     v62[1] = 3221225472;
     v62[2] = __85__AVMobileChromelessControlsViewController__animateContentTabPresentationStateUpdate__block_invoke;
@@ -1287,12 +1287,12 @@ LABEL_8:
     *(&v59 + 1) = &unk_1E7209618;
     objc_copyWeak(v60, &location);
     [v51 addCompletion:&v58];
-    objc_storeStrong((a1 + 1744), v51);
-    v52 = *(a1 + 1744);
+    objc_storeStrong((self + 1744), v51);
+    v52 = *(self + 1744);
     if (!v52)
     {
-      [*(a1 + 1752) updateSelectedCustomInfoViewController];
-      v52 = *(a1 + 1744);
+      [*(self + 1752) updateSelectedCustomInfoViewController];
+      v52 = *(self + 1744);
     }
 
     [v52 startAnimation];
@@ -1303,23 +1303,23 @@ LABEL_8:
 
   else
   {
-    [(AVMobileChromelessControlsViewController *)a1 _updateControlsViewLayoutConfiguration];
-    if (!*(a1 + 1744))
+    [(AVMobileChromelessControlsViewController *)self _updateControlsViewLayoutConfiguration];
+    if (!*(self + 1744))
     {
-      [*(a1 + 1752) updateSelectedCustomInfoViewController];
+      [*(self + 1752) updateSelectedCustomInfoViewController];
     }
 
-    if ((*(a1 + 1720) & 1) == 0)
+    if ((*(self + 1720) & 1) == 0)
     {
-      v43 = *(a1 + 1760);
-      *(a1 + 1760) = 0;
+      v43 = *(self + 1760);
+      *(self + 1760) = 0;
 
       [objc_opt_class() autoHideInterval];
-      [a1 flashControlsWithDuration:?];
+      [self flashControlsWithDuration:?];
     }
   }
 
-  v53 = *(a1 + 1760);
+  v53 = *(self + 1760);
   if (v53)
   {
     v54 = [v53 state] == 1;
@@ -1330,32 +1330,32 @@ LABEL_8:
     v54 = 1;
   }
 
-  [*(a1 + 1232) setIgnoresTouches:v54];
+  [*(self + 1232) setIgnoresTouches:v54];
 }
 
 - (void)_setUpPanGestureRecognizerIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    if (!a1[227])
+    if (!self[227])
     {
-      v2 = a1[214];
+      v2 = self[214];
       if (v2)
       {
         if ([v2 count])
         {
-          if (a1[154])
+          if (self[154])
           {
-            v3 = [a1 fullscreenController];
-            v4 = [v3 presentationState];
+            fullscreenController = [self fullscreenController];
+            presentationState = [fullscreenController presentationState];
 
-            if (v4 != 2)
+            if (presentationState != 2)
             {
-              v5 = [objc_alloc(MEMORY[0x1E69DCD28]) initWithTarget:a1 action:sel__contentTabPanGestureRecognizerTriggered_];
+              v5 = [objc_alloc(MEMORY[0x1E69DCD28]) initWithTarget:self action:sel__contentTabPanGestureRecognizerTriggered_];
               [v5 setEnabled:1];
-              [v5 setDelegate:a1];
-              v6 = a1[227];
-              a1[227] = v5;
+              [v5 setDelegate:self];
+              v6 = self[227];
+              self[227] = v5;
             }
           }
         }
@@ -1366,22 +1366,22 @@ LABEL_8:
 
 - (void)_setUpTapGestureRecognizerIfNeeded
 {
-  if (!*(a1 + 1768) && *(a1 + 1720) == 1)
+  if (!*(self + 1768) && *(self + 1720) == 1)
   {
-    if (*(a1 + 1232))
+    if (*(self + 1232))
     {
-      v2 = [a1 fullscreenController];
-      v3 = [v2 presentationState];
+      fullscreenController = [self fullscreenController];
+      presentationState = [fullscreenController presentationState];
 
-      if (v3 != 2)
+      if (presentationState != 2)
       {
-        v4 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:a1 action:sel__contentTabTapGestureRecognizerTriggered_];
-        [v4 setDelegate:a1];
+        v4 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__contentTabTapGestureRecognizerTriggered_];
+        [v4 setDelegate:self];
         [v4 setEnabled:1];
         [v4 setNumberOfTapsRequired:1];
-        [*(a1 + 1232) addGestureRecognizer:v4];
-        v5 = *(a1 + 1768);
-        *(a1 + 1768) = v4;
+        [*(self + 1232) addGestureRecognizer:v4];
+        v5 = *(self + 1768);
+        *(self + 1768) = v4;
       }
     }
   }
@@ -1505,55 +1505,55 @@ LABEL_20:
 - (void)_setNeedsControlsVisibilityStateUpdate
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  if (a1 && (*(a1 + 1552) & 1) == 0 && *(a1 + 1216) == 1)
+  if (self && (*(self + 1552) & 1) == 0 && *(self + 1216) == 1)
   {
-    *(a1 + 1552) = 1;
-    v2 = [MEMORY[0x1E695DFD0] mainRunLoop];
+    *(self + 1552) = 1;
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
     v4[0] = *MEMORY[0x1E695DA28];
     v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v4 count:1];
-    [v2 performSelector:sel__updateControlsVisibilityStateIfNeededAnimated_ target:a1 argument:MEMORY[0x1E695E118] order:0 modes:v3];
+    [mainRunLoop performSelector:sel__updateControlsVisibilityStateIfNeededAnimated_ target:self argument:MEMORY[0x1E695E118] order:0 modes:v3];
   }
 }
 
-- (void)_updateControlsVisibilityStateAnimated:(uint64_t)a1
+- (void)_updateControlsVisibilityStateAnimated:(uint64_t)animated
 {
   location[2] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!animated)
   {
     return;
   }
 
-  [(AVMobileGlassControlsViewController *)a1 _cancelOutstandVisibilityUpdates];
-  *(a1 + 1552) = 0;
-  v73 = *(a1 + 1536);
-  v74 = *(a1 + 1544);
-  if ([a1 visibilityPolicy] != 1)
+  [(AVMobileGlassControlsViewController *)animated _cancelOutstandVisibilityUpdates];
+  *(animated + 1552) = 0;
+  v73 = *(animated + 1536);
+  v74 = *(animated + 1544);
+  if ([animated visibilityPolicy] != 1)
   {
-    v72 = [*(a1 + 1232) volumeControlsView];
-    v5 = [a1 excludedControls];
-    v6 = [a1 includedControls];
-    v7 = [v72 isTracking];
-    v8 = [(AVMobileChromelessControlsViewController *)a1 _isScrubbing];
-    v9 = [a1 fullscreenController];
-    v10 = [v9 presentationState];
+    volumeControlsView = [*(animated + 1232) volumeControlsView];
+    excludedControls = [animated excludedControls];
+    includedControls = [animated includedControls];
+    isTracking = [volumeControlsView isTracking];
+    _isScrubbing = [(AVMobileChromelessControlsViewController *)animated _isScrubbing];
+    fullscreenController = [animated fullscreenController];
+    presentationState = [fullscreenController presentationState];
 
-    v11 = *(a1 + 1720);
-    v12 = [a1 playerController];
-    if ([v12 hasLiveStreamingContent])
+    v11 = *(animated + 1720);
+    playerController = [animated playerController];
+    if ([playerController hasLiveStreamingContent])
     {
-      v13 = [v12 canSeek];
+      canSeek = [playerController canSeek];
     }
 
     else
     {
-      v13 = 1;
+      canSeek = 1;
     }
 
-    v14 = [(AVMobileChromelessControlsViewController *)a1 _preferredAuxiliaryControlsPlacement];
-    v69 = v13;
+    _preferredAuxiliaryControlsPlacement = [(AVMobileChromelessControlsViewController *)animated _preferredAuxiliaryControlsPlacement];
+    v69 = canSeek;
     if (v11)
     {
-      v15 = [*(a1 + 1760) presentationLayout] != 0;
+      v15 = [*(animated + 1760) presentationLayout] != 0;
     }
 
     else
@@ -1562,24 +1562,24 @@ LABEL_20:
     }
 
     v68 = v15;
-    v16 = v10 != 2;
-    if (!((v10 == 2) | v7 & 1))
+    v16 = presentationState != 2;
+    if (!((presentationState == 2) | isTracking & 1))
     {
-      if (*(a1 + 1416))
+      if (*(animated + 1416))
       {
         v16 = 1;
       }
 
       else
       {
-        v16 = *(a1 + 1720);
+        v16 = *(animated + 1720);
       }
     }
 
-    v70 = v14;
-    if (v8 && [v12 hasSeekableLiveStreamingContent])
+    v70 = _preferredAuxiliaryControlsPlacement;
+    if (_isScrubbing && [playerController hasSeekableLiveStreamingContent])
     {
-      v67 = [v12 isAtLiveEdge] ^ 1;
+      v67 = [playerController isAtLiveEdge] ^ 1;
     }
 
     else
@@ -1587,16 +1587,16 @@ LABEL_20:
       v67 = 0;
     }
 
-    v17 = [a1 visibilityPolicy];
-    if (!v17)
+    visibilityPolicy = [animated visibilityPolicy];
+    if (!visibilityPolicy)
     {
       goto LABEL_26;
     }
 
-    v18 = v17;
-    if (v17 != 2)
+    v18 = visibilityPolicy;
+    if (visibilityPolicy != 2)
     {
-      if (v17 == 1)
+      if (visibilityPolicy == 1)
       {
         v19 = 0;
         goto LABEL_28;
@@ -1611,9 +1611,9 @@ LABEL_20:
       }
     }
 
-    if (([a1 temporarilyVisible] & 1) == 0)
+    if (([animated temporarilyVisible] & 1) == 0)
     {
-      v19 = *(a1 + 1584) > 0;
+      v19 = *(animated + 1584) > 0;
     }
 
     else
@@ -1627,9 +1627,9 @@ LABEL_28:
     if ((v19 | v16))
     {
       v22 = v69;
-      if ((v5 & 0x200) == 0)
+      if ((excludedControls & 0x200) == 0)
       {
-        v21 = [v12 hasEnabledAudio] ^ 1;
+        v21 = [playerController hasEnabledAudio] ^ 1;
       }
 
       if (v19)
@@ -1644,22 +1644,22 @@ LABEL_28:
       if (v19)
       {
 LABEL_32:
-        v23 = (v5 & 8) == 0;
+        v23 = (excludedControls & 8) == 0;
         goto LABEL_38;
       }
     }
 
-    if ((v5 & 8) != 0)
+    if ((excludedControls & 8) != 0)
     {
       v23 = 0;
     }
 
     else
     {
-      v23 = v8;
+      v23 = _isScrubbing;
     }
 
-    if (*(a1 + 1720) != 1)
+    if (*(animated + 1720) != 1)
     {
       v25 = 0;
       LOBYTE(v24) = 1;
@@ -1667,10 +1667,10 @@ LABEL_32:
     }
 
 LABEL_38:
-    v24 = (v5 >> 5) & 1;
+    v24 = (excludedControls >> 5) & 1;
     v25 = 1;
 LABEL_40:
-    if (((v6 & 1) == 0 || !v23) | v11 & 1)
+    if (((includedControls & 1) == 0 || !v23) | v11 & 1)
     {
       v26 = 0;
     }
@@ -1680,12 +1680,12 @@ LABEL_40:
       v26 = v22;
     }
 
-    if ((v6 & 2) == 0)
+    if ((includedControls & 2) == 0)
     {
       LOBYTE(v21) = 1;
     }
 
-    if ((v21 | v8))
+    if ((v21 | _isScrubbing))
     {
       v27 = v26;
     }
@@ -1696,34 +1696,34 @@ LABEL_40:
     }
 
     v28 = v27 | 4;
-    if (v8)
+    if (_isScrubbing)
     {
       v28 = v26;
     }
 
-    if ((v25 & ((v6 & 4) != 0)) != 0)
+    if ((v25 & ((includedControls & 4) != 0)) != 0)
     {
       v27 = v28;
     }
 
-    if ((v8 & 1) == 0)
+    if ((_isScrubbing & 1) == 0)
     {
       v26 = v27 | 8;
     }
 
-    v29 = (~v5 & 0x1C00) == 0 || !v19;
-    if ((v19 && v68) & (v6 >> 3))
+    v29 = (~excludedControls & 0x1C00) == 0 || !v19;
+    if ((v19 && v68) & (includedControls >> 3))
     {
       v27 = v26;
     }
 
-    v30 = (v6 & 0x10) == 0 || !v19;
-    if (!(v30 & 1 | v8 & (v70 == 0) | v11 & 1))
+    v30 = (includedControls & 0x10) == 0 || !v19;
+    if (!(v30 & 1 | _isScrubbing & (v70 == 0) | v11 & 1))
     {
       v27 |= 0x10uLL;
     }
 
-    if ((v6 & 0x20) != 0)
+    if ((includedControls & 0x20) != 0)
     {
       v31 = v29;
     }
@@ -1733,7 +1733,7 @@ LABEL_40:
       v31 = 1;
     }
 
-    if (v31 & 1 | v8 & 1 | (v10 == 2) | v11 & 1)
+    if (v31 & 1 | _isScrubbing & 1 | (presentationState == 2) | v11 & 1)
     {
       v32 = v27;
     }
@@ -1743,17 +1743,17 @@ LABEL_40:
       v32 = v27 | 0x20;
     }
 
-    if (v10 != 2)
+    if (presentationState != 2)
     {
       v27 = v32 | 0x40;
     }
 
-    if ((v6 & 0x40) == 0)
+    if ((includedControls & 0x40) == 0)
     {
       LOBYTE(v24) = 1;
     }
 
-    if ((v24 | v8))
+    if ((v24 | _isScrubbing))
     {
       v4 = v32;
     }
@@ -1774,7 +1774,7 @@ LABEL_40:
       v33 = 0;
     }
 
-    v3 = (v4 << 63 >> 63) & v33 | v19 & (v8 ^ 1u);
+    v3 = (v4 << 63 >> 63) & v33 | v19 & (_isScrubbing ^ 1u);
 
     goto LABEL_82;
   }
@@ -1782,84 +1782,84 @@ LABEL_40:
   v3 = 0;
   v4 = 0;
 LABEL_82:
-  if (*(a1 + 1232))
+  if (*(animated + 1232))
   {
     if (v73 != v4 || ((v3 ^ v74) & 1) != 0)
     {
       if ((v3 & 0x100) != 0)
       {
-        v35 = [a1 playerController];
-        v36 = [v35 hasSeekableLiveStreamingContent];
+        playerController2 = [animated playerController];
+        hasSeekableLiveStreamingContent = [playerController2 hasSeekableLiveStreamingContent];
 
-        v37 = [*(a1 + 1232) liveEdgeContentTagView];
-        v38 = (v37 == 0) & v36;
+        liveEdgeContentTagView = [*(animated + 1232) liveEdgeContentTagView];
+        v38 = (liveEdgeContentTagView == 0) & hasSeekableLiveStreamingContent;
 
         if (v38 == 1)
         {
           v39 = [AVMobileContentTagView alloc];
           v40 = +[AVMobileContentTag liveEdgeContentTag];
-          v41 = [(AVMobileContentTagView *)v39 initWithContentTag:v40 withStyleSheet:*(a1 + 1224)];
+          v41 = [(AVMobileContentTagView *)v39 initWithContentTag:v40 withStyleSheet:*(animated + 1224)];
 
-          v42 = [(AVMobileChromelessControlsViewController *)a1 _timelineSlider];
-          [v42 frameForSliderMark:*(a1 + 1672)];
+          _timelineSlider = [(AVMobileChromelessControlsViewController *)animated _timelineSlider];
+          [_timelineSlider frameForSliderMark:*(animated + 1672)];
           v44 = v43;
           v46 = v45;
           v48 = v47;
           v50 = v49;
 
-          [(AVMobileContentTagView *)v41 setFrame:[(AVMobileChromelessControlsViewController *)a1 _frameForLiveEdgeMarkContentTag:v44, v46, v48, v50]];
-          [*(a1 + 1232) setLiveEdgeContentTagView:v41];
+          [(AVMobileContentTagView *)v41 setFrame:[(AVMobileChromelessControlsViewController *)animated _frameForLiveEdgeMarkContentTag:v44, v46, v48, v50]];
+          [*(animated + 1232) setLiveEdgeContentTagView:v41];
         }
       }
 
       v51 = objc_alloc_init(AVPlayerViewControllerAnimationCoordinator);
-      v52 = [*(a1 + 1232) timelineView];
-      v53 = [a1 delegate];
-      if (v53)
+      timelineView = [*(animated + 1232) timelineView];
+      delegate = [animated delegate];
+      if (delegate)
       {
-        v54 = [a1 delegate];
+        delegate2 = [animated delegate];
         v55 = objc_opt_respondsToSelector();
 
         if (v55)
         {
-          v56 = [a1 delegate];
-          [v56 controlsViewController:a1 willBeginUpdatingVisibleControlsTo:v4 withAnimationCoordinator:v51];
+          delegate3 = [animated delegate];
+          [delegate3 controlsViewController:animated willBeginUpdatingVisibleControlsTo:v4 withAnimationCoordinator:v51];
         }
       }
 
-      if ((v4 != 0) == ([a1 visibleControls] == 0))
+      if ((v4 != 0) == ([animated visibleControls] == 0))
       {
-        [(AVMobileChromelessControlsViewController *)a1 _updateTimeResolver];
+        [(AVMobileChromelessControlsViewController *)animated _updateTimeResolver];
         if (v4)
         {
-          [v52 layoutIfNeeded];
+          [timelineView layoutIfNeeded];
         }
 
-        [(AVMobileChromelessControlsViewController *)a1 _updatePrefersVolumeSliderIncludedAnimated:?];
+        [(AVMobileChromelessControlsViewController *)animated _updatePrefersVolumeSliderIncludedAnimated:?];
       }
 
-      if ((([a1 visibleControls] ^ v4) & 2) != 0)
+      if ((([animated visibleControls] ^ v4) & 2) != 0)
       {
-        [(AVMobileChromelessControlsViewController *)a1 _updatePrefersSystemVolumeHUDHidden];
+        [(AVMobileChromelessControlsViewController *)animated _updatePrefersSystemVolumeHUDHidden];
       }
 
-      [*(a1 + 1232) setHidden:0];
+      [*(animated + 1232) setHidden:0];
 
       if (a2)
       {
-        v57 = *(a1 + 1568);
+        v57 = *(animated + 1568);
         v58 = 1.0;
-        if (v57 && [v57 isRunning] && objc_msgSend(*(a1 + 1568), "isInterruptible"))
+        if (v57 && [v57 isRunning] && objc_msgSend(*(animated + 1568), "isInterruptible"))
         {
-          [*(a1 + 1568) fractionComplete];
+          [*(animated + 1568) fractionComplete];
           v58 = v59;
-          [*(a1 + 1568) stopAnimation:1];
-          [*(a1 + 1568) finishAnimationAtPosition:2];
-          v60 = *(a1 + 1568);
-          *(a1 + 1568) = 0;
+          [*(animated + 1568) stopAnimation:1];
+          [*(animated + 1568) finishAnimationAtPosition:2];
+          v60 = *(animated + 1568);
+          *(animated + 1568) = 0;
         }
 
-        objc_initWeak(location, a1);
+        objc_initWeak(location, animated);
         v61 = objc_alloc(MEMORY[0x1E69DD278]);
         if (v58 > 1.0)
         {
@@ -1876,10 +1876,10 @@ LABEL_82:
         v62 = v51;
         v79 = v62;
         v63 = [v61 initWithDuration:3 curve:v78 animations:v58 * 0.15];
-        v64 = *(a1 + 1568);
-        *(a1 + 1568) = v63;
+        v64 = *(animated + 1568);
+        *(animated + 1568) = v63;
 
-        v65 = *(a1 + 1568);
+        v65 = *(animated + 1568);
         v75[0] = MEMORY[0x1E69E9820];
         v75[1] = 3221225472;
         v75[2] = __83__AVMobileChromelessControlsViewController__updateControlsVisibilityStateAnimated___block_invoke_2;
@@ -1890,11 +1890,11 @@ LABEL_82:
         v77[1] = v4;
         v77[2] = v3;
         [v65 addCompletion:v75];
-        *(a1 + 1576) = v4 == 0;
-        [*(a1 + 1568) startAnimation];
-        *(a1 + 1536) = v4;
-        *(a1 + 1544) = v3;
-        [(AVMobileChromelessControlsViewController *)a1 _didBeginUpdatingControlsVisibilityStateFromState:v73 toState:v74 withAnimationCoordinator:v4, v3, v66];
+        *(animated + 1576) = v4 == 0;
+        [*(animated + 1568) startAnimation];
+        *(animated + 1536) = v4;
+        *(animated + 1544) = v3;
+        [(AVMobileChromelessControlsViewController *)animated _didBeginUpdatingControlsVisibilityStateFromState:v73 toState:v74 withAnimationCoordinator:v4, v3, v66];
         objc_destroyWeak(v77);
 
         objc_destroyWeak(v80);
@@ -1903,15 +1903,15 @@ LABEL_82:
 
       else
       {
-        *(a1 + 1576) = v4 == 0;
-        [(AVMobileChromelessControlsViewController *)a1 _updateViewVisibilityStatesTo:v4, v3];
-        [(AVMobileChromelessControlsViewController *)a1 _updateControlsViewLayoutConfiguration];
+        *(animated + 1576) = v4 == 0;
+        [(AVMobileChromelessControlsViewController *)animated _updateViewVisibilityStatesTo:v4, v3];
+        [(AVMobileChromelessControlsViewController *)animated _updateControlsViewLayoutConfiguration];
         [(AVPlayerViewControllerAnimationCoordinator *)v51 performCoordinatedAnimations];
-        *(a1 + 1536) = v4;
-        *(a1 + 1544) = v3;
-        [(AVMobileChromelessControlsViewController *)a1 _didBeginUpdatingControlsVisibilityStateFromState:v73 toState:v74 withAnimationCoordinator:v4, v3, v51];
+        *(animated + 1536) = v4;
+        *(animated + 1544) = v3;
+        [(AVMobileChromelessControlsViewController *)animated _didBeginUpdatingControlsVisibilityStateFromState:v73 toState:v74 withAnimationCoordinator:v4, v3, v51];
         [(AVPlayerViewControllerAnimationCoordinator *)v51 didFinishAnimations:1];
-        [(AVMobileChromelessControlsViewController *)a1 _didEndUpdatingControlsVisibilityStateTo:v4 completed:v3, 1];
+        [(AVMobileChromelessControlsViewController *)animated _didEndUpdatingControlsVisibilityStateTo:v4 completed:v3, 1];
       }
     }
   }
@@ -1946,60 +1946,60 @@ uint64_t __83__AVMobileChromelessControlsViewController__updateControlsVisibilit
   return [v5 didFinishAnimations:v3];
 }
 
-- (void)_didBeginUpdatingControlsVisibilityStateFromState:(uint64_t)a3 toState:(uint64_t)a4 withAnimationCoordinator:(uint64_t)a5
+- (void)_didBeginUpdatingControlsVisibilityStateFromState:(uint64_t)state toState:(uint64_t)toState withAnimationCoordinator:(uint64_t)coordinator
 {
   v16 = a6;
-  v9 = [a1 delegate];
-  if (v9)
+  delegate = [self delegate];
+  if (delegate)
   {
-    v10 = [a1 delegate];
+    delegate2 = [self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [a1 delegate];
-      [v12 controlsViewController:a1 didBeginUpdatingVisibleControlsTo:a4 withAnimationCoordinator:v16];
+      delegate3 = [self delegate];
+      [delegate3 controlsViewController:self didBeginUpdatingVisibleControlsTo:toState withAnimationCoordinator:v16];
     }
   }
 
-  [(AVMobileChromelessControlsViewController *)a1 _updateTransportControlsLayoutGuidesConstraintsIfNeeded];
-  if (!a4)
+  [(AVMobileChromelessControlsViewController *)self _updateTransportControlsLayoutGuidesConstraintsIfNeeded];
+  if (!toState)
   {
-    [a1 cleanUpTips];
+    [self cleanUpTips];
   }
 
-  if ((a2 & 0x10) != 0 && (a4 & 0x10) == 0)
+  if ((a2 & 0x10) != 0 && (toState & 0x10) == 0)
   {
-    v13 = [a1[154] auxiliaryControlsView];
-    [v13 interruptActiveInteractions];
+    auxiliaryControlsView = [self[154] auxiliaryControlsView];
+    [auxiliaryControlsView interruptActiveInteractions];
   }
 
-  if ((a2 & 4) != 0 && (a4 & 4) == 0)
+  if ((a2 & 4) != 0 && (toState & 4) == 0)
   {
-    v14 = [a1[154] displayModeControlsView];
-    [v14 interruptActiveInteractions];
+    displayModeControlsView = [self[154] displayModeControlsView];
+    [displayModeControlsView interruptActiveInteractions];
   }
 
-  if ((a2 & 2) != 0 && (a4 & 2) == 0)
+  if ((a2 & 2) != 0 && (toState & 2) == 0)
   {
-    v15 = [a1[154] volumeControlsView];
-    [v15 interruptActiveInteractions];
+    volumeControlsView = [self[154] volumeControlsView];
+    [volumeControlsView interruptActiveInteractions];
   }
 }
 
-- (void)_updateViewVisibilityStatesTo:(int)a3
+- (void)_updateViewVisibilityStatesTo:(int)to
 {
-  if (a1)
+  if (self)
   {
-    v22 = [*(a1 + 1232) auxiliaryControlsView];
-    v19 = [*(a1 + 1232) contentTabsView];
-    v21 = [*(a1 + 1232) backgroundView];
-    v6 = [*(a1 + 1232) displayModeControlsView];
-    v20 = [*(a1 + 1232) liveEdgeContentTagView];
-    v7 = [*(a1 + 1232) playbackControlsView];
-    v8 = [*(a1 + 1232) timelineView];
-    v9 = [*(a1 + 1232) titlebarView];
-    v10 = [*(a1 + 1232) volumeControlsView];
+    auxiliaryControlsView = [*(self + 1232) auxiliaryControlsView];
+    contentTabsView = [*(self + 1232) contentTabsView];
+    backgroundView = [*(self + 1232) backgroundView];
+    displayModeControlsView = [*(self + 1232) displayModeControlsView];
+    liveEdgeContentTagView = [*(self + 1232) liveEdgeContentTagView];
+    playbackControlsView = [*(self + 1232) playbackControlsView];
+    timelineView = [*(self + 1232) timelineView];
+    titlebarView = [*(self + 1232) titlebarView];
+    volumeControlsView = [*(self + 1232) volumeControlsView];
     if (a2)
     {
       v11 = 1.0;
@@ -2070,7 +2070,7 @@ uint64_t __83__AVMobileChromelessControlsViewController__updateControlsVisibilit
       v17 = 0.0;
     }
 
-    if ((a3 & 0x100) != 0)
+    if ((to & 0x100) != 0)
     {
       v18 = 1.0;
     }
@@ -2080,23 +2080,23 @@ uint64_t __83__AVMobileChromelessControlsViewController__updateControlsVisibilit
       v18 = 0.0;
     }
 
-    [v8 setAlpha:v11];
-    [v19 setAlpha:v12];
-    [v10 setAlpha:v13];
-    [v6 setAlpha:v14];
-    [v7 setAlpha:v15];
-    [v22 setAlpha:v16];
-    [v9 setAlpha:v17];
-    [v20 setAlpha:v18];
-    [v21 setActive:a3 & 1];
-    [v8 setDrawsShadow:a2 & (a3 ^ 1) & 1];
-    [v10 setDrawsShadow:(a3 ^ 1) & ((a2 & 2) >> 1)];
+    [timelineView setAlpha:v11];
+    [contentTabsView setAlpha:v12];
+    [volumeControlsView setAlpha:v13];
+    [displayModeControlsView setAlpha:v14];
+    [playbackControlsView setAlpha:v15];
+    [auxiliaryControlsView setAlpha:v16];
+    [titlebarView setAlpha:v17];
+    [liveEdgeContentTagView setAlpha:v18];
+    [backgroundView setActive:to & 1];
+    [timelineView setDrawsShadow:a2 & (to ^ 1) & 1];
+    [volumeControlsView setDrawsShadow:(to ^ 1) & ((a2 & 2) >> 1)];
   }
 }
 
-- (id)_didEndUpdatingControlsVisibilityStateTo:(uint64_t)a3 completed:(int)a4
+- (id)_didEndUpdatingControlsVisibilityStateTo:(uint64_t)to completed:(int)completed
 {
-  if (!result || !a4)
+  if (!result || !completed)
   {
     return result;
   }
@@ -2135,47 +2135,47 @@ LABEL_12:
 
 - (void)_updateTimeResolver
 {
-  if (a1 && *(a1 + 1464))
+  if (self && *(self + 1464))
   {
-    v2 = *(a1 + 1232);
-    if (v2 && *(a1 + 1216) == 1 && ([v2 isHidden] & 1) == 0)
+    v2 = *(self + 1232);
+    if (v2 && *(self + 1216) == 1 && ([v2 isHidden] & 1) == 0)
     {
-      v5 = [(AVMobileChromelessControlsViewController *)a1 _timelineSlider];
-      v6 = [a1 traitCollection];
-      [v6 displayScale];
+      _timelineSlider = [(AVMobileChromelessControlsViewController *)self _timelineSlider];
+      traitCollection = [self traitCollection];
+      [traitCollection displayScale];
       v8 = v7;
 
-      [v5 bounds];
+      [_timelineSlider bounds];
       v10 = fmax(v8 * v9, 1.0);
-      v11 = [a1 playerController];
-      v12 = [v11 interstitialController];
+      playerController = [self playerController];
+      interstitialController = [playerController interstitialController];
 
-      v13 = [v12 currentInterstitialTimeRange];
+      currentInterstitialTimeRange = [interstitialController currentInterstitialTimeRange];
 
-      v14 = [a1 playerController];
-      v20 = v14;
-      if (v13)
+      playerController2 = [self playerController];
+      v20 = playerController2;
+      if (currentInterstitialTimeRange)
       {
-        v15 = [v14 timeline];
+        timeline = [playerController2 timeline];
 
-        v16 = [v12 currentInterstitialTimeRange];
-        v17 = [v16 interstice];
-        v18 = [v17 isCollapsedInTimeLine];
+        currentInterstitialTimeRange2 = [interstitialController currentInterstitialTimeRange];
+        interstice = [currentInterstitialTimeRange2 interstice];
+        isCollapsedInTimeLine = [interstice isCollapsedInTimeLine];
 
-        if (v18 && v15)
+        if (isCollapsedInTimeLine && timeline)
         {
-          v19 = [v12 interstitialTimingController];
+          interstitialTimingController = [interstitialController interstitialTimingController];
         }
 
         else
         {
-          v19 = [a1 playerController];
+          interstitialTimingController = [self playerController];
         }
 
-        v20 = v19;
+        v20 = interstitialTimingController;
       }
 
-      [*(a1 + 1464) setResolution:v10];
+      [*(self + 1464) setResolution:v10];
     }
 
     else
@@ -2183,13 +2183,13 @@ LABEL_12:
       v20 = 0;
     }
 
-    v3 = [*(a1 + 1464) playerController];
+    playerController3 = [*(self + 1464) playerController];
 
     v4 = v20;
-    if (v3 != v20)
+    if (playerController3 != v20)
     {
-      [*(a1 + 1464) setPlayerController:v20];
-      [(AVMobileChromelessControlsViewController *)a1 _updateTimelineValues];
+      [*(self + 1464) setPlayerController:v20];
+      [(AVMobileChromelessControlsViewController *)self _updateTimelineValues];
       v4 = v20;
     }
   }
@@ -2197,29 +2197,29 @@ LABEL_12:
 
 - (void)_updatePrefersSystemVolumeHUDHidden
 {
-  if (a1)
+  if (self)
   {
-    if (([a1 excludedControls] & 0x200) != 0)
+    if (([self excludedControls] & 0x200) != 0)
     {
       v7 = 0;
     }
 
     else
     {
-      v2 = [a1 pipController];
-      v3 = [v2 isPictureInPictureActive];
+      pipController = [self pipController];
+      isPictureInPictureActive = [pipController isPictureInPictureActive];
 
-      v4 = [a1 includedControls];
-      v5 = [a1 fullscreenController];
-      v6 = [v5 presentationState];
+      includedControls = [self includedControls];
+      fullscreenController = [self fullscreenController];
+      presentationState = [fullscreenController presentationState];
 
-      if (v6 == 2 || (v3 & 1) != 0 || (v4 & 2) == 0)
+      if (presentationState == 2 || (isPictureInPictureActive & 1) != 0 || (includedControls & 2) == 0)
       {
-        v8 = a1[192];
-        v9 = [a1 fullscreenController];
-        v10 = [v9 presentationState] == 2;
+        v8 = self[192];
+        fullscreenController2 = [self fullscreenController];
+        v10 = [fullscreenController2 presentationState] == 2;
 
-        v7 = v10 & ~v3 & (v8 >> 1) & 1;
+        v7 = v10 & ~isPictureInPictureActive & (v8 >> 1) & 1;
       }
 
       else
@@ -2228,36 +2228,36 @@ LABEL_12:
       }
     }
 
-    v11 = [a1 volumeController];
-    [v11 setPrefersSystemVolumeHUDHidden:v7];
+    volumeController = [self volumeController];
+    [volumeController setPrefersSystemVolumeHUDHidden:v7];
   }
 }
 
 - (void)_updateTransportControlsLayoutGuidesConstraintsIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[154];
+    v2 = self[154];
     if (v2)
     {
-      if (a1[203] && a1[204] && a1[205])
+      if (self[203] && self[204] && self[205])
       {
-        v22 = [v2 auxiliaryControlsView];
-        v3 = [a1[154] timelineView];
-        v4 = [a1[154] titlebarView];
-        [v4 frame];
+        auxiliaryControlsView = [v2 auxiliaryControlsView];
+        timelineView = [self[154] timelineView];
+        titlebarView = [self[154] titlebarView];
+        [titlebarView frame];
         v6 = v5;
-        [v3 frame];
+        [timelineView frame];
         v8 = v7;
-        [v22 frame];
+        [auxiliaryControlsView frame];
         v10 = v9;
-        [a1[154] frame];
+        [self[154] frame];
         Height = CGRectGetHeight(v24);
-        v12 = [v4 isHidden];
+        isHidden = [titlebarView isHidden];
         v13 = 0;
-        if (v4 && (v12 & 1) == 0)
+        if (titlebarView && (isHidden & 1) == 0)
         {
-          [v4 alpha];
+          [titlebarView alpha];
           if (v14 != 1.0 || Height <= v6)
           {
             v13 = 0;
@@ -2265,31 +2265,31 @@ LABEL_12:
 
           else
           {
-            v13 = a1[203];
+            v13 = self[203];
             Height = v6;
           }
         }
 
-        if (([v3 isHidden] & 1) != 0 || !v3 || ((objc_msgSend(v3, "alpha"), v16 == 1.0) ? (v17 = Height <= v8) : (v17 = 1), v17))
+        if (([timelineView isHidden] & 1) != 0 || !timelineView || ((objc_msgSend(timelineView, "alpha"), v16 == 1.0) ? (v17 = Height <= v8) : (v17 = 1), v17))
         {
           v8 = Height;
         }
 
         else
         {
-          v18 = a1[204];
+          v18 = self[204];
 
           v13 = v18;
         }
 
-        if (([v22 isHidden] & 1) == 0)
+        if (([auxiliaryControlsView isHidden] & 1) == 0)
         {
-          if (v22)
+          if (auxiliaryControlsView)
           {
-            [v22 alpha];
+            [auxiliaryControlsView alpha];
             if (v19 == 1.0 && v8 > v10)
             {
-              v20 = a1[205];
+              v20 = self[205];
 
               v13 = v20;
             }
@@ -2298,52 +2298,52 @@ LABEL_12:
 
         if (!v13)
         {
-          v13 = a1[206];
+          v13 = self[206];
         }
 
-        v21 = a1[202];
+        v21 = self[202];
         if (v21 != v13)
         {
           [v21 setActive:0];
-          objc_storeStrong(a1 + 202, v13);
-          [a1[202] setActive:1];
+          objc_storeStrong(self + 202, v13);
+          [self[202] setActive:1];
         }
       }
     }
   }
 }
 
-- (void)_updatePrefersVolumeSliderIncludedAnimated:(uint64_t)a1
+- (void)_updatePrefersVolumeSliderIncludedAnimated:(uint64_t)animated
 {
-  if (a1)
+  if (animated)
   {
-    v4 = [*(a1 + 1232) volumeControlsView];
-    if (([(AVMobileGlassControlsViewController *)a1 _activeRouteSupportsAdjustingVolume]& 1) != 0)
+    volumeControlsView = [*(animated + 1232) volumeControlsView];
+    if (([(AVMobileGlassControlsViewController *)animated _activeRouteSupportsAdjustingVolume]& 1) != 0)
     {
-      v5 = [*(a1 + 1232) volumeControlsView];
-      if ([v5 isTracking] & 1) != 0 || (*(a1 + 1416))
+      volumeControlsView2 = [*(animated + 1232) volumeControlsView];
+      if ([volumeControlsView2 isTracking] & 1) != 0 || (*(animated + 1416))
       {
         v6 = 1;
       }
 
       else
       {
-        v13 = [a1 fullscreenController];
-        v14 = [v13 presentationState];
+        fullscreenController = [animated fullscreenController];
+        presentationState = [fullscreenController presentationState];
 
-        if (v14 == 2)
+        if (presentationState == 2)
         {
           v6 = 0;
         }
 
         else
         {
-          [*(a1 + 1232) bounds];
+          [*(animated + 1232) bounds];
           v6 = v15 > 600.0;
         }
       }
 
-      if (v6 == [v4 prefersVolumeSliderIncluded])
+      if (v6 == [volumeControlsView prefersVolumeSliderIncluded])
       {
         goto LABEL_15;
       }
@@ -2356,7 +2356,7 @@ LABEL_12:
 
     else
     {
-      if (([v4 prefersVolumeSliderIncluded] & 1) == 0)
+      if (([volumeControlsView prefersVolumeSliderIncluded] & 1) == 0)
       {
 LABEL_15:
 
@@ -2368,20 +2368,20 @@ LABEL_15:
       {
 LABEL_8:
         v7 = 0.0;
-        if ([*(a1 + 1432) isRunning])
+        if ([*(animated + 1432) isRunning])
         {
-          if ([*(a1 + 1432) isInterruptible])
+          if ([*(animated + 1432) isInterruptible])
           {
-            [*(a1 + 1432) fractionComplete];
+            [*(animated + 1432) fractionComplete];
             v7 = v8;
-            [*(a1 + 1432) stopAnimation:1];
-            [*(a1 + 1432) finishAnimationAtPosition:2];
-            v9 = *(a1 + 1432);
-            *(a1 + 1432) = 0;
+            [*(animated + 1432) stopAnimation:1];
+            [*(animated + 1432) finishAnimationAtPosition:2];
+            v9 = *(animated + 1432);
+            *(animated + 1432) = 0;
           }
         }
 
-        objc_initWeak(&location, a1);
+        objc_initWeak(&location, animated);
         v10 = objc_alloc(MEMORY[0x1E69DD278]);
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
@@ -2390,17 +2390,17 @@ LABEL_8:
         objc_copyWeak(&v17, &location);
         v18 = v6;
         v11 = [v10 initWithDuration:3 curve:v16 animations:(1.0 - v7) * 0.1];
-        v12 = *(a1 + 1432);
-        *(a1 + 1432) = v11;
+        v12 = *(animated + 1432);
+        *(animated + 1432) = v11;
 
-        [*(a1 + 1432) startAnimation];
+        [*(animated + 1432) startAnimation];
         objc_destroyWeak(&v17);
         objc_destroyWeak(&location);
         goto LABEL_15;
       }
     }
 
-    [v4 setPrefersVolumeSliderIncluded:v6];
+    [volumeControlsView setPrefersVolumeSliderIncluded:v6];
     goto LABEL_15;
   }
 }
@@ -2418,49 +2418,49 @@ void __87__AVMobileChromelessControlsViewController__updatePrefersVolumeSliderIn
 
 - (id)_volumeControlsView
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[154] volumeControlsView];
+    self = [self[154] volumeControlsView];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (double)_frameForLiveEdgeMarkContentTag:(double)a3
+- (double)_frameForLiveEdgeMarkContentTag:(double)tag
 {
-  v10 = [*(a1 + 1232) liveEdgeContentTagView];
-  v11 = [(AVMobileChromelessControlsViewController *)a1 _timelineSlider];
-  [v11 convertRect:*(a1 + 1232) toView:{a2, a3, a4, a5}];
+  liveEdgeContentTagView = [*(self + 1232) liveEdgeContentTagView];
+  _timelineSlider = [(AVMobileChromelessControlsViewController *)self _timelineSlider];
+  [_timelineSlider convertRect:*(self + 1232) toView:{a2, tag, a4, a5}];
   v13 = v12;
   v15 = v14;
 
-  [v10 intrinsicContentSize];
+  [liveEdgeContentTagView intrinsicContentSize];
   v17 = v16;
 
   return v13 + v15 * 0.5 - v17 * 0.5;
 }
 
-- (void)_updateControlsVisibilityStateIfNeededAnimated:(id)a3
+- (void)_updateControlsVisibilityStateIfNeededAnimated:(id)animated
 {
   if (self->_needsControlsVisibilityStateUpdate)
   {
-    v5 = [a3 BOOLValue];
+    bOOLValue = [animated BOOLValue];
 
-    [(AVMobileChromelessControlsViewController *)self _updateControlsVisibilityStateAnimated:v5];
+    [(AVMobileChromelessControlsViewController *)self _updateControlsVisibilityStateAnimated:bOOLValue];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_contentTabTapGestureRecognizer == v4)
+  beginCopy = begin;
+  v5 = beginCopy;
+  if (self->_contentTabTapGestureRecognizer == beginCopy)
   {
-    v8 = [(UITapGestureRecognizer *)v4 view];
-    v9 = [(AVMobileChromelessControlsView *)self->_view contentTabsView];
-    [(UIPanGestureRecognizer *)v5 locationInView:v9];
-    v10 = [v8 hitTest:0 withEvent:?];
+    view = [(UITapGestureRecognizer *)beginCopy view];
+    contentTabsView = [(AVMobileChromelessControlsView *)self->_view contentTabsView];
+    [(UIPanGestureRecognizer *)v5 locationInView:contentTabsView];
+    v10 = [view hitTest:0 withEvent:?];
 
     v7 = v10 == 0;
   }
@@ -2483,9 +2483,9 @@ void __87__AVMobileChromelessControlsViewController__updatePrefersVolumeSliderIn
 
 - (void)_decrementUserInteractionCount
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[198];
+    v2 = self[198];
     if (v2 > 0)
     {
       goto LABEL_6;
@@ -2498,16 +2498,16 @@ void __87__AVMobileChromelessControlsViewController__updatePrefersVolumeSliderIn
       _os_log_error_impl(&dword_18B49C000, v3, OS_LOG_TYPE_ERROR, "Error: calls to decrementUserInteractionCount must be matched with calls to incrementUserInteractionCount", v5, 2u);
     }
 
-    v2 = a1[198];
+    v2 = self[198];
     if (v2 >= 1)
     {
 LABEL_6:
       v4 = v2 - 1;
-      a1[198] = v4;
+      self[198] = v4;
       if (!v4)
       {
         [objc_opt_class() autoHideInterval];
-        [a1 flashControlsWithDuration:?];
+        [self flashControlsWithDuration:?];
       }
     }
   }
@@ -2515,27 +2515,27 @@ LABEL_6:
 
 - (void)_incrementUserInteractionCount
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1584);
+    v2 = *(self + 1584);
     if (!v2)
     {
-      [(AVMobileChromelessControlsViewController *)a1 _setNeedsControlsVisibilityStateUpdate];
-      v2 = *(a1 + 1584);
+      [(AVMobileChromelessControlsViewController *)self _setNeedsControlsVisibilityStateUpdate];
+      v2 = *(self + 1584);
     }
 
-    *(a1 + 1584) = v2 + 1;
+    *(self + 1584) = v2 + 1;
   }
 }
 
-- (void)webkitPlayerController:(id)a3 didChangeScrubbingStateTo:(BOOL)a4
+- (void)webkitPlayerController:(id)controller didChangeScrubbingStateTo:(BOOL)to
 {
   [(AVMobileChromelessControlsViewController *)self _setNeedsControlsVisibilityStateUpdate];
 
   [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _updateTimelineEmphasisStateIfNeeded];
 }
 
-- (void)fullscreenControllerDidChangePresentationState:(id)a3
+- (void)fullscreenControllerDidChangePresentationState:(id)state
 {
   [(AVMobileChromelessControlsViewController *)self _updateAuxiliaryControls];
   [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _updateDisplayModeControlsButtonsInclusion];
@@ -2555,22 +2555,22 @@ LABEL_6:
 
 - (void)_updateDisplayModeControlsButtonsInclusion
 {
-  if (a1)
+  if (self)
   {
-    v12 = [a1[154] displayModeControlsView];
-    v2 = [a1 excludedControls];
+    displayModeControlsView = [self[154] displayModeControlsView];
+    excludedControls = [self excludedControls];
     if (+[AVPictureInPictureController isPictureInPictureSupported])
     {
-      v3 = [a1 pipController];
-      v4 = [v3 isPictureInPicturePossible];
-      if ((v2 & 0x100) != 0)
+      pipController = [self pipController];
+      isPictureInPicturePossible = [pipController isPictureInPicturePossible];
+      if ((excludedControls & 0x100) != 0)
       {
         v5 = 0;
       }
 
       else
       {
-        v5 = v4;
+        v5 = isPictureInPicturePossible;
       }
     }
 
@@ -2579,82 +2579,82 @@ LABEL_6:
       v5 = 0;
     }
 
-    v6 = [a1 fullscreenController];
-    if ([v6 presentationState])
+    fullscreenController = [self fullscreenController];
+    if ([fullscreenController presentationState])
     {
-      v7 = [a1 fullscreenController];
-      v8 = [v7 presentationState] == 1 && (objc_msgSend(a1, "excludedControls") & 0x80) == 0;
+      fullscreenController2 = [self fullscreenController];
+      v8 = [fullscreenController2 presentationState] == 1 && (objc_msgSend(self, "excludedControls") & 0x80) == 0;
     }
 
     else
     {
-      v8 = ([a1 excludedControls] & 0x80) == 0;
+      v8 = ([self excludedControls] & 0x80) == 0;
     }
 
-    if ([a1 showsFullScreenControl])
+    if ([self showsFullScreenControl])
     {
-      v9 = [a1 fullscreenController];
-      if ([v9 presentationState] == 2)
+      fullscreenController3 = [self fullscreenController];
+      if ([fullscreenController3 presentationState] == 2)
       {
-        v8 |= ([a1 excludedControls] & 0x40) == 0;
+        v8 |= ([self excludedControls] & 0x40) == 0;
       }
     }
 
-    shouldIncludeRoutePicker = [(AVMobileGlassControlsViewController *)a1 _shouldIncludeRoutePickerButton];
-    [v12 setIncludesFullscreenControl:v8 & 1];
-    [v12 setIncludesPictureInPictureControl:v5];
-    [v12 setIncludesRoutePickerControl:shouldIncludeRoutePicker];
+    shouldIncludeRoutePicker = [(AVMobileGlassControlsViewController *)self _shouldIncludeRoutePickerButton];
+    [displayModeControlsView setIncludesFullscreenControl:v8 & 1];
+    [displayModeControlsView setIncludesPictureInPictureControl:v5];
+    [displayModeControlsView setIncludesRoutePickerControl:shouldIncludeRoutePicker];
     v11 = +[AVKitGlobalSettings shared];
     LODWORD(shouldIncludeRoutePicker) = [v11 experienceControllerEnabled];
 
     if (shouldIncludeRoutePicker)
     {
-      [v12 setIncludesMultiviewControl:{objc_msgSend(a1, "showsMultiviewControl")}];
+      [displayModeControlsView setIncludesMultiviewControl:{objc_msgSend(self, "showsMultiviewControl")}];
     }
   }
 }
 
 - (void)_updateTimelineLabelPositions
 {
-  if (a1)
+  if (self)
   {
-    v5 = [a1[154] timelineView];
-    v2 = [a1 fullscreenController];
-    v3 = [v2 presentationState];
+    timelineView = [self[154] timelineView];
+    fullscreenController = [self fullscreenController];
+    presentationState = [fullscreenController presentationState];
 
-    if (v3 == 2)
+    if (presentationState == 2)
     {
-      v4 = [a1 prefersFullScreenStyleForEmbeddedMode];
+      prefersFullScreenStyleForEmbeddedMode = [self prefersFullScreenStyleForEmbeddedMode];
     }
 
     else
     {
-      v4 = 1;
+      prefersFullScreenStyleForEmbeddedMode = 1;
     }
 
-    if ([v5 labelPosition] != v4)
+    if ([timelineView labelPosition] != prefersFullScreenStyleForEmbeddedMode)
     {
-      [v5 setLabelPosition:v4];
-      [a1[154] setNeedsLayout];
+      [timelineView setLabelPosition:prefersFullScreenStyleForEmbeddedMode];
+      [self[154] setNeedsLayout];
     }
   }
 }
 
 - (void)_updateAuxiliaryControlSpacing
 {
-  if (a1)
+  if (self)
   {
-    v7 = [a1[154] auxiliaryControlsView];
-    v2 = [a1 fullscreenController];
-    v3 = [v2 presentationState];
+    auxiliaryControlsView = [self[154] auxiliaryControlsView];
+    fullscreenController = [self fullscreenController];
+    presentationState = [fullscreenController presentationState];
 
-    if (v3 == 2)
+    if (presentationState == 2)
     {
-      [a1[153] standardPaddingInline];
+      [self[153] standardPaddingInline];
       v5 = v4;
     }
 
-    else if ([(AVMobileChromelessControlsViewController *)a1 _isLandscape])
+    else if ([(AVMobileChromelessControlsViewController *)self _isLandscape])
     {
       v5 = 26.0;
     }
@@ -2664,26 +2664,26 @@ LABEL_6:
       v5 = 13.0;
     }
 
-    [v7 controlSpacing];
+    [auxiliaryControlsView controlSpacing];
     if (v6 != v5)
     {
-      [v7 setControlSpacing:v5];
-      [a1[154] setNeedsLayout];
+      [auxiliaryControlsView setControlSpacing:v5];
+      [self[154] setNeedsLayout];
     }
   }
 }
 
 - (void)_updateFullScreenButtonIcon
 {
-  if (a1)
+  if (self)
   {
-    v4 = [a1[154] displayModeControlsView];
-    v2 = [a1 fullscreenController];
-    v3 = [v2 presentationState];
+    displayModeControlsView = [self[154] displayModeControlsView];
+    fullscreenController = [self fullscreenController];
+    presentationState = [fullscreenController presentationState];
 
-    if (v3 <= 2)
+    if (presentationState <= 2)
     {
-      [v4 setFullscreenIcon:qword_18B6EC668[v3]];
+      [displayModeControlsView setFullscreenIcon:qword_18B6EC668[presentationState]];
     }
   }
 }
@@ -2691,38 +2691,38 @@ LABEL_6:
 - (void)_updatePinnedAuxiliaryControlsIfNeeded
 {
   v41 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 fullscreenController];
-    v3 = [v2 presentationState];
+    fullscreenController = [self fullscreenController];
+    presentationState = [fullscreenController presentationState];
 
-    v4 = [a1 traitCollection];
-    v5 = [v4 userInterfaceIdiom];
+    traitCollection = [self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    [*(a1 + 1232) bounds];
+    [*(self + 1232) bounds];
     v7 = v6;
     v9 = v8;
-    [*(a1 + 1232) bounds];
+    [*(self + 1232) bounds];
     v11 = v10;
-    v12 = [a1 traitCollection];
-    v13 = [v12 userInterfaceIdiom];
+    traitCollection2 = [self traitCollection];
+    userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v15 = v14;
-    if (v3 != 2)
+    if (presentationState != 2)
     {
-      v17 = v7 <= v9 || v13 != 0;
-      v18 = v11 > 600.0 && v5 == 1;
+      v17 = v7 <= v9 || userInterfaceIdiom2 != 0;
+      v18 = v11 > 600.0 && userInterfaceIdiom == 1;
       if (v18 || !v17)
       {
         v37 = 0u;
         v38 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v24 = [*(a1 + 1232) auxiliaryControlsView];
-        v19 = [v24 controls];
+        auxiliaryControlsView = [*(self + 1232) auxiliaryControlsView];
+        controls = [auxiliaryControlsView controls];
 
-        v25 = [v19 countByEnumeratingWithState:&v35 objects:v40 count:16];
+        v25 = [controls countByEnumeratingWithState:&v35 objects:v40 count:16];
         if (v25)
         {
           v26 = v25;
@@ -2733,7 +2733,7 @@ LABEL_6:
             {
               if (*v36 != v27)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(controls);
               }
 
               v29 = *(*(&v35 + 1) + 8 * i);
@@ -2743,7 +2743,7 @@ LABEL_6:
               }
             }
 
-            v26 = [v19 countByEnumeratingWithState:&v35 objects:v40 count:16];
+            v26 = [controls countByEnumeratingWithState:&v35 objects:v40 count:16];
           }
 
           while (v26);
@@ -2752,13 +2752,13 @@ LABEL_6:
         goto LABEL_35;
       }
 
-      if (*(a1 + 1288))
+      if (*(self + 1288))
       {
         [v14 addObject:?];
       }
     }
 
-    if (*(a1 + 1280))
+    if (*(self + 1280))
     {
       [v15 addObject:?];
     }
@@ -2767,8 +2767,8 @@ LABEL_6:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v19 = *(a1 + 1656);
-    v20 = [v19 countByEnumeratingWithState:&v31 objects:v39 count:16];
+    controls = *(self + 1656);
+    v20 = [controls countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v20)
     {
       v21 = v20;
@@ -2779,13 +2779,13 @@ LABEL_6:
         {
           if (*v32 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(controls);
           }
 
           [v15 addObject:{*(*(&v31 + 1) + 8 * j), v31}];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v21 = [controls countByEnumeratingWithState:&v31 objects:v39 count:16];
       }
 
       while (v21);
@@ -2793,29 +2793,29 @@ LABEL_6:
 
 LABEL_35:
 
-    v30 = *(a1 + 1240);
-    *(a1 + 1240) = v15;
+    v30 = *(self + 1240);
+    *(self + 1240) = v15;
 
-    [(AVMobileChromelessControlsViewController *)a1 _updateControlsViewLayoutConfiguration];
+    [(AVMobileChromelessControlsViewController *)self _updateControlsViewLayoutConfiguration];
   }
 }
 
 - (void)_updateSecondaryPlaybackControlsTypes
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1[154] playbackControlsView];
-    v3 = [a1 secondaryPlaybackControlsType];
-    if (v3 == 1)
+    playbackControlsView = [self[154] playbackControlsView];
+    secondaryPlaybackControlsType = [self secondaryPlaybackControlsType];
+    if (secondaryPlaybackControlsType == 1)
     {
-      [v2 setBackwardSecondaryControlIcon:1];
-      v4 = v2;
+      [playbackControlsView setBackwardSecondaryControlIcon:1];
+      v4 = playbackControlsView;
       v5 = 1;
     }
 
     else
     {
-      if (v3)
+      if (secondaryPlaybackControlsType)
       {
         v6 = _AVLog();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2827,8 +2827,8 @@ LABEL_35:
         goto LABEL_10;
       }
 
-      [v2 setBackwardSecondaryControlIcon:0];
-      v4 = v2;
+      [playbackControlsView setBackwardSecondaryControlIcon:0];
+      v4 = playbackControlsView;
       v5 = 0;
     }
 
@@ -2839,27 +2839,27 @@ LABEL_10:
 
 - (void)_updateVolumeControllerClient
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 1232) window];
-    v3 = [v2 windowScene];
-    v4 = [v3 session];
-    v6 = [v4 persistentIdentifier];
+    window = [*(self + 1232) window];
+    windowScene = [window windowScene];
+    session = [windowScene session];
+    persistentIdentifier = [session persistentIdentifier];
 
-    v5 = [a1 volumeController];
-    [v5 setClientWithIdentifier:*(a1 + 1456) forWindowSceneSessionWithIdentifier:v6];
+    volumeController = [self volumeController];
+    [volumeController setClientWithIdentifier:*(self + 1456) forWindowSceneSessionWithIdentifier:persistentIdentifier];
 
-    [(AVMobileChromelessControlsViewController *)a1 _updatePrefersSystemVolumeHUDHidden];
+    [(AVMobileChromelessControlsViewController *)self _updatePrefersSystemVolumeHUDHidden];
   }
 }
 
 - (void)_updateVolumeControlsViewAllowsVolumeAdjustmentState
 {
-  if (a1)
+  if (self)
   {
-    v6 = [a1[154] volumeControlsView];
-    active = [(AVMobileGlassControlsViewController *)a1 _activeRouteSupportsAdjustingVolume];
-    if (([a1 excludedControls] & 0x200) != 0)
+    volumeControlsView = [self[154] volumeControlsView];
+    active = [(AVMobileGlassControlsViewController *)self _activeRouteSupportsAdjustingVolume];
+    if (([self excludedControls] & 0x200) != 0)
     {
       v3 = 0;
     }
@@ -2869,70 +2869,70 @@ LABEL_10:
       v3 = active;
     }
 
-    [v6 setAllowsVolumeAdjustment:v3];
-    v4 = [a1 volumeController];
-    v5 = [v4 currentRouteHasVolumeControl];
+    [volumeControlsView setAllowsVolumeAdjustment:v3];
+    volumeController = [self volumeController];
+    currentRouteHasVolumeControl = [volumeController currentRouteHasVolumeControl];
 
-    [v6 setPrefersVolumeSliderEnabled:v5];
+    [volumeControlsView setPrefersVolumeSliderEnabled:currentRouteHasVolumeControl];
   }
 }
 
 - (BOOL)_isLandscape
 {
-  v1 = [*(a1 + 1232) window];
-  v2 = [v1 windowScene];
-  v3 = [v2 interfaceOrientation];
+  window = [*(self + 1232) window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  return (v3 - 3) < 2;
+  return (interfaceOrientation - 3) < 2;
 }
 
-- (void)contentTabsViewController:(id)a3 didChangeSelectedCustomInfoViewController:(id)a4 withReason:(unint64_t)a5
+- (void)contentTabsViewController:(id)controller didChangeSelectedCustomInfoViewController:(id)viewController withReason:(unint64_t)reason
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  viewControllerCopy = viewController;
   if (self)
   {
-    v8 = [(AVMobileChromelessContentTabsViewController *)self->_contentTabsViewController selectedCustomInfoViewController];
-    v9 = v8 != 0;
+    selectedCustomInfoViewController = [(AVMobileChromelessContentTabsViewController *)self->_contentTabsViewController selectedCustomInfoViewController];
+    v9 = selectedCustomInfoViewController != 0;
 
     [(AVMobileChromelessControlsViewController *)self _setContentTabPresented:v9 animated:1];
-    if (!a5)
+    if (!reason)
     {
       [objc_opt_class() autoHideInterval];
       [(AVMobileChromelessControlsViewController *)self flashControlsWithDuration:?];
     }
   }
 
-  if (v7)
+  if (viewControllerCopy)
   {
-    v10 = [v7 avkit_infoPanelKindIdentifier];
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
+    avkit_infoPanelKindIdentifier = [viewControllerCopy avkit_infoPanelKindIdentifier];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v13 = @"Kind";
-    v14[0] = v10;
+    v14[0] = avkit_infoPanelKindIdentifier;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    [v11 postNotificationName:@"AVPlayerViewControllerDidShowInfoViewControllerNotification" object:v7 userInfo:v12];
+    [defaultCenter postNotificationName:@"AVPlayerViewControllerDidShowInfoViewControllerNotification" object:viewControllerCopy userInfo:v12];
   }
 }
 
-- (void)slider:(id)a3 didUpdateFrame:(CGRect)a4 forSliderMark:(id)a5
+- (void)slider:(id)slider didUpdateFrame:(CGRect)frame forSliderMark:(id)mark
 {
-  if (self->_liveEdgeSliderMark == a5)
+  if (self->_liveEdgeSliderMark == mark)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    v11 = [(AVMobileChromelessControlsView *)self->_view liveEdgeContentTagView];
-    if (v11)
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
+    liveEdgeContentTagView = [(AVMobileChromelessControlsView *)self->_view liveEdgeContentTagView];
+    if (liveEdgeContentTagView)
     {
-      v12 = v11;
-      [v11 setFrame:{-[AVMobileChromelessControlsViewController _frameForLiveEdgeMarkContentTag:](self, x, y, width, height)}];
-      v11 = v12;
+      v12 = liveEdgeContentTagView;
+      [liveEdgeContentTagView setFrame:{-[AVMobileChromelessControlsViewController _frameForLiveEdgeMarkContentTag:](self, x, y, width, height)}];
+      liveEdgeContentTagView = v12;
     }
   }
 }
 
-- (void)sliderDidEndTracking:(id)a3
+- (void)sliderDidEndTracking:(id)tracking
 {
   [(AVMobileChromelessControlsViewController *)self _timelineSliderTrackingStateDidChange];
   [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _updatePlayPauseButtonIcon];
@@ -2943,25 +2943,25 @@ LABEL_10:
 
 - (void)_updatePlayPauseButtonIcon
 {
-  if (a1)
+  if (self)
   {
-    v7 = [a1[154] playbackControlsView];
-    v2 = [a1 playerController];
-    if ([v2 timeControlStatus])
+    playbackControlsView = [self[154] playbackControlsView];
+    playerController = [self playerController];
+    if ([playerController timeControlStatus])
     {
       v3 = 0;
     }
 
     else
     {
-      [v2 rate];
+      [playerController rate];
       v3 = v4 == 0.0;
     }
 
-    if ([v2 avkit_isAVPlayerControllerOrSubclass])
+    if ([playerController avkit_isAVPlayerControllerOrSubclass])
     {
-      [v2 suspendedRate];
-      v6 = [v2 isPlaybackSuspended] ^ 1 | (v5 == 0.0);
+      [playerController suspendedRate];
+      v6 = [playerController isPlaybackSuspended] ^ 1 | (v5 == 0.0);
     }
 
     else
@@ -2969,57 +2969,57 @@ LABEL_10:
       v6 = 1;
     }
 
-    [v7 setPlayPauseButtonShowsPlayIcon:v3 & v6];
+    [playbackControlsView setPlayPauseButtonShowsPlayIcon:v3 & v6];
   }
 }
 
-- (void)sliderWillEndTracking:(id)a3
+- (void)sliderWillEndTracking:(id)tracking
 {
   [(AVMobileChromelessControlsViewController *)self _timelineSliderTrackingStateDidChange];
-  v4 = [(AVMobileControlsViewController *)self playerController];
-  [v4 endScrubbing:self];
-  [v4 endPlaybackSuspension];
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  [playerController endScrubbing:self];
+  [playerController endPlaybackSuspension];
 }
 
-- (void)sliderDidBeginTracking:(id)a3
+- (void)sliderDidBeginTracking:(id)tracking
 {
-  v4 = [(AVMobileControlsViewController *)self playerController];
-  [v4 beginPlaybackSuspension];
-  [v4 beginScrubbing:self];
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  [playerController beginPlaybackSuspension];
+  [playerController beginScrubbing:self];
   [(AVMobileChromelessControlsViewController *)self _timelineSliderTrackingStateDidChange];
   [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _updatePlayPauseButtonIcon];
   [(AVMobileChromelessControlsViewController *)self _incrementUserInteractionCount];
   [(AVMobileChromelessControlsViewController *)self _setNeedsControlsVisibilityStateUpdate];
 }
 
-- (void)playbackControlsViewForwardSecondaryControlWasPressed:(id)a3
+- (void)playbackControlsViewForwardSecondaryControlWasPressed:(id)pressed
 {
-  v4 = a3;
-  if ([v4 forwardSecondaryControlIcon])
+  pressedCopy = pressed;
+  if ([pressedCopy forwardSecondaryControlIcon])
   {
-    if ([v4 forwardSecondaryControlIcon] == 1)
+    if ([pressedCopy forwardSecondaryControlIcon] == 1)
     {
-      v5 = [(AVMobileControlsViewController *)self eventManager];
-      [v5 sendActionsForEvent:@"AVControlsSkipForwardPressedEvent"];
+      eventManager = [(AVMobileControlsViewController *)self eventManager];
+      [eventManager sendActionsForEvent:@"AVControlsSkipForwardPressedEvent"];
     }
 
     else
     {
-      if ([v4 forwardSecondaryControlIcon] != 2)
+      if ([pressedCopy forwardSecondaryControlIcon] != 2)
       {
         goto LABEL_12;
       }
 
-      v5 = [(AVMobileControlsViewController *)self playerController];
-      [v5 seekToEnd:self];
+      eventManager = [(AVMobileControlsViewController *)self playerController];
+      [eventManager seekToEnd:self];
     }
   }
 
   else
   {
-    if (v4)
+    if (pressedCopy)
     {
-      [v4 forwardSecondaryControlSkipInterval];
+      [pressedCopy forwardSecondaryControlSkipInterval];
     }
 
     else
@@ -3028,13 +3028,13 @@ LABEL_10:
     }
 
     Seconds = CMTimeGetSeconds(&time);
-    v7 = [(AVMobileControlsViewController *)self playerController];
-    [v7 seekByTimeInterval:Seconds];
+    playerController = [(AVMobileControlsViewController *)self playerController];
+    [playerController seekByTimeInterval:Seconds];
 
-    v5 = [(AVMobileControlsViewController *)self delegate];
+    eventManager = [(AVMobileControlsViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 controlsViewControllerDidPressSkipForwardButton:self];
+      [eventManager controlsViewControllerDidPressSkipForwardButton:self];
     }
   }
 
@@ -3046,25 +3046,25 @@ LABEL_12:
   }
 }
 
-- (void)playbackControlsViewBackwardSecondaryControlWasPressed:(id)a3
+- (void)playbackControlsViewBackwardSecondaryControlWasPressed:(id)pressed
 {
-  v4 = a3;
-  if ([v4 backwardSecondaryControlIcon])
+  pressedCopy = pressed;
+  if ([pressedCopy backwardSecondaryControlIcon])
   {
-    if ([v4 backwardSecondaryControlIcon] != 1)
+    if ([pressedCopy backwardSecondaryControlIcon] != 1)
     {
       goto LABEL_10;
     }
 
-    v5 = [(AVMobileControlsViewController *)self eventManager];
-    [v5 sendActionsForEvent:@"AVControlsSkipBackwardPressedEvent"];
+    eventManager = [(AVMobileControlsViewController *)self eventManager];
+    [eventManager sendActionsForEvent:@"AVControlsSkipBackwardPressedEvent"];
   }
 
   else
   {
-    if (v4)
+    if (pressedCopy)
     {
-      [v4 backwardSecondaryControlSkipInterval];
+      [pressedCopy backwardSecondaryControlSkipInterval];
     }
 
     else
@@ -3073,13 +3073,13 @@ LABEL_12:
     }
 
     Seconds = CMTimeGetSeconds(&time);
-    v7 = [(AVMobileControlsViewController *)self playerController];
-    [v7 seekByTimeInterval:-Seconds];
+    playerController = [(AVMobileControlsViewController *)self playerController];
+    [playerController seekByTimeInterval:-Seconds];
 
-    v5 = [(AVMobileControlsViewController *)self delegate];
+    eventManager = [(AVMobileControlsViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 controlsViewControllerDidPressSkipBackButton:self];
+      [eventManager controlsViewControllerDidPressSkipBackButton:self];
     }
   }
 
@@ -3091,13 +3091,13 @@ LABEL_10:
   }
 }
 
-- (void)playbackControlsViewPlayPauseButtonWasPressed:(id)a3
+- (void)playbackControlsViewPlayPauseButtonWasPressed:(id)pressed
 {
-  v4 = [(AVMobileControlsViewController *)self eventManager];
-  [v4 sendActionsForEvent:@"AVControlsPlayPauseButtonPressedEvent"];
+  eventManager = [(AVMobileControlsViewController *)self eventManager];
+  [eventManager sendActionsForEvent:@"AVControlsPlayPauseButtonPressedEvent"];
 
-  v5 = [(AVMobileControlsViewController *)self playerController];
-  [v5 togglePlayback:self];
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  [playerController togglePlayback:self];
 
   if (self)
   {
@@ -3107,16 +3107,16 @@ LABEL_10:
   }
 }
 
-- (void)displayModeControlsView:(id)a3 layoutWithHiddenIdentifiers:(id)a4
+- (void)displayModeControlsView:(id)view layoutWithHiddenIdentifiers:(id)identifiers
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifiersCopy = identifiers;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
+  obj = identifiersCopy;
   v7 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
@@ -3132,8 +3132,8 @@ LABEL_10:
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [(AVMobileAuxiliaryControl *)self->_routePickerControl identifier];
-        v13 = [v11 isEqualToString:v12];
+        identifier = [(AVMobileAuxiliaryControl *)self->_routePickerControl identifier];
+        v13 = [v11 isEqualToString:identifier];
 
         if (v13)
         {
@@ -3157,9 +3157,9 @@ LABEL_10:
   }
 
   v15 = +[AVKitGlobalSettings shared];
-  v16 = [v15 playerTipsEnabled];
+  playerTipsEnabled = [v15 playerTipsEnabled];
 
-  if (v16)
+  if (playerTipsEnabled)
   {
     v17 = [MEMORY[0x1E695DFD8] setWithArray:self->_overflowDisplayModeControls];
     v18 = MEMORY[0x1E695DFD8];
@@ -3186,17 +3186,17 @@ LABEL_10:
   [(AVMobileChromelessControlsViewController *)self _updateAuxiliaryControls];
 }
 
-- (id)_auxiliaryControlForIdentifier:(uint64_t)a1
+- (id)_auxiliaryControlForIdentifier:(uint64_t)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = *(a1 + 1656);
+    v4 = *(identifier + 1656);
     v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
@@ -3211,9 +3211,9 @@ LABEL_10:
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
-          v9 = [v8 identifier];
+          identifier = [v8 identifier];
 
-          if (v9 == v3)
+          if (identifier == v3)
           {
             v5 = v8;
             goto LABEL_12;
@@ -3241,18 +3241,18 @@ LABEL_12:
   return v5;
 }
 
-- (void)_dismissControlItemWithTipInSymmetricDifferenceSet:(void *)a1
+- (void)_dismissControlItemWithTipInSymmetricDifferenceSet:(void *)set
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (set)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [a1 controlItems];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    controlItems = [set controlItems];
+    v5 = [controlItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -3263,22 +3263,22 @@ LABEL_12:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(controlItems);
           }
 
           v9 = *(*(&v12 + 1) + 8 * i);
-          v10 = [(AVMobileChromelessControlsViewController *)a1 _auxiliaryControlForControlItem:v9];
+          v10 = [(AVMobileChromelessControlsViewController *)set _auxiliaryControlForControlItem:v9];
           v11 = [v9 tip];
 
           if (v11 && [v3 containsObject:v10])
           {
-            [a1 dismissTip];
+            [set dismissTip];
 
             goto LABEL_13;
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [controlItems countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           continue;
@@ -3299,8 +3299,8 @@ LABEL_13:
     v1 = result;
     shouldIncludeRoutePicker = [(AVMobileGlassControlsViewController *)result _shouldIncludeRoutePickerButton];
     v3 = [v1[156] containsObject:v1[160]];
-    v4 = [v1[154] displayModeControlsView];
-    [v4 setIncludesRoutePickerControl:shouldIncludeRoutePicker];
+    displayModeControlsView = [v1[154] displayModeControlsView];
+    [displayModeControlsView setIncludesRoutePickerControl:shouldIncludeRoutePicker];
 
     v5 = v1[160];
 
@@ -3313,14 +3313,14 @@ LABEL_13:
 - (void)_updateControlItemsInclusionState
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v2 = [a1 controlItems];
-    v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    controlItems = [self controlItems];
+    v3 = [controlItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v3)
     {
       v4 = v3;
@@ -3331,22 +3331,22 @@ LABEL_13:
         {
           if (*v12 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(controlItems);
           }
 
           v7 = *(*(&v11 + 1) + 8 * i);
-          v8 = [(AVMobileChromelessControlsViewController *)a1 _auxiliaryControlForControlItem:v7];
-          v9 = [v7 type];
-          if ((v9 - 1) >= 2)
+          v8 = [(AVMobileChromelessControlsViewController *)self _auxiliaryControlForControlItem:v7];
+          type = [v7 type];
+          if ((type - 1) >= 2)
           {
-            if (v9)
+            if (type)
             {
               v10 = 0;
             }
 
             else
             {
-              v10 = [a1[156] containsObject:v8];
+              v10 = [self[156] containsObject:v8];
             }
           }
 
@@ -3358,7 +3358,7 @@ LABEL_13:
           [v8 setIncluded:v10];
         }
 
-        v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v4 = [controlItems countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v4);
@@ -3366,77 +3366,77 @@ LABEL_13:
   }
 }
 
-- (id)_auxiliaryControlForControlItem:(uint64_t)a1
+- (id)_auxiliaryControlForControlItem:(uint64_t)item
 {
-  v3 = [a2 identifier];
-  v4 = [(AVMobileChromelessControlsViewController *)a1 _auxiliaryControlForIdentifier:v3];
+  identifier = [a2 identifier];
+  v4 = [(AVMobileChromelessControlsViewController *)item _auxiliaryControlForIdentifier:identifier];
 
   return v4;
 }
 
-- (void)displayModeControlsViewMultiviewButtonWasPressed:(id)a3
+- (void)displayModeControlsViewMultiviewButtonWasPressed:(id)pressed
 {
-  v4 = [(AVMobileControlsViewController *)self delegate];
+  delegate = [(AVMobileControlsViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AVMobileControlsViewController *)self delegate];
-    [v6 controlsViewControllerDidPressMultiviewButton:self];
+    delegate2 = [(AVMobileControlsViewController *)self delegate];
+    [delegate2 controlsViewControllerDidPressMultiviewButton:self];
   }
 }
 
-- (void)displayModeControlsViewPictureInPictureButtonWasPressed:(id)a3
+- (void)displayModeControlsViewPictureInPictureButtonWasPressed:(id)pressed
 {
-  v4 = [(AVMobileControlsViewController *)self pipController];
-  v5 = [v4 isPictureInPicturePossible];
+  pipController = [(AVMobileControlsViewController *)self pipController];
+  isPictureInPicturePossible = [pipController isPictureInPicturePossible];
 
-  if (v5)
+  if (isPictureInPicturePossible)
   {
-    v6 = [(AVMobileControlsViewController *)self pipController];
-    v7 = [v6 isPictureInPictureActive];
+    pipController2 = [(AVMobileControlsViewController *)self pipController];
+    isPictureInPictureActive = [pipController2 isPictureInPictureActive];
 
-    v8 = [(AVMobileControlsViewController *)self pipController];
-    v9 = v8;
-    if (v7)
+    pipController3 = [(AVMobileControlsViewController *)self pipController];
+    v9 = pipController3;
+    if (isPictureInPictureActive)
     {
-      [v8 stopPictureInPicture];
+      [pipController3 stopPictureInPicture];
     }
 
     else
     {
-      [v8 startPictureInPicture];
+      [pipController3 startPictureInPicture];
     }
 
     [(AVMobileChromelessControlsViewController *)self _updatePrefersSystemVolumeHUDHidden];
   }
 }
 
-- (void)displayModeControlsViewFullscreenButtonWasPressed:(id)a3
+- (void)displayModeControlsViewFullscreenButtonWasPressed:(id)pressed
 {
-  v5 = a3;
-  if ([v5 fullscreenIcon] == 1)
+  pressedCopy = pressed;
+  if ([pressedCopy fullscreenIcon] == 1)
   {
-    v4 = [(AVMobileControlsViewController *)self fullscreenController];
-    [v4 enterFullscreen:self];
+    fullscreenController = [(AVMobileControlsViewController *)self fullscreenController];
+    [fullscreenController enterFullscreen:self];
   }
 
   else
   {
-    if ([v5 fullscreenIcon])
+    if ([pressedCopy fullscreenIcon])
     {
       goto LABEL_6;
     }
 
-    v4 = [(AVMobileControlsViewController *)self eventManager];
-    [v4 sendActionsForEvent:@"AVControlsDoneButtonPressedEvent"];
+    fullscreenController = [(AVMobileControlsViewController *)self eventManager];
+    [fullscreenController sendActionsForEvent:@"AVControlsDoneButtonPressedEvent"];
   }
 
 LABEL_6:
   [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _updateFullScreenButtonIcon];
 }
 
-- (void)volumeControlsView:(id)a3 didSelectHapticsOn:(BOOL)a4
+- (void)volumeControlsView:(id)view didSelectHapticsOn:(BOOL)on
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
@@ -3444,7 +3444,7 @@ LABEL_6:
   block[2] = __82__AVMobileChromelessControlsViewController_volumeControlsView_didSelectHapticsOn___block_invoke;
   block[3] = &unk_1E720A0B8;
   objc_copyWeak(&v6, &location);
-  v7 = a4;
+  onCopy = on;
   dispatch_async(MEMORY[0x1E69E96A0], block);
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -3460,10 +3460,10 @@ void __82__AVMobileChromelessControlsViewController_volumeControlsView_didSelect
   [(AVMobileChromelessControlsViewController *)v4 _updateHasHapticTrackSelectionMenuIDs];
 }
 
-- (void)volumeControlsViewButtonWasTapped:(id)a3
+- (void)volumeControlsViewButtonWasTapped:(id)tapped
 {
-  v4 = [(AVMobileControlsViewController *)self eventManager];
-  [v4 sendActionsForEvent:@"AVControlsVolumeButtonPressedEvent"];
+  eventManager = [(AVMobileControlsViewController *)self eventManager];
+  [eventManager sendActionsForEvent:@"AVControlsVolumeButtonPressedEvent"];
 
   if (self)
   {
@@ -3487,32 +3487,32 @@ void __82__AVMobileChromelessControlsViewController_volumeControlsView_didSelect
 
 - (void)_handleMuteStateToggle
 {
-  v8 = [a1 volumeController];
-  [v8 volume];
+  volumeController = [self volumeController];
+  [volumeController volume];
   v3 = v2;
-  v4 = [a1 playerController];
-  v5 = [v4 isMuted];
+  playerController = [self playerController];
+  isMuted = [playerController isMuted];
 
-  if (v3 != 0.0 || ([v8 beginChangingVolume], LODWORD(v6) = 1036831949, objc_msgSend(v8, "setTargetVolume:", v6), objc_msgSend(v8, "endChangingVolume"), v5))
+  if (v3 != 0.0 || ([volumeController beginChangingVolume], LODWORD(v6) = 1036831949, objc_msgSend(volumeController, "setTargetVolume:", v6), objc_msgSend(volumeController, "endChangingVolume"), isMuted))
   {
-    v7 = [a1 playerController];
-    [v7 toggleMuted:a1];
+    playerController2 = [self playerController];
+    [playerController2 toggleMuted:self];
 
-    [(AVMobileChromelessControlsViewController *)a1 _updateVolumeControlsViewMutedState];
+    [(AVMobileChromelessControlsViewController *)self _updateVolumeControlsViewMutedState];
   }
 }
 
 - (void)_temporarilyShowVolumeSlider
 {
-  [(AVMobileChromelessControlsViewController *)a1 _resetVolumeSliderTemporarilyVisibleTimer];
-  if ((*(a1 + 1416) & 1) == 0)
+  [(AVMobileChromelessControlsViewController *)self _resetVolumeSliderTemporarilyVisibleTimer];
+  if ((*(self + 1416) & 1) == 0)
   {
-    *(a1 + 1416) = 1;
-    [(AVMobileChromelessControlsViewController *)a1 _updatePrefersVolumeSliderIncludedAnimated:?];
-    [(AVMobileChromelessControlsViewController *)a1 _setNeedsControlsVisibilityStateUpdate];
+    *(self + 1416) = 1;
+    [(AVMobileChromelessControlsViewController *)self _updatePrefersVolumeSliderIncludedAnimated:?];
+    [(AVMobileChromelessControlsViewController *)self _setNeedsControlsVisibilityStateUpdate];
   }
 
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v2 = MEMORY[0x1E695DFF0];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -3520,8 +3520,8 @@ void __82__AVMobileChromelessControlsViewController_volumeControlsView_didSelect
   v5[3] = &unk_1E7209DA8;
   objc_copyWeak(&v6, &location);
   v3 = [v2 scheduledTimerWithTimeInterval:0 repeats:v5 block:2.0];
-  v4 = *(a1 + 1448);
-  *(a1 + 1448) = v3;
+  v4 = *(self + 1448);
+  *(self + 1448) = v3;
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -3529,12 +3529,12 @@ void __82__AVMobileChromelessControlsViewController_volumeControlsView_didSelect
 
 - (void)_resetVolumeSliderTemporarilyVisibleTimer
 {
-  v2 = *(a1 + 1448);
+  v2 = *(self + 1448);
   if (v2)
   {
     [v2 invalidate];
-    v3 = *(a1 + 1448);
-    *(a1 + 1448) = 0;
+    v3 = *(self + 1448);
+    *(self + 1448) = 0;
   }
 }
 
@@ -3553,17 +3553,17 @@ void __72__AVMobileChromelessControlsViewController__temporarilyShowVolumeSlider
 
 - (void)_updateVolumeControlsViewMutedState
 {
-  if (a1)
+  if (self)
   {
-    v4 = [a1[154] volumeControlsView];
-    v2 = [a1 playerController];
-    v3 = [v2 isMuted];
+    volumeControlsView = [self[154] volumeControlsView];
+    playerController = [self playerController];
+    isMuted = [playerController isMuted];
 
-    [v4 setMute:v3];
+    [volumeControlsView setMute:isMuted];
   }
 }
 
-- (void)volumeControlsViewInteractionDidEnd:(id)a3
+- (void)volumeControlsViewInteractionDidEnd:(id)end
 {
   [(AVMobileChromelessControlsViewController *)self _decrementUserInteractionCount];
   if (self)
@@ -3604,28 +3604,28 @@ void __80__AVMobileChromelessControlsViewController__volumeControlsViewInteracti
   [(AVMobileChromelessControlsViewController *)v3 _volumeControlsViewInteractionDidContinue];
 }
 
-- (void)_animateVolumeEmphasisTo:(id *)a1
+- (void)_animateVolumeEmphasisTo:(id *)to
 {
-  if (a1)
+  if (to)
   {
-    v4 = [a1[154] volumeControlsView];
-    if ([v4 isEmphasized] != a2)
+    volumeControlsView = [to[154] volumeControlsView];
+    if ([volumeControlsView isEmphasized] != a2)
     {
       v5 = 0.0;
-      if ([a1[178] isRunning])
+      if ([to[178] isRunning])
       {
-        if ([a1[178] isInterruptible])
+        if ([to[178] isInterruptible])
         {
-          [a1[178] fractionComplete];
+          [to[178] fractionComplete];
           v5 = v6;
-          [a1[178] stopAnimation:1];
-          [a1[178] finishAnimationAtPosition:2];
-          v7 = a1[178];
-          a1[178] = 0;
+          [to[178] stopAnimation:1];
+          [to[178] finishAnimationAtPosition:2];
+          v7 = to[178];
+          to[178] = 0;
         }
       }
 
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, to);
       v8 = objc_alloc(MEMORY[0x1E69DD278]);
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
@@ -3634,10 +3634,10 @@ void __80__AVMobileChromelessControlsViewController__volumeControlsViewInteracti
       objc_copyWeak(&v12, &location);
       v13 = a2;
       v9 = [v8 initWithDuration:3 curve:v11 animations:(1.0 - v5) * 0.2];
-      v10 = a1[178];
-      a1[178] = v9;
+      v10 = to[178];
+      to[178] = v9;
 
-      [a1[178] startAnimation];
+      [to[178] startAnimation];
       objc_destroyWeak(&v12);
       objc_destroyWeak(&location);
     }
@@ -3651,62 +3651,62 @@ void __69__AVMobileChromelessControlsViewController__animateVolumeEmphasisTo___b
   [v2 setEmphasized:*(a1 + 40)];
 }
 
-- (void)volumeControlsView:(id)a3 volumeDidChangeTo:(double)a4 withUpdateSource:(unint64_t)a5
+- (void)volumeControlsView:(id)view volumeDidChangeTo:(double)to withUpdateSource:(unint64_t)source
 {
-  v13 = a3;
-  v8 = [(AVMobileControlsViewController *)self playerController];
+  viewCopy = view;
+  playerController = [(AVMobileControlsViewController *)self playerController];
   [(AVMobileChromelessControlsViewController *)self _volumeControlsViewInteractionDidContinue];
-  if (a5 != 2)
+  if (source != 2)
   {
-    v9 = [(AVMobileControlsViewController *)self volumeController];
-    [v9 beginChangingVolume];
+    volumeController = [(AVMobileControlsViewController *)self volumeController];
+    [volumeController beginChangingVolume];
 
-    v10 = [(AVMobileControlsViewController *)self volumeController];
-    *&v11 = a4;
-    [v10 setTargetVolume:v11];
+    volumeController2 = [(AVMobileControlsViewController *)self volumeController];
+    *&v11 = to;
+    [volumeController2 setTargetVolume:v11];
 
-    v12 = [(AVMobileControlsViewController *)self volumeController];
-    [v12 endChangingVolume];
+    volumeController3 = [(AVMobileControlsViewController *)self volumeController];
+    [volumeController3 endChangingVolume];
   }
 
-  if ([v8 isMuted])
+  if ([playerController isMuted])
   {
-    [v8 setMuted:0];
-    [v13 setMute:0];
+    [playerController setMuted:0];
+    [viewCopy setMute:0];
   }
 }
 
 - (void)_volumeControlsViewInteractionDidContinue
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 1440) invalidate];
-    v2 = *(a1 + 1440);
-    *(a1 + 1440) = 0;
+    [*(self + 1440) invalidate];
+    v2 = *(self + 1440);
+    *(self + 1440) = 0;
   }
 }
 
-- (void)volumeControlsView:(id)a3 volumeDidChangeTo:(double)a4
+- (void)volumeControlsView:(id)view volumeDidChangeTo:(double)to
 {
-  v11 = a3;
+  viewCopy = view;
   [(AVMobileChromelessControlsViewController *)self _volumeControlsViewInteractionDidContinue];
-  v6 = [(AVMobileControlsViewController *)self volumeController];
-  *&v7 = a4;
-  [v6 setTargetVolume:v7];
+  volumeController = [(AVMobileControlsViewController *)self volumeController];
+  *&v7 = to;
+  [volumeController setTargetVolume:v7];
 
-  v8 = [(AVMobileControlsViewController *)self playerController];
-  v9 = [v8 isMuted];
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  isMuted = [playerController isMuted];
 
-  if (v9)
+  if (isMuted)
   {
-    v10 = [(AVMobileControlsViewController *)self playerController];
-    [v10 setMuted:0];
+    playerController2 = [(AVMobileControlsViewController *)self playerController];
+    [playerController2 setMuted:0];
 
-    [v11 setMute:0];
+    [viewCopy setMute:0];
   }
 }
 
-- (void)volumeControlsViewInteractionDidBegin:(id)a3
+- (void)volumeControlsViewInteractionDidBegin:(id)begin
 {
   [(AVMobileChromelessControlsViewController *)self _incrementUserInteractionCount];
   if (self)
@@ -3718,28 +3718,28 @@ void __69__AVMobileChromelessControlsViewController__animateVolumeEmphasisTo___b
     [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _animateVolumeEmphasisTo:?];
   }
 
-  v5 = [(AVMobileControlsViewController *)self volumeController];
-  [v5 beginChangingVolume];
+  volumeController = [(AVMobileControlsViewController *)self volumeController];
+  [volumeController beginChangingVolume];
 
   [(AVMobileChromelessControlsViewController *)self _updatePrefersVolumeSliderIncludedAnimated:?];
 
   [(AVMobileChromelessControlsViewController *)self _setNeedsControlsVisibilityStateUpdate];
 }
 
-- (id)auxiliaryControlsView:(id)a3 menuElementForControl:(id)a4
+- (id)auxiliaryControlsView:(id)view menuElementForControl:(id)control
 {
   v50[12] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 identifier];
+  controlCopy = control;
+  identifier = [controlCopy identifier];
   if (self && ([(AVMobileControlsViewController *)self transportBarCustomMenuItems], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
     v47 = 0u;
     v48 = 0u;
     *location = 0u;
     v46 = 0u;
-    v8 = [(AVMobileControlsViewController *)self transportBarCustomMenuItems];
+    transportBarCustomMenuItems = [(AVMobileControlsViewController *)self transportBarCustomMenuItems];
     v9 = 0;
-    v10 = [v8 countByEnumeratingWithState:location objects:v49 count:16];
+    v10 = [transportBarCustomMenuItems countByEnumeratingWithState:location objects:v49 count:16];
     if (v10)
     {
       v11 = *v46;
@@ -3749,12 +3749,12 @@ void __69__AVMobileChromelessControlsViewController__animateVolumeEmphasisTo___b
         {
           if (*v46 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(transportBarCustomMenuItems);
           }
 
           v13 = *(location[1] + i);
           v14 = [AVMobileGlassControlsViewController _identifierForMenuElement:v13];
-          if (v14 == v6)
+          if (v14 == identifier)
           {
             v15 = v13;
 
@@ -3762,7 +3762,7 @@ void __69__AVMobileChromelessControlsViewController__animateVolumeEmphasisTo___b
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:location objects:v49 count:16];
+        v10 = [transportBarCustomMenuItems countByEnumeratingWithState:location objects:v49 count:16];
       }
 
       while (v10);
@@ -3774,62 +3774,62 @@ void __69__AVMobileChromelessControlsViewController__animateVolumeEmphasisTo___b
     v9 = 0;
   }
 
-  v16 = v5;
+  v16 = controlCopy;
   if (self)
   {
     v47 = 0u;
     v48 = 0u;
     *location = 0u;
     v46 = 0u;
-    v17 = [(AVMobileControlsViewController *)self controlItems];
-    v18 = [v17 countByEnumeratingWithState:location objects:v49 count:16];
-    if (v18)
+    controlItems = [(AVMobileControlsViewController *)self controlItems];
+    menu = [controlItems countByEnumeratingWithState:location objects:v49 count:16];
+    if (menu)
     {
       v19 = *v46;
       while (2)
       {
-        for (j = 0; j != v18; ++j)
+        for (j = 0; j != menu; ++j)
         {
           if (*v46 != v19)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(controlItems);
           }
 
           v21 = *(location[1] + j);
-          v22 = [v21 identifier];
-          v23 = [(AVMobileAuxiliaryControl *)v16 identifier];
-          v24 = v22 == v23;
+          identifier2 = [v21 identifier];
+          identifier3 = [(AVMobileAuxiliaryControl *)v16 identifier];
+          v24 = identifier2 == identifier3;
 
           if (v24)
           {
-            v25 = [v21 action];
+            action = [v21 action];
 
-            if (v25)
+            if (action)
             {
               v26 = MEMORY[0x1E69DC628];
-              v27 = [v21 title];
-              v28 = [v21 image];
-              v29 = [(AVMobileAuxiliaryControl *)v16 identifier];
+              title = [v21 title];
+              image = [v21 image];
+              identifier4 = [(AVMobileAuxiliaryControl *)v16 identifier];
               v44[0] = MEMORY[0x1E69E9820];
               v44[1] = 3221225472;
               v44[2] = __71__AVMobileChromelessControlsViewController__menuElementForControlItem___block_invoke;
               v44[3] = &unk_1E72092D0;
               v44[4] = v21;
-              v18 = [v26 actionWithTitle:v27 image:v28 identifier:v29 handler:v44];
+              menu = [v26 actionWithTitle:title image:image identifier:identifier4 handler:v44];
 
               if (([v21 isEnabled] & 1) == 0)
               {
-                [v18 setAttributes:1];
+                [menu setAttributes:1];
               }
             }
 
             else
             {
-              v18 = [v21 menu];
+              menu = [v21 menu];
 
-              if (v18)
+              if (menu)
               {
-                v18 = [v21 menu];
+                menu = [v21 menu];
               }
             }
 
@@ -3837,8 +3837,8 @@ void __69__AVMobileChromelessControlsViewController__animateVolumeEmphasisTo___b
           }
         }
 
-        v18 = [v17 countByEnumeratingWithState:location objects:v49 count:16];
-        if (v18)
+        menu = [controlItems countByEnumeratingWithState:location objects:v49 count:16];
+        if (menu)
         {
           continue;
         }
@@ -3852,13 +3852,13 @@ LABEL_29:
 
   else
   {
-    v18 = 0;
+    menu = 0;
   }
 
   if (self->_audibleMediaSelectionControl == v16)
   {
     [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _updateAudibleMediaSelectionMenu];
-    v32 = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController audibleOptionsOverflowMenu];
+    audibleOptionsOverflowMenu = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController audibleOptionsOverflowMenu];
     goto LABEL_55;
   }
 
@@ -3869,7 +3869,7 @@ LABEL_29:
 
     if (hapticsSelectionControl == v16)
     {
-      v32 = [(AVMobileHapticsMenuController *)self->_hapticsMenuController hapticsOptionsMenu];
+      audibleOptionsOverflowMenu = [(AVMobileHapticsMenuController *)self->_hapticsMenuController hapticsOptionsMenu];
       goto LABEL_55;
     }
   }
@@ -3881,13 +3881,13 @@ LABEL_29:
   if (self->_legibleMediaSelectionControl == v16)
   {
     [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _updateLegibleMediaSelectionMenu];
-    v32 = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController legibleOptionsMenu];
+    audibleOptionsOverflowMenu = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController legibleOptionsMenu];
     goto LABEL_55;
   }
 
   if (self->_playbackSpeedControl == v16)
   {
-    v32 = [(AVMobilePlaybackRateMenuController *)self->_playbackSpeedMenuController menu];
+    audibleOptionsOverflowMenu = [(AVMobilePlaybackRateMenuController *)self->_playbackSpeedMenuController menu];
     goto LABEL_55;
   }
 
@@ -3914,18 +3914,18 @@ LABEL_29:
       {
         if (v9)
         {
-          v32 = v9;
+          audibleOptionsOverflowMenu = v9;
         }
 
         else
         {
-          if (!v18)
+          if (!menu)
           {
             v40 = 0;
             goto LABEL_56;
           }
 
-          v32 = v18;
+          audibleOptionsOverflowMenu = menu;
         }
 
         goto LABEL_55;
@@ -3934,18 +3934,18 @@ LABEL_29:
       v41 = 1368;
     }
 
-    v32 = *(&self->super.super.super.super.super.super.isa + v41);
+    audibleOptionsOverflowMenu = *(&self->super.super.super.super.super.super.isa + v41);
 LABEL_55:
-    v40 = v32;
+    v40 = audibleOptionsOverflowMenu;
     goto LABEL_56;
   }
 
-  v33 = [(AVMobileChromelessControlsView *)self->_view displayModeControlsView];
-  v34 = [v33 routePickerView];
+  displayModeControlsView = [(AVMobileChromelessControlsView *)self->_view displayModeControlsView];
+  routePickerView = [displayModeControlsView routePickerView];
 
   v35 = AVLocalizedString(@"EXTERNAL_PLAYBACK_OVERFLOW_MENU_ITEM_TITLE");
   v36 = [MEMORY[0x1E69DCAB8] avkit_imageWithSymbolNamed:@"airplayvideo" textStyle:*MEMORY[0x1E69DDD00] scale:2];
-  if ([v34 isAirPlayActive])
+  if ([routePickerView isAirPlayActive])
   {
     v37 = [MEMORY[0x1E69DC888] colorWithRed:0.5 green:0.86 blue:1.0 alpha:1.0];
     v38 = [v36 imageWithTintColor:v37 renderingMode:1];
@@ -3973,33 +3973,33 @@ LABEL_56:
 - (void)_updateAudibleMediaSelectionMenu
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 playerController];
-    v3 = [v2 audioMediaSelectionOptions];
-    v4 = [v2 currentAudioMediaSelectionOption];
-    v5 = [v3 indexOfObject:v4];
+    playerController = [self playerController];
+    audioMediaSelectionOptions = [playerController audioMediaSelectionOptions];
+    currentAudioMediaSelectionOption = [playerController currentAudioMediaSelectionOption];
+    v5 = [audioMediaSelectionOptions indexOfObject:currentAudioMediaSelectionOption];
 
-    [(AVMobileChromelessControlsViewController *)a1 _setUpMediaSelectionMenuControllerIfNeeded];
-    [a1[189] setAudibleOptions:v3];
-    [a1[189] setCurrentAudibleOptionIndex:v5];
+    [(AVMobileChromelessControlsViewController *)self _setUpMediaSelectionMenuControllerIfNeeded];
+    [self[189] setAudibleOptions:audioMediaSelectionOptions];
+    [self[189] setCurrentAudibleOptionIndex:v5];
     v6 = +[AVKitGlobalSettings shared];
     LODWORD(v5) = [v6 customMediaSelectionSchemeEnabled];
 
     if (v5)
     {
-      v7 = [v2 mediaPresentationSelectors];
-      v8 = [v2 availableCustomMediaSelectionLanguages];
-      [a1[189] setAudibleMediaPresentationSelectors:v7];
-      [a1[189] setAudibleMediaPresentationLanguages:v8];
-      v9 = [a1 transportBarCustomMenuItems];
-      v10 = v9;
-      if (v9 && [v9 count])
+      mediaPresentationSelectors = [playerController mediaPresentationSelectors];
+      availableCustomMediaSelectionLanguages = [playerController availableCustomMediaSelectionLanguages];
+      [self[189] setAudibleMediaPresentationSelectors:mediaPresentationSelectors];
+      [self[189] setAudibleMediaPresentationLanguages:availableCustomMediaSelectionLanguages];
+      transportBarCustomMenuItems = [self transportBarCustomMenuItems];
+      v10 = transportBarCustomMenuItems;
+      if (transportBarCustomMenuItems && [transportBarCustomMenuItems count])
       {
-        v34 = v8;
-        v35 = v7;
-        v36 = v3;
-        v37 = v2;
+        v34 = availableCustomMediaSelectionLanguages;
+        v35 = mediaPresentationSelectors;
+        v36 = audioMediaSelectionOptions;
+        v37 = playerController;
         v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v39 = 0u;
         v40 = 0u;
@@ -4033,16 +4033,16 @@ LABEL_56:
                   v19 = v17;
                   if (([v19 options] & 0x20) != 0)
                   {
-                    v20 = [v19 selectedElements];
-                    v21 = [v20 firstObject];
+                    selectedElements = [v19 selectedElements];
+                    firstObject = [selectedElements firstObject];
                     objc_opt_class();
                     isKindOfClass = objc_opt_isKindOfClass();
 
                     if (isKindOfClass)
                     {
-                      v23 = [v20 firstObject];
-                      v24 = [v23 title];
-                      [v19 setSubtitle:v24];
+                      firstObject2 = [selectedElements firstObject];
+                      title = [firstObject2 title];
+                      [v19 setSubtitle:title];
                     }
 
                     v11 = v38;
@@ -4059,50 +4059,50 @@ LABEL_56:
 
         if ([v11 count])
         {
-          [a1 setMediaPresentationSettingsCustomItems:v11];
+          [self setMediaPresentationSettingsCustomItems:v11];
         }
 
-        v2 = v37;
-        v7 = v35;
-        v3 = v36;
+        playerController = v37;
+        mediaPresentationSelectors = v35;
+        audioMediaSelectionOptions = v36;
         v10 = v33;
-        v8 = v34;
+        availableCustomMediaSelectionLanguages = v34;
       }
     }
 
     v25 = +[AVKitGlobalSettings shared];
-    v26 = [v25 enhanceDialogueEnabled];
+    enhanceDialogueEnabled = [v25 enhanceDialogueEnabled];
 
-    if (v26)
+    if (enhanceDialogueEnabled)
     {
-      v27 = [a1 enhanceDialogueController];
-      v28 = [v27 currentLevel];
+      enhanceDialogueController = [self enhanceDialogueController];
+      currentLevel = [enhanceDialogueController currentLevel];
 
-      v29 = [a1 enhanceDialogueController];
-      v30 = [v29 availableLevels];
+      enhanceDialogueController2 = [self enhanceDialogueController];
+      availableLevels = [enhanceDialogueController2 availableLevels];
 
-      v31 = [a1 enhanceDialogueController];
-      v32 = [v31 currentContentSupported];
+      enhanceDialogueController3 = [self enhanceDialogueController];
+      currentContentSupported = [enhanceDialogueController3 currentContentSupported];
 
-      [a1[189] setCurrentEnhanceDialogueOption:v28];
-      [a1[189] setEnhanceDialogueOptions:v30];
-      [a1[189] setShouldEnableEnhanceDialogueOptions:v32];
+      [self[189] setCurrentEnhanceDialogueOption:currentLevel];
+      [self[189] setEnhanceDialogueOptions:availableLevels];
+      [self[189] setShouldEnableEnhanceDialogueOptions:currentContentSupported];
     }
   }
 }
 
 - (void)_updateLegibleMediaSelectionMenu
 {
-  if (a1)
+  if (self)
   {
-    v5 = [a1 playerController];
-    v2 = [v5 legibleMediaSelectionOptions];
-    v3 = [v5 currentLegibleMediaSelectionOption];
-    v4 = [v2 indexOfObject:v3];
+    playerController = [self playerController];
+    legibleMediaSelectionOptions = [playerController legibleMediaSelectionOptions];
+    currentLegibleMediaSelectionOption = [playerController currentLegibleMediaSelectionOption];
+    v4 = [legibleMediaSelectionOptions indexOfObject:currentLegibleMediaSelectionOption];
 
-    [(AVMobileChromelessControlsViewController *)a1 _setUpMediaSelectionMenuControllerIfNeeded];
-    [a1[189] setLegibleOptions:v2];
-    [a1[189] setCurrentLegibleOptionIndex:v4];
+    [(AVMobileChromelessControlsViewController *)self _setUpMediaSelectionMenuControllerIfNeeded];
+    [self[189] setLegibleOptions:legibleMediaSelectionOptions];
+    [self[189] setCurrentLegibleOptionIndex:v4];
   }
 }
 
@@ -4143,18 +4143,18 @@ void __71__AVMobileChromelessControlsViewController__menuElementForControlItem__
   v1[2]();
 }
 
-- (void)auxiliaryControlsView:(id)a3 didOverflowControls:(id)a4
+- (void)auxiliaryControlsView:(id)view didOverflowControls:(id)controls
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  controlsCopy = controls;
   v8 = +[AVKitGlobalSettings shared];
-  v9 = [v8 playerTipsEnabled];
+  playerTipsEnabled = [v8 playerTipsEnabled];
 
-  if (v9)
+  if (playerTipsEnabled)
   {
     v10 = self->_controlsInOverflowMenu;
-    v22 = v7;
-    v11 = v7;
+    v22 = controlsCopy;
+    v11 = controlsCopy;
     v12 = [v11 mutableCopy];
     [v12 unionSet:v10];
     v13 = [v11 mutableCopy];
@@ -4162,20 +4162,20 @@ void __71__AVMobileChromelessControlsViewController__menuElementForControlItem__
     [v13 intersectSet:v10];
     [v12 minusSet:v13];
 
-    v14 = [(AVTipKitControlsViewController *)self tips];
-    v15 = [v14 objectForKeyedSubscript:@"AVPlayerControlTipForAudibleMediaSelection"];
+    tips = [(AVTipKitControlsViewController *)self tips];
+    v15 = [tips objectForKeyedSubscript:@"AVPlayerControlTipForAudibleMediaSelection"];
 
     v16 = +[AVKitGlobalSettings shared];
     if ([v16 enhanceDialogueEnabled])
     {
-      v17 = [(AVMobileChromelessControlsViewController *)self enhanceDialogueController];
-      [v17 availableLevels];
-      v18 = v14;
-      v20 = v19 = v6;
+      enhanceDialogueController = [(AVMobileChromelessControlsViewController *)self enhanceDialogueController];
+      [enhanceDialogueController availableLevels];
+      v18 = tips;
+      v20 = v19 = viewCopy;
       v21 = [v20 count] != 0;
 
-      v6 = v19;
-      v14 = v18;
+      viewCopy = v19;
+      tips = v18;
     }
 
     else
@@ -4193,10 +4193,10 @@ void __71__AVMobileChromelessControlsViewController__menuElementForControlItem__
       [(AVMobileChromelessControlsViewController *)self _dismissControlItemWithTipInSymmetricDifferenceSet:v12];
     }
 
-    v7 = v22;
+    controlsCopy = v22;
   }
 
-  objc_storeStrong(&self->_controlsInOverflowMenu, a4);
+  objc_storeStrong(&self->_controlsInOverflowMenu, controls);
   objc_initWeak(&location, self);
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
@@ -4227,8 +4227,8 @@ void __86__AVMobileChromelessControlsViewController_auxiliaryControlsView_didOve
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v2 = [result controlItems];
-  v3 = [v2 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  controlItems = [result controlItems];
+  v3 = [controlItems countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v3)
   {
     v4 = v3;
@@ -4239,14 +4239,14 @@ void __86__AVMobileChromelessControlsViewController_auxiliaryControlsView_didOve
       {
         if (*v33 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(controlItems);
         }
 
         v7 = *(*(&v32 + 1) + 8 * i);
         v8 = [v7 tip];
-        v9 = [v7 type];
-        v10 = [v1 visibleControls];
-        if (v9)
+        type = [v7 type];
+        visibleControls = [v1 visibleControls];
+        if (type)
         {
           v11 = 16;
         }
@@ -4256,7 +4256,7 @@ void __86__AVMobileChromelessControlsViewController_auxiliaryControlsView_didOve
           v11 = 4;
         }
 
-        v12 = v11 & v10;
+        v12 = v11 & visibleControls;
         if (v8)
         {
           v13 = v12 == 0;
@@ -4278,13 +4278,13 @@ void __86__AVMobileChromelessControlsViewController_auxiliaryControlsView_didOve
             }
 
 LABEL_18:
-            v18 = v2;
-            v19 = [v7 view];
-            v15 = [v19 accessibilityIdentifier];
+            v18 = controlItems;
+            view = [v7 view];
+            accessibilityIdentifier = [view accessibilityIdentifier];
 
-            if (v15 == @"Overflow Menu")
+            if (accessibilityIdentifier == @"Overflow Menu")
             {
-              v15 = @"Overflow Menu";
+              accessibilityIdentifier = @"Overflow Menu";
               v17 = 2;
             }
 
@@ -4298,7 +4298,7 @@ LABEL_18:
               v17 = 1;
             }
 
-            v2 = v18;
+            controlItems = v18;
           }
 
           else
@@ -4309,53 +4309,53 @@ LABEL_18:
             }
 
 LABEL_16:
-            v15 = @"Overflow Menu";
+            accessibilityIdentifier = @"Overflow Menu";
             v16 = @"Overflow Menu";
             v17 = 2;
           }
 
-          [v1 handleTipWithTipId:v8 sourceViewIdentifier:v15 arrowDirection:v17 priority:0];
+          [v1 handleTipWithTipId:v8 sourceViewIdentifier:accessibilityIdentifier arrowDirection:v17 priority:0];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v4 = [controlItems countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v4);
   }
 
-  v20 = [v1 tips];
-  v21 = [v1 visibleControls];
-  v22 = [v20 objectForKeyedSubscript:@"AVPlayerControlTipForAudibleMediaSelection"];
+  tips = [v1 tips];
+  visibleControls2 = [v1 visibleControls];
+  v22 = [tips objectForKeyedSubscript:@"AVPlayerControlTipForAudibleMediaSelection"];
   v23 = v22;
-  if ((v21 & 0x10) != 0 && v22)
+  if ((visibleControls2 & 0x10) != 0 && v22)
   {
-    v24 = [(AVMobileChromelessControlsViewController *)v1 _currentAccessibilityIdentifierForAudibleMedia];
-    [v1 handleTipWithTipId:v23 sourceViewIdentifier:v24 arrowDirection:2 priority:1];
+    _currentAccessibilityIdentifierForAudibleMedia = [(AVMobileChromelessControlsViewController *)v1 _currentAccessibilityIdentifierForAudibleMedia];
+    [v1 handleTipWithTipId:v23 sourceViewIdentifier:_currentAccessibilityIdentifierForAudibleMedia arrowDirection:2 priority:1];
   }
 
-  v25 = [v1 visibleControls];
-  v26 = +[AVKitGlobalSettings shared];
-  if (![v26 enhanceDialogueEnabled])
+  visibleControls3 = [v1 visibleControls];
+  _currentAccessibilityIdentifierForAudibleMedia2 = +[AVKitGlobalSettings shared];
+  if (![_currentAccessibilityIdentifierForAudibleMedia2 enhanceDialogueEnabled])
   {
     goto LABEL_35;
   }
 
-  v27 = [v1 enhanceDialogueController];
-  v28 = [v27 availableLevels];
-  v29 = [v28 count];
+  enhanceDialogueController = [v1 enhanceDialogueController];
+  availableLevels = [enhanceDialogueController availableLevels];
+  v29 = [availableLevels count];
 
-  if ((v25 & 0x10) != 0)
+  if ((visibleControls3 & 0x10) != 0)
   {
     if (v29)
     {
-      v30 = [v1 enhanceDialogueController];
-      v31 = [v30 currentLevel];
+      enhanceDialogueController2 = [v1 enhanceDialogueController];
+      currentLevel = [enhanceDialogueController2 currentLevel];
 
-      if (!v31)
+      if (!currentLevel)
       {
-        v26 = [(AVMobileChromelessControlsViewController *)v1 _currentAccessibilityIdentifierForAudibleMedia];
-        [v1 handleEnhanceDialogueWithSourceViewIdentifier:v26];
+        _currentAccessibilityIdentifierForAudibleMedia2 = [(AVMobileChromelessControlsViewController *)v1 _currentAccessibilityIdentifierForAudibleMedia];
+        [v1 handleEnhanceDialogueWithSourceViewIdentifier:_currentAccessibilityIdentifierForAudibleMedia2];
 LABEL_35:
       }
     }
@@ -4366,7 +4366,7 @@ LABEL_35:
 
 - (__CFString)_currentAccessibilityIdentifierForAudibleMedia
 {
-  if ([*(a1 + 1776) containsObject:*(a1 + 1256)])
+  if ([*(self + 1776) containsObject:*(self + 1256)])
   {
     v1 = @"Overflow Menu";
   }
@@ -4379,10 +4379,10 @@ LABEL_35:
   return v1;
 }
 
-- (void)viewIsOverVideoDidChange:(id)a3
+- (void)viewIsOverVideoDidChange:(id)change
 {
-  v4 = a3;
-  if ([v4 isOverVideo])
+  changeCopy = change;
+  if ([changeCopy isOverVideo])
   {
     v3 = 2;
   }
@@ -4392,30 +4392,30 @@ LABEL_35:
     v3 = 0;
   }
 
-  [v4 setOverrideUserInterfaceStyle:v3];
+  [changeCopy setOverrideUserInterfaceStyle:v3];
 }
 
-- (id)menuForMenuButton:(id)a3
+- (id)menuForMenuButton:(id)button
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_playbackSpeedButton == v4)
+  buttonCopy = button;
+  v5 = buttonCopy;
+  if (self->_playbackSpeedButton == buttonCopy)
   {
-    v8 = [(AVMobilePlaybackRateMenuController *)self->_playbackSpeedMenuController menu];
+    menu = [(AVMobilePlaybackRateMenuController *)self->_playbackSpeedMenuController menu];
     goto LABEL_10;
   }
 
-  if (self->_audibleMediaSelectionButton == v4)
+  if (self->_audibleMediaSelectionButton == buttonCopy)
   {
     [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _updateAudibleMediaSelectionMenu];
-    v8 = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController audibleOptionsMenu];
+    menu = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController audibleOptionsMenu];
     goto LABEL_10;
   }
 
-  if (self->_legibleMediaSelectionButton == v4)
+  if (self->_legibleMediaSelectionButton == buttonCopy)
   {
     [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _updateLegibleMediaSelectionMenu];
-    v8 = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController legibleOptionsMenu];
+    menu = [(AVMediaSelectionMenuController *)self->_mediaSelectionMenuController legibleOptionsMenu];
     goto LABEL_10;
   }
 
@@ -4427,9 +4427,9 @@ LABEL_35:
     if (hapticsMediaSelectionButton == v5)
     {
       [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _updateHasHapticTrackSelectionMenu];
-      v8 = [(AVMobileHapticsMenuController *)self->_hapticsMenuController hapticsOptionsMenu];
+      menu = [(AVMobileHapticsMenuController *)self->_hapticsMenuController hapticsOptionsMenu];
 LABEL_10:
-      v9 = v8;
+      v9 = menu;
       goto LABEL_11;
     }
   }
@@ -4444,130 +4444,130 @@ LABEL_11:
   return v9;
 }
 
-- (id)mediaSelectionMenuController:(id)a3 complementarySettingsForSelectedMediaPresentationSettingsForSelector:(id)a4
+- (id)mediaSelectionMenuController:(id)controller complementarySettingsForSelectedMediaPresentationSettingsForSelector:(id)selector
 {
-  v5 = a4;
-  v6 = [(AVMobileControlsViewController *)self playerController];
-  v7 = [v6 complementarySettingsForSelectedMediaPresentationSettingsForSelector:v5];
+  selectorCopy = selector;
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  v7 = [playerController complementarySettingsForSelectedMediaPresentationSettingsForSelector:selectorCopy];
 
   return v7;
 }
 
-- (id)mediaSelectionMenuController:(id)a3 complementarySettingsForSelector:(id)a4
+- (id)mediaSelectionMenuController:(id)controller complementarySettingsForSelector:(id)selector
 {
-  v5 = a4;
-  v6 = [(AVMobileControlsViewController *)self playerController];
-  v7 = [v6 complementarySettingsForSelector:v5];
+  selectorCopy = selector;
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  v7 = [playerController complementarySettingsForSelector:selectorCopy];
 
   return v7;
 }
 
-- (id)effectiveSettingsForSelectorForMediaSelectionMenuController:(id)a3
+- (id)effectiveSettingsForSelectorForMediaSelectionMenuController:(id)controller
 {
-  v3 = [(AVMobileControlsViewController *)self playerController];
-  v4 = [v3 effectiveSettings];
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  effectiveSettings = [playerController effectiveSettings];
 
-  return v4;
+  return effectiveSettings;
 }
 
-- (id)mediaSelectionMenuController:(id)a3 effectiveSettingForSelector:(id)a4
+- (id)mediaSelectionMenuController:(id)controller effectiveSettingForSelector:(id)selector
 {
-  v5 = a4;
-  v6 = [(AVMobileControlsViewController *)self playerController];
-  v7 = [v6 effectiveSettingForSelector:v5];
+  selectorCopy = selector;
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  v7 = [playerController effectiveSettingForSelector:selectorCopy];
 
   return v7;
 }
 
-- (id)mediaSelectionMenuController:(id)a3 selectedPresentationSettingForSelector:(id)a4
+- (id)mediaSelectionMenuController:(id)controller selectedPresentationSettingForSelector:(id)selector
 {
-  v5 = a4;
-  v6 = [(AVMobileControlsViewController *)self playerController];
-  v7 = [v6 selectedPresentationSettingForSelector:v5];
+  selectorCopy = selector;
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  v7 = [playerController selectedPresentationSettingForSelector:selectorCopy];
 
   return v7;
 }
 
-- (void)mediaSelectionMenuController:(id)a3 selectMediaPresentationSetting:(id)a4 forSelector:(id)a5
+- (void)mediaSelectionMenuController:(id)controller selectMediaPresentationSetting:(id)setting forSelector:(id)selector
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [(AVMobileControlsViewController *)self playerController];
-  [v8 selectPresentationSetting:v10];
+  settingCopy = setting;
+  selectorCopy = selector;
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  [playerController selectPresentationSetting:settingCopy];
 
-  v9 = [(AVMobileControlsViewController *)self delegate];
+  delegate = [(AVMobileControlsViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 chromelessControlsViewController:self didSelectSetting:v10 forSelector:v7];
+    [delegate chromelessControlsViewController:self didSelectSetting:settingCopy forSelector:selectorCopy];
   }
 }
 
-- (unint64_t)mediaSelectionMenuController:(id)a3 indexOfEffectivePresentationSettingForSelector:(id)a4
+- (unint64_t)mediaSelectionMenuController:(id)controller indexOfEffectivePresentationSettingForSelector:(id)selector
 {
-  v5 = a4;
-  v6 = [(AVMobileControlsViewController *)self playerController];
-  v7 = [v6 indexOfEffectivePresentationSettingForSelector:v5];
+  selectorCopy = selector;
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  v7 = [playerController indexOfEffectivePresentationSettingForSelector:selectorCopy];
 
   return v7;
 }
 
-- (unint64_t)indexOfSelectedMediaPresentationLanguageForMediaSelectionMenuController:(id)a3
+- (unint64_t)indexOfSelectedMediaPresentationLanguageForMediaSelectionMenuController:(id)controller
 {
-  v3 = [(AVMobileControlsViewController *)self playerController];
-  v4 = [v3 selectedMediaPresentationLanguageIndex];
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  selectedMediaPresentationLanguageIndex = [playerController selectedMediaPresentationLanguageIndex];
 
-  return v4;
+  return selectedMediaPresentationLanguageIndex;
 }
 
-- (void)mediaSelectionMenuController:(id)a3 selectMediaPresentationLanguage:(id)a4
+- (void)mediaSelectionMenuController:(id)controller selectMediaPresentationLanguage:(id)language
 {
-  v5 = a4;
-  v6 = [(AVMobileControlsViewController *)self playerController];
-  [v6 selectAudibleMediaPresentationLanguage:v5];
+  languageCopy = language;
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  [playerController selectAudibleMediaPresentationLanguage:languageCopy];
 }
 
-- (BOOL)shouldFilterMediaPresentationOptionsToAvailableCacheForMediaSelectionMenuController:(id)a3
+- (BOOL)shouldFilterMediaPresentationOptionsToAvailableCacheForMediaSelectionMenuController:(id)controller
 {
-  v3 = [(AVMobileControlsViewController *)self playerController];
-  v4 = [v3 mediaPresentationOptionsOnlyAvailableOffline];
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  mediaPresentationOptionsOnlyAvailableOffline = [playerController mediaPresentationOptionsOnlyAvailableOffline];
 
-  return v4;
+  return mediaPresentationOptionsOnlyAvailableOffline;
 }
 
-- (BOOL)shouldShowMediaAvailablePresentationLanguagesForMediaSelectionMenuController:(id)a3
+- (BOOL)shouldShowMediaAvailablePresentationLanguagesForMediaSelectionMenuController:(id)controller
 {
-  v3 = [(AVMobileControlsViewController *)self playerController];
-  v4 = [v3 shouldShowPresentationSettingsAudioTracks];
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  shouldShowPresentationSettingsAudioTracks = [playerController shouldShowPresentationSettingsAudioTracks];
 
-  return v4;
+  return shouldShowPresentationSettingsAudioTracks;
 }
 
-- (BOOL)isMediaPresentationSettingsEnabledForMediaSelectionMenuController:(id)a3
+- (BOOL)isMediaPresentationSettingsEnabledForMediaSelectionMenuController:(id)controller
 {
-  v3 = [(AVMobileControlsViewController *)self playerController];
-  v4 = [v3 isMediaPresentationSettingsEnabled];
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  isMediaPresentationSettingsEnabled = [playerController isMediaPresentationSettingsEnabled];
 
-  return v4;
+  return isMediaPresentationSettingsEnabled;
 }
 
-- (BOOL)shouldApplyLegibleMediaSelectionCriteriaAutomaticallyForMediaSelectionMenuController:(id)a3
+- (BOOL)shouldApplyLegibleMediaSelectionCriteriaAutomaticallyForMediaSelectionMenuController:(id)controller
 {
-  v3 = [(AVMobileControlsViewController *)self playerController];
-  v4 = [v3 closedCaptionsEnabled];
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  closedCaptionsEnabled = [playerController closedCaptionsEnabled];
 
-  return v4;
+  return closedCaptionsEnabled;
 }
 
-- (id)mediaSelectionMenuController:(id)a3 displayNameForMediaSelectionOption:(id)a4
+- (id)mediaSelectionMenuController:(id)controller displayNameForMediaSelectionOption:(id)option
 {
-  v5 = a4;
-  v6 = [(AVMobileControlsViewController *)self delegate];
+  optionCopy = option;
+  delegate = [(AVMobileControlsViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(AVMobileControlsViewController *)self delegate];
-    v9 = [v8 controlsViewController:self displayNameForMediaSelectionOption:v5];
+    delegate2 = [(AVMobileControlsViewController *)self delegate];
+    v9 = [delegate2 controlsViewController:self displayNameForMediaSelectionOption:optionCopy];
   }
 
   else
@@ -4578,17 +4578,17 @@ LABEL_11:
   return v9;
 }
 
-- (void)mediaSelectionMenuController:(id)a3 didSelectEnhanceDialogueOption:(int64_t)a4
+- (void)mediaSelectionMenuController:(id)controller didSelectEnhanceDialogueOption:(int64_t)option
 {
-  v6 = a3;
-  v7 = [(AVMobileChromelessControlsViewController *)self enhanceDialogueController];
-  [v7 setCurrentLevel:a4];
+  controllerCopy = controller;
+  enhanceDialogueController = [(AVMobileChromelessControlsViewController *)self enhanceDialogueController];
+  [enhanceDialogueController setCurrentLevel:option];
 
-  [v6 setCurrentEnhanceDialogueOption:a4];
+  [controllerCopy setCurrentEnhanceDialogueOption:option];
   v8 = +[AVKitGlobalSettings shared];
-  LODWORD(v6) = [v8 playerTipsEnabled];
+  LODWORD(controllerCopy) = [v8 playerTipsEnabled];
 
-  if (v6)
+  if (controllerCopy)
   {
     [(AVTipKitControlsViewController *)self handleTipEventDidEnterEnhanceDialogue];
   }
@@ -4598,39 +4598,39 @@ LABEL_11:
   [(AVMobileChromelessControlsViewController *)self _updateAuxiliaryControls];
 }
 
-- (void)mediaSelectionMenuController:(id)a3 didSelectOption:(id)a4
+- (void)mediaSelectionMenuController:(id)controller didSelectOption:(id)option
 {
-  v10 = a4;
-  v6 = [a3 audibleOptions];
-  v7 = [v6 containsObject:v10];
+  optionCopy = option;
+  audibleOptions = [controller audibleOptions];
+  v7 = [audibleOptions containsObject:optionCopy];
 
-  v8 = [(AVMobileControlsViewController *)self playerController];
-  v9 = v8;
+  playerController = [(AVMobileControlsViewController *)self playerController];
+  v9 = playerController;
   if (v7)
   {
-    [v8 setCurrentAudioMediaSelectionOption:v10];
+    [playerController setCurrentAudioMediaSelectionOption:optionCopy];
   }
 
   else
   {
-    [v8 setCurrentLegibleMediaSelectionOption:v10];
+    [playerController setCurrentLegibleMediaSelectionOption:optionCopy];
   }
 }
 
-- (void)controlItemDidUpdateVisualConfiguration:(id)a3
+- (void)controlItemDidUpdateVisualConfiguration:(id)configuration
 {
   if (self)
   {
-    v3 = [(AVMobileChromelessControlsView *)self->_view auxiliaryControlsView];
-    [v3 updateOverflowMenu];
+    auxiliaryControlsView = [(AVMobileChromelessControlsView *)self->_view auxiliaryControlsView];
+    [auxiliaryControlsView updateOverflowMenu];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = AVMobileChromelessControlsViewController;
-  [(AVMobileChromelessControlsViewController *)&v4 traitCollectionDidChange:a3];
+  [(AVMobileChromelessControlsViewController *)&v4 traitCollectionDidChange:change];
   if (self)
   {
     if (self->_hasBeenSetUp)
@@ -4641,14 +4641,14 @@ LABEL_11:
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v13.receiver = self;
   v13.super_class = AVMobileChromelessControlsViewController;
-  [(AVMobileChromelessControlsViewController *)&v13 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(AVMobileChromelessControlsViewController *)&v13 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if (self && self->_hasBeenSetUp)
   {
     [(UIPanGestureRecognizer *)self->_contentTabPanGestureRecognizer setEnabled:0];
@@ -4667,7 +4667,7 @@ LABEL_11:
     v10[2] = __95__AVMobileChromelessControlsViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
     v10[3] = &unk_1E7209140;
     objc_copyWeak(&v11, &location);
-    [v7 animateAlongsideTransition:v10 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v10 completion:0];
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
   }
@@ -4725,11 +4725,11 @@ void __71__AVMobileChromelessControlsViewController_viewSafeAreaInsetsDidChange_
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = AVMobileChromelessControlsViewController;
-  [(AVMobileChromelessControlsViewController *)&v5 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(AVMobileChromelessControlsViewController *)&v5 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
   if (self && self->_hasBeenSetUp)
   {
     [(AVMobileChromelessControlsViewController *)self _updateVolumeControllerClient];
@@ -4740,11 +4740,11 @@ void __71__AVMobileChromelessControlsViewController_viewSafeAreaInsetsDidChange_
 
 - (void)_attemptSetupIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    if ([(AVMobileChromelessControlsViewController *)a1 _canPerformSetup])
+    if ([(AVMobileChromelessControlsViewController *)self _canPerformSetup])
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v2[0] = MEMORY[0x1E69E9820];
       v2[1] = 3221225472;
       v2[2] = __65__AVMobileChromelessControlsViewController__attemptSetupIfNeeded__block_invoke;
@@ -4759,17 +4759,17 @@ void __71__AVMobileChromelessControlsViewController_viewSafeAreaInsetsDidChange_
 
 - (uint64_t)_canPerformSetup
 {
-  if ([a1 optimizeForPerformance])
+  if ([self optimizeForPerformance])
   {
     v2 = 0;
   }
 
   else
   {
-    v3 = [*(a1 + 1232) window];
-    if (v3)
+    window = [*(self + 1232) window];
+    if (window)
     {
-      v2 = *(a1 + 1216) ^ 1;
+      v2 = *(self + 1216) ^ 1;
     }
 
     else
@@ -5272,31 +5272,31 @@ uint64_t __65__AVMobileChromelessControlsViewController__attemptSetupIfNeeded__b
 
 - (void)_updateContentTabViewControllers
 {
-  if (a1)
+  if (self)
   {
     v2 = +[AVKitGlobalSettings shared];
-    v3 = [v2 supportsContentTabs];
+    supportsContentTabs = [v2 supportsContentTabs];
 
-    if (v3)
+    if (supportsContentTabs)
     {
-      [*(a1 + 1752) invalidateContentTabsSelection];
-      if (*(a1 + 1232) && !*(a1 + 1752))
+      [*(self + 1752) invalidateContentTabsSelection];
+      if (*(self + 1232) && !*(self + 1752))
       {
         v4 = objc_alloc_init(AVMobileChromelessContentTabsViewController);
-        v5 = *(a1 + 1752);
-        *(a1 + 1752) = v4;
+        v5 = *(self + 1752);
+        *(self + 1752) = v4;
 
-        [*(a1 + 1752) setCustomInfoViewControllers:*(a1 + 1712)];
-        [*(a1 + 1752) setDelegate:a1];
-        [*(a1 + 1752) willMoveToParentViewController:a1];
-        [a1 addChildViewController:*(a1 + 1752)];
-        v6 = [*(a1 + 1752) view];
-        [*(a1 + 1232) setContentTabsView:v6];
-        [*(a1 + 1752) didMoveToParentViewController:a1];
+        [*(self + 1752) setCustomInfoViewControllers:*(self + 1712)];
+        [*(self + 1752) setDelegate:self];
+        [*(self + 1752) willMoveToParentViewController:self];
+        [self addChildViewController:*(self + 1752)];
+        view = [*(self + 1752) view];
+        [*(self + 1232) setContentTabsView:view];
+        [*(self + 1752) didMoveToParentViewController:self];
       }
 
-      v7 = *(a1 + 1752);
-      v8 = *(a1 + 1712);
+      v7 = *(self + 1752);
+      v8 = *(self + 1712);
 
       [v7 setCustomInfoViewControllers:v8];
     }
@@ -5305,19 +5305,19 @@ uint64_t __65__AVMobileChromelessControlsViewController__attemptSetupIfNeeded__b
 
 - (void)_updateAnalysisControlInclusionIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1296);
+    v2 = *(self + 1296);
     if (v2)
     {
-      v3 = *(a1 + 1809);
+      v3 = *(self + 1809);
       v5 = v2;
       v4 = v3 == [v2 isIncluded];
       v2 = v5;
       if (!v4)
       {
-        [v5 setIncluded:*(a1 + 1809)];
-        [*(a1 + 1232) setNeedsLayout];
+        [v5 setIncluded:*(self + 1809)];
+        [*(self + 1232) setNeedsLayout];
         v2 = v5;
       }
     }
@@ -5332,52 +5332,52 @@ uint64_t __65__AVMobileChromelessControlsViewController__attemptSetupIfNeeded__b
   }
 
   v1 = result;
-  v2 = [result playerController];
-  if ([v2 hasAudioMediaSelectionOptions])
+  playerController = [result playerController];
+  if ([playerController hasAudioMediaSelectionOptions])
   {
-    v3 = 1;
+    enhanceDialogueEnabled = 1;
   }
 
   else
   {
-    v4 = [v1 playerController];
-    v5 = [v4 hasAudioMediaPresentationSelectionOptions];
+    playerController2 = [v1 playerController];
+    hasAudioMediaPresentationSelectionOptions = [playerController2 hasAudioMediaPresentationSelectionOptions];
 
-    if (v5)
+    if (hasAudioMediaPresentationSelectionOptions)
     {
-      v3 = 1;
+      enhanceDialogueEnabled = 1;
       goto LABEL_9;
     }
 
     v6 = +[AVKitGlobalSettings shared];
-    v3 = [v6 enhanceDialogueEnabled];
+    enhanceDialogueEnabled = [v6 enhanceDialogueEnabled];
 
-    if (!v3)
+    if (!enhanceDialogueEnabled)
     {
       goto LABEL_9;
     }
 
-    v2 = [v1 enhanceDialogueController];
-    v7 = [v2 availableLevels];
-    v3 = [v7 count] != 0;
+    playerController = [v1 enhanceDialogueController];
+    availableLevels = [playerController availableLevels];
+    enhanceDialogueEnabled = [availableLevels count] != 0;
   }
 
 LABEL_9:
   v8 = v1[157];
 
-  return [v8 setIncluded:v3];
+  return [v8 setIncluded:enhanceDialogueEnabled];
 }
 
 - (void)_updateAuxiliaryControlsForControlItems
 {
   v23 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [a1 controlItems];
+  controlItems = [self controlItems];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v4 = [controlItems countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5388,101 +5388,101 @@ LABEL_9:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(controlItems);
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [(AVMobileChromelessControlsViewController *)a1 _auxiliaryControlForControlItem:v8];
+        v9 = [(AVMobileChromelessControlsViewController *)self _auxiliaryControlForControlItem:v8];
         if (!v9)
         {
-          v10 = [v8 type];
-          if ((v10 - 1) < 2)
+          type = [v8 type];
+          if ((type - 1) < 2)
           {
-            v11 = [v8 view];
-            v12 = [v8 identifier];
-            v9 = [AVMobileAuxiliaryControl controlWithView:v11 displayPriority:0 identifier:v12];
+            view = [v8 view];
+            identifier = [v8 identifier];
+            v9 = [AVMobileAuxiliaryControl controlWithView:view displayPriority:0 identifier:identifier];
 
             goto LABEL_11;
           }
 
-          if (v10)
+          if (type)
           {
             v9 = 0;
           }
 
           else
           {
-            v11 = [v8 identifier];
-            v9 = [AVMobileAuxiliaryControl controlWithDisplayPriority:0 identifier:v11];
+            view = [v8 identifier];
+            v9 = [AVMobileAuxiliaryControl controlWithDisplayPriority:0 identifier:view];
 LABEL_11:
           }
 
-          v13 = [v8 view];
+          view2 = [v8 view];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v15 = [v8 view];
-            v16 = [MEMORY[0x1E69DC888] whiteColor];
-            [v15 setTintColor:v16];
+            view3 = [v8 view];
+            whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+            [view3 setTintColor:whiteColor];
 
-            [v15 setAutoresizingMask:0];
+            [view3 setAutoresizingMask:0];
           }
         }
 
-        [v8 setDelegate:a1];
+        [v8 setDelegate:self];
         [v2 addObject:v9];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [controlItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
   }
 
-  v17 = a1[207];
-  a1[207] = v2;
+  v17 = self[207];
+  self[207] = v2;
 
-  [(AVMobileChromelessControlsViewController *)a1 _updateControlItemsInclusionState];
-  [(AVMobileChromelessControlsViewController *)a1 _updateAuxiliaryControls];
-  [(AVMobileChromelessControlsViewController *)a1 _updatePinnedAuxiliaryControlsIfNeeded];
+  [(AVMobileChromelessControlsViewController *)self _updateControlItemsInclusionState];
+  [(AVMobileChromelessControlsViewController *)self _updateAuxiliaryControls];
+  [(AVMobileChromelessControlsViewController *)self _updatePinnedAuxiliaryControlsIfNeeded];
 }
 
 - (void)_updateContentTabsInteractionEnablementState
 {
-  if (a1)
+  if (self)
   {
-    v12 = [a1 playerController];
-    v2 = [v12 status];
-    [v12 contentDimensions];
+    playerController = [self playerController];
+    status = [playerController status];
+    [playerController contentDimensions];
     v7 = ((v4 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF && v4 >= 0 || (v4 - 1) < 0xFFFFFFFFFFFFFLL;
     v9 = (v3 < 0 || ((v3 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 > 0x3FE) && (v3 - 1) > 0xFFFFFFFFFFFFELL;
     if (v9 || !v7)
     {
-      v10 = [v12 isExternalPlaybackActive];
+      isExternalPlaybackActive = [playerController isExternalPlaybackActive];
     }
 
     else
     {
-      v10 = 1;
+      isExternalPlaybackActive = 1;
     }
 
-    v11 = [a1[219] view];
-    [v11 setUserInteractionEnabled:(v2 == 2) & v10];
+    view = [self[219] view];
+    [view setUserInteractionEnabled:(status == 2) & isExternalPlaybackActive];
   }
 }
 
 - (void)_updateContentTag
 {
-  if (a1)
+  if (self)
   {
-    v6 = [a1[154] titlebarView];
-    v2 = [a1 playerController];
-    v3 = [v2 status];
-    if ([v2 hasLiveStreamingContent])
+    titlebarView = [self[154] titlebarView];
+    playerController = [self playerController];
+    status = [playerController status];
+    if ([playerController hasLiveStreamingContent])
     {
-      if ([v2 isAtLiveEdge] && v3 == 2)
+      if ([playerController isAtLiveEdge] && status == 2)
       {
         v4 = +[AVMobileContentTag liveEdgeContentTag];
       }
@@ -5500,21 +5500,21 @@ LABEL_11:
       v5 = 0;
     }
 
-    [v6 setContentTag:v5];
-    [a1[154] setNeedsLayout];
+    [titlebarView setContentTag:v5];
+    [self[154] setNeedsLayout];
   }
 }
 
 - (void)_updateDisplayModeControlsForControlItems
 {
   v2 = +[AVKitGlobalSettings shared];
-  v3 = [a1 fullscreenController];
-  v4 = [v3 presentationState];
+  fullscreenController = [self fullscreenController];
+  presentationState = [fullscreenController presentationState];
 
   if ([v2 isTVApp])
   {
 
-    if (v4 == 2)
+    if (presentationState == 2)
     {
       return;
     }
@@ -5522,11 +5522,11 @@ LABEL_11:
     goto LABEL_3;
   }
 
-  v11 = [v2 isAVKitTester];
+  isAVKitTester = [v2 isAVKitTester];
 
-  if (v11)
+  if (isAVKitTester)
   {
-    v12 = v4 == 2;
+    v12 = presentationState == 2;
   }
 
   else
@@ -5544,7 +5544,7 @@ LABEL_3:
     v13[3] = &unk_1E7209320;
     v14 = v5;
     v6 = v5;
-    [a1 _enumerateControlItemsOfTypes:&unk_1EFF12F50 usingBlock:v13];
+    [self _enumerateControlItemsOfTypes:&unk_1EFF12F50 usingBlock:v13];
     v7 = [v6 count];
     if (v7 >= 2)
     {
@@ -5557,49 +5557,49 @@ LABEL_3:
     }
 
     v9 = [v6 subarrayWithRange:{0, v8}];
-    v10 = [a1[154] displayModeControlsView];
-    [v10 setCustomActions:v9];
+    displayModeControlsView = [self[154] displayModeControlsView];
+    [displayModeControlsView setCustomActions:v9];
   }
 }
 
 - (void)_updateLegibleMediaSelectionControlInclusionState
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1[158];
-    v2 = [a1 playerController];
-    [v1 setIncluded:{objc_msgSend(v2, "hasLegibleMediaSelectionOptions")}];
+    v1 = self[158];
+    playerController = [self playerController];
+    [v1 setIncluded:{objc_msgSend(playerController, "hasLegibleMediaSelectionOptions")}];
   }
 }
 
 - (void)_updateLoadingAnimatorState
 {
   location[3] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = [a1 playerController];
-  if ([v2 status] == 1)
+  playerController = [self playerController];
+  if ([playerController status] == 1)
   {
 
-    v3 = a1 + 190;
+    v3 = self + 190;
 LABEL_5:
     *v3 = 1;
-    v5 = a1[191];
+    v5 = self[191];
     if (!v5 || ([v5 isRunning] & 1) == 0)
     {
-      v6 = [(AVMobileChromelessControlsViewController *)a1 _timelineSlider];
-      v7 = [v6 tintState];
+      _timelineSlider = [(AVMobileChromelessControlsViewController *)self _timelineSlider];
+      tintState = [_timelineSlider tintState];
 
-      if (v7 >= 3)
+      if (tintState >= 3)
       {
         v9 = _AVLog();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
           LODWORD(location[0]) = 134217984;
-          *(location + 4) = v7;
+          *(location + 4) = tintState;
           _os_log_error_impl(&dword_18B49C000, v9, OS_LOG_TYPE_ERROR, "Error: unknown slider tint state %ld", location, 0xCu);
         }
 
@@ -5608,16 +5608,16 @@ LABEL_5:
 
       else
       {
-        v8 = qword_18B6EC680[v7];
+        v8 = qword_18B6EC680[tintState];
       }
 
-      objc_initWeak(location, a1);
+      objc_initWeak(location, self);
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __71__AVMobileChromelessControlsViewController__updateLoadingAnimatorState__block_invoke;
       v10[3] = &unk_1E7209EA8;
       objc_copyWeak(&v11, location);
-      [(AVMobileChromelessControlsViewController *)a1 _animateSliderToTintState:v8 duration:v10 completionHandler:1.0];
+      [(AVMobileChromelessControlsViewController *)self _animateSliderToTintState:v8 duration:v10 completionHandler:1.0];
       objc_destroyWeak(&v11);
       objc_destroyWeak(location);
     }
@@ -5625,10 +5625,10 @@ LABEL_5:
     return;
   }
 
-  v4 = [v2 timeControlStatus];
+  timeControlStatus = [playerController timeControlStatus];
 
-  v3 = a1 + 190;
-  if (v4 == 1)
+  v3 = self + 190;
+  if (timeControlStatus == 1)
   {
     goto LABEL_5;
   }
@@ -5637,32 +5637,32 @@ LABEL_5:
   {
     *v3 = 0;
 
-    [(AVMobileChromelessControlsViewController *)a1 _animateSliderToTintState:0 duration:0.25 completionHandler:?];
+    [(AVMobileChromelessControlsViewController *)self _animateSliderToTintState:0 duration:0.25 completionHandler:?];
   }
 }
 
 - (void)_updatePlaybackSpeedControlInclusion
 {
-  if (a1)
+  if (self)
   {
-    v6 = [a1 playerController];
-    if ([v6 hasLiveStreamingContent])
+    playerController = [self playerController];
+    if ([playerController hasLiveStreamingContent])
     {
-      v2 = [v6 hasSeekableLiveStreamingContent];
+      hasSeekableLiveStreamingContent = [playerController hasSeekableLiveStreamingContent];
     }
 
     else
     {
-      v2 = 1;
+      hasSeekableLiveStreamingContent = 1;
     }
 
-    v3 = [a1 playbackSpeedCollection];
-    if (v3)
+    playbackSpeedCollection = [self playbackSpeedCollection];
+    if (playbackSpeedCollection)
     {
       v4 = +[AVKitGlobalSettings shared];
       if ([v4 playbackSpeedControlEnabled])
       {
-        v5 = ([v6 isPlayingOnMatchPointDevice] ^ 1) & v2;
+        v5 = ([playerController isPlayingOnMatchPointDevice] ^ 1) & hasSeekableLiveStreamingContent;
       }
 
       else
@@ -5676,22 +5676,22 @@ LABEL_5:
       v5 = 0;
     }
 
-    [a1[159] setIncluded:v5];
+    [self[159] setIncluded:v5];
   }
 }
 
 - (void)_updatePlaybackControlsViewInclusionState
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 excludedControls];
-    v7 = [a1[154] playbackControlsView];
-    v3 = [a1 playerController];
-    v4 = [v3 hasLiveStreamingContent];
-    v5 = [v3 hasSeekableLiveStreamingContent];
-    if (!v4 || v5)
+    excludedControls = [self excludedControls];
+    playbackControlsView = [self[154] playbackControlsView];
+    playerController = [self playerController];
+    hasLiveStreamingContent = [playerController hasLiveStreamingContent];
+    hasSeekableLiveStreamingContent = [playerController hasSeekableLiveStreamingContent];
+    if (!hasLiveStreamingContent || hasSeekableLiveStreamingContent)
     {
-      v6 = [a1 requiresLinearPlayback] ^ 1;
+      v6 = [self requiresLinearPlayback] ^ 1;
     }
 
     else
@@ -5699,56 +5699,56 @@ LABEL_5:
       LOBYTE(v6) = 0;
     }
 
-    [v7 setShowsPlayPauseButton:(v2 & 1) == 0];
-    [v7 setShowsBackwardSecondaryPlaybackButton:((v2 & 2) == 0) & v6];
-    [v7 setShowsForwardSecondaryPlaybackButton:((v2 & 4) == 0) & v6];
+    [playbackControlsView setShowsPlayPauseButton:(excludedControls & 1) == 0];
+    [playbackControlsView setShowsBackwardSecondaryPlaybackButton:((excludedControls & 2) == 0) & v6];
+    [playbackControlsView setShowsForwardSecondaryPlaybackButton:((excludedControls & 4) == 0) & v6];
   }
 }
 
 - (void)_updateTimelineSliderEnablementState
 {
-  v2 = [(AVMobileChromelessControlsViewController *)a1 _timelineSlider];
-  [v2 setEnabled:{objc_msgSend(a1, "requiresLinearPlayback") ^ 1}];
+  _timelineSlider = [(AVMobileChromelessControlsViewController *)self _timelineSlider];
+  [_timelineSlider setEnabled:{objc_msgSend(self, "requiresLinearPlayback") ^ 1}];
 }
 
 - (void)_updateTitleAndDescriptionInfo
 {
   v47 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v1 = a1;
-  v2 = [a1[154] titlebarView];
-  v3 = [v1 playerController];
-  v4 = [v3 player];
-  v5 = [v4 currentItem];
-  v6 = [v5 contentTitle];
+  selfCopy = self;
+  titlebarView = [self[154] titlebarView];
+  playerController = [selfCopy playerController];
+  player = [playerController player];
+  currentItem = [player currentItem];
+  contentTitle = [currentItem contentTitle];
 
-  v7 = [v3 player];
-  v8 = [v7 currentItem];
-  v9 = [v8 contentSubtitle];
+  player2 = [playerController player];
+  currentItem2 = [player2 currentItem];
+  contentSubtitle = [currentItem2 contentSubtitle];
 
-  if (![v3 avkit_isAVPlayerControllerOrSubclass])
+  if (![playerController avkit_isAVPlayerControllerOrSubclass])
   {
     v15 = 0;
     goto LABEL_29;
   }
 
-  v37 = v1;
-  v38 = v2;
-  v35 = [v3 metadata];
-  v36 = v3;
-  v10 = [v3 player];
-  v11 = [v10 currentItem];
-  v12 = [v11 externalMetadata];
+  v37 = selfCopy;
+  v38 = titlebarView;
+  metadata = [playerController metadata];
+  v36 = playerController;
+  player3 = [playerController player];
+  currentItem3 = [player3 currentItem];
+  externalMetadata = [currentItem3 externalMetadata];
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v12;
+  obj = externalMetadata;
   v13 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (!v13)
   {
@@ -5772,20 +5772,20 @@ LABEL_5:
       }
 
       v19 = *(*(&v42 + 1) + 8 * i);
-      v20 = [v19 identifier];
-      v21 = v20;
-      if (!v6 && [v20 isEqualToString:v40] && (objc_msgSend(v19, "stringValue"), v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
+      identifier = [v19 identifier];
+      v21 = identifier;
+      if (!contentTitle && [identifier isEqualToString:v40] && (objc_msgSend(v19, "stringValue"), v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
       {
         v23 = objc_alloc(MEMORY[0x1E696AAB0]);
-        v24 = [v19 stringValue];
-        v6 = [v23 initWithString:v24];
+        stringValue = [v19 stringValue];
+        contentTitle = [v23 initWithString:stringValue];
       }
 
-      else if (!v9 && [v21 isEqualToString:v39] && (objc_msgSend(v19, "stringValue"), v25 = objc_claimAutoreleasedReturnValue(), v25, v25))
+      else if (!contentSubtitle && [v21 isEqualToString:v39] && (objc_msgSend(v19, "stringValue"), v25 = objc_claimAutoreleasedReturnValue(), v25, v25))
       {
         v26 = objc_alloc(MEMORY[0x1E696AAB0]);
-        v24 = [v19 stringValue];
-        v9 = [v26 initWithString:v24];
+        stringValue = [v19 stringValue];
+        contentSubtitle = [v26 initWithString:stringValue];
       }
 
       else
@@ -5796,7 +5796,7 @@ LABEL_5:
         }
 
         [v19 stringValue];
-        v15 = v24 = v15;
+        v15 = stringValue = v15;
       }
 
 LABEL_19:
@@ -5808,21 +5808,21 @@ LABEL_19:
   while (v14);
 LABEL_24:
 
-  v1 = v37;
-  v2 = v38;
-  v3 = v36;
-  if (!v6)
+  selfCopy = v37;
+  titlebarView = v38;
+  playerController = v36;
+  if (!contentTitle)
   {
     v27 = *MEMORY[0x1E69876B8];
-    v28 = [v35 objectForKeyedSubscript:*MEMORY[0x1E69876B8]];
+    v28 = [metadata objectForKeyedSubscript:*MEMORY[0x1E69876B8]];
 
     if (v28)
     {
       v29 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v30 = [v35 objectForKeyedSubscript:v27];
-      v6 = [v29 initWithString:v30];
+      v30 = [metadata objectForKeyedSubscript:v27];
+      contentTitle = [v29 initWithString:v30];
 
-      if (!v9)
+      if (!contentSubtitle)
       {
         goto LABEL_35;
       }
@@ -5830,8 +5830,8 @@ LABEL_24:
 
     else
     {
-      v6 = 0;
-      if (!v9)
+      contentTitle = 0;
+      if (!contentSubtitle)
       {
         goto LABEL_35;
       }
@@ -5844,22 +5844,22 @@ LABEL_26:
     }
 
 LABEL_27:
-    v15 = [v35 objectForKeyedSubscript:*MEMORY[0x1E6987690]];
+    v15 = [metadata objectForKeyedSubscript:*MEMORY[0x1E6987690]];
     goto LABEL_28;
   }
 
-  if (v9)
+  if (contentSubtitle)
   {
     goto LABEL_26;
   }
 
 LABEL_35:
   v31 = *MEMORY[0x1E6987938];
-  v32 = [v35 objectForKeyedSubscript:*MEMORY[0x1E6987938]];
+  v32 = [metadata objectForKeyedSubscript:*MEMORY[0x1E6987938]];
 
   if (!v32)
   {
-    v9 = 0;
+    contentSubtitle = 0;
     if (v15)
     {
       goto LABEL_28;
@@ -5869,8 +5869,8 @@ LABEL_35:
   }
 
   v33 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v34 = [v35 objectForKeyedSubscript:v31];
-  v9 = [v33 initWithString:v34];
+  v34 = [metadata objectForKeyedSubscript:v31];
+  contentSubtitle = [v33 initWithString:v34];
 
   if (!v15)
   {
@@ -5880,50 +5880,50 @@ LABEL_35:
 LABEL_28:
 
 LABEL_29:
-  [v2 setTitle:v6];
-  [v2 setSubtitle:v9];
-  [v1[154] setNeedsLayout];
+  [titlebarView setTitle:contentTitle];
+  [titlebarView setSubtitle:contentSubtitle];
+  [selfCopy[154] setNeedsLayout];
 }
 
 - (void)_updateTitleBarViewInclusionState
 {
-  v2 = [a1 excludedControls];
-  v3 = [a1[154] titlebarView];
-  [v3 setShowsTitle:(v2 & 0x400) == 0];
-  [v3 setShowsSubtitle:(v2 & 0x800) == 0];
-  [v3 setShowsContentTag:(v2 & 0x1000) == 0];
-  [v3 setNeedsLayout];
+  excludedControls = [self excludedControls];
+  titlebarView = [self[154] titlebarView];
+  [titlebarView setShowsTitle:(excludedControls & 0x400) == 0];
+  [titlebarView setShowsSubtitle:(excludedControls & 0x800) == 0];
+  [titlebarView setShowsContentTag:(excludedControls & 0x1000) == 0];
+  [titlebarView setNeedsLayout];
 }
 
-- (void)_updateVolumeControlsViewVolumeWithMuteStateUpdate:(id *)a1
+- (void)_updateVolumeControlsViewVolumeWithMuteStateUpdate:(id *)update
 {
-  if (a1)
+  if (update)
   {
-    v12 = [a1[154] volumeControlsView];
-    if (([v12 isTracking] & 1) == 0)
+    volumeControlsView = [update[154] volumeControlsView];
+    if (([volumeControlsView isTracking] & 1) == 0)
     {
-      v4 = [a1 playerController];
-      v5 = [v4 isMuted];
+      playerController = [update playerController];
+      isMuted = [playerController isMuted];
 
-      v6 = [a1 playerController];
-      v7 = [v6 isExternalPlaybackActive];
+      playerController2 = [update playerController];
+      isExternalPlaybackActive = [playerController2 isExternalPlaybackActive];
 
-      v8 = [a1 volumeController];
-      [v8 volume];
+      volumeController = [update volumeController];
+      [volumeController volume];
       v10 = v9;
 
       v11 = v10;
-      if (v7)
+      if (isExternalPlaybackActive)
       {
         v11 = 1.0;
       }
 
-      if (v5)
+      if (isMuted)
       {
         v11 = 0.0;
       }
 
-      [v12 setVolume:a2 forUpdateReason:v11];
+      [volumeControlsView setVolume:a2 forUpdateReason:v11];
     }
   }
 }
@@ -5931,56 +5931,56 @@ LABEL_29:
 - (uint64_t)_updateWebKitExcludedObservationState
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v23 = [a1 playerController];
-  v2 = *(a1 + 1208);
+  playerController = [self playerController];
+  v2 = *(self + 1208);
   if (!v2)
   {
-    v3 = [[AVObservationController alloc] initWithOwner:a1];
-    v4 = *(a1 + 1208);
-    *(a1 + 1208) = v3;
+    v3 = [[AVObservationController alloc] initWithOwner:self];
+    v4 = *(self + 1208);
+    *(self + 1208) = v3;
 
-    v2 = *(a1 + 1208);
+    v2 = *(self + 1208);
   }
 
-  v5 = [v2 stopAllObservation];
+  stopAllObservation = [v2 stopAllObservation];
   v6 = v24;
   if (v24)
   {
-    v5 = [v24 avkit_isAVPlayerControllerOrSubclass];
+    stopAllObservation = [v24 avkit_isAVPlayerControllerOrSubclass];
     v6 = v24;
-    if (v5)
+    if (stopAllObservation)
     {
-      v7 = [a1 playerController];
-      v8 = *(a1 + 1200);
+      playerController2 = [self playerController];
+      v8 = *(self + 1200);
       v26[0] = @"playbackSuspended";
       v26[1] = @"suspendedRate";
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
-      v10 = [v8 startObserving:v7 keyPaths:v9 observationHandler:&__block_literal_global_240];
+      v10 = [v8 startObserving:playerController2 keyPaths:v9 observationHandler:&__block_literal_global_240];
 
-      v11 = [*(a1 + 1200) startObserving:v7 keyPath:@"photosensitivityRegions" includeInitialValue:1 observationHandler:&__block_literal_global_245];
-      v12 = *(a1 + 1200);
+      v11 = [*(self + 1200) startObserving:playerController2 keyPath:@"photosensitivityRegions" includeInitialValue:1 observationHandler:&__block_literal_global_245];
+      v12 = *(self + 1200);
       v13 = *MEMORY[0x1E69879F8];
-      v14 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v12 startObservingNotificationForName:v13 object:0 notificationCenter:v14 observationHandler:&__block_literal_global_247];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [v12 startObservingNotificationForName:v13 object:0 notificationCenter:defaultCenter observationHandler:&__block_literal_global_247];
 
-      v15 = [*(a1 + 1200) startObserving:v7 keyPath:@"player.currentItem.interstitialTimeRanges" observationHandler:&__block_literal_global_252_25058];
-      v16 = *(a1 + 1200);
+      v15 = [*(self + 1200) startObserving:playerController2 keyPath:@"player.currentItem.interstitialTimeRanges" observationHandler:&__block_literal_global_252_25058];
+      v16 = *(self + 1200);
       v25[0] = @"playerController.player.currentItem.externalMetadata";
       v25[1] = @"playerController.metadata";
       v25[2] = @"playerController.player.currentItem.contentTitle";
       v25[3] = @"playerController.player.currentItem.contentSubtitle";
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
-      v18 = [v16 startObserving:a1 keyPaths:v17 observationHandler:&__block_literal_global_266];
+      v18 = [v16 startObserving:self keyPaths:v17 observationHandler:&__block_literal_global_266];
 
-      v19 = [*(a1 + 1200) startObserving:a1 keyPath:@"playerController.atLiveEdge" observationHandler:&__block_literal_global_271];
-      v20 = [*(a1 + 1200) startObserving:a1 keyPath:@"playerController.coordinatedPlaybackActive" includeInitialValue:0 observationHandler:&__block_literal_global_276];
-      v21 = [*(a1 + 1200) startObserving:a1 keyPath:@"playerController.contentDimensions" observationHandler:&__block_literal_global_281];
+      v19 = [*(self + 1200) startObserving:self keyPath:@"playerController.atLiveEdge" observationHandler:&__block_literal_global_271];
+      v20 = [*(self + 1200) startObserving:self keyPath:@"playerController.coordinatedPlaybackActive" includeInitialValue:0 observationHandler:&__block_literal_global_276];
+      v21 = [*(self + 1200) startObserving:self keyPath:@"playerController.contentDimensions" observationHandler:&__block_literal_global_281];
 
       v6 = v24;
     }
   }
 
-  return MEMORY[0x1EEE66BB8](v5, v6);
+  return MEMORY[0x1EEE66BB8](stopAllObservation, v6);
 }
 
 void __75__AVMobileChromelessControlsViewController__webKitExcludedObservationSetup__block_invoke_7(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -6022,12 +6022,12 @@ void __75__AVMobileChromelessControlsViewController__webKitExcludedObservationSe
 
 - (void)_updateJumpToLiveControlInclusionStateIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v3 = [a1 playerController];
-    if ([v3 hasSeekableLiveStreamingContent])
+    playerController = [self playerController];
+    if ([playerController hasSeekableLiveStreamingContent])
     {
-      v2 = [v3 isAtLiveEdge] ^ 1;
+      v2 = [playerController isAtLiveEdge] ^ 1;
     }
 
     else
@@ -6035,20 +6035,20 @@ void __75__AVMobileChromelessControlsViewController__webKitExcludedObservationSe
       v2 = 0;
     }
 
-    [a1[161] setIncluded:v2];
+    [self[161] setIncluded:v2];
   }
 }
 
 - (void)_updateSliderMarkForLiveEdgeIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 playerController];
-    if ([v2 hasSeekableLiveStreamingContent] && (objc_msgSend(v2, "isAtLiveEdge") & 1) == 0)
+    playerController = [self playerController];
+    if ([playerController hasSeekableLiveStreamingContent] && (objc_msgSend(playerController, "isAtLiveEdge") & 1) == 0)
     {
-      obja = *(a1 + 1672);
-      v4 = [(AVMobileChromelessControlsViewController *)a1 _timelineSlider];
-      [v4 maximumValue];
+      obja = *(self + 1672);
+      _timelineSlider = [(AVMobileChromelessControlsViewController *)self _timelineSlider];
+      [_timelineSlider maximumValue];
       v6 = v5;
 
       if (!obja || ([obja startValue], v3 = obja, vabds_f32(*&v7, v6) >= 0.00000011921))
@@ -6066,10 +6066,10 @@ void __75__AVMobileChromelessControlsViewController__webKitExcludedObservationSe
     }
 
     obj = v3;
-    if (*(a1 + 1672) != v3)
+    if (*(self + 1672) != v3)
     {
-      objc_storeStrong((a1 + 1672), v3);
-      [(AVMobileChromelessControlsViewController *)a1 _updateTimelineViewSliderMarksIfNeeded];
+      objc_storeStrong((self + 1672), v3);
+      [(AVMobileChromelessControlsViewController *)self _updateTimelineViewSliderMarksIfNeeded];
     }
   }
 }
@@ -6077,36 +6077,36 @@ void __75__AVMobileChromelessControlsViewController__webKitExcludedObservationSe
 - (void)_updateTimelineViewSliderMarksIfNeeded
 {
   v70 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v1 = a1;
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = [(AVMobileSliderMark *)v1 playerController];
-  v58 = v3;
-  if ([v3 avkit_isAVPlayerControllerOrSubclass])
+  selfCopy = self;
+  array = [MEMORY[0x1E695DF70] array];
+  playerController = [(AVMobileSliderMark *)selfCopy playerController];
+  v58 = playerController;
+  if ([playerController avkit_isAVPlayerControllerOrSubclass])
   {
-    v4 = v2;
-    v5 = [(AVMobileSliderMark *)v1 playerController];
-    v6 = [v5 timeline];
-    v7 = [v5 timeline];
+    v4 = array;
+    playerController2 = [(AVMobileSliderMark *)selfCopy playerController];
+    timeline = [playerController2 timeline];
+    timeline2 = [playerController2 timeline];
 
-    v8 = [v5 interstitialController];
-    v9 = [v8 currentInterstitialTimeRange];
+    interstitialController = [playerController2 interstitialController];
+    currentInterstitialTimeRange = [interstitialController currentInterstitialTimeRange];
 
-    if (v7)
+    if (timeline2)
     {
-      v10 = v1;
-      v11 = [v5 interstitialController];
-      v12 = [v11 currentInterstitialTimeRange];
-      v13 = [v12 interstice];
-      v14 = [v13 isCollapsedInTimeLine];
+      v10 = selfCopy;
+      interstitialController2 = [playerController2 interstitialController];
+      currentInterstitialTimeRange2 = [interstitialController2 currentInterstitialTimeRange];
+      interstice = [currentInterstitialTimeRange2 interstice];
+      isCollapsedInTimeLine = [interstice isCollapsedInTimeLine];
 
-      if (v14)
+      if (isCollapsedInTimeLine)
       {
-        v1 = v10;
+        selfCopy = v10;
       }
 
       else
@@ -6117,14 +6117,14 @@ void __75__AVMobileChromelessControlsViewController__webKitExcludedObservationSe
         v67[3] = &unk_1E7209258;
         v68 = v4;
         v69 = v10;
-        v1 = v10;
-        [v6 enumerateSegments:v67];
+        selfCopy = v10;
+        [timeline enumerateSegments:v67];
       }
     }
 
     else
     {
-      if (v9)
+      if (currentInterstitialTimeRange)
       {
         goto LABEL_17;
       }
@@ -6133,11 +6133,11 @@ void __75__AVMobileChromelessControlsViewController__webKitExcludedObservationSe
       v66 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v15 = [v5 player];
-      v16 = [v15 currentItem];
-      v11 = [v16 interstitialTimeRanges];
+      player = [playerController2 player];
+      currentItem = [player currentItem];
+      interstitialController2 = [currentItem interstitialTimeRanges];
 
-      v17 = [v11 countByEnumeratingWithState:&v63 objects:v67 count:16];
+      v17 = [interstitialController2 countByEnumeratingWithState:&v63 objects:v67 count:16];
       if (v17)
       {
         v18 = v17;
@@ -6148,14 +6148,14 @@ void __75__AVMobileChromelessControlsViewController__webKitExcludedObservationSe
           {
             if (*v64 != v19)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(interstitialController2);
             }
 
-            v21 = [(AVMobileChromelessControlsViewController *)v1 _sliderMarkForInterstitialTimeRange:1 isCollapsed:?];
+            v21 = [(AVMobileChromelessControlsViewController *)selfCopy _sliderMarkForInterstitialTimeRange:1 isCollapsed:?];
             [v4 addObject:v21];
           }
 
-          v18 = [v11 countByEnumeratingWithState:&v63 objects:v67 count:16];
+          v18 = [interstitialController2 countByEnumeratingWithState:&v63 objects:v67 count:16];
         }
 
         while (v18);
@@ -6163,31 +6163,31 @@ void __75__AVMobileChromelessControlsViewController__webKitExcludedObservationSe
     }
 
 LABEL_17:
-    if ([v5 hasSeekableLiveStreamingContent] && v1[41]._markType)
+    if ([playerController2 hasSeekableLiveStreamingContent] && selfCopy[41]._markType)
     {
       [v4 addObject:?];
     }
 
-    v3 = v58;
+    playerController = v58;
   }
 
-  v59 = v2;
-  v22 = [(AVMobileChromelessControlsViewController *)v1 _timelineSlider];
-  v23 = [(AVMobileSliderMark *)v1 playerController];
+  v59 = array;
+  _timelineSlider = [(AVMobileChromelessControlsViewController *)selfCopy _timelineSlider];
+  playerController3 = [(AVMobileSliderMark *)selfCopy playerController];
   v24 = objc_opt_respondsToSelector();
 
   if (v24)
   {
-    v57 = v22;
+    v57 = _timelineSlider;
     v65 = 0u;
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v25 = [(AVMobileSliderMark *)v1 playerController];
-    v26 = [v25 photosensitivityRegions];
+    playerController4 = [(AVMobileSliderMark *)selfCopy playerController];
+    photosensitivityRegions = [playerController4 photosensitivityRegions];
 
-    obj = v26;
-    v27 = [v26 countByEnumeratingWithState:&v63 objects:v67 count:16];
+    obj = photosensitivityRegions;
+    v27 = [photosensitivityRegions countByEnumeratingWithState:&v63 objects:v67 count:16];
     if (v27)
     {
       v28 = v27;
@@ -6205,7 +6205,7 @@ LABEL_17:
           [v31 risk];
           if (v32 >= 0.5)
           {
-            v33 = [v31 colors];
+            colors = [v31 colors];
             if (v31)
             {
               [v31 timeRange];
@@ -6225,24 +6225,24 @@ LABEL_17:
 
             time = v61[0];
             v35 = CMTimeGetSeconds(&time);
-            v36 = [(AVMobileChromelessControlsViewController *)v1 _normalizeTimeValue:v35];
-            v37 = [(AVMobileChromelessControlsViewController *)v1 _normalizeTimeValue:?];
+            v36 = [(AVMobileChromelessControlsViewController *)selfCopy _normalizeTimeValue:v35];
+            v37 = [(AVMobileChromelessControlsViewController *)selfCopy _normalizeTimeValue:?];
             v38 = MEMORY[0x1E69DC888];
-            v39 = [v33 objectAtIndexedSubscript:0];
+            v39 = [colors objectAtIndexedSubscript:0];
             [v39 doubleValue];
             v41 = v40;
-            v42 = [v33 objectAtIndexedSubscript:1];
+            v42 = [colors objectAtIndexedSubscript:1];
             [v42 doubleValue];
             v44 = v43;
-            [v33 objectAtIndexedSubscript:2];
-            v46 = v45 = v1;
+            [colors objectAtIndexedSubscript:2];
+            v46 = v45 = selfCopy;
             [v46 doubleValue];
             v48 = v47;
-            v49 = [v33 objectAtIndexedSubscript:3];
+            v49 = [colors objectAtIndexedSubscript:3];
             [v49 doubleValue];
             v51 = [v38 colorWithRed:v41 green:v44 blue:v48 alpha:v50];
 
-            v1 = v45;
+            selfCopy = v45;
             v52 = [AVMobileSliderMark alloc];
             *&v53 = v36;
             *&v54 = v37;
@@ -6257,25 +6257,25 @@ LABEL_17:
       while (v28);
     }
 
-    v22 = v57;
+    _timelineSlider = v57;
     [v57 setSliderMarks:v59];
-    v3 = v58;
+    playerController = v58;
   }
 
-  v56 = [(AVMobileChromelessControlsViewController *)v1 _timelineSlider];
-  [v56 setSliderMarks:v59];
+  _timelineSlider2 = [(AVMobileChromelessControlsViewController *)selfCopy _timelineSlider];
+  [_timelineSlider2 setSliderMarks:v59];
 }
 
-- (float)_normalizeTimeValue:(uint64_t)a1
+- (float)_normalizeTimeValue:(uint64_t)value
 {
-  v3 = *(a1 + 1464);
+  v3 = *(value + 1464);
   v4 = 0.0;
   if (v3)
   {
     [v3 minTime];
     v7 = v6;
     v8 = v6;
-    [*(a1 + 1464) maxTime];
+    [*(value + 1464) maxTime];
     if ((*&v8 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&v9 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
     {
       v11 = v9 - v7;
@@ -6311,11 +6311,11 @@ void __85__AVMobileChromelessControlsViewController__addTimelineViewSliderMarksT
   }
 }
 
-- (AVMobileSliderMark)_sliderMarkForInterstitialTimeRange:(char)a3 isCollapsed:
+- (AVMobileSliderMark)_sliderMarkForInterstitialTimeRange:(char)range isCollapsed:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     if (v5)
     {
@@ -6329,14 +6329,14 @@ void __85__AVMobileChromelessControlsViewController__addTimelineViewSliderMarksT
 
     time = *&v21[4];
     Seconds = CMTimeGetSeconds(&time);
-    v8 = [(AVMobileChromelessControlsViewController *)a1 _normalizeTimeValue:?];
-    v9 = [(AVMobileSliderMark *)a1 playerController];
-    v10 = [v9 timeline];
+    v8 = [(AVMobileChromelessControlsViewController *)self _normalizeTimeValue:?];
+    playerController = [(AVMobileSliderMark *)self playerController];
+    timeline = [playerController timeline];
     v11 = [AVMobileSliderMark alloc];
-    if (!v10 || (a3 & 1) != 0)
+    if (!timeline || (range & 1) != 0)
     {
       *&v12 = v8;
-      a1 = [AVMobileSliderMark interstitialMarkAtValue:v12];
+      self = [AVMobileSliderMark interstitialMarkAtValue:v12];
     }
 
     else
@@ -6353,19 +6353,19 @@ void __85__AVMobileChromelessControlsViewController__addTimelineViewSliderMarksT
 
       time = *&v21[1];
       v13 = CMTimeGetSeconds(&time);
-      v14 = [(AVMobileChromelessControlsViewController *)a1 _normalizeTimeValue:?];
+      v14 = [(AVMobileChromelessControlsViewController *)self _normalizeTimeValue:?];
       v15 = [AVMobileSliderMark alloc];
-      v16 = [MEMORY[0x1E69DC888] systemYellowColor];
-      v17 = [MEMORY[0x1E69DC888] systemYellowColor];
+      systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+      systemYellowColor2 = [MEMORY[0x1E69DC888] systemYellowColor];
       *&v18 = v8;
       *&v19 = v14;
-      a1 = [(AVMobileSliderMark *)v15 initWithStartValue:v16 endValue:v17 filledColor:2 unfilledColor:v18 markWithType:v19];
+      self = [(AVMobileSliderMark *)v15 initWithStartValue:systemYellowColor endValue:systemYellowColor2 filledColor:2 unfilledColor:v18 markWithType:v19];
 
-      v11 = v16;
+      v11 = systemYellowColor;
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __75__AVMobileChromelessControlsViewController__webKitExcludedObservationSetup__block_invoke_3(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -6390,20 +6390,20 @@ void __71__AVMobileChromelessControlsViewController__updateLoadingAnimatorState_
   [AVMobileChromelessControlsViewController _updateLoadingAnimatorState];
 }
 
-- (void)_animateSliderToTintState:(void *)a3 duration:(double)a4 completionHandler:
+- (void)_animateSliderToTintState:(void *)state duration:(double)duration completionHandler:
 {
-  v7 = a3;
-  v8 = *(a1 + 1528);
-  if (v8 && [v8 isRunning] && objc_msgSend(*(a1 + 1528), "isInterruptible"))
+  stateCopy = state;
+  v8 = *(self + 1528);
+  if (v8 && [v8 isRunning] && objc_msgSend(*(self + 1528), "isInterruptible"))
   {
-    [*(a1 + 1528) stopAnimation:1];
-    [*(a1 + 1528) finishAnimationAtPosition:2];
-    v9 = *(a1 + 1528);
-    *(a1 + 1528) = 0;
+    [*(self + 1528) stopAnimation:1];
+    [*(self + 1528) finishAnimationAtPosition:2];
+    v9 = *(self + 1528);
+    *(self + 1528) = 0;
   }
 
-  v10 = [*(a1 + 1232) timelineView];
-  objc_initWeak(&location, v10);
+  timelineView = [*(self + 1232) timelineView];
+  objc_initWeak(&location, timelineView);
 
   v11 = objc_alloc(MEMORY[0x1E69DD278]);
   v20[0] = MEMORY[0x1E69E9820];
@@ -6412,22 +6412,22 @@ void __71__AVMobileChromelessControlsViewController__updateLoadingAnimatorState_
   v20[3] = &unk_1E7209A38;
   objc_copyWeak(v21, &location);
   v21[1] = a2;
-  v12 = [v11 initWithDuration:3 curve:v20 animations:a4];
-  v13 = *(a1 + 1528);
-  *(a1 + 1528) = v12;
+  v12 = [v11 initWithDuration:3 curve:v20 animations:duration];
+  v13 = *(self + 1528);
+  *(self + 1528) = v12;
 
-  if (v7)
+  if (stateCopy)
   {
-    v14 = *(a1 + 1528);
+    v14 = *(self + 1528);
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __97__AVMobileChromelessControlsViewController__animateSliderToTintState_duration_completionHandler___block_invoke_2;
     v18 = &unk_1E7209280;
-    v19 = v7;
+    v19 = stateCopy;
     [v14 addCompletion:&v15];
   }
 
-  [*(a1 + 1528) startAnimation];
+  [*(self + 1528) startAnimation];
   objc_destroyWeak(v21);
   objc_destroyWeak(&location);
 }
@@ -6708,11 +6708,11 @@ void __61__AVMobileChromelessControlsViewController__observationSetup__block_inv
 
 - (void)_resetControlsVisibilityTimer
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 1560) invalidate];
-    v2 = *(a1 + 1560);
-    *(a1 + 1560) = 0;
+    [*(self + 1560) invalidate];
+    v2 = *(self + 1560);
+    *(self + 1560) = 0;
   }
 }
 
@@ -6819,17 +6819,17 @@ LABEL_10:
   [(AVMobileChromelessControlsViewController *)p_isa _updateJumpToLiveControlInclusionStateIfNeeded];
 }
 
-- (void)_configureAuxiliaryControlButton:(void *)a1
+- (void)_configureAuxiliaryControlButton:(void *)button
 {
-  v3 = a1[153];
+  v3 = button[153];
   v4 = a2;
-  v5 = [v3 buttonFont];
-  [v4 setInlineFont:v5];
+  buttonFont = [v3 buttonFont];
+  [v4 setInlineFont:buttonFont];
 
   v6 = MEMORY[0x1E69DC888];
-  v7 = [v4 isOverVideo];
-  v9 = [a1 traitCollection];
-  v8 = [v6 avkit_tintColorForControlElementIsOverVideo:v7 withUserInterfaceStyle:{objc_msgSend(v9, "userInterfaceStyle")}];
+  isOverVideo = [v4 isOverVideo];
+  traitCollection = [button traitCollection];
+  v8 = [v6 avkit_tintColorForControlElementIsOverVideo:isOverVideo withUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
   [v4 setTintColor:v8];
 }
 
@@ -7034,26 +7034,26 @@ void __79__AVMobileChromelessControlsViewController__animateKeyboardAvoidance_du
 
 - (void)_setUpAuxiliaryControlsViewIfNeeded
 {
-  v2 = *(a1 + 1232);
+  v2 = *(self + 1232);
   if (v2)
   {
-    v3 = [v2 auxiliaryControlsView];
+    auxiliaryControlsView = [v2 auxiliaryControlsView];
 
-    if (!v3)
+    if (!auxiliaryControlsView)
     {
       v6 = objc_alloc_init(AVMobileAuxiliaryControlsView);
       [(AVMobileAuxiliaryControlsView *)v6 setAutoresizingMask:0];
-      [(AVMobileAuxiliaryControlsView *)v6 setDelegate:a1];
+      [(AVMobileAuxiliaryControlsView *)v6 setDelegate:self];
       [(AVView *)v6 setAutomaticallyUpdatesSubviewContentIntersections:1];
-      v4 = [a1 prefersFullScreenStyleForEmbeddedMode];
+      prefersFullScreenStyleForEmbeddedMode = [self prefersFullScreenStyleForEmbeddedMode];
       v5 = 0.0;
-      if (v4)
+      if (prefersFullScreenStyleForEmbeddedMode)
       {
-        v5 = *(a1 + 1848);
+        v5 = *(self + 1848);
       }
 
       [(AVMobileAuxiliaryControlsView *)v6 setAvkit_extendedDynamicRangeGain:v5];
-      [*(a1 + 1232) setAuxiliaryControlsView:v6];
+      [*(self + 1232) setAuxiliaryControlsView:v6];
     }
   }
 }
@@ -7235,20 +7235,20 @@ void __71__AVMobileChromelessControlsViewController__setNeedsTimeResolverUpdate_
   [(AVView *)self->_view setIgnoresTouches:v3];
 }
 
-- (void)updateVisibilityPolicy:(unint64_t)a3 animated:(BOOL)a4
+- (void)updateVisibilityPolicy:(unint64_t)policy animated:(BOOL)animated
 {
-  v7 = [(AVMobileControlsViewController *)self visibilityPolicy];
-  if (v7 != a3)
+  visibilityPolicy = [(AVMobileControlsViewController *)self visibilityPolicy];
+  if (visibilityPolicy != policy)
   {
-    v8 = v7;
+    v8 = visibilityPolicy;
     v9.receiver = self;
     v9.super_class = AVMobileChromelessControlsViewController;
-    [(AVMobileControlsViewController *)&v9 setVisibilityPolicy:a3];
+    [(AVMobileControlsViewController *)&v9 setVisibilityPolicy:policy];
     if (self)
     {
       if (self->_hasBeenSetUp)
       {
-        if (a3 == 2)
+        if (policy == 2)
         {
           if (v8 == 1)
           {
@@ -7263,7 +7263,7 @@ void __71__AVMobileChromelessControlsViewController__setNeedsTimeResolverUpdate_
         }
 
         [(AVMobileChromelessControlsViewController *)self _setNeedsControlsVisibilityStateUpdate];
-        if (!a4)
+        if (!animated)
         {
           [(AVMobileChromelessControlsViewController *)self _updateControlsVisibilityStateIfNeededAnimated:MEMORY[0x1E695E110]];
         }
@@ -7274,20 +7274,20 @@ void __71__AVMobileChromelessControlsViewController__setNeedsTimeResolverUpdate_
 
 - (void)_hideControlsIfPossible
 {
-  if (a1)
+  if (self)
   {
-    [a1 setTemporarilyVisible:0];
-    *(a1 + 1416) = 0;
-    [(AVMobileChromelessControlsViewController *)a1 _resetVolumeSliderTemporarilyVisibleTimer];
-    [*(a1 + 1560) invalidate];
-    v2 = *(a1 + 1560);
-    *(a1 + 1560) = 0;
+    [self setTemporarilyVisible:0];
+    *(self + 1416) = 0;
+    [(AVMobileChromelessControlsViewController *)self _resetVolumeSliderTemporarilyVisibleTimer];
+    [*(self + 1560) invalidate];
+    v2 = *(self + 1560);
+    *(self + 1560) = 0;
 
-    [(AVMobileChromelessControlsViewController *)a1 _setNeedsControlsVisibilityStateUpdate];
+    [(AVMobileChromelessControlsViewController *)self _setNeedsControlsVisibilityStateUpdate];
   }
 }
 
-- (void)toggleVisibility:(id)a3
+- (void)toggleVisibility:(id)visibility
 {
   if ([(AVMobileControlsViewController *)self temporarilyVisible])
   {
@@ -7329,19 +7329,19 @@ void __56__AVMobileChromelessControlsViewController_scheduleTips__block_invoke(u
   [(AVMobileChromelessControlsViewController *)self flashControlsWithDuration:?];
 }
 
-- (void)flashControlsWithDuration:(double)a3
+- (void)flashControlsWithDuration:(double)duration
 {
   [(AVMobileChromelessControlsViewController *)self _resetControlsVisibilityTimer];
-  v5 = [(AVMobileControlsViewController *)self pipController];
-  v6 = [v5 isPictureInPictureActive];
+  pipController = [(AVMobileControlsViewController *)self pipController];
+  isPictureInPictureActive = [pipController isPictureInPictureActive];
 
-  if ((v6 & 1) == 0)
+  if ((isPictureInPictureActive & 1) == 0)
   {
-    v7 = [(AVMobileControlsViewController *)self playerController];
-    v8 = [v7 isPlaying];
+    playerController = [(AVMobileControlsViewController *)self playerController];
+    isPlaying = [playerController isPlaying];
 
     v10 = self && (contentTabPresentationContext = self->_contentTabPresentationContext) != 0 && [(AVMobileContentTabPresentationContext *)contentTabPresentationContext state]!= 1 && [(AVMobileContentTabPresentationContext *)self->_contentTabPresentationContext presentationLayout]== 0;
-    if (v8)
+    if (isPlaying)
     {
       if (!v10)
       {
@@ -7352,7 +7352,7 @@ void __56__AVMobileChromelessControlsViewController_scheduleTips__block_invoke(u
         v16[2] = __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___block_invoke;
         v16[3] = &unk_1E7209DA8;
         objc_copyWeak(&v17, &location);
-        v12 = [v11 scheduledTimerWithTimeInterval:0 repeats:v16 block:a3];
+        v12 = [v11 scheduledTimerWithTimeInterval:0 repeats:v16 block:duration];
         visibilityTimer = self->_visibilityTimer;
         self->_visibilityTimer = v12;
 
@@ -7393,9 +7393,9 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   [(AVMobileChromelessControlsViewController *)WeakRetained _configureTips];
 }
 
-- (void)dismissCustomInfoViewControllerAnimated:(BOOL)a3
+- (void)dismissCustomInfoViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = self->_contentTabPresentationContext;
   v10 = v5;
   if (v5)
@@ -7412,8 +7412,8 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
 
   if ([(AVMobileContentTabPresentationContext *)v5 state]== 2)
   {
-    v8 = [(AVMobileContentTabPresentationContext *)v10 transitionContext];
-    v9 = [v8 direction] == 0;
+    transitionContext = [(AVMobileContentTabPresentationContext *)v10 transitionContext];
+    v9 = [transitionContext direction] == 0;
   }
 
   else
@@ -7423,15 +7423,15 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
 
   if ((v7 | v9))
   {
-    [(AVMobileChromelessControlsViewController *)self _setContentTabPresented:v3 animated:?];
+    [(AVMobileChromelessControlsViewController *)self _setContentTabPresented:animatedCopy animated:?];
   }
 }
 
-- (void)setMediaPresentationSettingsCustomItems:(id)a3
+- (void)setMediaPresentationSettingsCustomItems:(id)items
 {
-  if (self->_mediaPresentationSettingsCustomItems != a3)
+  if (self->_mediaPresentationSettingsCustomItems != items)
   {
-    v4 = [a3 copy];
+    v4 = [items copy];
     mediaPresentationSettingsCustomItems = self->_mediaPresentationSettingsCustomItems;
     self->_mediaPresentationSettingsCustomItems = v4;
 
@@ -7439,22 +7439,22 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   }
 }
 
-- (void)setPrefersMediaPresentationSettingsMenuGroupTitle:(id)a3
+- (void)setPrefersMediaPresentationSettingsMenuGroupTitle:(id)title
 {
-  v5 = a3;
-  if (self->_prefersMediaPresentationSettingsMenuGroupTitle != v5)
+  titleCopy = title;
+  if (self->_prefersMediaPresentationSettingsMenuGroupTitle != titleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_prefersMediaPresentationSettingsMenuGroupTitle, a3);
-    v5 = v6;
+    v6 = titleCopy;
+    objc_storeStrong(&self->_prefersMediaPresentationSettingsMenuGroupTitle, title);
+    titleCopy = v6;
   }
 }
 
-- (void)setPrefersFullScreenStyleForEmbeddedMode:(BOOL)a3
+- (void)setPrefersFullScreenStyleForEmbeddedMode:(BOOL)mode
 {
-  if (self->_prefersFullScreenStyleForEmbeddedMode != a3)
+  if (self->_prefersFullScreenStyleForEmbeddedMode != mode)
   {
-    self->_prefersFullScreenStyleForEmbeddedMode = a3;
+    self->_prefersFullScreenStyleForEmbeddedMode = mode;
     [(AVMobileChromelessControlsViewController *)self _updateAuxiliaryControls];
     [(AVMobileChromelessControlsViewController *)self _updateExtendedDynamicRangeGain];
 
@@ -7464,29 +7464,29 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
 
 - (void)_updateExtendedDynamicRangeGain
 {
-  if (a1)
+  if (self)
   {
     v2 = 0.0;
-    if ([a1 prefersFullScreenStyleForEmbeddedMode])
+    if ([self prefersFullScreenStyleForEmbeddedMode])
     {
-      v2 = *(a1 + 1848);
+      v2 = *(self + 1848);
     }
 
-    v5 = [*(a1 + 1232) timelineView];
-    [v5 setLabelsExtendedDynamicRangeGain:v2];
-    [v5 setSliderExtendedDynamicRangeGain:v2];
-    v3 = [*(a1 + 1232) playbackControlsView];
-    [v3 setAvkit_extendedDynamicRangeGain:v2];
-    v4 = [*(a1 + 1232) auxiliaryControlsView];
-    [v4 setAvkit_extendedDynamicRangeGain:v2];
+    timelineView = [*(self + 1232) timelineView];
+    [timelineView setLabelsExtendedDynamicRangeGain:v2];
+    [timelineView setSliderExtendedDynamicRangeGain:v2];
+    playbackControlsView = [*(self + 1232) playbackControlsView];
+    [playbackControlsView setAvkit_extendedDynamicRangeGain:v2];
+    auxiliaryControlsView = [*(self + 1232) auxiliaryControlsView];
+    [auxiliaryControlsView setAvkit_extendedDynamicRangeGain:v2];
   }
 }
 
-- (void)setExtendedDynamicRangeGain:(double)a3
+- (void)setExtendedDynamicRangeGain:(double)gain
 {
-  if (self->_extendedDynamicRangeGain != a3)
+  if (self->_extendedDynamicRangeGain != gain)
   {
-    self->_extendedDynamicRangeGain = a3;
+    self->_extendedDynamicRangeGain = gain;
     [(AVMobileChromelessControlsViewController *)self _updateExtendedDynamicRangeGain];
   }
 }
@@ -7503,11 +7503,11 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
 {
   if (self)
   {
-    v3 = [(AVMobileChromelessControlsView *)self->_view volumeControlsView];
-    v4 = v3;
+    volumeControlsView = [(AVMobileChromelessControlsView *)self->_view volumeControlsView];
+    v4 = volumeControlsView;
     if (self->_view)
     {
-      v5 = v3 == 0;
+      v5 = volumeControlsView == 0;
     }
 
     else
@@ -7532,20 +7532,20 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   return v9;
 }
 
-- (void)setVolumeController:(id)a3
+- (void)setVolumeController:(id)controller
 {
-  v4 = a3;
-  v5 = [(AVMobileControlsViewController *)self volumeController];
+  controllerCopy = controller;
+  volumeController = [(AVMobileControlsViewController *)self volumeController];
 
-  if (v5)
+  if (volumeController)
   {
-    v6 = [(AVMobileControlsViewController *)self volumeController];
-    [v6 setPrefersSystemVolumeHUDHidden:0];
+    volumeController2 = [(AVMobileControlsViewController *)self volumeController];
+    [volumeController2 setPrefersSystemVolumeHUDHidden:0];
   }
 
   v7.receiver = self;
   v7.super_class = AVMobileChromelessControlsViewController;
-  [(AVMobileControlsViewController *)&v7 setVolumeController:v4];
+  [(AVMobileControlsViewController *)&v7 setVolumeController:controllerCopy];
   if (self && self->_hasBeenSetUp)
   {
     [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _updateVolumeControlsViewVolumeWithMuteStateUpdate:?];
@@ -7560,13 +7560,13 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   v44[3] = *MEMORY[0x1E69E9840];
   if (self)
   {
-    v3 = [(AVMobileChromelessControlsView *)self->_view auxiliaryControlsView];
-    v4 = [(AVMobileChromelessControlsView *)self->_view timelineView];
-    v5 = [(AVMobileChromelessControlsView *)self->_view titlebarView];
-    v6 = v5;
+    auxiliaryControlsView = [(AVMobileChromelessControlsView *)self->_view auxiliaryControlsView];
+    timelineView = [(AVMobileChromelessControlsView *)self->_view timelineView];
+    titlebarView = [(AVMobileChromelessControlsView *)self->_view titlebarView];
+    v6 = titlebarView;
     if (self->_view)
     {
-      v7 = v4 == 0;
+      v7 = timelineView == 0;
     }
 
     else
@@ -7574,52 +7574,52 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
       v7 = 1;
     }
 
-    v9 = v7 || v3 == 0 || v5 == 0;
+    v9 = v7 || auxiliaryControlsView == 0 || titlebarView == 0;
     if (!v9 && ![(AVMobileControlsViewController *)self optimizeForPerformance])
     {
-      v10 = [(AVMobileChromelessControlsView *)self->_view layoutMarginsGuide];
+      layoutMarginsGuide = [(AVMobileChromelessControlsView *)self->_view layoutMarginsGuide];
       v11 = objc_alloc_init(MEMORY[0x1E69DCC20]);
       transportControlsLayoutGuide = self->_transportControlsLayoutGuide;
       self->_transportControlsLayoutGuide = v11;
 
       [(AVMobileChromelessControlsView *)self->_view addLayoutGuide:self->_transportControlsLayoutGuide];
-      v13 = [(UILayoutGuide *)self->_transportControlsLayoutGuide topAnchor];
-      v14 = [v6 topAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      topAnchor = [(UILayoutGuide *)self->_transportControlsLayoutGuide topAnchor];
+      topAnchor2 = [v6 topAnchor];
+      v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
       titlebarViewTopAnchorConstraint = self->_titlebarViewTopAnchorConstraint;
       self->_titlebarViewTopAnchorConstraint = v15;
 
-      v17 = [(UILayoutGuide *)self->_transportControlsLayoutGuide topAnchor];
-      v18 = [v4 topAnchor];
-      v19 = [v17 constraintEqualToAnchor:v18];
+      topAnchor3 = [(UILayoutGuide *)self->_transportControlsLayoutGuide topAnchor];
+      topAnchor4 = [timelineView topAnchor];
+      v19 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       timelineTopAnchorConstraint = self->_timelineTopAnchorConstraint;
       self->_timelineTopAnchorConstraint = v19;
 
-      v21 = [(UILayoutGuide *)self->_transportControlsLayoutGuide topAnchor];
-      v22 = [v3 topAnchor];
-      v23 = [v21 constraintEqualToAnchor:v22];
+      topAnchor5 = [(UILayoutGuide *)self->_transportControlsLayoutGuide topAnchor];
+      topAnchor6 = [auxiliaryControlsView topAnchor];
+      v23 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
       auxiliaryControlsViewTopAnchorConstraint = self->_auxiliaryControlsViewTopAnchorConstraint;
       self->_auxiliaryControlsViewTopAnchorConstraint = v23;
 
-      v25 = [(UILayoutGuide *)self->_transportControlsLayoutGuide topAnchor];
-      v26 = [v10 bottomAnchor];
-      v27 = [v25 constraintEqualToAnchor:v26];
+      topAnchor7 = [(UILayoutGuide *)self->_transportControlsLayoutGuide topAnchor];
+      bottomAnchor = [layoutMarginsGuide bottomAnchor];
+      v27 = [topAnchor7 constraintEqualToAnchor:bottomAnchor];
       defaultTopAnchorConstraint = self->_defaultTopAnchorConstraint;
       self->_defaultTopAnchorConstraint = v27;
 
       v29 = objc_alloc(MEMORY[0x1E695DF70]);
-      v43 = [(UILayoutGuide *)self->_transportControlsLayoutGuide leadingAnchor];
-      v42 = [v10 leadingAnchor];
-      v41 = [v43 constraintEqualToAnchor:v42];
+      leadingAnchor = [(UILayoutGuide *)self->_transportControlsLayoutGuide leadingAnchor];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      v41 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v44[0] = v41;
-      v39 = [(UILayoutGuide *)self->_transportControlsLayoutGuide trailingAnchor];
-      v40 = v10;
-      v38 = [v10 trailingAnchor];
-      v30 = [v39 constraintEqualToAnchor:v38];
+      trailingAnchor = [(UILayoutGuide *)self->_transportControlsLayoutGuide trailingAnchor];
+      v40 = layoutMarginsGuide;
+      trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+      v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v44[1] = v30;
-      v31 = [(UILayoutGuide *)self->_transportControlsLayoutGuide bottomAnchor];
-      v32 = [v10 bottomAnchor];
-      v33 = [v31 constraintEqualToAnchor:v32];
+      bottomAnchor2 = [(UILayoutGuide *)self->_transportControlsLayoutGuide bottomAnchor];
+      bottomAnchor3 = [layoutMarginsGuide bottomAnchor];
+      v33 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
       v44[2] = v33;
       v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:3];
       v35 = [v29 initWithArray:v34];
@@ -7634,16 +7634,16 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   return v36;
 }
 
-- (void)setTransportBarCustomMenuItems:(id)a3
+- (void)setTransportBarCustomMenuItems:(id)items
 {
-  v4 = a3;
-  v5 = [(AVMobileControlsViewController *)self transportBarCustomMenuItems];
+  itemsCopy = items;
+  transportBarCustomMenuItems = [(AVMobileControlsViewController *)self transportBarCustomMenuItems];
 
-  if (v5 != v4)
+  if (transportBarCustomMenuItems != itemsCopy)
   {
     v6.receiver = self;
     v6.super_class = AVMobileChromelessControlsViewController;
-    [(AVMobileControlsViewController *)&v6 setTransportBarCustomMenuItems:v4];
+    [(AVMobileControlsViewController *)&v6 setTransportBarCustomMenuItems:itemsCopy];
     if (self)
     {
       if (self->_hasBeenSetUp)
@@ -7654,11 +7654,11 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   }
 }
 
-- (void)setShowsAudioTrackSelectionMenu:(BOOL)a3
+- (void)setShowsAudioTrackSelectionMenu:(BOOL)menu
 {
-  if (self->_showsAudioTrackSelectionMenu != a3)
+  if (self->_showsAudioTrackSelectionMenu != menu)
   {
-    self->_showsAudioTrackSelectionMenu = a3;
+    self->_showsAudioTrackSelectionMenu = menu;
     if (self->_hasBeenSetUp)
     {
       [(AVMobileChromelessControlsViewController *)self _updateAuxiliaryControls];
@@ -7666,11 +7666,11 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   }
 }
 
-- (void)setShowsVisualLookupControl:(BOOL)a3
+- (void)setShowsVisualLookupControl:(BOOL)control
 {
-  if (self->_showsVisualLookupControl != a3)
+  if (self->_showsVisualLookupControl != control)
   {
-    self->_showsVisualLookupControl = a3;
+    self->_showsVisualLookupControl = control;
     if (self->_hasBeenSetUp)
     {
       [(AVMobileChromelessControlsViewController *)self _setUpVisualLookupControlIfNeeded];
@@ -7685,11 +7685,11 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   }
 }
 
-- (void)setShowsCopySubjectControl:(BOOL)a3
+- (void)setShowsCopySubjectControl:(BOOL)control
 {
-  if (self->_showsCopySubjectControl != a3)
+  if (self->_showsCopySubjectControl != control)
   {
-    self->_showsCopySubjectControl = a3;
+    self->_showsCopySubjectControl = control;
     if (self->_hasBeenSetUp)
     {
       [(AVMobileChromelessControlsViewController *)self _setUpCopySubjectControlIfNeeded];
@@ -7704,11 +7704,11 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   }
 }
 
-- (void)setShowsAnalysisControl:(BOOL)a3
+- (void)setShowsAnalysisControl:(BOOL)control
 {
-  if (self->_showsAnalysisControl != a3)
+  if (self->_showsAnalysisControl != control)
   {
-    self->_showsAnalysisControl = a3;
+    self->_showsAnalysisControl = control;
     if (self->_hasBeenSetUp)
     {
       [(AVMobileChromelessControlsViewController *)self _setUpAnalysisControlIfNeeded];
@@ -7719,13 +7719,13 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   }
 }
 
-- (void)setSecondaryPlaybackControlsType:(unint64_t)a3
+- (void)setSecondaryPlaybackControlsType:(unint64_t)type
 {
-  if ([(AVMobileControlsViewController *)self secondaryPlaybackControlsType]!= a3)
+  if ([(AVMobileControlsViewController *)self secondaryPlaybackControlsType]!= type)
   {
     v5.receiver = self;
     v5.super_class = AVMobileChromelessControlsViewController;
-    [(AVMobileControlsViewController *)&v5 setSecondaryPlaybackControlsType:a3];
+    [(AVMobileControlsViewController *)&v5 setSecondaryPlaybackControlsType:type];
     if (self)
     {
       if (self->_hasBeenSetUp)
@@ -7736,22 +7736,22 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   }
 }
 
-- (void)setRoutingConfiguration:(id)a3
+- (void)setRoutingConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(AVMobileControlsViewController *)self routingConfiguration];
+  configurationCopy = configuration;
+  routingConfiguration = [(AVMobileControlsViewController *)self routingConfiguration];
 
-  if (v5 != v4)
+  if (routingConfiguration != configurationCopy)
   {
     v7.receiver = self;
     v7.super_class = AVMobileChromelessControlsViewController;
-    [(AVMobileControlsViewController *)&v7 setRoutingConfiguration:v4];
+    [(AVMobileControlsViewController *)&v7 setRoutingConfiguration:configurationCopy];
     if (self)
     {
       if (self->_hasBeenSetUp)
       {
-        v6 = [(AVMobileChromelessControlsView *)self->_view displayModeControlsView];
-        [v6 setRoutingConfiguration:v4];
+        displayModeControlsView = [(AVMobileChromelessControlsView *)self->_view displayModeControlsView];
+        [displayModeControlsView setRoutingConfiguration:configurationCopy];
 
         [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _updateDisplayModeControlsButtonsInclusion];
       }
@@ -7761,23 +7761,23 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
 
 - (id)_displayModeControlsView
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[154] displayModeControlsView];
+    self = [self[154] displayModeControlsView];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)setRequiresLinearPlayback:(BOOL)a3
+- (void)setRequiresLinearPlayback:(BOOL)playback
 {
-  v3 = a3;
-  if ([(AVMobileControlsViewController *)self requiresLinearPlayback]!= a3)
+  playbackCopy = playback;
+  if ([(AVMobileControlsViewController *)self requiresLinearPlayback]!= playback)
   {
     v5.receiver = self;
     v5.super_class = AVMobileChromelessControlsViewController;
-    [(AVMobileControlsViewController *)&v5 setRequiresLinearPlayback:v3];
+    [(AVMobileControlsViewController *)&v5 setRequiresLinearPlayback:playbackCopy];
     if (self)
     {
       if (self->_hasBeenSetUp)
@@ -7790,27 +7790,27 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   }
 }
 
-- (void)setPlayerController:(id)a3
+- (void)setPlayerController:(id)controller
 {
-  v4 = a3;
-  v5 = [(AVMobileControlsViewController *)self playerController];
+  controllerCopy = controller;
+  playerController = [(AVMobileControlsViewController *)self playerController];
 
-  if (v5 != v4)
+  if (playerController != controllerCopy)
   {
-    v6 = [(AVMobileControlsViewController *)self playerController];
-    [v6 avkit_setWebKitDelegate:0];
+    playerController2 = [(AVMobileControlsViewController *)self playerController];
+    [playerController2 avkit_setWebKitDelegate:0];
 
     v8.receiver = self;
     v8.super_class = AVMobileChromelessControlsViewController;
-    [(AVMobileControlsViewController *)&v8 setPlayerController:v4];
-    v7 = [(AVMobileControlsViewController *)self playerController];
-    [v7 avkit_setWebKitDelegate:self];
+    [(AVMobileControlsViewController *)&v8 setPlayerController:controllerCopy];
+    playerController3 = [(AVMobileControlsViewController *)self playerController];
+    [playerController3 avkit_setWebKitDelegate:self];
 
     if (self)
     {
       if (self->_hasBeenSetUp)
       {
-        [(AVPlayerControllerTimeResolver *)self->_timeResolver setPlayerController:v4];
+        [(AVPlayerControllerTimeResolver *)self->_timeResolver setPlayerController:controllerCopy];
         [(AVMobileChromelessControlsViewController *)self _updateWebKitExcludedObservationState];
         [(AVMobileChromelessControlsViewController *)self _updateTimeResolver];
       }
@@ -7818,46 +7818,46 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   }
 }
 
-- (void)setPlaybackSpeedCollection:(id)a3
+- (void)setPlaybackSpeedCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(AVControlsViewController *)self playbackSpeedCollection];
+  collectionCopy = collection;
+  playbackSpeedCollection = [(AVControlsViewController *)self playbackSpeedCollection];
 
-  if (v5 != v4)
+  if (playbackSpeedCollection != collectionCopy)
   {
     v6.receiver = self;
     v6.super_class = AVMobileChromelessControlsViewController;
-    [(AVControlsViewController *)&v6 setPlaybackSpeedCollection:v4];
+    [(AVControlsViewController *)&v6 setPlaybackSpeedCollection:collectionCopy];
     if (self)
     {
       if (self->_hasBeenSetUp)
       {
-        [(AVMobilePlaybackRateMenuController *)self->_playbackSpeedMenuController setPlaybackSpeedCollection:v4];
+        [(AVMobilePlaybackRateMenuController *)self->_playbackSpeedMenuController setPlaybackSpeedCollection:collectionCopy];
         [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _updatePlaybackSpeedControlInclusion];
       }
     }
   }
 }
 
-- (void)setOptimizeForPerformance:(BOOL)a3
+- (void)setOptimizeForPerformance:(BOOL)performance
 {
-  v3 = a3;
-  if ([(AVMobileControlsViewController *)self optimizeForPerformance]!= a3)
+  performanceCopy = performance;
+  if ([(AVMobileControlsViewController *)self optimizeForPerformance]!= performance)
   {
     v5.receiver = self;
     v5.super_class = AVMobileChromelessControlsViewController;
-    [(AVMobileControlsViewController *)&v5 setOptimizeForPerformance:v3];
+    [(AVMobileControlsViewController *)&v5 setOptimizeForPerformance:performanceCopy];
     [(AVMobileChromelessControlsViewController *)self _attemptSetupIfNeeded];
   }
 }
 
-- (void)setIncludedControls:(unint64_t)a3
+- (void)setIncludedControls:(unint64_t)controls
 {
-  if ([(AVMobileControlsViewController *)self includedControls]!= a3)
+  if ([(AVMobileControlsViewController *)self includedControls]!= controls)
   {
     v5.receiver = self;
     v5.super_class = AVMobileChromelessControlsViewController;
-    [(AVMobileControlsViewController *)&v5 setIncludedControls:a3];
+    [(AVMobileControlsViewController *)&v5 setIncludedControls:controls];
     if (self)
     {
       if (self->_hasBeenSetUp)
@@ -7869,13 +7869,13 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   }
 }
 
-- (void)setExcludedControls:(unint64_t)a3
+- (void)setExcludedControls:(unint64_t)controls
 {
-  if ([(AVMobileControlsViewController *)self excludedControls]!= a3)
+  if ([(AVMobileControlsViewController *)self excludedControls]!= controls)
   {
     v5.receiver = self;
     v5.super_class = AVMobileChromelessControlsViewController;
-    [(AVMobileControlsViewController *)&v5 setExcludedControls:a3];
+    [(AVMobileControlsViewController *)&v5 setExcludedControls:controls];
     if (self)
     {
       if (self->_hasBeenSetUp)
@@ -7891,24 +7891,24 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   }
 }
 
-- (void)setFullscreenController:(id)a3
+- (void)setFullscreenController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = AVMobileChromelessControlsViewController;
-  v4 = a3;
-  [(AVMobileControlsViewController *)&v5 setFullscreenController:v4];
-  [v4 setDelegate:{self, v5.receiver, v5.super_class}];
+  controllerCopy = controller;
+  [(AVMobileControlsViewController *)&v5 setFullscreenController:controllerCopy];
+  [controllerCopy setDelegate:{self, v5.receiver, v5.super_class}];
 }
 
 - (id)displayModeControlsLayoutItem
 {
   if (self)
   {
-    v3 = [(AVMobileChromelessControlsView *)self->_view displayModeControlsView];
-    v4 = v3;
+    displayModeControlsView = [(AVMobileChromelessControlsView *)self->_view displayModeControlsView];
+    v4 = displayModeControlsView;
     if (self->_view)
     {
-      v5 = v3 == 0;
+      v5 = displayModeControlsView == 0;
     }
 
     else
@@ -7933,15 +7933,15 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   return v9;
 }
 
-- (void)setControlItems:(id)a3
+- (void)setControlItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v17.receiver = self;
   v17.super_class = AVMobileChromelessControlsViewController;
-  v5 = [(AVMobileControlsViewController *)&v17 controlItems];
+  controlItems = [(AVMobileControlsViewController *)&v17 controlItems];
 
-  if (v5 != v4)
+  if (controlItems != itemsCopy)
   {
     v15 = 0u;
     v16 = 0u;
@@ -7949,8 +7949,8 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
     v14 = 0u;
     v12.receiver = self;
     v12.super_class = AVMobileChromelessControlsViewController;
-    v6 = [(AVMobileControlsViewController *)&v12 controlItems];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    controlItems2 = [(AVMobileControlsViewController *)&v12 controlItems];
+    v7 = [controlItems2 countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -7962,23 +7962,23 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(controlItems2);
           }
 
           [*(*(&v13 + 1) + 8 * v10++) setDelegate:0];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v8 = [controlItems2 countByEnumeratingWithState:&v13 objects:v18 count:16];
       }
 
       while (v8);
     }
 
-    [v4 enumerateObjectsUsingBlock:&__block_literal_global_48];
+    [itemsCopy enumerateObjectsUsingBlock:&__block_literal_global_48];
     v11.receiver = self;
     v11.super_class = AVMobileChromelessControlsViewController;
-    [(AVMobileControlsViewController *)&v11 setControlItems:v4];
+    [(AVMobileControlsViewController *)&v11 setControlItems:itemsCopy];
     if (self && self->_hasBeenSetUp)
     {
       [(AVMobileChromelessControlsViewController *)self _updateAuxiliaryControlsForControlItems];
@@ -7987,16 +7987,16 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   }
 }
 
-- (void)setShowsFullScreenControl:(BOOL)a3
+- (void)setShowsFullScreenControl:(BOOL)control
 {
-  v3 = a3;
+  controlCopy = control;
   v6.receiver = self;
   v6.super_class = AVMobileChromelessControlsViewController;
-  if ([(AVMobileControlsViewController *)&v6 showsFullScreenControl]!= a3)
+  if ([(AVMobileControlsViewController *)&v6 showsFullScreenControl]!= control)
   {
     v5.receiver = self;
     v5.super_class = AVMobileChromelessControlsViewController;
-    [(AVMobileControlsViewController *)&v5 setShowsFullScreenControl:v3];
+    [(AVMobileControlsViewController *)&v5 setShowsFullScreenControl:controlCopy];
     if (self)
     {
       if (self->_hasBeenSetUp)
@@ -8013,8 +8013,8 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   v4 = *(MEMORY[0x1E695F058] + 8);
   v5 = *(MEMORY[0x1E695F058] + 16);
   v6 = *(MEMORY[0x1E695F058] + 24);
-  v7 = [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _volumeControlsView];
-  [v7 frame];
+  _volumeControlsView = [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _volumeControlsView];
+  [_volumeControlsView frame];
   v41.origin.x = v8;
   v41.origin.y = v9;
   v41.size.width = v10;
@@ -8029,8 +8029,8 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   width = v36.size.width;
   height = v36.size.height;
 
-  v16 = [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _displayModeControlsView];
-  [v16 frame];
+  _displayModeControlsView = [(AVMobileChromelessControlsViewController *)&self->super.super.super.super.super.super.isa _displayModeControlsView];
+  [_displayModeControlsView frame];
   v42.origin.x = v17;
   v42.origin.y = v18;
   v42.size.width = v19;
@@ -8064,19 +8064,19 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
   return result;
 }
 
-- (void)setCustomInfoViewControllers:(id)a3
+- (void)setCustomInfoViewControllers:(id)controllers
 {
-  v5 = a3;
-  if (self->_customInfoViewControllers != v5)
+  controllersCopy = controllers;
+  if (self->_customInfoViewControllers != controllersCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_customInfoViewControllers, a3);
-    v5 = v6;
+    v6 = controllersCopy;
+    objc_storeStrong(&self->_customInfoViewControllers, controllers);
+    controllersCopy = v6;
     if (self->_hasBeenSetUp)
     {
       [(AVMobileChromelessControlsViewController *)self _updateContentTabViewControllers];
       [(AVMobileChromelessControlsViewController *)self _updateControlsViewLayoutConfiguration];
-      v5 = v6;
+      controllersCopy = v6;
     }
   }
 }
@@ -8085,16 +8085,16 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
 {
   if (self->_styleSheet)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   [(AVObservationController *)self->_observationController stopAllObservation];
-  v4 = [(AVMobileControlsViewController *)self volumeController];
-  [v4 setPrefersSystemVolumeHUDHidden:0];
+  volumeController = [(AVMobileControlsViewController *)self volumeController];
+  [volumeController setPrefersSystemVolumeHUDHidden:0];
 
-  v5 = [(AVMobileControlsViewController *)self volumeController];
-  [v5 setClientWithIdentifier:0 forWindowSceneSessionWithIdentifier:0];
+  volumeController2 = [(AVMobileControlsViewController *)self volumeController];
+  [volumeController2 setClientWithIdentifier:0 forWindowSceneSessionWithIdentifier:0];
 
   [(AVMobileGlassControlsViewController *)self _cancelOutstandVisibilityUpdates];
   v6.receiver = self;
@@ -8115,10 +8115,10 @@ void __70__AVMobileChromelessControlsViewController_flashControlsWithDuration___
     *&v2->_sliderEdgeInsets.top = *MEMORY[0x1E69DDCE0];
     *&v2->_sliderEdgeInsets.bottom = v4;
     v2->_showsAudioTrackSelectionMenu = 1;
-    v5 = [MEMORY[0x1E696AE30] processInfo];
-    v6 = [v5 globallyUniqueString];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    globallyUniqueString = [processInfo globallyUniqueString];
     uniqueIdentifier = v3->_uniqueIdentifier;
-    v3->_uniqueIdentifier = v6;
+    v3->_uniqueIdentifier = globallyUniqueString;
 
     controlsInOverflowMenu = v3->_controlsInOverflowMenu;
     v3->_controlsInOverflowMenu = 0;

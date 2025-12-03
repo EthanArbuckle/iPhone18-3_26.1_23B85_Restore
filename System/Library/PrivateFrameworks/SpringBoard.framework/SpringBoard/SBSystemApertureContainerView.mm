@@ -1,46 +1,46 @@
 @interface SBSystemApertureContainerView
-+ (double)_defaultCornerRadiusForBounds:(CGRect)a3 inWindow:(id)a4;
++ (double)_defaultCornerRadiusForBounds:(CGRect)bounds inWindow:(id)window;
 - (BOOL)_isInRotationTransition;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (SAUIElementViewControlling)elementViewController;
 - (SAUIElementViewControlling)outgoingElementViewController;
 - (SBSAContainerViewDescription)containerViewDescription;
 - (SBSystemApertureContainerRenderingConfiguration)renderingConfiguration;
-- (SBSystemApertureContainerView)initWithInterfaceElementIdentifier:(id)a3;
+- (SBSystemApertureContainerView)initWithInterfaceElementIdentifier:(id)identifier;
 - (SBSystemApertureContainerViewDelegate)delegate;
 - (SBSystemApertureElementOrientationAuthority)elementOrientationAuthority;
 - (UIColor)keyLineTintColor;
 - (id)_generateAccessibilityIdentifier;
 - (id)_validatedKeyLineTintColor;
-- (int64_t)activeElementInterfaceOrientationForSystemApertureElementOrientationObserver:(id)a3;
+- (int64_t)activeElementInterfaceOrientationForSystemApertureElementOrientationObserver:(id)observer;
 - (void)_applySettingsValues;
-- (void)_layoutHitTestViewWithBounds:(CGRect)a3;
-- (void)_setContentViewTransform:(CGAffineTransform *)a3 elementViewControllerInterfaceOrientation:(int64_t)a4;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setCornerRadius:(double)a3;
+- (void)_layoutHitTestViewWithBounds:(CGRect)bounds;
+- (void)_setContentViewTransform:(CGAffineTransform *)transform elementViewControllerInterfaceOrientation:(int64_t)orientation;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setCornerRadius:(double)radius;
 - (void)_updateContentViewTransformImmediately;
 - (void)_updateKeyLineFilters;
 - (void)_updateShadowStyleIfNeeded;
-- (void)addContainerViewGeometryObserver:(id)a3;
-- (void)addContentSubview:(id)a3;
-- (void)backgroundLumaView:(id)a3 didTransitionToLevel:(unint64_t)a4;
-- (void)elementOrientationDidChangeWithTransitionCoordinator:(id)a3;
+- (void)addContainerViewGeometryObserver:(id)observer;
+- (void)addContentSubview:(id)subview;
+- (void)backgroundLumaView:(id)view didTransitionToLevel:(unint64_t)level;
+- (void)elementOrientationDidChangeWithTransitionCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)removeContainerViewGeometryObserver:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setElementOrientationAuthority:(id)a3;
-- (void)setElementViewController:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setIDCornerRadius:(double)a3;
-- (void)setKeyLineMode:(int64_t)a3;
-- (void)setKeyLineTintColor:(id)a3;
+- (void)removeContainerViewGeometryObserver:(id)observer;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenter:(CGPoint)center;
+- (void)setElementOrientationAuthority:(id)authority;
+- (void)setElementViewController:(id)controller;
+- (void)setFrame:(CGRect)frame;
+- (void)setIDCornerRadius:(double)radius;
+- (void)setKeyLineMode:(int64_t)mode;
+- (void)setKeyLineTintColor:(id)color;
 - (void)setNeedsLayout;
-- (void)setRank:(unint64_t)a3;
-- (void)setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3;
-- (void)setShadowStyle:(int64_t)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setRank:(unint64_t)rank;
+- (void)setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration;
+- (void)setShadowStyle:(int64_t)style;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation SBSystemApertureContainerView
@@ -191,11 +191,11 @@ void __57__SBSystemApertureContainerView_containerViewDescription__block_invoke(
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
-  v4 = [(SBSystemApertureSettings *)self->_settings adaptiveKeyLineColorMatrix];
-  v5 = v4;
-  if (v4)
+  adaptiveKeyLineColorMatrix = [(SBSystemApertureSettings *)self->_settings adaptiveKeyLineColorMatrix];
+  v5 = adaptiveKeyLineColorMatrix;
+  if (adaptiveKeyLineColorMatrix)
   {
-    [v4 colorMatrix];
+    [adaptiveKeyLineColorMatrix colorMatrix];
   }
 
   else
@@ -233,11 +233,11 @@ void __57__SBSystemApertureContainerView_containerViewDescription__block_invoke(
     v9 = 0;
   }
 
-  v12 = [(_SBAdaptiveKeyLineBackdropView *)self->_lightBkgKeyLineView backdropLayer];
-  [v12 setAllowsInPlaceFiltering:v9 ^ 1u];
+  backdropLayer = [(_SBAdaptiveKeyLineBackdropView *)self->_lightBkgKeyLineView backdropLayer];
+  [backdropLayer setAllowsInPlaceFiltering:v9 ^ 1u];
 
-  v13 = [(_SBAdaptiveKeyLineBackdropView *)self->_lightBkgKeyLineView layer];
-  [v13 setFilters:v7];
+  layer = [(_SBAdaptiveKeyLineBackdropView *)self->_lightBkgKeyLineView layer];
+  [layer setFilters:v7];
 
   [(SBSystemApertureSettings *)self->_settings keyLineDarkToMixedMinLuma];
   v15 = v14;
@@ -289,19 +289,19 @@ void __57__SBSystemApertureContainerView_containerViewDescription__block_invoke(
 - (id)_generateAccessibilityIdentifier
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"jindo-container-view:%lu", self->_rank + 1];
-  v4 = [(SBSystemApertureContainerView *)self elementViewController];
-  v5 = v4;
-  if (v4)
+  elementViewController = [(SBSystemApertureContainerView *)self elementViewController];
+  v5 = elementViewController;
+  if (elementViewController)
   {
-    v6 = [v4 elementViewProvider];
-    v7 = [v6 element];
-    v8 = [v7 clientIdentifier];
+    elementViewProvider = [elementViewController elementViewProvider];
+    element = [elementViewProvider element];
+    clientIdentifier = [element clientIdentifier];
 
-    v9 = [v5 elementViewProvider];
-    v10 = [v9 element];
-    v11 = [v10 elementIdentifier];
+    elementViewProvider2 = [v5 elementViewProvider];
+    element2 = [elementViewProvider2 element];
+    elementIdentifier = [element2 elementIdentifier];
 
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@", client-identifier:%@, element-identifier:%@", v8, v11];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@", client-identifier:%@, element-identifier:%@", clientIdentifier, elementIdentifier];
     v13 = [v3 stringByAppendingString:v12];
 
     v3 = v13;
@@ -358,7 +358,7 @@ void __57__SBSystemApertureContainerView_containerViewDescription__block_invoke(
   v9 = 138543874;
   v10 = v7;
   v11 = 2050;
-  v12 = a1;
+  selfCopy = self;
   v13 = 2114;
   v14 = v8;
   _os_log_debug_impl(&dword_21ED4E000, a3, OS_LOG_TYPE_DEBUG, "<%{public}@: %{public}p>: Updating Container to Shadow Style: %{public}@", &v9, 0x20u);
@@ -381,11 +381,11 @@ void __57__SBSystemApertureContainerView_containerViewDescription__block_invoke(
   return cachedValidatedKeyLineTintColor;
 }
 
-- (SBSystemApertureContainerView)initWithInterfaceElementIdentifier:(id)a3
+- (SBSystemApertureContainerView)initWithInterfaceElementIdentifier:(id)identifier
 {
   v101[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(SBSystemApertureContainerView *)a2 initWithInterfaceElementIdentifier:?];
   }
@@ -395,8 +395,8 @@ void __57__SBSystemApertureContainerView_containerViewDescription__block_invoke(
   v6 = [(SBSystemApertureContainerView *)&v97 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v6)
   {
-    v91 = v5;
-    v7 = [v5 copy];
+    v91 = identifierCopy;
+    v7 = [identifierCopy copy];
     interfaceElementIdentifier = v6->_interfaceElementIdentifier;
     v6->_interfaceElementIdentifier = v7;
 
@@ -405,8 +405,8 @@ void __57__SBSystemApertureContainerView_containerViewDescription__block_invoke(
     v6->_settings = v9;
 
     [(PTSettings *)v6->_settings addKeyObserver:v6];
-    v11 = [(SBSystemApertureSettings *)v6->_settings adaptiveKeyLineColorMatrix];
-    [v11 addKeyObserver:v6];
+    adaptiveKeyLineColorMatrix = [(SBSystemApertureSettings *)v6->_settings adaptiveKeyLineColorMatrix];
+    [adaptiveKeyLineColorMatrix addKeyObserver:v6];
 
     [(SBSystemApertureContainerView *)v6 _applySettingsValues];
     [(SBSystemApertureContainerView *)v6 bounds];
@@ -418,9 +418,9 @@ void __57__SBSystemApertureContainerView_containerViewDescription__block_invoke(
     hitTestView = v6->_hitTestView;
     v6->_hitTestView = v20;
 
-    v22 = [(UIView *)v6->_hitTestView layer];
+    layer = [(UIView *)v6->_hitTestView layer];
     v92 = v6;
-    [v22 setHitTestsAsOpaque:1];
+    [layer setHitTestsAsOpaque:1];
 
     [(SBSystemApertureContainerView *)v92 addSubview:v92->_hitTestView];
     v23 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v13, v15, v17, v19}];
@@ -453,19 +453,19 @@ void __57__SBSystemApertureContainerView_containerViewDescription__block_invoke(
 
     [(UIView *)v6->_darkBkgKeyLineView setAlpha:0.0];
     v40 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5E8]];
-    v41 = [(UIView *)v6->_darkBkgKeyLineView layer];
+    layer2 = [(UIView *)v6->_darkBkgKeyLineView layer];
     v90 = v40;
     v101[0] = v40;
     v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v101 count:1];
-    [v41 setFilters:v42];
+    [layer2 setFilters:v42];
 
     [(UIView *)v92->_subBackgroundGroupingView addSubview:v92->_darkBkgKeyLineView];
     v43 = objc_alloc_init(_SBAdaptiveKeyLineBackdropView);
     lightBkgKeyLineView = v92->_lightBkgKeyLineView;
     v92->_lightBkgKeyLineView = v43;
 
-    v45 = [(_SBAdaptiveKeyLineBackdropView *)v92->_lightBkgKeyLineView backdropLayer];
-    [v45 setAllowsInPlaceFiltering:1];
+    backdropLayer = [(_SBAdaptiveKeyLineBackdropView *)v92->_lightBkgKeyLineView backdropLayer];
+    [backdropLayer setAllowsInPlaceFiltering:1];
 
     [(_SBAdaptiveKeyLineBackdropView *)v92->_lightBkgKeyLineView setAlpha:0.0];
     [(SBSystemApertureContainerView *)v92 _updateKeyLineFilters];
@@ -474,15 +474,15 @@ void __57__SBSystemApertureContainerView_containerViewDescription__block_invoke(
     shadowView = v92->_shadowView;
     v92->_shadowView = v46;
 
-    v48 = [(UIView *)v92->_shadowView layer];
-    v49 = [MEMORY[0x277D75348] blackColor];
-    [v48 setShadowColor:{objc_msgSend(v49, "CGColor")}];
+    layer3 = [(UIView *)v92->_shadowView layer];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [layer3 setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-    v50 = [(UIView *)v92->_shadowView layer];
-    [v50 setShadowOpacity:0.0];
+    layer4 = [(UIView *)v92->_shadowView layer];
+    [layer4 setShadowOpacity:0.0];
 
-    v51 = [(UIView *)v92->_shadowView layer];
-    [v51 setShadowPathIsBounds:1];
+    layer5 = [(UIView *)v92->_shadowView layer];
+    [layer5 setShadowPathIsBounds:1];
 
     v92->_needsShadowStyleUpdate = 1;
     v52 = v92;
@@ -503,8 +503,8 @@ void __57__SBSystemApertureContainerView_containerViewDescription__block_invoke(
     v92->_blobEnablingBlackFillView = v57;
 
     v59 = v92->_blobEnablingBlackFillView;
-    v60 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)v59 setBackgroundColor:v60];
+    blackColor2 = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)v59 setBackgroundColor:blackColor2];
 
     [(UIView *)v92->_blobEnablingBlackFillView setClipsToBounds:1];
     [(UIView *)v52->_backgroundGroupingView addSubview:v52->_blobEnablingBlackFillView];
@@ -555,12 +555,12 @@ void __57__SBSystemApertureContainerView_containerViewDescription__block_invoke(
     v96 = 0u;
     v93 = 0u;
     v94 = 0u;
-    v74 = [(SBSystemApertureContainerView *)v92 layer];
-    v99[0] = v74;
-    v75 = [(UIView *)v92->_subBackgroundGroupingView layer];
-    v99[1] = v75;
-    v76 = [(UIView *)v92->_backgroundGroupingView layer];
-    v99[2] = v76;
+    layer6 = [(SBSystemApertureContainerView *)v92 layer];
+    v99[0] = layer6;
+    layer7 = [(UIView *)v92->_subBackgroundGroupingView layer];
+    v99[1] = layer7;
+    layer8 = [(UIView *)v92->_backgroundGroupingView layer];
+    v99[2] = layer8;
     v77 = [MEMORY[0x277CBEA60] arrayWithObjects:v99 count:3];
 
     v78 = [v77 countByEnumeratingWithState:&v93 objects:v100 count:16];
@@ -594,25 +594,25 @@ void __57__SBSystemApertureContainerView_containerViewDescription__block_invoke(
     }
 
     v6 = v92;
-    v87 = [(SBSystemApertureContainerView *)v92 layer];
-    [v87 setHitTestsAsOpaque:1];
+    layer9 = [(SBSystemApertureContainerView *)v92 layer];
+    [layer9 setHitTestsAsOpaque:1];
 
-    v88 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v88 addObserver:v92 selector:sel__invertColorsChanged_ name:*MEMORY[0x277D76480] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v92 selector:sel__invertColorsChanged_ name:*MEMORY[0x277D76480] object:0];
 
-    v5 = v91;
+    identifierCopy = v91;
   }
 
   return v6;
 }
 
-- (void)addContentSubview:(id)a3
+- (void)addContentSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   v5 = self->_rotatingContentView;
-  v6 = [v4 superview];
+  superview = [subviewCopy superview];
 
-  if (v6 != v5)
+  if (superview != v5)
   {
     v7 = MEMORY[0x277D75D18];
     v8[0] = MEMORY[0x277D85DD0];
@@ -620,7 +620,7 @@ void __57__SBSystemApertureContainerView_containerViewDescription__block_invoke(
     v8[2] = __51__SBSystemApertureContainerView_addContentSubview___block_invoke;
     v8[3] = &unk_2783A92D8;
     v9 = v5;
-    v10 = v4;
+    v10 = subviewCopy;
     [v7 _performWithoutRetargetingAnimations:v8];
   }
 }
@@ -668,55 +668,55 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
   return [v7 layoutIfNeeded];
 }
 
-- (void)addContainerViewGeometryObserver:(id)a3
+- (void)addContainerViewGeometryObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   geometryObservers = self->_geometryObservers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!geometryObservers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_geometryObservers;
-    self->_geometryObservers = v6;
+    self->_geometryObservers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     geometryObservers = self->_geometryObservers;
   }
 
-  if (![(NSHashTable *)geometryObservers containsObject:v4])
+  if (![(NSHashTable *)geometryObservers containsObject:observerCopy])
   {
     [(NSHashTable *)self->_geometryObservers addObject:v8];
   }
 }
 
-- (void)removeContainerViewGeometryObserver:(id)a3
+- (void)removeContainerViewGeometryObserver:(id)observer
 {
   geometryObservers = self->_geometryObservers;
   if (geometryObservers)
   {
-    [(NSHashTable *)geometryObservers removeObject:a3];
+    [(NSHashTable *)geometryObservers removeObject:observer];
   }
 }
 
-- (void)setKeyLineMode:(int64_t)a3
+- (void)setKeyLineMode:(int64_t)mode
 {
-  if (self->_keyLineMode != a3)
+  if (self->_keyLineMode != mode)
   {
-    v3 = a3;
-    self->_keyLineMode = a3;
+    modeCopy = mode;
+    self->_keyLineMode = mode;
     if (![(SBSystemApertureSettings *)self->_settings keyLineEnabled])
     {
-      v3 = 0;
+      modeCopy = 0;
     }
 
-    [(_UILumaTrackingBackdropView *)self->_backgroundLumaSamplingBackdrop setPaused:v3 == 0];
-    if (v3 == 2)
+    [(_UILumaTrackingBackdropView *)self->_backgroundLumaSamplingBackdrop setPaused:modeCopy == 0];
+    if (modeCopy == 2)
     {
       [(UIView *)self->_darkBkgKeyLineView setAlpha:*&SBSystemApertureKeyLineDarkBkgEnabledOpacity];
       v5 = 0.0;
     }
 
-    else if (v3 == 1)
+    else if (modeCopy == 1)
     {
       [(UIView *)self->_darkBkgKeyLineView setAlpha:0.0];
       v5 = 1.0;
@@ -724,7 +724,7 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
 
     else
     {
-      if (v3)
+      if (modeCopy)
       {
         return;
       }
@@ -739,12 +739,12 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
   }
 }
 
-- (void)setKeyLineTintColor:(id)a3
+- (void)setKeyLineTintColor:(id)color
 {
-  v9 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_keyLineTintColor isEqual:?]& 1) == 0)
   {
-    v4 = [v9 copy];
+    v4 = [colorCopy copy];
     keyLineTintColor = self->_keyLineTintColor;
     self->_keyLineTintColor = v4;
 
@@ -752,28 +752,28 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
     self->_cachedValidatedKeyLineTintColor = 0;
 
     darkBkgKeyLineView = self->_darkBkgKeyLineView;
-    v8 = [(SBSystemApertureContainerView *)self _validatedKeyLineTintColor];
-    [(UIView *)darkBkgKeyLineView setBackgroundColor:v8];
+    _validatedKeyLineTintColor = [(SBSystemApertureContainerView *)self _validatedKeyLineTintColor];
+    [(UIView *)darkBkgKeyLineView setBackgroundColor:_validatedKeyLineTintColor];
   }
 }
 
-- (void)setShadowStyle:(int64_t)a3
+- (void)setShadowStyle:(int64_t)style
 {
-  if (self->_shadowStyle != a3)
+  if (self->_shadowStyle != style)
   {
-    self->_shadowStyle = a3;
+    self->_shadowStyle = style;
     self->_needsShadowStyleUpdate = 1;
     [(SBSystemApertureContainerView *)self _updateShadowStyleIfNeeded];
   }
 }
 
-- (void)setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)a3
+- (void)setRenderingConfiguration:(SBSystemApertureContainerRenderingConfiguration *)configuration
 {
   gainMapView = self->_gainMapView;
-  v8 = *a3;
+  v8 = *configuration;
   [(_SBSystemApertureGainMapView *)gainMapView setRenderingConfiguration:&v8];
-  v6 = a3->renderingStyle == 1;
-  v7 = a3->renderingStyle == 1 || a3->renderingStyle == 4;
+  v6 = configuration->renderingStyle == 1;
+  v7 = configuration->renderingStyle == 1 || configuration->renderingStyle == 4;
   [(_UILumaTrackingBackdropView *)self->_backgroundLumaSamplingBackdrop setHidden:v7];
   [(UIView *)self->_darkBkgKeyLineView setHidden:v7];
   [(_SBAdaptiveKeyLineBackdropView *)self->_lightBkgKeyLineView setHidden:v7];
@@ -784,12 +784,12 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
   [(UIView *)self->_shadowView setHidden:v7];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v31 = *MEMORY[0x277D85DE8];
   [(SBSystemApertureContainerView *)self frame];
   v9 = v8;
@@ -844,10 +844,10 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
   }
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   v24 = *MEMORY[0x277D85DE8];
   [(SBSystemApertureContainerView *)self center];
   v7 = v6;
@@ -892,12 +892,12 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SBSystemApertureContainerView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -921,12 +921,12 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
   }
 }
 
-- (void)_layoutHitTestViewWithBounds:(CGRect)a3
+- (void)_layoutHitTestViewWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -943,12 +943,12 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v8.receiver = self;
   v8.super_class = SBSystemApertureContainerView;
   [(SBSystemApertureContainerView *)&v8 willMoveToSuperview:?];
-  if (a3)
+  if (superview)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v6 = [WeakRetained parentViewForSubBackgroundForSystemApertureContainerView:self];
@@ -965,51 +965,51 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
   }
 }
 
-- (void)setIDCornerRadius:(double)a3
+- (void)setIDCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = SBSystemApertureContainerView;
   [(UIView *)&v5 setIDCornerRadius:?];
-  [(_UILumaTrackingBackdropView *)self->_backgroundLumaSamplingBackdrop setIDCornerRadius:a3];
-  [(UIView *)self->_shadowView setIDCornerRadius:a3 + -1.0];
-  [(UIView *)self->_darkBkgKeyLineView setIDCornerRadius:*&SBSystemApertureKeyLineThickness + a3];
-  [(UIView *)self->_lightBkgKeyLineView setIDCornerRadius:*&SBSystemApertureAdaptiveKeyLineThickness + a3];
-  [(_SBSystemApertureGainMapView *)self->_gainMapView setIDCornerRadius:a3];
-  [(UIView *)self->_blobEnablingBlackFillView setIDCornerRadius:a3 + -0.666666667];
-  [(UIView *)self->_scalingContentView setIDCornerRadius:a3];
-  [(UIView *)self->_contentClippingView setIDCornerRadius:a3];
+  [(_UILumaTrackingBackdropView *)self->_backgroundLumaSamplingBackdrop setIDCornerRadius:radius];
+  [(UIView *)self->_shadowView setIDCornerRadius:radius + -1.0];
+  [(UIView *)self->_darkBkgKeyLineView setIDCornerRadius:*&SBSystemApertureKeyLineThickness + radius];
+  [(UIView *)self->_lightBkgKeyLineView setIDCornerRadius:*&SBSystemApertureAdaptiveKeyLineThickness + radius];
+  [(_SBSystemApertureGainMapView *)self->_gainMapView setIDCornerRadius:radius];
+  [(UIView *)self->_blobEnablingBlackFillView setIDCornerRadius:radius + -0.666666667];
+  [(UIView *)self->_scalingContentView setIDCornerRadius:radius];
+  [(UIView *)self->_contentClippingView setIDCornerRadius:radius];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"SBSystemApertureContainerView.m" lineNumber:479 description:@"use -[UIView setIDCornerRadius:] instead"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSystemApertureContainerView.m" lineNumber:479 description:@"use -[UIView setIDCornerRadius:] instead"];
 
   v7.receiver = self;
   v7.super_class = SBSystemApertureContainerView;
-  [(SBSystemApertureContainerView *)&v7 _setContinuousCornerRadius:a3];
+  [(SBSystemApertureContainerView *)&v7 _setContinuousCornerRadius:radius];
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"SBSystemApertureContainerView.m" lineNumber:484 description:@"use -[UIView setIDCornerRadius:] instead"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSystemApertureContainerView.m" lineNumber:484 description:@"use -[UIView setIDCornerRadius:] instead"];
 
   v7.receiver = self;
   v7.super_class = SBSystemApertureContainerView;
-  [(SBSystemApertureContainerView *)&v7 _setCornerRadius:a3];
+  [(SBSystemApertureContainerView *)&v7 _setCornerRadius:radius];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   if ([(SBSystemApertureContainerView *)self isUserInteractionEnabled])
   {
     v11.receiver = self;
     v11.super_class = SBSystemApertureContainerView;
-    if ([(SBSystemApertureContainerView *)&v11 pointInside:v7 withEvent:x, y])
+    if ([(SBSystemApertureContainerView *)&v11 pointInside:eventCopy withEvent:x, y])
     {
       v8 = 1;
     }
@@ -1018,7 +1018,7 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
     {
       hitTestView = self->_hitTestView;
       [(SBSystemApertureContainerView *)self convertPoint:hitTestView toView:x, y];
-      v8 = [(UIView *)hitTestView pointInside:v7 withEvent:?];
+      v8 = [(UIView *)hitTestView pointInside:eventCopy withEvent:?];
     }
   }
 
@@ -1030,9 +1030,9 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
   return v8;
 }
 
-- (void)setElementViewController:(id)a3
+- (void)setElementViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_elementViewController);
 
   if (WeakRetained != obj)
@@ -1042,14 +1042,14 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
     objc_storeWeak(&self->_elementViewController, obj);
     [(SBSystemApertureContainerView *)self _updateContentViewTransformImmediately];
     [(SBSystemApertureContainerView *)self setContentClippingEnabled:1];
-    v6 = [(SBSystemApertureContainerView *)self _generateAccessibilityIdentifier];
-    [(SBSystemApertureContainerView *)self setAccessibilityIdentifier:v6];
+    _generateAccessibilityIdentifier = [(SBSystemApertureContainerView *)self _generateAccessibilityIdentifier];
+    [(SBSystemApertureContainerView *)self setAccessibilityIdentifier:_generateAccessibilityIdentifier];
   }
 }
 
-- (void)setElementOrientationAuthority:(id)a3
+- (void)setElementOrientationAuthority:(id)authority
 {
-  obj = a3;
+  obj = authority;
   WeakRetained = objc_loadWeakRetained(&self->_elementOrientationAuthority);
 
   v5 = obj;
@@ -1061,9 +1061,9 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
   }
 }
 
-- (void)elementOrientationDidChangeWithTransitionCoordinator:(id)a3
+- (void)elementOrientationDidChangeWithTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   WeakRetained = objc_loadWeakRetained(&self->_elementViewController);
   v6 = SBSAIsElementViewControllerFixedInOrientation(WeakRetained);
 
@@ -1077,9 +1077,9 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
     v18 = 0u;
     v19 = 0u;
     v17 = 0u;
-    if (v4)
+    if (coordinatorCopy)
     {
-      [v4 targetTransform];
+      [coordinatorCopy targetTransform];
     }
 
     v9 = v17;
@@ -1101,7 +1101,7 @@ uint64_t __51__SBSystemApertureContainerView_addContentSubview___block_invoke_2(
     v13 = v9;
     v15 = v11;
     v12[4] = self;
-    [v4 animateAlongsideTransition:v16 completion:v12];
+    [coordinatorCopy animateAlongsideTransition:v16 completion:v12];
   }
 }
 
@@ -1141,7 +1141,7 @@ __n128 __86__SBSystemApertureContainerView_elementOrientationDidChangeWithTransi
   return result;
 }
 
-- (int64_t)activeElementInterfaceOrientationForSystemApertureElementOrientationObserver:(id)a3
+- (int64_t)activeElementInterfaceOrientationForSystemApertureElementOrientationObserver:(id)observer
 {
   WeakRetained = objc_loadWeakRetained(&self->_elementViewController);
   v5 = SBSAIsElementViewControllerFixedInOrientation(WeakRetained);
@@ -1157,11 +1157,11 @@ __n128 __86__SBSystemApertureContainerView_elementOrientationDidChangeWithTransi
   return v8;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   [(SBSystemApertureContainerView *)self _applySettingsValues];
-  if (([v6 containsString:@"keyLineColorFixedLstar"] & 1) != 0 || objc_msgSend(v6, "containsString:", @"activityKeyLineColorEnabled"))
+  if (([keyCopy containsString:@"keyLineColorFixedLstar"] & 1) != 0 || objc_msgSend(keyCopy, "containsString:", @"activityKeyLineColorEnabled"))
   {
     cachedValidatedKeyLineTintColor = self->_cachedValidatedKeyLineTintColor;
     self->_cachedValidatedKeyLineTintColor = 0;
@@ -1170,12 +1170,12 @@ __n128 __86__SBSystemApertureContainerView_elementOrientationDidChangeWithTransi
   [(SBSystemApertureContainerView *)self setNeedsLayout];
 }
 
-- (void)backgroundLumaView:(id)a3 didTransitionToLevel:(unint64_t)a4
+- (void)backgroundLumaView:(id)view didTransitionToLevel:(unint64_t)level
 {
   v23 = *MEMORY[0x277D85DE8];
   if (_AXSClassicInvertColorsEnabled())
   {
-    if (a4 == 2)
+    if (level == 2)
     {
       v6 = 1;
     }
@@ -1189,9 +1189,9 @@ __n128 __86__SBSystemApertureContainerView_elementOrientationDidChangeWithTransi
   }
 
   v7 = _AXSInvertColorsEnabled();
-  v8 = a4 == 2;
+  v8 = level == 2;
   v9 = 1;
-  if (a4 == 2)
+  if (level == 2)
   {
     v6 = 2;
   }
@@ -1242,11 +1242,11 @@ LABEL_13:
   [WeakRetained systemApertureContainerView:self sampledLuminanceLevelChangedTo:v6];
 }
 
-+ (double)_defaultCornerRadiusForBounds:(CGRect)a3 inWindow:(id)a4
++ (double)_defaultCornerRadiusForBounds:(CGRect)bounds inWindow:(id)window
 {
-  v4 = CGRectGetHeight(a3) * 0.5;
-  v5 = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
-  [v5 maximumContinuousCornerRadius];
+  v4 = CGRectGetHeight(bounds) * 0.5;
+  mEMORY[0x277D67E28] = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
+  [mEMORY[0x277D67E28] maximumContinuousCornerRadius];
   v7 = v6;
 
   if (v4 <= v7)
@@ -1273,33 +1273,33 @@ LABEL_13:
   return !CGAffineTransformEqualToTransform(&t1, &v5);
 }
 
-- (void)_setContentViewTransform:(CGAffineTransform *)a3 elementViewControllerInterfaceOrientation:(int64_t)a4
+- (void)_setContentViewTransform:(CGAffineTransform *)transform elementViewControllerInterfaceOrientation:(int64_t)orientation
 {
   rotatingContentView = self->_rotatingContentView;
-  v7 = *&a3->c;
-  v13 = *&a3->a;
+  v7 = *&transform->c;
+  v13 = *&transform->a;
   v14 = v7;
-  v15 = *&a3->tx;
+  v15 = *&transform->tx;
   v8 = rotatingContentView;
   [(UIView *)v8 setTransform:&v13];
   WeakRetained = objc_loadWeakRetained(&self->_elementViewController);
-  v10 = [WeakRetained elementViewProvider];
-  v11 = [v10 element];
+  elementViewProvider = [WeakRetained elementViewProvider];
+  element = [elementViewProvider element];
 
   LOBYTE(WeakRetained) = objc_opt_respondsToSelector();
   if (WeakRetained)
   {
-    if (a4 > 4)
+    if (orientation > 4)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = qword_21F8A5C10[a4];
+      v12 = qword_21F8A5C10[orientation];
     }
 
-    [v11 setObstructionEdge:v12];
+    [element setObstructionEdge:v12];
   }
 }
 
@@ -1317,13 +1317,13 @@ LABEL_13:
   return WeakRetained;
 }
 
-- (void)setRank:(unint64_t)a3
+- (void)setRank:(unint64_t)rank
 {
-  if (self->_rank != a3)
+  if (self->_rank != rank)
   {
-    self->_rank = a3;
-    v5 = [(SBSystemApertureContainerView *)self _generateAccessibilityIdentifier];
-    [(SBSystemApertureContainerView *)self setAccessibilityIdentifier:v5];
+    self->_rank = rank;
+    _generateAccessibilityIdentifier = [(SBSystemApertureContainerView *)self _generateAccessibilityIdentifier];
+    [(SBSystemApertureContainerView *)self setAccessibilityIdentifier:_generateAccessibilityIdentifier];
   }
 }
 

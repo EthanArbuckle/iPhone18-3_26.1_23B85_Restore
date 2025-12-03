@@ -1,6 +1,6 @@
 @interface PLSleepState
 + (void)load;
-- (BOOL)updateWithEntry:(id)a3;
+- (BOOL)updateWithEntry:(id)entry;
 - (PLSleepState)init;
 @end
 
@@ -8,7 +8,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLSleepState;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -25,26 +25,26 @@
   return v3;
 }
 
-- (BOOL)updateWithEntry:(id)a3
+- (BOOL)updateWithEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"State"];
-  v6 = [v5 intValue];
+  entryCopy = entry;
+  v5 = [entryCopy objectForKeyedSubscript:@"State"];
+  intValue = [v5 intValue];
 
-  v7 = [v4 objectForKeyedSubscript:@"Event"];
-  v8 = [v7 intValue];
+  v7 = [entryCopy objectForKeyedSubscript:@"Event"];
+  intValue2 = [v7 intValue];
 
-  if (v6 <= 6)
+  if (intValue <= 6)
   {
-    if (((1 << v6) & 0x65) != 0)
+    if (((1 << intValue) & 0x65) != 0)
     {
       v9 = MEMORY[0x1E695E110];
       goto LABEL_4;
     }
 
-    if (v6 == 1)
+    if (intValue == 1)
     {
-      if (v8 == 1 || v8 == 6)
+      if (intValue2 == 1 || intValue2 == 6)
       {
         v9 = MEMORY[0x1E695E118];
       }
@@ -63,8 +63,8 @@ LABEL_4:
   v10 = [(PLState *)self updateWithValue:v9];
   if (v10)
   {
-    v11 = [v4 entryDate];
-    [(PLState *)self setStateChangeTime:v11];
+    entryDate = [entryCopy entryDate];
+    [(PLState *)self setStateChangeTime:entryDate];
   }
 
   return v10;

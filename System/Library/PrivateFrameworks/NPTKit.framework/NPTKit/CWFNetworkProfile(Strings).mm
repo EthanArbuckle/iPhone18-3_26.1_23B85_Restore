@@ -9,32 +9,32 @@
 - (id)dictionary
 {
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isCaptiveStateDetermined")}];
+  v3 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isCaptiveStateDetermined")}];
   [v2 setValue:v3 forKey:@"wifi_is_captive_state_determined"];
 
-  if ([a1 isCaptiveStateDetermined])
+  if ([self isCaptiveStateDetermined])
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isCaptive")}];
+    v4 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isCaptive")}];
     [v2 setValue:v4 forKey:@"wifi_is_captive"];
   }
 
-  v5 = [a1 __descriptionForHiddenState];
+  __descriptionForHiddenState = [self __descriptionForHiddenState];
 
-  if (v5)
+  if (__descriptionForHiddenState)
   {
-    v6 = [a1 __descriptionForHiddenState];
-    [v2 setValue:v6 forKey:@"wifi_hidden_state"];
+    __descriptionForHiddenState2 = [self __descriptionForHiddenState];
+    [v2 setValue:__descriptionForHiddenState2 forKey:@"wifi_hidden_state"];
   }
 
-  v7 = [a1 __descriptionForLowDataMode];
+  __descriptionForLowDataMode = [self __descriptionForLowDataMode];
 
-  if (v7)
+  if (__descriptionForLowDataMode)
   {
-    v8 = [a1 __descriptionForLowDataMode];
-    [v2 setValue:v8 forKey:@"wifi_low_data_mode"];
+    __descriptionForLowDataMode2 = [self __descriptionForLowDataMode];
+    [v2 setValue:__descriptionForLowDataMode2 forKey:@"wifi_low_data_mode"];
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isPersonalHotspot")}];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isPersonalHotspot")}];
   [v2 setValue:v9 forKey:@"wifi_is_personal_hotspot"];
 
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v2];
@@ -44,14 +44,14 @@
 
 - (__CFString)__descriptionForHiddenState
 {
-  v1 = [a1 hiddenState];
+  hiddenState = [self hiddenState];
   v2 = @"None";
-  if (v1 == 2)
+  if (hiddenState == 2)
   {
     v2 = @"Broadcast";
   }
 
-  if (v1 == 1)
+  if (hiddenState == 1)
   {
     return @"Hidden";
   }
@@ -64,15 +64,15 @@
 
 - (__CFString)__descriptionForLowDataMode
 {
-  v1 = [a1 lowDataMode];
-  if (v1 > 3)
+  lowDataMode = [self lowDataMode];
+  if (lowDataMode > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2789D3DA8[v1];
+    return off_2789D3DA8[lowDataMode];
   }
 }
 

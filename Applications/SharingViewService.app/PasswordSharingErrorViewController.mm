@@ -1,7 +1,7 @@
 @interface PasswordSharingErrorViewController
-- (_TtC18SharingViewService34PasswordSharingErrorViewController)initWithContentView:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC18SharingViewService34PasswordSharingErrorViewController)initWithContentView:(id)view;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -9,23 +9,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008E0C8();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10008E7F8(a3);
+  selfCopy = self;
+  sub_10008E7F8(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10008E980(a3);
+  selfCopy = self;
+  sub_10008E980(disappear);
 }
 
-- (_TtC18SharingViewService34PasswordSharingErrorViewController)initWithContentView:(id)a3
+- (_TtC18SharingViewService34PasswordSharingErrorViewController)initWithContentView:(id)view
 {
   *&self->presenter[OBJC_IVAR____TtC18SharingViewService34PasswordSharingErrorViewController_presenter] = 0;
   swift_unknownObjectWeakInit();
@@ -41,7 +41,7 @@
   *(v5 + 12) = 0;
   v8.receiver = self;
   v8.super_class = v6;
-  return [(PasswordSharingErrorViewController *)&v8 initWithContentView:a3];
+  return [(PasswordSharingErrorViewController *)&v8 initWithContentView:view];
 }
 
 @end

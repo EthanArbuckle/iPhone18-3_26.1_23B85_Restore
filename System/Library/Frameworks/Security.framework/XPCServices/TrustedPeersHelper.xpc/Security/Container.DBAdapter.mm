@@ -1,13 +1,13 @@
 @interface Container.DBAdapter
-- (id)allPeerIDs:(id *)a3;
-- (id)allRegisteredPolicyVersions:(id *)a3;
-- (id)peerWithID:(id)a3 error:(id *)a4;
-- (id)policyWithVersion:(unint64_t)a3 error:(id *)a4;
+- (id)allPeerIDs:(id *)ds;
+- (id)allRegisteredPolicyVersions:(id *)versions;
+- (id)peerWithID:(id)d error:(id *)error;
+- (id)policyWithVersion:(unint64_t)version error:(id *)error;
 @end
 
 @implementation Container.DBAdapter
 
-- (id)allPeerIDs:(id *)a3
+- (id)allPeerIDs:(id *)ds
 {
 
   sub_10010F840();
@@ -17,7 +17,7 @@
   return v3.super.isa;
 }
 
-- (id)peerWithID:(id)a3 error:(id *)a4
+- (id)peerWithID:(id)d error:(id *)error
 {
   v4 = sub_100216974();
   v6 = v5;
@@ -27,15 +27,15 @@
   return v7;
 }
 
-- (id)policyWithVersion:(unint64_t)a3 error:(id *)a4
+- (id)policyWithVersion:(unint64_t)version error:(id *)error
 {
 
-  v6 = sub_100112BF4(a3, a4);
+  v6 = sub_100112BF4(version, error);
 
   return v6;
 }
 
-- (id)allRegisteredPolicyVersions:(id *)a3
+- (id)allRegisteredPolicyVersions:(id *)versions
 {
 
   sub_1001131EC();

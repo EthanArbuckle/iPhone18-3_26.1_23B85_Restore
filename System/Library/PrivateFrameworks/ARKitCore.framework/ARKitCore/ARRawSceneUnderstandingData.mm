@@ -1,119 +1,119 @@
 @interface ARRawSceneUnderstandingData
 - (void)dealloc;
-- (void)setCapturedImage:(__CVBuffer *)a3;
-- (void)setDepthBuffer:(__CVBuffer *)a3;
-- (void)setDepthConfidenceBuffer:(__CVBuffer *)a3;
-- (void)setNormalsBuffer:(__CVBuffer *)a3;
-- (void)setSemanticSegmentationBuffer:(__CVBuffer *)a3;
-- (void)setSemanticSegmentationBufferSampledForDepth:(__CVBuffer *)a3;
-- (void)setSemanticSegmentationConfidenceBuffer:(__CVBuffer *)a3;
-- (void)setSemanticSegmentationConfidenceBufferSampledForDepth:(__CVBuffer *)a3;
-- (void)setSemanticSegmentationUncertaintyBuffer:(__CVBuffer *)a3;
+- (void)setCapturedImage:(__CVBuffer *)image;
+- (void)setDepthBuffer:(__CVBuffer *)buffer;
+- (void)setDepthConfidenceBuffer:(__CVBuffer *)buffer;
+- (void)setNormalsBuffer:(__CVBuffer *)buffer;
+- (void)setSemanticSegmentationBuffer:(__CVBuffer *)buffer;
+- (void)setSemanticSegmentationBufferSampledForDepth:(__CVBuffer *)depth;
+- (void)setSemanticSegmentationConfidenceBuffer:(__CVBuffer *)buffer;
+- (void)setSemanticSegmentationConfidenceBufferSampledForDepth:(__CVBuffer *)depth;
+- (void)setSemanticSegmentationUncertaintyBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation ARRawSceneUnderstandingData
 
-- (void)setSemanticSegmentationBuffer:(__CVBuffer *)a3
+- (void)setSemanticSegmentationBuffer:(__CVBuffer *)buffer
 {
   semanticSegmentationBuffer = self->_semanticSegmentationBuffer;
-  if (semanticSegmentationBuffer != a3)
+  if (semanticSegmentationBuffer != buffer)
   {
     CVPixelBufferRelease(semanticSegmentationBuffer);
-    self->_semanticSegmentationBuffer = a3;
+    self->_semanticSegmentationBuffer = buffer;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 }
 
-- (void)setSemanticSegmentationBufferSampledForDepth:(__CVBuffer *)a3
+- (void)setSemanticSegmentationBufferSampledForDepth:(__CVBuffer *)depth
 {
   semanticSegmentationBufferSampledForDepth = self->_semanticSegmentationBufferSampledForDepth;
-  if (semanticSegmentationBufferSampledForDepth != a3)
+  if (semanticSegmentationBufferSampledForDepth != depth)
   {
     CVPixelBufferRelease(semanticSegmentationBufferSampledForDepth);
-    self->_semanticSegmentationBufferSampledForDepth = a3;
+    self->_semanticSegmentationBufferSampledForDepth = depth;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(depth);
   }
 }
 
-- (void)setSemanticSegmentationUncertaintyBuffer:(__CVBuffer *)a3
+- (void)setSemanticSegmentationUncertaintyBuffer:(__CVBuffer *)buffer
 {
   semanticSegmentationUncertaintyBuffer = self->_semanticSegmentationUncertaintyBuffer;
-  if (semanticSegmentationUncertaintyBuffer != a3)
+  if (semanticSegmentationUncertaintyBuffer != buffer)
   {
     CVPixelBufferRelease(semanticSegmentationUncertaintyBuffer);
-    self->_semanticSegmentationUncertaintyBuffer = a3;
+    self->_semanticSegmentationUncertaintyBuffer = buffer;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 }
 
-- (void)setSemanticSegmentationConfidenceBuffer:(__CVBuffer *)a3
+- (void)setSemanticSegmentationConfidenceBuffer:(__CVBuffer *)buffer
 {
   semanticSegmentationConfidenceBuffer = self->_semanticSegmentationConfidenceBuffer;
-  if (semanticSegmentationConfidenceBuffer != a3)
+  if (semanticSegmentationConfidenceBuffer != buffer)
   {
     CVPixelBufferRelease(semanticSegmentationConfidenceBuffer);
-    self->_semanticSegmentationConfidenceBuffer = a3;
+    self->_semanticSegmentationConfidenceBuffer = buffer;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 }
 
-- (void)setSemanticSegmentationConfidenceBufferSampledForDepth:(__CVBuffer *)a3
+- (void)setSemanticSegmentationConfidenceBufferSampledForDepth:(__CVBuffer *)depth
 {
   semanticSegmentationConfidenceBufferSampledForDepth = self->_semanticSegmentationConfidenceBufferSampledForDepth;
-  if (semanticSegmentationConfidenceBufferSampledForDepth != a3)
+  if (semanticSegmentationConfidenceBufferSampledForDepth != depth)
   {
     CVPixelBufferRelease(semanticSegmentationConfidenceBufferSampledForDepth);
-    self->_semanticSegmentationConfidenceBufferSampledForDepth = CVPixelBufferRetain(a3);
+    self->_semanticSegmentationConfidenceBufferSampledForDepth = CVPixelBufferRetain(depth);
   }
 }
 
-- (void)setNormalsBuffer:(__CVBuffer *)a3
+- (void)setNormalsBuffer:(__CVBuffer *)buffer
 {
   normalsBuffer = self->_normalsBuffer;
-  if (normalsBuffer != a3)
+  if (normalsBuffer != buffer)
   {
     CVPixelBufferRelease(normalsBuffer);
-    self->_normalsBuffer = a3;
+    self->_normalsBuffer = buffer;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 }
 
-- (void)setDepthBuffer:(__CVBuffer *)a3
+- (void)setDepthBuffer:(__CVBuffer *)buffer
 {
   depthBuffer = self->_depthBuffer;
-  if (depthBuffer != a3)
+  if (depthBuffer != buffer)
   {
     CVPixelBufferRelease(depthBuffer);
-    self->_depthBuffer = a3;
+    self->_depthBuffer = buffer;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 }
 
-- (void)setDepthConfidenceBuffer:(__CVBuffer *)a3
+- (void)setDepthConfidenceBuffer:(__CVBuffer *)buffer
 {
   depthConfidenceBuffer = self->_depthConfidenceBuffer;
-  if (depthConfidenceBuffer != a3)
+  if (depthConfidenceBuffer != buffer)
   {
     CVPixelBufferRelease(depthConfidenceBuffer);
-    self->_depthConfidenceBuffer = a3;
+    self->_depthConfidenceBuffer = buffer;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 }
 
-- (void)setCapturedImage:(__CVBuffer *)a3
+- (void)setCapturedImage:(__CVBuffer *)image
 {
   capturedImage = self->_capturedImage;
-  if (capturedImage != a3)
+  if (capturedImage != image)
   {
     CVPixelBufferRelease(capturedImage);
-    self->_capturedImage = CVPixelBufferRetain(a3);
+    self->_capturedImage = CVPixelBufferRetain(image);
   }
 }
 

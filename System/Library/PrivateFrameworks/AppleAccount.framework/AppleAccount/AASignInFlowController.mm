@@ -1,7 +1,7 @@
 @interface AASignInFlowController
 - (AASignInFlowController)init;
-- (AASignInFlowController)initWithAccountStore:(id)a3;
-- (AASignInFlowController)initWithAccountStore:(id)a3 dataclassManager:(id)a4;
+- (AASignInFlowController)initWithAccountStore:(id)store;
+- (AASignInFlowController)initWithAccountStore:(id)store dataclassManager:(id)manager;
 - (AASignInFlowControllerDelegate)delegate;
 - (BOOL)_delegateRequiresTerms;
 - (BOOL)_delegateWantsToBackgroundDataclassEnablement;
@@ -9,58 +9,58 @@
 - (BOOL)_isAccountImprovementProgramEnabled;
 - (BOOL)_newSignInFlow;
 - (BOOL)_newSignInReauth;
-- (BOOL)_shouldEnableDataclassesForAccount:(id)a3;
+- (BOOL)_shouldEnableDataclassesForAccount:(id)account;
 - (BOOL)_shouldStashLoginResponse;
 - (CDPStateUIProvider)cdpUIProvider;
-- (id)_aaErrorForErrorCode:(int64_t)a3 withUnderlyingError:(id)a4;
-- (id)_aaMessageForErrorCode:(int64_t)a3;
-- (id)_dataclassActionsForPostCDPSaveForAccount:(id)a3;
-- (id)_dataclassActionsForPreflightSaveForAccount:(id)a3;
+- (id)_aaErrorForErrorCode:(int64_t)code withUnderlyingError:(id)error;
+- (id)_aaMessageForErrorCode:(int64_t)code;
+- (id)_dataclassActionsForPostCDPSaveForAccount:(id)account;
+- (id)_dataclassActionsForPreflightSaveForAccount:(id)account;
 - (id)_nameForCloudService;
-- (id)_onqueue_createCDPContextWithAuthResults:(id)a3;
-- (id)_onqueue_createNewAppleAccountWithAuthResults:(id)a3 accountCreationError:(id *)a4;
-- (id)_onqueue_updateOrCreateAppleAccountForAuthResults:(id)a3 accountCreationError:(id *)a4;
+- (id)_onqueue_createCDPContextWithAuthResults:(id)results;
+- (id)_onqueue_createNewAppleAccountWithAuthResults:(id)results accountCreationError:(id *)error;
+- (id)_onqueue_updateOrCreateAppleAccountForAuthResults:(id)results accountCreationError:(id *)error;
 - (id)_titleForSignInFailureAlert;
 - (id)_titleForVerificationFailureAlert;
 - (id)_userPersonaUniqueString;
 - (id)dataclassManager;
 - (unint64_t)_findMyActivationAction;
-- (void)_addKeysAndEnrollCDPStateForAccount:(id)a3 withCDPContext:(id)a4 completion:(id)a5;
-- (void)_backgroundSaveAccount:(id)a3 withDataclassEnablement:(BOOL)a4 completion:(id)a5;
-- (void)_cacheLoginResponse:(id)a3 forAccount:(id)a4 completion:(id)a5;
-- (void)_delegate_presentAccountCreationError:(id)a3 completion:(id)a4;
-- (void)_delegate_presentAccountPrivacyOptInForAccount:(id)a3 userActionCompletion:(id)a4;
-- (void)_delegate_presentDataclassActionsForAccount:(id)a3 completion:(id)a4;
-- (void)_delegate_presentGenericTermsUIforAccount:(id)a3 authResults:(id)a4 serverError:(id)a5 completion:(id)a6;
-- (void)_delegate_presentProgressViewForAccount:(id)a3 completion:(id)a4;
-- (void)_delegate_presentValidationAlertForError:(id)a3 forAccount:(id)a4 completion:(id)a5;
-- (void)_enableFindMyIfPossibleWithAccount:(id)a3 completion:(id)a4;
-- (void)_enrollCDPStateForAccount:(id)a3 withCDPContext:(id)a4 completion:(id)a5;
+- (void)_addKeysAndEnrollCDPStateForAccount:(id)account withCDPContext:(id)context completion:(id)completion;
+- (void)_backgroundSaveAccount:(id)account withDataclassEnablement:(BOOL)enablement completion:(id)completion;
+- (void)_cacheLoginResponse:(id)response forAccount:(id)account completion:(id)completion;
+- (void)_delegate_presentAccountCreationError:(id)error completion:(id)completion;
+- (void)_delegate_presentAccountPrivacyOptInForAccount:(id)account userActionCompletion:(id)completion;
+- (void)_delegate_presentDataclassActionsForAccount:(id)account completion:(id)completion;
+- (void)_delegate_presentGenericTermsUIforAccount:(id)account authResults:(id)results serverError:(id)error completion:(id)completion;
+- (void)_delegate_presentProgressViewForAccount:(id)account completion:(id)completion;
+- (void)_delegate_presentValidationAlertForError:(id)error forAccount:(id)account completion:(id)completion;
+- (void)_enableFindMyIfPossibleWithAccount:(id)account completion:(id)completion;
+- (void)_enrollCDPStateForAccount:(id)account withCDPContext:(id)context completion:(id)completion;
 - (void)_isAccountImprovementProgramEnabled;
-- (void)_loginAndUpdateiCloudWithAuthResults:(id)a3 iCloudAccount:(id)a4 withCompletion:(id)a5;
-- (void)_onqueue_addKeysAndEnrollCDPStateForAccount:(id)a3 withCDPContext:(id)a4 completion:(id)a5;
-- (void)_onqueue_delegate_enableFindMyWithCompletion:(id)a3;
-- (void)_onqueue_enableFindMyIfPossibleWithAccount:(id)a3 completion:(id)a4;
-- (void)_onqueue_enrollCDPStateForAccount:(id)a3 withCDPContext:(id)a4 completion:(id)a5;
-- (void)_onqueue_legacyRegisterAndVerifyLoginForiCloudAccount:(id)a3 authResults:(id)a4 withCompletion:(id)a5;
-- (void)_onqueue_prepareExistingAppleAccountForSignIn:(id)a3 withAuthResults:(id)a4 accountCreationError:(id *)a5;
-- (void)_onqueue_registerAndVerifyLoginForiCloudAccount:(id)a3 authResults:(id)a4 withCompletion:(id)a5;
-- (void)_onqueue_saveAccount:(id)a3 withAuthResults:(id)a4 withCDPEnablement:(BOOL)a5 withAllDataclassesEnabledIfPossibleWithCompletion:(id)a6;
-- (void)_onqueue_saveTermsWithAuthResults:(id)a3 account:(id)a4;
-- (void)_onqueue_signInWithIDMSAuthenticationResults:(id)a3 completion:(id)a4;
-- (void)_onqueue_updateAppleAccount:(id)a3 withAuthenticationResults:(id)a4;
-- (void)_onqueue_updateAppleAccountIfNecessary:(id)a3 withAltDSID:(id)a4 rawPassword:(id)a5;
-- (void)_onqueue_validateAndEnrollCDPStateForAccount:(id)a3 withAuthResults:(id)a4 completion:(id)a5;
-- (void)_onqueue_verifyLoginResponseForiCloudAccount:(id)a3 withAuthResults:(id)a4 withSuccess:(BOOL)a5 error:(id)a6 completion:(id)a7;
-- (void)_preflightSaveWithAuthResults:(id)a3 account:(id)a4 withCompletion:(id)a5;
-- (void)_registerAndVerifyLoginForiCloudAccount:(id)a3 authResults:(id)a4 withCompletion:(id)a5;
-- (void)_saveAccount:(id)a3 withAuthResults:(id)a4 withCDPEnablement:(BOOL)a5 withAllDataclassesEnabledIfPossibleWithCompletion:(id)a6;
-- (void)_stashLoginResponseWithAuthenticationResults:(id)a3 appleAccount:(id)a4;
+- (void)_loginAndUpdateiCloudWithAuthResults:(id)results iCloudAccount:(id)account withCompletion:(id)completion;
+- (void)_onqueue_addKeysAndEnrollCDPStateForAccount:(id)account withCDPContext:(id)context completion:(id)completion;
+- (void)_onqueue_delegate_enableFindMyWithCompletion:(id)completion;
+- (void)_onqueue_enableFindMyIfPossibleWithAccount:(id)account completion:(id)completion;
+- (void)_onqueue_enrollCDPStateForAccount:(id)account withCDPContext:(id)context completion:(id)completion;
+- (void)_onqueue_legacyRegisterAndVerifyLoginForiCloudAccount:(id)account authResults:(id)results withCompletion:(id)completion;
+- (void)_onqueue_prepareExistingAppleAccountForSignIn:(id)in withAuthResults:(id)results accountCreationError:(id *)error;
+- (void)_onqueue_registerAndVerifyLoginForiCloudAccount:(id)account authResults:(id)results withCompletion:(id)completion;
+- (void)_onqueue_saveAccount:(id)account withAuthResults:(id)results withCDPEnablement:(BOOL)enablement withAllDataclassesEnabledIfPossibleWithCompletion:(id)completion;
+- (void)_onqueue_saveTermsWithAuthResults:(id)results account:(id)account;
+- (void)_onqueue_signInWithIDMSAuthenticationResults:(id)results completion:(id)completion;
+- (void)_onqueue_updateAppleAccount:(id)account withAuthenticationResults:(id)results;
+- (void)_onqueue_updateAppleAccountIfNecessary:(id)necessary withAltDSID:(id)d rawPassword:(id)password;
+- (void)_onqueue_validateAndEnrollCDPStateForAccount:(id)account withAuthResults:(id)results completion:(id)completion;
+- (void)_onqueue_verifyLoginResponseForiCloudAccount:(id)account withAuthResults:(id)results withSuccess:(BOOL)success error:(id)error completion:(id)completion;
+- (void)_preflightSaveWithAuthResults:(id)results account:(id)account withCompletion:(id)completion;
+- (void)_registerAndVerifyLoginForiCloudAccount:(id)account authResults:(id)results withCompletion:(id)completion;
+- (void)_saveAccount:(id)account withAuthResults:(id)results withCDPEnablement:(BOOL)enablement withAllDataclassesEnabledIfPossibleWithCompletion:(id)completion;
+- (void)_stashLoginResponseWithAuthenticationResults:(id)results appleAccount:(id)account;
 - (void)_userPersonaUniqueString;
-- (void)_validateAndEnrollCDPStateForAccount:(id)a3 withAuthResults:(id)a4 completion:(id)a5;
-- (void)_verifyLoginResponseForiCloudAccount:(id)a3 withAuthResults:(id)a4 withSuccess:(BOOL)a5 error:(id)a6 completion:(id)a7;
-- (void)prewarmOperationsWithCompletion:(id)a3;
-- (void)signInWithIDMSAuthenticationResults:(id)a3 completion:(id)a4;
+- (void)_validateAndEnrollCDPStateForAccount:(id)account withAuthResults:(id)results completion:(id)completion;
+- (void)_verifyLoginResponseForiCloudAccount:(id)account withAuthResults:(id)results withSuccess:(BOOL)success error:(id)error completion:(id)completion;
+- (void)prewarmOperationsWithCompletion:(id)completion;
+- (void)signInWithIDMSAuthenticationResults:(id)results completion:(id)completion;
 @end
 
 @implementation AASignInFlowController
@@ -73,9 +73,9 @@
   return v4;
 }
 
-- (AASignInFlowController)initWithAccountStore:(id)a3
+- (AASignInFlowController)initWithAccountStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = AASignInFlowController;
   v6 = [(AASignInFlowController *)&v14 init];
@@ -91,34 +91,34 @@
     utilityQueue = v6->_utilityQueue;
     v6->_utilityQueue = v11;
 
-    objc_storeStrong(&v6->_accountStore, a3);
+    objc_storeStrong(&v6->_accountStore, store);
   }
 
   return v6;
 }
 
-- (AASignInFlowController)initWithAccountStore:(id)a3 dataclassManager:(id)a4
+- (AASignInFlowController)initWithAccountStore:(id)store dataclassManager:(id)manager
 {
-  v7 = a4;
-  v8 = [(AASignInFlowController *)self initWithAccountStore:a3];
+  managerCopy = manager;
+  v8 = [(AASignInFlowController *)self initWithAccountStore:store];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_dataclassManager, a4);
+    objc_storeStrong(&v8->_dataclassManager, manager);
   }
 
   return v9;
 }
 
-- (void)signInWithIDMSAuthenticationResults:(id)a3 completion:(id)a4
+- (void)signInWithIDMSAuthenticationResults:(id)results completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1B6F6A000, "appleaccount/signin-with-IDMSauthresults", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  if (!v7)
+  if (!completionCopy)
   {
     v9 = _AALogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -133,144 +133,144 @@
   block[2] = __73__AASignInFlowController_signInWithIDMSAuthenticationResults_completion___block_invoke;
   block[3] = &unk_1E7C9A898;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
+  v16 = resultsCopy;
+  v17 = completionCopy;
   v11 = uiQueue;
-  v12 = v7;
-  v13 = v6;
+  v12 = completionCopy;
+  v13 = resultsCopy;
   v14 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, block);
   dispatch_async(v11, v14);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)_registerAndVerifyLoginForiCloudAccount:(id)a3 authResults:(id)a4 withCompletion:(id)a5
+- (void)_registerAndVerifyLoginForiCloudAccount:(id)account authResults:(id)results withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  resultsCopy = results;
+  completionCopy = completion;
   uiQueue = self->_uiQueue;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __93__AASignInFlowController__registerAndVerifyLoginForiCloudAccount_authResults_withCompletion___block_invoke;
   v17[3] = &unk_1E7C9A8C0;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = accountCopy;
+  v19 = resultsCopy;
+  v20 = completionCopy;
   v12 = uiQueue;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v13 = completionCopy;
+  v14 = resultsCopy;
+  v15 = accountCopy;
   v16 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, v17);
   dispatch_async(v12, v16);
 }
 
-- (void)_verifyLoginResponseForiCloudAccount:(id)a3 withAuthResults:(id)a4 withSuccess:(BOOL)a5 error:(id)a6 completion:(id)a7
+- (void)_verifyLoginResponseForiCloudAccount:(id)account withAuthResults:(id)results withSuccess:(BOOL)success error:(id)error completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  accountCopy = account;
+  resultsCopy = results;
+  errorCopy = error;
+  completionCopy = completion;
   uiQueue = self->_uiQueue;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __108__AASignInFlowController__verifyLoginResponseForiCloudAccount_withAuthResults_withSuccess_error_completion___block_invoke;
   v23[3] = &unk_1E7C9A8E8;
   v23[4] = self;
-  v24 = v12;
-  v28 = a5;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
+  v24 = accountCopy;
+  successCopy = success;
+  v25 = resultsCopy;
+  v26 = errorCopy;
+  v27 = completionCopy;
   v17 = uiQueue;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
+  v18 = completionCopy;
+  v19 = errorCopy;
+  v20 = resultsCopy;
+  v21 = accountCopy;
   v22 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, v23);
   dispatch_async(v17, v22);
 }
 
-- (void)_validateAndEnrollCDPStateForAccount:(id)a3 withAuthResults:(id)a4 completion:(id)a5
+- (void)_validateAndEnrollCDPStateForAccount:(id)account withAuthResults:(id)results completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  resultsCopy = results;
+  completionCopy = completion;
   uiQueue = self->_uiQueue;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __90__AASignInFlowController__validateAndEnrollCDPStateForAccount_withAuthResults_completion___block_invoke;
   v17[3] = &unk_1E7C9A8C0;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = accountCopy;
+  v19 = resultsCopy;
+  v20 = completionCopy;
   v12 = uiQueue;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v13 = completionCopy;
+  v14 = resultsCopy;
+  v15 = accountCopy;
   v16 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, v17);
   dispatch_async(v12, v16);
 }
 
-- (void)_addKeysAndEnrollCDPStateForAccount:(id)a3 withCDPContext:(id)a4 completion:(id)a5
+- (void)_addKeysAndEnrollCDPStateForAccount:(id)account withCDPContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  contextCopy = context;
+  completionCopy = completion;
   uiQueue = self->_uiQueue;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __88__AASignInFlowController__addKeysAndEnrollCDPStateForAccount_withCDPContext_completion___block_invoke;
   v17[3] = &unk_1E7C9A8C0;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = accountCopy;
+  v19 = contextCopy;
+  v20 = completionCopy;
   v12 = uiQueue;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v13 = completionCopy;
+  v14 = contextCopy;
+  v15 = accountCopy;
   v16 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, v17);
   dispatch_async(v12, v16);
 }
 
-- (void)_enrollCDPStateForAccount:(id)a3 withCDPContext:(id)a4 completion:(id)a5
+- (void)_enrollCDPStateForAccount:(id)account withCDPContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  contextCopy = context;
+  completionCopy = completion;
   uiQueue = self->_uiQueue;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __78__AASignInFlowController__enrollCDPStateForAccount_withCDPContext_completion___block_invoke;
   v17[3] = &unk_1E7C9A8C0;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = accountCopy;
+  v19 = contextCopy;
+  v20 = completionCopy;
   v12 = uiQueue;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v13 = completionCopy;
+  v14 = contextCopy;
+  v15 = accountCopy;
   v16 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, v17);
   dispatch_async(v12, v16);
 }
 
-- (void)_onqueue_signInWithIDMSAuthenticationResults:(id)a3 completion:(id)a4
+- (void)_onqueue_signInWithIDMSAuthenticationResults:(id)results completion:(id)completion
 {
   v72 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  resultsCopy = results;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __82__AASignInFlowController__onqueue_signInWithIDMSAuthenticationResults_completion___block_invoke;
   aBlock[3] = &unk_1E7C9A910;
-  v50 = v8;
+  v50 = completionCopy;
   v65 = v50;
   v9 = _Block_copy(aBlock);
-  objc_storeStrong(&self->_authResults, a3);
+  objc_storeStrong(&self->_authResults, results);
   v10 = _AASignpostLogSystem();
   v11 = _AASignpostCreate(v10);
   v13 = v12;
@@ -292,7 +292,7 @@
   }
 
   v63 = 0;
-  v49 = [(AASignInFlowController *)self _onqueue_updateOrCreateAppleAccountForAuthResults:v7 accountCreationError:&v63];
+  v49 = [(AASignInFlowController *)self _onqueue_updateOrCreateAppleAccountForAuthResults:resultsCopy accountCreationError:&v63];
   v17 = v63;
   v18 = v17;
   if (v17)
@@ -305,27 +305,27 @@
     v19 = 0;
   }
 
-  v20 = [(AASignInFlowController *)self telemetryTimeSeries];
+  telemetryTimeSeries = [(AASignInFlowController *)self telemetryTimeSeries];
   v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s_%s", "GetLocalAppleAccount", "errorCode"];
-  [v20 setObject:v19 forKeyedSubscript:v21];
+  [telemetryTimeSeries setObject:v19 forKeyedSubscript:v21];
 
   if (v18)
   {
   }
 
-  v22 = [v18 domain];
-  v23 = [(AASignInFlowController *)self telemetryTimeSeries];
+  domain = [v18 domain];
+  telemetryTimeSeries2 = [(AASignInFlowController *)self telemetryTimeSeries];
   v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s_%s", "GetLocalAppleAccount", "errorDomain"];
-  [v23 setObject:v22 forKeyedSubscript:v24];
+  [telemetryTimeSeries2 setObject:domain forKeyedSubscript:v24];
 
   Nanoseconds = _AASignpostGetNanoseconds(v11, v13);
   v26 = _AASignpostLogSystem();
   v27 = v26;
   if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v26))
   {
-    v28 = [v18 code];
+    code = [v18 code];
     *buf = 67240192;
-    LODWORD(v67) = v28;
+    LODWORD(v67) = code;
     _os_signpost_emit_with_name_impl(&dword_1B6F6A000, v27, OS_SIGNPOST_INTERVAL_END, v11, "GetLocalAppleAccount", " Error=%{public,signpost.telemetry:number2,name=Error}d ", buf, 8u);
   }
 
@@ -334,19 +334,19 @@
   v30 = _AASignpostLogSystem();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v18 code];
+    code2 = [v18 code];
     *buf = 134218496;
     v67 = v11;
     v68 = 2048;
     v69 = v29;
     v70 = 1026;
-    v71 = v31;
+    v71 = code2;
     _os_log_impl(&dword_1B6F6A000, v30, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs:GetLocalAppleAccount  Error=%{public,signpost.telemetry:number2,name=Error}d ", buf, 0x1Cu);
   }
 
-  v32 = [(AASignInFlowController *)self telemetryTimeSeries];
+  telemetryTimeSeries3 = [(AASignInFlowController *)self telemetryTimeSeries];
   v33 = [MEMORY[0x1E696AD98] numberWithDouble:v29];
-  [v32 setObject:v33 forKeyedSubscript:@"GetLocalAppleAccount"];
+  [telemetryTimeSeries3 setObject:v33 forKeyedSubscript:@"GetLocalAppleAccount"];
 
   if (v18)
   {
@@ -361,7 +361,7 @@
     v59[3] = &unk_1E7C9A960;
     v62 = v9;
     v59[4] = self;
-    v34 = v7;
+    v34 = resultsCopy;
     v60 = v34;
     v35 = v49;
     v61 = v35;
@@ -600,18 +600,18 @@ uint64_t __82__AASignInFlowController__onqueue_signInWithIDMSAuthenticationResul
   return result;
 }
 
-- (id)_onqueue_updateOrCreateAppleAccountForAuthResults:(id)a3 accountCreationError:(id *)a4
+- (id)_onqueue_updateOrCreateAppleAccountForAuthResults:(id)results accountCreationError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E698DB68]];
-  v8 = [v7 stringValue];
+  resultsCopy = results;
+  v7 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB68]];
+  stringValue = [v7 stringValue];
 
-  if (v8 && ([(ACAccountStore *)self->_accountStore aa_appleAccountWithPersonID:v8], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (stringValue && ([(ACAccountStore *)self->_accountStore aa_appleAccountWithPersonID:stringValue], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
     self->_existingAccount = 1;
-    [(AASignInFlowController *)self _onqueue_prepareExistingAppleAccountForSignIn:v9 withAuthResults:v6 accountCreationError:a4];
-    if (!a4)
+    [(AASignInFlowController *)self _onqueue_prepareExistingAppleAccountForSignIn:v9 withAuthResults:resultsCopy accountCreationError:error];
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -619,63 +619,63 @@ uint64_t __82__AASignInFlowController__onqueue_signInWithIDMSAuthenticationResul
 
   else
   {
-    v10 = [(AASignInFlowController *)self _onqueue_createNewAppleAccountWithAuthResults:v6 accountCreationError:a4];
-    if (!a4)
+    v10 = [(AASignInFlowController *)self _onqueue_createNewAppleAccountWithAuthResults:resultsCopy accountCreationError:error];
+    if (!error)
     {
       goto LABEL_8;
     }
   }
 
-  if (*a4)
+  if (*error)
   {
     v11 = 0;
     goto LABEL_9;
   }
 
 LABEL_8:
-  [(AASignInFlowController *)self _onqueue_updateAppleAccount:v10 withAuthenticationResults:v6];
+  [(AASignInFlowController *)self _onqueue_updateAppleAccount:v10 withAuthenticationResults:resultsCopy];
   v11 = v10;
 LABEL_9:
 
   return v11;
 }
 
-- (void)_onqueue_prepareExistingAppleAccountForSignIn:(id)a3 withAuthResults:(id)a4 accountCreationError:(id *)a5
+- (void)_onqueue_prepareExistingAppleAccountForSignIn:(id)in withAuthResults:(id)results accountCreationError:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  inCopy = in;
   v9 = *MEMORY[0x1E698DB40];
-  v10 = a4;
-  v11 = [v10 objectForKeyedSubscript:v9];
-  v12 = [v10 objectForKeyedSubscript:*MEMORY[0x1E698DBD0]];
-  v13 = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
+  resultsCopy = results;
+  v11 = [resultsCopy objectForKeyedSubscript:v9];
+  v12 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBD0]];
+  aa_primaryAppleAccount = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
 
-  [(AASignInFlowController *)self _onqueue_updateAppleAccountIfNecessary:v8 withAltDSID:v11 rawPassword:v12];
-  [(AASignInFlowController *)self _onqueue_saveTermsWithAuthResults:v10 account:v8];
+  [(AASignInFlowController *)self _onqueue_updateAppleAccountIfNecessary:inCopy withAltDSID:v11 rawPassword:v12];
+  [(AASignInFlowController *)self _onqueue_saveTermsWithAuthResults:resultsCopy account:inCopy];
 
   v14 = _AALogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v8 aa_altDSID];
+    aa_altDSID = [inCopy aa_altDSID];
     v23 = 138412290;
-    v24 = v15;
+    v24 = aa_altDSID;
     _os_log_impl(&dword_1B6F6A000, v14, OS_LOG_TYPE_DEFAULT, "AASignInFlowController: found an existing account with altDSID: %{mask}@", &v23, 0xCu);
   }
 
-  v16 = [(AASignInFlowController *)self _userPersonaUniqueString];
+  _userPersonaUniqueString = [(AASignInFlowController *)self _userPersonaUniqueString];
 
-  if (v16)
+  if (_userPersonaUniqueString)
   {
     v17 = _AALogSystem();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v8 aa_altDSID];
+      aa_altDSID2 = [inCopy aa_altDSID];
       v23 = 138412290;
-      v24 = v18;
+      v24 = aa_altDSID2;
       _os_log_impl(&dword_1B6F6A000, v17, OS_LOG_TYPE_DEFAULT, "AASignInFlowController: found an existing account with altDSID %{mask}@, but we're running in the enterprise persona.", &v23, 0xCu);
     }
 
-    if (![v8 isDataSeparatedAccount])
+    if (![inCopy isDataSeparatedAccount])
     {
       goto LABEL_18;
     }
@@ -687,32 +687,32 @@ LABEL_9:
       [AASignInFlowController _onqueue_prepareExistingAppleAccountForSignIn:withAuthResults:accountCreationError:];
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [(AASignInFlowController *)self _aaErrorForErrorCode:-8012];
+      *error = [(AASignInFlowController *)self _aaErrorForErrorCode:-8012];
     }
 
     goto LABEL_18;
   }
 
-  if ([v8 isDataSeparatedAccount])
+  if ([inCopy isDataSeparatedAccount])
   {
     goto LABEL_9;
   }
 
-  if (!v13 && [v8 aa_isAccountClass:@"basic"])
+  if (!aa_primaryAppleAccount && [inCopy aa_isAccountClass:@"basic"])
   {
     v20 = _AALogSystem();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138412290;
-      v24 = v8;
+      v24 = inCopy;
       _os_log_impl(&dword_1B6F6A000, v20, OS_LOG_TYPE_DEFAULT, "AASignInFlowController: promoting existing account %@ to primary", &v23, 0xCu);
     }
 
-    [v8 aa_setAccountClass:@"primary"];
-    v21 = [(AASignInFlowController *)self _nameForCloudService];
-    [v8 setAccountDescription:v21];
+    [inCopy aa_setAccountClass:@"primary"];
+    _nameForCloudService = [(AASignInFlowController *)self _nameForCloudService];
+    [inCopy setAccountDescription:_nameForCloudService];
   }
 
 LABEL_18:
@@ -720,15 +720,15 @@ LABEL_18:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_onqueue_createNewAppleAccountWithAuthResults:(id)a3 accountCreationError:(id *)a4
+- (id)_onqueue_createNewAppleAccountWithAuthResults:(id)results accountCreationError:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DBF0]];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DB68]];
-  v8 = [v7 stringValue];
+  resultsCopy = results;
+  v6 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBF0]];
+  v7 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB68]];
+  stringValue = [v7 stringValue];
 
-  v29 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DBD8]];
+  v29 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBD8]];
   v9 = _AALogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -738,17 +738,17 @@ LABEL_18:
   }
 
   v10 = objc_alloc(MEMORY[0x1E6959A28]);
-  v11 = [(ACAccountStore *)self->_accountStore aa_appleAccountType];
-  v12 = [v10 initWithAccountType:v11];
+  aa_appleAccountType = [(ACAccountStore *)self->_accountStore aa_appleAccountType];
+  v12 = [v10 initWithAccountType:aa_appleAccountType];
 
   [v12 setUsername:v6];
-  [v12 _aa_setPersonID:v8];
-  v13 = [(AASignInFlowController *)self _userPersonaUniqueString];
+  [v12 _aa_setPersonID:stringValue];
+  _userPersonaUniqueString = [(AASignInFlowController *)self _userPersonaUniqueString];
   v14 = +[AAPreferences isMultipleFullAccountsEnabled];
-  v15 = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
 
-  v16 = [(ACAccountStore *)self->_accountStore aa_dataSeparatedAccounts];
-  v17 = [v16 count];
+  aa_dataSeparatedAccounts = [(ACAccountStore *)self->_accountStore aa_dataSeparatedAccounts];
+  v17 = [aa_dataSeparatedAccounts count];
 
   v18 = _AALogSystem();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -788,19 +788,19 @@ LABEL_18:
     _os_log_impl(&dword_1B6F6A000, v18, OS_LOG_TYPE_DEFAULT, "AASignInFlowController: multiple full accounts allowed: %@, already have data separated account: %@, disallow multiple full accounts: %@", buf, 0x20u);
   }
 
-  if (v13 == 0 || v17 == 0 || v14)
+  if (_userPersonaUniqueString == 0 || v17 == 0 || v14)
   {
     v22 = v29;
-    if (v13)
+    if (_userPersonaUniqueString)
     {
       [v12 setAccountDescription:v6];
       [v12 aa_setAccountClass:@"full"];
-      [v12 setObject:v13 forKeyedSubscript:*MEMORY[0x1E69597A0]];
+      [v12 setObject:_userPersonaUniqueString forKeyedSubscript:*MEMORY[0x1E69597A0]];
     }
 
     else
     {
-      if (v15)
+      if (aa_primaryAppleAccount)
       {
         [v12 setAccountDescription:v6];
         if (v14)
@@ -816,8 +816,8 @@ LABEL_18:
 
       else
       {
-        v25 = [(AASignInFlowController *)self _nameForCloudService];
-        [v12 setAccountDescription:v25];
+        _nameForCloudService = [(AASignInFlowController *)self _nameForCloudService];
+        [v12 setAccountDescription:_nameForCloudService];
 
         v24 = AAAccountClassPrimary;
       }
@@ -835,9 +835,9 @@ LABEL_18:
       [AASignInFlowController _onqueue_createNewAppleAccountWithAuthResults:accountCreationError:];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [(AASignInFlowController *)self _aaErrorForErrorCode:-8013];
+      *error = [(AASignInFlowController *)self _aaErrorForErrorCode:-8013];
     }
   }
 
@@ -846,32 +846,32 @@ LABEL_18:
     [v12 setCredentialLocation:1];
   }
 
-  [(AASignInFlowController *)self _onqueue_saveTermsWithAuthResults:v5 account:v12];
+  [(AASignInFlowController *)self _onqueue_saveTermsWithAuthResults:resultsCopy account:v12];
 
   v26 = *MEMORY[0x1E69E9840];
 
   return v12;
 }
 
-- (void)_onqueue_updateAppleAccount:(id)a3 withAuthenticationResults:(id)a4
+- (void)_onqueue_updateAppleAccount:(id)account withAuthenticationResults:(id)results
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E698DBC8]];
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E698DBD0]];
-  v9 = [v6 objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
-  v10 = [v6 objectForKeyedSubscript:*MEMORY[0x1E698DBD8]];
+  accountCopy = account;
+  resultsCopy = results;
+  v7 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBC8]];
+  v8 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBD0]];
+  v9 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
+  v10 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBD8]];
   v11 = [MEMORY[0x1E6959A30] credentialWithPassword:v7];
-  [v5 setCredential:v11];
-  [v5 _aa_setRawPassword:v8];
-  [v5 _aa_setAltDSID:v9];
-  v12 = [v5 aa_firstName];
+  [accountCopy setCredential:v11];
+  [accountCopy _aa_setRawPassword:v8];
+  [accountCopy _aa_setAltDSID:v9];
+  aa_firstName = [accountCopy aa_firstName];
 
-  if (!v12)
+  if (!aa_firstName)
   {
     objc_opt_class();
-    v13 = [v6 objectForKeyedSubscript:*MEMORY[0x1E698DB90]];
+    v13 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB90]];
     if (objc_opt_isKindOfClass())
     {
       v14 = v13;
@@ -882,7 +882,7 @@ LABEL_18:
       v14 = 0;
     }
 
-    [v5 aa_setFirstName:v14];
+    [accountCopy aa_setFirstName:v14];
     v15 = _AALogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -890,12 +890,12 @@ LABEL_18:
     }
   }
 
-  v16 = [v5 aa_lastName];
+  aa_lastName = [accountCopy aa_lastName];
 
-  if (!v16)
+  if (!aa_lastName)
   {
     objc_opt_class();
-    v17 = [v6 objectForKeyedSubscript:*MEMORY[0x1E698DBB8]];
+    v17 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBB8]];
     if (objc_opt_isKindOfClass())
     {
       v18 = v17;
@@ -906,7 +906,7 @@ LABEL_18:
       v18 = 0;
     }
 
-    [v5 aa_setLastName:v18];
+    [accountCopy aa_setLastName:v18];
     v19 = _AALogSystem();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
@@ -914,28 +914,28 @@ LABEL_18:
     }
   }
 
-  v20 = [v6 objectForKeyedSubscript:@"appProvidedContext"];
+  v20 = [resultsCopy objectForKeyedSubscript:@"appProvidedContext"];
 
   if (v20)
   {
     v21 = _AALogSystem();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v6 objectForKeyedSubscript:@"appProvidedContext"];
+      v22 = [resultsCopy objectForKeyedSubscript:@"appProvidedContext"];
       v26 = 138412290;
       v27 = v22;
       _os_log_impl(&dword_1B6F6A000, v21, OS_LOG_TYPE_DEFAULT, "AASignInFlowController: AuthContext contains AppProvidedContext: %@", &v26, 0xCu);
     }
 
-    v23 = [v6 objectForKeyedSubscript:@"appProvidedContext"];
-    [v5 _aa_setAppProvidedContext:v23];
+    v23 = [resultsCopy objectForKeyedSubscript:@"appProvidedContext"];
+    [accountCopy _aa_setAppProvidedContext:v23];
   }
 
   if ([v10 unsignedIntValue] == 9)
   {
     v24 = 1;
 LABEL_23:
-    [v5 setCredentialLocation:v24];
+    [accountCopy setCredentialLocation:v24];
     goto LABEL_24;
   }
 
@@ -950,24 +950,24 @@ LABEL_24:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_onqueue_updateAppleAccountIfNecessary:(id)a3 withAltDSID:(id)a4 rawPassword:(id)a5
+- (void)_onqueue_updateAppleAccountIfNecessary:(id)necessary withAltDSID:(id)d rawPassword:(id)password
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  necessaryCopy = necessary;
+  dCopy = d;
+  passwordCopy = password;
   v11 = _AALogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = v8;
+    v19 = necessaryCopy;
     _os_log_impl(&dword_1B6F6A000, v11, OS_LOG_TYPE_DEFAULT, "Checking to see if we should update altDSID on iCloud account %@", &v18, 0xCu);
   }
 
-  if ([v9 length])
+  if ([dCopy length])
   {
-    v12 = [v8 aa_altDSID];
-    v13 = [v12 length];
+    aa_altDSID = [necessaryCopy aa_altDSID];
+    v13 = [aa_altDSID length];
 
     v14 = _AALogSystem();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -985,13 +985,13 @@ LABEL_24:
       if (v15)
       {
         v18 = 138412290;
-        v19 = v9;
+        v19 = dCopy;
         _os_log_impl(&dword_1B6F6A000, v14, OS_LOG_TYPE_DEFAULT, "Updating iCloud account with altDSID: %{mask}@", &v18, 0xCu);
       }
 
-      [v8 _aa_setRawPassword:v10];
-      [v8 _aa_setAltDSID:v9];
-      [(ACAccountStore *)self->_accountStore saveVerifiedAccount:v8 withCompletionHandler:0];
+      [necessaryCopy _aa_setRawPassword:passwordCopy];
+      [necessaryCopy _aa_setAltDSID:dCopy];
+      [(ACAccountStore *)self->_accountStore saveVerifiedAccount:necessaryCopy withCompletionHandler:0];
     }
   }
 
@@ -1008,10 +1008,10 @@ LABEL_24:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_onqueue_saveTermsWithAuthResults:(id)a3 account:(id)a4
+- (void)_onqueue_saveTermsWithAuthResults:(id)results account:(id)account
 {
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:*MEMORY[0x1E698DB38]];
+  accountCopy = account;
+  v6 = [results objectForKeyedSubscript:*MEMORY[0x1E698DB38]];
   if (v6)
   {
     v7 = _AALogSystem();
@@ -1021,16 +1021,16 @@ LABEL_24:
     }
 
     v8 = objc_opt_new();
-    [v8 saveTermsAcceptance:v6 forAccount:v5];
+    [v8 saveTermsAcceptance:v6 forAccount:accountCopy];
   }
 }
 
-- (void)_cacheLoginResponse:(id)a3 forAccount:(id)a4 completion:(id)a5
+- (void)_cacheLoginResponse:(id)response forAccount:(id)account completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  accountCopy = account;
+  responseCopy = response;
   v11 = _AASignpostLogSystem();
   v12 = _AASignpostCreate(v11);
   v14 = v13;
@@ -1059,9 +1059,9 @@ LABEL_24:
   v23 = v12;
   v24 = v14;
   v21[4] = self;
-  v22 = v8;
-  v19 = v8;
-  [(AADaemonController *)v18 cacheLoginResponse:v10 forAccount:v9 completion:v21];
+  v22 = completionCopy;
+  v19 = completionCopy;
+  [(AADaemonController *)v18 cacheLoginResponse:responseCopy forAccount:accountCopy completion:v21];
 
   v20 = *MEMORY[0x1E69E9840];
 }
@@ -1134,11 +1134,11 @@ void __68__AASignInFlowController__cacheLoginResponse_forAccount_completion___bl
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_onqueue_registerAndVerifyLoginForiCloudAccount:(id)a3 authResults:(id)a4 withCompletion:(id)a5
+- (void)_onqueue_registerAndVerifyLoginForiCloudAccount:(id)account authResults:(id)results withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  resultsCopy = results;
+  completionCopy = completion;
   if (+[AAPreferences shouldUseUnifiedLoginEndpoint])
   {
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -1146,7 +1146,7 @@ void __68__AASignInFlowController__cacheLoginResponse_forAccount_completion___bl
     aBlock[2] = __101__AASignInFlowController__onqueue_registerAndVerifyLoginForiCloudAccount_authResults_withCompletion___block_invoke;
     aBlock[3] = &unk_1E7C9AA00;
     aBlock[4] = self;
-    v11 = v8;
+    v11 = accountCopy;
     v20 = v11;
     v12 = _Block_copy(aBlock);
     v15[0] = MEMORY[0x1E69E9820];
@@ -1154,9 +1154,9 @@ void __68__AASignInFlowController__cacheLoginResponse_forAccount_completion___bl
     v15[2] = __101__AASignInFlowController__onqueue_registerAndVerifyLoginForiCloudAccount_authResults_withCompletion___block_invoke_76;
     v15[3] = &unk_1E7C9AA50;
     v15[4] = self;
-    v16 = v9;
+    v16 = resultsCopy;
     v17 = v12;
-    v18 = v10;
+    v18 = completionCopy;
     v13 = v12;
     [(AASignInFlowController *)self _loginAndUpdateiCloudWithAuthResults:v16 iCloudAccount:v11 withCompletion:v15];
   }
@@ -1170,7 +1170,7 @@ void __68__AASignInFlowController__cacheLoginResponse_forAccount_completion___bl
       _os_log_impl(&dword_1B6F6A000, v14, OS_LOG_TYPE_DEFAULT, "[Warning] Using legacy non-unified login endpoint path for sign in (not expected)", buf, 2u);
     }
 
-    [(AASignInFlowController *)self _onqueue_legacyRegisterAndVerifyLoginForiCloudAccount:v8 authResults:v9 withCompletion:v10];
+    [(AASignInFlowController *)self _onqueue_legacyRegisterAndVerifyLoginForiCloudAccount:accountCopy authResults:resultsCopy withCompletion:completionCopy];
   }
 }
 
@@ -1314,12 +1314,12 @@ void __101__AASignInFlowController__onqueue_registerAndVerifyLoginForiCloudAccou
   v15(v14, v11, v18);
 }
 
-- (void)_loginAndUpdateiCloudWithAuthResults:(id)a3 iCloudAccount:(id)a4 withCompletion:(id)a5
+- (void)_loginAndUpdateiCloudWithAuthResults:(id)results iCloudAccount:(id)account withCompletion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  accountCopy = account;
+  completionCopy = completion;
+  resultsCopy = results;
   v11 = _AASignpostLogSystem();
   v12 = _AASignpostCreate(v11);
   v14 = v13;
@@ -1341,8 +1341,8 @@ void __101__AASignInFlowController__onqueue_registerAndVerifyLoginForiCloudAccou
   }
 
   v18 = MEMORY[0x1E6985DB0];
-  v19 = [v10 objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
-  v20 = [v10 objectForKeyedSubscript:*MEMORY[0x1E698DBE0]];
+  v19 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
+  v20 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBE0]];
 
   v21 = [v18 analyticsEventWithName:@"com.apple.appleaccount.iCloudAuthLoginAndUpdate" altDSID:v19 flowID:v20];
 
@@ -1356,10 +1356,10 @@ void __101__AASignInFlowController__onqueue_registerAndVerifyLoginForiCloudAccou
   v33 = v14;
   v28[4] = self;
   v29 = v21;
-  v30 = v8;
-  v31 = v9;
-  v24 = v9;
-  v25 = v8;
+  v30 = accountCopy;
+  v31 = completionCopy;
+  v24 = completionCopy;
+  v25 = accountCopy;
   v26 = v21;
   [(ACAccountStore *)accountStore aa_loginAndUpdateiCloudAccount:v25 delegateParams:v22 withCompletion:v28];
 
@@ -1447,12 +1447,12 @@ void __92__AASignInFlowController__loginAndUpdateiCloudWithAuthResults_iCloudAcc
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_onqueue_legacyRegisterAndVerifyLoginForiCloudAccount:(id)a3 authResults:(id)a4 withCompletion:(id)a5
+- (void)_onqueue_legacyRegisterAndVerifyLoginForiCloudAccount:(id)account authResults:(id)results withCompletion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  resultsCopy = results;
+  completionCopy = completion;
   v11 = _AASignpostLogSystem();
   v12 = _AASignpostCreate(v11);
   v14 = v13;
@@ -1481,12 +1481,12 @@ void __92__AASignInFlowController__loginAndUpdateiCloudWithAuthResults_iCloudAcc
   v27 = v12;
   v28 = v14;
   v23[4] = self;
-  v24 = v8;
-  v25 = v9;
-  v26 = v10;
-  v19 = v10;
-  v20 = v9;
-  v21 = v8;
+  v24 = accountCopy;
+  v25 = resultsCopy;
+  v26 = completionCopy;
+  v19 = completionCopy;
+  v20 = resultsCopy;
+  v21 = accountCopy;
   [(ACAccountStore *)accountStore aa_registerAppleAccount:v21 withCompletion:v23];
 
   v22 = *MEMORY[0x1E69E9840];
@@ -1559,14 +1559,14 @@ void __107__AASignInFlowController__onqueue_legacyRegisterAndVerifyLoginForiClou
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_onqueue_verifyLoginResponseForiCloudAccount:(id)a3 withAuthResults:(id)a4 withSuccess:(BOOL)a5 error:(id)a6 completion:(id)a7
+- (void)_onqueue_verifyLoginResponseForiCloudAccount:(id)account withAuthResults:(id)results withSuccess:(BOOL)success error:(id)error completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (a5)
+  accountCopy = account;
+  resultsCopy = results;
+  errorCopy = error;
+  completionCopy = completion;
+  if (success)
   {
     v16 = _AALogSystem();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1575,9 +1575,9 @@ void __107__AASignInFlowController__onqueue_legacyRegisterAndVerifyLoginForiClou
       _os_log_impl(&dword_1B6F6A000, v16, OS_LOG_TYPE_DEFAULT, "Account is valid: finish account setup", buf, 2u);
     }
 
-    v17 = [v12 aa_password];
+    aa_password = [accountCopy aa_password];
 
-    if (v17)
+    if (aa_password)
     {
       v18 = _AALogSystem();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1586,7 +1586,7 @@ void __107__AASignInFlowController__onqueue_legacyRegisterAndVerifyLoginForiClou
         _os_log_impl(&dword_1B6F6A000, v18, OS_LOG_TYPE_DEFAULT, "We have a password, setAuthenticated to NO and grab delegate tokens", buf, 2u);
       }
 
-      [v12 setAuthenticated:0];
+      [accountCopy setAuthenticated:0];
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -1594,13 +1594,13 @@ void __107__AASignInFlowController__onqueue_legacyRegisterAndVerifyLoginForiClou
     aBlock[2] = __116__AASignInFlowController__onqueue_verifyLoginResponseForiCloudAccount_withAuthResults_withSuccess_error_completion___block_invoke;
     aBlock[3] = &unk_1E7C9AB68;
     aBlock[4] = self;
-    v19 = v12;
+    v19 = accountCopy;
     v39 = v19;
-    v40 = v13;
-    v20 = v15;
+    v40 = resultsCopy;
+    v20 = completionCopy;
     v42 = v20;
-    v43 = a5;
-    v41 = v14;
+    successCopy = success;
+    v41 = errorCopy;
     v21 = _Block_copy(aBlock);
     if (+[AAFeatureFlags isBetterSignOutEnabled](AAFeatureFlags, "isBetterSignOutEnabled") && ([v19 aa_isAccountClass:@"primary"] & 1) != 0)
     {
@@ -1649,8 +1649,8 @@ void __107__AASignInFlowController__onqueue_legacyRegisterAndVerifyLoginForiClou
 
   else
   {
-    v29 = [v14 userInfo];
-    v30 = [v29 objectForKey:@"localizedError"];
+    userInfo = [errorCopy userInfo];
+    v30 = [userInfo objectForKey:@"localizedError"];
 
     v31 = _AALogSystem();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -1662,12 +1662,12 @@ void __107__AASignInFlowController__onqueue_legacyRegisterAndVerifyLoginForiClou
 
     if ([v30 isEqualToString:@"MOBILEME_TERMS_OF_SERVICE_UPDATE"])
     {
-      [(AASignInFlowController *)self _delegate_presentGenericTermsUIforAccount:v12 authResults:v13 serverError:v14 completion:v15];
+      [(AASignInFlowController *)self _delegate_presentGenericTermsUIforAccount:accountCopy authResults:resultsCopy serverError:errorCopy completion:completionCopy];
     }
 
     else
     {
-      [(AASignInFlowController *)self _delegate_presentValidationAlertForError:v14 forAccount:v12 completion:v15];
+      [(AASignInFlowController *)self _delegate_presentValidationAlertForError:errorCopy forAccount:accountCopy completion:completionCopy];
     }
   }
 
@@ -2052,12 +2052,12 @@ void __116__AASignInFlowController__onqueue_verifyLoginResponseForiCloudAccount_
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_onqueue_validateAndEnrollCDPStateForAccount:(id)a3 withAuthResults:(id)a4 completion:(id)a5
+- (void)_onqueue_validateAndEnrollCDPStateForAccount:(id)account withAuthResults:(id)results completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
+  accountCopy = account;
+  resultsCopy = results;
+  completionCopy = completion;
+  v11 = accountCopy;
   v12 = v11;
   if (self->_shouldAutomaticallySaveSignInResults)
   {
@@ -2098,12 +2098,12 @@ void __116__AASignInFlowController__onqueue_verifyLoginResponseForiCloudAccount_
   v19[2] = __98__AASignInFlowController__onqueue_validateAndEnrollCDPStateForAccount_withAuthResults_completion___block_invoke;
   v19[3] = &unk_1E7C9ABE0;
   v19[4] = self;
-  v20 = v9;
+  v20 = resultsCopy;
   v21 = v14;
-  v22 = v10;
-  v16 = v10;
+  v22 = completionCopy;
+  v16 = completionCopy;
   v17 = v14;
-  v18 = v9;
+  v18 = resultsCopy;
   [(AASignInFlowController *)self _preflightSaveWithAuthResults:v18 account:v17 withCompletion:v19];
 }
 
@@ -2148,18 +2148,18 @@ void __98__AASignInFlowController__onqueue_validateAndEnrollCDPStateForAccount_w
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_preflightSaveWithAuthResults:(id)a3 account:(id)a4 withCompletion:(id)a5
+- (void)_preflightSaveWithAuthResults:(id)results account:(id)account withCompletion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultsCopy = results;
+  accountCopy = account;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__AASignInFlowController__preflightSaveWithAuthResults_account_withCompletion___block_invoke;
   aBlock[3] = &unk_1E7C9AC08;
   aBlock[4] = self;
-  v11 = v10;
+  v11 = completionCopy;
   v40 = v11;
   v12 = _Block_copy(aBlock);
   v13 = _AASignpostLogSystem();
@@ -2183,13 +2183,13 @@ void __98__AASignInFlowController__onqueue_validateAndEnrollCDPStateForAccount_w
   }
 
   v19 = MEMORY[0x1E6985DB0];
-  v20 = [v8 objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
-  v21 = [v8 objectForKeyedSubscript:*MEMORY[0x1E698DBE0]];
+  v20 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
+  v21 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBE0]];
   v22 = [v19 analyticsEventWithName:@"com.apple.appleaccount.iCloudAuthPreflightSave" altDSID:v20 flowID:v21];
 
-  if (+[AAFeatureFlags isBetterSignOutEnabled](AAFeatureFlags, "isBetterSignOutEnabled") && [v9 aa_isAccountClass:@"primary"])
+  if (+[AAFeatureFlags isBetterSignOutEnabled](AAFeatureFlags, "isBetterSignOutEnabled") && [accountCopy aa_isAccountClass:@"primary"])
   {
-    v23 = [(AASignInFlowController *)self _dataclassActionsForPreflightSaveForAccount:v9];
+    v23 = [(AASignInFlowController *)self _dataclassActionsForPreflightSaveForAccount:accountCopy];
     v24 = _AALogSystem();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
@@ -2211,11 +2211,11 @@ void __98__AASignInFlowController__onqueue_validateAndEnrollCDPStateForAccount_w
   v38 = v31;
   v32[4] = self;
   v33 = v22;
-  v35 = v9;
+  v35 = accountCopy;
   v36 = v12;
-  v34 = v8;
-  v26 = v9;
-  v27 = v8;
+  v34 = resultsCopy;
+  v26 = accountCopy;
+  v27 = resultsCopy;
   v28 = v12;
   v29 = v22;
   [(ACAccountStore *)accountStore saveAccount:v26 withDataclassActions:v23 completion:v32];
@@ -2339,11 +2339,11 @@ void __79__AASignInFlowController__preflightSaveWithAuthResults_account_withComp
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_onqueue_addKeysAndEnrollCDPStateForAccount:(id)a3 withCDPContext:(id)a4 completion:(id)a5
+- (void)_onqueue_addKeysAndEnrollCDPStateForAccount:(id)account withCDPContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = _AALogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -2365,16 +2365,16 @@ void __79__AASignInFlowController__preflightSaveWithAuthResults_account_withComp
     v15[1] = 3221225472;
     v15[2] = __96__AASignInFlowController__onqueue_addKeysAndEnrollCDPStateForAccount_withCDPContext_completion___block_invoke;
     v15[3] = &unk_1E7C9AC58;
-    v16 = v9;
-    v17 = self;
-    v18 = v8;
-    v19 = v10;
+    v16 = contextCopy;
+    selfCopy = self;
+    v18 = accountCopy;
+    v19 = completionCopy;
     [(AACustodianController *)v14 fetchCustodianRecoveryKeysWithSessionID:v12 completion:v15];
   }
 
   else
   {
-    [(AASignInFlowController *)self _onqueue_enrollCDPStateForAccount:v8 withCDPContext:v9 completion:v10];
+    [(AASignInFlowController *)self _onqueue_enrollCDPStateForAccount:accountCopy withCDPContext:contextCopy completion:completionCopy];
   }
 }
 
@@ -2416,9 +2416,9 @@ void __96__AASignInFlowController__onqueue_addKeysAndEnrollCDPStateForAccount_wi
   [*(a1 + 40) _enrollCDPStateForAccount:*(a1 + 48) withCDPContext:*(a1 + 32) completion:*(a1 + 56)];
 }
 
-- (id)_dataclassActionsForPreflightSaveForAccount:(id)a3
+- (id)_dataclassActionsForPreflightSaveForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = _AALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2428,42 +2428,42 @@ void __96__AASignInFlowController__onqueue_addKeysAndEnrollCDPStateForAccount_wi
   dataclassActionsStore = self->_dataclassActionsStore;
   if (self->_userSelectedDataclassAction == 1)
   {
-    [(AADataclassActionsStore *)dataclassActionsStore deleteActionForKeychainDataclassForAddingAccount:v4];
+    [(AADataclassActionsStore *)dataclassActionsStore deleteActionForKeychainDataclassForAddingAccount:accountCopy];
   }
 
   else
   {
-    [(AADataclassActionsStore *)dataclassActionsStore mergeActionForKeychainDataclassForAddingAccount:v4];
+    [(AADataclassActionsStore *)dataclassActionsStore mergeActionForKeychainDataclassForAddingAccount:accountCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)_dataclassActionsForPostCDPSaveForAccount:(id)a3
+- (id)_dataclassActionsForPostCDPSaveForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   dataclassActionsStore = self->_dataclassActionsStore;
   if (self->_userSelectedDataclassAction == 1)
   {
-    [(AADataclassActionsStore *)dataclassActionsStore deleteLocalDataActionsForAddingAccount:v4];
+    [(AADataclassActionsStore *)dataclassActionsStore deleteLocalDataActionsForAddingAccount:accountCopy];
   }
 
   else
   {
-    [(AADataclassActionsStore *)dataclassActionsStore mergeLocalDataIntoSyncDataActionsForAddingAccount:v4];
+    [(AADataclassActionsStore *)dataclassActionsStore mergeLocalDataIntoSyncDataActionsForAddingAccount:accountCopy];
   }
   v6 = ;
 
   return v6;
 }
 
-- (void)_onqueue_enrollCDPStateForAccount:(id)a3 withCDPContext:(id)a4 completion:(id)a5
+- (void)_onqueue_enrollCDPStateForAccount:(id)account withCDPContext:(id)context completion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  contextCopy = context;
+  completionCopy = completion;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2050000000;
@@ -2482,7 +2482,7 @@ void __96__AASignInFlowController__onqueue_addKeysAndEnrollCDPStateForAccount_wi
 
   v12 = v11;
   _Block_object_dispose(&v36, 8);
-  v13 = [[v11 alloc] initWithContext:v9];
+  v13 = [[v11 alloc] initWithContext:contextCopy];
   WeakRetained = objc_loadWeakRetained(&self->_cdpUIProvider);
   v15 = WeakRetained == 0;
 
@@ -2529,12 +2529,12 @@ void __96__AASignInFlowController__onqueue_addKeysAndEnrollCDPStateForAccount_wi
   v30 = v13;
   v34 = v18;
   v35 = v20;
-  v32 = v8;
-  v33 = v10;
-  v31 = v9;
-  v24 = v8;
-  v25 = v10;
-  v26 = v9;
+  v32 = accountCopy;
+  v33 = completionCopy;
+  v31 = contextCopy;
+  v24 = accountCopy;
+  v25 = completionCopy;
+  v26 = contextCopy;
   v27 = v13;
   [v27 handleCloudDataProtectionStateWithCompletion:v29];
 
@@ -2706,19 +2706,19 @@ void __86__AASignInFlowController__onqueue_enrollCDPStateForAccount_withCDPConte
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_onqueue_createCDPContextWithAuthResults:(id)a3
+- (id)_onqueue_createCDPContextWithAuthResults:(id)results
 {
-  v4 = a3;
-  v5 = [(AASignInFlowController *)self delegate];
+  resultsCopy = results;
+  delegate = [(AASignInFlowController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(AASignInFlowController *)self delegate];
-    v7 = [v6 cdpContext];
+    delegate2 = [(AASignInFlowController *)self delegate];
+    cdpContext = [delegate2 cdpContext];
 
-    if (v7)
+    if (cdpContext)
     {
-      v8 = [(AASignInFlowController *)self delegate];
-      v9 = [v8 cdpContext];
+      delegate3 = [(AASignInFlowController *)self delegate];
+      cdpContext2 = [delegate3 cdpContext];
 
       goto LABEL_8;
     }
@@ -2746,39 +2746,39 @@ void __86__AASignInFlowController__onqueue_enrollCDPStateForAccount_withCDPConte
 
   v11 = v10;
   _Block_object_dispose(&v15, 8);
-  v9 = [[v10 alloc] initWithAuthenticationResults:v4];
-  v12 = [(AASignInFlowController *)self messageSession];
-  [v9 setSharingChannel:v12];
+  cdpContext2 = [[v10 alloc] initWithAuthenticationResults:resultsCopy];
+  messageSession = [(AASignInFlowController *)self messageSession];
+  [cdpContext2 setSharingChannel:messageSession];
 
-  [v9 set_ignoreLockAssertErrors:{-[AASignInFlowController ignoreLockAssertErrors](self, "ignoreLockAssertErrors")}];
+  [cdpContext2 set_ignoreLockAssertErrors:{-[AASignInFlowController ignoreLockAssertErrors](self, "ignoreLockAssertErrors")}];
 LABEL_8:
 
-  return v9;
+  return cdpContext2;
 }
 
-- (void)_enableFindMyIfPossibleWithAccount:(id)a3 completion:(id)a4
+- (void)_enableFindMyIfPossibleWithAccount:(id)account completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   uiQueue = self->_uiQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__AASignInFlowController__enableFindMyIfPossibleWithAccount_completion___block_invoke;
   block[3] = &unk_1E7C9A898;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = accountCopy;
+  v15 = completionCopy;
   v9 = uiQueue;
-  v10 = v7;
-  v11 = v6;
+  v10 = completionCopy;
+  v11 = accountCopy;
   v12 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, block);
   dispatch_async(v9, v12);
 }
 
-- (void)_onqueue_enableFindMyIfPossibleWithAccount:(id)a3 completion:(id)a4
+- (void)_onqueue_enableFindMyIfPossibleWithAccount:(id)account completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   if ([MEMORY[0x1E6985DD8] isVirtualMachine])
   {
     v8 = _AALogSystem();
@@ -2794,7 +2794,7 @@ LABEL_19:
 
   else
   {
-    v11 = [(AASignInFlowController *)self _shouldEnableDataclassesForAccount:v6];
+    v11 = [(AASignInFlowController *)self _shouldEnableDataclassesForAccount:accountCopy];
     if ([(AASignInFlowController *)self _findMyActivationAction]== 2 || !v11)
     {
       v8 = _AALogSystem();
@@ -2809,10 +2809,10 @@ LABEL_19:
 
     else if ([(AASignInFlowController *)self shouldAutomaticallySaveSignInResults])
     {
-      if ([v6 aa_isAccountClass:@"primary"] && (objc_msgSend(v6, "aa_isPrimaryEmailVerified") & 1) != 0)
+      if ([accountCopy aa_isAccountClass:@"primary"] && (objc_msgSend(accountCopy, "aa_isPrimaryEmailVerified") & 1) != 0)
       {
         v12 = *MEMORY[0x1E6959B08];
-        if (([v6 isProvisionedForDataclass:*MEMORY[0x1E6959B08]] & 1) == 0)
+        if (([accountCopy isProvisionedForDataclass:*MEMORY[0x1E6959B08]] & 1) == 0)
         {
           v8 = _AALogSystem();
           if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2826,13 +2826,13 @@ LABEL_19:
           goto LABEL_19;
         }
 
-        v13 = [(AASignInFlowController *)self dataclassManager];
-        v14 = [v13 userDefaultsDisabledDataclasses];
-        v15 = [v14 containsObject:v12];
+        dataclassManager = [(AASignInFlowController *)self dataclassManager];
+        userDefaultsDisabledDataclasses = [dataclassManager userDefaultsDisabledDataclasses];
+        v15 = [userDefaultsDisabledDataclasses containsObject:v12];
 
         if (!v15)
         {
-          [(AASignInFlowController *)self _onqueue_delegate_enableFindMyWithCompletion:v7];
+          [(AASignInFlowController *)self _onqueue_delegate_enableFindMyWithCompletion:completionCopy];
           goto LABEL_21;
         }
 
@@ -2874,7 +2874,7 @@ LABEL_19:
 
 LABEL_20:
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_21:
 }
 
@@ -2894,57 +2894,57 @@ LABEL_21:
   return v3;
 }
 
-- (void)_saveAccount:(id)a3 withAuthResults:(id)a4 withCDPEnablement:(BOOL)a5 withAllDataclassesEnabledIfPossibleWithCompletion:(id)a6
+- (void)_saveAccount:(id)account withAuthResults:(id)results withCDPEnablement:(BOOL)enablement withAllDataclassesEnabledIfPossibleWithCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  accountCopy = account;
+  resultsCopy = results;
+  completionCopy = completion;
   uiQueue = self->_uiQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __123__AASignInFlowController__saveAccount_withAuthResults_withCDPEnablement_withAllDataclassesEnabledIfPossibleWithCompletion___block_invoke;
   block[3] = &unk_1E7C9ACD0;
   block[4] = self;
-  v20 = v10;
-  v23 = a5;
-  v21 = v11;
-  v22 = v12;
+  v20 = accountCopy;
+  enablementCopy = enablement;
+  v21 = resultsCopy;
+  v22 = completionCopy;
   v14 = uiQueue;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v15 = completionCopy;
+  v16 = resultsCopy;
+  v17 = accountCopy;
   v18 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, block);
   dispatch_async(v14, v18);
 }
 
-- (void)_backgroundSaveAccount:(id)a3 withDataclassEnablement:(BOOL)a4 completion:(id)a5
+- (void)_backgroundSaveAccount:(id)account withDataclassEnablement:(BOOL)enablement completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  accountCopy = account;
+  completionCopy = completion;
   utilityQueue = self->_utilityQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __84__AASignInFlowController__backgroundSaveAccount_withDataclassEnablement_completion___block_invoke;
   v15[3] = &unk_1E7C9ACF8;
   v15[4] = self;
-  v16 = v8;
-  v18 = a4;
-  v17 = v9;
+  v16 = accountCopy;
+  enablementCopy = enablement;
+  v17 = completionCopy;
   v11 = utilityQueue;
-  v12 = v9;
-  v13 = v8;
+  v12 = completionCopy;
+  v13 = accountCopy;
   v14 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_DEFAULT, 0, v15);
   dispatch_async(v11, v14);
 }
 
-- (void)_onqueue_saveAccount:(id)a3 withAuthResults:(id)a4 withCDPEnablement:(BOOL)a5 withAllDataclassesEnabledIfPossibleWithCompletion:(id)a6
+- (void)_onqueue_saveAccount:(id)account withAuthResults:(id)results withCDPEnablement:(BOOL)enablement withAllDataclassesEnabledIfPossibleWithCompletion:(id)completion
 {
-  v7 = a5;
+  enablementCopy = enablement;
   v57 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v12;
+  accountCopy = account;
+  resultsCopy = results;
+  completionCopy = completion;
+  v13 = completionCopy;
   if (self->_shouldAutomaticallySaveSignInResults)
   {
     if (self->_pendingSignIn)
@@ -2962,8 +2962,8 @@ LABEL_21:
     else
     {
       self->_pendingSignIn = 1;
-      [v10 refresh];
-      if ([v10 isWarmingUp])
+      [accountCopy refresh];
+      if ([accountCopy isWarmingUp])
       {
         v16 = _AALogSystem();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -2972,13 +2972,13 @@ LABEL_21:
           _os_log_impl(&dword_1B6F6A000, v16, OS_LOG_TYPE_DEFAULT, "Account is no longer warming up.", buf, 2u);
         }
 
-        [v10 setWarmingUp:0];
+        [accountCopy setWarmingUp:0];
       }
 
-      v17 = v7 && [(AASignInFlowController *)self _delegateWantsToBackgroundDataclassEnablement];
-      if ([(AASignInFlowController *)self _shouldEnableDataclassesForAccount:v10])
+      v17 = enablementCopy && [(AASignInFlowController *)self _delegateWantsToBackgroundDataclassEnablement];
+      if ([(AASignInFlowController *)self _shouldEnableDataclassesForAccount:accountCopy])
       {
-        if ([v10 aa_isAccountClass:@"primary"])
+        if ([accountCopy aa_isAccountClass:@"primary"])
         {
           v18 = [(AASignInFlowController *)self _newSignInFlow]^ 1;
         }
@@ -2998,7 +2998,7 @@ LABEL_21:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109632;
-        *v54 = v7;
+        *v54 = enablementCopy;
         *&v54[4] = 1024;
         *&v54[6] = v17;
         v55 = 1024;
@@ -3007,8 +3007,8 @@ LABEL_21:
       }
 
       v20 = MEMORY[0x1E6985DB0];
-      v21 = [v11 objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
-      v22 = [v11 objectForKeyedSubscript:*MEMORY[0x1E698DBE0]];
+      v21 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
+      v22 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBE0]];
       v23 = [v20 analyticsEventWithName:@"com.apple.appleaccount.iCloudAccountAdd" altDSID:v21 flowID:v22];
 
       if (v17)
@@ -3048,10 +3048,10 @@ LABEL_21:
         v51 = v26;
         v52 = v28;
         v49 = v23;
-        v50 = self;
+        selfCopy = self;
         v32 = v23;
-        [(AASignInFlowController *)self _backgroundSaveAccount:v10 withDataclassEnablement:v18 completion:v48];
-        (v13)[2](v13, 1, v10, 0);
+        [(AASignInFlowController *)self _backgroundSaveAccount:accountCopy withDataclassEnablement:v18 completion:v48];
+        (v13)[2](v13, 1, accountCopy, 0);
         v33 = v49;
       }
 
@@ -3087,7 +3087,7 @@ LABEL_21:
         v44 = v23;
         v45 = v13;
         v41 = v23;
-        [(AASignInFlowController *)self _onqueue_delegate_saveAccount:v10 withDataclassEnablement:v18 completion:v43];
+        [(AASignInFlowController *)self _onqueue_delegate_saveAccount:accountCopy withDataclassEnablement:v18 completion:v43];
 
         v33 = v44;
       }
@@ -3096,7 +3096,7 @@ LABEL_21:
 
   else
   {
-    (*(v12 + 2))(v12, 1, v10, 0);
+    (*(completionCopy + 2))(completionCopy, 1, accountCopy, 0);
   }
 
   v42 = *MEMORY[0x1E69E9840];
@@ -3274,28 +3274,28 @@ uint64_t __82__AASignInFlowController__onqueue_saveAccount_withDataclassEnableme
   }
 }
 
-- (void)_delegate_presentAccountCreationError:(id)a3 completion:(id)a4
+- (void)_delegate_presentAccountCreationError:(id)error completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AASignInFlowController *)self _titleForSignInFailureAlert];
-  v9 = [v6 userInfo];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
+  errorCopy = error;
+  completionCopy = completion;
+  _titleForSignInFailureAlert = [(AASignInFlowController *)self _titleForSignInFailureAlert];
+  userInfo = [errorCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A578]];
 
   v11 = _AALogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    v22 = v6;
+    v22 = errorCopy;
     v23 = 2112;
-    v24 = v8;
+    v24 = _titleForSignInFailureAlert;
     v25 = 2112;
     v26 = v10;
     _os_log_error_impl(&dword_1B6F6A000, v11, OS_LOG_TYPE_ERROR, "AASignInFlowController: Sign in - account creation failed with error: %@, title: %@, message: %@", buf, 0x20u);
   }
 
-  v12 = [(AASignInFlowController *)self delegate];
+  delegate = [(AASignInFlowController *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
@@ -3305,17 +3305,17 @@ uint64_t __82__AASignInFlowController__onqueue_saveAccount_withDataclassEnableme
     block[2] = __75__AASignInFlowController__delegate_presentAccountCreationError_completion___block_invoke;
     block[3] = &unk_1E7C9ADC0;
     block[4] = self;
-    v17 = v8;
+    v17 = _titleForSignInFailureAlert;
     v18 = v10;
-    v20 = v7;
-    v19 = v6;
+    v20 = completionCopy;
+    v19 = errorCopy;
     v14 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, block);
     dispatch_async(MEMORY[0x1E69E96A0], v14);
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, 0, errorCopy);
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -3348,22 +3348,22 @@ uint64_t __75__AASignInFlowController__delegate_presentAccountCreationError_comp
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_delegate_presentGenericTermsUIforAccount:(id)a3 authResults:(id)a4 serverError:(id)a5 completion:(id)a6
+- (void)_delegate_presentGenericTermsUIforAccount:(id)account authResults:(id)results serverError:(id)error completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  accountCopy = account;
+  resultsCopy = results;
+  errorCopy = error;
+  completionCopy = completion;
   v14 = _AALogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v10;
+    v27 = accountCopy;
     _os_log_impl(&dword_1B6F6A000, v14, OS_LOG_TYPE_DEFAULT, "AASignInFlowController: Account needs terms: %@", buf, 0xCu);
   }
 
-  v15 = [(AASignInFlowController *)self delegate];
+  delegate = [(AASignInFlowController *)self delegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
@@ -3372,10 +3372,10 @@ uint64_t __75__AASignInFlowController__delegate_presentAccountCreationError_comp
     v21[1] = 3221225472;
     v21[2] = __103__AASignInFlowController__delegate_presentGenericTermsUIforAccount_authResults_serverError_completion___block_invoke;
     v21[3] = &unk_1E7C9A8C0;
-    v22 = v11;
-    v23 = v10;
-    v24 = self;
-    v25 = v13;
+    v22 = resultsCopy;
+    v23 = accountCopy;
+    selfCopy = self;
+    v25 = completionCopy;
     v17 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, v21);
     dispatch_async(MEMORY[0x1E69E96A0], v17);
 
@@ -3390,8 +3390,8 @@ uint64_t __75__AASignInFlowController__delegate_presentAccountCreationError_comp
       [AASignInFlowController _delegate_presentGenericTermsUIforAccount:authResults:serverError:completion:];
     }
 
-    v18 = [(AASignInFlowController *)self _aaErrorForErrorCode:-8010 withUnderlyingError:v12];
-    (*(v13 + 2))(v13, 0, 0, v18);
+    v18 = [(AASignInFlowController *)self _aaErrorForErrorCode:-8010 withUnderlyingError:errorCopy];
+    (*(completionCopy + 2))(completionCopy, 0, 0, v18);
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -3550,34 +3550,34 @@ void __103__AASignInFlowController__delegate_presentGenericTermsUIforAccount_aut
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_delegate_presentValidationAlertForError:(id)a3 forAccount:(id)a4 completion:(id)a5
+- (void)_delegate_presentValidationAlertForError:(id)error forAccount:(id)account completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 userInfo];
-  v10 = [v9 objectForKey:*MEMORY[0x1E696A578]];
+  errorCopy = error;
+  completionCopy = completion;
+  userInfo = [errorCopy userInfo];
+  v10 = [userInfo objectForKey:*MEMORY[0x1E696A578]];
   v11 = v10;
   if (v10)
   {
-    v12 = v10;
+    _titleForVerificationFailureAlert = v10;
   }
 
   else
   {
-    v12 = [(AASignInFlowController *)self _titleForVerificationFailureAlert];
+    _titleForVerificationFailureAlert = [(AASignInFlowController *)self _titleForVerificationFailureAlert];
   }
 
-  v13 = v12;
+  v13 = _titleForVerificationFailureAlert;
 
-  v14 = [v7 userInfo];
-  v15 = [v14 objectForKey:*MEMORY[0x1E696A588]];
+  userInfo2 = [errorCopy userInfo];
+  v15 = [userInfo2 objectForKey:*MEMORY[0x1E696A588]];
 
   v16 = _AALogSystem();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    v27 = v7;
+    v27 = errorCopy;
     v28 = 2112;
     v29 = v13;
     v30 = 2112;
@@ -3585,7 +3585,7 @@ void __103__AASignInFlowController__delegate_presentGenericTermsUIforAccount_aut
     _os_log_error_impl(&dword_1B6F6A000, v16, OS_LOG_TYPE_ERROR, "AASignInFlowController: Sign in - validation failed with error: %@, title: %@, message: %@", buf, 0x20u);
   }
 
-  v17 = [(AASignInFlowController *)self delegate];
+  delegate = [(AASignInFlowController *)self delegate];
   v18 = objc_opt_respondsToSelector();
 
   if (v18)
@@ -3597,15 +3597,15 @@ void __103__AASignInFlowController__delegate_presentGenericTermsUIforAccount_aut
     block[4] = self;
     v22 = v13;
     v23 = v15;
-    v25 = v8;
-    v24 = v7;
+    v25 = completionCopy;
+    v24 = errorCopy;
     v19 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, block);
     dispatch_async(MEMORY[0x1E69E96A0], v19);
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0, 0, v7);
+    (*(completionCopy + 2))(completionCopy, 0, 0, errorCopy);
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -3638,13 +3638,13 @@ uint64_t __89__AASignInFlowController__delegate_presentValidationAlertForError_f
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_delegate_presentProgressViewForAccount:(id)a3 completion:(id)a4
+- (void)_delegate_presentProgressViewForAccount:(id)account completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   if (_os_feature_enabled_impl())
   {
-    v8 = [(AASignInFlowController *)self delegate];
+    delegate = [(AASignInFlowController *)self delegate];
     v9 = objc_opt_respondsToSelector();
     v10 = _AALogSystem();
     v11 = v10;
@@ -3659,10 +3659,10 @@ uint64_t __89__AASignInFlowController__delegate_presentValidationAlertForError_f
       v14[1] = 3221225472;
       v14[2] = __77__AASignInFlowController__delegate_presentProgressViewForAccount_completion___block_invoke;
       v14[3] = &unk_1E7C9A8C0;
-      v15 = v8;
-      v16 = self;
-      v17 = v6;
-      v18 = v7;
+      v15 = delegate;
+      selfCopy = self;
+      v17 = accountCopy;
+      v18 = completionCopy;
       v12 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, v14);
       dispatch_async(MEMORY[0x1E69E96A0], v12);
     }
@@ -3674,9 +3674,9 @@ uint64_t __89__AASignInFlowController__delegate_presentValidationAlertForError_f
         [AASignInFlowController _delegate_presentProgressViewForAccount:completion:];
       }
 
-      if (v7)
+      if (completionCopy)
       {
-        (*(v7 + 2))(v7, 0);
+        (*(completionCopy + 2))(completionCopy, 0);
       }
     }
   }
@@ -3689,18 +3689,18 @@ uint64_t __89__AASignInFlowController__delegate_presentValidationAlertForError_f
       [AASignInFlowController _delegate_presentProgressViewForAccount:completion:];
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)_delegate_presentDataclassActionsForAccount:(id)a3 completion:(id)a4
+- (void)_delegate_presentDataclassActionsForAccount:(id)account completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[AADataclassActionsStore alloc] initWithAccount:v6];
+  accountCopy = account;
+  completionCopy = completion;
+  v8 = [[AADataclassActionsStore alloc] initWithAccount:accountCopy];
   dataclassActionsStore = self->_dataclassActionsStore;
   self->_dataclassActionsStore = v8;
 
@@ -3716,13 +3716,13 @@ uint64_t __89__AASignInFlowController__delegate_presentValidationAlertForError_f
       [AASignInFlowController _delegate_presentDataclassActionsForAccount:completion:];
     }
 
-    (*(v7 + 2))(v7, 0, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v12);
   }
 
   else
   {
-    v14 = [v6 aa_altDSID];
-    v15 = [v14 isEqualToString:v11];
+    aa_altDSID = [accountCopy aa_altDSID];
+    v15 = [aa_altDSID isEqualToString:v11];
 
     v16 = _AALogSystem();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
@@ -3733,7 +3733,7 @@ uint64_t __89__AASignInFlowController__delegate_presentValidationAlertForError_f
         [AASignInFlowController _delegate_presentDataclassActionsForAccount:completion:];
       }
 
-      (*(v7 + 2))(v7, 1, 2, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 2, 0);
     }
 
     else
@@ -3743,7 +3743,7 @@ uint64_t __89__AASignInFlowController__delegate_presentValidationAlertForError_f
         [AASignInFlowController _delegate_presentDataclassActionsForAccount:completion:];
       }
 
-      v18 = [(AASignInFlowController *)self delegate];
+      delegate = [(AASignInFlowController *)self delegate];
       v19 = objc_opt_respondsToSelector();
       v20 = _AALogSystem();
       v21 = v20;
@@ -3758,10 +3758,10 @@ uint64_t __89__AASignInFlowController__delegate_presentValidationAlertForError_f
         block[1] = 3221225472;
         block[2] = __81__AASignInFlowController__delegate_presentDataclassActionsForAccount_completion___block_invoke;
         block[3] = &unk_1E7C9A8C0;
-        v24 = v18;
-        v25 = self;
-        v26 = v6;
-        v27 = v7;
+        v24 = delegate;
+        selfCopy = self;
+        v26 = accountCopy;
+        v27 = completionCopy;
         v22 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, block);
         dispatch_async(MEMORY[0x1E69E96A0], v22);
       }
@@ -3773,17 +3773,17 @@ uint64_t __89__AASignInFlowController__delegate_presentValidationAlertForError_f
           [AASignInFlowController _delegate_presentDataclassActionsForAccount:completion:];
         }
 
-        (*(v7 + 2))(v7, 1, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 1, 0, 0);
       }
     }
   }
 }
 
-- (void)_delegate_presentAccountPrivacyOptInForAccount:(id)a3 userActionCompletion:(id)a4
+- (void)_delegate_presentAccountPrivacyOptInForAccount:(id)account userActionCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AASignInFlowController *)self delegate];
+  accountCopy = account;
+  completionCopy = completion;
+  delegate = [(AASignInFlowController *)self delegate];
   v9 = objc_opt_respondsToSelector();
   v10 = _AALogSystem();
   v11 = v10;
@@ -3798,10 +3798,10 @@ uint64_t __89__AASignInFlowController__delegate_presentValidationAlertForError_f
     v14[1] = 3221225472;
     v14[2] = __94__AASignInFlowController__delegate_presentAccountPrivacyOptInForAccount_userActionCompletion___block_invoke;
     v14[3] = &unk_1E7C9A8C0;
-    v15 = v8;
-    v16 = self;
-    v17 = v6;
-    v18 = v7;
+    v15 = delegate;
+    selfCopy = self;
+    v17 = accountCopy;
+    v18 = completionCopy;
     v12 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, v14);
     dispatch_async(MEMORY[0x1E69E96A0], v12);
 
@@ -3814,30 +3814,30 @@ uint64_t __89__AASignInFlowController__delegate_presentValidationAlertForError_f
     [AASignInFlowController _delegate_presentAccountPrivacyOptInForAccount:userActionCompletion:];
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AASignInErrors" code:-8016 userInfo:0];
-    (*(v7 + 2))(v7, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
 LABEL_9:
   }
 }
 
-- (void)_onqueue_delegate_enableFindMyWithCompletion:(id)a3
+- (void)_onqueue_delegate_enableFindMyWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(AASignInFlowController *)self delegate];
+  completionCopy = completion;
+  delegate = [(AASignInFlowController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AASignInFlowController *)self delegate];
-    v8 = [(AASignInFlowController *)self _findMyActivationAction];
+    delegate2 = [(AASignInFlowController *)self delegate];
+    _findMyActivationAction = [(AASignInFlowController *)self _findMyActivationAction];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __71__AASignInFlowController__onqueue_delegate_enableFindMyWithCompletion___block_invoke;
     v10[3] = &unk_1E7C9A780;
-    v11 = v4;
-    [v7 signInFlowController:self enableFindMyWithAction:v8 completion:v10];
+    v11 = completionCopy;
+    [delegate2 signInFlowController:self enableFindMyWithAction:_findMyActivationAction completion:v10];
   }
 
   else
@@ -3848,7 +3848,7 @@ LABEL_9:
       [(AASignInFlowController *)self _onqueue_delegate_enableFindMyWithCompletion:v9];
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -3887,29 +3887,29 @@ uint64_t __71__AASignInFlowController__onqueue_delegate_enableFindMyWithCompleti
   return v3;
 }
 
-- (id)_aaErrorForErrorCode:(int64_t)a3 withUnderlyingError:(id)a4
+- (id)_aaErrorForErrorCode:(int64_t)code withUnderlyingError:(id)error
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v8 = [(AASignInFlowController *)self _aaMessageForErrorCode:a3];
-  [v7 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696A578]];
+  errorCopy = error;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v8 = [(AASignInFlowController *)self _aaMessageForErrorCode:code];
+  [dictionary setObject:v8 forKeyedSubscript:*MEMORY[0x1E696A578]];
 
-  if (v6)
+  if (errorCopy)
   {
-    [v7 setObject:v6 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+    [dictionary setObject:errorCopy forKeyedSubscript:*MEMORY[0x1E696AA08]];
   }
 
-  v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AASignInErrors" code:a3 userInfo:v7];
+  v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AASignInErrors" code:code userInfo:dictionary];
 
   return v9;
 }
 
-- (id)_aaMessageForErrorCode:(int64_t)a3
+- (id)_aaMessageForErrorCode:(int64_t)code
 {
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
   v6 = [v5 localizedStringForKey:@"UNABLE_TO_VALIDATE" value:0 table:@"Localizable"];
 
-  if ([(AASignInFlowController *)self _isDuplicateAccountError:a3])
+  if ([(AASignInFlowController *)self _isDuplicateAccountError:code])
   {
     v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
     v8 = [v7 localizedStringForKey:@"ALREADY_EXISTING_ACCOUNT_DESC" value:0 table:@"Localizable"];
@@ -3923,19 +3923,19 @@ uint64_t __71__AASignInFlowController__onqueue_delegate_enableFindMyWithCompleti
 - (BOOL)_delegateWantsToSkipDataclassEnablement
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(AASignInFlowController *)self delegate];
+  delegate = [(AASignInFlowController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AASignInFlowController *)self delegate];
-    v6 = [v5 skipDataclassEnablement];
+    delegate2 = [(AASignInFlowController *)self delegate];
+    skipDataclassEnablement = [delegate2 skipDataclassEnablement];
 
     v7 = _AALogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"NO";
-      if (v6)
+      if (skipDataclassEnablement)
       {
         v8 = @"YES";
       }
@@ -3948,29 +3948,29 @@ uint64_t __71__AASignInFlowController__onqueue_delegate_enableFindMyWithCompleti
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(skipDataclassEnablement) = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v6;
+  return skipDataclassEnablement;
 }
 
 - (BOOL)_delegateWantsToBackgroundDataclassEnablement
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(AASignInFlowController *)self delegate];
+  delegate = [(AASignInFlowController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AASignInFlowController *)self delegate];
-    v6 = [v5 backgroundDataclassEnablement];
+    delegate2 = [(AASignInFlowController *)self delegate];
+    backgroundDataclassEnablement = [delegate2 backgroundDataclassEnablement];
 
     v7 = _AALogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"NO";
-      if (v6)
+      if (backgroundDataclassEnablement)
       {
         v8 = @"YES";
       }
@@ -3983,16 +3983,16 @@ uint64_t __71__AASignInFlowController__onqueue_delegate_enableFindMyWithCompleti
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(backgroundDataclassEnablement) = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v6;
+  return backgroundDataclassEnablement;
 }
 
 - (BOOL)_delegateRequiresTerms
 {
-  v3 = [(AASignInFlowController *)self delegate];
+  delegate = [(AASignInFlowController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -4000,9 +4000,9 @@ uint64_t __71__AASignInFlowController__onqueue_delegate_enableFindMyWithCompleti
     return 0;
   }
 
-  v5 = [(AASignInFlowController *)self delegate];
-  v6 = [v5 requiredTerms];
-  v7 = [v6 count] != 0;
+  delegate2 = [(AASignInFlowController *)self delegate];
+  requiredTerms = [delegate2 requiredTerms];
+  v7 = [requiredTerms count] != 0;
 
   return v7;
 }
@@ -4010,21 +4010,21 @@ uint64_t __71__AASignInFlowController__onqueue_delegate_enableFindMyWithCompleti
 - (unint64_t)_findMyActivationAction
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(AASignInFlowController *)self delegate];
+  delegate = [(AASignInFlowController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AASignInFlowController *)self delegate];
-    v6 = [v5 findMyActivationAction];
+    delegate2 = [(AASignInFlowController *)self delegate];
+    findMyActivationAction = [delegate2 findMyActivationAction];
 
-    if (v6)
+    if (findMyActivationAction)
     {
       v7 = _AALogSystem();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 134217984;
-        v11 = v6;
+        v11 = findMyActivationAction;
         _os_log_impl(&dword_1B6F6A000, v7, OS_LOG_TYPE_DEFAULT, "Delegate provided custom activation action: %lu", &v10, 0xCu);
       }
     }
@@ -4032,45 +4032,45 @@ uint64_t __71__AASignInFlowController__onqueue_delegate_enableFindMyWithCompleti
 
   else
   {
-    v6 = 0;
+    findMyActivationAction = 0;
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v6;
+  return findMyActivationAction;
 }
 
-- (BOOL)_shouldEnableDataclassesForAccount:(id)a3
+- (BOOL)_shouldEnableDataclassesForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   if ([(AASignInFlowController *)self _delegateWantsToSkipDataclassEnablement]|| self->_existingAccount && ![(AASignInFlowController *)self _newSignInReauth])
   {
-    v5 = 0;
+    aa_isPrimaryEmailVerified = 0;
   }
 
   else
   {
-    v5 = [v4 aa_isPrimaryEmailVerified];
+    aa_isPrimaryEmailVerified = [accountCopy aa_isPrimaryEmailVerified];
   }
 
-  return v5;
+  return aa_isPrimaryEmailVerified;
 }
 
 - (BOOL)_newSignInReauth
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(AASignInFlowController *)self delegate];
+  delegate = [(AASignInFlowController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AASignInFlowController *)self delegate];
-    v6 = [v5 newSignInReauth];
+    delegate2 = [(AASignInFlowController *)self delegate];
+    newSignInReauth = [delegate2 newSignInReauth];
 
     v7 = _AALogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"NO";
-      if (v6)
+      if (newSignInReauth)
       {
         v8 = @"YES";
       }
@@ -4083,29 +4083,29 @@ uint64_t __71__AASignInFlowController__onqueue_delegate_enableFindMyWithCompleti
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(newSignInReauth) = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v6;
+  return newSignInReauth;
 }
 
 - (BOOL)_newSignInFlow
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(AASignInFlowController *)self delegate];
+  delegate = [(AASignInFlowController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AASignInFlowController *)self delegate];
-    v6 = [v5 newSignInFlow];
+    delegate2 = [(AASignInFlowController *)self delegate];
+    newSignInFlow = [delegate2 newSignInFlow];
 
     v7 = _AALogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"NO";
-      if (v6)
+      if (newSignInFlow)
       {
         v8 = @"YES";
       }
@@ -4118,29 +4118,29 @@ uint64_t __71__AASignInFlowController__onqueue_delegate_enableFindMyWithCompleti
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(newSignInFlow) = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v6;
+  return newSignInFlow;
 }
 
 - (BOOL)_shouldStashLoginResponse
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(AASignInFlowController *)self delegate];
+  delegate = [(AASignInFlowController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AASignInFlowController *)self delegate];
-    v6 = [v5 shouldStashLoginResponse];
+    delegate2 = [(AASignInFlowController *)self delegate];
+    shouldStashLoginResponse = [delegate2 shouldStashLoginResponse];
 
     v7 = _AALogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"NO";
-      if (v6)
+      if (shouldStashLoginResponse)
       {
         v8 = @"YES";
       }
@@ -4153,17 +4153,17 @@ uint64_t __71__AASignInFlowController__onqueue_delegate_enableFindMyWithCompleti
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(shouldStashLoginResponse) = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v6;
+  return shouldStashLoginResponse;
 }
 
-- (void)_stashLoginResponseWithAuthenticationResults:(id)a3 appleAccount:(id)a4
+- (void)_stashLoginResponseWithAuthenticationResults:(id)results appleAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  accountCopy = account;
   if ([(AASignInFlowController *)self _shouldStashLoginResponse])
   {
     utilityQueue = self->_utilityQueue;
@@ -4171,8 +4171,8 @@ uint64_t __71__AASignInFlowController__onqueue_delegate_enableFindMyWithCompleti
     v11[1] = 3221225472;
     v11[2] = __84__AASignInFlowController__stashLoginResponseWithAuthenticationResults_appleAccount___block_invoke;
     v11[3] = &unk_1E7C9ADE8;
-    v12 = v7;
-    v13 = v6;
+    v12 = accountCopy;
+    v13 = resultsCopy;
     v9 = utilityQueue;
     v10 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_DEFAULT, 0, v11);
     dispatch_async(v9, v10);
@@ -4234,11 +4234,11 @@ void __84__AASignInFlowController__stashLoginResponseWithAuthenticationResults_a
   v2 = objc_alloc_init(MEMORY[0x1E69DF078]);
   if (([v2 isEnterprisePersona] & 1) != 0 || objc_msgSend(v2, "isGuestPersona"))
   {
-    v3 = [v2 userPersonaUniqueString];
+    userPersonaUniqueString = [v2 userPersonaUniqueString];
     v4 = _AALogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      [(AASignInFlowController *)v3 _userPersonaUniqueString];
+      [(AASignInFlowController *)userPersonaUniqueString _userPersonaUniqueString];
     }
   }
 
@@ -4250,22 +4250,22 @@ void __84__AASignInFlowController__stashLoginResponseWithAuthenticationResults_a
       [AASignInFlowController _userPersonaUniqueString];
     }
 
-    v3 = 0;
+    userPersonaUniqueString = 0;
   }
 
-  return v3;
+  return userPersonaUniqueString;
 }
 
-- (void)prewarmOperationsWithCompletion:(id)a3
+- (void)prewarmOperationsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[AARemoteServer sharedServer];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__AASignInFlowController_prewarmOperationsWithCompletion___block_invoke;
   v6[3] = &unk_1E7C9AE60;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 configurationWithCompletion:v6];
 }
 
@@ -4301,13 +4301,13 @@ void __58__AASignInFlowController_prewarmOperationsWithCompletion___block_invoke
 
 - (BOOL)_isAccountImprovementProgramEnabled
 {
-  v2 = [MEMORY[0x1E698DD70] sharedManager];
+  mEMORY[0x1E698DD70] = [MEMORY[0x1E698DD70] sharedManager];
   v3 = objc_opt_respondsToSelector();
 
   if (v3)
   {
-    v4 = [MEMORY[0x1E698DD70] sharedManager];
-    v5 = [v4 isAccountImprovementProgramEnabled];
+    mEMORY[0x1E698DD70]2 = [MEMORY[0x1E698DD70] sharedManager];
+    isAccountImprovementProgramEnabled = [mEMORY[0x1E698DD70]2 isAccountImprovementProgramEnabled];
 
     v6 = _AALogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -4324,10 +4324,10 @@ void __58__AASignInFlowController_prewarmOperationsWithCompletion___block_invoke
       [AASignInFlowController _isAccountImprovementProgramEnabled];
     }
 
-    v5 = 0;
+    isAccountImprovementProgramEnabled = 0;
   }
 
-  return v5;
+  return isAccountImprovementProgramEnabled;
 }
 
 - (AASignInFlowControllerDelegate)delegate
@@ -4696,13 +4696,13 @@ void __71__AASignInFlowController__onqueue_delegate_enableFindMyWithCompletion__
 - (void)_userPersonaUniqueString
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = [a2 userPersonaNickName];
+  userPersonaNickName = [a2 userPersonaNickName];
   v8 = 138543874;
-  v9 = a1;
+  selfCopy = self;
   v10 = 2112;
-  v11 = v6;
+  v11 = userPersonaNickName;
   v12 = 2048;
-  v13 = [a2 userPersonaType];
+  userPersonaType = [a2 userPersonaType];
   _os_log_debug_impl(&dword_1B6F6A000, a3, OS_LOG_TYPE_DEBUG, "Data separated persona detected. {uniqueString=%{public}@, nickname=%@, type=%ld}", &v8, 0x20u);
 
   v7 = *MEMORY[0x1E69E9840];

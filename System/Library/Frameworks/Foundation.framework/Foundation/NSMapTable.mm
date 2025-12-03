@@ -1,6 +1,6 @@
 @interface NSMapTable
 + (NSMapTable)alloc;
-+ (NSMapTable)allocWithZone:(_NSZone *)a3;
++ (NSMapTable)allocWithZone:(_NSZone *)zone;
 + (NSMapTable)mapTableWithKeyOptions:(NSPointerFunctionsOptions)keyOptions valueOptions:(NSPointerFunctionsOptions)valueOptions;
 + (NSMapTable)strongToStrongObjectsMapTable;
 + (NSMapTable)strongToWeakObjectsMapTable;
@@ -11,7 +11,7 @@
 + (id)mapTableWithWeakToStrongObjects;
 + (id)mapTableWithWeakToWeakObjects;
 - (NSDictionary)dictionaryRepresentation;
-- (NSMapTable)initWithCoder:(id)a3;
+- (NSMapTable)initWithCoder:(id)coder;
 - (id)mutableDictionary;
 @end
 
@@ -20,7 +20,7 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -43,7 +43,7 @@
         v9 = [(NSMapTable *)self objectForKey:v8];
         if (v9)
         {
-          [(NSDictionary *)v3 setObject:v9 forKey:v8];
+          [(NSDictionary *)dictionary setObject:v9 forKey:v8];
         }
       }
 
@@ -53,7 +53,7 @@
     while (v5);
   }
 
-  return v3;
+  return dictionary;
 }
 
 + (NSMapTable)alloc
@@ -105,7 +105,7 @@
   return v2;
 }
 
-+ (NSMapTable)allocWithZone:(_NSZone *)a3
++ (NSMapTable)allocWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_self();
 
@@ -133,17 +133,17 @@
   return v2;
 }
 
-- (NSMapTable)initWithCoder:(id)a3
+- (NSMapTable)initWithCoder:(id)coder
 {
   v4 = [NSConcreteMapTable alloc];
 
-  return [(NSConcreteMapTable *)v4 initWithCoder:a3];
+  return [(NSConcreteMapTable *)v4 initWithCoder:coder];
 }
 
 - (id)mutableDictionary
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -166,7 +166,7 @@
         v9 = [(NSMapTable *)self objectForKey:v8];
         if (v9)
         {
-          [v3 setObject:v9 forKey:v8];
+          [dictionary setObject:v9 forKey:v8];
         }
       }
 
@@ -176,7 +176,7 @@
     while (v5);
   }
 
-  return v3;
+  return dictionary;
 }
 
 @end

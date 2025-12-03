@@ -1,12 +1,12 @@
 @interface SUUIDynamicPageSectionIndexMapper
-- (BOOL)getItem:(unint64_t *)a3 section:(unint64_t *)a4 forGlobalIndex:(int64_t)a5;
-- (_NSRange)rangeForSectionAtIndex:(int64_t)a3;
-- (id)entityIndexPathForGlobalIndex:(int64_t)a3;
-- (int64_t)globalIndexForEntityIndexPath:(id)a3;
+- (BOOL)getItem:(unint64_t *)item section:(unint64_t *)section forGlobalIndex:(int64_t)index;
+- (_NSRange)rangeForSectionAtIndex:(int64_t)index;
+- (id)entityIndexPathForGlobalIndex:(int64_t)index;
+- (int64_t)globalIndexForEntityIndexPath:(id)path;
 - (int64_t)totalNumberOfEntities;
 - (void)_loadDataIfNeeded;
 - (void)dealloc;
-- (void)setEntityProvider:(id)a3;
+- (void)setEntityProvider:(id)provider;
 @end
 
 @implementation SUUIDynamicPageSectionIndexMapper
@@ -25,21 +25,21 @@
   [(SUUIDynamicPageSectionIndexMapper *)&v4 dealloc];
 }
 
-- (void)setEntityProvider:(id)a3
+- (void)setEntityProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   p_entityProvider = &self->_entityProvider;
-  if (self->_entityProvider != v5)
+  if (self->_entityProvider != providerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_entityProvider, a3);
+    v7 = providerCopy;
+    objc_storeStrong(p_entityProvider, provider);
     p_entityProvider = objc_opt_respondsToSelector();
-    v5 = v7;
+    providerCopy = v7;
     *&self->_entityProviderFlags = *&self->_entityProviderFlags & 0xFE | p_entityProvider & 1;
     self->_numberOfSections = -1;
   }
 
-  MEMORY[0x2821F96F8](p_entityProvider, v5);
+  MEMORY[0x2821F96F8](p_entityProvider, providerCopy);
 }
 
 - (int64_t)totalNumberOfEntities
@@ -57,12 +57,12 @@
   }
 }
 
-- (id)entityIndexPathForGlobalIndex:(int64_t)a3
+- (id)entityIndexPathForGlobalIndex:(int64_t)index
 {
   [(SUUIDynamicPageSectionIndexMapper *)self _loadDataIfNeeded];
   v7 = 0x7FFFFFFFFFFFFFFFLL;
   v8 = 0x7FFFFFFFFFFFFFFFLL;
-  if ([(SUUIDynamicPageSectionIndexMapper *)self getItem:&v8 section:&v7 forGlobalIndex:a3])
+  if ([(SUUIDynamicPageSectionIndexMapper *)self getItem:&v8 section:&v7 forGlobalIndex:index])
   {
     v5 = [MEMORY[0x277CCAA70] indexPathForItem:v8 inSection:v7];
   }
@@ -75,7 +75,7 @@
   return v5;
 }
 
-- (BOOL)getItem:(unint64_t *)a3 section:(unint64_t *)a4 forGlobalIndex:(int64_t)a5
+- (BOOL)getItem:(unint64_t *)item section:(unint64_t *)section forGlobalIndex:(int64_t)index
 {
   [(SUUIDynamicPageSectionIndexMapper *)self _loadDataIfNeeded];
   numberOfSections = self->_numberOfSections;
@@ -99,15 +99,15 @@
     v15 = &sectionIndexToEntityRange[v14];
     location = v15->location;
     length = v15->length;
-    v19 = a5 >= v15->location;
-    v18 = a5 - v15->location;
+    v19 = index >= v15->location;
+    v18 = index - v15->location;
     v19 = !v19 || v18 >= length;
     if (!v19)
     {
       break;
     }
 
-    if (a5 < location)
+    if (index < location)
     {
       v11 = v14 - 1;
     }
@@ -123,48 +123,48 @@
     }
   }
 
-  if (a3)
+  if (item)
   {
-    *a3 = v18;
+    *item = v18;
   }
 
-  if (a4)
+  if (section)
   {
-    *a4 = v14;
+    *section = v14;
   }
 
   return 1;
 }
 
-- (int64_t)globalIndexForEntityIndexPath:(id)a3
+- (int64_t)globalIndexForEntityIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
+  pathCopy = path;
+  section = [pathCopy section];
   v6 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v5 < self->_numberOfSections)
+  if (section < self->_numberOfSections)
   {
-    v7 = &self->_sectionIndexToEntityRange[v5];
+    v7 = &self->_sectionIndexToEntityRange[section];
     location = v7->location;
     length = v7->length;
-    v10 = [v4 item];
-    if (v10 < length)
+    item = [pathCopy item];
+    if (item < length)
     {
-      v6 = v10 + location;
+      v6 = item + location;
     }
   }
 
   return v6;
 }
 
-- (_NSRange)rangeForSectionAtIndex:(int64_t)a3
+- (_NSRange)rangeForSectionAtIndex:(int64_t)index
 {
   [(SUUIDynamicPageSectionIndexMapper *)self _loadDataIfNeeded];
   length = 0;
   numberOfSections = self->_numberOfSections;
   location = 0x7FFFFFFFFFFFFFFFLL;
-  if (numberOfSections > a3 && (a3 & 0x8000000000000000) == 0 && numberOfSections >= 1)
+  if (numberOfSections > index && (index & 0x8000000000000000) == 0 && numberOfSections >= 1)
   {
-    v8 = &self->_sectionIndexToEntityRange[a3];
+    v8 = &self->_sectionIndexToEntityRange[index];
     location = v8->location;
     length = v8->length;
   }
@@ -194,25 +194,25 @@
 
     if (*&self->_entityProviderFlags)
     {
-      v12 = [(SUUIEntityProviding *)self->_entityProvider numberOfSections];
-      self->_sectionIndexToEntityRange = malloc_type_calloc(v12, 0x10uLL, 0x1000040451B5BE8uLL);
-      if (v12 < 1)
+      numberOfSections = [(SUUIEntityProviding *)self->_entityProvider numberOfSections];
+      self->_sectionIndexToEntityRange = malloc_type_calloc(numberOfSections, 0x10uLL, 0x1000040451B5BE8uLL);
+      if (numberOfSections < 1)
       {
 LABEL_9:
-        self->_numberOfSections = v12;
+        self->_numberOfSections = numberOfSections;
         return;
       }
     }
 
     else
     {
-      v12 = 1;
+      numberOfSections = 1;
       self->_sectionIndexToEntityRange = malloc_type_calloc(1uLL, 0x10uLL, 0x1000040451B5BE8uLL);
     }
 
     v13 = 0;
     v14 = 0;
-    for (i = 0; i != v12; ++i)
+    for (i = 0; i != numberOfSections; ++i)
     {
       v16 = [(SUUIEntityProviding *)self->_entityProvider numberOfEntitiesInSection:i, v18, v19, v20, v21, v22, v23, v24, v25];
       v17 = &self->_sectionIndexToEntityRange[v13];

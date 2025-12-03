@@ -1,13 +1,13 @@
 @interface WFNetworkRetryManager
-- (BOOL)defaultAPIVersionIsFailingForSettings:(id)a3 failTracker:(id)a4;
+- (BOOL)defaultAPIVersionIsFailingForSettings:(id)settings failTracker:(id)tracker;
 - (NSArray)apiVersions;
 - (NSArray)failingAPIVersions;
 - (WFNetworkRetryManager)init;
-- (double)lastFailTimeInSecondsForAPIVersion:(id)a3;
-- (id)apiVersionForSettings:(id)a3;
-- (int)consecutiveFailsForAPIVersion:(id)a3;
-- (void)requestFailureForAPIVersion:(id)a3 error:(id)a4;
-- (void)requestSuccessForAPIVersion:(id)a3;
+- (double)lastFailTimeInSecondsForAPIVersion:(id)version;
+- (id)apiVersionForSettings:(id)settings;
+- (int)consecutiveFailsForAPIVersion:(id)version;
+- (void)requestFailureForAPIVersion:(id)version error:(id)error;
+- (void)requestSuccessForAPIVersion:(id)version;
 @end
 
 @implementation WFNetworkRetryManager
@@ -31,93 +31,93 @@
   return v2;
 }
 
-- (id)apiVersionForSettings:(id)a3
+- (id)apiVersionForSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(WFNetworkRetryManager *)self failTrackerDict];
-  v6 = [v4 apiVersion];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  settingsCopy = settings;
+  failTrackerDict = [(WFNetworkRetryManager *)self failTrackerDict];
+  apiVersion = [settingsCopy apiVersion];
+  v7 = [failTrackerDict objectForKeyedSubscript:apiVersion];
 
-  if ([(WFNetworkRetryManager *)self defaultAPIVersionIsFailingForSettings:v4 failTracker:v7])
+  if ([(WFNetworkRetryManager *)self defaultAPIVersionIsFailingForSettings:settingsCopy failTracker:v7])
   {
-    v8 = [(WFNetworkRetryManager *)self failingAPIVersionsSet];
-    v9 = [v4 apiVersion];
-    v10 = [v8 containsObject:v9];
+    failingAPIVersionsSet = [(WFNetworkRetryManager *)self failingAPIVersionsSet];
+    apiVersion2 = [settingsCopy apiVersion];
+    v10 = [failingAPIVersionsSet containsObject:apiVersion2];
 
     if ((v10 & 1) == 0)
     {
-      v11 = [v4 apiVersion];
+      apiVersion3 = [settingsCopy apiVersion];
 
-      if (v11)
+      if (apiVersion3)
       {
-        v12 = [(WFNetworkRetryManager *)self failingAPIVersionsSet];
-        v13 = [v4 apiVersion];
-        [v12 addObject:v13];
+        failingAPIVersionsSet2 = [(WFNetworkRetryManager *)self failingAPIVersionsSet];
+        apiVersion4 = [settingsCopy apiVersion];
+        [failingAPIVersionsSet2 addObject:apiVersion4];
       }
     }
 
-    v14 = [v4 apiVersionFallback];
+    apiVersionFallback = [settingsCopy apiVersionFallback];
   }
 
   else
   {
-    v15 = [v4 apiVersion];
+    apiVersion5 = [settingsCopy apiVersion];
 
-    if (v15)
+    if (apiVersion5)
     {
-      v16 = [(WFNetworkRetryManager *)self failingAPIVersionsSet];
-      v17 = [v4 apiVersion];
-      [v16 removeObject:v17];
+      failingAPIVersionsSet3 = [(WFNetworkRetryManager *)self failingAPIVersionsSet];
+      apiVersion6 = [settingsCopy apiVersion];
+      [failingAPIVersionsSet3 removeObject:apiVersion6];
     }
 
-    v14 = [v4 apiVersion];
+    apiVersionFallback = [settingsCopy apiVersion];
   }
 
-  v18 = v14;
+  v18 = apiVersionFallback;
 
   return v18;
 }
 
-- (void)requestSuccessForAPIVersion:(id)a3
+- (void)requestSuccessForAPIVersion:(id)version
 {
-  if (a3)
+  if (version)
   {
-    v4 = a3;
-    v5 = [(WFNetworkRetryManager *)self failTrackerDict];
-    [v5 setObject:0 forKeyedSubscript:v4];
+    versionCopy = version;
+    failTrackerDict = [(WFNetworkRetryManager *)self failTrackerDict];
+    [failTrackerDict setObject:0 forKeyedSubscript:versionCopy];
   }
 }
 
-- (void)requestFailureForAPIVersion:(id)a3 error:(id)a4
+- (void)requestFailureForAPIVersion:(id)version error:(id)error
 {
-  v5 = a3;
-  if (v5)
+  versionCopy = version;
+  if (versionCopy)
   {
-    v9 = v5;
-    v6 = [(WFNetworkRetryManager *)self failTrackerDict];
-    v7 = [v6 objectForKeyedSubscript:v9];
+    v9 = versionCopy;
+    failTrackerDict = [(WFNetworkRetryManager *)self failTrackerDict];
+    v7 = [failTrackerDict objectForKeyedSubscript:v9];
 
     if (!v7)
     {
       v7 = objc_opt_new();
-      v8 = [(WFNetworkRetryManager *)self failTrackerDict];
-      [v8 setObject:v7 forKeyedSubscript:v9];
+      failTrackerDict2 = [(WFNetworkRetryManager *)self failTrackerDict];
+      [failTrackerDict2 setObject:v7 forKeyedSubscript:v9];
     }
 
     [v7 incrementFailCount];
 
-    v5 = v9;
+    versionCopy = v9;
   }
 }
 
-- (BOOL)defaultAPIVersionIsFailingForSettings:(id)a3 failTracker:(id)a4
+- (BOOL)defaultAPIVersionIsFailingForSettings:(id)settings failTracker:(id)tracker
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && (v8 = [v6 numConsecutiveFails], objc_msgSend(v5, "networkFailedAttemptsLimit") < v8))
+  settingsCopy = settings;
+  trackerCopy = tracker;
+  v7 = trackerCopy;
+  if (trackerCopy && (v8 = [trackerCopy numConsecutiveFails], objc_msgSend(settingsCopy, "networkFailedAttemptsLimit") < v8))
   {
-    v9 = [v7 lastFailTimeExpiredForSettings:v5] ^ 1;
+    v9 = [v7 lastFailTimeExpiredForSettings:settingsCopy] ^ 1;
   }
 
   else
@@ -130,35 +130,35 @@
 
 - (NSArray)apiVersions
 {
-  v2 = [(WFNetworkRetryManager *)self failTrackerDict];
-  v3 = [v2 allKeys];
+  failTrackerDict = [(WFNetworkRetryManager *)self failTrackerDict];
+  allKeys = [failTrackerDict allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (NSArray)failingAPIVersions
 {
-  v2 = [(WFNetworkRetryManager *)self failingAPIVersionsSet];
-  v3 = [v2 allObjects];
+  failingAPIVersionsSet = [(WFNetworkRetryManager *)self failingAPIVersionsSet];
+  allObjects = [failingAPIVersionsSet allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (int)consecutiveFailsForAPIVersion:(id)a3
+- (int)consecutiveFailsForAPIVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(WFNetworkRetryManager *)self failTrackerDict];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  versionCopy = version;
+  failTrackerDict = [(WFNetworkRetryManager *)self failTrackerDict];
+  v6 = [failTrackerDict objectForKeyedSubscript:versionCopy];
 
-  LODWORD(v4) = [v6 numConsecutiveFails];
-  return v4;
+  LODWORD(versionCopy) = [v6 numConsecutiveFails];
+  return versionCopy;
 }
 
-- (double)lastFailTimeInSecondsForAPIVersion:(id)a3
+- (double)lastFailTimeInSecondsForAPIVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(WFNetworkRetryManager *)self failTrackerDict];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  versionCopy = version;
+  failTrackerDict = [(WFNetworkRetryManager *)self failTrackerDict];
+  v6 = [failTrackerDict objectForKeyedSubscript:versionCopy];
 
   [v6 lastFailTimeInSeconds];
   v8 = v7;

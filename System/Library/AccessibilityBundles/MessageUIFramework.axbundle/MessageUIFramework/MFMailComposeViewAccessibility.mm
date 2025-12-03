@@ -1,49 +1,49 @@
 @interface MFMailComposeViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)presentSearchResults:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)presentSearchResults:(id)results;
 - (id)_accessibilityComposeElementsForSorting;
 - (id)_searchResultsTable;
-- (id)dragSource:(id)a3 draggableItemsAtPoint:(CGPoint)a4;
-- (int64_t)_accessibilityCompareElement:(id)a3 toElement:(id)a4;
-- (unint64_t)_axIndexOfRecipient:(id)a3 inArray:(id)a4;
+- (id)dragSource:(id)source draggableItemsAtPoint:(CGPoint)point;
+- (int64_t)_accessibilityCompareElement:(id)element toElement:(id)toElement;
+- (unint64_t)_axIndexOfRecipient:(id)recipient inArray:(id)array;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)dropTarget:(id)a3 dragDidMoveToPoint:(CGPoint)a4;
-- (void)dropTarget:(id)a3 dragEnteredAtPoint:(CGPoint)a4;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)dropTarget:(id)target dragDidMoveToPoint:(CGPoint)point;
+- (void)dropTarget:(id)target dragEnteredAtPoint:(CGPoint)point;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation MFMailComposeViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFMailComposeView" hasInstanceMethod:@"_searchResultsTable" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFMailComposeView" hasInstanceVariable:@"_toField" withType:"MFMailComposeToField"];
-  [v3 validateClass:@"MFMailComposeView" hasInstanceVariable:@"_ccField" withType:"MFMailComposeRecipientTextView"];
-  [v3 validateClass:@"MFMailComposeView" hasInstanceVariable:@"_bccField" withType:"MFMailComposeRecipientTextView"];
-  [v3 validateClass:@"MFMailComposeView" hasInstanceVariable:@"_fromField" withType:"MFComposeFromView"];
-  [v3 validateClass:@"MFMailComposeView" hasInstanceVariable:@"_subjectField" withType:"MFComposeSubjectView"];
-  [v3 validateClass:@"MFMailComposeView" hasInstanceVariable:@"_headerView" withType:"UIView"];
-  [v3 validateClass:@"MFMailComposeView" hasInstanceMethod:@"composeWebView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFMailComposeRecipientTextView" hasInstanceVariable:@"_textView" withType:"_CNAtomTextView"];
-  [v3 validateClass:@"MFMailComposeView" hasInstanceMethod:@"presentSearchResults:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"MFMailComposeView" hasInstanceMethod:@"scrollViewDidScroll:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MFMailComposeView" hasInstanceMethod:@"composeViewDelegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFMailComposeView" hasInstanceVariable:@"_imageSizeField" withType:"MFComposeImageSizeView"];
-  [v3 validateClass:@"MFMailComposeView" hasInstanceMethod:@"dropTarget:dragEnteredAtPoint:" withFullSignature:{"v", "@", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"MFMailComposeView" hasInstanceMethod:@"dropTarget:dragDidMoveToPoint:" withFullSignature:{"v", "@", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"MFMailComposeView" hasInstanceMethod:@"dragSource:draggableItemsAtPoint:" withFullSignature:{"@", "@", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"_placeholderAttachmentRange" withFullSignature:{"{_NSRange=QQ}", 0}];
-  [v3 validateClass:@"MFMailComposeToField" isKindOfClass:@"MFMailComposeRecipientTextView"];
-  [v3 validateClass:@"MFMailComposeRecipientTextView" isKindOfClass:@"CNComposeRecipientTextView"];
-  [v3 validateClass:@"MFMailComposeRecipientTextView" hasInstanceVariable:@"_labelView" withType:"CNComposeHeaderLabelView"];
-  [v3 validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"placeholderAttachment" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"recipients" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFDropTarget"];
-  [v3 validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"addButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFDropTarget" hasInstanceMethod:@"targetView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFComposeRecipient" hasInstanceMethod:@"uncommentedAddress" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WKContentView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceMethod:@"_searchResultsTable" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceVariable:@"_toField" withType:"MFMailComposeToField"];
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceVariable:@"_ccField" withType:"MFMailComposeRecipientTextView"];
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceVariable:@"_bccField" withType:"MFMailComposeRecipientTextView"];
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceVariable:@"_fromField" withType:"MFComposeFromView"];
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceVariable:@"_subjectField" withType:"MFComposeSubjectView"];
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceVariable:@"_headerView" withType:"UIView"];
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceMethod:@"composeWebView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFMailComposeRecipientTextView" hasInstanceVariable:@"_textView" withType:"_CNAtomTextView"];
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceMethod:@"presentSearchResults:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceMethod:@"scrollViewDidScroll:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceMethod:@"composeViewDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceVariable:@"_imageSizeField" withType:"MFComposeImageSizeView"];
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceMethod:@"dropTarget:dragEnteredAtPoint:" withFullSignature:{"v", "@", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceMethod:@"dropTarget:dragDidMoveToPoint:" withFullSignature:{"v", "@", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceMethod:@"dragSource:draggableItemsAtPoint:" withFullSignature:{"@", "@", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"_placeholderAttachmentRange" withFullSignature:{"{_NSRange=QQ}", 0}];
+  [validationsCopy validateClass:@"MFMailComposeToField" isKindOfClass:@"MFMailComposeRecipientTextView"];
+  [validationsCopy validateClass:@"MFMailComposeRecipientTextView" isKindOfClass:@"CNComposeRecipientTextView"];
+  [validationsCopy validateClass:@"MFMailComposeRecipientTextView" hasInstanceVariable:@"_labelView" withType:"CNComposeHeaderLabelView"];
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"placeholderAttachment" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"recipients" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFDropTarget"];
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"addButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFDropTarget" hasInstanceMethod:@"targetView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFComposeRecipient" hasInstanceMethod:@"uncommentedAddress" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WKContentView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -66,12 +66,12 @@
   v9 = [(MFMailComposeViewAccessibility *)self safeValueForKey:@"_searchResultsTable"];
   [v9 setAccessibilityIdentifier:@"MessageRecipientSearchTable"];
 
-  v10 = [(MFMailComposeViewAccessibility *)self _accessibilityComposeElementsForSorting];
+  _accessibilityComposeElementsForSorting = [(MFMailComposeViewAccessibility *)self _accessibilityComposeElementsForSorting];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  v11 = [_accessibilityComposeElementsForSorting countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -82,7 +82,7 @@
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(_accessibilityComposeElementsForSorting);
         }
 
         v15 = *(*(&v17 + 1) + 8 * i);
@@ -90,7 +90,7 @@
         [v15 _enumerateDescendentViews:&__block_literal_global_2];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v12 = [_accessibilityComposeElementsForSorting countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v12);
@@ -99,15 +99,15 @@
   v16 = *MEMORY[0x29EDCA608];
 }
 
-- (int64_t)_accessibilityCompareElement:(id)a3 toElement:(id)a4
+- (int64_t)_accessibilityCompareElement:(id)element toElement:(id)toElement
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFMailComposeViewAccessibility *)self _accessibilityComposeElementsForSorting];
+  elementCopy = element;
+  toElementCopy = toElement;
+  _accessibilityComposeElementsForSorting = [(MFMailComposeViewAccessibility *)self _accessibilityComposeElementsForSorting];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
-  v31 = [v8 indexOfObject:v6];
+  v31 = [_accessibilityComposeElementsForSorting indexOfObject:elementCopy];
   if (v29[3] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v25[0] = MEMORY[0x29EDCA5F8];
@@ -115,14 +115,14 @@
     v25[2] = __73__MFMailComposeViewAccessibility__accessibilityCompareElement_toElement___block_invoke;
     v25[3] = &unk_29F2D1A38;
     v27 = &v28;
-    v26 = v8;
-    v9 = [v6 _accessibilityFindAncestor:v25 startWithSelf:0];
+    v26 = _accessibilityComposeElementsForSorting;
+    v9 = [elementCopy _accessibilityFindAncestor:v25 startWithSelf:0];
   }
 
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
-  v24 = [v8 indexOfObject:v7];
+  v24 = [_accessibilityComposeElementsForSorting indexOfObject:toElementCopy];
   if (v22[3] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v15 = MEMORY[0x29EDCA5F8];
@@ -130,8 +130,8 @@
     v17 = __73__MFMailComposeViewAccessibility__accessibilityCompareElement_toElement___block_invoke_2;
     v18 = &unk_29F2D1A38;
     v20 = &v21;
-    v19 = v8;
-    v10 = [v7 _accessibilityFindAncestor:&v15 startWithSelf:0];
+    v19 = _accessibilityComposeElementsForSorting;
+    v10 = [toElementCopy _accessibilityFindAncestor:&v15 startWithSelf:0];
   }
 
   v11 = [MEMORY[0x29EDBA070] numberWithInteger:{v29[3], v15, v16, v17, v18}];
@@ -178,39 +178,39 @@ uint64_t __73__MFMailComposeViewAccessibility__accessibilityComposeElementsForSo
 {
   v4.receiver = self;
   v4.super_class = MFMailComposeViewAccessibility;
-  v2 = [(MFMailComposeViewAccessibility *)&v4 _searchResultsTable];
-  [v2 setAccessibilityIdentifier:@"MessageRecipientSearchTable"];
+  _searchResultsTable = [(MFMailComposeViewAccessibility *)&v4 _searchResultsTable];
+  [_searchResultsTable setAccessibilityIdentifier:@"MessageRecipientSearchTable"];
 
-  return v2;
+  return _searchResultsTable;
 }
 
-- (BOOL)presentSearchResults:(id)a3
+- (BOOL)presentSearchResults:(id)results
 {
   v5.receiver = self;
   v5.super_class = MFMailComposeViewAccessibility;
-  v3 = [(MFMailComposeViewAccessibility *)&v5 presentSearchResults:a3];
+  v3 = [(MFMailComposeViewAccessibility *)&v5 presentSearchResults:results];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   return v3;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v3.receiver = self;
   v3.super_class = MFMailComposeViewAccessibility;
-  [(MFMailComposeViewAccessibility *)&v3 scrollViewDidScroll:a3];
+  [(MFMailComposeViewAccessibility *)&v3 scrollViewDidScroll:scroll];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
-- (id)dragSource:(id)a3 draggableItemsAtPoint:(CGPoint)a4
+- (id)dragSource:(id)source draggableItemsAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  sourceCopy = source;
   v12 = 0;
   objc_opt_class();
   v11.receiver = self;
   v11.super_class = MFMailComposeViewAccessibility;
-  v8 = [(MFMailComposeViewAccessibility *)&v11 dragSource:v7 draggableItemsAtPoint:x, y];
+  v8 = [(MFMailComposeViewAccessibility *)&v11 dragSource:sourceCopy draggableItemsAtPoint:x, y];
   v9 = __UIAccessibilityCastAsClass();
 
   if (v12 == 1)
@@ -226,17 +226,17 @@ uint64_t __73__MFMailComposeViewAccessibility__accessibilityComposeElementsForSo
   return v9;
 }
 
-- (void)dropTarget:(id)a3 dragEnteredAtPoint:(CGPoint)a4
+- (void)dropTarget:(id)target dragEnteredAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  targetCopy = target;
   v21.receiver = self;
   v21.super_class = MFMailComposeViewAccessibility;
-  [(MFMailComposeViewAccessibility *)&v21 dropTarget:v7 dragEnteredAtPoint:x, y];
+  [(MFMailComposeViewAccessibility *)&v21 dropTarget:targetCopy dragEnteredAtPoint:x, y];
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v8 = [v7 safeValueForKey:@"targetView"];
+    v8 = [targetCopy safeValueForKey:@"targetView"];
     NSClassFromString(&cfstr_Mfmailcomposer.isa);
     if (objc_opt_isKindOfClass())
     {
@@ -244,12 +244,12 @@ uint64_t __73__MFMailComposeViewAccessibility__accessibilityComposeElementsForSo
       v10 = v9;
       if (v9)
       {
-        v11 = [v9 accessibilityLabel];
-        v12 = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
-        v13 = [v11 stringByTrimmingCharactersInSet:v12];
+        accessibilityLabel = [v9 accessibilityLabel];
+        whitespaceCharacterSet = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
+        v13 = [accessibilityLabel stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-        v14 = [MEMORY[0x29EDB9F50] punctuationCharacterSet];
-        v15 = [v13 stringByTrimmingCharactersInSet:v14];
+        punctuationCharacterSet = [MEMORY[0x29EDB9F50] punctuationCharacterSet];
+        v15 = [v13 stringByTrimmingCharactersInSet:punctuationCharacterSet];
 
         v16 = MEMORY[0x29EDBA0F8];
         v17 = accessibilityLocalizedString(@"dragged.address.to");
@@ -257,8 +257,8 @@ uint64_t __73__MFMailComposeViewAccessibility__accessibilityComposeElementsForSo
 
         v19 = *MEMORY[0x29EDC7EA8];
         UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v18);
-        v20 = [MEMORY[0x29EDB8DB0] date];
-        [(MFMailComposeViewAccessibility *)self _accessibilitySetRetainedValue:v20 forKey:@"_axDragEnteredDate"];
+        date = [MEMORY[0x29EDB8DB0] date];
+        [(MFMailComposeViewAccessibility *)self _accessibilitySetRetainedValue:date forKey:@"_axDragEnteredDate"];
       }
 
       else
@@ -271,17 +271,17 @@ uint64_t __73__MFMailComposeViewAccessibility__accessibilityComposeElementsForSo
   }
 }
 
-- (void)dropTarget:(id)a3 dragDidMoveToPoint:(CGPoint)a4
+- (void)dropTarget:(id)target dragDidMoveToPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  targetCopy = target;
   v39.receiver = self;
   v39.super_class = MFMailComposeViewAccessibility;
-  [(MFMailComposeViewAccessibility *)&v39 dropTarget:v7 dragDidMoveToPoint:x, y];
+  [(MFMailComposeViewAccessibility *)&v39 dropTarget:targetCopy dragDidMoveToPoint:x, y];
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v8 = [v7 safeValueForKey:@"targetView"];
+    v8 = [targetCopy safeValueForKey:@"targetView"];
     NSClassFromString(&cfstr_Mfmailcomposer.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -315,8 +315,8 @@ LABEL_29:
     if ([v11 count] && v10 != 0x7FFFFFFFFFFFFFFFLL && v10 != v12)
     {
       [(MFMailComposeViewAccessibility *)self _accessibilitySetIntegerValue:v10 forKey:@"_axDragPlaceholderIndex"];
-      v13 = [v11 firstObject];
-      v14 = [(MFMailComposeViewAccessibility *)self _axIndexOfRecipient:v13 inArray:v31];
+      firstObject = [v11 firstObject];
+      v14 = [(MFMailComposeViewAccessibility *)self _axIndexOfRecipient:firstObject inArray:v31];
 
       v15 = [v11 count];
       v16 = v14 == 0x7FFFFFFFFFFFFFFFLL ? 0 : v14;
@@ -366,8 +366,8 @@ LABEL_22:
               {
                 v29 = *MEMORY[0x29EDC7EA8];
                 UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v24);
-                v30 = [MEMORY[0x29EDB8DB0] date];
-                [(MFMailComposeViewAccessibility *)self _accessibilitySetRetainedValue:v30 forKey:@"_axDragEnteredDate"];
+                date = [MEMORY[0x29EDB8DB0] date];
+                [(MFMailComposeViewAccessibility *)self _accessibilitySetRetainedValue:date forKey:@"_axDragEnteredDate"];
               }
 
               UIAccessibilityPostNotification(v29, *MEMORY[0x29EDBDAA8]);
@@ -399,14 +399,14 @@ uint64_t __64__MFMailComposeViewAccessibility_dropTarget_dragDidMoveToPoint___bl
   return result;
 }
 
-- (unint64_t)_axIndexOfRecipient:(id)a3 inArray:(id)a4
+- (unint64_t)_axIndexOfRecipient:(id)recipient inArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
+  recipientCopy = recipient;
+  arrayCopy = array;
   v7 = NSClassFromString(&cfstr_Mfcomposerecip.isa);
-  v8 = [v6 count];
+  v8 = [arrayCopy count];
   v9 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v5 && v8 && (objc_opt_isKindOfClass() & 1) != 0)
+  if (recipientCopy && v8 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v15 = 0;
     v16 = &v15;
@@ -417,9 +417,9 @@ uint64_t __64__MFMailComposeViewAccessibility_dropTarget_dragDidMoveToPoint___bl
     v11[2] = __62__MFMailComposeViewAccessibility__axIndexOfRecipient_inArray___block_invoke;
     v11[3] = &unk_29F2D1A60;
     v14 = v7;
-    v12 = v5;
+    v12 = recipientCopy;
     v13 = &v15;
-    [v6 enumerateObjectsUsingBlock:v11];
+    [arrayCopy enumerateObjectsUsingBlock:v11];
     v9 = v16[3];
 
     _Block_object_dispose(&v15, 8);

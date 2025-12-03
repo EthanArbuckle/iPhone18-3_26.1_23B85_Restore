@@ -1,24 +1,24 @@
 @interface ATXPBUnifiedInferredActivityTransition
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasInferredActivity:(BOOL)a3;
-- (void)setHasIsActivityStart:(BOOL)a3;
-- (void)setHasTransitionTime:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasInferredActivity:(BOOL)activity;
+- (void)setHasIsActivityStart:(BOOL)start;
+- (void)setHasTransitionTime:(BOOL)time;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBUnifiedInferredActivityTransition
 
-- (void)setHasTransitionTime:(BOOL)a3
+- (void)setHasTransitionTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 4;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsActivityStart:(BOOL)a3
+- (void)setHasIsActivityStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 8;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasInferredActivity:(BOOL)a3
+- (void)setHasInferredActivity:(BOOL)activity
 {
-  if (a3)
+  if (activity)
   {
     v3 = 2;
   }
@@ -67,20 +67,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBUnifiedInferredActivityTransition;
   v4 = [(ATXPBUnifiedInferredActivityTransition *)&v8 description];
-  v5 = [(ATXPBUnifiedInferredActivityTransition *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBUnifiedInferredActivityTransition *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_transitionTime];
-    [v3 setObject:v9 forKey:@"transitionTime"];
+    [dictionary setObject:v9 forKey:@"transitionTime"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -101,34 +101,34 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_isActivityStart];
-  [v3 setObject:v10 forKey:@"isActivityStart"];
+  [dictionary setObject:v10 forKey:@"isActivityStart"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_inferredActivity];
-    [v3 setObject:v5 forKey:@"inferredActivity"];
+    [dictionary setObject:v5 forKey:@"inferredActivity"];
   }
 
 LABEL_5:
   source = self->_source;
   if (source)
   {
-    [v3 setObject:source forKey:@"source"];
+    [dictionary setObject:source forKey:@"source"];
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_confidence];
-    [v3 setObject:v7 forKey:@"confidence"];
+    [dictionary setObject:v7 forKey:@"confidence"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -174,14 +174,14 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[3] = *&self->_transitionTime;
-    *(v4 + 44) |= 4u;
+    toCopy[3] = *&self->_transitionTime;
+    *(toCopy + 44) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -200,33 +200,33 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 40) = self->_isActivityStart;
-  *(v4 + 44) |= 8u;
+  *(toCopy + 40) = self->_isActivityStart;
+  *(toCopy + 44) |= 8u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    v4[2] = self->_inferredActivity;
-    *(v4 + 44) |= 2u;
+    toCopy[2] = self->_inferredActivity;
+    *(toCopy + 44) |= 2u;
   }
 
 LABEL_5:
   if (self->_source)
   {
-    v6 = v4;
-    [v4 setSource:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setSource:?];
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    v4[1] = *&self->_confidence;
-    *(v4 + 44) |= 1u;
+    toCopy[1] = *&self->_confidence;
+    *(toCopy + 44) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -261,7 +261,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_source copyWithZone:a3];
+  v8 = [(NSString *)self->_source copyWithZone:zone];
   v9 = *(v6 + 32);
   *(v6 + 32) = v8;
 
@@ -274,71 +274,71 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_transitionTime != *(v4 + 3))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_transitionTime != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0)
+    if ((*(equalCopy + 44) & 8) == 0)
     {
       goto LABEL_26;
     }
 
-    v7 = *(v4 + 40);
+    v7 = *(equalCopy + 40);
     if (self->_isActivityStart)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_26;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 44) & 8) != 0)
+  else if ((*(equalCopy + 44) & 8) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_inferredActivity != *(v4 + 2))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_inferredActivity != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_26;
   }
 
   source = self->_source;
-  if (source | *(v4 + 4))
+  if (source | *(equalCopy + 4))
   {
     if ([(NSString *)source isEqual:?])
     {
@@ -352,10 +352,10 @@ LABEL_26:
   }
 
 LABEL_21:
-  v9 = (*(v4 + 44) & 1) == 0;
+  v9 = (*(equalCopy + 44) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_confidence != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_confidence != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
@@ -462,15 +462,15 @@ LABEL_14:
   return v9 ^ v5 ^ v10 ^ v14 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if ((v5 & 4) != 0)
   {
-    self->_transitionTime = *(v4 + 3);
+    self->_transitionTime = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -483,45 +483,45 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 44) & 8) == 0)
+  else if ((*(fromCopy + 44) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_isActivityStart = *(v4 + 40);
+  self->_isActivityStart = *(fromCopy + 40);
   *&self->_has |= 8u;
-  if ((*(v4 + 44) & 2) != 0)
+  if ((*(fromCopy + 44) & 2) != 0)
   {
 LABEL_4:
-    self->_inferredActivity = *(v4 + 2);
+    self->_inferredActivity = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_5:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(ATXPBUnifiedInferredActivityTransition *)self setSource:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
-    self->_confidence = *(v4 + 1);
+    self->_confidence = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v5 = [(ATXPBUnifiedInferredActivityTransition *)self init];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = nCopy;
       v7 = [v6 objectForKeyedSubscript:@"confidence"];
       [v7 doubleValue];
       [(ATXPBUnifiedInferredActivityTransition *)v5 setConfidence:?];
@@ -574,8 +574,8 @@ LABEL_5:
   v24[3] = v15;
   v23[4] = @"source";
   v16 = MEMORY[0x277CEB600];
-  v17 = [(ATXPBUnifiedInferredActivityTransition *)self source];
-  v18 = [v16 wrapObject:v17];
+  source = [(ATXPBUnifiedInferredActivityTransition *)self source];
+  v18 = [v16 wrapObject:source];
   v24[4] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:5];
 

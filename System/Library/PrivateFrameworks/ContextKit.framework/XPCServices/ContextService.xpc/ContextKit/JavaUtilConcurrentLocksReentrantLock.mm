@@ -1,20 +1,20 @@
 @interface JavaUtilConcurrentLocksReentrantLock
-- (BOOL)hasQueuedThreadWithJavaLangThread:(id)a3;
+- (BOOL)hasQueuedThreadWithJavaLangThread:(id)thread;
 - (BOOL)hasQueuedThreads;
-- (BOOL)hasWaitersWithJavaUtilConcurrentLocksCondition:(id)a3;
+- (BOOL)hasWaitersWithJavaUtilConcurrentLocksCondition:(id)condition;
 - (BOOL)isFair;
 - (BOOL)isHeldByCurrentThread;
 - (BOOL)isLocked;
 - (BOOL)tryLock;
-- (BOOL)tryLockWithLong:(int64_t)a3 withJavaUtilConcurrentTimeUnitEnum:(id)a4;
+- (BOOL)tryLockWithLong:(int64_t)long withJavaUtilConcurrentTimeUnitEnum:(id)enum;
 - (NSString)description;
 - (id)getOwner;
 - (id)getQueuedThreads;
-- (id)getWaitingThreadsWithJavaUtilConcurrentLocksCondition:(id)a3;
+- (id)getWaitingThreadsWithJavaUtilConcurrentLocksCondition:(id)condition;
 - (id)newCondition;
 - (int)getHoldCount;
 - (int)getQueueLength;
-- (int)getWaitQueueLengthWithJavaUtilConcurrentLocksCondition:(id)a3;
+- (int)getWaitQueueLengthWithJavaUtilConcurrentLocksCondition:(id)condition;
 - (void)dealloc;
 - (void)lock;
 - (void)lockInterruptibly;
@@ -56,15 +56,15 @@
   return sub_10023FCC0(sync, 1);
 }
 
-- (BOOL)tryLockWithLong:(int64_t)a3 withJavaUtilConcurrentTimeUnitEnum:(id)a4
+- (BOOL)tryLockWithLong:(int64_t)long withJavaUtilConcurrentTimeUnitEnum:(id)enum
 {
   sync = self->sync_;
-  if (!sync || !a4)
+  if (!sync || !enum)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a4 toNanosWithLong:a3];
+  v5 = [enum toNanosWithLong:long];
 
   return [(JavaUtilConcurrentLocksAbstractQueuedSynchronizer *)sync tryAcquireNanosWithInt:1 withLong:v5];
 }
@@ -101,8 +101,8 @@
     JreThrowNullPointerException();
   }
 
-  v3 = [(JavaUtilConcurrentLocksAbstractOwnableSynchronizer *)self->sync_ getExclusiveOwnerThread];
-  if (v3 != JavaLangThread_currentThread())
+  getExclusiveOwnerThread = [(JavaUtilConcurrentLocksAbstractOwnableSynchronizer *)self->sync_ getExclusiveOwnerThread];
+  if (getExclusiveOwnerThread != JavaLangThread_currentThread())
   {
     return 0;
   }
@@ -118,8 +118,8 @@
     JreThrowNullPointerException();
   }
 
-  v3 = [(JavaUtilConcurrentLocksAbstractOwnableSynchronizer *)sync getExclusiveOwnerThread];
-  return v3 == JavaLangThread_currentThread();
+  getExclusiveOwnerThread = [(JavaUtilConcurrentLocksAbstractOwnableSynchronizer *)sync getExclusiveOwnerThread];
+  return getExclusiveOwnerThread == JavaLangThread_currentThread();
 }
 
 - (BOOL)isLocked
@@ -167,7 +167,7 @@
   return [(JavaUtilConcurrentLocksAbstractQueuedSynchronizer *)sync hasQueuedThreads];
 }
 
-- (BOOL)hasQueuedThreadWithJavaLangThread:(id)a3
+- (BOOL)hasQueuedThreadWithJavaLangThread:(id)thread
 {
   sync = self->sync_;
   if (!sync)
@@ -175,7 +175,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilConcurrentLocksAbstractQueuedSynchronizer *)sync isQueuedWithJavaLangThread:a3];
+  return [(JavaUtilConcurrentLocksAbstractQueuedSynchronizer *)sync isQueuedWithJavaLangThread:thread];
 }
 
 - (int)getQueueLength
@@ -200,9 +200,9 @@
   return [(JavaUtilConcurrentLocksAbstractQueuedSynchronizer *)sync getQueuedThreads];
 }
 
-- (BOOL)hasWaitersWithJavaUtilConcurrentLocksCondition:(id)a3
+- (BOOL)hasWaitersWithJavaUtilConcurrentLocksCondition:(id)condition
 {
-  if (!a3)
+  if (!condition)
   {
     v6 = new_JavaLangNullPointerException_init();
     goto LABEL_12;
@@ -228,12 +228,12 @@ LABEL_12:
     JreThrowClassCastException();
   }
 
-  return [(JavaUtilConcurrentLocksAbstractQueuedSynchronizer *)sync hasWaitersWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:a3];
+  return [(JavaUtilConcurrentLocksAbstractQueuedSynchronizer *)sync hasWaitersWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:condition];
 }
 
-- (int)getWaitQueueLengthWithJavaUtilConcurrentLocksCondition:(id)a3
+- (int)getWaitQueueLengthWithJavaUtilConcurrentLocksCondition:(id)condition
 {
-  if (!a3)
+  if (!condition)
   {
     v6 = new_JavaLangNullPointerException_init();
     goto LABEL_12;
@@ -259,12 +259,12 @@ LABEL_12:
     JreThrowClassCastException();
   }
 
-  return [(JavaUtilConcurrentLocksAbstractQueuedSynchronizer *)sync getWaitQueueLengthWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:a3];
+  return [(JavaUtilConcurrentLocksAbstractQueuedSynchronizer *)sync getWaitQueueLengthWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:condition];
 }
 
-- (id)getWaitingThreadsWithJavaUtilConcurrentLocksCondition:(id)a3
+- (id)getWaitingThreadsWithJavaUtilConcurrentLocksCondition:(id)condition
 {
-  if (!a3)
+  if (!condition)
   {
     v6 = new_JavaLangNullPointerException_init();
     goto LABEL_12;
@@ -290,7 +290,7 @@ LABEL_12:
     JreThrowClassCastException();
   }
 
-  return [(JavaUtilConcurrentLocksAbstractQueuedSynchronizer *)sync getWaitingThreadsWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:a3];
+  return [(JavaUtilConcurrentLocksAbstractQueuedSynchronizer *)sync getWaitingThreadsWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:condition];
 }
 
 - (NSString)description
@@ -303,20 +303,20 @@ LABEL_12:
 
   if ([(JavaUtilConcurrentLocksAbstractQueuedSynchronizer *)self->sync_ getState])
   {
-    v4 = [(JavaUtilConcurrentLocksAbstractOwnableSynchronizer *)sync getExclusiveOwnerThread];
+    getExclusiveOwnerThread = [(JavaUtilConcurrentLocksAbstractOwnableSynchronizer *)sync getExclusiveOwnerThread];
   }
 
   else
   {
-    v4 = 0;
+    getExclusiveOwnerThread = 0;
   }
 
   v21.receiver = self;
   v21.super_class = JavaUtilConcurrentLocksReentrantLock;
   v12 = [(JavaUtilConcurrentLocksReentrantLock *)&v21 description];
-  if (v4)
+  if (getExclusiveOwnerThread)
   {
-    [v4 getName];
+    [getExclusiveOwnerThread getName];
     JreStrcat("$$C", v13, v14, v15, v16, v17, v18, v19, @"[Locked by thread ");
   }
 

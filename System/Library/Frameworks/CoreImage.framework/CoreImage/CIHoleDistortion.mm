@@ -265,7 +265,7 @@
     y = v26.origin.y;
     width = v26.size.width;
     height = v26.size.height;
-    v14 = [(CIHoleDistortion *)self _geomKernel];
+    _geomKernel = [(CIHoleDistortion *)self _geomKernel];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __31__CIHoleDistortion_outputImage__block_invoke;
@@ -275,12 +275,12 @@
     inputImage = self->inputImage;
     v23[0] = inputCenter;
     v23[1] = [MEMORY[0x1E696AD98] numberWithDouble:v4 * v4];
-    v16 = [v14 applyWithExtent:v21 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v23, 2), x, y, width, height}];
-    v17 = [(CIHoleDistortion *)self _colorKernel];
+    v16 = [_geomKernel applyWithExtent:v21 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v23, 2), x, y, width, height}];
+    _colorKernel = [(CIHoleDistortion *)self _colorKernel];
     v22[0] = v16;
     v22[1] = inputCenter;
     v22[2] = [MEMORY[0x1E696AD98] numberWithDouble:v4];
-    return [v17 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v22, 3), x, y, width, height}];
+    return [_colorKernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v22, 3), x, y, width, height}];
   }
 }
 

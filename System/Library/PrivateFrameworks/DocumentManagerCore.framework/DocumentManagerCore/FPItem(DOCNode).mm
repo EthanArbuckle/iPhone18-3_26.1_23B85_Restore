@@ -36,15 +36,15 @@
 
 - (id)dateForSortingByRecents
 {
-  v2 = [a1 doc_lastUsedDate];
-  if (v2)
+  doc_lastUsedDate = [self doc_lastUsedDate];
+  if (doc_lastUsedDate)
   {
-    [a1 doc_lastUsedDate];
+    [self doc_lastUsedDate];
   }
 
   else
   {
-    [a1 modificationDate];
+    [self modificationDate];
   }
   v3 = ;
 
@@ -53,11 +53,11 @@
 
 - (uint64_t)isCopying
 {
-  v1 = [a1 copyingProgress];
-  v2 = v1;
-  if (v1)
+  copyingProgress = [self copyingProgress];
+  v2 = copyingProgress;
+  if (copyingProgress)
   {
-    v3 = [v1 isFinished] ^ 1;
+    v3 = [copyingProgress isFinished] ^ 1;
   }
 
   else
@@ -70,52 +70,52 @@
 
 - (uint64_t)isFullyFormed
 {
-  v2 = [a1 creationDate];
-  if (v2)
+  creationDate = [self creationDate];
+  if (creationDate)
   {
     v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:-534528000.0];
-    v4 = [v2 isEqual:v3];
+    isCopying = [creationDate isEqual:v3];
   }
 
   else
   {
-    v4 = [a1 isCopying];
+    isCopying = [self isCopying];
   }
 
-  return v4 ^ 1u;
+  return isCopying ^ 1u;
 }
 
 - (DOCNodeThumbnailIdentifier)thumbnailIdentifier
 {
   v14 = [DOCNodeThumbnailIdentifier alloc];
-  v2 = [a1 itemIdentifier];
-  v3 = [a1 modificationDate];
-  v4 = [a1 contentVersion];
-  v5 = [a1 folderType];
-  v6 = [a1 isTopLevelSharedItem];
-  v7 = [a1 isDownloaded];
-  v8 = [a1 filename];
-  v9 = [v8 pathExtension];
-  v10 = [a1 tagThumbnailKey];
-  LOBYTE(v13) = [a1 isActionable];
-  v11 = [(DOCNodeThumbnailIdentifier *)v14 initWithNodeIdentifier:v2 modificationDate:v3 contentVersion:v4 folderType:v5 isTopLevelSharedItem:v6 isDownloaded:v7 fileExtension:v9 customFolder:v10 isActionable:v13];
+  itemIdentifier = [self itemIdentifier];
+  modificationDate = [self modificationDate];
+  contentVersion = [self contentVersion];
+  folderType = [self folderType];
+  isTopLevelSharedItem = [self isTopLevelSharedItem];
+  isDownloaded = [self isDownloaded];
+  filename = [self filename];
+  pathExtension = [filename pathExtension];
+  tagThumbnailKey = [self tagThumbnailKey];
+  LOBYTE(v13) = [self isActionable];
+  v11 = [(DOCNodeThumbnailIdentifier *)v14 initWithNodeIdentifier:itemIdentifier modificationDate:modificationDate contentVersion:contentVersion folderType:folderType isTopLevelSharedItem:isTopLevelSharedItem isDownloaded:isDownloaded fileExtension:pathExtension customFolder:tagThumbnailKey isActionable:v13];
 
   return v11;
 }
 
 - (id)contentVersion
 {
-  v1 = [a1 itemVersion];
-  v2 = [v1 contentVersion];
+  itemVersion = [self itemVersion];
+  contentVersion = [itemVersion contentVersion];
 
-  return v2;
+  return contentVersion;
 }
 
 - (id)tagThumbnailKey
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [a1 tags];
-  v3 = [v2 count];
+  tags = [self tags];
+  v3 = [tags count];
 
   if (v3)
   {
@@ -124,8 +124,8 @@
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [a1 tags];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    tags2 = [self tags];
+    v6 = [tags2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -136,14 +136,14 @@
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(tags2);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) label];
-          [v4 appendFormat:@"%@\n", v10];
+          label = [*(*(&v13 + 1) + 8 * i) label];
+          [v4 appendFormat:@"%@\n", label];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [tags2 countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -163,9 +163,9 @@
 - (id)cachedDomain:()DOCNode
 {
   v5 = MEMORY[0x277CC6420];
-  v6 = [a1 providerDomainID];
+  providerDomainID = [self providerDomainID];
   v12 = 0;
-  v7 = [v5 providerDomainWithID:v6 cachePolicy:3 error:&v12];
+  v7 = [v5 providerDomainWithID:providerDomainID cachePolicy:3 error:&v12];
   v8 = v12;
 
   if (v8)
@@ -187,7 +187,7 @@
       goto LABEL_6;
     }
 
-    [(FPItem(DOCNode) *)a1 cachedDomain:v9, v8];
+    [(FPItem(DOCNode) *)self cachedDomain:v9, v8];
     if (a3)
     {
 LABEL_6:
@@ -203,11 +203,11 @@ LABEL_7:
 
 - (id)domainDisplayName
 {
-  v1 = [a1 cachedDomain];
-  v2 = v1;
-  if (v1)
+  cachedDomain = [self cachedDomain];
+  v2 = cachedDomain;
+  if (cachedDomain)
   {
-    v3 = DOCLocalizedDisplayName(v1);
+    v3 = DOCLocalizedDisplayName(cachedDomain);
   }
 
   else
@@ -220,46 +220,46 @@ LABEL_7:
 
 - (uint64_t)isRootItem
 {
-  v2 = [a1 itemIdentifier];
-  if ([v2 isEqualToString:*MEMORY[0x277CC6348]])
+  itemIdentifier = [self itemIdentifier];
+  if ([itemIdentifier isEqualToString:*MEMORY[0x277CC6348]])
   {
-    v3 = 1;
+    fp_isCloudDocsContainer = 1;
   }
 
   else
   {
-    v3 = [a1 fp_isCloudDocsContainer];
+    fp_isCloudDocsContainer = [self fp_isCloudDocsContainer];
   }
 
-  return v3;
+  return fp_isCloudDocsContainer;
 }
 
 - (uint64_t)isInTrash
 {
-  if ([a1 isTrashed])
+  if ([self isTrashed])
   {
     return 1;
   }
 
-  return [a1 isAnyParentTrashed];
+  return [self isAnyParentTrashed];
 }
 
 - (uint64_t)isAnyParentTrashed
 {
-  v1 = [a1 fileURL];
-  v2 = [v1 path];
-  v3 = [v2 containsString:@".Trash"];
+  fileURL = [self fileURL];
+  path = [fileURL path];
+  v3 = [path containsString:@".Trash"];
 
   return v3;
 }
 
 - (id)deepItemCount
 {
-  v1 = [a1 childItemCount];
-  v2 = v1;
-  if (v1)
+  childItemCount = [self childItemCount];
+  v2 = childItemCount;
+  if (childItemCount)
   {
-    v3 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v1, "intValue") + 1}];
+    v3 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(childItemCount, "intValue") + 1}];
   }
 
   else
@@ -272,11 +272,11 @@ LABEL_7:
 
 - (uint64_t)doc_isSMBSharepoint
 {
-  v2 = [a1 providerDomainID];
-  if (DOCProviderDomainIDIsSharedServerDomainID(v2, v3) && [a1 isRootItem])
+  providerDomainID = [self providerDomainID];
+  if (DOCProviderDomainIDIsSharedServerDomainID(providerDomainID, v3) && [self isRootItem])
   {
-    v4 = [a1 parentItemIdentifier];
-    v5 = [v4 isEqualToString:*MEMORY[0x277CC6348]];
+    parentItemIdentifier = [self parentItemIdentifier];
+    v5 = [parentItemIdentifier isEqualToString:*MEMORY[0x277CC6348]];
   }
 
   else
@@ -289,7 +289,7 @@ LABEL_7:
 
 - (uint64_t)doc_folderIconType
 {
-  result = [a1 folderType];
+  result = [self folderType];
   if (result > 2)
   {
     if (result == 4)
@@ -310,12 +310,12 @@ LABEL_7:
 
   else if (result == 1)
   {
-    if ([a1 isTopLevelSharedItem])
+    if ([self isTopLevelSharedItem])
     {
       return 5;
     }
 
-    else if ([a1 doc_isSMBSharepoint])
+    else if ([self doc_isSMBSharepoint])
     {
       return 6;
     }
@@ -336,77 +336,77 @@ LABEL_7:
 
 - (id)iconConfigurationForFolder
 {
-  if (([a1 isFolder] & 1) == 0)
+  if (([self isFolder] & 1) == 0)
   {
     [(FPItem(DOCNode) *)a2 iconConfigurationForFolder];
   }
 
   v4 = objc_alloc_init(MEMORY[0x277D1B190]);
-  v5 = [a1 tags];
-  [v4 setSystemTintColor:{objc_msgSend(MEMORY[0x277D046B0], "folderTintColorForLabel:", FolderTagColorForTags(v5))}];
+  tags = [self tags];
+  [v4 setSystemTintColor:{objc_msgSend(MEMORY[0x277D046B0], "folderTintColorForLabel:", FolderTagColorForTags(tags))}];
 
-  v6 = [a1 childItemCount];
-  [v4 setFolderEmpty:{objc_msgSend(v6, "intValue") == 0}];
+  childItemCount = [self childItemCount];
+  [v4 setFolderEmpty:{objc_msgSend(childItemCount, "intValue") == 0}];
 
   return v4;
 }
 
 - (id)folderIcon
 {
-  if (![a1 isFolder])
+  if (![self isFolder])
   {
     v8 = 0;
     goto LABEL_17;
   }
 
   v2 = +[DOCFeature folderOverlays];
-  v3 = [v2 isEnabled];
+  isEnabled = [v2 isEnabled];
 
-  if ((v3 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
     v9 = objc_alloc(MEMORY[0x277D1B1A8]);
-    v6 = [*MEMORY[0x277CE1D80] identifier];
-    v8 = [v9 initWithType:v6];
+    identifier = [*MEMORY[0x277CE1D80] identifier];
+    v8 = [v9 initWithType:identifier];
     goto LABEL_7;
   }
 
-  v4 = [a1 doc_folderIconType];
-  if (v4 == 6)
+  doc_folderIconType = [self doc_folderIconType];
+  if (doc_folderIconType == 6)
   {
     v5 = objc_alloc(MEMORY[0x277D1B1A8]);
-    v6 = [*MEMORY[0x277CE1D80] identifier];
+    identifier = [*MEMORY[0x277CE1D80] identifier];
     v7 = [objc_alloc(MEMORY[0x277D1B190]) initWithSymbolName:@"person.3.fill" systemTintColor:-1];
-    v8 = [v5 initWithType:v6 iconConfiguration:v7];
+    v8 = [v5 initWithType:identifier iconConfiguration:v7];
 
 LABEL_7:
     goto LABEL_17;
   }
 
-  v10 = v4;
-  v11 = [a1 folderIconIdentifierForFolderType:v4];
-  if (v10 <= 1 && [a1 supportsFolderCustomization] && (objc_msgSend(a1, "fileURL"), (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  v10 = doc_folderIconType;
+  v11 = [self folderIconIdentifierForFolderType:doc_folderIconType];
+  if (v10 <= 1 && [self supportsFolderCustomization] && (objc_msgSend(self, "fileURL"), (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v13 = v12;
+    iconConfigurationForFolder = v12;
     v14 = objc_alloc_init(MEMORY[0x277D1B190]);
     v15 = *MEMORY[0x277CBECA0];
     _DS_CFURLGetPropertyForKey();
-    v16 = [v14 symbolName];
+    symbolName = [v14 symbolName];
 
-    if (!v16)
+    if (!symbolName)
     {
       v24 = 0;
       v21 = *MEMORY[0x277CBEC98];
       _DS_CFURLGetPropertyForKey();
     }
 
-    v17 = [a1 tags];
-    [v14 setSystemTintColor:{objc_msgSend(MEMORY[0x277D046B0], "folderTintColorForLabel:", FolderTagColorForTags(v17))}];
+    tags = [self tags];
+    [v14 setSystemTintColor:{objc_msgSend(MEMORY[0x277D046B0], "folderTintColorForLabel:", FolderTagColorForTags(tags))}];
 
-    v18 = [a1 childItemCount];
-    if (v18)
+    childItemCount = [self childItemCount];
+    if (childItemCount)
     {
-      v19 = [a1 childItemCount];
-      [v14 setFolderEmpty:{objc_msgSend(v19, "intValue") == 0}];
+      childItemCount2 = [self childItemCount];
+      [v14 setFolderEmpty:{objc_msgSend(childItemCount2, "intValue") == 0}];
     }
 
     else
@@ -415,14 +415,14 @@ LABEL_7:
     }
 
     v22 = objc_alloc(MEMORY[0x277D1B1A8]);
-    v23 = [*MEMORY[0x277CE1D80] identifier];
-    v8 = [v22 initWithType:v23 iconConfiguration:v14];
+    identifier2 = [*MEMORY[0x277CE1D80] identifier];
+    v8 = [v22 initWithType:identifier2 iconConfiguration:v14];
   }
 
   else
   {
-    v13 = [a1 iconConfigurationForFolder];
-    v8 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithType:v11 iconConfiguration:v13];
+    iconConfigurationForFolder = [self iconConfigurationForFolder];
+    v8 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithType:v11 iconConfiguration:iconConfigurationForFolder];
   }
 
 LABEL_17:
@@ -432,34 +432,34 @@ LABEL_17:
 
 - (id)simplifiedFolderIcon
 {
-  if ([a1 isFolder])
+  if ([self isFolder])
   {
     v2 = +[DOCFeature folderOverlays];
-    v3 = [v2 isEnabled];
+    isEnabled = [v2 isEnabled];
 
-    if (v3)
+    if (isEnabled)
     {
-      v4 = [a1 doc_folderIconType];
-      if (v4 == 6)
+      doc_folderIconType = [self doc_folderIconType];
+      if (doc_folderIconType == 6)
       {
         v5 = objc_alloc(MEMORY[0x277D1B1A8]);
-        v6 = [*MEMORY[0x277CE1D80] identifier];
+        identifier = [*MEMORY[0x277CE1D80] identifier];
         v7 = [objc_alloc(MEMORY[0x277D1B190]) initWithSymbolName:@"person.3.fill" systemTintColor:-1];
-        v8 = [v5 initWithType:v6 iconConfiguration:v7];
+        v8 = [v5 initWithType:identifier iconConfiguration:v7];
       }
 
       else
       {
-        v6 = [a1 folderIconIdentifierForFolderType:v4];
+        identifier = [self folderIconIdentifierForFolderType:doc_folderIconType];
         v10 = objc_alloc_init(MEMORY[0x277D1B190]);
-        v11 = [a1 tags];
-        [v10 setSystemTintColor:{objc_msgSend(MEMORY[0x277D046B0], "folderTintColorForLabel:", FolderTagColorForTags(v11))}];
+        tags = [self tags];
+        [v10 setSystemTintColor:{objc_msgSend(MEMORY[0x277D046B0], "folderTintColorForLabel:", FolderTagColorForTags(tags))}];
 
-        v12 = [a1 childItemCount];
-        if (v12)
+        childItemCount = [self childItemCount];
+        if (childItemCount)
         {
-          v13 = [a1 childItemCount];
-          [v10 setFolderEmpty:{objc_msgSend(v13, "intValue") == 0}];
+          childItemCount2 = [self childItemCount];
+          [v10 setFolderEmpty:{objc_msgSend(childItemCount2, "intValue") == 0}];
         }
 
         else
@@ -469,15 +469,15 @@ LABEL_17:
 
         [v10 setSymbolName:0];
         [v10 setEmoji:0];
-        v8 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithType:v6 iconConfiguration:v10];
+        v8 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithType:identifier iconConfiguration:v10];
       }
     }
 
     else
     {
       v9 = objc_alloc(MEMORY[0x277D1B1A8]);
-      v6 = [*MEMORY[0x277CE1D80] identifier];
-      v8 = [v9 initWithType:v6];
+      identifier = [*MEMORY[0x277CE1D80] identifier];
+      v8 = [v9 initWithType:identifier];
     }
   }
 
@@ -491,17 +491,17 @@ LABEL_17:
 
 - (__CFString)folderIconIdentifierForFolderType:()DOCNode
 {
-  v5 = @"com.apple.desktop-folder";
+  identifier = @"com.apple.desktop-folder";
   if (a3 <= 3)
   {
     if (a3 >= 2)
     {
       if (a3 == 3)
       {
-        v5 = @"com.apple.documents-folder";
+        identifier = @"com.apple.documents-folder";
       }
 
-      return v5;
+      return identifier;
     }
 
     goto LABEL_11;
@@ -510,57 +510,57 @@ LABEL_17:
   switch(a3)
   {
     case 4:
-      v5 = @"com.apple.downloads-folder";
+      identifier = @"com.apple.downloads-folder";
 
       break;
     case 5:
-      v5 = @"com.apple.groups-folder";
+      identifier = @"com.apple.groups-folder";
       break;
     case 6:
 LABEL_11:
-      v5 = [*MEMORY[0x277CE1D80] identifier];
+      identifier = [*MEMORY[0x277CE1D80] identifier];
 
-      return v5;
+      return identifier;
     default:
 
       break;
   }
 
-  return v5;
+  return identifier;
 }
 
 - (id)iconsFromIconPackage
 {
-  if ([a1 isFolder])
+  if ([self isFolder])
   {
-    v2 = [a1 doc_folderIconType];
-    v3 = [a1 folderIconIdentifierForFolderType:v2];
-    v4 = [a1 iconConfigurationForFolder];
-    v5 = v4;
-    if (v2 == 6)
+    doc_folderIconType = [self doc_folderIconType];
+    v3 = [self folderIconIdentifierForFolderType:doc_folderIconType];
+    iconConfigurationForFolder = [self iconConfigurationForFolder];
+    v5 = iconConfigurationForFolder;
+    if (doc_folderIconType == 6)
     {
-      [v4 setSymbolName:@"person.3.fill"];
+      [iconConfigurationForFolder setSymbolName:@"person.3.fill"];
     }
 
     v6 = [objc_alloc(MEMORY[0x277D1B1C0]) initWithTypeIdentifier:v3 configuration:v5];
-    v7 = [v6 icons];
+    icons = [v6 icons];
   }
 
   else
   {
-    v7 = 0;
+    icons = 0;
   }
 
-  return v7;
+  return icons;
 }
 
 - (uint64_t)isBrowsable
 {
-  result = [a1 isFolder];
+  result = [self isFolder];
   if (result)
   {
 
-    return [a1 isReadable];
+    return [self isReadable];
   }
 
   return result;
@@ -569,17 +569,17 @@ LABEL_11:
 - (uint64_t)_doc_fileTypeCompare:()DOCNode
 {
   v4 = a3;
-  v5 = [a1 contentType];
-  v6 = [v4 contentType];
+  contentType = [self contentType];
+  contentType2 = [v4 contentType];
 
-  v7 = [v5 _doc_fileTypeCompare:v6];
+  v7 = [contentType _doc_fileTypeCompare:contentType2];
   return v7;
 }
 
 - (uint64_t)localizedStandardTagsCompareNode:()DOCNode
 {
-  v4 = [a3 fpfs_fpItem];
-  v5 = [a1 localizedStandardTagsCompare:v4];
+  fpfs_fpItem = [a3 fpfs_fpItem];
+  v5 = [self localizedStandardTagsCompare:fpfs_fpItem];
 
   return v5;
 }
@@ -588,48 +588,48 @@ LABEL_11:
 {
   v4 = a3;
   [v4 encodeInt:0 forKey:@"DOCNodeEncodedTypeKey"];
-  [v4 encodeObject:a1 forKey:@"DOCNodeEncodedObjectKey"];
+  [v4 encodeObject:self forKey:@"DOCNodeEncodedObjectKey"];
 }
 
 - (void)fetchParent:()DOCNode
 {
   v4 = a3;
-  v5 = [MEMORY[0x277CC6408] defaultManager];
-  v6 = [a1 itemID];
+  defaultManager = [MEMORY[0x277CC6408] defaultManager];
+  itemID = [self itemID];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __31__FPItem_DOCNode__fetchParent___block_invoke;
   v8[3] = &unk_278F9B888;
   v9 = v4;
   v7 = v4;
-  [v5 fetchParentsForItemID:v6 recursively:0 completionHandler:v8];
+  [defaultManager fetchParentsForItemID:itemID recursively:0 completionHandler:v8];
 }
 
 - (void)fetchParents:()DOCNode
 {
   v4 = a3;
-  v5 = [MEMORY[0x277CC6408] defaultManager];
-  v6 = [a1 itemID];
+  defaultManager = [MEMORY[0x277CC6408] defaultManager];
+  itemID = [self itemID];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __32__FPItem_DOCNode__fetchParents___block_invoke;
   v8[3] = &unk_278F9B888;
   v9 = v4;
   v7 = v4;
-  [v5 fetchParentsForItemID:v6 recursively:1 completionHandler:v8];
+  [defaultManager fetchParentsForItemID:itemID recursively:1 completionHandler:v8];
 }
 
 - (void)fetchURL:()DOCNode
 {
   v4 = a3;
-  v5 = [MEMORY[0x277CC6408] defaultManager];
+  defaultManager = [MEMORY[0x277CC6408] defaultManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__FPItem_DOCNode__fetchURL___block_invoke;
   v7[3] = &unk_278F9B8B0;
   v8 = v4;
   v6 = v4;
-  [v5 fetchURLForItem:a1 completionHandler:v7];
+  [defaultManager fetchURLForItem:self completionHandler:v7];
 }
 
 - (uint64_t)canPerformActions:()DOCNode
@@ -638,11 +638,11 @@ LABEL_11:
   v4 = a3;
   if ([v4 count])
   {
-    v5 = [MEMORY[0x277CC6408] defaultManager];
-    v24[0] = a1;
+    defaultManager = [MEMORY[0x277CC6408] defaultManager];
+    v24[0] = self;
     v6 = 1;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
-    v8 = [v5 eligibleActionsForItems:v7];
+    v8 = [defaultManager eligibleActionsForItems:v7];
 
     v21 = 0u;
     v22 = 0u;
@@ -669,7 +669,7 @@ LABEL_11:
 
           if (*(*(&v19 + 1) + 8 * v15) == v13)
           {
-            v16 = (v14 & ~[a1 capabilities]) == 0;
+            v16 = (v14 & ~[self capabilities]) == 0;
           }
 
           else
@@ -701,7 +701,7 @@ LABEL_11:
 - (uint64_t)canPerform:()DOCNode
 {
   v2 = [MEMORY[0x277CBEB98] setWithObject:?];
-  v3 = [a1 canPerformActions:v2];
+  v3 = [self canPerformActions:v2];
 
   return v3;
 }
@@ -709,10 +709,10 @@ LABEL_11:
 - (id)doc_eligibleActions
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CC6408] defaultManager];
-  v7[0] = a1;
+  defaultManager = [MEMORY[0x277CC6408] defaultManager];
+  v7[0] = self;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
-  v4 = [v2 eligibleActionsForItems:v3];
+  v4 = [defaultManager eligibleActionsForItems:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 
@@ -721,9 +721,9 @@ LABEL_11:
 
 - (id)doc_fallbackSortIdentity
 {
-  v2 = [a1 providerItemIdentifier];
-  v3 = [a1 domainIdentifier];
-  v4 = [v2 stringByAppendingString:v3];
+  providerItemIdentifier = [self providerItemIdentifier];
+  domainIdentifier = [self domainIdentifier];
+  v4 = [providerItemIdentifier stringByAppendingString:domainIdentifier];
 
   return v4;
 }
@@ -744,8 +744,8 @@ LABEL_11:
 
 - (void)iconConfigurationForFolder
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"DOCNode.m" lineNumber:338 description:@"Expected a folder"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"DOCNode.m" lineNumber:338 description:@"Expected a folder"];
 }
 
 @end

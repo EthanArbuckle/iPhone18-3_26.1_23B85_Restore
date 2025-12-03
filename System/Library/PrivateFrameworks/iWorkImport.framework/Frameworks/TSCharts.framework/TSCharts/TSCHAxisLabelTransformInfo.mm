@@ -9,7 +9,7 @@
 - (TSCHChartAxisLayoutItem)axisLayoutItem;
 - (TSCHChartInfo)chartInfo;
 - (TSCHChartModel)chartModel;
-- (void)setUnitCircleToEllipseTransform:(CGAffineTransform *)a3;
+- (void)setUnitCircleToEllipseTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation TSCHAxisLabelTransformInfo
@@ -85,11 +85,11 @@
   return self;
 }
 
-- (void)setUnitCircleToEllipseTransform:(CGAffineTransform *)a3
+- (void)setUnitCircleToEllipseTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_unitCircleToEllipseTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_unitCircleToEllipseTransform.tx = *&transform->tx;
   *&self->_unitCircleToEllipseTransform.c = v4;
   *&self->_unitCircleToEllipseTransform.a = v3;
 }

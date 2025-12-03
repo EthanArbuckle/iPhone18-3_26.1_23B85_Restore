@@ -3,17 +3,17 @@
 - (ICMediaUserState)activeUserState;
 - (NSArray)allUserStates;
 - (id)_establishClientConnection;
-- (id)_getUserStatesForcingRefresh:(BOOL)a3;
-- (id)_initLazily:(BOOL)a3;
+- (id)_getUserStatesForcingRefresh:(BOOL)refresh;
+- (id)_initLazily:(BOOL)lazily;
 - (id)initLazily;
-- (void)_applyServerStateUpdatedWithUserStates:(id)a3;
+- (void)_applyServerStateUpdatedWithUserStates:(id)states;
 - (void)_clearConnection;
-- (void)_handleServerStateUpdatedNotification:(id)a3;
-- (void)_onAsyncServer:(id)a3;
-- (void)_onSyncServer:(id)a3;
+- (void)_handleServerStateUpdatedNotification:(id)notification;
+- (void)_onAsyncServer:(id)server;
+- (void)_onSyncServer:(id)server;
 - (void)dealloc;
-- (void)refreshUserStatesWithCompletion:(id)a3;
-- (void)refreshUserStatesWithOptions:(unint64_t)a3 completion:(id)a4;
+- (void)refreshUserStatesWithCompletion:(id)completion;
+- (void)refreshUserStatesWithOptions:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation ICMediaUserStateCenter
@@ -40,7 +40,7 @@
   {
     v5 = [v10[5] count];
     *buf = 138543618;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
     v18 = v5;
     _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Accessing all user states, user states found: %lu", buf, 0x16u);
@@ -82,7 +82,7 @@ uint64_t __32__ICMediaUserStateCenter_shared__block_invoke()
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v33 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: No connection found, creating new connection", buf, 0xCu);
     }
 
@@ -96,11 +96,11 @@ uint64_t __32__ICMediaUserStateCenter_shared__block_invoke()
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v9 = [v6 msv_description];
+        msv_description = [v6 msv_description];
         *buf = 138543618;
-        v33 = self;
+        selfCopy4 = self;
         v34 = 2114;
-        v35 = v9;
+        v35 = msv_description;
         _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_ERROR, "%{public}@: created xpc connection from listener endpoint error=%{public}@", buf, 0x16u);
       }
     }
@@ -108,7 +108,7 @@ uint64_t __32__ICMediaUserStateCenter_shared__block_invoke()
     else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v33 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: created xpc connection from listener endpoint", buf, 0xCu);
     }
 
@@ -166,7 +166,7 @@ uint64_t __32__ICMediaUserStateCenter_shared__block_invoke()
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v33 = self;
+        selfCopy4 = self;
         v34 = 2114;
         v35 = v6;
         _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_ERROR, "%{public}@: Failed listenerEndpointForService:ICCloudServerSupportedServiceMediaUserStateCenterServer, err=%{public}@", buf, 0x16u);
@@ -185,14 +185,14 @@ uint64_t __32__ICMediaUserStateCenter_shared__block_invoke()
 - (ICMediaUserState)activeUserState
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(ICMediaUserStateCenter *)self allUserStates];
-  v4 = [v3 msv_firstWhere:&__block_literal_global_21];
+  allUserStates = [(ICMediaUserStateCenter *)self allUserStates];
+  v4 = [allUserStates msv_firstWhere:&__block_literal_global_21];
 
   v5 = os_log_create("com.apple.amp.iTunesCloud", "UserState");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
     v10 = v4;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Accessing active user state: %{public}@", &v7, 0x16u);
@@ -201,17 +201,17 @@ uint64_t __32__ICMediaUserStateCenter_shared__block_invoke()
   return v4;
 }
 
-- (void)_applyServerStateUpdatedWithUserStates:(id)a3
+- (void)_applyServerStateUpdatedWithUserStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__ICMediaUserStateCenter__applyServerStateUpdatedWithUserStates___block_invoke;
   v7[3] = &unk_1E7BFA078;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = statesCopy;
+  selfCopy = self;
+  v6 = statesCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -292,18 +292,18 @@ void __65__ICMediaUserStateCenter__applyServerStateUpdatedWithUserStates___block
   [v2 postNotificationName:@"ICMediaUserStateCenterUserStatesDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_handleServerStateUpdatedNotification:(id)a3
+- (void)_handleServerStateUpdatedNotification:(id)notification
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "UserState");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v6;
+    v12 = name;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Handling state update notification: %{public}@", buf, 0x16u);
   }
 
@@ -322,18 +322,18 @@ void __64__ICMediaUserStateCenter__handleServerStateUpdatedNotification___block_
   [*(a1 + 32) _applyServerStateUpdatedWithUserStates:v2];
 }
 
-- (void)_onSyncServer:(id)a3
+- (void)_onSyncServer:(id)server
 {
-  v4 = a3;
-  v5 = [(ICMediaUserStateCenter *)self _establishClientConnection];
-  v6 = v5;
+  serverCopy = server;
+  _establishClientConnection = [(ICMediaUserStateCenter *)self _establishClientConnection];
+  v6 = _establishClientConnection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__6906;
   v15 = __Block_byref_object_dispose__6907;
   v16 = 0;
-  if (v5)
+  if (_establishClientConnection)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -341,8 +341,8 @@ void __64__ICMediaUserStateCenter__handleServerStateUpdatedNotification___block_
     v10[3] = &unk_1E7BF4860;
     v10[4] = self;
     v10[5] = &v11;
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v10];
-    v4[2](v4, v7, v12[5]);
+    v7 = [_establishClientConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
+    serverCopy[2](serverCopy, v7, v12[5]);
   }
 
   else
@@ -351,7 +351,7 @@ void __64__ICMediaUserStateCenter__handleServerStateUpdatedNotification___block_
     v9 = v12[5];
     v12[5] = v8;
 
-    v4[2](v4, 0, v12[5]);
+    serverCopy[2](serverCopy, 0, v12[5]);
   }
 
   _Block_object_dispose(&v11, 8);
@@ -382,17 +382,17 @@ void __40__ICMediaUserStateCenter__onSyncServer___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)_onAsyncServer:(id)a3
+- (void)_onAsyncServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   cloudClient = self->_cloudClient;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__ICMediaUserStateCenter__onAsyncServer___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = serverCopy;
+  v6 = serverCopy;
   [(ICCloudClient *)cloudClient performBlockAfterServerSetup:v7];
 }
 
@@ -454,7 +454,7 @@ void __41__ICMediaUserStateCenter__onAsyncServer___block_invoke_2(uint64_t a1, v
   }
 }
 
-- (id)_getUserStatesForcingRefresh:(BOOL)a3
+- (id)_getUserStatesForcingRefresh:(BOOL)refresh
 {
   v7 = 0;
   v8 = &v7;
@@ -466,7 +466,7 @@ void __41__ICMediaUserStateCenter__onAsyncServer___block_invoke_2(uint64_t a1, v
   v5[1] = 3221225472;
   v5[2] = __55__ICMediaUserStateCenter__getUserStatesForcingRefresh___block_invoke;
   v5[3] = &unk_1E7BF4838;
-  v6 = a3;
+  refreshCopy = refresh;
   v5[4] = self;
   v5[5] = &v7;
   [(ICMediaUserStateCenter *)self _onSyncServer:v5];
@@ -627,10 +627,10 @@ void __52__ICMediaUserStateCenter__establishClientConnection__block_invoke_92(ui
   [WeakRetained _clearConnection];
 }
 
-- (void)refreshUserStatesWithCompletion:(id)a3
+- (void)refreshUserStatesWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "UserState");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -656,7 +656,7 @@ void __52__ICMediaUserStateCenter__establishClientConnection__block_invoke_92(ui
   block[3] = &unk_1E7BF7BF0;
   p_buf = &buf;
   block[4] = self;
-  v8 = v4;
+  v8 = completionCopy;
   v12 = v8;
   dispatch_sync(completionHandlersQueue, block);
   if ((*(*(&buf + 1) + 24) & 1) == 0)
@@ -792,20 +792,20 @@ void __58__ICMediaUserStateCenter_refreshUserStatesWithCompletion___block_invoke
   }
 }
 
-- (void)refreshUserStatesWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)refreshUserStatesWithOptions:(unint64_t)options completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (options)
   {
-    if (a3)
+    if (options)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __66__ICMediaUserStateCenter_refreshUserStatesWithOptions_completion___block_invoke_3;
       v10[3] = &unk_1E7BF47C0;
-      v11 = v6;
+      v11 = completionCopy;
       [(ICMediaUserStateCenter *)self _onAsyncServer:v10];
       v9 = v11;
     }
@@ -816,9 +816,9 @@ void __58__ICMediaUserStateCenter_refreshUserStatesWithCompletion___block_invoke
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v15 = self;
+        selfCopy = self;
         v16 = 2048;
-        v17 = a3;
+        optionsCopy = options;
         _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_ERROR, "%{public}@ refreshUserStatesWithOptions:completion: called with invalid options: %lu", buf, 0x16u);
       }
 
@@ -833,7 +833,7 @@ void __58__ICMediaUserStateCenter_refreshUserStatesWithCompletion___block_invoke
     v12[1] = 3221225472;
     v12[2] = __66__ICMediaUserStateCenter_refreshUserStatesWithOptions_completion___block_invoke;
     v12[3] = &unk_1E7BF47C0;
-    v13 = v6;
+    v13 = completionCopy;
     [(ICMediaUserStateCenter *)self _onAsyncServer:v12];
     v9 = v13;
   }
@@ -879,8 +879,8 @@ void __66__ICMediaUserStateCenter_refreshUserStatesWithOptions_completion___bloc
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(NSXPCConnection *)self->_xpcConnection invalidate];
   v4.receiver = self;
@@ -888,9 +888,9 @@ void __66__ICMediaUserStateCenter_refreshUserStatesWithOptions_completion___bloc
   [(ICMediaUserStateCenter *)&v4 dealloc];
 }
 
-- (id)_initLazily:(BOOL)a3
+- (id)_initLazily:(BOOL)lazily
 {
-  v3 = a3;
+  lazilyCopy = lazily;
   v29 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = ICMediaUserStateCenter;
@@ -920,7 +920,7 @@ void __66__ICMediaUserStateCenter_refreshUserStatesWithOptions_completion___bloc
       *buf = 138543618;
       v26 = v4;
       v27 = 1024;
-      v28 = v3;
+      v28 = lazilyCopy;
       _os_log_impl(&dword_1B4491000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: _initLazily %{BOOL}u", buf, 0x12u);
     }
 
@@ -929,12 +929,12 @@ void __66__ICMediaUserStateCenter_refreshUserStatesWithOptions_completion___bloc
     v19 = 3221225472;
     v20 = __38__ICMediaUserStateCenter__initLazily___block_invoke;
     v21 = &unk_1E7BF7860;
-    v23 = v3;
+    v23 = lazilyCopy;
     v15 = v4;
     v22 = v15;
     dispatch_async(v14, &v18);
-    v16 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v16 addObserver:v15 selector:sel__handleServerStateUpdatedNotification_ name:@"ICMediaUserStateCenterServerStateUpdatedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__handleServerStateUpdatedNotification_ name:@"ICMediaUserStateCenterServerStateUpdatedNotification" object:0];
   }
 
   return v4;

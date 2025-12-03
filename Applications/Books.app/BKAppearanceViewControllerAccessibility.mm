@@ -1,50 +1,50 @@
 @interface BKAppearanceViewControllerAccessibility
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)themeContainer;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_changeAppearanceStyle:(int)a3;
-- (void)decreaseFontSize:(id)a3;
-- (void)increaseFontSize:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_changeAppearanceStyle:(int)style;
+- (void)decreaseFontSize:(id)size;
+- (void)increaseFontSize:(id)size;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation BKAppearanceViewControllerAccessibility
 
-- (void)_changeAppearanceStyle:(int)a3
+- (void)_changeAppearanceStyle:(int)style
 {
   v5.receiver = self;
   v5.super_class = BKAppearanceViewControllerAccessibility;
-  [(BKAppearanceViewControllerAccessibility *)&v5 _changeAppearanceStyle:*&a3];
+  [(BKAppearanceViewControllerAccessibility *)&v5 _changeAppearanceStyle:*&style];
   v3 = UIAccessibilityAnnouncementNotification;
   v4 = sub_1000765EC(@"selected");
   UIAccessibilityPostNotification(v3, v4);
 }
 
-- (void)increaseFontSize:(id)a3
+- (void)increaseFontSize:(id)size
 {
   v5.receiver = self;
   v5.super_class = BKAppearanceViewControllerAccessibility;
-  [(BKAppearanceViewControllerAccessibility *)&v5 increaseFontSize:a3];
+  [(BKAppearanceViewControllerAccessibility *)&v5 increaseFontSize:size];
   v3 = UIAccessibilityAnnouncementNotification;
   v4 = sub_1000765EC(@"font.size.increased");
   UIAccessibilityPostNotification(v3, v4);
 }
 
-- (void)decreaseFontSize:(id)a3
+- (void)decreaseFontSize:(id)size
 {
   v5.receiver = self;
   v5.super_class = BKAppearanceViewControllerAccessibility;
-  [(BKAppearanceViewControllerAccessibility *)&v5 decreaseFontSize:a3];
+  [(BKAppearanceViewControllerAccessibility *)&v5 decreaseFontSize:size];
   v3 = UIAccessibilityAnnouncementNotification;
   v4 = sub_1000765EC(@"font.size.decreased");
   UIAccessibilityPostNotification(v3, v4);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v19.receiver = self;
   v19.super_class = BKAppearanceViewControllerAccessibility;
-  [(BKAppearanceViewControllerAccessibility *)&v19 viewDidAppear:a3];
+  [(BKAppearanceViewControllerAccessibility *)&v19 viewDidAppear:appear];
   objc_opt_class();
   v4 = [(BKAppearanceViewControllerAccessibility *)self imaxValueForKey:@"tableView"];
   v5 = __IMAccessibilityCastAsClass();
@@ -74,7 +74,7 @@
   v15 = __IMAccessibilityCastAsClass();
 
   objc_opt_class();
-  v16 = [v15 superview];
+  superview = [v15 superview];
   v17 = __IMAccessibilityCastAsClass();
 
   v18 = sub_1000765EC(@"vertical.scrolling.switch");
@@ -87,17 +87,17 @@
 {
   v5.receiver = self;
   v5.super_class = BKAppearanceViewControllerAccessibility;
-  v3 = [(BKAppearanceViewControllerAccessibility *)&v5 themeContainer];
+  themeContainer = [(BKAppearanceViewControllerAccessibility *)&v5 themeContainer];
   [(BKAppearanceViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 
-  return v3;
+  return themeContainer;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = BKAppearanceViewControllerAccessibility;
-  v5 = [(BKAppearanceViewControllerAccessibility *)&v9 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(BKAppearanceViewControllerAccessibility *)&v9 tableView:view cellForRowAtIndexPath:path];
   v6 = [(BKAppearanceViewControllerAccessibility *)self imaxValueForKey:@"_themeContainer"];
   if ([v6 _accessibilityIsDescendantOfElement:v5])
   {

@@ -8,14 +8,14 @@
 
 - (unint64_t)isAuthenticationError
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:*MEMORY[0x277CFB2F0]];
+  domain = [self domain];
+  v3 = [domain isEqualToString:*MEMORY[0x277CFB2F0]];
 
   if (v3)
   {
-    v4 = [a1 code];
-    v5 = 0x400000180uLL >> v4;
-    if (v4 >= 0x23)
+    code = [self code];
+    v5 = 0x400000180uLL >> code;
+    if (code >= 0x23)
     {
       LOBYTE(v5) = 0;
     }
@@ -23,18 +23,18 @@
 
   else
   {
-    v6 = [a1 domain];
-    v7 = [v6 isEqualToString:*MEMORY[0x277CFB290]];
+    domain2 = [self domain];
+    v7 = [domain2 isEqualToString:*MEMORY[0x277CFB290]];
 
     if (v7)
     {
-      v8 = [a1 code] == 305;
+      v8 = [self code] == 305;
     }
 
     else
     {
-      v9 = [a1 domain];
-      v10 = [v9 isEqualToString:*MEMORY[0x277CFB298]];
+      domain3 = [self domain];
+      v10 = [domain3 isEqualToString:*MEMORY[0x277CFB298]];
 
       if (!v10)
       {
@@ -42,8 +42,8 @@
         return v5 & 1;
       }
 
-      v11 = [a1 code];
-      v8 = v11 == 99 || v11 == 102;
+      code2 = [self code];
+      v8 = code2 == 99 || code2 == 102;
     }
 
     LOBYTE(v5) = v8;
@@ -54,10 +54,10 @@
 
 - (BOOL)isAuthKitUnableToPromptError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x277CEFF48]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x277CEFF48]])
   {
-    v3 = [a1 code] == -7013;
+    v3 = [self code] == -7013;
   }
 
   else
@@ -70,10 +70,10 @@
 
 - (uint64_t)isAuthKitUnableToPromptDueToNetworkError
 {
-  if ([a1 isAuthKitUnableToPromptError])
+  if ([self isAuthKitUnableToPromptError])
   {
-    v2 = [a1 userInfo];
-    v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    userInfo = [self userInfo];
+    v3 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
     if (v3)
     {

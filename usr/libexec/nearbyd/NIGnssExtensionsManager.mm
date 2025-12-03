@@ -1,23 +1,23 @@
 @interface NIGnssExtensionsManager
-+ (vector<nearby::algorithms::finding::GnssSatelliteData,)getGnssSatelliteDataVecFromDict:(id)a2;
-- (NIGnssExtensionsManager)initWithQueue:(id)a3 bundle:(id)a4 reason:(id)a5;
-- (NIGnssExtensionsManager)initWithQueue:(id)a3 bundleId:(id)a4 reason:(id)a5;
++ (vector<nearby::algorithms::finding::GnssSatelliteData,)getGnssSatelliteDataVecFromDict:(id)dict;
+- (NIGnssExtensionsManager)initWithQueue:(id)queue bundle:(id)bundle reason:(id)reason;
+- (NIGnssExtensionsManager)initWithQueue:(id)queue bundleId:(id)id reason:(id)reason;
 @end
 
 @implementation NIGnssExtensionsManager
 
-- (NIGnssExtensionsManager)initWithQueue:(id)a3 bundleId:(id)a4 reason:(id)a5
+- (NIGnssExtensionsManager)initWithQueue:(id)queue bundleId:(id)id reason:(id)reason
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  idCopy = id;
+  reasonCopy = reason;
   v22.receiver = self;
   v22.super_class = NIGnssExtensionsManager;
   v12 = [(NIGnssExtensionsManager *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->fQueue, a3);
+    objc_storeStrong(&v12->fQueue, queue);
     fQueue = v13->fQueue;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -25,7 +25,7 @@
     v20[3] = &unk_1009A66B0;
     v15 = v13;
     v21 = v15;
-    v16 = [CLGnssExtensionsClient newAssertionForBundleIdentifier:v10 withReason:v11 withCallbackQueue:fQueue andBlock:v20];
+    v16 = [CLGnssExtensionsClient newAssertionForBundleIdentifier:idCopy withReason:reasonCopy withCallbackQueue:fQueue andBlock:v20];
     fAssertion = v15->fAssertion;
     v15->fAssertion = v16;
 
@@ -35,18 +35,18 @@
   return v13;
 }
 
-- (NIGnssExtensionsManager)initWithQueue:(id)a3 bundle:(id)a4 reason:(id)a5
+- (NIGnssExtensionsManager)initWithQueue:(id)queue bundle:(id)bundle reason:(id)reason
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  bundleCopy = bundle;
+  reasonCopy = reason;
   v22.receiver = self;
   v22.super_class = NIGnssExtensionsManager;
   v12 = [(NIGnssExtensionsManager *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->fQueue, a3);
+    objc_storeStrong(&v12->fQueue, queue);
     fQueue = v13->fQueue;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -54,7 +54,7 @@
     v20[3] = &unk_1009A66B0;
     v15 = v13;
     v21 = v15;
-    v16 = [CLGnssExtensionsClient newAssertionForBundle:v10 withReason:v11 withCallbackQueue:fQueue andBlock:v20];
+    v16 = [CLGnssExtensionsClient newAssertionForBundle:bundleCopy withReason:reasonCopy withCallbackQueue:fQueue andBlock:v20];
     fAssertion = v15->fAssertion;
     v15->fAssertion = v16;
 
@@ -64,7 +64,7 @@
   return v13;
 }
 
-+ (vector<nearby::algorithms::finding::GnssSatelliteData,)getGnssSatelliteDataVecFromDict:(id)a2
++ (vector<nearby::algorithms::finding::GnssSatelliteData,)getGnssSatelliteDataVecFromDict:(id)dict
 {
   v45 = a4;
   v5 = [v45 objectForKey:@"data"];
@@ -76,20 +76,20 @@
   {
     v7 = [v5 objectAtIndexedSubscript:v6];
     v8 = [v7 objectForKey:@"satSystem"];
-    v9 = [v8 intValue];
+    intValue = [v8 intValue];
 
-    if (v9 - 1 >= 6)
+    if (intValue - 1 >= 6)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = v9;
+      v10 = intValue;
     }
 
     v11 = [v7 objectForKey:@"satId"];
-    v12 = [v11 intValue];
+    intValue2 = [v11 intValue];
 
     v13 = [v7 objectForKey:@"elevationDeg"];
     [v13 floatValue];
@@ -151,7 +151,7 @@
 
       v40 = 48 * v36;
       *v40 = v10;
-      *(v40 + 4) = v12;
+      *(v40 + 4) = intValue2;
       *(v40 + 8) = v28;
       *(v40 + 16) = v29;
       *(v40 + 24) = v30;
@@ -175,7 +175,7 @@
     else
     {
       *var1 = v10;
-      *(var1 + 1) = v12;
+      *(var1 + 1) = intValue2;
       *(var1 + 1) = v28;
       *(var1 + 2) = v29;
       *(var1 + 3) = v30;

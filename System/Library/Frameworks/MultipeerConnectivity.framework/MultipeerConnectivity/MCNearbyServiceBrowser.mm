@@ -2,33 +2,33 @@
 - (MCNearbyServiceBrowser)init;
 - (MCNearbyServiceBrowser)initWithPeer:(MCPeerID *)myPeerID serviceType:(NSString *)serviceType;
 - (NSString)description;
-- (id)rebuildUserDiscoveryInfoFromTXTRecordDictionary:(id)a3;
+- (id)rebuildUserDiscoveryInfoFromTXTRecordDictionary:(id)dictionary;
 - (int64_t)syncNextOutgoingInviteID;
-- (void)applicationDidEnterBackgroundNotification:(id)a3;
-- (void)applicationWillEnterForegroundNotification:(id)a3;
+- (void)applicationDidEnterBackgroundNotification:(id)notification;
+- (void)applicationWillEnterForegroundNotification:(id)notification;
 - (void)dealloc;
 - (void)invitePeer:(MCPeerID *)peerID toSession:(MCSession *)session withContext:(NSData *)context timeout:(NSTimeInterval)timeout;
-- (void)netService:(id)a3 didUpdateTXTRecordData:(id)a4;
-- (void)netServiceBrowser:(id)a3 didFindDomain:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowser:(id)a3 didNotSearch:(id)a4;
-- (void)netServiceBrowser:(id)a3 didRemoveDomain:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowserDidStopSearch:(id)a3;
-- (void)netServiceBrowserWillSearch:(id)a3;
-- (void)parseIDString:(id *)a3 displayName:(id *)a4 fromIdentifier:(id)a5;
+- (void)netService:(id)service didUpdateTXTRecordData:(id)data;
+- (void)netServiceBrowser:(id)browser didFindDomain:(id)domain moreComing:(BOOL)coming;
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceBrowser:(id)browser didNotSearch:(id)search;
+- (void)netServiceBrowser:(id)browser didRemoveDomain:(id)domain moreComing:(BOOL)coming;
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceBrowserDidStopSearch:(id)search;
+- (void)netServiceBrowserWillSearch:(id)search;
+- (void)parseIDString:(id *)string displayName:(id *)name fromIdentifier:(id)identifier;
 - (void)startBrowsingForPeers;
 - (void)stopBrowsingForPeers;
-- (void)syncAttachConnection:(id)a3 toPeer:(id)a4;
-- (void)syncCloseConnectionForPeer:(id)a3;
-- (void)syncHandleDeclinedInviteWithInfo:(id)a3;
-- (void)syncHandleInviteResponse:(id)a3 fromPeer:(id)a4;
-- (void)syncHandleInviteTimeout:(id)a3 forPeer:(id)a4;
-- (void)syncInitiateConnectionToPeer:(id)a3;
-- (void)syncInvitePeer:(id)a3 toSession:(id)a4 withContext:(id)a5 timeout:(double)a6;
-- (void)syncReceivedData:(id)a3 fromPeer:(id)a4;
-- (void)syncSendData:(id)a3 toPeer:(id)a4 withCompletionHandler:(id)a5;
-- (void)syncSendDictionary:(id)a3 toPeer:(id)a4 withCompletionHandler:(id)a5;
+- (void)syncAttachConnection:(id)connection toPeer:(id)peer;
+- (void)syncCloseConnectionForPeer:(id)peer;
+- (void)syncHandleDeclinedInviteWithInfo:(id)info;
+- (void)syncHandleInviteResponse:(id)response fromPeer:(id)peer;
+- (void)syncHandleInviteTimeout:(id)timeout forPeer:(id)peer;
+- (void)syncInitiateConnectionToPeer:(id)peer;
+- (void)syncInvitePeer:(id)peer toSession:(id)session withContext:(id)context timeout:(double)timeout;
+- (void)syncReceivedData:(id)data fromPeer:(id)peer;
+- (void)syncSendData:(id)data toPeer:(id)peer withCompletionHandler:(id)handler;
+- (void)syncSendDictionary:(id)dictionary toPeer:(id)peer withCompletionHandler:(id)handler;
 - (void)syncStartBrowsingForPeers;
 - (void)syncStopBrowsingForPeers;
 @end
@@ -75,10 +75,10 @@
     v6->_serviceType = [(NSString *)serviceType copy];
     v6->_formattedServiceType = [+[MCNearbyServiceUtils formattedServiceType:](MCNearbyServiceUtils formattedServiceType:{serviceType), "copy"}];
     v6->_syncQueue = dispatch_queue_create("com.apple.MCNearbyServiceBrowser.syncQueue", 0);
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v6 selector:sel_applicationDidEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
-    [v15 addObserver:v6 selector:sel_applicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
-    [v15 addObserver:v6 selector:sel_applicationWillTerminateNotification_ name:*MEMORY[0x277D76770] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_applicationDidEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
+    [defaultCenter addObserver:v6 selector:sel_applicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
+    [defaultCenter addObserver:v6 selector:sel_applicationWillTerminateNotification_ name:*MEMORY[0x277D76770] object:0];
   }
 
   return v6;
@@ -92,8 +92,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(NSMutableDictionary *)[(MCNearbyServiceBrowser *)self netServices] allValues];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  allValues = [(NSMutableDictionary *)[(MCNearbyServiceBrowser *)self netServices] allValues];
+  v4 = [allValues countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v4)
   {
     v6 = v4;
@@ -107,16 +107,16 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v17 + 1) + 8 * v8);
         v10 = mcbrowser_log();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v9 name];
+          name = [v9 name];
           *buf = v15;
-          v22 = v11;
+          v22 = name;
           _os_log_impl(&dword_239FB7000, v10, OS_LOG_TYPE_DEFAULT, "Removing netservice [%@] from net services dictionary.", buf, 0xCu);
         }
 
@@ -126,7 +126,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v6);
@@ -135,8 +135,8 @@
   [(NSNetServiceBrowser *)self->_networkBrowser setDelegate:0];
   [(NSNetServiceBrowser *)self->_networkBrowser stop];
   networkBrowser = self->_networkBrowser;
-  v13 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [(NSNetServiceBrowser *)networkBrowser removeFromRunLoop:v13 forMode:*MEMORY[0x277CBE738]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [(NSNetServiceBrowser *)networkBrowser removeFromRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 
   objc_storeWeak(&self->_delegate, 0);
   dispatch_release(self->_syncQueue);
@@ -151,11 +151,11 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MCNearbyServiceBrowser *)self myPeerID];
-  v7 = [(MCNearbyServiceBrowser *)self serviceType];
+  myPeerID = [(MCNearbyServiceBrowser *)self myPeerID];
+  serviceType = [(MCNearbyServiceBrowser *)self serviceType];
   [(MCNearbyServiceBrowser *)self delegate];
   v8 = objc_opt_class();
-  return [v3 stringWithFormat:@"<%@: %p MyPeerID = %@ ServiceType = %@ Delegate = <%@: %p>>", v5, self, v6, v7, NSStringFromClass(v8), -[MCNearbyServiceBrowser delegate](self, "delegate")];
+  return [v3 stringWithFormat:@"<%@: %p MyPeerID = %@ ServiceType = %@ Delegate = <%@: %p>>", v5, self, myPeerID, serviceType, NSStringFromClass(v8), -[MCNearbyServiceBrowser delegate](self, "delegate")];
 }
 
 - (int64_t)syncNextOutgoingInviteID
@@ -165,15 +165,15 @@
   return outgoingInviteID;
 }
 
-- (void)parseIDString:(id *)a3 displayName:(id *)a4 fromIdentifier:(id)a5
+- (void)parseIDString:(id *)string displayName:(id *)name fromIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = [MEMORY[0x277CCAC80] scannerWithString:a5];
-  if ([v8 scanUpToString:@"+" intoString:a3])
+  v8 = [MEMORY[0x277CCAC80] scannerWithString:identifier];
+  if ([v8 scanUpToString:@"+" intoString:string])
   {
     if ([v8 scanString:@"+" intoString:0])
     {
-      if ([v8 scanUpToString:@"+" intoString:a4])
+      if ([v8 scanUpToString:@"+" intoString:name])
       {
         goto LABEL_9;
       }
@@ -196,7 +196,7 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = a5;
+    identifierCopy = identifier;
     v14 = 1024;
     v15 = v9;
     _os_log_impl(&dword_239FB7000, v10, OS_LOG_TYPE_DEFAULT, "Identifier [%@] failed to parse @%d.", &v12, 0x12u);
@@ -215,8 +215,8 @@ LABEL_9:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v3 = [(NSMutableDictionary *)[(MCNearbyServiceBrowser *)self invites] allValues];
-    v4 = [v3 countByEnumeratingWithState:&v38 objects:v46 count:16];
+    allValues = [(NSMutableDictionary *)[(MCNearbyServiceBrowser *)self invites] allValues];
+    v4 = [allValues countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v4)
     {
       v5 = v4;
@@ -227,13 +227,13 @@ LABEL_9:
         {
           if (*v39 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           [(MCNearbyServiceBrowser *)self syncHandleDeclinedInviteWithInfo:*(*(&v38 + 1) + 8 * i)];
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        v5 = [allValues countByEnumeratingWithState:&v38 objects:v46 count:16];
       }
 
       while (v5);
@@ -244,8 +244,8 @@ LABEL_9:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v8 = [(NSMutableDictionary *)self->_peers allValues];
-    v9 = [v8 countByEnumeratingWithState:&v34 objects:v45 count:16];
+    allValues2 = [(NSMutableDictionary *)self->_peers allValues];
+    v9 = [allValues2 countByEnumeratingWithState:&v34 objects:v45 count:16];
     if (v9)
     {
       v10 = v9;
@@ -256,7 +256,7 @@ LABEL_9:
         {
           if (*v35 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allValues2);
           }
 
           v13 = *(*(&v34 + 1) + 8 * j);
@@ -266,7 +266,7 @@ LABEL_9:
           [v13 invalidate];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v34 objects:v45 count:16];
+        v10 = [allValues2 countByEnumeratingWithState:&v34 objects:v45 count:16];
       }
 
       while (v10);
@@ -277,8 +277,8 @@ LABEL_9:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v14 = [(NSMutableDictionary *)[(MCNearbyServiceBrowser *)self netServices] allValues];
-    v15 = [v14 countByEnumeratingWithState:&v30 objects:v44 count:16];
+    allValues3 = [(NSMutableDictionary *)[(MCNearbyServiceBrowser *)self netServices] allValues];
+    v15 = [allValues3 countByEnumeratingWithState:&v30 objects:v44 count:16];
     if (v15)
     {
       v17 = v15;
@@ -291,16 +291,16 @@ LABEL_9:
         {
           if (*v31 != v18)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allValues3);
           }
 
           v20 = *(*(&v30 + 1) + 8 * k);
           v21 = mcbrowser_log();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
-            v22 = [v20 name];
+            name = [v20 name];
             *buf = v29;
-            v43 = v22;
+            v43 = name;
             _os_log_impl(&dword_239FB7000, v21, OS_LOG_TYPE_DEFAULT, "Removing netservice [%@] from net services dictionary.", buf, 0xCu);
           }
 
@@ -308,7 +308,7 @@ LABEL_9:
           [v20 setDelegate:0];
         }
 
-        v17 = [v14 countByEnumeratingWithState:&v30 objects:v44 count:16];
+        v17 = [allValues3 countByEnumeratingWithState:&v30 objects:v44 count:16];
       }
 
       while (v17);
@@ -327,17 +327,17 @@ LABEL_9:
     }
 
     [(NSNetServiceBrowser *)[(MCNearbyServiceBrowser *)self networkBrowser] setDelegate:self];
-    v24 = [(MCNearbyServiceBrowser *)self networkBrowser];
-    v25 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [(NSNetServiceBrowser *)v24 scheduleInRunLoop:v25 forMode:*MEMORY[0x277CBE738]];
+    networkBrowser = [(MCNearbyServiceBrowser *)self networkBrowser];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [(NSNetServiceBrowser *)networkBrowser scheduleInRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
     [(NSNetServiceBrowser *)[(MCNearbyServiceBrowser *)self networkBrowser] searchForServicesOfType:[(MCNearbyServiceBrowser *)self formattedServiceType] inDomain:@"local."];
     [(MCNearbyServiceBrowser *)self setIsBrowsing:1];
     v26 = mcbrowser_log();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(MCNearbyServiceBrowser *)self formattedServiceType];
+      formattedServiceType = [(MCNearbyServiceBrowser *)self formattedServiceType];
       *buf = 138412290;
-      v43 = v27;
+      v43 = formattedServiceType;
       _os_log_impl(&dword_239FB7000, v26, OS_LOG_TYPE_DEFAULT, "Start discovering services of type [%@].", buf, 0xCu);
     }
   }
@@ -363,15 +363,15 @@ LABEL_9:
   {
     [(NSNetServiceBrowser *)[(MCNearbyServiceBrowser *)self networkBrowser] setDelegate:0];
     [(NSNetServiceBrowser *)[(MCNearbyServiceBrowser *)self networkBrowser] stop];
-    v3 = [(MCNearbyServiceBrowser *)self networkBrowser];
-    v4 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [(NSNetServiceBrowser *)v3 removeFromRunLoop:v4 forMode:*MEMORY[0x277CBE738]];
+    networkBrowser = [(MCNearbyServiceBrowser *)self networkBrowser];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [(NSNetServiceBrowser *)networkBrowser removeFromRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
     [(MCNearbyServiceBrowser *)self setIsBrowsing:0];
     v5 = mcbrowser_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = [(MCNearbyServiceBrowser *)self formattedServiceType];
+      formattedServiceType = [(MCNearbyServiceBrowser *)self formattedServiceType];
       _os_log_impl(&dword_239FB7000, v5, OS_LOG_TYPE_DEFAULT, "Stop discovering services of type [%@].", &v7, 0xCu);
     }
   }
@@ -390,7 +390,7 @@ LABEL_9:
   dispatch_async(syncQueue, block);
 }
 
-- (void)applicationDidEnterBackgroundNotification:(id)a3
+- (void)applicationDidEnterBackgroundNotification:(id)notification
 {
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -415,7 +415,7 @@ uint64_t __68__MCNearbyServiceBrowser_applicationDidEnterBackgroundNotification_
   return result;
 }
 
-- (void)applicationWillEnterForegroundNotification:(id)a3
+- (void)applicationWillEnterForegroundNotification:(id)notification
 {
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -440,7 +440,7 @@ uint64_t __69__MCNearbyServiceBrowser_applicationWillEnterForegroundNotification
   return result;
 }
 
-- (void)syncInitiateConnectionToPeer:(id)a3
+- (void)syncInitiateConnectionToPeer:(id)peer
 {
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@+%@", -[MCPeerID idString](-[MCNearbyServiceBrowser myPeerID](self, "myPeerID"), "idString"), -[MCPeerID displayName](-[MCNearbyServiceBrowser myPeerID](self, "myPeerID"), "displayName")];
   v6 = [[MCNearbyDiscoveryPeerConnection alloc] initWithLocalServiceName:v5];
@@ -448,13 +448,13 @@ uint64_t __69__MCNearbyServiceBrowser_applicationWillEnterForegroundNotification
   v7[1] = 3221225472;
   v7[2] = __55__MCNearbyServiceBrowser_syncInitiateConnectionToPeer___block_invoke;
   v7[3] = &unk_278B44738;
-  v7[4] = a3;
+  v7[4] = peer;
   v7[5] = self;
   v7[6] = v5;
   v7[7] = v6;
   [(MCNearbyDiscoveryPeerConnection *)v6 setConnectedHandler:v7];
-  -[MCNearbyDiscoveryPeerConnection connectToNetService:](v6, "connectToNetService:", [a3 netService]);
-  [a3 setTrialConnection:v6];
+  -[MCNearbyDiscoveryPeerConnection connectToNetService:](v6, "connectToNetService:", [peer netService]);
+  [peer setTrialConnection:v6];
 }
 
 void __55__MCNearbyServiceBrowser_syncInitiateConnectionToPeer___block_invoke(uint64_t a1, void *a2, int a3, void *a4, void *a5)
@@ -757,36 +757,36 @@ LABEL_7:
   return result;
 }
 
-- (void)syncAttachConnection:(id)a3 toPeer:(id)a4
+- (void)syncAttachConnection:(id)connection toPeer:(id)peer
 {
-  [a4 attachConnection:a3];
-  [a4 setState:2];
+  [peer attachConnection:connection];
+  [peer setState:2];
 
-  [a4 flushDataBuffer];
+  [peer flushDataBuffer];
 }
 
-- (void)syncCloseConnectionForPeer:(id)a3
+- (void)syncCloseConnectionForPeer:(id)peer
 {
   v8 = *MEMORY[0x277D85DE8];
-  [a3 closeConnection];
+  [peer closeConnection];
   v4 = mcbrowser_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = [objc_msgSend(a3 "peerID")];
+    v7 = [objc_msgSend(peer "peerID")];
     _os_log_impl(&dword_239FB7000, v4, OS_LOG_TYPE_DEFAULT, "Setting peer [%@] state to Not Connected.", &v6, 0xCu);
   }
 
-  [a3 setState:0];
+  [peer setState:0];
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncSendDictionary:(id)a3 toPeer:(id)a4 withCompletionHandler:(id)a5
+- (void)syncSendDictionary:(id)dictionary toPeer:(id)peer withCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0;
-  v8 = [a5 copy];
-  v9 = [MEMORY[0x277CCAC58] dataWithPropertyList:a3 format:200 options:0 error:&v13];
+  v8 = [handler copy];
+  v9 = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionary format:200 options:0 error:&v13];
   if (v9)
   {
     v10 = v9;
@@ -794,13 +794,13 @@ LABEL_7:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = a3;
+      dictionaryCopy = dictionary;
       v16 = 2112;
-      v17 = a4;
+      peerCopy = peer;
       _os_log_impl(&dword_239FB7000, v11, OS_LOG_TYPE_DEFAULT, "Sending dictionary %@ to peer %@.", buf, 0x16u);
     }
 
-    [(MCNearbyServiceBrowser *)self syncSendData:v10 toPeer:a4 withCompletionHandler:v8];
+    [(MCNearbyServiceBrowser *)self syncSendData:v10 toPeer:peer withCompletionHandler:v8];
   }
 
   else if (v8)
@@ -811,24 +811,24 @@ LABEL_7:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncInvitePeer:(id)a3 toSession:(id)a4 withContext:(id)a5 timeout:(double)a6
+- (void)syncInvitePeer:(id)peer toSession:(id)session withContext:(id)context timeout:(double)timeout
 {
   v30[5] = *MEMORY[0x277D85DE8];
   v11 = [MEMORY[0x277CCABB0] numberWithInteger:{-[MCNearbyServiceBrowser syncNextOutgoingInviteID](self, "syncNextOutgoingInviteID")}];
-  v12 = [objc_msgSend(a3 "peerID")];
-  v13 = [(MCPeerID *)[(MCNearbyServiceBrowser *)self myPeerID] serializedRepresentation];
-  if (a5)
+  v12 = [objc_msgSend(peer "peerID")];
+  serializedRepresentation = [(MCPeerID *)[(MCNearbyServiceBrowser *)self myPeerID] serializedRepresentation];
+  if (context)
   {
     v29[0] = @"MCNearbyServiceMessageIDKey";
     v30[0] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:1];
-    v30[1] = v13;
+    v30[1] = serializedRepresentation;
     v29[1] = @"MCNearbyServiceSenderPeerIDKey";
     v29[2] = @"MCNearbyServiceRecipientPeerIDKey";
     v30[2] = v12;
     v30[3] = v11;
     v29[3] = @"MCNearbyServiceInviteIDKey";
     v29[4] = @"MCNearbyServiceInviteContextKey";
-    v30[4] = a5;
+    v30[4] = context;
     v14 = MEMORY[0x277CBEAC0];
     v15 = v30;
     v16 = v29;
@@ -839,7 +839,7 @@ LABEL_7:
   {
     v27[0] = @"MCNearbyServiceMessageIDKey";
     v28[0] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:1];
-    v28[1] = v13;
+    v28[1] = serializedRepresentation;
     v27[1] = @"MCNearbyServiceSenderPeerIDKey";
     v27[2] = @"MCNearbyServiceRecipientPeerIDKey";
     v27[3] = @"MCNearbyServiceInviteIDKey";
@@ -854,18 +854,18 @@ LABEL_7:
   v18 = [v14 dictionaryWithObjects:v15 forKeys:v16 count:v17];
   v25[0] = @"MCNearbyServiceRecipientPeerIDKey";
   v25[1] = @"MCNearbyServiceSessionKey";
-  v26[0] = [a3 peerID];
-  v26[1] = a4;
+  v26[0] = [peer peerID];
+  v26[1] = session;
   -[NSMutableDictionary setObject:forKey:](self->_invites, "setObject:forKey:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2], v11);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __71__MCNearbyServiceBrowser_syncInvitePeer_toSession_withContext_timeout___block_invoke;
   v24[3] = &unk_278B44620;
   v24[4] = v18;
-  v24[5] = a3;
-  [(MCNearbyServiceBrowser *)self syncSendDictionary:v18 toPeer:a3 withCompletionHandler:v24];
-  v19 = a6 * 1000000000.0;
-  if (a6 <= 0.0)
+  v24[5] = peer;
+  [(MCNearbyServiceBrowser *)self syncSendDictionary:v18 toPeer:peer withCompletionHandler:v24];
+  v19 = timeout * 1000000000.0;
+  if (timeout <= 0.0)
   {
     v19 = 3.0e10;
   }
@@ -878,7 +878,7 @@ LABEL_7:
   v23[3] = &unk_278B43C88;
   v23[4] = self;
   v23[5] = v18;
-  v23[6] = a3;
+  v23[6] = peer;
   dispatch_after(v20, syncQueue, v23);
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -895,31 +895,31 @@ void __71__MCNearbyServiceBrowser_syncInvitePeer_toSession_withContext_timeout__
   }
 }
 
-- (void)syncHandleInviteResponse:(id)a3 fromPeer:(id)a4
+- (void)syncHandleInviteResponse:(id)response fromPeer:(id)peer
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = [objc_msgSend(a3 objectForKey:{@"MCNearbyServiceAcceptInviteKey", "BOOLValue"}];
+  v7 = [objc_msgSend(response objectForKey:{@"MCNearbyServiceAcceptInviteKey", "BOOLValue"}];
   v8 = mcbrowser_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v28 = a3;
+    responseCopy = response;
     v29 = 2112;
-    v30 = a4;
+    peerCopy = peer;
     _os_log_impl(&dword_239FB7000, v8, OS_LOG_TYPE_DEFAULT, "Got invite response [%@] from peer [%@].", buf, 0x16u);
   }
 
-  v9 = [a3 objectForKey:@"MCNearbyServiceRecipientPeerIDKey"];
+  v9 = [response objectForKey:@"MCNearbyServiceRecipientPeerIDKey"];
   v10 = [[MCPeerID alloc] initWithSerializedRepresentation:v9];
   if ([(MCPeerID *)[(MCNearbyServiceBrowser *)self myPeerID] isEqual:v10])
   {
-    v11 = [a3 objectForKey:@"MCNearbyServiceSenderPeerIDKey"];
+    v11 = [response objectForKey:@"MCNearbyServiceSenderPeerIDKey"];
     v12 = [[MCPeerID alloc] initWithSerializedRepresentation:v11];
-    if ([objc_msgSend(a4 "peerID")])
+    if ([objc_msgSend(peer "peerID")])
     {
       v25 = v7;
       p_invites = &self->_invites;
-      v24 = [a3 objectForKey:@"MCNearbyServiceInviteIDKey"];
+      v24 = [response objectForKey:@"MCNearbyServiceInviteIDKey"];
       v14 = [(NSMutableDictionary *)self->_invites objectForKey:?];
       v15 = [v14 objectForKey:@"MCNearbyServiceRecipientPeerIDKey"];
       v16 = [v14 objectForKey:@"MCNearbyServiceSessionKey"];
@@ -927,7 +927,7 @@ void __71__MCNearbyServiceBrowser_syncInvitePeer_toSession_withContext_timeout__
       {
         if (v16)
         {
-          v17 = [a4 peerID];
+          peerID = [peer peerID];
           if (v25)
           {
             v26[0] = MEMORY[0x277D85DD0];
@@ -939,17 +939,17 @@ void __71__MCNearbyServiceBrowser_syncInvitePeer_toSession_withContext_timeout__
             v18 = v24;
             v26[6] = v24;
             v26[7] = self;
-            v26[8] = a4;
-            v26[9] = a3;
+            v26[8] = peer;
+            v26[9] = response;
             v26[10] = v12;
             v26[11] = v16;
-            [v16 nearbyConnectionDataForPeer:v17 withCompletionHandler:v26];
+            [v16 nearbyConnectionDataForPeer:peerID withCompletionHandler:v26];
           }
 
           else
           {
-            [v16 peerDidDeclineInvitation:v17];
-            [(MCNearbyServiceBrowser *)self syncCloseConnectionForPeer:a4];
+            [v16 peerDidDeclineInvitation:peerID];
+            [(MCNearbyServiceBrowser *)self syncCloseConnectionForPeer:peer];
             v18 = v24;
           }
 
@@ -961,7 +961,7 @@ void __71__MCNearbyServiceBrowser_syncInvitePeer_toSession_withContext_timeout__
           v22 = mcbrowser_log();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            [(MCNearbyServiceBrowser *)a4 syncHandleInviteResponse:v22 fromPeer:?];
+            [(MCNearbyServiceBrowser *)peer syncHandleInviteResponse:v22 fromPeer:?];
           }
         }
       }
@@ -981,7 +981,7 @@ void __71__MCNearbyServiceBrowser_syncInvitePeer_toSession_withContext_timeout__
       v20 = mcbrowser_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        [MCNearbyServiceBrowser syncHandleInviteResponse:a4 fromPeer:v12];
+        [MCNearbyServiceBrowser syncHandleInviteResponse:peer fromPeer:v12];
       }
     }
   }
@@ -1073,13 +1073,13 @@ void __60__MCNearbyServiceBrowser_syncHandleInviteResponse_fromPeer___block_invo
   }
 }
 
-- (void)syncHandleDeclinedInviteWithInfo:(id)a3
+- (void)syncHandleDeclinedInviteWithInfo:(id)info
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (info)
   {
-    v5 = [a3 objectForKey:@"MCNearbyServiceSessionKey"];
-    v6 = [a3 objectForKey:@"MCNearbyServiceRecipientPeerIDKey"];
+    v5 = [info objectForKey:@"MCNearbyServiceSessionKey"];
+    v6 = [info objectForKey:@"MCNearbyServiceRecipientPeerIDKey"];
     v7 = mcbrowser_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -1093,8 +1093,8 @@ void __60__MCNearbyServiceBrowser_syncHandleInviteResponse_fromPeer___block_invo
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(NSMutableDictionary *)[(MCNearbyServiceBrowser *)self peers] allValues];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    allValues = [(NSMutableDictionary *)[(MCNearbyServiceBrowser *)self peers] allValues];
+    v9 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1105,7 +1105,7 @@ LABEL_6:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
@@ -1116,7 +1116,7 @@ LABEL_6:
 
         if (v10 == ++v12)
         {
-          v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v10 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
           if (v10)
           {
             goto LABEL_6;
@@ -1142,15 +1142,15 @@ LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncHandleInviteTimeout:(id)a3 forPeer:(id)a4
+- (void)syncHandleInviteTimeout:(id)timeout forPeer:(id)peer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = [a3 objectForKey:@"MCNearbyServiceInviteIDKey"];
+  v6 = [timeout objectForKey:@"MCNearbyServiceInviteIDKey"];
   v7 = mcbrowser_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = a4;
+    peerCopy = peer;
     _os_log_impl(&dword_239FB7000, v7, OS_LOG_TYPE_DEFAULT, "Invite timeout for peer [%@] fired.", &v10, 0xCu);
   }
 
@@ -1164,27 +1164,27 @@ LABEL_12:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncSendData:(id)a3 toPeer:(id)a4 withCompletionHandler:(id)a5
+- (void)syncSendData:(id)data toPeer:(id)peer withCompletionHandler:(id)handler
 {
-  if (![a4 state])
+  if (![peer state])
   {
-    [(MCNearbyServiceBrowser *)self syncInitiateConnectionToPeer:a4];
+    [(MCNearbyServiceBrowser *)self syncInitiateConnectionToPeer:peer];
   }
 
-  [a4 sendData:a3 withCompletionHandler:a5];
+  [peer sendData:data withCompletionHandler:handler];
 }
 
-- (void)syncReceivedData:(id)a3 fromPeer:(id)a4
+- (void)syncReceivedData:(id)data fromPeer:(id)peer
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
+  v6 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
   v7 = mcbrowser_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
     v13 = v6;
     v14 = 2112;
-    v15 = a4;
+    peerCopy = peer;
     _os_log_impl(&dword_239FB7000, v7, OS_LOG_TYPE_DEFAULT, "Received dictionary [%@] from peer [%@].", &v12, 0x16u);
   }
 
@@ -1193,7 +1193,7 @@ LABEL_12:
     v8 = [objc_msgSend(v6 objectForKey:{@"MCNearbyServiceMessageIDKey", "unsignedIntegerValue"}];
     if (v8 == 2)
     {
-      [(MCNearbyServiceBrowser *)self syncHandleInviteResponse:v6 fromPeer:a4];
+      [(MCNearbyServiceBrowser *)self syncHandleInviteResponse:v6 fromPeer:peer];
     }
 
     else
@@ -1302,37 +1302,37 @@ uint64_t __67__MCNearbyServiceBrowser_invitePeer_toSession_withContext_timeout__
   return [v2 browser:v3 lostPeer:v4];
 }
 
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming
 {
   v24 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (service)
   {
-    v5 = a5;
-    v8 = [objc_msgSend(a4 name];
+    comingCopy = coming;
+    name = [objc_msgSend(service name];
     v9 = mcbrowser_log();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (name)
     {
       if (v10)
       {
         v20 = 138412546;
-        v21 = v8;
+        v21 = name;
         v22 = 1024;
-        v23 = v5;
+        v23 = comingCopy;
         _os_log_impl(&dword_239FB7000, v9, OS_LOG_TYPE_DEFAULT, "NetService found [%@] moreComing [%d].", &v20, 0x12u);
       }
 
-      v11 = [(NSMutableDictionary *)[(MCNearbyServiceBrowser *)self netServices] objectForKey:v8];
+      v11 = [(NSMutableDictionary *)[(MCNearbyServiceBrowser *)self netServices] objectForKey:name];
       if (v11)
       {
         v12 = v11;
-        if ([a4 isEqual:v11])
+        if ([service isEqual:v11])
         {
 LABEL_18:
-          [a4 setDelegate:self];
-          v18 = [MEMORY[0x277CBEB88] mainRunLoop];
-          [a4 scheduleInRunLoop:v18 forMode:*MEMORY[0x277CBE738]];
-          [a4 startMonitoring];
+          [service setDelegate:self];
+          mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+          [service scheduleInRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
+          [service startMonitoring];
           goto LABEL_19;
         }
 
@@ -1340,7 +1340,7 @@ LABEL_18:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           v20 = 138412290;
-          v21 = v8;
+          v21 = name;
           _os_log_impl(&dword_239FB7000, v13, OS_LOG_TYPE_DEFAULT, "NetService replacing [%@] in net services dictionary.", &v20, 0xCu);
         }
 
@@ -1353,12 +1353,12 @@ LABEL_18:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           v20 = 138412290;
-          v21 = v8;
+          v21 = name;
           _os_log_impl(&dword_239FB7000, v17, OS_LOG_TYPE_DEFAULT, "NetService adding [%@] to net services dictionary.", &v20, 0xCu);
         }
       }
 
-      [(NSMutableDictionary *)[(MCNearbyServiceBrowser *)self netServices] setObject:a4 forKey:v8];
+      [(NSMutableDictionary *)[(MCNearbyServiceBrowser *)self netServices] setObject:service forKey:name];
       goto LABEL_18;
     }
 
@@ -1388,24 +1388,24 @@ LABEL_19:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netServiceBrowser:(id)a3 didFindDomain:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didFindDomain:(id)domain moreComing:(BOOL)coming
 {
-  v5 = a5;
+  comingCopy = coming;
   v13 = *MEMORY[0x277D85DE8];
   v7 = mcbrowser_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = a4;
+    domainCopy = domain;
     v11 = 1024;
-    v12 = v5;
+    v12 = comingCopy;
     _os_log_impl(&dword_239FB7000, v7, OS_LOG_TYPE_DEFAULT, "Did find domain [%@] moreComing [%d].", &v9, 0x12u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netServiceBrowser:(id)a3 didNotSearch:(id)a4
+- (void)netServiceBrowser:(id)browser didNotSearch:(id)search
 {
   v5 = mcbrowser_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1451,35 +1451,35 @@ uint64_t __57__MCNearbyServiceBrowser_netServiceBrowser_didNotSearch___block_inv
   return result;
 }
 
-- (void)netServiceBrowser:(id)a3 didRemoveDomain:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didRemoveDomain:(id)domain moreComing:(BOOL)coming
 {
-  v5 = a5;
+  comingCopy = coming;
   v13 = *MEMORY[0x277D85DE8];
   v7 = mcbrowser_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = a4;
+    domainCopy = domain;
     v11 = 1024;
-    v12 = v5;
+    v12 = comingCopy;
     _os_log_impl(&dword_239FB7000, v7, OS_LOG_TYPE_DEFAULT, "Did remove domain [%@] moreComing [%d].", &v9, 0x12u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming
 {
-  v5 = a5;
+  comingCopy = coming;
   v16 = *MEMORY[0x277D85DE8];
-  v7 = [a4 name];
+  name = [service name];
   v8 = mcbrowser_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v13 = v7;
+    v13 = name;
     v14 = 1024;
-    v15 = v5;
+    v15 = comingCopy;
     _os_log_impl(&dword_239FB7000, v8, OS_LOG_TYPE_DEFAULT, "Peer lost: idString [%@] moreComing [%d].", buf, 0x12u);
   }
 
@@ -1489,7 +1489,7 @@ uint64_t __57__MCNearbyServiceBrowser_netServiceBrowser_didNotSearch___block_inv
   v11[2] = __72__MCNearbyServiceBrowser_netServiceBrowser_didRemoveService_moreComing___block_invoke;
   v11[3] = &unk_278B43C60;
   v11[4] = self;
-  v11[5] = v7;
+  v11[5] = name;
   dispatch_async(syncQueue, v11);
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -1575,7 +1575,7 @@ uint64_t __72__MCNearbyServiceBrowser_netServiceBrowser_didRemoveService_moreCom
   return [v2 browser:v3 lostPeer:v4];
 }
 
-- (void)netServiceBrowserDidStopSearch:(id)a3
+- (void)netServiceBrowserDidStopSearch:(id)search
 {
   v3 = mcbrowser_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1585,7 +1585,7 @@ uint64_t __72__MCNearbyServiceBrowser_netServiceBrowser_didRemoveService_moreCom
   }
 }
 
-- (void)netServiceBrowserWillSearch:(id)a3
+- (void)netServiceBrowserWillSearch:(id)search
 {
   v3 = mcbrowser_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1595,11 +1595,11 @@ uint64_t __72__MCNearbyServiceBrowser_netServiceBrowser_didRemoveService_moreCom
   }
 }
 
-- (id)rebuildUserDiscoveryInfoFromTXTRecordDictionary:(id)a3
+- (id)rebuildUserDiscoveryInfoFromTXTRecordDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v23 = *MEMORY[0x277D85DE8];
-  v4 = [objc_msgSend(a3 "allValues")];
+  v4 = [objc_msgSend(dictionary "allValues")];
   if (v4 < 2)
   {
     v5 = 0;
@@ -1612,8 +1612,8 @@ uint64_t __72__MCNearbyServiceBrowser_netServiceBrowser_didRemoveService_moreCom
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [v3 allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    allKeys = [dictionaryCopy allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1625,14 +1625,14 @@ uint64_t __72__MCNearbyServiceBrowser_netServiceBrowser_didRemoveService_moreCom
         {
           if (*v19 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
           if (([v11 isEqualToString:@"_d"] & 1) == 0)
           {
-            v12 = v3;
-            v13 = [v3 objectForKey:v11];
+            v12 = dictionaryCopy;
+            v13 = [dictionaryCopy objectForKey:v11];
             v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v13 encoding:4];
             if ([v11 hasPrefix:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@%@", @"_", @"_"}])
             {
@@ -1640,11 +1640,11 @@ uint64_t __72__MCNearbyServiceBrowser_netServiceBrowser_didRemoveService_moreCom
             }
 
             [v17 setObject:v14 forKey:v11];
-            v3 = v12;
+            dictionaryCopy = v12;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v8);
@@ -1657,13 +1657,13 @@ uint64_t __72__MCNearbyServiceBrowser_netServiceBrowser_didRemoveService_moreCom
   return result;
 }
 
-- (void)netService:(id)a3 didUpdateTXTRecordData:(id)a4
+- (void)netService:(id)service didUpdateTXTRecordData:(id)data
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = [a3 name];
-  v8 = [MEMORY[0x277CBAB60] dictionaryFromTXTRecordData:a4];
+  name = [service name];
+  v8 = [MEMORY[0x277CBAB60] dictionaryFromTXTRecordData:data];
   v9 = [v8 objectForKey:@"_d"];
-  if (!v9 || ((v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v9 encoding:4], v11 = -[MCNearbyServiceBrowser rebuildUserDiscoveryInfoFromTXTRecordDictionary:](self, "rebuildUserDiscoveryInfoFromTXTRecordDictionary:", v8), v10) ? (v12 = v7 == 0) : (v12 = 1), v12))
+  if (!v9 || ((v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v9 encoding:4], v11 = -[MCNearbyServiceBrowser rebuildUserDiscoveryInfoFromTXTRecordDictionary:](self, "rebuildUserDiscoveryInfoFromTXTRecordDictionary:", v8), v10) ? (v12 = name == 0) : (v12 = 1), v12))
   {
     v13 = mcbrowser_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1675,14 +1675,14 @@ uint64_t __72__MCNearbyServiceBrowser_netServiceBrowser_didRemoveService_moreCom
   else
   {
     v15 = v11;
-    v16 = [[MCPeerID alloc] initWithIDString:v7 displayName:v10];
+    v16 = [[MCPeerID alloc] initWithIDString:name displayName:v10];
     v17 = mcbrowser_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v27 = v7;
+      v27 = name;
       v28 = 2112;
-      v29 = [(MCPeerID *)v16 displayNameAndPID];
+      displayNameAndPID = [(MCPeerID *)v16 displayNameAndPID];
       v30 = 2112;
       v31 = v15;
       _os_log_impl(&dword_239FB7000, v17, OS_LOG_TYPE_DEFAULT, "Peer found: idString [%@], displayNameAndPID [%@], discoveryInfo [%@].", buf, 0x20u);
@@ -1707,16 +1707,16 @@ uint64_t __72__MCNearbyServiceBrowser_netServiceBrowser_didRemoveService_moreCom
       v25[3] = &unk_278B43DC8;
       v25[4] = self;
       v25[5] = v16;
-      v25[6] = a3;
+      v25[6] = service;
       v25[7] = v15;
       dispatch_async(syncQueue, v25);
-      v21 = -[NSMutableDictionary objectForKey:](-[MCNearbyServiceBrowser netServices](self, "netServices"), "objectForKey:", [a3 name]);
+      v21 = -[NSMutableDictionary objectForKey:](-[MCNearbyServiceBrowser netServices](self, "netServices"), "objectForKey:", [service name]);
       if (v21)
       {
         v22 = v21;
         [v21 stopMonitoring];
         [v22 setDelegate:0];
-        -[NSMutableDictionary removeObjectForKey:](-[MCNearbyServiceBrowser netServices](self, "netServices"), "removeObjectForKey:", [a3 name]);
+        -[NSMutableDictionary removeObjectForKey:](-[MCNearbyServiceBrowser netServices](self, "netServices"), "removeObjectForKey:", [service name]);
       }
 
       else
@@ -1724,13 +1724,13 @@ uint64_t __72__MCNearbyServiceBrowser_netServiceBrowser_didRemoveService_moreCom
         v23 = mcbrowser_log();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [a3 name];
+          name2 = [service name];
           *buf = 138412290;
-          v27 = v24;
+          v27 = name2;
           _os_log_impl(&dword_239FB7000, v23, OS_LOG_TYPE_DEFAULT, "NetService not found [%@] in net services dictionary.", buf, 0xCu);
         }
 
-        [a3 stopMonitoring];
+        [service stopMonitoring];
       }
     }
   }

@@ -1,60 +1,60 @@
 @interface CBController
-+ (BOOL)writePrefKey:(id)a3 value:(id)a4 error:(id *)a5;
-+ (id)controllerInfoWithEndpoint:(id)a3 error:(id *)a4;
-+ (id)performDeviceRequest:(id)a3 device:(id)a4 xpcEndpoint:(id)a5 error:(id *)a6;
-+ (id)readPrefKeys:(id)a3 error:(id *)a4;
++ (BOOL)writePrefKey:(id)key value:(id)value error:(id *)error;
++ (id)controllerInfoWithEndpoint:(id)endpoint error:(id *)error;
++ (id)performDeviceRequest:(id)request device:(id)device xpcEndpoint:(id)endpoint error:(id *)error;
++ (id)readPrefKeys:(id)keys error:(id *)error;
 + (unsigned)featureFlags;
-+ (void)setOfflineAdvertisingParams:(id)a3;
-- (BOOL)setLowPowerModeWithReason:(int)a3 error:(id *)a4;
++ (void)setOfflineAdvertisingParams:(id)params;
+- (BOOL)setLowPowerModeWithReason:(int)reason error:(id *)error;
 - (CBController)init;
-- (CBController)initWithXPCObject:(id)a3 error:(id *)a4;
+- (CBController)initWithXPCObject:(id)object error:(id *)error;
 - (id)_ensureXPCStarted;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_activate;
-- (void)_activateAssertionWithFlagsDirect:(unsigned int)a3 completion:(id)a4;
-- (void)_activateAssertionWithFlagsXPC:(unsigned int)a3 completion:(id)a4;
+- (void)_activateAssertionWithFlagsDirect:(unsigned int)direct completion:(id)completion;
+- (void)_activateAssertionWithFlagsXPC:(unsigned int)c completion:(id)completion;
 - (void)_activateDirectStart;
-- (void)_activateXPCCompleted:(id)a3;
-- (void)_activateXPCStart:(BOOL)a3;
+- (void)_activateXPCCompleted:(id)completed;
+- (void)_activateXPCStart:(BOOL)start;
 - (void)_interrupted;
 - (void)_invalidated;
 - (void)_update;
-- (void)_updateIfNeededWithBlock:(id)a3;
-- (void)_xpcReceivedDiscoverableStateChanged:(id)a3;
-- (void)_xpcReceivedInquiryStateChanged:(id)a3;
-- (void)_xpcReceivedMessage:(id)a3;
-- (void)_xpcReceivedPowerStateChanged:(id)a3;
-- (void)_xpcReceivedRelayMessage:(id)a3;
-- (void)_xpcReceivedTipiChanged:(id)a3;
-- (void)activateAssertionWithFlags:(unsigned int)a3 completion:(id)a4;
-- (void)activateWithCompletion:(id)a3;
+- (void)_updateIfNeededWithBlock:(id)block;
+- (void)_xpcReceivedDiscoverableStateChanged:(id)changed;
+- (void)_xpcReceivedInquiryStateChanged:(id)changed;
+- (void)_xpcReceivedMessage:(id)message;
+- (void)_xpcReceivedPowerStateChanged:(id)changed;
+- (void)_xpcReceivedRelayMessage:(id)message;
+- (void)_xpcReceivedTipiChanged:(id)changed;
+- (void)activateAssertionWithFlags:(unsigned int)flags completion:(id)completion;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)deleteDevice:(id)a3 completion:(id)a4;
-- (void)diagnosticControl:(id)a3 completion:(id)a4;
-- (void)diagnosticLog:(id)a3 completion:(id)a4;
-- (void)diagnosticShow:(id)a3 completion:(id)a4;
-- (void)encodeWithXPCObject:(id)a3;
-- (void)getControllerInfoWithCompletion:(id)a3;
-- (void)getControllerSettingsWithCompletionHandler:(id)a3;
-- (void)getDevicesWithFlags:(unsigned int)a3 completionHandler:(id)a4;
-- (void)getPowerStateWithCompletion:(id)a3;
+- (void)deleteDevice:(id)device completion:(id)completion;
+- (void)diagnosticControl:(id)control completion:(id)completion;
+- (void)diagnosticLog:(id)log completion:(id)completion;
+- (void)diagnosticShow:(id)show completion:(id)completion;
+- (void)encodeWithXPCObject:(id)object;
+- (void)getControllerInfoWithCompletion:(id)completion;
+- (void)getControllerSettingsWithCompletionHandler:(id)handler;
+- (void)getDevicesWithFlags:(unsigned int)flags completionHandler:(id)handler;
+- (void)getPowerStateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)modifyControllerSettings:(id)a3 completionHandler:(id)a4;
-- (void)modifyDevice:(id)a3 completion:(id)a4;
-- (void)modifyDevice:(id)a3 connectionPriorityDevices:(id)a4 timeoutSeconds:(double)a5 completionHandler:(id)a6;
-- (void)modifyDevice:(id)a3 peerSourceDevice:(id)a4 peerSourceState:(char)a5 requestFlags:(unsigned int)a6 completionHandler:(id)a7;
-- (void)modifyDevice:(id)a3 settings:(id)a4 completion:(id)a5;
-- (void)performDeviceRequest:(id)a3 device:(id)a4 completion:(id)a5;
-- (void)resetCBExtensionID:(id)a3 completionHandler:(id)a4;
-- (void)sendConversationDetectMessage:(id)a3 device:(id)a4 completionHandler:(id)a5;
-- (void)sendRelayMessageType:(unsigned __int8)a3 messageData:(id)a4 conduitDevice:(id)a5 destinationDevice:(id)a6 completionHandler:(id)a7;
-- (void)sendSmartRoutingInformation:(id)a3 device:(id)a4 completionHandler:(id)a5;
-- (void)setLabel:(id)a3;
-- (void)setLowPowerModeWithParams:(int)a3 params:(id)a4 completion:(id)a5;
-- (void)setLowPowerModeWithReason:(int)a3 completion:(id)a4;
-- (void)setPowerState:(int64_t)a3 completion:(id)a4;
-- (void)updateIdentities:(id)a3 completion:(id)a4;
-- (void)xpcReceivedMessage:(id)a3;
+- (void)modifyControllerSettings:(id)settings completionHandler:(id)handler;
+- (void)modifyDevice:(id)device completion:(id)completion;
+- (void)modifyDevice:(id)device connectionPriorityDevices:(id)devices timeoutSeconds:(double)seconds completionHandler:(id)handler;
+- (void)modifyDevice:(id)device peerSourceDevice:(id)sourceDevice peerSourceState:(char)state requestFlags:(unsigned int)flags completionHandler:(id)handler;
+- (void)modifyDevice:(id)device settings:(id)settings completion:(id)completion;
+- (void)performDeviceRequest:(id)request device:(id)device completion:(id)completion;
+- (void)resetCBExtensionID:(id)d completionHandler:(id)handler;
+- (void)sendConversationDetectMessage:(id)message device:(id)device completionHandler:(id)handler;
+- (void)sendRelayMessageType:(unsigned __int8)type messageData:(id)data conduitDevice:(id)device destinationDevice:(id)destinationDevice completionHandler:(id)handler;
+- (void)sendSmartRoutingInformation:(id)information device:(id)device completionHandler:(id)handler;
+- (void)setLabel:(id)label;
+- (void)setLowPowerModeWithParams:(int)params params:(id)a4 completion:(id)completion;
+- (void)setLowPowerModeWithReason:(int)reason completion:(id)completion;
+- (void)setPowerState:(int64_t)state completion:(id)completion;
+- (void)updateIdentities:(id)identities completion:(id)completion;
+- (void)xpcReceivedMessage:(id)message;
 @end
 
 @implementation CBController
@@ -78,37 +78,37 @@
 
 - (id)_ensureXPCStarted
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_xpcCnx;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_xpcCnx;
   if (!v3)
   {
-    v4 = v2->_testListenerEndpoint;
+    v4 = selfCopy->_testListenerEndpoint;
     v5 = v4;
     if (v4)
     {
       mach_service = xpc_connection_create_from_endpoint(v4);
-      xpc_connection_set_target_queue(mach_service, v2->_dispatchQueue);
+      xpc_connection_set_target_queue(mach_service, selfCopy->_dispatchQueue);
     }
 
     else
     {
-      mach_service = xpc_connection_create_mach_service("com.apple.bluetooth.xpc", v2->_dispatchQueue, 0);
+      mach_service = xpc_connection_create_mach_service("com.apple.bluetooth.xpc", selfCopy->_dispatchQueue, 0);
     }
 
-    objc_storeStrong(&v2->_xpcCnx, mach_service);
+    objc_storeStrong(&selfCopy->_xpcCnx, mach_service);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __33__CBController__ensureXPCStarted__block_invoke;
     v8[3] = &unk_1E811D620;
-    v8[4] = v2;
+    v8[4] = selfCopy;
     v3 = mach_service;
     v9 = v3;
     xpc_connection_set_event_handler(v3, v8);
     xpc_connection_activate(v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -247,37 +247,37 @@ LABEL_6:
 {
   if (self->_invalidateCalled && !self->_invalidateDone && !self->_direct)
   {
-    v3 = self;
-    objc_sync_enter(v3);
-    xpcCnx = v3->_xpcCnx;
-    objc_sync_exit(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    xpcCnx = selfCopy->_xpcCnx;
+    objc_sync_exit(selfCopy);
 
     if (!xpcCnx)
     {
-      bluetoothStateChangedHandler = v3->_bluetoothStateChangedHandler;
-      v3->_bluetoothStateChangedHandler = 0;
+      bluetoothStateChangedHandler = selfCopy->_bluetoothStateChangedHandler;
+      selfCopy->_bluetoothStateChangedHandler = 0;
 
-      discoverableStateChangedHandler = v3->_discoverableStateChangedHandler;
-      v3->_discoverableStateChangedHandler = 0;
+      discoverableStateChangedHandler = selfCopy->_discoverableStateChangedHandler;
+      selfCopy->_discoverableStateChangedHandler = 0;
 
-      errorHandler = v3->_errorHandler;
-      v3->_errorHandler = 0;
+      errorHandler = selfCopy->_errorHandler;
+      selfCopy->_errorHandler = 0;
 
-      inquiryStateChangedHandler = v3->_inquiryStateChangedHandler;
-      v3->_inquiryStateChangedHandler = 0;
+      inquiryStateChangedHandler = selfCopy->_inquiryStateChangedHandler;
+      selfCopy->_inquiryStateChangedHandler = 0;
 
-      interruptionHandler = v3->_interruptionHandler;
-      v3->_interruptionHandler = 0;
+      interruptionHandler = selfCopy->_interruptionHandler;
+      selfCopy->_interruptionHandler = 0;
 
-      v16 = MEMORY[0x1C68DF720](v3->_invalidationHandler);
-      invalidationHandler = v3->_invalidationHandler;
-      v3->_invalidationHandler = 0;
+      v16 = MEMORY[0x1C68DF720](selfCopy->_invalidationHandler);
+      invalidationHandler = selfCopy->_invalidationHandler;
+      selfCopy->_invalidationHandler = 0;
 
-      relayMessageHandler = v3->_relayMessageHandler;
-      v3->_relayMessageHandler = 0;
+      relayMessageHandler = selfCopy->_relayMessageHandler;
+      selfCopy->_relayMessageHandler = 0;
 
-      tipiChangedHandler = v3->_tipiChangedHandler;
-      v3->_tipiChangedHandler = 0;
+      tipiChangedHandler = selfCopy->_tipiChangedHandler;
+      selfCopy->_tipiChangedHandler = 0;
 
       v13 = v16;
       if (v16)
@@ -287,7 +287,7 @@ LABEL_6:
       }
 
       self->_invalidateDone = 1;
-      p_var0 = &v3->_ucat->var0;
+      p_var0 = &selfCopy->_ucat->var0;
       if (*p_var0 <= 30)
       {
         if (*p_var0 != -1)
@@ -299,7 +299,7 @@ LABEL_6:
         v13 = v16;
         if (p_var0)
         {
-          ucat = v3->_ucat;
+          ucat = selfCopy->_ucat;
 LABEL_10:
           p_var0 = LogPrintF_safe();
           v13 = v16;
@@ -321,11 +321,11 @@ void __33__CBController__invalidateDirect__block_invoke(uint64_t a1)
   ucat = self->_ucat;
   if (ucat && (ucat->var3 & 0x40000) != 0)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = self->_ucat;
     LogCategory_Remove();
-    self = v3;
-    v3->_ucat = 0;
+    self = selfCopy;
+    selfCopy->_ucat = 0;
   }
 
   v5.receiver = self;
@@ -354,14 +354,14 @@ void __33__CBController__invalidateDirect__block_invoke(uint64_t a1)
   return _MergedGlobals;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   assertionFlags = self->_assertionFlags;
-  xdict = v4;
+  xdict = objectCopy;
   if (assertionFlags)
   {
-    xpc_dictionary_set_uint64(v4, "asrF", assertionFlags);
+    xpc_dictionary_set_uint64(objectCopy, "asrF", assertionFlags);
   }
 
   clientID = self->_clientID;
@@ -380,7 +380,7 @@ void __33__CBController__invalidateDirect__block_invoke(uint64_t a1)
   CUXPCEncodeObject();
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   NSAppendPrintF_safe();
   v4 = 0;
@@ -422,37 +422,37 @@ void __33__CBController__invalidateDirect__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_activateCalled)
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_activateCalled)
   {
-    v5->_activateCalled = 1;
-    v6 = MEMORY[0x1C68DF720](v4);
-    activateCompletion = v5->_activateCompletion;
-    v5->_activateCompletion = v6;
+    selfCopy->_activateCalled = 1;
+    v6 = MEMORY[0x1C68DF720](completionCopy);
+    activateCompletion = selfCopy->_activateCompletion;
+    selfCopy->_activateCompletion = v6;
 
-    dispatchQueue = v5->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __39__CBController_activateWithCompletion___block_invoke;
     block[3] = &unk_1E811D130;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_activateDirectStart
@@ -581,10 +581,10 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_activateXPCStart:(BOOL)a3
+- (void)_activateXPCStart:(BOOL)start
 {
   var0 = self->_ucat->var0;
-  if (a3)
+  if (start)
   {
     if (var0 <= 30)
     {
@@ -624,19 +624,19 @@ LABEL_12:
   v6 = xpc_dictionary_create(0, 0, 0);
   [(CBController *)self encodeWithXPCObject:v6];
   xpc_dictionary_set_string(v6, "mTyp", "CtrA");
-  v7 = [(CBController *)self _ensureXPCStarted];
+  _ensureXPCStarted = [(CBController *)self _ensureXPCStarted];
   dispatchQueue = self->_dispatchQueue;
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __34__CBController__activateXPCStart___block_invoke;
   handler[3] = &unk_1E811D158;
   handler[4] = self;
-  xpc_connection_send_message_with_reply(v7, v6, dispatchQueue, handler);
+  xpc_connection_send_message_with_reply(_ensureXPCStarted, v6, dispatchQueue, handler);
 }
 
-- (void)_activateXPCCompleted:(id)a3
+- (void)_activateXPCCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   v5 = CUXPCDecodeNSErrorIfNeeded();
   if (v5)
   {
@@ -839,37 +839,37 @@ LABEL_6:
   }
 }
 
-- (void)_updateIfNeededWithBlock:(id)a3
+- (void)_updateIfNeededWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ((v4[2](v4) & 1) != 0 && v5->_activateCalled && !v5->_changesPending)
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((blockCopy[2](blockCopy) & 1) != 0 && selfCopy->_activateCalled && !selfCopy->_changesPending)
   {
-    v5->_changesPending = 1;
-    dispatchQueue = v5->_dispatchQueue;
+    selfCopy->_changesPending = 1;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __41__CBController__updateIfNeededWithBlock___block_invoke;
     block[3] = &unk_1E811D130;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_update
 {
   if (!self->_invalidateCalled)
   {
-    v2 = self;
-    objc_sync_enter(v2);
-    changesPending = v2->_changesPending;
-    v2->_changesPending = 0;
-    objc_sync_exit(v2);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    changesPending = selfCopy->_changesPending;
+    selfCopy->_changesPending = 0;
+    objc_sync_exit(selfCopy);
 
-    var0 = v2->_ucat->var0;
+    var0 = selfCopy->_ucat->var0;
     if (changesPending)
     {
       if (var0 > 30)
@@ -884,7 +884,7 @@ LABEL_6:
           return;
         }
 
-        ucat = v2->_ucat;
+        ucat = selfCopy->_ucat;
       }
     }
 
@@ -902,7 +902,7 @@ LABEL_6:
           return;
         }
 
-        v6 = v2->_ucat;
+        v6 = selfCopy->_ucat;
       }
     }
 
@@ -910,11 +910,11 @@ LABEL_6:
   }
 }
 
-- (void)xpcReceivedMessage:(id)a3
+- (void)xpcReceivedMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   var0 = self->_ucat->var0;
-  v28 = v4;
+  v28 = messageCopy;
   if (var0 <= 9)
   {
     if (var0 != -1)
@@ -923,12 +923,12 @@ LABEL_3:
       v26 = CUPrintXPC();
       LogPrintF_safe();
 
-      v4 = v28;
+      messageCopy = v28;
       goto LABEL_5;
     }
 
     v6 = _LogCategory_Initialize();
-    v4 = v28;
+    messageCopy = v28;
     if (v6)
     {
       ucat = self->_ucat;
@@ -937,7 +937,7 @@ LABEL_3:
   }
 
 LABEL_5:
-  if (MEMORY[0x1C68DFDD0](v4) == MEMORY[0x1E69E9E80])
+  if (MEMORY[0x1C68DFDD0](messageCopy) == MEMORY[0x1E69E9E80])
   {
     [(CBController *)self _xpcReceivedMessage:v28];
     goto LABEL_26;
@@ -974,13 +974,13 @@ LABEL_5:
 
     LogPrintF_safe();
 LABEL_25:
-    v21 = self;
-    objc_sync_enter(v21);
-    xpcCnx = v21->_xpcCnx;
-    v21->_xpcCnx = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    xpcCnx = selfCopy->_xpcCnx;
+    selfCopy->_xpcCnx = 0;
 
-    objc_sync_exit(v21);
-    [(CBController *)v21 _invalidated];
+    objc_sync_exit(selfCopy);
+    [(CBController *)selfCopy _invalidated];
     goto LABEL_26;
   }
 
@@ -1033,10 +1033,10 @@ LABEL_21:
 LABEL_26:
 }
 
-- (void)_xpcReceivedMessage:(id)a3
+- (void)_xpcReceivedMessage:(id)message
 {
-  v11 = a3;
-  string = xpc_dictionary_get_string(v11, "mTyp");
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, "mTyp");
   if (!string)
   {
     var0 = self->_ucat->var0;
@@ -1058,7 +1058,7 @@ LABEL_12:
     }
 
 LABEL_13:
-    v8 = v11;
+    v8 = messageCopy;
 
     goto LABEL_15;
   }
@@ -1066,26 +1066,26 @@ LABEL_13:
   v5 = string;
   if (!strcmp(string, "DscC"))
   {
-    [(CBController *)self _xpcReceivedDiscoverableStateChanged:v11];
-    v8 = v11;
+    [(CBController *)self _xpcReceivedDiscoverableStateChanged:messageCopy];
+    v8 = messageCopy;
   }
 
   else if (!strcmp(v5, "InqC"))
   {
-    [(CBController *)self _xpcReceivedInquiryStateChanged:v11];
-    v8 = v11;
+    [(CBController *)self _xpcReceivedInquiryStateChanged:messageCopy];
+    v8 = messageCopy;
   }
 
   else if (!strcmp(v5, "PwrC"))
   {
-    [(CBController *)self _xpcReceivedPowerStateChanged:v11];
-    v8 = v11;
+    [(CBController *)self _xpcReceivedPowerStateChanged:messageCopy];
+    v8 = messageCopy;
   }
 
   else if (!strcmp(v5, "RlMR"))
   {
-    [(CBController *)self _xpcReceivedRelayMessage:v11];
-    v8 = v11;
+    [(CBController *)self _xpcReceivedRelayMessage:messageCopy];
+    v8 = messageCopy;
   }
 
   else
@@ -1112,16 +1112,16 @@ LABEL_13:
       goto LABEL_13;
     }
 
-    [(CBController *)self _xpcReceivedTipiChanged:v11];
-    v8 = v11;
+    [(CBController *)self _xpcReceivedTipiChanged:messageCopy];
+    v8 = messageCopy;
   }
 
 LABEL_15:
 }
 
-- (void)_xpcReceivedDiscoverableStateChanged:(id)a3
+- (void)_xpcReceivedDiscoverableStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (MEMORY[0x1C68DFDD0]() == MEMORY[0x1E69E9E80])
   {
     if (CUXPCDecodeSInt64RangedEx() == 6)
@@ -1143,9 +1143,9 @@ LABEL_15:
   }
 }
 
-- (void)_xpcReceivedInquiryStateChanged:(id)a3
+- (void)_xpcReceivedInquiryStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (MEMORY[0x1C68DFDD0]() == MEMORY[0x1E69E9E80])
   {
     if (CUXPCDecodeSInt64RangedEx() == 6)
@@ -1167,9 +1167,9 @@ LABEL_15:
   }
 }
 
-- (void)_xpcReceivedPowerStateChanged:(id)a3
+- (void)_xpcReceivedPowerStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (MEMORY[0x1C68DFDD0]() == MEMORY[0x1E69E9E80])
   {
     if (CUXPCDecodeSInt64RangedEx() == 6)
@@ -1191,9 +1191,9 @@ LABEL_15:
   }
 }
 
-- (void)_xpcReceivedRelayMessage:(id)a3
+- (void)_xpcReceivedRelayMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = MEMORY[0x1C68DF720](self->_relayMessageHandler);
   if (v5)
   {
@@ -1210,7 +1210,7 @@ LABEL_15:
     v11[4] = self;
     v11[5] = &v12;
     v6 = MEMORY[0x1C68DF720](v11);
-    if (MEMORY[0x1C68DFDD0](v4) == MEMORY[0x1E69E9E80])
+    if (MEMORY[0x1C68DFDD0](messageCopy) == MEMORY[0x1E69E9E80])
     {
       objc_opt_class();
       CUXPCDecodeObject();
@@ -1259,9 +1259,9 @@ uint64_t __41__CBController__xpcReceivedRelayMessage___block_invoke(uint64_t res
   return result;
 }
 
-- (void)_xpcReceivedTipiChanged:(id)a3
+- (void)_xpcReceivedTipiChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = MEMORY[0x1C68DF720](self->_tipiChangedHandler);
   if (v5)
   {
@@ -1278,7 +1278,7 @@ uint64_t __41__CBController__xpcReceivedRelayMessage___block_invoke(uint64_t res
     v11[4] = self;
     v11[5] = &v12;
     v6 = MEMORY[0x1C68DF720](v11);
-    if (MEMORY[0x1C68DFDD0](v4) == MEMORY[0x1E69E9E80])
+    if (MEMORY[0x1C68DFDD0](changedCopy) == MEMORY[0x1E69E9E80])
     {
       objc_opt_class();
       CUXPCDecodeObject();
@@ -1327,18 +1327,18 @@ uint64_t __40__CBController__xpcReceivedTipiChanged___block_invoke(uint64_t resu
   return result;
 }
 
-- (void)activateAssertionWithFlags:(unsigned int)a3 completion:(id)a4
+- (void)activateAssertionWithFlags:(unsigned int)flags completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__CBController_activateAssertionWithFlags_completion___block_invoke;
   block[3] = &unk_1E811E3A8;
-  v11 = a3;
+  flagsCopy = flags;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1359,17 +1359,17 @@ uint64_t __54__CBController_activateAssertionWithFlags_completion___block_invoke
   }
 }
 
-- (void)_activateAssertionWithFlagsDirect:(unsigned int)a3 completion:(id)a4
+- (void)_activateAssertionWithFlagsDirect:(unsigned int)direct completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = gCBDaemonServer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61__CBController__activateAssertionWithFlagsDirect_completion___block_invoke;
   v8[3] = &unk_1E811E3D0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v6 activateCBController:self completion:v8];
 }
 
@@ -1414,22 +1414,22 @@ void __61__CBController__activateAssertionWithFlagsDirect_completion___block_inv
   }
 }
 
-- (void)_activateAssertionWithFlagsXPC:(unsigned int)a3 completion:(id)a4
+- (void)_activateAssertionWithFlagsXPC:(unsigned int)c completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = xpc_dictionary_create(0, 0, 0);
   [(CBController *)self encodeWithXPCObject:v6];
   xpc_dictionary_set_string(v6, "mTyp", "CtrA");
-  v7 = [(CBController *)self _ensureXPCStarted];
+  _ensureXPCStarted = [(CBController *)self _ensureXPCStarted];
   dispatchQueue = self->_dispatchQueue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__CBController__activateAssertionWithFlagsXPC_completion___block_invoke;
   v10[3] = &unk_1E811E3F8;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
-  xpc_connection_send_message_with_reply(v7, v6, dispatchQueue, v10);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  xpc_connection_send_message_with_reply(_ensureXPCStarted, v6, dispatchQueue, v10);
 }
 
 uint64_t __58__CBController__activateAssertionWithFlagsXPC_completion___block_invoke(uint64_t a1)
@@ -1464,15 +1464,15 @@ LABEL_8:
   return MEMORY[0x1EEE66BB8](v3, v2);
 }
 
-+ (id)controllerInfoWithEndpoint:(id)a3 error:(id *)a4
++ (id)controllerInfoWithEndpoint:(id)endpoint error:(id *)error
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v6 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v6, "mTyp", "GCtI");
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v8 = dispatch_queue_create("CBController-GetInfo", v7);
 
-  v9 = v5;
+  v9 = endpointCopy;
   v10 = v9;
   if (v9)
   {
@@ -1495,11 +1495,11 @@ LABEL_8:
     if (v19)
     {
       v29 = v19;
-      if (a4)
+      if (error)
       {
         v32 = v19;
         v27 = 0;
-        *a4 = v29;
+        *error = v29;
       }
 
       else
@@ -1522,18 +1522,18 @@ LABEL_8:
           v30 = v27;
         }
 
-        else if (a4)
+        else if (error)
         {
           v33 = v28;
-          *a4 = v29;
+          *error = v29;
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         CBErrorF(-6762, "No controller info", v20, v21, v22, v23, v24, v25, v34);
         v29 = 0;
-        *a4 = v27 = 0;
+        *error = v27 = 0;
       }
 
       else
@@ -1544,10 +1544,10 @@ LABEL_8:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     CBErrorF(-6700, "No reply", v13, v14, v15, v16, v17, v18, v34);
-    *a4 = v27 = 0;
+    *error = v27 = 0;
   }
 
   else
@@ -1558,17 +1558,17 @@ LABEL_8:
   return v27;
 }
 
-- (void)getControllerInfoWithCompletion:(id)a3
+- (void)getControllerInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__CBController_getControllerInfoWithCompletion___block_invoke;
   v7[3] = &unk_1E811E440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1616,17 +1616,17 @@ void __48__CBController_getControllerInfoWithCompletion___block_invoke_2(uint64_
   }
 }
 
-- (void)getControllerSettingsWithCompletionHandler:(id)a3
+- (void)getControllerSettingsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__CBController_getControllerSettingsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E811E440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1664,20 +1664,20 @@ void __59__CBController_getControllerSettingsWithCompletionHandler___block_invok
   }
 }
 
-- (void)modifyControllerSettings:(id)a3 completionHandler:(id)a4
+- (void)modifyControllerSettings:(id)settings completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__CBController_modifyControllerSettings_completionHandler___block_invoke;
   block[3] = &unk_1E811D490;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = settingsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = settingsCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1705,18 +1705,18 @@ void __59__CBController_modifyControllerSettings_completionHandler___block_invok
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)getDevicesWithFlags:(unsigned int)a3 completionHandler:(id)a4
+- (void)getDevicesWithFlags:(unsigned int)flags completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__CBController_getDevicesWithFlags_completionHandler___block_invoke;
   block[3] = &unk_1E811E3A8;
-  v11 = a3;
+  flagsCopy = flags;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1760,11 +1760,11 @@ void __54__CBController_getDevicesWithFlags_completionHandler___block_invoke_2(u
   }
 }
 
-+ (id)performDeviceRequest:(id)a3 device:(id)a4 xpcEndpoint:(id)a5 error:(id *)a6
++ (id)performDeviceRequest:(id)request device:(id)device xpcEndpoint:(id)endpoint error:(id *)error
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  endpointCopy = endpoint;
+  deviceCopy = device;
+  requestCopy = request;
   v12 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v12, "mTyp", "PfDR");
   CUXPCEncodeObject();
@@ -1773,7 +1773,7 @@ void __54__CBController_getDevicesWithFlags_completionHandler___block_invoke_2(u
   v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v14 = dispatch_queue_create("CBController-Perform", v13);
 
-  v15 = v9;
+  v15 = endpointCopy;
   v16 = v15;
   if (v15)
   {
@@ -1796,10 +1796,10 @@ void __54__CBController_getDevicesWithFlags_completionHandler___block_invoke_2(u
     if (v25)
     {
       v27 = v25;
-      if (a6)
+      if (error)
       {
         v29 = v25;
-        *a6 = v27;
+        *error = v27;
       }
     }
 
@@ -1809,39 +1809,39 @@ void __54__CBController_getDevicesWithFlags_completionHandler___block_invoke_2(u
       CUXPCDecodeObject();
       v26 = 0;
       v27 = v26;
-      if (a6)
+      if (error)
       {
         v30 = v26;
-        *a6 = v27;
+        *error = v27;
       }
     }
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = CBErrorF(-6700, "No reply", v19, v20, v21, v22, v23, v24, v31);
+    *error = CBErrorF(-6700, "No reply", v19, v20, v21, v22, v23, v24, v31);
   }
 
   return 0;
 }
 
-- (void)performDeviceRequest:(id)a3 device:(id)a4 completion:(id)a5
+- (void)performDeviceRequest:(id)request device:(id)device completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  deviceCopy = device;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __55__CBController_performDeviceRequest_device_completion___block_invoke;
   v15[3] = &unk_1E811E468;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = requestCopy;
+  v17 = deviceCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = deviceCopy;
+  v14 = requestCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -1893,20 +1893,20 @@ void __55__CBController_performDeviceRequest_device_completion___block_invoke_2(
   }
 }
 
-- (void)deleteDevice:(id)a3 completion:(id)a4
+- (void)deleteDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__CBController_deleteDevice_completion___block_invoke;
   block[3] = &unk_1E811D490;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = deviceCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = deviceCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1934,20 +1934,20 @@ void __40__CBController_deleteDevice_completion___block_invoke_2(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)modifyDevice:(id)a3 completion:(id)a4
+- (void)modifyDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__CBController_modifyDevice_completion___block_invoke;
   block[3] = &unk_1E811D490;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = deviceCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = deviceCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1975,24 +1975,24 @@ void __40__CBController_modifyDevice_completion___block_invoke_2(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)modifyDevice:(id)a3 connectionPriorityDevices:(id)a4 timeoutSeconds:(double)a5 completionHandler:(id)a6
+- (void)modifyDevice:(id)device connectionPriorityDevices:(id)devices timeoutSeconds:(double)seconds completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  deviceCopy = device;
+  devicesCopy = devices;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__CBController_modifyDevice_connectionPriorityDevices_timeoutSeconds_completionHandler___block_invoke;
   block[3] = &unk_1E811E490;
   block[4] = self;
-  v18 = v10;
-  v21 = a5;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = deviceCopy;
+  secondsCopy = seconds;
+  v19 = devicesCopy;
+  v20 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = devicesCopy;
+  v16 = deviceCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2028,25 +2028,25 @@ void __88__CBController_modifyDevice_connectionPriorityDevices_timeoutSeconds_co
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)modifyDevice:(id)a3 peerSourceDevice:(id)a4 peerSourceState:(char)a5 requestFlags:(unsigned int)a6 completionHandler:(id)a7
+- (void)modifyDevice:(id)device peerSourceDevice:(id)sourceDevice peerSourceState:(char)state requestFlags:(unsigned int)flags completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  deviceCopy = device;
+  sourceDeviceCopy = sourceDevice;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __93__CBController_modifyDevice_peerSourceDevice_peerSourceState_requestFlags_completionHandler___block_invoke;
   block[3] = &unk_1E811E4B8;
   block[4] = self;
-  v20 = v12;
-  v24 = a5;
-  v23 = a6;
-  v21 = v13;
-  v22 = v14;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
+  v20 = deviceCopy;
+  stateCopy = state;
+  flagsCopy = flags;
+  v21 = sourceDeviceCopy;
+  v22 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = sourceDeviceCopy;
+  v18 = deviceCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2087,23 +2087,23 @@ void __93__CBController_modifyDevice_peerSourceDevice_peerSourceState_requestFla
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)modifyDevice:(id)a3 settings:(id)a4 completion:(id)a5
+- (void)modifyDevice:(id)device settings:(id)settings completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  settingsCopy = settings;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __49__CBController_modifyDevice_settings_completion___block_invoke;
   v15[3] = &unk_1E811E468;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = deviceCopy;
+  v17 = settingsCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = settingsCopy;
+  v14 = deviceCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -2133,20 +2133,20 @@ void __49__CBController_modifyDevice_settings_completion___block_invoke_2(uint64
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)diagnosticControl:(id)a3 completion:(id)a4
+- (void)diagnosticControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__CBController_diagnosticControl_completion___block_invoke;
   block[3] = &unk_1E811D490;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = controlCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = controlCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2208,20 +2208,20 @@ void __45__CBController_diagnosticControl_completion___block_invoke_2(uint64_t a
   }
 }
 
-- (void)diagnosticLog:(id)a3 completion:(id)a4
+- (void)diagnosticLog:(id)log completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  logCopy = log;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__CBController_diagnosticLog_completion___block_invoke;
   block[3] = &unk_1E811D490;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = logCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = logCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2283,20 +2283,20 @@ void __41__CBController_diagnosticLog_completion___block_invoke_2(uint64_t a1, v
   }
 }
 
-- (void)diagnosticShow:(id)a3 completion:(id)a4
+- (void)diagnosticShow:(id)show completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  showCopy = show;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__CBController_diagnosticShow_completion___block_invoke;
   block[3] = &unk_1E811D490;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = showCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = showCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2358,10 +2358,10 @@ void __42__CBController_diagnosticShow_completion___block_invoke_2(uint64_t a1, 
   }
 }
 
-- (void)setLowPowerModeWithParams:(int)a3 params:(id)a4 completion:(id)a5
+- (void)setLowPowerModeWithParams:(int)params params:(id)a4 completion:(id)completion
 {
   v8 = a4;
-  v16 = a5;
+  completionCopy = completion;
   if (gLogCategory_CBController > 30 || gLogCategory_CBController == -1 && !_LogCategory_Initialize())
   {
     if (v8)
@@ -2370,7 +2370,7 @@ void __42__CBController_diagnosticShow_completion___block_invoke_2(uint64_t a1, 
     }
 
 LABEL_16:
-    [(CBController *)v16 setLowPowerModeWithParams:v9 params:v10 completion:v11, v12, v13, v14, v15];
+    [(CBController *)completionCopy setLowPowerModeWithParams:v9 params:v10 completion:v11, v12, v13, v14, v15];
     goto LABEL_14;
   }
 
@@ -2381,7 +2381,7 @@ LABEL_16:
   }
 
 LABEL_5:
-  if (a3 == 3)
+  if (params == 3)
   {
     if ([v8 rssiThresholdValue])
     {
@@ -2394,48 +2394,48 @@ LABEL_5:
           xpc_dictionary_set_string(v17, "mTyp", "LpmS");
           xpc_dictionary_set_int64(v17, "ctrP", 3);
           CUXPCEncodeObject();
-          v18 = [(CBController *)self _ensureXPCStarted];
+          _ensureXPCStarted = [(CBController *)self _ensureXPCStarted];
           dispatchQueue = self->_dispatchQueue;
           handler[0] = MEMORY[0x1E69E9820];
           handler[1] = 3221225472;
           handler[2] = __60__CBController_setLowPowerModeWithParams_params_completion___block_invoke;
           handler[3] = &unk_1E811D1B0;
-          v23 = v16;
-          xpc_connection_send_message_with_reply(v18, v17, dispatchQueue, handler);
+          v23 = completionCopy;
+          xpc_connection_send_message_with_reply(_ensureXPCStarted, v17, dispatchQueue, handler);
         }
 
         else
         {
-          [CBController setLowPowerModeWithParams:v16 params:v8 completion:?];
+          [CBController setLowPowerModeWithParams:completionCopy params:v8 completion:?];
         }
       }
 
       else
       {
-        [CBController setLowPowerModeWithParams:v16 params:v8 completion:?];
+        [CBController setLowPowerModeWithParams:completionCopy params:v8 completion:?];
       }
     }
 
     else
     {
-      [CBController setLowPowerModeWithParams:v16 params:v8 completion:?];
+      [CBController setLowPowerModeWithParams:completionCopy params:v8 completion:?];
     }
   }
 
   else
   {
-    if (a3 > 2)
+    if (params > 2)
     {
       v20 = "?";
     }
 
     else
     {
-      v20 = off_1E811E528[a3];
+      v20 = off_1E811E528[params];
     }
 
     v21 = CBErrorF(-6735, "Power reason %s is not supported", v10, v11, v12, v13, v14, v15, v20);
-    (*(v16 + 2))(v16, v21);
+    (*(completionCopy + 2))(completionCopy, v21);
   }
 
 LABEL_14:
@@ -2452,13 +2452,13 @@ void __60__CBController_setLowPowerModeWithParams_params_completion___block_invo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setLowPowerModeWithReason:(int)a3 completion:(id)a4
+- (void)setLowPowerModeWithReason:(int)reason completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v7, "mTyp", "LpmS");
-  xpc_dictionary_set_int64(v7, "ctrP", a3);
-  v8 = [(CBController *)self _ensureXPCStarted];
+  xpc_dictionary_set_int64(v7, "ctrP", reason);
+  _ensureXPCStarted = [(CBController *)self _ensureXPCStarted];
   if (gLogCategory_CBController <= 30 && (gLogCategory_CBController != -1 || _LogCategory_Initialize()))
   {
     [CBController setLowPowerModeWithReason:completion:];
@@ -2469,9 +2469,9 @@ void __60__CBController_setLowPowerModeWithParams_params_completion___block_invo
   handler[1] = 3221225472;
   handler[2] = __53__CBController_setLowPowerModeWithReason_completion___block_invoke;
   handler[3] = &unk_1E811D1B0;
-  v12 = v6;
-  v10 = v6;
-  xpc_connection_send_message_with_reply(v8, v7, dispatchQueue, handler);
+  v12 = completionCopy;
+  v10 = completionCopy;
+  xpc_connection_send_message_with_reply(_ensureXPCStarted, v7, dispatchQueue, handler);
 }
 
 void __53__CBController_setLowPowerModeWithReason_completion___block_invoke(uint64_t a1)
@@ -2485,28 +2485,28 @@ void __53__CBController_setLowPowerModeWithReason_completion___block_invoke(uint
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)setLowPowerModeWithReason:(int)a3 error:(id *)a4
+- (BOOL)setLowPowerModeWithReason:(int)reason error:(id *)error
 {
   v7 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v7, "mTyp", "LpmS");
-  xpc_dictionary_set_int64(v7, "ctrP", a3);
-  v8 = [(CBController *)self _ensureXPCStarted];
-  v15 = xpc_connection_send_message_with_reply_sync(v8, v7);
+  xpc_dictionary_set_int64(v7, "ctrP", reason);
+  _ensureXPCStarted = [(CBController *)self _ensureXPCStarted];
+  v15 = xpc_connection_send_message_with_reply_sync(_ensureXPCStarted, v7);
   if (v15)
   {
     v16 = CUXPCDecodeNSErrorIfNeeded();
     v17 = v16 == 0;
-    if (v16 && a4)
+    if (v16 && error)
     {
       v16 = v16;
-      *a4 = v16;
+      *error = v16;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     CBErrorF(-6700, "No reply", v9, v10, v11, v12, v13, v14, v19);
-    *a4 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -2517,14 +2517,14 @@ void __53__CBController_setLowPowerModeWithReason_completion___block_invoke(uint
   return v17;
 }
 
-+ (void)setOfflineAdvertisingParams:(id)a3
++ (void)setOfflineAdvertisingParams:(id)params
 {
-  v5 = a3;
-  v3 = [gCBDaemonServer stackController];
-  v4 = v3;
-  if (v3)
+  paramsCopy = params;
+  stackController = [gCBDaemonServer stackController];
+  v4 = stackController;
+  if (stackController)
   {
-    [v3 setOfflineAdvertisingParams:v5];
+    [stackController setOfflineAdvertisingParams:paramsCopy];
   }
 
   else
@@ -2533,17 +2533,17 @@ void __53__CBController_setLowPowerModeWithReason_completion___block_invoke(uint
   }
 }
 
-- (void)getPowerStateWithCompletion:(id)a3
+- (void)getPowerStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__CBController_getPowerStateWithCompletion___block_invoke;
   v7[3] = &unk_1E811E440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -2587,18 +2587,18 @@ void __44__CBController_getPowerStateWithCompletion___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)setPowerState:(int64_t)a3 completion:(id)a4
+- (void)setPowerState:(int64_t)state completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__CBController_setPowerState_completion___block_invoke;
   block[3] = &unk_1E811E4E0;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  stateCopy = state;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2625,9 +2625,9 @@ void __41__CBController_setPowerState_completion___block_invoke_2(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-+ (id)readPrefKeys:(id)a3 error:(id *)a4
++ (id)readPrefKeys:(id)keys error:(id *)error
 {
-  v5 = a3;
+  keysCopy = keys;
   v6 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v6, "mTyp", "RdPf");
   CUXPCEncodeNSArrayOfNSString();
@@ -2646,11 +2646,11 @@ void __41__CBController_setPowerState_completion___block_invoke_2(uint64_t a1)
     v18 = v17;
     if (v17)
     {
-      if (a4)
+      if (error)
       {
         v37 = v17;
         v34 = 0;
-        *a4 = v18;
+        *error = v18;
       }
 
       else
@@ -2673,14 +2673,14 @@ void __41__CBController_setPowerState_completion___block_invoke_2(uint64_t a1)
 
         else
         {
-          [(CBController *)a4 readPrefKeys:v27 error:v28, v29, v30, v31, v32, v33];
+          [(CBController *)error readPrefKeys:v27 error:v28, v29, v30, v31, v32, v33];
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         CBErrorF(-6762, "No XPC prefs", v19, v20, v21, v22, v23, v24, v38);
-        *a4 = v34 = 0;
+        *error = v34 = 0;
       }
 
       else
@@ -2690,10 +2690,10 @@ void __41__CBController_setPowerState_completion___block_invoke_2(uint64_t a1)
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     CBErrorF(-6700, "No reply", v11, v12, v13, v14, v15, v16, v38);
-    *a4 = v34 = 0;
+    *error = v34 = 0;
   }
 
   else
@@ -2704,18 +2704,18 @@ void __41__CBController_setPowerState_completion___block_invoke_2(uint64_t a1)
   return v34;
 }
 
-+ (BOOL)writePrefKey:(id)a3 value:(id)a4 error:(id *)a5
++ (BOOL)writePrefKey:(id)key value:(id)value error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  valueCopy = value;
+  keyCopy = key;
   v9 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v9, "mTyp", "WrPf");
   v10 = v9;
-  v11 = [v8 UTF8String];
+  uTF8String = [keyCopy UTF8String];
 
-  if (v11)
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v10, "pfKy", v11);
+    xpc_dictionary_set_string(v10, "pfKy", uTF8String);
   }
 
   v12 = _CFXPCCreateXPCObjectFromCFObject();
@@ -2734,17 +2734,17 @@ void __41__CBController_setPowerState_completion___block_invoke_2(uint64_t a1)
     {
       v29 = CUXPCDecodeNSErrorIfNeeded();
       v30 = v29 == 0;
-      if (v29 && a5)
+      if (v29 && error)
       {
         v29 = v29;
-        *a5 = v29;
+        *error = v29;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       CBErrorF(-6700, "No reply", v23, v24, v25, v26, v27, v28, v32);
-      *a5 = v30 = 0;
+      *error = v30 = 0;
     }
 
     else
@@ -2753,10 +2753,10 @@ void __41__CBController_setPowerState_completion___block_invoke_2(uint64_t a1)
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     CBErrorF(-6756, "Bad value type", v13, v14, v15, v16, v17, v18, v32);
-    *a5 = v30 = 0;
+    *error = v30 = 0;
   }
 
   else
@@ -2767,27 +2767,27 @@ void __41__CBController_setPowerState_completion___block_invoke_2(uint64_t a1)
   return v30;
 }
 
-- (void)sendRelayMessageType:(unsigned __int8)a3 messageData:(id)a4 conduitDevice:(id)a5 destinationDevice:(id)a6 completionHandler:(id)a7
+- (void)sendRelayMessageType:(unsigned __int8)type messageData:(id)data conduitDevice:(id)device destinationDevice:(id)destinationDevice completionHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dataCopy = data;
+  deviceCopy = device;
+  destinationDeviceCopy = destinationDevice;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __99__CBController_sendRelayMessageType_messageData_conduitDevice_destinationDevice_completionHandler___block_invoke;
   v21[3] = &unk_1E811E508;
-  v27 = a3;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = self;
-  v26 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  typeCopy = type;
+  v22 = dataCopy;
+  v23 = deviceCopy;
+  v24 = destinationDeviceCopy;
+  selfCopy = self;
+  v26 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = destinationDeviceCopy;
+  v19 = deviceCopy;
+  v20 = dataCopy;
   dispatch_async(dispatchQueue, v21);
 }
 
@@ -2843,23 +2843,23 @@ void __99__CBController_sendRelayMessageType_messageData_conduitDevice_destinati
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)sendSmartRoutingInformation:(id)a3 device:(id)a4 completionHandler:(id)a5
+- (void)sendSmartRoutingInformation:(id)information device:(id)device completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  informationCopy = information;
+  deviceCopy = device;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__CBController_sendSmartRoutingInformation_device_completionHandler___block_invoke;
   v15[3] = &unk_1E811E468;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = informationCopy;
+  v17 = deviceCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = deviceCopy;
+  v14 = informationCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -2908,23 +2908,23 @@ void __69__CBController_sendSmartRoutingInformation_device_completionHandler___b
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)sendConversationDetectMessage:(id)a3 device:(id)a4 completionHandler:(id)a5
+- (void)sendConversationDetectMessage:(id)message device:(id)device completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  deviceCopy = device;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __71__CBController_sendConversationDetectMessage_device_completionHandler___block_invoke;
   v15[3] = &unk_1E811E468;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = messageCopy;
+  v17 = deviceCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = deviceCopy;
+  v14 = messageCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -2973,20 +2973,20 @@ void __71__CBController_sendConversationDetectMessage_device_completionHandler__
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)resetCBExtensionID:(id)a3 completionHandler:(id)a4
+- (void)resetCBExtensionID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__CBController_resetCBExtensionID_completionHandler___block_invoke;
   block[3] = &unk_1E811D490;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -3020,20 +3020,20 @@ void __53__CBController_resetCBExtensionID_completionHandler___block_invoke_2(ui
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)updateIdentities:(id)a3 completion:(id)a4
+- (void)updateIdentities:(id)identities completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identitiesCopy = identities;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__CBController_updateIdentities_completion___block_invoke;
   block[3] = &unk_1E811D490;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identitiesCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = identitiesCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -3098,9 +3098,9 @@ void __44__CBController_updateIdentities_completion___block_invoke_2(uint64_t a1
   (*(v1 + 16))(v1, v2);
 }
 
-- (CBController)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBController)initWithXPCObject:(id)object error:(id *)error
 {
-  OUTLINED_FUNCTION_19(self, a2, a3);
+  OUTLINED_FUNCTION_19(self, a2, object);
   v13 = OUTLINED_FUNCTION_18();
   if (!v13)
   {

@@ -1,20 +1,20 @@
 @interface _DPKeyNames
 + (id)allKeyNames;
 + (id)keyNamesGroupedByPropertyName;
-+ (id)keyPropertiesForKey:(id)a3;
-+ (id)propertiesFromNamesFile:(id)a3;
++ (id)keyPropertiesForKey:(id)key;
++ (id)propertiesFromNamesFile:(id)file;
 @end
 
 @implementation _DPKeyNames
 
-+ (id)keyPropertiesForKey:(id)a3
++ (id)keyPropertiesForKey:(id)key
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = +[_DPStrings keyNamesPath];
-  v6 = [a1 propertiesFromNamesFile:v5];
+  v6 = [self propertiesFromNamesFile:v5];
 
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:keyCopy];
   if (!v7)
   {
     v19 = 0u;
@@ -37,7 +37,7 @@
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          if ([v4 hasPrefix:{v13, v17}])
+          if ([keyCopy hasPrefix:{v13, v17}])
           {
             v14 = [v6 objectForKeyedSubscript:v13];
             if (v14)
@@ -67,16 +67,16 @@ LABEL_13:
   return v7;
 }
 
-+ (id)propertiesFromNamesFile:(id)a3
++ (id)propertiesFromNamesFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = objc_autoreleasePoolPush();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39___DPKeyNames_propertiesFromNamesFile___block_invoke;
   v10[3] = &unk_27858ABB8;
-  v12 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = fileCopy;
   v11 = v6;
   if (propertiesFromNamesFile__onceToken != -1)
   {
@@ -93,11 +93,11 @@ LABEL_13:
 + (id)allKeyNames
 {
   v3 = +[_DPStrings keyNamesPath];
-  v4 = [a1 propertiesFromNamesFile:v3];
+  v4 = [self propertiesFromNamesFile:v3];
 
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
 
-  return v5;
+  return allKeys;
 }
 
 + (id)keyNamesGroupedByPropertyName
@@ -107,7 +107,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __44___DPKeyNames_keyNamesGroupedByPropertyName__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (keyNamesGroupedByPropertyName_onceToken != -1)
   {
     dispatch_once(&keyNamesGroupedByPropertyName_onceToken, block);

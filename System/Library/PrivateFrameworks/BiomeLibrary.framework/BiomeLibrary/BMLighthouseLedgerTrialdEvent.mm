@@ -1,16 +1,16 @@
 @interface BMLighthouseLedgerTrialdEvent
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMLighthouseLedgerTrialdEvent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMLighthouseLedgerTrialdEvent)initWithTrialIdentifiers:(id)a3 contextID:(id)a4 timestamp:(id)a5 eventType:(int)a6 eventSucceeded:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMLighthouseLedgerTrialdEvent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMLighthouseLedgerTrialdEvent)initWithTrialIdentifiers:(id)identifiers contextID:(id)d timestamp:(id)timestamp eventType:(int)type eventSucceeded:(id)succeeded;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)timestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMLighthouseLedgerTrialdEvent
@@ -35,25 +35,25 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMLighthouseLedgerTrialdEvent *)self trialIdentifiers];
-    v7 = [v5 trialIdentifiers];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    trialIdentifiers = [(BMLighthouseLedgerTrialdEvent *)self trialIdentifiers];
+    trialIdentifiers2 = [v5 trialIdentifiers];
+    v8 = trialIdentifiers2;
+    if (trialIdentifiers == trialIdentifiers2)
     {
     }
 
     else
     {
-      v9 = [(BMLighthouseLedgerTrialdEvent *)self trialIdentifiers];
-      v10 = [v5 trialIdentifiers];
-      v11 = [v9 isEqual:v10];
+      trialIdentifiers3 = [(BMLighthouseLedgerTrialdEvent *)self trialIdentifiers];
+      trialIdentifiers4 = [v5 trialIdentifiers];
+      v11 = [trialIdentifiers3 isEqual:trialIdentifiers4];
 
       if (!v11)
       {
@@ -61,18 +61,18 @@
       }
     }
 
-    v13 = [(BMLighthouseLedgerTrialdEvent *)self contextID];
-    v14 = [v5 contextID];
-    v15 = v14;
-    if (v13 == v14)
+    contextID = [(BMLighthouseLedgerTrialdEvent *)self contextID];
+    contextID2 = [v5 contextID];
+    v15 = contextID2;
+    if (contextID == contextID2)
     {
     }
 
     else
     {
-      v16 = [(BMLighthouseLedgerTrialdEvent *)self contextID];
-      v17 = [v5 contextID];
-      v18 = [v16 isEqual:v17];
+      contextID3 = [(BMLighthouseLedgerTrialdEvent *)self contextID];
+      contextID4 = [v5 contextID];
+      v18 = [contextID3 isEqual:contextID4];
 
       if (!v18)
       {
@@ -80,18 +80,18 @@
       }
     }
 
-    v19 = [(BMLighthouseLedgerTrialdEvent *)self timestamp];
-    v20 = [v5 timestamp];
-    v21 = v20;
-    if (v19 == v20)
+    timestamp = [(BMLighthouseLedgerTrialdEvent *)self timestamp];
+    timestamp2 = [v5 timestamp];
+    v21 = timestamp2;
+    if (timestamp == timestamp2)
     {
     }
 
     else
     {
-      v22 = [(BMLighthouseLedgerTrialdEvent *)self timestamp];
-      v23 = [v5 timestamp];
-      v24 = [v22 isEqual:v23];
+      timestamp3 = [(BMLighthouseLedgerTrialdEvent *)self timestamp];
+      timestamp4 = [v5 timestamp];
+      v24 = [timestamp3 isEqual:timestamp4];
 
       if (!v24)
       {
@@ -99,8 +99,8 @@
       }
     }
 
-    v25 = [(BMLighthouseLedgerTrialdEvent *)self eventType];
-    if (v25 == [v5 eventType])
+    eventType = [(BMLighthouseLedgerTrialdEvent *)self eventType];
+    if (eventType == [v5 eventType])
     {
       if (!-[BMLighthouseLedgerTrialdEvent hasEventSucceeded](self, "hasEventSucceeded") && ![v5 hasEventSucceeded])
       {
@@ -110,8 +110,8 @@
 
       if (-[BMLighthouseLedgerTrialdEvent hasEventSucceeded](self, "hasEventSucceeded") && [v5 hasEventSucceeded])
       {
-        v26 = [(BMLighthouseLedgerTrialdEvent *)self eventSucceeded];
-        v12 = v26 ^ [v5 eventSucceeded] ^ 1;
+        eventSucceeded = [(BMLighthouseLedgerTrialdEvent *)self eventSucceeded];
+        v12 = eventSucceeded ^ [v5 eventSucceeded] ^ 1;
 LABEL_22:
 
         goto LABEL_23;
@@ -149,16 +149,16 @@ LABEL_23:
 - (id)jsonDictionary
 {
   v27[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMLighthouseLedgerTrialdEvent *)self trialIdentifiers];
-  v4 = [v3 jsonDictionary];
+  trialIdentifiers = [(BMLighthouseLedgerTrialdEvent *)self trialIdentifiers];
+  jsonDictionary = [trialIdentifiers jsonDictionary];
 
-  v5 = [(BMLighthouseLedgerTrialdEvent *)self contextID];
-  v6 = [(BMLighthouseLedgerTrialdEvent *)self timestamp];
-  if (v6)
+  contextID = [(BMLighthouseLedgerTrialdEvent *)self contextID];
+  timestamp = [(BMLighthouseLedgerTrialdEvent *)self timestamp];
+  if (timestamp)
   {
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(BMLighthouseLedgerTrialdEvent *)self timestamp];
-    [v8 timeIntervalSince1970];
+    timestamp2 = [(BMLighthouseLedgerTrialdEvent *)self timestamp];
+    [timestamp2 timeIntervalSince1970];
     v9 = [v7 numberWithDouble:?];
   }
 
@@ -179,46 +179,46 @@ LABEL_23:
   }
 
   v22 = @"trialIdentifiers";
-  v12 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v12;
-  v27[0] = v12;
+  v20 = null;
+  v27[0] = null;
   v23 = @"contextID";
-  v13 = v5;
-  if (!v5)
+  null2 = contextID;
+  if (!contextID)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[1] = v13;
+  v27[1] = null2;
   v24 = @"timestamp";
-  v14 = v9;
+  null3 = v9;
   if (!v9)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[2] = v14;
+  v27[2] = null3;
   v25 = @"eventType";
-  v15 = v10;
+  null4 = v10;
   if (!v10)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[3] = v15;
+  v27[3] = null4;
   v26 = @"eventSucceeded";
-  v16 = v11;
+  null5 = v11;
   if (!v11)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[4] = v16;
+  v27[4] = null5;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v22 count:{5, v20}];
   if (v11)
   {
@@ -246,14 +246,14 @@ LABEL_19:
   if (v9)
   {
 LABEL_20:
-    if (v5)
+    if (contextID)
     {
       goto LABEL_21;
     }
 
 LABEL_28:
 
-    if (v4)
+    if (jsonDictionary)
     {
       goto LABEL_22;
     }
@@ -263,13 +263,13 @@ LABEL_28:
 
 LABEL_27:
 
-  if (!v5)
+  if (!contextID)
   {
     goto LABEL_28;
   }
 
 LABEL_21:
-  if (v4)
+  if (jsonDictionary)
   {
     goto LABEL_22;
   }
@@ -282,11 +282,11 @@ LABEL_22:
   return v17;
 }
 
-- (BMLighthouseLedgerTrialdEvent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMLighthouseLedgerTrialdEvent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v60[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"trialIdentifiers"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"trialIdentifiers"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
@@ -302,10 +302,10 @@ LABEL_22:
     v12 = v50;
     if (v12)
     {
-      if (a4)
+      if (error)
       {
         v12 = v12;
-        *a4 = v12;
+        *error = v12;
       }
 
       v13 = 0;
@@ -313,20 +313,20 @@ LABEL_22:
     }
 
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"contextID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"contextID"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v11 = 0;
           v13 = 0;
           goto LABEL_41;
         }
 
-        v42 = a4;
+        errorCopy = error;
         v24 = objc_alloc(MEMORY[0x1E696ABC0]);
         v25 = *MEMORY[0x1E698F240];
         v57 = *MEMORY[0x1E696A578];
@@ -335,7 +335,7 @@ LABEL_4:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
         v49 = 0;
         v13 = 0;
-        *v42 = [v24 initWithDomain:v25 code:2 userInfo:v10];
+        *errorCopy = [v24 initWithDomain:v25 code:2 userInfo:v10];
 LABEL_40:
 
         v11 = v49;
@@ -352,7 +352,7 @@ LABEL_41:
       v49 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"timestamp"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
     v46 = v9;
     v47 = v8;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -361,13 +361,13 @@ LABEL_41:
       if (objc_opt_isKindOfClass())
       {
         v14 = MEMORY[0x1E695DF00];
-        v15 = a4;
+        errorCopy2 = error;
         v16 = v10;
         v17 = [v14 alloc];
         [v16 doubleValue];
         v19 = v18;
 
-        a4 = v15;
+        error = errorCopy2;
         v20 = [v17 initWithTimeIntervalSince1970:v19];
       }
 
@@ -385,14 +385,14 @@ LABEL_41:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v48 = 0;
             v13 = 0;
             goto LABEL_40;
           }
 
-          v45 = a4;
+          errorCopy3 = error;
           v38 = objc_alloc(MEMORY[0x1E696ABC0]);
           v39 = *MEMORY[0x1E698F240];
           v55 = *MEMORY[0x1E696A578];
@@ -401,7 +401,7 @@ LABEL_41:
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
           v48 = 0;
           v13 = 0;
-          *v45 = [v38 initWithDomain:v39 code:2 userInfo:v27];
+          *errorCopy3 = [v38 initWithDomain:v39 code:2 userInfo:v27];
           goto LABEL_39;
         }
 
@@ -417,8 +417,8 @@ LABEL_41:
     }
 
 LABEL_26:
-    v27 = [v6 objectForKeyedSubscript:@"eventType"];
-    v28 = a4;
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"eventType"];
+    errorCopy4 = error;
     if (v27 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -432,7 +432,7 @@ LABEL_26:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v29 = 0;
             v13 = 0;
@@ -442,13 +442,13 @@ LABEL_26:
           v44 = objc_alloc(MEMORY[0x1E696ABC0]);
           v41 = *MEMORY[0x1E698F240];
           v53 = *MEMORY[0x1E696A578];
-          v37 = a4;
-          v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"eventType"];
-          v54 = v28;
+          errorCopy5 = error;
+          errorCopy4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"eventType"];
+          v54 = errorCopy4;
           v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
           v29 = 0;
           v13 = 0;
-          *v37 = [v44 initWithDomain:v41 code:2 userInfo:v31];
+          *errorCopy5 = [v44 initWithDomain:v41 code:2 userInfo:v31];
           goto LABEL_38;
         }
 
@@ -463,15 +463,15 @@ LABEL_26:
       v29 = 0;
     }
 
-    v31 = [v6 objectForKeyedSubscript:@"eventSucceeded"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"eventSucceeded"];
     if (v31 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v28)
+        if (errorCopy4)
         {
-          v34 = v28;
+          v34 = errorCopy4;
           v43 = objc_alloc(MEMORY[0x1E696ABC0]);
           v40 = *MEMORY[0x1E698F240];
           v51 = *MEMORY[0x1E696A578];
@@ -480,22 +480,22 @@ LABEL_26:
           v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
           *v34 = [v43 initWithDomain:v40 code:2 userInfo:v36];
 
-          v28 = 0;
+          errorCopy4 = 0;
         }
 
         v13 = 0;
         goto LABEL_38;
       }
 
-      v28 = v31;
+      errorCopy4 = v31;
     }
 
     else
     {
-      v28 = 0;
+      errorCopy4 = 0;
     }
 
-    v13 = -[BMLighthouseLedgerTrialdEvent initWithTrialIdentifiers:contextID:timestamp:eventType:eventSucceeded:](self, "initWithTrialIdentifiers:contextID:timestamp:eventType:eventSucceeded:", v47, v49, v48, [v29 intValue], v28);
+    v13 = -[BMLighthouseLedgerTrialdEvent initWithTrialIdentifiers:contextID:timestamp:eventType:eventSucceeded:](self, "initWithTrialIdentifiers:contextID:timestamp:eventType:eventSucceeded:", v47, v49, v48, [v29 intValue], errorCopy4);
     self = v13;
 LABEL_38:
 
@@ -505,13 +505,13 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  if (!a4)
+  if (!error)
   {
     v13 = 0;
     goto LABEL_43;
   }
 
-  v21 = a4;
+  errorCopy6 = error;
   v22 = objc_alloc(MEMORY[0x1E696ABC0]);
   v23 = *MEMORY[0x1E698F240];
   v59 = *MEMORY[0x1E696A578];
@@ -519,7 +519,7 @@ LABEL_39:
   v60[0] = v8;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v60 forKeys:&v59 count:1];
   v13 = 0;
-  *v21 = [v22 initWithDomain:v23 code:2 userInfo:v11];
+  *errorCopy6 = [v22 initWithDomain:v23 code:2 userInfo:v11];
 LABEL_42:
 
 LABEL_43:
@@ -531,18 +531,18 @@ LABEL_43:
 {
   v3 = objc_opt_new();
   [(BMLighthouseLedgerTrialdEvent *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_trialIdentifiers)
   {
     PBDataWriterPlaceMark();
-    [(BMLighthouseLedgerTrialIdentifiers *)self->_trialIdentifiers writeTo:v4];
+    [(BMLighthouseLedgerTrialIdentifiers *)self->_trialIdentifiers writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -566,9 +566,9 @@ LABEL_43:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v40.receiver = self;
   v40.super_class = BMLighthouseLedgerTrialdEvent;
   v5 = [(BMEventBase *)&v40 init];
@@ -577,12 +577,12 @@ LABEL_43:
     goto LABEL_62;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -593,18 +593,18 @@ LABEL_43:
       while (1)
       {
         LOBYTE(v41[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v41 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v41 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v41[0] & 0x7F) << v7;
@@ -622,9 +622,9 @@ LABEL_43:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -641,7 +641,7 @@ LABEL_16:
             goto LABEL_61;
           }
 
-          v34 = [[BMLighthouseLedgerTrialIdentifiers alloc] initByReadFrom:v4];
+          v34 = [[BMLighthouseLedgerTrialIdentifiers alloc] initByReadFrom:fromCopy];
           if (!v34)
           {
             goto LABEL_61;
@@ -679,18 +679,18 @@ LABEL_49:
           case 3:
             v5->_hasRaw_timestamp = 1;
             v41[0] = 0;
-            v25 = [v4 position] + 8;
-            if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 8, v26 <= objc_msgSend(v4, "length")))
+            v25 = [fromCopy position] + 8;
+            if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 8, v26 <= objc_msgSend(fromCopy, "length")))
             {
-              v36 = [v4 data];
-              [v36 getBytes:v41 range:{objc_msgSend(v4, "position"), 8}];
+              data2 = [fromCopy data];
+              [data2 getBytes:v41 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             *&v5->_raw_timestamp = v41[0];
@@ -703,18 +703,18 @@ LABEL_49:
             while (1)
             {
               LOBYTE(v41[0]) = 0;
-              v30 = [v4 position] + 1;
-              if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 1, v31 <= objc_msgSend(v4, "length")))
+              v30 = [fromCopy position] + 1;
+              if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 1, v31 <= objc_msgSend(fromCopy, "length")))
               {
-                v32 = [v4 data];
-                [v32 getBytes:v41 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:v41 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v29 |= (v41[0] & 0x7F) << v27;
@@ -732,7 +732,7 @@ LABEL_49:
               }
             }
 
-            v33 = (v29 != 0) & ~[v4 hasError];
+            v33 = (v29 != 0) & ~[fromCopy hasError];
 LABEL_52:
             v5->_eventSucceeded = v33;
             break;
@@ -743,18 +743,18 @@ LABEL_52:
             while (1)
             {
               LOBYTE(v41[0]) = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:v41 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:v41 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v41[0] & 0x7F) << v16;
@@ -770,7 +770,7 @@ LABEL_52:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 3)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 3)
             {
 LABEL_55:
               LODWORD(v18) = 0;
@@ -784,13 +784,13 @@ LABEL_55:
       }
 
 LABEL_59:
-      v37 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v37 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_61:
     v38 = 0;
@@ -808,34 +808,34 @@ LABEL_62:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMLighthouseLedgerTrialdEvent *)self trialIdentifiers];
-  v5 = [(BMLighthouseLedgerTrialdEvent *)self contextID];
-  v6 = [(BMLighthouseLedgerTrialdEvent *)self timestamp];
+  trialIdentifiers = [(BMLighthouseLedgerTrialdEvent *)self trialIdentifiers];
+  contextID = [(BMLighthouseLedgerTrialdEvent *)self contextID];
+  timestamp = [(BMLighthouseLedgerTrialdEvent *)self timestamp];
   v7 = BMLighthouseLedgerTrialdEventEventTypeAsString([(BMLighthouseLedgerTrialdEvent *)self eventType]);
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMLighthouseLedgerTrialdEvent eventSucceeded](self, "eventSucceeded")}];
-  v9 = [v3 initWithFormat:@"BMLighthouseLedgerTrialdEvent with trialIdentifiers: %@, contextID: %@, timestamp: %@, eventType: %@, eventSucceeded: %@", v4, v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMLighthouseLedgerTrialdEvent with trialIdentifiers: %@, contextID: %@, timestamp: %@, eventType: %@, eventSucceeded: %@", trialIdentifiers, contextID, timestamp, v7, v8];
 
   return v9;
 }
 
-- (BMLighthouseLedgerTrialdEvent)initWithTrialIdentifiers:(id)a3 contextID:(id)a4 timestamp:(id)a5 eventType:(int)a6 eventSucceeded:(id)a7
+- (BMLighthouseLedgerTrialdEvent)initWithTrialIdentifiers:(id)identifiers contextID:(id)d timestamp:(id)timestamp eventType:(int)type eventSucceeded:(id)succeeded
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  identifiersCopy = identifiers;
+  dCopy = d;
+  timestampCopy = timestamp;
+  succeededCopy = succeeded;
   v20.receiver = self;
   v20.super_class = BMLighthouseLedgerTrialdEvent;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_trialIdentifiers, a3);
-    objc_storeStrong(&v17->_contextID, a4);
-    if (v15)
+    objc_storeStrong(&v17->_trialIdentifiers, identifiers);
+    objc_storeStrong(&v17->_contextID, d);
+    if (timestampCopy)
     {
       v17->_hasRaw_timestamp = 1;
-      [v15 timeIntervalSince1970];
+      [timestampCopy timeIntervalSince1970];
     }
 
     else
@@ -845,11 +845,11 @@ LABEL_62:
     }
 
     v17->_raw_timestamp = v18;
-    v17->_eventType = a6;
-    if (v16)
+    v17->_eventType = type;
+    if (succeededCopy)
     {
       v17->_hasEventSucceeded = 1;
-      v17->_eventSucceeded = [v16 BOOLValue];
+      v17->_eventSucceeded = [succeededCopy BOOLValue];
     }
 
     else
@@ -891,9 +891,9 @@ id __40__BMLighthouseLedgerTrialdEvent_columns__block_invoke(uint64_t a1, void *
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -901,8 +901,8 @@ id __40__BMLighthouseLedgerTrialdEvent_columns__block_invoke(uint64_t a1, void *
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMLighthouseLedgerTrialdEvent alloc] initByReadFrom:v7];
     v4 = v8;

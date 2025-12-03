@@ -1,23 +1,23 @@
 @interface RTAuthorizedLocationConfirmationStatusStore
-- (RTAuthorizedLocationConfirmationStatusStore)initWithPersistenceManager:(id)a3;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (void)_deleteConfirmationStatus:(id)a3;
-- (void)_fetchConfirmationStatusWithContext:(id)a3 handler:(id)a4;
-- (void)_fetchConfirmationStatusWithOptions:(id)a3 handler:(id)a4;
-- (void)_storeConfirmationStatus:(id)a3 handler:(id)a4;
-- (void)deleteConfirmationStatus:(id)a3;
-- (void)fetchConfirmationStatusWithOptions:(id)a3 handler:(id)a4;
-- (void)storeConfirmationStatus:(id)a3 handler:(id)a4;
+- (RTAuthorizedLocationConfirmationStatusStore)initWithPersistenceManager:(id)manager;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (void)_deleteConfirmationStatus:(id)status;
+- (void)_fetchConfirmationStatusWithContext:(id)context handler:(id)handler;
+- (void)_fetchConfirmationStatusWithOptions:(id)options handler:(id)handler;
+- (void)_storeConfirmationStatus:(id)status handler:(id)handler;
+- (void)deleteConfirmationStatus:(id)status;
+- (void)fetchConfirmationStatusWithOptions:(id)options handler:(id)handler;
+- (void)storeConfirmationStatus:(id)status handler:(id)handler;
 @end
 
 @implementation RTAuthorizedLocationConfirmationStatusStore
 
-- (RTAuthorizedLocationConfirmationStatusStore)initWithPersistenceManager:(id)a3
+- (RTAuthorizedLocationConfirmationStatusStore)initWithPersistenceManager:(id)manager
 {
   v15 = *MEMORY[0x277D85DE8];
   v10.receiver = self;
   v10.super_class = RTAuthorizedLocationConfirmationStatusStore;
-  v4 = [(RTStore *)&v10 initWithPersistenceManager:a3];
+  v4 = [(RTStore *)&v10 initWithPersistenceManager:manager];
   if (v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
@@ -37,11 +37,11 @@
   return v4;
 }
 
-- (void)_fetchConfirmationStatusWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchConfirmationStatusWithOptions:(id)options handler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -55,31 +55,31 @@
   }
 
   v7 = objc_alloc_init(MEMORY[0x277D01070]);
-  [(RTAuthorizedLocationConfirmationStatusStore *)self _fetchConfirmationStatusWithContext:v7 handler:v5];
+  [(RTAuthorizedLocationConfirmationStatusStore *)self _fetchConfirmationStatusWithContext:v7 handler:handlerCopy];
 }
 
-- (void)fetchConfirmationStatusWithOptions:(id)a3 handler:(id)a4
+- (void)fetchConfirmationStatusWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__RTAuthorizedLocationConfirmationStatusStore_fetchConfirmationStatusWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchConfirmationStatusWithContext:(id)a3 handler:(id)a4
+- (void)_fetchConfirmationStatusWithContext:(id)context handler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -87,7 +87,7 @@
     aBlock[3] = &unk_2788C4FB0;
     v14 = a2;
     aBlock[4] = self;
-    v8 = v6;
+    v8 = handlerCopy;
     v13 = v8;
     v9 = _Block_copy(aBlock);
     v10[0] = MEMORY[0x277D85DD0];
@@ -220,14 +220,14 @@ LABEL_6:
 LABEL_17:
 }
 
-- (void)_storeConfirmationStatus:(id)a3 handler:(id)a4
+- (void)_storeConfirmationStatus:(id)status handler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  statusCopy = status;
+  handlerCopy = handler;
+  if (statusCopy)
   {
-    v9 = [MEMORY[0x277CBEB18] arrayWithObject:v7];
+    v9 = [MEMORY[0x277CBEB18] arrayWithObject:statusCopy];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       v10 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
@@ -236,7 +236,7 @@ LABEL_17:
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
         v13 = NSStringFromSelector(a2);
-        v14 = [v7 description];
+        v14 = [statusCopy description];
         v18 = 138412802;
         v19 = v12;
         v20 = 2112;
@@ -247,7 +247,7 @@ LABEL_17:
       }
     }
 
-    [(RTStore *)self storeWritableObjects:v9 handler:v8];
+    [(RTStore *)self storeWritableObjects:v9 handler:handlerCopy];
 LABEL_10:
 
     goto LABEL_11;
@@ -274,11 +274,11 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)storeConfirmationStatus:(id)a3 handler:(id)a4
+- (void)storeConfirmationStatus:(id)status handler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  statusCopy = status;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
@@ -292,12 +292,12 @@ LABEL_11:
       v22 = 2112;
       v23 = v16;
       v24 = 2112;
-      v25 = v7;
+      v25 = statusCopy;
       _os_log_debug_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEBUG, "%@:%@,status,%@", buf, 0x20u);
     }
   }
 
-  if (!v7)
+  if (!statusCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -310,37 +310,37 @@ LABEL_11:
     }
   }
 
-  v11 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__RTAuthorizedLocationConfirmationStatusStore_storeConfirmationStatus_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v18 = v7;
-  v19 = v8;
-  v12 = v8;
-  v13 = v7;
-  dispatch_async(v11, block);
+  v18 = statusCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = statusCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)deleteConfirmationStatus:(id)a3
+- (void)deleteConfirmationStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  statusCopy = status;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__RTAuthorizedLocationConfirmationStatusStore_deleteConfirmationStatus___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = statusCopy;
+  v6 = statusCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_deleteConfirmationStatus:(id)a3
+- (void)_deleteConfirmationStatus:(id)status
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  statusCopy = status;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
@@ -359,10 +359,10 @@ LABEL_11:
 
   v11 = objc_opt_class();
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v11 count:1];
-  [(RTStore *)self removeAll:v7 handler:v5];
+  [(RTStore *)self removeAll:v7 handler:statusCopy];
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCA9B8];
@@ -372,10 +372,10 @@ LABEL_11:
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v6 errorWithDomain:v7 code:7 userInfo:v8];
 
-  if (a5)
+  if (error)
   {
     v10 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return 0;

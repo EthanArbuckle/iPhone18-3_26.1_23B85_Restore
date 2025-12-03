@@ -1,8 +1,8 @@
 @interface PXImportFilesAction
 - (PHFetchResult)importedAssets;
-- (PXImportFilesAction)initWithPhotoLibrary:(id)a3 fileURLs:(id)a4 assetCollection:(id)a5;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (PXImportFilesAction)initWithPhotoLibrary:(id)library fileURLs:(id)ls assetCollection:(id)collection;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXImportFilesAction
@@ -13,8 +13,8 @@
   {
     v3 = MEMORY[0x1E6978630];
     importedAssetsIdentifiers = self->_importedAssetsIdentifiers;
-    v5 = [(PXPhotosAction *)self standardFetchOptions];
-    v6 = [v3 fetchAssetsWithLocalIdentifiers:importedAssetsIdentifiers options:v5];
+    standardFetchOptions = [(PXPhotosAction *)self standardFetchOptions];
+    v6 = [v3 fetchAssetsWithLocalIdentifiers:importedAssetsIdentifiers options:standardFetchOptions];
     importedAssets = self->_importedAssets;
     self->_importedAssets = v6;
   }
@@ -24,23 +24,23 @@
   return v8;
 }
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v14 = a3;
-  v5 = [(PXImportFilesAction *)self importedAssets];
+  undoCopy = undo;
+  importedAssets = [(PXImportFilesAction *)self importedAssets];
   v6 = [PXActionRecord alloc];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = -[PXActionRecord initWithSourceIdentifier:variant:assetCount:userConfirmation:](v6, "initWithSourceIdentifier:variant:assetCount:userConfirmation:", v8, @"undoing", [v5 count], 4);
+  v9 = -[PXActionRecord initWithSourceIdentifier:variant:assetCount:userConfirmation:](v6, "initWithSourceIdentifier:variant:assetCount:userConfirmation:", v8, @"undoing", [importedAssets count], 4);
 
-  v10 = [(PXDestructiveAssetsAction *)PXDeleteAssetsAction actionWithAssets:v5 record:v9];
+  v10 = [(PXDestructiveAssetsAction *)PXDeleteAssetsAction actionWithAssets:importedAssets record:v9];
   if (!v10)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXImportFilesAction.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"deleteAssetsAction != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportFilesAction.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"deleteAssetsAction != nil"}];
   }
 
-  [v10 executeWithUndoManager:0 completionHandler:v14];
+  [v10 executeWithUndoManager:0 completionHandler:undoCopy];
   importedAssetsIdentifiers = self->_importedAssetsIdentifiers;
   self->_importedAssetsIdentifiers = 0;
 
@@ -48,20 +48,20 @@
   self->_importedAssets = 0;
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   fileURLs = self->_fileURLs;
-  v6 = [(PXPhotosAction *)self photoLibrary];
+  photoLibrary = [(PXPhotosAction *)self photoLibrary];
   assetCollection = self->_assetCollection;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __37__PXImportFilesAction_performAction___block_invoke;
   v10[3] = &unk_1E77353C8;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
-  v9 = [PXImportController importFilesAtURLs:fileURLs photoLibrary:v6 collection:assetCollection checkDuplicates:0 referenced:0 delegate:0 completionHandler:v10];
+  v11 = actionCopy;
+  v8 = actionCopy;
+  v9 = [PXImportController importFilesAtURLs:fileURLs photoLibrary:photoLibrary collection:assetCollection checkDuplicates:0 referenced:0 delegate:0 completionHandler:v10];
 }
 
 void __37__PXImportFilesAction_performAction___block_invoke(uint64_t a1, void *a2)
@@ -98,33 +98,33 @@ void __37__PXImportFilesAction_performAction___block_invoke(uint64_t a1, void *a
   (*(*(a1 + 40) + 16))();
 }
 
-- (PXImportFilesAction)initWithPhotoLibrary:(id)a3 fileURLs:(id)a4 assetCollection:(id)a5
+- (PXImportFilesAction)initWithPhotoLibrary:(id)library fileURLs:(id)ls assetCollection:(id)collection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  libraryCopy = library;
+  lsCopy = ls;
+  collectionCopy = collection;
+  if (!libraryCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXImportFilesAction.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportFilesAction.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  if (![v10 count])
+  if (![lsCopy count])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXImportFilesAction.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"fileURLs.count"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXImportFilesAction.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"fileURLs.count"}];
   }
 
   v18.receiver = self;
   v18.super_class = PXImportFilesAction;
-  v12 = [(PXPhotosAction *)&v18 initWithPhotoLibrary:v9];
+  v12 = [(PXPhotosAction *)&v18 initWithPhotoLibrary:libraryCopy];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [lsCopy copy];
     fileURLs = v12->_fileURLs;
     v12->_fileURLs = v13;
 
-    objc_storeStrong(&v12->_assetCollection, a5);
+    objc_storeStrong(&v12->_assetCollection, collection);
   }
 
   return v12;

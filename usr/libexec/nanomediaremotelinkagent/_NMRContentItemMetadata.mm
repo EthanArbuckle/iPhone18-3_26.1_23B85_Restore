@@ -1,20 +1,20 @@
 @interface _NMRContentItemMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsAutoPlayItem:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsAutoPlayItem:(BOOL)item;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _NMRContentItemMetadata
 
-- (void)setHasIsAutoPlayItem:(BOOL)a3
+- (void)setHasIsAutoPlayItem:(BOOL)item
 {
-  if (a3)
+  if (item)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = _NMRContentItemMetadata;
   v3 = [(_NMRContentItemMetadata *)&v7 description];
-  v4 = [(_NMRContentItemMetadata *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_NMRContentItemMetadata *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -78,26 +78,26 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_artist)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_album)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -105,7 +105,7 @@
   {
     duration = self->_duration;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -113,59 +113,59 @@
   {
     isAutoPlayItem = self->_isAutoPlayItem;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_title)
   {
-    [v4 setTitle:?];
-    v4 = v6;
+    [toCopy setTitle:?];
+    toCopy = v6;
   }
 
   if (self->_artist)
   {
     [v6 setArtist:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_album)
   {
     [v6 setAlbum:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_duration;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 1) = *&self->_duration;
+    *(toCopy + 44) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 40) = self->_isAutoPlayItem;
-    *(v4 + 44) |= 2u;
+    *(toCopy + 40) = self->_isAutoPlayItem;
+    *(toCopy + 44) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_artist copyWithZone:a3];
+  v8 = [(NSString *)self->_artist copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_album copyWithZone:a3];
+  v10 = [(NSString *)self->_album copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
@@ -186,16 +186,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   title = self->_title;
-  if (title | *(v4 + 4))
+  if (title | *(equalCopy + 4))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -204,7 +204,7 @@
   }
 
   artist = self->_artist;
-  if (artist | *(v4 + 3))
+  if (artist | *(equalCopy + 3))
   {
     if (![(NSString *)artist isEqual:?])
     {
@@ -213,7 +213,7 @@
   }
 
   album = self->_album;
-  if (album | *(v4 + 2))
+  if (album | *(equalCopy + 2))
   {
     if (![(NSString *)album isEqual:?])
     {
@@ -223,21 +223,21 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_duration != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_duration != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_15;
   }
 
-  v8 = (*(v4 + 44) & 2) == 0;
+  v8 = (*(equalCopy + 44) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0)
+    if ((*(equalCopy + 44) & 2) == 0)
     {
 LABEL_15:
       v8 = 0;
@@ -246,13 +246,13 @@ LABEL_15:
 
     if (self->_isAutoPlayItem)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_15;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_15;
     }
@@ -316,39 +316,39 @@ LABEL_16:
   return v4 ^ v3 ^ v5 ^ v8 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(_NMRContentItemMetadata *)self setTitle:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(_NMRContentItemMetadata *)self setArtist:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(_NMRContentItemMetadata *)self setAlbum:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if (v5)
   {
-    self->_duration = *(v4 + 1);
+    self->_duration = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_isAutoPlayItem = *(v4 + 40);
+    self->_isAutoPlayItem = *(fromCopy + 40);
     *&self->_has |= 2u;
   }
 }

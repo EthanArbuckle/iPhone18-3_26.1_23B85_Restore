@@ -1,13 +1,13 @@
 @interface SASRemoteRequestManager
 + (id)manager;
 - (id)_init;
-- (int64_t)_dismissalReasonForDeactivationReason:(int64_t)a3;
-- (void)_handleNewRemoteRequestWithInfo:(id)a3;
-- (void)_handlePendingVoiceTriggerActivationsWithInfo:(id)a3;
-- (void)_handleRemotePrewarmWithInfo:(id)a3;
-- (void)_handleRemoteRequestDismissalWithReason:(int64_t)a3 options:(unint64_t)a4 analyticsContext:(id)a5;
-- (void)_handleRequestWatcherVoiceTriggerRequestWithInfo:(id)a3;
-- (void)_processPendingVoiceTriggerActivationsWithInfo:(id)a3 delay:(double)a4;
+- (int64_t)_dismissalReasonForDeactivationReason:(int64_t)reason;
+- (void)_handleNewRemoteRequestWithInfo:(id)info;
+- (void)_handlePendingVoiceTriggerActivationsWithInfo:(id)info;
+- (void)_handleRemotePrewarmWithInfo:(id)info;
+- (void)_handleRemoteRequestDismissalWithReason:(int64_t)reason options:(unint64_t)options analyticsContext:(id)context;
+- (void)_handleRequestWatcherVoiceTriggerRequestWithInfo:(id)info;
+- (void)_processPendingVoiceTriggerActivationsWithInfo:(id)info delay:(double)delay;
 - (void)_startFetchingPocketStateUpdates;
 @end
 
@@ -43,54 +43,54 @@ uint64_t __34__SASRemoteRequestManager_manager__block_invoke()
     [(SASRemoteRequestManager *)v2 setRemoteRequestWatcher:v3];
 
     objc_initWeak(&location, v2);
-    v4 = [(SASRemoteRequestManager *)v2 remoteRequestWatcher];
+    remoteRequestWatcher = [(SASRemoteRequestManager *)v2 remoteRequestWatcher];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __32__SASRemoteRequestManager__init__block_invoke;
     v24[3] = &unk_1E82F41A0;
     objc_copyWeak(&v25, &location);
-    [v4 setPrewarmHandler:v24];
+    [remoteRequestWatcher setPrewarmHandler:v24];
 
-    v5 = [(SASRemoteRequestManager *)v2 remoteRequestWatcher];
+    remoteRequestWatcher2 = [(SASRemoteRequestManager *)v2 remoteRequestWatcher];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __32__SASRemoteRequestManager__init__block_invoke_2;
     v22[3] = &unk_1E82F41C8;
     objc_copyWeak(&v23, &location);
-    [v5 setRequestHandler:v22];
+    [remoteRequestWatcher2 setRequestHandler:v22];
 
-    v6 = [(SASRemoteRequestManager *)v2 remoteRequestWatcher];
+    remoteRequestWatcher3 = [(SASRemoteRequestManager *)v2 remoteRequestWatcher];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __32__SASRemoteRequestManager__init__block_invoke_3;
     v20[3] = &unk_1E82F41F0;
     objc_copyWeak(&v21, &location);
-    [v6 setDismissalHandler:v20];
+    [remoteRequestWatcher3 setDismissalHandler:v20];
 
-    v7 = [(SASRemoteRequestManager *)v2 remoteRequestWatcher];
-    [v7 setNewSpeechRequestHandler:&__block_literal_global_80];
+    remoteRequestWatcher4 = [(SASRemoteRequestManager *)v2 remoteRequestWatcher];
+    [remoteRequestWatcher4 setNewSpeechRequestHandler:&__block_literal_global_80];
 
-    v8 = [(SASRemoteRequestManager *)v2 remoteRequestWatcher];
+    remoteRequestWatcher5 = [(SASRemoteRequestManager *)v2 remoteRequestWatcher];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __32__SASRemoteRequestManager__init__block_invoke_5;
     v18[3] = &unk_1E82F4260;
     objc_copyWeak(&v19, &location);
-    [v8 setIntentHandler:v18];
+    [remoteRequestWatcher5 setIntentHandler:v18];
 
-    v9 = [(SASRemoteRequestManager *)v2 remoteRequestWatcher];
+    remoteRequestWatcher6 = [(SASRemoteRequestManager *)v2 remoteRequestWatcher];
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __32__SASRemoteRequestManager__init__block_invoke_7;
     v16 = &unk_1E82F42B0;
     objc_copyWeak(&v17, &location);
-    [v9 setIntentForwardingActionHandler:&v13];
+    [remoteRequestWatcher6 setIntentForwardingActionHandler:&v13];
 
     v10 = [(SASRemoteRequestManager *)v2 remoteRequestWatcher:v13];
     [v10 setButtonEventHandler:&__block_literal_global_91];
 
-    v11 = [(SASRemoteRequestManager *)v2 remoteRequestWatcher];
-    [v11 setActivationHandler:&__block_literal_global_95];
+    remoteRequestWatcher7 = [(SASRemoteRequestManager *)v2 remoteRequestWatcher];
+    [remoteRequestWatcher7 setActivationHandler:&__block_literal_global_95];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&v19);
@@ -296,10 +296,10 @@ void __32__SASRemoteRequestManager__init__block_invoke_92(uint64_t a1, void *a2,
   }
 }
 
-- (void)_handleRemotePrewarmWithInfo:(id)a3
+- (void)_handleRemotePrewarmWithInfo:(id)info
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v5 = MEMORY[0x1E698D0A0];
   v6 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -307,16 +307,16 @@ void __32__SASRemoteRequestManager__init__block_invoke_92(uint64_t a1, void *a2,
     v15 = 136315394;
     v16 = "[SASRemoteRequestManager _handleRemotePrewarmWithInfo:]";
     v17 = 2112;
-    v18 = v4;
+    v18 = infoCopy;
     _os_log_impl(&dword_1C8137000, v6, OS_LOG_TYPE_DEFAULT, "%s info=%@", &v15, 0x16u);
   }
 
   if ([(SASRemoteRequestManager *)self _requestWatcherVoiceActivationEnabled])
   {
-    v7 = [v4 speechRequestOptions];
-    v8 = [v7 activationEvent];
+    speechRequestOptions = [infoCopy speechRequestOptions];
+    activationEvent = [speechRequestOptions activationEvent];
 
-    if (v8 == 8)
+    if (activationEvent == 8)
     {
       [(SASRemoteRequestManager *)self _startFetchingPocketStateUpdates];
       if (AFDeviceSupportsAOP())
@@ -331,7 +331,7 @@ void __32__SASRemoteRequestManager__init__block_invoke_92(uint64_t a1, void *a2,
           _os_log_impl(&dword_1C8137000, v9, OS_LOG_TYPE_DEFAULT, "%s scheduling pending activation timer to give pocket detect time", &v15, 0xCu);
         }
 
-        [(SASRemoteRequestManager *)self _processPendingVoiceTriggerActivationsWithInfo:v4 delay:0.35];
+        [(SASRemoteRequestManager *)self _processPendingVoiceTriggerActivationsWithInfo:infoCopy delay:0.35];
       }
 
       v10 = +[SiriActivationService service];
@@ -339,10 +339,10 @@ void __32__SASRemoteRequestManager__init__block_invoke_92(uint64_t a1, void *a2,
     }
   }
 
-  v11 = [v4 speechRequestOptions];
-  v12 = [v11 activationEvent];
+  speechRequestOptions2 = [infoCopy speechRequestOptions];
+  activationEvent2 = [speechRequestOptions2 activationEvent];
 
-  if (v12 == 31)
+  if (activationEvent2 == 31)
   {
     v13 = +[SiriActivationService service];
     [v13 updatePredicatedRecordRoute];
@@ -351,10 +351,10 @@ void __32__SASRemoteRequestManager__init__block_invoke_92(uint64_t a1, void *a2,
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleNewRemoteRequestWithInfo:(id)a3
+- (void)_handleNewRemoteRequestWithInfo:(id)info
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v5 = MEMORY[0x1E698D0A0];
   v6 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -362,21 +362,21 @@ void __32__SASRemoteRequestManager__init__block_invoke_92(uint64_t a1, void *a2,
     *buf = 136315394;
     v20 = "[SASRemoteRequestManager _handleNewRemoteRequestWithInfo:]";
     v21 = 2112;
-    v22 = v4;
+    v22 = infoCopy;
     _os_log_impl(&dword_1C8137000, v6, OS_LOG_TYPE_DEFAULT, "%s info=%@", buf, 0x16u);
   }
 
-  v7 = [v4 speechRequestOptions];
-  v8 = [v7 activationEvent];
+  speechRequestOptions = [infoCopy speechRequestOptions];
+  activationEvent = [speechRequestOptions activationEvent];
 
-  if (v8 != 31 && v8 != 8)
+  if (activationEvent != 31 && activationEvent != 8)
   {
-    if ([v4 activationEvent] == 8)
+    if ([infoCopy activationEvent] == 8)
     {
       if (objc_opt_respondsToSelector())
       {
-        v9 = [v4 performSelector:sel_text];
-        if (!v4)
+        v9 = [infoCopy performSelector:sel_text];
+        if (!infoCopy)
         {
           goto LABEL_18;
         }
@@ -385,13 +385,13 @@ void __32__SASRemoteRequestManager__init__block_invoke_92(uint64_t a1, void *a2,
       else
       {
         v9 = 0;
-        if (!v4)
+        if (!infoCopy)
         {
           goto LABEL_18;
         }
       }
 
-      if (!-[SiriMagusContext length](v9, "length") || (v11 = [SiriTestingContext alloc], v18 = v9, [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1], v12 = objc_claimAutoreleasedReturnValue(), v10 = -[SiriTestingContext initWithRequestInfo:recognitionStrings:siriContextOverride:](v11, "initWithRequestInfo:recognitionStrings:siriContextOverride:", v4, v12, 0), v12, !v10))
+      if (!-[SiriMagusContext length](v9, "length") || (v11 = [SiriTestingContext alloc], v18 = v9, [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1], v12 = objc_claimAutoreleasedReturnValue(), v10 = -[SiriTestingContext initWithRequestInfo:recognitionStrings:siriContextOverride:](v11, "initWithRequestInfo:recognitionStrings:siriContextOverride:", infoCopy, v12, 0), v12, !v10))
       {
 LABEL_18:
         v14 = *v5;
@@ -412,19 +412,19 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    if (v8 > 33)
+    if (activationEvent > 33)
     {
-      if (v8 == 34)
+      if (activationEvent == 34)
       {
-        v9 = [(SiriContinuityContext *)[SiriMagusContext alloc] initWithRequestInfo:v4];
+        v9 = [(SiriContinuityContext *)[SiriMagusContext alloc] initWithRequestInfo:infoCopy];
         v10 = +[SiriActivationService service];
         [(SiriTestingContext *)v10 activationRequestFromContinuousConversationHearstWithContext:v9];
         goto LABEL_26;
       }
 
-      if (v8 == 35)
+      if (activationEvent == 35)
       {
-        v9 = [(SiriContinuityContext *)[SiriMagusContext alloc] initWithRequestInfo:v4];
+        v9 = [(SiriContinuityContext *)[SiriMagusContext alloc] initWithRequestInfo:infoCopy];
         v10 = +[SiriActivationService service];
         [(SiriTestingContext *)v10 activationRequestFromContinuousConversationJarvisWithContext:v9];
         goto LABEL_26;
@@ -433,42 +433,42 @@ LABEL_27:
 
     else
     {
-      if (v8 == 27)
+      if (activationEvent == 27)
       {
         v15 = [SiriHearstLongPressButtonContext alloc];
-        v16 = [v4 speechRequestOptions];
-        v9 = [(SiriHearstLongPressButtonContext *)v15 initWithSpeechRequestOptions:v16];
+        speechRequestOptions2 = [infoCopy speechRequestOptions];
+        v9 = [(SiriHearstLongPressButtonContext *)v15 initWithSpeechRequestOptions:speechRequestOptions2];
 
         v10 = +[SiriActivationService service];
         [(SiriTestingContext *)v10 buttonLongPressFromButtonIdentifier:8 context:v9];
         goto LABEL_26;
       }
 
-      if (v8 == 30)
+      if (activationEvent == 30)
       {
-        v9 = [(SiriContinuityContext *)[SiriMagusContext alloc] initWithRequestInfo:v4];
+        v9 = [(SiriContinuityContext *)[SiriMagusContext alloc] initWithRequestInfo:infoCopy];
         v10 = +[SiriActivationService service];
         [(SiriTestingContext *)v10 activationRequestFromContinuousConversationWithContext:v9];
         goto LABEL_26;
       }
     }
 
-    v9 = [[SiriContinuityContext alloc] initWithRequestInfo:v4];
+    v9 = [[SiriContinuityContext alloc] initWithRequestInfo:infoCopy];
     v10 = +[SiriActivationService service];
     [(SiriTestingContext *)v10 activationRequestFromContinuityWithContext:v9];
     goto LABEL_26;
   }
 
-  [(SASRemoteRequestManager *)self _handleRequestWatcherVoiceTriggerRequestWithInfo:v4];
+  [(SASRemoteRequestManager *)self _handleRequestWatcherVoiceTriggerRequestWithInfo:infoCopy];
 LABEL_28:
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleRequestWatcherVoiceTriggerRequestWithInfo:(id)a3
+- (void)_handleRequestWatcherVoiceTriggerRequestWithInfo:(id)info
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   if ([(SASRemoteRequestManager *)self _requestWatcherVoiceActivationEnabled])
   {
     currentVoiceTriggerRestriction = self->_currentVoiceTriggerRestriction;
@@ -496,7 +496,7 @@ LABEL_28:
         }
 
         [(SASRemoteRequestManager *)self setHasPendingVoiceTriggerActivation:1];
-        [(SASRemoteRequestManager *)self setPendingVoiceTriggerActivationInfo:v4];
+        [(SASRemoteRequestManager *)self setPendingVoiceTriggerActivationInfo:infoCopy];
       }
     }
 
@@ -510,7 +510,7 @@ LABEL_28:
         _os_log_impl(&dword_1C8137000, v8, OS_LOG_TYPE_DEFAULT, "%s Received VoiceTrigger activation request, no restrictions, activating", &v12, 0xCu);
       }
 
-      v9 = [(SiriContinuityContext *)[SiriVoiceTriggerContext alloc] initWithRequestInfo:v4];
+      v9 = [(SiriContinuityContext *)[SiriVoiceTriggerContext alloc] initWithRequestInfo:infoCopy];
       v10 = +[SiriActivationService service];
       [v10 activationRequestFromVoiceTriggerWithContext:v9];
     }
@@ -519,18 +519,18 @@ LABEL_28:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_processPendingVoiceTriggerActivationsWithInfo:(id)a3 delay:(double)a4
+- (void)_processPendingVoiceTriggerActivationsWithInfo:(id)info delay:(double)delay
 {
-  v6 = a3;
+  infoCopy = info;
   objc_initWeak(&location, self);
-  v7 = dispatch_time(0, (a4 * 1000000000.0));
+  v7 = dispatch_time(0, (delay * 1000000000.0));
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__SASRemoteRequestManager__processPendingVoiceTriggerActivationsWithInfo_delay___block_invoke;
   block[3] = &unk_1E82F37D0;
   objc_copyWeak(&v11, &location);
-  v10 = v6;
-  v8 = v6;
+  v10 = infoCopy;
+  v8 = infoCopy;
   dispatch_after(v7, MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v11);
@@ -584,10 +584,10 @@ void __80__SASRemoteRequestManager__processPendingVoiceTriggerActivationsWithInf
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleRemoteRequestDismissalWithReason:(int64_t)a3 options:(unint64_t)a4 analyticsContext:(id)a5
+- (void)_handleRemoteRequestDismissalWithReason:(int64_t)reason options:(unint64_t)options analyticsContext:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  contextCopy = context;
   v9 = MEMORY[0x1E698D0A0];
   v10 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -602,21 +602,21 @@ void __80__SASRemoteRequestManager__processPendingVoiceTriggerActivationsWithInf
     v30 = 2112;
     v31 = v13;
     v32 = 2112;
-    v33 = v8;
+    v33 = contextCopy;
     _os_log_impl(&dword_1C8137000, v11, OS_LOG_TYPE_DEFAULT, "%s Handling remote request dismissal, reason=%@, options=%@, analyticsContext=%@", &v26, 0x2Au);
   }
 
-  if (v8)
+  if (contextCopy)
   {
-    v14 = [v8 objectForKey:@"inSpokenNotification"];
-    v15 = [v14 BOOLValue];
+    v14 = [contextCopy objectForKey:@"inSpokenNotification"];
+    bOOLValue = [v14 BOOLValue];
 
-    if (a3 == 2)
+    if (reason == 2)
     {
-      if (v15)
+      if (bOOLValue)
       {
-        v16 = [MEMORY[0x1E698D0C8] sharedAnalytics];
-        [v16 logEventWithType:6007 context:0];
+        mEMORY[0x1E698D0C8] = [MEMORY[0x1E698D0C8] sharedAnalytics];
+        [mEMORY[0x1E698D0C8] logEventWithType:6007 context:0];
 
         v17 = [(SASRemoteRequestManager *)self _dismissalReasonForDeactivationReason:2];
 LABEL_10:
@@ -626,8 +626,8 @@ LABEL_10:
     }
   }
 
-  v17 = [(SASRemoteRequestManager *)self _dismissalReasonForDeactivationReason:a3];
-  if (a3 != 3)
+  v17 = [(SASRemoteRequestManager *)self _dismissalReasonForDeactivationReason:reason];
+  if (reason != 3)
   {
     goto LABEL_10;
   }
@@ -654,17 +654,17 @@ LABEL_10:
   }
 
 LABEL_12:
-  v23 = [[SiriDismissalOptions alloc] initWithDeactivationOptions:a4 animated:1 requestCancellationReason:CancellationReason dismissalReason:v17];
+  v23 = [[SiriDismissalOptions alloc] initWithDeactivationOptions:options animated:1 requestCancellationReason:CancellationReason dismissalReason:v17];
   v24 = +[SiriActivationService service];
   [v24 dismissSiriWithOptions:v23];
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handlePendingVoiceTriggerActivationsWithInfo:(id)a3
+- (void)_handlePendingVoiceTriggerActivationsWithInfo:(id)info
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v5 = MEMORY[0x1E698D0A0];
   v6 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -687,28 +687,28 @@ LABEL_12:
 
   if (![(SASRemoteRequestManager *)self pendingVoiceTriggerRestrictionCount]&& [(SASRemoteRequestManager *)self hasPendingVoiceTriggerActivation])
   {
-    v9 = v4;
-    v10 = [(SASRemoteRequestManager *)self pendingVoiceTriggerActivationInfo];
+    v9 = infoCopy;
+    pendingVoiceTriggerActivationInfo = [(SASRemoteRequestManager *)self pendingVoiceTriggerActivationInfo];
 
-    if (v10)
+    if (pendingVoiceTriggerActivationInfo)
     {
       v11 = *v5;
       if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
       {
         v12 = v11;
-        v13 = [(SASRemoteRequestManager *)self pendingVoiceTriggerActivationInfo];
+        pendingVoiceTriggerActivationInfo2 = [(SASRemoteRequestManager *)self pendingVoiceTriggerActivationInfo];
         *buf = 136315650;
         v21 = "[SASRemoteRequestManager _handlePendingVoiceTriggerActivationsWithInfo:]";
         v22 = 2112;
         v23 = v9;
         v24 = 2112;
-        v25 = v13;
+        v25 = pendingVoiceTriggerActivationInfo2;
         _os_log_impl(&dword_1C8137000, v12, OS_LOG_TYPE_DEFAULT, "%s replacing prewarm AFRequestInfo %@ with newer pending activation AFRequestInfo %@", buf, 0x20u);
       }
 
-      v14 = [(SASRemoteRequestManager *)self pendingVoiceTriggerActivationInfo];
+      pendingVoiceTriggerActivationInfo3 = [(SASRemoteRequestManager *)self pendingVoiceTriggerActivationInfo];
 
-      v9 = v14;
+      v9 = pendingVoiceTriggerActivationInfo3;
     }
 
     objc_initWeak(buf, self);
@@ -761,11 +761,11 @@ void __73__SASRemoteRequestManager__handlePendingVoiceTriggerActivationsWithInfo
   [v2 queryForPocketStateWithCompletion:0];
 }
 
-- (int64_t)_dismissalReasonForDeactivationReason:(int64_t)a3
+- (int64_t)_dismissalReasonForDeactivationReason:(int64_t)reason
 {
-  if (a3 < 0x15)
+  if (reason < 0x15)
   {
-    return qword_1C818F878[a3];
+    return qword_1C818F878[reason];
   }
 
   v4 = *MEMORY[0x1E698D0A0];

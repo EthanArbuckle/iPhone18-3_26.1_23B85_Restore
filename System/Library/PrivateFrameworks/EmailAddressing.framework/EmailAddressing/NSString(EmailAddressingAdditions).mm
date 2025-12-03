@@ -24,11 +24,11 @@
   v36 = v2;
   v37 = v2;
   *buffer = v2;
-  v3 = [(__CFString *)a1 length];
+  v3 = [(__CFString *)self length];
   v4 = NSZoneMalloc(0, 2 * v3 + 2);
-  theString[0] = a1;
+  theString[0] = self;
   v45 = v3;
-  theString[1] = CFStringGetCharactersPtr(a1);
+  theString[1] = CFStringGetCharactersPtr(self);
   if (theString[1])
   {
     CStringPtr = 0;
@@ -36,7 +36,7 @@
 
   else
   {
-    CStringPtr = CFStringGetCStringPtr(a1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(self, 0x600u);
   }
 
   v46 = 0;
@@ -307,19 +307,19 @@ LABEL_66:
 
 - (id)ea_uncommentedAddressRespectingGroups
 {
-  v2 = [a1 rangeOfString:@"@"];
-  v3 = [a1 rangeOfString:@"<"];
+  v2 = [self rangeOfString:@"@"];
+  v3 = [self rangeOfString:@"<"];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL && v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [a1 ea_uncommentedAddress];
+    selfCopy = [self ea_uncommentedAddress];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (BOOL)ea_isLegalEmailAddress
@@ -329,7 +329,7 @@ LABEL_66:
     [NSString(EmailAddressingAdditions) ea_isLegalEmailAddress];
   }
 
-  v2 = [EAEmailAddressParser idnaEncodedAddressForAddress:a1];
+  v2 = [EAEmailAddressParser idnaEncodedAddressForAddress:self];
   v3 = [EAEmailAddressParser rangeOfAddressDomainFromAddress:v2];
   v4 = v3;
   v6 = v5;
@@ -688,30 +688,30 @@ LABEL_92:
 
 - (id)ea_addressCommentPersonNameComponents
 {
-  v2 = [a1 ea_addressComment];
-  if ([v2 isEqualToString:a1])
+  ea_addressComment = [self ea_addressComment];
+  if ([ea_addressComment isEqualToString:self])
   {
 
-    v2 = 0;
+    ea_addressComment = 0;
   }
 
-  v3 = [v2 ea_personNameComponents];
+  ea_personNameComponents = [ea_addressComment ea_personNameComponents];
 
-  return v3;
+  return ea_personNameComponents;
 }
 
 - (id)ea_addressComment
 {
-  v1 = a1;
-  v2 = [v1 maximumLengthOfBytesUsingEncoding:4];
+  selfCopy = self;
+  v2 = [selfCopy maximumLengthOfBytesUsingEncoding:4];
   v3 = malloc_type_malloc(v2 + 1, 0xDADFC7DCuLL);
-  v4 = v1;
-  if ([v1 getCString:v3 maxLength:v2 + 1 encoding:4])
+  v4 = selfCopy;
+  if ([selfCopy getCString:v3 maxLength:v2 + 1 encoding:4])
   {
     v5 = strlen(v3);
     v6 = malloc_type_malloc(v5 + 1, 0x18B62943uLL);
     v7 = EAAddressComment(v3, v5, v6);
-    v4 = v1;
+    v4 = selfCopy;
     if (v7 != v3)
     {
       v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:v7];
@@ -727,10 +727,10 @@ LABEL_92:
 
 - (uint64_t)ea_isLegalCommentedEmailAddress
 {
-  v1 = [a1 ea_uncommentedAddressRespectingGroups];
-  v2 = [v1 ea_isLegalEmailAddress];
+  ea_uncommentedAddressRespectingGroups = [self ea_uncommentedAddressRespectingGroups];
+  ea_isLegalEmailAddress = [ea_uncommentedAddressRespectingGroups ea_isLegalEmailAddress];
 
-  return v2;
+  return ea_isLegalEmailAddress;
 }
 
 @end

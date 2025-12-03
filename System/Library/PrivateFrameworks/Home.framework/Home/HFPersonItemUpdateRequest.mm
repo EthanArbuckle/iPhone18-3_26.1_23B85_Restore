@@ -1,96 +1,96 @@
 @interface HFPersonItemUpdateRequest
-- (HFPersonItemUpdateRequest)initWithPerson:(id)a3 personManager:(id)a4 home:(id)a5;
-- (id)updateWithOptions:(id)a3;
+- (HFPersonItemUpdateRequest)initWithPerson:(id)person personManager:(id)manager home:(id)home;
+- (id)updateWithOptions:(id)options;
 @end
 
 @implementation HFPersonItemUpdateRequest
 
-- (HFPersonItemUpdateRequest)initWithPerson:(id)a3 personManager:(id)a4 home:(id)a5
+- (HFPersonItemUpdateRequest)initWithPerson:(id)person personManager:(id)manager home:(id)home
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  personCopy = person;
+  managerCopy = manager;
+  homeCopy = home;
   v15.receiver = self;
   v15.super_class = HFPersonItemUpdateRequest;
   v12 = [(HFPersonItemUpdateRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_person, a3);
-    objc_storeStrong(&v13->_personManager, a4);
-    objc_storeStrong(&v13->_home, a5);
+    objc_storeStrong(&v12->_person, person);
+    objc_storeStrong(&v13->_personManager, manager);
+    objc_storeStrong(&v13->_home, home);
   }
 
   return v13;
 }
 
-- (id)updateWithOptions:(id)a3
+- (id)updateWithOptions:(id)options
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFPersonItemUpdateRequest *)self home];
-  v6 = [v5 personManagerSettings];
-  v7 = [v6 isFaceClassificationEnabled];
+  optionsCopy = options;
+  home = [(HFPersonItemUpdateRequest *)self home];
+  personManagerSettings = [home personManagerSettings];
+  isFaceClassificationEnabled = [personManagerSettings isFaceClassificationEnabled];
 
-  if (v7)
+  if (isFaceClassificationEnabled)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    v9 = [(HFPersonItemUpdateRequest *)self person];
-    v10 = [v9 name];
-    [v8 na_safeSetObject:v10 forKey:@"title"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    person = [(HFPersonItemUpdateRequest *)self person];
+    name = [person name];
+    [dictionary na_safeSetObject:name forKey:@"title"];
 
-    v11 = [(HFPersonItemUpdateRequest *)self person];
-    v12 = [v11 UUID];
-    [v8 na_safeSetObject:v12 forKey:@"personIdentifier"];
+    person2 = [(HFPersonItemUpdateRequest *)self person];
+    uUID = [person2 UUID];
+    [dictionary na_safeSetObject:uUID forKey:@"personIdentifier"];
 
     v13 = MEMORY[0x277CCABB0];
-    v14 = [(HFPersonItemUpdateRequest *)self personManager];
+    personManager = [(HFPersonItemUpdateRequest *)self personManager];
     objc_opt_class();
     v15 = [v13 numberWithBool:objc_opt_isKindOfClass() & 1];
-    [v8 setObject:v15 forKeyedSubscript:@"HFPersonResultIsHomeOriginatedKey"];
+    [dictionary setObject:v15 forKeyedSubscript:@"HFPersonResultIsHomeOriginatedKey"];
 
     v16 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
-    [v8 setObject:v16 forKeyedSubscript:@"dependentHomeKitClasses"];
+    [dictionary setObject:v16 forKeyedSubscript:@"dependentHomeKitClasses"];
 
     v17 = MEMORY[0x277CBEB58];
-    v18 = [(HFPersonItemUpdateRequest *)self person];
-    v19 = [v17 na_setWithSafeObject:v18];
+    person3 = [(HFPersonItemUpdateRequest *)self person];
+    v19 = [v17 na_setWithSafeObject:person3];
 
-    [v8 setObject:v19 forKeyedSubscript:@"dependentHomeKitObjects"];
-    [v8 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"shouldDisableForNonAdminUsers"];
-    v20 = [v4 objectForKeyedSubscript:HFPersonItemUpdateOptionSkipFaceCrop];
-    v21 = [v20 BOOLValue];
+    [dictionary setObject:v19 forKeyedSubscript:@"dependentHomeKitObjects"];
+    [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"shouldDisableForNonAdminUsers"];
+    v20 = [optionsCopy objectForKeyedSubscript:HFPersonItemUpdateOptionSkipFaceCrop];
+    bOOLValue = [v20 BOOLValue];
 
-    if (v21)
+    if (bOOLValue)
     {
       v22 = MEMORY[0x277D2C900];
-      v23 = [HFItemUpdateOutcome outcomeWithResults:v8];
-      v24 = [v22 futureWithResult:v23];
+      personManager2 = [HFItemUpdateOutcome outcomeWithResults:dictionary];
+      v24 = [v22 futureWithResult:personManager2];
     }
 
     else
     {
-      v23 = [(HFPersonItemUpdateRequest *)self personManager];
-      v26 = [(HFPersonItemUpdateRequest *)self person];
-      v27 = [v26 UUID];
-      v28 = [v23 hf_faceCropsForPersonWithIdentifier:v27];
+      personManager2 = [(HFPersonItemUpdateRequest *)self personManager];
+      person4 = [(HFPersonItemUpdateRequest *)self person];
+      uUID2 = [person4 UUID];
+      v28 = [personManager2 hf_faceCropsForPersonWithIdentifier:uUID2];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __47__HFPersonItemUpdateRequest_updateWithOptions___block_invoke;
       v35[3] = &unk_277DF43F0;
-      v29 = v8;
+      v29 = dictionary;
       v36 = v29;
       v19 = v19;
       v37 = v19;
-      v38 = self;
+      selfCopy = self;
       v30 = [v28 flatMap:v35];
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __47__HFPersonItemUpdateRequest_updateWithOptions___block_invoke_105;
       v33[3] = &unk_277DF2D30;
       v33[4] = self;
-      v8 = v29;
-      v34 = v8;
+      dictionary = v29;
+      v34 = dictionary;
       v24 = [v30 recover:v33];
     }
   }
@@ -100,8 +100,8 @@
     v25 = MEMORY[0x277D2C900];
     v39 = @"hidden";
     v40[0] = MEMORY[0x277CBEC38];
-    v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
-    v19 = [HFItemUpdateOutcome outcomeWithResults:v8];
+    dictionary = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
+    v19 = [HFItemUpdateOutcome outcomeWithResults:dictionary];
     v24 = [v25 futureWithResult:v19];
   }
 

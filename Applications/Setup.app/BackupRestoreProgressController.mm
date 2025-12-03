@@ -4,35 +4,35 @@
 - (BOOL)takeAssertions;
 - (BackupRestoreProgressController)init;
 - (id)_createRestoreOptions;
-- (id)latestSnapshotForBackupUUID:(id)a3 backupCompletedDate:(id)a4 lastSnapshotDate:(id)a5 error:(id *)a6;
-- (id)latestSnapshotForBackupUUID:(id)a3 lastSnapshotDate:(id)a4 error:(id *)a5;
-- (id)latestSnapshotForSourceDevice:(id *)a3;
+- (id)latestSnapshotForBackupUUID:(id)d backupCompletedDate:(id)date lastSnapshotDate:(id)snapshotDate error:(id *)error;
+- (id)latestSnapshotForBackupUUID:(id)d lastSnapshotDate:(id)date error:(id *)error;
+- (id)latestSnapshotForSourceDevice:(id *)device;
 - (id)waitForBackupToComplete;
 - (void)_attemptRestore;
-- (void)_failedToStartRestoreForSnapshotID:(unint64_t)a3 error:(id)a4;
-- (void)_presentAlert:(id)a3;
-- (void)_traceAnalyticsForGuideUserToBackup:(id)a3 foundBackup:(BOOL)a4 polledForBackup:(BOOL)a5;
-- (void)backupDeviceController:(id)a3 backupCompletedWithError:(id)a4;
-- (void)backupProgress:(double)a3 estimatedTimeRemaining:(unint64_t)a4;
+- (void)_failedToStartRestoreForSnapshotID:(unint64_t)d error:(id)error;
+- (void)_presentAlert:(id)alert;
+- (void)_traceAnalyticsForGuideUserToBackup:(id)backup foundBackup:(BOOL)foundBackup polledForBackup:(BOOL)forBackup;
+- (void)backupDeviceController:(id)controller backupCompletedWithError:(id)error;
+- (void)backupProgress:(double)progress estimatedTimeRemaining:(unint64_t)remaining;
 - (void)controllerWasPopped;
 - (void)dealloc;
-- (void)handleBackupFailed:(id)a3;
+- (void)handleBackupFailed:(id)failed;
 - (void)loadView;
-- (void)manager:(id)a3 didFailRestoreWithError:(id)a4;
-- (void)manager:(id)a3 didUpdateProgress:(float)a4 estimatedTimeRemaining:(unint64_t)a5;
-- (void)managerDidFinishRestore:(id)a3;
-- (void)managerDidLoseConnectionToService:(id)a3;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)manager:(id)manager didFailRestoreWithError:(id)error;
+- (void)manager:(id)manager didUpdateProgress:(float)progress estimatedTimeRemaining:(unint64_t)remaining;
+- (void)managerDidFinishRestore:(id)restore;
+- (void)managerDidLoseConnectionToService:(id)service;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 - (void)popBackFromProgress;
 - (void)reattemptBackup;
 - (void)releaseAssertions;
-- (void)renewCredentialsThenStartRestore:(id)a3;
-- (void)restoreFailedWithError:(id)a3;
-- (void)setAlert:(id)a3;
-- (void)startRestore:(id)a3;
+- (void)renewCredentialsThenStartRestore:(id)restore;
+- (void)restoreFailedWithError:(id)error;
+- (void)setAlert:(id)alert;
+- (void)startRestore:(id)restore;
 - (void)updateProgress;
 - (void)updateProgressText;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)willResignActive;
 @end
 
@@ -70,32 +70,32 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   [(BackupRestoreProgressController *)self releaseAssertions];
   v2 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v2 removeObserver:v5 name:UIApplicationWillResignActiveNotification object:0];
+  [(NSNotificationCenter *)v2 removeObserver:selfCopy name:UIApplicationWillResignActiveNotification object:0];
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = BackupRestoreProgressController;
   [(BackupRestoreProgressController *)&v3 dealloc];
 }
 
 - (void)loadView
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = BackupRestoreProgressController;
   [(BackupRestoreProgressController *)&v3 loadView];
-  [(BackupRestoreProgressController *)v5 updateProgressText];
-  v2 = [(BackupRestoreProgressController *)v5 navigationItem];
-  [v2 setHidesBackButton:1];
+  [(BackupRestoreProgressController *)selfCopy updateProgressText];
+  navigationItem = [(BackupRestoreProgressController *)selfCopy navigationItem];
+  [navigationItem setHidesBackButton:1];
 }
 
 - (void)willResignActive
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   if ([(BackupRestoreProgressController *)self restoreState]== 1)
   {
@@ -117,10 +117,10 @@
         }
 
         objc_storeStrong(&oslog, 0);
-        [(BackupRestoreProgressController *)v12 setRestoreState:3];
-        [(MBManager *)v12->_backupManager cancel];
-        v4 = [(BackupRestoreProgressController *)v12 navigationController];
-        v5 = [v4 popViewControllerAnimated:0];
+        [(BackupRestoreProgressController *)selfCopy setRestoreState:3];
+        [(MBManager *)selfCopy->_backupManager cancel];
+        navigationController = [(BackupRestoreProgressController *)selfCopy navigationController];
+        v5 = [navigationController popViewControllerAnimated:0];
       }
     }
   }
@@ -128,55 +128,55 @@
 
 - (void)popBackFromProgress
 {
-  v2 = [(BackupRestoreProgressController *)self backupDeviceController];
-  [(BFFBackupDeviceController *)v2 reset];
+  backupDeviceController = [(BackupRestoreProgressController *)self backupDeviceController];
+  [(BFFBackupDeviceController *)backupDeviceController reset];
 
-  v3 = [(BackupRestoreProgressController *)self navigationController];
-  v4 = [v3 topViewController];
+  navigationController = [(BackupRestoreProgressController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v4 == self)
+  if (topViewController == self)
   {
-    v5 = [(BackupRestoreProgressController *)self delegate];
-    v6 = [(BFFFlowItemDelegate *)v5 popToBuddyControllerWithClass:objc_opt_class() animated:1];
+    delegate = [(BackupRestoreProgressController *)self delegate];
+    v6 = [(BFFFlowItemDelegate *)delegate popToBuddyControllerWithClass:objc_opt_class() animated:1];
 
     if (!v6)
     {
-      v7 = [(BackupRestoreProgressController *)self delegate];
-      v8 = [(BFFFlowItemDelegate *)v7 popToBuddyControllerWithClass:objc_opt_class() animated:1];
+      delegate2 = [(BackupRestoreProgressController *)self delegate];
+      v8 = [(BFFFlowItemDelegate *)delegate2 popToBuddyControllerWithClass:objc_opt_class() animated:1];
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = BackupRestoreProgressController;
-  [(BackupRestoreProgressController *)&v6 viewDidAppear:a3];
-  v3 = [(BackupRestoreProgressController *)v9 alert];
+  [(BackupRestoreProgressController *)&v6 viewDidAppear:appear];
+  alert = [(BackupRestoreProgressController *)selfCopy alert];
 
-  if (v3)
+  if (alert)
   {
-    v4 = v9;
-    v5 = [(BackupRestoreProgressController *)v9 alert];
-    [(BackupRestoreProgressController *)v4 presentViewController:v5 animated:1 completion:0];
+    v4 = selfCopy;
+    alert2 = [(BackupRestoreProgressController *)selfCopy alert];
+    [(BackupRestoreProgressController *)v4 presentViewController:alert2 animated:1 completion:0];
   }
 }
 
-- (void)renewCredentialsThenStartRestore:(id)a3
+- (void)renewCredentialsThenStartRestore:(id)restore
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, restore);
   v3 = +[ACAccountStore defaultStore];
-  v22 = [v3 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
 
   v4 = +[BFFAppleAccountInfo primaryAccountInfo];
-  v5 = [v4 rawPassword];
-  [v22 _aa_setRawPassword:v5];
+  rawPassword = [v4 rawPassword];
+  [aa_primaryAppleAccount _aa_setRawPassword:rawPassword];
 
   v6 = +[BYSecurityInterface sharedInterface];
   LOBYTE(v4) = [v6 isICDPEnabledForPrimaryAccount];
@@ -198,13 +198,13 @@
     v26 = &__kCFBooleanTrue;
     v18 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v9 = +[ACAccountStore defaultStore];
-    v10 = v22;
+    v10 = aa_primaryAppleAccount;
     v11 = _NSConcreteStackBlock;
     v12 = -1073741824;
     v13 = 0;
     v14 = sub_10008CF88;
     v15 = &unk_10032B860;
-    v16 = v24;
+    v16 = selfCopy;
     v17 = location[0];
     [v9 renewCredentialsForAccount:v10 options:v18 completion:&v11];
 
@@ -215,26 +215,26 @@
 
   else
   {
-    [(BackupRestoreProgressController *)v24 startRestore:location[0]];
+    [(BackupRestoreProgressController *)selfCopy startRestore:location[0]];
   }
 
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&aa_primaryAppleAccount, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)startRestore:(id)a3
+- (void)startRestore:(id)restore
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, restore);
   v3 = dispatch_get_global_queue(0, 0);
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_10008D304;
   v8 = &unk_10032B838;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 
@@ -243,17 +243,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_failedToStartRestoreForSnapshotID:(unint64_t)a3 error:(id)a4
+- (void)_failedToStartRestoreForSnapshotID:(unint64_t)d error:(id)error
 {
-  v78 = self;
+  selfCopy = self;
   v77 = a2;
-  v76 = a3;
+  dCopy = d;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, error);
   v74 = 0;
-  v4 = [location domain];
+  domain = [location domain];
   v5 = 0;
-  if ([v4 isEqualToString:@"MBErrorDomain"])
+  if ([domain isEqualToString:@"MBErrorDomain"])
   {
     v5 = [location code] == 204;
   }
@@ -264,20 +264,20 @@
     v72 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = v76;
-      v7 = [v78 backupItem];
-      v8 = [v7 backupUDID];
-      sub_10008E19C(buf, v6, v8);
+      v6 = dCopy;
+      backupItem = [selfCopy backupItem];
+      backupUDID = [backupItem backupUDID];
+      sub_10008E19C(buf, v6, backupUDID);
       _os_log_impl(&_mh_execute_header, oslog, v72, "Unable to find the snapshot ID %ld in backup UDID %@; searching for one that is the same...", buf, 0x16u);
     }
 
     objc_storeStrong(&oslog, 0);
     v71 = 0;
-    v9 = [v78 backupItem];
-    v10 = [v9 backupUUID];
-    v11 = *(v78 + 13);
+    backupItem2 = [selfCopy backupItem];
+    backupUUID = [backupItem2 backupUUID];
+    v11 = *(selfCopy + 13);
     obj = 0;
-    v12 = [BuddyBackupUtilities backupForUUID:v10 withManager:v11 error:&obj];
+    v12 = [BuddyBackupUtilities backupForUUID:backupUUID withManager:v11 error:&obj];
     objc_storeStrong(&v71, obj);
     v70 = v12;
 
@@ -285,8 +285,8 @@
     {
       v62 = 0;
       memset(__b, 0, sizeof(__b));
-      v14 = [v70 snapshots];
-      v15 = [v14 countByEnumeratingWithState:__b objects:v81 count:16];
+      snapshots = [v70 snapshots];
+      v15 = [snapshots countByEnumeratingWithState:__b objects:v81 count:16];
       if (v15)
       {
         v16 = *__b[2];
@@ -296,15 +296,15 @@
           {
             if (*__b[2] != v16)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(snapshots);
             }
 
             v61 = *(__b[1] + 8 * i);
-            v18 = [v61 date];
-            v19 = [v78 backupItem];
-            v20 = [v19 snapshot];
-            v21 = [v20 date];
-            v22 = [v18 isEqualToDate:v21];
+            date = [v61 date];
+            backupItem3 = [selfCopy backupItem];
+            snapshot = [backupItem3 snapshot];
+            date2 = [snapshot date];
+            v22 = [date isEqualToDate:date2];
 
             if (v22)
             {
@@ -314,7 +314,7 @@
             }
           }
 
-          v15 = [v14 countByEnumeratingWithState:__b objects:v81 count:16];
+          v15 = [snapshots countByEnumeratingWithState:__b objects:v81 count:16];
         }
 
         while (v15);
@@ -329,42 +329,42 @@ LABEL_29:
         v54 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [v62 snapshotID];
-          v26 = [v78 backupItem];
-          v27 = [v26 backupUDID];
-          sub_10008E19C(v80, v25, v27);
+          snapshotID = [v62 snapshotID];
+          backupItem4 = [selfCopy backupItem];
+          backupUDID2 = [backupItem4 backupUDID];
+          sub_10008E19C(v80, snapshotID, backupUDID2);
           _os_log_impl(&_mh_execute_header, v55, v54, "Found snapshot ID %ld in backup UDID %@ that was the same!", v80, 0x16u);
         }
 
         objc_storeStrong(&v55, 0);
-        v28 = [v78 backupItem];
-        v29 = [v28 backup];
-        v30 = [RestorableBackupItem restorableBackupItemWithBackup:v29 snapshot:v62];
-        [v78 setBackupItem:v30];
+        backupItem5 = [selfCopy backupItem];
+        backup = [backupItem5 backup];
+        v30 = [RestorableBackupItem restorableBackupItemWithBackup:backup snapshot:v62];
+        [selfCopy setBackupItem:v30];
 
         v53 = _BYLoggingFacility();
         v52 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
         {
-          v31 = [v78 backupItem];
-          v32 = [v31 backupUDID];
-          sub_10007B2CC(v79, v32, [v62 snapshotID]);
+          backupItem6 = [selfCopy backupItem];
+          backupUDID3 = [backupItem6 backupUDID];
+          sub_10007B2CC(v79, backupUDID3, [v62 snapshotID]);
           _os_log_impl(&_mh_execute_header, v53, v52, "Starting iCloud Restore for backup UDID %@ and snapshot %ld...", v79, 0x16u);
         }
 
         objc_storeStrong(&v53, 0);
-        v33 = [v78 backupManager];
-        v34 = [v78 backupItem];
-        v35 = [v34 backupUDID];
-        v36 = [v62 snapshotID];
-        v37 = [v78 _createRestoreOptions];
+        backupManager = [selfCopy backupManager];
+        backupItem7 = [selfCopy backupItem];
+        backupUDID4 = [backupItem7 backupUDID];
+        snapshotID2 = [v62 snapshotID];
+        _createRestoreOptions = [selfCopy _createRestoreOptions];
         v46 = _NSConcreteStackBlock;
         v47 = -1073741824;
         v48 = 0;
         v49 = sub_10008E1BC;
         v50 = &unk_10032B6F0;
-        v51 = v78;
-        [v33 startRestoreForBackupUDID:v35 snapshotID:v36 options:v37 completion:&v46];
+        v51 = selfCopy;
+        [backupManager startRestoreForBackupUDID:backupUDID4 snapshotID:snapshotID2 options:_createRestoreOptions completion:&v46];
 
         v74 = 1;
         objc_storeStrong(&v51, 0);
@@ -403,9 +403,9 @@ LABEL_29:
 
         else if (v71)
         {
-          v66 = [v71 domain];
+          domain2 = [v71 domain];
           v65 = 1;
-          v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v66, [v71 code]);
+          v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain2, [v71 code]);
           v64 = v13;
           v63 = 1;
         }
@@ -441,7 +441,7 @@ LABEL_29:
     v41 = 0;
     v42 = sub_10008E410;
     v43 = &unk_10032B838;
-    v44 = v78;
+    v44 = selfCopy;
     v45 = location;
     dispatch_async(v38, &block);
 
@@ -454,14 +454,14 @@ LABEL_29:
 
 - (BOOL)hasAssertions
 {
-  v2 = [(BackupRestoreProgressController *)self processAssertion];
+  processAssertion = [(BackupRestoreProgressController *)self processAssertion];
   v3 = 0;
-  if (v2)
+  if (processAssertion)
   {
-    v4 = v2;
-    v5 = [(BackupRestoreProgressController *)self deviceLockAssertion];
-    v2 = v4;
-    v3 = v5 != 0;
+    v4 = processAssertion;
+    deviceLockAssertion = [(BackupRestoreProgressController *)self deviceLockAssertion];
+    processAssertion = v4;
+    v3 = deviceLockAssertion != 0;
   }
 
   return v3;
@@ -469,10 +469,10 @@ LABEL_29:
 
 - (BOOL)takeAssertions
 {
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BackupRestoreProgressController *)self processAssertion];
-  [(RBSAssertion *)v2 invalidate];
+  processAssertion = [(BackupRestoreProgressController *)self processAssertion];
+  [(RBSAssertion *)processAssertion invalidate];
 
   v3 = [RBSAssertion alloc];
   v4 = [RBSTarget targetWithPid:getpid()];
@@ -480,12 +480,12 @@ LABEL_29:
   v52 = v5;
   v6 = [NSArray arrayWithObjects:&v52 count:1];
   v7 = [v3 initWithExplanation:@"iCloud Restore" target:v4 attributes:v6];
-  [(BackupRestoreProgressController *)v45 setProcessAssertion:v7];
+  [(BackupRestoreProgressController *)selfCopy setProcessAssertion:v7];
 
   location[0] = 0;
-  v8 = [(BackupRestoreProgressController *)v45 processAssertion];
+  processAssertion2 = [(BackupRestoreProgressController *)selfCopy processAssertion];
   v43 = 0;
-  LOBYTE(v7) = [(RBSAssertion *)v8 acquireWithError:&v43];
+  LOBYTE(v7) = [(RBSAssertion *)processAssertion2 acquireWithError:&v43];
   objc_storeStrong(location, v43);
 
   if ((v7 ^ 1))
@@ -503,9 +503,9 @@ LABEL_29:
 
       else if (location[0])
       {
-        v40 = [location[0] domain];
+        domain = [location[0] domain];
         v39 = 1;
-        v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v40, [location[0] code]);
+        v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [location[0] code]);
         v38 = v9;
         v37 = 1;
       }
@@ -527,7 +527,7 @@ LABEL_29:
     }
 
     objc_storeStrong(&v42, 0);
-    [(BackupRestoreProgressController *)v45 releaseAssertions];
+    [(BackupRestoreProgressController *)selfCopy releaseAssertions];
     v46 = 0;
     v36 = 1;
   }
@@ -546,12 +546,12 @@ LABEL_29:
 
     objc_storeStrong(&v35, 0);
     v32 = 0;
-    if ([(BackupRestoreProgressController *)v45 softwareUpdateDidOccur])
+    if ([(BackupRestoreProgressController *)selfCopy softwareUpdateDidOccur])
     {
       v31 = objc_alloc_init(BYBuddyDaemonGeneralClient);
       [v31 cancelDataMigratorDeferredExit];
-      [(BackupRestoreProgressController *)v45 setDeviceLockAssertion:MKBDeviceLockAssertionConsume()];
-      if ([(BackupRestoreProgressController *)v45 deviceLockAssertion])
+      [(BackupRestoreProgressController *)selfCopy setDeviceLockAssertion:MKBDeviceLockAssertionConsume()];
+      if ([(BackupRestoreProgressController *)selfCopy deviceLockAssertion])
       {
         v30 = _BYLoggingFacility();
         v29 = OS_LOG_TYPE_DEFAULT;
@@ -599,8 +599,8 @@ LABEL_29:
       v48 = @"MKBAssertionKey";
       v49 = @"RestoreFromBackup";
       v23 = [NSDictionary dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-      [(BackupRestoreProgressController *)v45 setDeviceLockAssertion:MKBDeviceLockAssertion()];
-      if ([(BackupRestoreProgressController *)v45 deviceLockAssertion])
+      [(BackupRestoreProgressController *)selfCopy setDeviceLockAssertion:MKBDeviceLockAssertion()];
+      if ([(BackupRestoreProgressController *)selfCopy deviceLockAssertion])
       {
         v22 = _BYLoggingFacility();
         v21 = OS_LOG_TYPE_DEFAULT;
@@ -640,14 +640,14 @@ LABEL_29:
       objc_storeStrong(&v23, 0);
     }
 
-    if ([(BackupRestoreProgressController *)v45 deviceLockAssertion])
+    if ([(BackupRestoreProgressController *)selfCopy deviceLockAssertion])
     {
       v46 = 1;
     }
 
     else
     {
-      [(BackupRestoreProgressController *)v45 releaseAssertions];
+      [(BackupRestoreProgressController *)selfCopy releaseAssertions];
       CFRelease(v32);
       v46 = 0;
     }
@@ -661,11 +661,11 @@ LABEL_29:
 
 - (void)releaseAssertions
 {
-  v14 = self;
+  selfCopy = self;
   oslog[1] = a2;
-  v2 = [(BackupRestoreProgressController *)self processAssertion];
+  processAssertion = [(BackupRestoreProgressController *)self processAssertion];
 
-  if (v2)
+  if (processAssertion)
   {
     oslog[0] = _BYLoggingFacility();
     v12 = OS_LOG_TYPE_DEFAULT;
@@ -678,13 +678,13 @@ LABEL_29:
     }
 
     objc_storeStrong(oslog, 0);
-    v5 = [(BackupRestoreProgressController *)v14 processAssertion];
-    [(RBSAssertion *)v5 invalidate];
+    processAssertion2 = [(BackupRestoreProgressController *)selfCopy processAssertion];
+    [(RBSAssertion *)processAssertion2 invalidate];
 
-    [(BackupRestoreProgressController *)v14 setProcessAssertion:0];
+    [(BackupRestoreProgressController *)selfCopy setProcessAssertion:0];
   }
 
-  if ([(BackupRestoreProgressController *)v14 deviceLockAssertion])
+  if ([(BackupRestoreProgressController *)selfCopy deviceLockAssertion])
   {
     v10 = _BYLoggingFacility();
     v9 = OS_LOG_TYPE_DEFAULT;
@@ -697,20 +697,20 @@ LABEL_29:
     }
 
     objc_storeStrong(&v10, 0);
-    CFRelease([(BackupRestoreProgressController *)v14 deviceLockAssertion]);
-    [(BackupRestoreProgressController *)v14 setDeviceLockAssertion:0];
+    CFRelease([(BackupRestoreProgressController *)selfCopy deviceLockAssertion]);
+    [(BackupRestoreProgressController *)selfCopy setDeviceLockAssertion:0];
   }
 }
 
-- (void)setAlert:(id)a3
+- (void)setAlert:(id)alert
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (!v4->_alert)
+  objc_storeStrong(location, alert);
+  if (!selfCopy->_alert)
   {
-    objc_storeStrong(&v4->_alert, location[0]);
+    objc_storeStrong(&selfCopy->_alert, location[0]);
   }
 
   objc_storeStrong(location, 0);
@@ -738,9 +738,9 @@ LABEL_29:
   {
     v4 = +[NSBundle mainBundle];
     v5 = [(NSBundle *)v4 localizedStringForKey:@"WAITING_FOR_BACKUP" value:&stru_10032F900 table:@"RestoreFromBackup"];
-    v6 = [(BackupRestoreProgressController *)self backupDeviceController];
-    v7 = [(BFFBackupDeviceController *)v6 backingUpDeviceName];
-    v8 = [NSString localizedStringWithFormat:v5, v7];
+    backupDeviceController = [(BackupRestoreProgressController *)self backupDeviceController];
+    backingUpDeviceName = [(BFFBackupDeviceController *)backupDeviceController backingUpDeviceName];
+    v8 = [NSString localizedStringWithFormat:v5, backingUpDeviceName];
     [(BackupRestoreProgressController *)self setTitle:v8];
   }
 
@@ -752,45 +752,45 @@ LABEL_29:
   }
 }
 
-- (id)latestSnapshotForSourceDevice:(id *)a3
+- (id)latestSnapshotForSourceDevice:(id *)device
 {
-  v4 = [(BackupRestoreProgressController *)self backupDeviceController];
-  v5 = [(BFFBackupDeviceController *)v4 backingUpDeviceUUID];
-  v6 = [(BackupRestoreProgressController *)self backupDeviceController];
-  v7 = [(BFFBackupDeviceController *)v6 completionDate];
-  v8 = [(BackupRestoreProgressController *)self latestSnapshotForBackupUUID:v5 backupCompletedDate:v7 lastSnapshotDate:self->_lastSourceDeviceSnapshotDate error:a3];
+  backupDeviceController = [(BackupRestoreProgressController *)self backupDeviceController];
+  backingUpDeviceUUID = [(BFFBackupDeviceController *)backupDeviceController backingUpDeviceUUID];
+  backupDeviceController2 = [(BackupRestoreProgressController *)self backupDeviceController];
+  completionDate = [(BFFBackupDeviceController *)backupDeviceController2 completionDate];
+  v8 = [(BackupRestoreProgressController *)self latestSnapshotForBackupUUID:backingUpDeviceUUID backupCompletedDate:completionDate lastSnapshotDate:self->_lastSourceDeviceSnapshotDate error:device];
 
   return v8;
 }
 
-- (id)latestSnapshotForBackupUUID:(id)a3 lastSnapshotDate:(id)a4 error:(id *)a5
+- (id)latestSnapshotForBackupUUID:(id)d lastSnapshotDate:(id)date error:(id *)error
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v7 = [(BackupRestoreProgressController *)v11 latestSnapshotForBackupUUID:location[0] backupCompletedDate:0 lastSnapshotDate:v9 error:a5];
+  objc_storeStrong(&v9, date);
+  v7 = [(BackupRestoreProgressController *)selfCopy latestSnapshotForBackupUUID:location[0] backupCompletedDate:0 lastSnapshotDate:v9 error:error];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 
   return v7;
 }
 
-- (id)latestSnapshotForBackupUUID:(id)a3 backupCompletedDate:(id)a4 lastSnapshotDate:(id)a5 error:(id *)a6
+- (id)latestSnapshotForBackupUUID:(id)d backupCompletedDate:(id)date lastSnapshotDate:(id)snapshotDate error:(id *)error
 {
-  v73 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v71 = 0;
-  objc_storeStrong(&v71, a4);
+  objc_storeStrong(&v71, date);
   v70 = 0;
-  objc_storeStrong(&v70, a5);
-  v69 = a6;
+  objc_storeStrong(&v70, snapshotDate);
+  errorCopy = error;
   v68 = 0;
-  backupManager = v73->_backupManager;
+  backupManager = selfCopy->_backupManager;
   obj = 0;
   v10 = [BuddyBackupUtilities backupForUUID:location[0] withManager:backupManager error:&obj];
   objc_storeStrong(&v68, obj);
@@ -810,9 +810,9 @@ LABEL_29:
 
       else if (v68)
       {
-        v63 = [v68 domain];
+        domain = [v68 domain];
         v62 = 1;
-        v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v63, [v68 code]);
+        v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v68 code]);
         v61 = v11;
         v60 = 1;
       }
@@ -834,10 +834,10 @@ LABEL_29:
     }
 
     objc_storeStrong(&oslog, 0);
-    if (v69)
+    if (errorCopy)
     {
       v12 = v68;
-      *v69 = v12;
+      *errorCopy = v12;
     }
 
 LABEL_61:
@@ -856,11 +856,11 @@ LABEL_61:
 
   objc_storeStrong(&v59, 0);
   v57 = 0;
-  v13 = [v67 snapshots];
+  snapshots = [v67 snapshots];
   v14 = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:0];
   v81 = v14;
   v15 = [NSArray arrayWithObjects:&v81 count:1];
-  v56 = [v13 sortedArrayUsingDescriptors:v15];
+  v56 = [snapshots sortedArrayUsingDescriptors:v15];
 
   if ([v56 count])
   {
@@ -882,8 +882,8 @@ LABEL_61:
           v55 = *(__b[1] + 8 * i);
           if ([v55 state] == 3 && +[BuddyBackupUtilities snapshotIsCompatibleWithCurrentSystemVersion:](BuddyBackupUtilities, "snapshotIsCompatibleWithCurrentSystemVersion:", v55))
           {
-            v20 = [v55 date];
-            v21 = [v20 compare:v71];
+            date = [v55 date];
+            v21 = [date compare:v71];
 
             v53 = v21;
             if (v71 && v53 <= 1)
@@ -894,9 +894,9 @@ LABEL_61:
               {
                 v22 = v52;
                 v23 = v51;
-                v24 = [v55 snapshotID];
-                v25 = [v55 date];
-                sub_10008FCD8(v79, v24, v25, v71);
+                snapshotID = [v55 snapshotID];
+                date2 = [v55 date];
+                sub_10008FCD8(v79, snapshotID, date2, v71);
                 _os_log_impl(&_mh_execute_header, v22, v23, "Choosing snapshot ID %ld (%@) as it is the same or newer than the backup the source device just made (%@)", v79, 0x20u);
               }
 
@@ -910,9 +910,9 @@ LABEL_61:
               v26 = 0;
               if (v70)
               {
-                v50 = [v55 date];
+                date3 = [v55 date];
                 v49 = 1;
-                v26 = [v50 compare:v70] == 1;
+                v26 = [date3 compare:v70] == 1;
               }
 
               if (v49)
@@ -927,9 +927,9 @@ LABEL_61:
                 {
                   v27 = v48;
                   v28 = v47;
-                  v29 = [v55 snapshotID];
-                  v30 = [v55 date];
-                  sub_10008FCD8(v78, v29, v30, v70);
+                  snapshotID2 = [v55 snapshotID];
+                  date4 = [v55 date];
+                  sub_10008FCD8(v78, snapshotID2, date4, v70);
                   _os_log_impl(&_mh_execute_header, v27, v28, "Choosing snapshot ID %ld (%@) as it is newer than the reported newest backup (%@)", v78, 0x20u);
                 }
 
@@ -945,9 +945,9 @@ LABEL_61:
                 {
                   v31 = v46;
                   v32 = v45;
-                  v33 = [v55 snapshotID];
-                  v34 = [v55 date];
-                  sub_10008FD00(v77, v33, v34, v70, v71);
+                  snapshotID3 = [v55 snapshotID];
+                  date5 = [v55 date];
+                  sub_10008FD00(v77, snapshotID3, date5, v70, v71);
                   _os_log_impl(&_mh_execute_header, v31, v32, "Not picking snapshot ID %ld (%@) as it is older than both the existing backup (%@) and the new backup (%@)", v77, 0x2Au);
                 }
 
@@ -1010,10 +1010,10 @@ LABEL_51:
 
   else
   {
-    if (v69)
+    if (errorCopy)
     {
       v36 = [NSError errorWithDomain:@"BackupRestoreProgressErrorDomain" code:-1 userInfo:0];
-      *v69 = v36;
+      *errorCopy = v36;
     }
 
     v44 = 0;
@@ -1039,22 +1039,22 @@ LABEL_62:
 
 - (void)reattemptBackup
 {
-  v17 = self;
+  selfCopy = self;
   v16[1] = a2;
   if ([(BackupRestoreProgressController *)self takeAssertions])
   {
-    v17->_backupThenRestore = 1;
-    v17->_backupPercentComplete = 0.0;
-    [(BackupRestoreProgressController *)v17 updateProgress];
-    [(BackupRestoreProgressController *)v17 updateProgressText];
-    [(BackupRestoreProgressController *)v17 setTimeRemainingEstimate:1.79769313e308];
+    selfCopy->_backupThenRestore = 1;
+    selfCopy->_backupPercentComplete = 0.0;
+    [(BackupRestoreProgressController *)selfCopy updateProgress];
+    [(BackupRestoreProgressController *)selfCopy updateProgressText];
+    [(BackupRestoreProgressController *)selfCopy setTimeRemainingEstimate:1.79769313e308];
     v2 = dispatch_get_global_queue(0, 0);
     block = _NSConcreteStackBlock;
     v12 = -1073741824;
     v13 = 0;
     v14 = sub_10008FF58;
     v15 = &unk_10032B0D0;
-    v16[0] = v17;
+    v16[0] = selfCopy;
     dispatch_async(v2, &block);
 
     objc_storeStrong(v16, 0);
@@ -1062,7 +1062,7 @@ LABEL_62:
 
   else
   {
-    objc_initWeak(&location, v17);
+    objc_initWeak(&location, selfCopy);
     v3 = _NSConcreteStackBlock;
     v4 = -1073741824;
     v5 = 0;
@@ -1070,20 +1070,20 @@ LABEL_62:
     v7 = &unk_10032AF58;
     objc_copyWeak(&v8, &location);
     v9 = [BuddyRestoreHelpers alertForBackupError:0 forBackup:1 okButtonAction:&v3];
-    [(BackupRestoreProgressController *)v17 _presentAlert:v9];
+    [(BackupRestoreProgressController *)selfCopy _presentAlert:v9];
     objc_storeStrong(&v9, 0);
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)handleBackupFailed:(id)a3
+- (void)handleBackupFailed:(id)failed
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BackupRestoreProgressController *)v12 releaseAssertions];
+  objc_storeStrong(location, failed);
+  [(BackupRestoreProgressController *)selfCopy releaseAssertions];
   v3 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
@@ -1091,7 +1091,7 @@ LABEL_62:
   v7 = sub_100090270;
   v8 = &unk_10032B838;
   v9 = location[0];
-  v10 = v12;
+  v10 = selfCopy;
   dispatch_async(v3, &block);
 
   objc_storeStrong(&v10, 0);
@@ -1099,52 +1099,52 @@ LABEL_62:
   objc_storeStrong(location, 0);
 }
 
-- (void)_traceAnalyticsForGuideUserToBackup:(id)a3 foundBackup:(BOOL)a4 polledForBackup:(BOOL)a5
+- (void)_traceAnalyticsForGuideUserToBackup:(id)backup foundBackup:(BOOL)foundBackup polledForBackup:(BOOL)forBackup
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = a4;
-  v15 = a5;
+  objc_storeStrong(location, backup);
+  foundBackupCopy = foundBackup;
+  forBackupCopy = forBackup;
   v19[0] = @"success";
   v7 = [NSNumber numberWithInt:location[0] == 0];
   v20[0] = v7;
   v19[1] = @"foundBackup";
-  v8 = [NSNumber numberWithBool:a4];
+  v8 = [NSNumber numberWithBool:foundBackup];
   v20[1] = v8;
   v19[2] = @"polledForBackup";
-  v9 = [NSNumber numberWithBool:v15];
+  v9 = [NSNumber numberWithBool:forBackupCopy];
   v20[2] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:3];
   v14 = [NSMutableDictionary dictionaryWithDictionary:v10];
 
   if (location[0])
   {
-    v11 = [location[0] domain];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (%ld)", v11, [location[0] code]);
+    domain = [location[0] domain];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (%ld)", domain, [location[0] code]);
     [v14 setObject:v12 forKeyedSubscript:@"error"];
   }
 
-  v13 = [(BackupRestoreProgressController *)v18 analyticsManager];
-  [(BYAnalyticsManager *)v13 addEvent:@"com.apple.setupassistant.ios.guideUserToBackup" withPayload:v14 persist:1];
+  analyticsManager = [(BackupRestoreProgressController *)selfCopy analyticsManager];
+  [(BYAnalyticsManager *)analyticsManager addEvent:@"com.apple.setupassistant.ios.guideUserToBackup" withPayload:v14 persist:1];
 
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_presentAlert:(id)a3
+- (void)_presentAlert:(id)alert
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, alert);
   v12 = _NSConcreteStackBlock;
   v13 = -1073741824;
   v14 = 0;
   v15 = sub_100091690;
   v16 = &unk_10032B838;
-  v17 = v21;
+  v17 = selfCopy;
   v18 = location[0];
   v19 = objc_retainBlock(&v12);
   v3 = +[NSThread currentThread];
@@ -1177,49 +1177,49 @@ LABEL_62:
 
 - (void)_attemptRestore
 {
-  v53 = self;
+  selfCopy = self;
   location[1] = a2;
   if ([(BackupRestoreProgressController *)self hasAssertions])
   {
-    v14 = [(BackupRestoreProgressController *)v53 backupDeviceController];
-    [(BFFBackupDeviceController *)v14 setDelegate:v53];
+    backupDeviceController = [(BackupRestoreProgressController *)selfCopy backupDeviceController];
+    [(BFFBackupDeviceController *)backupDeviceController setDelegate:selfCopy];
 
-    v15 = [(BackupRestoreProgressController *)v53 backupDeviceController];
-    v16 = [(BFFBackupDeviceController *)v15 isBackingUp];
+    backupDeviceController2 = [(BackupRestoreProgressController *)selfCopy backupDeviceController];
+    isBackingUp = [(BFFBackupDeviceController *)backupDeviceController2 isBackingUp];
     v32 = 0;
-    v17 = 1;
-    if ((v16 & 1) == 0)
+    backupStateUnknown = 1;
+    if ((isBackingUp & 1) == 0)
     {
-      v33 = [(BackupRestoreProgressController *)v53 backupDeviceController];
+      backupDeviceController3 = [(BackupRestoreProgressController *)selfCopy backupDeviceController];
       v32 = 1;
-      v17 = [v33 backupStateUnknown];
+      backupStateUnknown = [backupDeviceController3 backupStateUnknown];
     }
 
-    v53->_backupThenRestore = v17 & 1;
+    selfCopy->_backupThenRestore = backupStateUnknown & 1;
     if (v32)
     {
     }
 
-    if (v53->_backupThenRestore)
+    if (selfCopy->_backupThenRestore)
     {
-      v18 = [(BackupRestoreProgressController *)v53 backupItem];
-      v19 = [(RestorableBackupItem *)v18 snapshot];
-      v20 = [(MBSnapshot *)v19 date];
-      lastSourceDeviceSnapshotDate = v53->_lastSourceDeviceSnapshotDate;
-      v53->_lastSourceDeviceSnapshotDate = v20;
+      backupItem = [(BackupRestoreProgressController *)selfCopy backupItem];
+      snapshot = [(RestorableBackupItem *)backupItem snapshot];
+      date = [(MBSnapshot *)snapshot date];
+      lastSourceDeviceSnapshotDate = selfCopy->_lastSourceDeviceSnapshotDate;
+      selfCopy->_lastSourceDeviceSnapshotDate = date;
     }
 
-    v22 = [(BackupRestoreProgressController *)v53 passcodeCacheManager];
-    [(BYPasscodeCacheManager *)v22 persistPasscodeStash];
+    passcodeCacheManager = [(BackupRestoreProgressController *)selfCopy passcodeCacheManager];
+    [(BYPasscodeCacheManager *)passcodeCacheManager persistPasscodeStash];
 
-    objc_initWeak(&v31, v53);
+    objc_initWeak(&v31, selfCopy);
     v23 = dispatch_get_global_queue(0, 0);
     block = _NSConcreteStackBlock;
     v25 = -1073741824;
     v26 = 0;
     v27 = sub_100091F3C;
     v28 = &unk_10032B8B0;
-    v29 = v53;
+    v29 = selfCopy;
     objc_copyWeak(&v30, &v31);
     dispatch_async(v23, &block);
 
@@ -1241,7 +1241,7 @@ LABEL_62:
     }
 
     objc_storeStrong(location, 0);
-    objc_initWeak(&from, v53);
+    objc_initWeak(&from, selfCopy);
     v4 = +[NSBundle mainBundle];
     v5 = [(NSBundle *)v4 localizedStringForKey:@"BACKUP_FAILED_ALERT_TITLE" value:&stru_10032F900 table:@"RestoreFromBackup"];
     v48 = [UIAlertController alertControllerWithTitle:v5 message:&stru_10032F900 preferredStyle:1];
@@ -1272,7 +1272,7 @@ LABEL_62:
     [v10 addAction:v13];
     v34 = 0;
 
-    [(BackupRestoreProgressController *)v53 _presentAlert:v48];
+    [(BackupRestoreProgressController *)selfCopy _presentAlert:v48];
     objc_destroyWeak(&v40);
     objc_destroyWeak(&v47);
     objc_storeStrong(&v48, 0);
@@ -1280,14 +1280,14 @@ LABEL_62:
   }
 }
 
-- (void)restoreFailedWithError:(id)a3
+- (void)restoreFailedWithError:(id)error
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BackupRestoreProgressController *)v13 setRestoreState:2];
-  objc_initWeak(&from, v13);
+  objc_storeStrong(location, error);
+  [(BackupRestoreProgressController *)selfCopy setRestoreState:2];
+  objc_initWeak(&from, selfCopy);
   v3 = location[0];
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
@@ -1296,7 +1296,7 @@ LABEL_62:
   v8 = &unk_10032AF58;
   objc_copyWeak(&v9, &from);
   v10 = [BuddyRestoreHelpers alertForBackupError:v3 okButtonAction:&v4];
-  [(BackupRestoreProgressController *)v13 _presentAlert:v10];
+  [(BackupRestoreProgressController *)selfCopy _presentAlert:v10];
   objc_storeStrong(&v10, 0);
   objc_destroyWeak(&v9);
   objc_destroyWeak(&from);
@@ -1305,12 +1305,12 @@ LABEL_62:
 
 - (id)waitForBackupToComplete
 {
-  v31 = self;
+  selfCopy = self;
   v30[1] = a2;
   v30[0] = 0;
   location = 0;
-  v2 = [(BackupRestoreProgressController *)self backupDeviceController];
-  [(BFFBackupDeviceController *)v2 timeRemaining];
+  backupDeviceController = [(BackupRestoreProgressController *)self backupDeviceController];
+  [(BFFBackupDeviceController *)backupDeviceController timeRemaining];
   v4 = v3;
 
   v28 = v4;
@@ -1338,7 +1338,7 @@ LABEL_62:
   for (i = 0.0; i < *&v27; i = i + v26)
   {
     obj = location;
-    v6 = [(BackupRestoreProgressController *)v31 latestSnapshotForSourceDevice:&obj, i];
+    v6 = [(BackupRestoreProgressController *)selfCopy latestSnapshotForSourceDevice:&obj, i];
     objc_storeStrong(&location, obj);
     v7 = v30[0];
     v30[0] = v6;
@@ -1366,9 +1366,9 @@ LABEL_62:
 
         else if (location)
         {
-          v19 = [location domain];
+          domain = [location domain];
           v18 = 1;
-          v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v19, [location code]);
+          v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [location code]);
           v17 = v11;
           v16 = 1;
         }
@@ -1412,13 +1412,13 @@ LABEL_62:
 
 - (id)_createRestoreOptions
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = objc_alloc_init(MBStartRestoreOptions);
-  v2 = [(BackupRestoreProgressController *)v8 pendingRestoreState];
-  v3 = [(BuddyPendingRestoreState *)v2 allowCellularNetwork];
+  pendingRestoreState = [(BackupRestoreProgressController *)selfCopy pendingRestoreState];
+  allowCellularNetwork = [(BuddyPendingRestoreState *)pendingRestoreState allowCellularNetwork];
 
-  if (v3)
+  if (allowCellularNetwork)
   {
     v4 = +[MBCellularAccess inexpensiveCellularAccess];
     [location[0] setCellularAccess:v4];
@@ -1438,14 +1438,14 @@ LABEL_62:
   }
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BackupRestoreProgressController *)v4 takeAssertions];
-  [(BackupRestoreProgressController *)v4 _attemptRestore];
+  objc_storeStrong(location, completion);
+  [(BackupRestoreProgressController *)selfCopy takeAssertions];
+  [(BackupRestoreProgressController *)selfCopy _attemptRestore];
   if (location[0])
   {
     (*(location[0] + 2))(location[0], 1);
@@ -1454,24 +1454,24 @@ LABEL_62:
   objc_storeStrong(location, 0);
 }
 
-- (void)backupDeviceController:(id)a3 backupCompletedWithError:(id)a4
+- (void)backupDeviceController:(id)controller backupCompletedWithError:(id)error
 {
-  v76 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v74 = 0;
-  objc_storeStrong(&v74, a4);
+  objc_storeStrong(&v74, error);
   if (v74)
   {
-    v5 = [v74 domain];
+    domain = [v74 domain];
     v6 = 0;
-    if (v5 == @"BFFBackupDeviceErrorDomain")
+    if (domain == @"BFFBackupDeviceErrorDomain")
     {
-      v7 = v5;
-      v8 = [v74 code];
-      v5 = v7;
-      v6 = v8 == -1;
+      v7 = domain;
+      code = [v74 code];
+      domain = v7;
+      v6 = code == -1;
     }
 
     if (v6)
@@ -1487,11 +1487,11 @@ LABEL_62:
       }
 
       objc_storeStrong(&v73, 0);
-      v70 = [(BackupRestoreProgressController *)v76 waitForBackupToComplete];
-      [(BackupRestoreProgressController *)v76 _traceAnalyticsForGuideUserToBackup:0 foundBackup:v70 != 0 polledForBackup:1];
-      if (v70)
+      waitForBackupToComplete = [(BackupRestoreProgressController *)selfCopy waitForBackupToComplete];
+      [(BackupRestoreProgressController *)selfCopy _traceAnalyticsForGuideUserToBackup:0 foundBackup:waitForBackupToComplete != 0 polledForBackup:1];
+      if (waitForBackupToComplete)
       {
-        [(BackupRestoreProgressController *)v76 renewCredentialsThenStartRestore:v70];
+        [(BackupRestoreProgressController *)selfCopy renewCredentialsThenStartRestore:waitForBackupToComplete];
       }
 
       else
@@ -1507,10 +1507,10 @@ LABEL_62:
         }
 
         objc_storeStrong(&v69, 0);
-        [(BackupRestoreProgressController *)v76 handleBackupFailed:v74];
+        [(BackupRestoreProgressController *)selfCopy handleBackupFailed:v74];
       }
 
-      objc_storeStrong(&v70, 0);
+      objc_storeStrong(&waitForBackupToComplete, 0);
     }
 
     else
@@ -1528,9 +1528,9 @@ LABEL_62:
 
         else if (v74)
         {
-          v64 = [v74 domain];
+          domain2 = [v74 domain];
           v63 = 1;
-          v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v64, [v74 code]);
+          v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain2, [v74 code]);
           v62 = v13;
           v61 = 1;
         }
@@ -1552,24 +1552,24 @@ LABEL_62:
       }
 
       objc_storeStrong(&v66, 0);
-      [(BackupRestoreProgressController *)v76 _traceAnalyticsForGuideUserToBackup:v74 foundBackup:0 polledForBackup:0];
-      [(BackupRestoreProgressController *)v76 handleBackupFailed:v74];
+      [(BackupRestoreProgressController *)selfCopy _traceAnalyticsForGuideUserToBackup:v74 foundBackup:0 polledForBackup:0];
+      [(BackupRestoreProgressController *)selfCopy handleBackupFailed:v74];
     }
   }
 
   else
   {
-    v14 = [(BackupRestoreProgressController *)v76 proximitySetupController];
-    [(ProximitySetupController *)v14 setupFinished];
+    proximitySetupController = [(BackupRestoreProgressController *)selfCopy proximitySetupController];
+    [(ProximitySetupController *)proximitySetupController setupFinished];
 
-    v76->_backupPercentComplete = 1.0;
+    selfCopy->_backupPercentComplete = 1.0;
     v15 = &_dispatch_main_q;
     block = _NSConcreteStackBlock;
     v56 = -1073741824;
     v57 = 0;
     v58 = sub_100093DD8;
     v59 = &unk_10032B0D0;
-    v60 = v76;
+    v60 = selfCopy;
     dispatch_async(v15, &block);
 
     oslog = _BYLoggingFacility();
@@ -1601,7 +1601,7 @@ LABEL_62:
     do
     {
       obj = v48;
-      v20 = [(BackupRestoreProgressController *)v76 latestSnapshotForSourceDevice:&obj];
+      v20 = [(BackupRestoreProgressController *)selfCopy latestSnapshotForSourceDevice:&obj];
       objc_storeStrong(&v48, obj);
       v21 = v47;
       v47 = v20;
@@ -1627,9 +1627,9 @@ LABEL_62:
 
         else if (v48)
         {
-          v42 = [v48 domain];
+          domain3 = [v48 domain];
           v41 = 1;
-          v25 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v42, [v48 code]);
+          v25 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain3, [v48 code]);
           v40 = v25;
           v39 = 1;
         }
@@ -1667,10 +1667,10 @@ LABEL_62:
     }
 
     while (v46 < 3);
-    [(BackupRestoreProgressController *)v76 _traceAnalyticsForGuideUserToBackup:0 foundBackup:v47 != 0 polledForBackup:0];
+    [(BackupRestoreProgressController *)selfCopy _traceAnalyticsForGuideUserToBackup:0 foundBackup:v47 != 0 polledForBackup:0];
     if (v47)
     {
-      [(BackupRestoreProgressController *)v76 renewCredentialsThenStartRestore:v47];
+      [(BackupRestoreProgressController *)selfCopy renewCredentialsThenStartRestore:v47];
     }
 
     else
@@ -1681,7 +1681,7 @@ LABEL_62:
       v31 = 0;
       v32 = sub_100093E04;
       v33 = &unk_10032B838;
-      v34 = v76;
+      v34 = selfCopy;
       v35 = v48;
       dispatch_async(v28, &v29);
 
@@ -1698,55 +1698,55 @@ LABEL_62:
   objc_storeStrong(location, 0);
 }
 
-- (void)backupProgress:(double)a3 estimatedTimeRemaining:(unint64_t)a4
+- (void)backupProgress:(double)progress estimatedTimeRemaining:(unint64_t)remaining
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = a4;
+  progressCopy = progress;
+  remainingCopy = remaining;
   v4 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_100094054;
   v9 = &unk_10032B950;
-  v10[1] = v11;
-  v10[0] = v14;
-  v10[2] = *&v12;
+  v10[1] = remainingCopy;
+  v10[0] = selfCopy;
+  v10[2] = *&progressCopy;
   dispatch_async(v4, &block);
 
   objc_storeStrong(v10, 0);
 }
 
-- (void)manager:(id)a3 didUpdateProgress:(float)a4 estimatedTimeRemaining:(unint64_t)a5
+- (void)manager:(id)manager didUpdateProgress:(float)progress estimatedTimeRemaining:(unint64_t)remaining
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = a4;
-  v15 = a5;
+  objc_storeStrong(location, manager);
+  progressCopy = progress;
+  remainingCopy = remaining;
   v7 = &_dispatch_main_q;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_1000941D8;
   v12 = &unk_10032B978;
-  v13[1] = v15;
-  v13[0] = v18;
-  v14 = a4;
+  v13[1] = remainingCopy;
+  v13[0] = selfCopy;
+  progressCopy2 = progress;
   dispatch_async(v7, &v8);
 
   objc_storeStrong(v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)managerDidFinishRestore:(id)a3
+- (void)managerDidFinishRestore:(id)restore
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, restore);
   v27 = _BYLoggingFacility();
   v26 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -1758,9 +1758,9 @@ LABEL_62:
   }
 
   objc_storeStrong(&v27, 0);
-  [(BackupRestoreProgressController *)v29 setRestoreState:4];
-  v5 = [(BackupRestoreProgressController *)v29 prepareForCloudRestoreRebootBlock];
-  v5[2](v5);
+  [(BackupRestoreProgressController *)selfCopy setRestoreState:4];
+  prepareForCloudRestoreRebootBlock = [(BackupRestoreProgressController *)selfCopy prepareForCloudRestoreRebootBlock];
+  prepareForCloudRestoreRebootBlock[2](prepareForCloudRestoreRebootBlock);
 
   oslog = _BYLoggingFacility();
   v23 = OS_LOG_TYPE_DEFAULT;
@@ -1773,7 +1773,7 @@ LABEL_62:
   }
 
   objc_storeStrong(&oslog, 0);
-  [(BackupRestoreProgressController *)v29 deviceLockAssertion];
+  [(BackupRestoreProgressController *)selfCopy deviceLockAssertion];
   if (MKBDeviceLockAssertionPromote())
   {
     v20 = _BYLoggingFacility();
@@ -1795,7 +1795,7 @@ LABEL_62:
   v13 = 0;
   v14 = sub_1000944DC;
   v15 = &unk_10032B838;
-  v16 = v29;
+  v16 = selfCopy;
   v17 = location[0];
   dispatch_async(v10, &v11);
 
@@ -1804,15 +1804,15 @@ LABEL_62:
   objc_storeStrong(location, 0);
 }
 
-- (void)manager:(id)a3 didFailRestoreWithError:(id)a4
+- (void)manager:(id)manager didFailRestoreWithError:(id)error
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  if ([(BackupRestoreProgressController *)v24 restoreState]!= 3)
+  objc_storeStrong(&v22, error);
+  if ([(BackupRestoreProgressController *)selfCopy restoreState]!= 3)
   {
     oslog = _BYLoggingFacility();
     v20 = OS_LOG_TYPE_ERROR;
@@ -1827,9 +1827,9 @@ LABEL_62:
 
       else if (v22)
       {
-        v19 = [v22 domain];
+        domain = [v22 domain];
         v18 = 1;
-        v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v19, [v22 code]);
+        v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v22 code]);
         v17 = v5;
         v16 = 1;
       }
@@ -1851,13 +1851,13 @@ LABEL_62:
     }
 
     objc_storeStrong(&oslog, 0);
-    v6 = [v22 domain];
+    domain2 = [v22 domain];
     backupThenRestore = 0;
-    if ([v6 isEqualToString:@"MBErrorDomain"])
+    if ([domain2 isEqualToString:@"MBErrorDomain"])
     {
       if ([v22 code] == 204 || (backupThenRestore = 0, objc_msgSend(v22, "code") == 205))
       {
-        backupThenRestore = v24->_backupThenRestore;
+        backupThenRestore = selfCopy->_backupThenRestore;
       }
     }
 
@@ -1869,7 +1869,7 @@ LABEL_62:
       v11 = 0;
       v12 = sub_100094C34;
       v13 = &unk_10032B838;
-      v14 = v24;
+      v14 = selfCopy;
       v15 = v22;
       dispatch_async(v8, &block);
 
@@ -1879,22 +1879,22 @@ LABEL_62:
 
     else if ([v22 code] != 202)
     {
-      [(BackupRestoreProgressController *)v24 restoreFailedWithError:v22];
+      [(BackupRestoreProgressController *)selfCopy restoreFailedWithError:v22];
     }
   }
 
-  [(BackupRestoreProgressController *)v24 releaseAssertions];
+  [(BackupRestoreProgressController *)selfCopy releaseAssertions];
   objc_storeStrong(&v22, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)managerDidLoseConnectionToService:(id)a3
+- (void)managerDidLoseConnectionToService:(id)service
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(BackupRestoreProgressController *)v14 restoreState]== 1)
+  objc_storeStrong(location, service);
+  if ([(BackupRestoreProgressController *)selfCopy restoreState]== 1)
   {
     oslog = _BYLoggingFacility();
     v11 = 16;
@@ -1907,7 +1907,7 @@ LABEL_62:
     }
 
     objc_storeStrong(&oslog, 0);
-    [(BackupRestoreProgressController *)v14 manager:location[0] didFailRestoreWithError:0];
+    [(BackupRestoreProgressController *)selfCopy manager:location[0] didFailRestoreWithError:0];
   }
 
   else

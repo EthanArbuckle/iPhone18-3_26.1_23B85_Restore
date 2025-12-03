@@ -5,76 +5,76 @@
 - (BOOL)shouldGenerateLongTermPrivacyKey;
 - (BOOL)shouldGenerateTransactionKey;
 - (BOOL)shouldSignFidoChallenge;
-- (PKPaymentEligibilityResponse)initWithData:(id)a3;
+- (PKPaymentEligibilityResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentEligibilityResponse
 
-- (PKPaymentEligibilityResponse)initWithData:(id)a3
+- (PKPaymentEligibilityResponse)initWithData:(id)data
 {
   v114 = *MEMORY[0x1E69E9840];
   v108.receiver = self;
   v108.super_class = PKPaymentEligibilityResponse;
-  v3 = [(PKWebServiceResponse *)&v108 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v108 initWithData:data];
   if (!v3)
   {
     return 0;
   }
 
   v4 = v3;
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v5 objectForKeyedSubscript:@"eligibilityStatus"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([jSONObject objectForKeyedSubscript:@"eligibilityStatus"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [v5 objectForKeyedSubscript:@"identifier"];
+    v7 = [jSONObject objectForKeyedSubscript:@"identifier"];
     v8 = [v7 copy];
     identifier = v4->_identifier;
     v4->_identifier = v8;
 
-    v10 = [v5 objectForKeyedSubscript:@"eligibilityStatus"];
+    v10 = [jSONObject objectForKeyedSubscript:@"eligibilityStatus"];
     v4->_eligibilityStatus = [v10 integerValue];
 
-    v11 = [v5 PKStringForKey:@"nonce"];
+    v11 = [jSONObject PKStringForKey:@"nonce"];
     v12 = [v11 copy];
     nonce = v4->_nonce;
     v4->_nonce = v12;
 
-    v14 = [v5 objectForKeyedSubscript:@"cardType"];
+    v14 = [jSONObject objectForKeyedSubscript:@"cardType"];
     v4->_cardType = [v14 integerValue];
 
     v15 = MEMORY[0x1E695DFF8];
-    v16 = [v5 objectForKeyedSubscript:@"termsURL"];
+    v16 = [jSONObject objectForKeyedSubscript:@"termsURL"];
     v17 = [v15 URLWithString:v16];
     termsURL = v4->_termsURL;
     v4->_termsURL = v17;
 
-    v19 = [v5 objectForKeyedSubscript:@"termsID"];
+    v19 = [jSONObject objectForKeyedSubscript:@"termsID"];
     v20 = [v19 copy];
     termsID = v4->_termsID;
     v4->_termsID = v20;
 
-    v22 = [v5 objectForKeyedSubscript:@"applicationIdentifier"];
+    v22 = [jSONObject objectForKeyedSubscript:@"applicationIdentifier"];
     v23 = [v22 copy];
     applicationIdentifier = v4->_applicationIdentifier;
     v4->_applicationIdentifier = v23;
 
-    v25 = [v5 objectForKeyedSubscript:@"region"];
+    v25 = [jSONObject objectForKeyedSubscript:@"region"];
     v26 = [v25 copy];
     region = v4->_region;
     v4->_region = v26;
 
     v28 = MEMORY[0x1E695DFF8];
-    v29 = [v5 objectForKeyedSubscript:@"learnMoreURL"];
+    v29 = [jSONObject objectForKeyedSubscript:@"learnMoreURL"];
     v30 = [v28 URLWithString:v29];
     learnMoreURL = v4->_learnMoreURL;
     v4->_learnMoreURL = v30;
 
-    v32 = [v5 PKStringForKey:@"credentialAuthorityIdentifier"];
+    v32 = [jSONObject PKStringForKey:@"credentialAuthorityIdentifier"];
     v33 = [v32 copy];
     credentialAuthorityIdentifier = v4->_credentialAuthorityIdentifier;
     v4->_credentialAuthorityIdentifier = v33;
 
-    v35 = [v5 objectForKeyedSubscript:@"supplementaryData"];
+    v35 = [jSONObject objectForKeyedSubscript:@"supplementaryData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
     v105 = 0u;
     v106 = 0u;
     v107 = 0u;
-    v38 = [v5 PKArrayContaining:objc_opt_class() forKey:@"requiredFields"];
+    v38 = [jSONObject PKArrayContaining:objc_opt_class() forKey:@"requiredFields"];
     v39 = [v38 countByEnumeratingWithState:&v104 objects:v113 count:16];
     if (v39)
     {
@@ -105,14 +105,14 @@
           }
 
           v43 = *(*(&v104 + 1) + 8 * i);
-          v44 = [v5 PKDictionaryForKey:@"requiredFieldOptions"];
+          v44 = [jSONObject PKDictionaryForKey:@"requiredFieldOptions"];
           [v44 PKDictionaryForKey:v43];
-          v46 = v45 = v5;
+          v46 = v45 = jSONObject;
 
           v47 = [PKPaymentSetupField paymentSetupFieldWithIdentifier:v43 configuration:v46];
           [v103 safelyAddObject:v47];
 
-          v5 = v45;
+          jSONObject = v45;
         }
 
         v40 = [v38 countByEnumeratingWithState:&v104 objects:v113 count:16];
@@ -126,7 +126,7 @@
     requiredPaymentSetupFields = v4->_requiredPaymentSetupFields;
     v4->_requiredPaymentSetupFields = v48;
 
-    v51 = [v5 PKDictionaryForKey:@"auxiliaryCapabilities"];
+    v51 = [jSONObject PKDictionaryForKey:@"auxiliaryCapabilities"];
     if (v51)
     {
       v52 = [v51 PKArrayContaining:objc_opt_class() forKey:@"deviceDecryptions"];
@@ -140,20 +140,20 @@
       v4->_auxiliaryCapabilitySignatures = v56;
     }
 
-    v58 = [v5 objectForKeyedSubscript:@"fidoProfile"];
+    v58 = [jSONObject objectForKeyedSubscript:@"fidoProfile"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
       v60 = [PKPaymentEligibilityFIDOProfile alloc];
-      v61 = [v5 objectForKeyedSubscript:@"fidoProfile"];
+      v61 = [jSONObject objectForKeyedSubscript:@"fidoProfile"];
       v62 = [(PKPaymentEligibilityFIDOProfile *)v60 initWithDictionary:v61];
       fidoProfile = v4->_fidoProfile;
       v4->_fidoProfile = v62;
     }
 
-    v64 = [v5 PKStringForKey:@"fidoChallenge"];
+    v64 = [jSONObject PKStringForKey:@"fidoChallenge"];
     if (v64)
     {
       v65 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v64 options:1];
@@ -161,39 +161,39 @@
       v4->_fidoChallenge = v65;
     }
 
-    v67 = [v5 objectForKeyedSubscript:@"transactionKeyInformation"];
+    v67 = [jSONObject objectForKeyedSubscript:@"transactionKeyInformation"];
     objc_opt_class();
     v68 = objc_opt_isKindOfClass();
 
     v69 = v102;
     if (v68)
     {
-      v70 = [v5 objectForKeyedSubscript:@"transactionKeyInformation"];
+      v70 = [jSONObject objectForKeyedSubscript:@"transactionKeyInformation"];
       v71 = [v70 copy];
       transactionKeyInformation = v4->_transactionKeyInformation;
       v4->_transactionKeyInformation = v71;
     }
 
-    v73 = [v5 objectForKeyedSubscript:@"enableRequirements"];
+    v73 = [jSONObject objectForKeyedSubscript:@"enableRequirements"];
     objc_opt_class();
     v74 = objc_opt_isKindOfClass();
 
     if (v74)
     {
       v75 = objc_alloc(MEMORY[0x1E695DFD8]);
-      v76 = [v5 objectForKeyedSubscript:@"enableRequirements"];
+      v76 = [jSONObject objectForKeyedSubscript:@"enableRequirements"];
       v77 = [v75 initWithArray:v76];
       enableRequirements = v4->_enableRequirements;
       v4->_enableRequirements = v77;
     }
 
-    v79 = [v5 objectForKeyedSubscript:@"deviceProvisioningDataExpected"];
+    v79 = [jSONObject objectForKeyedSubscript:@"deviceProvisioningDataExpected"];
     v80 = v79;
     if (v79)
     {
-      v81 = [v79 BOOLValue];
+      bOOLValue = [v79 BOOLValue];
       v82 = 1;
-      if (!v81)
+      if (!bOOLValue)
       {
         v82 = 2;
       }
@@ -205,31 +205,31 @@
     }
 
     v4->_deviceProvisioningDataExpected = v82;
-    v88 = [v5 objectForKeyedSubscript:@"supportsVirtualCardNumber"];
+    v88 = [jSONObject objectForKeyedSubscript:@"supportsVirtualCardNumber"];
     v4->_supportsVirtualCardNumber = [v88 BOOLValue];
 
-    v89 = [v5 PKArrayContaining:objc_opt_class() forKey:@"FPANIdentifiers"];
+    v89 = [jSONObject PKArrayContaining:objc_opt_class() forKey:@"FPANIdentifiers"];
     fpanIdentifiers = v4->_fpanIdentifiers;
     v4->_fpanIdentifiers = v89;
 
-    v91 = [v5 objectForKeyedSubscript:@"sanitizedPrimaryAccountNumber"];
+    v91 = [jSONObject objectForKeyedSubscript:@"sanitizedPrimaryAccountNumber"];
     v92 = [v91 copy];
     sanitizedPrimaryAccountNumber = v4->_sanitizedPrimaryAccountNumber;
     v4->_sanitizedPrimaryAccountNumber = v92;
 
-    v94 = [v5 objectForKeyedSubscript:@"isCardOnFile"];
-    v95 = [v94 BOOLValue];
+    v94 = [jSONObject objectForKeyedSubscript:@"isCardOnFile"];
+    bOOLValue2 = [v94 BOOLValue];
 
-    if (v95)
+    if (bOOLValue2)
     {
       v4->_supersededBy = 1;
     }
 
-    v96 = [v5 PKStringForKey:@"DPANIdentifier"];
+    v96 = [jSONObject PKStringForKey:@"DPANIdentifier"];
     dpanIdentifier = v4->_dpanIdentifier;
     v4->_dpanIdentifier = v96;
 
-    v98 = [v5 PKArrayContaining:objc_opt_class() forKey:@"paymentApplications"];
+    v98 = [jSONObject PKArrayContaining:objc_opt_class() forKey:@"paymentApplications"];
     v99 = [v98 pk_arrayBySafelyApplyingBlock:&__block_literal_global_458];
 
     if ([v99 count])

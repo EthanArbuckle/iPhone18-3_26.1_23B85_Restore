@@ -1,30 +1,30 @@
 @interface CRLUSDLib
-+ (BOOL)addBasePlateWithStage:(TfRefPtr<pxrInternal__aapl__pxrReserved__:(CGSize)a4 :UsdStage>)a3 andSize:;
-+ (BOOL)addReferenceWithStage:(TfRefPtr<pxrInternal__aapl__pxrReserved__:(int64_t)a4 :(id)a5 UsdStage>)a3 andIndex:(id)a6 andItem:(id)a7 andUsdzURL:andDefaultPrimName:;
-+ (BOOL)createUSDZFromFileURLs:(id)a3 toOutputPath:(id)a4 error:(id *)a5;
-+ (BOOL)exportUsdzWithRequest:(id)a3 andDestUrl:(id)a4 andError:(id *)a5;
-+ (TfRefPtr<pxrInternal__aapl__pxrReserved__::UsdStage>)createImageStagewithImageURL:(id)a3 andSize:(CGSize)a4;
-+ (id)compressModel:(id)a3;
-+ (id)createImageUSDAwithImageURL:(id)a3 andSize:(CGSize)a4 andOutputDir:(id)a5 andError:(id *)a6;
-+ (id)defaultPrimNameForUSD:(id)a3;
-+ (int)determineCompression:(id)a3;
++ (BOOL)addBasePlateWithStage:(TfRefPtr<pxrInternal__aapl__pxrReserved__:(CGSize)stage :UsdStage>)a3 andSize:;
++ (BOOL)addReferenceWithStage:(TfRefPtr<pxrInternal__aapl__pxrReserved__:(int64_t)stage :(id)a5 UsdStage>)a3 andIndex:(id)index andItem:(id)item andUsdzURL:andDefaultPrimName:;
++ (BOOL)createUSDZFromFileURLs:(id)ls toOutputPath:(id)path error:(id *)error;
++ (BOOL)exportUsdzWithRequest:(id)request andDestUrl:(id)url andError:(id *)error;
++ (TfRefPtr<pxrInternal__aapl__pxrReserved__::UsdStage>)createImageStagewithImageURL:(id)l andSize:(CGSize)size;
++ (id)compressModel:(id)model;
++ (id)createImageUSDAwithImageURL:(id)l andSize:(CGSize)size andOutputDir:(id)dir andError:(id *)error;
++ (id)defaultPrimNameForUSD:(id)d;
++ (int)determineCompression:(id)compression;
 @end
 
 @implementation CRLUSDLib
 
-+ (BOOL)createUSDZFromFileURLs:(id)a3 toOutputPath:(id)a4 error:(id *)a5
++ (BOOL)createUSDZFromFileURLs:(id)ls toOutputPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  v46 = v6;
-  if (!v6 || ![v6 count])
+  lsCopy = ls;
+  pathCopy = path;
+  v46 = lsCopy;
+  if (!lsCopy || ![lsCopy count])
   {
-    if (a5)
+    if (error)
     {
       v29 = [NSError errorWithDomain:@"com.apple.freeform.CRLErrorDomainUsdLib" code:1 userInfo:0];
 LABEL_56:
       v28 = 0;
-      *a5 = v29;
+      *error = v29;
       goto LABEL_99;
     }
 
@@ -33,9 +33,9 @@ LABEL_59:
     goto LABEL_99;
   }
 
-  if (!v7)
+  if (!pathCopy)
   {
-    if (a5)
+    if (error)
     {
       v29 = [NSError errorWithDomain:@"com.apple.freeform.CRLErrorDomainUsdLib" code:2 userInfo:0];
       goto LABEL_56;
@@ -44,10 +44,10 @@ LABEL_59:
     goto LABEL_59;
   }
 
-  v44 = v7;
-  if ([v7 isFileURL])
+  v44 = pathCopy;
+  if ([pathCopy isFileURL])
   {
-    sub_1002F0794(v57, [v7 fileSystemRepresentation]);
+    sub_1002F0794(v57, [pathCopy fileSystemRepresentation]);
     pxrInternal__aapl__pxrReserved__::UsdZipFileWriter::CreateNew();
     if (v56)
     {
@@ -56,7 +56,7 @@ LABEL_59:
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      obj = v6;
+      obj = lsCopy;
       v8 = [obj countByEnumeratingWithState:&v52 objects:v68 count:16];
       if (!v8)
       {
@@ -193,9 +193,9 @@ LABEL_77:
                     sub_10134F16C();
                   }
 
-                  if (a5)
+                  if (error)
                   {
-                    *a5 = [NSError errorWithDomain:@"com.apple.freeform.CRLErrorDomainUsdLib" code:5 userInfo:0];
+                    *error = [NSError errorWithDomain:@"com.apple.freeform.CRLErrorDomainUsdLib" code:5 userInfo:0];
                   }
 
                   if (v51 < 0)
@@ -261,9 +261,9 @@ LABEL_48:
             v26 = off_1019EDC88;
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
-              v27 = [v44 path];
+              path = [v44 path];
               *buf = 138543362;
-              *&buf[4] = v27;
+              *&buf[4] = path;
               _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Exported USDZ to: %{public}@", buf, 0xCu);
             }
 
@@ -283,10 +283,10 @@ LABEL_48:
               sub_10134F1FC(v42);
             }
 
-            if (a5)
+            if (error)
             {
               [NSError errorWithDomain:@"com.apple.freeform.CRLErrorDomainUsdLib" code:6 userInfo:0];
-              *a5 = v28 = 0;
+              *error = v28 = 0;
             }
 
             else
@@ -297,7 +297,7 @@ LABEL_88:
           }
 
 LABEL_96:
-          v7 = v44;
+          pathCopy = v44;
           goto LABEL_97;
         }
       }
@@ -314,10 +314,10 @@ LABEL_96:
       sub_10134F290(v57, v35, v36, v37, v38, v39, v40, v41);
     }
 
-    if (a5)
+    if (error)
     {
       [NSError errorWithDomain:@"com.apple.freeform.CRLErrorDomainUsdLib" code:4 userInfo:0];
-      *a5 = v28 = 0;
+      *error = v28 = 0;
       goto LABEL_96;
     }
 
@@ -357,12 +357,12 @@ LABEL_97:
 
     v33 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLUSDLib createUSDZFromFileURLs:toOutputPath:error:]");
     v34 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CrossPlatformUI/USD Rendering/USDExporter/CRLUSDLib.mm"];
-    [CRLAssertionHandler handleFailureInFunction:v33 file:v34 lineNumber:110 isFatal:0 description:"outputPath is not isFileURL: %{public}@", v7];
+    [CRLAssertionHandler handleFailureInFunction:v33 file:v34 lineNumber:110 isFatal:0 description:"outputPath is not isFileURL: %{public}@", pathCopy];
 
-    if (a5)
+    if (error)
     {
       [NSError errorWithDomain:@"com.apple.freeform.CRLErrorDomainUsdLib" code:3 userInfo:0];
-      *a5 = v28 = 0;
+      *error = v28 = 0;
     }
 
     else
@@ -376,11 +376,11 @@ LABEL_99:
   return v28;
 }
 
-+ (id)defaultPrimNameForUSD:(id)a3
++ (id)defaultPrimNameForUSD:(id)d
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  dCopy = d;
+  v4 = dCopy;
+  if (dCopy && [dCopy length])
   {
     sub_1002F0794(&__p, [v4 UTF8String]);
     pxrInternal__aapl__pxrReserved__::UsdStage::Open();
@@ -458,20 +458,20 @@ LABEL_99:
   return v9;
 }
 
-+ (id)createImageUSDAwithImageURL:(id)a3 andSize:(CGSize)a4 andOutputDir:(id)a5 andError:(id *)a6
++ (id)createImageUSDAwithImageURL:(id)l andSize:(CGSize)size andOutputDir:(id)dir andError:(id *)error
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a5;
-  [CRLUSDLib createImageStagewithImageURL:v10 andSize:width, height];
-  v12 = [v11 URLByAppendingPathComponent:@"item.usda"];
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  dirCopy = dir;
+  [CRLUSDLib createImageStagewithImageURL:lCopy andSize:width, height];
+  v12 = [dirCopy URLByAppendingPathComponent:@"item.usda"];
   v13 = sub_1002F0D8C(&v37);
   pxrInternal__aapl__pxrReserved__::UsdStage::GetRootLayer(&v35, v13);
   sub_1002F0E04(&v35);
-  v14 = [v12 path];
-  v15 = v14;
-  sub_1002F0794(&v33, [v14 UTF8String]);
+  path = [v12 path];
+  v15 = path;
+  sub_1002F0794(&v33, [path UTF8String]);
   __p = 0;
   v31 = 0;
   v32 = 0;
@@ -497,12 +497,12 @@ LABEL_99:
   }
 
   v38[0] = v12;
-  v38[1] = v10;
+  v38[1] = lCopy;
   v17 = [NSArray arrayWithObjects:v38 count:2];
-  v18 = [v10 lastPathComponent];
-  v19 = [v18 stringByDeletingPathExtension];
+  lastPathComponent = [lCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v20 = [v11 URLByAppendingPathComponent:v19];
+  v20 = [dirCopy URLByAppendingPathComponent:stringByDeletingPathExtension];
   v21 = [v20 URLByAppendingPathExtension:@"usdz"];
 
   v27 = 0;
@@ -511,11 +511,11 @@ LABEL_99:
   v23 = v22;
   if (v22)
   {
-    if (a6)
+    if (error)
     {
       v24 = v22;
       v25 = 0;
-      *a6 = v23;
+      *error = v23;
     }
 
     else
@@ -534,10 +534,10 @@ LABEL_99:
   return v25;
 }
 
-+ (TfRefPtr<pxrInternal__aapl__pxrReserved__::UsdStage>)createImageStagewithImageURL:(id)a3 andSize:(CGSize)a4
++ (TfRefPtr<pxrInternal__aapl__pxrReserved__::UsdStage>)createImageStagewithImageURL:(id)l andSize:(CGSize)size
 {
   v5 = v4;
-  v6 = a3;
+  lCopy = l;
   pxrInternal__aapl__pxrReserved__::UsdStage::CreateInMemory();
   sub_1002F72D8(&v18, v5);
   pxrInternal__aapl__pxrReserved__::UsdGeomSetStageMetersPerUnit();
@@ -599,23 +599,23 @@ LABEL_99:
   pxrInternal__aapl__pxrReserved__::UsdAttribute::_Set<pxrInternal__aapl__pxrReserved__::VtArray<int>>();
 }
 
-+ (BOOL)exportUsdzWithRequest:(id)a3 andDestUrl:(id)a4 andError:(id *)a5
++ (BOOL)exportUsdzWithRequest:(id)request andDestUrl:(id)url andError:(id *)error
 {
-  v7 = a3;
-  v60 = a4;
-  v62 = v7;
-  v61 = [v7 items];
+  requestCopy = request;
+  urlCopy = url;
+  v62 = requestCopy;
+  items = [requestCopy items];
   v96 = 0;
   v63 = [[CRLTemporaryDirectory alloc] initWithError:&v96];
   v8 = v96;
   if (v8)
   {
     v9 = v8;
-    if (a5)
+    if (error)
     {
       v10 = v8;
       v11 = 0;
-      *a5 = v9;
+      *error = v9;
     }
 
     else
@@ -634,13 +634,13 @@ LABEL_99:
   v12 = off_1019EDC88;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v61 count];
+    v13 = [items count];
     LODWORD(buf) = 134217984;
     *(&buf + 4) = v13;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Exporting %lu item(s) to USDZ", &buf, 0xCu);
   }
 
-  v58 = a5;
+  errorCopy = error;
 
   sub_1002F4398();
   pxrInternal__aapl__pxrReserved__::UsdStage::CreateInMemory();
@@ -672,11 +672,11 @@ LABEL_99:
     sub_1002F6E8C(*(&buf + 1));
   }
 
-  if ([v7 showBasePlate])
+  if ([requestCopy showBasePlate])
   {
     v88 = v95;
     sub_10134EF68(&v88);
-    [v7 basePlateSize];
+    [requestCopy basePlateSize];
     [CRLUSDLib addBasePlateWithStage:&v88 andSize:?];
     sub_1002F717C(&v88);
   }
@@ -710,11 +710,11 @@ LABEL_99:
     sub_1002F6E8C(*(&v98 + 1));
   }
 
-  [v7 surfaceScale];
+  [requestCopy surfaceScale];
   v16 = v15;
-  [v7 surfaceScale];
+  [requestCopy surfaceScale];
   v18 = v17;
-  [v7 surfaceScale];
+  [requestCopy surfaceScale];
   v19 = v16;
   v20 = v18;
   *&v21 = v21;
@@ -731,7 +731,7 @@ LABEL_99:
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v23 = v61;
+  v23 = items;
   v24 = [v23 countByEnumeratingWithState:&v76 objects:v97 count:16];
   if (!v24)
   {
@@ -753,10 +753,10 @@ LABEL_99:
       }
 
       v29 = *(*(&v76 + 1) + 8 * v28);
-      v30 = [v29 type];
-      if (v30)
+      type = [v29 type];
+      if (type)
       {
-        if (v30 != 1)
+        if (type != 1)
         {
           goto LABEL_35;
         }
@@ -767,15 +767,15 @@ LABEL_99:
         v35 = v34;
         v36 = [(CRLTemporaryDirectory *)v63 URL];
         v75 = 0;
-        v37 = [CRLUSDLib createImageUSDAwithImageURL:v31 andSize:v36 andOutputDir:&v75 andError:v33, v35];
+        lowercaseString = [CRLUSDLib createImageUSDAwithImageURL:v31 andSize:v36 andOutputDir:&v75 andError:v33, v35];
         v9 = v75;
 
         if (v9)
         {
-          if (v58)
+          if (errorCopy)
           {
             v55 = v9;
-            *v58 = v9;
+            *errorCopy = v9;
           }
 
           goto LABEL_58;
@@ -783,22 +783,22 @@ LABEL_99:
 
         v74 = v95;
         sub_10134EF68(&v74);
-        [CRLUSDLib addReferenceWithStage:&v74 andIndex:v27 andItem:v29 andUsdzURL:v37 andDefaultPrimName:@"item"];
+        [CRLUSDLib addReferenceWithStage:&v74 andIndex:v27 andItem:v29 andUsdzURL:lowercaseString andDefaultPrimName:@"item"];
         sub_1002F717C(&v74);
-        [v64 addObject:v37];
+        [v64 addObject:lowercaseString];
       }
 
       else
       {
         v38 = [v29 url];
-        v39 = [v38 pathExtension];
-        v37 = [v39 lowercaseString];
+        pathExtension = [v38 pathExtension];
+        lowercaseString = [pathExtension lowercaseString];
 
-        if (([v37 isEqualToString:@"usdz"] & 1) != 0 || (objc_msgSend(v37, "isEqualToString:", @"usda") & 1) != 0 || objc_msgSend(v37, "isEqualToString:", @"usdc"))
+        if (([lowercaseString isEqualToString:@"usdz"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"usda") & 1) != 0 || objc_msgSend(lowercaseString, "isEqualToString:", @"usdc"))
         {
           v40 = [v29 url];
-          v41 = [v40 path];
-          v42 = [CRLUSDLib defaultPrimNameForUSD:v41];
+          path = [v40 path];
+          v42 = [CRLUSDLib defaultPrimNameForUSD:path];
 
           v73 = v95;
           sub_10134EF68(&v73);
@@ -821,9 +821,9 @@ LABEL_99:
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
           {
             v45 = [v29 url];
-            v46 = [v45 absoluteString];
+            absoluteString = [v45 absoluteString];
             LODWORD(v98) = v57;
-            *(&v98 + 4) = v46;
+            *(&v98 + 4) = absoluteString;
             _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Skipping USDZ export of file with unsupported extension: %{public}@", &v98, 0xCu);
           }
         }
@@ -850,9 +850,9 @@ LABEL_42:
   v48 = sub_1002F0D8C(&v95);
   pxrInternal__aapl__pxrReserved__::UsdStage::GetRootLayer(&v71, v48);
   sub_1002F0E04(&v71);
-  v49 = [v59 path];
-  v50 = v49;
-  sub_1002F0794(&v98, [v49 UTF8String]);
+  path2 = [v59 path];
+  v50 = path2;
+  sub_1002F0794(&v98, [path2 UTF8String]);
   __p = 0;
   v69 = 0;
   v70 = 0;
@@ -877,20 +877,20 @@ LABEL_42:
     (*(*v52 + 8))(v52);
   }
 
-  v11 = v58;
+  v11 = errorCopy;
   if (v51)
   {
     v65 = 0;
-    [CRLUSDLib createUSDZFromFileURLs:v64 toOutputPath:v60 error:&v65];
+    [CRLUSDLib createUSDZFromFileURLs:v64 toOutputPath:urlCopy error:&v65];
     v53 = v65;
     v9 = v53;
     if (v53)
     {
-      if (v58)
+      if (errorCopy)
       {
         v54 = v53;
         v11 = 0;
-        *v58 = v9;
+        *errorCopy = v9;
       }
     }
 
@@ -916,7 +916,7 @@ LABEL_60:
   return v11;
 }
 
-+ (BOOL)addBasePlateWithStage:(TfRefPtr<pxrInternal__aapl__pxrReserved__:(CGSize)a4 :UsdStage>)a3 andSize:
++ (BOOL)addBasePlateWithStage:(TfRefPtr<pxrInternal__aapl__pxrReserved__:(CGSize)stage :UsdStage>)a3 andSize:
 {
   sub_1002F0794(&v10, "/scene");
   pxrInternal__aapl__pxrReserved__::SdfPath::SdfPath();
@@ -943,16 +943,16 @@ LABEL_60:
   pxrInternal__aapl__pxrReserved__::UsdAttribute::_Set<pxrInternal__aapl__pxrReserved__::VtArray<int>>();
 }
 
-+ (BOOL)addReferenceWithStage:(TfRefPtr<pxrInternal__aapl__pxrReserved__:(int64_t)a4 :(id)a5 UsdStage>)a3 andIndex:(id)a6 andItem:(id)a7 andUsdzURL:andDefaultPrimName:
++ (BOOL)addReferenceWithStage:(TfRefPtr<pxrInternal__aapl__pxrReserved__:(int64_t)stage :(id)a5 UsdStage>)a3 andIndex:(id)index andItem:(id)item andUsdzURL:andDefaultPrimName:
 {
   v11 = a5;
-  v43 = a6;
-  v42 = a7;
-  v12 = [NSString stringWithFormat:@"ref%lu", a4];
+  indexCopy = index;
+  itemCopy = item;
+  stage = [NSString stringWithFormat:@"ref%lu", stage];
   sub_1002F0794(buf, "/scene/scaleroot");
   pxrInternal__aapl__pxrReserved__::SdfPath::SdfPath();
-  v13 = v12;
-  pxrInternal__aapl__pxrReserved__::TfToken::TfToken(v60, [v12 UTF8String]);
+  v13 = stage;
+  pxrInternal__aapl__pxrReserved__::TfToken::TfToken(v60, [stage UTF8String]);
   pxrInternal__aapl__pxrReserved__::SdfPath::AppendChild(&v72, v65, v60);
   if ((v60[0] & 7) != 0)
   {
@@ -1010,19 +1010,19 @@ LABEL_60:
   sub_10134F484(buf);
   sub_1002F6CB4(v52, &v57, &v58);
   pxrInternal__aapl__pxrReserved__::UsdPrim::GetReferences(&v48, v52);
-  v26 = [v43 lastPathComponent];
-  v27 = [NSString stringWithFormat:@"./%@", v26];
+  lastPathComponent = [indexCopy lastPathComponent];
+  v27 = [NSString stringWithFormat:@"./%@", lastPathComponent];
   v28 = v27;
   sub_1002F0794(&__p, [v27 UTF8String]);
 
   v45 = 0;
   pxrInternal__aapl__pxrReserved__::Sdf_Pool<pxrInternal__aapl__pxrReserved__::Sdf_PathPrimTag,24u,8u,16384u>::Handle::Handle();
   pxrInternal__aapl__pxrReserved__::Sdf_Pool<pxrInternal__aapl__pxrReserved__::Sdf_PathPropTag,24u,8u,16384u>::Handle::Handle();
-  if (v42)
+  if (itemCopy)
   {
-    v29 = [NSString stringWithFormat:@"/%@", v42];
-    v30 = v29;
-    sub_1002F0794(buf, [v29 UTF8String]);
+    itemCopy = [NSString stringWithFormat:@"/%@", itemCopy];
+    v30 = itemCopy;
+    sub_1002F0794(buf, [itemCopy UTF8String]);
 
     pxrInternal__aapl__pxrReserved__::SdfPath::SdfPath();
     sub_1002F6F30(&v45, v44);
@@ -1046,7 +1046,7 @@ LABEL_60:
     if (os_log_type_enabled(off_1019EDC88, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v43;
+      *&buf[4] = indexCopy;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "No default prim name for USD: %{public}@", buf, 0xCu);
     }
   }
@@ -1137,32 +1137,32 @@ LABEL_60:
   return v34 & v32;
 }
 
-+ (id)compressModel:(id)a3
++ (id)compressModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   sub_1002F4398();
   v4 = [[CRLTemporaryDirectory alloc] initWithError:0];
   if (v4)
   {
     [(CRLTemporaryDirectory *)v4 path];
-    v5 = [objc_claimAutoreleasedReturnValue() UTF8String];
-    sub_1002F0794(&__p, v5);
+    uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+    sub_1002F0794(&__p, uTF8String);
     sub_1002F5F58(&v7);
   }
 
   return 0;
 }
 
-+ (int)determineCompression:(id)a3
++ (int)determineCompression:(id)compression
 {
-  v3 = a3;
+  compressionCopy = compression;
   sub_1002F4398();
   v4 = [[CRLTemporaryDirectory alloc] initWithError:0];
   if (v4)
   {
     [(CRLTemporaryDirectory *)v4 path];
-    v5 = [objc_claimAutoreleasedReturnValue() UTF8String];
-    sub_1002F0794(&__p, v5);
+    uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+    sub_1002F0794(&__p, uTF8String);
     sub_1002F5F58(&v8);
   }
 

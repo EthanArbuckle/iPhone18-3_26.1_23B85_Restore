@@ -1,12 +1,12 @@
 @interface PHAssetCreationRequestPlaceholderSupportCrashRecovery
-+ (void)restartPendingPlaceholderDownloadsForLibrary:(id)a3;
++ (void)restartPendingPlaceholderDownloadsForLibrary:(id)library;
 @end
 
 @implementation PHAssetCreationRequestPlaceholderSupportCrashRecovery
 
-+ (void)restartPendingPlaceholderDownloadsForLibrary:(id)a3
++ (void)restartPendingPlaceholderDownloadsForLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -29,7 +29,7 @@
   v11[1] = 3221225472;
   v11[2] = __102__PHAssetCreationRequestPlaceholderSupportCrashRecovery_restartPendingPlaceholderDownloadsForLibrary___block_invoke;
   v11[3] = &unk_1E75A9D28;
-  v4 = v3;
+  v4 = libraryCopy;
   v12 = v4;
   v13 = v18;
   v14 = v16;

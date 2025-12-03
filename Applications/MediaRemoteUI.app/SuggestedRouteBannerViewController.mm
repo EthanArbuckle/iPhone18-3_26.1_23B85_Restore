@@ -2,50 +2,50 @@
 - (BNPresentableContext)presentableContext;
 - (UIEdgeInsets)bannerContentOutsets;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SuggestedRouteBannerViewController
 
 - (void)loadView
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_1000166F4();
-  [(SuggestedRouteBannerViewController *)v3 setView:v2];
+  [(SuggestedRouteBannerViewController *)selfCopy setView:v2];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100016884();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100016C5C(a3);
+  selfCopy = self;
+  sub_100016C5C(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for SuggestedRouteBannerViewController();
   v4 = v5.receiver;
-  [(SuggestedRouteBannerViewController *)&v5 viewDidAppear:v3];
+  [(SuggestedRouteBannerViewController *)&v5 viewDidAppear:appearCopy];
   v4[OBJC_IVAR____TtC13MediaRemoteUI34SuggestedRouteBannerViewController_isOnScreen] = 1;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for SuggestedRouteBannerViewController();
   v4 = v6.receiver;
-  [(SuggestedRouteBannerViewController *)&v6 viewDidDisappear:v3];
+  [(SuggestedRouteBannerViewController *)&v6 viewDidDisappear:disappearCopy];
   if (*&v4[OBJC_IVAR____TtC13MediaRemoteUI34SuggestedRouteBannerViewController_userInterfaceStyleTraitChangeRegistration])
   {
     swift_unknownObjectRetain();
@@ -66,7 +66,7 @@
 
 - (UIEdgeInsets)bannerContentOutsets
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000166F4();
   v4 = *&v3[OBJC_IVAR____TtC13MediaRemoteUI24SuggestedRouteBannerView_pillView];
 

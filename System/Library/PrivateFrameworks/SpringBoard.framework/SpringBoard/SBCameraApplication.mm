@@ -1,7 +1,7 @@
 @interface SBCameraApplication
-- (BOOL)icon:(id)a3 launchFromLocation:(id)a4 context:(id)a5;
+- (BOOL)icon:(id)icon launchFromLocation:(id)location context:(id)context;
 - (void)_cancelPreheatForUserLaunchIfNecessary;
-- (void)preHeatForUserLaunchIfNecessaryWithAbsoluteTime:(unint64_t)a3 andContinuousTime:(unint64_t)a4;
+- (void)preHeatForUserLaunchIfNecessaryWithAbsoluteTime:(unint64_t)time andContinuousTime:(unint64_t)continuousTime;
 @end
 
 @implementation SBCameraApplication
@@ -20,7 +20,7 @@
   }
 }
 
-- (void)preHeatForUserLaunchIfNecessaryWithAbsoluteTime:(unint64_t)a3 andContinuousTime:(unint64_t)a4
+- (void)preHeatForUserLaunchIfNecessaryWithAbsoluteTime:(unint64_t)time andContinuousTime:(unint64_t)continuousTime
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v14.receiver = self;
@@ -33,8 +33,8 @@
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Prewarming Camera for icon touch.", v13, 2u);
   }
 
-  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
-  v9 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
+  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:time];
+  v9 = [MEMORY[0x277CCABB0] numberWithLongLong:continuousTime];
   v10 = *MEMORY[0x277CE58D0];
   v11 = *MEMORY[0x277CE5910];
   v15[0] = *MEMORY[0x277CE5908];
@@ -48,11 +48,11 @@
   self->_hasPreHeatInFlight = 1;
 }
 
-- (BOOL)icon:(id)a3 launchFromLocation:(id)a4 context:(id)a5
+- (BOOL)icon:(id)icon launchFromLocation:(id)location context:(id)context
 {
   v7.receiver = self;
   v7.super_class = SBCameraApplication;
-  result = [(SBApplication *)&v7 icon:a3 launchFromLocation:a4 context:a5];
+  result = [(SBApplication *)&v7 icon:icon launchFromLocation:location context:context];
   self->_hasPreHeatInFlight = 0;
   return result;
 }

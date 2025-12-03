@@ -1,20 +1,20 @@
 @interface LNAsyncIterator
-- (BOOL)isEqual:(id)a3;
-- (LNAsyncIterator)initWithReference:(id)a3 connection:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNAsyncIterator)initWithReference:(id)reference connection:(id)connection;
 - (id)description;
 - (unint64_t)hash;
-- (void)nextResultsWithCompletionHandler:(id)a3;
+- (void)nextResultsWithCompletionHandler:(id)handler;
 @end
 
 @implementation LNAsyncIterator
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -23,10 +23,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNAsyncIterator *)self connection];
-    v8 = [(LNAsyncIterator *)v6 connection];
-    v9 = v7;
-    v10 = v8;
+    connection = [(LNAsyncIterator *)self connection];
+    connection2 = [(LNAsyncIterator *)v6 connection];
+    v9 = connection;
+    v10 = connection2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -53,10 +53,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNAsyncIterator *)self reference];
-    v16 = [(LNAsyncIterator *)v6 reference];
-    v14 = v15;
-    v17 = v16;
+    reference = [(LNAsyncIterator *)self reference];
+    reference2 = [(LNAsyncIterator *)v6 reference];
+    v14 = reference;
+    v17 = reference2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -83,10 +83,10 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(LNAsyncIterator *)self connection];
-  v4 = [v3 hash];
-  v5 = [(LNAsyncIterator *)self reference];
-  v6 = [v5 hash];
+  connection = [(LNAsyncIterator *)self connection];
+  v4 = [connection hash];
+  reference = [(LNAsyncIterator *)self reference];
+  v6 = [reference hash];
 
   return v6 ^ v4;
 }
@@ -96,28 +96,28 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNAsyncIterator *)self connection];
-  v7 = [(LNAsyncIterator *)self reference];
-  v8 = [v3 stringWithFormat:@"<%@: %p, connection: %@, reference: %@>", v5, self, v6, v7];
+  connection = [(LNAsyncIterator *)self connection];
+  reference = [(LNAsyncIterator *)self reference];
+  v8 = [v3 stringWithFormat:@"<%@: %p, connection: %@, reference: %@>", v5, self, connection, reference];
 
   return v8;
 }
 
-- (void)nextResultsWithCompletionHandler:(id)a3
+- (void)nextResultsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(LNAsyncIterator *)self connection];
-  v5 = [(LNAsyncIterator *)self reference];
-  [v6 nextAsyncIteratorResults:v5 completionHandler:v4];
+  handlerCopy = handler;
+  connection = [(LNAsyncIterator *)self connection];
+  reference = [(LNAsyncIterator *)self reference];
+  [connection nextAsyncIteratorResults:reference completionHandler:handlerCopy];
 }
 
-- (LNAsyncIterator)initWithReference:(id)a3 connection:(id)a4
+- (LNAsyncIterator)initWithReference:(id)reference connection:(id)connection
 {
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  referenceCopy = reference;
+  connectionCopy = connection;
+  if (connectionCopy)
   {
-    if (v8)
+    if (referenceCopy)
     {
       goto LABEL_3;
     }
@@ -125,17 +125,17 @@ LABEL_21:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"LNAsyncIterator.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAsyncIterator.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
 
-    if (v8)
+    if (referenceCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"LNAsyncIterator.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"reference"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAsyncIterator.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"reference"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -144,8 +144,8 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_connection, a4);
-    objc_storeStrong(&v11->_reference, a3);
+    objc_storeStrong(&v10->_connection, connection);
+    objc_storeStrong(&v11->_reference, reference);
     v12 = v11;
   }
 

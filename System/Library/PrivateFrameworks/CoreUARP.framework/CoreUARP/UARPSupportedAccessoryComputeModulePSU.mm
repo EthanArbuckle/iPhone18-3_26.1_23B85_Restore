@@ -15,8 +15,8 @@
     [(UARPSupportedAccessory *)v2 setAppleModelNumber:v3];
 
     v4 = [UARPAccessoryHardwareIPv6 alloc];
-    v5 = [(UARPSupportedAccessory *)v2 appleModelNumber];
-    v6 = [(UARPAccessoryHardwareIPv6 *)v4 initWithAppleModelNumber:v5];
+    appleModelNumber = [(UARPSupportedAccessory *)v2 appleModelNumber];
+    v6 = [(UARPAccessoryHardwareIPv6 *)v4 initWithAppleModelNumber:appleModelNumber];
     hwID = v2->hwID;
     v2->hwID = v6;
 

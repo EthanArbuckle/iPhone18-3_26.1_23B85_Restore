@@ -1,19 +1,19 @@
 @interface ICSearchCollectionViewHeaderView
 - (BOOL)isInsetGroupedList;
-- (ICSearchCollectionViewHeaderView)initWithCoder:(id)a3;
-- (ICSearchCollectionViewHeaderView)initWithFrame:(CGRect)a3;
+- (ICSearchCollectionViewHeaderView)initWithCoder:(id)coder;
+- (ICSearchCollectionViewHeaderView)initWithFrame:(CGRect)frame;
 - (unint64_t)accessibilityTraits;
-- (void)setTitle:(id)a3 detail:(id)a4;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setTitle:(id)title detail:(id)detail;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation ICSearchCollectionViewHeaderView
 
-- (ICSearchCollectionViewHeaderView)initWithFrame:(CGRect)a3
+- (ICSearchCollectionViewHeaderView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = ICSearchCollectionViewHeaderView;
-  result = [(ICSearchCollectionViewHeaderView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(ICSearchCollectionViewHeaderView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_horizontalInsetsOverride = 2.22507386e-308;
@@ -22,11 +22,11 @@
   return result;
 }
 
-- (ICSearchCollectionViewHeaderView)initWithCoder:(id)a3
+- (ICSearchCollectionViewHeaderView)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = ICSearchCollectionViewHeaderView;
-  result = [(ICSearchCollectionViewHeaderView *)&v4 initWithCoder:a3];
+  result = [(ICSearchCollectionViewHeaderView *)&v4 initWithCoder:coder];
   if (result)
   {
     result->_horizontalInsetsOverride = 2.22507386e-308;
@@ -35,48 +35,48 @@
   return result;
 }
 
-- (void)setTitle:(id)a3 detail:(id)a4
+- (void)setTitle:(id)title detail:(id)detail
 {
-  v6 = a4;
-  [(ICSearchCollectionViewHeaderView *)self setTitle:a3];
-  [(ICSearchCollectionViewHeaderView *)self setDetail:v6];
+  detailCopy = detail;
+  [(ICSearchCollectionViewHeaderView *)self setTitle:title];
+  [(ICSearchCollectionViewHeaderView *)self setDetail:detailCopy];
 
   [(ICSearchCollectionViewHeaderView *)self setNeedsUpdateConfiguration];
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v50 = +[UIBackgroundConfiguration clearConfiguration];
-  v5 = [v50 updatedConfigurationForState:v4];
+  v5 = [v50 updatedConfigurationForState:stateCopy];
   [(ICSearchCollectionViewHeaderView *)self setBackgroundConfiguration:v5];
 
   v6 = +[UIListContentConfiguration headerConfiguration];
-  v7 = [v6 updatedConfigurationForState:v4];
+  v7 = [v6 updatedConfigurationForState:stateCopy];
 
   [v7 setPrefersSideBySideTextAndSecondaryText:1];
-  v8 = [(ICSearchCollectionViewHeaderView *)self title];
-  [v7 setText:v8];
+  title = [(ICSearchCollectionViewHeaderView *)self title];
+  [v7 setText:title];
 
   v9 = +[UIColor labelColor];
-  v10 = [v7 textProperties];
-  [v10 setColor:v9];
+  textProperties = [v7 textProperties];
+  [textProperties setColor:v9];
 
   v11 = +[UIListContentConfiguration prominentInsetGroupedHeaderConfiguration];
-  v12 = [v11 updatedConfigurationForState:v4];
+  v12 = [v11 updatedConfigurationForState:stateCopy];
 
-  v13 = [(ICSearchCollectionViewHeaderView *)self detail];
-  [v7 setSecondaryText:v13];
+  detail = [(ICSearchCollectionViewHeaderView *)self detail];
+  [v7 setSecondaryText:detail];
 
-  v14 = [v12 secondaryTextProperties];
-  v15 = [v14 font];
-  v16 = [v7 secondaryTextProperties];
-  [v16 setFont:v15];
+  secondaryTextProperties = [v12 secondaryTextProperties];
+  font = [secondaryTextProperties font];
+  secondaryTextProperties2 = [v7 secondaryTextProperties];
+  [secondaryTextProperties2 setFont:font];
 
-  v17 = [v12 secondaryTextProperties];
-  v18 = [v17 color];
-  v19 = [v7 secondaryTextProperties];
-  [v19 setColor:v18];
+  secondaryTextProperties3 = [v12 secondaryTextProperties];
+  color = [secondaryTextProperties3 color];
+  secondaryTextProperties4 = [v7 secondaryTextProperties];
+  [secondaryTextProperties4 setColor:color];
 
   [(ICSearchCollectionViewHeaderView *)self horizontalInsetsOverride];
   v21 = v20;
@@ -93,18 +93,18 @@
     }
   }
 
-  v24 = [(ICSearchCollectionViewHeaderView *)self ic_behavior];
-  v25 = [(ICSearchCollectionViewHeaderView *)self traitCollection];
-  v26 = [v25 splitViewControllerLayoutEnvironment];
+  ic_behavior = [(ICSearchCollectionViewHeaderView *)self ic_behavior];
+  traitCollection = [(ICSearchCollectionViewHeaderView *)self traitCollection];
+  splitViewControllerLayoutEnvironment = [traitCollection splitViewControllerLayoutEnvironment];
 
   if (v21 == 2.22507386e-308)
   {
     v31 = ICInternalSettingsAlignHeadersWithNavTitle();
-    v33 = v24 == 1 && v26 == 2;
+    v33 = ic_behavior == 1 && splitViewControllerLayoutEnvironment == 2;
     if ((v31 & 1) != 0 || v33)
     {
       objc_opt_class();
-      v34 = [(ICSearchCollectionViewHeaderView *)self superview];
+      superview = [(ICSearchCollectionViewHeaderView *)self superview];
       v35 = ICDynamicCast();
 
       [v35 directionalLayoutMargins];
@@ -138,8 +138,8 @@
 
 - (BOOL)isInsetGroupedList
 {
-  v2 = [(ICSearchCollectionViewHeaderView *)self traitCollection];
-  v3 = [v2 listEnvironment] == 4;
+  traitCollection = [(ICSearchCollectionViewHeaderView *)self traitCollection];
+  v3 = [traitCollection listEnvironment] == 4;
 
   return v3;
 }

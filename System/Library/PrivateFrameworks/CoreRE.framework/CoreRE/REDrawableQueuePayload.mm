@@ -1,14 +1,14 @@
 @interface REDrawableQueuePayload
-- (REDrawableQueuePayload)initWithCoder:(id)a3;
-- (REDrawableQueuePayload)initWithWidth:(unsigned int)a3 height:(unsigned int)a4 pixelFormat:(unint64_t)a5 textureHandles:(id)a6 allowPixelFormatConversion:(BOOL)a7 machSemaphore:(unsigned int)a8 queueStateShmem:(void *)region queueStateLength:(unint64_t)length;
-- (void)encodeWithCoder:(id)a3;
+- (REDrawableQueuePayload)initWithCoder:(id)coder;
+- (REDrawableQueuePayload)initWithWidth:(unsigned int)width height:(unsigned int)height pixelFormat:(unint64_t)format textureHandles:(id)handles allowPixelFormatConversion:(BOOL)conversion machSemaphore:(unsigned int)semaphore queueStateShmem:(void *)region queueStateLength:(unint64_t)length;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REDrawableQueuePayload
 
-- (REDrawableQueuePayload)initWithWidth:(unsigned int)a3 height:(unsigned int)a4 pixelFormat:(unint64_t)a5 textureHandles:(id)a6 allowPixelFormatConversion:(BOOL)a7 machSemaphore:(unsigned int)a8 queueStateShmem:(void *)region queueStateLength:(unint64_t)length
+- (REDrawableQueuePayload)initWithWidth:(unsigned int)width height:(unsigned int)height pixelFormat:(unint64_t)format textureHandles:(id)handles allowPixelFormatConversion:(BOOL)conversion machSemaphore:(unsigned int)semaphore queueStateShmem:(void *)region queueStateLength:(unint64_t)length
 {
-  v16 = a6;
+  handlesCopy = handles;
   v29.receiver = self;
   v29.super_class = REDrawableQueuePayload;
   v17 = [(RESharedResourcePayload *)&v29 init];
@@ -18,10 +18,10 @@
     goto LABEL_8;
   }
 
-  v17->_width = a3;
-  v17->_height = a4;
-  v17->_pixelFormat = a5;
-  v19 = [v16 copy];
+  v17->_width = width;
+  v17->_height = height;
+  v17->_pixelFormat = format;
+  v19 = [handlesCopy copy];
   textureHandles = v18->_textureHandles;
   v18->_textureHandles = v19;
 
@@ -70,8 +70,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v18->_machSemaphore = a8;
-  if (!a8)
+  v18->_machSemaphore = semaphore;
+  if (!semaphore)
   {
     v25 = *re::assetTypesLogObjects(v23);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
@@ -86,7 +86,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v18->_allowPixelFormatConversion = a7;
+  v18->_allowPixelFormatConversion = conversion;
 LABEL_8:
   v24 = v18;
 LABEL_19:
@@ -94,12 +94,12 @@ LABEL_19:
   return v24;
 }
 
-- (REDrawableQueuePayload)initWithCoder:(id)a3
+- (REDrawableQueuePayload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = REDrawableQueuePayload;
-  v5 = [(RESharedResourcePayload *)&v25 initWithCoder:v4];
+  v5 = [(RESharedResourcePayload *)&v25 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_9;
@@ -108,25 +108,25 @@ LABEL_19:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
     v10 = {;
-    [v4 failWithError:v10];
+    [coderCopy failWithError:v10];
 LABEL_16:
 
     v20 = 0;
     goto LABEL_17;
   }
 
-  v7 = [v4 decodeIntegerForKey:@"width"];
+  v7 = [coderCopy decodeIntegerForKey:@"width"];
   v5->_width = v7;
-  v8 = [v4 decodeIntegerForKey:@"height"];
+  v8 = [coderCopy decodeIntegerForKey:@"height"];
   v5->_height = v8;
-  v5->_pixelFormat = [v4 decodeIntegerForKey:@"pixelFormat"];
+  v5->_pixelFormat = [coderCopy decodeIntegerForKey:@"pixelFormat"];
   if (HIDWORD(v8) || HIDWORD(v7))
     v10 = {;
-    [v4 failWithError:v10];
+    [coderCopy failWithError:v10];
     goto LABEL_16;
   }
 
-  v10 = v4;
+  v10 = coderCopy;
   v11 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
   v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
@@ -168,14 +168,14 @@ LABEL_17:
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v6 = v4;
+    v6 = coderCopy;
     [v6 encodeInteger:self->_width forKey:@"width"];
     [v6 encodeInteger:self->_height forKey:@"height"];
     [v6 encodeInteger:self->_pixelFormat forKey:@"pixelFormat"];

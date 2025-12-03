@@ -1,16 +1,16 @@
 @interface CarAdvisoryListCardViewController
-- (CarAdvisoryListCardViewController)initWithRoute:(id)a3 delegate:(id)a4;
+- (CarAdvisoryListCardViewController)initWithRoute:(id)route delegate:(id)delegate;
 - (CarAdvisoryListCardViewControllerDelegate)delegate;
 - (NSArray)focusOrderSubItems;
 - (NSArray)preferredFocusEnvironments;
-- (id)itemAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)itemAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (id)title;
 - (id)uniqueName;
-- (void)setRoute:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setRoute:(id)route;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -27,61 +27,61 @@
 {
   if ([(CarAdvisoryListCardViewController *)self isViewLoaded])
   {
-    v3 = [(CarBaseSearchViewController *)self tableView];
-    v4 = [v3 preferredFocusEnvironments];
+    tableView = [(CarBaseSearchViewController *)self tableView];
+    preferredFocusEnvironments = [tableView preferredFocusEnvironments];
   }
 
   else
   {
-    v4 = &__NSArray0__struct;
+    preferredFocusEnvironments = &__NSArray0__struct;
   }
 
-  return v4;
+  return preferredFocusEnvironments;
 }
 
 - (NSArray)focusOrderSubItems
 {
   if ([(CarAdvisoryListCardViewController *)self isViewLoaded])
   {
-    v3 = [(CarBaseSearchViewController *)self tableView];
-    v4 = [v3 _car_visibleCells];
+    tableView = [(CarBaseSearchViewController *)self tableView];
+    _car_visibleCells = [tableView _car_visibleCells];
   }
 
   else
   {
-    v4 = &__NSArray0__struct;
+    _car_visibleCells = &__NSArray0__struct;
   }
 
-  return v4;
+  return _car_visibleCells;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   advisoryItems = self->_advisoryItems;
-  v7 = a4;
-  v8 = a3;
-  v9 = -[NSArray objectAtIndex:](advisoryItems, "objectAtIndex:", [v7 row]);
-  v10 = [(CarAdvisoryListCardViewController *)self delegate];
-  [v10 advisoryListCardDidSelectAdvisoryItem:v9];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = -[NSArray objectAtIndex:](advisoryItems, "objectAtIndex:", [pathCopy row]);
+  delegate = [(CarAdvisoryListCardViewController *)self delegate];
+  [delegate advisoryListCardDidSelectAdvisoryItem:v9];
 
   v11.receiver = self;
   v11.super_class = CarAdvisoryListCardViewController;
-  [(CarBaseSearchViewController *)&v11 tableView:v8 didSelectRowAtIndexPath:v7];
+  [(CarBaseSearchViewController *)&v11 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CarAdvisoryListCardViewController *)self itemAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(CarAdvisoryListCardViewController *)self itemAtIndexPath:pathCopy];
   v9 = +[CarSearchItemCell reuseIdentifier];
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   [v10 setAccessibilityIdentifier:@"CarAdvisoryCell"];
   v11 = +[UIColor systemBackgroundColor];
   [v10 setBackgroundColor:v11];
 
-  v12 = [(CarBaseSearchViewController *)self modelForItemAtIndexPath:v6];
+  v12 = [(CarBaseSearchViewController *)self modelForItemAtIndexPath:pathCopy];
 
   if (!v12)
   {
@@ -94,10 +94,10 @@
   return v10;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
+  pathCopy = path;
+  v5 = [pathCopy row];
   if (v5 >= [(NSArray *)self->_advisoryItems count])
   {
     v6 = 0;
@@ -105,13 +105,13 @@
 
   else
   {
-    v6 = -[NSArray objectAtIndex:](self->_advisoryItems, "objectAtIndex:", [v4 row]);
+    v6 = -[NSArray objectAtIndex:](self->_advisoryItems, "objectAtIndex:", [pathCopy row]);
   }
 
   return v6;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v4 = [[UITableViewHeaderFooterView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v4 setAlpha:0.0];
@@ -119,7 +119,7 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   v4 = [[UITableViewHeaderFooterView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v4 setAlpha:0.0];
@@ -139,63 +139,63 @@
   v25.receiver = self;
   v25.super_class = CarAdvisoryListCardViewController;
   [(CarAdvisoryListCardViewController *)&v25 viewDidLoad];
-  v3 = [(CarAdvisoryListCardViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"CarAdvisoryListCard"];
+  view = [(CarAdvisoryListCardViewController *)self view];
+  [view setAccessibilityIdentifier:@"CarAdvisoryListCard"];
 
   v4 = [[CarTableView alloc] initWithFrame:2 style:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(CarBaseSearchViewController *)self setTableView:v4];
 
-  v5 = [(CarBaseSearchViewController *)self tableView];
-  [v5 setAccessibilityIdentifier:@"CarAdvisoryListCardTableView"];
+  tableView = [(CarBaseSearchViewController *)self tableView];
+  [tableView setAccessibilityIdentifier:@"CarAdvisoryListCardTableView"];
 
-  v6 = [(CarBaseSearchViewController *)self tableView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView2 = [(CarBaseSearchViewController *)self tableView];
+  [tableView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(CarBaseSearchViewController *)self tableView];
+  tableView3 = [(CarBaseSearchViewController *)self tableView];
   LODWORD(v8) = 1148846080;
-  [v7 setContentCompressionResistancePriority:0 forAxis:v8];
+  [tableView3 setContentCompressionResistancePriority:0 forAxis:v8];
 
-  v9 = [(CarBaseSearchViewController *)self tableView];
+  tableView4 = [(CarBaseSearchViewController *)self tableView];
   LODWORD(v10) = 1148846080;
-  [v9 setContentCompressionResistancePriority:1 forAxis:v10];
+  [tableView4 setContentCompressionResistancePriority:1 forAxis:v10];
 
-  v11 = [(CarBaseSearchViewController *)self tableView];
-  [v11 setDataSource:self];
+  tableView5 = [(CarBaseSearchViewController *)self tableView];
+  [tableView5 setDataSource:self];
 
-  v12 = [(CarBaseSearchViewController *)self tableView];
-  [v12 setDelegate:self];
+  tableView6 = [(CarBaseSearchViewController *)self tableView];
+  [tableView6 setDelegate:self];
 
   v13 = +[UIColor clearColor];
-  v14 = [(CarBaseSearchViewController *)self tableView];
-  [v14 setBackgroundColor:v13];
+  tableView7 = [(CarBaseSearchViewController *)self tableView];
+  [tableView7 setBackgroundColor:v13];
 
-  v15 = [(CarBaseSearchViewController *)self tableView];
-  [v15 _setHeaderAndFooterViewsFloat:0];
+  tableView8 = [(CarBaseSearchViewController *)self tableView];
+  [tableView8 _setHeaderAndFooterViewsFloat:0];
 
-  v16 = [(CarBaseSearchViewController *)self tableView];
-  [v16 setRowHeight:44.0];
+  tableView9 = [(CarBaseSearchViewController *)self tableView];
+  [tableView9 setRowHeight:44.0];
 
-  v17 = [(CarBaseSearchViewController *)self tableView];
+  tableView10 = [(CarBaseSearchViewController *)self tableView];
   v18 = objc_opt_class();
   v19 = +[CarSearchItemCell reuseIdentifier];
-  [v17 registerClass:v18 forCellReuseIdentifier:v19];
+  [tableView10 registerClass:v18 forCellReuseIdentifier:v19];
 
-  v20 = [(CarAdvisoryListCardViewController *)self view];
-  v21 = [(CarBaseSearchViewController *)self tableView];
-  [v20 addSubview:v21];
+  view2 = [(CarAdvisoryListCardViewController *)self view];
+  tableView11 = [(CarBaseSearchViewController *)self tableView];
+  [view2 addSubview:tableView11];
 
-  v22 = [(CarBaseSearchViewController *)self tableView];
-  v23 = [(CarAdvisoryListCardViewController *)self view];
-  v24 = [v22 _maps_constraintsForCenteringInView:v23];
+  tableView12 = [(CarBaseSearchViewController *)self tableView];
+  view3 = [(CarAdvisoryListCardViewController *)self view];
+  v24 = [tableView12 _maps_constraintsForCenteringInView:view3];
   [NSLayoutConstraint activateConstraints:v24];
 }
 
 - (id)title
 {
-  v2 = [(CarAdvisoryListCardViewController *)self numberOfItems];
+  numberOfItems = [(CarAdvisoryListCardViewController *)self numberOfItems];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2 <= 1)
+  if (numberOfItems <= 1)
   {
     v5 = @"RoutePlanning_advisory";
   }
@@ -210,31 +210,31 @@
   return v6;
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  if (self->_route != a3)
+  if (self->_route != route)
   {
-    v7 = [a3 clickableAdvisory];
-    v5 = [v7 advisoryItems];
+    clickableAdvisory = [route clickableAdvisory];
+    advisoryItems = [clickableAdvisory advisoryItems];
     advisoryItems = self->_advisoryItems;
-    self->_advisoryItems = v5;
+    self->_advisoryItems = advisoryItems;
   }
 }
 
-- (CarAdvisoryListCardViewController)initWithRoute:(id)a3 delegate:(id)a4
+- (CarAdvisoryListCardViewController)initWithRoute:(id)route delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  routeCopy = route;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = CarAdvisoryListCardViewController;
   v8 = [(CarBaseSearchViewController *)&v12 initWithDisabledETAUpdates:1];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v7);
-    [(CarAdvisoryListCardViewController *)v9 setRoute:v6];
-    v10 = [(CarBaseSearchViewController *)v9 tableView];
-    [v10 reloadData];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    [(CarAdvisoryListCardViewController *)v9 setRoute:routeCopy];
+    tableView = [(CarBaseSearchViewController *)v9 tableView];
+    [tableView reloadData];
   }
 
   return v9;

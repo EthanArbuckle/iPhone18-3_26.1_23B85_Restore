@@ -1,21 +1,21 @@
 @interface ICQUpgradePhotosCloudUpgradeEnableFlowManager
-- (void)_performPageButtonActionWithParameters:(id)a3 completion:(id)a4;
+- (void)_performPageButtonActionWithParameters:(id)parameters completion:(id)completion;
 @end
 
 @implementation ICQUpgradePhotosCloudUpgradeEnableFlowManager
 
-- (void)_performPageButtonActionWithParameters:(id)a3 completion:(id)a4
+- (void)_performPageButtonActionWithParameters:(id)parameters completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __99__ICQUpgradePhotosCloudUpgradeEnableFlowManager__performPageButtonActionWithParameters_completion___block_invoke;
   v9[3] = &unk_27A65C308;
-  v10 = v6;
+  v10 = completionCopy;
   v8.receiver = self;
   v8.super_class = ICQUpgradePhotosCloudUpgradeEnableFlowManager;
-  v7 = v6;
-  [(ICQUpgradeCloudStorageFlowManager *)&v8 _performPageButtonActionWithParameters:a3 completion:v9];
+  v7 = completionCopy;
+  [(ICQUpgradeCloudStorageFlowManager *)&v8 _performPageButtonActionWithParameters:parameters completion:v9];
 }
 
 void __99__ICQUpgradePhotosCloudUpgradeEnableFlowManager__performPageButtonActionWithParameters_completion___block_invoke(uint64_t a1, char a2, void *a3)

@@ -1,28 +1,28 @@
 @interface WFChooseFromListActionUIKitUserInterface
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)chooseImageController:(id)a3 didSelectItems:(id)a4;
-- (void)chooseImageControllerDidCancel:(id)a3;
-- (void)finishWithContent:(id)a3 error:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)showImagesWithPrompt:(id)a3 canSelectAll:(BOOL)a4 canSelectMultiple:(BOOL)a5 inputItems:(id)a6 completionHandler:(id)a7;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)chooseImageController:(id)controller didSelectItems:(id)items;
+- (void)chooseImageControllerDidCancel:(id)cancel;
+- (void)finishWithContent:(id)content error:(id)error;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)showImagesWithPrompt:(id)prompt canSelectAll:(BOOL)all canSelectMultiple:(BOOL)multiple inputItems:(id)items completionHandler:(id)handler;
 @end
 
 @implementation WFChooseFromListActionUIKitUserInterface
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [MEMORY[0x277CCA9B8] userCancelledError];
-  [(WFChooseFromListActionUIKitUserInterface *)self finishWithContent:0 error:v4];
+  userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
+  [(WFChooseFromListActionUIKitUserInterface *)self finishWithContent:0 error:userCancelledError];
 }
 
-- (void)chooseImageControllerDidCancel:(id)a3
+- (void)chooseImageControllerDidCancel:(id)cancel
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __75__WFChooseFromListActionUIKitUserInterface_chooseImageControllerDidCancel___block_invoke;
   v3[3] = &unk_278C37538;
   v3[4] = self;
-  [a3 dismissViewControllerAnimated:1 completion:v3];
+  [cancel dismissViewControllerAnimated:1 completion:v3];
 }
 
 void __75__WFChooseFromListActionUIKitUserInterface_chooseImageControllerDidCancel___block_invoke(uint64_t a1)
@@ -32,46 +32,46 @@ void __75__WFChooseFromListActionUIKitUserInterface_chooseImageControllerDidCanc
   [v1 finishWithContent:0 error:v2];
 }
 
-- (void)chooseImageController:(id)a3 didSelectItems:(id)a4
+- (void)chooseImageController:(id)controller didSelectItems:(id)items
 {
-  v6 = a4;
+  itemsCopy = items;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __81__WFChooseFromListActionUIKitUserInterface_chooseImageController_didSelectItems___block_invoke;
   v8[3] = &unk_278C375A0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 dismissViewControllerAnimated:1 completion:v8];
+  v9 = itemsCopy;
+  v7 = itemsCopy;
+  [controller dismissViewControllerAnimated:1 completion:v8];
 }
 
-- (void)finishWithContent:(id)a3 error:(id)a4
+- (void)finishWithContent:(id)content error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(WFChooseFromListActionUIKitUserInterface *)self completionHandler];
+  contentCopy = content;
+  errorCopy = error;
+  completionHandler = [(WFChooseFromListActionUIKitUserInterface *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(WFChooseFromListActionUIKitUserInterface *)self completionHandler];
-    (v8)[2](v8, v9, v6);
+    completionHandler2 = [(WFChooseFromListActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, contentCopy, errorCopy);
   }
 
   [(WFChooseFromListActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__WFChooseFromListActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFChooseFromListActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -86,24 +86,24 @@ uint64_t __84__WFChooseFromListActionUIKitUserInterface_cancelPresentationWithCo
   return v4();
 }
 
-- (void)showImagesWithPrompt:(id)a3 canSelectAll:(BOOL)a4 canSelectMultiple:(BOOL)a5 inputItems:(id)a6 completionHandler:(id)a7
+- (void)showImagesWithPrompt:(id)prompt canSelectAll:(BOOL)all canSelectMultiple:(BOOL)multiple inputItems:(id)items completionHandler:(id)handler
 {
-  v10 = a4;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  if (!v15)
+  allCopy = all;
+  promptCopy = prompt;
+  itemsCopy = items;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"WFChooseFromListActionUIKitUserInterface.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFChooseFromListActionUIKitUserInterface.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  [(WFChooseFromListActionUIKitUserInterface *)self setCompletionHandler:v15];
+  [(WFChooseFromListActionUIKitUserInterface *)self setCompletionHandler:handlerCopy];
   v16 = MEMORY[0x277CCAA78];
-  if (v10 && a5)
+  if (allCopy && multiple)
   {
-    v17 = [v14 items];
-    v18 = [v16 indexSetWithIndexesInRange:{0, objc_msgSend(v17, "count")}];
+    items = [itemsCopy items];
+    v18 = [v16 indexSetWithIndexesInRange:{0, objc_msgSend(items, "count")}];
   }
 
   else
@@ -115,14 +115,14 @@ uint64_t __84__WFChooseFromListActionUIKitUserInterface_cancelPresentationWithCo
   block[1] = 3221225472;
   block[2] = __125__WFChooseFromListActionUIKitUserInterface_showImagesWithPrompt_canSelectAll_canSelectMultiple_inputItems_completionHandler___block_invoke;
   block[3] = &unk_278C36F68;
-  v24 = v14;
+  v24 = itemsCopy;
   v25 = v18;
-  v28 = a5;
-  v26 = self;
-  v27 = v13;
-  v19 = v13;
+  multipleCopy = multiple;
+  selfCopy = self;
+  v27 = promptCopy;
+  v19 = promptCopy;
   v20 = v18;
-  v21 = v14;
+  v21 = itemsCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

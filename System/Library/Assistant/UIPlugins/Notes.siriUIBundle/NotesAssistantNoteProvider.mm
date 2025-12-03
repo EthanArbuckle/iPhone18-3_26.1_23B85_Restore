@@ -1,7 +1,7 @@
 @interface NotesAssistantNoteProvider
 + (id)htmlManagedObjectContext;
-- (NotesAssistantNoteProvider)initWithAceObject:(id)a3;
-- (id)stringForExpression:(id)a3 containsPrivacySensitiveContents:(BOOL *)a4;
+- (NotesAssistantNoteProvider)initWithAceObject:(id)object;
+- (id)stringForExpression:(id)expression containsPrivacySensitiveContents:(BOOL *)contents;
 @end
 
 @implementation NotesAssistantNoteProvider
@@ -9,30 +9,30 @@
 + (id)htmlManagedObjectContext
 {
   v2 = +[NoteContext sharedContext];
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [v2 managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
-- (NotesAssistantNoteProvider)initWithAceObject:(id)a3
+- (NotesAssistantNoteProvider)initWithAceObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v24.receiver = self;
   v24.super_class = NotesAssistantNoteProvider;
   v5 = [(NotesAssistantNoteProvider *)&v24 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [objectCopy identifier];
     v7 = os_log_create("com.apple.notes", "Siri");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_AF0C(v6, v4, v7);
+      sub_AF0C(identifier, objectCopy, v7);
     }
 
     v8 = +[ICNoteContext sharedContext];
-    v9 = [v8 managedObjectContext];
-    v10 = [objc_opt_class() htmlManagedObjectContext];
-    v11 = [NotesAssistantUtilities searchIndexableNoteForObject:v4 modernNoteContext:v9 htmlNoteContext:v10];
+    managedObjectContext = [v8 managedObjectContext];
+    htmlManagedObjectContext = [objc_opt_class() htmlManagedObjectContext];
+    v11 = [NotesAssistantUtilities searchIndexableNoteForObject:objectCopy modernNoteContext:managedObjectContext htmlNoteContext:htmlManagedObjectContext];
 
     objc_opt_class();
     v12 = ICDynamicCast();
@@ -44,21 +44,21 @@
     htmlNote = v5->_htmlNote;
     v5->_htmlNote = v14;
 
-    v16 = [v4 title];
-    if (v16)
+    title = [objectCopy title];
+    if (title)
     {
-      v17 = v16;
-      v18 = [v4 contents];
+      v17 = title;
+      contents = [objectCopy contents];
 
-      if (v18)
+      if (contents)
       {
-        v19 = [v4 title];
+        title2 = [objectCopy title];
         noteTitle = v5->_noteTitle;
-        v5->_noteTitle = v19;
+        v5->_noteTitle = title2;
 
-        v21 = [v4 contents];
+        contents2 = [objectCopy contents];
         noteContents = v5->_noteContents;
-        v5->_noteContents = v21;
+        v5->_noteContents = contents2;
       }
     }
   }
@@ -66,98 +66,98 @@
   return v5;
 }
 
-- (id)stringForExpression:(id)a3 containsPrivacySensitiveContents:(BOOL *)a4
+- (id)stringForExpression:(id)expression containsPrivacySensitiveContents:(BOOL *)contents
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  expressionCopy = expression;
+  v7 = expressionCopy;
+  if (contents)
   {
-    *a4 = 1;
+    *contents = 1;
   }
 
-  if (![v6 isEqualToString:SANoteObjectDeferredTitleKeyValue])
+  if (![expressionCopy isEqualToString:SANoteObjectDeferredTitleKeyValue])
   {
     if (![v7 isEqualToString:SANoteObjectDeferredContentsKeyValue])
     {
-      v19 = 0;
-      if (a4)
+      title2 = 0;
+      if (contents)
       {
-        *a4 = 0;
+        *contents = 0;
       }
 
       goto LABEL_22;
     }
 
-    v10 = [(NotesAssistantNoteProvider *)self note];
+    note = [(NotesAssistantNoteProvider *)self note];
 
-    if (v10)
+    if (note)
     {
-      v11 = [(NotesAssistantNoteProvider *)self note];
-      v12 = [v11 isPasswordProtected];
+      note2 = [(NotesAssistantNoteProvider *)self note];
+      isPasswordProtected = [note2 isPasswordProtected];
 
-      v13 = [(NotesAssistantNoteProvider *)self note];
-      v14 = v13;
-      if (v12)
+      note3 = [(NotesAssistantNoteProvider *)self note];
+      htmlNote2 = note3;
+      if (isPasswordProtected)
       {
-        v15 = [v13 title];
+        title = [note3 title];
         v16 = [NSBundle bundleForClass:objc_opt_class()];
         v17 = [v16 localizedStringForKey:@"This note is password protected." value:&stru_18718 table:@"NotesAssistant"];
-        v18 = [v15 stringByAppendingFormat:@"\n\n%@", v17];
+        noteContents = [title stringByAppendingFormat:@"\n\n%@", v17];
 
 LABEL_19:
 LABEL_20:
-        v24 = [v18 stringByReplacingOccurrencesOfString:@"(\n)+" withString:@"\n" options:1024 range:{0, objc_msgSend(v18, "length")}];
+        v24 = [noteContents stringByReplacingOccurrencesOfString:@"(\n)+" withString:@"\n" options:1024 range:{0, objc_msgSend(noteContents, "length")}];
 
-        v19 = [v24 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\x1B\\pause=500\\""];
+        title2 = [v24 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\x1B\\pause=500\\""];
 
         goto LABEL_22;
       }
 
-      v23 = [v13 noteAsPlainText];
+      noteAsPlainText = [note3 noteAsPlainText];
     }
 
     else
     {
-      v22 = [(NotesAssistantNoteProvider *)self htmlNote];
+      htmlNote = [(NotesAssistantNoteProvider *)self htmlNote];
 
-      if (!v22)
+      if (!htmlNote)
       {
-        v18 = [(NotesAssistantNoteProvider *)self noteContents];
+        noteContents = [(NotesAssistantNoteProvider *)self noteContents];
         goto LABEL_20;
       }
 
-      v14 = [(NotesAssistantNoteProvider *)self htmlNote];
-      v23 = [v14 contentAsPlainTextPreservingNewlines];
+      htmlNote2 = [(NotesAssistantNoteProvider *)self htmlNote];
+      noteAsPlainText = [htmlNote2 contentAsPlainTextPreservingNewlines];
     }
 
-    v18 = v23;
+    noteContents = noteAsPlainText;
     goto LABEL_19;
   }
 
-  v8 = [(NotesAssistantNoteProvider *)self note];
+  note4 = [(NotesAssistantNoteProvider *)self note];
 
-  if (v8)
+  if (note4)
   {
-    v9 = [(NotesAssistantNoteProvider *)self note];
+    note5 = [(NotesAssistantNoteProvider *)self note];
 LABEL_14:
-    v21 = v9;
-    v19 = [v9 title];
+    v21 = note5;
+    title2 = [note5 title];
 
     goto LABEL_22;
   }
 
-  v20 = [(NotesAssistantNoteProvider *)self htmlNote];
+  htmlNote3 = [(NotesAssistantNoteProvider *)self htmlNote];
 
-  if (v20)
+  if (htmlNote3)
   {
-    v9 = [(NotesAssistantNoteProvider *)self htmlNote];
+    note5 = [(NotesAssistantNoteProvider *)self htmlNote];
     goto LABEL_14;
   }
 
-  v19 = [(NotesAssistantNoteProvider *)self noteTitle];
+  title2 = [(NotesAssistantNoteProvider *)self noteTitle];
 LABEL_22:
 
-  return v19;
+  return title2;
 }
 
 @end

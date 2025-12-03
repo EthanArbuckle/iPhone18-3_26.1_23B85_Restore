@@ -1,6 +1,6 @@
 @interface TUINavigationBarItemLayout
-- (BOOL)collectHostingPropertiesWithCollector:(id)a3;
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (BOOL)collectHostingPropertiesWithCollector:(id)collector;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 - (void)computeLayout;
 @end
 
@@ -13,8 +13,8 @@
   v3 = COERCE_FLOAT([(TUILayout *)self specifiedWidth]);
   v12 = 0u;
   v13 = 0u;
-  v4 = [(TUILayout *)self children];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  children = [(TUILayout *)self children];
+  v5 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -25,7 +25,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(children);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -34,39 +34,39 @@
         [v9 validateLayout];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)collectHostingPropertiesWithCollector:(id)a3
+- (BOOL)collectHostingPropertiesWithCollector:(id)collector
 {
-  v4 = a3;
+  collectorCopy = collector;
   v5 = [(TUILayout *)self box];
-  v6 = [v5 hostingIdentifiers];
+  hostingIdentifiers = [v5 hostingIdentifiers];
 
-  if (v6)
+  if (hostingIdentifiers)
   {
-    v7 = [v5 hostingIdentifiers];
-    v8 = [v7 count];
+    hostingIdentifiers2 = [v5 hostingIdentifiers];
+    v8 = [hostingIdentifiers2 count];
 
     if (v8)
     {
       v9 = 0;
       do
       {
-        v10 = [v5 hostingIdentifiers];
-        v11 = [v10 objectAtIndexedSubscript:v9];
+        hostingIdentifiers3 = [v5 hostingIdentifiers];
+        v11 = [hostingIdentifiers3 objectAtIndexedSubscript:v9];
 
-        v12 = [v5 hostingProperties];
-        v13 = [v12 objectAtIndexedSubscript:v9];
+        hostingProperties = [v5 hostingProperties];
+        v13 = [hostingProperties objectAtIndexedSubscript:v9];
 
-        [v4 hostingCollectorAddProperties:v13 forIdentifier:v11];
+        [collectorCopy hostingCollectorAddProperties:v13 forIdentifier:v11];
         ++v9;
-        v14 = [v5 hostingIdentifiers];
-        v15 = [v14 count];
+        hostingIdentifiers4 = [v5 hostingIdentifiers];
+        v15 = [hostingIdentifiers4 count];
       }
 
       while (v9 < v15);
@@ -76,19 +76,19 @@
   return 0;
 }
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   v6 = [(TUILayout *)self box];
-  v88 = [v6 width];
+  width = [v6 width];
   v83 = v7;
 
-  v8 = [(TUILayout *)self children];
-  v9 = [v8 firstObject];
+  children = [(TUILayout *)self children];
+  firstObject = [children firstObject];
 
-  if (v9)
+  if (firstObject)
   {
-    v94 = [v5 renderModelForLayout:v9 kind:6];
+    v94 = [contextCopy renderModelForLayout:firstObject kind:6];
   }
 
   else
@@ -97,7 +97,7 @@
   }
 
   v10 = [(TUILayout *)self box];
-  v86 = v9;
+  v86 = firstObject;
   if ([v10 axHasNonDefaultAttributess])
   {
     v11 = [TUIAXAttributes alloc];
@@ -111,33 +111,33 @@
   }
 
   v13 = [(TUILayout *)self box];
-  v14 = [v13 actionHandler];
+  actionHandler = [v13 actionHandler];
 
   v15 = [(TUILayout *)self box];
-  v16 = [v15 menuContainer];
-  v17 = [v16 menuModel];
+  menuContainer = [v15 menuContainer];
+  menuModel = [menuContainer menuModel];
   v18 = [(TUILayout *)self box];
-  v19 = [v18 menuIsPrimary];
-  v20 = [v14 actionObject];
-  v92 = v14;
-  v21 = [v14 actionDelegate];
-  v91 = [v17 menuWithIsPrimary:v19 actionObject:v20 actionDelegate:v21];
+  menuIsPrimary = [v18 menuIsPrimary];
+  actionObject = [actionHandler actionObject];
+  v92 = actionHandler;
+  actionDelegate = [actionHandler actionDelegate];
+  v91 = [menuModel menuWithIsPrimary:menuIsPrimary actionObject:actionObject actionDelegate:actionDelegate];
 
   v22 = [(TUILayout *)self box];
-  v23 = [v22 menuContainer];
-  v24 = [v23 imageModelsToLoad];
+  menuContainer2 = [v22 menuContainer];
+  imageModelsToLoad = [menuContainer2 imageModelsToLoad];
 
-  v87 = v5;
-  v85 = v24;
-  if ([v24 count])
+  v87 = contextCopy;
+  v85 = imageModelsToLoad;
+  if ([imageModelsToLoad count])
   {
-    v26 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v24 count]);
-    [v5 contentsScale];
+    v26 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [imageModelsToLoad count]);
+    [contextCopy contentsScale];
     v101 = 0u;
     v102 = 0u;
     v103 = 0u;
     v104 = 0u;
-    obj = v24;
+    obj = imageModelsToLoad;
     v99 = [obj countByEnumeratingWithState:&v101 objects:v105 count:16];
     if (v99)
     {
@@ -153,18 +153,18 @@
           }
 
           v28 = *(*(&v101 + 1) + 8 * v27);
-          v29 = [(TUILayout *)self controller];
-          v30 = [v29 manager];
-          v31 = [v30 imageResourceCache];
-          v32 = [v28 urlString];
+          controller = [(TUILayout *)self controller];
+          manager = [controller manager];
+          imageResourceCache = [manager imageResourceCache];
+          urlString = [v28 urlString];
           [v28 baseURL];
           v34 = v33 = self;
           [v28 size];
-          v35 = [v31 imageResourceForTemplatedURL:v32 baseURL:v34 naturalSize:? contentsScale:?];
+          v35 = [imageResourceCache imageResourceForTemplatedURL:urlString baseURL:v34 naturalSize:? contentsScale:?];
 
           self = v33;
-          v36 = [v28 identifier];
-          [v26 setObject:v35 forKeyedSubscript:v36];
+          identifier = [v28 identifier];
+          [v26 setObject:v35 forKeyedSubscript:identifier];
 
           v27 = v27 + 1;
         }
@@ -178,7 +178,7 @@
 
     v90 = v26;
 
-    v5 = v87;
+    contextCopy = v87;
   }
 
   else
@@ -186,57 +186,57 @@
     v90 = 0;
   }
 
-  LODWORD(v25) = v88;
+  LODWORD(v25) = width;
   v37 = v83;
-  v38 = *(&v88 + 1);
-  v39 = *&v88;
+  v38 = *(&width + 1);
+  v39 = *&width;
   v84 = [(TUILayout *)self box:0.0];
-  v72 = [v84 itemType];
+  itemType = [v84 itemType];
   v82 = [(TUILayout *)self box];
-  v100 = [v82 identifier];
+  identifier2 = [v82 identifier];
   v81 = [(TUILayout *)self box];
   obja = [v81 title];
   v80 = [(TUILayout *)self box];
-  v70 = [v80 attributedTitle];
+  attributedTitle = [v80 attributedTitle];
   v79 = [(TUILayout *)self box];
-  v98 = [v79 image];
+  image = [v79 image];
   v78 = [(TUILayout *)self box];
-  v67 = [v78 isEnabled];
+  isEnabled = [v78 isEnabled];
   v77 = [(TUILayout *)self box];
-  v66 = [v77 buttonType];
+  buttonType = [v77 buttonType];
   v76 = [(TUILayout *)self box];
-  v64 = [v76 buttonRole];
+  buttonRole = [v76 buttonRole];
   v75 = [(TUILayout *)self box];
-  v89 = [v75 text];
+  text = [v75 text];
   v73 = [(TUILayout *)self box];
-  v61 = [v73 searchTextMaxLength];
+  searchTextMaxLength = [v73 searchTextMaxLength];
   v71 = [(TUILayout *)self box];
-  v60 = [v71 placeholderText];
-  v69 = [v5 environment];
-  v58 = TUIKeyboardAppearanceFromEnvironmentStyle([v69 style]);
+  placeholderText = [v71 placeholderText];
+  environment = [contextCopy environment];
+  v58 = TUIKeyboardAppearanceFromEnvironmentStyle([environment style]);
   v68 = [(TUILayout *)self box];
   [v68 navigationBarBackgroundOpacity];
   v41 = v40;
   v65 = [(TUILayout *)self box];
-  v57 = [v65 observeTrigger];
+  observeTrigger = [v65 observeTrigger];
   v63 = [(TUILayout *)self box];
-  v56 = [v63 observeTriggerValue];
+  observeTriggerValue = [v63 observeTriggerValue];
   v62 = [(TUILayout *)self box];
-  v42 = [v62 ignoreInsetsForOpacityTrigger];
+  ignoreInsetsForOpacityTrigger = [v62 ignoreInsetsForOpacityTrigger];
   v59 = [(TUILayout *)self box];
-  v43 = [v59 refId];
+  refId = [v59 refId];
   v44 = [(TUILayout *)self box];
   [v44 refInstance];
   v46 = v45 = self;
   v47 = [(TUILayout *)v45 box];
-  v48 = [v47 hostingIdentifiers];
+  hostingIdentifiers = [v47 hostingIdentifiers];
   v49 = [(TUILayout *)v45 box];
-  v50 = [v49 hostingProperties];
+  hostingProperties = [v49 hostingProperties];
   v51 = [(TUILayout *)v45 box];
   LOBYTE(v55) = [v51 prefersNoPlatter];
-  LOBYTE(v54) = v42;
-  LOBYTE(v53) = v67;
-  v74 = [TUIRenderModelNavigationItem renderModelWithItemType:v72 identifier:v100 imageModelIDToResource:v90 actionHandler:v92 title:obja attributedTitle:v70 image:v39 enabled:v38 buttonType:v37 buttonRole:v41 width:v98 minWidth:v53 maxWidth:v66 text:v64 searchTextMaxLength:v89 placeholderText:v61 keyboardAppearance:v60 navigationBarBackgroundOpacity:v58 observeTrigger:v57 observeTriggerValue:v56 ignoreInsetsForOpacityTrigger:v54 menu:v91 subview:v94 axAttributes:v93 refId:v43 refInstance:v46 hostingIdentifiers:v48 hostingProperties:v50 prefersNoPlatter:v55];
+  LOBYTE(v54) = ignoreInsetsForOpacityTrigger;
+  LOBYTE(v53) = isEnabled;
+  v74 = [TUIRenderModelNavigationItem renderModelWithItemType:itemType identifier:identifier2 imageModelIDToResource:v90 actionHandler:v92 title:obja attributedTitle:attributedTitle image:v39 enabled:v38 buttonType:v37 buttonRole:v41 width:image minWidth:v53 maxWidth:buttonType text:buttonRole searchTextMaxLength:text placeholderText:searchTextMaxLength keyboardAppearance:placeholderText navigationBarBackgroundOpacity:v58 observeTrigger:observeTrigger observeTriggerValue:observeTriggerValue ignoreInsetsForOpacityTrigger:v54 menu:v91 subview:v94 axAttributes:v93 refId:refId refInstance:v46 hostingIdentifiers:hostingIdentifiers hostingProperties:hostingProperties prefersNoPlatter:v55];
 
   return v74;
 }

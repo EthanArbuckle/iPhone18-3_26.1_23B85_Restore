@@ -1,21 +1,21 @@
 @interface SPDictionaryDatastoreToken
-- (SPDictionaryDatastoreToken)initWithStore:(id)a3;
-- (void)begin:(id)a3;
-- (void)finishWithClientID:(id)a3;
+- (SPDictionaryDatastoreToken)initWithStore:(id)store;
+- (void)begin:(id)begin;
+- (void)finishWithClientID:(id)d;
 @end
 
 @implementation SPDictionaryDatastoreToken
 
-- (SPDictionaryDatastoreToken)initWithStore:(id)a3
+- (SPDictionaryDatastoreToken)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = SPDictionaryDatastoreToken;
   v6 = [(SPDictionaryDatastoreToken *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
     v7->_type = 4;
     v8 = [SITracingObjcLifetimeSpan alloc];
     v9 = si_tracing_current_span();
@@ -31,9 +31,9 @@
   return v7;
 }
 
-- (void)begin:(id)a3
+- (void)begin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v5 = si_tracing_current_span();
   v6 = *(v5 + 16);
   v56 = *v5;
@@ -49,32 +49,32 @@
   *(v5 + 28) = 102;
   *(v5 + 32) = "[SPDictionaryDatastoreToken begin:]";
   si_tracing_log_span_begin();
-  v11 = [v4 queryContext];
-  v12 = [v4 connection];
-  v13 = [v12 bundleID];
+  queryContext = [beginCopy queryContext];
+  connection = [beginCopy connection];
+  bundleID = [connection bundleID];
 
   v14 = [SFStartLocalSearchFeedback alloc];
-  v15 = [v11 searchString];
-  v16 = [v14 initWithInput:v15 triggerEvent:objc_msgSend(v11 indexType:"whyQuery") queryId:{6, objc_msgSend(v4, "queryIdent")}];
+  searchString = [queryContext searchString];
+  v16 = [v14 initWithInput:searchString triggerEvent:objc_msgSend(queryContext indexType:"whyQuery") queryId:{6, objc_msgSend(beginCopy, "queryIdent")}];
   feedback = self->_feedback;
   self->_feedback = v16;
 
   v18 = +[SPFeedbackProxy sharedProxy];
-  [v18 sendFeedbackType:5 feedback:self->_feedback queryId:objc_msgSend(v4 clientID:{"queryIdent"), v13}];
+  [v18 sendFeedbackType:5 feedback:self->_feedback queryId:objc_msgSend(beginCopy clientID:{"queryIdent"), bundleID}];
 
-  [v4 externalID];
+  [beginCopy externalID];
   kdebug_trace();
   v19 = SPLogForSPLogCategoryTelemetry();
-  v20 = [v4 externalID];
-  if (v20 && os_signpost_enabled(v19))
+  externalID = [beginCopy externalID];
+  if (externalID && os_signpost_enabled(v19))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v19, OS_SIGNPOST_INTERVAL_BEGIN, v20, "dictionaryLatency", " enableTelemetry=YES ", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v19, OS_SIGNPOST_INTERVAL_BEGIN, externalID, "dictionaryLatency", " enableTelemetry=YES ", buf, 2u);
   }
 
   v45 = +[NSCharacterSet whitespaceCharacterSet];
-  v21 = [v11 getTrimmedSearchString];
-  v22 = [v21 mutableCopy];
+  getTrimmedSearchString = [queryContext getTrimmedSearchString];
+  v22 = [getTrimmedSearchString mutableCopy];
 
   if (qword_1000A85E8 != -1)
   {
@@ -82,7 +82,7 @@
   }
 
   v23 = [v22 length];
-  v44 = v11;
+  v44 = queryContext;
   if (v23 > [qword_1000A85F0 length] && objc_msgSend(v22, "hasPrefix:", qword_1000A85F0) && (objc_msgSend(v45, "characterIsMember:", objc_msgSend(v22, "characterAtIndex:", objc_msgSend(qword_1000A85F0, "length"))) & 1) != 0)
   {
     v24 = &qword_1000A85F0;
@@ -125,18 +125,18 @@ LABEL_18:
   v53 = buf;
   v54 = 0x2020000000;
   v55 = 0;
-  v31 = [(SPDictionaryDatastoreToken *)self store];
-  v32 = [v31 dictionaries];
+  store = [(SPDictionaryDatastoreToken *)self store];
+  dictionaries = [store dictionaries];
 
-  if ([v32 count])
+  if ([dictionaries count])
   {
-    objc_initWeak(location, v4);
+    objc_initWeak(location, beginCopy);
     objc_copyWeak(v49, location);
     v33 = v22;
     v50 = v29;
     v49[1] = v30;
     v47 = v33;
-    v48 = v13;
+    v48 = bundleID;
     md_tracing_dispatch_async_propagating();
 
     objc_destroyWeak(v49);
@@ -146,20 +146,20 @@ LABEL_18:
   else
   {
     v34 = +[SDController workQueue];
-    v46 = v4;
+    v46 = beginCopy;
     md_tracing_dispatch_async_propagating();
 
     [v46 externalID];
     kdebug_trace();
     v35 = SPLogForSPLogCategoryTelemetry();
-    v36 = [v46 externalID];
-    if (v36 && os_signpost_enabled(v35))
+    externalID2 = [v46 externalID];
+    if (externalID2 && os_signpost_enabled(v35))
     {
       LOWORD(location[0]) = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v35, OS_SIGNPOST_INTERVAL_END, v36, "dictionaryLatency", " enableTelemetry=YES ", location, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v35, OS_SIGNPOST_INTERVAL_END, externalID2, "dictionaryLatency", " enableTelemetry=YES ", location, 2u);
     }
 
-    [(SPDictionaryDatastoreToken *)self finishWithClientID:v13];
+    [(SPDictionaryDatastoreToken *)self finishWithClientID:bundleID];
   }
 
   _Block_object_dispose(buf, 8);
@@ -176,12 +176,12 @@ LABEL_18:
   *(v5 + 32) = v58;
 }
 
-- (void)finishWithClientID:(id)a3
+- (void)finishWithClientID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[SPFeedbackProxy sharedProxy];
   v6 = [[SFEndLocalSearchFeedback alloc] initWithStartSearch:self->_feedback];
-  [v5 sendFeedbackType:6 feedback:v6 queryId:-[SFStartSearchFeedback queryId](self->_feedback clientID:{"queryId"), v4}];
+  [v5 sendFeedbackType:6 feedback:v6 queryId:-[SFStartSearchFeedback queryId](self->_feedback clientID:{"queryId"), dCopy}];
 
   feedback = self->_feedback;
   self->_feedback = 0;

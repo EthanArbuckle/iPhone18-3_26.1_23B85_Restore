@@ -1,6 +1,6 @@
 @interface EDLink
-+ (id)linkWithType:(int)a3;
-- (EDLink)initWithType:(int)a3;
++ (id)linkWithType:(int)type;
+- (EDLink)initWithType:(int)type;
 - (id)description;
 - (id)externalNames;
 @end
@@ -22,22 +22,22 @@
   return mExternalNames;
 }
 
-- (EDLink)initWithType:(int)a3
+- (EDLink)initWithType:(int)type
 {
   v5.receiver = self;
   v5.super_class = EDLink;
   result = [(EDLink *)&v5 init];
   if (result)
   {
-    result->mType = a3;
+    result->mType = type;
   }
 
   return result;
 }
 
-+ (id)linkWithType:(int)a3
++ (id)linkWithType:(int)type
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithType:*&a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithType:*&type];
 
   return v3;
 }

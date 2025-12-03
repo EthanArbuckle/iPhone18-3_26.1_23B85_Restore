@@ -4,25 +4,25 @@
 - (void)_handleMigrateStart;
 - (void)_handleMigrateStartDemo;
 - (void)_handleMigrateStartUI;
-- (void)_handleVisualAuthEvent:(int64_t)a3;
-- (void)_handleVisualAuthScannedCode:(id)a3;
-- (void)_sessionHandleProgress:(unsigned int)a3 info:(id)a4;
-- (void)_sessionStart:(id)a3;
-- (void)_tryPIN:(id)a3;
+- (void)_handleVisualAuthEvent:(int64_t)event;
+- (void)_handleVisualAuthScannedCode:(id)code;
+- (void)_sessionHandleProgress:(unsigned int)progress info:(id)info;
+- (void)_sessionStart:(id)start;
+- (void)_tryPIN:(id)n;
 - (void)_willAppearInRemoteViewController;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismiss:(int)a3 animated:(BOOL)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)logUsageDone:(int)a3;
-- (void)logUsageStart:(int)a3;
-- (void)showAuthUIWithFlags:(unsigned int)a3 throttleSeconds:(int)a4 animated:(BOOL)a5;
-- (void)showBackupSyncUI:(unsigned int)a3 info:(id)a4;
-- (void)showDoneUI:(id)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismiss:(int)dismiss animated:(BOOL)animated;
+- (void)handleButtonActions:(id)actions;
+- (void)logUsageDone:(int)done;
+- (void)logUsageStart:(int)start;
+- (void)showAuthUIWithFlags:(unsigned int)flags throttleSeconds:(int)seconds animated:(BOOL)animated;
+- (void)showBackupSyncUI:(unsigned int)i info:(id)info;
+- (void)showDoneUI:(id)i;
 - (void)showFinishUI;
 - (void)showStartUI;
 - (void)showWiFi;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation iOSSetupMainController
@@ -62,12 +62,12 @@
   sub_100127D6C(vcNav, vcFinish, 1);
 }
 
-- (void)showDoneUI:(id)a3
+- (void)showDoneUI:(id)i
 {
-  v9 = a3;
+  iCopy = i;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
-    v8 = v9;
+    v8 = iCopy;
     LogPrintF();
   }
 
@@ -82,7 +82,7 @@
     vcDone = self->_vcDone;
   }
 
-  [(iOSSetupDoneViewController *)vcDone setError:v9, v8];
+  [(iOSSetupDoneViewController *)vcDone setError:iCopy, v8];
   [(SFDeviceSetupSessioniOS *)self->_setupSession invalidate];
   setupSession = self->_setupSession;
   self->_setupSession = 0;
@@ -91,10 +91,10 @@
   [(iOSSetupMainController *)self logUsageDone:NSErrorToOSStatus()];
 }
 
-- (void)showBackupSyncUI:(unsigned int)a3 info:(id)a4
+- (void)showBackupSyncUI:(unsigned int)i info:(id)info
 {
-  v4 = *&a3;
-  v9 = a4;
+  v4 = *&i;
+  infoCopy = info;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -112,7 +112,7 @@
     vcBackupSync = self->_vcBackupSync;
   }
 
-  [(iOSSetupBackupSyncViewController *)vcBackupSync handleProgressEvent:v4 info:v9];
+  [(iOSSetupBackupSyncViewController *)vcBackupSync handleProgressEvent:v4 info:infoCopy];
 }
 
 - (void)showStartUI
@@ -124,28 +124,28 @@
   sub_100127D6C(vcNav, vcStart, 1);
 }
 
-- (void)_tryPIN:(id)a3
+- (void)_tryPIN:(id)n
 {
-  v7 = a3;
+  nCopy = n;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     v4 = IsAppleInternalBuild();
     v5 = @"*";
     if (v4)
     {
-      v5 = v7;
+      v5 = nCopy;
     }
 
     v6 = v5;
     LogPrintF();
   }
 
-  [(SFDeviceSetupSessioniOS *)self->_setupSession tryPIN:v7, v6];
+  [(SFDeviceSetupSessioniOS *)self->_setupSession tryPIN:nCopy, v6];
 }
 
-- (void)_handleVisualAuthScannedCode:(id)a3
+- (void)_handleVisualAuthScannedCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -164,7 +164,7 @@
     else
     {
       self->_visualAuthTryingCode = 1;
-      [(iOSSetupMainController *)self _tryPIN:v4];
+      [(iOSSetupMainController *)self _tryPIN:codeCopy];
     }
   }
 
@@ -176,9 +176,9 @@ LABEL_12:
   }
 }
 
-- (void)_handleVisualAuthEvent:(int64_t)a3
+- (void)_handleVisualAuthEvent:(int64_t)event
 {
-  if (a3 == 2)
+  if (event == 2)
   {
     if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
     {
@@ -189,8 +189,8 @@ LABEL_12:
     vcVisualAuth = self->_vcVisualAuth;
     self->_vcVisualAuth = 0;
 
-    v8 = [(UIViewController *)self->_vcVisualAuthParent view];
-    [v8 setHidden:0];
+    view = [(UIViewController *)self->_vcVisualAuthParent view];
+    [view setHidden:0];
 
     vcVisualAuthParent = self->_vcVisualAuthParent;
     self->_vcVisualAuthParent = 0;
@@ -200,7 +200,7 @@ LABEL_12:
     [(iOSSetupMainController *)self showAuthUIWithFlags:0 throttleSeconds:0xFFFFFFFFLL animated:0];
   }
 
-  else if (a3 == 1)
+  else if (event == 1)
   {
     if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
     {
@@ -222,12 +222,12 @@ LABEL_12:
   }
 }
 
-- (void)showAuthUIWithFlags:(unsigned int)a3 throttleSeconds:(int)a4 animated:(BOOL)a5
+- (void)showAuthUIWithFlags:(unsigned int)flags throttleSeconds:(int)seconds animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   self->_visualAuthTryingCode = 0;
   vcAuth = self->_vcAuth;
-  if ((a3 & 0x100) == 0 || vcAuth)
+  if ((flags & 0x100) == 0 || vcAuth)
   {
     if (vcAuth)
     {
@@ -237,14 +237,14 @@ LABEL_12:
 
     else
     {
-      v14 = [(UIStoryboard *)self->_storyboard instantiateViewControllerWithIdentifier:@"ManualAuth", *&a4];
+      v14 = [(UIStoryboard *)self->_storyboard instantiateViewControllerWithIdentifier:@"ManualAuth", *&seconds];
       v15 = self->_vcAuth;
       self->_vcAuth = v14;
 
       [(SVSBaseViewController *)self->_vcAuth setMainController:self];
       vcNav = self->_vcNav;
       v17 = self->_vcAuth;
-      if (v5)
+      if (animatedCopy)
       {
 
         sub_100127D6C(vcNav, v17, 0);
@@ -261,7 +261,7 @@ LABEL_12:
 
   else
   {
-    if (a4 >= 1)
+    if (seconds >= 1)
     {
       v8 = mach_absolute_time();
       self->_visualAuthNextTicks = SecondsToUpTicks() + v8;
@@ -269,9 +269,9 @@ LABEL_12:
 
     if (!self->_vcVisualAuth)
     {
-      v9 = [(SVSCommonNavController *)self->_vcNav visibleViewController];
+      visibleViewController = [(SVSCommonNavController *)self->_vcNav visibleViewController];
       vcVisualAuthParent = self->_vcVisualAuthParent;
-      self->_vcVisualAuthParent = v9;
+      self->_vcVisualAuthParent = visibleViewController;
 
       v11 = +[VPScannerViewController instantiateViewController];
       vcVisualAuth = self->_vcVisualAuth;
@@ -315,17 +315,17 @@ LABEL_12:
   }
 }
 
-- (void)_sessionHandleProgress:(unsigned int)a3 info:(id)a4
+- (void)_sessionHandleProgress:(unsigned int)progress info:(id)info
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&progress;
+  infoCopy = info;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     v7 = sub_1000F0C00(v4);
     v8 = &stru_100195CA8;
-    if (v6)
+    if (infoCopy)
     {
-      v8 = v6;
+      v8 = infoCopy;
     }
 
     v22 = v7;
@@ -345,8 +345,8 @@ LABEL_12:
           CFErrorGetTypeID();
           v10 = CFDictionaryGetTypedValue();
           [(iOSSetupMainController *)self showDoneUI:v10];
-          v15 = [(iOSSetupMainController *)self _remoteViewControllerProxy];
-          [v15 setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.iOSSetup"];
+          _remoteViewControllerProxy = [(iOSSetupMainController *)self _remoteViewControllerProxy];
+          [_remoteViewControllerProxy setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.iOSSetup"];
         }
 
         else
@@ -368,8 +368,8 @@ LABEL_12:
           v12 = self->_vcVisualAuth;
           self->_vcVisualAuth = 0;
 
-          v13 = [(UIViewController *)self->_vcVisualAuthParent view];
-          [v13 setHidden:0];
+          view = [(UIViewController *)self->_vcVisualAuthParent view];
+          [view setHidden:0];
 
           vcVisualAuthParent = self->_vcVisualAuthParent;
           self->_vcVisualAuthParent = 0;
@@ -380,10 +380,10 @@ LABEL_12:
 
       if (v4 == 97)
       {
-        v16 = [(SFDeviceSetupSessioniOS *)setupSession fileTransferSessionTemplate];
-        if (v16)
+        fileTransferSessionTemplate = [(SFDeviceSetupSessioniOS *)setupSession fileTransferSessionTemplate];
+        if (fileTransferSessionTemplate)
         {
-          [(BYMigrationSourceController *)self->_migrationController setFileTransferSession:v16];
+          [(BYMigrationSourceController *)self->_migrationController setFileTransferSession:fileTransferSessionTemplate];
         }
 
         vcFinish = self->_vcFinish;
@@ -414,7 +414,7 @@ LABEL_12:
     {
       if (v4 == 300 || v4 == 310)
       {
-        [(iOSSetupMainController *)self showBackupSyncUI:v4 info:v6, v22, v23];
+        [(iOSSetupMainController *)self showBackupSyncUI:v4 info:infoCopy, v22, v23];
       }
     }
 
@@ -454,12 +454,12 @@ LABEL_12:
 LABEL_43:
 }
 
-- (void)_sessionStart:(id)a3
+- (void)_sessionStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
-    v8 = v4;
+    v8 = startCopy;
     LogPrintF();
   }
 
@@ -468,7 +468,7 @@ LABEL_43:
   setupSession = self->_setupSession;
   self->_setupSession = v5;
 
-  [(SFDeviceSetupSessioniOS *)self->_setupSession setPeerDevice:v4];
+  [(SFDeviceSetupSessioniOS *)self->_setupSession setPeerDevice:startCopy];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000F1688;
@@ -483,15 +483,15 @@ LABEL_43:
   [(SFDeviceSetupSessioniOS *)self->_setupSession setPromptForPINHandler:v9];
   [(SFDeviceSetupSessioniOS *)self->_setupSession activate];
   [(iOSSetupMainController *)self logUsageStart:9];
-  v7 = [(iOSSetupMainController *)self _remoteViewControllerProxy];
-  [v7 setIdleTimerDisabled:1 forReason:@"com.apple.SharingViewService.iOSSetup"];
+  _remoteViewControllerProxy = [(iOSSetupMainController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setIdleTimerDisabled:1 forReason:@"com.apple.SharingViewService.iOSSetup"];
 }
 
-- (void)logUsageDone:(int)a3
+- (void)logUsageDone:(int)done
 {
   if (!self->_loggedUsageDone)
   {
-    v3 = *&a3;
+    v3 = *&done;
     self->_loggedUsageDone = 1;
     CFStringGetTypeID();
     v5 = CFDictionaryGetTypedValue();
@@ -532,11 +532,11 @@ LABEL_43:
   }
 }
 
-- (void)logUsageStart:(int)a3
+- (void)logUsageStart:(int)start
 {
   if (!self->_loggedUsageStart)
   {
-    v3 = *&a3;
+    v3 = *&start;
     self->_loggedUsageStart = 1;
     CFStringGetTypeID();
     v4 = CFDictionaryGetTypedValue();
@@ -576,8 +576,8 @@ LABEL_43:
 
 - (void)_handleMigrateStartUI
 {
-  v6 = [(SFDeviceSetupSessioniOS *)self->_setupSession fileTransferSessionTemplate];
-  if (v6)
+  fileTransferSessionTemplate = [(SFDeviceSetupSessioniOS *)self->_setupSession fileTransferSessionTemplate];
+  if (fileTransferSessionTemplate)
   {
     v3 = objc_alloc_init(BYMigrationSourceController);
     migrationController = self->_migrationController;
@@ -588,12 +588,12 @@ LABEL_43:
       if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
       {
         LogPrintF();
-        [(BYMigrationSourceController *)self->_migrationController launchSetupForMigration:v6, v6];
+        [(BYMigrationSourceController *)self->_migrationController launchSetupForMigration:fileTransferSessionTemplate, fileTransferSessionTemplate];
       }
 
       else
       {
-        [(BYMigrationSourceController *)self->_migrationController launchSetupForMigration:v6, v5];
+        [(BYMigrationSourceController *)self->_migrationController launchSetupForMigration:fileTransferSessionTemplate, v5];
       }
 
       goto LABEL_14;
@@ -623,10 +623,10 @@ LABEL_14:
       LogPrintF();
     }
 
-    v3 = [(SFDeviceSetupSessioniOS *)self->_setupSession fileTransferSessionTemplate];
+    fileTransferSessionTemplate = [(SFDeviceSetupSessioniOS *)self->_setupSession fileTransferSessionTemplate];
     fileTransferSession = self->_fileTransferSession;
-    self->_fileTransferSession = v3;
-    v5 = v3;
+    self->_fileTransferSession = fileTransferSessionTemplate;
+    v5 = fileTransferSessionTemplate;
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -708,9 +708,9 @@ LABEL_14:
   }
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     if (self->_blockHardwareButtons)
@@ -723,7 +723,7 @@ LABEL_14:
       v5 = "no";
     }
 
-    v12 = v4;
+    v12 = actionsCopy;
     v13 = v5;
     LogPrintF();
   }
@@ -732,7 +732,7 @@ LABEL_14:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = actionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -763,33 +763,33 @@ LABEL_14:
   }
 }
 
-- (void)dismiss:(int)a3 animated:(BOOL)a4
+- (void)dismiss:(int)dismiss animated:(BOOL)animated
 {
   if (!self->_dismissed)
   {
-    v4 = a4;
+    animatedCopy = animated;
     self->_dismissed = 1;
-    [(iOSSetupMainController *)self logUsageStart:*&a3];
+    [(iOSSetupMainController *)self logUsageStart:*&dismiss];
     [(iOSSetupMainController *)self _remoteViewControllerProxy];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000F2700;
     v8 = v7[3] = &unk_100195AC0;
     v6 = v8;
-    [(iOSSetupMainController *)self dismissViewControllerAnimated:v4 completion:v7];
+    [(iOSSetupMainController *)self dismissViewControllerAnimated:animatedCopy completion:v7];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  v5 = [(iOSSetupMainController *)self _remoteViewControllerProxy];
-  [v5 setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.iOSSetup"];
+  _remoteViewControllerProxy = [(iOSSetupMainController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.iOSSetup"];
 
   if (!self->_dismissed)
   {
@@ -833,12 +833,12 @@ LABEL_14:
 
   v14.receiver = self;
   v14.super_class = iOSSetupMainController;
-  [(SVSBaseMainController *)&v14 viewDidDisappear:v3];
+  [(SVSBaseMainController *)&v14 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -846,31 +846,31 @@ LABEL_14:
 
   v14.receiver = self;
   v14.super_class = iOSSetupMainController;
-  [(iOSSetupMainController *)&v14 viewDidAppear:v3];
+  [(iOSSetupMainController *)&v14 viewDidAppear:appearCopy];
   self->_viewAppearedTicks = mach_absolute_time();
   v5 = [UIStoryboard storyboardWithName:@"iOSSetup" bundle:0];
   storyboard = self->_storyboard;
   self->_storyboard = v5;
 
-  v7 = [(UIStoryboard *)self->_storyboard instantiateInitialViewController];
+  instantiateInitialViewController = [(UIStoryboard *)self->_storyboard instantiateInitialViewController];
   vcNav = self->_vcNav;
-  self->_vcNav = v7;
+  self->_vcNav = instantiateInitialViewController;
 
   [(SVSCommonNavController *)self->_vcNav setDelegate:self];
   [(SVSCommonNavController *)self->_vcNav setModalPresentationStyle:4];
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(SVSCommonNavController *)self->_vcNav setModalTransitionStyle:2];
   }
 
   [(SVSCommonNavController *)self->_vcNav setTransitioningDelegate:self->_vcNav];
-  v11 = [(SVSCommonNavController *)self->_vcNav viewControllers];
-  v12 = [v11 firstObject];
+  viewControllers = [(SVSCommonNavController *)self->_vcNav viewControllers];
+  firstObject = [viewControllers firstObject];
   vcStart = self->_vcStart;
-  self->_vcStart = v12;
+  self->_vcStart = firstObject;
 
   [(SVSBaseViewController *)self->_vcStart setMainController:self];
   [(iOSSetupMainController *)self presentViewController:self->_vcNav animated:1 completion:0];
@@ -878,18 +878,18 @@ LABEL_14:
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(iOSSetupMainController *)self view];
-  v3 = [v2 window];
+  view = [(iOSSetupMainController *)self view];
+  window = [view window];
 
-  if (!v3)
+  if (!window)
   {
     return 30;
   }
 
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return (1 << [UIApp activeInterfaceOrientation]);
   }
@@ -900,12 +900,12 @@ LABEL_14:
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v14 = a4;
-  v6 = [a3 userInfo];
+  completionCopy = completion;
+  userInfo = [context userInfo];
   userInfo = self->super._userInfo;
-  self->super._userInfo = v6;
+  self->super._userInfo = userInfo;
 
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
@@ -945,9 +945,9 @@ LABEL_10:
   otherDeviceClassName = self->_otherDeviceClassName;
   self->_otherDeviceClassName = v12;
 
-  if (v14)
+  if (completionCopy)
   {
-    v14[2](v14);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -956,8 +956,8 @@ LABEL_10:
   v4.receiver = self;
   v4.super_class = iOSSetupMainController;
   [(SVSBaseMainController *)&v4 _willAppearInRemoteViewController];
-  v3 = [(iOSSetupMainController *)self _remoteViewControllerProxy];
-  [v3 setAllowsAlertStacking:1];
+  _remoteViewControllerProxy = [(iOSSetupMainController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
 }
 
 @end

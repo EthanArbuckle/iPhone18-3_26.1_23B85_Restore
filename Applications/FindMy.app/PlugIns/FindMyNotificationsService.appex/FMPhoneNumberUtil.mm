@@ -1,13 +1,13 @@
 @interface FMPhoneNumberUtil
-+ (BOOL)isEmailValidWithEmail:(id)a3;
-+ (BOOL)isPhoneNumberValidWithPhoneNumber:(id)a3;
-+ (id)unformatWithPhoneNumber:(id)a3;
++ (BOOL)isEmailValidWithEmail:(id)email;
++ (BOOL)isPhoneNumberValidWithPhoneNumber:(id)number;
++ (id)unformatWithPhoneNumber:(id)number;
 - (_TtC26FindMyNotificationsService17FMPhoneNumberUtil)init;
 @end
 
 @implementation FMPhoneNumberUtil
 
-+ (id)unformatWithPhoneNumber:(id)a3
++ (id)unformatWithPhoneNumber:(id)number
 {
   v3 = type metadata accessor for CharacterSet();
   v4 = *(v3 - 8);
@@ -26,21 +26,21 @@
   return v11;
 }
 
-+ (BOOL)isEmailValidWithEmail:(id)a3
++ (BOOL)isEmailValidWithEmail:(id)email
 {
   v3 = qword_100020BC0;
-  v4 = a3;
+  emailCopy = email;
   if (v3 != -1)
   {
     swift_once();
   }
 
-  v5 = [static String.emailPredicate evaluateWithObject:v4];
+  v5 = [static String.emailPredicate evaluateWithObject:emailCopy];
 
   return v5;
 }
 
-+ (BOOL)isPhoneNumberValidWithPhoneNumber:(id)a3
++ (BOOL)isPhoneNumberValidWithPhoneNumber:(id)number
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = sub_10000D668(v3, v4);

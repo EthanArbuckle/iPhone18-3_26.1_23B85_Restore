@@ -1,5 +1,5 @@
 @interface AVPairedDevice
-- (AVPairedDevice)initWithName:(id)a3 ID:(id)a4 modelID:(id)a5 playing:(BOOL)a6 productName:(id)a7;
+- (AVPairedDevice)initWithName:(id)name ID:(id)d modelID:(id)iD playing:(BOOL)playing productName:(id)productName;
 - (void)dealloc;
 @end
 
@@ -19,18 +19,18 @@
   [(AVPairedDevice *)&v4 dealloc];
 }
 
-- (AVPairedDevice)initWithName:(id)a3 ID:(id)a4 modelID:(id)a5 playing:(BOOL)a6 productName:(id)a7
+- (AVPairedDevice)initWithName:(id)name ID:(id)d modelID:(id)iD playing:(BOOL)playing productName:(id)productName
 {
   v16.receiver = self;
   v16.super_class = AVPairedDevice;
   v12 = [(AVPairedDevice *)&v16 init];
   if (v12 && (v13 = objc_alloc_init(AVPairedDeviceInternal), (v12->_ivars = v13) != 0))
   {
-    v12->_ivars->name = [a3 copy];
-    v12->_ivars->ID = [a4 copy];
-    v12->_ivars->modelID = [a5 copy];
-    v12->_ivars->playing = a6;
-    v12->_ivars->productName = [a7 copy];
+    v12->_ivars->name = [name copy];
+    v12->_ivars->ID = [d copy];
+    v12->_ivars->modelID = [iD copy];
+    v12->_ivars->playing = playing;
+    v12->_ivars->productName = [productName copy];
     v14 = v12;
   }
 

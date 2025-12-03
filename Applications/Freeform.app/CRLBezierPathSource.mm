@@ -1,40 +1,40 @@
 @interface CRLBezierPathSource
-+ (id)pathSourceWithBezierPath:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)pathSourceWithBezierPath:(id)path;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)transformToNaturalSize;
 - (CGSize)naturalSize;
-- (CRLBezierPathSource)initWithBezierPath:(id)a3;
-- (CRLBezierPathSource)initWithNaturalSize:(CGSize)a3;
+- (CRLBezierPathSource)initWithBezierPath:(id)path;
+- (CRLBezierPathSource)initWithNaturalSize:(CGSize)size;
 - (id)bezierPathWithoutFlips;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)inferredAccessibilityDescription;
 - (id)inferredAccessibilityDescriptionNoShapeNames;
 - (id)name;
 - (unint64_t)hash;
-- (void)p_setBezierPath:(id)a3;
-- (void)setNaturalSize:(CGSize)a3;
+- (void)p_setBezierPath:(id)path;
+- (void)setNaturalSize:(CGSize)size;
 @end
 
 @implementation CRLBezierPathSource
 
-+ (id)pathSourceWithBezierPath:(id)a3
++ (id)pathSourceWithBezierPath:(id)path
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBezierPath:v3];
+  pathCopy = path;
+  v4 = [objc_alloc(objc_opt_class()) initWithBezierPath:pathCopy];
 
   return v4;
 }
 
-- (CRLBezierPathSource)initWithBezierPath:(id)a3
+- (CRLBezierPathSource)initWithBezierPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = CRLBezierPathSource;
   v5 = [(CRLBezierPathSource *)&v16 init];
   if (v5)
   {
-    if ([v4 elementCount] < 1)
+    if ([pathCopy elementCount] < 1)
     {
       width = CGRectNull.size.width;
       height = CGRectNull.size.height;
@@ -42,7 +42,7 @@
 
     else
     {
-      [v4 controlPointBounds];
+      [pathCopy controlPointBounds];
     }
 
     v8 = width == CGSizeZero.width && height == CGSizeZero.height;
@@ -57,7 +57,7 @@
       v10 = off_1019EDA68;
       if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
       {
-        sub_10132D158(v4, v9, v10);
+        sub_10132D158(pathCopy, v9, v10);
       }
 
       if (qword_101AD5A10 != -1)
@@ -73,16 +73,16 @@
 
       v12 = [NSString stringWithUTF8String:"[CRLBezierPathSource initWithBezierPath:]"];
       v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLBezierPathSource.m"];
-      [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:31 isFatal:0 description:"Ignoring invalid bezier path %@", v4];
+      [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:31 isFatal:0 description:"Ignoring invalid bezier path %@", pathCopy];
 
       v14 = +[CRLBezierPath bezierPathWithDefaultsForErrorCases];
 
-      v4 = v14;
+      pathCopy = v14;
     }
 
-    if (v4)
+    if (pathCopy)
     {
-      [(CRLBezierPathSource *)v5 p_setBezierPath:v4];
+      [(CRLBezierPathSource *)v5 p_setBezierPath:pathCopy];
     }
 
     else
@@ -95,28 +95,28 @@
   return v5;
 }
 
-- (CRLBezierPathSource)initWithNaturalSize:(CGSize)a3
+- (CRLBezierPathSource)initWithNaturalSize:(CGSize)size
 {
-  v4 = [CRLBezierPath bezierPathWithRect:0.0, 0.0, a3.width, a3.height];
+  v4 = [CRLBezierPath bezierPathWithRect:0.0, 0.0, size.width, size.height];
   v5 = [(CRLBezierPathSource *)self initWithBezierPath:v4];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(CRLBezierPath *)self->mPath copy];
-  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithBezierPath:", v5}];
+  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithBezierPath:", v5}];
   [v6 setHasHorizontalFlip:{-[CRLPathSource hasHorizontalFlip](self, "hasHorizontalFlip")}];
   [v6 setHasVerticalFlip:{-[CRLPathSource hasVerticalFlip](self, "hasVerticalFlip")}];
-  v7 = [(CRLPathSource *)self localizationKey];
-  [v6 setLocalizationKey:v7];
+  localizationKey = [(CRLPathSource *)self localizationKey];
+  [v6 setLocalizationKey:localizationKey];
 
-  v8 = [(CRLPathSource *)self userDefinedIdentifier];
-  [v6 setUserDefinedIdentifier:v8];
+  userDefinedIdentifier = [(CRLPathSource *)self userDefinedIdentifier];
+  [v6 setUserDefinedIdentifier:userDefinedIdentifier];
 
-  v9 = [(CRLPathSource *)self userDefinedName];
-  [v6 setUserDefinedName:v9];
+  userDefinedName = [(CRLPathSource *)self userDefinedName];
+  [v6 setUserDefinedName:userDefinedName];
 
   [(CRLBezierPathSource *)self naturalSize];
   [v6 setNaturalSize:?];
@@ -124,10 +124,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -135,8 +135,8 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = sub_100014370(v5, v4);
-    v8 = v6 && (v10.receiver = self, v10.super_class = CRLBezierPathSource, [(CRLPathSource *)&v10 isEqual:v4]) && ((mPath = self->mPath, mPath == *(v6 + 56)) || [(CRLBezierPath *)mPath isEqual:?]) && self->mIsRectangular == *(v6 + 64) && sub_10011ECC8(self->mNaturalSize.width, self->mNaturalSize.height, *(v6 + 72), *(v6 + 80));
+    v6 = sub_100014370(v5, equalCopy);
+    v8 = v6 && (v10.receiver = self, v10.super_class = CRLBezierPathSource, [(CRLPathSource *)&v10 isEqual:equalCopy]) && ((mPath = self->mPath, mPath == *(v6 + 56)) || [(CRLBezierPath *)mPath isEqual:?]) && self->mIsRectangular == *(v6 + 64) && sub_10011ECC8(self->mNaturalSize.width, self->mNaturalSize.height, *(v6 + 72), *(v6 + 80));
   }
 
   return v8;
@@ -158,18 +158,18 @@
   v3 = [(CRLBezierPathSource *)&v10 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(CRLPathSource *)self localizationKey];
-  v6 = [(CRLPathSource *)self userDefinedName];
+  localizationKey = [(CRLPathSource *)self localizationKey];
+  userDefinedName = [(CRLPathSource *)self userDefinedName];
   v7 = NSStringFromCGSize(self->mNaturalSize);
-  v8 = [NSString stringWithFormat:@" localizationKey=%@; userDefinedName=%@; naturalSize=%@; path=%@; isRectangular=%d", v5, v6, v7, self->mPath, self->mIsRectangular];;
+  v8 = [NSString stringWithFormat:@" localizationKey=%@; userDefinedName=%@; naturalSize=%@; path=%@; isRectangular=%d", localizationKey, userDefinedName, v7, self->mPath, self->mIsRectangular];;
   [v4 appendString:v8];
 
   return v4;
 }
 
-- (void)setNaturalSize:(CGSize)a3
+- (void)setNaturalSize:(CGSize)size
 {
-  self->mNaturalSize = a3;
+  self->mNaturalSize = size;
   mBezierPathWithoutFlips = self->mBezierPathWithoutFlips;
   self->mBezierPathWithoutFlips = 0;
 }
@@ -249,23 +249,23 @@
 
 - (id)name
 {
-  v3 = [(CRLPathSource *)self userDefinedName];
-  if (!v3)
+  userDefinedName = [(CRLPathSource *)self userDefinedName];
+  if (!userDefinedName)
   {
     v4 = +[CRLShapeLibrary sharedLibrary];
-    v5 = [(CRLPathSource *)self localizationKey];
-    v6 = [v4 shapeWithLocalizationKey:v5];
+    localizationKey = [(CRLPathSource *)self localizationKey];
+    v6 = [v4 shapeWithLocalizationKey:localizationKey];
 
-    v3 = [v6 name];
+    userDefinedName = [v6 name];
   }
 
-  return v3;
+  return userDefinedName;
 }
 
-- (void)p_setBezierPath:(id)a3
+- (void)p_setBezierPath:(id)path
 {
-  v4 = a3;
-  if (!v4)
+  pathCopy = path;
+  if (!pathCopy)
   {
     v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -295,18 +295,18 @@
     [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:178 isFatal:0 description:"invalid nil value for '%{public}s'", "path"];
   }
 
-  [(CRLBezierPath *)v4 bounds];
+  [(CRLBezierPath *)pathCopy bounds];
   v11 = v10;
   v13 = v12;
   if (!sub_10011ECC8(v10, v12, CGPointZero.x, CGPointZero.y))
   {
     CGAffineTransformMakeTranslation(&v19, -v11, -v13);
-    [(CRLBezierPath *)v4 transformUsingAffineTransform:&v19];
+    [(CRLBezierPath *)pathCopy transformUsingAffineTransform:&v19];
   }
 
   mPath = self->mPath;
-  self->mPath = v4;
-  v15 = v4;
+  self->mPath = pathCopy;
+  v15 = pathCopy;
 
   [(CRLBezierPath *)self->mPath bounds];
   self->mNaturalSize.width = v16;
@@ -318,39 +318,39 @@
 
 - (id)inferredAccessibilityDescriptionNoShapeNames
 {
-  v3 = [(CRLPathSource *)self userDefinedName];
-  if (![v3 length])
+  userDefinedName = [(CRLPathSource *)self userDefinedName];
+  if (![userDefinedName length])
   {
-    v4 = [(CRLBezierPath *)self->mPath inferredAccessibilityDescription];
+    inferredAccessibilityDescription = [(CRLBezierPath *)self->mPath inferredAccessibilityDescription];
 
-    v3 = v4;
+    userDefinedName = inferredAccessibilityDescription;
   }
 
-  return v3;
+  return userDefinedName;
 }
 
 - (id)inferredAccessibilityDescription
 {
-  v3 = [(CRLPathSource *)self userDefinedName];
-  if (![v3 length])
+  userDefinedName = [(CRLPathSource *)self userDefinedName];
+  if (![userDefinedName length])
   {
     v4 = +[CRLShapeLibrary sharedLibrary];
-    v5 = [(CRLPathSource *)self localizationKey];
-    v6 = [v4 shapeWithLocalizationKey:v5];
+    localizationKey = [(CRLPathSource *)self localizationKey];
+    v6 = [v4 shapeWithLocalizationKey:localizationKey];
 
-    v7 = [v6 name];
+    name = [v6 name];
 
-    v3 = v7;
+    userDefinedName = name;
   }
 
-  if (![v3 length])
+  if (![userDefinedName length])
   {
-    v8 = [(CRLBezierPath *)self->mPath inferredAccessibilityDescription];
+    inferredAccessibilityDescription = [(CRLBezierPath *)self->mPath inferredAccessibilityDescription];
 
-    v3 = v8;
+    userDefinedName = inferredAccessibilityDescription;
   }
 
-  return v3;
+  return userDefinedName;
 }
 
 - (CGSize)naturalSize

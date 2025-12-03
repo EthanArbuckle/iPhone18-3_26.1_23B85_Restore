@@ -1,7 +1,7 @@
 @interface BKEngagementManagerMetadata
 - (BKEngagementManagerMetadata)init;
 - (NSDictionary)propertyCounts;
-- (void)setPropertyCounts:(id)a3;
+- (void)setPropertyCounts:(id)counts;
 @end
 
 @implementation BKEngagementManagerMetadata
@@ -15,7 +15,7 @@
   return v2.super.isa;
 }
 
-- (void)setPropertyCounts:(id)a3
+- (void)setPropertyCounts:(id)counts
 {
   v4 = sub_1007A2044();
   v5 = OBJC_IVAR___BKEngagementManagerMetadata_propertyCounts;

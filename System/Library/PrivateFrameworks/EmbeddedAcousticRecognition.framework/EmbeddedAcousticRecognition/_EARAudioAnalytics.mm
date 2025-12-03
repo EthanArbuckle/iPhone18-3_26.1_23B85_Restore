@@ -1,27 +1,27 @@
 @interface _EARAudioAnalytics
-- (id)_initWithSpeechRecognitionFeatures:(id)a3 acousticFeatures:(id)a4 snr:(double)a5;
+- (id)_initWithSpeechRecognitionFeatures:(id)features acousticFeatures:(id)acousticFeatures snr:(double)snr;
 @end
 
 @implementation _EARAudioAnalytics
 
-- (id)_initWithSpeechRecognitionFeatures:(id)a3 acousticFeatures:(id)a4 snr:(double)a5
+- (id)_initWithSpeechRecognitionFeatures:(id)features acousticFeatures:(id)acousticFeatures snr:(double)snr
 {
-  v8 = a3;
-  v9 = a4;
+  featuresCopy = features;
+  acousticFeaturesCopy = acousticFeatures;
   v16.receiver = self;
   v16.super_class = _EARAudioAnalytics;
   v10 = [(_EARAudioAnalytics *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [featuresCopy copy];
     speechRecognitionFeatures = v10->_speechRecognitionFeatures;
     v10->_speechRecognitionFeatures = v11;
 
-    v13 = [v9 copy];
+    v13 = [acousticFeaturesCopy copy];
     acousticFeatures = v10->_acousticFeatures;
     v10->_acousticFeatures = v13;
 
-    v10->_snr = a5;
+    v10->_snr = snr;
   }
 
   return v10;

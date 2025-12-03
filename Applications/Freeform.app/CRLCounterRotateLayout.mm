@@ -1,17 +1,17 @@
 @interface CRLCounterRotateLayout
-- (BOOL)descendentWrappablesContainsWrappable:(id)a3;
+- (BOOL)descendentWrappablesContainsWrappable:(id)wrappable;
 - (BOOL)supportsFlipping;
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3;
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform;
 - (CGRect)boundsForStandardKnobs;
 - (CGSize)minimumSize;
-- (id)additionalDependenciesForChildLayout:(id)a3;
+- (id)additionalDependenciesForChildLayout:(id)layout;
 - (id)childInfosForChildLayouts;
-- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)a3;
+- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)transform;
 - (id)descendentWrappables;
 - (id)reliedOnLayouts;
 - (id)visibleGeometries;
-- (void)takeFreeTransformFromTracker:(id)a3;
-- (void)takeSizeFromTracker:(id)a3;
+- (void)takeFreeTransformFromTracker:(id)tracker;
+- (void)takeSizeFromTracker:(id)tracker;
 @end
 
 @implementation CRLCounterRotateLayout
@@ -20,34 +20,34 @@
 {
   v8.receiver = self;
   v8.super_class = CRLCounterRotateLayout;
-  v3 = [(CRLCanvasLayout *)&v8 childInfosForChildLayouts];
-  v4 = [(CRLCounterRotateLayout *)self containerInfo];
-  v5 = [v4 childInfos];
+  childInfosForChildLayouts = [(CRLCanvasLayout *)&v8 childInfosForChildLayouts];
+  containerInfo = [(CRLCounterRotateLayout *)self containerInfo];
+  childInfos = [containerInfo childInfos];
 
-  if ([v5 count])
+  if ([childInfos count])
   {
-    v6 = [v5 arrayByAddingObjectsFromArray:v3];
+    v6 = [childInfos arrayByAddingObjectsFromArray:childInfosForChildLayouts];
 
-    v3 = v6;
+    childInfosForChildLayouts = v6;
   }
 
-  return v3;
+  return childInfosForChildLayouts;
 }
 
 - (id)reliedOnLayouts
 {
-  v2 = [(CRLCanvasAbstractLayout *)self children];
-  v3 = [NSSet setWithArray:v2];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  v3 = [NSSet setWithArray:children];
 
   return v3;
 }
 
-- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)a3
+- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)transform
 {
-  v4 = [(CRLCanvasAbstractLayout *)self children];
-  v5 = [v4 firstObject];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  firstObject = [children firstObject];
 
-  if (!v5)
+  if (!firstObject)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -76,21 +76,21 @@
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:45 isFatal:0 description:"invalid nil value for '%{public}s'", "childLayout"];
   }
 
-  v9 = *&a3->c;
-  v12[0] = *&a3->a;
+  v9 = *&transform->c;
+  v12[0] = *&transform->a;
   v12[1] = v9;
-  v12[2] = *&a3->tx;
-  v10 = [v5 commandToClampModelToLayoutSizeWithAdditionalTransform:v12];
+  v12[2] = *&transform->tx;
+  v10 = [firstObject commandToClampModelToLayoutSizeWithAdditionalTransform:v12];
 
   return v10;
 }
 
-- (id)additionalDependenciesForChildLayout:(id)a3
+- (id)additionalDependenciesForChildLayout:(id)layout
 {
   v4 = +[NSMutableArray array];
   v5 = objc_opt_class();
-  v6 = [(CRLCanvasAbstractLayout *)self parent];
-  v7 = sub_100013F00(v5, v6);
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v7 = sub_100013F00(v5, parent);
 
   if (v7)
   {
@@ -100,12 +100,12 @@
   return v4;
 }
 
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform
 {
-  v5 = [(CRLCanvasAbstractLayout *)self children];
-  v6 = [v5 firstObject];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  firstObject = [children firstObject];
 
-  if (!v6)
+  if (!firstObject)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -135,12 +135,12 @@
   }
 
   [(CRLCanvasAbstractLayout *)self transform];
-  v10 = *&a3->c;
-  *&t2.a = *&a3->a;
+  v10 = *&transform->c;
+  *&t2.a = *&transform->a;
   *&t2.c = v10;
-  *&t2.tx = *&a3->tx;
+  *&t2.tx = *&transform->tx;
   CGAffineTransformConcat(&v25, &t1, &t2);
-  [v6 baseFrameForFrameForCullingWithAdditionalTransform:&v25];
+  [firstObject baseFrameForFrameForCullingWithAdditionalTransform:&v25];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -159,17 +159,17 @@
 
 - (CGRect)boundsForStandardKnobs
 {
-  v2 = [(CRLCanvasAbstractLayout *)self children];
-  v3 = [v2 firstObject];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  firstObject = [children firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    [v3 boundsForStandardKnobs];
+    [firstObject boundsForStandardKnobs];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    [v3 transform];
+    [firstObject transform];
   }
 
   else
@@ -231,10 +231,10 @@
 
 - (CGSize)minimumSize
 {
-  v2 = [(CRLCanvasAbstractLayout *)self children];
-  v3 = [v2 firstObject];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  firstObject = [children firstObject];
 
-  if (!v3)
+  if (!firstObject)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -263,7 +263,7 @@
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:77 isFatal:0 description:"invalid nil value for '%{public}s'", "childLayout"];
   }
 
-  [v3 minimumSize];
+  [firstObject minimumSize];
   v8 = v7;
   v10 = v9;
 
@@ -276,10 +276,10 @@
 
 - (BOOL)supportsFlipping
 {
-  v2 = [(CRLCanvasAbstractLayout *)self children];
-  v3 = [v2 firstObject];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  firstObject = [children firstObject];
 
-  if (!v3)
+  if (!firstObject)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -308,9 +308,9 @@
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:83 isFatal:0 description:"invalid nil value for '%{public}s'", "childLayout"];
   }
 
-  v7 = [v3 supportsFlipping];
+  supportsFlipping = [firstObject supportsFlipping];
 
-  return v7;
+  return supportsFlipping;
 }
 
 - (id)visibleGeometries
@@ -319,11 +319,11 @@
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
-  v4 = [(CRLCanvasAbstractLayout *)self geometry];
-  v5 = v4;
-  if (v4)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v5 = geometry;
+  if (geometry)
   {
-    [v4 transform];
+    [geometry transform];
   }
 
   else
@@ -333,10 +333,10 @@
     v24 = 0u;
   }
 
-  v6 = [(CRLCanvasAbstractLayout *)self children];
-  v7 = [v6 firstObject];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  firstObject = [children firstObject];
 
-  if (!v7)
+  if (!firstObject)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -365,12 +365,12 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:92 isFatal:0 description:"invalid nil value for '%{public}s'", "childLayout"];
   }
 
-  v11 = [v7 visibleGeometries];
+  visibleGeometries = [firstObject visibleGeometries];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v20 objects:v27 count:16];
+  v12 = [visibleGeometries countByEnumeratingWithState:&v20 objects:v27 count:16];
   if (v12)
   {
     v13 = v12;
@@ -381,7 +381,7 @@
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(visibleGeometries);
         }
 
         v16 = *(*(&v20 + 1) + 8 * i);
@@ -392,7 +392,7 @@
         [v3 addObject:v17];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v20 objects:v27 count:16];
+      v13 = [visibleGeometries countByEnumeratingWithState:&v20 objects:v27 count:16];
     }
 
     while (v13);
@@ -404,10 +404,10 @@
 - (id)descendentWrappables
 {
   v3 = [[NSMutableArray alloc] initWithCapacity:1];
-  v4 = [(CRLCanvasAbstractLayout *)self children];
-  v5 = [v4 firstObject];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  firstObject = [children firstObject];
 
-  if (!v5)
+  if (!firstObject)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -436,26 +436,26 @@
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:111 isFatal:0 description:"invalid nil value for '%{public}s'", "childLayout"];
   }
 
-  if ([v5 conformsToProtocol:&OBJC_PROTOCOL___CRLCanvasWrappable])
+  if ([firstObject conformsToProtocol:&OBJC_PROTOCOL___CRLCanvasWrappable])
   {
-    [v3 addObject:v5];
+    [v3 addObject:firstObject];
   }
 
-  else if ([v5 conformsToProtocol:&OBJC_PROTOCOL___CRLCanvasWrappableParent])
+  else if ([firstObject conformsToProtocol:&OBJC_PROTOCOL___CRLCanvasWrappableParent])
   {
-    v9 = [v5 descendentWrappables];
-    [v3 addObjectsFromArray:v9];
+    descendentWrappables = [firstObject descendentWrappables];
+    [v3 addObjectsFromArray:descendentWrappables];
   }
 
   return v3;
 }
 
-- (BOOL)descendentWrappablesContainsWrappable:(id)a3
+- (BOOL)descendentWrappablesContainsWrappable:(id)wrappable
 {
-  v4 = a3;
-  v5 = [v4 parent];
+  wrappableCopy = wrappable;
+  parent = [wrappableCopy parent];
 
-  if (v5 == self)
+  if (parent == self)
   {
     v16 = 1;
   }
@@ -463,13 +463,13 @@
   else
   {
     v6 = objc_opt_class();
-    v7 = sub_100014370(v6, v4);
+    v7 = sub_100014370(v6, wrappableCopy);
     v8 = [(CRLCanvasAbstractLayout *)self childLayoutContainingPossibleDescendentLayout:v7];
     v15 = sub_1003035DC(v8, 1, v9, v10, v11, v12, v13, v14, &OBJC_PROTOCOL___CRLCanvasWrappableParent);
 
     if (v15)
     {
-      v16 = [v15 descendentWrappablesContainsWrappable:v4];
+      v16 = [v15 descendentWrappablesContainsWrappable:wrappableCopy];
     }
 
     else
@@ -481,13 +481,13 @@
   return v16;
 }
 
-- (void)takeSizeFromTracker:(id)a3
+- (void)takeSizeFromTracker:(id)tracker
 {
-  v4 = a3;
-  v5 = [(CRLCanvasAbstractLayout *)self children];
-  v6 = [v5 firstObject];
+  trackerCopy = tracker;
+  children = [(CRLCanvasAbstractLayout *)self children];
+  firstObject = [children firstObject];
 
-  if (!v6)
+  if (!firstObject)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -516,16 +516,16 @@
     [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:143 isFatal:0 description:"invalid nil value for '%{public}s'", "childLayout"];
   }
 
-  [v6 takeSizeFromTracker:v4];
+  [firstObject takeSizeFromTracker:trackerCopy];
 }
 
-- (void)takeFreeTransformFromTracker:(id)a3
+- (void)takeFreeTransformFromTracker:(id)tracker
 {
-  v4 = a3;
-  v5 = [(CRLCanvasAbstractLayout *)self children];
-  v6 = [v5 firstObject];
+  trackerCopy = tracker;
+  children = [(CRLCanvasAbstractLayout *)self children];
+  firstObject = [children firstObject];
 
-  if (!v6)
+  if (!firstObject)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -554,7 +554,7 @@
     [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:150 isFatal:0 description:"invalid nil value for '%{public}s'", "childLayout"];
   }
 
-  [v6 takeFreeTransformFromTracker:v4];
+  [firstObject takeFreeTransformFromTracker:trackerCopy];
 }
 
 @end

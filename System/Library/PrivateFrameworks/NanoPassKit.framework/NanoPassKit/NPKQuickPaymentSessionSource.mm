@@ -1,30 +1,30 @@
 @interface NPKQuickPaymentSessionSource
-- (NPKQuickPaymentSessionSource)initWithDelegate:(id)a3 buttonListener:(id)a4 callbackQueue:(id)a5;
-- (void)_handleAuthIntentEventFromSource:(unint64_t)a3;
-- (void)setDeferAuthorization:(BOOL)a3;
-- (void)setDelegateHandlingButtonEvents:(BOOL)a3;
-- (void)setInitialPass:(id)a3;
-- (void)setLocalAuthenticationCoordinator:(id)a3;
-- (void)setPreconditionState:(unint64_t)a3;
-- (void)setRequireFirstInQueue:(BOOL)a3;
-- (void)setVasPasses:(id)a3;
+- (NPKQuickPaymentSessionSource)initWithDelegate:(id)delegate buttonListener:(id)listener callbackQueue:(id)queue;
+- (void)_handleAuthIntentEventFromSource:(unint64_t)source;
+- (void)setDeferAuthorization:(BOOL)authorization;
+- (void)setDelegateHandlingButtonEvents:(BOOL)events;
+- (void)setInitialPass:(id)pass;
+- (void)setLocalAuthenticationCoordinator:(id)coordinator;
+- (void)setPreconditionState:(unint64_t)state;
+- (void)setRequireFirstInQueue:(BOOL)queue;
+- (void)setVasPasses:(id)passes;
 @end
 
 @implementation NPKQuickPaymentSessionSource
 
-- (NPKQuickPaymentSessionSource)initWithDelegate:(id)a3 buttonListener:(id)a4 callbackQueue:(id)a5
+- (NPKQuickPaymentSessionSource)initWithDelegate:(id)delegate buttonListener:(id)listener callbackQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  listenerCopy = listener;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = NPKQuickPaymentSessionSource;
   v11 = [(NPKQuickPaymentSessionSource *)&v21 init];
   if (v11)
   {
-    if (v10)
+    if (queueCopy)
     {
-      v12 = v10;
+      v12 = queueCopy;
     }
 
     else
@@ -40,15 +40,15 @@
     sessionSourceQueue = v11->_sessionSourceQueue;
     v11->_sessionSourceQueue = v15;
 
-    objc_storeWeak(&v11->_delegate, v8);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     objc_initWeak(&location, v11);
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __78__NPKQuickPaymentSessionSource_initWithDelegate_buttonListener_callbackQueue___block_invoke;
     v18[3] = &unk_279945EF0;
     objc_copyWeak(&v19, &location);
-    [v9 setButtonHandler:v18];
-    objc_storeStrong(&v11->_buttonListener, a4);
+    [listenerCopy setButtonHandler:v18];
+    objc_storeStrong(&v11->_buttonListener, listener);
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
   }
@@ -73,7 +73,7 @@ void __78__NPKQuickPaymentSessionSource_initWithDelegate_buttonListener_callback
   }
 }
 
-- (void)setDelegateHandlingButtonEvents:(BOOL)a3
+- (void)setDelegateHandlingButtonEvents:(BOOL)events
 {
   sessionSourceQueue = self->_sessionSourceQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -81,11 +81,11 @@ void __78__NPKQuickPaymentSessionSource_initWithDelegate_buttonListener_callback
   v4[2] = __64__NPKQuickPaymentSessionSource_setDelegateHandlingButtonEvents___block_invoke;
   v4[3] = &unk_279944FC0;
   v4[4] = self;
-  v5 = a3;
+  eventsCopy = events;
   dispatch_async(sessionSourceQueue, v4);
 }
 
-- (void)setDeferAuthorization:(BOOL)a3
+- (void)setDeferAuthorization:(BOOL)authorization
 {
   sessionSourceQueue = self->_sessionSourceQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -93,11 +93,11 @@ void __78__NPKQuickPaymentSessionSource_initWithDelegate_buttonListener_callback
   v4[2] = __54__NPKQuickPaymentSessionSource_setDeferAuthorization___block_invoke;
   v4[3] = &unk_279944FC0;
   v4[4] = self;
-  v5 = a3;
+  authorizationCopy = authorization;
   dispatch_async(sessionSourceQueue, v4);
 }
 
-- (void)setRequireFirstInQueue:(BOOL)a3
+- (void)setRequireFirstInQueue:(BOOL)queue
 {
   sessionSourceQueue = self->_sessionSourceQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -105,11 +105,11 @@ void __78__NPKQuickPaymentSessionSource_initWithDelegate_buttonListener_callback
   v4[2] = __55__NPKQuickPaymentSessionSource_setRequireFirstInQueue___block_invoke;
   v4[3] = &unk_279944FC0;
   v4[4] = self;
-  v5 = a3;
+  queueCopy = queue;
   dispatch_async(sessionSourceQueue, v4);
 }
 
-- (void)setPreconditionState:(unint64_t)a3
+- (void)setPreconditionState:(unint64_t)state
 {
   sessionSourceQueue = self->_sessionSourceQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -117,57 +117,57 @@ void __78__NPKQuickPaymentSessionSource_initWithDelegate_buttonListener_callback
   v4[2] = __53__NPKQuickPaymentSessionSource_setPreconditionState___block_invoke;
   v4[3] = &unk_279945830;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_async(sessionSourceQueue, v4);
 }
 
-- (void)setInitialPass:(id)a3
+- (void)setInitialPass:(id)pass
 {
-  v4 = a3;
+  passCopy = pass;
   sessionSourceQueue = self->_sessionSourceQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__NPKQuickPaymentSessionSource_setInitialPass___block_invoke;
   v7[3] = &unk_2799454E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = passCopy;
+  v6 = passCopy;
   dispatch_async(sessionSourceQueue, v7);
 }
 
-- (void)setVasPasses:(id)a3
+- (void)setVasPasses:(id)passes
 {
-  v4 = a3;
+  passesCopy = passes;
   sessionSourceQueue = self->_sessionSourceQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__NPKQuickPaymentSessionSource_setVasPasses___block_invoke;
   v7[3] = &unk_2799454E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = passesCopy;
+  v6 = passesCopy;
   dispatch_async(sessionSourceQueue, v7);
 }
 
-- (void)setLocalAuthenticationCoordinator:(id)a3
+- (void)setLocalAuthenticationCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   sessionSourceQueue = self->_sessionSourceQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__NPKQuickPaymentSessionSource_setLocalAuthenticationCoordinator___block_invoke;
   v7[3] = &unk_2799454E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = coordinatorCopy;
+  v6 = coordinatorCopy;
   dispatch_async(sessionSourceQueue, v7);
 }
 
-- (void)_handleAuthIntentEventFromSource:(unint64_t)a3
+- (void)_handleAuthIntentEventFromSource:(unint64_t)source
 {
   v68 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  if (a3 == 1)
+  date = [MEMORY[0x277CBEAA8] date];
+  if (source == 1)
   {
     v10 = pk_Payment_log();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -188,7 +188,7 @@ void __78__NPKQuickPaymentSessionSource_initWithDelegate_buttonListener_callback
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!source)
   {
     v6 = pk_Payment_log();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -277,9 +277,9 @@ LABEL_73:
     }
 
     v28 = objc_loadWeakRetained(&self->_delegate);
-    [v28 paymentSessionSource:self receivedButtonEventAtDate:v5 authIntentSource:a3 delegated:0];
+    [v28 paymentSessionSource:self receivedButtonEventAtDate:date authIntentSource:source delegated:0];
 
-    if (v21 != a3)
+    if (v21 != source)
     {
       v57[0] = MEMORY[0x277D85DD0];
       v57[1] = 3221225472;
@@ -335,11 +335,11 @@ LABEL_60:
           [v39 setDeferAuthorization:1];
         }
 
-        v40 = [v39 startSession];
+        startSession = [v39 startSession];
         v41 = pk_Payment_log();
         v42 = os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT);
 
-        if (v40)
+        if (startSession)
         {
           if (v42)
           {
@@ -357,8 +357,8 @@ LABEL_60:
           v53[3] = &unk_279945958;
           v53[4] = self;
           v54 = v39;
-          v55 = v5;
-          v56 = a3;
+          v55 = date;
+          sourceCopy = source;
           v44 = v39;
           [(NPKQuickPaymentSessionSource *)self _performDelegateCallback:v53];
 
@@ -412,7 +412,7 @@ LABEL_72:
     goto LABEL_73;
   }
 
-  if (v20 == a3)
+  if (v20 == source)
   {
     v22 = pk_Payment_log();
     v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
@@ -432,14 +432,14 @@ LABEL_72:
     v59[2] = __65__NPKQuickPaymentSessionSource__handleAuthIntentEventFromSource___block_invoke_89;
     v59[3] = &unk_279945F18;
     v59[4] = self;
-    v60 = v5;
-    v61 = a3;
+    v60 = date;
+    sourceCopy2 = source;
     [(NPKQuickPaymentSessionSource *)self _performDelegateCallback:v59];
 
     goto LABEL_74;
   }
 
-  if (a3 == 1)
+  if (source == 1)
   {
     v45 = pk_Payment_log();
     v46 = os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT);
@@ -466,7 +466,7 @@ LABEL_72:
     goto LABEL_60;
   }
 
-  if (!a3)
+  if (!source)
   {
     v35 = pk_Payment_log();
     v36 = os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT);

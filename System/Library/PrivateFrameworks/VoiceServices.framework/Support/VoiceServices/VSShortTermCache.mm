@@ -1,11 +1,11 @@
 @interface VSShortTermCache
 + (id)sharedInstance;
 - (VSShortTermCache)init;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4 timeToLive:(double)a5;
-- (void)timeToLiveTimerFired:(id)a3;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key timeToLive:(double)live;
+- (void)timeToLiveTimerFired:(id)fired;
 @end
 
 @implementation VSShortTermCache
@@ -17,8 +17,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(VSShortTermCache *)self cacheTimer];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  cacheTimer = [(VSShortTermCache *)self cacheTimer];
+  v4 = [cacheTimer countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -30,24 +30,24 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(cacheTimer);
         }
 
         [*(*(&v13 + 1) + 8 * v7++) invalidate];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [cacheTimer countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(VSShortTermCache *)self cacheTimer];
-  [v8 removeAllObjects];
+  cacheTimer2 = [(VSShortTermCache *)self cacheTimer];
+  [cacheTimer2 removeAllObjects];
 
-  v9 = [(VSShortTermCache *)self cache];
-  [v9 removeAllObjects];
+  cache = [(VSShortTermCache *)self cache];
+  [cache removeAllObjects];
 
   v10 = VSGetLogDefault();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -59,77 +59,77 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(VSShortTermCache *)self cache];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  cache = [(VSShortTermCache *)self cache];
+  v6 = [cache objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VSShortTermCache *)self cache];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  cache = [(VSShortTermCache *)self cache];
+  [cache removeObjectForKey:keyCopy];
 
-  v6 = [(VSShortTermCache *)self cacheTimer];
-  v7 = [v6 objectForKey:v4];
+  cacheTimer = [(VSShortTermCache *)self cacheTimer];
+  v7 = [cacheTimer objectForKey:keyCopy];
 
   [v7 invalidate];
-  v8 = [(VSShortTermCache *)self cacheTimer];
-  [v8 removeObjectForKey:v4];
+  cacheTimer2 = [(VSShortTermCache *)self cacheTimer];
+  [cacheTimer2 removeObjectForKey:keyCopy];
 
   v9 = VSGetLogDefault();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = keyCopy;
     _os_log_impl(&dword_2727E4000, v9, OS_LOG_TYPE_INFO, "Removed short term cache for key:'%@'", &v11, 0xCu);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timeToLiveTimerFired:(id)a3
+- (void)timeToLiveTimerFired:(id)fired
 {
-  v5 = a3;
-  v4 = [v5 userInfo];
-  [(VSShortTermCache *)self removeObjectForKey:v4];
+  firedCopy = fired;
+  userInfo = [firedCopy userInfo];
+  [(VSShortTermCache *)self removeObjectForKey:userInfo];
 
-  [v5 invalidate];
+  [firedCopy invalidate];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 timeToLive:(double)a5
+- (void)setObject:(id)object forKey:(id)key timeToLive:(double)live
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(VSShortTermCache *)self cacheTimer];
-  v11 = [v10 objectForKey:v9];
+  objectCopy = object;
+  keyCopy = key;
+  cacheTimer = [(VSShortTermCache *)self cacheTimer];
+  v11 = [cacheTimer objectForKey:keyCopy];
   [v11 invalidate];
 
-  v12 = [MEMORY[0x277CBEBB8] timerWithTimeInterval:self target:sel_timeToLiveTimerFired_ selector:v9 userInfo:0 repeats:a5];
-  v13 = [(VSShortTermCache *)self cache];
-  [v13 setObject:v8 forKey:v9];
+  v12 = [MEMORY[0x277CBEBB8] timerWithTimeInterval:self target:sel_timeToLiveTimerFired_ selector:keyCopy userInfo:0 repeats:live];
+  cache = [(VSShortTermCache *)self cache];
+  [cache setObject:objectCopy forKey:keyCopy];
 
-  v14 = [(VSShortTermCache *)self cacheTimer];
-  [v14 setObject:v12 forKey:v9];
+  cacheTimer2 = [(VSShortTermCache *)self cacheTimer];
+  [cacheTimer2 setObject:v12 forKey:keyCopy];
 
   v15 = VSGetLogDefault();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v18 = 138412546;
-    v19 = v8;
+    v19 = objectCopy;
     v20 = 2112;
-    v21 = v9;
+    v21 = keyCopy;
     _os_log_impl(&dword_2727E4000, v15, OS_LOG_TYPE_INFO, "Added short term cache:%@ for key:'%@'", &v18, 0x16u);
   }
 
-  v16 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v16 addTimer:v12 forMode:*MEMORY[0x277CBE640]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [mainRunLoop addTimer:v12 forMode:*MEMORY[0x277CBE640]];
 
   v17 = *MEMORY[0x277D85DE8];
 }

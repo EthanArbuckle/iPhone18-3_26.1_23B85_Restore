@@ -1,29 +1,29 @@
 @interface NTKDolomiteStyleEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)defaultOptionForDevice:(id)a3;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)defaultOptionForDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKDolomiteStyleEditOption
 
-+ (id)defaultOptionForDevice:(id)a3
++ (id)defaultOptionForDevice:(id)device
 {
-  v3 = a3;
-  v4 = +[NTKDolomiteStyleEditOption optionWithStyle:forDevice:](NTKDolomiteStyleEditOption, "optionWithStyle:forDevice:", [v3 isRunningNapiliGMOrLater], v3);
+  deviceCopy = device;
+  v4 = +[NTKDolomiteStyleEditOption optionWithStyle:forDevice:](NTKDolomiteStyleEditOption, "optionWithStyle:forDevice:", [deviceCopy isRunningNapiliGMOrLater], deviceCopy);
 
   return v4;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
   v4 = @"outline";
-  if (a3 != 1)
+  if (value != 1)
   {
     v4 = 0;
   }
 
-  if (a3)
+  if (value)
   {
     return v4;
   }

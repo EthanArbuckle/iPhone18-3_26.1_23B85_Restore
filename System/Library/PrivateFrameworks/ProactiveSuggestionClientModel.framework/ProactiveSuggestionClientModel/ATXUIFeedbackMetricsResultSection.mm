@@ -1,7 +1,7 @@
 @interface ATXUIFeedbackMetricsResultSection
 - (ATXUIFeedbackMetricsResultSection)init;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXUIFeedbackMetricsResultSection:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXUIFeedbackMetricsResultSection:(id)section;
 - (unint64_t)hash;
 @end
 
@@ -38,29 +38,29 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUIFeedbackMetricsResultSection *)self isEqualToATXUIFeedbackMetricsResultSection:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUIFeedbackMetricsResultSection *)self isEqualToATXUIFeedbackMetricsResultSection:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXUIFeedbackMetricsResultSection:(id)a3
+- (BOOL)isEqualToATXUIFeedbackMetricsResultSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   v5 = self->_scoreDistribution;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == sectionCopy[1])
   {
   }
 
@@ -76,7 +76,7 @@
 
   v8 = self->_clientModelBreakdown;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == sectionCopy[2])
   {
   }
 
@@ -92,7 +92,7 @@
 
   v11 = self->_consumerSubTypeBreakdown;
   v12 = v11;
-  if (v11 == v4[3])
+  if (v11 == sectionCopy[3])
   {
   }
 
@@ -108,7 +108,7 @@
 
   v14 = self->_confidenceBreakdown;
   v15 = v14;
-  if (v14 == v4[4])
+  if (v14 == sectionCopy[4])
   {
   }
 
@@ -126,7 +126,7 @@ LABEL_15:
 
   v18 = self->_predictionReasonCodeBreakdown;
   v19 = v18;
-  if (v18 == v4[5])
+  if (v18 == sectionCopy[5])
   {
     v17 = 1;
   }

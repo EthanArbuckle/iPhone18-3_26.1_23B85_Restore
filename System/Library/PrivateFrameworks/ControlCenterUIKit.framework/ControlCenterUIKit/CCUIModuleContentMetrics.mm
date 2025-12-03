@@ -1,8 +1,8 @@
 @interface CCUIModuleContentMetrics
-+ (id)defaultMetricsForGridGeometryInfo:(CCUIGridGeometryInfo)a3;
++ (id)defaultMetricsForGridGeometryInfo:(CCUIGridGeometryInfo)info;
 - (CCUIGridGeometryInfo)gridGeometryInfo;
 - (CCUIModuleContentMetrics)init;
-- (CCUIModuleContentMetrics)initWithSymbolConfiguration:(id)a3 symbolFont:(id)a4 symbolScaleFactor:(double)a5 metricsScaleFactor:(double)a6 gridGeometryInfo:(CCUIGridGeometryInfo)a7;
+- (CCUIModuleContentMetrics)initWithSymbolConfiguration:(id)configuration symbolFont:(id)font symbolScaleFactor:(double)factor metricsScaleFactor:(double)scaleFactor gridGeometryInfo:(CCUIGridGeometryInfo)info;
 - (NSString)description;
 @end
 
@@ -17,24 +17,24 @@
   return result;
 }
 
-- (CCUIModuleContentMetrics)initWithSymbolConfiguration:(id)a3 symbolFont:(id)a4 symbolScaleFactor:(double)a5 metricsScaleFactor:(double)a6 gridGeometryInfo:(CCUIGridGeometryInfo)a7
+- (CCUIModuleContentMetrics)initWithSymbolConfiguration:(id)configuration symbolFont:(id)font symbolScaleFactor:(double)factor metricsScaleFactor:(double)scaleFactor gridGeometryInfo:(CCUIGridGeometryInfo)info
 {
-  *(&self->super.isa + OBJC_IVAR___CCUIModuleContentMetrics_symbolConfiguration) = a3;
-  *(&self->super.isa + OBJC_IVAR___CCUIModuleContentMetrics_symbolFont) = a4;
-  *(&self->super.isa + OBJC_IVAR___CCUIModuleContentMetrics_symbolScaleFactor) = a5;
-  *(&self->super.isa + OBJC_IVAR___CCUIModuleContentMetrics_metricsScaleFactor) = a6;
-  *(&self->super.isa + OBJC_IVAR___CCUIModuleContentMetrics_gridGeometryInfo) = a7;
+  *(&self->super.isa + OBJC_IVAR___CCUIModuleContentMetrics_symbolConfiguration) = configuration;
+  *(&self->super.isa + OBJC_IVAR___CCUIModuleContentMetrics_symbolFont) = font;
+  *(&self->super.isa + OBJC_IVAR___CCUIModuleContentMetrics_symbolScaleFactor) = factor;
+  *(&self->super.isa + OBJC_IVAR___CCUIModuleContentMetrics_metricsScaleFactor) = scaleFactor;
+  *(&self->super.isa + OBJC_IVAR___CCUIModuleContentMetrics_gridGeometryInfo) = info;
   v11.receiver = self;
   v11.super_class = CCUIModuleContentMetrics;
-  v8 = a3;
-  v9 = a4;
+  configurationCopy = configuration;
+  fontCopy = font;
   return [(CCUIModuleContentMetrics *)&v11 init];
 }
 
-+ (id)defaultMetricsForGridGeometryInfo:(CCUIGridGeometryInfo)a3
++ (id)defaultMetricsForGridGeometryInfo:(CCUIGridGeometryInfo)info
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = info.var1;
+  var0 = info.var0;
   swift_getObjCClassMetadata();
   v5 = sub_1D16C39CC(var0, var1);
 
@@ -43,7 +43,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CCUIModuleContentMetrics.description.getter();
 
   v3 = sub_1D16CC494();

@@ -36,12 +36,12 @@
     v8 = v2;
     v9 = v3;
     v5 = +[DSLogging sharedInstance];
-    v6 = [v5 dsLogger];
+    dsLogger = [v5 dsLogger];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
     {
       *v7 = 0;
-      _os_log_impl(&dword_249027000, v6, OS_LOG_TYPE_DEFAULT, "[DSCoreAnalytics] null metric during provider availability update\n", v7, 2u);
+      _os_log_impl(&dword_249027000, dsLogger, OS_LOG_TYPE_DEFAULT, "[DSCoreAnalytics] null metric during provider availability update\n", v7, 2u);
     }
   }
 }
@@ -60,12 +60,12 @@
     v8 = v2;
     v9 = v3;
     v5 = +[DSLogging sharedInstance];
-    v6 = [v5 dsLogger];
+    dsLogger = [v5 dsLogger];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
     {
       *v7 = 0;
-      _os_log_impl(&dword_249027000, v6, OS_LOG_TYPE_DEFAULT, "[DSCoreAnalytics] null metric during provider unavailability update\n", v7, 2u);
+      _os_log_impl(&dword_249027000, dsLogger, OS_LOG_TYPE_DEFAULT, "[DSCoreAnalytics] null metric during provider unavailability update\n", v7, 2u);
     }
   }
 }
@@ -84,12 +84,12 @@
     v8 = v2;
     v9 = v3;
     v5 = +[DSLogging sharedInstance];
-    v6 = [v5 dsLogger];
+    dsLogger = [v5 dsLogger];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
     {
       *v7 = 0;
-      _os_log_impl(&dword_249027000, v6, OS_LOG_TYPE_DEFAULT, "[DSCoreAnalytics] null metric during first listener session update\n", v7, 2u);
+      _os_log_impl(&dword_249027000, dsLogger, OS_LOG_TYPE_DEFAULT, "[DSCoreAnalytics] null metric during first listener session update\n", v7, 2u);
     }
   }
 }

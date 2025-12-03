@@ -1,41 +1,41 @@
 @interface UIImageAsset
-+ (id)_dynamicAssetNamed:(id)a3 generator:(id)a4;
-+ (id)_uncachedDynamicIconAssetNamed:(id)a3 generator:(id)a4;
++ (id)_dynamicAssetNamed:(id)named generator:(id)generator;
++ (id)_uncachedDynamicIconAssetNamed:(id)named generator:(id)generator;
 - (BOOL)_canProvideCatalogData;
 - (BOOL)_isIconAsset;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CUINamedLayerStack)_layerStack;
 - (UIImage)imageWithConfiguration:(UIImageConfiguration *)configuration;
 - (UIImage)imageWithTraitCollection:(UITraitCollection *)traitCollection;
 - (UIImageAsset)init;
 - (UIImageAsset)initWithCoder:(NSCoder *)coder;
 - (_UIAssetManager)_assetManager;
-- (id)_cachedRenditionForKey:(id)a3;
+- (id)_cachedRenditionForKey:(id)key;
 - (id)_catalogData;
-- (id)_initWithAssetName:(id)a3 forFilesInBundle:(id)a4;
-- (id)_initWithAssetName:(id)a3 forManager:(id)a4;
+- (id)_initWithAssetName:(id)name forFilesInBundle:(id)bundle;
+- (id)_initWithAssetName:(id)name forManager:(id)manager;
 - (id)_nameForStoringRuntimeRegisteredImagesInMutableCatalog;
-- (id)_performLookUpRegisteredObjectForTraitCollection:(id)a3 withAccessorWithAppearanceName:(id)a4;
-- (id)_renditionCache:(BOOL)a3;
+- (id)_performLookUpRegisteredObjectForTraitCollection:(id)collection withAccessorWithAppearanceName:(id)name;
+- (id)_renditionCache:(BOOL)cache;
 - (id)_unpinObserver;
 - (id)_unsafe_mutableCatalog;
 - (id)_withLock_catalogData;
-- (id)_withLock_imageWithConfiguration:(id)a3;
-- (id)_withLock_lookUpRegisteredObjectForTraitCollection:(id)a3 withAccessorWithAppearanceName:(id)a4;
+- (id)_withLock_imageWithConfiguration:(id)configuration;
+- (id)_withLock_lookUpRegisteredObjectForTraitCollection:(id)collection withAccessorWithAppearanceName:(id)name;
 - (id)_withLock_mutableCatalog;
 - (id)_withLock_registeredAppearanceNames;
-- (id)_withLock_updateAssetFromBlockGenerationWithConfiguration:(id)a3 resolvedCatalogImage:(id)a4;
-- (void)_cacheRendition:(id)a3 forKey:(id)a4;
+- (id)_withLock_updateAssetFromBlockGenerationWithConfiguration:(id)configuration resolvedCatalogImage:(id)image;
+- (void)_cacheRendition:(id)rendition forKey:(id)key;
 - (void)_disconnectFromAssetManager;
-- (void)_registerImage:(id)a3 withConfiguration:(id)a4;
-- (void)_setLayerStack:(id)a3;
-- (void)_setStronglyRetainsAssetManager:(BOOL)a3;
-- (void)_unregisterImageWithDescription:(id)a3;
-- (void)_unsafe_registerImage:(id)a3 withConfiguration:(id)a4;
-- (void)_withLock_registerImage:(id)a3 withConfiguration:(id)a4;
-- (void)_withLock_unregisterImageWithDescription:(id)a3;
+- (void)_registerImage:(id)image withConfiguration:(id)configuration;
+- (void)_setLayerStack:(id)stack;
+- (void)_setStronglyRetainsAssetManager:(BOOL)manager;
+- (void)_unregisterImageWithDescription:(id)description;
+- (void)_unsafe_registerImage:(id)image withConfiguration:(id)configuration;
+- (void)_withLock_registerImage:(id)image withConfiguration:(id)configuration;
+- (void)_withLock_unregisterImageWithDescription:(id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)registerImage:(UIImage *)image withTraitCollection:(UITraitCollection *)traitCollection;
 - (void)unregisterImageWithConfiguration:(UIImageConfiguration *)configuration;
 - (void)unregisterImageWithTraitCollection:(UITraitCollection *)traitCollection;
@@ -54,18 +54,18 @@
 {
   if (*&self->_assetFlags)
   {
-    v3 = [(UIImageAsset *)self _unsafe_mutableCatalog];
-    v4 = [(UIImageAsset *)self _nameForStoringRuntimeRegisteredImagesInMutableCatalog];
-    [v3 removeImagesNamed:v4];
+    _unsafe_mutableCatalog = [(UIImageAsset *)self _unsafe_mutableCatalog];
+    _nameForStoringRuntimeRegisteredImagesInMutableCatalog = [(UIImageAsset *)self _nameForStoringRuntimeRegisteredImagesInMutableCatalog];
+    [_unsafe_mutableCatalog removeImagesNamed:_nameForStoringRuntimeRegisteredImagesInMutableCatalog];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_unpinObserver);
 
   if (WeakRetained)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v7 = objc_loadWeakRetained(&self->_unpinObserver);
-    [v6 removeObserver:v7];
+    [defaultCenter removeObserver:v7];
   }
 
   strongAssetManager = self->_strongAssetManager;
@@ -81,11 +81,11 @@
 
 - (id)_unsafe_mutableCatalog
 {
-  v2 = [(UIImageAsset *)self _assetManager];
-  v3 = v2;
-  if (v2)
+  _assetManager = [(UIImageAsset *)self _assetManager];
+  v3 = _assetManager;
+  if (_assetManager)
   {
-    [v2 runtimeCatalog];
+    [_assetManager runtimeCatalog];
   }
 
   else
@@ -99,16 +99,16 @@
 
 - (id)_nameForStoringRuntimeRegisteredImagesInMutableCatalog
 {
-  v3 = [(UIImageAsset *)self _assetManager];
-  if (v3)
+  _assetManager = [(UIImageAsset *)self _assetManager];
+  if (_assetManager)
   {
     if (!dyld_program_sdk_at_least())
     {
       has_internal_diagnostics = os_variant_has_internal_diagnostics();
-      v12 = [v3 _managingUIKitAssets];
+      _managingUIKitAssets = [_assetManager _managingUIKitAssets];
       if (has_internal_diagnostics)
       {
-        if (v12)
+        if (_managingUIKitAssets)
         {
           v17 = __UIFaultDebugAssertLog();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -119,7 +119,7 @@
         }
       }
 
-      else if (v12)
+      else if (_managingUIKitAssets)
       {
         v18 = *(__UILogGetCategoryCachedImpl("Assert", &_nameForStoringRuntimeRegisteredImagesInMutableCatalog___s_category) + 8);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -131,17 +131,17 @@
 
       v13 = MEMORY[0x1E696AEC0];
       assetName = self->_assetName;
-      v6 = [v3 carFileName];
-      v15 = [(NSBundle *)self->_containingBundle bundlePath];
-      v10 = [v13 stringWithFormat:@"<image asset '%@' in catalog '%@' in bundle at path '%@'>", assetName, v6, v15];
+      carFileName = [_assetManager carFileName];
+      bundlePath = [(NSBundle *)self->_containingBundle bundlePath];
+      v10 = [v13 stringWithFormat:@"<image asset '%@' in catalog '%@' in bundle at path '%@'>", assetName, carFileName, bundlePath];
 
       goto LABEL_10;
     }
 
     v4 = MEMORY[0x1E696AEC0];
     v5 = self->_assetName;
-    v6 = [(NSBundle *)self->_containingBundle bundlePath];
-    [v4 stringWithFormat:@"<image asset '%@' in bundle at path '%@'>", v5, v6];
+    carFileName = [(NSBundle *)self->_containingBundle bundlePath];
+    [v4 stringWithFormat:@"<image asset '%@' in bundle at path '%@'>", v5, carFileName];
     v10 = LABEL_6:;
 LABEL_10:
 
@@ -153,8 +153,8 @@ LABEL_10:
   v9 = self->_assetName;
   if (containingBundle)
   {
-    v6 = [(NSBundle *)containingBundle bundlePath];
-    [v8 stringWithFormat:@"<image asset '%@' in resources for bundle at path '%@'>", v9, v6];
+    carFileName = [(NSBundle *)containingBundle bundlePath];
+    [v8 stringWithFormat:@"<image asset '%@' in resources for bundle at path '%@'>", v9, carFileName];
     goto LABEL_6;
   }
 
@@ -168,12 +168,12 @@ LABEL_11:
 {
   v8[1] = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(UIImageAsset *)self _withLock_mutableCatalog];
-  v4 = [v3 appearanceNames];
+  _withLock_mutableCatalog = [(UIImageAsset *)self _withLock_mutableCatalog];
+  appearanceNames = [_withLock_mutableCatalog appearanceNames];
 
-  if (v4 && [v4 count])
+  if (appearanceNames && [appearanceNames count])
   {
-    v5 = v4;
+    v5 = appearanceNames;
   }
 
   else
@@ -196,8 +196,8 @@ LABEL_11:
 
 - (CUINamedLayerStack)_layerStack
 {
-  v3 = [(UIImageAsset *)self _assetManager];
-  v4 = v3;
+  _assetManager = [(UIImageAsset *)self _assetManager];
+  v4 = _assetManager;
   layerStack = self->_layerStack;
   if (layerStack)
   {
@@ -206,7 +206,7 @@ LABEL_11:
 
   else
   {
-    v6 = v3 == 0;
+    v6 = _assetManager == 0;
   }
 
   if (!v6)
@@ -229,9 +229,9 @@ LABEL_11:
   return layerStack;
 }
 
-- (void)_setStronglyRetainsAssetManager:(BOOL)a3
+- (void)_setStronglyRetainsAssetManager:(BOOL)manager
 {
-  if ([(UIImageAsset *)self _stronglyRetainsAssetManager]!= a3)
+  if ([(UIImageAsset *)self _stronglyRetainsAssetManager]!= manager)
   {
     os_unfair_lock_lock(&self->_lock);
     WeakRetained = objc_loadWeakRetained(&self->_assetManager);
@@ -242,42 +242,42 @@ LABEL_11:
   }
 }
 
-+ (id)_dynamicAssetNamed:(id)a3 generator:(id)a4
++ (id)_dynamicAssetNamed:(id)named generator:(id)generator
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  namedCopy = named;
+  generatorCopy = generator;
+  if (!generatorCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"UIImageAsset.m" lineNumber:121 description:@"assets initialized with _dynamicAssetNamed:generator must provide a block"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIImageAsset.m" lineNumber:121 description:@"assets initialized with _dynamicAssetNamed:generator must provide a block"];
   }
 
-  v9 = [objc_alloc(objc_opt_class()) _initWithAssetName:v7 forManager:0];
+  v9 = [objc_alloc(objc_opt_class()) _initWithAssetName:namedCopy forManager:0];
   v10 = v9;
   if (v9)
   {
-    [v9 setCreationBlock:v8];
+    [v9 setCreationBlock:generatorCopy];
     v10[32] |= 2u;
   }
 
   return v10;
 }
 
-+ (id)_uncachedDynamicIconAssetNamed:(id)a3 generator:(id)a4
++ (id)_uncachedDynamicIconAssetNamed:(id)named generator:(id)generator
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  namedCopy = named;
+  generatorCopy = generator;
+  if (!generatorCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"UIImageAsset.m" lineNumber:132 description:@"assets initialized with _uncachedDynamicAssetNamed:generator must provide a block"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIImageAsset.m" lineNumber:132 description:@"assets initialized with _uncachedDynamicAssetNamed:generator must provide a block"];
   }
 
-  v9 = [objc_alloc(objc_opt_class()) _initWithAssetName:v7 forManager:0];
+  v9 = [objc_alloc(objc_opt_class()) _initWithAssetName:namedCopy forManager:0];
   v10 = v9;
   if (v9)
   {
-    [v9 setCreationBlock:v8];
+    [v9 setCreationBlock:generatorCopy];
     v10[32] |= 0xEu;
   }
 
@@ -286,8 +286,8 @@ LABEL_11:
 
 - (BOOL)_isIconAsset
 {
-  v2 = self;
-  v3 = (*&v2->_assetFlags >> 3) & 1;
+  selfCopy = self;
+  v3 = (*&selfCopy->_assetFlags >> 3) & 1;
 
   return v3;
 }
@@ -299,41 +299,41 @@ LABEL_11:
   v2 = [(UIImageAsset *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
-    CommonInit_1(v2, v4, 0, 0);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    CommonInit_1(v2, uUIDString, 0, 0);
   }
 
   return v2;
 }
 
-- (id)_initWithAssetName:(id)a3 forManager:(id)a4
+- (id)_initWithAssetName:(id)name forManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = UIImageAsset;
   v8 = [(UIImageAsset *)&v11 init];
   if (v8)
   {
-    v9 = [v7 bundle];
-    CommonInit_1(v8, v6, v7, v9);
+    bundle = [managerCopy bundle];
+    CommonInit_1(v8, nameCopy, managerCopy, bundle);
   }
 
   return v8;
 }
 
-- (id)_initWithAssetName:(id)a3 forFilesInBundle:(id)a4
+- (id)_initWithAssetName:(id)name forFilesInBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v11.receiver = self;
   v11.super_class = UIImageAsset;
   v8 = [(UIImageAsset *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    CommonInit_1(v8, v6, 0, v7);
+    CommonInit_1(v8, nameCopy, 0, bundleCopy);
   }
 
   return v9;
@@ -344,28 +344,28 @@ LABEL_11:
   v39 = *MEMORY[0x1E69E9840];
   v4 = coder;
   v5 = [(NSCoder *)v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIImageAssetName"];
-  v6 = 0;
+  mainBundle = 0;
   v7 = 0;
   if ([(NSCoder *)v4 decodeBoolForKey:@"UIImageAssetHadAssetManager"]&& v5)
   {
     if ([v5 length])
     {
-      v6 = [MEMORY[0x1E696AAE8] mainBundle];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
       if ([(NSCoder *)v4 containsValueForKey:@"UIImageAssetManagerBundlePath"])
       {
         v8 = MEMORY[0x1E696AAE8];
         v9 = [(NSCoder *)v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIImageAssetManagerBundlePath"];
         v10 = [v8 bundleWithPath:v9];
 
-        v6 = v10;
+        mainBundle = v10;
       }
 
-      v7 = [_UIAssetManager assetManagerForBundle:v6];
+      v7 = [_UIAssetManager assetManagerForBundle:mainBundle];
     }
 
     else
     {
-      v6 = 0;
+      mainBundle = 0;
       v7 = 0;
     }
   }
@@ -377,7 +377,7 @@ LABEL_11:
     v13 = v11;
 
 LABEL_10:
-    CommonInit_1(v13, v5, v7, v6);
+    CommonInit_1(v13, v5, v7, mainBundle);
 LABEL_11:
     if ([(NSCoder *)v4 decodeBoolForKey:@"UIImageAssetHasRegisteredImages"])
     {
@@ -407,8 +407,8 @@ LABEL_11:
             }
 
             v21 = *(*(&v33 + 1) + 8 * i);
-            v22 = [v21 configuration];
-            [(UIImageAsset *)v13 _unsafe_registerImage:v21 withConfiguration:v22];
+            configuration = [v21 configuration];
+            [(UIImageAsset *)v13 _unsafe_registerImage:v21 withConfiguration:configuration];
           }
 
           v18 = [v16 countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -429,16 +429,16 @@ LABEL_11:
   v13 = [(UIImageAsset *)&v37 init];
   if (!v13)
   {
-    CommonInit_1(0, v5, v7, v6);
+    CommonInit_1(0, v5, v7, mainBundle);
     goto LABEL_30;
   }
 
   if (!v5 || ![v5 length])
   {
-    v23 = [MEMORY[0x1E696AFB0] UUID];
-    v24 = [v23 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v5 = v24;
+    v5 = uUIDString;
   }
 
   if (!v7)
@@ -455,7 +455,7 @@ LABEL_11:
     v13 = v27;
   }
 
-  CommonInit_1(v13, v5, v7, v6);
+  CommonInit_1(v13, v5, v7, mainBundle);
   if (v13)
   {
     goto LABEL_11;
@@ -467,39 +467,39 @@ LABEL_30:
   return v28;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIImageAsset *)self assetName];
-  [v4 encodeObject:v5 forKey:@"UIImageAssetName"];
+  coderCopy = coder;
+  assetName = [(UIImageAsset *)self assetName];
+  [coderCopy encodeObject:assetName forKey:@"UIImageAssetName"];
 
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(UIImageAsset *)self _assetManager];
-  v7 = v6;
-  if (v6)
+  _assetManager = [(UIImageAsset *)self _assetManager];
+  v7 = _assetManager;
+  if (_assetManager)
   {
-    if (([v6 _managingUIKitAssets] & 1) == 0)
+    if (([_assetManager _managingUIKitAssets] & 1) == 0)
     {
-      [v4 encodeBool:1 forKey:@"UIImageAssetHadAssetManager"];
-      v8 = [v7 bundle];
-      v9 = [MEMORY[0x1E696AAE8] mainBundle];
+      [coderCopy encodeBool:1 forKey:@"UIImageAssetHadAssetManager"];
+      bundle = [v7 bundle];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
 
-      if (v8 != v9)
+      if (bundle != mainBundle)
       {
-        v10 = [v7 bundle];
-        v11 = [v10 bundlePath];
-        [v4 encodeObject:v11 forKey:@"UIImageAssetManagerBundlePath"];
+        bundle2 = [v7 bundle];
+        bundlePath = [bundle2 bundlePath];
+        [coderCopy encodeObject:bundlePath forKey:@"UIImageAssetManagerBundlePath"];
       }
     }
   }
 
-  [v4 encodeBool:*&self->_assetFlags & 1 forKey:@"UIImageAssetHasRegisteredImages"];
+  [coderCopy encodeBool:*&self->_assetFlags & 1 forKey:@"UIImageAssetHasRegisteredImages"];
   if (*&self->_assetFlags)
   {
-    v12 = [(UIImageAsset *)self _withLock_mutableCatalog];
-    v13 = [(UIImageAsset *)self _nameForStoringRuntimeRegisteredImagesInMutableCatalog];
-    v14 = [v12 imagesWithName:v13];
+    _withLock_mutableCatalog = [(UIImageAsset *)self _withLock_mutableCatalog];
+    _nameForStoringRuntimeRegisteredImagesInMutableCatalog = [(UIImageAsset *)self _nameForStoringRuntimeRegisteredImagesInMutableCatalog];
+    v14 = [_withLock_mutableCatalog imagesWithName:_nameForStoringRuntimeRegisteredImagesInMutableCatalog];
 
     v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v14, "count")}];
     v24 = 0u;
@@ -522,8 +522,8 @@ LABEL_30:
           }
 
           v21 = *(*(&v24 + 1) + 8 * i);
-          v22 = [v21 configuration];
-          v23 = [v21 UIImageWithAsset:self configuration:v22 flippedHorizontally:0 optionalVectorImage:0];
+          configuration = [v21 configuration];
+          v23 = [v21 UIImageWithAsset:self configuration:configuration flippedHorizontally:0 optionalVectorImage:0];
 
           [v15 addObject:v23];
         }
@@ -534,7 +534,7 @@ LABEL_30:
       while (v18);
     }
 
-    [v4 encodeObject:v15 forKey:@"UIImageAssetRegisteredImages"];
+    [coderCopy encodeObject:v15 forKey:@"UIImageAssetRegisteredImages"];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -544,15 +544,15 @@ LABEL_30:
 {
   if (traitCollection)
   {
-    v4 = [(UITraitCollection *)traitCollection imageConfiguration];
+    imageConfiguration = [(UITraitCollection *)traitCollection imageConfiguration];
   }
 
   else
   {
-    v4 = 0;
+    imageConfiguration = 0;
   }
 
-  v5 = v4;
+  v5 = imageConfiguration;
   v6 = [(UIImageAsset *)self imageWithConfiguration:v5];
 
   return v6;
@@ -569,27 +569,27 @@ LABEL_30:
   return v5;
 }
 
-- (id)_withLock_imageWithConfiguration:(id)a3
+- (id)_withLock_imageWithConfiguration:(id)configuration
 {
   v69[2] = *MEMORY[0x1E69E9840];
-  v4 = self;
-  v5 = a3;
-  v6 = [(UIImageAsset *)v4 _defaultTraitCollection];
-  v7 = v6;
-  if (v6)
+  selfCopy = self;
+  configurationCopy = configuration;
+  _defaultTraitCollection = [(UIImageAsset *)selfCopy _defaultTraitCollection];
+  v7 = _defaultTraitCollection;
+  if (_defaultTraitCollection)
   {
-    v8 = [v6 imageConfiguration];
+    imageConfiguration = [_defaultTraitCollection imageConfiguration];
   }
 
   else
   {
-    v8 = 0;
+    imageConfiguration = 0;
   }
 
-  v9 = v8;
-  v10 = [UIImageConfiguration _completeConfiguration:v5 fromConfiguration:v9];
+  v9 = imageConfiguration;
+  v10 = [UIImageConfiguration _completeConfiguration:configurationCopy fromConfiguration:v9];
 
-  v11 = [v10 _effectiveTraitCollectionForImageLookup];
+  _effectiveTraitCollectionForImageLookup = [v10 _effectiveTraitCollectionForImageLookup];
   v63 = 0;
   v64 = &v63;
   v65 = 0x3032000000;
@@ -603,28 +603,28 @@ LABEL_30:
   v57 = 0;
   v58 = 0;
   v56 = 0;
-  v55 = [v11 layoutDirection];
-  v12 = [v11 horizontalSizeClass];
-  v13 = [v11 verticalSizeClass];
-  [_UIAssetManager _convertTraitCollection:v11 toCUIScale:&v62 CUIIdiom:&v61 UIKitIdiom:&v58 UIKitUserInterfaceStyle:&v57 subtype:&v59 CUIDisplayGamut:&v60 UIKitLayoutDirection:&v55 CUILayoutDirection:&v56];
-  v14 = [(UIImageAsset *)v4 _assetManager];
-  v15 = v14;
-  if (*&v4->_assetFlags)
+  layoutDirection = [_effectiveTraitCollectionForImageLookup layoutDirection];
+  horizontalSizeClass = [_effectiveTraitCollectionForImageLookup horizontalSizeClass];
+  verticalSizeClass = [_effectiveTraitCollectionForImageLookup verticalSizeClass];
+  [_UIAssetManager _convertTraitCollection:_effectiveTraitCollectionForImageLookup toCUIScale:&v62 CUIIdiom:&v61 UIKitIdiom:&v58 UIKitUserInterfaceStyle:&v57 subtype:&v59 CUIDisplayGamut:&v60 UIKitLayoutDirection:&layoutDirection CUILayoutDirection:&v56];
+  _assetManager = [(UIImageAsset *)selfCopy _assetManager];
+  v15 = _assetManager;
+  if (*&selfCopy->_assetFlags)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __49__UIImageAsset__withLock_imageWithConfiguration___block_invoke;
     aBlock[3] = &unk_1E710C218;
-    aBlock[4] = v4;
+    aBlock[4] = selfCopy;
     *&aBlock[5] = v62;
     aBlock[6] = v61;
     aBlock[7] = v59;
     aBlock[8] = v60;
     aBlock[9] = v56;
-    aBlock[10] = v12;
-    aBlock[11] = v13;
+    aBlock[10] = horizontalSizeClass;
+    aBlock[11] = verticalSizeClass;
     v47 = _Block_copy(aBlock);
-    v24 = [(UIImageAsset *)v4 _withLock_lookUpRegisteredObjectForTraitCollection:v11 withAccessorWithAppearanceName:v47];
+    v24 = [(UIImageAsset *)selfCopy _withLock_lookUpRegisteredObjectForTraitCollection:_effectiveTraitCollectionForImageLookup withAccessorWithAppearanceName:v47];
     v25 = v24;
     if (!v24)
     {
@@ -634,7 +634,7 @@ LABEL_30:
         v48[1] = 3221225472;
         v49 = __49__UIImageAsset__withLock_imageWithConfiguration___block_invoke_2;
         v50 = &unk_1E70FEE78;
-        v51 = v4;
+        v51 = selfCopy;
         v52 = v10;
         v53 = &v63;
         v36 = v48;
@@ -644,9 +644,9 @@ LABEL_30:
         os_unfair_lock_unlock(&__UIImageAssetRegisterLock);
       }
 
-      if (!v64[5] && (*&v4->_assetFlags & 2) != 0)
+      if (!v64[5] && (*&selfCopy->_assetFlags & 2) != 0)
       {
-        v37 = [(UIImageAsset *)v4 _withLock_updateAssetFromBlockGenerationWithConfiguration:v10 resolvedCatalogImage:0];
+        v37 = [(UIImageAsset *)selfCopy _withLock_updateAssetFromBlockGenerationWithConfiguration:v10 resolvedCatalogImage:0];
         v38 = v64[5];
         v64[5] = v37;
       }
@@ -654,9 +654,9 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v26 = [v24 configuration];
-    v27 = [v26 _effectiveTraitCollectionForImageLookup];
-    v28 = [(UITraitCollection *)v11 _matchesIntersectionWithTraitCollectionConsideringTraitsThatCanRepresentUnspecifiedOnly:v27];
+    configuration = [v24 configuration];
+    _effectiveTraitCollectionForImageLookup2 = [configuration _effectiveTraitCollectionForImageLookup];
+    v28 = [(UITraitCollection *)_effectiveTraitCollectionForImageLookup _matchesIntersectionWithTraitCollectionConsideringTraitsThatCanRepresentUnspecifiedOnly:_effectiveTraitCollectionForImageLookup2];
 
     if (v28)
     {
@@ -665,8 +665,8 @@ LABEL_30:
 
     if (v15)
     {
-      v29 = [(UIImageAsset *)v4 assetName];
-      v30 = [v15 imageNamed:v29 configuration:v10 cachingOptions:0 attachCatalogImage:1];
+      assetName = [(UIImageAsset *)selfCopy assetName];
+      v30 = [v15 imageNamed:assetName configuration:v10 cachingOptions:0 attachCatalogImage:1];
 
       if (!v30)
       {
@@ -681,7 +681,7 @@ LABEL_28:
         }
 
 LABEL_27:
-        v42 = [v25 UIImageWithAsset:v4 configuration:v10 flippedHorizontally:0 optionalVectorImage:0];
+        v42 = [v25 UIImageWithAsset:selfCopy configuration:v10 flippedHorizontally:0 optionalVectorImage:0];
         v43 = v64[5];
         v64[5] = v42;
 
@@ -694,7 +694,7 @@ LABEL_27:
       v69[0] = v25;
       v69[1] = v31;
       v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v69 count:2];
-      v33 = [v46 bestMatchUsingImages:v32 scaleFactor:v61 deviceIdiom:v59 deviceSubtype:v60 displayGamut:v56 layoutDirection:v12 sizeClassHorizontal:v62 sizeClassVertical:v13];
+      v33 = [v46 bestMatchUsingImages:v32 scaleFactor:v61 deviceIdiom:v59 deviceSubtype:v60 displayGamut:v56 layoutDirection:horizontalSizeClass sizeClassHorizontal:v62 sizeClassVertical:verticalSizeClass];
 
       if (v33 == v31)
       {
@@ -706,13 +706,13 @@ LABEL_27:
 
     else
     {
-      if ((*&v4->_assetFlags & 2) == 0)
+      if ((*&selfCopy->_assetFlags & 2) == 0)
       {
         goto LABEL_26;
       }
 
-      v30 = [v25 UIImageWithAsset:v4 configuration:v10 flippedHorizontally:0 optionalVectorImage:0];
-      v41 = [(UIImageAsset *)v4 _withLock_updateAssetFromBlockGenerationWithConfiguration:v10 resolvedCatalogImage:v30];
+      v30 = [v25 UIImageWithAsset:selfCopy configuration:v10 flippedHorizontally:0 optionalVectorImage:0];
+      v41 = [(UIImageAsset *)selfCopy _withLock_updateAssetFromBlockGenerationWithConfiguration:v10 resolvedCatalogImage:v30];
       v31 = v64[5];
       v64[5] = v41;
     }
@@ -720,10 +720,10 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  if (v14)
+  if (_assetManager)
   {
-    v16 = [(UIImageAsset *)v4 assetName];
-    v17 = [v15 imageNamed:v16 configuration:v10 cachingOptions:0 attachCatalogImage:0];
+    assetName2 = [(UIImageAsset *)selfCopy assetName];
+    v17 = [v15 imageNamed:assetName2 configuration:v10 cachingOptions:0 attachCatalogImage:0];
     v18 = v64[5];
     v64[5] = v17;
 
@@ -731,23 +731,23 @@ LABEL_27:
     v20 = v64[5];
     if (v19)
     {
-      v21 = [v64[5] configuration];
-      v22 = [v20 _imageWithImageAsset:v4 configuration:v21];
+      configuration2 = [v64[5] configuration];
+      v22 = [v20 _imageWithImageAsset:selfCopy configuration:configuration2];
       v23 = v64[5];
       v64[5] = v22;
     }
 
     else
     {
-      v39 = [v64[5] _imageWithImageAsset:v4];
+      v39 = [v64[5] _imageWithImageAsset:selfCopy];
       v40 = v64[5];
       v64[5] = v39;
     }
   }
 
-  else if ((*&v4->_assetFlags & 2) != 0)
+  else if ((*&selfCopy->_assetFlags & 2) != 0)
   {
-    v34 = [(UIImageAsset *)v4 _withLock_updateAssetFromBlockGenerationWithConfiguration:v10 resolvedCatalogImage:0];
+    v34 = [(UIImageAsset *)selfCopy _withLock_updateAssetFromBlockGenerationWithConfiguration:v10 resolvedCatalogImage:0];
     v35 = v64[5];
     v64[5] = v34;
   }
@@ -823,37 +823,37 @@ LABEL_11:
   v6 = image;
   if (traitCollection)
   {
-    v7 = [(UITraitCollection *)traitCollection imageConfiguration];
+    imageConfiguration = [(UITraitCollection *)traitCollection imageConfiguration];
   }
 
   else
   {
-    v7 = 0;
+    imageConfiguration = 0;
   }
 
-  v8 = v7;
+  v8 = imageConfiguration;
   [(UIImageAsset *)self _registerImage:v6 withConfiguration:v8];
 }
 
-- (void)_unregisterImageWithDescription:(id)a3
+- (void)_unregisterImageWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   os_unfair_lock_lock(&self->_lock);
-  [(UIImageAsset *)self _withLock_unregisterImageWithDescription:v4];
+  [(UIImageAsset *)self _withLock_unregisterImageWithDescription:descriptionCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_withLock_unregisterImageWithDescription:(id)a3
+- (void)_withLock_unregisterImageWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   os_unfair_lock_assert_owner(&self->_lock);
-  v10 = [(UIImageAsset *)self _nameForStoringRuntimeRegisteredImagesInMutableCatalog];
-  v5 = [(UIImageAsset *)self _withLock_mutableCatalog];
-  [v5 removeImageNamed:v10 withDescription:v4];
+  _nameForStoringRuntimeRegisteredImagesInMutableCatalog = [(UIImageAsset *)self _nameForStoringRuntimeRegisteredImagesInMutableCatalog];
+  _withLock_mutableCatalog = [(UIImageAsset *)self _withLock_mutableCatalog];
+  [_withLock_mutableCatalog removeImageNamed:_nameForStoringRuntimeRegisteredImagesInMutableCatalog withDescription:descriptionCopy];
 
-  v6 = [(UIImageAsset *)self _withLock_mutableCatalog];
-  v7 = [v6 imagesWithName:v10];
+  _withLock_mutableCatalog2 = [(UIImageAsset *)self _withLock_mutableCatalog];
+  v7 = [_withLock_mutableCatalog2 imagesWithName:_nameForStoringRuntimeRegisteredImagesInMutableCatalog];
 
   v8 = [v7 count];
   v9 = *&self->_assetFlags & 0xFE;
@@ -867,24 +867,24 @@ LABEL_11:
 
 - (void)unregisterImageWithConfiguration:(UIImageConfiguration *)configuration
 {
-  v5 = [(UIImageConfiguration *)configuration _effectiveTraitCollectionForImageLookup];
-  v4 = [v5 _namedImageDescription];
-  [(UIImageAsset *)self _unregisterImageWithDescription:v4];
+  _effectiveTraitCollectionForImageLookup = [(UIImageConfiguration *)configuration _effectiveTraitCollectionForImageLookup];
+  _namedImageDescription = [_effectiveTraitCollectionForImageLookup _namedImageDescription];
+  [(UIImageAsset *)self _unregisterImageWithDescription:_namedImageDescription];
 }
 
 - (void)unregisterImageWithTraitCollection:(UITraitCollection *)traitCollection
 {
-  v4 = [(UITraitCollection *)traitCollection _namedImageDescription];
-  [(UIImageAsset *)self _unregisterImageWithDescription:v4];
+  _namedImageDescription = [(UITraitCollection *)traitCollection _namedImageDescription];
+  [(UIImageAsset *)self _unregisterImageWithDescription:_namedImageDescription];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[11];
     v7 = self->_assetName;
     v8 = v6;
@@ -917,10 +917,10 @@ LABEL_11:
     {
 
 LABEL_15:
-      v13 = [(UIImageAsset *)self _assetManager];
-      v14 = [v5 _assetManager];
-      v7 = v13;
-      v15 = v14;
+      _assetManager = [(UIImageAsset *)self _assetManager];
+      _assetManager2 = [v5 _assetManager];
+      v7 = _assetManager;
+      v15 = _assetManager2;
       v9 = v15;
       if (v7 == v15)
       {
@@ -964,24 +964,24 @@ LABEL_23:
   return v10;
 }
 
-- (void)_setLayerStack:(id)a3
+- (void)_setLayerStack:(id)stack
 {
-  v5 = a3;
-  if (self->_layerStack != v5)
+  stackCopy = stack;
+  if (self->_layerStack != stackCopy)
   {
-    objc_storeStrong(&self->_layerStack, a3);
-    v6 = [(UIImageAsset *)self _assetManager];
-    if (!v5)
+    objc_storeStrong(&self->_layerStack, stack);
+    _assetManager = [(UIImageAsset *)self _assetManager];
+    if (!stackCopy)
     {
       goto LABEL_7;
     }
 
-    if ([(CUINamedLayerStack *)v5 representsOnDemandContent]&& v6 && (v7 = objc_loadWeakRetained(&self->_unpinObserver), v7, !v7))
+    if ([(CUINamedLayerStack *)stackCopy representsOnDemandContent]&& _assetManager && (v7 = objc_loadWeakRetained(&self->_unpinObserver), v7, !v7))
     {
       objc_initWeak(&location, self);
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
-      v12 = [v6 bundle];
-      v13 = [MEMORY[0x1E696ADC8] mainQueue];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      bundle = [_assetManager bundle];
+      mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
       v14 = *MEMORY[0x1E696B138];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
@@ -989,22 +989,22 @@ LABEL_23:
       v16[3] = &unk_1E710C240;
       objc_copyWeak(&v17, &location);
       v16[4] = self;
-      v15 = [v11 addObserverForName:v14 object:v12 queue:v13 usingBlock:v16];
+      v15 = [defaultCenter addObserverForName:v14 object:bundle queue:mainQueue usingBlock:v16];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(&location);
     }
 
-    else if (([(CUINamedLayerStack *)v5 representsOnDemandContent]& 1) == 0)
+    else if (([(CUINamedLayerStack *)stackCopy representsOnDemandContent]& 1) == 0)
     {
 LABEL_7:
       WeakRetained = objc_loadWeakRetained(&self->_unpinObserver);
 
       if (WeakRetained)
       {
-        v9 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
         v10 = objc_loadWeakRetained(&self->_unpinObserver);
-        [v9 removeObserver:v10];
+        [defaultCenter2 removeObserver:v10];
       }
     }
   }
@@ -1028,51 +1028,51 @@ void __31__UIImageAsset__setLayerStack___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_registerImage:(id)a3 withConfiguration:(id)a4
+- (void)_registerImage:(id)image withConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
+  configurationCopy = configuration;
+  imageCopy = image;
   os_unfair_lock_lock(&self->_lock);
-  [(UIImageAsset *)self _withLock_registerImage:v7 withConfiguration:v6];
+  [(UIImageAsset *)self _withLock_registerImage:imageCopy withConfiguration:configurationCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_withLock_registerImage:(id)a3 withConfiguration:(id)a4
+- (void)_withLock_registerImage:(id)image withConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
+  configurationCopy = configuration;
+  imageCopy = image;
   os_unfair_lock_assert_owner(&self->_lock);
-  [(UIImageAsset *)self _unsafe_registerImage:v7 withConfiguration:v6];
+  [(UIImageAsset *)self _unsafe_registerImage:imageCopy withConfiguration:configurationCopy];
 }
 
-- (void)_unsafe_registerImage:(id)a3 withConfiguration:(id)a4
+- (void)_unsafe_registerImage:(id)image withConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  imageCopy = image;
+  configurationCopy = configuration;
+  if (imageCopy)
   {
-    v8 = [(UIImageAsset *)self _assetManager];
-    v9 = v8;
-    if (v8 && ([v8 _managingUIKitAssets] & 1) != 0)
+    _assetManager = [(UIImageAsset *)self _assetManager];
+    v9 = _assetManager;
+    if (_assetManager && ([_assetManager _managingUIKitAssets] & 1) != 0)
     {
       goto LABEL_24;
     }
 
-    if (dyld_program_sdk_at_least() & 1) != 0 || ([v6 isSymbolImage])
+    if (dyld_program_sdk_at_least() & 1) != 0 || ([imageCopy isSymbolImage])
     {
-      v10 = [v6 content];
-      v11 = [v10 isCGImageOnly];
+      content = [imageCopy content];
+      isCGImageOnly = [content isCGImageOnly];
 
-      if (!v11)
+      if (!isCGImageOnly)
       {
         v29[0] = MEMORY[0x1E69E9820];
         v29[1] = 3221225472;
         v29[2] = __56__UIImageAsset__unsafe_registerImage_withConfiguration___block_invoke_2;
         v29[3] = &unk_1E70F6228;
         v29[4] = self;
-        v30 = v6;
-        v31 = v7;
+        v30 = imageCopy;
+        v31 = configurationCopy;
         os_unfair_lock_lock(&__UIImageAssetRegisterLock);
         __56__UIImageAsset__unsafe_registerImage_withConfiguration___block_invoke_2(v29);
         os_unfair_lock_unlock(&__UIImageAssetRegisterLock);
@@ -1084,27 +1084,27 @@ LABEL_24:
 
     else
     {
-      v12 = [v6 content];
-      v13 = [v12 isCGImage];
+      content2 = [imageCopy content];
+      isCGImage = [content2 isCGImage];
 
-      if ((v13 & 1) == 0)
+      if ((isCGImage & 1) == 0)
       {
         goto LABEL_24;
       }
     }
 
-    v14 = self;
-    v15 = [v7 _effectiveTraitCollectionForImageLookup];
-    v16 = [v15 _namedImageDescription];
+    selfCopy = self;
+    _effectiveTraitCollectionForImageLookup = [configurationCopy _effectiveTraitCollectionForImageLookup];
+    _namedImageDescription = [_effectiveTraitCollectionForImageLookup _namedImageDescription];
 
-    v17 = [v6 renderingMode];
+    renderingMode = [imageCopy renderingMode];
     v18 = 1;
-    if (v17 != 2)
+    if (renderingMode != 2)
     {
       v18 = 2;
     }
 
-    if (v17 == 1)
+    if (renderingMode == 1)
     {
       v19 = 0;
     }
@@ -1114,42 +1114,42 @@ LABEL_24:
       v19 = v18;
     }
 
-    [v16 setTemplateRenderingMode:v19];
-    [v6 alignmentRectInsets];
-    [v16 setAlignmentEdgeInsets:?];
-    [v16 setResizingMode:{objc_msgSend(v6, "resizingMode") != 0}];
-    [v6 capInsets];
+    [_namedImageDescription setTemplateRenderingMode:v19];
+    [imageCopy alignmentRectInsets];
+    [_namedImageDescription setAlignmentEdgeInsets:?];
+    [_namedImageDescription setResizingMode:{objc_msgSend(imageCopy, "resizingMode") != 0}];
+    [imageCopy capInsets];
     if (v23 == 0.0 && v20 == 0.0 && v22 == 0.0 && v21 == 0.0)
     {
-      [v16 setImageType:0];
+      [_namedImageDescription setImageType:0];
     }
 
     else
     {
-      [v16 setImageType:3];
-      [v6 capInsets];
-      [v16 setEdgeInsets:?];
+      [_namedImageDescription setImageType:3];
+      [imageCopy capInsets];
+      [_namedImageDescription setEdgeInsets:?];
     }
 
-    v24 = [v6 imageOrientation];
-    if (v24 >= 8)
+    imageOrientation = [imageCopy imageOrientation];
+    if (imageOrientation >= 8)
     {
       v25 = 0;
     }
 
     else
     {
-      v25 = (0x75426831u >> (4 * v24)) & 0xF;
+      v25 = (0x75426831u >> (4 * imageOrientation)) & 0xF;
     }
 
-    [v16 setExifOrientation:v25];
-    v26 = [(UIImageAsset *)v14 _unsafe_mutableCatalog];
-    v27 = [v6 CGImage];
-    v28 = [(UIImageAsset *)v14 _nameForStoringRuntimeRegisteredImagesInMutableCatalog];
-    [v26 insertCGImage:v27 withName:v28 andDescription:v16];
+    [_namedImageDescription setExifOrientation:v25];
+    _unsafe_mutableCatalog = [(UIImageAsset *)selfCopy _unsafe_mutableCatalog];
+    cGImage = [imageCopy CGImage];
+    _nameForStoringRuntimeRegisteredImagesInMutableCatalog = [(UIImageAsset *)selfCopy _nameForStoringRuntimeRegisteredImagesInMutableCatalog];
+    [_unsafe_mutableCatalog insertCGImage:cGImage withName:_nameForStoringRuntimeRegisteredImagesInMutableCatalog andDescription:_namedImageDescription];
 
-    *&v14->_assetFlags |= 1u;
-    [v6 _setImageAsset:v14];
+    *&selfCopy->_assetFlags |= 1u;
+    [imageCopy _setImageAsset:selfCopy];
 
     goto LABEL_24;
   }
@@ -1172,40 +1172,40 @@ void __56__UIImageAsset__unsafe_registerImage_withConfiguration___block_invoke_2
   *(*(a1 + 32) + 32) |= 1u;
 }
 
-- (id)_withLock_updateAssetFromBlockGenerationWithConfiguration:(id)a3 resolvedCatalogImage:(id)a4
+- (id)_withLock_updateAssetFromBlockGenerationWithConfiguration:(id)configuration resolvedCatalogImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  imageCopy = image;
   os_unfair_lock_assert_owner(&self->_lock);
-  v8 = [(UIImageAsset *)self creationBlock];
+  creationBlock = [(UIImageAsset *)self creationBlock];
 
-  if (v8)
+  if (creationBlock)
   {
-    v9 = [(UIImageAsset *)self creationBlock];
-    v10 = (v9)[2](v9, self, v6, v7);
+    creationBlock2 = [(UIImageAsset *)self creationBlock];
+    v10 = (creationBlock2)[2](creationBlock2, self, configurationCopy, imageCopy);
     v11 = v10;
-    v12 = v10 ? v10 : v7;
-    v8 = v12;
+    v12 = v10 ? v10 : imageCopy;
+    creationBlock = v12;
 
-    if (v8 != v7)
+    if (creationBlock != imageCopy)
     {
-      v13 = [v8 _primitiveImageAsset];
+      _primitiveImageAsset = [creationBlock _primitiveImageAsset];
 
-      if (!v13)
+      if (!_primitiveImageAsset)
       {
-        v14 = [v8 _imageWithImageAsset:self configuration:v6];
+        v14 = [creationBlock _imageWithImageAsset:self configuration:configurationCopy];
 
-        v8 = v14;
+        creationBlock = v14;
       }
 
       if ((*&self->_assetFlags & 4) == 0)
       {
-        [(UIImageAsset *)self _withLock_registerImage:v8 withConfiguration:v6];
+        [(UIImageAsset *)self _withLock_registerImage:creationBlock withConfiguration:configurationCopy];
       }
     }
   }
 
-  return v8;
+  return creationBlock;
 }
 
 - (void)_disconnectFromAssetManager
@@ -1215,30 +1215,30 @@ void __56__UIImageAsset__unsafe_registerImage_withConfiguration___block_invoke_2
   self->_strongAssetManager = 0;
 }
 
-- (id)_withLock_lookUpRegisteredObjectForTraitCollection:(id)a3 withAccessorWithAppearanceName:(id)a4
+- (id)_withLock_lookUpRegisteredObjectForTraitCollection:(id)collection withAccessorWithAppearanceName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  nameCopy = name;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (v6)
+  if (collectionCopy)
   {
-    [(UIImageAsset *)self _performLookUpRegisteredObjectForTraitCollection:v6 withAccessorWithAppearanceName:v7];
+    [(UIImageAsset *)self _performLookUpRegisteredObjectForTraitCollection:collectionCopy withAccessorWithAppearanceName:nameCopy];
   }
 
   else
   {
-    v7[2](v7, 0);
+    nameCopy[2](nameCopy, 0);
   }
   v8 = ;
 
   return v8;
 }
 
-- (id)_performLookUpRegisteredObjectForTraitCollection:(id)a3 withAccessorWithAppearanceName:(id)a4
+- (id)_performLookUpRegisteredObjectForTraitCollection:(id)collection withAccessorWithAppearanceName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIImageAsset *)self _withLock_registeredAppearanceNames];
+  collectionCopy = collection;
+  nameCopy = name;
+  _withLock_registeredAppearanceNames = [(UIImageAsset *)self _withLock_registeredAppearanceNames];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1249,12 +1249,12 @@ void __56__UIImageAsset__unsafe_registerImage_withConfiguration___block_invoke_2
   v13[1] = 3221225472;
   v13[2] = __96__UIImageAsset__performLookUpRegisteredObjectForTraitCollection_withAccessorWithAppearanceName___block_invoke;
   v13[3] = &unk_1E710C268;
-  v9 = v8;
+  v9 = _withLock_registeredAppearanceNames;
   v14 = v9;
   v16 = &v17;
-  v10 = v7;
+  v10 = nameCopy;
   v15 = v10;
-  [(UITraitCollection *)v6 _enumerateThemeAppearanceNamesForLookup:v13];
+  [(UITraitCollection *)collectionCopy _enumerateThemeAppearanceNamesForLookup:v13];
   v11 = v18[5];
 
   _Block_object_dispose(&v17, 8);
@@ -1281,11 +1281,11 @@ void __96__UIImageAsset__performLookUpRegisteredObjectForTraitCollection_withAcc
 
 - (BOOL)_canProvideCatalogData
 {
-  v3 = [(UIImageAsset *)self _assetManager];
-  if (v3)
+  _assetManager = [(UIImageAsset *)self _assetManager];
+  if (_assetManager)
   {
-    v4 = [(UIImageAsset *)self assetName];
-    v5 = [v4 length] != 0;
+    assetName = [(UIImageAsset *)self assetName];
+    v5 = [assetName length] != 0;
   }
 
   else
@@ -1299,20 +1299,20 @@ void __96__UIImageAsset__performLookUpRegisteredObjectForTraitCollection_withAcc
 - (id)_catalogData
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(UIImageAsset *)self _withLock_catalogData];
+  _withLock_catalogData = [(UIImageAsset *)self _withLock_catalogData];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _withLock_catalogData;
 }
 
 - (id)_withLock_catalogData
 {
-  v2 = self;
-  v3 = [(UIImageAsset *)v2 _assetManager];
-  if (v3)
+  selfCopy = self;
+  _assetManager = [(UIImageAsset *)selfCopy _assetManager];
+  if (_assetManager)
   {
-    v4 = [(UIImageAsset *)v2 assetName];
-    v5 = [v3 _catalogDataForSymbolImageNamed:v4];
+    assetName = [(UIImageAsset *)selfCopy assetName];
+    v5 = [_assetManager _catalogDataForSymbolImageNamed:assetName];
   }
 
   else
@@ -1323,9 +1323,9 @@ void __96__UIImageAsset__performLookUpRegisteredObjectForTraitCollection_withAcc
   return v5;
 }
 
-- (id)_renditionCache:(BOOL)a3
+- (id)_renditionCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   if (pthread_main_np() != 1)
   {
     if (os_variant_has_internal_diagnostics())
@@ -1357,7 +1357,7 @@ void __96__UIImageAsset__performLookUpRegisteredObjectForTraitCollection_withAcc
 
   else
   {
-    v6 = !v3;
+    v6 = !cacheCopy;
   }
 
   if (!v6)
@@ -1369,19 +1369,19 @@ void __96__UIImageAsset__performLookUpRegisteredObjectForTraitCollection_withAcc
   return v5;
 }
 
-- (void)_cacheRendition:(id)a3 forKey:(id)a4
+- (void)_cacheRendition:(id)rendition forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  renditionCopy = rendition;
   v8 = [(UIImageAsset *)self _renditionCache:1];
-  [v8 setObject:v7 forKey:v6];
+  [v8 setObject:renditionCopy forKey:keyCopy];
 }
 
-- (id)_cachedRenditionForKey:(id)a3
+- (id)_cachedRenditionForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(UIImageAsset *)self _renditionCache:0];
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:keyCopy];
 
   return v6;
 }

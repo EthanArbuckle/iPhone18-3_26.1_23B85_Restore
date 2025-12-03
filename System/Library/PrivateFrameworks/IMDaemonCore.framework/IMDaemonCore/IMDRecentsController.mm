@@ -1,12 +1,12 @@
 @interface IMDRecentsController
 + (IMDRecentsController)sharedInstance;
-- (BOOL)hasRecentMessageFrom:(id)a3;
-- (BOOL)hasRecentlyMessaged:(id)a3;
+- (BOOL)hasRecentMessageFrom:(id)from;
+- (BOOL)hasRecentlyMessaged:(id)messaged;
 - (void)__pruneTypingContexts;
 - (void)_setTimerForPruningTypingContext;
-- (void)noteRecentMessageForPeople:(id)a3;
-- (void)noteRecentMessageFromChatID:(id)a3;
-- (void)updateLatestActiveDestination:(id)a3 ForHandle:(id)a4 incomingType:(unsigned __int8)a5;
+- (void)noteRecentMessageForPeople:(id)people;
+- (void)noteRecentMessageFromChatID:(id)d;
+- (void)updateLatestActiveDestination:(id)destination ForHandle:(id)handle incomingType:(unsigned __int8)type;
 @end
 
 @implementation IMDRecentsController
@@ -99,9 +99,9 @@
   _Block_object_dispose(&v16, 8);
 }
 
-- (BOOL)hasRecentMessageFrom:(id)a3
+- (BOOL)hasRecentMessageFrom:(id)from
 {
-  if (!a3)
+  if (!from)
   {
     return 0;
   }
@@ -113,12 +113,12 @@
   return v5;
 }
 
-- (void)noteRecentMessageFromChatID:(id)a3
+- (void)noteRecentMessageFromChatID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v8 = v4;
+    v8 = dCopy;
     if (!self->_incomingMessagesTypingContext)
     {
       Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
@@ -132,21 +132,21 @@
       [(NSMutableDictionary *)self->_incomingMessagesTypingContext setObject:v7 forKey:v8];
     }
 
-    v4 = v8;
+    dCopy = v8;
   }
 }
 
-- (BOOL)hasRecentlyMessaged:(id)a3
+- (BOOL)hasRecentlyMessaged:(id)messaged
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  messagedCopy = messaged;
+  if ([messagedCopy count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v4;
+    v5 = messagedCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -194,11 +194,11 @@ LABEL_14:
   return v12;
 }
 
-- (void)noteRecentMessageForPeople:(id)a3
+- (void)noteRecentMessageForPeople:(id)people
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  peopleCopy = people;
+  if ([peopleCopy count])
   {
     if (!self->_typingContext)
     {
@@ -214,7 +214,7 @@ LABEL_14:
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v8 = v4;
+      v8 = peopleCopy;
       v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v9)
       {
@@ -247,18 +247,18 @@ LABEL_14:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateLatestActiveDestination:(id)a3 ForHandle:(id)a4 incomingType:(unsigned __int8)a5
+- (void)updateLatestActiveDestination:(id)destination ForHandle:(id)handle incomingType:(unsigned __int8)type
 {
-  v5 = a5;
-  v19 = a3;
-  v8 = a4;
-  if (v19 && v8)
+  typeCopy = type;
+  destinationCopy = destination;
+  handleCopy = handle;
+  if (destinationCopy && handleCopy)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEAA8]);
     v10 = v9;
     if (v9)
     {
-      if (v5 == 1)
+      if (typeCopy == 1)
       {
         v11 = v9;
       }
@@ -269,13 +269,13 @@ LABEL_14:
       }
 
       v12 = v11;
-      v13 = [[IMDMessageActiveDevice alloc] initWithIDSDestination:v19 latestDate:v10 latestReadReceiptDate:v12 hasReceivedReadReceipt:v5 == 1];
-      v14 = [(NSMutableDictionary *)self->_activeDeviceForHandle objectForKey:v8];
+      v13 = [[IMDMessageActiveDevice alloc] initWithIDSDestination:destinationCopy latestDate:v10 latestReadReceiptDate:v12 hasReceivedReadReceipt:typeCopy == 1];
+      v14 = [(NSMutableDictionary *)self->_activeDeviceForHandle objectForKey:handleCopy];
       v15 = v14;
       if (v14 && [v14 isEqual:v13])
       {
         [v15 setLatestActiveDate:v10];
-        if (v5 == 1)
+        if (typeCopy == 1)
         {
           [v15 setHasReceivedReadReceipt:1];
           [v15 setLatestReadReceipt:v10];
@@ -294,7 +294,7 @@ LABEL_14:
           activeDeviceForHandle = self->_activeDeviceForHandle;
         }
 
-        [(NSMutableDictionary *)activeDeviceForHandle setObject:v13 forKey:v8];
+        [(NSMutableDictionary *)activeDeviceForHandle setObject:v13 forKey:handleCopy];
       }
     }
   }

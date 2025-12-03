@@ -1,15 +1,15 @@
 @interface APSettings
 + (NSMapTable)mapTable;
 + (id)settings;
-+ (id)storageWithDefaultValues:(id)a3;
++ (id)storageWithDefaultValues:(id)values;
 - (APSettings)init;
 - (id)_gatherSubclassProperties;
-- (id)_namespacedKey:(id)a3;
-- (id)_propertyNameFromSetSelectorString:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (id)_namespacedKey:(id)key;
+- (id)_propertyNameFromSetSelectorString:(id)string;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)valueForUndefinedKey:(id)key;
+- (void)forwardInvocation:(id)invocation;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 - (void)synchronize;
 @end
 
@@ -19,7 +19,7 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v8 = objc_msgSend_mapTable(a1, v5, v6, v7);
+  v8 = objc_msgSend_mapTable(self, v5, v6, v7);
   objc_sync_enter(v8);
   v11 = objc_msgSend_objectForKey_(v8, v9, v4, v10);
   if (!v11)
@@ -101,11 +101,11 @@
   return v2;
 }
 
-+ (id)storageWithDefaultValues:(id)a3
++ (id)storageWithDefaultValues:(id)values
 {
-  v3 = a3;
+  valuesCopy = values;
   v4 = [APSettingsStorageFile alloc];
-  v7 = objc_msgSend_initWithDefaultValues_(v4, v5, v3, v6);
+  v7 = objc_msgSend_initWithDefaultValues_(v4, v5, valuesCopy, v6);
 
   return v7;
 }
@@ -116,25 +116,25 @@
   objc_msgSend_synchronize(v7, v4, v5, v6);
 }
 
-- (id)_namespacedKey:(id)a3
+- (id)_namespacedKey:(id)key
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v9 = objc_msgSend_stringWithFormat_(v3, v7, @"%@%@%@", v8, v6, @".", v4);
+  v9 = objc_msgSend_stringWithFormat_(v3, v7, @"%@%@%@", v8, v6, @".", keyCopy);
 
   return v9;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v8 = objc_msgSend__gatherSubclassProperties(self, v5, v6, v7);
-  if (objc_msgSend_containsObject_(v8, v9, v4, v10))
+  if (objc_msgSend_containsObject_(v8, v9, keyCopy, v10))
   {
     v14 = objc_msgSend_storage(self, v11, v12, v13);
-    v17 = objc_msgSend__namespacedKey_(self, v15, v4, v16);
+    v17 = objc_msgSend__namespacedKey_(self, v15, keyCopy, v16);
     v20 = objc_msgSend_valueForKey_(v14, v18, v17, v19);
   }
 
@@ -146,22 +146,22 @@
   return v20;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v21 = a3;
-  v6 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v10 = objc_msgSend__gatherSubclassProperties(self, v7, v8, v9);
-  if (objc_msgSend_containsObject_(v10, v11, v6, v12))
+  if (objc_msgSend_containsObject_(v10, v11, keyCopy, v12))
   {
     v16 = objc_msgSend_storage(self, v13, v14, v15);
-    v19 = objc_msgSend__namespacedKey_(self, v17, v6, v18);
-    objc_msgSend_setValue_forKey_(v16, v20, v21, v19);
+    v19 = objc_msgSend__namespacedKey_(self, v17, keyCopy, v18);
+    objc_msgSend_setValue_forKey_(v16, v20, valueCopy, v19);
   }
 }
 
-- (id)_propertyNameFromSetSelectorString:(id)a3
+- (id)_propertyNameFromSetSelectorString:(id)string
 {
-  v4 = objc_msgSend_substringFromIndex_(a3, a2, 3, v3);
+  v4 = objc_msgSend_substringFromIndex_(string, a2, 3, v3);
   v8 = objc_msgSend_length(v4, v5, v6, v7);
   v11 = objc_msgSend_substringToIndex_(v4, v9, v8 - 1, v10);
 
@@ -173,16 +173,16 @@
   return v24;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v8 = objc_msgSend_selector(v4, v5, v6, v7);
+  invocationCopy = invocation;
+  v8 = objc_msgSend_selector(invocationCopy, v5, v6, v7);
   v9 = NSStringFromSelector(v8);
   if (objc_msgSend_hasPrefix_(v9, v10, @"set", v11))
   {
     v14 = objc_msgSend__propertyNameFromSetSelectorString_(self, v12, v9, v13);
     v22 = 0;
-    objc_msgSend_getArgument_atIndex_(v4, v15, &v22, 2);
+    objc_msgSend_getArgument_atIndex_(invocationCopy, v15, &v22, 2);
 
     objc_msgSend_setValue_forUndefinedKey_(self, v16, v22, v14);
   }
@@ -190,14 +190,14 @@
   else
   {
     v22 = objc_msgSend_valueForUndefinedKey_(self, v12, v9, v13);
-    objc_msgSend_retainArguments(v4, v17, v18, v19);
-    objc_msgSend_setReturnValue_(v4, v20, &v22, v21);
+    objc_msgSend_retainArguments(invocationCopy, v17, v18, v19);
+    objc_msgSend_setReturnValue_(invocationCopy, v20, &v22, v21);
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v5 = NSStringFromSelector(a3);
+  v5 = NSStringFromSelector(selector);
   v9 = objc_msgSend__gatherSubclassProperties(self, v6, v7, v8);
   if (objc_msgSend_hasPrefix_(v5, v10, @"set", v11))
   {
@@ -217,7 +217,7 @@
 LABEL_7:
     v24.receiver = self;
     v24.super_class = APSettings;
-    v22 = [(APSettings *)&v24 methodSignatureForSelector:a3];
+    v22 = [(APSettings *)&v24 methodSignatureForSelector:selector];
     goto LABEL_8;
   }
 

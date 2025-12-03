@@ -1,43 +1,43 @@
 @interface STCustomizeDailyScheduleListController
-- (STCustomizeDailyScheduleListController)initWithDailySchedule:(id)a3 weekdayIndex:(unint64_t)a4 weekdayName:(id)a5 minimumStartTime:(id)a6;
+- (STCustomizeDailyScheduleListController)initWithDailySchedule:(id)schedule weekdayIndex:(unint64_t)index weekdayName:(id)name minimumStartTime:(id)time;
 - (STCustomizeDailyScheduleListControllerDelegate)delegate;
-- (id)_endTime:(id)a3;
-- (id)_getWeekdayEnabled:(id)a3;
-- (id)_startTime:(id)a3;
-- (id)datePickerForSpecifier:(id)a3;
+- (id)_endTime:(id)time;
+- (id)_getWeekdayEnabled:(id)enabled;
+- (id)_startTime:(id)time;
+- (id)datePickerForSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)_setWeekdayEnabled:(id)a3 specifier:(id)a4;
-- (void)_updateTimeSpecifierDetailTextLabelColors:(BOOL)a3 selectedSpecifier:(id)a4 unselectedSpecifier:(id)a5;
-- (void)cancelButtonTapped:(id)a3;
-- (void)datePickerChanged:(id)a3;
-- (void)doneButtonTapped:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_setWeekdayEnabled:(id)enabled specifier:(id)specifier;
+- (void)_updateTimeSpecifierDetailTextLabelColors:(BOOL)colors selectedSpecifier:(id)specifier unselectedSpecifier:(id)unselectedSpecifier;
+- (void)cancelButtonTapped:(id)tapped;
+- (void)datePickerChanged:(id)changed;
+- (void)doneButtonTapped:(id)tapped;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation STCustomizeDailyScheduleListController
 
-- (STCustomizeDailyScheduleListController)initWithDailySchedule:(id)a3 weekdayIndex:(unint64_t)a4 weekdayName:(id)a5 minimumStartTime:(id)a6
+- (STCustomizeDailyScheduleListController)initWithDailySchedule:(id)schedule weekdayIndex:(unint64_t)index weekdayName:(id)name minimumStartTime:(id)time
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  scheduleCopy = schedule;
+  nameCopy = name;
+  timeCopy = time;
   v52.receiver = self;
   v52.super_class = STCustomizeDailyScheduleListController;
   v13 = [(STCustomizeDailyScheduleListController *)&v52 init];
   v14 = v13;
   if (v13)
   {
-    [(STCustomizeDailyScheduleListController *)v13 setTitle:v11];
-    v15 = [(STCustomizeDailyScheduleListController *)v14 navigationItem];
+    [(STCustomizeDailyScheduleListController *)v13 setTitle:nameCopy];
+    navigationItem = [(STCustomizeDailyScheduleListController *)v14 navigationItem];
     v16 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v14 action:sel_cancelButtonTapped_];
-    [v15 setLeftBarButtonItem:v16];
+    [navigationItem setLeftBarButtonItem:v16];
 
-    v49 = v15;
+    v49 = navigationItem;
     if (_UISolariumEnabled())
     {
       v17 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v14 action:sel_doneButtonTapped_];
-      [v15 setRightBarButtonItem:v17];
+      [navigationItem setRightBarButtonItem:v17];
     }
 
     else
@@ -46,26 +46,26 @@
       v17 = [v18 localizedStringForKey:@"DeviceDowntimeScheduleDoneBarButtonItemTitle" value:&stru_28766E5A8 table:0];
 
       v19 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v17 style:2 target:v14 action:sel_doneButtonTapped_];
-      [v15 setRightBarButtonItem:v19];
+      [navigationItem setRightBarButtonItem:v19];
     }
 
-    v14->_weekdayEnabled = v10 != 0;
-    v20 = [v10 copy];
+    v14->_weekdayEnabled = scheduleCopy != 0;
+    v20 = [scheduleCopy copy];
     dailySchedule = v14->_dailySchedule;
     v14->_dailySchedule = v20;
 
-    v14->_weekdayIndex = a4;
-    v22 = [v12 copy];
+    v14->_weekdayIndex = index;
+    v22 = [timeCopy copy];
     minimumStartTime = v14->_minimumStartTime;
     v14->_minimumStartTime = v22;
 
-    v50 = v12;
-    v24 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
+    v50 = timeCopy;
+    st_emptyGroupSpecifier = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
     dailyScheduleGroupSpecifier = v14->_dailyScheduleGroupSpecifier;
-    v14->_dailyScheduleGroupSpecifier = v24;
+    v14->_dailyScheduleGroupSpecifier = st_emptyGroupSpecifier;
 
     v26 = +[STScreenTimeSettingsUIBundle bundle];
-    v51 = v10;
+    v51 = scheduleCopy;
     v27 = [v26 localizedStringForKey:@"DeviceDowntimeFromSpecifierName" value:&stru_28766E5A8 table:0];
     v28 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v27 target:v14 set:0 get:sel__startTime_ detail:0 cell:4 edit:0];
     startTimeSpecifier = v14->_startTimeSpecifier;
@@ -76,8 +76,8 @@
     v14->_startTimePickerSpecifier = v30;
 
     v32 = objc_opt_new();
-    v33 = [v32 UUIDString];
-    [(PSSpecifier *)v14->_startTimePickerSpecifier setIdentifier:v33];
+    uUIDString = [v32 UUIDString];
+    [(PSSpecifier *)v14->_startTimePickerSpecifier setIdentifier:uUIDString];
 
     v34 = MEMORY[0x277CCABB0];
     [MEMORY[0x277D3F9E0] preferredHeight];
@@ -98,23 +98,23 @@
     v14->_endTimePickerSpecifier = v42;
 
     v44 = objc_opt_new();
-    v45 = [v44 UUIDString];
-    [(PSSpecifier *)v14->_endTimePickerSpecifier setIdentifier:v45];
+    uUIDString2 = [v44 UUIDString];
+    [(PSSpecifier *)v14->_endTimePickerSpecifier setIdentifier:uUIDString2];
 
-    v10 = v51;
+    scheduleCopy = v51;
     v46 = MEMORY[0x277CCABB0];
     [MEMORY[0x277D3F9E0] preferredHeight];
     v47 = [v46 numberWithDouble:?];
     [(PSSpecifier *)v14->_endTimePickerSpecifier setObject:v47 forKeyedSubscript:v36];
 
-    v12 = v50;
+    timeCopy = v50;
     [(PSSpecifier *)v14->_endTimePickerSpecifier setObject:objc_opt_class() forKeyedSubscript:v38];
   }
 
   return v14;
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
   v4 = +[STUILog persistence];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -123,28 +123,28 @@
     _os_log_impl(&dword_264BA2000, v4, OS_LOG_TYPE_INFO, "User saved edited custom Downtime schedule", v8, 2u);
   }
 
-  v5 = [(STCustomizeDailyScheduleListController *)self delegate];
+  delegate = [(STCustomizeDailyScheduleListController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(STCustomizeDailyScheduleListController *)self isWeekdayEnabled];
-    if (v6)
+    isWeekdayEnabled = [(STCustomizeDailyScheduleListController *)self isWeekdayEnabled];
+    if (isWeekdayEnabled)
     {
-      v7 = [(STCustomizeDailyScheduleListController *)self dailySchedule];
+      dailySchedule = [(STCustomizeDailyScheduleListController *)self dailySchedule];
     }
 
     else
     {
-      v7 = 0;
+      dailySchedule = 0;
     }
 
-    [v5 customizeDailyScheduleListController:self didSaveDailySchedule:v7 forWeekdayIndex:{-[STCustomizeDailyScheduleListController weekdayIndex](self, "weekdayIndex")}];
-    if (v6)
+    [delegate customizeDailyScheduleListController:self didSaveDailySchedule:dailySchedule forWeekdayIndex:{-[STCustomizeDailyScheduleListController weekdayIndex](self, "weekdayIndex")}];
+    if (isWeekdayEnabled)
     {
     }
   }
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   v4 = +[STUILog persistence];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -153,10 +153,10 @@
     _os_log_impl(&dword_264BA2000, v4, OS_LOG_TYPE_INFO, "User cancelled editing custom Downtime schedule", v6, 2u);
   }
 
-  v5 = [(STCustomizeDailyScheduleListController *)self delegate];
+  delegate = [(STCustomizeDailyScheduleListController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 customizeDailyScheduleListControllerDidCancel:self];
+    [delegate customizeDailyScheduleListControllerDidCancel:self];
   }
 }
 
@@ -166,25 +166,25 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
+    st_emptyGroupSpecifier = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
     v6 = MEMORY[0x277D3FAD8];
-    v7 = [(STCustomizeDailyScheduleListController *)self title];
-    v8 = [v6 preferenceSpecifierNamed:v7 target:self set:sel__setWeekdayEnabled_specifier_ get:sel__getWeekdayEnabled_ detail:0 cell:6 edit:0];
+    title = [(STCustomizeDailyScheduleListController *)self title];
+    v8 = [v6 preferenceSpecifierNamed:title target:self set:sel__setWeekdayEnabled_specifier_ get:sel__getWeekdayEnabled_ detail:0 cell:6 edit:0];
 
-    v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v5, v8, 0}];
+    v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{st_emptyGroupSpecifier, v8, 0}];
     if ([(STCustomizeDailyScheduleListController *)self isWeekdayEnabled])
     {
-      v10 = [(STCustomizeDailyScheduleListController *)self dailyScheduleGroupSpecifier];
-      [v9 addObject:v10];
+      dailyScheduleGroupSpecifier = [(STCustomizeDailyScheduleListController *)self dailyScheduleGroupSpecifier];
+      [v9 addObject:dailyScheduleGroupSpecifier];
 
-      v11 = [(STCustomizeDailyScheduleListController *)self startTimeSpecifier];
-      [v9 addObject:v11];
+      startTimeSpecifier = [(STCustomizeDailyScheduleListController *)self startTimeSpecifier];
+      [v9 addObject:startTimeSpecifier];
 
-      v12 = [(STCustomizeDailyScheduleListController *)self startTimePickerSpecifier];
-      [v9 addObject:v12];
+      startTimePickerSpecifier = [(STCustomizeDailyScheduleListController *)self startTimePickerSpecifier];
+      [v9 addObject:startTimePickerSpecifier];
 
-      v13 = [(STCustomizeDailyScheduleListController *)self endTimeSpecifier];
-      [v9 addObject:v13];
+      endTimeSpecifier = [(STCustomizeDailyScheduleListController *)self endTimeSpecifier];
+      [v9 addObject:endTimeSpecifier];
     }
 
     v14 = *(&self->super.super.super.super.super.isa + v3);
@@ -196,57 +196,57 @@
   return v4;
 }
 
-- (id)_getWeekdayEnabled:(id)a3
+- (id)_getWeekdayEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(STCustomizeDailyScheduleListController *)self isWeekdayEnabled];
+  isWeekdayEnabled = [(STCustomizeDailyScheduleListController *)self isWeekdayEnabled];
 
-  return [v3 numberWithBool:v4];
+  return [v3 numberWithBool:isWeekdayEnabled];
 }
 
-- (void)_setWeekdayEnabled:(id)a3 specifier:(id)a4
+- (void)_setWeekdayEnabled:(id)enabled specifier:(id)specifier
 {
   v26[4] = *MEMORY[0x277D85DE8];
-  v5 = [a3 BOOLValue];
-  [(STCustomizeDailyScheduleListController *)self setWeekdayEnabled:v5];
-  if (v5)
+  bOOLValue = [enabled BOOLValue];
+  [(STCustomizeDailyScheduleListController *)self setWeekdayEnabled:bOOLValue];
+  if (bOOLValue)
   {
-    v6 = [(STCustomizeDailyScheduleListController *)self dailySchedule];
+    dailySchedule = [(STCustomizeDailyScheduleListController *)self dailySchedule];
 
-    if (!v6)
+    if (!dailySchedule)
     {
       v7 = objc_opt_new();
       v8 = +[STDeviceBedtime defaultBedtimeSchedule];
-      v9 = [v8 startTime];
-      v10 = [(STCustomizeDailyScheduleListController *)self minimumStartTime];
-      if (v10 && STCompareHourMinuteTimeComponents() == 1)
+      startTime = [v8 startTime];
+      minimumStartTime = [(STCustomizeDailyScheduleListController *)self minimumStartTime];
+      if (minimumStartTime && STCompareHourMinuteTimeComponents() == 1)
       {
         v11 = v7;
-        v12 = v10;
+        v12 = minimumStartTime;
       }
 
       else
       {
         v11 = v7;
-        v12 = v9;
+        v12 = startTime;
       }
 
       [v11 setStartTime:v12];
-      v19 = [v8 endTime];
-      [v7 setEndTime:v19];
+      endTime = [v8 endTime];
+      [v7 setEndTime:endTime];
 
       [v7 setDay:{-[STCustomizeDailyScheduleListController weekdayIndex](self, "weekdayIndex")}];
       [(STCustomizeDailyScheduleListController *)self setDailySchedule:v7];
     }
 
-    v20 = [(STCustomizeDailyScheduleListController *)self dailyScheduleGroupSpecifier];
-    v26[0] = v20;
-    v21 = [(STCustomizeDailyScheduleListController *)self startTimeSpecifier];
-    v26[1] = v21;
-    v22 = [(STCustomizeDailyScheduleListController *)self startTimePickerSpecifier];
-    v26[2] = v22;
-    v23 = [(STCustomizeDailyScheduleListController *)self endTimeSpecifier];
-    v26[3] = v23;
+    dailyScheduleGroupSpecifier = [(STCustomizeDailyScheduleListController *)self dailyScheduleGroupSpecifier];
+    v26[0] = dailyScheduleGroupSpecifier;
+    startTimeSpecifier = [(STCustomizeDailyScheduleListController *)self startTimeSpecifier];
+    v26[1] = startTimeSpecifier;
+    startTimePickerSpecifier = [(STCustomizeDailyScheduleListController *)self startTimePickerSpecifier];
+    v26[2] = startTimePickerSpecifier;
+    endTimeSpecifier = [(STCustomizeDailyScheduleListController *)self endTimeSpecifier];
+    v26[3] = endTimeSpecifier;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:4];
 
     [(STCustomizeDailyScheduleListController *)self addSpecifiersFromArray:v24 animated:1];
@@ -255,42 +255,42 @@
   else
   {
     v13 = objc_alloc(MEMORY[0x277CBEB18]);
-    v14 = [(STCustomizeDailyScheduleListController *)self dailyScheduleGroupSpecifier];
-    v15 = [(STCustomizeDailyScheduleListController *)self startTimeSpecifier];
-    v25 = [v13 initWithObjects:{v14, v15, 0}];
+    dailyScheduleGroupSpecifier2 = [(STCustomizeDailyScheduleListController *)self dailyScheduleGroupSpecifier];
+    startTimeSpecifier2 = [(STCustomizeDailyScheduleListController *)self startTimeSpecifier];
+    v25 = [v13 initWithObjects:{dailyScheduleGroupSpecifier2, startTimeSpecifier2, 0}];
 
-    v16 = [(STCustomizeDailyScheduleListController *)self startTimePickerSpecifier];
-    if ([(STCustomizeDailyScheduleListController *)self containsSpecifier:v16])
+    startTimePickerSpecifier2 = [(STCustomizeDailyScheduleListController *)self startTimePickerSpecifier];
+    if ([(STCustomizeDailyScheduleListController *)self containsSpecifier:startTimePickerSpecifier2])
     {
-      [v25 addObject:v16];
+      [v25 addObject:startTimePickerSpecifier2];
     }
 
-    v17 = [(STCustomizeDailyScheduleListController *)self endTimeSpecifier];
-    [v25 addObject:v17];
+    endTimeSpecifier2 = [(STCustomizeDailyScheduleListController *)self endTimeSpecifier];
+    [v25 addObject:endTimeSpecifier2];
 
-    v18 = [(STCustomizeDailyScheduleListController *)self endTimePickerSpecifier];
-    if ([(STCustomizeDailyScheduleListController *)self containsSpecifier:v18])
+    endTimePickerSpecifier = [(STCustomizeDailyScheduleListController *)self endTimePickerSpecifier];
+    if ([(STCustomizeDailyScheduleListController *)self containsSpecifier:endTimePickerSpecifier])
     {
-      [v25 addObject:v18];
+      [v25 addObject:endTimePickerSpecifier];
     }
 
     [(STCustomizeDailyScheduleListController *)self removeContiguousSpecifiers:v25 animated:1];
   }
 }
 
-- (id)_startTime:(id)a3
+- (id)_startTime:(id)time
 {
-  v3 = [(STCustomizeDailyScheduleListController *)self dailySchedule];
-  v4 = v3;
-  if (v3)
+  dailySchedule = [(STCustomizeDailyScheduleListController *)self dailySchedule];
+  v4 = dailySchedule;
+  if (dailySchedule)
   {
-    v5 = [v3 startTime];
-    v6 = [v5 copy];
+    startTime = [dailySchedule startTime];
+    v6 = [startTime copy];
 
     [v6 setWeekday:{objc_msgSend(v4, "day") + 1}];
-    v7 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v8 = objc_opt_new();
-    v9 = [v7 nextDateAfterDate:v8 matchingComponents:v6 options:1024];
+    v9 = [currentCalendar nextDateAfterDate:v8 matchingComponents:v6 options:1024];
 
     v10 = v9;
     v11 = objc_opt_new();
@@ -307,32 +307,32 @@
   return v12;
 }
 
-- (id)_endTime:(id)a3
+- (id)_endTime:(id)time
 {
-  v3 = [(STCustomizeDailyScheduleListController *)self dailySchedule];
-  v4 = v3;
-  if (v3)
+  dailySchedule = [(STCustomizeDailyScheduleListController *)self dailySchedule];
+  v4 = dailySchedule;
+  if (dailySchedule)
   {
-    v5 = [v3 endTime];
-    v6 = [v5 copy];
+    endTime = [dailySchedule endTime];
+    v6 = [endTime copy];
 
-    v7 = [v4 startTime];
+    startTime = [v4 startTime];
     v8 = STCompareHourMinuteTimeComponents();
 
     v9 = [v4 day] + 1;
     if (v8 == 1)
     {
-      v10 = [MEMORY[0x277CBEA80] currentCalendar];
-      [v10 maximumRangeOfUnit:512];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      [currentCalendar maximumRangeOfUnit:512];
       v12 = v9 % v11;
 
       v9 = v12 + 1;
     }
 
     [v6 setWeekday:v9];
-    v13 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
     v14 = objc_opt_new();
-    v15 = [v13 nextDateAfterDate:v14 matchingComponents:v6 options:1024];
+    v15 = [currentCalendar2 nextDateAfterDate:v14 matchingComponents:v6 options:1024];
 
     v16 = v15;
     v17 = objc_opt_new();
@@ -349,38 +349,38 @@
   return v18;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STCustomizeDailyScheduleListController *)self specifierAtIndexPath:v7];
-  v9 = [(STCustomizeDailyScheduleListController *)self startTimeSpecifier];
-  v10 = [(STCustomizeDailyScheduleListController *)self startTimePickerSpecifier];
-  v11 = [(STCustomizeDailyScheduleListController *)self endTimeSpecifier];
-  v12 = [(STCustomizeDailyScheduleListController *)self endTimePickerSpecifier];
-  if (v8 == v9)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(STCustomizeDailyScheduleListController *)self specifierAtIndexPath:pathCopy];
+  startTimeSpecifier = [(STCustomizeDailyScheduleListController *)self startTimeSpecifier];
+  startTimePickerSpecifier = [(STCustomizeDailyScheduleListController *)self startTimePickerSpecifier];
+  endTimeSpecifier = [(STCustomizeDailyScheduleListController *)self endTimeSpecifier];
+  endTimePickerSpecifier = [(STCustomizeDailyScheduleListController *)self endTimePickerSpecifier];
+  if (v8 == startTimeSpecifier)
   {
-    if ([(STCustomizeDailyScheduleListController *)self containsSpecifier:v12])
+    if ([(STCustomizeDailyScheduleListController *)self containsSpecifier:endTimePickerSpecifier])
     {
       v14 = 1;
-      [(STCustomizeDailyScheduleListController *)self removeSpecifier:v12 animated:1];
+      [(STCustomizeDailyScheduleListController *)self removeSpecifier:endTimePickerSpecifier animated:1];
     }
 
     else
     {
-      if ([(STCustomizeDailyScheduleListController *)self containsSpecifier:v10])
+      if ([(STCustomizeDailyScheduleListController *)self containsSpecifier:startTimePickerSpecifier])
       {
-        [(STCustomizeDailyScheduleListController *)self removeSpecifier:v10 animated:1];
+        [(STCustomizeDailyScheduleListController *)self removeSpecifier:startTimePickerSpecifier animated:1];
         v14 = 0;
 LABEL_13:
-        v15 = self;
+        selfCopy2 = self;
         v16 = v14;
-        v17 = v9;
-        v18 = v11;
+        v17 = startTimeSpecifier;
+        v18 = endTimeSpecifier;
 LABEL_17:
-        [(STCustomizeDailyScheduleListController *)v15 _updateTimeSpecifierDetailTextLabelColors:v16 selectedSpecifier:v17 unselectedSpecifier:v18];
-        v19 = [v8 identifier];
-        [(STCustomizeDailyScheduleListController *)self highlightSpecifierWithID:v19];
+        [(STCustomizeDailyScheduleListController *)selfCopy2 _updateTimeSpecifierDetailTextLabelColors:v16 selectedSpecifier:v17 unselectedSpecifier:v18];
+        identifier = [v8 identifier];
+        [(STCustomizeDailyScheduleListController *)self highlightSpecifierWithID:identifier];
 
         goto LABEL_18;
       }
@@ -388,68 +388,68 @@ LABEL_17:
       v14 = 1;
     }
 
-    [(STCustomizeDailyScheduleListController *)self insertSpecifier:v10 afterSpecifier:v9 animated:1];
+    [(STCustomizeDailyScheduleListController *)self insertSpecifier:startTimePickerSpecifier afterSpecifier:startTimeSpecifier animated:1];
     goto LABEL_13;
   }
 
-  if (v8 == v11)
+  if (v8 == endTimeSpecifier)
   {
-    if ([(STCustomizeDailyScheduleListController *)self containsSpecifier:v10])
+    if ([(STCustomizeDailyScheduleListController *)self containsSpecifier:startTimePickerSpecifier])
     {
       v13 = 1;
-      [(STCustomizeDailyScheduleListController *)self removeSpecifier:v10 animated:1];
+      [(STCustomizeDailyScheduleListController *)self removeSpecifier:startTimePickerSpecifier animated:1];
     }
 
     else
     {
-      if ([(STCustomizeDailyScheduleListController *)self containsSpecifier:v12])
+      if ([(STCustomizeDailyScheduleListController *)self containsSpecifier:endTimePickerSpecifier])
       {
-        [(STCustomizeDailyScheduleListController *)self removeSpecifier:v12 animated:1];
+        [(STCustomizeDailyScheduleListController *)self removeSpecifier:endTimePickerSpecifier animated:1];
         v13 = 0;
 LABEL_16:
-        v15 = self;
+        selfCopy2 = self;
         v16 = v13;
-        v17 = v11;
-        v18 = v9;
+        v17 = endTimeSpecifier;
+        v18 = startTimeSpecifier;
         goto LABEL_17;
       }
 
       v13 = 1;
     }
 
-    [(STCustomizeDailyScheduleListController *)self insertSpecifier:v12 afterSpecifier:v11 animated:1];
+    [(STCustomizeDailyScheduleListController *)self insertSpecifier:endTimePickerSpecifier afterSpecifier:endTimeSpecifier animated:1];
     goto LABEL_16;
   }
 
 LABEL_18:
   v20.receiver = self;
   v20.super_class = STCustomizeDailyScheduleListController;
-  [(STCustomizeDailyScheduleListController *)&v20 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(STCustomizeDailyScheduleListController *)&v20 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v18 = a4;
-  v8 = a5;
-  v9 = [(STCustomizeDailyScheduleListController *)self startTimeSpecifier];
-  v10 = [(STCustomizeDailyScheduleListController *)self indexPathForSpecifier:v9];
-  v11 = [v8 isEqual:v10];
+  cellCopy = cell;
+  pathCopy = path;
+  startTimeSpecifier = [(STCustomizeDailyScheduleListController *)self startTimeSpecifier];
+  v10 = [(STCustomizeDailyScheduleListController *)self indexPathForSpecifier:startTimeSpecifier];
+  v11 = [pathCopy isEqual:v10];
   if (v11)
   {
-    v5 = [(STCustomizeDailyScheduleListController *)self startTimePickerSpecifier];
-    if ([(STCustomizeDailyScheduleListController *)self containsSpecifier:v5])
+    startTimePickerSpecifier = [(STCustomizeDailyScheduleListController *)self startTimePickerSpecifier];
+    if ([(STCustomizeDailyScheduleListController *)self containsSpecifier:startTimePickerSpecifier])
     {
 
       goto LABEL_11;
     }
   }
 
-  v12 = [(STCustomizeDailyScheduleListController *)self endTimeSpecifier];
-  v13 = [(STCustomizeDailyScheduleListController *)self indexPathForSpecifier:v12];
-  if ([v8 isEqual:v13])
+  endTimeSpecifier = [(STCustomizeDailyScheduleListController *)self endTimeSpecifier];
+  v13 = [(STCustomizeDailyScheduleListController *)self indexPathForSpecifier:endTimeSpecifier];
+  if ([pathCopy isEqual:v13])
   {
-    v14 = [(STCustomizeDailyScheduleListController *)self endTimePickerSpecifier];
-    v15 = [(STCustomizeDailyScheduleListController *)self containsSpecifier:v14];
+    endTimePickerSpecifier = [(STCustomizeDailyScheduleListController *)self endTimePickerSpecifier];
+    v15 = [(STCustomizeDailyScheduleListController *)self containsSpecifier:endTimePickerSpecifier];
   }
 
   else
@@ -471,135 +471,135 @@ LABEL_18:
   if (v15)
   {
 LABEL_11:
-    v16 = [MEMORY[0x277D75348] tableCellBlueTextColor];
-    v17 = [v18 detailTextLabel];
-    [v17 setTextColor:v16];
+    tableCellBlueTextColor = [MEMORY[0x277D75348] tableCellBlueTextColor];
+    detailTextLabel = [cellCopy detailTextLabel];
+    [detailTextLabel setTextColor:tableCellBlueTextColor];
   }
 
 LABEL_12:
 }
 
-- (void)_updateTimeSpecifierDetailTextLabelColors:(BOOL)a3 selectedSpecifier:(id)a4 unselectedSpecifier:(id)a5
+- (void)_updateTimeSpecifierDetailTextLabelColors:(BOOL)colors selectedSpecifier:(id)specifier unselectedSpecifier:(id)unselectedSpecifier
 {
-  v6 = a3;
+  colorsCopy = colors;
   v7 = *MEMORY[0x277D40148];
-  v8 = a5;
-  v9 = [a4 objectForKeyedSubscript:v7];
-  v15 = [v9 detailTextLabel];
+  unselectedSpecifierCopy = unselectedSpecifier;
+  v9 = [specifier objectForKeyedSubscript:v7];
+  detailTextLabel = [v9 detailTextLabel];
 
-  v10 = [v8 objectForKeyedSubscript:v7];
+  v10 = [unselectedSpecifierCopy objectForKeyedSubscript:v7];
 
-  v11 = [v10 detailTextLabel];
+  detailTextLabel2 = [v10 detailTextLabel];
 
-  if (v6)
+  if (colorsCopy)
   {
-    v12 = [v15 textColor];
-    v13 = [MEMORY[0x277D75348] tableCellBlueTextColor];
-    [v15 setTextColor:v13];
+    textColor = [detailTextLabel textColor];
+    tableCellBlueTextColor = [MEMORY[0x277D75348] tableCellBlueTextColor];
+    [detailTextLabel setTextColor:tableCellBlueTextColor];
 
-    v14 = v11;
+    v14 = detailTextLabel2;
   }
 
   else
   {
-    v12 = [v11 textColor];
-    v14 = v15;
+    textColor = [detailTextLabel2 textColor];
+    v14 = detailTextLabel;
   }
 
-  [v14 setTextColor:v12];
+  [v14 setTextColor:textColor];
 }
 
-- (void)datePickerChanged:(id)a3
+- (void)datePickerChanged:(id)changed
 {
-  v21 = a3;
-  v4 = [(STCustomizeDailyScheduleListController *)self startTimePickerSpecifier];
-  v5 = [(STCustomizeDailyScheduleListController *)self containsSpecifier:v4];
+  changedCopy = changed;
+  startTimePickerSpecifier = [(STCustomizeDailyScheduleListController *)self startTimePickerSpecifier];
+  v5 = [(STCustomizeDailyScheduleListController *)self containsSpecifier:startTimePickerSpecifier];
 
   if (v5)
   {
-    v6 = [(STCustomizeDailyScheduleListController *)self startTimeSpecifier];
-    v7 = [(STCustomizeDailyScheduleListController *)self dailySchedule];
-    v8 = [v7 startTime];
-    v9 = [v7 endTime];
-    v10 = [v21 calendar];
-    v11 = [v21 date];
-    v12 = [v10 components:96 fromDate:v11];
+    startTimeSpecifier = [(STCustomizeDailyScheduleListController *)self startTimeSpecifier];
+    dailySchedule = [(STCustomizeDailyScheduleListController *)self dailySchedule];
+    startTime = [dailySchedule startTime];
+    endTime = [dailySchedule endTime];
+    calendar = [changedCopy calendar];
+    date = [changedCopy date];
+    dailySchedule3 = [calendar components:96 fromDate:date];
 
-    v13 = [(STCustomizeDailyScheduleListController *)self dailySchedule];
-    [v13 setStartTime:v12];
+    dailySchedule2 = [(STCustomizeDailyScheduleListController *)self dailySchedule];
+    [dailySchedule2 setStartTime:dailySchedule3];
 
     v14 = STCompareHourMinuteTimeComponents();
     if (v14 != STCompareHourMinuteTimeComponents())
     {
-      v15 = [(STCustomizeDailyScheduleListController *)self endTimeSpecifier];
-      [(STCustomizeDailyScheduleListController *)self reloadSpecifier:v15];
+      endTimeSpecifier = [(STCustomizeDailyScheduleListController *)self endTimeSpecifier];
+      [(STCustomizeDailyScheduleListController *)self reloadSpecifier:endTimeSpecifier];
     }
   }
 
   else
   {
-    v16 = [(STCustomizeDailyScheduleListController *)self endTimePickerSpecifier];
-    v17 = [(STCustomizeDailyScheduleListController *)self containsSpecifier:v16];
+    endTimePickerSpecifier = [(STCustomizeDailyScheduleListController *)self endTimePickerSpecifier];
+    v17 = [(STCustomizeDailyScheduleListController *)self containsSpecifier:endTimePickerSpecifier];
 
     if (!v17)
     {
       goto LABEL_8;
     }
 
-    v6 = [(STCustomizeDailyScheduleListController *)self endTimeSpecifier];
-    v7 = [v21 calendar];
-    v8 = [v21 date];
-    v9 = [v7 components:96 fromDate:v8];
-    v12 = [(STCustomizeDailyScheduleListController *)self dailySchedule];
-    [v12 setEndTime:v9];
+    startTimeSpecifier = [(STCustomizeDailyScheduleListController *)self endTimeSpecifier];
+    dailySchedule = [changedCopy calendar];
+    startTime = [changedCopy date];
+    endTime = [dailySchedule components:96 fromDate:startTime];
+    dailySchedule3 = [(STCustomizeDailyScheduleListController *)self dailySchedule];
+    [dailySchedule3 setEndTime:endTime];
   }
 
-  if (v6)
+  if (startTimeSpecifier)
   {
-    [(STCustomizeDailyScheduleListController *)self reloadSpecifier:v6];
-    v18 = [v6 objectForKeyedSubscript:*MEMORY[0x277D40148]];
-    v19 = [MEMORY[0x277D75348] tableCellBlueTextColor];
-    v20 = [v18 detailTextLabel];
-    [v20 setTextColor:v19];
+    [(STCustomizeDailyScheduleListController *)self reloadSpecifier:startTimeSpecifier];
+    v18 = [startTimeSpecifier objectForKeyedSubscript:*MEMORY[0x277D40148]];
+    tableCellBlueTextColor = [MEMORY[0x277D75348] tableCellBlueTextColor];
+    detailTextLabel = [v18 detailTextLabel];
+    [detailTextLabel setTextColor:tableCellBlueTextColor];
   }
 
 LABEL_8:
 }
 
-- (id)datePickerForSpecifier:(id)a3
+- (id)datePickerForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = objc_opt_new();
   [v5 setPreferredDatePickerStyle:1];
   [v5 setDatePickerMode:0];
-  v6 = [(STCustomizeDailyScheduleListController *)self startTimePickerSpecifier];
+  startTimePickerSpecifier = [(STCustomizeDailyScheduleListController *)self startTimePickerSpecifier];
 
-  if (v6 == v4)
+  if (startTimePickerSpecifier == specifierCopy)
   {
-    v8 = [v5 calendar];
-    v12 = [(STCustomizeDailyScheduleListController *)self dailySchedule];
-    v13 = [v12 startTime];
-    v14 = [v8 dateFromComponents:v13];
+    calendar = [v5 calendar];
+    dailySchedule = [(STCustomizeDailyScheduleListController *)self dailySchedule];
+    startTime = [dailySchedule startTime];
+    v14 = [calendar dateFromComponents:startTime];
     [v5 setDate:v14];
 
-    v9 = [(STCustomizeDailyScheduleListController *)self minimumStartTime];
-    v10 = [v8 dateFromComponents:v9];
-    [v5 setMinimumDate:v10];
+    minimumStartTime = [(STCustomizeDailyScheduleListController *)self minimumStartTime];
+    endTime = [calendar dateFromComponents:minimumStartTime];
+    [v5 setMinimumDate:endTime];
   }
 
   else
   {
-    v7 = [(STCustomizeDailyScheduleListController *)self endTimePickerSpecifier];
+    endTimePickerSpecifier = [(STCustomizeDailyScheduleListController *)self endTimePickerSpecifier];
 
-    if (v7 != v4)
+    if (endTimePickerSpecifier != specifierCopy)
     {
       goto LABEL_6;
     }
 
-    v8 = [v5 calendar];
-    v9 = [(STCustomizeDailyScheduleListController *)self dailySchedule];
-    v10 = [v9 endTime];
-    v11 = [v8 dateFromComponents:v10];
+    calendar = [v5 calendar];
+    minimumStartTime = [(STCustomizeDailyScheduleListController *)self dailySchedule];
+    endTime = [minimumStartTime endTime];
+    v11 = [calendar dateFromComponents:endTime];
     [v5 setDate:v11];
   }
 

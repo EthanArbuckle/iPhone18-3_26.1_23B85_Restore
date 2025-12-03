@@ -1,22 +1,22 @@
 @interface LACDTOMutablePolicyEvaluationResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSuccess;
-- (LACDTOMutablePolicyEvaluationResult)initWithIdentifier:(id)a3;
+- (LACDTOMutablePolicyEvaluationResult)initWithIdentifier:(id)identifier;
 - (NSString)description;
 @end
 
 @implementation LACDTOMutablePolicyEvaluationResult
 
-- (LACDTOMutablePolicyEvaluationResult)initWithIdentifier:(id)a3
+- (LACDTOMutablePolicyEvaluationResult)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8.receiver = self;
   v8.super_class = LACDTOMutablePolicyEvaluationResult;
   v5 = [(LACDTOMutablePolicyEvaluationResult *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(LACDTOMutablePolicyEvaluationResult *)v5 setIdentifier:v4];
+    [(LACDTOMutablePolicyEvaluationResult *)v5 setIdentifier:identifierCopy];
   }
 
   return v6;
@@ -24,8 +24,8 @@
 
 - (BOOL)isSuccess
 {
-  v2 = [(LACDTOMutablePolicyEvaluationResult *)self result];
-  v3 = v2 != 0;
+  result = [(LACDTOMutablePolicyEvaluationResult *)self result];
+  v3 = result != 0;
 
   return v3;
 }
@@ -36,16 +36,16 @@
   v18 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(LACDTOMutablePolicyEvaluationResult *)self identifier];
-  v6 = [v4 stringWithFormat:@"identifier: %@", v5];
+  identifier = [(LACDTOMutablePolicyEvaluationResult *)self identifier];
+  v6 = [v4 stringWithFormat:@"identifier: %@", identifier];
   v19[0] = v6;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(LACDTOMutablePolicyEvaluationResult *)self result];
-  v9 = [v7 stringWithFormat:@"result: %@", v8];
+  result = [(LACDTOMutablePolicyEvaluationResult *)self result];
+  v9 = [v7 stringWithFormat:@"result: %@", result];
   v19[1] = v9;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(LACDTOMutablePolicyEvaluationResult *)self error];
-  v12 = [v10 stringWithFormat:@"error: %@", v11];
+  error = [(LACDTOMutablePolicyEvaluationResult *)self error];
+  v12 = [v10 stringWithFormat:@"error: %@", error];
   v19[2] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:3];
   v14 = [v13 componentsJoinedByString:@" "];;
@@ -56,24 +56,24 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F26977C8])
+  equalCopy = equal;
+  if ([equalCopy conformsToProtocol:&unk_1F26977C8])
   {
-    v5 = v4;
-    v6 = [(LACDTOMutablePolicyEvaluationResult *)self identifier];
-    v7 = [v5 identifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    identifier = [(LACDTOMutablePolicyEvaluationResult *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v9 = [(LACDTOMutablePolicyEvaluationResult *)self identifier];
-      v10 = [v5 identifier];
-      v11 = [v9 isEqualToString:v10];
+      identifier3 = [(LACDTOMutablePolicyEvaluationResult *)self identifier];
+      identifier4 = [v5 identifier];
+      v11 = [identifier3 isEqualToString:identifier4];
 
       if (!v11)
       {
@@ -81,18 +81,18 @@
       }
     }
 
-    v13 = [(LACDTOMutablePolicyEvaluationResult *)self result];
-    v14 = [v5 result];
-    v15 = v14;
-    if (v13 == v14)
+    result = [(LACDTOMutablePolicyEvaluationResult *)self result];
+    result2 = [v5 result];
+    v15 = result2;
+    if (result == result2)
     {
     }
 
     else
     {
-      v16 = [(LACDTOMutablePolicyEvaluationResult *)self result];
-      v17 = [v5 result];
-      v18 = [v16 isEqual:v17];
+      result3 = [(LACDTOMutablePolicyEvaluationResult *)self result];
+      result4 = [v5 result];
+      v18 = [result3 isEqual:result4];
 
       if (!v18)
       {
@@ -104,18 +104,18 @@ LABEL_15:
       }
     }
 
-    v19 = [(LACDTOMutablePolicyEvaluationResult *)self error];
-    v20 = [v5 error];
-    if (v19 == v20)
+    error = [(LACDTOMutablePolicyEvaluationResult *)self error];
+    error2 = [v5 error];
+    if (error == error2)
     {
       v12 = 1;
     }
 
     else
     {
-      v21 = [(LACDTOMutablePolicyEvaluationResult *)self error];
-      v22 = [v5 error];
-      v12 = [v21 isEqual:v22];
+      error3 = [(LACDTOMutablePolicyEvaluationResult *)self error];
+      error4 = [v5 error];
+      v12 = [error3 isEqual:error4];
     }
 
     goto LABEL_15;

@@ -14,13 +14,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [a1 length];
+  v2 = [self length];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __38__NSString_MatchScore__composedLength__block_invoke;
   v5[3] = &unk_1E8596088;
   v5[4] = &v6;
-  [a1 enumerateSubstringsInRange:0 options:v2 usingBlock:{2, v5}];
+  [self enumerateSubstringsInRange:0 options:v2 usingBlock:{2, v5}];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -28,22 +28,22 @@
 
 - (uint64_t)hasCommonSubDomainPrefix
 {
-  if ([a1 hasPrefix:@"www."] & 1) != 0 || (objc_msgSend(a1, "hasPrefix:", @"ww."))
+  if ([self hasPrefix:@"www."] & 1) != 0 || (objc_msgSend(self, "hasPrefix:", @"ww."))
   {
     return 1;
   }
 
-  return [a1 hasPrefix:@"m."];
+  return [self hasPrefix:@"m."];
 }
 
 - (uint64_t)hasSpecialAppPrefix
 {
-  if ([a1 hasPrefix:@"my"] & 1) != 0 || (objc_msgSend(a1, "hasPrefix:", @"My"))
+  if ([self hasPrefix:@"my"] & 1) != 0 || (objc_msgSend(self, "hasPrefix:", @"My"))
   {
     return 1;
   }
 
-  return [a1 hasPrefix:@"i"];
+  return [self hasPrefix:@"i"];
 }
 
 - (BOOL)containsCJK
@@ -53,15 +53,15 @@
     [NSString(MatchScore) containsCJK];
   }
 
-  return [containsCJK_sRegex numberOfMatchesInString:a1 options:0 range:{0, objc_msgSend(a1, "length")}] != 0;
+  return [containsCJK_sRegex numberOfMatchesInString:self options:0 range:{0, objc_msgSend(self, "length")}] != 0;
 }
 
 - (uint64_t)startCJK
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
-    result = [a1 UTF8String];
+    result = [self UTF8String];
     if (result)
     {
       if ((*result & 0x80000000) == 0)

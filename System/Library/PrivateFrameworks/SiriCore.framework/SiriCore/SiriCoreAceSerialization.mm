@@ -1,28 +1,28 @@
 @interface SiriCoreAceSerialization
-+ (BOOL)tryParsingAceHeaderData:(id)a3 compressionType:(unsigned __int8 *)a4 bytesRead:(unint64_t *)a5 error:(id *)a6;
-+ (BOOL)tryParsingPacketWithBytes:(const void *)a3 length:(unint64_t)a4 rawPacket:(id *)a5 object:(id *)a6 bytesRead:(unint64_t *)a7 error:(id *)a8;
-+ (id)_insufficientDataErrorForBytesNeeded:(unint64_t)a3 available:(unint64_t)a4;
-+ (id)_tryParsingPlistPacketBytes:(const void *)a3 length:(unint64_t)a4;
-+ (id)_tryParsingSpeechPacketBytes:(const void *)a3 length:(unint64_t)a4;
++ (BOOL)tryParsingAceHeaderData:(id)data compressionType:(unsigned __int8 *)type bytesRead:(unint64_t *)read error:(id *)error;
++ (BOOL)tryParsingPacketWithBytes:(const void *)bytes length:(unint64_t)length rawPacket:(id *)packet object:(id *)object bytesRead:(unint64_t *)read error:(id *)error;
++ (id)_insufficientDataErrorForBytesNeeded:(unint64_t)needed available:(unint64_t)available;
++ (id)_tryParsingPlistPacketBytes:(const void *)bytes length:(unint64_t)length;
++ (id)_tryParsingSpeechPacketBytes:(const void *)bytes length:(unint64_t)length;
 + (id)dataForNop;
-+ (id)dataForObject:(id)a3 error:(id *)a4;
-+ (id)dataForPing:(unsigned int)a3;
-+ (id)dataForPong:(unsigned int)a3;
-+ (id)dataForSpeechPacket:(id)a3 error:(id *)a4;
++ (id)dataForObject:(id)object error:(id *)error;
++ (id)dataForPing:(unsigned int)ping;
++ (id)dataForPong:(unsigned int)pong;
++ (id)dataForSpeechPacket:(id)packet error:(id *)error;
 + (id)dataForStreamEnd;
-+ (id)dataForStreamHeaderWithCompressionType:(unsigned __int8)a3;
++ (id)dataForStreamHeaderWithCompressionType:(unsigned __int8)type;
 @end
 
 @implementation SiriCoreAceSerialization
 
-+ (id)_insufficientDataErrorForBytesNeeded:(unint64_t)a3 available:(unint64_t)a4
++ (id)_insufficientDataErrorForBytesNeeded:(unint64_t)needed available:(unint64_t)available
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v11[0] = @"SiriCoreAceSerializationErrorUserInfoBytesNeeded";
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:needed];
   v11[1] = @"SiriCoreAceSerializationErrorUserInfoBytesAvailable";
   v12[0] = v5;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:available];
   v12[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
 
@@ -33,22 +33,22 @@
   return v8;
 }
 
-+ (BOOL)tryParsingPacketWithBytes:(const void *)a3 length:(unint64_t)a4 rawPacket:(id *)a5 object:(id *)a6 bytesRead:(unint64_t *)a7 error:(id *)a8
++ (BOOL)tryParsingPacketWithBytes:(const void *)bytes length:(unint64_t)length rawPacket:(id *)packet object:(id *)object bytesRead:(unint64_t *)read error:(id *)error
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  if (!a3 || (v13 = a4 - 5, a4 < 5))
+  if (!bytes || (lengthCopy = length - 5, length < 5))
   {
     v17 = 5;
-    v13 = a4;
+    lengthCopy = length;
 LABEL_9:
-    v18 = [a1 _insufficientDataErrorForBytesNeeded:v17 available:v13];
+    v18 = [self _insufficientDataErrorForBytesNeeded:v17 available:lengthCopy];
     v19 = 0;
     v20 = 0;
     goto LABEL_10;
   }
 
   v15 = 0;
-  v16 = *a3;
+  v16 = *bytes;
   if (v16 > 3)
   {
     if (v16 == 4)
@@ -69,20 +69,20 @@ LABEL_9:
     }
 
 LABEL_22:
-    v26 = bswap32(*(a3 + 1));
-    if (v13 < v26)
+    v26 = bswap32(*(bytes + 1));
+    if (lengthCopy < v26)
     {
       v17 = v26;
       goto LABEL_9;
     }
 
-    v27 = a3 + 5;
+    v27 = bytes + 5;
     if (v16 == 7)
     {
       v20 = [SiriCoreAceSerialization _tryParsingSpeechPacketBytes:v27 length:v26];
       if (!v20)
       {
-        v28 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:a3 + 5 length:v26];
+        v28 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:bytes + 5 length:v26];
         v35 = @"SiriCoreAceSerializationErrorUserInfoPlist";
         v36[0] = v28;
         v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
@@ -101,7 +101,7 @@ LABEL_35:
       v20 = [SiriCoreAceSerialization _tryParsingPlistPacketBytes:v27 length:v26];
       if (!v20)
       {
-        v28 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:a3 + 5 length:v26];
+        v28 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:bytes + 5 length:v26];
         v33 = @"SiriCoreAceSerializationErrorUserInfoPlist";
         v34 = v28;
         v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
@@ -119,7 +119,7 @@ LABEL_36:
 LABEL_10:
     v21 = 0;
     v15 = 0;
-    if (!a5)
+    if (!packet)
     {
       goto LABEL_12;
     }
@@ -132,7 +132,7 @@ LABEL_10:
     goto LABEL_22;
   }
 
-  if (*a3)
+  if (*bytes)
   {
     if (v16 == 3)
     {
@@ -148,44 +148,44 @@ LABEL_10:
 LABEL_30:
   v18 = 0;
   v20 = 0;
-  v21 = bswap32(*(a3 + 1));
+  v21 = bswap32(*(bytes + 1));
   v19 = 5;
-  if (a5)
+  if (packet)
   {
 LABEL_11:
-    a5->var0 = v15;
-    *(&a5->var0 + 1) = 0;
-    *(&a5->var0 + 3) = 0;
-    a5->var1 = v21;
+    packet->var0 = v15;
+    *(&packet->var0 + 1) = 0;
+    *(&packet->var0 + 3) = 0;
+    packet->var1 = v21;
   }
 
 LABEL_12:
-  if (a6)
+  if (object)
   {
     v22 = v20;
-    *a6 = v20;
+    *object = v20;
   }
 
-  if (a7)
+  if (read)
   {
-    *a7 = v19;
+    *read = v19;
   }
 
-  if (a8)
+  if (error)
   {
     v23 = v18;
-    *a8 = v18;
+    *error = v18;
   }
 
   v24 = *MEMORY[0x277D85DE8];
   return v18 != 0;
 }
 
-+ (id)_tryParsingSpeechPacketBytes:(const void *)a3 length:(unint64_t)a4
++ (id)_tryParsingSpeechPacketBytes:(const void *)bytes length:(unint64_t)length
 {
-  if (a4 && (v4 = *a3, v5 = a4 - 1 - v4, a4 - 1 >= v4))
+  if (length && (v4 = *bytes, v5 = length - 1 - v4, length - 1 >= v4))
   {
-    v7 = a3 + 1;
+    v7 = bytes + 1;
     v8 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:v4];
     memmove([v8 mutableBytes], v7, v4);
     v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
@@ -260,20 +260,20 @@ LABEL_13:
   return v6;
 }
 
-+ (id)_tryParsingPlistPacketBytes:(const void *)a3 length:(unint64_t)a4
++ (id)_tryParsingPlistPacketBytes:(const void *)bytes length:(unint64_t)length
 {
-  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:a3 length:a4];
+  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:bytes length:length];
   v5 = [MEMORY[0x277D470E0] aceObjectWithPlistData:v4];
 
   return v5;
 }
 
-+ (BOOL)tryParsingAceHeaderData:(id)a3 compressionType:(unsigned __int8 *)a4 bytesRead:(unint64_t *)a5 error:(id *)a6
++ (BOOL)tryParsingAceHeaderData:(id)data compressionType:(unsigned __int8 *)type bytesRead:(unint64_t *)read error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  dataCopy = data;
   v21 = 0;
-  if ([v10 length] < 4)
+  if ([dataCopy length] < 4)
   {
     v14 = *MEMORY[0x277CEF0A8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0A8], OS_LOG_TYPE_INFO))
@@ -284,15 +284,15 @@ LABEL_13:
       v24 = 2048;
       *v25 = 4;
       *&v25[8] = 2048;
-      v26 = [v10 length];
+      v26 = [dataCopy length];
       _os_log_impl(&dword_2669D1000, v15, OS_LOG_TYPE_INFO, "%s Ace Header needs %lu bytes, but have %lu", buf, 0x20u);
     }
 
-    v13 = [a1 _insufficientDataErrorForBytesNeeded:4 available:{objc_msgSend(v10, "length")}];
+    v13 = [self _insufficientDataErrorForBytesNeeded:4 available:{objc_msgSend(dataCopy, "length")}];
 LABEL_12:
     v16 = 0;
     v17 = 1;
-    if (!a4)
+    if (!type)
     {
       goto LABEL_14;
     }
@@ -300,7 +300,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  [v10 getBytes:&v21 length:4];
+  [dataCopy getBytes:&v21 length:4];
   if (v21 != 52394 || BYTE2(v21) != 238)
   {
     v12 = *MEMORY[0x277CEF0A8];
@@ -324,22 +324,22 @@ LABEL_12:
   v13 = 0;
   v17 = HIBYTE(v21);
   v16 = 4;
-  if (a4)
+  if (type)
   {
 LABEL_13:
-    *a4 = v17;
+    *type = v17;
   }
 
 LABEL_14:
-  if (a5)
+  if (read)
   {
-    *a5 = v16;
+    *read = v16;
   }
 
-  if (a6)
+  if (error)
   {
     v13 = v13;
-    *a6 = v13;
+    *error = v13;
   }
 
   v18 = v13 != 0;
@@ -348,16 +348,16 @@ LABEL_14:
   return v18;
 }
 
-+ (id)dataForSpeechPacket:(id)a3 error:(id *)a4
++ (id)dataForSpeechPacket:(id)packet error:(id *)error
 {
   v62 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 refId];
-  v9 = [v8 UTF8String];
+  packetCopy = packet;
+  refId = [packetCopy refId];
+  uTF8String = [refId UTF8String];
 
-  if (v9)
+  if (uTF8String)
   {
-    v10 = strlen(v9);
+    v10 = strlen(uTF8String);
     v11 = v10;
     if (v10 > 0x7F)
     {
@@ -380,9 +380,9 @@ LABEL_9:
     v11 = 0;
   }
 
-  v14 = [v7 packetNumber];
-  v15 = v14;
-  if (v14 != v14)
+  packetNumber = [packetCopy packetNumber];
+  v15 = packetNumber;
+  if (packetNumber != packetNumber)
   {
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SiriCoreAceSerializationErrorDomain" code:6 userInfo:0];
     goto LABEL_9;
@@ -390,14 +390,14 @@ LABEL_9:
 
   v13 = 0;
 LABEL_11:
-  v16 = [v7 packets];
-  v17 = v16;
+  packets = [packetCopy packets];
+  v17 = packets;
   if (v13)
   {
     goto LABEL_12;
   }
 
-  v22 = [v16 count];
+  v22 = [packets count];
   v51 = v17;
   if (v22 >> 15)
   {
@@ -406,7 +406,7 @@ LABEL_11:
     {
 LABEL_12:
       v18 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_14;
       }
@@ -415,7 +415,7 @@ LABEL_12:
     }
 
     v47 = a2;
-    v48 = a1;
+    selfCopy2 = self;
     v23 = 5;
   }
 
@@ -423,8 +423,8 @@ LABEL_12:
   {
     LODWORD(v13) = v22;
     v47 = a2;
-    v48 = a1;
-    size = a4;
+    selfCopy2 = self;
+    size = error;
     v24 = 2 * v22;
     v58 = 0u;
     v59 = 0u;
@@ -455,7 +455,7 @@ LABEL_12:
     }
 
     v23 = v24 + 5;
-    a4 = size;
+    error = size;
     v17 = v51;
   }
 
@@ -470,7 +470,7 @@ LABEL_12:
   v34 = v32 + 6;
   if (v11 >= 1)
   {
-    memmove(v32 + 6, v9, v11);
+    memmove(v32 + 6, uTF8String, v11);
     v34 = (v34 + v11);
   }
 
@@ -518,17 +518,17 @@ LABEL_12:
 
   if (v35 - v33 != sizea)
   {
-    v46 = [MEMORY[0x277CCA890] currentHandler];
-    [v46 handleFailureInMethod:v47 object:v48 file:@"SiriCoreAceSerialization.m" lineNumber:229 description:@"Error serializing SiriCoreSpeechPacket"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:v47 object:selfCopy2 file:@"SiriCoreAceSerialization.m" lineNumber:229 description:@"Error serializing SiriCoreSpeechPacket"];
   }
 
   v18 = dispatch_data_create(v33, sizea, 0, *MEMORY[0x277D85CB0]);
   v13 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_13:
     v19 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
 LABEL_14:
@@ -556,42 +556,42 @@ LABEL_14:
   return v2;
 }
 
-+ (id)dataForPong:(unsigned int)a3
++ (id)dataForPong:(unsigned int)pong
 {
   buffer = 4;
-  v6 = bswap32(a3);
+  v6 = bswap32(pong);
   v3 = dispatch_data_create(&buffer, 5uLL, 0, 0);
 
   return v3;
 }
 
-+ (id)dataForPing:(unsigned int)a3
++ (id)dataForPing:(unsigned int)ping
 {
   buffer = 3;
-  v6 = bswap32(a3);
+  v6 = bswap32(ping);
   v3 = dispatch_data_create(&buffer, 5uLL, 0, 0);
 
   return v3;
 }
 
-+ (id)dataForObject:(id)a3 error:(id *)a4
++ (id)dataForObject:(id)object error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 _serializedData];
-  if (v6)
+  objectCopy = object;
+  _serializedData = [objectCopy _serializedData];
+  if (_serializedData)
   {
-    v7 = v6;
+    v7 = _serializedData;
   }
 
   else
   {
-    v12 = [v5 dictionary];
-    if (!v12 || (v13 = v12, [MEMORY[0x277CCAC58] dataWithPropertyList:v12 format:200 options:0 error:a4], v7 = objc_claimAutoreleasedReturnValue(), v13, !v7))
+    dictionary = [objectCopy dictionary];
+    if (!dictionary || (v13 = dictionary, [MEMORY[0x277CCAC58] dataWithPropertyList:dictionary format:200 options:0 error:error], v7 = objc_claimAutoreleasedReturnValue(), v13, !v7))
     {
-      if (a4 && !*a4)
+      if (error && !*error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:@"SiriCoreAceSerializationErrorDomain" code:5 userInfo:0];
-        *a4 = v10 = 0;
+        *error = v10 = 0;
       }
 
       else
@@ -615,11 +615,11 @@ LABEL_4:
   return v10;
 }
 
-+ (id)dataForStreamHeaderWithCompressionType:(unsigned __int8)a3
++ (id)dataForStreamHeaderWithCompressionType:(unsigned __int8)type
 {
   v6 = -18;
   buffer = -13142;
-  v7 = a3;
+  typeCopy = type;
   v3 = dispatch_data_create(&buffer, 4uLL, 0, 0);
 
   return v3;

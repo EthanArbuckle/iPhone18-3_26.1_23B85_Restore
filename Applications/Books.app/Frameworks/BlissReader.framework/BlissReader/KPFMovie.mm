@@ -1,17 +1,17 @@
 @interface KPFMovie
 - (BOOL)showsClosedCaptions;
-- (KPFMovie)initWithURL:(id)a3 looping:(id)a4 volume:(double)a5 name:(id)a6 audioOnly:(BOOL)a7 drmContext:(id)a8;
+- (KPFMovie)initWithURL:(id)l looping:(id)looping volume:(double)volume name:(id)name audioOnly:(BOOL)only drmContext:(id)context;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)p_playMovie;
-- (void)p_playerItemDidPlayToEndTime:(id)a3;
-- (void)p_setShowsClosedCaptions:(BOOL)a3;
+- (void)p_playerItemDidPlayToEndTime:(id)time;
+- (void)p_setShowsClosedCaptions:(BOOL)captions;
 - (void)p_setupEnhancedCaptionsInformation;
 - (void)p_setupPosterFrame;
 - (void)p_tearDownMoviePlayback;
 - (void)pause;
-- (void)playAfterDelay:(double)a3;
-- (void)registerForMovieEndCallback:(SEL)a3 target:(id)a4;
+- (void)playAfterDelay:(double)delay;
+- (void)registerForMovieEndCallback:(SEL)callback target:(id)target;
 - (void)resume;
 - (void)stop;
 @end
@@ -30,20 +30,20 @@
   return v3 != 0;
 }
 
-- (KPFMovie)initWithURL:(id)a3 looping:(id)a4 volume:(double)a5 name:(id)a6 audioOnly:(BOOL)a7 drmContext:(id)a8
+- (KPFMovie)initWithURL:(id)l looping:(id)looping volume:(double)volume name:(id)name audioOnly:(BOOL)only drmContext:(id)context
 {
-  v9 = a7;
+  onlyCopy = only;
   v19.receiver = self;
   v19.super_class = KPFMovie;
   v14 = [(KPFMovie *)&v19 init];
   if (v14)
   {
-    if ([a4 isEqualToString:@"looping"])
+    if ([looping isEqualToString:@"looping"])
     {
       v15 = 2;
     }
 
-    else if ([a4 isEqualToString:@"loopBackAndForth"])
+    else if ([looping isEqualToString:@"loopBackAndForth"])
     {
       v15 = 3;
     }
@@ -54,11 +54,11 @@
     }
 
     v14->mLooping = v15;
-    v14->mVolume = a5;
-    v14->mName = a6;
-    v16 = [AVPlayerItem playerItemWithURL:a3];
+    v14->mVolume = volume;
+    v14->mName = name;
+    v16 = [AVPlayerItem playerItemWithURL:l];
     v14->mPlayerItem = v16;
-    [a8 authorizeAVPlayerItemForPlayback:v16];
+    [context authorizeAVPlayerItemForPlayback:v16];
     v14->mPlayer = [[AVPlayer alloc] initWithPlayerItem:v14->mPlayerItem];
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
@@ -67,15 +67,15 @@
     [(AVPlayer *)v14->mPlayer addObserver:v14 forKeyPath:@"currentItem.status" options:0 context:off_55FFF8];
     v14->mIsObservingPlayerItemStatus = 1;
     *&v14->mMoviePlaybackIsQueued = 0;
-    v14->mAudioOnly = v9;
-    if (v9)
+    v14->mAudioOnly = onlyCopy;
+    if (onlyCopy)
     {
       v14->mPlayerLayer = 0;
     }
 
     else
     {
-      if ([(KPFMovie *)v14 p_canLoadEnhancedCaptionsInformationForURL:a3])
+      if ([(KPFMovie *)v14 p_canLoadEnhancedCaptionsInformationForURL:l])
       {
         [(KPFMovie *)v14 p_setupEnhancedCaptionsInformation];
       }
@@ -103,12 +103,12 @@
   [(KPFMovie *)&v3 dealloc];
 }
 
-- (void)p_setShowsClosedCaptions:(BOOL)a3
+- (void)p_setShowsClosedCaptions:(BOOL)captions
 {
-  v3 = a3;
+  captionsCopy = captions;
   v5 = [(AVAsset *)[(AVPlayerItem *)self->mPlayerItem asset] mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
   v6 = v5;
-  if (v3)
+  if (captionsCopy)
   {
     v7 = +[AVMediaSelectionGroup mediaSelectionOptionsFromArray:filteredAndSortedAccordingToPreferredLanguages:](AVMediaSelectionGroup, "mediaSelectionOptionsFromArray:filteredAndSortedAccordingToPreferredLanguages:", [(AVMediaSelectionGroup *)v5 options], +[NSLocale preferredLanguages]);
     if (!v7)
@@ -140,28 +140,28 @@
 {
   if ([(AVAsset *)[(AVPlayerItem *)self->mPlayerItem asset] statusOfValueForKey:@"tracks" error:0]!= &dword_0 + 2)
   {
-    v3 = [(AVPlayerItem *)self->mPlayerItem asset];
+    asset = [(AVPlayerItem *)self->mPlayerItem asset];
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_7A060;
     v4[3] = &unk_45AE00;
     v4[4] = self;
-    [(AVAsset *)v3 loadValuesAsynchronouslyForKeys:&off_49D860 completionHandler:v4];
+    [(AVAsset *)asset loadValuesAsynchronouslyForKeys:&off_49D860 completionHandler:v4];
   }
 }
 
-- (void)playAfterDelay:(double)a3
+- (void)playAfterDelay:(double)delay
 {
   if ([(AVPlayerItem *)[(AVPlayer *)self->mPlayer currentItem] status]== &dword_0 + 1)
   {
 
-    [(KPFMovie *)self performSelector:"p_playMovie" withObject:0 afterDelay:a3];
+    [(KPFMovie *)self performSelector:"p_playMovie" withObject:0 afterDelay:delay];
   }
 
   else if ([(AVPlayerItem *)[(AVPlayer *)self->mPlayer currentItem] status]!= &dword_0 + 2)
   {
     self->mMoviePlaybackIsQueued = 1;
-    self->mQueuedPlaybackTime = CACurrentMediaTime() + a3;
+    self->mQueuedPlaybackTime = CACurrentMediaTime() + delay;
   }
 }
 
@@ -202,20 +202,20 @@
   }
 }
 
-- (void)registerForMovieEndCallback:(SEL)a3 target:(id)a4
+- (void)registerForMovieEndCallback:(SEL)callback target:(id)target
 {
-  self->mMovieEndCallbackTarget = a4;
-  if (a3)
+  self->mMovieEndCallbackTarget = target;
+  if (callback)
   {
-    v4 = a3;
+    callbackCopy = callback;
   }
 
   else
   {
-    v4 = 0;
+    callbackCopy = 0;
   }
 
-  self->mMovieEndCallbackSelector = v4;
+  self->mMovieEndCallbackSelector = callbackCopy;
 }
 
 - (void)p_playMovie
@@ -243,16 +243,16 @@
   }
 }
 
-- (void)p_playerItemDidPlayToEndTime:(id)a3
+- (void)p_playerItemDidPlayToEndTime:(id)time
 {
   mLooping = self->mLooping;
   if (mLooping == 3)
   {
-    v8 = [(AVPlayer *)self->mPlayer currentItem];
-    if (v8)
+    currentItem = [(AVPlayer *)self->mPlayer currentItem];
+    if (currentItem)
     {
-      v9 = v8;
-      [(AVPlayerItem *)v8 currentTime];
+      v9 = currentItem;
+      [(AVPlayerItem *)currentItem currentTime];
       [(AVPlayerItem *)v9 forwardPlaybackEndTime];
     }
 
@@ -281,18 +281,18 @@ LABEL_12:
   {
     memset(&time1, 0, sizeof(time1));
     CMTimeMakeWithSeconds(&time1, 0.0, 90000);
-    v5 = [(AVPlayer *)self->mPlayer currentItem];
+    currentItem2 = [(AVPlayer *)self->mPlayer currentItem];
     time2 = time1;
     v19 = *&kCMTimeZero.value;
     epoch = kCMTimeZero.epoch;
     v17 = v19;
     v18 = epoch;
-    [(AVPlayerItem *)v5 seekToTime:&time2 toleranceBefore:&v19 toleranceAfter:&v17 completionHandler:0];
+    [(AVPlayerItem *)currentItem2 seekToTime:&time2 toleranceBefore:&v19 toleranceAfter:&v17 completionHandler:0];
     mPlayer = self->mPlayer;
     goto LABEL_12;
   }
 
-  [(AVPlayer *)self->mPlayer setRate:a3, 0.0];
+  [(AVPlayer *)self->mPlayer setRate:time, 0.0];
   mMovieEndCallbackTarget = self->mMovieEndCallbackTarget;
   if (mMovieEndCallbackTarget)
   {
@@ -323,11 +323,11 @@ LABEL_12:
 
 - (void)p_setupPosterFrame
 {
-  v3 = [(AVPlayer *)self->mPlayer currentItem];
-  v4 = [(AVPlayerItem *)v3 asset];
-  if (v3)
+  currentItem = [(AVPlayer *)self->mPlayer currentItem];
+  asset = [(AVPlayerItem *)currentItem asset];
+  if (currentItem)
   {
-    [(AVPlayerItem *)v3 currentTime];
+    [(AVPlayerItem *)currentItem currentTime];
   }
 
   else
@@ -336,7 +336,7 @@ LABEL_12:
   }
 
   v5 = CMTimeGetSeconds(&time.start) + 0.05;
-  v6 = [[AVAssetImageGenerator alloc] initWithAsset:v4];
+  v6 = [[AVAssetImageGenerator alloc] initWithAsset:asset];
   *&time.start.value = *&kCMTimeZero.value;
   v11 = *&time.start.value;
   time.start.epoch = kCMTimeZero.epoch;
@@ -347,9 +347,9 @@ LABEL_12:
   [v6 setRequestedTimeToleranceBefore:&time];
   [v6 setAppliesPreferredTrackTransform:1];
   CMTimeMakeWithSeconds(&v25, v5, 90000);
-  if (v4)
+  if (asset)
   {
-    [(AVAsset *)v4 duration];
+    [(AVAsset *)asset duration];
   }
 
   else
@@ -416,10 +416,10 @@ LABEL_12:
     }
 
     [(AVPlayer *)self->mPlayer removeObserver:self forKeyPath:@"currentItem"];
-    v4 = [(AVPlayer *)self->mPlayer currentItem];
-    if (v4)
+    currentItem = [(AVPlayer *)self->mPlayer currentItem];
+    if (currentItem)
     {
-      [+[NSNotificationCenter defaultCenter](NSNotificationCenter removeObserver:"removeObserver:name:object:" name:self object:AVPlayerItemDidPlayToEndTimeNotification, v4];
+      [+[NSNotificationCenter defaultCenter](NSNotificationCenter removeObserver:"removeObserver:name:object:" name:self object:AVPlayerItemDidPlayToEndTimeNotification, currentItem];
     }
 
     [(KPFMovie *)self p_setupPosterFrame];
@@ -439,13 +439,13 @@ LABEL_12:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_55FFF8 == a6)
+  if (off_55FFF8 == context)
   {
-    v8 = [(AVPlayerItem *)[(AVPlayer *)self->mPlayer currentItem:a3] status];
+    status = [(AVPlayerItem *)[(AVPlayer *)self->mPlayer currentItem:path] status];
     mPlayer = self->mPlayer;
-    if (v8 == AVPlayerItemStatusReadyToPlay)
+    if (status == AVPlayerItemStatusReadyToPlay)
     {
       [(AVPlayer *)mPlayer removeObserver:self forKeyPath:@"currentItem.status"];
       self->mIsObservingPlayerItemStatus = 0;
@@ -478,10 +478,10 @@ LABEL_12:
     self->mMoviePlaybackIsQueued = 0;
   }
 
-  else if (off_55FFF0 == a6)
+  else if (off_55FFF0 == context)
   {
-    v12 = [NSNotificationCenter defaultCenter:a3];
-    v13 = [a5 objectForKey:NSKeyValueChangeOldKey];
+    v12 = [NSNotificationCenter defaultCenter:path];
+    v13 = [change objectForKey:NSKeyValueChangeOldKey];
     if (v13)
     {
       v14 = v13;
@@ -492,7 +492,7 @@ LABEL_12:
       }
     }
 
-    v15 = [a5 objectForKey:NSKeyValueChangeNewKey];
+    v15 = [change objectForKey:NSKeyValueChangeNewKey];
     if (v15)
     {
       v16 = v15;
@@ -509,7 +509,7 @@ LABEL_12:
   {
     v17.receiver = self;
     v17.super_class = KPFMovie;
-    [(KPFMovie *)&v17 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(KPFMovie *)&v17 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

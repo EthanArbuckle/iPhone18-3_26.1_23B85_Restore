@@ -1,41 +1,41 @@
 @interface SBAnimationStepper
-- (SBAnimationStepper)initWithAnimationSettings:(id)a3;
+- (SBAnimationStepper)initWithAnimationSettings:(id)settings;
 - (double)_nextCommitTime;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)_adjustDurationForLongestAnimation;
 - (void)_checkForCompletion;
-- (void)_displayLinkFired:(id)a3;
-- (void)_displayLinkFiredForBackwardToStart:(id)a3;
-- (void)_makeSubviewTree:(id)a3 fromView:(id)a4;
-- (void)_setStepPercentage:(double)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)_displayLinkFired:(id)fired;
+- (void)_displayLinkFiredForBackwardToStart:(id)start;
+- (void)_makeSubviewTree:(id)tree fromView:(id)view;
+- (void)_setStepPercentage:(double)percentage;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
-- (void)finishSteppingBackwardToStartWithCompletion:(id)a3;
-- (void)finishSteppingForwardToEndWithCompletion:(id)a3;
+- (void)finishSteppingBackwardToStartWithCompletion:(id)completion;
+- (void)finishSteppingForwardToEndWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)setStepPercentage:(double)a3;
-- (void)startSteppingAnimationsInView:(id)a3;
+- (void)setStepPercentage:(double)percentage;
+- (void)startSteppingAnimationsInView:(id)view;
 @end
 
 @implementation SBAnimationStepper
 
-- (SBAnimationStepper)initWithAnimationSettings:(id)a3
+- (SBAnimationStepper)initWithAnimationSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v16.receiver = self;
   v16.super_class = SBAnimationStepper;
   v5 = [(SBAnimationStepper *)&v16 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [settingsCopy copy];
     animationSettings = v5->_animationSettings;
     v5->_animationSettings = v6;
 
-    v8 = [MEMORY[0x277CF0D38] factoryWithSettings:v4];
-    v9 = [v8 effectiveSettings];
-    [v9 duration];
+    v8 = [MEMORY[0x277CF0D38] factoryWithSettings:settingsCopy];
+    effectiveSettings = [v8 effectiveSettings];
+    [effectiveSettings duration];
     v5->_duration = v10;
 
     v11 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -54,50 +54,50 @@
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
-- (void)startSteppingAnimationsInView:(id)a3
+- (void)startSteppingAnimationsInView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
-    value = v4;
-    v5 = [(NSMutableSet *)self->_views containsObject:v4];
-    v4 = value;
+    value = viewCopy;
+    v5 = [(NSMutableSet *)self->_views containsObject:viewCopy];
+    viewCopy = value;
     if ((v5 & 1) == 0)
     {
       [value layoutIfNeeded];
       [(NSMutableSet *)self->_views addObject:value];
-      v6 = [value layer];
+      layer = [value layer];
       [(SBAnimationStepper *)self _nextCommitTime];
-      [v6 setBeginTime:?];
-      [v6 setSpeed:0.0];
-      [v6 beginTime];
-      [v6 setTimeOffset:?];
+      [layer setBeginTime:?];
+      [layer setSpeed:0.0];
+      [layer beginTime];
+      [layer setTimeOffset:?];
       if ([(SBAnimationStepper *)self adjustsDurationForLongestAnimation])
       {
         [(SBAnimationStepper *)self _adjustDurationForLongestAnimation];
       }
 
-      v7 = [MEMORY[0x277CD9DF8] animation];
-      [v7 setDuration:self->_duration];
-      [v7 setRemovedOnCompletion:1];
-      [v7 setDelegate:self];
-      v8 = [v6 animationForKey:@"SBAnimationStepper"];
+      animation = [MEMORY[0x277CD9DF8] animation];
+      [animation setDuration:self->_duration];
+      [animation setRemovedOnCompletion:1];
+      [animation setDelegate:self];
+      v8 = [layer animationForKey:@"SBAnimationStepper"];
 
       if (v8)
       {
         [SBAnimationStepper startSteppingAnimationsInView:];
       }
 
-      [v6 addAnimation:v7 forKey:@"SBAnimationStepper"];
-      v9 = [v6 animationForKey:@"SBAnimationStepper"];
+      [layer addAnimation:animation forKey:@"SBAnimationStepper"];
+      v9 = [layer animationForKey:@"SBAnimationStepper"];
 
       objc_setAssociatedObject(v9, &SBAnimationStepperViewForAnimationKey, value, 0);
-      v4 = value;
+      viewCopy = value;
     }
   }
 }
@@ -134,7 +134,7 @@
     while (v6);
   }
 
-  v24 = self;
+  selfCopy = self;
 
   v32 = 0u;
   v33 = 0u;
@@ -156,13 +156,13 @@
           objc_enumerationMutation(obj);
         }
 
-        v14 = [*(*(&v30 + 1) + 8 * j) layer];
+        layer = [*(*(&v30 + 1) + 8 * j) layer];
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v15 = [v14 animationKeys];
-        v16 = [v15 countByEnumeratingWithState:&v26 objects:v38 count:16];
+        animationKeys = [layer animationKeys];
+        v16 = [animationKeys countByEnumeratingWithState:&v26 objects:v38 count:16];
         if (v16)
         {
           v17 = v16;
@@ -173,10 +173,10 @@
             {
               if (*v27 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(animationKeys);
               }
 
-              v20 = [v14 animationForKey:*(*(&v26 + 1) + 8 * k)];
+              v20 = [layer animationForKey:*(*(&v26 + 1) + 8 * k)];
               [v20 duration];
               if (fabs(v21) != INFINITY && v21 > v12)
               {
@@ -184,7 +184,7 @@
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v26 objects:v38 count:16];
+            v17 = [animationKeys countByEnumeratingWithState:&v26 objects:v38 count:16];
           }
 
           while (v17);
@@ -202,25 +202,25 @@
     v12 = 0.0;
   }
 
-  duration = v24->_duration;
+  duration = selfCopy->_duration;
   if (v12 >= duration)
   {
     duration = v12;
   }
 
-  v24->_duration = duration;
+  selfCopy->_duration = duration;
 }
 
-- (void)_makeSubviewTree:(id)a3 fromView:(id)a4
+- (void)_makeSubviewTree:(id)tree fromView:(id)view
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  treeCopy = tree;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [a4 subviews];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subviews = [view subviews];
+  v8 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -231,15 +231,15 @@
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
-        [v6 addObject:v12];
-        [(SBAnimationStepper *)self _makeSubviewTree:v6 fromView:v12];
+        [treeCopy addObject:v12];
+        [(SBAnimationStepper *)self _makeSubviewTree:treeCopy fromView:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -293,9 +293,9 @@ void __32__SBAnimationStepper_invalidate__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)finishSteppingForwardToEndWithCompletion:(id)a3
+- (void)finishSteppingForwardToEndWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_invalidated)
   {
     [SBAnimationStepper finishSteppingForwardToEndWithCompletion:];
@@ -307,7 +307,7 @@ void __32__SBAnimationStepper_invalidate__block_invoke(uint64_t a1, void *a2)
   }
 
   self->_finishingForward = 1;
-  v5 = [v4 copy];
+  v5 = [completionCopy copy];
   completion = self->_completion;
   self->_completion = v5;
 
@@ -334,9 +334,9 @@ void __63__SBAnimationStepper_finishSteppingForwardToEndWithCompletion___block_i
   [v4 setSpeed:v3];
 }
 
-- (void)finishSteppingBackwardToStartWithCompletion:(id)a3
+- (void)finishSteppingBackwardToStartWithCompletion:(id)completion
 {
-  v15 = a3;
+  completionCopy = completion;
   if (self->_invalidated)
   {
     [SBAnimationStepper finishSteppingBackwardToStartWithCompletion:];
@@ -347,16 +347,16 @@ void __63__SBAnimationStepper_finishSteppingForwardToEndWithCompletion___block_i
     [SBAnimationStepper finishSteppingBackwardToStartWithCompletion:];
   }
 
-  v4 = [MEMORY[0x277CBEB88] currentRunLoop];
-  v5 = [MEMORY[0x277CBEB88] mainRunLoop];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
 
-  if (v4 != v5)
+  if (currentRunLoop != mainRunLoop)
   {
     [SBAnimationStepper finishSteppingBackwardToStartWithCompletion:];
   }
 
   self->_finishingBackward = 1;
-  v6 = [v15 copy];
+  v6 = [completionCopy copy];
   completion = self->_completion;
   self->_completion = v6;
 
@@ -372,8 +372,8 @@ void __63__SBAnimationStepper_finishSteppingForwardToEndWithCompletion___block_i
   self->_displayLink = v11;
 
   v13 = self->_displayLink;
-  v14 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [(CADisplayLink *)v13 addToRunLoop:v14 forMode:*MEMORY[0x277CBE738]];
+  currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+  [(CADisplayLink *)v13 addToRunLoop:currentRunLoop2 forMode:*MEMORY[0x277CBE738]];
 
   [(SBAnimationStepper *)self _displayLinkFiredForBackwardToStart:0];
 }
@@ -398,9 +398,9 @@ void __63__SBAnimationStepper_finishSteppingForwardToEndWithCompletion___block_i
   }
 }
 
-- (void)_setStepPercentage:(double)a3
+- (void)_setStepPercentage:(double)percentage
 {
-  self->_percentage = fmin(fmax(a3, 0.0), 1.0);
+  self->_percentage = fmin(fmax(percentage, 0.0), 1.0);
   views = self->_views;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -418,12 +418,12 @@ void __41__SBAnimationStepper__setStepPercentage___block_invoke(uint64_t a1, voi
   [v4 setTimeOffset:v3 + *(*(a1 + 32) + 120) * *(*(a1 + 32) + 48)];
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   if (!self->_invalidated && !self->_completed)
   {
-    v15 = v4;
+    v15 = firedCopy;
     v5 = CACurrentMediaTime();
     animatedSteppingTargetPercent = self->_animatedSteppingTargetPercent;
     percentage = self->_percentage;
@@ -453,11 +453,11 @@ void __41__SBAnimationStepper__setStepPercentage___block_invoke(uint64_t a1, voi
     }
 
     [(SBAnimationStepper *)self _setStepPercentage:v10];
-    v4 = v15;
+    firedCopy = v15;
   }
 }
 
-- (void)_displayLinkFiredForBackwardToStart:(id)a3
+- (void)_displayLinkFiredForBackwardToStart:(id)start
 {
   if (!self->_invalidated && !self->_completed)
   {
@@ -508,67 +508,67 @@ void __58__SBAnimationStepper__displayLinkFiredForBackwardToStart___block_invoke
   return v4;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = a3;
+  stopCopy = stop;
   if (!self->_invalidated && !self->_completed)
   {
-    v7 = v5;
-    v6 = objc_getAssociatedObject(v5, &SBAnimationStepperViewForAnimationKey);
+    v7 = stopCopy;
+    v6 = objc_getAssociatedObject(stopCopy, &SBAnimationStepperViewForAnimationKey);
     if (v6)
     {
       [(NSMutableSet *)self->_finishedAnimatingViews addObject:v6];
       [(SBAnimationStepper *)self _checkForCompletion];
     }
 
-    v5 = v7;
+    stopCopy = v7;
   }
 }
 
-- (void)setStepPercentage:(double)a3
+- (void)setStepPercentage:(double)percentage
 {
   if (!self->_invalidated && !self->_completed)
   {
     if (self->_animatingToStepPercent)
     {
-      [(SBAnimationStepper *)self _updateAnimationSteppingTarget:a3];
+      [(SBAnimationStepper *)self _updateAnimationSteppingTarget:percentage];
     }
 
     else
     {
-      [(SBAnimationStepper *)self _setStepPercentage:a3];
+      [(SBAnimationStepper *)self _setStepPercentage:percentage];
     }
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBAnimationStepper *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBAnimationStepper *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBAnimationStepper *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBAnimationStepper *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBAnimationStepper *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBAnimationStepper *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__SBAnimationStepper_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

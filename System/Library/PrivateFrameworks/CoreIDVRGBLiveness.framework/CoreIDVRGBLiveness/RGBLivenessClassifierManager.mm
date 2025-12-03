@@ -1,10 +1,10 @@
 @interface RGBLivenessClassifierManager
-- (void)stitchDetectedWithNotification:(id)a3;
+- (void)stitchDetectedWithNotification:(id)notification;
 @end
 
 @implementation RGBLivenessClassifierManager
 
-- (void)stitchDetectedWithNotification:(id)a3
+- (void)stitchDetectedWithNotification:(id)notification
 {
   v3 = sub_245747B10();
   v4 = *(v3 - 8);

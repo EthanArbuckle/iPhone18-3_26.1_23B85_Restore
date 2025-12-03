@@ -1,18 +1,18 @@
 @interface IP_Zawgyi_migrator
-- (id)migrateToUseZawgyiForPreferences:(id)a3;
-- (id)performMigrationForPreferences:(id)a3;
+- (id)migrateToUseZawgyiForPreferences:(id)preferences;
+- (id)performMigrationForPreferences:(id)preferences;
 @end
 
 @implementation IP_Zawgyi_migrator
 
-- (id)migrateToUseZawgyiForPreferences:(id)a3
+- (id)migrateToUseZawgyiForPreferences:(id)preferences
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [v3 objectForKeyedSubscript:@"AppleLanguages"];
+  preferencesCopy = preferences;
+  v4 = [preferencesCopy mutableCopy];
+  v5 = [preferencesCopy objectForKeyedSubscript:@"AppleLanguages"];
   v6 = [v5 mutableCopy];
 
-  v7 = [v3 objectForKeyedSubscript:@"AppleLocale"];
+  v7 = [preferencesCopy objectForKeyedSubscript:@"AppleLocale"];
   v8 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:v7];
   v25 = 0;
   v26 = &v25;
@@ -54,9 +54,9 @@
   return v4;
 }
 
-- (id)performMigrationForPreferences:(id)a3
+- (id)performMigrationForPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   if ([(ISMigrator *)self previousSchemaVersion]>= 0x3E9 || [(ISMigrator *)self platform]!= 1 && [(ISMigrator *)self platform]!= 2)
   {
     goto LABEL_8;
@@ -72,13 +72,13 @@
   if (MatchingFontDescriptor)
   {
     CFRelease(MatchingFontDescriptor);
-    v7 = [(IP_Zawgyi_migrator *)self migrateToUseZawgyiForPreferences:v4];
+    v7 = [(IP_Zawgyi_migrator *)self migrateToUseZawgyiForPreferences:preferencesCopy];
   }
 
   else
   {
 LABEL_8:
-    v7 = v4;
+    v7 = preferencesCopy;
   }
 
   v8 = v7;

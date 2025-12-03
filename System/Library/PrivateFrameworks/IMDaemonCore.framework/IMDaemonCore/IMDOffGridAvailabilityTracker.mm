@@ -5,8 +5,8 @@
 - (void)_startTimer;
 - (void)_updateTracker;
 - (void)dealloc;
-- (void)startTrackingHandle:(id)a3;
-- (void)stopTrackingHandle:(id)a3;
+- (void)startTrackingHandle:(id)handle;
+- (void)stopTrackingHandle:(id)handle;
 @end
 
 @implementation IMDOffGridAvailabilityTracker
@@ -38,15 +38,15 @@
   return v2;
 }
 
-- (void)startTrackingHandle:(id)a3
+- (void)startTrackingHandle:(id)handle
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 ID];
+  handleCopy = handle;
+  v5 = [handleCopy ID];
   if ([v5 length])
   {
-    v6 = [(IMDOffGridAvailabilityTracker *)self trackedHandles];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    trackedHandles = [(IMDOffGridAvailabilityTracker *)self trackedHandles];
+    v7 = [trackedHandles objectForKeyedSubscript:v5];
 
     if (!v7)
     {
@@ -62,12 +62,12 @@
       }
 
       v9 = objc_alloc_init(IMDOffGridAvailabilityTrackerRecord);
-      [(IMDOffGridAvailabilityTrackerRecord *)v9 setHandle:v4];
+      [(IMDOffGridAvailabilityTrackerRecord *)v9 setHandle:handleCopy];
       v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:172800.0];
       [(IMDOffGridAvailabilityTrackerRecord *)v9 setExpirationDate:v10];
 
-      v11 = [(IMDOffGridAvailabilityTracker *)self trackedHandles];
-      [v11 setObject:v9 forKeyedSubscript:v5];
+      trackedHandles2 = [(IMDOffGridAvailabilityTracker *)self trackedHandles];
+      [trackedHandles2 setObject:v9 forKeyedSubscript:v5];
 
       [(IMDOffGridAvailabilityTracker *)self _startTimer];
     }
@@ -76,15 +76,15 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopTrackingHandle:(id)a3
+- (void)stopTrackingHandle:(id)handle
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 ID];
+  handleCopy = handle;
+  v5 = [handleCopy ID];
   if ([v5 length])
   {
-    v6 = [(IMDOffGridAvailabilityTracker *)self trackedHandles];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    trackedHandles = [(IMDOffGridAvailabilityTracker *)self trackedHandles];
+    v7 = [trackedHandles objectForKeyedSubscript:v5];
 
     if (v7)
     {
@@ -93,18 +93,18 @@
         v8 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
-          v9 = [v4 ID];
+          v9 = [handleCopy ID];
           v14 = 138412290;
           v15 = v9;
           _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Stopping tracking of handle %@", &v14, 0xCu);
         }
       }
 
-      v10 = [(IMDOffGridAvailabilityTracker *)self trackedHandles];
-      [v10 setObject:0 forKeyedSubscript:v5];
+      trackedHandles2 = [(IMDOffGridAvailabilityTracker *)self trackedHandles];
+      [trackedHandles2 setObject:0 forKeyedSubscript:v5];
 
-      v11 = [(IMDOffGridAvailabilityTracker *)self trackedHandles];
-      v12 = [v11 count] == 0;
+      trackedHandles3 = [(IMDOffGridAvailabilityTracker *)self trackedHandles];
+      v12 = [trackedHandles3 count] == 0;
 
       if (v12)
       {
@@ -118,9 +118,9 @@
 
 - (void)_startTimer
 {
-  v3 = [(IMDOffGridAvailabilityTracker *)self updateTimer];
+  updateTimer = [(IMDOffGridAvailabilityTracker *)self updateTimer];
 
-  if (!v3)
+  if (!updateTimer)
   {
     if (IMOSLoggingEnabled())
     {
@@ -149,9 +149,9 @@
 
 - (void)_clearTimer
 {
-  v3 = [(IMDOffGridAvailabilityTracker *)self updateTimer];
+  updateTimer = [(IMDOffGridAvailabilityTracker *)self updateTimer];
 
-  if (v3)
+  if (updateTimer)
   {
     if (IMOSLoggingEnabled())
     {
@@ -163,8 +163,8 @@
       }
     }
 
-    v5 = [(IMDOffGridAvailabilityTracker *)self updateTimer];
-    [v5 invalidate];
+    updateTimer2 = [(IMDOffGridAvailabilityTracker *)self updateTimer];
+    [updateTimer2 invalidate];
 
     [(IMDOffGridAvailabilityTracker *)self setUpdateTimer:0];
   }
@@ -172,8 +172,8 @@
 
 - (void)dealloc
 {
-  v3 = [(IMDOffGridAvailabilityTracker *)self updateTimer];
-  [v3 invalidate];
+  updateTimer = [(IMDOffGridAvailabilityTracker *)self updateTimer];
+  [updateTimer invalidate];
 
   v4.receiver = self;
   v4.super_class = IMDOffGridAvailabilityTracker;
@@ -192,8 +192,8 @@
     }
   }
 
-  v4 = [(IMDOffGridAvailabilityTracker *)self trackedHandles];
-  [v4 enumerateKeysAndObjectsUsingBlock:&unk_283F1B288];
+  trackedHandles = [(IMDOffGridAvailabilityTracker *)self trackedHandles];
+  [trackedHandles enumerateKeysAndObjectsUsingBlock:&unk_283F1B288];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface FPFSSQLBackupEngine
 - (_TtC18FileProviderDaemon19FPFSSQLBackupEngine)init;
-- (_TtC18FileProviderDaemon19FPFSSQLBackupEngine)initWithUserURL:(id)a3 outputUserURL:(id)a4;
-- (void)backUpWithCompletionHandler:(id)a3;
+- (_TtC18FileProviderDaemon19FPFSSQLBackupEngine)initWithUserURL:(id)l outputUserURL:(id)rL;
+- (void)backUpWithCompletionHandler:(id)handler;
 @end
 
 @implementation FPFSSQLBackupEngine
 
-- (_TtC18FileProviderDaemon19FPFSSQLBackupEngine)initWithUserURL:(id)a3 outputUserURL:(id)a4
+- (_TtC18FileProviderDaemon19FPFSSQLBackupEngine)initWithUserURL:(id)l outputUserURL:(id)rL
 {
   v4 = sub_1CF9E5A58();
   v5 = *(*(v4 - 8) + 64);
@@ -19,12 +19,12 @@
   return FPFSSQLBackupEngine.init(userURL:outputUserURL:)(v10, v7);
 }
 
-- (void)backUpWithCompletionHandler:(id)a3
+- (void)backUpWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
-  v5 = self;
-  sub_1CF33E3F0(v5, v4);
+  selfCopy = self;
+  sub_1CF33E3F0(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }

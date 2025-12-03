@@ -1,10 +1,10 @@
 @interface _DPInputHelper
 - (_DPInputHelper)init;
-- (id)nonEmptyNonWhitespaceStringsFromFileAtPath:(id)a3;
-- (id)nonEmptyStringsFromFileAtPath:(id)a3;
-- (id)nonEmptyStringsFromFileAtPath:(id)a3 encoding:(unint64_t)a4;
-- (id)nonEmptyStringsFromFileAtPath:(id)a3 separatedBy:(id)a4 encoding:(unint64_t)a5;
-- (id)numbersFromFileAtPath:(id)a3;
+- (id)nonEmptyNonWhitespaceStringsFromFileAtPath:(id)path;
+- (id)nonEmptyStringsFromFileAtPath:(id)path;
+- (id)nonEmptyStringsFromFileAtPath:(id)path encoding:(unint64_t)encoding;
+- (id)nonEmptyStringsFromFileAtPath:(id)path separatedBy:(id)by encoding:(unint64_t)encoding;
+- (id)numbersFromFileAtPath:(id)path;
 @end
 
 @implementation _DPInputHelper
@@ -26,13 +26,13 @@
   return v2;
 }
 
-- (id)nonEmptyStringsFromFileAtPath:(id)a3 separatedBy:(id)a4 encoding:(unint64_t)a5
+- (id)nonEmptyStringsFromFileAtPath:(id)path separatedBy:(id)by encoding:(unint64_t)encoding
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  byCopy = by;
   v9 = objc_autoreleasePoolPush();
-  v10 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v7 encoding:a5 error:0];
-  v11 = [v10 componentsSeparatedByCharactersInSet:v8];
+  v10 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:pathCopy encoding:encoding error:0];
+  v11 = [v10 componentsSeparatedByCharactersInSet:byCopy];
   v12 = [MEMORY[0x277CBEBF8] mutableCopy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -47,41 +47,41 @@
   return v13;
 }
 
-- (id)nonEmptyStringsFromFileAtPath:(id)a3
+- (id)nonEmptyStringsFromFileAtPath:(id)path
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 newlineCharacterSet];
-  v7 = [(_DPInputHelper *)self nonEmptyStringsFromFileAtPath:v5 separatedBy:v6 encoding:4];
+  pathCopy = path;
+  newlineCharacterSet = [v4 newlineCharacterSet];
+  v7 = [(_DPInputHelper *)self nonEmptyStringsFromFileAtPath:pathCopy separatedBy:newlineCharacterSet encoding:4];
 
   return v7;
 }
 
-- (id)nonEmptyStringsFromFileAtPath:(id)a3 encoding:(unint64_t)a4
+- (id)nonEmptyStringsFromFileAtPath:(id)path encoding:(unint64_t)encoding
 {
   v6 = MEMORY[0x277CCA900];
-  v7 = a3;
-  v8 = [v6 newlineCharacterSet];
-  v9 = [(_DPInputHelper *)self nonEmptyStringsFromFileAtPath:v7 separatedBy:v8 encoding:a4];
+  pathCopy = path;
+  newlineCharacterSet = [v6 newlineCharacterSet];
+  v9 = [(_DPInputHelper *)self nonEmptyStringsFromFileAtPath:pathCopy separatedBy:newlineCharacterSet encoding:encoding];
 
   return v9;
 }
 
-- (id)nonEmptyNonWhitespaceStringsFromFileAtPath:(id)a3
+- (id)nonEmptyNonWhitespaceStringsFromFileAtPath:(id)path
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 whitespaceAndNewlineCharacterSet];
-  v7 = [(_DPInputHelper *)self nonEmptyStringsFromFileAtPath:v5 separatedBy:v6 encoding:4];
+  pathCopy = path;
+  whitespaceAndNewlineCharacterSet = [v4 whitespaceAndNewlineCharacterSet];
+  v7 = [(_DPInputHelper *)self nonEmptyStringsFromFileAtPath:pathCopy separatedBy:whitespaceAndNewlineCharacterSet encoding:4];
 
   return v7;
 }
 
-- (id)numbersFromFileAtPath:(id)a3
+- (id)numbersFromFileAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(_DPInputHelper *)self nonEmptyNonWhitespaceStringsFromFileAtPath:v4];
+  v6 = [(_DPInputHelper *)self nonEmptyNonWhitespaceStringsFromFileAtPath:pathCopy];
   v7 = [MEMORY[0x277CBEBF8] mutableCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;

@@ -1,24 +1,24 @@
 @interface VCPVanishingPointDetector
-- (BOOL)isVerticalOrHorizontal:(int)a3;
-- (VCPVanishingPointDetector)initWithImage:(__CVBuffer *)a3;
+- (BOOL)isVerticalOrHorizontal:(int)horizontal;
+- (VCPVanishingPointDetector)initWithImage:(__CVBuffer *)image;
 - (id).cxx_construct;
-- (int)calculateConfidence:(id)a3 lineDistance:(float)a4 vaninshingPoint:(CGPoint)a5 vanishingPointConfidence:(float *)a6;
+- (int)calculateConfidence:(id)confidence lineDistance:(float)distance vaninshingPoint:(CGPoint)point vanishingPointConfidence:(float *)pointConfidence;
 - (int)calculateOrientationResponses;
-- (int)detect:(CGPoint *)a3 withConfidence:(float *)a4 dominantLine:(id *)a5;
-- (int)generateLineWeightMap:(id)a3 weightMap:(float *)a4;
+- (int)detect:(CGPoint *)detect withConfidence:(float *)confidence dominantLine:(id *)line;
+- (int)generateLineWeightMap:(id)map weightMap:(float *)weightMap;
 - (int)generateOrientationMap;
-- (int)prepareImage:(__CVBuffer *)a3;
-- (int)searchVanishingPointandDominantLine:(float *)a3 lineGroup:(id)a4 vanishingPoint:(CGPoint *)a5 vanishingPointConfidence:(float *)a6 dominantLine:(id *)a7;
-- (int)voteVanishingPoint:(float *)a3;
-- (void)averageOrientationResponses:(int)a3 withCurrentMap:(float *)a4;
+- (int)prepareImage:(__CVBuffer *)image;
+- (int)searchVanishingPointandDominantLine:(float *)line lineGroup:(id)group vanishingPoint:(CGPoint *)point vanishingPointConfidence:(float *)confidence dominantLine:(id *)dominantLine;
+- (int)voteVanishingPoint:(float *)point;
+- (void)averageOrientationResponses:(int)responses withCurrentMap:(float *)map;
 - (void)dealloc;
-- (void)extractUsefulAreaFrom:(float *)a3 to:(float *)a4 withOffset:(unint64_t)a5 stridePadded:(unint64_t)a6 width:(unint64_t)a7 height:(unint64_t)a8;
-- (void)smoothFiltering:(float *)a3 width:(unint64_t)a4 height:(unint64_t)a5;
+- (void)extractUsefulAreaFrom:(float *)from to:(float *)to withOffset:(unint64_t)offset stridePadded:(unint64_t)padded width:(unint64_t)width height:(unint64_t)height;
+- (void)smoothFiltering:(float *)filtering width:(unint64_t)width height:(unint64_t)height;
 @end
 
 @implementation VCPVanishingPointDetector
 
-- (VCPVanishingPointDetector)initWithImage:(__CVBuffer *)a3
+- (VCPVanishingPointDetector)initWithImage:(__CVBuffer *)image
 {
   v11.receiver = self;
   v11.super_class = VCPVanishingPointDetector;
@@ -26,7 +26,7 @@
   v5 = v4;
   if (v4)
   {
-    if ([(VCPVanishingPointDetector *)v4 prepareImage:a3])
+    if ([(VCPVanishingPointDetector *)v4 prepareImage:image])
     {
       v6 = 0;
     }
@@ -55,57 +55,57 @@
   return v7;
 }
 
-- (int)detect:(CGPoint *)a3 withConfidence:(float *)a4 dominantLine:(id *)a5
+- (int)detect:(CGPoint *)detect withConfidence:(float *)confidence dominantLine:(id *)line
 {
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (!self->_validDimension)
   {
-    a3->x = 0.0;
-    a3->y = 0.0;
-    *a4 = 0.0;
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    if (!v11)
+    detect->x = 0.0;
+    detect->y = 0.0;
+    *confidence = 0.0;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if (!dictionary)
     {
-      v10 = -108;
+      calculateOrientationResponses = -108;
       goto LABEL_12;
     }
 
     v16.x = 0.0;
     v16.y = 0.0;
     v12 = NSStringFromPoint(v16);
-    [v11 setObject:v12 forKey:@"Point0"];
+    [dictionary setObject:v12 forKey:@"Point0"];
 
     v17.x = 0.0;
     v17.y = 0.0;
     v13 = NSStringFromPoint(v17);
-    [v11 setObject:v13 forKey:@"Point1"];
+    [dictionary setObject:v13 forKey:@"Point1"];
 
-    [v11 setObject:&unk_1F49BB0E8 forKey:@"Radius"];
-    [v11 setObject:&unk_1F49BB0E8 forKey:@"Theta"];
-    [v11 setObject:&unk_1F49BBE30 forKey:@"Length"];
-    v14 = v11;
-    *a5 = v11;
+    [dictionary setObject:&unk_1F49BB0E8 forKey:@"Radius"];
+    [dictionary setObject:&unk_1F49BB0E8 forKey:@"Theta"];
+    [dictionary setObject:&unk_1F49BBE30 forKey:@"Length"];
+    v14 = dictionary;
+    *line = dictionary;
 
     goto LABEL_10;
   }
 
-  v10 = [(VCPVanishingPointDetector *)self calculateOrientationResponses];
-  if (!v10)
+  calculateOrientationResponses = [(VCPVanishingPointDetector *)self calculateOrientationResponses];
+  if (!calculateOrientationResponses)
   {
-    v10 = [(VCPVanishingPointDetector *)self generateOrientationMap];
-    if (!v10)
+    calculateOrientationResponses = [(VCPVanishingPointDetector *)self generateOrientationMap];
+    if (!calculateOrientationResponses)
     {
-      v10 = [(VCPVanishingPointDetector *)self generateLineWeightMap:v9 weightMap:self->_edgeWeightMap];
-      if (!v10)
+      calculateOrientationResponses = [(VCPVanishingPointDetector *)self generateLineWeightMap:array weightMap:self->_edgeWeightMap];
+      if (!calculateOrientationResponses)
       {
-        v10 = [(VCPVanishingPointDetector *)self voteVanishingPoint:self->_image];
-        if (!v10)
+        calculateOrientationResponses = [(VCPVanishingPointDetector *)self voteVanishingPoint:self->_image];
+        if (!calculateOrientationResponses)
         {
-          v10 = [(VCPVanishingPointDetector *)self searchVanishingPointandDominantLine:self->_image lineGroup:v9 vanishingPoint:a3 vanishingPointConfidence:a4 dominantLine:a5];
-          if (!v10)
+          calculateOrientationResponses = [(VCPVanishingPointDetector *)self searchVanishingPointandDominantLine:self->_image lineGroup:array vanishingPoint:detect vanishingPointConfidence:confidence dominantLine:line];
+          if (!calculateOrientationResponses)
           {
 LABEL_10:
-            v10 = 0;
+            calculateOrientationResponses = 0;
           }
         }
       }
@@ -114,7 +114,7 @@ LABEL_10:
 
 LABEL_12:
 
-  return v10;
+  return calculateOrientationResponses;
 }
 
 - (void)dealloc
@@ -157,15 +157,15 @@ LABEL_12:
   [(VCPVanishingPointDetector *)&v9 dealloc];
 }
 
-- (int)prepareImage:(__CVBuffer *)a3
+- (int)prepareImage:(__CVBuffer *)image
 {
-  if (!a3)
+  if (!image)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
   if (Height >= Width)
   {
     v7 = Width;
@@ -224,7 +224,7 @@ LABEL_12:
   }
 
   pixelBuffer = 0;
-  Scaler::Scale(&self->_scaler, a3, &pixelBuffer, v12, v11, 875704422);
+  Scaler::Scale(&self->_scaler, image, &pixelBuffer, v12, v11, 875704422);
   v13 = v14;
   if (!v14)
   {
@@ -450,33 +450,33 @@ LABEL_4:
   }
 }
 
-- (void)extractUsefulAreaFrom:(float *)a3 to:(float *)a4 withOffset:(unint64_t)a5 stridePadded:(unint64_t)a6 width:(unint64_t)a7 height:(unint64_t)a8
+- (void)extractUsefulAreaFrom:(float *)from to:(float *)to withOffset:(unint64_t)offset stridePadded:(unint64_t)padded width:(unint64_t)width height:(unint64_t)height
 {
-  if (a8)
+  if (height)
   {
-    v8 = a8;
-    v10 = 4 * a7;
-    v11 = 4 * a6;
-    v12 = &a3[a5];
+    heightCopy = height;
+    v10 = 4 * width;
+    v11 = 4 * padded;
+    v12 = &from[offset];
     do
     {
-      memcpy(a4, v12, v10);
+      memcpy(to, v12, v10);
       v12 = (v12 + v11);
-      a4 = (a4 + v10);
-      --v8;
+      to = (to + v10);
+      --heightCopy;
     }
 
-    while (v8);
+    while (heightCopy);
   }
 }
 
-- (void)averageOrientationResponses:(int)a3 withCurrentMap:(float *)a4
+- (void)averageOrientationResponses:(int)responses withCurrentMap:(float *)map
 {
   __B = 8.0;
   v5 = self->_height * self->_width;
-  v6 = self->_orientationResponses[a3];
-  vDSP_vsdiv(a4, 1, &__B, a4, 1, v5);
-  MEMORY[0x1CCA97370](v6, 1, a4, 1, v6, 1, v5);
+  v6 = self->_orientationResponses[responses];
+  vDSP_vsdiv(map, 1, &__B, map, 1, v5);
+  MEMORY[0x1CCA97370](v6, 1, map, 1, v6, 1, v5);
 }
 
 - (int)generateOrientationMap
@@ -657,7 +657,7 @@ LABEL_42:
   return v10;
 }
 
-- (void)smoothFiltering:(float *)a3 width:(unint64_t)a4 height:(unint64_t)a5
+- (void)smoothFiltering:(float *)filtering width:(unint64_t)width height:(unint64_t)height
 {
   v22 = *MEMORY[0x1E69E9840];
   v8 = -2;
@@ -696,10 +696,10 @@ LABEL_42:
   }
 
   while (v8 != 3);
-  vDSP_f5x5(a3, a5, a4, __F, a3);
+  vDSP_f5x5(filtering, height, width, __F, filtering);
 }
 
-- (int)voteVanishingPoint:(float *)a3
+- (int)voteVanishingPoint:(float *)point
 {
   width = self->_width;
   height = self->_height;
@@ -713,7 +713,7 @@ LABEL_42:
     v7 = self->_width;
   }
 
-  vDSP_vclr(a3, 1, height * width);
+  vDSP_vclr(point, 1, height * width);
   v23 = height;
   if (height >= 1)
   {
@@ -771,7 +771,7 @@ LABEL_42:
                       v18 = 5.0 / ((v17 + v17) + 1.0);
                       if (v21 <= v18)
                       {
-                        a3[v8] = a3[v8] + (((fabsf(sinf((v15 + v15) * 0.017453)) + 1.0) * self->_edgeWeightMap[v8]) / (((v17 * v21) * (v17 * v21)) + 1.0));
+                        point[v8] = point[v8] + (((fabsf(sinf((v15 + v15) * 0.017453)) + 1.0) * self->_edgeWeightMap[v8]) / (((v17 * v21) * (v17 * v21)) + 1.0));
                       }
                     }
                   }
@@ -804,14 +804,14 @@ LABEL_42:
   return 0;
 }
 
-- (int)searchVanishingPointandDominantLine:(float *)a3 lineGroup:(id)a4 vanishingPoint:(CGPoint *)a5 vanishingPointConfidence:(float *)a6 dominantLine:(id *)a7
+- (int)searchVanishingPointandDominantLine:(float *)line lineGroup:(id)group vanishingPoint:(CGPoint *)point vanishingPointConfidence:(float *)confidence dominantLine:(id *)dominantLine
 {
-  v47 = a6;
+  confidenceCopy = confidence;
   v54 = *MEMORY[0x1E69E9840];
-  v48 = a4;
+  groupCopy = group;
   width = self->_width;
   height = self->_height;
-  [(VCPVanishingPointDetector *)self smoothFiltering:a3 width:width height:height];
+  [(VCPVanishingPointDetector *)self smoothFiltering:line width:width height:height];
   if (height < 1)
   {
     v17 = 0.0;
@@ -830,7 +830,7 @@ LABEL_42:
     {
       if (width >= 1)
       {
-        v19 = &a3[v13];
+        v19 = &line[v13];
         v20 = 0.0;
         v21 = width;
         do
@@ -859,13 +859,13 @@ LABEL_42:
     while (v14 != height);
   }
 
-  a5->x = v15 / width;
-  a5->y = v17 / height;
+  point->x = v15 / width;
+  point->y = v17 / height;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v24 = v48;
+  v24 = groupCopy;
   v25 = [v24 countByEnumeratingWithState:&v49 objects:v53 count:16];
   v26 = v15 - vcvts_n_f32_s32(width, 1uLL);
   v27 = v17 - vcvts_n_f32_s32(height, 1uLL);
@@ -884,7 +884,7 @@ LABEL_42:
         }
 
         v32 = *(*(&v49 + 1) + 8 * i);
-        v33 = [v32 objectForKey:{@"Radius", v47}];
+        v33 = [v32 objectForKey:{@"Radius", confidenceCopy}];
         [v33 floatValue];
         v35 = v34;
 
@@ -898,7 +898,7 @@ LABEL_42:
         if (v41 < v30)
         {
           v42 = v32;
-          *a7 = v32;
+          *dominantLine = v32;
           v30 = v41;
         }
 
@@ -918,17 +918,17 @@ LABEL_42:
 
   if (![v24 count])
   {
-    v43 = v47;
-    *v47 = 0.0;
+    v43 = confidenceCopy;
+    *confidenceCopy = 0.0;
 LABEL_26:
     v45 = 0;
     *v43 = 1.0;
     goto LABEL_27;
   }
 
-  v43 = v47;
+  v43 = confidenceCopy;
   *&v44 = v29 / [v24 count];
-  v45 = [(VCPVanishingPointDetector *)self calculateConfidence:v24 lineDistance:v47 vaninshingPoint:v44 vanishingPointConfidence:v26, v27];
+  v45 = [(VCPVanishingPointDetector *)self calculateConfidence:v24 lineDistance:confidenceCopy vaninshingPoint:v44 vanishingPointConfidence:v26, v27];
   if (!v45)
   {
     goto LABEL_26;
@@ -939,16 +939,16 @@ LABEL_27:
   return v45;
 }
 
-- (int)calculateConfidence:(id)a3 lineDistance:(float)a4 vaninshingPoint:(CGPoint)a5 vanishingPointConfidence:(float *)a6
+- (int)calculateConfidence:(id)confidence lineDistance:(float)distance vaninshingPoint:(CGPoint)point vanishingPointConfidence:(float *)pointConfidence
 {
-  v9 = a3;
+  confidenceCopy = confidence;
   v10 = hypotf(self->_width, self->_height);
-  v11 = [v9 count];
-  v12 = expf(((a4 / v10) * (a4 / v10)) / -0.0648);
-  *a6 = v12;
+  v11 = [confidenceCopy count];
+  v12 = expf(((distance / v10) * (distance / v10)) / -0.0648);
+  *pointConfidence = v12;
   if (v12 >= 0.4)
   {
-    v53 = a6;
+    pointConfidenceCopy = pointConfidence;
     v13 = 0.2;
     if (v11 >= 3)
     {
@@ -960,7 +960,7 @@ LABEL_27:
       do
       {
         v55 = v14;
-        v19 = [v9 objectAtIndex:?];
+        v19 = [confidenceCopy objectAtIndex:?];
         v20 = [v19 objectForKey:@"Radius"];
         [v20 floatValue];
         v57 = v21;
@@ -980,7 +980,7 @@ LABEL_27:
           v29 = __sincosf_stret(v24 * 0.017453);
           do
           {
-            v30 = [v9 objectAtIndex:v17];
+            v30 = [confidenceCopy objectAtIndex:v17];
             v31 = [v30 objectForKey:@"Radius"];
             [v31 floatValue];
             v33 = v32;
@@ -1009,8 +1009,8 @@ LABEL_27:
                 v10 = v44;
                 v49 = v43;
                 v18 = v42;
-                v50 = v47 - a5.x;
-                v51 = v48 - a5.y;
+                v50 = v47 - point.x;
+                v51 = v48 - point.y;
                 v16 = v49 + hypotf(v50, v51);
                 ++v15;
               }
@@ -1039,15 +1039,15 @@ LABEL_27:
       }
     }
 
-    *v53 = v13;
+    *pointConfidenceCopy = v13;
   }
 
   return 0;
 }
 
-- (BOOL)isVerticalOrHorizontal:(int)a3
+- (BOOL)isVerticalOrHorizontal:(int)horizontal
 {
-  v3 = a3 % 180 + (a3 % 180 < 0 ? 0xB4 : 0);
+  v3 = horizontal % 180 + (horizontal % 180 < 0 ? 0xB4 : 0);
   v4 = v3 * 0.017453;
   v5 = (180 - v3) * 0.017453;
   v7 = v3 - 90;
@@ -1061,9 +1061,9 @@ LABEL_27:
   return fminf(fminf(v4, v5), v8 * 0.017453) < 0.0087266;
 }
 
-- (int)generateLineWeightMap:(id)a3 weightMap:(float *)a4
+- (int)generateLineWeightMap:(id)map weightMap:(float *)weightMap
 {
-  v6 = a3;
+  mapCopy = map;
   v7 = (self->_pixelVar * -0.03078) + 5.3225;
   v8 = 5.0;
   if (v7 < 5.0)
@@ -1081,7 +1081,7 @@ LABEL_27:
     v9 = v8;
   }
 
-  v10 = [[VCPEdgeDetector alloc] initWithImage:self->_image edgeMap:a4 width:self->_width height:self->_height widthExtension:15 heightExtension:15];
+  v10 = [[VCPEdgeDetector alloc] initWithImage:self->_image edgeMap:weightMap width:self->_width height:self->_height widthExtension:15 heightExtension:15];
   LODWORD(v11) = 1153957888;
   LODWORD(v12) = 1161527296;
   v43 = v10;
@@ -1091,9 +1091,9 @@ LABEL_27:
   {
     v15 = [VCPHoughTransform alloc];
     LODWORD(v16) = 1.0;
-    v47 = a4;
-    v42 = [(VCPHoughTransform *)v15 initWithEdgeMap:a4 mapWidth:LODWORD(self->_width) mapHeight:LODWORD(self->_height) angleStep:v16];
-    [(VCPHoughTransform *)v42 DetectLinesWithThreshold:70 output:v6];
+    weightMapCopy = weightMap;
+    v42 = [(VCPHoughTransform *)v15 initWithEdgeMap:weightMap mapWidth:LODWORD(self->_width) mapHeight:LODWORD(self->_height) angleStep:v16];
+    [(VCPHoughTransform *)v42 DetectLinesWithThreshold:70 output:mapCopy];
     height = self->_height;
     if (height)
     {
@@ -1107,24 +1107,24 @@ LABEL_27:
           v44 = i;
           v45 = i;
           v18 = v18;
-          v22 = self;
+          selfCopy2 = self;
           do
           {
             v23 = 0;
-            v47[v18] = 1.0;
+            weightMapCopy[v18] = 1.0;
             v46 = v21;
             v24 = v21 - vcvts_n_f32_u64(width, 1uLL);
-            v25 = v45 - vcvts_n_f32_u64(v22->_height, 1uLL);
+            v25 = v45 - vcvts_n_f32_u64(selfCopy2->_height, 1uLL);
             while (1)
             {
-              v26 = [v6 count];
+              v26 = [mapCopy count];
               v27 = v26 >= 5 ? 5 : v26;
               if (v27 <= v23)
               {
                 break;
               }
 
-              v28 = [v6 objectAtIndex:v23];
+              v28 = [mapCopy objectAtIndex:v23];
               v29 = [v28 objectForKey:@"Radius"];
               [v29 floatValue];
               v31 = v30;
@@ -1134,21 +1134,21 @@ LABEL_27:
               v34 = v33;
 
               v35 = [v28 objectForKey:@"Length"];
-              v36 = [v35 integerValue];
+              integerValue = [v35 integerValue];
               v37 = v34 * 0.017453;
 
               v38 = __sincosf_stret(v37);
               if (vabds_f32((v25 * v38.__sinval) + (v24 * v38.__cosval), v31) <= 2.0)
               {
-                v39 = fminf(expf(v36 / 320.0), 3.0);
+                v39 = fminf(expf(integerValue / 320.0), 3.0);
                 v40 = (fabsf(sinf(v37 + v37)) + 1.0) * v39;
-                v47[v18] = v40;
+                weightMapCopy[v18] = v40;
               }
 
               ++v23;
             }
 
-            v22 = self;
+            selfCopy2 = self;
             v21 = v46 + 1;
             ++v18;
             width = self->_width;

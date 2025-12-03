@@ -2,20 +2,20 @@
 - (NSDictionary)overlayParameters;
 - (NSDictionary)secureOverlayParameters;
 - (PKOverlayableWebServiceRequest)init;
-- (PKOverlayableWebServiceRequest)initWithCoder:(id)a3;
+- (PKOverlayableWebServiceRequest)initWithCoder:(id)coder;
 - (PKZeroingDataContainer)archivedData;
-- (id)overlayValueForKey:(id)a3;
-- (id)secureOverlayValueForKey:(id)a3;
-- (void)_applyOverlayToDictionary:(id)a3;
-- (void)_applySecureOverlayToDictionary:(id)a3;
-- (void)_setOverriddenKeys:(id)a3;
-- (void)_updateRequestForRedirect:(id)a3 overrides:(id)a4 webService:(id)a5 withCompletion:(id)a6;
-- (void)_updateRequestForRetry:(id)a3 retryFields:(id)a4 webService:(id)a5 withCompletion:(id)a6;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOverlayParameters:(id)a3;
-- (void)setOverlayValue:(id)a3 forKey:(id)a4;
-- (void)setSecureOverlayParameters:(id)a3;
-- (void)setSecureOverlayValue:(id)a3 forKey:(id)a4;
+- (id)overlayValueForKey:(id)key;
+- (id)secureOverlayValueForKey:(id)key;
+- (void)_applyOverlayToDictionary:(id)dictionary;
+- (void)_applySecureOverlayToDictionary:(id)dictionary;
+- (void)_setOverriddenKeys:(id)keys;
+- (void)_updateRequestForRedirect:(id)redirect overrides:(id)overrides webService:(id)service withCompletion:(id)completion;
+- (void)_updateRequestForRetry:(id)retry retryFields:(id)fields webService:(id)service withCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOverlayParameters:(id)parameters;
+- (void)setOverlayValue:(id)value forKey:(id)key;
+- (void)setSecureOverlayParameters:(id)parameters;
+- (void)setSecureOverlayValue:(id)value forKey:(id)key;
 @end
 
 @implementation PKOverlayableWebServiceRequest
@@ -39,12 +39,12 @@
   return v2;
 }
 
-- (PKOverlayableWebServiceRequest)initWithCoder:(id)a3
+- (PKOverlayableWebServiceRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PKOverlayableWebServiceRequest;
-  v5 = [(PKWebServiceRequest *)&v21 initWithCoder:v4];
+  v5 = [(PKWebServiceRequest *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -55,36 +55,36 @@
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v6 setWithObjects:{v7, v8, v9, v10, v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"overlayParameters"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"overlayParameters"];
     overlayParameters = v5->_overlayParameters;
     v5->_overlayParameters = v14;
 
-    v16 = [v4 decodeObjectOfClasses:v13 forKey:@"secureOverlayParameters"];
+    v16 = [coderCopy decodeObjectOfClasses:v13 forKey:@"secureOverlayParameters"];
     secureOverlayParameters = v5->_secureOverlayParameters;
     v5->_secureOverlayParameters = v16;
 
-    v18 = [v4 decodeObjectOfClasses:v13 forKey:@"overridenKeys"];
+    v18 = [coderCopy decodeObjectOfClasses:v13 forKey:@"overridenKeys"];
     overridenKeys = v5->_overridenKeys;
     v5->_overridenKeys = v18;
 
-    v5->_requiresConfigurationForRetry = [v4 decodeBoolForKey:@"requiresConfigurationForRetry"];
-    v5->_requiresConfigurationForRedirect = [v4 decodeBoolForKey:@"requiresConfigurationForRedirect"];
+    v5->_requiresConfigurationForRetry = [coderCopy decodeBoolForKey:@"requiresConfigurationForRetry"];
+    v5->_requiresConfigurationForRedirect = [coderCopy decodeBoolForKey:@"requiresConfigurationForRedirect"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKOverlayableWebServiceRequest;
-  v4 = a3;
-  [(PKWebServiceRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_overlayParameters forKey:{@"overlayParameters", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_secureOverlayParameters forKey:@"secureOverlayParameters"];
-  [v4 encodeObject:self->_overridenKeys forKey:@"overridenKeys"];
-  [v4 encodeBool:self->_requiresConfigurationForRetry forKey:@"requiresConfigurationForRetry"];
-  [v4 encodeBool:self->_requiresConfigurationForRedirect forKey:@"requiresConfigurationForRedirect"];
+  coderCopy = coder;
+  [(PKWebServiceRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_overlayParameters forKey:{@"overlayParameters", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_secureOverlayParameters forKey:@"secureOverlayParameters"];
+  [coderCopy encodeObject:self->_overridenKeys forKey:@"overridenKeys"];
+  [coderCopy encodeBool:self->_requiresConfigurationForRetry forKey:@"requiresConfigurationForRetry"];
+  [coderCopy encodeBool:self->_requiresConfigurationForRedirect forKey:@"requiresConfigurationForRedirect"];
 }
 
 - (PKZeroingDataContainer)archivedData
@@ -107,28 +107,28 @@
   return v5;
 }
 
-- (void)setOverlayValue:(id)a3 forKey:(id)a4
+- (void)setOverlayValue:(id)value forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6)
+  valueCopy = value;
+  keyCopy = key;
+  if (keyCopy)
   {
     overlayParameters = self->_overlayParameters;
-    if (v8)
+    if (valueCopy)
     {
-      [(NSMutableDictionary *)overlayParameters setObject:v8 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)overlayParameters setObject:valueCopy forKeyedSubscript:keyCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)overlayParameters removeObjectForKey:v6];
+      [(NSMutableDictionary *)overlayParameters removeObjectForKey:keyCopy];
     }
   }
 }
 
-- (id)overlayValueForKey:(id)a3
+- (id)overlayValueForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = [(NSMutableDictionary *)self->_overlayParameters objectForKeyedSubscript:?];
   }
@@ -148,13 +148,13 @@
   return v2;
 }
 
-- (void)setOverlayParameters:(id)a3
+- (void)setOverlayParameters:(id)parameters
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  parametersCopy = parameters;
+  v7 = parametersCopy;
+  if (parametersCopy)
   {
-    v5 = [v4 mutableCopy];
+    v5 = [parametersCopy mutableCopy];
   }
 
   else
@@ -166,28 +166,28 @@
   objc_storeStrong(&self->_overlayParameters, v5);
 }
 
-- (void)setSecureOverlayValue:(id)a3 forKey:(id)a4
+- (void)setSecureOverlayValue:(id)value forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6)
+  valueCopy = value;
+  keyCopy = key;
+  if (keyCopy)
   {
     secureOverlayParameters = self->_secureOverlayParameters;
-    if (v8)
+    if (valueCopy)
     {
-      [(NSMutableDictionary *)secureOverlayParameters setObject:v8 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)secureOverlayParameters setObject:valueCopy forKeyedSubscript:keyCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)secureOverlayParameters removeObjectForKey:v6];
+      [(NSMutableDictionary *)secureOverlayParameters removeObjectForKey:keyCopy];
     }
   }
 }
 
-- (id)secureOverlayValueForKey:(id)a3
+- (id)secureOverlayValueForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = [(NSMutableDictionary *)self->_secureOverlayParameters objectForKeyedSubscript:?];
   }
@@ -207,13 +207,13 @@
   return v2;
 }
 
-- (void)setSecureOverlayParameters:(id)a3
+- (void)setSecureOverlayParameters:(id)parameters
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  parametersCopy = parameters;
+  v7 = parametersCopy;
+  if (parametersCopy)
   {
-    v5 = [v4 mutableCopy];
+    v5 = [parametersCopy mutableCopy];
   }
 
   else
@@ -225,10 +225,10 @@
   objc_storeStrong(&self->_secureOverlayParameters, v5);
 }
 
-- (void)_applyOverlayToDictionary:(id)a3
+- (void)_applyOverlayToDictionary:(id)dictionary
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -250,7 +250,7 @@
 
         v10 = *(*(&v12 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_overlayParameters objectForKeyedSubscript:v10, v12];
-        [v4 setObject:v11 forKeyedSubscript:v10];
+        [dictionaryCopy setObject:v11 forKeyedSubscript:v10];
       }
 
       v7 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -260,10 +260,10 @@
   }
 }
 
-- (void)_applySecureOverlayToDictionary:(id)a3
+- (void)_applySecureOverlayToDictionary:(id)dictionary
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -285,7 +285,7 @@
 
         v10 = *(*(&v12 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_secureOverlayParameters objectForKeyedSubscript:v10, v12];
-        [v4 setObject:v11 forKeyedSubscript:v10];
+        [dictionaryCopy setObject:v11 forKeyedSubscript:v10];
       }
 
       v7 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -295,18 +295,18 @@
   }
 }
 
-- (void)_setOverriddenKeys:(id)a3
+- (void)_setOverriddenKeys:(id)keys
 {
-  v4 = [a3 copy];
+  v4 = [keys copy];
   overridenKeys = self->_overridenKeys;
   self->_overridenKeys = v4;
 }
 
-- (void)_updateRequestForRedirect:(id)a3 overrides:(id)a4 webService:(id)a5 withCompletion:(id)a6
+- (void)_updateRequestForRedirect:(id)redirect overrides:(id)overrides webService:(id)service withCompletion:(id)completion
 {
-  v14 = a3;
-  v9 = a4;
-  v10 = a6;
+  redirectCopy = redirect;
+  overridesCopy = overrides;
+  completionCopy = completion;
   v11 = [(NSMutableDictionary *)self->_overlayParameters mutableCopy];
   v12 = v11;
   if (v11)
@@ -314,30 +314,30 @@
     [v11 removeObjectsForKeys:self->_overridenKeys];
   }
 
-  if (v9)
+  if (overridesCopy)
   {
-    [v12 addEntriesFromDictionary:v9];
+    [v12 addEntriesFromDictionary:overridesCopy];
   }
 
   v13 = [objc_opt_class() _HTTPBodyWithDictionary:v12];
-  [v14 setHTTPBody:v13];
+  [redirectCopy setHTTPBody:v13];
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, v14);
+    completionCopy[2](completionCopy, redirectCopy);
   }
 }
 
-- (void)_updateRequestForRetry:(id)a3 retryFields:(id)a4 webService:(id)a5 withCompletion:(id)a6
+- (void)_updateRequestForRetry:(id)retry retryFields:(id)fields webService:(id)service withCompletion:(id)completion
 {
-  v10 = a3;
-  v8 = a6;
+  retryCopy = retry;
+  completionCopy = completion;
   v9 = [objc_opt_class() _HTTPBodyWithDictionary:self->_overlayParameters];
-  [v10 setHTTPBody:v9];
+  [retryCopy setHTTPBody:v9];
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8, v10);
+    completionCopy[2](completionCopy, retryCopy);
   }
 }
 

@@ -1,20 +1,20 @@
 @interface AADeviceBatteryInfo
 - (BOOL)caseWithBudsChargingComplete;
-- (BOOL)wasConnectedInLast:(double)a3;
+- (BOOL)wasConnectedInLast:(double)last;
 - (NSArray)nonStaleBatteries;
-- (void)updateWithNewInfo:(id)a3;
+- (void)updateWithNewInfo:(id)info;
 @end
 
 @implementation AADeviceBatteryInfo
 
-- (void)updateWithNewInfo:(id)a3
+- (void)updateWithNewInfo:(id)info
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [a3 batteries];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  batteries = [info batteries];
+  v5 = [batteries countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -26,7 +26,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(batteries);
         }
 
         v9 = [*(*(&v10 + 1) + 8 * v8) copy];
@@ -36,7 +36,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [batteries countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -50,8 +50,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(AADeviceBatteryInfo *)self batteries];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  batteries = [(AADeviceBatteryInfo *)self batteries];
+  v5 = [batteries countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -62,7 +62,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(batteries);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -72,7 +72,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [batteries countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -81,19 +81,19 @@
   return v3;
 }
 
-- (BOOL)wasConnectedInLast:(double)a3
+- (BOOL)wasConnectedInLast:(double)last
 {
   v5 = +[AAPairedDeviceDaemon sharedAAPairedDeviceDaemon];
-  v6 = [(AADeviceBatteryInfo *)self identifier];
-  v7 = [v5 deviceWithIdentifier:v6];
+  identifier = [(AADeviceBatteryInfo *)self identifier];
+  v7 = [v5 deviceWithIdentifier:identifier];
 
   if (v7)
   {
-    v8 = [NSDate dateWithTimeIntervalSinceNow:-a3];
-    v9 = [v7 lastSeenConnectedTime];
-    if (v9)
+    v8 = [NSDate dateWithTimeIntervalSinceNow:-last];
+    lastSeenConnectedTime = [v7 lastSeenConnectedTime];
+    if (lastSeenConnectedTime)
     {
-      v10 = [v8 earlierDate:v9];
+      v10 = [v8 earlierDate:lastSeenConnectedTime];
       v11 = v10 == v8;
 
       if (dword_1002F6620 <= 10 && (dword_1002F6620 != -1 || _LogCategory_Initialize()))
@@ -127,75 +127,75 @@ LABEL_8:
 
 - (BOOL)caseWithBudsChargingComplete
 {
-  v3 = [(AADeviceBatteryInfo *)self batteryCase];
+  batteryCase = [(AADeviceBatteryInfo *)self batteryCase];
 
-  if (v3)
+  if (batteryCase)
   {
-    v4 = [(AADeviceBatteryInfo *)self batteryCase];
-    v5 = [v4 charging];
+    batteryCase2 = [(AADeviceBatteryInfo *)self batteryCase];
+    charging = [batteryCase2 charging];
 
-    if (!v5)
+    if (!charging)
     {
       goto LABEL_12;
     }
 
-    v6 = [(AADeviceBatteryInfo *)self batteryCase];
-    v7 = [v6 fullyCharged];
+    batteryCase3 = [(AADeviceBatteryInfo *)self batteryCase];
+    fullyCharged = [batteryCase3 fullyCharged];
 
-    if (!v7)
+    if (!fullyCharged)
     {
       goto LABEL_12;
     }
 
-    v8 = [(AADeviceBatteryInfo *)self batteryLeft];
+    batteryLeft = [(AADeviceBatteryInfo *)self batteryLeft];
 
-    LOBYTE(v3) = v8 != 0;
-    if (v8)
+    LOBYTE(batteryCase) = batteryLeft != 0;
+    if (batteryLeft)
     {
-      v9 = [(AADeviceBatteryInfo *)self batteryLeft];
-      v10 = [v9 charging];
+      batteryLeft2 = [(AADeviceBatteryInfo *)self batteryLeft];
+      charging2 = [batteryLeft2 charging];
 
-      if (!v10)
+      if (!charging2)
       {
         goto LABEL_12;
       }
 
-      v11 = [(AADeviceBatteryInfo *)self batteryLeft];
-      v12 = [v11 fullyCharged];
+      batteryLeft3 = [(AADeviceBatteryInfo *)self batteryLeft];
+      fullyCharged2 = [batteryLeft3 fullyCharged];
 
-      if (!v12)
+      if (!fullyCharged2)
       {
         goto LABEL_12;
       }
     }
 
-    v13 = [(AADeviceBatteryInfo *)self batteryRight];
+    batteryRight = [(AADeviceBatteryInfo *)self batteryRight];
 
-    if (!v13)
+    if (!batteryRight)
     {
-      return v3;
+      return batteryCase;
     }
 
-    v14 = [(AADeviceBatteryInfo *)self batteryRight];
-    v15 = [v14 charging];
+    batteryRight2 = [(AADeviceBatteryInfo *)self batteryRight];
+    charging3 = [batteryRight2 charging];
 
-    if (!v15)
+    if (!charging3)
     {
 LABEL_12:
-      LOBYTE(v3) = 0;
-      return v3;
+      LOBYTE(batteryCase) = 0;
+      return batteryCase;
     }
 
-    v16 = [(AADeviceBatteryInfo *)self batteryRight];
-    LODWORD(v3) = [v16 fullyCharged];
+    batteryRight3 = [(AADeviceBatteryInfo *)self batteryRight];
+    LODWORD(batteryCase) = [batteryRight3 fullyCharged];
 
-    if (v3)
+    if (batteryCase)
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(batteryCase) = 1;
     }
   }
 
-  return v3;
+  return batteryCase;
 }
 
 @end

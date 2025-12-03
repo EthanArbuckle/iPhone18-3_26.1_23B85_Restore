@@ -72,8 +72,8 @@
   v38 = [v36 setWithArray:v37];
   [v2 setClasses:v38 forSelector:sel_fetchBatchQuery_application_userInitiated_completionHandler_ argumentIndex:0 ofReply:1];
 
-  v39 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v39 forSelector:sel_fetchBatchQuery_application_userInitiated_completionHandler_ argumentIndex:1 ofReply:1];
+  safeErrorClasses = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses forSelector:sel_fetchBatchQuery_application_userInitiated_completionHandler_ argumentIndex:1 ofReply:1];
 
   v40 = MEMORY[0x1E695DFD8];
   v41 = objc_opt_class();
@@ -116,14 +116,14 @@
   v60 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v60 forSelector:sel_getStatus_completionBlock_ argumentIndex:0 ofReply:1];
 
-  v61 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v61 forSelector:sel_getStatus_completionBlock_ argumentIndex:1 ofReply:1];
+  safeErrorClasses2 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses2 forSelector:sel_getStatus_completionBlock_ argumentIndex:1 ofReply:1];
 
   v62 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v62 forSelector:sel_getSelfStatus_completionBlock_ argumentIndex:0 ofReply:1];
 
-  v63 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v63 forSelector:sel_getSelfStatus_completionBlock_ argumentIndex:1 ofReply:1];
+  safeErrorClasses3 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses3 forSelector:sel_getSelfStatus_completionBlock_ argumentIndex:1 ofReply:1];
 
   v64 = MEMORY[0x1E695DFD8];
   v65 = objc_opt_class();
@@ -131,8 +131,8 @@
   [v2 setClasses:v66 forSelector:sel_errorsForFailedEvents_completionBlock_ argumentIndex:0 ofReply:0];
 
   v67 = MEMORY[0x1E695DFA8];
-  v68 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  v69 = [v67 setWithSet:v68];
+  safeErrorClasses4 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  v69 = [v67 setWithSet:safeErrorClasses4];
 
   [v69 addObject:objc_opt_class()];
   [v69 addObject:objc_opt_class()];
@@ -170,11 +170,11 @@
   v82 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v82 forSelector:sel_makeReports_additionalData_auditorURI_completionBlock_ argumentIndex:2 ofReply:0];
 
-  v83 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v83 forSelector:sel_transparencyIDSRepair_ argumentIndex:0 ofReply:1];
+  safeErrorClasses5 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses5 forSelector:sel_transparencyIDSRepair_ argumentIndex:0 ofReply:1];
 
-  v84 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v84 forSelector:sel_transparencyTriggerIDMSFetch_ argumentIndex:0 ofReply:1];
+  safeErrorClasses6 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses6 forSelector:sel_transparencyTriggerIDMSFetch_ argumentIndex:0 ofReply:1];
 
   v85 = MEMORY[0x1E695DFD8];
   v86 = objc_opt_class();
@@ -183,25 +183,25 @@
   v89 = [v85 setWithObjects:{v86, v87, v88, objc_opt_class(), 0}];
   [v2 setClasses:v89 forSelector:sel_transparencySysDiagnose_ argumentIndex:0 ofReply:1];
 
-  v90 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v90 forSelector:sel_waitForIDSRegistration_complete_ argumentIndex:0 ofReply:1];
+  safeErrorClasses7 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses7 forSelector:sel_waitForIDSRegistration_complete_ argumentIndex:0 ofReply:1];
 
   v91 = MEMORY[0x1E695DFD8];
   v92 = objc_opt_class();
   v93 = [v91 setWithObjects:{v92, objc_opt_class(), 0}];
   [v2 setClasses:v93 forSelector:sel_idmsDevices_ argumentIndex:0 ofReply:1];
 
-  v94 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v94 forSelector:sel_idmsDevices_ argumentIndex:1 ofReply:1];
+  safeErrorClasses8 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses8 forSelector:sel_idmsDevices_ argumentIndex:1 ofReply:1];
 
-  v95 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v95 forSelector:sel_triggerSelfValidate_ argumentIndex:0 ofReply:1];
+  safeErrorClasses9 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses9 forSelector:sel_triggerSelfValidate_ argumentIndex:0 ofReply:1];
 
   v96 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
   [v2 setClasses:v96 forSelector:sel_performAndWaitForSelfValidate_ argumentIndex:1 ofReply:1];
 
-  v97 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v97 forSelector:sel_performAndWaitForSelfValidate_ argumentIndex:2 ofReply:1];
+  safeErrorClasses10 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses10 forSelector:sel_performAndWaitForSelfValidate_ argumentIndex:2 ofReply:1];
 
   v98 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
   [v2 setClasses:v98 forSelector:sel_replaySelfValidate_application_pcsAccountKey_queryRequest_queryResponse_responseTime_completionHandler_ argumentIndex:0 ofReply:0];
@@ -209,22 +209,22 @@
   v99 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
   [v2 setClasses:v99 forSelector:sel_replaySelfValidate_application_pcsAccountKey_queryRequest_queryResponse_responseTime_completionHandler_ argumentIndex:0 ofReply:1];
 
-  v100 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v100 forSelector:sel_replaySelfValidate_application_pcsAccountKey_queryRequest_queryResponse_responseTime_completionHandler_ argumentIndex:1 ofReply:1];
+  safeErrorClasses11 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses11 forSelector:sel_replaySelfValidate_application_pcsAccountKey_queryRequest_queryResponse_responseTime_completionHandler_ argumentIndex:1 ofReply:1];
 
   v101 = MEMORY[0x1E695DFD8];
   v102 = objc_opt_class();
   v103 = [v101 setWithObjects:{v102, objc_opt_class(), 0}];
   [v2 setClasses:v103 forSelector:sel_transparencyCloudDevices_ argumentIndex:0 ofReply:1];
 
-  v104 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v104 forSelector:sel_transparencyCloudDevices_ argumentIndex:1 ofReply:1];
+  safeErrorClasses12 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses12 forSelector:sel_transparencyCloudDevices_ argumentIndex:1 ofReply:1];
 
-  v105 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v105 forSelector:sel_transparencyCloudDeviceAdd_clientData_complete_ argumentIndex:0 ofReply:1];
+  safeErrorClasses13 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses13 forSelector:sel_transparencyCloudDeviceAdd_clientData_complete_ argumentIndex:0 ofReply:1];
 
-  v106 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v106 forSelector:sel_transparencyCloudDeviceRemove_clientData_complete_ argumentIndex:0 ofReply:1];
+  safeErrorClasses14 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses14 forSelector:sel_transparencyCloudDeviceRemove_clientData_complete_ argumentIndex:0 ofReply:1];
 
   v107 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v107 forSelector:sel_getOptInStateForAccount_complete_ argumentIndex:0 ofReply:0];
@@ -232,8 +232,8 @@
   v108 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v108 forSelector:sel_getOptInStateForAccount_complete_ argumentIndex:0 ofReply:1];
 
-  v109 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v109 forSelector:sel_getOptInStateForAccount_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses15 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses15 forSelector:sel_getOptInStateForAccount_complete_ argumentIndex:1 ofReply:1];
 
   v110 = MEMORY[0x1E695DFD8];
   v216[0] = objc_opt_class();
@@ -242,8 +242,8 @@
   v112 = [v110 setWithArray:v111];
   [v2 setClasses:v112 forSelector:sel_getAllOptInStates_ argumentIndex:0 ofReply:1];
 
-  v113 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v113 forSelector:sel_getAllOptInStates_ argumentIndex:1 ofReply:1];
+  safeErrorClasses16 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses16 forSelector:sel_getAllOptInStates_ argumentIndex:1 ofReply:1];
 
   v114 = MEMORY[0x1E695DFD8];
   v215 = objc_opt_class();
@@ -251,8 +251,8 @@
   v116 = [v114 setWithArray:v115];
   [v2 setClasses:v116 forSelector:sel_getOptInStateForApplication_complete_ argumentIndex:0 ofReply:1];
 
-  v117 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v117 forSelector:sel_getOptInStateForApplication_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses17 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses17 forSelector:sel_getOptInStateForApplication_complete_ argumentIndex:1 ofReply:1];
 
   v118 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v118 forSelector:sel_transparencyGetKTSignatures_complete_ argumentIndex:0 ofReply:0];
@@ -260,29 +260,29 @@
   v119 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
   [v2 setClasses:v119 forSelector:sel_transparencyGetKTSignatures_complete_ argumentIndex:0 ofReply:1];
 
-  v120 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v120 forSelector:sel_transparencyGetKTSignatures_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses18 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses18 forSelector:sel_transparencyGetKTSignatures_complete_ argumentIndex:1 ofReply:1];
 
   v121 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
   [v2 setClasses:v121 forSelector:sel_transparencyDumpKTRegistrationData_ argumentIndex:0 ofReply:1];
 
-  v122 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v122 forSelector:sel_transparencyDumpKTRegistrationData_ argumentIndex:1 ofReply:1];
+  safeErrorClasses19 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses19 forSelector:sel_transparencyDumpKTRegistrationData_ argumentIndex:1 ofReply:1];
 
   v123 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
   [v2 setClasses:v123 forSelector:sel_transparencyPerformRegistrationSignature_ argumentIndex:0 ofReply:1];
 
-  v124 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v124 forSelector:sel_transparencyPerformRegistrationSignature_ argumentIndex:1 ofReply:1];
+  safeErrorClasses20 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses20 forSelector:sel_transparencyPerformRegistrationSignature_ argumentIndex:1 ofReply:1];
 
-  v125 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v125 forSelector:sel_transparencyClearKTRegistrationData_ argumentIndex:0 ofReply:1];
+  safeErrorClasses21 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses21 forSelector:sel_transparencyClearKTRegistrationData_ argumentIndex:0 ofReply:1];
 
-  v126 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v126 forSelector:sel_transparencyCheckKTAccountKey_complete_ argumentIndex:0 ofReply:1];
+  safeErrorClasses22 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses22 forSelector:sel_transparencyCheckKTAccountKey_complete_ argumentIndex:0 ofReply:1];
 
-  v127 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v127 forSelector:sel_transparencyCheckKTAccountKey_complete_ argumentIndex:0 ofReply:1];
+  safeErrorClasses23 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses23 forSelector:sel_transparencyCheckKTAccountKey_complete_ argumentIndex:0 ofReply:1];
 
   v128 = MEMORY[0x1E695DFD8];
   v129 = objc_opt_class();
@@ -290,8 +290,8 @@
   v131 = [v128 setWithObjects:{v129, v130, objc_opt_class(), 0}];
   [v2 setClasses:v131 forSelector:sel_copyDeviceStatus_complete_ argumentIndex:0 ofReply:1];
 
-  v132 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v132 forSelector:sel_copyDeviceStatus_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses24 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses24 forSelector:sel_copyDeviceStatus_complete_ argumentIndex:1 ofReply:1];
 
   v133 = MEMORY[0x1E695DFD8];
   v134 = objc_opt_class();
@@ -321,8 +321,8 @@
   v147 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v147 forSelector:sel_updateStaticKeyEntry_contactIdentifier_contactExternalIdentifier_mappings_error_ argumentIndex:0 ofReply:1];
 
-  v148 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v148 forSelector:sel_updateStaticKeyEntry_contactIdentifier_contactExternalIdentifier_mappings_error_ argumentIndex:1 ofReply:1];
+  safeErrorClasses25 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses25 forSelector:sel_updateStaticKeyEntry_contactIdentifier_contactExternalIdentifier_mappings_error_ argumentIndex:1 ofReply:1];
 
   v149 = MEMORY[0x1E695DFD8];
   v212 = objc_opt_class();
@@ -339,8 +339,8 @@
   v155 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v155 forSelector:sel_updateStaticKeyEntry_contact_complete_ argumentIndex:0 ofReply:1];
 
-  v156 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v156 forSelector:sel_updateStaticKeyEntry_contact_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses26 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses26 forSelector:sel_updateStaticKeyEntry_contact_complete_ argumentIndex:1 ofReply:1];
 
   v157 = MEMORY[0x1E695DFD8];
   v210 = objc_opt_class();
@@ -351,20 +351,20 @@
   v160 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v160 forSelector:sel_findStaticKeyStoreMappingByKey_complete_ argumentIndex:0 ofReply:1];
 
-  v161 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v161 forSelector:sel_findStaticKeyStoreMappingByKey_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses27 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses27 forSelector:sel_findStaticKeyStoreMappingByKey_complete_ argumentIndex:1 ofReply:1];
 
   v162 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v162 forSelector:sel_findStaticKeyStoreMappingByIDSURI_complete_ argumentIndex:0 ofReply:1];
 
-  v163 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v163 forSelector:sel_findStaticKeyStoreMappingByIDSURI_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses28 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses28 forSelector:sel_findStaticKeyStoreMappingByIDSURI_complete_ argumentIndex:1 ofReply:1];
 
   v164 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v164 forSelector:sel_findStaticKeyStoreMappingByContactIdentifer_complete_ argumentIndex:0 ofReply:1];
 
-  v165 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v165 forSelector:sel_findStaticKeyStoreMappingByContactIdentifer_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses29 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses29 forSelector:sel_findStaticKeyStoreMappingByContactIdentifer_complete_ argumentIndex:1 ofReply:1];
 
   v166 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v166 forSelector:sel_findStaticKeyStoreMappingByContact_complete_ argumentIndex:0 ofReply:0];
@@ -372,26 +372,26 @@
   v167 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v167 forSelector:sel_findStaticKeyStoreMappingByContact_complete_ argumentIndex:0 ofReply:1];
 
-  v168 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v168 forSelector:sel_findStaticKeyStoreMappingByContact_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses30 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses30 forSelector:sel_findStaticKeyStoreMappingByContact_complete_ argumentIndex:1 ofReply:1];
 
   v169 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v169 forSelector:sel_validateStaticKeyStoreMappingByContactIdentifer_complete_ argumentIndex:0 ofReply:1];
 
-  v170 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v170 forSelector:sel_validateStaticKeyStoreMappingByContactIdentifer_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses31 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses31 forSelector:sel_validateStaticKeyStoreMappingByContactIdentifer_complete_ argumentIndex:1 ofReply:1];
 
   v171 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v171 forSelector:sel_validateStaticKeyStoreMappingByContactExternalURI_complete_ argumentIndex:0 ofReply:1];
 
-  v172 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v172 forSelector:sel_validateStaticKeyStoreMappingByContactExternalURI_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses32 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses32 forSelector:sel_validateStaticKeyStoreMappingByContactExternalURI_complete_ argumentIndex:1 ofReply:1];
 
   v173 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v173 forSelector:sel_validateStaticKeyStoreMappingByKey_complete_ argumentIndex:0 ofReply:1];
 
-  v174 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v174 forSelector:sel_validateStaticKeyStoreMappingByKey_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses33 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses33 forSelector:sel_validateStaticKeyStoreMappingByKey_complete_ argumentIndex:1 ofReply:1];
 
   v175 = MEMORY[0x1E695DFD8];
   v209 = objc_opt_class();
@@ -399,11 +399,11 @@
   v177 = [v175 setWithArray:v176];
   [v2 setClasses:v177 forSelector:sel_removeEntryByKDID_complete_ argumentIndex:0 ofReply:0];
 
-  v178 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v178 forSelector:sel_removeEntryByKDID_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses34 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses34 forSelector:sel_removeEntryByKDID_complete_ argumentIndex:1 ofReply:1];
 
-  v179 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v179 forSelector:sel_removeEntryByContactIdentifier_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses35 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses35 forSelector:sel_removeEntryByContactIdentifier_complete_ argumentIndex:1 ofReply:1];
 
   v180 = MEMORY[0x1E695DFD8];
   v208[0] = objc_opt_class();
@@ -412,26 +412,26 @@
   v182 = [v180 setWithArray:v181];
   [v2 setClasses:v182 forSelector:sel_listStaticKey_ argumentIndex:0 ofReply:1];
 
-  v183 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v183 forSelector:sel_listStaticKey_ argumentIndex:1 ofReply:1];
+  safeErrorClasses36 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses36 forSelector:sel_listStaticKey_ argumentIndex:1 ofReply:1];
 
-  v184 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v184 forSelector:sel_setErrorCode_forMapping_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses37 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses37 forSelector:sel_setErrorCode_forMapping_complete_ argumentIndex:1 ofReply:1];
 
-  v185 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v185 forSelector:sel_staticKeyTriggerSync_ argumentIndex:1 ofReply:1];
+  safeErrorClasses38 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses38 forSelector:sel_staticKeyTriggerSync_ argumentIndex:1 ofReply:1];
 
-  v186 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v186 forSelector:sel_setupCloudSchema_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses39 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses39 forSelector:sel_setupCloudSchema_complete_ argumentIndex:1 ofReply:1];
 
-  v187 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v187 forSelector:sel_resetCloudZone_ argumentIndex:1 ofReply:1];
+  safeErrorClasses40 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses40 forSelector:sel_resetCloudZone_ argumentIndex:1 ofReply:1];
 
-  v188 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v188 forSelector:sel_reportEligibility_complete_ argumentIndex:0 ofReply:1];
+  safeErrorClasses41 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses41 forSelector:sel_reportEligibility_complete_ argumentIndex:0 ofReply:1];
 
-  v189 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v189 forSelector:sel_getAggregateResult_element_complete_ argumentIndex:0 ofReply:1];
+  safeErrorClasses42 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses42 forSelector:sel_getAggregateResult_element_complete_ argumentIndex:0 ofReply:1];
 
   v190 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v190 forSelector:sel_networkKTQuery_application_traceUUID_timeout_complete_ argumentIndex:1 ofReply:0];
@@ -442,8 +442,8 @@
   v192 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v192 forSelector:sel_networkKTQuery_application_traceUUID_timeout_complete_ argumentIndex:0 ofReply:1];
 
-  v193 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v193 forSelector:sel_networkKTQuery_application_traceUUID_timeout_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses43 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses43 forSelector:sel_networkKTQuery_application_traceUUID_timeout_complete_ argumentIndex:1 ofReply:1];
 
   v194 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v194 forSelector:sel_validateIDSData_ktData_complete_ argumentIndex:0 ofReply:0];
@@ -458,8 +458,8 @@
   v198 = [v196 setWithArray:v197];
   [v2 setClasses:v198 forSelector:sel_validateIDSData_ktData_complete_ argumentIndex:0 ofReply:1];
 
-  v199 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v199 forSelector:sel_validateIDSData_ktData_complete_ argumentIndex:1 ofReply:1];
+  safeErrorClasses44 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses44 forSelector:sel_validateIDSData_ktData_complete_ argumentIndex:1 ofReply:1];
 
   v200 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v200 forSelector:sel_validateSelfForThisDeviceForApplication_pushToken_complete_ argumentIndex:0 ofReply:0];
@@ -467,14 +467,14 @@
   v201 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v201 forSelector:sel_validateSelfForThisDeviceForApplication_pushToken_complete_ argumentIndex:1 ofReply:1];
 
-  v202 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v202 forSelector:sel_validateSelfForThisDeviceForApplication_pushToken_complete_ argumentIndex:2 ofReply:1];
+  safeErrorClasses45 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses45 forSelector:sel_validateSelfForThisDeviceForApplication_pushToken_complete_ argumentIndex:2 ofReply:1];
 
   v203 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   [v2 setClasses:v203 forSelector:sel_ktRepair_complete_ argumentIndex:0 ofReply:0];
 
-  v204 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  [v2 setClasses:v204 forSelector:sel_ktRepair_complete_ argumentIndex:0 ofReply:1];
+  safeErrorClasses46 = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  [v2 setClasses:safeErrorClasses46 forSelector:sel_ktRepair_complete_ argumentIndex:0 ofReply:1];
 
   v205 = *MEMORY[0x1E69E9840];
 

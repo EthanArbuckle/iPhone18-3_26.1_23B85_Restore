@@ -1,26 +1,26 @@
 @interface MBCKModel
-+ (void)fetchFromServerWithOperationTracker:(id)a3 childrenOfClass:(Class)a4 refs:(id)a5 cache:(id)a6 completion:(id)a7;
-- (BOOL)fetchFromServerWithOperationTracker:(id)a3 error:(id *)a4;
-- (BOOL)saveToCacheWithError:(id *)a3;
-- (BOOL)saveWithOperationTracker:(id)a3 error:(id *)a4;
++ (void)fetchFromServerWithOperationTracker:(id)tracker childrenOfClass:(Class)class refs:(id)refs cache:(id)cache completion:(id)completion;
+- (BOOL)fetchFromServerWithOperationTracker:(id)tracker error:(id *)error;
+- (BOOL)saveToCacheWithError:(id *)error;
+- (BOOL)saveWithOperationTracker:(id)tracker error:(id *)error;
 - (CKRecordID)recordID;
 - (MBCKModel)init;
-- (MBCKModel)initWithCoder:(id)a3;
-- (MBCKModel)initWithDictionary:(id)a3 cache:(id)a4;
-- (MBCKModel)initWithRecord:(id)a3 cache:(id)a4;
+- (MBCKModel)initWithCoder:(id)coder;
+- (MBCKModel)initWithDictionary:(id)dictionary cache:(id)cache;
+- (MBCKModel)initWithRecord:(id)record cache:(id)cache;
 - (MBDebugContext)debugContext;
 - (MBRetryStrategy)retryStrategy;
 - (NSString)recordIDString;
 - (id)recordRepresentation;
-- (void)addSavesWithBatchSave:(id)a3 completion:(id)a4;
-- (void)addSavesWithOperationTracker:(id)a3 completion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchFromServerWithOperationTracker:(id)a3 childrenOfClass:(Class)a4 refs:(id)a5 completion:(id)a6;
-- (void)fetchFromServerWithOperationTracker:(id)a3 completion:(id)a4;
-- (void)handleSaveComplete:(id)a3 withError:(id)a4 completion:(id)a5;
-- (void)refreshWithRecord:(id)a3;
-- (void)saveWithBatchSave:(id)a3 completion:(id)a4;
-- (void)saveWithOperationTracker:(id)a3 completion:(id)a4;
+- (void)addSavesWithBatchSave:(id)save completion:(id)completion;
+- (void)addSavesWithOperationTracker:(id)tracker completion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchFromServerWithOperationTracker:(id)tracker childrenOfClass:(Class)class refs:(id)refs completion:(id)completion;
+- (void)fetchFromServerWithOperationTracker:(id)tracker completion:(id)completion;
+- (void)handleSaveComplete:(id)complete withError:(id)error completion:(id)completion;
+- (void)refreshWithRecord:(id)record;
+- (void)saveWithBatchSave:(id)save completion:(id)completion;
+- (void)saveWithOperationTracker:(id)tracker completion:(id)completion;
 @end
 
 @implementation MBCKModel
@@ -34,41 +34,41 @@
   return 0;
 }
 
-- (MBCKModel)initWithRecord:(id)a3 cache:(id)a4
+- (MBCKModel)initWithRecord:(id)record cache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  cacheCopy = cache;
   v12.receiver = self;
   v12.super_class = MBCKModel;
   v8 = [(MBCKModel *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_cache, a4);
-    if (v6)
+    objc_storeStrong(&v8->_cache, cache);
+    if (recordCopy)
     {
-      v10 = [v6 creationDate];
+      creationDate = [recordCopy creationDate];
 
-      if (v10)
+      if (creationDate)
       {
         [(MBCKModel *)v9 setIsPersistedToServer:1];
       }
 
-      [(MBCKModel *)v9 refreshWithRecord:v6];
+      [(MBCKModel *)v9 refreshWithRecord:recordCopy];
     }
   }
 
   return v9;
 }
 
-- (MBCKModel)initWithDictionary:(id)a3 cache:(id)a4
+- (MBCKModel)initWithDictionary:(id)dictionary cache:(id)cache
 {
-  v6 = a3;
-  v7 = [(MBCKModel *)self initWithRecord:0 cache:a4];
+  dictionaryCopy = dictionary;
+  v7 = [(MBCKModel *)self initWithRecord:0 cache:cache];
   v8 = v7;
   if (v7)
   {
-    [(MBCKModel *)v7 refreshWithDictionary:v6];
+    [(MBCKModel *)v7 refreshWithDictionary:dictionaryCopy];
   }
 
   return v8;
@@ -95,8 +95,8 @@
   if (!retryStrategy)
   {
     v4 = [MBRetryStrategy alloc];
-    v5 = [(MBCKModel *)self debugContext];
-    v6 = [(MBRetryStrategy *)v4 initWithDebugContext:v5 networkAvailabilityProvider:0 engineMode:0 restoreType:0];
+    debugContext = [(MBCKModel *)self debugContext];
+    v6 = [(MBRetryStrategy *)v4 initWithDebugContext:debugContext networkAvailabilityProvider:0 engineMode:0 restoreType:0];
     v7 = self->_retryStrategy;
     self->_retryStrategy = v6;
 
@@ -106,31 +106,31 @@
   return retryStrategy;
 }
 
-- (void)fetchFromServerWithOperationTracker:(id)a3 completion:(id)a4
+- (void)fetchFromServerWithOperationTracker:(id)tracker completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  trackerCopy = tracker;
+  completionCopy = completion;
+  if (!trackerCopy)
   {
     __assert_rtn("[MBCKModel fetchFromServerWithOperationTracker:completion:]", "MBCKModel.m", 62, "tracker");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = completionCopy;
+  if (!completionCopy)
   {
     __assert_rtn("[MBCKModel fetchFromServerWithOperationTracker:completion:]", "MBCKModel.m", 63, "completion");
   }
 
   [objc_opt_class() timeoutIntervalForFetch];
   v10 = v9;
-  v11 = [v6 ckOperationPolicy];
-  if (!v11)
+  ckOperationPolicy = [trackerCopy ckOperationPolicy];
+  if (!ckOperationPolicy)
   {
     __assert_rtn("[MBCKModel fetchFromServerWithOperationTracker:completion:]", "MBCKModel.m", 67, "policy");
   }
 
-  v12 = v11;
-  if ([v11 fetchAssets])
+  v12 = ckOperationPolicy;
+  if ([ckOperationPolicy fetchAssets])
   {
     [v12 timeoutIntervalForFetch];
     if (v10 == v13)
@@ -145,24 +145,24 @@
   [v14 setFetchAssets:1];
   [v14 setTimeoutIntervalForFetch:v10];
   v20 = 0;
-  v15 = [MBCKOperationTracker operationTrackerWithParentTracker:v6 policy:v14 error:&v20];
+  v15 = [MBCKOperationTracker operationTrackerWithParentTracker:trackerCopy policy:v14 error:&v20];
   v16 = v20;
 
   if (v15)
   {
 
-    v6 = v15;
+    trackerCopy = v15;
 LABEL_10:
-    v17 = [(MBCKModel *)self recordID];
+    recordID = [(MBCKModel *)self recordID];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10004A2B0;
     v18[3] = &unk_1003BC138;
     v18[4] = self;
     v19 = v8;
-    [v6 fetchRecordWithID:v17 completion:v18];
+    [trackerCopy fetchRecordWithID:recordID completion:v18];
 
-    v16 = v6;
+    v16 = trackerCopy;
     goto LABEL_11;
   }
 
@@ -170,9 +170,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (BOOL)fetchFromServerWithOperationTracker:(id)a3 error:(id *)a4
+- (BOOL)fetchFromServerWithOperationTracker:(id)tracker error:(id *)error
 {
-  v6 = a3;
+  trackerCopy = tracker;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -186,13 +186,13 @@ LABEL_11:
   v13 = &v14;
   v7 = dispatch_semaphore_create(0);
   v12 = v7;
-  [(MBCKModel *)self fetchFromServerWithOperationTracker:v6 completion:v11];
+  [(MBCKModel *)self fetchFromServerWithOperationTracker:trackerCopy completion:v11];
   MBSemaphoreWaitForever();
   v8 = v15[5];
-  if (a4 && v8)
+  if (error && v8)
   {
     v8 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   v9 = v8 == 0;
@@ -201,47 +201,47 @@ LABEL_11:
   return v9;
 }
 
-+ (void)fetchFromServerWithOperationTracker:(id)a3 childrenOfClass:(Class)a4 refs:(id)a5 cache:(id)a6 completion:(id)a7
++ (void)fetchFromServerWithOperationTracker:(id)tracker childrenOfClass:(Class)class refs:(id)refs cache:(id)cache completion:(id)completion
 {
-  v11 = a3;
-  v32 = a5;
-  v35 = a6;
-  v12 = a7;
-  if (!v11)
+  trackerCopy = tracker;
+  refsCopy = refs;
+  cacheCopy = cache;
+  completionCopy = completion;
+  if (!trackerCopy)
   {
     __assert_rtn("+[MBCKModel fetchFromServerWithOperationTracker:childrenOfClass:refs:cache:completion:]", "MBCKModel.m", 109, "tracker");
   }
 
-  if (!a4)
+  if (!class)
   {
     __assert_rtn("+[MBCKModel fetchFromServerWithOperationTracker:childrenOfClass:refs:cache:completion:]", "MBCKModel.m", 110, "childClass");
   }
 
-  if (!v32)
+  if (!refsCopy)
   {
     __assert_rtn("+[MBCKModel fetchFromServerWithOperationTracker:childrenOfClass:refs:cache:completion:]", "MBCKModel.m", 111, "refs");
   }
 
-  if (!v12)
+  if (!completionCopy)
   {
     __assert_rtn("+[MBCKModel fetchFromServerWithOperationTracker:childrenOfClass:refs:cache:completion:]", "MBCKModel.m", 112, "completion");
   }
 
-  v30 = v12;
-  v34 = a4;
-  [(objc_class *)a4 timeoutIntervalForFetch];
+  v30 = completionCopy;
+  classCopy = class;
+  [(objc_class *)class timeoutIntervalForFetch];
   v14 = v13;
-  v15 = [v11 ckOperationPolicy];
-  v16 = v15;
-  if (!v15)
+  ckOperationPolicy = [trackerCopy ckOperationPolicy];
+  v16 = ckOperationPolicy;
+  if (!ckOperationPolicy)
   {
     __assert_rtn("+[MBCKModel fetchFromServerWithOperationTracker:childrenOfClass:refs:cache:completion:]", "MBCKModel.m", 116, "policy");
   }
 
-  if ([v15 fetchAssets] && (objc_msgSend(v16, "timeoutIntervalForFetch"), v14 == v17))
+  if ([ckOperationPolicy fetchAssets] && (objc_msgSend(v16, "timeoutIntervalForFetch"), v14 == v17))
   {
     v29 = v16;
-    v31 = v11;
+    v31 = trackerCopy;
   }
 
   else
@@ -252,7 +252,7 @@ LABEL_11:
     [v18 setTimeoutIntervalForFetch:v14];
     v54 = 0;
     v29 = v18;
-    v31 = [MBCKOperationTracker operationTrackerWithParentTracker:v11 policy:v18 error:&v54];
+    v31 = [MBCKOperationTracker operationTrackerWithParentTracker:trackerCopy policy:v18 error:&v54];
     v19 = v54;
 
     if (!v31)
@@ -268,14 +268,14 @@ LABEL_11:
   v52[3] = sub_10004A564;
   v52[4] = sub_10004A574;
   v53 = 0;
-  v20 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v32, "count")}];
+  v20 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(refsCopy, "count")}];
   v21 = objc_opt_new();
-  v22 = [v31 startBatchFetch];
+  startBatchFetch = [v31 startBatchFetch];
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v32;
+  obj = refsCopy;
   v23 = [obj countByEnumeratingWithState:&v48 objects:v55 count:16];
   if (v23)
   {
@@ -289,17 +289,17 @@ LABEL_11:
           objc_enumerationMutation(obj);
         }
 
-        v26 = [*(*(&v48 + 1) + 8 * i) recordID];
+        recordID = [*(*(&v48 + 1) + 8 * i) recordID];
         v42[0] = _NSConcreteStackBlock;
         v42[1] = 3221225472;
         v42[2] = sub_10004AAE8;
         v42[3] = &unk_1003BC188;
         v43 = v21;
         v46 = v52;
-        v47 = v34;
-        v44 = v35;
+        v47 = classCopy;
+        v44 = cacheCopy;
         v45 = v20;
-        [v22 fetchRecordWithID:v26 completion:v42];
+        [startBatchFetch fetchRecordWithID:recordID completion:v42];
       }
 
       v23 = [obj countByEnumeratingWithState:&v48 objects:v55 count:16];
@@ -319,51 +319,51 @@ LABEL_11:
   v38 = v28;
   v39 = obj;
   v40 = v30;
-  [v31 finishBatchFetch:v22 completion:v36];
+  [v31 finishBatchFetch:startBatchFetch completion:v36];
 
   _Block_object_dispose(v52, 8);
   v19 = v31;
 LABEL_20:
 }
 
-- (void)fetchFromServerWithOperationTracker:(id)a3 childrenOfClass:(Class)a4 refs:(id)a5 completion:(id)a6
+- (void)fetchFromServerWithOperationTracker:(id)tracker childrenOfClass:(Class)class refs:(id)refs completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  completionCopy = completion;
+  refsCopy = refs;
+  trackerCopy = tracker;
   v13 = objc_opt_class();
-  v14 = [(MBCKModel *)self cache];
-  [v13 fetchFromServerWithOperationTracker:v12 childrenOfClass:a4 refs:v11 cache:v14 completion:v10];
+  cache = [(MBCKModel *)self cache];
+  [v13 fetchFromServerWithOperationTracker:trackerCopy childrenOfClass:class refs:refsCopy cache:cache completion:completionCopy];
 }
 
-- (void)addSavesWithOperationTracker:(id)a3 completion:(id)a4
+- (void)addSavesWithOperationTracker:(id)tracker completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  trackerCopy = tracker;
+  completionCopy = completion;
+  if (!trackerCopy)
   {
     __assert_rtn("[MBCKModel addSavesWithOperationTracker:completion:]", "MBCKModel.m", 171, "tracker");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = completionCopy;
+  if (!completionCopy)
   {
     __assert_rtn("[MBCKModel addSavesWithOperationTracker:completion:]", "MBCKModel.m", 172, "completion");
   }
 
-  v9 = [(MBCKModel *)self recordRepresentation];
+  recordRepresentation = [(MBCKModel *)self recordRepresentation];
   v10 = MBGetDefaultLog();
   v11 = v10;
-  if (v9)
+  if (recordRepresentation)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [v9 recordID];
+      recordID = [recordRepresentation recordID];
       *buf = 138543362;
-      v18 = v12;
+      selfCopy = recordID;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Saving record %{public}@ to server", buf, 0xCu);
 
-      v14 = [v9 recordID];
+      recordID2 = [recordRepresentation recordID];
       _MBLog();
     }
 
@@ -373,7 +373,7 @@ LABEL_20:
     v15[3] = &unk_1003BC1D8;
     v15[4] = self;
     v16 = v8;
-    [v6 saveRecord:v9 delegate:self completion:v15];
+    [trackerCopy saveRecord:recordRepresentation delegate:self completion:v15];
   }
 
   else
@@ -381,7 +381,7 @@ LABEL_20:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to fetch the record representation for %@", buf, 0xCu);
       _MBLog();
     }
@@ -391,31 +391,31 @@ LABEL_20:
   }
 }
 
-- (void)saveWithOperationTracker:(id)a3 completion:(id)a4
+- (void)saveWithOperationTracker:(id)tracker completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  trackerCopy = tracker;
+  completionCopy = completion;
+  if (!trackerCopy)
   {
     __assert_rtn("[MBCKModel saveWithOperationTracker:completion:]", "MBCKModel.m", 188, "tracker");
   }
 
-  v8 = v7;
+  v8 = completionCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10004B154;
   v11[3] = &unk_1003BC200;
-  v12 = v6;
-  v13 = v7;
+  v12 = trackerCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
+  v9 = trackerCopy;
   v10 = v8;
   [(MBCKModel *)self prepareForSaveWithOperationTracker:v9 completion:v11];
 }
 
-- (BOOL)saveWithOperationTracker:(id)a3 error:(id *)a4
+- (BOOL)saveWithOperationTracker:(id)tracker error:(id *)error
 {
-  v6 = a3;
+  trackerCopy = tracker;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -429,13 +429,13 @@ LABEL_20:
   v13 = &v14;
   v7 = dispatch_semaphore_create(0);
   v12 = v7;
-  [(MBCKModel *)self saveWithOperationTracker:v6 completion:v11];
+  [(MBCKModel *)self saveWithOperationTracker:trackerCopy completion:v11];
   MBSemaphoreWaitForever();
   v8 = v15[5];
-  if (a4 && v8)
+  if (error && v8)
   {
     v8 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   v9 = v8 == 0;
@@ -444,33 +444,33 @@ LABEL_20:
   return v9;
 }
 
-- (void)addSavesWithBatchSave:(id)a3 completion:(id)a4
+- (void)addSavesWithBatchSave:(id)save completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  saveCopy = save;
+  completionCopy = completion;
+  if (!saveCopy)
   {
     __assert_rtn("[MBCKModel addSavesWithBatchSave:completion:]", "MBCKModel.m", 215, "batchSave");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = completionCopy;
+  if (!completionCopy)
   {
     __assert_rtn("[MBCKModel addSavesWithBatchSave:completion:]", "MBCKModel.m", 216, "completion");
   }
 
-  v9 = [(MBCKModel *)self recordRepresentation];
-  if (v9)
+  recordRepresentation = [(MBCKModel *)self recordRepresentation];
+  if (recordRepresentation)
   {
     v10 = MBGetDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [v9 recordID];
+      recordID = [recordRepresentation recordID];
       *buf = 138543362;
-      v17 = v11;
+      v17 = recordID;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Saving record %{public}@ to server", buf, 0xCu);
 
-      v13 = [v9 recordID];
+      recordID2 = [recordRepresentation recordID];
       _MBLog();
     }
 
@@ -480,7 +480,7 @@ LABEL_20:
     v14[3] = &unk_1003BC1D8;
     v14[4] = self;
     v15 = v8;
-    [v6 saveRecord:v9 delegate:self completion:v14];
+    [saveCopy saveRecord:recordRepresentation delegate:self completion:v14];
   }
 
   else
@@ -490,44 +490,44 @@ LABEL_20:
   }
 }
 
-- (void)saveWithBatchSave:(id)a3 completion:(id)a4
+- (void)saveWithBatchSave:(id)save completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  saveCopy = save;
+  completionCopy = completion;
+  if (!saveCopy)
   {
     __assert_rtn("[MBCKModel saveWithBatchSave:completion:]", "MBCKModel.m", 232, "batchedSave");
   }
 
-  v8 = v7;
-  v9 = [v6 ckOperationTracker];
-  if (!v9)
+  v8 = completionCopy;
+  ckOperationTracker = [saveCopy ckOperationTracker];
+  if (!ckOperationTracker)
   {
     __assert_rtn("[MBCKModel saveWithBatchSave:completion:]", "MBCKModel.m", 234, "tracker");
   }
 
-  v10 = v9;
+  v10 = ckOperationTracker;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10004B760;
   v13[3] = &unk_1003BC200;
-  v14 = v6;
+  v14 = saveCopy;
   v15 = v8;
   v13[4] = self;
-  v11 = v6;
+  v11 = saveCopy;
   v12 = v8;
   [(MBCKModel *)self prepareForSaveWithOperationTracker:v10 completion:v13];
 }
 
 - (CKRecordID)recordID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_recordID)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_recordID)
   {
-    v3 = [(MBCKModel *)v2 _getRecordIDString];
-    v4 = [(CKRecordID *)v2->_recordID recordName];
-    v5 = [v4 isEqualToString:v3];
+    _getRecordIDString = [(MBCKModel *)selfCopy _getRecordIDString];
+    recordName = [(CKRecordID *)selfCopy->_recordID recordName];
+    v5 = [recordName isEqualToString:_getRecordIDString];
 
     if ((v5 & 1) == 0)
     {
@@ -537,165 +537,165 @@ LABEL_20:
         v7 = v6;
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
         {
-          v8 = [(CKRecordID *)v2->_recordID recordName];
+          recordName2 = [(CKRecordID *)selfCopy->_recordID recordName];
           *buf = 138543618;
-          v24 = v8;
+          v24 = recordName2;
           v25 = 2114;
-          v26 = v3;
+          v26 = _getRecordIDString;
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "RecordID string has changed: %{public}@ -> %{public}@", buf, 0x16u);
         }
 
-        v22 = [(CKRecordID *)v2->_recordID recordName];
+        recordName3 = [(CKRecordID *)selfCopy->_recordID recordName];
         _MBLog();
       }
 
-      objc_storeStrong(&v2->_recordIDString, v3);
+      objc_storeStrong(&selfCopy->_recordIDString, _getRecordIDString);
       v9 = [CKRecordID alloc];
-      v10 = [MBCKDatabaseManager zoneIDOfType:[(MBCKModel *)v2 recordZone]];
-      v11 = [v9 initWithRecordName:v3 zoneID:v10];
-      recordID = v2->_recordID;
-      v2->_recordID = v11;
+      v10 = [MBCKDatabaseManager zoneIDOfType:[(MBCKModel *)selfCopy recordZone]];
+      v11 = [v9 initWithRecordName:_getRecordIDString zoneID:v10];
+      recordID = selfCopy->_recordID;
+      selfCopy->_recordID = v11;
     }
   }
 
   else
   {
-    v13 = v2->_recordIDString;
+    v13 = selfCopy->_recordIDString;
     if (!v13)
     {
-      v14 = [(MBCKModel *)v2 _getRecordIDString];
-      recordIDString = v2->_recordIDString;
-      v2->_recordIDString = v14;
+      _getRecordIDString2 = [(MBCKModel *)selfCopy _getRecordIDString];
+      recordIDString = selfCopy->_recordIDString;
+      selfCopy->_recordIDString = _getRecordIDString2;
 
-      v13 = v14;
+      v13 = _getRecordIDString2;
     }
 
     v16 = [CKRecordID alloc];
-    v17 = [MBCKDatabaseManager zoneIDOfType:[(MBCKModel *)v2 recordZone]];
+    v17 = [MBCKDatabaseManager zoneIDOfType:[(MBCKModel *)selfCopy recordZone]];
     v18 = [v16 initWithRecordName:v13 zoneID:v17];
-    v19 = v2->_recordID;
-    v2->_recordID = v18;
+    v19 = selfCopy->_recordID;
+    selfCopy->_recordID = v18;
   }
 
-  v20 = v2->_recordID;
-  objc_sync_exit(v2);
+  v20 = selfCopy->_recordID;
+  objc_sync_exit(selfCopy);
 
   return v20;
 }
 
 - (NSString)recordIDString
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  recordIDString = v2->_recordIDString;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  recordIDString = selfCopy->_recordIDString;
   if (!recordIDString)
   {
-    v4 = [(MBCKModel *)v2 _getRecordIDString];
-    v5 = v2->_recordIDString;
-    v2->_recordIDString = v4;
+    _getRecordIDString = [(MBCKModel *)selfCopy _getRecordIDString];
+    v5 = selfCopy->_recordIDString;
+    selfCopy->_recordIDString = _getRecordIDString;
 
-    recordIDString = v2->_recordIDString;
+    recordIDString = selfCopy->_recordIDString;
   }
 
   v6 = recordIDString;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)recordRepresentation
 {
-  v3 = [(MBCKModel *)self systemFieldData];
+  systemFieldData = [(MBCKModel *)self systemFieldData];
 
-  if (v3)
+  if (systemFieldData)
   {
     v4 = [NSKeyedUnarchiver alloc];
-    v5 = [(MBCKModel *)self systemFieldData];
-    v6 = [v4 initForReadingFromData:v5 error:0];
+    systemFieldData2 = [(MBCKModel *)self systemFieldData];
+    recordType = [v4 initForReadingFromData:systemFieldData2 error:0];
 
-    v7 = [[CKRecord alloc] initWithCoder:v6];
+    v7 = [[CKRecord alloc] initWithCoder:recordType];
   }
 
   else
   {
     v8 = [CKRecord alloc];
-    v6 = [(MBCKModel *)self recordType];
-    v9 = [(MBCKModel *)self recordID];
-    v7 = [v8 initWithRecordType:v6 recordID:v9];
+    recordType = [(MBCKModel *)self recordType];
+    recordID = [(MBCKModel *)self recordID];
+    v7 = [v8 initWithRecordType:recordType recordID:recordID];
   }
 
   return v7;
 }
 
-- (void)handleSaveComplete:(id)a3 withError:(id)a4 completion:(id)a5
+- (void)handleSaveComplete:(id)complete withError:(id)error completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completeCopy = complete;
+  errorCopy = error;
+  completionCopy = completion;
   v11 = MBGetDefaultLog();
   v12 = v11;
-  if (v9)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
       v20 = objc_opt_class();
       v21 = 2112;
-      v22 = v9;
+      v22 = errorCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to save a record for %{public}@: %@", buf, 0x16u);
       objc_opt_class();
       _MBLog();
     }
 
-    v10[2](v10, v9);
+    completionCopy[2](completionCopy, errorCopy);
   }
 
   else
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v13 = [v8 recordType];
-      v14 = [v8 recordID];
-      v15 = [v14 recordName];
+      recordType = [completeCopy recordType];
+      recordID = [completeCopy recordID];
+      recordName = [recordID recordName];
       *buf = 138543618;
-      v20 = v13;
+      v20 = recordType;
       v21 = 2114;
-      v22 = v15;
+      v22 = recordName;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%{public}@ record %{public}@ saved to server successfully", buf, 0x16u);
 
-      v16 = [v8 recordType];
-      v17 = [v8 recordID];
-      v18 = [v17 recordName];
+      recordType2 = [completeCopy recordType];
+      recordID2 = [completeCopy recordID];
+      recordName2 = [recordID2 recordName];
       _MBLog();
     }
 
-    [(MBCKModel *)self refreshWithRecord:v8];
-    [(MBCKModel *)self saveToCacheWithCompletion:v10];
+    [(MBCKModel *)self refreshWithRecord:completeCopy];
+    [(MBCKModel *)self saveToCacheWithCompletion:completionCopy];
   }
 }
 
-- (void)refreshWithRecord:(id)a3
+- (void)refreshWithRecord:(id)record
 {
-  v8 = a3;
-  if (v8)
+  recordCopy = record;
+  if (recordCopy)
   {
     v4 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-    [v8 encodeSystemFieldsWithCoder:v4];
-    v5 = [v8 creationDate];
+    [recordCopy encodeSystemFieldsWithCoder:v4];
+    creationDate = [recordCopy creationDate];
 
-    if (v5)
+    if (creationDate)
     {
       [(MBCKModel *)self setIsPersistedToServer:1];
     }
 
     if (v4)
     {
-      v6 = [v4 encodedData];
+      encodedData = [v4 encodedData];
 
-      if (v6)
+      if (encodedData)
       {
-        v7 = [v4 encodedData];
-        [(MBCKModel *)self setSystemFieldData:v7];
+        encodedData2 = [v4 encodedData];
+        [(MBCKModel *)self setSystemFieldData:encodedData2];
       }
     }
   }
@@ -706,11 +706,11 @@ LABEL_20:
   }
 }
 
-- (BOOL)saveToCacheWithError:(id *)a3
+- (BOOL)saveToCacheWithError:(id *)error
 {
-  v5 = [(MBCKModel *)self cache];
+  cache = [(MBCKModel *)self cache];
 
-  if (v5)
+  if (cache)
   {
     v13 = 0;
     v14 = &v13;
@@ -729,18 +729,18 @@ LABEL_20:
     MBSemaphoreWaitForever();
     v7 = v14[5];
     v8 = v7 == 0;
-    if (a3 && v7)
+    if (error && v7)
     {
-      *a3 = v7;
+      *error = v7;
     }
 
     _Block_object_dispose(&v13, 8);
   }
 
-  else if (a3)
+  else if (error)
   {
     [MBError errorWithCode:100 format:@"Attempting to save to cache without a cache"];
-    *a3 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -751,24 +751,24 @@ LABEL_20:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(MBCKModel *)self systemFieldData];
-  [v6 encodeObject:v5 forKey:@"SystemFields"];
+  systemFieldData = [(MBCKModel *)self systemFieldData];
+  [coderCopy encodeObject:systemFieldData forKey:@"SystemFields"];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (MBCKModel)initWithCoder:(id)a3
+- (MBCKModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6 = [(MBCKModel *)self initWithRecord:0 cache:0];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SystemFields"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SystemFields"];
     systemFieldData = v6->_systemFieldData;
     v6->_systemFieldData = v7;
   }

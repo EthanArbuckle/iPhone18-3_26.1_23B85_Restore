@@ -1,21 +1,21 @@
 @interface SDUnlockReset
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSessionID:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSessionID:(BOOL)d;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDUnlockReset
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSessionID:(BOOL)a3
+- (void)setHasSessionID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -48,8 +48,8 @@
   v7.receiver = self;
   v7.super_class = SDUnlockReset;
   v3 = [(SDUnlockReset *)&v7 description];
-  v4 = [(SDUnlockReset *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDUnlockReset *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -101,16 +101,16 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 4) != 0)
   {
     version = self->_version;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -131,31 +131,31 @@ LABEL_3:
 
   sessionID = self->_sessionID;
   PBDataWriterWriteUint32Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_4:
     resetReason = self->_resetReason;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
   if (self->_errorString)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[6] = self->_version;
-    *(v4 + 28) |= 4u;
+    toCopy[6] = self->_version;
+    *(toCopy + 28) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -174,27 +174,27 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[5] = self->_sessionID;
-  *(v4 + 28) |= 2u;
+  toCopy[5] = self->_sessionID;
+  *(toCopy + 28) |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    v4[4] = self->_resetReason;
-    *(v4 + 28) |= 1u;
+    toCopy[4] = self->_resetReason;
+    *(toCopy + 28) |= 1u;
   }
 
 LABEL_5:
   if (self->_errorString)
   {
-    v6 = v4;
-    [v4 setErrorString:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setErrorString:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) == 0)
@@ -232,31 +232,31 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_errorString copyWithZone:a3];
+  v8 = [(NSString *)self->_errorString copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_version != *(v4 + 6))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_version != *(equalCopy + 6))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
 LABEL_19:
     v7 = 0;
@@ -265,32 +265,32 @@ LABEL_19:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_sessionID != *(v4 + 5))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_sessionID != *(equalCopy + 5))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_resetReason != *(v4 + 4))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_resetReason != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_19;
   }
 
   errorString = self->_errorString;
-  if (errorString | *(v4 + 1))
+  if (errorString | *(equalCopy + 1))
   {
     v7 = [(NSString *)errorString isEqual:?];
   }
@@ -345,15 +345,15 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(NSString *)self->_errorString hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if ((v5 & 4) != 0)
   {
-    self->_version = *(v4 + 6);
+    self->_version = *(fromCopy + 6);
     *&self->_has |= 4u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -366,26 +366,26 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 2) == 0)
+  else if ((*(fromCopy + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_sessionID = *(v4 + 5);
+  self->_sessionID = *(fromCopy + 5);
   *&self->_has |= 2u;
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
 LABEL_4:
-    self->_resetReason = *(v4 + 4);
+    self->_resetReason = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
 LABEL_5:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SDUnlockReset *)self setErrorString:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

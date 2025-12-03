@@ -1,27 +1,27 @@
 @interface PGGraphSyndicatedAssetsMetricEvent
-- (PGGraphSyndicatedAssetsMetricEvent)initWithWorkingContext:(id)a3;
-- (void)gatherMetricsWithProgressBlock:(id)a3;
+- (PGGraphSyndicatedAssetsMetricEvent)initWithWorkingContext:(id)context;
+- (void)gatherMetricsWithProgressBlock:(id)block;
 @end
 
 @implementation PGGraphSyndicatedAssetsMetricEvent
 
-- (void)gatherMetricsWithProgressBlock:(id)a3
+- (void)gatherMetricsWithProgressBlock:(id)block
 {
   v98 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = 0.0;
-  v90 = _Block_copy(v4);
+  v90 = _Block_copy(blockCopy);
   if (!v90 || (v6 = CFAbsoluteTimeGetCurrent(), v6 < 0.01))
   {
 LABEL_7:
-    v7 = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
-    v8 = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
-    if (([v8 isSystemPhotoLibrary] & 1) == 0)
+    loggingConnection = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
+    photoLibrary = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
+    if (([photoLibrary isSystemPhotoLibrary] & 1) == 0)
     {
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_INFO, "PGGraphSyndicatedAssetsMetricEvent: Only reporting for system photo library.", buf, 2u);
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "PGGraphSyndicatedAssetsMetricEvent: Only reporting for system photo library.", buf, 2u);
       }
 
       if (v90)
@@ -53,11 +53,11 @@ LABEL_7:
     v11 = v10;
     if (!v9 || v10)
     {
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         *v97 = v11;
-        _os_log_error_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_ERROR, "PGGraphSyndicatedAssetsMetricEvent: Failed to open syndicated library: %@", buf, 0xCu);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "PGGraphSyndicatedAssetsMetricEvent: Failed to open syndicated library: %@", buf, 0xCu);
       }
 
       if (v90)
@@ -83,23 +83,23 @@ LABEL_7:
       goto LABEL_105;
     }
 
-    v12 = [v9 librarySpecificFetchOptions];
-    [v12 setIncludeGuestAssets:1];
+    librarySpecificFetchOptions = [v9 librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludeGuestAssets:1];
     v13 = *MEMORY[0x277CD9AD0];
     v95[0] = *MEMORY[0x277CD9B10];
     v95[1] = v13;
     v95[2] = *MEMORY[0x277CD9A80];
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v95 count:3];
-    [v12 setFetchPropertySets:v14];
+    [librarySpecificFetchOptions setFetchPropertySets:v14];
 
-    v89 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v12];
+    v89 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
     context = [v89 count];
     if (!context)
     {
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_DEFAULT, "PGGraphSyndicatedAssetsMetricEvent: No assets to report.", buf, 2u);
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "PGGraphSyndicatedAssetsMetricEvent: No assets to report.", buf, 2u);
       }
 
       if (v90)
@@ -125,12 +125,12 @@ LABEL_7:
       goto LABEL_104;
     }
 
-    v77 = self;
-    v78 = v12;
+    selfCopy = self;
+    v78 = librarySpecificFetchOptions;
     v79 = v9;
-    v85 = v8;
-    v80 = v7;
-    v81 = v4;
+    v85 = photoLibrary;
+    v80 = loggingConnection;
+    v81 = blockCopy;
     v15 = 0;
     v16 = 0;
     v17 = 0;
@@ -146,8 +146,8 @@ LABEL_7:
       {
         v23 = objc_autoreleasePoolPush();
         v24 = [v89 objectAtIndexedSubscript:v22];
-        v25 = [v24 syndicationEligibility];
-        if (v25 == 2)
+        syndicationEligibility = [v24 syndicationEligibility];
+        if (syndicationEligibility == 2)
         {
           v26 = v21 + 1;
         }
@@ -157,7 +157,7 @@ LABEL_7:
           v26 = v21;
         }
 
-        if (v25 == 1)
+        if (syndicationEligibility == 1)
         {
           v26 = v21;
           v27 = v20 + 1;
@@ -168,7 +168,7 @@ LABEL_7:
           v27 = v20;
         }
 
-        if (v25)
+        if (syndicationEligibility)
         {
           v28 = v19;
         }
@@ -178,7 +178,7 @@ LABEL_7:
           v28 = v19 + 1;
         }
 
-        if ((v25 + 2) >= 2)
+        if ((syndicationEligibility + 2) >= 2)
         {
           v29 = v28;
         }
@@ -188,7 +188,7 @@ LABEL_7:
           v29 = v19;
         }
 
-        if (v25 < 0xFFFFFFFFFFFFFFFELL)
+        if (syndicationEligibility < 0xFFFFFFFFFFFFFFFELL)
         {
           v30 = v18;
         }
@@ -198,7 +198,7 @@ LABEL_7:
           v30 = v18 + 1;
         }
 
-        if (v25 > 0)
+        if (syndicationEligibility > 0)
         {
           v29 = v19;
           v30 = v18;
@@ -210,8 +210,8 @@ LABEL_7:
           v27 = v20;
         }
 
-        v31 = v25 + 4;
-        if (v25 == -5)
+        v31 = syndicationEligibility + 4;
+        if (syndicationEligibility == -5)
         {
           v32 = v16 + 1;
         }
@@ -221,7 +221,7 @@ LABEL_7:
           v32 = v16;
         }
 
-        if (v25 == -6)
+        if (syndicationEligibility == -6)
         {
           v32 = v16;
           v33 = v15 + 1;
@@ -249,7 +249,7 @@ LABEL_7:
           v33 = v15;
         }
 
-        if (v25 <= -3)
+        if (syndicationEligibility <= -3)
         {
           v17 = v35;
         }
@@ -262,7 +262,7 @@ LABEL_7:
           v18 = v30;
         }
 
-        if (v25 <= -3)
+        if (syndicationEligibility <= -3)
         {
           v16 = v32;
           v15 = v33;
@@ -330,12 +330,12 @@ LABEL_7:
         }
 
 LABEL_82:
-        v7 = v80;
-        v4 = v81;
-        v8 = v85;
+        loggingConnection = v80;
+        blockCopy = v81;
+        photoLibrary = v85;
         v11 = 0;
         v9 = v79;
-        v12 = v78;
+        librarySpecificFetchOptions = v78;
         goto LABEL_104;
       }
 
@@ -344,22 +344,22 @@ LABEL_82:
 
 LABEL_84:
     contextb = objc_autoreleasePoolPush();
-    v38 = [v85 librarySpecificFetchOptions];
+    librarySpecificFetchOptions2 = [v85 librarySpecificFetchOptions];
     v39 = [MEMORY[0x277D3B248] predicateForIncludeMask:objc_msgSend(MEMORY[0x277D3B248] useIndex:{"maskForGuestAsset"), 1}];
-    [v38 setIncludeGuestAssets:1];
-    [v38 setInternalPredicate:v39];
-    v40 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v38];
+    [librarySpecificFetchOptions2 setIncludeGuestAssets:1];
+    [librarySpecificFetchOptions2 setInternalPredicate:v39];
+    v40 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions2];
 
     objc_autoreleasePoolPop(contextb);
     v83 = objc_autoreleasePoolPush();
     v41 = MEMORY[0x277CD98F8];
-    v42 = [v85 librarySpecificFetchOptions];
+    librarySpecificFetchOptions3 = [v85 librarySpecificFetchOptions];
     contexta = v40;
-    v43 = [v41 fetchMomentUUIDByAssetUUIDForAssets:v40 options:v42];
+    v43 = [v41 fetchMomentUUIDByAssetUUIDForAssets:v40 options:librarySpecificFetchOptions3];
 
     v44 = MEMORY[0x277CBEB98];
-    v45 = [v43 allValues];
-    v46 = [v44 setWithArray:v45];
+    allValues = [v43 allValues];
+    v46 = [v44 setWithArray:allValues];
 
     v47 = [v46 count];
     objc_autoreleasePoolPop(v83);
@@ -394,8 +394,8 @@ LABEL_95:
     v84 = v47;
     v50 = objc_autoreleasePoolPush();
     v51 = MEMORY[0x277CD97B8];
-    v52 = [v85 librarySpecificFetchOptions];
-    v53 = [v51 fetchAssetCollectionsContainingAssets:contexta withType:4 options:v52];
+    librarySpecificFetchOptions4 = [v85 librarySpecificFetchOptions];
+    v53 = [v51 fetchAssetCollectionsContainingAssets:contexta withType:4 options:librarySpecificFetchOptions4];
 
     v76 = [v53 count];
     objc_autoreleasePoolPop(v50);
@@ -419,12 +419,12 @@ LABEL_95:
           }
 
 LABEL_96:
-          v7 = v80;
-          v4 = v81;
-          v8 = v85;
+          loggingConnection = v80;
+          blockCopy = v81;
+          photoLibrary = v85;
           v11 = 0;
           v9 = v79;
-          v12 = v78;
+          librarySpecificFetchOptions = v78;
 LABEL_103:
 
 LABEL_104:
@@ -439,12 +439,12 @@ LABEL_106:
     }
 
     v74 = objc_autoreleasePoolPush();
-    v55 = [v85 librarySpecificFetchOptions];
+    librarySpecificFetchOptions5 = [v85 librarySpecificFetchOptions];
     v56 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type == %d", 18];
-    v72 = v55;
-    [v55 setPredicate:v56];
+    v72 = librarySpecificFetchOptions5;
+    [librarySpecificFetchOptions5 setPredicate:v56];
 
-    v57 = [MEMORY[0x277CD9970] fetchAnsweredYesOrNoQuestionsWithOptions:v55 validQuestionsOnly:0];
+    v57 = [MEMORY[0x277CD9970] fetchAnsweredYesOrNoQuestionsWithOptions:librarySpecificFetchOptions5 validQuestionsOnly:0];
     v58 = [MEMORY[0x277CD9970] questionsWithValidEntitiesFromQuestions:v57 photoLibrary:v85];
     v59 = [v57 count];
     v73 = v59 - [v58 count];
@@ -481,15 +481,15 @@ LABEL_106:
     v68 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v73];
     v94[9] = v68;
     v69 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v94 forKeys:v93 count:10];
-    payload = v77->_payload;
-    v77->_payload = v69;
+    payload = selfCopy->_payload;
+    selfCopy->_payload = v69;
 
-    v8 = v85;
-    v7 = v80;
-    v4 = v81;
+    photoLibrary = v85;
+    loggingConnection = v80;
+    blockCopy = v81;
     v11 = 0;
     v9 = v79;
-    v12 = v78;
+    librarySpecificFetchOptions = v78;
     if (v90)
     {
       if (CFAbsoluteTimeGetCurrent() - v5 >= 0.01)
@@ -535,16 +535,16 @@ LABEL_107:
   v71 = *MEMORY[0x277D85DE8];
 }
 
-- (PGGraphSyndicatedAssetsMetricEvent)initWithWorkingContext:(id)a3
+- (PGGraphSyndicatedAssetsMetricEvent)initWithWorkingContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = PGGraphSyndicatedAssetsMetricEvent;
   v6 = [(PGGraphSyndicatedAssetsMetricEvent *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workingContext, a3);
+    objc_storeStrong(&v6->_workingContext, context);
     payload = v7->_payload;
     v7->_payload = MEMORY[0x277CBEC10];
   }

@@ -1,18 +1,18 @@
 @interface MSDProgress
-+ (id)progressWithStage:(int)a3 percent:(int64_t)a4;
++ (id)progressWithStage:(int)stage percent:(int64_t)percent;
 - (NSString)stageDescription;
 @end
 
 @implementation MSDProgress
 
-+ (id)progressWithStage:(int)a3 percent:(int64_t)a4
++ (id)progressWithStage:(int)stage percent:(int64_t)percent
 {
   v6 = objc_alloc_init(MSDProgress);
   v7 = v6;
   if (v6)
   {
-    [(MSDProgress *)v6 setStage:a3];
-    [(MSDProgress *)v7 setPercent:a4];
+    [(MSDProgress *)v6 setStage:stage];
+    [(MSDProgress *)v7 setPercent:percent];
   }
 
   return v7;
@@ -20,9 +20,9 @@
 
 - (NSString)stageDescription
 {
-  v2 = [(MSDProgress *)self stage];
+  stage = [(MSDProgress *)self stage];
   result = @"Rebooting to turn off snapshot";
-  switch(v2)
+  switch(stage)
   {
     case 0:
       return result;
@@ -107,7 +107,7 @@
       result = @"Rebooting device";
       break;
     default:
-      if (v2 == 100)
+      if (stage == 100)
       {
         result = @"Operation completed";
       }

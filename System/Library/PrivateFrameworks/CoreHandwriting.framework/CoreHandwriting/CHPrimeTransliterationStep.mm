@@ -1,24 +1,24 @@
 @interface CHPrimeTransliterationStep
-- (id)process:(id)a3 options:(id)a4;
-- (void)transliteratePrimeExponent:(id)a3 startIndex:(int64_t)a4 endIndex:(int64_t)a5 preservedPrimeIndexes:(void *)a6;
+- (id)process:(id)process options:(id)options;
+- (void)transliteratePrimeExponent:(id)exponent startIndex:(int64_t)index endIndex:(int64_t)endIndex preservedPrimeIndexes:(void *)indexes;
 @end
 
 @implementation CHPrimeTransliterationStep
 
-- (void)transliteratePrimeExponent:(id)a3 startIndex:(int64_t)a4 endIndex:(int64_t)a5 preservedPrimeIndexes:(void *)a6
+- (void)transliteratePrimeExponent:(id)exponent startIndex:(int64_t)index endIndex:(int64_t)endIndex preservedPrimeIndexes:(void *)indexes
 {
-  v9 = a3;
-  v14 = v9;
+  exponentCopy = exponent;
+  v14 = exponentCopy;
   v95 = 0;
   v96 = 0;
   v94 = &v95;
-  if (a4 > a5)
+  if (index > endIndex)
   {
     goto LABEL_64;
   }
 
   v15 = 0;
-  objc_msgSend_objectAtIndexedSubscript_(v9, v10, a4, v11, v12, v13, v9);
+  objc_msgSend_objectAtIndexedSubscript_(exponentCopy, v10, index, v11, v12, v13, exponentCopy);
   while (1)
     v22 = {;
     v28 = objc_msgSend_string(v22, v23, v24, v25, v26, v27);
@@ -39,7 +39,7 @@ LABEL_14:
         {
           v40 = v39;
           v41 = v39[4];
-          if (a4 >= v41)
+          if (index >= v41)
           {
             break;
           }
@@ -51,7 +51,7 @@ LABEL_14:
           }
         }
 
-        if (v41 >= a4)
+        if (v41 >= index)
         {
           break;
         }
@@ -81,19 +81,19 @@ LABEL_14:
       }
     }
 
-    v21 = a4++ == a5;
+    v21 = index++ == endIndex;
     if (v21)
     {
       break;
     }
 
-    objc_msgSend_objectAtIndexedSubscript_(v14, v17, a4, v18, v19, v20, v93);
+    objc_msgSend_objectAtIndexedSubscript_(v14, v17, index, v18, v19, v20, v93);
   }
 
   v67 = v15;
   v68 = v94;
-  v69 = a6 + 8;
-  v70 = *a6;
+  v69 = indexes + 8;
+  v70 = *indexes;
   v71 = v94 == &v95;
   if (v94 == &v95 || v70 == v69)
   {
@@ -236,7 +236,7 @@ LABEL_47:
   {
     do
     {
-      v89 = *sub_18368D5C4(a6, v69, &v98, &v97, v68 + 4);
+      v89 = *sub_18368D5C4(indexes, v69, &v98, &v97, v68 + 4);
       if (!v89)
       {
         operator new();
@@ -300,10 +300,10 @@ LABEL_64:
   sub_18368D56C(&v94, v95);
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
-  v143 = a3;
-  v137 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -324,7 +324,7 @@ LABEL_64:
   v154 = v155;
   while (1)
   {
-    v18 = objc_msgSend_result(v143, v12, v13, v14, v15, v16, v137);
+    v18 = objc_msgSend_result(processCopy, v12, v13, v14, v15, v16, optionsCopy);
     v24 = objc_msgSend_transcriptionPaths(v18, v19, v20, v21, v22, v23);
     v30 = objc_msgSend_count(v24, v25, v26, v27, v28, v29);
 
@@ -333,7 +333,7 @@ LABEL_64:
       break;
     }
 
-    v36 = objc_msgSend_result(v143, v31, v32, v33, v34, v35);
+    v36 = objc_msgSend_result(processCopy, v31, v32, v33, v34, v35);
     v42 = objc_msgSend_transcriptionPaths(v36, v37, v38, v39, v40, v41);
     v142 = objc_msgSend_objectAtIndexedSubscript_(v42, v43, v17, v44, v45, v46);
 
@@ -342,8 +342,8 @@ LABEL_64:
     v151 = &v150;
     v152 = 0x2020000000;
     v153 = 0;
-    v57 = objc_msgSend_result(v143, v52, v53, v54, v55, v56);
-    v63 = objc_msgSend_result(v143, v58, v59, v60, v61, v62);
+    v57 = objc_msgSend_result(processCopy, v52, v53, v54, v55, v56);
+    v63 = objc_msgSend_result(processCopy, v58, v59, v60, v61, v62);
     v69 = objc_msgSend_tokenColumnCount(v63, v64, v65, v66, v67, v68);
     v147[0] = MEMORY[0x1E69E9820];
     v147[1] = 3221225472;
@@ -476,11 +476,11 @@ LABEL_64:
 
   v126 = [CHTokenizedMathResult alloc];
   v131 = objc_msgSend_initWithBestPathTokens_(v126, v127, v139, v128, v129, v130);
-  objc_msgSend_setResult_(v143, v132, v131, v133, v134, v135);
+  objc_msgSend_setResult_(processCopy, v132, v131, v133, v134, v135);
 
   sub_18368D56C(&v154, v155[0]);
 
-  return v143;
+  return processCopy;
 }
 
 @end

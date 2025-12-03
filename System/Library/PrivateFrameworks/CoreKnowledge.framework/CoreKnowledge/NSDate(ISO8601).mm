@@ -8,7 +8,7 @@
 {
   v2 = objc_alloc_init(MEMORY[0x1E696AC80]);
   [v2 setFormatOptions:{objc_msgSend(v2, "formatOptions") | 0x800}];
-  v3 = [v2 stringFromDate:a1];
+  v3 = [v2 stringFromDate:self];
 
   return v3;
 }

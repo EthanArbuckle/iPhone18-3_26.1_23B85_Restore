@@ -1,17 +1,17 @@
 @interface CSKeywordAnalyzerQuasar
-- (CSKeywordAnalyzerQuasar)initWithConfigPath:(id)a3 triggerTokens:(id)a4 useKeywordSpotting:(BOOL)a5;
+- (CSKeywordAnalyzerQuasar)initWithConfigPath:(id)path triggerTokens:(id)tokens useKeywordSpotting:(BOOL)spotting;
 - (CSKeywordAnalyzerQuasarScoreDelegate)delegate;
-- (double)_getConfidence:(id)a3;
+- (double)_getConfidence:(id)confidence;
 - (id)_phIdToCtcScoreMap;
-- (void)_recognizeWavData:(const signed __int16 *)a3 length:(int)a4;
+- (void)_recognizeWavData:(const signed __int16 *)data length:(int)length;
 - (void)dealloc;
 - (void)endAudio;
-- (void)processAudioChunk:(id)a3;
+- (void)processAudioChunk:(id)chunk;
 - (void)reset;
 - (void)runRecognition;
-- (void)speechRecognizer:(id)a3 didFinishRecognitionWithError:(id)a4;
-- (void)speechRecognizer:(id)a3 didRecognizeFinalResults:(id)a4;
-- (void)speechRecognizer:(id)a3 didRecognizePartialResult:(id)a4;
+- (void)speechRecognizer:(id)recognizer didFinishRecognitionWithError:(id)error;
+- (void)speechRecognizer:(id)recognizer didRecognizeFinalResults:(id)results;
+- (void)speechRecognizer:(id)recognizer didRecognizePartialResult:(id)result;
 @end
 
 @implementation CSKeywordAnalyzerQuasar
@@ -23,12 +23,12 @@
   return WeakRetained;
 }
 
-- (double)_getConfidence:(id)a3
+- (double)_getConfidence:(id)confidence
 {
-  v4 = a3;
-  v5 = v4;
+  confidenceCopy = confidence;
+  v5 = confidenceCopy;
   v6 = 0.0;
-  if (v4 && self->_triggerTokenList)
+  if (confidenceCopy && self->_triggerTokenList)
   {
     v9 = 0;
     v10 = &v9;
@@ -40,7 +40,7 @@
     v8[3] = &unk_1E865C6A0;
     v8[4] = self;
     v8[5] = &v9;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [confidenceCopy enumerateObjectsUsingBlock:v8];
     v6 = v10[3];
     _Block_object_dispose(&v9, 8);
   }
@@ -84,17 +84,17 @@ void __42__CSKeywordAnalyzerQuasar__getConfidence___block_invoke(uint64_t a1, vo
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)speechRecognizer:(id)a3 didFinishRecognitionWithError:(id)a4
+- (void)speechRecognizer:(id)recognizer didFinishRecognitionWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__CSKeywordAnalyzerQuasar_speechRecognizer_didFinishRecognitionWithError___block_invoke;
   v8[3] = &unk_1E865C970;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = errorCopy;
+  selfCopy = self;
+  v7 = errorCopy;
   dispatch_async(queue, v8);
 }
 
@@ -276,8 +276,8 @@ LABEL_22:
 
         v13 = *(*(&v30 + 1) + 8 * j);
         ctcKwdToPhIdMap = self->_ctcKwdToPhIdMap;
-        v15 = [v13 tokenName];
-        v16 = [(NSDictionary *)ctcKwdToPhIdMap objectForKeyedSubscript:v15];
+        tokenName = [v13 tokenName];
+        v16 = [(NSDictionary *)ctcKwdToPhIdMap objectForKeyedSubscript:tokenName];
 
         v17 = CSLogContextFacilityCoreSpeech;
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -313,17 +313,17 @@ LABEL_22:
   return v4;
 }
 
-- (void)speechRecognizer:(id)a3 didRecognizeFinalResults:(id)a4
+- (void)speechRecognizer:(id)recognizer didRecognizeFinalResults:(id)results
 {
-  v5 = a4;
+  resultsCopy = results;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69__CSKeywordAnalyzerQuasar_speechRecognizer_didRecognizeFinalResults___block_invoke;
   v8[3] = &unk_1E865C970;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = resultsCopy;
+  selfCopy = self;
+  v7 = resultsCopy;
   dispatch_async(queue, v8);
 }
 
@@ -404,17 +404,17 @@ LABEL_11:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)speechRecognizer:(id)a3 didRecognizePartialResult:(id)a4
+- (void)speechRecognizer:(id)recognizer didRecognizePartialResult:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__CSKeywordAnalyzerQuasar_speechRecognizer_didRecognizePartialResult___block_invoke;
   v8[3] = &unk_1E865C970;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = resultCopy;
+  v7 = resultCopy;
   dispatch_async(queue, v8);
 }
 
@@ -453,16 +453,16 @@ void __70__CSKeywordAnalyzerQuasar_speechRecognizer_didRecognizePartialResult___
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_recognizeWavData:(const signed __int16 *)a3 length:(int)a4
+- (void)_recognizeWavData:(const signed __int16 *)data length:(int)length
 {
   v5 = *MEMORY[0x1E69E9840];
-  [(_EARSpeechRecognitionAudioBuffer *)self->_recognizerBuffer addAudioSamples:a3 count:a4];
+  [(_EARSpeechRecognitionAudioBuffer *)self->_recognizerBuffer addAudioSamples:data count:length];
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processAudioChunk:(id)a3
+- (void)processAudioChunk:(id)chunk
 {
-  v4 = a3;
+  chunkCopy = chunk;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -471,7 +471,7 @@ void __70__CSKeywordAnalyzerQuasar_speechRecognizer_didRecognizePartialResult___
   v19 = 0;
   if (+[CSConfig inputRecordingIsFloat])
   {
-    v5 = [v4 dataForChannel:self->_activeChannel];
+    v5 = [chunkCopy dataForChannel:self->_activeChannel];
     v6 = [CSFLPCMTypeConverter convertToShortLPCMBufFromFloatLPCMBuf:v5];
     v7 = v15[5];
     v15[5] = v6;
@@ -479,7 +479,7 @@ void __70__CSKeywordAnalyzerQuasar_speechRecognizer_didRecognizePartialResult___
 
   else
   {
-    v8 = [v4 dataForChannel:self->_activeChannel];
+    v8 = [chunkCopy dataForChannel:self->_activeChannel];
     v5 = v15[5];
     v15[5] = v8;
   }
@@ -489,10 +489,10 @@ void __70__CSKeywordAnalyzerQuasar_speechRecognizer_didRecognizePartialResult___
   block[1] = 3221225472;
   block[2] = __45__CSKeywordAnalyzerQuasar_processAudioChunk___block_invoke;
   block[3] = &unk_1E865CC08;
-  v12 = v4;
+  v12 = chunkCopy;
   v13 = &v14;
   block[4] = self;
-  v10 = v4;
+  v10 = chunkCopy;
   dispatch_async(queue, block);
 
   _Block_object_dispose(&v14, 8);
@@ -621,11 +621,11 @@ uint64_t __32__CSKeywordAnalyzerQuasar_reset__block_invoke(uint64_t a1)
   return [*(*(a1 + 32) + 16) removeAllObjects];
 }
 
-- (CSKeywordAnalyzerQuasar)initWithConfigPath:(id)a3 triggerTokens:(id)a4 useKeywordSpotting:(BOOL)a5
+- (CSKeywordAnalyzerQuasar)initWithConfigPath:(id)path triggerTokens:(id)tokens useKeywordSpotting:(BOOL)spotting
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  tokensCopy = tokens;
   v28.receiver = self;
   v28.super_class = CSKeywordAnalyzerQuasar;
   v10 = [(CSKeywordAnalyzerQuasar *)&v28 init];
@@ -644,7 +644,7 @@ uint64_t __32__CSKeywordAnalyzerQuasar_reset__block_invoke(uint64_t a1)
     *(v10 + 2) = v15;
 
     *(v10 + 8) = 0;
-    v17 = [v9 componentsSeparatedByString:@"_"];
+    v17 = [tokensCopy componentsSeparatedByString:@"_"];
     v18 = *(v10 + 3);
     *(v10 + 3) = v17;
 
@@ -665,13 +665,13 @@ uint64_t __32__CSKeywordAnalyzerQuasar_reset__block_invoke(uint64_t a1)
     v21 = *(v10 + 5);
     *(v10 + 5) = 0;
 
-    *(v10 + 48) = a5;
+    *(v10 + 48) = spotting;
     v22 = *(v10 + 1);
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __79__CSKeywordAnalyzerQuasar_initWithConfigPath_triggerTokens_useKeywordSpotting___block_invoke;
     v25[3] = &unk_1E865C970;
-    v26 = v8;
+    v26 = pathCopy;
     v27 = v10;
     dispatch_async(v22, v25);
   }

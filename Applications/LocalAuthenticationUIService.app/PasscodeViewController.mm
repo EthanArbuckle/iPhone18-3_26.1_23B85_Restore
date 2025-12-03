@@ -7,19 +7,19 @@
 - (int64_t)preferredStatusBarStyle;
 - (void)_clearTimer;
 - (void)_layoutGlyph;
-- (void)_processPasscodeEntryResult:(int64_t)a3;
+- (void)_processPasscodeEntryResult:(int64_t)result;
 - (void)_scheduleTimerIfNecessaryAndUpdateSubtitle;
 - (void)_setupGlyph;
 - (void)_setupView;
-- (void)_showBackoffScreenWithMinsUntilUnblocked:(int)a3;
+- (void)_showBackoffScreenWithMinsUntilUnblocked:(int)unblocked;
 - (void)_showPasscodeScreen;
-- (void)_switchToBackoffScreen:(id)a3 animated:(BOOL)a4;
+- (void)_switchToBackoffScreen:(id)screen animated:(BOOL)animated;
 - (void)_updateStyle;
 - (void)didReceiveAuthenticationData;
 - (void)loadView;
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5;
-- (void)passcodeViewPasscodeDidChange:(id)a3;
-- (void)passcodeViewPasscodeEntered:(id)a3;
+- (void)mechanismEvent:(int64_t)event value:(id)value reply:(id)reply;
+- (void)passcodeViewPasscodeDidChange:(id)change;
+- (void)passcodeViewPasscodeEntered:(id)entered;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -30,8 +30,8 @@
   v37.receiver = self;
   v37.super_class = PasscodeViewController;
   [(TransitionViewController *)&v37 didReceiveAuthenticationData];
-  v3 = [(TransitionViewController *)self options];
-  v4 = [v3 objectForKeyedSubscript:&off_1000AF320];
+  options = [(TransitionViewController *)self options];
+  v4 = [options objectForKeyedSubscript:&off_1000AF320];
 
   if (v4)
   {
@@ -58,23 +58,23 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v28 = [(TransitionViewController *)self authenticationTitle];
-  v29 = [v28 length];
+  authenticationTitle = [(TransitionViewController *)self authenticationTitle];
+  v29 = [authenticationTitle length];
 
   if (!v29)
   {
-    v30 = [(TransitionViewController *)self callerBundleId];
-    if (v30 || [(TransitionViewController *)self callerNameOverride])
+    callerBundleId = [(TransitionViewController *)self callerBundleId];
+    if (callerBundleId || [(TransitionViewController *)self callerNameOverride])
     {
-      v31 = [(TransitionViewController *)self callerName];
+      callerName = [(TransitionViewController *)self callerName];
 
-      if (v31)
+      if (callerName)
       {
         v9 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"APP_ASKING_PASSCODE"];
         v32 = [NSBundle bundleForClass:objc_opt_class()];
         v33 = [v32 localizedStringForKey:v9 value:&stru_1000ADB50 table:@"MobileUI"];
-        v34 = [(TransitionViewController *)self callerName];
-        v35 = [NSString stringWithFormat:v33, v34];
+        callerName2 = [(TransitionViewController *)self callerName];
+        v35 = [NSString stringWithFormat:v33, callerName2];
         [(TransitionViewController *)self setAuthenticationTitle:v35];
 
         goto LABEL_8;
@@ -91,8 +91,8 @@ LABEL_8:
   }
 
 LABEL_9:
-  v12 = [(TransitionViewController *)self internalInfo];
-  v13 = [v12 objectForKeyedSubscript:@"FallbackReason"];
+  internalInfo = [(TransitionViewController *)self internalInfo];
+  v13 = [internalInfo objectForKeyedSubscript:@"FallbackReason"];
 
   if (![LACError error:v13 hasCode:LACErrorCodeSystemCancel])
   {
@@ -100,19 +100,19 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  v14 = [v13 userInfo];
-  v15 = [v14 objectForKeyedSubscript:LAErrorSubcodeKey];
+  userInfo = [v13 userInfo];
+  v15 = [userInfo objectForKeyedSubscript:LAErrorSubcodeKey];
 
   if (v15)
   {
-    v16 = [v15 integerValue];
-    if (v16 == 13)
+    integerValue = [v15 integerValue];
+    if (integerValue == 13)
     {
       v17 = @"PEARL_HW_ISSUE_HIGH_TEMPERATURE";
       goto LABEL_17;
     }
 
-    if (v16 == 14)
+    if (integerValue == 14)
     {
       v17 = @"PEARL_HW_ISSUE_LOW_TEMPERATURE";
 LABEL_17:
@@ -127,13 +127,13 @@ LABEL_17:
 LABEL_18:
 
 LABEL_19:
-  v20 = [(TransitionViewController *)self options];
-  v21 = [v20 objectForKeyedSubscript:&off_1000AF350];
+  options2 = [(TransitionViewController *)self options];
+  v21 = [options2 objectForKeyedSubscript:&off_1000AF350];
 
   if (v18)
   {
-    v22 = [LACStringHelper truncateString:v18 maxLength:512];
-    [(TransitionViewController *)self setAuthenticationSubtitle:v22];
+    options3 = [LACStringHelper truncateString:v18 maxLength:512];
+    [(TransitionViewController *)self setAuthenticationSubtitle:options3];
 LABEL_23:
 
     goto LABEL_24;
@@ -141,8 +141,8 @@ LABEL_23:
 
   if (v21)
   {
-    v22 = [(TransitionViewController *)self options];
-    v23 = [v22 objectForKeyedSubscript:&off_1000AF350];
+    options3 = [(TransitionViewController *)self options];
+    v23 = [options3 objectForKeyedSubscript:&off_1000AF350];
     v24 = [LACStringHelper truncateString:v23 maxLength:512];
     [(TransitionViewController *)self setAuthenticationSubtitle:v24];
 
@@ -150,8 +150,8 @@ LABEL_23:
   }
 
 LABEL_24:
-  v25 = [(TransitionViewController *)self options];
-  v26 = [v25 objectForKey:&off_1000AF368];
+  options4 = [(TransitionViewController *)self options];
+  v26 = [options4 objectForKey:&off_1000AF368];
   failureLimit = self->_failureLimit;
   self->_failureLimit = v26;
 
@@ -182,39 +182,39 @@ LABEL_24:
   self->_passcodeView = v9;
 
   [(PasscodeView *)self->_passcodeView setDelegate:self];
-  v11 = [(PasscodeViewController *)self view];
-  v12 = [(PasscodeView *)self->_passcodeView view];
-  [v11 addSubview:v12];
+  view = [(PasscodeViewController *)self view];
+  view2 = [(PasscodeView *)self->_passcodeView view];
+  [view addSubview:view2];
 
-  v13 = [(PasscodeView *)self->_passcodeView view];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(PasscodeView *)self->_passcodeView view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v14 = [(PasscodeView *)self->_passcodeView view];
-  v15 = [v14 topAnchor];
-  v16 = [(PasscodeViewController *)self view];
-  v17 = [v16 topAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  view4 = [(PasscodeView *)self->_passcodeView view];
+  topAnchor = [view4 topAnchor];
+  view5 = [(PasscodeViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v18 setActive:1];
 
-  v19 = [(PasscodeView *)self->_passcodeView view];
-  v20 = [v19 bottomAnchor];
-  v21 = [(PasscodeViewController *)self view];
-  v22 = [v21 bottomAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  view6 = [(PasscodeView *)self->_passcodeView view];
+  bottomAnchor = [view6 bottomAnchor];
+  view7 = [(PasscodeViewController *)self view];
+  bottomAnchor2 = [view7 bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v23 setActive:1];
 
-  v24 = [(PasscodeView *)self->_passcodeView view];
-  v25 = [v24 leadingAnchor];
-  v26 = [(PasscodeViewController *)self view];
-  v27 = [v26 leadingAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27];
+  view8 = [(PasscodeView *)self->_passcodeView view];
+  leadingAnchor = [view8 leadingAnchor];
+  view9 = [(PasscodeViewController *)self view];
+  leadingAnchor2 = [view9 leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v28 setActive:1];
 
-  v29 = [(PasscodeView *)self->_passcodeView view];
-  v30 = [v29 trailingAnchor];
-  v31 = [(PasscodeViewController *)self view];
-  v32 = [v31 trailingAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32];
+  view10 = [(PasscodeView *)self->_passcodeView view];
+  trailingAnchor = [view10 trailingAnchor];
+  view11 = [(PasscodeViewController *)self view];
+  trailingAnchor2 = [view11 trailingAnchor];
+  v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v33 setActive:1];
 
   [(PasscodeViewController *)self addChildViewController:self->_passcodeView];
@@ -223,16 +223,16 @@ LABEL_24:
 
 - (void)_setupGlyph
 {
-  v3 = [(TransitionViewController *)self internalInfo];
-  v4 = [v3 objectForKeyedSubscript:@"FaceIdAtPasscode"];
-  v5 = [v4 BOOLValue];
+  internalInfo = [(TransitionViewController *)self internalInfo];
+  v4 = [internalInfo objectForKeyedSubscript:@"FaceIdAtPasscode"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = +[LACSecureFaceIDUIUtilities sharedInstance];
-    v7 = [v6 isActive];
+    isActive = [v6 isActive];
 
-    if (v7)
+    if (isActive)
     {
       if ((LADynamicIslandAvailable() & 1) == 0)
       {
@@ -258,9 +258,9 @@ LABEL_24:
       v13 = [NSBundle bundleForClass:objc_opt_class()];
       v14 = [v13 localizedStringForKey:@"PEARL" value:&stru_1000ADB50 table:@"MobileUI"];
       v15 = LACLightweightUIModeNone;
-      v16 = [(TransitionViewController *)self options];
+      options = [(TransitionViewController *)self options];
       v17 = [NSNumber numberWithInteger:LACPolicyOptionSecureUIRecording];
-      v18 = [v16 objectForKeyedSubscript:v17];
+      v18 = [options objectForKeyedSubscript:v17];
       v19 = -[FaceIdToastViewController initWithGlyph:presentingController:title:lightweightUIMode:secureUIRecording:](v11, "initWithGlyph:presentingController:title:lightweightUIMode:secureUIRecording:", v12, self, v14, v15, [v18 BOOLValue]);
       toastController = self->_toastController;
       self->_toastController = v19;
@@ -308,8 +308,8 @@ LABEL_12:
   if (!self->_toastController)
   {
     [(LAUIPearlGlyphView *)self->_glyphView frame];
-    v7 = [(PasscodeViewController *)self view];
-    [v7 bounds];
+    view = [(PasscodeViewController *)self view];
+    [view bounds];
     v4 = +[UIScreen mainScreen];
     [v4 scale];
     v6 = v5;
@@ -318,7 +318,7 @@ LABEL_12:
   }
 }
 
-- (void)passcodeViewPasscodeDidChange:(id)a3
+- (void)passcodeViewPasscodeDidChange:(id)change
 {
   if (!self->_startedTypingPasscode)
   {
@@ -329,20 +329,20 @@ LABEL_12:
   }
 }
 
-- (void)passcodeViewPasscodeEntered:(id)a3
+- (void)passcodeViewPasscodeEntered:(id)entered
 {
   if (!self->_passcodeEntered)
   {
     self->_passcodeEntered = 1;
-    v4 = [(PasscodeView *)self->_passcodeView passcode];
-    v5 = [LACSecureData secureDataWithString:v4];
+    passcode = [(PasscodeView *)self->_passcodeView passcode];
+    v5 = [LACSecureData secureDataWithString:passcode];
 
     v6 = +[LAUtils isSharedIPad];
     v7 = v6;
     if (v6)
     {
-      v8 = [(PasscodeView *)self->_passcodeView passcode];
-      v9 = [v8 dataUsingEncoding:4];
+      passcode2 = [(PasscodeView *)self->_passcodeView passcode];
+      v9 = [passcode2 dataUsingEncoding:4];
 
       v10 = MKBUnlockDevice();
       v11 = LACLogPasscodeUI();
@@ -359,7 +359,7 @@ LABEL_12:
       v10 = 0;
     }
 
-    v12 = [(TransitionViewController *)self backoffCounter];
+    backoffCounter = [(TransitionViewController *)self backoffCounter];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = __54__PasscodeViewController_passcodeViewPasscodeEntered___block_invoke;
@@ -369,7 +369,7 @@ LABEL_12:
     v14[4] = self;
     v15 = v5;
     v13 = v5;
-    [v12 currentBackoffErrorWithReply:v14];
+    [backoffCounter currentBackoffErrorWithReply:v14];
   }
 }
 
@@ -457,18 +457,18 @@ id __54__PasscodeViewController_passcodeViewPasscodeEntered___block_invoke_3(uin
   return v10;
 }
 
-- (void)_processPasscodeEntryResult:(int64_t)a3
+- (void)_processPasscodeEntryResult:(int64_t)result
 {
-  if (!a3)
+  if (!result)
   {
-    v7 = [(TransitionViewController *)self mechanism];
+    mechanism = [(TransitionViewController *)self mechanism];
     v27 = @"uptime";
     v8 = +[NSProcessInfo processInfo];
     [v8 systemUptime];
     v9 = [NSNumber numberWithDouble:?];
     v28 = v9;
     v10 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-    [v7 uiEvent:8 options:v10];
+    [mechanism uiEvent:8 options:v10];
 
     objc_initWeak(&location, self);
     block[0] = _NSConcreteStackBlock;
@@ -477,8 +477,8 @@ id __54__PasscodeViewController_passcodeViewPasscodeEntered___block_invoke_3(uin
     block[3] = &unk_1000AA370;
     objc_copyWeak(&v21, &location);
     dispatch_async(&_dispatch_main_q, block);
-    v11 = [(TransitionViewController *)self backoffCounter];
-    [v11 actionSuccess];
+    backoffCounter = [(TransitionViewController *)self backoffCounter];
+    [backoffCounter actionSuccess];
 
     v25 = @"Result";
     v23 = &off_1000AF398;
@@ -494,20 +494,20 @@ id __54__PasscodeViewController_passcodeViewPasscodeEntered___block_invoke_3(uin
   }
 
   self->_passcodeEntered = 0;
-  v5 = [(TransitionViewController *)self mechanism];
-  [v5 uiEvent:9 options:0];
+  mechanism2 = [(TransitionViewController *)self mechanism];
+  [mechanism2 uiEvent:9 options:0];
 
-  if (a3 == 1)
+  if (result == 1)
   {
     if (!self->_failureLimit || (v14 = self->_failures + 1, self->_failures = v14, v14 <= [(NSNumber *)self->_failureLimit unsignedIntegerValue]))
     {
-      v16 = [(TransitionViewController *)self backoffCounter];
+      backoffCounter2 = [(TransitionViewController *)self backoffCounter];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = __54__PasscodeViewController__processPasscodeEntryResult___block_invoke_83;
       v19[3] = &unk_1000AA748;
       v19[4] = self;
-      [v16 actionFailureWithReply:v19];
+      [backoffCounter2 actionFailureWithReply:v19];
 
       return;
     }
@@ -517,15 +517,15 @@ id __54__PasscodeViewController_passcodeViewPasscodeEntered___block_invoke_3(uin
 
   else
   {
-    if (a3 == 2)
+    if (result == 2)
     {
-      v6 = [(TransitionViewController *)self backoffCounter];
+      backoffCounter3 = [(TransitionViewController *)self backoffCounter];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = __54__PasscodeViewController__processPasscodeEntryResult___block_invoke_6;
       v18[3] = &unk_1000AA748;
       v18[4] = self;
-      [v6 actionBackoffWithReply:v18];
+      [backoffCounter3 actionBackoffWithReply:v18];
 
       return;
     }
@@ -688,12 +688,12 @@ void __41__PasscodeViewController_viewWillAppear___block_invoke_2(uint64_t a1)
   v5.receiver = self;
   v5.super_class = PasscodeViewController;
   [(PasscodeViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [(PasscodeViewController *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(PasscodeViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (self->_currentInterfaceStyle != v4)
+  if (self->_currentInterfaceStyle != userInterfaceStyle)
   {
-    self->_currentInterfaceStyle = v4;
+    self->_currentInterfaceStyle = userInterfaceStyle;
     [(PasscodeViewController *)self setNeedsStatusBarAppearanceUpdate];
     [(PasscodeViewController *)self _updateStyle];
   }
@@ -718,24 +718,24 @@ void __41__PasscodeViewController_viewWillAppear___block_invoke_2(uint64_t a1)
     }
   }
 
-  v7 = [(PasscodeView *)self->_passcodeView state];
-  v5 = [(PasscodeViewController *)self _style];
-  v6 = [v7 withStyle:v5];
+  state = [(PasscodeView *)self->_passcodeView state];
+  _style = [(PasscodeViewController *)self _style];
+  v6 = [state withStyle:_style];
   [(PasscodeView *)self->_passcodeView setState:v6];
 }
 
 - (id)_style
 {
-  v3 = [(PasscodeViewController *)self _useWhitePasscodeScreen];
-  v4 = [(PasscodeViewController *)self _backgroundStyle];
-  if (v3)
+  _useWhitePasscodeScreen = [(PasscodeViewController *)self _useWhitePasscodeScreen];
+  _backgroundStyle = [(PasscodeViewController *)self _backgroundStyle];
+  if (_useWhitePasscodeScreen)
   {
-    [PasscodeViewStyle lightStyleWithBackgroundStyle:v4];
+    [PasscodeViewStyle lightStyleWithBackgroundStyle:_backgroundStyle];
   }
 
   else
   {
-    [PasscodeViewStyle darkStyleWithBackgroundStyle:v4];
+    [PasscodeViewStyle darkStyleWithBackgroundStyle:_backgroundStyle];
   }
   v5 = ;
 
@@ -764,11 +764,11 @@ void __41__PasscodeViewController_viewWillAppear___block_invoke_2(uint64_t a1)
 
 - (BOOL)_hasBlurredBackground
 {
-  v3 = [(TransitionViewController *)self options];
-  v4 = [v3 objectForKeyedSubscript:&off_1000AF3B0];
+  options = [(TransitionViewController *)self options];
+  v4 = [options objectForKeyedSubscript:&off_1000AF3B0];
 
-  v5 = [(TransitionViewController *)self options];
-  v6 = [v5 objectForKeyedSubscript:&off_1000AF3C8];
+  options2 = [(TransitionViewController *)self options];
+  v6 = [options2 objectForKeyedSubscript:&off_1000AF3C8];
 
   if (v4 | v6)
   {
@@ -793,11 +793,11 @@ LABEL_9:
 
 - (BOOL)_hasTranslucentBackground
 {
-  v3 = [(TransitionViewController *)self options];
-  v4 = [v3 objectForKeyedSubscript:&off_1000AF3B0];
+  options = [(TransitionViewController *)self options];
+  v4 = [options objectForKeyedSubscript:&off_1000AF3B0];
 
-  v5 = [(TransitionViewController *)self options];
-  v6 = [v5 objectForKeyedSubscript:&off_1000AF3C8];
+  options2 = [(TransitionViewController *)self options];
+  v6 = [options2 objectForKeyedSubscript:&off_1000AF3C8];
 
   if (v4 | v6 || [(PasscodeViewController *)self _useWhitePasscodeScreen]|| [(TransitionViewController *)self policy]!= 1004)
   {
@@ -814,13 +814,13 @@ LABEL_9:
 
 - (BOOL)_useWhitePasscodeScreen
 {
-  v3 = [(PasscodeViewController *)self traitCollection];
-  v4 = [v3 userInterfaceStyle] == 2;
+  traitCollection = [(PasscodeViewController *)self traitCollection];
+  v4 = [traitCollection userInterfaceStyle] == 2;
 
   v5 = +[LAPasscodeHelper sharedInstance];
-  v6 = [(TransitionViewController *)self policy];
-  v7 = [(TransitionViewController *)self options];
-  v8 = [v5 passcodeScreenStyleWithPolicy:v6 options:v7 darkInterface:v4];
+  policy = [(TransitionViewController *)self policy];
+  options = [(TransitionViewController *)self options];
+  v8 = [v5 passcodeScreenStyleWithPolicy:policy options:options darkInterface:v4];
 
   return v8 == 0;
 }
@@ -858,7 +858,7 @@ id __45__PasscodeViewController__showPasscodeScreen__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)_showBackoffScreenWithMinsUntilUnblocked:(int)a3
+- (void)_showBackoffScreenWithMinsUntilUnblocked:(int)unblocked
 {
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"DEVICE_BLOCKED" value:&stru_1000ADB50 table:@"MobileUI"];
@@ -867,11 +867,11 @@ id __45__PasscodeViewController__showPasscodeScreen__block_invoke(uint64_t a1)
   v11[2] = __67__PasscodeViewController__showBackoffScreenWithMinsUntilUnblocked___block_invoke;
   v11[3] = &unk_1000AAA90;
   v11[4] = self;
-  v12 = a3;
+  unblockedCopy = unblocked;
   v7 = __67__PasscodeViewController__showBackoffScreenWithMinsUntilUnblocked___block_invoke(v11);
   v8 = [PasscodeViewState backOffStateWithTitle:v6 subtitle:v7];
-  v9 = [(PasscodeViewController *)self _style];
-  v10 = [v8 withStyle:v9];
+  _style = [(PasscodeViewController *)self _style];
+  v10 = [v8 withStyle:_style];
   [(PasscodeView *)self->_passcodeView setState:v10];
 }
 
@@ -908,10 +908,10 @@ id __67__PasscodeViewController__showBackoffScreenWithMinsUntilUnblocked___block
   return v2;
 }
 
-- (void)_switchToBackoffScreen:(id)a3 animated:(BOOL)a4
+- (void)_switchToBackoffScreen:(id)screen animated:(BOOL)animated
 {
-  v5 = [a3 userInfo];
-  v6 = [v5 objectForKey:LAPasswordRetryTime];
+  userInfo = [screen userInfo];
+  v6 = [userInfo objectForKey:LAPasswordRetryTime];
   blockedUntilDate = self->_blockedUntilDate;
   self->_blockedUntilDate = v6;
 
@@ -957,7 +957,7 @@ id __67__PasscodeViewController__showBackoffScreenWithMinsUntilUnblocked___block
       isBlocked = self->_isBlocked;
       isLockoutActive = self->_isLockoutActive;
       v15 = 138544130;
-      v16 = self;
+      selfCopy = self;
       v17 = 1024;
       v18 = isBlocked;
       v19 = 1024;
@@ -1000,26 +1000,26 @@ id __67__PasscodeViewController__showBackoffScreenWithMinsUntilUnblocked___block
   }
 }
 
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5
+- (void)mechanismEvent:(int64_t)event value:(id)value reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  valueCopy = value;
+  replyCopy = reply;
   v10 = LACLogPasscodeUI();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = NSStringFromMechanismEventAndValue();
     *buf = 138543874;
-    v23 = self;
+    selfCopy = self;
     v24 = 1024;
-    v25 = a3;
+    eventCopy = event;
     v26 = 2112;
     v27 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ has received mechanism event %d (%@)", buf, 0x1Cu);
   }
 
-  if (a3 > 2)
+  if (event > 2)
   {
-    if (a3 == 3)
+    if (event == 3)
     {
       objc_initWeak(buf, self);
       v14[0] = _NSConcreteStackBlock;
@@ -1035,7 +1035,7 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    if (a3 != 4 && a3 != 13)
+    if (event != 4 && event != 13)
     {
       goto LABEL_16;
     }
@@ -1065,12 +1065,12 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (a3 == 1)
+  if (event == 1)
   {
     goto LABEL_11;
   }
 
-  if (a3 == 2)
+  if (event == 2)
   {
     +[LAUIPearlGlyphView invokeSuccessFeedback];
     block[0] = _NSConcreteStackBlock;
@@ -1078,16 +1078,16 @@ LABEL_11:
     block[2] = __53__PasscodeViewController_mechanismEvent_value_reply___block_invoke;
     block[3] = &unk_1000AA568;
     block[4] = self;
-    v21 = v9;
+    v21 = replyCopy;
     dispatch_async(&_dispatch_main_q, block);
 
     goto LABEL_18;
   }
 
 LABEL_16:
-  if (v9)
+  if (replyCopy)
   {
-    v9[2](v9);
+    replyCopy[2](replyCopy);
   }
 
 LABEL_18:

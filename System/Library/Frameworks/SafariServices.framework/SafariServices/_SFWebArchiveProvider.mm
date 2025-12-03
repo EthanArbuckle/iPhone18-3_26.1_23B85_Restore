@@ -2,32 +2,32 @@
 - (BOOL)canGenerateWebArchive;
 - (NSString)suggestedFilenameWithExtension;
 - (WKWebView)webView;
-- (_SFWebArchiveProvider)initWithWebView:(id)a3;
+- (_SFWebArchiveProvider)initWithWebView:(id)view;
 - (id)_quickLookDocument;
 - (id)_suggestedFilenameWithoutExtension;
 - (id)_webViewUTI;
-- (void)generateWebArchiveWithCompletionHandler:(id)a3;
+- (void)generateWebArchiveWithCompletionHandler:(id)handler;
 @end
 
 @implementation _SFWebArchiveProvider
 
-- (_SFWebArchiveProvider)initWithWebView:(id)a3
+- (_SFWebArchiveProvider)initWithWebView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = _SFWebArchiveProvider;
   v5 = [(_SFWebArchiveProvider *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_webView, v4);
-    v7 = [v4 URL];
+    objc_storeWeak(&v5->_webView, viewCopy);
+    v7 = [viewCopy URL];
     cachedWebViewURL = v6->_cachedWebViewURL;
     v6->_cachedWebViewURL = v7;
 
-    v9 = [v4 title];
+    title = [viewCopy title];
     cachedWebViewTitle = v6->_cachedWebViewTitle;
-    v6->_cachedWebViewTitle = v9;
+    v6->_cachedWebViewTitle = title;
 
     v11 = v6;
   }
@@ -37,8 +37,8 @@
 
 - (NSString)suggestedFilenameWithExtension
 {
-  v2 = [(_SFWebArchiveProvider *)self _suggestedFilenameWithoutExtension];
-  v3 = [v2 safari_ensurePathExtension:@"webarchive"];
+  _suggestedFilenameWithoutExtension = [(_SFWebArchiveProvider *)self _suggestedFilenameWithoutExtension];
+  v3 = [_suggestedFilenameWithoutExtension safari_ensurePathExtension:@"webarchive"];
 
   return v3;
 }
@@ -52,20 +52,20 @@
     return 0;
   }
 
-  v4 = [(_SFWebArchiveProvider *)self _webViewUTI];
-  return UTTypeConformsTo(v4, *MEMORY[0x1E69638B0]) != 0;
+  _webViewUTI = [(_SFWebArchiveProvider *)self _webViewUTI];
+  return UTTypeConformsTo(_webViewUTI, *MEMORY[0x1E69638B0]) != 0;
 }
 
-- (void)generateWebArchiveWithCompletionHandler:(id)a3
+- (void)generateWebArchiveWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65___SFWebArchiveProvider_generateWebArchiveWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E8490818;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -80,8 +80,8 @@
   else
   {
     v5 = objc_alloc(MEMORY[0x1E69B1B68]);
-    v6 = [(_SFWebArchiveProvider *)self suggestedFilenameWithExtension];
-    v7 = [v5 initWithFileName:v6 mimeType:*MEMORY[0x1E69B1F80] uti:0 needsQuickLookDocumentView:0];
+    suggestedFilenameWithExtension = [(_SFWebArchiveProvider *)self suggestedFilenameWithExtension];
+    v7 = [v5 initWithFileName:suggestedFilenameWithExtension mimeType:*MEMORY[0x1E69B1F80] uti:0 needsQuickLookDocumentView:0];
 
     [v7 setDocumentSource:self];
     WeakRetained = objc_loadWeakRetained(&self->_webView);
@@ -101,23 +101,23 @@
 
 - (id)_suggestedFilenameWithoutExtension
 {
-  v3 = [(NSString *)self->_cachedWebViewTitle safari_suggestedFilenameFromTitleString];
-  if ([v3 length])
+  safari_suggestedFilenameFromTitleString = [(NSString *)self->_cachedWebViewTitle safari_suggestedFilenameFromTitleString];
+  if ([safari_suggestedFilenameFromTitleString length])
   {
-    v4 = v3;
+    safari_lastPathComponentWithoutZipExtension = safari_suggestedFilenameFromTitleString;
     goto LABEL_10;
   }
 
-  v5 = [(_SFWebArchiveProvider *)self _webViewUTI];
-  if (UTTypeEqual(v5, *MEMORY[0x1E69637E8]))
+  _webViewUTI = [(_SFWebArchiveProvider *)self _webViewUTI];
+  if (UTTypeEqual(_webViewUTI, *MEMORY[0x1E69637E8]))
   {
 LABEL_4:
-    v6 = [(NSURL *)self->_cachedWebViewURL host];
-    v7 = [v6 safari_highLevelDomainFromHost];
+    host = [(NSURL *)self->_cachedWebViewURL host];
+    safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
 
-    if ([v7 length])
+    if ([safari_highLevelDomainFromHost length])
     {
-      v8 = v7;
+      v8 = safari_highLevelDomainFromHost;
     }
 
     else
@@ -125,15 +125,15 @@ LABEL_4:
       v8 = _WBSLocalizedString();
     }
 
-    v4 = v8;
+    safari_lastPathComponentWithoutZipExtension = v8;
 
     goto LABEL_10;
   }
 
-  v9 = [(NSURL *)self->_cachedWebViewURL safari_userVisibleString];
-  v4 = [v9 safari_lastPathComponentWithoutZipExtension];
+  safari_userVisibleString = [(NSURL *)self->_cachedWebViewURL safari_userVisibleString];
+  safari_lastPathComponentWithoutZipExtension = [safari_userVisibleString safari_lastPathComponentWithoutZipExtension];
 
-  if (![v4 length])
+  if (![safari_lastPathComponentWithoutZipExtension length])
   {
 
     goto LABEL_4;
@@ -141,15 +141,15 @@ LABEL_4:
 
 LABEL_10:
 
-  return v4;
+  return safari_lastPathComponentWithoutZipExtension;
 }
 
 - (id)_webViewUTI
 {
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v3 = [WeakRetained _MIMEType];
+  _MIMEType = [WeakRetained _MIMEType];
 
-  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963718], v3, 0);
+  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963718], _MIMEType, 0);
 
   return PreferredIdentifierForTag;
 }

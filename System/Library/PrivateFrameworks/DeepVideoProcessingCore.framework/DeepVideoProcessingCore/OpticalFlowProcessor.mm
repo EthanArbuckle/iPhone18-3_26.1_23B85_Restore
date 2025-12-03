@@ -1,17 +1,17 @@
 @interface OpticalFlowProcessor
 - (BOOL)finishProcessing;
-- (BOOL)opticalFlowsFrom:(id)a3 to:(id)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 streamingMode:(BOOL)a7 error:(id *)a8;
-- (BOOL)processWithOpticalFlowParams:(id)a3 error:(id *)a4;
-- (BOOL)startSessionWithOpticalFlowConfig:(id)a3 error:(id *)a4;
-- (OpticalFlowProcessor)initWithFrameWidth:(int64_t)a3 FrameHeight:(int64_t)a4 revision:(int64_t)a5;
-- (int64_t)getFrameRotation:(int64_t)a3;
+- (BOOL)opticalFlowsFrom:(id)from to:(id)to forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow streamingMode:(BOOL)mode error:(id *)error;
+- (BOOL)processWithOpticalFlowParams:(id)params error:(id *)error;
+- (BOOL)startSessionWithOpticalFlowConfig:(id)config error:(id *)error;
+- (OpticalFlowProcessor)initWithFrameWidth:(int64_t)width FrameHeight:(int64_t)height revision:(int64_t)revision;
+- (int64_t)getFrameRotation:(int64_t)rotation;
 @end
 
 @implementation OpticalFlowProcessor
 
-- (int64_t)getFrameRotation:(int64_t)a3
+- (int64_t)getFrameRotation:(int64_t)rotation
 {
-  if ((a3 & 0x1000) != 0)
+  if ((rotation & 0x1000) != 0)
   {
     return 2;
   }
@@ -32,35 +32,35 @@
   }
 }
 
-- (BOOL)startSessionWithOpticalFlowConfig:(id)a3 error:(id *)a4
+- (BOOL)startSessionWithOpticalFlowConfig:(id)config error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 revision];
-  if (v7 != self->_revision)
+  configCopy = config;
+  revision = [configCopy revision];
+  if (revision != self->_revision)
   {
-    [(OpticalFlowProcessor *)a4 startSessionWithOpticalFlowConfig:v6 error:&self->_revision, &v15];
+    [(OpticalFlowProcessor *)error startSessionWithOpticalFlowConfig:configCopy error:&self->_revision, &v15];
     v12 = v15;
     goto LABEL_9;
   }
 
-  if (v7 == -1)
+  if (revision == -1)
   {
     goto LABEL_8;
   }
 
-  if ([v6 qualityPrioritization] == 1)
+  if ([configCopy qualityPrioritization] == 1)
   {
     v8 = 0;
   }
 
   else
   {
-    if ([v6 qualityPrioritization] != 2)
+    if ([configCopy qualityPrioritization] != 2)
     {
-      if (a4)
+      if (error)
       {
-        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid opticalFlowConfig.qualityPrioritization %d", objc_msgSend(v6, "qualityPrioritization")];
-        *a4 = errorMessage(12, v14);
+        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid opticalFlowConfig.qualityPrioritization %d", objc_msgSend(configCopy, "qualityPrioritization")];
+        *error = errorMessage(12, v14);
       }
 
 LABEL_12:
@@ -76,12 +76,12 @@ LABEL_12:
   v10 = (self->_width / FlowDownscaleRatio);
   v11 = (self->_height / FlowDownscaleRatio);
   [(GenericFlow *)self->_genericFlow setFlowOnlyMode:self->_flowOnlyMode];
-  if (![(GenericFlow *)self->_genericFlow startSessionWithFlowWidth:v10 flowHeight:v11 frameWidth:self->_width frameHeight:self->_height useHomographyInFlow:self->_useHomographyInFlow error:a4])
+  if (![(GenericFlow *)self->_genericFlow startSessionWithFlowWidth:v10 flowHeight:v11 frameWidth:self->_width frameHeight:self->_height useHomographyInFlow:self->_useHomographyInFlow error:error])
   {
-    if (a4)
+    if (error)
     {
       errorMessage(7, @"Could not start the session");
-      *a4 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_9;
     }
 
@@ -96,13 +96,13 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)processWithOpticalFlowParams:(id)a3 error:(id *)a4
+- (BOOL)processWithOpticalFlowParams:(id)params error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  paramsCopy = params;
+  v7 = paramsCopy;
   if (*&self->_opticalFlowSPI == 0)
   {
-    if (a4)
+    if (error)
     {
       v33 = @"Error: Session Not Started";
       v34 = 3;
@@ -112,9 +112,9 @@ LABEL_9:
     goto LABEL_39;
   }
 
-  if (!v6)
+  if (!paramsCopy)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_39;
     }
@@ -124,17 +124,17 @@ LABEL_27:
     v34 = 12;
 LABEL_28:
     errorMessage(v34, v33);
-    *a4 = v31 = 0;
+    *error = v31 = 0;
     goto LABEL_18;
   }
 
-  v8 = [v6 sourceFrame];
-  PixelFormatType = CVPixelBufferGetPixelFormatType([v8 buffer]);
+  sourceFrame = [paramsCopy sourceFrame];
+  PixelFormatType = CVPixelBufferGetPixelFormatType([sourceFrame buffer]);
   v10 = isPixelFormatSupported(PixelFormatType);
 
   if ((v10 & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_39;
     }
@@ -143,12 +143,12 @@ LABEL_28:
     goto LABEL_27;
   }
 
-  v11 = [v7 sourceFrame];
-  v12 = [(BaseProcessor *)self matchPixelFormat:v11];
+  sourceFrame2 = [v7 sourceFrame];
+  v12 = [(BaseProcessor *)self matchPixelFormat:sourceFrame2];
 
   if (!v12)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_39;
     }
@@ -157,12 +157,12 @@ LABEL_28:
     goto LABEL_27;
   }
 
-  v13 = [v7 sourceFrame];
-  v14 = [(BaseProcessor *)self matchBufferResolution:v13];
+  sourceFrame3 = [v7 sourceFrame];
+  v14 = [(BaseProcessor *)self matchBufferResolution:sourceFrame3];
 
   if (!v14)
   {
-    if (a4)
+    if (error)
     {
       v33 = @"opticalFlowParams buffer resolution mismatch with OpticalFlowProcessor's buffer resolution for the DVPFrameProcessor session";
       goto LABEL_27;
@@ -174,13 +174,13 @@ LABEL_39:
   }
 
   v15 = [DVPFrame alloc];
-  v16 = [v7 sourceFrame];
-  v17 = [v16 buffer];
-  v18 = [v7 sourceFrame];
-  v19 = v18;
-  if (v18)
+  sourceFrame4 = [v7 sourceFrame];
+  buffer = [sourceFrame4 buffer];
+  sourceFrame5 = [v7 sourceFrame];
+  v19 = sourceFrame5;
+  if (sourceFrame5)
   {
-    [v18 presentationTimeStamp];
+    [sourceFrame5 presentationTimeStamp];
   }
 
   else
@@ -190,14 +190,14 @@ LABEL_39:
     v39 = 0;
   }
 
-  v20 = [(DVPFrame *)v15 initWithBuffer:v17 presentationTimeStamp:&v37];
+  v20 = [(DVPFrame *)v15 initWithBuffer:buffer presentationTimeStamp:&v37];
 
   if (!v20)
   {
-    if (a4)
+    if (error)
     {
       errorMessage(9, @"Error allocating firstFrame");
-      *a4 = v31 = 0;
+      *error = v31 = 0;
     }
 
     else
@@ -209,13 +209,13 @@ LABEL_39:
   }
 
   v21 = [DVPFrame alloc];
-  v22 = [v7 nextFrame];
-  v23 = [v22 buffer];
-  v24 = [v7 nextFrame];
-  v25 = v24;
-  if (v24)
+  nextFrame = [v7 nextFrame];
+  buffer2 = [nextFrame buffer];
+  nextFrame2 = [v7 nextFrame];
+  v25 = nextFrame2;
+  if (nextFrame2)
   {
-    [v24 presentationTimeStamp];
+    [nextFrame2 presentationTimeStamp];
   }
 
   else
@@ -225,17 +225,17 @@ LABEL_39:
     v39 = 0;
   }
 
-  v26 = [(DVPFrame *)v21 initWithBuffer:v23 presentationTimeStamp:&v37];
+  v26 = [(DVPFrame *)v21 initWithBuffer:buffer2 presentationTimeStamp:&v37];
 
   if (!v26)
   {
-    if (a4)
+    if (error)
     {
       v35 = @"Error allocating secondFrame";
       v36 = 9;
 LABEL_35:
       errorMessage(v36, v35);
-      *a4 = v31 = 0;
+      *error = v31 = 0;
       goto LABEL_16;
     }
 
@@ -245,14 +245,14 @@ LABEL_36:
   }
 
   kdebug_trace();
-  v27 = [v7 opticalFlow];
-  v28 = [v27 forwardFlow];
-  v29 = [v7 opticalFlow];
-  v30 = -[OpticalFlowProcessor opticalFlowsFrom:to:forwardFlow:backwardFlow:streamingMode:error:](self, "opticalFlowsFrom:to:forwardFlow:backwardFlow:streamingMode:error:", v20, v26, v28, [v29 backwardFlow], objc_msgSend(v7, "submissionMode") == 2, a4);
+  opticalFlow = [v7 opticalFlow];
+  forwardFlow = [opticalFlow forwardFlow];
+  opticalFlow2 = [v7 opticalFlow];
+  v30 = -[OpticalFlowProcessor opticalFlowsFrom:to:forwardFlow:backwardFlow:streamingMode:error:](self, "opticalFlowsFrom:to:forwardFlow:backwardFlow:streamingMode:error:", v20, v26, forwardFlow, [opticalFlow2 backwardFlow], objc_msgSend(v7, "submissionMode") == 2, error);
 
   if (!v30)
   {
-    if (a4)
+    if (error)
     {
       v35 = @"opticalFlowsFrom fail";
       v36 = 11;
@@ -272,15 +272,15 @@ LABEL_18:
   return v31;
 }
 
-- (BOOL)opticalFlowsFrom:(id)a3 to:(id)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 streamingMode:(BOOL)a7 error:(id *)a8
+- (BOOL)opticalFlowsFrom:(id)from to:(id)to forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow streamingMode:(BOOL)mode error:(id *)error
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = v15;
-  if (!v14)
+  modeCopy = mode;
+  fromCopy = from;
+  toCopy = to;
+  v16 = toCopy;
+  if (!fromCopy)
   {
-    if (!a8)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -290,13 +290,13 @@ LABEL_21:
     v20 = 12;
 LABEL_22:
     errorMessage(v20, v19);
-    *a8 = v17 = 0;
+    *error = v17 = 0;
     goto LABEL_12;
   }
 
-  if (!v15)
+  if (!toCopy)
   {
-    if (!a8)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -305,9 +305,9 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  if (!a5)
+  if (!flow)
   {
-    if (!a8)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -316,9 +316,9 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  if (!a6)
+  if (!backwardFlow)
   {
-    if (!a8)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -329,18 +329,18 @@ LABEL_22:
 
   if (self->_revision != -1)
   {
-    if (![(GenericFlow *)self->_genericFlow processWithFirstFrame:v14 secondFrame:v15 forwardFlow:a5 backwardFlow:a6 streamingMode:v9 error:a8]&& a8)
+    if (![(GenericFlow *)self->_genericFlow processWithFirstFrame:fromCopy secondFrame:toCopy forwardFlow:flow backwardFlow:backwardFlow streamingMode:modeCopy error:error]&& error)
     {
-      *a8 = errorMessage(11, @"processWithFirstFrame fail");
+      *error = errorMessage(11, @"processWithFirstFrame fail");
     }
 
     goto LABEL_11;
   }
 
   kdebug_trace();
-  if (-[FRCOpticalFlowEstimator opticalFlowsFrom:to:forwardFlow:backwardFlow:](self->_opticalFlowSPI, "opticalFlowsFrom:to:forwardFlow:backwardFlow:", [v14 buffer], objc_msgSend(v16, "buffer"), a5, a6) != -22000)
+  if (-[FRCOpticalFlowEstimator opticalFlowsFrom:to:forwardFlow:backwardFlow:](self->_opticalFlowSPI, "opticalFlowsFrom:to:forwardFlow:backwardFlow:", [fromCopy buffer], objc_msgSend(v16, "buffer"), flow, backwardFlow) != -22000)
   {
-    if (a8)
+    if (error)
     {
       v19 = @"opticalFlowsFrom fail";
       v20 = 11;
@@ -389,7 +389,7 @@ LABEL_12:
   return 1;
 }
 
-- (OpticalFlowProcessor)initWithFrameWidth:(int64_t)a3 FrameHeight:(int64_t)a4 revision:(int64_t)a5
+- (OpticalFlowProcessor)initWithFrameWidth:(int64_t)width FrameHeight:(int64_t)height revision:(int64_t)revision
 {
   v23.receiver = self;
   v23.super_class = OpticalFlowProcessor;
@@ -400,11 +400,11 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  v8->_revision = a5;
+  v8->_revision = revision;
   v8->_streamingMode = 0;
   v8->_flowOnlyMode = 1;
-  v8->_width = a3;
-  v8->_height = a4;
+  v8->_width = width;
+  v8->_height = height;
   v8->_onDemandOpticalFlowBuffersAllocation = 0;
   v8->_useHomographyInFlow = 0;
   VELoggerInit(16, 0);

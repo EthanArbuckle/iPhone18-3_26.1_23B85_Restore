@@ -1,68 +1,68 @@
 @interface CKTranscriptCompositionalLayout
-+ (double)bottomTranscriptSpaceWithLastChatItem:(id)a3;
-+ (int64_t)translateLayoutIndexToEffectIndex:(int64_t)a3;
++ (double)bottomTranscriptSpaceWithLastChatItem:(id)item;
++ (int64_t)translateLayoutIndexToEffectIndex:(int64_t)index;
 - (BOOL)_dynamicsAreEnabled;
 - (BOOL)isInBackground;
-- (BOOL)needsAdditionalBracketPaddingForChatItem:(id)a3 prevChatItem:(id)a4;
-- (BOOL)nextItemIsOriginatorWithRepliesForIndex:(unint64_t)a3;
-- (BOOL)nextMessageIsReplyForIndex:(unint64_t)a3;
-- (BOOL)previousReplyCount:(unint64_t)a3 isOccludedForAssociatedFrame:(CGRect)a4 outMaxY:(double *)a5;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)needsAdditionalBracketPaddingForChatItem:(id)item prevChatItem:(id)chatItem;
+- (BOOL)nextItemIsOriginatorWithRepliesForIndex:(unint64_t)index;
+- (BOOL)nextMessageIsReplyForIndex:(unint64_t)index;
+- (BOOL)previousReplyCount:(unint64_t)count isOccludedForAssociatedFrame:(CGRect)frame outMaxY:(double *)y;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (BOOL)shouldUseRotisserieScroll;
 - (CGPoint)targetContentOffset;
-- (CGRect)_convertScreenFrameToLocalFrame:(CGRect)a3;
+- (CGRect)_convertScreenFrameToLocalFrame:(CGRect)frame;
 - (CGSize)collectionViewContentSize;
 - (CGSize)sizeForRotation;
-- (CKTranscriptCompositionalLayout)initWithSectionProvider:(id)a3;
+- (CKTranscriptCompositionalLayout)initWithSectionProvider:(id)provider;
 - (NSArray)layoutAttributes;
-- (UIEdgeInsets)_visibleRectInsectsForMaxYAnchorLayoutAttribute:(id)a3 forVisibleBounds:(CGRect)a4;
+- (UIEdgeInsets)_visibleRectInsectsForMaxYAnchorLayoutAttribute:(id)attribute forVisibleBounds:(CGRect)bounds;
 - (double)_calculateDeltaYForNewlyInsertedItems;
-- (double)_calculateTargetEasingForNewlyInsertedChatItem:(id)a3 previousItemAttributes:(id)a4;
-- (double)handleInvalidCaseForChatItem:(id)a3 withPrevChatItem:(id)a4;
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (int64_t)effectIndexForDecorationViewAtIndex:(int64_t)a3;
-- (void)_applyAttributeUpdatesWithTargetMap:(id)a3 layoutAttributes:(id)a4 updateBlock:(id)a5;
-- (void)_applyCurrentFrameOffsetsForLayoutAttributesIfNeeded:(id)a3;
-- (void)_applyHorizontalOffsetFromMapping:(id)a3 toLayoutAttributes:(id)a4;
-- (void)_applyTargetFrameOffsetsForLayoutAttributesIfNeeded:(id)a3;
+- (double)_calculateTargetEasingForNewlyInsertedChatItem:(id)item previousItemAttributes:(id)attributes;
+- (double)handleInvalidCaseForChatItem:(id)item withPrevChatItem:(id)chatItem;
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (int64_t)effectIndexForDecorationViewAtIndex:(int64_t)index;
+- (void)_applyAttributeUpdatesWithTargetMap:(id)map layoutAttributes:(id)attributes updateBlock:(id)block;
+- (void)_applyCurrentFrameOffsetsForLayoutAttributesIfNeeded:(id)needed;
+- (void)_applyHorizontalOffsetFromMapping:(id)mapping toLayoutAttributes:(id)attributes;
+- (void)_applyTargetFrameOffsetsForLayoutAttributesIfNeeded:(id)needed;
 - (void)_configureDisplayLink;
-- (void)_configureThreadGroupsForAttributes:(id)a3 outMaxYAnchorAttribute:(id *)a4 forVisibleBounds:(CGRect)a5;
+- (void)_configureThreadGroupsForAttributes:(id)attributes outMaxYAnchorAttribute:(id *)attribute forVisibleBounds:(CGRect)bounds;
 - (void)_configureUpdateSequenceItem;
 - (void)_dealloc;
 - (void)_kickDynamicsIfNeeded;
-- (void)_resetHorizontalBalloonOffsetsForLayoutAttributes:(id)a3 includeAssociatedAttributes:(BOOL)a4;
-- (void)_sceneActivationStateDidChange:(id)a3;
-- (void)_updateAssociatedAttributeFramesForPrimaryAttribute:(id)a3;
-- (void)_updateAttributeZIndex:(id)a3 forEffect:(id)a4;
-- (void)_updateCurrentBalloonOffsetForLayoutAttributes:(id)a3;
-- (void)applyDynamicScrollResistanceToItemsForScrollDeltaY:(double)a3;
+- (void)_resetHorizontalBalloonOffsetsForLayoutAttributes:(id)attributes includeAssociatedAttributes:(BOOL)associatedAttributes;
+- (void)_sceneActivationStateDidChange:(id)change;
+- (void)_updateAssociatedAttributeFramesForPrimaryAttribute:(id)attribute;
+- (void)_updateAttributeZIndex:(id)index forEffect:(id)effect;
+- (void)_updateCurrentBalloonOffsetForLayoutAttributes:(id)attributes;
+- (void)applyDynamicScrollResistanceToItemsForScrollDeltaY:(double)y;
 - (void)checkDynamicsWatchdog;
 - (void)clearParentInitialIndexesAndFinalOffsets;
 - (void)dealloc;
-- (void)displayLinkFired:(id)a3;
+- (void)displayLinkFired:(id)fired;
 - (void)invalidateDisplayLink;
 - (void)prepareLayout;
 - (void)prepareLayoutForRotisserieScrolling;
-- (void)reduceMotionSettingChanged:(id)a3;
+- (void)reduceMotionSettingChanged:(id)changed;
 - (void)reloadData;
 - (void)reloadLayout;
 - (void)removeUpdateSequenceItem;
-- (void)setAnchorYPosition:(double)a3;
-- (void)setContentSize:(CGFloat)a3;
-- (void)setDisplayLink:(uint64_t)a1;
-- (void)setInitialIndex:(unint64_t)a3 forParentOfAssociatedItemInsertedAtIndex:(unint64_t)a4;
+- (void)setAnchorYPosition:(double)position;
+- (void)setContentSize:(CGFloat)size;
+- (void)setDisplayLink:(uint64_t)link;
+- (void)setInitialIndex:(unint64_t)index forParentOfAssociatedItemInsertedAtIndex:(unint64_t)atIndex;
 - (void)setNeedsDynamicsUpdate;
-- (void)setTargetContentOffset:(CGPoint)a3;
-- (void)setVerticalOffset:(double)a3 forParentOfAssociatedItemDeletedAtIndex:(unint64_t)a4;
-- (void)sizeCategoryDidChange:(id)a3;
-- (void)updateAttributesForAnchorYChangeWithAttributes:(id)a3;
-- (void)updateAttributesForTargetContentOffsetChangeWithAttributes:(id)a3;
+- (void)setTargetContentOffset:(CGPoint)offset;
+- (void)setVerticalOffset:(double)offset forParentOfAssociatedItemDeletedAtIndex:(unint64_t)index;
+- (void)sizeCategoryDidChange:(id)change;
+- (void)updateAttributesForAnchorYChangeWithAttributes:(id)attributes;
+- (void)updateAttributesForTargetContentOffsetChangeWithAttributes:(id)attributes;
 - (void)updateContentSize;
-- (void)updateDynamicsWatchdogForRenderedFrameWithDuration:(double)a3;
+- (void)updateDynamicsWatchdogForRenderedFrameWithDuration:(double)duration;
 @end
 
 @implementation CKTranscriptCompositionalLayout
@@ -94,13 +94,13 @@ uint64_t __63__CKTranscriptCompositionalLayout__configureUpdateSequenceItem__blo
 {
   v135 = *MEMORY[0x1E69E9840];
   OUTLINED_FUNCTION_2_1();
-  v120 = self;
+  selfCopy = self;
   v130.receiver = self;
   v130.super_class = CKTranscriptCompositionalLayout;
   [(CKTranscriptCompositionalLayout *)&v130 prepareLayout];
-  v104 = [(CKTranscriptCompositionalLayout *)self isInBackground];
-  v106 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  v105 = [(CKTranscriptCompositionalLayout *)self layoutAttributes];
+  isInBackground = [(CKTranscriptCompositionalLayout *)self isInBackground];
+  collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+  layoutAttributes = [(CKTranscriptCompositionalLayout *)self layoutAttributes];
   if (self)
   {
     x = self->_visibleBounds.origin.x;
@@ -122,22 +122,22 @@ uint64_t __63__CKTranscriptCompositionalLayout__configureUpdateSequenceItem__blo
   v102 = width;
   if (CGRectEqualToRect(v136, *&x))
   {
-    [v106 bounds];
+    [collectionView bounds];
     v102 = v8;
     y = v9;
   }
 
-  [v106 bounds];
+  [collectionView bounds];
   v99 = v10;
   v100 = v11;
   v101 = v12;
   v14 = v13;
-  if (v104)
+  if (isInBackground)
   {
-    v15 = v120;
-    if (v120)
+    v15 = selfCopy;
+    if (selfCopy)
     {
-      v120->_previousFrameTimestamp = 0.0;
+      selfCopy->_previousFrameTimestamp = 0.0;
       v15->_currentFrameTimestamp = 0.0;
     }
 
@@ -170,19 +170,19 @@ uint64_t __63__CKTranscriptCompositionalLayout__configureUpdateSequenceItem__blo
     }
   }
 
-  if (![(CKTranscriptCompositionalLayout *)v120 shouldUseRotisserieScroll])
+  if (![(CKTranscriptCompositionalLayout *)selfCopy shouldUseRotisserieScroll])
   {
-    v20 = [(CKTranscriptCompositionalLayout *)v120 _dynamicsAreEnabled];
-    v97 = [v106 delegate];
-    v21 = [(CKTranscriptCompositionalLayout *)v120 _dynamicsAreRequiredForInlineReplyAnimation];
-    v22 = [v106 unanimatedLayoutPassShouldSnapToTargetFrames];
-    if (!v20 && !v21 && ((v22 ^ 1) & 1) == 0)
+    _dynamicsAreEnabled = [(CKTranscriptCompositionalLayout *)selfCopy _dynamicsAreEnabled];
+    delegate = [collectionView delegate];
+    _dynamicsAreRequiredForInlineReplyAnimation = [(CKTranscriptCompositionalLayout *)selfCopy _dynamicsAreRequiredForInlineReplyAnimation];
+    unanimatedLayoutPassShouldSnapToTargetFrames = [collectionView unanimatedLayoutPassShouldSnapToTargetFrames];
+    if (!_dynamicsAreEnabled && !_dynamicsAreRequiredForInlineReplyAnimation && ((unanimatedLayoutPassShouldSnapToTargetFrames ^ 1) & 1) == 0)
     {
       v128 = 0u;
       v129 = 0u;
       v126 = 0u;
       v127 = 0u;
-      v23 = v105;
+      v23 = layoutAttributes;
       v24 = [v23 countByEnumeratingWithState:&v126 objects:v132 count:16];
       if (v24)
       {
@@ -214,12 +214,12 @@ uint64_t __63__CKTranscriptCompositionalLayout__configureUpdateSequenceItem__blo
 
       if (v14 != v102)
       {
-        [(CKTranscriptCompositionalLayout *)v120 updateContentSize];
+        [(CKTranscriptCompositionalLayout *)selfCopy updateContentSize];
       }
 
-      if (v120)
+      if (selfCopy)
       {
-        OUTLINED_FUNCTION_5_0(&v120->_visibleBounds);
+        OUTLINED_FUNCTION_5_0(&selfCopy->_visibleBounds);
       }
 
 LABEL_121:
@@ -228,12 +228,12 @@ LABEL_121:
     }
 
     v30 = 0.0;
-    if (v120 && v120->_isDisplayDrivenLayoutInvalidation)
+    if (selfCopy && selfCopy->_isDisplayDrivenLayoutInvalidation)
     {
-      previousFrameTimestamp = v120->_previousFrameTimestamp;
-      if (previousFrameTimestamp == 0.0 || (currentFrameTimestamp = v120->_currentFrameTimestamp, currentFrameTimestamp == 0.0))
+      previousFrameTimestamp = selfCopy->_previousFrameTimestamp;
+      if (previousFrameTimestamp == 0.0 || (currentFrameTimestamp = selfCopy->_currentFrameTimestamp, currentFrameTimestamp == 0.0))
       {
-        requestedFrameRate = v120->_requestedFrameRate;
+        requestedFrameRate = selfCopy->_requestedFrameRate;
         if (requestedFrameRate <= 0.0)
         {
           v30 = 0.0;
@@ -250,7 +250,7 @@ LABEL_121:
         v30 = currentFrameTimestamp - previousFrameTimestamp;
       }
 
-      [(CKTranscriptCompositionalLayout *)v120 updateDynamicsWatchdogForRenderedFrameWithDuration:v30];
+      [(CKTranscriptCompositionalLayout *)selfCopy updateDynamicsWatchdogForRenderedFrameWithDuration:v30];
       OUTLINED_FUNCTION_2_1();
       v110 = 1;
     }
@@ -263,28 +263,28 @@ LABEL_121:
     v34 = v101 - y;
     if (v101 - y != 0.0)
     {
-      [(CKTranscriptCompositionalLayout *)v120 _kickDynamicsIfNeeded];
+      [(CKTranscriptCompositionalLayout *)selfCopy _kickDynamicsIfNeeded];
     }
 
-    v35 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v35 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v109 = v36;
 
     if (v34 == 0.0)
     {
-      v37 = v120;
-      easingUp = v120->_easingUp;
+      v37 = selfCopy;
+      easingUp = selfCopy->_easingUp;
     }
 
     else
     {
       easingUp = v34 > 0.0;
-      v37 = v120;
-      if (!v120)
+      v37 = selfCopy;
+      if (!selfCopy)
       {
         v112 = v34 > 0.0;
 LABEL_49:
-        v111 = [v105 count];
+        v111 = [layoutAttributes count];
         if (v111)
         {
           v39 = +[CKUIBehavior sharedBehaviors];
@@ -297,7 +297,7 @@ LABEL_49:
           v44 = v96 - ((v43 + 15) & 0xFFFFFFFFFFFFFFF0);
           bzero(v44, v43);
           v108 = v44;
-          [v105 getObjects:v44 range:{0, v41}];
+          [layoutAttributes getObjects:v44 range:{0, v41}];
           v119 = 0;
           v45 = 0;
           v117 = vabdd_f64(v101, y);
@@ -327,7 +327,7 @@ LABEL_49:
             {
               v54 = 1.0;
               v55 = 1.0 - v52;
-              v56 = v120;
+              v56 = selfCopy;
               if (1.0 - v52 < 1.0)
               {
                 v54 = (1.0 - pow(1.0 - v52, v98)) / (1.0 - v55);
@@ -344,7 +344,7 @@ LABEL_49:
 
             else
             {
-              v56 = v120;
+              v56 = selfCopy;
             }
 
             v58 = 2.0;
@@ -376,7 +376,7 @@ LABEL_49:
               *(v48 + 448) = 0;
               [(CKTranscriptCompositionalLayout *)v56 _resetHorizontalBalloonOffsetsForLayoutAttributes:v48 includeAssociatedAttributes:1];
               v113 &= v62;
-              v56 = v120;
+              v56 = selfCopy;
             }
 
             if (v119)
@@ -442,7 +442,7 @@ LABEL_49:
                 }
               }
 
-              v56 = v120;
+              v56 = selfCopy;
             }
 
             if (v117 > 2.5)
@@ -512,31 +512,31 @@ LABEL_49:
           }
 
           while (v114 + 1 != v111);
-          [v106 bounds];
+          [collectionView bounds];
           v85 = v84;
           v87 = v86;
           v89 = v88;
           v91 = v90;
           v121 = 0;
-          [(CKTranscriptCompositionalLayout *)v120 _configureThreadGroupsForAttributes:v105 outMaxYAnchorAttribute:&v121 forVisibleBounds:?];
+          [(CKTranscriptCompositionalLayout *)selfCopy _configureThreadGroupsForAttributes:layoutAttributes outMaxYAnchorAttribute:&v121 forVisibleBounds:?];
           v92 = v121;
-          [(CKTranscriptCompositionalLayout *)v120 _visibleRectInsectsForMaxYAnchorLayoutAttribute:v92 forVisibleBounds:v85, v87, v89, v91];
-          [v106 _setVisibleRectEdgeInsets:?];
+          [(CKTranscriptCompositionalLayout *)selfCopy _visibleRectInsectsForMaxYAnchorLayoutAttribute:v92 forVisibleBounds:v85, v87, v89, v91];
+          [collectionView _setVisibleRectEdgeInsets:?];
 
-          if (((v113 | v104) & 1) == 0)
+          if (((v113 | isInBackground) & 1) == 0)
           {
-            v93 = v120;
+            v93 = selfCopy;
             if (v110)
             {
-              if (v120)
+              if (selfCopy)
               {
-                v120->_previousFrameTimestamp = v120->_currentFrameTimestamp;
+                selfCopy->_previousFrameTimestamp = selfCopy->_currentFrameTimestamp;
               }
 
               [(CKTranscriptCompositionalLayout *)v93 checkDynamicsWatchdog];
               v94 = 0;
-              v93 = v120;
-              if (!v120)
+              v93 = selfCopy;
+              if (!selfCopy)
               {
                 goto LABEL_114;
               }
@@ -545,7 +545,7 @@ LABEL_49:
             else
             {
               v94 = 0;
-              if (!v120)
+              if (!selfCopy)
               {
                 goto LABEL_114;
               }
@@ -561,17 +561,17 @@ LABEL_49:
           v113 = 1;
         }
 
-        [(CKTranscriptCompositionalLayout *)v120 invalidateDisplayLink];
-        v93 = v120;
+        [(CKTranscriptCompositionalLayout *)selfCopy invalidateDisplayLink];
+        v93 = selfCopy;
         v94 = v113;
-        if (!v120)
+        if (!selfCopy)
         {
 LABEL_114:
           if (v14 != v102)
           {
             v95 = v94;
             [(CKTranscriptCompositionalLayout *)v93 updateContentSize];
-            v93 = v120;
+            v93 = selfCopy;
             v94 = v95;
           }
 
@@ -583,7 +583,7 @@ LABEL_114:
           if (v93->_isResting != v94)
           {
             v93->_isResting = v94;
-            [v97 collectionViewLayoutRestingDidChange:?];
+            [delegate collectionViewLayoutRestingDidChange:?];
           }
 
           goto LABEL_121;
@@ -600,32 +600,32 @@ LABEL_113:
     goto LABEL_49;
   }
 
-  [(CKTranscriptCompositionalLayout *)v120 prepareLayoutForRotisserieScrolling];
+  [(CKTranscriptCompositionalLayout *)selfCopy prepareLayoutForRotisserieScrolling];
 LABEL_122:
 }
 
 - (NSArray)layoutAttributes
 {
-  v2 = self;
+  selfCopy = self;
   v176 = *MEMORY[0x1E69E9840];
   layoutAttributes = self->_layoutAttributes;
   if (!layoutAttributes)
   {
-    v4 = [(CKTranscriptCompositionalLayout *)v2 collectionView];
-    v5 = [v4 delegate];
-    v138 = [v5 currentEffectForCollectionView:v4 layout:v2];
-    v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v7 = [v6 isDiffableTranscriptDataSourceEnabled];
+    collectionView = [(CKTranscriptCompositionalLayout *)selfCopy collectionView];
+    delegate = [collectionView delegate];
+    v138 = [delegate currentEffectForCollectionView:collectionView layout:selfCopy];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isDiffableTranscriptDataSourceEnabled = [mEMORY[0x1E69A8070] isDiffableTranscriptDataSourceEnabled];
 
-    v140 = v5;
-    if (v7)
+    v140 = delegate;
+    if (isDiffableTranscriptDataSourceEnabled)
     {
-      v8 = [v4 numberOfItemsInSection:0];
+      v8 = [collectionView numberOfItemsInSection:0];
     }
 
     else
     {
-      v8 = [v5 collectionView:v4 numberOfItemsInSection:0];
+      v8 = [delegate collectionView:collectionView numberOfItemsInSection:0];
     }
 
     v139 = v8;
@@ -634,7 +634,7 @@ LABEL_122:
     v165 = 0u;
     v166 = 0u;
     v167 = 0u;
-    v9 = v2->_oldLayoutAttributes;
+    v9 = selfCopy->_oldLayoutAttributes;
     v10 = [(NSArray *)v9 countByEnumeratingWithState:&v164 objects:v175 count:16];
     if (v10)
     {
@@ -650,13 +650,13 @@ LABEL_122:
           }
 
           v14 = *(*(&v164 + 1) + 8 * i);
-          v15 = [v14 chatItem];
-          v16 = [v15 IMChatItem];
-          v17 = [v16 guid];
+          chatItem = [v14 chatItem];
+          iMChatItem = [chatItem IMChatItem];
+          guid = [iMChatItem guid];
 
-          if ([v17 length])
+          if ([guid length])
           {
-            [v152 setObject:v14 forKey:v17];
+            [v152 setObject:v14 forKey:guid];
           }
         }
 
@@ -666,12 +666,12 @@ LABEL_122:
       while (v11);
     }
 
-    [(CKTranscriptCompositionalLayout *)v2 _calculateDeltaYForNewlyInsertedItems];
+    [(CKTranscriptCompositionalLayout *)selfCopy _calculateDeltaYForNewlyInsertedItems];
     v19 = v18;
     v137 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v139];
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v157 = v2;
-    v136 = v4;
+    v157 = selfCopy;
+    v136 = collectionView;
     v153 = v20;
     if (v139)
     {
@@ -685,29 +685,29 @@ LABEL_122:
       {
         v26 = [MEMORY[0x1E696AC88] indexPathForItem:v23 inSection:0];
         v27 = [MEMORY[0x1E696AC88] indexPathForRow:v23 inSection:0];
-        v163.receiver = v2;
+        v163.receiver = selfCopy;
         v163.super_class = CKTranscriptCompositionalLayout;
         v28 = [(CKTranscriptCompositionalLayout *)&v163 layoutAttributesForItemAtIndexPath:v27];
 
         v149 = v26;
-        v29 = [v140 collectionView:v4 layout:v2 chatItemForItemAtIndexPath:v26];
+        v29 = [v140 collectionView:collectionView layout:selfCopy chatItemForItemAtIndexPath:v26];
         v30 = v29;
         v151 = v28;
         v148 = v29;
         if (v28)
         {
-          v31 = [v29 IMChatItem];
-          v32 = [v31 guid];
+          iMChatItem2 = [v29 IMChatItem];
+          guid2 = [iMChatItem2 guid];
 
-          v144 = v32;
-          v33 = [v152 objectForKeyedSubscript:v32];
+          v144 = guid2;
+          v33 = [v152 objectForKeyedSubscript:guid2];
           v145 = v23;
           v146 = v22;
           v142 = v33;
           if (v33)
           {
             v34 = *(v33 + *v24 + 8) - *(v33 + 360);
-            v35 = v2;
+            v35 = selfCopy;
             v36 = v25;
             v37 = v33;
             v38 = v151;
@@ -720,7 +720,7 @@ LABEL_122:
             v48 = *(v37 + 416);
             v49 = *(v37 + 424);
             v25 = v36;
-            v2 = v35;
+            selfCopy = v35;
           }
 
           else
@@ -731,7 +731,7 @@ LABEL_122:
             v42 = v54;
             v44 = v55;
             v46 = v19 + v56;
-            [(CKTranscriptCompositionalLayout *)v2 _calculateTargetEasingForNewlyInsertedChatItem:v30 previousItemAttributes:v22];
+            [(CKTranscriptCompositionalLayout *)selfCopy _calculateTargetEasingForNewlyInsertedChatItem:v30 previousItemAttributes:v22];
             v49 = v57;
             v48 = v57;
             v47 = v30;
@@ -762,7 +762,7 @@ LABEL_122:
           if (!v23)
           {
             objc_opt_class();
-            [(CKTranscriptCompositionalLayout *)v2 setHasLoadMore:objc_opt_isKindOfClass() & 1];
+            [(CKTranscriptCompositionalLayout *)selfCopy setHasLoadMore:objc_opt_isKindOfClass() & 1];
           }
 
           v66 = v47;
@@ -771,11 +771,11 @@ LABEL_122:
           v51 = v144;
           if (objc_opt_isKindOfClass())
           {
-            v67 = [v66 previousPluginChatItem];
-            v68 = v67;
-            if (v67)
+            previousPluginChatItem = [v66 previousPluginChatItem];
+            v68 = previousPluginChatItem;
+            if (previousPluginChatItem)
             {
-              v66 = v67;
+              v66 = previousPluginChatItem;
             }
           }
 
@@ -786,22 +786,22 @@ LABEL_122:
           }
 
           v141 = v66;
-          [(CKTranscriptCompositionalLayout *)v2 _updateAttributeZIndex:v151 forEffect:v25];
-          v69 = [v150 visibleAssociatedMessageChatItems];
+          [(CKTranscriptCompositionalLayout *)selfCopy _updateAttributeZIndex:v151 forEffect:v25];
+          visibleAssociatedMessageChatItems = [v150 visibleAssociatedMessageChatItems];
           v70 = +[CKPrintController sharedInstance];
-          v71 = [v70 isPrinting];
+          isPrinting = [v70 isPrinting];
 
-          v156 = 0;
+          array = 0;
           v72 = v146;
-          v143 = v69;
-          if (v69 && (v71 & 1) == 0)
+          v143 = visibleAssociatedMessageChatItems;
+          if (visibleAssociatedMessageChatItems && (isPrinting & 1) == 0)
           {
-            v156 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v159 = 0u;
             v160 = 0u;
             v161 = 0u;
             v162 = 0u;
-            obj = v69;
+            obj = visibleAssociatedMessageChatItems;
             v73 = [obj countByEnumeratingWithState:&v159 objects:v168 count:16];
             if (v73)
             {
@@ -833,7 +833,7 @@ LABEL_122:
                     v86 = v82[80];
                     v82[80] = v85;
 
-                    [v156 addObject:v82];
+                    [array addObject:v82];
                     [(NSArray *)v21 addObject:v82];
                   }
 
@@ -866,7 +866,7 @@ LABEL_122:
               while (v74);
             }
 
-            v2 = v157;
+            selfCopy = v157;
             v25 = v138;
             v23 = v145;
             v72 = v146;
@@ -876,8 +876,8 @@ LABEL_122:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v89 = [v150 messageHighlightChatItem];
-            if (v89)
+            messageHighlightChatItem = [v150 messageHighlightChatItem];
+            if (messageHighlightChatItem)
             {
               v90 = [(NSArray *)v21 count];
               v91 = [MEMORY[0x1E696AC88] indexPathForItem:v90 inSection:1];
@@ -885,7 +885,7 @@ LABEL_122:
               v93 = v92;
               if (v92)
               {
-                [v92 setChatItem:v89];
+                [v92 setChatItem:messageHighlightChatItem];
                 v94 = v157->_initialParentLayoutAttributes;
                 v95 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v90];
                 v96 = [(NSMutableDictionary *)v94 objectForKey:v95];
@@ -893,14 +893,14 @@ LABEL_122:
                 v93[80] = v96;
 
                 [(NSArray *)v21 addObject:v93];
-                v98 = v156;
-                if (!v156)
+                array2 = array;
+                if (!array)
                 {
-                  v98 = [MEMORY[0x1E695DF70] array];
+                  array2 = [MEMORY[0x1E695DF70] array];
                 }
 
-                v156 = v98;
-                [v98 addObject:v93];
+                array = array2;
+                [array2 addObject:v93];
               }
 
               else
@@ -923,7 +923,7 @@ LABEL_122:
 
               v99 = v151;
 
-              v2 = v157;
+              selfCopy = v157;
             }
 
             else
@@ -939,17 +939,17 @@ LABEL_122:
             v99 = v151;
           }
 
-          if (v156)
+          if (array)
           {
-            objc_storeStrong(v99 + 79, v156);
-            [(CKTranscriptCompositionalLayout *)v2 _updateAssociatedAttributeFramesForPrimaryAttribute:v99];
+            objc_storeStrong(v99 + 79, array);
+            [(CKTranscriptCompositionalLayout *)selfCopy _updateAssociatedAttributeFramesForPrimaryAttribute:v99];
           }
 
           v52 = v99;
           v102 = v99;
 
           v22 = v102;
-          v4 = v136;
+          collectionView = v136;
         }
 
         else
@@ -984,15 +984,15 @@ LABEL_122:
     }
 
     v147 = v22;
-    [(CKTranscriptCompositionalLayout *)v2 _configureThreadGroupsForAttributes:v137 outMaxYAnchorAttribute:0 forVisibleBounds:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    if (!v2->_decorationLayoutAttributes && v25)
+    [(CKTranscriptCompositionalLayout *)selfCopy _configureThreadGroupsForAttributes:v137 outMaxYAnchorAttribute:0 forVisibleBounds:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    if (!selfCopy->_decorationLayoutAttributes && v25)
     {
       v103 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v104 = [v25 layerCount];
-      v105 = [v25 shouldDrawOverNavigationBar];
-      if (v104)
+      layerCount = [v25 layerCount];
+      shouldDrawOverNavigationBar = [v25 shouldDrawOverNavigationBar];
+      if (layerCount)
       {
-        v106 = v105;
+        v106 = shouldDrawOverNavigationBar;
       }
 
       else
@@ -1000,8 +1000,8 @@ LABEL_122:
         v106 = 0;
       }
 
-      v107 = v104 - v106;
-      if (v104 != v106)
+      v107 = layerCount - v106;
+      if (layerCount != v106)
       {
         v108 = 0;
         do
@@ -1013,8 +1013,8 @@ LABEL_122:
             v111 = [MEMORY[0x1E696AC88] indexPathWithIndex:v108];
             v112 = [v109 layoutAttributesForDecorationViewOfKind:v110 withIndexPath:v111];
 
-            v113 = [(CKTranscriptCompositionalLayout *)v157 collectionView];
-            [v113 bounds];
+            collectionView2 = [(CKTranscriptCompositionalLayout *)v157 collectionView];
+            [collectionView2 bounds];
             v115 = v114;
             v117 = v116;
             v119 = v118;
@@ -1022,7 +1022,7 @@ LABEL_122:
 
             v25 = v138;
             [v112 setFrame:{v115, v117, v119, v121}];
-            v122 = [v138 isForegroundEffect];
+            isForegroundEffect = [v138 isForegroundEffect];
             if (v107 == 1)
             {
               v123 = 3000;
@@ -1038,7 +1038,7 @@ LABEL_122:
               v123 = -2000;
             }
 
-            if (v122)
+            if (isForegroundEffect)
             {
               v124 = 3000;
             }
@@ -1059,18 +1059,18 @@ LABEL_122:
         while (v107);
       }
 
-      v2 = v157;
+      selfCopy = v157;
       decorationLayoutAttributes = v157->_decorationLayoutAttributes;
       v157->_decorationLayoutAttributes = v103;
 
-      v4 = v136;
+      collectionView = v136;
     }
 
-    objc_storeStrong(&v2->_layoutAttributes, v137);
-    v126 = [(CKTranscriptCompositionalLayout *)v2 oldAssociatedLayoutAttributes];
-    if (v126)
+    objc_storeStrong(&selfCopy->_layoutAttributes, v137);
+    oldAssociatedLayoutAttributes = [(CKTranscriptCompositionalLayout *)selfCopy oldAssociatedLayoutAttributes];
+    if (oldAssociatedLayoutAttributes)
     {
-      [(CKTranscriptCompositionalLayout *)v2 oldAssociatedLayoutAttributes];
+      [(CKTranscriptCompositionalLayout *)selfCopy oldAssociatedLayoutAttributes];
     }
 
     else
@@ -1079,30 +1079,30 @@ LABEL_122:
     }
     v127 = ;
 
-    v128 = v153;
+    array3 = v153;
     if (!v153)
     {
-      v128 = [MEMORY[0x1E695DF70] array];
+      array3 = [MEMORY[0x1E695DF70] array];
     }
 
-    v129 = [(NSArray *)v128 differenceFromArray:v127 withOptions:0 usingEquivalenceTest:&__block_literal_global_243_1];
+    v129 = [(NSArray *)array3 differenceFromArray:v127 withOptions:0 usingEquivalenceTest:&__block_literal_global_243_1];
     IMIndexesFromOrderedCollectionDifference();
     v130 = 0;
     v131 = 0;
     v132 = [v130 mutableCopy];
-    [(CKTranscriptCompositionalLayout *)v2 setInsertedAssociatedLayoutAttributes:v132];
+    [(CKTranscriptCompositionalLayout *)selfCopy setInsertedAssociatedLayoutAttributes:v132];
 
-    [(CKTranscriptCompositionalLayout *)v2 setOldAssociatedLayoutAttributes:0];
-    [(CKTranscriptCompositionalLayout *)v2 setOldLayoutAttributes:0];
-    associatedLayoutAttributes = v2->_associatedLayoutAttributes;
-    v2->_associatedLayoutAttributes = v128;
-    v134 = v128;
+    [(CKTranscriptCompositionalLayout *)selfCopy setOldAssociatedLayoutAttributes:0];
+    [(CKTranscriptCompositionalLayout *)selfCopy setOldLayoutAttributes:0];
+    associatedLayoutAttributes = selfCopy->_associatedLayoutAttributes;
+    selfCopy->_associatedLayoutAttributes = array3;
+    v134 = array3;
 
-    [(CKTranscriptCompositionalLayout *)v2 updateContentSize];
-    [(CKTranscriptCompositionalLayout *)v2 _applyTargetFrameOffsetsForLayoutAttributesIfNeeded:v2->_layoutAttributes];
-    [(CKTranscriptCompositionalLayout *)v2 _applyCurrentFrameOffsetsForLayoutAttributesIfNeeded:v2->_layoutAttributes];
+    [(CKTranscriptCompositionalLayout *)selfCopy updateContentSize];
+    [(CKTranscriptCompositionalLayout *)selfCopy _applyTargetFrameOffsetsForLayoutAttributesIfNeeded:selfCopy->_layoutAttributes];
+    [(CKTranscriptCompositionalLayout *)selfCopy _applyCurrentFrameOffsetsForLayoutAttributesIfNeeded:selfCopy->_layoutAttributes];
 
-    layoutAttributes = v2->_layoutAttributes;
+    layoutAttributes = selfCopy->_layoutAttributes;
   }
 
   return layoutAttributes;
@@ -1128,32 +1128,32 @@ LABEL_122:
 - (BOOL)_dynamicsAreEnabled
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 shouldUseDynamicScrolling];
+  shouldUseDynamicScrolling = [v3 shouldUseDynamicScrolling];
 
-  if (!v4 || [(CKTranscriptCompositionalLayout *)self isInBackground])
+  if (!shouldUseDynamicScrolling || [(CKTranscriptCompositionalLayout *)self isInBackground])
   {
     return 0;
   }
 
-  v6 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  v5 = ([v6 dynamicsDisabled] & 1) == 0 && (!-[CKTranscriptCompositionalLayout disableDynamicsWhileScrolling](self, "disableDynamicsWhileScrolling") || !-[CKTranscriptCompositionalLayout isResting](self, "isResting"));
+  collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+  v5 = ([collectionView dynamicsDisabled] & 1) == 0 && (!-[CKTranscriptCompositionalLayout disableDynamicsWhileScrolling](self, "disableDynamicsWhileScrolling") || !-[CKTranscriptCompositionalLayout isResting](self, "isResting"));
 
   return v5;
 }
 
 - (BOOL)isInBackground
 {
-  v2 = [MEMORY[0x1E69A6160] sharedInstance];
-  v3 = [v2 isInBackground];
+  mEMORY[0x1E69A6160] = [MEMORY[0x1E69A6160] sharedInstance];
+  isInBackground = [mEMORY[0x1E69A6160] isInBackground];
 
-  return v3;
+  return isInBackground;
 }
 
 - (BOOL)shouldUseRotisserieScroll
 {
-  v3 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  v4 = [v3 hideShowPendingAnimations];
-  v5 = [v4 count];
+  collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+  hideShowPendingAnimations = [collectionView hideShowPendingAnimations];
+  v5 = [hideShowPendingAnimations count];
 
   v6 = +[CKUIBehavior sharedBehaviors];
   if ([v6 shouldUseRotisserieScrolling])
@@ -1172,7 +1172,7 @@ LABEL_122:
 - (void)checkDynamicsWatchdog
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v3 = 134218240;
   v4 = v2;
   v5 = 2048;
@@ -1210,15 +1210,15 @@ LABEL_122:
   }
 }
 
-+ (int64_t)translateLayoutIndexToEffectIndex:(int64_t)a3
++ (int64_t)translateLayoutIndexToEffectIndex:(int64_t)index
 {
   v3 = 2;
-  if (a3 != 3000)
+  if (index != 3000)
   {
-    v3 = a3 == 1000;
+    v3 = index == 1000;
   }
 
-  if (a3 == 5000)
+  if (index == 5000)
   {
     return 3;
   }
@@ -1229,20 +1229,20 @@ LABEL_122:
   }
 }
 
-- (int64_t)effectIndexForDecorationViewAtIndex:(int64_t)a3
+- (int64_t)effectIndexForDecorationViewAtIndex:(int64_t)index
 {
-  v4 = [(CKTranscriptCompositionalLayout *)self decorationLayoutAttributes];
-  v5 = [v4 objectAtIndex:a3];
+  decorationLayoutAttributes = [(CKTranscriptCompositionalLayout *)self decorationLayoutAttributes];
+  v5 = [decorationLayoutAttributes objectAtIndex:index];
   v6 = +[CKTranscriptCompositionalLayout translateLayoutIndexToEffectIndex:](CKTranscriptCompositionalLayout, "translateLayoutIndexToEffectIndex:", [v5 zIndex]);
 
   return v6;
 }
 
-- (CKTranscriptCompositionalLayout)initWithSectionProvider:(id)a3
+- (CKTranscriptCompositionalLayout)initWithSectionProvider:(id)provider
 {
   v16.receiver = self;
   v16.super_class = CKTranscriptCompositionalLayout;
-  v3 = [(CKTranscriptCompositionalLayout *)&v16 initWithSectionProvider:a3];
+  v3 = [(CKTranscriptCompositionalLayout *)&v16 initWithSectionProvider:provider];
   v4 = v3;
   if (v3)
   {
@@ -1265,30 +1265,30 @@ LABEL_122:
 
     v12 = [objc_alloc(MEMORY[0x1E69A6158]) initWithTarget:v4 action:sel__kickDynamicsIfNeeded];
     [(CKTranscriptCompositionalLayout *)v4 setDynamicsUpdater:v12];
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v4 selector:sel_sizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_sizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v4 selector:sel_reduceMotionSettingChanged_ name:*MEMORY[0x1E69DD918] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v4 selector:sel_reduceMotionSettingChanged_ name:*MEMORY[0x1E69DD918] object:0];
   }
 
   return v4;
 }
 
-- (void)_sceneActivationStateDidChange:(id)a3
+- (void)_sceneActivationStateDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  v6 = [v5 window];
-  v9 = [v6 windowScene];
+  changeCopy = change;
+  collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+  window = [collectionView window];
+  windowScene = [window windowScene];
 
-  v7 = [v4 object];
+  object = [changeCopy object];
 
-  v8 = v9;
-  if (v7 == v9)
+  v8 = windowScene;
+  if (object == windowScene)
   {
     [(CKTranscriptCompositionalLayout *)self _kickDynamicsIfNeeded];
-    v8 = v9;
+    v8 = windowScene;
   }
 }
 
@@ -1297,8 +1297,8 @@ LABEL_122:
   if ((_UIUpdateCycleEnabled() & 1) == 0 && !self->_displayLink)
   {
     v4 = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel_displayLinkFired_];
-    v3 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v4 addToRunLoop:v3 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [v4 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     [(CKTranscriptCompositionalLayout *)self setDisplayLink:v4];
   }
@@ -1306,8 +1306,8 @@ LABEL_122:
 
 - (void)setNeedsDynamicsUpdate
 {
-  v2 = [(CKTranscriptCompositionalLayout *)self dynamicsUpdater];
-  [v2 setNeedsUpdate];
+  dynamicsUpdater = [(CKTranscriptCompositionalLayout *)self dynamicsUpdater];
+  [dynamicsUpdater setNeedsUpdate];
 }
 
 - (void)dealloc
@@ -1329,10 +1329,10 @@ LABEL_122:
 - (void)prepareLayoutForRotisserieScrolling
 {
   v198[16] = *MEMORY[0x1E69E9840];
-  v3 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  v163 = self;
-  v4 = [(CKTranscriptCompositionalLayout *)self layoutAttributes];
-  [v3 bounds];
+  collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+  selfCopy = self;
+  layoutAttributes = [(CKTranscriptCompositionalLayout *)self layoutAttributes];
+  [collectionView bounds];
   v6 = v5;
   v8 = v7;
   width = v199.size.width;
@@ -1359,7 +1359,7 @@ LABEL_122:
   v202.size.width = width;
   v202.size.height = height;
   v176 = CGRectGetHeight(v202);
-  [v3 __ck_bottomOffset];
+  [collectionView __ck_bottomOffset];
   v177 = v16;
   v18 = v17;
   v203.origin.x = v6;
@@ -1367,7 +1367,7 @@ LABEL_122:
   v203.size.width = width;
   v203.size.height = v11;
   v171 = CGRectGetMaxY(v203);
-  v19 = [v4 indexOfObjectWithOptions:2 passingTest:&__block_literal_global_173];
+  v19 = [layoutAttributes indexOfObjectWithOptions:2 passingTest:&__block_literal_global_173];
   if (v19 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v20 = v18 - v11;
@@ -1375,7 +1375,7 @@ LABEL_122:
 
   else
   {
-    v21 = [v4 objectAtIndexedSubscript:v19];
+    v21 = [layoutAttributes objectAtIndexedSubscript:v19];
     v22 = CGRectGetMaxY(v21[11]) - v11;
 
     v171 = v22;
@@ -1387,7 +1387,7 @@ LABEL_122:
   v204.size.width = width;
   v204.size.height = height;
   v23 = CGRectGetMinY(v204);
-  [v3 __ck_scrollToTopContentOffset];
+  [collectionView __ck_scrollToTopContentOffset];
   v205.origin.x = v26 + 0.0;
   v24 = v205.origin.x;
   v205.origin.y = v27 + 15.0;
@@ -1400,8 +1400,8 @@ LABEL_122:
   v206.size.width = width;
   v206.size.height = height;
   v167 = CGRectGetMaxY(v206);
-  v166 = [(CKTranscriptCompositionalLayout *)v163 hasLoadMore];
-  v28 = [v4 count];
+  hasLoadMore = [(CKTranscriptCompositionalLayout *)selfCopy hasLoadMore];
+  v28 = [layoutAttributes count];
   if (!v28)
   {
     goto LABEL_155;
@@ -1412,10 +1412,10 @@ LABEL_122:
   MEMORY[0x1EEE9AC00](v28);
   *&v31 = &v159 - ((v30 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(*&v31, v30);
-  [v4 getObjects:*&v31 range:{0, v29}];
+  [layoutAttributes getObjects:*&v31 range:{0, v29}];
   v32 = v29 - 1;
-  v160 = v4;
-  v161 = v3;
+  v160 = layoutAttributes;
+  v161 = collectionView;
   v33 = MinY;
   v170 = v31;
   v168 = v29;
@@ -1837,7 +1837,7 @@ LABEL_95:
       }
 
 LABEL_115:
-      v125 = v166;
+      v125 = hasLoadMore;
       if (v120 > v167)
       {
         v125 = 1;
@@ -1976,19 +1976,19 @@ LABEL_114:
   }
 
 LABEL_154:
-  v3 = v161;
+  collectionView = v161;
   [v161 bounds];
   v150 = v149;
   v152 = v151;
   v154 = v153;
   v156 = v155;
   v178 = 0;
-  v157 = v163;
-  v4 = v160;
-  [(CKTranscriptCompositionalLayout *)v163 _configureThreadGroupsForAttributes:v160 outMaxYAnchorAttribute:&v178 forVisibleBounds:?];
+  v157 = selfCopy;
+  layoutAttributes = v160;
+  [(CKTranscriptCompositionalLayout *)selfCopy _configureThreadGroupsForAttributes:v160 outMaxYAnchorAttribute:&v178 forVisibleBounds:?];
   v158 = v178;
   [(CKTranscriptCompositionalLayout *)v157 _visibleRectInsectsForMaxYAnchorLayoutAttribute:v158 forVisibleBounds:v150, v152, v154, v156];
-  [v3 _setVisibleRectEdgeInsets:?];
+  [collectionView _setVisibleRectEdgeInsets:?];
 
 LABEL_155:
 }
@@ -2002,20 +2002,20 @@ uint64_t __70__CKTranscriptCompositionalLayout_prepareLayoutForRotisserieScrolli
   return isKindOfClass & 1;
 }
 
-- (UIEdgeInsets)_visibleRectInsectsForMaxYAnchorLayoutAttribute:(id)a3 forVisibleBounds:(CGRect)a4
+- (UIEdgeInsets)_visibleRectInsectsForMaxYAnchorLayoutAttribute:(id)attribute forVisibleBounds:(CGRect)bounds
 {
-  x = a4.origin.x;
+  x = bounds.origin.x;
   v5 = *MEMORY[0x1E69DDCE0];
   v6 = *(MEMORY[0x1E69DDCE0] + 8);
   v8 = *(MEMORY[0x1E69DDCE0] + 16);
   v7 = *(MEMORY[0x1E69DDCE0] + 24);
-  if (a3)
+  if (attribute)
   {
     v17 = *MEMORY[0x1E69DDCE0];
-    y = a4.origin.y;
-    width = a4.size.width;
-    height = a4.size.height;
-    MaxY = CGRectGetMaxY(*(a3 + 12));
+    y = bounds.origin.y;
+    width = bounds.size.width;
+    height = bounds.size.height;
+    MaxY = CGRectGetMaxY(*(attribute + 12));
     v18.origin.x = x;
     v18.origin.y = y;
     v18.size.width = width;
@@ -2039,43 +2039,43 @@ uint64_t __70__CKTranscriptCompositionalLayout_prepareLayoutForRotisserieScrolli
   return result;
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(CKTranscriptCompositionalLayout *)self isUsingInitialLayoutAttributesForRotation])
   {
-    v5 = [(CKTranscriptCompositionalLayout *)self layoutAttributesForItemAtIndexPath:v4];
+    v5 = [(CKTranscriptCompositionalLayout *)self layoutAttributesForItemAtIndexPath:pathCopy];
     goto LABEL_13;
   }
 
-  if ([v4 section] == 1)
+  if ([pathCopy section] == 1)
   {
-    v6 = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
-    v7 = [v6 count];
-    if (v7 <= [v4 item])
+    associatedLayoutAttributes = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
+    v7 = [associatedLayoutAttributes count];
+    if (v7 <= [pathCopy item])
     {
     }
 
     else
     {
-      v8 = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
-      v9 = [v8 objectAtIndex:{objc_msgSend(v4, "item")}];
+      associatedLayoutAttributes2 = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
+      v9 = [associatedLayoutAttributes2 objectAtIndex:{objc_msgSend(pathCopy, "item")}];
 
       if (v9)
       {
-        v10 = [(CKTranscriptCompositionalLayout *)self layoutAttributesForItemAtIndexPath:v4];
+        v10 = [(CKTranscriptCompositionalLayout *)self layoutAttributesForItemAtIndexPath:pathCopy];
         v5 = [v10 copy];
 
         [v5 setAlpha:1.0];
-        v11 = [(CKTranscriptCompositionalLayout *)self insertedAssociatedLayoutAttributes];
-        v12 = [v11 containsIndex:{objc_msgSend(v4, "row")}];
+        insertedAssociatedLayoutAttributes = [(CKTranscriptCompositionalLayout *)self insertedAssociatedLayoutAttributes];
+        v12 = [insertedAssociatedLayoutAttributes containsIndex:{objc_msgSend(pathCopy, "row")}];
 
         if (v12)
         {
           [v5 frame];
           [v5 setFrame:?];
-          v13 = [(CKTranscriptCompositionalLayout *)self insertedAssociatedLayoutAttributes];
-          [v13 removeIndex:{objc_msgSend(v4, "row")}];
+          insertedAssociatedLayoutAttributes2 = [(CKTranscriptCompositionalLayout *)self insertedAssociatedLayoutAttributes];
+          [insertedAssociatedLayoutAttributes2 removeIndex:{objc_msgSend(pathCopy, "row")}];
         }
 
         goto LABEL_13;
@@ -2085,17 +2085,17 @@ uint64_t __70__CKTranscriptCompositionalLayout_prepareLayoutForRotisserieScrolli
 
   v19.receiver = self;
   v19.super_class = CKTranscriptCompositionalLayout;
-  v5 = [(CKTranscriptCompositionalLayout *)&v19 initialLayoutAttributesForAppearingItemAtIndexPath:v4];
-  v14 = [(CKTranscriptCompositionalLayout *)self indicesOfChatItemsToBeInsertedWithoutFading];
-  v15 = [v14 containsIndex:{objc_msgSend(v4, "item")}];
+  v5 = [(CKTranscriptCompositionalLayout *)&v19 initialLayoutAttributesForAppearingItemAtIndexPath:pathCopy];
+  indicesOfChatItemsToBeInsertedWithoutFading = [(CKTranscriptCompositionalLayout *)self indicesOfChatItemsToBeInsertedWithoutFading];
+  v15 = [indicesOfChatItemsToBeInsertedWithoutFading containsIndex:{objc_msgSend(pathCopy, "item")}];
 
   if (v15)
   {
     [v5 setAlpha:1.0];
   }
 
-  v16 = [(CKTranscriptCompositionalLayout *)self indicesOfReplyChatItemsToBeInserted];
-  v17 = [v16 containsIndex:{objc_msgSend(v4, "item")}];
+  indicesOfReplyChatItemsToBeInserted = [(CKTranscriptCompositionalLayout *)self indicesOfReplyChatItemsToBeInserted];
+  v17 = [indicesOfReplyChatItemsToBeInserted containsIndex:{objc_msgSend(pathCopy, "item")}];
 
   if (v17)
   {
@@ -2108,21 +2108,21 @@ LABEL_13:
   return v5;
 }
 
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(CKTranscriptCompositionalLayout *)self isUsingInitialLayoutAttributesForRotation])
   {
-    v5 = [(CKTranscriptCompositionalLayout *)self layoutAttributesForItemAtIndexPath:v4];
+    v5 = [(CKTranscriptCompositionalLayout *)self layoutAttributesForItemAtIndexPath:pathCopy];
   }
 
-  else if ([v4 section] == 1)
+  else if ([pathCopy section] == 1)
   {
     v16.receiver = self;
     v16.super_class = CKTranscriptCompositionalLayout;
-    v5 = [(CKTranscriptCompositionalLayout *)&v16 finalLayoutAttributesForDisappearingItemAtIndexPath:v4];
+    v5 = [(CKTranscriptCompositionalLayout *)&v16 finalLayoutAttributesForDisappearingItemAtIndexPath:pathCopy];
     finalParentVerticalOffsets = self->_finalParentVerticalOffsets;
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "item")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(pathCopy, "item")}];
     v8 = [(NSMutableDictionary *)finalParentVerticalOffsets objectForKey:v7];
     [v8 doubleValue];
     v10 = v9;
@@ -2138,9 +2138,9 @@ LABEL_13:
   {
     v15.receiver = self;
     v15.super_class = CKTranscriptCompositionalLayout;
-    v5 = [(CKTranscriptCompositionalLayout *)&v15 finalLayoutAttributesForDisappearingItemAtIndexPath:v4];
-    v11 = [(CKTranscriptCompositionalLayout *)self indicesOfChatItemsToBeRemovedWithoutFading];
-    v12 = [v11 containsIndex:{objc_msgSend(v4, "item")}];
+    v5 = [(CKTranscriptCompositionalLayout *)&v15 finalLayoutAttributesForDisappearingItemAtIndexPath:pathCopy];
+    indicesOfChatItemsToBeRemovedWithoutFading = [(CKTranscriptCompositionalLayout *)self indicesOfChatItemsToBeRemovedWithoutFading];
+    v12 = [indicesOfChatItemsToBeRemovedWithoutFading containsIndex:{objc_msgSend(pathCopy, "item")}];
 
     if (v12)
     {
@@ -2151,8 +2151,8 @@ LABEL_13:
     if (objc_opt_isKindOfClass())
     {
       v5 = v5;
-      v13 = [v5 chatItem];
-      if ([v13 isEditedMessageHistory])
+      chatItem = [v5 chatItem];
+      if ([chatItem isEditedMessageHistory])
       {
         [v5 setZIndex:-1000];
       }
@@ -2162,21 +2162,21 @@ LABEL_13:
   return v5;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v128 = *MEMORY[0x1E69E9840];
-  v4 = [(CKTranscriptCompositionalLayout *)self layoutAttributes];
-  v5 = [(CKTranscriptCompositionalLayout *)self shouldUseRotisserieScroll];
-  v100 = self;
-  v6 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  [v6 bounds];
+  layoutAttributes = [(CKTranscriptCompositionalLayout *)self layoutAttributes];
+  shouldUseRotisserieScroll = [(CKTranscriptCompositionalLayout *)self shouldUseRotisserieScroll];
+  selfCopy = self;
+  collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+  [collectionView bounds];
   v8 = v7 * 0.5;
-  v99 = v6;
-  [v6 bounds];
+  v99 = collectionView;
+  [collectionView bounds];
   v110 = v8 + v9;
-  v10 = [v4 count];
+  v10 = [layoutAttributes count];
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v105 = v4;
+  v105 = layoutAttributes;
   v12 = 0;
   if (v10)
   {
@@ -2187,7 +2187,7 @@ LABEL_13:
     {
       v15 = [v105 objectAtIndex:v13];
       v16 = v15;
-      if (v5)
+      if (shouldUseRotisserieScroll)
       {
         if ((*(v15 + 616) & 1) == 0)
         {
@@ -2304,7 +2304,7 @@ LABEL_13:
         v130.origin.y = v23;
         v130.size.width = v25;
         v130.size.height = v26;
-        if (CGRectIntersectsRect(v130, a3) || (v131.origin.x = v28, v131.origin.y = v27, v131.size.height = v106, *&v131.size.width = obj, CGRectIntersectsRect(v131, a3)))
+        if (CGRectIntersectsRect(v130, rect) || (v131.origin.x = v28, v131.origin.y = v27, v131.size.height = v106, *&v131.size.width = obj, CGRectIntersectsRect(v131, rect)))
         {
           v132.origin.x = v24;
           v132.origin.y = v23;
@@ -2356,13 +2356,13 @@ LABEL_29:
 LABEL_32:
   v102 = v29;
   v104 = v12;
-  v48 = [(CKTranscriptCompositionalLayout *)v100 associatedLayoutAttributes];
-  v49 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v48, "count")}];
+  associatedLayoutAttributes = [(CKTranscriptCompositionalLayout *)selfCopy associatedLayoutAttributes];
+  v49 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(associatedLayoutAttributes, "count")}];
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
-  v50 = v48;
+  v50 = associatedLayoutAttributes;
   v51 = v49;
   obja = v50;
   v52 = [v50 countByEnumeratingWithState:&v116 objects:v126 count:16];
@@ -2384,7 +2384,7 @@ LABEL_32:
       }
 
       v56 = *(*(&v116 + 1) + 8 * j);
-      if (v5)
+      if (shouldUseRotisserieScroll)
       {
         if (*(v56 + 616))
         {
@@ -2479,13 +2479,13 @@ LABEL_32:
       v138.origin.y = v73;
       v138.size.width = v75;
       v138.size.height = v76;
-      if (!CGRectIntersectsRect(v138, a3))
+      if (!CGRectIntersectsRect(v138, rect))
       {
         v139.origin.x = v77;
         v139.origin.y = v78;
         v139.size.width = v79;
         v139.size.height = v80;
-        if (!CGRectIntersectsRect(v139, a3))
+        if (!CGRectIntersectsRect(v139, rect))
         {
           continue;
         }
@@ -2513,12 +2513,12 @@ LABEL_48:
   while (v53);
 LABEL_51:
 
-  v87 = [(CKTranscriptCompositionalLayout *)v100 decorationLayoutAttributes];
+  decorationLayoutAttributes = [(CKTranscriptCompositionalLayout *)selfCopy decorationLayoutAttributes];
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
   v115 = 0u;
-  v88 = [v87 countByEnumeratingWithState:&v112 objects:v125 count:16];
+  v88 = [decorationLayoutAttributes countByEnumeratingWithState:&v112 objects:v125 count:16];
   if (v88)
   {
     v89 = v88;
@@ -2529,16 +2529,16 @@ LABEL_51:
       {
         if (*v113 != v90)
         {
-          objc_enumerationMutation(v87);
+          objc_enumerationMutation(decorationLayoutAttributes);
         }
 
         v92 = *(*(&v112 + 1) + 8 * k);
-        v93 = [(CKTranscriptCompositionalLayout *)v100 collectionView];
-        [v93 bounds];
+        collectionView2 = [(CKTranscriptCompositionalLayout *)selfCopy collectionView];
+        [collectionView2 bounds];
         [v92 setFrame:?];
       }
 
-      v89 = [v87 countByEnumeratingWithState:&v112 objects:v125 count:16];
+      v89 = [decorationLayoutAttributes countByEnumeratingWithState:&v112 objects:v125 count:16];
     }
 
     while (v89);
@@ -2563,9 +2563,9 @@ LABEL_51:
     v94 = v96;
   }
 
-  if (v87)
+  if (decorationLayoutAttributes)
   {
-    v97 = [v94 arrayByAddingObjectsFromArray:v87];
+    v97 = [v94 arrayByAddingObjectsFromArray:decorationLayoutAttributes];
 
     v94 = v97;
   }
@@ -2573,25 +2573,25 @@ LABEL_51:
   return v94;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CKTranscriptCompositionalLayout *)self layoutAttributes];
-  v6 = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
-  if ([v4 section])
+  pathCopy = path;
+  layoutAttributes = [(CKTranscriptCompositionalLayout *)self layoutAttributes];
+  associatedLayoutAttributes = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
+  if ([pathCopy section])
   {
-    v7 = v6;
+    v7 = associatedLayoutAttributes;
   }
 
   else
   {
-    v7 = v5;
+    v7 = layoutAttributes;
   }
 
   v8 = v7;
-  if ([v8 count] && (v9 = objc_msgSend(v4, "item"), v9 < objc_msgSend(v8, "count")))
+  if ([v8 count] && (v9 = objc_msgSend(pathCopy, "item"), v9 < objc_msgSend(v8, "count")))
   {
-    v10 = [v8 objectAtIndex:{objc_msgSend(v4, "item")}];
+    v10 = [v8 objectAtIndex:{objc_msgSend(pathCopy, "item")}];
   }
 
   else
@@ -2602,53 +2602,53 @@ LABEL_51:
   return v10;
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CKTranscriptCompositionalLayout *)self decorationLayoutAttributes];
-  v7 = [v5 section];
+  pathCopy = path;
+  decorationLayoutAttributes = [(CKTranscriptCompositionalLayout *)self decorationLayoutAttributes];
+  section = [pathCopy section];
 
-  v8 = [v6 objectAtIndex:v7];
+  v8 = [decorationLayoutAttributes objectAtIndex:section];
 
   return v8;
 }
 
-- (void)applyDynamicScrollResistanceToItemsForScrollDeltaY:(double)a3
+- (void)applyDynamicScrollResistanceToItemsForScrollDeltaY:(double)y
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = [(CKTranscriptCompositionalLayout *)self layoutAttributes];
-  v5 = [v4 count];
+  layoutAttributes = [(CKTranscriptCompositionalLayout *)self layoutAttributes];
+  v5 = [layoutAttributes count];
   MEMORY[0x1EEE9AC00](v5);
   v7 = (v10 - v6);
   bzero(v10 - v6, v8);
-  [v4 getObjects:v7 range:{0, v5}];
+  [layoutAttributes getObjects:v7 range:{0, v5}];
   for (; v5; --v5)
   {
     v9 = *v7++;
-    *(v9 + 392) = *(v9 + 392) + a3;
+    *(v9 + 392) = *(v9 + 392) + y;
   }
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   kdebug_trace();
   if ([(CKTranscriptCompositionalLayout *)self isHoldingBoundsInvalidation]&& ![(CKTranscriptCompositionalLayout *)self shouldUseRotisserieScroll])
   {
     return 0;
   }
 
-  v7 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  [v7 bounds];
+  collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+  [collectionView bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  v15 = [v14 delegate];
-  v16 = [v15 currentEffectForCollectionView:v14 layout:self];
+  collectionView2 = [(CKTranscriptCompositionalLayout *)self collectionView];
+  delegate = [collectionView2 delegate];
+  v16 = [delegate currentEffectForCollectionView:collectionView2 layout:self];
   if ([(CKTranscriptCompositionalLayout *)self _dynamicsAreEnabled])
   {
     v17 = y - v11;
@@ -2678,8 +2678,8 @@ LABEL_51:
 {
   [(CKTranscriptCompositionalLayout *)self setOldLayoutAttributes:self->_layoutAttributes];
   [(CKTranscriptCompositionalLayout *)self setLayoutAttributes:0];
-  v3 = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
-  [(CKTranscriptCompositionalLayout *)self setOldAssociatedLayoutAttributes:v3];
+  associatedLayoutAttributes = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
+  [(CKTranscriptCompositionalLayout *)self setOldAssociatedLayoutAttributes:associatedLayoutAttributes];
 
   [(CKTranscriptCompositionalLayout *)self setAssociatedLayoutAttributes:0];
 
@@ -2693,13 +2693,13 @@ LABEL_51:
   [(CKTranscriptCompositionalLayout *)0 setDisplayLink:?];
 }
 
-- (void)updateDynamicsWatchdogForRenderedFrameWithDuration:(double)a3
+- (void)updateDynamicsWatchdogForRenderedFrameWithDuration:(double)duration
 {
-  if (a3 <= 2.0)
+  if (duration <= 2.0)
   {
-    if (a3 > 0.0)
+    if (duration > 0.0)
     {
-      self->_cumulativeDisplayDrivenDynamicsRunTime = self->_cumulativeDisplayDrivenDynamicsRunTime + a3;
+      self->_cumulativeDisplayDrivenDynamicsRunTime = self->_cumulativeDisplayDrivenDynamicsRunTime + duration;
     }
   }
 
@@ -2708,7 +2708,7 @@ LABEL_51:
     v4 = IMLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      [(CKTranscriptCompositionalLayout *)v4 updateDynamicsWatchdogForRenderedFrameWithDuration:a3];
+      [(CKTranscriptCompositionalLayout *)v4 updateDynamicsWatchdogForRenderedFrameWithDuration:duration];
     }
   }
 }
@@ -2731,23 +2731,23 @@ LABEL_51:
   [(CKTranscriptCompositionalLayout *)self invalidateLayout];
 }
 
-- (void)setInitialIndex:(unint64_t)a3 forParentOfAssociatedItemInsertedAtIndex:(unint64_t)a4
+- (void)setInitialIndex:(unint64_t)index forParentOfAssociatedItemInsertedAtIndex:(unint64_t)atIndex
 {
   layoutAttributes = self->_layoutAttributes;
-  if (layoutAttributes && [(NSArray *)layoutAttributes count]> a3)
+  if (layoutAttributes && [(NSArray *)layoutAttributes count]> index)
   {
     initialParentLayoutAttributes = self->_initialParentLayoutAttributes;
-    v10 = [(NSArray *)self->_layoutAttributes objectAtIndex:a3];
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v10 = [(NSArray *)self->_layoutAttributes objectAtIndex:index];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:atIndex];
     [(NSMutableDictionary *)initialParentLayoutAttributes setObject:v10 forKey:v9];
   }
 }
 
-- (void)setVerticalOffset:(double)a3 forParentOfAssociatedItemDeletedAtIndex:(unint64_t)a4
+- (void)setVerticalOffset:(double)offset forParentOfAssociatedItemDeletedAtIndex:(unint64_t)index
 {
   finalParentVerticalOffsets = self->_finalParentVerticalOffsets;
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:offset];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   [(NSMutableDictionary *)finalParentVerticalOffsets setObject:v7 forKey:v6];
 }
 
@@ -2815,25 +2815,25 @@ uint64_t __51__CKTranscriptCompositionalLayout_layoutAttributes__block_invoke(ui
   return v6;
 }
 
-- (void)_updateAttributeZIndex:(id)a3 forEffect:(id)a4
+- (void)_updateAttributeZIndex:(id)index forEffect:(id)effect
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [v20 chatItem];
-  if ([v6 layerCount])
+  indexCopy = index;
+  effectCopy = effect;
+  chatItem = [indexCopy chatItem];
+  if ([effectCopy layerCount])
   {
-    v8 = v7;
+    v8 = chatItem;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v6 triggeringChatItem];
-      v10 = [v8 isEqual:v9];
+      triggeringChatItem = [effectCopy triggeringChatItem];
+      v10 = [v8 isEqual:triggeringChatItem];
 
       if (v10)
       {
         v11 = 4000;
 LABEL_7:
-        [v20 setZIndex:v11];
+        [indexCopy setZIndex:v11];
         goto LABEL_8;
       }
 
@@ -2847,53 +2847,53 @@ LABEL_7:
 LABEL_8:
   }
 
-  if ([v7 isEditedMessageHistory])
+  if ([chatItem isEditedMessageHistory])
   {
-    [v20 setZIndex:-1000];
+    [indexCopy setZIndex:-1000];
   }
 
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v13 = [v12 isExpressiveTextEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v13)
+  if (isExpressiveTextEnabled)
   {
-    v14 = [(CKTranscriptCompositionalLayout *)self collectionView];
-    v15 = [v14 delegate];
+    collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+    delegate = [collectionView delegate];
 
-    v16 = [v20 indexPath];
-    v17 = [v15 collectionViewLayout:self hasPlayingOrPausedTextEffectForChatItem:v7 indexPath:v16];
+    indexPath = [indexCopy indexPath];
+    v17 = [delegate collectionViewLayout:self hasPlayingOrPausedTextEffectForChatItem:chatItem indexPath:indexPath];
 
     if (v17)
     {
-      v18 = [v20 zIndex];
-      if (v18 <= 3000)
+      zIndex = [indexCopy zIndex];
+      if (zIndex <= 3000)
       {
         v19 = 3000;
       }
 
       else
       {
-        v19 = v18;
+        v19 = zIndex;
       }
 
-      [v20 setZIndex:v19];
+      [indexCopy setZIndex:v19];
     }
   }
 }
 
-- (void)_updateAssociatedAttributeFramesForPrimaryAttribute:(id)a3
+- (void)_updateAssociatedAttributeFramesForPrimaryAttribute:(id)attribute
 {
   v123 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  [v5 bounds];
+  attributeCopy = attribute;
+  collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+  [collectionView bounds];
   v7 = v6;
-  v95 = v5;
-  [v5 marginInsets];
+  v95 = collectionView;
+  [collectionView marginInsets];
   v103 = v9;
   v104 = v8;
-  v10 = v4[82];
-  [v4 frame];
+  v10 = attributeCopy[82];
+  [attributeCopy frame];
   v102 = v11;
   v13 = v12;
   rect = v14;
@@ -2902,7 +2902,7 @@ LABEL_8:
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
-  v17 = v4[79];
+  v17 = attributeCopy[79];
   v18 = [v17 countByEnumeratingWithState:&v117 objects:v122 count:16];
   if (v18)
   {
@@ -2926,19 +2926,19 @@ LABEL_8:
         }
 
         v24 = *(*(&v117 + 1) + 8 * i);
-        v25 = [v24 chatItem];
-        [v25 size];
+        chatItem = [v24 chatItem];
+        [chatItem size];
         v27 = v26;
-        [v25 contentInsets];
+        [chatItem contentInsets];
         v116 = 0;
         v30 = v27 + v104 + v28 + v103 + v29;
         memset(&v115, 0, sizeof(v115));
-        if (!v25)
+        if (!chatItem)
         {
           goto LABEL_18;
         }
 
-        [v25 geometryDescriptor];
+        [chatItem geometryDescriptor];
         if (*&v115.a == 11)
         {
           v124.origin.x = v102;
@@ -2963,7 +2963,7 @@ LABEL_8:
           {
             v96 = v20;
             v33 = v10;
-            v34 = [v33 layoutRecipe];
+            layoutRecipe = [v33 layoutRecipe];
             [v33 size];
             v37 = rect / v35;
             if (v35 == 0.0)
@@ -3000,7 +3000,7 @@ LABEL_8:
             }
 
             memset(&v113, 0, sizeof(v113));
-            [v34 rotation];
+            [layoutRecipe rotation];
             CGAffineTransformMakeRotation(&v113, v63 * 3.14159265 / 180.0);
             v64 = v113.tx + v41 * v113.c + v113.a * v42 - v42;
             v65 = v113.ty + v41 * v113.d + v113.b * v42 - v41;
@@ -3048,21 +3048,21 @@ LABEL_8:
         else
         {
 LABEL_18:
-          [v25 adjustedParentFrameForPositioning:{v102, v13, rect, v16}];
+          [chatItem adjustedParentFrameForPositioning:{v102, v13, rect, v16}];
           v44 = v43;
           v46 = v45;
           v48 = v47;
           v50 = v49;
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v25 isReaction])
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [chatItem isReaction])
           {
-            v51 = [v10 itemIsFromMe];
+            itemIsFromMe = [v10 itemIsFromMe];
             [v10 stickerReactionInsets];
-            v52 = v51;
+            v52 = itemIsFromMe;
             v17 = v98;
             [CKAssociatedMessageChatItem locationForStickerReactionWithParentFrame:v99 reactionIndex:v52 parentIsFromMe:v44 insets:v46, v48, v50, v53, v54, v55, v56];
             v58 = v57;
-            [v25 setStickerReactionIndex:v99++];
+            [chatItem setStickerReactionIndex:v99++];
           }
 
           else
@@ -3100,8 +3100,8 @@ LABEL_32:
         [v24 setCenter:{MidX, MidY}];
         *(v24 + 584) = MidY;
         *(v24 + 592) = MidY;
-        *(v24 + 608) = v4[76];
-        *(v24 + 616) = *(v4 + 616);
+        *(v24 + 608) = attributeCopy[76];
+        *(v24 + 616) = *(attributeCopy + 616);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -3115,7 +3115,7 @@ LABEL_32:
 
         else
         {
-          [v24 setZIndex:{objc_msgSend(v4, "zIndex") + 1}];
+          [v24 setZIndex:{objc_msgSend(attributeCopy, "zIndex") + 1}];
         }
 
         [v10 size];
@@ -3124,8 +3124,8 @@ LABEL_32:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v80 = [v10 layoutRecipe];
-          v81 = v80;
+          layoutRecipe2 = [v10 layoutRecipe];
+          v81 = layoutRecipe2;
           v82 = rect / v77;
           if (v77 == 0.0)
           {
@@ -3141,7 +3141,7 @@ LABEL_32:
           v84 = fmin(v82, v83);
           v85 = v77 * v84;
           v79 = v79 * v84;
-          [v80 offset];
+          [layoutRecipe2 offset];
           v77 = v85 + v86;
         }
 
@@ -3160,7 +3160,7 @@ LABEL_32:
           v111[1] = 3221225472;
           v111[2] = __87__CKTranscriptCompositionalLayout__updateAssociatedAttributeFramesForPrimaryAttribute___block_invoke_2;
           v111[3] = &unk_1E72F4C80;
-          v112 = v4;
+          v112 = attributeCopy;
           [v17 enumerateObjectsUsingBlock:v111];
 
           goto LABEL_48;
@@ -3179,7 +3179,7 @@ LABEL_49:
   v110 = 0u;
   v107 = 0u;
   v108 = 0u;
-  v87 = v4[79];
+  v87 = attributeCopy[79];
   v88 = [v87 countByEnumeratingWithState:&v107 objects:v121 count:16];
   if (v88)
   {
@@ -3242,14 +3242,14 @@ void __87__CKTranscriptCompositionalLayout__updateAssociatedAttributeFramesForPr
   [v9 setZIndex:v8];
 }
 
-- (void)_configureThreadGroupsForAttributes:(id)a3 outMaxYAnchorAttribute:(id *)a4 forVisibleBounds:(CGRect)a5
+- (void)_configureThreadGroupsForAttributes:(id)attributes outMaxYAnchorAttribute:(id *)attribute forVisibleBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v69 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  attributesCopy = attributes;
   if (![(CKTranscriptCompositionalLayout *)self isUsingOverlayLayout])
   {
     v62 = 0;
@@ -3296,16 +3296,16 @@ void __87__CKTranscriptCompositionalLayout__updateAssociatedAttributeFramesForPr
     *&v46[10] = height;
     v46[6] = &v48;
     v38 = _Block_copy(v46);
-    v37 = [(CKTranscriptCompositionalLayout *)self chatStyle];
+    chatStyle = [(CKTranscriptCompositionalLayout *)self chatStyle];
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    obj = v10;
+    obj = attributesCopy;
     v11 = [obj countByEnumeratingWithState:&v42 objects:v68 count:16];
     if (v11)
     {
-      v33 = v10;
+      v33 = attributesCopy;
       v39 = *v43;
       do
       {
@@ -3318,7 +3318,7 @@ void __87__CKTranscriptCompositionalLayout__updateAssociatedAttributeFramesForPr
           }
 
           v13 = *(*(&v42 + 1) + 8 * i);
-          v14 = [obj lastObject];
+          lastObject = [obj lastObject];
 
           v15 = v13[82];
           objc_opt_class();
@@ -3326,21 +3326,21 @@ void __87__CKTranscriptCompositionalLayout__updateAssociatedAttributeFramesForPr
           objc_opt_class();
           if ((objc_opt_isKindOfClass() | isKindOfClass))
           {
-            v17 = [v15 IMChatItem];
+            iMChatItem = [v15 IMChatItem];
             objc_opt_class();
             v18 = objc_opt_isKindOfClass();
-            v19 = [v17 itemIsThreadOriginator];
-            v20 = ([v17 itemIsReplyContextPreview] | v19 & (isKindOfClass ^ 1)) & (v18 ^ 1);
+            itemIsThreadOriginator = [iMChatItem itemIsThreadOriginator];
+            v20 = ([iMChatItem itemIsReplyContextPreview] | itemIsThreadOriginator & (isKindOfClass ^ 1)) & (v18 ^ 1);
             v21 = v63[5];
             if (v21 || (v20 & 1) == 0)
             {
               if ([v21 count])
               {
-                v35 = [v17 threadGroupIdentifier];
+                threadGroupIdentifier = [iMChatItem threadGroupIdentifier];
                 v22 = IMMessageThreadIdentifierOriginatorGUIDAndPartMatch();
-                v23 = [v17 isFromMe];
-                v36 = [v17 itemIsReply];
-                if ((v37 != 45) | v23 & 1)
+                isFromMe = [iMChatItem isFromMe];
+                itemIsReply = [iMChatItem itemIsReply];
+                if ((chatStyle != 45) | isFromMe & 1)
                 {
                   v24 = v20;
                   v25 = 1;
@@ -3353,14 +3353,14 @@ void __87__CKTranscriptCompositionalLayout__updateAssociatedAttributeFramesForPr
                 }
 
                 v26 = v22 & ([v15 itemIsReplyContextPreview] ^ 1) & v25;
-                v10 = v33;
+                attributesCopy = v33;
                 if (v26 == 1)
                 {
                   [v63[5] addObject:v13];
                   objc_storeStrong(v55 + 5, v13);
                 }
 
-                if ((v36 & (v23 | isKindOfClass | ([v15 chatItemReplyLineContiguousTypeForChatStyle:v37] == 0)) & 1) == 0)
+                if ((itemIsReply & (isFromMe | isKindOfClass | ([v15 chatItemReplyLineContiguousTypeForChatStyle:chatStyle] == 0)) & 1) == 0)
                 {
                   if ([v63[5] count] >= 2)
                   {
@@ -3373,7 +3373,7 @@ void __87__CKTranscriptCompositionalLayout__updateAssociatedAttributeFramesForPr
                   v28 = v63[5];
                   v63[5] = 0;
 
-                  if (v13 != v14 && ((v36 | v24) & 1) != 0)
+                  if (v13 != lastObject && ((itemIsReply | v24) & 1) != 0)
                   {
                     v34[2](v34, v13, v15);
                   }
@@ -3392,7 +3392,7 @@ void __87__CKTranscriptCompositionalLayout__updateAssociatedAttributeFramesForPr
             objc_opt_class();
             v29 = objc_opt_isKindOfClass();
             objc_opt_class();
-            if ((v29 & ~objc_opt_isKindOfClass() & 1) != 0 || v13 == v14)
+            if ((v29 & ~objc_opt_isKindOfClass() & 1) != 0 || v13 == lastObject)
             {
               v38[2]();
               v30 = v55[5];
@@ -3410,9 +3410,9 @@ void __87__CKTranscriptCompositionalLayout__updateAssociatedAttributeFramesForPr
       while (v11);
     }
 
-    if (a4)
+    if (attribute)
     {
-      *a4 = v49[5];
+      *attribute = v49[5];
     }
 
     _Block_object_dispose(&v48, 8);
@@ -3564,28 +3564,28 @@ LABEL_27:
 - (void)updateContentSize
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(NSArray *)self->_layoutAttributes lastObject];
+  lastObject = [(NSArray *)self->_layoutAttributes lastObject];
   v4 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);
-  if (v3)
+  if (lastObject)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
     v28 = 0x3032000000;
     v29 = __Block_byref_object_copy__46;
     v30 = __Block_byref_object_dispose__46;
-    v6 = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
-    v31 = [v6 firstObject];
+    associatedLayoutAttributes = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
+    firstObject = [associatedLayoutAttributes firstObject];
 
-    v7 = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
+    associatedLayoutAttributes2 = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __52__CKTranscriptCompositionalLayout_updateContentSize__block_invoke;
     v26[3] = &unk_1E72F4CF8;
     v26[4] = &buf;
-    [v7 enumerateObjectsUsingBlock:v26];
+    [associatedLayoutAttributes2 enumerateObjectsUsingBlock:v26];
 
-    MaxY = CGRectGetMaxY(v3[11]);
+    MaxY = CGRectGetMaxY(lastObject[11]);
     v9 = *(*(&buf + 1) + 40);
     if (v9)
     {
@@ -3596,9 +3596,9 @@ LABEL_27:
       }
     }
 
-    v11 = [(CKTranscriptCompositionalLayout *)self collectionView];
-    v12 = [v11 traitCollection];
-    [v12 displayScale];
+    collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+    traitCollection = [collectionView traitCollection];
+    [traitCollection displayScale];
     v14 = v13;
     if (v13 == 0.0)
     {
@@ -3618,8 +3618,8 @@ LABEL_27:
       }
     }
 
-    v15 = [(CKTranscriptCompositionalLayout *)self collectionView];
-    [v15 bounds];
+    collectionView2 = [(CKTranscriptCompositionalLayout *)self collectionView];
+    [collectionView2 bounds];
     v17 = v16;
 
     [(CKTranscriptCompositionalLayout *)self sizeForRotation];
@@ -3634,8 +3634,8 @@ LABEL_27:
       v4 = v20;
     }
 
-    v21 = [(CGRect *)v3 chatItem];
-    [objc_opt_class() bottomTranscriptSpaceWithLastChatItem:v21];
+    chatItem = [(CGRect *)lastObject chatItem];
+    [objc_opt_class() bottomTranscriptSpaceWithLastChatItem:chatItem];
     v23 = v22;
 
     _Block_object_dispose(&buf, 8);
@@ -3669,10 +3669,10 @@ void __52__CKTranscriptCompositionalLayout_updateContentSize__block_invoke(uint6
   }
 }
 
-- (void)setContentSize:(CGFloat)a3
+- (void)setContentSize:(CGFloat)size
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     if (IMOSLoggingEnabled())
     {
@@ -3680,7 +3680,7 @@ void __52__CKTranscriptCompositionalLayout_updateContentSize__block_invoke(uint6
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         v15.width = a2;
-        v15.height = a3;
+        v15.height = size;
         v7 = NSStringFromCGSize(v15);
         v10 = 136315394;
         v11 = "[CKTranscriptCompositionalLayout setContentSize:]";
@@ -3690,7 +3690,7 @@ void __52__CKTranscriptCompositionalLayout_updateContentSize__block_invoke(uint6
       }
     }
 
-    if (a1[90] != a2 || a1[91] != a3)
+    if (self[90] != a2 || self[91] != size)
     {
       if (IMOSLoggingEnabled())
       {
@@ -3698,14 +3698,14 @@ void __52__CKTranscriptCompositionalLayout_updateContentSize__block_invoke(uint6
         [CKTranscriptCompositionalLayout setContentSize:v9];
       }
 
-      [(CKTranscriptCompositionalLayout *)a1 setContentSize:a2, a3];
+      [(CKTranscriptCompositionalLayout *)self setContentSize:a2, size];
     }
   }
 }
 
-+ (double)bottomTranscriptSpaceWithLastChatItem:(id)a3
++ (double)bottomTranscriptSpaceWithLastChatItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3765,19 +3765,19 @@ void __52__CKTranscriptCompositionalLayout_updateContentSize__block_invoke(uint6
   return v8;
 }
 
-- (void)updateAttributesForAnchorYChangeWithAttributes:(id)a3
+- (void)updateAttributesForAnchorYChangeWithAttributes:(id)attributes
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  [v5 bounds];
+  attributesCopy = attributes;
+  collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+  [collectionView bounds];
   v7 = v6;
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v4;
+  obj = attributesCopy;
   v8 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v8)
   {
@@ -3797,8 +3797,8 @@ void __52__CKTranscriptCompositionalLayout_updateContentSize__block_invoke(uint6
 
         v13 = *(*(&v34 + 1) + 8 * v11);
         [v13 setFrame:{v13[48], v13[49], v13[50], v13[51], *&v31}];
-        v14 = [v13 chatItem];
-        v15 = [v14 attachmentContiguousType] & 0xFE;
+        chatItem = [v13 chatItem];
+        v15 = [chatItem attachmentContiguousType] & 0xFE;
         if (v12)
         {
           v16 = v15 == 2;
@@ -3828,9 +3828,9 @@ void __52__CKTranscriptCompositionalLayout_updateContentSize__block_invoke(uint6
         else
         {
           v20 = 0.00999999978;
-          if ([v14 transcriptOrientation])
+          if ([chatItem transcriptOrientation])
           {
-            if ([v14 transcriptOrientation] == 1)
+            if ([chatItem transcriptOrientation] == 1)
             {
               v20 = v31;
             }
@@ -3884,12 +3884,12 @@ void __52__CKTranscriptCompositionalLayout_updateContentSize__block_invoke(uint6
   }
 }
 
-- (double)_calculateTargetEasingForNewlyInsertedChatItem:(id)a3 previousItemAttributes:(id)a4
+- (double)_calculateTargetEasingForNewlyInsertedChatItem:(id)item previousItemAttributes:(id)attributes
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 attachmentContiguousType] & 0xFE;
-  if (v6)
+  itemCopy = item;
+  attributesCopy = attributes;
+  v7 = [itemCopy attachmentContiguousType] & 0xFE;
+  if (attributesCopy)
   {
     v8 = v7 == 2;
   }
@@ -3900,7 +3900,7 @@ void __52__CKTranscriptCompositionalLayout_updateContentSize__block_invoke(uint6
   }
 
   v9 = v8;
-  if (!v6 && v7 == 2 && IMOSLoggingEnabled())
+  if (!attributesCopy && v7 == 2 && IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -3912,14 +3912,14 @@ void __52__CKTranscriptCompositionalLayout_updateContentSize__block_invoke(uint6
 
   if (v9)
   {
-    v11 = v6[53];
+    v11 = attributesCopy[53];
   }
 
   else
   {
-    if ([v5 transcriptOrientation])
+    if ([itemCopy transcriptOrientation])
     {
-      if ([v5 transcriptOrientation] == 1)
+      if ([itemCopy transcriptOrientation] == 1)
       {
         v12 = 0.00499999989;
       }
@@ -3949,12 +3949,12 @@ void __52__CKTranscriptCompositionalLayout_updateContentSize__block_invoke(uint6
   return v11;
 }
 
-- (void)updateAttributesForTargetContentOffsetChangeWithAttributes:(id)a3
+- (void)updateAttributesForTargetContentOffsetChangeWithAttributes:(id)attributes
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  [v5 bounds];
+  attributesCopy = attributes;
+  collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+  [collectionView bounds];
   v7 = v6;
 
   [(CKTranscriptCompositionalLayout *)self anchorYPosition];
@@ -3965,7 +3965,7 @@ void __52__CKTranscriptCompositionalLayout_updateContentSize__block_invoke(uint6
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v4;
+  obj = attributesCopy;
   v11 = [obj countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v11)
   {
@@ -4002,8 +4002,8 @@ void __52__CKTranscriptCompositionalLayout_updateContentSize__block_invoke(uint6
         [v18 setFrame:{v18[48], v18[49], v18[50], v18[51]}];
         [v18 center];
         v20 = v19;
-        v21 = [v18 chatItem];
-        v22 = [v21 attachmentContiguousType] & 0xFE;
+        chatItem = [v18 chatItem];
+        v22 = [chatItem attachmentContiguousType] & 0xFE;
         if (v17)
         {
           v23 = v22 == 2;
@@ -4038,9 +4038,9 @@ void __52__CKTranscriptCompositionalLayout_updateContentSize__block_invoke(uint6
           }
 
           v27 = 0.00999999978;
-          if ([v21 transcriptOrientation])
+          if ([chatItem transcriptOrientation])
           {
-            if ([v21 transcriptOrientation] == 1)
+            if ([chatItem transcriptOrientation] == 1)
             {
               v27 = 0.00499999989;
             }
@@ -4095,73 +4095,73 @@ LABEL_35:
   }
 }
 
-- (void)setAnchorYPosition:(double)a3
+- (void)setAnchorYPosition:(double)position
 {
-  if (self->_anchorYPosition != a3)
+  if (self->_anchorYPosition != position)
   {
-    self->_anchorYPosition = a3;
-    v5 = [(CKTranscriptCompositionalLayout *)self layoutAttributes];
-    [(CKTranscriptCompositionalLayout *)self updateAttributesForAnchorYChangeWithAttributes:v5];
+    self->_anchorYPosition = position;
+    layoutAttributes = [(CKTranscriptCompositionalLayout *)self layoutAttributes];
+    [(CKTranscriptCompositionalLayout *)self updateAttributesForAnchorYChangeWithAttributes:layoutAttributes];
 
-    v6 = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
-    [(CKTranscriptCompositionalLayout *)self updateAttributesForAnchorYChangeWithAttributes:v6];
+    associatedLayoutAttributes = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
+    [(CKTranscriptCompositionalLayout *)self updateAttributesForAnchorYChangeWithAttributes:associatedLayoutAttributes];
   }
 }
 
-- (void)setTargetContentOffset:(CGPoint)a3
+- (void)setTargetContentOffset:(CGPoint)offset
 {
-  if (a3.x != self->_targetContentOffset.x || a3.y != self->_targetContentOffset.y)
+  if (offset.x != self->_targetContentOffset.x || offset.y != self->_targetContentOffset.y)
   {
-    v6 = [(CKTranscriptCompositionalLayout *)self layoutAttributes];
-    [(CKTranscriptCompositionalLayout *)self updateAttributesForTargetContentOffsetChangeWithAttributes:v6];
+    layoutAttributes = [(CKTranscriptCompositionalLayout *)self layoutAttributes];
+    [(CKTranscriptCompositionalLayout *)self updateAttributesForTargetContentOffsetChangeWithAttributes:layoutAttributes];
 
-    v7 = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
-    [(CKTranscriptCompositionalLayout *)self updateAttributesForTargetContentOffsetChangeWithAttributes:v7];
+    associatedLayoutAttributes = [(CKTranscriptCompositionalLayout *)self associatedLayoutAttributes];
+    [(CKTranscriptCompositionalLayout *)self updateAttributesForTargetContentOffsetChangeWithAttributes:associatedLayoutAttributes];
   }
 }
 
-- (void)displayLinkFired:(id)a3
+- (void)displayLinkFired:(id)fired
 {
-  v7 = a3;
+  firedCopy = fired;
   kdebug_trace();
   if ((_UIUpdateCycleEnabled() & 1) == 0)
   {
     if (self)
     {
       self->_isDisplayDrivenLayoutInvalidation = 1;
-      [v7 timestamp];
+      [firedCopy timestamp];
       self->_currentFrameTimestamp = v4;
-      [v7 preferredFrameRateRange];
+      [firedCopy preferredFrameRateRange];
       self->_requestedFrameRate = v5;
     }
 
     else
     {
-      [CKTranscriptCompositionalLayout displayLinkFired:v7];
+      [CKTranscriptCompositionalLayout displayLinkFired:firedCopy];
     }
 
     kdebug_trace();
-    v6 = [(CKTranscriptCompositionalLayout *)self _invalidationContextForRefreshingVisibleElementAttributes];
-    [(CKTranscriptCompositionalLayout *)self invalidateLayoutWithContext:v6];
+    _invalidationContextForRefreshingVisibleElementAttributes = [(CKTranscriptCompositionalLayout *)self _invalidationContextForRefreshingVisibleElementAttributes];
+    [(CKTranscriptCompositionalLayout *)self invalidateLayoutWithContext:_invalidationContextForRefreshingVisibleElementAttributes];
 
     [(CKTranscriptCompositionalLayout *)self checkDynamicsWatchdog];
   }
 }
 
-- (double)handleInvalidCaseForChatItem:(id)a3 withPrevChatItem:(id)a4
+- (double)handleInvalidCaseForChatItem:(id)item withPrevChatItem:(id)chatItem
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  chatItemCopy = chatItem;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v12 = 138412546;
-      v13 = v5;
+      v13 = itemCopy;
       v14 = 2112;
-      v15 = v6;
+      v15 = chatItemCopy;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Transcript: %@ shouldn't follow %@", &v12, 0x16u);
     }
   }
@@ -4173,9 +4173,9 @@ LABEL_35:
   return v10;
 }
 
-- (BOOL)nextItemIsOriginatorWithRepliesForIndex:(unint64_t)a3
+- (BOOL)nextItemIsOriginatorWithRepliesForIndex:(unint64_t)index
 {
-  v4 = a3 + 1;
+  v4 = index + 1;
   v5 = self->_layoutAttributes;
   if (v4 >= [(NSArray *)v5 count])
   {
@@ -4185,22 +4185,22 @@ LABEL_35:
   else
   {
     v6 = [(NSArray *)v5 objectAtIndex:v4];
-    v7 = [v6 chatItem];
+    chatItem = [v6 chatItem];
     objc_opt_class();
-    v8 = (objc_opt_isKindOfClass() & 1) != 0 && [v7 itemIsThreadOriginator] && -[CKTranscriptCompositionalLayout nextMessageIsReplyForIndex:](self, "nextMessageIsReplyForIndex:", v4);
+    v8 = (objc_opt_isKindOfClass() & 1) != 0 && [chatItem itemIsThreadOriginator] && -[CKTranscriptCompositionalLayout nextMessageIsReplyForIndex:](self, "nextMessageIsReplyForIndex:", v4);
   }
 
   return v8;
 }
 
-- (BOOL)nextMessageIsReplyForIndex:(unint64_t)a3
+- (BOOL)nextMessageIsReplyForIndex:(unint64_t)index
 {
   v4 = self->_layoutAttributes;
-  v5 = a3 + 1;
+  v5 = index + 1;
   if (v5 >= [(NSArray *)v4 count])
   {
 LABEL_4:
-    v8 = 0;
+    itemIsReply = 0;
   }
 
   else
@@ -4208,7 +4208,7 @@ LABEL_4:
     while (1)
     {
       v6 = [(NSArray *)v4 objectAtIndex:v5];
-      v7 = [v6 chatItem];
+      chatItem = [v6 chatItem];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -4221,25 +4221,25 @@ LABEL_4:
       }
     }
 
-    v8 = [v7 itemIsReply];
+    itemIsReply = [chatItem itemIsReply];
   }
 
-  return v8;
+  return itemIsReply;
 }
 
-- (BOOL)previousReplyCount:(unint64_t)a3 isOccludedForAssociatedFrame:(CGRect)a4 outMaxY:(double *)a5
+- (BOOL)previousReplyCount:(unint64_t)count isOccludedForAssociatedFrame:(CGRect)frame outMaxY:(double *)y
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11 = self->_layoutAttributes;
-  v12 = [(NSArray *)v11 objectAtIndex:a3];
-  v13 = [v12 chatItem];
+  v12 = [(NSArray *)v11 objectAtIndex:count];
+  chatItem = [v12 chatItem];
 
-  if ([v13 itemIsReply])
+  if ([chatItem itemIsReply])
   {
-    v14 = (a3 - 1) < 1;
+    v14 = (count - 1) < 1;
   }
 
   else
@@ -4257,21 +4257,21 @@ LABEL_7:
   {
     while (1)
     {
-      v15 = [(NSArray *)v11 objectAtIndex:--a3];
-      v16 = [v15 chatItem];
+      v15 = [(NSArray *)v11 objectAtIndex:--count];
+      chatItem2 = [v15 chatItem];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         break;
       }
 
-      if (a3 <= 1)
+      if (count <= 1)
       {
         goto LABEL_7;
       }
     }
 
-    v18 = [v16 replyCount];
+    replyCount = [chatItem2 replyCount];
     v24.origin.x = x;
     v24.origin.y = y;
     v24.size.width = width;
@@ -4286,28 +4286,28 @@ LABEL_7:
     MinY = CGRectGetMinY(v26);
     [v15 frame];
     v22 = MinY <= CGRectGetMaxY(v27) && MinX <= MaxX;
-    v17 = v18 > 1 && v22;
+    v17 = replyCount > 1 && v22;
     if (v17)
     {
       [v15 frame];
-      *a5 = CGRectGetMaxY(v28);
+      *y = CGRectGetMaxY(v28);
     }
   }
 
   return v17;
 }
 
-- (BOOL)needsAdditionalBracketPaddingForChatItem:(id)a3 prevChatItem:(id)a4
+- (BOOL)needsAdditionalBracketPaddingForChatItem:(id)item prevChatItem:(id)chatItem
 {
-  v5 = a3;
-  if (([a4 itemIsFromMe] & 1) != 0 || !objc_msgSend(v5, "itemIsFromMe"))
+  itemCopy = item;
+  if (([chatItem itemIsFromMe] & 1) != 0 || !objc_msgSend(itemCopy, "itemIsFromMe"))
   {
     v10 = 0;
   }
 
   else
   {
-    [v5 size];
+    [itemCopy size];
     v7 = v6;
     v8 = +[CKUIBehavior sharedBehaviors];
     [v8 textBalloonMinHeight];
@@ -4317,19 +4317,19 @@ LABEL_7:
   return v10;
 }
 
-- (void)_applyAttributeUpdatesWithTargetMap:(id)a3 layoutAttributes:(id)a4 updateBlock:(id)a5
+- (void)_applyAttributeUpdatesWithTargetMap:(id)map layoutAttributes:(id)attributes updateBlock:(id)block
 {
   v78 = *MEMORY[0x1E69E9840];
-  v62 = a3;
-  v8 = a4;
-  v9 = a5;
-  v59 = self;
-  v10 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  [v10 frame];
+  mapCopy = map;
+  attributesCopy = attributes;
+  blockCopy = block;
+  selfCopy = self;
+  collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+  [collectionView frame];
   v12 = v11;
 
-  v13 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  [v13 _visibleRectEdgeInsets];
+  collectionView2 = [(CKTranscriptCompositionalLayout *)self collectionView];
+  [collectionView2 _visibleRectEdgeInsets];
   v15 = v14;
   v17 = v16;
 
@@ -4339,7 +4339,7 @@ LABEL_7:
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = v8;
+  obj = attributesCopy;
   v18 = [obj countByEnumeratingWithState:&v72 objects:v77 count:16];
   if (v18)
   {
@@ -4357,9 +4357,9 @@ LABEL_7:
         }
 
         v24 = *(*(&v72 + 1) + 8 * i);
-        v25 = [*(v24 + 656) IMChatItem];
-        v26 = [v25 guid];
-        v27 = [v62 objectForKey:v26];
+        iMChatItem = [*(v24 + 656) IMChatItem];
+        guid = [iMChatItem guid];
+        v27 = [mapCopy objectForKey:guid];
 
         if (v27)
         {
@@ -4374,8 +4374,8 @@ LABEL_7:
             goto LABEL_16;
           }
 
-          v32 = [(CKTranscriptCompositionalLayout *)v59 collectionView];
-          [v32 frame];
+          collectionView3 = [(CKTranscriptCompositionalLayout *)selfCopy collectionView];
+          [collectionView3 frame];
           v34 = y - v33 > v20;
 
           if (v34)
@@ -4384,10 +4384,10 @@ LABEL_7:
             goto LABEL_16;
           }
 
-          [(CKTranscriptCompositionalLayout *)v59 _convertScreenFrameToLocalFrame:x, y, width, height];
+          [(CKTranscriptCompositionalLayout *)selfCopy _convertScreenFrameToLocalFrame:x, y, width, height];
           v36 = v35;
           v37 = *(v24 + 392);
-          v9[2](v9, v24, 0);
+          blockCopy[2](blockCopy, v24, 0);
           v22 = v36 - v37;
         }
 
@@ -4400,7 +4400,7 @@ LABEL_7:
             goto LABEL_16;
           }
 
-          (v9[2])(v9, v24, 1, *(v24 + 384), v22 + *(v24 + 392), *(v24 + 400), *(v24 + 408));
+          (blockCopy[2])(blockCopy, v24, 1, *(v24 + 384), v22 + *(v24 + 392), *(v24 + 400), *(v24 + 408));
         }
 
         v19 = 1;
@@ -4417,10 +4417,10 @@ LABEL_16:
   [v38 smallTranscriptSpace];
   v40 = v39;
 
-  v41 = [(CKTranscriptCompositionalLayout *)v59 collectionView];
-  v42 = [v41 superview];
-  v43 = [(CKTranscriptCompositionalLayout *)v59 collectionView];
-  [v42 convertPoint:v43 toView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  collectionView4 = [(CKTranscriptCompositionalLayout *)selfCopy collectionView];
+  superview = [collectionView4 superview];
+  collectionView5 = [(CKTranscriptCompositionalLayout *)selfCopy collectionView];
+  [superview convertPoint:collectionView5 toView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
   v45 = v44;
 
   v71[0] = 0;
@@ -4433,11 +4433,11 @@ LABEL_16:
   v67[3] = &unk_1E72F4D20;
   v69 = v71;
   v70 = v40;
-  v46 = v9;
+  v46 = blockCopy;
   v68 = v46;
   [v60 enumerateObjectsWithOptions:2 usingBlock:v67];
-  v47 = [(CKTranscriptCompositionalLayout *)v59 collectionView];
-  [v47 bounds];
+  collectionView6 = [(CKTranscriptCompositionalLayout *)selfCopy collectionView];
+  [collectionView6 bounds];
   MaxY = CGRectGetMaxY(v80);
 
   v65 = 0u;
@@ -4477,7 +4477,7 @@ LABEL_16:
     while (v50);
   }
 
-  [(CKTranscriptCompositionalLayout *)v59 _kickDynamicsIfNeeded];
+  [(CKTranscriptCompositionalLayout *)selfCopy _kickDynamicsIfNeeded];
   _Block_object_dispose(v71, 8);
 }
 
@@ -4497,16 +4497,16 @@ void __100__CKTranscriptCompositionalLayout__applyAttributeUpdatesWithTargetMap_
   (*(*(a1 + 32) + 16))(v3);
 }
 
-- (CGRect)_convertScreenFrameToLocalFrame:(CGRect)a3
+- (CGRect)_convertScreenFrameToLocalFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  v9 = [v8 superview];
-  v10 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  [v9 convertRect:v10 toView:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+  superview = [collectionView superview];
+  collectionView2 = [(CKTranscriptCompositionalLayout *)self collectionView];
+  [superview convertRect:collectionView2 toView:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -4523,23 +4523,23 @@ void __100__CKTranscriptCompositionalLayout__applyAttributeUpdatesWithTargetMap_
   return result;
 }
 
-- (void)_applyTargetFrameOffsetsForLayoutAttributesIfNeeded:(id)a3
+- (void)_applyTargetFrameOffsetsForLayoutAttributesIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  v6 = [v5 delegate];
+  neededCopy = needed;
+  collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+  delegate = [collectionView delegate];
 
-  v7 = [v6 overrideTargetFrameMapForLayout:self];
+  v7 = [delegate overrideTargetFrameMapForLayout:self];
   if (v7)
   {
-    v8 = [(CKTranscriptCompositionalLayout *)self isInlineAnimatingOut];
+    isInlineAnimatingOut = [(CKTranscriptCompositionalLayout *)self isInlineAnimatingOut];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __87__CKTranscriptCompositionalLayout__applyTargetFrameOffsetsForLayoutAttributesIfNeeded___block_invoke;
     aBlock[3] = &__block_descriptor_33_e89_v52__0__CKTranscriptCollectionViewLayoutAttributes_8_CGRect__CGPoint_dd__CGSize_dd__16B48l;
-    v11 = v8;
+    v11 = isInlineAnimatingOut;
     v9 = _Block_copy(aBlock);
-    [(CKTranscriptCompositionalLayout *)self _applyAttributeUpdatesWithTargetMap:v7 layoutAttributes:v4 updateBlock:v9];
+    [(CKTranscriptCompositionalLayout *)self _applyAttributeUpdatesWithTargetMap:v7 layoutAttributes:neededCopy updateBlock:v9];
   }
 }
 
@@ -4623,21 +4623,21 @@ void __87__CKTranscriptCompositionalLayout__applyTargetFrameOffsetsForLayoutAttr
   }
 }
 
-- (void)_applyCurrentFrameOffsetsForLayoutAttributesIfNeeded:(id)a3
+- (void)_applyCurrentFrameOffsetsForLayoutAttributesIfNeeded:(id)needed
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKTranscriptCompositionalLayout *)self collectionView];
-  v6 = [v5 delegate];
+  neededCopy = needed;
+  collectionView = [(CKTranscriptCompositionalLayout *)self collectionView];
+  delegate = [collectionView delegate];
 
-  v7 = [v6 overrideCurrentFrameMapForLayout:self];
-  v8 = [v6 balloonOffsetMapForLayout:self resetsOffsetMapAfterUse:1];
+  v7 = [delegate overrideCurrentFrameMapForLayout:self];
+  v8 = [delegate balloonOffsetMapForLayout:self resetsOffsetMapAfterUse:1];
   if (v7)
   {
     v44 = v7;
-    [(CKTranscriptCompositionalLayout *)self _applyAttributeUpdatesWithTargetMap:v7 layoutAttributes:v4 updateBlock:&__block_literal_global_266_1];
-    v9 = [(CKTranscriptCompositionalLayout *)self collectionView];
-    [v9 frame];
+    [(CKTranscriptCompositionalLayout *)self _applyAttributeUpdatesWithTargetMap:v7 layoutAttributes:neededCopy updateBlock:&__block_literal_global_266_1];
+    collectionView2 = [(CKTranscriptCompositionalLayout *)self collectionView];
+    [collectionView2 frame];
     v11 = v10;
 
     if (self)
@@ -4661,18 +4661,18 @@ void __87__CKTranscriptCompositionalLayout__applyTargetFrameOffsetsForLayoutAttr
       v14 = v11 * 0.5;
     }
 
-    v15 = [(CKTranscriptCompositionalLayout *)self collectionView];
-    v16 = [v15 superview];
-    v17 = [(CKTranscriptCompositionalLayout *)self collectionView];
-    [v16 convertPoint:v17 toView:{0.0, v14}];
+    collectionView3 = [(CKTranscriptCompositionalLayout *)self collectionView];
+    superview = [collectionView3 superview];
+    collectionView4 = [(CKTranscriptCompositionalLayout *)self collectionView];
+    [superview convertPoint:collectionView4 toView:{0.0, v14}];
     v47 = v18;
 
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v45 = v4;
-    obj = v4;
+    v45 = neededCopy;
+    obj = neededCopy;
     v19 = [obj countByEnumeratingWithState:&v52 objects:v57 count:16];
     if (v19)
     {
@@ -4704,9 +4704,9 @@ void __87__CKTranscriptCompositionalLayout__applyTargetFrameOffsetsForLayoutAttr
 
             v31 = v11;
             v32 = fmax(v30, 0.0);
-            v33 = [(CKTranscriptCompositionalLayout *)self isInlineAnimatingOut];
+            isInlineAnimatingOut = [(CKTranscriptCompositionalLayout *)self isInlineAnimatingOut];
             v34 = -0.0500000007;
-            if (!v33)
+            if (!isInlineAnimatingOut)
             {
               v34 = 0.0;
             }
@@ -4761,7 +4761,7 @@ void __87__CKTranscriptCompositionalLayout__applyTargetFrameOffsetsForLayoutAttr
     }
 
     [(CKTranscriptCompositionalLayout *)self _kickDynamicsIfNeeded];
-    v4 = v45;
+    neededCopy = v45;
     v7 = v44;
   }
 }
@@ -4842,15 +4842,15 @@ void __88__CKTranscriptCompositionalLayout__applyCurrentFrameOffsetsForLayoutAtt
   }
 }
 
-- (void)_applyHorizontalOffsetFromMapping:(id)a3 toLayoutAttributes:(id)a4
+- (void)_applyHorizontalOffsetFromMapping:(id)mapping toLayoutAttributes:(id)attributes
 {
-  v5 = *(a4 + 82);
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 IMChatItem];
-  v14 = [v8 guid];
+  v5 = *(attributes + 82);
+  attributesCopy = attributes;
+  mappingCopy = mapping;
+  iMChatItem = [v5 IMChatItem];
+  guid = [iMChatItem guid];
 
-  v9 = [v7 objectForKey:v14];
+  v9 = [mappingCopy objectForKey:guid];
 
   [v9 floatValue];
   v11 = v10;
@@ -4861,14 +4861,14 @@ void __88__CKTranscriptCompositionalLayout__applyCurrentFrameOffsetsForLayoutAtt
     v13 = v11;
   }
 
-  v6[55] = v13;
-  v6[56] = v13;
+  attributesCopy[55] = v13;
+  attributesCopy[56] = v13;
 }
 
-- (void)_updateCurrentBalloonOffsetForLayoutAttributes:(id)a3
+- (void)_updateCurrentBalloonOffsetForLayoutAttributes:(id)attributes
 {
-  v3 = a3;
-  v4 = v3[73] - v3[74];
+  attributesCopy = attributes;
+  v4 = attributesCopy[73] - attributesCopy[74];
   if (v4 < 0.0)
   {
     v4 = -v4;
@@ -4877,8 +4877,8 @@ void __88__CKTranscriptCompositionalLayout__applyCurrentFrameOffsetsForLayoutAtt
   v5 = fmax(v4, 1.0);
   if (v5 >= 2.0)
   {
-    v13 = v3;
-    [v3 center];
+    v13 = attributesCopy;
+    [attributesCopy center];
     v8 = v7 - v13[74];
     if (v8 < 0.0)
     {
@@ -4890,29 +4890,29 @@ void __88__CKTranscriptCompositionalLayout__applyCurrentFrameOffsetsForLayoutAtt
     [v10 curveValueForSwipeWithVelocity:*MEMORY[0x1E695EFF8] t:{*(MEMORY[0x1E695EFF8] + 8), v9}];
     v12 = v11;
 
-    v3 = v13;
+    attributesCopy = v13;
     v6 = fmax(v12 * v13[55], 0.0);
   }
 
   else
   {
-    v6 = v3[56] + -6.0;
+    v6 = attributesCopy[56] + -6.0;
   }
 
-  v3[56] = v6;
+  attributesCopy[56] = v6;
 }
 
-- (void)_resetHorizontalBalloonOffsetsForLayoutAttributes:(id)a3 includeAssociatedAttributes:(BOOL)a4
+- (void)_resetHorizontalBalloonOffsetsForLayoutAttributes:(id)attributes includeAssociatedAttributes:(BOOL)associatedAttributes
 {
   v14 = *MEMORY[0x1E69E9840];
-  *(a3 + 55) = 0;
-  if (a4)
+  *(attributes + 55) = 0;
+  if (associatedAttributes)
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = *(a3 + 79);
+    v4 = *(attributes + 79);
     v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
@@ -4940,21 +4940,21 @@ void __88__CKTranscriptCompositionalLayout__applyCurrentFrameOffsetsForLayoutAtt
   }
 }
 
-- (void)sizeCategoryDidChange:(id)a3
+- (void)sizeCategoryDidChange:(id)change
 {
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v4 isAccessibilityPreferredContentSizeCategory];
 
-  if (v5 != [(CKTranscriptCompositionalLayout *)self sizeCategoryIsAccessibilitySizeCategory])
+  if (isAccessibilityPreferredContentSizeCategory != [(CKTranscriptCompositionalLayout *)self sizeCategoryIsAccessibilitySizeCategory])
   {
     [(CKTranscriptCompositionalLayout *)self setLayoutAttributes:0];
     [(CKTranscriptCompositionalLayout *)self invalidateLayout];
 
-    [(CKTranscriptCompositionalLayout *)self setSizeCategoryIsAccessibilitySizeCategory:v5];
+    [(CKTranscriptCompositionalLayout *)self setSizeCategoryIsAccessibilitySizeCategory:isAccessibilityPreferredContentSizeCategory];
   }
 }
 
-- (void)reduceMotionSettingChanged:(id)a3
+- (void)reduceMotionSettingChanged:(id)changed
 {
   [(CKTranscriptCompositionalLayout *)self setLayoutAttributes:0];
 
@@ -4979,11 +4979,11 @@ void __88__CKTranscriptCompositionalLayout__applyCurrentFrameOffsetsForLayoutAtt
   return result;
 }
 
-- (void)setDisplayLink:(uint64_t)a1
+- (void)setDisplayLink:(uint64_t)link
 {
-  if (a1)
+  if (link)
   {
-    objc_storeStrong((a1 + 680), a2);
+    objc_storeStrong((link + 680), a2);
   }
 }
 

@@ -1,8 +1,8 @@
 @interface MSOnboardingUtil
 + (BOOL)shouldShowOnboarding;
-+ (id)viewControllerForMediaType:(int64_t)a3 completion:(id)a4;
++ (id)viewControllerForMediaType:(int64_t)type completion:(id)completion;
 + (void)markAsShown;
-+ (void)presentIfNeededFromViewController:(id)a3 mediaTypes:(int64_t)a4 completion:(id)a5;
++ (void)presentIfNeededFromViewController:(id)controller mediaTypes:(int64_t)types completion:(id)completion;
 @end
 
 @implementation MSOnboardingUtil
@@ -28,25 +28,25 @@
   [MEMORY[0x277D69BF8] acknowledgePrivacyLinkWithIdentifier:*MEMORY[0x277D6A500] URL:v5];
 }
 
-+ (void)presentIfNeededFromViewController:(id)a3 mediaTypes:(int64_t)a4 completion:(id)a5
++ (void)presentIfNeededFromViewController:(id)controller mediaTypes:(int64_t)types completion:(id)completion
 {
-  if ([a1 shouldShowOnboarding])
+  if ([self shouldShowOnboarding])
   {
-    [a3 presentedViewController];
+    [controller presentedViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [a3 presentedViewController];
+      presentedViewController = [controller presentedViewController];
     }
 
     else
     {
-      v9 = 0;
+      presentedViewController = 0;
     }
 
-    if (![objc_msgSend(v9 "viewControllers")])
+    if (![objc_msgSend(presentedViewController "viewControllers")])
     {
-      [a3 presentedViewController];
+      [controller presentedViewController];
     }
 
     getAMPOnboardingViewControllerClass();
@@ -56,26 +56,26 @@
       v14[1] = 3221225472;
       v14[2] = __76__MSOnboardingUtil_presentIfNeededFromViewController_mediaTypes_completion___block_invoke;
       v14[3] = &unk_279926C58;
-      v14[4] = a5;
-      v13 = [a1 viewControllerForMediaType:a4 completion:v14];
+      v14[4] = completion;
+      v13 = [self viewControllerForMediaType:types completion:v14];
       [v13 setModalPresentationStyle:2];
-      [a3 presentViewController:v13 animated:1 completion:0];
+      [controller presentViewController:v13 animated:1 completion:0];
       return;
     }
 
-    v10 = *(a5 + 2);
-    v11 = a5;
+    v10 = *(completion + 2);
+    completionCopy2 = completion;
     v12 = 0;
   }
 
   else
   {
-    v10 = *(a5 + 2);
-    v11 = a5;
+    v10 = *(completion + 2);
+    completionCopy2 = completion;
     v12 = 1;
   }
 
-  v10(v11, v12);
+  v10(completionCopy2, v12);
 }
 
 uint64_t __76__MSOnboardingUtil_presentIfNeededFromViewController_mediaTypes_completion___block_invoke(uint64_t a1, void *a2)
@@ -112,34 +112,34 @@ uint64_t __76__MSOnboardingUtil_presentIfNeededFromViewController_mediaTypes_com
   return [v2 shouldDisplayPrivacyLinkWithIdentifier:v3];
 }
 
-+ (id)viewControllerForMediaType:(int64_t)a3 completion:(id)a4
++ (id)viewControllerForMediaType:(int64_t)type completion:(id)completion
 {
   v31[3] = *MEMORY[0x277D85DE8];
   v7 = [MEMORY[0x277D37670] linkWithBundleIdentifier:@"com.apple.onboarding.itunesstore"];
-  if (a3 == 2)
+  if (type == 2)
   {
     v21 = objc_alloc(getAMPOnboardingViewControllerClass());
-    v22 = [a1 iTunesStoreAppIcon];
+    iTunesStoreAppIcon = [self iTunesStoreAppIcon];
     v23 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"ONBOARDING_TITLE", &stru_286C31D20, 0}];
     v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v25 = @"ONBOARDING_DESCRIPTION_MUSIC";
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v21 = objc_alloc(getAMPOnboardingViewControllerClass());
-    v22 = [a1 iTunesStoreAppIcon];
+    iTunesStoreAppIcon = [self iTunesStoreAppIcon];
     v23 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"ONBOARDING_TITLE", &stru_286C31D20, 0}];
     v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v25 = @"ONBOARDING_DESCRIPTION_MUSIC_AND_MOVIES";
 LABEL_7:
     v26 = [v24 localizedStringForKey:v25 value:&stru_286C31D20 table:0];
-    v20 = [v21 initWithHeaderImage:v22 titleText:v23 descriptionText:v26 primaryButtonText:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] privacyLinkController:{"bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"ONBOARDING_CONTINUE", &stru_286C31D20, 0), v7}];
+    v20 = [v21 initWithHeaderImage:iTunesStoreAppIcon titleText:v23 descriptionText:v26 primaryButtonText:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] privacyLinkController:{"bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"ONBOARDING_CONTINUE", &stru_286C31D20, 0), v7}];
     goto LABEL_8;
   }
 
-  if (a3)
+  if (type)
   {
     v27 = 0;
     goto LABEL_10;
@@ -170,7 +170,7 @@ LABEL_10:
   v30[1] = 3221225472;
   v30[2] = __58__MSOnboardingUtil_viewControllerForMediaType_completion___block_invoke;
   v30[3] = &unk_279926C80;
-  v30[4] = a4;
+  v30[4] = completion;
   [v27 setPrimaryButtonCallback:v30];
   return v27;
 }

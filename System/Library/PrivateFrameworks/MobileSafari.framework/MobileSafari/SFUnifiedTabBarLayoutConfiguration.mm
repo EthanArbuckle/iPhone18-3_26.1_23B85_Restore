@@ -1,21 +1,21 @@
 @interface SFUnifiedTabBarLayoutConfiguration
 - (CGPoint)midpointForCenteredContent;
 - (CGRect)visibleRectOverride;
-- (SFUnifiedTabBarLayoutConfiguration)initWithScrollView:(id)a3;
+- (SFUnifiedTabBarLayoutConfiguration)initWithScrollView:(id)view;
 @end
 
 @implementation SFUnifiedTabBarLayoutConfiguration
 
-- (SFUnifiedTabBarLayoutConfiguration)initWithScrollView:(id)a3
+- (SFUnifiedTabBarLayoutConfiguration)initWithScrollView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = SFUnifiedTabBarLayoutConfiguration;
   v6 = [(SFUnifiedTabBarLayoutConfiguration *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scrollView, a3);
+    objc_storeStrong(&v6->_scrollView, view);
     v8 = *(MEMORY[0x1E695F050] + 16);
     v7->_visibleRectOverride.origin = *MEMORY[0x1E695F050];
     v7->_visibleRectOverride.size = v8;

@@ -1,24 +1,24 @@
 @interface TSDStyledLayout
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3;
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale;
 - (CGRect)alignmentFrameInRoot;
 - (CGRect)frameForCulling;
 - (CGRect)i_baseFrame;
-- (CGRect)reflectionBoundsForRect:(CGRect)a3;
+- (CGRect)reflectionBoundsForRect:(CGRect)rect;
 - (CGRect)reflectionFrame;
-- (CGRect)reflectionFrameForSubRect:(CGRect)a3;
+- (CGRect)reflectionFrameForSubRect:(CGRect)rect;
 - (CGRect)reflectionFrameInRoot;
 - (CGRect)shadowedNaturalBoundsWithoutOffset;
 - (double)opacity;
-- (void)dynamicOpacityUpdateToValue:(double)a3;
+- (void)dynamicOpacityUpdateToValue:(double)value;
 @end
 
 @implementation TSDStyledLayout
 
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale
 {
   [(TSDAbstractLayout *)self alignmentFrame];
 
-  v8 = TSDRoundedRectForScale(v4, v5, v6, v7, a3);
+  v8 = TSDRoundedRectForScale(v4, v5, v6, v7, scale);
   result.size.height = v11;
   result.size.width = v10;
   result.origin.y = v9;
@@ -28,18 +28,18 @@
 
 - (CGRect)alignmentFrameInRoot
 {
-  v3 = [(TSDAbstractLayout *)self parent];
+  parent = [(TSDAbstractLayout *)self parent];
   [(TSDAbstractLayout *)self alignmentFrame];
   x = v4;
   y = v6;
   width = v8;
   height = v10;
-  if (v3)
+  if (parent)
   {
-    v12 = [(TSDAbstractLayout *)self parent];
-    if (v12)
+    parent2 = [(TSDAbstractLayout *)self parent];
+    if (parent2)
     {
-      [(TSDAbstractLayout *)v12 transformInRoot];
+      [(TSDAbstractLayout *)parent2 transformInRoot];
     }
 
     else
@@ -107,14 +107,14 @@
   return result;
 }
 
-- (CGRect)reflectionBoundsForRect:(CGRect)a3
+- (CGRect)reflectionBoundsForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = fmin(a3.size.height * 0.400000006, 120.0);
-  MinX = CGRectGetMinX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v7 = fmin(rect.size.height * 0.400000006, 120.0);
+  MinX = CGRectGetMinX(rect);
   v14.origin.x = x;
   v14.origin.y = y;
   v14.size.width = width;
@@ -184,12 +184,12 @@
   return result;
 }
 
-- (CGRect)reflectionFrameForSubRect:(CGRect)a3
+- (CGRect)reflectionFrameForSubRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(TSDStyledLayout *)self i_baseFrame];
   v9 = v8;
   v11 = v10;
@@ -322,9 +322,9 @@
   return v5;
 }
 
-- (void)dynamicOpacityUpdateToValue:(double)a3
+- (void)dynamicOpacityUpdateToValue:(double)value
 {
-  self->mDynamicOpacity = a3;
+  self->mDynamicOpacity = value;
   v3 = [objc_msgSend(objc_msgSend(-[TSDLayout layoutController](self "layoutController")];
 
   [v3 processChangedProperty:518];

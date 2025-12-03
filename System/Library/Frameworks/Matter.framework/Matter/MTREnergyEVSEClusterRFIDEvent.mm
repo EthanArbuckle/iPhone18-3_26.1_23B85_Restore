@@ -1,6 +1,6 @@
 @interface MTREnergyEVSEClusterRFIDEvent
 - (MTREnergyEVSEClusterRFIDEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,15 +13,15 @@
   v2 = [(MTREnergyEVSEClusterRFIDEvent *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     uid = v2->_uid;
-    v2->_uid = v3;
+    v2->_uid = data;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTREnergyEVSEClusterRFIDEvent);
   v5 = [(MTREnergyEVSEClusterRFIDEvent *)self uid];

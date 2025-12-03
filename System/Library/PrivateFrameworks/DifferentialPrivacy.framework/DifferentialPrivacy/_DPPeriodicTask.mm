@@ -1,36 +1,36 @@
 @interface _DPPeriodicTask
-+ (id)taskWithName:(id)a3 period:(unint64_t)a4 handler:(id)a5;
-- (_DPPeriodicTask)initWithName:(id)a3 period:(unint64_t)a4 handler:(id)a5 networkingRequired:(BOOL)a6;
++ (id)taskWithName:(id)name period:(unint64_t)period handler:(id)handler;
+- (_DPPeriodicTask)initWithName:(id)name period:(unint64_t)period handler:(id)handler networkingRequired:(BOOL)required;
 @end
 
 @implementation _DPPeriodicTask
 
-- (_DPPeriodicTask)initWithName:(id)a3 period:(unint64_t)a4 handler:(id)a5 networkingRequired:(BOOL)a6
+- (_DPPeriodicTask)initWithName:(id)name period:(unint64_t)period handler:(id)handler networkingRequired:(BOOL)required
 {
   keys[6] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = v11;
-  v13 = 0;
-  if (v10 && v11)
+  nameCopy = name;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  selfCopy = 0;
+  if (nameCopy && handlerCopy)
   {
     v33.receiver = self;
     v33.super_class = _DPPeriodicTask;
     v14 = [(_DPPeriodicTask *)&v33 init];
     if (v14)
     {
-      v15 = [v10 copy];
+      v15 = [nameCopy copy];
       name = v14->_name;
       v14->_name = v15;
 
-      v17 = 5;
-      if (a4 > 5)
+      periodCopy = 5;
+      if (period > 5)
       {
-        v17 = a4;
+        periodCopy = period;
       }
 
-      v14->_periodSeconds = v17;
-      v14->_networkingRequired = a6;
+      v14->_periodSeconds = periodCopy;
+      v14->_networkingRequired = required;
       v18 = MEMORY[0x22AA7A8C0](v12);
       handler = v14->_handler;
       v14->_handler = v18;
@@ -72,18 +72,18 @@
     }
 
     self = v14;
-    v13 = self;
+    selfCopy = self;
   }
 
   v31 = *MEMORY[0x277D85DE8];
-  return v13;
+  return selfCopy;
 }
 
-+ (id)taskWithName:(id)a3 period:(unint64_t)a4 handler:(id)a5
++ (id)taskWithName:(id)name period:(unint64_t)period handler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [objc_opt_class() taskWithName:v8 period:a4 handler:v7 networkingRequired:0];
+  handlerCopy = handler;
+  nameCopy = name;
+  v9 = [objc_opt_class() taskWithName:nameCopy period:period handler:handlerCopy networkingRequired:0];
 
   return v9;
 }

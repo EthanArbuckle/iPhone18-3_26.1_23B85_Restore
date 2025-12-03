@@ -1,18 +1,18 @@
 @interface PLModelMigrationAction_RemoveSharedLibraryAlbum
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RemoveSharedLibraryAlbum
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v70 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AE18];
-  v7 = a3;
+  contextCopy = context;
   v8 = [v6 predicateWithFormat:@"%K = %@", @"kind", &unk_1F0FBCDF0];
   v9 = +[PLFetchingAlbum entityName];
   v34 = 0;
-  v10 = [PLModelMigrator executeBatchDeleteWithEntityName:v9 predicate:v8 managedObjectContext:v7 error:&v34];
+  v10 = [PLModelMigrator executeBatchDeleteWithEntityName:v9 predicate:v8 managedObjectContext:contextCopy error:&v34];
 
   v11 = v34;
   if (v10)
@@ -22,9 +22,9 @@
 
     if (v13)
     {
-      v14 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v14)
+      if (logger)
       {
         v68 = 0u;
         v69 = 0u;
@@ -88,10 +88,10 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       v18 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     v19 = PLMigrationGetLog();
@@ -99,9 +99,9 @@
 
     if (v20)
     {
-      v21 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v21)
+      if (logger2)
       {
         v68 = 0u;
         v69 = 0u;

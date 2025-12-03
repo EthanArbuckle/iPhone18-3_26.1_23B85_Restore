@@ -1,28 +1,28 @@
 @interface SLShareableContentAction
-+ (id)actionWithBSAction:(id)a3;
++ (id)actionWithBSAction:(id)action;
 - (NSString)sceneIdentifier;
-- (SLShareableContentAction)initWithAction:(id)a3;
-- (SLShareableContentAction)initWithCoder:(id)a3;
-- (SLShareableContentAction)initWithInfo:(id)a3 responseHandler:(id)a4;
-- (SLShareableContentAction)initWithSceneIdentifier:(id)a3 responseHandler:(id)a4;
+- (SLShareableContentAction)initWithAction:(id)action;
+- (SLShareableContentAction)initWithCoder:(id)coder;
+- (SLShareableContentAction)initWithInfo:(id)info responseHandler:(id)handler;
+- (SLShareableContentAction)initWithSceneIdentifier:(id)identifier responseHandler:(id)handler;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)failWithError:(id)a3;
-- (void)fulfillWithResponse:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)failWithError:(id)error;
+- (void)fulfillWithResponse:(id)response;
 @end
 
 @implementation SLShareableContentAction
 
-+ (id)actionWithBSAction:(id)a3
++ (id)actionWithBSAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 info];
-  v5 = [v4 objectForSetting:30295];
+  actionCopy = action;
+  info = [actionCopy info];
+  v5 = [info objectForSetting:30295];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = NSClassFromString(v5), [(objc_class *)v6 isSubclassOfClass:objc_opt_class()]) && [(objc_class *)v6 instancesRespondToSelector:sel_initWithAction_])
   {
-    v7 = [[v6 alloc] initWithAction:v3];
+    v7 = [[v6 alloc] initWithAction:actionCopy];
   }
 
   else
@@ -33,28 +33,28 @@
   return v7;
 }
 
-- (SLShareableContentAction)initWithAction:(id)a3
+- (SLShareableContentAction)initWithAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v9.receiver = self;
   v9.super_class = SLShareableContentAction;
   v6 = [(SLShareableContentAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_action, a3);
+    objc_storeStrong(&v6->_action, action);
   }
 
   return v7;
 }
 
-- (SLShareableContentAction)initWithInfo:(id)a3 responseHandler:(id)a4
+- (SLShareableContentAction)initWithInfo:(id)info responseHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x277CF0C80];
-  v8 = a3;
+  infoCopy = info;
   v9 = objc_alloc_init(v7);
-  [v9 applySettings:v8];
+  [v9 applySettings:infoCopy];
 
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
@@ -65,8 +65,8 @@
   v18[1] = 3221225472;
   v18[2] = __57__SLShareableContentAction_initWithInfo_responseHandler___block_invoke;
   v18[3] = &unk_278926D88;
-  v19 = v6;
-  v13 = v6;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
   v14 = [v12 responderWithHandler:v18];
   v15 = [objc_alloc(MEMORY[0x277CF0B58]) initWithInfo:v9 responder:v14];
   v16 = [(SLShareableContentAction *)self initWithAction:v15];
@@ -97,23 +97,23 @@ void __57__SLShareableContentAction_initWithInfo_responseHandler___block_invoke(
   }
 }
 
-- (SLShareableContentAction)initWithSceneIdentifier:(id)a3 responseHandler:(id)a4
+- (SLShareableContentAction)initWithSceneIdentifier:(id)identifier responseHandler:(id)handler
 {
   v6 = MEMORY[0x277CF0C80];
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v9 = objc_alloc_init(v6);
-  [v9 setObject:v8 forSetting:1];
+  [v9 setObject:identifierCopy forSetting:1];
 
-  v10 = [(SLShareableContentAction *)self initWithInfo:v9 responseHandler:v7];
+  v10 = [(SLShareableContentAction *)self initWithInfo:v9 responseHandler:handlerCopy];
   return v10;
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(SLShareableContentAction *)self sceneIdentifier];
-  [v3 appendFormat:@" sceneIdentifier=%@", v4];
+  sceneIdentifier = [(SLShareableContentAction *)self sceneIdentifier];
+  [v3 appendFormat:@" sceneIdentifier=%@", sceneIdentifier];
 
   [v3 appendString:@">"];
   v5 = [v3 copy];
@@ -127,9 +127,9 @@ void __57__SLShareableContentAction_initWithInfo_responseHandler___block_invoke(
   sceneIdentifier = self->_sceneIdentifier;
   if (!sceneIdentifier)
   {
-    v5 = [(SLShareableContentAction *)self action];
-    v6 = [v5 info];
-    v7 = [v6 objectForSetting:1];
+    action = [(SLShareableContentAction *)self action];
+    info = [action info];
+    v7 = [info objectForSetting:1];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -143,25 +143,25 @@ void __57__SLShareableContentAction_initWithInfo_responseHandler___block_invoke(
   return sceneIdentifier;
 }
 
-- (void)fulfillWithResponse:(id)a3
+- (void)fulfillWithResponse:(id)response
 {
   v4 = MEMORY[0x277CF0C80];
-  v5 = a3;
+  responseCopy = response;
   v8 = objc_alloc_init(v4);
-  [v8 setObject:v5 forSetting:2];
+  [v8 setObject:responseCopy forSetting:2];
 
-  v6 = [(SLShareableContentAction *)self action];
+  action = [(SLShareableContentAction *)self action];
   v7 = [MEMORY[0x277CF0B68] responseWithInfo:v8];
-  [v6 sendResponse:v7];
+  [action sendResponse:v7];
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  errorCopy = error;
+  v9 = errorCopy;
+  if (errorCopy)
   {
-    v5 = v4;
+    v5 = errorCopy;
   }
 
   else
@@ -170,20 +170,20 @@ void __57__SLShareableContentAction_initWithInfo_responseHandler___block_invoke(
   }
 
   v6 = v5;
-  v7 = [(SLShareableContentAction *)self action];
+  action = [(SLShareableContentAction *)self action];
   v8 = [MEMORY[0x277CF0B68] responseForError:v6];
-  [v7 sendResponse:v8];
+  [action sendResponse:v8];
 }
 
-- (SLShareableContentAction)initWithCoder:(id)a3
+- (SLShareableContentAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SLShareableContentAction *)self init];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_sceneIdentifier);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     sceneIdentifier = v5->_sceneIdentifier;
     v5->_sceneIdentifier = v8;
   }
@@ -191,12 +191,12 @@ void __57__SLShareableContentAction_initWithInfo_responseHandler___block_invoke(
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(SLShareableContentAction *)self sceneIdentifier];
+  coderCopy = coder;
+  sceneIdentifier = [(SLShareableContentAction *)self sceneIdentifier];
   v5 = NSStringFromSelector(sel_sceneIdentifier);
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:sceneIdentifier forKey:v5];
 }
 
 @end

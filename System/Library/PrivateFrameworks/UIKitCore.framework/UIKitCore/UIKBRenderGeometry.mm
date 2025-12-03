@@ -1,8 +1,8 @@
 @interface UIKBRenderGeometry
-+ (id)geometryWithFrame:(CGRect)a3 paddedFrame:(CGRect)a4;
-+ (id)geometryWithShape:(id)a3;
-+ (id)sortedGeometries:(id)a3 leftToRight:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)geometryWithFrame:(CGRect)frame paddedFrame:(CGRect)paddedFrame;
++ (id)geometryWithShape:(id)shape;
++ (id)sortedGeometries:(id)geometries leftToRight:(BOOL)right;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)popupSource;
 - (CGRect)displayFrame;
 - (CGRect)frame;
@@ -14,26 +14,26 @@
 - (UIEdgeInsets)displayInsets;
 - (UIEdgeInsets)layoutMargins;
 - (UIEdgeInsets)paddedInsets;
-- (UIKBRenderGeometry)initWithShape:(id)a3;
-- (id)_copyForDirection:(int64_t)a3 positionFactor:(double)a4 inwardSizeFactor:(double)a5 outwardSizeFactor:(double)a6 perpendicularSizeFactor:(double)a7 sizeAspectRatio:(double)a8 scale:(double)a9;
-- (id)copyForFlickDirection:(int64_t)a3 scale:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UIKBRenderGeometry)initWithShape:(id)shape;
+- (id)_copyForDirection:(int64_t)direction positionFactor:(double)factor inwardSizeFactor:(double)sizeFactor outwardSizeFactor:(double)outwardSizeFactor perpendicularSizeFactor:(double)perpendicularSizeFactor sizeAspectRatio:(double)ratio scale:(double)scale;
+- (id)copyForFlickDirection:(int64_t)direction scale:(double)scale;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)iPadVariantGeometries:(unint64_t)a3 rowLimit:(int64_t)a4;
-- (id)iPhoneVariantGeometries:(unint64_t)a3 annotationIndex:(unint64_t)a4;
+- (id)iPadVariantGeometries:(unint64_t)geometries rowLimit:(int64_t)limit;
+- (id)iPhoneVariantGeometries:(unint64_t)geometries annotationIndex:(unint64_t)index;
 - (id)similarShape;
-- (id)watchVariantGeometries:(unint64_t)a3 annotationIndex:(unint64_t)a4;
-- (unint64_t)adjustForTranslucentGapsInFrameWithSize_10Key:(CGSize)a3 centerX:(double)a4 bottomEdge:(BOOL)a5 topEdge:(BOOL)a6;
-- (unint64_t)adjustForTranslucentGapsWithSize:(CGSize)a3 inFrame:(CGRect)a4;
-- (void)adjustForConsistentGapsWithSize:(CGSize)a3 inFrame:(CGRect)a4;
-- (void)adjustToTopWithInsets:(UIEdgeInsets)a3;
-- (void)applyInsets:(UIEdgeInsets)a3;
-- (void)applyOffset:(CGPoint)a3;
-- (void)applyShadowInsets:(UIEdgeInsets)a3;
-- (void)makeIntegralWithScale:(double)a3;
-- (void)overlayWithGeometry:(id)a3;
-- (void)setLayeredBackgroundPaddedFrame:(CGRect)a3;
-- (void)setLayeredForegroundPaddedFrame:(CGRect)a3;
+- (id)watchVariantGeometries:(unint64_t)geometries annotationIndex:(unint64_t)index;
+- (unint64_t)adjustForTranslucentGapsInFrameWithSize_10Key:(CGSize)key centerX:(double)x bottomEdge:(BOOL)edge topEdge:(BOOL)topEdge;
+- (unint64_t)adjustForTranslucentGapsWithSize:(CGSize)size inFrame:(CGRect)frame;
+- (void)adjustForConsistentGapsWithSize:(CGSize)size inFrame:(CGRect)frame;
+- (void)adjustToTopWithInsets:(UIEdgeInsets)insets;
+- (void)applyInsets:(UIEdgeInsets)insets;
+- (void)applyOffset:(CGPoint)offset;
+- (void)applyShadowInsets:(UIEdgeInsets)insets;
+- (void)makeIntegralWithScale:(double)scale;
+- (void)overlayWithGeometry:(id)geometry;
+- (void)setLayeredBackgroundPaddedFrame:(CGRect)frame;
+- (void)setLayeredForegroundPaddedFrame:(CGRect)frame;
 @end
 
 @implementation UIKBRenderGeometry
@@ -105,15 +105,15 @@
   return result;
 }
 
-- (unint64_t)adjustForTranslucentGapsWithSize:(CGSize)a3 inFrame:(CGRect)a4
+- (unint64_t)adjustForTranslucentGapsWithSize:(CGSize)size inFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.height;
-  v9 = a3.width;
-  if (CGRectIsEmpty(a4))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v8 = size.height;
+  v9 = size.width;
+  if (CGRectIsEmpty(frame))
   {
     return 0;
   }
@@ -226,25 +226,25 @@
   return v16;
 }
 
-- (unint64_t)adjustForTranslucentGapsInFrameWithSize_10Key:(CGSize)a3 centerX:(double)a4 bottomEdge:(BOOL)a5 topEdge:(BOOL)a6
+- (unint64_t)adjustForTranslucentGapsInFrameWithSize_10Key:(CGSize)key centerX:(double)x bottomEdge:(BOOL)edge topEdge:(BOOL)topEdge
 {
-  v6 = a6;
-  v7 = a5;
-  height = a3.height;
-  width = a3.width;
+  topEdgeCopy = topEdge;
+  edgeCopy = edge;
+  height = key.height;
+  width = key.width;
   [(UIKBRenderGeometry *)self paddedFrame];
   x = v22.origin.x;
   y = v22.origin.y;
   v14 = v22.size.width;
   v15 = v22.size.height;
-  if (CGRectGetMaxX(v22) >= a4)
+  if (CGRectGetMaxX(v22) >= x)
   {
     v23.origin.x = x;
     v23.origin.y = y;
     v23.size.width = v14;
     v23.size.height = v15;
     MinX = CGRectGetMinX(v23);
-    if (MinX <= a4)
+    if (MinX <= x)
     {
       v16 = v14;
     }
@@ -255,7 +255,7 @@
       v16 = v14 - width;
     }
 
-    if (MinX > a4)
+    if (MinX > x)
     {
       v17 = 2;
     }
@@ -273,25 +273,25 @@
   }
 
   v19 = 4;
-  if (!v7)
+  if (!edgeCopy)
   {
     v19 = 0;
   }
 
-  v20 = v19 | v6;
+  v20 = v19 | topEdgeCopy;
   [(UIKBRenderGeometry *)self setPaddedFrame:UIRectInsetEdges(v20, x, y, v16, v15, height)];
   return v17 | v20;
 }
 
-- (void)adjustForConsistentGapsWithSize:(CGSize)a3 inFrame:(CGRect)a4
+- (void)adjustForConsistentGapsWithSize:(CGSize)size inFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.height;
-  v9 = a3.width;
-  if (!CGRectIsEmpty(a4))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v8 = size.height;
+  v9 = size.width;
+  if (!CGRectIsEmpty(frame))
   {
     v11 = v9 == *MEMORY[0x1E695F060] && v8 == *(MEMORY[0x1E695F060] + 8);
     if (!v11)
@@ -389,12 +389,12 @@
   }
 }
 
-- (void)adjustToTopWithInsets:(UIEdgeInsets)a3
+- (void)adjustToTopWithInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(UIKBRenderGeometry *)self frame];
   if (v8 != 0.0)
   {
@@ -414,24 +414,24 @@
   }
 }
 
-- (void)makeIntegralWithScale:(double)a3
+- (void)makeIntegralWithScale:(double)scale
 {
   [(UIKBRenderGeometry *)self frame];
-  [(UIKBRenderGeometry *)self setFrame:UIRectIntegralWithScale(v5, v6, v7, v8, a3)];
+  [(UIKBRenderGeometry *)self setFrame:UIRectIntegralWithScale(v5, v6, v7, v8, scale)];
   [(UIKBRenderGeometry *)self paddedFrame];
-  [(UIKBRenderGeometry *)self setPaddedFrame:UIRectIntegralWithScale(v9, v10, v11, v12, a3)];
+  [(UIKBRenderGeometry *)self setPaddedFrame:UIRectIntegralWithScale(v9, v10, v11, v12, scale)];
   [(UIKBRenderGeometry *)self displayFrame];
-  [(UIKBRenderGeometry *)self setDisplayFrame:UIRectIntegralWithScale(v13, v14, v15, v16, a3)];
+  [(UIKBRenderGeometry *)self setDisplayFrame:UIRectIntegralWithScale(v13, v14, v15, v16, scale)];
   [(UIKBRenderGeometry *)self symbolFrame];
-  v21 = UIRectIntegralWithScale(v17, v18, v19, v20, a3);
+  v21 = UIRectIntegralWithScale(v17, v18, v19, v20, scale);
 
   [(UIKBRenderGeometry *)self setSymbolFrame:v21];
 }
 
-- (void)applyOffset:(CGPoint)a3
+- (void)applyOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   [(UIKBRenderGeometry *)self frame];
   [(UIKBRenderGeometry *)self setFrame:x + v6, y + v8, v7 - (x - x), v9 - (y - y)];
   [(UIKBRenderGeometry *)self paddedFrame];
@@ -447,9 +447,9 @@
   [(UIKBRenderGeometry *)self setSymbolFrame:v19, v23, v21, v25];
 }
 
-- (id)copyForFlickDirection:(int64_t)a3 scale:(double)a4
+- (id)copyForFlickDirection:(int64_t)direction scale:(double)scale
 {
-  v5 = [(UIKBRenderGeometry *)self _copyForDirection:a3 positionFactor:1.0 inwardSizeFactor:0.12 outwardSizeFactor:-0.12 perpendicularSizeFactor:-0.125 sizeAspectRatio:0.8 scale:a4];
+  v5 = [(UIKBRenderGeometry *)self _copyForDirection:direction positionFactor:1.0 inwardSizeFactor:0.12 outwardSizeFactor:-0.12 perpendicularSizeFactor:-0.125 sizeAspectRatio:0.8 scale:scale];
   [v5 displayFrame];
   v7 = v6;
   v9 = v8;
@@ -469,42 +469,42 @@
   return v5;
 }
 
-- (id)_copyForDirection:(int64_t)a3 positionFactor:(double)a4 inwardSizeFactor:(double)a5 outwardSizeFactor:(double)a6 perpendicularSizeFactor:(double)a7 sizeAspectRatio:(double)a8 scale:(double)a9
+- (id)_copyForDirection:(int64_t)direction positionFactor:(double)factor inwardSizeFactor:(double)sizeFactor outwardSizeFactor:(double)outwardSizeFactor perpendicularSizeFactor:(double)perpendicularSizeFactor sizeAspectRatio:(double)ratio scale:(double)scale
 {
   v16 = [(UIKBRenderGeometry *)self copy];
   [v16 paddedFrame];
   v19 = v17;
   v20 = v18;
-  if (a3 > 1)
+  if (direction > 1)
   {
-    if (a3 == 2)
+    if (direction == 2)
     {
-      [v16 applyOffset:{0.0, v18 * a4}];
+      [v16 applyOffset:{0.0, v18 * factor}];
       [v16 paddedFrame];
-      v21 = v20 * a5;
-      v23 = v19 * a7 * a8;
-      v44 = v20 * a6;
+      v21 = v20 * sizeFactor;
+      v23 = v19 * perpendicularSizeFactor * ratio;
+      v44 = v20 * outwardSizeFactor;
       v25 = v23 + v45;
       v26 = v23 + v23;
       v28 = v46 - (v23 + v23);
-      v30 = v20 * a5 + v47;
-      v31 = v20 * a5 + v44;
+      v30 = v20 * sizeFactor + v47;
+      v31 = v20 * sizeFactor + v44;
       v33 = v48 - v31;
       v34 = 12;
       goto LABEL_10;
     }
 
-    if (a3 == 3)
+    if (direction == 3)
     {
-      [v16 applyOffset:{-(v17 * a4), 0.0}];
+      [v16 applyOffset:{-(v17 * factor), 0.0}];
       [v16 paddedFrame];
-      v21 = v20 * a7;
-      v35 = v19 * a5 * a8;
-      v23 = v19 * a6 * a8;
+      v21 = v20 * perpendicularSizeFactor;
+      v35 = v19 * sizeFactor * ratio;
+      v23 = v19 * outwardSizeFactor * ratio;
       v25 = v23 + v36;
       v26 = v35 + v23;
       v28 = v37 - (v35 + v23);
-      v30 = v20 * a7 + v38;
+      v30 = v20 * perpendicularSizeFactor + v38;
       v31 = v21 + v21;
       v33 = v39 - (v21 + v21);
       v34 = 5;
@@ -514,33 +514,33 @@
 
   else
   {
-    if (!a3)
+    if (!direction)
     {
-      [v16 applyOffset:{0.0, -(v18 * a4)}];
+      [v16 applyOffset:{0.0, -(v18 * factor)}];
       [v16 paddedFrame];
-      v21 = v20 * a6;
-      v23 = v19 * a7 * a8;
+      v21 = v20 * outwardSizeFactor;
+      v23 = v19 * perpendicularSizeFactor * ratio;
       v25 = v23 + v40;
       v26 = v23 + v23;
       v28 = v41 - (v23 + v23);
       v30 = v21 + v42;
-      v31 = v21 + v20 * a5;
+      v31 = v21 + v20 * sizeFactor;
       v33 = v43 - v31;
       v34 = 3;
       goto LABEL_10;
     }
 
-    if (a3 == 1)
+    if (direction == 1)
     {
-      [v16 applyOffset:{v17 * a4, 0.0}];
+      [v16 applyOffset:{v17 * factor, 0.0}];
       [v16 paddedFrame];
-      v21 = v20 * a7;
-      v22 = v19 * a6 * a8;
-      v23 = v19 * a5 * a8;
+      v21 = v20 * perpendicularSizeFactor;
+      v22 = v19 * outwardSizeFactor * ratio;
+      v23 = v19 * sizeFactor * ratio;
       v25 = v23 + v24;
       v26 = v22 + v23;
       v28 = v27 - (v22 + v23);
-      v30 = v20 * a7 + v29;
+      v30 = v20 * perpendicularSizeFactor + v29;
       v31 = v21 + v21;
       v33 = v32 - (v21 + v21);
       v34 = 10;
@@ -553,28 +553,28 @@ LABEL_10:
   }
 
   [v16 setRoundRectRadius:8.0];
-  [v16 makeIntegralWithScale:a9];
+  [v16 makeIntegralWithScale:scale];
   return v16;
 }
 
-+ (id)geometryWithShape:(id)a3
++ (id)geometryWithShape:(id)shape
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithShape:v4];
+  shapeCopy = shape;
+  v5 = [[self alloc] initWithShape:shapeCopy];
 
   return v5;
 }
 
-+ (id)geometryWithFrame:(CGRect)a3 paddedFrame:(CGRect)a4
++ (id)geometryWithFrame:(CGRect)frame paddedFrame:(CGRect)paddedFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = paddedFrame.size.height;
+  width = paddedFrame.size.width;
+  y = paddedFrame.origin.y;
+  x = paddedFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   v12 = objc_alloc_init(UIKBRenderGeometry);
   [(UIKBRenderGeometry *)v12 setFrame:v11, v10, v9, v8];
   [(UIKBRenderGeometry *)v12 setPaddedFrame:x, y, width, height];
@@ -593,36 +593,36 @@ LABEL_10:
   return v12;
 }
 
-- (UIKBRenderGeometry)initWithShape:(id)a3
+- (UIKBRenderGeometry)initWithShape:(id)shape
 {
-  v4 = a3;
+  shapeCopy = shape;
   v27.receiver = self;
   v27.super_class = UIKBRenderGeometry;
   v5 = [(UIKBRenderGeometry *)&v27 init];
   if (v5)
   {
-    [v4 frame];
+    [shapeCopy frame];
     *(v5 + 15) = v6;
     *(v5 + 16) = v7;
     *(v5 + 17) = v8;
     *(v5 + 18) = v9;
-    [v4 paddedFrame];
+    [shapeCopy paddedFrame];
     *(v5 + 19) = v10;
     *(v5 + 20) = v11;
     *(v5 + 21) = v12;
     *(v5 + 22) = v13;
-    [v4 paddedFrame];
+    [shapeCopy paddedFrame];
     *(v5 + 23) = v14;
     *(v5 + 24) = v15;
     *(v5 + 25) = v16;
     *(v5 + 26) = v17;
-    [v4 paddedFrame];
+    [shapeCopy paddedFrame];
     *(v5 + 27) = v18;
     *(v5 + 28) = v19;
     *(v5 + 29) = v20;
     *(v5 + 30) = v21;
-    *(v5 + 2) = [v4 concaveCorner];
-    [v4 concaveCornerOffset];
+    *(v5 + 2) = [shapeCopy concaveCorner];
+    [shapeCopy concaveCornerOffset];
     *(v5 + 13) = v22;
     *(v5 + 14) = v23;
     *(v5 + 5) = -3;
@@ -710,20 +710,20 @@ LABEL_10:
     [v3 appendFormat:@"; popupDirection = %ld", -[UIKBRenderGeometry popupDirection](self, "popupDirection")];
   }
 
-  v16 = [(UIKBRenderGeometry *)self splitLeftRect];
+  splitLeftRect = [(UIKBRenderGeometry *)self splitLeftRect];
 
-  if (v16)
+  if (splitLeftRect)
   {
-    v17 = [(UIKBRenderGeometry *)self splitLeftRect];
-    [v3 appendFormat:@"; splitLeftRect = %@", v17];
+    splitLeftRect2 = [(UIKBRenderGeometry *)self splitLeftRect];
+    [v3 appendFormat:@"; splitLeftRect = %@", splitLeftRect2];
   }
 
-  v18 = [(UIKBRenderGeometry *)self splitRightRect];
+  splitRightRect = [(UIKBRenderGeometry *)self splitRightRect];
 
-  if (v18)
+  if (splitRightRect)
   {
-    v19 = [(UIKBRenderGeometry *)self splitRightRect];
-    [v3 appendFormat:@"; splitRightRect = %@", v19];
+    splitRightRect2 = [(UIKBRenderGeometry *)self splitRightRect];
+    [v3 appendFormat:@"; splitRightRect = %@", splitRightRect2];
   }
 
   [v3 appendString:@">"];
@@ -731,39 +731,39 @@ LABEL_10:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
     goto LABEL_28;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || !CGRectEqualToRect(self->_frame, v4->_frame) || !CGRectEqualToRect(self->_paddedFrame, v4->_paddedFrame) || !CGRectEqualToRect(self->_displayFrame, v4->_displayFrame) || !CGRectEqualToRect(self->_symbolFrame, v4->_symbolFrame) || self->_concaveCorner != v4->_concaveCorner)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || !CGRectEqualToRect(self->_frame, equalCopy->_frame) || !CGRectEqualToRect(self->_paddedFrame, equalCopy->_paddedFrame) || !CGRectEqualToRect(self->_displayFrame, equalCopy->_displayFrame) || !CGRectEqualToRect(self->_symbolFrame, equalCopy->_symbolFrame) || self->_concaveCorner != equalCopy->_concaveCorner)
   {
     goto LABEL_26;
   }
 
   v5 = 0;
-  if (self->_concaveCornerOffset.width != v4->_concaveCornerOffset.width)
+  if (self->_concaveCornerOffset.width != equalCopy->_concaveCornerOffset.width)
   {
     goto LABEL_28;
   }
 
-  if (self->_concaveCornerOffset.height != v4->_concaveCornerOffset.height)
+  if (self->_concaveCornerOffset.height != equalCopy->_concaveCornerOffset.height)
   {
     goto LABEL_28;
   }
 
   v5 = 0;
-  if (self->_popupSource.x != v4->_popupSource.x || self->_popupSource.y != v4->_popupSource.y)
+  if (self->_popupSource.x != equalCopy->_popupSource.x || self->_popupSource.y != equalCopy->_popupSource.y)
   {
     goto LABEL_28;
   }
 
-  if (self->_roundRectCorners != v4->_roundRectCorners || self->_roundRectRadius != v4->_roundRectRadius || self->_popupBias != v4->_popupBias || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_layoutMargins.top, *&v4->_layoutMargins.top), vceqq_f64(*&self->_layoutMargins.bottom, *&v4->_layoutMargins.bottom)))) & 1) == 0 || self->_flickDirection != v4->_flickDirection || self->_detachedVariants != v4->_detachedVariants || self->_tallPopup != v4->_tallPopup || self->_popupDirection != v4->_popupDirection || (splitLeftRect = self->_splitLeftRect, (splitLeftRect == 0) == (v4->_splitLeftRect != 0)) || splitLeftRect && ![(NSValue *)splitLeftRect isEqualToValue:?])
+  if (self->_roundRectCorners != equalCopy->_roundRectCorners || self->_roundRectRadius != equalCopy->_roundRectRadius || self->_popupBias != equalCopy->_popupBias || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_layoutMargins.top, *&equalCopy->_layoutMargins.top), vceqq_f64(*&self->_layoutMargins.bottom, *&equalCopy->_layoutMargins.bottom)))) & 1) == 0 || self->_flickDirection != equalCopy->_flickDirection || self->_detachedVariants != equalCopy->_detachedVariants || self->_tallPopup != equalCopy->_tallPopup || self->_popupDirection != equalCopy->_popupDirection || (splitLeftRect = self->_splitLeftRect, (splitLeftRect == 0) == (equalCopy->_splitLeftRect != 0)) || splitLeftRect && ![(NSValue *)splitLeftRect isEqualToValue:?])
   {
 LABEL_26:
     v5 = 0;
@@ -771,7 +771,7 @@ LABEL_26:
   }
 
   splitRightRect = self->_splitRightRect;
-  v8 = v4->_splitRightRect;
+  v8 = equalCopy->_splitRightRect;
   v5 = (splitRightRect == 0) == (v8 == 0);
   if (splitRightRect && v8)
   {
@@ -783,7 +783,7 @@ LABEL_28:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UIKBRenderGeometry);
   [(UIKBRenderGeometry *)self frame];
@@ -809,65 +809,65 @@ LABEL_28:
   [(UIKBRenderGeometry *)v4 setDetachedVariants:[(UIKBRenderGeometry *)self detachedVariants]];
   [(UIKBRenderGeometry *)v4 setTallPopup:[(UIKBRenderGeometry *)self tallPopup]];
   [(UIKBRenderGeometry *)v4 setPopupDirection:[(UIKBRenderGeometry *)self popupDirection]];
-  v5 = [(UIKBRenderGeometry *)self splitLeftRect];
-  v6 = [v5 copy];
+  splitLeftRect = [(UIKBRenderGeometry *)self splitLeftRect];
+  v6 = [splitLeftRect copy];
   [(UIKBRenderGeometry *)v4 setSplitLeftRect:v6];
 
-  v7 = [(UIKBRenderGeometry *)self splitRightRect];
-  v8 = [v7 copy];
+  splitRightRect = [(UIKBRenderGeometry *)self splitRightRect];
+  v8 = [splitRightRect copy];
   [(UIKBRenderGeometry *)v4 setSplitRightRect:v8];
 
   return v4;
 }
 
-- (void)overlayWithGeometry:(id)a3
+- (void)overlayWithGeometry:(id)geometry
 {
-  v5 = a3;
-  [v5 roundRectRadius];
+  geometryCopy = geometry;
+  [geometryCopy roundRectRadius];
   if (v4 > 0.0)
   {
-    [v5 roundRectRadius];
+    [geometryCopy roundRectRadius];
     [(UIKBRenderGeometry *)self setRoundRectRadius:?];
   }
 
-  if ([v5 roundRectCorners])
+  if ([geometryCopy roundRectCorners])
   {
-    -[UIKBRenderGeometry setRoundRectCorners:](self, "setRoundRectCorners:", [v5 roundRectCorners]);
+    -[UIKBRenderGeometry setRoundRectCorners:](self, "setRoundRectCorners:", [geometryCopy roundRectCorners]);
   }
 
-  if ([v5 popupBias])
+  if ([geometryCopy popupBias])
   {
-    -[UIKBRenderGeometry setPopupBias:](self, "setPopupBias:", [v5 popupBias]);
+    -[UIKBRenderGeometry setPopupBias:](self, "setPopupBias:", [geometryCopy popupBias]);
   }
 
-  if ([v5 flickDirection] != -3)
+  if ([geometryCopy flickDirection] != -3)
   {
-    -[UIKBRenderGeometry setFlickDirection:](self, "setFlickDirection:", [v5 flickDirection]);
+    -[UIKBRenderGeometry setFlickDirection:](self, "setFlickDirection:", [geometryCopy flickDirection]);
   }
 
-  if ([v5 detachedVariants])
+  if ([geometryCopy detachedVariants])
   {
-    -[UIKBRenderGeometry setDetachedVariants:](self, "setDetachedVariants:", [v5 detachedVariants]);
+    -[UIKBRenderGeometry setDetachedVariants:](self, "setDetachedVariants:", [geometryCopy detachedVariants]);
   }
 
-  if ([v5 tallPopup])
+  if ([geometryCopy tallPopup])
   {
-    -[UIKBRenderGeometry setTallPopup:](self, "setTallPopup:", [v5 tallPopup]);
+    -[UIKBRenderGeometry setTallPopup:](self, "setTallPopup:", [geometryCopy tallPopup]);
   }
 
-  if ([v5 popupDirection])
+  if ([geometryCopy popupDirection])
   {
-    -[UIKBRenderGeometry setPopupDirection:](self, "setPopupDirection:", [v5 popupDirection]);
+    -[UIKBRenderGeometry setPopupDirection:](self, "setPopupDirection:", [geometryCopy popupDirection]);
   }
 }
 
-- (void)applyInsets:(UIEdgeInsets)a3
+- (void)applyInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  if (a3.left != 0.0 || a3.top != 0.0 || a3.right != 0.0 || a3.bottom != 0.0)
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  if (insets.left != 0.0 || insets.top != 0.0 || insets.right != 0.0 || insets.bottom != 0.0)
   {
     [(UIKBRenderGeometry *)self frame];
     [(UIKBRenderGeometry *)self setFrame:left + v8, top + v9, v10 - (left + right), v11 - (top + bottom)];
@@ -907,13 +907,13 @@ LABEL_28:
   }
 }
 
-- (void)applyShadowInsets:(UIEdgeInsets)a3
+- (void)applyShadowInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  if (a3.left == 0.0 && a3.top == 0.0 && a3.right == 0.0 && a3.bottom == 0.0)
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  if (insets.left == 0.0 && insets.top == 0.0 && insets.right == 0.0 && insets.bottom == 0.0)
   {
     return;
   }
@@ -990,9 +990,9 @@ LABEL_23:
   [(UIKBRenderGeometry *)self setPaddedFrame:v23, v29, v25, v28];
 }
 
-- (id)iPhoneVariantGeometries:(unint64_t)a3 annotationIndex:(unint64_t)a4
+- (id)iPhoneVariantGeometries:(unint64_t)geometries annotationIndex:(unint64_t)index
 {
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(UIKBRenderGeometry *)self displayFrame];
   v9 = v8;
   v11 = v10;
@@ -1055,7 +1055,7 @@ LABEL_23:
   v44 = v22;
   v109.size.height = v22;
   v45 = CGRectGetMaxX(v109);
-  if (a3)
+  if (geometries)
   {
     v46 = v45;
     v47 = fmod(rect2 - MinX, v89);
@@ -1065,7 +1065,7 @@ LABEL_23:
     v86 = *MEMORY[0x1E695F058];
     v83 = *(MEMORY[0x1E695F058] + 24);
     v84 = *(MEMORY[0x1E695F058] + 16);
-    v50 = v47 < v48 || a4 >= a3;
+    v50 = v47 < v48 || index >= geometries;
     v90 = v22 + 10.0;
     v51 = v50;
     v52 = v88 + v89;
@@ -1074,7 +1074,7 @@ LABEL_23:
     do
     {
       v54 = v88;
-      if (v89 >= v44 || v49 != 1 || a4 >= a3)
+      if (v89 >= v44 || v49 != 1 || index >= geometries)
       {
         v57 = v89;
       }
@@ -1240,26 +1240,26 @@ LABEL_23:
       [v81 setRoundRectCorners:{-[UIKBRenderGeometry roundRectCorners](self, "roundRectCorners")}];
       [(UIKBRenderGeometry *)self roundRectRadius];
       [v81 setRoundRectRadius:?];
-      [v7 addObject:v81];
+      [array addObject:v81];
 
       ++v49;
       v44 = v95;
     }
 
-    while (v49 != a3);
+    while (v49 != geometries);
   }
 
-  if (a4 < a3 && [v7 count] >= 2)
+  if (index < geometries && [array count] >= 2)
   {
-    [v7 exchangeObjectAtIndex:1 withObjectAtIndex:a4];
+    [array exchangeObjectAtIndex:1 withObjectAtIndex:index];
   }
 
-  return v7;
+  return array;
 }
 
-- (id)watchVariantGeometries:(unint64_t)a3 annotationIndex:(unint64_t)a4
+- (id)watchVariantGeometries:(unint64_t)geometries annotationIndex:(unint64_t)index
 {
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(UIKBRenderGeometry *)self displayFrame];
   v9 = v8;
   v11 = v10;
@@ -1318,7 +1318,7 @@ LABEL_23:
   v38 = v88;
   v102.size.height = v88;
   v39 = CGRectGetMaxX(v102);
-  if (a3)
+  if (geometries)
   {
     v40 = v39;
     v41 = fmod(rect2 - MinX, v21);
@@ -1328,14 +1328,14 @@ LABEL_23:
     v80 = *MEMORY[0x1E695F058];
     v77 = *(MEMORY[0x1E695F058] + 24);
     v78 = *(MEMORY[0x1E695F058] + 16);
-    v45 = v41 < v42 || a4 >= a3;
+    v45 = v41 < v42 || index >= geometries;
     v46 = v17 + v21;
     v81 = v17 + v21;
     v47 = v17 + v21;
     do
     {
       v48 = v83;
-      if (v21 >= v38 || v43 != 1 || a4 >= a3)
+      if (v21 >= v38 || v43 != 1 || index >= geometries)
       {
         v51 = v21;
       }
@@ -1500,35 +1500,35 @@ LABEL_23:
       v75 = [UIKBRenderGeometry geometryWithFrame:v54 paddedFrame:v63, v62, v53, v71, v72, v73, v74];
       [v75 setRoundRectCorners:-1];
       [v75 setRoundRectRadius:2.0];
-      [v7 addObject:v75];
+      [array addObject:v75];
 
       ++v43;
       v38 = v88;
     }
 
-    while (v43 != a3);
+    while (v43 != geometries);
   }
 
-  if (a4 < a3 && [v7 count] >= 2)
+  if (index < geometries && [array count] >= 2)
   {
-    [v7 exchangeObjectAtIndex:1 withObjectAtIndex:a4];
+    [array exchangeObjectAtIndex:1 withObjectAtIndex:index];
   }
 
-  return v7;
+  return array;
 }
 
-- (id)iPadVariantGeometries:(unint64_t)a3 rowLimit:(int64_t)a4
+- (id)iPadVariantGeometries:(unint64_t)geometries rowLimit:(int64_t)limit
 {
   [(UIKBRenderGeometry *)self roundRectRadius];
   v8 = v7;
-  if ((a4 - 1) >= 0x7FFFFFFFFFFFFFFELL)
+  if ((limit - 1) >= 0x7FFFFFFFFFFFFFFELL)
   {
-    v9 = 5;
+    limitCopy = 5;
   }
 
   else
   {
-    v9 = a4;
+    limitCopy = limit;
   }
 
   [(UIKBRenderGeometry *)self paddedFrame];
@@ -1553,8 +1553,8 @@ LABEL_23:
   v45 = v24;
   [(UIKBRenderGeometry *)self paddedFrame];
   v26 = v25;
-  v27 = [MEMORY[0x1E695DF70] array];
-  if (a3)
+  array = [MEMORY[0x1E695DF70] array];
+  if (geometries)
   {
     v28 = 0;
     v29 = 0;
@@ -1569,7 +1569,7 @@ LABEL_23:
     v38 = v35;
     do
     {
-      v39 = v28 % v9;
+      v39 = v28 % limitCopy;
       if (v29)
       {
         v40 = v35;
@@ -1624,27 +1624,27 @@ LABEL_23:
         v38 = v40 + v32 * v37;
       }
 
-      v29 = v9 - 1 == v39;
-      v43 = [UIKBRenderGeometry geometryWithFrame:v38 paddedFrame:v34 - v33 * (v28 / v9), v32, v33, v38, v34 - v33 * (v28 / v9), v32, v33];
+      v29 = limitCopy - 1 == v39;
+      v43 = [UIKBRenderGeometry geometryWithFrame:v38 paddedFrame:v34 - v33 * (v28 / limitCopy), v32, v33, v38, v34 - v33 * (v28 / limitCopy), v32, v33];
       [v43 setRoundRectCorners:{-[UIKBRenderGeometry roundRectCorners](self, "roundRectCorners")}];
       [v43 setRoundRectRadius:v31];
-      [v27 addObject:v43];
+      [array addObject:v43];
 
       ++v28;
     }
 
-    while (a3 != v28);
+    while (geometries != v28);
   }
 
-  return v27;
+  return array;
 }
 
-+ (id)sortedGeometries:(id)a3 leftToRight:(BOOL)a4
++ (id)sortedGeometries:(id)geometries leftToRight:(BOOL)right
 {
-  v4 = a4;
+  rightCopy = right;
   v5 = MEMORY[0x1E696AD98];
-  v6 = a3;
-  v7 = [v6 sortedArrayUsingFunction:geometryPositionSort context:{objc_msgSend(v5, "numberWithBool:", v4)}];
+  geometriesCopy = geometries;
+  v7 = [geometriesCopy sortedArrayUsingFunction:geometryPositionSort context:{objc_msgSend(v5, "numberWithBool:", rightCopy)}];
 
   return v7;
 }
@@ -1688,14 +1688,14 @@ LABEL_23:
   return result;
 }
 
-- (void)setLayeredBackgroundPaddedFrame:(CGRect)a3
+- (void)setLayeredBackgroundPaddedFrame:(CGRect)frame
 {
   v3 = *(MEMORY[0x1E695F050] + 16);
   self->_layeredBackgroundPaddedFrame.origin = *MEMORY[0x1E695F050];
   self->_layeredBackgroundPaddedFrame.size = v3;
 }
 
-- (void)setLayeredForegroundPaddedFrame:(CGRect)a3
+- (void)setLayeredForegroundPaddedFrame:(CGRect)frame
 {
   v3 = *(MEMORY[0x1E695F050] + 16);
   self->_layeredForegroundPaddedFrame.origin = *MEMORY[0x1E695F050];

@@ -1,22 +1,22 @@
 @interface MBManifestBuilder
-+ (id)manifestBuilderWithDirectory:(id)a3 error:(id *)a4;
-- (BOOL)closeWithError:(id *)a3;
-- (MBManifestBuilder)initWithDirectory:(id)a3 error:(id *)a4;
++ (id)manifestBuilderWithDirectory:(id)directory error:(id *)error;
+- (BOOL)closeWithError:(id *)error;
+- (MBManifestBuilder)initWithDirectory:(id)directory error:(id *)error;
 @end
 
 @implementation MBManifestBuilder
 
-+ (id)manifestBuilderWithDirectory:(id)a3 error:(id *)a4
++ (id)manifestBuilderWithDirectory:(id)directory error:(id *)error
 {
-  v5 = a3;
-  v6 = [[MBManifestBuilder alloc] initWithDirectory:v5 error:a4];
+  directoryCopy = directory;
+  v6 = [[MBManifestBuilder alloc] initWithDirectory:directoryCopy error:error];
 
   return v6;
 }
 
-- (MBManifestBuilder)initWithDirectory:(id)a3 error:(id *)a4
+- (MBManifestBuilder)initWithDirectory:(id)directory error:(id *)error
 {
-  v7 = a3;
+  directoryCopy = directory;
   v17.receiver = self;
   v17.super_class = MBManifestBuilder;
   v8 = [(MBManifestBuilder *)&v17 init];
@@ -26,13 +26,13 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v8->_directory, a3);
+  objc_storeStrong(&v8->_directory, directory);
   v10 = objc_alloc_init(MBProperties);
   properties = v9->_properties;
   v9->_properties = v10;
 
-  v12 = [(MBManifestBuilder *)v9 databasePath];
-  v13 = [MBEncoder encoderToFile:v12 error:a4];
+  databasePath = [(MBManifestBuilder *)v9 databasePath];
+  v13 = [MBEncoder encoderToFile:databasePath error:error];
 
   if (v13)
   {
@@ -47,11 +47,11 @@ LABEL_4:
   return v13;
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
   properties = self->_properties;
-  v6 = [(MBManifestBuilder *)self propertiesPath];
-  v7 = [(MBProperties *)properties writeToFile:v6 error:a3];
+  propertiesPath = [(MBManifestBuilder *)self propertiesPath];
+  v7 = [(MBProperties *)properties writeToFile:propertiesPath error:error];
 
   if (v7)
   {

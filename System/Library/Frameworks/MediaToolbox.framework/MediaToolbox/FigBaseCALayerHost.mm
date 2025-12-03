@@ -1,13 +1,13 @@
 @interface FigBaseCALayerHost
 - (FigBaseCALayerHost)init;
-- (id)actionForKey:(id)a3;
-- (void)addSublayer:(id)a3;
-- (void)insertSublayer:(id)a3 above:(id)a4;
-- (void)insertSublayer:(id)a3 atIndex:(unsigned int)a4;
-- (void)insertSublayer:(id)a3 below:(id)a4;
+- (id)actionForKey:(id)key;
+- (void)addSublayer:(id)sublayer;
+- (void)insertSublayer:(id)sublayer above:(id)above;
+- (void)insertSublayer:(id)sublayer atIndex:(unsigned int)index;
+- (void)insertSublayer:(id)sublayer below:(id)below;
 - (void)removeFromSuperlayer;
-- (void)replaceSublayer:(id)a3 with:(id)a4;
-- (void)setSublayers:(id)a3;
+- (void)replaceSublayer:(id)sublayer with:(id)with;
+- (void)setSublayers:(id)sublayers;
 @end
 
 @implementation FigBaseCALayerHost
@@ -22,75 +22,75 @@
   return [(CALayerHost *)&v4 init];
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
-  if (([a3 isEqualToString:@"contentsCDRStrength"] & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"contentsEDRStrength") & 1) == 0 && !objc_msgSend(a3, "isEqualToString:", @"preferredDynamicRange"))
+  if (([key isEqualToString:@"contentsCDRStrength"] & 1) == 0 && (objc_msgSend(key, "isEqualToString:", @"contentsEDRStrength") & 1) == 0 && !objc_msgSend(key, "isEqualToString:", @"preferredDynamicRange"))
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = FigBaseCALayerHost;
-  return [(FigBaseCALayerHost *)&v6 actionForKey:a3];
+  return [(FigBaseCALayerHost *)&v6 actionForKey:key];
 }
 
-- (void)setSublayers:(id)a3
+- (void)setSublayers:(id)sublayers
 {
   if ((*(&self->super._asynchronousRenderMaxAPLStrength + 1) & 1) == 0)
   {
     v3.receiver = self;
     v3.super_class = FigBaseCALayerHost;
-    [(FigBaseCALayerHost *)&v3 setSublayers:a3];
+    [(FigBaseCALayerHost *)&v3 setSublayers:sublayers];
   }
 }
 
-- (void)addSublayer:(id)a3
+- (void)addSublayer:(id)sublayer
 {
   if ((*(&self->super._asynchronousRenderMaxAPLStrength + 1) & 1) == 0)
   {
     v3.receiver = self;
     v3.super_class = FigBaseCALayerHost;
-    [(FigBaseCALayerHost *)&v3 addSublayer:a3];
+    [(FigBaseCALayerHost *)&v3 addSublayer:sublayer];
   }
 }
 
-- (void)insertSublayer:(id)a3 atIndex:(unsigned int)a4
+- (void)insertSublayer:(id)sublayer atIndex:(unsigned int)index
 {
   if ((*(&self->super._asynchronousRenderMaxAPLStrength + 1) & 1) == 0)
   {
     v4.receiver = self;
     v4.super_class = FigBaseCALayerHost;
-    [(FigBaseCALayerHost *)&v4 insertSublayer:a3 atIndex:*&a4];
+    [(FigBaseCALayerHost *)&v4 insertSublayer:sublayer atIndex:*&index];
   }
 }
 
-- (void)insertSublayer:(id)a3 below:(id)a4
+- (void)insertSublayer:(id)sublayer below:(id)below
 {
   if ((*(&self->super._asynchronousRenderMaxAPLStrength + 1) & 1) == 0)
   {
     v4.receiver = self;
     v4.super_class = FigBaseCALayerHost;
-    [(FigBaseCALayerHost *)&v4 insertSublayer:a3 below:a4];
+    [(FigBaseCALayerHost *)&v4 insertSublayer:sublayer below:below];
   }
 }
 
-- (void)insertSublayer:(id)a3 above:(id)a4
+- (void)insertSublayer:(id)sublayer above:(id)above
 {
   if ((*(&self->super._asynchronousRenderMaxAPLStrength + 1) & 1) == 0)
   {
     v4.receiver = self;
     v4.super_class = FigBaseCALayerHost;
-    [(FigBaseCALayerHost *)&v4 insertSublayer:a3 above:a4];
+    [(FigBaseCALayerHost *)&v4 insertSublayer:sublayer above:above];
   }
 }
 
-- (void)replaceSublayer:(id)a3 with:(id)a4
+- (void)replaceSublayer:(id)sublayer with:(id)with
 {
   if ((*(&self->super._asynchronousRenderMaxAPLStrength + 1) & 1) == 0)
   {
     v4.receiver = self;
     v4.super_class = FigBaseCALayerHost;
-    [(FigBaseCALayerHost *)&v4 replaceSublayer:a3 with:a4];
+    [(FigBaseCALayerHost *)&v4 replaceSublayer:sublayer with:with];
   }
 }
 

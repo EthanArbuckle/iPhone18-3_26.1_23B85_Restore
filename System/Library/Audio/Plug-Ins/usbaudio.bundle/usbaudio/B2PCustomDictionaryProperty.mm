@@ -1,31 +1,31 @@
 @interface B2PCustomDictionaryProperty
-- (BOOL)getPropertyWithQualifierSize:(unsigned int)a3 qualifierData:(void *)a4 dataSize:(unsigned int *)a5 andData:(void *)a6 forClient:(int)a7;
-- (BOOL)setPropertyWithQualifierSize:(unsigned int)a3 qualifierData:(void *)a4 dataSize:(unsigned int)a5 andData:(void *)a6 forClient:(int)a7;
-- (_TtC9AUASDCore27B2PCustomDictionaryProperty)initWithAddress:(id)a3 propertyDataType:(unsigned int)a4 qualifierDataType:(unsigned int)a5;
+- (BOOL)getPropertyWithQualifierSize:(unsigned int)size qualifierData:(void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client;
+- (BOOL)setPropertyWithQualifierSize:(unsigned int)size qualifierData:(void *)data dataSize:(unsigned int)dataSize andData:(void *)andData forClient:(int)client;
+- (_TtC9AUASDCore27B2PCustomDictionaryProperty)initWithAddress:(id)address propertyDataType:(unsigned int)type qualifierDataType:(unsigned int)dataType;
 @end
 
 @implementation B2PCustomDictionaryProperty
 
-- (BOOL)getPropertyWithQualifierSize:(unsigned int)a3 qualifierData:(void *)a4 dataSize:(unsigned int *)a5 andData:(void *)a6 forClient:(int)a7
+- (BOOL)getPropertyWithQualifierSize:(unsigned int)size qualifierData:(void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client
 {
-  *a5 = 8;
+  *dataSize = 8;
   v7 = *&self->ASDCustomProperty_opaque[OBJC_IVAR____TtC9AUASDCore27B2PCustomDictionaryProperty_dictionary];
-  v8 = *a6;
-  *a6 = v7;
+  v8 = *andData;
+  *andData = v7;
   v9 = v7;
 
   return 1;
 }
 
-- (BOOL)setPropertyWithQualifierSize:(unsigned int)a3 qualifierData:(void *)a4 dataSize:(unsigned int)a5 andData:(void *)a6 forClient:(int)a7
+- (BOOL)setPropertyWithQualifierSize:(unsigned int)size qualifierData:(void *)data dataSize:(unsigned int)dataSize andData:(void *)andData forClient:(int)client
 {
-  v9 = self;
-  LOBYTE(a6) = sub_10008512C(a5, a6);
+  selfCopy = self;
+  LOBYTE(andData) = sub_10008512C(dataSize, andData);
 
-  return a6 & 1;
+  return andData & 1;
 }
 
-- (_TtC9AUASDCore27B2PCustomDictionaryProperty)initWithAddress:(id)a3 propertyDataType:(unsigned int)a4 qualifierDataType:(unsigned int)a5
+- (_TtC9AUASDCore27B2PCustomDictionaryProperty)initWithAddress:(id)address propertyDataType:(unsigned int)type qualifierDataType:(unsigned int)dataType
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

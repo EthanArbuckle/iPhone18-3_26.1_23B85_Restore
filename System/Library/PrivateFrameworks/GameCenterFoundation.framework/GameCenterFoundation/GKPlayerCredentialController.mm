@@ -3,45 +3,45 @@
 + (id)sharedController;
 + (void)migrateOldAccountInformation;
 - (GKPlayerCredentialController)init;
-- (GKPlayerCredentialController)initWithStore:(id)a3 notificationCenter:(id)a4;
-- (id)_transactAndWait:(id)a3;
+- (GKPlayerCredentialController)initWithStore:(id)store notificationCenter:(id)center;
+- (id)_transactAndWait:(id)wait;
 - (id)accessQueue;
-- (id)allCredentialsForEnvironment:(int64_t)a3;
-- (id)credentialForPlayer:(id)a3 environment:(int64_t)a4;
-- (id)credentialForPlayerID:(id)a3 environment:(int64_t)a4;
-- (id)credentialForUsername:(id)a3 environment:(int64_t)a4;
-- (id)primaryCredentialForEnvironment:(int64_t)a3;
-- (id)primaryCredentialForEnvironment:(int64_t)a3 accountStore:(id)a4;
+- (id)allCredentialsForEnvironment:(int64_t)environment;
+- (id)credentialForPlayer:(id)player environment:(int64_t)environment;
+- (id)credentialForPlayerID:(id)d environment:(int64_t)environment;
+- (id)credentialForUsername:(id)username environment:(int64_t)environment;
+- (id)primaryCredentialForEnvironment:(int64_t)environment;
+- (id)primaryCredentialForEnvironment:(int64_t)environment accountStore:(id)store;
 - (id)suggestedUsername;
-- (void)_transact:(id)a3 complete:(id)a4;
-- (void)accountStoreDidChange:(id)a3;
-- (void)accountStoreEmailDidChange:(id)a3;
-- (void)getAltDSIDFromIDMSForCredential:(id)a3 completionHandler:(id)a4;
+- (void)_transact:(id)_transact complete:(id)complete;
+- (void)accountStoreDidChange:(id)change;
+- (void)accountStoreEmailDidChange:(id)change;
+- (void)getAltDSIDFromIDMSForCredential:(id)credential completionHandler:(id)handler;
 - (void)invalidateCredentialCaches;
-- (void)removeAllCredentialsForEnvironment:(int64_t)a3 completionHandler:(id)a4;
-- (void)removeCredential:(id)a3 completionHandler:(id)a4;
-- (void)renewCredentialForUsername:(id)a3 ttl:(double)a4 completionHandler:(id)a5;
-- (void)replaceCredential:(id)a3 withCredential:(id)a4 completionHandler:(id)a5;
-- (void)setContactAssociationID:(id)a3 contactIntegrationConsent:(int)a4 serviceLastUpdateTimestamp:(id)a5 forEnvironment:(int64_t)a6 forcefully:(BOOL)a7 completionHandler:(id)a8;
-- (void)setCredential:(id)a3 completionHandler:(id)a4;
-- (void)setPrimaryCredential:(id)a3 completionHandler:(id)a4;
+- (void)removeAllCredentialsForEnvironment:(int64_t)environment completionHandler:(id)handler;
+- (void)removeCredential:(id)credential completionHandler:(id)handler;
+- (void)renewCredentialForUsername:(id)username ttl:(double)ttl completionHandler:(id)handler;
+- (void)replaceCredential:(id)credential withCredential:(id)withCredential completionHandler:(id)handler;
+- (void)setContactAssociationID:(id)d contactIntegrationConsent:(int)consent serviceLastUpdateTimestamp:(id)timestamp forEnvironment:(int64_t)environment forcefully:(BOOL)forcefully completionHandler:(id)handler;
+- (void)setCredential:(id)credential completionHandler:(id)handler;
+- (void)setPrimaryCredential:(id)credential completionHandler:(id)handler;
 @end
 
 @implementation GKPlayerCredentialController
 
 - (GKPlayerCredentialController)init
 {
-  v3 = [MEMORY[0x277CB8F48] defaultStore];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  v5 = [(GKPlayerCredentialController *)self initWithStore:v3 notificationCenter:v4];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v5 = [(GKPlayerCredentialController *)self initWithStore:defaultStore notificationCenter:defaultCenter];
 
   return v5;
 }
 
-- (GKPlayerCredentialController)initWithStore:(id)a3 notificationCenter:(id)a4
+- (GKPlayerCredentialController)initWithStore:(id)store notificationCenter:(id)center
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  centerCopy = center;
   v15.receiver = self;
   v15.super_class = GKPlayerCredentialController;
   v9 = [(GKPlayerCredentialController *)&v15 init];
@@ -55,9 +55,9 @@
     allCredentialsCache = v9->_allCredentialsCache;
     v9->_allCredentialsCache = v12;
 
-    objc_storeStrong(&v9->_store, a3);
-    [v8 addObserver:v9 selector:sel_accountStoreDidChange_ name:*MEMORY[0x277CB8B78] object:v9->_store];
-    [v8 addObserver:v9 selector:sel_accountStoreEmailDidChange_ name:*MEMORY[0x277CEFF50] object:v9->_store];
+    objc_storeStrong(&v9->_store, store);
+    [centerCopy addObserver:v9 selector:sel_accountStoreDidChange_ name:*MEMORY[0x277CB8B78] object:v9->_store];
+    [centerCopy addObserver:v9 selector:sel_accountStoreEmailDidChange_ name:*MEMORY[0x277CEFF50] object:v9->_store];
   }
 
   return v9;
@@ -118,9 +118,9 @@ void __48__GKPlayerCredentialController_sharedController__block_invoke()
   +[GKAuthenticationMachine migratePreBlacktailAccountInformation];
 }
 
-- (id)_transactAndWait:(id)a3
+- (id)_transactAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKPlayerCredentialController.m", 138, "-[GKPlayerCredentialController _transactAndWait:]"];
   v6 = [GKDispatchGroup dispatchGroupWithName:v5];
 
@@ -129,10 +129,10 @@ void __48__GKPlayerCredentialController_sharedController__block_invoke()
   v11[2] = __49__GKPlayerCredentialController__transactAndWait___block_invoke;
   v11[3] = &unk_2785DDEA0;
   v12 = v6;
-  v13 = v4;
+  v13 = waitCopy;
   v11[4] = self;
   v7 = v6;
-  v8 = v4;
+  v8 = waitCopy;
   [v7 perform:v11];
   [v7 wait];
   v9 = [v7 objectForKeyedSubscript:@"object"];
@@ -180,10 +180,10 @@ uint64_t __49__GKPlayerCredentialController__transactAndWait___block_invoke_3(ui
   return v3();
 }
 
-- (void)_transact:(id)a3 complete:(id)a4
+- (void)_transact:(id)_transact complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  _transactCopy = _transact;
+  completeCopy = complete;
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKPlayerCredentialController.m", 156, "-[GKPlayerCredentialController _transact:complete:]"];
   v9 = [GKDispatchGroup dispatchGroupWithName:v8];
 
@@ -192,19 +192,19 @@ uint64_t __49__GKPlayerCredentialController__transactAndWait___block_invoke_3(ui
   v16[2] = __51__GKPlayerCredentialController__transact_complete___block_invoke;
   v16[3] = &unk_2785DDEA0;
   v16[4] = self;
-  v10 = v6;
+  v10 = _transactCopy;
   v18 = v10;
   v11 = v9;
   v17 = v11;
   [v11 perform:v16];
-  if (v7)
+  if (completeCopy)
   {
     v12 = dispatch_get_global_queue(0, 0);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __51__GKPlayerCredentialController__transact_complete___block_invoke_4;
     v13[3] = &unk_2785DDC10;
-    v15 = v7;
+    v15 = completeCopy;
     v14 = v11;
     [v14 notifyOnQueue:v12 block:v13];
   }
@@ -259,19 +259,19 @@ void __51__GKPlayerCredentialController__transact_complete___block_invoke_4(uint
 
 - (void)invalidateCredentialCaches
 {
-  v3 = [(GKPlayerCredentialController *)self primaryCredentialCache];
-  [v3 removeAllObjects];
+  primaryCredentialCache = [(GKPlayerCredentialController *)self primaryCredentialCache];
+  [primaryCredentialCache removeAllObjects];
 
-  v4 = [(GKPlayerCredentialController *)self allCredentialsCache];
-  [v4 removeAllObjects];
+  allCredentialsCache = [(GKPlayerCredentialController *)self allCredentialsCache];
+  [allCredentialsCache removeAllObjects];
 
   [(GKPlayerCredentialController *)self setGameBundleId:0];
 }
 
-- (void)accountStoreDidChange:(id)a3
+- (void)accountStoreDidChange:(id)change
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -282,12 +282,12 @@ void __51__GKPlayerCredentialController__transact_complete___block_invoke_4(uint
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = changeCopy;
     _os_log_impl(&dword_227904000, v5, OS_LOG_TYPE_INFO, "the main account store attached to the account has changed.The notification is:%@", &v11, 0xCu);
   }
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CB8C90]];
+  userInfo = [changeCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CB8C90]];
   v9 = [v8 isEqual:@"com.apple.account.GameCenter"];
 
   if (v9)
@@ -298,10 +298,10 @@ void __51__GKPlayerCredentialController__transact_complete___block_invoke_4(uint
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountStoreEmailDidChange:(id)a3
+- (void)accountStoreEmailDidChange:(id)change
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -312,7 +312,7 @@ void __51__GKPlayerCredentialController__transact_complete___block_invoke_4(uint
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = changeCopy;
     _os_log_impl(&dword_227904000, v5, OS_LOG_TYPE_INFO, "the email address attached to the account has changed.The notification is:%@", &v8, 0xCu);
   }
 
@@ -321,11 +321,11 @@ void __51__GKPlayerCredentialController__transact_complete___block_invoke_4(uint
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCredential:(id)a3 completionHandler:(id)a4
+- (void)setCredential:(id)credential completionHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -335,7 +335,7 @@ void __51__GKPlayerCredentialController__transact_complete___block_invoke_4(uint
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = credentialCopy;
     _os_log_impl(&dword_227904000, v9, OS_LOG_TYPE_INFO, "CRED: save credential (%@) start", buf, 0xCu);
   }
 
@@ -343,9 +343,9 @@ void __51__GKPlayerCredentialController__transact_complete___block_invoke_4(uint
   v12[1] = 3221225472;
   v12[2] = __64__GKPlayerCredentialController_setCredential_completionHandler___block_invoke;
   v12[3] = &unk_2785DDEC8;
-  v13 = v6;
-  v10 = v6;
-  [(GKPlayerCredentialController *)self _transact:v12 complete:v7];
+  v13 = credentialCopy;
+  v10 = credentialCopy;
+  [(GKPlayerCredentialController *)self _transact:v12 complete:handlerCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -389,11 +389,11 @@ void __64__GKPlayerCredentialController_setCredential_completionHandler___block_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPrimaryCredential:(id)a3 completionHandler:(id)a4
+- (void)setPrimaryCredential:(id)credential completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -403,7 +403,7 @@ void __64__GKPlayerCredentialController_setCredential_completionHandler___block_
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = credentialCopy;
     _os_log_impl(&dword_227904000, v9, OS_LOG_TYPE_INFO, "CRED: set primary credential (%@) start", buf, 0xCu);
   }
 
@@ -411,10 +411,10 @@ void __64__GKPlayerCredentialController_setCredential_completionHandler___block_
   v12[1] = 3221225472;
   v12[2] = __71__GKPlayerCredentialController_setPrimaryCredential_completionHandler___block_invoke;
   v12[3] = &unk_2785DDEF0;
-  v13 = v6;
-  v14 = self;
-  v10 = v6;
-  [(GKPlayerCredentialController *)self _transact:v12 complete:v7];
+  v13 = credentialCopy;
+  selfCopy = self;
+  v10 = credentialCopy;
+  [(GKPlayerCredentialController *)self _transact:v12 complete:handlerCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -624,23 +624,23 @@ void __71__GKPlayerCredentialController_setPrimaryCredential_completionHandler__
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)setContactAssociationID:(id)a3 contactIntegrationConsent:(int)a4 serviceLastUpdateTimestamp:(id)a5 forEnvironment:(int64_t)a6 forcefully:(BOOL)a7 completionHandler:(id)a8
+- (void)setContactAssociationID:(id)d contactIntegrationConsent:(int)consent serviceLastUpdateTimestamp:(id)timestamp forEnvironment:(int64_t)environment forcefully:(BOOL)forcefully completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a5;
+  dCopy = d;
+  timestampCopy = timestamp;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __153__GKPlayerCredentialController_setContactAssociationID_contactIntegrationConsent_serviceLastUpdateTimestamp_forEnvironment_forcefully_completionHandler___block_invoke;
   v18[3] = &unk_2785DDF18;
-  v19 = v15;
-  v20 = self;
-  v24 = a7;
-  v21 = v14;
-  v22 = a6;
-  v23 = a4;
-  v16 = v14;
-  v17 = v15;
-  [(GKPlayerCredentialController *)self _transact:v18 complete:a8];
+  v19 = timestampCopy;
+  selfCopy = self;
+  forcefullyCopy = forcefully;
+  v21 = dCopy;
+  environmentCopy = environment;
+  consentCopy = consent;
+  v16 = dCopy;
+  v17 = timestampCopy;
+  [(GKPlayerCredentialController *)self _transact:v18 complete:handler];
 }
 
 void __153__GKPlayerCredentialController_setContactAssociationID_contactIntegrationConsent_serviceLastUpdateTimestamp_forEnvironment_forcefully_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -765,18 +765,18 @@ LABEL_32:
 LABEL_34:
 }
 
-- (void)getAltDSIDFromIDMSForCredential:(id)a3 completionHandler:(id)a4
+- (void)getAltDSIDFromIDMSForCredential:(id)credential completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __82__GKPlayerCredentialController_getAltDSIDFromIDMSForCredential_completionHandler___block_invoke;
   v11[3] = &unk_2785DDF68;
-  v12 = v6;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v12 = credentialCopy;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = credentialCopy;
   v10 = [(GKPlayerCredentialController *)self _transactAndWait:v11];
 }
 
@@ -818,15 +818,15 @@ void __82__GKPlayerCredentialController_getAltDSIDFromIDMSForCredential_completi
   }
 }
 
-- (void)removeAllCredentialsForEnvironment:(int64_t)a3 completionHandler:(id)a4
+- (void)removeAllCredentialsForEnvironment:(int64_t)environment completionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __85__GKPlayerCredentialController_removeAllCredentialsForEnvironment_completionHandler___block_invoke;
   v4[3] = &unk_2785DDF90;
   v4[4] = self;
-  v4[5] = a3;
-  [(GKPlayerCredentialController *)self _transact:v4 complete:a4];
+  v4[5] = environment;
+  [(GKPlayerCredentialController *)self _transact:v4 complete:handler];
 }
 
 void __85__GKPlayerCredentialController_removeAllCredentialsForEnvironment_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -874,11 +874,11 @@ void __85__GKPlayerCredentialController_removeAllCredentialsForEnvironment_compl
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeCredential:(id)a3 completionHandler:(id)a4
+- (void)removeCredential:(id)credential completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -888,7 +888,7 @@ void __85__GKPlayerCredentialController_removeAllCredentialsForEnvironment_compl
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = credentialCopy;
     _os_log_impl(&dword_227904000, v9, OS_LOG_TYPE_INFO, "CRED: delete credential (%@) start", buf, 0xCu);
   }
 
@@ -896,10 +896,10 @@ void __85__GKPlayerCredentialController_removeAllCredentialsForEnvironment_compl
   v12[1] = 3221225472;
   v12[2] = __67__GKPlayerCredentialController_removeCredential_completionHandler___block_invoke;
   v12[3] = &unk_2785DDEF0;
-  v13 = v6;
-  v14 = self;
-  v10 = v6;
-  [(GKPlayerCredentialController *)self _transact:v12 complete:v7];
+  v13 = credentialCopy;
+  selfCopy = self;
+  v10 = credentialCopy;
+  [(GKPlayerCredentialController *)self _transact:v12 complete:handlerCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -947,12 +947,12 @@ void __67__GKPlayerCredentialController_removeCredential_completionHandler___blo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)replaceCredential:(id)a3 withCredential:(id)a4 completionHandler:(id)a5
+- (void)replaceCredential:(id)credential withCredential:(id)withCredential completionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  credentialCopy = credential;
+  withCredentialCopy = withCredential;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v11 = GKOSLoggers();
@@ -962,9 +962,9 @@ void __67__GKPlayerCredentialController_removeCredential_completionHandler___blo
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v21 = v8;
+    v21 = credentialCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = withCredentialCopy;
     _os_log_impl(&dword_227904000, v12, OS_LOG_TYPE_INFO, "CRED: replace credential old:(%@) new:(%@) start", buf, 0x16u);
   }
 
@@ -972,12 +972,12 @@ void __67__GKPlayerCredentialController_removeCredential_completionHandler___blo
   v16[1] = 3221225472;
   v16[2] = __83__GKPlayerCredentialController_replaceCredential_withCredential_completionHandler___block_invoke;
   v16[3] = &unk_2785DDFE0;
-  v17 = v8;
-  v18 = v9;
-  v19 = self;
-  v13 = v9;
-  v14 = v8;
-  [(GKPlayerCredentialController *)self _transact:v16 complete:v10];
+  v17 = credentialCopy;
+  v18 = withCredentialCopy;
+  selfCopy = self;
+  v13 = withCredentialCopy;
+  v14 = credentialCopy;
+  [(GKPlayerCredentialController *)self _transact:v16 complete:handlerCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -1066,18 +1066,18 @@ void __83__GKPlayerCredentialController_replaceCredential_withCredential_complet
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)renewCredentialForUsername:(id)a3 ttl:(double)a4 completionHandler:(id)a5
+- (void)renewCredentialForUsername:(id)username ttl:(double)ttl completionHandler:(id)handler
 {
-  v8 = a3;
+  usernameCopy = username;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __81__GKPlayerCredentialController_renewCredentialForUsername_ttl_completionHandler___block_invoke;
   v10[3] = &unk_2785DE030;
-  v12 = a4;
+  ttlCopy = ttl;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
-  [(GKPlayerCredentialController *)self _transact:v10 complete:a5];
+  v11 = usernameCopy;
+  v9 = usernameCopy;
+  [(GKPlayerCredentialController *)self _transact:v10 complete:handler];
 }
 
 void __81__GKPlayerCredentialController_renewCredentialForUsername_ttl_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1116,19 +1116,19 @@ LABEL_4:
   }
 }
 
-- (id)credentialForPlayer:(id)a3 environment:(int64_t)a4
+- (id)credentialForPlayer:(id)player environment:(int64_t)environment
 {
-  v6 = [a3 playerID];
-  v7 = [(GKPlayerCredentialController *)self credentialForPlayerID:v6 environment:a4];
+  playerID = [player playerID];
+  v7 = [(GKPlayerCredentialController *)self credentialForPlayerID:playerID environment:environment];
 
   return v7;
 }
 
-- (id)credentialForPlayerID:(id)a3 environment:(int64_t)a4
+- (id)credentialForPlayerID:(id)d environment:(int64_t)environment
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [(GKPlayerCredentialController *)self allCredentialsForEnvironment:a4];
+  dCopy = d;
+  [(GKPlayerCredentialController *)self allCredentialsForEnvironment:environment];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1147,9 +1147,9 @@ LABEL_4:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 playerInternal];
-        v13 = [v12 playerID];
-        v14 = [v13 isEqualToString:v6];
+        playerInternal = [v11 playerInternal];
+        playerID = [playerInternal playerID];
+        v14 = [playerID isEqualToString:dCopy];
 
         if (v14)
         {
@@ -1175,16 +1175,16 @@ LABEL_11:
   return v8;
 }
 
-- (id)credentialForUsername:(id)a3 environment:(int64_t)a4
+- (id)credentialForUsername:(id)username environment:(int64_t)environment
 {
-  v6 = a3;
+  usernameCopy = username;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__GKPlayerCredentialController_credentialForUsername_environment___block_invoke;
   v10[3] = &unk_2785DE058;
-  v11 = v6;
-  v12 = a4;
-  v7 = v6;
+  v11 = usernameCopy;
+  environmentCopy = environment;
+  v7 = usernameCopy;
   v8 = [(GKPlayerCredentialController *)self _transactAndWait:v10];
 
   return v8;
@@ -1199,12 +1199,12 @@ void __66__GKPlayerCredentialController_credentialForUsername_environment___bloc
   (a3)[2](v7, v8);
 }
 
-- (id)allCredentialsForEnvironment:(int64_t)a3
+- (id)allCredentialsForEnvironment:(int64_t)environment
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:?];
-  v6 = [(GKPlayerCredentialController *)self allCredentialsCache];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  allCredentialsCache = [(GKPlayerCredentialController *)self allCredentialsCache];
+  v7 = [allCredentialsCache objectForKeyedSubscript:v5];
 
   if (!v7)
   {
@@ -1212,12 +1212,12 @@ void __66__GKPlayerCredentialController_credentialForUsername_environment___bloc
     v13[1] = 3221225472;
     v13[2] = __61__GKPlayerCredentialController_allCredentialsForEnvironment___block_invoke;
     v13[3] = &__block_descriptor_40_e34_v24__0__ACAccountStore_8___v____16l;
-    v13[4] = a3;
+    v13[4] = environment;
     v7 = [(GKPlayerCredentialController *)self _transactAndWait:v13];
     if (v7)
     {
-      v10 = [(GKPlayerCredentialController *)self allCredentialsCache];
-      [v10 setObject:v7 forKeyedSubscript:v5];
+      allCredentialsCache2 = [(GKPlayerCredentialController *)self allCredentialsCache];
+      [allCredentialsCache2 setObject:v7 forKeyedSubscript:v5];
 
       if (!os_log_GKGeneral)
       {
@@ -1249,11 +1249,11 @@ void __61__GKPlayerCredentialController_allCredentialsForEnvironment___block_inv
   v5[2](v5, v6);
 }
 
-- (id)primaryCredentialForEnvironment:(int64_t)a3
+- (id)primaryCredentialForEnvironment:(int64_t)environment
 {
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:?];
-  v6 = [(GKPlayerCredentialController *)self primaryCredentialCache];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  primaryCredentialCache = [(GKPlayerCredentialController *)self primaryCredentialCache];
+  v7 = [primaryCredentialCache objectForKeyedSubscript:v5];
 
   if (!v7)
   {
@@ -1262,7 +1262,7 @@ void __61__GKPlayerCredentialController_allCredentialsForEnvironment___block_inv
     v9[2] = __64__GKPlayerCredentialController_primaryCredentialForEnvironment___block_invoke;
     v9[3] = &unk_2785DE058;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = environment;
     v7 = [(GKPlayerCredentialController *)self _transactAndWait:v9];
   }
 
@@ -1278,21 +1278,21 @@ void __64__GKPlayerCredentialController_primaryCredentialForEnvironment___block_
   v6[2](v6, v7);
 }
 
-- (id)primaryCredentialForEnvironment:(int64_t)a3 accountStore:(id)a4
+- (id)primaryCredentialForEnvironment:(int64_t)environment accountStore:(id)store
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v8 = [(GKPlayerCredentialController *)self primaryCredentialCache];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  storeCopy = store;
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:environment];
+  primaryCredentialCache = [(GKPlayerCredentialController *)self primaryCredentialCache];
+  v9 = [primaryCredentialCache objectForKeyedSubscript:v7];
 
   if (!v9)
   {
-    v9 = [v6 _gkPrimaryCredentialForEnvironment:a3];
+    v9 = [storeCopy _gkPrimaryCredentialForEnvironment:environment];
     if (v9)
     {
-      v12 = [(GKPlayerCredentialController *)self primaryCredentialCache];
-      [v12 setObject:v9 forKeyedSubscript:v7];
+      primaryCredentialCache2 = [(GKPlayerCredentialController *)self primaryCredentialCache];
+      [primaryCredentialCache2 setObject:v9 forKeyedSubscript:v7];
 
       if (!os_log_GKGeneral)
       {
@@ -1318,8 +1318,8 @@ void __64__GKPlayerCredentialController_primaryCredentialForEnvironment___block_
 
 - (id)suggestedUsername
 {
-  v2 = [MEMORY[0x277CB8F48] defaultStore];
-  v3 = [v2 aa_recommendedAppleIDForAccountSignInWithTypeIdentifier:0];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  v3 = [defaultStore aa_recommendedAppleIDForAccountSignInWithTypeIdentifier:0];
 
   return v3;
 }

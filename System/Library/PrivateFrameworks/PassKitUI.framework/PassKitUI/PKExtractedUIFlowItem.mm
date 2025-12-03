@@ -1,26 +1,26 @@
 @interface PKExtractedUIFlowItem
 - (PKExtractedUIFlowItem)init;
-- (id)viewControllerWithCompletion:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
+- (id)viewControllerWithCompletion:(id)completion;
+- (void)preflightWithCompletion:(id)completion;
 @end
 
 @implementation PKExtractedUIFlowItem
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   ExtractedUIFlowItem.preflight(completion:)(sub_1BD1B6B00, v5);
 }
 
-- (id)viewControllerWithCompletion:(id)a3
+- (id)viewControllerWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   v7 = ExtractedUIFlowItem.viewController(completion:)(sub_1BD166E88, v5);
 
   return v7;

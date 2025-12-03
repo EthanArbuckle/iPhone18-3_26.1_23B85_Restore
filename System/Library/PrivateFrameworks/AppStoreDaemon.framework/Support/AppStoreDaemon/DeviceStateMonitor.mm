@@ -1,8 +1,8 @@
 @interface DeviceStateMonitor
 - (DeviceStateMonitor)init;
-- (void)_handleSetupAssistantNotification:(id)a3;
+- (void)_handleSetupAssistantNotification:(id)notification;
 - (void)dealloc;
-- (void)environment:(id)a3 stateDidChangeFromOldState:(id)a4;
+- (void)environment:(id)environment stateDidChangeFromOldState:(id)state;
 @end
 
 @implementation DeviceStateMonitor
@@ -89,11 +89,11 @@ LABEL_14:
   [(DeviceStateMonitor *)&v4 dealloc];
 }
 
-- (void)environment:(id)a3 stateDidChangeFromOldState:(id)a4
+- (void)environment:(id)environment stateDidChangeFromOldState:(id)state
 {
-  v5 = [a3 state];
-  v6 = [v5 biometry];
-  v7 = [v6 isLockedOut];
+  state = [environment state];
+  biometry = [state biometry];
+  isLockedOut = [biometry isLockedOut];
 
   dispatchQueue = self->_dispatchQueue;
   v9[0] = _NSConcreteStackBlock;
@@ -101,11 +101,11 @@ LABEL_14:
   v9[2] = sub_10023CF04;
   v9[3] = &unk_10051C8F8;
   v9[4] = self;
-  v10 = v7;
+  v10 = isLockedOut;
   dispatch_async(dispatchQueue, v9);
 }
 
-- (void)_handleSetupAssistantNotification:(id)a3
+- (void)_handleSetupAssistantNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;

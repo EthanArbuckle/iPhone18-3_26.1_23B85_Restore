@@ -1,30 +1,30 @@
 @interface IDSIDStatusQueryController
 + (id)sharedInstance;
-- (BOOL)hasValidStatusForURI:(id)a3 fromURI:(id)a4 fromService:(id)a5;
+- (BOOL)hasValidStatusForURI:(id)i fromURI:(id)rI fromService:(id)service;
 - (IDSIDStatusQueryController)init;
-- (IDSIDStatusQueryController)initWithShouldAllowProxyQueries:(BOOL)a3 peerIDManager:(id)a4 userDefaults:(id)a5 statusDepencencyProvider:(id)a6;
-- (id)_cachedResultsForURIs:(id)a3 fromURI:(id)a4 fromService:(id)a5 reason:(id)a6;
+- (IDSIDStatusQueryController)initWithShouldAllowProxyQueries:(BOOL)queries peerIDManager:(id)manager userDefaults:(id)defaults statusDepencencyProvider:(id)provider;
+- (id)_cachedResultsForURIs:(id)is fromURI:(id)i fromService:(id)service reason:(id)reason;
 - (id)_loadLegacyCache;
 - (id)_plistFilePath;
-- (id)currentCacheForService:(id)a3;
-- (unsigned)_IDStatusForURI:(id)a3 fromService:(id)a4;
-- (unsigned)cachedIDStatusForID:(id)a3 fromURI:(id)a4 fromService:(id)a5 respectExpiry:(BOOL)a6 reason:(id)a7;
-- (void)_lookupIDStatusForURIs:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 lightQuery:(BOOL)a7 allowQuery:(BOOL)a8 clientRequestedForceQuery:(BOOL)a9 bypassLimit:(BOOL)a10 allowOnMissingEndpoints:(BOOL)a11 reason:(id)a12 completionBlock:(id)a13;
-- (void)_sendIDStatusChanges:(id)a3 forService:(id)a4 URI:(id)a5 success:(BOOL)a6 error:(id)a7;
-- (void)_updateCacheWithStatusUpdates:(id)a3 fromURI:(id)a4 fromService:(id)a5 success:(BOOL)a6 hadError:(BOOL)a7 negativeCacheHints:(id)a8;
+- (id)currentCacheForService:(id)service;
+- (unsigned)_IDStatusForURI:(id)i fromService:(id)service;
+- (unsigned)cachedIDStatusForID:(id)d fromURI:(id)i fromService:(id)service respectExpiry:(BOOL)expiry reason:(id)reason;
+- (void)_lookupIDStatusForURIs:(id)is fromIdentity:(id)identity fromURI:(id)i fromService:(id)service lightQuery:(BOOL)query allowQuery:(BOOL)allowQuery clientRequestedForceQuery:(BOOL)forceQuery bypassLimit:(BOOL)self0 allowOnMissingEndpoints:(BOOL)self1 reason:(id)self2 completionBlock:(id)self3;
+- (void)_sendIDStatusChanges:(id)changes forService:(id)service URI:(id)i success:(BOOL)success error:(id)error;
+- (void)_updateCacheWithStatusUpdates:(id)updates fromURI:(id)i fromService:(id)service success:(BOOL)success hadError:(BOOL)error negativeCacheHints:(id)hints;
 - (void)_wipeLegacyCache;
-- (void)addCompletionBlock:(id)a3 forUniqueIdentifier:(id)a4;
+- (void)addCompletionBlock:(id)block forUniqueIdentifier:(id)identifier;
 - (void)clearCache;
 - (void)dealloc;
-- (void)infoForIDs:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 infoType:(unint64_t)a7 infoOptions:(id)a8 lightQuery:(BOOL)a9 allowQuery:(BOOL)a10 reason:(id)a11 completion:(id)a12;
-- (void)noteIncomingID:(id)a3 fromService:(id)a4;
-- (void)remoteDevicesForIDs:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 lightQuery:(BOOL)a7 allowQuery:(BOOL)a8 reason:(id)a9 completionBlock:(id)a10;
-- (void)removeCachedEntriesForService:(id)a3;
-- (void)removeCachedIDStatusForURI:(id)a3 service:(id)a4;
-- (void)removeCompletionBlockForUniqueIdentifier:(id)a3;
-- (void)requestIDStatusForID:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 lightQuery:(BOOL)a7 allowQuery:(BOOL)a8 reason:(id)a9 completionBlock:(id)a10;
-- (void)requestIDStatusForIDs:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 lightQuery:(BOOL)a7 allowQuery:(BOOL)a8 forceQuery:(BOOL)a9 bypassLimit:(BOOL)a10 reason:(id)a11 completionBlock:(id)a12;
-- (void)setCachedIDStatus:(unsigned int)a3 ForID:(id)a4 fromURI:(id)a5 fromService:(id)a6;
+- (void)infoForIDs:(id)ds fromIdentity:(id)identity fromURI:(id)i fromService:(id)service infoType:(unint64_t)type infoOptions:(id)options lightQuery:(BOOL)query allowQuery:(BOOL)self0 reason:(id)self1 completion:(id)self2;
+- (void)noteIncomingID:(id)d fromService:(id)service;
+- (void)remoteDevicesForIDs:(id)ds fromIdentity:(id)identity fromURI:(id)i fromService:(id)service lightQuery:(BOOL)query allowQuery:(BOOL)allowQuery reason:(id)reason completionBlock:(id)self0;
+- (void)removeCachedEntriesForService:(id)service;
+- (void)removeCachedIDStatusForURI:(id)i service:(id)service;
+- (void)removeCompletionBlockForUniqueIdentifier:(id)identifier;
+- (void)requestIDStatusForID:(id)d fromIdentity:(id)identity fromURI:(id)i fromService:(id)service lightQuery:(BOOL)query allowQuery:(BOOL)allowQuery reason:(id)reason completionBlock:(id)self0;
+- (void)requestIDStatusForIDs:(id)ds fromIdentity:(id)identity fromURI:(id)i fromService:(id)service lightQuery:(BOOL)query allowQuery:(BOOL)allowQuery forceQuery:(BOOL)forceQuery bypassLimit:(BOOL)self0 reason:(id)self1 completionBlock:(id)self2;
+- (void)setCachedIDStatus:(unsigned int)status ForID:(id)d fromURI:(id)i fromService:(id)service;
 @end
 
 @implementation IDSIDStatusQueryController
@@ -41,21 +41,21 @@
   return v3;
 }
 
-- (IDSIDStatusQueryController)initWithShouldAllowProxyQueries:(BOOL)a3 peerIDManager:(id)a4 userDefaults:(id)a5 statusDepencencyProvider:(id)a6
+- (IDSIDStatusQueryController)initWithShouldAllowProxyQueries:(BOOL)queries peerIDManager:(id)manager userDefaults:(id)defaults statusDepencencyProvider:(id)provider
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  defaultsCopy = defaults;
+  providerCopy = provider;
   v21.receiver = self;
   v21.super_class = IDSIDStatusQueryController;
   v14 = [(IDSIDStatusQueryController *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_peerIDManager, a4);
-    objc_storeStrong(&v15->_userDefaults, a5);
-    objc_storeStrong(&v15->_dependencyProvider, a6);
-    v15->_allowProxyQueries = a3;
+    objc_storeStrong(&v14->_peerIDManager, manager);
+    objc_storeStrong(&v15->_userDefaults, defaults);
+    objc_storeStrong(&v15->_dependencyProvider, provider);
+    v15->_allowProxyQueries = queries;
     objc_initWeak(&location, v15);
     peerIDManager = v15->_peerIDManager;
     v18[0] = _NSConcreteStackBlock;
@@ -90,29 +90,29 @@
   [(IDSIDStatusQueryController *)&v3 dealloc];
 }
 
-- (void)_updateCacheWithStatusUpdates:(id)a3 fromURI:(id)a4 fromService:(id)a5 success:(BOOL)a6 hadError:(BOOL)a7 negativeCacheHints:(id)a8
+- (void)_updateCacheWithStatusUpdates:(id)updates fromURI:(id)i fromService:(id)service success:(BOOL)success hadError:(BOOL)error negativeCacheHints:(id)hints
 {
-  v62 = a6;
-  v11 = a3;
-  v12 = a4;
-  v67 = a5;
-  v63 = a8;
-  v66 = v11;
-  v74 = v12;
-  if ([v11 count])
+  successCopy = success;
+  updatesCopy = updates;
+  iCopy = i;
+  serviceCopy = service;
+  hintsCopy = hints;
+  v66 = updatesCopy;
+  v74 = iCopy;
+  if ([updatesCopy count])
   {
-    v13 = [v12 prefixedURI];
-    v14 = [v13 length];
+    prefixedURI = [iCopy prefixedURI];
+    v14 = [prefixedURI length];
 
     if (v14)
     {
-      v15 = v67;
+      v15 = serviceCopy;
       v16 = v74;
-      if ([v67 length])
+      if ([serviceCopy length])
       {
         [(IDSIDStatusDependencyProvider *)self->_dependencyProvider currentTime];
         v18 = v17;
-        v61 = [v67 isEqualToString:@"com.apple.madrid"];
+        v61 = [serviceCopy isEqualToString:@"com.apple.madrid"];
         if (v61)
         {
           v19 = OSLogHandleForIDSCategory();
@@ -123,18 +123,18 @@
           }
 
           v16 = v74;
-          v15 = v67;
+          v15 = serviceCopy;
           if (os_log_shim_legacy_logging_enabled())
           {
             MarcoLogMadridLevel();
             IMLogString();
             v16 = v74;
-            v15 = v67;
+            v15 = serviceCopy;
             if (_IMWillLog())
             {
               _IMAlwaysLog();
               v16 = v74;
-              v15 = v67;
+              v15 = serviceCopy;
             }
           }
         }
@@ -143,7 +143,7 @@
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138413058;
-          v84 = v11;
+          v84 = updatesCopy;
           v85 = 2048;
           v86 = v18;
           v87 = 2112;
@@ -157,16 +157,16 @@
         {
           MarcoLogMadridLevel();
           v58 = v74;
-          v59 = v67;
+          v59 = serviceCopy;
           v57 = v18;
-          v56 = v11;
+          v56 = updatesCopy;
           IMLogString();
           if (_IMWillLog())
           {
             v58 = v74;
-            v59 = v67;
+            v59 = serviceCopy;
             v57 = v18;
-            v56 = v11;
+            v56 = updatesCopy;
             _IMAlwaysLog();
           }
         }
@@ -175,7 +175,7 @@
         v80 = 0u;
         v77 = 0u;
         v78 = 0u;
-        obj = [v11 allKeys];
+        obj = [updatesCopy allKeys];
         v68 = [obj countByEnumeratingWithState:&v77 objects:v82 count:16];
         if (v68)
         {
@@ -191,9 +191,9 @@
 
               v22 = *(*(&v77 + 1) + 8 * i);
               v76 = [v66 objectForKey:v22];
-              v23 = [v76 unsignedIntValue];
+              unsignedIntValue = [v76 unsignedIntValue];
               v24 = [v22 isEqualToURI:v74];
-              if (v23 == 2)
+              if (unsignedIntValue == 2)
               {
                 v25 = v24;
               }
@@ -225,16 +225,16 @@
 
               else
               {
-                v27 = [(IDSIDStatusQueryController *)self peerIDManager];
-                v28 = [v22 prefixedURI];
-                v72 = [v27 loadStatusForService:v67 URI:v28];
+                peerIDManager = [(IDSIDStatusQueryController *)self peerIDManager];
+                prefixedURI2 = [v22 prefixedURI];
+                v72 = [peerIDManager loadStatusForService:serviceCopy URI:prefixedURI2];
 
-                v70 = [v22 prefixedURI];
-                v75 = v67;
+                prefixedURI3 = [v22 prefixedURI];
+                v75 = serviceCopy;
                 v71 = [NSNumber numberWithDouble:v18];
                 v29 = objc_opt_class();
-                v30 = [v22 prefixedURI];
-                v31 = [v63 objectForKey:v30];
+                prefixedURI4 = [v22 prefixedURI];
+                v31 = [hintsCopy objectForKey:prefixedURI4];
                 if (objc_opt_isKindOfClass())
                 {
                   v69 = v31;
@@ -248,7 +248,7 @@
                     if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
                     {
                       *buf = 138412546;
-                      v84 = v30;
+                      v84 = prefixedURI4;
                       v85 = 2112;
                       v86 = *&v29;
                       _os_log_fault_impl(&_mh_execute_header, v32, OS_LOG_TYPE_FAULT, "Failed type check! {key: %@, class: %@}", buf, 0x16u);
@@ -258,16 +258,16 @@
                   v69 = 0;
                 }
 
-                v33 = [(IDSIDStatusQueryController *)self peerIDManager];
+                peerIDManager2 = [(IDSIDStatusQueryController *)self peerIDManager];
                 v81 = v22;
                 v34 = [NSArray arrayWithObjects:&v81 count:1];
-                v35 = [v33 endpointsForURIs:v34 service:v75 fromURI:v74];
+                v35 = [peerIDManager2 endpointsForURIs:v34 service:v75 fromURI:v74];
                 v36 = [v35 objectForKey:v22];
                 v37 = [v36 __imArrayByApplyingBlock:&stru_100BE0A10];
                 v38 = [v37 sortedArrayUsingComparator:&stru_100BE0A50];
-                v39 = [v38 firstObject];
+                firstObject = [v38 firstObject];
 
-                if (v39)
+                if (firstObject)
                 {
                   v40 = v61;
                 }
@@ -279,7 +279,7 @@
 
                 if (v40 == 1)
                 {
-                  [v39 timeIntervalSinceNow];
+                  [firstObject timeIntervalSinceNow];
                   v41 = [NSNumber numberWithDouble:?];
                 }
 
@@ -288,15 +288,15 @@
                   v41 = 0;
                 }
 
-                v42 = [v72 status];
-                v43 = [(IDSIDStatusQueryController *)self peerIDManager];
-                [v43 timeToCacheURI:v22 fromURI:v74 service:v75 forStatus:v42];
+                status = [v72 status];
+                peerIDManager3 = [(IDSIDStatusQueryController *)self peerIDManager];
+                [peerIDManager3 timeToCacheURI:v22 fromURI:v74 service:v75 forStatus:status];
                 v45 = v44;
 
                 [IDSBagUtilities timeToCacheResultsForIDStatus:0 forService:v75];
-                if (v23)
+                if (unsignedIntValue)
                 {
-                  if (v23 == 1)
+                  if (unsignedIntValue == 1)
                   {
                     if (v41)
                     {
@@ -312,7 +312,7 @@
                     v48 = 1;
                   }
 
-                  else if (v23 == 2)
+                  else if (unsignedIntValue == 2)
                   {
                     v47 = 0;
                     v48 = 2;
@@ -334,11 +334,11 @@
                   v48 = 0;
                 }
 
-                v50 = [[IDSCachedIDStatus alloc] initWithURIString:v70 service:v75 status:v48 expiry:v47 negativeTTL:v69 lookupDate:v71];
-                v51 = [(IDSIDStatusQueryController *)self peerIDManager];
-                [v51 saveStatus:v50];
+                v50 = [[IDSCachedIDStatus alloc] initWithURIString:prefixedURI3 service:v75 status:v48 expiry:v47 negativeTTL:v69 lookupDate:v71];
+                peerIDManager4 = [(IDSIDStatusQueryController *)self peerIDManager];
+                [peerIDManager4 saveStatus:v50];
 
-                if (((v49 | v62) & 1) == 0 && !a7)
+                if (((v49 | successCopy) & 1) == 0 && !error)
                 {
                   v52 = OSLogHandleForIDSCategory();
                   if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
@@ -432,75 +432,75 @@ LABEL_77:
 LABEL_78:
 }
 
-- (unsigned)_IDStatusForURI:(id)a3 fromService:(id)a4
+- (unsigned)_IDStatusForURI:(id)i fromService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  if (sub_1005848C4([v6 FZIDType], v6))
+  iCopy = i;
+  serviceCopy = service;
+  if (sub_1005848C4([iCopy FZIDType], iCopy))
   {
-    v8 = [(IDSIDStatusQueryController *)self peerIDManager];
-    v9 = [v6 prefixedURI];
-    v10 = [v8 loadStatusForService:v7 URI:v9];
+    peerIDManager = [(IDSIDStatusQueryController *)self peerIDManager];
+    prefixedURI = [iCopy prefixedURI];
+    v10 = [peerIDManager loadStatusForService:serviceCopy URI:prefixedURI];
 
     if (v10)
     {
-      v11 = [v10 status];
+      status = [v10 status];
     }
 
     else
     {
-      v11 = 0;
+      status = 0;
     }
   }
 
   else
   {
-    v11 = 2;
+    status = 2;
   }
 
-  return v11;
+  return status;
 }
 
-- (void)removeCachedEntriesForService:(id)a3
+- (void)removeCachedEntriesForService:(id)service
 {
-  v4 = a3;
-  if (v4)
+  serviceCopy = service;
+  if (serviceCopy)
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v9 = v4;
+      v9 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing cached entries {service: %@}", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
       MarcoLogMadridLevel();
-      v7 = v4;
+      v7 = serviceCopy;
       IMLogString();
       if (_IMWillLog())
       {
-        v7 = v4;
+        v7 = serviceCopy;
         _IMAlwaysLog();
       }
     }
 
-    v6 = [(IDSIDStatusQueryController *)self peerIDManager];
-    [v6 deleteAllStatusesForService:v4];
+    peerIDManager = [(IDSIDStatusQueryController *)self peerIDManager];
+    [peerIDManager deleteAllStatusesForService:serviceCopy];
   }
 }
 
-- (void)removeCachedIDStatusForURI:(id)a3 service:(id)a4
+- (void)removeCachedIDStatusForURI:(id)i service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  iCopy = i;
+  serviceCopy = service;
+  v8 = serviceCopy;
+  if (iCopy && serviceCopy)
   {
-    v9 = [(IDSIDStatusQueryController *)self peerIDManager];
-    v10 = [v6 prefixedURI];
-    [v9 deleteStatusForService:v8 URI:v10];
+    peerIDManager = [(IDSIDStatusQueryController *)self peerIDManager];
+    prefixedURI = [iCopy prefixedURI];
+    [peerIDManager deleteStatusForService:v8 URI:prefixedURI];
   }
 
   else
@@ -524,22 +524,22 @@ LABEL_78:
   }
 }
 
-- (void)noteIncomingID:(id)a3 fromService:(id)a4
+- (void)noteIncomingID:(id)d fromService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  dCopy = d;
+  serviceCopy = service;
+  if ([serviceCopy length])
   {
-    v8 = [v6 FZIDType];
-    if ([v7 length])
+    fZIDType = [dCopy FZIDType];
+    if ([serviceCopy length])
     {
-      if (sub_1005848C4(v8, v6))
+      if (sub_1005848C4(fZIDType, dCopy))
       {
-        if ([(IDSIDStatusQueryController *)self _IDStatusForURI:v6 fromService:v7]== 2)
+        if ([(IDSIDStatusQueryController *)self _IDStatusForURI:dCopy fromService:serviceCopy]== 2)
         {
-          v9 = [(IDSIDStatusQueryController *)self peerIDManager];
-          v10 = [v6 prefixedURI];
-          [v9 deleteStatusForService:v7 URI:v10];
+          peerIDManager = [(IDSIDStatusQueryController *)self peerIDManager];
+          prefixedURI = [dCopy prefixedURI];
+          [peerIDManager deleteStatusForService:serviceCopy URI:prefixedURI];
         }
 
         goto LABEL_26;
@@ -549,7 +549,7 @@ LABEL_78:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v6;
+        v16 = dCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, " => Bogus ID query for: %@   ignoring this", buf, 0xCu);
       }
 
@@ -571,7 +571,7 @@ LABEL_25:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v6;
+        v16 = dCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, " => Bogus ID query for: %@   ignoring this", buf, 0xCu);
       }
 
@@ -589,7 +589,7 @@ LABEL_25:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v7;
+        v16 = serviceCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, " => From Service: %@", buf, 0xCu);
       }
 
@@ -628,19 +628,19 @@ LABEL_25:
 LABEL_26:
 }
 
-- (id)_cachedResultsForURIs:(id)a3 fromURI:(id)a4 fromService:(id)a5 reason:(id)a6
+- (id)_cachedResultsForURIs:(id)is fromURI:(id)i fromService:(id)service reason:(id)reason
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  isCopy = is;
+  iCopy = i;
+  serviceCopy = service;
+  reasonCopy = reason;
   v22 = objc_alloc_init(NSMutableDictionary);
   v14 = objc_alloc_init(NSMutableDictionary);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v10;
+  obj = isCopy;
   v15 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v15)
   {
@@ -656,7 +656,7 @@ LABEL_26:
         }
 
         v19 = *(*(&v24 + 1) + 8 * i);
-        v20 = [NSNumber numberWithUnsignedInt:[(IDSIDStatusQueryController *)self cachedIDStatusForID:v19 fromURI:v11 fromService:v12 reason:v13, v22]];
+        v20 = [NSNumber numberWithUnsignedInt:[(IDSIDStatusQueryController *)self cachedIDStatusForID:v19 fromURI:iCopy fromService:serviceCopy reason:reasonCopy, v22]];
         [v14 setObject:v20 forKey:v19];
       }
 
@@ -666,34 +666,34 @@ LABEL_26:
     while (v16);
   }
 
-  [v22 setObject:v14 forKey:v12];
+  [v22 setObject:v14 forKey:serviceCopy];
 
   return v22;
 }
 
-- (BOOL)hasValidStatusForURI:(id)a3 fromURI:(id)a4 fromService:(id)a5
+- (BOOL)hasValidStatusForURI:(id)i fromURI:(id)rI fromService:(id)service
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (sub_1005848C4([v8 FZIDType], v8))
+  iCopy = i;
+  rICopy = rI;
+  serviceCopy = service;
+  if (sub_1005848C4([iCopy FZIDType], iCopy))
   {
-    v11 = [(IDSIDStatusQueryController *)self peerIDManager];
-    v12 = [v9 prefixedURI];
-    v13 = [v11 loadStatusForService:v10 URI:v12];
+    peerIDManager = [(IDSIDStatusQueryController *)self peerIDManager];
+    prefixedURI = [rICopy prefixedURI];
+    v13 = [peerIDManager loadStatusForService:serviceCopy URI:prefixedURI];
 
     if ([v13 status] == 2)
     {
-      v14 = [v13 lookupDate];
-      [v14 doubleValue];
+      lookupDate = [v13 lookupDate];
+      [lookupDate doubleValue];
       v16 = v15;
       Current = CFAbsoluteTimeGetCurrent();
       v18 = +[IDSPeerIDManager sharedInstance];
       v19 = vabdd_f64(Current, v16);
-      [v18 timeToCacheURI:v8 fromURI:v9 service:v10 forStatus:{objc_msgSend(v13, "status")}];
+      [v18 timeToCacheURI:iCopy fromURI:rICopy service:serviceCopy forStatus:{objc_msgSend(v13, "status")}];
       v21 = v20;
 
-      v22 = v19 >= v21 || v14 == 0;
+      v22 = v19 >= v21 || lookupDate == 0;
       v23 = v22;
       if (!v22)
       {
@@ -701,7 +701,7 @@ LABEL_26:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67110144;
-          v29 = [v13 status];
+          status = [v13 status];
           v30 = 2048;
           v31 = Current;
           v32 = 2048;
@@ -715,9 +715,9 @@ LABEL_26:
 
         if (os_log_shim_legacy_logging_enabled())
         {
-          v26 = [v13 status];
+          status2 = [v13 status];
           MarcoLogMadridLevel();
-          v27 = [v13 status];
+          status3 = [v13 status];
           IMLogString();
           if (_IMWillLog())
           {
@@ -742,25 +742,25 @@ LABEL_26:
   return v23;
 }
 
-- (void)_lookupIDStatusForURIs:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 lightQuery:(BOOL)a7 allowQuery:(BOOL)a8 clientRequestedForceQuery:(BOOL)a9 bypassLimit:(BOOL)a10 allowOnMissingEndpoints:(BOOL)a11 reason:(id)a12 completionBlock:(id)a13
+- (void)_lookupIDStatusForURIs:(id)is fromIdentity:(id)identity fromURI:(id)i fromService:(id)service lightQuery:(BOOL)query allowQuery:(BOOL)allowQuery clientRequestedForceQuery:(BOOL)forceQuery bypassLimit:(BOOL)self0 allowOnMissingEndpoints:(BOOL)self1 reason:(id)self2 completionBlock:(id)self3
 {
-  v175 = a8;
-  v159 = a7;
-  v167 = a3;
-  v166 = a4;
-  v174 = a5;
-  v180 = a6;
-  v164 = a12;
-  v165 = a13;
-  v183 = self;
+  allowQueryCopy = allowQuery;
+  queryCopy = query;
+  isCopy = is;
+  identityCopy = identity;
+  iCopy = i;
+  serviceCopy = service;
+  reasonCopy = reason;
+  blockCopy = block;
+  selfCopy = self;
   if (!self->_allowProxyQueries)
   {
-    if (![v167 count] || (objc_msgSend(v174, "prefixedURI"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "length"), v17, !v166) || !v18)
+    if (![isCopy count] || (objc_msgSend(iCopy, "prefixedURI"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "length"), v17, !identityCopy) || !v18)
     {
-      v62 = v165;
-      if (v165)
+      v62 = blockCopy;
+      if (blockCopy)
       {
-        (*(v165 + 2))(v165, 0, v174, v180, 0, 0);
+        (*(blockCopy + 2))(blockCopy, 0, iCopy, serviceCopy, 0, 0);
       }
 
       goto LABEL_236;
@@ -768,20 +768,20 @@ LABEL_26:
   }
 
   v19 = +[IDSTrafficMonitor sharedInstance];
-  [v19 noteQueryRequestForService:v180 requestor:@"unknown"];
+  [v19 noteQueryRequestForService:serviceCopy requestor:@"unknown"];
 
   v169 = objc_alloc_init(NSMutableArray);
   v177 = objc_alloc_init(NSMutableArray);
   v181 = objc_alloc_init(NSMutableArray);
   v168 = objc_alloc_init(NSMutableArray);
-  v20 = [(IDSIDStatusQueryController *)self peerIDManager];
-  v173 = [v20 endpointsForURIs:v167 service:v180 fromURI:v174 ignoringTTL:1];
+  peerIDManager = [(IDSIDStatusQueryController *)self peerIDManager];
+  v173 = [peerIDManager endpointsForURIs:isCopy service:serviceCopy fromURI:iCopy ignoringTTL:1];
 
   v201 = 0u;
   v202 = 0u;
   v199 = 0u;
   v200 = 0u;
-  obj = v167;
+  obj = isCopy;
   v21 = [obj countByEnumeratingWithState:&v199 objects:v214 count:16];
   if (!v21)
   {
@@ -801,11 +801,11 @@ LABEL_26:
       }
 
       v24 = *(*(&v199 + 1) + 8 * i);
-      v25 = [v24 FZIDType];
+      fZIDType = [v24 FZIDType];
       [v181 addObject:v24];
-      if (sub_1005848C4(v25, v24))
+      if (sub_1005848C4(fZIDType, v24))
       {
-        if (a9 && sub_100587FE0())
+        if (forceQuery && sub_100587FE0())
         {
           v26 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -833,22 +833,22 @@ LABEL_88:
           continue;
         }
 
-        v28 = [(IDSIDStatusQueryController *)v183 peerIDManager];
-        v29 = [v24 prefixedURI];
-        v30 = [v28 loadStatusForService:v180 URI:v29];
+        peerIDManager2 = [(IDSIDStatusQueryController *)selfCopy peerIDManager];
+        prefixedURI = [v24 prefixedURI];
+        v30 = [peerIDManager2 loadStatusForService:serviceCopy URI:prefixedURI];
 
-        if (a11)
+        if (endpoints)
         {
-          v31 = v180;
+          v31 = serviceCopy;
           v32 = [IDSServerBag sharedInstanceForBagType:0];
           v33 = [NSString stringWithFormat:@"client-query-allow-for-missing-endpoints-%@", v31];
           v34 = [v32 objectForKey:v33];
 
           if (v34)
           {
-            v35 = [v34 BOOLValue];
+            bOOLValue = [v34 BOOLValue];
 
-            if (!v35)
+            if (!bOOLValue)
             {
               goto LABEL_41;
             }
@@ -910,49 +910,49 @@ LABEL_88:
         }
 
 LABEL_41:
-        v42 = [v30 status];
-        v43 = [v30 lookupDate];
-        v44 = [v30 expiry];
-        v45 = [v30 negativeTTL];
-        [v43 doubleValue];
+        status = [v30 status];
+        lookupDate = [v30 lookupDate];
+        expiry = [v30 expiry];
+        negativeTTL = [v30 negativeTTL];
+        [lookupDate doubleValue];
         v47 = v46;
-        [(IDSIDStatusDependencyProvider *)v183->_dependencyProvider currentTime];
+        [(IDSIDStatusDependencyProvider *)selfCopy->_dependencyProvider currentTime];
         v49 = v48;
-        if (v45)
+        if (negativeTTL)
         {
-          [v45 doubleValue];
+          [negativeTTL doubleValue];
           goto LABEL_43;
         }
 
-        if (v44 && sub_10058817C())
+        if (expiry && sub_10058817C())
         {
-          [v44 doubleValue];
+          [expiry doubleValue];
 LABEL_43:
           v51 = v50;
         }
 
         else
         {
-          v52 = [(IDSIDStatusQueryController *)v183 peerIDManager];
-          [v52 timeToCacheURI:v24 fromURI:v174 service:v180 forStatus:v42];
+          peerIDManager3 = [(IDSIDStatusQueryController *)selfCopy peerIDManager];
+          [peerIDManager3 timeToCacheURI:v24 fromURI:iCopy service:serviceCopy forStatus:status];
           v51 = v53;
         }
 
         v54 = vabdd_f64(v49, v47);
-        v55 = [v30 status];
-        if (v55 != 1 || v54 >= v51)
+        status2 = [v30 status];
+        if (status2 != 1 || v54 >= v51)
         {
-          if (v175)
+          if (allowQueryCopy)
           {
-            if (v43 && v54 < v51)
+            if (lookupDate && v54 < v51)
             {
-              if (v55)
+              if (status2)
               {
                 v56 = OSLogHandleForIDSCategory();
                 if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 67110144;
-                  *v207 = v42;
+                  *v207 = status;
                   *&v207[4] = 2048;
                   *&v207[6] = v49;
                   *&v207[14] = 2048;
@@ -971,7 +971,7 @@ LABEL_43:
                   v157 = v51;
                   v154 = v49;
                   v155 = v47;
-                  v150 = v42;
+                  v150 = status;
                   IMLogString();
                   if (_IMWillLog())
                   {
@@ -986,7 +986,7 @@ LABEL_43:
                 if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 67110144;
-                  *v207 = v42;
+                  *v207 = status;
                   *&v207[4] = 2048;
                   *&v207[6] = v49;
                   *&v207[14] = 2048;
@@ -1005,7 +1005,7 @@ LABEL_43:
                   v157 = v51;
                   v154 = v49;
                   v155 = v47;
-                  v150 = v42;
+                  v150 = status;
                   IMLogString();
                   if (_IMWillLog())
                   {
@@ -1013,7 +1013,7 @@ LABEL_43:
                     v157 = v51;
                     v154 = v49;
                     v155 = v47;
-                    v150 = v42;
+                    v150 = status;
                     _IMAlwaysLog();
                   }
                 }
@@ -1024,7 +1024,7 @@ LABEL_43:
               goto LABEL_86;
             }
 
-            if (!v43)
+            if (!lookupDate)
             {
               [v168 addObject:v24];
             }
@@ -1035,7 +1035,7 @@ LABEL_43:
               *buf = 138413570;
               *v207 = v24;
               *&v207[8] = 1024;
-              *&v207[10] = v42;
+              *&v207[10] = status;
               *&v207[14] = 2048;
               *&v207[16] = v47;
               v208 = 2048;
@@ -1055,7 +1055,7 @@ LABEL_43:
               v155 = v47;
               v156 = v49;
               v150 = v24;
-              v154 = *&v42;
+              v154 = *&status;
               IMLogString();
               if (_IMWillLog())
               {
@@ -1064,7 +1064,7 @@ LABEL_43:
                 v155 = v47;
                 v156 = v49;
                 v150 = v24;
-                v154 = *&v42;
+                v154 = *&status;
                 _IMAlwaysLog();
               }
             }
@@ -1078,7 +1078,7 @@ LABEL_43:
             if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 67110144;
-              *v207 = v42;
+              *v207 = status;
               *&v207[4] = 2048;
               *&v207[6] = v49;
               *&v207[14] = 2048;
@@ -1097,7 +1097,7 @@ LABEL_43:
               v157 = v51;
               v154 = v49;
               v155 = v47;
-              v150 = v42;
+              v150 = status;
               IMLogString();
               if (_IMWillLog())
               {
@@ -1106,7 +1106,7 @@ LABEL_57:
                 v157 = v51;
                 v154 = v49;
                 v155 = v47;
-                v150 = v42;
+                v150 = status;
                 _IMAlwaysLog();
               }
             }
@@ -1118,7 +1118,7 @@ LABEL_86:
 
         else
         {
-          if ([v180 isEqualToString:@"com.apple.madrid"] & 1) != 0 || (objc_msgSend(v180, "isEqualToString:", @"com.apple.private.alloy.willow") & 1) != 0 || (objc_msgSend(v180, "isEqualToString:", @"com.apple.private.alloy.biz"))
+          if ([serviceCopy isEqualToString:@"com.apple.madrid"] & 1) != 0 || (objc_msgSend(serviceCopy, "isEqualToString:", @"com.apple.private.alloy.willow") & 1) != 0 || (objc_msgSend(serviceCopy, "isEqualToString:", @"com.apple.private.alloy.biz"))
           {
             goto LABEL_86;
           }
@@ -1183,14 +1183,14 @@ LABEL_95:
   v192[1] = 3221225472;
   v192[2] = sub_1005881E8;
   v192[3] = &unk_100BE0A98;
-  v178 = v174;
+  v178 = iCopy;
   v193 = v178;
-  v194 = v183;
-  v63 = v180;
+  v194 = selfCopy;
+  v63 = serviceCopy;
   v195 = v63;
-  v160 = v165;
+  v160 = blockCopy;
   v198 = v160;
-  v161 = v164;
+  v161 = reasonCopy;
   v196 = v161;
   v163 = v181;
   v197 = v163;
@@ -1199,38 +1199,38 @@ LABEL_95:
   v65 = +[IDSDServiceController sharedInstance];
   v170 = [v65 serviceWithIdentifier:v64];
 
-  v66 = v64;
+  identifier = v64;
   if ([v170 adHocServiceType])
   {
     v67 = +[IDSDServiceController sharedInstance];
     v68 = [v67 primaryServiceForAdhocServiceType:{objc_msgSend(v170, "adHocServiceType")}];
 
-    v66 = [v68 identifier];
+    identifier = [v68 identifier];
   }
 
-  startQueryDateByTopLevelService = v183->_startQueryDateByTopLevelService;
+  startQueryDateByTopLevelService = selfCopy->_startQueryDateByTopLevelService;
   if (!startQueryDateByTopLevelService)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    v71 = v183->_startQueryDateByTopLevelService;
-    v183->_startQueryDateByTopLevelService = Mutable;
+    v71 = selfCopy->_startQueryDateByTopLevelService;
+    selfCopy->_startQueryDateByTopLevelService = Mutable;
 
-    startQueryDateByTopLevelService = v183->_startQueryDateByTopLevelService;
+    startQueryDateByTopLevelService = selfCopy->_startQueryDateByTopLevelService;
   }
 
-  v182 = [(NSMutableDictionary *)startQueryDateByTopLevelService objectForKeyedSubscript:v66, v150];
-  [v182 timeIntervalSinceNow];
+  v150 = [(NSMutableDictionary *)startQueryDateByTopLevelService objectForKeyedSubscript:identifier, v150];
+  [v150 timeIntervalSinceNow];
   v73 = v72;
-  v74 = sub_1005887E0(v66);
+  v74 = sub_1005887E0(identifier);
   v75 = fabs(v73);
-  if (v182)
+  if (v150)
   {
     if (v75 > (3600 * v74))
     {
       v76 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
       {
-        v77 = sub_1005887E0(v66);
+        v77 = sub_1005887E0(identifier);
         *buf = 134217984;
         *v207 = v77;
         _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_DEFAULT, "Over %ld hour(s), resetting query per hour(s) count", buf, 0xCu);
@@ -1238,39 +1238,39 @@ LABEL_95:
 
       if (os_log_shim_legacy_logging_enabled())
       {
-        sub_1005887E0(v66);
+        sub_1005887E0(identifier);
         MarcoLogMadridLevel();
-        v151 = sub_1005887E0(v66);
+        v151 = sub_1005887E0(identifier);
         IMLogString();
         if (_IMWillLog())
         {
-          v151 = sub_1005887E0(v66);
+          v151 = sub_1005887E0(identifier);
           _IMAlwaysLog();
         }
       }
 
-      numQueriesThisHourByTopLevelService = v183->_numQueriesThisHourByTopLevelService;
+      numQueriesThisHourByTopLevelService = selfCopy->_numQueriesThisHourByTopLevelService;
       if (!numQueriesThisHourByTopLevelService)
       {
         v79 = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-        v80 = v183->_numQueriesThisHourByTopLevelService;
-        v183->_numQueriesThisHourByTopLevelService = v79;
+        v80 = selfCopy->_numQueriesThisHourByTopLevelService;
+        selfCopy->_numQueriesThisHourByTopLevelService = v79;
 
-        numQueriesThisHourByTopLevelService = v183->_numQueriesThisHourByTopLevelService;
+        numQueriesThisHourByTopLevelService = selfCopy->_numQueriesThisHourByTopLevelService;
       }
 
-      [(NSMutableDictionary *)numQueriesThisHourByTopLevelService setObject:&off_100C3CAC0 forKeyedSubscript:v66, v151];
-      reportedRateLimitedThisHour = v183->_reportedRateLimitedThisHour;
+      [(NSMutableDictionary *)numQueriesThisHourByTopLevelService setObject:&off_100C3CAC0 forKeyedSubscript:identifier, v151];
+      reportedRateLimitedThisHour = selfCopy->_reportedRateLimitedThisHour;
       if (!reportedRateLimitedThisHour)
       {
         v82 = objc_alloc_init(NSMutableSet);
-        v83 = v183->_reportedRateLimitedThisHour;
-        v183->_reportedRateLimitedThisHour = v82;
+        v83 = selfCopy->_reportedRateLimitedThisHour;
+        selfCopy->_reportedRateLimitedThisHour = v82;
 
-        reportedRateLimitedThisHour = v183->_reportedRateLimitedThisHour;
+        reportedRateLimitedThisHour = selfCopy->_reportedRateLimitedThisHour;
       }
 
-      [(NSMutableSet *)reportedRateLimitedThisHour removeObject:v66];
+      [(NSMutableSet *)reportedRateLimitedThisHour removeObject:identifier];
       goto LABEL_111;
     }
   }
@@ -1278,61 +1278,61 @@ LABEL_95:
   else
   {
 LABEL_111:
-    v182 = [(IDSIDStatusDependencyProvider *)v183->_dependencyProvider currentDate];
-    [(NSMutableDictionary *)v183->_startQueryDateByTopLevelService setObject:v182 forKeyedSubscript:v66];
+    v150 = [(IDSIDStatusDependencyProvider *)selfCopy->_dependencyProvider currentDate];
+    [(NSMutableDictionary *)selfCopy->_startQueryDateByTopLevelService setObject:v150 forKeyedSubscript:identifier];
     v84 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *v207 = v182;
+      *v207 = v150;
       _os_log_impl(&_mh_execute_header, v84, OS_LOG_TYPE_DEFAULT, "New start query date %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
       MarcoLogMadridLevel();
-      v151 = v182;
+      v151 = v150;
       IMLogString();
       if (_IMWillLog())
       {
-        v151 = v182;
+        v151 = v150;
         _IMAlwaysLog();
       }
     }
   }
 
-  v85 = [(NSMutableDictionary *)v183->_numQueriesThisHourByTopLevelService objectForKeyedSubscript:v66, v151];
-  v86 = v85;
+  v151 = [(NSMutableDictionary *)selfCopy->_numQueriesThisHourByTopLevelService objectForKeyedSubscript:identifier, v151];
+  v86 = v151;
   v87 = &off_100C3CAC0;
-  if (v85)
+  if (v151)
   {
-    v87 = v85;
+    v87 = v151;
   }
 
   v172 = v87;
 
-  v88 = [v172 intValue];
-  v176 = v66;
+  intValue = [v172 intValue];
+  v176 = identifier;
   v89 = [IDSServerBag sharedInstanceForBagType:1];
-  v90 = [NSString stringWithFormat:@"device-queries-per-hour-%@", v176];
-  v91 = [v89 objectForKey:v90];
+  v176 = [NSString stringWithFormat:@"device-queries-per-hour-%@", v176];
+  v91 = [v89 objectForKey:v176];
 
   if (v91)
   {
-    v92 = [v91 intValue];
+    intValue2 = [v91 intValue];
   }
 
   else if ([v176 isEqualToString:@"com.apple.private.alloy.arcade"])
   {
-    v92 = 1000;
+    intValue2 = 1000;
   }
 
   else
   {
-    v92 = 200;
+    intValue2 = 200;
   }
 
-  if (v88 < v92 || a10 && ((+[IDSServerBag sharedInstanceForBagType:](IDSServerBag, "sharedInstanceForBagType:", 0), v94 = objc_claimAutoreleasedReturnValue(), [v94 objectForKey:@"client-query-allow-bypass-limit"], v95 = objc_claimAutoreleasedReturnValue(), v94, !v95) || (v96 = objc_msgSend(v95, "BOOLValue"), v95, v96)))
+  if (intValue < intValue2 || limit && ((+[IDSServerBag sharedInstanceForBagType:](IDSServerBag, "sharedInstanceForBagType:", 0), v94 = objc_claimAutoreleasedReturnValue(), [v94 objectForKey:@"client-query-allow-bypass-limit"], v95 = objc_claimAutoreleasedReturnValue(), v94, !v95) || (v96 = objc_msgSend(v95, "BOOLValue"), v95, v96)))
   {
     if ([v177 count])
     {
@@ -1344,30 +1344,30 @@ LABEL_111:
       v93 = [v169 count] != 0;
     }
 
-    if (((v171 ^ 1 | HIDWORD(v171) | (a10 && v93)) & 1) == 0)
+    if (((v171 ^ 1 | HIDWORD(v171) | (limit && v93)) & 1) == 0)
     {
-      v114 = [(IDSIDStatusQueryController *)v183 _cachedResultsForURIs:v163 fromURI:v178 fromService:v64 reason:v161];
+      newRemoteCredential = [(IDSIDStatusQueryController *)selfCopy _cachedResultsForURIs:v163 fromURI:v178 fromService:v64 reason:v161];
       v115 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v115, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *v207 = v114;
+        *v207 = newRemoteCredential;
         _os_log_impl(&_mh_execute_header, v115, OS_LOG_TYPE_DEFAULT, "We have at least one valid result, returning cached results %@", buf, 0xCu);
       }
 
       if (os_log_shim_legacy_logging_enabled())
       {
         MarcoLogMadridLevel();
-        v152 = v114;
+        v1762 = newRemoteCredential;
         IMLogString();
         if (_IMWillLog())
         {
-          v152 = v114;
+          v1762 = newRemoteCredential;
           _IMAlwaysLog();
         }
       }
 
-      [(IDSIDStatusQueryController *)v183 _sendIDStatusChanges:v114 forService:v64 URI:v178 success:1 error:0, v152];
+      [(IDSIDStatusQueryController *)selfCopy _sendIDStatusChanges:newRemoteCredential forService:v64 URI:v178 success:1 error:0, v1762];
       if (v160)
       {
         v160[2]();
@@ -1398,7 +1398,7 @@ LABEL_111:
           v107 = [NSNumber numberWithUnsignedInt:0];
           v108 = [NSDictionary dictionaryWithObject:v107 forKey:v106];
 
-          [(IDSIDStatusQueryController *)v183 _updateCacheWithStatusUpdates:v108 fromURI:v178 fromService:v64 success:0 hadError:0 negativeCacheHints:0];
+          [(IDSIDStatusQueryController *)selfCopy _updateCacheWithStatusUpdates:v108 fromURI:v178 fromService:v64 success:0 hadError:0 negativeCacheHints:0];
         }
 
         v103 = [v102 countByEnumeratingWithState:&v188 objects:v205 count:16];
@@ -1407,9 +1407,9 @@ LABEL_111:
       while (v103);
     }
 
-    if (!v166)
+    if (!identityCopy)
     {
-      if (v183->_allowProxyQueries && [v177 count])
+      if (selfCopy->_allowProxyQueries && [v177 count])
       {
         v127 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v127, OS_LOG_TYPE_DEFAULT))
@@ -1428,16 +1428,16 @@ LABEL_111:
           }
         }
 
-        v114 = [(IDSIDStatusDependencyProvider *)v183->_dependencyProvider newRemoteCredential];
+        newRemoteCredential = [(IDSIDStatusDependencyProvider *)selfCopy->_dependencyProvider newRemoteCredential];
         v184[0] = _NSConcreteStackBlock;
         v184[1] = 3221225472;
         v184[2] = sub_1005888A4;
         v184[3] = &unk_100BE0AC0;
-        v184[4] = v183;
+        v184[4] = selfCopy;
         v185 = v178;
         v186 = v64;
         v187 = v160;
-        [v114 requestIDStatusForURIs:obj service:v186 lightQuery:v159 allowQuery:v175 completionBlock:v184];
+        [newRemoteCredential requestIDStatusForURIs:obj service:v186 lightQuery:queryCopy allowQuery:allowQueryCopy completionBlock:v184];
 
         goto LABEL_234;
       }
@@ -1446,7 +1446,7 @@ LABEL_111:
       if (os_log_type_enabled(v136, OS_LOG_TYPE_DEFAULT))
       {
         v137 = @"NO";
-        if (v183->_allowProxyQueries)
+        if (selfCopy->_allowProxyQueries)
         {
           v137 = @"YES";
         }
@@ -1458,7 +1458,7 @@ LABEL_111:
         _os_log_impl(&_mh_execute_header, v136, OS_LOG_TYPE_DEFAULT, "Device does not have a cert {_allowProxyQueries: %@, URIsToQuery: %@}", buf, 0x16u);
       }
 
-      if (!os_log_shim_legacy_logging_enabled() || ((MarcoLogMadridLevel(), !v183->_allowProxyQueries) ? (v138 = @"NO") : (v138 = @"YES"), v152 = v138, v154 = *&v177, IMLogString(), (_IMWillLog() & 1) == 0))
+      if (!os_log_shim_legacy_logging_enabled() || ((MarcoLogMadridLevel(), !selfCopy->_allowProxyQueries) ? (v138 = @"NO") : (v138 = @"YES"), v1762 = v138, v154 = *&v177, IMLogString(), (_IMWillLog() & 1) == 0))
       {
         v101 = 0;
 LABEL_218:
@@ -1470,7 +1470,7 @@ LABEL_218:
         goto LABEL_223;
       }
 
-      if (v183->_allowProxyQueries)
+      if (selfCopy->_allowProxyQueries)
       {
         v139 = @"YES";
       }
@@ -1480,7 +1480,7 @@ LABEL_218:
         v139 = @"NO";
       }
 
-      v152 = v139;
+      v1762 = v139;
       v154 = *&v177;
       _IMAlwaysLog();
       if (v171)
@@ -1491,12 +1491,12 @@ LABEL_218:
 LABEL_222:
       v101 = 0;
 LABEL_223:
-      v114 = [(IDSIDStatusQueryController *)v183 _cachedResultsForURIs:v163 fromURI:v178 fromService:v64 reason:v161, v152, *&v154];
+      newRemoteCredential = [(IDSIDStatusQueryController *)selfCopy _cachedResultsForURIs:v163 fromURI:v178 fromService:v64 reason:v161, v1762, *&v154];
       v145 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v145, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *v207 = v114;
+        *v207 = newRemoteCredential;
         _os_log_impl(&_mh_execute_header, v145, OS_LOG_TYPE_DEFAULT, "We didn't query anything, returning cached results %@", buf, 0xCu);
       }
 
@@ -1510,12 +1510,12 @@ LABEL_223:
         }
       }
 
-      v146 = [NSString stringWithFormat:@"Query on the service %@ is being rate limited { numQueriesThisHour: %@ }", v64, v172];
-      v147 = v146;
+      v172 = [NSString stringWithFormat:@"Query on the service %@ is being rate limited { numQueriesThisHour: %@ }", v64, v172];
+      v147 = v172;
       if (v101)
       {
         v203 = NSLocalizedDescriptionKey;
-        v204 = v146;
+        v204 = v172;
         v148 = [NSDictionary dictionaryWithObjects:&v204 forKeys:&v203 count:1];
         v149 = [NSError errorWithDomain:IDSPeerIDManagerErrorDomain code:5 userInfo:v148];
       }
@@ -1525,7 +1525,7 @@ LABEL_223:
         v149 = 0;
       }
 
-      [(IDSIDStatusQueryController *)v183 _sendIDStatusChanges:v114 forService:v64 URI:v178 success:1 error:v149];
+      [(IDSIDStatusQueryController *)selfCopy _sendIDStatusChanges:newRemoteCredential forService:v64 URI:v178 success:1 error:v149];
       if (v160)
       {
         v160[2]();
@@ -1536,7 +1536,7 @@ LABEL_234:
     }
 
     v109 = sub_10058817C();
-    if (((v109 | !a9) & 1) == 0)
+    if (((v109 | !forceQuery) & 1) == 0)
     {
       v109 = sub_100587FE0();
     }
@@ -1561,24 +1561,24 @@ LABEL_234:
 
     if ([v177 count] || !objc_msgSend(v169, "count"))
     {
-      v128 = [(IDSIDStatusQueryController *)v183 peerIDManager];
-      LOBYTE(v152) = a9;
-      v129 = [v128 startQueryForURIs:v177 fromIdentity:v166 fromURI:v178 fromService:v64 forSending:1 forceToServer:v109 clientRequestedForceQuery:v152 reason:v113 completionBlock:v162];
+      peerIDManager4 = [(IDSIDStatusQueryController *)selfCopy peerIDManager];
+      LOBYTE(v1762) = forceQuery;
+      v129 = [peerIDManager4 startQueryForURIs:v177 fromIdentity:identityCopy fromURI:v178 fromService:v64 forSending:1 forceToServer:v109 clientRequestedForceQuery:v1762 reason:v113 completionBlock:v162];
 
-      if (!v183->_numQueriesThisHourByTopLevelService)
+      if (!selfCopy->_numQueriesThisHourByTopLevelService)
       {
         v130 = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-        v131 = v183->_numQueriesThisHourByTopLevelService;
-        v183->_numQueriesThisHourByTopLevelService = v130;
+        v131 = selfCopy->_numQueriesThisHourByTopLevelService;
+        selfCopy->_numQueriesThisHourByTopLevelService = v130;
       }
 
       v132 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v177 count] + objc_msgSend(v172, "intValue"));
-      [(NSMutableDictionary *)v183->_numQueriesThisHourByTopLevelService setObject:v132 forKeyedSubscript:v176];
+      [(NSMutableDictionary *)selfCopy->_numQueriesThisHourByTopLevelService setObject:v132 forKeyedSubscript:v176];
 
       v133 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v133, OS_LOG_TYPE_DEFAULT))
       {
-        v134 = [(NSMutableDictionary *)v183->_numQueriesThisHourByTopLevelService objectForKeyedSubscript:v176];
+        v134 = [(NSMutableDictionary *)selfCopy->_numQueriesThisHourByTopLevelService objectForKeyedSubscript:v176];
         *buf = 138412546;
         *v207 = v134;
         *&v207[8] = 2112;
@@ -1588,17 +1588,17 @@ LABEL_234:
 
       if (os_log_shim_legacy_logging_enabled())
       {
-        v153 = [(NSMutableDictionary *)v183->_numQueriesThisHourByTopLevelService objectForKeyedSubscript:v176];
+        v153 = [(NSMutableDictionary *)selfCopy->_numQueriesThisHourByTopLevelService objectForKeyedSubscript:v176];
         MarcoLogMadridLevel();
 
-        v152 = [(NSMutableDictionary *)v183->_numQueriesThisHourByTopLevelService objectForKeyedSubscript:v176, v153, v176];
+        v1762 = [(NSMutableDictionary *)selfCopy->_numQueriesThisHourByTopLevelService objectForKeyedSubscript:v176, v153, v176];
         v154 = *&v176;
         IMLogString();
 
         if (_IMWillLog())
         {
-          v135 = [(NSMutableDictionary *)v183->_numQueriesThisHourByTopLevelService objectForKeyedSubscript:v176, v152, v176];
-          v152 = v135;
+          v1763 = [(NSMutableDictionary *)selfCopy->_numQueriesThisHourByTopLevelService objectForKeyedSubscript:v176, v1762, v176];
+          v1762 = v1763;
           v154 = *&v176;
           _IMAlwaysLog();
 LABEL_216:
@@ -1610,9 +1610,9 @@ LABEL_216:
     {
       if ([v169 count])
       {
-        v135 = [[IDSPeerIDQueryContext alloc] initWithSending:1 forceToServer:v109 messaging:0 resultExpected:0 preventNewQuery:1 clientRequestedForceQuery:a9];
-        v140 = [(IDSIDStatusQueryController *)v183 peerIDManager];
-        v141 = v140;
+        v1763 = [[IDSPeerIDQueryContext alloc] initWithSending:1 forceToServer:v109 messaging:0 resultExpected:0 preventNewQuery:1 clientRequestedForceQuery:forceQuery];
+        peerIDManager5 = [(IDSIDStatusQueryController *)selfCopy peerIDManager];
+        v141 = peerIDManager5;
         if (v161)
         {
           v142 = v161;
@@ -1623,11 +1623,11 @@ LABEL_216:
           v142 = @"StatusLookupPiggyback";
         }
 
-        v129 = [v140 startQueryForURIs:v169 fromIdentity:v166 fromURI:v178 fromService:v64 context:v135 reason:v142 completionBlock:v162];
+        v129 = [peerIDManager5 startQueryForURIs:v169 fromIdentity:identityCopy fromURI:v178 fromService:v64 context:v1763 reason:v142 completionBlock:v162];
 
         if (((v129 | v171 ^ 1) & 1) == 0)
         {
-          v143 = [(IDSIDStatusQueryController *)v183 _cachedResultsForURIs:v163 fromURI:v178 fromService:v64 reason:v161];
+          v143 = [(IDSIDStatusQueryController *)selfCopy _cachedResultsForURIs:v163 fromURI:v178 fromService:v64 reason:v161];
           v144 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v144, OS_LOG_TYPE_DEFAULT))
           {
@@ -1639,16 +1639,16 @@ LABEL_216:
           if (os_log_shim_legacy_logging_enabled())
           {
             MarcoLogMadridLevel();
-            v152 = v143;
+            v1762 = v143;
             IMLogString();
             if (_IMWillLog())
             {
-              v152 = v143;
+              v1762 = v143;
               _IMAlwaysLog();
             }
           }
 
-          [(IDSIDStatusQueryController *)v183 _sendIDStatusChanges:v143 forService:v64 URI:v178 success:1 error:0, v152];
+          [(IDSIDStatusQueryController *)selfCopy _sendIDStatusChanges:v143 forService:v64 URI:v178 success:1 error:0, v1762];
           if (v160)
           {
             (v160[2])(v160, v143, v178, v64, 1, 0);
@@ -1682,38 +1682,38 @@ LABEL_216:
   if (os_log_shim_legacy_logging_enabled())
   {
     MarcoLogMadridLevel();
-    v152 = v172;
+    v1762 = v172;
     v154 = *&v64;
     IMLogString();
     if (_IMWillLog())
     {
-      v152 = v172;
+      v1762 = v172;
       v154 = *&v64;
       _IMAlwaysLog();
     }
   }
 
-  v98 = v183->_reportedRateLimitedThisHour;
+  v98 = selfCopy->_reportedRateLimitedThisHour;
   if (!v98)
   {
     v99 = objc_alloc_init(NSMutableSet);
-    v100 = v183->_reportedRateLimitedThisHour;
-    v183->_reportedRateLimitedThisHour = v99;
+    v100 = selfCopy->_reportedRateLimitedThisHour;
+    selfCopy->_reportedRateLimitedThisHour = v99;
 
-    v98 = v183->_reportedRateLimitedThisHour;
+    v98 = selfCopy->_reportedRateLimitedThisHour;
   }
 
-  if (([(NSMutableSet *)v98 containsObject:v176, v152, *&v154]& 1) != 0)
+  if (([(NSMutableSet *)v98 containsObject:v176, v1762, *&v154]& 1) != 0)
   {
     v101 = 1;
     goto LABEL_218;
   }
 
-  [(NSMutableSet *)v183->_reportedRateLimitedThisHour addObject:v176];
+  [(NSMutableSet *)selfCopy->_reportedRateLimitedThisHour addObject:v176];
   if (+[IDSAutoBugCapture isSupported])
   {
-    v116 = [NSString stringWithFormat:@"(%@)", v176];
-    [IDSAutoBugCapture triggerCaptureWithEvent:103 context:v116 completion:&stru_100BE0AE0];
+    v1764 = [NSString stringWithFormat:@"(%@)", v176];
+    [IDSAutoBugCapture triggerCaptureWithEvent:103 context:v1764 completion:&stru_100BE0AE0];
   }
 
   v117 = [IDSQueryRateLimitedMetric alloc];
@@ -1756,40 +1756,40 @@ LABEL_216:
 
 LABEL_235:
 
-  v62 = v165;
+  v62 = blockCopy;
 LABEL_236:
 }
 
-- (void)requestIDStatusForIDs:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 lightQuery:(BOOL)a7 allowQuery:(BOOL)a8 forceQuery:(BOOL)a9 bypassLimit:(BOOL)a10 reason:(id)a11 completionBlock:(id)a12
+- (void)requestIDStatusForIDs:(id)ds fromIdentity:(id)identity fromURI:(id)i fromService:(id)service lightQuery:(BOOL)query allowQuery:(BOOL)allowQuery forceQuery:(BOOL)forceQuery bypassLimit:(BOOL)self0 reason:(id)self1 completionBlock:(id)self2
 {
-  v31 = a7;
-  v32 = a8;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a11;
-  v21 = a12;
+  queryCopy = query;
+  allowQueryCopy = allowQuery;
+  dsCopy = ds;
+  identityCopy = identity;
+  iCopy = i;
+  serviceCopy = service;
+  reasonCopy = reason;
+  blockCopy = block;
   if (self->_allowProxyQueries)
   {
     goto LABEL_31;
   }
 
-  if ([v19 length])
+  if ([serviceCopy length])
   {
-    v22 = [v18 prefixedURI];
-    v23 = [v22 length];
-    if (v17 && v23)
+    prefixedURI = [iCopy prefixedURI];
+    v23 = [prefixedURI length];
+    if (identityCopy && v23)
     {
-      v24 = [v18 prefixedURI];
-      v25 = [v24 isEqualToIgnoringCase:kIDSServiceDefaultsSentinelAlias];
+      prefixedURI2 = [iCopy prefixedURI];
+      v25 = [prefixedURI2 isEqualToIgnoringCase:kIDSServiceDefaultsSentinelAlias];
 
       if (!v25)
       {
 LABEL_31:
-        *(&v30 + 1) = a10;
-        LOBYTE(v30) = a9;
-        [IDSIDStatusQueryController _lookupIDStatusForURIs:"_lookupIDStatusForURIs:fromIdentity:fromURI:fromService:lightQuery:allowQuery:clientRequestedForceQuery:bypassLimit:allowOnMissingEndpoints:reason:completionBlock:" fromIdentity:v16 fromURI:v17 fromService:v18 lightQuery:v19 allowQuery:v31 clientRequestedForceQuery:v32 bypassLimit:v30 allowOnMissingEndpoints:v20 reason:v21 completionBlock:?];
+        *(&v30 + 1) = limit;
+        LOBYTE(v30) = forceQuery;
+        [IDSIDStatusQueryController _lookupIDStatusForURIs:"_lookupIDStatusForURIs:fromIdentity:fromURI:fromService:lightQuery:allowQuery:clientRequestedForceQuery:bypassLimit:allowOnMissingEndpoints:reason:completionBlock:" fromIdentity:dsCopy fromURI:identityCopy fromService:iCopy lightQuery:serviceCopy allowQuery:queryCopy clientRequestedForceQuery:allowQueryCopy bypassLimit:v30 allowOnMissingEndpoints:reasonCopy reason:blockCopy completionBlock:?];
         goto LABEL_32;
       }
     }
@@ -1803,18 +1803,18 @@ LABEL_31:
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v34 = v16;
+    v34 = dsCopy;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, " => Bogus ID query for: %@   ignoring this request", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled())
   {
     MarcoLogMadridLevel();
-    v30 = v16;
+    v30 = dsCopy;
     IMLogString();
     if (_IMWillLog())
     {
-      v30 = v16;
+      v30 = dsCopy;
       _IMAlwaysLog();
     }
   }
@@ -1823,18 +1823,18 @@ LABEL_31:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v34 = v18;
+    v34 = iCopy;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, " => From URI: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled())
   {
     MarcoLogMadridLevel();
-    v30 = v18;
+    v30 = iCopy;
     IMLogString();
     if (_IMWillLog())
     {
-      v30 = v18;
+      v30 = iCopy;
       _IMAlwaysLog();
     }
   }
@@ -1843,23 +1843,23 @@ LABEL_31:
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v34 = v19;
+    v34 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, " => From Service: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled())
   {
     MarcoLogMadridLevel();
-    v30 = v19;
+    v30 = serviceCopy;
     IMLogString();
     if (_IMWillLog())
     {
-      v30 = v19;
+      v30 = serviceCopy;
       _IMAlwaysLog();
     }
   }
 
-  if (!v17)
+  if (!identityCopy)
   {
     v29 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -1879,44 +1879,44 @@ LABEL_31:
     }
   }
 
-  if (!v21)
+  if (!blockCopy)
   {
     goto LABEL_31;
   }
 
-  (*(v21 + 2))(v21, 0, v18, v19, 0, 0);
+  (*(blockCopy + 2))(blockCopy, 0, iCopy, serviceCopy, 0, 0);
 LABEL_32:
 }
 
-- (void)requestIDStatusForID:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 lightQuery:(BOOL)a7 allowQuery:(BOOL)a8 reason:(id)a9 completionBlock:(id)a10
+- (void)requestIDStatusForID:(id)d fromIdentity:(id)identity fromURI:(id)i fromService:(id)service lightQuery:(BOOL)query allowQuery:(BOOL)allowQuery reason:(id)reason completionBlock:(id)self0
 {
-  v10 = a7;
-  v15 = a10;
-  v16 = a9;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
+  queryCopy = query;
+  blockCopy = block;
+  reasonCopy = reason;
+  serviceCopy = service;
+  iCopy = i;
+  identityCopy = identity;
   v21 = IMSingleObjectArray();
   LOWORD(v20) = 0;
-  [(IDSIDStatusQueryController *)self requestIDStatusForIDs:v21 fromIdentity:v19 fromURI:v18 fromService:v17 lightQuery:v10 allowQuery:v10 forceQuery:v20 bypassLimit:v16 reason:v15 completionBlock:?];
+  [(IDSIDStatusQueryController *)self requestIDStatusForIDs:v21 fromIdentity:identityCopy fromURI:iCopy fromService:serviceCopy lightQuery:queryCopy allowQuery:queryCopy forceQuery:v20 bypassLimit:reasonCopy reason:blockCopy completionBlock:?];
 }
 
-- (void)setCachedIDStatus:(unsigned int)a3 ForID:(id)a4 fromURI:(id)a5 fromService:(id)a6
+- (void)setCachedIDStatus:(unsigned int)status ForID:(id)d fromURI:(id)i fromService:(id)service
 {
-  v8 = *&a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 FZIDType];
-  if ([v12 length] && (objc_msgSend(v11, "prefixedURI"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v15))
+  v8 = *&status;
+  dCopy = d;
+  iCopy = i;
+  serviceCopy = service;
+  fZIDType = [dCopy FZIDType];
+  if ([serviceCopy length] && (objc_msgSend(iCopy, "prefixedURI"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v15))
   {
-    if (sub_1005848C4(v13, v10))
+    if (sub_1005848C4(fZIDType, dCopy))
     {
       v16 = objc_alloc_init(NSMutableDictionary);
       v17 = [NSNumber numberWithUnsignedInt:v8];
-      [v16 setObject:v17 forKey:v10];
+      [v16 setObject:v17 forKey:dCopy];
 
-      [(IDSIDStatusQueryController *)self _updateCacheWithStatusUpdates:v16 fromURI:v11 fromService:v12 success:1 hadError:0 negativeCacheHints:0];
+      [(IDSIDStatusQueryController *)self _updateCacheWithStatusUpdates:v16 fromURI:iCopy fromService:serviceCopy success:1 hadError:0 negativeCacheHints:0];
       goto LABEL_25;
     }
 
@@ -1924,7 +1924,7 @@ LABEL_32:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v10;
+      v23 = dCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, " => Bogus ID for: %@   ignoring this", buf, 0xCu);
     }
 
@@ -1946,7 +1946,7 @@ LABEL_24:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v10;
+      v23 = dCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, " => Bogus ID for: %@   ignoring this", buf, 0xCu);
     }
 
@@ -1964,7 +1964,7 @@ LABEL_24:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v11;
+      v23 = iCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, " => From URI: %@", buf, 0xCu);
     }
 
@@ -1982,7 +1982,7 @@ LABEL_24:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v12;
+      v23 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, " => From Service: %@", buf, 0xCu);
     }
 
@@ -2000,73 +2000,73 @@ LABEL_24:
 LABEL_25:
 }
 
-- (unsigned)cachedIDStatusForID:(id)a3 fromURI:(id)a4 fromService:(id)a5 respectExpiry:(BOOL)a6 reason:(id)a7
+- (unsigned)cachedIDStatusForID:(id)d fromURI:(id)i fromService:(id)service respectExpiry:(BOOL)expiry reason:(id)reason
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [v12 FZIDType];
-  if ([v14 length] && (objc_msgSend(v13, "prefixedURI"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "length"), v17, v18))
+  expiryCopy = expiry;
+  dCopy = d;
+  iCopy = i;
+  serviceCopy = service;
+  reasonCopy = reason;
+  fZIDType = [dCopy FZIDType];
+  if ([serviceCopy length] && (objc_msgSend(iCopy, "prefixedURI"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "length"), v17, v18))
   {
-    if (sub_1005848C4(v16, v12))
+    if (sub_1005848C4(fZIDType, dCopy))
     {
-      v19 = [(IDSIDStatusQueryController *)self peerIDManager];
-      v20 = [v12 prefixedURI];
-      v21 = [v19 loadStatusForService:v14 URI:v20];
+      peerIDManager = [(IDSIDStatusQueryController *)self peerIDManager];
+      prefixedURI = [dCopy prefixedURI];
+      v21 = [peerIDManager loadStatusForService:serviceCopy URI:prefixedURI];
 
-      if (v16 + 1 > 8)
+      if (fZIDType + 1 > 8)
       {
         v22 = 2863311530;
       }
 
       else
       {
-        v22 = dword_1009ABDB8[v16 + 1];
+        v22 = dword_1009ABDB8[fZIDType + 1];
       }
 
-      if (@"InternalQueryCacheCheck" != v15)
+      if (@"InternalQueryCacheCheck" != reasonCopy)
       {
-        v28 = [[IDSCachedQueryCompletionMetric alloc] initWithService:v14 queryURITypes:v22 queryReason:v15 uriCount:1];
+        v28 = [[IDSCachedQueryCompletionMetric alloc] initWithService:serviceCopy queryURITypes:v22 queryReason:reasonCopy uriCount:1];
         v29 = +[IDSCoreAnalyticsLogger defaultLogger];
         [v29 logMetric:v28];
       }
 
-      if (!v8 || ![v21 status])
+      if (!expiryCopy || ![v21 status])
       {
 LABEL_43:
         LODWORD(v26) = [v21 status];
         goto LABEL_44;
       }
 
-      v30 = [v21 lookupDate];
-      v26 = v30;
-      if (!v30)
+      lookupDate = [v21 lookupDate];
+      v26 = lookupDate;
+      if (!lookupDate)
       {
 LABEL_44:
 
         goto LABEL_45;
       }
 
-      [v30 doubleValue];
+      [lookupDate doubleValue];
       v32 = v31;
       [(IDSIDStatusDependencyProvider *)self->_dependencyProvider currentTime];
       v34 = v33;
-      v35 = [v21 negativeTTL];
-      v36 = [v21 expiry];
-      v37 = v36;
-      if (v35)
+      negativeTTL = [v21 negativeTTL];
+      expiry = [v21 expiry];
+      v37 = expiry;
+      if (negativeTTL)
       {
-        v38 = v35;
+        v38 = negativeTTL;
       }
 
       else
       {
-        if (!v36 || !sub_10058817C())
+        if (!expiry || !sub_10058817C())
         {
-          v41 = [(IDSIDStatusQueryController *)self peerIDManager];
-          [v41 timeToCacheURI:v12 fromURI:v13 service:v14 forStatus:{objc_msgSend(v21, "status")}];
+          peerIDManager2 = [(IDSIDStatusQueryController *)self peerIDManager];
+          [peerIDManager2 timeToCacheURI:dCopy fromURI:iCopy service:serviceCopy forStatus:{objc_msgSend(v21, "status")}];
           v40 = v42;
 
           goto LABEL_41;
@@ -2085,9 +2085,9 @@ LABEL_41:
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138413058;
-          v47 = v12;
+          v47 = dCopy;
           v48 = 2112;
-          v49 = v13;
+          v49 = iCopy;
           v50 = 2048;
           v51 = v43;
           v52 = 2048;
@@ -2116,7 +2116,7 @@ LABEL_41:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v47 = v12;
+      v47 = dCopy;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, " => Bogus ID query for: %@   ignoring this", buf, 0xCu);
     }
 
@@ -2139,7 +2139,7 @@ LABEL_41:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v47 = v12;
+      v47 = dCopy;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, " => Bogus ID query for: %@   ignoring this", buf, 0xCu);
     }
 
@@ -2157,7 +2157,7 @@ LABEL_41:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v47 = v13;
+      v47 = iCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, " => From URI: %@", buf, 0xCu);
     }
 
@@ -2175,7 +2175,7 @@ LABEL_41:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v47 = v14;
+      v47 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, " => From Service: %@", buf, 0xCu);
     }
 
@@ -2197,13 +2197,13 @@ LABEL_45:
   return v26;
 }
 
-- (id)currentCacheForService:(id)a3
+- (id)currentCacheForService:(id)service
 {
-  v4 = a3;
-  if ([v4 length])
+  serviceCopy = service;
+  if ([serviceCopy length])
   {
-    v5 = [(IDSIDStatusQueryController *)self peerIDManager];
-    v6 = [v5 loadAllStatusesForService:v4];
+    peerIDManager = [(IDSIDStatusQueryController *)self peerIDManager];
+    v6 = [peerIDManager loadAllStatusesForService:serviceCopy];
 
     v7 = +[NSMutableDictionary dictionary];
     v23 = 0u;
@@ -2228,21 +2228,21 @@ LABEL_45:
           v13 = *(*(&v23 + 1) + 8 * i);
           if ([v13 status])
           {
-            v14 = [v13 service];
-            v15 = [v7 objectForKeyedSubscript:v14];
+            service = [v13 service];
+            v15 = [v7 objectForKeyedSubscript:service];
 
             if (!v15)
             {
               v16 = +[NSMutableDictionary dictionary];
-              v17 = [v13 service];
-              [v7 setObject:v16 forKeyedSubscript:v17];
+              service2 = [v13 service];
+              [v7 setObject:v16 forKeyedSubscript:service2];
             }
 
             v18 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v13 status]);
-            v19 = [v13 service];
-            v20 = [v7 objectForKeyedSubscript:v19];
-            v21 = [v13 uriString];
-            [v20 setObject:v18 forKeyedSubscript:v21];
+            service3 = [v13 service];
+            v20 = [v7 objectForKeyedSubscript:service3];
+            uriString = [v13 uriString];
+            [v20 setObject:v18 forKeyedSubscript:uriString];
           }
         }
 
@@ -2261,26 +2261,26 @@ LABEL_45:
   return v7;
 }
 
-- (void)remoteDevicesForIDs:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 lightQuery:(BOOL)a7 allowQuery:(BOOL)a8 reason:(id)a9 completionBlock:(id)a10
+- (void)remoteDevicesForIDs:(id)ds fromIdentity:(id)identity fromURI:(id)i fromService:(id)service lightQuery:(BOOL)query allowQuery:(BOOL)allowQuery reason:(id)reason completionBlock:(id)self0
 {
-  v33 = a7;
-  v34 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a9;
-  v19 = a10;
+  queryCopy = query;
+  allowQueryCopy = allowQuery;
+  dsCopy = ds;
+  identityCopy = identity;
+  iCopy = i;
+  serviceCopy = service;
+  reasonCopy = reason;
+  blockCopy = block;
   if (!self->_allowProxyQueries)
   {
-    if ([v17 length])
+    if ([serviceCopy length])
     {
-      v20 = [v16 prefixedURI];
-      v21 = [v20 length];
-      if (v15 && v21)
+      prefixedURI = [iCopy prefixedURI];
+      v21 = [prefixedURI length];
+      if (identityCopy && v21)
       {
-        v22 = [v16 prefixedURI];
-        v23 = [v22 isEqualToIgnoringCase:kIDSServiceDefaultsSentinelAlias];
+        prefixedURI2 = [iCopy prefixedURI];
+        v23 = [prefixedURI2 isEqualToIgnoringCase:kIDSServiceDefaultsSentinelAlias];
 
         if (!v23)
         {
@@ -2297,18 +2297,18 @@ LABEL_45:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v41 = v14;
+      v41 = dsCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, " => Bogus ID query for: %@   ignoring this request", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
       MarcoLogMadridLevel();
-      v32 = v14;
+      v32 = dsCopy;
       IMLogString();
       if (_IMWillLog())
       {
-        v32 = v14;
+        v32 = dsCopy;
         _IMAlwaysLog();
       }
     }
@@ -2317,18 +2317,18 @@ LABEL_45:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v41 = v16;
+      v41 = iCopy;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, " => From URI: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
       MarcoLogMadridLevel();
-      v32 = v16;
+      v32 = iCopy;
       IMLogString();
       if (_IMWillLog())
       {
-        v32 = v16;
+        v32 = iCopy;
         _IMAlwaysLog();
       }
     }
@@ -2337,23 +2337,23 @@ LABEL_45:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v41 = v17;
+      v41 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, " => From Service: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
       MarcoLogMadridLevel();
-      v32 = v17;
+      v32 = serviceCopy;
       IMLogString();
       if (_IMWillLog())
       {
-        v32 = v17;
+        v32 = serviceCopy;
         _IMAlwaysLog();
       }
     }
 
-    if (!v15)
+    if (!identityCopy)
     {
       v27 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -2373,9 +2373,9 @@ LABEL_45:
       }
     }
 
-    if (v19)
+    if (blockCopy)
     {
-      (*(v19 + 2))(v19, 0, v16, v17, 0, 0);
+      (*(blockCopy + 2))(blockCopy, 0, iCopy, serviceCopy, 0, 0);
     }
   }
 
@@ -2385,39 +2385,39 @@ LABEL_31:
   v35[2] = sub_10058A944;
   v35[3] = &unk_100BE0B08;
   v35[4] = self;
-  v36 = v14;
-  v37 = v17;
-  v38 = v16;
-  v39 = v19;
-  v28 = v19;
-  v29 = v16;
-  v30 = v17;
-  v31 = v14;
+  v36 = dsCopy;
+  v37 = serviceCopy;
+  v38 = iCopy;
+  v39 = blockCopy;
+  v28 = blockCopy;
+  v29 = iCopy;
+  v30 = serviceCopy;
+  v31 = dsCopy;
   BYTE2(v32) = 1;
   LOWORD(v32) = 0;
-  [IDSIDStatusQueryController _lookupIDStatusForURIs:"_lookupIDStatusForURIs:fromIdentity:fromURI:fromService:lightQuery:allowQuery:clientRequestedForceQuery:bypassLimit:allowOnMissingEndpoints:reason:completionBlock:" fromIdentity:v31 fromURI:v15 fromService:v29 lightQuery:v30 allowQuery:v33 clientRequestedForceQuery:v34 bypassLimit:v32 allowOnMissingEndpoints:v18 reason:v35 completionBlock:?];
+  [IDSIDStatusQueryController _lookupIDStatusForURIs:"_lookupIDStatusForURIs:fromIdentity:fromURI:fromService:lightQuery:allowQuery:clientRequestedForceQuery:bypassLimit:allowOnMissingEndpoints:reason:completionBlock:" fromIdentity:v31 fromURI:identityCopy fromService:v29 lightQuery:v30 allowQuery:queryCopy clientRequestedForceQuery:allowQueryCopy bypassLimit:v32 allowOnMissingEndpoints:reasonCopy reason:v35 completionBlock:?];
 }
 
-- (void)infoForIDs:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 infoType:(unint64_t)a7 infoOptions:(id)a8 lightQuery:(BOOL)a9 allowQuery:(BOOL)a10 reason:(id)a11 completion:(id)a12
+- (void)infoForIDs:(id)ds fromIdentity:(id)identity fromURI:(id)i fromService:(id)service infoType:(unint64_t)type infoOptions:(id)options lightQuery:(BOOL)query allowQuery:(BOOL)self0 reason:(id)self1 completion:(id)self2
 {
-  v39 = a3;
-  v42 = a4;
-  v41 = a5;
-  v18 = a6;
-  v19 = a8;
-  v40 = a11;
-  v20 = a12;
-  v21 = self;
+  dsCopy = ds;
+  identityCopy = identity;
+  iCopy = i;
+  serviceCopy = service;
+  optionsCopy = options;
+  reasonCopy = reason;
+  completionCopy = completion;
+  selfCopy = self;
   if (!self->_allowProxyQueries)
   {
-    if ([v18 length])
+    if ([serviceCopy length])
     {
-      v22 = [v41 prefixedURI];
-      v23 = [v22 length];
-      if (v42 && v23)
+      prefixedURI = [iCopy prefixedURI];
+      v23 = [prefixedURI length];
+      if (identityCopy && v23)
       {
-        v24 = [v41 prefixedURI];
-        v25 = [v24 isEqualToIgnoringCase:kIDSServiceDefaultsSentinelAlias];
+        prefixedURI2 = [iCopy prefixedURI];
+        v25 = [prefixedURI2 isEqualToIgnoringCase:kIDSServiceDefaultsSentinelAlias];
 
         if (!v25)
         {
@@ -2434,18 +2434,18 @@ LABEL_31:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v51 = v39;
+      v51 = dsCopy;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, " => Bogus ID query for: %@   ignoring this request", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
       MarcoLogMadridLevel();
-      v35 = v39;
+      v35 = dsCopy;
       IMLogString();
       if (_IMWillLog())
       {
-        v35 = v39;
+        v35 = dsCopy;
         _IMAlwaysLog();
       }
     }
@@ -2454,18 +2454,18 @@ LABEL_31:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v51 = v41;
+      v51 = iCopy;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, " => From URI: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
       MarcoLogMadridLevel();
-      v35 = v41;
+      v35 = iCopy;
       IMLogString();
       if (_IMWillLog())
       {
-        v35 = v41;
+        v35 = iCopy;
         _IMAlwaysLog();
       }
     }
@@ -2474,23 +2474,23 @@ LABEL_31:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v51 = v18;
+      v51 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, " => From Service: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
       MarcoLogMadridLevel();
-      v35 = v18;
+      v35 = serviceCopy;
       IMLogString();
       if (_IMWillLog())
       {
-        v35 = v18;
+        v35 = serviceCopy;
         _IMAlwaysLog();
       }
     }
 
-    if (!v42)
+    if (!identityCopy)
     {
       v29 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -2510,86 +2510,86 @@ LABEL_31:
       }
     }
 
-    if (v20)
+    if (completionCopy)
     {
-      (*(v20 + 2))(v20, 0, v41, v18, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, iCopy, serviceCopy, 0, 0);
     }
   }
 
 LABEL_31:
-  v30 = [v19 forceRefresh];
-  v31 = [v19 bypassLimit];
+  forceRefresh = [optionsCopy forceRefresh];
+  bypassLimit = [optionsCopy bypassLimit];
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
   v43[2] = sub_10058B0A4;
   v43[3] = &unk_100BE0B30;
-  v43[4] = v21;
-  v44 = v39;
-  v45 = v18;
-  v46 = v41;
-  v47 = v19;
-  v48 = v20;
-  v49 = a7;
-  v38 = v20;
-  v37 = v19;
-  v32 = v41;
-  v33 = v18;
-  v34 = v39;
+  v43[4] = selfCopy;
+  v44 = dsCopy;
+  v45 = serviceCopy;
+  v46 = iCopy;
+  v47 = optionsCopy;
+  v48 = completionCopy;
+  typeCopy = type;
+  v38 = completionCopy;
+  v37 = optionsCopy;
+  v32 = iCopy;
+  v33 = serviceCopy;
+  v34 = dsCopy;
   BYTE2(v36) = 1;
-  BYTE1(v36) = v31;
-  LOBYTE(v36) = v30;
-  [IDSIDStatusQueryController _lookupIDStatusForURIs:v21 fromIdentity:"_lookupIDStatusForURIs:fromIdentity:fromURI:fromService:lightQuery:allowQuery:clientRequestedForceQuery:bypassLimit:allowOnMissingEndpoints:reason:completionBlock:" fromURI:v34 fromService:v42 lightQuery:v32 allowQuery:v33 clientRequestedForceQuery:a9 bypassLimit:a10 allowOnMissingEndpoints:v36 reason:v40 completionBlock:v43];
+  BYTE1(v36) = bypassLimit;
+  LOBYTE(v36) = forceRefresh;
+  [IDSIDStatusQueryController _lookupIDStatusForURIs:selfCopy fromIdentity:"_lookupIDStatusForURIs:fromIdentity:fromURI:fromService:lightQuery:allowQuery:clientRequestedForceQuery:bypassLimit:allowOnMissingEndpoints:reason:completionBlock:" fromURI:v34 fromService:identityCopy lightQuery:v32 allowQuery:v33 clientRequestedForceQuery:query bypassLimit:allowQuery allowOnMissingEndpoints:v36 reason:reasonCopy completionBlock:v43];
 }
 
-- (void)_sendIDStatusChanges:(id)a3 forService:(id)a4 URI:(id)a5 success:(BOOL)a6 error:(id)a7
+- (void)_sendIDStatusChanges:(id)changes forService:(id)service URI:(id)i success:(BOOL)success error:(id)error
 {
-  v8 = a6;
-  v33 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v32 = v12;
-  if ([v12 length] && (objc_msgSend(v13, "prefixedURI"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "length"), v15, v16))
+  successCopy = success;
+  changesCopy = changes;
+  serviceCopy = service;
+  iCopy = i;
+  errorCopy = error;
+  v32 = serviceCopy;
+  if ([serviceCopy length] && (objc_msgSend(iCopy, "prefixedURI"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "length"), v15, v16))
   {
     v17 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413314;
       v18 = @"NO";
-      v40 = v33;
-      if (v8)
+      v40 = changesCopy;
+      if (successCopy)
       {
         v18 = @"YES";
       }
 
       v41 = 2112;
-      v42 = v12;
+      v42 = serviceCopy;
       v43 = 2112;
-      v44 = v13;
+      v44 = iCopy;
       v45 = 2112;
       v46 = v18;
       v47 = 2112;
-      v48 = v14;
+      v48 = errorCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Sending id status changes %@ for service %@ URI %@ success %@ error %@", buf, 0x34u);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
-      v19 = v8 ? @"YES" : @"NO";
+      v19 = successCopy ? @"YES" : @"NO";
       MarcoLogMadridLevel();
       v30 = v19;
-      v31 = v14;
+      v31 = errorCopy;
       v28 = v32;
-      v29 = v13;
-      v27 = v33;
+      v29 = iCopy;
+      v27 = changesCopy;
       IMLogString();
       if (_IMWillLog())
       {
         v30 = v19;
-        v31 = v14;
+        v31 = errorCopy;
         v28 = v32;
-        v29 = v13;
-        v27 = v33;
+        v29 = iCopy;
+        v27 = changesCopy;
         _IMAlwaysLog();
       }
     }
@@ -2618,7 +2618,7 @@ LABEL_31:
           v22 = v25;
           if (v25)
           {
-            (v25)[2](v25, v33, v13, v32, v8, v14);
+            (v25)[2](v25, changesCopy, iCopy, v32, successCopy, errorCopy);
           }
         }
 
@@ -2650,15 +2650,15 @@ LABEL_31:
   }
 }
 
-- (void)addCompletionBlock:(id)a3 forUniqueIdentifier:(id)a4
+- (void)addCompletionBlock:(id)block forUniqueIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  blockCopy = block;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    if (v6)
+    if (blockCopy)
     {
-      v8 = [v6 copy];
+      v8 = [blockCopy copy];
       if (v8)
       {
         completionBlocks = self->_completionBlocks;
@@ -2672,7 +2672,7 @@ LABEL_31:
         }
 
         v12 = objc_retainBlock(v8);
-        [(NSMutableDictionary *)completionBlocks setObject:v12 forKey:v7];
+        [(NSMutableDictionary *)completionBlocks setObject:v12 forKey:identifierCopy];
       }
 
       v13 = OSLogHandleForIDSCategory();
@@ -2680,7 +2680,7 @@ LABEL_31:
       {
         v14 = self->_completionBlocks;
         *buf = 138412546;
-        v18 = v7;
+        v18 = identifierCopy;
         v19 = 2112;
         v20 = v14;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Completion block for uniqueID %@ added %@", buf, 0x16u);
@@ -2703,7 +2703,7 @@ LABEL_31:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v7;
+      v18 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Empty completion block for uniqueID %@", buf, 0xCu);
     }
 
@@ -2743,12 +2743,12 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)removeCompletionBlockForUniqueIdentifier:(id)a3
+- (void)removeCompletionBlockForUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    [(NSMutableDictionary *)self->_completionBlocks removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_completionBlocks removeObjectForKey:identifierCopy];
     if (![(NSMutableDictionary *)self->_completionBlocks count])
     {
       completionBlocks = self->_completionBlocks;
@@ -2759,7 +2759,7 @@ LABEL_23:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v9 = v4;
+      v9 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Removed completion block for uniqueID %@", buf, 0xCu);
     }
 
@@ -2816,8 +2816,8 @@ LABEL_13:
     }
   }
 
-  v4 = [(IDSIDStatusQueryController *)self peerIDManager];
-  [v4 deleteStatusCache];
+  peerIDManager = [(IDSIDStatusQueryController *)self peerIDManager];
+  [peerIDManager deleteStatusCache];
 }
 
 - (id)_plistFilePath
@@ -2847,18 +2847,18 @@ LABEL_13:
 
 - (id)_loadLegacyCache
 {
-  v2 = [(IDSIDStatusQueryController *)self _plistFilePath];
-  v3 = [[NSDictionary alloc] initWithContentsOfFile:v2];
+  _plistFilePath = [(IDSIDStatusQueryController *)self _plistFilePath];
+  v3 = [[NSDictionary alloc] initWithContentsOfFile:_plistFilePath];
 
   return v3;
 }
 
 - (void)_wipeLegacyCache
 {
-  v2 = [(IDSIDStatusQueryController *)self _plistFilePath];
+  _plistFilePath = [(IDSIDStatusQueryController *)self _plistFilePath];
   v3 = +[NSFileManager defaultManager];
   v6 = 0;
-  [v3 removeItemAtPath:v2 error:&v6];
+  [v3 removeItemAtPath:_plistFilePath error:&v6];
   v4 = v6;
 
   v5 = OSLogHandleForIDSCategory();

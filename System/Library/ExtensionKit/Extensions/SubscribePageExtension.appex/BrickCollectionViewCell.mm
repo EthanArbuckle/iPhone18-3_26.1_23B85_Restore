@@ -1,12 +1,12 @@
 @interface BrickCollectionViewCell
-- (_TtC22SubscribePageExtension23BrickCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension23BrickCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation BrickCollectionViewCell
 
-- (_TtC22SubscribePageExtension23BrickCollectionViewCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension23BrickCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension23BrickCollectionViewCell_itemLayoutContext;
   v5 = sub_1007469A4();
@@ -22,7 +22,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10032C700();
 }
 

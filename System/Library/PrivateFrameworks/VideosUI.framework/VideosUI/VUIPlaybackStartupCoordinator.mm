@@ -1,32 +1,32 @@
 @interface VUIPlaybackStartupCoordinator
-+ (id)identifierForMediaInfo:(id)a3;
-+ (id)startupCoordinatorWithMediaInfo:(id)a3 watchType:(int64_t)a4 isRentAndWatchNow:(BOOL)a5;
++ (id)identifierForMediaInfo:(id)info;
++ (id)startupCoordinatorWithMediaInfo:(id)info watchType:(int64_t)type isRentAndWatchNow:(BOOL)now;
 + (id)startupCoordinators;
 + (void)initialize;
 - (BOOL)_existingPlaybackSessionAllowsCellular;
-- (BOOL)_mediaItemIsBeingDownloadedAndDownloadAllowsCellular:(id)a3;
+- (BOOL)_mediaItemIsBeingDownloadedAndDownloadAllowsCellular:(id)cellular;
 - (BOOL)_metadataContainsAgeGate;
-- (BOOL)_shouldPromptForExpiredDownload:(id)a3;
-- (BOOL)_shouldWarnAboutRentalPlaybackQualityForRentalMediaItem:(id)a3;
-- (BOOL)_shouldWarnStartingRentalPlaybackWindowWithMediaItem:(id)a3;
-- (VUIPlaybackStartupCoordinator)initWithAdamID:(id)a3 watchType:(int64_t)a4 isRentAndWatchNow:(BOOL)a5 contentMetadata:(id)a6;
-- (VUIPlaybackStartupCoordinator)initWithCanonicalID:(id)a3 showCanonicalID:(id)a4 mediaType:(id)a5 watchType:(int64_t)a6 isRentAndWatchNow:(BOOL)a7 contentMetadata:(id)a8;
-- (VUIPlaybackStartupCoordinator)initWithMediaInfo:(id)a3 watchType:(int64_t)a4 isRentAndWatchNow:(BOOL)a5;
-- (id)_addQueryParamsToSharedWatchURL:(id)a3 watchType:(int64_t)a4 groupActivityDay:(id)a5;
-- (id)_descriptionForStartupAction:(int64_t)a3;
-- (id)_descriptionForWatchType:(int64_t)a3;
+- (BOOL)_shouldPromptForExpiredDownload:(id)download;
+- (BOOL)_shouldWarnAboutRentalPlaybackQualityForRentalMediaItem:(id)item;
+- (BOOL)_shouldWarnStartingRentalPlaybackWindowWithMediaItem:(id)item;
+- (VUIPlaybackStartupCoordinator)initWithAdamID:(id)d watchType:(int64_t)type isRentAndWatchNow:(BOOL)now contentMetadata:(id)metadata;
+- (VUIPlaybackStartupCoordinator)initWithCanonicalID:(id)d showCanonicalID:(id)iD mediaType:(id)type watchType:(int64_t)watchType isRentAndWatchNow:(BOOL)now contentMetadata:(id)metadata;
+- (VUIPlaybackStartupCoordinator)initWithMediaInfo:(id)info watchType:(int64_t)type isRentAndWatchNow:(BOOL)now;
+- (id)_addQueryParamsToSharedWatchURL:(id)l watchType:(int64_t)type groupActivityDay:(id)day;
+- (id)_descriptionForStartupAction:(int64_t)action;
+- (id)_descriptionForWatchType:(int64_t)type;
 - (id)makeDownloadStreamedForCoWatchingWarningNotificationOptions;
-- (void)_addGroupActivityDayParamToPlayableAndMediaItem:(id)a3;
-- (void)_checkIfAllowedToPlayOnCellularNetworkWithMediaItem:(id)a3 presentingController:(id)a4 completion:(id)a5;
-- (void)_performRatingAndAgeVerificationWithMediaItem:(id)a3 presentingController:(id)a4 completion:(id)a5;
-- (void)_preflightPlaybackWithPlaylist:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5;
-- (void)_presentCantPlaybackOverCellularAlertControllerWithMediaItem:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5;
-- (void)_presentStartingPlaybackWindowWarningWithRentalMediaItem:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5;
+- (void)_addGroupActivityDayParamToPlayableAndMediaItem:(id)item;
+- (void)_checkIfAllowedToPlayOnCellularNetworkWithMediaItem:(id)item presentingController:(id)controller completion:(id)completion;
+- (void)_performRatingAndAgeVerificationWithMediaItem:(id)item presentingController:(id)controller completion:(id)completion;
+- (void)_preflightPlaybackWithPlaylist:(id)playlist presentingViewController:(id)controller completionHandler:(id)handler;
+- (void)_presentCantPlaybackOverCellularAlertControllerWithMediaItem:(id)item presentingViewController:(id)controller completionHandler:(id)handler;
+- (void)_presentStartingPlaybackWindowWarningWithRentalMediaItem:(id)item presentingViewController:(id)controller completionHandler:(id)handler;
 - (void)_registerStateMachineHandlers;
-- (void)_showAlertControllerForExpirationPromptForDownload:(id)a3 presentingViewController:(id)a4;
-- (void)_showCellularPlaybackQualityOptionsForRentalMediaItem:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5;
+- (void)_showAlertControllerForExpirationPromptForDownload:(id)download presentingViewController:(id)controller;
+- (void)_showCellularPlaybackQualityOptionsForRentalMediaItem:(id)item presentingViewController:(id)controller completionHandler:(id)handler;
 - (void)dealloc;
-- (void)performPlaybackStartupFlowWithCompletion:(id)a3;
+- (void)performPlaybackStartupFlowWithCompletion:(id)completion;
 @end
 
 @implementation VUIPlaybackStartupCoordinator
@@ -65,58 +65,58 @@ void __52__VUIPlaybackStartupCoordinator_startupCoordinators__block_invoke()
   startupCoordinators___coordinators = v0;
 }
 
-+ (id)identifierForMediaInfo:(id)a3
++ (id)identifierForMediaInfo:(id)info
 {
-  v3 = [a3 tvpPlaylist];
-  v4 = [v3 currentMediaItem];
+  tvpPlaylist = [info tvpPlaylist];
+  currentMediaItem = [tvpPlaylist currentMediaItem];
 
-  v5 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
-  if (v5 || ([v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  v5 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
+  if (v5 || ([currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v6 = v5;
+    absoluteString = v5;
   }
 
   else
   {
-    v8 = [v4 mediaItemURL];
-    v6 = [v8 absoluteString];
+    mediaItemURL = [currentMediaItem mediaItemURL];
+    absoluteString = [mediaItemURL absoluteString];
   }
 
-  return v6;
+  return absoluteString;
 }
 
-+ (id)startupCoordinatorWithMediaInfo:(id)a3 watchType:(int64_t)a4 isRentAndWatchNow:(BOOL)a5
++ (id)startupCoordinatorWithMediaInfo:(id)info watchType:(int64_t)type isRentAndWatchNow:(BOOL)now
 {
-  v8 = a3;
+  infoCopy = info;
   v24 = MEMORY[0x1E69E9820];
   v25 = 3221225472;
   v26 = __93__VUIPlaybackStartupCoordinator_startupCoordinatorWithMediaInfo_watchType_isRentAndWatchNow___block_invoke;
   v27 = &unk_1E8734030;
-  v9 = v8;
+  v9 = infoCopy;
   v28 = v9;
-  v29 = a4;
-  v31 = a5;
-  v30 = a1;
+  typeCopy = type;
+  nowCopy = now;
+  selfCopy = self;
   v10 = _Block_copy(&v24);
-  v11 = [a1 identifierForMediaInfo:{v9, v24, v25, v26, v27}];
-  if ([v11 length] && (objc_msgSend(a1, "startupCoordinators"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "objectForKey:", v11), v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
+  v11 = [self identifierForMediaInfo:{v9, v24, v25, v26, v27}];
+  if ([v11 length] && (objc_msgSend(self, "startupCoordinators"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "objectForKey:", v11), v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
   {
-    v14 = [a1 startupCoordinators];
-    v15 = [v14 objectForKey:v11];
+    startupCoordinators = [self startupCoordinators];
+    v15 = [startupCoordinators objectForKey:v11];
 
-    v16 = [v15 alertController];
-    if (v16 && (v17 = v16, [v15 alertController], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "vui_isPresented"), v18, v17, (v19 & 1) == 0))
+    alertController = [v15 alertController];
+    if (alertController && (v17 = alertController, [v15 alertController], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "vui_isPresented"), v18, v17, (v19 & 1) == 0))
     {
-      v22 = [v15 stateMachine];
-      [v22 postEvent:@"Preflight cancelled"];
+      stateMachine = [v15 stateMachine];
+      [stateMachine postEvent:@"Preflight cancelled"];
 
       v21 = v10[2](v10, v11);
     }
 
     else
     {
-      v20 = [a1 startupCoordinators];
-      v21 = [v20 objectForKey:v11];
+      startupCoordinators2 = [self startupCoordinators];
+      v21 = [startupCoordinators2 objectForKey:v11];
     }
   }
 
@@ -141,18 +141,18 @@ VUIPlaybackStartupCoordinator *__93__VUIPlaybackStartupCoordinator_startupCoordi
   return v4;
 }
 
-- (VUIPlaybackStartupCoordinator)initWithMediaInfo:(id)a3 watchType:(int64_t)a4 isRentAndWatchNow:(BOOL)a5
+- (VUIPlaybackStartupCoordinator)initWithMediaInfo:(id)info watchType:(int64_t)type isRentAndWatchNow:(BOOL)now
 {
-  v9 = a3;
+  infoCopy = info;
   v19.receiver = self;
   v19.super_class = VUIPlaybackStartupCoordinator;
   v10 = [(VUIPlaybackStartupCoordinator *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_mediaInfo, a3);
-    v11->_watchType = a4;
-    v11->_isRentAndWatchNow = a5;
+    objc_storeStrong(&v10->_mediaInfo, info);
+    v11->_watchType = type;
+    v11->_isRentAndWatchNow = now;
     v12 = objc_alloc(MEMORY[0x1E696AD60]);
     v13 = objc_opt_class();
     v14 = initWithMediaInfo_watchType_isRentAndWatchNow__instanceNumber++;
@@ -170,20 +170,20 @@ VUIPlaybackStartupCoordinator *__93__VUIPlaybackStartupCoordinator_startupCoordi
   return v11;
 }
 
-- (VUIPlaybackStartupCoordinator)initWithAdamID:(id)a3 watchType:(int64_t)a4 isRentAndWatchNow:(BOOL)a5 contentMetadata:(id)a6
+- (VUIPlaybackStartupCoordinator)initWithAdamID:(id)d watchType:(int64_t)type isRentAndWatchNow:(BOOL)now contentMetadata:(id)metadata
 {
-  v11 = a3;
-  v12 = a6;
+  dCopy = d;
+  metadataCopy = metadata;
   v22.receiver = self;
   v22.super_class = VUIPlaybackStartupCoordinator;
   v13 = [(VUIPlaybackStartupCoordinator *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_adamID, a3);
-    v14->_watchType = a4;
-    v14->_isRentAndWatchNow = a5;
-    objc_storeStrong(&v14->_contentMetadata, a6);
+    objc_storeStrong(&v13->_adamID, d);
+    v14->_watchType = type;
+    v14->_isRentAndWatchNow = now;
+    objc_storeStrong(&v14->_contentMetadata, metadata);
     v15 = objc_alloc(MEMORY[0x1E696AD60]);
     v16 = objc_opt_class();
     v17 = initWithAdamID_watchType_isRentAndWatchNow_contentMetadata__instanceNumber++;
@@ -200,24 +200,24 @@ VUIPlaybackStartupCoordinator *__93__VUIPlaybackStartupCoordinator_startupCoordi
   return v14;
 }
 
-- (VUIPlaybackStartupCoordinator)initWithCanonicalID:(id)a3 showCanonicalID:(id)a4 mediaType:(id)a5 watchType:(int64_t)a6 isRentAndWatchNow:(BOOL)a7 contentMetadata:(id)a8
+- (VUIPlaybackStartupCoordinator)initWithCanonicalID:(id)d showCanonicalID:(id)iD mediaType:(id)type watchType:(int64_t)watchType isRentAndWatchNow:(BOOL)now contentMetadata:(id)metadata
 {
-  v27 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  dCopy = d;
+  iDCopy = iD;
+  typeCopy = type;
+  metadataCopy = metadata;
   v28.receiver = self;
   v28.super_class = VUIPlaybackStartupCoordinator;
   v18 = [(VUIPlaybackStartupCoordinator *)&v28 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_videoCanonicalID, a3);
-    objc_storeStrong(&v19->_showCanonicalID, a4);
-    objc_storeStrong(&v19->_mediaType, a5);
-    v19->_watchType = a6;
-    v19->_isRentAndWatchNow = a7;
-    objc_storeStrong(&v19->_contentMetadata, a8);
+    objc_storeStrong(&v18->_videoCanonicalID, d);
+    objc_storeStrong(&v19->_showCanonicalID, iD);
+    objc_storeStrong(&v19->_mediaType, type);
+    v19->_watchType = watchType;
+    v19->_isRentAndWatchNow = now;
+    objc_storeStrong(&v19->_contentMetadata, metadata);
     v20 = objc_alloc(MEMORY[0x1E696AD60]);
     v21 = objc_opt_class();
     v22 = initWithCanonicalID_showCanonicalID_mediaType_watchType_isRentAndWatchNow_contentMetadata__instanceNumber++;
@@ -248,22 +248,22 @@ VUIPlaybackStartupCoordinator *__93__VUIPlaybackStartupCoordinator_startupCoordi
   [(VUIPlaybackStartupCoordinator *)&v4 dealloc];
 }
 
-- (void)performPlaybackStartupFlowWithCompletion:(id)a3
+- (void)performPlaybackStartupFlowWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
-  v5 = _Block_copy(v4);
+  completionCopy = completion;
+  stateMachine = [(VUIPlaybackStartupCoordinator *)self stateMachine];
+  v5 = _Block_copy(completionCopy);
 
-  [v6 postEvent:@"Start" withContext:v5 userInfo:0];
+  [stateMachine postEvent:@"Start" withContext:v5 userInfo:0];
 }
 
 - (BOOL)_metadataContainsAgeGate
 {
-  v3 = [(VUIPlaybackStartupCoordinator *)self contentMetadata];
-  v4 = [v3 vui_numberForKey:@"requiredAgeForPlayback"];
+  contentMetadata = [(VUIPlaybackStartupCoordinator *)self contentMetadata];
+  v4 = [contentMetadata vui_numberForKey:@"requiredAgeForPlayback"];
 
-  v5 = [(VUIPlaybackStartupCoordinator *)self contentMetadata];
-  v6 = [v5 vui_numberForKey:@"frequencyOfAgeConfirmation"];
+  contentMetadata2 = [(VUIPlaybackStartupCoordinator *)self contentMetadata];
+  v6 = [contentMetadata2 vui_numberForKey:@"frequencyOfAgeConfirmation"];
 
   if (v4)
   {
@@ -280,61 +280,61 @@ VUIPlaybackStartupCoordinator *__93__VUIPlaybackStartupCoordinator_startupCoordi
   return v8;
 }
 
-- (id)_descriptionForWatchType:(int64_t)a3
+- (id)_descriptionForWatchType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E87345B8[a3];
+    return off_1E87345B8[type];
   }
 }
 
-- (id)_descriptionForStartupAction:(int64_t)a3
+- (id)_descriptionForStartupAction:(int64_t)action
 {
-  if (a3 > 3)
+  if (action > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E87345E0[a3];
+    return off_1E87345E0[action];
   }
 }
 
-- (id)_addQueryParamsToSharedWatchURL:(id)a3 watchType:(int64_t)a4 groupActivityDay:(id)a5
+- (id)_addQueryParamsToSharedWatchURL:(id)l watchType:(int64_t)type groupActivityDay:(id)day
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = v7;
+  lCopy = l;
+  dayCopy = day;
+  v9 = lCopy;
   v10 = v9;
   v11 = v9;
-  if (a4 <= 4)
+  if (type <= 4)
   {
     v11 = v9;
-    if (((1 << a4) & 0x19) != 0)
+    if (((1 << type) & 0x19) != 0)
     {
       v11 = v9;
-      if ([v8 length])
+      if ([dayCopy length])
       {
-        v11 = [v10 vui_URLByAddingQueryParamWithName:@"groupActivityDay" value:v8];
+        v11 = [v10 vui_URLByAddingQueryParamWithName:@"groupActivityDay" value:dayCopy];
       }
     }
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
     v12 = @"true";
   }
 
   else
   {
-    if (a4 != 4)
+    if (type != 4)
     {
       goto LABEL_10;
     }
@@ -358,39 +358,39 @@ LABEL_10:
   return v11;
 }
 
-- (void)_addGroupActivityDayParamToPlayableAndMediaItem:(id)a3
+- (void)_addGroupActivityDayParamToPlayableAndMediaItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v5 = [(VUIPlaybackStartupCoordinator *)self resolvedPlayable];
-    if (v5)
+    resolvedPlayable = [(VUIPlaybackStartupCoordinator *)self resolvedPlayable];
+    if (resolvedPlayable)
     {
-      v6 = v5;
+      firstObject = resolvedPlayable;
     }
 
     else
     {
-      v7 = [(VUIPlaybackStartupCoordinator *)self mediaInfo];
-      v8 = [v7 videosPlayables];
-      v6 = [v8 firstObject];
+      mediaInfo = [(VUIPlaybackStartupCoordinator *)self mediaInfo];
+      videosPlayables = [mediaInfo videosPlayables];
+      firstObject = [videosPlayables firstObject];
 
-      if (!v6)
+      if (!firstObject)
       {
 LABEL_8:
-        v11 = [(VUIPlaybackStartupCoordinator *)self mediaInfo];
-        v12 = [v11 tvpPlaylist];
-        v13 = [v12 currentMediaItem];
+        mediaInfo2 = [(VUIPlaybackStartupCoordinator *)self mediaInfo];
+        tvpPlaylist = [mediaInfo2 tvpPlaylist];
+        currentMediaItem = [tvpPlaylist currentMediaItem];
 
-        [v13 setMediaItemMetadata:v4 forProperty:@"VUIMediaItemMetadataKeyGroupActivityDay"];
+        [currentMediaItem setMediaItemMetadata:itemCopy forProperty:@"VUIMediaItemMetadataKeyGroupActivityDay"];
         goto LABEL_9;
       }
     }
 
-    v9 = [v6 hlsURL];
-    v10 = [v9 vui_URLByAddingQueryParamWithName:@"groupActivityDay" value:v4];
+    hlsURL = [firstObject hlsURL];
+    v10 = [hlsURL vui_URLByAddingQueryParamWithName:@"groupActivityDay" value:itemCopy];
 
-    [v6 setHlsURL:v10];
+    [firstObject setHlsURL:v10];
     goto LABEL_8;
   }
 
@@ -515,7 +515,7 @@ LABEL_9:
   v108[3] = &unk_1E87342C8;
   objc_copyWeak(&v109, location);
   v23 = _Block_copy(v108);
-  v24 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
+  stateMachine = [(VUIPlaybackStartupCoordinator *)self stateMachine];
   v100[0] = MEMORY[0x1E69E9820];
   v100[1] = 3221225472;
   v100[2] = __62__VUIPlaybackStartupCoordinator__registerStateMachineHandlers__block_invoke_3_304;
@@ -533,12 +533,12 @@ LABEL_9:
   v105 = v57;
   v28 = v18;
   v106 = v28;
-  [v24 registerHandlerForEvent:@"Start" onState:@"Waiting to start" withBlock:v100];
+  [stateMachine registerHandlerForEvent:@"Start" onState:@"Waiting to start" withBlock:v100];
 
-  v29 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
-  [v29 registerDefaultHandlerForEvent:@"Start" withBlock:&__block_literal_global_308];
+  stateMachine2 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
+  [stateMachine2 registerDefaultHandlerForEvent:@"Start" withBlock:&__block_literal_global_308];
 
-  v30 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
+  stateMachine3 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
   v92[0] = MEMORY[0x1E69E9820];
   v92[1] = 3221225472;
   v92[2] = __62__VUIPlaybackStartupCoordinator__registerStateMachineHandlers__block_invoke_2_310;
@@ -556,9 +556,9 @@ LABEL_9:
   v97 = v34;
   v35 = v19;
   v98 = v35;
-  [v30 registerHandlerForEvent:@"Attempt to start co-watching complete" onState:@"Attempting to start co-watching" withBlock:v92];
+  [stateMachine3 registerHandlerForEvent:@"Attempt to start co-watching complete" onState:@"Attempting to start co-watching" withBlock:v92];
 
-  v36 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
+  stateMachine4 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
   v89[0] = MEMORY[0x1E69E9820];
   v89[1] = 3221225472;
   v89[2] = __62__VUIPlaybackStartupCoordinator__registerStateMachineHandlers__block_invoke_311;
@@ -566,9 +566,9 @@ LABEL_9:
   objc_copyWeak(&v91, location);
   v37 = v35;
   v90 = v37;
-  [v36 registerHandlerForEvent:@"Co-watch session handling complete" onState:@"Waiting for co-watch session to be handled" withBlock:v89];
+  [stateMachine4 registerHandlerForEvent:@"Co-watch session handling complete" onState:@"Waiting for co-watch session to be handled" withBlock:v89];
 
-  v38 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
+  stateMachine5 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
   v83[0] = MEMORY[0x1E69E9820];
   v83[1] = 3221225472;
   v83[2] = __62__VUIPlaybackStartupCoordinator__registerStateMachineHandlers__block_invoke_318;
@@ -582,9 +582,9 @@ LABEL_9:
   v86 = v40;
   v41 = v37;
   v87 = v41;
-  [v38 registerHandlerForEvent:@"Share URL resolution complete" onState:@"Waiting for share URL for be resolved" withBlock:v83];
+  [stateMachine5 registerHandlerForEvent:@"Share URL resolution complete" onState:@"Waiting for share URL for be resolved" withBlock:v83];
 
-  v42 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
+  stateMachine6 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
   v80[0] = MEMORY[0x1E69E9820];
   v80[1] = 3221225472;
   v80[2] = __62__VUIPlaybackStartupCoordinator__registerStateMachineHandlers__block_invoke_320;
@@ -592,9 +592,9 @@ LABEL_9:
   objc_copyWeak(&v82, location);
   v43 = v34;
   v81 = v43;
-  [v42 registerHandlerForEvent:@"Watch alone button pressed" onState:@"Asking whether to watch alone or cancel due to content being unavailable" withBlock:v80];
+  [stateMachine6 registerHandlerForEvent:@"Watch alone button pressed" onState:@"Asking whether to watch alone or cancel due to content being unavailable" withBlock:v80];
 
-  v44 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
+  stateMachine7 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
   v77[0] = MEMORY[0x1E69E9820];
   v77[1] = 3221225472;
   v77[2] = __62__VUIPlaybackStartupCoordinator__registerStateMachineHandlers__block_invoke_321;
@@ -602,9 +602,9 @@ LABEL_9:
   objc_copyWeak(&v79, location);
   v45 = v41;
   v78 = v45;
-  [v44 registerHandlerForEvent:@"Watch cancel button pressed" onState:@"Asking whether to watch alone or cancel due to content being unavailable" withBlock:v77];
+  [stateMachine7 registerHandlerForEvent:@"Watch cancel button pressed" onState:@"Asking whether to watch alone or cancel due to content being unavailable" withBlock:v77];
 
-  v46 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
+  stateMachine8 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
   v72[0] = MEMORY[0x1E69E9820];
   v72[1] = 3221225472;
   v72[2] = __62__VUIPlaybackStartupCoordinator__registerStateMachineHandlers__block_invoke_322;
@@ -616,10 +616,10 @@ LABEL_9:
   v74 = v48;
   v49 = v62;
   v75 = v49;
-  [v46 registerHandlerForEvent:@"Preflight complete" onState:@"Performing preflight" withBlock:v72];
+  [stateMachine8 registerHandlerForEvent:@"Preflight complete" onState:@"Performing preflight" withBlock:v72];
   v64 = v33;
 
-  v50 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
+  stateMachine9 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
   v68[0] = MEMORY[0x1E69E9820];
   v68[1] = 3221225472;
   v68[2] = __62__VUIPlaybackStartupCoordinator__registerStateMachineHandlers__block_invoke_2_324;
@@ -629,16 +629,16 @@ LABEL_9:
   v69 = v51;
   v52 = v49;
   v70 = v52;
-  [v50 registerHandlerForEvent:@"Route selection complete" onState:@"Performing route selection" withBlock:v68];
+  [stateMachine9 registerHandlerForEvent:@"Route selection complete" onState:@"Performing route selection" withBlock:v68];
 
-  v53 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
+  stateMachine10 = [(VUIPlaybackStartupCoordinator *)self stateMachine];
   v66[0] = MEMORY[0x1E69E9820];
   v66[1] = 3221225472;
   v66[2] = __62__VUIPlaybackStartupCoordinator__registerStateMachineHandlers__block_invoke_3_325;
   v66[3] = &unk_1E8730120;
   v54 = v51;
   v67 = v54;
-  [v53 registerDefaultHandlerForEvent:@"Preflight cancelled" withBlock:v66];
+  [stateMachine10 registerDefaultHandlerForEvent:@"Preflight cancelled" withBlock:v66];
 
   objc_destroyWeak(&v71);
   objc_destroyWeak(&v76);
@@ -2803,23 +2803,23 @@ LABEL_7:
   return v10;
 }
 
-- (void)_preflightPlaybackWithPlaylist:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5
+- (void)_preflightPlaybackWithPlaylist:(id)playlist presentingViewController:(id)controller completionHandler:(id)handler
 {
   v58 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v40 = a4;
-  v9 = a5;
+  playlistCopy = playlist;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v10 = +[VUIPlaybackManager sharedInstance];
-  v11 = [v10 isPlaylistBeingPresented:v8];
+  v11 = [v10 isPlaylistBeingPresented:playlistCopy];
 
   if (!v11)
   {
-    v14 = [v8 currentMediaItem];
+    currentMediaItem = [playlistCopy currentMediaItem];
     v15 = sLogObject_18;
     if (os_log_type_enabled(sLogObject_18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v55 = v14;
+      v55 = currentMediaItem;
       _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_DEFAULT, "Performing preflight for media item %@", buf, 0xCu);
     }
 
@@ -2829,31 +2829,31 @@ LABEL_7:
     aBlock[2] = __107__VUIPlaybackStartupCoordinator__preflightPlaybackWithPlaylist_presentingViewController_completionHandler___block_invoke;
     aBlock[3] = &unk_1E87344F8;
     objc_copyWeak(&v52, &location);
-    v13 = v14;
+    v13 = currentMediaItem;
     v49 = v13;
-    v38 = v40;
+    v38 = controllerCopy;
     v50 = v38;
-    v51 = v9;
+    v51 = handlerCopy;
     v16 = _Block_copy(aBlock);
     v17 = +[VUIPlaybackManager sharedInstance];
-    v18 = [v17 currentMediaItem];
+    currentMediaItem2 = [v17 currentMediaItem];
 
-    v19 = [(VUIPlaybackStartupCoordinator *)self _existingPlaybackSessionAllowsCellular];
-    if (v19)
+    _existingPlaybackSessionAllowsCellular = [(VUIPlaybackStartupCoordinator *)self _existingPlaybackSessionAllowsCellular];
+    if (_existingPlaybackSessionAllowsCellular)
     {
-      v39 = 1;
+      cellularDataPlaybackEnabled = 1;
     }
 
     else
     {
       v20 = +[VUIPlaybackSettings sharedSettings];
-      v39 = [v20 cellularDataPlaybackEnabled];
+      cellularDataPlaybackEnabled = [v20 cellularDataPlaybackEnabled];
     }
 
     v21 = sLogObject_18;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      if (v19)
+      if (_existingPlaybackSessionAllowsCellular)
       {
         v22 = @"YES";
       }
@@ -2883,7 +2883,7 @@ LABEL_7:
       v13 = v37;
     }
 
-    if (v18 && [v18 isEqualToMediaItem:v13])
+    if (currentMediaItem2 && [currentMediaItem2 isEqualToMediaItem:v13])
     {
       goto LABEL_36;
     }
@@ -2904,9 +2904,9 @@ LABEL_7:
     if ([(VUIPlaybackStartupCoordinator *)self _shouldPromptForExpiredDownload:v13])
     {
       v27 = [(__CFString *)v13 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C68]];
-      v28 = [v27 intValue];
+      intValue = [v27 intValue];
 
-      if (v28 != 2)
+      if (intValue != 2)
       {
         [(VUIPlaybackStartupCoordinator *)self _showAlertControllerForExpirationPromptForDownload:v13 presentingViewController:v38];
       }
@@ -2928,7 +2928,7 @@ LABEL_7:
       if (!os_log_type_enabled(sLogObject_18, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_36:
-        (*(v16 + 2))(v16, 1, v39);
+        (*(v16 + 2))(v16, 1, cellularDataPlaybackEnabled);
 LABEL_37:
 
         objc_destroyWeak(&v52);
@@ -3008,7 +3008,7 @@ LABEL_37:
   }
 
   v13 = +[VUIPlaybackManager sharedInstance];
-  (*(v9 + 2))(v9, 1, [(__CFString *)v13 currentPlaylistAllowsCellular]);
+  (*(handlerCopy + 2))(handlerCopy, 1, [(__CFString *)v13 currentPlaylistAllowsCellular]);
 LABEL_38:
 }
 
@@ -3223,13 +3223,13 @@ uint64_t __107__VUIPlaybackStartupCoordinator__preflightPlaybackWithPlaylist_pre
   return v10();
 }
 
-- (BOOL)_shouldWarnStartingRentalPlaybackWindowWithMediaItem:(id)a3
+- (BOOL)_shouldWarnStartingRentalPlaybackWindowWithMediaItem:(id)item
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 hasTrait:*MEMORY[0x1E69D5E60]])
+  itemCopy = item;
+  if ([itemCopy hasTrait:*MEMORY[0x1E69D5E60]])
   {
-    v4 = [v3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CF8]];
+    v4 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5CF8]];
     if (v4)
     {
       v5 = sLogObject_18;
@@ -3244,8 +3244,8 @@ uint64_t __107__VUIPlaybackStartupCoordinator__preflightPlaybackWithPlaylist_pre
       goto LABEL_22;
     }
 
-    v7 = [v3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CE0]];
-    v8 = [v3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CF0]];
+    v7 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5CE0]];
+    v8 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5CF0]];
     v9 = v8;
     if (v7)
     {
@@ -3271,8 +3271,8 @@ LABEL_19:
 
     else
     {
-      v12 = [MEMORY[0x1E695DF00] date];
-      [v7 timeIntervalSinceDate:v12];
+      date = [MEMORY[0x1E695DF00] date];
+      [v7 timeIntervalSinceDate:date];
       v14 = v13;
 
       [v9 doubleValue];
@@ -3317,12 +3317,12 @@ LABEL_23:
   return v6;
 }
 
-- (void)_presentStartingPlaybackWindowWarningWithRentalMediaItem:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5
+- (void)_presentStartingPlaybackWindowWarningWithRentalMediaItem:(id)item presentingViewController:(id)controller completionHandler:(id)handler
 {
   v39[2] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v33 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  controllerCopy = controller;
+  itemCopy = item;
   v9 = +[VUIApplicationRouter topPresentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -3336,7 +3336,7 @@ LABEL_23:
   v12 = MEMORY[0x1E696AEC0];
   v13 = +[VUILocalizationManager sharedInstance];
   v14 = [v13 localizedStringForKey:@"RENTAL_PLAYBACK_WINDOW_WARNING_TITLE_FORMAT"];
-  v15 = [v8 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
+  v15 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
 
   v31 = [v12 stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@" error:0, v15];
 
@@ -3348,8 +3348,8 @@ LABEL_23:
   v38[0] = *MEMORY[0x1E69DB648];
   v38[1] = v18;
   v39[0] = v17;
-  v19 = [MEMORY[0x1E69DC888] systemGrayColor];
-  v39[1] = v19;
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  v39[1] = systemGrayColor;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
 
   v21 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v32 attributes:v20];
@@ -3361,7 +3361,7 @@ LABEL_23:
   v36[1] = 3221225472;
   v36[2] = __133__VUIPlaybackStartupCoordinator__presentStartingPlaybackWindowWarningWithRentalMediaItem_presentingViewController_completionHandler___block_invoke;
   v36[3] = &unk_1E8732FF8;
-  v25 = v7;
+  v25 = handlerCopy;
   v37 = v25;
   v26 = [VUIAlertAction vui_actionWithTitle:v24 style:0 handler:v36];
   [v22 vui_addAction:v26];
@@ -3377,14 +3377,14 @@ LABEL_23:
   v30 = [VUIAlertAction vui_actionWithTitle:v28 style:1 handler:v34];
   [v22 vui_addAction:v30];
 
-  [v22 vui_presentAlertFromPresentingController:v33 animated:1 completion:0];
+  [v22 vui_presentAlertFromPresentingController:controllerCopy animated:1 completion:0];
 }
 
-- (void)_presentCantPlaybackOverCellularAlertControllerWithMediaItem:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5
+- (void)_presentCantPlaybackOverCellularAlertControllerWithMediaItem:(id)item presentingViewController:(id)controller completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  controllerCopy = controller;
+  itemCopy = item;
   v10 = MGGetBoolAnswer();
   v11 = +[VUILocalizationManager sharedInstance];
   v12 = v11;
@@ -3400,7 +3400,7 @@ LABEL_23:
 
   v14 = [v11 localizedStringForKey:v13];
 
-  v15 = [v9 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
+  v15 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
 
   if (![v15 isEqualToString:*MEMORY[0x1E69D5ED0]])
   {
@@ -3410,8 +3410,8 @@ LABEL_23:
     }
 
 LABEL_10:
-    v19 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
-    v20 = [v19 localizedStringForKey:@"CANT_PLAYBACK_OVER_CELLULAR_NETWORK_ERROR_TITLE" value:0 table:@"VideosUIEmbedded"];
+    vui_videosUIBundle = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
+    v20 = [vui_videosUIBundle localizedStringForKey:@"CANT_PLAYBACK_OVER_CELLULAR_NETWORK_ERROR_TITLE" value:0 table:@"VideosUIEmbedded"];
     goto LABEL_11;
   }
 
@@ -3429,8 +3429,8 @@ LABEL_10:
 
   v14 = v18;
 LABEL_8:
-  v19 = +[VUILocalizationManager sharedInstance];
-  v20 = [v19 localizedStringForKey:@"CANT_PLAYBACK_OVER_WLAN_ERROR_TITLE"];
+  vui_videosUIBundle = +[VUILocalizationManager sharedInstance];
+  v20 = [vui_videosUIBundle localizedStringForKey:@"CANT_PLAYBACK_OVER_WLAN_ERROR_TITLE"];
 LABEL_11:
   v22 = v20;
 
@@ -3441,12 +3441,12 @@ LABEL_11:
   v28[1] = 3221225472;
   v28[2] = __137__VUIPlaybackStartupCoordinator__presentCantPlaybackOverCellularAlertControllerWithMediaItem_presentingViewController_completionHandler___block_invoke;
   v28[3] = &unk_1E8732FF8;
-  v29 = v7;
-  v26 = v7;
+  v29 = handlerCopy;
+  v26 = handlerCopy;
   v27 = [VUIAlertAction vui_actionWithTitle:v25 style:0 handler:v28];
   [v23 vui_addAction:v27];
 
-  [v23 vui_presentAlertFromPresentingController:v8 animated:1 completion:0];
+  [v23 vui_presentAlertFromPresentingController:controllerCopy animated:1 completion:0];
 }
 
 uint64_t __137__VUIPlaybackStartupCoordinator__presentCantPlaybackOverCellularAlertControllerWithMediaItem_presentingViewController_completionHandler___block_invoke(uint64_t a1)
@@ -3460,21 +3460,21 @@ uint64_t __137__VUIPlaybackStartupCoordinator__presentCantPlaybackOverCellularAl
   return result;
 }
 
-- (void)_showCellularPlaybackQualityOptionsForRentalMediaItem:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5
+- (void)_showCellularPlaybackQualityOptionsForRentalMediaItem:(id)item presentingViewController:(id)controller completionHandler:(id)handler
 {
-  v7 = a5;
-  v28 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  controllerCopy = controller;
+  itemCopy = item;
   v9 = +[VUILocalizationManager sharedInstance];
   v29 = [v9 localizedStringForKey:@"WATCH_RENTAL_IN_HD_TITLE_FORMAT"];
 
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [v8 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
+  v11 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
 
   v12 = [v10 stringWithValidatedFormat:v29 validFormatSpecifiers:@"%@" error:0, v11];
 
-  v13 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
-  v14 = [v13 localizedStringForKey:@"WATCH_RENTAL_IN_HD_DESCRIPTION" value:0 table:@"VideosUIEmbedded"];
+  vui_videosUIBundle = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
+  v14 = [vui_videosUIBundle localizedStringForKey:@"WATCH_RENTAL_IN_HD_DESCRIPTION" value:0 table:@"VideosUIEmbedded"];
 
   v15 = [VUIAlertController vui_alertControllerWithTitle:v12 message:v14 preferredStyle:1];
   v16 = +[VUILocalizationManager sharedInstance];
@@ -3483,7 +3483,7 @@ uint64_t __137__VUIPlaybackStartupCoordinator__presentCantPlaybackOverCellularAl
   v34[1] = 3221225472;
   v34[2] = __130__VUIPlaybackStartupCoordinator__showCellularPlaybackQualityOptionsForRentalMediaItem_presentingViewController_completionHandler___block_invoke;
   v34[3] = &unk_1E8732FF8;
-  v18 = v7;
+  v18 = handlerCopy;
   v35 = v18;
   v19 = [VUIAlertAction vui_actionWithTitle:v17 style:0 handler:v34];
   [v15 vui_addAction:v19];
@@ -3510,26 +3510,26 @@ uint64_t __137__VUIPlaybackStartupCoordinator__presentCantPlaybackOverCellularAl
   v27 = [VUIAlertAction vui_actionWithTitle:v25 style:1 handler:v30];
   [v15 vui_addAction:v27];
 
-  [v15 vui_presentAlertFromPresentingController:v28 animated:1 completion:0];
+  [v15 vui_presentAlertFromPresentingController:controllerCopy animated:1 completion:0];
 }
 
-- (void)_performRatingAndAgeVerificationWithMediaItem:(id)a3 presentingController:(id)a4 completion:(id)a5
+- (void)_performRatingAndAgeVerificationWithMediaItem:(id)item presentingController:(id)controller completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  itemCopy = item;
+  controllerCopy = controller;
+  completionCopy = completion;
   if (+[VUITVExtension isRunningInCompanionApp])
   {
-    v9[2](v9, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
   {
     v10 = +[VUIPreflightManager defaultPreflightManager];
-    [v10 setPresentingController:v8];
-    [v10 setMediaItem:v7];
+    [v10 setPresentingController:controllerCopy];
+    [v10 setMediaItem:itemCopy];
     [v10 setRestrictionsCheckType:0];
-    if ([v7 hasTrait:*MEMORY[0x1E69D5E58]] && (+[VUIAgeVerification sharedInstance](VUIAgeVerification, "sharedInstance"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isAgeVerificationEnabled"), v11, (v12 & 1) != 0))
+    if ([itemCopy hasTrait:*MEMORY[0x1E69D5E58]] && (+[VUIAgeVerification sharedInstance](VUIAgeVerification, "sharedInstance"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isAgeVerificationEnabled"), v11, (v12 & 1) != 0))
     {
       v13 = 1;
     }
@@ -3543,7 +3543,7 @@ uint64_t __137__VUIPlaybackStartupCoordinator__presentCantPlaybackOverCellularAl
     v14[1] = 3221225472;
     v14[2] = __111__VUIPlaybackStartupCoordinator__performRatingAndAgeVerificationWithMediaItem_presentingController_completion___block_invoke;
     v14[3] = &unk_1E8734570;
-    v15 = v9;
+    v15 = completionCopy;
     [v10 preflightWithOptions:v13 completion:v14];
   }
 }
@@ -3559,21 +3559,21 @@ uint64_t __111__VUIPlaybackStartupCoordinator__performRatingAndAgeVerificationWi
   return result;
 }
 
-- (BOOL)_shouldWarnAboutRentalPlaybackQualityForRentalMediaItem:(id)a3
+- (BOOL)_shouldWarnAboutRentalPlaybackQualityForRentalMediaItem:(id)item
 {
   v3 = *MEMORY[0x1E69D5E60];
-  v4 = a3;
-  LODWORD(v3) = [v4 hasTrait:v3];
+  itemCopy = item;
+  LODWORD(v3) = [itemCopy hasTrait:v3];
   v5 = +[VUIPlaybackSettings sharedSettings];
-  v6 = [v5 networkStatus];
+  networkStatus = [v5 networkStatus];
 
-  v7 = [v4 hasTrait:*MEMORY[0x1E69D5E48]];
+  v7 = [itemCopy hasTrait:*MEMORY[0x1E69D5E48]];
   v8 = +[VUIPlaybackSettings sharedSettings];
-  v9 = [v8 preferredCellularPlaybackQuality];
+  preferredCellularPlaybackQuality = [v8 preferredCellularPlaybackQuality];
 
   if (v3)
   {
-    v10 = v6 == 2;
+    v10 = networkStatus == 2;
   }
 
   else
@@ -3581,15 +3581,15 @@ uint64_t __111__VUIPlaybackStartupCoordinator__performRatingAndAgeVerificationWi
     v10 = 0;
   }
 
-  v12 = v10 && v7 != 0 && v9 == 1;
+  v12 = v10 && v7 != 0 && preferredCellularPlaybackQuality == 1;
   result = 0;
   if (v12)
   {
     v13 = objc_alloc_init(MEMORY[0x1E6977E50]);
-    v14 = [v13 path];
-    v15 = [v14 isExpensive];
+    path = [v13 path];
+    isExpensive = [path isExpensive];
 
-    if (v15)
+    if (isExpensive)
     {
       return 1;
     }
@@ -3598,15 +3598,15 @@ uint64_t __111__VUIPlaybackStartupCoordinator__performRatingAndAgeVerificationWi
   return result;
 }
 
-- (void)_checkIfAllowedToPlayOnCellularNetworkWithMediaItem:(id)a3 presentingController:(id)a4 completion:(id)a5
+- (void)_checkIfAllowedToPlayOnCellularNetworkWithMediaItem:(id)item presentingController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  controllerCopy = controller;
+  completionCopy = completion;
   v11 = +[VUIPlaybackSettings sharedSettings];
-  v12 = [v11 cellularDataPlaybackEnabled];
+  cellularDataPlaybackEnabled = [v11 cellularDataPlaybackEnabled];
 
-  if (v12)
+  if (cellularDataPlaybackEnabled)
   {
     v13 = sLogObject_18;
     if (os_log_type_enabled(sLogObject_18, OS_LOG_TYPE_DEFAULT))
@@ -3632,11 +3632,11 @@ LABEL_10:
     }
 
 LABEL_11:
-    v10[2](v10, 1);
+    completionCopy[2](completionCopy, 1);
     goto LABEL_12;
   }
 
-  if ([(VUIPlaybackStartupCoordinator *)self _mediaItemIsBeingDownloadedAndDownloadAllowsCellular:v8])
+  if ([(VUIPlaybackStartupCoordinator *)self _mediaItemIsBeingDownloadedAndDownloadAllowsCellular:itemCopy])
   {
     v13 = sLogObject_18;
     if (os_log_type_enabled(sLogObject_18, OS_LOG_TYPE_DEFAULT))
@@ -3650,11 +3650,11 @@ LABEL_11:
   }
 
   v15 = MGGetBoolAnswer();
-  v16 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
-  v33 = [v16 localizedStringForKey:@"ASK_TO_ENABLE_CELLULAR_DATA_TO_STREAM_TITLE" value:0 table:@"VideosUIEmbedded"];
+  vui_videosUIBundle = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
+  v33 = [vui_videosUIBundle localizedStringForKey:@"ASK_TO_ENABLE_CELLULAR_DATA_TO_STREAM_TITLE" value:0 table:@"VideosUIEmbedded"];
 
-  v17 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
-  v18 = v17;
+  vui_videosUIBundle2 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
+  v18 = vui_videosUIBundle2;
   if (v15)
   {
     v19 = @"ASK_TO_ENABLE_CELLULAR_DATA_TO_STREAM_MESSAGE_WLAN";
@@ -3665,22 +3665,22 @@ LABEL_11:
     v19 = @"ASK_TO_ENABLE_CELLULAR_DATA_TO_STREAM_MESSAGE_WIFI";
   }
 
-  v31 = [v17 localizedStringForKey:v19 value:0 table:@"VideosUIEmbedded"];
+  v31 = [vui_videosUIBundle2 localizedStringForKey:v19 value:0 table:@"VideosUIEmbedded"];
 
-  v20 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
-  v32 = [v20 localizedStringForKey:@"ENABLE_CELLULAR_DATA_TO_STREAM_BUTTON_TITLE" value:0 table:@"VideosUIEmbedded"];
+  vui_videosUIBundle3 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
+  v32 = [vui_videosUIBundle3 localizedStringForKey:@"ENABLE_CELLULAR_DATA_TO_STREAM_BUTTON_TITLE" value:0 table:@"VideosUIEmbedded"];
 
-  v21 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
-  v30 = [v21 localizedStringForKey:@"USE_CELLULAR_DATA_TO_STREAM_ONCE_BUTTON_TITLE" value:0 table:@"VideosUIEmbedded"];
+  vui_videosUIBundle4 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
+  v30 = [vui_videosUIBundle4 localizedStringForKey:@"USE_CELLULAR_DATA_TO_STREAM_ONCE_BUTTON_TITLE" value:0 table:@"VideosUIEmbedded"];
 
-  v22 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
-  v34 = [v22 localizedStringForKey:@"DONT_ENABLE_CELLULAR_DATA_TO_STREAM_BUTTON_TITLE" value:0 table:@"VideosUIEmbedded"];
+  vui_videosUIBundle5 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
+  v34 = [vui_videosUIBundle5 localizedStringForKey:@"DONT_ENABLE_CELLULAR_DATA_TO_STREAM_BUTTON_TITLE" value:0 table:@"VideosUIEmbedded"];
 
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __117__VUIPlaybackStartupCoordinator__checkIfAllowedToPlayOnCellularNetworkWithMediaItem_presentingController_completion___block_invoke;
   v42[3] = &unk_1E8732FF8;
-  v23 = v10;
+  v23 = completionCopy;
   v43 = v23;
   v24 = [VUIAlertAction vui_actionWithTitle:v32 style:0 handler:v42];
   v40[0] = MEMORY[0x1E69E9820];
@@ -3705,7 +3705,7 @@ LABEL_11:
   v35[2] = __117__VUIPlaybackStartupCoordinator__checkIfAllowedToPlayOnCellularNetworkWithMediaItem_presentingController_completion___block_invoke_429;
   v35[3] = &unk_1E872D990;
   v36 = v28;
-  v37 = v9;
+  v37 = controllerCopy;
   v29 = v28;
   [v37 dismissViewControllerAnimated:1 completion:v35];
 
@@ -3751,29 +3751,29 @@ uint64_t __117__VUIPlaybackStartupCoordinator__checkIfAllowedToPlayOnCellularNet
   return (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)_shouldPromptForExpiredDownload:(id)a3
+- (BOOL)_shouldPromptForExpiredDownload:(id)download
 {
-  v3 = [a3 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyDownloadExpirationDate"];
+  v3 = [download mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyDownloadExpirationDate"];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 vui_isInThePast];
+    vui_isInThePast = [v3 vui_isInThePast];
   }
 
   else
   {
-    v5 = 0;
+    vui_isInThePast = 0;
   }
 
-  return v5;
+  return vui_isInThePast;
 }
 
-- (void)_showAlertControllerForExpirationPromptForDownload:(id)a3 presentingViewController:(id)a4
+- (void)_showAlertControllerForExpirationPromptForDownload:(id)download presentingViewController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyAvailabilityEndDate"];
-  v8 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD8]];
+  downloadCopy = download;
+  controllerCopy = controller;
+  v7 = [downloadCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyAvailabilityEndDate"];
+  v8 = [downloadCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD8]];
   if (v7 && ![v7 vui_isInTheFuture])
   {
     v22 = MEMORY[0x1E696AEC0];
@@ -3791,19 +3791,19 @@ uint64_t __117__VUIPlaybackStartupCoordinator__checkIfAllowedToPlayOnCellularNet
     v40[1] = 3221225472;
     v40[2] = __109__VUIPlaybackStartupCoordinator__showAlertControllerForExpirationPromptForDownload_presentingViewController___block_invoke_3;
     v40[3] = &unk_1E87329B0;
-    v41 = v5;
+    v41 = downloadCopy;
     v29 = [VUIAlertAction vui_actionWithTitle:v28 style:0 handler:v40];
 
     [(__CFString *)v16 vui_addAction:v29];
-    [(__CFString *)v16 vui_presentAlertFromPresentingController:v6 animated:1 completion:0];
+    [(__CFString *)v16 vui_presentAlertFromPresentingController:controllerCopy animated:1 completion:0];
 
     v21 = v41;
   }
 
   else
   {
-    v9 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyDownloadAllowsManualRenewal"];
-    v10 = [v9 BOOLValue];
+    v9 = [downloadCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyDownloadAllowsManualRenewal"];
+    bOOLValue = [v9 BOOLValue];
 
     v11 = +[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy isNetworkReachable];
     v12 = +[VUILocalizationManager sharedInstance];
@@ -3811,7 +3811,7 @@ uint64_t __117__VUIPlaybackStartupCoordinator__checkIfAllowedToPlayOnCellularNet
     v39 = v8;
     if (v11)
     {
-      if (v10)
+      if (bOOLValue)
       {
         v14 = [v12 localizedStringForKey:@"RENEW_DOWNLOAD"];
 
@@ -3857,8 +3857,8 @@ uint64_t __117__VUIPlaybackStartupCoordinator__checkIfAllowedToPlayOnCellularNet
       v42[1] = 3221225472;
       v42[2] = __109__VUIPlaybackStartupCoordinator__showAlertControllerForExpirationPromptForDownload_presentingViewController___block_invoke;
       v42[3] = &unk_1E8734598;
-      v43 = v5;
-      v44 = v6;
+      v43 = downloadCopy;
+      v44 = controllerCopy;
       v33 = [VUIAlertAction vui_actionWithTitle:v16 style:0 handler:v42];
       [v32 vui_addAction:v33];
 
@@ -3878,7 +3878,7 @@ uint64_t __117__VUIPlaybackStartupCoordinator__checkIfAllowedToPlayOnCellularNet
 
     v38 = [VUIAlertAction vui_actionWithTitle:v37 style:1 handler:0];
     [v32 vui_addAction:v38];
-    [v32 vui_presentAlertFromPresentingController:v6 animated:1 completion:0];
+    [v32 vui_presentAlertFromPresentingController:controllerCopy animated:1 completion:0];
 
     v8 = v39;
   }
@@ -3909,9 +3909,9 @@ void __109__VUIPlaybackStartupCoordinator__showAlertControllerForExpirationPromp
   [v2 cancelAndRemoveDownloadForMediaItem:*(a1 + 32)];
 }
 
-- (BOOL)_mediaItemIsBeingDownloadedAndDownloadAllowsCellular:(id)a3
+- (BOOL)_mediaItemIsBeingDownloadedAndDownloadAllowsCellular:(id)cellular
 {
-  v3 = [a3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
+  v3 = [cellular mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
   if ([v3 length])
   {
     v4 = +[VUIDownloadManager sharedInstance];
@@ -3919,44 +3919,44 @@ void __109__VUIPlaybackStartupCoordinator__showAlertControllerForExpirationPromp
 
     if (v5)
     {
-      v6 = [v5 allowCellularUsage];
+      allowCellularUsage = [v5 allowCellularUsage];
     }
 
     else
     {
-      v6 = 0;
+      allowCellularUsage = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    allowCellularUsage = 0;
   }
 
-  return v6;
+  return allowCellularUsage;
 }
 
 - (BOOL)_existingPlaybackSessionAllowsCellular
 {
-  v3 = [(VUIPlaybackStartupCoordinator *)self mediaInfo];
+  mediaInfo = [(VUIPlaybackStartupCoordinator *)self mediaInfo];
 
-  if (!v3)
+  if (!mediaInfo)
   {
     return 0;
   }
 
-  v4 = [(VUIPlaybackStartupCoordinator *)self mediaInfo];
-  v5 = [v4 playbackContext];
+  mediaInfo2 = [(VUIPlaybackStartupCoordinator *)self mediaInfo];
+  playbackContext = [mediaInfo2 playbackContext];
 
-  if ((v5 - 10) > 2)
+  if ((playbackContext - 10) > 2)
   {
     return 0;
   }
 
   v6 = +[VUIPlaybackManager sharedInstance];
-  v7 = [v6 currentPlaylistAllowsCellular];
+  currentPlaylistAllowsCellular = [v6 currentPlaylistAllowsCellular];
 
-  return v7;
+  return currentPlaylistAllowsCellular;
 }
 
 @end

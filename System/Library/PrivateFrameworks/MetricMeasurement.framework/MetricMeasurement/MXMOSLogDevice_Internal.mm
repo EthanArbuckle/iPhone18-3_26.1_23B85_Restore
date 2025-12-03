@@ -1,37 +1,37 @@
 @interface MXMOSLogDevice_Internal
-- (MXMOSLogDevice_Internal)initWithName:(id)a3 identifier:(id)a4;
-- (MXMOSLogDevice_Internal)initWithOSLogDevice:(id)a3;
+- (MXMOSLogDevice_Internal)initWithName:(id)name identifier:(id)identifier;
+- (MXMOSLogDevice_Internal)initWithOSLogDevice:(id)device;
 @end
 
 @implementation MXMOSLogDevice_Internal
 
-- (MXMOSLogDevice_Internal)initWithOSLogDevice:(id)a3
+- (MXMOSLogDevice_Internal)initWithOSLogDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = MXMOSLogDevice_Internal;
   v6 = [(MXMOSLogDevice_Internal *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rawDevice, a3);
+    objc_storeStrong(&v6->_rawDevice, device);
   }
 
   return v7;
 }
 
-- (MXMOSLogDevice_Internal)initWithName:(id)a3 identifier:(id)a4
+- (MXMOSLogDevice_Internal)initWithName:(id)name identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = MXMOSLogDevice_Internal;
   v9 = [(MXMOSLogDevice_Internal *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_identifier, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_identifier, identifier);
   }
 
   return v10;

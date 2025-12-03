@@ -1,11 +1,11 @@
 @interface AppBundleGradientBackgroundView
-- (_TtC18ASMessagesProvider31AppBundleGradientBackgroundView)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider31AppBundleGradientBackgroundView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation AppBundleGradientBackgroundView
 
-- (_TtC18ASMessagesProvider31AppBundleGradientBackgroundView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider31AppBundleGradientBackgroundView)initWithCoder:(id)coder
 {
   result = sub_76A840();
   __break(1u);

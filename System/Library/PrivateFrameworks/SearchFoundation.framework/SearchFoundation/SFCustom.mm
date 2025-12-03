@@ -1,11 +1,11 @@
 @interface SFCustom
 - (SFCustom)init;
-- (SFCustom)initWithCoder:(id)a3;
+- (SFCustom)initWithCoder:(id)coder;
 @end
 
 @implementation SFCustom
 
-- (SFCustom)initWithCoder:(id)a3
+- (SFCustom)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFCustom;

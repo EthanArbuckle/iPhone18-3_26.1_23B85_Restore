@@ -1,7 +1,7 @@
 @interface KeychainWriteFailedEvent
 - (BOOL)canCreatePayload;
 - (NSString)errorDomain;
-- (void)setErrorDomain:(id)a3;
+- (void)setErrorDomain:(id)domain;
 @end
 
 @implementation KeychainWriteFailedEvent
@@ -14,17 +14,17 @@
   return v2;
 }
 
-- (void)setErrorDomain:(id)a3
+- (void)setErrorDomain:(id)domain
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_10017543C(v4, v6);
 }
 
 - (BOOL)canCreatePayload
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10017575C();
 
   return v3;

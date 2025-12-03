@@ -1,5 +1,5 @@
 @interface PingBasedOnlineNetworkTransitionOperation
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4;
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after;
 - (_TtC8NewsCore41PingBasedOnlineNetworkTransitionOperation)init;
 - (void)cancel;
 - (void)performOperation;
@@ -10,23 +10,23 @@
 
 - (void)performOperation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B64B0E24();
 }
 
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after
 {
-  v6 = a3;
-  v7 = self;
-  LOBYTE(a4) = sub_1B64B25A0(a4);
+  errorCopy = error;
+  selfCopy = self;
+  LOBYTE(after) = sub_1B64B25A0(after);
 
-  return a4 & 1;
+  return after & 1;
 }
 
 - (void)resetForRetry
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8NewsCore41PingBasedOnlineNetworkTransitionOperation_probeLock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 24));
   if (*(v2 + 16))
   {
@@ -40,7 +40,7 @@
 - (void)cancel
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8NewsCore41PingBasedOnlineNetworkTransitionOperation_probeLock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 24));
   if (*(v2 + 16))
   {
@@ -48,7 +48,7 @@
   }
 
   os_unfair_lock_unlock((v2 + 24));
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for PingBasedOnlineNetworkTransitionOperation();
   [(FCOperation *)&v4 cancel];
 }

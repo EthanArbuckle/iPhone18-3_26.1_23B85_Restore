@@ -1,7 +1,7 @@
 @interface NCInternalSettingsButtonView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (NCInternalSettingsButtonView)initWithCoder:(id)a3;
-- (NCInternalSettingsButtonView)initWithFrame:(CGRect)a3;
+- (NCInternalSettingsButtonView)initWithCoder:(id)coder;
+- (NCInternalSettingsButtonView)initWithFrame:(CGRect)frame;
 - (NCInternalSettingsButtonViewDelegate)delegate;
 - (void)layoutSubviews;
 @end
@@ -15,12 +15,12 @@
   return Strong;
 }
 
-- (NCInternalSettingsButtonView)initWithFrame:(CGRect)a3
+- (NCInternalSettingsButtonView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR___NCInternalSettingsButtonView_isDeviceAuthenticated) = 0;
   *(self + OBJC_IVAR___NCInternalSettingsButtonView_hostingController) = 0;
@@ -29,7 +29,7 @@
   return [(NCInternalSettingsButtonView *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (NCInternalSettingsButtonView)initWithCoder:(id)a3
+- (NCInternalSettingsButtonView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR___NCInternalSettingsButtonView_isDeviceAuthenticated) = 0;
@@ -46,12 +46,12 @@
   {
     height = result.height;
     width = result.width;
-    v6 = self;
-    v7 = [v3 view];
-    if (v7)
+    selfCopy = self;
+    view = [v3 view];
+    if (view)
     {
-      v8 = v7;
-      [v7 sizeThatFits_];
+      v8 = view;
+      [view sizeThatFits_];
       v10 = v9;
       v12 = v11;
 
@@ -72,7 +72,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   NCInternalSettingsButtonView.layoutSubviews()();
 }
 

@@ -1,23 +1,23 @@
 @interface HMDMatterSoftwareUpdateProviderDelegate
 + (id)logCategory;
-- (BOOL)canEstablishConnectionForHMDHAPAccessory:(id)a3;
-- (BOOL)isUARPFirmwareVersionMismatchForAccessory:(id)a3 version:(id)a4;
+- (BOOL)canEstablishConnectionForHMDHAPAccessory:(id)accessory;
+- (BOOL)isUARPFirmwareVersionMismatchForAccessory:(id)accessory version:(id)version;
 - (HMDAccessoryFirmwareUpdateManager)accessoryFirmwareUpdateManager;
 - (HMDHomeManager)homeManager;
-- (HMDMatterSoftwareUpdateProviderDelegate)initWithHomeManager:(id)a3 accessoryFirmwareUpdateManager:(id)a4;
-- (HMDMatterSoftwareUpdateProviderDelegate)initWithHomeManager:(id)a3 accessoryFirmwareUpdateManager:(id)a4 dataSource:(id)a5;
+- (HMDMatterSoftwareUpdateProviderDelegate)initWithHomeManager:(id)manager accessoryFirmwareUpdateManager:(id)updateManager;
+- (HMDMatterSoftwareUpdateProviderDelegate)initWithHomeManager:(id)manager accessoryFirmwareUpdateManager:(id)updateManager dataSource:(id)source;
 - (HMMTRSoftwareUpdateProvider)softwareUpdateProvider;
-- (id)_accessoryWithPairing:(id)a3;
-- (id)_queryImageResponseWithStatus:(id)a3 delayedActionTime:(id)a4;
-- (void)applyUpdateWithPairing:(id)a3 requestParams:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)configureWithSoftwareUpdateProvider:(id)a3;
-- (void)manageBusyImageResponses:(id)a3 completionHandler:(id)a4;
-- (void)manageNonBusyAvailableImageResponses:(id)a3 normalStatus:(id)a4 error:(id)a5 completionHandler:(id)a6;
-- (void)notifyCheckFirmwareUpdateSessionWithPairing:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)notifyUpdateWithPairing:(id)a3 params:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)queryImageWithPairing:(id)a3 requestParams:(id)a4 queue:(id)a5 accessoryInitiated:(BOOL)a6 completionHandler:(id)a7;
-- (void)resetImageResponseCounters:(id)a3;
-- (void)resetOTAProviderStateForHMDHAPAccessory:(id)a3;
+- (id)_accessoryWithPairing:(id)pairing;
+- (id)_queryImageResponseWithStatus:(id)status delayedActionTime:(id)time;
+- (void)applyUpdateWithPairing:(id)pairing requestParams:(id)params queue:(id)queue completionHandler:(id)handler;
+- (void)configureWithSoftwareUpdateProvider:(id)provider;
+- (void)manageBusyImageResponses:(id)responses completionHandler:(id)handler;
+- (void)manageNonBusyAvailableImageResponses:(id)responses normalStatus:(id)status error:(id)error completionHandler:(id)handler;
+- (void)notifyCheckFirmwareUpdateSessionWithPairing:(id)pairing queue:(id)queue completionHandler:(id)handler;
+- (void)notifyUpdateWithPairing:(id)pairing params:(id)params queue:(id)queue completionHandler:(id)handler;
+- (void)queryImageWithPairing:(id)pairing requestParams:(id)params queue:(id)queue accessoryInitiated:(BOOL)initiated completionHandler:(id)handler;
+- (void)resetImageResponseCounters:(id)counters;
+- (void)resetOTAProviderStateForHMDHAPAccessory:(id)accessory;
 @end
 
 @implementation HMDMatterSoftwareUpdateProviderDelegate
@@ -43,19 +43,19 @@
   return WeakRetained;
 }
 
-- (id)_accessoryWithPairing:(id)a3
+- (id)_accessoryWithPairing:(id)pairing
 {
   v71 = *MEMORY[0x277D85DE8];
-  v55 = a3;
+  pairingCopy = pairing;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v4 = [(HMDMatterSoftwareUpdateProviderDelegate *)self homeManager];
-  v5 = [v4 homes];
+  homeManager = [(HMDMatterSoftwareUpdateProviderDelegate *)self homeManager];
+  homes = [homeManager homes];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v64 objects:v70 count:16];
+  obj = homes;
+  v6 = [homes countByEnumeratingWithState:&v64 objects:v70 count:16];
   if (!v6)
   {
     v34 = 0;
@@ -74,9 +74,9 @@
       }
 
       v10 = *(*(&v64 + 1) + 8 * i);
-      v11 = [v10 matterFabricID];
-      v12 = [v55 fabricID];
-      v13 = [v11 isEqualToNumber:v12];
+      matterFabricID = [v10 matterFabricID];
+      fabricID = [pairingCopy fabricID];
+      v13 = [matterFabricID isEqualToNumber:fabricID];
 
       if (v13)
       {
@@ -84,8 +84,8 @@
         v63 = 0u;
         v60 = 0u;
         v61 = 0u;
-        v14 = [v10 hapAccessories];
-        v41 = [v14 countByEnumeratingWithState:&v60 objects:v69 count:16];
+        hapAccessories = [v10 hapAccessories];
+        v41 = [hapAccessories countByEnumeratingWithState:&v60 objects:v69 count:16];
         if (!v41)
         {
           goto LABEL_29;
@@ -96,8 +96,8 @@
         v40 = v8;
         v37 = *v61;
         v38 = i;
-        v49 = v11;
-        v44 = v14;
+        v49 = matterFabricID;
+        v44 = hapAccessories;
         while (1)
         {
           v16 = 0;
@@ -105,7 +105,7 @@
           {
             if (*v61 != v15)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(hapAccessories);
             }
 
             v17 = *(*(&v60 + 1) + 8 * v16);
@@ -115,11 +115,11 @@
             v59 = 0u;
             v42 = v16;
             v43 = v17;
-            v18 = [v17 chipStorage];
-            v19 = [v18 pairings];
+            chipStorage = [v17 chipStorage];
+            pairings = [chipStorage pairings];
 
-            v54 = v19;
-            v20 = [v19 countByEnumeratingWithState:&v56 objects:v68 count:16];
+            v54 = pairings;
+            v20 = [pairings countByEnumeratingWithState:&v56 objects:v68 count:16];
             if (v20)
             {
               v21 = v20;
@@ -137,30 +137,30 @@
                   }
 
                   v24 = *(*(&v56 + 1) + 8 * v23);
-                  v25 = [v55 nodeID];
-                  v26 = [v24 chipPluginPairing];
-                  v27 = [v26 nodeID];
-                  if (![v25 isEqualToNumber:v27])
+                  nodeID = [pairingCopy nodeID];
+                  chipPluginPairing = [v24 chipPluginPairing];
+                  nodeID2 = [chipPluginPairing nodeID];
+                  if (![nodeID isEqualToNumber:nodeID2])
                   {
                     goto LABEL_24;
                   }
 
-                  v28 = [v55 fabricID];
-                  v29 = [v24 chipPluginPairing];
-                  v30 = [v29 fabricID];
-                  if (![v28 isEqualToNumber:v30])
+                  fabricID2 = [pairingCopy fabricID];
+                  chipPluginPairing2 = [v24 chipPluginPairing];
+                  fabricID3 = [chipPluginPairing2 fabricID];
+                  if (![fabricID2 isEqualToNumber:fabricID3])
                   {
                     goto LABEL_23;
                   }
 
-                  v31 = [v55 rootPublicKey];
-                  v50 = [v24 chipPluginPairing];
-                  v32 = [v50 rootPublicKey];
-                  v51 = v31;
-                  if (![v31 isEqualToData:v32])
+                  rootPublicKey = [pairingCopy rootPublicKey];
+                  chipPluginPairing3 = [v24 chipPluginPairing];
+                  rootPublicKey2 = [chipPluginPairing3 rootPublicKey];
+                  v51 = rootPublicKey;
+                  if (![rootPublicKey isEqualToData:rootPublicKey2])
                   {
 
-                    v11 = v49;
+                    matterFabricID = v49;
 LABEL_23:
 
                     v22 = v52;
@@ -170,12 +170,12 @@ LABEL_24:
                     goto LABEL_25;
                   }
 
-                  v46 = [v55 vendorID];
-                  v47 = [v24 chipPluginPairing];
-                  v33 = [v47 vendorID];
-                  v48 = [v46 isEqualToNumber:v33];
+                  vendorID = [pairingCopy vendorID];
+                  chipPluginPairing4 = [v24 chipPluginPairing];
+                  vendorID2 = [chipPluginPairing4 vendorID];
+                  v48 = [vendorID isEqualToNumber:vendorID2];
 
-                  v11 = v49;
+                  matterFabricID = v49;
                   v22 = v52;
                   v21 = v53;
                   if (v48)
@@ -201,7 +201,7 @@ LABEL_25:
             v8 = v40;
             v15 = v37;
             i = v38;
-            v14 = v44;
+            hapAccessories = v44;
           }
 
           while (v42 + 1 != v41);
@@ -228,50 +228,50 @@ LABEL_34:
   return v34;
 }
 
-- (void)resetOTAProviderStateForHMDHAPAccessory:(id)a3
+- (void)resetOTAProviderStateForHMDHAPAccessory:(id)accessory
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 shortDescription];
+    shortDescription = [accessoryCopy shortDescription];
     v24 = 138543874;
     v25 = v8;
     v26 = 2112;
-    v27 = v9;
+    v27 = shortDescription;
     v28 = 2112;
-    v29 = v4;
+    v29 = accessoryCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@%@ Resetting OTA provider state for %@", &v24, 0x20u);
   }
 
   objc_autoreleasePoolPop(v5);
-  if ([v4 supportsCHIP])
+  if ([accessoryCopy supportsCHIP])
   {
-    v10 = [(HMDMatterSoftwareUpdateProviderDelegate *)v6 softwareUpdateProvider];
-    if (v10)
+    softwareUpdateProvider = [(HMDMatterSoftwareUpdateProviderDelegate *)selfCopy softwareUpdateProvider];
+    if (softwareUpdateProvider)
     {
-      v11 = [v4 chipStorage];
-      v12 = [v11 nodeID];
-      [v10 updateOTAProviderStateForNodeID:v12 otaProviderState:1];
+      chipStorage = [accessoryCopy chipStorage];
+      nodeID = [chipStorage nodeID];
+      [softwareUpdateProvider updateOTAProviderStateForNodeID:nodeID otaProviderState:1];
     }
 
     else
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = v6;
+      v19 = selfCopy;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         v21 = HMFGetLogIdentifier();
-        v22 = [v4 shortDescription];
+        shortDescription2 = [accessoryCopy shortDescription];
         v24 = 138543618;
         v25 = v21;
         v26 = 2112;
-        v27 = v22;
+        v27 = shortDescription2;
         _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_ERROR, "%{public}@%@ Couldn't get a strong ref to the software update provider", &v24, 0x16u);
       }
 
@@ -282,16 +282,16 @@ LABEL_34:
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = v6;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v4 shortDescription];
+      shortDescription3 = [accessoryCopy shortDescription];
       v24 = 138543618;
       v25 = v16;
       v26 = 2112;
-      v27 = v17;
+      v27 = shortDescription3;
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_ERROR, "%{public}@%@ Not a matter accessory", &v24, 0x16u);
     }
 
@@ -301,48 +301,48 @@ LABEL_34:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)canEstablishConnectionForHMDHAPAccessory:(id)a3
+- (BOOL)canEstablishConnectionForHMDHAPAccessory:(id)accessory
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 shortDescription];
+    shortDescription = [accessoryCopy shortDescription];
     v26 = 138543618;
     v27 = v8;
     v28 = 2112;
-    v29 = v9;
+    v29 = shortDescription;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@%@ canEstablishConnectionForHMDHAPAccessory", &v26, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  if ([v4 supportsCHIP])
+  if ([accessoryCopy supportsCHIP])
   {
-    v10 = [(HMDMatterSoftwareUpdateProviderDelegate *)v6 softwareUpdateProvider];
-    if (v10)
+    softwareUpdateProvider = [(HMDMatterSoftwareUpdateProviderDelegate *)selfCopy softwareUpdateProvider];
+    if (softwareUpdateProvider)
     {
-      v11 = [v4 chipStorage];
-      v12 = [v11 nodeID];
-      v13 = [v10 canEstablishConnectionForNodeID:v12];
+      chipStorage = [accessoryCopy chipStorage];
+      nodeID = [chipStorage nodeID];
+      v13 = [softwareUpdateProvider canEstablishConnectionForNodeID:nodeID];
     }
 
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = v6;
+      v20 = selfCopy;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         v22 = HMFGetLogIdentifier();
-        v23 = [v4 shortDescription];
+        shortDescription2 = [accessoryCopy shortDescription];
         v26 = 138543618;
         v27 = v22;
         v28 = 2112;
-        v29 = v23;
+        v29 = shortDescription2;
         _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_ERROR, "%{public}@%@ Couldn't get a strong ref to the software update provider", &v26, 0x16u);
       }
 
@@ -354,16 +354,16 @@ LABEL_34:
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v6;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v17 = HMFGetLogIdentifier();
-      v18 = [v4 shortDescription];
+      shortDescription3 = [accessoryCopy shortDescription];
       v26 = 138543618;
       v27 = v17;
       v28 = 2112;
-      v29 = v18;
+      v29 = shortDescription3;
       _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_ERROR, "%{public}@%@ Not a matter accessory", &v26, 0x16u);
     }
 
@@ -375,24 +375,24 @@ LABEL_34:
   return v13;
 }
 
-- (void)queryImageWithPairing:(id)a3 requestParams:(id)a4 queue:(id)a5 accessoryInitiated:(BOOL)a6 completionHandler:(id)a7
+- (void)queryImageWithPairing:(id)pairing requestParams:(id)params queue:(id)queue accessoryInitiated:(BOOL)initiated completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  pairingCopy = pairing;
+  paramsCopy = params;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __122__HMDMatterSoftwareUpdateProviderDelegate_queryImageWithPairing_requestParams_queue_accessoryInitiated_completionHandler___block_invoke;
   block[3] = &unk_279733CD0;
   block[4] = self;
-  v19 = v12;
-  v20 = v13;
-  v21 = v14;
-  v22 = a6;
-  v15 = v13;
-  v16 = v14;
-  v17 = v12;
-  dispatch_async(a5, block);
+  v19 = pairingCopy;
+  v20 = paramsCopy;
+  v21 = handlerCopy;
+  initiatedCopy = initiated;
+  v15 = paramsCopy;
+  v16 = handlerCopy;
+  v17 = pairingCopy;
+  dispatch_async(queue, block);
 }
 
 void __122__HMDMatterSoftwareUpdateProviderDelegate_queryImageWithPairing_requestParams_queue_accessoryInitiated_completionHandler___block_invoke(uint64_t a1)
@@ -822,16 +822,16 @@ LABEL_59:
   v95 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isUARPFirmwareVersionMismatchForAccessory:(id)a3 version:(id)a4
+- (BOOL)isUARPFirmwareVersionMismatchForAccessory:(id)accessory version:(id)version
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDMatterSoftwareUpdateProviderDelegate *)self accessoryFirmwareUpdateManager];
-  v9 = [v8 UARPAccessoryForHMDAccessory:v6];
-  v10 = [v7 stringValue];
-  v11 = [v9 firmwareVersion];
-  if (v11 && (v12 = v11, [v9 firmwareVersion], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", v10), v13, v12, (v14 & 1) != 0))
+  accessoryCopy = accessory;
+  versionCopy = version;
+  accessoryFirmwareUpdateManager = [(HMDMatterSoftwareUpdateProviderDelegate *)self accessoryFirmwareUpdateManager];
+  v9 = [accessoryFirmwareUpdateManager UARPAccessoryForHMDAccessory:accessoryCopy];
+  stringValue = [versionCopy stringValue];
+  firmwareVersion = [v9 firmwareVersion];
+  if (firmwareVersion && (v12 = firmwareVersion, [v9 firmwareVersion], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", stringValue), v13, v12, (v14 & 1) != 0))
   {
     v15 = 0;
   }
@@ -839,22 +839,22 @@ LABEL_59:
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [v6 shortDescription];
+      shortDescription = [accessoryCopy shortDescription];
       [v9 firmwareVersion];
       v21 = v24 = v16;
       *buf = 138544130;
       v26 = v19;
       v27 = 2112;
-      v28 = v20;
+      v28 = shortDescription;
       v29 = 2112;
       v30 = v21;
       v31 = 2112;
-      v32 = v10;
+      v32 = stringValue;
       _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_INFO, "%{public}@%@ Firmware version from uarpAccessory (%@) doesn't match accessory version (%@)", buf, 0x2Au);
 
       v16 = v24;
@@ -868,51 +868,51 @@ LABEL_59:
   return v15;
 }
 
-- (id)_queryImageResponseWithStatus:(id)a3 delayedActionTime:(id)a4
+- (id)_queryImageResponseWithStatus:(id)status delayedActionTime:(id)time
 {
   v5 = MEMORY[0x277D17B80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithStatus:v7 delayedActionTime:v6 imageURI:0 softwareVersion:0 softwareVersionString:0 updateToken:0 userConsentNeeded:0 metadataForRequestor:0];
+  timeCopy = time;
+  statusCopy = status;
+  v8 = [[v5 alloc] initWithStatus:statusCopy delayedActionTime:timeCopy imageURI:0 softwareVersion:0 softwareVersionString:0 updateToken:0 userConsentNeeded:0 metadataForRequestor:0];
 
   return v8;
 }
 
-- (void)resetImageResponseCounters:(id)a3
+- (void)resetImageResponseCounters:(id)counters
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  countersCopy = counters;
+  if (countersCopy)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = HMFGetLogIdentifier();
-      v9 = [v4 shortDescription];
+      shortDescription = [countersCopy shortDescription];
       v11 = 138543618;
       v12 = v8;
       v13 = 2112;
-      v14 = v9;
+      v14 = shortDescription;
       _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@%@ Sending Available status response, reset all other responses counters", &v11, 0x16u);
     }
 
     objc_autoreleasePoolPop(v5);
-    [v4 resetNonAvailableCounters];
+    [countersCopy resetNonAvailableCounters];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)manageBusyImageResponses:(id)a3 completionHandler:(id)a4
+- (void)manageBusyImageResponses:(id)responses completionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  responsesCopy = responses;
+  handlerCopy = handler;
+  if (responsesCopy)
   {
-    [v6 handleBusyImageResponseCounter];
+    [responsesCopy handleBusyImageResponseCounter];
     v9 = v8;
   }
 
@@ -922,16 +922,16 @@ LABEL_59:
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v6 shortDescription];
+    shortDescription = [responsesCopy shortDescription];
     v18 = 138543874;
     v19 = v13;
     v20 = 2112;
-    v21 = v14;
+    v21 = shortDescription;
     v22 = 2048;
     v23 = v9;
     _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@%@ Sending BUSY status response with %.0f seconds delay", &v18, 0x20u);
@@ -939,20 +939,20 @@ LABEL_59:
 
   objc_autoreleasePoolPop(v10);
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
-  v16 = [(HMDMatterSoftwareUpdateProviderDelegate *)v11 _queryImageResponseWithStatus:&unk_286629560 delayedActionTime:v15];
-  v7[2](v7, v16, 0);
+  v16 = [(HMDMatterSoftwareUpdateProviderDelegate *)selfCopy _queryImageResponseWithStatus:&unk_286629560 delayedActionTime:v15];
+  handlerCopy[2](handlerCopy, v16, 0);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)manageNonBusyAvailableImageResponses:(id)a3 normalStatus:(id)a4 error:(id)a5 completionHandler:(id)a6
+- (void)manageNonBusyAvailableImageResponses:(id)responses normalStatus:(id)status error:(id)error completionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  responsesCopy = responses;
+  statusCopy = status;
+  errorCopy = error;
+  handlerCopy = handler;
+  if (!responsesCopy)
   {
     v22 = objc_autoreleasePoolPush();
     self = self;
@@ -969,26 +969,26 @@ LABEL_59:
     goto LABEL_9;
   }
 
-  if ([v10 handleNotAvailableImageResponseCounter])
+  if ([responsesCopy handleNotAvailableImageResponseCounter])
   {
 LABEL_9:
-    v21 = self;
-    v19 = v11;
+    selfCopy = self;
+    v19 = statusCopy;
     v20 = 0;
     goto LABEL_10;
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy2 = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v10 shortDescription];
+    shortDescription = [responsesCopy shortDescription];
     v27 = 138543874;
     v28 = v17;
     v29 = 2112;
-    v30 = v18;
+    v30 = shortDescription;
     v31 = 2048;
     v32 = 0x40F5180000000000;
     _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_INFO, "%{public}@%@ Sending BUSY status response with %0.f delay due to request rate exceeding threshold", &v27, 0x20u);
@@ -997,28 +997,28 @@ LABEL_9:
   objc_autoreleasePoolPop(v14);
   v19 = &unk_286629560;
   v20 = &unk_28662BE88;
-  v21 = v15;
+  selfCopy = selfCopy2;
 LABEL_10:
-  v25 = [(HMDMatterSoftwareUpdateProviderDelegate *)v21 _queryImageResponseWithStatus:v19 delayedActionTime:v20];
-  v13[2](v13, v25, v12);
+  v25 = [(HMDMatterSoftwareUpdateProviderDelegate *)selfCopy _queryImageResponseWithStatus:v19 delayedActionTime:v20];
+  handlerCopy[2](handlerCopy, v25, errorCopy);
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyCheckFirmwareUpdateSessionWithPairing:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)notifyCheckFirmwareUpdateSessionWithPairing:(id)pairing queue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  pairingCopy = pairing;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __111__HMDMatterSoftwareUpdateProviderDelegate_notifyCheckFirmwareUpdateSessionWithPairing_queue_completionHandler___block_invoke;
   block[3] = &unk_2797355D0;
   block[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  dispatch_async(a4, block);
+  v13 = pairingCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = pairingCopy;
+  dispatch_async(queue, block);
 }
 
 void __111__HMDMatterSoftwareUpdateProviderDelegate_notifyCheckFirmwareUpdateSessionWithPairing_queue_completionHandler___block_invoke(uint64_t a1)
@@ -1081,23 +1081,23 @@ LABEL_11:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyUpdateWithPairing:(id)a3 params:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)notifyUpdateWithPairing:(id)pairing params:(id)params queue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  pairingCopy = pairing;
+  paramsCopy = params;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __98__HMDMatterSoftwareUpdateProviderDelegate_notifyUpdateWithPairing_params_queue_completionHandler___block_invoke;
   v16[3] = &unk_279734578;
   v16[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v19 = v12;
-  v13 = v11;
-  v14 = v12;
-  v15 = v10;
-  dispatch_async(a5, v16);
+  v17 = pairingCopy;
+  v18 = paramsCopy;
+  v19 = handlerCopy;
+  v13 = paramsCopy;
+  v14 = handlerCopy;
+  v15 = pairingCopy;
+  dispatch_async(queue, v16);
 }
 
 void __98__HMDMatterSoftwareUpdateProviderDelegate_notifyUpdateWithPairing_params_queue_completionHandler___block_invoke(uint64_t a1)
@@ -1214,20 +1214,20 @@ LABEL_18:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applyUpdateWithPairing:(id)a3 requestParams:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)applyUpdateWithPairing:(id)pairing requestParams:(id)params queue:(id)queue completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
+  pairingCopy = pairing;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __104__HMDMatterSoftwareUpdateProviderDelegate_applyUpdateWithPairing_requestParams_queue_completionHandler___block_invoke;
   block[3] = &unk_2797355D0;
   block[4] = self;
-  v14 = v9;
-  v15 = v10;
-  v11 = v10;
-  v12 = v9;
-  dispatch_async(a5, block);
+  v14 = pairingCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = pairingCopy;
+  dispatch_async(queue, block);
 }
 
 void __104__HMDMatterSoftwareUpdateProviderDelegate_applyUpdateWithPairing_requestParams_queue_completionHandler___block_invoke(uint64_t a1)
@@ -1280,18 +1280,18 @@ void __104__HMDMatterSoftwareUpdateProviderDelegate_applyUpdateWithPairing_reque
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithSoftwareUpdateProvider:(id)a3
+- (void)configureWithSoftwareUpdateProvider:(id)provider
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMatterSoftwareUpdateProviderDelegate *)self dataSource];
-  v6 = [v5 isMatterAccessorySoftwareUpdateEnabled];
+  providerCopy = provider;
+  dataSource = [(HMDMatterSoftwareUpdateProviderDelegate *)self dataSource];
+  isMatterAccessorySoftwareUpdateEnabled = [dataSource isMatterAccessorySoftwareUpdateEnabled];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = v9;
-  if (v6)
+  if (isMatterAccessorySoftwareUpdateEnabled)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -1302,8 +1302,8 @@ void __104__HMDMatterSoftwareUpdateProviderDelegate_applyUpdateWithPairing_reque
     }
 
     objc_autoreleasePoolPop(v7);
-    [v4 setDelegate:v8];
-    [(HMDMatterSoftwareUpdateProviderDelegate *)v8 setSoftwareUpdateProvider:v4];
+    [providerCopy setDelegate:selfCopy];
+    [(HMDMatterSoftwareUpdateProviderDelegate *)selfCopy setSoftwareUpdateProvider:providerCopy];
   }
 
   else
@@ -1324,31 +1324,31 @@ void __104__HMDMatterSoftwareUpdateProviderDelegate_applyUpdateWithPairing_reque
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMatterSoftwareUpdateProviderDelegate)initWithHomeManager:(id)a3 accessoryFirmwareUpdateManager:(id)a4 dataSource:(id)a5
+- (HMDMatterSoftwareUpdateProviderDelegate)initWithHomeManager:(id)manager accessoryFirmwareUpdateManager:(id)updateManager dataSource:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  updateManagerCopy = updateManager;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = HMDMatterSoftwareUpdateProviderDelegate;
   v11 = [(HMDMatterSoftwareUpdateProviderDelegate *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_homeManager, v8);
-    objc_storeWeak(&v12->_accessoryFirmwareUpdateManager, v9);
-    objc_storeStrong(&v12->_dataSource, a5);
+    objc_storeWeak(&v11->_homeManager, managerCopy);
+    objc_storeWeak(&v12->_accessoryFirmwareUpdateManager, updateManagerCopy);
+    objc_storeStrong(&v12->_dataSource, source);
   }
 
   return v12;
 }
 
-- (HMDMatterSoftwareUpdateProviderDelegate)initWithHomeManager:(id)a3 accessoryFirmwareUpdateManager:(id)a4
+- (HMDMatterSoftwareUpdateProviderDelegate)initWithHomeManager:(id)manager accessoryFirmwareUpdateManager:(id)updateManager
 {
-  v6 = a4;
-  v7 = a3;
+  updateManagerCopy = updateManager;
+  managerCopy = manager;
   v8 = objc_alloc_init(HMDMatterSoftwareUpdateProviderDelegateDataSource);
-  v9 = [(HMDMatterSoftwareUpdateProviderDelegate *)self initWithHomeManager:v7 accessoryFirmwareUpdateManager:v6 dataSource:v8];
+  v9 = [(HMDMatterSoftwareUpdateProviderDelegate *)self initWithHomeManager:managerCopy accessoryFirmwareUpdateManager:updateManagerCopy dataSource:v8];
 
   return v9;
 }

@@ -1,14 +1,14 @@
 @interface HFCompoundLocalizableStringKey
-- (HFCompoundLocalizableStringKey)initWithFormat:(id)a3 localizableStrings:(id)a4;
-- (id)localizedStringWithArgumentBlock:(id)a3;
+- (HFCompoundLocalizableStringKey)initWithFormat:(id)format localizableStrings:(id)strings;
+- (id)localizedStringWithArgumentBlock:(id)block;
 @end
 
 @implementation HFCompoundLocalizableStringKey
 
-- (HFCompoundLocalizableStringKey)initWithFormat:(id)a3 localizableStrings:(id)a4
+- (HFCompoundLocalizableStringKey)initWithFormat:(id)format localizableStrings:(id)strings
 {
-  v7 = a3;
-  v8 = a4;
+  formatCopy = format;
+  stringsCopy = strings;
   if (qword_27C84C538 != -1)
   {
     dispatch_once(&qword_27C84C538, &__block_literal_global_78_2);
@@ -21,15 +21,15 @@
 
   if (v10)
   {
-    objc_storeStrong(&v10->_format, a3);
-    v11 = [v8 mutableCopy];
-    v12 = v11;
+    objc_storeStrong(&v10->_format, format);
+    v11 = [stringsCopy mutableCopy];
+    array = v11;
     if (!v11)
     {
-      v12 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
     }
 
-    objc_storeStrong(&v10->_localizableStrings, v12);
+    objc_storeStrong(&v10->_localizableStrings, array);
     if (!v11)
     {
     }
@@ -44,20 +44,20 @@ void __68__HFCompoundLocalizableStringKey_initWithFormat_localizableStrings___bl
   qword_27C84C540 = &stru_2824B1A78;
 }
 
-- (id)localizedStringWithArgumentBlock:(id)a3
+- (id)localizedStringWithArgumentBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(HFCompoundLocalizableStringKey *)self format];
-  v7 = [(HFCompoundLocalizableStringKey *)self localizableStrings];
+  format = [(HFCompoundLocalizableStringKey *)self format];
+  localizableStrings = [(HFCompoundLocalizableStringKey *)self localizableStrings];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__HFCompoundLocalizableStringKey_localizedStringWithArgumentBlock___block_invoke;
   v12[3] = &unk_277DFDED8;
-  v13 = v4;
-  v8 = v4;
-  v9 = [v7 na_map:v12];
-  v10 = [v5 hf_stringWithFormat:v6 arguments:v9];
+  v13 = blockCopy;
+  v8 = blockCopy;
+  v9 = [localizableStrings na_map:v12];
+  v10 = [v5 hf_stringWithFormat:format arguments:v9];
 
   return v10;
 }

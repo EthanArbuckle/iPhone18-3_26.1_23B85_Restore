@@ -1,17 +1,17 @@
 @interface SBCoverSheetDestOutLayerView
-- (SBCoverSheetDestOutLayerView)initWithCoder:(id)a3;
-- (SBCoverSheetDestOutLayerView)initWithFrame:(CGRect)a3;
+- (SBCoverSheetDestOutLayerView)initWithCoder:(id)coder;
+- (SBCoverSheetDestOutLayerView)initWithFrame:(CGRect)frame;
 - (void)_setup;
-- (void)updatePosition:(CGPoint)a3 forPresentationValue:(BOOL)a4;
+- (void)updatePosition:(CGPoint)position forPresentationValue:(BOOL)value;
 @end
 
 @implementation SBCoverSheetDestOutLayerView
 
-- (SBCoverSheetDestOutLayerView)initWithFrame:(CGRect)a3
+- (SBCoverSheetDestOutLayerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBCoverSheetDestOutLayerView;
-  v3 = [(SBCoverSheetDestOutLayerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBCoverSheetDestOutLayerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,11 +21,11 @@
   return v4;
 }
 
-- (SBCoverSheetDestOutLayerView)initWithCoder:(id)a3
+- (SBCoverSheetDestOutLayerView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SBCoverSheetDestOutLayerView;
-  v3 = [(SBCoverSheetDestOutLayerView *)&v6 initWithCoder:a3];
+  v3 = [(SBCoverSheetDestOutLayerView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -37,36 +37,36 @@
 
 - (void)_setup
 {
-  v3 = [(SBCoverSheetDestOutLayerView *)self layer];
-  v4 = [MEMORY[0x277D75348] blackColor];
-  [v3 setBackgroundColor:{objc_msgSend(v4, "cgColor")}];
+  layer = [(SBCoverSheetDestOutLayerView *)self layer];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [layer setBackgroundColor:{objc_msgSend(blackColor, "cgColor")}];
 
-  v5 = [(SBCoverSheetDestOutLayerView *)self layer];
-  [v5 setCornerCurve:*MEMORY[0x277CDA138]];
+  layer2 = [(SBCoverSheetDestOutLayerView *)self layer];
+  [layer2 setCornerCurve:*MEMORY[0x277CDA138]];
 
-  v6 = [(SBCoverSheetDestOutLayerView *)self layer];
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  v8 = [v7 traitCollection];
-  [v8 displayCornerRadius];
-  [v6 setCornerRadius:?];
+  layer3 = [(SBCoverSheetDestOutLayerView *)self layer];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  [traitCollection displayCornerRadius];
+  [layer3 setCornerRadius:?];
 
-  v9 = [(SBCoverSheetDestOutLayerView *)self layer];
-  [v9 setCompositingFilter:@"destOut"];
+  layer4 = [(SBCoverSheetDestOutLayerView *)self layer];
+  [layer4 setCompositingFilter:@"destOut"];
 }
 
-- (void)updatePosition:(CGPoint)a3 forPresentationValue:(BOOL)a4
+- (void)updatePosition:(CGPoint)position forPresentationValue:(BOOL)value
 {
-  if (a4)
+  if (value)
   {
-    v6 = a3;
-    v5 = [MEMORY[0x277CCAE60] valueWithBytes:&v6 objCType:"{CGPoint=dd}"];
+    positionCopy = position;
+    v5 = [MEMORY[0x277CCAE60] valueWithBytes:&positionCopy objCType:"{CGPoint=dd}"];
     [(SBCoverSheetDestOutLayerView *)self _setPresentationValue:v5 forKey:@"position"];
   }
 
   else
   {
 
-    [(SBCoverSheetDestOutLayerView *)self setCenter:a3.x, a3.y];
+    [(SBCoverSheetDestOutLayerView *)self setCenter:position.x, position.y];
   }
 }
 

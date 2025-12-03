@@ -1,24 +1,24 @@
 @interface PXAppIntentsViewAnnotationsBridge
-+ (void)clearViewAnnotationDelegateFor:(id)a3;
-+ (void)setViewAnnotationDelegate:(id)a3 for:(id)a4;
++ (void)clearViewAnnotationDelegateFor:(id)for;
++ (void)setViewAnnotationDelegate:(id)delegate for:(id)for;
 - (_TtC12PhotosUICore33PXAppIntentsViewAnnotationsBridge)init;
 @end
 
 @implementation PXAppIntentsViewAnnotationsBridge
 
-+ (void)setViewAnnotationDelegate:(id)a3 for:(id)a4
++ (void)setViewAnnotationDelegate:(id)delegate for:(id)for
 {
   type metadata accessor for PXAppIntentsViewAnnotations();
   swift_unknownObjectRetain();
-  v6 = a4;
-  static PXAppIntentsViewAnnotations.setDelegate(_:for:)(a3, v6);
+  forCopy = for;
+  static PXAppIntentsViewAnnotations.setDelegate(_:for:)(delegate, forCopy);
   swift_unknownObjectRelease();
 }
 
-+ (void)clearViewAnnotationDelegateFor:(id)a3
++ (void)clearViewAnnotationDelegateFor:(id)for
 {
-  v4 = a3;
-  _s12PhotosUICore27PXAppIntentsViewAnnotationsC13clearDelegate3forySo6UIViewCSg_tFZ_0(a3);
+  forCopy = for;
+  _s12PhotosUICore27PXAppIntentsViewAnnotationsC13clearDelegate3forySo6UIViewCSg_tFZ_0(for);
 }
 
 - (_TtC12PhotosUICore33PXAppIntentsViewAnnotationsBridge)init

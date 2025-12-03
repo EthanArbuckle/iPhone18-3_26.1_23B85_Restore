@@ -6,29 +6,29 @@
 
 - (__CFString)feedbackSectionIdentifier
 {
-  if ([a1 isAppClip])
+  if ([self isAppClip])
   {
-    v2 = @"com.apple.app-clips";
+    sectionBundleIdentifier = @"com.apple.app-clips";
   }
 
-  else if ([a1 isLocalApplicationResult])
+  else if ([self isLocalApplicationResult])
   {
-    v2 = @"com.apple.application";
+    sectionBundleIdentifier = @"com.apple.application";
   }
 
   else
   {
-    v2 = [a1 sectionBundleIdentifier];
+    sectionBundleIdentifier = [self sectionBundleIdentifier];
   }
 
-  if ([(__CFString *)v2 isEqualToString:@"com.apple.DocumentsApp"])
+  if ([(__CFString *)sectionBundleIdentifier isEqualToString:@"com.apple.DocumentsApp"])
   {
-    v3 = [a1 resultBundleId];
+    resultBundleId = [self resultBundleId];
 
-    v2 = v3;
+    sectionBundleIdentifier = resultBundleId;
   }
 
-  return v2;
+  return sectionBundleIdentifier;
 }
 
 @end

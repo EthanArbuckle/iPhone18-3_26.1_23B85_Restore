@@ -1,29 +1,29 @@
 @interface BMSiriPrivateLearningSELFEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMSiriPrivateLearningSELFEvent)initWithCoder:(id)a3;
-- (BMSiriPrivateLearningSELFEvent)initWithProto:(id)a3;
-- (BMSiriPrivateLearningSELFEvent)initWithProtoData:(id)a3;
-- (BMSiriPrivateLearningSELFEvent)initWithUniqueId:(id)a3 absoluteTimestamp:(double)a4 eventData:(id)a5;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMSiriPrivateLearningSELFEvent)initWithCoder:(id)coder;
+- (BMSiriPrivateLearningSELFEvent)initWithProto:(id)proto;
+- (BMSiriPrivateLearningSELFEvent)initWithProtoData:(id)data;
+- (BMSiriPrivateLearningSELFEvent)initWithUniqueId:(id)id absoluteTimestamp:(double)timestamp eventData:(id)data;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMSiriPrivateLearningSELFEvent
 
-- (BMSiriPrivateLearningSELFEvent)initWithUniqueId:(id)a3 absoluteTimestamp:(double)a4 eventData:(id)a5
+- (BMSiriPrivateLearningSELFEvent)initWithUniqueId:(id)id absoluteTimestamp:(double)timestamp eventData:(id)data
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  idCopy = id;
+  dataCopy = data;
+  v12 = dataCopy;
+  if (idCopy)
   {
-    if (v11)
+    if (dataCopy)
     {
       goto LABEL_3;
     }
@@ -46,20 +46,20 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_uniqueId, a3);
-    v14->_absoluteTimestamp = a4;
-    objc_storeStrong(&v14->_eventData, a5);
+    objc_storeStrong(&v13->_uniqueId, id);
+    v14->_absoluteTimestamp = timestamp;
+    objc_storeStrong(&v14->_eventData, data);
   }
 
   return v14;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -67,7 +67,7 @@ LABEL_3:
     v8 = __biome_log_for_category();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [BMSiriPrivateLearningSELFEvent eventWithData:a4 dataVersion:v8];
+      [BMSiriPrivateLearningSELFEvent eventWithData:version dataVersion:v8];
     }
 
     v7 = 0;
@@ -97,9 +97,9 @@ LABEL_3:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMSiriPrivateLearningSELFEvent *)self jsonDict];
+  jsonDict = [(BMSiriPrivateLearningSELFEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -114,59 +114,59 @@ LABEL_3:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMSiriPrivateLearningSELFEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMSiriPrivateLearningSELFEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMSiriPrivateLearningSELFEvent)initWithCoder:(id)a3
+- (BMSiriPrivateLearningSELFEvent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMSiriPrivateLearningSELFEvent *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMSiriPrivateLearningSELFEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMSiriPrivateLearningSELFEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMSiriPrivateLearningSELFEvent)initWithProto:(id)a3
+- (BMSiriPrivateLearningSELFEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasUniqueId]&& [v5 hasAbsoluteTimestamp]&& ([v5 hasEventData]& 1) != 0)
       {
-        v6 = [v5 uniqueId];
+        uniqueId = [v5 uniqueId];
         [v5 absoluteTimestamp];
         v8 = v7;
-        v9 = [v5 eventData];
-        self = [(BMSiriPrivateLearningSELFEvent *)self initWithUniqueId:v6 absoluteTimestamp:v9 eventData:v8];
+        eventData = [v5 eventData];
+        self = [(BMSiriPrivateLearningSELFEvent *)self initWithUniqueId:uniqueId absoluteTimestamp:eventData eventData:v8];
 
-        v10 = self;
+        selfCopy = self;
 LABEL_14:
 
         goto LABEL_15;
@@ -188,45 +188,45 @@ LABEL_14:
       }
     }
 
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_15:
 
-  return v10;
+  return selfCopy;
 }
 
-- (BMSiriPrivateLearningSELFEvent)initWithProtoData:(id)a3
+- (BMSiriPrivateLearningSELFEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBSiriPrivateLearningSELFEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBSiriPrivateLearningSELFEvent alloc] initWithData:dataCopy];
 
     self = [(BMSiriPrivateLearningSELFEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMSiriPrivateLearningSELFEvent *)self uniqueId];
-  [v3 setUniqueId:v4];
+  uniqueId = [(BMSiriPrivateLearningSELFEvent *)self uniqueId];
+  [v3 setUniqueId:uniqueId];
 
   [(BMSiriPrivateLearningSELFEvent *)self absoluteTimestamp];
   [v3 setAbsoluteTimestamp:?];
-  v5 = [(BMSiriPrivateLearningSELFEvent *)self eventData];
-  [v3 setEventData:v5];
+  eventData = [(BMSiriPrivateLearningSELFEvent *)self eventData];
+  [v3 setEventData:eventData];
 
   return v3;
 }
@@ -240,13 +240,13 @@ LABEL_15:
   return v5 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = equalCopy;
     absoluteTimestamp = self->_absoluteTimestamp;
     [v6 absoluteTimestamp];
     if (absoluteTimestamp != v8)
@@ -258,23 +258,23 @@ LABEL_20:
     }
 
     uniqueId = self->_uniqueId;
-    v10 = uniqueId;
+    eventData = uniqueId;
     if (!uniqueId)
     {
-      v11 = [v6 uniqueId];
-      if (!v11)
+      uniqueId = [v6 uniqueId];
+      if (!uniqueId)
       {
         v18 = 0;
         v12 = 0;
         goto LABEL_12;
       }
 
-      v18 = v11;
-      v10 = self->_uniqueId;
+      v18 = uniqueId;
+      eventData = self->_uniqueId;
     }
 
-    v3 = [v6 uniqueId];
-    if (([v10 isEqualToString:v3] & 1) == 0)
+    uniqueId2 = [v6 uniqueId];
+    if (([eventData isEqualToString:uniqueId2] & 1) == 0)
     {
 
       v13 = 0;
@@ -287,8 +287,8 @@ LABEL_12:
     v15 = eventData;
     if (!eventData)
     {
-      v10 = [v6 eventData];
-      if (!v10)
+      eventData = [v6 eventData];
+      if (!eventData)
       {
         v13 = 1;
         goto LABEL_23;
@@ -297,8 +297,8 @@ LABEL_12:
       v15 = self->_eventData;
     }
 
-    v16 = [v6 eventData];
-    v13 = [(NSData *)v15 isEqualToData:v16];
+    eventData2 = [v6 eventData];
+    v13 = [(NSData *)v15 isEqualToData:eventData2];
 
     if (eventData)
     {
@@ -333,18 +333,18 @@ LABEL_21:
   return v13;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   if (self->_uniqueId && self->_eventData)
   {
     v7 = 1;
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else

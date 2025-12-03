@@ -1,5 +1,5 @@
 @interface UIImage
-- (void)cuik_drawAtPoint:(double)a3;
+- (void)cuik_drawAtPoint:(double)point;
 @end
 
 @implementation UIImage
@@ -13,14 +13,14 @@ uint64_t __65__UIImage_CUIKPlatforms__cuik_drawImageWithSize_scale_drawBlock___b
   return v4(v2, v3);
 }
 
-- (void)cuik_drawAtPoint:(double)a3
+- (void)cuik_drawAtPoint:(double)point
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_3(a1, a2, a3, a4);
+    return OUTLINED_FUNCTION_0_3(self, a2, point, a4);
   }
 
-  return a1;
+  return self;
 }
 
 void *__47__UIImage_CUIKPlatforms__cuik_imageWithInsets___block_invoke(uint64_t a1, const char *a2)

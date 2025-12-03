@@ -7,30 +7,30 @@
 
 - (id)hf_displayName
 {
-  v1 = [a1 hf_serviceNameComponents];
-  v2 = [v1 composedString];
+  hf_serviceNameComponents = [self hf_serviceNameComponents];
+  composedString = [hf_serviceNameComponents composedString];
 
-  return v2;
+  return composedString;
 }
 
 - (HFServiceNameComponents)hf_serviceNameComponents
 {
-  v2 = [a1 accessory];
-  v3 = [v2 room];
+  accessory = [self accessory];
+  room = [accessory room];
 
-  v4 = [a1 hf_parentService];
+  hf_parentService = [self hf_parentService];
 
-  if (v4)
+  if (hf_parentService)
   {
 
-    v3 = 0;
+    room = 0;
   }
 
-  v5 = [HFNamingComponents namingComponentFromService:a1];
+  v5 = [HFNamingComponents namingComponentFromService:self];
   v6 = [HFServiceNameComponents alloc];
-  v7 = [v5 name];
-  v8 = [v3 name];
-  v9 = [(HFServiceNameComponents *)v6 initWithRawServiceName:v7 rawRoomName:v8];
+  name = [v5 name];
+  name2 = [room name];
+  v9 = [(HFServiceNameComponents *)v6 initWithRawServiceName:name rawRoomName:name2];
 
   return v9;
 }

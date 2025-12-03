@@ -1,27 +1,27 @@
 @interface APECBackoffTimer
-- (APECBackoffTimer)initWithClock:(id)a3;
+- (APECBackoffTimer)initWithClock:(id)clock;
 - (BOOL)isWaitingForBackoff;
 - (NSDate)scheduledDate;
-- (int64_t)indexContainingDuration:(double)a3;
+- (int64_t)indexContainingDuration:(double)duration;
 - (int64_t)nextIndex;
 - (void)resetTimer;
-- (void)startMinimumTimer:(double)a3;
+- (void)startMinimumTimer:(double)timer;
 - (void)startNextTimer;
-- (void)startTimerAt:(int64_t)a3;
+- (void)startTimerAt:(int64_t)at;
 @end
 
 @implementation APECBackoffTimer
 
-- (APECBackoffTimer)initWithClock:(id)a3
+- (APECBackoffTimer)initWithClock:(id)clock
 {
-  v5 = a3;
+  clockCopy = clock;
   v9.receiver = self;
   v9.super_class = APECBackoffTimer;
   v6 = [(APECBackoffTimer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clock, a3);
+    objc_storeStrong(&v6->_clock, clock);
     v7->_currentIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
@@ -30,21 +30,21 @@
 
 - (NSDate)scheduledDate
 {
-  v2 = [(APECBackoffTimer *)self currentTimer];
-  v3 = [v2 endDate];
+  currentTimer = [(APECBackoffTimer *)self currentTimer];
+  endDate = [currentTimer endDate];
 
-  return v3;
+  return endDate;
 }
 
 - (BOOL)isWaitingForBackoff
 {
-  v3 = [(APECBackoffTimer *)self currentTimer];
-  if (v3)
+  currentTimer = [(APECBackoffTimer *)self currentTimer];
+  if (currentTimer)
   {
-    v4 = [(APECBackoffTimer *)self currentTimer];
-    v5 = [(APECBackoffTimer *)self clock];
-    v6 = [v5 now];
-    v7 = [v4 containsDate:v6];
+    currentTimer2 = [(APECBackoffTimer *)self currentTimer];
+    clock = [(APECBackoffTimer *)self clock];
+    v6 = [clock now];
+    v7 = [currentTimer2 containsDate:v6];
   }
 
   else
@@ -62,25 +62,25 @@
   [(APECBackoffTimer *)self setCurrentTimer:0];
 }
 
-- (void)startMinimumTimer:(double)a3
+- (void)startMinimumTimer:(double)timer
 {
-  v4 = [(APECBackoffTimer *)self indexContainingDuration:a3];
+  v4 = [(APECBackoffTimer *)self indexContainingDuration:timer];
 
   [(APECBackoffTimer *)self startTimerAt:v4];
 }
 
 - (void)startNextTimer
 {
-  v3 = [(APECBackoffTimer *)self nextIndex];
+  nextIndex = [(APECBackoffTimer *)self nextIndex];
 
-  [(APECBackoffTimer *)self startTimerAt:v3];
+  [(APECBackoffTimer *)self startTimerAt:nextIndex];
 }
 
-- (int64_t)indexContainingDuration:(double)a3
+- (int64_t)indexContainingDuration:(double)duration
 {
   for (i = 0; i != 9; ++i)
   {
-    if (dbl_1003F09C8[i] >= a3)
+    if (dbl_1003F09C8[i] >= duration)
     {
       break;
     }
@@ -104,9 +104,9 @@
     return 0;
   }
 
-  v4 = [(APECBackoffTimer *)self currentIndex];
+  currentIndex = [(APECBackoffTimer *)self currentIndex];
   result = [(APECBackoffTimer *)self currentIndex];
-  if (v4 < 8)
+  if (currentIndex < 8)
   {
     ++result;
   }
@@ -114,12 +114,12 @@
   return result;
 }
 
-- (void)startTimerAt:(int64_t)a3
+- (void)startTimerAt:(int64_t)at
 {
-  [(APECBackoffTimer *)self setCurrentIndex:a3];
+  [(APECBackoffTimer *)self setCurrentIndex:at];
   v4 = [NSDateInterval alloc];
-  v7 = [(APECBackoffTimer *)self clock];
-  v5 = [v7 now];
+  clock = [(APECBackoffTimer *)self clock];
+  v5 = [clock now];
   v6 = [v4 initWithStartDate:v5 duration:{dbl_1003F09C8[-[APECBackoffTimer currentIndex](self, "currentIndex")]}];
   [(APECBackoffTimer *)self setCurrentTimer:v6];
 }

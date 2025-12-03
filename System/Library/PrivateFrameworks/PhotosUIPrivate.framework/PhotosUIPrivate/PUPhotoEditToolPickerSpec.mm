@@ -1,19 +1,19 @@
 @interface PUPhotoEditToolPickerSpec
 - (PUPhotoEditToolPickerSpec)init;
 - (double)interToolSpacing;
-- (double)interToolVerticalSpacingForToolCount:(unint64_t)a3;
+- (double)interToolVerticalSpacingForToolCount:(unint64_t)count;
 @end
 
 @implementation PUPhotoEditToolPickerSpec
 
-- (double)interToolVerticalSpacingForToolCount:(unint64_t)a3
+- (double)interToolVerticalSpacingForToolCount:(unint64_t)count
 {
   [(PUViewControllerSpec *)self layoutReferenceSize];
   v6 = v5;
-  v7 = [(PUViewControllerSpec *)self currentLayoutStyle];
-  if (v7 < 2)
+  currentLayoutStyle = [(PUViewControllerSpec *)self currentLayoutStyle];
+  if (currentLayoutStyle < 2)
   {
-    v9 = a3 > 5;
+    v9 = count > 5;
     result = 12.0;
     v10 = 6.0;
 LABEL_9:
@@ -25,21 +25,21 @@ LABEL_9:
     return result;
   }
 
-  if (v7 != 2)
+  if (currentLayoutStyle != 2)
   {
     result = 22.0;
-    if (v7 != 3)
+    if (currentLayoutStyle != 3)
     {
       return result;
     }
 
-    v9 = v6 <= 402.0 && a3 > 5;
+    v9 = v6 <= 402.0 && count > 5;
     result = 16.0;
     v10 = 8.0;
     goto LABEL_9;
   }
 
-  if (a3 < 6)
+  if (count < 6)
   {
     return 14.0;
   }
@@ -59,9 +59,9 @@ LABEL_9:
 
 - (double)interToolSpacing
 {
-  v2 = [(PUViewControllerSpec *)self currentLayoutStyle];
+  currentLayoutStyle = [(PUViewControllerSpec *)self currentLayoutStyle];
   result = 28.0;
-  if (v2 == 1)
+  if (currentLayoutStyle == 1)
   {
     return 18.0;
   }

@@ -1,9 +1,9 @@
 @interface PLAssetsdService
-- (BOOL)_prepareToRunDaemonJob:(id)a3 error:(id *)a4;
+- (BOOL)_prepareToRunDaemonJob:(id)job error:(id *)error;
 - (NSString)connectionDescription;
 - (NSString)description;
 - (NSString)stateDescription;
-- (PLAssetsdService)initWithConnection:(id)a3 libraryBundleController:(id)a4 daemonServices:(id)a5;
+- (PLAssetsdService)initWithConnection:(id)connection libraryBundleController:(id)controller daemonServices:(id)services;
 - (id)CloudInternalService;
 - (id)CloudService;
 - (id)DebugService;
@@ -26,8 +26,8 @@
 - (id)SystemLibraryURLReadOnlyService;
 - (id)_photoLibrary;
 - (id)_waitForLibraryServicesForDaemonJob;
-- (id)bindToPhotoLibraryURL:(id)a3 sandboxExtension:(id)a4 clientOptions:(id)a5;
-- (id)bindWithToken:(id)a3;
+- (id)bindToPhotoLibraryURL:(id)l sandboxExtension:(id)extension clientOptions:(id)options;
+- (id)bindWithToken:(id)token;
 - (id)clientDebugDescription;
 - (id)makeInnerCloudInternalService;
 - (id)makeInnerCloudService;
@@ -90,36 +90,36 @@
 - (id)permissionsForSyncService;
 - (id)permissionsForSystemLibraryURLReadOnlyService;
 - (id)resourceDownloader;
-- (id)serviceContextWithSelector:(SEL)a3;
-- (void)PhotoKitAddService_applyChangesRequest:(id)a3 libraryToken:(id)a4 reply:(id)a5;
-- (void)PhotoKitService_applyChangesRequest:(id)a3 libraryToken:(id)a4 reply:(id)a5;
-- (void)bindToPhotoLibraryURL:(id)a3 sandboxExtension:(id)a4 clientOptions:(id)a5 withReply:(id)a6;
+- (id)serviceContextWithSelector:(SEL)selector;
+- (void)PhotoKitAddService_applyChangesRequest:(id)request libraryToken:(id)token reply:(id)reply;
+- (void)PhotoKitService_applyChangesRequest:(id)request libraryToken:(id)token reply:(id)reply;
+- (void)bindToPhotoLibraryURL:(id)l sandboxExtension:(id)extension clientOptions:(id)options withReply:(id)reply;
 - (void)collectCacheMetrics;
-- (void)getCloudInternalServiceWithReply:(id)a3;
-- (void)getCloudServiceWithReply:(id)a3;
-- (void)getDebugServiceWithReply:(id)a3;
-- (void)getDemoServiceWithReply:(id)a3;
-- (void)getDiagnosticsServiceWithReply:(id)a3;
-- (void)getLibraryInternalServiceWithReply:(id)a3;
-- (void)getLibraryManagementServiceWithReply:(id)a3;
-- (void)getLibraryServiceWithReply:(id)a3;
-- (void)getMigrationServiceWithReply:(id)a3;
-- (void)getNonBindingDebugServiceWithReply:(id)a3;
-- (void)getNotificationServiceWithReply:(id)a3;
-- (void)getPhotoKitAddServiceWithReply:(id)a3;
-- (void)getPhotoKitServiceWithReply:(id)a3;
-- (void)getPrivacySupportServiceWithReply:(id)a3;
-- (void)getResourceAvailabilityServiceWithReply:(id)a3;
-- (void)getResourceInternalServiceWithReply:(id)a3;
-- (void)getResourceServiceWithReply:(id)a3;
-- (void)getResourceWriteOnlyServiceWithReply:(id)a3;
-- (void)getSyncServiceWithReply:(id)a3;
-- (void)getSystemLibraryURLReadOnlyServiceWithReply:(id)a3;
+- (void)getCloudInternalServiceWithReply:(id)reply;
+- (void)getCloudServiceWithReply:(id)reply;
+- (void)getDebugServiceWithReply:(id)reply;
+- (void)getDemoServiceWithReply:(id)reply;
+- (void)getDiagnosticsServiceWithReply:(id)reply;
+- (void)getLibraryInternalServiceWithReply:(id)reply;
+- (void)getLibraryManagementServiceWithReply:(id)reply;
+- (void)getLibraryServiceWithReply:(id)reply;
+- (void)getMigrationServiceWithReply:(id)reply;
+- (void)getNonBindingDebugServiceWithReply:(id)reply;
+- (void)getNotificationServiceWithReply:(id)reply;
+- (void)getPhotoKitAddServiceWithReply:(id)reply;
+- (void)getPhotoKitServiceWithReply:(id)reply;
+- (void)getPrivacySupportServiceWithReply:(id)reply;
+- (void)getResourceAvailabilityServiceWithReply:(id)reply;
+- (void)getResourceInternalServiceWithReply:(id)reply;
+- (void)getResourceServiceWithReply:(id)reply;
+- (void)getResourceWriteOnlyServiceWithReply:(id)reply;
+- (void)getSyncServiceWithReply:(id)reply;
+- (void)getSystemLibraryURLReadOnlyServiceWithReply:(id)reply;
 - (void)handleInterruption;
 - (void)handleInvalidation;
-- (void)invalidateConnectionWithReason:(id)a3;
-- (void)photoLibraryDeletedAtURL:(id)a3 reply:(id)a4;
-- (void)runDaemonJob:(id)a3 isSerial:(BOOL)a4 withReply:(id)a5;
+- (void)invalidateConnectionWithReason:(id)reason;
+- (void)photoLibraryDeletedAtURL:(id)l reply:(id)reply;
+- (void)runDaemonJob:(id)job isSerial:(BOOL)serial withReply:(id)reply;
 @end
 
 @implementation PLAssetsdService
@@ -134,14 +134,14 @@
   return v5;
 }
 
-- (void)invalidateConnectionWithReason:(id)a3
+- (void)invalidateConnectionWithReason:(id)reason
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PLAssetsdService.m" lineNumber:1003 description:{@"Invalid parameter not satisfying: %@", @"reason != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdService.m" lineNumber:1003 description:{@"Invalid parameter not satisfying: %@", @"reason != nil"}];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_connection);
@@ -153,11 +153,11 @@
     if ((v7 & 1) == 0 && (v8 & 1) == 0)
     {
       v9 = objc_loadWeakRetained(&self->_connection);
-      v10 = [v9 _unboostingRemoteObjectProxy];
+      _unboostingRemoteObjectProxy = [v9 _unboostingRemoteObjectProxy];
 
-      v11 = PLBackendGetLog();
-      v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-      if (v10)
+      libraryURL = PLBackendGetLog();
+      v12 = os_log_type_enabled(libraryURL, OS_LOG_TYPE_DEFAULT);
+      if (_unboostingRemoteObjectProxy)
       {
         if (v12)
         {
@@ -166,11 +166,11 @@
           v15 = [v13 numberWithInt:{objc_msgSend(v14, "processIdentifier")}];
           *buf = 138543362;
           v22 = v15;
-          _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Sending libraryBecameUnavailable to PID %{public}@", buf, 0xCu);
+          _os_log_impl(&dword_19BF1F000, libraryURL, OS_LOG_TYPE_DEFAULT, "Sending libraryBecameUnavailable to PID %{public}@", buf, 0xCu);
         }
 
-        v11 = [(PLAssetsdService *)self libraryURL];
-        [v10 libraryBecameUnavailable:v11 reason:v5];
+        libraryURL = [(PLAssetsdService *)self libraryURL];
+        [_unboostingRemoteObjectProxy libraryBecameUnavailable:libraryURL reason:reasonCopy];
       }
 
       else if (v12)
@@ -180,7 +180,7 @@
         v18 = [v16 numberWithInt:{objc_msgSend(v17, "processIdentifier")}];
         *buf = 138543362;
         v22 = v18;
-        _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "No remoteObjectProxy for client PID %{public}@", buf, 0xCu);
+        _os_log_impl(&dword_19BF1F000, libraryURL, OS_LOG_TYPE_DEFAULT, "No remoteObjectProxy for client PID %{public}@", buf, 0xCu);
       }
     }
 
@@ -191,10 +191,10 @@
   }
 }
 
-- (BOOL)_prepareToRunDaemonJob:(id)a3 error:(id *)a4
+- (BOOL)_prepareToRunDaemonJob:(id)job error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  jobCopy = job;
   v19[1] = MEMORY[0x1E69E9820];
   v19[2] = 3221225472;
   v19[3] = __49__PLAssetsdService__prepareToRunDaemonJob_error___block_invoke;
@@ -202,20 +202,20 @@
   v19[5] = self;
   v19[6] = a2;
   pl_dispatch_once();
-  if ([v7 daemonOperation] == 13 || objc_msgSend(v7, "daemonOperation") == 16)
+  if ([jobCopy daemonOperation] == 13 || objc_msgSend(jobCopy, "daemonOperation") == 16)
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    [v7 setClientConnection:WeakRetained];
+    [jobCopy setClientConnection:WeakRetained];
   }
 
   if (!self->_readyForDaemonJobs)
   {
-    v10 = [(PLAssetsdService *)self libraryServicesManager];
-    v11 = v10;
-    if (v10)
+    libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+    v11 = libraryServicesManager;
+    if (libraryServicesManager)
     {
       v19[0] = 0;
-      v12 = [v10 awaitLibraryState:6 error:v19];
+      v12 = [libraryServicesManager awaitLibraryState:6 error:v19];
       v13 = v19[0];
       v14 = v13;
       if (v12)
@@ -223,16 +223,16 @@
         self->_readyForDaemonJobs = 1;
       }
 
-      else if (a4)
+      else if (error)
       {
         v17 = v13;
-        *a4 = v14;
+        *error = v14;
       }
     }
 
     else
     {
-      if (!a4)
+      if (!error)
       {
 LABEL_14:
 
@@ -245,7 +245,7 @@ LABEL_14:
       v20 = *MEMORY[0x1E696A578];
       v21[0] = @"No library services manager";
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-      *a4 = [v15 errorWithDomain:v16 code:41012 userInfo:v14];
+      *error = [v15 errorWithDomain:v16 code:41012 userInfo:v14];
     }
 
     goto LABEL_14;
@@ -293,25 +293,25 @@ void __49__PLAssetsdService__prepareToRunDaemonJob_error___block_invoke(uint64_t
 - (void)collectCacheMetrics
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(PLAssetsdService *)self cacheMetricsShellObject];
-  v4 = [v3 cacheMetricsCollectorServer];
+  cacheMetricsShellObject = [(PLAssetsdService *)self cacheMetricsShellObject];
+  cacheMetricsCollectorServer = [cacheMetricsShellObject cacheMetricsCollectorServer];
 
-  if (v4)
+  if (cacheMetricsCollectorServer)
   {
-    v5 = [(PLAssetsdService *)self libraryServicesManager];
-    v6 = [v5 resourceCacheMetrics];
+    libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+    resourceCacheMetrics = [libraryServicesManager resourceCacheMetrics];
     v8 = v7;
-    v9 = [(PLAssetsdService *)self cacheMetricsShellObject];
-    v10 = [v9 cacheMetricsCollectorServer];
-    v11 = [v10 getSharedImageRequestCacheMetrics];
-    v12 = v6 & 0xFFFFFFFF00000000;
-    v13 = (v11 + v6);
+    cacheMetricsShellObject2 = [(PLAssetsdService *)self cacheMetricsShellObject];
+    cacheMetricsCollectorServer2 = [cacheMetricsShellObject2 cacheMetricsCollectorServer];
+    getSharedImageRequestCacheMetrics = [cacheMetricsCollectorServer2 getSharedImageRequestCacheMetrics];
+    v12 = resourceCacheMetrics & 0xFFFFFFFF00000000;
+    v13 = (getSharedImageRequestCacheMetrics + resourceCacheMetrics);
     v15 = (v14 + v8);
     v16 = v14 + (v8 & 0xFFFFFFFF00000000);
-    v17 = v11 + v12;
-    v18 = (v11 + v12) & 0xFFFFFFFF00000000;
+    v17 = getSharedImageRequestCacheMetrics + v12;
+    v18 = (getSharedImageRequestCacheMetrics + v12) & 0xFFFFFFFF00000000;
 
-    [v5 setResourceCacheMetrics:{v18 | v13, v15 | v16 & 0xFFFFFFFF00000000}];
+    [libraryServicesManager setResourceCacheMetrics:{v18 | v13, v15 | v16 & 0xFFFFFFFF00000000}];
     v19 = PLCacheMetricsCollectorGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
@@ -328,22 +328,22 @@ void __49__PLAssetsdService__prepareToRunDaemonJob_error___block_invoke(uint64_t
   }
 }
 
-- (void)PhotoKitAddService_applyChangesRequest:(id)a3 libraryToken:(id)a4 reply:(id)a5
+- (void)PhotoKitAddService_applyChangesRequest:(id)request libraryToken:(id)token reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  tokenCopy = token;
+  replyCopy = reply;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __78__PLAssetsdService_PhotoKitAddService_applyChangesRequest_libraryToken_reply___block_invoke;
   v14[3] = &unk_1E7573C00;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v8;
-  v12 = v10;
-  v13 = v9;
+  v15 = tokenCopy;
+  v16 = requestCopy;
+  v17 = replyCopy;
+  v11 = requestCopy;
+  v12 = replyCopy;
+  v13 = tokenCopy;
   [PLAssetsdCrashRecoverySupport trackPerformChangesRequestInProgressWithBlock:v14];
 }
 
@@ -375,22 +375,22 @@ void __78__PLAssetsdService_PhotoKitAddService_applyChangesRequest_libraryToken_
   }
 }
 
-- (void)PhotoKitService_applyChangesRequest:(id)a3 libraryToken:(id)a4 reply:(id)a5
+- (void)PhotoKitService_applyChangesRequest:(id)request libraryToken:(id)token reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  tokenCopy = token;
+  replyCopy = reply;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __75__PLAssetsdService_PhotoKitService_applyChangesRequest_libraryToken_reply___block_invoke;
   v14[3] = &unk_1E7573C00;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v8;
-  v12 = v10;
-  v13 = v9;
+  v15 = tokenCopy;
+  v16 = requestCopy;
+  v17 = replyCopy;
+  v11 = requestCopy;
+  v12 = replyCopy;
+  v13 = tokenCopy;
   [PLAssetsdCrashRecoverySupport trackPerformChangesRequestInProgressWithBlock:v14];
 }
 
@@ -422,53 +422,53 @@ void __75__PLAssetsdService_PhotoKitService_applyChangesRequest_libraryToken_rep
   }
 }
 
-- (id)bindWithToken:(id)a3
+- (id)bindWithToken:(id)token
 {
-  v4 = a3;
-  v5 = v4;
+  tokenCopy = token;
+  v5 = tokenCopy;
   libraryURL = self->_libraryURL;
-  if (libraryURL && ([v4 url], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[NSURL isEqual:](libraryURL, "isEqual:", v7), v7, v8))
+  if (libraryURL && ([tokenCopy url], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[NSURL isEqual:](libraryURL, "isEqual:", v7), v7, v8))
   {
     v9 = MEMORY[0x1E69BF2D0];
-    v10 = [MEMORY[0x1E695DFB0] null];
-    v11 = [v9 successWithResult:v10];
+    null = [MEMORY[0x1E695DFB0] null];
+    v11 = [v9 successWithResult:null];
   }
 
   else
   {
-    v10 = [v5 url];
-    v12 = [v5 sandboxExtension];
-    v13 = [v5 clientOptions];
-    v11 = [(PLAssetsdService *)self bindToPhotoLibraryURL:v10 sandboxExtension:v12 clientOptions:v13];
+    null = [v5 url];
+    sandboxExtension = [v5 sandboxExtension];
+    clientOptions = [v5 clientOptions];
+    v11 = [(PLAssetsdService *)self bindToPhotoLibraryURL:null sandboxExtension:sandboxExtension clientOptions:clientOptions];
   }
 
   return v11;
 }
 
-- (id)bindToPhotoLibraryURL:(id)a3 sandboxExtension:(id)a4 clientOptions:(id)a5
+- (id)bindToPhotoLibraryURL:(id)l sandboxExtension:(id)extension clientOptions:(id)options
 {
   v87[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  optionsCopy = options;
   v11 = MEMORY[0x1E69BF278];
-  v12 = a4;
-  v13 = [v11 sharedBookmarkManager];
+  extensionCopy = extension;
+  sharedBookmarkManager = [v11 sharedBookmarkManager];
   v75 = 0;
-  v14 = [v13 URLFromClientLibraryURL:v9 sandboxExtension:v12 error:&v75];
+  v14 = [sharedBookmarkManager URLFromClientLibraryURL:lCopy sandboxExtension:extensionCopy error:&v75];
 
   v15 = v75;
   v74 = 0;
   if (v14)
   {
     v16 = [(PLPhotoLibraryBundleController *)self->_libraryBundleController lookupOrCreateBundleForLibraryURL:v14];
-    v17 = [v16 libraryServicesManager];
-    v18 = [PLPhotoLibraryOpener autoCreateWellKnownPhotoLibraryIfNeededWithURL:v14 libraryServicesManager:v17 wellKnownLibraryIdentifier:&v74];
+    libraryServicesManager = [v16 libraryServicesManager];
+    v18 = [PLPhotoLibraryOpener autoCreateWellKnownPhotoLibraryIfNeededWithURL:v14 libraryServicesManager:libraryServicesManager wellKnownLibraryIdentifier:&v74];
   }
 
   if (self->_libraryURL && ([v14 isEqual:?] & 1) == 0)
   {
-    v68 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v68 handleFailureInMethod:a2 object:self file:@"PLAssetsdService.m" lineNumber:743 description:{@"Cannot update _libraryURL %@ to %@ after it is assigned", self->_libraryURL, v9}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdService.m" lineNumber:743 description:{@"Cannot update _libraryURL %@ to %@ after it is assigned", self->_libraryURL, lCopy}];
   }
 
   if ((v74 & 0xFFFFFFFFFFFFFFFELL) == 2 && ![(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization photosDataVaultEntitled])
@@ -481,13 +481,13 @@ void __75__PLAssetsdService_PhotoKitService_applyChangesRequest_libraryToken_rep
         v21 = v74;
         [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
         v23 = v22 = v15;
-        v24 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization clientProcessIdentifier];
+        clientProcessIdentifier = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization clientProcessIdentifier];
         *buf = 134218498;
         v81 = v21;
         v82 = 2112;
         v83 = v23;
         v84 = 1024;
-        v85 = v24;
+        v85 = clientProcessIdentifier;
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "bindToPhotoLibraryURL WILL FAIL for well known library %td because client '%@' (%d) is missing the photos data vault entitlement com.apple.private.security.storage.PhotosLibraries", buf, 0x1Cu);
 
         v15 = v22;
@@ -531,7 +531,7 @@ void __75__PLAssetsdService_PhotoKitService_applyChangesRequest_libraryToken_rep
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v81 = v9;
+    v81 = lCopy;
     _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_DEBUG, "Need to bind to URL: %@", buf, 0xCu);
   }
 
@@ -543,18 +543,18 @@ void __75__PLAssetsdService_PhotoKitService_applyChangesRequest_libraryToken_rep
       goto LABEL_61;
     }
 
-    if (v10)
+    if (optionsCopy)
     {
       v31 = v15;
-      v32 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69BFEF0]];
-      v33 = [v32 BOOLValue];
+      v32 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69BFEF0]];
+      bOOLValue = [v32 BOOLValue];
 
-      if (v33)
+      if (bOOLValue)
       {
         [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization setClientLimitedLibraryCapable:1];
       }
 
-      v34 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69BF3A0]];
+      v34 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69BF3A0]];
       if (v34)
       {
         [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization setClientMainBundleSandboxedURL:v34];
@@ -568,9 +568,9 @@ void __75__PLAssetsdService_PhotoKitService_applyChangesRequest_libraryToken_rep
       if ([(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization photoKitEntitled]|| [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization isClientAuthorizedForTCCServicePhotos]|| [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization isClientAuthorizedForTCCServicePhotosAdd])
       {
         v35 = [(PLPhotoLibraryBundleController *)self->_libraryBundleController openBundleAtLibraryURL:v14];
-        v72 = [v35 libraryServicesManager];
+        libraryServicesManager2 = [v35 libraryServicesManager];
         obj = v35;
-        if ([v72 wellKnownPhotoLibraryIdentifier] == 1)
+        if ([libraryServicesManager2 wellKnownPhotoLibraryIdentifier] == 1)
         {
           if (MEMORY[0x19EAEE230]())
           {
@@ -580,16 +580,16 @@ void __75__PLAssetsdService_PhotoKitService_applyChangesRequest_libraryToken_rep
           goto LABEL_52;
         }
 
-        v45 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization isClientEntitledForPhotoKitOrPrivatePhotosTCC];
+        isClientEntitledForPhotoKitOrPrivatePhotosTCC = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization isClientEntitledForPhotoKitOrPrivatePhotosTCC];
         if (MEMORY[0x19EAEE230]())
         {
-          if ([(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization photosDataVaultEntitled]|| v45)
+          if ([(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization photosDataVaultEntitled]|| isClientEntitledForPhotoKitOrPrivatePhotosTCC)
           {
             goto LABEL_52;
           }
         }
 
-        else if (v45)
+        else if (isClientEntitledForPhotoKitOrPrivatePhotosTCC)
         {
 LABEL_52:
           v52 = v15;
@@ -604,7 +604,7 @@ LABEL_52:
             _os_log_impl(&dword_19BF1F000, v53, OS_LOG_TYPE_DEBUG, "Bound to %@", buf, 0xCu);
           }
 
-          v55 = [[PLAssetsdXPCUserInfo alloc] initWithLibraryServicesManager:v72];
+          v55 = [[PLAssetsdXPCUserInfo alloc] initWithLibraryServicesManager:libraryServicesManager2];
           WeakRetained = objc_loadWeakRetained(&self->_connection);
           [WeakRetained setUserInfo:v55];
 
@@ -621,13 +621,13 @@ LABEL_52:
           }
 
           v15 = v52;
-          if ([v72 wellKnownPhotoLibraryIdentifier] == 1 && !-[PLAssetsdConnectionAuthorization isClientEntitledForPhotoKitOrPrivatePhotosTCC](self->_connectionAuthorization, "isClientEntitledForPhotoKitOrPrivatePhotosTCC"))
+          if ([libraryServicesManager2 wellKnownPhotoLibraryIdentifier] == 1 && !-[PLAssetsdConnectionAuthorization isClientEntitledForPhotoKitOrPrivatePhotosTCC](self->_connectionAuthorization, "isClientEntitledForPhotoKitOrPrivatePhotosTCC"))
           {
-            v61 = [MEMORY[0x1E69BF2B0] sharedInstance];
-            [v61 reportPhotosUseWithClientAuthorization:self->_connectionAuthorization];
+            mEMORY[0x1E69BF2B0] = [MEMORY[0x1E69BF2B0] sharedInstance];
+            [mEMORY[0x1E69BF2B0] reportPhotosUseWithClientAuthorization:self->_connectionAuthorization];
 
-            v62 = [MEMORY[0x1E69BF2B0] sharedInstance];
-            [v62 logPhotosAccessWithClientAuthorization:self->_connectionAuthorization];
+            mEMORY[0x1E69BF2B0]2 = [MEMORY[0x1E69BF2B0] sharedInstance];
+            [mEMORY[0x1E69BF2B0]2 logPhotosAccessWithClientAuthorization:self->_connectionAuthorization];
 
             v15 = v52;
           }
@@ -657,7 +657,7 @@ LABEL_52:
         v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
         v19 = [v50 errorWithDomain:v51 code:41011 userInfo:v49];
         obj = 0;
-        v72 = 0;
+        libraryServicesManager2 = 0;
       }
 
       v15 = v70;
@@ -672,23 +672,23 @@ LABEL_52:
       v36 = v15;
       v37 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v38 = v37;
-      if (v9)
+      if (lCopy)
       {
-        [v37 setObject:v9 forKeyedSubscript:*MEMORY[0x1E696A998]];
+        [v37 setObject:lCopy forKeyedSubscript:*MEMORY[0x1E696A998]];
       }
 
       v39 = objc_alloc_init(MEMORY[0x1E696AC08]);
       buf[0] = 0;
-      v40 = [(NSURL *)v9 path];
-      v72 = v39;
-      LOBYTE(v39) = [v39 fileExistsAtPath:v40 isDirectory:buf];
+      path = [(NSURL *)lCopy path];
+      libraryServicesManager2 = v39;
+      LOBYTE(v39) = [v39 fileExistsAtPath:path isDirectory:buf];
 
       obj = v38;
       if (v39)
       {
-        v41 = [v36 domain];
+        domain = [v36 domain];
         v42 = *MEMORY[0x1E69BFF48];
-        v43 = [v41 isEqualToString:*MEMORY[0x1E69BFF48]];
+        v43 = [domain isEqualToString:*MEMORY[0x1E69BFF48]];
 
         if (!v43)
         {
@@ -737,28 +737,28 @@ LABEL_61:
   return v64;
 }
 
-- (void)bindToPhotoLibraryURL:(id)a3 sandboxExtension:(id)a4 clientOptions:(id)a5 withReply:(id)a6
+- (void)bindToPhotoLibraryURL:(id)l sandboxExtension:(id)extension clientOptions:(id)options withReply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  extensionCopy = extension;
+  optionsCopy = options;
+  replyCopy = reply;
   v22 = 0u;
   *sel = 0u;
   v20 = 0u;
-  v14 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v20) = v14;
-  if (v14)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v20) = enabled;
+  if (enabled)
   {
     *(&v20 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: bindToPhotoLibraryURL:sandboxExtension:clientOptions:withReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v20 + 1), (&v22 + 8));
   }
 
-  v15 = [(PLAssetsdService *)self bindToPhotoLibraryURL:v10 sandboxExtension:v11 clientOptions:v12, v20];
-  v16 = [v15 error];
-  v13[2](v13, v16);
+  v15 = [(PLAssetsdService *)self bindToPhotoLibraryURL:lCopy sandboxExtension:extensionCopy clientOptions:optionsCopy, v20];
+  error = [v15 error];
+  replyCopy[2](replyCopy, error);
 
   if (v21 == 1)
   {
@@ -782,8 +782,8 @@ LABEL_61:
 - (id)_waitForLibraryServicesForDaemonJob
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PLAssetsdService *)self libraryServicesManager];
-  if (v2)
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+  if (libraryServicesManager)
   {
     v3 = 0;
   }
@@ -801,19 +801,19 @@ LABEL_61:
   return v3;
 }
 
-- (void)runDaemonJob:(id)a3 isSerial:(BOOL)a4 withReply:(id)a5
+- (void)runDaemonJob:(id)job isSerial:(BOOL)serial withReply:(id)reply
 {
-  v6 = a4;
+  serialCopy = serial;
   *&v35[5] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  jobCopy = job;
+  replyCopy = reply;
   +[PLFileDescriptorFuse checkFileDescriptorFuse];
   v32 = 0u;
   *sel = 0u;
   v31 = 0u;
-  v10 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v31) = v10;
-  if (v10)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v31) = enabled;
+  if (enabled)
   {
     v11 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: runDaemonJob:isSerial:withReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v12 = *(&v31 + 1);
@@ -826,44 +826,44 @@ LABEL_61:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v35 = v8;
+    *v35 = jobCopy;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "runDaemonJob:isSerial:withReply: with job %@", buf, 0xCu);
   }
 
   v30 = 0;
-  v14 = [(PLAssetsdService *)self _prepareToRunDaemonJob:v8 error:&v30];
+  v14 = [(PLAssetsdService *)self _prepareToRunDaemonJob:jobCopy error:&v30];
   v15 = v30;
   if (v14)
   {
-    if (v9)
+    if (replyCopy)
     {
-      [v8 setReplyHandler:v9];
+      [jobCopy setReplyHandler:replyCopy];
     }
 
-    if (v6)
+    if (serialCopy)
     {
-      v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      [v16 setObject:*MEMORY[0x1E69C0498] forKey:*MEMORY[0x1E69C0410]];
-      [v16 setObject:v8 forKey:@"kPLImageWriterDaemonJobEventKey"];
+      _waitForLibraryServicesForDaemonJob = objc_alloc_init(MEMORY[0x1E695DF90]);
+      [_waitForLibraryServicesForDaemonJob setObject:*MEMORY[0x1E69C0498] forKey:*MEMORY[0x1E69C0410]];
+      [_waitForLibraryServicesForDaemonJob setObject:jobCopy forKey:@"kPLImageWriterDaemonJobEventKey"];
       if ([(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization isClientInLimitedLibraryMode])
       {
-        [v16 setObject:MEMORY[0x1E695E118] forKey:@"job.private.ClientInLimitedLibraryMode"];
-        v17 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
-        if ([v17 length])
+        [_waitForLibraryServicesForDaemonJob setObject:MEMORY[0x1E695E118] forKey:@"job.private.ClientInLimitedLibraryMode"];
+        trustedCallerBundleID = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
+        if ([trustedCallerBundleID length])
         {
           v18 = PLGatekeeperXPCGetLog();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization clientProcessIdentifier];
+            clientProcessIdentifier = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization clientProcessIdentifier];
             *buf = 67109378;
-            v35[0] = v19;
+            v35[0] = clientProcessIdentifier;
             LOWORD(v35[1]) = 2112;
-            *(&v35[1] + 2) = v17;
+            *(&v35[1] + 2) = trustedCallerBundleID;
             _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Running job for limited library client (%d) %@", buf, 0x12u);
           }
 
-          [v16 setObject:v17 forKey:@"job.private.LimitedLibraryClientFetchFilterIdentifier"];
-          [v16 setObject:self->_connectionAuthorization forKey:@"job.private.LimitedLibraryClientAuthorization"];
+          [_waitForLibraryServicesForDaemonJob setObject:trustedCallerBundleID forKey:@"job.private.LimitedLibraryClientFetchFilterIdentifier"];
+          [_waitForLibraryServicesForDaemonJob setObject:self->_connectionAuthorization forKey:@"job.private.LimitedLibraryClientAuthorization"];
         }
 
         else
@@ -871,43 +871,43 @@ LABEL_61:
           v21 = PLGatekeeperXPCGetLog();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
-            v22 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization clientProcessIdentifier];
+            clientProcessIdentifier2 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization clientProcessIdentifier];
             *buf = 67109120;
-            v35[0] = v22;
+            v35[0] = clientProcessIdentifier2;
             _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEFAULT, "Running job for limited library client %d without client identifier", buf, 8u);
           }
         }
       }
 
-      v23 = [(PLAssetsdService *)self libraryServicesManager];
-      v24 = [v23 imageWriter];
-      [v24 enqueueJob:v16];
+      libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+      imageWriter = [libraryServicesManager imageWriter];
+      [imageWriter enqueueJob:_waitForLibraryServicesForDaemonJob];
     }
 
     else
     {
       v20 = dispatch_get_global_queue(0, 0);
-      v29 = v8;
+      v29 = jobCopy;
       pl_dispatch_async();
 
-      v16 = v29;
+      _waitForLibraryServicesForDaemonJob = v29;
     }
   }
 
-  else if (v9)
+  else if (replyCopy)
   {
-    v16 = [(PLAssetsdService *)self _waitForLibraryServicesForDaemonJob];
-    v9[2](v9, v16, 0);
+    _waitForLibraryServicesForDaemonJob = [(PLAssetsdService *)self _waitForLibraryServicesForDaemonJob];
+    replyCopy[2](replyCopy, _waitForLibraryServicesForDaemonJob, 0);
   }
 
   else
   {
-    v16 = PLGatekeeperXPCGetLog();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    _waitForLibraryServicesForDaemonJob = PLGatekeeperXPCGetLog();
+    if (os_log_type_enabled(_waitForLibraryServicesForDaemonJob, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       *v35 = v15;
-      _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "Failed in prepare to run daemon job: %@", buf, 0xCu);
+      _os_log_impl(&dword_19BF1F000, _waitForLibraryServicesForDaemonJob, OS_LOG_TYPE_ERROR, "Failed in prepare to run daemon job: %@", buf, 0xCu);
     }
   }
 
@@ -931,10 +931,10 @@ LABEL_61:
   }
 }
 
-- (void)photoLibraryDeletedAtURL:(id)a3 reply:(id)a4
+- (void)photoLibraryDeletedAtURL:(id)l reply:(id)reply
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   v7 = [WeakRetained valueForEntitlement:@"com.apple.private.photos.library.deleted"];
 
@@ -947,7 +947,7 @@ LABEL_61:
     v13[0] = @"Missing entitlement for photoLibraryDeletedAtURL";
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v11 = [v8 errorWithDomain:v9 code:46104 userInfo:v10];
-    v5[2](v5, v11);
+    replyCopy[2](replyCopy, v11);
   }
 }
 
@@ -957,9 +957,9 @@ LABEL_61:
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v6 = 138412290;
-    v7 = v4;
+    v7 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdNonBindingDebugService for client: %@", &v6, 0xCu);
   }
 
@@ -984,16 +984,16 @@ LABEL_61:
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v10 = 138412290;
-    v11 = v4;
+    v11 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdDebugService for client: %@", &v10, 0xCu);
   }
 
   v5 = [PLAssetsdDebugService alloc];
-  v6 = [(PLAssetsdService *)self libraryServicesManager];
-  v7 = [(PLAssetsdService *)self resourceDownloader];
-  v8 = [(PLAssetsdDebugService *)v5 initWithLibraryServicesManager:v6 resourceDownloader:v7 bundleController:self->_libraryBundleController connectionAuthorization:self->_connectionAuthorization];
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+  resourceDownloader = [(PLAssetsdService *)self resourceDownloader];
+  v8 = [(PLAssetsdDebugService *)v5 initWithLibraryServicesManager:libraryServicesManager resourceDownloader:resourceDownloader bundleController:self->_libraryBundleController connectionAuthorization:self->_connectionAuthorization];
 
   return v8;
 }
@@ -1016,15 +1016,15 @@ LABEL_61:
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v9 = 138412290;
-    v10 = v4;
+    v10 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdDiagnosticsService for client: %@", &v9, 0xCu);
   }
 
   v5 = [PLAssetsdDiagnosticsService alloc];
-  v6 = [(PLAssetsdService *)self libraryServicesManager];
-  v7 = [(PLAbstractLibraryServicesManagerService *)v5 initWithLibraryServicesManager:v6];
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+  v7 = [(PLAbstractLibraryServicesManagerService *)v5 initWithLibraryServicesManager:libraryServicesManager];
 
   return v7;
 }
@@ -1047,9 +1047,9 @@ LABEL_61:
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v6 = 138412290;
-    v7 = v4;
+    v7 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdDemoService for client: %@", &v6, 0xCu);
   }
 
@@ -1074,15 +1074,15 @@ LABEL_61:
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v9 = 138412290;
-    v10 = v4;
+    v10 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdNotificationService for client: %@", &v9, 0xCu);
   }
 
   v5 = [PLAssetsdNotificationService alloc];
-  v6 = [(PLAssetsdService *)self libraryServicesManager];
-  v7 = [(PLAbstractLibraryServicesManagerService *)v5 initWithLibraryServicesManager:v6];
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+  v7 = [(PLAbstractLibraryServicesManagerService *)v5 initWithLibraryServicesManager:libraryServicesManager];
 
   return v7;
 }
@@ -1105,15 +1105,15 @@ LABEL_61:
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v9 = 138412290;
-    v10 = v4;
+    v10 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdSyncService for client: %@", &v9, 0xCu);
   }
 
   v5 = [PLAssetsdSyncService alloc];
-  v6 = [(PLAssetsdService *)self libraryServicesManager];
-  v7 = [(PLAssetsdSyncService *)v5 initWithLibraryServicesManager:v6];
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+  v7 = [(PLAssetsdSyncService *)v5 initWithLibraryServicesManager:libraryServicesManager];
 
   return v7;
 }
@@ -1136,15 +1136,15 @@ LABEL_61:
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v9 = 138412290;
-    v10 = v4;
+    v10 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdMigrationService for client: %@", &v9, 0xCu);
   }
 
   v5 = [PLAssetsdMigrationService alloc];
-  v6 = [(PLAssetsdService *)self libraryServicesManager];
-  v7 = [(PLAssetsdMigrationService *)v5 initWithLibraryServicesManager:v6];
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+  v7 = [(PLAssetsdMigrationService *)v5 initWithLibraryServicesManager:libraryServicesManager];
 
   return v7;
 }
@@ -1167,15 +1167,15 @@ LABEL_61:
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v9 = 138412290;
-    v10 = v4;
+    v10 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdCloudInternalService for client: %@", &v9, 0xCu);
   }
 
   v5 = [PLAssetsdCloudInternalService alloc];
-  v6 = [(PLAssetsdService *)self libraryServicesManager];
-  v7 = [(PLAssetsdCloudInternalService *)v5 initWithLibraryServicesManager:v6 connectionAuthorization:self->_connectionAuthorization];
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+  v7 = [(PLAssetsdCloudInternalService *)v5 initWithLibraryServicesManager:libraryServicesManager connectionAuthorization:self->_connectionAuthorization];
 
   return v7;
 }
@@ -1198,9 +1198,9 @@ LABEL_61:
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     *buf = 138412290;
-    v15 = v4;
+    v15 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdCloudService for client: %@", buf, 0xCu);
   }
 
@@ -1215,8 +1215,8 @@ LABEL_61:
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
   v8 = [PLAssetsdCloudService alloc];
-  v9 = [(PLAssetsdService *)self libraryServicesManager];
-  v10 = [(PLAssetsdCloudService *)v8 initWithLibraryServicesManager:v9 lazyResourceDownloader:v7];
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+  v10 = [(PLAssetsdCloudService *)v8 initWithLibraryServicesManager:libraryServicesManager lazyResourceDownloader:v7];
 
   return v10;
 }
@@ -1253,16 +1253,16 @@ id __35__PLAssetsdService_newCloudService__block_invoke(uint64_t a1)
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v10 = 138412290;
-    v11 = v4;
+    v11 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdResourceInternalService for client: %@", &v10, 0xCu);
   }
 
   v5 = [PLAssetsdResourceInternalService alloc];
-  v6 = [(PLAssetsdService *)self libraryServicesManager];
-  v7 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
-  v8 = [(PLAssetsdResourceInternalService *)v5 initWithLibraryServicesManager:v6 trustedCallerBundleID:v7];
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+  trustedCallerBundleID = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
+  v8 = [(PLAssetsdResourceInternalService *)v5 initWithLibraryServicesManager:libraryServicesManager trustedCallerBundleID:trustedCallerBundleID];
 
   return v8;
 }
@@ -1285,15 +1285,15 @@ id __35__PLAssetsdService_newCloudService__block_invoke(uint64_t a1)
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v9 = 138412290;
-    v10 = v4;
+    v10 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new newResourceWriteOnlyService for client: %@", &v9, 0xCu);
   }
 
   v5 = [PLAssetsdResourceWriteOnlyService alloc];
-  v6 = [(PLAssetsdService *)self libraryServicesManager];
-  v7 = [(PLAssetsdResourceWriteOnlyService *)v5 initWithLibraryServicesManager:v6 connectionAuthorization:self->_connectionAuthorization];
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+  v7 = [(PLAssetsdResourceWriteOnlyService *)v5 initWithLibraryServicesManager:libraryServicesManager connectionAuthorization:self->_connectionAuthorization];
 
   return v7;
 }
@@ -1313,17 +1313,17 @@ id __35__PLAssetsdService_newCloudService__block_invoke(uint64_t a1)
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v11 = 138412290;
-    v12 = v4;
+    v12 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdResourceService for client: %@", &v11, 0xCu);
   }
 
   v5 = [PLAssetsdResourceService alloc];
-  v6 = [(PLAssetsdService *)self libraryServicesManager];
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
   connectionAuthorization = self->_connectionAuthorization;
-  v8 = [(PLAssetsdService *)self resourceDownloader];
-  v9 = [(PLAssetsdResourceService *)v5 initWithLibraryServicesManager:v6 connectionAuthorization:connectionAuthorization resourceDownloader:v8];
+  resourceDownloader = [(PLAssetsdService *)self resourceDownloader];
+  v9 = [(PLAssetsdResourceService *)v5 initWithLibraryServicesManager:libraryServicesManager connectionAuthorization:connectionAuthorization resourceDownloader:resourceDownloader];
 
   return v9;
 }
@@ -1343,24 +1343,24 @@ id __35__PLAssetsdService_newCloudService__block_invoke(uint64_t a1)
   v4 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v14 = 138412290;
-    v15 = v5;
+    v15 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdResourceAvailabilityService for client: %@", &v14, 0xCu);
   }
 
   v6 = NSClassFromString(&cfstr_Plassetsdresou_13.isa);
   if (!v6)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLAssetsdService.m" lineNumber:414 description:@"no PLAssetsdResourceAvailabilityService class found"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdService.m" lineNumber:414 description:@"no PLAssetsdResourceAvailabilityService class found"];
   }
 
   v7 = [v6 alloc];
-  v8 = [(PLAssetsdService *)self libraryServicesManager];
-  v9 = [(PLAssetsdService *)self cacheMetricsShellObject];
-  v10 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
-  v11 = [v7 initWithLibraryServicesManager:v8 shellObject:v9 trustedCallerBundleID:v10 clientPid:self->_remotePID];
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+  cacheMetricsShellObject = [(PLAssetsdService *)self cacheMetricsShellObject];
+  trustedCallerBundleID = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
+  v11 = [v7 initWithLibraryServicesManager:libraryServicesManager shellObject:cacheMetricsShellObject trustedCallerBundleID:trustedCallerBundleID clientPid:self->_remotePID];
 
   return v11;
 }
@@ -1381,15 +1381,15 @@ id __35__PLAssetsdService_newCloudService__block_invoke(uint64_t a1)
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v9 = 138412290;
-    v10 = v4;
+    v10 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdPhotoKitAddService for client: %@", &v9, 0xCu);
   }
 
   v5 = [PLAssetsdPhotoKitAddService alloc];
-  v6 = [(PLAssetsdService *)self libraryServicesManager];
-  v7 = [(PLAssetsdPhotoKitAddService *)v5 initWithLibraryServicesManager:v6 connectionAuthorization:self->_connectionAuthorization];
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+  v7 = [(PLAssetsdPhotoKitAddService *)v5 initWithLibraryServicesManager:libraryServicesManager connectionAuthorization:self->_connectionAuthorization];
 
   return v7;
 }
@@ -1410,15 +1410,15 @@ id __35__PLAssetsdService_newCloudService__block_invoke(uint64_t a1)
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v9 = 138412290;
-    v10 = v4;
+    v10 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdPhotoKitService for client: %@", &v9, 0xCu);
   }
 
   v5 = [PLAssetsdPhotoKitService alloc];
-  v6 = [(PLAssetsdService *)self libraryServicesManager];
-  v7 = [(PLAssetsdPhotoKitService *)v5 initWithLibraryServicesManager:v6 connectionAuthorization:self->_connectionAuthorization];
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+  v7 = [(PLAssetsdPhotoKitService *)v5 initWithLibraryServicesManager:libraryServicesManager connectionAuthorization:self->_connectionAuthorization];
 
   return v7;
 }
@@ -1439,9 +1439,9 @@ id __35__PLAssetsdService_newCloudService__block_invoke(uint64_t a1)
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v6 = 138412290;
-    v7 = v4;
+    v7 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdLibraryManagementService for client: %@", &v6, 0xCu);
   }
 
@@ -1466,9 +1466,9 @@ id __35__PLAssetsdService_newCloudService__block_invoke(uint64_t a1)
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v6 = 138412290;
-    v7 = v4;
+    v7 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdPrivacySupportService for client: %@", &v6, 0xCu);
   }
 
@@ -1490,9 +1490,9 @@ id __35__PLAssetsdService_newCloudService__block_invoke(uint64_t a1)
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v6 = 138412290;
-    v7 = v4;
+    v7 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdSystemLibraryURLReadOnlyService for client: %@", &v6, 0xCu);
   }
 
@@ -1514,15 +1514,15 @@ id __35__PLAssetsdService_newCloudService__block_invoke(uint64_t a1)
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v9 = 138412290;
-    v10 = v4;
+    v10 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdLibraryInternalService for client: %@", &v9, 0xCu);
   }
 
   v5 = [PLAssetsdLibraryInternalService alloc];
-  v6 = [(PLAssetsdService *)self libraryServicesManager];
-  v7 = [(PLAssetsdLibraryInternalService *)v5 initWithLibraryServicesManager:v6 connectionAuthorization:self->_connectionAuthorization];
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+  v7 = [(PLAssetsdLibraryInternalService *)v5 initWithLibraryServicesManager:libraryServicesManager connectionAuthorization:self->_connectionAuthorization];
 
   return v7;
 }
@@ -1545,15 +1545,15 @@ id __35__PLAssetsdService_newCloudService__block_invoke(uint64_t a1)
   v3 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PLAssetsdService *)self clientDebugDescription];
+    clientDebugDescription = [(PLAssetsdService *)self clientDebugDescription];
     v9 = 138412290;
-    v10 = v4;
+    v10 = clientDebugDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "Creating new PLAssetsdLibraryService for client: %@", &v9, 0xCu);
   }
 
   v5 = [PLAssetsdLibraryService alloc];
-  v6 = [(PLAssetsdService *)self libraryServicesManager];
-  v7 = [(PLAssetsdLibraryService *)v5 initWithLibraryServicesManager:v6 bundleController:self->_libraryBundleController connectionAuthorization:self->_connectionAuthorization assetsdService:self];
+  libraryServicesManager = [(PLAssetsdService *)self libraryServicesManager];
+  v7 = [(PLAssetsdLibraryService *)v5 initWithLibraryServicesManager:libraryServicesManager bundleController:self->_libraryBundleController connectionAuthorization:self->_connectionAuthorization assetsdService:self];
 
   return v7;
 }
@@ -1569,8 +1569,8 @@ id __35__PLAssetsdService_newCloudService__block_invoke(uint64_t a1)
 
 - (id)makeInnerPrivacySupportService
 {
-  v3 = [(PLAssetsdService *)self permissionsForPrivacySupportService];
-  v4 = [(PLAssetsdService *)self requiredStateForPrivacySupportService];
+  permissionsForPrivacySupportService = [(PLAssetsdService *)self permissionsForPrivacySupportService];
+  requiredStateForPrivacySupportService = [(PLAssetsdService *)self requiredStateForPrivacySupportService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -1583,7 +1583,7 @@ id __35__PLAssetsdService_newCloudService__block_invoke(uint64_t a1)
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForPrivacySupportService requiredLibraryServicesState:requiredStateForPrivacySupportService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -1610,9 +1610,9 @@ id __50__PLAssetsdService_makeInnerPrivacySupportService__block_invoke(uint64_t 
   innerPrivacySupportService = self->_innerPrivacySupportService;
   if (!innerPrivacySupportService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerPrivacySupportService];
+    makeInnerPrivacySupportService = [(PLAssetsdService *)self makeInnerPrivacySupportService];
     v6 = self->_innerPrivacySupportService;
-    self->_innerPrivacySupportService = v5;
+    self->_innerPrivacySupportService = makeInnerPrivacySupportService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -1621,24 +1621,24 @@ id __50__PLAssetsdService_makeInnerPrivacySupportService__block_invoke(uint64_t 
   return v8;
 }
 
-- (void)getPrivacySupportServiceWithReply:(id)a3
+- (void)getPrivacySupportServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerPrivacySupportService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerPrivacySupportService];
+    makeInnerPrivacySupportService = [(PLAssetsdService *)self makeInnerPrivacySupportService];
     innerPrivacySupportService = self->_innerPrivacySupportService;
-    self->_innerPrivacySupportService = v5;
+    self->_innerPrivacySupportService = makeInnerPrivacySupportService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerPrivacySupportService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerPrivacySupportService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerNonBindingDebugService
 {
-  v3 = [(PLAssetsdService *)self permissionsForNonBindingDebugService];
-  v4 = [(PLAssetsdService *)self requiredStateForNonBindingDebugService];
+  permissionsForNonBindingDebugService = [(PLAssetsdService *)self permissionsForNonBindingDebugService];
+  requiredStateForNonBindingDebugService = [(PLAssetsdService *)self requiredStateForNonBindingDebugService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -1651,7 +1651,7 @@ id __50__PLAssetsdService_makeInnerPrivacySupportService__block_invoke(uint64_t 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForNonBindingDebugService requiredLibraryServicesState:requiredStateForNonBindingDebugService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -1678,9 +1678,9 @@ id __51__PLAssetsdService_makeInnerNonBindingDebugService__block_invoke(uint64_t
   innerNonBindingDebugService = self->_innerNonBindingDebugService;
   if (!innerNonBindingDebugService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerNonBindingDebugService];
+    makeInnerNonBindingDebugService = [(PLAssetsdService *)self makeInnerNonBindingDebugService];
     v6 = self->_innerNonBindingDebugService;
-    self->_innerNonBindingDebugService = v5;
+    self->_innerNonBindingDebugService = makeInnerNonBindingDebugService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -1689,24 +1689,24 @@ id __51__PLAssetsdService_makeInnerNonBindingDebugService__block_invoke(uint64_t
   return v8;
 }
 
-- (void)getNonBindingDebugServiceWithReply:(id)a3
+- (void)getNonBindingDebugServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerNonBindingDebugService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerNonBindingDebugService];
+    makeInnerNonBindingDebugService = [(PLAssetsdService *)self makeInnerNonBindingDebugService];
     innerNonBindingDebugService = self->_innerNonBindingDebugService;
-    self->_innerNonBindingDebugService = v5;
+    self->_innerNonBindingDebugService = makeInnerNonBindingDebugService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerNonBindingDebugService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerNonBindingDebugService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerDebugService
 {
-  v3 = [(PLAssetsdService *)self permissionsForDebugService];
-  v4 = [(PLAssetsdService *)self requiredStateForDebugService];
+  permissionsForDebugService = [(PLAssetsdService *)self permissionsForDebugService];
+  requiredStateForDebugService = [(PLAssetsdService *)self requiredStateForDebugService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -1719,7 +1719,7 @@ id __51__PLAssetsdService_makeInnerNonBindingDebugService__block_invoke(uint64_t
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForDebugService requiredLibraryServicesState:requiredStateForDebugService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -1746,9 +1746,9 @@ id __41__PLAssetsdService_makeInnerDebugService__block_invoke(uint64_t a1)
   innerDebugService = self->_innerDebugService;
   if (!innerDebugService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerDebugService];
+    makeInnerDebugService = [(PLAssetsdService *)self makeInnerDebugService];
     v6 = self->_innerDebugService;
-    self->_innerDebugService = v5;
+    self->_innerDebugService = makeInnerDebugService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -1757,24 +1757,24 @@ id __41__PLAssetsdService_makeInnerDebugService__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)getDebugServiceWithReply:(id)a3
+- (void)getDebugServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerDebugService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerDebugService];
+    makeInnerDebugService = [(PLAssetsdService *)self makeInnerDebugService];
     innerDebugService = self->_innerDebugService;
-    self->_innerDebugService = v5;
+    self->_innerDebugService = makeInnerDebugService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerDebugService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerDebugService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerDiagnosticsService
 {
-  v3 = [(PLAssetsdService *)self permissionsForDiagnosticsService];
-  v4 = [(PLAssetsdService *)self requiredStateForDiagnosticsService];
+  permissionsForDiagnosticsService = [(PLAssetsdService *)self permissionsForDiagnosticsService];
+  requiredStateForDiagnosticsService = [(PLAssetsdService *)self requiredStateForDiagnosticsService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -1787,7 +1787,7 @@ id __41__PLAssetsdService_makeInnerDebugService__block_invoke(uint64_t a1)
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForDiagnosticsService requiredLibraryServicesState:requiredStateForDiagnosticsService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -1814,9 +1814,9 @@ id __47__PLAssetsdService_makeInnerDiagnosticsService__block_invoke(uint64_t a1)
   innerDiagnosticsService = self->_innerDiagnosticsService;
   if (!innerDiagnosticsService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerDiagnosticsService];
+    makeInnerDiagnosticsService = [(PLAssetsdService *)self makeInnerDiagnosticsService];
     v6 = self->_innerDiagnosticsService;
-    self->_innerDiagnosticsService = v5;
+    self->_innerDiagnosticsService = makeInnerDiagnosticsService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -1825,24 +1825,24 @@ id __47__PLAssetsdService_makeInnerDiagnosticsService__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)getDiagnosticsServiceWithReply:(id)a3
+- (void)getDiagnosticsServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerDiagnosticsService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerDiagnosticsService];
+    makeInnerDiagnosticsService = [(PLAssetsdService *)self makeInnerDiagnosticsService];
     innerDiagnosticsService = self->_innerDiagnosticsService;
-    self->_innerDiagnosticsService = v5;
+    self->_innerDiagnosticsService = makeInnerDiagnosticsService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerDiagnosticsService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerDiagnosticsService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerDemoService
 {
-  v3 = [(PLAssetsdService *)self permissionsForDemoService];
-  v4 = [(PLAssetsdService *)self requiredStateForDemoService];
+  permissionsForDemoService = [(PLAssetsdService *)self permissionsForDemoService];
+  requiredStateForDemoService = [(PLAssetsdService *)self requiredStateForDemoService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -1855,7 +1855,7 @@ id __47__PLAssetsdService_makeInnerDiagnosticsService__block_invoke(uint64_t a1)
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForDemoService requiredLibraryServicesState:requiredStateForDemoService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -1882,9 +1882,9 @@ id __40__PLAssetsdService_makeInnerDemoService__block_invoke(uint64_t a1)
   innerDemoService = self->_innerDemoService;
   if (!innerDemoService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerDemoService];
+    makeInnerDemoService = [(PLAssetsdService *)self makeInnerDemoService];
     v6 = self->_innerDemoService;
-    self->_innerDemoService = v5;
+    self->_innerDemoService = makeInnerDemoService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -1893,24 +1893,24 @@ id __40__PLAssetsdService_makeInnerDemoService__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)getDemoServiceWithReply:(id)a3
+- (void)getDemoServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerDemoService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerDemoService];
+    makeInnerDemoService = [(PLAssetsdService *)self makeInnerDemoService];
     innerDemoService = self->_innerDemoService;
-    self->_innerDemoService = v5;
+    self->_innerDemoService = makeInnerDemoService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerDemoService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerDemoService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerNotificationService
 {
-  v3 = [(PLAssetsdService *)self permissionsForNotificationService];
-  v4 = [(PLAssetsdService *)self requiredStateForNotificationService];
+  permissionsForNotificationService = [(PLAssetsdService *)self permissionsForNotificationService];
+  requiredStateForNotificationService = [(PLAssetsdService *)self requiredStateForNotificationService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -1923,7 +1923,7 @@ id __40__PLAssetsdService_makeInnerDemoService__block_invoke(uint64_t a1)
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForNotificationService requiredLibraryServicesState:requiredStateForNotificationService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -1950,9 +1950,9 @@ id __48__PLAssetsdService_makeInnerNotificationService__block_invoke(uint64_t a1
   innerNotificationService = self->_innerNotificationService;
   if (!innerNotificationService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerNotificationService];
+    makeInnerNotificationService = [(PLAssetsdService *)self makeInnerNotificationService];
     v6 = self->_innerNotificationService;
-    self->_innerNotificationService = v5;
+    self->_innerNotificationService = makeInnerNotificationService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -1961,24 +1961,24 @@ id __48__PLAssetsdService_makeInnerNotificationService__block_invoke(uint64_t a1
   return v8;
 }
 
-- (void)getNotificationServiceWithReply:(id)a3
+- (void)getNotificationServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerNotificationService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerNotificationService];
+    makeInnerNotificationService = [(PLAssetsdService *)self makeInnerNotificationService];
     innerNotificationService = self->_innerNotificationService;
-    self->_innerNotificationService = v5;
+    self->_innerNotificationService = makeInnerNotificationService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerNotificationService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerNotificationService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerSyncService
 {
-  v3 = [(PLAssetsdService *)self permissionsForSyncService];
-  v4 = [(PLAssetsdService *)self requiredStateForSyncService];
+  permissionsForSyncService = [(PLAssetsdService *)self permissionsForSyncService];
+  requiredStateForSyncService = [(PLAssetsdService *)self requiredStateForSyncService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -1991,7 +1991,7 @@ id __48__PLAssetsdService_makeInnerNotificationService__block_invoke(uint64_t a1
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForSyncService requiredLibraryServicesState:requiredStateForSyncService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -2018,9 +2018,9 @@ id __40__PLAssetsdService_makeInnerSyncService__block_invoke(uint64_t a1)
   innerSyncService = self->_innerSyncService;
   if (!innerSyncService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerSyncService];
+    makeInnerSyncService = [(PLAssetsdService *)self makeInnerSyncService];
     v6 = self->_innerSyncService;
-    self->_innerSyncService = v5;
+    self->_innerSyncService = makeInnerSyncService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -2029,24 +2029,24 @@ id __40__PLAssetsdService_makeInnerSyncService__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)getSyncServiceWithReply:(id)a3
+- (void)getSyncServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerSyncService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerSyncService];
+    makeInnerSyncService = [(PLAssetsdService *)self makeInnerSyncService];
     innerSyncService = self->_innerSyncService;
-    self->_innerSyncService = v5;
+    self->_innerSyncService = makeInnerSyncService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerSyncService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerSyncService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerMigrationService
 {
-  v3 = [(PLAssetsdService *)self permissionsForMigrationService];
-  v4 = [(PLAssetsdService *)self requiredStateForMigrationService];
+  permissionsForMigrationService = [(PLAssetsdService *)self permissionsForMigrationService];
+  requiredStateForMigrationService = [(PLAssetsdService *)self requiredStateForMigrationService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -2059,7 +2059,7 @@ id __40__PLAssetsdService_makeInnerSyncService__block_invoke(uint64_t a1)
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForMigrationService requiredLibraryServicesState:requiredStateForMigrationService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -2086,9 +2086,9 @@ id __45__PLAssetsdService_makeInnerMigrationService__block_invoke(uint64_t a1)
   innerMigrationService = self->_innerMigrationService;
   if (!innerMigrationService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerMigrationService];
+    makeInnerMigrationService = [(PLAssetsdService *)self makeInnerMigrationService];
     v6 = self->_innerMigrationService;
-    self->_innerMigrationService = v5;
+    self->_innerMigrationService = makeInnerMigrationService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -2097,24 +2097,24 @@ id __45__PLAssetsdService_makeInnerMigrationService__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)getMigrationServiceWithReply:(id)a3
+- (void)getMigrationServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerMigrationService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerMigrationService];
+    makeInnerMigrationService = [(PLAssetsdService *)self makeInnerMigrationService];
     innerMigrationService = self->_innerMigrationService;
-    self->_innerMigrationService = v5;
+    self->_innerMigrationService = makeInnerMigrationService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerMigrationService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerMigrationService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerCloudInternalService
 {
-  v3 = [(PLAssetsdService *)self permissionsForCloudInternalService];
-  v4 = [(PLAssetsdService *)self requiredStateForCloudInternalService];
+  permissionsForCloudInternalService = [(PLAssetsdService *)self permissionsForCloudInternalService];
+  requiredStateForCloudInternalService = [(PLAssetsdService *)self requiredStateForCloudInternalService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -2127,7 +2127,7 @@ id __45__PLAssetsdService_makeInnerMigrationService__block_invoke(uint64_t a1)
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForCloudInternalService requiredLibraryServicesState:requiredStateForCloudInternalService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -2154,9 +2154,9 @@ id __49__PLAssetsdService_makeInnerCloudInternalService__block_invoke(uint64_t a
   innerCloudInternalService = self->_innerCloudInternalService;
   if (!innerCloudInternalService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerCloudInternalService];
+    makeInnerCloudInternalService = [(PLAssetsdService *)self makeInnerCloudInternalService];
     v6 = self->_innerCloudInternalService;
-    self->_innerCloudInternalService = v5;
+    self->_innerCloudInternalService = makeInnerCloudInternalService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -2165,24 +2165,24 @@ id __49__PLAssetsdService_makeInnerCloudInternalService__block_invoke(uint64_t a
   return v8;
 }
 
-- (void)getCloudInternalServiceWithReply:(id)a3
+- (void)getCloudInternalServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerCloudInternalService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerCloudInternalService];
+    makeInnerCloudInternalService = [(PLAssetsdService *)self makeInnerCloudInternalService];
     innerCloudInternalService = self->_innerCloudInternalService;
-    self->_innerCloudInternalService = v5;
+    self->_innerCloudInternalService = makeInnerCloudInternalService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerCloudInternalService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerCloudInternalService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerCloudService
 {
-  v3 = [(PLAssetsdService *)self permissionsForCloudService];
-  v4 = [(PLAssetsdService *)self requiredStateForCloudService];
+  permissionsForCloudService = [(PLAssetsdService *)self permissionsForCloudService];
+  requiredStateForCloudService = [(PLAssetsdService *)self requiredStateForCloudService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -2195,7 +2195,7 @@ id __49__PLAssetsdService_makeInnerCloudInternalService__block_invoke(uint64_t a
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForCloudService requiredLibraryServicesState:requiredStateForCloudService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -2222,9 +2222,9 @@ id __41__PLAssetsdService_makeInnerCloudService__block_invoke(uint64_t a1)
   innerCloudService = self->_innerCloudService;
   if (!innerCloudService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerCloudService];
+    makeInnerCloudService = [(PLAssetsdService *)self makeInnerCloudService];
     v6 = self->_innerCloudService;
-    self->_innerCloudService = v5;
+    self->_innerCloudService = makeInnerCloudService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -2233,24 +2233,24 @@ id __41__PLAssetsdService_makeInnerCloudService__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)getCloudServiceWithReply:(id)a3
+- (void)getCloudServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerCloudService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerCloudService];
+    makeInnerCloudService = [(PLAssetsdService *)self makeInnerCloudService];
     innerCloudService = self->_innerCloudService;
-    self->_innerCloudService = v5;
+    self->_innerCloudService = makeInnerCloudService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerCloudService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerCloudService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerResourceInternalService
 {
-  v3 = [(PLAssetsdService *)self permissionsForResourceInternalService];
-  v4 = [(PLAssetsdService *)self requiredStateForResourceInternalService];
+  permissionsForResourceInternalService = [(PLAssetsdService *)self permissionsForResourceInternalService];
+  requiredStateForResourceInternalService = [(PLAssetsdService *)self requiredStateForResourceInternalService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -2263,7 +2263,7 @@ id __41__PLAssetsdService_makeInnerCloudService__block_invoke(uint64_t a1)
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForResourceInternalService requiredLibraryServicesState:requiredStateForResourceInternalService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -2290,9 +2290,9 @@ id __52__PLAssetsdService_makeInnerResourceInternalService__block_invoke(uint64_
   innerResourceInternalService = self->_innerResourceInternalService;
   if (!innerResourceInternalService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerResourceInternalService];
+    makeInnerResourceInternalService = [(PLAssetsdService *)self makeInnerResourceInternalService];
     v6 = self->_innerResourceInternalService;
-    self->_innerResourceInternalService = v5;
+    self->_innerResourceInternalService = makeInnerResourceInternalService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -2301,24 +2301,24 @@ id __52__PLAssetsdService_makeInnerResourceInternalService__block_invoke(uint64_
   return v8;
 }
 
-- (void)getResourceInternalServiceWithReply:(id)a3
+- (void)getResourceInternalServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerResourceInternalService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerResourceInternalService];
+    makeInnerResourceInternalService = [(PLAssetsdService *)self makeInnerResourceInternalService];
     innerResourceInternalService = self->_innerResourceInternalService;
-    self->_innerResourceInternalService = v5;
+    self->_innerResourceInternalService = makeInnerResourceInternalService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerResourceInternalService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerResourceInternalService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerResourceWriteOnlyService
 {
-  v3 = [(PLAssetsdService *)self permissionsForResourceWriteOnlyService];
-  v4 = [(PLAssetsdService *)self requiredStateForResourceWriteOnlyService];
+  permissionsForResourceWriteOnlyService = [(PLAssetsdService *)self permissionsForResourceWriteOnlyService];
+  requiredStateForResourceWriteOnlyService = [(PLAssetsdService *)self requiredStateForResourceWriteOnlyService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -2331,7 +2331,7 @@ id __52__PLAssetsdService_makeInnerResourceInternalService__block_invoke(uint64_
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForResourceWriteOnlyService requiredLibraryServicesState:requiredStateForResourceWriteOnlyService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -2358,9 +2358,9 @@ id __53__PLAssetsdService_makeInnerResourceWriteOnlyService__block_invoke(uint64
   innerResourceWriteOnlyService = self->_innerResourceWriteOnlyService;
   if (!innerResourceWriteOnlyService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerResourceWriteOnlyService];
+    makeInnerResourceWriteOnlyService = [(PLAssetsdService *)self makeInnerResourceWriteOnlyService];
     v6 = self->_innerResourceWriteOnlyService;
-    self->_innerResourceWriteOnlyService = v5;
+    self->_innerResourceWriteOnlyService = makeInnerResourceWriteOnlyService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -2369,24 +2369,24 @@ id __53__PLAssetsdService_makeInnerResourceWriteOnlyService__block_invoke(uint64
   return v8;
 }
 
-- (void)getResourceWriteOnlyServiceWithReply:(id)a3
+- (void)getResourceWriteOnlyServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerResourceWriteOnlyService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerResourceWriteOnlyService];
+    makeInnerResourceWriteOnlyService = [(PLAssetsdService *)self makeInnerResourceWriteOnlyService];
     innerResourceWriteOnlyService = self->_innerResourceWriteOnlyService;
-    self->_innerResourceWriteOnlyService = v5;
+    self->_innerResourceWriteOnlyService = makeInnerResourceWriteOnlyService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerResourceWriteOnlyService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerResourceWriteOnlyService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerResourceService
 {
-  v3 = [(PLAssetsdService *)self permissionsForResourceService];
-  v4 = [(PLAssetsdService *)self requiredStateForResourceService];
+  permissionsForResourceService = [(PLAssetsdService *)self permissionsForResourceService];
+  requiredStateForResourceService = [(PLAssetsdService *)self requiredStateForResourceService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -2399,7 +2399,7 @@ id __53__PLAssetsdService_makeInnerResourceWriteOnlyService__block_invoke(uint64
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForResourceService requiredLibraryServicesState:requiredStateForResourceService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -2426,9 +2426,9 @@ id __44__PLAssetsdService_makeInnerResourceService__block_invoke(uint64_t a1)
   innerResourceService = self->_innerResourceService;
   if (!innerResourceService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerResourceService];
+    makeInnerResourceService = [(PLAssetsdService *)self makeInnerResourceService];
     v6 = self->_innerResourceService;
-    self->_innerResourceService = v5;
+    self->_innerResourceService = makeInnerResourceService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -2437,24 +2437,24 @@ id __44__PLAssetsdService_makeInnerResourceService__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)getResourceServiceWithReply:(id)a3
+- (void)getResourceServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerResourceService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerResourceService];
+    makeInnerResourceService = [(PLAssetsdService *)self makeInnerResourceService];
     innerResourceService = self->_innerResourceService;
-    self->_innerResourceService = v5;
+    self->_innerResourceService = makeInnerResourceService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerResourceService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerResourceService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerResourceAvailabilityService
 {
-  v3 = [(PLAssetsdService *)self permissionsForResourceAvailabilityService];
-  v4 = [(PLAssetsdService *)self requiredStateForResourceAvailabilityService];
+  permissionsForResourceAvailabilityService = [(PLAssetsdService *)self permissionsForResourceAvailabilityService];
+  requiredStateForResourceAvailabilityService = [(PLAssetsdService *)self requiredStateForResourceAvailabilityService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -2467,7 +2467,7 @@ id __44__PLAssetsdService_makeInnerResourceService__block_invoke(uint64_t a1)
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForResourceAvailabilityService requiredLibraryServicesState:requiredStateForResourceAvailabilityService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -2494,9 +2494,9 @@ id __56__PLAssetsdService_makeInnerResourceAvailabilityService__block_invoke(uin
   innerResourceAvailabilityService = self->_innerResourceAvailabilityService;
   if (!innerResourceAvailabilityService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerResourceAvailabilityService];
+    makeInnerResourceAvailabilityService = [(PLAssetsdService *)self makeInnerResourceAvailabilityService];
     v6 = self->_innerResourceAvailabilityService;
-    self->_innerResourceAvailabilityService = v5;
+    self->_innerResourceAvailabilityService = makeInnerResourceAvailabilityService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -2505,24 +2505,24 @@ id __56__PLAssetsdService_makeInnerResourceAvailabilityService__block_invoke(uin
   return v8;
 }
 
-- (void)getResourceAvailabilityServiceWithReply:(id)a3
+- (void)getResourceAvailabilityServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerResourceAvailabilityService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerResourceAvailabilityService];
+    makeInnerResourceAvailabilityService = [(PLAssetsdService *)self makeInnerResourceAvailabilityService];
     innerResourceAvailabilityService = self->_innerResourceAvailabilityService;
-    self->_innerResourceAvailabilityService = v5;
+    self->_innerResourceAvailabilityService = makeInnerResourceAvailabilityService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerResourceAvailabilityService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerResourceAvailabilityService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerPhotoKitAddService
 {
-  v3 = [(PLAssetsdService *)self permissionsForPhotoKitAddService];
-  v4 = [(PLAssetsdService *)self requiredStateForPhotoKitAddService];
+  permissionsForPhotoKitAddService = [(PLAssetsdService *)self permissionsForPhotoKitAddService];
+  requiredStateForPhotoKitAddService = [(PLAssetsdService *)self requiredStateForPhotoKitAddService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -2535,7 +2535,7 @@ id __56__PLAssetsdService_makeInnerResourceAvailabilityService__block_invoke(uin
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForPhotoKitAddService requiredLibraryServicesState:requiredStateForPhotoKitAddService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -2562,9 +2562,9 @@ id __47__PLAssetsdService_makeInnerPhotoKitAddService__block_invoke(uint64_t a1)
   innerPhotoKitAddService = self->_innerPhotoKitAddService;
   if (!innerPhotoKitAddService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerPhotoKitAddService];
+    makeInnerPhotoKitAddService = [(PLAssetsdService *)self makeInnerPhotoKitAddService];
     v6 = self->_innerPhotoKitAddService;
-    self->_innerPhotoKitAddService = v5;
+    self->_innerPhotoKitAddService = makeInnerPhotoKitAddService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -2573,24 +2573,24 @@ id __47__PLAssetsdService_makeInnerPhotoKitAddService__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)getPhotoKitAddServiceWithReply:(id)a3
+- (void)getPhotoKitAddServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerPhotoKitAddService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerPhotoKitAddService];
+    makeInnerPhotoKitAddService = [(PLAssetsdService *)self makeInnerPhotoKitAddService];
     innerPhotoKitAddService = self->_innerPhotoKitAddService;
-    self->_innerPhotoKitAddService = v5;
+    self->_innerPhotoKitAddService = makeInnerPhotoKitAddService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerPhotoKitAddService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerPhotoKitAddService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerPhotoKitService
 {
-  v3 = [(PLAssetsdService *)self permissionsForPhotoKitService];
-  v4 = [(PLAssetsdService *)self requiredStateForPhotoKitService];
+  permissionsForPhotoKitService = [(PLAssetsdService *)self permissionsForPhotoKitService];
+  requiredStateForPhotoKitService = [(PLAssetsdService *)self requiredStateForPhotoKitService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -2603,7 +2603,7 @@ id __47__PLAssetsdService_makeInnerPhotoKitAddService__block_invoke(uint64_t a1)
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForPhotoKitService requiredLibraryServicesState:requiredStateForPhotoKitService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -2630,9 +2630,9 @@ id __44__PLAssetsdService_makeInnerPhotoKitService__block_invoke(uint64_t a1)
   innerPhotoKitService = self->_innerPhotoKitService;
   if (!innerPhotoKitService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerPhotoKitService];
+    makeInnerPhotoKitService = [(PLAssetsdService *)self makeInnerPhotoKitService];
     v6 = self->_innerPhotoKitService;
-    self->_innerPhotoKitService = v5;
+    self->_innerPhotoKitService = makeInnerPhotoKitService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -2641,24 +2641,24 @@ id __44__PLAssetsdService_makeInnerPhotoKitService__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)getPhotoKitServiceWithReply:(id)a3
+- (void)getPhotoKitServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerPhotoKitService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerPhotoKitService];
+    makeInnerPhotoKitService = [(PLAssetsdService *)self makeInnerPhotoKitService];
     innerPhotoKitService = self->_innerPhotoKitService;
-    self->_innerPhotoKitService = v5;
+    self->_innerPhotoKitService = makeInnerPhotoKitService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerPhotoKitService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerPhotoKitService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerLibraryManagementService
 {
-  v3 = [(PLAssetsdService *)self permissionsForLibraryManagementService];
-  v4 = [(PLAssetsdService *)self requiredStateForLibraryManagementService];
+  permissionsForLibraryManagementService = [(PLAssetsdService *)self permissionsForLibraryManagementService];
+  requiredStateForLibraryManagementService = [(PLAssetsdService *)self requiredStateForLibraryManagementService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -2671,7 +2671,7 @@ id __44__PLAssetsdService_makeInnerPhotoKitService__block_invoke(uint64_t a1)
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForLibraryManagementService requiredLibraryServicesState:requiredStateForLibraryManagementService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -2698,9 +2698,9 @@ id __53__PLAssetsdService_makeInnerLibraryManagementService__block_invoke(uint64
   innerLibraryManagementService = self->_innerLibraryManagementService;
   if (!innerLibraryManagementService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerLibraryManagementService];
+    makeInnerLibraryManagementService = [(PLAssetsdService *)self makeInnerLibraryManagementService];
     v6 = self->_innerLibraryManagementService;
-    self->_innerLibraryManagementService = v5;
+    self->_innerLibraryManagementService = makeInnerLibraryManagementService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -2709,24 +2709,24 @@ id __53__PLAssetsdService_makeInnerLibraryManagementService__block_invoke(uint64
   return v8;
 }
 
-- (void)getLibraryManagementServiceWithReply:(id)a3
+- (void)getLibraryManagementServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerLibraryManagementService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerLibraryManagementService];
+    makeInnerLibraryManagementService = [(PLAssetsdService *)self makeInnerLibraryManagementService];
     innerLibraryManagementService = self->_innerLibraryManagementService;
-    self->_innerLibraryManagementService = v5;
+    self->_innerLibraryManagementService = makeInnerLibraryManagementService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerLibraryManagementService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerLibraryManagementService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerSystemLibraryURLReadOnlyService
 {
-  v3 = [(PLAssetsdService *)self permissionsForSystemLibraryURLReadOnlyService];
-  v4 = [(PLAssetsdService *)self requiredStateForSystemLibraryURLReadOnlyService];
+  permissionsForSystemLibraryURLReadOnlyService = [(PLAssetsdService *)self permissionsForSystemLibraryURLReadOnlyService];
+  requiredStateForSystemLibraryURLReadOnlyService = [(PLAssetsdService *)self requiredStateForSystemLibraryURLReadOnlyService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -2739,7 +2739,7 @@ id __53__PLAssetsdService_makeInnerLibraryManagementService__block_invoke(uint64
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForSystemLibraryURLReadOnlyService requiredLibraryServicesState:requiredStateForSystemLibraryURLReadOnlyService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -2766,9 +2766,9 @@ id __60__PLAssetsdService_makeInnerSystemLibraryURLReadOnlyService__block_invoke
   innerSystemLibraryURLReadOnlyService = self->_innerSystemLibraryURLReadOnlyService;
   if (!innerSystemLibraryURLReadOnlyService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerSystemLibraryURLReadOnlyService];
+    makeInnerSystemLibraryURLReadOnlyService = [(PLAssetsdService *)self makeInnerSystemLibraryURLReadOnlyService];
     v6 = self->_innerSystemLibraryURLReadOnlyService;
-    self->_innerSystemLibraryURLReadOnlyService = v5;
+    self->_innerSystemLibraryURLReadOnlyService = makeInnerSystemLibraryURLReadOnlyService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -2777,24 +2777,24 @@ id __60__PLAssetsdService_makeInnerSystemLibraryURLReadOnlyService__block_invoke
   return v8;
 }
 
-- (void)getSystemLibraryURLReadOnlyServiceWithReply:(id)a3
+- (void)getSystemLibraryURLReadOnlyServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerSystemLibraryURLReadOnlyService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerSystemLibraryURLReadOnlyService];
+    makeInnerSystemLibraryURLReadOnlyService = [(PLAssetsdService *)self makeInnerSystemLibraryURLReadOnlyService];
     innerSystemLibraryURLReadOnlyService = self->_innerSystemLibraryURLReadOnlyService;
-    self->_innerSystemLibraryURLReadOnlyService = v5;
+    self->_innerSystemLibraryURLReadOnlyService = makeInnerSystemLibraryURLReadOnlyService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerSystemLibraryURLReadOnlyService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerSystemLibraryURLReadOnlyService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerLibraryInternalService
 {
-  v3 = [(PLAssetsdService *)self permissionsForLibraryInternalService];
-  v4 = [(PLAssetsdService *)self requiredStateForLibraryInternalService];
+  permissionsForLibraryInternalService = [(PLAssetsdService *)self permissionsForLibraryInternalService];
+  requiredStateForLibraryInternalService = [(PLAssetsdService *)self requiredStateForLibraryInternalService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -2807,7 +2807,7 @@ id __60__PLAssetsdService_makeInnerSystemLibraryURLReadOnlyService__block_invoke
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForLibraryInternalService requiredLibraryServicesState:requiredStateForLibraryInternalService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -2834,9 +2834,9 @@ id __51__PLAssetsdService_makeInnerLibraryInternalService__block_invoke(uint64_t
   innerLibraryInternalService = self->_innerLibraryInternalService;
   if (!innerLibraryInternalService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerLibraryInternalService];
+    makeInnerLibraryInternalService = [(PLAssetsdService *)self makeInnerLibraryInternalService];
     v6 = self->_innerLibraryInternalService;
-    self->_innerLibraryInternalService = v5;
+    self->_innerLibraryInternalService = makeInnerLibraryInternalService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -2845,24 +2845,24 @@ id __51__PLAssetsdService_makeInnerLibraryInternalService__block_invoke(uint64_t
   return v8;
 }
 
-- (void)getLibraryInternalServiceWithReply:(id)a3
+- (void)getLibraryInternalServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerLibraryInternalService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerLibraryInternalService];
+    makeInnerLibraryInternalService = [(PLAssetsdService *)self makeInnerLibraryInternalService];
     innerLibraryInternalService = self->_innerLibraryInternalService;
-    self->_innerLibraryInternalService = v5;
+    self->_innerLibraryInternalService = makeInnerLibraryInternalService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerLibraryInternalService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerLibraryInternalService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
 - (id)makeInnerLibraryService
 {
-  v3 = [(PLAssetsdService *)self permissionsForLibraryService];
-  v4 = [(PLAssetsdService *)self requiredStateForLibraryService];
+  permissionsForLibraryService = [(PLAssetsdService *)self permissionsForLibraryService];
+  requiredStateForLibraryService = [(PLAssetsdService *)self requiredStateForLibraryService];
   v5 = objc_initWeak(&location, self);
 
   v6 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -2875,7 +2875,7 @@ id __51__PLAssetsdService_makeInnerLibraryInternalService__block_invoke(uint64_t
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
   v8 = [PLAssetsdInnerService alloc];
-  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:v3 requiredLibraryServicesState:v4 lazyService:v7, v11, v12, v13, v14];
+  v9 = [(PLAssetsdInnerService *)v8 initWithPermissions:permissionsForLibraryService requiredLibraryServicesState:requiredStateForLibraryService lazyService:v7, v11, v12, v13, v14];
 
   return v9;
 }
@@ -2902,9 +2902,9 @@ id __43__PLAssetsdService_makeInnerLibraryService__block_invoke(uint64_t a1)
   innerLibraryService = self->_innerLibraryService;
   if (!innerLibraryService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerLibraryService];
+    makeInnerLibraryService = [(PLAssetsdService *)self makeInnerLibraryService];
     v6 = self->_innerLibraryService;
-    self->_innerLibraryService = v5;
+    self->_innerLibraryService = makeInnerLibraryService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
@@ -2913,25 +2913,25 @@ id __43__PLAssetsdService_makeInnerLibraryService__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)getLibraryServiceWithReply:(id)a3
+- (void)getLibraryServiceWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   if (!self->_innerLibraryService)
   {
-    v5 = [(PLAssetsdService *)self makeInnerLibraryService];
+    makeInnerLibraryService = [(PLAssetsdService *)self makeInnerLibraryService];
     innerLibraryService = self->_innerLibraryService;
-    self->_innerLibraryService = v5;
+    self->_innerLibraryService = makeInnerLibraryService;
   }
 
   v7 = [(PLAssetsdService *)self serviceContextWithSelector:a2];
-  [(PLAssetsdInnerService *)self->_innerLibraryService getInnerServiceWithContext:v7 reply:v8];
+  [(PLAssetsdInnerService *)self->_innerLibraryService getInnerServiceWithContext:v7 reply:replyCopy];
 }
 
-- (id)serviceContextWithSelector:(SEL)a3
+- (id)serviceContextWithSelector:(SEL)selector
 {
   v5 = [PLDefaultAssetsdServiceContext alloc];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v7 = [(PLDefaultAssetsdServiceContext *)v5 initWithSelector:a3 connection:WeakRetained libraryBundle:self->_libraryBundle connectionAuthorization:self->_connectionAuthorization];
+  v7 = [(PLDefaultAssetsdServiceContext *)v5 initWithSelector:selector connection:WeakRetained libraryBundle:self->_libraryBundle connectionAuthorization:self->_connectionAuthorization];
 
   return v7;
 }
@@ -2954,9 +2954,9 @@ id __43__PLAssetsdService_makeInnerLibraryService__block_invoke(uint64_t a1)
   [(PLAssetsdCPLResourceDownloader *)self->_resourceDownloader handleInvalidation];
   if ([(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization isPhotosClient])
   {
-    v6 = [(PLPhotoLibraryBundle *)self->_libraryBundle libraryServicesManager];
-    v7 = [v6 migrationServiceProxy];
-    [v7 unboost];
+    libraryServicesManager = [(PLPhotoLibraryBundle *)self->_libraryBundle libraryServicesManager];
+    migrationServiceProxy = [libraryServicesManager migrationServiceProxy];
+    [migrationServiceProxy unboost];
   }
 }
 
@@ -2977,30 +2977,30 @@ id __43__PLAssetsdService_makeInnerLibraryService__block_invoke(uint64_t a1)
 
   if ([(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization isPhotosClient])
   {
-    v6 = [(PLPhotoLibraryBundle *)self->_libraryBundle libraryServicesManager];
-    v7 = [v6 migrationServiceProxy];
-    [v7 unboost];
+    libraryServicesManager = [(PLPhotoLibraryBundle *)self->_libraryBundle libraryServicesManager];
+    migrationServiceProxy = [libraryServicesManager migrationServiceProxy];
+    [migrationServiceProxy unboost];
   }
 }
 
 - (NSString)connectionDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
-  v5 = [v3 stringWithFormat:@"%@[%d]", v4, -[PLAssetsdConnectionAuthorization clientProcessIdentifier](self->_connectionAuthorization, "clientProcessIdentifier")];
+  trustedCallerBundleID = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
+  v5 = [v3 stringWithFormat:@"%@[%d]", trustedCallerBundleID, -[PLAssetsdConnectionAuthorization clientProcessIdentifier](self->_connectionAuthorization, "clientProcessIdentifier")];
 
   return v5;
 }
 
 - (NSString)stateDescription
 {
-  v3 = [(PLAssetsdService *)self libraryURL];
+  libraryURL = [(PLAssetsdService *)self libraryURL];
 
-  if (v3)
+  if (libraryURL)
   {
     v4 = MEMORY[0x1E69BF238];
-    v5 = [(PLAssetsdService *)self libraryURL];
-    v6 = [v4 redactedDescriptionForFileURL:v5];
+    libraryURL2 = [(PLAssetsdService *)self libraryURL];
+    v6 = [v4 redactedDescriptionForFileURL:libraryURL2];
   }
 
   else
@@ -3017,12 +3017,12 @@ id __43__PLAssetsdService_makeInnerLibraryService__block_invoke(uint64_t a1)
 {
   v2 = MEMORY[0x1E696AEC0];
   connectionAuthorization = self->_connectionAuthorization;
-  v4 = [(PLAssetsdService *)self libraryURL];
-  v5 = v4;
+  libraryURL = [(PLAssetsdService *)self libraryURL];
+  v5 = libraryURL;
   v6 = @"<no library>";
-  if (v4)
+  if (libraryURL)
   {
-    v6 = v4;
+    v6 = libraryURL;
   }
 
   v7 = [v2 stringWithFormat:@"%@: %@", connectionAuthorization, v6];
@@ -3036,10 +3036,10 @@ id __43__PLAssetsdService_makeInnerLibraryService__block_invoke(uint64_t a1)
   if (!resourceDownloader)
   {
     v4 = [PLAssetsdCPLResourceDownloader alloc];
-    v5 = [(PLAssetsdService *)self _photoLibrary];
-    v6 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
+    _photoLibrary = [(PLAssetsdService *)self _photoLibrary];
+    trustedCallerBundleID = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v8 = [(PLAssetsdCPLResourceDownloader *)v4 initWithPhotoLibrary:v5 trustedCallerBundleID:v6 clientConnection:WeakRetained];
+    v8 = [(PLAssetsdCPLResourceDownloader *)v4 initWithPhotoLibrary:_photoLibrary trustedCallerBundleID:trustedCallerBundleID clientConnection:WeakRetained];
     v9 = self->_resourceDownloader;
     self->_resourceDownloader = v8;
 
@@ -3054,9 +3054,9 @@ id __43__PLAssetsdService_makeInnerLibraryService__block_invoke(uint64_t a1)
   v20 = *MEMORY[0x1E69E9840];
   if (!self->_photoLibrary)
   {
-    v3 = [(PLAssetsdService *)self libraryURL];
+    libraryURL = [(PLAssetsdService *)self libraryURL];
 
-    if (v3)
+    if (libraryURL)
     {
       v4 = objc_alloc_init(PLPhotoLibraryOptions);
       [(PLPhotoLibraryOptions *)v4 setRequiredState:6];
@@ -3073,11 +3073,11 @@ id __43__PLAssetsdService_makeInnerLibraryService__block_invoke(uint64_t a1)
         v9 = PLBackendGetLog();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
-          v10 = [(PLAssetsdService *)self libraryURL];
+          libraryURL2 = [(PLAssetsdService *)self libraryURL];
           *buf = 136446722;
           v15 = "[PLAssetsdService _photoLibrary]";
           v16 = 2112;
-          v17 = v10;
+          v17 = libraryURL2;
           v18 = 2112;
           v19 = v7;
           _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "failed to load photo library %{public}s with url %@, %@", buf, 0x20u);
@@ -3091,21 +3091,21 @@ id __43__PLAssetsdService_makeInnerLibraryService__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (PLAssetsdService)initWithConnection:(id)a3 libraryBundleController:(id)a4 daemonServices:(id)a5
+- (PLAssetsdService)initWithConnection:(id)connection libraryBundleController:(id)controller daemonServices:(id)services
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  controllerCopy = controller;
+  servicesCopy = services;
   v24.receiver = self;
   v24.super_class = PLAssetsdService;
   v11 = [(PLAssetsdService *)&v24 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_connection, v8);
-    objc_storeStrong(&v12->_libraryBundleController, a4);
-    v13 = [[PLAssetsdConnectionAuthorization alloc] initWithConnection:v8 daemonServices:v10];
+    objc_storeWeak(&v11->_connection, connectionCopy);
+    objc_storeStrong(&v12->_libraryBundleController, controller);
+    v13 = [[PLAssetsdConnectionAuthorization alloc] initWithConnection:connectionCopy daemonServices:servicesCopy];
     connectionAuthorization = v12->_connectionAuthorization;
     v12->_connectionAuthorization = v13;
 

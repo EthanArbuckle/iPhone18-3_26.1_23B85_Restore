@@ -1,10 +1,10 @@
 @interface BRFileObjectID
-+ (BRFileObjectID)fileObjectIDWithString:(id)a3;
-+ (id)newFromSqliteValue:(sqlite3_value *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFileObjectID:(id)a3;
++ (BRFileObjectID)fileObjectIDWithString:(id)string;
++ (id)newFromSqliteValue:(sqlite3_value *)value;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFileObjectID:(id)d;
 - (BOOL)isFpfsItem;
-- (BRFileObjectID)initWithCoder:(id)a3;
+- (BRFileObjectID)initWithCoder:(id)coder;
 - (NSNumber)documentID;
 - (NSNumber)folderID;
 - (NSNumber)itemDBRowID;
@@ -12,17 +12,17 @@
 - (unint64_t)rawID;
 - (void)asString;
 - (void)documentID;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)folderID;
 - (void)itemDBRowID;
 @end
 
 @implementation BRFileObjectID
 
-+ (BRFileObjectID)fileObjectIDWithString:(id)a3
++ (BRFileObjectID)fileObjectIDWithString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E6967250]])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:*MEMORY[0x1E6967250]])
   {
 LABEL_2:
     v4 = [BRDbRowObjectID alloc];
@@ -33,7 +33,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E6967168]])
+  if ([stringCopy isEqualToString:*MEMORY[0x1E6967168]])
   {
     v4 = [BRDbRowObjectID alloc];
     v5 = 1;
@@ -41,15 +41,15 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if ([v3 length])
+  if ([stringCopy length])
   {
-    v7 = [v3 UTF8String];
-    v8 = *v7;
+    uTF8String = [stringCopy UTF8String];
+    v8 = *uTF8String;
     if ((v8 - 97) <= 0x13)
     {
       if (((1 << (v8 - 97)) & 0x2821) != 0)
       {
-        v9 = v7;
+        v9 = uTF8String;
         v10 = [BRFileObjectTypeConverter toBRFileObjectIDType:v8];
         v11 = strtoul(v9 + 1, 0, 16);
         v4 = [BRDbRowObjectID alloc];
@@ -81,7 +81,7 @@ LABEL_9:
     goto LABEL_21;
   }
 
-  if (v3)
+  if (stringCopy)
   {
     v14 = brc_bread_crumbs("+[BRFileObjectID fileObjectIDWithString:]", 175);
     v15 = brc_default_log(0, 0);
@@ -104,9 +104,9 @@ LABEL_10:
   return v12;
 }
 
-+ (id)newFromSqliteValue:(sqlite3_value *)a3
++ (id)newFromSqliteValue:(sqlite3_value *)value
 {
-  v3 = [MEMORY[0x1E696AEC0] newFromSqliteValue:a3];
+  v3 = [MEMORY[0x1E696AEC0] newFromSqliteValue:value];
   v4 = [objc_opt_class() fileObjectIDWithString:v3];
 
   return v4;
@@ -184,7 +184,7 @@ LABEL_10:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8 = *MEMORY[0x1E69E9840];
   v3 = brc_bread_crumbs("[BRFileObjectID encodeWithCoder:]", 279);
@@ -199,7 +199,7 @@ LABEL_10:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BRFileObjectID)initWithCoder:(id)a3
+- (BRFileObjectID)initWithCoder:(id)coder
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = brc_bread_crumbs("[BRFileObjectID initWithCoder:]", 284);
@@ -215,13 +215,13 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)isEqualToFileObjectID:(id)a3
+- (BOOL)isEqualToFileObjectID:(id)d
 {
-  v4 = a3;
-  if (v4 && (v5 = objc_opt_class(), v5 == objc_opt_class()))
+  dCopy = d;
+  if (dCopy && (v5 = objc_opt_class(), v5 == objc_opt_class()))
   {
-    v7 = [v4 rawID];
-    v6 = v7 == [(BRFileObjectID *)self rawID];
+    rawID = [dCopy rawID];
+    v6 = rawID == [(BRFileObjectID *)self rawID];
   }
 
   else
@@ -232,10 +232,10 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -243,7 +243,7 @@ LABEL_10:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRFileObjectID *)self isEqualToFileObjectID:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRFileObjectID *)self isEqualToFileObjectID:equalCopy];
   }
 
   return v5;

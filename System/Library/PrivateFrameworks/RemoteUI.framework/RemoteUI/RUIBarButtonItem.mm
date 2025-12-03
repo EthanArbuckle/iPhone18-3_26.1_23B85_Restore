@@ -1,13 +1,13 @@
 @interface RUIBarButtonItem
 + (id)tapToRadarButton;
-+ (id)titleItemWithLabel:(id)a3 imageView:(id)a4 imageSize:(CGSize)a5 style:(id)a6 labelColor:(id)a7;
++ (id)titleItemWithLabel:(id)label imageView:(id)view imageSize:(CGSize)size style:(id)style labelColor:(id)color;
 - (NSString)itemType;
 - (UIBarButtonItem)barButtonItem;
-- (id)_createBarButtonItemWithTitle:(id)a3 style:(int64_t)a4;
+- (id)_createBarButtonItemWithTitle:(id)title style:(int64_t)style;
 - (id)_labelColor;
-- (void)_buttonPressed:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setImageSize:(CGSize)a3;
+- (void)_buttonPressed:(id)pressed;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setImageSize:(CGSize)size;
 - (void)updateBackButtonColors;
 @end
 
@@ -27,7 +27,7 @@
   return v2;
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
   action = self->_action;
   if (action)
@@ -44,16 +44,16 @@
     goto LABEL_23;
   }
 
-  v4 = [(RUIElement *)self attributes];
+  attributes = [(RUIElement *)self attributes];
 
-  if (!v4)
+  if (!attributes)
   {
     v12 = 0;
     goto LABEL_24;
   }
 
-  v5 = [(RUIElement *)self attributes];
-  v6 = [v5 objectForKey:@"style"];
+  attributes2 = [(RUIElement *)self attributes];
+  v6 = [attributes2 objectForKey:@"style"];
 
   v73 = -1.0;
   if ([v6 isEqualToString:@"done"])
@@ -66,41 +66,41 @@
     v7 = 0;
   }
 
-  v8 = [(RUIBarButtonItem *)self itemType];
-  v9 = [v8 isEqualToString:@"editBarItem"];
+  itemType = [(RUIBarButtonItem *)self itemType];
+  v9 = [itemType isEqualToString:@"editBarItem"];
 
   if (v9)
   {
-    v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:2 target:self action:sel__buttonPressed_];
+    _labelColor3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:2 target:self action:sel__buttonPressed_];
     v11 = 0;
   }
 
   else
   {
-    v13 = [(RUIBarButtonItem *)self itemType];
-    v14 = [v13 isEqualToString:@"nextBarItem"];
+    itemType2 = [(RUIBarButtonItem *)self itemType];
+    v14 = [itemType2 isEqualToString:@"nextBarItem"];
 
     if (v14)
     {
-      v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      [v15 localizedStringForKey:@"NEXT" value:&stru_282D68F58 table:@"Localizable"];
+      attributes3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+      [attributes3 localizedStringForKey:@"NEXT" value:&stru_282D68F58 table:@"Localizable"];
     }
 
     else
     {
-      v15 = [(RUIElement *)self attributes];
-      [v15 objectForKey:@"label"];
+      attributes3 = [(RUIElement *)self attributes];
+      [attributes3 objectForKey:@"label"];
     }
     v11 = ;
 
-    v10 = 0;
+    _labelColor3 = 0;
   }
 
-  v16 = [(RUIBarButtonItem *)self itemType];
-  v17 = [v16 isEqualToString:@"closeButtonBarItem"];
+  itemType3 = [(RUIBarButtonItem *)self itemType];
+  v17 = [itemType3 isEqualToString:@"closeButtonBarItem"];
 
-  v18 = [(RUIElement *)self attributes];
-  v19 = [v18 objectForKeyedSubscript:@"barButtonType"];
+  attributes4 = [(RUIElement *)self attributes];
+  v19 = [attributes4 objectForKeyedSubscript:@"barButtonType"];
   v20 = [v19 isEqualToString:@"cancel"];
 
   if ((v17 & 1) != 0 || v20)
@@ -114,8 +114,8 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v21 = [(RUIBarButtonItem *)self itemType];
-  v22 = [v21 isEqualToString:@"titleBarItem"];
+  itemType4 = [(RUIBarButtonItem *)self itemType];
+  v22 = [itemType4 isEqualToString:@"titleBarItem"];
 
   if (v22)
   {
@@ -123,12 +123,12 @@ LABEL_21:
     imageView = self->_imageView;
     self->_imageView = v23;
 
-    v25 = [(RUIElement *)self attributes];
-    v26 = [v25 objectForKey:@"imageWidth"];
+    attributes5 = [(RUIElement *)self attributes];
+    v26 = [attributes5 objectForKey:@"imageWidth"];
     [v26 floatValue];
     v28 = v27;
-    v29 = [(RUIElement *)self attributes];
-    v30 = [v29 objectForKey:@"imageHeight"];
+    attributes6 = [(RUIElement *)self attributes];
+    v30 = [attributes6 objectForKey:@"imageHeight"];
     [v30 floatValue];
     v32 = v31;
 
@@ -139,15 +139,15 @@ LABEL_21:
     }
 
     v34 = self->_imageView;
-    v35 = [(RUIElement *)self style];
-    v36 = [(RUIBarButtonItem *)self _labelColor];
-    v37 = [RUIBarButtonItem titleItemWithLabel:v11 imageView:v34 imageSize:v35 style:v36 labelColor:v28, v32];
+    style = [(RUIElement *)self style];
+    _labelColor = [(RUIBarButtonItem *)self _labelColor];
+    v37 = [RUIBarButtonItem titleItemWithLabel:v11 imageView:v34 imageSize:style style:_labelColor labelColor:v28, v32];
 
     goto LABEL_22;
   }
 
-  v42 = [(RUIBarButtonItem *)self itemType];
-  if ([v42 isEqualToString:@"backButtonBarItem"])
+  itemType5 = [(RUIBarButtonItem *)self itemType];
+  if ([itemType5 isEqualToString:@"backButtonBarItem"])
   {
     v43 = +[RUIPlatform isSolariumEnabled];
 
@@ -163,8 +163,8 @@ LABEL_21:
   {
   }
 
-  v44 = [(RUIBarButtonItem *)self itemType];
-  v45 = [v44 isEqualToString:@"backButtonBarItem"];
+  itemType6 = [(RUIBarButtonItem *)self itemType];
+  v45 = [itemType6 isEqualToString:@"backButtonBarItem"];
 
   if (v45)
   {
@@ -174,8 +174,8 @@ LABEL_21:
     self->_backButton = v47;
 
     v49 = [MEMORY[0x277D755D0] configurationWithPointSize:25.0];
-    v50 = [(RUIElement *)self attributes];
-    v51 = [v50 objectForKey:@"systemImage"];
+    attributes7 = [(RUIElement *)self attributes];
+    v51 = [attributes7 objectForKey:@"systemImage"];
 
     v52 = [MEMORY[0x277D755B8] systemImageNamed:@"chevron.backward" withConfiguration:v49];
     v71 = v51;
@@ -197,8 +197,8 @@ LABEL_21:
       v57 = [MEMORY[0x277D755B8] systemImageNamed:@"chevron.backward.circle.fill" withConfiguration:v54];
 
       [(RUIBarButtonItem *)self updateBackButtonColors];
-      v58 = [(UIButton *)self->_backButton layer];
-      [v58 setCornerRadius:30.0];
+      layer = [(UIButton *)self->_backButton layer];
+      [layer setCornerRadius:30.0];
       v55 = v57;
     }
 
@@ -212,20 +212,20 @@ LABEL_21:
       }
 
       v66 = v52;
-      v58 = +[RUIImageLoader sharedImageLoader];
-      v67 = [v58 imageForURL:v46 loadIfAbsent:1];
+      layer = +[RUIImageLoader sharedImageLoader];
+      v67 = [layer imageForURL:v46 loadIfAbsent:1];
       v55 = [MEMORY[0x277D755B8] imageWithCGImage:v67 scale:0 orientation:v73];
 
       v56 = v49;
     }
 
 LABEL_48:
-    v68 = [MEMORY[0x277D75128] sharedApplication];
-    v69 = [v68 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-    if (v69 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
-      v70 = [v55 imageFlippedForRightToLeftLayoutDirection];
+      imageFlippedForRightToLeftLayoutDirection = [v55 imageFlippedForRightToLeftLayoutDirection];
     }
 
     [(UIButton *)self->_backButton setImage:v55 forState:0];
@@ -235,8 +235,8 @@ LABEL_48:
     goto LABEL_22;
   }
 
-  v59 = [(RUIBarButtonItem *)self itemType];
-  v60 = [v59 isEqualToString:@"tapToRadarBarItem"];
+  itemType7 = [(RUIBarButtonItem *)self itemType];
+  v60 = [itemType7 isEqualToString:@"tapToRadarBarItem"];
 
   if (v60)
   {
@@ -259,18 +259,18 @@ LABEL_48:
 
   if (![v11 length])
   {
-    v37 = v10;
+    v37 = _labelColor3;
     goto LABEL_22;
   }
 
   v37 = [(RUIBarButtonItem *)self _createBarButtonItemWithTitle:v11 style:v7];
 
-  v65 = [(RUIBarButtonItem *)self _labelColor];
+  _labelColor2 = [(RUIBarButtonItem *)self _labelColor];
 
-  if (v65)
+  if (_labelColor2)
   {
-    v10 = [(RUIBarButtonItem *)self _labelColor];
-    [(UIBarButtonItem *)v37 setTintColor:v10];
+    _labelColor3 = [(RUIBarButtonItem *)self _labelColor];
+    [(UIBarButtonItem *)v37 setTintColor:_labelColor3];
     goto LABEL_21;
   }
 
@@ -310,20 +310,20 @@ id __33__RUIBarButtonItem_barButtonItem__block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-+ (id)titleItemWithLabel:(id)a3 imageView:(id)a4 imageSize:(CGSize)a5 style:(id)a6 labelColor:(id)a7
++ (id)titleItemWithLabel:(id)label imageView:(id)view imageSize:(CGSize)size style:(id)style labelColor:(id)color
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  styleCopy = style;
+  colorCopy = color;
   v15 = MEMORY[0x277D75A68];
-  v16 = a3;
+  labelCopy = label;
   v17 = objc_alloc_init(v15);
   [v17 setAxis:0];
   [v17 setAlignment:3];
   [v17 setDistribution:3];
-  [v13 navBarLabelSpacingWithImage];
+  [styleCopy navBarLabelSpacingWithImage];
   if (v18 == 0.0)
   {
     v19 = 8.0;
@@ -331,18 +331,18 @@ id __33__RUIBarButtonItem_barButtonItem__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    [v13 navBarLabelSpacingWithImage];
+    [styleCopy navBarLabelSpacingWithImage];
   }
 
   [v17 setSpacing:v19];
   v20 = objc_alloc_init(MEMORY[0x277D756B8]);
-  [v20 setText:v16];
+  [v20 setText:labelCopy];
 
-  v21 = [v13 navBarButtonLabelFont];
+  navBarButtonLabelFont = [styleCopy navBarButtonLabelFont];
 
-  if (v21)
+  if (navBarButtonLabelFont)
   {
-    [v13 navBarButtonLabelFont];
+    [styleCopy navBarButtonLabelFont];
   }
 
   else
@@ -352,26 +352,26 @@ id __33__RUIBarButtonItem_barButtonItem__block_invoke(uint64_t a1, void *a2)
   v22 = ;
   [v20 setFont:v22];
 
-  if (v14)
+  if (colorCopy)
   {
-    [v20 setTextColor:v14];
+    [v20 setTextColor:colorCopy];
   }
 
   if (width == 0.0 && height == 0.0)
   {
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v23 = [v12 heightAnchor];
-    v24 = [v23 constraintEqualToConstant:25.0];
+    [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    heightAnchor = [viewCopy heightAnchor];
+    v24 = [heightAnchor constraintEqualToConstant:25.0];
     [v24 setActive:1];
 
-    v25 = [v12 widthAnchor];
-    v26 = [v25 constraintEqualToConstant:25.0];
+    widthAnchor = [viewCopy widthAnchor];
+    v26 = [widthAnchor constraintEqualToConstant:25.0];
     [v26 setActive:1];
   }
 
-  if (v12)
+  if (viewCopy)
   {
-    [v17 addArrangedSubview:v12];
+    [v17 addArrangedSubview:viewCopy];
   }
 
   [v17 addArrangedSubview:v20];
@@ -381,21 +381,21 @@ id __33__RUIBarButtonItem_barButtonItem__block_invoke(uint64_t a1, void *a2)
   return v27;
 }
 
-- (id)_createBarButtonItemWithTitle:(id)a3 style:(int64_t)a4
+- (id)_createBarButtonItemWithTitle:(id)title style:(int64_t)style
 {
-  v6 = a3;
-  v7 = [(RUIElement *)self attributes];
-  v8 = [v7 objectForKeyedSubscript:@"parentBar"];
+  titleCopy = title;
+  attributes = [(RUIElement *)self attributes];
+  v8 = [attributes objectForKeyedSubscript:@"parentBar"];
   v9 = [v8 isEqualToString:@"navigationBar"];
 
-  if (a4 == 2 && (+[RUIPlatform isSolariumEnabled]& v9) == 1)
+  if (style == 2 && (+[RUIPlatform isSolariumEnabled]& v9) == 1)
   {
     v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel__buttonPressed_];
   }
 
   else
   {
-    v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v6 style:a4 target:self action:sel__buttonPressed_];
+    v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:titleCopy style:style target:self action:sel__buttonPressed_];
   }
 
   v11 = v10;
@@ -405,14 +405,14 @@ id __33__RUIBarButtonItem_barButtonItem__block_invoke(uint64_t a1, void *a2)
 
 - (id)_labelColor
 {
-  v3 = [(RUIElement *)self attributes];
-  v4 = [v3 objectForKeyedSubscript:@"labelColor"];
+  attributes = [(RUIElement *)self attributes];
+  v4 = [attributes objectForKeyedSubscript:@"labelColor"];
 
   if (v4)
   {
     v5 = MEMORY[0x277D75348];
-    v6 = [(RUIElement *)self attributes];
-    v7 = [v6 objectForKey:@"labelColor"];
+    attributes2 = [(RUIElement *)self attributes];
+    v7 = [attributes2 objectForKey:@"labelColor"];
     v8 = [v5 _remoteUI_colorWithString:v7];
   }
 
@@ -426,31 +426,31 @@ id __33__RUIBarButtonItem_barButtonItem__block_invoke(uint64_t a1, void *a2)
 
 - (NSString)itemType
 {
-  v2 = [(RUIElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"type"];
+  attributes = [(RUIElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"type"];
 
   return v3;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = RUIBarButtonItem;
   [(RUIElement *)&v5 setEnabled:?];
-  [(UIBarButtonItem *)self->_barButtonItem setEnabled:v3];
+  [(UIBarButtonItem *)self->_barButtonItem setEnabled:enabledCopy];
 }
 
 - (void)updateBackButtonColors
 {
-  v3 = [MEMORY[0x277D75C80] _currentTraitCollection];
-  v4 = [v3 userInterfaceStyle];
+  _currentTraitCollection = [MEMORY[0x277D75C80] _currentTraitCollection];
+  userInterfaceStyle = [_currentTraitCollection userInterfaceStyle];
 
   backButton = self->_backButton;
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v6 = [MEMORY[0x277D75348] systemDarkGrayColor];
-    [(UIButton *)backButton setTintColor:v6];
+    systemDarkGrayColor = [MEMORY[0x277D75348] systemDarkGrayColor];
+    [(UIButton *)backButton setTintColor:systemDarkGrayColor];
 
     v7 = self->_backButton;
     [MEMORY[0x277D75348] systemExtraLightGrayColor];
@@ -458,8 +458,8 @@ id __33__RUIBarButtonItem_barButtonItem__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v8 = [MEMORY[0x277D75348] systemExtraLightGrayColor];
-    [(UIButton *)backButton setTintColor:v8];
+    systemExtraLightGrayColor = [MEMORY[0x277D75348] systemExtraLightGrayColor];
+    [(UIButton *)backButton setTintColor:systemExtraLightGrayColor];
 
     v7 = self->_backButton;
     [MEMORY[0x277D75348] systemGrayColor];
@@ -468,17 +468,17 @@ id __33__RUIBarButtonItem_barButtonItem__block_invoke(uint64_t a1, void *a2)
   [(UIButton *)v7 setBackgroundColor:?];
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(UIImageView *)self->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(UIImageView *)self->_imageView heightAnchor];
-  v7 = [v6 constraintEqualToConstant:height];
+  heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+  v7 = [heightAnchor constraintEqualToConstant:height];
   [v7 setActive:1];
 
-  v9 = [(UIImageView *)self->_imageView widthAnchor];
-  v8 = [v9 constraintEqualToConstant:width];
+  widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+  v8 = [widthAnchor constraintEqualToConstant:width];
   [v8 setActive:1];
 }
 

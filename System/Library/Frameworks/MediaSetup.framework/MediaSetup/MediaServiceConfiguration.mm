@@ -1,52 +1,52 @@
 @interface MediaServiceConfiguration
 + (id)sharedInstance;
-- (BOOL)thirdPartyMusicAvailable:(id)a3;
-- (MediaServiceConfiguration)initWithQueue:(id)a3;
+- (BOOL)thirdPartyMusicAvailable:(id)available;
+- (MediaServiceConfiguration)initWithQueue:(id)queue;
 - (MediaServiceUpdatedDelegate)delegate;
-- (void)activeServiceApplicationInformationForSharedUserID:(id)a3 completionHandler:(id)a4;
-- (void)addMediaService:(id)a3 toHomes:(id)a4 completion:(id)a5;
+- (void)activeServiceApplicationInformationForSharedUserID:(id)d completionHandler:(id)handler;
+- (void)addMediaService:(id)service toHomes:(id)homes completion:(id)completion;
 - (void)dealloc;
-- (void)getAvailableServices:(id)a3 completion:(id)a4;
-- (void)getCachedAvailableServices:(id)a3 completion:(id)a4;
-- (void)getCachedServiceInfo:(id)a3 homeUserID:(id)a4 endpointID:(id)a5 completion:(id)a6;
-- (void)getDefaultMediaService:(id)a3 completion:(id)a4;
-- (void)getDefaultMediaServiceForAllUsers:(id)a3;
-- (void)getMediaServiceChoicesForAllUsers:(id)a3;
-- (void)getMediaServiceChoicesForSharedUser:(id)a3 completion:(id)a4;
-- (void)getPublicInfoForBundleID:(id)a3 completion:(id)a4;
-- (void)getResolvedServiceInfo:(id)a3 completion:(id)a4;
-- (void)getResolvedServiceInfo:(id)a3 sharedUserID:(id)a4 completion:(id)a5;
-- (void)getServiceConfigurationInfo:(id)a3 completion:(id)a4;
-- (void)getServiceConfigurationInfo:(id)a3 serviceID:(id)a4 completion:(id)a5;
-- (void)getSupportedThirdPartyMediaServices:(id)a3;
-- (void)removeServiceFromHome:(id)a3 fromHome:(id)a4 completion:(id)a5;
-- (void)requestAuthRenewalForMediaService:(id)a3 homeUserID:(id)a4 parentNetworkActivity:(id)a5 completion:(id)a6;
-- (void)serviceSettingDidUpdate:(id)a3 homeUserID:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setVersion:(unint64_t)a3 completion:(id)a4;
-- (void)switchUserAccountInfo:(id)a3 home:(id)a4 completion:(id)a5;
-- (void)updateDefaultMediaService:(id)a3 forHome:(id)a4 completion:(id)a5;
-- (void)updateProperty:(id)a3 forHome:(id)a4 withOptions:(id)a5 completion:(id)a6;
-- (void)userDidRemoveService:(id)a3 homeUserID:(id)a4;
-- (void)userDidUpdateDefaultService:(id)a3 homeUserID:(id)a4;
+- (void)getAvailableServices:(id)services completion:(id)completion;
+- (void)getCachedAvailableServices:(id)services completion:(id)completion;
+- (void)getCachedServiceInfo:(id)info homeUserID:(id)d endpointID:(id)iD completion:(id)completion;
+- (void)getDefaultMediaService:(id)service completion:(id)completion;
+- (void)getDefaultMediaServiceForAllUsers:(id)users;
+- (void)getMediaServiceChoicesForAllUsers:(id)users;
+- (void)getMediaServiceChoicesForSharedUser:(id)user completion:(id)completion;
+- (void)getPublicInfoForBundleID:(id)d completion:(id)completion;
+- (void)getResolvedServiceInfo:(id)info completion:(id)completion;
+- (void)getResolvedServiceInfo:(id)info sharedUserID:(id)d completion:(id)completion;
+- (void)getServiceConfigurationInfo:(id)info completion:(id)completion;
+- (void)getServiceConfigurationInfo:(id)info serviceID:(id)d completion:(id)completion;
+- (void)getSupportedThirdPartyMediaServices:(id)services;
+- (void)removeServiceFromHome:(id)home fromHome:(id)fromHome completion:(id)completion;
+- (void)requestAuthRenewalForMediaService:(id)service homeUserID:(id)d parentNetworkActivity:(id)activity completion:(id)completion;
+- (void)serviceSettingDidUpdate:(id)update homeUserID:(id)d;
+- (void)setDelegate:(id)delegate;
+- (void)setVersion:(unint64_t)version completion:(id)completion;
+- (void)switchUserAccountInfo:(id)info home:(id)home completion:(id)completion;
+- (void)updateDefaultMediaService:(id)service forHome:(id)home completion:(id)completion;
+- (void)updateProperty:(id)property forHome:(id)home withOptions:(id)options completion:(id)completion;
+- (void)userDidRemoveService:(id)service homeUserID:(id)d;
+- (void)userDidUpdateDefaultService:(id)service homeUserID:(id)d;
 @end
 
 @implementation MediaServiceConfiguration
 
-- (MediaServiceConfiguration)initWithQueue:(id)a3
+- (MediaServiceConfiguration)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v72.receiver = self;
   v72.super_class = MediaServiceConfiguration;
   v6 = [(MediaServiceConfiguration *)&v72 init];
   if (v6)
   {
-    v66 = v5;
+    v66 = queueCopy;
     v7 = [[MediaServiceConfigurationMediator alloc] initWithServiceDelegate:v6];
     mediator = v6->_mediator;
     v6->_mediator = v7;
 
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v9 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.mediasetupd.server" options:4096];
     connection = v6->_connection;
     v6->_connection = v9;
@@ -57,28 +57,28 @@
     v65 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284C54538];
     [(NSXPCConnection *)v6->_connection setExportedInterface:?];
     [(NSXPCConnection *)v6->_connection setExportedObject:v6->_mediator];
-    v12 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
+    remoteObjectInterface = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
     v13 = MEMORY[0x277CBEB98];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    [v12 setClasses:v15 forSelector:sel_addMediaService_usingSetupBundles_completion_ argumentIndex:1 ofReply:0];
+    [remoteObjectInterface setClasses:v15 forSelector:sel_addMediaService_usingSetupBundles_completion_ argumentIndex:1 ofReply:0];
 
     v16 = MEMORY[0x277CBEB98];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
-    [v19 setClasses:v18 forSelector:sel_getAvailableServices_userIdentifier_completion_ argumentIndex:0 ofReply:1];
+    remoteObjectInterface2 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
+    [remoteObjectInterface2 setClasses:v18 forSelector:sel_getAvailableServices_userIdentifier_completion_ argumentIndex:0 ofReply:1];
 
-    v20 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
-    [v20 setClasses:v18 forSelector:sel_getCachedAvailableServices_userIdentifier_completion_ argumentIndex:0 ofReply:1];
+    remoteObjectInterface3 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
+    [remoteObjectInterface3 setClasses:v18 forSelector:sel_getCachedAvailableServices_userIdentifier_completion_ argumentIndex:0 ofReply:1];
 
     v21 = MEMORY[0x277CBEB98];
     v22 = objc_opt_class();
     v23 = objc_opt_class();
     v24 = objc_opt_class();
     v25 = [v21 setWithObjects:{v22, v23, v24, objc_opt_class(), 0}];
-    v26 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
-    [v26 setClasses:v25 forSelector:sel_getMediaServiceChoicesForAllUsers_ argumentIndex:0 ofReply:1];
+    remoteObjectInterface4 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
+    [remoteObjectInterface4 setClasses:v25 forSelector:sel_getMediaServiceChoicesForAllUsers_ argumentIndex:0 ofReply:1];
 
     v27 = MEMORY[0x277CBEB98];
     v28 = objc_opt_class();
@@ -86,52 +86,52 @@
     v30 = objc_opt_class();
     v31 = objc_opt_class();
     v32 = [v27 setWithObjects:{v28, v29, v30, v31, objc_opt_class(), 0}];
-    v33 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
-    [v33 setClasses:v32 forSelector:sel_getServiceConfigurationInfo_serviceID_completion_ argumentIndex:0 ofReply:1];
+    remoteObjectInterface5 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
+    [remoteObjectInterface5 setClasses:v32 forSelector:sel_getServiceConfigurationInfo_serviceID_completion_ argumentIndex:0 ofReply:1];
 
-    v34 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
-    [v34 setClasses:v32 forSelector:sel_getDefaultMediaServiceForAllUsers_ argumentIndex:0 ofReply:1];
+    remoteObjectInterface6 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
+    [remoteObjectInterface6 setClasses:v32 forSelector:sel_getDefaultMediaServiceForAllUsers_ argumentIndex:0 ofReply:1];
 
-    v35 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
+    remoteObjectInterface7 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
     v36 = MEMORY[0x277CBEB98];
     v37 = objc_opt_class();
     v38 = [v36 setWithObjects:{v37, objc_opt_class(), 0}];
-    [v35 setClasses:v38 forSelector:sel_getServiceConfigurationInfo_serviceID_completion_ argumentIndex:0 ofReply:0];
+    [remoteObjectInterface7 setClasses:v38 forSelector:sel_getServiceConfigurationInfo_serviceID_completion_ argumentIndex:0 ofReply:0];
 
-    v39 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
+    remoteObjectInterface8 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
     v40 = MEMORY[0x277CBEB98];
     v41 = objc_opt_class();
     v42 = objc_opt_class();
     v43 = [v40 setWithObjects:{v41, v42, objc_opt_class(), 0}];
-    [v39 setClasses:v43 forSelector:sel_getPublicInfoForBundleID_completion_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface8 setClasses:v43 forSelector:sel_getPublicInfoForBundleID_completion_ argumentIndex:0 ofReply:1];
 
-    v44 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
+    remoteObjectInterface9 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
     v45 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    [v44 setClasses:v45 forSelector:sel_getResolvedServiceInfo_sharedUserID_completion_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface9 setClasses:v45 forSelector:sel_getResolvedServiceInfo_sharedUserID_completion_ argumentIndex:0 ofReply:1];
 
-    v46 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
+    remoteObjectInterface10 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
     v47 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    [v46 setClasses:v47 forSelector:sel_getResolvedServiceInfo_completion_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface10 setClasses:v47 forSelector:sel_getResolvedServiceInfo_completion_ argumentIndex:0 ofReply:1];
 
-    v48 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
+    remoteObjectInterface11 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
     v49 = MEMORY[0x277CBEB98];
     v50 = objc_opt_class();
     v51 = objc_opt_class();
     v52 = objc_opt_class();
     v53 = [v49 setWithObjects:{v50, v51, v52, objc_opt_class(), 0}];
-    [v48 setClasses:v53 forSelector:sel_activeServiceApplicationInformationForSharedUserID_completionHandler_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface11 setClasses:v53 forSelector:sel_activeServiceApplicationInformationForSharedUserID_completionHandler_ argumentIndex:0 ofReply:1];
 
-    v54 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
+    remoteObjectInterface12 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
     v55 = MEMORY[0x277CBEB98];
     v56 = objc_opt_class();
     v57 = [v55 setWithObjects:{v56, objc_opt_class(), 0}];
-    [v54 setClasses:v57 forSelector:sel_getSupportedThirdPartyMediaServices_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface12 setClasses:v57 forSelector:sel_getSupportedThirdPartyMediaServices_ argumentIndex:0 ofReply:1];
 
-    v58 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
+    remoteObjectInterface13 = [(NSXPCConnection *)v6->_connection remoteObjectInterface];
     v59 = MEMORY[0x277CBEB98];
     v60 = objc_opt_class();
     v61 = [v59 setWithObjects:{v60, objc_opt_class(), 0}];
-    [v58 setClasses:v61 forSelector:sel_getMediaServiceChoicesForSharedUser_completion_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface13 setClasses:v61 forSelector:sel_getMediaServiceChoicesForSharedUser_completion_ argumentIndex:0 ofReply:1];
 
     objc_initWeak(&location, v6);
     v62 = v6->_connection;
@@ -153,7 +153,7 @@
     objc_destroyWeak(&v70);
     objc_destroyWeak(&location);
 
-    v5 = v66;
+    queueCopy = v66;
   }
 
   return v6;
@@ -199,7 +199,7 @@ void __43__MediaServiceConfiguration_initWithQueue___block_invoke_126(uint64_t a
   block[1] = 3221225472;
   block[2] = __43__MediaServiceConfiguration_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -219,31 +219,31 @@ void __43__MediaServiceConfiguration_sharedInstance__block_invoke(uint64_t a1)
   _sSharedInstance = v3;
 }
 
-- (void)getAvailableServices:(id)a3 completion:(id)a4
+- (void)getAvailableServices:(id)services completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  servicesCopy = services;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __61__MediaServiceConfiguration_getAvailableServices_completion___block_invoke;
     v25[3] = &unk_278AA3030;
-    v10 = v7;
+    v10 = completionCopy;
     v26 = v10;
     v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v25];
-    v12 = [v6 uniqueIdentifier];
-    v13 = [v6 currentUser];
-    v14 = [v13 uniqueIdentifier];
+    uniqueIdentifier = [servicesCopy uniqueIdentifier];
+    currentUser = [servicesCopy currentUser];
+    uniqueIdentifier2 = [currentUser uniqueIdentifier];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __61__MediaServiceConfiguration_getAvailableServices_completion___block_invoke_2;
     v23[3] = &unk_278AA3080;
     v23[4] = self;
     v24 = v10;
-    [v11 getAvailableServices:v12 userIdentifier:v14 completion:v23];
+    [v11 getAvailableServices:uniqueIdentifier userIdentifier:uniqueIdentifier2 completion:v23];
 
     v15 = v26;
   }
@@ -278,31 +278,31 @@ void __61__MediaServiceConfiguration_getAvailableServices_completion___block_inv
   }
 }
 
-- (void)getCachedAvailableServices:(id)a3 completion:(id)a4
+- (void)getCachedAvailableServices:(id)services completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  servicesCopy = services;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __67__MediaServiceConfiguration_getCachedAvailableServices_completion___block_invoke;
     v25[3] = &unk_278AA3030;
-    v10 = v7;
+    v10 = completionCopy;
     v26 = v10;
     v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v25];
-    v12 = [v6 uniqueIdentifier];
-    v13 = [v6 currentUser];
-    v14 = [v13 uniqueIdentifier];
+    uniqueIdentifier = [servicesCopy uniqueIdentifier];
+    currentUser = [servicesCopy currentUser];
+    uniqueIdentifier2 = [currentUser uniqueIdentifier];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __67__MediaServiceConfiguration_getCachedAvailableServices_completion___block_invoke_2;
     v23[3] = &unk_278AA3080;
     v23[4] = self;
     v24 = v10;
-    [v11 getCachedAvailableServices:v12 userIdentifier:v14 completion:v23];
+    [v11 getCachedAvailableServices:uniqueIdentifier userIdentifier:uniqueIdentifier2 completion:v23];
 
     v15 = v26;
   }
@@ -336,10 +336,10 @@ void __67__MediaServiceConfiguration_getCachedAvailableServices_completion___blo
   }
 }
 
-- (BOOL)thirdPartyMusicAvailable:(id)a3
+- (BOOL)thirdPartyMusicAvailable:(id)available
 {
-  v4 = a3;
-  if (v4)
+  availableCopy = available;
+  if (availableCopy)
   {
     v20 = 0;
     v21 = &v20;
@@ -352,13 +352,13 @@ void __67__MediaServiceConfiguration_getCachedAvailableServices_completion___blo
     v19[3] = &unk_278AA30A8;
     v19[4] = &v20;
     v6 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v19];
-    v7 = [v4 uniqueIdentifier];
+    uniqueIdentifier = [availableCopy uniqueIdentifier];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __54__MediaServiceConfiguration_thirdPartyMusicAvailable___block_invoke_134;
     v18[3] = &unk_278AA30D0;
     v18[4] = &v20;
-    [v6 thirdPartyMusicAvailable:v7 completion:v18];
+    [v6 thirdPartyMusicAvailable:uniqueIdentifier completion:v18];
 
     v8 = *(v21 + 24);
     _Block_object_dispose(&v20, 8);
@@ -390,21 +390,21 @@ void __54__MediaServiceConfiguration_thirdPartyMusicAvailable___block_invoke(uin
   *(*(*(a1 + 32) + 8) + 24) = 0;
 }
 
-- (void)getCachedServiceInfo:(id)a3 homeUserID:(id)a4 endpointID:(id)a5 completion:(id)a6
+- (void)getCachedServiceInfo:(id)info homeUserID:(id)d endpointID:(id)iD completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  infoCopy = info;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __83__MediaServiceConfiguration_getCachedServiceInfo_homeUserID_endpointID_completion___block_invoke;
     v28[3] = &unk_278AA3030;
-    v16 = v13;
+    v16 = completionCopy;
     v29 = v16;
     v17 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v28];
     v26[0] = MEMORY[0x277D85DD0];
@@ -413,7 +413,7 @@ void __54__MediaServiceConfiguration_thirdPartyMusicAvailable___block_invoke(uin
     v26[3] = &unk_278AA3120;
     v26[4] = self;
     v27 = v16;
-    [v17 getCachedServiceInfo:v10 homeUserID:v11 endpointID:v12 completion:v26];
+    [v17 getCachedServiceInfo:infoCopy homeUserID:dCopy endpointID:iDCopy completion:v26];
 
     v18 = v29;
   }
@@ -449,21 +449,21 @@ void __83__MediaServiceConfiguration_getCachedServiceInfo_homeUserID_endpointID_
   }
 }
 
-- (void)requestAuthRenewalForMediaService:(id)a3 homeUserID:(id)a4 parentNetworkActivity:(id)a5 completion:(id)a6
+- (void)requestAuthRenewalForMediaService:(id)service homeUserID:(id)d parentNetworkActivity:(id)activity completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  serviceCopy = service;
+  dCopy = d;
+  activityCopy = activity;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __107__MediaServiceConfiguration_requestAuthRenewalForMediaService_homeUserID_parentNetworkActivity_completion___block_invoke;
     v28[3] = &unk_278AA3030;
-    v16 = v13;
+    v16 = completionCopy;
     v29 = v16;
     v17 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v28];
     v26[0] = MEMORY[0x277D85DD0];
@@ -472,7 +472,7 @@ void __83__MediaServiceConfiguration_getCachedServiceInfo_homeUserID_endpointID_
     v26[3] = &unk_278AA3148;
     v26[4] = self;
     v27 = v16;
-    [v17 requestAuthRenewalForMediaService:v10 homeUserID:v11 parentNetworkActivity:v12 completion:v26];
+    [v17 requestAuthRenewalForMediaService:serviceCopy homeUserID:dCopy parentNetworkActivity:activityCopy completion:v26];
 
     v18 = v29;
   }
@@ -506,33 +506,33 @@ void __107__MediaServiceConfiguration_requestAuthRenewalForMediaService_homeUser
   }
 }
 
-- (void)updateDefaultMediaService:(id)a3 forHome:(id)a4 completion:(id)a5
+- (void)updateDefaultMediaService:(id)service forHome:(id)home completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  serviceCopy = service;
+  homeCopy = home;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __74__MediaServiceConfiguration_updateDefaultMediaService_forHome_completion___block_invoke;
     v29[3] = &unk_278AA3030;
-    v13 = v10;
+    v13 = completionCopy;
     v30 = v13;
     v14 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v29];
-    v15 = [v9 uniqueIdentifier];
-    v16 = [v9 currentUser];
-    v17 = [v16 uniqueIdentifier];
+    uniqueIdentifier = [homeCopy uniqueIdentifier];
+    currentUser = [homeCopy currentUser];
+    uniqueIdentifier2 = [currentUser uniqueIdentifier];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __74__MediaServiceConfiguration_updateDefaultMediaService_forHome_completion___block_invoke_2;
     v26[3] = &unk_278AA3198;
     v28 = v13;
     v26[4] = self;
-    v27 = v8;
-    [v14 updateDefaultMediaService:v27 homeID:v15 homeUserID:v17 completion:v26];
+    v27 = serviceCopy;
+    [v14 updateDefaultMediaService:v27 homeID:uniqueIdentifier homeUserID:uniqueIdentifier2 completion:v26];
 
     v18 = v30;
   }
@@ -575,31 +575,31 @@ void __74__MediaServiceConfiguration_updateDefaultMediaService_forHome_completio
   }
 }
 
-- (void)getDefaultMediaService:(id)a3 completion:(id)a4
+- (void)getDefaultMediaService:(id)service completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  serviceCopy = service;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __63__MediaServiceConfiguration_getDefaultMediaService_completion___block_invoke;
     v25[3] = &unk_278AA3030;
-    v10 = v7;
+    v10 = completionCopy;
     v26 = v10;
     v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v25];
-    v12 = [v6 uniqueIdentifier];
-    v13 = [v6 currentUser];
-    v14 = [v13 uniqueIdentifier];
+    uniqueIdentifier = [serviceCopy uniqueIdentifier];
+    currentUser = [serviceCopy currentUser];
+    uniqueIdentifier2 = [currentUser uniqueIdentifier];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __63__MediaServiceConfiguration_getDefaultMediaService_completion___block_invoke_2;
     v23[3] = &unk_278AA3148;
     v23[4] = self;
     v24 = v10;
-    [v11 getDefaultMediaService:v12 homeUserID:v14 completion:v23];
+    [v11 getDefaultMediaService:uniqueIdentifier homeUserID:uniqueIdentifier2 completion:v23];
 
     v15 = v26;
   }
@@ -633,32 +633,32 @@ void __63__MediaServiceConfiguration_getDefaultMediaService_completion___block_i
   }
 }
 
-- (void)removeServiceFromHome:(id)a3 fromHome:(id)a4 completion:(id)a5
+- (void)removeServiceFromHome:(id)home fromHome:(id)fromHome completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  homeCopy = home;
+  fromHomeCopy = fromHome;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __71__MediaServiceConfiguration_removeServiceFromHome_fromHome_completion___block_invoke;
     v28[3] = &unk_278AA3030;
-    v13 = v10;
+    v13 = completionCopy;
     v29 = v13;
     v14 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v28];
-    v15 = [v9 uniqueIdentifier];
-    v16 = [v9 currentUser];
-    v17 = [v16 uniqueIdentifier];
+    uniqueIdentifier = [fromHomeCopy uniqueIdentifier];
+    currentUser = [fromHomeCopy currentUser];
+    uniqueIdentifier2 = [currentUser uniqueIdentifier];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __71__MediaServiceConfiguration_removeServiceFromHome_fromHome_completion___block_invoke_2;
     v26[3] = &unk_278AA31C0;
     v26[4] = self;
     v27 = v13;
-    [v14 removeMediaService:v8 homeID:v15 homeUserID:v17 completion:v26];
+    [v14 removeMediaService:homeCopy homeID:uniqueIdentifier homeUserID:uniqueIdentifier2 completion:v26];
 
     v18 = v29;
   }
@@ -691,19 +691,19 @@ void __71__MediaServiceConfiguration_removeServiceFromHome_fromHome_completion__
   }
 }
 
-- (void)addMediaService:(id)a3 toHomes:(id)a4 completion:(id)a5
+- (void)addMediaService:(id)service toHomes:(id)homes completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  serviceCopy = service;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v10 = [a4 na_map:&__block_literal_global_1];
+    v10 = [homes na_map:&__block_literal_global_1];
     connection = self->_connection;
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __64__MediaServiceConfiguration_addMediaService_toHomes_completion___block_invoke_2;
     v23[3] = &unk_278AA3030;
-    v12 = v9;
+    v12 = completionCopy;
     v24 = v12;
     v13 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v23];
     v21[0] = MEMORY[0x277D85DD0];
@@ -712,7 +712,7 @@ void __71__MediaServiceConfiguration_removeServiceFromHome_fromHome_completion__
     v21[3] = &unk_278AA31C0;
     v21[4] = self;
     v22 = v12;
-    [v13 addMediaService:v8 usingSetupBundles:v10 completion:v21];
+    [v13 addMediaService:serviceCopy usingSetupBundles:v10 completion:v21];
   }
 
   else
@@ -756,19 +756,19 @@ void __64__MediaServiceConfiguration_addMediaService_toHomes_completion___block_
   }
 }
 
-- (void)getPublicInfoForBundleID:(id)a3 completion:(id)a4
+- (void)getPublicInfoForBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __65__MediaServiceConfiguration_getPublicInfoForBundleID_completion___block_invoke;
     v22[3] = &unk_278AA3030;
-    v10 = v7;
+    v10 = completionCopy;
     v23 = v10;
     v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v22];
     v20[0] = MEMORY[0x277D85DD0];
@@ -777,7 +777,7 @@ void __64__MediaServiceConfiguration_addMediaService_toHomes_completion___block_
     v20[3] = &unk_278AA3230;
     v20[4] = self;
     v21 = v10;
-    [v11 getPublicInfoForBundleID:v6 completion:v20];
+    [v11 getPublicInfoForBundleID:dCopy completion:v20];
 
     v12 = v23;
   }
@@ -809,38 +809,38 @@ void __65__MediaServiceConfiguration_getPublicInfoForBundleID_completion___block
   }
 }
 
-- (void)getServiceConfigurationInfo:(id)a3 completion:(id)a4
+- (void)getServiceConfigurationInfo:(id)info completion:(id)completion
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (completion)
   {
     v5 = MEMORY[0x277CCA9B8];
     v11 = *MEMORY[0x277CCA450];
     v12[0] = @"Please use updated API, getServiceConfigurationInfo:serviceID:completion";
     v6 = MEMORY[0x277CBEAC0];
-    v7 = a4;
+    completionCopy = completion;
     v8 = [v6 dictionaryWithObjects:v12 forKeys:&v11 count:1];
     v9 = [v5 errorWithDomain:@"com.apple.mediasetup.errorDomain" code:1 userInfo:v8];
-    (*(a4 + 2))(v7, 0, v9);
+    (*(completion + 2))(completionCopy, 0, v9);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getServiceConfigurationInfo:(id)a3 serviceID:(id)a4 completion:(id)a5
+- (void)getServiceConfigurationInfo:(id)info serviceID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  infoCopy = info;
+  dCopy = d;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __78__MediaServiceConfiguration_getServiceConfigurationInfo_serviceID_completion___block_invoke;
     v25[3] = &unk_278AA3030;
-    v13 = v10;
+    v13 = completionCopy;
     v26 = v13;
     v14 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v25];
     v23[0] = MEMORY[0x277D85DD0];
@@ -849,7 +849,7 @@ void __65__MediaServiceConfiguration_getPublicInfoForBundleID_completion___block
     v23[3] = &unk_278AA3258;
     v23[4] = self;
     v24 = v13;
-    [v14 getServiceConfigurationInfo:v8 serviceID:v9 completion:v23];
+    [v14 getServiceConfigurationInfo:infoCopy serviceID:dCopy completion:v23];
 
     v15 = v26;
   }
@@ -882,18 +882,18 @@ void __78__MediaServiceConfiguration_getServiceConfigurationInfo_serviceID_compl
   [v7 _performBlock:v11];
 }
 
-- (void)setVersion:(unint64_t)a3 completion:(id)a4
+- (void)setVersion:(unint64_t)version completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __51__MediaServiceConfiguration_setVersion_completion___block_invoke;
     v21[3] = &unk_278AA3030;
-    v9 = v6;
+    v9 = completionCopy;
     v22 = v9;
     v10 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v21];
     v19[0] = MEMORY[0x277D85DD0];
@@ -901,7 +901,7 @@ void __78__MediaServiceConfiguration_getServiceConfigurationInfo_serviceID_compl
     v19[2] = __51__MediaServiceConfiguration_setVersion_completion___block_invoke_2;
     v19[3] = &unk_278AA3030;
     v20 = v9;
-    [v10 setVersion:a3 completion:v19];
+    [v10 setVersion:version completion:v19];
 
     v11 = v22;
   }
@@ -938,18 +938,18 @@ uint64_t __89__MediaServiceConfiguration_overrideAppleMusicSubscriptionStatus_ho
   return result;
 }
 
-- (void)getDefaultMediaServiceForAllUsers:(id)a3
+- (void)getDefaultMediaServiceForAllUsers:(id)users
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  usersCopy = users;
+  v5 = usersCopy;
+  if (usersCopy)
   {
     connection = self->_connection;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __63__MediaServiceConfiguration_getDefaultMediaServiceForAllUsers___block_invoke;
     v19[3] = &unk_278AA3030;
-    v7 = v4;
+    v7 = usersCopy;
     v20 = v7;
     v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v19];
     v17[0] = MEMORY[0x277D85DD0];
@@ -992,20 +992,20 @@ void __63__MediaServiceConfiguration_getDefaultMediaServiceForAllUsers___block_i
   }
 }
 
-- (void)getResolvedServiceInfo:(id)a3 sharedUserID:(id)a4 completion:(id)a5
+- (void)getResolvedServiceInfo:(id)info sharedUserID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  infoCopy = info;
+  dCopy = d;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __76__MediaServiceConfiguration_getResolvedServiceInfo_sharedUserID_completion___block_invoke;
     v25[3] = &unk_278AA3030;
-    v13 = v10;
+    v13 = completionCopy;
     v26 = v13;
     v14 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v25];
     v23[0] = MEMORY[0x277D85DD0];
@@ -1014,7 +1014,7 @@ void __63__MediaServiceConfiguration_getDefaultMediaServiceForAllUsers___block_i
     v23[3] = &unk_278AA32A8;
     v23[4] = self;
     v24 = v13;
-    [v14 getResolvedServiceInfo:v8 sharedUserID:v9 completion:v23];
+    [v14 getResolvedServiceInfo:infoCopy sharedUserID:dCopy completion:v23];
 
     v15 = v26;
   }
@@ -1047,19 +1047,19 @@ void __76__MediaServiceConfiguration_getResolvedServiceInfo_sharedUserID_complet
   [v7 _performBlock:v11];
 }
 
-- (void)getResolvedServiceInfo:(id)a3 completion:(id)a4
+- (void)getResolvedServiceInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  infoCopy = info;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __63__MediaServiceConfiguration_getResolvedServiceInfo_completion___block_invoke;
     v22[3] = &unk_278AA3030;
-    v10 = v7;
+    v10 = completionCopy;
     v23 = v10;
     v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v22];
     v20[0] = MEMORY[0x277D85DD0];
@@ -1068,7 +1068,7 @@ void __76__MediaServiceConfiguration_getResolvedServiceInfo_sharedUserID_complet
     v20[3] = &unk_278AA32A8;
     v20[4] = self;
     v21 = v10;
-    [v11 getResolvedServiceInfo:v6 completion:v20];
+    [v11 getResolvedServiceInfo:infoCopy completion:v20];
 
     v12 = v23;
   }
@@ -1101,32 +1101,32 @@ void __63__MediaServiceConfiguration_getResolvedServiceInfo_completion___block_i
   [v7 _performBlock:v11];
 }
 
-- (void)switchUserAccountInfo:(id)a3 home:(id)a4 completion:(id)a5
+- (void)switchUserAccountInfo:(id)info home:(id)home completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  infoCopy = info;
+  homeCopy = home;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __67__MediaServiceConfiguration_switchUserAccountInfo_home_completion___block_invoke;
     v28[3] = &unk_278AA3030;
-    v13 = v10;
+    v13 = completionCopy;
     v29 = v13;
     v14 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v28];
-    v15 = [v9 uniqueIdentifier];
-    v16 = [v9 currentUser];
-    v17 = [v16 uniqueIdentifier];
+    uniqueIdentifier = [homeCopy uniqueIdentifier];
+    currentUser = [homeCopy currentUser];
+    uniqueIdentifier2 = [currentUser uniqueIdentifier];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __67__MediaServiceConfiguration_switchUserAccountInfo_home_completion___block_invoke_2;
     v26[3] = &unk_278AA32D0;
     v26[4] = self;
     v27 = v13;
-    [v14 switchUserAccountInfo:v8 homeID:v15 homeUserID:v17 completion:v26];
+    [v14 switchUserAccountInfo:infoCopy homeID:uniqueIdentifier homeUserID:uniqueIdentifier2 completion:v26];
 
     v18 = v29;
   }
@@ -1156,22 +1156,22 @@ void __67__MediaServiceConfiguration_switchUserAccountInfo_home_completion___blo
   [v4 _performBlock:v7];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = _MSLogingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = delegateCopy;
     _os_log_impl(&dword_23986C000, v5, OS_LOG_TYPE_INFO, "Setting MediaServiceUpdatedDelegate %@", &v8, 0xCu);
   }
 
   v6 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_147];
   [v6 openConnection];
 
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -1185,14 +1185,14 @@ void __41__MediaServiceConfiguration_setDelegate___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)serviceSettingDidUpdate:(id)a3 homeUserID:(id)a4
+- (void)serviceSettingDidUpdate:(id)update homeUserID:(id)d
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(MediaServiceConfiguration *)self delegate];
-  if ([v7 conformsToProtocol:&unk_284C690E0])
+  updateCopy = update;
+  dCopy = d;
+  delegate = [(MediaServiceConfiguration *)self delegate];
+  if ([delegate conformsToProtocol:&unk_284C690E0])
   {
-    v8 = [(MediaServiceConfiguration *)self delegate];
+    delegate2 = [(MediaServiceConfiguration *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if ((v9 & 1) == 0)
@@ -1200,27 +1200,27 @@ void __41__MediaServiceConfiguration_setDelegate___block_invoke(uint64_t a1, voi
       goto LABEL_5;
     }
 
-    v7 = [(MediaServiceConfiguration *)self delegate];
-    [v7 serviceSettingDidUpdate:v10 homeUserID:v6];
+    delegate = [(MediaServiceConfiguration *)self delegate];
+    [delegate serviceSettingDidUpdate:updateCopy homeUserID:dCopy];
   }
 
 LABEL_5:
 }
 
-- (void)userDidRemoveService:(id)a3 homeUserID:(id)a4
+- (void)userDidRemoveService:(id)service homeUserID:(id)d
 {
-  v14 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  dCopy = d;
   v7 = [MSRemovalEvent alloc];
-  v8 = [v14 serviceID];
-  v9 = [v8 UUIDString];
-  v10 = [(MSRemovalEvent *)v7 initWithServiceId:v9];
+  serviceID = [serviceCopy serviceID];
+  uUIDString = [serviceID UUIDString];
+  v10 = [(MSRemovalEvent *)v7 initWithServiceId:uUIDString];
 
   [MSAnalytics sendRemovalEvent:v10];
-  v11 = [(MediaServiceConfiguration *)self delegate];
-  if ([v11 conformsToProtocol:&unk_284C690E0])
+  delegate = [(MediaServiceConfiguration *)self delegate];
+  if ([delegate conformsToProtocol:&unk_284C690E0])
   {
-    v12 = [(MediaServiceConfiguration *)self delegate];
+    delegate2 = [(MediaServiceConfiguration *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if ((v13 & 1) == 0)
@@ -1228,21 +1228,21 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v11 = [(MediaServiceConfiguration *)self delegate];
-    [v11 userDidRemoveService:v14 homeUserID:v6];
+    delegate = [(MediaServiceConfiguration *)self delegate];
+    [delegate userDidRemoveService:serviceCopy homeUserID:dCopy];
   }
 
 LABEL_5:
 }
 
-- (void)userDidUpdateDefaultService:(id)a3 homeUserID:(id)a4
+- (void)userDidUpdateDefaultService:(id)service homeUserID:(id)d
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(MediaServiceConfiguration *)self delegate];
-  if ([v7 conformsToProtocol:&unk_284C690E0])
+  serviceCopy = service;
+  dCopy = d;
+  delegate = [(MediaServiceConfiguration *)self delegate];
+  if ([delegate conformsToProtocol:&unk_284C690E0])
   {
-    v8 = [(MediaServiceConfiguration *)self delegate];
+    delegate2 = [(MediaServiceConfiguration *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if ((v9 & 1) == 0)
@@ -1250,8 +1250,8 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v7 = [(MediaServiceConfiguration *)self delegate];
-    [v7 userDidUpdateDefaultService:v10 homeUserID:v6];
+    delegate = [(MediaServiceConfiguration *)self delegate];
+    [delegate userDidUpdateDefaultService:serviceCopy homeUserID:dCopy];
   }
 
 LABEL_5:
@@ -1264,33 +1264,33 @@ LABEL_5:
   return WeakRetained;
 }
 
-- (void)updateProperty:(id)a3 forHome:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (void)updateProperty:(id)property forHome:(id)home withOptions:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  propertyCopy = property;
+  homeCopy = home;
+  optionsCopy = options;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __89__MediaServiceConfiguration_MediaService__updateProperty_forHome_withOptions_completion___block_invoke;
     v31[3] = &unk_278AA3030;
-    v16 = v13;
+    v16 = completionCopy;
     v32 = v16;
     v17 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v31];
-    v18 = [v11 uniqueIdentifier];
-    v19 = [v11 currentUser];
-    v20 = [v19 uniqueIdentifier];
+    uniqueIdentifier = [homeCopy uniqueIdentifier];
+    currentUser = [homeCopy currentUser];
+    uniqueIdentifier2 = [currentUser uniqueIdentifier];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __89__MediaServiceConfiguration_MediaService__updateProperty_forHome_withOptions_completion___block_invoke_2;
     v29[3] = &unk_278AA31C0;
     v29[4] = self;
     v30 = v16;
-    [v17 updateProperty:v10 homeID:v18 homeUserID:v20 withOptions:v12 completion:v29];
+    [v17 updateProperty:propertyCopy homeID:uniqueIdentifier homeUserID:uniqueIdentifier2 withOptions:optionsCopy completion:v29];
 
     v21 = v32;
   }
@@ -1323,19 +1323,19 @@ void __89__MediaServiceConfiguration_MediaService__updateProperty_forHome_withOp
   }
 }
 
-- (void)activeServiceApplicationInformationForSharedUserID:(id)a3 completionHandler:(id)a4
+- (void)activeServiceApplicationInformationForSharedUserID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
     connection = self->_connection;
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __112__MediaServiceConfiguration_AppSelection__activeServiceApplicationInformationForSharedUserID_completionHandler___block_invoke;
     v22[3] = &unk_278AA3030;
-    v10 = v7;
+    v10 = handlerCopy;
     v23 = v10;
     v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v22];
     v20[0] = MEMORY[0x277D85DD0];
@@ -1344,7 +1344,7 @@ void __89__MediaServiceConfiguration_MediaService__updateProperty_forHome_withOp
     v20[3] = &unk_278AA3318;
     v20[4] = self;
     v21 = v10;
-    [v11 activeServiceApplicationInformationForSharedUserID:v6 completionHandler:v20];
+    [v11 activeServiceApplicationInformationForSharedUserID:dCopy completionHandler:v20];
 
     v12 = v23;
   }
@@ -1377,19 +1377,19 @@ void __112__MediaServiceConfiguration_AppSelection__activeServiceApplicationInfo
   [v7 _performBlock:v11];
 }
 
-- (void)getMediaServiceChoicesForSharedUser:(id)a3 completion:(id)a4
+- (void)getMediaServiceChoicesForSharedUser:(id)user completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  userCopy = user;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __90__MediaServiceConfiguration_AppSelection__getMediaServiceChoicesForSharedUser_completion___block_invoke;
     v22[3] = &unk_278AA3030;
-    v10 = v7;
+    v10 = completionCopy;
     v23 = v10;
     v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v22];
     v20[0] = MEMORY[0x277D85DD0];
@@ -1398,7 +1398,7 @@ void __112__MediaServiceConfiguration_AppSelection__activeServiceApplicationInfo
     v20[3] = &unk_278AA3340;
     v20[4] = self;
     v21 = v10;
-    [v11 getMediaServiceChoicesForSharedUser:v6 completion:v20];
+    [v11 getMediaServiceChoicesForSharedUser:userCopy completion:v20];
 
     v12 = v23;
   }
@@ -1431,18 +1431,18 @@ void __90__MediaServiceConfiguration_AppSelection__getMediaServiceChoicesForShar
   [v7 _performBlock:v11];
 }
 
-- (void)getMediaServiceChoicesForAllUsers:(id)a3
+- (void)getMediaServiceChoicesForAllUsers:(id)users
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  usersCopy = users;
+  v5 = usersCopy;
+  if (usersCopy)
   {
     connection = self->_connection;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __77__MediaServiceConfiguration_AppSelection__getMediaServiceChoicesForAllUsers___block_invoke;
     v19[3] = &unk_278AA3030;
-    v7 = v4;
+    v7 = usersCopy;
     v20 = v7;
     v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v19];
     v17[0] = MEMORY[0x277D85DD0];
@@ -1484,18 +1484,18 @@ void __77__MediaServiceConfiguration_AppSelection__getMediaServiceChoicesForAllU
   [v7 _performBlock:v11];
 }
 
-- (void)getSupportedThirdPartyMediaServices:(id)a3
+- (void)getSupportedThirdPartyMediaServices:(id)services
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  servicesCopy = services;
+  v5 = servicesCopy;
+  if (servicesCopy)
   {
     connection = self->_connection;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __79__MediaServiceConfiguration_AppSelection__getSupportedThirdPartyMediaServices___block_invoke;
     v19[3] = &unk_278AA3030;
-    v7 = v4;
+    v7 = servicesCopy;
     v20 = v7;
     v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v19];
     v17[0] = MEMORY[0x277D85DD0];

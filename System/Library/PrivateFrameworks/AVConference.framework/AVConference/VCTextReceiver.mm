@@ -1,27 +1,27 @@
 @interface VCTextReceiver
-- (BOOL)enqueuePacket:(tagAudioPacket *)a3;
-- (BOOL)isSupportedPayload:(int)a3;
-- (BOOL)parsePacket:(tagAudioPacket *)a3;
+- (BOOL)enqueuePacket:(tagAudioPacket *)packet;
+- (BOOL)isSupportedPayload:(int)payload;
+- (BOOL)parsePacket:(tagAudioPacket *)packet;
 - (BOOL)start;
 - (BOOL)stop;
-- (VCTextReceiver)initWithConfiguration:(_VCTextReceiverConfiguration *)a3;
-- (int)retrieveRTPPacket:(tagAudioPacket *)a3;
-- (tagAudioFrame)allocFrameWithPacket:(tagAudioPacket *)a3 data:(char *)a4 dataLength:(int)a5 timestamp:(unsigned int)a6;
+- (VCTextReceiver)initWithConfiguration:(_VCTextReceiverConfiguration *)configuration;
+- (int)retrieveRTPPacket:(tagAudioPacket *)packet;
+- (tagAudioFrame)allocFrameWithPacket:(tagAudioPacket *)packet data:(char *)data dataLength:(int)length timestamp:(unsigned int)timestamp;
 - (void)dealloc;
 - (void)didDetectMissingFrame;
-- (void)didReceiveFrame:(tagAudioFrame *)a3;
-- (void)initializeTextPacket:(tagAudioPacket *)a3 withMediaPacket:(_RTPMediaPacket *)a4;
+- (void)didReceiveFrame:(tagAudioFrame *)frame;
+- (void)initializeTextPacket:(tagAudioPacket *)packet withMediaPacket:(_RTPMediaPacket *)mediaPacket;
 - (void)processRTCPPacket;
 - (void)processRTPPacket;
-- (void)receiverThreadCallback:(tagVCRealTimeThreadParameters *)a3;
-- (void)splitPacket:(tagAudioPacket *)a3 packetArray:(tagAudioPacketArray *)a4;
+- (void)receiverThreadCallback:(tagVCRealTimeThreadParameters *)callback;
+- (void)splitPacket:(tagAudioPacket *)packet packetArray:(tagAudioPacketArray *)array;
 - (void)start;
-- (void)validateAndEnqueuePackets:(tagAudioPacketArray *)a3;
+- (void)validateAndEnqueuePackets:(tagAudioPacketArray *)packets;
 @end
 
 @implementation VCTextReceiver
 
-- (VCTextReceiver)initWithConfiguration:(_VCTextReceiverConfiguration *)a3
+- (VCTextReceiver)initWithConfiguration:(_VCTextReceiverConfiguration *)configuration
 {
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -30,8 +30,8 @@
   v5 = v4;
   if (v4)
   {
-    *(v4 + 1) = a3->var0;
-    var1 = a3->var1;
+    *(v4 + 1) = configuration->var0;
+    var1 = configuration->var1;
     *(v4 + 4) = var1;
     *(v4 + 56) = vdupq_n_s64(0x7FF8000000000000uLL);
     v11[1] = -1431655766;
@@ -45,7 +45,7 @@
       v5->_receiverThread = v8;
       if (v8)
       {
-        if (!a3->var2)
+        if (!configuration->var2)
         {
           return v5;
         }
@@ -175,7 +175,7 @@
       WORD2(v13) = 2112;
       *(&v13 + 6) = v3;
       HIWORD(v13) = 2048;
-      v14 = self;
+      selfCopy = self;
       v6 = "VCTextReceiver [%s] %s:%d %@(%p) ";
       v7 = v10;
       v8 = 48;
@@ -260,7 +260,7 @@ LABEL_11:
         v21 = 2112;
         v22 = v3;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v6 = "VCTextReceiver [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -288,24 +288,24 @@ LABEL_11:
   return v13;
 }
 
-- (void)initializeTextPacket:(tagAudioPacket *)a3 withMediaPacket:(_RTPMediaPacket *)a4
+- (void)initializeTextPacket:(tagAudioPacket *)packet withMediaPacket:(_RTPMediaPacket *)mediaPacket
 {
-  var0 = a4->var0;
-  a3->var7 = a4->var1;
-  a3->var4 = a4->var3;
-  a3->var5 = a4->var4;
-  a3->var2 = a4->var17;
-  a3->var14 = a4->var20.var1;
-  var9 = a4->var9;
-  a3->var0 = var0;
-  a3->var1 = var9;
-  var1 = a4->var19.var1;
-  var2 = a4->var19.var2;
-  a3->var12 = var1;
-  memcpy(a3->var11, var2, var1);
+  var0 = mediaPacket->var0;
+  packet->var7 = mediaPacket->var1;
+  packet->var4 = mediaPacket->var3;
+  packet->var5 = mediaPacket->var4;
+  packet->var2 = mediaPacket->var17;
+  packet->var14 = mediaPacket->var20.var1;
+  var9 = mediaPacket->var9;
+  packet->var0 = var0;
+  packet->var1 = var9;
+  var1 = mediaPacket->var19.var1;
+  var2 = mediaPacket->var19.var2;
+  packet->var12 = var1;
+  memcpy(packet->var11, var2, var1);
 }
 
-- (int)retrieveRTPPacket:(tagAudioPacket *)a3
+- (int)retrieveRTPPacket:(tagAudioPacket *)packet
 {
   v28 = *MEMORY[0x1E69E9840];
   v19 = 0;
@@ -381,7 +381,7 @@ LABEL_11:
   else
   {
 LABEL_8:
-    [(VCTextReceiver *)self initializeTextPacket:a3 withMediaPacket:v19 + 2, v18];
+    [(VCTextReceiver *)self initializeTextPacket:packet withMediaPacket:v19 + 2, v18];
     if (VRTraceGetErrorLogLevelForModule() >= 8)
     {
       v10 = VRTraceErrorLogLevelToCSTR();
@@ -416,7 +416,7 @@ LABEL_8:
   return v5;
 }
 
-- (void)receiverThreadCallback:(tagVCRealTimeThreadParameters *)a3
+- (void)receiverThreadCallback:(tagVCRealTimeThreadParameters *)callback
 {
   v38 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -489,7 +489,7 @@ LABEL_13:
         v34 = 2112;
         v35 = v5;
         v36 = 2048;
-        v37 = self;
+        selfCopy4 = self;
         v9 = "VCTextReceiver [%s] %s:%d %@(%p) ";
         v10 = v13;
         v11 = 48;
@@ -507,7 +507,7 @@ LABEL_13:
         v34 = 2112;
         v35 = v5;
         v36 = 2048;
-        v37 = self;
+        selfCopy4 = self;
         _os_log_debug_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEBUG, "VCTextReceiver [%s] %s:%d %@(%p) ", buf, 0x30u);
       }
     }
@@ -528,7 +528,7 @@ LABEL_25:
     return;
   }
 
-  if ((RTPGetReceiveStatus(&self->_rtpHandle, &v27, 1, a3->var0) & 0x80000000) != 0)
+  if ((RTPGetReceiveStatus(&self->_rtpHandle, &v27, 1, callback->var0) & 0x80000000) != 0)
   {
     goto LABEL_25;
   }
@@ -607,7 +607,7 @@ LABEL_35:
         v34 = 2112;
         v35 = v17;
         v36 = 2048;
-        v37 = self;
+        selfCopy4 = self;
         _os_log_debug_impl(&dword_1DB56E000, v25, OS_LOG_TYPE_DEBUG, "VCTextReceiver [%s] %s:%d %@(%p) Receiving RTP packet", buf, 0x30u);
       }
 
@@ -625,7 +625,7 @@ LABEL_35:
       v34 = 2112;
       v35 = v17;
       v36 = 2048;
-      v37 = self;
+      selfCopy4 = self;
       v21 = "VCTextReceiver [%s] %s:%d %@(%p) Receiving RTP packet";
       v22 = v25;
       v23 = 48;
@@ -646,19 +646,19 @@ LABEL_41:
 - (void)processRTPPacket
 {
   v5[101] = *MEMORY[0x1E69E9840];
-  v3 = [(VCTextJitterBuffer *)self->_jitterBuffer allocTextPacket];
-  if ([(VCTextReceiver *)self retrieveRTPPacket:v3]< 0)
+  allocTextPacket = [(VCTextJitterBuffer *)self->_jitterBuffer allocTextPacket];
+  if ([(VCTextReceiver *)self retrieveRTPPacket:allocTextPacket]< 0)
   {
     jitterBuffer = self->_jitterBuffer;
 
-    [(VCTextJitterBuffer *)jitterBuffer releaseTextPacket:v3];
+    [(VCTextJitterBuffer *)jitterBuffer releaseTextPacket:allocTextPacket];
   }
 
   else
   {
     self->_lastReceivedRTPPacketTime = micro();
     bzero(v5, 0x328uLL);
-    [(VCTextReceiver *)self splitPacket:v3 packetArray:v5];
+    [(VCTextReceiver *)self splitPacket:allocTextPacket packetArray:v5];
     [(VCTextReceiver *)self validateAndEnqueuePackets:v5];
   }
 }
@@ -673,7 +673,7 @@ LABEL_41:
   OUTLINED_FUNCTION_6_2(&dword_1DB56E000, v1, v2, "VCTextReceiver [%s] %s:%d Failed to retrieve RTCP packet. Error:%x", v3, *v4, "[VCTextReceiver processRTCPPacket]" >> 16, v5);
 }
 
-- (BOOL)isSupportedPayload:(int)a3
+- (BOOL)isSupportedPayload:(int)payload
 {
   v16 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -695,7 +695,7 @@ LABEL_41:
           objc_enumerationMutation(supportedPayloads);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) unsignedIntValue] == a3)
+        if ([*(*(&v12 + 1) + 8 * i) unsignedIntValue] == payload)
         {
           LOBYTE(v9) = 1;
           return v9;
@@ -729,10 +729,10 @@ LABEL_12:
   return v9;
 }
 
-- (void)validateAndEnqueuePackets:(tagAudioPacketArray *)a3
+- (void)validateAndEnqueuePackets:(tagAudioPacketArray *)packets
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = AudioPacketArray_Next(a3);
+  v5 = AudioPacketArray_Next(packets);
   if (v5)
   {
     v7 = v5;
@@ -766,7 +766,7 @@ LABEL_12:
       }
 
 LABEL_11:
-      v7 = AudioPacketArray_Next(a3);
+      v7 = AudioPacketArray_Next(packets);
       if (!v7)
       {
         return;
@@ -802,29 +802,29 @@ LABEL_10:
   }
 }
 
-- (void)splitPacket:(tagAudioPacket *)a3 packetArray:(tagAudioPacketArray *)a4
+- (void)splitPacket:(tagAudioPacket *)packet packetArray:(tagAudioPacketArray *)array
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3->var7 == 20)
+  if (packet->var7 == 20)
   {
     memset(v11, 0, sizeof(v11));
-    v7 = VCAudioRedBuilder_SplitRedAudioPacket(self->_rtpHandle, a3, v11, 4, self->_sampleRate, 0);
+    v7 = VCAudioRedBuilder_SplitRedAudioPacket(self->_rtpHandle, packet, v11, 4, self->_sampleRate, 0);
     if (v7 >= 1)
     {
       v8 = v7;
       v9 = v11;
       do
       {
-        v10 = [(VCTextJitterBuffer *)self->_jitterBuffer allocTextPacket];
-        AudioPacket_initNewPacket(a3, v10);
-        if (VCAudioRedBuilder_UpdateAudioPacketWithRedPayload(v10, v9))
+        allocTextPacket = [(VCTextJitterBuffer *)self->_jitterBuffer allocTextPacket];
+        AudioPacket_initNewPacket(packet, allocTextPacket);
+        if (VCAudioRedBuilder_UpdateAudioPacketWithRedPayload(allocTextPacket, v9))
         {
-          AudioPacketArray_Append(a4, v10);
+          AudioPacketArray_Append(array, allocTextPacket);
         }
 
         else
         {
-          [(VCTextJitterBuffer *)self->_jitterBuffer releaseTextPacket:v10];
+          [(VCTextJitterBuffer *)self->_jitterBuffer releaseTextPacket:allocTextPacket];
         }
 
         v9 += 8;
@@ -834,52 +834,52 @@ LABEL_10:
       while (v8);
     }
 
-    [(VCTextJitterBuffer *)self->_jitterBuffer releaseTextPacket:a3];
+    [(VCTextJitterBuffer *)self->_jitterBuffer releaseTextPacket:packet];
   }
 
   else
   {
 
-    AudioPacketArray_Append(a4, a3);
+    AudioPacketArray_Append(array, packet);
   }
 }
 
-- (tagAudioFrame)allocFrameWithPacket:(tagAudioPacket *)a3 data:(char *)a4 dataLength:(int)a5 timestamp:(unsigned int)a6
+- (tagAudioFrame)allocFrameWithPacket:(tagAudioPacket *)packet data:(char *)data dataLength:(int)length timestamp:(unsigned int)timestamp
 {
-  v10 = [(VCTextJitterBuffer *)self->_jitterBuffer allocTextFrame];
-  v11 = v10;
-  if (v10)
+  allocTextFrame = [(VCTextJitterBuffer *)self->_jitterBuffer allocTextFrame];
+  v11 = allocTextFrame;
+  if (allocTextFrame)
   {
-    var0 = a3->var0;
-    v10->var0 = 0;
-    v10->var1 = var0;
-    v10->var11 = 0;
-    v10->var3 = a3->var4;
-    v10->var2 = a3->var3;
-    v10->var4 = a6;
-    v10->var6 = a5;
-    v10->var12 = a3->var17;
-    v10->var14 = a3->var7;
-    memcpy(v10->var5, a4, a5);
+    var0 = packet->var0;
+    allocTextFrame->var0 = 0;
+    allocTextFrame->var1 = var0;
+    allocTextFrame->var11 = 0;
+    allocTextFrame->var3 = packet->var4;
+    allocTextFrame->var2 = packet->var3;
+    allocTextFrame->var4 = timestamp;
+    allocTextFrame->var6 = length;
+    allocTextFrame->var12 = packet->var17;
+    allocTextFrame->var14 = packet->var7;
+    memcpy(allocTextFrame->var5, data, length);
   }
 
   return v11;
 }
 
-- (BOOL)parsePacket:(tagAudioPacket *)a3
+- (BOOL)parsePacket:(tagAudioPacket *)packet
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a3->var7 == 109)
+  if (packet->var7 == 109)
   {
-    var12 = a3->var12;
-    if (var12 <= 0x465 && a3->var14 < 0x11u)
+    var12 = packet->var12;
+    if (var12 <= 0x465 && packet->var14 < 0x11u)
     {
-      v7 = [(VCTextReceiver *)self allocFrameWithPacket:a3 data:a3->var11 dataLength:a3->var12 timestamp:a3->var5];
+      v7 = [(VCTextReceiver *)self allocFrameWithPacket:packet data:packet->var11 dataLength:packet->var12 timestamp:packet->var5];
       if (v7)
       {
-        var16 = a3->var16;
-        a3->var16 = var16 + 1;
-        a3->var15[var16] = v7;
+        var16 = packet->var16;
+        packet->var16 = var16 + 1;
+        packet->var15[var16] = v7;
         LOBYTE(v7) = 1;
       }
 
@@ -895,7 +895,7 @@ LABEL_10:
         LODWORD(v7) = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR);
         if (v7)
         {
-          var14 = a3->var14;
+          var14 = packet->var14;
           v14 = 136316162;
           v15 = v11;
           v16 = 2080;
@@ -926,7 +926,7 @@ LABEL_16:
       LODWORD(v7) = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR);
       if (v7)
       {
-        v8 = a3->var14;
+        v8 = packet->var14;
         v14 = 136316162;
         v15 = v5;
         v16 = 2080;
@@ -964,12 +964,12 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)enqueuePacket:(tagAudioPacket *)a3
+- (BOOL)enqueuePacket:(tagAudioPacket *)packet
 {
   v5 = [(VCTextReceiver *)self parsePacket:?];
   if (v5)
   {
-    [(VCTextJitterBuffer *)self->_jitterBuffer enqueuePacket:a3];
+    [(VCTextJitterBuffer *)self->_jitterBuffer enqueuePacket:packet];
   }
 
   return v5;
@@ -977,19 +977,19 @@ LABEL_7:
 
 - (void)didDetectMissingFrame
 {
-  v2 = [(VCTextReceiver *)self delegate];
+  delegate = [(VCTextReceiver *)self delegate];
 
-  [(VCTextReceiverDelegate *)v2 didReceiveText:@"\uFFFD"];
+  [(VCTextReceiverDelegate *)delegate didReceiveText:@"\uFFFD"];
 }
 
-- (void)didReceiveFrame:(tagAudioFrame *)a3
+- (void)didReceiveFrame:(tagAudioFrame *)frame
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a3->var14 == 109)
+  if (frame->var14 == 109)
   {
-    if (a3->var6 > 0)
+    if (frame->var6 > 0)
     {
-      v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:a3->var5 length:a3->var6 encoding:4];
+      v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:frame->var5 length:frame->var6 encoding:4];
       if (objc_opt_class() == self)
       {
         if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -1040,7 +1040,7 @@ LABEL_19:
             WORD2(v29) = 2112;
             *(&v29 + 6) = v5;
             HIWORD(v29) = 2048;
-            v30 = self;
+            selfCopy3 = self;
             v10 = "VCTextReceiver [%s] %s:%d %@(%p) ";
             v11 = v14;
             v12 = 48;
@@ -1078,7 +1078,7 @@ LABEL_19:
             WORD2(v29) = 2112;
             *(&v29 + 6) = v4;
             HIWORD(v29) = 2048;
-            v30 = v19;
+            selfCopy3 = v19;
             v20 = "VCTextReceiver [%s] %s:%d Received text:%@ length:%lu";
             v21 = v17;
             v22 = 48;
@@ -1122,7 +1122,7 @@ LABEL_32:
             WORD2(v29) = 2112;
             *(&v29 + 6) = v15;
             HIWORD(v29) = 2048;
-            v30 = self;
+            selfCopy3 = self;
             *v31 = 2112;
             *&v31[2] = v4;
             *&v31[10] = 2048;
@@ -1145,7 +1145,7 @@ LABEL_32:
           WORD2(v29) = 2112;
           *(&v29 + 6) = v15;
           HIWORD(v29) = 2048;
-          v30 = self;
+          selfCopy3 = self;
           *v31 = 2112;
           *&v31[2] = v4;
           *&v31[10] = 2048;
@@ -1253,7 +1253,7 @@ LABEL_37:
     }
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 - (void)retrieveRTPPacket:.cold.1()

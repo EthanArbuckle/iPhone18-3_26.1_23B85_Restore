@@ -1,15 +1,15 @@
 @interface ASTMouseKeysController
-- (id)initialDelay:(id)a3;
-- (id)maxSpeed:(id)a3;
-- (id)mouseKeysEnabled:(id)a3;
-- (id)optionToggleEnabled:(id)a3;
+- (id)initialDelay:(id)delay;
+- (id)maxSpeed:(id)speed;
+- (id)mouseKeysEnabled:(id)enabled;
+- (id)optionToggleEnabled:(id)enabled;
 - (id)specifiers;
-- (id)useMainKeyboardKeysEnabled:(id)a3;
-- (void)setInitialDelay:(id)a3 specifier:(id)a4;
-- (void)setMaxSpeed:(id)a3 specifier:(id)a4;
-- (void)setMouseKeysEnabled:(id)a3 specifier:(id)a4;
-- (void)setOptionToggleEnabled:(id)a3 specifier:(id)a4;
-- (void)setUseMainKeyboardKeysEnabled:(id)a3 specifier:(id)a4;
+- (id)useMainKeyboardKeysEnabled:(id)enabled;
+- (void)setInitialDelay:(id)delay specifier:(id)specifier;
+- (void)setMaxSpeed:(id)speed specifier:(id)specifier;
+- (void)setMouseKeysEnabled:(id)enabled specifier:(id)specifier;
+- (void)setOptionToggleEnabled:(id)enabled specifier:(id)specifier;
+- (void)setUseMainKeyboardKeysEnabled:(id)enabled specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -52,8 +52,8 @@ void __37__ASTMouseKeysController_viewDidLoad__block_invoke(uint64_t a1)
     [v5 setProperty:v7 forKey:PSFooterCellClassGroupKey];
 
     v8 = [NSBundle bundleForClass:objc_opt_class()];
-    v9 = [v8 bundlePath];
-    [v5 setProperty:v9 forKey:@"bundlePath"];
+    bundlePath = [v8 bundlePath];
+    [v5 setProperty:bundlePath forKey:@"bundlePath"];
 
     [v5 setProperty:@"HandSettings" forKey:@"table"];
     [v5 setProperty:&off_27CB60 forKey:@"content"];
@@ -146,7 +146,7 @@ void __37__ASTMouseKeysController_viewDidLoad__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)mouseKeysEnabled:(id)a3
+- (id)mouseKeysEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchMouseKeysEnabled]);
@@ -154,16 +154,16 @@ void __37__ASTMouseKeysController_viewDidLoad__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setMouseKeysEnabled:(id)a3 specifier:(id)a4
+- (void)setMouseKeysEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setAssistiveTouchMouseKeysEnabled:v5];
+  [v6 setAssistiveTouchMouseKeysEnabled:bOOLValue];
 }
 
-- (id)optionToggleEnabled:(id)a3
+- (id)optionToggleEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchMouseKeysOptionToggleEnabled]);
@@ -171,16 +171,16 @@ void __37__ASTMouseKeysController_viewDidLoad__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setOptionToggleEnabled:(id)a3 specifier:(id)a4
+- (void)setOptionToggleEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setAssistiveTouchMouseKeysOptionToggleEnabled:v5];
+  [v6 setAssistiveTouchMouseKeysOptionToggleEnabled:bOOLValue];
 }
 
-- (id)useMainKeyboardKeysEnabled:(id)a3
+- (id)useMainKeyboardKeysEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchMouseKeysUseMainKeyboardKeys]);
@@ -188,35 +188,35 @@ void __37__ASTMouseKeysController_viewDidLoad__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setUseMainKeyboardKeysEnabled:(id)a3 specifier:(id)a4
+- (void)setUseMainKeyboardKeysEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setAssistiveTouchMouseKeysUseMainKeyboardKeys:v5];
+  [v6 setAssistiveTouchMouseKeysUseMainKeyboardKeys:bOOLValue];
 }
 
-- (id)initialDelay:(id)a3
+- (id)initialDelay:(id)delay
 {
-  v3 = a3;
+  delayCopy = delay;
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchMouseKeysDelay];
-  v6 = [v3 propertyForKey:PSSliderSegmentCount];
+  assistiveTouchMouseKeysDelay = [v4 assistiveTouchMouseKeysDelay];
+  v6 = [delayCopy propertyForKey:PSSliderSegmentCount];
 
   [v6 floatValue];
-  *&v8 = v5 / v7;
+  *&v8 = assistiveTouchMouseKeysDelay / v7;
   v9 = [NSNumber numberWithFloat:v8];
 
   return v9;
 }
 
-- (void)setInitialDelay:(id)a3 specifier:(id)a4
+- (void)setInitialDelay:(id)delay specifier:(id)specifier
 {
-  v5 = a4;
-  [a3 floatValue];
+  specifierCopy = specifier;
+  [delay floatValue];
   v7 = v6;
-  v8 = [v5 propertyForKey:PSSliderSegmentCount];
+  v8 = [specifierCopy propertyForKey:PSSliderSegmentCount];
 
   [v8 floatValue];
   v10 = (v7 * v9);
@@ -225,26 +225,26 @@ void __37__ASTMouseKeysController_viewDidLoad__block_invoke(uint64_t a1)
   [v11 setAssistiveTouchMouseKeysDelay:v10];
 }
 
-- (id)maxSpeed:(id)a3
+- (id)maxSpeed:(id)speed
 {
-  v3 = a3;
+  speedCopy = speed;
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchMouseKeysMaxSpeed];
-  v6 = [v3 propertyForKey:PSSliderSegmentCount];
+  assistiveTouchMouseKeysMaxSpeed = [v4 assistiveTouchMouseKeysMaxSpeed];
+  v6 = [speedCopy propertyForKey:PSSliderSegmentCount];
 
   [v6 floatValue];
-  *&v8 = v5 / v7;
+  *&v8 = assistiveTouchMouseKeysMaxSpeed / v7;
   v9 = [NSNumber numberWithFloat:v8];
 
   return v9;
 }
 
-- (void)setMaxSpeed:(id)a3 specifier:(id)a4
+- (void)setMaxSpeed:(id)speed specifier:(id)specifier
 {
-  v5 = a4;
-  [a3 floatValue];
+  specifierCopy = specifier;
+  [speed floatValue];
   v7 = v6;
-  v8 = [v5 propertyForKey:PSSliderSegmentCount];
+  v8 = [specifierCopy propertyForKey:PSSliderSegmentCount];
 
   [v8 floatValue];
   v10 = (v7 * v9);

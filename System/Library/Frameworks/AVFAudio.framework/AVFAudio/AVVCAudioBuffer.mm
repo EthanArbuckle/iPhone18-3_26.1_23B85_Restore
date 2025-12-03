@@ -1,8 +1,8 @@
 @interface AVVCAudioBuffer
 - (void)dealloc;
 - (void)finalize;
-- (void)setBytesDataSize:(int)a3;
-- (void)setPacketDescriptions:(const AudioStreamPacketDescription *)a3 count:(int)a4;
+- (void)setBytesDataSize:(int)size;
+- (void)setPacketDescriptions:(const AudioStreamPacketDescription *)descriptions count:(int)count;
 @end
 
 @implementation AVVCAudioBuffer
@@ -22,31 +22,31 @@
   [(AVVCAudioBuffer *)&v4 dealloc];
 }
 
-- (void)setPacketDescriptions:(const AudioStreamPacketDescription *)a3 count:(int)a4
+- (void)setPacketDescriptions:(const AudioStreamPacketDescription *)descriptions count:(int)count
 {
-  if (a3)
+  if (descriptions)
   {
     v4 = *self->_impl;
-    v5 = *(v4 + 32);
-    if (v5 >= a4)
+    countCopy = *(v4 + 32);
+    if (countCopy >= count)
     {
-      v5 = a4;
+      countCopy = count;
     }
 
-    memcpy(*(v4 + 40), a3, 16 * v5);
+    memcpy(*(v4 + 40), descriptions, 16 * countCopy);
   }
 }
 
-- (void)setBytesDataSize:(int)a3
+- (void)setBytesDataSize:(int)size
 {
   v3 = *self->_impl;
-  v4 = *v3;
-  if (*v3 >= a3)
+  sizeCopy = *v3;
+  if (*v3 >= size)
   {
-    v4 = a3;
+    sizeCopy = size;
   }
 
-  v3[4] = v4;
+  v3[4] = sizeCopy;
 }
 
 - (void)finalize

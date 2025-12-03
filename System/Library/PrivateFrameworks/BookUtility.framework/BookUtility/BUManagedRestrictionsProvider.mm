@@ -8,10 +8,10 @@
 - (void)_uq_notifyObserversForBookStoreRestrictionsChange;
 - (void)_uq_notifyObserversForExplicitContentRestrictionsChange;
 - (void)_uq_updateRestrictionsIfNeeded;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation BUManagedRestrictionsProvider
@@ -114,31 +114,31 @@
   [(BUManagedRestrictionsProvider *)&v6 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_241DC6C64;
   v6[3] = &unk_278D1D008;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   os_unfair_lock_lock(&self->_observersLock);
   (sub_241DC6C64)(v6);
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_241DC6D1C;
   v6[3] = &unk_278D1D008;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   os_unfair_lock_lock(&self->_observersLock);
   (sub_241DC6D1C)(v6);
   os_unfair_lock_unlock(&self->_observersLock);
@@ -156,7 +156,7 @@
   v6[1] = 3221225472;
   v7 = sub_241DC6E6C;
   v8 = &unk_278D1CE00;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_observersLock);
@@ -348,7 +348,7 @@
   }
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];

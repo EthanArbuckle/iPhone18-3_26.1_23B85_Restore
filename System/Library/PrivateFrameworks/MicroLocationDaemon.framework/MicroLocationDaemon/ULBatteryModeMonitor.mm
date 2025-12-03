@@ -1,42 +1,42 @@
 @interface ULBatteryModeMonitor
 - (BOOL)_checkLowPowerMode;
-- (ULBatteryModeMonitor)initWithNotificationHelper:(id)a3;
-- (id)latestEventAfterAddingObserverForEventName:(id)a3;
+- (ULBatteryModeMonitor)initWithNotificationHelper:(id)helper;
+- (id)latestEventAfterAddingObserverForEventName:(id)name;
 - (void)_handleIOPSNotifyAdapterChangeNotification;
-- (void)_handleNSProcessInfoPowerStateDidChangeNotification:(id)a3;
+- (void)_handleNSProcessInfoPowerStateDidChangeNotification:(id)notification;
 - (void)_startMonitoringForLowPowerMode;
 - (void)_startMonitoringForUnlimitedPower;
 - (void)_stopMonitoringForLowPowerMode;
 - (void)_stopMonitoringForUnlimitedPower;
-- (void)startMonitoring:(id)a3;
-- (void)stopMonitoring:(id)a3;
+- (void)startMonitoring:(id)monitoring;
+- (void)stopMonitoring:(id)monitoring;
 @end
 
 @implementation ULBatteryModeMonitor
 
-- (ULBatteryModeMonitor)initWithNotificationHelper:(id)a3
+- (ULBatteryModeMonitor)initWithNotificationHelper:(id)helper
 {
-  v4 = a3;
+  helperCopy = helper;
   v8.receiver = self;
   v8.super_class = ULBatteryModeMonitor;
   v5 = [(ULEventMonitor *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ULBatteryModeMonitor *)v5 setNotificationHelper:v4];
+    [(ULBatteryModeMonitor *)v5 setNotificationHelper:helperCopy];
   }
 
   return v6;
 }
 
-- (void)startMonitoring:(id)a3
+- (void)startMonitoring:(id)monitoring
 {
-  v9 = a3;
-  v4 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v4);
+  monitoringCopy = monitoring;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = +[(ULEvent *)ULBatteryModeMonitorEventUnlimitedPower];
-  v6 = [v9 isEqual:v5];
+  v6 = [monitoringCopy isEqual:v5];
 
   if (v6)
   {
@@ -46,7 +46,7 @@
   else
   {
     v7 = +[(ULEvent *)ULBatteryModeMonitorEventLowPowerMode];
-    v8 = [v9 isEqual:v7];
+    v8 = [monitoringCopy isEqual:v7];
 
     if (v8)
     {
@@ -55,14 +55,14 @@
   }
 }
 
-- (void)stopMonitoring:(id)a3
+- (void)stopMonitoring:(id)monitoring
 {
-  v9 = a3;
-  v4 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v4);
+  monitoringCopy = monitoring;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = +[(ULEvent *)ULBatteryModeMonitorEventUnlimitedPower];
-  v6 = [v9 isEqual:v5];
+  v6 = [monitoringCopy isEqual:v5];
 
   if (v6)
   {
@@ -72,7 +72,7 @@
   else
   {
     v7 = +[(ULEvent *)ULBatteryModeMonitorEventLowPowerMode];
-    v8 = [v9 isEqual:v7];
+    v8 = [monitoringCopy isEqual:v7];
 
     if (v8)
     {
@@ -81,14 +81,14 @@
   }
 }
 
-- (id)latestEventAfterAddingObserverForEventName:(id)a3
+- (id)latestEventAfterAddingObserverForEventName:(id)name
 {
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  nameCopy = name;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[(ULEvent *)ULBatteryModeMonitorEventUnlimitedPower];
-  v7 = [v4 isEqual:v6];
+  v7 = [nameCopy isEqual:v6];
 
   if (v7)
   {
@@ -99,7 +99,7 @@
   else
   {
     v9 = +[(ULEvent *)ULBatteryModeMonitorEventLowPowerMode];
-    v10 = [v4 isEqual:v9];
+    v10 = [nameCopy isEqual:v9];
 
     if (v10)
     {
@@ -120,13 +120,13 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
-  v3 = [(ULBatteryModeMonitor *)self notificationHelper];
+  notificationHelper = [(ULBatteryModeMonitor *)self notificationHelper];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __57__ULBatteryModeMonitor__startMonitoringForUnlimitedPower__block_invoke;
   v12 = &unk_2798D4080;
   objc_copyWeak(&v13, &location);
-  [v3 addObserverForNotificationName:@"com.apple.system.powermanagement.poweradapter" handler:&v9];
+  [notificationHelper addObserverForNotificationName:@"com.apple.system.powermanagement.poweradapter" handler:&v9];
 
   [(ULBatteryModeMonitor *)self setUnlimitedPower:[(ULBatteryModeMonitor *)self _checkUnlimitedPower:v9]];
   if (onceToken_MicroLocation_Default != -1)
@@ -138,9 +138,9 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = +[(ULEvent *)ULBatteryModeMonitorEventUnlimitedPower];
-    v6 = [(ULBatteryModeMonitor *)self unlimitedPower];
+    unlimitedPower = [(ULBatteryModeMonitor *)self unlimitedPower];
     v7 = @"NO";
-    if (v6)
+    if (unlimitedPower)
     {
       v7 = @"YES";
     }
@@ -171,8 +171,8 @@ void __57__ULBatteryModeMonitor__startMonitoringForUnlimitedPower__block_invoke(
 - (void)_startMonitoringForLowPowerMode
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__handleNSProcessInfoPowerStateDidChangeNotification_ name:*MEMORY[0x277CCA5E8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleNSProcessInfoPowerStateDidChangeNotification_ name:*MEMORY[0x277CCA5E8] object:0];
 
   [(ULBatteryModeMonitor *)self setLowPowerMode:[(ULBatteryModeMonitor *)self _checkLowPowerMode]];
   if (onceToken_MicroLocation_Default != -1)
@@ -185,9 +185,9 @@ void __57__ULBatteryModeMonitor__startMonitoringForUnlimitedPower__block_invoke(
   {
     v5 = v4;
     v6 = +[(ULEvent *)ULBatteryModeMonitorEventLowPowerMode];
-    v7 = [(ULBatteryModeMonitor *)self lowPowerMode];
+    lowPowerMode = [(ULBatteryModeMonitor *)self lowPowerMode];
     v8 = @"NO";
-    if (v7)
+    if (lowPowerMode)
     {
       v8 = @"YES";
     }
@@ -220,8 +220,8 @@ void __57__ULBatteryModeMonitor__startMonitoringForUnlimitedPower__block_invoke(
     _os_log_impl(&dword_258FE9000, v4, OS_LOG_TYPE_DEFAULT, "Stop monitoring: %@", &v8, 0xCu);
   }
 
-  v6 = [(ULBatteryModeMonitor *)self notificationHelper];
-  [v6 removeObserverForNotificationName:@"com.apple.system.powermanagement.poweradapter"];
+  notificationHelper = [(ULBatteryModeMonitor *)self notificationHelper];
+  [notificationHelper removeObserverForNotificationName:@"com.apple.system.powermanagement.poweradapter"];
 
   [(ULBatteryModeMonitor *)self setUnlimitedPower:0];
   v7 = *MEMORY[0x277D85DE8];
@@ -245,8 +245,8 @@ void __57__ULBatteryModeMonitor__startMonitoringForUnlimitedPower__block_invoke(
     _os_log_impl(&dword_258FE9000, v4, OS_LOG_TYPE_DEFAULT, "Stop monitoring: %@", &v8, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x277CCA5E8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CCA5E8] object:0];
 
   [(ULBatteryModeMonitor *)self setLowPowerMode:0];
   v7 = *MEMORY[0x277D85DE8];
@@ -254,13 +254,13 @@ void __57__ULBatteryModeMonitor__startMonitoringForUnlimitedPower__block_invoke(
 
 - (void)_handleIOPSNotifyAdapterChangeNotification
 {
-  v3 = [(ULEventMonitor *)self queue];
+  queue = [(ULEventMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__ULBatteryModeMonitor__handleIOPSNotifyAdapterChangeNotification__block_invoke;
   block[3] = &unk_2798D41D8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __66__ULBatteryModeMonitor__handleIOPSNotifyAdapterChangeNotification__block_invoke(uint64_t a1)
@@ -275,15 +275,15 @@ void __66__ULBatteryModeMonitor__handleIOPSNotifyAdapterChangeNotification__bloc
   }
 }
 
-- (void)_handleNSProcessInfoPowerStateDidChangeNotification:(id)a3
+- (void)_handleNSProcessInfoPowerStateDidChangeNotification:(id)notification
 {
-  v4 = [(ULEventMonitor *)self queue];
+  queue = [(ULEventMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__ULBatteryModeMonitor__handleNSProcessInfoPowerStateDidChangeNotification___block_invoke;
   block[3] = &unk_2798D41D8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __76__ULBatteryModeMonitor__handleNSProcessInfoPowerStateDidChangeNotification___block_invoke(uint64_t a1)
@@ -300,10 +300,10 @@ void __76__ULBatteryModeMonitor__handleNSProcessInfoPowerStateDidChangeNotificat
 
 - (BOOL)_checkLowPowerMode
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  return v3;
+  return isLowPowerModeEnabled;
 }
 
 @end

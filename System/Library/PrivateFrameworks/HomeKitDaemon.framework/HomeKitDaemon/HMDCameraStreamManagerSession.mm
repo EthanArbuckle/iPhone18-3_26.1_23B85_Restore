@@ -1,8 +1,8 @@
 @interface HMDCameraStreamManagerSession
 + (id)logCategory;
-- (BOOL)canStartWithError:(id *)a3;
-- (HMDCameraStreamManagerSession)initWithSessionID:(id)a3 destinationID:(id)a4 streamClientConnection:(id)a5 streamControlManager:(id)a6 setupWaitPeriod:(double)a7;
-- (HMDCameraStreamManagerSession)initWithSessionID:(id)a3 destinationID:(id)a4 streamClientConnection:(id)a5 streamControlManager:(id)a6 streamSetupTimer:(id)a7;
+- (BOOL)canStartWithError:(id *)error;
+- (HMDCameraStreamManagerSession)initWithSessionID:(id)d destinationID:(id)iD streamClientConnection:(id)connection streamControlManager:(id)manager setupWaitPeriod:(double)period;
+- (HMDCameraStreamManagerSession)initWithSessionID:(id)d destinationID:(id)iD streamClientConnection:(id)connection streamControlManager:(id)manager streamSetupTimer:(id)timer;
 - (id)logIdentifier;
 @end
 
@@ -10,26 +10,26 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraStreamManagerSession *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraStreamManagerSession *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
 
-- (BOOL)canStartWithError:(id *)a3
+- (BOOL)canStartWithError:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDCameraStreamManagerSession *)self destinationID];
+  destinationID = [(HMDCameraStreamManagerSession *)self destinationID];
 
-  if (!v5)
+  if (!destinationID)
   {
     goto LABEL_4;
   }
 
   v6 = +[HMDDeviceCapabilities deviceCapabilities];
-  v7 = [v6 isResidentCapable];
+  isResidentCapable = [v6 isResidentCapable];
 
-  if (!v7)
+  if (!isResidentCapable)
   {
     goto LABEL_4;
   }
@@ -40,7 +40,7 @@
   if ((v9 & 1) == 0)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -48,17 +48,17 @@
       v18 = 138543618;
       v19 = v15;
       v20 = 2112;
-      v21 = v13;
+      v21 = selfCopy;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_ERROR, "%{public}@Stream tracker cannot start stream session: %@", &v18, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    if (a3)
+    if (error)
     {
       v16 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:1018];
       v17 = v16;
       result = 0;
-      *a3 = v16;
+      *error = v16;
     }
 
     else
@@ -77,47 +77,47 @@ LABEL_4:
   return result;
 }
 
-- (HMDCameraStreamManagerSession)initWithSessionID:(id)a3 destinationID:(id)a4 streamClientConnection:(id)a5 streamControlManager:(id)a6 streamSetupTimer:(id)a7
+- (HMDCameraStreamManagerSession)initWithSessionID:(id)d destinationID:(id)iD streamClientConnection:(id)connection streamControlManager:(id)manager streamSetupTimer:(id)timer
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v12)
+  dCopy = d;
+  iDCopy = iD;
+  connectionCopy = connection;
+  managerCopy = manager;
+  timerCopy = timer;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_6;
   }
 
-  if (!v15)
+  if (!managerCopy)
   {
 LABEL_6:
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v17 = v16;
-  if (v16)
+  v17 = timerCopy;
+  if (timerCopy)
   {
     v36.receiver = self;
     v36.super_class = HMDCameraStreamManagerSession;
     v18 = [(HMDCameraStreamManagerSession *)&v36 init];
     sessionID = v18->_sessionID;
-    v18->_sessionID = v12;
-    v20 = v12;
+    v18->_sessionID = dCopy;
+    v20 = dCopy;
 
-    v21 = [v13 copy];
+    v21 = [iDCopy copy];
     destinationID = v18->_destinationID;
     v18->_destinationID = v21;
 
     streamClientConnection = v18->_streamClientConnection;
-    v18->_streamClientConnection = v14;
-    v24 = v14;
+    v18->_streamClientConnection = connectionCopy;
+    v24 = connectionCopy;
 
     streamControlManager = v18->_streamControlManager;
-    v18->_streamControlManager = v15;
-    v26 = v15;
+    v18->_streamControlManager = managerCopy;
+    v26 = managerCopy;
 
     streamSetupTimer = v18->_streamSetupTimer;
     v18->_streamSetupTimer = v17;
@@ -130,30 +130,30 @@ LABEL_7:
   return [(HMDCameraStreamManagerSession *)v29 initWithSessionID:v30 destinationID:v31 streamClientConnection:v32 streamControlManager:v33 setupWaitPeriod:v34, v35];
 }
 
-- (HMDCameraStreamManagerSession)initWithSessionID:(id)a3 destinationID:(id)a4 streamClientConnection:(id)a5 streamControlManager:(id)a6 setupWaitPeriod:(double)a7
+- (HMDCameraStreamManagerSession)initWithSessionID:(id)d destinationID:(id)iD streamClientConnection:(id)connection streamControlManager:(id)manager setupWaitPeriod:(double)period
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v12)
+  dCopy = d;
+  iDCopy = iD;
+  connectionCopy = connection;
+  managerCopy = manager;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_6;
   }
 
-  v16 = v15;
-  if (!v15)
+  v16 = managerCopy;
+  if (!managerCopy)
   {
 LABEL_6:
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  if (a7 > 0.0)
+  if (period > 0.0)
   {
-    v17 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:a7];
-    v18 = [(HMDCameraStreamManagerSession *)self initWithSessionID:v12 destinationID:v13 streamClientConnection:v14 streamControlManager:v16 streamSetupTimer:v17];
+    v17 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:period];
+    v18 = [(HMDCameraStreamManagerSession *)self initWithSessionID:dCopy destinationID:iDCopy streamClientConnection:connectionCopy streamControlManager:v16 streamSetupTimer:v17];
 
     return v18;
   }

@@ -1,19 +1,19 @@
 @interface AHTDeviceStats
 - (AHTDeviceStats)init;
-- (BOOL)getCalibrationSource:(id *)a3;
-- (BOOL)getFirstInputPropertyValue:(unsigned int)a3;
-- (BOOL)start:(id)a3 error:(id *)a4;
-- (BOOL)stop:(id *)a3;
-- (int)getAGMDecision:(id *)a3 andAGMDecisionEnum:(unsigned int *)a4 andCalibrationSource:(id *)a5 withAGMEntry:(unsigned int)a6;
-- (int)getAuthStatus:(id *)a3 withAGMDecisionEnum:(unsigned int)a4;
-- (int)getFirstInputReceived:(BOOL *)a3;
-- (unsigned)checkChildrenForMatches:(unsigned int)a3 matchingFunc:(id)a4 depth:(int)a5;
+- (BOOL)getCalibrationSource:(id *)source;
+- (BOOL)getFirstInputPropertyValue:(unsigned int)value;
+- (BOOL)start:(id)start error:(id *)error;
+- (BOOL)stop:(id *)stop;
+- (int)getAGMDecision:(id *)decision andAGMDecisionEnum:(unsigned int *)enum andCalibrationSource:(id *)source withAGMEntry:(unsigned int)entry;
+- (int)getAuthStatus:(id *)status withAGMDecisionEnum:(unsigned int)enum;
+- (int)getFirstInputReceived:(BOOL *)received;
+- (unsigned)checkChildrenForMatches:(unsigned int)matches matchingFunc:(id)func depth:(int)depth;
 - (unsigned)getAGMEntry;
 - (void)agmStackChoiceStatsCollection;
 - (void)collectRepairHistoryInvalidationStat;
 - (void)dailyStatsCollection;
-- (void)restartCriticalErrorCollectionTimer:(unint64_t)a3;
-- (void)restartDailyCollectionTimer:(unint64_t)a3;
+- (void)restartCriticalErrorCollectionTimer:(unint64_t)timer;
+- (void)restartDailyCollectionTimer:(unint64_t)timer;
 - (void)startCriticalErrorCollectionTimer;
 - (void)startDailyCollectionTimer;
 @end
@@ -50,9 +50,9 @@
   return v4;
 }
 
-- (BOOL)start:(id)a3 error:(id *)a4
+- (BOOL)start:(id)start error:(id *)error
 {
-  v5 = a3;
+  startCopy = start;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315138;
@@ -61,11 +61,11 @@
   }
 
   queue = self->_queue;
-  self->_queue = v5;
+  self->_queue = startCopy;
 
-  v7 = [(AHTDeviceStats *)self getAGMEntry];
+  getAGMEntry = [(AHTDeviceStats *)self getAGMEntry];
   [(AHTDeviceStats *)self startDailyCollectionTimer];
-  if (v7)
+  if (getAGMEntry)
   {
     [(AHTDeviceStats *)self startCriticalErrorCollectionTimer];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -75,7 +75,7 @@
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s Is AGM-based device", &v9, 0xCu);
     }
 
-    IOObjectRelease(v7);
+    IOObjectRelease(getAGMEntry);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -88,7 +88,7 @@
   return 1;
 }
 
-- (BOOL)stop:(id *)a3
+- (BOOL)stop:(id *)stop
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -162,35 +162,35 @@ LABEL_3:
   return v3;
 }
 
-- (void)restartDailyCollectionTimer:(unint64_t)a3
+- (void)restartDailyCollectionTimer:(unint64_t)timer
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[AHTDeviceStats restartDailyCollectionTimer:]";
     v9 = 2048;
-    v10 = a3;
+    timerCopy = timer;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s interval: %llu", &v7, 0x16u);
   }
 
   dailyCollectionTimer = self->_dailyCollectionTimer;
-  v6 = dispatch_time(0, 1000000000 * a3);
+  v6 = dispatch_time(0, 1000000000 * timer);
   dispatch_source_set_timer(dailyCollectionTimer, v6, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 }
 
-- (void)restartCriticalErrorCollectionTimer:(unint64_t)a3
+- (void)restartCriticalErrorCollectionTimer:(unint64_t)timer
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[AHTDeviceStats restartCriticalErrorCollectionTimer:]";
     v9 = 2048;
-    v10 = a3;
+    timerCopy = timer;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s interval: %llu", &v7, 0x16u);
   }
 
   criticalErrorTimer = self->_criticalErrorTimer;
-  v6 = dispatch_time(0, 1000000000 * a3);
+  v6 = dispatch_time(0, 1000000000 * timer);
   dispatch_source_set_timer(criticalErrorTimer, v6, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 }
 
@@ -224,23 +224,23 @@ LABEL_3:
     goto LABEL_29;
   }
 
-  v4 = [v2 getBootLoader];
-  if (!v4)
+  getBootLoader = [v2 getBootLoader];
+  if (!getBootLoader)
   {
     sub_6D9C();
     goto LABEL_29;
   }
 
-  v5 = v4;
-  v6 = [v4 getRegistryProperties];
-  if (!v6)
+  v5 = getBootLoader;
+  getRegistryProperties = [getBootLoader getRegistryProperties];
+  if (!getRegistryProperties)
   {
     sub_6CF8(v5);
     goto LABEL_29;
   }
 
-  v7 = v6;
-  v8 = [v6 objectForKey:@"Property Sources"];
+  v7 = getRegistryProperties;
+  v8 = [getRegistryProperties objectForKey:@"Property Sources"];
   if (!v8)
   {
     sub_6C4C(v7, v5);
@@ -398,8 +398,8 @@ LABEL_29:
 - (void)agmStackChoiceStatsCollection
 {
   v19 = 255;
-  v3 = [(AHTDeviceStats *)self getAGMEntry];
-  if (!v3)
+  getAGMEntry = [(AHTDeviceStats *)self getAGMEntry];
+  if (!getAGMEntry)
   {
     v6 = 0;
     v7 = 0;
@@ -407,10 +407,10 @@ LABEL_29:
     goto LABEL_15;
   }
 
-  v4 = v3;
+  v4 = getAGMEntry;
   v17 = 0;
   v18 = 0;
-  v5 = [(AHTDeviceStats *)self getAGMDecision:&v18 andAGMDecisionEnum:&v19 andCalibrationSource:&v17 withAGMEntry:v3];
+  v5 = [(AHTDeviceStats *)self getAGMDecision:&v18 andAGMDecisionEnum:&v19 andCalibrationSource:&v17 withAGMEntry:getAGMEntry];
   v6 = v18;
   v7 = v17;
   IOObjectRelease(v4);
@@ -473,10 +473,10 @@ LABEL_16:
   [(AHTDeviceStats *)self restartCriticalErrorCollectionTimer:v12];
 }
 
-- (int)getAGMDecision:(id *)a3 andAGMDecisionEnum:(unsigned int *)a4 andCalibrationSource:(id *)a5 withAGMEntry:(unsigned int)a6
+- (int)getAGMDecision:(id *)decision andAGMDecisionEnum:(unsigned int *)enum andCalibrationSource:(id *)source withAGMEntry:(unsigned int)entry
 {
   properties = 0;
-  v10 = IORegistryEntryCreateCFProperties(a6, &properties, kCFAllocatorDefault, 0);
+  v10 = IORegistryEntryCreateCFProperties(entry, &properties, kCFAllocatorDefault, 0);
   if (v10)
   {
     v19 = v10;
@@ -491,18 +491,18 @@ LABEL_16:
     if (v12)
     {
       v13 = v12;
-      v14 = [v13 unsignedIntValue];
-      v15 = v14;
-      if (v14)
+      unsignedIntValue = [v13 unsignedIntValue];
+      v15 = unsignedIntValue;
+      if (unsignedIntValue)
       {
-        *a5 = @"None";
+        *source = @"None";
         v16 = @"Other";
-        if (v14 == 1)
+        if (unsignedIntValue == 1)
         {
           v16 = @"NotAuthentic";
         }
 
-        if (v14 == 2)
+        if (unsignedIntValue == 2)
         {
           v17 = @"NotAuthenticLaunchFailed";
         }
@@ -515,12 +515,12 @@ LABEL_16:
         goto LABEL_11;
       }
 
-      if ([(AHTDeviceStats *)self getCalibrationSource:a5])
+      if ([(AHTDeviceStats *)self getCalibrationSource:source])
       {
         v17 = @"Authentic";
 LABEL_11:
-        *a3 = v17;
-        *a4 = v15;
+        *decision = v17;
+        *enum = v15;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136315394;
@@ -532,11 +532,11 @@ LABEL_11:
 
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [*a3 UTF8String];
+          uTF8String = [*decision UTF8String];
           *buf = 136315394;
           v23 = "[AHTDeviceStats getAGMDecision:andAGMDecisionEnum:andCalibrationSource:withAGMEntry:]";
           v24 = 2080;
-          v25 = v18;
+          v25 = uTF8String;
           _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s AGM decision string    : %s", buf, 0x16u);
         }
 
@@ -575,10 +575,10 @@ LABEL_16:
   return v19;
 }
 
-- (int)getAuthStatus:(id *)a3 withAGMDecisionEnum:(unsigned int)a4
+- (int)getAuthStatus:(id *)status withAGMDecisionEnum:(unsigned int)enum
 {
   v9 = 0;
-  if (a4 == 1)
+  if (enum == 1)
   {
     v7 = [(AHTDeviceStats *)self getFirstInputReceived:&v9];
     if (!v7)
@@ -603,12 +603,12 @@ LABEL_16:
 
   else
   {
-    if (!a4)
+    if (!enum)
     {
       v5 = 0;
       v6 = @"ConfirmedAuthentic";
 LABEL_7:
-      *a3 = v6;
+      *status = v6;
       return v5;
     }
 
@@ -627,9 +627,9 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)getFirstInputPropertyValue:(unsigned int)a3
+- (BOOL)getFirstInputPropertyValue:(unsigned int)value
 {
-  v4 = IOIteratorNext(a3);
+  v4 = IOIteratorNext(value);
   if (v4)
   {
     v5 = v4;
@@ -645,7 +645,7 @@ LABEL_7:
       }
 
       IOObjectRelease(v5);
-      v5 = IOIteratorNext(a3);
+      v5 = IOIteratorNext(value);
     }
 
     while (v5);
@@ -678,22 +678,22 @@ LABEL_7:
       self->_dailyCollectionTimer = v4;
 
       v6 = self->_dailyCollectionTimer;
-      v7 = self;
-      dispatch_set_context(v6, v7);
+      selfCopy = self;
+      dispatch_set_context(v6, selfCopy);
       v8 = self->_dailyCollectionTimer;
       sub_4514();
       v14 = 3221225472;
       v15 = sub_2E70;
       v16 = &unk_C418;
-      v17 = v7;
+      v17 = selfCopy;
       dispatch_source_set_event_handler(v9, handler);
       v10 = self->_dailyCollectionTimer;
       sub_44EC();
       v12[2] = sub_2E78;
       v12[3] = &unk_C418;
-      v12[4] = v7;
+      v12[4] = selfCopy;
       dispatch_source_set_cancel_handler(v11, v12);
-      [(AHTDeviceStats *)v7 restartDailyCollectionTimer:0];
+      [(AHTDeviceStats *)selfCopy restartDailyCollectionTimer:0];
       dispatch_resume(self->_dailyCollectionTimer);
     }
   }
@@ -722,7 +722,7 @@ LABEL_7:
       v12 = 3221225472;
       v13 = sub_2F24;
       v14 = &unk_C418;
-      v15 = self;
+      selfCopy = self;
       dispatch_source_set_event_handler(v7, handler);
       v8 = self->_criticalErrorTimer;
       sub_44EC();
@@ -736,11 +736,11 @@ LABEL_7:
   }
 }
 
-- (unsigned)checkChildrenForMatches:(unsigned int)a3 matchingFunc:(id)a4 depth:(int)a5
+- (unsigned)checkChildrenForMatches:(unsigned int)matches matchingFunc:(id)func depth:(int)depth
 {
-  v8 = a4;
+  funcCopy = func;
   iterator = 0;
-  if (IORegistryEntryGetChildIterator(a3, "IOService", &iterator))
+  if (IORegistryEntryGetChildIterator(matches, "IOService", &iterator))
   {
     goto LABEL_13;
   }
@@ -754,11 +754,11 @@ LABEL_7:
   if (IOIteratorIsValid(iterator) && (v9 = IOIteratorNext(iterator), v9))
   {
     v10 = v9;
-    while (!v8[2](v8, v10))
+    while (!funcCopy[2](funcCopy, v10))
     {
-      if (a5)
+      if (depth)
       {
-        v11 = [(AHTDeviceStats *)self checkChildrenForMatches:v10 matchingFunc:v8 depth:(a5 - 1)];
+        v11 = [(AHTDeviceStats *)self checkChildrenForMatches:v10 matchingFunc:funcCopy depth:(depth - 1)];
       }
 
       else
@@ -800,7 +800,7 @@ LABEL_17:
   return v11;
 }
 
-- (BOOL)getCalibrationSource:(id *)a3
+- (BOOL)getCalibrationSource:(id *)source
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -834,14 +834,14 @@ LABEL_17:
   }
 
   v16 = v13;
-  *a3 = v14;
+  *source = v14;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [*a3 UTF8String];
+    uTF8String = [*source UTF8String];
     *v25 = 136315394;
     *&v25[4] = "[AHTDeviceStats getCalibrationSource:]";
     *&v25[12] = 2080;
-    *&v25[14] = v17;
+    *&v25[14] = uTF8String;
     v18 = &dword_0;
     v19 = &_os_log_default;
     v20 = "%s Calibration source: %s";
@@ -858,10 +858,10 @@ LABEL_8:
   return v15;
 }
 
-- (int)getFirstInputReceived:(BOOL *)a3
+- (int)getFirstInputReceived:(BOOL *)received
 {
   existing = 0;
-  *a3 = 0;
+  *received = 0;
   v5 = IOServiceMatching("AppleHIDTransportHIDDevice");
   if (v5)
   {
@@ -870,15 +870,15 @@ LABEL_8:
     v8 = [[NSArray alloc] initWithObjects:{v7, 0}];
     CFDictionarySetValue(v6, @"DeviceUsagePairs", v8);
     MatchingServices = IOServiceGetMatchingServices(0, v6, &existing);
-    *a3 = [(AHTDeviceStats *)self getFirstInputPropertyValue:existing];
+    *received = [(AHTDeviceStats *)self getFirstInputPropertyValue:existing];
     IOObjectRelease(existing);
-    if (!*a3)
+    if (!*received)
     {
       v10 = IOServiceMatching("AppleGenericMultitouchHIDSPI");
       if (v10)
       {
         MatchingServices = IOServiceGetMatchingServices(0, v10, &existing);
-        *a3 = [(AHTDeviceStats *)self getFirstInputPropertyValue:existing];
+        *received = [(AHTDeviceStats *)self getFirstInputPropertyValue:existing];
         IOObjectRelease(existing);
       }
     }

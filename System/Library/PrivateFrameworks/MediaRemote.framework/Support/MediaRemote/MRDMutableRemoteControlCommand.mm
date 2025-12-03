@@ -1,73 +1,73 @@
 @interface MRDMutableRemoteControlCommand
 - (NSString)destinationAppDisplayID;
 - (int)destinationAppProcessID;
-- (void)setDestinationAppDisplayID:(id)a3;
-- (void)setOptionValue:(id)a3 forKey:(__CFString *)a4;
-- (void)setOptionsData:(id)a3;
-- (void)setSenderAppDisplayID:(id)a3;
+- (void)setDestinationAppDisplayID:(id)d;
+- (void)setOptionValue:(id)value forKey:(__CFString *)key;
+- (void)setOptionsData:(id)data;
+- (void)setSenderAppDisplayID:(id)d;
 @end
 
 @implementation MRDMutableRemoteControlCommand
 
-- (void)setOptionsData:(id)a3
+- (void)setOptionsData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   optionsData = self->super._optionsData;
   self->super._optionsData = v4;
 }
 
-- (void)setSenderAppDisplayID:(id)a3
+- (void)setSenderAppDisplayID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   senderAppDisplayID = self->super._senderAppDisplayID;
   self->super._senderAppDisplayID = v4;
 }
 
-- (void)setDestinationAppDisplayID:(id)a3
+- (void)setDestinationAppDisplayID:(id)d
 {
-  v7 = a3;
-  v4 = [(MRDRemoteControlCommand *)self playerPath];
-  v5 = [v4 client];
+  dCopy = d;
+  playerPath = [(MRDRemoteControlCommand *)self playerPath];
+  client = [playerPath client];
 
-  if (v5)
+  if (client)
   {
-    if (v7)
+    if (dCopy)
     {
-      [v5 setBundleIdentifier:v7];
+      [client setBundleIdentifier:dCopy];
     }
   }
 
   else
   {
-    v5 = [[MRClient alloc] initWithProcessIdentifier:0 bundleIdentifier:v7];
-    v6 = [(MRDRemoteControlCommand *)self playerPath];
-    [v6 setClient:v5];
+    client = [[MRClient alloc] initWithProcessIdentifier:0 bundleIdentifier:dCopy];
+    playerPath2 = [(MRDRemoteControlCommand *)self playerPath];
+    [playerPath2 setClient:client];
   }
 }
 
 - (int)destinationAppProcessID
 {
-  v2 = [(MRDRemoteControlCommand *)self playerPath];
-  v3 = [v2 client];
-  v4 = [v3 processIdentifier];
+  playerPath = [(MRDRemoteControlCommand *)self playerPath];
+  client = [playerPath client];
+  processIdentifier = [client processIdentifier];
 
-  return v4;
+  return processIdentifier;
 }
 
 - (NSString)destinationAppDisplayID
 {
-  v2 = [(MRDRemoteControlCommand *)self playerPath];
-  v3 = [v2 client];
-  v4 = [v3 bundleIdentifier];
+  playerPath = [(MRDRemoteControlCommand *)self playerPath];
+  client = [playerPath client];
+  bundleIdentifier = [client bundleIdentifier];
 
-  return v4;
+  return bundleIdentifier;
 }
 
-- (void)setOptionValue:(id)a3 forKey:(__CFString *)a4
+- (void)setOptionValue:(id)value forKey:(__CFString *)key
 {
-  v6 = a3;
-  v7 = [(MRDRemoteControlCommand *)self _optionsDictionary];
-  [v7 setValue:v6 forKey:a4];
+  valueCopy = value;
+  _optionsDictionary = [(MRDRemoteControlCommand *)self _optionsDictionary];
+  [_optionsDictionary setValue:valueCopy forKey:key];
 }
 
 @end

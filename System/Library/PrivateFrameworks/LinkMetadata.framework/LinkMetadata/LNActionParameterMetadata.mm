@@ -1,53 +1,53 @@
 @interface LNActionParameterMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNActionParameterMetadata)actionParameterMetadataWithCapabilities:(unint64_t)a3;
-- (LNActionParameterMetadata)actionParameterMetadataWithDescriptiveMetadataFromParameter:(id)a3 usingLibraryKey:(id)a4;
-- (LNActionParameterMetadata)initWithCoder:(id)a3;
-- (LNActionParameterMetadata)initWithName:(id)a3 valueType:(id)a4 optional:(BOOL)a5 title:(id)a6 description:(id)a7 resolvableInputTypes:(id)a8 typeSpecificMetadata:(id)a9 dynamicOptionsSupport:(int64_t)a10 inputConnectionBehavior:(int64_t)a11 capabilities:(unint64_t)a12 queryIdentifier:(id)a13;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNActionParameterMetadata)actionParameterMetadataWithCapabilities:(unint64_t)capabilities;
+- (LNActionParameterMetadata)actionParameterMetadataWithDescriptiveMetadataFromParameter:(id)parameter usingLibraryKey:(id)key;
+- (LNActionParameterMetadata)initWithCoder:(id)coder;
+- (LNActionParameterMetadata)initWithName:(id)name valueType:(id)type optional:(BOOL)optional title:(id)title description:(id)description resolvableInputTypes:(id)types typeSpecificMetadata:(id)metadata dynamicOptionsSupport:(int64_t)self0 inputConnectionBehavior:(int64_t)self1 capabilities:(unint64_t)self2 queryIdentifier:(id)self3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNActionParameterMetadata
 
-- (LNActionParameterMetadata)actionParameterMetadataWithDescriptiveMetadataFromParameter:(id)a3 usingLibraryKey:(id)a4
+- (LNActionParameterMetadata)actionParameterMetadataWithDescriptiveMetadataFromParameter:(id)parameter usingLibraryKey:(id)key
 {
-  v5 = a3;
+  parameterCopy = parameter;
   v6 = [(LNActionParameterMetadata *)self copy];
   v7 = v6[4];
   if (!v7 || ([v7 key], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "length"), v8, !v9))
   {
-    v10 = [v5 title];
+    title = [parameterCopy title];
     v11 = v6[4];
-    v6[4] = v10;
+    v6[4] = title;
   }
 
   v12 = v6[5];
   if (!v12 || ([v12 key], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, !v14))
   {
-    v15 = [v5 parameterDescription];
+    parameterDescription = [parameterCopy parameterDescription];
     v16 = v6[5];
-    v6[5] = v15;
+    v6[5] = parameterDescription;
   }
 
   if (!v6[10])
   {
-    v6[10] = [v5 capabilities];
+    v6[10] = [parameterCopy capabilities];
   }
 
-  v17 = [(LNActionParameterMetadata *)self typeSpecificMetadata];
-  v18 = [v17 mutableCopy];
+  typeSpecificMetadata = [(LNActionParameterMetadata *)self typeSpecificMetadata];
+  v18 = [typeSpecificMetadata mutableCopy];
 
-  v19 = [v5 typeSpecificMetadata];
+  typeSpecificMetadata2 = [parameterCopy typeSpecificMetadata];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __105__LNActionParameterMetadata_actionParameterMetadataWithDescriptiveMetadataFromParameter_usingLibraryKey___block_invoke;
   v24[3] = &unk_1E72B12A8;
   v25 = v18;
   v20 = v18;
-  [v19 enumerateKeysAndObjectsUsingBlock:v24];
+  [typeSpecificMetadata2 enumerateKeysAndObjectsUsingBlock:v24];
 
   v21 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v20];
   v22 = v6[7];
@@ -106,21 +106,21 @@ LABEL_14:
 LABEL_15:
 }
 
-- (LNActionParameterMetadata)actionParameterMetadataWithCapabilities:(unint64_t)a3
+- (LNActionParameterMetadata)actionParameterMetadataWithCapabilities:(unint64_t)capabilities
 {
   v4 = [(LNActionParameterMetadata *)self copy];
-  v4[10] = a3;
+  v4[10] = capabilities;
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -129,10 +129,10 @@ LABEL_49:
       goto LABEL_50;
     }
 
-    v7 = [(LNActionParameterMetadata *)self name];
-    v8 = [(LNActionParameterMetadata *)v6 name];
-    v9 = v7;
-    v10 = v8;
+    name = [(LNActionParameterMetadata *)self name];
+    name2 = [(LNActionParameterMetadata *)v6 name];
+    v9 = name;
+    v10 = name2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -159,10 +159,10 @@ LABEL_48:
       }
     }
 
-    v16 = [(LNActionParameterMetadata *)self title];
-    v17 = [(LNActionParameterMetadata *)v6 title];
-    v14 = v16;
-    v18 = v17;
+    title = [(LNActionParameterMetadata *)self title];
+    title2 = [(LNActionParameterMetadata *)v6 title];
+    v14 = title;
+    v18 = title2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -189,10 +189,10 @@ LABEL_47:
       }
     }
 
-    v22 = [(LNActionParameterMetadata *)self valueType];
-    v23 = [(LNActionParameterMetadata *)v6 valueType];
-    v20 = v22;
-    v24 = v23;
+    valueType = [(LNActionParameterMetadata *)self valueType];
+    valueType2 = [(LNActionParameterMetadata *)v6 valueType];
+    v20 = valueType;
+    v24 = valueType2;
     v19 = v24;
     if (v20 == v24)
     {
@@ -216,8 +216,8 @@ LABEL_47:
       }
     }
 
-    v26 = [(LNActionParameterMetadata *)self isOptional];
-    if (v26 != [(LNActionParameterMetadata *)v6 isOptional])
+    isOptional = [(LNActionParameterMetadata *)self isOptional];
+    if (isOptional != [(LNActionParameterMetadata *)v6 isOptional])
     {
       LOBYTE(v12) = 0;
 LABEL_46:
@@ -226,10 +226,10 @@ LABEL_46:
     }
 
     v46 = v20;
-    v27 = [(LNActionParameterMetadata *)self typeSpecificMetadata];
-    v44 = [(LNActionParameterMetadata *)v6 typeSpecificMetadata];
-    v20 = v27;
-    v28 = v44;
+    typeSpecificMetadata = [(LNActionParameterMetadata *)self typeSpecificMetadata];
+    typeSpecificMetadata2 = [(LNActionParameterMetadata *)v6 typeSpecificMetadata];
+    v20 = typeSpecificMetadata;
+    v28 = typeSpecificMetadata2;
     v45 = v28;
     if (v20 == v28)
     {
@@ -275,28 +275,28 @@ LABEL_45:
       }
     }
 
-    v32 = [(LNActionParameterMetadata *)self dynamicOptionsSupport];
-    if (v32 != [(LNActionParameterMetadata *)v6 dynamicOptionsSupport])
+    dynamicOptionsSupport = [(LNActionParameterMetadata *)self dynamicOptionsSupport];
+    if (dynamicOptionsSupport != [(LNActionParameterMetadata *)v6 dynamicOptionsSupport])
     {
       goto LABEL_39;
     }
 
-    v33 = [(LNActionParameterMetadata *)self inputConnectionBehavior];
-    if (v33 != [(LNActionParameterMetadata *)v6 inputConnectionBehavior])
+    inputConnectionBehavior = [(LNActionParameterMetadata *)self inputConnectionBehavior];
+    if (inputConnectionBehavior != [(LNActionParameterMetadata *)v6 inputConnectionBehavior])
     {
       goto LABEL_39;
     }
 
-    v34 = [(LNActionParameterMetadata *)self capabilities];
-    if (v34 != [(LNActionParameterMetadata *)v6 capabilities])
+    capabilities = [(LNActionParameterMetadata *)self capabilities];
+    if (capabilities != [(LNActionParameterMetadata *)v6 capabilities])
     {
       goto LABEL_39;
     }
 
-    v35 = [(LNActionParameterMetadata *)self queryIdentifier];
-    v36 = [(LNActionParameterMetadata *)v6 queryIdentifier];
-    v37 = v35;
-    v38 = v36;
+    queryIdentifier = [(LNActionParameterMetadata *)self queryIdentifier];
+    queryIdentifier2 = [(LNActionParameterMetadata *)v6 queryIdentifier];
+    v37 = queryIdentifier;
+    v38 = queryIdentifier2;
     v39 = v38;
     if (v37 == v38)
     {
@@ -326,20 +326,20 @@ LABEL_50:
 
 - (unint64_t)hash
 {
-  v3 = [(LNActionParameterMetadata *)self isOptional];
-  v4 = [(LNActionParameterMetadata *)self valueType];
-  v5 = [v4 hash];
-  v6 = [(LNActionParameterMetadata *)self name];
-  v7 = v5 ^ [v6 hash] ^ v3;
-  v8 = [(LNActionParameterMetadata *)self title];
-  v9 = [v8 hash];
-  v10 = [(LNActionParameterMetadata *)self typeSpecificMetadata];
-  v11 = v9 ^ [v10 hash];
+  isOptional = [(LNActionParameterMetadata *)self isOptional];
+  valueType = [(LNActionParameterMetadata *)self valueType];
+  v5 = [valueType hash];
+  name = [(LNActionParameterMetadata *)self name];
+  v7 = v5 ^ [name hash] ^ isOptional;
+  title = [(LNActionParameterMetadata *)self title];
+  v9 = [title hash];
+  typeSpecificMetadata = [(LNActionParameterMetadata *)self typeSpecificMetadata];
+  v11 = v9 ^ [typeSpecificMetadata hash];
   v12 = v7 ^ v11 ^ [(LNActionParameterMetadata *)self dynamicOptionsSupport];
-  v13 = [(LNActionParameterMetadata *)self inputConnectionBehavior];
-  v14 = v13 ^ [(LNActionParameterMetadata *)self capabilities];
-  v15 = [(LNActionParameterMetadata *)self queryIdentifier];
-  v16 = v14 ^ [v15 hash];
+  inputConnectionBehavior = [(LNActionParameterMetadata *)self inputConnectionBehavior];
+  v14 = inputConnectionBehavior ^ [(LNActionParameterMetadata *)self capabilities];
+  queryIdentifier = [(LNActionParameterMetadata *)self queryIdentifier];
+  v16 = v14 ^ [queryIdentifier hash];
 
   return v12 ^ v16;
 }
@@ -349,42 +349,42 @@ LABEL_50:
   v26 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v27 = [(LNActionParameterMetadata *)self name];
-  v5 = [(LNActionParameterMetadata *)self valueType];
-  v6 = [(LNActionParameterMetadata *)self title];
-  v25 = [(LNActionParameterMetadata *)self resolvableInputTypes];
-  v24 = [v25 valueForKeyPath:@"description"];
+  name = [(LNActionParameterMetadata *)self name];
+  valueType = [(LNActionParameterMetadata *)self valueType];
+  title = [(LNActionParameterMetadata *)self title];
+  resolvableInputTypes = [(LNActionParameterMetadata *)self resolvableInputTypes];
+  v24 = [resolvableInputTypes valueForKeyPath:@"description"];
   v7 = [v24 componentsJoinedByString:{@", "}];
-  v22 = [(LNActionParameterMetadata *)self isOptional];
-  v8 = [(LNActionParameterMetadata *)self typeSpecificMetadata];
-  v23 = [(LNActionParameterMetadata *)self dynamicOptionsSupport];
-  v9 = [(LNActionParameterMetadata *)self inputConnectionBehavior];
+  isOptional = [(LNActionParameterMetadata *)self isOptional];
+  typeSpecificMetadata = [(LNActionParameterMetadata *)self typeSpecificMetadata];
+  dynamicOptionsSupport = [(LNActionParameterMetadata *)self dynamicOptionsSupport];
+  inputConnectionBehavior = [(LNActionParameterMetadata *)self inputConnectionBehavior];
   v10 = @"Default";
-  if (v9 == 1)
+  if (inputConnectionBehavior == 1)
   {
     v10 = @"Never";
   }
 
-  if (v9 == 2)
+  if (inputConnectionBehavior == 2)
   {
     v10 = @"ConnectToPreviousIntentResult";
   }
 
   v11 = v10;
-  v12 = [(LNActionParameterMetadata *)self capabilities];
-  v13 = [(LNActionParameterMetadata *)self queryIdentifier];
-  if (v12)
+  capabilities = [(LNActionParameterMetadata *)self capabilities];
+  queryIdentifier = [(LNActionParameterMetadata *)self queryIdentifier];
+  if (capabilities)
   {
     v21 = v4;
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v15 = v14;
-    if (v12)
+    if (capabilities)
     {
       [v14 addObject:@"HasStaticDefault"];
-      if ((v12 & 2) == 0)
+      if ((capabilities & 2) == 0)
       {
 LABEL_8:
-        if ((v12 & 4) == 0)
+        if ((capabilities & 4) == 0)
         {
           goto LABEL_9;
         }
@@ -393,16 +393,16 @@ LABEL_8:
       }
     }
 
-    else if ((v12 & 2) == 0)
+    else if ((capabilities & 2) == 0)
     {
       goto LABEL_8;
     }
 
     [v15 addObject:@"HasDynamicDefault"];
-    if ((v12 & 4) == 0)
+    if ((capabilities & 4) == 0)
     {
 LABEL_9:
-      if ((v12 & 8) == 0)
+      if ((capabilities & 8) == 0)
       {
 LABEL_11:
         v16 = [v15 componentsJoinedByString:{@", "}];
@@ -417,10 +417,10 @@ LABEL_10:
     }
 
 LABEL_21:
-    v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"HasQuery(%@)", v13];
+    v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"HasQuery(%@)", queryIdentifier];
     [v15 addObject:v20];
 
-    if ((v12 & 8) == 0)
+    if ((capabilities & 8) == 0)
     {
       goto LABEL_11;
     }
@@ -430,7 +430,7 @@ LABEL_21:
 
   v16 = @"N/A";
 LABEL_13:
-  if (v22)
+  if (isOptional)
   {
     v17 = @"YES";
   }
@@ -440,26 +440,26 @@ LABEL_13:
     v17 = @"NO";
   }
 
-  v18 = [v26 stringWithFormat:@"<%@: %p, name: %@, valueType: %@, title: %@, resolvableInputTypes: [%@], isOptional: %@, typeSpecificMetadata: %@, dynamicOptionsSupport: %ld, inputConnectionBehavior: %@, capabilities: %@>", v4, self, v27, v5, v6, v7, v17, v8, v23, v11, v16];
+  v18 = [v26 stringWithFormat:@"<%@: %p, name: %@, valueType: %@, title: %@, resolvableInputTypes: [%@], isOptional: %@, typeSpecificMetadata: %@, dynamicOptionsSupport: %ld, inputConnectionBehavior: %@, capabilities: %@>", v4, self, name, valueType, title, v7, v17, typeSpecificMetadata, dynamicOptionsSupport, v11, v16];
 
   return v18;
 }
 
-- (LNActionParameterMetadata)initWithCoder:(id)a3
+- (LNActionParameterMetadata)initWithCoder:(id)coder
 {
   v30[9] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"valueType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"valueType"];
   if (v6)
   {
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterDescription"];
-    v7 = [v4 decodeBoolForKey:@"optional"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterDescription"];
+    v7 = [coderCopy decodeBoolForKey:@"optional"];
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"resolvableInputTypes"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"resolvableInputTypes"];
 
     if (v11)
     {
@@ -476,26 +476,26 @@ LABEL_13:
       v30[8] = objc_opt_class();
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:9];
       v14 = [v12 setByAddingObjectsFromArray:v13];
-      v15 = [v4 decodeObjectOfClasses:v14 forKey:@"typeSpecificMetadata"];
+      v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"typeSpecificMetadata"];
 
       if (v15)
       {
-        v16 = [v4 decodeIntegerForKey:@"dynamicOptionsSupport"];
-        v17 = [v4 decodeIntegerForKey:@"inputConnectionBehavior"];
-        v18 = [v4 decodeIntegerForKey:@"capabilities"];
-        v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"queryIdentifier"];
+        v16 = [coderCopy decodeIntegerForKey:@"dynamicOptionsSupport"];
+        v17 = [coderCopy decodeIntegerForKey:@"inputConnectionBehavior"];
+        v18 = [coderCopy decodeIntegerForKey:@"capabilities"];
+        v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"queryIdentifier"];
         v26 = v18;
         v25 = v16;
         v21 = v28;
         v20 = v29;
         self = [(LNActionParameterMetadata *)self initWithName:v5 valueType:v6 optional:v27 title:v29 description:v28 resolvableInputTypes:v11 typeSpecificMetadata:v15 dynamicOptionsSupport:v25 inputConnectionBehavior:v17 capabilities:v26 queryIdentifier:v19];
 
-        v22 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v22 = 0;
+        selfCopy = 0;
         v21 = v28;
         v20 = v29;
       }
@@ -503,7 +503,7 @@ LABEL_13:
 
     else
     {
-      v22 = 0;
+      selfCopy = 0;
       v21 = v28;
       v20 = v29;
     }
@@ -511,73 +511,73 @@ LABEL_13:
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
   v23 = *MEMORY[0x1E69E9840];
-  return v22;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNActionParameterMetadata *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(LNActionParameterMetadata *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(LNActionParameterMetadata *)self valueType];
-  [v4 encodeObject:v6 forKey:@"valueType"];
+  valueType = [(LNActionParameterMetadata *)self valueType];
+  [coderCopy encodeObject:valueType forKey:@"valueType"];
 
-  v7 = [(LNActionParameterMetadata *)self title];
-  [v4 encodeObject:v7 forKey:@"title"];
+  title = [(LNActionParameterMetadata *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v8 = [(LNActionParameterMetadata *)self parameterDescription];
-  [v4 encodeObject:v8 forKey:@"parameterDescription"];
+  parameterDescription = [(LNActionParameterMetadata *)self parameterDescription];
+  [coderCopy encodeObject:parameterDescription forKey:@"parameterDescription"];
 
-  [v4 encodeBool:-[LNActionParameterMetadata isOptional](self forKey:{"isOptional"), @"optional"}];
-  v9 = [(LNActionParameterMetadata *)self resolvableInputTypes];
-  [v4 encodeObject:v9 forKey:@"resolvableInputTypes"];
+  [coderCopy encodeBool:-[LNActionParameterMetadata isOptional](self forKey:{"isOptional"), @"optional"}];
+  resolvableInputTypes = [(LNActionParameterMetadata *)self resolvableInputTypes];
+  [coderCopy encodeObject:resolvableInputTypes forKey:@"resolvableInputTypes"];
 
-  v10 = [(LNActionParameterMetadata *)self typeSpecificMetadata];
-  [v4 encodeObject:v10 forKey:@"typeSpecificMetadata"];
+  typeSpecificMetadata = [(LNActionParameterMetadata *)self typeSpecificMetadata];
+  [coderCopy encodeObject:typeSpecificMetadata forKey:@"typeSpecificMetadata"];
 
-  [v4 encodeInteger:-[LNActionParameterMetadata dynamicOptionsSupport](self forKey:{"dynamicOptionsSupport"), @"dynamicOptionsSupport"}];
-  [v4 encodeInteger:-[LNActionParameterMetadata inputConnectionBehavior](self forKey:{"inputConnectionBehavior"), @"inputConnectionBehavior"}];
-  [v4 encodeInteger:-[LNActionParameterMetadata capabilities](self forKey:{"capabilities"), @"capabilities"}];
-  v11 = [(LNActionParameterMetadata *)self queryIdentifier];
-  [v4 encodeObject:v11 forKey:@"queryIdentifier"];
+  [coderCopy encodeInteger:-[LNActionParameterMetadata dynamicOptionsSupport](self forKey:{"dynamicOptionsSupport"), @"dynamicOptionsSupport"}];
+  [coderCopy encodeInteger:-[LNActionParameterMetadata inputConnectionBehavior](self forKey:{"inputConnectionBehavior"), @"inputConnectionBehavior"}];
+  [coderCopy encodeInteger:-[LNActionParameterMetadata capabilities](self forKey:{"capabilities"), @"capabilities"}];
+  queryIdentifier = [(LNActionParameterMetadata *)self queryIdentifier];
+  [coderCopy encodeObject:queryIdentifier forKey:@"queryIdentifier"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v17 = [LNActionParameterMetadata alloc];
-  v16 = [(LNActionParameterMetadata *)self name];
-  v4 = [(LNActionParameterMetadata *)self valueType];
-  v5 = [(LNActionParameterMetadata *)self isOptional];
-  v6 = [(LNActionParameterMetadata *)self title];
-  v7 = [(LNActionParameterMetadata *)self parameterDescription];
-  v8 = [(LNActionParameterMetadata *)self resolvableInputTypes];
-  v9 = [(LNActionParameterMetadata *)self typeSpecificMetadata];
-  v10 = [(LNActionParameterMetadata *)self dynamicOptionsSupport];
-  v11 = [(LNActionParameterMetadata *)self inputConnectionBehavior];
-  v12 = [(LNActionParameterMetadata *)self capabilities];
-  v13 = [(LNActionParameterMetadata *)self queryIdentifier];
-  v14 = [(LNActionParameterMetadata *)v17 initWithName:v16 valueType:v4 optional:v5 title:v6 description:v7 resolvableInputTypes:v8 typeSpecificMetadata:v9 dynamicOptionsSupport:v10 inputConnectionBehavior:v11 capabilities:v12 queryIdentifier:v13];
+  name = [(LNActionParameterMetadata *)self name];
+  valueType = [(LNActionParameterMetadata *)self valueType];
+  isOptional = [(LNActionParameterMetadata *)self isOptional];
+  title = [(LNActionParameterMetadata *)self title];
+  parameterDescription = [(LNActionParameterMetadata *)self parameterDescription];
+  resolvableInputTypes = [(LNActionParameterMetadata *)self resolvableInputTypes];
+  typeSpecificMetadata = [(LNActionParameterMetadata *)self typeSpecificMetadata];
+  dynamicOptionsSupport = [(LNActionParameterMetadata *)self dynamicOptionsSupport];
+  inputConnectionBehavior = [(LNActionParameterMetadata *)self inputConnectionBehavior];
+  capabilities = [(LNActionParameterMetadata *)self capabilities];
+  queryIdentifier = [(LNActionParameterMetadata *)self queryIdentifier];
+  v14 = [(LNActionParameterMetadata *)v17 initWithName:name valueType:valueType optional:isOptional title:title description:parameterDescription resolvableInputTypes:resolvableInputTypes typeSpecificMetadata:typeSpecificMetadata dynamicOptionsSupport:dynamicOptionsSupport inputConnectionBehavior:inputConnectionBehavior capabilities:capabilities queryIdentifier:queryIdentifier];
 
   return v14;
 }
 
-- (LNActionParameterMetadata)initWithName:(id)a3 valueType:(id)a4 optional:(BOOL)a5 title:(id)a6 description:(id)a7 resolvableInputTypes:(id)a8 typeSpecificMetadata:(id)a9 dynamicOptionsSupport:(int64_t)a10 inputConnectionBehavior:(int64_t)a11 capabilities:(unint64_t)a12 queryIdentifier:(id)a13
+- (LNActionParameterMetadata)initWithName:(id)name valueType:(id)type optional:(BOOL)optional title:(id)title description:(id)description resolvableInputTypes:(id)types typeSpecificMetadata:(id)metadata dynamicOptionsSupport:(int64_t)self0 inputConnectionBehavior:(int64_t)self1 capabilities:(unint64_t)self2 queryIdentifier:(id)self3
 {
-  v45 = a3;
-  v19 = a4;
-  v20 = a6;
-  v44 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a13;
-  if (v21)
+  nameCopy = name;
+  typeCopy = type;
+  titleCopy = title;
+  descriptionCopy = description;
+  typesCopy = types;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  if (typesCopy)
   {
-    if (v19)
+    if (typeCopy)
     {
       goto LABEL_3;
     }
@@ -585,17 +585,17 @@ LABEL_13:
 
   else
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v41 handleFailureInMethod:a2 object:self file:@"LNActionParameterMetadata.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"resolvableInputTypes"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNActionParameterMetadata.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"resolvableInputTypes"}];
 
-    if (v19)
+    if (typeCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v42 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v42 handleFailureInMethod:a2 object:self file:@"LNActionParameterMetadata.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"valueType"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNActionParameterMetadata.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"valueType"}];
 
 LABEL_3:
   v46.receiver = self;
@@ -603,11 +603,11 @@ LABEL_3:
   v24 = [(LNActionParameterMetadata *)&v46 init];
   if (v24)
   {
-    v25 = [v45 copy];
+    v25 = [nameCopy copy];
     name = v24->_name;
     v24->_name = v25;
 
-    v27 = v20;
+    v27 = titleCopy;
     if (v27)
     {
       objc_opt_class();
@@ -632,24 +632,24 @@ LABEL_3:
     title = v24->_title;
     v24->_title = v29;
 
-    objc_storeStrong(&v24->_parameterDescription, a7);
-    v31 = [v19 copy];
+    objc_storeStrong(&v24->_parameterDescription, description);
+    v31 = [typeCopy copy];
     valueType = v24->_valueType;
     v24->_valueType = v31;
 
-    v24->_optional = a5;
-    v33 = [v21 copy];
+    v24->_optional = optional;
+    v33 = [typesCopy copy];
     resolvableInputTypes = v24->_resolvableInputTypes;
     v24->_resolvableInputTypes = v33;
 
-    v35 = [v22 copy];
+    v35 = [metadataCopy copy];
     typeSpecificMetadata = v24->_typeSpecificMetadata;
     v24->_typeSpecificMetadata = v35;
 
-    v24->_dynamicOptionsSupport = a10;
-    v24->_inputConnectionBehavior = a11;
-    v24->_capabilities = a12;
-    v37 = [v23 copy];
+    v24->_dynamicOptionsSupport = support;
+    v24->_inputConnectionBehavior = behavior;
+    v24->_capabilities = capabilities;
+    v37 = [identifierCopy copy];
     queryIdentifier = v24->_queryIdentifier;
     v24->_queryIdentifier = v37;
 

@@ -1,31 +1,31 @@
 @interface PGChildOutdoorMemoryGenerator
-- (PGChildOutdoorMemoryGenerator)initWithMemoryGenerationContext:(id)a3;
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4;
-- (id)outdoorROINodesInGraph:(id)a3;
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8;
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3;
-- (unint64_t)numberOfRelevantAssetsForMomentNodes:(id)a3 featureNodes:(id)a4;
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4;
+- (PGChildOutdoorMemoryGenerator)initWithMemoryGenerationContext:(id)context;
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph;
+- (id)outdoorROINodesInGraph:(id)graph;
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type;
+- (unint64_t)numberOfRelevantAssetsForMomentNodes:(id)nodes featureNodes:(id)featureNodes;
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation PGChildOutdoorMemoryGenerator
 
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
-  v9 = a3;
-  v10 = a7;
-  v11 = [v9 memoryFeatureNodes];
-  v12 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:v11];
+  memoryCopy = memory;
+  contextCopy = context;
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  v12 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:memoryFeatureNodes];
   if ([v12 count] == 1)
   {
     v13 = [PGChildOutdoorMemoryTitleGenerator alloc];
-    v14 = [v9 memoryMomentNodes];
-    v15 = [v14 temporarySet];
-    v16 = [v12 anyNode];
-    v17 = [(PGChildOutdoorMemoryTitleGenerator *)v13 initWithMomentNodes:v15 personNode:v16 type:0 titleGenerationContext:v10];
+    memoryMomentNodes = [memoryCopy memoryMomentNodes];
+    temporarySet = [memoryMomentNodes temporarySet];
+    anyNode = [v12 anyNode];
+    v17 = [(PGChildOutdoorMemoryTitleGenerator *)v13 initWithMomentNodes:temporarySet personNode:anyNode type:0 titleGenerationContext:contextCopy];
 
-    v18 = [v9 memoryFeatureNodes];
-    v19 = [(PGGraphNodeCollection *)PGGraphYearNodeCollection subsetInCollection:v18];
+    memoryFeatureNodes2 = [memoryCopy memoryFeatureNodes];
+    v19 = [(PGGraphNodeCollection *)PGGraphYearNodeCollection subsetInCollection:memoryFeatureNodes2];
 
     if ([v19 count] == 1)
     {
@@ -47,51 +47,51 @@
   return v17;
 }
 
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph
 {
   v11.receiver = self;
   v11.super_class = PGChildOutdoorMemoryGenerator;
-  v5 = a3;
-  v6 = [(PGMemoryGenerator *)&v11 keyAssetCurationOptionsWithTriggeredMemory:v5 inGraph:a4];
-  v7 = [v5 memoryFeatureNodes];
+  memoryCopy = memory;
+  v6 = [(PGMemoryGenerator *)&v11 keyAssetCurationOptionsWithTriggeredMemory:memoryCopy inGraph:graph];
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
 
-  v8 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:v7];
-  v9 = [v8 localIdentifiers];
-  [v6 setReferencePersonLocalIdentifiers:v9];
+  v8 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:memoryFeatureNodes];
+  localIdentifiers = [v8 localIdentifiers];
+  [v6 setReferencePersonLocalIdentifiers:localIdentifiers];
 
   return v6;
 }
 
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [PGMemoryGeneratorUtils babyAndChildPersonNodesAtHomeOrFrequentLocationInGraph:v5];
+  graphCopy = graph;
+  blockCopy = block;
+  v7 = [PGMemoryGeneratorUtils babyAndChildPersonNodesAtHomeOrFrequentLocationInGraph:graphCopy];
   if ([v7 count])
   {
-    v8 = [PGMemoryGeneratorUtils outdoorROIMomentNodesNotAtHomeOrFrequentLocationInGraph:v5 useMomentFeatureEdges:1];
+    v8 = [PGMemoryGeneratorUtils outdoorROIMomentNodesNotAtHomeOrFrequentLocationInGraph:graphCopy useMomentFeatureEdges:1];
     if ([v8 count])
     {
       v9 = MEMORY[0x277D22C90];
       v10 = +[PGGraphMomentNode featureOfMoment];
       v21[0] = v10;
       v11 = +[PGGraphPersonNode filter];
-      v12 = [v11 relation];
-      v21[1] = v12;
+      relation = [v11 relation];
+      v21[1] = relation;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
       v14 = [v9 chain:v13];
 
       v15 = [MEMORY[0x277D22BF8] adjacencyWithSources:v8 relation:v14 targetsClass:objc_opt_class()];
       v16 = [v15 intersectingTargetsWith:v7];
 
-      v17 = [v16 transposed];
+      transposed = [v16 transposed];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __87__PGChildOutdoorMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGraph_usingBlock___block_invoke;
       v19[3] = &unk_278880440;
-      v20 = v6;
-      [v17 enumerateTargetsBySourceWithBlock:v19];
+      v20 = blockCopy;
+      [transposed enumerateTargetsBySourceWithBlock:v19];
     }
   }
 
@@ -106,48 +106,48 @@ void __87__PGChildOutdoorMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGr
   (*(v6 + 16))(v6, v7, v8, a4);
 }
 
-- (unint64_t)numberOfRelevantAssetsForMomentNodes:(id)a3 featureNodes:(id)a4
+- (unint64_t)numberOfRelevantAssetsForMomentNodes:(id)nodes featureNodes:(id)featureNodes
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nodesCopy = nodes;
+  featureNodesCopy = featureNodes;
   if ([(PGOverTimeMemoryGenerator *)self intersectRelevantAssetsForFeatures])
   {
-    v8 = [(PGMemoryGenerator *)self loggingConnection];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v21[0]) = 0;
-      _os_log_error_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_ERROR, "Cannot set intersectRelevantAssetsForFeatures=YES and override this superclass method", v21, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Cannot set intersectRelevantAssetsForFeatures=YES and override this superclass method", v21, 2u);
     }
   }
 
-  if ([v6 count])
+  if ([nodesCopy count])
   {
-    v9 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:v7];
+    v9 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:featureNodesCopy];
     if ([v9 count] == 1)
     {
-      v10 = [(PGGraphEdgeCollection *)PGGraphMomentFeaturesEdgeCollection edgesFromNodes:v6 toNodes:v9];
-      v11 = [v6 graph];
-      v12 = [(PGChildOutdoorMemoryGenerator *)self outdoorROINodesInGraph:v11];
+      loggingConnection2 = [(PGGraphEdgeCollection *)PGGraphMomentFeaturesEdgeCollection edgesFromNodes:nodesCopy toNodes:v9];
+      graph = [nodesCopy graph];
+      v12 = [(PGChildOutdoorMemoryGenerator *)self outdoorROINodesInGraph:graph];
 
-      v13 = [(PGGraphEdgeCollection *)PGGraphMomentFeaturesEdgeCollection edgesFromNodes:v6 toNodes:v12];
-      v14 = [v13 allRelevantAssetUUIDs];
-      v15 = [v14 mutableCopy];
+      v13 = [(PGGraphEdgeCollection *)PGGraphMomentFeaturesEdgeCollection edgesFromNodes:nodesCopy toNodes:v12];
+      allRelevantAssetUUIDs = [v13 allRelevantAssetUUIDs];
+      v15 = [allRelevantAssetUUIDs mutableCopy];
 
-      v16 = [v10 allRelevantAssetUUIDs];
-      [v15 intersectSet:v16];
+      allRelevantAssetUUIDs2 = [loggingConnection2 allRelevantAssetUUIDs];
+      [v15 intersectSet:allRelevantAssetUUIDs2];
       v17 = [v15 count];
     }
 
     else
     {
-      v10 = [(PGMemoryGenerator *)self loggingConnection];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      loggingConnection2 = [(PGMemoryGenerator *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
       {
         v20 = [v9 count];
         v21[0] = 67109120;
         v21[1] = v20;
-        _os_log_error_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_ERROR, "[PGChildOutdoorMemoryGenerator] One person node expected, found %d", v21, 8u);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "[PGChildOutdoorMemoryGenerator] One person node expected, found %d", v21, 8u);
       }
 
       v17 = 0;
@@ -163,12 +163,12 @@ void __87__PGChildOutdoorMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGr
   return v17;
 }
 
-- (id)outdoorROINodesInGraph:(id)a3
+- (id)outdoorROINodesInGraph:(id)graph
 {
   outdoorROINodes = self->_outdoorROINodes;
   if (!outdoorROINodes)
   {
-    v5 = [PGMemoryGeneratorUtils outdoorROINodesInGraph:a3];
+    v5 = [PGMemoryGeneratorUtils outdoorROINodesInGraph:graph];
     v6 = self->_outdoorROINodes;
     self->_outdoorROINodes = v5;
 
@@ -178,34 +178,34 @@ void __87__PGChildOutdoorMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGr
   return outdoorROINodes;
 }
 
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (type == 1)
   {
     result = 15005;
   }
 
   else
   {
-    v3 = a3;
-    if (a3 == 3)
+    typeCopy = type;
+    if (type == 3)
     {
       result = 15006;
     }
 
     else
     {
-      v5 = [(PGMemoryGenerator *)self loggingConnection];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
         v9 = 138412546;
         v10 = v8;
         v11 = 1024;
-        v12 = v3;
-        _os_log_error_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
+        v12 = typeCopy;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
       }
 
       result = 0;
@@ -216,11 +216,11 @@ void __87__PGChildOutdoorMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGr
   return result;
 }
 
-- (PGChildOutdoorMemoryGenerator)initWithMemoryGenerationContext:(id)a3
+- (PGChildOutdoorMemoryGenerator)initWithMemoryGenerationContext:(id)context
 {
   v16.receiver = self;
   v16.super_class = PGChildOutdoorMemoryGenerator;
-  v3 = [(PGMemoryGenerator *)&v16 initWithMemoryGenerationContext:a3];
+  v3 = [(PGMemoryGenerator *)&v16 initWithMemoryGenerationContext:context];
   v4 = v3;
   if (v3)
   {

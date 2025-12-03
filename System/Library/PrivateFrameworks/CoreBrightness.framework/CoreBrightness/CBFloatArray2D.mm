@@ -1,26 +1,26 @@
 @interface CBFloatArray2D
-- (CBFloatArray2D)initWithValues:(float *)a3 andCountCols:(unint64_t)a4 andRows:(unint64_t)a5;
+- (CBFloatArray2D)initWithValues:(float *)values andCountCols:(unint64_t)cols andRows:(unint64_t)rows;
 @end
 
 @implementation CBFloatArray2D
 
-- (CBFloatArray2D)initWithValues:(float *)a3 andCountCols:(unint64_t)a4 andRows:(unint64_t)a5
+- (CBFloatArray2D)initWithValues:(float *)values andCountCols:(unint64_t)cols andRows:(unint64_t)rows
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
-  v8 = a4;
-  v7 = a5;
+  valuesCopy = values;
+  colsCopy = cols;
+  rowsCopy = rows;
   v6.receiver = self;
   v6.super_class = CBFloatArray2D;
-  v11 = [(CBFloatArray *)&v6 initWithValues:a3 andCount:a4 * a5];
-  if (v11)
+  selfCopy = [(CBFloatArray *)&v6 initWithValues:values andCount:cols * rows];
+  if (selfCopy)
   {
-    v11->_cols = v8;
-    v11->_rows = v7;
+    selfCopy->_cols = colsCopy;
+    selfCopy->_rows = rowsCopy;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

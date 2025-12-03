@@ -1,27 +1,27 @@
 @interface TPSKVOManager
-- (TPSKVOManager)initWithObserver:(id)a3;
+- (TPSKVOManager)initWithObserver:(id)observer;
 - (__CFDictionary)KVODictionary;
 - (id)observer;
-- (void)addKVOObject:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6;
+- (void)addKVOObject:(id)object forKeyPath:(id)path options:(unint64_t)options context:(void *)context;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeAllKVOObjects;
-- (void)removeKVOForObject:(id)a3;
-- (void)removeKVOObject:(id)a3 forKeyPath:(id)a4;
+- (void)removeKVOForObject:(id)object;
+- (void)removeKVOObject:(id)object forKeyPath:(id)path;
 @end
 
 @implementation TPSKVOManager
 
-- (TPSKVOManager)initWithObserver:(id)a3
+- (TPSKVOManager)initWithObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v8.receiver = self;
   v8.super_class = TPSKVOManager;
   v5 = [(TPSKVOManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(TPSKVOManager *)v5 setObserver:v4];
+    [(TPSKVOManager *)v5 setObserver:observerCopy];
   }
 
   return v6;
@@ -55,60 +55,60 @@
   return result;
 }
 
-- (void)addKVOObject:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6
+- (void)addKVOObject:(id)object forKeyPath:(id)path options:(unint64_t)options context:(void *)context
 {
-  key = a3;
-  v10 = a4;
-  if (key && v10)
+  key = object;
+  pathCopy = path;
+  if (key && pathCopy)
   {
     if ([(TPSKVOManager *)self KVODictionary]&& (CFDictionaryGetValue([(TPSKVOManager *)self KVODictionary], key), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v12 = v11;
-      if ([v11 indexOfObject:v10] == 0x7FFFFFFFFFFFFFFFLL)
+      array = v11;
+      if ([v11 indexOfObject:pathCopy] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        [key addObserver:self forKeyPath:v10 options:a5 context:a6];
-        [v12 addObject:v10];
+        [key addObserver:self forKeyPath:pathCopy options:options context:context];
+        [array addObject:pathCopy];
       }
     }
 
     else
     {
-      [key addObserver:self forKeyPath:v10 options:a5 context:a6];
-      v12 = [MEMORY[0x1E695DF70] array];
-      [v12 addObject:v10];
-      CFDictionarySetValue([(TPSKVOManager *)self KVODictionary], key, v12);
+      [key addObserver:self forKeyPath:pathCopy options:options context:context];
+      array = [MEMORY[0x1E695DF70] array];
+      [array addObject:pathCopy];
+      CFDictionarySetValue([(TPSKVOManager *)self KVODictionary], key, array);
     }
   }
 }
 
-- (void)removeKVOObject:(id)a3 forKeyPath:(id)a4
+- (void)removeKVOObject:(id)object forKeyPath:(id)path
 {
-  key = a3;
-  v6 = a4;
-  if (v6 && key && self->_KVODictionary)
+  key = object;
+  pathCopy = path;
+  if (pathCopy && key && self->_KVODictionary)
   {
     v7 = CFDictionaryGetValue([(TPSKVOManager *)self KVODictionary], key);
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 indexOfObject:v6];
+      v9 = [v7 indexOfObject:pathCopy];
       if (v9 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v10 = v9;
-        [key removeObserver:self forKeyPath:v6];
+        [key removeObserver:self forKeyPath:pathCopy];
         [v8 removeObjectAtIndex:v10];
       }
     }
   }
 }
 
-- (void)removeKVOForObject:(id)a3
+- (void)removeKVOForObject:(id)object
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && self->_KVODictionary)
+  objectCopy = object;
+  if (objectCopy && self->_KVODictionary)
   {
-    v5 = CFDictionaryGetValue([(TPSKVOManager *)self KVODictionary], v4);
+    v5 = CFDictionaryGetValue([(TPSKVOManager *)self KVODictionary], objectCopy);
     v6 = v5;
     if (v5)
     {
@@ -131,7 +131,7 @@
               objc_enumerationMutation(v6);
             }
 
-            [v4 removeObserver:self forKeyPath:*(*(&v12 + 1) + 8 * v10++)];
+            [objectCopy removeObserver:self forKeyPath:*(*(&v12 + 1) + 8 * v10++)];
           }
 
           while (v8 != v10);
@@ -141,7 +141,7 @@
         while (v8);
       }
 
-      CFDictionaryRemoveValue(self->_KVODictionary, v4);
+      CFDictionaryRemoveValue(self->_KVODictionary, objectCopy);
     }
   }
 
@@ -235,19 +235,19 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v17 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(TPSKVOManager *)self observer];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  observer = [(TPSKVOManager *)self observer];
   v13 = objc_opt_respondsToSelector();
 
-  v14 = [(TPSKVOManager *)self observer];
-  v15 = v14;
+  observer2 = [(TPSKVOManager *)self observer];
+  observer3 = observer2;
   if (v13)
   {
-    [v14 performSelector:a6 withObject:v10 withObject:v11];
+    [observer2 performSelector:context withObject:objectCopy withObject:changeCopy];
   }
 
   else
@@ -259,8 +259,8 @@
       goto LABEL_6;
     }
 
-    v15 = [(TPSKVOManager *)self observer];
-    [v15 observeValueForKeyPath:v17 ofObject:v10 change:v11 context:a6];
+    observer3 = [(TPSKVOManager *)self observer];
+    [observer3 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
 LABEL_6:

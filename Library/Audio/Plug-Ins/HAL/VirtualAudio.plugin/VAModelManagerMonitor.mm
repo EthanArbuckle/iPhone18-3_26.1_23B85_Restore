@@ -1,21 +1,21 @@
 @interface VAModelManagerMonitor
-- (void)register_for_inference_monitor_eventsWithHash:(unint64_t)a3 eventCallback:(id)a4 completionHandler:;
-- (void)unregister_from_inference_monitorWithObserver:(unint64_t)a3 completionHandler:(id)a4;
+- (void)register_for_inference_monitor_eventsWithHash:(unint64_t)hash eventCallback:(id)callback completionHandler:;
+- (void)unregister_from_inference_monitorWithObserver:(unint64_t)observer completionHandler:(id)handler;
 @end
 
 @implementation VAModelManagerMonitor
 
-- (void)register_for_inference_monitor_eventsWithHash:(unint64_t)a3 eventCallback:(id)a4 completionHandler:
+- (void)register_for_inference_monitor_eventsWithHash:(unint64_t)hash eventCallback:(id)callback completionHandler:
 {
   v5 = v4;
   v9 = sub_1D1138(&qword_6E48F8, &qword_516E88);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v19 - v11;
-  v13 = _Block_copy(a4);
+  v13 = _Block_copy(callback);
   v14 = _Block_copy(v5);
   v15 = swift_allocObject();
-  v15[2] = a3;
+  v15[2] = hash;
   v15[3] = v13;
   v15[4] = v14;
   v15[5] = self;
@@ -35,15 +35,15 @@
   sub_1D0460(0, 0, v12, &unk_517098, v18);
 }
 
-- (void)unregister_from_inference_monitorWithObserver:(unint64_t)a3 completionHandler:(id)a4
+- (void)unregister_from_inference_monitorWithObserver:(unint64_t)observer completionHandler:(id)handler
 {
   v7 = sub_1D1138(&qword_6E48F8, &qword_516E88);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v16 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = observer;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_51349C();

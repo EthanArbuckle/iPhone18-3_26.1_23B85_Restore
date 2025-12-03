@@ -2,8 +2,8 @@
 - (NSArray)destinationRegions;
 - (NSArray)snapshots;
 - (_UIFocusMapSearchInfo)init;
-- (void)addDestinationRegion:(id)a3;
-- (void)addSnapshot:(id)a3;
+- (void)addDestinationRegion:(id)region;
+- (void)addSnapshot:(id)snapshot;
 @end
 
 @implementation _UIFocusMapSearchInfo
@@ -31,42 +31,42 @@
 
 - (NSArray)snapshots
 {
-  v2 = [(_UIFocusMapSearchInfo *)self mutableSnapshots];
-  v3 = [v2 copy];
+  mutableSnapshots = [(_UIFocusMapSearchInfo *)self mutableSnapshots];
+  v3 = [mutableSnapshots copy];
 
   return v3;
 }
 
 - (NSArray)destinationRegions
 {
-  v2 = [(_UIFocusMapSearchInfo *)self mutableDestinationRegions];
-  v3 = [v2 copy];
+  mutableDestinationRegions = [(_UIFocusMapSearchInfo *)self mutableDestinationRegions];
+  v3 = [mutableDestinationRegions copy];
 
   return v3;
 }
 
-- (void)addSnapshot:(id)a3
+- (void)addSnapshot:(id)snapshot
 {
-  v5 = a3;
-  if (v5)
+  snapshotCopy = snapshot;
+  if (snapshotCopy)
   {
-    v4 = [(_UIFocusMapSearchInfo *)self mutableSnapshots];
-    [v4 addObject:v5];
+    mutableSnapshots = [(_UIFocusMapSearchInfo *)self mutableSnapshots];
+    [mutableSnapshots addObject:snapshotCopy];
 
     if (self->_hasOnlyStaticContent)
     {
-      self->_hasOnlyStaticContent &= [v5 hasOnlyStaticContent];
+      self->_hasOnlyStaticContent &= [snapshotCopy hasOnlyStaticContent];
     }
   }
 }
 
-- (void)addDestinationRegion:(id)a3
+- (void)addDestinationRegion:(id)region
 {
-  if (a3)
+  if (region)
   {
-    v4 = a3;
-    v5 = [(_UIFocusMapSearchInfo *)self mutableDestinationRegions];
-    [v5 addObject:v4];
+    regionCopy = region;
+    mutableDestinationRegions = [(_UIFocusMapSearchInfo *)self mutableDestinationRegions];
+    [mutableDestinationRegions addObject:regionCopy];
   }
 }
 

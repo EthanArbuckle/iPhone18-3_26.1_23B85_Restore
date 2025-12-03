@@ -1,14 +1,14 @@
 @interface RootSideBarController.RootSideBarCollectionView
 - (CGSize)contentSize;
-- (_TtCC8VideosUI21RootSideBarController25RootSideBarCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
-- (void)setContentSize:(CGSize)a3;
+- (_TtCC8VideosUI21RootSideBarController25RootSideBarCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation RootSideBarController.RootSideBarCollectionView
 
 - (CGSize)contentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3ACCD58();
   v4 = v3;
   v6 = v5;
@@ -20,15 +20,15 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   sub_1E3ACCDF0(width, height);
 }
 
-- (_TtCC8VideosUI21RootSideBarController25RootSideBarCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtCC8VideosUI21RootSideBarController25RootSideBarCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   OUTLINED_FUNCTION_0_8();
   v5 = v4;

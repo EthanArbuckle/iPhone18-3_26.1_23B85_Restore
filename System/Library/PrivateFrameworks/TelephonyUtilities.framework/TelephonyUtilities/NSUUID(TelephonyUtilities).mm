@@ -15,7 +15,7 @@
     a3 = 0;
     if (v6 && v7)
     {
-      a3 = [a1 tu_UUIDv5ForData:v7 namespaceUUID:v6];
+      a3 = [self tu_UUIDv5ForData:v7 namespaceUUID:v6];
     }
   }
 
@@ -35,10 +35,10 @@
     memset(&v11, 0, sizeof(v11));
     CC_SHA1_Init(&v11);
     CC_SHA1_Update(&v11, data, 0x10u);
-    v7 = [v6 bytes];
+    bytes = [v6 bytes];
     v8 = [v6 length];
 
-    CC_SHA1_Update(&v11, v7, v8);
+    CC_SHA1_Update(&v11, bytes, v8);
     CC_SHA1_Final(md, &v11);
     v14 = *md;
     BYTE6(v14) = md[6] & 0xF | 0x50;

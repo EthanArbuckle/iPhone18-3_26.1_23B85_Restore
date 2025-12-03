@@ -1,23 +1,23 @@
 @interface ASCLockupFeatureShortName
-- (ASCLockupFeatureShortName)initWithCoder:(id)a3;
-- (ASCLockupFeatureShortName)initWithShortName:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCLockupFeatureShortName)initWithCoder:(id)coder;
+- (ASCLockupFeatureShortName)initWithShortName:(id)name;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCLockupFeatureShortName
 
-- (ASCLockupFeatureShortName)initWithShortName:(id)a3
+- (ASCLockupFeatureShortName)initWithShortName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = ASCLockupFeatureShortName;
   v5 = [(ASCLockupFeatureShortName *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     shortName = v5->_shortName;
     v5->_shortName = v6;
   }
@@ -25,36 +25,36 @@
   return v5;
 }
 
-- (ASCLockupFeatureShortName)initWithCoder:(id)a3
+- (ASCLockupFeatureShortName)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortName"];
 
   v6 = [(ASCLockupFeatureShortName *)self initWithShortName:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCLockupFeatureShortName *)self shortName];
-  [v4 encodeObject:v5 forKey:@"shortName"];
+  coderCopy = coder;
+  shortName = [(ASCLockupFeatureShortName *)self shortName];
+  [coderCopy encodeObject:shortName forKey:@"shortName"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCLockupFeatureShortName *)self shortName];
-  [(ASCHasher *)v3 combineObject:v4];
+  shortName = [(ASCLockupFeatureShortName *)self shortName];
+  [(ASCHasher *)v3 combineObject:shortName];
 
-  v5 = [(ASCHasher *)v3 finalizeHash];
-  return v5;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -62,7 +62,7 @@
   else
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -85,17 +85,17 @@
 
     if (v8)
     {
-      v9 = [(ASCLockupFeatureShortName *)self shortName];
-      v10 = [(ASCLockupFeatureShortName *)v8 shortName];
-      v11 = v10;
-      if (v9 && v10)
+      shortName = [(ASCLockupFeatureShortName *)self shortName];
+      shortName2 = [(ASCLockupFeatureShortName *)v8 shortName];
+      v11 = shortName2;
+      if (shortName && shortName2)
       {
-        v7 = [v9 isEqual:v10];
+        v7 = [shortName isEqual:shortName2];
       }
 
       else
       {
-        v7 = v9 == v10;
+        v7 = shortName == shortName2;
       }
     }
 
@@ -111,12 +111,12 @@
 - (NSString)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCLockupFeatureShortName *)self shortName];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"shortName"];
+  shortName = [(ASCLockupFeatureShortName *)self shortName];
+  [(ASCDescriber *)v3 addObject:shortName withName:@"shortName"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
 @end

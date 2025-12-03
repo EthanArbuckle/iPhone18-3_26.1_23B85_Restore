@@ -1,36 +1,36 @@
 @interface THCanvasEditor
-- (BOOL)p_canNavigateByBookDirection:(int)a3 bookGranularity:(int)a4;
-- (BOOL)p_canNavigateByHistoryDirection:(int)a3;
-- (void)insertText:(id)a3 replacementRange:(_NSRange)a4;
-- (void)p_navigateByBookDirection:(int)a3 bookGranularity:(int)a4;
-- (void)p_navigateByHistoryDirection:(int)a3;
+- (BOOL)p_canNavigateByBookDirection:(int)direction bookGranularity:(int)granularity;
+- (BOOL)p_canNavigateByHistoryDirection:(int)direction;
+- (void)insertText:(id)text replacementRange:(_NSRange)range;
+- (void)p_navigateByBookDirection:(int)direction bookGranularity:(int)granularity;
+- (void)p_navigateByHistoryDirection:(int)direction;
 @end
 
 @implementation THCanvasEditor
 
-- (void)insertText:(id)a3 replacementRange:(_NSRange)a4
+- (void)insertText:(id)text replacementRange:(_NSRange)range
 {
-  if ([a3 length] == &dword_0 + 1 && objc_msgSend(a3, "characterAtIndex:", 0) == 32)
+  if ([text length] == &dword_0 + 1 && objc_msgSend(text, "characterAtIndex:", 0) == 32)
   {
 
     [(THCanvasEditor *)self p_navigateByBookDirection:1 bookGranularity:1];
   }
 }
 
-- (BOOL)p_canNavigateByBookDirection:(int)a3 bookGranularity:(int)a4
+- (BOOL)p_canNavigateByBookDirection:(int)direction bookGranularity:(int)granularity
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&granularity;
+  v5 = *&direction;
   objc_opt_class();
   [(THCanvasEditor *)self interactiveCanvasController];
   v7 = TSUDynamicCast();
-  v8 = [v7 delegate];
+  delegate = [v7 delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  v9 = [v8 documentNavigatorForInteractiveCanvasController:v7];
+  v9 = [delegate documentNavigatorForInteractiveCanvasController:v7];
   if (!v9)
   {
     return 0;
@@ -39,19 +39,19 @@
   return [v9 canNavigateByBookDirection:v5 bookGranularity:v4];
 }
 
-- (void)p_navigateByBookDirection:(int)a3 bookGranularity:(int)a4
+- (void)p_navigateByBookDirection:(int)direction bookGranularity:(int)granularity
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&granularity;
+  v5 = *&direction;
   if ([THCanvasEditor p_canNavigateByBookDirection:"p_canNavigateByBookDirection:bookGranularity:" bookGranularity:?])
   {
     objc_opt_class();
     [(THCanvasEditor *)self interactiveCanvasController];
     v7 = TSUDynamicCast();
-    v8 = [v7 delegate];
+    delegate = [v7 delegate];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v8 documentNavigatorForInteractiveCanvasController:v7];
+      v9 = [delegate documentNavigatorForInteractiveCanvasController:v7];
       if (v9)
       {
 
@@ -61,19 +61,19 @@
   }
 }
 
-- (BOOL)p_canNavigateByHistoryDirection:(int)a3
+- (BOOL)p_canNavigateByHistoryDirection:(int)direction
 {
-  v3 = *&a3;
+  v3 = *&direction;
   objc_opt_class();
   [(THCanvasEditor *)self interactiveCanvasController];
   v5 = TSUDynamicCast();
-  v6 = [v5 delegate];
+  delegate = [v5 delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  v7 = [v6 documentNavigatorForInteractiveCanvasController:v5];
+  v7 = [delegate documentNavigatorForInteractiveCanvasController:v5];
   if (!v7)
   {
     return 0;
@@ -82,18 +82,18 @@
   return [v7 canNavigateByHistoryDirection:v3];
 }
 
-- (void)p_navigateByHistoryDirection:(int)a3
+- (void)p_navigateByHistoryDirection:(int)direction
 {
-  v3 = *&a3;
+  v3 = *&direction;
   if ([(THCanvasEditor *)self p_canNavigateByHistoryDirection:?])
   {
     objc_opt_class();
     [(THCanvasEditor *)self interactiveCanvasController];
     v5 = TSUDynamicCast();
-    v6 = [v5 delegate];
+    delegate = [v5 delegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 documentNavigatorForInteractiveCanvasController:v5];
+      v7 = [delegate documentNavigatorForInteractiveCanvasController:v5];
       if (v7)
       {
 

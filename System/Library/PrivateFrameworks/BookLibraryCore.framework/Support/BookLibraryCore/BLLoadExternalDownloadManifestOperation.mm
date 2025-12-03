@@ -1,32 +1,32 @@
 @interface BLLoadExternalDownloadManifestOperation
-- (BLLoadExternalDownloadManifestOperation)initWithRequest:(id)a3 uiHostProxy:(id)a4 downloadBlock:(id)a5;
-- (BOOL)_runForPurchaseFormatWithURLRequest:(id)a3 error:(id *)a4;
+- (BLLoadExternalDownloadManifestOperation)initWithRequest:(id)request uiHostProxy:(id)proxy downloadBlock:(id)block;
+- (BOOL)_runForPurchaseFormatWithURLRequest:(id)request error:(id *)error;
 - (id)URLRequest;
 - (void)run;
 @end
 
 @implementation BLLoadExternalDownloadManifestOperation
 
-- (BLLoadExternalDownloadManifestOperation)initWithRequest:(id)a3 uiHostProxy:(id)a4 downloadBlock:(id)a5
+- (BLLoadExternalDownloadManifestOperation)initWithRequest:(id)request uiHostProxy:(id)proxy downloadBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  proxyCopy = proxy;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = BLLoadExternalDownloadManifestOperation;
   v11 = [(BLOperation *)&v18 init];
   if (v11)
   {
-    v12 = [v8 URLRequest];
-    v13 = [v12 copy];
+    uRLRequest = [requestCopy URLRequest];
+    v13 = [uRLRequest copy];
     urlRequest = v11->_urlRequest;
     v11->_urlRequest = v13;
 
-    v15 = [v10 copy];
+    v15 = [blockCopy copy];
     downloadBlock = v11->_downloadBlock;
     v11->_downloadBlock = v15;
 
-    objc_storeStrong(&v11->_uiHostProxy, a4);
+    objc_storeStrong(&v11->_uiHostProxy, proxy);
   }
 
   return v11;
@@ -43,13 +43,13 @@
 
 - (void)run
 {
-  v3 = [(BLLoadExternalDownloadManifestOperation *)self URLRequest];
-  v4 = [v3 URL];
+  uRLRequest = [(BLLoadExternalDownloadManifestOperation *)self URLRequest];
+  v4 = [uRLRequest URL];
 
   if (v4)
   {
     v11 = 0;
-    v5 = [(BLLoadExternalDownloadManifestOperation *)self _runForPurchaseFormatWithURLRequest:v3 error:&v11];
+    v5 = [(BLLoadExternalDownloadManifestOperation *)self _runForPurchaseFormatWithURLRequest:uRLRequest error:&v11];
     v6 = v11;
     if (v5)
     {
@@ -89,26 +89,26 @@ LABEL_12:
   [(BLOperation *)self setError:v6];
 }
 
-- (BOOL)_runForPurchaseFormatWithURLRequest:(id)a3 error:(id *)a4
+- (BOOL)_runForPurchaseFormatWithURLRequest:(id)request error:(id *)error
 {
-  v6 = [a3 URL];
+  v6 = [request URL];
   v7 = [[BLLoadStoreDownloadQueueOperation alloc] initWithURL:v6];
-  v8 = [(BLLoadExternalDownloadManifestOperation *)self uiHostProxy];
-  [(BLLoadStoreDownloadQueueOperation *)v7 setUiHostProxy:v8];
+  uiHostProxy = [(BLLoadExternalDownloadManifestOperation *)self uiHostProxy];
+  [(BLLoadStoreDownloadQueueOperation *)v7 setUiHostProxy:uiHostProxy];
 
   v21 = 0;
   v9 = [(BLOperation *)self runSubOperation:v7 returningError:&v21];
   v10 = v21;
   if (v9)
   {
-    v11 = [(BLLoadStoreDownloadQueueOperation *)v7 downloads];
-    v12 = [v11 array];
+    downloads = [(BLLoadStoreDownloadQueueOperation *)v7 downloads];
+    array = [downloads array];
 
-    v13 = [(BLLoadExternalDownloadManifestOperation *)self downloadBlock];
-    v14 = v13;
-    if (v13)
+    downloadBlock = [(BLLoadExternalDownloadManifestOperation *)self downloadBlock];
+    v14 = downloadBlock;
+    if (downloadBlock)
     {
-      (*(v13 + 16))(v13, v12, v10);
+      (*(downloadBlock + 16))(downloadBlock, array, v10);
     }
   }
 
@@ -126,18 +126,18 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%@: Request failed with error:  %@", buf, 0x16u);
     }
 
-    v18 = [(BLLoadExternalDownloadManifestOperation *)self downloadBlock];
-    v12 = v18;
-    if (v18)
+    downloadBlock2 = [(BLLoadExternalDownloadManifestOperation *)self downloadBlock];
+    array = downloadBlock2;
+    if (downloadBlock2)
     {
-      (*(v18 + 16))(v18, 0, v10);
+      (*(downloadBlock2 + 16))(downloadBlock2, 0, v10);
     }
   }
 
-  if (a4)
+  if (error)
   {
     v19 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v9;

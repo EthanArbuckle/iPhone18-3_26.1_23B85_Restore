@@ -1,6 +1,6 @@
 @interface TSWPTextMeasurerBundle
 - (TSWPFontHeightInfo)fontHeightInfo;
-- (void)setFontHeightInfo:(TSWPFontHeightInfo *)a3;
+- (void)setFontHeightInfo:(TSWPFontHeightInfo *)info;
 @end
 
 @implementation TSWPTextMeasurerBundle
@@ -19,15 +19,15 @@
   return self;
 }
 
-- (void)setFontHeightInfo:(TSWPFontHeightInfo *)a3
+- (void)setFontHeightInfo:(TSWPFontHeightInfo *)info
 {
-  v3 = *&a3->spaceBefore;
-  *&self->_fontHeightInfo.ascent = *&a3->ascent;
+  v3 = *&info->spaceBefore;
+  *&self->_fontHeightInfo.ascent = *&info->ascent;
   *&self->_fontHeightInfo.spaceBefore = v3;
-  v4 = *&a3->descent;
-  v5 = *&a3->leadingBelow;
-  v6 = *&a3->verticalHeight;
-  *&self->_fontHeightInfo.underlinePosition = *&a3->underlinePosition;
+  v4 = *&info->descent;
+  v5 = *&info->leadingBelow;
+  v6 = *&info->verticalHeight;
+  *&self->_fontHeightInfo.underlinePosition = *&info->underlinePosition;
   *&self->_fontHeightInfo.verticalHeight = v6;
   *&self->_fontHeightInfo.leadingBelow = v5;
   *&self->_fontHeightInfo.descent = v4;

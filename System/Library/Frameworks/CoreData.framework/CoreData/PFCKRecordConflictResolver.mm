@@ -1,14 +1,14 @@
 @interface PFCKRecordConflictResolver
-- (PFCKRecordConflictResolver)initWithAncestorRecord:(id)a3 serverRecord:(id)a4 clientRecord:(id)a5;
+- (PFCKRecordConflictResolver)initWithAncestorRecord:(id)record serverRecord:(id)serverRecord clientRecord:(id)clientRecord;
 - (void)dealloc;
 @end
 
 @implementation PFCKRecordConflictResolver
 
-- (PFCKRecordConflictResolver)initWithAncestorRecord:(id)a3 serverRecord:(id)a4 clientRecord:(id)a5
+- (PFCKRecordConflictResolver)initWithAncestorRecord:(id)record serverRecord:(id)serverRecord clientRecord:(id)clientRecord
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  if (a3 && (getCloudKitCKShareClass[0](), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || a4 && (getCloudKitCKShareClass[0](), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || a5 && (getCloudKitCKShareClass[0](), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (record && (getCloudKitCKShareClass[0](), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || serverRecord && (getCloudKitCKShareClass[0](), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || clientRecord && (getCloudKitCKShareClass[0](), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
@@ -30,9 +30,9 @@
   v11 = [(PFCKRecordConflictResolver *)&v25 init];
   if (v11)
   {
-    v11->_ancestorRecord = a3;
-    v11->_serverRecord = a4;
-    v11->_clientRecord = a5;
+    v11->_ancestorRecord = record;
+    v11->_serverRecord = serverRecord;
+    v11->_clientRecord = clientRecord;
     objc_opt_self();
     v12 = objc_alloc_init(NSManagedObjectModel);
     v13 = objc_alloc_init(NSEntityDescription);

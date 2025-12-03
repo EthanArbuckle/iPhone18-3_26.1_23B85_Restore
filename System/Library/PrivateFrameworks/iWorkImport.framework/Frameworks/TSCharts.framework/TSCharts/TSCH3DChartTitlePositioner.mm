@@ -1,40 +1,40 @@
 @interface TSCH3DChartTitlePositioner
-+ (TSCH3DChartTitlePositioner)positionerWithInfo:(id)a3 scene:(id)a4;
-- (BOOL)hasScene:(id)a3;
-- (TSCH3DChartTitlePositioner)initWithInfo:(id)a3 scene:(id)a4;
++ (TSCH3DChartTitlePositioner)positionerWithInfo:(id)info scene:(id)scene;
+- (BOOL)hasScene:(id)scene;
+- (TSCH3DChartTitlePositioner)initWithInfo:(id)info scene:(id)scene;
 - (TSCH3DScene)scene;
-- (double)wrapWidthForSize:(CGSize)a3 labelTransform:(const void *)a4;
+- (double)wrapWidthForSize:(CGSize)size labelTransform:(const void *)transform;
 - (id).cxx_construct;
 - (tvec2<float>)sizeOfCategoryAxisLabels;
 - (tvec2<float>)sizeOfSeriesLabels;
 - (tvec2<float>)sizeOfValueAxisLabels;
-- (void)applyParagraphStyle:(id)a3 onLabelTransform:(void *)a4 alignmentDimension:(int)a5;
+- (void)applyParagraphStyle:(id)style onLabelTransform:(void *)transform alignmentDimension:(int)dimension;
 @end
 
 @implementation TSCH3DChartTitlePositioner
 
-+ (TSCH3DChartTitlePositioner)positionerWithInfo:(id)a3 scene:(id)a4
++ (TSCH3DChartTitlePositioner)positionerWithInfo:(id)info scene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v13 = objc_msgSend_initWithInfo_scene_(v8, v9, v10, v11, v12, v6, v7);
+  infoCopy = info;
+  sceneCopy = scene;
+  v8 = [self alloc];
+  v13 = objc_msgSend_initWithInfo_scene_(v8, v9, v10, v11, v12, infoCopy, sceneCopy);
 
   return v13;
 }
 
-- (TSCH3DChartTitlePositioner)initWithInfo:(id)a3 scene:(id)a4
+- (TSCH3DChartTitlePositioner)initWithInfo:(id)info scene:(id)scene
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  sceneCopy = scene;
   v18.receiver = self;
   v18.super_class = TSCH3DChartTitlePositioner;
   v9 = [(TSCH3DChartTitlePositioner *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_info, a3);
-    objc_storeWeak(&v10->_weakScene, v8);
+    objc_storeStrong(&v9->_info, info);
+    objc_storeWeak(&v10->_weakScene, sceneCopy);
     __asm { FMOV            V0.2S, #-1.0 }
 
     v10->_cachedSeriesLabelsSize = _D0;
@@ -65,10 +65,10 @@
   return v4;
 }
 
-- (BOOL)hasScene:(id)a3
+- (BOOL)hasScene:(id)scene
 {
-  v5 = a3;
-  if (!v5)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v6, v7, v8, "[TSCH3DChartTitlePositioner hasScene:]");
@@ -81,7 +81,7 @@
   WeakRetained = objc_loadWeakRetained(&self->_weakScene);
   if (WeakRetained)
   {
-    v25 = WeakRetained == v5;
+    v25 = WeakRetained == sceneCopy;
   }
 
   else
@@ -94,9 +94,9 @@
   return v26;
 }
 
-- (void)applyParagraphStyle:(id)a3 onLabelTransform:(void *)a4 alignmentDimension:(int)a5
+- (void)applyParagraphStyle:(id)style onLabelTransform:(void *)transform alignmentDimension:(int)dimension
 {
-  v10 = objc_msgSend_intValueForProperty_(a3, a2, v5, v6, v7, 86);
+  v10 = objc_msgSend_intValueForProperty_(style, a2, v5, v6, v7, 86);
   if (v10)
   {
     if (v10 != 1)
@@ -114,18 +114,18 @@
     v12 = 0.0;
   }
 
-  *(a4 + a5) = v12;
-  *(a4 + 5) |= v11;
+  *(transform + dimension) = v12;
+  *(transform + 5) |= v11;
 }
 
-- (double)wrapWidthForSize:(CGSize)a3 labelTransform:(const void *)a4
+- (double)wrapWidthForSize:(CGSize)size labelTransform:(const void *)transform
 {
-  if (*(a4 + 28))
+  if (*(transform + 28))
   {
-    a3.width = a3.height;
+    size.width = size.height;
   }
 
-  return a3.width;
+  return size.width;
 }
 
 - (tvec2<float>)sizeOfCategoryAxisLabels
@@ -136,12 +136,12 @@
   LODWORD(v5) = -1.0;
   if (*&v3 == -1.0 && *&v4 == -1.0)
   {
-    v8 = self;
+    selfCopy = self;
     self = objc_msgSend_sizeOfLabelsForInfo_onlyHeight_(TSCHChartCategoryAxis, a2, v3, v4, v5, self->_info, 0);
     *&v3 = v9;
     LODWORD(v4) = v10;
-    v8->_cachedCategoryAxisLabelsSize.var0.var0 = v9;
-    v8->_cachedCategoryAxisLabelsSize.var1.var0 = *&v4;
+    selfCopy->_cachedCategoryAxisLabelsSize.var0.var0 = v9;
+    selfCopy->_cachedCategoryAxisLabelsSize.var1.var0 = *&v4;
   }
 
   *v6 = LODWORD(v3);
@@ -157,12 +157,12 @@
   LODWORD(v5) = -1.0;
   if (*&v3 == -1.0 && *&v4 == -1.0)
   {
-    v8 = self;
+    selfCopy = self;
     self = objc_msgSend_sizeOfLabelsForInfo_onlyHeight_(TSCHChartValueAxis, a2, v3, v4, v5, self->_info, 0);
     *&v3 = v9;
     LODWORD(v4) = v10;
-    v8->_cachedValueAxisLabelsSize.var0.var0 = v9;
-    v8->_cachedValueAxisLabelsSize.var1.var0 = *&v4;
+    selfCopy->_cachedValueAxisLabelsSize.var0.var0 = v9;
+    selfCopy->_cachedValueAxisLabelsSize.var1.var0 = *&v4;
   }
 
   *v6 = LODWORD(v3);
@@ -178,12 +178,12 @@
   LODWORD(v5) = -1.0;
   if (*&v3 == -1.0 && *&v4 == -1.0)
   {
-    v8 = self;
+    selfCopy = self;
     self = objc_msgSend_sizeOfSeriesLabelsForInfo_onlyHeight_(TSCHChartCategoryAxis, a2, v3, v4, v5, self->_info, 0);
     *&v3 = v9;
     LODWORD(v4) = v10;
-    v8->_cachedSeriesLabelsSize.var0.var0 = v9;
-    v8->_cachedSeriesLabelsSize.var1.var0 = *&v4;
+    selfCopy->_cachedSeriesLabelsSize.var0.var0 = v9;
+    selfCopy->_cachedSeriesLabelsSize.var1.var0 = *&v4;
   }
 
   *v6 = LODWORD(v3);

@@ -1,15 +1,15 @@
 @interface INStorageByAppResponse
-- (INStorageByAppResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (INStorageByAppResponse)initWithHTTPResponse:(id)response data:(id)data;
 - (void)_parseResponseDict;
 @end
 
 @implementation INStorageByAppResponse
 
-- (INStorageByAppResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (INStorageByAppResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v9.receiver = self;
   v9.super_class = INStorageByAppResponse;
-  v4 = [(INStorageByAppResponse *)&v9 initWithHTTPResponse:a3 data:a4 bodyIsPlist:0];
+  v4 = [(INStorageByAppResponse *)&v9 initWithHTTPResponse:response data:data bodyIsPlist:0];
   v5 = v4;
   if (v4)
   {

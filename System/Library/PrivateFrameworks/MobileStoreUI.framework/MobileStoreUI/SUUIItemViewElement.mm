@@ -1,18 +1,18 @@
 @interface SUUIItemViewElement
-- (SUUIItemViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIItemViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIItemViewElement
 
-- (SUUIItemViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIItemViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   v24.receiver = self;
   v24.super_class = SUUIItemViewElement;
-  v11 = [(SUUIViewElement *)&v24 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SUUIViewElement *)&v24 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (!v11)
   {
     goto LABEL_7;
@@ -24,7 +24,7 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v19 = [v9 parent];
+      parent = [parentCopy parent];
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
@@ -32,7 +32,7 @@
 
       else
       {
-        v22 = [v9 parent];
+        parent2 = [parentCopy parent];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -56,16 +56,16 @@ LABEL_3:
     {
       v14 = SUUIStackItemViewElement;
 LABEL_13:
-      v18 = [[v14 alloc] initWithDOMElement:v8 parent:v9 elementFactory:v10];
+      v18 = [[v14 alloc] initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
       goto LABEL_14;
     }
   }
 
-  v15 = [(IKTextParser *)SUUIViewElementText textWithDOMElement:v8 usingParseBlock:0];
+  v15 = [(IKTextParser *)SUUIViewElementText textWithDOMElement:elementCopy usingParseBlock:0];
   itemText = v11->_itemText;
   v11->_itemText = v15;
 
-  v17 = [v8 getAttribute:@"selected"];
+  v17 = [elementCopy getAttribute:@"selected"];
   v11->_selected = [v17 BOOLValue];
 
 LABEL_7:
@@ -76,20 +76,20 @@ LABEL_14:
   return v20;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUIItemViewElement;
-  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    v7 = [(SUUIItemViewElement *)v4 itemText];
+    itemText = [(SUUIItemViewElement *)elementCopy itemText];
     itemText = self->_itemText;
-    self->_itemText = v7;
+    self->_itemText = itemText;
 
-    self->_selected = [(SUUIItemViewElement *)v4 isSelected];
+    self->_selected = [(SUUIItemViewElement *)elementCopy isSelected];
   }
 
   return v6;

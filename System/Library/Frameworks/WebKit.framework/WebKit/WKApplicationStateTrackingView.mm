@@ -1,6 +1,6 @@
 @interface WKApplicationStateTrackingView
 - (BOOL)isBackground;
-- (WKApplicationStateTrackingView)initWithFrame:(CGRect)a3 webView:(id)a4;
+- (WKApplicationStateTrackingView)initWithFrame:(CGRect)frame webView:(id)view;
 - (id).cxx_construct;
 - (void)_applicationDidEnterBackground;
 - (void)_applicationDidFinishSnapshottingAfterEnteringBackground;
@@ -8,7 +8,7 @@
 - (void)_didCompleteSnapshotSequence;
 - (void)_willBeginSnapshotSequence;
 - (void)didMoveToWindow;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation WKApplicationStateTrackingView
@@ -60,9 +60,9 @@
         v6 = 0;
       }
 
-      v7 = [(WKApplicationStateTrackingView *)self isBackground];
+      isBackground = [(WKApplicationStateTrackingView *)self isBackground];
       *buf = 134219008;
-      v11 = self;
+      selfCopy = self;
       v12 = 2048;
       v13 = v9;
       v14 = 2048;
@@ -70,20 +70,20 @@
       v16 = 1024;
       v17 = v4 & 1;
       v18 = 1024;
-      v19 = v7;
+      v19 = isBackground;
       _os_log_impl(&dword_19D52D000, v5, OS_LOG_TYPE_DEFAULT, "%p - WKApplicationStateTrackingView: View with page [%p, pageProxyID=%llu] was added to a window, _lastObservedStateWasBackground=%d, isNowBackground=%d", buf, 0x2Cu);
     }
 
-    v8 = [(WKApplicationStateTrackingView *)self isBackground];
+    isBackground2 = [(WKApplicationStateTrackingView *)self isBackground];
     if (v4)
     {
-      if (!v8)
+      if (!isBackground2)
       {
         [(WKApplicationStateTrackingView *)self _applicationWillEnterForeground];
       }
     }
 
-    else if (v8)
+    else if (isBackground2)
     {
       [(WKApplicationStateTrackingView *)self _applicationDidEnterBackground];
     }
@@ -106,15 +106,15 @@
   return v3 & 1;
 }
 
-- (WKApplicationStateTrackingView)initWithFrame:(CGRect)a3 webView:(id)a4
+- (WKApplicationStateTrackingView)initWithFrame:(CGRect)frame webView:(id)view
 {
   v12.receiver = self;
   v12.super_class = WKApplicationStateTrackingView;
-  v5 = [(WKApplicationStateTrackingView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(WKApplicationStateTrackingView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_webViewToTrack.m_weakReference, a4);
+    objc_storeWeak(&v5->_webViewToTrack.m_weakReference, view);
     if (WebKit::ApplicationStateTracker::s_heapRef)
     {
       NonCompact = bmalloc::api::tzoneAllocateNonCompact(WebKit::ApplicationStateTracker::s_heapRef, v7);
@@ -138,19 +138,19 @@
   return v6;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v19 = *MEMORY[0x1E69E9840];
   if ([(WKApplicationStateTrackingView *)self window])
   {
-    v5 = [(UIView *)[(WKApplicationStateTrackingView *)self _contentView] window];
-    if (a3 || !v5)
+    window = [(UIView *)[(WKApplicationStateTrackingView *)self _contentView] window];
+    if (window || !window)
     {
       return;
     }
   }
 
-  else if (a3)
+  else if (window)
   {
     return;
   }
@@ -182,7 +182,7 @@
     }
 
     *buf = 134218752;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
     v14 = v10;
     v15 = 2048;
@@ -224,7 +224,7 @@
       {
         v6 = *(v7 + 5);
         *buf = 134218496;
-        v9 = self;
+        selfCopy = self;
         v10 = 2048;
         v11 = v7;
         v12 = 2048;
@@ -277,7 +277,7 @@
           }
 
           *buf = 134218496;
-          v8 = self;
+          selfCopy = self;
           v9 = 2048;
           v10 = v6;
           v11 = 2048;
@@ -318,7 +318,7 @@
           }
 
           *buf = 134218496;
-          v8 = self;
+          selfCopy = self;
           v9 = 2048;
           v10 = v6;
           v11 = 2048;

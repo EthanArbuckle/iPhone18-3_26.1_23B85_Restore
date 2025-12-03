@@ -1,15 +1,15 @@
 @interface TUIKeyboardPathRenderer
-+ (id)generatePipelineDescriptorsForMTKView:(id)a3;
-- (TUIKeyboardPathRenderer)initWithMTKView:(id)a3 generatePipelineDescriptors:(BOOL)a4;
++ (id)generatePipelineDescriptorsForMTKView:(id)view;
+- (TUIKeyboardPathRenderer)initWithMTKView:(id)view generatePipelineDescriptors:(BOOL)descriptors;
 - (TUIKeyboardPathRendererDataSource)datasource;
 - (void)completeRendering;
-- (void)drawInMTKView:(id)a3;
+- (void)drawInMTKView:(id)view;
 - (void)keyboardDidHide;
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4;
-- (void)setPaused:(BOOL)a3;
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change;
+- (void)setPaused:(BOOL)paused;
 - (void)setupMetal;
 - (void)setupPipeline;
-- (void)updateVertexBufferForPaths:(id)a3;
+- (void)updateVertexBufferForPaths:(id)paths;
 @end
 
 @implementation TUIKeyboardPathRenderer
@@ -24,37 +24,37 @@
 - (void)keyboardDidHide
 {
   [(MTKView *)self->_view releaseDrawables];
-  v3 = [(MTKView *)self->_view layer];
+  layer = [(MTKView *)self->_view layer];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(MTKView *)self->_view layer];
-    [v5 discardContents];
-    [v5 removeBackBuffers];
+    layer2 = [(MTKView *)self->_view layer];
+    [layer2 discardContents];
+    [layer2 removeBackBuffers];
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
-  if ([(MTKView *)self->_view isPaused]!= a3)
+  pausedCopy = paused;
+  if ([(MTKView *)self->_view isPaused]!= paused)
   {
     view = self->_view;
 
-    [(MTKView *)view setPaused:v3];
+    [(MTKView *)view setPaused:pausedCopy];
   }
 }
 
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change
 {
-  height = a4.height;
-  *self->_viewportPixelSize = vmovn_s64(vcvtq_u64_f64(a4));
-  v6 = a3;
-  [v6 bounds];
+  height = change.height;
+  *self->_viewportPixelSize = vmovn_s64(vcvtq_u64_f64(change));
+  viewCopy = view;
+  [viewCopy bounds];
   *self->_viewportPointSize = v7;
-  [v6 bounds];
+  [viewCopy bounds];
   v9 = v8;
 
   *&self->_viewportPointSize[4] = v9;
@@ -87,9 +87,9 @@
   }
 }
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (self->_setupCompleted && !self->_drawing)
   {
     if (self->_pipelineState)
@@ -97,23 +97,23 @@
       v5 = vceqz_s32(*self->_viewportPointSize);
       if ((vpmax_u32(v5, v5).u32[0] & 0x80000000) == 0)
       {
-        v6 = [(TUIKeyboardPathRenderer *)self datasource];
+        datasource = [(TUIKeyboardPathRenderer *)self datasource];
         v7 = objc_opt_respondsToSelector();
 
         if (v7)
         {
-          v8 = [(TUIKeyboardPathRenderer *)self datasource];
-          v9 = [v8 pathsToRender];
+          datasource2 = [(TUIKeyboardPathRenderer *)self datasource];
+          pathsToRender = [datasource2 pathsToRender];
 
-          [(TUIKeyboardPathRenderer *)self updateVertexBufferForPaths:v9];
+          [(TUIKeyboardPathRenderer *)self updateVertexBufferForPaths:pathsToRender];
         }
 
-        v10 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-        [v10 setLabel:@"PathCommand"];
-        v11 = [v4 currentRenderPassDescriptor];
-        if (v11)
+        commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+        [commandBuffer setLabel:@"PathCommand"];
+        currentRenderPassDescriptor = [viewCopy currentRenderPassDescriptor];
+        if (currentRenderPassDescriptor)
         {
-          v12 = [v10 renderCommandEncoderWithDescriptor:v11];
+          v12 = [commandBuffer renderCommandEncoderWithDescriptor:currentRenderPassDescriptor];
           [v12 setLabel:@"PathRenderEncoder"];
           [v12 setFrontFacingWinding:0];
           v13 = *self->_viewportPixelSize;
@@ -140,15 +140,15 @@
           v16[2] = __41__TUIKeyboardPathRenderer_drawInMTKView___block_invoke;
           v16[3] = &unk_1E72D7AE0;
           objc_copyWeak(&v17, location);
-          [v10 addCompletedHandler:v16];
-          v15 = [v4 currentDrawable];
-          [v10 presentDrawable:v15];
+          [commandBuffer addCompletedHandler:v16];
+          currentDrawable = [viewCopy currentDrawable];
+          [commandBuffer presentDrawable:currentDrawable];
 
           objc_destroyWeak(&v17);
           objc_destroyWeak(location);
         }
 
-        [v10 commit];
+        [commandBuffer commit];
       }
     }
   }
@@ -176,18 +176,18 @@ void __41__TUIKeyboardPathRenderer_drawInMTKView___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)updateVertexBufferForPaths:(id)a3
+- (void)updateVertexBufferForPaths:(id)paths
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathsCopy = paths;
   self->_vertexCount = 0;
-  v5 = [(MTLBuffer *)self->_vertexBuffer contents];
+  contents = [(MTLBuffer *)self->_vertexBuffer contents];
   scale = self->_scale;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v4;
+  obj = pathsCopy;
   v7 = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
   if (v7)
   {
@@ -208,13 +208,13 @@ void __41__TUIKeyboardPathRenderer_drawInMTKView___block_invoke_2(uint64_t a1)
 
         v44 = v10;
         v11 = *(*(&v47 + 1) + 8 * v10);
-        v12 = [v11 nonSentinelPoints];
-        v13 = [v12 count];
+        nonSentinelPoints = [v11 nonSentinelPoints];
+        v13 = [nonSentinelPoints count];
 
         if (v13 >= 2)
         {
-          v14 = [v11 nonSentinelPoints];
-          v15 = [v14 objectAtIndex:0];
+          nonSentinelPoints2 = [v11 nonSentinelPoints];
+          v15 = [nonSentinelPoints2 objectAtIndex:0];
 
           [v15 point];
           v17.f64[1] = v16;
@@ -227,8 +227,8 @@ void __41__TUIKeyboardPathRenderer_drawInMTKView___block_invoke_2(uint64_t a1)
             v22 = v20;
             v23 = v19;
             v24 = v18;
-            v25 = [v11 nonSentinelPoints];
-            v26 = [v25 objectAtIndex:v21];
+            nonSentinelPoints3 = [v11 nonSentinelPoints];
+            v26 = [nonSentinelPoints3 objectAtIndex:v21];
 
             [v26 decay];
             *&v27 = v13 * v27 + 0.0;
@@ -256,27 +256,27 @@ void __41__TUIKeyboardPathRenderer_drawInMTKView___block_invoke_2(uint64_t a1)
                 vertexCount = self->_vertexCount;
                 if (vertexCount >> 12 <= 2)
                 {
-                  *(v5 + 8 * vertexCount) = v23;
+                  *(contents + 8 * vertexCount) = v23;
                   self->_vertexCount = vertexCount + 1;
                   if (vertexCount != 12287)
                   {
-                    *(v5 + 8 * (vertexCount + 1)) = v22;
+                    *(contents + 8 * (vertexCount + 1)) = v22;
                     self->_vertexCount = vertexCount + 2;
                     if (vertexCount <= 0x2FFD)
                     {
-                      *(v5 + 8 * (vertexCount + 2)) = v19;
+                      *(contents + 8 * (vertexCount + 2)) = v19;
                       self->_vertexCount = vertexCount + 3;
                       if (vertexCount != 12285)
                       {
-                        *(v5 + 8 * (vertexCount + 3)) = v19;
+                        *(contents + 8 * (vertexCount + 3)) = v19;
                         self->_vertexCount = vertexCount + 4;
                         if (vertexCount >> 2 <= 0xBFE)
                         {
-                          *(v5 + 8 * (vertexCount + 4)) = v22;
+                          *(contents + 8 * (vertexCount + 4)) = v22;
                           self->_vertexCount = vertexCount + 5;
                           if (vertexCount != 12283)
                           {
-                            *(v5 + 8 * (vertexCount + 5)) = v20;
+                            *(contents + 8 * (vertexCount + 5)) = v20;
                             self->_vertexCount = vertexCount + 6;
                           }
                         }
@@ -310,16 +310,16 @@ void __41__TUIKeyboardPathRenderer_drawInMTKView___block_invoke_2(uint64_t a1)
                 v39 = vadd_f32(v36, v18);
                 if (v37 >> 12 <= 2)
                 {
-                  *(v5 + 8 * v37) = v40;
+                  *(contents + 8 * v37) = v40;
                   self->_vertexCount = v37 + 1;
-                  if (v37 == 12287 || (*(v5 + 8 * (v37 + 1)) = v18, self->_vertexCount = v37 + 2, v37 > 0x2FFD))
+                  if (v37 == 12287 || (*(contents + 8 * (v37 + 1)) = v18, self->_vertexCount = v37 + 2, v37 > 0x2FFD))
                   {
                     v37 = 12288;
                   }
 
                   else
                   {
-                    *(v5 + 8 * (v37 + 2)) = v39;
+                    *(contents + 8 * (v37 + 2)) = v39;
                     v37 += 3;
                     self->_vertexCount = v37;
                   }
@@ -380,28 +380,28 @@ void __41__TUIKeyboardPathRenderer_drawInMTKView___block_invoke_2(uint64_t a1)
     v14 = [v5 newFunctionWithName:@"pathVertexShader"];
     v15 = [v5 newFunctionWithName:@"pathFragmentShader"];
     v16 = objc_alloc_init(MEMORY[0x1E69741E0]);
-    v17 = [v16 attributes];
-    v18 = [v17 objectAtIndexedSubscript:0];
+    attributes = [v16 attributes];
+    v18 = [attributes objectAtIndexedSubscript:0];
     [v18 setFormat:29];
 
-    v19 = [v16 attributes];
-    v20 = [v19 objectAtIndexedSubscript:0];
+    attributes2 = [v16 attributes];
+    v20 = [attributes2 objectAtIndexedSubscript:0];
     [v20 setOffset:0];
 
-    v21 = [v16 attributes];
-    v22 = [v21 objectAtIndexedSubscript:0];
+    attributes3 = [v16 attributes];
+    v22 = [attributes3 objectAtIndexedSubscript:0];
     [v22 setBufferIndex:0];
 
-    v23 = [v16 layouts];
-    v24 = [v23 objectAtIndexedSubscript:0];
+    layouts = [v16 layouts];
+    v24 = [layouts objectAtIndexedSubscript:0];
     [v24 setStride:8];
 
-    v25 = [v16 layouts];
-    v26 = [v25 objectAtIndexedSubscript:0];
+    layouts2 = [v16 layouts];
+    v26 = [layouts2 objectAtIndexedSubscript:0];
     [v26 setStepRate:1];
 
-    v27 = [v16 layouts];
-    v28 = [v27 objectAtIndexedSubscript:0];
+    layouts3 = [v16 layouts];
+    v28 = [layouts3 objectAtIndexedSubscript:0];
     [v28 setStepFunction:1];
 
     v29 = objc_alloc_init(MEMORY[0x1E6974148]);
@@ -410,8 +410,8 @@ void __41__TUIKeyboardPathRenderer_drawInMTKView___block_invoke_2(uint64_t a1)
     [v29 setVertexFunction:v14];
     [v29 setFragmentFunction:v15];
     colorPixelFormat = self->_colorPixelFormat;
-    v31 = [v29 colorAttachments];
-    v32 = [v31 objectAtIndexedSubscript:0];
+    colorAttachments = [v29 colorAttachments];
+    v32 = [colorAttachments objectAtIndexedSubscript:0];
     [v32 setPixelFormat:colorPixelFormat];
 
     [v29 setDepthAttachmentPixelFormat:0];
@@ -430,9 +430,9 @@ void __41__TUIKeyboardPathRenderer_drawInMTKView___block_invoke_2(uint64_t a1)
       NSLog(&cfstr_FailedToCreate.isa, v6, v40);
     }
 
-    v36 = [(MTLDevice *)self->_device newCommandQueue];
+    newCommandQueue = [(MTLDevice *)self->_device newCommandQueue];
     commandQueue = self->_commandQueue;
-    self->_commandQueue = v36;
+    self->_commandQueue = newCommandQueue;
 
     v38 = [(MTLDevice *)self->_device newBufferWithLength:98304 options:0];
     vertexBuffer = self->_vertexBuffer;
@@ -500,40 +500,40 @@ void __37__TUIKeyboardPathRenderer_setupMetal__block_invoke(uint64_t a1)
   [v3 addObserver:*(a1 + 32) selector:sel_keyboardDidHide name:*MEMORY[0x1E69DDBC8] object:0];
 }
 
-- (TUIKeyboardPathRenderer)initWithMTKView:(id)a3 generatePipelineDescriptors:(BOOL)a4
+- (TUIKeyboardPathRenderer)initWithMTKView:(id)view generatePipelineDescriptors:(BOOL)descriptors
 {
-  v7 = a3;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = TUIKeyboardPathRenderer;
   v8 = [(TUIKeyboardPathRenderer *)&v12 init];
   if (v8)
   {
-    v9 = [v7 device];
+    device = [viewCopy device];
     device = v8->_device;
-    v8->_device = v9;
+    v8->_device = device;
 
-    objc_storeStrong(&v8->_view, a3);
+    objc_storeStrong(&v8->_view, view);
     [(MTKView *)v8->_view setDelegate:v8];
     [(MTKView *)v8->_view setAutoResizeDrawable:0];
-    v8->_generatePipelineDescriptors = a4;
+    v8->_generatePipelineDescriptors = descriptors;
     [(TUIKeyboardPathRenderer *)v8 setupMetal];
   }
 
   return v8;
 }
 
-+ (id)generatePipelineDescriptorsForMTKView:(id)a3
++ (id)generatePipelineDescriptorsForMTKView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 device];
-  [v4 startCollectingPipelineDescriptors];
+  viewCopy = view;
+  device = [viewCopy device];
+  [device startCollectingPipelineDescriptors];
 
-  v5 = [[TUIKeyboardPathRenderer alloc] initWithMTKView:v3 generatePipelineDescriptors:1];
-  v6 = [v3 device];
+  v5 = [[TUIKeyboardPathRenderer alloc] initWithMTKView:viewCopy generatePipelineDescriptors:1];
+  device2 = [viewCopy device];
 
-  v7 = [v6 endCollectingPipelineDescriptors];
+  endCollectingPipelineDescriptors = [device2 endCollectingPipelineDescriptors];
 
-  return v7;
+  return endCollectingPipelineDescriptors;
 }
 
 @end

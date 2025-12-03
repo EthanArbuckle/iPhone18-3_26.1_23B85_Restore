@@ -1,18 +1,18 @@
 @interface RgbJasperCalibrationViewController
 - (void)cancel;
-- (void)finishRun:(id)a3 reducedLog:(id)a4 result:(int)a5 prcl:(const Prcl *)a6 angles:;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)finishRun:(id)run reducedLog:(id)log result:(int)result prcl:(const Prcl *)prcl angles:;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 @end
 
 @implementation RgbJasperCalibrationViewController
 
-- (void)finishRun:(id)a3 reducedLog:(id)a4 result:(int)a5 prcl:(const Prcl *)a6 angles:
+- (void)finishRun:(id)run reducedLog:(id)log result:(int)result prcl:(const Prcl *)prcl angles:
 {
   v7 = v6;
-  v9 = *&a5;
-  v12 = a3;
-  v33 = a4;
+  v9 = *&result;
+  runCopy = run;
+  logCopy = log;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(buf.__r_.__value_.__l.__data_) = 0;
@@ -20,7 +20,7 @@
   }
 
   v13 = objc_alloc_init(NSMutableDictionary);
-  v14 = [v33 componentsJoinedByString:{@", "}];
+  v14 = [logCopy componentsJoinedByString:{@", "}];
   [v13 setValue:v14 forKey:@"log"];
   v15 = +[NSBundle mainBundle];
   v16 = [v15 objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
@@ -52,7 +52,7 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "RgbJasperCalibrationViewController finishRun1", &buf, 2u);
     }
 
-    v30 = [NSData dataWithBytes:a6 length:256];
+    v30 = [NSData dataWithBytes:prcl length:256];
     v32 = ConvertDataToHexString(v30);
     v37[0] = @"x";
     std::to_string(&buf, *v7);
@@ -117,19 +117,19 @@
     [v13 setValue:v32 forKey:@"PrCL"];
   }
 
-  v27 = [(RgbJasperCalibrationViewController *)self result];
-  [v27 setData:v13];
+  result = [(RgbJasperCalibrationViewController *)self result];
+  [result setData:v13];
 
   v28 = [NSNumber numberWithInt:v9];
-  v29 = [(RgbJasperCalibrationViewController *)self result];
-  [v29 setStatusCode:v28];
+  result2 = [(RgbJasperCalibrationViewController *)self result];
+  [result2 setStatusCode:v28];
 
   [(RgbJasperCalibrationViewController *)self setFinished:1];
 }
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  v5 = a3;
+  inputsCopy = inputs;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v7 = 0;
@@ -137,7 +137,7 @@
   }
 
   inputs = self->_inputs;
-  self->_inputs = v5;
+  self->_inputs = inputsCopy;
 }
 
 - (void)start
@@ -152,8 +152,8 @@
   mainAppViewController = self->_mainAppViewController;
   self->_mainAppViewController = v3;
 
-  v5 = [(RgbJasperCalibrationViewController *)self view];
-  [self->_mainAppViewController setStoryBoardView:v5];
+  view = [(RgbJasperCalibrationViewController *)self view];
+  [self->_mainAppViewController setStoryBoardView:view];
 
   [self->_mainAppViewController setListener:self];
   inputs = self->_inputs;
@@ -194,8 +194,8 @@
 {
   [self->_mainAppViewController cancel];
   v3 = [NSNumber numberWithInt:[self->_mainAppViewController getCurrentResult]];
-  v4 = [(RgbJasperCalibrationViewController *)self result];
-  [v4 setStatusCode:v3];
+  result = [(RgbJasperCalibrationViewController *)self result];
+  [result setStatusCode:v3];
 
   mainAppViewController = self->_mainAppViewController;
   self->_mainAppViewController = 0;

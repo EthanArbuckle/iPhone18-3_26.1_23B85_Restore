@@ -1,32 +1,32 @@
 @interface CSDMessagingInvitationContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addNearbyStableDeviceIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addNearbyStableDeviceIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingInvitationContext
 
-- (void)addNearbyStableDeviceIdentifiers:(id)a3
+- (void)addNearbyStableDeviceIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   nearbyStableDeviceIdentifiers = self->_nearbyStableDeviceIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!nearbyStableDeviceIdentifiers)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_nearbyStableDeviceIdentifiers;
     self->_nearbyStableDeviceIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     nearbyStableDeviceIdentifiers = self->_nearbyStableDeviceIdentifiers;
   }
 
-  [(NSMutableArray *)nearbyStableDeviceIdentifiers addObject:v4];
+  [(NSMutableArray *)nearbyStableDeviceIdentifiers addObject:identifiersCopy];
 }
 
 - (id)description
@@ -34,8 +34,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingInvitationContext;
   v3 = [(CSDMessagingInvitationContext *)&v7 description];
-  v4 = [(CSDMessagingInvitationContext *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingInvitationContext *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -53,9 +53,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -89,28 +89,28 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(CSDMessagingInvitationContext *)self nearbyStableDeviceIdentifiersCount])
   {
-    [v8 clearNearbyStableDeviceIdentifiers];
-    v4 = [(CSDMessagingInvitationContext *)self nearbyStableDeviceIdentifiersCount];
-    if (v4)
+    [toCopy clearNearbyStableDeviceIdentifiers];
+    nearbyStableDeviceIdentifiersCount = [(CSDMessagingInvitationContext *)self nearbyStableDeviceIdentifiersCount];
+    if (nearbyStableDeviceIdentifiersCount)
     {
-      v5 = v4;
+      v5 = nearbyStableDeviceIdentifiersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(CSDMessagingInvitationContext *)self nearbyStableDeviceIdentifiersAtIndex:i];
-        [v8 addNearbyStableDeviceIdentifiers:v7];
+        [toCopy addNearbyStableDeviceIdentifiers:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -131,7 +131,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addNearbyStableDeviceIdentifiers:v11];
 
         v10 = v10 + 1;
@@ -147,13 +147,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     nearbyStableDeviceIdentifiers = self->_nearbyStableDeviceIdentifiers;
-    if (nearbyStableDeviceIdentifiers | v4[1])
+    if (nearbyStableDeviceIdentifiers | equalCopy[1])
     {
       v6 = [(NSMutableArray *)nearbyStableDeviceIdentifiers isEqual:?];
     }
@@ -172,13 +172,13 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {

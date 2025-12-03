@@ -1,14 +1,14 @@
 @interface ManagedAchievementWeeklyStreak
-- (ManagedAchievementWeeklyStreak)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (ManagedAchievementWeeklyStreak)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedAchievementWeeklyStreak
 
-- (ManagedAchievementWeeklyStreak)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (ManagedAchievementWeeklyStreak)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ManagedAchievementWeeklyStreak();
-  return [(ManagedAchievementWeeklyStreak *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedAchievementWeeklyStreak *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

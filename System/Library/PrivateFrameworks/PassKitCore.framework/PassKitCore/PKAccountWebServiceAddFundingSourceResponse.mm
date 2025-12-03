@@ -1,15 +1,15 @@
 @interface PKAccountWebServiceAddFundingSourceResponse
-- (PKAccountWebServiceAddFundingSourceResponse)initWithData:(id)a3;
+- (PKAccountWebServiceAddFundingSourceResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceAddFundingSourceResponse
 
-- (PKAccountWebServiceAddFundingSourceResponse)initWithData:(id)a3
+- (PKAccountWebServiceAddFundingSourceResponse)initWithData:(id)data
 {
   v24 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = PKAccountWebServiceAddFundingSourceResponse;
-  v3 = [(PKWebServiceResponse *)&v19 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v19 initWithData:data];
   v4 = v3;
   if (!v3)
   {
@@ -18,11 +18,11 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = jSONObject;
     v7 = [v6 objectForKey:@"confirmationPage"];
     if ([v7 count])
     {

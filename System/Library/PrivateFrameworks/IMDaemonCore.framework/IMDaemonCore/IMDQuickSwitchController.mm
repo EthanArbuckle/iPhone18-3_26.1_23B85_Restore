@@ -1,11 +1,11 @@
 @interface IMDQuickSwitchController
 + (id)sharedInstance;
 - (BOOL)_isPairedDeviceInProxyMode;
-- (BOOL)_sendIDSFile:(id)a3 withCommand:(int64_t)a4;
-- (BOOL)_sendIDSMessage:(id)a3;
-- (BOOL)_sendZippedFileAtPath:(id)a3 withCommand:(int64_t)a4;
+- (BOOL)_sendIDSFile:(id)file withCommand:(int64_t)command;
+- (BOOL)_sendIDSMessage:(id)message;
+- (BOOL)_sendZippedFileAtPath:(id)path withCommand:(int64_t)command;
 - (BOOL)_supportsQuickSwitchWithPairedDevice;
-- (BOOL)_truncateDBToPath:(id)a3;
+- (BOOL)_truncateDBToPath:(id)path;
 - (IMDQuickSwitchController)init;
 - (id)_defaultPairedDevice;
 - (id)_getDowngradedDBPath;
@@ -15,28 +15,28 @@
 - (id)_getZippedDBPath;
 - (id)_getZippedRecentsPath;
 - (int64_t)_getCurrentDBVersion;
-- (unint64_t)_getFileSizeAtPath:(id)a3;
+- (unint64_t)_getFileSizeAtPath:(id)path;
 - (void)_cleanUpTemporaryFiles;
-- (void)_compressFileAtPath:(id)a3 toPath:(id)a4 withCompletionBlock:(id)a5;
-- (void)_decompressFileAtPath:(id)a3 toPath:(id)a4 withCompletionBlock:(id)a5;
-- (void)_deleteFileAtPath:(id)a3;
-- (void)_handleDBVersionResponse:(id)a3;
-- (void)_handleIncomingDB:(id)a3;
-- (void)_handleIncomingRecents:(id)a3;
-- (void)_handleQuickSwitchCompleted:(id)a3;
+- (void)_compressFileAtPath:(id)path toPath:(id)toPath withCompletionBlock:(id)block;
+- (void)_decompressFileAtPath:(id)path toPath:(id)toPath withCompletionBlock:(id)block;
+- (void)_deleteFileAtPath:(id)path;
+- (void)_handleDBVersionResponse:(id)response;
+- (void)_handleIncomingDB:(id)b;
+- (void)_handleIncomingRecents:(id)recents;
+- (void)_handleQuickSwitchCompleted:(id)completed;
 - (void)_handleQuickSwitchInitiateRequest;
 - (void)_handleRecentsRequest;
 - (void)_initiateQuickSwitch;
 - (void)_notifyPSYDataSent;
-- (void)_notifyPSYWithResult:(BOOL)a3;
-- (void)_sendDBVersionResponse:(int64_t)a3;
+- (void)_notifyPSYWithResult:(BOOL)result;
+- (void)_sendDBVersionResponse:(int64_t)response;
 - (void)_sendRecentsRequest;
 - (void)dealloc;
 - (void)dummyMethod;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
 @end
 
 @implementation IMDQuickSwitchController
@@ -130,50 +130,50 @@
 
 - (id)_getTempDBPath
 {
-  v2 = [IMSafeTemporaryDirectory() path];
+  path = [IMSafeTemporaryDirectory() path];
 
-  return [v2 stringByAppendingPathComponent:@"MessagesQSwitch"];
+  return [path stringByAppendingPathComponent:@"MessagesQSwitch"];
 }
 
 - (id)_getTempRecentsPath
 {
-  v2 = [IMSafeTemporaryDirectory() path];
+  path = [IMSafeTemporaryDirectory() path];
 
-  return [v2 stringByAppendingPathComponent:@"Recents"];
+  return [path stringByAppendingPathComponent:@"Recents"];
 }
 
 - (id)_getZippedRecentsPath
 {
-  v2 = [IMSafeTemporaryDirectory() path];
+  path = [IMSafeTemporaryDirectory() path];
 
-  return [v2 stringByAppendingPathComponent:@"compressedSMSRecents.zip"];
+  return [path stringByAppendingPathComponent:@"compressedSMSRecents.zip"];
 }
 
 - (id)_getTruncatedDBPath
 {
-  v2 = [IMSafeTemporaryDirectory() path];
+  path = [IMSafeTemporaryDirectory() path];
 
-  return [v2 stringByAppendingPathComponent:@"tempSMS.db"];
+  return [path stringByAppendingPathComponent:@"tempSMS.db"];
 }
 
 - (id)_getDowngradedDBPath
 {
-  v2 = [IMSafeTemporaryDirectory() path];
+  path = [IMSafeTemporaryDirectory() path];
 
-  return [v2 stringByAppendingPathComponent:@"tempDowngradedSMS.db"];
+  return [path stringByAppendingPathComponent:@"tempDowngradedSMS.db"];
 }
 
 - (id)_getZippedDBPath
 {
-  v2 = [IMSafeTemporaryDirectory() path];
+  path = [IMSafeTemporaryDirectory() path];
 
-  return [v2 stringByAppendingPathComponent:@"compressedSMSDB.zip"];
+  return [path stringByAppendingPathComponent:@"compressedSMSDB.zip"];
 }
 
-- (unint64_t)_getFileSizeAtPath:(id)a3
+- (unint64_t)_getFileSizeAtPath:(id)path
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!path)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -209,7 +209,7 @@
     }
 
     *buf = 138412546;
-    v16 = a3;
+    pathCopy2 = path;
     v17 = 2112;
     v18 = v14;
     v6 = "QuickSwitch Could not determine file size at path %@ with error %@";
@@ -218,33 +218,33 @@
 LABEL_9:
     _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, v6, buf, v8);
 LABEL_10:
-    v10 = 0;
+    fileSize = 0;
     goto LABEL_11;
   }
 
-  v10 = [v4 fileSize];
+  fileSize = [v4 fileSize];
   if (IMOSLoggingEnabled())
   {
     v13 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v16 = a3;
+      pathCopy2 = path;
       v17 = 2048;
-      v18 = v10;
+      v18 = fileSize;
       _os_log_impl(&dword_22B4CC000, v13, OS_LOG_TYPE_INFO, "Size of file at path %@ is %lu", buf, 0x16u);
     }
   }
 
 LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
-  return v10;
+  return fileSize;
 }
 
-- (BOOL)_truncateDBToPath:(id)a3
+- (BOOL)_truncateDBToPath:(id)path
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (path)
   {
     if ((IMDDatabaseDelete() & 1) == 0)
     {
@@ -254,7 +254,7 @@ LABEL_11:
         if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v12 = a3;
+          pathCopy = path;
           _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "QuickSwitch Could not delete DB at path %@", buf, 0xCu);
         }
       }
@@ -265,7 +265,7 @@ LABEL_11:
     if (v6)
     {
       IMTimingStopTimingForKey();
-      [(IMDQuickSwitchController *)self _getFileSizeAtPath:a3];
+      [(IMDQuickSwitchController *)self _getFileSizeAtPath:path];
     }
 
     else if (IMOSLoggingEnabled())
@@ -274,7 +274,7 @@ LABEL_11:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v12 = 0;
+        pathCopy = 0;
         _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "QuickSwitch Could not trim DB with error %@ ", buf, 0xCu);
       }
     }
@@ -299,10 +299,10 @@ LABEL_11:
   return v6;
 }
 
-- (void)_deleteFileAtPath:(id)a3
+- (void)_deleteFileAtPath:(id)path
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (path)
   {
     v15 = 0;
     v4 = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
@@ -315,7 +315,7 @@ LABEL_11:
         if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
         {
           v16 = 138412290;
-          v17 = a3;
+          pathCopy2 = path;
           v7 = "Deleted file at path %@ ";
           v8 = v6;
           v9 = 12;
@@ -330,14 +330,14 @@ LABEL_12:
       v11 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [v15 domain];
-        v13 = [v15 code];
+        domain = [v15 domain];
+        code = [v15 code];
         v16 = 138412802;
-        v17 = a3;
+        pathCopy2 = path;
         v18 = 2112;
-        v19 = v12;
+        v19 = domain;
         v20 = 2048;
-        v21 = v13;
+        v21 = code;
         v7 = "QuickSwitch Could not delete file at path %@ with error domain '%@' code: %ld";
         v8 = v11;
         v9 = 32;
@@ -389,9 +389,9 @@ LABEL_12:
       v4 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
-        v5 = [(IMDQuickSwitchController *)self _getTruncatedDBPath];
+        _getTruncatedDBPath = [(IMDQuickSwitchController *)self _getTruncatedDBPath];
         *buf = 138412546;
-        v8 = v5;
+        v8 = _getTruncatedDBPath;
         v9 = 2112;
         v10 = 0;
         _os_log_impl(&dword_22B4CC000, v4, OS_LOG_TYPE_INFO, "QuickSwitch Could not delete DB at path %@ %@", buf, 0x16u);
@@ -402,7 +402,7 @@ LABEL_12:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_compressFileAtPath:(id)a3 toPath:(id)a4 withCompletionBlock:(id)a5
+- (void)_compressFileAtPath:(id)path toPath:(id)toPath withCompletionBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
   if ([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")])
@@ -426,7 +426,7 @@ LABEL_12:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v20 = a4;
+          toPathCopy = toPath;
           v21 = 2112;
           v22 = v18;
           _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "QuickSwitch Could not delete zipped file DB at path %@ with error %@", buf, 0x16u);
@@ -436,17 +436,17 @@ LABEL_12:
   }
 
   v16 = MEMORY[0x277D85DD0];
-  v17 = a5;
+  blockCopy = block;
   v11 = objc_alloc(MEMORY[0x277D19248]);
-  v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:{a3, v16, 3221225472, sub_22B57E090, &unk_278704F18, a4, self, v17}];
-  v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:a4];
+  v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:{path, v16, 3221225472, sub_22B57E090, &unk_278704F18, toPath, self, blockCopy}];
+  v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:toPath];
   v14 = [v11 initWithInputURL:v12 outputURL:v13 identifier:0 operation:2 completionBlock:&v16 queue:MEMORY[0x277D85CD0]];
   IMTimingStartTimingForKey();
   [v14 start];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_decompressFileAtPath:(id)a3 toPath:(id)a4 withCompletionBlock:(id)a5
+- (void)_decompressFileAtPath:(id)path toPath:(id)toPath withCompletionBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
   if ([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")])
@@ -470,7 +470,7 @@ LABEL_12:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v18 = a4;
+          toPathCopy = toPath;
           v19 = 2112;
           v20 = v16;
           _os_log_impl(&dword_22B4CC000, v9, OS_LOG_TYPE_INFO, "QuickSwitch Could not delete zipped file DB at path %@ with error %@", buf, 0x16u);
@@ -483,11 +483,11 @@ LABEL_12:
   v15[1] = 3221225472;
   v15[2] = sub_22B57E3D0;
   v15[3] = &unk_278704F40;
-  v15[4] = a4;
-  v15[5] = a5;
+  v15[4] = toPath;
+  v15[5] = block;
   v10 = objc_alloc(MEMORY[0x277D19248]);
-  v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3];
-  v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:a4];
+  v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
+  v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:toPath];
   v13 = [v10 initWithInputURL:v11 outputURL:v12 identifier:0 operation:1 completionBlock:v15 queue:MEMORY[0x277D85CD0]];
   IMTimingStartTimingForKey();
   [v13 start];
@@ -524,11 +524,11 @@ LABEL_12:
   }
 }
 
-- (void)_sendDBVersionResponse:(int64_t)a3
+- (void)_sendDBVersionResponse:(int64_t)response
 {
   v5 = objc_alloc(MEMORY[0x277CBEAC0]);
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:2];
-  v7 = [v5 initWithObjectsAndKeys:{v6, @"c", objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", a3), @"dbv", 0}];
+  v7 = [v5 initWithObjectsAndKeys:{v6, @"c", objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", response), @"dbv", 0}];
   if (![(IMDQuickSwitchController *)self _sendIDSMessage:v7])
   {
     if (IMOSLoggingEnabled())
@@ -578,9 +578,9 @@ LABEL_12:
   }
 }
 
-- (BOOL)_sendZippedFileAtPath:(id)a3 withCommand:(int64_t)a4
+- (BOOL)_sendZippedFileAtPath:(id)path withCommand:(int64_t)command
 {
-  if (!a3)
+  if (!path)
   {
     return 0;
   }
@@ -590,7 +590,7 @@ LABEL_12:
   return MEMORY[0x2821F9670](self, sel__sendIDSFile_withCommand_);
 }
 
-- (void)_handleDBVersionResponse:(id)a3
+- (void)_handleDBVersionResponse:(id)response
 {
   v44 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -599,14 +599,14 @@ LABEL_12:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *&buf[4] = a3;
+      *&buf[4] = response;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "dbVersionResponse %@", buf, 0xCu);
     }
   }
 
-  v6 = [(IMDQuickSwitchController *)self _getCurrentDBVersion];
-  v7 = [objc_msgSend(a3 objectForKey:{@"dbv", "integerValue"}];
-  if (v6 != v7)
+  _getCurrentDBVersion = [(IMDQuickSwitchController *)self _getCurrentDBVersion];
+  v7 = [objc_msgSend(response objectForKey:{@"dbv", "integerValue"}];
+  if (_getCurrentDBVersion != v7)
   {
     v12 = IMDCanDowngradeDatabaseToVersion();
     v13 = IMOSLoggingEnabled();
@@ -618,7 +618,7 @@ LABEL_12:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           *buf = 134218240;
-          *&buf[4] = v6;
+          *&buf[4] = _getCurrentDBVersion;
           *&buf[12] = 2048;
           *&buf[14] = v7;
           _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "Trying to QuickSwitch to incompatible gizmo. Bailing quick switch. localDBVersion %ld gizmoDBVersion %ld", buf, 0x16u);
@@ -640,8 +640,8 @@ LABEL_12:
     }
   }
 
-  v8 = [(IMDQuickSwitchController *)self _getTruncatedDBPath];
-  if (!-[IMDQuickSwitchController _truncateDBToPath:](self, "_truncateDBToPath:", v8) || ([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")] & 1) == 0)
+  _getTruncatedDBPath = [(IMDQuickSwitchController *)self _getTruncatedDBPath];
+  if (!-[IMDQuickSwitchController _truncateDBToPath:](self, "_truncateDBToPath:", _getTruncatedDBPath) || ([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -649,7 +649,7 @@ LABEL_12:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        *&buf[4] = v8;
+        *&buf[4] = _getTruncatedDBPath;
         _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "QuickSwitch Truncated DB did not succeed at path %@, Really bad! ", buf, 0xCu);
       }
     }
@@ -669,7 +669,7 @@ LABEL_23:
     }
   }
 
-  if (v6 == v7)
+  if (_getCurrentDBVersion == v7)
   {
     goto LABEL_11;
   }
@@ -692,13 +692,13 @@ LABEL_23:
     v41 = sub_22B4D76A0;
     v42 = sub_22B4D78A8;
     v43 = 0;
-    v18 = [MEMORY[0x277D18EB0] synchronousDatabase];
+    synchronousDatabase = [MEMORY[0x277D18EB0] synchronousDatabase];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = sub_22B57F2CC;
     v36[3] = &unk_278704F68;
     v36[4] = buf;
-    [v18 splitMergedChatsInDatabaseAtPath:v8 completionHandler:v36];
+    [synchronousDatabase splitMergedChatsInDatabaseAtPath:_getTruncatedDBPath completionHandler:v36];
     if (*(*&buf[8] + 40))
     {
       if (IMOSLoggingEnabled())
@@ -708,7 +708,7 @@ LABEL_23:
         {
           v20 = *(*&buf[8] + 40);
           *v37 = 138412546;
-          *&v37[4] = v8;
+          *&v37[4] = _getTruncatedDBPath;
           v38 = 2112;
           v39 = v20;
           _os_log_impl(&dword_22B4CC000, v19, OS_LOG_TYPE_INFO, "QuickSwitch failed to split merged chats on db at path %@ with error: %@", v37, 0x16u);
@@ -729,14 +729,14 @@ LABEL_23:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      *&buf[4] = v6;
+      *&buf[4] = _getCurrentDBVersion;
       *&buf[12] = 2048;
       *&buf[14] = v7;
       _os_log_impl(&dword_22B4CC000, v21, OS_LOG_TYPE_INFO, "Attempting downgrade from %ld to %ld...", buf, 0x16u);
     }
   }
 
-  v22 = [(IMDQuickSwitchController *)self _getDowngradedDBPath];
+  _getDowngradedDBPath = [(IMDQuickSwitchController *)self _getDowngradedDBPath];
   *v37 = 0;
   v23 = IMDDowngradeDatabaseToVersion();
   if (*v37)
@@ -758,14 +758,14 @@ LABEL_23:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         *buf = 134218240;
-        *&buf[4] = v6;
+        *&buf[4] = _getCurrentDBVersion;
         *&buf[12] = 2048;
         *&buf[14] = v7;
         _os_log_impl(&dword_22B4CC000, v26, OS_LOG_TYPE_INFO, "Downgraded from %ld to %ld ok! :-D", buf, 0x16u);
       }
     }
 
-    [(IMDQuickSwitchController *)self _deleteFileAtPath:v8];
+    [(IMDQuickSwitchController *)self _deleteFileAtPath:_getTruncatedDBPath];
     v35 = 0;
     v27 = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
     if (v35)
@@ -787,21 +787,21 @@ LABEL_23:
         if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          *&buf[4] = v22;
+          *&buf[4] = _getDowngradedDBPath;
           *&buf[12] = 2112;
-          *&buf[14] = v8;
+          *&buf[14] = _getTruncatedDBPath;
           _os_log_impl(&dword_22B4CC000, v30, OS_LOG_TYPE_INFO, "renamed %@ to %@ in preperation for compression - this means the downgrade completed ok. :-D", buf, 0x16u);
         }
       }
 
 LABEL_11:
-      v10 = [(IMDQuickSwitchController *)self _getZippedDBPath];
+      _getZippedDBPath = [(IMDQuickSwitchController *)self _getZippedDBPath];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = sub_22B57F2DC;
       v34[3] = &unk_278704F90;
       v34[4] = self;
-      [(IMDQuickSwitchController *)self _compressFileAtPath:v8 toPath:v10 withCompletionBlock:v34];
+      [(IMDQuickSwitchController *)self _compressFileAtPath:_getTruncatedDBPath toPath:_getZippedDBPath withCompletionBlock:v34];
       goto LABEL_24;
     }
 
@@ -826,13 +826,13 @@ LABEL_11:
       v31 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
-        v32 = [*v37 localizedDescription];
+        localizedDescription = [*v37 localizedDescription];
         *buf = 134218498;
         *&buf[4] = v7;
         *&buf[12] = 2048;
-        *&buf[14] = v6;
+        *&buf[14] = _getCurrentDBVersion;
         *&buf[22] = 2112;
-        v41 = v32;
+        v41 = localizedDescription;
         _os_log_impl(&dword_22B4CC000, v31, OS_LOG_TYPE_INFO, "Error Trying to QuickSwitch watch to version %ld from %ld. Downgrade failed with error: %@", buf, 0x20u);
       }
     }
@@ -847,9 +847,9 @@ LABEL_24:
 - (void)_handleRecentsRequest
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [FormattedRecentDomainDirectory() stringByStandardizingPath];
-  v4 = [(IMDQuickSwitchController *)self _getTempRecentsPath];
-  v5 = [(IMDQuickSwitchController *)self _getZippedRecentsPath];
+  stringByStandardizingPath = [FormattedRecentDomainDirectory() stringByStandardizingPath];
+  _getTempRecentsPath = [(IMDQuickSwitchController *)self _getTempRecentsPath];
+  _getZippedRecentsPath = [(IMDQuickSwitchController *)self _getZippedRecentsPath];
   v10 = 0;
   if (![objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")])
   {
@@ -862,9 +862,9 @@ LABEL_24:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v12 = v3;
+      v12 = stringByStandardizingPath;
       v13 = 2112;
-      v14 = v4;
+      v14 = _getTempRecentsPath;
       _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "Copying from %@ to %@", buf, 0x16u);
     }
   }
@@ -882,7 +882,7 @@ LABEL_24:
       }
     }
 
-    [(IMDQuickSwitchController *)self _deleteFileAtPath:v4];
+    [(IMDQuickSwitchController *)self _deleteFileAtPath:_getTempRecentsPath];
     [(IMDQuickSwitchController *)self _quickSwitchCompleted:0];
   }
 
@@ -893,15 +893,15 @@ LABEL_6:
     v9[1] = 3221225472;
     v9[2] = sub_22B57F6A8;
     v9[3] = &unk_2787043C8;
-    v9[4] = v5;
+    v9[4] = _getZippedRecentsPath;
     v9[5] = self;
-    [(IMDQuickSwitchController *)self _compressFileAtPath:v4 toPath:v5 withCompletionBlock:v9];
+    [(IMDQuickSwitchController *)self _compressFileAtPath:_getTempRecentsPath toPath:_getZippedRecentsPath withCompletionBlock:v9];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleQuickSwitchCompleted:(id)a3
+- (void)_handleQuickSwitchCompleted:(id)completed
 {
   v9 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -910,16 +910,16 @@ LABEL_6:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = a3;
+      completedCopy = completed;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "_handleQuickSwitchCompleted %@", &v7, 0xCu);
     }
   }
 
-  -[IMDQuickSwitchController _quickSwitchCompleted:](self, "_quickSwitchCompleted:", [objc_msgSend(a3 objectForKey:{@"s", "BOOLValue"}]);
+  -[IMDQuickSwitchController _quickSwitchCompleted:](self, "_quickSwitchCompleted:", [objc_msgSend(completed objectForKey:{@"s", "BOOLValue"}]);
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleIncomingDB:(id)a3
+- (void)_handleIncomingDB:(id)b
 {
   if (IMOSLoggingEnabled())
   {
@@ -932,7 +932,7 @@ LABEL_6:
   }
 }
 
-- (void)_handleIncomingRecents:(id)a3
+- (void)_handleIncomingRecents:(id)recents
 {
   if (IMOSLoggingEnabled())
   {
@@ -945,14 +945,14 @@ LABEL_6:
   }
 }
 
-- (BOOL)_sendIDSFile:(id)a3 withCommand:(int64_t)a4
+- (BOOL)_sendIDSFile:(id)file withCommand:(int64_t)command
 {
   v26 = *MEMORY[0x277D85DE8];
   v7 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v8 = [v7 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", a4), @"c", 0}];
+  v8 = [v7 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", command), @"c", 0}];
   v14 = 0;
   v15 = 0;
-  v9 = -[IDSService sendResourceAtURL:metadata:toDestinations:priority:options:identifier:error:](self->_quickSwitchIDSService, "sendResourceAtURL:metadata:toDestinations:priority:options:identifier:error:", a3, v8, [MEMORY[0x277CBEB98] setWithObject:*MEMORY[0x277D187E8]], 300, 0, &v15, &v14);
+  v9 = -[IDSService sendResourceAtURL:metadata:toDestinations:priority:options:identifier:error:](self->_quickSwitchIDSService, "sendResourceAtURL:metadata:toDestinations:priority:options:identifier:error:", file, v8, [MEMORY[0x277CBEB98] setWithObject:*MEMORY[0x277D187E8]], 300, 0, &v15, &v14);
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMEventCategory();
@@ -965,7 +965,7 @@ LABEL_6:
       }
 
       *buf = 138413314;
-      v17 = a3;
+      fileCopy = file;
       v18 = 2112;
       v19 = v15;
       v20 = 2112;
@@ -982,13 +982,13 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)_sendIDSMessage:(id)a3
+- (BOOL)_sendIDSMessage:(id)message
 {
   v21 = *MEMORY[0x277D85DE8];
   v11 = 0;
   v12 = 0;
-  v5 = [JWEncodeDictionary() _FTCopyGzippedData];
-  v6 = -[IDSService sendData:toDestinations:priority:options:identifier:error:](self->_quickSwitchIDSService, "sendData:toDestinations:priority:options:identifier:error:", v5, [MEMORY[0x277CBEB98] setWithObject:*MEMORY[0x277D187E8]], 300, 0, &v12, &v11);
+  _FTCopyGzippedData = [JWEncodeDictionary() _FTCopyGzippedData];
+  v6 = -[IDSService sendData:toDestinations:priority:options:identifier:error:](self->_quickSwitchIDSService, "sendData:toDestinations:priority:options:identifier:error:", _FTCopyGzippedData, [MEMORY[0x277CBEB98] setWithObject:*MEMORY[0x277D187E8]], 300, 0, &v12, &v11);
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMEventCategory();
@@ -1005,7 +1005,7 @@ LABEL_6:
       v15 = 2112;
       v16 = v11;
       v17 = 2112;
-      v18 = a3;
+      messageCopy = message;
       v19 = 2112;
       v20 = v8;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Sending message to local account (identifier %@)  (error %@)  (request %@) success: %@", buf, 0x2Au);
@@ -1016,7 +1016,7 @@ LABEL_6:
   return v6;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
   v35 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -1025,20 +1025,20 @@ LABEL_6:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v25 = 138413314;
-      v26 = a3;
+      dCopy2 = service;
       v27 = 2112;
-      v28 = a4;
+      accountCopy = account;
       v29 = 2112;
-      v30 = a5;
+      dataCopy = data;
       v31 = 2112;
-      v32 = a6;
+      dCopy = d;
       v33 = 2112;
-      v34 = a7;
+      contextCopy = context;
       _os_log_impl(&dword_22B4CC000, v13, OS_LOG_TYPE_INFO, "service %@, account %@, incomingData %@ fromID %@ context %@", &v25, 0x34u);
     }
   }
 
-  if (![a3 deviceForFromID:a6])
+  if (![service deviceForFromID:d])
   {
     if (!IMOSLoggingEnabled())
     {
@@ -1052,14 +1052,14 @@ LABEL_6:
     }
 
     v25 = 138412290;
-    v26 = a6;
+    dCopy2 = d;
     v20 = "Not an IDSDevice: fromID %@. Bailing";
 LABEL_27:
     _os_log_impl(&dword_22B4CC000, v19, OS_LOG_TYPE_INFO, v20, &v25, 0xCu);
     goto LABEL_36;
   }
 
-  [a5 _FTOptionallyDecompressData];
+  [data _FTOptionallyDecompressData];
   v14 = JWDecodeDictionary();
   if (IMOSLoggingEnabled())
   {
@@ -1067,7 +1067,7 @@ LABEL_27:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v25 = 138412290;
-      v26 = v14;
+      dCopy2 = v14;
       _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "Got request %@", &v25, 0xCu);
     }
   }
@@ -1108,7 +1108,7 @@ LABEL_24:
         }
 
         v25 = 134217984;
-        v26 = v16;
+        dCopy2 = v16;
         v20 = "QuickSwitch got unknown request over quick switch service %ld";
         goto LABEL_27;
       }
@@ -1167,7 +1167,7 @@ LABEL_36:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
   v35 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -1176,22 +1176,22 @@ LABEL_36:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v23 = 138413570;
-      v24 = a3;
+      lCopy3 = service;
       v25 = 2112;
-      v26 = a4;
+      accountCopy = account;
       v27 = 2112;
-      v28 = a5;
+      lCopy = l;
       v29 = 2112;
-      v30 = a6;
+      metadataCopy = metadata;
       v31 = 2112;
-      v32 = a7;
+      dCopy = d;
       v33 = 2112;
-      v34 = a8;
+      contextCopy = context;
       _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "service %@, account %@, resourceURL %@ metadata %@ fromID %@ context %@", &v23, 0x3Eu);
     }
   }
 
-  if (![a3 deviceForFromID:a7])
+  if (![service deviceForFromID:d])
   {
     if (!IMOSLoggingEnabled())
     {
@@ -1205,12 +1205,12 @@ LABEL_36:
     }
 
     v23 = 138412290;
-    v24 = a7;
+    lCopy3 = d;
     v20 = "Not an IDSDevice: fromID %@. Bailing";
     goto LABEL_21;
   }
 
-  v16 = [objc_msgSend(a6 objectForKey:{@"c", "integerValue"}];
+  v16 = [objc_msgSend(metadata objectForKey:{@"c", "integerValue"}];
   v17 = IMOSLoggingEnabled();
   if (v16 != 6)
   {
@@ -1222,12 +1222,12 @@ LABEL_36:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
           v23 = 138412290;
-          v24 = a5;
+          lCopy3 = l;
           _os_log_impl(&dword_22B4CC000, v18, OS_LOG_TYPE_INFO, "Got IMDQuickSwitchControllerCommandIncomingDB at url %@", &v23, 0xCu);
         }
       }
 
-      -[IMDQuickSwitchController _handleIncomingDB:](self, "_handleIncomingDB:", [a5 path]);
+      -[IMDQuickSwitchController _handleIncomingDB:](self, "_handleIncomingDB:", [l path]);
       goto LABEL_22;
     }
 
@@ -1243,7 +1243,7 @@ LABEL_36:
     }
 
     v23 = 134217984;
-    v24 = v16;
+    lCopy3 = v16;
     v20 = "QuickSwitch got unknown resource ULR callback over quick switch service %ld";
 LABEL_21:
     _os_log_impl(&dword_22B4CC000, v19, OS_LOG_TYPE_INFO, v20, &v23, 0xCu);
@@ -1256,17 +1256,17 @@ LABEL_21:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       v23 = 138412290;
-      v24 = a5;
+      lCopy3 = l;
       _os_log_impl(&dword_22B4CC000, v21, OS_LOG_TYPE_INFO, "Got IMDQuickSwitchControllerCommandIncomingRecents at url %@", &v23, 0xCu);
     }
   }
 
-  -[IMDQuickSwitchController _handleIncomingRecents:](self, "_handleIncomingRecents:", [a5 path]);
+  -[IMDQuickSwitchController _handleIncomingRecents:](self, "_handleIncomingRecents:", [l path]);
 LABEL_22:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -1275,7 +1275,7 @@ LABEL_22:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = a5;
+      identifierCopy = identifier;
       _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "message sent with identifier %@ ", &v10, 0xCu);
     }
   }
@@ -1373,8 +1373,8 @@ LABEL_21:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [self->_quickSwitchIDSService devices];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v17 count:16];
+  devices = [self->_quickSwitchIDSService devices];
+  v3 = [devices countByEnumeratingWithState:&v11 objects:v17 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -1384,7 +1384,7 @@ LABEL_21:
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
@@ -1405,7 +1405,7 @@ LABEL_21:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v17 count:16];
+      v3 = [devices countByEnumeratingWithState:&v11 objects:v17 count:16];
       if (v3)
       {
         continue;
@@ -1438,7 +1438,7 @@ LABEL_16:
   return [v2 supportsCapability:2799955160];
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
   v14 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -1447,9 +1447,9 @@ LABEL_16:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v10 = 138412546;
-      v11 = a3;
+      coordinatorCopy = coordinator;
       v12 = 2112;
-      v13 = a4;
+      sessionCopy = session;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Got beginSyncSession call with coordinator %@ and session %@", &v10, 0x16u);
     }
   }
@@ -1477,12 +1477,12 @@ LABEL_16:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyPSYWithResult:(BOOL)a3
+- (void)_notifyPSYWithResult:(BOOL)result
 {
-  v3 = a3;
-  v4 = [(PSYSyncCoordinator *)[(IMDQuickSwitchController *)self syncCoordinator] activeSyncSession];
+  resultCopy = result;
+  activeSyncSession = [(PSYSyncCoordinator *)[(IMDQuickSwitchController *)self syncCoordinator] activeSyncSession];
   v5 = IMOSLoggingEnabled();
-  if (v3)
+  if (resultCopy)
   {
     if (v5)
     {
@@ -1494,7 +1494,7 @@ LABEL_16:
       }
     }
 
-    [v4 syncDidComplete];
+    [activeSyncSession syncDidComplete];
   }
 
   else
@@ -1509,15 +1509,15 @@ LABEL_16:
       }
     }
 
-    [v4 syncDidFailWithError:0];
+    [activeSyncSession syncDidFailWithError:0];
   }
 }
 
 - (void)_notifyPSYDataSent
 {
-  v2 = [(PSYSyncCoordinator *)[(IMDQuickSwitchController *)self syncCoordinator] activeSyncSession];
+  activeSyncSession = [(PSYSyncCoordinator *)[(IMDQuickSwitchController *)self syncCoordinator] activeSyncSession];
 
-  MEMORY[0x2821F9670](v2, sel_syncDidCompleteSending);
+  MEMORY[0x2821F9670](activeSyncSession, sel_syncDidCompleteSending);
 }
 
 @end

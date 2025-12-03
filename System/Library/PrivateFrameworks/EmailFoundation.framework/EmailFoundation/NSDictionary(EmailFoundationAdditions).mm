@@ -10,7 +10,7 @@
 
 - (id)ef_objectOfClass:()EmailFoundationAdditions forKey:
 {
-  v4 = [a1 objectForKey:a4];
+  v4 = [self objectForKey:a4];
   if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v5 = v4;
@@ -38,7 +38,7 @@
   v9 = v4;
   v10 = &v11;
   v5 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v8];
+  [self enumerateKeysAndObjectsUsingBlock:v8];
   v6 = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
@@ -59,7 +59,7 @@
   v9 = v4;
   v10 = &v11;
   v5 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v8];
+  [self enumerateKeysAndObjectsUsingBlock:v8];
   v6 = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
@@ -75,39 +75,39 @@
   v14[3] = &unk_1E8248FC8;
   v5 = v4;
   v15 = v5;
-  v6 = [a1 keysOfEntriesPassingTest:v14];
-  v7 = [v6 allObjects];
+  v6 = [self keysOfEntriesPassingTest:v14];
+  allObjects = [v6 allObjects];
 
-  v8 = [v7 count];
-  if (v8 == [a1 count])
+  v8 = [allObjects count];
+  if (v8 == [self count])
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v10 = objc_alloc(MEMORY[0x1E695DF20]);
-    v11 = [MEMORY[0x1E695DFB0] null];
-    v12 = [a1 objectsForKeys:v7 notFoundMarker:v11];
-    v9 = [v10 initWithObjects:v12 forKeys:v7];
+    null = [MEMORY[0x1E695DFB0] null];
+    v12 = [self objectsForKeys:allObjects notFoundMarker:null];
+    selfCopy = [v10 initWithObjects:v12 forKeys:allObjects];
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)ef_mapValues:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__NSDictionary_EmailFoundationAdditions__ef_mapValues___block_invoke;
   v11[3] = &unk_1E8248FF0;
   v6 = v4;
   v13 = v6;
-  v7 = v5;
+  v7 = dictionary;
   v12 = v7;
-  [a1 enumerateKeysAndObjectsUsingBlock:v11];
+  [self enumerateKeysAndObjectsUsingBlock:v11];
   v8 = v12;
   v9 = v7;
 

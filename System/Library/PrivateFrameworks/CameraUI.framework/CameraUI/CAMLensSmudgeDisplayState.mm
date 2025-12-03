@@ -1,35 +1,35 @@
 @interface CAMLensSmudgeDisplayState
-+ (void)logModeChangedWithMode:(int64_t)a3;
++ (void)logModeChangedWithMode:(int64_t)mode;
 - (BOOL)shouldDisplayLensIsSmudged;
 - (CAMLensSmudgeDisplayState)init;
-- (CAMLensSmudgeDisplayState)initWithDelegate:(id)a3 devicePosition:(int64_t)a4 displayDuration:(double)a5 preferences:(id)a6;
+- (CAMLensSmudgeDisplayState)initWithDelegate:(id)delegate devicePosition:(int64_t)position displayDuration:(double)duration preferences:(id)preferences;
 - (void)acknowledgeSmudgeDetection;
 - (void)didEnterBackground;
-- (void)setStatus:(int64_t)a3;
+- (void)setStatus:(int64_t)status;
 @end
 
 @implementation CAMLensSmudgeDisplayState
 
 - (void)didEnterBackground
 {
-  v1 = a1;
+  selfCopy = self;
   sub_1A395FEE0();
 }
 
-- (CAMLensSmudgeDisplayState)initWithDelegate:(id)a3 devicePosition:(int64_t)a4 displayDuration:(double)a5 preferences:(id)a6
+- (CAMLensSmudgeDisplayState)initWithDelegate:(id)delegate devicePosition:(int64_t)position displayDuration:(double)duration preferences:(id)preferences
 {
   swift_unknownObjectRetain();
-  v10 = a6;
-  v11 = sub_1A3961900(a5, a3, a4, v10);
+  preferencesCopy = preferences;
+  v11 = sub_1A3961900(duration, delegate, position, preferencesCopy);
   swift_unknownObjectRelease();
 
   return v11;
 }
 
-- (void)setStatus:(int64_t)a3
+- (void)setStatus:(int64_t)status
 {
-  v4 = self;
-  sub_1A395F17C(a3);
+  selfCopy = self;
+  sub_1A395F17C(status);
 }
 
 - (BOOL)shouldDisplayLensIsSmudged
@@ -37,7 +37,7 @@
   if (*(&self->super.isa + OBJC_IVAR___CAMLensSmudgeDisplayState__status) == 2)
   {
     v2 = *(&self->super.isa + OBJC_IVAR___CAMLensSmudgeDisplayState_devicePosition);
-    v3 = self;
+    selfCopy = self;
     v4 = sub_1A395F7F8(v2);
   }
 
@@ -51,15 +51,15 @@
 
 - (void)acknowledgeSmudgeDetection
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A39601A0();
 }
 
-+ (void)logModeChangedWithMode:(int64_t)a3
++ (void)logModeChangedWithMode:(int64_t)mode
 {
   sub_1A3A31F20();
   MEMORY[0x1A58F7770](0x1000000000000018, 0x80000001A3AA5450);
-  v4 = CAMCaptureMode.description.getter(a3);
+  v4 = CAMCaptureMode.description.getter(mode);
   MEMORY[0x1A58F7770](v4);
 
   MEMORY[0x1A58F7770](0xD000000000000024, 0x80000001A3AA5470);

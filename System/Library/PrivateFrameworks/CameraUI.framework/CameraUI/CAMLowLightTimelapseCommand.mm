@@ -1,14 +1,14 @@
 @interface CAMLowLightTimelapseCommand
-- (CAMLowLightTimelapseCommand)initWithCoder:(id)a3;
-- (CAMLowLightTimelapseCommand)initWithTimelapseLowLightCompensationEnabled:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMLowLightTimelapseCommand)initWithCoder:(id)coder;
+- (CAMLowLightTimelapseCommand)initWithTimelapseLowLightCompensationEnabled:(BOOL)enabled;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMLowLightTimelapseCommand
 
-- (CAMLowLightTimelapseCommand)initWithTimelapseLowLightCompensationEnabled:(BOOL)a3
+- (CAMLowLightTimelapseCommand)initWithTimelapseLowLightCompensationEnabled:(BOOL)enabled
 {
   v8.receiver = self;
   v8.super_class = CAMLowLightTimelapseCommand;
@@ -16,57 +16,57 @@
   v5 = v4;
   if (v4)
   {
-    v4->__enabled = a3;
+    v4->__enabled = enabled;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (CAMLowLightTimelapseCommand)initWithCoder:(id)a3
+- (CAMLowLightTimelapseCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CAMLowLightTimelapseCommand;
   v5 = [(CAMCaptureCommand *)&v8 init];
   if (v5)
   {
-    v5->__enabled = [v4 decodeBoolForKey:@"CAMLowLightTimelapseCommandEnabled"];
+    v5->__enabled = [coderCopy decodeBoolForKey:@"CAMLowLightTimelapseCommandEnabled"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMLowLightTimelapseCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[CAMLowLightTimelapseCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMLowLightTimelapseCommandEnabled"}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[CAMLowLightTimelapseCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMLowLightTimelapseCommandEnabled"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMLowLightTimelapseCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[24] = [(CAMLowLightTimelapseCommand *)self _isEnabled];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = [a3 currentVideoDevice];
+  currentVideoDevice = [context currentVideoDevice];
   memset(&v8, 0, sizeof(v8));
   CMTimeMake(&v8, 1, 15);
   if ([(CAMLowLightTimelapseCommand *)self _isEnabled])
   {
     memset(&v7, 0, sizeof(v7));
-    if (v4)
+    if (currentVideoDevice)
     {
-      [v4 activeVideoMaxFrameDuration];
+      [currentVideoDevice activeVideoMaxFrameDuration];
     }
 
     time1 = v7;
@@ -74,7 +74,7 @@
     if (CMTimeCompare(&time1, &v5) < 0)
     {
       time1 = v8;
-      [v4 setActiveVideoMaxFrameDuration:&time1];
+      [currentVideoDevice setActiveVideoMaxFrameDuration:&time1];
     }
   }
 }

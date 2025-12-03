@@ -1,47 +1,47 @@
 @interface SKRemoteEngagementRemoteViewController
 - (SKEngagementPresenterProtocol)delegate;
-- (void)engagementTaskDidFinishWithResult:(id)a3 resultData:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)preferredContentSizeDidChange:(CGSize)a3;
+- (void)engagementTaskDidFinishWithResult:(id)result resultData:(id)data error:(id)error completion:(id)completion;
+- (void)preferredContentSizeDidChange:(CGSize)change;
 @end
 
 @implementation SKRemoteEngagementRemoteViewController
 
-- (void)engagementTaskDidFinishWithResult:(id)a3 resultData:(id)a4 error:(id)a5 completion:(id)a6
+- (void)engagementTaskDidFinishWithResult:(id)result resultData:(id)data error:(id)error completion:(id)completion
 {
-  v18 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(SKRemoteEngagementRemoteViewController *)self delegate];
-  if (v13)
+  resultCopy = result;
+  dataCopy = data;
+  errorCopy = error;
+  completionCopy = completion;
+  delegate = [(SKRemoteEngagementRemoteViewController *)self delegate];
+  if (delegate)
   {
-    v14 = v13;
-    v15 = [(SKRemoteEngagementRemoteViewController *)self delegate];
+    v14 = delegate;
+    delegate2 = [(SKRemoteEngagementRemoteViewController *)self delegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = [(SKRemoteEngagementRemoteViewController *)self delegate];
-      [v17 engagementTaskDidFinishWithResult:v18 resultData:v10 error:v11 completion:v12];
+      delegate3 = [(SKRemoteEngagementRemoteViewController *)self delegate];
+      [delegate3 engagementTaskDidFinishWithResult:resultCopy resultData:dataCopy error:errorCopy completion:completionCopy];
     }
   }
 }
 
-- (void)preferredContentSizeDidChange:(CGSize)a3
+- (void)preferredContentSizeDidChange:(CGSize)change
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SKRemoteEngagementRemoteViewController *)self delegate];
-  if (v6)
+  height = change.height;
+  width = change.width;
+  delegate = [(SKRemoteEngagementRemoteViewController *)self delegate];
+  if (delegate)
   {
-    v7 = v6;
-    v8 = [(SKRemoteEngagementRemoteViewController *)self delegate];
+    v7 = delegate;
+    delegate2 = [(SKRemoteEngagementRemoteViewController *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(SKRemoteEngagementRemoteViewController *)self delegate];
-      [v10 preferredContentSizeDidChange:{width, height}];
+      delegate3 = [(SKRemoteEngagementRemoteViewController *)self delegate];
+      [delegate3 preferredContentSizeDidChange:{width, height}];
     }
   }
 }

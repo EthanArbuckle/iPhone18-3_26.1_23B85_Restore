@@ -1,14 +1,14 @@
 @interface PSSGMessageSHTriggerHealthUpdate
-+ (id)messageWithHealthData:(id)a3 sender:(id)a4;
++ (id)messageWithHealthData:(id)data sender:(id)sender;
 @end
 
 @implementation PSSGMessageSHTriggerHealthUpdate
 
-+ (id)messageWithHealthData:(id)a3 sender:(id)a4
++ (id)messageWithHealthData:(id)data sender:(id)sender
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(PSSGMessageBase *)[PSSGMessageSHTriggerHealthUpdate alloc] initWithType:12 string1:v5 data:v6];
+  senderCopy = sender;
+  dataCopy = data;
+  v7 = [(PSSGMessageBase *)[PSSGMessageSHTriggerHealthUpdate alloc] initWithType:12 string1:senderCopy data:dataCopy];
 
   return v7;
 }

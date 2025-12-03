@@ -1,6 +1,6 @@
 @interface ROI
 - (ROI)initWithBbox:(ROI *)self;
-- (int64_t)compareSelfAsLSWithAnotherLS:(id)a3;
+- (int64_t)compareSelfAsLSWithAnotherLS:(id)s;
 - (void)reflectAroundCenter:(ROI *)self;
 @end
 
@@ -39,13 +39,13 @@
   [(ROI *)self setBbox:v8];
 }
 
-- (int64_t)compareSelfAsLSWithAnotherLS:(id)a3
+- (int64_t)compareSelfAsLSWithAnotherLS:(id)s
 {
-  v4 = a3;
+  sCopy = s;
   [(ROI *)self area];
   if (v5 > 18000.0)
   {
-    [v4 area];
+    [sCopy area];
     if (v6 <= 17820.0)
     {
       goto LABEL_12;
@@ -55,14 +55,14 @@
   [(ROI *)self area];
   if (v7 <= 17820.0)
   {
-    [v4 area];
+    [sCopy area];
     if (v8 > 18000.0)
     {
       goto LABEL_9;
     }
   }
 
-  [v4 dist2ghost];
+  [sCopy dist2ghost];
   v10 = v9;
   [(ROI *)self dist2ghost];
   if (v10 > (v11 + 32.0))
@@ -70,10 +70,10 @@
     goto LABEL_9;
   }
 
-  [v4 dist2ghost];
+  [sCopy dist2ghost];
   if (v12 != INFINITY)
   {
-    [v4 dist2ghost];
+    [sCopy dist2ghost];
     v14 = v13;
     [(ROI *)self dist2ghost];
     if (vabds_f32(v14, v15) > 32.0)
@@ -82,10 +82,10 @@
     }
   }
 
-  [v4 area];
+  [sCopy area];
   v17 = v16;
   [(ROI *)self area];
-  if (v17 < (v18 + -256.0) || ([v4 area], v21 = v20, -[ROI area](self, "area"), vabds_f32(v21, v22) <= 256.0) && (objc_msgSend(v4, "dist2opticalCenter"), v24 = v23, -[ROI dist2opticalCenter](self, "dist2opticalCenter"), v24 > v25))
+  if (v17 < (v18 + -256.0) || ([sCopy area], v21 = v20, -[ROI area](self, "area"), vabds_f32(v21, v22) <= 256.0) && (objc_msgSend(sCopy, "dist2opticalCenter"), v24 = v23, -[ROI dist2opticalCenter](self, "dist2opticalCenter"), v24 > v25))
   {
 LABEL_9:
     v19 = -1;

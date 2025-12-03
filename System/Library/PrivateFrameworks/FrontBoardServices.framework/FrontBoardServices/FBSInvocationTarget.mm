@@ -1,22 +1,22 @@
 @interface FBSInvocationTarget
-+ (void)targetWithInterface:(void *)a3 handler:;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
++ (void)targetWithInterface:(void *)interface handler:;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation FBSInvocationTarget
 
-+ (void)targetWithInterface:(void *)a3 handler:
++ (void)targetWithInterface:(void *)interface handler:
 {
   v4 = a2;
-  v5 = a3;
+  interfaceCopy = interface;
   objc_opt_self();
   if (!v4)
   {
     [FBSInvocationTarget targetWithInterface:? handler:?];
   }
 
-  if (!v5)
+  if (!interfaceCopy)
   {
     [FBSInvocationTarget targetWithInterface:? handler:?];
   }
@@ -26,33 +26,33 @@
   v8 = v6[1];
   v6[1] = v7;
 
-  v9 = [v5 copy];
+  v9 = [interfaceCopy copy];
   v10 = v6[2];
   v6[2] = v9;
 
   return v6;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v5 = [FBSInvocation alloc];
-  v6 = [(FBSInvocation *)v5 initWithInvocation:v4 interface:self->_interface];
+  v6 = [(FBSInvocation *)v5 initWithInvocation:invocationCopy interface:self->_interface];
   handler = self->_handler;
-  v8 = [v6 context];
-  LOBYTE(handler) = handler[2](handler, v5, v8);
+  context = [v6 context];
+  LOBYTE(handler) = handler[2](handler, v5, context);
 
   if ((handler & 1) == 0)
   {
     v9 = FBLogSceneInvocation();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(FBSInvocationTarget *)v4 forwardInvocation:v9];
+      [(FBSInvocationTarget *)invocationCopy forwardInvocation:v9];
     }
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   p_interface = &self->_interface;
   v6 = [(BSObjCProtocol *)self->_interface methodForSelector:?];
@@ -60,8 +60,8 @@
   if (v6)
   {
     v8 = MEMORY[0x1E695DF68];
-    v9 = [v6 encoding];
-    v10 = [v8 signatureWithObjCTypes:{objc_msgSend(v9, "UTF8String")}];
+    encoding = [v6 encoding];
+    v10 = [v8 signatureWithObjCTypes:{objc_msgSend(encoding, "UTF8String")}];
   }
 
   else
@@ -69,12 +69,12 @@
     v11 = FBLogSceneInvocation();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(FBSInvocationTarget *)a3 methodSignatureForSelector:v11];
+      [(FBSInvocationTarget *)selector methodSignatureForSelector:v11];
     }
 
     v13.receiver = self;
     v13.super_class = FBSInvocationTarget;
-    v10 = [(FBSInvocationTarget *)&v13 methodSignatureForSelector:a3];
+    v10 = [(FBSInvocationTarget *)&v13 methodSignatureForSelector:selector];
   }
 
   return v10;

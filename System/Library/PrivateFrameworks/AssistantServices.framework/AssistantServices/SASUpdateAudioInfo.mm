@@ -1,7 +1,7 @@
 @interface SASUpdateAudioInfo
-- (BOOL)ad_isDifferentFromStartSpeech:(id)a3;
+- (BOOL)ad_isDifferentFromStartSpeech:(id)speech;
 - (id)ad_deferredMetricsContext;
-- (void)ad_updateWithRecordingInfo:(id)a3 speechRequestOptions:(id)a4 clientConfiguration:(id)a5;
+- (void)ad_updateWithRecordingInfo:(id)info speechRequestOptions:(id)options clientConfiguration:(id)configuration;
 @end
 
 @implementation SASUpdateAudioInfo
@@ -10,123 +10,123 @@
 {
   v12.receiver = self;
   v12.super_class = SASUpdateAudioInfo;
-  v3 = [(SASUpdateAudioInfo *)&v12 ad_deferredMetricsContext];
-  v4 = [(SASUpdateAudioInfo *)self audioSource];
-  if (v4)
+  ad_deferredMetricsContext = [(SASUpdateAudioInfo *)&v12 ad_deferredMetricsContext];
+  audioSource = [(SASUpdateAudioInfo *)self audioSource];
+  if (audioSource)
   {
-    [v3 setObject:v4 forKey:SASUpdateAudioInfoAudioSourcePListKey];
+    [ad_deferredMetricsContext setObject:audioSource forKey:SASUpdateAudioInfoAudioSourcePListKey];
   }
 
-  v5 = [(SASUpdateAudioInfo *)self origin];
-  if (v5)
+  origin = [(SASUpdateAudioInfo *)self origin];
+  if (origin)
   {
-    [v3 setObject:v5 forKey:SASUpdateAudioInfoOriginPListKey];
+    [ad_deferredMetricsContext setObject:origin forKey:SASUpdateAudioInfoOriginPListKey];
   }
 
-  v6 = [(SASUpdateAudioInfo *)self headsetAddress];
-  if (v6)
+  headsetAddress = [(SASUpdateAudioInfo *)self headsetAddress];
+  if (headsetAddress)
   {
-    [v3 setObject:v6 forKey:SASUpdateAudioInfoHeadsetAddressPListKey];
+    [ad_deferredMetricsContext setObject:headsetAddress forKey:SASUpdateAudioInfoHeadsetAddressPListKey];
   }
 
-  v7 = [(SASUpdateAudioInfo *)self headsetId];
-  if (v7)
+  headsetId = [(SASUpdateAudioInfo *)self headsetId];
+  if (headsetId)
   {
-    [v3 setObject:v7 forKey:SASUpdateAudioInfoHeadsetIdPListKey];
+    [ad_deferredMetricsContext setObject:headsetId forKey:SASUpdateAudioInfoHeadsetIdPListKey];
   }
 
-  v8 = [(SASUpdateAudioInfo *)self headsetName];
-  if (v8)
+  headsetName = [(SASUpdateAudioInfo *)self headsetName];
+  if (headsetName)
   {
-    [v3 setObject:v8 forKey:SASUpdateAudioInfoHeadsetNamePListKey];
+    [ad_deferredMetricsContext setObject:headsetName forKey:SASUpdateAudioInfoHeadsetNamePListKey];
   }
 
-  v9 = [(SASUpdateAudioInfo *)self vendorId];
-  if (v9)
+  vendorId = [(SASUpdateAudioInfo *)self vendorId];
+  if (vendorId)
   {
-    [v3 setObject:v9 forKey:SASUpdateAudioInfoVendorIdPListKey];
+    [ad_deferredMetricsContext setObject:vendorId forKey:SASUpdateAudioInfoVendorIdPListKey];
   }
 
-  v10 = [(SASUpdateAudioInfo *)self productId];
-  if (v10)
+  productId = [(SASUpdateAudioInfo *)self productId];
+  if (productId)
   {
-    [v3 setObject:v10 forKey:SASUpdateAudioInfoProductIdPListKey];
+    [ad_deferredMetricsContext setObject:productId forKey:SASUpdateAudioInfoProductIdPListKey];
   }
 
-  return v3;
+  return ad_deferredMetricsContext;
 }
 
-- (void)ad_updateWithRecordingInfo:(id)a3 speechRequestOptions:(id)a4 clientConfiguration:(id)a5
+- (void)ad_updateWithRecordingInfo:(id)info speechRequestOptions:(id)options clientConfiguration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 source];
+  infoCopy = info;
+  optionsCopy = options;
+  configurationCopy = configuration;
+  source = [infoCopy source];
   v12 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v66 = "[SASUpdateAudioInfo(ADSAExtensions) ad_updateWithRecordingInfo:speechRequestOptions:clientConfiguration:]";
     v67 = 2112;
-    v68 = v11;
+    v68 = source;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s audioSource = %@", buf, 0x16u);
   }
 
-  [(SASUpdateAudioInfo *)self setAudioSource:v11];
-  v13 = [v8 destination];
+  [(SASUpdateAudioInfo *)self setAudioSource:source];
+  destination = [infoCopy destination];
   v14 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v66 = "[SASUpdateAudioInfo(ADSAExtensions) ad_updateWithRecordingInfo:speechRequestOptions:clientConfiguration:]";
     v67 = 2112;
-    v68 = v13;
+    v68 = destination;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s audioDestination = %@", buf, 0x16u);
   }
 
-  [(SASUpdateAudioInfo *)self setAudioDestination:v13];
-  v15 = [v8 codec];
+  [(SASUpdateAudioInfo *)self setAudioDestination:destination];
+  codec = [infoCopy codec];
   [(SASUpdateAudioInfo *)self setCodec:SASCodecForString()];
 
-  v16 = [v8 deviceIdentifier];
-  [(SASUpdateAudioInfo *)self setDeviceIdentifier:v16];
+  deviceIdentifier = [infoCopy deviceIdentifier];
+  [(SASUpdateAudioInfo *)self setDeviceIdentifier:deviceIdentifier];
 
-  v17 = [v8 modelName];
-  [(SASUpdateAudioInfo *)self setDeviceModel:v17];
+  modelName = [infoCopy modelName];
+  [(SASUpdateAudioInfo *)self setDeviceModel:modelName];
 
-  v18 = [v8 dspStatus];
-  [(SASUpdateAudioInfo *)self setDspStatus:v18];
+  dspStatus = [infoCopy dspStatus];
+  [(SASUpdateAudioInfo *)self setDspStatus:dspStatus];
 
-  v19 = [v8 headsetAddress];
-  [(SASUpdateAudioInfo *)self setHeadsetAddress:v19];
+  headsetAddress = [infoCopy headsetAddress];
+  [(SASUpdateAudioInfo *)self setHeadsetAddress:headsetAddress];
 
-  v20 = [v8 headsetName];
-  [(SASUpdateAudioInfo *)self setHeadsetName:v20];
+  headsetName = [infoCopy headsetName];
+  [(SASUpdateAudioInfo *)self setHeadsetName:headsetName];
 
-  v21 = [v8 productId];
-  [(SASUpdateAudioInfo *)self setProductId:v21];
+  productId = [infoCopy productId];
+  [(SASUpdateAudioInfo *)self setProductId:productId];
 
-  v22 = [v8 vendorId];
-  [(SASUpdateAudioInfo *)self setVendorId:v22];
+  vendorId = [infoCopy vendorId];
+  [(SASUpdateAudioInfo *)self setVendorId:vendorId];
 
-  -[SASUpdateAudioInfo setTriggeredTwoShotBorealis:](self, "setTriggeredTwoShotBorealis:", [v8 triggeredTwoShotBorealis]);
-  v23 = [(SASUpdateAudioInfo *)self recordingInfo];
-  v24 = [v23 copy];
+  -[SASUpdateAudioInfo setTriggeredTwoShotBorealis:](self, "setTriggeredTwoShotBorealis:", [infoCopy triggeredTwoShotBorealis]);
+  recordingInfo = [(SASUpdateAudioInfo *)self recordingInfo];
+  v24 = [recordingInfo copy];
 
   if (!v24)
   {
     v24 = objc_alloc_init(SASRecordingInfo);
   }
 
-  v25 = v9;
-  v61 = v11;
-  v63 = v10;
+  v25 = optionsCopy;
+  v61 = source;
+  v63 = configurationCopy;
   if (!AFHasRingerSwitch())
   {
     goto LABEL_14;
   }
 
-  v26 = [v10 deviceRingerSwitchState];
+  deviceRingerSwitchState = [configurationCopy deviceRingerSwitchState];
   v27 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
@@ -138,10 +138,10 @@
     v68 = v29;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "%s deviceRingerSwitchState = %@", buf, 0x16u);
 
-    v9 = v25;
+    optionsCopy = v25;
   }
 
-  if (v26)
+  if (deviceRingerSwitchState)
   {
     v30 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -149,11 +149,11 @@
       *buf = 136315394;
       v66 = "[SASUpdateAudioInfo(ADSAExtensions) ad_updateWithRecordingInfo:speechRequestOptions:clientConfiguration:]";
       v67 = 1024;
-      LODWORD(v68) = v26 != 1;
+      LODWORD(v68) = deviceRingerSwitchState != 1;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "%s SASRecordingInfo.ringerSwitchOff = %d", buf, 0x12u);
     }
 
-    [v24 setRingerSwitchOff:v26 != 1];
+    [v24 setRingerSwitchOff:deviceRingerSwitchState != 1];
     v31 = 1;
   }
 
@@ -163,8 +163,8 @@ LABEL_14:
     v31 = 0;
   }
 
-  v32 = [v8 audioAlertStyle];
-  if (!v32)
+  audioAlertStyle = [infoCopy audioAlertStyle];
+  if (!audioAlertStyle)
   {
     goto LABEL_33;
   }
@@ -175,16 +175,16 @@ LABEL_14:
     *buf = 136315394;
     v66 = "[SASUpdateAudioInfo(ADSAExtensions) ad_updateWithRecordingInfo:speechRequestOptions:clientConfiguration:]";
     v67 = 2048;
-    v68 = v32;
+    v68 = audioAlertStyle;
     _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "%s audioAlertStyle = %ld", buf, 0x16u);
   }
 
-  if (v32 == 1)
+  if (audioAlertStyle == 1)
   {
     v34 = &SASRecordingInfoAlertTypeNoneValue;
   }
 
-  else if (v32 == 3)
+  else if (audioAlertStyle == 3)
   {
     v35 = AFHasHapticEngine();
     v34 = &SASRecordingInfoAlertTypeVibrationValue;
@@ -196,7 +196,7 @@ LABEL_14:
 
   else
   {
-    if (v32 != 2)
+    if (audioAlertStyle != 2)
     {
       v36 = 0;
       goto LABEL_28;
@@ -223,9 +223,9 @@ LABEL_28:
     v31 = 1;
   }
 
-  v9 = v25;
+  optionsCopy = v25;
 LABEL_33:
-  [v8 firstBufferTimestamp];
+  [infoCopy firstBufferTimestamp];
   if (v38 <= 0.0)
   {
     goto LABEL_59;
@@ -242,9 +242,9 @@ LABEL_33:
     _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "%s firstBufferTimestamp (baseline) = %f", buf, 0x16u);
   }
 
-  if ([v9 activationEvent] == 1)
+  if ([optionsCopy activationEvent] == 1)
   {
-    [v9 homeButtonDownEventTime];
+    [optionsCopy homeButtonDownEventTime];
     v42 = v41;
     v43 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -272,11 +272,11 @@ LABEL_33:
       [v24 setButtonDowntime:v45];
 
       v31 = 1;
-      v9 = v25;
+      optionsCopy = v25;
     }
   }
 
-  [v8 startRecordingTimestamp];
+  [infoCopy startRecordingTimestamp];
   v47 = v46;
   v48 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -315,10 +315,10 @@ LABEL_33:
 
     [v24 setZeroLatencyLaunch:v39 < v47];
     v31 = 1;
-    v9 = v25;
+    optionsCopy = v25;
   }
 
-  [v8 activationAlertStartTimestamp];
+  [infoCopy activationAlertStartTimestamp];
   v53 = v52;
   v54 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -336,7 +336,7 @@ LABEL_33:
   }
 
   v55 = ((v53 - v39) * 1000.0);
-  if (v32 == 3)
+  if (audioAlertStyle == 3)
   {
     v60 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -353,7 +353,7 @@ LABEL_33:
     goto LABEL_64;
   }
 
-  if (v32 != 2)
+  if (audioAlertStyle != 2)
   {
 LABEL_59:
     v59 = v62;
@@ -387,11 +387,11 @@ LABEL_65:
 LABEL_66:
 }
 
-- (BOOL)ad_isDifferentFromStartSpeech:(id)a3
+- (BOOL)ad_isDifferentFromStartSpeech:(id)speech
 {
-  v4 = a3;
-  v5 = [(SASUpdateAudioInfo *)self codec];
-  if (v5 != [v4 codec] || (-[SASUpdateAudioInfo vendorId](self, "vendorId"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6) || (-[SASUpdateAudioInfo productId](self, "productId"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  speechCopy = speech;
+  codec = [(SASUpdateAudioInfo *)self codec];
+  if (codec != [speechCopy codec] || (-[SASUpdateAudioInfo vendorId](self, "vendorId"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6) || (-[SASUpdateAudioInfo productId](self, "productId"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
     v8 = 1;
   }
@@ -411,7 +411,7 @@ LABEL_66:
     {
       v11 = (&v16)[v10];
       v12 = [(SASUpdateAudioInfo *)self performSelector:v11, v16, v17, v18, v19, v20, v21, v22];
-      v13 = [v4 performSelector:v11];
+      v13 = [speechCopy performSelector:v11];
       v14 = v13;
       if (v12 == v13)
       {

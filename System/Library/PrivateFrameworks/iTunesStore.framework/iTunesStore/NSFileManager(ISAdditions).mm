@@ -8,10 +8,10 @@
 
 + (uint64_t)cacheDirectoryPathWithName:()ISAdditions
 {
-  v4 = [-[NSArray lastObject](NSSearchPathForDirectoriesInDomains(NSCachesDirectory 1uLL];
-  if ([a1 ensureDirectoryExists:v4])
+  1uLL = [-[NSArray lastObject](NSSearchPathForDirectoriesInDomains(NSCachesDirectory 1uLL];
+  if ([self ensureDirectoryExists:1uLL])
   {
-    return v4;
+    return 1uLL;
   }
 
   else
@@ -42,9 +42,9 @@
 
 + (BOOL)_storeMovePath:()ISAdditions toPath:
 {
-  v5 = [a3 fileSystemRepresentation];
-  v6 = [a4 fileSystemRepresentation];
-  rename(v5, v6, v7);
+  fileSystemRepresentation = [a3 fileSystemRepresentation];
+  fileSystemRepresentation2 = [a4 fileSystemRepresentation];
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v7);
   return v8 == 0;
 }
 

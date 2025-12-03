@@ -1,33 +1,33 @@
 @interface RUIScrollViewWeakLayoutObserver
-- (RUIScrollViewWeakLayoutObserver)initWithLayoutObserver:(id)a3;
-- (void)_scrollViewDidLayoutSubviews:(id)a3;
+- (RUIScrollViewWeakLayoutObserver)initWithLayoutObserver:(id)observer;
+- (void)_scrollViewDidLayoutSubviews:(id)subviews;
 @end
 
 @implementation RUIScrollViewWeakLayoutObserver
 
-- (RUIScrollViewWeakLayoutObserver)initWithLayoutObserver:(id)a3
+- (RUIScrollViewWeakLayoutObserver)initWithLayoutObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v8.receiver = self;
   v8.super_class = RUIScrollViewWeakLayoutObserver;
   v5 = [(RUIScrollViewWeakLayoutObserver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_weakLayoutObserver, v4);
+    objc_storeWeak(&v5->_weakLayoutObserver, observerCopy);
   }
 
   return v6;
 }
 
-- (void)_scrollViewDidLayoutSubviews:(id)a3
+- (void)_scrollViewDidLayoutSubviews:(id)subviews
 {
-  v6 = a3;
+  subviewsCopy = subviews;
   WeakRetained = objc_loadWeakRetained(&self->_weakLayoutObserver);
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained _scrollViewDidLayoutSubviews:v6];
+    [WeakRetained _scrollViewDidLayoutSubviews:subviewsCopy];
   }
 }
 

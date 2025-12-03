@@ -1,34 +1,34 @@
 @interface TSCH3DLightingPackage
 + (id)allNamedPackages;
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-+ (id)localizedNameForName:(id)a3;
-+ (id)nameFromSageLightingPackageName:(id)a3;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
++ (id)localizedNameForName:(id)name;
++ (id)nameFromSageLightingPackageName:(id)name;
 + (id)p_sageLightingPackageNames;
 + (id)package;
-+ (id)packageFromName:(id)a3;
-+ (id)packageWithSageLightingPackageData:(id)a3;
-+ (id)sageNameFromLightingPackageName:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)packageFromName:(id)name;
++ (id)packageWithSageLightingPackageData:(id)data;
++ (id)sageNameFromLightingPackageName:(id)name;
+- (BOOL)isEqual:(id)equal;
 - (NSString)localizedName;
 - (TSCH3DLightingPackage)init;
-- (TSCH3DLightingPackage)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addLight:(id)a3;
-- (void)affect:(id)a3 states:(id)a4 scene:(id)a5 texturePool:(id)a6;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (TSCH3DLightingPackage)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addLight:(id)light;
+- (void)affect:(id)affect states:(id)states scene:(id)scene texturePool:(id)pool;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSCH3DLightingPackage
 
-+ (id)localizedNameForName:(id)a3
++ (id)localizedNameForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (qword_280A468B8 != -1)
   {
     sub_2764A6B34();
   }
 
-  v9 = objc_msgSend_objectForKeyedSubscript_(qword_280A468B0, v3, v5, v6, v7, v4);
+  v9 = objc_msgSend_objectForKeyedSubscript_(qword_280A468B0, v3, v5, v6, v7, nameCopy);
   if (!v9)
   {
     v13 = MEMORY[0x277D81150];
@@ -48,7 +48,7 @@
   block[1] = 3221225472;
   block[2] = sub_276195DA0;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A468C8 != -1)
   {
     dispatch_once(&qword_280A468C8, block);
@@ -59,11 +59,11 @@
   return v2;
 }
 
-+ (id)packageFromName:(id)a3
++ (id)packageFromName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8 = sub_276360774(v5, v6, v7);
-  v13 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v9, v10, v11, v12, @"%@.lpg", v4);
+  v13 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v9, v10, v11, v12, @"%@.lpg", nameCopy);
   v18 = objc_msgSend_pathForResource_ofType_(v8, v14, v15, v16, v17, v13, @"plist");
 
   v23 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x277CBEA90], v19, v20, v21, v22, v18);
@@ -84,7 +84,7 @@
   else
   {
     v50 = objc_msgSend_dataWithDictionary_(TSCH3DSageLightingPackageData, v29, v31, v32, v33, v28);
-    v49 = objc_msgSend_packageWithSageLightingPackageData_(a1, v51, v52, v53, v54, v50);
+    v49 = objc_msgSend_packageWithSageLightingPackageData_(self, v51, v52, v53, v54, v50);
   }
 
   return v49;
@@ -92,7 +92,7 @@
 
 + (id)package
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -116,10 +116,10 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   v15 = objc_msgSend_init(v10, v11, v12, v13, v14);
   v16 = v15;
   if (v15)
@@ -134,10 +134,10 @@
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -206,30 +206,30 @@ LABEL_13:
   return isEqual;
 }
 
-- (void)addLight:(id)a3
+- (void)addLight:(id)light
 {
-  v16 = a3;
+  lightCopy = light;
   v4 = self->_lights;
-  v9 = objc_msgSend_arrayByAddingObject_(v4, v5, v6, v7, v8, v16);
+  v9 = objc_msgSend_arrayByAddingObject_(v4, v5, v6, v7, v8, lightCopy);
   v14 = objc_msgSend_copy(v9, v10, v11, v12, v13);
   lights = self->_lights;
   self->_lights = v14;
 }
 
-- (void)affect:(id)a3 states:(id)a4 scene:(id)a5 texturePool:(id)a6
+- (void)affect:(id)affect states:(id)states scene:(id)scene texturePool:(id)pool
 {
   v103 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  affectCopy = affect;
+  statesCopy = states;
+  poolCopy = pool;
   v87 = objc_msgSend_effect(TSCH3DLightingPackageShaderEffect, v12, v13, v14, v15);
-  objc_msgSend_addEffect_toSection_(v9, v16, v17, v18, v19);
+  objc_msgSend_addEffect_toSection_(affectCopy, v16, v17, v18, v19);
   v24 = objc_msgSend_set(MEMORY[0x277CCA940], v20, v21, v22, v23);
   v98 = 0u;
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v86 = self;
+  selfCopy = self;
   v25 = self->_lights;
   v31 = objc_msgSend_countByEnumeratingWithState_objects_count_(v25, v26, v27, v28, v29, &v96, v102, 16);
   if (v31)
@@ -244,7 +244,7 @@ LABEL_13:
           objc_enumerationMutation(v25);
         }
 
-        if (objc_msgSend_enabled(*(*(&v96 + 1) + 8 * i), v30, v32, v33, v34, v86))
+        if (objc_msgSend_enabled(*(*(&v96 + 1) + 8 * i), v30, v32, v33, v34, selfCopy))
         {
           v37 = objc_opt_class();
           objc_msgSend_addObject_(v24, v38, v39, v40, v41, v37);
@@ -276,11 +276,11 @@ LABEL_13:
         }
 
         v54 = *(*(&v92 + 1) + 8 * j);
-        v55 = objc_msgSend_effectClass(v54, v47, v49, v50, v51, v86);
-        objc_msgSend_createStateInEffectsStates_(v55, v56, v57, v58, v59, v10);
+        v55 = objc_msgSend_effectClass(v54, v47, v49, v50, v51, selfCopy);
+        objc_msgSend_createStateInEffectsStates_(v55, v56, v57, v58, v59, statesCopy);
         v64 = objc_msgSend_countForObject_(v42, v60, v61, v62, v63, v54);
         v69 = objc_msgSend_effectWithLightCount_(v55, v65, v66, v67, v68, v64);
-        objc_msgSend_addEffect_toSection_(v9, v70, v71, v72, v73, v69, 2);
+        objc_msgSend_addEffect_toSection_(affectCopy, v70, v71, v72, v73, v69, 2);
       }
 
       v48 = objc_msgSend_countByEnumeratingWithState_objects_count_(v42, v47, v49, v50, v51, &v92, v101, 16);
@@ -293,7 +293,7 @@ LABEL_13:
   v91 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v74 = v86->_lights;
+  v74 = selfCopy->_lights;
   v80 = objc_msgSend_countByEnumeratingWithState_objects_count_(v74, v75, v76, v77, v78, &v88, v100, 16);
   if (v80)
   {
@@ -307,7 +307,7 @@ LABEL_13:
           objc_enumerationMutation(v74);
         }
 
-        objc_msgSend_affect_states_texturePool_(*(*(&v88 + 1) + 8 * k), v79, v81, v82, v83, v9, v10, v11, v86);
+        objc_msgSend_affect_states_texturePool_(*(*(&v88 + 1) + 8 * k), v79, v81, v82, v83, affectCopy, statesCopy, poolCopy, selfCopy);
       }
 
       v80 = objc_msgSend_countByEnumeratingWithState_objects_count_(v74, v79, v81, v82, v83, &v88, v100, 16);
@@ -326,29 +326,29 @@ LABEL_13:
   return v13;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSCH3DLightingPackage alloc];
-  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, a3, v5);
+  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, archive, unarchiverCopy);
 
   return v11;
 }
 
-- (TSCH3DLightingPackage)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCH3DLightingPackage)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v54.receiver = self;
   v54.super_class = TSCH3DLightingPackage;
   v7 = [(TSCH3DLightingPackage *)&v54 init];
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x277CCACA8]);
-    v13 = objc_msgSend_tsp_initWithProtobufString_(v8, v9, v10, v11, v12, *(a3 + 6) & 0xFFFFFFFFFFFFFFFELL);
+    v13 = objc_msgSend_tsp_initWithProtobufString_(v8, v9, v10, v11, v12, *(archive + 6) & 0xFFFFFFFFFFFFFFFELL);
     name = v7->_name;
     v7->_name = v13;
 
-    v15 = *(a3 + 8);
+    v15 = *(archive + 8);
     v21 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v16, v17, v18, v19, v15);
     if (v15 >= 1)
     {
@@ -356,7 +356,7 @@ LABEL_13:
       do
       {
         v26 = [TSCH3DLight alloc];
-        v31 = objc_msgSend_initWithArchive_unarchiver_(v26, v27, v28, v29, v30, *(*(a3 + 5) + v25), v6);
+        v31 = objc_msgSend_initWithArchive_unarchiver_(v26, v27, v28, v29, v30, *(*(archive + 5) + v25), unarchiverCopy);
         objc_msgSend_addObject_(v21, v32, v33, v34, v35, v31);
 
         v25 += 8;
@@ -384,10 +384,10 @@ LABEL_13:
   return v7;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v56 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  archiverCopy = archiver;
   name = self->_name;
   if (!name)
   {
@@ -401,7 +401,7 @@ LABEL_13:
   }
 
   v27 = objc_msgSend_tsp_protobufString(name, v6, v8, v9, v10);
-  sub_276197000(a3, v27);
+  sub_276197000(archive, v27);
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
@@ -422,36 +422,36 @@ LABEL_13:
         }
 
         v40 = *(*(&v51 + 1) + 8 * v39);
-        v41 = *(a3 + 5);
+        v41 = *(archive + 5);
         if (!v41)
         {
           goto LABEL_13;
         }
 
-        v42 = *(a3 + 8);
+        v42 = *(archive + 8);
         v43 = *v41;
         if (v42 < *v41)
         {
-          *(a3 + 8) = v42 + 1;
-          objc_msgSend_saveToArchive_archiver_(v40, v33, v35, v36, v37, *&v41[2 * v42 + 2], v7);
+          *(archive + 8) = v42 + 1;
+          objc_msgSend_saveToArchive_archiver_(v40, v33, v35, v36, v37, *&v41[2 * v42 + 2], archiverCopy);
           goto LABEL_15;
         }
 
-        if (v43 == *(a3 + 9))
+        if (v43 == *(archive + 9))
         {
 LABEL_13:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-          v41 = *(a3 + 5);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+          v41 = *(archive + 5);
           v43 = *v41;
         }
 
         *v41 = v43 + 1;
-        v44 = sub_27644752C(*(a3 + 3));
-        v45 = *(a3 + 8);
-        v46 = *(a3 + 5) + 8 * v45;
-        *(a3 + 8) = v45 + 1;
+        v44 = sub_27644752C(*(archive + 3));
+        v45 = *(archive + 8);
+        v46 = *(archive + 5) + 8 * v45;
+        *(archive + 8) = v45 + 1;
         *(v46 + 8) = v44;
-        objc_msgSend_saveToArchive_archiver_(v40, v47, v48, v49, v50, v44, v7);
+        objc_msgSend_saveToArchive_archiver_(v40, v47, v48, v49, v50, v44, archiverCopy);
 LABEL_15:
         ++v39;
       }
@@ -476,15 +476,15 @@ LABEL_15:
   return v3;
 }
 
-+ (id)nameFromSageLightingPackageName:(id)a3
++ (id)nameFromSageLightingPackageName:(id)name
 {
-  v4 = a3;
-  v9 = objc_msgSend_p_sageLightingPackageNames(a1, v5, v6, v7, v8);
-  v14 = objc_msgSend_containsObject_(v9, v10, v11, v12, v13, v4);
+  nameCopy = name;
+  v9 = objc_msgSend_p_sageLightingPackageNames(self, v5, v6, v7, v8);
+  v14 = objc_msgSend_containsObject_(v9, v10, v11, v12, v13, nameCopy);
 
   if (v14)
   {
-    v15 = v4;
+    v15 = nameCopy;
   }
 
   else
@@ -495,28 +495,28 @@ LABEL_15:
   return v15;
 }
 
-+ (id)sageNameFromLightingPackageName:(id)a3
++ (id)sageNameFromLightingPackageName:(id)name
 {
-  v4 = a3;
-  v9 = objc_msgSend_p_sageLightingPackageNames(a1, v5, v6, v7, v8);
-  v14 = objc_msgSend_containsObject_(v9, v10, v11, v12, v13, v4);
+  nameCopy = name;
+  v9 = objc_msgSend_p_sageLightingPackageNames(self, v5, v6, v7, v8);
+  v14 = objc_msgSend_containsObject_(v9, v10, v11, v12, v13, nameCopy);
 
   if ((v14 & 1) == 0)
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v16, v17, v18, "+[TSCH3DLightingPackage(ImportExportAdditions) sageNameFromLightingPackageName:]");
     v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, v22, v23, v24, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DLightingPackageImportExportAdditions.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v26, v27, v28, v29, v20, v25, 66, 0, "invalid lighting package name encountered %@", v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v26, v27, v28, v29, v20, v25, 66, 0, "invalid lighting package name encountered %@", nameCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31, v32, v33);
   }
 
-  v34 = objc_msgSend_p_sageLightingPackageNames(a1, v15, v16, v17, v18);
-  v39 = objc_msgSend_containsObject_(v34, v35, v36, v37, v38, v4);
+  v34 = objc_msgSend_p_sageLightingPackageNames(self, v15, v16, v17, v18);
+  v39 = objc_msgSend_containsObject_(v34, v35, v36, v37, v38, nameCopy);
 
   if (v39)
   {
-    v40 = v4;
+    v40 = nameCopy;
   }
 
   else
@@ -527,10 +527,10 @@ LABEL_15:
   return v40;
 }
 
-+ (id)packageWithSageLightingPackageData:(id)a3
++ (id)packageWithSageLightingPackageData:(id)data
 {
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v6, v7, v8, "+[TSCH3DLightingPackage(ImportExportAdditions) packageWithSageLightingPackageData:]");
@@ -540,11 +540,11 @@ LABEL_15:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  v210 = objc_msgSend_package(a1, v4, v6, v7, v8);
-  v28 = objc_msgSend_packageName(v5, v24, v25, v26, v27);
+  v210 = objc_msgSend_package(self, v4, v6, v7, v8);
+  v28 = objc_msgSend_packageName(dataCopy, v24, v25, v26, v27);
   objc_msgSend_setName_(v210, v29, v30, v31, v32, v28);
 
-  v37 = objc_msgSend_count(v5, v33, v34, v35, v36);
+  v37 = objc_msgSend_count(dataCopy, v33, v34, v35, v36);
   v42 = v37;
   if (v37)
   {
@@ -554,13 +554,13 @@ LABEL_15:
     v209 = v37;
     do
     {
-      v46 = objc_msgSend_typeAtIndex_(v5, v38, v39, v40, v41, v43);
+      v46 = objc_msgSend_typeAtIndex_(dataCopy, v38, v39, v40, v41, v43);
       if (v46)
       {
         if (v46 == 1)
         {
           v51 = objc_msgSend_light(TSCH3DDirectionalLight, v47, v48, v49, v50);
-          objc_msgSend_directionAtIndex_(v5, v84, v85, v86, v87, v43);
+          objc_msgSend_directionAtIndex_(dataCopy, v84, v85, v86, v87, v43);
           v211 = LODWORD(v88);
           v212 = LODWORD(v89);
           v213 = LODWORD(v90);
@@ -575,19 +575,19 @@ LABEL_15:
           }
 
           v51 = objc_msgSend_light(TSCH3DSpotLight, v47, v48, v49, v50);
-          objc_msgSend_positionAtIndex_(v5, v52, v53, v54, v55, v43);
+          objc_msgSend_positionAtIndex_(dataCopy, v52, v53, v54, v55, v43);
           v211 = LODWORD(v56);
           v212 = LODWORD(v57);
           v213 = LODWORD(v58);
           objc_msgSend_setPosition_(v51, v59, v56, v57, v58, &v211);
-          objc_msgSend_directionAtIndex_(v5, v60, v61, v62, v63, v43);
+          objc_msgSend_directionAtIndex_(dataCopy, v60, v61, v62, v63, v43);
           v211 = LODWORD(v64);
           v212 = LODWORD(v65);
           v213 = LODWORD(v66);
           objc_msgSend_setDirection_(v51, v67, v64, v65, v66, &v211);
-          objc_msgSend_cutOffAngleAtIndex_(v5, v68, v69, v70, v71, v43);
+          objc_msgSend_cutOffAngleAtIndex_(dataCopy, v68, v69, v70, v71, v43);
           objc_msgSend_setCutOff_(v51, v72, v73, v74, v75);
-          objc_msgSend_dropOffRateAtIndex_(v5, v76, v77, v78, v79, v43);
+          objc_msgSend_dropOffRateAtIndex_(dataCopy, v76, v77, v78, v79, v43);
           objc_msgSend_setDropOff_(v51, v80, v81, v82, v83);
         }
       }
@@ -595,7 +595,7 @@ LABEL_15:
       else
       {
         v51 = objc_msgSend_light(TSCH3DPointLight, v47, v48, v49, v50);
-        objc_msgSend_positionAtIndex_(v5, v92, v93, v94, v95, v43);
+        objc_msgSend_positionAtIndex_(dataCopy, v92, v93, v94, v95, v43);
         v211 = LODWORD(v96);
         v212 = LODWORD(v97);
         v213 = LODWORD(v98);
@@ -604,35 +604,35 @@ LABEL_15:
 
       if (v51)
       {
-        v100 = objc_msgSend_nameAtIndex_(v5, v47, v48, v49, v50, v43);
+        v100 = objc_msgSend_nameAtIndex_(dataCopy, v47, v48, v49, v50, v43);
         objc_msgSend_setName_(v51, v101, v102, v103, v104, v100);
 
-        objc_msgSend_ambientColorAtIndex_(v5, v105, v106, v107, v108, v43);
+        objc_msgSend_ambientColorAtIndex_(dataCopy, v105, v106, v107, v108, v43);
         v211 = LODWORD(v109);
         v212 = LODWORD(v110);
         v213 = LODWORD(v111);
         v214 = v112;
         objc_msgSend_setAmbientColor_(v51, v113, v109, v110, v111, &v211);
-        objc_msgSend_diffuseColorAtIndex_(v5, v114, v115, v116, v117, v43);
+        objc_msgSend_diffuseColorAtIndex_(dataCopy, v114, v115, v116, v117, v43);
         v211 = LODWORD(v118);
         v212 = LODWORD(v119);
         v213 = LODWORD(v120);
         v214 = v121;
         objc_msgSend_setDiffuseColor_(v51, v122, v118, v119, v120, &v211);
-        objc_msgSend_specularColorAtIndex_(v5, v123, v124, v125, v126, v43);
+        objc_msgSend_specularColorAtIndex_(dataCopy, v123, v124, v125, v126, v43);
         v211 = LODWORD(v127);
         v212 = LODWORD(v128);
         v213 = LODWORD(v129);
         v214 = v130;
         objc_msgSend_setSpecularColor_(v51, v131, v127, v128, v129, &v211);
-        objc_msgSend_intensityAtIndex_(v5, v132, v133, v134, v135, v43);
+        objc_msgSend_intensityAtIndex_(dataCopy, v132, v133, v134, v135, v43);
         objc_msgSend_setIntensity_(v51, v136, v137, v138, v139);
-        objc_msgSend_attenuationAtIndex_(v5, v140, v141, v142, v143, v43);
+        objc_msgSend_attenuationAtIndex_(dataCopy, v140, v141, v142, v143, v43);
         v211 = LODWORD(v144);
         v212 = LODWORD(v145);
         v213 = LODWORD(v146);
         objc_msgSend_setAttenuation_(v51, v147, v144, v145, v146, &v211);
-        v152 = objc_msgSend_coordinateSpaceAtIndex_(v5, v148, v149, v150, v151, v43);
+        v152 = objc_msgSend_coordinateSpaceAtIndex_(dataCopy, v148, v149, v150, v151, v43);
         if (v152 < 1)
         {
           if ((v152 - 1) > 0xFFFFFFFF7FFFFFFELL)
@@ -666,7 +666,7 @@ LABEL_17:
           objc_msgSend_setCoordinateSpace_(v51, v153, v154, v155, v156, v152);
         }
 
-        v199 = objc_msgSend_enabledAtIndex_(v5, v175, v176, v177, v178, v43);
+        v199 = objc_msgSend_enabledAtIndex_(dataCopy, v175, v176, v177, v178, v43);
         objc_msgSend_setEnabled_(v51, v200, v201, v202, v203, v199);
         objc_msgSend_addLight_(v210, v204, v205, v206, v207, v51);
         goto LABEL_19;
@@ -676,7 +676,7 @@ LABEL_15:
       v179 = MEMORY[0x277D81150];
       v180 = objc_msgSend_stringWithUTF8String_(*(v45 + 3240), v47, v48, v49, v50, v44);
       v185 = objc_msgSend_stringWithUTF8String_(*(v45 + 3240), v181, v182, v183, v184, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DLightingPackageImportExportAdditions.mm");
-      v190 = objc_msgSend_typeAtIndex_(v5, v186, v187, v188, v189, v43);
+      v190 = objc_msgSend_typeAtIndex_(dataCopy, v186, v187, v188, v189, v43);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v179, v191, v192, v193, v194, v180, v185, 104, 0, "invalid light type %ld", v190);
 
       v51 = 0;

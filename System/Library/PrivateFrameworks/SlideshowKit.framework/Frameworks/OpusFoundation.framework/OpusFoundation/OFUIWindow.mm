@@ -1,12 +1,12 @@
 @interface OFUIWindow
-- (OFUIWindow)initWithCoder:(id)a3;
-- (OFUIWindow)initWithFrame:(CGRect)a3;
-- (id)beginDraggingItems:(id)a3 position:(CGPoint)a4 source:(id)a5;
+- (OFUIWindow)initWithCoder:(id)coder;
+- (OFUIWindow)initWithFrame:(CGRect)frame;
+- (id)beginDraggingItems:(id)items position:(CGPoint)position source:(id)source;
 - (void)cancelDragging;
 - (void)commonInit;
 - (void)dealloc;
-- (void)handleDragging:(id)a3;
-- (void)sendEvent:(id)a3;
+- (void)handleDragging:(id)dragging;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation OFUIWindow
@@ -23,11 +23,11 @@
   self->_showTouches = 0;
 }
 
-- (OFUIWindow)initWithFrame:(CGRect)a3
+- (OFUIWindow)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = OFUIWindow;
-  v3 = [(OFUIWindow *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(OFUIWindow *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -37,11 +37,11 @@
   return v4;
 }
 
-- (OFUIWindow)initWithCoder:(id)a3
+- (OFUIWindow)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = OFUIWindow;
-  v3 = [(OFUIWindow *)&v6 initWithCoder:a3];
+  v3 = [(OFUIWindow *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -87,17 +87,17 @@
   [(OFUIWindow *)&v7 dealloc];
 }
 
-- (id)beginDraggingItems:(id)a3 position:(CGPoint)a4 source:(id)a5
+- (id)beginDraggingItems:(id)items position:(CGPoint)position source:(id)source
 {
-  y = a4.y;
-  x = a4.x;
+  y = position.y;
+  x = position.x;
   if ([(OFUIWindow *)self isDragging])
   {
     [(OFUIWindow *)self cancelDragging];
   }
 
-  v10 = [a3 count];
-  if (!a5)
+  v10 = [items count];
+  if (!source)
   {
     return 0;
   }
@@ -107,7 +107,7 @@
     return 0;
   }
 
-  v11 = [[OFUIWindowDraggingSession alloc] initWithWindow:self items:a3 position:a5 source:x, y];
+  v11 = [[OFUIWindowDraggingSession alloc] initWithWindow:self items:items position:source source:x, y];
   if (!v11)
   {
     return 0;
@@ -139,19 +139,19 @@
   }
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
   v23 = *MEMORY[0x277D85DE8];
   v21.receiver = self;
   v21.super_class = OFUIWindow;
   [(OFUIWindow *)&v21 sendEvent:?];
-  if (self->_showTouches && ![a3 type])
+  if (self->_showTouches && ![event type])
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [a3 touchesForWindow:{self, 0}];
+    v5 = [event touchesForWindow:{self, 0}];
     v6 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v6)
     {
@@ -167,8 +167,8 @@
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
-          v11 = [v10 phase];
-          if ((v11 - 3) < 2)
+          phase = [v10 phase];
+          if ((phase - 3) < 2)
           {
             v14 = -[NSMutableDictionary objectForKey:](self->_eventsTracking, "objectForKey:", [v10 hashString]);
             if (v14)
@@ -178,7 +178,7 @@
             }
           }
 
-          else if (v11 == 1)
+          else if (phase == 1)
           {
             v15 = -[NSMutableDictionary objectForKey:](self->_eventsTracking, "objectForKey:", [v10 hashString]);
             if (v15)
@@ -189,7 +189,7 @@
             }
           }
 
-          else if (!v11)
+          else if (!phase)
           {
             v12 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:{objc_msgSend(MEMORY[0x277D755B8], "imageWithContentsOfFile:", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "pathForResource:ofType:", @"touch", @"png"}];
             if (v12)
@@ -213,12 +213,12 @@
   }
 }
 
-- (void)handleDragging:(id)a3
+- (void)handleDragging:(id)dragging
 {
-  v5 = [a3 state];
-  if (v5 > 2)
+  state = [dragging state];
+  if (state > 2)
   {
-    if (v5 == 3)
+    if (state == 3)
     {
       [(OFUIWindowDraggingAutoscroll *)self->_draggingAutoscroll stopAutoscroll];
       draggingSession = self->_draggingSession;
@@ -227,7 +227,7 @@
 
     else
     {
-      if (v5 != 4)
+      if (state != 4)
       {
         return;
       }
@@ -245,12 +245,12 @@
       self->_draggingSession = 0;
     }
 
-    v13 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
 
-    [v13 beginGeneratingDeviceOrientationNotifications];
+    [currentDevice beginGeneratingDeviceOrientationNotifications];
   }
 
-  else if (v5 == 1)
+  else if (state == 1)
   {
     [objc_msgSend(MEMORY[0x277D75418] "currentDevice")];
     v11 = self->_draggingSession;
@@ -258,10 +258,10 @@
     [(OFUIWindowDraggingSession *)v11 beginDragging];
   }
 
-  else if (v5 == 2)
+  else if (state == 2)
   {
     v6 = self->_draggingSession;
-    [a3 locationOfTouch:0 inView:self];
+    [dragging locationOfTouch:0 inView:self];
     [(OFUIWindowDraggingSession *)v6 moveToPosition:?];
     draggingAutoscroll = self->_draggingAutoscroll;
     v8 = self->_draggingSession;

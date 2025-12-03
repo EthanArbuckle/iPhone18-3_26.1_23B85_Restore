@@ -1,30 +1,30 @@
 @interface SSSScreenshotItemProviderPDFAsImage
-- (SSSScreenshotItemProviderPDFAsImage)initWithScreenshot:(id)a3;
-- (id)activityViewController:(id)a3 attachmentNameForActivityType:(id)a4;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (SSSScreenshotItemProviderPDFAsImage)initWithScreenshot:(id)screenshot;
+- (id)activityViewController:(id)controller attachmentNameForActivityType:(id)type;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 - (id)imageData;
 - (id)item;
-- (id)placeholderItemForScreenshot:(id)a3;
+- (id)placeholderItemForScreenshot:(id)screenshot;
 @end
 
 @implementation SSSScreenshotItemProviderPDFAsImage
 
-- (SSSScreenshotItemProviderPDFAsImage)initWithScreenshot:(id)a3
+- (SSSScreenshotItemProviderPDFAsImage)initWithScreenshot:(id)screenshot
 {
   v4.receiver = self;
   v4.super_class = SSSScreenshotItemProviderPDFAsImage;
-  return [(SSSScreenshotItemProvider *)&v4 initWithScreenshot:a3];
+  return [(SSSScreenshotItemProvider *)&v4 initWithScreenshot:screenshot];
 }
 
-- (id)placeholderItemForScreenshot:(id)a3
+- (id)placeholderItemForScreenshot:(id)screenshot
 {
-  v4 = [(SSSScreenshotItemProviderPDFAsImage *)self thumbnailImage];
+  thumbnailImage = [(SSSScreenshotItemProviderPDFAsImage *)self thumbnailImage];
 
-  if (!v4)
+  if (!thumbnailImage)
   {
-    v5 = [(SSSScreenshotItemProvider *)self screenshot];
-    v6 = [v5 PDFDocument];
-    v7 = [v6 pageAtIndex:0];
+    screenshot = [(SSSScreenshotItemProvider *)self screenshot];
+    pDFDocument = [screenshot PDFDocument];
+    v7 = [pDFDocument pageAtIndex:0];
     v8 = [v7 thumbnailOfSize:1 forBox:{300.0, 300.0}];
     [(SSSScreenshotItemProviderPDFAsImage *)self setThumbnailImage:v8];
   }
@@ -34,21 +34,21 @@
 
 - (id)item
 {
-  v3 = [(SSSScreenshotItemProviderPDFAsImage *)self pdfAsImage];
+  pdfAsImage = [(SSSScreenshotItemProviderPDFAsImage *)self pdfAsImage];
 
-  if (!v3)
+  if (!pdfAsImage)
   {
-    v4 = [(SSSScreenshotItemProvider *)self screenshot];
-    v5 = [v4 pdfAsImage];
-    [(SSSScreenshotItemProviderPDFAsImage *)self setPdfAsImage:v5];
+    screenshot = [(SSSScreenshotItemProvider *)self screenshot];
+    pdfAsImage2 = [screenshot pdfAsImage];
+    [(SSSScreenshotItemProviderPDFAsImage *)self setPdfAsImage:pdfAsImage2];
   }
 
   return [(SSSScreenshotItemProviderPDFAsImage *)self pdfAsImage];
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2050000000;
@@ -106,24 +106,24 @@
   v12 = v11;
   _Block_object_dispose(&v24, 8);
   v13 = [v11 alloc];
-  v14 = [(SSSScreenshotItemProviderPDFAsImage *)self thumbnailImage];
-  v15 = [v13 initWithPlatformImage:v14];
+  thumbnailImage = [(SSSScreenshotItemProviderPDFAsImage *)self thumbnailImage];
+  v15 = [v13 initWithPlatformImage:thumbnailImage];
   [v10 setThumbnail:v15];
 
-  v16 = [(SSSScreenshotItemProvider *)self nameForScreenshot];
-  [v10 setName:v16];
+  nameForScreenshot = [(SSSScreenshotItemProvider *)self nameForScreenshot];
+  [v10 setName:nameForScreenshot];
 
-  v17 = [UTTypeImage identifier];
-  [v10 setType:v17];
+  identifier = [UTTypeImage identifier];
+  [v10 setType:identifier];
 
   [v7 setSpecialization:v10];
 
   return v7;
 }
 
-- (id)activityViewController:(id)a3 attachmentNameForActivityType:(id)a4
+- (id)activityViewController:(id)controller attachmentNameForActivityType:(id)type
 {
-  v4 = [(SSSScreenshotItemProvider *)self nameForScreenshot:a3];
+  v4 = [(SSSScreenshotItemProvider *)self nameForScreenshot:controller];
   v5 = [v4 stringByAppendingPathExtension:@"jpeg"];
 
   return v5;
@@ -131,8 +131,8 @@
 
 - (id)imageData
 {
-  v2 = [(SSSScreenshotItemProviderPDFAsImage *)self pdfAsImage];
-  v3 = UIImageJPEGRepresentation(v2, 1.0);
+  pdfAsImage = [(SSSScreenshotItemProviderPDFAsImage *)self pdfAsImage];
+  v3 = UIImageJPEGRepresentation(pdfAsImage, 1.0);
 
   return v3;
 }

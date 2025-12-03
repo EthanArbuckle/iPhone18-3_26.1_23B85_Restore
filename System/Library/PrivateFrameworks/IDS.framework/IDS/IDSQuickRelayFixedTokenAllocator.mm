@@ -1,16 +1,16 @@
 @interface IDSQuickRelayFixedTokenAllocator
-- (BOOL)_isSessionInfoValid:(id)a3;
+- (BOOL)_isSessionInfoValid:(id)valid;
 - (IDSQuickRelayFixedTokenAllocator)initWithDefaults;
-- (IDSQuickRelayFixedTokenAllocator)initWithDictionary:(id)a3;
+- (IDSQuickRelayFixedTokenAllocator)initWithDictionary:(id)dictionary;
 - (id)_parseQuickRelayDefaults;
-- (void)_setAllValuesFromDictionary:(id)a3;
+- (void)_setAllValuesFromDictionary:(id)dictionary;
 @end
 
 @implementation IDSQuickRelayFixedTokenAllocator
 
-- (IDSQuickRelayFixedTokenAllocator)initWithDictionary:(id)a3
+- (IDSQuickRelayFixedTokenAllocator)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (_IDSRunningInDaemon())
   {
     v5 = +[IDSTransportLog QRAllocator];
@@ -28,34 +28,34 @@
   self = v6;
   if (v6)
   {
-    if (![(IDSQuickRelayFixedTokenAllocator *)v6 _isSessionInfoValid:v4])
+    if (![(IDSQuickRelayFixedTokenAllocator *)v6 _isSessionInfoValid:dictionaryCopy])
     {
 LABEL_9:
-      v7 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
-    [(IDSQuickRelayFixedTokenAllocator *)self _setAllValuesFromDictionary:v4];
+    [(IDSQuickRelayFixedTokenAllocator *)self _setAllValuesFromDictionary:dictionaryCopy];
   }
 
   self = self;
-  v7 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v7;
+  return selfCopy;
 }
 
 - (IDSQuickRelayFixedTokenAllocator)initWithDefaults
 {
   if (_IDSRunningInDaemon())
   {
-    v3 = +[IDSTransportLog QRAllocator];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    _parseQuickRelayDefaults = +[IDSTransportLog QRAllocator];
+    if (os_log_type_enabled(_parseQuickRelayDefaults, OS_LOG_TYPE_ERROR))
     {
       sub_195B2E704();
     }
 
-    v4 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -69,46 +69,46 @@ LABEL_10:
     }
 
     v6 = v5;
-    v3 = [(IDSQuickRelayFixedTokenAllocator *)v5 _parseQuickRelayDefaults];
-    self = [(IDSQuickRelayFixedTokenAllocator *)v6 initWithDictionary:v3];
-    v4 = self;
+    _parseQuickRelayDefaults = [(IDSQuickRelayFixedTokenAllocator *)v5 _parseQuickRelayDefaults];
+    self = [(IDSQuickRelayFixedTokenAllocator *)v6 initWithDictionary:_parseQuickRelayDefaults];
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)_setAllValuesFromDictionary:(id)a3
+- (void)_setAllValuesFromDictionary:(id)dictionary
 {
   v4 = *MEMORY[0x1E69A5528];
-  v5 = a3;
-  v6 = [v5 objectForKey:v4];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKey:v4];
   [(IDSQuickRelayFixedTokenAllocator *)self setRelayIP:v6];
 
-  v7 = [v5 objectForKey:*MEMORY[0x1E69A5538]];
+  v7 = [dictionaryCopy objectForKey:*MEMORY[0x1E69A5538]];
   [(IDSQuickRelayFixedTokenAllocator *)self setRelayPort:v7];
 
-  v8 = [v5 objectForKey:*MEMORY[0x1E69A5550]];
+  v8 = [dictionaryCopy objectForKey:*MEMORY[0x1E69A5550]];
   [(IDSQuickRelayFixedTokenAllocator *)self setRelaySessionToken:v8];
 
-  v9 = [v5 objectForKey:*MEMORY[0x1E69A5548]];
+  v9 = [dictionaryCopy objectForKey:*MEMORY[0x1E69A5548]];
   [(IDSQuickRelayFixedTokenAllocator *)self setRelaySessionKey:v9];
 
-  v10 = [v5 objectForKey:*MEMORY[0x1E69A5540]];
+  v10 = [dictionaryCopy objectForKey:*MEMORY[0x1E69A5540]];
   [(IDSQuickRelayFixedTokenAllocator *)self setRelaySessionID:v10];
 
-  v11 = [v5 objectForKey:*MEMORY[0x1E69A5530]];
+  v11 = [dictionaryCopy objectForKey:*MEMORY[0x1E69A5530]];
   [(IDSQuickRelayFixedTokenAllocator *)self setRelayCombinedSoftwareID:v11];
 
-  v12 = [v5 objectForKey:*MEMORY[0x1E69A5510]];
+  v12 = [dictionaryCopy objectForKey:*MEMORY[0x1E69A5510]];
 
   [(IDSQuickRelayFixedTokenAllocator *)self setAppleID:v12];
 }
 
-- (BOOL)_isSessionInfoValid:(id)a3
+- (BOOL)_isSessionInfoValid:(id)valid
 {
   v21[7] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  validCopy = valid;
+  if (validCopy)
   {
     v4 = *MEMORY[0x1E69A5538];
     v21[0] = *MEMORY[0x1E69A5528];
@@ -139,7 +139,7 @@ LABEL_10:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [v3 objectForKey:{*(*(&v16 + 1) + 8 * i), v16}];
+          v12 = [validCopy objectForKey:{*(*(&v16 + 1) + 8 * i), v16}];
 
           if (!v12)
           {
@@ -185,7 +185,7 @@ LABEL_12:
     {
       v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v32 + 4 length:4];
       v6 = [v3 objectAtIndex:1];
-      v26 = [v6 integerValue];
+      integerValue = [v6 integerValue];
 
       v7 = +[IDSTransportLog QRAllocator];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -193,20 +193,20 @@ LABEL_12:
         *buf = 138412546;
         v29 = v4;
         v30 = 1024;
-        v31 = v26;
+        v31 = integerValue;
         _os_log_impl(&dword_1959FF000, v7, OS_LOG_TYPE_DEFAULT, "Decoded relay-server-address %@:%u", buf, 0x12u);
       }
 
       v25 = MEMORY[0x19A8BACE0](@"com.apple.ids", @"FixedQuickRelaySessionID");
       v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v25 options:0];
-      v9 = [v8 bytes];
-      if (v9)
+      bytes = [v8 bytes];
+      if (bytes)
       {
-        v9 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:{objc_msgSend(v8, "bytes")}];
+        bytes = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:{objc_msgSend(v8, "bytes")}];
       }
 
-      v24 = v9;
-      value = [v9 UUIDString];
+      v24 = bytes;
+      value = [bytes UUIDString];
       v10 = +[IDSTransportLog QRAllocator];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -235,11 +235,11 @@ LABEL_12:
         _os_log_impl(&dword_1959FF000, v15, OS_LOG_TYPE_DEFAULT, "Decoded base64 relay-session-key %@", buf, 0xCu);
       }
 
-      if (v5 && v26 && value && v11 && v14)
+      if (v5 && integerValue && value && v11 && v14)
       {
         Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
         CFDictionarySetValue(Mutable, *MEMORY[0x1E69A5528], v5);
-        v17 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v26];
+        v17 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:integerValue];
         if (v17)
         {
           CFDictionarySetValue(Mutable, *MEMORY[0x1E69A5538], v17);

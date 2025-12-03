@@ -8,8 +8,8 @@
 - (void)initWithContact:()Contact
 {
   v4 = a3;
-  v5 = [MEMORY[0x277D0C038] internalRepresentation];
-  v6 = [a1 initWithInternalRepresentation:v5];
+  internalRepresentation = [MEMORY[0x277D0C038] internalRepresentation];
+  v6 = [self initWithInternalRepresentation:internalRepresentation];
   v7 = v6;
   if (v6)
   {
@@ -22,48 +22,48 @@
 - (void)setContact:()Contact
 {
   v22 = a3;
-  objc_setAssociatedObject(a1, @"_gkCNContact", v22, 0x301);
+  objc_setAssociatedObject(self, @"_gkCNContact", v22, 0x301);
   v4 = v22;
   if (v22)
   {
-    v5 = [v22 identifier];
-    v6 = [a1 internal];
-    [v6 setPlayerID:v5];
+    identifier = [v22 identifier];
+    internal = [self internal];
+    [internal setPlayerID:identifier];
 
-    v7 = [a1 internal];
-    v8 = [v7 playerID];
+    internal2 = [self internal];
+    playerID = [internal2 playerID];
 
-    if (!v8)
+    if (!playerID)
     {
-      v9 = [MEMORY[0x277CCAD78] UUID];
-      v10 = [v9 UUIDString];
-      v11 = [a1 internal];
-      [v11 setPlayerID:v10];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      internal3 = [self internal];
+      [internal3 setPlayerID:uUIDString];
     }
 
-    v12 = [v22 givenName];
-    v13 = [a1 internal];
-    [v13 setFirstName:v12];
+    givenName = [v22 givenName];
+    internal4 = [self internal];
+    [internal4 setFirstName:givenName];
 
-    v14 = [v22 familyName];
-    v15 = [a1 internal];
-    [v15 setLastName:v14];
+    familyName = [v22 familyName];
+    internal5 = [self internal];
+    [internal5 setLastName:familyName];
 
     v16 = [MEMORY[0x277CBDA78] stringFromContact:v22 style:0];
-    v17 = [a1 internal];
-    [v17 setCompositeName:v16];
+    internal6 = [self internal];
+    [internal6 setCompositeName:v16];
 
-    v18 = [a1 internal];
-    [v18 setAlias:0];
+    internal7 = [self internal];
+    [internal7 setAlias:0];
 
-    v19 = [a1 internal];
-    [v19 setAvatarType:&unk_286189600];
+    internal8 = [self internal];
+    [internal8 setAvatarType:&unk_286189600];
 
     v20 = [GKMessageUtilities messagesRecipientHandleForContact:v22];
     if (v20)
     {
-      v21 = [a1 internal];
-      [v21 setMessagesID:v20];
+      internal9 = [self internal];
+      [internal9 setMessagesID:v20];
     }
 
     v4 = v22;

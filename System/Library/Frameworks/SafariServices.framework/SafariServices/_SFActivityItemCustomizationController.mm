@@ -2,12 +2,12 @@
 - (_SFActivityItemCustomizationController)init;
 - (_SFActivityItemCustomizationDelegate)delegate;
 - (id)_allowedContentTypes;
-- (id)_customizationGroupsForActivityViewController:(id)a3;
-- (int64_t)_contentTypeForAllowedContentAtIndex:(int64_t)a3;
+- (id)_customizationGroupsForActivityViewController:(id)controller;
+- (int64_t)_contentTypeForAllowedContentAtIndex:(int64_t)index;
 - (int64_t)_selectedIndex;
 - (void)_customizationsDidChange;
 - (void)_ensureSelectedContentTypeIsAllowed;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _SFActivityItemCustomizationController
@@ -29,23 +29,23 @@
   return v3;
 }
 
-- (id)_customizationGroupsForActivityViewController:(id)a3
+- (id)_customizationGroupsForActivityViewController:(id)controller
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = [(_SFActivityItemCustomizationController *)self _allowedContentTypes];
-  v5 = [v4 safari_mapObjectsUsingBlock:&__block_literal_global_43];
+  _allowedContentTypes = [(_SFActivityItemCustomizationController *)self _allowedContentTypes];
+  v5 = [_allowedContentTypes safari_mapObjectsUsingBlock:&__block_literal_global_43];
 
   if ([v5 count] >= 2)
   {
     v7 = MEMORY[0x1E69CDA48];
-    v8 = [(_SFActivityItemCustomizationController *)self _selectedIndex];
+    _selectedIndex = [(_SFActivityItemCustomizationController *)self _selectedIndex];
     v9 = _WBSLocalizedString();
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __88___SFActivityItemCustomizationController__customizationGroupsForActivityViewController___block_invoke_2;
     v16[3] = &unk_1E84942A0;
     v16[4] = self;
-    v10 = [v7 pickerCustomizationWithIdentifier:@"SFActivityFormatPicker" options:v5 selectedOptionIndex:v8 footerText:v9 valueChangedHandler:v16];
+    v10 = [v7 pickerCustomizationWithIdentifier:@"SFActivityFormatPicker" options:v5 selectedOptionIndex:_selectedIndex footerText:v9 valueChangedHandler:v16];
 
     v11 = objc_alloc(MEMORY[0x1E69CDA50]);
     v12 = _WBSLocalizedString();
@@ -65,16 +65,16 @@
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 webViewForCustomizationController:self];
+    v5 = [delegateCopy webViewForCustomizationController:self];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v4 isContentObscuredByDigitalHealthForCustomizationController:self];
+      v6 = [delegateCopy isContentObscuredByDigitalHealthForCustomizationController:self];
     }
 
     else
@@ -84,7 +84,7 @@
 
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v4 isDisplayingQuickLookDocumentForCustomizationController:self] ^ 1;
+      v7 = [delegateCopy isDisplayingQuickLookDocumentForCustomizationController:self] ^ 1;
     }
 
     else
@@ -94,7 +94,7 @@
 
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v4 isReaderAvailableForCustomizationController:self];
+      v8 = [delegateCopy isReaderAvailableForCustomizationController:self];
     }
 
     else
@@ -104,7 +104,7 @@
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v4 isShowingReaderForCustomizationController:self];
+      v9 = [delegateCopy isShowingReaderForCustomizationController:self];
     }
 
     else
@@ -112,24 +112,24 @@
       v9 = 0;
     }
 
-    v10 = [v5 _isDisplayingStandaloneImageDocument];
-    v11 = v10;
-    if ((v6 | v10))
+    _isDisplayingStandaloneImageDocument = [v5 _isDisplayingStandaloneImageDocument];
+    v11 = _isDisplayingStandaloneImageDocument;
+    if ((v6 | _isDisplayingStandaloneImageDocument))
     {
-      v12 = 0;
+      _isDisplayingPDF = 0;
     }
 
     else
     {
-      v13 = [v5 _isDisplayingStandaloneMediaDocument];
-      if ((v13 | v7))
+      _isDisplayingStandaloneMediaDocument = [v5 _isDisplayingStandaloneMediaDocument];
+      if ((_isDisplayingStandaloneMediaDocument | v7))
       {
-        v12 = v13 ^ 1;
+        _isDisplayingPDF = _isDisplayingStandaloneMediaDocument ^ 1;
       }
 
       else
       {
-        v12 = [v5 _isDisplayingPDF];
+        _isDisplayingPDF = [v5 _isDisplayingPDF];
       }
     }
 
@@ -137,7 +137,7 @@
     v18 = 3221225472;
     v19 = __54___SFActivityItemCustomizationController_setDelegate___block_invoke;
     v20 = &unk_1E84942C8;
-    v22 = v12;
+    v22 = _isDisplayingPDF;
     v23 = v9;
     v24 = v8;
     v14 = v5;
@@ -154,20 +154,20 @@
   }
 }
 
-- (int64_t)_contentTypeForAllowedContentAtIndex:(int64_t)a3
+- (int64_t)_contentTypeForAllowedContentAtIndex:(int64_t)index
 {
-  v4 = [(_SFActivityItemCustomizationController *)self _allowedContentTypes];
-  v5 = [v4 objectAtIndexedSubscript:a3];
-  v6 = [v5 integerValue];
+  _allowedContentTypes = [(_SFActivityItemCustomizationController *)self _allowedContentTypes];
+  v5 = [_allowedContentTypes objectAtIndexedSubscript:index];
+  integerValue = [v5 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
 - (int64_t)_selectedIndex
 {
-  v3 = [(_SFActivityItemCustomizationController *)self _allowedContentTypes];
+  _allowedContentTypes = [(_SFActivityItemCustomizationController *)self _allowedContentTypes];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:self->_selectedContentType];
-  v5 = [v3 indexOfObject:v4];
+  v5 = [_allowedContentTypes indexOfObject:v4];
 
   return v5;
 }
@@ -207,22 +207,22 @@
 {
   if (!self->_contentTypeAllowedMap[self->_selectedContentType])
   {
-    v4 = [(_SFActivityItemCustomizationController *)self _allowedContentTypes];
-    v7 = [v4 firstObject];
+    _allowedContentTypes = [(_SFActivityItemCustomizationController *)self _allowedContentTypes];
+    firstObject = [_allowedContentTypes firstObject];
 
-    v5 = v7;
-    if (v7)
+    v5 = firstObject;
+    if (firstObject)
     {
-      v6 = [v7 integerValue];
-      v5 = v7;
+      integerValue = [firstObject integerValue];
+      v5 = firstObject;
     }
 
     else
     {
-      v6 = 0;
+      integerValue = 0;
     }
 
-    self->_selectedContentType = v6;
+    self->_selectedContentType = integerValue;
   }
 }
 

@@ -1,6 +1,6 @@
 @interface HMBShareOperation
 + (id)logCategory;
-- (HMBShareOperation)initWithCloudZone:(id)a3 block:(id)a4;
+- (HMBShareOperation)initWithCloudZone:(id)zone block:(id)block;
 - (void)main;
 @end
 
@@ -8,12 +8,12 @@
 
 - (void)main
 {
-  v3 = [(HMBShareOperation *)self cloudZone];
-  v4 = [v3 shareModel];
-  v5 = [v4 share];
+  cloudZone = [(HMBShareOperation *)self cloudZone];
+  shareModel = [cloudZone shareModel];
+  share = [shareModel share];
 
-  v6 = [(HMBFutureOperation *)self block];
-  v7 = v6[2]();
+  block = [(HMBFutureOperation *)self block];
+  v7 = block[2]();
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -26,8 +26,8 @@
   v11[2] = __25__HMBShareOperation_main__block_invoke_2;
   v11[3] = &unk_2786E1948;
   v11[4] = self;
-  v12 = v5;
-  v9 = v5;
+  v12 = share;
+  v9 = share;
   v10 = [v7 addFailureBlock:v11];
 }
 
@@ -177,16 +177,16 @@ void __25__HMBShareOperation_main__block_invoke_8(uint64_t a1, void *a2)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (HMBShareOperation)initWithCloudZone:(id)a3 block:(id)a4
+- (HMBShareOperation)initWithCloudZone:(id)zone block:(id)block
 {
-  v7 = a3;
+  zoneCopy = zone;
   v11.receiver = self;
   v11.super_class = HMBShareOperation;
-  v8 = [(HMBFutureOperation *)&v11 initWithBlock:a4];
+  v8 = [(HMBFutureOperation *)&v11 initWithBlock:block];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_cloudZone, a3);
+    objc_storeStrong(&v8->_cloudZone, zone);
   }
 
   return v9;

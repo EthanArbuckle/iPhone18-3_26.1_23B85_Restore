@@ -1,12 +1,12 @@
 @interface _DKLocalChanges
-- (id)initWithInsertedObjects:(uint64_t)a1 tombstones:(void *)a2 startDate:endDate:;
+- (id)initWithInsertedObjects:(uint64_t)objects tombstones:(void *)tombstones startDate:endDate:;
 @end
 
 @implementation _DKLocalChanges
 
-- (id)initWithInsertedObjects:(uint64_t)a1 tombstones:(void *)a2 startDate:endDate:
+- (id)initWithInsertedObjects:(uint64_t)objects tombstones:(void *)tombstones startDate:endDate:
 {
-  v7 = OUTLINED_FUNCTION_18_3(a1, a2);
+  v7 = OUTLINED_FUNCTION_18_3(objects, tombstones);
   v8 = v4;
   v9 = v3;
   v10 = v2;

@@ -12,10 +12,10 @@
 - (NSString)category;
 - (NSString)soundFileName;
 - (NSString)tapUrl;
-- (SSRemoteNotification)initWithNotificationUserInfo:(id)a3;
-- (SSRemoteNotification)initWithXPCEncoding:(id)a3;
-- (id)_valueForAPSKey:(id)a3;
-- (id)_valueForAlertKey:(id)a3;
+- (SSRemoteNotification)initWithNotificationUserInfo:(id)info;
+- (SSRemoteNotification)initWithXPCEncoding:(id)encoding;
+- (id)_valueForAPSKey:(id)key;
+- (id)_valueForAlertKey:(id)key;
 - (id)badgeValue;
 - (id)copyXPCEncoding;
 - (int64_t)actionType;
@@ -25,21 +25,21 @@
 
 @implementation SSRemoteNotification
 
-- (SSRemoteNotification)initWithNotificationUserInfo:(id)a3
+- (SSRemoteNotification)initWithNotificationUserInfo:(id)info
 {
   v15.receiver = self;
   v15.super_class = SSRemoteNotification;
   v4 = [(SSRemoteNotification *)&v15 init];
   if (v4)
   {
-    v4->_userInfo = [a3 copy];
-    v5 = [a3 objectForKey:@"10"];
+    v4->_userInfo = [info copy];
+    v5 = [info objectForKey:@"10"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if ([v5 isEqualToString:@"application/gzip"])
       {
-        v6 = [a3 objectForKey:@"aps"];
+        v6 = [info objectForKey:@"aps"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -292,9 +292,9 @@ LABEL_8:
   }
 
   v4 = MEMORY[0x1E695DF00];
-  v5 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return [v4 dateWithTimeIntervalSince1970:v5];
+  return [v4 dateWithTimeIntervalSince1970:integerValue];
 }
 
 - (NSDictionary)metrics
@@ -391,9 +391,9 @@ LABEL_8:
   return v3;
 }
 
-- (SSRemoteNotification)initWithXPCEncoding:(id)a3
+- (SSRemoteNotification)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v7.receiver = self;
     v7.super_class = SSRemoteNotification;
@@ -401,7 +401,7 @@ LABEL_8:
     if (v5)
     {
       objc_opt_class();
-      v5->_userInfo = SSXPCDictionaryCopyCFObjectWithClass(a3, "0");
+      v5->_userInfo = SSXPCDictionaryCopyCFObjectWithClass(encoding, "0");
     }
   }
 
@@ -414,7 +414,7 @@ LABEL_8:
   return v5;
 }
 
-- (id)_valueForAlertKey:(id)a3
+- (id)_valueForAlertKey:(id)key
 {
   v4 = [(NSDictionary *)self->_userInfo objectForKey:@"aps"];
   objc_opt_class();
@@ -430,10 +430,10 @@ LABEL_8:
     return 0;
   }
 
-  return [v5 objectForKey:a3];
+  return [v5 objectForKey:key];
 }
 
-- (id)_valueForAPSKey:(id)a3
+- (id)_valueForAPSKey:(id)key
 {
   v4 = [(NSDictionary *)self->_userInfo objectForKey:@"aps"];
   objc_opt_class();
@@ -442,7 +442,7 @@ LABEL_8:
     return 0;
   }
 
-  return [v4 objectForKey:a3];
+  return [v4 objectForKey:key];
 }
 
 @end

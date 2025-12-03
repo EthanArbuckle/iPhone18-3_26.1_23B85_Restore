@@ -1,9 +1,9 @@
 @interface SBFluidSwitcherSheetMetricsCache
-- (CGAffineTransform)transformForCardUnderSheetForBoundsSize:(SEL)a3;
-- (CGRect)pageSheetFrameForBounds:(CGRect)a3 interfaceOrientation:(int64_t)a4 configuration:(int64_t)a5;
-- (CGRect)pageSheetFrameForBounds:(CGRect)a3 interfaceOrientation:(int64_t)a4 configuration:(int64_t)a5 userInterfaceIdiom:(int64_t)a6 displayScale:(double)a7 displayEdgeInfo:(id)a8;
-- (CGSize)pageSheetMetricsForBoundsSize:(CGSize)a3 interfaceOrientation:(int64_t)a4 configuration:(int64_t)a5;
-- (CGSize)pageSheetMetricsForBoundsSize:(CGSize)a3 interfaceOrientation:(int64_t)a4 configuration:(int64_t)a5 userInterfaceIdiom:(int64_t)a6 displayScale:(double)a7 displayEdgeInfo:(id)a8;
+- (CGAffineTransform)transformForCardUnderSheetForBoundsSize:(SEL)size;
+- (CGRect)pageSheetFrameForBounds:(CGRect)bounds interfaceOrientation:(int64_t)orientation configuration:(int64_t)configuration;
+- (CGRect)pageSheetFrameForBounds:(CGRect)bounds interfaceOrientation:(int64_t)orientation configuration:(int64_t)configuration userInterfaceIdiom:(int64_t)idiom displayScale:(double)scale displayEdgeInfo:(id)info;
+- (CGSize)pageSheetMetricsForBoundsSize:(CGSize)size interfaceOrientation:(int64_t)orientation configuration:(int64_t)configuration;
+- (CGSize)pageSheetMetricsForBoundsSize:(CGSize)size interfaceOrientation:(int64_t)orientation configuration:(int64_t)configuration userInterfaceIdiom:(int64_t)idiom displayScale:(double)scale displayEdgeInfo:(id)info;
 - (id)_displayEdgeInfo;
 @end
 
@@ -31,7 +31,7 @@ void __52__SBFluidSwitcherSheetMetricsCache__displayEdgeInfo__block_invoke()
   _displayEdgeInfo_sDisplayEdgeInfo = v2;
 }
 
-- (CGAffineTransform)transformForCardUnderSheetForBoundsSize:(SEL)a3
+- (CGAffineTransform)transformForCardUnderSheetForBoundsSize:(SEL)size
 {
   v6 = [MEMORY[0x277CCAE60] valueWithCGSize:?];
   v7 = [(NSMutableDictionary *)self->_boundsToTransformMap objectForKey:v6];
@@ -77,13 +77,13 @@ void __52__SBFluidSwitcherSheetMetricsCache__displayEdgeInfo__block_invoke()
   return result;
 }
 
-- (CGSize)pageSheetMetricsForBoundsSize:(CGSize)a3 interfaceOrientation:(int64_t)a4 configuration:(int64_t)a5
+- (CGSize)pageSheetMetricsForBoundsSize:(CGSize)size interfaceOrientation:(int64_t)orientation configuration:(int64_t)configuration
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = [(SBFluidSwitcherSheetMetricsCache *)self _displayEdgeInfo];
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  -[SBFluidSwitcherSheetMetricsCache pageSheetMetricsForBoundsSize:interfaceOrientation:configuration:userInterfaceIdiom:displayScale:displayEdgeInfo:](self, "pageSheetMetricsForBoundsSize:interfaceOrientation:configuration:userInterfaceIdiom:displayScale:displayEdgeInfo:", a4, a5, [v11 userInterfaceIdiom], v10, width, height, SBScreenScale());
+  height = size.height;
+  width = size.width;
+  _displayEdgeInfo = [(SBFluidSwitcherSheetMetricsCache *)self _displayEdgeInfo];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  -[SBFluidSwitcherSheetMetricsCache pageSheetMetricsForBoundsSize:interfaceOrientation:configuration:userInterfaceIdiom:displayScale:displayEdgeInfo:](self, "pageSheetMetricsForBoundsSize:interfaceOrientation:configuration:userInterfaceIdiom:displayScale:displayEdgeInfo:", orientation, configuration, [currentDevice userInterfaceIdiom], _displayEdgeInfo, width, height, SBScreenScale());
   v13 = v12;
   v15 = v14;
 
@@ -94,13 +94,13 @@ void __52__SBFluidSwitcherSheetMetricsCache__displayEdgeInfo__block_invoke()
   return result;
 }
 
-- (CGSize)pageSheetMetricsForBoundsSize:(CGSize)a3 interfaceOrientation:(int64_t)a4 configuration:(int64_t)a5 userInterfaceIdiom:(int64_t)a6 displayScale:(double)a7 displayEdgeInfo:(id)a8
+- (CGSize)pageSheetMetricsForBoundsSize:(CGSize)size interfaceOrientation:(int64_t)orientation configuration:(int64_t)configuration userInterfaceIdiom:(int64_t)idiom displayScale:(double)scale displayEdgeInfo:(id)info
 {
-  height = a3.height;
-  width = a3.width;
-  v15 = a8;
-  v16 = [[_SBFluidSwitcherSheetMetricsCacheKey alloc] initWithBoundsSize:a4 interfaceOrientation:a5 configuration:a6 userInterfaceIdiom:v15 displayScale:width displayEdgeInfo:height, a7];
-  v17 = [(NSMutableDictionary *)self->_cacheKeyToSizeValueMap objectForKey:v16];
+  height = size.height;
+  width = size.width;
+  infoCopy = info;
+  scale = [[_SBFluidSwitcherSheetMetricsCacheKey alloc] initWithBoundsSize:orientation interfaceOrientation:configuration configuration:idiom userInterfaceIdiom:infoCopy displayScale:width displayEdgeInfo:height, scale];
+  v17 = [(NSMutableDictionary *)self->_cacheKeyToSizeValueMap objectForKey:scale];
   if (v17)
   {
     v18 = v17;
@@ -118,12 +118,12 @@ void __52__SBFluidSwitcherSheetMetricsCache__displayEdgeInfo__block_invoke()
     v44[1] = 3221225472;
     v44[2] = __149__SBFluidSwitcherSheetMetricsCache_pageSheetMetricsForBoundsSize_interfaceOrientation_configuration_userInterfaceIdiom_displayScale_displayEdgeInfo___block_invoke;
     v44[3] = &__block_descriptor_64_e27_v16__0___UIMutableTraits__8l;
-    v44[4] = a6;
-    *&v44[5] = a7;
+    v44[4] = idiom;
+    *&v44[5] = scale;
     *&v44[6] = width;
     *&v44[7] = height;
     v23 = [MEMORY[0x277D75C80] traitCollectionWithTraits:v44];
-    [v15 sb_orientedEdgeInsetsForInterfaceOrientation:a4 traitCollection:v23];
+    [infoCopy sb_orientedEdgeInsetsForInterfaceOrientation:orientation traitCollection:v23];
     v25 = v24;
     v27 = v26;
     v29 = v28;
@@ -133,16 +133,16 @@ void __52__SBFluidSwitcherSheetMetricsCache__displayEdgeInfo__block_invoke()
     [(_SBFluidSwitcherSheetMetricsView *)v22 _setSafeAreaInsetsFrozen:1];
     [(_SBFluidSwitcherSheetMetricsView *)v22 _setSafeAreaInsetsFrozen:0];
     [(_SBFluidSwitcherSheetMetricsView *)v22 _setSafeAreaInsetsFrozen:1];
-    if (a5 == 1)
+    if (configuration == 1)
     {
       v34 = +[SBAppSwitcherDomain rootSettings];
-      v35 = [v34 centerWindowSizingSettings];
+      centerWindowSizingSettings = [v34 centerWindowSizingSettings];
 
-      if ([v35 useCustomSizingForNewWindows])
+      if ([centerWindowSizingSettings useCustomSizingForNewWindows])
       {
-        [v35 fullWidthScaleFactor];
+        [centerWindowSizingSettings fullWidthScaleFactor];
         v37 = v36;
-        [v35 fullHeightScaleFactor];
+        [centerWindowSizingSettings fullHeightScaleFactor];
         width = width * v37;
         height = height * v38;
       }
@@ -150,7 +150,7 @@ void __52__SBFluidSwitcherSheetMetricsCache__displayEdgeInfo__block_invoke()
 
     else
     {
-      if (a5)
+      if (configuration)
       {
         _UISheetFormSize();
       }
@@ -175,7 +175,7 @@ void __52__SBFluidSwitcherSheetMetricsCache__displayEdgeInfo__block_invoke()
       cacheKeyToSizeValueMap = self->_cacheKeyToSizeValueMap;
     }
 
-    [(NSMutableDictionary *)cacheKeyToSizeValueMap setObject:v18 forKey:v16];
+    [(NSMutableDictionary *)cacheKeyToSizeValueMap setObject:v18 forKey:scale];
   }
 
   v42 = width;
@@ -195,15 +195,15 @@ void __149__SBFluidSwitcherSheetMetricsCache_pageSheetMetricsForBoundsSize_inter
   [v4 setVerticalSizeClass:_UIUserInterfaceSizeClassForHeight()];
 }
 
-- (CGRect)pageSheetFrameForBounds:(CGRect)a3 interfaceOrientation:(int64_t)a4 configuration:(int64_t)a5
+- (CGRect)pageSheetFrameForBounds:(CGRect)bounds interfaceOrientation:(int64_t)orientation configuration:(int64_t)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = [(SBFluidSwitcherSheetMetricsCache *)self _displayEdgeInfo];
-  v13 = [MEMORY[0x277D75418] currentDevice];
-  -[SBFluidSwitcherSheetMetricsCache pageSheetFrameForBounds:interfaceOrientation:configuration:userInterfaceIdiom:displayScale:displayEdgeInfo:](self, "pageSheetFrameForBounds:interfaceOrientation:configuration:userInterfaceIdiom:displayScale:displayEdgeInfo:", a4, a5, [v13 userInterfaceIdiom], v12, x, y, width, height, SBScreenScale());
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _displayEdgeInfo = [(SBFluidSwitcherSheetMetricsCache *)self _displayEdgeInfo];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  -[SBFluidSwitcherSheetMetricsCache pageSheetFrameForBounds:interfaceOrientation:configuration:userInterfaceIdiom:displayScale:displayEdgeInfo:](self, "pageSheetFrameForBounds:interfaceOrientation:configuration:userInterfaceIdiom:displayScale:displayEdgeInfo:", orientation, configuration, [currentDevice userInterfaceIdiom], _displayEdgeInfo, x, y, width, height, SBScreenScale());
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -220,11 +220,11 @@ void __149__SBFluidSwitcherSheetMetricsCache_pageSheetMetricsForBoundsSize_inter
   return result;
 }
 
-- (CGRect)pageSheetFrameForBounds:(CGRect)a3 interfaceOrientation:(int64_t)a4 configuration:(int64_t)a5 userInterfaceIdiom:(int64_t)a6 displayScale:(double)a7 displayEdgeInfo:(id)a8
+- (CGRect)pageSheetFrameForBounds:(CGRect)bounds interfaceOrientation:(int64_t)orientation configuration:(int64_t)configuration userInterfaceIdiom:(int64_t)idiom displayScale:(double)scale displayEdgeInfo:(id)info
 {
-  if (a5 == 1)
+  if (configuration == 1)
   {
-    [(SBFluidSwitcherSheetMetricsCache *)self pageSheetMetricsForBoundsSize:a4 interfaceOrientation:1 configuration:a6 userInterfaceIdiom:a8 displayScale:a3.size.width displayEdgeInfo:a3.size.height, a7];
+    [(SBFluidSwitcherSheetMetricsCache *)self pageSheetMetricsForBoundsSize:orientation interfaceOrientation:1 configuration:idiom userInterfaceIdiom:info displayScale:bounds.size.width displayEdgeInfo:bounds.size.height, scale];
     BSRectWithSize();
     UIRectCenteredIntegralRectScale();
     v9 = v8;
@@ -232,17 +232,17 @@ void __149__SBFluidSwitcherSheetMetricsCache_pageSheetMetricsForBoundsSize_inter
     v13 = v12;
     v15 = v14;
     v16 = +[SBAppSwitcherDomain rootSettings];
-    v17 = [v16 centerWindowSizingSettings];
+    centerWindowSizingSettings = [v16 centerWindowSizingSettings];
 
-    if ([v17 useCustomSizingForNewWindows])
+    if ([centerWindowSizingSettings useCustomSizingForNewWindows])
     {
-      [v17 topInset];
+      [centerWindowSizingSettings topInset];
       UIRectInsetEdges();
-      [v17 bottomInset];
+      [centerWindowSizingSettings bottomInset];
       UIRectInsetEdges();
-      [v17 leftInset];
+      [centerWindowSizingSettings leftInset];
       UIRectInsetEdges();
-      [v17 rightInset];
+      [centerWindowSizingSettings rightInset];
       UIRectInsetEdges();
       v9 = v18;
       v11 = v19;
@@ -253,7 +253,7 @@ void __149__SBFluidSwitcherSheetMetricsCache_pageSheetMetricsForBoundsSize_inter
 
   else
   {
-    [(SBFluidSwitcherSheetMetricsCache *)self pageSheetMetricsForBoundsSize:a4 interfaceOrientation:a5 configuration:a6 userInterfaceIdiom:a8 displayScale:a3.size.width displayEdgeInfo:a3.size.height, a7];
+    [(SBFluidSwitcherSheetMetricsCache *)self pageSheetMetricsForBoundsSize:orientation interfaceOrientation:configuration configuration:idiom userInterfaceIdiom:info displayScale:bounds.size.width displayEdgeInfo:bounds.size.height, scale];
     BSRectWithSize();
     UIRectCenteredIntegralRectScale();
     v9 = v22;

@@ -1,49 +1,49 @@
 @interface _PSAutocompleteSuggestion
-- (BOOL)isEqual:(id)a3;
-- (_PSAutocompleteSuggestion)initWithChatGuid:(id)a3 chatHandles:(id)a4 displayName:(id)a5 handle:(id)a6 contactIdentifier:(id)a7 resultSourceType:(unint64_t)a8 autocompleteResult:(id)a9 recipients:(id)a10;
-- (_PSAutocompleteSuggestion)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_PSAutocompleteSuggestion)initWithChatGuid:(id)guid chatHandles:(id)handles displayName:(id)name handle:(id)handle contactIdentifier:(id)identifier resultSourceType:(unint64_t)type autocompleteResult:(id)result recipients:(id)self0;
+- (_PSAutocompleteSuggestion)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _PSAutocompleteSuggestion
 
-- (_PSAutocompleteSuggestion)initWithChatGuid:(id)a3 chatHandles:(id)a4 displayName:(id)a5 handle:(id)a6 contactIdentifier:(id)a7 resultSourceType:(unint64_t)a8 autocompleteResult:(id)a9 recipients:(id)a10
+- (_PSAutocompleteSuggestion)initWithChatGuid:(id)guid chatHandles:(id)handles displayName:(id)name handle:(id)handle contactIdentifier:(id)identifier resultSourceType:(unint64_t)type autocompleteResult:(id)result recipients:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
+  guidCopy = guid;
+  handlesCopy = handles;
+  nameCopy = name;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  recipientsCopy = recipients;
   v36.receiver = self;
   v36.super_class = _PSAutocompleteSuggestion;
   v22 = [(_PSAutocompleteSuggestion *)&v36 init];
   if (v22)
   {
-    v23 = [v16 copy];
+    v23 = [guidCopy copy];
     chatGuid = v22->_chatGuid;
     v22->_chatGuid = v23;
 
-    v25 = [v17 copy];
+    v25 = [handlesCopy copy];
     chatHandles = v22->_chatHandles;
     v22->_chatHandles = v25;
 
-    v27 = [v18 copy];
+    v27 = [nameCopy copy];
     displayName = v22->_displayName;
     v22->_displayName = v27;
 
-    v29 = [v19 copy];
+    v29 = [handleCopy copy];
     handle = v22->_handle;
     v22->_handle = v29;
 
-    v31 = [v20 copy];
+    v31 = [identifierCopy copy];
     contactIdentifier = v22->_contactIdentifier;
     v22->_contactIdentifier = v31;
 
-    v22->_resultSourceType = a8;
-    v33 = [v21 copy];
+    v22->_resultSourceType = type;
+    v33 = [recipientsCopy copy];
     recipients = v22->_recipients;
     v22->_recipients = v33;
   }
@@ -51,23 +51,23 @@
   return v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v5 = v4;
-  v6 = [(_PSAutocompleteSuggestion *)self chatGuid];
-  if (!v6)
+  v5 = equalCopy;
+  chatGuid = [(_PSAutocompleteSuggestion *)self chatGuid];
+  if (!chatGuid)
   {
 LABEL_7:
-    v13 = [v5 handle];
-    v14 = [(_PSAutocompleteSuggestion *)self handle];
-    v15 = [v13 isEqualToString:v14];
+    handle = [v5 handle];
+    handle2 = [(_PSAutocompleteSuggestion *)self handle];
+    v15 = [handle isEqualToString:handle2];
 
     if (v15)
     {
@@ -79,18 +79,18 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v7 = v6;
-  v8 = [v5 chatGuid];
-  if (!v8)
+  v7 = chatGuid;
+  chatGuid2 = [v5 chatGuid];
+  if (!chatGuid2)
   {
 
     goto LABEL_7;
   }
 
-  v9 = v8;
-  v10 = [v5 chatGuid];
-  v11 = [(_PSAutocompleteSuggestion *)self chatGuid];
-  v12 = [v10 isEqualToString:v11];
+  v9 = chatGuid2;
+  chatGuid3 = [v5 chatGuid];
+  chatGuid4 = [(_PSAutocompleteSuggestion *)self chatGuid];
+  v12 = [chatGuid3 isEqualToString:chatGuid4];
 
   if ((v12 & 1) == 0)
   {
@@ -106,8 +106,8 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(_PSAutocompleteSuggestion *)self chatGuid];
-  if (v3)
+  chatGuid = [(_PSAutocompleteSuggestion *)self chatGuid];
+  if (chatGuid)
   {
     [(_PSAutocompleteSuggestion *)self chatGuid];
   }
@@ -122,42 +122,42 @@ LABEL_10:
   return v5;
 }
 
-- (_PSAutocompleteSuggestion)initWithCoder:(id)a3
+- (_PSAutocompleteSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = _PSAutocompleteSuggestion;
   v5 = [(_PSAutocompleteSuggestion *)&v26 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
     handle = v5->_handle;
     v5->_handle = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"chatGuid"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"chatGuid"];
     chatGuid = v5->_chatGuid;
     v5->_chatGuid = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"chatHandles"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"chatHandles"];
     chatHandles = v5->_chatHandles;
     v5->_chatHandles = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
     contactIdentifier = v5->_contactIdentifier;
     v5->_contactIdentifier = v17;
 
-    v5->_resultSourceType = [v4 decodeIntegerForKey:@"resultSourceType"];
+    v5->_resultSourceType = [coderCopy decodeIntegerForKey:@"resultSourceType"];
     v19 = MEMORY[0x1E695DFD8];
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"recipients"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"recipients"];
     recipients = v5->_recipients;
     v5->_recipients = v22;
 
@@ -167,29 +167,29 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   handle = self->_handle;
-  v5 = a3;
-  [v5 encodeObject:handle forKey:@"handle"];
-  [v5 encodeObject:self->_chatGuid forKey:@"chatGuid"];
-  [v5 encodeObject:self->_chatHandles forKey:@"chatHandles"];
-  [v5 encodeInteger:self->_resultSourceType forKey:@"resultSourceType"];
-  [v5 encodeObject:self->_displayName forKey:@"displayName"];
-  [v5 encodeObject:self->_contactIdentifier forKey:@"contactIdentifier"];
-  [v5 encodeObject:self->_recipients forKey:@"recipients"];
+  coderCopy = coder;
+  [coderCopy encodeObject:handle forKey:@"handle"];
+  [coderCopy encodeObject:self->_chatGuid forKey:@"chatGuid"];
+  [coderCopy encodeObject:self->_chatHandles forKey:@"chatHandles"];
+  [coderCopy encodeInteger:self->_resultSourceType forKey:@"resultSourceType"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_contactIdentifier forKey:@"contactIdentifier"];
+  [coderCopy encodeObject:self->_recipients forKey:@"recipients"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_PSAutocompleteSuggestion *)self chatGuid];
-  v6 = [(_PSAutocompleteSuggestion *)self chatHandles];
-  v7 = [(_PSAutocompleteSuggestion *)self handle];
-  v8 = [(_PSAutocompleteSuggestion *)self displayName];
-  v9 = [(_PSAutocompleteSuggestion *)self contactIdentifier];
-  v10 = [v3 stringWithFormat:@"<%@ %p> chatGuid: %@, chatHandles: %@, handle: %@, displayName: %@, contactIdentifier: %@", v4, self, v5, v6, v7, v8, v9];
+  chatGuid = [(_PSAutocompleteSuggestion *)self chatGuid];
+  chatHandles = [(_PSAutocompleteSuggestion *)self chatHandles];
+  handle = [(_PSAutocompleteSuggestion *)self handle];
+  displayName = [(_PSAutocompleteSuggestion *)self displayName];
+  contactIdentifier = [(_PSAutocompleteSuggestion *)self contactIdentifier];
+  v10 = [v3 stringWithFormat:@"<%@ %p> chatGuid: %@, chatHandles: %@, handle: %@, displayName: %@, contactIdentifier: %@", v4, self, chatGuid, chatHandles, handle, displayName, contactIdentifier];
 
   return v10;
 }

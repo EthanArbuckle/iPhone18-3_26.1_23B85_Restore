@@ -1,26 +1,26 @@
 @interface PPKPDFIconCollectionViewCell_iOS
-- (PPKPDFIconCollectionViewCell_iOS)initWithCoder:(id)a3;
-- (PPKPDFIconCollectionViewCell_iOS)initWithFrame:(CGRect)a3;
+- (PPKPDFIconCollectionViewCell_iOS)initWithCoder:(id)coder;
+- (PPKPDFIconCollectionViewCell_iOS)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 - (void)_updateMetricsIfNeeded;
 - (void)prepareForReuse;
-- (void)setHasLargeThumbnail:(BOOL)a3;
-- (void)setIsHorizontalLayout:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setThumbnailHeight:(double)a3;
-- (void)setThumbnailWidth:(double)a3;
+- (void)setHasLargeThumbnail:(BOOL)thumbnail;
+- (void)setIsHorizontalLayout:(BOOL)layout;
+- (void)setSelected:(BOOL)selected;
+- (void)setThumbnailHeight:(double)height;
+- (void)setThumbnailWidth:(double)width;
 - (void)setupSubviews;
-- (void)updateAspectConstraintWithSize:(CGSize)a3;
+- (void)updateAspectConstraintWithSize:(CGSize)size;
 - (void)updateOverlay;
 @end
 
 @implementation PPKPDFIconCollectionViewCell_iOS
 
-- (PPKPDFIconCollectionViewCell_iOS)initWithFrame:(CGRect)a3
+- (PPKPDFIconCollectionViewCell_iOS)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PPKPDFIconCollectionViewCell_iOS;
-  v3 = [(PPKPDFIconCollectionViewCell_iOS *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PPKPDFIconCollectionViewCell_iOS *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,11 +30,11 @@
   return v4;
 }
 
-- (PPKPDFIconCollectionViewCell_iOS)initWithCoder:(id)a3
+- (PPKPDFIconCollectionViewCell_iOS)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PPKPDFIconCollectionViewCell_iOS;
-  v3 = [(PPKPDFIconCollectionViewCell_iOS *)&v6 initWithCoder:a3];
+  v3 = [(PPKPDFIconCollectionViewCell_iOS *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -44,20 +44,20 @@
   return v4;
 }
 
-- (void)setHasLargeThumbnail:(BOOL)a3
+- (void)setHasLargeThumbnail:(BOOL)thumbnail
 {
-  if (self->_hasLargeThumbnail != a3)
+  if (self->_hasLargeThumbnail != thumbnail)
   {
-    self->_hasLargeThumbnail = a3;
+    self->_hasLargeThumbnail = thumbnail;
     [(PPKPDFIconCollectionViewCell_iOS *)self _updateMetricsIfNeeded];
   }
 }
 
-- (void)setIsHorizontalLayout:(BOOL)a3
+- (void)setIsHorizontalLayout:(BOOL)layout
 {
-  if (self->_isHorizontalLayout != a3)
+  if (self->_isHorizontalLayout != layout)
   {
-    self->_isHorizontalLayout = a3;
+    self->_isHorizontalLayout = layout;
     [(PPKPDFIconCollectionViewCell_iOS *)self _updateMetricsIfNeeded];
   }
 }
@@ -129,8 +129,8 @@
   self->_CellShadowOffset = v6;
   if (_UISolariumEnabled())
   {
-    v9 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-    [v9 ppkSetFixedCornerMaskingConfigurationWithRadius:8.0];
+    imageView = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+    [imageView ppkSetFixedCornerMaskingConfigurationWithRadius:8.0];
 
     [(UIView *)self->_overlayView ppkSetFixedCornerMaskingConfigurationWithRadius:8.0];
   }
@@ -138,13 +138,13 @@
   else
   {
     ImageCornerRadius = self->_ImageCornerRadius;
-    v11 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-    v12 = [v11 layer];
-    [v12 setCornerRadius:ImageCornerRadius];
+    imageView2 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+    layer = [imageView2 layer];
+    [layer setCornerRadius:ImageCornerRadius];
 
     SelectionOverlayCornerRadius = self->_SelectionOverlayCornerRadius;
-    v14 = [(UIView *)self->_overlayView layer];
-    [v14 setCornerRadius:SelectionOverlayCornerRadius];
+    layer2 = [(UIView *)self->_overlayView layer];
+    [layer2 setCornerRadius:SelectionOverlayCornerRadius];
   }
 
   [(NSLayoutConstraint *)self->_imageViewBottomConstraint setConstant:-self->_ImageEdgesInset - self->_CellVerticalEdgesInset];
@@ -158,20 +158,20 @@
   if (!_UISolariumEnabled())
   {
     hasLargeThumbnail = self->_hasLargeThumbnail;
-    v22 = [(PPKPDFIconCollectionViewCell_iOS *)self layer];
-    [v22 setMasksToBounds:!hasLargeThumbnail];
+    layer3 = [(PPKPDFIconCollectionViewCell_iOS *)self layer];
+    [layer3 setMasksToBounds:!hasLargeThumbnail];
 
     v23 = *MEMORY[0x1E69796E8];
-    v24 = [(PPKPDFIconCollectionViewCell_iOS *)self layer];
-    [v24 setCornerCurve:v23];
+    layer4 = [(PPKPDFIconCollectionViewCell_iOS *)self layer];
+    [layer4 setCornerCurve:v23];
 
     CellCornerRadius = self->_CellCornerRadius;
-    v26 = [(PPKPDFIconCollectionViewCell_iOS *)self layer];
-    [v26 setCornerRadius:CellCornerRadius];
+    layer5 = [(PPKPDFIconCollectionViewCell_iOS *)self layer];
+    [layer5 setCornerRadius:CellCornerRadius];
 
-    v27 = [(CALayer *)self->_secondaryShadow superlayer];
+    superlayer = [(CALayer *)self->_secondaryShadow superlayer];
 
-    if (!v27)
+    if (!superlayer)
     {
       goto LABEL_23;
     }
@@ -197,12 +197,12 @@
     [(CALayer *)self->_secondaryShadow setShadowOpacity:v17];
   }
 
-  v18 = [MEMORY[0x1E69DC888] blackColor];
-  -[CALayer setShadowColor:](self->_secondaryShadow, "setShadowColor:", [v18 CGColor]);
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  -[CALayer setShadowColor:](self->_secondaryShadow, "setShadowColor:", [blackColor CGColor]);
 
-  v19 = [(CALayer *)self->_secondaryShadow superlayer];
+  superlayer2 = [(CALayer *)self->_secondaryShadow superlayer];
 
-  if (!v19)
+  if (!superlayer2)
   {
     secondaryShadow = [(PPKPDFIconCollectionViewCell_iOS *)self layer];
     [secondaryShadow insertSublayer:self->_secondaryShadow atIndex:0];
@@ -211,23 +211,23 @@ LABEL_22:
 
 LABEL_23:
   CellShadowOffset = self->_CellShadowOffset;
-  v29 = [(PPKPDFIconCollectionViewCell_iOS *)self layer];
-  [v29 setShadowOffset:{CellShadowOffset, CellShadowOffset}];
+  layer6 = [(PPKPDFIconCollectionViewCell_iOS *)self layer];
+  [layer6 setShadowOffset:{CellShadowOffset, CellShadowOffset}];
 
   CellShadowRadius = self->_CellShadowRadius;
-  v31 = [(PPKPDFIconCollectionViewCell_iOS *)self layer];
-  [v31 setShadowRadius:CellShadowRadius];
+  layer7 = [(PPKPDFIconCollectionViewCell_iOS *)self layer];
+  [layer7 setShadowRadius:CellShadowRadius];
 
   *&CellShadowRadius = self->_CellShadowOpacity;
-  v32 = [(PPKPDFIconCollectionViewCell_iOS *)self layer];
+  layer8 = [(PPKPDFIconCollectionViewCell_iOS *)self layer];
   LODWORD(v33) = LODWORD(CellShadowRadius);
-  [v32 setShadowOpacity:v33];
+  [layer8 setShadowOpacity:v33];
 
-  v37 = [MEMORY[0x1E69DC888] blackColor];
-  v34 = v37;
-  v35 = [v37 CGColor];
-  v36 = [(PPKPDFIconCollectionViewCell_iOS *)self layer];
-  [v36 setShadowColor:v35];
+  blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+  v34 = blackColor2;
+  cGColor = [blackColor2 CGColor];
+  layer9 = [(PPKPDFIconCollectionViewCell_iOS *)self layer];
+  [layer9 setShadowColor:cGColor];
 }
 
 - (void)_commonInit
@@ -245,19 +245,19 @@ LABEL_23:
   [(PPKPDFIconCollectionViewCell_iOS *)&v5 prepareForReuse];
   if (self->_ratioConstraint)
   {
-    v3 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-    [v3 removeConstraint:self->_ratioConstraint];
+    imageView = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+    [imageView removeConstraint:self->_ratioConstraint];
   }
 
-  v4 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-  [v4 setImage:0];
+  imageView2 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+  [imageView2 setImage:0];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = PPKPDFIconCollectionViewCell_iOS;
-  [(PPKPDFIconCollectionViewCell_iOS *)&v4 setSelected:a3];
+  [(PPKPDFIconCollectionViewCell_iOS *)&v4 setSelected:selected];
   [(PPKPDFIconCollectionViewCell_iOS *)self updateOverlay];
 }
 
@@ -277,36 +277,36 @@ LABEL_23:
   v4 = [v3 initWithFrame:?];
   [(PPKPDFIconCollectionViewCell_iOS *)self setImageView:v4];
 
-  v5 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-  [v5 setContentMode:0];
+  imageView = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+  [imageView setContentMode:0];
 
   v6 = *MEMORY[0x1E69796E8];
-  v7 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-  v8 = [v7 layer];
-  [v8 setCornerCurve:v6];
+  imageView2 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+  layer = [imageView2 layer];
+  [layer setCornerCurve:v6];
 
-  v9 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-  v10 = [v9 layer];
-  [v10 setMasksToBounds:1];
+  imageView3 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+  layer2 = [imageView3 layer];
+  [layer2 setMasksToBounds:1];
 
   v11 = *MEMORY[0x1E6979D68];
-  v12 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-  v13 = [v12 layer];
-  [v13 setMinificationFilter:v11];
+  imageView4 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+  layer3 = [imageView4 layer];
+  [layer3 setMinificationFilter:v11];
 
-  v14 = [MEMORY[0x1E69DC888] whiteColor];
-  v15 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-  [v15 setBackgroundColor:v14];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  imageView5 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+  [imageView5 setBackgroundColor:whiteColor];
 
-  v16 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
-  v17 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-  [v16 addSubview:v17];
+  contentView = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
+  imageView6 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+  [contentView addSubview:imageView6];
 
   v18 = objc_opt_new();
   overlayView = self->_overlayView;
   self->_overlayView = v18;
 
-  v20 = [MEMORY[0x1E69DC888] blackColor];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
   v21 = _UISolariumEnabled();
   v22 = 0.3;
   if (v21)
@@ -314,77 +314,77 @@ LABEL_23:
     v22 = 0.2;
   }
 
-  v23 = [v20 colorWithAlphaComponent:v22];
+  v23 = [blackColor colorWithAlphaComponent:v22];
   [(UIView *)self->_overlayView setBackgroundColor:v23];
 
-  v24 = [(UIView *)self->_overlayView layer];
-  [v24 setCornerCurve:v6];
+  layer4 = [(UIView *)self->_overlayView layer];
+  [layer4 setCornerCurve:v6];
 
   [(UIView *)self->_overlayView setHidden:1];
-  v25 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
-  [v25 addSubview:self->_overlayView];
+  contentView2 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
+  [contentView2 addSubview:self->_overlayView];
 
-  v26 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-  [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+  imageView7 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+  [imageView7 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(UIView *)self->_overlayView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v27 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-  v28 = [v27 bottomAnchor];
-  v29 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
-  v30 = [v29 bottomAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30 constant:0.0];
+  imageView8 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+  bottomAnchor = [imageView8 bottomAnchor];
+  contentView3 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
   imageViewBottomConstraint = self->_imageViewBottomConstraint;
   self->_imageViewBottomConstraint = v31;
 
-  v33 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-  v34 = [v33 topAnchor];
-  v35 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
-  v36 = [v35 topAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36 constant:0.0];
+  imageView9 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+  topAnchor = [imageView9 topAnchor];
+  contentView4 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v37 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   imageViewTopConstraint = self->_imageViewTopConstraint;
   self->_imageViewTopConstraint = v37;
 
-  v39 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-  v40 = [v39 leadingAnchor];
-  v41 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
-  v42 = [v41 leadingAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42 constant:0.0];
+  imageView10 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+  leadingAnchor = [imageView10 leadingAnchor];
+  contentView5 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
+  leadingAnchor2 = [contentView5 leadingAnchor];
+  v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
   imageViewLeadingConstraint = self->_imageViewLeadingConstraint;
   self->_imageViewLeadingConstraint = v43;
 
-  v45 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-  v46 = [v45 trailingAnchor];
-  v47 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
-  v48 = [v47 trailingAnchor];
-  v49 = [v46 constraintEqualToAnchor:v48 constant:0.0];
+  imageView11 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+  trailingAnchor = [imageView11 trailingAnchor];
+  contentView6 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
+  trailingAnchor2 = [contentView6 trailingAnchor];
+  v49 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
   imageViewTrailingConstraint = self->_imageViewTrailingConstraint;
   self->_imageViewTrailingConstraint = v49;
 
-  v51 = [(UIView *)self->_overlayView bottomAnchor];
-  v52 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
-  v53 = [v52 bottomAnchor];
-  v54 = [v51 constraintEqualToAnchor:v53 constant:0.0];
+  bottomAnchor3 = [(UIView *)self->_overlayView bottomAnchor];
+  contentView7 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
+  bottomAnchor4 = [contentView7 bottomAnchor];
+  v54 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:0.0];
   overlayViewBottomConstraint = self->_overlayViewBottomConstraint;
   self->_overlayViewBottomConstraint = v54;
 
-  v56 = [(UIView *)self->_overlayView topAnchor];
-  v57 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
-  v58 = [v57 topAnchor];
-  v59 = [v56 constraintEqualToAnchor:v58 constant:0.0];
+  topAnchor3 = [(UIView *)self->_overlayView topAnchor];
+  contentView8 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
+  topAnchor4 = [contentView8 topAnchor];
+  v59 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:0.0];
   overlayViewTopConstraint = self->_overlayViewTopConstraint;
   self->_overlayViewTopConstraint = v59;
 
-  v61 = [(UIView *)self->_overlayView leadingAnchor];
-  v62 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
-  v63 = [v62 leadingAnchor];
-  v64 = [v61 constraintEqualToAnchor:v63 constant:0.0];
+  leadingAnchor3 = [(UIView *)self->_overlayView leadingAnchor];
+  contentView9 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
+  leadingAnchor4 = [contentView9 leadingAnchor];
+  v64 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:0.0];
   overlayViewLeadingConstraint = self->_overlayViewLeadingConstraint;
   self->_overlayViewLeadingConstraint = v64;
 
-  v66 = [(UIView *)self->_overlayView trailingAnchor];
-  v67 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
-  v68 = [v67 trailingAnchor];
-  v69 = [v66 constraintEqualToAnchor:v68 constant:0.0];
+  trailingAnchor3 = [(UIView *)self->_overlayView trailingAnchor];
+  contentView10 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
+  trailingAnchor4 = [contentView10 trailingAnchor];
+  v69 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:0.0];
   overlayViewTrailingConstraint = self->_overlayViewTrailingConstraint;
   self->_overlayViewTrailingConstraint = v69;
 
@@ -410,44 +410,44 @@ LABEL_23:
   self->_actionsButton = v78;
 
   v96 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"ellipsis.circle.fill"];
-  v80 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  [v80 setImage:v96];
-  v81 = [MEMORY[0x1E69DC888] whiteColor];
-  [v80 setBaseForegroundColor:v81];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  [plainButtonConfiguration setImage:v96];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  [plainButtonConfiguration setBaseForegroundColor:whiteColor2];
 
-  [(UIButton *)self->_actionsButton setConfiguration:v80];
+  [(UIButton *)self->_actionsButton setConfiguration:plainButtonConfiguration];
   [(UIView *)self->_overlayView addSubview:self->_actionsButton];
   [(UIButton *)self->_actionsButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v91 = MEMORY[0x1E696ACD8];
-  v95 = [(UIButton *)self->_actionsButton widthAnchor];
-  v94 = [(UIView *)self->_overlayView widthAnchor];
-  v93 = [v95 constraintEqualToAnchor:v94];
+  widthAnchor = [(UIButton *)self->_actionsButton widthAnchor];
+  widthAnchor2 = [(UIView *)self->_overlayView widthAnchor];
+  v93 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v97[0] = v93;
-  v92 = [(UIButton *)self->_actionsButton heightAnchor];
-  v82 = [(UIView *)self->_overlayView heightAnchor];
-  v83 = [v92 constraintEqualToAnchor:v82];
+  heightAnchor = [(UIButton *)self->_actionsButton heightAnchor];
+  heightAnchor2 = [(UIView *)self->_overlayView heightAnchor];
+  v83 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v97[1] = v83;
-  v84 = [(UIButton *)self->_actionsButton centerXAnchor];
-  v85 = [(UIView *)self->_overlayView centerXAnchor];
-  v86 = [v84 constraintEqualToAnchor:v85];
+  centerXAnchor = [(UIButton *)self->_actionsButton centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_overlayView centerXAnchor];
+  v86 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v97[2] = v86;
-  v87 = [(UIButton *)self->_actionsButton centerYAnchor];
-  v88 = [(UIView *)self->_overlayView centerYAnchor];
-  v89 = [v87 constraintEqualToAnchor:v88];
+  centerYAnchor = [(UIButton *)self->_actionsButton centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_overlayView centerYAnchor];
+  v89 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v97[3] = v89;
   v90 = [MEMORY[0x1E695DEC8] arrayWithObjects:v97 count:4];
   [v91 activateConstraints:v90];
 }
 
-- (void)updateAspectConstraintWithSize:(CGSize)a3
+- (void)updateAspectConstraintWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v18[1] = *MEMORY[0x1E69E9840];
   if (self->_ratioConstraint)
   {
-    v6 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-    [v6 removeConstraint:self->_ratioConstraint];
+    imageView = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+    [imageView removeConstraint:self->_ratioConstraint];
   }
 
   v7 = height / width;
@@ -462,11 +462,11 @@ LABEL_23:
   }
 
   v8 = fmin(v7, 2.0);
-  v9 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-  v10 = [v9 heightAnchor];
-  v11 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
-  v12 = [v11 widthAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 multiplier:v8 constant:0.0];
+  imageView2 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+  heightAnchor = [imageView2 heightAnchor];
+  imageView3 = [(PPKPDFIconCollectionViewCell_iOS *)self imageView];
+  widthAnchor = [imageView3 widthAnchor];
+  v13 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:v8 constant:0.0];
   ratioConstraint = self->_ratioConstraint;
   self->_ratioConstraint = v13;
 
@@ -478,24 +478,24 @@ LABEL_23:
   [v16 activateConstraints:v17];
 }
 
-- (void)setThumbnailWidth:(double)a3
+- (void)setThumbnailWidth:(double)width
 {
   v14[1] = *MEMORY[0x1E69E9840];
   [(NSLayoutConstraint *)self->_imageViewWidthConstraint constant];
-  if (v5 != a3)
+  if (v5 != width)
   {
     imageViewWidthConstraint = self->_imageViewWidthConstraint;
     if (imageViewWidthConstraint)
     {
 
-      [(NSLayoutConstraint *)imageViewWidthConstraint setConstant:a3];
+      [(NSLayoutConstraint *)imageViewWidthConstraint setConstant:width];
     }
 
     else
     {
-      v7 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
-      v8 = [v7 widthAnchor];
-      v9 = [v8 constraintEqualToConstant:a3];
+      contentView = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
+      widthAnchor = [contentView widthAnchor];
+      v9 = [widthAnchor constraintEqualToConstant:width];
       v10 = self->_imageViewWidthConstraint;
       self->_imageViewWidthConstraint = v9;
 
@@ -510,24 +510,24 @@ LABEL_23:
   }
 }
 
-- (void)setThumbnailHeight:(double)a3
+- (void)setThumbnailHeight:(double)height
 {
   v14[1] = *MEMORY[0x1E69E9840];
   [(NSLayoutConstraint *)self->_imageViewHeightConstraint constant];
-  if (v5 != a3)
+  if (v5 != height)
   {
     imageViewHeightConstraint = self->_imageViewHeightConstraint;
     if (imageViewHeightConstraint)
     {
 
-      [(NSLayoutConstraint *)imageViewHeightConstraint setConstant:a3];
+      [(NSLayoutConstraint *)imageViewHeightConstraint setConstant:height];
     }
 
     else
     {
-      v7 = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
-      v8 = [v7 heightAnchor];
-      v9 = [v8 constraintEqualToConstant:a3];
+      contentView = [(PPKPDFIconCollectionViewCell_iOS *)self contentView];
+      heightAnchor = [contentView heightAnchor];
+      v9 = [heightAnchor constraintEqualToConstant:height];
       v10 = self->_imageViewHeightConstraint;
       self->_imageViewHeightConstraint = v9;
 

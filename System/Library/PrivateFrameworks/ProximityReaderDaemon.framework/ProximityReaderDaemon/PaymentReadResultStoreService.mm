@@ -1,10 +1,10 @@
 @interface PaymentReadResultStoreService
 - (_TtC21ProximityReaderDaemon29PaymentReadResultStoreService)init;
 - (void)dealloc;
-- (void)fetchStoredPaymentCardReadResultBatchWithSize:(int64_t)a3 completionHandler:(id)a4;
-- (void)fetchStoredPaymentCardReadResultCountWithCompletionHandler:(id)a3;
-- (void)resetBatchStateWithCompletionHandler:(id)a3;
-- (void)resolveBatchWithBatchDeletionToken:(NSString *)a3 completionHandler:(id)a4;
+- (void)fetchStoredPaymentCardReadResultBatchWithSize:(int64_t)size completionHandler:(id)handler;
+- (void)fetchStoredPaymentCardReadResultCountWithCompletionHandler:(id)handler;
+- (void)resetBatchStateWithCompletionHandler:(id)handler;
+- (void)resolveBatchWithBatchDeletionToken:(NSString *)token completionHandler:(id)handler;
 @end
 
 @implementation PaymentReadResultStoreService
@@ -21,13 +21,13 @@
   swift_beginAccess();
   if ((*(v5 + 48))(self + v9, 1, v4))
   {
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
     sub_2613765A4(self + v9, v8, type metadata accessor for StoreAnalytics);
-    v11 = self;
+    selfCopy2 = self;
     sub_261266F18();
     sub_261376698(v8, type metadata accessor for StoreAnalytics);
   }
@@ -44,13 +44,13 @@
   return result;
 }
 
-- (void)fetchStoredPaymentCardReadResultCountWithCompletionHandler:(id)a3
+- (void)fetchStoredPaymentCardReadResultCountWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FE9F580, &qword_2613A5480);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -66,19 +66,19 @@
   v13[3] = 0;
   v13[4] = &unk_2613AD3B0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_261262B98(0, 0, v8, &unk_2613AD3B8, v13);
 }
 
-- (void)fetchStoredPaymentCardReadResultBatchWithSize:(int64_t)a3 completionHandler:(id)a4
+- (void)fetchStoredPaymentCardReadResultBatchWithSize:(int64_t)size completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FE9F580, &qword_2613A5480);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = size;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2613A1C1C();
@@ -93,17 +93,17 @@
   v15[3] = 0;
   v15[4] = &unk_2613AD390;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_261262B98(0, 0, v10, &unk_2613AD398, v15);
 }
 
-- (void)resetBatchStateWithCompletionHandler:(id)a3
+- (void)resetBatchStateWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FE9F580, &qword_2613A5480);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -119,19 +119,19 @@
   v13[3] = 0;
   v13[4] = &unk_2613AD370;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_261262B98(0, 0, v8, &unk_2613AD378, v13);
 }
 
-- (void)resolveBatchWithBatchDeletionToken:(NSString *)a3 completionHandler:(id)a4
+- (void)resolveBatchWithBatchDeletionToken:(NSString *)token completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FE9F580, &qword_2613A5480);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = token;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2613A1C1C();
@@ -146,8 +146,8 @@
   v15[3] = 0;
   v15[4] = &unk_2613AD340;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  tokenCopy = token;
+  selfCopy = self;
   sub_261262B98(0, 0, v10, &unk_2613AD350, v15);
 }
 

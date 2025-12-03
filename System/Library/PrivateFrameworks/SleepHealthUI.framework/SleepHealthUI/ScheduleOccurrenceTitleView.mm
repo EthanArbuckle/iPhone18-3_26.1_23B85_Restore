@@ -1,12 +1,12 @@
 @interface ScheduleOccurrenceTitleView
-- (_TtC13SleepHealthUI27ScheduleOccurrenceTitleView)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI27ScheduleOccurrenceTitleView)initWithFrame:(CGRect)a3;
-- (void)willMoveToWindow:(id)a3;
+- (_TtC13SleepHealthUI27ScheduleOccurrenceTitleView)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI27ScheduleOccurrenceTitleView)initWithFrame:(CGRect)frame;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation ScheduleOccurrenceTitleView
 
-- (_TtC13SleepHealthUI27ScheduleOccurrenceTitleView)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI27ScheduleOccurrenceTitleView)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -16,11 +16,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_269D90394();
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -30,11 +30,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (window)
   {
-    v8 = self;
-    v5 = a3;
-    [v5 bounds];
+    selfCopy = self;
+    windowCopy = window;
+    [windowCopy bounds];
     sub_269D8FDB4(v6, v7);
   }
 
@@ -43,7 +43,7 @@
   }
 }
 
-- (_TtC13SleepHealthUI27ScheduleOccurrenceTitleView)initWithFrame:(CGRect)a3
+- (_TtC13SleepHealthUI27ScheduleOccurrenceTitleView)initWithFrame:(CGRect)frame
 {
   sub_269D9A8E0();
   sub_269D9A8D0();

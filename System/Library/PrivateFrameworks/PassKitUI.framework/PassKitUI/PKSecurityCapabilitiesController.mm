@@ -1,31 +1,31 @@
 @interface PKSecurityCapabilitiesController
-+ (id)displayableErrorForErrorCode:(unint64_t)a3;
++ (id)displayableErrorForErrorCode:(unint64_t)code;
 - (BOOL)isHSA2Enabled;
-- (PKSecurityCapabilitiesController)initWithRequirements:(unint64_t)a3 feature:(unint64_t)a4 context:(int64_t)a5;
+- (PKSecurityCapabilitiesController)initWithRequirements:(unint64_t)requirements feature:(unint64_t)feature context:(int64_t)context;
 - (id)_authenticationReason;
 - (id)_createAuthContext;
 - (id)_genericDisplayableError;
 - (id)_missingTLKsAlertController;
-- (void)_isEnabledForSecurityRequirements:(unint64_t)a3 withCompletion:(id)a4;
-- (void)_isManateeCapableWithCompletion:(id)a3;
-- (void)_isMissingTLKsWithCompletion:(id)a3;
-- (void)_presentDeviceToDeviceEncryptionRepairFlow:(id)a3 completion:(id)a4;
-- (void)_presentManateeSecurityFlowWithPresentingViewController:(id)a3 suppressHSA2Alert:(BOOL)a4 completion:(id)a5;
-- (void)_presentManateeTermsAlertViewController:(id)a3 completion:(id)a4;
-- (void)_presentMissingTLKsAlertWithPresentingViewController:(id)a3 completion:(id)a4;
-- (void)_presentPasswordPromptWithPresentingViewController:(id)a3 completion:(id)a4;
-- (void)_resetApplyPayManateeViewWithCompletion:(id)a3;
-- (void)presentSecurityRepairFlowWithPresentingViewController:(id)a3 suppressHSA2Alert:(BOOL)a4 completion:(id)a5;
+- (void)_isEnabledForSecurityRequirements:(unint64_t)requirements withCompletion:(id)completion;
+- (void)_isManateeCapableWithCompletion:(id)completion;
+- (void)_isMissingTLKsWithCompletion:(id)completion;
+- (void)_presentDeviceToDeviceEncryptionRepairFlow:(id)flow completion:(id)completion;
+- (void)_presentManateeSecurityFlowWithPresentingViewController:(id)controller suppressHSA2Alert:(BOOL)alert completion:(id)completion;
+- (void)_presentManateeTermsAlertViewController:(id)controller completion:(id)completion;
+- (void)_presentMissingTLKsAlertWithPresentingViewController:(id)controller completion:(id)completion;
+- (void)_presentPasswordPromptWithPresentingViewController:(id)controller completion:(id)completion;
+- (void)_resetApplyPayManateeViewWithCompletion:(id)completion;
+- (void)presentSecurityRepairFlowWithPresentingViewController:(id)controller suppressHSA2Alert:(BOOL)alert completion:(id)completion;
 @end
 
 @implementation PKSecurityCapabilitiesController
 
-+ (id)displayableErrorForErrorCode:(unint64_t)a3
++ (id)displayableErrorForErrorCode:(unint64_t)code
 {
   v3 = 0;
-  if (a3 > 3)
+  if (code > 3)
   {
-    if (a3 == 4)
+    if (code == 4)
     {
       v8 = PKPrimaryAppleAccountFormattedUsername();
       v4 = PKLocalizedPaymentString(&cfstr_HsaEnrollmentN.isa, &stru_1F3BD5BF0.isa, v8);
@@ -34,7 +34,7 @@
       goto LABEL_10;
     }
 
-    if (a3 != 5)
+    if (code != 5)
     {
       goto LABEL_11;
     }
@@ -43,9 +43,9 @@
     v5 = @"HSA_ENROLLMENT_MANATEE_UNAVAILABLE_MESSAGE";
   }
 
-  else if (a3 - 1 >= 2)
+  else if (code - 1 >= 2)
   {
-    if (a3 != 3)
+    if (code != 3)
     {
       goto LABEL_11;
     }
@@ -69,7 +69,7 @@ LABEL_11:
   return v3;
 }
 
-- (PKSecurityCapabilitiesController)initWithRequirements:(unint64_t)a3 feature:(unint64_t)a4 context:(int64_t)a5
+- (PKSecurityCapabilitiesController)initWithRequirements:(unint64_t)requirements feature:(unint64_t)feature context:(int64_t)context
 {
   v15.receiver = self;
   v15.super_class = PKSecurityCapabilitiesController;
@@ -77,27 +77,27 @@ LABEL_11:
   v9 = v8;
   if (v8)
   {
-    v8->_feature = a4;
-    v8->_securityRequirements = a3;
-    v10 = [(PKSecurityCapabilitiesController *)v8 _createAuthContext];
+    v8->_feature = feature;
+    v8->_securityRequirements = requirements;
+    _createAuthContext = [(PKSecurityCapabilitiesController *)v8 _createAuthContext];
     authContext = v9->_authContext;
-    v9->_authContext = v10;
+    v9->_authContext = _createAuthContext;
 
-    v9->_context = a5;
-    v12 = [MEMORY[0x1E69B86F8] sharedInstance];
+    v9->_context = context;
+    mEMORY[0x1E69B86F8] = [MEMORY[0x1E69B86F8] sharedInstance];
     cloudService = v9->_cloudService;
-    v9->_cloudService = v12;
+    v9->_cloudService = mEMORY[0x1E69B86F8];
   }
 
   return v9;
 }
 
-- (void)presentSecurityRepairFlowWithPresentingViewController:(id)a3 suppressHSA2Alert:(BOOL)a4 completion:(id)a5
+- (void)presentSecurityRepairFlowWithPresentingViewController:(id)controller suppressHSA2Alert:(BOOL)alert completion:(id)completion
 {
-  v24 = a4;
+  alertCopy = alert;
   v59 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v7 = a5;
+  controllerCopy = controller;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -130,9 +130,9 @@ LABEL_11:
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "The current context is setup assistant so dont present any repair flows.", v51, 2u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
@@ -142,7 +142,7 @@ LABEL_11:
     aBlock[1] = 3221225472;
     aBlock[2] = __119__PKSecurityCapabilitiesController_presentSecurityRepairFlowWithPresentingViewController_suppressHSA2Alert_completion___block_invoke;
     aBlock[3] = &unk_1E8012F10;
-    v47 = v7;
+    v47 = completionCopy;
     v48 = buf;
     v49 = v50;
     v13 = _Block_copy(aBlock);
@@ -162,7 +162,7 @@ LABEL_11:
     v37[3] = &unk_1E80163E0;
     v40 = v50;
     v37[4] = self;
-    v16 = v25;
+    v16 = controllerCopy;
     v38 = v16;
     v41 = buf;
     v17 = v15;
@@ -177,7 +177,7 @@ LABEL_11:
         v21 = PKSecurityCapabilitiesRequirementToString(0xCCuLL);
         v22 = v21;
         v23 = &stru_1F3BD7330;
-        if (v24)
+        if (alertCopy)
         {
           v23 = @" with HSA2 alert suppressed.";
         }
@@ -194,7 +194,7 @@ LABEL_11:
       v30[2] = __119__PKSecurityCapabilitiesController_presentSecurityRepairFlowWithPresentingViewController_suppressHSA2Alert_completion___block_invoke_100;
       v30[3] = &unk_1E8016430;
       v30[4] = self;
-      v35 = v24;
+      v35 = alertCopy;
       v31 = v16;
       v33 = v50;
       v34 = buf;
@@ -582,32 +582,32 @@ void __119__PKSecurityCapabilitiesController_presentSecurityRepairFlowWithPresen
 
 - (BOOL)isHSA2Enabled
 {
-  v3 = [MEMORY[0x1E698DC80] sharedInstance];
-  v4 = [(AKAppleIDAuthenticationContext *)self->_authContext altDSID];
-  v5 = [v3 authKitAccountWithAltDSID:v4];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  altDSID = [(AKAppleIDAuthenticationContext *)self->_authContext altDSID];
+  v5 = [mEMORY[0x1E698DC80] authKitAccountWithAltDSID:altDSID];
 
-  v6 = [v3 securityLevelForAccount:v5];
+  v6 = [mEMORY[0x1E698DC80] securityLevelForAccount:v5];
   if (v6 == 4)
   {
     return 1;
   }
 
-  v8 = [MEMORY[0x1E69B8568] sharedInstance];
-  v9 = [v8 appleAccountInformation];
+  mEMORY[0x1E69B8568] = [MEMORY[0x1E69B8568] sharedInstance];
+  appleAccountInformation = [mEMORY[0x1E69B8568] appleAccountInformation];
 
-  LOBYTE(v8) = [v9 isManagedAppleAccount];
-  return v8;
+  LOBYTE(mEMORY[0x1E69B8568]) = [appleAccountInformation isManagedAppleAccount];
+  return mEMORY[0x1E69B8568];
 }
 
-- (void)_presentMissingTLKsAlertWithPresentingViewController:(id)a3 completion:(id)a4
+- (void)_presentMissingTLKsAlertWithPresentingViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (controllerCopy)
     {
-      v8 = [(PKSecurityCapabilitiesController *)self _missingTLKsAlertController];
+      _missingTLKsAlertController = [(PKSecurityCapabilitiesController *)self _missingTLKsAlertController];
       v9 = MEMORY[0x1E69DC648];
       v10 = PKLocalizedPaymentString(&cfstr_TlksResetButto.isa);
       v22[0] = MEMORY[0x1E69E9820];
@@ -615,10 +615,10 @@ void __119__PKSecurityCapabilitiesController_presentSecurityRepairFlowWithPresen
       v22[2] = __100__PKSecurityCapabilitiesController__presentMissingTLKsAlertWithPresentingViewController_completion___block_invoke;
       v22[3] = &unk_1E8016458;
       v22[4] = self;
-      v11 = v7;
+      v11 = completionCopy;
       v23 = v11;
       v12 = [v9 actionWithTitle:v10 style:0 handler:v22];
-      [v8 addAction:v12];
+      [_missingTLKsAlertController addAction:v12];
 
       v13 = MEMORY[0x1E69DC648];
       v14 = PKLocalizedPaymentString(&cfstr_TlksResetCance.isa);
@@ -626,18 +626,18 @@ void __119__PKSecurityCapabilitiesController_presentSecurityRepairFlowWithPresen
       v17 = 3221225472;
       v18 = __100__PKSecurityCapabilitiesController__presentMissingTLKsAlertWithPresentingViewController_completion___block_invoke_3;
       v19 = &unk_1E8016458;
-      v20 = self;
+      selfCopy = self;
       v21 = v11;
       v15 = [v13 actionWithTitle:v14 style:1 handler:&v16];
-      [v8 addAction:{v15, v16, v17, v18, v19, v20}];
+      [_missingTLKsAlertController addAction:{v15, v16, v17, v18, v19, selfCopy}];
 
-      [v6 presentViewController:v8 animated:1 completion:0];
+      [controllerCopy presentViewController:_missingTLKsAlertController animated:1 completion:0];
     }
 
     else
     {
-      v8 = [(PKSecurityCapabilitiesController *)self _genericDisplayableError];
-      (*(v7 + 2))(v7, 2, v8);
+      _missingTLKsAlertController = [(PKSecurityCapabilitiesController *)self _genericDisplayableError];
+      (*(completionCopy + 2))(completionCopy, 2, _missingTLKsAlertController);
     }
   }
 }
@@ -706,9 +706,9 @@ void __100__PKSecurityCapabilitiesController__presentMissingTLKsAlertWithPresent
   }
 }
 
-- (void)_resetApplyPayManateeViewWithCompletion:(id)a3
+- (void)_resetApplyPayManateeViewWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -716,17 +716,17 @@ void __100__PKSecurityCapabilitiesController__presentMissingTLKsAlertWithPresent
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "User wants to blow away apple pay manatee view and create new TLKs.", v6, 2u);
   }
 
-  [(PKCloudStoreService *)self->_cloudService resetApplePayManateeViewWithCompletion:v4];
+  [(PKCloudStoreService *)self->_cloudService resetApplePayManateeViewWithCompletion:completionCopy];
 }
 
-- (void)_presentDeviceToDeviceEncryptionRepairFlow:(id)a3 completion:(id)a4
+- (void)_presentDeviceToDeviceEncryptionRepairFlow:(id)flow completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  flowCopy = flow;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    if (v6)
+    if (flowCopy)
     {
       v9 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -740,22 +740,22 @@ void __100__PKSecurityCapabilitiesController__presentMissingTLKsAlertWithPresent
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v6 presentedViewController];
+          presentedViewController = [flowCopy presentedViewController];
 
-          v6 = v10;
+          flowCopy = presentedViewController;
         }
       }
 
       v11 = objc_alloc(MEMORY[0x1E6997860]);
-      v12 = [(AKAppleIDAuthenticationContext *)self->_authContext altDSID];
-      v13 = [v11 initWithAltDSID:v12];
+      altDSID = [(AKAppleIDAuthenticationContext *)self->_authContext altDSID];
+      v13 = [v11 initWithAltDSID:altDSID];
 
-      [v13 setPresentingViewController:v6];
+      [v13 setPresentingViewController:flowCopy];
       [v13 setDeviceToDeviceEncryptionUpgradeType:0];
       [v13 setDeviceToDeviceEncryptionUpgradeUIStyle:3];
       [v13 setSecurityUpgradeContext:*MEMORY[0x1E698DC50]];
-      v14 = [(PKSecurityCapabilitiesController *)self _authenticationReason];
-      [v13 setFeatureName:v14];
+      _authenticationReason = [(PKSecurityCapabilitiesController *)self _authenticationReason];
+      [v13 setFeatureName:_authenticationReason];
 
       v15 = [objc_alloc(MEMORY[0x1E6997868]) initWithContext:v13];
       v16[0] = MEMORY[0x1E69E9820];
@@ -768,7 +768,7 @@ void __100__PKSecurityCapabilitiesController__presentMissingTLKsAlertWithPresent
 
     else
     {
-      (*(v7 + 2))(v7, 2);
+      (*(completionCopy + 2))(completionCopy, 2);
     }
   }
 }
@@ -807,10 +807,10 @@ void __90__PKSecurityCapabilitiesController__presentDeviceToDeviceEncryptionRepa
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_presentManateeSecurityFlowWithPresentingViewController:(id)a3 suppressHSA2Alert:(BOOL)a4 completion:(id)a5
+- (void)_presentManateeSecurityFlowWithPresentingViewController:(id)controller suppressHSA2Alert:(BOOL)alert completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  completionCopy = completion;
   feature = self->_feature;
   if (feature == 1)
   {
@@ -832,9 +832,9 @@ void __90__PKSecurityCapabilitiesController__presentDeviceToDeviceEncryptionRepa
   }
 
   v12 = v11;
-  if (a4 || [(PKSecurityCapabilitiesController *)self isHSA2Enabled])
+  if (alert || [(PKSecurityCapabilitiesController *)self isHSA2Enabled])
   {
-    [(PKSecurityCapabilitiesController *)self _presentDeviceToDeviceEncryptionRepairFlow:v8 completion:v9];
+    [(PKSecurityCapabilitiesController *)self _presentDeviceToDeviceEncryptionRepairFlow:controllerCopy completion:completionCopy];
   }
 
   else
@@ -850,9 +850,9 @@ void __90__PKSecurityCapabilitiesController__presentDeviceToDeviceEncryptionRepa
     v29[2] = __121__PKSecurityCapabilitiesController__presentManateeSecurityFlowWithPresentingViewController_suppressHSA2Alert_completion___block_invoke;
     v29[3] = &unk_1E8016480;
     v29[4] = self;
-    v18 = v8;
+    v18 = controllerCopy;
     v30 = v18;
-    v19 = v9;
+    v19 = completionCopy;
     v31 = v19;
     v20 = [v16 actionWithTitle:v17 style:0 handler:v29];
     [v15 addAction:v20];
@@ -882,11 +882,11 @@ uint64_t __121__PKSecurityCapabilitiesController__presentManateeSecurityFlowWith
   return result;
 }
 
-- (void)_presentManateeTermsAlertViewController:(id)a3 completion:(id)a4
+- (void)_presentManateeTermsAlertViewController:(id)controller completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x1E69DC650];
-  v7 = a3;
+  controllerCopy = controller;
   v8 = PKLocalizedPaymentString(&cfstr_ManateeTermsAc.isa);
   v9 = PKLocalizedPaymentString(&cfstr_ManateeTermsAc_0.isa);
   v10 = [v6 alertControllerWithTitle:v8 message:v9 preferredStyle:1];
@@ -897,7 +897,7 @@ uint64_t __121__PKSecurityCapabilitiesController__presentManateeSecurityFlowWith
   v24[1] = 3221225472;
   v24[2] = __87__PKSecurityCapabilitiesController__presentManateeTermsAlertViewController_completion___block_invoke;
   v24[3] = &unk_1E8011248;
-  v13 = v5;
+  v13 = completionCopy;
   v25 = v13;
   v14 = [v11 actionWithTitle:v12 style:0 handler:v24];
   [v10 addAction:v14];
@@ -913,7 +913,7 @@ uint64_t __121__PKSecurityCapabilitiesController__presentManateeSecurityFlowWith
   v18 = [v15 actionWithTitle:v16 style:1 handler:&v19];
   [v10 addAction:{v18, v19, v20, v21, v22}];
 
-  [v7 presentViewController:v10 animated:1 completion:0];
+  [controllerCopy presentViewController:v10 animated:1 completion:0];
 }
 
 void __87__PKSecurityCapabilitiesController__presentManateeTermsAlertViewController_completion___block_invoke(uint64_t a1)
@@ -940,12 +940,12 @@ uint64_t __87__PKSecurityCapabilitiesController__presentManateeTermsAlertViewCon
   return result;
 }
 
-- (void)_presentPasswordPromptWithPresentingViewController:(id)a3 completion:(id)a4
+- (void)_presentPasswordPromptWithPresentingViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  controllerCopy = controller;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (controllerCopy && completionCopy)
   {
     v9 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -954,22 +954,22 @@ uint64_t __87__PKSecurityCapabilitiesController__presentManateeTermsAlertViewCon
       _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Presenting password prompt...", buf, 2u);
     }
 
-    v10 = [MEMORY[0x1E69B8568] sharedInstance];
-    v11 = [v10 appleAccountInformation];
+    mEMORY[0x1E69B8568] = [MEMORY[0x1E69B8568] sharedInstance];
+    appleAccountInformation = [mEMORY[0x1E69B8568] appleAccountInformation];
 
     v12 = objc_alloc_init(MEMORY[0x1E698DE80]);
-    [v12 setPresentingViewController:v6];
-    v13 = [v11 appleID];
-    [v12 setUsername:v13];
+    [v12 setPresentingViewController:controllerCopy];
+    appleID = [appleAccountInformation appleID];
+    [v12 setUsername:appleID];
 
-    v14 = [v11 aaAlternateDSID];
-    [v12 setAltDSID:v14];
+    aaAlternateDSID = [appleAccountInformation aaAlternateDSID];
+    [v12 setAltDSID:aaAlternateDSID];
 
     [v12 setIsUsernameEditable:0];
     [v12 setShouldPromptForPasswordOnly:1];
     [v12 setAuthenticationType:2];
-    v15 = [(PKSecurityCapabilitiesController *)self _authenticationReason];
-    [v12 setReason:v15];
+    _authenticationReason = [(PKSecurityCapabilitiesController *)self _authenticationReason];
+    [v12 setReason:_authenticationReason];
 
     v16 = objc_alloc_init(MEMORY[0x1E698DCC0]);
     v17[0] = MEMORY[0x1E69E9820];
@@ -978,7 +978,7 @@ uint64_t __87__PKSecurityCapabilitiesController__presentManateeTermsAlertViewCon
     v17[3] = &unk_1E80164D0;
     v19 = v8;
     v17[4] = self;
-    v18 = v6;
+    v18 = controllerCopy;
     [v16 authenticateWithContext:v12 completion:v17];
   }
 }
@@ -1097,10 +1097,10 @@ LABEL_16:
 LABEL_19:
 }
 
-- (void)_isEnabledForSecurityRequirements:(unint64_t)a3 withCompletion:(id)a4
+- (void)_isEnabledForSecurityRequirements:(unint64_t)requirements withCompletion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -1114,7 +1114,7 @@ LABEL_19:
   v9 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = PKSecurityCapabilitiesRequirementToString(a3);
+    v10 = PKSecurityCapabilitiesRequirementToString(requirements);
     *buf = 138412290;
     *v40 = v10;
     _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Checking security requirements: %@", buf, 0xCu);
@@ -1124,7 +1124,7 @@ LABEL_19:
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = PKSecurityCapabilitiesRequirementToString(a3 & 0x38);
+      v11 = PKSecurityCapabilitiesRequirementToString(requirements & 0x38);
       *buf = 67109378;
       *v40 = 1;
       *&v40[4] = 2112;
@@ -1135,23 +1135,23 @@ LABEL_19:
     goto LABEL_11;
   }
 
-  if ((a3 & 0xA8) != 0)
+  if ((requirements & 0xA8) != 0)
   {
     dispatch_group_enter(v8);
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __85__PKSecurityCapabilitiesController__isEnabledForSecurityRequirements_withCompletion___block_invoke;
     v24[3] = &unk_1E8016520;
-    v28 = (a3 & 8) != 0;
+    v28 = (requirements & 8) != 0;
     v26 = &v35;
     v27 = &v31;
-    v29 = (a3 & 0x20) != 0;
-    v30 = (a3 & 0x80) != 0;
+    v29 = (requirements & 0x20) != 0;
+    v30 = (requirements & 0x80) != 0;
     v25 = v8;
     [(PKSecurityCapabilitiesController *)self _isManateeCapableWithCompletion:v24];
   }
 
-  if ((a3 & 0x10) != 0)
+  if ((requirements & 0x10) != 0)
   {
     dispatch_group_enter(v8);
     v20[0] = MEMORY[0x1E69E9820];
@@ -1166,17 +1166,17 @@ LABEL_19:
 LABEL_11:
   }
 
-  if ((a3 & 4) != 0)
+  if ((requirements & 4) != 0)
   {
-    v12 = [(PKSecurityCapabilitiesController *)self isHSA2Enabled];
-    *(v36 + 24) &= v12;
-    if (!v12)
+    isHSA2Enabled = [(PKSecurityCapabilitiesController *)self isHSA2Enabled];
+    *(v36 + 24) &= isHSA2Enabled;
+    if (!isHSA2Enabled)
     {
       v32[3] |= 4uLL;
     }
   }
 
-  if ((a3 & 0x40) != 0)
+  if ((requirements & 0x40) != 0)
   {
     v13 = PKPasscodeEnabled();
     *(v36 + 24) &= v13 != 0;
@@ -1191,10 +1191,10 @@ LABEL_11:
   block[2] = __85__PKSecurityCapabilitiesController__isEnabledForSecurityRequirements_withCompletion___block_invoke_5;
   block[3] = &unk_1E8016570;
   v18 = &v31;
-  v19 = a3;
-  v16 = v6;
+  requirementsCopy = requirements;
+  v16 = completionCopy;
   v17 = &v35;
-  v14 = v6;
+  v14 = completionCopy;
   dispatch_group_notify(v8, MEMORY[0x1E69E96A0], block);
 
   _Block_object_dispose(&v31, 8);
@@ -1399,23 +1399,23 @@ LABEL_10:
 - (id)_createAuthContext
 {
   v3 = objc_alloc_init(MEMORY[0x1E6959A48]);
-  v4 = [v3 aa_primaryAppleAccount];
-  v5 = [MEMORY[0x1E698DC80] sharedInstance];
-  v6 = [v5 altDSIDForAccount:v4];
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  v6 = [mEMORY[0x1E698DC80] altDSIDForAccount:aa_primaryAppleAccount];
 
   v7 = objc_alloc_init(MEMORY[0x1E698DCB8]);
   [v7 setAltDSID:v6];
   [v7 setSecurityUpgradeContext:*MEMORY[0x1E698DC50]];
-  v8 = [(PKSecurityCapabilitiesController *)self _authenticationReason];
-  [v7 setReason:v8];
+  _authenticationReason = [(PKSecurityCapabilitiesController *)self _authenticationReason];
+  [v7 setReason:_authenticationReason];
 
   return v7;
 }
 
-- (void)_isManateeCapableWithCompletion:(id)a3
+- (void)_isManateeCapableWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     cloudService = self->_cloudService;
     v6 = PKCurrentCloudStoreApplePayContainerName();
@@ -1423,7 +1423,7 @@ LABEL_10:
     v7[1] = 3221225472;
     v7[2] = __68__PKSecurityCapabilitiesController__isManateeCapableWithCompletion___block_invoke;
     v7[3] = &unk_1E8016598;
-    v8 = v4;
+    v8 = completionCopy;
     [(PKCloudStoreService *)cloudService cloudStoreStatusForContainer:v6 completion:v7];
   }
 }
@@ -1448,26 +1448,26 @@ void __68__PKSecurityCapabilitiesController__isManateeCapableWithCompletion___bl
   (*(*(a1 + 32) + 16))(*(a1 + 32), [v7 supportsDeviceToDeviceEncryption], a3, objc_msgSend(v7, "needsToVerifyTerms"));
 }
 
-- (void)_isMissingTLKsWithCompletion:(id)a3
+- (void)_isMissingTLKsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     cloudService = self->_cloudService;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __65__PKSecurityCapabilitiesController__isMissingTLKsWithCompletion___block_invoke;
     v7[3] = &unk_1E8013FF8;
-    v8 = v4;
+    v8 = completionCopy;
     [(PKCloudStoreService *)cloudService checkTLKsMissingWithCompletion:v7];
   }
 }
 
 - (id)_authenticationReason
 {
-  v3 = [MEMORY[0x1E69B8568] sharedInstance];
-  v4 = [v3 appleAccountInformation];
+  mEMORY[0x1E69B8568] = [MEMORY[0x1E69B8568] sharedInstance];
+  appleAccountInformation = [mEMORY[0x1E69B8568] appleAccountInformation];
 
   if (self->_feature - 1 > 1)
   {
@@ -1478,7 +1478,7 @@ void __68__PKSecurityCapabilitiesController__isManateeCapableWithCompletion___bl
   {
     IsBridge = PKPaymentSetupContextIsBridge();
     v6 = PKDeviceSpecificLocalizedStringKeyForKey(@"ACCOUNT_PROVISION_PASS_AUTHENTICATION_REASON_FORMAT", IsBridge);
-    v9 = [v4 appleID];
+    appleID = [appleAccountInformation appleID];
     v7 = PKLocalizedFeatureString();
   }
 

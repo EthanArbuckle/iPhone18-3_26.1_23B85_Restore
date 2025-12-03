@@ -9,19 +9,19 @@
 - (NSNumber)previousArticleVersion;
 - (NSURL)sourceURL;
 - (TSAnalyticsReferral)referral;
-- (uint64_t)setWithShowSubscribedAlert:(char)a3;
-- (void)setFeedTagType:(unint64_t)a3;
-- (void)setSourceURL:(id)a3;
-- (void)setWithSourceURL:(id)a3;
+- (uint64_t)setWithShowSubscribedAlert:(char)alert;
+- (void)setFeedTagType:(unint64_t)type;
+- (void)setSourceURL:(id)l;
+- (void)setWithSourceURL:(id)l;
 @end
 
 @implementation TSFeedViewContext
 
-- (uint64_t)setWithShowSubscribedAlert:(char)a3
+- (uint64_t)setWithShowSubscribedAlert:(char)alert
 {
   v5 = OBJC_IVAR___TSFeedViewContext_showSubscribedAlert;
   result = swift_beginAccess();
-  *(a1 + v5) = a3;
+  *(self + v5) = alert;
   return result;
 }
 
@@ -103,12 +103,12 @@
   return v10;
 }
 
-- (void)setSourceURL:(id)a3
+- (void)setSourceURL:(id)l
 {
   sub_21873F65C(0);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (l)
   {
     sub_219BDB8B4();
     v8 = sub_219BDB954();
@@ -123,7 +123,7 @@
 
   v10 = OBJC_IVAR___TSFeedViewContext_sourceURL;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_218FA6590(v7, self + v10);
   swift_endAccess();
 }
@@ -135,7 +135,7 @@
   return *(self + v3);
 }
 
-- (void)setWithSourceURL:(id)a3
+- (void)setWithSourceURL:(id)l
 {
   sub_21873F65C(0);
   MEMORY[0x28223BE20](v4 - 8);
@@ -149,16 +149,16 @@
   (*(v8 + 56))(v6, 0, 1, v7);
   v11 = OBJC_IVAR___TSFeedViewContext_sourceURL;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_218FA6590(v6, self + v11);
   swift_endAccess();
 }
 
-- (void)setFeedTagType:(unint64_t)a3
+- (void)setFeedTagType:(unint64_t)type
 {
   v4 = self + OBJC_IVAR___TSFeedViewContext_feedTagType;
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = type;
   v4[8] = 0;
 }
 

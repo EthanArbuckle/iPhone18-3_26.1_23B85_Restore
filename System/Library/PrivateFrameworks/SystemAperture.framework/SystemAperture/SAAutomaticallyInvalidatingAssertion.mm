@@ -1,6 +1,6 @@
 @interface SAAutomaticallyInvalidatingAssertion
-- (BOOL)_setAutomaticallyInvalidatable:(BOOL)a3 lockingWithKey:(id)a4 reason:(id)a5;
-- (SAAutomaticallyInvalidatingAssertion)initWithInvalidationInterval:(double)a3;
+- (BOOL)_setAutomaticallyInvalidatable:(BOOL)invalidatable lockingWithKey:(id)key reason:(id)reason;
+- (SAAutomaticallyInvalidatingAssertion)initWithInvalidationInterval:(double)interval;
 - (id)_descriptionConstituents;
 - (void)_invalidateInvalidationTimerIfNecessary;
 - (void)_scheduleInvalidationTimerIfNecessary;
@@ -43,20 +43,20 @@ void __77__SAAutomaticallyInvalidatingAssertion__scheduleInvalidationTimerIfNece
 
   v12.receiver = self;
   v12.super_class = SAAutomaticallyInvalidatingAssertion;
-  v9 = [(SAAssertion *)&v12 _descriptionConstituents];
-  v10 = [v9 arrayByAddingObject:v8];
+  _descriptionConstituents = [(SAAssertion *)&v12 _descriptionConstituents];
+  v10 = [_descriptionConstituents arrayByAddingObject:v8];
 
   return v10;
 }
 
-- (SAAutomaticallyInvalidatingAssertion)initWithInvalidationInterval:(double)a3
+- (SAAutomaticallyInvalidatingAssertion)initWithInvalidationInterval:(double)interval
 {
   v5.receiver = self;
   v5.super_class = SAAutomaticallyInvalidatingAssertion;
   result = [(SAAssertion *)&v5 init];
   if (result)
   {
-    result->_invalidationInterval = a3;
+    result->_invalidationInterval = interval;
   }
 
   return result;
@@ -65,46 +65,46 @@ void __77__SAAutomaticallyInvalidatingAssertion__scheduleInvalidationTimerIfNece
 - (void)resetAutomaticInvalidationTimer
 {
   v7 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(SAAssertion *)v2 isValid]&& [(NSTimer *)v2->_invalidationTimer isValid])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(SAAssertion *)selfCopy isValid]&& [(NSTimer *)selfCopy->_invalidationTimer isValid])
   {
     v3 = SALogSystem;
     if (os_log_type_enabled(SALogSystem, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138543362;
-      v6 = v2;
+      v6 = selfCopy;
       _os_log_impl(&dword_26C47D000, v3, OS_LOG_TYPE_DEFAULT, "Automatic invalidation timer reset: %{public}@", &v5, 0xCu);
     }
 
-    [(SAAutomaticallyInvalidatingAssertion *)v2 _invalidateInvalidationTimerIfNecessary];
-    [(SAAutomaticallyInvalidatingAssertion *)v2 _scheduleInvalidationTimerIfNecessary];
+    [(SAAutomaticallyInvalidatingAssertion *)selfCopy _invalidateInvalidationTimerIfNecessary];
+    [(SAAutomaticallyInvalidatingAssertion *)selfCopy _scheduleInvalidationTimerIfNecessary];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_setAutomaticallyInvalidatable:(BOOL)a3 lockingWithKey:(id)a4 reason:(id)a5
+- (BOOL)_setAutomaticallyInvalidatable:(BOOL)invalidatable lockingWithKey:(id)key reason:(id)reason
 {
-  v6 = a3;
+  invalidatableCopy = invalidatable;
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  if (![(SAAssertion *)v10 isValid])
+  keyCopy = key;
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(SAAssertion *)selfCopy isValid])
   {
     goto LABEL_11;
   }
 
-  automaticallyInvalidatable = v10->_automaticallyInvalidatable;
-  key = v10->_key;
-  if (automaticallyInvalidatable == v6)
+  automaticallyInvalidatable = selfCopy->_automaticallyInvalidatable;
+  key = selfCopy->_key;
+  if (automaticallyInvalidatable == invalidatableCopy)
   {
     v13 = 0;
-    if (!v8 || key)
+    if (!keyCopy || key)
     {
       goto LABEL_21;
     }
@@ -114,9 +114,9 @@ void __77__SAAutomaticallyInvalidatingAssertion__scheduleInvalidationTimerIfNece
 
   if (key)
   {
-    if ([(NSString *)key isEqualToString:v8])
+    if ([(NSString *)key isEqualToString:keyCopy])
     {
-      automaticallyInvalidatable = v10->_automaticallyInvalidatable;
+      automaticallyInvalidatable = selfCopy->_automaticallyInvalidatable;
       goto LABEL_9;
     }
 
@@ -126,25 +126,25 @@ LABEL_11:
   }
 
 LABEL_9:
-  v13 = automaticallyInvalidatable != v6;
-  v10->_automaticallyInvalidatable = v6;
-  if (v6)
+  v13 = automaticallyInvalidatable != invalidatableCopy;
+  selfCopy->_automaticallyInvalidatable = invalidatableCopy;
+  if (invalidatableCopy)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [v8 copy];
+    v14 = [keyCopy copy];
   }
 
-  v15 = v10->_key;
-  v10->_key = v14;
+  v15 = selfCopy->_key;
+  selfCopy->_key = v14;
 
   v16 = SALogSystem;
   if (os_log_type_enabled(SALogSystem, OS_LOG_TYPE_DEFAULT))
   {
-    if (v10->_automaticallyInvalidatable)
+    if (selfCopy->_automaticallyInvalidatable)
     {
       v17 = @"enabled";
     }
@@ -157,22 +157,22 @@ LABEL_9:
     v20 = 138412546;
     v21 = v17;
     v22 = 2114;
-    v23 = v10;
+    v23 = selfCopy;
     _os_log_impl(&dword_26C47D000, v16, OS_LOG_TYPE_DEFAULT, "Automatic invalidation %@: %{public}@", &v20, 0x16u);
   }
 
-  if (v10->_automaticallyInvalidatable)
+  if (selfCopy->_automaticallyInvalidatable)
   {
-    [(SAAutomaticallyInvalidatingAssertion *)v10 _scheduleInvalidationTimerIfNecessary];
+    [(SAAutomaticallyInvalidatingAssertion *)selfCopy _scheduleInvalidationTimerIfNecessary];
   }
 
   else
   {
-    [(SAAutomaticallyInvalidatingAssertion *)v10 _invalidateInvalidationTimerIfNecessary];
+    [(SAAutomaticallyInvalidatingAssertion *)selfCopy _invalidateInvalidationTimerIfNecessary];
   }
 
 LABEL_21:
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
   v18 = *MEMORY[0x277D85DE8];
   return v13;
@@ -181,35 +181,35 @@ LABEL_21:
 - (void)_scheduleInvalidationTimerIfNecessary
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(SAAssertion *)v2 isValid]&& ![(NSTimer *)v2->_invalidationTimer isValid])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(SAAssertion *)selfCopy isValid]&& ![(NSTimer *)selfCopy->_invalidationTimer isValid])
   {
     v3 = SALogSystem;
     if (os_log_type_enabled(SALogSystem, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v12 = v2;
+      v12 = selfCopy;
       _os_log_impl(&dword_26C47D000, v3, OS_LOG_TYPE_DEFAULT, "Scheduling automatic invalidation timer: %{public}@", buf, 0xCu);
     }
 
-    objc_initWeak(buf, v2);
+    objc_initWeak(buf, selfCopy);
     v4 = MEMORY[0x277CBEBB8];
-    invalidationInterval = v2->_invalidationInterval;
+    invalidationInterval = selfCopy->_invalidationInterval;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __77__SAAutomaticallyInvalidatingAssertion__scheduleInvalidationTimerIfNecessary__block_invoke;
     v9[3] = &unk_279D32180;
     objc_copyWeak(&v10, buf);
     v6 = [v4 scheduledTimerWithTimeInterval:0 repeats:v9 block:invalidationInterval];
-    invalidationTimer = v2->_invalidationTimer;
-    v2->_invalidationTimer = v6;
+    invalidationTimer = selfCopy->_invalidationTimer;
+    selfCopy->_invalidationTimer = v6;
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -217,24 +217,24 @@ LABEL_21:
 - (void)_invalidateInvalidationTimerIfNecessary
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(NSTimer *)v2->_invalidationTimer isValid])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSTimer *)selfCopy->_invalidationTimer isValid])
   {
     v3 = SALogSystem;
     if (os_log_type_enabled(SALogSystem, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = v2;
+      v7 = selfCopy;
       _os_log_impl(&dword_26C47D000, v3, OS_LOG_TYPE_DEFAULT, "Automatic invalidation timer invalidated: %{public}@", &v6, 0xCu);
     }
 
-    [(NSTimer *)v2->_invalidationTimer invalidate];
-    invalidationTimer = v2->_invalidationTimer;
-    v2->_invalidationTimer = 0;
+    [(NSTimer *)selfCopy->_invalidationTimer invalidate];
+    invalidationTimer = selfCopy->_invalidationTimer;
+    selfCopy->_invalidationTimer = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = *MEMORY[0x277D85DE8];
 }

@@ -1,7 +1,7 @@
 @interface OfflineMapDeviceDetailsSectionController
 - (OfflineMapDetailsActionSectionControllerDelegate)actionDelegate;
-- (OfflineMapDeviceDetailsSectionController)initWithSubscriptionInfo:(id)a3;
-- (OfflineMapDeviceDetailsSectionController)initWithSubscriptionInfo:(id)a3 deviceName:(id)a4;
+- (OfflineMapDeviceDetailsSectionController)initWithSubscriptionInfo:(id)info;
+- (OfflineMapDeviceDetailsSectionController)initWithSubscriptionInfo:(id)info deviceName:(id)name;
 - (id)_subscriptionState;
 - (void)_commonInit;
 - (void)_didStopDownload;
@@ -9,11 +9,11 @@
 - (void)_unregisterKVOObservers;
 - (void)_updateRowViews;
 - (void)_updateStateRow;
-- (void)_updateWaitingRowWithDownloadState:(int64_t)a3 waitingReasons:(unint64_t)a4 userInfo:(id)a5;
+- (void)_updateWaitingRowWithDownloadState:(int64_t)state waitingReasons:(unint64_t)reasons userInfo:(id)info;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setLastUpdatedDate:(id)a3;
-- (void)setSubscriptionInfo:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setLastUpdatedDate:(id)date;
+- (void)setSubscriptionInfo:(id)info;
 @end
 
 @implementation OfflineMapDeviceDetailsSectionController
@@ -25,11 +25,11 @@
   return WeakRetained;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_10192C8B0 == a6)
+  if (off_10192C8B0 == context)
   {
-    if ([NSThread isMainThread:a3])
+    if ([NSThread isMainThread:path])
     {
 
       [(OfflineMapDeviceDetailsSectionController *)self _updateRowViews];
@@ -50,25 +50,25 @@
   {
     v7.receiver = self;
     v7.super_class = OfflineMapDeviceDetailsSectionController;
-    [(OfflineMapDeviceDetailsSectionController *)&v7 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(OfflineMapDeviceDetailsSectionController *)&v7 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (void)_didStopDownload
 {
-  v4 = [(OfflineMapDeviceDetailsSectionController *)self actionDelegate];
-  v3 = [(OfflineMapSectionController *)self subscriptionInfo];
-  [v4 offlineMapDetailsActionSectionControllerDidSelectPauseDownload:v3];
+  actionDelegate = [(OfflineMapDeviceDetailsSectionController *)self actionDelegate];
+  subscriptionInfo = [(OfflineMapSectionController *)self subscriptionInfo];
+  [actionDelegate offlineMapDetailsActionSectionControllerDidSelectPauseDownload:subscriptionInfo];
 }
 
-- (void)_updateWaitingRowWithDownloadState:(int64_t)a3 waitingReasons:(unint64_t)a4 userInfo:(id)a5
+- (void)_updateWaitingRowWithDownloadState:(int64_t)state waitingReasons:(unint64_t)reasons userInfo:(id)info
 {
-  v5 = a4;
-  v8 = a5;
+  reasonsCopy = reasons;
+  infoCopy = info;
   if (self->_waitingReasonRow)
   {
-    v25 = v8;
-    if (a3 == 4)
+    v25 = infoCopy;
+    if (state == 4)
     {
       v9 = +[NSBundle mainBundle];
       v10 = v9;
@@ -77,10 +77,10 @@
 
     else
     {
-      v12 = [v8 objectForKeyedSubscript:GEOMapDataSubscriptionStateWaitingMinimumBatteryLevelKey];
-      v13 = [v12 unsignedIntegerValue];
+      v12 = [infoCopy objectForKeyedSubscript:GEOMapDataSubscriptionStateWaitingMinimumBatteryLevelKey];
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-      if ((v5 & 8) != 0)
+      if ((reasonsCopy & 8) != 0)
       {
         v15 = MGGetBoolAnswer();
         v10 = +[NSBundle mainBundle];
@@ -97,7 +97,7 @@
 
       else
       {
-        if ((v5 & 4) != 0)
+        if ((reasonsCopy & 4) != 0)
         {
           v10 = objc_alloc_init(NSNumberFormatter);
           [v10 setNumberStyle:3];
@@ -105,7 +105,7 @@
           v16 = +[NSLocale autoupdatingCurrentLocale];
           [v10 setLocale:v16];
 
-          v17 = [NSNumber numberWithDouble:v13 * 0.01];
+          v17 = [NSNumber numberWithDouble:unsignedIntegerValue * 0.01];
           v18 = [v10 stringFromNumber:v17];
 
           LODWORD(v17) = MGGetBoolAnswer();
@@ -128,9 +128,9 @@
           goto LABEL_18;
         }
 
-        if ((~v5 & 3) != 0)
+        if ((~reasonsCopy & 3) != 0)
         {
-          if ((v5 & 2) != 0)
+          if ((reasonsCopy & 2) != 0)
           {
             v9 = +[NSBundle mainBundle];
             v10 = v9;
@@ -138,7 +138,7 @@
             goto LABEL_17;
           }
 
-          if ((v5 & 1) == 0)
+          if ((reasonsCopy & 1) == 0)
           {
             v9 = +[NSBundle mainBundle];
             v10 = v9;
@@ -183,15 +183,15 @@ LABEL_17:
     [(OfflineMapDeviceExplanatoryRowView *)self->_waitingReasonRow setText:v18];
 LABEL_18:
 
-    v8 = v25;
+    infoCopy = v25;
   }
 }
 
 - (void)_updateStateRow
 {
-  v3 = [(OfflineMapDeviceDetailsSectionController *)self _subscriptionState];
-  v4 = [v3 loadState];
-  if ((v4 - 1) < 2)
+  _subscriptionState = [(OfflineMapDeviceDetailsSectionController *)self _subscriptionState];
+  loadState = [_subscriptionState loadState];
+  if ((loadState - 1) < 2)
   {
     if (!self->_dateTimeFormatter)
     {
@@ -210,18 +210,18 @@ LABEL_18:
     v15 = [v14 localizedStringForKey:@"Last Updated [Offline Maps Details]" value:@"localized string not found" table:@"Offline"];
     [(OfflineMapDeviceStateRowView *)self->_stateRow setLabelText:v15];
 
-    v7 = [(OfflineMapDeviceDetailsSectionController *)self lastUpdatedDate];
-    if (v7)
+    lastUpdatedDate = [(OfflineMapDeviceDetailsSectionController *)self lastUpdatedDate];
+    if (lastUpdatedDate)
     {
       v16 = +[NSDate date];
-      [v16 timeIntervalSinceDate:v7];
+      [v16 timeIntervalSinceDate:lastUpdatedDate];
       v18 = v17;
 
       if (v18 >= 60.0)
       {
         v30 = self->_dateTimeFormatter;
         v20 = +[NSDate now];
-        v22 = [(NSRelativeDateTimeFormatter *)v30 localizedStringForDate:v7 relativeToDate:v20];
+        v22 = [(NSRelativeDateTimeFormatter *)v30 localizedStringForDate:lastUpdatedDate relativeToDate:v20];
         goto LABEL_20;
       }
 
@@ -248,17 +248,17 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if ((v4 == 3 || !v4) && [v3 downloadState] - 1 <= 1)
+  if ((loadState == 3 || !loadState) && [_subscriptionState downloadState] - 1 <= 1)
   {
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"MAP_DETAILS_LOADING_STATE_LABEL" value:@"localized string not found" table:@"Offline"];
     [(OfflineMapDeviceStateRowView *)self->_stateRow setLabelText:v6];
 
-    v7 = [v3 downloadProgress];
-    v8 = [v3 downloadState];
-    v9 = [v7 localizedAdditionalDescription];
-    v10 = v9;
-    if (v8 == 1 || ![v9 length])
+    lastUpdatedDate = [_subscriptionState downloadProgress];
+    downloadState = [_subscriptionState downloadState];
+    localizedAdditionalDescription = [lastUpdatedDate localizedAdditionalDescription];
+    v10 = localizedAdditionalDescription;
+    if (downloadState == 1 || ![localizedAdditionalDescription length])
     {
       v23 = +[NSBundle mainBundle];
       v24 = [v23 localizedStringForKey:@"MAP_DETAILS_LOADING_STATE_VALUE_WAITING" value:@"localized string not found" table:@"Offline"];
@@ -295,7 +295,7 @@ LABEL_21:
       progressView = self->_progressView;
     }
 
-    [(MUCircleProgressObservingView *)progressView setProgress:v7, v32, v33, v34, v35];
+    [(MUCircleProgressObservingView *)progressView setProgress:lastUpdatedDate, v32, v33, v34, v35];
     [(OfflineMapDeviceStateRowView *)self->_stateRow setTrailingAccessoryView:self->_progressView];
 
     goto LABEL_21;
@@ -307,22 +307,22 @@ LABEL_22:
 - (void)_updateRowViews
 {
   v3 = +[NSMutableArray array];
-  v4 = [(OfflineMapDeviceDetailsSectionController *)self _subscriptionState];
-  v5 = v4;
-  if (v4)
+  _subscriptionState = [(OfflineMapDeviceDetailsSectionController *)self _subscriptionState];
+  v5 = _subscriptionState;
+  if (_subscriptionState)
   {
-    v6 = [v4 loadState];
-    if ((v6 - 1) < 2)
+    loadState = [_subscriptionState loadState];
+    if ((loadState - 1) < 2)
     {
       goto LABEL_11;
     }
 
-    if (v6 == 3 || !v6)
+    if (loadState == 3 || !loadState)
     {
-      v7 = [v5 downloadState];
-      if (v7 <= 5)
+      downloadState = [v5 downloadState];
+      if (downloadState <= 5)
       {
-        if (((1 << v7) & 0x31) != 0)
+        if (((1 << downloadState) & 0x31) != 0)
         {
           p_waitingReasonRow = &self->_waitingReasonRow;
           if (!self->_waitingReasonRow)
@@ -334,17 +334,17 @@ LABEL_22:
             [*p_waitingReasonRow setAccessibilityIdentifier:@"WaitingRowView"];
           }
 
-          v11 = [v5 downloadState];
-          v12 = [v5 userInfo];
-          v13 = [v12 objectForKeyedSubscript:GEOMapDataSubscriptionStateWaitingReasonKey];
-          v14 = [v13 unsignedIntegerValue];
-          v15 = [v5 userInfo];
-          [(OfflineMapDeviceDetailsSectionController *)self _updateWaitingRowWithDownloadState:v11 waitingReasons:v14 userInfo:v15];
+          downloadState2 = [v5 downloadState];
+          userInfo = [v5 userInfo];
+          v13 = [userInfo objectForKeyedSubscript:GEOMapDataSubscriptionStateWaitingReasonKey];
+          unsignedIntegerValue = [v13 unsignedIntegerValue];
+          userInfo2 = [v5 userInfo];
+          [(OfflineMapDeviceDetailsSectionController *)self _updateWaitingRowWithDownloadState:downloadState2 waitingReasons:unsignedIntegerValue userInfo:userInfo2];
 
           goto LABEL_12;
         }
 
-        if (((1 << v7) & 6) == 0)
+        if (((1 << downloadState) & 6) == 0)
         {
           goto LABEL_13;
         }
@@ -359,12 +359,12 @@ LABEL_12:
   }
 
 LABEL_13:
-  v16 = [(OfflineMapDeviceDetailsSectionController *)self _actions];
+  _actions = [(OfflineMapDeviceDetailsSectionController *)self _actions];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v17 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v17 = [_actions countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v17)
   {
     v18 = v17;
@@ -378,7 +378,7 @@ LABEL_13:
       {
         if (*v27 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(_actions);
         }
 
         v24 = *(*(&v26 + 1) + 8 * i);
@@ -387,7 +387,7 @@ LABEL_13:
         [v3 addObject:v25];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v18 = [_actions countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v18);
@@ -396,39 +396,39 @@ LABEL_13:
   [(MUPlaceVerticalCardContainerView *)self->_stackView setRowViews:v3];
 }
 
-- (void)setLastUpdatedDate:(id)a3
+- (void)setLastUpdatedDate:(id)date
 {
-  objc_storeStrong(&self->_lastUpdatedDate, a3);
+  objc_storeStrong(&self->_lastUpdatedDate, date);
 
   [(OfflineMapDeviceDetailsSectionController *)self _updateStateRow];
 }
 
-- (void)setSubscriptionInfo:(id)a3
+- (void)setSubscriptionInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(OfflineMapSectionController *)self subscriptionInfo];
+  infoCopy = info;
+  subscriptionInfo = [(OfflineMapSectionController *)self subscriptionInfo];
 
-  if (v5 != v4)
+  if (subscriptionInfo != infoCopy)
   {
     [(OfflineMapDeviceDetailsSectionController *)self _unregisterKVOObservers];
     v6.receiver = self;
     v6.super_class = OfflineMapDeviceDetailsSectionController;
-    [(OfflineMapSectionController *)&v6 setSubscriptionInfo:v4];
+    [(OfflineMapSectionController *)&v6 setSubscriptionInfo:infoCopy];
     [(OfflineMapDeviceDetailsSectionController *)self _registerKVOObservers];
   }
 }
 
 - (void)_unregisterKVOObservers
 {
-  v3 = [(OfflineMapSectionController *)self subscriptionInfo];
-  if (v3)
+  subscriptionInfo = [(OfflineMapSectionController *)self subscriptionInfo];
+  if (subscriptionInfo)
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [objc_opt_class() _keyPathsToObserve];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    _keyPathsToObserve = [objc_opt_class() _keyPathsToObserve];
+    v5 = [_keyPathsToObserve countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -440,15 +440,15 @@ LABEL_13:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_keyPathsToObserve);
           }
 
-          [v3 removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8) context:off_10192C8B0];
+          [subscriptionInfo removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8) context:off_10192C8B0];
           v8 = v8 + 1;
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [_keyPathsToObserve countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -458,15 +458,15 @@ LABEL_13:
 
 - (void)_registerKVOObservers
 {
-  v3 = [(OfflineMapSectionController *)self subscriptionInfo];
-  if (v3)
+  subscriptionInfo = [(OfflineMapSectionController *)self subscriptionInfo];
+  if (subscriptionInfo)
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [objc_opt_class() _keyPathsToObserve];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    _keyPathsToObserve = [objc_opt_class() _keyPathsToObserve];
+    v5 = [_keyPathsToObserve countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -478,15 +478,15 @@ LABEL_13:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_keyPathsToObserve);
           }
 
-          [v3 addObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8) options:0 context:off_10192C8B0];
+          [subscriptionInfo addObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8) options:0 context:off_10192C8B0];
           v8 = v8 + 1;
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [_keyPathsToObserve countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -522,21 +522,21 @@ LABEL_13:
     v7 = objc_alloc_init(UIView);
     [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v7 addSubview:self->_sectionHeader];
-    v46 = [(SectionHeaderView *)self->_sectionHeader topAnchor];
-    v44 = [v7 topAnchor];
-    v42 = [v46 constraintEqualToAnchor:v44];
+    topAnchor = [(SectionHeaderView *)self->_sectionHeader topAnchor];
+    topAnchor2 = [v7 topAnchor];
+    v42 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v50[0] = v42;
-    v40 = [(SectionHeaderView *)self->_sectionHeader leadingAnchor];
-    v39 = [v7 leadingAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39 constant:16.0];
+    leadingAnchor = [(SectionHeaderView *)self->_sectionHeader leadingAnchor];
+    leadingAnchor2 = [v7 leadingAnchor];
+    v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v50[1] = v38;
-    v37 = [(SectionHeaderView *)self->_sectionHeader trailingAnchor];
-    v8 = [v7 trailingAnchor];
-    v9 = [v37 constraintEqualToAnchor:v8];
+    trailingAnchor = [(SectionHeaderView *)self->_sectionHeader trailingAnchor];
+    trailingAnchor2 = [v7 trailingAnchor];
+    v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v50[2] = v9;
-    v10 = [(SectionHeaderView *)self->_sectionHeader bottomAnchor];
-    v11 = [v7 bottomAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    bottomAnchor = [(SectionHeaderView *)self->_sectionHeader bottomAnchor];
+    bottomAnchor2 = [v7 bottomAnchor];
+    v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v50[3] = v12;
     v13 = [NSArray arrayWithObjects:v50 count:4];
     [NSLayoutConstraint activateConstraints:v13];
@@ -563,30 +563,30 @@ LABEL_13:
 
   [(MUPlaceSectionView *)self->_sectionView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_containerView addSubview:self->_sectionView];
-  v43 = [(MUPlaceSectionView *)self->_sectionView leadingAnchor];
-  v41 = [(UIView *)self->_containerView leadingAnchor];
-  v19 = [v43 constraintEqualToAnchor:v41];
+  leadingAnchor3 = [(MUPlaceSectionView *)self->_sectionView leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_containerView leadingAnchor];
+  v19 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v49[0] = v19;
-  v20 = [(MUPlaceSectionView *)self->_sectionView trailingAnchor];
-  v21 = [(UIView *)self->_containerView trailingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  trailingAnchor3 = [(MUPlaceSectionView *)self->_sectionView trailingAnchor];
+  trailingAnchor4 = [(UIView *)self->_containerView trailingAnchor];
+  v22 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v49[1] = v22;
-  v23 = [(MUPlaceSectionView *)self->_sectionView bottomAnchor];
-  v24 = [(UIView *)self->_containerView bottomAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  bottomAnchor3 = [(MUPlaceSectionView *)self->_sectionView bottomAnchor];
+  bottomAnchor4 = [(UIView *)self->_containerView bottomAnchor];
+  v25 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v49[2] = v25;
   v26 = [NSArray arrayWithObjects:v49 count:3];
   v45 = [v26 mutableCopy];
 
   if (v47)
   {
-    v27 = [v47 topAnchor];
-    v28 = [(UIView *)self->_containerView topAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    topAnchor3 = [v47 topAnchor];
+    topAnchor4 = [(UIView *)self->_containerView topAnchor];
+    v29 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v48[0] = v29;
-    v30 = [(MUPlaceSectionView *)self->_sectionView topAnchor];
-    v31 = [v47 bottomAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    topAnchor5 = [(MUPlaceSectionView *)self->_sectionView topAnchor];
+    bottomAnchor5 = [v47 bottomAnchor];
+    v32 = [topAnchor5 constraintEqualToAnchor:bottomAnchor5];
     v48[1] = v32;
     v33 = [NSArray arrayWithObjects:v48 count:2];
     v34 = v45;
@@ -595,9 +595,9 @@ LABEL_13:
 
   else
   {
-    v27 = [(MUPlaceSectionView *)self->_sectionView topAnchor];
-    v28 = [(UIView *)self->_containerView topAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    topAnchor3 = [(MUPlaceSectionView *)self->_sectionView topAnchor];
+    topAnchor4 = [(UIView *)self->_containerView topAnchor];
+    v29 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v34 = v45;
     [v45 addObject:v29];
   }
@@ -615,21 +615,21 @@ LABEL_13:
 
 - (id)_subscriptionState
 {
-  v2 = [(OfflineMapSectionController *)self subscriptionInfo];
-  v3 = [v2 state];
+  subscriptionInfo = [(OfflineMapSectionController *)self subscriptionInfo];
+  state = [subscriptionInfo state];
 
-  return v3;
+  return state;
 }
 
-- (OfflineMapDeviceDetailsSectionController)initWithSubscriptionInfo:(id)a3 deviceName:(id)a4
+- (OfflineMapDeviceDetailsSectionController)initWithSubscriptionInfo:(id)info deviceName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = OfflineMapDeviceDetailsSectionController;
-  v7 = [(OfflineMapSectionController *)&v12 initWithSubscriptionInfo:a3];
+  v7 = [(OfflineMapSectionController *)&v12 initWithSubscriptionInfo:info];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     deviceName = v7->_deviceName;
     v7->_deviceName = v8;
 
@@ -640,12 +640,12 @@ LABEL_13:
   return v7;
 }
 
-- (OfflineMapDeviceDetailsSectionController)initWithSubscriptionInfo:(id)a3
+- (OfflineMapDeviceDetailsSectionController)initWithSubscriptionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 name];
-  v7 = [(OfflineMapDeviceDetailsSectionController *)self initWithSubscriptionInfo:v4 deviceName:v6];
+  name = [v5 name];
+  v7 = [(OfflineMapDeviceDetailsSectionController *)self initWithSubscriptionInfo:infoCopy deviceName:name];
 
   return v7;
 }

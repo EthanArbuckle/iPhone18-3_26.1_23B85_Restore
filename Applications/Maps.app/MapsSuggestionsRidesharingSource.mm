@@ -1,8 +1,8 @@
 @interface MapsSuggestionsRidesharingSource
 + (BOOL)isEnabled;
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
-- (void)rideStatusMapDidChange:(id)a3;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
+- (void)rideStatusMapDidChange:(id)change;
 - (void)start;
 - (void)stop;
 @end
@@ -30,18 +30,18 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "start", v5, 2u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  [(MapsSuggestionsRidesharingSource *)v4 setSuspended:0];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MapsSuggestionsRidesharingSource *)selfCopy setSuspended:0];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)rideStatusMapDidChange:(id)a3
+- (void)rideStatusMapDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  if ([(MapsSuggestionsRidesharingSource *)v6 suspended])
+  changeCopy = change;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(MapsSuggestionsRidesharingSource *)selfCopy suspended])
   {
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -55,9 +55,9 @@
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(MapsSuggestionsRidesharingSource *)v6 uniqueName];
+      uniqueName = [(MapsSuggestionsRidesharingSource *)selfCopy uniqueName];
       *buf = 138412546;
-      v17 = v10;
+      v17 = uniqueName;
       v18 = 2080;
       v19 = "_updateRideBookingRideStatuses";
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -70,21 +70,21 @@
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v11, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "_updateRideBookingRideStatuses", "", buf, 2u);
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
-    objc_initWeak(buf, v6);
-    queue = v6->_queue;
+    objc_initWeak(buf, selfCopy);
+    queue = selfCopy->_queue;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100CD5808;
     v13[3] = &unk_101661340;
     objc_copyWeak(&v15, buf);
-    v14 = v5;
+    v14 = changeCopy;
     dispatch_async(queue, v13);
 
     objc_destroyWeak(&v15);
@@ -92,9 +92,9 @@
   }
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -119,7 +119,7 @@
     v24[2] = sub_100CD640C;
     v24[3] = &unk_101660648;
     objc_copyWeak(&v26, buf);
-    v25 = v4;
+    v25 = handlerCopy;
     dispatch_async(queue, v24);
     v9 = v25;
     goto LABEL_11;
@@ -141,7 +141,7 @@
     block[2] = sub_100CD6628;
     block[3] = &unk_101660648;
     objc_copyWeak(&v23, buf);
-    v22 = v4;
+    v22 = handlerCopy;
     dispatch_async(v7, block);
     v9 = v22;
 LABEL_11:
@@ -150,19 +150,19 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v14 = self;
-  objc_sync_enter(v14);
-  if (![(MapsSuggestionsRidesharingSource *)v14 suspended])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(MapsSuggestionsRidesharingSource *)selfCopy suspended])
   {
-    objc_sync_exit(v14);
+    objc_sync_exit(selfCopy);
 
-    v16 = v14->_queue;
+    v16 = selfCopy->_queue;
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100CD6844;
     v18[3] = &unk_101660648;
     objc_copyWeak(&v20, buf);
-    v19 = v4;
+    v19 = handlerCopy;
     dispatch_async(v16, v18);
     GEOConfigGetDouble();
     v12 = v17;
@@ -178,12 +178,12 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Suspended, so no need to update", v27, 2u);
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 
-  objc_sync_exit(v14);
+  objc_sync_exit(selfCopy);
 
 LABEL_12:
   v12 = 0.0;
@@ -196,10 +196,10 @@ LABEL_13:
 - (void)stop
 {
   [(MapsSuggestionsAppGuardian *)self->_guardian unregisterAllBundleIDsForSource:self];
-  v3 = self;
-  objc_sync_enter(v3);
-  [(MapsSuggestionsRidesharingSource *)v3 setSuspended:1];
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MapsSuggestionsRidesharingSource *)selfCopy setSuspended:1];
+  objc_sync_exit(selfCopy);
 
   v4 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -209,11 +209,11 @@ LABEL_13:
   }
 }
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  depotCopy = depot;
+  nameCopy = name;
+  if (!depotCopy)
   {
     v22 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -232,9 +232,9 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  v8 = [v6 oneSourceDelegate];
+  oneSourceDelegate = [depotCopy oneSourceDelegate];
 
-  if (!v8)
+  if (!oneSourceDelegate)
   {
     v22 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -252,20 +252,20 @@ LABEL_13:
 
 LABEL_11:
 
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  v9 = [v6 oneSourceDelegate];
+  oneSourceDelegate2 = [depotCopy oneSourceDelegate];
   v28.receiver = self;
   v28.super_class = MapsSuggestionsRidesharingSource;
-  v10 = [(MapsSuggestionsRidesharingSource *)&v28 initWithDelegate:v9 name:v7];
+  v10 = [(MapsSuggestionsRidesharingSource *)&v28 initWithDelegate:oneSourceDelegate2 name:nameCopy];
 
   if (v10)
   {
-    v11 = [(MapsSuggestionsRidesharingSource *)v10 uniqueName];
-    v12 = v11;
-    v13 = [v11 cStringUsingEncoding:4];
+    uniqueName = [(MapsSuggestionsRidesharingSource *)v10 uniqueName];
+    v12 = uniqueName;
+    v13 = [uniqueName cStringUsingEncoding:4];
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v15 = dispatch_queue_create(v13, v14);
     queue = v10->_queue;
@@ -274,9 +274,9 @@ LABEL_11:
     oneShotCallbackBlock = v10->_oneShotCallbackBlock;
     v10->_oneShotCallbackBlock = 0;
 
-    v18 = [v6 oneAppGuardian];
+    oneAppGuardian = [depotCopy oneAppGuardian];
     guardian = v10->_guardian;
-    v10->_guardian = v18;
+    v10->_guardian = oneAppGuardian;
 
     objc_initWeak(location, v10);
     block[0] = _NSConcreteStackBlock;
@@ -298,10 +298,10 @@ LABEL_11:
   }
 
   self = v10;
-  v21 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v21;
+  return selfCopy;
 }
 
 @end

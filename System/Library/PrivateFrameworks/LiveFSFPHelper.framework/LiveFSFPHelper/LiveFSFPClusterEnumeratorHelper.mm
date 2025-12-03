@@ -1,52 +1,52 @@
 @interface LiveFSFPClusterEnumeratorHelper
-+ (id)newWithEnumeratedItem:(id)a3 extension:(id)a4 error:(id *)a5;
-- (LiveFSFPClusterEnumeratorHelper)initWithEnumeratedItem:(id)a3 extension:(id)a4 error:(id *)a5;
-- (void)enumerateItemsForObserver:(id)a3 startingAtPage:(id)a4;
++ (id)newWithEnumeratedItem:(id)item extension:(id)extension error:(id *)error;
+- (LiveFSFPClusterEnumeratorHelper)initWithEnumeratedItem:(id)item extension:(id)extension error:(id *)error;
+- (void)enumerateItemsForObserver:(id)observer startingAtPage:(id)page;
 - (void)invalidate;
 @end
 
 @implementation LiveFSFPClusterEnumeratorHelper
 
-- (LiveFSFPClusterEnumeratorHelper)initWithEnumeratedItem:(id)a3 extension:(id)a4 error:(id *)a5
+- (LiveFSFPClusterEnumeratorHelper)initWithEnumeratedItem:(id)item extension:(id)extension error:(id *)error
 {
-  v7 = a4;
+  extensionCopy = extension;
   v11.receiver = self;
   v11.super_class = LiveFSFPClusterEnumeratorHelper;
   v8 = [(LiveFSFPClusterEnumeratorHelper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->ext, a4);
+    objc_storeStrong(&v8->ext, extension);
   }
 
   return v9;
 }
 
-+ (id)newWithEnumeratedItem:(id)a3 extension:(id)a4 error:(id *)a5
++ (id)newWithEnumeratedItem:(id)item extension:(id)extension error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 isEqualToString:*MEMORY[0x277CC6368]];
+  itemCopy = item;
+  extensionCopy = extension;
+  v10 = [itemCopy isEqualToString:*MEMORY[0x277CC6368]];
   v11 = *MEMORY[0x277CC6348];
   if (v10)
   {
     v12 = v11;
 
-    v8 = v12;
+    itemCopy = v12;
 LABEL_4:
-    v13 = [[a1 alloc] initWithEnumeratedItem:v8 extension:v9 error:a5];
+    v13 = [[self alloc] initWithEnumeratedItem:itemCopy extension:extensionCopy error:error];
     goto LABEL_5;
   }
 
-  if ([v8 isEqualToString:v11])
+  if ([itemCopy isEqualToString:v11])
   {
     goto LABEL_4;
   }
 
-  if (a5)
+  if (error)
   {
     [LiveFSFPExtensionHelper getNSErrorFromLiveFSErrno:22];
-    *a5 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -70,18 +70,18 @@ LABEL_5:
     _os_log_impl(&dword_255FE9000, v3, OS_LOG_TYPE_INFO, "%s: marking state as DEAD", &v6, 0xCu);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_state = 3;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_state = 3;
+  objc_sync_exit(selfCopy);
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateItemsForObserver:(id)a3 startingAtPage:(id)a4
+- (void)enumerateItemsForObserver:(id)observer startingAtPage:(id)page
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  observerCopy = observer;
   v6 = objc_opt_new();
   ext = self->ext;
   v16 = 0;
@@ -100,7 +100,7 @@ LABEL_5:
       _os_log_impl(&dword_255FE9000, v10, OS_LOG_TYPE_DEFAULT, "%s: err (%@)", buf, 0x16u);
     }
 
-    [v5 finishEnumeratingWithError:v9];
+    [observerCopy finishEnumeratingWithError:v9];
   }
 
   else
@@ -122,8 +122,8 @@ LABEL_5:
     v12 = v6;
     v15 = v12;
     [v8 enumerateObjectsUsingBlock:v14];
-    [v5 didEnumerateItems:v12];
-    [v5 finishEnumeratingUpToPage:0];
+    [observerCopy didEnumerateItems:v12];
+    [observerCopy finishEnumeratingUpToPage:0];
   }
 
   v13 = *MEMORY[0x277D85DE8];

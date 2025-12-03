@@ -1,5 +1,5 @@
 @interface IDSClientProcessReceivedMessageMetric
-- (IDSClientProcessReceivedMessageMetric)initWithServiceIdentifier:(id)a3 messageSize:(unint64_t)a4 deltaTime:(unint64_t)a5 priority:(unint64_t)a6;
+- (IDSClientProcessReceivedMessageMetric)initWithServiceIdentifier:(id)identifier messageSize:(unint64_t)size deltaTime:(unint64_t)time priority:(unint64_t)priority;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,10 +8,10 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSClientProcessReceivedMessageMetric *)self serviceIdentifier];
-  if (v4)
+  serviceIdentifier = [(IDSClientProcessReceivedMessageMetric *)self serviceIdentifier];
+  if (serviceIdentifier)
   {
-    CFDictionarySetValue(v3, @"serviceIdentifier", v4);
+    CFDictionarySetValue(v3, @"serviceIdentifier", serviceIdentifier);
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[IDSClientProcessReceivedMessageMetric messageSize](self, "messageSize")}];
@@ -35,19 +35,19 @@
   return v3;
 }
 
-- (IDSClientProcessReceivedMessageMetric)initWithServiceIdentifier:(id)a3 messageSize:(unint64_t)a4 deltaTime:(unint64_t)a5 priority:(unint64_t)a6
+- (IDSClientProcessReceivedMessageMetric)initWithServiceIdentifier:(id)identifier messageSize:(unint64_t)size deltaTime:(unint64_t)time priority:(unint64_t)priority
 {
-  v11 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = IDSClientProcessReceivedMessageMetric;
   v12 = [(IDSClientProcessReceivedMessageMetric *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_serviceIdentifier, a3);
-    v13->_messageSize = a4;
-    v13->_deltaTime = a5;
-    v13->_priority = a6;
+    objc_storeStrong(&v12->_serviceIdentifier, identifier);
+    v13->_messageSize = size;
+    v13->_deltaTime = time;
+    v13->_priority = priority;
   }
 
   return v13;

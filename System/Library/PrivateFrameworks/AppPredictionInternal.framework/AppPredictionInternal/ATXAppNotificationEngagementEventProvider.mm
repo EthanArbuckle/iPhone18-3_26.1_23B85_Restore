@@ -1,36 +1,36 @@
 @interface ATXAppNotificationEngagementEventProvider
-- (ATXAppNotificationEngagementEventProvider)initWithModeEventProvider:(id)a3;
-- (BOOL)notificationEventOccurredWhileInMode:(id)a3 modeTransitionEvent:(id)a4;
+- (ATXAppNotificationEngagementEventProvider)initWithModeEventProvider:(id)provider;
+- (BOOL)notificationEventOccurredWhileInMode:(id)mode modeTransitionEvent:(id)event;
 - (BOOL)successfullyCalculatedNotificationEvents;
-- (double)classConditionalOfNotificationsClearedForBundleId:(id)a3;
-- (double)classConditionalOfNotificationsReceivedForBundleId:(id)a3;
-- (double)globalNotificationsClearedRateForBundleId:(id)a3;
-- (double)globalPopularityOfNotificationsReceivedForBundleId:(id)a3;
-- (double)localNotificationsClearedRateForBundleId:(id)a3;
-- (double)localPopularityOfNotificationsReceivedForBundleId:(id)a3;
-- (double)ratioOfLocalToGlobalNotificationsClearedRateForBundleId:(id)a3;
-- (double)ratioOfLocalToGlobalPopularityOfNotificationsReceivedForBundleId:(id)a3;
-- (id)dateIntervalFromNotificationEvent:(id)a3;
+- (double)classConditionalOfNotificationsClearedForBundleId:(id)id;
+- (double)classConditionalOfNotificationsReceivedForBundleId:(id)id;
+- (double)globalNotificationsClearedRateForBundleId:(id)id;
+- (double)globalPopularityOfNotificationsReceivedForBundleId:(id)id;
+- (double)localNotificationsClearedRateForBundleId:(id)id;
+- (double)localPopularityOfNotificationsReceivedForBundleId:(id)id;
+- (double)ratioOfLocalToGlobalNotificationsClearedRateForBundleId:(id)id;
+- (double)ratioOfLocalToGlobalPopularityOfNotificationsReceivedForBundleId:(id)id;
+- (id)dateIntervalFromNotificationEvent:(id)event;
 - (unint64_t)globalCountOfNotificationsCleared;
 - (unint64_t)globalCountOfNotificationsReceived;
 - (unint64_t)modeCountOfNotificationsCleared;
 - (unint64_t)modeCountOfNotificationsReceived;
 - (void)successfullyCalculatedNotificationEvents;
-- (void)trackNewNotificationEvent:(id)a3 forInstalledApps:(id)a4;
+- (void)trackNewNotificationEvent:(id)event forInstalledApps:(id)apps;
 @end
 
 @implementation ATXAppNotificationEngagementEventProvider
 
-- (ATXAppNotificationEngagementEventProvider)initWithModeEventProvider:(id)a3
+- (ATXAppNotificationEngagementEventProvider)initWithModeEventProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = ATXAppNotificationEngagementEventProvider;
   v6 = [(ATXAppNotificationEngagementEventProvider *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_modeEventProvider, a3);
+    objc_storeStrong(&v6->_modeEventProvider, provider);
     v8 = objc_alloc_init(MEMORY[0x277CCA940]);
     modeCountOfNotificationsCleared = v7->_modeCountOfNotificationsCleared;
     v7->_modeCountOfNotificationsCleared = v8;
@@ -55,16 +55,16 @@
 {
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
   v4 = +[_ATXAppIconState sharedInstance];
-  v5 = [v4 allInstalledAppsKnownToSpringBoard];
-  v6 = [v3 initWithArray:v5];
+  allInstalledAppsKnownToSpringBoard = [v4 allInstalledAppsKnownToSpringBoard];
+  v6 = [v3 initWithArray:allInstalledAppsKnownToSpringBoard];
 
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2419200.0];
   v8 = BiomeLibrary();
-  v9 = [v8 Notification];
-  v10 = [v9 Usage];
+  notification = [v8 Notification];
+  usage = [notification Usage];
 
   v11 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v7 endDate:0 maxEvents:0 lastN:0 reversed:0];
-  v12 = [v10 publisherWithUseCase:*MEMORY[0x277CEBB48] options:v11];
+  v12 = [usage publisherWithUseCase:*MEMORY[0x277CEBB48] options:v11];
   v13 = [(ATXModeEntityEventProviderProtocol *)self->_modeEventProvider biomePublisherWithBookmark:0];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
@@ -251,24 +251,24 @@ LABEL_10:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dateIntervalFromNotificationEvent:(id)a3
+- (id)dateIntervalFromNotificationEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 eventBody];
+    v4 = eventCopy;
+    eventBody = [v4 eventBody];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [v4 eventBody];
+      eventBody2 = [v4 eventBody];
       v8 = objc_alloc(MEMORY[0x277CCA970]);
-      v9 = [v7 absoluteTimestamp];
-      v10 = [v7 absoluteTimestamp];
-      v11 = [v8 initWithStartDate:v9 endDate:v10];
+      absoluteTimestamp = [eventBody2 absoluteTimestamp];
+      absoluteTimestamp2 = [eventBody2 absoluteTimestamp];
+      v11 = [v8 initWithStartDate:absoluteTimestamp endDate:absoluteTimestamp2];
     }
 
     else
@@ -285,54 +285,54 @@ LABEL_10:
   return v11;
 }
 
-- (void)trackNewNotificationEvent:(id)a3 forInstalledApps:(id)a4
+- (void)trackNewNotificationEvent:(id)event forInstalledApps:(id)apps
 {
-  v6 = a4;
-  v17 = [a3 eventBody];
-  v7 = [v17 bundleID];
-  v8 = [v6 containsObject:v7];
+  appsCopy = apps;
+  eventBody = [event eventBody];
+  bundleID = [eventBody bundleID];
+  v8 = [appsCopy containsObject:bundleID];
 
   if (v8)
   {
-    if ([v17 usageType] == 4)
+    if ([eventBody usageType] == 4)
     {
       globalCountOfNotificationsCleared = self->_globalCountOfNotificationsCleared;
-      v10 = [v17 bundleID];
-      [(NSCountedSet *)globalCountOfNotificationsCleared addObject:v10];
+      bundleID2 = [eventBody bundleID];
+      [(NSCountedSet *)globalCountOfNotificationsCleared addObject:bundleID2];
 
-      if ([(ATXAppNotificationEngagementEventProvider *)self notificationEventOccurredWhileInMode:v17 modeTransitionEvent:self->_mostRecentModeEvent])
+      if ([(ATXAppNotificationEngagementEventProvider *)self notificationEventOccurredWhileInMode:eventBody modeTransitionEvent:self->_mostRecentModeEvent])
       {
         modeCountOfNotificationsCleared = self->_modeCountOfNotificationsCleared;
-        v12 = [v17 bundleID];
-        [(NSCountedSet *)modeCountOfNotificationsCleared addObject:v12];
+        bundleID3 = [eventBody bundleID];
+        [(NSCountedSet *)modeCountOfNotificationsCleared addObject:bundleID3];
       }
     }
 
-    if ([v17 usageType] == 17 || objc_msgSend(v17, "usageType") == 18)
+    if ([eventBody usageType] == 17 || objc_msgSend(eventBody, "usageType") == 18)
     {
       globalCountOfNotificationsReceived = self->_globalCountOfNotificationsReceived;
-      v14 = [v17 bundleID];
-      [(NSCountedSet *)globalCountOfNotificationsReceived addObject:v14];
+      bundleID4 = [eventBody bundleID];
+      [(NSCountedSet *)globalCountOfNotificationsReceived addObject:bundleID4];
 
-      if ([(ATXAppNotificationEngagementEventProvider *)self notificationEventOccurredWhileInMode:v17 modeTransitionEvent:self->_mostRecentModeEvent])
+      if ([(ATXAppNotificationEngagementEventProvider *)self notificationEventOccurredWhileInMode:eventBody modeTransitionEvent:self->_mostRecentModeEvent])
       {
         modeCountOfNotificationsReceived = self->_modeCountOfNotificationsReceived;
-        v16 = [v17 bundleID];
-        [(NSCountedSet *)modeCountOfNotificationsReceived addObject:v16];
+        bundleID5 = [eventBody bundleID];
+        [(NSCountedSet *)modeCountOfNotificationsReceived addObject:bundleID5];
       }
     }
   }
 }
 
-- (BOOL)notificationEventOccurredWhileInMode:(id)a3 modeTransitionEvent:(id)a4
+- (BOOL)notificationEventOccurredWhileInMode:(id)mode modeTransitionEvent:(id)event
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 absoluteTimestamp];
-  [v7 timeIntervalSince1970];
+  modeCopy = mode;
+  eventCopy = event;
+  absoluteTimestamp = [modeCopy absoluteTimestamp];
+  [absoluteTimestamp timeIntervalSince1970];
   v9 = v8;
-  v10 = [v6 startDate];
-  [v10 timeIntervalSince1970];
+  startDate = [eventCopy startDate];
+  [startDate timeIntervalSince1970];
   if (v9 <= v11)
   {
     v17 = 0;
@@ -340,11 +340,11 @@ LABEL_10:
 
   else
   {
-    v12 = [v5 absoluteTimestamp];
-    [v12 timeIntervalSince1970];
+    absoluteTimestamp2 = [modeCopy absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSince1970];
     v14 = v13;
-    v15 = [v6 endDate];
-    [v15 timeIntervalSince1970];
+    endDate = [eventCopy endDate];
+    [endDate timeIntervalSince1970];
     v17 = v14 < v16;
   }
 
@@ -433,44 +433,44 @@ LABEL_10:
   return v6;
 }
 
-- (double)localNotificationsClearedRateForBundleId:(id)a3
+- (double)localNotificationsClearedRateForBundleId:(id)id
 {
-  v4 = [(ATXAppNotificationEngagementEventProvider *)self modeCountOfNotificationsClearedForBundleId:a3];
-  v5 = [(ATXAppNotificationEngagementEventProvider *)self modeCountOfNotificationsCleared];
+  v4 = [(ATXAppNotificationEngagementEventProvider *)self modeCountOfNotificationsClearedForBundleId:id];
+  modeCountOfNotificationsCleared = [(ATXAppNotificationEngagementEventProvider *)self modeCountOfNotificationsCleared];
   result = 0.0;
   if (v4)
   {
-    if (v5)
+    if (modeCountOfNotificationsCleared)
     {
-      return v4 / v5;
+      return v4 / modeCountOfNotificationsCleared;
     }
   }
 
   return result;
 }
 
-- (double)globalNotificationsClearedRateForBundleId:(id)a3
+- (double)globalNotificationsClearedRateForBundleId:(id)id
 {
-  v4 = [(ATXAppNotificationEngagementEventProvider *)self globalCountOfNotificationsClearedForBundleId:a3];
-  v5 = [(ATXAppNotificationEngagementEventProvider *)self globalCountOfNotificationsCleared];
+  v4 = [(ATXAppNotificationEngagementEventProvider *)self globalCountOfNotificationsClearedForBundleId:id];
+  globalCountOfNotificationsCleared = [(ATXAppNotificationEngagementEventProvider *)self globalCountOfNotificationsCleared];
   result = 0.0;
   if (v4)
   {
-    if (v5)
+    if (globalCountOfNotificationsCleared)
     {
-      return v4 / v5;
+      return v4 / globalCountOfNotificationsCleared;
     }
   }
 
   return result;
 }
 
-- (double)ratioOfLocalToGlobalNotificationsClearedRateForBundleId:(id)a3
+- (double)ratioOfLocalToGlobalNotificationsClearedRateForBundleId:(id)id
 {
-  v4 = a3;
-  [(ATXAppNotificationEngagementEventProvider *)self localNotificationsClearedRateForBundleId:v4];
+  idCopy = id;
+  [(ATXAppNotificationEngagementEventProvider *)self localNotificationsClearedRateForBundleId:idCopy];
   v6 = v5;
-  [(ATXAppNotificationEngagementEventProvider *)self globalNotificationsClearedRateForBundleId:v4];
+  [(ATXAppNotificationEngagementEventProvider *)self globalNotificationsClearedRateForBundleId:idCopy];
   v8 = v7;
 
   result = 0.0;
@@ -482,11 +482,11 @@ LABEL_10:
   return result;
 }
 
-- (double)classConditionalOfNotificationsClearedForBundleId:(id)a3
+- (double)classConditionalOfNotificationsClearedForBundleId:(id)id
 {
-  v4 = a3;
-  v5 = [(ATXAppNotificationEngagementEventProvider *)self modeCountOfNotificationsClearedForBundleId:v4];
-  v6 = [(ATXAppNotificationEngagementEventProvider *)self globalCountOfNotificationsClearedForBundleId:v4];
+  idCopy = id;
+  v5 = [(ATXAppNotificationEngagementEventProvider *)self modeCountOfNotificationsClearedForBundleId:idCopy];
+  v6 = [(ATXAppNotificationEngagementEventProvider *)self globalCountOfNotificationsClearedForBundleId:idCopy];
 
   result = 0.0;
   if (v5)
@@ -582,44 +582,44 @@ LABEL_10:
   return v6;
 }
 
-- (double)globalPopularityOfNotificationsReceivedForBundleId:(id)a3
+- (double)globalPopularityOfNotificationsReceivedForBundleId:(id)id
 {
-  v4 = [(ATXAppNotificationEngagementEventProvider *)self globalCountOfNotificationsReceivedForBundleId:a3];
-  v5 = [(ATXAppNotificationEngagementEventProvider *)self globalCountOfNotificationsReceived];
+  v4 = [(ATXAppNotificationEngagementEventProvider *)self globalCountOfNotificationsReceivedForBundleId:id];
+  globalCountOfNotificationsReceived = [(ATXAppNotificationEngagementEventProvider *)self globalCountOfNotificationsReceived];
   result = 0.0;
   if (v4)
   {
-    if (v5)
+    if (globalCountOfNotificationsReceived)
     {
-      return v4 / v5;
+      return v4 / globalCountOfNotificationsReceived;
     }
   }
 
   return result;
 }
 
-- (double)localPopularityOfNotificationsReceivedForBundleId:(id)a3
+- (double)localPopularityOfNotificationsReceivedForBundleId:(id)id
 {
-  v4 = [(ATXAppNotificationEngagementEventProvider *)self modeCountOfNotificationsReceivedForBundleId:a3];
-  v5 = [(ATXAppNotificationEngagementEventProvider *)self modeCountOfNotificationsReceived];
+  v4 = [(ATXAppNotificationEngagementEventProvider *)self modeCountOfNotificationsReceivedForBundleId:id];
+  modeCountOfNotificationsReceived = [(ATXAppNotificationEngagementEventProvider *)self modeCountOfNotificationsReceived];
   result = 0.0;
   if (v4)
   {
-    if (v5)
+    if (modeCountOfNotificationsReceived)
     {
-      return v4 / v5;
+      return v4 / modeCountOfNotificationsReceived;
     }
   }
 
   return result;
 }
 
-- (double)ratioOfLocalToGlobalPopularityOfNotificationsReceivedForBundleId:(id)a3
+- (double)ratioOfLocalToGlobalPopularityOfNotificationsReceivedForBundleId:(id)id
 {
-  v4 = a3;
-  [(ATXAppNotificationEngagementEventProvider *)self localPopularityOfNotificationsReceivedForBundleId:v4];
+  idCopy = id;
+  [(ATXAppNotificationEngagementEventProvider *)self localPopularityOfNotificationsReceivedForBundleId:idCopy];
   v6 = v5;
-  [(ATXAppNotificationEngagementEventProvider *)self globalPopularityOfNotificationsReceivedForBundleId:v4];
+  [(ATXAppNotificationEngagementEventProvider *)self globalPopularityOfNotificationsReceivedForBundleId:idCopy];
   v8 = v7;
 
   result = 0.0;
@@ -631,11 +631,11 @@ LABEL_10:
   return result;
 }
 
-- (double)classConditionalOfNotificationsReceivedForBundleId:(id)a3
+- (double)classConditionalOfNotificationsReceivedForBundleId:(id)id
 {
-  v4 = a3;
-  v5 = [(ATXAppNotificationEngagementEventProvider *)self modeCountOfNotificationsReceivedForBundleId:v4];
-  v6 = [(ATXAppNotificationEngagementEventProvider *)self globalCountOfNotificationsReceivedForBundleId:v4];
+  idCopy = id;
+  v5 = [(ATXAppNotificationEngagementEventProvider *)self modeCountOfNotificationsReceivedForBundleId:idCopy];
+  v6 = [(ATXAppNotificationEngagementEventProvider *)self globalCountOfNotificationsReceivedForBundleId:idCopy];
 
   result = 0.0;
   if (v5)
@@ -652,7 +652,7 @@ LABEL_10:
 - (void)successfullyCalculatedNotificationEvents
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = HIDWORD(*(*a1 + 40));
+  v9 = HIDWORD(*(*self + 40));
   OUTLINED_FUNCTION_0(&dword_2263AA000, a2, a3, "ATXAppNotificationEngagementEventProvider: Error from merged publishers: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }

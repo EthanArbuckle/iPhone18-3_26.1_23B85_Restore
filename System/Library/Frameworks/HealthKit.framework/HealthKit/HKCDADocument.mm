@@ -1,46 +1,46 @@
 @interface HKCDADocument
-- (BOOL)_compressDocumentDataForTransfer:(id *)a3;
-- (BOOL)_decompressDocumentDataForDelivery:(id *)a3;
-- (HKCDADocument)initWithCoder:(id)a3 omittedContentFlags:(int64_t)a4;
-- (HKCDADocument)initWithDocumentData:(id)a3 compressedDocumentData:(id)a4 title:(id)a5 patientName:(id)a6 authorName:(id)a7 custodianName:(id)a8;
-- (id)_descriptionFieldTitle:(id)a3 content:(id)a4 maxSize:(unint64_t)a5;
+- (BOOL)_compressDocumentDataForTransfer:(id *)transfer;
+- (BOOL)_decompressDocumentDataForDelivery:(id *)delivery;
+- (HKCDADocument)initWithCoder:(id)coder omittedContentFlags:(int64_t)flags;
+- (HKCDADocument)initWithDocumentData:(id)data compressedDocumentData:(id)documentData title:(id)title patientName:(id)name authorName:(id)authorName custodianName:(id)custodianName;
+- (id)_descriptionFieldTitle:(id)title content:(id)content maxSize:(unint64_t)size;
 - (id)_validateConfiguration;
 - (id)description;
-- (void)encodeWithCoder:(id)a3 omittedContentFlags:(int64_t)a4;
+- (void)encodeWithCoder:(id)coder omittedContentFlags:(int64_t)flags;
 @end
 
 @implementation HKCDADocument
 
-- (HKCDADocument)initWithDocumentData:(id)a3 compressedDocumentData:(id)a4 title:(id)a5 patientName:(id)a6 authorName:(id)a7 custodianName:(id)a8
+- (HKCDADocument)initWithDocumentData:(id)data compressedDocumentData:(id)documentData title:(id)title patientName:(id)name authorName:(id)authorName custodianName:(id)custodianName
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dataCopy = data;
+  documentDataCopy = documentData;
+  titleCopy = title;
+  nameCopy = name;
+  authorNameCopy = authorName;
+  custodianNameCopy = custodianName;
   v24.receiver = self;
   v24.super_class = HKCDADocument;
   v18 = [(HKCDADocument *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_internalDocumentData, a3);
-    objc_storeStrong(&v19->_compressedDocumentData, a4);
+    objc_storeStrong(&v18->_internalDocumentData, data);
+    objc_storeStrong(&v19->_compressedDocumentData, documentData);
     v19->_compressionLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v19->_title, a5);
-    objc_storeStrong(&v19->_patientName, a6);
-    objc_storeStrong(&v19->_authorName, a7);
-    objc_storeStrong(&v19->_custodianName, a8);
+    objc_storeStrong(&v19->_title, title);
+    objc_storeStrong(&v19->_patientName, name);
+    objc_storeStrong(&v19->_authorName, authorName);
+    objc_storeStrong(&v19->_custodianName, custodianName);
   }
 
   return v19;
 }
 
-- (HKCDADocument)initWithCoder:(id)a3 omittedContentFlags:(int64_t)a4
+- (HKCDADocument)initWithCoder:(id)coder omittedContentFlags:(int64_t)flags
 {
-  v4 = a4;
-  v6 = a3;
+  flagsCopy = flags;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = HKCDADocument;
   v7 = [(HKCDADocument *)&v22 init];
@@ -51,9 +51,9 @@
     v7->_internalDocumentData = 0;
 
     v10 = 0;
-    if ((v4 & 2) == 0)
+    if ((flagsCopy & 2) == 0)
     {
-      v10 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"compressedDocumentData"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"compressedDocumentData"];
     }
 
     compressedDocumentData = v8->_compressedDocumentData;
@@ -61,19 +61,19 @@
 
     v8->_compressionLock._os_unfair_lock_opaque = 0;
     v12 = objc_opt_class();
-    v13 = [v6 decodeObjectOfClass:v12 forKey:@"title"];
+    v13 = [coderCopy decodeObjectOfClass:v12 forKey:@"title"];
     title = v8->_title;
     v8->_title = v13;
 
-    v15 = [v6 decodeObjectOfClass:v12 forKey:@"patient_name"];
+    v15 = [coderCopy decodeObjectOfClass:v12 forKey:@"patient_name"];
     patientName = v8->_patientName;
     v8->_patientName = v15;
 
-    v17 = [v6 decodeObjectOfClass:v12 forKey:@"author_name"];
+    v17 = [coderCopy decodeObjectOfClass:v12 forKey:@"author_name"];
     authorName = v8->_authorName;
     v8->_authorName = v17;
 
-    v19 = [v6 decodeObjectOfClass:v12 forKey:@"custodian_name"];
+    v19 = [coderCopy decodeObjectOfClass:v12 forKey:@"custodian_name"];
     custodianName = v8->_custodianName;
     v8->_custodianName = v19;
   }
@@ -105,7 +105,7 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)_compressDocumentDataForTransfer:(id *)a3
+- (BOOL)_compressDocumentDataForTransfer:(id *)transfer
 {
   os_unfair_lock_lock(&self->_compressionLock);
   if (self->_compressedDocumentData)
@@ -122,7 +122,7 @@ LABEL_5:
       goto LABEL_11;
     }
 
-    if (!a3)
+    if (!transfer)
     {
       goto LABEL_7;
     }
@@ -145,7 +145,7 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if (!a3)
+    if (!transfer)
     {
 LABEL_7:
       _HKLogDroppedError(v9);
@@ -154,7 +154,7 @@ LABEL_7:
 
 LABEL_10:
     v10 = v9;
-    *a3 = v9;
+    *transfer = v9;
     goto LABEL_11;
   }
 
@@ -165,7 +165,7 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)_decompressDocumentDataForDelivery:(id *)a3
+- (BOOL)_decompressDocumentDataForDelivery:(id *)delivery
 {
   os_unfair_lock_lock(&self->_compressionLock);
   if (!self->_internalDocumentData)
@@ -201,10 +201,10 @@ LABEL_13:
     v9 = v12;
     if (v12)
     {
-      if (a3)
+      if (delivery)
       {
         v13 = v12;
-        *a3 = v9;
+        *delivery = v9;
       }
 
       else
@@ -223,12 +223,12 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3 omittedContentFlags:(int64_t)a4
+- (void)encodeWithCoder:(id)coder omittedContentFlags:(int64_t)flags
 {
-  v4 = a4;
-  v7 = a3;
-  v9 = v7;
-  if ((v4 & 2) == 0)
+  flagsCopy = flags;
+  coderCopy = coder;
+  v9 = coderCopy;
+  if ((flagsCopy & 2) == 0)
   {
     os_unfair_lock_lock(&self->_compressionLock);
     compressedDocumentData = self->_compressedDocumentData;
@@ -240,35 +240,35 @@ LABEL_14:
 
     [v9 encodeObject:compressedDocumentData forKey:{@"compressedDocumentData", v9}];
     os_unfair_lock_unlock(&self->_compressionLock);
-    v7 = v9;
+    coderCopy = v9;
   }
 
-  [v7 encodeObject:self->_title forKey:{@"title", v9}];
+  [coderCopy encodeObject:self->_title forKey:{@"title", v9}];
   [v10 encodeObject:self->_patientName forKey:@"patient_name"];
   [v10 encodeObject:self->_authorName forKey:@"author_name"];
   [v10 encodeObject:self->_custodianName forKey:@"custodian_name"];
 }
 
-- (id)_descriptionFieldTitle:(id)a3 content:(id)a4 maxSize:(unint64_t)a5
+- (id)_descriptionFieldTitle:(id)title content:(id)content maxSize:(unint64_t)size
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 length];
-  v10 = v9 - a5;
-  if (v9 <= a5)
+  titleCopy = title;
+  contentCopy = content;
+  v9 = [contentCopy length];
+  v10 = v9 - size;
+  if (v9 <= size)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@=%@", v7, v8];
+    contentCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@=%@", titleCopy, contentCopy];
   }
 
   else
   {
-    v11 = [v8 substringToIndex:a5];
+    v11 = [contentCopy substringToIndex:size];
 
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@=%@...(%ld more)", v7, v11, v10];
-    v8 = v11;
+    contentCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@=%@...(%ld more)", titleCopy, v11, v10];
+    contentCopy = v11;
   }
 
-  return v12;
+  return contentCopy;
 }
 
 - (id)description
@@ -279,7 +279,7 @@ LABEL_14:
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:self->_internalDocumentData encoding:4];
     v5 = @"documentData";
-    v6 = self;
+    selfCopy2 = self;
     v7 = v4;
     v8 = 40;
   }
@@ -294,12 +294,12 @@ LABEL_14:
 
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%ld bytes)", -[NSData length](compressedDocumentData, "length")];
     v5 = @"compressedDocumentData";
-    v6 = self;
+    selfCopy2 = self;
     v7 = v4;
     v8 = 50;
   }
 
-  v10 = [(HKCDADocument *)v6 _descriptionFieldTitle:v5 content:v7 maxSize:v8];
+  v10 = [(HKCDADocument *)selfCopy2 _descriptionFieldTitle:v5 content:v7 maxSize:v8];
   [v3 addObject:v10];
 
 LABEL_6:

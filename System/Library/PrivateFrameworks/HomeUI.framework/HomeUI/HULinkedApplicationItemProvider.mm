@@ -1,8 +1,8 @@
 @interface HULinkedApplicationItemProvider
 - (HULinkedApplicationItemProvider)init;
-- (HULinkedApplicationItemProvider)initWithHome:(id)a3;
-- (id)_generateItemsFromSoftwareLookupResult:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HULinkedApplicationItemProvider)initWithHome:(id)home;
+- (id)_generateItemsFromSoftwareLookupResult:(id)result;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
@@ -11,23 +11,23 @@
 
 - (HULinkedApplicationItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HULinkedApplicationItemProvider.m" lineNumber:32 description:{@"%s is unavailable; use %@ instead", "-[HULinkedApplicationItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HULinkedApplicationItemProvider.m" lineNumber:32 description:{@"%s is unavailable; use %@ instead", "-[HULinkedApplicationItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HULinkedApplicationItemProvider)initWithHome:(id)a3
+- (HULinkedApplicationItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HULinkedApplicationItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = objc_alloc_init(MEMORY[0x277CBEB98]);
     linkedApplicationItems = v7->_linkedApplicationItems;
     v7->_linkedApplicationItems = v8;
@@ -36,11 +36,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HULinkedApplicationItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HULinkedApplicationItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
@@ -49,8 +49,8 @@
 {
   v5.receiver = self;
   v5.super_class = HULinkedApplicationItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:*MEMORY[0x277D13B28]];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:*MEMORY[0x277D13B28]];
 
   return v3;
 }
@@ -58,16 +58,16 @@
 - (id)reloadItems
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(HULinkedApplicationItemProvider *)self home];
-  v5 = [v4 accessories];
-  v6 = [v3 setWithArray:v5];
+  home = [(HULinkedApplicationItemProvider *)self home];
+  accessories = [home accessories];
+  v6 = [v3 setWithArray:accessories];
 
-  v7 = [(HULinkedApplicationItemProvider *)self filter];
+  filter = [(HULinkedApplicationItemProvider *)self filter];
 
-  if (v7)
+  if (filter)
   {
-    v8 = [(HULinkedApplicationItemProvider *)self filter];
-    v9 = [v6 na_filter:v8];
+    filter2 = [(HULinkedApplicationItemProvider *)self filter];
+    v9 = [v6 na_filter:filter2];
 
     v6 = v9;
   }
@@ -126,22 +126,22 @@ id __46__HULinkedApplicationItemProvider_reloadItems__block_invoke_2()
   return v5;
 }
 
-- (id)_generateItemsFromSoftwareLookupResult:(id)a3
+- (id)_generateItemsFromSoftwareLookupResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = objc_opt_new();
-  v5 = [v3 matchedLibraryItems];
+  matchedLibraryItems = [resultCopy matchedLibraryItems];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __74__HULinkedApplicationItemProvider__generateItemsFromSoftwareLookupResult___block_invoke;
   v17[3] = &unk_277DBEA90;
-  v6 = v3;
+  v6 = resultCopy;
   v18 = v6;
   v7 = v4;
   v19 = v7;
-  [v5 na_each:v17];
+  [matchedLibraryItems na_each:v17];
 
-  v8 = [v6 matchedStoreItems];
+  matchedStoreItems = [v6 matchedStoreItems];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __74__HULinkedApplicationItemProvider__generateItemsFromSoftwareLookupResult___block_invoke_2;
@@ -150,7 +150,7 @@ id __46__HULinkedApplicationItemProvider_reloadItems__block_invoke_2()
   v9 = v7;
   v16 = v9;
   v10 = v6;
-  [v8 na_each:v14];
+  [matchedStoreItems na_each:v14];
 
   v11 = v16;
   v12 = v9;

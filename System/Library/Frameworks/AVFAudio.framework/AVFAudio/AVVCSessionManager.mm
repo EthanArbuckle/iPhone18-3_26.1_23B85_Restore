@@ -1,12 +1,12 @@
 @interface AVVCSessionManager
-- (AVVCSessionManager)initWithSession:(id)a3;
-- (BOOL)activateAudioSessionWithPrewarm:(BOOL)a3 error:(id *)a4;
-- (BOOL)clearInputPreferences:(id *)a3;
-- (BOOL)deactivateAudioSessionWithOptions:(unsigned int)a3 error:(id *)a4;
+- (AVVCSessionManager)initWithSession:(id)session;
+- (BOOL)activateAudioSessionWithPrewarm:(BOOL)prewarm error:(id *)error;
+- (BOOL)clearInputPreferences:(id *)preferences;
+- (BOOL)deactivateAudioSessionWithOptions:(unsigned int)options error:(id *)error;
 - (BOOL)getClientRequestsRecording;
 - (BOOL)getForceGetSessionProperties;
-- (BOOL)getSiriInputSource:(unint64_t *)a3 withIdentifier:(id *)a4 withIsMicrophoneCheck:(BOOL *)a5 forActivationMode:(int64_t)a6;
-- (BOOL)isAirplayOneOfTheOutputRoutes:(id)a3;
+- (BOOL)getSiriInputSource:(unint64_t *)source withIdentifier:(id *)identifier withIsMicrophoneCheck:(BOOL *)check forActivationMode:(int64_t)mode;
+- (BOOL)isAirplayOneOfTheOutputRoutes:(id)routes;
 - (BOOL)isBTDeviceInEar;
 - (BOOL)isCurrentInputBuiltInMic;
 - (BOOL)isInputAvailable;
@@ -15,18 +15,18 @@
 - (BOOL)isSWVolumeSupportedOnPickedRoute;
 - (BOOL)isSessionActive;
 - (BOOL)isSessionInSiriCategory;
-- (BOOL)isSessionInSiriCategoryModeAndOptions:(unsigned int)a3;
+- (BOOL)isSessionInSiriCategoryModeAndOptions:(unsigned int)options;
 - (BOOL)isSessionOutputInWirelessSplitterMode;
-- (BOOL)predictIfMicrophoneShouldBeUsedForActivationMode:(int64_t)a3;
-- (BOOL)setActivationContext:(id)a3 error:(id *)a4;
-- (BOOL)setAudioHardwareControlFlags:(unint64_t)a3 error:(id *)a4;
-- (BOOL)setCategory:(id)a3 mode:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (BOOL)setCategory:(id)a3 mode:(id)a4 routeSharingPolicy:(unint64_t)a5 options:(unint64_t)a6 error:(id *)a7;
-- (BOOL)setDuckOthers:(id)a3 mixWithOthers:(id)a4 error:(id *)a5;
-- (BOOL)setDuckToLevelDB:(id)a3 error:(id *)a4;
-- (BOOL)setDuckToLevelScalar:(id)a3 error:(id *)a4;
-- (BOOL)setDuckingFadeOutDuration:(id)a3 fadeInDuration:(id)a4 error:(id *)a5;
-- (BOOL)setPreferredSampleRate:(double)a3 error:(id *)a4;
+- (BOOL)predictIfMicrophoneShouldBeUsedForActivationMode:(int64_t)mode;
+- (BOOL)setActivationContext:(id)context error:(id *)error;
+- (BOOL)setAudioHardwareControlFlags:(unint64_t)flags error:(id *)error;
+- (BOOL)setCategory:(id)category mode:(id)mode options:(unint64_t)options error:(id *)error;
+- (BOOL)setCategory:(id)category mode:(id)mode routeSharingPolicy:(unint64_t)policy options:(unint64_t)options error:(id *)error;
+- (BOOL)setDuckOthers:(id)others mixWithOthers:(id)withOthers error:(id *)error;
+- (BOOL)setDuckToLevelDB:(id)b error:(id *)error;
+- (BOOL)setDuckToLevelScalar:(id)scalar error:(id *)error;
+- (BOOL)setDuckingFadeOutDuration:(id)duration fadeInDuration:(id)inDuration error:(id *)error;
+- (BOOL)setPreferredSampleRate:(double)rate error:(id *)error;
 - (double)inputLatency;
 - (double)inputSafetyOffset;
 - (double)outputLatency;
@@ -42,30 +42,30 @@
 - (id)sessionCurrentOutputRoutes;
 - (id)siriRemoteInputIdentifier;
 - (int)sessionState;
-- (int)setSessionActivationContext:(id)a3;
-- (int)setSessionAudioHWControlFlagsForActivationMode:(int64_t)a3 withOptions:(unint64_t)a4;
-- (int)setSessionBufferSize:(int)a3;
-- (int)setSessionCategoryModeOptionsForActivationMode:(int64_t)a3 withOptions:(unint64_t)a4;
-- (int)setSessionSampleRateForActivationMode:(int64_t)a3;
-- (int)setupOneTimeSessionSettingsForClient:(int64_t)a3;
+- (int)setSessionActivationContext:(id)context;
+- (int)setSessionAudioHWControlFlagsForActivationMode:(int64_t)mode withOptions:(unint64_t)options;
+- (int)setSessionBufferSize:(int)size;
+- (int)setSessionCategoryModeOptionsForActivationMode:(int64_t)mode withOptions:(unint64_t)options;
+- (int)setSessionSampleRateForActivationMode:(int64_t)mode;
+- (int)setupOneTimeSessionSettingsForClient:(int64_t)client;
 - (int64_t)inputNumberOfChannels;
 - (int64_t)reporterID;
 - (unint64_t)siriInputSource;
 - (unsigned)getOpaqueSessionID;
 - (unsigned)getSessionActivationOptions;
-- (void)changeDuckOthersOption:(BOOL)a3;
+- (void)changeDuckOthersOption:(BOOL)option;
 - (void)dealloc;
 - (void)getHypotheticalRouteAndUpdateStates;
-- (void)removeSessionNotifications:(id)a3;
-- (void)setClientRequestsRecording:(BOOL)a3;
-- (void)setDeviceGain:(float)a3;
-- (void)setForceGetSessionProperties:(BOOL)a3;
-- (void)setPlaybackRoute:(id)a3;
-- (void)setSessionActivationOptions:(unsigned int)a3;
-- (void)setSessionState:(int)a3;
-- (void)setSessionStateWithoutLock:(int)a3;
-- (void)setupSessionNotifications:(id)a3;
-- (void)shouldEnableMiniDucking:(BOOL)a3 withOptions:(unint64_t)a4;
+- (void)removeSessionNotifications:(id)notifications;
+- (void)setClientRequestsRecording:(BOOL)recording;
+- (void)setDeviceGain:(float)gain;
+- (void)setForceGetSessionProperties:(BOOL)properties;
+- (void)setPlaybackRoute:(id)route;
+- (void)setSessionActivationOptions:(unsigned int)options;
+- (void)setSessionState:(int)state;
+- (void)setSessionStateWithoutLock:(int)lock;
+- (void)setupSessionNotifications:(id)notifications;
+- (void)shouldEnableMiniDucking:(BOOL)ducking withOptions:(unint64_t)options;
 @end
 
 @implementation AVVCSessionManager
@@ -191,11 +191,11 @@ LABEL_17:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  v4 = [(AVAudioSession *)self->_audioSession pickedRoute];
-  v5 = v4;
-  if (v4)
+  pickedRoute = [(AVAudioSession *)self->_audioSession pickedRoute];
+  v5 = pickedRoute;
+  if (pickedRoute)
   {
-    v6 = [v4 objectForKey:@"SoftwareVolumeEnabled"];
+    v6 = [pickedRoute objectForKey:@"SoftwareVolumeEnabled"];
     LODWORD(v7) = [v6 BOOLValue];
 
     goto LABEL_25;
@@ -314,8 +314,8 @@ LABEL_17:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  v4 = [(AVAudioSession *)self->_audioSession currentRoute];
-  extractFirstInputPortTypeFromRouteDescription(v4, v11);
+  currentRoute = [(AVAudioSession *)self->_audioSession currentRoute];
+  extractFirstInputPortTypeFromRouteDescription(currentRoute, v11);
   v5 = *v11;
   v6 = areNSStringsEqualOrBothNil(*v11, *MEMORY[0x1E698D660]);
 
@@ -416,7 +416,7 @@ LABEL_17:
       std::recursive_mutex::lock(&self->mSessionManagerLock);
     }
 
-    v4 = [(AVAudioSession *)self->_audioSession currentRoute];
+    currentRoute = [(AVAudioSession *)self->_audioSession currentRoute];
     if (v3)
     {
       std::recursive_mutex::unlock(&self->mSessionManagerLock);
@@ -425,10 +425,10 @@ LABEL_17:
 
   else
   {
-    v4 = 0;
+    currentRoute = 0;
   }
 
-  return v4;
+  return currentRoute;
 }
 
 - (void)getHypotheticalRouteAndUpdateStates
@@ -442,7 +442,7 @@ LABEL_17:
   if (isAudioSessionAvailable(void)::audioSessionAvailable == 1)
   {
     ElapsedTime::ElapsedTime(v24, "[AVVCSessionManager getHypotheticalRouteAndUpdateStates]", "getHypotheticalRouteAndUpdateStates", 0);
-    v3 = [(AVVCSessionManager *)self pickedRoute];
+    pickedRoute = [(AVVCSessionManager *)self pickedRoute];
     if (kAVVCScope)
     {
       v4 = *kAVVCScope;
@@ -465,7 +465,7 @@ LABEL_17:
       v20 = 1024;
       v21 = 524;
       v22 = 2112;
-      v23[0] = v3;
+      v23[0] = pickedRoute;
       _os_log_impl(&dword_1BA5AC000, v4, OS_LOG_TYPE_DEFAULT, "%25s:%-5d pickedRoute from AudioSession: %@", &v18, 0x1Cu);
     }
 
@@ -499,10 +499,10 @@ LABEL_11:
     }
 
 LABEL_18:
-    v9 = [v3 objectForKey:@"BTDetails_SupportsDoAP"];
+    v9 = [pickedRoute objectForKey:@"BTDetails_SupportsDoAP"];
     self->mRouteHasDoAPSupport = [v9 BOOLValue];
 
-    v10 = [v3 objectForKey:@"SoftwareVolumeEnabled"];
+    v10 = [pickedRoute objectForKey:@"SoftwareVolumeEnabled"];
     self->mOutputSupportsSWVolume = [v10 BOOLValue];
 
     if (self->mIsOtherAudioPlaying)
@@ -589,7 +589,7 @@ LABEL_34:
     }
 
     ElapsedTime::ElapsedTime(v7, "[AVVCSessionManager pickedRoute]", "pickedRoute", 0);
-    v4 = [(AVAudioSession *)self->_audioSession pickedRoute];
+    pickedRoute = [(AVAudioSession *)self->_audioSession pickedRoute];
     ElapsedTime::~ElapsedTime(v7);
     if (v3)
     {
@@ -599,12 +599,12 @@ LABEL_34:
 
   else
   {
-    v4 = 0;
+    pickedRoute = 0;
   }
 
   v5 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return pickedRoute;
 }
 
 - (int)sessionState
@@ -719,7 +719,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v25 = self;
+  selfCopy = self;
   v26 = v3;
   ElapsedTime::ElapsedTime(v31, "[AVVCSessionManager isSessionOutputInWirelessSplitterMode]", "isSessionOutputInWirelessSplitterMode", 0);
   if (isAVOutputContextAvailable(void)::onceToken1 != -1)
@@ -731,8 +731,8 @@ LABEL_7:
   {
     if (kAVVCScope)
     {
-      v7 = *kAVVCScope;
-      if (!v7)
+      sharedSystemAudioContext = *kAVVCScope;
+      if (!sharedSystemAudioContext)
       {
         LOBYTE(v4) = 0;
         goto LABEL_51;
@@ -741,31 +741,31 @@ LABEL_7:
 
     else
     {
-      v7 = MEMORY[0x1E69E9C10];
+      sharedSystemAudioContext = MEMORY[0x1E69E9C10];
       v10 = MEMORY[0x1E69E9C10];
     }
 
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(sharedSystemAudioContext, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v41 = "AVVCCarplayRuntimeAvailability.mm";
       v42 = 1024;
       v43 = 70;
-      _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d AVOutputContext API not available", buf, 0x12u);
+      _os_log_impl(&dword_1BA5AC000, sharedSystemAudioContext, OS_LOG_TYPE_DEFAULT, "%25s:%-5d AVOutputContext API not available", buf, 0x12u);
     }
 
     goto LABEL_29;
   }
 
-  v7 = [getAVOutputContextClass() sharedSystemAudioContext];
-  v24 = v7;
-  v8 = [v7 supportsMultipleBluetoothOutputDevices];
+  sharedSystemAudioContext = [getAVOutputContextClass() sharedSystemAudioContext];
+  v24 = sharedSystemAudioContext;
+  supportsMultipleBluetoothOutputDevices = [sharedSystemAudioContext supportsMultipleBluetoothOutputDevices];
   if (kAVVCScope)
   {
     v9 = *kAVVCScope;
     if (!v9)
     {
-      if (v8)
+      if (supportsMultipleBluetoothOutputDevices)
       {
         goto LABEL_26;
       }
@@ -789,17 +789,17 @@ LABEL_29:
     v42 = 1024;
     v43 = 78;
     v44 = 1024;
-    LODWORD(v45) = v8;
+    LODWORD(v45) = supportsMultipleBluetoothOutputDevices;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d supportsMultipleBTDevices: %d", buf, 0x18u);
   }
 
-  if (!v8)
+  if (!supportsMultipleBluetoothOutputDevices)
   {
     goto LABEL_29;
   }
 
 LABEL_26:
-  v12 = [v7 outputDevices];
+  outputDevices = [sharedSystemAudioContext outputDevices];
   if (!kAVVCScope)
   {
     v13 = MEMORY[0x1E69E9C10];
@@ -818,7 +818,7 @@ LABEL_31:
       v42 = 1024;
       v43 = 82;
       v44 = 2112;
-      v45 = v12;
+      v45 = outputDevices;
       _os_log_impl(&dword_1BA5AC000, v13, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Wireless Output Devices: %@", buf, 0x1Cu);
     }
   }
@@ -827,7 +827,7 @@ LABEL_31:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v15 = v12;
+  v15 = outputDevices;
   v4 = [v15 countByEnumeratingWithState:&v27 objects:buf count:16];
   if (!v4)
   {
@@ -847,7 +847,7 @@ LABEL_31:
       }
 
       v20 = *(*(&v27 + 1) + 8 * i);
-      v21 = [v20 supportsBluetoothSharing];
+      supportsBluetoothSharing = [v20 supportsBluetoothSharing];
       if (kAVVCScope)
       {
         v22 = *kAVVCScope;
@@ -872,12 +872,12 @@ LABEL_31:
         v36 = 2048;
         v37 = v20;
         v38 = 1024;
-        v39 = v21;
+        v39 = supportsBluetoothSharing;
         _os_log_impl(&dword_1BA5AC000, v22, OS_LOG_TYPE_DEFAULT, "%25s:%-5d AVOutputDevice %p supports BT sharing: %d", v32, 0x22u);
       }
 
 LABEL_46:
-      v16 += v21;
+      v16 += supportsBluetoothSharing;
     }
 
     v4 = [v15 countByEnumeratingWithState:&v27 objects:buf count:16];
@@ -887,10 +887,10 @@ LABEL_46:
   LOBYTE(v4) = v16 > 1;
 LABEL_49:
 
-  v7 = v24;
+  sharedSystemAudioContext = v24;
 LABEL_50:
 
-  self = v25;
+  self = selfCopy;
   v3 = v26;
 LABEL_51:
   self->mSessionOutputIsWirelessSplitter = v4;
@@ -992,8 +992,8 @@ LABEL_18:
       std::recursive_mutex::lock(&self->mSessionManagerLock);
     }
 
-    v4 = [(AVAudioSession *)self->_audioSession currentRoute];
-    v5 = [v4 siriInputSource];
+    currentRoute = [(AVAudioSession *)self->_audioSession currentRoute];
+    siriInputSource = [currentRoute siriInputSource];
 
     if (v3)
     {
@@ -1003,7 +1003,7 @@ LABEL_18:
 
   else
   {
-    v5 = 1936289391;
+    siriInputSource = 1936289391;
     if (kAVVCScope)
     {
       v6 = *kAVVCScope;
@@ -1035,7 +1035,7 @@ LABEL_18:
 
 LABEL_17:
   v8 = *MEMORY[0x1E69E9840];
-  return v5;
+  return siriInputSource;
 }
 
 - (BOOL)isSessionActive
@@ -1076,7 +1076,7 @@ LABEL_17:
       if (!v6)
       {
 LABEL_18:
-        LOBYTE(v4) = 0;
+        LOBYTE(isInputAvailable) = 0;
         goto LABEL_25;
       }
     }
@@ -1115,7 +1115,7 @@ LABEL_18:
   }
 
   ElapsedTime::ElapsedTime(&v11, "[AVVCSessionManager isInputAvailable]", "isInputAvailable", 0);
-  v4 = [(AVAudioSession *)self->_audioSession isInputAvailable];
+  isInputAvailable = [(AVAudioSession *)self->_audioSession isInputAvailable];
   ElapsedTime::~ElapsedTime(&v11);
   if (!kAVVCScope)
   {
@@ -1135,7 +1135,7 @@ LABEL_20:
       v13 = 1024;
       v14 = 2078;
       v15 = 1024;
-      LODWORD(v16) = v4;
+      LODWORD(v16) = isInputAvailable;
       _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d input available %d", &v11, 0x18u);
     }
   }
@@ -1147,13 +1147,13 @@ LABEL_20:
 
 LABEL_25:
   v9 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isInputAvailable;
 }
 
-- (BOOL)setDuckToLevelScalar:(id)a3 error:(id *)a4
+- (BOOL)setDuckToLevelScalar:(id)scalar error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  scalarCopy = scalar;
   if (isAudioSessionAvailable(void)::onceToken != -1)
   {
     dispatch_once(&isAudioSessionAvailable(void)::onceToken, &__block_literal_global_44);
@@ -1194,17 +1194,17 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v7 = [(AVAudioSession *)self->_audioSession setDuckToLevelScalar:v6 error:a4];
+  v7 = [(AVAudioSession *)self->_audioSession setDuckToLevelScalar:scalarCopy error:error];
 LABEL_13:
 
   v10 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (BOOL)setDuckToLevelDB:(id)a3 error:(id *)a4
+- (BOOL)setDuckToLevelDB:(id)b error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bCopy = b;
   if (isAudioSessionAvailable(void)::onceToken != -1)
   {
     dispatch_once(&isAudioSessionAvailable(void)::onceToken, &__block_literal_global_44);
@@ -1245,7 +1245,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v7 = [(AVAudioSession *)self->_audioSession setDuckToLevelDB:v6 error:a4];
+  v7 = [(AVAudioSession *)self->_audioSession setDuckToLevelDB:bCopy error:error];
 LABEL_13:
 
   v10 = *MEMORY[0x1E69E9840];
@@ -1268,7 +1268,7 @@ LABEL_13:
       if (!v5)
       {
 LABEL_17:
-        v4 = 1;
+        inputNumberOfChannels = 1;
         goto LABEL_18;
       }
     }
@@ -1306,7 +1306,7 @@ LABEL_17:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  v4 = [(AVAudioSession *)self->_audioSession inputNumberOfChannels];
+  inputNumberOfChannels = [(AVAudioSession *)self->_audioSession inputNumberOfChannels];
   if (v3)
   {
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
@@ -1314,12 +1314,12 @@ LABEL_17:
 
 LABEL_18:
   v7 = *MEMORY[0x1E69E9840];
-  return v4;
+  return inputNumberOfChannels;
 }
 
-- (void)removeSessionNotifications:(id)a3
+- (void)removeSessionNotifications:(id)notifications
 {
-  v7 = a3;
+  notificationsCopy = notifications;
   if (isAudioSessionAvailable(void)::onceToken != -1)
   {
     dispatch_once(&isAudioSessionAvailable(void)::onceToken, &__block_literal_global_44);
@@ -1338,13 +1338,13 @@ LABEL_18:
       std::recursive_mutex::lock(&self->mSessionManagerLock);
     }
 
-    if (v7 && self->_audioSession)
+    if (notificationsCopy && self->_audioSession)
     {
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v5 removeObserver:v7 name:*MEMORY[0x1E698D550] object:self->_audioSession];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:notificationsCopy name:*MEMORY[0x1E698D550] object:self->_audioSession];
 
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 removeObserver:v7 name:*MEMORY[0x1E698D6C8] object:self->_audioSession];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 removeObserver:notificationsCopy name:*MEMORY[0x1E698D6C8] object:self->_audioSession];
     }
 
     if (v4)
@@ -1354,9 +1354,9 @@ LABEL_18:
   }
 }
 
-- (void)setupSessionNotifications:(id)a3
+- (void)setupSessionNotifications:(id)notifications
 {
-  v7 = a3;
+  notificationsCopy = notifications;
   if (isAudioSessionAvailable(void)::onceToken != -1)
   {
     dispatch_once(&isAudioSessionAvailable(void)::onceToken, &__block_literal_global_44);
@@ -1375,13 +1375,13 @@ LABEL_18:
       std::recursive_mutex::lock(&self->mSessionManagerLock);
     }
 
-    if (v7 && self->_audioSession)
+    if (notificationsCopy && self->_audioSession)
     {
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v5 addObserver:v7 selector:NSSelectorFromString(&cfstr_Handleinterrup_0.isa) name:*MEMORY[0x1E698D550] object:self->_audioSession];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:notificationsCopy selector:NSSelectorFromString(&cfstr_Handleinterrup_0.isa) name:*MEMORY[0x1E698D550] object:self->_audioSession];
 
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 addObserver:v7 selector:NSSelectorFromString(&cfstr_Handleroutecha_0.isa) name:*MEMORY[0x1E698D6C8] object:self->_audioSession];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:notificationsCopy selector:NSSelectorFromString(&cfstr_Handleroutecha_0.isa) name:*MEMORY[0x1E698D6C8] object:self->_audioSession];
     }
 
     if (v4)
@@ -1411,8 +1411,8 @@ LABEL_18:
       std::recursive_mutex::lock(&self->mSessionManagerLock);
     }
 
-    v4 = [(AVAudioSession *)self->_audioSession activeSessionDisplayIDs];
-    v5 = [v4 componentsJoinedByString:{@", "}];
+    activeSessionDisplayIDs = [(AVAudioSession *)self->_audioSession activeSessionDisplayIDs];
+    v5 = [activeSessionDisplayIDs componentsJoinedByString:{@", "}];
 
     v6 = v5;
     if (v3)
@@ -1445,7 +1445,7 @@ LABEL_18:
       if (!v5)
       {
 LABEL_17:
-        v4 = 0;
+        opaqueSessionID = 0;
         goto LABEL_18;
       }
     }
@@ -1483,7 +1483,7 @@ LABEL_17:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  v4 = [(AVAudioSession *)self->_audioSession opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self->_audioSession opaqueSessionID];
   if (v3)
   {
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
@@ -1491,13 +1491,13 @@ LABEL_17:
 
 LABEL_18:
   v7 = *MEMORY[0x1E69E9840];
-  return v4;
+  return opaqueSessionID;
 }
 
-- (BOOL)setActivationContext:(id)a3 error:(id *)a4
+- (BOOL)setActivationContext:(id)context error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   if (isAudioSessionAvailable(void)::onceToken != -1)
   {
     dispatch_once(&isAudioSessionAvailable(void)::onceToken, &__block_literal_global_44);
@@ -1549,7 +1549,7 @@ LABEL_17:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  v8 = [(AVAudioSession *)self->_audioSession setActivationContext:v6 error:a4];
+  v8 = [(AVAudioSession *)self->_audioSession setActivationContext:contextCopy error:error];
   if (v7)
   {
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
@@ -1561,7 +1561,7 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)getSiriInputSource:(unint64_t *)a3 withIdentifier:(id *)a4 withIsMicrophoneCheck:(BOOL *)a5 forActivationMode:(int64_t)a6
+- (BOOL)getSiriInputSource:(unint64_t *)source withIdentifier:(id *)identifier withIsMicrophoneCheck:(BOOL *)check forActivationMode:(int64_t)mode
 {
   if (isAudioSessionAvailable(void)::onceToken != -1)
   {
@@ -1570,7 +1570,7 @@ LABEL_18:
 
   if ((isAudioSessionAvailable(void)::audioSessionAvailable & 1) == 0)
   {
-    *a3 = 1936289391;
+    *source = 1936289391;
     return 1;
   }
 
@@ -1585,19 +1585,19 @@ LABEL_18:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  v12 = [(AVAudioSession *)self->_audioSession currentRoute];
-  v13 = [v12 siriInputSource];
+  currentRoute = [(AVAudioSession *)self->_audioSession currentRoute];
+  siriInputSource = [currentRoute siriInputSource];
   v14 = 0;
-  v15 = 0;
-  *a3 = v13;
-  if (v13 > 1936290659)
+  siriRemoteInputIdentifier = 0;
+  *source = siriInputSource;
+  if (siriInputSource > 1936290659)
   {
-    if (v13 == 1936290660)
+    if (siriInputSource == 1936290660)
     {
 LABEL_23:
-      v14 = [(AVVCSessionManager *)self predictIfMicrophoneShouldBeUsedForActivationMode:a6];
-      v15 = 0;
-      if (!a4)
+      v14 = [(AVVCSessionManager *)self predictIfMicrophoneShouldBeUsedForActivationMode:mode];
+      siriRemoteInputIdentifier = 0;
+      if (!identifier)
       {
         goto LABEL_18;
       }
@@ -1605,39 +1605,39 @@ LABEL_23:
       goto LABEL_17;
     }
 
-    if (v13 != 1936679529)
+    if (siriInputSource != 1936679529)
     {
       goto LABEL_16;
     }
 
 LABEL_15:
-    v15 = [v12 siriRemoteInputIdentifier];
+    siriRemoteInputIdentifier = [currentRoute siriRemoteInputIdentifier];
     v14 = 0;
     goto LABEL_16;
   }
 
-  if (v13 == 1936024681)
+  if (siriInputSource == 1936024681)
   {
     goto LABEL_15;
   }
 
-  if (v13 == 1936286822)
+  if (siriInputSource == 1936286822)
   {
     goto LABEL_23;
   }
 
 LABEL_16:
-  if (a4)
+  if (identifier)
   {
 LABEL_17:
-    v16 = v15;
-    *a4 = v15;
+    v16 = siriRemoteInputIdentifier;
+    *identifier = siriRemoteInputIdentifier;
   }
 
 LABEL_18:
-  if (a5)
+  if (check)
   {
-    *a5 = v14;
+    *check = v14;
   }
 
   if (v11)
@@ -1648,7 +1648,7 @@ LABEL_18:
   return 1;
 }
 
-- (BOOL)predictIfMicrophoneShouldBeUsedForActivationMode:(int64_t)a3
+- (BOOL)predictIfMicrophoneShouldBeUsedForActivationMode:(int64_t)mode
 {
   v85 = *MEMORY[0x1E69E9840];
   if (isAudioSessionAvailable(void)::onceToken != -1)
@@ -1708,7 +1708,7 @@ LABEL_20:
     goto LABEL_100;
   }
 
-  v4 = [(AVAudioSession *)self->_audioSession availableInputs];
+  availableInputs = [(AVAudioSession *)self->_audioSession availableInputs];
   if (kAVVCScope)
   {
     v5 = *kAVVCScope;
@@ -1731,15 +1731,15 @@ LABEL_20:
     v69 = 1024;
     v70 = 1771;
     v71 = 2112;
-    v72 = v4;
+    v72 = availableInputs;
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d availableInputs: %@", buf, 0x1Cu);
   }
 
 LABEL_25:
   v66 = 0;
-  v49 = [(AVAudioSession *)self->_audioSession currentRoute];
-  extractFirstInputPortTypeFromRouteDescription(v49, &v66);
-  if (![v4 count])
+  currentRoute = [(AVAudioSession *)self->_audioSession currentRoute];
+  extractFirstInputPortTypeFromRouteDescription(currentRoute, &v66);
+  if (![availableInputs count])
   {
     if (kAVVCScope)
     {
@@ -1768,15 +1768,15 @@ LABEL_25:
     goto LABEL_86;
   }
 
-  if ([v4 count] == 1)
+  if ([availableInputs count] == 1)
   {
-    v10 = [v4 objectAtIndexedSubscript:0];
-    v11 = [v10 portType];
+    v10 = [availableInputs objectAtIndexedSubscript:0];
+    portType = [v10 portType];
 
     if (kAVVCScope)
     {
       v12 = *kAVVCScope;
-      v13 = v11;
+      v13 = portType;
       if (!v12)
       {
 LABEL_57:
@@ -1811,7 +1811,7 @@ LABEL_57:
         }
 
         LOBYTE(v7) = 0;
-        v13 = v11;
+        v13 = portType;
         goto LABEL_91;
       }
     }
@@ -1820,7 +1820,7 @@ LABEL_57:
     {
       v12 = MEMORY[0x1E69E9C10];
       v24 = MEMORY[0x1E69E9C10];
-      v13 = v11;
+      v13 = portType;
     }
 
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1834,17 +1834,17 @@ LABEL_57:
       _os_log_impl(&dword_1BA5AC000, v12, OS_LOG_TYPE_DEFAULT, "%25s:%-5d predictIfMicrophoneShouldBeUsedForActivationMode: Only one input available: %@", buf, 0x1Cu);
     }
 
-    v13 = v11;
+    v13 = portType;
     goto LABEL_57;
   }
 
-  if (a3 == 1752132965)
+  if (mode == 1752132965)
   {
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v13 = v4;
+    v13 = availableInputs;
     obj = v13;
     v26 = [v13 countByEnumeratingWithState:&v58 objects:v83 count:16];
     if (!v26)
@@ -1869,7 +1869,7 @@ LABEL_64:
       }
 
       v29 = *(*(&v58 + 1) + 8 * v28);
-      v30 = [v29 portType];
+      portType2 = [v29 portType];
       if (kAVVCScope)
       {
         v31 = *kAVVCScope;
@@ -1893,25 +1893,25 @@ LABEL_64:
         [v29 portName];
         v37 = v36 = v27;
         v38 = [v29 UID];
-        v39 = [v29 portSubType];
+        portSubType = [v29 portSubType];
         v40 = Get4CCFromInt([v29 endpointType]);
-        v41 = [v29 isHeadphones];
+        isHeadphones = [v29 isHeadphones];
         *buf = 136316930;
         v68 = "AVVCSessionManager.mm";
         v69 = 1024;
         v70 = 1833;
         v71 = 2112;
-        v72 = v30;
+        v72 = portType2;
         v73 = 2112;
         v74 = v37;
         v75 = 2112;
         v76 = v38;
         v77 = 2048;
-        v78 = v39;
+        v78 = portSubType;
         v79 = 2112;
         v80 = v40;
         v81 = 1024;
-        v82 = v41;
+        v82 = isHeadphones;
         _os_log_impl(&dword_1BA5AC000, v34, OS_LOG_TYPE_DEFAULT, "%25s:%-5d predictIfMicrophoneShouldBeUsedForActivationMode: Available input: [ portType(%@), portName(%@), portUID(%@), portSubType(%ld), endpointType(%@) isHeadphones(%d) ]", buf, 0x4Au);
 
         v27 = v36;
@@ -1919,7 +1919,7 @@ LABEL_64:
       }
 
 LABEL_74:
-      if (v30 == v56)
+      if (portType2 == v56)
       {
         if (![v29 isHeadphones])
         {
@@ -1927,21 +1927,21 @@ LABEL_74:
           goto LABEL_83;
         }
 
-        v42 = [(AVVCSessionManager *)self isBTDeviceInEar];
+        isBTDeviceInEar = [(AVVCSessionManager *)self isBTDeviceInEar];
         goto LABEL_80;
       }
 
-      if (v30 == v55)
+      if (portType2 == v55)
       {
         v7 = 0;
         goto LABEL_83;
       }
 
-      if (v30 == v54)
+      if (portType2 == v54)
       {
-        v42 = areNSStringsEqualOrBothNil(v51, v54);
+        isBTDeviceInEar = areNSStringsEqualOrBothNil(v51, v54);
 LABEL_80:
-        v7 = v42 ^ 1u;
+        v7 = isBTDeviceInEar ^ 1u;
       }
 
 LABEL_83:
@@ -1960,7 +1960,7 @@ LABEL_83:
     }
   }
 
-  if (a3 != 1684628340)
+  if (mode != 1684628340)
   {
 LABEL_49:
     LOBYTE(v7) = 0;
@@ -1971,7 +1971,7 @@ LABEL_49:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v13 = v4;
+  v13 = availableInputs;
   v14 = v13;
   v15 = [v13 countByEnumeratingWithState:&v62 objects:v84 count:16];
   if (!v15)
@@ -1995,9 +1995,9 @@ LABEL_86:
       }
 
       v20 = *(*(&v62 + 1) + 8 * i);
-      v21 = [v20 portType];
-      v22 = v21;
-      if (v21 == v17)
+      portType3 = [v20 portType];
+      v22 = portType3;
+      if (portType3 == v17)
       {
         if ([v20 isHeadphones])
         {
@@ -2010,7 +2010,7 @@ LABEL_86:
         }
       }
 
-      else if (v21 != v18)
+      else if (portType3 != v18)
       {
         LOBYTE(v7) = 0;
       }
@@ -2061,7 +2061,7 @@ LABEL_102:
 - (BOOL)isBTDeviceInEar
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = [(AVVCSessionManager *)self pickedRoute];
+  pickedRoute = [(AVVCSessionManager *)self pickedRoute];
   if (kAVVCScope)
   {
     v3 = *kAVVCScope;
@@ -2084,28 +2084,28 @@ LABEL_102:
     v21 = 1024;
     v22 = 1730;
     v23 = 2112;
-    v24 = v2;
+    v24 = pickedRoute;
     _os_log_impl(&dword_1BA5AC000, v3, OS_LOG_TYPE_DEFAULT, "%25s:%-5d isBTDeviceInEar: pickedRoute from AudioSession: %@", &v19, 0x1Cu);
   }
 
 LABEL_8:
-  if (v2)
+  if (pickedRoute)
   {
-    v5 = [v2 objectForKey:@"IsBTRoute"];
-    v6 = [v5 BOOLValue];
+    v5 = [pickedRoute objectForKey:@"IsBTRoute"];
+    bOOLValue = [v5 BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
-      v7 = [v2 objectForKey:@"PreferredExternalRouteDetails_InEarDetectSupported"];
-      v8 = [v7 BOOLValue];
+      v7 = [pickedRoute objectForKey:@"PreferredExternalRouteDetails_InEarDetectSupported"];
+      bOOLValue2 = [v7 BOOLValue];
 
-      v9 = [v2 objectForKey:@"PreferredExternalRouteDetails_InEarDetectEnabled"];
+      v9 = [pickedRoute objectForKey:@"PreferredExternalRouteDetails_InEarDetectEnabled"];
       LOBYTE(v7) = [v9 BOOLValue];
 
-      v10 = [v2 objectForKey:@"PreferredExternalRouteDetails_IsActive"];
-      v11 = [v10 BOOLValue];
+      v10 = [pickedRoute objectForKey:@"PreferredExternalRouteDetails_IsActive"];
+      bOOLValue3 = [v10 BOOLValue];
 
-      v12 = v8 & v7 ^ 1 | v11;
+      v12 = bOOLValue2 & v7 ^ 1 | bOOLValue3;
       goto LABEL_19;
     }
 
@@ -2171,11 +2171,11 @@ LABEL_26:
 - (BOOL)isPickedRouteW1
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = [(AVVCSessionManager *)self pickedRoute];
-  v3 = v2;
-  if (v2)
+  pickedRoute = [(AVVCSessionManager *)self pickedRoute];
+  v3 = pickedRoute;
+  if (pickedRoute)
   {
-    v4 = [v2 objectForKey:@"BTDetails_ProductID"];
+    v4 = [pickedRoute objectForKey:@"BTDetails_ProductID"];
     v5 = v4;
     if (v4)
     {
@@ -2277,10 +2277,10 @@ LABEL_22:
       std::recursive_mutex::lock(&self->mSessionManagerLock);
     }
 
-    v4 = [(AVAudioSession *)self->_audioSession currentRoute];
-    v5 = [v4 siriRemoteInputIdentifier];
+    currentRoute = [(AVAudioSession *)self->_audioSession currentRoute];
+    siriRemoteInputIdentifier = [currentRoute siriRemoteInputIdentifier];
 
-    v6 = v5;
+    v6 = siriRemoteInputIdentifier;
     if (v3)
     {
       std::recursive_mutex::unlock(&self->mSessionManagerLock);
@@ -2315,10 +2315,10 @@ LABEL_22:
       std::recursive_mutex::lock(&self->mSessionManagerLock);
     }
 
-    v4 = [(AVAudioSession *)self->_audioSession currentRoute];
-    v5 = [v4 inputs];
+    currentRoute = [(AVAudioSession *)self->_audioSession currentRoute];
+    inputs = [currentRoute inputs];
 
-    v6 = v5;
+    v6 = inputs;
     if (v3)
     {
       std::recursive_mutex::unlock(&self->mSessionManagerLock);
@@ -2353,10 +2353,10 @@ LABEL_22:
       std::recursive_mutex::lock(&self->mSessionManagerLock);
     }
 
-    v4 = [(AVAudioSession *)self->_audioSession currentRoute];
-    v5 = [v4 outputs];
+    currentRoute = [(AVAudioSession *)self->_audioSession currentRoute];
+    outputs = [currentRoute outputs];
 
-    v6 = v5;
+    v6 = outputs;
     if (v3)
     {
       std::recursive_mutex::unlock(&self->mSessionManagerLock);
@@ -2371,7 +2371,7 @@ LABEL_22:
   return v6;
 }
 
-- (BOOL)setPreferredSampleRate:(double)a3 error:(id *)a4
+- (BOOL)setPreferredSampleRate:(double)rate error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
   if (isAudioSessionAvailable(void)::onceToken != -1)
@@ -2425,7 +2425,7 @@ LABEL_17:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  v8 = [(AVAudioSession *)self->_audioSession setPreferredSampleRate:a4 error:a3];
+  v8 = [(AVAudioSession *)self->_audioSession setPreferredSampleRate:error error:rate];
   if (v7)
   {
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
@@ -2436,7 +2436,7 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)setAudioHardwareControlFlags:(unint64_t)a3 error:(id *)a4
+- (BOOL)setAudioHardwareControlFlags:(unint64_t)flags error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
   if (isAudioSessionAvailable(void)::onceToken != -1)
@@ -2490,7 +2490,7 @@ LABEL_17:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  v8 = [(AVAudioSession *)self->_audioSession setAudioHardwareControlFlags:a3 error:a4];
+  v8 = [(AVAudioSession *)self->_audioSession setAudioHardwareControlFlags:flags error:error];
   if (v7)
   {
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
@@ -2566,7 +2566,7 @@ LABEL_18:
   return v4;
 }
 
-- (BOOL)isSessionInSiriCategoryModeAndOptions:(unsigned int)a3
+- (BOOL)isSessionInSiriCategoryModeAndOptions:(unsigned int)options
 {
   v27 = *MEMORY[0x1E69E9840];
   if (isAudioSessionAvailable(void)::onceToken != -1)
@@ -2653,7 +2653,7 @@ LABEL_15:
   if ([(NSString *)v6 isEqualToString:*MEMORY[0x1E698D518]])
   {
     v12 = [(NSString *)v7 isEqualToString:*MEMORY[0x1E698D600]];
-    v13 = mPreviousSessionCategoryOptions == a3 && v12;
+    v13 = mPreviousSessionCategoryOptions == options && v12;
   }
 
   else
@@ -2671,7 +2671,7 @@ LABEL_30:
   return v13;
 }
 
-- (BOOL)clearInputPreferences:(id *)a3
+- (BOOL)clearInputPreferences:(id *)preferences
 {
   v19 = *MEMORY[0x1E69E9840];
   if (isAudioSessionAvailable(void)::onceToken != -1)
@@ -2725,7 +2725,7 @@ LABEL_17:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  v6 = [(AVAudioSession *)self->_audioSession clearInputPreferences:a3];
+  v6 = [(AVAudioSession *)self->_audioSession clearInputPreferences:preferences];
   if (v5)
   {
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
@@ -2736,11 +2736,11 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)setCategory:(id)a3 mode:(id)a4 routeSharingPolicy:(unint64_t)a5 options:(unint64_t)a6 error:(id *)a7
+- (BOOL)setCategory:(id)category mode:(id)mode routeSharingPolicy:(unint64_t)policy options:(unint64_t)options error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  categoryCopy = category;
+  modeCopy = mode;
   if (isAudioSessionAvailable(void)::onceToken != -1)
   {
     dispatch_once(&isAudioSessionAvailable(void)::onceToken, &__block_literal_global_44);
@@ -2792,7 +2792,7 @@ LABEL_17:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  v15 = [(AVAudioSession *)self->_audioSession setCategory:v12 mode:v13 routeSharingPolicy:a5 options:a6 error:a7];
+  v15 = [(AVAudioSession *)self->_audioSession setCategory:categoryCopy mode:modeCopy routeSharingPolicy:policy options:options error:error];
   if (v14)
   {
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
@@ -2804,11 +2804,11 @@ LABEL_18:
   return v15;
 }
 
-- (BOOL)setCategory:(id)a3 mode:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (BOOL)setCategory:(id)category mode:(id)mode options:(unint64_t)options error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  categoryCopy = category;
+  modeCopy = mode;
   if (isAudioSessionAvailable(void)::onceToken != -1)
   {
     dispatch_once(&isAudioSessionAvailable(void)::onceToken, &__block_literal_global_44);
@@ -2860,7 +2860,7 @@ LABEL_17:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  v13 = [(AVAudioSession *)self->_audioSession setCategory:v10 mode:v11 options:a5 error:a6];
+  v13 = [(AVAudioSession *)self->_audioSession setCategory:categoryCopy mode:modeCopy options:options error:error];
   if (v12)
   {
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
@@ -3095,7 +3095,7 @@ LABEL_18:
   return forceGetSessionProperties;
 }
 
-- (void)setForceGetSessionProperties:(BOOL)a3
+- (void)setForceGetSessionProperties:(BOOL)properties
 {
   if (IsSerializationEnabled(void)::onceToken != -1)
   {
@@ -3105,14 +3105,14 @@ LABEL_18:
   if (IsSerializationEnabled(void)::enable)
   {
     std::recursive_mutex::lock(&self->mSessionManagerLock);
-    self->_forceGetSessionProperties = a3;
+    self->_forceGetSessionProperties = properties;
 
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
   }
 
   else
   {
-    self->_forceGetSessionProperties = a3;
+    self->_forceGetSessionProperties = properties;
   }
 }
 
@@ -3138,9 +3138,9 @@ LABEL_18:
   return v3;
 }
 
-- (void)setPlaybackRoute:(id)a3
+- (void)setPlaybackRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   if (IsSerializationEnabled(void)::onceToken != -1)
   {
     dispatch_once(&IsSerializationEnabled(void)::onceToken, &__block_literal_global_197);
@@ -3150,7 +3150,7 @@ LABEL_18:
   {
     std::recursive_mutex::lock(&self->mSessionManagerLock);
     playbackRoute = self->_playbackRoute;
-    self->_playbackRoute = v4;
+    self->_playbackRoute = routeCopy;
 
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
   }
@@ -3158,7 +3158,7 @@ LABEL_18:
   else
   {
     v6 = self->_playbackRoute;
-    self->_playbackRoute = v4;
+    self->_playbackRoute = routeCopy;
   }
 }
 
@@ -3180,7 +3180,7 @@ LABEL_18:
   return deviceGain;
 }
 
-- (void)setDeviceGain:(float)a3
+- (void)setDeviceGain:(float)gain
 {
   if (IsSerializationEnabled(void)::onceToken != -1)
   {
@@ -3190,14 +3190,14 @@ LABEL_18:
   if (IsSerializationEnabled(void)::enable)
   {
     std::recursive_mutex::lock(&self->mSessionManagerLock);
-    self->_deviceGain = a3;
+    self->_deviceGain = gain;
 
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
   }
 
   else
   {
-    self->_deviceGain = a3;
+    self->_deviceGain = gain;
   }
 }
 
@@ -3223,7 +3223,7 @@ LABEL_18:
   return clientRequestsRecording;
 }
 
-- (void)setClientRequestsRecording:(BOOL)a3
+- (void)setClientRequestsRecording:(BOOL)recording
 {
   if (IsSerializationEnabled(void)::onceToken != -1)
   {
@@ -3233,18 +3233,18 @@ LABEL_18:
   if (IsSerializationEnabled(void)::enable)
   {
     std::recursive_mutex::lock(&self->mSessionManagerLock);
-    self->_clientRequestsRecording = a3;
+    self->_clientRequestsRecording = recording;
 
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
   }
 
   else
   {
-    self->_clientRequestsRecording = a3;
+    self->_clientRequestsRecording = recording;
   }
 }
 
-- (void)setSessionStateWithoutLock:(int)a3
+- (void)setSessionStateWithoutLock:(int)lock
 {
   v22 = *MEMORY[0x1E69E9840];
   if (IsSerializationEnabled(void)::onceToken != -1)
@@ -3286,14 +3286,14 @@ LABEL_18:
       v9 = off_1E7EF63F8[sessionState];
     }
 
-    if (a3 > 7)
+    if (lock > 7)
     {
       v10 = "ILLEGAL";
     }
 
     else
     {
-      v10 = off_1E7EF63F8[a3];
+      v10 = off_1E7EF63F8[lock];
     }
 
     v12 = 136316162;
@@ -3301,7 +3301,7 @@ LABEL_18:
     v14 = 1024;
     v15 = 1396;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2080;
     v19 = v9;
     v20 = 2080;
@@ -3310,7 +3310,7 @@ LABEL_18:
   }
 
 LABEL_18:
-  self->_sessionState = a3;
+  self->_sessionState = lock;
   if (v5)
   {
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
@@ -3319,7 +3319,7 @@ LABEL_18:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSessionState:(int)a3
+- (void)setSessionState:(int)state
 {
   v22 = *MEMORY[0x1E69E9840];
   if (IsSerializationEnabled(void)::onceToken != -1)
@@ -3361,14 +3361,14 @@ LABEL_18:
       v9 = off_1E7EF63F8[sessionState];
     }
 
-    if (a3 > 7)
+    if (state > 7)
     {
       v10 = "ILLEGAL";
     }
 
     else
     {
-      v10 = off_1E7EF63F8[a3];
+      v10 = off_1E7EF63F8[state];
     }
 
     v12 = 136316162;
@@ -3376,7 +3376,7 @@ LABEL_18:
     v14 = 1024;
     v15 = 1390;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2080;
     v19 = v9;
     v20 = 2080;
@@ -3385,7 +3385,7 @@ LABEL_18:
   }
 
 LABEL_18:
-  self->_sessionState = a3;
+  self->_sessionState = state;
   if (v5)
   {
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
@@ -3394,7 +3394,7 @@ LABEL_18:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)deactivateAudioSessionWithOptions:(unsigned int)a3 error:(id *)a4
+- (BOOL)deactivateAudioSessionWithOptions:(unsigned int)options error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
   if (isAudioSessionAvailable(void)::onceToken != -1)
@@ -3448,7 +3448,7 @@ LABEL_18:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  v8 = [(AVVCSessionManager *)self audioSession];
+  audioSession = [(AVVCSessionManager *)self audioSession];
   [(AVVCSessionManager *)self setSessionStateWithoutLock:4];
   if (kAVVCScope)
   {
@@ -3472,15 +3472,15 @@ LABEL_18:
     v32 = 1024;
     v33 = 1365;
     v34 = 1024;
-    LODWORD(v35) = a3;
+    LODWORD(v35) = options;
     _os_log_impl(&dword_1BA5AC000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d deactivateAudioSession: session options : %d", buf, 0x18u);
   }
 
 LABEL_23:
   v28 = 0;
-  v12 = [v8 setActive:0 withOptions:a3 error:&v28];
+  v12 = [audioSession setActive:0 withOptions:options error:&v28];
   v14 = v28;
-  v15 = [v14 code];
+  code = [v14 code];
   if (!v12)
   {
     if (kAVVCScope)
@@ -3489,7 +3489,7 @@ LABEL_23:
       if (!v17)
       {
 LABEL_39:
-        v21 = v15 != 1836282486;
+        v21 = code != 1836282486;
         goto LABEL_40;
       }
     }
@@ -3503,8 +3503,8 @@ LABEL_39:
     v23 = v17;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      CAX4CCString::CAX4CCString(v29, v15);
-      v24 = [(AVAudioSession *)self->_audioSession opaqueSessionID];
+      CAX4CCString::CAX4CCString(v29, code);
+      opaqueSessionID = [(AVAudioSession *)self->_audioSession opaqueSessionID];
       *buf = 136315906;
       v31 = "AVVCSessionManager.mm";
       v32 = 1024;
@@ -3512,7 +3512,7 @@ LABEL_39:
       v34 = 2080;
       v35 = v29;
       v36 = 1024;
-      v37 = v24;
+      v37 = opaqueSessionID;
       _os_log_impl(&dword_1BA5AC000, v23, OS_LOG_TYPE_ERROR, "%25s:%-5d deactivateAudioSession failed with error: %s, session id:0x%x", buf, 0x22u);
     }
 
@@ -3533,8 +3533,8 @@ LABEL_31:
     v19 = v16;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      CAX4CCString::CAX4CCString(v29, v15);
-      v20 = [(AVAudioSession *)self->_audioSession opaqueSessionID];
+      CAX4CCString::CAX4CCString(v29, code);
+      opaqueSessionID2 = [(AVAudioSession *)self->_audioSession opaqueSessionID];
       *buf = 136315906;
       v31 = "AVVCSessionManager.mm";
       v32 = 1024;
@@ -3542,7 +3542,7 @@ LABEL_31:
       v34 = 2080;
       v35 = v29;
       v36 = 1024;
-      v37 = v20;
+      v37 = opaqueSessionID2;
       _os_log_impl(&dword_1BA5AC000, v19, OS_LOG_TYPE_DEFAULT, "%25s:%-5d deactivateAudioSession succeeded error: %s, session id:0x%x", buf, 0x22u);
     }
   }
@@ -3550,10 +3550,10 @@ LABEL_31:
   v21 = 1;
 LABEL_40:
   [(AVVCSessionManager *)self setSessionStateWithoutLock:v21];
-  if (a4)
+  if (error)
   {
     v25 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   if (v7)
@@ -3566,9 +3566,9 @@ LABEL_44:
   return v12;
 }
 
-- (BOOL)activateAudioSessionWithPrewarm:(BOOL)a3 error:(id *)a4
+- (BOOL)activateAudioSessionWithPrewarm:(BOOL)prewarm error:(id *)error
 {
-  v5 = a3;
+  prewarmCopy = prewarm;
   v53 = *MEMORY[0x1E69E9840];
   if (isAudioSessionAvailable(void)::onceToken != -1)
   {
@@ -3627,8 +3627,8 @@ LABEL_21:
   v39 = __Block_byref_object_copy__6402;
   v40 = __Block_byref_object_dispose__6403;
   v41 = 0;
-  v31 = [(AVVCSessionManager *)self audioSession];
-  if (v5)
+  audioSession = [(AVVCSessionManager *)self audioSession];
+  if (prewarmCopy)
   {
     [(AVVCSessionManager *)self setSessionStateWithoutLock:5];
     mSessionActivationOptions = 0x2000;
@@ -3678,7 +3678,7 @@ LABEL_26:
   aBlock[1] = 3221225472;
   aBlock[2] = __60__AVVCSessionManager_activateAudioSessionWithPrewarm_error___block_invoke;
   aBlock[3] = &unk_1E7EF63D0;
-  v14 = v31;
+  v14 = audioSession;
   v35 = mSessionActivationOptions;
   v33 = v14;
   v34 = &v36;
@@ -3691,7 +3691,7 @@ LABEL_26:
   ElapsedTime::~ElapsedTime(buf);
   kdebug_trace();
   ProfileMetrics(&cfstr_AvvcProfilePro_7.isa);
-  v18 = [v37[5] code];
+  code = [v37[5] code];
   if (!v12)
   {
     if (kAVVCScope)
@@ -3700,7 +3700,7 @@ LABEL_26:
       if (!v20)
       {
 LABEL_42:
-        v24 = v18 != 1836282486;
+        v24 = code != 1836282486;
         goto LABEL_43;
       }
     }
@@ -3714,8 +3714,8 @@ LABEL_42:
     v26 = v20;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      CAX4CCString::CAX4CCString(v42, v18);
-      v27 = [(AVAudioSession *)self->_audioSession opaqueSessionID];
+      CAX4CCString::CAX4CCString(v42, code);
+      opaqueSessionID = [(AVAudioSession *)self->_audioSession opaqueSessionID];
       *buf = 136316162;
       v44 = "AVVCSessionManager.mm";
       v45 = 1024;
@@ -3725,7 +3725,7 @@ LABEL_42:
       v49 = 2080;
       v50 = v42;
       v51 = 1024;
-      v52 = v27;
+      v52 = opaqueSessionID;
       _os_log_impl(&dword_1BA5AC000, v26, OS_LOG_TYPE_ERROR, "%25s:%-5d %@ failed with error: %s, session id:0x%x", buf, 0x2Cu);
     }
 
@@ -3746,8 +3746,8 @@ LABEL_34:
     v22 = v19;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      CAX4CCString::CAX4CCString(v42, v18);
-      v23 = [(AVAudioSession *)self->_audioSession opaqueSessionID];
+      CAX4CCString::CAX4CCString(v42, code);
+      opaqueSessionID2 = [(AVAudioSession *)self->_audioSession opaqueSessionID];
       *buf = 136316162;
       v44 = "AVVCSessionManager.mm";
       v45 = 1024;
@@ -3757,7 +3757,7 @@ LABEL_34:
       v49 = 2080;
       v50 = v42;
       v51 = 1024;
-      v52 = v23;
+      v52 = opaqueSessionID2;
       _os_log_impl(&dword_1BA5AC000, v22, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %@ succeeded error: %s, session id:0x%x", buf, 0x2Cu);
     }
   }
@@ -3765,9 +3765,9 @@ LABEL_34:
   v24 = 7;
 LABEL_43:
   [(AVVCSessionManager *)self setSessionStateWithoutLock:v24];
-  if (a4)
+  if (error)
   {
-    *a4 = v37[5];
+    *error = v37[5];
   }
 
   _Block_object_dispose(&v36, 8);
@@ -3792,16 +3792,16 @@ uint64_t __60__AVVCSessionManager_activateAudioSessionWithPrewarm_error___block_
   return v4;
 }
 
-- (BOOL)isAirplayOneOfTheOutputRoutes:(id)a3
+- (BOOL)isAirplayOneOfTheOutputRoutes:(id)routes
 {
   v33 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = [v15 count];
+  routesCopy = routes;
+  v16 = [routesCopy count];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v15;
+  obj = routesCopy;
   v3 = [obj countByEnumeratingWithState:&v18 objects:v32 count:16];
   if (v3)
   {
@@ -3818,7 +3818,7 @@ uint64_t __60__AVVCSessionManager_activateAudioSessionWithPrewarm_error___block_
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v18 + 1) + 8 * i) portType];
+        portType = [*(*(&v18 + 1) + 8 * i) portType];
         if (kAVVCScope)
         {
           v10 = *kAVVCScope;
@@ -3845,12 +3845,12 @@ uint64_t __60__AVVCSessionManager_activateAudioSessionWithPrewarm_error___block_
           v28 = 1024;
           v29 = v16;
           v30 = 2112;
-          v31 = v9;
+          v31 = portType;
           _os_log_impl(&dword_1BA5AC000, v10, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Output Port[%d / %d] : %@", buf, 0x28u);
         }
 
 LABEL_13:
-        v12 = [v9 isEqualToString:v7];
+        v12 = [portType isEqualToString:v7];
 
         v5 |= v12;
         ++v4;
@@ -3871,7 +3871,7 @@ LABEL_17:
   return v5 & 1;
 }
 
-- (void)setSessionActivationOptions:(unsigned int)a3
+- (void)setSessionActivationOptions:(unsigned int)options
 {
   if (IsSerializationEnabled(void)::onceToken != -1)
   {
@@ -3881,14 +3881,14 @@ LABEL_17:
   if (IsSerializationEnabled(void)::enable)
   {
     std::recursive_mutex::lock(&self->mSessionManagerLock);
-    self->mSessionActivationOptions = a3;
+    self->mSessionActivationOptions = options;
 
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
   }
 
   else
   {
-    self->mSessionActivationOptions = a3;
+    self->mSessionActivationOptions = options;
   }
 }
 
@@ -3910,11 +3910,11 @@ LABEL_17:
   return mSessionActivationOptions;
 }
 
-- (BOOL)setDuckingFadeOutDuration:(id)a3 fadeInDuration:(id)a4 error:(id *)a5
+- (BOOL)setDuckingFadeOutDuration:(id)duration fadeInDuration:(id)inDuration error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  durationCopy = duration;
+  inDurationCopy = inDuration;
   ElapsedTime::ElapsedTime(v27, "[AVVCSessionManager setDuckingFadeOutDuration:fadeInDuration:error:]", "setDuckingFadeDuration", 0);
   if (isAudioSessionAvailable(void)::onceToken != -1)
   {
@@ -3967,8 +3967,8 @@ LABEL_20:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  v11 = [(AVAudioSession *)self->_audioSession setDuckingFadeOutDuration:v8 fadeInDuration:v9 error:a5];
-  if ((v11 & 1) != 0 || !*a5)
+  v11 = [(AVAudioSession *)self->_audioSession setDuckingFadeOutDuration:durationCopy fadeInDuration:inDurationCopy error:error];
+  if ((v11 & 1) != 0 || !*error)
   {
     goto LABEL_25;
   }
@@ -3987,14 +3987,14 @@ LABEL_22:
     v16 = v12;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [*a5 code];
-      v18 = [*a5 description];
+      code = [*error code];
+      v18 = [*error description];
       v21 = 136315906;
       v22 = "AVVCSessionManager.mm";
       v23 = 1024;
       v24 = 1195;
       v25 = 1024;
-      *v26 = v17;
+      *v26 = code;
       *&v26[4] = 2112;
       *&v26[6] = v18;
       _os_log_impl(&dword_1BA5AC000, v16, OS_LOG_TYPE_ERROR, "%25s:%-5d Error in setDuckingFadeDuration %d, %@", &v21, 0x22u);
@@ -4014,11 +4014,11 @@ LABEL_27:
   return v11;
 }
 
-- (BOOL)setDuckOthers:(id)a3 mixWithOthers:(id)a4 error:(id *)a5
+- (BOOL)setDuckOthers:(id)others mixWithOthers:(id)withOthers error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  othersCopy = others;
+  withOthersCopy = withOthers;
   ElapsedTime::ElapsedTime(v36, "[AVVCSessionManager setDuckOthers:mixWithOthers:error:]", "setDuckOthersMixWithOthers", 0);
   if (isAudioSessionAvailable(void)::onceToken != -1)
   {
@@ -4073,10 +4073,10 @@ LABEL_20:
 
   mPreviousSessionCategoryOptions = self->mPreviousSessionCategoryOptions;
   v12 = mPreviousSessionCategoryOptions;
-  if (!v8)
+  if (!othersCopy)
   {
 LABEL_11:
-    if (!v9)
+    if (!withOthersCopy)
     {
       goto LABEL_25;
     }
@@ -4084,22 +4084,22 @@ LABEL_11:
     goto LABEL_22;
   }
 
-  if ([v8 BOOLValue])
+  if ([othersCopy BOOLValue])
   {
     v12 = mPreviousSessionCategoryOptions | 2;
     goto LABEL_11;
   }
 
   v12 = mPreviousSessionCategoryOptions & 0xFFFFFFFFFFFFFFFDLL;
-  if (!v9)
+  if (!withOthersCopy)
   {
     goto LABEL_25;
   }
 
 LABEL_22:
-  v16 = [v9 BOOLValue];
+  bOOLValue = [withOthersCopy BOOLValue];
   v17 = 17;
-  if (!v16)
+  if (!bOOLValue)
   {
     v17 = 0;
   }
@@ -4170,8 +4170,8 @@ LABEL_39:
     }
   }
 
-  v15 = [(AVAudioSession *)self->_audioSession setCategoryOptions:v12 error:a5];
-  if ((v15 & 1) == 0 && *a5)
+  v15 = [(AVAudioSession *)self->_audioSession setCategoryOptions:v12 error:error];
+  if ((v15 & 1) == 0 && *error)
   {
     if (kAVVCScope)
     {
@@ -4191,14 +4191,14 @@ LABEL_39:
     v27 = v23;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v28 = [*a5 code];
-      v29 = [*a5 description];
+      code = [*error code];
+      v29 = [*error description];
       v30 = 136315906;
       v31 = "AVVCSessionManager.mm";
       v32 = 1024;
       v33 = 1170;
       v34 = 1024;
-      *v35 = v28;
+      *v35 = code;
       *&v35[4] = 2112;
       *&v35[6] = v29;
       _os_log_impl(&dword_1BA5AC000, v27, OS_LOG_TYPE_ERROR, "%25s:%-5d ERROR: AVVCSessionManager::setDuckOthers:mixWithOthers failed with error: %d, %@", &v30, 0x22u);
@@ -4228,7 +4228,7 @@ LABEL_49:
   return v15;
 }
 
-- (void)changeDuckOthersOption:(BOOL)a3
+- (void)changeDuckOthersOption:(BOOL)option
 {
   if (IsSerializationEnabled(void)::onceToken != -1)
   {
@@ -4238,18 +4238,18 @@ LABEL_49:
   if (IsSerializationEnabled(void)::enable)
   {
     std::recursive_mutex::lock(&self->mSessionManagerLock);
-    self->mShouldDuckOthers = a3;
+    self->mShouldDuckOthers = option;
 
     std::recursive_mutex::unlock(&self->mSessionManagerLock);
   }
 
   else
   {
-    self->mShouldDuckOthers = a3;
+    self->mShouldDuckOthers = option;
   }
 }
 
-- (int)setSessionBufferSize:(int)a3
+- (int)setSessionBufferSize:(int)size
 {
   v38 = *MEMORY[0x1E69E9840];
   if (isAudioSessionAvailable(void)::onceToken != -1)
@@ -4265,7 +4265,7 @@ LABEL_49:
       if (!v7)
       {
 LABEL_21:
-        v11 = 0;
+        code = 0;
         goto LABEL_44;
       }
     }
@@ -4304,7 +4304,7 @@ LABEL_21:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  if (self->mPreviousIOBufferFrameSize == a3)
+  if (self->mPreviousIOBufferFrameSize == size)
   {
     if (kAVVCScope)
     {
@@ -4312,7 +4312,7 @@ LABEL_21:
       if (!v6)
       {
 LABEL_29:
-        v11 = 0;
+        code = 0;
         goto LABEL_34;
       }
     }
@@ -4338,17 +4338,17 @@ LABEL_29:
 
   audioSession = self->_audioSession;
   v23 = 0;
-  v9 = [(AVAudioSession *)audioSession setPreferredIOBufferFrameSize:a3 error:&v23];
+  v9 = [(AVAudioSession *)audioSession setPreferredIOBufferFrameSize:size error:&v23];
   v10 = v23;
   v6 = v10;
   if (v9)
   {
-    v11 = 0;
-    self->mPreviousIOBufferFrameSize = a3;
+    code = 0;
+    self->mPreviousIOBufferFrameSize = size;
     goto LABEL_34;
   }
 
-  v11 = [v10 code];
+  code = [v10 code];
   if (kAVVCScope)
   {
     v13 = *kAVVCScope;
@@ -4410,10 +4410,10 @@ LABEL_38:
   ElapsedTime::~ElapsedTime(buf);
 LABEL_44:
   v21 = *MEMORY[0x1E69E9840];
-  return v11;
+  return code;
 }
 
-- (int)setSessionSampleRateForActivationMode:(int64_t)a3
+- (int)setSessionSampleRateForActivationMode:(int64_t)mode
 {
   v53 = *MEMORY[0x1E69E9840];
   if (isAudioSessionAvailable(void)::onceToken != -1)
@@ -4429,7 +4429,7 @@ LABEL_44:
       if (!v10)
       {
 LABEL_22:
-        v6 = 0;
+        code = 0;
         goto LABEL_64;
       }
     }
@@ -4468,15 +4468,15 @@ LABEL_22:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  v6 = 0;
-  if ((IsPluginActivationContext(a3) & 1) != 0 || a3 == 1684108899)
+  code = 0;
+  if ((IsPluginActivationContext(mode) & 1) != 0 || mode == 1684108899)
   {
     goto LABEL_61;
   }
 
   [(AVAudioSession *)self->_audioSession sampleRate];
   v8 = *&v7;
-  if (a3 == 1986357346)
+  if (mode == 1986357346)
   {
     if (v7 != 24000.0)
     {
@@ -4512,7 +4512,7 @@ LABEL_37:
       v14 = v18;
       if (!v17)
       {
-        v6 = [v18 code];
+        code = [v18 code];
         v19 = CALog::LogObjIfEnabled(1, kAVVCScope);
         v13 = v19;
         if (!v19 || !os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -4601,7 +4601,7 @@ LABEL_57:
 
 LABEL_58:
     v14 = 0;
-    v6 = 0;
+    code = 0;
     goto LABEL_59;
   }
 
@@ -4641,7 +4641,7 @@ LABEL_45:
   v14 = v26;
   if (!v25)
   {
-    v6 = [v26 code];
+    code = [v26 code];
     v27 = CALog::LogObjIfEnabled(1, kAVVCScope);
     v13 = v27;
     if (!v27 || !os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -4668,7 +4668,7 @@ LABEL_59:
   }
 
 LABEL_46:
-  v6 = 0;
+  code = 0;
 LABEL_60:
 
 LABEL_61:
@@ -4680,12 +4680,12 @@ LABEL_61:
   ElapsedTime::~ElapsedTime(buf);
 LABEL_64:
   v33 = *MEMORY[0x1E69E9840];
-  return v6;
+  return code;
 }
 
-- (int)setSessionAudioHWControlFlagsForActivationMode:(int64_t)a3 withOptions:(unint64_t)a4
+- (int)setSessionAudioHWControlFlagsForActivationMode:(int64_t)mode withOptions:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v108 = *MEMORY[0x1E69E9840];
   if (isAudioSessionAvailable(void)::onceToken != -1)
   {
@@ -4742,7 +4742,7 @@ LABEL_21:
   self->mSessionActivationOptions &= ~0x4000u;
   if (caulk::product::get_device_class(v7) == 4 && (MGGetBoolAnswer() & 1) == 0)
   {
-    if (IsPluginActivationContext(a3))
+    if (IsPluginActivationContext(mode))
     {
       if (self->mPreviousHardwareControlFlags != 0x100000)
       {
@@ -4946,8 +4946,8 @@ LABEL_79:
       goto LABEL_99;
     }
 
-    v25 = a3 == 1987012963 || a3 == 1751414371;
-    if ((v4 & 1) != 0 && v25)
+    v25 = mode == 1987012963 || mode == 1751414371;
+    if ((optionsCopy & 1) != 0 && v25)
     {
       if (self->mPreviousHardwareControlFlags)
       {
@@ -5006,7 +5006,7 @@ LABEL_120:
       v61 = v59;
       if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
       {
-        CAX4CCString::CAX4CCString(v93, a3);
+        CAX4CCString::CAX4CCString(v93, mode);
         *v94 = 136315650;
         v95 = "AVVCSessionManager.mm";
         v96 = 1024;
@@ -5110,7 +5110,7 @@ LABEL_120:
     }
 
     mSessionNeedsVolumeControl = self->mSessionNeedsVolumeControl;
-    if (a3 == 1651795060)
+    if (mode == 1651795060)
     {
       if (mSessionNeedsVolumeControl)
       {
@@ -5120,11 +5120,11 @@ LABEL_120:
       goto LABEL_154;
     }
 
-    if (a3 == 1987012963)
+    if (mode == 1987012963)
     {
-      v63 = [(AVAudioSession *)self->_audioSession currentRoute];
-      v64 = [v63 outputs];
-      v65 = [(AVVCSessionManager *)self isAirplayOneOfTheOutputRoutes:v64];
+      currentRoute = [(AVAudioSession *)self->_audioSession currentRoute];
+      outputs = [currentRoute outputs];
+      v65 = [(AVVCSessionManager *)self isAirplayOneOfTheOutputRoutes:outputs];
 
       if (v65)
       {
@@ -5159,7 +5159,7 @@ LABEL_120:
       goto LABEL_163;
     }
 
-    if (IsPluginActivationContext(a3))
+    if (IsPluginActivationContext(mode))
     {
 LABEL_135:
       v71 = CALog::LogObjIfEnabled(3, kAVVCScope);
@@ -5247,9 +5247,9 @@ LABEL_166:
       goto LABEL_100;
     }
 
-    if (a3 != 1635087471)
+    if (mode != 1635087471)
     {
-      if (a3 == 1886352244 && self->mPreviousActivationMode == 1751414371)
+      if (mode == 1886352244 && self->mPreviousActivationMode == 1751414371)
       {
         goto LABEL_135;
       }
@@ -5312,7 +5312,7 @@ LABEL_59:
     }
   }
 
-  if (a3 == 1768780647)
+  if (mode == 1768780647)
   {
     goto LABEL_99;
   }
@@ -5331,9 +5331,9 @@ LABEL_103:
   return v12;
 }
 
-- (int)setSessionCategoryModeOptionsForActivationMode:(int64_t)a3 withOptions:(unint64_t)a4
+- (int)setSessionCategoryModeOptionsForActivationMode:(int64_t)mode withOptions:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v99 = *MEMORY[0x1E69E9840];
   if (isAudioSessionAvailable(void)::onceToken != -1)
   {
@@ -5348,7 +5348,7 @@ LABEL_103:
       if (!v8)
       {
 LABEL_23:
-        v10 = 0;
+        code = 0;
         goto LABEL_164;
       }
     }
@@ -5485,9 +5485,9 @@ LABEL_36:
   }
 
 LABEL_40:
-  if (a3 > 1768764004)
+  if (mode > 1768764004)
   {
-    if (a3 != 1768764005 && a3 != 1768780647)
+    if (mode != 1768764005 && mode != 1768780647)
     {
 LABEL_54:
       LOBYTE(v19) = self->mShouldDuckOthers;
@@ -5503,11 +5503,11 @@ LABEL_54:
 
       if (isAVSystemControllerAvailable(void)::isAvailable)
       {
-        v20 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-        v21 = [v20 attributeForKey:*MEMORY[0x1E69AEA70]];
-        v22 = [v21 BOOLValue];
+        mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+        v21 = [mEMORY[0x1E69AED08] attributeForKey:*MEMORY[0x1E69AEA70]];
+        bOOLValue = [v21 BOOLValue];
 
-        if (!v22)
+        if (!bOOLValue)
         {
 LABEL_89:
           v15 = *MEMORY[0x1E698D518];
@@ -5602,7 +5602,7 @@ LABEL_71:
     goto LABEL_71;
   }
 
-  if (a3 == 1651797093)
+  if (mode == 1651797093)
   {
     v15 = *MEMORY[0x1E698D520];
     v16 = *MEMORY[0x1E698D5C8];
@@ -5638,7 +5638,7 @@ LABEL_81:
     goto LABEL_81;
   }
 
-  if (a3 != 1752396914)
+  if (mode != 1752396914)
   {
     goto LABEL_54;
   }
@@ -5671,8 +5671,8 @@ LABEL_73:
 LABEL_90:
   v18 = 4;
 LABEL_91:
-  v31 = a3 == 1987012963 || a3 == 1751414371;
-  if ((v4 & 1) != 0 && v31)
+  v31 = mode == 1987012963 || mode == 1751414371;
+  if ((optionsCopy & 1) != 0 && v31)
   {
     if (kAVVCScope)
     {
@@ -5692,7 +5692,7 @@ LABEL_91:
     v34 = v32;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      CAX4CCString::CAX4CCString(v90, a3);
+      CAX4CCString::CAX4CCString(v90, mode);
       *v75 = 136315650;
       v76 = "AVVCSessionManager.mm";
       v77 = 1024;
@@ -5730,12 +5730,12 @@ LABEL_124:
           objc_storeStrong(&self->mPreviousSessionCategory, v15);
           objc_storeStrong(&self->mPreviousSessionMode, v16);
 LABEL_139:
-          v10 = 0;
+          code = 0;
           self->mPreviousSessionCategoryOptions = v18;
           goto LABEL_151;
         }
 
-        v10 = [v46 code];
+        code = [v46 code];
         if (kAVVCScope)
         {
           v47 = *kAVVCScope;
@@ -5795,7 +5795,7 @@ LABEL_139:
       v84 = 1024;
       v85 = mPreviousSessionCategoryOptions;
       v86 = 1024;
-      v87 = a3;
+      modeCopy = mode;
       v88 = 1024;
       v89 = mPreviousActivationMode;
       _os_log_impl(&dword_1BA5AC000, v37, OS_LOG_TYPE_DEFAULT, "%25s:%-5d AVVCSessionManager::setSessionCategoryModeOptions: Setting new category: %@, mode: %@, options: 0x%x. Previous category: %@, mode: %@, options: 0x%x. (Current activation: %d, Previous activation: %d)", v75, 0x52u);
@@ -5812,7 +5812,7 @@ LABEL_139:
       if (!v36)
       {
 LABEL_133:
-        v10 = 0;
+        code = 0;
         goto LABEL_151;
       }
     }
@@ -5840,7 +5840,7 @@ LABEL_133:
       *&v80[18] = 1024;
       *&v80[20] = v51;
       v81 = 1024;
-      *v82 = a3;
+      *v82 = mode;
       *&v82[4] = 1024;
       *&v82[6] = v52;
       _os_log_impl(&dword_1BA5AC000, v36, OS_LOG_TYPE_DEFAULT, "%25s:%-5d AVVCSessionManager::setSessionCategoryModeOptions: No change - category, mode and options are the same. No op. Current category: %@, mode: %@, options: 0x%x. (Current activation: %d, Previous activation: %d)", v75, 0x38u);
@@ -5880,7 +5880,7 @@ LABEL_135:
       v81 = 1024;
       *v82 = v56;
       *&v82[4] = 1024;
-      *&v82[6] = a3;
+      *&v82[6] = mode;
       LOWORD(v83) = 1024;
       *(&v83 + 2) = v57;
       _os_log_impl(&dword_1BA5AC000, v38, OS_LOG_TYPE_DEFAULT, "%25s:%-5d AVVCSessionManager::setSessionCategoryModeOptions: Setting new options: 0x%x. Previous category: %@, mode: %@, options: 0x%x. (Current activation: %d, Previous activation: %d)", v75, 0x3Eu);
@@ -5897,7 +5897,7 @@ LABEL_135:
     goto LABEL_139;
   }
 
-  v10 = [v60 code];
+  code = [v60 code];
   if (kAVVCScope)
   {
     v61 = *kAVVCScope;
@@ -5934,7 +5934,7 @@ LABEL_151:
 
     if ((v65 & 1) == 0)
     {
-      v10 = [v66 code];
+      code = [v66 code];
       if (kAVVCScope)
       {
         v67 = *kAVVCScope;
@@ -5978,7 +5978,7 @@ LABEL_161:
   ElapsedTime::~ElapsedTime(buf);
 LABEL_164:
   v69 = *MEMORY[0x1E69E9840];
-  return v10;
+  return code;
 }
 
 - (BOOL)isMiniDuckingEnabled
@@ -6003,10 +6003,10 @@ LABEL_164:
   return mIsMiniDuckingEnabled;
 }
 
-- (void)shouldEnableMiniDucking:(BOOL)a3 withOptions:(unint64_t)a4
+- (void)shouldEnableMiniDucking:(BOOL)ducking withOptions:(unint64_t)options
 {
-  v4 = a4;
-  v5 = a3;
+  optionsCopy = options;
+  duckingCopy = ducking;
   v28 = *MEMORY[0x1E69E9840];
   if (isAudioSessionAvailable(void)::onceToken != -1)
   {
@@ -6032,7 +6032,7 @@ LABEL_164:
       std::recursive_mutex::lock(&self->mSessionManagerLock);
     }
 
-    if (self->mIsMiniDuckingEnabled == v5)
+    if (self->mIsMiniDuckingEnabled == duckingCopy)
     {
       if (kAVVCScope)
       {
@@ -6061,7 +6061,7 @@ LABEL_164:
       goto LABEL_45;
     }
 
-    if (v5)
+    if (duckingCopy)
     {
       v11 = 1;
       self->mShouldEnableMiniDucking = 1;
@@ -6089,7 +6089,7 @@ LABEL_45:
       p_mShouldDisableMiniDucking = &self->mShouldDisableMiniDucking;
       mPreviousActivationMode = self->mPreviousActivationMode;
       v15 = mPreviousActivationMode == 1987012963 || mPreviousActivationMode == 1751414371;
-      if ((v4 & 1) != 0 && v15)
+      if ((optionsCopy & 1) != 0 && v15)
       {
         v16 = CALog::LogObjIfEnabled(3, kAVVCScope);
         v17 = v16;
@@ -6144,10 +6144,10 @@ LABEL_48:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (int)setSessionActivationContext:(id)a3
+- (int)setSessionActivationContext:(id)context
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   if (isAudioSessionAvailable(void)::onceToken != -1)
   {
     dispatch_once(&isAudioSessionAvailable(void)::onceToken, &__block_literal_global_44);
@@ -6161,7 +6161,7 @@ LABEL_48:
       if (!v7)
       {
 LABEL_19:
-        v9 = 0;
+        code = 0;
         goto LABEL_55;
       }
     }
@@ -6200,7 +6200,7 @@ LABEL_19:
     std::recursive_mutex::lock(&self->mSessionManagerLock);
   }
 
-  if (!v4)
+  if (!contextCopy)
   {
     if (kAVVCScope)
     {
@@ -6208,7 +6208,7 @@ LABEL_19:
       if (!v6)
       {
 LABEL_24:
-        v4 = objc_alloc_init(MEMORY[0x1E695DF20]);
+        contextCopy = objc_alloc_init(MEMORY[0x1E695DF20]);
         goto LABEL_25;
       }
     }
@@ -6232,17 +6232,17 @@ LABEL_24:
   }
 
 LABEL_25:
-  v11 = [v4 objectForKey:@"activation trigger"];
-  v12 = [v11 intValue];
+  v11 = [contextCopy objectForKey:@"activation trigger"];
+  intValue = [v11 intValue];
 
-  v13 = [v4 objectForKey:@"activation device uid"];
+  v13 = [contextCopy objectForKey:@"activation device uid"];
   p_mPreviousActivationDeviceUID = &self->mPreviousActivationDeviceUID;
   mPreviousActivationMode = self->mPreviousActivationMode;
-  if (((mPreviousActivationMode == v12) & areDeviceUIDsSame(v13, self->mPreviousActivationDeviceUID)) == 0)
+  if (((mPreviousActivationMode == intValue) & areDeviceUIDsSame(v13, self->mPreviousActivationDeviceUID)) == 0)
   {
     audioSession = self->_audioSession;
     v31 = 0;
-    v18 = [(AVAudioSession *)audioSession setActivationContext:v4 error:&v31];
+    v18 = [(AVAudioSession *)audioSession setActivationContext:contextCopy error:&v31];
     v19 = v31;
     if (v18)
     {
@@ -6252,10 +6252,10 @@ LABEL_25:
         if (!v20)
         {
 LABEL_44:
-          self->mPreviousActivationMode = v12;
+          self->mPreviousActivationMode = intValue;
           objc_storeStrong(&self->mPreviousActivationDeviceUID, v13);
 LABEL_45:
-          v9 = 0;
+          code = 0;
 LABEL_51:
 
           goto LABEL_52;
@@ -6271,7 +6271,7 @@ LABEL_51:
       v26 = v20;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        CAX4CCString::CAX4CCString(v33, v12);
+        CAX4CCString::CAX4CCString(v33, intValue);
         CAX4CCString::CAX4CCString(v32, self->mPreviousActivationMode);
         v27 = *p_mPreviousActivationDeviceUID;
         *v34 = 136316418;
@@ -6292,14 +6292,14 @@ LABEL_51:
       goto LABEL_44;
     }
 
-    v21 = [(AVAudioSession *)self->_audioSession opaqueSessionID];
+    opaqueSessionID = [(AVAudioSession *)self->_audioSession opaqueSessionID];
     if (kAVVCScope)
     {
       v22 = *kAVVCScope;
       if (!v22)
       {
 LABEL_50:
-        v9 = [v19 code];
+        code = [v19 code];
         goto LABEL_51;
       }
     }
@@ -6317,7 +6317,7 @@ LABEL_50:
       v36 = 1024;
       v37 = 438;
       v38 = 1024;
-      *v39 = v21;
+      *v39 = opaqueSessionID;
       *&v39[4] = 2112;
       *&v39[6] = v19;
       _os_log_impl(&dword_1BA5AC000, v22, OS_LOG_TYPE_ERROR, "%25s:%-5d ERROR: AVVCSessionManager::setActivationContext of sessionID(0x%x) failed with error: %@", v34, 0x22u);
@@ -6340,7 +6340,7 @@ LABEL_37:
     v19 = v16;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      CAX4CCString::CAX4CCString(v33, v12);
+      CAX4CCString::CAX4CCString(v33, intValue);
       CAX4CCString::CAX4CCString(v32, self->mPreviousActivationMode);
       v24 = *p_mPreviousActivationDeviceUID;
       *v34 = 136316418;
@@ -6361,7 +6361,7 @@ LABEL_37:
     goto LABEL_45;
   }
 
-  v9 = 0;
+  code = 0;
 LABEL_52:
 
   if (v5)
@@ -6373,10 +6373,10 @@ LABEL_52:
 LABEL_55:
 
   v29 = *MEMORY[0x1E69E9840];
-  return v9;
+  return code;
 }
 
-- (int)setupOneTimeSessionSettingsForClient:(int64_t)a3
+- (int)setupOneTimeSessionSettingsForClient:(int64_t)client
 {
   v89 = *MEMORY[0x1E69E9840];
   if (isAudioSessionAvailable(void)::onceToken != -1)
@@ -6392,7 +6392,7 @@ LABEL_55:
       if (!v12)
       {
 LABEL_24:
-        v14 = 0;
+        code2 = 0;
         goto LABEL_116;
       }
     }
@@ -6444,13 +6444,13 @@ LABEL_24:
   }
 
   v6 = +[AVVCMetricsManager sharedManager];
-  v7 = [v6 reporterID];
+  reporterID = [v6 reporterID];
 
-  if (v7)
+  if (reporterID)
   {
     audioSession = self->_audioSession;
     v72 = 0;
-    v9 = [(AVAudioSession *)audioSession setReporterID:v7 error:&v72];
+    v9 = [(AVAudioSession *)audioSession setReporterID:reporterID error:&v72];
     v10 = v72;
     if (v9)
     {
@@ -6472,15 +6472,15 @@ LABEL_24:
       v18 = v11;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(AVAudioSession *)self->_audioSession opaqueSessionID];
+        opaqueSessionID = [(AVAudioSession *)self->_audioSession opaqueSessionID];
         *v73 = 136315906;
         v74 = "AVVCSessionManager.mm";
         v75 = 1024;
         v76 = 235;
         v77 = 2048;
-        v78 = v7;
+        v78 = reporterID;
         v79 = 1024;
-        v80 = v19;
+        v80 = opaqueSessionID;
         _os_log_impl(&dword_1BA5AC000, v18, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Set reporterID(%lld) on session(0x%x)", v73, 0x22u);
       }
     }
@@ -6548,12 +6548,12 @@ LABEL_43:
   v21 = *MEMORY[0x1E698D5C8];
   v22 = *MEMORY[0x1E698D5C8];
   v23 = v22;
-  if (a3 == 4)
+  if (client == 4)
   {
     goto LABEL_46;
   }
 
-  if (a3 == 3)
+  if (client == 3)
   {
     v32 = *MEMORY[0x1E698D518];
     v25 = *MEMORY[0x1E698D518];
@@ -6581,7 +6581,7 @@ LABEL_43:
       if (!v42)
       {
 LABEL_74:
-        v46 = [v36 code];
+        code = [v36 code];
         goto LABEL_111;
       }
     }
@@ -6606,7 +6606,7 @@ LABEL_74:
     goto LABEL_74;
   }
 
-  if (a3 != 1)
+  if (client != 1)
   {
     v25 = &stru_1F384E730;
     goto LABEL_112;
@@ -6631,7 +6631,7 @@ LABEL_46:
     {
       objc_storeStrong(&self->mPreviousSessionCategory, v24);
       objc_storeStrong(&self->mPreviousSessionMode, v26);
-      v14 = 0;
+      code2 = 0;
       v31 = 4;
 LABEL_58:
       self->mPreviousSessionCategoryOptions = v31;
@@ -6644,7 +6644,7 @@ LABEL_58:
       if (!v37)
       {
 LABEL_66:
-        v14 = [v29 code];
+        code2 = [v29 code];
         goto LABEL_80;
       }
     }
@@ -6681,7 +6681,7 @@ LABEL_66:
   {
     objc_storeStrong(&self->mPreviousSessionCategory, v38);
     objc_storeStrong(&self->mPreviousSessionMode, v21);
-    v14 = 0;
+    code2 = 0;
     v31 = 19;
     goto LABEL_58;
   }
@@ -6709,7 +6709,7 @@ LABEL_76:
     }
   }
 
-  v14 = [v41 code];
+  code2 = [v41 code];
 LABEL_80:
   v48 = self->_audioSession;
   v69 = v30;
@@ -6745,7 +6745,7 @@ LABEL_85:
     }
   }
 
-  v14 = [v50 code];
+  code2 = [v50 code];
 LABEL_89:
   v54 = self->_audioSession;
   v68 = v50;
@@ -6781,9 +6781,9 @@ LABEL_94:
     }
   }
 
-  v14 = [v56 code];
+  code2 = [v56 code];
 LABEL_98:
-  if (a3 != 1)
+  if (client != 1)
   {
     goto LABEL_101;
   }
@@ -6802,17 +6802,17 @@ LABEL_98:
       if (!v62)
       {
 LABEL_110:
-        v46 = [v61 code];
+        code = [v61 code];
 LABEL_111:
-        v14 = v46;
-        if (v46)
+        code2 = code;
+        if (code)
         {
           goto LABEL_113;
         }
 
 LABEL_112:
         [(AVVCSessionManager *)self setSessionStateWithoutLock:1];
-        v14 = 0;
+        code2 = 0;
         goto LABEL_113;
       }
     }
@@ -6839,7 +6839,7 @@ LABEL_112:
 
   self->mEnableSmartRoutingConsideration = 0;
 LABEL_101:
-  if (!v14)
+  if (!code2)
   {
     goto LABEL_112;
   }
@@ -6854,7 +6854,7 @@ LABEL_113:
   ElapsedTime::~ElapsedTime(buf);
 LABEL_116:
   v64 = *MEMORY[0x1E69E9840];
-  return v14;
+  return code2;
 }
 
 - (void)dealloc
@@ -6870,9 +6870,9 @@ LABEL_116:
   [(AVVCSessionManager *)&v5 dealloc];
 }
 
-- (AVVCSessionManager)initWithSession:(id)a3
+- (AVVCSessionManager)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v19.receiver = self;
   v19.super_class = AVVCSessionManager;
   v6 = [(AVVCSessionManager *)&v19 init];
@@ -6885,14 +6885,14 @@ LABEL_116:
 
     if (isAudioSessionAvailable(void)::audioSessionAvailable == 1)
     {
-      objc_storeStrong(v6 + 25, a3);
+      objc_storeStrong(v6 + 25, session);
       v6[8] = 0;
       *(v6 + 10) = 0;
       *(v6 + 9) = 0;
       *(v6 + 5) = 1;
       *(v6 + 36) = 0;
-      v7 = [MEMORY[0x1E698D708] sharedInstance];
-      v6[141] = v7 == v5;
+      mEMORY[0x1E698D708] = [MEMORY[0x1E698D708] sharedInstance];
+      v6[141] = mEMORY[0x1E698D708] == sessionCopy;
 
       v6[142] = 0;
       *(v6 + 37) = 1065353216;

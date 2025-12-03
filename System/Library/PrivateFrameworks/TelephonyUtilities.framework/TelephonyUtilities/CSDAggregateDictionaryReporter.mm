@@ -1,6 +1,6 @@
 @interface CSDAggregateDictionaryReporter
 - (CSDAggregateDictionaryReporter)init;
-- (void)reportingController:(id)a3 relayMessageReceived:(id)a4 fromPairedDevice:(BOOL)a5;
+- (void)reportingController:(id)controller relayMessageReceived:(id)received fromPairedDevice:(BOOL)device;
 @end
 
 @implementation CSDAggregateDictionaryReporter
@@ -20,15 +20,15 @@
   return v3;
 }
 
-- (void)reportingController:(id)a3 relayMessageReceived:(id)a4 fromPairedDevice:(BOOL)a5
+- (void)reportingController:(id)controller relayMessageReceived:(id)received fromPairedDevice:(BOOL)device
 {
-  v5 = a5;
-  v7 = a4;
-  if (v5)
+  deviceCopy = device;
+  receivedCopy = received;
+  if (deviceCopy)
   {
-    v22 = v7;
-    [v7 messageSendTime];
-    v7 = v22;
+    v22 = receivedCopy;
+    [receivedCopy messageSendTime];
+    receivedCopy = v22;
     if (v8 != 0.0)
     {
       v9 = +[NSDate date];
@@ -38,27 +38,27 @@
       [v22 messageSendTime];
       v13 = v12;
       v14 = TUBundleIdentifierCallServicesDaemon;
-      v15 = [v22 typeString];
+      typeString = [v22 typeString];
       [v22 messageSendTime];
-      v17 = [NSMutableString stringWithFormat:@"%@.%@.%f", v14, v15, v16];
+      v17 = [NSMutableString stringWithFormat:@"%@.%@.%f", v14, typeString, v16];
 
-      v18 = [v22 uniqueProxyIdentifier];
+      uniqueProxyIdentifier = [v22 uniqueProxyIdentifier];
 
-      if (v18)
+      if (uniqueProxyIdentifier)
       {
-        v19 = [v22 uniqueProxyIdentifier];
-        [v17 appendFormat:@".%@", v19];
+        uniqueProxyIdentifier2 = [v22 uniqueProxyIdentifier];
+        [v17 appendFormat:@".%@", uniqueProxyIdentifier2];
       }
 
-      v20 = [(CSDAggregateDictionaryReporter *)self block];
+      block = [(CSDAggregateDictionaryReporter *)self block];
 
-      if (v20)
+      if (block)
       {
-        v21 = [(CSDAggregateDictionaryReporter *)self block];
-        (v21)[2](v21, v17, v11 - v13);
+        block2 = [(CSDAggregateDictionaryReporter *)self block];
+        (block2)[2](block2, v17, v11 - v13);
       }
 
-      v7 = v22;
+      receivedCopy = v22;
     }
   }
 }

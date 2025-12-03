@@ -18,10 +18,10 @@
     v9 = a5;
   }
 
-  v10 = [a1 photoLibrary];
-  v11 = [v10 vcp_isSyndicationLibrary];
+  photoLibrary = [self photoLibrary];
+  vcp_isSyndicationLibrary = [photoLibrary vcp_isSyndicationLibrary];
 
-  if ((v11 & 1) == 0 && (a3 == 7 || a3 == 2))
+  if ((vcp_isSyndicationLibrary & 1) == 0 && (a3 == 7 || a3 == 2))
   {
     if (a5 >= 4)
     {

@@ -1,16 +1,16 @@
 @interface PageHeaderContentViewController
-- (_TtC16MusicApplication31PageHeaderContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MusicApplication31PageHeaderContentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation PageHeaderContentViewController
 
-- (_TtC16MusicApplication31PageHeaderContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication31PageHeaderContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_AB92A0();
     v7 = v6;
@@ -22,35 +22,35 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return PageHeaderContentViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return PageHeaderContentViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   PageHeaderContentViewController.loadView()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   PageHeaderContentViewController.viewDidLayoutSubviews()();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   PageHeaderContentViewController.viewDidLoad()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   PageHeaderContentViewController.traitCollectionDidChange(_:)(v9);
 }
 

@@ -2,10 +2,10 @@
 + (id)commonReachability;
 - (DNDSReachability)init;
 - (void)_informDelegates;
-- (void)_updateHandlerForPath:(id)a3;
-- (void)addDelegate:(id)a3;
+- (void)_updateHandlerForPath:(id)path;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)removeDelegate:(id)a3;
+- (void)removeDelegate:(id)delegate;
 - (void)setupPathMonitor;
 @end
 
@@ -31,9 +31,9 @@
     v9 = *(v2 + 2);
     *(v2 + 2) = v8;
 
-    v10 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v11 = *(v2 + 5);
-    *(v2 + 5) = v10;
+    *(v2 + 5) = weakObjectsHashTable;
 
     *(v2 + 10) = 0;
     [v2 setupPathMonitor];
@@ -65,24 +65,24 @@ uint64_t __38__DNDSReachability_commonReachability__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(DNDSReachability *)self debounceTimer];
-  dispatch_resume(v3);
+  debounceTimer = [(DNDSReachability *)self debounceTimer];
+  dispatch_resume(debounceTimer);
 
-  v4 = [(DNDSReachability *)self debounceTimer];
-  dispatch_source_cancel(v4);
+  debounceTimer2 = [(DNDSReachability *)self debounceTimer];
+  dispatch_source_cancel(debounceTimer2);
 
   v5.receiver = self;
   v5.super_class = DNDSReachability;
   [(DNDSReachability *)&v5 dealloc];
 }
 
-- (void)_updateHandlerForPath:(id)a3
+- (void)_updateHandlerForPath:(id)path
 {
-  v4 = a3;
-  v5 = [(DNDSReachability *)self queue];
-  dispatch_assert_queue_V2(v5);
+  pathCopy = path;
+  queue = [(DNDSReachability *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  status = nw_path_get_status(v4);
+  status = nw_path_get_status(pathCopy);
   [(DNDSReachability *)self _setReachable:(status & 0xFFFFFFFD) == 1];
   if (![(DNDSReachability *)self isInitialized])
   {
@@ -94,17 +94,17 @@ uint64_t __38__DNDSReachability_commonReachability__block_invoke()
 
 - (void)setupPathMonitor
 {
-  v3 = [(DNDSReachability *)self pathMonitor];
+  pathMonitor = [(DNDSReachability *)self pathMonitor];
   update_handler[0] = MEMORY[0x277D85DD0];
   update_handler[1] = 3221225472;
   update_handler[2] = __36__DNDSReachability_setupPathMonitor__block_invoke;
   update_handler[3] = &unk_278F8AAA0;
   update_handler[4] = self;
-  nw_path_monitor_set_update_handler(v3, update_handler);
+  nw_path_monitor_set_update_handler(pathMonitor, update_handler);
 
-  v4 = [(DNDSReachability *)self pathMonitor];
-  v5 = [(DNDSReachability *)self queue];
-  nw_path_monitor_set_queue(v4, v5);
+  pathMonitor2 = [(DNDSReachability *)self pathMonitor];
+  queue = [(DNDSReachability *)self queue];
+  nw_path_monitor_set_queue(pathMonitor2, queue);
 
   debounceTimer = self->_debounceTimer;
   v7[0] = MEMORY[0x277D85DD0];
@@ -115,18 +115,18 @@ uint64_t __38__DNDSReachability_commonReachability__block_invoke()
   dispatch_source_set_event_handler(debounceTimer, v7);
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(DNDSReachability *)self queue];
+  delegateCopy = delegate;
+  queue = [(DNDSReachability *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__DNDSReachability_addDelegate___block_invoke;
   v7[3] = &unk_278F89F48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_sync(queue, v7);
 }
 
 void __32__DNDSReachability_addDelegate___block_invoke(uint64_t a1)
@@ -157,18 +157,18 @@ void __32__DNDSReachability_addDelegate___block_invoke(uint64_t a1)
   [v9 addObject:*(a1 + 40)];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(DNDSReachability *)self queue];
+  delegateCopy = delegate;
+  queue = [(DNDSReachability *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__DNDSReachability_removeDelegate___block_invoke;
   v7[3] = &unk_278F89F48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_sync(queue, v7);
 }
 
 void __35__DNDSReachability_removeDelegate___block_invoke(uint64_t a1)
@@ -196,20 +196,20 @@ void __35__DNDSReachability_removeDelegate___block_invoke(uint64_t a1)
 - (void)_informDelegates
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(DNDSReachability *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(DNDSReachability *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(DNDSReachability *)self isReachable];
-  v5 = [(DNDSReachability *)self lastInformedReachability];
+  isReachable = [(DNDSReachability *)self isReachable];
+  lastInformedReachability = [(DNDSReachability *)self lastInformedReachability];
   v6 = DNDSLogSystemState;
   v7 = os_log_type_enabled(DNDSLogSystemState, OS_LOG_TYPE_DEFAULT);
-  if (v4 == v5)
+  if (isReachable == lastInformedReachability)
   {
     if (v7)
     {
       v16 = MEMORY[0x277CCABB0];
       v17 = v6;
-      v18 = [v16 numberWithBool:v4];
+      v18 = [v16 numberWithBool:isReachable];
       *buf = 138412290;
       v26 = v18;
       _os_log_impl(&dword_24912E000, v17, OS_LOG_TYPE_DEFAULT, "Debounced reachability state (%@) did not change. Ignoring.", buf, 0xCu);
@@ -222,19 +222,19 @@ void __35__DNDSReachability_removeDelegate___block_invoke(uint64_t a1)
     {
       v8 = MEMORY[0x277CCABB0];
       v9 = v6;
-      v10 = [v8 numberWithBool:v4];
+      v10 = [v8 numberWithBool:isReachable];
       *buf = 138412290;
       v26 = v10;
       _os_log_impl(&dword_24912E000, v9, OS_LOG_TYPE_DEFAULT, "Informing delegates of debounced reachability state: %@", buf, 0xCu);
     }
 
-    [(DNDSReachability *)self setLastInformedReachability:v4];
+    [(DNDSReachability *)self setLastInformedReachability:isReachable];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v11 = [(DNDSReachability *)self delegates];
-    v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    delegates = [(DNDSReachability *)self delegates];
+    v12 = [delegates countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -246,14 +246,14 @@ void __35__DNDSReachability_removeDelegate___block_invoke(uint64_t a1)
         {
           if (*v21 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(delegates);
           }
 
-          [*(*(&v20 + 1) + 8 * v15++) reachabilityChangedTo:v4];
+          [*(*(&v20 + 1) + 8 * v15++) reachabilityChangedTo:isReachable];
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v13 = [delegates countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v13);

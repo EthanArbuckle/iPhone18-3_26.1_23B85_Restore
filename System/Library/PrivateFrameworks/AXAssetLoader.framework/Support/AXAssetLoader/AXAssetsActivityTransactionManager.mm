@@ -1,11 +1,11 @@
 @interface AXAssetsActivityTransactionManager
 - (AXAssetsActivityTransactionManager)init;
 - (AXAssetsActivityTransactionManagerDelegate)delegate;
-- (void)_queue_addActiveReason:(id)a3;
+- (void)_queue_addActiveReason:(id)reason;
 - (void)_queue_handleInactiveTimerFired;
-- (void)_queue_removeActiveReason:(id)a3;
-- (void)simpleTaskFinished:(id)a3;
-- (void)simpleTaskStarted:(id)a3;
+- (void)_queue_removeActiveReason:(id)reason;
+- (void)simpleTaskFinished:(id)finished;
+- (void)simpleTaskStarted:(id)started;
 @end
 
 @implementation AXAssetsActivityTransactionManager
@@ -36,43 +36,43 @@
   return v2;
 }
 
-- (void)simpleTaskStarted:(id)a3
+- (void)simpleTaskStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006430;
   v7[3] = &unk_1000187D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = startedCopy;
+  v6 = startedCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)simpleTaskFinished:(id)a3
+- (void)simpleTaskFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000064D4;
   v7[3] = &unk_1000187D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = finishedCopy;
+  v6 = finishedCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_queue_addActiveReason:(id)a3
+- (void)_queue_addActiveReason:(id)reason
 {
-  v4 = a3;
-  if ([(NSMutableArray *)self->_queue_activeReasons containsObject:v4])
+  reasonCopy = reason;
+  if ([(NSMutableArray *)self->_queue_activeReasons containsObject:reasonCopy])
   {
     v5 = AXLogAssetDaemon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      sub_10000DCF4(v4, v5);
+      sub_10000DCF4(reasonCopy, v5);
     }
 
 LABEL_4:
@@ -82,13 +82,13 @@ LABEL_4:
 
   [(AXDispatchTimer *)self->_queue_activityTimer cancel];
   v6 = [(NSMutableArray *)self->_queue_activeReasons count];
-  [(NSMutableArray *)self->_queue_activeReasons addObject:v4];
+  [(NSMutableArray *)self->_queue_activeReasons addObject:reasonCopy];
   v7 = AXLogAssetDaemon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = [(NSMutableArray *)self->_queue_activeReasons count];
     v10 = 138412546;
-    v11 = v4;
+    v11 = reasonCopy;
     v12 = 2048;
     v13 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "AXATM: Added active reason: '%@'. Reason count=%ld", &v10, 0x16u);
@@ -111,18 +111,18 @@ LABEL_4:
 LABEL_9:
 }
 
-- (void)_queue_removeActiveReason:(id)a3
+- (void)_queue_removeActiveReason:(id)reason
 {
-  v4 = a3;
-  if (([(NSMutableArray *)self->_queue_activeReasons containsObject:v4]& 1) != 0)
+  reasonCopy = reason;
+  if (([(NSMutableArray *)self->_queue_activeReasons containsObject:reasonCopy]& 1) != 0)
   {
-    [(NSMutableArray *)self->_queue_activeReasons removeObject:v4];
+    [(NSMutableArray *)self->_queue_activeReasons removeObject:reasonCopy];
     v5 = AXLogAssetDaemon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = [(NSMutableArray *)self->_queue_activeReasons count];
       *buf = 138412546;
-      v12 = v4;
+      v12 = reasonCopy;
       v13 = 2048;
       v14 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "AXATM: Removed active reason: '%@'. Reason count=%ld", buf, 0x16u);
@@ -153,7 +153,7 @@ LABEL_9:
     v9 = AXLogAssetDaemon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_10000DD6C(v4, v9);
+      sub_10000DD6C(reasonCopy, v9);
     }
   }
 }
@@ -169,13 +169,13 @@ LABEL_9:
 
   self->_queue_transitioningToIdle = 1;
   objc_initWeak(buf, self);
-  v4 = [(AXAssetsActivityTransactionManager *)self delegate];
+  delegate = [(AXAssetsActivityTransactionManager *)self delegate];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100006988;
   v5[3] = &unk_100018788;
   objc_copyWeak(&v6, buf);
-  [v4 willBecomeIdle:self completion:v5];
+  [delegate willBecomeIdle:self completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(buf);

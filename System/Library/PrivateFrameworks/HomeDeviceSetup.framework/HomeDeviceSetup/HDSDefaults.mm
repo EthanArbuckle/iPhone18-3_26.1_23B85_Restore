@@ -1,10 +1,10 @@
 @interface HDSDefaults
 + (BOOL)sysDropProfileInstalled;
-+ (double)getDoubleForKey:(id)a3 defaultValue:(double)a4;
++ (double)getDoubleForKey:(id)key defaultValue:(double)value;
 + (id)sharedDefaults;
 + (id)sharedInstance;
-+ (int64_t)getBoolForKey:(id)a3 defaultValue:(BOOL)a4;
-+ (int64_t)getIntegerForKey:(id)a3 defaultValue:(int64_t)a4;
++ (int64_t)getBoolForKey:(id)key defaultValue:(BOOL)value;
++ (int64_t)getIntegerForKey:(id)key defaultValue:(int64_t)value;
 + (unsigned)sysDropBuildMode;
 - (HDSDefaults)init;
 @end
@@ -50,17 +50,17 @@ uint64_t __29__HDSDefaults_sharedInstance__block_invoke()
 + (id)sharedDefaults
 {
   v2 = +[HDSDefaults sharedInstance];
-  v3 = [v2 defaults];
+  defaults = [v2 defaults];
 
-  return v3;
+  return defaults;
 }
 
 + (unsigned)sysDropBuildMode
 {
-  result = [a1 getIntegerForKey:@"SysDropBuildMode" defaultValue:0];
+  result = [self getIntegerForKey:@"SysDropBuildMode" defaultValue:0];
   if (!result)
   {
-    if ((isInternalBuild() & 1) != 0 || ![a1 sysDropProfileInstalled])
+    if ((isInternalBuild() & 1) != 0 || ![self sysDropProfileInstalled])
     {
       result = isInternalBuild();
       if (result)
@@ -68,7 +68,7 @@ uint64_t __29__HDSDefaults_sharedInstance__block_invoke()
         result = _os_feature_enabled_impl();
         if (result)
         {
-          return [a1 sysDropEnabled];
+          return [self sysDropEnabled];
         }
       }
     }
@@ -90,8 +90,8 @@ uint64_t __29__HDSDefaults_sharedInstance__block_invoke()
 + (BOOL)sysDropProfileInstalled
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 installedProfilesWithFilterFlags:3];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] installedProfilesWithFilterFlags:3];
 
   v14 = 0u;
   v15 = 0u;
@@ -111,9 +111,9 @@ uint64_t __29__HDSDefaults_sharedInstance__block_invoke()
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) identifier];
-        v9 = v8;
-        if (v8 && (([v8 isEqualToString:@"com.apple.homedevicesetup.sysdrop"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"com.apple.homedevicesetup.sysdrop.prod")))
+        identifier = [*(*(&v12 + 1) + 8 * i) identifier];
+        v9 = identifier;
+        if (identifier && (([identifier isEqualToString:@"com.apple.homedevicesetup.sysdrop"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"com.apple.homedevicesetup.sysdrop.prod")))
         {
 
           LOBYTE(v5) = 1;
@@ -137,48 +137,48 @@ LABEL_13:
   return v5;
 }
 
-+ (int64_t)getIntegerForKey:(id)a3 defaultValue:(int64_t)a4
++ (int64_t)getIntegerForKey:(id)key defaultValue:(int64_t)value
 {
-  v6 = a3;
-  v7 = [a1 sharedDefaults];
-  v8 = [v7 objectForKey:v6];
+  keyCopy = key;
+  sharedDefaults = [self sharedDefaults];
+  v8 = [sharedDefaults objectForKey:keyCopy];
 
   if (v8)
   {
-    a4 = [v7 integerForKey:v6];
+    value = [sharedDefaults integerForKey:keyCopy];
   }
 
-  return a4;
+  return value;
 }
 
-+ (double)getDoubleForKey:(id)a3 defaultValue:(double)a4
++ (double)getDoubleForKey:(id)key defaultValue:(double)value
 {
-  v6 = a3;
-  v7 = [a1 sharedDefaults];
-  v8 = [v7 objectForKey:v6];
+  keyCopy = key;
+  sharedDefaults = [self sharedDefaults];
+  v8 = [sharedDefaults objectForKey:keyCopy];
 
   if (v8)
   {
-    [v7 doubleForKey:v6];
-    a4 = v9;
+    [sharedDefaults doubleForKey:keyCopy];
+    value = v9;
   }
 
-  return a4;
+  return value;
 }
 
-+ (int64_t)getBoolForKey:(id)a3 defaultValue:(BOOL)a4
++ (int64_t)getBoolForKey:(id)key defaultValue:(BOOL)value
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [a1 sharedDefaults];
-  v8 = [v7 objectForKey:v6];
+  valueCopy = value;
+  keyCopy = key;
+  sharedDefaults = [self sharedDefaults];
+  v8 = [sharedDefaults objectForKey:keyCopy];
 
   if (v8)
   {
-    v4 = [v7 BOOLForKey:v6];
+    valueCopy = [sharedDefaults BOOLForKey:keyCopy];
   }
 
-  return v4;
+  return valueCopy;
 }
 
 @end

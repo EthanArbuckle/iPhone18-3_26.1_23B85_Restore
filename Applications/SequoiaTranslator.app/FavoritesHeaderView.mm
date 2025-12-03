@@ -1,11 +1,11 @@
 @interface FavoritesHeaderView
-- (_TtC17SequoiaTranslator19FavoritesHeaderView)initWithCoder:(id)a3;
+- (_TtC17SequoiaTranslator19FavoritesHeaderView)initWithCoder:(id)coder;
 - (void)buttonPressed;
 @end
 
 @implementation FavoritesHeaderView
 
-- (_TtC17SequoiaTranslator19FavoritesHeaderView)initWithCoder:(id)a3
+- (_TtC17SequoiaTranslator19FavoritesHeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC17SequoiaTranslator19FavoritesHeaderView_label;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(UILabel) initWithFrame:{0.0, 0.0, 0.0, 0.0}];
@@ -24,7 +24,7 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator19FavoritesHeaderView_buttonAction);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_10001AD18(v2);
     v2(v4);
 

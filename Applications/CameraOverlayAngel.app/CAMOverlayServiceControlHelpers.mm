@@ -1,5 +1,5 @@
 @interface CAMOverlayServiceControlHelpers
-+ (id)interpretControl:(id)a3;
++ (id)interpretControl:(id)control;
 - (CAMOverlayServiceControlHelpers)init;
 @end
 
@@ -12,9 +12,9 @@
   return [(CAMOverlayServiceControlHelpers *)&v3 init];
 }
 
-+ (id)interpretControl:(id)a3
++ (id)interpretControl:(id)control
 {
-  v3 = a3;
+  controlCopy = control;
   v4 = sub_10002D944();
 
   return v4;

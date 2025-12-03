@@ -1,13 +1,13 @@
 @interface LegacyScoreboardView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 @end
 
 @implementation LegacyScoreboardView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v5 = self;
-  sub_1E3AAB2B4(a4);
+  selfCopy = self;
+  sub_1E3AAB2B4(only);
   v7 = v6;
   v9 = v8;
 

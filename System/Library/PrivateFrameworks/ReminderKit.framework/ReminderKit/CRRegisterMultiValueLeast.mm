@@ -11,9 +11,9 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(CRRegisterMultiValue *)self values];
+  values = [(CRRegisterMultiValue *)self values];
   v3 = 0;
-  v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [values countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -23,7 +23,7 @@
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(values);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -35,7 +35,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [values countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);

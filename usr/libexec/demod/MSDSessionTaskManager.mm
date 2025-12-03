@@ -1,10 +1,10 @@
 @interface MSDSessionTaskManager
 - (MSDSessionTaskManager)init;
-- (id)getSessionTask:(id)a3;
-- (id)getTaskInState:(int)a3;
-- (void)addSessionTask:(id)a3;
+- (id)getSessionTask:(id)task;
+- (id)getTaskInState:(int)state;
+- (void)addSessionTask:(id)task;
 - (void)cancelAndRemoveAllSessionTask;
-- (void)removeSessionTask:(id)a3;
+- (void)removeSessionTask:(id)task;
 @end
 
 @implementation MSDSessionTaskManager
@@ -26,37 +26,37 @@
   return v2;
 }
 
-- (id)getSessionTask:(id)a3
+- (id)getSessionTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   os_unfair_lock_lock(&self->_sharedStoreLock);
-  v5 = [(MSDSessionTaskManager *)self sharedStore];
-  v6 = [v5 objectForKey:v4];
+  sharedStore = [(MSDSessionTaskManager *)self sharedStore];
+  v6 = [sharedStore objectForKey:taskCopy];
 
   os_unfair_lock_unlock(&self->_sharedStoreLock);
 
   return v6;
 }
 
-- (void)addSessionTask:(id)a3
+- (void)addSessionTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   os_unfair_lock_lock(&self->_sharedStoreLock);
-  v5 = [(MSDSessionTaskManager *)self sharedStore];
-  v6 = [v4 task];
-  [v5 setObject:v4 forKey:v6];
+  sharedStore = [(MSDSessionTaskManager *)self sharedStore];
+  task = [taskCopy task];
+  [sharedStore setObject:taskCopy forKey:task];
 
   os_unfair_lock_unlock(&self->_sharedStoreLock);
 }
 
-- (void)removeSessionTask:(id)a3
+- (void)removeSessionTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   os_unfair_lock_lock(&self->_sharedStoreLock);
-  v5 = [(MSDSessionTaskManager *)self sharedStore];
-  v6 = [v4 task];
+  sharedStore = [(MSDSessionTaskManager *)self sharedStore];
+  task = [taskCopy task];
 
-  [v5 removeObjectForKey:v6];
+  [sharedStore removeObjectForKey:task];
 
   os_unfair_lock_unlock(&self->_sharedStoreLock);
 }
@@ -68,8 +68,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(MSDSessionTaskManager *)self sharedStore];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sharedStore = [(MSDSessionTaskManager *)self sharedStore];
+  v4 = [sharedStore countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -81,27 +81,27 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sharedStore);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
-        v9 = [(MSDSessionTaskManager *)self sharedStore];
-        v10 = [v9 objectForKey:v8];
+        sharedStore2 = [(MSDSessionTaskManager *)self sharedStore];
+        v10 = [sharedStore2 objectForKey:v8];
 
         if (![v10 state])
         {
-          v11 = [v10 task];
-          [v11 cancel];
+          task = [v10 task];
+          [task cancel];
         }
 
-        v12 = [(MSDSessionTaskManager *)self sharedStore];
-        [v12 removeObjectForKey:v8];
+        sharedStore3 = [(MSDSessionTaskManager *)self sharedStore];
+        [sharedStore3 removeObjectForKey:v8];
 
         v7 = v7 + 1;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [sharedStore countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -110,7 +110,7 @@
   os_unfair_lock_unlock(&self->_sharedStoreLock);
 }
 
-- (id)getTaskInState:(int)a3
+- (id)getTaskInState:(int)state
 {
   v5 = objc_alloc_init(NSMutableArray);
   os_unfair_lock_lock(&self->_sharedStoreLock);
@@ -118,8 +118,8 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(MSDSessionTaskManager *)self sharedStore];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  sharedStore = [(MSDSessionTaskManager *)self sharedStore];
+  v7 = [sharedStore countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -130,20 +130,20 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sharedStore);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [(MSDSessionTaskManager *)self sharedStore];
-        v13 = [v12 objectForKey:v11];
+        sharedStore2 = [(MSDSessionTaskManager *)self sharedStore];
+        v13 = [sharedStore2 objectForKey:v11];
 
-        if ([v13 state] == a3)
+        if ([v13 state] == state)
         {
           [v5 addObject:v13];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [sharedStore countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);

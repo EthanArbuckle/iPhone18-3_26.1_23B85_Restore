@@ -1,27 +1,27 @@
 @interface HMDeviceSetupOperationBase
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (id)logCategory;
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
 - (HMAccessory)accessory;
 - (HMDeviceSetupOperationBase)init;
-- (HMDeviceSetupOperationBase)initWithSessionTransport:(id)a3;
-- (HMDeviceSetupOperationBase)initWithSessionTransport:(id)a3 sessionIdentifier:(id)a4;
-- (HMDeviceSetupOperationBase)initWithSessionTransport:(id)a3 setupSessionFactory:(id)a4;
+- (HMDeviceSetupOperationBase)initWithSessionTransport:(id)transport;
+- (HMDeviceSetupOperationBase)initWithSessionTransport:(id)transport sessionIdentifier:(id)identifier;
+- (HMDeviceSetupOperationBase)initWithSessionTransport:(id)transport setupSessionFactory:(id)factory;
 - (HMDeviceSetupOperationTransport)sessionTransport;
 - (NSError)error;
 - (id)logIdentifier;
 - (void)cancel;
-- (void)cancelWithError:(id)a3;
+- (void)cancelWithError:(id)error;
 - (void)dealloc;
 - (void)finish;
-- (void)setAccessory:(id)a3;
-- (void)setError:(id)a3;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
-- (void)setQualityOfService:(int64_t)a3;
-- (void)setupSession:(id)a3 didCloseWithError:(id)a4;
-- (void)setupSession:(id)a3 didReceiveExchangeData:(id)a4 completionHandler:(id)a5;
+- (void)setAccessory:(id)accessory;
+- (void)setError:(id)error;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
+- (void)setQualityOfService:(int64_t)service;
+- (void)setupSession:(id)session didCloseWithError:(id)error;
+- (void)setupSession:(id)session didReceiveExchangeData:(id)data completionHandler:(id)handler;
 - (void)start;
 @end
 
@@ -36,28 +36,28 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDeviceSetupOperationBase *)self setupSession];
-  v3 = [v2 identifier];
-  v4 = [v3 UUIDString];
+  setupSession = [(HMDeviceSetupOperationBase *)self setupSession];
+  identifier = [setupSession identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (void)setupSession:(id)a3 didReceiveExchangeData:(id)a4 completionHandler:(id)a5
+- (void)setupSession:(id)session didReceiveExchangeData:(id)data completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(HMDeviceSetupOperationBase *)self clientQueue];
+  dataCopy = data;
+  handlerCopy = handler;
+  clientQueue = [(HMDeviceSetupOperationBase *)self clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__HMDeviceSetupOperationBase_setupSession_didReceiveExchangeData_completionHandler___block_invoke;
   block[3] = &unk_1E754E0F8;
-  v13 = v7;
-  v14 = v8;
+  v13 = dataCopy;
+  v14 = handlerCopy;
   block[4] = self;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, block);
+  v10 = dataCopy;
+  v11 = handlerCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __84__HMDeviceSetupOperationBase_setupSession_didReceiveExchangeData_completionHandler___block_invoke(uint64_t a1)
@@ -124,24 +124,24 @@ uint64_t __84__HMDeviceSetupOperationBase_setupSession_didReceiveExchangeData_co
   return result;
 }
 
-- (void)setupSession:(id)a3 didCloseWithError:(id)a4
+- (void)setupSession:(id)session didCloseWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDeviceSetupOperationBase *)self clientQueue];
-  dispatch_activate(v8);
+  sessionCopy = session;
+  errorCopy = error;
+  clientQueue = [(HMDeviceSetupOperationBase *)self clientQueue];
+  dispatch_activate(clientQueue);
 
-  v9 = [(HMDeviceSetupOperationBase *)self clientQueue];
+  clientQueue2 = [(HMDeviceSetupOperationBase *)self clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__HMDeviceSetupOperationBase_setupSession_didCloseWithError___block_invoke;
   block[3] = &unk_1E754E5E8;
-  v13 = v7;
-  v14 = self;
-  v15 = v6;
-  v10 = v6;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = errorCopy;
+  selfCopy = self;
+  v15 = sessionCopy;
+  v10 = sessionCopy;
+  v11 = errorCopy;
+  dispatch_async(clientQueue2, block);
 }
 
 void __61__HMDeviceSetupOperationBase_setupSession_didCloseWithError___block_invoke(uint64_t a1)
@@ -230,21 +230,21 @@ void __61__HMDeviceSetupOperationBase_setupSession_didCloseWithError___block_inv
   }
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HMDeviceSetupOperationBase *)self clientQueue];
-  dispatch_activate(v5);
+  errorCopy = error;
+  clientQueue = [(HMDeviceSetupOperationBase *)self clientQueue];
+  dispatch_activate(clientQueue);
 
-  v6 = [(HMDeviceSetupOperationBase *)self clientQueue];
+  clientQueue2 = [(HMDeviceSetupOperationBase *)self clientQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__HMDeviceSetupOperationBase_cancelWithError___block_invoke;
   v8[3] = &unk_1E754E5C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = errorCopy;
+  v7 = errorCopy;
+  dispatch_async(clientQueue2, v8);
 }
 
 void __46__HMDeviceSetupOperationBase_cancelWithError___block_invoke(uint64_t a1)
@@ -304,7 +304,7 @@ void __46__HMDeviceSetupOperationBase_cancelWithError___block_invoke(uint64_t a1
   if ([(HMDeviceSetupOperationBase *)self isExecuting])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -321,7 +321,7 @@ void __46__HMDeviceSetupOperationBase_cancelWithError___block_invoke(uint64_t a1
   if (([(HMDeviceSetupOperationBase *)self isReady]& 1) == 0)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -340,16 +340,16 @@ LABEL_9:
     objc_exception_throw(*MEMORY[0x1E695D940]);
   }
 
-  v3 = [(HMDeviceSetupOperationBase *)self clientQueue];
-  dispatch_activate(v3);
+  clientQueue = [(HMDeviceSetupOperationBase *)self clientQueue];
+  dispatch_activate(clientQueue);
 
-  v4 = [(HMDeviceSetupOperationBase *)self clientQueue];
+  clientQueue2 = [(HMDeviceSetupOperationBase *)self clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __35__HMDeviceSetupOperationBase_start__block_invoke;
   block[3] = &unk_1E754E2A8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(clientQueue2, block);
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -403,12 +403,12 @@ void __35__HMDeviceSetupOperationBase_start__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAccessory:(id)a3
+- (void)setAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   os_unfair_lock_lock_with_options();
   accessory = self->_accessory;
-  self->_accessory = v4;
+  self->_accessory = accessoryCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -422,19 +422,19 @@ void __35__HMDeviceSetupOperationBase_start__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setQualityOfService:(int64_t)a3
+- (void)setQualityOfService:(int64_t)service
 {
   v7.receiver = self;
   v7.super_class = HMDeviceSetupOperationBase;
   [(HMDeviceSetupOperationBase *)&v7 setQualityOfService:?];
   clientQueue = self->_clientQueue;
-  v6 = dispatch_get_global_queue(a3, 0);
+  v6 = dispatch_get_global_queue(service, 0);
   dispatch_set_target_queue(clientQueue, v6);
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = [a3 copy];
+  v4 = [error copy];
   os_unfair_lock_lock_with_options();
   error = self->_error;
   self->_error = v4;
@@ -458,11 +458,11 @@ void __35__HMDeviceSetupOperationBase_start__block_invoke(uint64_t a1)
   [(HMDeviceSetupOperationBase *)self setFinished:1];
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
   [(HMDeviceSetupOperationBase *)self willChangeValueForKey:@"isFinished"];
   os_unfair_lock_lock_with_options();
-  self->_finished = a3;
+  self->_finished = finished;
   os_unfair_lock_unlock(&self->_lock);
 
   [(HMDeviceSetupOperationBase *)self didChangeValueForKey:@"isFinished"];
@@ -476,11 +476,11 @@ void __35__HMDeviceSetupOperationBase_start__block_invoke(uint64_t a1)
   return finished;
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
   [(HMDeviceSetupOperationBase *)self willChangeValueForKey:@"isExecuting"];
   os_unfair_lock_lock_with_options();
-  self->_executing = a3;
+  self->_executing = executing;
   os_unfair_lock_unlock(&self->_lock);
 
   [(HMDeviceSetupOperationBase *)self didChangeValueForKey:@"isExecuting"];
@@ -496,18 +496,18 @@ void __35__HMDeviceSetupOperationBase_start__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(HMDeviceSetupOperationBase *)self clientQueue];
-  dispatch_activate(v3);
+  clientQueue = [(HMDeviceSetupOperationBase *)self clientQueue];
+  dispatch_activate(clientQueue);
 
   v4.receiver = self;
   v4.super_class = HMDeviceSetupOperationBase;
   [(HMDeviceSetupOperationBase *)&v4 dealloc];
 }
 
-- (HMDeviceSetupOperationBase)initWithSessionTransport:(id)a3 setupSessionFactory:(id)a4
+- (HMDeviceSetupOperationBase)initWithSessionTransport:(id)transport setupSessionFactory:(id)factory
 {
-  v6 = a3;
-  v7 = a4;
+  transportCopy = transport;
+  factoryCopy = factory;
   v22.receiver = self;
   v22.super_class = HMDeviceSetupOperationBase;
   v8 = [(HMDeviceSetupOperationBase *)&v22 init];
@@ -515,37 +515,37 @@ void __35__HMDeviceSetupOperationBase_start__block_invoke(uint64_t a1)
   if (v8)
   {
     v10 = HMDispatchQueueNameString(v8, 0);
-    v11 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     v12 = dispatch_queue_attr_make_initially_inactive(0);
-    v13 = dispatch_queue_create(v11, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     clientQueue = v9->_clientQueue;
     v9->_clientQueue = v13;
 
-    objc_storeWeak(&v9->_sessionTransport, v6);
-    v15 = v7[2](v7, v9);
+    objc_storeWeak(&v9->_sessionTransport, transportCopy);
+    v15 = factoryCopy[2](factoryCopy, v9);
     setupSession = v9->_setupSession;
     v9->_setupSession = v15;
 
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [(HMDeviceSetupSession *)v9->_setupSession identifier];
-    v19 = [v18 UUIDString];
-    v20 = [v17 stringWithFormat:@"DeviceSetupOperation (%@)", v19];
+    identifier = [(HMDeviceSetupSession *)v9->_setupSession identifier];
+    uUIDString = [identifier UUIDString];
+    v20 = [v17 stringWithFormat:@"DeviceSetupOperation (%@)", uUIDString];
     [(HMDeviceSetupOperationBase *)v9 setName:v20];
   }
 
   return v9;
 }
 
-- (HMDeviceSetupOperationBase)initWithSessionTransport:(id)a3 sessionIdentifier:(id)a4
+- (HMDeviceSetupOperationBase)initWithSessionTransport:(id)transport sessionIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __73__HMDeviceSetupOperationBase_initWithSessionTransport_sessionIdentifier___block_invoke;
   v10[3] = &unk_1E7549330;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(HMDeviceSetupOperationBase *)self initWithSessionTransport:a3 setupSessionFactory:v10];
+  v11 = identifierCopy;
+  v7 = identifierCopy;
+  v8 = [(HMDeviceSetupOperationBase *)self initWithSessionTransport:transport setupSessionFactory:v10];
 
   return v8;
 }
@@ -558,12 +558,12 @@ HMDeviceSetupSession *__73__HMDeviceSetupOperationBase_initWithSessionTransport_
   return v4;
 }
 
-- (HMDeviceSetupOperationBase)initWithSessionTransport:(id)a3
+- (HMDeviceSetupOperationBase)initWithSessionTransport:(id)transport
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [(HMDeviceSetupOperationBase *)self initWithSessionTransport:v5 sessionIdentifier:v6];
+  transportCopy = transport;
+  uUID = [v4 UUID];
+  v7 = [(HMDeviceSetupOperationBase *)self initWithSessionTransport:transportCopy sessionIdentifier:uUID];
 
   return v7;
 }
@@ -601,17 +601,17 @@ uint64_t __41__HMDeviceSetupOperationBase_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"executing"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"executing"])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"finished"] ^ 1;
+    v4 = [keyCopy isEqualToString:@"finished"] ^ 1;
   }
 
   return v4;

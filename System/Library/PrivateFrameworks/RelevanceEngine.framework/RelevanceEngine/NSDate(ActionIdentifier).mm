@@ -7,11 +7,11 @@
 - (uint64_t)re_actionIdentifierHashValue
 {
   v1 = MEMORY[0x277CCABB0];
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   v2 = [v1 numberWithDouble:?];
-  v3 = [v2 re_actionIdentifierHashValue];
+  re_actionIdentifierHashValue = [v2 re_actionIdentifierHashValue];
 
-  return v3;
+  return re_actionIdentifierHashValue;
 }
 
 @end

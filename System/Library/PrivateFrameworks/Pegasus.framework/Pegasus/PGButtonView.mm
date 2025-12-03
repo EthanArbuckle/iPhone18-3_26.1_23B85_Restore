@@ -1,76 +1,76 @@
 @interface PGButtonView
-+ (id)buttonWithDelegate:(id)a3 wantsGlassBackground:(BOOL)a4;
++ (id)buttonWithDelegate:(id)delegate wantsGlassBackground:(BOOL)background;
 - (BOOL)_shouldHitTest;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (NSString)text;
 - (PGButtonViewDelegate)delegate;
 - (UIColor)enabledTintColor;
 - (UIFont)font;
 - (UIPointerInteraction)pointerInteraction;
 - (UIViewPropertyAnimator)highlightAnimator;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_handleTouchDown:(id)a3;
-- (void)_handleTouchUpInside:(id)a3;
-- (void)_handleTouchUpOrCancel:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_handleTouchDown:(id)down;
+- (void)_handleTouchUpInside:(id)inside;
+- (void)_handleTouchUpOrCancel:(id)cancel;
 - (void)_updateForCircularAppearanceIfNeeded;
 - (void)_updateGlyphConfigurationIfNeeded;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAccessibilityIdentifier:(id)a3;
-- (void)setCircular:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFont:(id)a3;
-- (void)setGlyphSize:(double)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setSystemImageName:(id)a3;
-- (void)setText:(id)a3;
+- (void)setAccessibilityIdentifier:(id)identifier;
+- (void)setCircular:(BOOL)circular;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFont:(id)font;
+- (void)setGlyphSize:(double)size;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image;
+- (void)setSystemImageName:(id)name;
+- (void)setText:(id)text;
 - (void)sizeToFit;
 @end
 
 @implementation PGButtonView
 
-+ (id)buttonWithDelegate:(id)a3 wantsGlassBackground:(BOOL)a4
++ (id)buttonWithDelegate:(id)delegate wantsGlassBackground:(BOOL)background
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[a1 alloc] initWithFrame:v4 wantsGlassBackground:{0.0, 0.0, 44.0, 44.0}];
-  *(v7 + 440) = v4;
-  if (v4)
+  backgroundCopy = background;
+  delegateCopy = delegate;
+  v7 = [[self alloc] initWithFrame:backgroundCopy wantsGlassBackground:{0.0, 0.0, 44.0, 44.0}];
+  *(v7 + 440) = backgroundCopy;
+  if (backgroundCopy)
   {
     v8 = [[PGCABackdropLayerView alloc] initWithFrame:1 wantsGlassBackground:0.0, 0.0, 44.0, 44.0];
-    v9 = [v7 contentView];
-    [v9 insertSubview:v8 atIndex:0];
+    contentView = [v7 contentView];
+    [contentView insertSubview:v8 atIndex:0];
   }
 
-  v10 = [_PGButton buttonWithType:0 wantsGlassBackground:v4];
+  v10 = [_PGButton buttonWithType:0 wantsGlassBackground:backgroundCopy];
   v11 = *(v7 + 520);
   *(v7 + 520) = v10;
 
   [*(v7 + 520) setAdjustsImageWhenHighlighted:0];
   [*(v7 + 520) setButtonView:v7];
-  v12 = [v7 contentView];
-  [v12 addSubview:*(v7 + 520)];
+  contentView2 = [v7 contentView];
+  [contentView2 addSubview:*(v7 + 520)];
 
-  objc_storeWeak((v7 + 488), v6);
+  objc_storeWeak((v7 + 488), delegateCopy);
   [*(v7 + 520) addTarget:v7 action:sel__handleTouchUpInside_ forControlEvents:64];
   [*(v7 + 520) addTarget:v7 action:sel__handleTouchDown_ forControlEvents:1];
   [*(v7 + 520) addTarget:v7 action:sel__handleDragEnter_ forControlEvents:16];
   [*(v7 + 520) addTarget:v7 action:sel__handleDragExit_ forControlEvents:32];
   [*(v7 + 520) addTarget:v7 action:sel__handleTouchUpOrCancel_ forControlEvents:448];
   [v7 setEnabled:1];
-  v13 = [v7 actualButton];
-  v14 = [v7 actualButton];
-  [v14 contentEdgeInsets];
-  [v6 buttonView:v7 contentEdgeInsetsForProposedInsets:?];
+  actualButton = [v7 actualButton];
+  actualButton2 = [v7 actualButton];
+  [actualButton2 contentEdgeInsets];
+  [delegateCopy buttonView:v7 contentEdgeInsetsForProposedInsets:?];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  [v13 setContentEdgeInsets:{v16, v18, v20, v22}];
+  [actualButton setContentEdgeInsets:{v16, v18, v20, v22}];
   v23 = [objc_alloc(MEMORY[0x1E69DCDB0]) initWithDelegate:v7];
   [v7 setPointerInteraction:v23];
   [v7 addInteraction:v23];
@@ -86,58 +86,58 @@
   [(PGButtonView *)&v3 dealloc];
 }
 
-- (void)setAccessibilityIdentifier:(id)a3
+- (void)setAccessibilityIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = [(_PGButton *)self->_actualButton accessibilityIdentifier];
-  v5 = [v4 isEqualToString:v6];
+  identifierCopy = identifier;
+  accessibilityIdentifier = [(_PGButton *)self->_actualButton accessibilityIdentifier];
+  v5 = [accessibilityIdentifier isEqualToString:identifierCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(_PGButton *)self->_actualButton setAccessibilityIdentifier:v6];
+    [(_PGButton *)self->_actualButton setAccessibilityIdentifier:identifierCopy];
   }
 }
 
 - (NSString)text
 {
-  v2 = [(PGButtonView *)self actualButton];
-  v3 = [v2 titleForState:0];
+  actualButton = [(PGButtonView *)self actualButton];
+  v3 = [actualButton titleForState:0];
 
   return v3;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v15 = a3;
-  v4 = [(PGButtonView *)self text];
-  if (v4 == v15)
+  textCopy = text;
+  text = [(PGButtonView *)self text];
+  if (text == textCopy)
   {
   }
 
   else
   {
-    v5 = [(PGButtonView *)self text];
-    v6 = [v5 isEqualToString:v15];
+    text2 = [(PGButtonView *)self text];
+    v6 = [text2 isEqualToString:textCopy];
 
     if ((v6 & 1) == 0)
     {
-      v7 = [(PGButtonView *)self actualButton];
-      [v7 setTitle:v15 forState:0];
+      actualButton = [(PGButtonView *)self actualButton];
+      [actualButton setTitle:textCopy forState:0];
 
-      v8 = [(PGButtonView *)self actualButton];
+      actualButton2 = [(PGButtonView *)self actualButton];
       v9 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.75];
-      [v8 setTitleColor:v9 forState:0];
+      [actualButton2 setTitleColor:v9 forState:0];
 
-      v10 = [(PGButtonView *)self actualButton];
-      v11 = [(PGButtonView *)self delegate];
-      v12 = [(PGButtonView *)self actualButton];
-      [v12 contentEdgeInsets];
-      [v11 buttonView:self contentEdgeInsetsForProposedInsets:?];
-      [v10 setContentEdgeInsets:?];
+      actualButton3 = [(PGButtonView *)self actualButton];
+      delegate = [(PGButtonView *)self delegate];
+      actualButton4 = [(PGButtonView *)self actualButton];
+      [actualButton4 contentEdgeInsets];
+      [delegate buttonView:self contentEdgeInsetsForProposedInsets:?];
+      [actualButton3 setContentEdgeInsets:?];
 
-      v13 = [(PGButtonView *)self actualButton];
-      v14 = [v13 titleLabel];
-      [v14 setLineBreakMode:4];
+      actualButton5 = [(PGButtonView *)self actualButton];
+      titleLabel = [actualButton5 titleLabel];
+      [titleLabel setLineBreakMode:4];
 
       [(PGButtonView *)self _updateGlyphConfigurationIfNeeded];
     }
@@ -146,19 +146,19 @@
 
 - (UIFont)font
 {
-  v2 = [(PGButtonView *)self actualButton];
-  v3 = [v2 titleLabel];
-  v4 = [v3 font];
+  actualButton = [(PGButtonView *)self actualButton];
+  titleLabel = [actualButton titleLabel];
+  font = [titleLabel font];
 
-  return v4;
+  return font;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v6 = [(PGButtonView *)self actualButton];
-  v5 = [v6 titleLabel];
-  [v5 setFont:v4];
+  fontCopy = font;
+  actualButton = [(PGButtonView *)self actualButton];
+  titleLabel = [actualButton titleLabel];
+  [titleLabel setFont:fontCopy];
 }
 
 - (void)layoutSubviews
@@ -179,21 +179,21 @@
     return 0;
   }
 
-  v4 = [(PGButtonView *)self alpha];
+  alpha = [(PGButtonView *)self alpha];
 
-  return MEMORY[0x1EEDF00E0](v4);
+  return MEMORY[0x1EEDF00E0](alpha);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if ([(PGButtonView *)self _shouldHitTest])
   {
     actualButton = self->_actualButton;
     [(PGButtonView *)self convertPoint:actualButton toView:x, y];
-    v9 = [(_PGButton *)actualButton hitTest:v7 withEvent:?];
+    v9 = [(_PGButton *)actualButton hitTest:eventCopy withEvent:?];
   }
 
   else
@@ -204,16 +204,16 @@
   return v9;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   if ([(PGButtonView *)self _shouldHitTest])
   {
     actualButton = self->_actualButton;
     [(PGButtonView *)self convertPoint:actualButton toView:x, y];
-    v9 = [(_PGButton *)actualButton pointInside:v7 withEvent:?];
+    v9 = [(_PGButton *)actualButton pointInside:eventCopy withEvent:?];
   }
 
   else
@@ -226,48 +226,48 @@
 
 - (void)sizeToFit
 {
-  v3 = [(PGButtonView *)self actualButton];
-  [v3 sizeToFit];
+  actualButton = [(PGButtonView *)self actualButton];
+  [actualButton sizeToFit];
 
   [(PGButtonView *)self frame];
   v5 = v4;
   v7 = v6;
-  v8 = [(PGButtonView *)self actualButton];
-  [v8 frame];
+  actualButton2 = [(PGButtonView *)self actualButton];
+  [actualButton2 frame];
   v10 = v9;
   v12 = v11;
 
   [(PGButtonView *)self setFrame:v5, v7, v10, v12];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(_PGButton *)self->_actualButton setEnabled:?];
   WeakRetained = objc_loadWeakRetained(&self->_pointerInteraction);
-  [WeakRetained setEnabled:v3];
+  [WeakRetained setEnabled:enabledCopy];
 
-  [(PGButtonView *)self setUserInteractionEnabled:v3];
+  [(PGButtonView *)self setUserInteractionEnabled:enabledCopy];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(PGButtonView *)self _updateGlyphConfigurationIfNeeded];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setSystemImageName:(id)a3
+- (void)setSystemImageName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_systemImageName isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     systemImageName = self->_systemImageName;
     self->_systemImageName = v4;
 
@@ -275,20 +275,20 @@
   }
 }
 
-- (void)setGlyphSize:(double)a3
+- (void)setGlyphSize:(double)size
 {
-  if (self->_glyphSize != a3)
+  if (self->_glyphSize != size)
   {
-    self->_glyphSize = a3;
+    self->_glyphSize = size;
     [(PGButtonView *)self _updateGlyphConfigurationIfNeeded];
   }
 }
 
-- (void)setCircular:(BOOL)a3
+- (void)setCircular:(BOOL)circular
 {
-  if (self->_circular != a3)
+  if (self->_circular != circular)
   {
-    self->_circular = a3;
+    self->_circular = circular;
     [(PGButtonView *)self _updateForCircularAppearanceIfNeeded];
   }
 }
@@ -297,15 +297,15 @@
 {
   if ([(PGMaterialView *)self isBackdropHidden]|| self->_wantsGlassBackground)
   {
-    v3 = [MEMORY[0x1E69DC888] systemWhiteColor];
+    systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    systemWhiteColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
 
-  return v3;
+  return systemWhiteColor;
 }
 
 - (void)didMoveToWindow
@@ -316,7 +316,7 @@
   [(PGButtonView *)self _updateGlyphConfigurationIfNeeded];
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self];
   if ([(PGMaterialView *)self isBackdropHidden]&& ([(PGMaterialView *)self backgroundColor], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
@@ -337,23 +337,23 @@
 
 - (void)_updateGlyphConfigurationIfNeeded
 {
-  v3 = [(PGButtonView *)self window];
+  window = [(PGButtonView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(PGButtonView *)self glyphSize];
     UIRoundToViewScale();
     v5 = v4;
     currentGlyphSize = self->_currentGlyphSize;
     currentGlyphImageName = self->_currentGlyphImageName;
-    v8 = [(PGButtonView *)self systemImageName];
-    v9 = [(NSString *)currentGlyphImageName isEqualToString:v8];
+    systemImageName = [(PGButtonView *)self systemImageName];
+    v9 = [(NSString *)currentGlyphImageName isEqualToString:systemImageName];
 
     v10 = currentGlyphSize != v5 || !v9;
     if (v10 || self->_image != self->_currentCustomImage)
     {
-      v12 = [(PGButtonView *)self systemImageName];
-      v13 = [v12 copy];
+      systemImageName2 = [(PGButtonView *)self systemImageName];
+      v13 = [systemImageName2 copy];
       v14 = self->_currentGlyphImageName;
       self->_currentGlyphImageName = v13;
 
@@ -421,20 +421,20 @@ LABEL_15:
   }
 }
 
-- (void)_handleTouchDown:(id)a3
+- (void)_handleTouchDown:(id)down
 {
-  v7 = a3;
+  downCopy = down;
   [(PGButtonView *)self setHighlighted:1];
   if (!self->_preventAutoHideOfControlsAssertion)
   {
-    v4 = [v7 accessibilityIdentifier];
-    v5 = [(UIView *)self PG_acquireAssertionToPreventAutoHideOfControlsWithReason:v4];
+    accessibilityIdentifier = [downCopy accessibilityIdentifier];
+    v5 = [(UIView *)self PG_acquireAssertionToPreventAutoHideOfControlsWithReason:accessibilityIdentifier];
     preventAutoHideOfControlsAssertion = self->_preventAutoHideOfControlsAssertion;
     self->_preventAutoHideOfControlsAssertion = v5;
   }
 }
 
-- (void)_handleTouchUpOrCancel:(id)a3
+- (void)_handleTouchUpOrCancel:(id)cancel
 {
   [(BSInvalidatable *)self->_preventAutoHideOfControlsAssertion invalidate];
   preventAutoHideOfControlsAssertion = self->_preventAutoHideOfControlsAssertion;
@@ -443,7 +443,7 @@ LABEL_15:
   [(PGButtonView *)self setHighlighted:0];
 }
 
-- (void)_handleTouchUpInside:(id)a3
+- (void)_handleTouchUpInside:(id)inside
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained buttonViewDidReceiveTouchUpInside:self];
@@ -451,11 +451,11 @@ LABEL_15:
   [(PGButtonView *)self setHighlighted:0];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (!self->_wantsGlassBackground && [(PGButtonView *)self isHighlighted]!= a3)
+  if (!self->_wantsGlassBackground && [(PGButtonView *)self isHighlighted]!= highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     WeakRetained = objc_loadWeakRetained(&self->_highlightAnimator);
     if ([WeakRetained isRunning])
     {

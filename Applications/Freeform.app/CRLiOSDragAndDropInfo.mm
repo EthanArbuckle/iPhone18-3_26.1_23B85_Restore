@@ -1,6 +1,6 @@
 @interface CRLiOSDragAndDropInfo
-- (BOOL)canCreateItemsOfClass:(Class)a3;
-- (id)createItemsOfClass:(Class)a3 completion:(id)a4;
+- (BOOL)canCreateItemsOfClass:(Class)class;
+- (id)createItemsOfClass:(Class)class completion:(id)completion;
 - (id)description;
 - (id)inProcessDraggingSources;
 - (id)promisedUTIs;
@@ -14,19 +14,19 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CRLDragAndDropInfo *)self platformDraggingInfo];
-  v6 = [(CRLiOSDragAndDropInfo *)self promisedUTIs];
-  v7 = [NSString stringWithFormat:@"%@<%p>: platform dragging info %@ promised UTIs %@", v4, self, v5, v6];
+  platformDraggingInfo = [(CRLDragAndDropInfo *)self platformDraggingInfo];
+  promisedUTIs = [(CRLiOSDragAndDropInfo *)self promisedUTIs];
+  v7 = [NSString stringWithFormat:@"%@<%p>: platform dragging info %@ promised UTIs %@", v4, self, platformDraggingInfo, promisedUTIs];
 
   return v7;
 }
 
 - (unint64_t)dragOperationMask
 {
-  v2 = [(CRLDragAndDropInfo *)self platformDraggingInfo];
-  v3 = [v2 allowsMoveOperation];
+  platformDraggingInfo = [(CRLDragAndDropInfo *)self platformDraggingInfo];
+  allowsMoveOperation = [platformDraggingInfo allowsMoveOperation];
 
-  if (v3)
+  if (allowsMoveOperation)
   {
     return 3;
   }
@@ -39,9 +39,9 @@
 
 - (unint64_t)numberOfDraggingItems
 {
-  v2 = [(CRLDragAndDropInfo *)self platformDraggingInfo];
-  v3 = [v2 items];
-  v4 = [v3 count];
+  platformDraggingInfo = [(CRLDragAndDropInfo *)self platformDraggingInfo];
+  items = [platformDraggingInfo items];
+  v4 = [items count];
 
   return v4;
 }
@@ -49,16 +49,16 @@
 - (id)inProcessDraggingSources
 {
   v3 = +[NSMutableArray array];
-  v4 = [(CRLDragAndDropInfo *)self platformDraggingInfo];
-  v5 = [v4 localDragSession];
-  v6 = [v5 localContext];
+  platformDraggingInfo = [(CRLDragAndDropInfo *)self platformDraggingInfo];
+  localDragSession = [platformDraggingInfo localDragSession];
+  localContext = [localDragSession localContext];
 
-  if (v6)
+  if (localContext)
   {
-    v7 = [(CRLDragAndDropInfo *)self platformDraggingInfo];
-    v8 = [v7 localDragSession];
-    v9 = [v8 localContext];
-    [v3 addObject:v9];
+    platformDraggingInfo2 = [(CRLDragAndDropInfo *)self platformDraggingInfo];
+    localDragSession2 = [platformDraggingInfo2 localDragSession];
+    localContext2 = [localDragSession2 localContext];
+    [v3 addObject:localContext2];
   }
 
   return v3;
@@ -71,10 +71,10 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CRLDragAndDropInfo *)self platformDraggingInfo];
-  v5 = [v4 items];
+  platformDraggingInfo = [(CRLDragAndDropInfo *)self platformDraggingInfo];
+  items = [platformDraggingInfo items];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -85,15 +85,15 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) itemProvider];
-        v11 = [v10 registeredTypeIdentifiers];
-        [v3 addObjectsFromArray:v11];
+        itemProvider = [*(*(&v13 + 1) + 8 * i) itemProvider];
+        registeredTypeIdentifiers = [itemProvider registeredTypeIdentifiers];
+        [v3 addObjectsFromArray:registeredTypeIdentifiers];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -102,21 +102,21 @@
   return v3;
 }
 
-- (BOOL)canCreateItemsOfClass:(Class)a3
+- (BOOL)canCreateItemsOfClass:(Class)class
 {
-  v4 = [(CRLDragAndDropInfo *)self itemSource];
-  LOBYTE(a3) = [v4 canLoadItemsOfClass:a3];
+  itemSource = [(CRLDragAndDropInfo *)self itemSource];
+  LOBYTE(class) = [itemSource canLoadItemsOfClass:class];
 
-  return a3;
+  return class;
 }
 
-- (id)createItemsOfClass:(Class)a3 completion:(id)a4
+- (id)createItemsOfClass:(Class)class completion:(id)completion
 {
-  v6 = a4;
-  if ([(objc_class *)a3 conformsToProtocol:&OBJC_PROTOCOL___NSItemProviderReading])
+  completionCopy = completion;
+  if ([(objc_class *)class conformsToProtocol:&OBJC_PROTOCOL___NSItemProviderReading])
   {
-    v7 = [(CRLDragAndDropInfo *)self platformDraggingInfo];
-    v8 = [v7 loadObjectsOfClass:a3 completion:v6];
+    platformDraggingInfo = [(CRLDragAndDropInfo *)self platformDraggingInfo];
+    v8 = [platformDraggingInfo loadObjectsOfClass:class completion:completionCopy];
   }
 
   else

@@ -1,5 +1,5 @@
 @interface MTCoreDataContainer
-- (MTCoreDataContainer)initWithConfig:(id)a3;
+- (MTCoreDataContainer)initWithConfig:(id)config;
 - (MTManagedObjectContext)carPlayContext;
 - (MTManagedObjectContext)importContext;
 - (MTManagedObjectContext)loggingContext;
@@ -8,26 +8,26 @@
 - (MTManagedObjectContext)privateQueueContext;
 - (MTManagedObjectContext)resetableImportContext;
 - (MTManagedObjectContext)storeContext;
-- (id)_createManagedObjectContextWithName:(id)a3 coordinator:(id)a4 concurrencyType:(unint64_t)a5;
+- (id)_createManagedObjectContextWithName:(id)name coordinator:(id)coordinator concurrencyType:(unint64_t)type;
 - (id)allContexts;
-- (id)contextForName:(id)a3;
-- (id)createSingleUsePrivateContext:(id)a3;
+- (id)contextForName:(id)name;
+- (id)createSingleUsePrivateContext:(id)context;
 - (id)mainOrPrivateContext;
-- (id)managedObjectIDForURI:(id)a3 error:(id *)a4;
+- (id)managedObjectIDForURI:(id)i error:(id *)error;
 - (id)persistentStoreCoordinator;
 - (id)persistentStoreUuid;
-- (id)safePersistentStoreCoordinatorWithError:(id *)a3;
-- (void)_addChanges:(id)a3 ofType:(int)a4 toLibraryChanges:(id)a5;
-- (void)_notifyLibraryChanged:(id)a3 contextName:(id)a4;
-- (void)_tearDown:(BOOL)a3;
-- (void)addChangeNotifier:(id)a3;
-- (void)checkForFullDisk_probablyNotABug:(id)a3;
-- (void)checkForRadar75450416_probablyNotABug:(id)a3;
-- (void)checkForWritePermissions:(id)a3;
+- (id)safePersistentStoreCoordinatorWithError:(id *)error;
+- (void)_addChanges:(id)changes ofType:(int)type toLibraryChanges:(id)libraryChanges;
+- (void)_notifyLibraryChanged:(id)changed contextName:(id)name;
+- (void)_tearDown:(BOOL)down;
+- (void)addChangeNotifier:(id)notifier;
+- (void)checkForFullDisk_probablyNotABug:(id)bug;
+- (void)checkForRadar75450416_probablyNotABug:(id)bug;
+- (void)checkForWritePermissions:(id)permissions;
 - (void)destroy;
-- (void)mergeFromContextDidSaveNotification:(id)a3;
-- (void)removeChangeNotifier:(id)a3;
-- (void)tearDownAsync:(BOOL)a3;
+- (void)mergeFromContextDidSaveNotification:(id)notification;
+- (void)removeChangeNotifier:(id)notifier;
+- (void)tearDownAsync:(BOOL)async;
 @end
 
 @implementation MTCoreDataContainer
@@ -37,23 +37,23 @@
   privateQueueContext = self->_privateQueueContext;
   if (!privateQueueContext)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_privateQueueContext)
     {
-      v5 = [(MTCoreDataContainer *)v4 persistentStoreCoordinator];
-      v6 = [(MTCoreDataContainer *)v4 _createManagedObjectContextWithName:@"background context" coordinator:v5 concurrencyType:1];
+      persistentStoreCoordinator = [(MTCoreDataContainer *)selfCopy persistentStoreCoordinator];
+      v6 = [(MTCoreDataContainer *)selfCopy _createManagedObjectContextWithName:@"background context" coordinator:persistentStoreCoordinator concurrencyType:1];
       v7 = self->_privateQueueContext;
       self->_privateQueueContext = v6;
 
       v8 = [[PFDatabaseHangDetector alloc] initWithContext:self->_privateQueueContext label:0 pingInterval:1.0 shortHangDuration:5.0 severeHangDuration:10.0 criticalHangDuration:15.0 criticalHangRepeatInterval:1.0];
       [(MTManagedObjectContext *)self->_privateQueueContext setHangDetector:v8];
 
-      v9 = [(MTManagedObjectContext *)self->_privateQueueContext hangDetector];
-      [v9 beginMonitoring];
+      hangDetector = [(MTManagedObjectContext *)self->_privateQueueContext hangDetector];
+      [hangDetector beginMonitoring];
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     privateQueueContext = self->_privateQueueContext;
   }
@@ -69,27 +69,27 @@
   coordinator = self->_coordinator;
   if (coordinator)
   {
-    v3 = coordinator;
+    coordinator = coordinator;
     goto LABEL_7;
   }
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v6 = +[MTDB libraryPath];
-  v7 = [v6 path];
-  v8 = [v5 fileExistsAtPath:v7];
+  path = [v6 path];
+  v8 = [defaultManager fileExistsAtPath:path];
 
   v9 = objc_alloc(MEMORY[0x1E695D6C0]);
-  v10 = [(MTCoreDataContainer *)self config];
-  v11 = [v10 managedObjectModel];
-  v12 = [v9 initWithManagedObjectModel:v11];
+  config = [(MTCoreDataContainer *)self config];
+  managedObjectModel = [config managedObjectModel];
+  v12 = [v9 initWithManagedObjectModel:managedObjectModel];
 
   v13 = *MEMORY[0x1E695D4A8];
-  v14 = [(MTCoreDataContainer *)self config];
-  v15 = [v14 databaseFileUrl];
-  v16 = [(MTCoreDataContainer *)self config];
-  v17 = [v16 persistentStoreOptions];
+  config2 = [(MTCoreDataContainer *)self config];
+  databaseFileUrl = [config2 databaseFileUrl];
+  config3 = [(MTCoreDataContainer *)self config];
+  persistentStoreOptions = [config3 persistentStoreOptions];
   v25 = 0;
-  v18 = [v12 addPersistentStoreWithType:v13 configuration:0 URL:v15 options:v17 error:&v25];
+  v18 = [v12 addPersistentStoreWithType:v13 configuration:0 URL:databaseFileUrl options:persistentStoreOptions error:&v25];
   v19 = v25;
 
   if (!v18)
@@ -102,12 +102,12 @@
       _os_log_impl(&dword_1D8CEC000, v22, OS_LOG_TYPE_FAULT, "Critical error in Core Data intialization. (Error: %@)", buf, 0xCu);
     }
 
-    v23 = [v19 domain];
-    if ([v23 isEqual:*MEMORY[0x1E696A250]])
+    domain = [v19 domain];
+    if ([domain isEqual:*MEMORY[0x1E696A250]])
     {
-      v24 = [v19 code];
+      code = [v19 code];
 
-      if (v24 == 134100)
+      if (code == 134100)
       {
         [MTDB setCoreDataChecksum:0];
       }
@@ -137,12 +137,12 @@ LABEL_5:
 
 LABEL_6:
   [(MTCoreDataContainer *)self setCoordinator:v12];
-  v3 = [(MTCoreDataContainer *)self coordinator];
+  coordinator = [(MTCoreDataContainer *)self coordinator];
 
 LABEL_7:
   v20 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return coordinator;
 }
 
 - (MTManagedObjectContext)importContext
@@ -150,23 +150,23 @@ LABEL_7:
   importContext = self->_importContext;
   if (!importContext)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_importContext)
     {
-      v5 = [(MTCoreDataContainer *)v4 persistentStoreCoordinator];
-      v6 = [(MTCoreDataContainer *)v4 _createManagedObjectContextWithName:@"import context" coordinator:v5 concurrencyType:1];
+      persistentStoreCoordinator = [(MTCoreDataContainer *)selfCopy persistentStoreCoordinator];
+      v6 = [(MTCoreDataContainer *)selfCopy _createManagedObjectContextWithName:@"import context" coordinator:persistentStoreCoordinator concurrencyType:1];
       v7 = self->_importContext;
       self->_importContext = v6;
 
       v8 = [[PFDatabaseHangDetector alloc] initWithContext:self->_importContext label:1 pingInterval:1.0 shortHangDuration:10.0 severeHangDuration:20.0 criticalHangDuration:30.0 criticalHangRepeatInterval:1.0];
       [(MTManagedObjectContext *)self->_importContext setHangDetector:v8];
 
-      v9 = [(MTManagedObjectContext *)self->_importContext hangDetector];
-      [v9 beginMonitoring];
+      hangDetector = [(MTManagedObjectContext *)self->_importContext hangDetector];
+      [hangDetector beginMonitoring];
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     importContext = self->_importContext;
   }
@@ -181,17 +181,17 @@ LABEL_7:
   storeContext = self->_storeContext;
   if (!storeContext)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_storeContext)
     {
-      v5 = [(MTCoreDataContainer *)v4 persistentStoreCoordinator];
-      v6 = [(MTCoreDataContainer *)v4 _createManagedObjectContextWithName:@"state machine context" coordinator:v5 concurrencyType:1];
+      persistentStoreCoordinator = [(MTCoreDataContainer *)selfCopy persistentStoreCoordinator];
+      v6 = [(MTCoreDataContainer *)selfCopy _createManagedObjectContextWithName:@"state machine context" coordinator:persistentStoreCoordinator concurrencyType:1];
       v7 = self->_storeContext;
       self->_storeContext = v6;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     storeContext = self->_storeContext;
   }
@@ -222,17 +222,17 @@ LABEL_7:
   loggingContext = self->_loggingContext;
   if (!loggingContext)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_loggingContext)
     {
-      v5 = [(MTCoreDataContainer *)v4 persistentStoreCoordinator];
-      v6 = [(MTCoreDataContainer *)v4 _createManagedObjectContextWithName:@"logging" coordinator:v5 concurrencyType:1];
+      persistentStoreCoordinator = [(MTCoreDataContainer *)selfCopy persistentStoreCoordinator];
+      v6 = [(MTCoreDataContainer *)selfCopy _createManagedObjectContextWithName:@"logging" coordinator:persistentStoreCoordinator concurrencyType:1];
       v7 = self->_loggingContext;
       self->_loggingContext = v6;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     loggingContext = self->_loggingContext;
   }
@@ -289,20 +289,20 @@ LABEL_7:
   return v4;
 }
 
-- (MTCoreDataContainer)initWithConfig:(id)a3
+- (MTCoreDataContainer)initWithConfig:(id)config
 {
   v22[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configCopy = config;
   v21.receiver = self;
   v21.super_class = MTCoreDataContainer;
   v5 = [(MTCoreDataContainer *)&v21 init];
   v6 = v5;
   if (v5)
   {
-    [(MTCoreDataContainer *)v5 setConfig:v4];
+    [(MTCoreDataContainer *)v5 setConfig:configCopy];
     [(MTCoreDataContainer *)v6 setValid:1];
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    [(MTCoreDataContainer *)v6 setNotifiers:v7];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    [(MTCoreDataContainer *)v6 setNotifiers:weakObjectsHashTable];
 
     v22[0] = @"MTPodcast";
     v22[1] = @"MTEpisode";
@@ -336,14 +336,14 @@ LABEL_7:
   mainQueueContext = self->_mainQueueContext;
   if (!mainQueueContext)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    v5 = [(MTCoreDataContainer *)v4 persistentStoreCoordinator];
-    v6 = [(MTCoreDataContainer *)v4 _createManagedObjectContextWithName:@"main queue context" coordinator:v5 concurrencyType:2];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    persistentStoreCoordinator = [(MTCoreDataContainer *)selfCopy persistentStoreCoordinator];
+    v6 = [(MTCoreDataContainer *)selfCopy _createManagedObjectContextWithName:@"main queue context" coordinator:persistentStoreCoordinator concurrencyType:2];
     v7 = self->_mainQueueContext;
     self->_mainQueueContext = v6;
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
     mainQueueContext = self->_mainQueueContext;
   }
 
@@ -357,17 +357,17 @@ LABEL_7:
   carPlayContext = self->_carPlayContext;
   if (!carPlayContext)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_carPlayContext)
     {
-      v5 = [(MTCoreDataContainer *)v4 persistentStoreCoordinator];
-      v6 = [(MTCoreDataContainer *)v4 _createManagedObjectContextWithName:@"carplay context" coordinator:v5 concurrencyType:1];
+      persistentStoreCoordinator = [(MTCoreDataContainer *)selfCopy persistentStoreCoordinator];
+      v6 = [(MTCoreDataContainer *)selfCopy _createManagedObjectContextWithName:@"carplay context" coordinator:persistentStoreCoordinator concurrencyType:1];
       v7 = self->_carPlayContext;
       self->_carPlayContext = v6;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     carPlayContext = self->_carPlayContext;
   }
@@ -382,19 +382,19 @@ LABEL_7:
   resetableImportContext = self->_resetableImportContext;
   if (!resetableImportContext)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_resetableImportContext)
     {
-      v5 = [(MTCoreDataContainer *)v4 persistentStoreCoordinator];
-      v6 = [(MTCoreDataContainer *)v4 _createManagedObjectContextWithName:@"resetable import context" coordinator:v5 concurrencyType:1];
+      persistentStoreCoordinator = [(MTCoreDataContainer *)selfCopy persistentStoreCoordinator];
+      v6 = [(MTCoreDataContainer *)selfCopy _createManagedObjectContextWithName:@"resetable import context" coordinator:persistentStoreCoordinator concurrencyType:1];
       v7 = self->_resetableImportContext;
       self->_resetableImportContext = v6;
 
       [(MTManagedObjectContext *)self->_resetableImportContext setIsResetable:1];
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     resetableImportContext = self->_resetableImportContext;
   }
@@ -409,23 +409,23 @@ LABEL_7:
   playbackContext = self->_playbackContext;
   if (!playbackContext)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_playbackContext)
     {
-      v5 = [(MTCoreDataContainer *)v4 persistentStoreCoordinator];
-      v6 = [(MTCoreDataContainer *)v4 _createManagedObjectContextWithName:@"playback" coordinator:v5 concurrencyType:1];
+      persistentStoreCoordinator = [(MTCoreDataContainer *)selfCopy persistentStoreCoordinator];
+      v6 = [(MTCoreDataContainer *)selfCopy _createManagedObjectContextWithName:@"playback" coordinator:persistentStoreCoordinator concurrencyType:1];
       v7 = self->_playbackContext;
       self->_playbackContext = v6;
 
       v8 = [[PFDatabaseHangDetector alloc] initWithContext:self->_playbackContext label:2 pingInterval:1.0 shortHangDuration:1.0 severeHangDuration:2.0 criticalHangDuration:5.0 criticalHangRepeatInterval:1.0];
       [(MTManagedObjectContext *)self->_playbackContext setHangDetector:v8];
 
-      v9 = [(MTManagedObjectContext *)self->_playbackContext hangDetector];
-      [v9 beginMonitoring];
+      hangDetector = [(MTManagedObjectContext *)self->_playbackContext hangDetector];
+      [hangDetector beginMonitoring];
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     playbackContext = self->_playbackContext;
   }
@@ -435,30 +435,30 @@ LABEL_7:
   return v10;
 }
 
-- (id)_createManagedObjectContextWithName:(id)a3 coordinator:(id)a4 concurrencyType:(unint64_t)a5
+- (id)_createManagedObjectContextWithName:(id)name coordinator:(id)coordinator concurrencyType:(unint64_t)type
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[MTManagedObjectContext alloc] initWithConcurrencyType:a5 name:v9];
+  coordinatorCopy = coordinator;
+  nameCopy = name;
+  v10 = [[MTManagedObjectContext alloc] initWithConcurrencyType:type name:nameCopy];
 
-  [(MTManagedObjectContext *)v10 setPersistentStoreCoordinator:v8];
+  [(MTManagedObjectContext *)v10 setPersistentStoreCoordinator:coordinatorCopy];
   [(MTManagedObjectContext *)v10 setMergePolicy:*MEMORY[0x1E695D370]];
   [(MTManagedObjectContext *)v10 setUndoManager:0];
-  [(MTManagedObjectContext *)v10 setType:a5 != 2];
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 addObserver:self selector:sel_mergeFromContextDidSaveNotification_ name:*MEMORY[0x1E695D358] object:v10];
+  [(MTManagedObjectContext *)v10 setType:type != 2];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_mergeFromContextDidSaveNotification_ name:*MEMORY[0x1E695D358] object:v10];
 
   return v10;
 }
 
-- (id)managedObjectIDForURI:(id)a3 error:(id *)a4
+- (id)managedObjectIDForURI:(id)i error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MTCoreDataContainer *)self safePersistentStoreCoordinatorWithError:a4];
+  iCopy = i;
+  v7 = [(MTCoreDataContainer *)self safePersistentStoreCoordinatorWithError:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 managedObjectIDForURIRepresentation:v6];
+    v9 = [v7 managedObjectIDForURIRepresentation:iCopy];
   }
 
   else
@@ -469,58 +469,58 @@ LABEL_7:
   return v9;
 }
 
-- (id)safePersistentStoreCoordinatorWithError:(id *)a3
+- (id)safePersistentStoreCoordinatorWithError:(id *)error
 {
   coordinator = self->_coordinator;
   if (coordinator)
   {
-    v4 = coordinator;
+    coordinator2 = coordinator;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v8 = +[MTDB libraryPath];
-    v9 = [v8 path];
-    v10 = [v7 fileExistsAtPath:v9];
+    path = [v8 path];
+    v10 = [defaultManager fileExistsAtPath:path];
 
     v11 = objc_alloc(MEMORY[0x1E695D6C0]);
-    v12 = [(MTCoreDataContainer *)self config];
-    v13 = [v12 managedObjectModel];
-    v14 = [v11 initWithManagedObjectModel:v13];
+    config = [(MTCoreDataContainer *)self config];
+    managedObjectModel = [config managedObjectModel];
+    v14 = [v11 initWithManagedObjectModel:managedObjectModel];
     [(MTCoreDataContainer *)self setCoordinator:v14];
 
-    v15 = [(MTCoreDataContainer *)self coordinator];
+    coordinator = [(MTCoreDataContainer *)self coordinator];
     v16 = *MEMORY[0x1E695D4A8];
-    v17 = [(MTCoreDataContainer *)self config];
-    v18 = [v17 databaseFileUrl];
-    v19 = [(MTCoreDataContainer *)self config];
-    v20 = [v19 persistentStoreOptions];
-    v21 = [v15 addPersistentStoreWithType:v16 configuration:0 URL:v18 options:v20 error:a3];
+    config2 = [(MTCoreDataContainer *)self config];
+    databaseFileUrl = [config2 databaseFileUrl];
+    config3 = [(MTCoreDataContainer *)self config];
+    persistentStoreOptions = [config3 persistentStoreOptions];
+    v21 = [coordinator addPersistentStoreWithType:v16 configuration:0 URL:databaseFileUrl options:persistentStoreOptions error:error];
 
     if ((v10 & 1) == 0)
     {
       +[MTDBExtensionAccess postDatabaseCreatedNotification];
     }
 
-    v4 = [(MTCoreDataContainer *)self coordinator];
+    coordinator2 = [(MTCoreDataContainer *)self coordinator];
   }
 
-  return v4;
+  return coordinator2;
 }
 
-- (void)checkForFullDisk_probablyNotABug:(id)a3
+- (void)checkForFullDisk_probablyNotABug:(id)bug
 {
-  v8 = a3;
-  v3 = [v8 domain];
+  bugCopy = bug;
+  domain = [bugCopy domain];
   v4 = *MEMORY[0x1E695D488];
-  if ([v3 isEqualToString:*MEMORY[0x1E695D488]])
+  if ([domain isEqualToString:*MEMORY[0x1E695D488]])
   {
-    v5 = [v8 userInfo];
-    v6 = [v5 objectForKeyedSubscript:v4];
-    v7 = [v6 intValue];
+    userInfo = [bugCopy userInfo];
+    v6 = [userInfo objectForKeyedSubscript:v4];
+    intValue = [v6 intValue];
 
-    if (v7 == 13)
+    if (intValue == 13)
     {
       [MEMORY[0x1E695DF30] raise:@"Disk is full" format:@"Could not open podcasts library because the disk is full."];
     }
@@ -531,15 +531,15 @@ LABEL_7:
   }
 }
 
-- (void)checkForRadar75450416_probablyNotABug:(id)a3
+- (void)checkForRadar75450416_probablyNotABug:(id)bug
 {
-  v5 = a3;
-  v3 = [v5 domain];
-  if ([v3 isEqualToString:*MEMORY[0x1E696A250]])
+  bugCopy = bug;
+  domain = [bugCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v4 = [v5 code];
+    code = [bugCopy code];
 
-    if (v4 == 134100 && +[MTDB coreDataVersion_deprecated]== 78)
+    if (code == 134100 && +[MTDB coreDataVersion_deprecated]== 78)
     {
       [MEMORY[0x1E695DF30] raise:@"Unmigratable database" format:{@"This device has a corrupt, unmigrateable database that never shipped to the public. See rdar://75450416 for mitigation instructions."}];
     }
@@ -550,15 +550,15 @@ LABEL_7:
   }
 }
 
-- (void)checkForWritePermissions:(id)a3
+- (void)checkForWritePermissions:(id)permissions
 {
-  v5 = a3;
-  v3 = [v5 domain];
-  if ([v3 isEqualToString:*MEMORY[0x1E696A250]])
+  permissionsCopy = permissions;
+  domain = [permissionsCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v4 = [v5 code];
+    code = [permissionsCopy code];
 
-    if (v4 == 513)
+    if (code == 513)
     {
       [MEMORY[0x1E695DF30] raise:@"No write permissions" format:@"The current user does not have write permissions for the Podcasts library path."];
     }
@@ -573,12 +573,12 @@ LABEL_7:
 {
   v3 = MEMORY[0x1E695D6C0];
   v4 = *MEMORY[0x1E695D4A8];
-  v5 = [(MTCoreDataContainer *)self config];
-  v6 = [v5 databaseFileUrl];
-  v7 = [(MTCoreDataContainer *)self config];
-  v8 = [v7 persistentStoreOptions];
+  config = [(MTCoreDataContainer *)self config];
+  databaseFileUrl = [config databaseFileUrl];
+  config2 = [(MTCoreDataContainer *)self config];
+  persistentStoreOptions = [config2 persistentStoreOptions];
   v13 = 0;
-  v9 = [v3 metadataForPersistentStoreOfType:v4 URL:v6 options:v8 error:&v13];
+  v9 = [v3 metadataForPersistentStoreOfType:v4 URL:databaseFileUrl options:persistentStoreOptions error:&v13];
   v10 = v13;
 
   if (v9 || [v10 code] != 260)
@@ -594,11 +594,11 @@ LABEL_7:
   return v11;
 }
 
-- (id)contextForName:(id)a3
+- (id)contextForName:(id)name
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     [(MTCoreDataContainer *)self allContexts];
     v14 = 0u;
@@ -619,8 +619,8 @@ LABEL_7:
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 mt_immutableName];
-          v11 = [v10 isEqualToString:v4];
+          mt_immutableName = [v9 mt_immutableName];
+          v11 = [mt_immutableName isEqualToString:nameCopy];
 
           if (v11)
           {
@@ -652,41 +652,41 @@ LABEL_12:
   return v6;
 }
 
-- (id)createSingleUsePrivateContext:(id)a3
+- (id)createSingleUsePrivateContext:(id)context
 {
-  v4 = a3;
-  v5 = [(MTCoreDataContainer *)self persistentStoreCoordinator];
-  v6 = [(MTCoreDataContainer *)self _createManagedObjectContextWithName:v4 coordinator:v5 concurrencyType:1];
+  contextCopy = context;
+  persistentStoreCoordinator = [(MTCoreDataContainer *)self persistentStoreCoordinator];
+  v6 = [(MTCoreDataContainer *)self _createManagedObjectContextWithName:contextCopy coordinator:persistentStoreCoordinator concurrencyType:1];
 
   return v6;
 }
 
-- (void)mergeFromContextDidSaveNotification:(id)a3
+- (void)mergeFromContextDidSaveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [(MTCoreDataContainer *)self allContexts];
-  v7 = v6;
-  if (!v5)
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  allContexts = [(MTCoreDataContainer *)self allContexts];
+  v7 = allContexts;
+  if (!object)
   {
     goto LABEL_4;
   }
 
-  if ([v6 containsObject:v5])
+  if ([allContexts containsObject:object])
   {
-    [v7 removeObject:v5];
+    [v7 removeObject:object];
 LABEL_4:
     objc_initWeak(&location, self);
-    v8 = [(MTCoreDataContainer *)self mergeQueue];
+    mergeQueue = [(MTCoreDataContainer *)self mergeQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __59__MTCoreDataContainer_mergeFromContextDidSaveNotification___block_invoke;
     block[3] = &unk_1E8569F88;
     objc_copyWeak(&v13, &location);
-    v10 = v5;
-    v11 = v4;
+    v10 = object;
+    v11 = notificationCopy;
     v12 = v7;
-    dispatch_async(v8, block);
+    dispatch_async(mergeQueue, block);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -732,52 +732,52 @@ void __59__MTCoreDataContainer_mergeFromContextDidSaveNotification___block_invok
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addChangeNotifier:(id)a3
+- (void)addChangeNotifier:(id)notifier
 {
-  v6 = a3;
-  v4 = [(MTCoreDataContainer *)self notifiers];
-  objc_sync_enter(v4);
-  v5 = [(MTCoreDataContainer *)self notifiers];
-  [v5 addObject:v6];
+  notifierCopy = notifier;
+  notifiers = [(MTCoreDataContainer *)self notifiers];
+  objc_sync_enter(notifiers);
+  notifiers2 = [(MTCoreDataContainer *)self notifiers];
+  [notifiers2 addObject:notifierCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(notifiers);
 }
 
-- (void)removeChangeNotifier:(id)a3
+- (void)removeChangeNotifier:(id)notifier
 {
-  v6 = a3;
-  v4 = [(MTCoreDataContainer *)self notifiers];
-  objc_sync_enter(v4);
-  v5 = [(MTCoreDataContainer *)self notifiers];
-  [v5 removeObject:v6];
+  notifierCopy = notifier;
+  notifiers = [(MTCoreDataContainer *)self notifiers];
+  objc_sync_enter(notifiers);
+  notifiers2 = [(MTCoreDataContainer *)self notifiers];
+  [notifiers2 removeObject:notifierCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(notifiers);
 }
 
-- (void)_notifyLibraryChanged:(id)a3 contextName:(id)a4
+- (void)_notifyLibraryChanged:(id)changed contextName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTCoreDataContainer *)self notifiers];
-  objc_sync_enter(v8);
-  v9 = [(MTCoreDataContainer *)self notifiers];
-  v10 = [v9 allObjects];
+  changedCopy = changed;
+  nameCopy = name;
+  notifiers = [(MTCoreDataContainer *)self notifiers];
+  objc_sync_enter(notifiers);
+  notifiers2 = [(MTCoreDataContainer *)self notifiers];
+  allObjects = [notifiers2 allObjects];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(notifiers);
   inited = objc_initWeak(&location, self);
   v12 = objc_autoreleasePoolPush();
   v13 = inited;
-  v14 = [[MTLibraryChanges alloc] initWithContextName:v7];
-  v15 = [v6 userInfo];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x1E695D320]];
+  v14 = [[MTLibraryChanges alloc] initWithContextName:nameCopy];
+  userInfo = [changedCopy userInfo];
+  v16 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695D320]];
   [(MTCoreDataContainer *)self _addChanges:v16 ofType:0 toLibraryChanges:v14];
 
-  v17 = [v6 userInfo];
-  v18 = [v17 objectForKeyedSubscript:*MEMORY[0x1E695D4C8]];
+  userInfo2 = [changedCopy userInfo];
+  v18 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E695D4C8]];
   [(MTCoreDataContainer *)self _addChanges:v18 ofType:2 toLibraryChanges:v14];
 
-  v19 = [v6 userInfo];
-  v20 = [v19 objectForKeyedSubscript:*MEMORY[0x1E695D2F0]];
+  userInfo3 = [changedCopy userInfo];
+  v20 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E695D2F0]];
   [(MTCoreDataContainer *)self _addChanges:v20 ofType:1 toLibraryChanges:v14];
 
   if ([(MTLibraryChanges *)v14 hasChanges])
@@ -788,7 +788,7 @@ void __59__MTCoreDataContainer_mergeFromContextDidSaveNotification___block_invok
     v21[3] = &unk_1E8569FB0;
     v21[4] = self;
     v22 = v14;
-    [v10 enumerateObjectsUsingBlock:v21];
+    [allObjects enumerateObjectsUsingBlock:v21];
   }
 
   objc_autoreleasePoolPop(v12);
@@ -809,16 +809,16 @@ void __57__MTCoreDataContainer__notifyLibraryChanged_contextName___block_invoke(
   dispatch_async(v4, v6);
 }
 
-- (void)_addChanges:(id)a3 ofType:(int)a4 toLibraryChanges:(id)a5
+- (void)_addChanges:(id)changes ofType:(int)type toLibraryChanges:(id)libraryChanges
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  changesCopy = changes;
+  libraryChangesCopy = libraryChanges;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v9 = [changesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
@@ -829,23 +829,23 @@ void __57__MTCoreDataContainer__notifyLibraryChanged_contextName___block_invoke(
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(changesCopy);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 entity];
-        v15 = [v14 name];
+        entity = [v13 entity];
+        name = [entity name];
 
-        v16 = [(MTCoreDataContainer *)self entityNames];
-        v17 = [v16 containsObject:v15];
+        entityNames = [(MTCoreDataContainer *)self entityNames];
+        v17 = [entityNames containsObject:name];
 
         if (v17)
         {
-          [v8 addChangeWith:v13 entityName:v15 changeType:a4];
+          [libraryChangesCopy addChangeWith:v13 entityName:name changeType:type];
         }
       }
 
-      v10 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [changesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
@@ -854,25 +854,25 @@ void __57__MTCoreDataContainer__notifyLibraryChanged_contextName___block_invoke(
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)tearDownAsync:(BOOL)a3
+- (void)tearDownAsync:(BOOL)async
 {
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v6 = [(MTCoreDataContainer *)self mergeQueue];
+  mergeQueue = [(MTCoreDataContainer *)self mergeQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__MTCoreDataContainer_tearDownAsync___block_invoke;
   v7[3] = &unk_1E8569FD8;
   v7[4] = self;
-  v8 = a3;
-  dispatch_async(v6, v7);
+  asyncCopy = async;
+  dispatch_async(mergeQueue, v7);
 }
 
-- (void)_tearDown:(BOOL)a3
+- (void)_tearDown:(BOOL)down
 {
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6 = dispatch_group_create();
   dispatch_group_enter(v6);
@@ -947,14 +947,14 @@ void __57__MTCoreDataContainer__notifyLibraryChanged_contextName___block_invoke(
   v27 = v20;
   v22 = v20;
   [(MTManagedObjectContext *)playbackContext performBlock:v26];
-  v23 = [(MTCoreDataContainer *)self mergeQueue];
+  mergeQueue = [(MTCoreDataContainer *)self mergeQueue];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __33__MTCoreDataContainer__tearDown___block_invoke_9;
   v24[3] = &unk_1E8569FD8;
   v24[4] = self;
-  v25 = a3;
-  dispatch_group_notify(v22, v23, v24);
+  downCopy = down;
+  dispatch_group_notify(v22, mergeQueue, v24);
 }
 
 void __33__MTCoreDataContainer__tearDown___block_invoke_9(uint64_t a1)
@@ -969,14 +969,14 @@ void __33__MTCoreDataContainer__tearDown___block_invoke_9(uint64_t a1)
 
 - (void)destroy
 {
-  v3 = [(MTCoreDataContainer *)self persistentStoreCoordinator];
-  v4 = [(MTCoreDataContainer *)self config];
-  v5 = [v4 databaseFileUrl];
+  persistentStoreCoordinator = [(MTCoreDataContainer *)self persistentStoreCoordinator];
+  config = [(MTCoreDataContainer *)self config];
+  databaseFileUrl = [config databaseFileUrl];
   v6 = *MEMORY[0x1E695D4A8];
-  v7 = [(MTCoreDataContainer *)self config];
-  v8 = [v7 persistentStoreOptions];
+  config2 = [(MTCoreDataContainer *)self config];
+  persistentStoreOptions = [config2 persistentStoreOptions];
   v20 = 0;
-  v9 = [v3 destroyPersistentStoreAtURL:v5 withType:v6 options:v8 error:&v20];
+  v9 = [persistentStoreCoordinator destroyPersistentStoreAtURL:databaseFileUrl withType:v6 options:persistentStoreOptions error:&v20];
   v10 = v20;
   if (v9)
   {
@@ -985,19 +985,19 @@ void __33__MTCoreDataContainer__tearDown___block_invoke_9(uint64_t a1)
 
   else
   {
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
-    v13 = [(MTCoreDataContainer *)self config];
-    v14 = [v13 databaseFileUrl];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    config3 = [(MTCoreDataContainer *)self config];
+    databaseFileUrl2 = [config3 databaseFileUrl];
     v19 = v10;
-    v15 = [v12 removeItemAtURL:v14 error:&v19];
-    v18 = v4;
-    v16 = v3;
+    v15 = [defaultManager removeItemAtURL:databaseFileUrl2 error:&v19];
+    v18 = config;
+    v16 = persistentStoreCoordinator;
     v17 = v19;
 
     v11 = v15 ^ 1;
     v10 = v17;
-    v3 = v16;
-    v4 = v18;
+    persistentStoreCoordinator = v16;
+    config = v18;
   }
 
   if (v11)

@@ -1,46 +1,46 @@
 @interface SBUISystemApertureButtonContentProvider
-- (SBUISystemApertureButtonContentProvider)initWithButtonConfiguration:(id)a3 action:(id)a4;
-- (SBUISystemApertureButtonContentProvider)initWithDefaultSymbolActionConfigurationWithAction:(id)a3;
-- (SBUISystemApertureButtonContentProvider)initWithDefaultTextActionConfigurationWithAction:(id)a3;
+- (SBUISystemApertureButtonContentProvider)initWithButtonConfiguration:(id)configuration action:(id)action;
+- (SBUISystemApertureButtonContentProvider)initWithDefaultSymbolActionConfigurationWithAction:(id)action;
+- (SBUISystemApertureButtonContentProvider)initWithDefaultTextActionConfigurationWithAction:(id)action;
 - (SBUISystemApertureContentViewContaining)contentContainer;
 - (UIButtonConfiguration)buttonConfiguration;
 - (UIColor)contentColor;
-- (void)setButtonConfiguration:(id)a3;
-- (void)setContentColor:(id)a3;
+- (void)setButtonConfiguration:(id)configuration;
+- (void)setContentColor:(id)color;
 @end
 
 @implementation SBUISystemApertureButtonContentProvider
 
-- (SBUISystemApertureButtonContentProvider)initWithDefaultTextActionConfigurationWithAction:(id)a3
+- (SBUISystemApertureButtonContentProvider)initWithDefaultTextActionConfigurationWithAction:(id)action
 {
   v4 = MEMORY[0x1E69DC740];
-  v5 = a3;
-  v6 = [v4 sbui_systemApertureTextButtonConfiguration];
-  v7 = [(SBUISystemApertureButtonContentProvider *)self initWithButtonConfiguration:v6 action:v5];
+  actionCopy = action;
+  sbui_systemApertureTextButtonConfiguration = [v4 sbui_systemApertureTextButtonConfiguration];
+  v7 = [(SBUISystemApertureButtonContentProvider *)self initWithButtonConfiguration:sbui_systemApertureTextButtonConfiguration action:actionCopy];
 
   return v7;
 }
 
-- (SBUISystemApertureButtonContentProvider)initWithDefaultSymbolActionConfigurationWithAction:(id)a3
+- (SBUISystemApertureButtonContentProvider)initWithDefaultSymbolActionConfigurationWithAction:(id)action
 {
   v4 = MEMORY[0x1E69DC740];
-  v5 = a3;
-  v6 = [v4 sbui_systemApertureSymbolButtonConfiguration];
-  v7 = [(SBUISystemApertureButtonContentProvider *)self initWithButtonConfiguration:v6 action:v5];
+  actionCopy = action;
+  sbui_systemApertureSymbolButtonConfiguration = [v4 sbui_systemApertureSymbolButtonConfiguration];
+  v7 = [(SBUISystemApertureButtonContentProvider *)self initWithButtonConfiguration:sbui_systemApertureSymbolButtonConfiguration action:actionCopy];
 
   return v7;
 }
 
-- (SBUISystemApertureButtonContentProvider)initWithButtonConfiguration:(id)a3 action:(id)a4
+- (SBUISystemApertureButtonContentProvider)initWithButtonConfiguration:(id)configuration action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  actionCopy = action;
   v12.receiver = self;
   v12.super_class = SBUISystemApertureButtonContentProvider;
   v8 = [(SBUISystemApertureButtonContentProvider *)&v12 init];
   if (v8)
   {
-    v9 = [SBUISystemApertureButton buttonWithConfiguration:v6 primaryAction:v7];
+    v9 = [SBUISystemApertureButton buttonWithConfiguration:configurationCopy primaryAction:actionCopy];
     providedView = v8->_providedView;
     v8->_providedView = v9;
   }
@@ -50,47 +50,47 @@
 
 - (UIButtonConfiguration)buttonConfiguration
 {
-  v2 = [(SBUISystemApertureButtonContentProvider *)self _providedView];
-  v3 = [v2 configuration];
+  _providedView = [(SBUISystemApertureButtonContentProvider *)self _providedView];
+  configuration = [_providedView configuration];
 
-  return v3;
+  return configuration;
 }
 
-- (void)setButtonConfiguration:(id)a3
+- (void)setButtonConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SBUISystemApertureButtonContentProvider *)self _providedView];
-  [v5 setConfiguration:v4];
+  configurationCopy = configuration;
+  _providedView = [(SBUISystemApertureButtonContentProvider *)self _providedView];
+  [_providedView setConfiguration:configurationCopy];
 }
 
 - (UIColor)contentColor
 {
-  v2 = [(SBUISystemApertureButtonContentProvider *)self buttonConfiguration];
-  v3 = [v2 baseForegroundColor];
-  v4 = v3;
-  if (v3)
+  buttonConfiguration = [(SBUISystemApertureButtonContentProvider *)self buttonConfiguration];
+  baseForegroundColor = [buttonConfiguration baseForegroundColor];
+  v4 = baseForegroundColor;
+  if (baseForegroundColor)
   {
-    v5 = v3;
+    baseBackgroundColor = baseForegroundColor;
   }
 
   else
   {
-    v5 = [v2 baseBackgroundColor];
+    baseBackgroundColor = [buttonConfiguration baseBackgroundColor];
   }
 
-  v6 = v5;
+  v6 = baseBackgroundColor;
 
   return v6;
 }
 
-- (void)setContentColor:(id)a3
+- (void)setContentColor:(id)color
 {
-  v4 = a3;
-  v5 = [(SBUISystemApertureButtonContentProvider *)self buttonConfiguration];
-  [v5 setBaseForegroundColor:v4];
-  [v5 setBaseBackgroundColor:v4];
+  colorCopy = color;
+  buttonConfiguration = [(SBUISystemApertureButtonContentProvider *)self buttonConfiguration];
+  [buttonConfiguration setBaseForegroundColor:colorCopy];
+  [buttonConfiguration setBaseBackgroundColor:colorCopy];
 
-  [(SBUISystemApertureButtonContentProvider *)self setButtonConfiguration:v5];
+  [(SBUISystemApertureButtonContentProvider *)self setButtonConfiguration:buttonConfiguration];
 }
 
 - (SBUISystemApertureContentViewContaining)contentContainer

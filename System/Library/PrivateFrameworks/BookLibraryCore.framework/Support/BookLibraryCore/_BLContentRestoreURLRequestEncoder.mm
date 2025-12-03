@@ -1,15 +1,15 @@
 @interface _BLContentRestoreURLRequestEncoder
-- (_BLContentRestoreURLRequestEncoder)initWithBag:(id)a3;
-- (id)requestByEncodingRequest:(id)a3 parameters:(id)a4;
+- (_BLContentRestoreURLRequestEncoder)initWithBag:(id)bag;
+- (id)requestByEncodingRequest:(id)request parameters:(id)parameters;
 @end
 
 @implementation _BLContentRestoreURLRequestEncoder
 
-- (_BLContentRestoreURLRequestEncoder)initWithBag:(id)a3
+- (_BLContentRestoreURLRequestEncoder)initWithBag:(id)bag
 {
   v6.receiver = self;
   v6.super_class = _BLContentRestoreURLRequestEncoder;
-  v3 = [(_BLContentRestoreURLRequestEncoder *)&v6 initWithBag:a3];
+  v3 = [(_BLContentRestoreURLRequestEncoder *)&v6 initWithBag:bag];
   v4 = v3;
   if (v3)
   {
@@ -19,15 +19,15 @@
   return v4;
 }
 
-- (id)requestByEncodingRequest:(id)a3 parameters:(id)a4
+- (id)requestByEncodingRequest:(id)request parameters:(id)parameters
 {
-  v6 = a4;
-  v7 = [a3 mutableCopy];
+  parametersCopy = parameters;
+  v7 = [request mutableCopy];
   [v7 setCachePolicy:1];
   [v7 setHTTPContentType:@"text/xml"];
   v10.receiver = self;
   v10.super_class = _BLContentRestoreURLRequestEncoder;
-  v8 = [(_BLContentRestoreURLRequestEncoder *)&v10 requestByEncodingRequest:v7 parameters:v6];
+  v8 = [(_BLContentRestoreURLRequestEncoder *)&v10 requestByEncodingRequest:v7 parameters:parametersCopy];
 
   return v8;
 }

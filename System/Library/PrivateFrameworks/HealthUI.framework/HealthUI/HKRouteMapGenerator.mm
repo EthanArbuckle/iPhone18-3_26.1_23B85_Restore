@@ -1,15 +1,15 @@
 @interface HKRouteMapGenerator
-- ($00C252D827C7059747F93C85745A0A56)_adjustRectForPolyline:(id)a3 withSize:(CGSize)a4;
-- ($00C252D827C7059747F93C85745A0A56)_adjustedMapRectForPolyline:(id)a3 size:(CGSize)a4;
-- ($00C252D827C7059747F93C85745A0A56)_adjustedMapRectForPolyline:(id)a3 size:(CGSize)a4 offsets:(CGRect)a5;
+- ($00C252D827C7059747F93C85745A0A56)_adjustRectForPolyline:(id)polyline withSize:(CGSize)size;
+- ($00C252D827C7059747F93C85745A0A56)_adjustedMapRectForPolyline:(id)polyline size:(CGSize)size;
+- ($00C252D827C7059747F93C85745A0A56)_adjustedMapRectForPolyline:(id)polyline size:(CGSize)size offsets:(CGRect)offsets;
 - (HKRouteMapGenerator)init;
-- (id)_annotationViewWithIsStartPoint:(BOOL)a3;
-- (id)_imageWithPolyline:(id)a3 lineWidth:(double)a4 mapRect:(id)a5 onSnapshot:(id)a6;
-- (id)relativeColorForSpeed:(double)a3;
-- (void)_drawLineFromPointA:(CGPoint)a3 toPointB:(CGPoint)a4 atSpeed:(double)a5 context:(CGContext *)a6 drawDashes:(BOOL)a7 lineWidth:(double)a8;
-- (void)_overlayAnnotationView:(id)a3 point:(id)a4 onSnapshot:(id)a5 context:(CGContext *)a6;
-- (void)drawLinesWithPolyline:(id)a3 lineWidth:(double)a4 mapRect:(id)a5 context:(CGContext *)a6 pointFromMapPoint:(id)a7;
-- (void)snapshotWithSize:(CGSize)a3 lineWidth:(double)a4 traitCollection:(id)a5 offsets:(CGRect)a6 completion:(id)a7;
+- (id)_annotationViewWithIsStartPoint:(BOOL)point;
+- (id)_imageWithPolyline:(id)polyline lineWidth:(double)width mapRect:(id)rect onSnapshot:(id)snapshot;
+- (id)relativeColorForSpeed:(double)speed;
+- (void)_drawLineFromPointA:(CGPoint)a toPointB:(CGPoint)b atSpeed:(double)speed context:(CGContext *)context drawDashes:(BOOL)dashes lineWidth:(double)width;
+- (void)_overlayAnnotationView:(id)view point:(id)point onSnapshot:(id)snapshot context:(CGContext *)context;
+- (void)drawLinesWithPolyline:(id)polyline lineWidth:(double)width mapRect:(id)rect context:(CGContext *)context pointFromMapPoint:(id)point;
+- (void)snapshotWithSize:(CGSize)size lineWidth:(double)width traitCollection:(id)collection offsets:(CGRect)offsets completion:(id)completion;
 @end
 
 @implementation HKRouteMapGenerator
@@ -29,15 +29,15 @@
   return v3;
 }
 
-- (void)drawLinesWithPolyline:(id)a3 lineWidth:(double)a4 mapRect:(id)a5 context:(CGContext *)a6 pointFromMapPoint:(id)a7
+- (void)drawLinesWithPolyline:(id)polyline lineWidth:(double)width mapRect:(id)rect context:(CGContext *)context pointFromMapPoint:(id)point
 {
-  var1 = a5.var1.var1;
-  var0 = a5.var1.var0;
-  v11 = a5.var0.var1;
-  v12 = a5.var0.var0;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v11 = rect.var0.var1;
+  v12 = rect.var0.var0;
   v64 = *MEMORY[0x1E69E9840];
-  v47 = a3;
-  v14 = a7;
+  polylineCopy = polyline;
+  pointCopy = point;
   v67.origin.x = v12;
   v67.origin.y = v11;
   v67.size.width = var0;
@@ -47,14 +47,14 @@
   x = v68.origin.x;
   height = v68.size.height;
   width = v68.size.width;
-  v15 = [(HKRouteMapGenerator *)self locationReadings];
-  v16 = [v15 workout];
-  v17 = v16;
-  if (v16)
+  locationReadings = [(HKRouteMapGenerator *)self locationReadings];
+  workout = [locationReadings workout];
+  v17 = workout;
+  if (workout)
   {
-    v18 = [v16 workoutActivityType];
+    workoutActivityType = [workout workoutActivityType];
     v19 = 5.0;
-    if (v18 == 46)
+    if (workoutActivityType == 46)
     {
       v19 = 15.0;
     }
@@ -71,11 +71,11 @@
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v20 = [(HKRouteMapGenerator *)self locationReadings];
-  v21 = [v20 inOrderLocationArrays];
+  locationReadings2 = [(HKRouteMapGenerator *)self locationReadings];
+  inOrderLocationArrays = [locationReadings2 inOrderLocationArrays];
 
-  obj = v21;
-  v50 = [v21 countByEnumeratingWithState:&v59 objects:v63 count:16];
+  obj = inOrderLocationArrays;
+  v50 = [inOrderLocationArrays countByEnumeratingWithState:&v59 objects:v63 count:16];
   if (v50)
   {
     v49 = *v60;
@@ -89,9 +89,9 @@
         }
 
         v23 = *(*(&v59 + 1) + 8 * i);
-        v24 = [v23 firstObject];
-        v25 = [v24 timestamp];
-        [v25 timeIntervalSinceReferenceDate];
+        firstObject = [v23 firstObject];
+        timestamp = [firstObject timestamp];
+        [timestamp timeIntervalSinceReferenceDate];
         v27 = v26;
 
         if ([v23 count] >= 2)
@@ -101,13 +101,13 @@
           {
             v58 = v27;
             v29 = [v23 objectAtIndexedSubscript:v28];
-            [v24 coordinate];
+            [firstObject coordinate];
             v30 = MKMapPointForCoordinate(v65);
             [v29 coordinate];
             v31 = MKMapPointForCoordinate(v66);
-            v32 = v14[2](v14, v30.x, v30.y);
+            v32 = pointCopy[2](pointCopy, v30.x, v30.y);
             v34 = v33;
-            v35 = v14[2](v14, v31.x, v31.y);
+            v35 = pointCopy[2](pointCopy, v31.x, v31.y);
             v37 = v36;
             v57 = v32;
             v38 = (v35 - v32) * (v35 - v32) + (v36 - v34) * (v36 - v34);
@@ -123,24 +123,24 @@
               v69.size.width = width;
               if (MKMapRectIntersectsRect(v69, v70))
               {
-                v39 = [v29 timestamp];
-                [v39 timeIntervalSinceReferenceDate];
+                timestamp2 = [v29 timestamp];
+                [timestamp2 timeIntervalSinceReferenceDate];
                 v41 = v40 - v58;
 
-                if (v38 >= a4 * a4 || v41 <= v52)
+                if (v38 >= width * width || v41 <= v52)
                 {
                   [v29 speed];
-                  [(HKRouteMapGenerator *)self _drawLineFromPointA:a6 toPointB:v41 > v52 atSpeed:v57 context:v34 drawDashes:v35 lineWidth:v37, v43, a4];
+                  [(HKRouteMapGenerator *)self _drawLineFromPointA:context toPointB:v41 > v52 atSpeed:v57 context:v34 drawDashes:v35 lineWidth:v37, v43, width];
                 }
               }
 
               v44 = v29;
 
-              v24 = v44;
+              firstObject = v44;
             }
 
-            v45 = [v29 timestamp];
-            [v45 timeIntervalSinceReferenceDate];
+            timestamp3 = [v29 timestamp];
+            [timestamp3 timeIntervalSinceReferenceDate];
             v27 = v46;
 
             ++v28;
@@ -157,39 +157,39 @@
   }
 }
 
-- (void)_drawLineFromPointA:(CGPoint)a3 toPointB:(CGPoint)a4 atSpeed:(double)a5 context:(CGContext *)a6 drawDashes:(BOOL)a7 lineWidth:(double)a8
+- (void)_drawLineFromPointA:(CGPoint)a toPointB:(CGPoint)b atSpeed:(double)speed context:(CGContext *)context drawDashes:(BOOL)dashes lineWidth:(double)width
 {
-  v9 = a7;
-  y = a4.y;
-  x = a4.x;
-  v14 = a3.y;
-  v15 = a3.x;
+  dashesCopy = dashes;
+  y = b.y;
+  x = b.x;
+  v14 = a.y;
+  v15 = a.x;
   lengths[2] = *MEMORY[0x1E69E9840];
   Mutable = CGPathCreateMutable();
   CGPathMoveToPoint(Mutable, 0, v15, v14);
   CGPathAddLineToPoint(Mutable, 0, x, y);
-  if (v9)
+  if (dashesCopy)
   {
     lengths[0] = 0.0;
-    lengths[1] = a8 + a8;
+    lengths[1] = width + width;
     CopyByDashingPath = CGPathCreateCopyByDashingPath(Mutable, 0, 0.0, lengths, 2uLL);
-    CGContextAddPath(a6, CopyByDashingPath);
-    CGContextSetLineWidth(a6, a8);
-    CGContextSetLineCap(a6, kCGLineCapRound);
-    v19 = [MEMORY[0x1E69DC888] grayColor];
-    CGContextSetStrokeColorWithColor(a6, [v19 CGColor]);
+    CGContextAddPath(context, CopyByDashingPath);
+    CGContextSetLineWidth(context, width);
+    CGContextSetLineCap(context, kCGLineCapRound);
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    CGContextSetStrokeColorWithColor(context, [grayColor CGColor]);
 
-    v20 = a6;
+    contextCopy2 = context;
     v21 = kCGPathStroke;
   }
 
   else
   {
-    CopyByDashingPath = CGPathCreateCopyByStrokingPath(Mutable, 0, a8, kCGLineCapRound, kCGLineJoinRound, 10.0);
-    CGContextAddPath(a6, CopyByDashingPath);
+    CopyByDashingPath = CGPathCreateCopyByStrokingPath(Mutable, 0, width, kCGLineCapRound, kCGLineJoinRound, 10.0);
+    CGContextAddPath(context, CopyByDashingPath);
     if ([(HKRouteMapGenerator *)self useRelativeColorForSpeed])
     {
-      [(HKRouteMapGenerator *)self relativeColorForSpeed:a5];
+      [(HKRouteMapGenerator *)self relativeColorForSpeed:speed];
     }
 
     else
@@ -197,35 +197,35 @@
       [MEMORY[0x1E69DC888] colorWithRed:0.298039216 green:0.850980392 blue:0.392156863 alpha:1.0];
     }
     v22 = ;
-    CGContextSetFillColorWithColor(a6, [v22 CGColor]);
+    CGContextSetFillColorWithColor(context, [v22 CGColor]);
 
-    v20 = a6;
+    contextCopy2 = context;
     v21 = kCGPathFill;
   }
 
-  CGContextDrawPath(v20, v21);
+  CGContextDrawPath(contextCopy2, v21);
   CGPathRelease(CopyByDashingPath);
   CGPathRelease(Mutable);
 }
 
-- (id)relativeColorForSpeed:(double)a3
+- (id)relativeColorForSpeed:(double)speed
 {
   v5 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:0.8 blue:0.0 alpha:0.85];
-  v6 = [(HKRouteMapGenerator *)self locationReadings];
-  [v6 averageSpeed];
+  locationReadings = [(HKRouteMapGenerator *)self locationReadings];
+  [locationReadings averageSpeed];
   v8 = v7;
 
-  v9 = [(HKRouteMapGenerator *)self locationReadings];
-  [v9 topSpeed];
+  locationReadings2 = [(HKRouteMapGenerator *)self locationReadings];
+  [locationReadings2 topSpeed];
   v11 = v10;
 
-  v12 = [(HKRouteMapGenerator *)self locationReadings];
-  [v12 bottomSpeed];
+  locationReadings3 = [(HKRouteMapGenerator *)self locationReadings];
+  [locationReadings3 bottomSpeed];
   v14 = v13;
 
-  if (a3 >= 0.0 && v8 != 0.0 && (v8 * 0.9 < a3 ? (v15 = v8 * 1.1 <= a3) : (v15 = 1), v15))
+  if (speed >= 0.0 && v8 != 0.0 && (v8 * 0.9 < speed ? (v15 = v8 * 1.1 <= speed) : (v15 = 1), v15))
   {
-    v16 = (a3 - v14) / (v11 - v14);
+    v16 = (speed - v14) / (v11 - v14);
     if (v16 >= 0.5)
     {
       v22 = v16 + -0.5 + v16 + -0.5;
@@ -255,20 +255,20 @@
   return v23;
 }
 
-- ($00C252D827C7059747F93C85745A0A56)_adjustedMapRectForPolyline:(id)a3 size:(CGSize)a4
+- ($00C252D827C7059747F93C85745A0A56)_adjustedMapRectForPolyline:(id)polyline size:(CGSize)size
 {
-  [(HKRouteMapGenerator *)self _adjustRectForPolyline:a3 withSize:a4.width, a4.height];
+  [(HKRouteMapGenerator *)self _adjustRectForPolyline:polyline withSize:size.width, size.height];
 
   return MKMapRectInset(*&v4, v6 * -0.05, v7 * -0.05);
 }
 
-- ($00C252D827C7059747F93C85745A0A56)_adjustedMapRectForPolyline:(id)a3 size:(CGSize)a4 offsets:(CGRect)a5
+- ($00C252D827C7059747F93C85745A0A56)_adjustedMapRectForPolyline:(id)polyline size:(CGSize)size offsets:(CGRect)offsets
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  [(HKRouteMapGenerator *)self _adjustRectForPolyline:a3 withSize:a4.width, a4.height];
+  height = offsets.size.height;
+  width = offsets.size.width;
+  y = offsets.origin.y;
+  x = offsets.origin.x;
+  [(HKRouteMapGenerator *)self _adjustRectForPolyline:polyline withSize:size.width, size.height];
   v11 = v9 + v10 * x;
   v14 = v12 + v13 * y;
   v15 = v10 - v10 * width;
@@ -280,23 +280,23 @@
   return result;
 }
 
-- ($00C252D827C7059747F93C85745A0A56)_adjustRectForPolyline:(id)a3 withSize:(CGSize)a4
+- ($00C252D827C7059747F93C85745A0A56)_adjustRectForPolyline:(id)polyline withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  [v6 boundingMapRect];
+  height = size.height;
+  width = size.width;
+  polylineCopy = polyline;
+  [polylineCopy boundingMapRect];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v6 points];
-  v16 = *v15;
-  v17 = v15[1];
-  v18 = [v6 points];
-  v19 = [v6 pointCount];
+  points = [polylineCopy points];
+  v16 = *points;
+  v17 = points[1];
+  points2 = [polylineCopy points];
+  pointCount = [polylineCopy pointCount];
 
-  v20 = v18 + 16 * v19;
+  v20 = points2 + 16 * pointCount;
   v21 = *(v20 - 16);
   v22 = fmin(v17, *(v20 - 8));
   v23 = 16.0 / width * v12;
@@ -334,14 +334,14 @@
   return result;
 }
 
-- (id)_annotationViewWithIsStartPoint:(BOOL)a3
+- (id)_annotationViewWithIsStartPoint:(BOOL)point
 {
-  v3 = a3;
+  pointCopy = point;
   if (self->_useMarkerAnnotations)
   {
     v4 = [objc_alloc(MEMORY[0x1E696F2C8]) initWithAnnotation:0 reuseIdentifier:0];
     [(MKAnnotationView *)v4 setBounds:0.0, 0.0, 32.0, 32.0];
-    if (v3)
+    if (pointCopy)
     {
       v5 = 0.298039216;
       v6 = 0.850980392;
@@ -363,11 +363,11 @@
   {
     v4 = [[HKDotAnnotationView alloc] initWithAnnotation:0 reuseIdentifier:0];
     [(MKAnnotationView *)v4 setBounds:0.0, 0.0, 20.0, 20.0];
-    if (v3)
+    if (pointCopy)
     {
-      v9 = [(HKRouteMapGenerator *)self startPointColor];
+      startPointColor = [(HKRouteMapGenerator *)self startPointColor];
 
-      if (v9)
+      if (startPointColor)
       {
         [(HKRouteMapGenerator *)self startPointColor];
       }
@@ -380,9 +380,9 @@
 
     else
     {
-      v11 = [(HKRouteMapGenerator *)self endPointColor];
+      endPointColor = [(HKRouteMapGenerator *)self endPointColor];
 
-      if (v11)
+      if (endPointColor)
       {
         [(HKRouteMapGenerator *)self endPointColor];
       }
@@ -400,29 +400,29 @@
   return v4;
 }
 
-- (void)snapshotWithSize:(CGSize)a3 lineWidth:(double)a4 traitCollection:(id)a5 offsets:(CGRect)a6 completion:(id)a7
+- (void)snapshotWithSize:(CGSize)size lineWidth:(double)width traitCollection:(id)collection offsets:(CGRect)offsets completion:(id)completion
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a3.height;
-  v14 = a3.width;
-  v16 = a5;
-  v17 = a7;
+  height = offsets.size.height;
+  width = offsets.size.width;
+  y = offsets.origin.y;
+  x = offsets.origin.x;
+  v13 = size.height;
+  v14 = size.width;
+  collectionCopy = collection;
+  completionCopy = completion;
   v18 = objc_alloc_init(MEMORY[0x1E696F2B0]);
-  [v18 setTraitCollection:v16];
-  v19 = [(HKRouteMapGenerator *)self locationReadings];
-  v20 = [v19 count];
+  [v18 setTraitCollection:collectionCopy];
+  locationReadings = [(HKRouteMapGenerator *)self locationReadings];
+  v20 = [locationReadings count];
 
-  v21 = [(HKRouteMapGenerator *)self locationReadings];
-  v22 = [v21 allValidLocations];
-  v23 = v22;
+  locationReadings2 = [(HKRouteMapGenerator *)self locationReadings];
+  allValidLocations = [locationReadings2 allValidLocations];
+  v23 = allValidLocations;
   if (v20 == 1)
   {
-    v24 = [v22 firstObject];
+    firstObject = [allValidLocations firstObject];
 
-    [v24 coordinate];
+    [firstObject coordinate];
     v25 = MKMapPointForCoordinate(v56);
     v26 = v25.x + -750.0 + -32.0;
     v27 = v25.y + -750.0 + -32.0;
@@ -434,8 +434,8 @@
 
   else
   {
-    v50 = v17;
-    v31 = [v22 count];
+    v50 = completionCopy;
+    v31 = [allValidLocations count];
 
     v32 = malloc_type_malloc(16 * v31, 0x1000040451B5BE8uLL);
     v33 = v32;
@@ -445,9 +445,9 @@
       v35 = v32 + 8;
       do
       {
-        v36 = [(HKRouteMapGenerator *)self locationReadings];
-        v37 = [v36 allValidLocations];
-        v38 = [v37 objectAtIndexedSubscript:v34];
+        locationReadings3 = [(HKRouteMapGenerator *)self locationReadings];
+        allValidLocations2 = [locationReadings3 allValidLocations];
+        v38 = [allValidLocations2 objectAtIndexedSubscript:v34];
 
         [v38 coordinate];
         *(v35 - 8) = MKMapPointForCoordinate(v57);
@@ -479,7 +479,7 @@
     v27 = v40;
     v28 = v41;
     v30 = v42;
-    v17 = v50;
+    completionCopy = v50;
   }
 
   [v18 setMapRect:{v26, v27, v28, v30}];
@@ -500,12 +500,12 @@
   v51[1] = 3221225472;
   v51[2] = __85__HKRouteMapGenerator_snapshotWithSize_lineWidth_traitCollection_offsets_completion___block_invoke;
   v51[3] = &unk_1E81BA870;
-  v48 = v17;
+  v48 = completionCopy;
   v53 = v48;
   objc_copyWeak(v54, location);
   v49 = v29;
   v52 = v49;
-  v54[1] = *&a4;
+  v54[1] = *&width;
   v54[2] = *&v26;
   v54[3] = *&v27;
   v54[4] = *&v28;
@@ -575,49 +575,49 @@ void __85__HKRouteMapGenerator_snapshotWithSize_lineWidth_traitCollection_offset
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)_imageWithPolyline:(id)a3 lineWidth:(double)a4 mapRect:(id)a5 onSnapshot:(id)a6
+- (id)_imageWithPolyline:(id)polyline lineWidth:(double)width mapRect:(id)rect onSnapshot:(id)snapshot
 {
-  var1 = a5.var1.var1;
-  var0 = a5.var1.var0;
-  v9 = a5.var0.var1;
-  v10 = a5.var0.var0;
-  v13 = a3;
-  v14 = a6;
-  v15 = [v14 image];
-  [v15 size];
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v9 = rect.var0.var1;
+  v10 = rect.var0.var0;
+  polylineCopy = polyline;
+  snapshotCopy = snapshot;
+  image = [snapshotCopy image];
+  [image size];
   v17 = v16;
   v19 = v18;
-  v20 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v20 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v22 = v21;
   v48.width = v17;
   v48.height = v19;
   UIGraphicsBeginImageContextWithOptions(v48, 0, v22);
 
-  v23 = [v14 image];
-  [v23 size];
+  image2 = [snapshotCopy image];
+  [image2 size];
   v25 = v24;
-  v26 = [v14 image];
-  [v26 size];
+  image3 = [snapshotCopy image];
+  [image3 size];
   v28 = v27;
 
-  v29 = [v14 image];
-  [v29 drawInRect:{0.0, 0.0, v25, v28}];
+  image4 = [snapshotCopy image];
+  [image4 drawInRect:{0.0, 0.0, v25, v28}];
 
   CurrentContext = UIGraphicsGetCurrentContext();
   v31 = [(HKRouteMapGenerator *)self _annotationViewWithIsStartPoint:1];
-  v32 = [(HKRouteMapGenerator *)self locationReadings];
-  v33 = [v32 count];
+  locationReadings = [(HKRouteMapGenerator *)self locationReadings];
+  v33 = [locationReadings count];
 
   if (v33 == 1)
   {
-    v34 = [(HKRouteMapGenerator *)self locationReadings];
-    v35 = [v34 allValidLocations];
-    v36 = [v35 firstObject];
-    [v36 coordinate];
+    locationReadings2 = [(HKRouteMapGenerator *)self locationReadings];
+    allValidLocations = [locationReadings2 allValidLocations];
+    firstObject = [allValidLocations firstObject];
+    [firstObject coordinate];
     v37 = MKMapPointForCoordinate(v49);
 
-    [(HKRouteMapGenerator *)self _overlayAnnotationView:v31 point:v14 onSnapshot:CurrentContext context:v37.x, v37.y];
+    [(HKRouteMapGenerator *)self _overlayAnnotationView:v31 point:snapshotCopy onSnapshot:CurrentContext context:v37.x, v37.y];
   }
 
   else
@@ -626,18 +626,18 @@ void __85__HKRouteMapGenerator_snapshotWithSize_lineWidth_traitCollection_offset
     v45[1] = 3221225472;
     v45[2] = __71__HKRouteMapGenerator__imageWithPolyline_lineWidth_mapRect_onSnapshot___block_invoke;
     v45[3] = &unk_1E81BA898;
-    v38 = v14;
+    v38 = snapshotCopy;
     v46 = v38;
-    [(HKRouteMapGenerator *)self drawLinesWithPolyline:v13 lineWidth:CurrentContext mapRect:v45 context:a4 pointFromMapPoint:v10, v9, var0, var1];
+    [(HKRouteMapGenerator *)self drawLinesWithPolyline:polylineCopy lineWidth:CurrentContext mapRect:v45 context:width pointFromMapPoint:v10, v9, var0, var1];
     CGContextStrokePath(CurrentContext);
     v39 = [(HKRouteMapGenerator *)self _annotationViewWithIsStartPoint:0];
-    if ([v13 pointCount])
+    if ([polylineCopy pointCount])
     {
-      v40 = [v13 points];
-      [(HKRouteMapGenerator *)self _overlayAnnotationView:v31 point:v38 onSnapshot:CurrentContext context:*v40, v40[1]];
-      v41 = [v13 points];
-      v42 = [v13 pointCount];
-      [(HKRouteMapGenerator *)self _overlayAnnotationView:v39 point:v38 onSnapshot:CurrentContext context:*(v41 + 16 * v42 - 16), *(v41 + 16 * v42 - 8)];
+      points = [polylineCopy points];
+      [(HKRouteMapGenerator *)self _overlayAnnotationView:v31 point:v38 onSnapshot:CurrentContext context:*points, points[1]];
+      points2 = [polylineCopy points];
+      pointCount = [polylineCopy pointCount];
+      [(HKRouteMapGenerator *)self _overlayAnnotationView:v39 point:v38 onSnapshot:CurrentContext context:*(points2 + 16 * pointCount - 16), *(points2 + 16 * pointCount - 8)];
     }
   }
 
@@ -655,35 +655,35 @@ uint64_t __71__HKRouteMapGenerator__imageWithPolyline_lineWidth_mapRect_onSnapsh
   return [v3 pointForCoordinate:{v4.latitude, v4.longitude}];
 }
 
-- (void)_overlayAnnotationView:(id)a3 point:(id)a4 onSnapshot:(id)a5 context:(CGContext *)a6
+- (void)_overlayAnnotationView:(id)view point:(id)point onSnapshot:(id)snapshot context:(CGContext *)context
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v10 = a5;
-  v11 = a3;
+  var1 = point.var1;
+  var0 = point.var0;
+  snapshotCopy = snapshot;
+  viewCopy = view;
   v25.x = var0;
   v25.y = var1;
   v12 = MKCoordinateForMapPoint(v25);
-  [v10 pointForCoordinate:{v12.latitude, v12.longitude}];
+  [snapshotCopy pointForCoordinate:{v12.latitude, v12.longitude}];
   v14 = v13;
   v16 = v15;
 
-  [v11 bounds];
+  [viewCopy bounds];
   v17 = v14 - CGRectGetMidX(v26);
-  [v11 centerOffset];
+  [viewCopy centerOffset];
   v19 = v17 + v18;
-  [v11 bounds];
+  [viewCopy bounds];
   v20 = v16 - CGRectGetMidY(v27);
-  [v11 centerOffset];
+  [viewCopy centerOffset];
   v22 = v20 + v21;
-  CGContextSaveGState(a6);
-  CGContextTranslateCTM(a6, v19, v22);
-  [v11 prepareForSnapshotting];
-  v23 = [v11 layer];
+  CGContextSaveGState(context);
+  CGContextTranslateCTM(context, v19, v22);
+  [viewCopy prepareForSnapshotting];
+  layer = [viewCopy layer];
 
-  [v23 renderInContext:a6];
+  [layer renderInContext:context];
 
-  CGContextRestoreGState(a6);
+  CGContextRestoreGState(context);
 }
 
 void __85__HKRouteMapGenerator_snapshotWithSize_lineWidth_traitCollection_offsets_completion___block_invoke_cold_1(uint64_t a1, NSObject *a2)

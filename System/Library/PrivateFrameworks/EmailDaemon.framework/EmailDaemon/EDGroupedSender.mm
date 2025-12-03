@@ -6,14 +6,14 @@
 - (BOOL)hasAttachments;
 - (BOOL)isBlocked;
 - (BOOL)isEditable;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isVIP;
 - (BOOL)shouldArchiveByDefault;
 - (BOOL)supportsArchiving;
 - (ECSubject)subject;
-- (EDGroupedSender)initWithBusinessID:(int64_t)a3 externalBusinessID:(id)a4 messages:(id)a5 originatingQuery:(id)a6 businessPersistence:(id)a7 messagePersistence:(id)a8 businessCloudStorage:(id)a9 unsubscribeDetector:(id)a10;
-- (EDGroupedSender)initWithCoder:(id)a3;
-- (EDGroupedSender)initWithObjectID:(id)a3 businessID:(int64_t)a4 externalBusinessID:(id)a5 messages:(id)a6 sortDescriptors:(id)a7 businessPersistence:(id)a8 messagePersistence:(id)a9 businessCloudStorage:(id)a10 unsubscribeDetector:(id)a11 unreadCount:(unint64_t)a12 unseenCount:(unint64_t)a13 alwaysUseNewestItems:(BOOL)a14;
+- (EDGroupedSender)initWithBusinessID:(int64_t)d externalBusinessID:(id)iD messages:(id)messages originatingQuery:(id)query businessPersistence:(id)persistence messagePersistence:(id)messagePersistence businessCloudStorage:(id)storage unsubscribeDetector:(id)self0;
+- (EDGroupedSender)initWithCoder:(id)coder;
+- (EDGroupedSender)initWithObjectID:(id)d businessID:(int64_t)iD externalBusinessID:(id)businessID messages:(id)messages sortDescriptors:(id)descriptors businessPersistence:(id)persistence messagePersistence:(id)messagePersistence businessCloudStorage:(id)self0 unsubscribeDetector:(id)self1 unreadCount:(unint64_t)self2 unseenCount:(unint64_t)self3 alwaysUseNewestItems:(BOOL)self4;
 - (EFFuture)displayMessage;
 - (EMCategory)category;
 - (EMCollectionItemID)displayMessageItemID;
@@ -38,26 +38,26 @@
 - (NSString)summary;
 - (NSURL)brandIndicatorLocation;
 - (id)_newestMessageDescription;
-- (id)_newestMessages:(int64_t)a3;
+- (id)_newestMessages:(int64_t)messages;
 - (id)_persistedBusinessDisplayName;
 - (id)_recalculateGroupedSenderMessageListItems;
 - (id)_senderDisplayName;
-- (id)_uiChangeFrom:(id)a3;
-- (id)addMessages:(id)a3;
-- (id)changeFrom:(id)a3;
-- (id)changeKeyPaths:(id)a3 forMessages:(id)a4 messageProvider:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_uiChangeFrom:(id)from;
+- (id)addMessages:(id)messages;
+- (id)changeFrom:(id)from;
+- (id)changeKeyPaths:(id)paths forMessages:(id)messages messageProvider:(id)provider;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)recalculateUnseenCount;
-- (id)removeMessages:(id)a3 isGroupEmpty:(BOOL *)a4 messageProvider:(id)a5;
-- (unint64_t)_flagCountForMessages:(id)a3;
-- (unint64_t)_unreadCountForMessages:(id)a3;
-- (unint64_t)_unseenCountForMessages:(id)a3;
-- (unint64_t)_unseenCountForMessages:(id)a3 lastSeenDate:(id)a4 lastSeenDisplayDate:(id)a5;
+- (id)removeMessages:(id)messages isGroupEmpty:(BOOL *)empty messageProvider:(id)provider;
+- (unint64_t)_flagCountForMessages:(id)messages;
+- (unint64_t)_unreadCountForMessages:(id)messages;
+- (unint64_t)_unseenCountForMessages:(id)messages;
+- (unint64_t)_unseenCountForMessages:(id)messages lastSeenDate:(id)date lastSeenDisplayDate:(id)displayDate;
 - (void)_trimMessages;
-- (void)_updateCachedMessagesIfNeededWithMessageProvider:(id)a3;
+- (void)_updateCachedMessagesIfNeededWithMessageProvider:(id)provider;
 - (void)_updateGroupedSenderMessageListItems;
-- (void)encodeWithCoder:(id)a3;
-- (void)setUnreadCount:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setUnreadCount:(unint64_t)count;
 @end
 
 @implementation EDGroupedSender
@@ -68,7 +68,7 @@
   block[1] = 3221225472;
   block[2] = __22__EDGroupedSender_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_41 != -1)
   {
     dispatch_once(&log_onceToken_41, block);
@@ -87,31 +87,31 @@ void __22__EDGroupedSender_log__block_invoke(uint64_t a1)
   log_log_41 = v1;
 }
 
-- (EDGroupedSender)initWithBusinessID:(int64_t)a3 externalBusinessID:(id)a4 messages:(id)a5 originatingQuery:(id)a6 businessPersistence:(id)a7 messagePersistence:(id)a8 businessCloudStorage:(id)a9 unsubscribeDetector:(id)a10
+- (EDGroupedSender)initWithBusinessID:(int64_t)d externalBusinessID:(id)iD messages:(id)messages originatingQuery:(id)query businessPersistence:(id)persistence messagePersistence:(id)messagePersistence businessCloudStorage:(id)storage unsubscribeDetector:(id)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v39 = a7;
-  v38 = a8;
-  v19 = a9;
-  v20 = a10;
+  iDCopy = iD;
+  messagesCopy = messages;
+  queryCopy = query;
+  persistenceCopy = persistence;
+  messagePersistenceCopy = messagePersistence;
+  storageCopy = storage;
+  detectorCopy = detector;
   v21 = MEMORY[0x1E699ADA0];
-  v42 = v18;
-  v40 = v16;
-  v37 = v19;
-  v22 = [v18 predicate];
-  v43 = [v21 threadScopeForPredicate:v22 withMailboxTypeResolver:0];
+  v42 = queryCopy;
+  v40 = iDCopy;
+  v37 = storageCopy;
+  predicate = [queryCopy predicate];
+  v43 = [v21 threadScopeForPredicate:predicate withMailboxTypeResolver:0];
 
-  v23 = [objc_alloc(MEMORY[0x1E699ACD0]) initWithBusinessID:a3 threadScope:v43];
-  v24 = [(EDGroupedSender *)self _unreadCountForMessages:v17];
-  v25 = [v17 firstObject];
-  v26 = [v25 category];
+  v23 = [objc_alloc(MEMORY[0x1E699ACD0]) initWithBusinessID:d threadScope:v43];
+  v24 = [(EDGroupedSender *)self _unreadCountForMessages:messagesCopy];
+  firstObject = [messagesCopy firstObject];
+  category = [firstObject category];
 
-  v36 = v26;
-  if (v26)
+  v36 = category;
+  if (category)
   {
-    v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v26, "type")}];
+    v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(category, "type")}];
   }
 
   else
@@ -120,63 +120,63 @@ void __22__EDGroupedSender_log__block_invoke(uint64_t a1)
   }
 
   v35 = v27;
-  v41 = [v19 lastSeenDateForCategoryType:v27 businessWithExternalID:v16];
-  v28 = [v19 lastSeenDisplayDateForCategoryType:v27 businessWithExternalID:v16];
-  v29 = [(EDGroupedSender *)self _unseenCountForMessages:v17 lastSeenDate:v41 lastSeenDisplayDate:v28];
+  v41 = [storageCopy lastSeenDateForCategoryType:v27 businessWithExternalID:iDCopy];
+  v28 = [storageCopy lastSeenDisplayDateForCategoryType:v27 businessWithExternalID:iDCopy];
+  v29 = [(EDGroupedSender *)self _unseenCountForMessages:messagesCopy lastSeenDate:v41 lastSeenDisplayDate:v28];
   v30 = [MEMORY[0x1E699ACE8] preferenceEnabled:41];
-  v31 = [v42 sortDescriptors];
+  sortDescriptors = [v42 sortDescriptors];
   LOBYTE(v34) = v30;
-  v32 = [(EDGroupedSender *)self initWithObjectID:v23 businessID:a3 externalBusinessID:v40 messages:v17 sortDescriptors:v31 businessPersistence:v39 messagePersistence:v38 businessCloudStorage:v37 unsubscribeDetector:v20 unreadCount:v24 unseenCount:v29 alwaysUseNewestItems:v34];
+  v32 = [(EDGroupedSender *)self initWithObjectID:v23 businessID:d externalBusinessID:v40 messages:messagesCopy sortDescriptors:sortDescriptors businessPersistence:persistenceCopy messagePersistence:messagePersistenceCopy businessCloudStorage:v37 unsubscribeDetector:detectorCopy unreadCount:v24 unseenCount:v29 alwaysUseNewestItems:v34];
 
   return v32;
 }
 
-- (EDGroupedSender)initWithObjectID:(id)a3 businessID:(int64_t)a4 externalBusinessID:(id)a5 messages:(id)a6 sortDescriptors:(id)a7 businessPersistence:(id)a8 messagePersistence:(id)a9 businessCloudStorage:(id)a10 unsubscribeDetector:(id)a11 unreadCount:(unint64_t)a12 unseenCount:(unint64_t)a13 alwaysUseNewestItems:(BOOL)a14
+- (EDGroupedSender)initWithObjectID:(id)d businessID:(int64_t)iD externalBusinessID:(id)businessID messages:(id)messages sortDescriptors:(id)descriptors businessPersistence:(id)persistence messagePersistence:(id)messagePersistence businessCloudStorage:(id)self0 unsubscribeDetector:(id)self1 unreadCount:(unint64_t)self2 unseenCount:(unint64_t)self3 alwaysUseNewestItems:(BOOL)self4
 {
-  v20 = a3;
-  v40 = a5;
-  v21 = a6;
-  v39 = a7;
-  v38 = a8;
-  v37 = a9;
-  v36 = a10;
-  v35 = a11;
+  dCopy = d;
+  businessIDCopy = businessID;
+  messagesCopy = messages;
+  descriptorsCopy = descriptors;
+  persistenceCopy = persistence;
+  messagePersistenceCopy = messagePersistence;
+  storageCopy = storage;
+  detectorCopy = detector;
   v41.receiver = self;
   v41.super_class = EDGroupedSender;
-  v22 = [(EMObject *)&v41 initWithObjectID:v20];
+  v22 = [(EMObject *)&v41 initWithObjectID:dCopy];
   v23 = v22;
   if (v22)
   {
-    v22->_businessID = a4;
-    v24 = [v40 copy];
+    v22->_businessID = iD;
+    v24 = [businessIDCopy copy];
     externalBusinessID = v23->_externalBusinessID;
     v23->_externalBusinessID = v24;
 
-    objc_storeStrong(&v23->_sortDescriptors, a7);
-    objc_storeStrong(&v23->_businessPersistence, a8);
-    objc_storeStrong(&v23->_messagePersistence, a9);
-    objc_storeStrong(&v23->_businessCloudStorage, a10);
-    objc_storeStrong(&v23->_unsubscribeDetector, a11);
-    v26 = [v21 firstObject];
-    v27 = [v26 businessLogoID];
+    objc_storeStrong(&v23->_sortDescriptors, descriptors);
+    objc_storeStrong(&v23->_businessPersistence, persistence);
+    objc_storeStrong(&v23->_messagePersistence, messagePersistence);
+    objc_storeStrong(&v23->_businessCloudStorage, storage);
+    objc_storeStrong(&v23->_unsubscribeDetector, detector);
+    firstObject = [messagesCopy firstObject];
+    businessLogoID = [firstObject businessLogoID];
     businessLogoID = v23->_businessLogoID;
-    v23->_businessLogoID = v27;
+    v23->_businessLogoID = businessLogoID;
 
-    v29 = [v21 ef_filter:&__block_literal_global_27];
+    v29 = [messagesCopy ef_filter:&__block_literal_global_27];
     v30 = [v29 mutableCopy];
     messages = v23->_messages;
     v23->_messages = v30;
 
-    [(NSMutableArray *)v23->_messages sortUsingDescriptors:v39];
+    [(NSMutableArray *)v23->_messages sortUsingDescriptors:descriptorsCopy];
     v32 = [MEMORY[0x1E699AD30] combinedFlagsForMessageListItems:v23->_messages];
     flags = v23->_flags;
     v23->_flags = v32;
 
-    v23->_unreadCount = a12;
-    v23->_unseenCount = a13;
+    v23->_unreadCount = count;
+    v23->_unseenCount = unseenCount;
     v23->_flagCount = [(EDGroupedSender *)v23 _flagCountForMessages:v23->_messages];
-    v23->_count = [v21 count];
-    v23->_alwaysUseNewestItems = a14;
+    v23->_count = [messagesCopy count];
+    v23->_alwaysUseNewestItems = items;
     v23->_authenticatedCount = [(EDGroupedSender *)v23 _authenticatedCountForMessages:v23->_messages];
     [(EDGroupedSender *)v23 _trimMessages];
   }
@@ -192,96 +192,96 @@ uint64_t __216__EDGroupedSender_initWithObjectID_businessID_externalBusinessID_m
   return v3 ^ 1u;
 }
 
-- (EDGroupedSender)initWithCoder:(id)a3
+- (EDGroupedSender)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = EDGroupedSender;
-  v5 = [(EMObject *)&v26 initWithCoder:v4];
+  v5 = [(EMObject *)&v26 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_businessID = [v4 decodeInt64ForKey:@"EFPropertyKey_businessID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_businessLogoID"];
+    v5->_businessID = [coderCopy decodeInt64ForKey:@"EFPropertyKey_businessID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_businessLogoID"];
     businessLogoID = v5->_businessLogoID;
     v5->_businessLogoID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_externalBusinessID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_externalBusinessID"];
     externalBusinessID = v5->_externalBusinessID;
     v5->_externalBusinessID = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"EFPropertyKey_emailAddress"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"EFPropertyKey_emailAddress"];
     emailAddress = v5->_emailAddress;
     v5->_emailAddress = v13;
 
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"EFPropertyKey_sortDescriptors"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"EFPropertyKey_sortDescriptors"];
     sortDescriptors = v5->_sortDescriptors;
     v5->_sortDescriptors = v18;
 
     v20 = MEMORY[0x1E695DFD8];
     v21 = objc_opt_class();
     v22 = [v20 setWithObjects:{v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"EFPropertyKey_messages"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"EFPropertyKey_messages"];
     messages = v5->_messages;
     v5->_messages = v23;
 
-    v5->_unreadCount = [v4 decodeIntegerForKey:@"EFPropertyKey_unreadCount"];
+    v5->_unreadCount = [coderCopy decodeIntegerForKey:@"EFPropertyKey_unreadCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = EDGroupedSender;
-  [(EMObject *)&v10 encodeWithCoder:v4];
-  [v4 encodeInt64:-[EDGroupedSender businessID](self forKey:{"businessID"), @"EFPropertyKey_businessID"}];
-  v5 = [(EDGroupedSender *)self businessLogoID];
-  [v4 encodeObject:v5 forKey:@"EFPropertyKey_businessLogoID"];
+  [(EMObject *)&v10 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:-[EDGroupedSender businessID](self forKey:{"businessID"), @"EFPropertyKey_businessID"}];
+  businessLogoID = [(EDGroupedSender *)self businessLogoID];
+  [coderCopy encodeObject:businessLogoID forKey:@"EFPropertyKey_businessLogoID"];
 
-  v6 = [(EDGroupedSender *)self businessDisplayName];
-  [v4 encodeObject:v6 forKey:@"EFPropertyKey_businessDisplayName"];
+  businessDisplayName = [(EDGroupedSender *)self businessDisplayName];
+  [coderCopy encodeObject:businessDisplayName forKey:@"EFPropertyKey_businessDisplayName"];
 
-  v7 = [(EDGroupedSender *)self externalBusinessID];
-  [v4 encodeObject:v7 forKey:@"EFPropertyKey_externalBusinessID"];
+  externalBusinessID = [(EDGroupedSender *)self externalBusinessID];
+  [coderCopy encodeObject:externalBusinessID forKey:@"EFPropertyKey_externalBusinessID"];
 
-  v8 = [(EDGroupedSender *)self emailAddress];
-  [v4 encodeObject:v8 forKey:@"EFPropertyKey_emailAddress"];
+  emailAddress = [(EDGroupedSender *)self emailAddress];
+  [coderCopy encodeObject:emailAddress forKey:@"EFPropertyKey_emailAddress"];
 
-  v9 = [(EDGroupedSender *)self sortDescriptors];
-  [v4 encodeObject:v9 forKey:@"EFPropertyKey_sortDescriptors"];
+  sortDescriptors = [(EDGroupedSender *)self sortDescriptors];
+  [coderCopy encodeObject:sortDescriptors forKey:@"EFPropertyKey_sortDescriptors"];
 
-  [v4 encodeObject:self->_messages forKey:@"EFPropertyKey_messages"];
-  [v4 encodeInteger:-[EDGroupedSender unreadCount](self forKey:{"unreadCount"), @"EFPropertyKey_unreadCount"}];
+  [coderCopy encodeObject:self->_messages forKey:@"EFPropertyKey_messages"];
+  [coderCopy encodeInteger:-[EDGroupedSender unreadCount](self forKey:{"unreadCount"), @"EFPropertyKey_unreadCount"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v19 = [(EMObject *)self objectID];
-  v22 = [v19 copy];
-  v5 = [(EDGroupedSender *)self businessID];
-  v21 = [(EDGroupedSender *)self externalBusinessID];
-  v18 = [(EDGroupedSender *)self messages];
-  v20 = [v18 copy];
-  v17 = [(EDGroupedSender *)self sortDescriptors];
-  v6 = [v17 copy];
-  v7 = [(EDGroupedSender *)self businessPersistence];
-  v8 = [(EDGroupedSender *)self messagePersistence];
-  v9 = [(EDGroupedSender *)self businessCloudStorage];
+  objectID = [(EMObject *)self objectID];
+  v22 = [objectID copy];
+  businessID = [(EDGroupedSender *)self businessID];
+  externalBusinessID = [(EDGroupedSender *)self externalBusinessID];
+  messages = [(EDGroupedSender *)self messages];
+  v20 = [messages copy];
+  sortDescriptors = [(EDGroupedSender *)self sortDescriptors];
+  v6 = [sortDescriptors copy];
+  businessPersistence = [(EDGroupedSender *)self businessPersistence];
+  messagePersistence = [(EDGroupedSender *)self messagePersistence];
+  businessCloudStorage = [(EDGroupedSender *)self businessCloudStorage];
   v10 = v4;
-  v11 = [(EDGroupedSender *)self unsubscribeDetector];
-  v12 = [(EDGroupedSender *)self unreadCount];
-  v13 = [(EDGroupedSender *)self unseenCount];
+  unsubscribeDetector = [(EDGroupedSender *)self unsubscribeDetector];
+  unreadCount = [(EDGroupedSender *)self unreadCount];
+  unseenCount = [(EDGroupedSender *)self unseenCount];
   LOBYTE(v16) = [(EDGroupedSender *)self alwaysUseNewestItems];
-  v14 = [v10 initWithObjectID:v22 businessID:v5 externalBusinessID:v21 messages:v20 sortDescriptors:v6 businessPersistence:v7 messagePersistence:v8 businessCloudStorage:v9 unsubscribeDetector:v11 unreadCount:v12 unseenCount:v13 alwaysUseNewestItems:v16];
+  v14 = [v10 initWithObjectID:v22 businessID:businessID externalBusinessID:externalBusinessID messages:v20 sortDescriptors:v6 businessPersistence:businessPersistence messagePersistence:messagePersistence businessCloudStorage:businessCloudStorage unsubscribeDetector:unsubscribeDetector unreadCount:unreadCount unseenCount:unseenCount alwaysUseNewestItems:v16];
 
   return v14;
 }
@@ -289,33 +289,33 @@ uint64_t __216__EDGroupedSender_initWithObjectID_businessID_externalBusinessID_m
 - (EMMessage)newestMessage
 {
   v2 = [(EDGroupedSender *)self _newestMessages:1];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (id)_newestMessages:(int64_t)a3
+- (id)_newestMessages:(int64_t)messages
 {
-  if (a3)
+  if (messages)
   {
-    v5 = [(EDGroupedSender *)self sortDescriptors];
-    v6 = [v5 firstObject];
-    v7 = [v6 ascending];
+    sortDescriptors = [(EDGroupedSender *)self sortDescriptors];
+    firstObject = [sortDescriptors firstObject];
+    ascending = [firstObject ascending];
 
     v8 = [(NSMutableArray *)self->_messages count];
-    if (v8 >= a3)
+    if (v8 >= messages)
     {
-      v9 = a3;
+      messagesCopy = messages;
     }
 
     else
     {
-      v9 = v8;
+      messagesCopy = v8;
     }
 
-    if (v7)
+    if (ascending)
     {
-      v10 = [(NSMutableArray *)self->_messages count]- v9;
+      v10 = [(NSMutableArray *)self->_messages count]- messagesCopy;
     }
 
     else
@@ -323,19 +323,19 @@ uint64_t __216__EDGroupedSender_initWithObjectID_businessID_externalBusinessID_m
       v10 = 0;
     }
 
-    v12 = [(NSMutableArray *)self->_messages subarrayWithRange:v10, v9];
-    v13 = v12;
-    if (v7)
+    messagesCopy = [(NSMutableArray *)self->_messages subarrayWithRange:v10, messagesCopy];
+    v13 = messagesCopy;
+    if (ascending)
     {
-      v14 = [v12 ef_reverse];
+      ef_reverse = [messagesCopy ef_reverse];
     }
 
     else
     {
-      v14 = v12;
+      ef_reverse = messagesCopy;
     }
 
-    v11 = v14;
+    v11 = ef_reverse;
   }
 
   else
@@ -346,16 +346,16 @@ uint64_t __216__EDGroupedSender_initWithObjectID_businessID_externalBusinessID_m
   return v11;
 }
 
-- (unint64_t)_unreadCountForMessages:(id)a3
+- (unint64_t)_unreadCountForMessages:(id)messages
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
+  messagesCopy = messages;
   v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [messagesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -366,18 +366,18 @@ uint64_t __216__EDGroupedSender_initWithObjectID_businessID_externalBusinessID_m
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(messagesCopy);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * v7) flags];
-        v9 = [v8 read];
+        flags = [*(*(&v12 + 1) + 8 * v7) flags];
+        read = [flags read];
 
-        v4 += v9 ^ 1u;
+        v4 += read ^ 1u;
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [messagesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -387,16 +387,16 @@ uint64_t __216__EDGroupedSender_initWithObjectID_businessID_externalBusinessID_m
   return v4;
 }
 
-- (unint64_t)_flagCountForMessages:(id)a3
+- (unint64_t)_flagCountForMessages:(id)messages
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
+  messagesCopy = messages;
   v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [messagesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -407,18 +407,18 @@ uint64_t __216__EDGroupedSender_initWithObjectID_businessID_externalBusinessID_m
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(messagesCopy);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * v7) flags];
-        v9 = [v8 flagged];
+        flags = [*(*(&v12 + 1) + 8 * v7) flags];
+        flagged = [flags flagged];
 
-        v4 += v9;
+        v4 += flagged;
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [messagesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -428,14 +428,14 @@ uint64_t __216__EDGroupedSender_initWithObjectID_businessID_externalBusinessID_m
   return v4;
 }
 
-- (unint64_t)_unseenCountForMessages:(id)a3
+- (unint64_t)_unseenCountForMessages:(id)messages
 {
-  v4 = a3;
-  v5 = [(EDGroupedSender *)self category];
-  v6 = v5;
-  if (v5)
+  messagesCopy = messages;
+  category = [(EDGroupedSender *)self category];
+  v6 = category;
+  if (category)
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "type")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(category, "type")}];
   }
 
   else
@@ -443,29 +443,29 @@ uint64_t __216__EDGroupedSender_initWithObjectID_businessID_externalBusinessID_m
     v7 = 0;
   }
 
-  v8 = [(EDGroupedSender *)self businessCloudStorage];
-  v9 = [(EDGroupedSender *)self externalBusinessID];
-  v10 = [v8 lastSeenDateForCategoryType:v7 businessWithExternalID:v9];
+  businessCloudStorage = [(EDGroupedSender *)self businessCloudStorage];
+  externalBusinessID = [(EDGroupedSender *)self externalBusinessID];
+  v10 = [businessCloudStorage lastSeenDateForCategoryType:v7 businessWithExternalID:externalBusinessID];
 
-  v11 = [(EDGroupedSender *)self businessCloudStorage];
-  v12 = [(EDGroupedSender *)self externalBusinessID];
-  v13 = [v11 lastSeenDisplayDateForCategoryType:v7 businessWithExternalID:v12];
+  businessCloudStorage2 = [(EDGroupedSender *)self businessCloudStorage];
+  externalBusinessID2 = [(EDGroupedSender *)self externalBusinessID];
+  v13 = [businessCloudStorage2 lastSeenDisplayDateForCategoryType:v7 businessWithExternalID:externalBusinessID2];
 
-  v14 = [(EDGroupedSender *)self _unseenCountForMessages:v4 lastSeenDate:v10 lastSeenDisplayDate:v13];
+  v14 = [(EDGroupedSender *)self _unseenCountForMessages:messagesCopy lastSeenDate:v10 lastSeenDisplayDate:v13];
   return v14;
 }
 
-- (unint64_t)_unseenCountForMessages:(id)a3 lastSeenDate:(id)a4 lastSeenDisplayDate:(id)a5
+- (unint64_t)_unseenCountForMessages:(id)messages lastSeenDate:(id)date lastSeenDisplayDate:(id)displayDate
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  messagesCopy = messages;
+  dateCopy = date;
+  displayDateCopy = displayDate;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v7;
+  v10 = messagesCopy;
   v11 = 0;
   v12 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
@@ -481,24 +481,24 @@ uint64_t __216__EDGroupedSender_initWithObjectID_businessID_externalBusinessID_m
         }
 
         v15 = *(*(&v24 + 1) + 8 * i);
-        v16 = [v15 flags];
-        v17 = [v16 read];
+        flags = [v15 flags];
+        read = [flags read];
 
-        if ((v17 & 1) == 0)
+        if ((read & 1) == 0)
         {
-          if (v8)
+          if (dateCopy)
           {
-            v18 = [v15 date];
-            v19 = [v8 ef_isEarlierThanDate:v18] ^ 1;
-            if (!v9)
+            date = [v15 date];
+            v19 = [dateCopy ef_isEarlierThanDate:date] ^ 1;
+            if (!displayDateCopy)
             {
               LOBYTE(v19) = 0;
             }
 
             if (v19)
             {
-              v20 = [v15 displayDate];
-              v21 = [v9 ef_isEarlierThanDate:v20];
+              displayDate = [v15 displayDate];
+              v21 = [displayDateCopy ef_isEarlierThanDate:displayDate];
 
               if (!v21)
               {
@@ -525,22 +525,22 @@ uint64_t __216__EDGroupedSender_initWithObjectID_businessID_externalBusinessID_m
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4.receiver = self;
   v4.super_class = EDGroupedSender;
-  return [(EMObject *)&v4 isEqual:a3];
+  return [(EMObject *)&v4 isEqual:equal];
 }
 
-- (id)addMessages:(id)a3
+- (id)addMessages:(id)messages
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messagesCopy = messages;
   v20 = [(EDGroupedSender *)self copy];
-  v5 = [v4 ef_filter:&__block_literal_global_42_0];
+  v5 = [messagesCopy ef_filter:&__block_literal_global_42_0];
 
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count", v5)}];
-  v7 = [(EDGroupedSender *)self sortDescriptors];
+  sortDescriptors = [(EDGroupedSender *)self sortDescriptors];
   v8 = EFComparatorFromSortDescriptors();
 
   v23 = 0u;
@@ -584,11 +584,11 @@ uint64_t __216__EDGroupedSender_initWithObjectID_businessID_externalBusinessID_m
     v15 = +[EDGroupedSender log];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(EMObject *)self objectID];
+      objectID = [(EMObject *)self objectID];
       *buf = 134218242;
       v26 = v14;
       v27 = 2112;
-      v28 = v16;
+      v28 = objectID;
       _os_log_impl(&dword_1C61EF000, v15, OS_LOG_TYPE_DEFAULT, "Incrementing flagCount by %lld for sender %@", buf, 0x16u);
     }
   }
@@ -610,13 +610,13 @@ uint64_t __31__EDGroupedSender_addMessages___block_invoke(uint64_t a1, void *a2)
   return v3 ^ 1u;
 }
 
-- (id)changeKeyPaths:(id)a3 forMessages:(id)a4 messageProvider:(id)a5
+- (id)changeKeyPaths:(id)paths forMessages:(id)messages messageProvider:(id)provider
 {
   v57 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v48 = a5;
+  messagesCopy = messages;
+  providerCopy = provider;
   v49 = [(EDGroupedSender *)self copy];
-  v8 = [v7 ef_filter:&__block_literal_global_46_0];
+  v8 = [messagesCopy ef_filter:&__block_literal_global_46_0];
 
   v54 = 0u;
   v55 = 0u;
@@ -639,30 +639,30 @@ uint64_t __31__EDGroupedSender_addMessages___block_invoke(uint64_t a1, void *a2)
 
         v12 = *(*(&v52 + 1) + 8 * i);
         messages = self->_messages;
-        v14 = [v12 second];
-        [(NSMutableArray *)messages removeObject:v14];
+        second = [v12 second];
+        [(NSMutableArray *)messages removeObject:second];
 
-        v15 = [v12 first];
-        LODWORD(messages) = (*(v10 + 16))(v10, v15);
+        first = [v12 first];
+        LODWORD(messages) = (*(v10 + 16))(v10, first);
 
         if (!messages)
         {
           continue;
         }
 
-        v16 = [v12 first];
-        v17 = [v16 flags];
-        if ([v17 read])
+        first2 = [v12 first];
+        flags = [first2 flags];
+        if ([flags read])
         {
         }
 
         else
         {
-          v18 = [v12 second];
-          v19 = [v18 flags];
-          v20 = [v19 read];
+          second2 = [v12 second];
+          flags2 = [second2 flags];
+          read = [flags2 read];
 
-          if (v20)
+          if (read)
           {
             v21 = [(EDGroupedSender *)self unreadCount]- 1;
 LABEL_14:
@@ -671,15 +671,15 @@ LABEL_14:
           }
         }
 
-        v22 = [v12 first];
-        v23 = [v22 flags];
-        if ([v23 read])
+        first3 = [v12 first];
+        flags3 = [first3 flags];
+        if ([flags3 read])
         {
-          v24 = [v12 second];
-          v25 = [v24 flags];
-          v26 = [v25 read];
+          second3 = [v12 second];
+          flags4 = [second3 flags];
+          read2 = [flags4 read];
 
-          if (v26)
+          if (read2)
           {
             goto LABEL_16;
           }
@@ -689,17 +689,17 @@ LABEL_14:
         }
 
 LABEL_16:
-        v27 = [v12 second];
-        if ([v27 isAuthenticated])
+        second4 = [v12 second];
+        if ([second4 isAuthenticated])
         {
         }
 
         else
         {
-          v28 = [v12 first];
-          v29 = [v28 isAuthenticated];
+          first4 = [v12 first];
+          isAuthenticated = [first4 isAuthenticated];
 
-          if (v29)
+          if (isAuthenticated)
           {
             v30 = [(EDGroupedSender *)self authenticatedCount]+ 1;
 LABEL_23:
@@ -708,36 +708,36 @@ LABEL_23:
           }
         }
 
-        v31 = [v12 second];
-        if (([v31 isAuthenticated] & 1) == 0)
+        second5 = [v12 second];
+        if (([second5 isAuthenticated] & 1) == 0)
         {
 
           goto LABEL_25;
         }
 
-        v32 = [v12 first];
-        v33 = [v32 isAuthenticated];
+        first5 = [v12 first];
+        isAuthenticated2 = [first5 isAuthenticated];
 
-        if ((v33 & 1) == 0)
+        if ((isAuthenticated2 & 1) == 0)
         {
           v30 = [(EDGroupedSender *)self authenticatedCount]- 1;
           goto LABEL_23;
         }
 
 LABEL_25:
-        v34 = [v12 second];
-        v35 = [v34 flags];
-        if ([v35 flagged])
+        second6 = [v12 second];
+        flags5 = [second6 flags];
+        if ([flags5 flagged])
         {
         }
 
         else
         {
-          v36 = [v12 first];
-          v37 = [v36 flags];
-          v38 = [v37 flagged];
+          first6 = [v12 first];
+          flags6 = [first6 flags];
+          flagged = [flags6 flagged];
 
-          if (v38)
+          if (flagged)
           {
             v39 = [(EDGroupedSender *)self flagCount]+ 1;
 LABEL_32:
@@ -746,15 +746,15 @@ LABEL_32:
           }
         }
 
-        v40 = [v12 second];
-        v41 = [v40 flags];
-        if ([v41 flagged])
+        second7 = [v12 second];
+        flags7 = [second7 flags];
+        if ([flags7 flagged])
         {
-          v42 = [v12 first];
-          v43 = [v42 flags];
-          v44 = [v43 flagged];
+          first7 = [v12 first];
+          flags8 = [first7 flags];
+          flagged2 = [flags8 flagged];
 
-          if (v44)
+          if (flagged2)
           {
             continue;
           }
@@ -770,7 +770,7 @@ LABEL_32:
     while (v9);
   }
 
-  [(EDGroupedSender *)self _updateCachedMessagesIfNeededWithMessageProvider:v48];
+  [(EDGroupedSender *)self _updateCachedMessagesIfNeededWithMessageProvider:providerCopy];
   v45 = [(EDGroupedSender *)self _uiChangeFrom:v49];
 
   v46 = *MEMORY[0x1E69E9840];
@@ -787,46 +787,46 @@ uint64_t __62__EDGroupedSender_changeKeyPaths_forMessages_messageProvider___bloc
   return v4 ^ 1u;
 }
 
-- (id)removeMessages:(id)a3 isGroupEmpty:(BOOL *)a4 messageProvider:(id)a5
+- (id)removeMessages:(id)messages isGroupEmpty:(BOOL *)empty messageProvider:(id)provider
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  messagesCopy = messages;
+  providerCopy = provider;
   v10 = [(EDGroupedSender *)self copy];
-  if ([v8 count])
+  if ([messagesCopy count])
   {
-    [(NSMutableArray *)self->_messages removeObjectsInArray:v8];
+    [(NSMutableArray *)self->_messages removeObjectsInArray:messagesCopy];
   }
 
-  [(EDGroupedSender *)self _updateCachedMessagesIfNeededWithMessageProvider:v9];
+  [(EDGroupedSender *)self _updateCachedMessagesIfNeededWithMessageProvider:providerCopy];
   v11 = [(NSMutableArray *)self->_messages count];
-  if (a4)
+  if (empty)
   {
-    *a4 = v11 == 0;
+    *empty = v11 == 0;
   }
 
   if (v11)
   {
-    [(EDGroupedSender *)self setUnreadCount:[(EDGroupedSender *)self unreadCount]- [(EDGroupedSender *)self _unreadCountForMessages:v8]];
-    [(EDGroupedSender *)self setUnseenCount:[(EDGroupedSender *)self unseenCount]- [(EDGroupedSender *)self _unseenCountForMessages:v8]];
-    [(EDGroupedSender *)self setAuthenticatedCount:[(EDGroupedSender *)self authenticatedCount]- [(EDGroupedSender *)self _authenticatedCountForMessages:v8]];
-    v12 = [(EDGroupedSender *)self _flagCountForMessages:v8];
+    [(EDGroupedSender *)self setUnreadCount:[(EDGroupedSender *)self unreadCount]- [(EDGroupedSender *)self _unreadCountForMessages:messagesCopy]];
+    [(EDGroupedSender *)self setUnseenCount:[(EDGroupedSender *)self unseenCount]- [(EDGroupedSender *)self _unseenCountForMessages:messagesCopy]];
+    [(EDGroupedSender *)self setAuthenticatedCount:[(EDGroupedSender *)self authenticatedCount]- [(EDGroupedSender *)self _authenticatedCountForMessages:messagesCopy]];
+    v12 = [(EDGroupedSender *)self _flagCountForMessages:messagesCopy];
     if (v12)
     {
       v13 = +[EDGroupedSender log];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(EMObject *)self objectID];
+        objectID = [(EMObject *)self objectID];
         v18 = 134218242;
         v19 = v12;
         v20 = 2112;
-        v21 = v14;
+        v21 = objectID;
         _os_log_impl(&dword_1C61EF000, v13, OS_LOG_TYPE_DEFAULT, "Decrementing flagCount by %lld for sender %@", &v18, 0x16u);
       }
     }
 
     [(EDGroupedSender *)self setFlagCount:[(EDGroupedSender *)self flagCount]- v12];
-    self->_count -= [v8 count];
+    self->_count -= [messagesCopy count];
     v15 = [(EDGroupedSender *)self _uiChangeFrom:v10];
   }
 
@@ -845,33 +845,33 @@ uint64_t __62__EDGroupedSender_changeKeyPaths_forMessages_messageProvider___bloc
   return v15;
 }
 
-- (id)_uiChangeFrom:(id)a3
+- (id)_uiChangeFrom:(id)from
 {
-  v3 = [MEMORY[0x1E699ACC8] changeFrom:a3 to:self];
-  v4 = [v3 groupedSenderMessageListItems];
-  if (v4 || ([v3 isAuthenticated], (v4 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v3, "count"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  v3 = [MEMORY[0x1E699ACC8] changeFrom:from to:self];
+  groupedSenderMessageListItems = [v3 groupedSenderMessageListItems];
+  if (groupedSenderMessageListItems || ([v3 isAuthenticated], (groupedSenderMessageListItems = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v3, "count"), (groupedSenderMessageListItems = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_5:
-    v5 = v3;
+    unreadCount = v3;
     goto LABEL_6;
   }
 
-  v5 = [v3 unreadCount];
+  unreadCount = [v3 unreadCount];
 
-  if (v5)
+  if (unreadCount)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
 
-  return v5;
+  return unreadCount;
 }
 
-- (id)changeFrom:(id)a3
+- (id)changeFrom:(id)from
 {
-  v3 = [MEMORY[0x1E699ACC8] changeFrom:a3 to:self];
+  v3 = [MEMORY[0x1E699ACC8] changeFrom:from to:self];
 
   return v3;
 }
@@ -879,36 +879,36 @@ LABEL_6:
 - (void)_trimMessages
 {
   [(EDGroupedSender *)self _updateGroupedSenderMessageListItems];
-  v10 = [(NSMutableArray *)self->_messages firstObject];
+  firstObject = [(NSMutableArray *)self->_messages firstObject];
   v4 = [(NSArray *)self->_groupedSenderMessageListItems mutableCopy];
   messages = self->_messages;
   self->_messages = v4;
 
-  if (v10)
+  if (firstObject)
   {
-    [(NSMutableArray *)self->_messages ef_addObjectIfAbsent:v10];
+    [(NSMutableArray *)self->_messages ef_addObjectIfAbsent:firstObject];
   }
 
   v6 = self->_messages;
-  v7 = [(EDGroupedSender *)self sortDescriptors];
-  [(NSMutableArray *)v6 sortUsingDescriptors:v7];
+  sortDescriptors = [(EDGroupedSender *)self sortDescriptors];
+  [(NSMutableArray *)v6 sortUsingDescriptors:sortDescriptors];
 
-  v8 = [objc_opt_class() maxMessageCount];
-  if ([(NSMutableArray *)self->_messages count]> v8)
+  maxMessageCount = [objc_opt_class() maxMessageCount];
+  if ([(NSMutableArray *)self->_messages count]> maxMessageCount)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"EDGroupedSender.m" lineNumber:355 description:@"too many items in _messages"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDGroupedSender.m" lineNumber:355 description:@"too many items in _messages"];
   }
 }
 
-- (void)_updateCachedMessagesIfNeededWithMessageProvider:(id)a3
+- (void)_updateCachedMessagesIfNeededWithMessageProvider:(id)provider
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  providerCopy = provider;
   v5 = [(NSMutableArray *)self->_messages count];
   if (v5 <= [objc_opt_class() maxMessageCount])
   {
-    v6 = [v4 messagesForGroupedSender:self limit:0x7FFFFFFFFFFFFFFFLL];
+    v6 = [providerCopy messagesForGroupedSender:self limit:0x7FFFFFFFFFFFFFFFLL];
     if ([v6 count] || (EFProtectedDataAvailable() & 1) != 0)
     {
       v7 = [v6 mutableCopy];
@@ -924,13 +924,13 @@ LABEL_6:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v11 = objc_opt_class();
-        v12 = [(EDGroupedSender *)self ef_publicDescription];
+        ef_publicDescription = [(EDGroupedSender *)self ef_publicDescription];
         v13 = 138412802;
         v14 = v11;
         v15 = 2048;
-        v16 = self;
+        selfCopy = self;
         v17 = 2114;
-        v18 = v12;
+        v18 = ef_publicDescription;
         _os_log_impl(&dword_1C61EF000, v10, OS_LOG_TYPE_DEFAULT, "<%@ %p> Unable to fetch messages for %{public}@, as the protected database is unavailable. Skipping updating cached messages", &v13, 0x20u);
       }
     }
@@ -942,11 +942,11 @@ LABEL_6:
 - (id)recalculateUnseenCount
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(EDGroupedSender *)self unseenCount];
-  v4 = [(EDGroupedSender *)self messages];
-  [(EDGroupedSender *)self setUnseenCount:[(EDGroupedSender *)self _unseenCountForMessages:v4]];
+  unseenCount = [(EDGroupedSender *)self unseenCount];
+  messages = [(EDGroupedSender *)self messages];
+  [(EDGroupedSender *)self setUnseenCount:[(EDGroupedSender *)self _unseenCountForMessages:messages]];
 
-  if (v3 == [(EDGroupedSender *)self unseenCount])
+  if (unseenCount == [(EDGroupedSender *)self unseenCount])
   {
     v5 = 0;
   }
@@ -966,69 +966,69 @@ LABEL_6:
 
 - (EMCollectionItemID)itemID
 {
-  v2 = [(EMObject *)self objectID];
-  v3 = [v2 collectionItemID];
+  objectID = [(EMObject *)self objectID];
+  collectionItemID = [objectID collectionItemID];
 
-  return v3;
+  return collectionItemID;
 }
 
 - (NSArray)mailboxObjectIDs
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 mailboxObjectIDs];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  mailboxObjectIDs = [newestMessage mailboxObjectIDs];
 
-  return v3;
+  return mailboxObjectIDs;
 }
 
 - (NSArray)mailboxes
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 mailboxes];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  mailboxes = [newestMessage mailboxes];
 
-  return v3;
+  return mailboxes;
 }
 
 - (NSArray)mailboxesIfAvailable
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 mailboxesIfAvailable];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  mailboxesIfAvailable = [newestMessage mailboxesIfAvailable];
 
-  return v3;
+  return mailboxesIfAvailable;
 }
 
 - (EFFuture)displayMessage
 {
   v2 = MEMORY[0x1E699B7C8];
-  v3 = [(EDGroupedSender *)self groupedSenderMessageListItems];
-  v4 = [v3 firstObject];
-  v5 = [v2 futureWithResult:v4];
+  groupedSenderMessageListItems = [(EDGroupedSender *)self groupedSenderMessageListItems];
+  firstObject = [groupedSenderMessageListItems firstObject];
+  v5 = [v2 futureWithResult:firstObject];
 
   return v5;
 }
 
 - (EMCollectionItemID)displayMessageItemID
 {
-  v2 = [(EDGroupedSender *)self groupedSenderMessageListItems];
-  v3 = [v2 firstObject];
-  v4 = [v3 displayMessageItemID];
+  groupedSenderMessageListItems = [(EDGroupedSender *)self groupedSenderMessageListItems];
+  firstObject = [groupedSenderMessageListItems firstObject];
+  displayMessageItemID = [firstObject displayMessageItemID];
 
-  return v4;
+  return displayMessageItemID;
 }
 
 - (EMObjectID)displayMessageObjectID
 {
-  v2 = [(EDGroupedSender *)self groupedSenderMessageListItems];
-  v3 = [v2 firstObject];
-  v4 = [v3 displayMessageObjectID];
+  groupedSenderMessageListItems = [(EDGroupedSender *)self groupedSenderMessageListItems];
+  firstObject = [groupedSenderMessageListItems firstObject];
+  displayMessageObjectID = [firstObject displayMessageObjectID];
 
-  return v4;
+  return displayMessageObjectID;
 }
 
 - (BOOL)deleteMovesToTrash
 {
   v2 = MEMORY[0x1E699AD18];
-  v3 = [(EDGroupedSender *)self mailboxes];
-  LOBYTE(v2) = [v2 deleteMovesToTrashForMailboxes:v3];
+  mailboxes = [(EDGroupedSender *)self mailboxes];
+  LOBYTE(v2) = [v2 deleteMovesToTrashForMailboxes:mailboxes];
 
   return v2;
 }
@@ -1036,8 +1036,8 @@ LABEL_6:
 - (BOOL)supportsArchiving
 {
   v2 = MEMORY[0x1E699AD18];
-  v3 = [(EDGroupedSender *)self mailboxes];
-  LOBYTE(v2) = [v2 supportsArchivingForMailboxes:v3];
+  mailboxes = [(EDGroupedSender *)self mailboxes];
+  LOBYTE(v2) = [v2 supportsArchivingForMailboxes:mailboxes];
 
   return v2;
 }
@@ -1050,8 +1050,8 @@ LABEL_6:
   }
 
   v3 = MEMORY[0x1E699AD18];
-  v4 = [(EDGroupedSender *)self mailboxes];
-  v5 = [v3 shouldArchiveByDefaultForMailboxes:v4];
+  mailboxes = [(EDGroupedSender *)self mailboxes];
+  v5 = [v3 shouldArchiveByDefaultForMailboxes:mailboxes];
 
   return v5;
 }
@@ -1061,8 +1061,8 @@ LABEL_6:
   isEditable = self->_isEditable;
   if (!isEditable)
   {
-    v4 = [(EDGroupedSender *)self mailboxes];
-    v5 = [v4 ef_any:&__block_literal_global_61];
+    mailboxes = [(EDGroupedSender *)self mailboxes];
+    v5 = [mailboxes ef_any:&__block_literal_global_61];
 
     isEditable = 1;
     if (v5)
@@ -1086,26 +1086,26 @@ BOOL __29__EDGroupedSender_isEditable__block_invoke(uint64_t a1, void *a2)
 
 - (NSDate)date
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 date];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  date = [newestMessage date];
 
-  return v3;
+  return date;
 }
 
 - (NSDate)displayDate
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 displayDate];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  displayDate = [newestMessage displayDate];
 
-  return v3;
+  return displayDate;
 }
 
 - (NSString)businessDisplayName
 {
-  v3 = [(EDGroupedSender *)self _persistedBusinessDisplayName];
+  _persistedBusinessDisplayName = [(EDGroupedSender *)self _persistedBusinessDisplayName];
   if ([(EDGroupedSender *)self displayNamesMatch])
   {
-    v4 = v3;
+    v4 = _persistedBusinessDisplayName;
   }
 
   else
@@ -1120,58 +1120,58 @@ BOOL __29__EDGroupedSender_isEditable__block_invoke(uint64_t a1, void *a2)
 
 - (id)_persistedBusinessDisplayName
 {
-  v3 = [(EDGroupedSender *)self businessPersistence];
-  v4 = [v3 businessDisplayNameForBusinessID:{-[EDGroupedSender businessID](self, "businessID")}];
+  businessPersistence = [(EDGroupedSender *)self businessPersistence];
+  v4 = [businessPersistence businessDisplayNameForBusinessID:{-[EDGroupedSender businessID](self, "businessID")}];
 
   return v4;
 }
 
 - (id)_senderDisplayName
 {
-  v2 = [(EDGroupedSender *)self senderList];
-  v3 = [v2 firstObject];
-  v4 = [v3 emailAddressValue];
-  v5 = [v4 emailAddressValue];
-  v6 = [v5 displayName];
-  v7 = v6;
-  if (v6)
+  senderList = [(EDGroupedSender *)self senderList];
+  firstObject = [senderList firstObject];
+  emailAddressValue = [firstObject emailAddressValue];
+  v4EmailAddressValue = [emailAddressValue emailAddressValue];
+  displayName = [v4EmailAddressValue displayName];
+  v7 = displayName;
+  if (displayName)
   {
-    v8 = v6;
+    stringValue = displayName;
   }
 
   else
   {
-    v8 = [v4 stringValue];
+    stringValue = [emailAddressValue stringValue];
   }
 
-  v9 = v8;
+  v9 = stringValue;
 
   return v9;
 }
 
 - (BOOL)displayNamesMatch
 {
-  v3 = [(EDGroupedSender *)self _persistedBusinessDisplayName];
-  v4 = [v3 lowercaseString];
+  _persistedBusinessDisplayName = [(EDGroupedSender *)self _persistedBusinessDisplayName];
+  lowercaseString = [_persistedBusinessDisplayName lowercaseString];
 
-  v5 = [(EDGroupedSender *)self _senderDisplayName];
-  v6 = [v5 lowercaseString];
+  _senderDisplayName = [(EDGroupedSender *)self _senderDisplayName];
+  lowercaseString2 = [_senderDisplayName lowercaseString];
 
-  if (v4)
+  if (lowercaseString)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __36__EDGroupedSender_displayNamesMatch__block_invoke;
     aBlock[3] = &unk_1E82522D0;
     aBlock[4] = self;
-    v7 = v4;
+    v7 = lowercaseString;
     v29 = v7;
-    v8 = v6;
+    v8 = lowercaseString2;
     v30 = v8;
     v9 = _Block_copy(aBlock);
-    v10 = [(EDGroupedSender *)self businessLogoID];
+    businessLogoID = [(EDGroupedSender *)self businessLogoID];
 
-    if (v10)
+    if (businessLogoID)
     {
       v11 = [v7 length];
       v12 = [v8 length];
@@ -1214,15 +1214,15 @@ BOOL __29__EDGroupedSender_isEditable__block_invoke(uint64_t a1, void *a2)
 
       if ([v8 length])
       {
-        v20 = [v8 substringToIndex:v16];
+        emailAddressValue = [v8 substringToIndex:v16];
       }
 
       else
       {
-        v20 = &stru_1F45B4608;
+        emailAddressValue = &stru_1F45B4608;
       }
 
-      if (([(__CFString *)v17 isEqualToString:v20]& 1) != 0)
+      if (([(__CFString *)v17 isEqualToString:emailAddressValue]& 1) != 0)
       {
         v18 = 1;
 LABEL_26:
@@ -1247,16 +1247,16 @@ LABEL_27:
       }
 
       v9[2](v9, v17);
-      v21 = [(EDGroupedSender *)self senderList];
-      v22 = [v21 firstObject];
-      v20 = [v22 emailAddressValue];
+      senderList = [(EDGroupedSender *)self senderList];
+      firstObject = [senderList firstObject];
+      emailAddressValue = [firstObject emailAddressValue];
 
-      if (v20)
+      if (emailAddressValue)
       {
-        v23 = [(EDGroupedSender *)self businessPersistence];
+        businessPersistence = [(EDGroupedSender *)self businessPersistence];
         v24 = objc_opt_class();
         v25 = NSStringFromClass(v24);
-        [v23 reportIncorrectBusinessForAddress:v20 isBusinessConnectGrouping:0 fromClassName:v25];
+        [businessPersistence reportIncorrectBusinessForAddress:emailAddressValue isBusinessConnectGrouping:0 fromClassName:v25];
       }
     }
 
@@ -1301,10 +1301,10 @@ void __36__EDGroupedSender_displayNamesMatch__block_invoke(uint64_t a1, void *a2
 
 - (ECSubject)subject
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 subject];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  subject = [newestMessage subject];
 
-  return v3;
+  return subject;
 }
 
 + (int64_t)maxGroupedSenderMessageListItemsCount
@@ -1356,9 +1356,9 @@ uint64_t __56__EDGroupedSender_maxGroupedSenderMessageListItemsCount__block_invo
 
 - (void)_updateGroupedSenderMessageListItems
 {
-  v3 = [(EDGroupedSender *)self _recalculateGroupedSenderMessageListItems];
+  _recalculateGroupedSenderMessageListItems = [(EDGroupedSender *)self _recalculateGroupedSenderMessageListItems];
   groupedSenderMessageListItems = self->_groupedSenderMessageListItems;
-  self->_groupedSenderMessageListItems = v3;
+  self->_groupedSenderMessageListItems = _recalculateGroupedSenderMessageListItems;
 }
 
 - (id)_recalculateGroupedSenderMessageListItems
@@ -1377,48 +1377,48 @@ uint64_t __56__EDGroupedSender_maxGroupedSenderMessageListItemsCount__block_invo
 
   if ([(EDGroupedSender *)self alwaysUseNewestItems])
   {
-    v7 = [(NSMutableArray *)self->_messages ef_prefix:v6];
+    ef_reverse = [(NSMutableArray *)self->_messages ef_prefix:v6];
   }
 
   else
   {
-    v8 = [(EDGroupedSender *)self sortDescriptors];
-    v9 = [v8 firstObject];
-    v10 = [v9 ascending];
+    sortDescriptors = [(EDGroupedSender *)self sortDescriptors];
+    firstObject = [sortDescriptors firstObject];
+    ascending = [firstObject ascending];
 
-    if (v10)
+    if (ascending)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"EDGroupedSender.m" lineNumber:565 description:@"Only ascending is supported"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EDGroupedSender.m" lineNumber:565 description:@"Only ascending is supported"];
     }
 
     v11 = [(NSMutableArray *)self->_messages indexOfObjectPassingTest:&__block_literal_global_82];
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v12 = [(NSMutableArray *)self->_messages subarrayWithRange:[(NSMutableArray *)self->_messages count]- v6, v6];
-      v7 = [v12 ef_reverse];
+      ef_reverse2 = [(NSMutableArray *)self->_messages subarrayWithRange:[(NSMutableArray *)self->_messages count]- v6, v6];
+      ef_reverse = [ef_reverse2 ef_reverse];
     }
 
     else
     {
       v13 = v11;
       v14 = [(NSMutableArray *)self->_messages subarrayWithRange:0, v11];
-      v12 = [v14 ef_reverse];
+      ef_reverse2 = [v14 ef_reverse];
 
-      if ([v12 count] > v6)
+      if ([ef_reverse2 count] > v6)
       {
-        v15 = [v12 ef_prefix:v6];
+        v15 = [ef_reverse2 ef_prefix:v6];
 
-        v12 = v15;
+        ef_reverse2 = v15;
       }
 
-      v7 = [v12 mutableCopy];
-      v16 = -[NSMutableArray subarrayWithRange:](self->_messages, "subarrayWithRange:", v13, v6 - [v7 count]);
-      [v7 addObjectsFromArray:v16];
+      ef_reverse = [ef_reverse2 mutableCopy];
+      v16 = -[NSMutableArray subarrayWithRange:](self->_messages, "subarrayWithRange:", v13, v6 - [ef_reverse count]);
+      [ef_reverse addObjectsFromArray:v16];
     }
   }
 
-  return v7;
+  return ef_reverse;
 }
 
 uint64_t __60__EDGroupedSender__recalculateGroupedSenderMessageListItems__block_invoke(uint64_t a1, void *a2)
@@ -1431,83 +1431,83 @@ uint64_t __60__EDGroupedSender__recalculateGroupedSenderMessageListItems__block_
 
 - (NSString)summary
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 summary];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  summary = [newestMessage summary];
 
-  return v3;
+  return summary;
 }
 
 - (EMGeneratedSummary)generatedSummary
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 generatedSummary];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  generatedSummary = [newestMessage generatedSummary];
 
-  return v3;
+  return generatedSummary;
 }
 
 - (NSArray)senderList
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 senderList];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  senderList = [newestMessage senderList];
 
-  return v3;
+  return senderList;
 }
 
 - (NSArray)toList
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 toList];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  toList = [newestMessage toList];
 
-  return v3;
+  return toList;
 }
 
 - (NSArray)ccList
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 ccList];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  ccList = [newestMessage ccList];
 
-  return v3;
+  return ccList;
 }
 
 - (NSIndexSet)flagColors
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 flagColors];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  flagColors = [newestMessage flagColors];
 
-  return v3;
+  return flagColors;
 }
 
 - (BOOL)isVIP
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 isVIP];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  isVIP = [newestMessage isVIP];
 
-  return v3;
+  return isVIP;
 }
 
 - (BOOL)isBlocked
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 isBlocked];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  isBlocked = [newestMessage isBlocked];
 
-  return v3;
+  return isBlocked;
 }
 
 - (BOOL)hasAttachments
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 hasAttachments];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  hasAttachments = [newestMessage hasAttachments];
 
-  return v3;
+  return hasAttachments;
 }
 
 - (NSURL)brandIndicatorLocation
 {
-  v2 = [(EDGroupedSender *)self messages];
-  v3 = [v2 ef_firstObjectPassingTest:&__block_literal_global_84];
-  v4 = [v3 brandIndicatorLocation];
+  messages = [(EDGroupedSender *)self messages];
+  v3 = [messages ef_firstObjectPassingTest:&__block_literal_global_84];
+  brandIndicatorLocation = [v3 brandIndicatorLocation];
 
-  return v4;
+  return brandIndicatorLocation;
 }
 
 BOOL __41__EDGroupedSender_brandIndicatorLocation__block_invoke(uint64_t a1, void *a2)
@@ -1520,10 +1520,10 @@ BOOL __41__EDGroupedSender_brandIndicatorLocation__block_invoke(uint64_t a1, voi
 
 - (EMCategory)category
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
-  v3 = [v2 category];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
+  category = [newestMessage category];
 
-  return v3;
+  return category;
 }
 
 - (NSArray)messages
@@ -1533,14 +1533,14 @@ BOOL __41__EDGroupedSender_brandIndicatorLocation__block_invoke(uint64_t a1, voi
   return v2;
 }
 
-- (void)setUnreadCount:(unint64_t)a3
+- (void)setUnreadCount:(unint64_t)count
 {
   unreadCount = self->_unreadCount;
-  if (unreadCount != a3)
+  if (unreadCount != count)
   {
     if (unreadCount)
     {
-      v6 = a3 == 0;
+      v6 = count == 0;
     }
 
     else
@@ -1552,7 +1552,7 @@ BOOL __41__EDGroupedSender_brandIndicatorLocation__block_invoke(uint64_t a1, voi
     {
       if (unreadCount)
       {
-        v7 = a3 == 0;
+        v7 = count == 0;
       }
 
       else
@@ -1575,21 +1575,21 @@ BOOL __41__EDGroupedSender_brandIndicatorLocation__block_invoke(uint64_t a1, voi
       self->_flags = v9;
     }
 
-    self->_unreadCount = a3;
+    self->_unreadCount = count;
   }
 }
 
 - (id)_newestMessageDescription
 {
-  v2 = [(EDGroupedSender *)self newestMessage];
+  newestMessage = [(EDGroupedSender *)self newestMessage];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [v2 objectID];
-  v5 = [v4 globalMessageID];
-  v6 = [v2 subject];
-  v7 = [v6 ef_publicDescription];
-  v8 = [v2 flags];
-  v9 = [v8 ef_publicDescription];
-  v10 = [v3 stringWithFormat:@"<Newest Message Info - GlobalMessageID:%lld Subject:%@ Flags:%@>", v5, v7, v9];
+  objectID = [newestMessage objectID];
+  globalMessageID = [objectID globalMessageID];
+  subject = [newestMessage subject];
+  ef_publicDescription = [subject ef_publicDescription];
+  flags = [newestMessage flags];
+  ef_publicDescription2 = [flags ef_publicDescription];
+  v10 = [v3 stringWithFormat:@"<Newest Message Info - GlobalMessageID:%lld Subject:%@ Flags:%@>", globalMessageID, ef_publicDescription, ef_publicDescription2];
 
   return v10;
 }
@@ -1598,17 +1598,17 @@ BOOL __41__EDGroupedSender_brandIndicatorLocation__block_invoke(uint64_t a1, voi
 {
   v15 = MEMORY[0x1E696AEC0];
   v14 = objc_opt_class();
-  v16 = [(EDGroupedSender *)self businessDisplayName];
-  v3 = [(EDGroupedSender *)self businessID];
-  v4 = [(EDGroupedSender *)self businessLogoID];
-  v5 = [(EDGroupedSender *)self messages];
-  v6 = [v5 count];
-  v7 = [(EDGroupedSender *)self unreadCount];
-  v8 = [(EDGroupedSender *)self unseenCount];
-  v9 = [(EDGroupedSender *)self flagCount];
-  v10 = [(EDGroupedSender *)self category];
-  v11 = [(EDGroupedSender *)self _newestMessageDescription];
-  v12 = [v15 stringWithFormat:@"<%@: %p> %@ (%lld, %@) messages:%lu, unread count:%lu, unseen count:%lu, flagCount:%lu, Category:%@ %@", v14, self, v16, v3, v4, v6, v7, v8, v9, v10, v11];
+  businessDisplayName = [(EDGroupedSender *)self businessDisplayName];
+  businessID = [(EDGroupedSender *)self businessID];
+  businessLogoID = [(EDGroupedSender *)self businessLogoID];
+  messages = [(EDGroupedSender *)self messages];
+  v6 = [messages count];
+  unreadCount = [(EDGroupedSender *)self unreadCount];
+  unseenCount = [(EDGroupedSender *)self unseenCount];
+  flagCount = [(EDGroupedSender *)self flagCount];
+  category = [(EDGroupedSender *)self category];
+  _newestMessageDescription = [(EDGroupedSender *)self _newestMessageDescription];
+  v12 = [v15 stringWithFormat:@"<%@: %p> %@ (%lld, %@) messages:%lu, unread count:%lu, unseen count:%lu, flagCount:%lu, Category:%@ %@", v14, self, businessDisplayName, businessID, businessLogoID, v6, unreadCount, unseenCount, flagCount, category, _newestMessageDescription];
 
   return v12;
 }
@@ -1618,18 +1618,18 @@ BOOL __41__EDGroupedSender_brandIndicatorLocation__block_invoke(uint64_t a1, voi
   v16 = MEMORY[0x1E696AEC0];
   v15 = objc_opt_class();
   v3 = MEMORY[0x1E699B858];
-  v18 = [(EDGroupedSender *)self businessDisplayName];
+  businessDisplayName = [(EDGroupedSender *)self businessDisplayName];
   v17 = [v3 fullyOrPartiallyRedactedStringForString:?];
-  v4 = [(EDGroupedSender *)self businessID];
-  v5 = [(EDGroupedSender *)self businessLogoID];
-  v6 = [(EDGroupedSender *)self messages];
-  v7 = [v6 count];
-  v8 = [(EDGroupedSender *)self unreadCount];
-  v9 = [(EDGroupedSender *)self unseenCount];
-  v10 = [(EDGroupedSender *)self flagCount];
-  v11 = [(EDGroupedSender *)self category];
-  v12 = [(EDGroupedSender *)self _newestMessageDescription];
-  v13 = [v16 stringWithFormat:@"<%@: %p> %@ (%lld, %@) messages:%lu, unread count:%lu, unseen count:%lu, flagCount:%lu, Category:%@ %@", v15, self, v17, v4, v5, v7, v8, v9, v10, v11, v12];
+  businessID = [(EDGroupedSender *)self businessID];
+  businessLogoID = [(EDGroupedSender *)self businessLogoID];
+  messages = [(EDGroupedSender *)self messages];
+  v7 = [messages count];
+  unreadCount = [(EDGroupedSender *)self unreadCount];
+  unseenCount = [(EDGroupedSender *)self unseenCount];
+  flagCount = [(EDGroupedSender *)self flagCount];
+  category = [(EDGroupedSender *)self category];
+  _newestMessageDescription = [(EDGroupedSender *)self _newestMessageDescription];
+  v13 = [v16 stringWithFormat:@"<%@: %p> %@ (%lld, %@) messages:%lu, unread count:%lu, unseen count:%lu, flagCount:%lu, Category:%@ %@", v15, self, v17, businessID, businessLogoID, v7, unreadCount, unseenCount, flagCount, category, _newestMessageDescription];
 
   return v13;
 }

@@ -1,21 +1,21 @@
 @interface RPTapToRadarRequest
-- (RPTapToRadarRequest)initWithTitle:(id)a3 message:(id)a4;
+- (RPTapToRadarRequest)initWithTitle:(id)title message:(id)message;
 @end
 
 @implementation RPTapToRadarRequest
 
-- (RPTapToRadarRequest)initWithTitle:(id)a3 message:(id)a4
+- (RPTapToRadarRequest)initWithTitle:(id)title message:(id)message
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  messageCopy = message;
   v12.receiver = self;
   v12.super_class = RPTapToRadarRequest;
   v9 = [(RPTapToRadarRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
-    objc_storeStrong(&v10->_message, a4);
+    objc_storeStrong(&v9->_title, title);
+    objc_storeStrong(&v10->_message, message);
   }
 
   return v10;

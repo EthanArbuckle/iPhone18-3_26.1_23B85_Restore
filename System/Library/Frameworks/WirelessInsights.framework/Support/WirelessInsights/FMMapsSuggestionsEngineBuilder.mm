@@ -1,17 +1,17 @@
 @interface FMMapsSuggestionsEngineBuilder
 + (id)alreadyThereFilter;
-+ (id)engineWithAlreadyThereFilter:(id)a3;
++ (id)engineWithAlreadyThereFilter:(id)filter;
 @end
 
 @implementation FMMapsSuggestionsEngineBuilder
 
-+ (id)engineWithAlreadyThereFilter:(id)a3
++ (id)engineWithAlreadyThereFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a1 alreadyThereFilter];
-    v6 = [v4 performSelector:"withoutPostFilters:" withObject:v5];
+    alreadyThereFilter = [self alreadyThereFilter];
+    v6 = [filterCopy performSelector:"withoutPostFilters:" withObject:alreadyThereFilter];
   }
 
   else

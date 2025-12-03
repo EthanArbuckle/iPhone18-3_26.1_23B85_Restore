@@ -1,80 +1,80 @@
 @interface CSAssetController
-+ (id)filteredAssetsForAssets:(id)a3 assetType:(unint64_t)a4 language:(id)a5;
-+ (id)getAssetTypeStringForType:(unint64_t)a3;
++ (id)filteredAssetsForAssets:(id)assets assetType:(unint64_t)type language:(id)language;
++ (id)getAssetTypeStringForType:(unint64_t)type;
 + (id)getEndpointAssetTypeString;
 + (id)getSpeakerRecognitionAssetTypeString;
 + (id)sharedController;
 + (unint64_t)getEndpointAssetCurrentCompatibilityVersion;
-+ (void)addKeyValuePairForQuery:(id *)a3 assetType:(unint64_t)a4;
-- (BOOL)_isRetryRecommendedWithResult:(int64_t)a3;
-- (BOOL)_notInstalledAssetState:(int64_t)a3 assetType:(unint64_t)a4;
++ (void)addKeyValuePairForQuery:(id *)query assetType:(unint64_t)type;
+- (BOOL)_isRetryRecommendedWithResult:(int64_t)result;
+- (BOOL)_notInstalledAssetState:(int64_t)state assetType:(unint64_t)type;
 - (CSAssetController)init;
-- (id)_assetQueryForAssetType:(unint64_t)a3;
+- (id)_assetQueryForAssetType:(unint64_t)type;
 - (id)_defaultDownloadOptions;
-- (id)_findLatestInstalledAsset:(id)a3 assetType:(unint64_t)a4;
-- (id)_installedAssetOfType:(unint64_t)a3 withLanguage:(id)a4;
-- (id)allInstalledAssetsOfType:(unint64_t)a3 language:(id)a4;
-- (id)assetOfType:(unint64_t)a3 language:(id)a4;
-- (id)installedAssetOfType:(unint64_t)a3 language:(id)a4;
-- (id)installedAssetOfType:(unint64_t)a3 withLanguage:(id)a4;
+- (id)_findLatestInstalledAsset:(id)asset assetType:(unint64_t)type;
+- (id)_installedAssetOfType:(unint64_t)type withLanguage:(id)language;
+- (id)allInstalledAssetsOfType:(unint64_t)type language:(id)language;
+- (id)assetOfType:(unint64_t)type language:(id)language;
+- (id)installedAssetOfType:(unint64_t)type language:(id)language;
+- (id)installedAssetOfType:(unint64_t)type withLanguage:(id)language;
 - (void)_cleanUpMobileAssetV1Directory;
-- (void)_downloadAsset:(id)a3 withComplete:(id)a4;
-- (void)_downloadAssetCatalogForAssetType:(unint64_t)a3 complete:(id)a4;
-- (void)_fetchRemoteAssetOfType:(unint64_t)a3 withLanguage:(id)a4 completion:(id)a5;
-- (void)_fetchRemoteAssetOfType:(unint64_t)a3 withLanguage:(id)a4 query:(id)a5 completion:(id)a6;
-- (void)_installedAssetOfType:(unint64_t)a3 query:(id)a4 withLanguage:(id)a5 completion:(id)a6;
-- (void)_installedAssetOfType:(unint64_t)a3 withLanguage:(id)a4 completion:(id)a5;
-- (void)_runAssetQuery:(id)a3 completion:(id)a4;
-- (void)_setAssetQueryParameters:(id)a3;
-- (void)_startDownloadingAsset:(id)a3 progress:(id)a4 completion:(id)a5;
-- (void)_updateFromRemoteToLocalAssets:(id)a3 forAssetType:(unint64_t)a4 completion:(id)a5;
-- (void)addObserver:(id)a3 forAssetType:(unint64_t)a4;
-- (void)assetOfType:(unint64_t)a3 language:(id)a4 compatibilityVersion:(unint64_t)a5 completion:(id)a6;
-- (void)assetOfType:(unint64_t)a3 language:(id)a4 completion:(id)a5;
-- (void)fetchRemoteMetaOfType:(unint64_t)a3;
-- (void)fetchRemoteMetaOfType:(unint64_t)a3 allowRetry:(BOOL)a4;
-- (void)installedAssetOfType:(unint64_t)a3 language:(id)a4 completion:(id)a5;
-- (void)installedAssetOfType:(unint64_t)a3 withLanguage:(id)a4 completion:(id)a5;
-- (void)removeObserver:(id)a3 forAssetType:(unint64_t)a4;
+- (void)_downloadAsset:(id)asset withComplete:(id)complete;
+- (void)_downloadAssetCatalogForAssetType:(unint64_t)type complete:(id)complete;
+- (void)_fetchRemoteAssetOfType:(unint64_t)type withLanguage:(id)language completion:(id)completion;
+- (void)_fetchRemoteAssetOfType:(unint64_t)type withLanguage:(id)language query:(id)query completion:(id)completion;
+- (void)_installedAssetOfType:(unint64_t)type query:(id)query withLanguage:(id)language completion:(id)completion;
+- (void)_installedAssetOfType:(unint64_t)type withLanguage:(id)language completion:(id)completion;
+- (void)_runAssetQuery:(id)query completion:(id)completion;
+- (void)_setAssetQueryParameters:(id)parameters;
+- (void)_startDownloadingAsset:(id)asset progress:(id)progress completion:(id)completion;
+- (void)_updateFromRemoteToLocalAssets:(id)assets forAssetType:(unint64_t)type completion:(id)completion;
+- (void)addObserver:(id)observer forAssetType:(unint64_t)type;
+- (void)assetOfType:(unint64_t)type language:(id)language compatibilityVersion:(unint64_t)version completion:(id)completion;
+- (void)assetOfType:(unint64_t)type language:(id)language completion:(id)completion;
+- (void)fetchRemoteMetaOfType:(unint64_t)type;
+- (void)fetchRemoteMetaOfType:(unint64_t)type allowRetry:(BOOL)retry;
+- (void)installedAssetOfType:(unint64_t)type language:(id)language completion:(id)completion;
+- (void)installedAssetOfType:(unint64_t)type withLanguage:(id)language completion:(id)completion;
+- (void)removeObserver:(id)observer forAssetType:(unint64_t)type;
 @end
 
 @implementation CSAssetController
 
-- (void)removeObserver:(id)a3 forAssetType:(unint64_t)a4
+- (void)removeObserver:(id)observer forAssetType:(unint64_t)type
 {
-  v6 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000078F8;
   block[3] = &unk_10001C720;
-  v10 = v6;
-  v11 = a4;
+  v10 = observerCopy;
+  typeCopy = type;
   block[4] = self;
-  v8 = v6;
+  v8 = observerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)addObserver:(id)a3 forAssetType:(unint64_t)a4
+- (void)addObserver:(id)observer forAssetType:(unint64_t)type
 {
-  v6 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100007A98;
   block[3] = &unk_10001C720;
-  v10 = v6;
-  v11 = a4;
+  v10 = observerCopy;
+  typeCopy = type;
   block[4] = self;
-  v8 = v6;
+  v8 = observerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_startDownloadingAsset:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)_startDownloadingAsset:(id)asset progress:(id)progress completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  progressCopy = progress;
+  completionCopy = completion;
   v11 = CSLogCategoryAsset;
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_INFO))
   {
@@ -82,9 +82,9 @@
     *buf = 136315650;
     *&buf[4] = "[CSAssetController _startDownloadingAsset:progress:completion:]";
     v29 = 2114;
-    v30 = v8;
+    v30 = assetCopy;
     v31 = 2050;
-    v32 = [v8 state];
+    state = [assetCopy state];
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s Attempting to download asset %{public}@, asset state : %{public}ld", buf, 0x20u);
   }
 
@@ -92,21 +92,21 @@
   v25[1] = 3221225472;
   v25[2] = sub_100007EF8;
   v25[3] = &unk_10001C9D0;
-  v13 = v9;
+  v13 = progressCopy;
   v27 = v13;
-  v14 = v8;
+  v14 = assetCopy;
   v26 = v14;
   v15 = objc_retainBlock(v25);
-  v16 = [v14 state];
-  if (v16 > 6)
+  state2 = [v14 state];
+  if (state2 > 6)
   {
 LABEL_14:
-    if (v16)
+    if (state2)
     {
       v19 = 0;
 LABEL_7:
       v20 = 1;
-      if (!v10)
+      if (!completionCopy)
       {
         goto LABEL_10;
       }
@@ -121,16 +121,16 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (((1 << v16) & 0x6C) != 0)
+  if (((1 << state2) & 0x6C) != 0)
   {
     v17 = CSErrorDomain;
     v18 = 806;
     goto LABEL_6;
   }
 
-  if (v16 != 1)
+  if (state2 != 1)
   {
-    if (v16 == 4)
+    if (state2 == 4)
     {
       v17 = CSErrorDomain;
       v18 = 805;
@@ -145,13 +145,13 @@ LABEL_6:
   if (v21)
   {
     [v14 attachProgressCallBack:v15];
-    v22 = [(CSAssetController *)self _defaultDownloadOptions];
+    _defaultDownloadOptions = [(CSAssetController *)self _defaultDownloadOptions];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100007F9C;
     v23[3] = &unk_10001C9F8;
-    v24 = v10;
-    [v14 startDownload:v22 then:v23];
+    v24 = completionCopy;
+    [v14 startDownload:_defaultDownloadOptions then:v23];
 
     v19 = 0;
   }
@@ -162,22 +162,22 @@ LABEL_6:
   }
 
   v20 = v21 ^ 1;
-  if (v10)
+  if (completionCopy)
   {
 LABEL_8:
     if (v20)
     {
-      (*(v10 + 2))(v10, v19);
+      (*(completionCopy + 2))(completionCopy, v19);
     }
   }
 
 LABEL_10:
 }
 
-- (void)_downloadAsset:(id)a3 withComplete:(id)a4
+- (void)_downloadAsset:(id)asset withComplete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  completeCopy = complete;
   dispatch_assert_queue_V2(self->_queue);
   v8 = CSLogCategoryAsset;
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
@@ -191,10 +191,10 @@ LABEL_10:
   v11[1] = 3221225472;
   v11[2] = sub_1000081B8;
   v11[3] = &unk_10001C9A8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = assetCopy;
+  v13 = completeCopy;
+  v9 = completeCopy;
+  v10 = assetCopy;
   [(CSAssetController *)self _startDownloadingAsset:v10 progress:&stru_10001C980 completion:v11];
 }
 
@@ -208,11 +208,11 @@ LABEL_10:
   return v2;
 }
 
-- (void)_updateFromRemoteToLocalAssets:(id)a3 forAssetType:(unint64_t)a4 completion:(id)a5
+- (void)_updateFromRemoteToLocalAssets:(id)assets forAssetType:(unint64_t)type completion:(id)completion
 {
-  v7 = a3;
-  v38 = self;
-  v39 = a5;
+  assetsCopy = assets;
+  selfCopy = self;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v8 = CSLogCategoryAsset;
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
@@ -226,7 +226,7 @@ LABEL_10:
   v51 = 0u;
   v49 = 0u;
   v48 = 0u;
-  v9 = v7;
+  v9 = assetsCopy;
   v10 = [v9 countByEnumeratingWithState:&v48 objects:v57 count:16];
   if (!v10)
   {
@@ -335,18 +335,18 @@ LABEL_24:
             if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
             {
               v29 = v28;
-              v30 = [v25 path];
+              path = [v25 path];
               *buf = 136315394;
               v53 = "[CSAssetController _updateFromRemoteToLocalAssets:forAssetType:completion:]";
               v54 = 2114;
-              v55 = v30;
+              typeCopy = path;
               _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%s ::: Purging installed asset : %{public}@", buf, 0x16u);
             }
 
             [v25 purgeSync];
             v31 = +[CSFPreferences sharedPreferences];
-            v32 = [v31 getOnDeviceCompilationCacheDirectory];
-            v33 = [CSOnDeviceMAAssetCachedIrPurger purgeCachedIrForMAAsset:v25 cachedIrDir:v32];
+            getOnDeviceCompilationCacheDirectory = [v31 getOnDeviceCompilationCacheDirectory];
+            v33 = [CSOnDeviceMAAssetCachedIrPurger purgeCachedIrForMAAsset:v25 cachedIrDir:getOnDeviceCompilationCacheDirectory];
 
             v20 = v40;
           }
@@ -361,19 +361,19 @@ LABEL_24:
 
   if (!v14 || v14 == v13)
   {
-    v35 = v39;
+    v35 = completionCopy;
     if (v13)
     {
-      if (v39)
+      if (completionCopy)
       {
-        (*(v39 + 2))(v39, 0);
+        (*(completionCopy + 2))(completionCopy, 0);
       }
     }
 
-    else if (v39)
+    else if (completionCopy)
     {
       v36 = [NSError errorWithDomain:CSErrorDomain code:802 userInfo:0];
-      (*(v39 + 2))(v39, v36);
+      (*(completionCopy + 2))(completionCopy, v36);
     }
   }
 
@@ -385,7 +385,7 @@ LABEL_24:
       *buf = 136315394;
       v53 = "[CSAssetController _updateFromRemoteToLocalAssets:forAssetType:completion:]";
       v54 = 2050;
-      v55 = a4;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%s ::: Request downloading remote asset for assetType %{public}lu", buf, 0x16u);
     }
 
@@ -393,69 +393,69 @@ LABEL_24:
     v41[1] = 3221225472;
     v41[2] = sub_1000089B8;
     v41[3] = &unk_10001C940;
-    v35 = v39;
-    v41[4] = v38;
-    v42 = v39;
-    v43 = a4;
-    [(CSAssetController *)v38 _downloadAsset:v14 withComplete:v41];
+    v35 = completionCopy;
+    v41[4] = selfCopy;
+    v42 = completionCopy;
+    typeCopy2 = type;
+    [(CSAssetController *)selfCopy _downloadAsset:v14 withComplete:v41];
   }
 }
 
-- (BOOL)_isRetryRecommendedWithResult:(int64_t)a3
+- (BOOL)_isRetryRecommendedWithResult:(int64_t)result
 {
   result = 1;
-  if ((a3 - 8) > 0x3F || ((1 << (a3 - 8)) & 0x800000800C410723) == 0)
+  if ((result - 8) > 0x3F || ((1 << (result - 8)) & 0x800000800C410723) == 0)
   {
-    return (a3 - 1) < 3;
+    return (result - 1) < 3;
   }
 
   return result;
 }
 
-- (void)_downloadAssetCatalogForAssetType:(unint64_t)a3 complete:(id)a4
+- (void)_downloadAssetCatalogForAssetType:(unint64_t)type complete:(id)complete
 {
-  v6 = a4;
+  completeCopy = complete;
   csAssetsDictionary = self->_csAssetsDictionary;
-  v8 = [NSNumber numberWithUnsignedInteger:a3];
+  v8 = [NSNumber numberWithUnsignedInteger:type];
   v9 = [(NSDictionary *)csAssetsDictionary objectForKeyedSubscript:v8];
-  v10 = [(CSAssetController *)self _defaultDownloadOptions];
+  _defaultDownloadOptions = [(CSAssetController *)self _defaultDownloadOptions];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100008D7C;
   v12[3] = &unk_10001C918;
-  v13 = v6;
-  v14 = a3;
+  v13 = completeCopy;
+  typeCopy = type;
   v12[4] = self;
-  v11 = v6;
-  [MAAsset startCatalogDownload:v9 options:v10 then:v12];
+  v11 = completeCopy;
+  [MAAsset startCatalogDownload:v9 options:_defaultDownloadOptions then:v12];
 }
 
-- (void)_fetchRemoteAssetOfType:(unint64_t)a3 withLanguage:(id)a4 query:(id)a5 completion:(id)a6
+- (void)_fetchRemoteAssetOfType:(unint64_t)type withLanguage:(id)language query:(id)query completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  [v11 returnTypes:2];
+  languageCopy = language;
+  queryCopy = query;
+  completionCopy = completion;
+  [queryCopy returnTypes:2];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100009004;
   v16[3] = &unk_10001C850;
   v16[4] = self;
-  v17 = v11;
-  v19 = v12;
-  v20 = a3;
-  v18 = v10;
-  v13 = v12;
-  v14 = v10;
-  v15 = v11;
+  v17 = queryCopy;
+  v19 = completionCopy;
+  typeCopy = type;
+  v18 = languageCopy;
+  v13 = completionCopy;
+  v14 = languageCopy;
+  v15 = queryCopy;
   [v15 queryMetaData:v16];
 }
 
-- (void)_fetchRemoteAssetOfType:(unint64_t)a3 withLanguage:(id)a4 completion:(id)a5
+- (void)_fetchRemoteAssetOfType:(unint64_t)type withLanguage:(id)language completion:(id)completion
 {
   queue = self->_queue;
-  v9 = a5;
-  v10 = a4;
+  completionCopy = completion;
+  languageCopy = language;
   dispatch_assert_queue_V2(queue);
   v11 = CSLogCategoryAsset;
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
@@ -465,11 +465,11 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s ::: Request fetching remote asset", &v13, 0xCu);
   }
 
-  v12 = [(CSAssetController *)self _assetQueryForAssetType:a3];
-  [(CSAssetController *)self _fetchRemoteAssetOfType:a3 withLanguage:v10 query:v12 completion:v9];
+  v12 = [(CSAssetController *)self _assetQueryForAssetType:type];
+  [(CSAssetController *)self _fetchRemoteAssetOfType:type withLanguage:languageCopy query:v12 completion:completionCopy];
 }
 
-- (void)fetchRemoteMetaOfType:(unint64_t)a3 allowRetry:(BOOL)a4
+- (void)fetchRemoteMetaOfType:(unint64_t)type allowRetry:(BOOL)retry
 {
   v7 = CSLogCategoryAsset;
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
@@ -477,7 +477,7 @@ LABEL_24:
     *buf = 136315394;
     v11 = "[CSAssetController fetchRemoteMetaOfType:allowRetry:]";
     v12 = 1026;
-    v13 = a3;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s ::: Request Fetching RemoteMetaData : assetType : %{public}d", buf, 0x12u);
   }
 
@@ -486,17 +486,17 @@ LABEL_24:
   v8[2] = sub_100009528;
   v8[3] = &unk_10001C8C8;
   v8[4] = self;
-  v8[5] = a3;
-  v9 = a4;
-  [(CSAssetController *)self _downloadAssetCatalogForAssetType:a3 complete:v8];
+  v8[5] = type;
+  retryCopy = retry;
+  [(CSAssetController *)self _downloadAssetCatalogForAssetType:type complete:v8];
 }
 
-- (void)fetchRemoteMetaOfType:(unint64_t)a3
+- (void)fetchRemoteMetaOfType:(unint64_t)type
 {
   if ([(CSAssetController *)self _isNeededForOTA:?])
   {
 
-    [(CSAssetController *)self fetchRemoteMetaOfType:a3 allowRetry:1];
+    [(CSAssetController *)self fetchRemoteMetaOfType:type allowRetry:1];
   }
 
   else
@@ -511,10 +511,10 @@ LABEL_24:
   }
 }
 
-- (void)_runAssetQuery:(id)a3 completion:(id)a4
+- (void)_runAssetQuery:(id)query completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  queryCopy = query;
+  completionCopy = completion;
   v7 = CSLogCategoryAsset;
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_INFO))
   {
@@ -523,7 +523,7 @@ LABEL_24:
     v15 = 2082;
     v16 = "[CSAssetController _runAssetQuery:completion:]";
     v17 = 2114;
-    v18 = v5;
+    v18 = queryCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s ::: %{public}s; query: %{public}@", buf, 0x20u);
   }
 
@@ -532,16 +532,16 @@ LABEL_24:
   v10[1] = 3221225472;
   v10[2] = sub_1000099AC;
   v10[3] = &unk_10001C878;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = queryCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = queryCopy;
   [v9 queryMetaData:v10];
 }
 
-- (void)_setAssetQueryParameters:(id)a3
+- (void)_setAssetQueryParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = CSLogCategoryAsset;
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
   {
@@ -550,10 +550,10 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s setDoNotBlockBeforeFirstUnlock: YES", &v5, 0xCu);
   }
 
-  [v3 setDoNotBlockBeforeFirstUnlock:1];
+  [parametersCopy setDoNotBlockBeforeFirstUnlock:1];
 }
 
-- (id)_assetQueryForAssetType:(unint64_t)a3
+- (id)_assetQueryForAssetType:(unint64_t)type
 {
   v5 = CSLogCategoryAsset;
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_INFO))
@@ -561,18 +561,18 @@ LABEL_24:
     *buf = 136315394;
     v15 = "[CSAssetController _assetQueryForAssetType:]";
     v16 = 2050;
-    v17 = a3;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s ::: assetType: %{public}lu", buf, 0x16u);
   }
 
   v6 = [MAAssetQuery alloc];
   csAssetsDictionary = self->_csAssetsDictionary;
-  v8 = [NSNumber numberWithUnsignedInteger:a3];
+  v8 = [NSNumber numberWithUnsignedInteger:type];
   v9 = [(NSDictionary *)csAssetsDictionary objectForKeyedSubscript:v8];
   v10 = [v6 initWithType:v9];
 
   v13 = v10;
-  [CSAssetController addKeyValuePairForQuery:&v13 assetType:a3];
+  [CSAssetController addKeyValuePairForQuery:&v13 assetType:type];
   v11 = v13;
 
   [(CSAssetController *)self _setAssetQueryParameters:v11];
@@ -580,13 +580,13 @@ LABEL_24:
   return v11;
 }
 
-- (id)_findLatestInstalledAsset:(id)a3 assetType:(unint64_t)a4
+- (id)_findLatestInstalledAsset:(id)asset assetType:(unint64_t)type
 {
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = asset;
   v6 = [obj countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v6)
   {
@@ -605,18 +605,18 @@ LABEL_24:
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v12 state];
+        state = [v12 state];
         v14 = CSLogCategoryAsset;
         if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v20;
           v27 = "[CSAssetController _findLatestInstalledAsset:assetType:]";
           v28 = 2050;
-          v29 = v13;
+          v29 = state;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s Asset state : %{public}ld", buf, 0x16u);
         }
 
-        if (![(CSAssetController *)self _notInstalledAssetState:v13 assetType:a4])
+        if (![(CSAssetController *)self _notInstalledAssetState:state assetType:type])
         {
           if (v9)
           {
@@ -650,29 +650,29 @@ LABEL_24:
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
   {
     v17 = v16;
-    v18 = [v9 attributes];
+    attributes = [v9 attributes];
     *buf = 136315394;
     v27 = "[CSAssetController _findLatestInstalledAsset:assetType:]";
     v28 = 2114;
-    v29 = v18;
+    v29 = attributes;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s %{public}@", buf, 0x16u);
   }
 
   return v9;
 }
 
-- (BOOL)_notInstalledAssetState:(int64_t)a3 assetType:(unint64_t)a4
+- (BOOL)_notInstalledAssetState:(int64_t)state assetType:(unint64_t)type
 {
-  v5 = [(CSAssetController *)self _isNeededForOTA:a4];
-  v6 = (a3 - 7) < 0xFFFFFFFFFFFFFFFELL;
-  if (a3 >= 7)
+  v5 = [(CSAssetController *)self _isNeededForOTA:type];
+  v6 = (state - 7) < 0xFFFFFFFFFFFFFFFELL;
+  if (state >= 7)
   {
     LOBYTE(v7) = 1;
   }
 
   else
   {
-    v7 = 0x13u >> a3;
+    v7 = 0x13u >> state;
   }
 
   if (v5)
@@ -683,57 +683,57 @@ LABEL_24:
   return v6;
 }
 
-- (void)_installedAssetOfType:(unint64_t)a3 query:(id)a4 withLanguage:(id)a5 completion:(id)a6
+- (void)_installedAssetOfType:(unint64_t)type query:(id)query withLanguage:(id)language completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  [v10 returnTypes:2];
+  queryCopy = query;
+  languageCopy = language;
+  completionCopy = completion;
+  [queryCopy returnTypes:2];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10000A18C;
   v16[3] = &unk_10001C850;
-  v20 = v12;
-  v21 = a3;
-  v17 = v10;
-  v18 = v11;
-  v19 = self;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v20 = completionCopy;
+  typeCopy = type;
+  v17 = queryCopy;
+  v18 = languageCopy;
+  selfCopy = self;
+  v13 = completionCopy;
+  v14 = languageCopy;
+  v15 = queryCopy;
   [v15 queryMetaData:v16];
 }
 
-- (void)_installedAssetOfType:(unint64_t)a3 withLanguage:(id)a4 completion:(id)a5
+- (void)_installedAssetOfType:(unint64_t)type withLanguage:(id)language completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(CSAssetController *)self _assetQueryForAssetType:a3];
-  [(CSAssetController *)self _installedAssetOfType:a3 query:v10 withLanguage:v9 completion:v8];
+  completionCopy = completion;
+  languageCopy = language;
+  v10 = [(CSAssetController *)self _assetQueryForAssetType:type];
+  [(CSAssetController *)self _installedAssetOfType:type query:v10 withLanguage:languageCopy completion:completionCopy];
 }
 
-- (id)_installedAssetOfType:(unint64_t)a3 withLanguage:(id)a4
+- (id)_installedAssetOfType:(unint64_t)type withLanguage:(id)language
 {
-  v6 = a4;
-  v7 = [(CSAssetController *)self _assetQueryForAssetType:a3];
+  languageCopy = language;
+  v7 = [(CSAssetController *)self _assetQueryForAssetType:type];
   [v7 returnTypes:2];
-  v8 = [v7 queryMetaDataSync];
-  v9 = [v7 results];
-  v10 = [CSAssetController filteredAssetsForAssets:v9 assetType:a3 language:v6];
+  queryMetaDataSync = [v7 queryMetaDataSync];
+  results = [v7 results];
+  v10 = [CSAssetController filteredAssetsForAssets:results assetType:type language:languageCopy];
 
   v11 = CSLogCategoryAsset;
-  if ((v8 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((queryMetaDataSync & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_ERROR))
     {
       v17 = 136315906;
       v18 = "[CSAssetController _installedAssetOfType:withLanguage:]";
       v19 = 2050;
-      v20 = a3;
+      typeCopy = type;
       v21 = 2114;
-      v22 = v7;
+      typeCopy2 = v7;
       v23 = 2050;
-      v24 = v8;
+      v24 = queryMetaDataSync;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s Error running asset-query for assetType:%{public}lu, query: %{public}@, error: %{public}lu", &v17, 0x2Au);
     }
 
@@ -746,45 +746,45 @@ LABEL_24:
     {
       v13 = v11;
       v14 = [v10 count];
-      v15 = [v7 queryParams];
+      queryParams = [v7 queryParams];
       v17 = 136315906;
       v18 = "[CSAssetController _installedAssetOfType:withLanguage:]";
       v19 = 2050;
-      v20 = v14;
+      typeCopy = v14;
       v21 = 2050;
-      v22 = a3;
+      typeCopy2 = type;
       v23 = 2114;
-      v24 = v15;
+      v24 = queryParams;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s ::: found %{public}lu assets for assetType=%{public}lu, matching query: %{public}@", &v17, 0x2Au);
     }
 
-    v12 = [(CSAssetController *)self _findLatestInstalledAsset:v10 assetType:a3];
+    v12 = [(CSAssetController *)self _findLatestInstalledAsset:v10 assetType:type];
   }
 
   return v12;
 }
 
-- (void)installedAssetOfType:(unint64_t)a3 withLanguage:(id)a4 completion:(id)a5
+- (void)installedAssetOfType:(unint64_t)type withLanguage:(id)language completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  languageCopy = language;
+  completionCopy = completion;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000A7C4;
   v13[3] = &unk_10001C828;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = languageCopy;
+  v15 = completionCopy;
+  typeCopy = type;
+  v11 = completionCopy;
+  v12 = languageCopy;
   dispatch_async(queue, v13);
 }
 
-- (id)installedAssetOfType:(unint64_t)a3 withLanguage:(id)a4
+- (id)installedAssetOfType:(unint64_t)type withLanguage:(id)language
 {
-  v6 = a4;
+  languageCopy = language;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -797,23 +797,23 @@ LABEL_24:
   v13 = sub_10000AA5C;
   v14 = &unk_10001C800;
   v17 = &v19;
-  v18 = a3;
-  v15 = self;
-  v8 = v6;
+  typeCopy = type;
+  selfCopy = self;
+  v8 = languageCopy;
   v16 = v8;
   dispatch_sync(queue, &v11);
-  v9 = [v20[5] getCSAssetOfType:{a3, v11, v12, v13, v14, v15}];
+  v9 = [v20[5] getCSAssetOfType:{type, v11, v12, v13, v14, selfCopy}];
 
   _Block_object_dispose(&v19, 8);
 
   return v9;
 }
 
-- (void)installedAssetOfType:(unint64_t)a3 language:(id)a4 completion:(id)a5
+- (void)installedAssetOfType:(unint64_t)type language:(id)language completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  languageCopy = language;
+  completionCopy = completion;
+  if (!languageCopy)
   {
     v10 = CSLogCategoryAsset;
     if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_ERROR))
@@ -821,33 +821,33 @@ LABEL_24:
       v12 = 136315138;
       v13 = "[CSAssetController installedAssetOfType:language:completion:]";
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s CSAssetController cannot query for nil language", &v12, 0xCu);
-      if (!v9)
+      if (!completionCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!v9)
+    else if (!completionCopy)
     {
       goto LABEL_6;
     }
 
     v11 = [NSError errorWithDomain:CSErrorDomain code:114 userInfo:0];
-    v9[2](v9, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
 
     goto LABEL_6;
   }
 
-  [(CSAssetController *)self installedAssetOfType:a3 withLanguage:v8 completion:v9];
+  [(CSAssetController *)self installedAssetOfType:type withLanguage:languageCopy completion:completionCopy];
 LABEL_6:
 }
 
-- (id)installedAssetOfType:(unint64_t)a3 language:(id)a4
+- (id)installedAssetOfType:(unint64_t)type language:(id)language
 {
-  v6 = a4;
-  if (v6)
+  languageCopy = language;
+  if (languageCopy)
   {
-    v7 = [(CSAssetController *)self installedAssetOfType:a3 withLanguage:v6];
+    v7 = [(CSAssetController *)self installedAssetOfType:type withLanguage:languageCopy];
   }
 
   else
@@ -866,11 +866,11 @@ LABEL_6:
   return v7;
 }
 
-- (void)assetOfType:(unint64_t)a3 language:(id)a4 compatibilityVersion:(unint64_t)a5 completion:(id)a6
+- (void)assetOfType:(unint64_t)type language:(id)language compatibilityVersion:(unint64_t)version completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
-  if (!v10)
+  languageCopy = language;
+  completionCopy = completion;
+  if (!languageCopy)
   {
     v13 = CSLogCategoryAsset;
     if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_ERROR))
@@ -878,19 +878,19 @@ LABEL_6:
       *buf = 136315138;
       v21 = "[CSAssetController assetOfType:language:compatibilityVersion:completion:]";
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s CSAssetController cannot query for nil language", buf, 0xCu);
-      if (!v11)
+      if (!completionCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!v11)
+    else if (!completionCopy)
     {
       goto LABEL_6;
     }
 
     v14 = [NSError errorWithDomain:CSErrorDomain code:114 userInfo:0];
-    v11[2](v11, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
 
     goto LABEL_6;
   }
@@ -901,20 +901,20 @@ LABEL_6:
   block[2] = sub_10000AEA4;
   block[3] = &unk_10001C7D8;
   block[4] = self;
-  v18 = a3;
-  v19 = a5;
-  v16 = v10;
-  v17 = v11;
+  typeCopy = type;
+  versionCopy = version;
+  v16 = languageCopy;
+  v17 = completionCopy;
   dispatch_async(queue, block);
 
 LABEL_6:
 }
 
-- (void)assetOfType:(unint64_t)a3 language:(id)a4 completion:(id)a5
+- (void)assetOfType:(unint64_t)type language:(id)language completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  languageCopy = language;
+  completionCopy = completion;
+  if (!languageCopy)
   {
     v11 = CSLogCategoryAsset;
     if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_ERROR))
@@ -922,61 +922,61 @@ LABEL_6:
       *buf = 136315138;
       v17 = "[CSAssetController assetOfType:language:completion:]";
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s CSAssetController cannot query for nil language", buf, 0xCu);
-      if (!v9)
+      if (!completionCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!v9)
+    else if (!completionCopy)
     {
       goto LABEL_6;
     }
 
     v12 = [NSError errorWithDomain:CSErrorDomain code:114 userInfo:0];
-    v9[2](v9, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
 
     goto LABEL_6;
   }
 
-  [(CSAssetController *)self installedAssetOfType:a3 withLanguage:v8 completion:v9];
+  [(CSAssetController *)self installedAssetOfType:type withLanguage:languageCopy completion:completionCopy];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000B294;
   block[3] = &unk_10001C720;
   block[4] = self;
-  v15 = a3;
-  v14 = v8;
+  typeCopy = type;
+  v14 = languageCopy;
   dispatch_async(queue, block);
 
 LABEL_6:
 }
 
-- (id)allInstalledAssetsOfType:(unint64_t)a3 language:(id)a4
+- (id)allInstalledAssetsOfType:(unint64_t)type language:(id)language
 {
-  v6 = a4;
-  if (v6)
+  languageCopy = language;
+  if (languageCopy)
   {
-    v7 = [(CSAssetController *)self _assetQueryForAssetType:a3];
+    v7 = [(CSAssetController *)self _assetQueryForAssetType:type];
     [v7 returnTypes:2];
-    v8 = [v7 queryMetaDataSync];
-    v9 = [v7 results];
-    v10 = [CSAssetController filteredAssetsForAssets:v9 assetType:a3 language:v6];
+    queryMetaDataSync = [v7 queryMetaDataSync];
+    results = [v7 results];
+    v10 = [CSAssetController filteredAssetsForAssets:results assetType:type language:languageCopy];
 
     v11 = CSLogCategoryAsset;
-    if ((v8 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+    if ((queryMetaDataSync & 0xFFFFFFFFFFFFFFFDLL) != 0)
     {
       if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315906;
         v25 = "[CSAssetController allInstalledAssetsOfType:language:]";
         v26 = 2050;
-        v27 = a3;
+        typeCopy = type;
         v28 = 2114;
-        v29 = v7;
+        typeCopy2 = v7;
         v30 = 2050;
-        v31 = v8;
+        v31 = queryMetaDataSync;
         _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s Error running asset-query for assetType:%{public}lu, query: %{public}@, error: %{public}lu", buf, 0x2Au);
       }
 
@@ -989,15 +989,15 @@ LABEL_6:
       {
         v14 = v11;
         v15 = [v10 count];
-        v16 = [v7 queryParams];
+        queryParams = [v7 queryParams];
         *buf = 136315906;
         v25 = "[CSAssetController allInstalledAssetsOfType:language:]";
         v26 = 2050;
-        v27 = v15;
+        typeCopy = v15;
         v28 = 2050;
-        v29 = a3;
+        typeCopy2 = type;
         v30 = 2114;
-        v31 = v16;
+        v31 = queryParams;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s ::: found %{public}lu installed assets for assetType=%{public}lu, matching query: %{public}@", buf, 0x2Au);
       }
 
@@ -1007,7 +1007,7 @@ LABEL_6:
       v21[1] = 3221225472;
       v21[2] = sub_10000B5D8;
       v22 = v21[3] = &unk_10001C788;
-      v23 = a3;
+      typeCopy3 = type;
       v21[4] = self;
       v18 = v22;
       [v17 enumerateObjectsUsingBlock:v21];
@@ -1041,20 +1041,20 @@ LABEL_6:
   return v12;
 }
 
-- (id)assetOfType:(unint64_t)a3 language:(id)a4
+- (id)assetOfType:(unint64_t)type language:(id)language
 {
-  v6 = a4;
-  if (v6)
+  languageCopy = language;
+  if (languageCopy)
   {
-    v7 = [(CSAssetController *)self installedAssetOfType:a3 withLanguage:v6];
+    v7 = [(CSAssetController *)self installedAssetOfType:type withLanguage:languageCopy];
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10000B81C;
     block[3] = &unk_10001C720;
     block[4] = self;
-    v13 = a3;
-    v12 = v6;
+    typeCopy = type;
+    v12 = languageCopy;
     dispatch_async(queue, block);
   }
 
@@ -1162,19 +1162,19 @@ LABEL_6:
   return v2;
 }
 
-+ (id)getAssetTypeStringForType:(unint64_t)a3
++ (id)getAssetTypeStringForType:(unint64_t)type
 {
   v3 = 0;
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v3 = +[CSAssetController getEndpointAssetTypeString];
       }
 
-      else if (a3 == 2)
+      else if (type == 2)
       {
         v3 = +[CSAssetController getLanguageDetectorAssetTypeString];
       }
@@ -1186,15 +1186,15 @@ LABEL_6:
     }
   }
 
-  else if (a3 > 4)
+  else if (type > 4)
   {
     v4 = @"com.apple.MobileAsset.VoiceTriggerAssetsMac";
-    if (a3 != 7)
+    if (type != 7)
     {
       v4 = 0;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       v3 = @"com.apple.MobileAsset.VoiceTriggerAssetsStudioDisplay";
     }
@@ -1207,7 +1207,7 @@ LABEL_6:
 
   else
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       +[CSAssetController getSpeakerRecognitionAssetTypeString];
     }
@@ -1297,12 +1297,12 @@ LABEL_6:
   return @"com.apple.MobileAsset.SpeechEndpointAssets";
 }
 
-+ (void)addKeyValuePairForQuery:(id *)a3 assetType:(unint64_t)a4
++ (void)addKeyValuePairForQuery:(id *)query assetType:(unint64_t)type
 {
-  v5 = *a3;
-  if (a4 <= 2)
+  v5 = *query;
+  if (type <= 2)
   {
-    switch(a4)
+    switch(type)
     {
       case 0uLL:
         v6 = +[CSAssetController getVoiceTriggerAssetCurrentCompatibilityVersion];
@@ -1318,9 +1318,9 @@ LABEL_6:
 
   else
   {
-    if (a4 <= 4)
+    if (type <= 4)
     {
-      if (a4 == 3)
+      if (type == 3)
       {
         v6 = +[CSAssetController getSpeakerRecognitionCurrentCompatibilityVersion];
       }
@@ -1333,13 +1333,13 @@ LABEL_6:
       goto LABEL_19;
     }
 
-    if (a4 == 5)
+    if (type == 5)
     {
       v6 = 14;
       goto LABEL_19;
     }
 
-    if (a4 == 7)
+    if (type == 7)
     {
       v6 = 15;
       goto LABEL_19;
@@ -1352,7 +1352,7 @@ LABEL_6:
     *buf = 136315394;
     v11 = "+[CSAssetController(Utils) addKeyValuePairForQuery:assetType:]";
     v12 = 2050;
-    v13 = a4;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s ERR: Unknown AssetType: %{public}lu", buf, 0x16u);
   }
 
@@ -1363,16 +1363,16 @@ LABEL_19:
   [v5 addKeyValuePair:v8 with:v9];
 }
 
-+ (id)filteredAssetsForAssets:(id)a3 assetType:(unint64_t)a4 language:(id)a5
++ (id)filteredAssetsForAssets:(id)assets assetType:(unint64_t)type language:(id)language
 {
-  v7 = a3;
-  v8 = a5;
+  assetsCopy = assets;
+  languageCopy = language;
   v30 = objc_alloc_init(NSMutableArray);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v9 = v7;
+  v9 = assetsCopy;
   v10 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v10)
   {
@@ -1381,7 +1381,7 @@ LABEL_19:
     v13 = kCSAssetLanguageKey;
     v28 = kCSAssetFootprintKey;
     v27 = kCSAssetPremiumKey;
-    v29 = v8;
+    v29 = languageCopy;
     do
     {
       for (i = 0; i != v11; i = i + 1)
@@ -1392,19 +1392,19 @@ LABEL_19:
         }
 
         v15 = *(*(&v31 + 1) + 8 * i);
-        v16 = [v15 attributes];
-        v17 = [v16 valueForKey:v13];
+        attributes = [v15 attributes];
+        v17 = [attributes valueForKey:v13];
         v18 = v17;
-        if (!v8 || [v17 containsObject:v8])
+        if (!languageCopy || [v17 containsObject:languageCopy])
         {
-          if (a4 <= 7 && ((1 << a4) & 0xA1) != 0 && (+[CSUtils supportPremiumAssets]& 1) == 0)
+          if (type <= 7 && ((1 << type) & 0xA1) != 0 && (+[CSUtils supportPremiumAssets]& 1) == 0)
           {
             v19 = v11;
             v20 = v13;
-            v21 = a4;
+            typeCopy = type;
             v22 = v12;
             v23 = v9;
-            v24 = [v16 objectForKey:v28];
+            v24 = [attributes objectForKey:v28];
             v25 = v24;
             if (!v24 || ([v24 isEqualToString:v27] & 1) == 0)
             {
@@ -1413,10 +1413,10 @@ LABEL_19:
 
             v9 = v23;
             v12 = v22;
-            a4 = v21;
+            type = typeCopy;
             v13 = v20;
             v11 = v19;
-            v8 = v29;
+            languageCopy = v29;
           }
 
           else

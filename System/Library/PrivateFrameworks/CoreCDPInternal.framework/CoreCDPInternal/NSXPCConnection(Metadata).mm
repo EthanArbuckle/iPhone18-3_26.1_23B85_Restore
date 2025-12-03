@@ -11,7 +11,7 @@
   v7 = *MEMORY[0x277D85DE8];
   v5 = 648;
   memset(v6, 0, 512);
-  dword_28134D0CC = [a1 processIdentifier];
+  dword_28134D0CC = [self processIdentifier];
   v1 = sysctl(processName_name, 4u, v6, &v5, 0, 0);
   v2 = @"unknown";
   if (!v1 && BYTE3(v6[15]))
@@ -27,7 +27,7 @@
 - (id)bundleID
 {
   v14 = *MEMORY[0x277D85DE8];
-  [a1 auditToken];
+  [self auditToken];
   v2 = SecTaskCreateWithAuditToken(0, &token);
   if (v2)
   {
@@ -41,7 +41,7 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         token.val[0] = 138412802;
-        *&token.val[1] = a1;
+        *&token.val[1] = self;
         LOWORD(token.val[3]) = 2112;
         *(&token.val[3] + 2) = v3;
         HIWORD(token.val[5]) = 2112;
@@ -70,7 +70,7 @@ LABEL_15:
       v8 = _CDPLogSystem();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [(NSXPCConnection(Metadata) *)a1 bundleID];
+        [(NSXPCConnection(Metadata) *)self bundleID];
       }
     }
 
@@ -81,7 +81,7 @@ LABEL_15:
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [(NSXPCConnection(Metadata) *)a1 bundleID];
+    [(NSXPCConnection(Metadata) *)self bundleID];
   }
 
   v5 = 0;
@@ -102,7 +102,7 @@ LABEL_16:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_24510B000, a2, OS_LOG_TYPE_ERROR, "%@: Failed to allocate security task (using framework-provided identifier)", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

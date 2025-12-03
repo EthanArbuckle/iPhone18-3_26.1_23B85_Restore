@@ -1,15 +1,15 @@
 @interface RTPersistenceContainer
-- (BOOL)_validateConfigurations:(id)a3;
+- (BOOL)_validateConfigurations:(id)configurations;
 - (BOOL)storesNeedSetup;
-- (BOOL)updateContainerConfigurations:(id)a3;
-- (RTPersistenceContainer)initWithName:(id)a3 model:(id)a4 configurations:(id)a5;
+- (BOOL)updateContainerConfigurations:(id)configurations;
+- (RTPersistenceContainer)initWithName:(id)name model:(id)model configurations:(id)configurations;
 - (RTPersistenceContainerDelegate)delegate;
 - (id)persistenceContext;
-- (id)persistenceContextWithOptions:(unint64_t)a3;
+- (id)persistenceContextWithOptions:(unint64_t)options;
 - (id)tearDownPersistenceStack;
 - (id)waitForPersistenceContext;
 - (void)dealloc;
-- (void)persistenceContextWithHandler:(id)a3;
+- (void)persistenceContextWithHandler:(id)handler;
 - (void)resumePersistenceStores;
 - (void)setupPersistenceStores;
 - (void)suspendPersistenceStores;
@@ -17,13 +17,13 @@
 
 @implementation RTPersistenceContainer
 
-- (RTPersistenceContainer)initWithName:(id)a3 model:(id)a4 configurations:(id)a5
+- (RTPersistenceContainer)initWithName:(id)name model:(id)model configurations:(id)configurations
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  nameCopy = name;
+  modelCopy = model;
+  configurationsCopy = configurations;
+  if (!nameCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -35,7 +35,7 @@
       _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: name (in %s:%d)", buf, 0x12u);
     }
 
-    if (v9)
+    if (modelCopy)
     {
       goto LABEL_18;
     }
@@ -43,7 +43,7 @@
     goto LABEL_15;
   }
 
-  if (!v9)
+  if (!modelCopy)
   {
 LABEL_15:
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -59,13 +59,13 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  if (![(RTPersistenceContainer *)self _validateConfigurations:v10])
+  if (![(RTPersistenceContainer *)self _validateConfigurations:configurationsCopy])
   {
     goto LABEL_18;
   }
 
-  v11 = [v9 versionIdentifiers];
-  v12 = [v11 count];
+  versionIdentifiers = [modelCopy versionIdentifiers];
+  v12 = [versionIdentifiers count];
 
   if (v12 != 1)
   {
@@ -80,13 +80,13 @@ LABEL_15:
     }
   }
 
-  v14 = [v9 versionIdentifiers];
-  v15 = [v14 count];
+  versionIdentifiers2 = [modelCopy versionIdentifiers];
+  v15 = [versionIdentifiers2 count];
 
   if (v15 != 1)
   {
 LABEL_18:
-    v31 = 0;
+    selfCopy = 0;
     goto LABEL_19;
   }
 
@@ -95,19 +95,19 @@ LABEL_18:
   v16 = [(RTPersistenceContainer *)&v36 init];
   if (v16)
   {
-    v17 = [v8 copy];
+    v17 = [nameCopy copy];
     name = v16->_name;
     v16->_name = v17;
 
-    v19 = [v10 copy];
+    v19 = [configurationsCopy copy];
     configurations = v16->_configurations;
     v16->_configurations = v19;
 
-    v21 = [objc_alloc(MEMORY[0x277CBE4D8]) initWithManagedObjectModel:v9];
+    v21 = [objc_alloc(MEMORY[0x277CBE4D8]) initWithManagedObjectModel:modelCopy];
     coordinator = v16->_coordinator;
     v16->_coordinator = v21;
 
-    [(NSPersistentStoreCoordinator *)v16->_coordinator setName:v8];
+    [(NSPersistentStoreCoordinator *)v16->_coordinator setName:nameCopy];
     v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@-%p", objc_opt_class(), v16->_name, v16];
     v24 = dispatch_queue_attr_make_with_overcommit();
     v25 = dispatch_queue_attr_make_initially_inactive(v24);
@@ -117,16 +117,16 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v28 = [v26 UTF8String];
+      uTF8String = [v26 UTF8String];
     }
 
     else
     {
       v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v26];
-      v28 = [v33 UTF8String];
+      uTF8String = [v33 UTF8String];
     }
 
-    v34 = dispatch_queue_create(v28, v27);
+    v34 = dispatch_queue_create(uTF8String, v27);
 
     contextRequestsQueue = v16->_contextRequestsQueue;
     v16->_contextRequestsQueue = v34;
@@ -135,19 +135,19 @@ LABEL_18:
   }
 
   self = v16;
-  v31 = self;
+  selfCopy = self;
 LABEL_19:
 
-  return v31;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v3 = [(RTPersistenceContainer *)self contextRequestsQueue];
-  v4 = v3;
-  if (v3)
+  contextRequestsQueue = [(RTPersistenceContainer *)self contextRequestsQueue];
+  v4 = contextRequestsQueue;
+  if (contextRequestsQueue)
   {
-    dispatch_activate(v3);
+    dispatch_activate(contextRequestsQueue);
     [(RTPersistenceContainer *)self setContextRequestsQueue:0];
   }
 
@@ -156,11 +156,11 @@ LABEL_19:
   [(RTPersistenceContainer *)&v5 dealloc];
 }
 
-- (BOOL)_validateConfigurations:(id)a3
+- (BOOL)_validateConfigurations:(id)configurations
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 count])
+  configurationsCopy = configurations;
+  if (![configurationsCopy count])
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -173,14 +173,14 @@ LABEL_19:
     }
   }
 
-  if ([v4 count])
+  if ([configurationsCopy count])
   {
-    v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(configurationsCopy, "count")}];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = v4;
+    v7 = configurationsCopy;
     v8 = [v7 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v8)
     {
@@ -195,8 +195,8 @@ LABEL_19:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v21 + 1) + 8 * i) store];
-          v13 = [v12 URL];
+          store = [*(*(&v21 + 1) + 8 * i) store];
+          v13 = [store URL];
 
           if (v13)
           {
@@ -231,9 +231,9 @@ LABEL_19:
       v18 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v20 = [(RTPersistenceContainer *)self name];
+        name = [(RTPersistenceContainer *)self name];
         *buf = 138412546;
-        v26 = v20;
+        v26 = name;
         v27 = 2112;
         v28 = v7;
         _os_log_debug_impl(&dword_2304B3000, v18, OS_LOG_TYPE_DEBUG, "container named, %@, updating configurations, %@", buf, 0x16u);
@@ -281,8 +281,8 @@ LABEL_19:
 
 - (BOOL)storesNeedSetup
 {
-  v2 = [(RTPersistenceContainer *)self contextRequestsQueue];
-  v3 = v2 != 0;
+  contextRequestsQueue = [(RTPersistenceContainer *)self contextRequestsQueue];
+  v3 = contextRequestsQueue != 0;
 
   return v3;
 }
@@ -311,10 +311,10 @@ LABEL_19:
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v20 + 1) + 8 * v7) store];
-        v9 = [(RTPersistenceContainer *)self coordinator];
+        store = [*(*(&v20 + 1) + 8 * v7) store];
+        coordinator = [(RTPersistenceContainer *)self coordinator];
         v19 = 0;
-        v10 = [v8 removeFromCoordinator:v9 error:&v19];
+        v10 = [store removeFromCoordinator:coordinator error:&v19];
         v11 = v19;
 
         if (v10)
@@ -364,7 +364,7 @@ LABEL_19:
 
 - (void)setupPersistenceStores
 {
-  v2 = self;
+  selfCopy = self;
   v55 = *MEMORY[0x277D85DE8];
   if (![(RTPersistenceContainer *)self storesNeedSetup])
   {
@@ -376,18 +376,18 @@ LABEL_19:
     v3 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      v34 = [(RTPersistenceContainer *)v2 name];
+      name = [(RTPersistenceContainer *)selfCopy name];
       *buf = 138412290;
-      v49 = v34;
+      v49 = name;
       _os_log_debug_impl(&dword_2304B3000, v3, OS_LOG_TYPE_DEBUG, "container named, %@, opening stores", buf, 0xCu);
     }
   }
 
-  v4 = [(NSArray *)v2->_configurations mutableCopy];
-  v40 = v2;
+  v4 = [(NSArray *)selfCopy->_configurations mutableCopy];
+  v40 = selfCopy;
   if (![v4 count])
   {
-    WeakRetained = objc_loadWeakRetained(&v2->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
     goto LABEL_44;
   }
 
@@ -423,10 +423,10 @@ LABEL_19:
 
         v10 = *(*(&v44 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 store];
-        v13 = [(RTPersistenceContainer *)v2 coordinator];
-        v14 = [v12 URL];
-        v15 = [v13 persistentStoreForURL:v14];
+        store = [v10 store];
+        coordinator = [(RTPersistenceContainer *)selfCopy coordinator];
+        v14 = [store URL];
+        v15 = [coordinator persistentStoreForURL:v14];
 
         if (v15)
         {
@@ -434,9 +434,9 @@ LABEL_19:
           goto LABEL_26;
         }
 
-        v16 = [(RTPersistenceContainer *)v2 coordinator];
+        coordinator2 = [(RTPersistenceContainer *)selfCopy coordinator];
         v43 = 0;
-        v17 = [v12 openWithCoordinator:v16 configuration:v10 error:&v43];
+        v17 = [store openWithCoordinator:coordinator2 configuration:v10 error:&v43];
         v18 = v43;
 
         if ([v18 code] == 1)
@@ -446,9 +446,9 @@ LABEL_19:
             v19 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
             {
-              v22 = [(RTPersistenceContainer *)v40 name];
+              name2 = [(RTPersistenceContainer *)v40 name];
               *buf = 138412290;
-              v49 = v22;
+              v49 = name2;
               _os_log_debug_impl(&dword_2304B3000, v19, OS_LOG_TYPE_DEBUG, "container named, %@, currently unavailable", buf, 0xCu);
             }
           }
@@ -462,7 +462,7 @@ LABEL_19:
           if (v18)
           {
             [v42 removeAllObjects];
-            v2 = v40;
+            selfCopy = v40;
             [(RTPersistenceContainer *)v40 setSetupFailed:1];
 
             objc_autoreleasePoolPop(v11);
@@ -471,9 +471,9 @@ LABEL_19:
 
           if ((v17 & 1) == 0)
           {
-            if ([v12 state] == 2)
+            if ([store state] == 2)
             {
-              v2 = v40;
+              selfCopy = v40;
               if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
               {
                 goto LABEL_25;
@@ -482,9 +482,9 @@ LABEL_19:
               v20 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
               if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
               {
-                v21 = [(RTPersistenceContainer *)v40 name];
+                name3 = [(RTPersistenceContainer *)v40 name];
                 *buf = 138412290;
-                v49 = v21;
+                v49 = name3;
                 _os_log_debug_impl(&dword_2304B3000, v20, OS_LOG_TYPE_DEBUG, "container named, %@, currently yielding", buf, 0xCu);
               }
             }
@@ -492,12 +492,12 @@ LABEL_19:
             else
             {
               v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-              v2 = v40;
+              selfCopy = v40;
               if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
               {
-                v23 = [v12 state];
+                state = [store state];
                 *buf = v37;
-                v49 = v23;
+                v49 = state;
                 v50 = 2080;
                 v51 = "[RTPersistenceContainer setupPersistenceStores]";
                 v52 = 1024;
@@ -512,7 +512,7 @@ LABEL_19:
           [v42 removeObject:v10];
         }
 
-        v2 = v40;
+        selfCopy = v40;
 LABEL_25:
 
 LABEL_26:
@@ -533,22 +533,22 @@ LABEL_38:
   }
 
   while ([v42 count]);
-  WeakRetained = objc_loadWeakRetained(&v2->_delegate);
-  if ((v39 & 1) != 0 && ![(RTPersistenceContainer *)v2 setupFailed])
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+  if ((v39 & 1) != 0 && ![(RTPersistenceContainer *)selfCopy setupFailed])
   {
     if (objc_opt_respondsToSelector())
     {
-      v26 = [(RTPersistenceContainer *)v2 contextRequestsQueue];
-      [WeakRetained container:v2 failedToActivateRequestsQueue:v26];
+      contextRequestsQueue = [(RTPersistenceContainer *)selfCopy contextRequestsQueue];
+      [WeakRetained container:selfCopy failedToActivateRequestsQueue:contextRequestsQueue];
     }
 
     goto LABEL_57;
   }
 
 LABEL_44:
-  v27 = [(RTPersistenceContainer *)v2 setupFailed];
+  setupFailed = [(RTPersistenceContainer *)selfCopy setupFailed];
   v28 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
-  if (v27)
+  if (setupFailed)
   {
     v29 = v40;
     if (v28)
@@ -556,9 +556,9 @@ LABEL_44:
       v30 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
-        v35 = [(RTPersistenceContainer *)v40 name];
+        name4 = [(RTPersistenceContainer *)v40 name];
         *buf = 138412290;
-        v49 = v35;
+        v49 = name4;
         _os_log_debug_impl(&dword_2304B3000, v30, OS_LOG_TYPE_DEBUG, "container named, %@, failed to open all stores", buf, 0xCu);
       }
 
@@ -573,9 +573,9 @@ LABEL_44:
       v31 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
-        v36 = [(RTPersistenceContainer *)v40 name];
+        name5 = [(RTPersistenceContainer *)v40 name];
         *buf = 138412290;
-        v49 = v36;
+        v49 = name5;
         _os_log_debug_impl(&dword_2304B3000, v31, OS_LOG_TYPE_DEBUG, "container named, %@, successfully opened all stores", buf, 0xCu);
       }
     }
@@ -586,40 +586,40 @@ LABEL_44:
 
   if (objc_opt_respondsToSelector())
   {
-    v32 = [(RTPersistenceContainer *)v29 contextRequestsQueue];
-    [WeakRetained container:v40 willActivateRequestsQueue:v32];
+    contextRequestsQueue2 = [(RTPersistenceContainer *)v29 contextRequestsQueue];
+    [WeakRetained container:v40 willActivateRequestsQueue:contextRequestsQueue2];
 
     v29 = v40;
   }
 
-  v33 = [(RTPersistenceContainer *)v29 contextRequestsQueue];
-  dispatch_activate(v33);
+  contextRequestsQueue3 = [(RTPersistenceContainer *)v29 contextRequestsQueue];
+  dispatch_activate(contextRequestsQueue3);
 
   [(RTPersistenceContainer *)v29 setContextRequestsQueue:0];
 LABEL_57:
 }
 
-- (BOOL)updateContainerConfigurations:(id)a3
+- (BOOL)updateContainerConfigurations:(id)configurations
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(RTPersistenceContainer *)self _validateConfigurations:v4]&& [(RTPersistenceContainer *)self storesNeedSetup])
+  configurationsCopy = configurations;
+  if ([(RTPersistenceContainer *)self _validateConfigurations:configurationsCopy]&& [(RTPersistenceContainer *)self storesNeedSetup])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       v5 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [(RTPersistenceContainer *)self name];
+        name = [(RTPersistenceContainer *)self name];
         v11 = 138412546;
-        v12 = v10;
+        v12 = name;
         v13 = 2112;
-        v14 = v4;
+        v14 = configurationsCopy;
         _os_log_debug_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEBUG, "container named, %@, updating configurations, %@", &v11, 0x16u);
       }
     }
 
-    v6 = [v4 copy];
+    v6 = [configurationsCopy copy];
     configurations = self->_configurations;
     self->_configurations = v6;
 
@@ -634,22 +634,22 @@ LABEL_57:
   return v8;
 }
 
-- (void)persistenceContextWithHandler:(id)a3
+- (void)persistenceContextWithHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTPersistenceContainer *)self contextRequestsQueue];
-    if (v5)
+    contextRequestsQueue = [(RTPersistenceContainer *)self contextRequestsQueue];
+    if (contextRequestsQueue)
     {
-      v6 = v5;
+      v6 = contextRequestsQueue;
       objc_initWeak(location, self);
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __56__RTPersistenceContainer_persistenceContextWithHandler___block_invoke;
       v8[3] = &unk_2788CA2D8;
-      v9 = v4;
+      v9 = handlerCopy;
       objc_copyWeak(&v10, location);
       dispatch_async(v6, v8);
       objc_destroyWeak(&v10);
@@ -659,8 +659,8 @@ LABEL_57:
 
     else
     {
-      v7 = [(RTPersistenceContainer *)self _persistenceContext];
-      (*(v4 + 2))(v4, v7);
+      _persistenceContext = [(RTPersistenceContainer *)self _persistenceContext];
+      (*(handlerCopy + 2))(handlerCopy, _persistenceContext);
 
       v6 = 0;
     }
@@ -690,19 +690,19 @@ void __56__RTPersistenceContainer_persistenceContextWithHandler___block_invoke(u
 
 - (id)persistenceContext
 {
-  v3 = [(RTPersistenceContainer *)self contextRequestsQueue];
+  contextRequestsQueue = [(RTPersistenceContainer *)self contextRequestsQueue];
 
-  if (v3)
+  if (contextRequestsQueue)
   {
-    v4 = 0;
+    _persistenceContext = 0;
   }
 
   else
   {
-    v4 = [(RTPersistenceContainer *)self _persistenceContext];
+    _persistenceContext = [(RTPersistenceContainer *)self _persistenceContext];
   }
 
-  return v4;
+  return _persistenceContext;
 }
 
 - (id)waitForPersistenceContext
@@ -713,9 +713,9 @@ void __56__RTPersistenceContainer_persistenceContextWithHandler___block_invoke(u
   v13 = __Block_byref_object_copy__64;
   v14 = __Block_byref_object_dispose__64;
   v15 = 0;
-  v3 = [(RTPersistenceContainer *)self contextRequestsQueue];
-  v4 = v3;
-  if (v3)
+  contextRequestsQueue = [(RTPersistenceContainer *)self contextRequestsQueue];
+  v4 = contextRequestsQueue;
+  if (contextRequestsQueue)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -723,14 +723,14 @@ void __56__RTPersistenceContainer_persistenceContextWithHandler___block_invoke(u
     v9[3] = &unk_2788C7FB0;
     v9[4] = self;
     v9[5] = &v10;
-    dispatch_sync(v3, v9);
+    dispatch_sync(contextRequestsQueue, v9);
   }
 
   else
   {
-    v5 = [(RTPersistenceContainer *)self _persistenceContext];
+    _persistenceContext = [(RTPersistenceContainer *)self _persistenceContext];
     v6 = v11[5];
-    v11[5] = v5;
+    v11[5] = _persistenceContext;
   }
 
   v7 = v11[5];
@@ -747,7 +747,7 @@ uint64_t __51__RTPersistenceContainer_waitForPersistenceContext__block_invoke(ui
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)persistenceContextWithOptions:(unint64_t)a3
+- (id)persistenceContextWithOptions:(unint64_t)options
 {
   v24 = *MEMORY[0x277D85DE8];
   if ([(RTPersistenceContainer *)self setupFailed])
@@ -769,22 +769,22 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ((a3 & 1) != 0 || [(RTPersistenceContainer *)self serveContexts])
+  if ((options & 1) != 0 || [(RTPersistenceContainer *)self serveContexts])
   {
-    v7 = [[RTPersistenceContext alloc] initWithConcurrencyType:1 options:a3];
-    v8 = [MEMORY[0x277CBE460] mergeByPropertyStoreTrumpMergePolicy];
-    [(RTPersistenceContext *)v7 setMergePolicy:v8];
+    v7 = [[RTPersistenceContext alloc] initWithConcurrencyType:1 options:options];
+    mergeByPropertyStoreTrumpMergePolicy = [MEMORY[0x277CBE460] mergeByPropertyStoreTrumpMergePolicy];
+    [(RTPersistenceContext *)v7 setMergePolicy:mergeByPropertyStoreTrumpMergePolicy];
 
-    v9 = [(RTPersistenceContainer *)self coordinator];
-    [(RTPersistenceContext *)v7 setPersistentStoreCoordinator:v9];
+    coordinator = [(RTPersistenceContainer *)self coordinator];
+    [(RTPersistenceContext *)v7 setPersistentStoreCoordinator:coordinator];
 
-    v10 = [MEMORY[0x277CCAC38] processInfo];
-    v11 = [v10 processName];
-    [(RTPersistenceContext *)v7 setName:v11];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    [(RTPersistenceContext *)v7 setName:processName];
 
-    v12 = [MEMORY[0x277CCAC38] processInfo];
-    v13 = [v12 processName];
-    [(RTPersistenceContext *)v7 setTransactionAuthor:v13];
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    processName2 = [processInfo2 processName];
+    [(RTPersistenceContext *)v7 setTransactionAuthor:processName2];
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;

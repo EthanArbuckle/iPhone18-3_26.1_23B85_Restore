@@ -1,11 +1,11 @@
 @interface FMDNanoSupportProtoLostModeExitAuth
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FMDNanoSupportProtoLostModeExitAuth
@@ -15,8 +15,8 @@
   v7.receiver = self;
   v7.super_class = FMDNanoSupportProtoLostModeExitAuth;
   v3 = [(FMDNanoSupportProtoLostModeExitAuth *)&v7 description];
-  v4 = [(FMDNanoSupportProtoLostModeExitAuth *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(FMDNanoSupportProtoLostModeExitAuth *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -36,11 +36,11 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   errorOccurred = self->_errorOccurred;
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteBOOLField();
   if (self->_lostModeExitAuthToken)
   {
@@ -48,39 +48,39 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 16) = self->_errorOccurred;
+  *(to + 16) = self->_errorOccurred;
   lostModeExitAuthToken = self->_lostModeExitAuthToken;
   if (lostModeExitAuthToken)
   {
-    [a3 setLostModeExitAuthToken:lostModeExitAuthToken];
+    [to setLostModeExitAuthToken:lostModeExitAuthToken];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[16] = self->_errorOccurred;
-  v6 = [(NSString *)self->_lostModeExitAuthToken copyWithZone:a3];
+  v6 = [(NSString *)self->_lostModeExitAuthToken copyWithZone:zone];
   v7 = *(v5 + 1);
   *(v5 + 1) = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_4;
   }
 
-  v5 = *(v4 + 16);
+  v5 = *(equalCopy + 16);
   if (self->_errorOccurred)
   {
-    if ((*(v4 + 16) & 1) == 0)
+    if ((*(equalCopy + 16) & 1) == 0)
     {
 LABEL_4:
       v6 = 0;
@@ -88,13 +88,13 @@ LABEL_4:
     }
   }
 
-  else if (*(v4 + 16))
+  else if (*(equalCopy + 16))
   {
     goto LABEL_4;
   }
 
   lostModeExitAuthToken = self->_lostModeExitAuthToken;
-  if (lostModeExitAuthToken | *(v4 + 1))
+  if (lostModeExitAuthToken | *(equalCopy + 1))
   {
     v6 = [(NSString *)lostModeExitAuthToken isEqual:?];
   }
@@ -109,10 +109,10 @@ LABEL_5:
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_errorOccurred = *(a3 + 16);
-  if (*(a3 + 1))
+  self->_errorOccurred = *(from + 16);
+  if (*(from + 1))
   {
     [(FMDNanoSupportProtoLostModeExitAuth *)self setLostModeExitAuthToken:?];
   }

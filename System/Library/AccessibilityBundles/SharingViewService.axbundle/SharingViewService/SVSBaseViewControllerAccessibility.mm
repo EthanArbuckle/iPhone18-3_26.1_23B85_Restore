@@ -1,20 +1,20 @@
 @interface SVSBaseViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation SVSBaseViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SVSBaseViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SharingViewService.B389DoneViewController"];
-  [v3 validateClass:@"SharingViewService.B389DoneViewController" isKindOfClass:@"SVSBaseViewController"];
-  [v3 validateClass:@"SVSCurrentLocationIndicator"];
-  [v3 validateClass:@"SVSBaseViewController" hasInstanceMethod:@"containerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SVSBaseViewController" hasInstanceMethod:@"mainController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SharingViewService.B389SetupMainViewController" hasInstanceMethod:@"accessibilitySession" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SPPairingSession" hasInstanceMethod:@"pairingLocation" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SVSBaseViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SharingViewService.B389DoneViewController"];
+  [validationsCopy validateClass:@"SharingViewService.B389DoneViewController" isKindOfClass:@"SVSBaseViewController"];
+  [validationsCopy validateClass:@"SVSCurrentLocationIndicator"];
+  [validationsCopy validateClass:@"SVSBaseViewController" hasInstanceMethod:@"containerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SVSBaseViewController" hasInstanceMethod:@"mainController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SharingViewService.B389SetupMainViewController" hasInstanceMethod:@"accessibilitySession" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SPPairingSession" hasInstanceMethod:@"pairingLocation" withFullSignature:{"@", 0}];
 }
 
 BOOL __52__SVSBaseViewControllerAccessibility_viewDidAppear___block_invoke_2(uint64_t a1, void *a2)

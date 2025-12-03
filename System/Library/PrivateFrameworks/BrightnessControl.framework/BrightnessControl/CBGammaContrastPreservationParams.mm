@@ -1,20 +1,20 @@
 @interface CBGammaContrastPreservationParams
-+ (id)paramsWithProvider:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CBGammaContrastPreservationParams)initWithProvider:(id)a3;
++ (id)paramsWithProvider:(id)provider;
+- (BOOL)isEqual:(id)equal;
+- (CBGammaContrastPreservationParams)initWithProvider:(id)provider;
 - (void)dealloc;
 @end
 
 @implementation CBGammaContrastPreservationParams
 
-+ (id)paramsWithProvider:(id)a3
++ (id)paramsWithProvider:(id)provider
 {
-  v3 = [[CBGammaContrastPreservationParams alloc] initWithProvider:a3];
+  v3 = [[CBGammaContrastPreservationParams alloc] initWithProvider:provider];
 
   return v3;
 }
 
-- (CBGammaContrastPreservationParams)initWithProvider:(id)a3
+- (CBGammaContrastPreservationParams)initWithProvider:(id)provider
 {
   v25[20] = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
@@ -64,7 +64,7 @@
   v25[18] = &unk_2837438A0;
   v25[19] = &unk_2837438B0;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:20];
-  v23[0] = a3;
+  v23[0] = provider;
   v23[1] = [CBDictConfigProvider providerWithDict:v6];
   v7 = +[CBCombinedConfigProvider providerFromList:](CBCombinedConfigProvider, "providerFromList:", [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2]);
   [v7 setLogHandle:*(v5 + 1)];
@@ -251,7 +251,7 @@ LABEL_62:
   [(CBGammaContrastPreservationParams *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v18 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -261,8 +261,8 @@ LABEL_62:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NSDictionary *)[(CBGammaContrastPreservationParams *)self codingKeys] allValues];
-    v6 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    allValues = [(NSDictionary *)[(CBGammaContrastPreservationParams *)self codingKeys] allValues];
+    v6 = [(NSArray *)allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -273,10 +273,10 @@ LABEL_4:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        v10 = [-[CBGammaContrastPreservationParams valueForKey:](self valueForKey:{*(*(&v13 + 1) + 8 * v9)), "isEqual:", objc_msgSend(a3, "valueForKey:", *(*(&v13 + 1) + 8 * v9))}];
+        v10 = [-[CBGammaContrastPreservationParams valueForKey:](self valueForKey:{*(*(&v13 + 1) + 8 * v9)), "isEqual:", objc_msgSend(equal, "valueForKey:", *(*(&v13 + 1) + 8 * v9))}];
         if (!v10)
         {
           break;
@@ -284,7 +284,7 @@ LABEL_4:
 
         if (v7 == ++v9)
         {
-          v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v7 = [(NSArray *)allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
           LOBYTE(v10) = 1;
           if (v7)
           {

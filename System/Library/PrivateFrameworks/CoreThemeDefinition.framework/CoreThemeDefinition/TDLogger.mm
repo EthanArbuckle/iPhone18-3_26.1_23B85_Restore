@@ -4,12 +4,12 @@
 - (TDLogger)init;
 - (int)verbosity;
 - (void)dealloc;
-- (void)logErrorWithFormat:(id)a3;
-- (void)logExtraWithFormat:(id)a3;
-- (void)logInfoWithFormat:(id)a3;
-- (void)logMessage:(id)a3 whenVerbosity:(int)a4;
-- (void)logWarningWithFormat:(id)a3;
-- (void)setVerbosity:(int)a3;
+- (void)logErrorWithFormat:(id)format;
+- (void)logExtraWithFormat:(id)format;
+- (void)logInfoWithFormat:(id)format;
+- (void)logMessage:(id)message whenVerbosity:(int)verbosity;
+- (void)logWarningWithFormat:(id)format;
+- (void)setVerbosity:(int)verbosity;
 - (void)waitForLoggingToComplete;
 @end
 
@@ -17,7 +17,7 @@
 
 + (id)logger
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -62,11 +62,11 @@ TDLogger *__25__TDLogger_defaultLogger__block_invoke()
   return result;
 }
 
-- (void)setVerbosity:(int)a3
+- (void)setVerbosity:(int)verbosity
 {
-  if (self->_verbosity != a3)
+  if (self->_verbosity != verbosity)
   {
-    self->_verbosity = a3;
+    self->_verbosity = verbosity;
   }
 }
 
@@ -96,9 +96,9 @@ TDLogger *__25__TDLogger_defaultLogger__block_invoke()
   [(TDLogger *)&v4 dealloc];
 }
 
-- (void)logMessage:(id)a3 whenVerbosity:(int)a4
+- (void)logMessage:(id)message whenVerbosity:(int)verbosity
 {
-  if ([(TDLogger *)self verbosity]>= a4)
+  if ([(TDLogger *)self verbosity]>= verbosity)
   {
     loggingQueue = self->_loggingQueue;
     if (loggingQueue)
@@ -107,13 +107,13 @@ TDLogger *__25__TDLogger_defaultLogger__block_invoke()
       block[1] = 3221225472;
       block[2] = __37__TDLogger_logMessage_whenVerbosity___block_invoke;
       block[3] = &unk_278EBB568;
-      block[4] = a3;
+      block[4] = message;
       dispatch_async(loggingQueue, block);
     }
 
     else
     {
-      NSLog(&cfstr_Distill.isa, a3);
+      NSLog(&cfstr_Distill.isa, message);
     }
   }
 }
@@ -125,27 +125,27 @@ uint64_t __37__TDLogger_logMessage_whenVerbosity___block_invoke(uint64_t a1)
   return puts(v1);
 }
 
-- (void)logExtraWithFormat:(id)a3
+- (void)logExtraWithFormat:(id)format
 {
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:a3 arguments:&v5];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:format arguments:&v5];
   [(TDLogger *)self logExtra:v4];
 }
 
-- (void)logInfoWithFormat:(id)a3
+- (void)logInfoWithFormat:(id)format
 {
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:a3 arguments:&v5];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:format arguments:&v5];
   [(TDLogger *)self logInfo:v4];
 }
 
-- (void)logWarningWithFormat:(id)a3
+- (void)logWarningWithFormat:(id)format
 {
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:a3 arguments:&v5];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:format arguments:&v5];
   [(TDLogger *)self logWarning:v4];
 }
 
-- (void)logErrorWithFormat:(id)a3
+- (void)logErrorWithFormat:(id)format
 {
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:a3 arguments:&v5];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:format arguments:&v5];
   [(TDLogger *)self logError:v4];
 }
 

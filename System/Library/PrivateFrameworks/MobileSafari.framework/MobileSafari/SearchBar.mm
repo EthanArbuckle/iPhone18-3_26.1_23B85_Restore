@@ -1,6 +1,6 @@
 @interface SearchBar
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (void)didReceiveHover:(id)a3;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (void)didReceiveHover:(id)hover;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
 - (void)updateConstraints;
@@ -8,17 +8,17 @@
 
 @implementation SearchBar
 
-- (void)didReceiveHover:(id)a3
+- (void)didReceiveHover:(id)hover
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [v4 state];
-  if (v5 != 1)
+  hoverCopy = hover;
+  selfCopy = self;
+  state = [hoverCopy state];
+  if (state != 1)
   {
-    v5 = [v4 state] == 2;
+    state = [hoverCopy state] == 2;
   }
 
-  sub_18BB87304(v5);
+  sub_18BB87304(state);
 }
 
 - (void)layoutMarginsDidChange
@@ -32,22 +32,22 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BB89950();
 }
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BB89AD0();
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC12MobileSafari9SearchBar_isEnabled) == 1)
   {
     v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12MobileSafari9SearchBar_shouldBeginSearching);
-    v4 = self;
+    selfCopy = self;
     v5 = sub_18BC1E1A8();
     v6 = v3(v5);
   }

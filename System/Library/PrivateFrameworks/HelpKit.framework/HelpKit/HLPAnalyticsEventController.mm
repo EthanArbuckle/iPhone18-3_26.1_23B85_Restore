@@ -1,9 +1,9 @@
 @interface HLPAnalyticsEventController
 + (id)sharedInstance;
-- (id)counterForKey:(id)a3;
-- (void)configureWithHelpBookID:(id)a3 version:(id)a4;
-- (void)incrementCounterForKey:(id)a3;
-- (void)logAnalyticsEvent:(id)a3;
+- (id)counterForKey:(id)key;
+- (void)configureWithHelpBookID:(id)d version:(id)version;
+- (void)incrementCounterForKey:(id)key;
+- (void)logAnalyticsEvent:(id)event;
 @end
 
 @implementation HLPAnalyticsEventController
@@ -29,22 +29,22 @@ uint64_t __45__HLPAnalyticsEventController_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)configureWithHelpBookID:(id)a3 version:(id)a4
+- (void)configureWithHelpBookID:(id)d version:(id)version
 {
   v24 = *MEMORY[0x277D85DE8];
-  objc_storeStrong(&self->_identifier, a3);
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
+  objc_storeStrong(&self->_identifier, d);
+  dCopy = d;
+  versionCopy = version;
+  v9 = [versionCopy stringByReplacingOccurrencesOfString:@"." withString:@"_"];
 
   version = self->_version;
   self->_version = v9;
 
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v13 = [MEMORY[0x277CCA8D8] mainBundle];
-  v14 = [v13 objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v14 = [mainBundle2 objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
 
   v20[0] = @"book_ID";
   v20[1] = @"book_version";
@@ -52,9 +52,9 @@ uint64_t __45__HLPAnalyticsEventController_sharedInstance__block_invoke()
   v21 = vbslq_s8(vceqzq_s64(*&self->_identifier), vdupq_n_s64(@"undefined"), *&self->_identifier);
   v20[2] = @"product";
   v20[3] = @"product_version";
-  if (v12)
+  if (bundleIdentifier)
   {
-    v16 = v12;
+    v16 = bundleIdentifier;
   }
 
   else
@@ -76,41 +76,41 @@ uint64_t __45__HLPAnalyticsEventController_sharedInstance__block_invoke()
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logAnalyticsEvent:(id)a3
+- (void)logAnalyticsEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = MEMORY[0x277CCACA8];
-  v5 = [v3 eventName];
-  v6 = [v4 stringWithFormat:@"%@.%@", @"com.apple.HelpKit", v5];
+  eventName = [eventCopy eventName];
+  v6 = [v4 stringWithFormat:@"%@.%@", @"com.apple.HelpKit", eventName];
 
-  v8 = v3;
-  v7 = v3;
+  v8 = eventCopy;
+  v7 = eventCopy;
   AnalyticsSendEventLazy();
 }
 
-- (void)incrementCounterForKey:(id)a3
+- (void)incrementCounterForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HLPAnalyticsEventController *)self countersByKey];
+  keyCopy = key;
+  countersByKey = [(HLPAnalyticsEventController *)self countersByKey];
 
-  if (!v5)
+  if (!countersByKey)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    [(HLPAnalyticsEventController *)self setCountersByKey:v6];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(HLPAnalyticsEventController *)self setCountersByKey:dictionary];
   }
 
-  v7 = [(HLPAnalyticsEventController *)self counterForKey:v4];
+  v7 = [(HLPAnalyticsEventController *)self counterForKey:keyCopy];
   v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v7, "intValue") + 1}];
 
-  v8 = [(HLPAnalyticsEventController *)self countersByKey];
-  [v8 setObject:v9 forKeyedSubscript:v4];
+  countersByKey2 = [(HLPAnalyticsEventController *)self countersByKey];
+  [countersByKey2 setObject:v9 forKeyedSubscript:keyCopy];
 }
 
-- (id)counterForKey:(id)a3
+- (id)counterForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HLPAnalyticsEventController *)self countersByKey];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  countersByKey = [(HLPAnalyticsEventController *)self countersByKey];
+  v6 = [countersByKey objectForKeyedSubscript:keyCopy];
 
   if (v6)
   {

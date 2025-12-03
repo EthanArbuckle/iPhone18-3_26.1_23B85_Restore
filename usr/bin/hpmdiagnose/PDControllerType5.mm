@@ -1,30 +1,30 @@
 @interface PDControllerType5
 - (id)readFullVersion;
-- (id)registerFormatter8ByteVersionWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterADCResultsWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterBootFlagsWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterCFDebugConfigWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterCFSOPUVDMEnumWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterCFVIDConfigWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterCFVIDStatusWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterFWStateConfigWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterGenericWithBuffer:(void *)a3 andLength:(unint64_t)a4 andConfig:(id)a5;
-- (id)registerFormatterIOConfig1WithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterIOConfig2WithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterIntEventWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterIntMaskClearWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterLDCMConfigWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterLDCMStatusWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterMuxStateWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterPD3EMIntMaskWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterPersParamsWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterPowerSwitchStateWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterSecondaryMUXInitWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterSystemConfigWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterTBTRetimerDataWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterTXEPRSourceCapWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterUSBConfigWithBuffer:(void *)a3 andLength:(unint64_t)a4;
-- (id)registerFormatterWakeEventMaskWithBuffer:(void *)a3 andLength:(unint64_t)a4;
+- (id)registerFormatter8ByteVersionWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterADCResultsWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterBootFlagsWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterCFDebugConfigWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterCFSOPUVDMEnumWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterCFVIDConfigWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterCFVIDStatusWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterFWStateConfigWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterGenericWithBuffer:(void *)buffer andLength:(unint64_t)length andConfig:(id)config;
+- (id)registerFormatterIOConfig1WithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterIOConfig2WithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterIntEventWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterIntMaskClearWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterLDCMConfigWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterLDCMStatusWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterMuxStateWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterPD3EMIntMaskWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterPersParamsWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterPowerSwitchStateWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterSecondaryMUXInitWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterSystemConfigWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterTBTRetimerDataWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterTXEPRSourceCapWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterUSBConfigWithBuffer:(void *)buffer andLength:(unint64_t)length;
+- (id)registerFormatterWakeEventMaskWithBuffer:(void *)buffer andLength:(unint64_t)length;
 - (int)printAllDPMrSubcommands;
 - (int)printDBStateHistory;
 - (int)printTBRrIfIntelRetimerPresent;
@@ -34,25 +34,25 @@
 
 @implementation PDControllerType5
 
-- (id)registerFormatter8ByteVersionWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatter8ByteVersionWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
   v7 = +[NSMutableArray array];
-  v8 = [(PDController *)self registerFormatterHexDumpWithBuffer:a3 andLength:a4];
+  v8 = [(PDController *)self registerFormatterHexDumpWithBuffer:buffer andLength:length];
   [v7 addObjectsFromArray:v8];
-  if (a4 == 8)
+  if (length == 8)
   {
-    [NSString stringWithFormat:@"%llX.%llX.%llX.%lld.%02lld", *a3 >> 20, (*a3 >> 8) & 0xFFFLL, *a3, BYTE4(*a3), (WORD2(*a3) >> 8)];
+    [NSString stringWithFormat:@"%llX.%llX.%llX.%lld.%02lld", *buffer >> 20, (*buffer >> 8) & 0xFFFLL, *buffer, BYTE4(*buffer), (WORD2(*buffer) >> 8)];
   }
 
-  else if (a4 == 4)
+  else if (length == 4)
   {
     [v7 addObject:@"Warning: Unexpected 4-byte version register"];
-    [NSString stringWithFormat:@"%X.%X.%X (Unknown Customer Version)", *a3 >> 20, (*a3 >> 8) & 0xFFF, *a3, v13, v14];
+    [NSString stringWithFormat:@"%X.%X.%X (Unknown Customer Version)", *buffer >> 20, (*buffer >> 8) & 0xFFF, *buffer, v13, v14];
   }
 
   else
   {
-    [NSString stringWithFormat:@"ERROR: Unexpected length %lld", a4, v11, v12, v13, v14];
+    [NSString stringWithFormat:@"ERROR: Unexpected length %lld", length, v11, v12, v13, v14];
   }
   v9 = ;
   [v7 addObject:v9];
@@ -124,20 +124,20 @@
         }
 
         v9 = *(*(&v23 + 1) + 8 * v8);
-        v10 = [(PDControllerType4 *)self dpmrConfigs];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        dpmrConfigs = [(PDControllerType4 *)self dpmrConfigs];
+        v11 = [dpmrConfigs objectForKeyedSubscript:v9];
         v12 = [v11 objectForKeyedSubscript:@"mask"];
-        v13 = [v12 unsignedIntegerValue];
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-        v14 = [(PDControllerType4 *)self dpmrConfigs];
-        v15 = [v14 objectForKeyedSubscript:v9];
+        dpmrConfigs2 = [(PDControllerType4 *)self dpmrConfigs];
+        v15 = [dpmrConfigs2 objectForKeyedSubscript:v9];
         v16 = [v15 objectForKeyedSubscript:@"match"];
-        v17 = [v16 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 
-        if ((v22 & v13) == v17)
+        if ((v22 & unsignedIntegerValue) == unsignedIntegerValue2)
         {
-          v18 = [(PDControllerType4 *)self dpmrConfigs];
-          v19 = [v18 objectForKeyedSubscript:v9];
+          dpmrConfigs3 = [(PDControllerType4 *)self dpmrConfigs];
+          v19 = [dpmrConfigs3 objectForKeyedSubscript:v9];
           [(PDControllerType4 *)self printDPMrSubCommand:v9 withDeviceConfig:v19];
         }
 
@@ -154,28 +154,28 @@
   return 0;
 }
 
-- (id)registerFormatterGenericWithBuffer:(void *)a3 andLength:(unint64_t)a4 andConfig:(id)a5
+- (id)registerFormatterGenericWithBuffer:(void *)buffer andLength:(unint64_t)length andConfig:(id)config
 {
-  v8 = a5;
+  configCopy = config;
   v9 = +[NSMutableArray array];
-  v69 = self;
-  v10 = [(PDController *)self registerFormatterHexDumpWithBuffer:a3 andLength:a4];
+  selfCopy = self;
+  v10 = [(PDController *)self registerFormatterHexDumpWithBuffer:buffer andLength:length];
   [v9 addObjectsFromArray:v10];
-  v11 = [v8 objectForKeyedSubscript:@"length"];
-  v12 = [v11 unsignedIntegerValue];
+  v11 = [configCopy objectForKeyedSubscript:@"length"];
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-  if (v12 > a4)
+  if (unsignedIntegerValue > length)
   {
-    v13 = [NSString stringWithFormat:@"ERROR: length %lld < %lu", a4, v12];
+    v13 = [NSString stringWithFormat:@"ERROR: length %lld < %lu", length, unsignedIntegerValue];
     [v9 addObject:v13];
 
     goto LABEL_68;
   }
 
-  v72 = a4;
-  if (v12 < a4)
+  lengthCopy = length;
+  if (unsignedIntegerValue < length)
   {
-    v14 = [NSString stringWithFormat:@"ERROR: length %lld > %lu, register may not be decoded correctly", a4, v12];
+    v14 = [NSString stringWithFormat:@"ERROR: length %lld > %lu, register may not be decoded correctly", length, unsignedIntegerValue];
     [v9 addObject:v14];
   }
 
@@ -183,8 +183,8 @@
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v68 = v8;
-  obj = [v8 objectForKeyedSubscript:@"fields"];
+  v68 = configCopy;
+  obj = [configCopy objectForKeyedSubscript:@"fields"];
   v15 = [obj countByEnumeratingWithState:&v76 objects:v80 count:16];
   if (v15)
   {
@@ -192,7 +192,7 @@
     v74 = *v77;
     v17 = @"%02X";
     v70 = v9;
-    v71 = a3;
+    bufferCopy = buffer;
     do
     {
       v18 = 0;
@@ -232,42 +232,42 @@ LABEL_18:
         }
 
         v26 = [v19 objectForKeyedSubscript:@"bit_length"];
-        v27 = [v26 unsignedCharValue];
+        unsignedCharValue = [v26 unsignedCharValue];
 
         v28 = [v19 objectForKeyedSubscript:@"byte_offset"];
-        v29 = [v28 unsignedCharValue];
+        unsignedCharValue2 = [v28 unsignedCharValue];
 
         v30 = [v19 objectForKeyedSubscript:@"name"];
-        if (v29 >= v72)
+        if (unsignedCharValue2 >= lengthCopy)
         {
-          [NSString stringWithFormat:@"Error, byte offset too large (%x)", v29, v65, v66, v67];
+          [NSString stringWithFormat:@"Error, byte offset too large (%x)", unsignedCharValue2, v65, v66, v67];
           v32 = LABEL_22:;
           [v9 addObject:v32];
           goto LABEL_23;
         }
 
-        if (v27 >= 0x21)
+        if (unsignedCharValue >= 0x21)
         {
-          v31 = v29 + ((v27 + 7) >> 3);
-          if (v31 > v72)
+          v31 = unsignedCharValue2 + ((unsignedCharValue + 7) >> 3);
+          if (v31 > lengthCopy)
           {
-            [NSString stringWithFormat:@"Error, byte_offset + byte_length too large (error in field %@, offset=%d, byte_length=%d actual_length=%d)", v30, v29, (v27 + 7) >> 3, v27];
+            [NSString stringWithFormat:@"Error, byte_offset + byte_length too large (error in field %@, offset=%d, byte_length=%d actual_length=%d)", v30, unsignedCharValue2, (unsignedCharValue + 7) >> 3, unsignedCharValue];
             goto LABEL_22;
           }
 
           v32 = [NSMutableString stringWithUTF8String:"0x"];
           v44 = v31 - 1;
-          if (v44 >= v29)
+          if (v44 >= unsignedCharValue2)
           {
             do
             {
-              [v32 appendFormat:v22, v71[v44--]];
+              [v32 appendFormat:v22, bufferCopy[v44--]];
             }
 
-            while (v29 <= v44);
+            while (unsignedCharValue2 <= v44);
           }
 
-          v45 = [(PDControllerType4 *)v69 stringForTitle:v30 valueString:v32];
+          v45 = [(PDControllerType4 *)selfCopy stringForTitle:v30 valueString:v32];
           [v9 addObject:v45];
 
 LABEL_23:
@@ -275,17 +275,17 @@ LABEL_23:
           goto LABEL_19;
         }
 
-        v75 = *&v71[v29];
+        v75 = *&bufferCopy[unsignedCharValue2];
         v33 = [v19 objectForKeyedSubscript:@"bit_shift"];
 
         if (v33)
         {
           v34 = [v19 objectForKeyedSubscript:@"bit_shift"];
-          v35 = [v34 unsignedIntegerValue];
-          v75 >>= v35;
+          unsignedIntegerValue2 = [v34 unsignedIntegerValue];
+          v75 >>= unsignedIntegerValue2;
         }
 
-        v75 &= ~(-1 << v27);
+        v75 &= ~(-1 << unsignedCharValue);
         v36 = [v19 objectForKeyedSubscript:@"show_only_when_nonzero"];
 
         if (!v36 || ([v19 objectForKeyedSubscript:@"show_only_when_nonzero"], v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "BOOLValue"), v39 = v75, v37, !v38) || v39)
@@ -296,18 +296,18 @@ LABEL_23:
           {
             v41 = v75;
             v42 = [v19 objectForKeyedSubscript:@"values"];
-            v43 = [(PDControllerType4 *)v69 stringForTitle:v30 value:v41 table:v42];
+            v43 = [(PDControllerType4 *)selfCopy stringForTitle:v30 value:v41 table:v42];
           }
 
           else
           {
-            if (v27 > 4)
+            if (unsignedCharValue > 4)
             {
-              if (v27 > 8)
+              if (unsignedCharValue > 8)
               {
-                if (v27 > 0x10)
+                if (unsignedCharValue > 0x10)
                 {
-                  if (v27 > 0x18)
+                  if (unsignedCharValue > 0x18)
                   {
                     [NSString stringWithFormat:@"0x%08llX", v75];
                   }
@@ -335,7 +335,7 @@ LABEL_23:
               [NSString stringWithFormat:@"0x%X", v75];
             }
             v42 = ;
-            v43 = [(PDControllerType4 *)v69 stringForTitle:v30 valueString:v42];
+            v43 = [(PDControllerType4 *)selfCopy stringForTitle:v30 valueString:v42];
           }
 
           v46 = v43;
@@ -361,7 +361,7 @@ LABEL_64:
 
             if (v51)
             {
-              if (v27 == 16)
+              if (unsignedCharValue == 16)
               {
                 v52 = v75;
 LABEL_56:
@@ -370,7 +370,7 @@ LABEL_56:
 
               else
               {
-                if (v27 == 8)
+                if (unsignedCharValue == 8)
                 {
                   v52 = v75;
                   goto LABEL_56;
@@ -446,22 +446,22 @@ LABEL_19:
     while (v63);
   }
 
-  v8 = v68;
+  configCopy = v68;
 LABEL_68:
 
   return v9;
 }
 
-- (id)registerFormatterIntEventWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterIntEventWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EA70];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EA70];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EA70];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EA70];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -472,16 +472,16 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterIntMaskClearWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterIntMaskClearWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EA88];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EA88];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EA88];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EA88];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -492,16 +492,16 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterWakeEventMaskWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterWakeEventMaskWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EAA0];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EAA0];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EAA0];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EAA0];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -512,16 +512,16 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterUSBConfigWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterUSBConfigWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EAB8];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EAB8];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EAB8];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EAB8];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -532,16 +532,16 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterIOConfig1WithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterIOConfig1WithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EAD0];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EAD0];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EAD0];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EAD0];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -552,16 +552,16 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterIOConfig2WithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterIOConfig2WithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EAE8];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EAE8];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EAE8];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EAE8];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -572,16 +572,16 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterPD3EMIntMaskWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterPD3EMIntMaskWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EB00];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EB00];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EB00];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EB00];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -592,16 +592,16 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterPersParamsWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterPersParamsWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EB18];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EB18];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EB18];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EB18];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -612,16 +612,16 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterBootFlagsWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterBootFlagsWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EB30];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EB30];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EB30];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EB30];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -632,16 +632,16 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterCFVIDStatusWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterCFVIDStatusWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EB48];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EB48];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EB48];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EB48];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -652,28 +652,28 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterPowerSwitchStateWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterPowerSwitchStateWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
   v7 = +[NSMutableArray array];
-  v8 = [(PDController *)self registerFormatterHexDumpWithBuffer:a3 andLength:a4];
+  v8 = [(PDController *)self registerFormatterHexDumpWithBuffer:buffer andLength:length];
   [v7 addObjectsFromArray:v8];
-  if (a4 == 44 || a4 == 20)
+  if (length == 44 || length == 20)
   {
     v15.receiver = self;
     v15.super_class = PDControllerType5;
-    v9 = [(PDControllerType5 *)&v15 registerFormatterPowerSwitchStateWithBuffer:a3 andLength:a4];
+    v9 = [(PDControllerType5 *)&v15 registerFormatterPowerSwitchStateWithBuffer:buffer andLength:length];
   }
 
   else
   {
-    v10 = [(PDControllerType5 *)self registerConfigs];
-    v11 = [v10 objectForKeyedSubscript:&off_10001EB60];
+    registerConfigs = [(PDControllerType5 *)self registerConfigs];
+    v11 = [registerConfigs objectForKeyedSubscript:&off_10001EB60];
 
     if (v11)
     {
-      v12 = [(PDControllerType5 *)self registerConfigs];
-      v13 = [v12 objectForKeyedSubscript:&off_10001EB60];
-      v9 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v13];
+      registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+      v13 = [registerConfigs2 objectForKeyedSubscript:&off_10001EB60];
+      v9 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v13];
     }
 
     else
@@ -685,16 +685,16 @@ LABEL_68:
   return v9;
 }
 
-- (id)registerFormatterADCResultsWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterADCResultsWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EB78];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EB78];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EB78];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EB78];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -705,25 +705,25 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterMuxStateWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterMuxStateWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  if ((a4 & 0xFFFFFFFFFFFFFFFBLL) == 8)
+  if ((length & 0xFFFFFFFFFFFFFFFBLL) == 8)
   {
     v13.receiver = self;
     v13.super_class = PDControllerType5;
-    v7 = [(PDControllerType5 *)&v13 registerFormatterMuxStateWithBuffer:a3 andLength:a4];
+    v7 = [(PDControllerType5 *)&v13 registerFormatterMuxStateWithBuffer:buffer andLength:length];
   }
 
   else
   {
-    v8 = [(PDControllerType5 *)self registerConfigs];
-    v9 = [v8 objectForKeyedSubscript:&off_10001EB90];
+    registerConfigs = [(PDControllerType5 *)self registerConfigs];
+    v9 = [registerConfigs objectForKeyedSubscript:&off_10001EB90];
 
     if (v9)
     {
-      v10 = [(PDControllerType5 *)self registerConfigs];
-      v11 = [v10 objectForKeyedSubscript:&off_10001EB90];
-      v7 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v11];
+      registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+      v11 = [registerConfigs2 objectForKeyedSubscript:&off_10001EB90];
+      v7 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v11];
     }
 
     else
@@ -735,16 +735,16 @@ LABEL_68:
   return v7;
 }
 
-- (id)registerFormatterLDCMConfigWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterLDCMConfigWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EBA8];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EBA8];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EBA8];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EBA8];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -755,16 +755,16 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterLDCMStatusWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterLDCMStatusWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EBC0];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EBC0];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EBC0];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EBC0];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -775,16 +775,16 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterFWStateConfigWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterFWStateConfigWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EBD8];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EBD8];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EBD8];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EBD8];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -795,16 +795,16 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterSystemConfigWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterSystemConfigWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EBF0];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EBF0];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EBF0];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EBF0];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -815,16 +815,16 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterCFSOPUVDMEnumWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterCFSOPUVDMEnumWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EC08];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EC08];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EC08];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EC08];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -835,16 +835,16 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterTXEPRSourceCapWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterTXEPRSourceCapWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EC20];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EC20];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EC20];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EC20];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -855,16 +855,16 @@ LABEL_68:
   return v11;
 }
 
-- (id)registerFormatterTBTRetimerDataWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterTBTRetimerDataWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
-  v7 = [(PDControllerType5 *)self registerConfigs];
-  v8 = [v7 objectForKeyedSubscript:&off_10001EC38];
+  registerConfigs = [(PDControllerType5 *)self registerConfigs];
+  v8 = [registerConfigs objectForKeyedSubscript:&off_10001EC38];
 
   if (v8)
   {
-    v9 = [(PDControllerType5 *)self registerConfigs];
-    v10 = [v9 objectForKeyedSubscript:&off_10001EC38];
-    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:a3 andLength:a4 andConfig:v10];
+    registerConfigs2 = [(PDControllerType5 *)self registerConfigs];
+    v10 = [registerConfigs2 objectForKeyedSubscript:&off_10001EC38];
+    v11 = [(PDControllerType5 *)self registerFormatterGenericWithBuffer:buffer andLength:length andConfig:v10];
   }
 
   else
@@ -907,11 +907,11 @@ LABEL_6:
   return v6;
 }
 
-- (id)registerFormatterCFVIDConfigWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterCFVIDConfigWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
   v16.receiver = self;
   v16.super_class = PDControllerType5;
-  v5 = [(PDControllerType5 *)&v16 registerFormatterCFVIDConfigWithBuffer:a3 andLength:a4];
+  v5 = [(PDControllerType5 *)&v16 registerFormatterCFVIDConfigWithBuffer:buffer andLength:length];
   v6 = [v5 mutableCopy];
 
   if ([v6 count])
@@ -956,17 +956,17 @@ LABEL_6:
   return v6;
 }
 
-- (id)registerFormatterCFDebugConfigWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterCFDebugConfigWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
   v7 = +[NSMutableArray array];
-  v97 = self;
-  v8 = [(PDController *)self registerFormatterHexDumpWithBuffer:a3 andLength:a4];
+  selfCopy = self;
+  v8 = [(PDController *)self registerFormatterHexDumpWithBuffer:buffer andLength:length];
   [v7 addObjectsFromArray:v8];
-  if (a4 < 0x41)
+  if (length < 0x41)
   {
-    if (a4 != 64)
+    if (length != 64)
     {
-      v74 = [NSString stringWithFormat:@"ERROR: length %lld < 64", a4];
+      v74 = [NSString stringWithFormat:@"ERROR: length %lld < 64", length];
       [v7 addObject:v74];
 
       goto LABEL_32;
@@ -1143,7 +1143,7 @@ LABEL_6:
 
     v90 = v10;
     v95 = v10 - v13;
-    v93 = a3 + v10;
+    v93 = buffer + v10;
     v14 = v10 << 32;
     do
     {
@@ -1156,7 +1156,7 @@ LABEL_6:
       if (!v93[v12])
       {
         v85 = [NSString stringWithFormat:@"0x%X (byte 0x%X)", 0, v12 + v10 + 1];
-        v73 = [(PDControllerType4 *)v97 stringForTitle:@"Terminator Record" valueString:v85];
+        v73 = [(PDControllerType4 *)selfCopy stringForTitle:@"Terminator Record" valueString:v85];
         [v7 addObject:v73];
 
         goto LABEL_29;
@@ -1164,7 +1164,7 @@ LABEL_6:
 
       v16 = [NSString stringWithFormat:@"DC Record #%u Header", v98];
       v17 = [NSString stringWithFormat:@"0x%02X", v15];
-      v18 = [(PDControllerType4 *)v97 stringForTitle:v16 valueString:v17];
+      v18 = [(PDControllerType4 *)selfCopy stringForTitle:v16 valueString:v17];
       [v7 addObject:v18];
 
       v99[0] = &off_10001EC50;
@@ -1177,11 +1177,11 @@ LABEL_6:
       v100[3] = @"Signal DC Record. (0x03)";
       v19 = [NSDictionary dictionaryWithObjects:v100 forKeys:v99 count:4];
       v20 = v15 >> 6;
-      v21 = [(PDControllerType4 *)v97 stringForTitle:@"  DCRecordType" value:v15 >> 6 table:v19];
+      v21 = [(PDControllerType4 *)selfCopy stringForTitle:@"  DCRecordType" value:v15 >> 6 table:v19];
       [v7 addObject:v21];
 
       v22 = [NSString stringWithFormat:@"0x%02X (byte 0x%02X)", v15 & 0x3F, (v15 & 0x3F) + 1];
-      v23 = [(PDControllerType4 *)v97 stringForTitle:@"  DCRecordEnd" valueString:v22];
+      v23 = [(PDControllerType4 *)selfCopy stringForTitle:@"  DCRecordEnd" valueString:v22];
       [v7 addObject:v23];
 
       ++v12;
@@ -1201,28 +1201,28 @@ LABEL_27:
           continue;
         }
 
-        v76 = *(a3 + (v14 >> 32));
+        v76 = *(buffer + (v14 >> 32));
         v77 = [NSString stringWithFormat:@"DC Record #%u Internal DC Record", v98];
         v78 = [NSString stringWithFormat:@"0x%02X", v76];
-        v79 = [(PDControllerType4 *)v97 stringForTitle:v77 valueString:v78];
+        v79 = [(PDControllerType4 *)selfCopy stringForTitle:v77 valueString:v78];
         [v7 addObject:v79];
 
-        v80 = [(PDControllerType5 *)v97 decodeSingleBit:v76 >> 7 title:@"  OfferRESET" arg0:@"No PortMicro Action entry for reset shall be advertised. (0x0)" arg1:@"PortMicro Action entry for reset shall be advertised. (0x1)"];
+        v80 = [(PDControllerType5 *)selfCopy decodeSingleBit:v76 >> 7 title:@"  OfferRESET" arg0:@"No PortMicro Action entry for reset shall be advertised. (0x0)" arg1:@"PortMicro Action entry for reset shall be advertised. (0x1)"];
         [v7 addObjectsFromArray:v80];
 
-        v81 = [(PDControllerType5 *)v97 decodeSingleBit:v76 >> 6 title:@"  OfferAceDFU" arg0:@"No PortMicro Action entry for DFU shall be advertised. (0x0)" arg1:@"PortMicro DFU entry for reset shall be advertised. (0x1)"];
+        v81 = [(PDControllerType5 *)selfCopy decodeSingleBit:v76 >> 6 title:@"  OfferAceDFU" arg0:@"No PortMicro Action entry for DFU shall be advertised. (0x0)" arg1:@"PortMicro DFU entry for reset shall be advertised. (0x1)"];
         [v7 addObjectsFromArray:v81];
 
-        v82 = [(PDControllerType5 *)v97 decodeSingleBit:v76 >> 3 title:@"  OfferI2C2SPMI" arg0:@"No PortMicro I2C/SPMI entry for I2C2 and SPMI shall be advertised. (0x0)" arg1:@"PortMicro I2C or SPMI entry for I2C2 or SPMI shall be advertised. (0x1)"];
+        v82 = [(PDControllerType5 *)selfCopy decodeSingleBit:v76 >> 3 title:@"  OfferI2C2SPMI" arg0:@"No PortMicro I2C/SPMI entry for I2C2 and SPMI shall be advertised. (0x0)" arg1:@"PortMicro I2C or SPMI entry for I2C2 or SPMI shall be advertised. (0x1)"];
         [v7 addObjectsFromArray:v82];
 
-        v83 = [(PDControllerType5 *)v97 decodeSingleBit:v76 >> 2 title:@"  OfferI2C1" arg0:@"No PortMicro I2C entry for I2C1 shall be advertised. (0x0)" arg1:@"PortMicro I2C entry for I2C1 shall be advertised. (0x1)"];
+        v83 = [(PDControllerType5 *)selfCopy decodeSingleBit:v76 >> 2 title:@"  OfferI2C1" arg0:@"No PortMicro I2C entry for I2C1 shall be advertised. (0x0)" arg1:@"PortMicro I2C entry for I2C1 shall be advertised. (0x1)"];
         [v7 addObjectsFromArray:v83];
 
-        v84 = [(PDControllerType5 *)v97 decodeSingleBit:v76 >> 1 title:@"  OfferDebugSerial" arg0:@"No PortMicro UART entry shall be advertised. (0x0)" arg1:@"PortMicro UART entry shall be advertised. (0x1)"];
+        v84 = [(PDControllerType5 *)selfCopy decodeSingleBit:v76 >> 1 title:@"  OfferDebugSerial" arg0:@"No PortMicro UART entry shall be advertised. (0x0)" arg1:@"PortMicro UART entry shall be advertised. (0x1)"];
         [v7 addObjectsFromArray:v84];
 
-        v85 = [(PDControllerType5 *)v97 decodeSingleBit:v76 title:@"  OfferSWD" arg0:@"No PortMicro SWD entry shall be advertised. (0x0)" arg1:@"PortMicro SWD entry shall be advertised. (0x1)"];
+        v85 = [(PDControllerType5 *)selfCopy decodeSingleBit:v76 title:@"  OfferSWD" arg0:@"No PortMicro SWD entry shall be advertised. (0x0)" arg1:@"PortMicro SWD entry shall be advertised. (0x1)"];
         [v7 addObjectsFromArray:v85];
         goto LABEL_29;
       }
@@ -1232,13 +1232,13 @@ LABEL_27:
       v25 = v14 >> 32;
       if (v20 == 2)
       {
-        v26 = *(a3 + v25);
+        v26 = *(buffer + v25);
         v27 = [NSString stringWithFormat:@"DC Record #%u Action DC Record", v98];
         v28 = [NSString stringWithFormat:@"0x%02X", v26];
-        v29 = [(PDControllerType4 *)v97 stringForTitle:v27 valueString:v28];
+        v29 = [(PDControllerType4 *)selfCopy stringForTitle:v27 valueString:v28];
         [v7 addObject:v29];
 
-        v30 = [(PDControllerType4 *)v97 stringForTitle:@"  ActionTarget" value:v26 table:v89];
+        v30 = [(PDControllerType4 *)selfCopy stringForTitle:@"  ActionTarget" value:v26 table:v89];
         [v7 addObject:v30];
 
         if (v24 < 62)
@@ -1249,21 +1249,21 @@ LABEL_27:
           v33 = 1;
           while (v32)
           {
-            v34 = *(a3 + v10);
+            v34 = *(buffer + v10);
             v35 = [NSString stringWithFormat:@"DC Record #%u Action EDC Record #%d", v98, v33];
-            v36 = [NSString stringWithFormat:@"0x%06X", v34 & 0xFFFFFF];
-            v37 = [(PDControllerType4 *)v97 stringForTitle:v35 valueString:v36];
+            0xFFFFFF = [NSString stringWithFormat:@"0x%06X", v34 & 0xFFFFFF];
+            v37 = [(PDControllerType4 *)selfCopy stringForTitle:v35 valueString:0xFFFFFF];
             [v7 addObject:v37];
 
-            v38 = [(PDControllerType4 *)v97 stringForTitle:@"  AceAction" value:(v34 >> 18) & 0xF table:v92];
+            v38 = [(PDControllerType4 *)selfCopy stringForTitle:@"  AceAction" value:(v34 >> 18) & 0xF table:v92];
             [v7 addObject:v38];
 
             v39 = [NSString stringWithFormat:@"0x%02X", BYTE1(v34)];
-            v40 = [(PDControllerType4 *)v97 stringForTitle:@"  ActionValue" valueString:v39];
+            v40 = [(PDControllerType4 *)selfCopy stringForTitle:@"  ActionValue" valueString:v39];
             [v7 addObject:v40];
 
             v41 = [NSString stringWithFormat:@"0x%02X", v34];
-            v42 = [(PDControllerType4 *)v97 stringForTitle:@"  ActionTag" valueString:v41];
+            v42 = [(PDControllerType4 *)selfCopy stringForTitle:@"  ActionTag" valueString:v41];
             [v7 addObject:v42];
 
             v43 = v10 + 3;
@@ -1284,52 +1284,52 @@ LABEL_27:
       else
       {
         v94 = v24;
-        v45 = *(a3 + v25);
+        v45 = *(buffer + v25);
         v46 = [NSString stringWithFormat:@"DC Record #%u Signal DC Record", v98];
         v47 = [NSString stringWithFormat:@"0x%08X", v45];
-        v48 = [(PDControllerType4 *)v97 stringForTitle:v46 valueString:v47];
+        v48 = [(PDControllerType4 *)selfCopy stringForTitle:v46 valueString:v47];
         [v7 addObject:v48];
 
-        v49 = [(PDControllerType5 *)v97 decodeSingleBit:(v45 >> 31) & 1 title:@"  SignalPairs_Single" arg0:@"All specified pairs used. (0x0)" arg1:@"Single pair used. (0x1)"];
+        v49 = [(PDControllerType5 *)selfCopy decodeSingleBit:(v45 >> 31) & 1 title:@"  SignalPairs_Single" arg0:@"All specified pairs used. (0x0)" arg1:@"Single pair used. (0x1)"];
         [v7 addObjectsFromArray:v49];
 
-        v50 = [(PDControllerType5 *)v97 decodeSingleBit:v45 >> 30 title:@"  SignalPairs_RX2" arg0:@"Not used. (0x0)" arg1:@"Used. (0x1)"];
+        v50 = [(PDControllerType5 *)selfCopy decodeSingleBit:v45 >> 30 title:@"  SignalPairs_RX2" arg0:@"Not used. (0x0)" arg1:@"Used. (0x1)"];
         [v7 addObjectsFromArray:v50];
 
-        v51 = [(PDControllerType5 *)v97 decodeSingleBit:v45 >> 29 title:@"  SignalPairs_RX1" arg0:@"Not used. (0x0)" arg1:@"Used. (0x1)"];
+        v51 = [(PDControllerType5 *)selfCopy decodeSingleBit:v45 >> 29 title:@"  SignalPairs_RX1" arg0:@"Not used. (0x0)" arg1:@"Used. (0x1)"];
         [v7 addObjectsFromArray:v51];
 
-        v52 = [(PDControllerType5 *)v97 decodeSingleBit:v45 >> 28 title:@"  SignalPairs_TX2" arg0:@"Not used. (0x0)" arg1:@"Used. (0x1)"];
+        v52 = [(PDControllerType5 *)selfCopy decodeSingleBit:v45 >> 28 title:@"  SignalPairs_TX2" arg0:@"Not used. (0x0)" arg1:@"Used. (0x1)"];
         [v7 addObjectsFromArray:v52];
 
-        v53 = [(PDControllerType5 *)v97 decodeSingleBit:v45 >> 27 title:@"  SignalPairs_TX1" arg0:@"Not used. (0x0)" arg1:@"Used. (0x1)"];
+        v53 = [(PDControllerType5 *)selfCopy decodeSingleBit:v45 >> 27 title:@"  SignalPairs_TX1" arg0:@"Not used. (0x0)" arg1:@"Used. (0x1)"];
         [v7 addObjectsFromArray:v53];
 
-        v54 = [(PDControllerType5 *)v97 decodeSingleBit:v45 >> 26 title:@"  SignalPairs_SBU" arg0:@"Not used. (0x0)" arg1:@"Used. (0x1)"];
+        v54 = [(PDControllerType5 *)selfCopy decodeSingleBit:v45 >> 26 title:@"  SignalPairs_SBU" arg0:@"Not used. (0x0)" arg1:@"Used. (0x1)"];
         [v7 addObjectsFromArray:v54];
 
-        v55 = [(PDControllerType5 *)v97 decodeSingleBit:v45 >> 25 title:@"  SignalPairs_Mission" arg0:@"Not used. (0x0)" arg1:@"Used. (0x1)"];
+        v55 = [(PDControllerType5 *)selfCopy decodeSingleBit:v45 >> 25 title:@"  SignalPairs_Mission" arg0:@"Not used. (0x0)" arg1:@"Used. (0x1)"];
         [v7 addObjectsFromArray:v55];
 
-        v56 = [(PDControllerType5 *)v97 decodeSingleBit:BYTE3(v45) title:@"  SignalPairs_Debug" arg0:@"Not used. (0x0)" arg1:@"Used. (0x1)"];
+        v56 = [(PDControllerType5 *)selfCopy decodeSingleBit:BYTE3(v45) title:@"  SignalPairs_Debug" arg0:@"Not used. (0x0)" arg1:@"Used. (0x1)"];
         [v7 addObjectsFromArray:v56];
 
-        v57 = [(PDControllerType5 *)v97 decodeSingleBit:(v45 >> 23) title:@"  InsertTagVoltageVDDIO" arg0:@"Do not insert 0x02 0xVV (Voltage) tag. (0x0)" arg1:@"Insert 0x02 0xVV (Voltage) tag after Pairs tag. (0x1)"];
+        v57 = [(PDControllerType5 *)selfCopy decodeSingleBit:(v45 >> 23) title:@"  InsertTagVoltageVDDIO" arg0:@"Do not insert 0x02 0xVV (Voltage) tag. (0x0)" arg1:@"Insert 0x02 0xVV (Voltage) tag after Pairs tag. (0x1)"];
         [v7 addObjectsFromArray:v57];
 
-        v58 = [(PDControllerType5 *)v97 decodeSingleBit:(v45 >> 22) title:@"  FirstTagBeforePairs" arg0:@"Do not place first EDC Record before Pairs tag. (0x0)" arg1:@"Place first EDC Record before Pairs tag. (0x1)"];
+        v58 = [(PDControllerType5 *)selfCopy decodeSingleBit:(v45 >> 22) title:@"  FirstTagBeforePairs" arg0:@"Do not place first EDC Record before Pairs tag. (0x0)" arg1:@"Place first EDC Record before Pairs tag. (0x1)"];
         [v7 addObjectsFromArray:v58];
 
-        v59 = [(PDControllerType5 *)v97 decodeSingleBit:(v45 >> 21) title:@"  InsertTagVoltage3.3V" arg0:@"Do not insert 0x02 0x21 (Voltage: 3.3V) tag. (0x0)" arg1:@"Insert 0x02 0x21 (Voltage: 3.3V) tag after Pairs tag. (0x1)"];
+        v59 = [(PDControllerType5 *)selfCopy decodeSingleBit:(v45 >> 21) title:@"  InsertTagVoltage3.3V" arg0:@"Do not insert 0x02 0x21 (Voltage: 3.3V) tag. (0x0)" arg1:@"Insert 0x02 0x21 (Voltage: 3.3V) tag after Pairs tag. (0x1)"];
         [v7 addObjectsFromArray:v59];
 
-        v60 = [(PDControllerType4 *)v97 stringForTitle:@"  AceSignal" value:WORD1(v45) & 0x1F table:v87];
+        v60 = [(PDControllerType4 *)selfCopy stringForTitle:@"  AceSignal" value:WORD1(v45) & 0x1F table:v87];
         [v7 addObject:v60];
 
-        v61 = [(PDControllerType4 *)v97 stringForTitle:@"  SignalTarget" value:BYTE1(v45) table:v89];
+        v61 = [(PDControllerType4 *)selfCopy stringForTitle:@"  SignalTarget" value:BYTE1(v45) table:v89];
         [v7 addObject:v61];
 
-        v62 = [(PDControllerType4 *)v97 stringForTitle:@"  Signal" value:v45 table:v88];
+        v62 = [(PDControllerType4 *)selfCopy stringForTitle:@"  Signal" value:v45 table:v88];
         [v7 addObject:v62];
 
         if (v94 < 59)
@@ -1339,17 +1339,17 @@ LABEL_27:
           v64 = 1;
           while (v63)
           {
-            v65 = *(a3 + v10);
+            v65 = *(buffer + v10);
             v66 = [NSString stringWithFormat:@"DC Record #%u Signal EDC Record #%d", v98, v64];
             v67 = [NSString stringWithFormat:@"0x%04X", v65];
-            v68 = [(PDControllerType4 *)v97 stringForTitle:v66 valueString:v67];
+            v68 = [(PDControllerType4 *)selfCopy stringForTitle:v66 valueString:v67];
             [v7 addObject:v68];
 
             v69 = [NSString stringWithFormat:@"0x%02X", v65 >> 8];
-            v70 = [(PDControllerType4 *)v97 stringForTitle:@"  SignalValue" valueString:v69];
+            v70 = [(PDControllerType4 *)selfCopy stringForTitle:@"  SignalValue" valueString:v69];
             [v7 addObject:v70];
 
-            v71 = [(PDControllerType4 *)v97 stringForTitle:@"  SignalTag" value:v65 table:v91];
+            v71 = [(PDControllerType4 *)selfCopy stringForTitle:@"  SignalTag" value:v65 table:v91];
             [v7 addObject:v71];
 
             v43 = v10 + 2;
@@ -1387,16 +1387,16 @@ LABEL_32:
   return v7;
 }
 
-- (id)registerFormatterSecondaryMUXInitWithBuffer:(void *)a3 andLength:(unint64_t)a4
+- (id)registerFormatterSecondaryMUXInitWithBuffer:(void *)buffer andLength:(unint64_t)length
 {
   v7 = +[NSMutableArray array];
-  v8 = [(PDController *)self registerFormatterHexDumpWithBuffer:a3 andLength:a4];
+  v8 = [(PDController *)self registerFormatterHexDumpWithBuffer:buffer andLength:length];
   [v7 addObjectsFromArray:v8];
-  if (a4 < 0x41)
+  if (length < 0x41)
   {
-    if (a4 != 64)
+    if (length != 64)
     {
-      v16 = [NSString stringWithFormat:@"ERROR: length %lld < 64", a4];
+      v16 = [NSString stringWithFormat:@"ERROR: length %lld < 64", length];
       [v7 addObject:v16];
       goto LABEL_16;
     }
@@ -1409,9 +1409,9 @@ LABEL_32:
   }
 
   v51 = v8;
-  v10 = *(a3 + 1);
+  v10 = *(buffer + 1);
   v11 = v10 & 0x20;
-  v54 = *(a3 + 1);
+  v54 = *(buffer + 1);
   v12 = (v10 >> 6) | 2;
   v13 = [NSString stringWithFormat:@"if ( I2CDataMux != 01110b)"];
   [v7 addObject:v13];
@@ -1426,7 +1426,7 @@ LABEL_32:
     v17 = [NSString stringWithFormat:@"  Initialization Record %d", v14];
     [v7 addObject:v17];
 
-    v18 = a3 + v15;
+    v18 = buffer + v15;
     v19 = *v18;
     if (v53)
     {
@@ -1449,13 +1449,13 @@ LABEL_32:
 
     if ((v54 & 0x40) != 0)
     {
-      v16 = [NSString stringWithFormat:@"0x%04X", *(a3 + v23) | (*(a3 + v23 + 1) << 8)];
+      v16 = [NSString stringWithFormat:@"0x%04X", *(buffer + v23) | (*(buffer + v23 + 1) << 8)];
       v26 = 2;
     }
 
     else
     {
-      v16 = [NSString stringWithFormat:@"0x%02X", *(a3 + v23)];
+      v16 = [NSString stringWithFormat:@"0x%02X", *(buffer + v23)];
       v26 = 1;
     }
 
@@ -1468,7 +1468,7 @@ LABEL_32:
   }
 
   while (v15 <= v52);
-  v29 = *(a3 + 1);
+  v29 = *(buffer + 1);
   v30 = [(PDControllerType5 *)self decodeSingleBit:v29 >> 7 title:@"  SecondaryMUXInitEveryConnect" arg0:@"Initialization only needs to be performed once. (0x0)" arg1:@"Initialization must be performed every time the MUX is 'activated'. (0x1)"];
   [v7 addObjectsFromArray:v30];
 
@@ -1478,8 +1478,8 @@ LABEL_32:
   v32 = [(PDControllerType5 *)self decodeSingleBit:v29 >> 5 title:@"  SecondaryMUXSubaddr16bit" arg0:@"Subaddress Records are 1 byte each. (0x0)" arg1:@"Subaddress Records are 2 bytes each. (0x1)"];
   [v7 addObjectsFromArray:v32];
 
-  v33 = [NSString stringWithFormat:@"0x%02X", v29 & 0x1F];
-  v34 = [(PDControllerType4 *)self stringForTitle:@"  SecondaryMUXNumEntries" valueString:v33];
+  0x1F = [NSString stringWithFormat:@"0x%02X", v29 & 0x1F];
+  v34 = [(PDControllerType4 *)self stringForTitle:@"  SecondaryMUXNumEntries" valueString:0x1F];
   [v7 addObject:v34];
 
   v35 = [NSString stringWithFormat:@"if ( I2CDataMux == 01110b)"];
@@ -1487,25 +1487,25 @@ LABEL_32:
 
   for (i = 63; i != 1; --i)
   {
-    v37 = *(a3 + i);
+    v37 = *(buffer + i);
     v38 = [NSString stringWithFormat:@"  SecondaryMUXInitByte%d", i - 2];
     v39 = [NSString stringWithFormat:@"0x%02X", v37];
     v40 = [(PDControllerType4 *)self stringForTitle:v38 valueString:v39];
     [v7 addObject:v40];
   }
 
-  v41 = *(a3 + 1);
+  v41 = *(buffer + 1);
   v42 = [(PDControllerType5 *)self decodeSingleBit:v41 >> 7 title:@"  SecondaryMUXInitEveryConnect" arg0:@"Initialization only needs to be performed once. (0x0)" arg1:@"Initialization must be performed every time the MUX is 'activated'. (0x1)"];
   [v7 addObjectsFromArray:v42];
 
   v43 = [(PDControllerType5 *)self decodeSingleBit:v41 >> 6 title:@"  SecondaryMUXUseStringTable" arg0:@"SecondaryMUXNumBytes contains the number of SecondaryMUXInitByte bytes. (0x0)" arg1:@"SecondaryMUXNumBytes contains an index to the String Table. (0x1)"];
   [v7 addObjectsFromArray:v43];
 
-  v44 = [NSString stringWithFormat:@"0x%02X", v41 & 0x3F];
-  v45 = [(PDControllerType4 *)self stringForTitle:@"  SecondaryMUXNumEntries" valueString:v44];
+  0x3F = [NSString stringWithFormat:@"0x%02X", v41 & 0x3F];
+  v45 = [(PDControllerType4 *)self stringForTitle:@"  SecondaryMUXNumEntries" valueString:0x3F];
   [v7 addObject:v45];
 
-  v46 = *a3;
+  v46 = *buffer;
   v47 = [NSString stringWithFormat:@"I2C addr = 0x%02X", v46 >> 1];
   v48 = [(PDControllerType4 *)self stringForTitle:@"SecondaryMUXAddr" valueString:v47];
   [v7 addObject:v48];
@@ -1543,8 +1543,8 @@ LABEL_16:
   v46.receiver = self;
   v46.super_class = PDControllerType5;
   [(PDControllerType4 *)&v46 setDPMrConfigs];
-  v3 = [(PDControllerType4 *)self dpmrConfigs];
-  v4 = [NSMutableDictionary dictionaryWithDictionary:v3];
+  dpmrConfigs = [(PDControllerType4 *)self dpmrConfigs];
+  v4 = [NSMutableDictionary dictionaryWithDictionary:dpmrConfigs];
 
   v5 = [v4 objectForKeyedSubscript:@"LRD1"];
   if (v5)

@@ -17,18 +17,18 @@
 
 - (id)pr_posterConfiguredProperties
 {
-  v2 = [a1 transientLocalSettings];
-  v3 = [v2 objectForSetting:20564];
+  transientLocalSettings = [self transientLocalSettings];
+  v3 = [transientLocalSettings objectForSetting:20564];
 
   if (v3)
   {
     v4 = objc_opt_class();
-    v5 = v3;
+    otherSettings = v3;
     if (v4)
     {
       if (objc_opt_isKindOfClass())
       {
-        v6 = v5;
+        v6 = otherSettings;
       }
 
       else
@@ -47,8 +47,8 @@
 
   else
   {
-    v5 = [a1 otherSettings];
-    v7 = [v5 objectForSetting:20564];
+    otherSettings = [self otherSettings];
+    v7 = [otherSettings objectForSetting:20564];
     v8 = objc_opt_class();
     v9 = v7;
     if (v8)
@@ -77,8 +77,8 @@
 
 - (void)pr_posterConfigurableOptions
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20563];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20563];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -101,8 +101,8 @@
 
 - (void)pr_posterTitleStyleConfiguration
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20565];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20565];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -125,8 +125,8 @@
 
 - (void)pr_caseColor
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20562];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20562];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -149,8 +149,8 @@
 
 - (double)pr_deviceMotionUpdateInterval
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20576];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20576];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -181,8 +181,8 @@
 
 - (uint64_t)pr_effectiveMotionEffectsMode
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20574];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20574];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -206,14 +206,14 @@
 
   v6 = v5;
 
-  v7 = [v6 integerValue];
-  return v7;
+  integerValue = [v6 integerValue];
+  return integerValue;
 }
 
 - (uint64_t)pr_isDepthEffectDisallowed
 {
-  v1 = [a1 otherSettings];
-  [v1 flagForSetting:20567];
+  otherSettings = [self otherSettings];
+  [otherSettings flagForSetting:20567];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
@@ -221,8 +221,8 @@
 
 - (void)pr_posterAmbientConfiguration
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20566];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20566];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -245,16 +245,16 @@
 
 - (uint64_t)pr_isAlternateDateEnabled
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20763];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20763];
 
   return v2;
 }
 
 - (double)pr_horizontalTitleBoundingRect
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20572];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20572];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -286,8 +286,8 @@
 
 - (double)pr_verticalTitleBoundingRect
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20573];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20573];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -319,8 +319,8 @@
 
 - (void)pr_posterHostedContentSettings
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20577];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20577];
 
   v3 = objc_opt_class();
   v4 = v2;

@@ -1,5 +1,5 @@
 @interface NSValue
-+ (NSValue)allocWithZone:(_NSZone *)a3;
++ (NSValue)allocWithZone:(_NSZone *)zone;
 + (NSValue)valueWithBytes:(const void *)value objCType:(const char *)type;
 + (NSValue)valueWithEdgeInsets:(NSEdgeInsets)insets;
 + (NSValue)valueWithNonretainedObject:(id)anObject;
@@ -8,9 +8,9 @@
 + (NSValue)valueWithRange:(NSRange)range;
 + (NSValue)valueWithRect:(NSRect)rect;
 + (NSValue)valueWithSize:(NSSize)size;
-+ (NSValue)valueWithWeakObject:(id)a3;
-- (BOOL)_matchType:(const char *)a3 size:(unint64_t)a4 strict:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
++ (NSValue)valueWithWeakObject:(id)object;
+- (BOOL)_matchType:(const char *)type size:(unint64_t)size strict:(BOOL)strict;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isEqualToValue:(NSValue *)value;
 - (NSEdgeInsets)edgeInsetsValue;
 - (NSPoint)pointValue;
@@ -19,11 +19,11 @@
 - (NSSize)sizeValue;
 - (NSValue)init;
 - (NSValue)initWithCoder:(NSCoder *)coder;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)nonretainedObjectValue;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)getValue:(void *)value;
 - (void)getValue:(void *)value size:(NSUInteger)size;
 - (void)pointerValue;
@@ -185,16 +185,16 @@
   return result;
 }
 
-+ (NSValue)allocWithZone:(_NSZone *)a3
++ (NSValue)allocWithZone:(_NSZone *)zone
 {
-  if (NSValue == a1)
+  if (NSValue == self)
   {
     return &__placeholderValue;
   }
 
   else
   {
-    return NSAllocateObject(a1, 0, a3);
+    return NSAllocateObject(self, 0, zone);
   }
 }
 
@@ -233,38 +233,38 @@
   }
 
   sizep[0] = 0;
-  v11 = [(NSValue *)self objCType];
-  NSGetSizeAndAlignment(v11, sizep, 0);
+  objCType = [(NSValue *)self objCType];
+  NSGetSizeAndAlignment(objCType, sizep, 0);
   if (sizep[0] != size)
   {
-    v12 = [NSString stringWithFormat:@"Cannot get value with size %zu. The type encoded as %s is expected to be %zu bytes", size, v11, sizep[0]];
+    v12 = [NSString stringWithFormat:@"Cannot get value with size %zu. The type encoded as %s is expected to be %zu bytes", size, objCType, sizep[0]];
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v12 userInfo:0]);
   }
 
   [(NSValue *)self getValue:value];
 }
 
-- (BOOL)_matchType:(const char *)a3 size:(unint64_t)a4 strict:(BOOL)a5
+- (BOOL)_matchType:(const char *)type size:(unint64_t)size strict:(BOOL)strict
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v8 = [(NSValue *)self objCType];
+  objCType = [(NSValue *)self objCType];
   v10[0] = 0;
-  NSGetSizeAndAlignment(v8, v10, 0);
-  result = v10[0] == a4 && !a5;
-  if (a5 && v10[0] == a4)
+  NSGetSizeAndAlignment(objCType, v10, 0);
+  result = v10[0] == size && !strict;
+  if (strict && v10[0] == size)
   {
-    return matchTypeEncoding(v8, a3, a4);
+    return matchTypeEncoding(objCType, type, size);
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   sizep[128] = *MEMORY[0x1E69E9840];
-  v5 = [(NSValue *)self objCType];
+  objCType = [(NSValue *)self objCType];
   sizep[0] = 0;
-  NSGetSizeAndAlignment(v5, sizep, 0);
+  NSGetSizeAndAlignment(objCType, sizep, 0);
   v6 = sizep[0];
   if (sizep[0] < 0x401)
   {
@@ -277,7 +277,7 @@
   }
 
   [(NSValue *)self getValue:v7];
-  v8 = _NSNewValue(v7, v5, a3);
+  v8 = _NSNewValue(v7, objCType, zone);
   if (v6 > 0x400)
   {
     free(v7);
@@ -294,14 +294,14 @@
     return 1;
   }
 
-  v5 = [(NSValue *)self objCType];
-  if (strcmp(v5, [(NSValue *)value objCType]))
+  objCType = [(NSValue *)self objCType];
+  if (strcmp(objCType, [(NSValue *)value objCType]))
   {
     return 0;
   }
 
   sizep[0] = 0;
-  NSGetSizeAndAlignment(v5, sizep, 0);
+  NSGetSizeAndAlignment(objCType, sizep, 0);
   v7 = sizep[0];
   if (sizep[0] < 0x401)
   {
@@ -327,19 +327,19 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
 
-  else if (a3)
+  else if (equal)
   {
     if (objc_opt_class() == __NSConcreteValueClass || (v5 = _NSIsNSValue()) != 0)
     {
 
-      LOBYTE(v5) = [(NSValue *)self isEqualToValue:a3];
+      LOBYTE(v5) = [(NSValue *)self isEqualToValue:equal];
     }
   }
 
@@ -354,9 +354,9 @@
 - (unint64_t)hash
 {
   sizep[128] = *MEMORY[0x1E69E9840];
-  v3 = [(NSValue *)self objCType];
+  objCType = [(NSValue *)self objCType];
   sizep[0] = 0;
-  NSGetSizeAndAlignment(v3, sizep, 0);
+  NSGetSizeAndAlignment(objCType, sizep, 0);
   v4 = sizep[0];
   if (sizep[0] < 0x401)
   {
@@ -413,7 +413,7 @@
 
   while (v9 > 0xF);
 LABEL_9:
-  v12 = *v3 - 66;
+  v12 = *objCType - 66;
   v13 = v12 > 0x31;
   v14 = (1 << v12) & 0x2848200028483;
   v15 = v13 || v14 == 0;
@@ -455,9 +455,9 @@ LABEL_9:
   return [NSValue valueWithBytes:v4 objCType:"^v"];
 }
 
-+ (NSValue)valueWithWeakObject:(id)a3
++ (NSValue)valueWithWeakObject:(id)object
 {
-  v3 = [[NSWeakObjectValue alloc] initWithObject:a3];
+  v3 = [[NSWeakObjectValue alloc] initWithObject:object];
 
   return v3;
 }
@@ -504,13 +504,13 @@ LABEL_9:
   return [NSValue valueWithBytes:&v4 objCType:"{NSEdgeInsets=dddd}"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sizep[128] = *MEMORY[0x1E69E9840];
-  v5 = [(NSValue *)self objCType];
-  v9 = v5;
+  objCType = [(NSValue *)self objCType];
+  v9 = objCType;
   sizep[0] = 0;
-  NSGetSizeAndAlignment(v5, sizep, 0);
+  NSGetSizeAndAlignment(objCType, sizep, 0);
   v6 = sizep[0];
   if (sizep[0] < 0x401)
   {
@@ -522,15 +522,15 @@ LABEL_9:
     v7 = malloc_type_malloc(sizep[0], 0x100004077774924uLL);
   }
 
-  if (*v5 == 94 && v5[1] == 118)
+  if (*objCType == 94 && objCType[1] == 118)
   {
     v8 = [NSString stringWithFormat:@"cannot encode (void *) value: %@", self];
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v8 userInfo:0]);
   }
 
   [(NSValue *)self getValue:v7];
-  [a3 encodeValueOfObjCType:"*" at:&v9];
-  [a3 encodeValueOfObjCType:v9 at:v7];
+  [coder encodeValueOfObjCType:"*" at:&v9];
+  [coder encodeValueOfObjCType:v9 at:v7];
   if (v6 > 0x400)
   {
     free(v7);

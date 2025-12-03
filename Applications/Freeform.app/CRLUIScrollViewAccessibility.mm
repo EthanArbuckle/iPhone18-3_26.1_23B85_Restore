@@ -1,39 +1,39 @@
 @interface CRLUIScrollViewAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)_accessibilityScrollStatusPrefersVertical;
 - (BOOL)_accessibilityScrollingEnabled;
 - (BOOL)_accessibilityUseContentInset;
-- (BOOL)accessibilityShouldEnableScrollIndicator:(id)a3;
+- (BOOL)accessibilityShouldEnableScrollIndicator:(id)indicator;
 - (double)_accessibilityScrollAnimationDurationDelay;
 - (id)_accessibilityScrollStatus;
 - (id)_accessibilityScrollStatusFormatString;
-- (void)accessibilityApplyScrollContent:(CGPoint)a3 sendScrollStatus:(BOOL)a4 animated:(BOOL)a5;
+- (void)accessibilityApplyScrollContent:(CGPoint)content sendScrollStatus:(BOOL)status animated:(BOOL)animated;
 - (void)accessibilityScrollLeftPage;
 - (void)accessibilityScrollRightPage;
 @end
 
 @implementation CRLUIScrollViewAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (void)accessibilityScrollLeftPage
 {
-  v3 = [(CRLUIScrollViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqual:@"nestedVScrollView"];
+  accessibilityIdentifier = [(CRLUIScrollViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqual:@"nestedVScrollView"];
 
   if (!v4)
   {
     goto LABEL_7;
   }
 
-  v5 = [(CRLUIScrollViewAccessibility *)self superview];
+  superview = [(CRLUIScrollViewAccessibility *)self superview];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -45,20 +45,20 @@ LABEL_7:
     return;
   }
 
-  [v5 accessibilityScrollLeftPage];
+  [superview accessibilityScrollLeftPage];
 }
 
 - (void)accessibilityScrollRightPage
 {
-  v3 = [(CRLUIScrollViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqual:@"nestedVScrollView"];
+  accessibilityIdentifier = [(CRLUIScrollViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqual:@"nestedVScrollView"];
 
   if (!v4)
   {
     goto LABEL_7;
   }
 
-  v5 = [(CRLUIScrollViewAccessibility *)self superview];
+  superview = [(CRLUIScrollViewAccessibility *)self superview];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -70,7 +70,7 @@ LABEL_7:
     return;
   }
 
-  [v5 accessibilityScrollRightPage];
+  [superview accessibilityScrollRightPage];
 }
 
 - (id)_accessibilityScrollStatus
@@ -80,16 +80,16 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v3 = self;
-  v4 = [(CRLUIScrollViewAccessibility *)v3 superview];
-  v5 = [v4 subviews];
+  selfCopy = self;
+  superview = [(CRLUIScrollViewAccessibility *)selfCopy superview];
+  subviews = [superview subviews];
 
   NSClassFromString(@"CRLPageControl");
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v5;
+  v6 = subviews;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -107,7 +107,7 @@ LABEL_7:
         v11 = *(*(&v15 + 1) + 8 * i);
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 accessibilityValue];
+          accessibilityValue = [v11 accessibilityValue];
           goto LABEL_12;
         }
       }
@@ -122,31 +122,31 @@ LABEL_7:
     }
   }
 
-  v12 = 0;
+  accessibilityValue = 0;
 LABEL_12:
 
-  if (!v12)
+  if (!accessibilityValue)
   {
 LABEL_13:
     v14.receiver = self;
     v14.super_class = CRLUIScrollViewAccessibility;
-    v12 = [(CRLUIScrollViewAccessibility *)&v14 _accessibilityScrollStatus];
+    accessibilityValue = [(CRLUIScrollViewAccessibility *)&v14 _accessibilityScrollStatus];
   }
 
-  return v12;
+  return accessibilityValue;
 }
 
 - (id)_accessibilityScrollStatusFormatString
 {
-  v3 = [(CRLUIScrollViewAccessibility *)self crlaxScrollStatusFormatString];
-  if (!v3)
+  crlaxScrollStatusFormatString = [(CRLUIScrollViewAccessibility *)self crlaxScrollStatusFormatString];
+  if (!crlaxScrollStatusFormatString)
   {
     v5.receiver = self;
     v5.super_class = CRLUIScrollViewAccessibility;
-    v3 = [(CRLUIScrollViewAccessibility *)&v5 _accessibilityScrollStatusFormatString];
+    crlaxScrollStatusFormatString = [(CRLUIScrollViewAccessibility *)&v5 _accessibilityScrollStatusFormatString];
   }
 
-  return v3;
+  return crlaxScrollStatusFormatString;
 }
 
 - (double)_accessibilityScrollAnimationDurationDelay
@@ -189,27 +189,27 @@ LABEL_13:
   return [(CRLUIScrollViewAccessibility *)&v4 _accessibilityScrollingEnabled];
 }
 
-- (void)accessibilityApplyScrollContent:(CGPoint)a3 sendScrollStatus:(BOOL)a4 animated:(BOOL)a5
+- (void)accessibilityApplyScrollContent:(CGPoint)content sendScrollStatus:(BOOL)status animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  y = a3.y;
-  x = a3.x;
-  if (a4 || (-[CRLUIScrollViewAccessibility accessibilityIdentifier](self, "accessibilityIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [&off_1018E12F0 containsObject:v10], v10, v11))
+  animatedCopy = animated;
+  statusCopy = status;
+  y = content.y;
+  x = content.x;
+  if (status || (-[CRLUIScrollViewAccessibility accessibilityIdentifier](self, "accessibilityIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [&off_1018E12F0 containsObject:v10], v10, v11))
   {
     v14.receiver = self;
     v14.super_class = CRLUIScrollViewAccessibility;
-    [(CRLUIScrollViewAccessibility *)&v14 accessibilityApplyScrollContent:v6 sendScrollStatus:v5 animated:x, y];
+    [(CRLUIScrollViewAccessibility *)&v14 accessibilityApplyScrollContent:statusCopy sendScrollStatus:animatedCopy animated:x, y];
   }
 
-  if (!v5)
+  if (!animatedCopy)
   {
-    v12 = [(CRLUIScrollViewAccessibility *)self crlaxTarget];
-    v13 = [v12 delegate];
+    crlaxTarget = [(CRLUIScrollViewAccessibility *)self crlaxTarget];
+    delegate = [crlaxTarget delegate];
 
     if (objc_opt_respondsToSelector())
     {
-      [v13 crlaxScrollView:self didScrollToContentOffsetWithoutAnimation:{x, y}];
+      [delegate crlaxScrollView:self didScrollToContentOffsetWithoutAnimation:{x, y}];
     }
   }
 }
@@ -226,12 +226,12 @@ LABEL_13:
   return [(CRLUIScrollViewAccessibility *)&v4 _accessibilityScrollStatusPrefersVertical];
 }
 
-- (BOOL)accessibilityShouldEnableScrollIndicator:(id)a3
+- (BOOL)accessibilityShouldEnableScrollIndicator:(id)indicator
 {
-  v4 = a3;
-  v5 = [(CRLUIScrollViewAccessibility *)self accessibilityIdentifier];
+  indicatorCopy = indicator;
+  accessibilityIdentifier = [(CRLUIScrollViewAccessibility *)self accessibilityIdentifier];
   v6 = +[CRLAccessibility iOSBoardViewControllerScrollViewIdentifier];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [accessibilityIdentifier isEqualToString:v6];
 
   if (v7)
   {
@@ -242,7 +242,7 @@ LABEL_13:
   {
     v10.receiver = self;
     v10.super_class = CRLUIScrollViewAccessibility;
-    v8 = [(CRLUIScrollViewAccessibility *)&v10 accessibilityShouldEnableScrollIndicator:v4];
+    v8 = [(CRLUIScrollViewAccessibility *)&v10 accessibilityShouldEnableScrollIndicator:indicatorCopy];
   }
 
   return v8;

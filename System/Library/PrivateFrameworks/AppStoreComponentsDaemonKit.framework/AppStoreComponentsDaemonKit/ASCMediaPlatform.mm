@@ -1,23 +1,23 @@
 @interface ASCMediaPlatform
-- (ASCMediaPlatform)initWithCoder:(id)a3;
-- (ASCMediaPlatform)initWithDeviceCornerRadiusFactor:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCMediaPlatform)initWithCoder:(id)coder;
+- (ASCMediaPlatform)initWithDeviceCornerRadiusFactor:(id)factor;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCMediaPlatform
 
-- (ASCMediaPlatform)initWithDeviceCornerRadiusFactor:(id)a3
+- (ASCMediaPlatform)initWithDeviceCornerRadiusFactor:(id)factor
 {
-  v4 = a3;
+  factorCopy = factor;
   v9.receiver = self;
   v9.super_class = ASCMediaPlatform;
   v5 = [(ASCMediaPlatform *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [factorCopy copy];
     deviceCornerRadiusFactor = v5->_deviceCornerRadiusFactor;
     v5->_deviceCornerRadiusFactor = v6;
   }
@@ -25,10 +25,10 @@
   return v5;
 }
 
-- (ASCMediaPlatform)initWithCoder:(id)a3
+- (ASCMediaPlatform)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceCornerRadiusFactor"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceCornerRadiusFactor"];
 
   v10.receiver = self;
   v10.super_class = ASCMediaPlatform;
@@ -43,27 +43,27 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCMediaPlatform *)self deviceCornerRadiusFactor];
-  [v4 encodeObject:v5 forKey:@"deviceCornerRadiusFactor"];
+  coderCopy = coder;
+  deviceCornerRadiusFactor = [(ASCMediaPlatform *)self deviceCornerRadiusFactor];
+  [coderCopy encodeObject:deviceCornerRadiusFactor forKey:@"deviceCornerRadiusFactor"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCMediaPlatform *)self deviceCornerRadiusFactor];
-  [(ASCHasher *)v3 combineObject:v4];
+  deviceCornerRadiusFactor = [(ASCMediaPlatform *)self deviceCornerRadiusFactor];
+  [(ASCHasher *)v3 combineObject:deviceCornerRadiusFactor];
 
-  v5 = [(ASCHasher *)v3 finalizeHash];
-  return v5;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -71,7 +71,7 @@
   else
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -94,17 +94,17 @@
 
     if (v8)
     {
-      v9 = [(ASCMediaPlatform *)self deviceCornerRadiusFactor];
-      v10 = [(ASCMediaPlatform *)v8 deviceCornerRadiusFactor];
-      v11 = v10;
-      if (v9 && v10)
+      deviceCornerRadiusFactor = [(ASCMediaPlatform *)self deviceCornerRadiusFactor];
+      deviceCornerRadiusFactor2 = [(ASCMediaPlatform *)v8 deviceCornerRadiusFactor];
+      v11 = deviceCornerRadiusFactor2;
+      if (deviceCornerRadiusFactor && deviceCornerRadiusFactor2)
       {
-        v7 = [v9 isEqual:v10];
+        v7 = [deviceCornerRadiusFactor isEqual:deviceCornerRadiusFactor2];
       }
 
       else
       {
-        v7 = v9 == v10;
+        v7 = deviceCornerRadiusFactor == deviceCornerRadiusFactor2;
       }
     }
 
@@ -120,12 +120,12 @@
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCMediaPlatform *)self deviceCornerRadiusFactor];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"deviceCornerRadiusFactor"];
+  deviceCornerRadiusFactor = [(ASCMediaPlatform *)self deviceCornerRadiusFactor];
+  [(ASCDescriber *)v3 addObject:deviceCornerRadiusFactor withName:@"deviceCornerRadiusFactor"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
 @end

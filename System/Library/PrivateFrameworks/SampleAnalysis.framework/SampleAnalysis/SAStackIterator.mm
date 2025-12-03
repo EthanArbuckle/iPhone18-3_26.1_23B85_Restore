@@ -2,27 +2,27 @@
 - (BOOL)hasKernelStack;
 - (BOOL)hasSwiftAsyncStack;
 - (BOOL)hasUserStack;
-- (void)iterateFramesWithBacktraceStyle:(unint64_t)a3 block:(id)a4;
+- (void)iterateFramesWithBacktraceStyle:(unint64_t)style block:(id)block;
 @end
 
 @implementation SAStackIterator
 
-- (void)iterateFramesWithBacktraceStyle:(unint64_t)a3 block:(id)a4
+- (void)iterateFramesWithBacktraceStyle:(unint64_t)style block:(id)block
 {
   v29 = *MEMORY[0x1E69E9840];
-  if ((a3 & 0x1C) != 0)
+  if ((style & 0x1C) != 0)
   {
     v14 = *__error();
     v15 = _sa_logt();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v28 = a3;
+      styleCopy = style;
       _os_log_error_impl(&dword_1E0E2F000, v15, OS_LOG_TYPE_ERROR, "SAStackIterator doesn't support backtrace style 0x%llx", buf, 0xCu);
     }
 
     *__error() = v14;
-    _SASetCrashLogMessage(1088, "SAStackIterator doesn't support backtrace style 0x%llx", v16, v17, v18, v19, v20, v21, a3);
+    _SASetCrashLogMessage(1088, "SAStackIterator doesn't support backtrace style 0x%llx", v16, v17, v18, v19, v20, v21, style);
     _os_crash();
     __break(1u);
   }
@@ -49,23 +49,23 @@
         v11 = *(*(&v22 + 1) + 8 * i);
         if (![v11 isKernel])
         {
-          if ((a3 & 2) != 0)
+          if ((style & 2) != 0)
           {
             continue;
           }
 
 LABEL_13:
-          (*(a4 + 2))(a4, v11);
+          (*(block + 2))(block, v11);
           continue;
         }
 
-        if (a3)
+        if (style)
         {
           goto LABEL_16;
         }
 
-        v12 = [v11 isExclave];
-        if ((a3 & 0x20) == 0 || (v12 & 1) == 0)
+        isExclave = [v11 isExclave];
+        if ((style & 0x20) == 0 || (isExclave & 1) == 0)
         {
           goto LABEL_13;
         }
@@ -86,8 +86,8 @@ LABEL_16:
 {
   if ([(NSArray *)self->_stack count])
   {
-    v3 = [(NSArray *)self->_stack firstObject];
-    v4 = [v3 isKernel] ^ 1;
+    firstObject = [(NSArray *)self->_stack firstObject];
+    v4 = [firstObject isKernel] ^ 1;
   }
 
   else
@@ -100,10 +100,10 @@ LABEL_16:
 
 - (BOOL)hasSwiftAsyncStack
 {
-  v2 = [(NSArray *)self->_stack firstObject];
-  v3 = [v2 isSwiftAsync];
+  firstObject = [(NSArray *)self->_stack firstObject];
+  isSwiftAsync = [firstObject isSwiftAsync];
 
-  return v3;
+  return isSwiftAsync;
 }
 
 - (BOOL)hasKernelStack
@@ -111,10 +111,10 @@ LABEL_16:
   v3 = [(NSArray *)self->_stack count];
   if (v3)
   {
-    v4 = [(NSArray *)self->_stack lastObject];
-    v5 = [v4 isKernel];
+    lastObject = [(NSArray *)self->_stack lastObject];
+    isKernel = [lastObject isKernel];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = isKernel;
   }
 
   return v3;

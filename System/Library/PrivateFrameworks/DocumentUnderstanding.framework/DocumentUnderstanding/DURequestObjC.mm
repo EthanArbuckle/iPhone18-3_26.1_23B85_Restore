@@ -1,44 +1,44 @@
 @interface DURequestObjC
-- (DURequestObjC)initWithClient:(id)a3 contentType:(id)a4 strategies:(id)a5;
-- (void)executeWithDocument:(id)a3 completion:(id)a4;
+- (DURequestObjC)initWithClient:(id)client contentType:(id)type strategies:(id)strategies;
+- (void)executeWithDocument:(id)document completion:(id)completion;
 @end
 
 @implementation DURequestObjC
 
-- (void)executeWithDocument:(id)a3 completion:(id)a4
+- (void)executeWithDocument:(id)document completion:(id)completion
 {
-  v6 = a4;
-  v10 = objc_msgSend_documentForObjCDocument_(DUObjCCompatibilityUtils, v7, a3, v8, v9);
+  completionCopy = completion;
+  v10 = objc_msgSend_documentForObjCDocument_(DUObjCCompatibilityUtils, v7, document, v8, v9);
   underlyingRequest = self->_underlyingRequest;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_232CE0890;
   v15[3] = &unk_2789A7BD0;
-  v16 = v6;
-  v12 = v6;
+  v16 = completionCopy;
+  v12 = completionCopy;
   objc_msgSend_executeWithDocument_completion_(underlyingRequest, v13, v10, v15, v14);
 }
 
-- (DURequestObjC)initWithClient:(id)a3 contentType:(id)a4 strategies:(id)a5
+- (DURequestObjC)initWithClient:(id)client contentType:(id)type strategies:(id)strategies
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  clientCopy = client;
+  typeCopy = type;
+  strategiesCopy = strategies;
   v46.receiver = self;
   v46.super_class = DURequestObjC;
   v14 = [(DURequestObjC *)&v46 init];
   if (v14)
   {
-    v41 = v8;
-    v40 = objc_msgSend_clientForObjCClient_(DUObjCCompatibilityUtils, v11, v8, v12, v13);
-    v39 = objc_msgSend_typeForObjCType_(DUObjCCompatibilityUtils, v15, v9, v16, v17);
+    v41 = clientCopy;
+    v40 = objc_msgSend_clientForObjCClient_(DUObjCCompatibilityUtils, v11, clientCopy, v12, v13);
+    v39 = objc_msgSend_typeForObjCType_(DUObjCCompatibilityUtils, v15, typeCopy, v16, v17);
     v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v19 = v10;
+    v19 = strategiesCopy;
     v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v19, v20, &v42, v47, 16);
     if (v21)
     {
@@ -76,7 +76,7 @@
     v14->_underlyingRequest = v34;
 
     v36 = v14;
-    v8 = v41;
+    clientCopy = v41;
   }
 
   v37 = *MEMORY[0x277D85DE8];

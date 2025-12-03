@@ -1,36 +1,36 @@
 @interface PHImageResourceChooserBestPolicyHandler
-+ (BOOL)_imageResourceIsUndecodableBasedOnResourceType:(unsigned int)a3 recipeID:(unsigned int)a4 version:(unsigned int)a5 asset:(id)a6 loggingPrefix:(id)a7;
-+ (unint64_t)qualifyResourceInfo:(id)a3 againstPolicy:(int64_t)a4 requestInfo:(id)a5 reversed:(BOOL)a6 tooLargeForPolicy:(BOOL *)a7 disqualificationReason:(id *)a8;
++ (BOOL)_imageResourceIsUndecodableBasedOnResourceType:(unsigned int)type recipeID:(unsigned int)d version:(unsigned int)version asset:(id)asset loggingPrefix:(id)prefix;
++ (unint64_t)qualifyResourceInfo:(id)info againstPolicy:(int64_t)policy requestInfo:(id)requestInfo reversed:(BOOL)reversed tooLargeForPolicy:(BOOL *)forPolicy disqualificationReason:(id *)reason;
 @end
 
 @implementation PHImageResourceChooserBestPolicyHandler
 
-+ (unint64_t)qualifyResourceInfo:(id)a3 againstPolicy:(int64_t)a4 requestInfo:(id)a5 reversed:(BOOL)a6 tooLargeForPolicy:(BOOL *)a7 disqualificationReason:(id *)a8
++ (unint64_t)qualifyResourceInfo:(id)info againstPolicy:(int64_t)policy requestInfo:(id)requestInfo reversed:(BOOL)reversed tooLargeForPolicy:(BOOL *)forPolicy disqualificationReason:(id *)reason
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a5;
-  v52.receiver = a1;
+  reversedCopy = reversed;
+  infoCopy = info;
+  requestInfoCopy = requestInfo;
+  v52.receiver = self;
   v52.super_class = &OBJC_METACLASS___PHImageResourceChooserBestPolicyHandler;
-  HIDWORD(v48) = v10;
-  v51 = a8;
-  v16 = objc_msgSendSuper2(&v52, sel_qualifyResourceInfo_againstPolicy_requestInfo_reversed_tooLargeForPolicy_disqualificationReason_, v14, a4, v15, v10, a7, a8);
-  v17 = [v15 asset];
-  v18 = [v14 dataStoreKey];
+  HIDWORD(v48) = reversedCopy;
+  reasonCopy = reason;
+  v16 = objc_msgSendSuper2(&v52, sel_qualifyResourceInfo_againstPolicy_requestInfo_reversed_tooLargeForPolicy_disqualificationReason_, infoCopy, policy, requestInfoCopy, reversedCopy, forPolicy, reason);
+  asset = [requestInfoCopy asset];
+  dataStoreKey = [infoCopy dataStoreKey];
 
-  v19 = [v15 behaviorSpec];
-  v20 = [v19 loadingOptions];
+  behaviorSpec = [requestInfoCopy behaviorSpec];
+  loadingOptions = [behaviorSpec loadingOptions];
 
-  v21 = [v15 behaviorSpec];
-  v22 = [v21 version];
+  behaviorSpec2 = [requestInfoCopy behaviorSpec];
+  version = [behaviorSpec2 version];
 
-  v23 = [v14 store];
-  v24 = [objc_opt_class() storeClassID];
+  store = [infoCopy store];
+  storeClassID = [objc_opt_class() storeClassID];
 
   v25 = 0.0;
-  if (v22 <= 1)
+  if (version <= 1)
   {
-    [v15 fallbackRequestedScaleIfPreferredResourceNotLocallyAvailable];
+    [requestInfoCopy fallbackRequestedScaleIfPreferredResourceNotLocallyAvailable];
     v25 = v26;
   }
 
@@ -39,23 +39,23 @@
     goto LABEL_8;
   }
 
-  if ((v20 & 6) != 0 && v24 == 1)
+  if ((loadingOptions & 6) != 0 && storeClassID == 1)
   {
     v27 = @"failed loading mode test";
 LABEL_7:
-    *v51 = v27;
+    *reasonCopy = v27;
 LABEL_8:
     v28 = 1;
     goto LABEL_12;
   }
 
-  [v14 recipeID];
+  [infoCopy recipeID];
   if (PLResourceRecipeIsFullSizeDeferredProcessingPreview())
   {
-    v29 = [v15 asset];
-    v30 = [v29 mediaType];
+    asset2 = [requestInfoCopy asset];
+    mediaType = [asset2 mediaType];
 
-    if (v30 != 2)
+    if (mediaType != 2)
     {
       v27 = @"failed deferred processing preview test";
       goto LABEL_7;
@@ -64,7 +64,7 @@ LABEL_8:
 
   v28 = 0;
 LABEL_12:
-  if (![v17 isRAWPlusJPEG])
+  if (![asset isRAWPlusJPEG])
   {
     if ((v28 & 1) == 0)
     {
@@ -76,68 +76,68 @@ LABEL_22:
     goto LABEL_63;
   }
 
-  if ([v14 resourceType] || objc_msgSend(v14, "version"))
+  if ([infoCopy resourceType] || objc_msgSend(infoCopy, "version"))
   {
-    v31 = 1;
+    isDerivative = 1;
   }
 
   else
   {
-    v31 = [v14 isDerivative];
+    isDerivative = [infoCopy isDerivative];
   }
 
-  v32 = [v17 originalResourceChoice];
+  originalResourceChoice = [asset originalResourceChoice];
   if (v28)
   {
     goto LABEL_22;
   }
 
-  if (v32 == 1 || v22 == 2)
+  if (originalResourceChoice == 1 || version == 2)
   {
-    if (!((v22 != 2) | v31 & 1))
+    if (!((version != 2) | isDerivative & 1))
     {
       v33 = @"r+j raw or derivatives";
       goto LABEL_62;
     }
 
-    if (v32 == 1 && !(([v14 version] != 0) | v31 & 1))
+    if (originalResourceChoice == 1 && !(([infoCopy version] != 0) | isDerivative & 1))
     {
       v33 = @"r+j ignore orig JPEG";
       goto LABEL_62;
     }
   }
 
-  else if ([v14 resourceType] == 4)
+  else if ([infoCopy resourceType] == 4)
   {
     v33 = @"r+j alt image";
 LABEL_62:
     v34 = 0;
-    *v51 = v33;
+    *reasonCopy = v33;
     goto LABEL_63;
   }
 
 LABEL_26:
-  if ([v14 recipeID] == 65743 && !v18 && objc_msgSend(v17, "effectiveThumbnailIndex") != 0x7FFFFFFFFFFFFFFFLL)
+  if ([infoCopy recipeID] == 65743 && !dataStoreKey && objc_msgSend(asset, "effectiveThumbnailIndex") != 0x7FFFFFFFFFFFFFFFLL)
   {
     v33 = @"cpl thumb test";
     goto LABEL_62;
   }
 
-  if (!([v14 isHintBased] & 1 | (v18 != 0)) && (objc_msgSend(v14, "canDownload") & 1) == 0 && !objc_msgSend(v14, "locallyGeneratableForAsset:", v17))
+  if (!([infoCopy isHintBased] & 1 | (dataStoreKey != 0)) && (objc_msgSend(infoCopy, "canDownload") & 1) == 0 && !objc_msgSend(infoCopy, "locallyGeneratableForAsset:", asset))
   {
     v33 = @"failed local/generatable test";
     goto LABEL_62;
   }
 
-  LODWORD(v48) = v18 != 0;
-  if ([v14 isHintBased] & 1) == 0 && (v20)
+  LODWORD(v48) = dataStoreKey != 0;
+  if ([infoCopy isHintBased] & 1) == 0 && (loadingOptions)
   {
     v35 = objc_opt_class();
-    v36 = [v14 resourceType];
-    v37 = [v14 recipeID];
-    v38 = [v14 version];
-    v39 = [v15 loggingPrefix];
-    LOBYTE(v35) = [v35 _imageResourceIsUndecodableBasedOnResourceType:v36 recipeID:v37 version:v38 asset:v17 loggingPrefix:v39];
+    resourceType = [infoCopy resourceType];
+    recipeID = [infoCopy recipeID];
+    version2 = [infoCopy version];
+    loggingPrefix = [requestInfoCopy loggingPrefix];
+    LOBYTE(v35) = [v35 _imageResourceIsUndecodableBasedOnResourceType:resourceType recipeID:recipeID version:version2 asset:asset loggingPrefix:loggingPrefix];
 
     if (v35)
     {
@@ -146,19 +146,19 @@ LABEL_26:
     }
   }
 
-  if (v24 == 3 && ![v14 recipeID])
+  if (storeClassID == 3 && ![infoCopy recipeID])
   {
-    v40 = [v15 behaviorSpec];
-    v41 = [v40 isExplicitUserAction];
+    behaviorSpec3 = [requestInfoCopy behaviorSpec];
+    isExplicitUserAction = [behaviorSpec3 isExplicitUserAction];
 
-    if (!v41)
+    if (!isExplicitUserAction)
     {
       v33 = @"syndication originals test";
       goto LABEL_62;
     }
   }
 
-  if (v22 < 2)
+  if (version < 2)
   {
     v42 = v50 ^ 1;
   }
@@ -170,7 +170,7 @@ LABEL_26:
 
   if (v42 == 1 && v25 > 0.0)
   {
-    [v14 resourceScale];
+    [infoCopy resourceScale];
     if (v25 > v43)
     {
       v33 = @"smaller than fallback scale";
@@ -178,9 +178,9 @@ LABEL_26:
     }
   }
 
-  [v14 resourceScale];
+  [infoCopy resourceScale];
   v45 = v44;
-  [v15 requestedScale];
+  [requestInfoCopy requestedScale];
   if (v45 >= v46)
   {
     v34 = 2;
@@ -199,7 +199,7 @@ LABEL_26:
 
   if (((v25 > 0.0) & v49) == 0 && ((v42 ^ 1) & 1) == 0)
   {
-    if (v51)
+    if (reasonCopy)
     {
       v33 = @"too small";
       goto LABEL_62;
@@ -213,11 +213,11 @@ LABEL_63:
   return v34;
 }
 
-+ (BOOL)_imageResourceIsUndecodableBasedOnResourceType:(unsigned int)a3 recipeID:(unsigned int)a4 version:(unsigned int)a5 asset:(id)a6 loggingPrefix:(id)a7
++ (BOOL)_imageResourceIsUndecodableBasedOnResourceType:(unsigned int)type recipeID:(unsigned int)d version:(unsigned int)version asset:(id)asset loggingPrefix:(id)prefix
 {
   v51 = *MEMORY[0x1E69E9840];
-  v11 = a6;
-  v12 = a7;
+  assetCopy = asset;
+  prefixCopy = prefix;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -230,31 +230,31 @@ LABEL_63:
   v36 = __Block_byref_object_copy__34675;
   v37 = __Block_byref_object_dispose__34676;
   v38 = 0;
-  v13 = [v11 managedObjectContextForFetchingResources];
-  if (!(a4 | a3 | a5))
+  managedObjectContextForFetchingResources = [assetCopy managedObjectContextForFetchingResources];
+  if (!(d | type | version))
   {
     v14 = v29;
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __127__PHImageResourceChooserBestPolicyHandler__imageResourceIsUndecodableBasedOnResourceType_recipeID_version_asset_loggingPrefix___block_invoke;
     v29[3] = &unk_1E75A9D58;
-    v29[4] = v11;
-    v30 = v13;
+    v29[4] = assetCopy;
+    v30 = managedObjectContextForFetchingResources;
     v31 = &v39;
     v32 = &v33;
     [v30 performBlockAndWait:v29];
     goto LABEL_7;
   }
 
-  if (!a3 && a4 == 65938 && a5 == 2)
+  if (!type && d == 65938 && version == 2)
   {
     v14 = v25;
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __127__PHImageResourceChooserBestPolicyHandler__imageResourceIsUndecodableBasedOnResourceType_recipeID_version_asset_loggingPrefix___block_invoke_2;
     v25[3] = &unk_1E75A9D58;
-    v25[4] = v11;
-    v26 = v13;
+    v25[4] = assetCopy;
+    v26 = managedObjectContextForFetchingResources;
     v27 = &v39;
     v28 = &v33;
     [v26 performBlockAndWait:v25];
@@ -279,7 +279,7 @@ LABEL_7:
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v46 = v12;
+            versionCopy2 = prefixCopy;
             _os_log_impl(&dword_19C86F000, v20, OS_LOG_TYPE_DEBUG, "[RM]: %@ Checking image decodability based on media metadata", buf, 0xCu);
           }
 
@@ -293,9 +293,9 @@ LABEL_7:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
-            v46 = v12;
+            versionCopy2 = prefixCopy;
             v47 = 2048;
-            v48 = a5;
+            versionCopy = version;
             _os_log_impl(&dword_19C86F000, v21, OS_LOG_TYPE_DEBUG, "[RM]: %@ Metadata decode check failed (version: %ld)", buf, 0x16u);
           }
         }
@@ -305,11 +305,11 @@ LABEL_7:
           v21 = PLImageManagerGetLog();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
-            v23 = [v11 uuid];
+            uuid = [assetCopy uuid];
             *buf = 134218498;
-            v46 = a5;
+            versionCopy2 = version;
             v47 = 2112;
-            v48 = v23;
+            versionCopy = uuid;
             v49 = 2112;
             v50 = v18;
             _os_log_impl(&dword_19C86F000, v21, OS_LOG_TYPE_ERROR, "Error serializing media metadata for resource version: %ld, asset: %@, error: %@", buf, 0x20u);

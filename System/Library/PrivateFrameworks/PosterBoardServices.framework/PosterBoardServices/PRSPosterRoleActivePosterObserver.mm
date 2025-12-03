@@ -1,8 +1,8 @@
 @interface PRSPosterRoleActivePosterObserver
 - (PRSPosterRoleActivePosterObserver)init;
-- (PRSPosterRoleActivePosterObserver)initWithRoles:(id)a3 needsSandboxExtensions:(BOOL)a4;
-- (id)stateForRole:(id)a3;
-- (void)issueUpdatedState:(id)a3;
+- (PRSPosterRoleActivePosterObserver)initWithRoles:(id)roles needsSandboxExtensions:(BOOL)extensions;
+- (id)stateForRole:(id)role;
+- (void)issueUpdatedState:(id)state;
 @end
 
 @implementation PRSPosterRoleActivePosterObserver
@@ -15,19 +15,19 @@
   return v4;
 }
 
-- (PRSPosterRoleActivePosterObserver)initWithRoles:(id)a3 needsSandboxExtensions:(BOOL)a4
+- (PRSPosterRoleActivePosterObserver)initWithRoles:(id)roles needsSandboxExtensions:(BOOL)extensions
 {
-  v6 = a3;
+  rolesCopy = roles;
   v13.receiver = self;
   v13.super_class = PRSPosterRoleActivePosterObserver;
   v7 = [(PRSPosterRoleActivePosterObserver *)&v13 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [rolesCopy copy];
     roles = v7->_roles;
     v7->_roles = v8;
 
-    v7->_needsSandboxExtensions = a4;
+    v7->_needsSandboxExtensions = extensions;
     v10 = objc_opt_new();
     roleToState = v7->_roleToState;
     v7->_roleToState = v10;
@@ -36,33 +36,33 @@
   return v7;
 }
 
-- (void)issueUpdatedState:(id)a3
+- (void)issueUpdatedState:(id)state
 {
-  v8 = a3;
-  v4 = [v8 role];
-  if ([(NSSet *)self->_roles containsObject:v4])
+  stateCopy = state;
+  role = [stateCopy role];
+  if ([(NSSet *)self->_roles containsObject:role])
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSMutableDictionary *)v5->_roleToState setObject:v8 forKeyedSubscript:v4];
-    v6 = [(PRSPosterRoleActivePosterObserver *)v5 handler];
-    v7 = v6;
-    if (v6)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableDictionary *)selfCopy->_roleToState setObject:stateCopy forKeyedSubscript:role];
+    handler = [(PRSPosterRoleActivePosterObserver *)selfCopy handler];
+    v7 = handler;
+    if (handler)
     {
-      (*(v6 + 16))(v6, v5, v8);
+      (*(handler + 16))(handler, selfCopy, stateCopy);
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (id)stateForRole:(id)a3
+- (id)stateForRole:(id)role
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_roleToState objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  roleCopy = role;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_roleToState objectForKeyedSubscript:roleCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

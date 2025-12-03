@@ -1,6 +1,6 @@
 @interface HFClimateStatusItem
 + (id)statusItemClasses;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFClimateStatusItem
@@ -32,11 +32,11 @@ void __40__HFClimateStatusItem_statusItemClasses__block_invoke_2()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v6.receiver = self;
   v6.super_class = HFClimateStatusItem;
-  v3 = [(HFAbstractGroupedStatusItem *)&v6 _subclass_updateWithOptions:a3];
+  v3 = [(HFAbstractGroupedStatusItem *)&v6 _subclass_updateWithOptions:options];
   v4 = [v3 flatMap:&__block_literal_global_11_4];
 
   return v4;

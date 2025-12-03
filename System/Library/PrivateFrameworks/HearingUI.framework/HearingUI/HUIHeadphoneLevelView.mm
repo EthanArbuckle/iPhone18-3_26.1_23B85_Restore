@@ -3,13 +3,13 @@
 - (HUIHeadphoneLevelView)init;
 - (id)_accessibilityUserTestingChildren;
 - (id)accessibilityValue;
-- (id)formatLevel:(id)a3 baseFont:(id)a4;
-- (id)formatLevelRating:(id)a3 threshold:(unint64_t)a4;
+- (id)formatLevel:(id)level baseFont:(id)font;
+- (id)formatLevelRating:(id)rating threshold:(unint64_t)threshold;
 - (unint64_t)accessibilityTraits;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)updateConstraints;
-- (void)updateViewsWithSlowLeq:(double)a3 fastLeq:(double)a4 andThreshold:(unint64_t)a5;
+- (void)updateViewsWithSlowLeq:(double)leq fastLeq:(double)fastLeq andThreshold:(unint64_t)threshold;
 @end
 
 @implementation HUIHeadphoneLevelView
@@ -22,8 +22,8 @@
   v2 = [(HUIHeadphoneLevelView *)&v105 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_updateConstraints name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_updateConstraints name:*MEMORY[0x277D76810] object:0];
 
     [(HUIHeadphoneLevelView *)v2 setClipsToBounds:1];
     [(HUIHeadphoneLevelView *)v2 _setContinuousCornerRadius:37.0];
@@ -47,21 +47,21 @@
     [(UIView *)v2->_backgroundView setUserInteractionEnabled:1];
     [(HUIHeadphoneLevelView *)v2 insertSubview:v2->_backgroundView atIndex:0];
     v99 = MEMORY[0x277CCAAD0];
-    v103 = [(UIView *)v2->_backgroundView leadingAnchor];
-    v102 = [(HUIHeadphoneLevelView *)v2 leadingAnchor];
-    v101 = [v103 constraintEqualToAnchor:v102];
+    leadingAnchor = [(UIView *)v2->_backgroundView leadingAnchor];
+    leadingAnchor2 = [(HUIHeadphoneLevelView *)v2 leadingAnchor];
+    v101 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v106[0] = v101;
-    v100 = [(UIView *)v2->_backgroundView trailingAnchor];
-    v11 = [(HUIHeadphoneLevelView *)v2 trailingAnchor];
-    v12 = [v100 constraintEqualToAnchor:v11];
+    trailingAnchor = [(UIView *)v2->_backgroundView trailingAnchor];
+    trailingAnchor2 = [(HUIHeadphoneLevelView *)v2 trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v106[1] = v12;
-    v13 = [(UIView *)v2->_backgroundView topAnchor];
-    v14 = [(HUIHeadphoneLevelView *)v2 topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    topAnchor = [(UIView *)v2->_backgroundView topAnchor];
+    topAnchor2 = [(HUIHeadphoneLevelView *)v2 topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v106[2] = v15;
-    v16 = [(UIView *)v2->_backgroundView bottomAnchor];
-    v17 = [(HUIHeadphoneLevelView *)v2 bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    bottomAnchor = [(UIView *)v2->_backgroundView bottomAnchor];
+    bottomAnchor2 = [(HUIHeadphoneLevelView *)v2 bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v106[3] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v106 count:4];
     [v99 activateConstraints:v19];
@@ -73,8 +73,8 @@
     [(UIView *)v2->_centerContainer setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HUIHeadphoneLevelView *)v2 addSubview:v2->_centerContainer];
     v22 = objc_alloc(MEMORY[0x277D75D68]);
-    v23 = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
-    v24 = [v22 initWithEffect:v23];
+    controlCenterSecondaryVibrancyEffect = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
+    v24 = [v22 initWithEffect:controlCenterSecondaryVibrancyEffect];
     titleContainer = v2->_titleContainer;
     v2->_titleContainer = v24;
 
@@ -98,8 +98,8 @@
     [(UILabel *)v31 setFont:v33];
 
     v34 = v2->_titleLabel;
-    v35 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v34 setTextColor:v35];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v34 setTextColor:whiteColor];
 
     [(UILabel *)v2->_titleLabel setNumberOfLines:0];
     [(UILabel *)v2->_titleLabel setTextAlignment:4];
@@ -110,8 +110,8 @@
     [(UILabel *)v2->_titleLabel setBaselineAdjustment:0];
     [(UILabel *)v2->_titleLabel setClipsToBounds:0];
     [(UILabel *)v2->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v38 = [(UIVisualEffectView *)v2->_titleContainer contentView];
-    [v38 addSubview:v2->_titleLabel];
+    contentView = [(UIVisualEffectView *)v2->_titleContainer contentView];
+    [contentView addSubview:v2->_titleLabel];
 
     v39 = objc_opt_new();
     subtitleLeftLabel = v2->_subtitleLeftLabel;
@@ -127,8 +127,8 @@
     [(UILabel *)v43 setFont:v45];
 
     v46 = v2->_subtitleLeftLabel;
-    v47 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v46 setTextColor:v47];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v46 setTextColor:whiteColor2];
 
     [(UILabel *)v2->_subtitleLeftLabel setNumberOfLines:0];
     [(UILabel *)v2->_subtitleLeftLabel setTextAlignment:4];
@@ -152,8 +152,8 @@
     [(UILabel *)v52 setFont:v54];
 
     v55 = v2->_subtitleRightLabel;
-    v56 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v55 setTextColor:v56];
+    whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v55 setTextColor:whiteColor3];
 
     [(UILabel *)v2->_subtitleRightLabel setNumberOfLines:0];
     v57 = v2->_subtitleRightLabel;
@@ -172,8 +172,8 @@
     [(UILabel *)v2->_subtitleRightLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v2->_subtitleContainer addSubview:v2->_subtitleRightLabel];
     v59 = objc_alloc(MEMORY[0x277D75D68]);
-    v60 = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
-    v61 = [v59 initWithEffect:v60];
+    controlCenterSecondaryVibrancyEffect2 = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
+    v61 = [v59 initWithEffect:controlCenterSecondaryVibrancyEffect2];
     labelContainer = v2->_labelContainer;
     v2->_labelContainer = v61;
 
@@ -184,12 +184,12 @@
     v2->_minLabel = v63;
 
     v65 = v2->_minLabel;
-    v66 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v65 setTextColor:v66];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v65 setTextColor:systemGrayColor];
 
     v67 = v2->_minLabel;
-    v68 = [(HUIHeadphoneLevelView *)v2 dbFormatter];
-    v69 = [v68 stringFromNumber:&unk_286465810];
+    dbFormatter = [(HUIHeadphoneLevelView *)v2 dbFormatter];
+    v69 = [dbFormatter stringFromNumber:&unk_286465810];
     [(UILabel *)v67 setText:v69];
 
     v70 = v2->_minLabel;
@@ -200,20 +200,20 @@
     [(UILabel *)v2->_minLabel setNumberOfLines:0];
     [(UILabel *)v2->_minLabel setTextAlignment:4];
     [(UILabel *)v2->_minLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v73 = [(UIVisualEffectView *)v2->_labelContainer contentView];
-    [v73 addSubview:v2->_minLabel];
+    contentView2 = [(UIVisualEffectView *)v2->_labelContainer contentView];
+    [contentView2 addSubview:v2->_minLabel];
 
     v74 = objc_opt_new();
     thresholdLabel = v2->_thresholdLabel;
     v2->_thresholdLabel = v74;
 
     v76 = v2->_thresholdLabel;
-    v77 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v76 setTextColor:v77];
+    systemGrayColor2 = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v76 setTextColor:systemGrayColor2];
 
     v78 = v2->_thresholdLabel;
-    v79 = [(HUIHeadphoneLevelView *)v2 dbFormatter];
-    v80 = [v79 stringFromNumber:&unk_286465828];
+    dbFormatter2 = [(HUIHeadphoneLevelView *)v2 dbFormatter];
+    v80 = [dbFormatter2 stringFromNumber:&unk_286465828];
     [(UILabel *)v78 setText:v80];
 
     v81 = v2->_thresholdLabel;
@@ -223,20 +223,20 @@
     [(UILabel *)v2->_thresholdLabel setNumberOfLines:0];
     [(UILabel *)v2->_thresholdLabel setTextAlignment:1];
     [(UILabel *)v2->_thresholdLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v83 = [(UIVisualEffectView *)v2->_labelContainer contentView];
-    [v83 addSubview:v2->_thresholdLabel];
+    contentView3 = [(UIVisualEffectView *)v2->_labelContainer contentView];
+    [contentView3 addSubview:v2->_thresholdLabel];
 
     v84 = objc_opt_new();
     maxLabel = v2->_maxLabel;
     v2->_maxLabel = v84;
 
     v86 = v2->_maxLabel;
-    v87 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v86 setTextColor:v87];
+    systemGrayColor3 = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v86 setTextColor:systemGrayColor3];
 
     v88 = v2->_maxLabel;
-    v89 = [(HUIHeadphoneLevelView *)v2 dbFormatter];
-    v90 = [v89 stringFromNumber:&unk_286465840];
+    dbFormatter3 = [(HUIHeadphoneLevelView *)v2 dbFormatter];
+    v90 = [dbFormatter3 stringFromNumber:&unk_286465840];
     [(UILabel *)v88 setText:v90];
 
     v91 = v2->_maxLabel;
@@ -257,8 +257,8 @@
 
     [(UILabel *)v93 setTextAlignment:v94];
     [(UILabel *)v2->_maxLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v95 = [(UIVisualEffectView *)v2->_labelContainer contentView];
-    [v95 addSubview:v2->_maxLabel];
+    contentView4 = [(UIVisualEffectView *)v2->_labelContainer contentView];
+    [contentView4 addSubview:v2->_maxLabel];
 
     v96 = objc_opt_new();
     levelGroup = v2->_levelGroup;
@@ -273,8 +273,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HUIHeadphoneLevelView;
@@ -287,15 +287,15 @@
   v9.receiver = self;
   v9.super_class = HUIHeadphoneLevelView;
   [(HUIHeadphoneLevelView *)&v9 layoutSubviews];
-  v3 = [(HUIHeadphoneLevelView *)self layoutViewSize];
-  if (v3 != Layout)
+  layoutViewSize = [(HUIHeadphoneLevelView *)self layoutViewSize];
+  if (layoutViewSize != Layout)
   {
     v4 = HCLogSoundMeter();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(HUIHeadphoneLevelView *)self layoutViewSize];
+      layoutViewSize2 = [(HUIHeadphoneLevelView *)self layoutViewSize];
       *buf = 67109376;
-      v11 = v5;
+      v11 = layoutViewSize2;
       v12 = 1024;
       v13 = Layout;
       _os_log_impl(&dword_252166000, v4, OS_LOG_TYPE_INFO, "Headphone level layout size doesn't match anymore %i -> %i. Rebuilding constraints", buf, 0xEu);
@@ -303,226 +303,226 @@
 
     [(HUIHeadphoneLevelView *)self setLayoutViewSize:Layout];
     v6 = MEMORY[0x277CCAAD0];
-    v7 = [(HUIHeadphoneLevelView *)self viewConstraints];
-    [v6 deactivateConstraints:v7];
+    viewConstraints = [(HUIHeadphoneLevelView *)self viewConstraints];
+    [v6 deactivateConstraints:viewConstraints];
 
     [(HUIHeadphoneLevelView *)self setViewConstraints:0];
     [(HUIHeadphoneLevelView *)self setNeedsUpdateConstraints];
-    v8 = [(HUIHeadphoneLevelView *)self levelGroup];
-    [v8 setNeedsLayout];
+    levelGroup = [(HUIHeadphoneLevelView *)self levelGroup];
+    [levelGroup setNeedsLayout];
   }
 }
 
 - (void)updateConstraints
 {
   v167[15] = *MEMORY[0x277D85DE8];
-  v3 = [(HUIHeadphoneLevelView *)self viewConstraints];
+  viewConstraints = [(HUIHeadphoneLevelView *)self viewConstraints];
 
-  if (!v3)
+  if (!viewConstraints)
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v161 = [v4 preferredContentSizeCategory];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-    v162 = [MEMORY[0x277CBEB18] array];
-    v158 = [(UIView *)self->_centerContainer centerYAnchor];
-    v154 = [(HUIHeadphoneLevelView *)self centerYAnchor];
-    v150 = [v158 constraintEqualToAnchor:v154];
+    array = [MEMORY[0x277CBEB18] array];
+    centerYAnchor = [(UIView *)self->_centerContainer centerYAnchor];
+    centerYAnchor2 = [(HUIHeadphoneLevelView *)self centerYAnchor];
+    v150 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v167[0] = v150;
-    v146 = [(UIView *)self->_centerContainer topAnchor];
-    v142 = [(HUIHeadphoneLevelView *)self topAnchor];
-    v138 = [v146 constraintEqualToAnchor:v142 constant:10.0];
+    topAnchor = [(UIView *)self->_centerContainer topAnchor];
+    topAnchor2 = [(HUIHeadphoneLevelView *)self topAnchor];
+    v138 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
     v167[1] = v138;
-    v134 = [(UIView *)self->_centerContainer bottomAnchor];
-    v130 = [(HUIHeadphoneLevelView *)self bottomAnchor];
-    v126 = [v134 constraintEqualToAnchor:v130 constant:-10.0];
+    bottomAnchor = [(UIView *)self->_centerContainer bottomAnchor];
+    bottomAnchor2 = [(HUIHeadphoneLevelView *)self bottomAnchor];
+    v126 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
     v167[2] = v126;
-    v124 = [(UIView *)self->_centerContainer leadingAnchor];
-    v122 = [(HUIHeadphoneLevelView *)self leadingAnchor];
-    v120 = [v124 constraintEqualToAnchor:v122 constant:20.0];
+    leadingAnchor = [(UIView *)self->_centerContainer leadingAnchor];
+    leadingAnchor2 = [(HUIHeadphoneLevelView *)self leadingAnchor];
+    v120 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
     v167[3] = v120;
-    v118 = [(UIView *)self->_centerContainer trailingAnchor];
-    v116 = [(HUIHeadphoneLevelView *)self trailingAnchor];
-    v114 = [v118 constraintEqualToAnchor:v116 constant:-20.0];
+    trailingAnchor = [(UIView *)self->_centerContainer trailingAnchor];
+    trailingAnchor2 = [(HUIHeadphoneLevelView *)self trailingAnchor];
+    v114 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
     v167[4] = v114;
-    v112 = [(UIVisualEffectView *)self->_titleContainer topAnchor];
-    v110 = [(UIView *)self->_centerContainer topAnchor];
-    v108 = [v112 constraintEqualToAnchor:v110];
+    topAnchor3 = [(UIVisualEffectView *)self->_titleContainer topAnchor];
+    topAnchor4 = [(UIView *)self->_centerContainer topAnchor];
+    v108 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v167[5] = v108;
-    v106 = [(UIVisualEffectView *)self->_titleContainer leadingAnchor];
-    v104 = [(UIView *)self->_centerContainer leadingAnchor];
-    v101 = [v106 constraintEqualToAnchor:v104];
+    leadingAnchor3 = [(UIVisualEffectView *)self->_titleContainer leadingAnchor];
+    leadingAnchor4 = [(UIView *)self->_centerContainer leadingAnchor];
+    v101 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v167[6] = v101;
-    v99 = [(UIVisualEffectView *)self->_titleContainer trailingAnchor];
-    v97 = [(UIView *)self->_centerContainer trailingAnchor];
-    v95 = [v99 constraintEqualToAnchor:v97];
+    trailingAnchor3 = [(UIVisualEffectView *)self->_titleContainer trailingAnchor];
+    trailingAnchor4 = [(UIView *)self->_centerContainer trailingAnchor];
+    v95 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v167[7] = v95;
-    v93 = [(UIView *)self->_subtitleContainer topAnchor];
-    v91 = [(UIVisualEffectView *)self->_titleContainer bottomAnchor];
-    v88 = [v93 constraintEqualToAnchor:v91];
+    topAnchor5 = [(UIView *)self->_subtitleContainer topAnchor];
+    bottomAnchor3 = [(UIVisualEffectView *)self->_titleContainer bottomAnchor];
+    v88 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3];
     v167[8] = v88;
-    v86 = [(UIView *)self->_subtitleContainer leadingAnchor];
-    v84 = [(UIVisualEffectView *)self->_titleContainer leadingAnchor];
-    v83 = [v86 constraintEqualToAnchor:v84];
+    leadingAnchor5 = [(UIView *)self->_subtitleContainer leadingAnchor];
+    leadingAnchor6 = [(UIVisualEffectView *)self->_titleContainer leadingAnchor];
+    v83 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v167[9] = v83;
-    v81 = [(UIView *)self->_subtitleContainer trailingAnchor];
-    v79 = [(UIVisualEffectView *)self->_titleContainer trailingAnchor];
-    v77 = [v81 constraintEqualToAnchor:v79];
+    trailingAnchor5 = [(UIView *)self->_subtitleContainer trailingAnchor];
+    trailingAnchor6 = [(UIVisualEffectView *)self->_titleContainer trailingAnchor];
+    v77 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v167[10] = v77;
-    v75 = [(UIVisualEffectView *)self->_labelContainer topAnchor];
-    v73 = [(HUIHeadphoneLevelGroup *)self->_levelGroup bottomAnchor];
-    v71 = [v75 constraintEqualToAnchor:v73];
+    topAnchor6 = [(UIVisualEffectView *)self->_labelContainer topAnchor];
+    bottomAnchor4 = [(HUIHeadphoneLevelGroup *)self->_levelGroup bottomAnchor];
+    v71 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4];
     v167[11] = v71;
-    v69 = [(UIVisualEffectView *)self->_labelContainer bottomAnchor];
-    v5 = [(UIView *)self->_centerContainer bottomAnchor];
-    v6 = [v69 constraintEqualToAnchor:v5];
+    bottomAnchor5 = [(UIVisualEffectView *)self->_labelContainer bottomAnchor];
+    bottomAnchor6 = [(UIView *)self->_centerContainer bottomAnchor];
+    v6 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v167[12] = v6;
-    v7 = [(UIVisualEffectView *)self->_labelContainer leadingAnchor];
-    v8 = [(HUIHeadphoneLevelGroup *)self->_levelGroup leadingAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    leadingAnchor7 = [(UIVisualEffectView *)self->_labelContainer leadingAnchor];
+    leadingAnchor8 = [(HUIHeadphoneLevelGroup *)self->_levelGroup leadingAnchor];
+    v9 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v167[13] = v9;
-    v10 = [(UIVisualEffectView *)self->_labelContainer trailingAnchor];
-    v11 = [(HUIHeadphoneLevelGroup *)self->_levelGroup trailingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    trailingAnchor7 = [(UIVisualEffectView *)self->_labelContainer trailingAnchor];
+    trailingAnchor8 = [(HUIHeadphoneLevelGroup *)self->_levelGroup trailingAnchor];
+    v12 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v167[14] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v167 count:15];
-    [v162 addObjectsFromArray:v13];
+    [array addObjectsFromArray:v13];
 
-    LODWORD(v10) = [(HUIHeadphoneLevelView *)self isRTL];
-    v155 = [(HUIHeadphoneLevelGroup *)self->_levelGroup topAnchor];
-    v151 = [(UIView *)self->_subtitleContainer bottomAnchor];
-    v147 = [v155 constraintEqualToAnchor:v151];
+    LODWORD(trailingAnchor7) = [(HUIHeadphoneLevelView *)self isRTL];
+    topAnchor7 = [(HUIHeadphoneLevelGroup *)self->_levelGroup topAnchor];
+    bottomAnchor7 = [(UIView *)self->_subtitleContainer bottomAnchor];
+    v147 = [topAnchor7 constraintEqualToAnchor:bottomAnchor7];
     v166[0] = v147;
-    v143 = [(HUIHeadphoneLevelGroup *)self->_levelGroup leadingAnchor];
-    v139 = [(UIView *)self->_subtitleContainer leadingAnchor];
-    v135 = [v143 constraintEqualToAnchor:v139];
+    leadingAnchor9 = [(HUIHeadphoneLevelGroup *)self->_levelGroup leadingAnchor];
+    leadingAnchor10 = [(UIView *)self->_subtitleContainer leadingAnchor];
+    v135 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
     v166[1] = v135;
-    v131 = [(HUIHeadphoneLevelGroup *)self->_levelGroup trailingAnchor];
-    v127 = [(UIView *)self->_subtitleContainer trailingAnchor];
-    v125 = [v131 constraintEqualToAnchor:v127];
+    trailingAnchor9 = [(HUIHeadphoneLevelGroup *)self->_levelGroup trailingAnchor];
+    trailingAnchor10 = [(UIView *)self->_subtitleContainer trailingAnchor];
+    v125 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     v166[2] = v125;
-    v123 = [(UILabel *)self->_titleLabel topAnchor];
-    v121 = [(UIVisualEffectView *)self->_titleContainer topAnchor];
-    v119 = [v123 constraintEqualToAnchor:v121];
+    topAnchor8 = [(UILabel *)self->_titleLabel topAnchor];
+    topAnchor9 = [(UIVisualEffectView *)self->_titleContainer topAnchor];
+    v119 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
     v166[3] = v119;
-    v117 = [(UILabel *)self->_titleLabel bottomAnchor];
-    v115 = [(UIVisualEffectView *)self->_titleContainer bottomAnchor];
-    v113 = [v117 constraintEqualToAnchor:v115];
+    bottomAnchor8 = [(UILabel *)self->_titleLabel bottomAnchor];
+    bottomAnchor9 = [(UIVisualEffectView *)self->_titleContainer bottomAnchor];
+    v113 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
     v166[4] = v113;
-    v111 = [(UILabel *)self->_titleLabel leadingAnchor];
-    v109 = [(UIVisualEffectView *)self->_titleContainer leadingAnchor];
-    v107 = [v111 constraintEqualToAnchor:v109];
+    leadingAnchor11 = [(UILabel *)self->_titleLabel leadingAnchor];
+    leadingAnchor12 = [(UIVisualEffectView *)self->_titleContainer leadingAnchor];
+    v107 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
     v166[5] = v107;
-    v105 = [(UILabel *)self->_titleLabel trailingAnchor];
-    v103 = [(UIVisualEffectView *)self->_titleContainer trailingAnchor];
-    v102 = [v105 constraintEqualToAnchor:v103];
+    trailingAnchor11 = [(UILabel *)self->_titleLabel trailingAnchor];
+    trailingAnchor12 = [(UIVisualEffectView *)self->_titleContainer trailingAnchor];
+    v102 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
     v166[6] = v102;
-    v100 = [(UILabel *)self->_subtitleLeftLabel topAnchor];
-    v98 = [(UIView *)self->_subtitleContainer topAnchor];
-    v96 = [v100 constraintEqualToAnchor:v98];
+    topAnchor10 = [(UILabel *)self->_subtitleLeftLabel topAnchor];
+    topAnchor11 = [(UIView *)self->_subtitleContainer topAnchor];
+    v96 = [topAnchor10 constraintEqualToAnchor:topAnchor11];
     v166[7] = v96;
-    v94 = [(UILabel *)self->_subtitleLeftLabel leadingAnchor];
-    v92 = [(UIView *)self->_subtitleContainer leadingAnchor];
-    v90 = [v94 constraintEqualToAnchor:v92];
+    leadingAnchor13 = [(UILabel *)self->_subtitleLeftLabel leadingAnchor];
+    leadingAnchor14 = [(UIView *)self->_subtitleContainer leadingAnchor];
+    v90 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14];
     v166[8] = v90;
-    v87 = [(UILabel *)self->_minLabel leadingAnchor];
-    v89 = [(UIVisualEffectView *)self->_labelContainer contentView];
-    v85 = [v89 leadingAnchor];
-    v82 = [v87 constraintEqualToAnchor:v85];
+    leadingAnchor15 = [(UILabel *)self->_minLabel leadingAnchor];
+    contentView = [(UIVisualEffectView *)self->_labelContainer contentView];
+    leadingAnchor16 = [contentView leadingAnchor];
+    v82 = [leadingAnchor15 constraintEqualToAnchor:leadingAnchor16];
     v166[9] = v82;
-    v78 = [(UILabel *)self->_minLabel topAnchor];
-    v80 = [(UIVisualEffectView *)self->_labelContainer contentView];
-    v76 = [v80 topAnchor];
-    v74 = [v78 constraintEqualToAnchor:v76];
+    topAnchor12 = [(UILabel *)self->_minLabel topAnchor];
+    contentView2 = [(UIVisualEffectView *)self->_labelContainer contentView];
+    topAnchor13 = [contentView2 topAnchor];
+    v74 = [topAnchor12 constraintEqualToAnchor:topAnchor13];
     v166[10] = v74;
-    v70 = [(UILabel *)self->_minLabel bottomAnchor];
-    v72 = [(UIVisualEffectView *)self->_labelContainer contentView];
-    v68 = [v72 bottomAnchor];
-    v67 = [v70 constraintEqualToAnchor:v68];
+    bottomAnchor10 = [(UILabel *)self->_minLabel bottomAnchor];
+    contentView3 = [(UIVisualEffectView *)self->_labelContainer contentView];
+    bottomAnchor11 = [contentView3 bottomAnchor];
+    v67 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11];
     v166[11] = v67;
     v14 = MEMORY[0x277CCAAD0];
     thresholdLabel = self->_thresholdLabel;
-    v16 = [(UIVisualEffectView *)self->_labelContainer contentView];
-    v66 = v16;
+    contentView4 = [(UIVisualEffectView *)self->_labelContainer contentView];
+    v66 = contentView4;
     v17 = 1.38888884;
-    if (v10)
+    if (trailingAnchor7)
     {
       v17 = 0.611111104;
     }
 
-    v65 = [v14 constraintWithItem:thresholdLabel attribute:9 relatedBy:0 toItem:v16 attribute:9 multiplier:v17 constant:0.0];
+    v65 = [v14 constraintWithItem:thresholdLabel attribute:9 relatedBy:0 toItem:contentView4 attribute:9 multiplier:v17 constant:0.0];
     v166[12] = v65;
-    v63 = [(UILabel *)self->_thresholdLabel widthAnchor];
-    v64 = [(UIVisualEffectView *)self->_labelContainer contentView];
-    v62 = [v64 widthAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62];
+    widthAnchor = [(UILabel *)self->_thresholdLabel widthAnchor];
+    contentView5 = [(UIVisualEffectView *)self->_labelContainer contentView];
+    widthAnchor2 = [contentView5 widthAnchor];
+    v61 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v166[13] = v61;
-    v59 = [(UILabel *)self->_thresholdLabel topAnchor];
-    v60 = [(UIVisualEffectView *)self->_labelContainer contentView];
-    v58 = [v60 topAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58];
+    topAnchor14 = [(UILabel *)self->_thresholdLabel topAnchor];
+    contentView6 = [(UIVisualEffectView *)self->_labelContainer contentView];
+    topAnchor15 = [contentView6 topAnchor];
+    v57 = [topAnchor14 constraintEqualToAnchor:topAnchor15];
     v166[14] = v57;
-    v55 = [(UILabel *)self->_thresholdLabel bottomAnchor];
-    v56 = [(UIVisualEffectView *)self->_labelContainer contentView];
-    v54 = [v56 bottomAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    bottomAnchor12 = [(UILabel *)self->_thresholdLabel bottomAnchor];
+    contentView7 = [(UIVisualEffectView *)self->_labelContainer contentView];
+    bottomAnchor13 = [contentView7 bottomAnchor];
+    v53 = [bottomAnchor12 constraintEqualToAnchor:bottomAnchor13];
     v166[15] = v53;
-    v51 = [(UILabel *)self->_maxLabel trailingAnchor];
-    v52 = [(UIVisualEffectView *)self->_labelContainer contentView];
-    v50 = [v52 trailingAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    trailingAnchor13 = [(UILabel *)self->_maxLabel trailingAnchor];
+    contentView8 = [(UIVisualEffectView *)self->_labelContainer contentView];
+    trailingAnchor14 = [contentView8 trailingAnchor];
+    v49 = [trailingAnchor13 constraintEqualToAnchor:trailingAnchor14];
     v166[16] = v49;
-    v18 = [(UILabel *)self->_maxLabel topAnchor];
-    v19 = [(UIVisualEffectView *)self->_labelContainer contentView];
-    v20 = [v19 topAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
+    topAnchor16 = [(UILabel *)self->_maxLabel topAnchor];
+    contentView9 = [(UIVisualEffectView *)self->_labelContainer contentView];
+    topAnchor17 = [contentView9 topAnchor];
+    v21 = [topAnchor16 constraintEqualToAnchor:topAnchor17];
     v166[17] = v21;
-    v22 = [(UILabel *)self->_maxLabel bottomAnchor];
-    v23 = [(UIVisualEffectView *)self->_labelContainer contentView];
-    v24 = [v23 bottomAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24];
+    bottomAnchor14 = [(UILabel *)self->_maxLabel bottomAnchor];
+    contentView10 = [(UIVisualEffectView *)self->_labelContainer contentView];
+    bottomAnchor15 = [contentView10 bottomAnchor];
+    v25 = [bottomAnchor14 constraintEqualToAnchor:bottomAnchor15];
     v166[18] = v25;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v166 count:19];
-    [v162 addObjectsFromArray:v26];
+    [array addObjectsFromArray:v26];
 
     v27 = *MEMORY[0x277D767F8];
-    v28 = [v161 isEqualToString:*MEMORY[0x277D767F8]];
+    v28 = [preferredContentSizeCategory isEqualToString:*MEMORY[0x277D767F8]];
     v29 = MEMORY[0x277D767F0];
-    if (v28 & 1) != 0 || ([v161 isEqualToString:*MEMORY[0x277D767F0]])
+    if (v28 & 1) != 0 || ([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D767F0]])
     {
       v30 = 1;
     }
 
     else
     {
-      v30 = [v161 isEqualToString:*MEMORY[0x277D767E8]];
+      v30 = [preferredContentSizeCategory isEqualToString:*MEMORY[0x277D767E8]];
     }
 
     [(UILabel *)self->_maxLabel setHidden:v30];
-    if (([v161 isEqualToString:v27] & 1) != 0 || (objc_msgSend(v161, "isEqualToString:", *v29) & 1) != 0 || objc_msgSend(v161, "isEqualToString:", *MEMORY[0x277D767E8]))
+    if (([preferredContentSizeCategory isEqualToString:v27] & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *v29) & 1) != 0 || objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x277D767E8]))
     {
-      v156 = [(UILabel *)self->_subtitleLeftLabel bottomAnchor];
-      v152 = [(UILabel *)self->_subtitleRightLabel topAnchor];
-      v148 = [v156 constraintEqualToAnchor:v152];
+      bottomAnchor16 = [(UILabel *)self->_subtitleLeftLabel bottomAnchor];
+      topAnchor18 = [(UILabel *)self->_subtitleRightLabel topAnchor];
+      v148 = [bottomAnchor16 constraintEqualToAnchor:topAnchor18];
       v165[0] = v148;
-      v159 = [(UILabel *)self->_subtitleLeftLabel trailingAnchor];
-      v144 = [(UILabel *)self->_subtitleRightLabel trailingAnchor];
-      v140 = [v159 constraintEqualToAnchor:v144];
+      trailingAnchor15 = [(UILabel *)self->_subtitleLeftLabel trailingAnchor];
+      trailingAnchor16 = [(UILabel *)self->_subtitleRightLabel trailingAnchor];
+      v140 = [trailingAnchor15 constraintEqualToAnchor:trailingAnchor16];
       v165[1] = v140;
-      v136 = [(UILabel *)self->_subtitleRightLabel bottomAnchor];
-      v132 = [(UIView *)self->_subtitleContainer bottomAnchor];
-      v128 = [v136 constraintEqualToAnchor:v132];
+      bottomAnchor17 = [(UILabel *)self->_subtitleRightLabel bottomAnchor];
+      bottomAnchor18 = [(UIView *)self->_subtitleContainer bottomAnchor];
+      v128 = [bottomAnchor17 constraintEqualToAnchor:bottomAnchor18];
       v165[2] = v128;
-      v31 = [(UILabel *)self->_subtitleRightLabel leadingAnchor];
-      v32 = [(UIView *)self->_subtitleContainer leadingAnchor];
-      v33 = [v31 constraintEqualToAnchor:v32];
+      leadingAnchor17 = [(UILabel *)self->_subtitleRightLabel leadingAnchor];
+      leadingAnchor18 = [(UIView *)self->_subtitleContainer leadingAnchor];
+      v33 = [leadingAnchor17 constraintEqualToAnchor:leadingAnchor18];
       v165[3] = v33;
-      v34 = [(UILabel *)self->_subtitleRightLabel trailingAnchor];
-      v35 = [(UIView *)self->_subtitleContainer trailingAnchor];
-      v36 = [v34 constraintEqualToAnchor:v35];
+      trailingAnchor17 = [(UILabel *)self->_subtitleRightLabel trailingAnchor];
+      trailingAnchor18 = [(UIView *)self->_subtitleContainer trailingAnchor];
+      v36 = [trailingAnchor17 constraintEqualToAnchor:trailingAnchor18];
       v165[4] = v36;
       v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v165 count:5];
-      v38 = v162;
-      [v162 addObjectsFromArray:v37];
+      v38 = array;
+      [array addObjectsFromArray:v37];
 
       subtitleRightLabel = self->_subtitleRightLabel;
       v40 = 4;
@@ -530,29 +530,29 @@
 
     else
     {
-      v157 = [(UILabel *)self->_subtitleLeftLabel bottomAnchor];
-      v153 = [(UIView *)self->_subtitleContainer bottomAnchor];
-      v149 = [v157 constraintEqualToAnchor:v153];
+      bottomAnchor19 = [(UILabel *)self->_subtitleLeftLabel bottomAnchor];
+      bottomAnchor20 = [(UIView *)self->_subtitleContainer bottomAnchor];
+      v149 = [bottomAnchor19 constraintEqualToAnchor:bottomAnchor20];
       v164[0] = v149;
-      v160 = [(UILabel *)self->_subtitleLeftLabel trailingAnchor];
-      v145 = [(UILabel *)self->_subtitleRightLabel leadingAnchor];
-      v141 = [v160 constraintEqualToAnchor:v145 constant:-12.0];
+      trailingAnchor19 = [(UILabel *)self->_subtitleLeftLabel trailingAnchor];
+      leadingAnchor19 = [(UILabel *)self->_subtitleRightLabel leadingAnchor];
+      v141 = [trailingAnchor19 constraintEqualToAnchor:leadingAnchor19 constant:-12.0];
       v164[1] = v141;
-      v137 = [(UILabel *)self->_subtitleRightLabel topAnchor];
-      v133 = [(UIView *)self->_subtitleContainer topAnchor];
-      v129 = [v137 constraintEqualToAnchor:v133];
+      topAnchor19 = [(UILabel *)self->_subtitleRightLabel topAnchor];
+      topAnchor20 = [(UIView *)self->_subtitleContainer topAnchor];
+      v129 = [topAnchor19 constraintEqualToAnchor:topAnchor20];
       v164[2] = v129;
-      v41 = [(UILabel *)self->_subtitleRightLabel bottomAnchor];
-      v42 = [(UIView *)self->_subtitleContainer bottomAnchor];
-      v43 = [v41 constraintEqualToAnchor:v42];
+      bottomAnchor21 = [(UILabel *)self->_subtitleRightLabel bottomAnchor];
+      bottomAnchor22 = [(UIView *)self->_subtitleContainer bottomAnchor];
+      v43 = [bottomAnchor21 constraintEqualToAnchor:bottomAnchor22];
       v164[3] = v43;
-      v44 = [(UILabel *)self->_subtitleRightLabel trailingAnchor];
-      v45 = [(UIView *)self->_subtitleContainer trailingAnchor];
-      v46 = [v44 constraintEqualToAnchor:v45];
+      trailingAnchor20 = [(UILabel *)self->_subtitleRightLabel trailingAnchor];
+      trailingAnchor21 = [(UIView *)self->_subtitleContainer trailingAnchor];
+      v46 = [trailingAnchor20 constraintEqualToAnchor:trailingAnchor21];
       v164[4] = v46;
       v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v164 count:5];
-      v38 = v162;
-      [v162 addObjectsFromArray:v47];
+      v38 = array;
+      [array addObjectsFromArray:v47];
 
       v48 = self->_subtitleRightLabel;
       if ([(HUIHeadphoneLevelView *)self isRTL])
@@ -578,13 +578,13 @@
   [(HUIHeadphoneLevelView *)&v163 updateConstraints];
 }
 
-- (void)updateViewsWithSlowLeq:(double)a3 fastLeq:(double)a4 andThreshold:(unint64_t)a5
+- (void)updateViewsWithSlowLeq:(double)leq fastLeq:(double)fastLeq andThreshold:(unint64_t)threshold
 {
   objc_initWeak(&location, self);
   objc_copyWeak(v8, &location);
-  v8[1] = *&a3;
-  v8[2] = a5;
-  v8[3] = *&a4;
+  v8[1] = *&leq;
+  v8[2] = threshold;
+  v8[3] = *&fastLeq;
   AXPerformBlockOnMainThread();
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -616,16 +616,16 @@ void __69__HUIHeadphoneLevelView_updateViewsWithSlowLeq_fastLeq_andThreshold___b
   [v16 updateWithExposure:*(a1 + 48) withThreshold:*(a1 + 56)];
 }
 
-- (id)formatLevelRating:(id)a3 threshold:(unint64_t)a4
+- (id)formatLevelRating:(id)rating threshold:(unint64_t)threshold
 {
-  v5 = colorForThreshold(a4);
-  if (!a4)
+  v5 = colorForThreshold(threshold);
+  if (!threshold)
   {
     v6 = @"checkmark.circle.fill";
     goto LABEL_6;
   }
 
-  if (a4 == 100 || a4 == 80)
+  if (threshold == 100 || threshold == 80)
   {
     v6 = @"exclamationmark.triangle.fill";
 LABEL_6:
@@ -641,16 +641,16 @@ LABEL_8:
   return v8;
 }
 
-- (id)formatLevel:(id)a3 baseFont:(id)a4
+- (id)formatLevel:(id)level baseFont:(id)font
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCACA8];
-  v6 = a4;
-  v7 = a3;
+  fontCopy = font;
+  levelCopy = level;
   v8 = hearingLocString();
-  v9 = [v5 stringWithFormat:v8, v7];
+  levelCopy = [v5 stringWithFormat:v8, levelCopy];
 
-  v10 = [v9 rangeOfString:v7 options:0];
+  v10 = [levelCopy rangeOfString:levelCopy options:0];
   v12 = v11;
 
   v13 = *MEMORY[0x277D74388];
@@ -662,7 +662,7 @@ LABEL_8:
   v20[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
 
-  v16 = attributedStringWithFeatureSettings(v9, v6, v15, v10, v12);
+  v16 = attributedStringWithFeatureSettings(levelCopy, fontCopy, v15, v10, v12);
 
   return v16;
 }
@@ -670,9 +670,9 @@ LABEL_8:
 - (id)accessibilityValue
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(UILabel *)self->_subtitleLeftLabel accessibilityLabel];
-  v5 = [(UILabel *)self->_subtitleRightLabel accessibilityLabel];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  accessibilityLabel = [(UILabel *)self->_subtitleLeftLabel accessibilityLabel];
+  accessibilityLabel2 = [(UILabel *)self->_subtitleRightLabel accessibilityLabel];
+  v6 = [v3 stringWithFormat:@"%@ %@", accessibilityLabel, accessibilityLabel2];
 
   return v6;
 }
@@ -687,8 +687,8 @@ LABEL_8:
 - (id)_accessibilityUserTestingChildren
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  v2 = [(HUIHeadphoneLevelView *)self centerContainer];
-  v5[0] = v2;
+  centerContainer = [(HUIHeadphoneLevelView *)self centerContainer];
+  v5[0] = centerContainer;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
 
   return v3;

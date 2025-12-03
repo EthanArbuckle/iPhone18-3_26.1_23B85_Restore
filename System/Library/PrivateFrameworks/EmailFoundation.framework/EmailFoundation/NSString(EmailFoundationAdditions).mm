@@ -57,8 +57,8 @@
 
 - (id)ef_stringByTrimmingWhitespaceAndNewlineCharacters
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v3;
 }
@@ -70,7 +70,7 @@
     [NSString(EmailFoundationAdditions) ef_sanitizedFileName];
   }
 
-  v2 = [a1 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+  v2 = [self stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
   v3 = [v2 ef_stringByReplacingContiguousSequencesOfCharactersInSet:ef_sanitizedFileName_shouldBeWhitespaceCharacterSet withString:@" "];
 
   return v3;
@@ -78,38 +78,38 @@
 
 - (id)ef_md5Digest
 {
-  v1 = [a1 dataUsingEncoding:4];
-  v2 = [v1 ef_md5Digest];
+  v1 = [self dataUsingEncoding:4];
+  ef_md5Digest = [v1 ef_md5Digest];
 
-  return v2;
+  return ef_md5Digest;
 }
 
 + (id)ef_UUID
 {
-  v0 = [MEMORY[0x1E696AFB0] UUID];
-  v1 = [v0 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v1;
+  return uUIDString;
 }
 
 - (id)ef_sha256Digest
 {
-  v1 = [a1 dataUsingEncoding:4];
-  v2 = [v1 ef_sha256Digest];
+  v1 = [self dataUsingEncoding:4];
+  ef_sha256Digest = [v1 ef_sha256Digest];
 
-  return v2;
+  return ef_sha256Digest;
 }
 
 - (id)ef_sha256String
 {
   v11 = *MEMORY[0x1E69E9840];
-  v1 = [a1 UTF8String];
+  uTF8String = [self UTF8String];
   *&v2 = 0xAAAAAAAAAAAAAAAALL;
   *(&v2 + 1) = 0xAAAAAAAAAAAAAAAALL;
   *md = v2;
   v10 = v2;
-  v3 = strlen(v1);
-  CC_SHA256(v1, v3, md);
+  v3 = strlen(uTF8String);
+  CC_SHA256(uTF8String, v3, md);
   v4 = [MEMORY[0x1E696AD60] stringWithCapacity:64];
   for (i = 0; i != 32; ++i)
   {
@@ -125,16 +125,16 @@
 
 - (uint64_t)ef_firstStrongDirectionalityIsLeftToRight
 {
-  v2 = [(__CFString *)a1 length];
-  theString = a1;
+  v2 = [(__CFString *)self length];
+  theString = self;
   v27 = 0;
   v28 = v2;
-  CharactersPtr = CFStringGetCharactersPtr(a1);
+  CharactersPtr = CFStringGetCharactersPtr(self);
   CStringPtr = 0;
   v25 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(a1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(self, 0x600u);
   }
 
   v29 = 0;
@@ -291,16 +291,16 @@ LABEL_18:
 
 - (uint64_t)ef_lastStrongDirectionalityIsLeftToRight
 {
-  v2 = [(__CFString *)a1 length];
-  theString = a1;
+  v2 = [(__CFString *)self length];
+  theString = self;
   v26 = 0;
   v27 = v2;
-  CharactersPtr = CFStringGetCharactersPtr(a1);
+  CharactersPtr = CFStringGetCharactersPtr(self);
   CStringPtr = 0;
   v24 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(a1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(self, 0x600u);
   }
 
   v28 = 0;
@@ -456,7 +456,7 @@ LABEL_15:
 
 - (id)_ef_sqliteFormattedWithFormatSpecifier:()EmailFoundationAdditions
 {
-  v3 = sqlite3_mprintf(a3, [a1 UTF8String]);
+  v3 = sqlite3_mprintf(a3, [self UTF8String]);
   v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:v3 length:strlen(v3) encoding:4 deallocator:&__block_literal_global_22];
 
   return v4;
@@ -465,22 +465,22 @@ LABEL_15:
 - (_BYTE)ef_sqliteAllocatedStringWithHexFromUTF8
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [a1 lengthOfBytesUsingEncoding:4];
+  v2 = [self lengthOfBytesUsingEncoding:4];
   if (v2)
   {
     v3 = v2;
-    v4 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [a1 dataUsingEncoding:4 allowLossyConversion:1];
-    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v5 encoding:4];
-    v3 = [v4 lengthOfBytesUsingEncoding:4];
+    v5 = [self dataUsingEncoding:4 allowLossyConversion:1];
+    selfCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v5 encoding:4];
+    v3 = [selfCopy lengthOfBytesUsingEncoding:4];
   }
 
   v6 = sqlite3_malloc64((2 * v3) | 1);
-  v7 = [v4 length];
+  v7 = [selfCopy length];
   v15 = 0;
   v16 = v7;
   v8 = v6;
@@ -508,7 +508,7 @@ LABEL_15:
       v17[2] = v10;
       v17[0] = v10;
       v14 = 0;
-      [v4 getBytes:v17 maxLength:256 usedLength:&v14 encoding:4 options:0 range:v15 remainingRange:{v7, &v15}];
+      [selfCopy getBytes:v17 maxLength:256 usedLength:&v14 encoding:4 options:0 range:v15 remainingRange:{v7, &v15}];
       if (v14)
       {
         for (i = 0; i < v14; ++i)
@@ -542,7 +542,7 @@ LABEL_15:
 {
   v6 = a4;
   v7 = [MEMORY[0x1E696AE70] ef_regularExpressionForQuotedStringsInLocales:a3];
-  v8 = [v7 ef_stringByRemovingTokensFromString:a1 matchingOptions:0 tokenizationOptions:3 tokenizationHandler:v6];
+  v8 = [v7 ef_stringByRemovingTokensFromString:self matchingOptions:0 tokenizationOptions:3 tokenizationHandler:v6];
 
   return v8;
 }
@@ -552,7 +552,7 @@ LABEL_15:
   v6 = a3;
   v36 = a4;
   v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v34 = [a1 length];
+  v34 = [self length];
   v7 = 0;
   v33 = [v6 isEqualToString:v36];
   v8 = v33 ^ 1;
@@ -564,7 +564,7 @@ LABEL_15:
     {
       if (v9)
       {
-        v11 = [a1 rangeOfString:v6 options:0 range:{v7, v10}];
+        v11 = [self rangeOfString:v6 options:0 range:{v7, v10}];
         v13 = v12;
         if ((v8 & 1) == 0)
         {
@@ -590,7 +590,7 @@ LABEL_4:
         }
       }
 
-      v15 = [a1 rangeOfString:v36 options:0 range:{v7, v10}];
+      v15 = [self rangeOfString:v36 options:0 range:{v7, v10}];
       v14 = v16;
       if (!v13)
       {
@@ -642,12 +642,12 @@ LABEL_14:
 
         else
         {
-          v22 = [v35 lastObject];
-          v20 = v22;
-          if (v22)
+          lastObject = [v35 lastObject];
+          v20 = lastObject;
+          if (lastObject)
           {
-            v23 = [v22 second];
-            v24 = [v23 isEqualToString:v6];
+            second = [lastObject second];
+            v24 = [second isEqualToString:v6];
 
             if (v24)
             {
@@ -693,35 +693,35 @@ LABEL_24:
       }
 
       v28 = MEMORY[0x1E695DF70];
-      v29 = [v35 lastObject];
-      v30 = [v28 arrayWithObject:v29];
+      lastObject2 = [v35 lastObject];
+      v30 = [v28 arrayWithObject:lastObject2];
 
       v35 = v30;
     }
 
-    v31 = [a1 mutableCopy];
+    v31 = [self mutableCopy];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __88__NSString_EmailFoundationAdditions__ef_stringByRemovingUnbalancedOpenQuote_closeQuote___block_invoke;
     v37[3] = &unk_1E82493F8;
-    v27 = v31;
-    v38 = v27;
+    selfCopy = v31;
+    v38 = selfCopy;
     [v35 enumerateObjectsWithOptions:2 usingBlock:v37];
   }
 
   else
   {
 LABEL_30:
-    v27 = a1;
+    selfCopy = self;
   }
 
-  return v27;
+  return selfCopy;
 }
 
 - (id)ef_stringByRemovingUnbalancedQuotesForLanguages:()EmailFoundationAdditions
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a1;
+  selfCopy = self;
   [MEMORY[0x1E695DF58] ef_quotePairsForLanguages:a3];
   v17 = 0u;
   v18 = 0u;
@@ -734,7 +734,7 @@ LABEL_30:
     do
     {
       v8 = 0;
-      v9 = v4;
+      v9 = selfCopy;
       do
       {
         if (*v16 != v7)
@@ -743,12 +743,12 @@ LABEL_30:
         }
 
         v10 = *(*(&v15 + 1) + 8 * v8);
-        v11 = [v10 first];
-        v12 = [v10 second];
-        v4 = [v9 ef_stringByRemovingUnbalancedOpenQuote:v11 closeQuote:v12];
+        first = [v10 first];
+        second = [v10 second];
+        selfCopy = [v9 ef_stringByRemovingUnbalancedOpenQuote:first closeQuote:second];
 
         ++v8;
-        v9 = v4;
+        v9 = selfCopy;
       }
 
       while (v6 != v8);
@@ -760,14 +760,14 @@ LABEL_30:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)ef_stringByRemovingTokenizedLinksUsingTokenizationHandler:()EmailFoundationAdditions
 {
   v4 = a3;
   v5 = [objc_alloc(MEMORY[0x1E696AB60]) initWithTypes:32 error:0];
-  v6 = [v5 ef_stringByRemovingTokensFromString:a1 matchingOptions:16 tokenizationOptions:2 tokenizationHandler:v4];
+  v6 = [v5 ef_stringByRemovingTokensFromString:self matchingOptions:16 tokenizationOptions:2 tokenizationHandler:v4];
 
   return v6;
 }
@@ -775,7 +775,7 @@ LABEL_30:
 - (id)ef_stringByRemovingQuotesForLanguages:()EmailFoundationAdditions
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a1;
+  selfCopy = self;
   [MEMORY[0x1E695DF58] ef_quotePairsForLanguages:a3];
   v17 = 0u;
   v18 = 0u;
@@ -795,11 +795,11 @@ LABEL_30:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 first];
-        v11 = [v4 stringByReplacingOccurrencesOfString:v10 withString:&stru_1F459BF68];
+        first = [v9 first];
+        v11 = [selfCopy stringByReplacingOccurrencesOfString:first withString:&stru_1F459BF68];
 
-        v12 = [v9 second];
-        v4 = [v11 stringByReplacingOccurrencesOfString:v12 withString:&stru_1F459BF68];
+        second = [v9 second];
+        selfCopy = [v11 stringByReplacingOccurrencesOfString:second withString:&stru_1F459BF68];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -810,28 +810,28 @@ LABEL_30:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)ef_stringByTrimmingOuterQuotes
 {
-  v1 = a1;
-  if ([v1 length] >= 2)
+  selfCopy = self;
+  if ([selfCopy length] >= 2)
   {
-    if ((v2 = [v1 characterAtIndex:0], v3 = objc_msgSend(v1, "characterAtIndex:", objc_msgSend(v1, "length") - 1), v2 == 39) && v3 == 39 || v2 == 34 && v3 == 34)
+    if ((v2 = [selfCopy characterAtIndex:0], v3 = objc_msgSend(selfCopy, "characterAtIndex:", objc_msgSend(selfCopy, "length") - 1), v2 == 39) && v3 == 39 || v2 == 34 && v3 == 34)
     {
-      v4 = [v1 substringWithRange:{1, objc_msgSend(v1, "length") - 2}];
+      v4 = [selfCopy substringWithRange:{1, objc_msgSend(selfCopy, "length") - 2}];
 
-      v1 = v4;
+      selfCopy = v4;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)ef_stringByRemovingCharactersInSet:()EmailFoundationAdditions
 {
-  v1 = [a1 componentsSeparatedByCharactersInSet:?];
+  v1 = [self componentsSeparatedByCharactersInSet:?];
   v2 = [v1 componentsJoinedByString:&stru_1F459BF68];
 
   return v2;
@@ -841,7 +841,7 @@ LABEL_30:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 mutableCopy];
+  v8 = [self mutableCopy];
   [v8 ef_removeCharactersInSet:v6 beforeOccurrencesOfString:v7];
 
   return v8;
@@ -851,7 +851,7 @@ LABEL_30:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 mutableCopy];
+  v8 = [self mutableCopy];
   [v8 ef_replaceContiguousSequencesOfCharactersInSet:v6 withString:v7];
 
   return v8;
@@ -860,7 +860,7 @@ LABEL_30:
 - (id)ef_stringByTrimmingLeadingCharactersInSet:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 ef_trimLeadingCharactersInSet:v4];
 
   return v5;
@@ -868,8 +868,8 @@ LABEL_30:
 
 - (__CFString)ef_stringByTrimmingTrailingCharactersInSet:()EmailFoundationAdditions
 {
-  v4 = [a3 invertedSet];
-  v5 = [a1 rangeOfCharacterFromSet:v4 options:4];
+  invertedSet = [a3 invertedSet];
+  v5 = [self rangeOfCharacterFromSet:invertedSet options:4];
   v7 = v6;
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
@@ -877,14 +877,14 @@ LABEL_30:
     v8 = &stru_1F459BF68;
   }
 
-  else if (v5 + v7 == [a1 length])
+  else if (v5 + v7 == [self length])
   {
-    v8 = [a1 copy];
+    v8 = [self copy];
   }
 
   else
   {
-    v8 = [a1 substringToIndex:v5 + v7];
+    v8 = [self substringToIndex:v5 + v7];
   }
 
   return v8;
@@ -892,7 +892,7 @@ LABEL_30:
 
 - (id)ef_stringByRFC5322Unfolding
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   [v1 ef_rfc5322Unfold];
 
   return v1;
@@ -904,7 +904,7 @@ LABEL_30:
   v6 = a3;
   if (a4)
   {
-    v7 = [a1 componentsSeparatedByString:v6];
+    v7 = [self componentsSeparatedByString:v6];
     if ([v7 count] <= (a4 + 1))
     {
       v9 = v7;
@@ -924,7 +924,7 @@ LABEL_30:
 
   else
   {
-    v14[0] = a1;
+    v14[0] = self;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   }
 
@@ -935,14 +935,14 @@ LABEL_30:
 
 - (id)ef_wordComponentsForLocale:()EmailFoundationAdditions
 {
-  v3 = [a1 ef_wordComponentsForLocale:a3 minimumWordLength:0];
+  v3 = [self ef_wordComponentsForLocale:a3 minimumWordLength:0];
 
   return v3;
 }
 
 - (id)ef_wordComponentsForLocale:()EmailFoundationAdditions minimumWordLength:
 {
-  v4 = [a1 ef_wordComponentsForLocale:a3 minimumWordLength:a4 componentLimit:-1 remainingString:0];
+  v4 = [self ef_wordComponentsForLocale:a3 minimumWordLength:a4 componentLimit:-1 remainingString:0];
 
   return v4;
 }
@@ -951,21 +951,21 @@ LABEL_30:
 {
   v26[1] = *MEMORY[0x1E69E9840];
   v10 = a3;
-  v28.length = CFStringGetLength(a1);
+  v28.length = CFStringGetLength(self);
   v28.location = 0;
-  v11 = CFStringTokenizerCreate(*MEMORY[0x1E695E480], a1, v28, 4uLL, v10);
+  v11 = CFStringTokenizerCreate(*MEMORY[0x1E695E480], self, v28, 4uLL, v10);
   if (v11)
   {
     v25 = v10;
-    v12 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     while (CFStringTokenizerAdvanceToNextToken(v11) && [v13 count] < a5)
     {
       CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v11);
       if (CurrentTokenRange.length >= a4)
       {
-        v15 = [(__CFString *)a1 substringWithRange:CurrentTokenRange.location, CurrentTokenRange.length];
-        v16 = [v15 stringByTrimmingCharactersInSet:v12];
+        v15 = [(__CFString *)self substringWithRange:CurrentTokenRange.location, CurrentTokenRange.length];
+        v16 = [v15 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
         v17 = [v16 length];
 
         if (v17)
@@ -980,8 +980,8 @@ LABEL_30:
       location = CFStringTokenizerGetCurrentTokenRange(v11).location;
       if (location != -1)
       {
-        v19 = [(__CFString *)a1 substringFromIndex:location];
-        v20 = [v19 ef_stringByTrimmingLeadingCharactersInSet:v12];
+        v19 = [(__CFString *)self substringFromIndex:location];
+        v20 = [v19 ef_stringByTrimmingLeadingCharactersInSet:whitespaceCharacterSet];
 
         if ([v20 length])
         {
@@ -1009,7 +1009,7 @@ LABEL_18:
     *a6 = 0;
   }
 
-  v26[0] = a1;
+  v26[0] = self;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
 LABEL_21:
 
@@ -1034,7 +1034,7 @@ LABEL_21:
   v16 = v9;
   v10 = v5;
   v17 = v10;
-  [v6 ef_enumerateTokensInString:a1 options:0 usingBlock:v14];
+  [v6 ef_enumerateTokensInString:self options:0 usingBlock:v14];
   v11 = v17;
   v12 = v9;
 
@@ -1048,7 +1048,7 @@ LABEL_21:
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__4;
   v13 = __Block_byref_object_dispose__4;
-  v14 = [a1 mutableCopy];
+  v14 = [self mutableCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __100__NSString_EmailFoundationAdditions__ef_stringByEscapingSQLLikeSpecialCharactersWithEscapeCharater___block_invoke;
@@ -1073,7 +1073,7 @@ LABEL_21:
   if ([v4 rangeCount] == 1)
   {
     v5 = [v4 rangeAtIndex:0];
-    v7 = [a1 substringWithRange:{v5, v6}];
+    v7 = [self substringWithRange:{v5, v6}];
   }
 
   else
@@ -1085,7 +1085,7 @@ LABEL_21:
     v11[3] = &unk_1E8249470;
     v9 = v8;
     v12 = v9;
-    v13 = a1;
+    selfCopy = self;
     [v4 enumerateRangesUsingBlock:v11];
     v7 = v9;
   }
@@ -1116,7 +1116,7 @@ LABEL_21:
 - (id)ef_stringWithNoExtraSpaces
 {
   v1 = 0;
-  v2 = [a1 mutableCopy];
+  v2 = [self mutableCopy];
   while (v1 < [v2 length])
   {
     v3 = [v2 characterAtIndex:v1++];
@@ -1149,21 +1149,21 @@ LABEL_21:
 
 - (id)ef_stringByAddingPercentEscapesUsingEncoding:()EmailFoundationAdditions
 {
-  v1 = a1;
-  v2 = [v1 stringByReplacingOccurrencesOfString:@"&" withString:@"%26" options:2 range:{0, objc_msgSend(v1, "length")}];
+  selfCopy = self;
+  v2 = [selfCopy stringByReplacingOccurrencesOfString:@"&" withString:@"%26" options:2 range:{0, objc_msgSend(selfCopy, "length")}];
 
-  v3 = [MEMORY[0x1E695DFF8] ef_defaultAllowedCharacterSet];
-  v4 = [v2 stringByAddingPercentEncodingWithAllowedCharacters:v3];
+  ef_defaultAllowedCharacterSet = [MEMORY[0x1E695DFF8] ef_defaultAllowedCharacterSet];
+  v4 = [v2 stringByAddingPercentEncodingWithAllowedCharacters:ef_defaultAllowedCharacterSet];
 
   return v4;
 }
 
 - (id)ef_stringByReplacingPercentEscapesUsingEncoding:()EmailFoundationAdditions
 {
-  v1 = a1;
-  v2 = [v1 stringByRemovingPercentEncoding];
+  selfCopy = self;
+  stringByRemovingPercentEncoding = [selfCopy stringByRemovingPercentEncoding];
 
-  v3 = [v2 stringByReplacingOccurrencesOfString:@"%26" withString:@"&" options:2 range:{0, objc_msgSend(v2, "length")}];
+  v3 = [stringByRemovingPercentEncoding stringByReplacingOccurrencesOfString:@"%26" withString:@"&" options:2 range:{0, objc_msgSend(stringByRemovingPercentEncoding, "length")}];
 
   return v3;
 }
@@ -1174,8 +1174,8 @@ LABEL_21:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"EFNSStringAdditions.m" lineNumber:559 description:@"Arguments is not a valid array."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFNSStringAdditions.m" lineNumber:559 description:@"Arguments is not a valid array."];
   }
 
   v6 = &stru_1F459BF68;
@@ -1203,38 +1203,38 @@ LABEL_7:
     {
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"EFNSStringAdditions.m" lineNumber:566 description:@"Unexpected characters in sanitized string."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EFNSStringAdditions.m" lineNumber:566 description:@"Unexpected characters in sanitized string."];
 
     goto LABEL_7;
   }
 
 LABEL_8:
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(%@)", a1, v6];;
+  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(%@)", self, v6];;
 
   return v14;
 }
 
 - (uint64_t)ef_lossyDefaultCStringBytes
 {
-  v2 = [a1 _fastCStringContents:1];
-  if (!v2)
+  mutableBytes = [self _fastCStringContents:1];
+  if (!mutableBytes)
   {
-    v3 = [a1 length];
+    v3 = [self length];
     v8 = 0xAAAAAAAAAAAAAAAALL;
     v9 = 0xAAAAAAAAAAAAAAAALL;
-    if ([a1 getBytes:0 maxLength:0x7FFFFFFFFFFFFFFELL usedLength:&v9 encoding:1 options:1 range:0 remainingRange:{v3, 0}])
+    if ([self getBytes:0 maxLength:0x7FFFFFFFFFFFFFFELL usedLength:&v9 encoding:1 options:1 range:0 remainingRange:{v3, 0}])
     {
       v4 = [MEMORY[0x1E695DF88] dataWithLength:v9 + 1];
-      v2 = [v4 mutableBytes];
-      if (v2 && ([a1 getBytes:v2 maxLength:v9 usedLength:&v8 encoding:1 options:1 range:0 remainingRange:{v3, 0}] & 1) != 0)
+      mutableBytes = [v4 mutableBytes];
+      if (mutableBytes && ([self getBytes:mutableBytes maxLength:v9 usedLength:&v8 encoding:1 options:1 range:0 remainingRange:{v3, 0}] & 1) != 0)
       {
         v5 = v8;
         v6 = v9;
 
         if (v5 == v6)
         {
-          *(v2 + v9) = 0;
+          *(mutableBytes + v9) = 0;
         }
       }
 
@@ -1244,19 +1244,19 @@ LABEL_8:
     }
   }
 
-  return v2;
+  return mutableBytes;
 }
 
 - (uint64_t)ef_isWebAddress
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
 
   v2 = [MEMORY[0x1E696AB60] dataDetectorWithTypes:32 error:0];
-  v3 = [a1 length];
-  v4 = [v2 firstMatchInString:a1 options:1 range:{0, v3}];
+  v3 = [self length];
+  v4 = [v2 firstMatchInString:self options:1 range:{0, v3}];
   if ([v4 range])
   {
     v6 = 0;
@@ -1270,24 +1270,24 @@ LABEL_8:
   if (v6)
   {
     v8 = [v4 URL];
-    v7 = [v8 ef_isEligibleForRichLink];
+    ef_isEligibleForRichLink = [v8 ef_isEligibleForRichLink];
   }
 
   else
   {
-    v7 = 0;
+    ef_isEligibleForRichLink = 0;
   }
 
-  return v7;
+  return ef_isEligibleForRichLink;
 }
 
 - (uint64_t)ef_rangeOfWebAddressContainingRange:()EmailFoundationAdditions
 {
   v23 = *MEMORY[0x1E69E9840];
-  if ([a1 length])
+  if ([self length])
   {
     v7 = [MEMORY[0x1E696AB60] dataDetectorWithTypes:32 error:0];
-    [v7 matchesInString:a1 options:1 range:{0, objc_msgSend(a1, "length")}];
+    [v7 matchesInString:self options:1 range:{0, objc_msgSend(self, "length")}];
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
@@ -1312,11 +1312,11 @@ LABEL_8:
           if (NSIntersectionRange(v24, v25).length == a4)
           {
             v13 = [v12 URL];
-            v14 = [v13 ef_isEligibleForRichLink];
+            ef_isEligibleForRichLink = [v13 ef_isEligibleForRichLink];
 
-            if (v14)
+            if (ef_isEligibleForRichLink)
             {
-              v15 = [v12 range];
+              range = [v12 range];
               goto LABEL_14;
             }
           }
@@ -1332,22 +1332,22 @@ LABEL_8:
       }
     }
 
-    v15 = 0x7FFFFFFFFFFFFFFFLL;
+    range = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_14:
   }
 
   else
   {
-    v15 = 0x7FFFFFFFFFFFFFFFLL;
+    range = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v15;
+  return range;
 }
 
 - (uint64_t)ef_isUnsignedIntegerString
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
     if (ef_isUnsignedIntegerString_onceToken != -1)
@@ -1355,7 +1355,7 @@ LABEL_14:
       [NSString(EmailFoundationAdditions) ef_isUnsignedIntegerString];
     }
 
-    return [a1 rangeOfCharacterFromSet:ef_isUnsignedIntegerString_nonDigitCharacterSet] == 0x7FFFFFFFFFFFFFFFLL;
+    return [self rangeOfCharacterFromSet:ef_isUnsignedIntegerString_nonDigitCharacterSet] == 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return result;
@@ -1363,17 +1363,17 @@ LABEL_14:
 
 - (id)ef_stringByEscapingForMessageBody
 {
-  v1 = [(NSString *)a1 _escapeForXML];
-  [v1 replaceOccurrencesOfString:@"\r\n" withString:@"<BR>" options:0 range:{0, objc_msgSend(v1, "length")}];
-  [v1 replaceOccurrencesOfString:@"\n" withString:@"<BR>" options:0 range:{0, objc_msgSend(v1, "length")}];
-  [v1 replaceOccurrencesOfString:@"\r" withString:@"<BR>" options:0 range:{0, objc_msgSend(v1, "length")}];
+  _escapeForXML = [(NSString *)self _escapeForXML];
+  [_escapeForXML replaceOccurrencesOfString:@"\r\n" withString:@"<BR>" options:0 range:{0, objc_msgSend(_escapeForXML, "length")}];
+  [_escapeForXML replaceOccurrencesOfString:@"\n" withString:@"<BR>" options:0 range:{0, objc_msgSend(_escapeForXML, "length")}];
+  [_escapeForXML replaceOccurrencesOfString:@"\r" withString:@"<BR>" options:0 range:{0, objc_msgSend(_escapeForXML, "length")}];
 
-  return v1;
+  return _escapeForXML;
 }
 
 - (uint64_t)ef_conformsToMarkupUTType
 {
-  v1 = [MEMORY[0x1E6982C40] typeWithIdentifier:a1];
+  v1 = [MEMORY[0x1E6982C40] typeWithIdentifier:self];
   if ([v1 conformsToType:*MEMORY[0x1E6982E30]])
   {
     v2 = 1;
@@ -1389,7 +1389,7 @@ LABEL_14:
 
 - (uint64_t)ef_conformsToRFC822UTType
 {
-  v1 = [MEMORY[0x1E6982C40] typeWithIdentifier:a1];
+  v1 = [MEMORY[0x1E6982C40] typeWithIdentifier:self];
   v2 = [MEMORY[0x1E6982C40] typeWithIdentifier:@"com.apple.mail.email"];
   if ([v1 conformsToType:*MEMORY[0x1E6982DA8]])
   {
@@ -1406,11 +1406,11 @@ LABEL_14:
 
 - (id)ef_declaredUTTypeFromExtension
 {
-  v2 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:a1];
+  v2 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:self];
   v3 = v2;
   if (!v2 || [v2 isDynamic])
   {
-    v4 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:a1 conformingToType:*MEMORY[0x1E6982F30]];
+    v4 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:self conformingToType:*MEMORY[0x1E6982F30]];
 
     v3 = v4;
   }
@@ -1421,13 +1421,13 @@ LABEL_14:
 - (void)ef_filenameWithExtensionForMimeType:()EmailFoundationAdditions
 {
   v4 = a3;
-  if ([v4 length] && (objc_msgSend(a1, "pathExtension"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "length"), v5, !v6))
+  if ([v4 length] && (objc_msgSend(self, "pathExtension"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "length"), v5, !v6))
   {
     v8 = [MEMORY[0x1E6982C40] typeWithMIMEType:v4];
-    v9 = [v8 preferredFilenameExtension];
-    if ([v9 length])
+    preferredFilenameExtension = [v8 preferredFilenameExtension];
+    if ([preferredFilenameExtension length])
     {
-      v7 = [a1 stringByAppendingPathExtension:v9];
+      v7 = [self stringByAppendingPathExtension:preferredFilenameExtension];
     }
 
     else
@@ -1443,25 +1443,25 @@ LABEL_14:
 
   if (v7)
   {
-    a1 = v7;
+    self = v7;
   }
 
-  v10 = a1;
+  selfCopy = self;
 
-  return a1;
+  return self;
 }
 
 - (id)ef_pathByReplacingRelativePathWithFolderName:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 pathComponents];
+  pathComponents = [self pathComponents];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __83__NSString_EmailFoundationAdditions__ef_pathByReplacingRelativePathWithFolderName___block_invoke;
   v10[3] = &unk_1E8249498;
   v6 = v4;
   v11 = v6;
-  v7 = [v5 ef_map:v10];
+  v7 = [pathComponents ef_map:v10];
 
   v8 = [MEMORY[0x1E696AEC0] pathWithComponents:v7];
 
@@ -1470,23 +1470,23 @@ LABEL_14:
 
 - (id)ef_UTF8ConvertibleString
 {
-  if ([a1 UTF8String])
+  if ([self UTF8String])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = _EFRepairString(a1);
+    selfCopy = _EFRepairString(self);
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)ef_stringByTrimmingWhitespaceAndDuplicateSpaces
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 componentsSeparatedByCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v3 = [self componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v4 = [v3 ef_filter:&__block_literal_global_145];
 
@@ -1498,8 +1498,8 @@ LABEL_14:
 - (id)ef_stringByRemovingWhitespaceAndUnbalancedQuotesForLanguages:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 ef_stringByTrimmingWhitespaceAndNewlineCharacters];
-  v6 = [v5 ef_stringByRemovingUnbalancedQuotesForLanguages:v4];
+  ef_stringByTrimmingWhitespaceAndNewlineCharacters = [self ef_stringByTrimmingWhitespaceAndNewlineCharacters];
+  v6 = [ef_stringByTrimmingWhitespaceAndNewlineCharacters ef_stringByRemovingUnbalancedQuotesForLanguages:v4];
 
   return v6;
 }
@@ -1507,7 +1507,7 @@ LABEL_14:
 - (uint64_t)ef_rangeOfCharactersFromSet:()EmailFoundationAdditions options:
 {
   v6 = a3;
-  v7 = [a1 ef_rangeOfCharactersFromSet:v6 options:a4 range:{0, objc_msgSend(a1, "length")}];
+  v7 = [self ef_rangeOfCharactersFromSet:v6 options:a4 range:{0, objc_msgSend(self, "length")}];
 
   return v7;
 }
@@ -1522,7 +1522,7 @@ LABEL_14:
     {
       if ((a4 & 8) != 0)
       {
-        v14 = [a1 _lengthOfSuffixOfCharactersFromSet:v10 range:{a5, a6}];
+        v14 = [self _lengthOfSuffixOfCharactersFromSet:v10 range:{a5, a6}];
         if (v14)
         {
           v11 = a5 + a6 - v14;
@@ -1545,7 +1545,7 @@ LABEL_9:
             goto LABEL_23;
           }
 
-          v13 = [a1 _lengthOfSuffixOfCharactersFromSet:v10 range:{a5, a6}];
+          v13 = [self _lengthOfSuffixOfCharactersFromSet:v10 range:{a5, a6}];
           if (v13)
           {
             break;
@@ -1560,7 +1560,7 @@ LABEL_9:
 
     else if ((a4 & 8) != 0)
     {
-      if ([a1 _lengthOfPrefixOfCharactersFromSet:v10 range:{a5, a6}])
+      if ([self _lengthOfPrefixOfCharactersFromSet:v10 range:{a5, a6}])
       {
         v11 = a5;
       }
@@ -1574,7 +1574,7 @@ LABEL_9:
     else if (a5 < a5 + a6)
     {
       v11 = a5;
-      while (![a1 _lengthOfPrefixOfCharactersFromSet:v10 range:{v11, a6}])
+      while (![self _lengthOfPrefixOfCharactersFromSet:v10 range:{v11, a6}])
       {
         ++v11;
         if (!--a6)
@@ -1596,7 +1596,7 @@ LABEL_23:
   if (a4 < a4 + a5)
   {
     v9 = 0;
-    while (([v8 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", a4 + v9)}] & 1) != 0)
+    while (([v8 characterIsMember:{objc_msgSend(self, "characterAtIndex:", a4 + v9)}] & 1) != 0)
     {
       if (a5 == ++v9)
       {
@@ -1621,7 +1621,7 @@ LABEL_7:
   {
     --v9;
     ++v10;
-    if (([v8 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", v9)}] & 1) == 0)
+    if (([v8 characterIsMember:{objc_msgSend(self, "characterAtIndex:", v9)}] & 1) == 0)
     {
       goto LABEL_6;
     }
